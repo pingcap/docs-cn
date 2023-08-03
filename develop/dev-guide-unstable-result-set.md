@@ -70,25 +70,25 @@ Then two values that match this SQL are returned.
 
 The first returned value:
 
-   ```sql
-   +------------+--------------+------------------------+
-   | class      | stuname      | max( `b`.`courscore` ) |
-   +------------+--------------+------------------------+
-   | 2018_CS_01 | MonkeyDLuffy |                   95.5 |
-   | 2018_CS_03 | PatrickStar  |                   99.0 |
-   +------------+--------------+------------------------+
-   ```
+```sql
++------------+--------------+------------------------+
+| class      | stuname      | max( `b`.`courscore` ) |
++------------+--------------+------------------------+
+| 2018_CS_01 | MonkeyDLuffy |                   95.5 |
+| 2018_CS_03 | PatrickStar  |                   99.0 |
++------------+--------------+------------------------+
+```
 
 The second returned value:
 
-   ```sql
-   +------------+--------------+------------------+
-   | class      | stuname      | max(b.courscore) |
-   +------------+--------------+------------------+
-   | 2018_CS_01 | MonkeyDLuffy |             95.5 |
-   | 2018_CS_03 | SpongeBob    |             99.0 |
-   +------------+--------------+------------------+
-   ```
+```sql
++------------+--------------+------------------+
+| class      | stuname      | max(b.courscore) |
++------------+--------------+------------------+
+| 2018_CS_01 | MonkeyDLuffy |             95.5 |
+| 2018_CS_03 | SpongeBob    |             99.0 |
++------------+--------------+------------------+
+```
 
 There are two results because you did **_NOT_** specify how to get the value of the `a`.`stuname` field in SQL, and two results are both satisfied by SQL semantics. It results in an unstable result set. Therefore, if you want to guarantee the stability of the result set of the `GROUP BY` statement, use the `FULL GROUP BY` syntax.
 
@@ -177,59 +177,59 @@ To let `GROUP_CONCAT()` get the result set output in order, you need to add the 
 
 1. Excluded `ORDER BY`
 
-   First query:
+    First query:
 
-   {{< copyable "sql" >}}
+    {{< copyable "sql" >}}
 
-   ```sql
-   mysql>  select GROUP_CONCAT( customer_id SEPARATOR ',' ) FROM customer where customer_id like '200002%';
-   +-------------------------------------------------------------------------+
-   | GROUP_CONCAT(customer_id  SEPARATOR ',')                                |
-   +-------------------------------------------------------------------------+
-   | 20000200992,20000200993,20000200994,20000200995,20000200996,20000200... |
-   +-------------------------------------------------------------------------+
-   ```
+    ```sql
+    mysql>  select GROUP_CONCAT( customer_id SEPARATOR ',' ) FROM customer where customer_id like '200002%';
+    +-------------------------------------------------------------------------+
+    | GROUP_CONCAT(customer_id  SEPARATOR ',')                                |
+    +-------------------------------------------------------------------------+
+    | 20000200992,20000200993,20000200994,20000200995,20000200996,20000200... |
+    +-------------------------------------------------------------------------+
+    ```
 
-   Second query:
+    Second query:
 
-   {{< copyable "sql" >}}
+    {{< copyable "sql" >}}
 
-   ```sql
-   mysql>  select GROUP_CONCAT( customer_id SEPARATOR ',' ) FROM customer where customer_id like '200002%';
-   +-------------------------------------------------------------------------+
-   | GROUP_CONCAT(customer_id  SEPARATOR ',')                                |
-   +-------------------------------------------------------------------------+
-   | 20000203040,20000203041,20000203042,20000203043,20000203044,20000203... |
-   +-------------------------------------------------------------------------+
-   ```
+    ```sql
+    mysql>  select GROUP_CONCAT( customer_id SEPARATOR ',' ) FROM customer where customer_id like '200002%';
+    +-------------------------------------------------------------------------+
+    | GROUP_CONCAT(customer_id  SEPARATOR ',')                                |
+    +-------------------------------------------------------------------------+
+    | 20000203040,20000203041,20000203042,20000203043,20000203044,20000203... |
+    +-------------------------------------------------------------------------+
+    ```
 
 2. Include `ORDER BY`
 
-   First query:
+    First query:
 
-   {{< copyable "sql" >}}
+    {{< copyable "sql" >}}
 
-   ```sql
-   mysql>  select GROUP_CONCAT( customer_id order by customer_id SEPARATOR ',' ) FROM customer where customer_id like '200002%';
-   +-------------------------------------------------------------------------+
-   | GROUP_CONCAT(customer_id  SEPARATOR ',')                                |
-   +-------------------------------------------------------------------------+
-   | 20000200000,20000200001,20000200002,20000200003,20000200004,20000200... |
-   +-------------------------------------------------------------------------+
-   ```
+    ```sql
+    mysql>  select GROUP_CONCAT( customer_id order by customer_id SEPARATOR ',' ) FROM customer where customer_id like '200002%';
+    +-------------------------------------------------------------------------+
+    | GROUP_CONCAT(customer_id  SEPARATOR ',')                                |
+    +-------------------------------------------------------------------------+
+    | 20000200000,20000200001,20000200002,20000200003,20000200004,20000200... |
+    +-------------------------------------------------------------------------+
+    ```
 
-   Second query:
+    Second query:
 
-   {{< copyable "sql" >}}
+    {{< copyable "sql" >}}
 
-   ```sql
-   mysql>  select GROUP_CONCAT( customer_id order by customer_id SEPARATOR ',' ) FROM customer where customer_id like '200002%';
-   +-------------------------------------------------------------------------+
-   | GROUP_CONCAT(customer_id  SEPARATOR ',')                                |
-   +-------------------------------------------------------------------------+
-   | 20000200000,20000200001,20000200002,20000200003,20000200004,20000200... |
-   +-------------------------------------------------------------------------+
-   ```
+    ```sql
+    mysql>  select GROUP_CONCAT( customer_id order by customer_id SEPARATOR ',' ) FROM customer where customer_id like '200002%';
+    +-------------------------------------------------------------------------+
+    | GROUP_CONCAT(customer_id  SEPARATOR ',')                                |
+    +-------------------------------------------------------------------------+
+    | 20000200000,20000200001,20000200002,20000200003,20000200004,20000200... |
+    +-------------------------------------------------------------------------+
+    ```
 
 ## Unstable results in `SELECT * FROM T LIMIT N`
 

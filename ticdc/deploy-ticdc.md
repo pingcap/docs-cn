@@ -115,7 +115,7 @@ This section describes how to use the [`tiup cluster edit-config`](/tiup/tiup-co
 
 1. Run the `tiup cluster edit-config` command. Replace `<cluster-name>` with the actual cluster name:
 
-   ```shell
+    ```shell
     tiup cluster edit-config <cluster-name>
     ```
 

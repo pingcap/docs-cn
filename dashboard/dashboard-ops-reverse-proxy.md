@@ -195,9 +195,9 @@ For a deployed cluster:
 
     {{< copyable "shell-regular" >}}
 
-   ```shell
-   tiup cluster reload CLUSTER_NAME -R pd
-   ```
+    ```shell
+    tiup cluster reload CLUSTER_NAME -R pd
+    ```
 
 See [Common TiUP Operations - Modify the configuration](/maintain-tidb-using-tiup.md#modify-the-configuration) for details.
 

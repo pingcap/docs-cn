@@ -37,22 +37,22 @@ When `tidb_analyze_version = 2`, if memory overflow occurs after `ANALYZE` is ex
 
 - If the `ANALYZE` statement is executed manually, manually analyze every table to be analyzed.
 
-   ```sql
-   SELECT DISTINCT(CONCAT('ANALYZE TABLE ', table_schema, '.', table_name, ';')) FROM information_schema.tables, mysql.stats_histograms WHERE stats_ver = 2 AND table_id = tidb_table_id;
-   ```
+    ```sql
+    SELECT DISTINCT(CONCAT('ANALYZE TABLE ', table_schema, '.', table_name, ';')) FROM information_schema.tables, mysql.stats_histograms WHERE stats_ver = 2 AND table_id = tidb_table_id;
+    ```
 
 - If TiDB automatically executes the `ANALYZE` statement because the auto-analysis has been enabled, execute the following statement that generates the `DROP STATS` statement:
 
-   ```sql
-   SELECT DISTINCT(CONCAT('DROP STATS ', table_schema, '.', table_name, ';')) FROM information_schema.tables, mysql.stats_histograms WHERE stats_ver = 2 AND table_id = tidb_table_id;
-   ```
+    ```sql
+    SELECT DISTINCT(CONCAT('DROP STATS ', table_schema, '.', table_name, ';')) FROM information_schema.tables, mysql.stats_histograms WHERE stats_ver = 2 AND table_id = tidb_table_id;
+    ```
 
 - If the result of the preceding statement is too long to copy and paste, you can export the result to a temporary text file and then perform execution from the file like this:
 
-   ```sql
-   SELECT DISTINCT ... INTO OUTFILE '/tmp/sql.txt';
-   mysql -h ${TiDB_IP} -u user -P ${TIDB_PORT} ... < '/tmp/sql.txt'
-   ```
+    ```sql
+    SELECT DISTINCT ... INTO OUTFILE '/tmp/sql.txt';
+    mysql -h ${TiDB_IP} -u user -P ${TIDB_PORT} ... < '/tmp/sql.txt'
+    ```
 
 This document briefly introduces the histogram, Count-Min Sketch, and Top-N, and details the collection and maintenance of statistics.
 

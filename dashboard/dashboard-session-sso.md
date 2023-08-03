@@ -19,28 +19,28 @@ TiDB Dashboard supports [OIDC](https://openid.net/connect/)-based Single Sign-On
 
 4. Fill the **OIDC Client ID** and the **OIDC Discovery URL** fields in the form.
 
-   Generally, you can obtain the two fields from the SSO service provider:
+    Generally, you can obtain the two fields from the SSO service provider:
 
-   - OIDC Client ID is also called OIDC Token Issuer.
-   - OIDC Discovery URL is also called OIDC Token Audience.
+    - OIDC Client ID is also called OIDC Token Issuer.
+    - OIDC Discovery URL is also called OIDC Token Audience.
 
 5. Click **Authorize Impersonation** and input the SQL password.
 
-   TiDB Dashboard will store this SQL password and use it to impersonate a normal SQL sign-in after an SSO sign-in is finished.
+    TiDB Dashboard will store this SQL password and use it to impersonate a normal SQL sign-in after an SSO sign-in is finished.
 
-   ![Sample Step](/media/dashboard/dashboard-session-sso-enable-1.png)
+    ![Sample Step](/media/dashboard/dashboard-session-sso-enable-1.png)
 
-   > **Note:**
-   >
-   > The password you have entered will be encrypted and stored. The SSO sign-in will fail after the password of the SQL user is changed. In this case, you can re-enter the password to bring SSO back.
+    > **Note:**
+    >
+    > The password you have entered will be encrypted and stored. The SSO sign-in will fail after the password of the SQL user is changed. In this case, you can re-enter the password to bring SSO back.
 
 6. Click **Authorize and Save**.
 
-   ![Sample Step](/media/dashboard/dashboard-session-sso-enable-2.png)
+    ![Sample Step](/media/dashboard/dashboard-session-sso-enable-2.png)
 
 7. Click **Update** (Update) to save the configuration.
 
-   ![Sample Step](/media/dashboard/dashboard-session-sso-enable-3.png)
+    ![Sample Step](/media/dashboard/dashboard-session-sso-enable-3.png)
 
 Now SSO sign-in has been enabled for TiDB Dashboard.
 
@@ -60,7 +60,7 @@ You can disable the SSO, which will completely erase the stored SQL password:
 
 4. Click **Update** (Update) to save the configuration.
 
-   ![Sample Step](/media/dashboard/dashboard-session-sso-disable.png)
+    ![Sample Step](/media/dashboard/dashboard-session-sso-disable.png)
 
 ### Re-enter the password after a password change
 
@@ -72,7 +72,7 @@ The SSO sign-in will fail once the password of the SQL user is changed. In this 
 
 3. In the **Single Sign-On** section, Click **Authorize Impersonation** and input the updated SQL password.
 
-   ![Sample Step](/media/dashboard/dashboard-session-sso-reauthorize.png)
+    ![Sample Step](/media/dashboard/dashboard-session-sso-reauthorize.png)
 
 4. Click **Authorize and Save**.
 
@@ -82,7 +82,7 @@ Once SSO is configured for TiDB Dashboard, you can sign in via SSO by taking fol
 
 1. In the sign-in page of TiDB Dashboard, click **Sign in via Company Account**.
 
-   ![Sample Step](/media/dashboard/dashboard-session-sso-signin.png)
+    ![Sample Step](/media/dashboard/dashboard-session-sso-signin.png)
 
 2. Sign into the system with SSO service configured.
 
@@ -102,7 +102,7 @@ First, create an Okta Application Integration to integrate SSO.
 
 3. Click **Create App Integration**.
 
-   ![Sample Step](/media/dashboard/dashboard-session-sso-okta-1.png)
+    ![Sample Step](/media/dashboard/dashboard-session-sso-okta-1.png)
 
 4. In the poped up dialog, choose **OIDC - OpenID Connect** in **Sign-in method**.
 
@@ -110,43 +110,43 @@ First, create an Okta Application Integration to integrate SSO.
 
 6. Click the **Next** button.
 
-   ![Sample Step](/media/dashboard/dashboard-session-sso-okta-2.png)
+    ![Sample Step](/media/dashboard/dashboard-session-sso-okta-2.png)
 
 7. Fill **Sign-in redirect URIs** as follows:
 
-   ```
-   http://DASHBOARD_IP:PORT/dashboard/?sso_callback=1
-   ```
+    ```
+    http://DASHBOARD_IP:PORT/dashboard/?sso_callback=1
+    ```
 
-   Substitute `DASHBOARD_IP:PORT` with the actual domain (or IP address) and port that you use to access the TiDB Dashboard in the browser.
+    Substitute `DASHBOARD_IP:PORT` with the actual domain (or IP address) and port that you use to access the TiDB Dashboard in the browser.
 
 8. Fill **Sign-out redirect URIs** as follows:
 
-   ```
-   http://DASHBOARD_IP:PORT/dashboard/
-   ```
+    ```
+    http://DASHBOARD_IP:PORT/dashboard/
+    ```
 
-   Similarly, substitute `DASHBOARD_IP:PORT` with the actual domain (or IP address) and port.
+    Similarly, substitute `DASHBOARD_IP:PORT` with the actual domain (or IP address) and port.
 
-   ![Sample Step](/media/dashboard/dashboard-session-sso-okta-3.png)
+    ![Sample Step](/media/dashboard/dashboard-session-sso-okta-3.png)
 
 9. Configure what type of users in your organization is allowed for SSO sign-in in the **Assignments** field, and then click **Save** to save the configuration.
 
-   ![Sample Step](/media/dashboard/dashboard-session-sso-okta-4.png)
+    ![Sample Step](/media/dashboard/dashboard-session-sso-okta-4.png)
 
 ### Step 2: Obtain OIDC information and fill in TiDB Dashboard
 
 1. In the Application Integration just created in Okta, click **Sign On**.
 
-   ![Sample Step 1](/media/dashboard/dashboard-session-sso-okta-info-1.png)
+    ![Sample Step 1](/media/dashboard/dashboard-session-sso-okta-info-1.png)
 
 2. Copy values of the **Issuer** and **Audience** fields from the **OpenID Connect ID Token** section.
 
-   ![Sample Step 2](/media/dashboard/dashboard-session-sso-okta-info-2.png)
+    ![Sample Step 2](/media/dashboard/dashboard-session-sso-okta-info-2.png)
 
 3. Open the TiDB Dashboard configuration page, fill **OIDC Client ID** with **Issuer** obtained from the last step and fill **OIDC Discovery URL** with **Audience**. Then finish the authorization and save the configuration. For example:
 
-   ![Sample Step 3](/media/dashboard/dashboard-session-sso-okta-info-3.png)
+    ![Sample Step 3](/media/dashboard/dashboard-session-sso-okta-info-3.png)
 
 Now TiDB Dashboard has been configured to use Okta SSO for sign-in.
 
@@ -160,33 +160,33 @@ Similar to Okta, [Auth0](https://auth0.com/) also provides OIDC SSO identity ser
 
 2. Navigate on the left sidebar **Applications** > **Applications**.
 
-3. Click **Create App Integration**. 
+3. Click **Create App Integration**.
 
-   ![Create Application](/media/dashboard/dashboard-session-sso-auth0-create-app.png)
+    ![Create Application](/media/dashboard/dashboard-session-sso-auth0-create-app.png)
 
     In the popped-up dialog, fill **Name**, for example, "TiDB Dashboard". Choose **Single Page Web Applications** in **Choose an application type**. Click **Create**.
 
 4. Click **Settings**.
 
-   ![Settings](/media/dashboard/dashboard-session-sso-auth0-settings-1.png)
+    ![Settings](/media/dashboard/dashboard-session-sso-auth0-settings-1.png)
 
 5. Fill **Allowed Callback URLs** as follows:
 
-   ```
-   http://DASHBOARD_IP:PORT/dashboard/?sso_callback=1
-   ```
+    ```
+    http://DASHBOARD_IP:PORT/dashboard/?sso_callback=1
+    ```
 
-   Replace `DASHBOARD_IP:PORT` with the actual domain (or IP address) and port that you use to access the TiDB Dashboard in your browser.
+    Replace `DASHBOARD_IP:PORT` with the actual domain (or IP address) and port that you use to access the TiDB Dashboard in your browser.
 
 6. Fill **Allowed Logout URLs** as follows:
 
-   ```
-   http://DASHBOARD_IP:PORT/dashboard/
+    ```
+    http://DASHBOARD_IP:PORT/dashboard/
     ```
 
-   Similarly, replace `DASHBOARD_IP:PORT` with the actual domain (or IP address) and port.
+    Similarly, replace `DASHBOARD_IP:PORT` with the actual domain (or IP address) and port.
 
-   ![Settings](/media/dashboard/dashboard-session-sso-auth0-settings-2.png)
+    ![Settings](/media/dashboard/dashboard-session-sso-auth0-settings-2.png)
 
 7. Keep the default values for other settings and click **Save Changes**.
 
@@ -196,7 +196,7 @@ Similar to Okta, [Auth0](https://auth0.com/) also provides OIDC SSO identity ser
 
 2. Fill **OIDC Discovery URL** with the **Domain** field value prefixed with `https://` and suffixed with `/`, for example, `https://example.us.auth0.com/`. Complete authorization and save the configuration.
 
-   ![Settings](/media/dashboard/dashboard-session-sso-auth0-settings-3.png)
+    ![Settings](/media/dashboard/dashboard-session-sso-auth0-settings-3.png)
 
 Now TiDB Dashboard has been configured to use Auth0 SSO for sign-in.
 
@@ -211,19 +211,19 @@ Now TiDB Dashboard has been configured to use Auth0 SSO for sign-in.
 2. Navigate from the top sidebar **Applications**.
 
 3. Click **Applications - Add**.
-   ![Settings](/media/dashboard/dashboard-session-sso-casdoor-settings-1.png)
+    ![Settings](/media/dashboard/dashboard-session-sso-casdoor-settings-1.png)
 
 4. Fill **Name** and **Display name**, for example, **TiDB Dashboard**.
 
 5. Add **Redirect URLs** as follows:
 
-   ```
-   http://DASHBOARD_IP:PORT/dashboard/?sso_callback=1
-   ```
+    ```
+    http://DASHBOARD_IP:PORT/dashboard/?sso_callback=1
+    ```
 
-   Replace `DASHBOARD_IP:PORT` with the actual domain (or IP address) and port that you use to access the TiDB Dashboard in your browser.
-   
-   ![Settings](/media/dashboard/dashboard-session-sso-casdoor-settings-2.png)
+    Replace `DASHBOARD_IP:PORT` with the actual domain (or IP address) and port that you use to access the TiDB Dashboard in your browser.
+
+    ![Settings](/media/dashboard/dashboard-session-sso-casdoor-settings-2.png)
 
 6. Keep the default values for other settings and click **Save & Exit**.
 
@@ -235,6 +235,6 @@ Now TiDB Dashboard has been configured to use Auth0 SSO for sign-in.
 
 2. Fill **OIDC Discovery URL** with the **Domain** field value prefixed with `https://` and suffixed with `/`, for example, `https://casdoor.example.com/`. Complete authorization and save the configuration.
 
-      ![Settings](/media/dashboard/dashboard-session-sso-casdoor-settings-3.png)
+    ![Settings](/media/dashboard/dashboard-session-sso-casdoor-settings-3.png)
 
 Now TiDB Dashboard has been configured to use Casdoor SSO for sign-in.

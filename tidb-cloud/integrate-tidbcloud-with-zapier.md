@@ -119,15 +119,15 @@ In the editor page, you can see the trigger and action. Click the trigger to set
 
     Click **Test action** to create a new row in the table. If you check your TiDB Cloud cluster, you can find the data is written successfully.
 
-   ```sql
-   mysql> SELECT * FROM test.github_global_event;
-   +-------------+-------------+------------+-----------------+----------------------------------------------+--------+---------------------+
-   | id          | type        | actor      | repo_name       | repo_url                                     | public | created_at          |
-   +-------------+-------------+------------+-----------------+----------------------------------------------+--------+---------------------+
-   | 25324462424 | CreateEvent | shiyuhang0 | shiyuhang0/docs | https://api.github.com/repos/shiyuhang0/docs | True   | 2022-11-18 08:03:14 |
-   +-------------+-------------+------------+-----------------+----------------------------------------------+--------+---------------------+
-   1 row in set (0.17 sec)
-   ```
+    ```sql
+    mysql> SELECT * FROM test.github_global_event;
+    +-------------+-------------+------------+-----------------+----------------------------------------------+--------+---------------------+
+    | id          | type        | actor      | repo_name       | repo_url                                     | public | created_at          |
+    +-------------+-------------+------------+-----------------+----------------------------------------------+--------+---------------------+
+    | 25324462424 | CreateEvent | shiyuhang0 | shiyuhang0/docs | https://api.github.com/repos/shiyuhang0/docs | True   | 2022-11-18 08:03:14 |
+    +-------------+-------------+------------+-----------------+----------------------------------------------+--------+---------------------+
+    1 row in set (0.17 sec)
+    ```
 
 ### Step 5: Publish your zap
 

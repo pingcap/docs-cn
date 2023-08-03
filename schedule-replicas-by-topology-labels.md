@@ -24,7 +24,7 @@ Assume that the topology has four layers: zone > data center (dc) > rack > host,
 
 + Use the command-line flag to start a TiKV instance:
 
-     ```shell
+    ```shell
     tikv-server --labels zone=<zone>,dc=<dc>,rack=<rack>,host=<host>
     ```
 
@@ -41,14 +41,14 @@ Assume that the topology has four layers: zone > data center (dc) > rack > host,
 
 To set labels for TiFlash, you can use the `tiflash-learner.toml` file, which is the configuration file of tiflash-proxy:
 
-  ```toml
-  [server]
-  [server.labels]
-  zone = "<zone>"
-  dc = "<dc>"
-  rack = "<rack>"
-  host = "<host>"
-  ```
+```toml
+[server]
+[server.labels]
+zone = "<zone>"
+dc = "<dc>"
+rack = "<rack>"
+host = "<host>"
+```
 
 ### (Optional) Configure `labels` for TiDB
 

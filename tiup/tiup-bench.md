@@ -229,6 +229,6 @@ You can write an arbitrary query in a SQL file, and then use it for the test by 
 
 2. Run the RawSQL test:
 
-   ```shell
-   tiup bench rawsql run --count 60 --query-files demo.sql
-   ```
+    ```shell
+    tiup bench rawsql run --count 60 --query-files demo.sql
+    ```

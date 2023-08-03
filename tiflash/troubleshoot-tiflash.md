@@ -14,21 +14,21 @@ The issue might occur due to different reasons. It is recommended that you troub
 
 1. Check whether your system is RedHat Enterprise Linux 8.
 
-     RedHat Enterprise Linux 8 does not have the `libnsl.so` system library. You can manually install it via the following command:
+    RedHat Enterprise Linux 8 does not have the `libnsl.so` system library. You can manually install it via the following command:
 
-     {{< copyable "shell-regular" >}}
+    {{< copyable "shell-regular" >}}
 
-     ```shell
-     dnf install libnsl
-     ```
+    ```shell
+    dnf install libnsl
+    ```
 
 2. Check your system's `ulimit` parameter setting.
 
-     {{< copyable "shell-regular" >}}
+    {{< copyable "shell-regular" >}}
 
-     ```shell
-     ulimit -n 1000000
-     ```
+    ```shell
+    ulimit -n 1000000
+    ```
 
 3. Use the PD Control tool to check whether there is any TiFlash instance that failed to go offline on the node (same IP and Port) and force the instance(s) to go offline. For detailed steps, refer to [Scale in a TiFlash cluster](/scale-tidb-using-tiup.md#scale-in-a-tiflash-cluster).
 

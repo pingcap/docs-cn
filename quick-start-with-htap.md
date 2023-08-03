@@ -97,7 +97,7 @@ In the following steps, you can create a [TPC-H](http://www.tpc.org/tpch/) datas
     | test.lineitem |        6491711 | 849.07 MiB| 99.06 MiB  | 948.13 MiB|
     +---------------+----------------+-----------+------------+-----------+
     8 rows in set (0.06 sec)
-     ```
+    ```
 
     This is a database of a commercial ordering system. In which, the `test.nation` table indicates the information about countries, the `test.region` table indicates the information about regions, the `test.part` table indicates the information about parts, the `test.supplier` table indicates the information about suppliers, the `test.partsupp` table indicates the information about parts of suppliers, the `test.customer` table indicates the information about customers, the `test.customer` table indicates the information about orders, and the `test.lineitem` table indicates the information about online items.
 
@@ -139,7 +139,7 @@ This is a shipping priority query, which provides the priority and potential rev
 
 ### Step 4. Replicate the test data to the columnar storage engine
 
-After TiFlash is deployed, TiKV does not replicate data to TiFlash immediately. You need to execute the following DDL statements in a MySQL client of TiDB to specify which tables need to be replicated. After that, TiDB will create the specified replicas in TiFlash accordingly. 
+After TiFlash is deployed, TiKV does not replicate data to TiFlash immediately. You need to execute the following DDL statements in a MySQL client of TiDB to specify which tables need to be replicated. After that, TiDB will create the specified replicas in TiFlash accordingly.
 
 {{< copyable "sql" >}}
 

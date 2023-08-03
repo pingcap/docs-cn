@@ -182,9 +182,9 @@ The SQL statements mostly used by pt-osc and the corresponding operation of DM a
     * DM splits the above `rename` operation into two SQL statements:
 
         ```sql
-         rename test.test4 to test._test4_old;
-         rename test._test4_new to test.test4;
-         ```
+        rename test.test4 to test._test4_old;
+        rename test._test4_new to test.test4;
+        ```
 
     * DM does not execute `rename to _test4_old`. When executing `rename ghost_table to origin table`, DM takes the following steps:
 

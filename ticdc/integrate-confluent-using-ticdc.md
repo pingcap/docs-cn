@@ -71,7 +71,7 @@ The preceding steps are performed in a lab environment. You can also deploy a cl
 
     After creation, a key pair file is generated, as shown below:
 
-     ```
+    ```
     === Confluent Cloud API key: yyy-yyyyy ===
     API key:
     7NBH2CAFM2LMGTH7
@@ -229,7 +229,7 @@ create or replace TABLE TIDB_TEST_ITEM (
     );
     ```
 
-2. Create a stream for `TIDB_TEST_ITEM` and set `append_only` to `true` as follows. 
+2. Create a stream for `TIDB_TEST_ITEM` and set `append_only` to `true` as follows.
 
     ```
     create or replace stream TEST_ITEM_STREAM on table TIDB_TEST_ITEM append_only=true;

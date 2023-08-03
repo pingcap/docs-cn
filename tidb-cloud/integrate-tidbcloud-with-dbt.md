@@ -77,7 +77,7 @@ To configure the project, take the following steps:
 
     In the editor, add the following configuration:
 
-   ```yaml
+    ```yaml
     jaffle_shop_tidb:                                                 # Project name
       target: dev                                                     # Target
       outputs:
