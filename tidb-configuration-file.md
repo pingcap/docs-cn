@@ -200,7 +200,18 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
 
 + 用于开启 Global Kill（跨节点终止查询或连接）功能。
 + 默认值：true
-+ 当该配置项值为 `true` 时，`KILL` 语句和 `KILL TIDB` 语句均能跨节点终止查询或连接，无需担心错误地终止其他查询或连接。当你使用客户端连接到任何一个 TiDB 节点执行 `KILL` 语句或 `KILL TIDB` 语句时，该语句会被转发给对应的 TiDB 节点。当客户端和 TiDB 中间有代理时，`KILL` 语句或 `KILL TIDB` 语句也会被转发给对应的 TiDB 节点执行。目前暂时不支持在 `enable-global-kill` 为 `true` 时用 MySQL 命令行 <kbd>ctrl</kbd>+<kbd>c</kbd> 终止查询或连接。关于 `KILL` 语句的更多信息，请参考 [KILL [TIDB]](/sql-statements/sql-statement-kill.md)。
++ 当该配置项值为 `true` 时，`KILL` 语句和 `KILL TIDB` 语句均能跨节点终止查询或连接，无需担心错误地终止其他查询或连接。当你使用客户端连接到任何一个 TiDB 节点执行 `KILL` 语句或 `KILL TIDB` 语句时，该语句会被转发给对应的 TiDB 节点。当客户端和 TiDB 中间有代理时，`KILL` 语句或 `KILL TIDB` 语句也会被转发给对应的 TiDB 节点执行。关于 `KILL` 语句的更多信息，请参考 [`KILL [TIDB]`](/sql-statements/sql-statement-kill.md)。
++ TiDB 从 v7.3.0 开始支持在 `enable-global-kill = true` 和 [`enable-32bits-connection-id = true`](#enable-32bits-connection-id-从-v730-版本开始引入) 时使用 MySQL 命令行 <kbd>Control+C</kbd> 终止查询或连接。
+
+### `enable-32bits-connection-id` <span class="version-mark">从 v7.3.0 版本开始引入</span>
+
++ 用于控制是否开启生成 32 位 connection ID 的功能。
++ 默认值：`true`
++ 当该配置项值以及 [`enable-global-kill`](#enable-global-kill-从-v610-版本开始引入) 为 `true` 时，生成 32 位 connection ID，从而支持在 MySQL 命令行中通过 <kbd>Control+C</kbd> 终止查询或连接。
+
+> **注意：**
+>
+> 当集群中 TiDB 实例数量超过 2048 或者单个 TiDB 实例的同时连接数超过 1048576 后，由于 32 位 connection ID 空间不足，将自动升级为 64 位 connection ID。升级过程中业务以及已建立的连接不受影响，但后续的新建连接将无法通过 MySQL 命令行 <kbd>Control+C</kbd> 终止。
 
 ### `initialize-sql-file` <span class="version-mark">从 v6.6.0 版本开始引入</span>
 
