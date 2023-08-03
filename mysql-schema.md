@@ -62,9 +62,9 @@ aliases: ['/docs-cn/dev/system-tables/system-table-overview/','/docs-cn/dev/refe
 
 ## Runaway Queries 相关系统表
 
-* `tidb_runaway_queries` 过去 7 天内所有识别到的 Runaway Queries 的历史记录
-* `tidb_runaway_watch` Runaway Queries 的监控列表 (Watch List)。
-* `tidb_runaway_watch_done` 被删除或者过期的 Runaway Queries 的监控列表。
+* `tidb_runaway_queries`：过去 7 天内所有识别到的 Runaway Queries 的历史记录
+* `tidb_runaway_watch`：Runaway Queries 的监控列表 (Watch List)
+* `tidb_runaway_watch_done`：被删除或者过期的 Runaway Queries 的监控列表
 
 ## 其它系统表
 

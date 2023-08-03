@@ -5,7 +5,7 @@ summary: TiDB 数据库中 QUERY WATCH 的使用概况。
 
 # QUERY WATCH
 
-`QUERY WATCH` 语句用于在资源组中手动管理 `Runaway Queries` 识别名单。
+`QUERY WATCH` 语句用于在资源组中手动管理 Runaway Queries 监控列表。
 
 > **警告：**
 >
