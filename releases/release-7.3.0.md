@@ -50,7 +50,9 @@ TiDB 版本：7.3.0
 
     TiDB 在 v7.3.0 新增了几个优化器提示，用来控制表之间的连接方式，包括：
    
-    - [`INDEX_JOIN()`](链接) 选择 Index Nested Loop Join，利用索引过滤并将结果集作为内表连接。
+    - [`NO_MERGE_JOIN()`](/optimizer-hints.md#no_merge_joint1_name--tl_name-) 选择除 Merge Join 以外的连接方式。
+    - [`NO_INDEX_JOIN()`](/optimizer-hints.md#no_index_joint1_name--tl_name-) 选择除 Index Nested Loop Join 以外的连接方式。
+    - [`NO_INDEX_MERGE_JOIN()`](/optimizer-hints.md#no_index_merge_joint1_name--tl_name-) 选择除 Index Nested Loop Merge Join 以外的连接方式。
     - [`NO_HASH_JOIN()`](/optimizer-hints.md#no_hash_joint1_name--tl_name-) 选择哈希连接以外的连接方式。
     - [`NO_INDEX_HASH_JOIN()`](/optimizer-hints.md#no_index_hash_joint1_name--tl_name-) 选择除 [Index Nested Loop Hash Join](/optimizer-hints.md#inl_hash_join) 以外的连接方式。
 
