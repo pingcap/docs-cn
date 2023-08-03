@@ -39,16 +39,16 @@ Version 2 的统计信息避免了 Version 1 中因为哈希冲突导致的在�
 
 - 如果 ANALYZE 语句是开启了自动 ANALYZE 后 TiDB 自动执行的，使用以下 SQL 语句生成 DROP STATS 的语句并执行：
 
-   ```sql
-   SELECT DISTINCT(CONCAT('DROP STATS ', table_schema, '.', table_name, ';')) FROM information_schema.tables, mysql.stats_histograms WHERE stats_ver = 2 AND table_id = tidb_table_id;
-   ```
+    ```sql
+    SELECT DISTINCT(CONCAT('DROP STATS ', table_schema, '.', table_name, ';')) FROM information_schema.tables, mysql.stats_histograms WHERE stats_ver = 2 AND table_id = tidb_table_id;
+    ```
 
 - 如果上一条语句返回结果太长，不方便复制粘贴，可以将结果导出到临时文件后，再执行:
 
-   ```sql
-   SELECT DISTINCT... INTO outfile '/tmp/sql.txt';
-   mysql -h ${TiDB_IP} -u user -P ${TIDB_PORT} ... < '/tmp/sql.txt';
-   ```
+    ```sql
+    SELECT DISTINCT... INTO outfile '/tmp/sql.txt';
+    mysql -h ${TiDB_IP} -u user -P ${TIDB_PORT} ... < '/tmp/sql.txt';
+    ```
 
 本文接下来将简单介绍其中出现的直方图和 Count-Min Sketch 以及 Top-N 这些数据结构，以及详细介绍统计信息的收集和维护。
 
