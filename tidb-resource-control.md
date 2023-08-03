@@ -210,7 +210,7 @@ Runaway Query 是指执行时间或消耗资源超出预期的查询。下面使
 - `COOLDOWN`：将查询的执行优先级降到最低，查询仍旧会以低优先级继续执行，不占用其他操作的资源。
 - `KILL`：识别到的查询将被自动终止，报错 `Query execution was interrupted, identified as runaway query`。
 
-为了避免并发的 Runaway Queries 太多，在被条件识别前就将系统资源耗尽，资源管控引入了一个 Runaway Queries 监控机制，来实现快速识别和隔离。借助子句 `WATCH`，当某一个查询被识别为 Runaway Query 之后，会从这个查询提取匹配特征（通过 `WATCH` 后的匹配方式参数决定），在接下来的一段时间里（通过 `DURATION` 定义），这个 Runaway Query 的匹配特征会被加入监控列表，TiDB 实例会将查询和监控列表进行匹配，匹配到的查询直接标记为 Runaway Query，而不再等待其被条件识别，并按照当前应对操作进行隔离。其中 `KILL` 会终止该查询，并报错 `Quarantined and interrupted because of being in runaway watch list`。
+为了避免并发的 Runaway Query 过多导致系统资源耗尽，资源管控引入了 Runaway Query 监控机制，能够快速识别并隔离 Runaway Query。该功能通过 `WATCH` 子句实现，当某一个查询被识别为 Runaway Query 之后，会提取这个查询的匹配特征（由 `WATCH` 后的匹配方式参数决定），在接下来的一段时间里（由 `DURATION` 定义），这个 Runaway Query 的匹配特征会被加入到监控列表，TiDB 实例会将查询和监控列表进行匹配，匹配到的查询直接标记为 Runaway Query，而不再等待其被条件识别，并按照当前应对操作进行隔离。其中 `KILL` 会终止该查询，并报错 `Quarantined and interrupted because of being in runaway watch list`。
 
 `WATCH` 有三种匹配方式：
 
@@ -220,7 +220,7 @@ Runaway Query 是指执行时间或消耗资源超出预期的查询。下面使
 
 `WATCH` 中的 `DURATION` 选项，用于表示此识别项的持续时间，默认为无限长。
 
-当监控项被添加后，匹配特征和 ACTION 都不会随着 `QUERY_LIMIT` 配置的修改或删除而改变和删除。可以使用 `QUERY WATCH REMOVE` 来删除监控项。
+添加监控项后，匹配特征和 `ACTION` 都不会随着 `QUERY_LIMIT` 配置的修改或删除而改变或删除。可以使用 `QUERY WATCH REMOVE` 来删除监控项。
 
 `QUERY_LIMIT` 具体格式如下：
 
@@ -256,12 +256,12 @@ Runaway Query 是指执行时间或消耗资源超出预期的查询。下面使
 
 参数说明如下：
 
-- `RESOURCE GROUP` 用于指定资源组。此语句添加的 Runaway Queries 监控特征将添加到该资源组的监控列表。此参数可以省略，省略时作用于 `default` 资源组。
+- `RESOURCE GROUP` 用于指定资源组。此语句添加的 Runaway Queries 监控特征将添加到该资源组的监控列表中。此参数可以省略，省略时作用于 `default` 资源组。
 - `ACTION` 的含义与 `QUERY LIMIT` 相同。此参数可以省略，省略时表示识别后的对应操作采用此时资源组中 `QUERY LIMIT` 配置的 `ACTION`，且不会随着 `QUERY LIMIT` 配置的改变而改变。如果资源组没有配置 `ACTION`，会报错。
 - `QueryWatchTextOption` 参数有 `SQL DIGEST`、`PLAN DIGEST`、`SQL TEXT` 三种类型。
-    - `SQL DIGEST` 的含义与 `QUERY LIMIT` `WATCH` 类型中的 `SIMILAR` 相同，后面紧跟的参数可以是字符串、用户自定义变量以及其他计算结果为字符串的表达式，但需要的字符串长度必须为 64，该长度与 TiDB 中关于 Digest 的定义一致。
+    - `SQL DIGEST` 的含义与 `QUERY LIMIT` `WATCH` 类型中的 `SIMILAR` 相同，后面紧跟的参数可以是字符串、用户自定义变量以及其他计算结果为字符串的表达式。字符串长度必须为 64，与 TiDB 中关于 Digest 的定义一致。
     - `PLAN DIGEST` 的含义与 `PLAN` 相同。输入参数为 Digest 字符串。
-    - `SQL TEXT` 可以根据后面紧跟的参数，将输入的 SQL 的原始字符串 (使用 `EXACT` 选项) 作为模式匹配项，或者经过解析和编译转化为 `SQL DIGEST`(使用 `SIMILAR` 选项)、`PLAN DIGEST`(使用 `PLAN` 选项) 来作为模式匹配项。
+    - `SQL TEXT` 可以根据后面紧跟的参数，将输入的 SQL 的原始字符串（使用 `EXACT` 选项）作为模式匹配项，或者经过解析和编译转化为 `SQL DIGEST`（使用 `SIMILAR` 选项）、`PLAN DIGEST`（使用 `PLAN` 选项）来作为模式匹配项。
 
 1. 为默认资源组的 Runaway Queries 监控列表添加监控匹配特征（需要提前为默认资源组设置 `QUERY LIMIT`）。
 
@@ -269,7 +269,7 @@ Runaway Query 是指执行时间或消耗资源超出预期的查询。下面使
     QUERY WATCH ADD ACTION KILL SQL TEXT EXACT TO 'select * from test.t2';
     ```
 
-2. 通过将 SQL 解析成 SQL Digest， 为 `rg1` 资源组的 Runaway Queries 监控列表添加监控匹配特征。未指定 `ACTION` 时，使用 `rg1` 资源组已配置的 `ACTION`。
+2. 通过将 SQL 解析成 SQL Digest，为 `rg1` 资源组的 Runaway Queries 监控列表添加监控匹配特征。未指定 `ACTION` 时，使用 `rg1` 资源组已配置的 `ACTION`。
 
     ```sql
     QUERY WATCH ADD RESOURCE GROUP rg1 SQL TEXT SIMILAR TO 'select * from test.t2';
@@ -281,10 +281,10 @@ Runaway Query 是指执行时间或消耗资源超出预期的查询。下面使
     QUERY WATCH ADD RESOURCE GROUP rg1 ACTION KILL PLAN DIGEST 'd08bc323a934c39dc41948b0a073725be3398479b6fa4f6dd1db2a9b115f7f57';
     ```
 
-4. 通过查询 `information_schema.runaway_watches` 获取监控项 ID，删除该监控项。
+4. 通过查询 `INFORMATION_SCHEMA.RUNAWAY_WATCHES` 获取监控项 ID，删除该监控项。
 
     ```sql
-    select * from information_schema.runaway_watches order by id;
+    SELECT * FROM INFORMATION_SCHEMA.RUNAWAY_WATCHES ORDER BY id;
     ```
 
     ```sql
@@ -301,7 +301,7 @@ Runaway Query 是指执行时间或消耗资源超出预期的查询。下面使
     ```
 
     ```sql
-    query watch remove 20003;
+    QUERY WATCH REMOVE 20003;
     ```
 
 #### 可观测性
