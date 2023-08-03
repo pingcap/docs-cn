@@ -21,7 +21,7 @@ AnalyzeOptionListOpt ::=
 ( WITH AnalyzeOptionList )?
 
 AnalyzeOptionList ::=
-AnalyzeOption ( ',' AnlyzeOption )*
+AnalyzeOption ( ',' AnalyzeOption )*
 
 AnalyzeOption ::=
 ( NUM ( 'BUCKETS' | 'TOPN' | ( 'CMSKETCH' ( 'DEPTH' | 'WIDTH' ) ) | 'SAMPLES' ) ) | ( FLOATNUM 'SAMPLERATE' )
