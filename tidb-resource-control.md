@@ -75,6 +75,10 @@ Request Unit (RU) 是 TiDB 对 CPU、IO 等系统资源的统一抽象的计量�
 > - 除了用户执行的查询之外，RU 还可以被后台任务消耗，例如自动统计信息收集。
 > - 上表只列举了本地部署的 TiDB 计算 RU 时涉及的相关资源，其中不包括网络和存储部分。TiDB Serverless 的 RU 可参考 [TiDB Serverless Pricing Details](https://www.pingcap.com/tidb-cloud-serverless-pricing-details/)。
 
+## 估算 SQL 所消耗的 RU
+
+你可以通过 [`EXPLAIN ANALYZE`](/sql-statements/sql-statement-explain-analyze.md#ru-request-unit-消耗) 语句获取到 SQL 执行时所消耗的 RU。注意 RU 的大小会受缓存的影响（比如[下推计算结果缓存](/coprocessor-cache.md)），多次执行同一条 SQL 所消耗的 RU 可能会有不同。因此这个 RU 值并不代表每次执行的精确值，但可以作为估算的参考。
+
 ## 相关参数
 
 资源管控特性引入了两个新的全局开关变量：
