@@ -34,6 +34,11 @@ file = "tidb-lightning.log"
 max-size = 128 # MB
 max-days = 28
 max-backups = 14
+
+# Controls whether to enable the diagnostic logs. The default value is false, that is, only the logs related to the import are output, and the logs of other dependent components are not output.
+# When you set it to true, logs from both the import process and other dependent components are output, and GRPC debugging is enabled, which can be used for diagnosis.
+# This parameter is introduced in v7.3.0.
+enable-diagnose-logs = false
 ```
 
 ### TiDB Lightning (Task)
@@ -148,10 +153,10 @@ addr = "172.16.31.10:8287"
 # The following resolution algorithms are supported:
 #  - none: does not detect duplicate records, which has the best performance of the two algorithms.
 #          But if there are duplicate records in the data source, it might lead to inconsistent data in the target TiDB.
-#  - remove: if there are primary key or unique key conflicts between the inserting data A and B, 
+#  - remove: if there are primary key or unique key conflicts between the inserting data A and B,
 #            A and B will be removed from the target table and recorded
-#            in the `lightning_task_info.conflict_error_v1` table in the target TiDB. 
-#            You can manually insert the correct records into the target table based on your business requirements. 
+#            in the `lightning_task_info.conflict_error_v1` table in the target TiDB.
+#            You can manually insert the correct records into the target table based on your business requirements.
 #            Note that the target TiKV must be v5.2.0 or later versions; otherwise it falls back to 'none'.
 # The default value is 'none'.
 # duplicate-resolution = 'none'
