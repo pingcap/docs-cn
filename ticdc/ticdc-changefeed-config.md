@@ -137,6 +137,7 @@ write-key-threshold = 0
 # protocol = "canal-json"
 
 # delete-only-output-handle-key-columns 用于指定 Delete 事件的输出内容，只对 canal-json 和 open-protocol 协议有效。从 v7.2.0 开始引入。
+# 该参数和 `force-replicate` 参数不兼容，如果同时将该参数和 `force-replicate` 设置为 true，创建 changefeed 会报错。
 # 默认值为 false，即输出所有列的内容。当设置为 true 时，只输出主键列，或唯一索引列的内容。
 # Avro 协议不受该参数控制，总是只输出主键列，或唯一索引列的内容。
 # CSV 协议不受该参数控制，总是输出所有列的内容。
