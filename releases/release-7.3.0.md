@@ -143,6 +143,7 @@ TiDB 版本：7.3.0
 | [`tidb_opt_enable_non_eval_scalar_subquery`](/system-variables.md#tidb_opt_enable_non_eval_scalar_subquery-从-v730-版本开始引入) | 新增 | 这个变量用于控制 `EXPLAIN` 语句是否禁止提前执行可以在优化阶段展开的常量子查询。 |
 | [`tiflash_replica_read`](/system-variables.md#tiflash_replica_read-从-v730-版本开始引入) | 新增 | 这个变量用于设置当查询需要使用 TiFlash 引擎时，TiFlash 副本的选择策略。 |
 | [`tidb_opt_enable_mpp_shared_cte_execution`](/system-variables.md#tidb_opt_enable_mpp_shared_cte_execution-从-v720-版本开始引入) | 修改 | 该变量从 v7.3.0 开始生效，用于控制非递归的公共表表达式 (CTE) 是否可以在 TiFlash MPP 执行。 |
+| [`tidb_lock_unchanged_keys`](/system-variables.md#tiflash_replica_read-从-v730v711-版本开始引入) | 新增 | 用于控制部分场景下，对于事务中涉及但并未修改值的 key 是否进行上锁 |
 |  | 新增/删除/修改 |  |
 |  | 新增/删除/修改 |  |
 |  | 新增/删除/修改 |  |
@@ -192,6 +193,7 @@ TiDB 版本：7.3.0
 
 + TiKV
 
+    - 添加了 `Max gap of safe-ts`、`Min safe ts region` 监控和 `tikv-ctl get_region_read_progress` 命令，用于更好地观测和诊断 resolved-ts 和 safe-ts 的状态 [#15082](https://github.com/tikv/tikv/issues/15082) [@ekexium](https://github.com/ekexium)
     - note [#issue](链接) @[贡献者 GitHub ID](链接)
     - note [#issue](链接) @[贡献者 GitHub ID](链接)
 
@@ -240,11 +242,15 @@ TiDB 版本：7.3.0
 
 + TiDB
 
-    - note [#issue](链接) @[贡献者 GitHub ID](链接)
-    - note [#issue](链接) @[贡献者 GitHub ID](链接)
+    - 修复了一个 data race 导致 TiDB crash 的问题 [#45563](https://github.com/pingcap/tidb/pull/45563) @[genliqi](https://github.com/gengliqi)
+    - 修复了一个 index merge 被 kill 可能会导致 hang 住的问题 [#45284](https://github.com/pingcap/tidb/pull/45284) @[xzhangxian1008](https://github.com/xzhangxian1008)
+    - 修复了 parallel apply 开启 MPP 情况下 query 结果错误的问题 [#45302](https://github.com/pingcap/tidb/pull/45302) @[windtalker](https://github.com/windtalker)
+    - 修复了一个时钟漂移可能导致 resolve lock 长时间卡住的问题 [#44822](https://github.com/pingcap/tidb/issues/44822) [@zyguan](https://github.com/zyguan)
+    - 修复了一个 GC resolve lock 可能遗漏未清理 primary 悲观锁的问题 [#45134](https://github.com/pingcap/tidb/issues/45134) [@MyonKeminta](https://github.com/MyonKeminta)
 
 + TiKV
 
+    - 修复了一个在某些罕见的情况下，在 GC 的同时读数据有可能发生 panic 的问题 [#15109](https://github.com/tikv/tikv/issues/15109) [@MyonKeminta](https://github.com/MyonKeminta)
     - note [#issue](链接) @[贡献者 GitHub ID](链接)
     - note [#issue](链接) @[贡献者 GitHub ID](链接)
 
@@ -257,7 +263,7 @@ TiDB 版本：7.3.0
 
     - 修复了由于死锁导致 TiFlash 无法成功同步分区表的问题 [#7758](https://github.com/pingcap/tiflash/issues/7758) @[hongyunyan](https://github.com/hongyunyan)
     - 修复了系统表 information_schema.tiflash_replica 泄露了用户没有访问权限的表的问题 [#7795](https://github.com/pingcap/tiflash/issues/7795) @[Lloyd-Pottiger](https://github.com/Lloyd-Pottiger)
-    - note [#issue](链接) @[贡献者 GitHub ID](链接)
+    - 修复了多个 HashAgg 在同一个 MPPTask 内部时，可能导致 MPPTask 编译时间过长而严重影响 query 性能的问题 [#7810](https://github.com/pingcap/tiflash/issues/7810) @[SeaRise](https://github.com/SeaRise)
 
 + Tools
 
@@ -283,7 +289,7 @@ TiDB 版本：7.3.0
 
     + TiDB Lightning
 
-        - note [#issue](链接) @[贡献者 GitHub ID](链接)
+        - 修复了 lighting 导入完成后执行 checksum 可能遇到 ssl 错误的 bug [#45462](https://github.com/pingcap/tidb/issues/45462) @[D3Hunter](https://github.com/D3Hunter)
         - note [#issue](链接) @[贡献者 GitHub ID](链接)
 
     + TiUP
