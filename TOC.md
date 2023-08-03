@@ -268,6 +268,7 @@
         - [错误索引的解决方案](/wrong-index-solution.md)
         - [Distinct 优化](/agg-distinct-optimization.md)
         - [代价模型](/cost-model.md)
+        - [Runtime Filter](/runtime-filter.md)
       - [Prepare 语句执行计划缓存](/sql-prepared-plan-cache.md)
       - [非 Prepare 语句执行计划缓存](/sql-non-prepared-plan-cache.md)
     - 控制执行计划
