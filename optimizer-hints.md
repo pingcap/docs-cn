@@ -989,7 +989,7 @@ EXPLAIN SELECT /*+ leading(t1, t3), inl_join(t3) */ * FROM t1, t2, t3 WHERE t1.i
 在下面几种情况下，可能会出现 `Can't find a proper physical plan for this query` 错误：
 
 - 查询本身并不需要按顺序读取索引，即在不使用 Hint 的前提下，优化器在任何情况下都不会生成按顺序读取索引的计划。此时，如果指定了 `ORDER_INDEX` Hint，会出现此报错，此时应考虑移除对应的 `ORDER_INDEX` Hint。 
-- 使用 `NO_JOIN` 相关的 hint 排除了所有可能的 Join 方式。
+- 查询使用了 `NO_JOIN` 相关的 Hint 排除了所有可能的 Join 方式。
 
 ```sql
 CREATE TABLE t1 (a INT);
