@@ -396,7 +396,7 @@ PARTITION BY LIST (store_id) (
 );
 ```
 
-对于不包含默认分区的 List 或 List COLUMNS 分区表，`INSERT` 语句要插入的值需要匹配该表 `PARTITION ... VALUES IN (...)` 子句中定义的数据集合。如果 `INSERT` 语句要插入的值不匹配任何分区的数据集合，该语句将执行失败并报错，如下例所示：
+对于不包含默认分区的 List 或 List COLUMNS 分区表，`INSERT` 语句要插入的值需要匹配该表 `PARTITION ... VALUES IN (...)` 子句中定义的数据集合。如果要插入的值不匹配任何分区的数据集合，该语句将执行失败并报错，如下例所示：
 
 ```sql
 CREATE TABLE t (
