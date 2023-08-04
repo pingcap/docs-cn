@@ -1,11 +1,10 @@
 ---
-title: TiFlash v6.2 升级帮助
-summary: 了解升级 TiFlash 至 v6.2 时的注意事项。
+title: TiFlash 升级帮助
+summary: 了解升级 TiFlash 时的注意事项。
 ---
+# TiFlash 升级帮助
 
-# TiFlash v6.2 升级帮助
-
-本文介绍从 TiFlash 低版本升级至 v6.2 时功能模块的变化，以及推荐的应对方法。
+本文介绍从 TiFlash 升级时功能模块的变化，以及推荐的应对方法。
 
 如需了解标准升级流程，请参考如下文档：
 
@@ -80,3 +79,9 @@ TiFlash 在 v6.2.0 将数据格式升级到 V3 版本，因此，从 v5.x 或 v6
 ## 从 v6.1 升级至 v6.2
 
 从 v6.1 升级至 v6.2 时，需要注意 PageStorage 变更数据版本带来的影响。具体请参考[从 v5.x 或 v6.0 升级至 v6.2](#从-v5x-或-v60-升级至-v62) 中关于 PageStorage 的描述。
+
+## 从 v6.x / v7.x 升级至 v7.4
+
+从 v7.4 开始，TiFlash DMFile 默认为 V3 版本，支持合并小文件功能，可以将多个小文件合并成一个大文件，减少文件数量。升级后, TiFlash 仍可以读 V2 版本的 DMFile，并且在后续的 Compact 中逐步重新写为 V3 版本的 DMFile。
+
+如果在升级到 v7.4 使用 V3 版本的 DMFile 后，需要回退到前序版本，可以通过 DTTool 离线将 DMFile 重新写回 V2 版本，具体可以参考 [DTTool 迁移工具](/tiflash/tiflash-command-line-flags.md#dttool-migrate)。
