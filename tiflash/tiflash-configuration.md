@@ -43,8 +43,9 @@ This section introduces the configuration parameters of TiFlash.
 ```toml
 ## The listening host for supporting services such as TPC/HTTP. It is recommended to configure it as "0.0.0.0", which means to listen on all IP addresses of this machine.
 listen_host = "0.0.0.0"
-## The TiFlash TCP service port.
-tcp_port = 9000
+## The TiFlash TCP service port. This port is used for internal testing and is set to 9000 by default. Before TiFlash v7.1.0, this port is enabled by default with a security risk. To enhance security, it is recommended to apply access control on this port to only allow access from whitelisted IP addresses. Starting from TiFlash v7.1.0, you can avoid the security risk by commenting out the configuration of this port. When the TiFlash configuration file does not specify this port, it will be disabled. 
+## It is **NOT** recommended to configure this port in any TiFlash deployment. (Note: Starting from TiFlash v7.1.0, TiFlash deployed by TiUP >= v1.12.5 or TiDB Operator >= v1.5.0 disables the port by default and is more secure.)
+# tcp_port = 9000
 ## The cache size limit of the metadata of a data block. Generally, you do not need to change this value.
 mark_cache_size = 5368709120
 ## The cache size limit of the min-max index of a data block. Generally, you do not need to change this value.
