@@ -288,8 +288,8 @@ ALTER TABLE table_name LAST PARTITION LESS THAN (<expression>)
 
 在创建 List 分区表之前，请确保以下系统变量为其默认值 `ON`：
 
-- [`tidb_enable_list_partition`](/system-variables#tidb_enable_list_partition-new-in-v50) 
-- [`tidb_enable_table_partition`](/system-variables#tidb_enable_table_partition) 
+- [`tidb_enable_list_partition`](/system-variables.md#tidb_enable_list_partition-从-v50-版本开始引入) 
+- [`tidb_enable_table_partition`](/system-variables.md#tidb_enable_table_partition) 
 
 List 分区和 Range 分区有很多相似的地方。不同之处主要在于 List 分区中，对于表的每个分区中包含的所有行，按分区表达式计算的值属于给定的数据集合。每个分区定义的数据集合有任意个值，但不能有重复的值，可通过 `PARTITION ... VALUES IN (...)` 子句对值进行定义。
 
