@@ -149,6 +149,7 @@ aliases: ['/docs-cn/dev/basic-features/','/docs-cn/dev/experimental-features-4.0
 | [Key 分区](/partitioned-table.md#key-分区) | Y | Y | Y | N | N | N | N | N | N | N | N |
 | [List 分区](/partitioned-table.md#list-分区) | Y | Y | Y | Y | Y | E | E | E | E | E | N |
 | [List COLUMNS 分区](/partitioned-table.md#list-columns-分区) | Y | Y | Y | Y | Y | E | E | E | E | E | N |
+| [List 和 List COLUMNS 分区表的默认分区](/partitioned-table.md#默认的-list-分区) | Y | N | N | N | N | N | N | N | N | N | N |
 | [`EXCHANGE PARTITION`](/partitioned-table.md) | Y | Y | Y | Y | E | E | E | E | E | E | N |
 | [`REORGANIZE PARTITION`](/partitioned-table.md#重组分区) | Y | Y | Y | N | N | N | N | N | N | N | N |
 | [`COALESCE PARTITION`](/partitioned-table.md#减少分区数量) | Y | Y | Y | N | N | N | N | N | N | N | N |
