@@ -37,8 +37,9 @@ title: TiFlash 配置参数
 ```toml
 ## TiFlash TCP/HTTP 等辅助服务的监听 host。建议配置成 0.0.0.0，即监听本机所有 IP 地址。
 listen_host = "0.0.0.0"
-## TiFlash TCP 服务的端口
-tcp_port = 9000
+## TiFlash TCP 服务的端口。TCP 服务为内部测试接口，默认使用 9000 端口。在 TiFlash v7.1.0 之前的版本中，该端口默认开启，但存在安全风险。为了提高安全性，建议对该端口进行访问控制，只允许白名单 IP 访问。从 TiFlash v7.1.0 起，可以通过注释掉该端口的配置避免安全风险。当 TiFlash 配置文件未声明该端口时，该端口也不会开启。
+## 建议在任何 TiFlash 的部署中都不配置该端口。(注: 从 TiFlash v7.1.0 起，由 TiUP >= v1.12.5 或 TiDB Operator >= v1.5.0 部署的 TiFlash 默认为安全版本，即默认未开启该端口)
+# tcp_port = 9000
 ## 数据块元信息的内存 cache 大小限制，通常不需要修改
 mark_cache_size = 5368709120
 ## 数据块 min-max 索引的内存 cache 大小限制，通常不需要修改
