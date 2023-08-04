@@ -101,7 +101,7 @@ Before TiDB v6.2.0, the DDL execution framework had the following limitations:
 - The DDL Owner always processes DDL jobs in a first-in-first-out way.
 - The DDL Owner can only execute one DDL task of the same type (either logical or physical) at a time, which is relatively strict, and affects the user experience.
 
-These limitations might lead to some "unintended" DDL blocking behavior. For more details, see [SQL FAQ - DDL Execution](/faq/sql-faq.md#ddl-execution).
+These limitations might lead to some "unintended" DDL blocking behavior. For more details, see [SQL FAQ - DDL Execution](https://docs.pingcap.com/tidb/stable/sql-faq#ddl-execution).
 
 </div>
 <div label="Parallel DDL framework starting from v6.2.0">
@@ -188,4 +188,4 @@ When TiDB is adding an index, the phase of backfilling data will cause read and 
 
 ## Common questions
 
-For common questions about DDL execution, see [SQL FAQ - DDL execution](/faq/sql-faq.md#ddl-execution).
+For common questions about DDL execution, see [SQL FAQ - DDL execution](https://docs.pingcap.com/tidb/stable/sql-faq).

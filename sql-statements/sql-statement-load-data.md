@@ -8,22 +8,14 @@ aliases: ['/docs/dev/sql-statements/sql-statement-load-data/','/docs/dev/referen
 
 The `LOAD DATA` statement batch loads data into a TiDB table.
 
-In TiDB v7.0.0, the `LOAD DATA` SQL statement supports the following features:
+Starting from TiDB v7.0.0, the `LOAD DATA` SQL statement supports the following features:
 
 - Support importing data from S3 and GCS
 - Add a new parameter `FIELDS DEFINED NULL BY`
 
 > **Warning:**
 >
-> The new parameter `FIELDS DEFINED NULL BY` and support for importing data from S3 and GCS in v7.0.0 are experimental. It is not recommended that you use it in the production environment. This feature might be changed or removed without prior notice. If you find a bug, you can report an [issue](https://github.com/pingcap/tidb/issues) on GitHub.
-
-<CustomContent platform="tidb-cloud">
-
-> **Note:**
->
-> This feature is only available on [TiDB Serverless clusters](https://docs.pingcap.com/tidbcloud/select-cluster-tier#tidb-serverless).
-
-</CustomContent>
+> The new parameter `FIELDS DEFINED NULL BY` and support for importing data from S3 and GCS are experimental. It is not recommended that you use it in the production environment. This feature might be changed or removed without prior notice. If you find a bug, you can report an [issue](https://github.com/pingcap/tidb/issues) on GitHub.
 
 ## Synopsis
 
@@ -45,6 +37,20 @@ Fields ::=
 ### `LOCAL`
 
 You can use `LOCAL` to specify data files on the client to be imported, where the file parameter must be the file system path on the client.
+
+If you are using TiDB Cloud, to use the `LOAD DATA` statement to load local data files, you need to add the `--local-infile` option to the connection string when you connect to TiDB Cloud. 
+
+- The following is an example connection string for TiDB Serverless:
+
+    ```
+    mysql --connect-timeout 15 -u '<user_name>' -h <host_name> -P 4000 -D test --ssl-mode=VERIFY_IDENTITY --ssl-ca=/etc/ssl/cert.pem -p<your_password> --local-infile
+    ```
+
+- The following is an example connection string for TiDB Dedicated:
+
+    ```
+    mysql --connect-timeout 15 --ssl-mode=VERIFY_IDENTITY --ssl-ca=<CA_path> --tls-version="TLSv1.2" -u root -h <host_name> -P 4000 -D test -p<your_password> --local-infile
+    ```
 
 ### S3 and GCS storage
 

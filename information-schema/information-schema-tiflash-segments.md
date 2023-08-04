@@ -9,6 +9,10 @@ summary: Learn the `TIFLASH_SEGMENTS` information_schema table.
 >
 > Do not use this table in production environments, as the fields of the table are unstable, and subject to change in new releases of TiDB, without prior notice.
 
+> **Note:**
+>
+> This statement is not applicable to TiDB Serverless clusters.
+
 The `TIFLASH_SEGMENTS` table provides statistical information about data tables in TiFlash.
 
 ```sql
