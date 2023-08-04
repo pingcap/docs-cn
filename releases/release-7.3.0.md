@@ -185,6 +185,10 @@ TiDB 版本：7.3.0
 |  | | 新增/删除/修改 | |
 |  | | 新增/删除/修改 | |
 
+### 系统表
+
+- 新增系统表 `mysql.tidb_timers` 用来存储系统内部定时器的元信息。
+
 ## 废弃功能
 
 - note
@@ -197,7 +201,8 @@ TiDB 版本：7.3.0
     - 游标 (Cursor) 结果过大时，写入 TiDB 临时磁盘空间从而避免OOM [#43233](https://github.com/pingcap/tidb/issues/43233) @[YangKeao](https://github.com/YangKeao) <!--1430-->
     - 新增 [`tidb_opt_enable_non_eval_scalar_subquery`](/system-variables.md#tidb_opt_enable_non_eval_scalar_subquery-从-v730-版本开始引入) 系统变量用于控制 `EXPLAIN` 语句是否在优化阶段提前执行子查询 [#22076](https://github.com/pingcap/tidb/issues/22076) @[winoros](https://github.com/winoros) **tw@Oreoxmt** <!--983-->
     - 在启用 [Global Kill](/tidb-configuration-file#enable-global-kill-从-v610-版本开始引入) 的情况下，可以通过 <kbd>Control+C</kbd> 终止当前会话 [#8854](https://github.com/pingcap/tidb/issues/8854) @[pingyu](https://github.com/pingyu) **tw@Oreoxmt**
-    - note [#issue](链接) @[贡献者 GitHub ID](链接)
+    - 支持新的函数 `IS_USED_LOCK` [#44493](https://github.com/pingcap/tidb/issues/44493) @[dveeden](https://github.com/dveeden)
+    - 提高了读取落盘数据的速度 [#45125](https://github.com/pingcap/tidb/issues/45125) @[YangKeao](https://github.com/YangKeao)
 
 + TiKV
 
@@ -255,6 +260,20 @@ TiDB 版本：7.3.0
     - 修复了 parallel apply 开启 MPP 情况下 query 结果错误的问题 [#45299](https://github.com/pingcap/tidb/issues/45299) @[windtalker](https://github.com/windtalker)
     - 修复了一个时钟漂移可能导致 resolve lock 长时间卡住的问题 [#44822](https://github.com/pingcap/tidb/issues/44822) [@zyguan](https://github.com/zyguan)
     - 修复了一个 GC resolve lock 可能遗漏未清理 primary 悲观锁的问题 [#45134](https://github.com/pingcap/tidb/issues/45134) [@MyonKeminta](https://github.com/MyonKeminta)
+    - 修复了在开启了动态裁剪的情况下，使用了排序的查询返回的结果错误的问题 [#45007](https://github.com/pingcap/tidb/issues/45007) @[Defined2014](https://github.com/Defined2014)
+    - 修复了列定义中，AUTO_INCREMENT 与默认值不能共存的问题 [#45136](https://github.com/pingcap/tidb/issues/45136) @[Defined2014](https://github.com/Defined2014)
+    - 修复了某些情况下查询系统表 `information_schema.TIKV_REGION_STATUS` 返回结果错误的问题 [#45531](https://github.com/pingcap/tidb/issues/45531) @[Defined2014](https://github.com/Defined2014)
+    - 修复了某些情况下分区表分区裁剪不正确的问题 [#42273](https://github.com/pingcap/tidb/issues/42273) @[jiyfhust](https://github.com/jiyfhust)
+    - 修复了 truncate 分区表的某个分区时，全局索引无法清除的问题 [#42435](https://github.com/pingcap/tidb/issues/42435) @[L-maple](https://github.com/L-maple)
+    - 修复了某些情况下未完成的 TTL 任务在 TiDB 重启后无法被重新执行的问题 [#](https://github.com/pingcap/tidb/issues/45022) @[lcwangchao](https://github.com/lcwangchao)
+    - 修复了 TTL 运行过程中一些内存泄漏的问题 [#](https://github.com/pingcap/tidb/issues/45510) @[lcwangchao](https://github.com/lcwangchao)
+    - 修复了向分区表插入数据时又些报错信息不准确的问题 [#44966](https://github.com/pingcap/tidb/issues/44966) @[lilinghai](https://github.com/lilinghai)
+    - 修复了对 `information_schema.tiflash_replica` 表的读取权限问题 [#7795](https://github.com/pingcap/tiflash/issues/7795) @[Lloyd-Pottiger](https://github.com/Lloyd-Pottiger)
+    - 修复了使用错误分区表名时报错。 [#44967](https://github.com/pingcap/tidb/issues/44967) @[River2000i](https://github.com/River2000i)
+    - 修复了某些情况下，打开 `tidb_enable_dist_task` 开关时，创建索引卡住的问题 [#](https://github.com/pingcap/tidb/issues/44440) @[tangenta](https://github.com/tangenta)
+    - 修复了用 BR 恢复设置了 `AUTO_ID_CACHE = 1`的表导致 `Duplicate entry` 错误的问题 [#44716](https://github.com/pingcap/tidb/issues/44716) @[tiancaiamao](https://github.com/tiancaiamao)
+    - 修复了 `truncate table` 执行消耗的时间和 `admin show DDL jobs` 结果中显示的任务执行时间不一致的问题 [#44785](https://github.com/pingcap/tidb/issues/44785) @[tangenta](https://github.com/tangenta)
+    - 修复了读取元数据时间超过一个 DDL lease 导致的升级 TiDB 卡住的问题 [#45176](https://github.com/pingcap/tidb/issues/45176) @[zimulala](https://github.com/zimulala)
 
 + TiKV
 
