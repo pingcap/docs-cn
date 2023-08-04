@@ -207,8 +207,8 @@ TiDB 版本：7.3.0
 
 + PD
 
-    - 未开启 Swagger server 时，PD 默认屏蔽 Swagger API [#6785](https://github.com/tikv/pd/pull/6785) @[bufferflies](https://github.com/bufferflies)
-    - 提升 etcd 高可用性 [#6577](https://github.com/tikv/pd/pull/6577) @[lhy1024](https://github.com/lhy1024)
+    - 未开启 Swagger server 时，PD 默认屏蔽 Swagger API [#6786](https://github.com/tikv/pd/issues/6786) @[bufferflies](https://github.com/bufferflies)
+    - 提升 etcd 高可用性 [#6554](https://github.com/tikv/pd/issues/6554) [#6442](https://github.com/tikv/pd/issues/6442) @[lhy1024](https://github.com/lhy1024)
     - 减少 GetRegions 内存占用 [#6838](https://github.com/tikv/pd/pull/6838) @[lhy1024](https://github.com/lhy1024)
 
 + TiFlash
@@ -250,9 +250,9 @@ TiDB 版本：7.3.0
 
 + TiDB
 
-    - 修复了一个 data race 导致 TiDB crash 的问题 [#45563](https://github.com/pingcap/tidb/pull/45563) @[genliqi](https://github.com/gengliqi)
-    - 修复了一个 index merge 被 kill 可能会导致 hang 住的问题 [#45284](https://github.com/pingcap/tidb/pull/45284) @[xzhangxian1008](https://github.com/xzhangxian1008)
-    - 修复了 parallel apply 开启 MPP 情况下 query 结果错误的问题 [#45302](https://github.com/pingcap/tidb/pull/45302) @[windtalker](https://github.com/windtalker)
+    - 修复了一个 data race 导致 TiDB crash 的问题 [#45561](https://github.com/pingcap/tidb/issues/45561) @[genliqi](https://github.com/gengliqi)
+    - 修复了一个 index merge 被 kill 可能会导致 hang 住的问题 [#45279](https://github.com/pingcap/tidb/issues/45279) @[xzhangxian1008](https://github.com/xzhangxian1008)
+    - 修复了 parallel apply 开启 MPP 情况下 query 结果错误的问题 [#45299](https://github.com/pingcap/tidb/issues/45299) @[windtalker](https://github.com/windtalker)
     - 修复了一个时钟漂移可能导致 resolve lock 长时间卡住的问题 [#44822](https://github.com/pingcap/tidb/issues/44822) [@zyguan](https://github.com/zyguan)
     - 修复了一个 GC resolve lock 可能遗漏未清理 primary 悲观锁的问题 [#45134](https://github.com/pingcap/tidb/issues/45134) [@MyonKeminta](https://github.com/MyonKeminta)
 
