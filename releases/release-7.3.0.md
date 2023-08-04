@@ -214,8 +214,8 @@ TiDB 版本：7.3.0
 
     <!-- qiancai -->
     - 未开启 Swagger server 时，PD 默认屏蔽 Swagger API [#6786](https://github.com/tikv/pd/issues/6786) @[bufferflies](https://github.com/bufferflies)
-    - 提升 etcd 高可用性 [#6554](https://github.com/tikv/pd/issues/6554) [#6442](https://github.com/tikv/pd/issues/6442) @[lhy1024](https://github.com/lhy1024)
-    - 减少 GetRegions 内存占用 [#6838](https://github.com/tikv/pd/pull/6838) @[lhy1024](https://github.com/lhy1024)
+    - 提升 etcd 的高可用性 [#6554](https://github.com/tikv/pd/issues/6554) [#6442](https://github.com/tikv/pd/issues/6442) @[lhy1024](https://github.com/lhy1024)
+    - 减少 `GetRegions` 请求的内存占用 [#6835](https://github.com/tikv/pd/issues/6835) @[lhy1024](https://github.com/lhy1024)
 
 + TiFlash
 
@@ -270,18 +270,18 @@ TiDB 版本：7.3.0
 + PD
 
     <!-- qiancai -->
-    - 修复了当重启 PD 时，可能会导致 default resource group 重新初始化的问题 [#6788](https://github.com/tikv/pd/pull/6788) @[glorv](https://github.com/glorv)
-    - 修复了当 etcd 已经启动，但 client 还未连接上去时，调用 client 会 panic 的问题 [#6866](https://github.com/tikv/pd/pull/6866) @[HuSharp](https://github.com/HuSharp)
-    - 修复了 region health-check 输出可能与通过 ID 所查 region 信息不一致的问题 [#6812](https://github.com/tikv/pd/pull/6812) @[JmPotato](https://github.com/JmPotato)
-    - 修复了 unsafe recovery 中失败的 learner peer 在 auto-detect 模式中被忽略的问题 [#6691](https://github.com/tikv/pd/pull/6691) @[v01dstar](https://github.com/v01dstar)
-    - 修复了 palcement rule 在选定没有满足 rule 的 tiflash learner 问题 [#6660](https://github.com/tikv/pd/pull/6660) @[rleungx](https://github.com/rleungx)
+    - 修复重启 PD 可能导致 `default` 资源组被重新初始化的问题 [#6787](https://github.com/tikv/pd/issues/6787) @[glorv](https://github.com/glorv)
+    - 修复当 etcd 已经启动，但 client 尚未连接上 etcd 时，调用 client 会导致 PD panic 的问题 [#6860](https://github.com/tikv/pd/issues/6860) @[HuSharp](https://github.com/HuSharp)
+    - 修复 Region 的 `health-check` 输出可能与通过 ID 所查到的 Region 信息不一致的问题 [#6560](https://github.com/tikv/pd/issues/6560) @[JmPotato](https://github.com/JmPotato)
+    - 修复 `unsafe recovery` 中失败的 learner peer 在 `auto-detect` 模式中被忽略的问题 [#6690](https://github.com/tikv/pd/issues/6690) @[v01dstar](https://github.com/v01dstar)
+    - 修复 Placement Rules 选择了不满足规则的 TiFlash learner 的问题 [#6662](https://github.com/tikv/pd/issues/6662) @[rleungx](https://github.com/rleungx)
 
 + TiFlash
 
     <!-- qiancai -->
-    - 修复了由于死锁导致 TiFlash 无法成功同步分区表的问题 [#7758](https://github.com/pingcap/tiflash/issues/7758) @[hongyunyan](https://github.com/hongyunyan)
-    - 修复了系统表 information_schema.tiflash_replica 泄露了用户没有访问权限的表的问题 [#7795](https://github.com/pingcap/tiflash/issues/7795) @[Lloyd-Pottiger](https://github.com/Lloyd-Pottiger)
-    - 修复了多个 HashAgg 在同一个 MPPTask 内部时，可能导致 MPPTask 编译时间过长而严重影响 query 性能的问题 [#7810](https://github.com/pingcap/tiflash/issues/7810) @[SeaRise](https://github.com/SeaRise)
+    - 修复由于死锁导致 TiFlash 无法成功同步分区表的问题 [#7758](https://github.com/pingcap/tiflash/issues/7758) @[hongyunyan](https://github.com/hongyunyan)
+    - 修复系统表 `INFORMATION_SCHEMA.TIFLASH_REPLICA` 包含用户没有访问权限的表的问题 [#7795](https://github.com/pingcap/tiflash/issues/7795) @[Lloyd-Pottiger](https://github.com/Lloyd-Pottiger)
+    - 修复当同一个 MPP Task 内有多个 HashAgg 算子时，可能导致 MPP Task 编译时间过长而严重影响查询性能的问题 [#7810](https://github.com/pingcap/tiflash/issues/7810) @[SeaRise](https://github.com/SeaRise)
 
 + Tools
 
