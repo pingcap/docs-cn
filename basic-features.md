@@ -106,6 +106,7 @@ aliases: ['/docs-cn/dev/basic-features/','/docs-cn/dev/experimental-features-4.0
 | [索引合并](/explain-index-merge.md) | Y | Y | Y | Y | Y | Y | E | E | E | E | E |
 | [基于 SQL 的数据放置规则](/placement-rules-in-sql.md) | Y | Y | Y | Y | Y | E | E | N | N | N | N |
 | [Cascades Planner](/system-variables.md#tidb_enable_cascades_planner) | E | E | E | E | E | E | E | E | E | E | E |
+| [Runtime Filter](/runtime-filter.md) | Y | N | N | N | N | N | N | N | N | N | N |
 
 ## 数据定义语言 (DDL)
 
