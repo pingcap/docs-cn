@@ -102,6 +102,7 @@ summary: 了解 TiDB 的功能概览。
 | [MPP 执行引擎](/explain-mpp.md) | Y | Y | Y | Y | Y | Y | Y | Y | Y | Y | N |
 | [MPP 执行引擎 - compression exchange](/explain-mpp.md#mpp-version-和-exchange-数据压缩) | Y | Y | Y | N | N | N | N | N | N | N | N |
 | [TiFlash Pipeline 执行模型](/tiflash/tiflash-pipeline-model.md) | E | E | N | N | N | N | N | N | N | N | N |
+| [TiFlash 副本选择策略](/system-variables.md#tiflash_replica_read-从-v730-版本开始引入) | Y | N | N | N | N | N | N | N | N | N | N |
 | [索引合并](/explain-index-merge.md) | Y | Y | Y | Y | Y | Y | E | E | E | E | E |
 | [基于 SQL 的数据放置规则](/placement-rules-in-sql.md) | Y | Y | Y | Y | Y | E | E | N | N | N | N |
 | [Cascades Planner](/system-variables.md#tidb_enable_cascades_planner) | E | E | E | E | E | E | E | E | E | E | E |
