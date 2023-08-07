@@ -7,11 +7,18 @@ summary: Learn how to resolve type conversion and duplication errors during data
 
 Starting from v5.4.0, you can configure TiDB Lightning to skip errors like invalid type conversion and unique key conflicts, and to continue the data processing as if those wrong row data does not exist. A report will be generated for you to read and manually fix errors afterward. This is ideal for importing from a slightly dirty data source, where locating the errors manually is difficult and restarting TiDB Lightning on every encounter is costly.
 
-This document introduces how to use the type error feature (`lightning.max-error`) and the duplicate resolution feature (`tikv-importer.duplicate-resolution`). It also introduces the database where these errors are stored (`lightning.task-info-schema-name`). At the end of this document, an example is provided.
+This document introduces TiDB Lightning error types, how to query the errors, and provides an example. The following configuration items are involved:
+
+- `lightning.max-error`: the tolerance threshold of type error
+- `conflict.strategy`, `conflict.threshold`, and `conflict.max-record-rows`: configurations related to conflicting data
+- `tikv-importer.duplicate-resolution`: the conflict handling configuration that can only be used in the physical import mode
+- `lightning.task-info-schema-name`: the database where conflicting data is stored when TiDB Lightning detects conflicts
+
+For more information, see [TiDB Lightning (Task)](/tidb-lightning/tidb-lightning-configuration.md#tidb-lightning-task).
 
 ## Type error
 
-You can use the `lightning.max-error` configuration to increase the tolerance of errors related to data types. If this configuration is set to *N*, TiDB Lightning allows and skips up to *N* errors from the data source before it exists. The default value `0` means that no error is allowed.
+You can use the `lightning.max-error` configuration to increase the tolerance of errors related to data types. If this configuration is set to *N*, TiDB Lightning allows and skips up to *N* type errors from the data source before it exists. The default value `0` means that no error is allowed.
 
 These errors are recorded in a database. After the import is completed, you can view the errors in the database and process them manually. For more information, see [Error Report](#error-report).
 
@@ -31,15 +38,18 @@ The above configuration covers the following errors:
 * Set NULL to a NOT NULL column.
 * Failed to evaluate a generated column expression.
 * Column count mismatch. The number of values in the row does not match the number of columns of the table.
-* Unique/Primary key conflict in TiDB-backend, when `on-duplicate = "error"`.
 * Any other SQL errors.
 
-The following errors are always fatal, and cannot be skipped by changing `max-error`:
+The following errors are always fatal, and cannot be skipped by changing `lightning.max-error`:
 
 * Syntax error (such as unclosed quotation marks) in the original CSV, SQL or Parquet file.
 * I/O, network or system permission errors.
 
-Unique/Primary key conflict in the physical import mode is handled separately and explained in the next section.
+## Conflict errors
+
+You can use the [`conflict.threshold`](/tidb-lightning/tidb-lightning-configuration.md#tidb-lightning-task) configuration item to increase the tolerance of errors related to data conflict. If this configuration item is set to *N*, TiDB Lightning allows and skips up to *N* conflict errors from the data source before it exits. The default value is `9223372036854775807`, which means that almost all errors are tolerant.
+
+These errors are recorded in a table. After the import is completed, you can view the errors in the database and process them manually. For more information, see [Error Report](#error-report)
 
 ## Error report
 
@@ -71,16 +81,6 @@ task-info-schema-name = 'lightning_task_info'
 TiDB Lightning creates 3 tables in this database:
 
 ```sql
-CREATE TABLE syntax_error_v1 (
-    task_id     bigint NOT NULL,
-    create_time datetime(6) NOT NULL DEFAULT now(6),
-    table_name  varchar(261) NOT NULL,
-    path        varchar(2048) NOT NULL,
-    offset      bigint NOT NULL,
-    error       text NOT NULL,
-    context     text
-);
-
 CREATE TABLE type_error_v1 (
     task_id     bigint NOT NULL,
     create_time datetime(6) NOT NULL DEFAULT now(6),
@@ -104,15 +104,24 @@ CREATE TABLE conflict_error_v1 (
     raw_row     mediumblob NOT NULL,
     KEY (task_id, table_name)
 );
+CREATE TABLE conflict_records (
+    task_id     bigint NOT NULL,
+    create_time datetime(6) NOT NULL DEFAULT now(6),
+    table_name  varchar(261) NOT NULL,
+    path        varchar(2048) NOT NULL,
+    offset      bigint NOT NULL,
+    error           text NOT NULL,
+    row_id        bigint NOT NULL COMMENT 'the row id of the conflicting row',
+    row_data    text NOT NULL COMMENT 'the row data of the conflicting row',
+    KEY (task_id, table_name)
+);
 ```
 
-<!--
-**syntax_error_v1** is intended to record syntax error from files. It is not implemented yet.
--->
+`type_error_v1` records all [type errors](#type-error) managed by `lightning.max-error`. Each error corresponds to one row.
 
-**type_error_v1** records all [type errors](#type-error) managed by the `max-error` configuration. There is one row per error.
+`conflict_error_v1` records all unique and primary key conflicts managed by `tikv-importer.duplicate-resolution` in the physical import mode. Each pair of conflicts corresponds to two rows.
 
-**conflict_error_v1** records all unique/primary key conflict in the Local-backend. There are 2 rows per pair of conflicts.
+`conflict_records` records all unique and primary key conflicts managed by the `conflict` configuration group in logical import mode and physical import mode. Each error corresponds to one row.
 
 | Column       | Syntax | Type | Conflict | Description                                                                                                                         |
 | ------------ | ------ | ---- | -------- | ----------------------------------------------------------------------------------------------------------------------------------- |
