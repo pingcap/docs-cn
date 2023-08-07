@@ -21,9 +21,9 @@ jobs:
           ref: "i18n-ja-release-7.1"
           path: "docs"
       - uses: actions/setup-node@v3
-        name: Setup node 16
+        name: Setup node 18
         with:
-          node-version: 16
+          node-version: 18
 
       - run: |
           sudo apt install tree -y
@@ -79,9 +79,9 @@ jobs:
 #           ref: "i18n-ja-release-7.1"
 #           path: "docs"
 #       - uses: actions/setup-node@v3
-#         name: Setup node 16
+#         name: Setup node 18
 #         with:
-#           node-version: 16
+#           node-version: 18
 
 #       - run: |
 #           sudo apt install tree -y
