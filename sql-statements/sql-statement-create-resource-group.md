@@ -17,7 +17,8 @@ IfNotExists ::=
     ('IF' 'NOT' 'EXISTS')?
 
 ResourceGroupName ::=
-   Identifier
+    Identifier
+|   "DEFAULT"
 
 ResourceGroupOptionList ::=
     DirectResourceGroupOption
@@ -46,11 +47,15 @@ ResourceGroupRunawayOptionList ::=
 DirectResourceGroupRunawayOption ::=
     "EXEC_ELAPSED" EqOpt stringLit
 |   "ACTION" EqOpt ResourceGroupRunawayActionOption
-|   "WATCH" EqOpt ResourceGroupRunawayWatchOption "DURATION" EqOpt stringLit
+|   "WATCH" EqOpt ResourceGroupRunawayWatchOption WatchDurationOption
+
+WatchDurationOption ::=
+    ("DURATION" EqOpt stringLit | "DURATION" EqOpt "UNLIMITED")?
 
 ResourceGroupRunawayWatchOption ::=
     EXACT
 |   SIMILAR
+|   PLAN
 
 ResourceGroupRunawayActionOption ::=
     DRYRUN
