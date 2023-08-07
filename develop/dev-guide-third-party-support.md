@@ -228,8 +228,8 @@ If you encounter problems when connecting to TiDB using the tools listed in this
       </tr>
       <tr>
          <td><a href="https://www.prisma.io/" target="_blank" referrerpolicy="no-referrer-when-downgrade">Prisma Client</a></td>
-         <td>3.15.1</td>
-         <td>Compatible</td>
+         <td>4.16.2</td>
+         <td>Full</td>
          <td>N/A</td>
          <td>N/A</td>
       </tr>
