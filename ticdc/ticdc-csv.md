@@ -89,7 +89,7 @@ The DML events of this table are stored in the CSV format as follows:
 | `TIME`                                                | String   | `"23:59:59"`                   | Format: `yyyy-MM-dd`                         |
 | `YEAR`                                                | Integer  | `1970`                         |  -                                     |
 | `VARCHAR`/`JSON`/`TINYTEXT`/`MEDIUMTEXT`/`LONGTEXT`/`TEXT`/`CHAR` | String   | `"test"`                       | UTF-8 encoded                       |
-| `VARBINARY`/`TINYBLOB`/`MEDIUMBLOB`/`LONGBLOB`/`BLOB`/`BINARY`  | String   | `"6Zi/5pav"`                   | base64 encoded                      |
+| `VARBINARY`/`TINYBLOB`/`MEDIUMBLOB`/`LONGBLOB`/`BLOB`/`BINARY`  | String   | `"6Zi/5pav"` or `"e998bfe696af"`                  | Base64 or hex encoded                      |
 | `BIT`                                                 | Integer  | `81`                           | -                                      |
 | `DECIMAL`                                             | String   | `"129012.1230000"`             | -                                      |
 | `ENUM`                                                | String   | `"a"`                          | -                                     |

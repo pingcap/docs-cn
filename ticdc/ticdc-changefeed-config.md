@@ -180,6 +180,8 @@ enable-partition-separator = true
 # null = '\N'
 # Whether to include commit-ts in CSV rows. The default value is false.
 # include-commit-ts = false
+# The encoding method of binary data, which can be 'base64' or 'hex'. The default value is 'base64'.
+# binary-encoding-method = 'base64'
 
 # Specifies the replication consistency configurations for a changefeed when using the redo log. For more information, see https://docs.pingcap.com/tidb/stable/ticdc-sink-to-mysql#eventually-consistent-replication-in-disaster-scenarios.
 # Note: The consistency-related configuration items only take effect when the downstream is a database and the redo log feature is enabled.
