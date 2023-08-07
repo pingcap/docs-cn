@@ -76,5 +76,6 @@ Currently, the `help_topic` is NULL.
 - `opt_rule_blacklist`: the blocklist for logical optimization rules
 - `table_cache_meta`: the metadata of cached tables
 - `tidb_import_jobs`: the job information of [`IMPORT INTO`](/sql-statements/sql-statement-import-into.md)
+- `tidb_timers`: the metadata of internal timers
 
 </CustomContent>
