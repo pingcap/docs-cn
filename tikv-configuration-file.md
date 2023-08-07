@@ -516,7 +516,11 @@ Configuration items related to the sharing of block cache among multiple RocksDB
 ### `capacity`
 
 + The size of the shared block cache.
-+ Default value: 45% of the size of total system memory
++ Default value:
+
+    + When `storage.engine="raft-kv"`, the default value is 45% of the size of total system memory.
+    + When `storage.engine="partitioned-raft-kv"`, the default value is 30% of the size of total system memory.
+
 + Unit: KB|MB|GB
 
 ## storage.flow-control
@@ -1169,12 +1173,18 @@ Configuration items related to RocksDB
 ### `max-total-wal-size`
 
 + The maximum RocksDB WAL size in total, which is the size of `*.log` files in the `data-dir`.
-+ Default value: `"4GB"`
++ Default value:
+
+    + When `storage.engine="raft-kv"`, the default value is `"4GB"`.
+    + When `storage.engine="partitioned-raft-kv"`, the default value is `1`.
 
 ### `stats-dump-period`
 
 + The interval at which statistics are output to the log.
-+ Default value: `10m`
++ Default value:
+
+    + When `storage.engine="raft-kv"`, the default value is `"10m"`.
+    + When `storage.engine="partitioned-raft-kv"`, the default value is `"0"`.
 
 ### `compaction-readahead-size`
 
@@ -1284,8 +1294,12 @@ Configuration items related to RocksDB
 >
 > This feature is experimental. It is not recommended that you use it in the production environment. This feature might be changed or removed without prior notice. If you find a bug, you can report an [issue](https://github.com/pingcap/tidb/issues) on GitHub.
 
-+ Specifies the total memory limit of `memtable` for all RocksDB instances in a single TiKV. The default value is 25% of the memory of the machine. It is recommended to configure a memory of at least 5 GiB. This configuration only takes effect for Partitioned Raft KV (`storage.engine`=`"partitioned-raft-kv"`).
-+ Default value: 25%
++ Specifies the total memory limit of `memtable` for all RocksDB instances in a single TiKV. `0` means no limit.
++ Default value:
+
+    + When `storage.engine="raft-kv"`, the default value is `0`, which means no limit.
+    + When `storage.engine="partitioned-raft-kv"`, the default value is 20% of the size of total system memory.
+
 + Unit: KiB|MiB|GiB
 
 ## rocksdb.titan
@@ -1553,7 +1567,10 @@ Configuration items related to `rocksdb.defaultcf`, `rocksdb.writecf`, and `rock
     - `3`: Can be read by TiKV v2.1 and later versions. Changes the encoding of the keys in index blocks.
     - `4`: Can be read by TiKV v3.0 and later versions. Changes the encoding of the values in index blocks.
     - `5`: Can be read by TiKV v6.1 and later versions. Full and partitioned filters use a faster and more accurate Bloom filter implementation with a different schema.
-+ Default value: `2`
++ Default value:
+
+    + When `storage.engine="raft-kv"`, the default value is `2`.
+    + When `storage.engine="partitioned-raft-kv"`, the default value is `5`.
 
 ### `ttl` <span class="version-mark">New in v7.2.0</span>
 
