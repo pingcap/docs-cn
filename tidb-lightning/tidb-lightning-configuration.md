@@ -137,8 +137,8 @@ driver = "file"
 # The default value is `false`.
 # When you use parallel import mode, you must set the parameter to `true`,
 # but the premise is that no data exists in the target table, that is, all data can only be imported by TiDB Lightning.
-# Note that this parameter **is not for incremental data import** and is only used in scenarios where the target table is empty.
-# incremental-import = false
+# Note that this parameter is only used in scenarios where the target table is empty.
+# parallel-import = false
 
 # The listening address of tikv-importer when backend is "importer". Change it to the actual address.
 addr = "172.16.31.10:8287"
