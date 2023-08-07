@@ -6,14 +6,16 @@ aliases: ['/docs/dev/garbage-collection-configuration/','/docs/dev/reference/gar
 
 # Garbage Collection Configuration
 
-Garbage collection is configured via the following system variables:
+You can configure garbage collection (GC) using the following system variables:
 
-* [`tidb_gc_enable`](/system-variables.md#tidb_gc_enable-new-in-v50)
-* [`tidb_gc_run_interval`](/system-variables.md#tidb_gc_run_interval-new-in-v50)
-* [`tidb_gc_life_time`](/system-variables.md#tidb_gc_life_time-new-in-v50)
-* [`tidb_gc_concurrency`](/system-variables.md#tidb_gc_concurrency-new-in-v50)
-* [`tidb_gc_scan_lock_mode`](/system-variables.md#tidb_gc_scan_lock_mode-new-in-v50)
-* [`tidb_gc_max_wait_time`](/system-variables.md#tidb_gc_max_wait_time-new-in-v610)
+* [`tidb_gc_enable`](/system-variables.md#tidb_gc_enable-new-in-v50): controls whether to enable garbage collection for TiKV.
+* [`tidb_gc_run_interval`](/system-variables.md#tidb_gc_run_interval-new-in-v50): specifies the GC interval.
+* [`tidb_gc_life_time`](/system-variables.md#tidb_gc_life_time-new-in-v50): specifies the time limit during which data is retained for each GC.
+* [`tidb_gc_concurrency`](/system-variables.md#tidb_gc_concurrency-new-in-v50): specifies the number of threads in the [Resolve Locks](/garbage-collection-overview.md#resolve-locks) step of GC.
+* [`tidb_gc_scan_lock_mode`](/system-variables.md#tidb_gc_scan_lock_mode-new-in-v50): specifies the way of scanning locks in the Resolve Locks step of GC.
+* [`tidb_gc_max_wait_time`](/system-variables.md#tidb_gc_max_wait_time-new-in-v610): specifies the maximum time that active transactions block the GC safe point.
+
+For more information about how to modify the value of a system variable, see [System variables](/system-variables.md).
 
 ## GC I/O limit
 
@@ -47,7 +49,7 @@ For information on changes in previous releases, refer to earlier versions of th
 
 ## Changes in TiDB 6.1.0
 
-Before TiDB v6.1.0, the transaction in TiDB does not affect the GC safe point. Since v6.1.0, TiDB considers the startTS of the transaction when calculating the GC safe point, to resolve the problem that the data to be accessed has been cleared. If the transaction is too long, the safe point will be blocked for a long time, which affects the application performance.
+Before TiDB v6.1.0, the transaction in TiDB does not affect the GC safe point. Starting from v6.1.0, TiDB considers the startTS of the transaction when calculating the GC safe point, to resolve the problem that the data to be accessed has been cleared. If the transaction is too long, the safe point will be blocked for a long time, which affects the application performance.
 
 In TiDB v6.1.0, the system variable [`tidb_gc_max_wait_time`](/system-variables.md#tidb_gc_max_wait_time-new-in-v610) is introduced to control the maximum time that active transactions block the GC safe point. After the value is exceeded, the GC safe point is forwarded forcefully.
 
