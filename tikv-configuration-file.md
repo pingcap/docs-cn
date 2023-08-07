@@ -517,7 +517,11 @@ RocksDB 多个 CF 之间共享 block cache 的配置选项。
 ### `capacity`
 
 + 共享 block cache 的大小。
-+ 默认值：系统总内存大小的 45%
++ 默认值：
+
+    + 当 `storage.engine="raft-kv"` 时，默认值为系统总内存大小的 45%。
+    + 当 `storage.engine="partitioned-raft-kv"` 时，默认值为系统总内存大小的 30%。
+
 + 单位：KB|MB|GB
 
 ## storage.flow-control
@@ -1168,12 +1172,17 @@ RocksDB 相关的配置项。
 ### `max-total-wal-size`
 
 + RocksDB WAL 总大小限制，即 `data-dir` 目录下 `*.log` 文件的大小总和。
-+ 默认值：`"4GB"`
++ 默认值：
+    + 当 `storage.engine="raft-kv"` 时，默认值为 `"4GB"`
+    + 当 `storage.engine="partitioned-raft-kv"` 时，默认值为 `1`
 
 ### `stats-dump-period`
 
 + 将统计信息输出到日志中的间隔时间。
-+ 默认值：10m
++ 默认值：
+
+    + 当 `storage.engine="raft-kv"` 时，默认值为 `"10m"`。
+    + 当 `storage.engine="partitioned-raft-kv"` 时，默认值为 `"0"`。
 
 ### `compaction-readahead-size`
 
@@ -1282,8 +1291,12 @@ RocksDB 相关的配置项。
 >
 > 该功能目前为实验特性，不建议在生产环境中使用。该功能可能会在未事先通知的情况下发生变化或删除。如果发现 bug，请在 GitHub 上提 [issue](https://github.com/pingcap/tidb/issues) 反馈。
 
-+ 设置单个 TiKV 中所有 RocksDB 实例使用的 memtable 的总内存上限，默认值为本机内存的 25%，推荐配置不低于 5 GiB 的内存。该配置只对 Partitioned Raft KV (storage.engine="partitioned-raft-kv") 生效。
-+ 默认值：25%
++ 设置单个 TiKV 中所有 RocksDB 实例使用的 memtable 的总内存上限。`0` 表示不设限制。
++ 默认值：
+
+    + 当 `storage.engine="raft-kv"` 时，默认值为 `0`，即不限制。
+    + 当 `storage.engine="partitioned-raft-kv"` 时，默认值为本机内存的 20%。
+
 + 单位：KiB|MiB|GiB
 
 ## rocksdb.titan
@@ -1560,7 +1573,10 @@ rocksdb defaultcf、rocksdb writecf 和 rocksdb lockcf 相关的配置项。
     - `3`：适用于 TiKV v2.1 及以上版本。更改了索引块中 key 的编码方式。
     - `4`：适用于 TiKV v3.0 及以上版本。更改了索引块中 value 的编码方式。
     - `5`：适用于 TiKV v6.1 及以上版本。全量和分区 filter 采用一种具有不同模式的、更快、更准确的 Bloom filter 实现。
-+ 默认值：`2`
++ 默认值：
+
+    + 当 `storage.engine="raft-kv"` 时，默认值为 `2`。
+    + 当 `storage.engine="partitioned-raft-kv"` 时，默认值为 `5`。
 
 ### `ttl` <span class="version-mark">从 v7.2.0 版本开始引入</span>
 
