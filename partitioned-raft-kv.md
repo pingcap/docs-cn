@@ -37,6 +37,11 @@ Partitioned Raft KV has the following restrictions:
 
 * It does not support EBS volume snapshot backup yet.
 * It does not support online unsafe recovery or Titan yet.
-* It does not support the tikv-ctl command-line tool yet.
+* It does not support the following subcommands of the tikv-ctl command-line tool:
+    * `unsafe-recover`
+    * `raw-scan`
+    * `remove-fail-stores`
+    * `recreate-region`
+    * `reset-to-version`
 * It is not compatible with TiFlash yet.
 * You cannot enable or disable this feature after the cluster is initialized.

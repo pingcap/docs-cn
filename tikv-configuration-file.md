@@ -1432,7 +1432,9 @@ Configuration items related to `rocksdb.defaultcf`, `rocksdb.writecf`, and `rock
 
 + Memtable size
 + Default value for `defaultcf` and `writecf`: `"128MB"`
-+ Default value for `lockcf`: `"32MB"`
++ Default value for `lockcf`:
+    + When `storage.engine="raft-kv"`, the default value is `"32MB"`.
+    + When `storage.engine="partitioned-raft-kv"`, the default value is `"4MB"`.
 + Minimum value: `0`
 + Unit: KB|MB|GB
 
@@ -1721,6 +1723,8 @@ Configuration items related to `raftdb`
 
 + The maximum RocksDB WAL size in total
 + Default value: `"4GB"`
+    + When `storage.engine="raft-kv"`, the default value is `"4GB"`.
+    + When `storage.engine="partitioned-raft-kv"`, the default value is `1`.
 
 ### `compaction-readahead-size`
 
@@ -1875,7 +1879,9 @@ Configuration items related to Raft Engine.
 + Value Options:
     + `1`: Default log file version for TiKV earlier than v6.3.0. Can be read by TiKV >= v6.1.0.
     + `2`: Supports log recycling. Can be read by TiKV >= v6.3.0.
-+ Default value: `2`
++ Default value:
+    + When `storage.engine="raft-kv"`, the default value is `2`.
+    + When `storage.engine="partitioned-raft-kv"`, the default value is `5`.
 
 ### `enable-log-recycle` <span class="version-mark">New in v6.3.0</span>
 
