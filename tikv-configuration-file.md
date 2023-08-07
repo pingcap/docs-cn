@@ -1084,7 +1084,7 @@ Coprocessor 相关的配置项。
 ### `region-bucket-size` <span class="version-mark">从 v6.1.0 版本开始引入</span>
 
 + 设置 `enable-region-bucket` 启用时 bucket 的预期大小。
-+ 默认值：96MiB
++ 默认值：50MiB
 
 > **警告：**
 >
