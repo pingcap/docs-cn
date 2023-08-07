@@ -1419,7 +1419,9 @@ rocksdb defaultcf、rocksdb writecf 和 rocksdb lockcf 相关的配置项。
 + memtable 大小。
 + `defaultcf` 默认值：`"128MB"`
 + `writecf` 默认值：`"128MB"`
-+ `lockcf` 默认值：`"32MB"`
++ `lockcf` 默认值：
+    + 当 `storage.engine="raft-kv"` 时，默认值为 `"32MB"`
+    + 当 `storage.engine="partitioned-raft-kv"` 时，默认值为 `"4MB"`
 + 最小值：0
 + 单位：KB|MB|GB
 
@@ -1707,7 +1709,9 @@ raftdb 相关配置项。
 ### `max-total-wal-size`
 
 + RocksDB WAL 文件的最大总大小。
-+ 默认值：`"4GB"`
++ 默认值：
+    + 当 `storage.engine="raft-kv"` 时，默认值为 `"4GB"`
+    + 当 `storage.engine="partitioned-raft-kv"` 时，默认值为 `1`
 
 ### `compaction-readahead-size`
 
@@ -1862,7 +1866,9 @@ Raft Engine 相关的配置项。
 + 可选值：
     + `1`：v6.3.0 以前的默认日志文件格式。v6.1.0 及以后版本的 TiKV 可以读取该格式。
     + `2`：支持日志回收。v6.3.0 及以后版本的 TiKV 可以读取该格式。
-+ 默认值：`2`
++ 默认值：
+    + 当 `storage.engine="raft-kv"` 时，默认值为 `2`
+    + 当 `storage.engine="partitioned-raft-kv"` 时，默认值为 `5`
 
 ### `enable-log-recycle` <span class="version-mark">从 v6.3.0 版本开始引入</span>
 
