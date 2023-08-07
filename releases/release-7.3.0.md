@@ -338,4 +338,16 @@ v7.3.0 引入了以下主要功能。功能详情中列出的部分更新旨在�
 
 感谢来自 TiDB 社区的贡献者们：
 
-+ [Contributor 1]()
+- [charleszheng44](https://github.com/charleszheng44)
+- [dhysum](https://github.com/dhysum)
+- [haiyux](https://github.com/haiyux)
+- [Jiang-Hua](https://github.com/Jiang-Hua)
+- [Jille](https://github.com/Jille)
+- [jiyfhust](https://github.com/jiyfhust)
+- [krishnaduttPanchagnula](https://github.com/krishnaduttPanchagnula)
+- [L-maple](https://github.com/L-maple)
+- [pingandb](https://github.com/pingandb)
+- [testwill](https://github.com/testwill)
+- [tisonkun](https://github.com/tisonkun)
+- [xuyifangreeneyes](https://github.com/xuyifangreeneyes)
+- [yumchina](https://github.com/yumchina)
