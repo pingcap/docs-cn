@@ -3834,6 +3834,17 @@ tidb> set tx_isolation='serializable';
 Query OK, 0 rows affected, 1 warning (0.00 sec)
 ```
 
+### `tidb_skip_missing_partition_stats` <span class="version-mark">从 v7.3.0 版本开始引入</span>
+
+- 作用域：SESSION | GLOBAL
+- 是否持久化到集群：是
+- 类型：布尔型
+- 默认值：`ON`
+- 分区表在开启[动态裁剪模式](/partitioned-table.md#动态裁剪模式)时，TiDB 会汇总各个分区的统计信息生成 GlobalStats。这个变量用于控制当分区统计信息缺失时生成 GlobalStats 的行为。
+
+    - 当开启该变量时，TiDB 生成 GlobalStats 时会跳过缺失的分区统计信息，不影响 GlobalStats 生成。
+    - 当关闭该变量时，遇到缺失的分区统计信息，TiDB 会停止生成 GloablStats。
+
 ### `tidb_skip_utf8_check`
 
 - 作用域：SESSION | GLOBAL
