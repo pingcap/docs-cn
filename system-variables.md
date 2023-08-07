@@ -4338,6 +4338,23 @@ Query OK, 0 rows affected, 1 warning (0.00 sec)
     * 大于 0: 表示使用细粒度 shuffle 功能，下推到 TiFlash 的窗口函数会以多线程方式执行，并发度为： min(`tiflash_fine_grained_shuffle_stream_count`, TiFlash 节点物理线程数)
 - 理论上窗口函数的性能会随着该值的增加线性提升。但是如果设置的值超过实际的物理线程数，反而会导致性能下降。
 
+### `tiflash_replica_read` <span class="version-mark">从 v7.3.0 版本开始引入</span>
+
+- 作用范围：SESSION | GLOBAL
+- 持久化至集群：是
+- 类型：枚举型
+- 默认值：`all_replicas`
+- 可选值：`all_replicas`、`closest_adaptive`、`closest_replicas`
+- 该变量用于设置当查询需要使用 TiFlash 引擎时，TiFlash 副本的选择策略。
+    - `all_replicas` 表示使用所有的 TiFlash 副本进行分析计算。
+    - `closest_adaptive` 表示尽量使用与当前发起查询请求的 TiDB 节点相同区域的 TiFlash 副本进行分析计算。如果此区域的 TiFlash 副本未包含查询所需的全部数据，则再使用其他区域的 TiFlash 副本及对应的 TiFlash 节点。
+    - `closest_replicas` 表示仅使用与发起当前查询请求的 TiDB 节点相同区域的 TiFlash 副本进行分析计算。如果此区域的 TiFlash 副本未包含查询所需的全部数据，则查询将报错。
+
+> **注意：**
+> 
+> - 如果 TiDB 节点未设置[区域属性](/schedule-replicas-by-topology-labels.md#设置-tidb-的-labels可选)，并且 TiFlash 副本选择策略不是 `all_replicas` 时，TiFlash 引擎将忽略 TiFlash 副本选择策略，使用所有 TiFlash 副本进行 TiFlash 查询，并且返回警告 `The variable tiflash_replica_read is ignored`。
+> - 如果 TiFlash 节点未设置[区域属性](/schedule-replicas-by-topology-labels.md#设置-tikv-和-tiflash-的-labels)，则将其视为不属于任何区域的节点。
+
 ### `time_zone`
 
 - 作用域：SESSION | GLOBAL
