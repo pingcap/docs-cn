@@ -17,7 +17,7 @@ SET SESSION tidb_distsql_scan_concurrency = 10;
 
 # 以下两个语句等价地改变一个 Global 变量
 SET @@global.tidb_distsql_scan_concurrency = 10;
-SET  GLOBAL tidb_distsql_scan_concurrency = 10;
+SET GLOBAL tidb_distsql_scan_concurrency = 10;
 ```
 
 > **注意：**
