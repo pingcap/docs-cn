@@ -24,7 +24,7 @@ title: TiFlash 命令行参数
 
 - 参数：
     - `--imitative`：当不使用 DTFile 的加密功能时，可以使用本选项避免使用配置文件和连接 PD。
-    - `--version`：DTFile 的目标版本，可选值为 1, 2, 3，默认为 2。1 为传统格式，2 checksum 对应的 DTFile 格式, 3 为合并小文件后的 DTFile 格式。
+    - `--version`：DTFile 的目标版本，可选值为 1, 2, 3，默认为 2。1 为传统格式，2 为 checksum 对应的 DTFile 格式, 3 为合并小文件后的 DTFile 格式。
     - `--algorithm`：检验哈希算法，可选值为 xxh3，city128，crc32，crc64，none，默认为 xxh3，仅在 version=2 时有用。
     - `--frame`：校验帧大小，默认为 1048576，仅在 version=2 时有用。
     - `--compression`：目标压缩算法，可选值为 LZ4（默认）、LZ4HC、zstd 和 none。
