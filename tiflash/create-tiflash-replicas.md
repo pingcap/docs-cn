@@ -256,4 +256,6 @@ When configuring replicas, if you need to distribute TiFlash replicas to multipl
 
 For more information about scheduling replicas by using labels, see [Schedule Replicas by Topology Labels](/schedule-replicas-by-topology-labels.md), [Multiple Data Centers in One City Deployment](/multi-data-centers-in-one-city-deployment.md), and [Three Data Centers in Two Cities Deployment](/three-data-centers-in-two-cities-deployment.md).
 
+TiFlash supports configuring the replica selection strategy for different zones. For more information, see [`tiflash_replica_read`](/system-variables.md#tiflash_replica_read-new-in-v730).
+
 </CustomContent>
