@@ -4329,27 +4329,21 @@ SHOW WARNINGS;
 
 ### tidb_runtime_filter_mode <span class="version-mark">New in v7.2.0</span>
 
-> **Warning:**
->
-> The feature controlled by this variable is not fully functional in the current TiDB version. Do not change the default value.
-
 - Scope: SESSION | GLOBAL
 - Persists to cluster: Yes
 - Type: Enumeration
 - Default value: `OFF`
-- Value options: `OFF`, `LOCAL`
+- Possible values: `OFF`, `LOCAL`
+- Controls the mode of Runtime Filter, that is, the relationship between the **Filter Sender operator** and **Filter Receiver operator**. There are two modes: `OFF` and `LOCAL`. `OFF` means disabling Runtime Filter. `LOCAL` means enabling Runtime Filter in the local mode. For more information, see [Runtime Filter mode](/runtime-filter.md#runtime-filter-mode).
 
 ### tidb_runtime_filter_type <span class="version-mark">New in v7.2.0</span>
-
-> **Warning:**
->
-> The feature controlled by this variable is not fully functional in the current TiDB version. Do not change the default value.
 
 - Scope: SESSION | GLOBAL
 - Persists to cluster: Yes
 - Type: Enumeration
 - Default value: `IN`
-- Value options: `IN`
+- Possible values: `IN`
+- Controls the type of predicate used by the generated Filter operator. Currently, only one type is supported: `IN`. For more information, see [Runtime Filter type](/runtime-filter.md#runtime-filter-type).
 
 ### tidb_scatter_region
 

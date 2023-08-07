@@ -270,6 +270,7 @@
         - [Wrong Index Solution](/wrong-index-solution.md)
         - [Distinct Optimization](/agg-distinct-optimization.md)
         - [Cost Model](/cost-model.md)
+        - [Runtime Filter](/runtime-filter.md)
       - [Prepared Execution Plan Cache](/sql-prepared-plan-cache.md)
       - [Non-Prepared Execution Plan Cache](/sql-non-prepared-plan-cache.md)
     - Control Execution Plans

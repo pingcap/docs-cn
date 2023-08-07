@@ -179,8 +179,8 @@ An index join operation using the hint [`INL_JOIN`](/optimizer-hints.md#inl_join
 
 Index join performance is influenced by the following system variables:
 
-* [`tidb_index_join_batch_size`](/system-variables.md#tidb_index_join_batch_size) (default value: `25000`) - the batch size of `index lookup join` operations.
-* [`tidb_index_lookup_join_concurrency`](/system-variables.md#tidb_index_lookup_join_concurrency) (default value: `4`) - the number of concurrent index lookup tasks.
+- [`tidb_index_join_batch_size`](/system-variables.md#tidb_index_join_batch_size) (default value: `25000`) - the batch size of `index lookup join` operations.
+- [`tidb_index_lookup_join_concurrency`](/system-variables.md#tidb_index_lookup_join_concurrency) (default value: `4`) - the number of concurrent index lookup tasks.
 
 ## Hash Join
 
@@ -257,8 +257,12 @@ Query OK, 0 rows affected (0.00 sec)
 
 Hash join performance is influenced by the following system variables:
 
-* [`tidb_mem_quota_query`](/system-variables.md#tidb_mem_quota_query) (default value: 1GB) - if the memory quota for a query is exceeded, TiDB will attempt to spill the `Build` operator of a hash join to disk to save memory.
-* [`tidb_hash_join_concurrency`](/system-variables.md#tidb_hash_join_concurrency) (default value: `5`) - the number of concurrent hash join tasks.
+- [`tidb_mem_quota_query`](/system-variables.md#tidb_mem_quota_query) (default value: 1GB) - if the memory quota for a query is exceeded, TiDB will attempt to spill the `Build` operator of a hash join to disk to save memory.
+- [`tidb_hash_join_concurrency`](/system-variables.md#tidb_hash_join_concurrency) (default value: `5`) - the number of concurrent hash join tasks.
+
+### Related optimizations
+
+TiDB provides the Runtime Filter feature, which optimizes the performance of hash join and greatly improves its execution speed. For specific optimization usage, see [Runtime Filter](/runtime-filter.md).
 
 ## Merge Join
 
