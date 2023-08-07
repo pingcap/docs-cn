@@ -266,10 +266,9 @@ v7.3.0 引入了以下主要功能。功能详情中列出的部分更新旨在�
     + TiCDC
 
         <!-- ran-huang -->
-        - 优化了 Open Protocol 输出的消息大小，在发送 update 类型事件时仅输出被更新的列值 [#9336](https://github.com/pingcap/tiflow/issues/9336) @[3AceShowHand](https://github.com/3AceShowHand)
-        - Storage Sink 支持对 hex 格式数据进行十六进制编码输出，使其兼容 AWS DMS 的格式规范[#9373](https://github.com/pingcap/tiflow/issues/9373) @[CharlesCheung96](https://github.com/CharlesCheung96)
-        - 优化了 TiCDC 获取下游 Kafka 集群元信息过于频繁导致的性能问题 [#8959](https://github.com/pingcap/tiflow/issues/8959) @[hi-rustin](https://github.com/hi-rustin)
-        - Kafka Sink 支持在消息过大时只发送 Handle Key 数据，减少数据大小 [#9382](https://github.com/pingcap/tiflow/issues/9382) @[3AceShowHand](https://github.com/3AceShowHand) **tw@ran-huang** <!--1406-->
+        - 优化了 Open Protocol 输出的消息大小，在发送 `UPDATE` 类型事件时仅输出被更新的列值 [#9336](https://github.com/pingcap/tiflow/issues/9336) @[3AceShowHand](https://github.com/3AceShowHand)
+        - Storage Sink 支持对 HEX 格式的数据进行十六进制编码输出，使其兼容 AWS DMS 的格式规范 [#9373](https://github.com/pingcap/tiflow/issues/9373) @[CharlesCheung96](https://github.com/CharlesCheung96)
+        - Kafka Sink 支持在消息过大时[只发送 Handle Key 数据](/ticdc/ticdc-sink-to-kafka.md#处理超过-kafka-topic-限制的消息)，减少数据大小 [#9382](https://github.com/pingcap/tiflow/issues/9382) @[3AceShowHand](https://github.com/3AceShowHand) **tw@ran-huang** <!--1406-->
 
 ## 错误修复
 
@@ -324,16 +323,16 @@ v7.3.0 引入了以下主要功能。功能详情中列出的部分更新旨在�
     + TiCDC
 
         <!-- ran-huang -->
-        - 修复了一个由于 PD 短暂不可用而导致的同步任务报错的问题 [#9294](https://github.com/pingcap/tiflow/issues/9294) @[asddongmen](https://github.com/asddongmen)
-        - 修复了 TiCDC 部分节点发生网络隔离时有可能引发的数据不一致问题 [#9344](https://github.com/pingcap/tiflow/issues/9344) @[CharlesCheung96](https://github.com/CharlesCheung96)
-        - 修复了一个当 Kafka Sink 遇到错误时可能会无限阻塞同步任务推进的问题 [#9309](https://github.com/pingcap/tiflow/issues/9309) @[hicqu](https://github.com/hicqu)
-        - 修复了一个在 TiCDC 节点状态发生改变时有可能引发的 panic 问题 [#9354](https://github.com/pingcap/tiflow/issues/9354) @[sdojjy](https://github.com/sdojjy)
-        - 修复了对默认 enum 值编码错误的问题 [#9259](https://github.com/pingcap/tiflow/issues/9259) @[3AceShowHand](https://github.com/3AceShowHand)
+        - 修复由于 PD 短暂不可用而导致同步任务报错的问题 [#9294](https://github.com/pingcap/tiflow/issues/9294) @[asddongmen](https://github.com/asddongmen)
+        - 修复 TiCDC 部分节点发生网络隔离时可能引发的数据不一致问题 [#9344](https://github.com/pingcap/tiflow/issues/9344) @[CharlesCheung96](https://github.com/CharlesCheung96)
+        - 修复当 Kafka Sink 遇到错误时可能会无限阻塞同步任务推进的问题 [#9309](https://github.com/pingcap/tiflow/issues/9309) @[hicqu](https://github.com/hicqu)
+        - 修复在 TiCDC 节点状态发生改变时可能引发的 panic 问题 [#9354](https://github.com/pingcap/tiflow/issues/9354) @[sdojjy](https://github.com/sdojjy)
+        - 修复对默认 ENUM 值编码错误的问题 [#9259](https://github.com/pingcap/tiflow/issues/9259) @[3AceShowHand](https://github.com/3AceShowHand)
 
     + TiDB Lightning
 
         <!-- ran-huang -->
-        - 修复了 lighting 导入完成后执行 checksum 可能遇到 ssl 错误的 bug [#45462](https://github.com/pingcap/tidb/issues/45462) @[D3Hunter](https://github.com/D3Hunter)
+        - 修复 TiDB Lightning 导入完成后执行 checksum 可能遇到 SSL 错误的问题 [#45462](https://github.com/pingcap/tidb/issues/45462) @[D3Hunter](https://github.com/D3Hunter)
 
 ## 贡献者
 
