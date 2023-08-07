@@ -136,6 +136,7 @@ write-key-threshold = 0
 # protocol = "canal-json"
 
 # Starting from v7.2.0, the `delete-only-output-handle-key-columns` parameter specifies the output of DELETE events. This parameter is valid only for canal-json and open-protocol protocols.
+# This parameter is incompatible with `force-replicate`. If both this parameter and `force-replicate` is set to `true`, TiCDC reports an error when creating a changefeed.
 # The default value is false, which means outputting all columns. When you set it to true, only primary key columns or unique index columns are output.
 # The Avro protocol is not controlled by this parameter and always outputs only the primary key columns or unique index columns.
 # The CSV protocol is not controlled by this parameter and always outputs all columns.
