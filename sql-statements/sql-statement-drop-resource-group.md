@@ -26,6 +26,7 @@ IfExists ::=
 
 ResourceGroupName ::=
     Identifier
+|   "DEFAULT"
 ```
 
 > **Note:**
