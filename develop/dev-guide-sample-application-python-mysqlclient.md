@@ -1,6 +1,6 @@
 ---
 title: TiDB 和 mysqlclient 的简单示例
-summary: 给出 TiDB 和 mysqlclient 的简单示例代码片段。
+summary: 介绍如何使用 TiDB 和 mysqlclient 构造一个 CRUD 应用程序并给出重点代码片段。
 ---
 
 <!-- markdownlint-disable MD024 -->
