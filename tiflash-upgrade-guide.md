@@ -82,7 +82,7 @@ TiFlash 在 v6.2.0 将数据格式升级到 V3 版本，因此，从 v5.x 或 v6
 
 ## 从 v6.x / v7.x 升级至 v7.3 ，并且设置了 `storage.format_version` = 5
 
-从 v7.3 开始，TiFlash DMFile 支持合并小文件功能，可以将多个小文件合并成一个大文件，减少文件数量。这个功能对应的 DMFile 的版本是 V3，通过 storage.format_version = 5 来设置。升级后, TiFlash 仍可以读 V2 版本的 DMFile，并且在后续的 Compact 中逐步重新写为 V3 版本的 DMFile。
+从 v7.3 开始，TiFlash 支持新的 DMFile 版本 V3，可以将多个小文件合并成一个大文件，减少文件数量。DMFile 在 v7.3 的默认版本是 V2，如需使用 V3，可通过 [TiFlash 配置参数](/tiflash/tiflash-configuration.md) `storage.format_version = 5` 来设置。设置后，TiFlash 仍可以读 V2 版本的 DMFile，并且在后续的数据整理 (Compaction) 中会将这些 V2 版本的 DMFile 逐步重新写为 V3 版本的 DMFile。
 
 DMFile 在 v7.3 的默认版本是 V2。
 
