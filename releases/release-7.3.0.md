@@ -283,7 +283,7 @@ v7.3.0 引入了以下主要功能。功能详情中列出的部分更新旨在�
     - 修复 GC resolve lock 可能错过一些悲观锁的问题 [#45134](https://github.com/pingcap/tidb/issues/45134)  @[MyonKeminta](https://github.com/MyonKeminta)
     - 修复动态裁剪模式下使用了排序的查询返回结果错误的问题 [#45007](https://github.com/pingcap/tidb/issues/45007) @[Defined2014](https://github.com/Defined2014)
     <!-- hfxsd -->
-    - 修复列定义中 `AUTO_INCREMENT` 与默认值不能共存的问题 [#45136](https://github.com/pingcap/tidb/issues/45136) @[Defined2014](https://github.com/Defined2014)
+    - 修复 `AUTO_INCREMENT` 与列的默认值 `DEFAULT` 可以指定在同一列上的问题 [#45136](https://github.com/pingcap/tidb/issues/45136) @[Defined2014](https://github.com/Defined2014)
     - 修复某些情况下查询系统表 `information_schema.TIKV_REGION_STATUS` 返回结果错误的问题 [#45531](https://github.com/pingcap/tidb/issues/45531) @[Defined2014](https://github.com/Defined2014)
     - 修复某些情况下分区表分区裁剪不正确的问题 [#42273](https://github.com/pingcap/tidb/issues/42273) @[jiyfhust](https://github.com/jiyfhust)
     - 修复 `TRUNCATE` 分区表的某个分区时，全局索引无法清除的问题 [#42435](https://github.com/pingcap/tidb/issues/42435) @[L-maple](https://github.com/L-maple)
