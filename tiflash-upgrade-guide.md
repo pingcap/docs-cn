@@ -5,7 +5,7 @@ aliases: ['/zh/tidb/dev/tiflash-620-upgrade-guide']
 ---
 # TiFlash 升级帮助
 
-本文介绍从 TiFlash 升级时功能模块的变化，以及推荐的应对方法。
+本文介绍 TiFlash 升级时功能模块的变化，以及推荐的应对方法。
 
 如需了解标准升级流程，请参考如下文档：
 
