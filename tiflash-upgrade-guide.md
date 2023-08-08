@@ -3,6 +3,7 @@ title: TiFlash 升级帮助
 summary: 了解升级 TiFlash 时的注意事项。
 aliases: ['/zh/tidb/dev/tiflash-620-upgrade-guide']
 ---
+
 # TiFlash 升级帮助
 
 本文介绍 TiFlash 升级时功能模块的变化，以及推荐的应对方法。
