@@ -54,7 +54,7 @@ TiDB Lightning 的完整配置文件可参考[完整配置及命令行参数](/t
 | `"replace"` | 新数据替代旧数据 | `REPLACE INTO ...` |
 | `"ignore"` | 保留旧数据，忽略新数据 | `INSERT IGNORE INTO ...` |
 | `"error"` | 终止导入 | `INSERT INTO ...` |
-| `""` | 不进行处理，但如果存在有主键和唯一键冲突的数据，会在后续步骤报错  | 无 |
+| `""` | 不进行冲突检查和处理，但如果存在有主键和唯一键冲突的数据，会在后续步骤报错  | 无 |
 
 配置为 `"error"` 时，由冲突数据引发的错误将直接导致导入任务终止。配置为 `"replace"` 或 `"ignore"` 时，可以通过进一步配置 [`conflict.threshold`](/tidb-lightning/tidb-lightning-configuration.md#tidb-lightning-任务配置) 控制冲突数据的上限。默认值为 `9223372036854775807`，意味着几乎能容忍全部错误。
 
