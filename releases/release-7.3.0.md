@@ -40,7 +40,8 @@ v7.3.0 引入了以下主要功能。[功能详情](#功能详情)中列出的�
   <tr>
     <td>SQL</td>
     <td><a href="https://docs.pingcap.com/zh/tidb/v7.3/optimizer-hints">添加更多优化器提示，加强对算子的控制，提升查询稳定性</a></td>
-    <td>新增优化器提示：<code>NO_INDEX_JOIN()</code>、<code>NO_MERGE_JOIN()</code>、<code>NO_INDEX_MERGE_JOIN()</code>、<code>NO_HASH_JOIN()</code>、<code>NO_INDEX_HASH_JOIN()</code>
+    <td>新增优化器提示：<code>NO_INDEX_JOIN()</code>、<code>NO_MERGE_JOIN()</code>、<code>NO_INDEX_MERGE_JOIN()</code>、<code>NO_HASH_JOIN()</code>、<code>NO_INDEX_HASH_JOIN()</code></td>
+  </tr>
   <tr>
     <td>数据库管理与可观测性</td>
     <td><a href="https://docs.pingcap.com/zh/tidb/v7.3/sql-plan-replayer">显示统计信息收集的进度</a></td>
