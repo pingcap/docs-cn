@@ -233,29 +233,25 @@ v7.3.0 引入了以下主要功能。[功能详情](#功能详情)中列出的�
 
 ## 改进提升
 
-+ TiDB
++ TiDB <!-- Oreoxmt -->
 
-    <!-- Oreoxmt -->
     - 新增 [`tidb_opt_enable_non_eval_scalar_subquery`](/system-variables.md#tidb_opt_enable_non_eval_scalar_subquery-从-v730-版本开始引入) 系统变量用于控制 `EXPLAIN` 语句是否在优化阶段提前执行子查询 [#22076](https://github.com/pingcap/tidb/issues/22076) @[winoros](https://github.com/winoros) **tw@Oreoxmt** <!--983-->
     - 在启用 [Global Kill](/tidb-configuration-file#enable-global-kill-从-v610-版本开始引入) 的情况下，可以通过 <kbd>Control+C</kbd> 终止当前会话 [#8854](https://github.com/pingcap/tidb/issues/8854) @[pingyu](https://github.com/pingyu) **tw@Oreoxmt**
     - 支持锁函数 `IS_FREE_LOCK() 和 `IS_USED_LOCK()` [#44493](https://github.com/pingcap/tidb/issues/44493) @[dveeden](https://github.com/dveeden)
     - 优化与落盘相关的 chunk 读取的性能 [#45125](https://github.com/pingcap/tidb/issues/45125) @[YangKeao](https://github.com/YangKeao)
 
-+ TiKV
++ TiKV <!-- Oreoxmt -->
 
-    <!-- Oreoxmt -->
     - 添加 `Max gap of safe-ts` 和 `Min safe ts region` 监控项以及 `tikv-ctl get_region_read_progress` 命令，用于更好地观测和诊断 resolved-ts 和 safe-ts 的状态 [#15082](https://github.com/tikv/tikv/issues/15082) [@ekexium](https://github.com/ekexium)
 
-+ PD
++ PD <!-- qiancai -->
 
-    <!-- qiancai -->
     - 未开启 Swagger server 时，PD 默认屏蔽 Swagger API [#6786](https://github.com/tikv/pd/issues/6786) @[bufferflies](https://github.com/bufferflies)
     - 提升 etcd 的高可用性 [#6554](https://github.com/tikv/pd/issues/6554) [#6442](https://github.com/tikv/pd/issues/6442) @[lhy1024](https://github.com/lhy1024)
     - 减少 `GetRegions` 请求的内存占用 [#6835](https://github.com/tikv/pd/issues/6835) @[lhy1024](https://github.com/lhy1024)
 
-+ TiFlash
++ TiFlash <!-- qiancai -->
 
-    <!-- qiancai -->
     - 支持新的 DTFile 格式版本 [`storage.format_version = 5`](/tiflash/tiflash-configuration.md)，可以合并小文件从而减少物理文件数量（实验特性） [#7595](https://github.com/pingcap/tiflash/issues/7595) @[hongyunyan](https://github.com/hongyunyan)
 
 + Tools
@@ -264,18 +260,16 @@ v7.3.0 引入了以下主要功能。[功能详情](#功能详情)中列出的�
 
         - 使用 BR 备份数据到 Azure Blob Storage 时，支持使用加密范围或加密密钥对数据进行服务端加密 [#45025](https://github.com/pingcap/tidb/issues/45025) @[Leavrth](https://github.com/Leavrth) **tw@Oreoxmt** <!--1385-->
 
-    + TiCDC
+    + TiCDC <!-- ran-huang -->
 
-        <!-- ran-huang -->
         - 优化了 Open Protocol 输出的消息大小，在发送 `UPDATE` 类型事件时仅输出被更新的列值 [#9336](https://github.com/pingcap/tiflow/issues/9336) @[3AceShowHand](https://github.com/3AceShowHand)
         - Storage Sink 支持对 HEX 格式的数据进行十六进制编码输出，使其兼容 AWS DMS 的格式规范 [#9373](https://github.com/pingcap/tiflow/issues/9373) @[CharlesCheung96](https://github.com/CharlesCheung96)
         - Kafka Sink 支持在消息过大时[只发送 Handle Key 数据](/ticdc/ticdc-sink-to-kafka.md#处理超过-kafka-topic-限制的消息)，减少数据大小 [#9382](https://github.com/pingcap/tiflow/issues/9382) @[3AceShowHand](https://github.com/3AceShowHand) **tw@ran-huang** <!--1406-->
 
 ## 错误修复
 
-+ TiDB
++ TiDB <!-- Oreoxmt -->
 
-    <!-- Oreoxmt -->
     - 修复当使用 MySQL 的 Cursor Fetch 协议时，结果集占用的内存超过 `tidb_mem_quota_query` 的限制导致 TiDB OOM 的问题。修复后，TiDB 会自动将结果集写入磁盘以释放内存资源 [#43233](https://github.com/pingcap/tidb/issues/43233) @[YangKeao](https://github.com/YangKeao) <!--1430-->
     - 修复数据争用导致 TiDB panic 的问题 [#45561](https://github.com/pingcap/tidb/issues/45561) @[genliqi](https://github.com/gengliqi)
     - 修复带 `indexMerge` 的查询被 kill 时可能会卡住的问题 [#45279](https://github.com/pingcap/tidb/issues/45279) @[xzhangxian1008](https://github.com/xzhangxian1008)
@@ -298,14 +292,12 @@ v7.3.0 引入了以下主要功能。[功能详情](#功能详情)中列出的�
     - 修复执行 `TRUNCATE TABLE` 消耗的时间和 `ADMIN SHOW DDL JOBS` 显示的任务执行时间不一致的问题 [#44785](https://github.com/pingcap/tidb/issues/44785) @[tangenta](https://github.com/tangenta)
     - 修复读取元数据时间超过一个 DDL lease 导致升级 TiDB 卡住的问题 [#45176](https://github.com/pingcap/tidb/issues/45176) @[zimulala](https://github.com/zimulala)
 
-+ TiKV
++ TiKV <!-- Oreoxmt -->
 
-    <!-- Oreoxmt -->
     - 修复在一些罕见的情况下，在 GC 的同时读取数据可能导致 TiKV panic 的问题 [#15109](https://github.com/tikv/tikv/issues/15109) [@MyonKeminta](https://github.com/MyonKeminta)
 
-+ PD
++ PD <!-- qiancai -->
 
-    <!-- qiancai -->
     - 修复重启 PD 可能导致 `default` 资源组被重新初始化的问题 [#6787](https://github.com/tikv/pd/issues/6787) @[glorv](https://github.com/glorv)
     - 修复当 etcd 已经启动，但 client 尚未连接上 etcd 时，调用 client 会导致 PD panic 的问题 [#6860](https://github.com/tikv/pd/issues/6860) @[HuSharp](https://github.com/HuSharp)
     - 修复 Region 的 `health-check` 输出可能与通过 ID 所查到的 Region 信息不一致的问题 [#6560](https://github.com/tikv/pd/issues/6560) @[JmPotato](https://github.com/JmPotato)
@@ -313,27 +305,24 @@ v7.3.0 引入了以下主要功能。[功能详情](#功能详情)中列出的�
     - 修复 Placement Rules 选择了不满足规则的 TiFlash learner 的问题 [#6662](https://github.com/tikv/pd/issues/6662) @[rleungx](https://github.com/rleungx)
     - 修复在 rule checker 选定 peer 时，unhealthy peer 无法被移除的问题 [#6559](https://github.com/tikv/pd/issues/6559) [nolouch](https://github.com/nolouch)
 
-+ TiFlash
++ TiFlash <!-- qiancai -->
 
-    <!-- qiancai -->
     - 修复由于死锁导致 TiFlash 无法成功同步分区表的问题 [#7758](https://github.com/pingcap/tiflash/issues/7758) @[hongyunyan](https://github.com/hongyunyan)
     - 修复系统表 `INFORMATION_SCHEMA.TIFLASH_REPLICA` 包含用户没有访问权限的表的问题 [#7795](https://github.com/pingcap/tiflash/issues/7795) @[Lloyd-Pottiger](https://github.com/Lloyd-Pottiger)
     - 修复当同一个 MPP Task 内有多个 HashAgg 算子时，可能导致 MPP Task 编译时间过长而严重影响查询性能的问题 [#7810](https://github.com/pingcap/tiflash/issues/7810) @[SeaRise](https://github.com/SeaRise)
 
 + Tools
 
-    + TiCDC
+    + TiCDC <!-- ran-huang -->
 
-        <!-- ran-huang -->
         - 修复由于 PD 短暂不可用而导致同步任务报错的问题 [#9294](https://github.com/pingcap/tiflow/issues/9294) @[asddongmen](https://github.com/asddongmen)
         - 修复 TiCDC 部分节点发生网络隔离时可能引发的数据不一致问题 [#9344](https://github.com/pingcap/tiflow/issues/9344) @[CharlesCheung96](https://github.com/CharlesCheung96)
         - 修复当 Kafka Sink 遇到错误时可能会无限阻塞同步任务推进的问题 [#9309](https://github.com/pingcap/tiflow/issues/9309) @[hicqu](https://github.com/hicqu)
         - 修复在 TiCDC 节点状态发生改变时可能引发的 panic 问题 [#9354](https://github.com/pingcap/tiflow/issues/9354) @[sdojjy](https://github.com/sdojjy)
         - 修复对默认 ENUM 值编码错误的问题 [#9259](https://github.com/pingcap/tiflow/issues/9259) @[3AceShowHand](https://github.com/3AceShowHand)
 
-    + TiDB Lightning
+    + TiDB Lightning <!-- ran-huang -->
 
-        <!-- ran-huang -->
         - 修复 TiDB Lightning 导入完成后执行 checksum 可能遇到 SSL 错误的问题 [#45462](https://github.com/pingcap/tidb/issues/45462) @[D3Hunter](https://github.com/D3Hunter)
 
 ## 贡献者
