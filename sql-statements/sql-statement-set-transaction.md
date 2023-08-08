@@ -1,7 +1,6 @@
 ---
 title: SET TRANSACTION
 summary: TiDB 数据库中 SET TRANSACTION 的使用概况。
-aliases: ['/docs-cn/dev/sql-statements/sql-statement-set-transaction/','/docs-cn/dev/reference/sql/statements/set-transaction/']
 ---
 
 # SET TRANSACTION
@@ -13,9 +12,9 @@ aliases: ['/docs-cn/dev/sql-statements/sql-statement-set-transaction/','/docs-cn
 ```ebnf+diagram
 
 SetStmt ::=
-    'SET' ( VariableAssignmentList | 
-    'PASSWORD' ('FOR' Username)? '=' PasswordOpt | 
-    ( 'GLOBAL'| 'SESSION' )? 'TRANSACTION' TransactionChars | 
+    'SET' ( VariableAssignmentList |
+    'PASSWORD' ('FOR' Username)? '=' PasswordOpt |
+    ( 'GLOBAL'| 'SESSION' )? 'TRANSACTION' TransactionChars |
     'CONFIG' ( Identifier | stringLit) ConfigItemName EqOrAssignmentEq SetExpr )
 
 TransactionChars ::=

@@ -1,6 +1,5 @@
 ---
 title: TiUP 故障排查
-aliases: ['/docs-cn/dev/tiup/tiup-troubleshooting-guide/']
 ---
 
 # TiUP 故障排查

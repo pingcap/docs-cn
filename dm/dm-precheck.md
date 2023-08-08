@@ -1,7 +1,6 @@
 ---
 title: TiDB Data Migration 任务前置检查
 summary: 了解 DM 执行数据迁移任务时将进行的前置检查。
-aliases: ['/docs-cn/tidb-data-migration/dev/precheck/']
 ---
 
 # TiDB Data Migration 任务前置检查
@@ -100,15 +99,15 @@ tiup dmctl check-task ./task.yaml
 * 下游数据库中的 Region 分布
 
     - 统计不同的 TiKV 上的 Region 数目。假设 Region 数最少的 TiKV 节点上拥有 `a` 个 Region，Region 数最多的 TiKV 节点上拥有 `b` 个 Region，如果 a/b 小于 0.75，则前置检查会向用户返回警告。可以调整 PD 相关参数加快 Region 调度速度，并等待 Region 数目变化以解除警告。参见 [PD 调度策略最佳实践 - Leader/Region 分布不均衡](/best-practices/pd-scheduling-best-practices.md#leaderregion-分布不均衡)
-    
+
 * 下游数据库 TiDB、PD、TiKV 组件的版本
 
     - 物理导入模式需要调用 TiDB、PD、TiKV 接口，如果版本不符合要求，会返回错误。
-    
+
 * 下游数据库的剩余空间
 
     - 估算上游数据库所有白名单表的大小之和 (`source_size`)，如果下游数据库剩余空间小于 `source_size`，前置检查会返回错误；如果下游数据库剩余空间小于 TiKV 副本数 \* `source_size` \* 2，前置检查会返回警告。
-    
+
 * 下游数据库是否在运行与 Physical Import 不兼容的任务
 
     - 目前物理导入模式不兼容 [TiCDC](/ticdc/ticdc-overview.md)、[PITR](/br/br-pitr-guide.md) 任务，如果发现下游数据库正在运行这些任务，前置检查会返回错误。

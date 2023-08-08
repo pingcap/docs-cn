@@ -1,7 +1,6 @@
 ---
 title: 下游存在更多列的迁移场景
 summary: 介绍下游存在更多列的迁移场景。
-aliases: ['zh/tidb/dev/usage-scenario-downstream-more-columns/']
 ---
 
 # 下游存在更多列的迁移场景

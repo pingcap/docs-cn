@@ -1,7 +1,6 @@
 ---
 title: TiDB 事务隔离级别
 summary: 了解 TiDB 事务的隔离级别。
-aliases: ['/docs-cn/dev/transaction-isolation-levels/','/docs-cn/dev/reference/transactions/transaction-isolation/']
 ---
 
 # TiDB 事务隔离级别
@@ -75,7 +74,7 @@ MySQL 可重复读隔离级别在更新时并不检验当前版本是否可见�
     - 如果加锁过程中遇到因时间戳旧而导致写冲突，则重新获取最新的全局时间戳进行加锁。
     - 如果加锁过程中没有遇到写冲突或其他错误，则加锁成功。
 - 如果读取过程中遇到更新的数据版本，则尝试重新获取一个新的时间戳重试此语句。
- 
+
 在使用 `READ-COMMITTED` 隔离级别且单个事务中点写语句较多、点写冲突较少的场景，可通过开启此变量来避免获取全局时间戳带来的延迟和开销。
 
 ### 与 MySQL Read Committed 隔离级别的区别

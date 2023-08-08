@@ -1,7 +1,6 @@
 ---
 title: 从 Amazon Aurora 迁移数据到 TiDB
 summary: 介绍如何使用快照从 Amazon Aurora 迁移数据到 TiDB。
-aliases: ['/zh/tidb/dev/migrate-from-aurora-using-lightning/','/docs-cn/dev/migrate-from-aurora-mysql-database/','/docs-cn/dev/how-to/migrate/from-mysql-aurora/','/docs-cn/dev/how-to/migrate/from-aurora/','/zh/tidb/dev/migrate-from-aurora-mysql-database/','/zh/tidb/dev/migrate-from-mysql-aurora','/zh/tidb/stable/migrate-from-aurora-using-lightning/']
 ---
 
 # 从 Amazon Aurora 迁移数据到 TiDB
@@ -145,7 +144,7 @@ type = '$3'
 
 #### 2.3 导入全量数据到 TiDB
 
-1. 使用 TiDB Lightning 导入 Aurora Snapshot 的数据到 TiDB。 
+1. 使用 TiDB Lightning 导入 Aurora Snapshot 的数据到 TiDB。
 
     ```shell
     export AWS_ACCESS_KEY_ID=${access_key}

@@ -1,7 +1,6 @@
 ---
 title: EXPLAIN ANALYZE
 summary: TiDB 数据库中 EXPLAIN ANALYZE 的使用概况。
-aliases: ['/docs-cn/dev/sql-statements/sql-statement-explain-analyze/','/docs-cn/dev/reference/sql/statements/explain-analyze/']
 ---
 
 # EXPLAIN ANALYZE
@@ -233,13 +232,13 @@ build_hash_table:{total:146.071334ms, fetch:110.338509ms, build:35.732825ms}, pr
 ```sql
 tiflash_scan: {
   dtfile: {
-    total_scanned_packs: 2, 
-    total_skipped_packs: 1, 
-    total_scanned_rows: 16000, 
-    total_skipped_rows: 8192, 
-    total_rough_set_index_load_time: 2ms, 
+    total_scanned_packs: 2,
+    total_skipped_packs: 1,
+    total_scanned_rows: 16000,
+    total_skipped_rows: 8192,
+    total_rough_set_index_load_time: 2ms,
     total_read_time: 20ms
-  }, 
+  },
   total_create_snapshot_time: 1ms
 }
 ```
