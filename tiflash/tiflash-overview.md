@@ -1,6 +1,5 @@
 ---
 title: TiFlash 简介
-aliases: ['/docs-cn/dev/tiflash/tiflash-overview/','/docs-cn/dev/reference/tiflash/overview/','/docs-cn/dev/tiflash/use-tiflash/','/docs-cn/dev/reference/tiflash/use-tiflash/','/zh/tidb/dev/use-tiflash']
 ---
 
 # TiFlash 简介

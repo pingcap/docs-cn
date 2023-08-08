@@ -1,7 +1,6 @@
 ---
 title: 使用 FastScan 功能
 summary: 介绍通过使用 FastScan 来加速 OLAP 场景的查询的方法。
-aliases: ['/zh/tidb/dev/sql-statement-set-tiflash-mode/','/zh/tidb/dev/dev-guide-use-fastscan/']
 ---
 
 # 使用 FastScan 功能
@@ -43,7 +42,7 @@ SELECT * FROM t1;
 +------+------+
 ```
 
-对于这些旧数据，TiFlash 在后台会自动发起数据整理（Compaction）。当这些旧数据已经被后台整理且它们的数据版本小于 GC safe point 之后，才会被物理清理。此后在 FastScan 模式下将不再返回这些数据。旧数据被整理的时机受多种因素的自动触发，你也可以通过 [`ALTER TABLE ... COMPACT`](/sql-statements/sql-statement-alter-table-compact.md) 手动触发数据整理。 
+对于这些旧数据，TiFlash 在后台会自动发起数据整理（Compaction）。当这些旧数据已经被后台整理且它们的数据版本小于 GC safe point 之后，才会被物理清理。此后在 FastScan 模式下将不再返回这些数据。旧数据被整理的时机受多种因素的自动触发，你也可以通过 [`ALTER TABLE ... COMPACT`](/sql-statements/sql-statement-alter-table-compact.md) 手动触发数据整理。
 
 ## 启用和禁用 FastScan
 

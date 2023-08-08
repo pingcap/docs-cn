@@ -1,7 +1,6 @@
 ---
 title: TiDB 磁盘 I/O 过高的处理办法
 summary: 了解如何定位和处理 TiDB 存储 I/O 过高的问题。
-aliases: ['/docs-cn/dev/troubleshoot-high-disk-io/']
 ---
 
 # TiDB 磁盘 I/O 过高的处理办法
@@ -54,7 +53,7 @@ TiDB 集群主要的持久化组件是 TiKV 集群，一个 TiKV 包含两个 Ro
     - 机器的 CPU 是不是不够了。
 
 - apply log 慢。TiKV Grafana 的 Raft I/O 和 apply log duration 比较高，通常会伴随着 Raft Propose/apply wait duration 比较高。可能的情况如下：
-  
+
     - `[raftstore]` 的 `apply-pool-size` 配置过小（建议在 [1, 5] 之间，不建议太大），Thread CPU/apply cpu 比较高；
     - 机器的 CPU 资源不够了。
     - Region 写入热点问题，单个 apply 线程 CPU 使用率比较高（通过修改 Grafana 表达式，加上 by (instance, name) 来看各个线程的 cpu 使用情况），暂时对于单个 Region 的热点写入没有很好的方式，最近在优化该场景。

@@ -1,6 +1,5 @@
 ---
 title: TiDB 用户账户管理
-aliases: ['/docs-cn/dev/user-account-management/','/docs-cn/dev/reference/security/user-account-management/']
 ---
 
 # TiDB 用户账户管理
@@ -220,7 +219,7 @@ TiDB 将密码存在 `mysql.user` 系统数据库里面。只有拥有 `CREATE U
 
         ```bash
         kill -9 <pid>
-        ```    
+        ```
 
 3. 使用修改之后的配置启动 TiDB：
 

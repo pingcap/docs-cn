@@ -1,6 +1,5 @@
 ---
 title: 索引的选择
-aliases: ['/docs-cn/dev/choose-index/']
 ---
 
 # 索引的选择
@@ -25,7 +24,7 @@ aliases: ['/docs-cn/dev/choose-index/']
 | IndexMerge | 表有多个索引或多值索引 | 使用多值索引或同时使用多个索引的时候 | 可以通过 [optimizer hints](/optimizer-hints.md) 指定使用该算子，或让优化器根据代价估算自动选择该算子，参见[用 EXPLAIN 查看索引合并的 SQL 执行计划](/explain-index-merge.md) |
 
 > **注意：**
-> 
+>
 > TableReader 是基于 `_tidb_rowid` 的索引，TiFlash 是列存索引，所以索引的选择即是读表算子的选择。
 
 ## 索引的选择
@@ -128,7 +127,7 @@ mysql> SHOW WARNINGS;
 2. 统计信息准确，为什么读 TiFlash 更快，而优化器选择了 TiKV？
 
     目前区别 TiFlash 和 TiKV 的代价模型还比较粗糙，可以调小 `tidb_opt_seek_factor` 的值，让优化器倾向于选择 TiFlash。
-    
+
 3. 统计信息准确，某个索引要回表，但是它比另一个不用回表的索引实际执行更快，为什么选择了不用回表的索引？
 
     碰到这种情况，可能是代价估算时对于回表的代价计算得过大，可以调小 `tidb_opt_network_factor`，降低回表的代价。

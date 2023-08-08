@@ -1,7 +1,6 @@
 ---
 title: TiKV 线程池性能调优
 summary: 了解 TiKV 线程池性能调优。
-aliases: ['/docs-cn/dev/tune-tikv-thread-performance/']
 ---
 
 # TiKV 线程池性能调优
@@ -43,7 +42,7 @@ TiKV 的读取请求分为两类：
 
     - 如果检测到有事务冲突，那么它会提前返回冲突结果给客户端。
     - 如果未检测到事务冲突，那么它会把需要写入的 key-value 合并成一条 Raft 日志交给 Raftstore 线程进行 Raft 日志复制。
-    
+
     通常来说为了避免过多的线程切换，最好确保 scheduler 线程池的利用率保持在 50%～75% 之间。（如果线程池大小为 8 的话，那么 Grafana 上的 TiKV-Details.Thread CPU.scheduler worker CPU 应当在 400%～600% 之间较为合理）
 
 * Raftstore 线程池是 TiKV 中最复杂的一个线程池，默认大小 (由 `raftstore.store-pool-size` 控制) 为 2。StoreWriter 线程池的默认大小 (由 `raftstore.store-io-pool-size` 控制) 为 0。
