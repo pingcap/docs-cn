@@ -2015,18 +2015,10 @@ Query OK, 0 rows affected (0.09 sec)
 - 作用域：SESSION | GLOBAL
 - 是否持久化到集群：是
 - 类型：布尔型
-- 默认值：`OFF`
+- 默认值：`ON`
 - 这个变量用来控制是否启用 TiFlash 新的执行模型 [Pipeline Model](/tiflash/tiflash-pipeline-model.md)。
 - 当设置该变量为 `OFF` 关闭 TiFlash Pipeline Model 时，下推到 TiFlash 的查询会使用 TiFlash 原有的执行模型 Stream Model 来执行。
 - 当设置该变量为 `ON` 开启 TiFlash Pipeline Model 时，下推到 TiFlash 的查询会使用 TiFlash 新的执行模型 Pipeline Model 来执行。
-
-> **注意：**
->
-> - TiFlash Pipeline Model 目前为实验特性，不建议在生产环境中使用。
-> - TiFlash Pipeline Model 目前不支持以下功能。当下列功能开启时，即使 `tidb_enable_tiflash_pipeline_model` 设置为 `ON`，下推到 TiFlash 的查询仍会使用原有的执行模型 Stream Model 来执行。
->
->     - [Join 算子落盘](#tidb_max_bytes_before_tiflash_external_join-从-v700-版本开始引入)
->     - [TiFlash 存算分离架构与 S3](/tiflash/tiflash-disaggregated-and-s3.md)
 
 ### `tidb_enable_tiflash_read_for_write_stmt` <span class="version-mark">从 v6.3.0 版本开始引入</span>
 

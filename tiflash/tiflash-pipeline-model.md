@@ -11,17 +11,9 @@ summary: 介绍 TiFlash 新的执行模型 Pipeline Model。
 
 Pipeline Model 主要借鉴了 [Morsel-Driven Parallelism: A NUMA-Aware Query Evaluation Framework for the Many-Core Age](https://dl.acm.org/doi/10.1145/2588555.2610507) 这篇论文，提供了一个精细的任务调度模型，有别于传统的线程调度模型，减少了操作系统申请和调度线程的开销以及提供精细的调度机制。
 
-> **注意：**
->
-> - TiFlash Pipeline Model 目前为实验特性，不建议在生产环境中使用。
-> - TiFlash Pipeline Model 目前不支持以下功能。当下列功能开启时，即使 `tidb_enable_tiflash_pipeline_model` 设置为 `ON`，下推到 TiFlash 的查询仍会使用原有的执行模型 Stream Model 来执行。
->
->     - [Join 算子落盘](/system-variables.md#tidb_max_bytes_before_tiflash_external_join-从-v700-版本开始引入)
->     - [TiFlash 存算分离架构与 S3](/tiflash/tiflash-disaggregated-and-s3.md)
-
 ## 启用和禁用 TiFlash Pipeline Model
 
-你可以使用系统变量 [`tidb_enable_tiflash_pipeline_model`](/system-variables.md#tidb_enable_tiflash_pipeline_model-从-v720-版本开始引入) 来开启或禁用 TiFlash Pipeline Model。该变量可以在 Session 级别和 Global 级别生效。默认情况下，`tidb_enable_tiflash_pipeline_model=OFF`，即关闭 TiFlash Pipeline Model。你可以通过以下语句来查看对应的变量信息：
+你可以使用系统变量 [`tidb_enable_tiflash_pipeline_model`](/system-variables.md#tidb_enable_tiflash_pipeline_model-从-v720-版本开始引入) 来开启或禁用 TiFlash Pipeline Model。该变量可以在 Session 级别和 Global 级别生效。默认情况下，`tidb_enable_tiflash_pipeline_model=ON`，即开启 TiFlash Pipeline Model。你可以通过以下语句来查看对应的变量信息：
 
 ```sql
 SHOW VARIABLES LIKE 'tidb_enable_tiflash_pipeline_model';
@@ -31,7 +23,7 @@ SHOW VARIABLES LIKE 'tidb_enable_tiflash_pipeline_model';
 +------------------------------------+-------+
 | Variable_name                      | Value |
 +------------------------------------+-------+
-| tidb_enable_tiflash_pipeline_model | OFF   |
+| tidb_enable_tiflash_pipeline_model | ON    |
 +------------------------------------+-------+
 ```
 
@@ -43,7 +35,7 @@ SHOW GLOBAL VARIABLES LIKE 'tidb_enable_tiflash_pipeline_model';
 +------------------------------------+-------+
 | Variable_name                      | Value |
 +------------------------------------+-------+
-| tidb_enable_tiflash_pipeline_model | OFF   |
+| tidb_enable_tiflash_pipeline_model | ON    |
 +------------------------------------+-------+
 ```
 
