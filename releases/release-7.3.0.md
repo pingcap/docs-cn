@@ -11,9 +11,7 @@ TiDB 版本：7.3.0
 
 试用链接：[快速体验](https://docs.pingcap.com/zh/tidb/v7.3/quick-start-with-tidb) | [下载离线包](https://cn.pingcap.com/product-community/)
 
-在 7.3.0 版本中，你可以获得以下关键特性：
-
-v7.3.0 引入了以下主要功能。功能详情中列出的部分更新旨在增强 TiDB 和 TiFlash 的查询稳定性，不直接面向用户，因此不包含在下表的发布亮点中。
+v7.3.0 引入了以下主要功能。[功能详情](#功能详情)中列出的部分功能旨在增强 TiDB 和 TiFlash 的查询稳定性，不直接面向用户，因此未包含在下表中。
 
 <table>
 <thead>
@@ -27,26 +25,26 @@ v7.3.0 引入了以下主要功能。功能详情中列出的部分更新旨在�
   <tr>
     <td>可扩展性与性能</td>
     <td>TiDB Lightning 支持 Partitioned Raft KV </td>
-    <td>TiDB Lightning 的数据导入服务现在支持新的 Partitioned Raft KV 架构，该改进将作为近期 Partitioned Raft KV GA 的一部分。
+    <td>TiDB Lightning 的数据导入服务支持新的 [Partitioned Raft KV](https://docs.pingcap.com/zh/tidb/v7.3/partitioned-raft-kv) 架构，为 Partitioned Raft KV 在 TiDB 后续版本中 GA 做好准备。
     </td>
   </tr>
   <tr>
     <td rowspan="2">稳定性与高可用</td>
-    <td><a href="https://docs.pingcap.com/tidb/v7.3/tidb-lightning/tidb-lightning-physical-import-mode-usage.md#conflict-detection">TiDB Lightning 引入冲突数据的自动检测和处理机制</a></td>
-    <td>TiDB Lightning 物理导入模式支持新版本的冲突检测，并在遇到冲突时实现替换 (`replace`) 或忽略 (`ignore`) 冲突数据的语义。TiDB Lightning 会自动处理冲突数据，同时提高了冲突处理的性能。</td>
+    <td><a href="https://docs.pingcap.com/zh/tidb/v7.3/tidb-lightning-physical-import-mode-usage#冲突数据检测">TiDB Lightning 引入冲突数据的自动检测和处理机制</a></td>
+    <td>TiDB Lightning 物理导入模式支持新版本的冲突检测机制，支持在遇到数据冲突时替换 (`replace`) 或忽略 (`ignore`) 冲突数据的语义。TiDB Lightning 会自动处理冲突数据，同时提高了冲突处理的性能。</td>
   </tr>
   <tr>
-    <td><a href="https://docs.pingcap.com/tidb/dev/tidb-resource-control.md#query-watch-parameters">手动标记资源使用超出预期的查询</a>（实验特性）</td>
-    <td>查询超时存在于每个 TiKV 节点上，现在资源组可以通过全局并行执行时间来管理查询，并且允许降低查询的优先级或终止查询。允许算子通过 SQL 的文本、SQL Digest 或执行计划标记查询，以及在资源组级别对这些查询进行处理，从而更好地控制非预期的大型查询可能对集群产生的影响。</td>
+    <td><a href="https://docs.pingcap.com/zh/tidb/v7.3/tidb-resource-control#query-watch-语句说明">手动标记资源使用超出预期的查询</a>（实验特性）</td>
+    <td>查询超时可能发生在任一 TiKV 节点上，现在资源组可以通过全局并行执行时间来管理查询，并且允许降低查询的优先级或终止查询。该功能允许算子在资源组级别通过匹配 SQL 文本、SQL digest 或执行计划标记查询，并对这些查询进行处理，从而更好地控制非预期的大型查询可能对集群产生的影响。</td>
   </tr>
   <tr>
     <td>SQL</td>
-    <td><a href="https://docs.pingcap.com/tidb/dev/optimizer-hints">添加更多优化器提示，加强对算子的控制，提升查询稳定性</a></td>
-    <td>新增优化器提示：<code>NO_HASH_JOIN()</code>、<code>INDEX_JOIN()</code>、<code>NO_INDEX_HASH_JOIN()</code>
+    <td><a href="https://docs.pingcap.com/zh/tidb/v7.3/optimizer-hints">添加更多优化器提示，加强对算子的控制，提升查询稳定性</a></td>
+    <td>新增优化器提示：<code>NO_INDEX_JOIN()</code>、<code>NO_MERGE_JOIN()</code>、<code>NO_INDEX_MERGE_JOIN()</code>、<code>NO_HASH_JOIN()</code>、<code>NO_INDEX_HASH_JOIN()</code>
   <tr>
     <td>数据库管理与可观测性</td>
-    <td><a href="https://docs.pingcap.com/tidb/dev/sql-plan-replayer">显示统计信息收集的进度</a></td>
-    <td>支持使用 <code>SHOW ANALYZE STATUS</code> 或通过系统表 <code>mysql.analyze_jobs</code> 查看 <code>ANALYZE</code> 任务的进度</td>
+    <td><a href="https://docs.pingcap.com/zh/tidb/v7.3/sql-plan-replayer">显示统计信息收集的进度</a></td>
+    <td>支持使用 <code>SHOW ANALYZE STATUS</code> 语句或通过<code>mysql.analyze_jobs</code> 系统表查看 <code>ANALYZE</code> 任务的进度。</td>
   </tr>
 </tbody>
 </table>
