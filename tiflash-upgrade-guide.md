@@ -86,4 +86,4 @@ TiFlash 在 v6.2.0 将数据格式升级到 V3 版本，因此，从 v5.x 或 v6
 
 DMFile 在 v7.3 的默认版本是 V2。
 
-如果在升级到 v7.3 并且使用了 V3 版本的 DMFile 后，需要回退到前序版本，可以通过 DTTool 离线将 DMFile 重新写回 V2 版本，具体可以参考 [DTTool 迁移工具](/tiflash/tiflash-command-line-flags.md#dttool-migrate)。
+在 TiFlash 升级到 v7.3 并且使用了 V3 版本的 DMFile 后，如需回退到之前的 TiFlash 版本，可以通过 DTTool 离线将 DMFile 重新写回 V2 版本，详见 [DTTool 迁移工具](/tiflash/tiflash-command-line-flags.md#dttool-migrate)。
