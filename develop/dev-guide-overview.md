@@ -46,4 +46,4 @@ TiDB 高度兼容 MySQL 协议，TiDB 支持[大多数 MySQL 的语法及特性]
 - [数据读取](/develop/dev-guide-get-data-from-single-table.md)
 - [事务](/develop/dev-guide-transaction-overview.md)
 - [优化 SQL 性能](/develop/dev-guide-optimize-sql-overview.md)
-- [示例程序](/develop/dev-guide-sample-application-spring-boot.md)
+- [示例程序](/develop/dev-guide-sample-application-java-spring-boot.md)

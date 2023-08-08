@@ -266,6 +266,10 @@ Hash Join 算法的性能受以下系统变量影响：
 * [`tidb_mem_quota_query`](/system-variables.md#tidb_mem_quota_query)（默认值：1GB）- 如果某条查询的内存消耗超出了配额，TiDB 会尝试将 Hash Join 的 Build 端移到磁盘上以节省内存。
 * [`tidb_hash_join_concurrency`](/system-variables.md#tidb_hash_join_concurrency)（默认值：`5`）- 可以并发执行的 Hash Join 任务数量。
 
+### 相关优化
+
+TiDB 提供了 Runtime Filter 功能，针对 Hash Join 进行性能优化，大幅提升 Hash Join 的执行速度。具体优化使用方式见 [Runtime Filter](/runtime-filter.md)。
+
 ## Merge Join
 
 Merge Join 是一种特殊的 Join 算法。当两个关联表要 Join 的字段需要按排好的顺序读取时，适用 Merge Join 算法。由于 Build 端和 Probe 端的数据都会读取，这种算法的 Join 操作是流式的，类似“拉链式合并”的高效版。Merge Join 占用的内存要远低于 Hash Join，但 Merge Join 不能并发执行。

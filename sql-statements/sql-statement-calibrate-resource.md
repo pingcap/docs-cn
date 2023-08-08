@@ -31,6 +31,10 @@ TiDB 提供两种预估方式：
 - 时间窗口范围为 10 分钟至 24 小时。
 - 在预估的时间窗口内，TiDB 与 TiKV 的 CPU 利用率不能过低，否则无法进行容量估算。
 
+> **注意：**
+>
+> 由于 TiKV 未在 macOS 上监控 CPU 使用率，所以不支持在 macOS 上使用根据实际负载估算容量功能。
+
 ### 基于硬件部署估算容量
 
 这种方式主要根据当前的集群配置，结合对不同负载观测的经验值进行预估。由于不同类型的负载对硬件的配比要求不同，相同配置的硬件所输出的容量也会有所不同。这里的 `WORKLOAD` 参数提供了以下不同的负载类型供选择，默认为 `TPCC`：
@@ -87,7 +91,14 @@ CALIBRATE RESOURCE START_TIME '2023-04-18 08:00:00' DURATION '9m';
 ERROR 1105 (HY000): the duration of calibration is too short, which could lead to inaccurate output. Please make the duration between 10m0s and 24h0m0s
 ```
 
-当时间窗口范围内的负载过低，会导致报错提醒。
+[根据实际负载估算容量](#根据实际负载估算容量)功能的监控指标包括 `tikv_cpu_quota`、`tidb_server_maxprocs`、`resource_manager_resource_unit`、`process_cpu_usage`。如果 CPU quota 监控数据为空，会有对应监控项名称的报错，如下面例子所示。
+
+```sql
+CALIBRATE RESOURCE START_TIME '2023-04-18 08:00:00' DURATION '60m';
+Error 1105 (HY000): There is no CPU quota metrics, metrics 'tikv_cpu_quota' is empty
+```
+
+当时间窗口范围内的负载过低或者 `resource_manager_resource_unit` 及 `process_cpu_usage` 监控数据缺失，会导致报错。此外，由于 TiKV 未在 macOS 上监控 CPU 使用率，也会导致报错。
 
 ```sql
 CALIBRATE RESOURCE START_TIME '2023-04-18 08:00:00' DURATION '60m';

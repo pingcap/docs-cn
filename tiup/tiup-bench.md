@@ -214,6 +214,6 @@ Flags:
 
 2. 运行 RawSQL 测试：
 
-   ```shell
-   tiup bench rawsql run --count 60 --query-files demo.sql
-   ```
+    ```shell
+    tiup bench rawsql run --count 60 --query-files demo.sql
+    ```

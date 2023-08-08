@@ -71,10 +71,6 @@ TiCDC 作为 TiDB 的增量数据同步工具，通过 PD 内部的 etcd 实现�
 - 容灾场景下使用 TiCDC 需要配置 [redo log](/ticdc/ticdc-sink-to-mysql.md#灾难场景的最终一致性复制) 实现最终一致性。
 - 使用 TiCDC 同步单行较大 (> 1k) 的宽表时，推荐设置 TiCDC 参数 [per-table-memory-quota](/ticdc/ticdc-server-config.md)，使得 `per-table-memory-quota` = `ticdcTotalMemory` / (`tableCount` * 2)。`ticdcTotalMemory` 是一个 TiCDC 节点的内存，`tableCount` 是一个 TiCDC 节点同步的目标表的数量。
 
-> **注意：**
->
-> 从 TiCDC v4.0.8 版本开始，可通过修改任务配置来同步**没有有效索引**的表，但在数据一致性的保证上有所减弱。具体使用方法和注意事项参考[同步没有有效索引的表](/ticdc/ticdc-manage-changefeed.md#同步没有有效索引的表)。
-
 ### 暂不支持的场景
 
 目前 TiCDC 暂不支持的场景如下：
