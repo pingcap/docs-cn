@@ -186,9 +186,6 @@ v7.3.0 引入了以下主要功能。[功能详情](#功能详情)中列出的�
 | [`tiflash_replica_read`](/system-variables.md#tiflash_replica_read-从-v730-版本开始引入) | 新增 | 这个变量用于设置当查询需要使用 TiFlash 引擎时，TiFlash 副本的选择策略。 |
 | [`tidb_opt_enable_mpp_shared_cte_execution`](/system-variables.md#tidb_opt_enable_mpp_shared_cte_execution-从-v720-版本开始引入) | 修改 | 该变量从 v7.3.0 开始生效，用于控制非递归的公共表表达式 (CTE) 是否可以在 TiFlash MPP 执行。 |
 | [`tidb_lock_unchanged_keys`](/system-variables.md#tiflash_replica_read-从-v730v711-版本开始引入) | 新增 | 用于控制部分场景下，对于事务中涉及但并未修改值的 key 是否进行上锁 |
-|  | 新增/删除/修改 |  |
-|  | 新增/删除/修改 |  |
-|  | 新增/删除/修改 |  |
 
 ### 配置文件参数
 
@@ -217,19 +214,10 @@ v7.3.0 引入了以下主要功能。[功能详情](#功能详情)中列出的�
 |BR  | azblob.encryption-key | 新增 |BR 为外部存储 Azure Blob Storage 提供加密密钥支持 |
 | TiCDC | [`large-message-handle-option`](/ticdc/ticdc-sink-to-kafka.md#处理超过-kafka-topic-限制的消息) | 新增 | 默认为空，即消息大小超过 Kafka Topic 的限制后，同步任务失败。设置为 "handle-key-only" 时，如果消息超过大小，只发送 handle key 以减少消息的大小；如果依旧超过大小，则同步任务失败。 |
 | TiCDC | [`sink.csv.binary-encoding-method`](/ticdc/ticdc-changefeed-config.md#ticdc-changefeed-配置文件说明) | 新增 | CSV 协议中二进制类型数据的编码方式，可选 `'base64'` 与 `'hex'`。默认值为 `'base64'`。 |
-|  | | 新增/删除/修改 | |
-|  | | 新增/删除/修改 | |
-|  | | 新增/删除/修改 | |
-|  | | 新增/删除/修改 | |
 
 ### 系统表
 
 - 新增系统表 `mysql.tidb_timers` 用来存储系统内部定时器的元信息。
-
-## 废弃功能
-
-- note
-- note
 
 ## 改进提升
 
