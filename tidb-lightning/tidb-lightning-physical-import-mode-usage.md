@@ -110,7 +110,7 @@ The meaning of configuration values are as follows:
 | `"replace"` | Replacing existing data with new data. | `REPLACE INTO ...` |
 | `"ignore"` | Keeping existing data and ignoring new data. | `INSERT IGNORE INTO ...` |
 | `"error"` | Pausing the import and reporting an error. | `INSERT INTO ...` |
-| `""` | no actions. TiDB Lightning might exit due to an error. |  None   |
+| `""` | TiDB Lightning does not detect or handle conflicting data. If data with primary and unique key conflicts exists, the subsequent step reports an error. |  None   |
 
 > **Note:**
 >
