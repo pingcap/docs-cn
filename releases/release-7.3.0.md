@@ -310,6 +310,7 @@ v7.3.0 引入了以下主要功能。功能详情中列出的部分更新旨在�
     - 修复 Region 的 `health-check` 输出可能与通过 ID 所查到的 Region 信息不一致的问题 [#6560](https://github.com/tikv/pd/issues/6560) @[JmPotato](https://github.com/JmPotato)
     - 修复 `unsafe recovery` 中失败的 learner peer 在 `auto-detect` 模式中被忽略的问题 [#6690](https://github.com/tikv/pd/issues/6690) @[v01dstar](https://github.com/v01dstar)
     - 修复 Placement Rules 选择了不满足规则的 TiFlash learner 的问题 [#6662](https://github.com/tikv/pd/issues/6662) @[rleungx](https://github.com/rleungx)
+    - 修复在 rule checker 选定 peer 时，unhealthy peer 无法被移除的问题 [#6559](https://github.com/tikv/pd/issues/6559) [nolouch](https://github.com/nolouch)
 
 + TiFlash
 
