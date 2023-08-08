@@ -115,7 +115,7 @@ TiDB 版本：6.2.0-DMR
 
     v6.2.0 默认以新版本存储格式保存数据。从更低版本升级到 6.2.0 版本后，不支持原地降级，否则更低版本的 TiFlash 无法识别新版本的数据格式。
 
-    建议用户在升级前阅读 [TiFlash v6.2.0 升级帮助](/tiflash-upgrade-guide.md)。
+    建议用户在升级前阅读 [TiFlash 升级帮助](/tiflash-upgrade-guide.md)。
 
     [用户文档](/tiflash/tiflash-configuration.md#配置文件-tiflashtoml) [#3594](https://github.com/pingcap/tiflash/issues/3594) @[JaySon-Huang](https://github.com/JaySon-Huang) @[lidezhu](https://github.com/lidezhu) @[jiaqizho](https://github.com/jiaqizho)
 
