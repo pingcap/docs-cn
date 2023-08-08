@@ -23,10 +23,11 @@ This document introduces the command-line flags that you can use when you launch
     - If you need to downgrade TiFlash from a version >= v5.4.0 that has enabled data validation to a version < v5.4.0, you can use this tool to downgrade the data format of the DTFile.
     - If you upgrade TiFlash to a version >= v5.4.0, and if you hope to enable data validation for existing data, you can use this tool to upgrade the data format of the DTFile.
     - Test the space usage and read speed of the DTFile in different configurations.
+    - If you need to downgrade TiFlash from a version >= v7.3.0 that has enabled small file merging (that is, `storage.format_version` >= 5) to a version < v7.3.0, you can use this tool to downgrade the data format of the DTFile.
 
 - Parameters:
     - `--imitative`: When you do not use the encryption feature of the DTFile, you can use this flag to avoid using the configuration file and connecting to PD.
-    - `--version`: The version of DTFile. The value options are `1` and `2` (default). `1` is the old version, and `2` is the version corresponding to the new checksum.
+    - `--version`: The target version of DTFile. The value options are `1`, `2` (default), and `3`. `1` is the old version, `2` is the version corresponding to the new checksum, and `3` is the version that supports merging small files.
     - `--algorithm`: The hash algorithm used for data validation. The value options are `xxh3` (default), `city128`, `crc32`, `crc64`, and `none`. This parameter is effective only when `version` is `2`.
     - `--frame`: The size of the validation frame. The default value is `1048576`. This parameter is effective only when `version` is `2`.
     - `--compression`: The target compression algorithm. The value options are `LZ4` (default), `LZ4HC`, `zstd`, and `none`.

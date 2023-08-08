@@ -1,11 +1,12 @@
 ---
-title: TiFlash v6.2 Upgrade Guide
-summary: Learn the precautions when you upgrade TiFlash to v6.2.
+title: TiFlash Upgrade Guide
+summary: Learn the precautions when you upgrade TiFlash.
+aliases: ['/tidb/dev/tiflash-620-upgrade-guide']
 ---
 
-# TiFlash v6.2 Upgrade Guide
+# TiFlash Upgrade Guide
 
-This document describes the functional changes in TiFlash modules you need to pay attention to when you upgrade TiFlash from earlier versions to v6.2, and recommended actions for you to take.
+This document describes the function changes and recommended actions that you need to learn when you upgrade TiFlash.
 
 To learn the standard upgrade process, see the following documents:
 
@@ -84,3 +85,9 @@ You can forcibly scale in the target TiFlash node and then replicate data from T
 ## From v6.1 to v6.2
 
 When you upgrade TiFlash from v6.1 to v6.2, pay attention to the change in data storage format. For details, see [PageStorage](#pagestorage).
+
+## From v6.x or v7.x to v7.3 with `storage.format_version = 5` configured
+
+Starting from v7.3, TiFlash introduces a new DTFile version: DTFile V3 (experimental). This new DTFile version can merge multiple small files into a single larger file to reduce the total number of files. In v7.3, the default DTFile version is still V2. To use V3, you can set the [TiFlash configuration parameter](/tiflash/tiflash-configuration.md) `storage.format_version = 5`. After the setting, TiFlash can still read V2 DTFiles and will gradually rewrite existing V2 DTFiles to V3 DTFiles during subsequent data compaction.
+
+After upgrading TiFlash to v7.3 and configuring TiFlash to use V3 DTFiles, if you need to revert TiFlash to an earlier version, you can use the DTTool offline to rewrite V3 DTFiles back to V2 DTFiles. For more information, see [DTTool Migration Tool](/tiflash/tiflash-command-line-flags.md#dttool-migrate).

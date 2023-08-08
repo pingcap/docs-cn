@@ -77,6 +77,7 @@ delta_index_cache_size = 0
     ## * format_version = 2, the default format for versions < v6.0.0.
     ## * format_version = 3, the default format for v6.0.0 and v6.1.x, which provides more data validation features.
     ## * format_version = 4, the default format for v6.2.0 and later versions, which reduces write amplification and background task resource consumption
+    ## * format_version = 5, a new format introduced in v7.3.0 (not the default format for v7.3.0) that reduces the number of physical files by merging smaller files. Note that this format is experimental and not recommended to be used in a production environment.
     # format_version = 4
 
     [storage.main]
