@@ -517,7 +517,11 @@ RocksDB 多个 CF 之间共享 block cache 的配置选项。
 ### `capacity`
 
 + 共享 block cache 的大小。
-+ 默认值：系统总内存大小的 45%
++ 默认值：
+
+    + 当 `storage.engine="raft-kv"` 时，默认值为系统总内存大小的 45%。
+    + 当 `storage.engine="partitioned-raft-kv"` 时，默认值为系统总内存大小的 30%。
+
 + 单位：KB|MB|GB
 
 ## storage.flow-control
@@ -1084,7 +1088,7 @@ Coprocessor 相关的配置项。
 ### `region-bucket-size` <span class="version-mark">从 v6.1.0 版本开始引入</span>
 
 + 设置 `enable-region-bucket` 启用时 bucket 的预期大小。
-+ 默认值：96MiB
++ 默认值：从 v7.3.0 起，默认值从 `96MiB` 变更为 `50MiB`。
 
 > **警告：**
 >
@@ -1168,12 +1172,17 @@ RocksDB 相关的配置项。
 ### `max-total-wal-size`
 
 + RocksDB WAL 总大小限制，即 `data-dir` 目录下 `*.log` 文件的大小总和。
-+ 默认值：`"4GB"`
++ 默认值：
+    + 当 `storage.engine="raft-kv"` 时，默认值为 `"4GB"`
+    + 当 `storage.engine="partitioned-raft-kv"` 时，默认值为 `1`
 
 ### `stats-dump-period`
 
 + 将统计信息输出到日志中的间隔时间。
-+ 默认值：10m
++ 默认值：
+
+    + 当 `storage.engine="raft-kv"` 时，默认值为 `"10m"`。
+    + 当 `storage.engine="partitioned-raft-kv"` 时，默认值为 `"0"`。
 
 ### `compaction-readahead-size`
 
@@ -1282,8 +1291,12 @@ RocksDB 相关的配置项。
 >
 > 该功能目前为实验特性，不建议在生产环境中使用。该功能可能会在未事先通知的情况下发生变化或删除。如果发现 bug，请在 GitHub 上提 [issue](https://github.com/pingcap/tidb/issues) 反馈。
 
-+ 设置单个 TiKV 中所有 RocksDB 实例使用的 memtable 的总内存上限，默认值为本机内存的 25%，推荐配置不低于 5 GiB 的内存。该配置只对 Partitioned Raft KV (storage.engine="partitioned-raft-kv") 生效。
-+ 默认值：25%
++ 设置单个 TiKV 中所有 RocksDB 实例使用的 memtable 的总内存上限。`0` 表示不设限制。
++ 默认值：
+
+    + 当 `storage.engine="raft-kv"` 时，默认值为 `0`，即不限制。
+    + 当 `storage.engine="partitioned-raft-kv"` 时，默认值为本机内存的 20%。
+
 + 单位：KiB|MiB|GiB
 
 ## rocksdb.titan
@@ -1419,7 +1432,9 @@ rocksdb defaultcf、rocksdb writecf 和 rocksdb lockcf 相关的配置项。
 + memtable 大小。
 + `defaultcf` 默认值：`"128MB"`
 + `writecf` 默认值：`"128MB"`
-+ `lockcf` 默认值：`"32MB"`
++ `lockcf` 默认值：
+    + 当 `storage.engine="raft-kv"` 时，默认值为 `"32MB"`
+    + 当 `storage.engine="partitioned-raft-kv"` 时，默认值为 `"4MB"`
 + 最小值：0
 + 单位：KB|MB|GB
 
@@ -1539,7 +1554,7 @@ rocksdb defaultcf、rocksdb writecf 和 rocksdb lockcf 相关的配置项。
 ### `compaction-guard-min-output-file-size`
 
 + 设置 compaction guard 启用时 SST 文件大小的最小值，防止 SST 文件过小。
-+ 默认值：从 v7.2.0 起，默认值从 8MB 变更为 1MB。
++ 默认值：`"8MB"`
 + 单位：KB|MB|GB
 
 ### `compaction-guard-max-output-file-size`
@@ -1558,7 +1573,10 @@ rocksdb defaultcf、rocksdb writecf 和 rocksdb lockcf 相关的配置项。
     - `3`：适用于 TiKV v2.1 及以上版本。更改了索引块中 key 的编码方式。
     - `4`：适用于 TiKV v3.0 及以上版本。更改了索引块中 value 的编码方式。
     - `5`：适用于 TiKV v6.1 及以上版本。全量和分区 filter 采用一种具有不同模式的、更快、更准确的 Bloom filter 实现。
-+ 默认值：`2`
++ 默认值：
+
+    + 当 `storage.engine="raft-kv"` 时，默认值为 `2`。
+    + 当 `storage.engine="partitioned-raft-kv"` 时，默认值为 `5`。
 
 ### `ttl` <span class="version-mark">从 v7.2.0 版本开始引入</span>
 
@@ -1707,7 +1725,9 @@ raftdb 相关配置项。
 ### `max-total-wal-size`
 
 + RocksDB WAL 文件的最大总大小。
-+ 默认值：`"4GB"`
++ 默认值：
+    + 当 `storage.engine="raft-kv"` 时，默认值为 `"4GB"`
+    + 当 `storage.engine="partitioned-raft-kv"` 时，默认值为 `1`
 
 ### `compaction-readahead-size`
 
@@ -1862,7 +1882,9 @@ Raft Engine 相关的配置项。
 + 可选值：
     + `1`：v6.3.0 以前的默认日志文件格式。v6.1.0 及以后版本的 TiKV 可以读取该格式。
     + `2`：支持日志回收。v6.3.0 及以后版本的 TiKV 可以读取该格式。
-+ 默认值：`2`
++ 默认值：
+    + 当 `storage.engine="raft-kv"` 时，默认值为 `2`
+    + 当 `storage.engine="partitioned-raft-kv"` 时，默认值为 `5`
 
 ### `enable-log-recycle` <span class="version-mark">从 v6.3.0 版本开始引入</span>
 

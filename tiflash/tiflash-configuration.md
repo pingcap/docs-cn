@@ -38,8 +38,9 @@ aliases: ['/docs-cn/dev/tiflash/tiflash-configuration/','/docs-cn/dev/reference/
 ```toml
 ## TiFlash TCP/HTTP 等辅助服务的监听 host。建议配置成 0.0.0.0，即监听本机所有 IP 地址。
 listen_host = "0.0.0.0"
-## TiFlash TCP 服务的端口
-tcp_port = 9000
+## TiFlash TCP 服务的端口。TCP 服务为内部测试接口，默认使用 9000 端口。在 TiFlash v7.1.0 之前的版本中，该端口默认开启，但存在安全风险。为了提高安全性，建议对该端口进行访问控制，只允许白名单 IP 访问。从 TiFlash v7.1.0 起，可以通过注释掉该端口的配置避免安全风险。当 TiFlash 配置文件未声明该端口时，该端口也不会开启。
+## 建议在任何 TiFlash 的部署中都不配置该端口。(注: 从 TiFlash v7.1.0 起，由 TiUP >= v1.12.5 或 TiDB Operator >= v1.5.0 部署的 TiFlash 默认为安全版本，即默认未开启该端口)
+# tcp_port = 9000
 ## 数据块元信息的内存 cache 大小限制，通常不需要修改
 mark_cache_size = 5368709120
 ## 数据块 min-max 索引的内存 cache 大小限制，通常不需要修改
@@ -67,6 +68,7 @@ delta_index_cache_size = 0
     ## * format_version = 2 v6.0.0 以前版本的默认文件格式
     ## * format_version = 3 v6.0.0 及 v6.1.x 版本的默认文件格式，具有更完善的检验功能
     ## * format_version = 4 v6.2.0 及以后版本的默认文件格式，优化了写放大问题，同时减少了后台线程消耗
+    ## * format_version = 5 从 v7.3.0 开始引入的文件格式（非 v7.3.0 默认格式），该格式可以合并小文件从而减少了物理文件数量。注意该格式目前为实验特性，不建议在生产环境中使用。
     # format_version = 4
 
     [storage.main]
