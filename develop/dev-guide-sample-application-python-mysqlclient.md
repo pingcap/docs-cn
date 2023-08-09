@@ -65,7 +65,9 @@ with get_mysqlclient_connection(autocommit=True) as conn:
 
 [更多插入数据参考文档](/develop/dev-guide-insert-data.md)
 
-### 查询
+### 查询数据
+
+下面示例为使用 mysqlclient 从 `player` 表查询数据：
 
 ```python
 with get_mysqlclient_connection(autocommit=True) as conn:
