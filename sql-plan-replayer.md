@@ -19,7 +19,7 @@ You can use `PLAN REPLAYER` to save the on-site information of a TiDB cluster. T
 {{< copyable "sql" >}}
 
 ```sql
-PLAN REPLAYER DUMP EXPLAIN [ANALYZE] sql-statement;
+PLAN REPLAYER DUMP EXPLAIN [ANALYZE] [WITH STATS AS OF TIMESTAMP expression] sql-statement;
 ```
 
 Based on `sql-statement`, TiDB sorts out and exports the following on-site information:
@@ -32,6 +32,10 @@ Based on `sql-statement`, TiDB sorts out and exports the following on-site infor
 - The statistics of the table in `sql-statement`
 - The result of `EXPLAIN [ANALYZE] sql-statement`
 - Some internal procudures of query optimization
+
+If historical statistics are [enabled](/system-variables.md#tidb_enable_historical_stats), you can specify a time in the `PLAN REPLAYER` statement to get the historical statistics for the corresponding time. You can directly specify a time and date or specify a timestamp. TiDB looks for the historical statistics before the specified time and exports the latest one among them.
+
+If there are no historical statistics before the specified time, TiDB exports the latest statistics, which is consistent with the behavior when no time is specified. In addition, TiDB prints the error messages in the `errors.txt` file within the exported `ZIP` file.
 
 > **Note:**
 >
@@ -48,6 +52,8 @@ insert into t values(1,1), (2, 2), (3, 3);
 analyze table t;
 
 plan replayer dump explain select * from t;
+plan replayer dump with stats as of timestamp '2023-07-17 12:00:00' explain select * from t;
+plan replayer dump with stats as of timestamp '442012134592479233' explain select * from t;
 ```
 
 `PLAN REPLAYER DUMP` packages the table information above into a `ZIP` file and returns the file identifier as the execution result.
