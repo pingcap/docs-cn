@@ -63,7 +63,7 @@ with get_mysqlclient_connection(autocommit=True) as conn:
         cursor.execute("INSERT INTO player (id, coins, goods) VALUES (%s, %s, %s)", player)
 ```
 
-[更多插入数据参考文档](/develop/dev-guide-insert-data.md)
+更多信息参考[插入数据](/develop/dev-guide-insert-data.md)。
 
 ### 查询数据
 
