@@ -167,7 +167,7 @@ v7.3.0 引入了以下主要功能。[功能详情](#功能详情)中列出的�
 
     - 当 Kafka sink 使用 Avro 协议时，如果开启了 `force-replicate` 参数，创建 changefeed 会报错。
     - 由于 `delete-only-output-handle-key-columns` 和 `force-replicate` 参数不兼容，同时开启两个参数时，创建 changefeed 会报错。
-    - 当使用 `Open Protocol` 作为输出协议时，`UPDATE` 类型的事件将仅输出变更的列。
+    - 当使用 Open Protocol 作为输出协议时，`UPDATE` 类型的事件将仅输出变更的列。
 
 ### 系统变量
 
