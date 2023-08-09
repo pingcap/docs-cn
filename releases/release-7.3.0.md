@@ -31,7 +31,7 @@ v7.3.0 引入了以下主要功能。[功能详情](#功能详情)中列出的�
   <tr>
     <td rowspan="2">稳定性与高可用</td>
     <td><a href="https://docs.pingcap.com/zh/tidb/v7.3/tidb-lightning-physical-import-mode-usage#冲突数据检测">TiDB Lightning 引入冲突数据的自动检测和处理机制</a></td>
-    <td>TiDB Lightning 物理导入模式支持新版本的冲突检测机制，支持在遇到数据冲突时替换 (`replace`) 或忽略 (`ignore`) 冲突数据的语义。TiDB Lightning 会自动处理冲突数据，同时提高了冲突处理的性能。</td>
+    <td>TiDB Lightning 物理导入模式支持新版本的冲突检测机制，支持在遇到数据冲突时替换 (<code>replace</code>) 或忽略 (<code>ignore</code>) 冲突数据的语义。TiDB Lightning 会自动处理冲突数据，同时提高了冲突处理的性能。</td>
   </tr>
   <tr>
     <td><a href="https://docs.pingcap.com/zh/tidb/v7.3/tidb-resource-control#query-watch-语句说明">手动标记资源使用超出预期的查询</a>（实验特性）</td>
