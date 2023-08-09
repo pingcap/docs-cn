@@ -98,7 +98,7 @@ with get_mysqlclient_connection(autocommit=True) as conn:
         cursor.execute("DELETE FROM player WHERE id = %s", (player_id,))
 ```
 
-[更多删除数据参考文档](/develop/dev-guide-delete-data.md)
+更多信息参考[删除数据](/develop/dev-guide-delete-data.md)。
 
 ## 其他值得注意的事
 
