@@ -24,8 +24,8 @@ v7.3.0 引入了以下主要功能。[功能详情](#功能详情)中列出的�
 <tbody>
   <tr>
     <td>可扩展性与性能</td>
-    <td>TiDB Lightning 支持 Partitioned Raft KV </td>
-    <td>TiDB Lightning 的数据导入服务支持新的 <a href="https://docs.pingcap.com/zh/tidb/v7.3/partitioned-raft-kv">Partitioned Raft KV</a> 架构，为 Partitioned Raft KV 在 TiDB 后续版本中 GA 做好准备。
+    <td>TiDB Lightning 支持 <a href="https://docs.pingcap.com/zh/tidb/v7.3/partitioned-raft-kv">Partitioned Raft KV</a>（实验特性）</td>
+    <td>TiDB Lightning 的数据导入服务支持新的 Partitioned Raft KV 架构，为 Partitioned Raft KV 在 TiDB 后续版本中 GA 做好准备。
     </td>
   </tr>
   <tr>
