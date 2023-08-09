@@ -1846,8 +1846,6 @@ mysql> explain select /*+ TIDB_INLJ(t1, t2) */ t1.* from t1, t2 where t2.code = 
 
 2. 生成所有分区表的更新统计信息的语句：
 
-    {{< copyable "sql" >}}
-
     ```sql
     SELECT DISTINCT CONCAT('ANALYZE TABLE ',TABLE_SCHEMA,'.',TABLE_NAME,' ALL COLUMNS;')
         FROM information_schema.PARTITIONS
@@ -1868,9 +1866,7 @@ mysql> explain select /*+ TIDB_INLJ(t1, t2) */ t1.* from t1, t2 where t2.code = 
 
 3. 将批量更新语句导出到文件：
 
-    {{< copyable "sql" >}}
-
-    ```sql
+    ```shell
     mysql --host xxxx --port xxxx -u root -p -e "SELECT DISTINCT CONCAT('ANALYZE TABLE ',TABLE_SCHEMA,'.',TABLE_NAME,' ALL COLUMNS;') \
         FROM information_schema.PARTITIONS \
         WHERE TIDB_PARTITION_ID IS NOT NULL \
