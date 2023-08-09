@@ -32,7 +32,7 @@ hide_commit: true
 
 [快速开始](https://docs.pingcap.com/zh/tidb/v7.3/dev-guide-build-cluster-in-cloud)
 
-[示例程序](https://docs.pingcap.com/zh/tidb/v7.3/dev-guide-sample-application-spring-boot)
+[示例程序](https://docs.pingcap.com/zh/tidb/v7.3/dev-guide-sample-application-java-spring-boot)
 
 </LearningPath>
 
