@@ -10,7 +10,18 @@ summary: 介绍如何使用 TiDB 和 mysqlclient 构造一个 CRUD 应用程序�
 
 [mysqlclient](https://pypi.org/project/mysqlclient/) 为当前比较流行的开源 Python Driver 之一。
 
-本文档将展示如何使用 TiDB 和 mysqlclient 来构造一个简单的 CRUD 应用程序。此处将以 mysqlclient **2.1.1** 版本，Python **3.10** 版本进行说明。虽然 Python 的 Driver 相较其他语言，使用也极其方便。但因其不可屏蔽底层实现，需手动管控事务的特性，如果没有大量必须使用 SQL 的场景，仍然推荐使用 ORM 进行程序编写。这可以降低程序的耦合性。
+本文介绍如何使用 TiDB 和 mysqlclient 构造一个简单的 CRUD 应用程序。
+
+虽然 Python 的 Driver 相较其他语言，使用简单。但其不可屏蔽底层实现，需要手动管控事务。所以如果没有大量必须使用 SQL 的场景，仍然推荐使用 ORM 编写程序，以降低程序耦合度。
+
+## 前提条件
+
+- Python 3.10 或更高版本
+- mysqlclient 2.1.1 或更高版本
+- TiDB 集群
+
+    - 推荐使用 TiDB Serverless 集群。详情请参考[创建 TiDB Serverless 集群](/develop/dev-guide-build-cluster-in-cloud.md#第-1-步创建-tidb-serverless-集群)。
+    - 可选使用[本地测试 TiDB 集群](/quick-start-with-tidb.md#部署本地测试集群)或[正式 TiDB 集群](/production-deployment-using-tiup.md)。
 
 ## 重点代码片段
 
