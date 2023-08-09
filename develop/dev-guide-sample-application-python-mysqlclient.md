@@ -89,7 +89,9 @@ with get_mysqlclient_connection(autocommit=True) as conn:
 
 更多信息参考[更新数据](/develop/dev-guide-update-data.md)。
 
-### 删除
+### 删除数据
+
+下面示例为使用 mysqlclient 删除 `player` 表的数据：
 
 ```python
 with get_mysqlclient_connection(autocommit=True) as conn:
