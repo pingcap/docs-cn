@@ -27,8 +27,6 @@ summary: 介绍如何使用 TiDB 和 mysqlclient 构造一个 CRUD 应用程序�
 
 本示例将运行在你的 TiDB 集群上，如果你还没有 TiDB 集群：
 
-- 推荐参考[创建 TiDB Serverless 集群](/develop/dev-guide-build-cluster-in-cloud.md#第-1-步创建-tidb-serverless-集群)文档创建你自己的 TiDB Cloud 集群。
-- 备选参考[部署本地测试 TiDB 集群](/quick-start-with-tidb.md#部署本地测试集群)或[部署正式 TiDB 集群](/production-deployment-using-tiup.md)文档创建本地集群。
 
 ### 连接到 TiDB
 
