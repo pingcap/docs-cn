@@ -26,7 +26,7 @@ Gitpod 是一个开源 Kubernetes 应用程序（GitHub 仓库地址 <https://gi
 
 完成[快速开始](#快速开始) 的步骤之后，Gitpod 会需要一段时间来设置你的工作区。
 
-以 [Spring Boot Web](/develop/dev-guide-sample-application-spring-boot.md) 应用程序为例，通过 URL `https://gitpod.io/#targetFile=spring-jpa-hibernate_Makefile,targetMode=spring-jpa-hibernate/https://github.com/pingcap-inc/tidb-example-java` 可以创建一个新工作区。
+以 [Spring Boot Web](/develop/dev-guide-sample-application-java-spring-boot.md) 应用程序为例，通过 URL `https://gitpod.io/#targetFile=spring-jpa-hibernate_Makefile,targetMode=spring-jpa-hibernate/https://github.com/pingcap-inc/tidb-example-java` 可以创建一个新工作区。
 
 完成后，你将看到如下所示的页面。
 
@@ -40,7 +40,7 @@ Gitpod 是一个开源 Kubernetes 应用程序（GitHub 仓库地址 <https://gi
 
 ![playground gitpod workspace ready](/media/develop/playground-gitpod-workspace-ready.png)
 
-你可以按照[该指南](/develop/dev-guide-sample-application-spring-boot.md#第-6-步http-请求)测试 API。注意请将 URL `http://localhost:8080` 替换为你在 `REMOTE EXPLORER` 中找到的那个。
+你可以按照[该指南](/develop/dev-guide-sample-application-java-spring-boot.md#第-6-步http-请求)测试 API。注意请将 URL `http://localhost:8080` 替换为你在 `REMOTE EXPLORER` 中找到的那个。
 
 ## 使用自定义的 Gitpod 配置和 Docker 镜像
 
