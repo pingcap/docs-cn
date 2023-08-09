@@ -25,8 +25,6 @@ summary: 介绍如何使用 TiDB 和 mysqlclient 构造一个 CRUD 应用程序�
 
 ## 重点代码片段
 
-
-
 ### 连接到 TiDB
 
 下面函数示例使用 mysqlclient 连接到 TiDB：
