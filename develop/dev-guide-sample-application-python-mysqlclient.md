@@ -52,7 +52,9 @@ def get_mysqlclient_connection(autocommit:bool=True) -> MySQLdb.Connection:
     return MySQLdb.connect(**db_conf)
 ```
 
-### 增加
+### 插入数据
+
+下面示例为使用 mysqlclient 向 `player` 表插入数据：
 
 ```python
 with get_mysqlclient_connection(autocommit=True) as conn:
