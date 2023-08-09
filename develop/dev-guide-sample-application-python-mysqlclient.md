@@ -78,7 +78,9 @@ with get_mysqlclient_connection(autocommit=True) as conn:
 
 更多信息参考[查询数据](/develop/dev-guide-get-data-from-single-table.md)。
 
-### 更新
+### 更新数据
+
+下面示例为使用 mysqlclient 更新 `player` 表的数据：
 
 ```python
 with get_mysqlclient_connection(autocommit=True) as conn:
