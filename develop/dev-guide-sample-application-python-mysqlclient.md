@@ -47,7 +47,7 @@ def get_mysqlclient_connection(autocommit:bool=True) -> MySQLdb.Connection:
     return MySQLdb.connect(**db_conf)
 ```
 
-在使用该函数时，你需要将 `${tidb_host}`、`${tidb_port}`、`${tidb_user}`、`${tidb_password}`、`${tidb_db_name}` 等变量替换为你的 TiDB 集群的实际值。
+在使用该函数时，你需要将 `${tidb_host}`、`${tidb_port}`、`${tidb_user}`、`${tidb_password}`、`${tidb_db_name}` 等替换为你的 TiDB 集群的实际值。
 
 ### 插入数据
 
