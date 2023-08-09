@@ -197,10 +197,10 @@ v7.3.0 引入了以下主要功能。[功能详情](#功能详情)中列出的�
 | TiFlash | [`storage.format_version`](/tiflash/tiflash-configuration.md) | 修改 | 引入新的 DTFile 储存文件格式 `format_version = 5`，该格式可以合并小文件从而减少物理文件数量。注意该格式目前为实验特性，默认未启用。 |
 | TiDB Lightning | `tikv-importer.incremental-import` | 删除 | TiDB Lightning 并行导入参数。因为该参数名容易被误认为是增量导入的参数，因此更名为 `tikv-importer.parallel-import`。如果用户传入旧的参数名，会被自动转成新的参数名。|
 |TiDB Lightning  | `tikv-importer.on-duplicate` | 废弃 | TiDB Lightning 逻辑导入模式插入冲突数据时执行的操作。从 v7.3.0 起，该参数由 [`conflict.strategy`](/tidb-lightning/tidb-lightning-configuration.md#tidb-lightning-任务配置) 取代。|
-| TiDB Lightning  | `conflict.max-record-rows` | 新增 | TiDB Lightning 新版冲突检测与处理策略，用于记录在数据导入过程中遇到的冲突记录，并允许设置最大上限，默认值为 `100`。 |
-| TiDB Lightning  | `conflict.strategy` | 新增 | TiDB Lightning 新版冲突检测与处理的策略，包含 `""`（不做冲突检测），`"error"`（遇到冲突数据即报错并停止导入），`"replace"`（遇到冲突记录替换已有的冲突记录），`"ignore"`（遇到冲突记录忽略需要插入的该条冲突记录）四种策略。默认值为 `""`，即不做冲突检测。 |
-| TiDB Lightning  | `conflict.threshold` | 新增 |TiDB Lightning 新版冲突检测与处理策略允许的冲突上限，`conflict.strategy="error"` 时默认值为 `0`，当 `conflict.strategy="replace"` 或 `conflict.strategy="ignore"` 时默认值为 maxint。 |
-| TiDB Lightning  | `enable-diagnose-logs` | 新增 | 是否开启诊断日志。默认为 `false`，即只输出和导入有关的日志，不会输出依赖的其他组件的日志。设置为 `true` 后，既输出和导入相关的日志，也输出依赖的其他组件的日志，并开启 GRPC debug，可用于问题诊断。 |
+| TiDB Lightning  | [`conflict.max-record-rows`](/tidb-lightning/tidb-lightning-configuration.md) | 新增 | TiDB Lightning 新版冲突检测与处理策略，用于记录在数据导入过程中遇到的冲突记录，并允许设置最大上限，默认值为 `100`。 |
+| TiDB Lightning  | [`conflict.strategy`](/tidb-lightning/tidb-lightning-configuration.md) | 新增 | TiDB Lightning 新版冲突检测与处理的策略，包含 `""`（不做冲突检测），`"error"`（遇到冲突数据即报错并停止导入），`"replace"`（遇到冲突记录替换已有的冲突记录），`"ignore"`（遇到冲突记录忽略需要插入的该条冲突记录）四种策略。默认值为 `""`，即不做冲突检测。 |
+| TiDB Lightning  | [`conflict.threshold`](/tidb-lightning/tidb-lightning-configuration.md) | 新增 |TiDB Lightning 新版冲突检测与处理策略允许的冲突上限，`conflict.strategy="error"` 时默认值为 `0`，当 `conflict.strategy="replace"` 或 `conflict.strategy="ignore"` 时默认值为 maxint。 |
+| TiDB Lightning  | [`enable-diagnose-logs`](/tidb-lightning/tidb-lightning-configuration.md) | 新增 | 是否开启诊断日志。默认为 `false`，即只输出和导入有关的日志，不会输出依赖的其他组件的日志。设置为 `true` 后，既输出和导入相关的日志，也输出依赖的其他组件的日志，并开启 GRPC debug，可用于问题诊断。 |
 | TiDB Lightning | [`tikv-importer.parallel-import`](/tidb-lightning/tidb-lightning-configuration.md) | 新增 | TiDB Lightning 并行导入参数。用于替代原有的 `tikv-importer.incremental-import` 参数，因为原有参数会被误认为是增量导入的参数而误用。 |
 | BR | `azblob.encryption-key` | 新增 |BR 为外部存储 Azure Blob Storage 提供加密密钥支持 |
 | BR | `azblob.encryption-scope` | 新增 |BR 为外部存储 Azure Blob Storage 提供加密范围支持 |
