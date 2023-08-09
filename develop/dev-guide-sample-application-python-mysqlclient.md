@@ -76,7 +76,7 @@ with get_mysqlclient_connection(autocommit=True) as conn:
         print(cur.fetchone()[0])
 ```
 
-[更多查询数据参考文档](/develop/dev-guide-get-data-from-single-table.md)
+更多信息参考[查询数据](/develop/dev-guide-get-data-from-single-table.md)。
 
 ### 更新
 
