@@ -100,7 +100,7 @@ with get_mysqlclient_connection(autocommit=True) as conn:
 
 更多信息参考[删除数据](/develop/dev-guide-delete-data.md)。
 
-## 其他值得注意的事
+## 注意事项
 
 - 完整代码及运行方式见 [tidb-example-python](https://github.com/pingcap-inc/tidb-example-python/blob/main/README-zh.md) GitHub 仓库。
 - 由于 Driver 封装程度较低，程序内存在大量的 SQL 语句。需要注意，mysqlclient 的查询对象为元组 (tuple) 形式，与使用 ORM 的数据对象形式不同。
