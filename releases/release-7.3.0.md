@@ -88,7 +88,7 @@ v7.3.0 引入了以下主要功能。[功能详情](#功能详情)中列出的�
     - [`NO_HASH_JOIN()`](/optimizer-hints.md#no_hash_joint1_name--tl_name-) 选择哈希连接以外的连接方式。
     - [`NO_INDEX_HASH_JOIN()`](/optimizer-hints.md#no_index_hash_joint1_name--tl_name-) 选择除 [Index Nested Loop Hash Join](/optimizer-hints.md#inl_hash_join) 以外的连接方式。
 
-    更多信息，请参考[用户文档](/optimizer-hints.md)。
+  更多信息，请参考[用户文档](/optimizer-hints.md)。
 
 * 手动标记资源使用超出预期的查询（实验特性）[#43691](https://github.com/pingcap/tidb/issues/43691) @[Connor1996](https://github.com/Connor1996) @[CabinfeverB](https://github.com/CabinfeverB)
 
@@ -176,8 +176,8 @@ v7.3.0 引入了以下主要功能。[功能详情](#功能详情)中列出的�
 | [`tidb_opt_enable_non_eval_scalar_subquery`](/system-variables.md#tidb_opt_enable_non_eval_scalar_subquery-从-v730-版本开始引入) | 新增 | 这个变量用于控制 `EXPLAIN` 语句是否禁止提前执行可以在优化阶段展开的常量子查询。 |
 | [`tidb_skip_missing_partition_stats`](/system-variables.md#tidb_skip_missing_partition_stats-从-v730-版本开始引入) | 新增 | 这个变量用于控制当分区统计信息缺失时生成 GlobalStats 的行为。 |
 | [`tiflash_replica_read`](/system-variables.md#tiflash_replica_read-从-v730-版本开始引入) | 新增 | 这个变量用于设置当查询需要使用 TiFlash 引擎时，TiFlash 副本的选择策略。 |
+| [`tidb_lock_unchanged_keys`](/system-variables.md#tidb_lock_unchanged_keys-从-v711-和-v730-版本开始引入) | 新增 | 用于控制部分场景下，对于事务中涉及但并未修改值的 key 是否进行上锁。 |
 | [`tidb_opt_enable_mpp_shared_cte_execution`](/system-variables.md#tidb_opt_enable_mpp_shared_cte_execution-从-v720-版本开始引入) | 修改 | 该变量从 v7.3.0 开始生效，用于控制非递归的公共表表达式 (CTE) 是否可以在 TiFlash MPP 执行。 |
-| [`tidb_lock_unchanged_keys`](/system-variables.md#tiflash_replica_read-从-v730-版本开始引入) | 新增 | 用于控制部分场景下，对于事务中涉及但并未修改值的 key 是否进行上锁 |
 
 ### 配置文件参数
 
@@ -257,7 +257,6 @@ v7.3.0 引入了以下主要功能。[功能详情](#功能详情)中列出的�
     - 修复 resolve lock 在 PD 时间跳变的情况下可能卡住的问题 [#44822](https://github.com/pingcap/tidb/issues/44822) @[zyguan](https://github.com/zyguan)
     - 修复 GC resolve lock 可能错过一些悲观锁的问题 [#45134](https://github.com/pingcap/tidb/issues/45134) @[MyonKeminta](https://github.com/MyonKeminta)
     - 修复动态裁剪模式下使用了排序的查询返回结果错误的问题 [#45007](https://github.com/pingcap/tidb/issues/45007) @[Defined2014](https://github.com/Defined2014)
-
     - 修复 `AUTO_INCREMENT` 与列的默认值 `DEFAULT` 可以指定在同一列上的问题 [#45136](https://github.com/pingcap/tidb/issues/45136) @[Defined2014](https://github.com/Defined2014)
     - 修复某些情况下查询系统表 `INFORMATION_SCHEMA.TIKV_REGION_STATUS` 返回结果错误的问题 [#45531](https://github.com/pingcap/tidb/issues/45531) @[Defined2014](https://github.com/Defined2014)
     - 修复某些情况下分区表分区裁剪不正确的问题 [#42273](https://github.com/pingcap/tidb/issues/42273) @[jiyfhust](https://github.com/jiyfhust)
