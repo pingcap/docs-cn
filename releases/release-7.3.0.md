@@ -273,6 +273,8 @@ v7.3.0 引入了以下主要功能。[功能详情](#功能详情)中列出的�
     - 修复通过 BR 恢复 `AUTO_ID_CACHE=1` 的表时，会遇到 `duplicate entry` 报错的问题 [#44716](https://github.com/pingcap/tidb/issues/44716) @[tiancaiamao](https://github.com/tiancaiamao)
     - 修复执行 `TRUNCATE TABLE` 消耗的时间和 `ADMIN SHOW DDL JOBS` 显示的任务执行时间不一致的问题 [#44785](https://github.com/pingcap/tidb/issues/44785) @[tangenta](https://github.com/tangenta)
     - 修复读取元数据时间超过一个 DDL lease 导致升级 TiDB 卡住的问题 [#45176](https://github.com/pingcap/tidb/issues/45176) @[zimulala](https://github.com/zimulala)
+    - 修复 `SELECT CAST(n AS CHAR)` 语句中的 `n` 为负数时，查询结果出错的问题 [#44786](https://github.com/pingcap/tidb/issues/44786) @[xhebox](https://github.com/xhebox)
+    - 修复开启 `tidb_opt_agg_push_down` 时查询可能返回错误结果的问题 [#44795](https://github.com/pingcap/tidb/issues/44795) @[AilinKid](https://github.com/AilinKid)
 
 + TiKV <!-- Oreoxmt -->
 
@@ -306,6 +308,7 @@ v7.3.0 引入了以下主要功能。[功能详情](#功能详情)中列出的�
     + TiDB Lightning <!-- ran-huang -->
 
         - 修复 TiDB Lightning 导入完成后执行 checksum 可能遇到 SSL 错误的问题 [#45462](https://github.com/pingcap/tidb/issues/45462) @[D3Hunter](https://github.com/D3Hunter)
+        - 修复逻辑导入模式下，导入期间下游删除表可能导致 TiDB Lightning 元信息未及时更新的问题 [#44614](https://github.com/pingcap/tidb/issues/44614) @[dsdashun](https://github.com/dsdashun)
 
 ## 贡献者
 
