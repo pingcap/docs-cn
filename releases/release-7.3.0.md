@@ -35,7 +35,7 @@ v7.3.0 引入了以下主要功能。[功能详情](#功能详情)中列出的�
   </tr>
   <tr>
     <td><a href="https://docs.pingcap.com/zh/tidb/v7.3/tidb-resource-control#query-watch-语句说明">手动标记资源使用超出预期的查询</a>（实验特性）</td>
-    <td>查询超时可能发生在任一 TiKV 节点上，现在资源组可以通过全局并行执行时间来管理查询，并且允许降低查询的优先级或终止查询。该功能允许算子在资源组级别通过匹配 SQL 文本、SQL digest 或执行计划标记查询，并对这些查询进行处理，从而更好地控制非预期的大型查询可能对集群产生的影响。</td>
+    <td>查询耗费的时间有时会超出预期。通过资源组新增的 Runaway Queries 监控列表，你可以设置降低 Runaway Queries 的优先级或终止查询，从而更有效地管理查询。该功能允许算子在资源组级别通过匹配 SQL 文本、SQL digest 或执行计划标记查询，并对这些查询进行处理，从而更好地控制非预期的大型查询可能对集群产生的影响。</td>
   </tr>
   <tr>
     <td>SQL</td>
@@ -44,15 +44,13 @@ v7.3.0 引入了以下主要功能。[功能详情](#功能详情)中列出的�
   </tr>
   <tr>
     <td>数据库管理与可观测性</td>
-    <td><a href="https://docs.pingcap.com/zh/tidb/v7.3/sql-plan-replayer">显示统计信息收集的进度</a></td>
+    <td><a href="https://docs.pingcap.com/zh/tidb/v7.3/sql-statement-show-analyze-status">显示统计信息收集的进度</a></td>
     <td>支持使用 <code>SHOW ANALYZE STATUS</code> 语句或通过<code>mysql.analyze_jobs</code> 系统表查看 <code>ANALYZE</code> 任务的进度。</td>
   </tr>
 </tbody>
 </table>
 
 ## 功能详情
-
-### 可扩展性
 
 ### 性能
 
@@ -100,8 +98,6 @@ v7.3.0 引入了以下主要功能。[功能详情](#功能详情)中列出的�
 
     更多信息，请参考[用户文档](/tidb-resource-control.md#query-watch-语句说明)。
 
-### 高可用
-
 ### SQL 功能
 
 * List 和 List COLUMNS 分区表支持默认分区 [#20679](https://github.com/pingcap/tidb/issues/20679) @[mjonss](https://github.com/mjonss) @[bb7133](https://github.com/bb7133) **tw@qiancai** <!--1342-->
@@ -114,8 +110,6 @@ v7.3.0 引入了以下主要功能。[功能详情](#功能详情)中列出的�
 
     更多信息，请参考[用户文档](/partitioned-table.md#list-分区)。
 
-### 数据库管理
-
 ### 可观测性
 
 * 显示统计信息收集的进度 [#44033](https://github.com/pingcap/tidb/issues/44033) @[hawkingrei](https://github.com/hawkingrei) **tw@Oreoxmt** <!--1380-->
@@ -126,7 +120,7 @@ v7.3.0 引入了以下主要功能。[功能详情](#功能详情)中列出的�
 
 * Plan Replayer 支持导出历史统计信息 [#45038](https://github.com/pingcap/tidb/issues/45038) @[time-and-fate](https://github.com/time-and-fate) **tw@ran-huang** <!--1445-->
 
-    自 v7.3.0 起，通过新增的 [`dump with stats as of timestamp`](/sql-plan-replayer.md) 子句，Plan Replayer 能够导出指定 SQL 相关对象在指定时间点的统计信息。在执行计划问题的诊断过程中，通过对历史统计信息的准确抓取，能够更精确地分析出执行计划在问题发生的时间点是如何生成的，从而找到问题的根本原因，大大提升执行计划问题的诊断效率。
+    自 v7.3.0 起，通过新增的 [`dump with stats as of timestamp`](/sql-plan-replayer.md) 子句，你可以使用 Plan Replayer 导出指定 SQL 相关对象在指定时间点的统计信息。在执行计划问题的诊断过程中，通过对历史统计信息的准确抓取，能够更精确地分析出执行计划在问题发生的时间点是如何生成的，从而找到问题的根本原因，大大提升执行计划问题的诊断效率。
 
     更多信息，请参考[用户文档](/sql-plan-replayer.md)。
 
@@ -175,7 +169,7 @@ v7.3.0 引入了以下主要功能。[功能详情](#功能详情)中列出的�
 
     - 当 Kafka sink 使用 Avro 协议时，如果开启了 `force-replicate` 参数，创建 changefeed 会报错。
     - 由于 `delete-only-output-handle-key-columns` 和 `force-replicate` 参数不兼容，同时开启两个参数时，创建 changefeed 会报错。
-    - 当使用 `Open Protocol` 作为输出协议时， update 类型的事件将仅输出变更的列。
+    - 当使用 `Open Protocol` 作为输出协议时，`UPDATE` 类型的事件将仅输出变更的列。
 
 ### 系统变量
 
