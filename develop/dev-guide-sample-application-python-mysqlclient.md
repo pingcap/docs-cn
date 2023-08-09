@@ -87,7 +87,7 @@ with get_mysqlclient_connection(autocommit=True) as conn:
         cursor.execute("UPDATE player SET goods = goods + %s, coins = coins + %s WHERE id = %s", (-amount, price, sell_id))
 ```
 
-[更多更新数据参考文档](/develop/dev-guide-update-data.md)
+更多信息参考[更新数据](/develop/dev-guide-update-data.md)。
 
 ### 删除
 
