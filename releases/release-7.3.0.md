@@ -184,6 +184,8 @@ v7.3.0 引入了以下主要功能。[功能详情](#功能详情)中列出的�
 | 配置文件 | 配置项 | 修改类型 | 描述 |
 | -------- | -------- | -------- | -------- |
 | TiDB | [`enable-32bits-connection-id`](/tidb-configuration-file.md#enable-32bits-connection-id-从-v730-版本开始引入) | 新增 | 这个变量用于控制是否开启生成 32 位 connection ID 的功能。 |
+| TiDB | [`in-mem-slow-query-topn-num`](/tidb-configuration-file.md#in-mem-slow-query-topn-num-从-v730-版本开始引入) | 新增 | 这个变量用于控制缓存在内存中的最慢的 slow query 个数。 |
+| TiDB | [`in-mem-slow-query-recent-num`](/tidb-configuration-file.md#in-mem-slow-query-recent-num-从-v730-版本开始引入) | 新增 | 这个变量用于控制缓存在内存中的最近使用的 slow query 个数。 |
 | TiKV | [`coprocessor.region-bucket-size`](/tikv-configuration-file.md#region-bucket-size-从-v610-版本开始引入) | 修改 | 为降低客户端超时的可能性，默认值从 `96MiB` 修改为 `50MiB`。 |
 | TiKV | [`raft-engine.format-version`](/tikv-configuration-file.md#format-version-从-v630-版本开始引入) | 修改 | 当使用 Partitioned Raft KV (`storage.engine="partitioned-raft-kv"`) 时，会引入 Ribbon filter，因此将默认值从 `2` 修改为 `5`。 |
 | TiKV | [`raftdb.max-total-wal-size`](/tikv-configuration-file.md#max-total-wal-size-1) | 修改 | 当使用 Partitioned Raft KV (`storage.engine="partitioned-raft-kv"`) 时，TiKV 会跳过写 WAL，因此默认值从 `"4GB"` 修改为 `1`，即禁用 WAL。 |
@@ -226,7 +228,8 @@ v7.3.0 引入了以下主要功能。[功能详情](#功能详情)中列出的�
     - 在启用 [Global Kill](/tidb-configuration-file.md#enable-global-kill-从-v610-版本开始引入) 的情况下，可以通过 <kbd>Control+C</kbd> 终止当前会话 [#8854](https://github.com/pingcap/tidb/issues/8854) @[pingyu](https://github.com/pingyu)
     - 支持锁函数 `IS_FREE_LOCK()` 和 `IS_USED_LOCK()` [#44493](https://github.com/pingcap/tidb/issues/44493) @[dveeden](https://github.com/dveeden)
     - 优化与落盘相关的 chunk 读取的性能 [#45125](https://github.com/pingcap/tidb/issues/45125) @[YangKeao](https://github.com/YangKeao)
-
+    - 以 Optimizer Fix Controls 的方式改进了 Index Join 内表的高估问题 [#44855](https://github.com/pingcap/tidb/issues/44855) @[time-and-fate](https://github.com/time-and-fate)
+    
 + TiKV
 
     - 添加 `Max gap of safe-ts` 和 `Min safe ts region` 监控项以及 `tikv-ctl get_region_read_progress` 命令，用于更好地观测和诊断 resolved-ts 和 safe-ts 的状态 [#15082](https://github.com/tikv/tikv/issues/15082) @[ekexium](https://github.com/ekexium)
@@ -279,7 +282,8 @@ v7.3.0 引入了以下主要功能。[功能详情](#功能详情)中列出的�
     - 修复读取元数据时间超过一个 DDL lease 导致升级 TiDB 卡住的问题 [#45176](https://github.com/pingcap/tidb/issues/45176) @[zimulala](https://github.com/zimulala)
     - 修复 `SELECT CAST(n AS CHAR)` 语句中的 `n` 为负数时，查询结果出错的问题 [#44786](https://github.com/pingcap/tidb/issues/44786) @[xhebox](https://github.com/xhebox)
     - 修复开启 `tidb_opt_agg_push_down` 时查询可能返回错误结果的问题 [#44795](https://github.com/pingcap/tidb/issues/44795) @[AilinKid](https://github.com/AilinKid)
-
+    - 修复了带有 `current_date()` 的查询使用 Plan Cache 导致的结果正确性问题 [#45086](https://github.com/pingcap/tidb/issues/45086) @[qw4990](https://github.com/qw4990)
+    
 + TiKV
 
     - 修复在一些罕见的情况下，在 GC 的同时读取数据可能导致 TiKV panic 的问题 [#15109](https://github.com/tikv/tikv/issues/15109) @[MyonKeminta](https://github.com/MyonKeminta)
