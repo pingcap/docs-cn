@@ -5,6 +5,10 @@ summary: 介绍 TiDB 中非 Prepare 语句执行计划缓存的原理、使用�
 
 # 非 Prepare 语句执行计划缓存
 
+> **警告：**
+>
+> 非 Prepare 语句执行计划缓存 (Non-Prepared Plan Cache) 目前为实验特性，不建议在生产环境中使用。该功能可能会在未事先通知的情况下发生变化或删除。如果发现 bug，请在 GitHub 上提 [issue](https://github.com/pingcap/tidb/issues) 反馈。
+
 对于某些非 `PREPARE` 语句，TiDB 可以像 [`Prepare`/`Execute` 语句](/sql-prepared-plan-cache.md)一样支持执行计划缓存。这可以让这些语句跳过优化器阶段，以提升性能。
 
 ## 原理
@@ -19,8 +23,6 @@ Non-Prepared Plan Cache 为会话级别，并且与 [Prepared Plan Cache](/sql-p
 ## 使用方法
 
 目前，你可以通过 [`tidb_enable_non_prepared_plan_cache`](/system-variables.md#tidb_enable_non_prepared_plan_cache) 开启或关闭 Non-Prepared Plan Cache。同时，你还可以通过 [`tidb_session_plan_cache_size`](/system-variables.md#tidb_session_plan_cache_size-从-v710-版本开始引入) 来控制 Plan Cache 的大小。当缓存的计划数超过 `tidb_session_plan_cache_size` 时，TiDB 会使用 LRU (Least Recently Used) 策略进行逐出。
-
-`tidb_enable_non_prepared_plan_cache` 在 v7.1.0 之前版本中默认值为 `OFF`，即默认关闭。在 v7.1.0 及之后的版本中默认值为 `ON`，即默认开启。
 
 从 v7.1.0 开始，你可以通过变量 [`tidb_plan_cache_max_plan_size`](/system-variables.md#tidb_plan_cache_max_plan_size-从-v710-版本开始引入) 来设置可以缓存的计划的最大大小，默认为 2 MB。超过该值的执行计划将不会被缓存到 Plan Cache 中。
 
@@ -86,7 +88,7 @@ TiDB 对参数化后形式相同的查询，只能缓存一个计划。例如，
 - 不支持 `ORDER BY` 或者 `GROUP BY` 后直接带数字或者表达式的查询，如 `ORDER BY 1`、`GROUP BY a+1`。仅支持 `ORDER BY column_name` 和 `GROUP BY column_name`。
 - 不支持过滤条件中包含 `JSON`、`ENUM`、`SET` 或 `BIT` 类型的列的查询，例如 `SELECT * FROM t WHERE json_col = '{}'`。
 - 不支持过滤条件中出现 `NULL` 值的查询，例如 `SELECT * FROM t WHERE a is NULL`。
-- 不支持参数化后参数个数超过 200 个的查询，例如 `SELECT * FROM t WHERE a in (1, 2, 3, ... 201)`。
+- 默认不支持参数化后参数个数超过 200 个的查询，例如 `SELECT * FROM t WHERE a in (1, 2, 3, ... 201)`。从 v7.3.0 开始，你可以通过在 [`tidb_opt_fix_control`](/system-variables.md#tidb_opt_fix_control-从-v710-版本开始引入) 系统变量中设置 [`44823`](/optimizer-fix-controls.md#44823-从-v730-版本开始引入) 这个 Fix 来调整该限制。
 - 不支持访问分区表、虚拟列、临时表、视图、或内存表的查询，例如 `SELECT * FROM INFORMATION_SCHEMA.COLUMNS`，其中 `COLUMNS` 为 TiDB 内存表。
 - 不支持带有 Hint 或有 Binding 的查询。
 - 默认不支持 DML 语句或包含 `FOR UPDATE` 的查询语句。若要启用支持，你可以执行 `SET tidb_enable_non_prepared_plan_cache_for_dml = ON`。

@@ -33,13 +33,13 @@ TiDB Lightning 导入数据时，根据导入方式和启用特性等，需要�
    </tr>
    <tr>
       <td rowspan="4">必需</td>
-      <td>Logical Import Mode</td>
+      <td>逻辑导入模式</td>
       <td>information_schema.columns</td>
       <td>SELECT</td>
       <td></td>
    </tr>
    <tr>
-      <td  rowspan="3">Physical Import Mode</td>
+      <td  rowspan="3">物理导入模式</td>
       <td>mysql.tidb</td>
       <td>SELECT</td>
       <td></td>

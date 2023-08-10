@@ -163,6 +163,10 @@ DOUBLE PRECISION [(M,D)] [UNSIGNED] [ZEROFILL], REAL[(M,D)] [UNSIGNED] [ZEROFILL
 >
 > 与在 MySQL 中一样，`DOUBLE` 数据类型存储近似值。对于货币之类的精确值，建议使用 `DECIMAL` 类型。
 
+> **注意：**
+>
+> 当 TiDB 将用科学计数法表示的双精度浮点数转换到 `CHAR` 类型时，其结果在显示上与 MySQL 不一致，详情参见 [Cast 函数和操作符](/functions-and-operators/cast-functions-and-operators.md)。
+
 ### 存储空间
 
 每种类型对存储空间的需求如下表所示：

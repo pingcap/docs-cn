@@ -20,7 +20,7 @@ summary: 介绍 TiDB 与 ProxySQL 集成的方法。
 
 <div label="TiDB Cloud" value="tidb-cloud">
 
-请参考[使用 TiDB Cloud (Serverless Tier) 构建 TiDB 集群](/develop/dev-guide-build-cluster-in-cloud.md)。
+请参考[使用 TiDB Serverless 构建 TiDB 集群](/develop/dev-guide-build-cluster-in-cloud.md)。
 
 </div>
 

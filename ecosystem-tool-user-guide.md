@@ -28,7 +28,7 @@ TiDB 提供了 TiUP、TiDB Operator 和 TiUniManager 三种部署运维工具，
 
 #### TiUniManager
 
-[TiUniManager](/tiunimanager/tiunimanager-overview.md) 是一款以 TiDB 数据库为核心的数据库管理平台，帮助用户在私有部署 (on-premises) 或公有云环境中管理 TiDB 集群。
+[TiUniManager](/tiunimanager/tiunimanager-overview.md) 是一款以 TiDB 数据库为核心的数据库管理平台，帮助用户在本地部署环境或公有云环境中管理 TiDB 集群。
 
 TiUniManager 不仅提供对 TiDB 集群的全生命周期的可视化管理，也同时一站式提供 TiDB 数据库参数管理、数据库版本升级、克隆集群、主备集群切换、数据导入导出、数据同步、数据备份恢复服务，能有效提高 TiDB 集群运维效率，降低企业运维成本。
 
@@ -40,7 +40,7 @@ TiUniManager 不仅提供对 TiDB 集群的全生命周期的可视化管理，�
 
 ### 在 Kubernetes 上部署运维 TiDB - TiDB Operator
 
-[TiDB Operator](https://docs.pingcap.com/zh/tidb-in-kubernetes/stable) 是 Kubernetes 上的 TiDB 集群自动运维系统，提供包括部署、升级、扩缩容、备份恢复、配置变更的 TiDB 全生命周期管理。借助 TiDB Operator，TiDB 可以无缝运行在公有云或私有部署的 Kubernetes 集群上。
+[TiDB Operator](https://docs.pingcap.com/zh/tidb-in-kubernetes/stable) 是 Kubernetes 上的 TiDB 集群自动运维系统，提供包括部署、升级、扩缩容、备份恢复、配置变更的 TiDB 全生命周期管理。借助 TiDB Operator，TiDB 可以无缝运行在公有云或自托管的 Kubernetes 集群上。
 
 基本信息：
 
@@ -96,8 +96,8 @@ TiUniManager 不仅提供对 TiDB 集群的全生命周期的可视化管理，�
 
 使用 TiDB Lightning 导入数据到 TiDB 时，有以下模式：
 
-- `Physical Import Mode` 模式：TiDB Lightning 将数据解析为有序的键值对，并直接将其导入 TiKV。这种模式一般用于导入大量的数据（TB 级别）到新集群，但在数据导入过程中集群无法提供正常的服务。
-- `Logical Import Mode` 模式：以 TiDB/MySQL 作为后端，这种模式相比 `Physical Import Mode`，导入速度较慢，但是可以在线导入，同时也支持将数据导入到 MySQL。
+- [物理导入模式](/tidb-lightning/tidb-lightning-physical-import-mode.md)：TiDB Lightning 将数据解析为有序的键值对，并直接将其导入 TiKV。这种模式一般用于导入大量的数据（TB 级别）到新集群，但在数据导入过程中集群无法提供正常的服务。
+- [逻辑导入模式](/tidb-lightning/tidb-lightning-logical-import-mode.md)：以 TiDB/MySQL 作为后端，这种模式相比物理导入模式，导入速度较慢，但是可以在线导入，同时也支持将数据导入到 MySQL。
 
 基本信息：
 

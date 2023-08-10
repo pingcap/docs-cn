@@ -49,7 +49,10 @@ ADMIN SHOW DDL;
 - `JOB_ID`：每个 DDL 操作对应一个 DDL 任务，`JOB_ID` 全局唯一。
 - `DB_NAME`：执行 DDL 操作的数据库的名称。
 - `TABLE_NAME`：执行 DDL 操作的表的名称。
-- `JOB_TYPE`：DDL 操作的类型。
+- `JOB_TYPE`：DDL 任务的类型。常见的任务类型包括：
+    - `ingest`：通过 [`tidb_ddl_enable_fast_reorg`](/system-variables.md#tidb_ddl_enable_fast_reorg-从-v630-版本开始引入) 配置的加速索引回填的 ingest 任务。
+    - `txn`：基本的事务性回填。
+    - `txn-merge`：在回填完成时将临时索引与原始索引合并的事务性回填。
 - `SCHEMA_STATE`：DDL 所操作的 schema 对象的当前状态。如果 `JOB_TYPE` 是 `ADD INDEX`，则为索引的状态；如果是 `ADD COLUMN`，则为列的状态；如果是 `CREATE TABLE`，则为表的状态。常见的状态有以下几种：
     - `none`：表示不存在。一般 `DROP` 操作或者 `CREATE` 操作失败回滚后，会变为 `none` 状态。
     - `delete only`、`write only`、`delete reorganization`、`write reorganization`：这四种状态是中间状态，具体含义请参考 [TiDB 中在线 DDL 异步变更的原理](/ddl-introduction.md#tidb-在线-ddl-异步变更的原理)。由于中间状态转换很快，一般操作中看不到这几种状态，只有执行 `ADD INDEX` 操作时能看到处于 `write reorganization` 状态，表示正在添加索引数据。
@@ -64,7 +67,8 @@ ADMIN SHOW DDL;
     - `synced`：表示该操作已经执行成功，且所有 TiDB 实例都已经同步该状态。
     - `rollback done`：表示该操作执行失败，回滚完成。
     - `rollingback`：表示该操作执行失败，正在回滚。
-    - `cancelling`：表示正在取消该操作。这个状态只有在用 `ADMIN CANCEL DDL JOBS` 命令取消 DDL 任务时才会出现。
+    - `cancelling`：表示正在取消该操作。这个状态只有在用 [`ADMIN CANCEL DDL JOBS`](/sql-statements/sql-statement-admin-cancel-ddl.md) 命令取消 DDL 任务时才会出现。
+    - `paused`：表示 DDL 已被暂停运行。这个状态只有在用 [`ADMIN PAUSED DDL JOBS`](/sql-statements/sql-statement-admin-pause-ddl.md) 命令暂停 DDL 任务时才会出现。可以通过 [`ADMIN RESUME DDL JOBS`](/sql-statements/sql-statement-admin-resume-ddl.md) 命令进行恢复运行。
 
 示例如下：
 
@@ -190,3 +194,5 @@ ADMIN SHOW DDL JOB QUERIES LIMIT 3 OFFSET 4;  # Retrieve rows 5-7
 ## 另请参阅
 
 * [ADMIN CANCEL DDL](/sql-statements/sql-statement-admin-cancel-ddl.md)
+* [ADMIN PAUSE DDL](/sql-statements/sql-statement-admin-pause-ddl.md)
+* [ADMIN RESUME DDL](/sql-statements/sql-statement-admin-resume-ddl.md)

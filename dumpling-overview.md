@@ -6,7 +6,7 @@ aliases: ['/docs-cn/dev/dumpling-overview/','/docs-cn/dev/mydumper-overview/','/
 
 # 使用 Dumpling 导出数据
 
-使用数据导出工具 [Dumpling](https://github.com/pingcap/dumpling)，你可以把存储在 TiDB 或 MySQL 中的数据导出为 SQL 或 CSV 格式，用于逻辑全量备份。Dumpling 也支持将数据导出到 Amazon S3 中。
+使用数据导出工具 [Dumpling](https://github.com/pingcap/tidb/tree/master/dumpling)，你可以把存储在 TiDB 或 MySQL 中的数据导出为 SQL 或 CSV 格式，用于逻辑全量备份。Dumpling 也支持将数据导出到 Amazon S3 中。
 
 要快速了解 Dumpling 的基本功能，建议先观看下面的培训视频（时长 28 分钟）。注意本视频只作为功能介绍、学习参考，具体操作步骤和最新功能，请以文档内容为准。
 
@@ -38,9 +38,18 @@ TiDB 还提供了其他工具，你可以根据需要选择使用：
 - 支持导出到 Amazon S3 云盘。
 - 针对 TiDB 进行了更多优化：
     - 支持配置 TiDB 单条 SQL 内存限制。
-    - 针对 TiDB v4.0.0 及更新版本支持自动调整 TiDB GC 时间。
+    - 针对 TiDB v4.0.0 及更新版本，如果 Dumpling 能够直接连接到 PD，则支持自动调整 TiDB GC 时间。
     - 使用 TiDB 的隐藏列 `_tidb_rowid` 优化了单表内数据的并发导出性能。
     - 对于 TiDB 可以设置 [tidb_snapshot](/read-historical-data.md#操作流程) 的值指定备份数据的时间点，从而保证备份的一致性，而不是通过 `FLUSH TABLES WITH READ LOCK` 来保证备份一致性。
+
+> **注意：**
+>
+> 在以下情况下，Dumpling 无法连接到 PD：
+>
+> - TiDB 集群正在 Kubernetes 上运行（Dumpling 本身在 Kubernetes 环境中运行时除外）。
+> - TiDB 集群正在 TiDB Cloud 上运行。
+>
+> 在这种情况下，你需要手动[调整 TiDB GC 时间](#手动设置-tidb-gc-时间)，以避免导出失败。
 
 ## 从 TiDB/MySQL 导出数据
 
@@ -66,9 +75,9 @@ dumpling -u root -P 4000 -h 127.0.0.1 --filetype sql -t 8 -o /tmp/test -r 200000
 以上命令中：
 
 - `-h`、`-P`、`-u` 分别代表地址、端口、用户。如果需要密码验证，可以使用 `-p $YOUR_SECRET_PASSWORD` 将密码传给 Dumpling。
-- `-o`（或 `--output`）用于选择存储导出文件的目录，支持本地文件路径或[外部存储 URI 格式](/br/backup-and-restore-storages.md#uri-格式)。
+- `-o`（或 `--output`）用于选择存储导出文件的目录，支持本地文件的绝对路径或[外部存储 URI 格式](/br/backup-and-restore-storages.md#uri-格式)。
 - `-t` 用于指定导出的线程数。增加线程数会增加 Dumpling 并发度提高导出速度，但也会加大数据库内存消耗，因此不宜设置过大。一般不超过 64。
-- `-r` 用于指定单个文件的最大行数，指定该参数后 Dumpling 会开启表内并发加速导出，同时减少内存使用。当上游为 TiDB 且版本为 v3.0 或更新版本时，设置 `-r` 参数大于 0 表示使用 TiDB region 信息划分表内并发，具体取值不影响划分算法。对上游为 MySQL 且表的主键是 int 的场景，该参数也有表内并发效果。
+- `-r` 用于开启表内并发加速导出。默认值是 `0`，表示不开启。取值大于 0 表示开启，取值是 INT 类型。当数据源为 TiDB 时，设置 `-r` 参数大于 0 表示使用 TiDB region 信息划分区间，同时减少内存使用。具体取值不影响划分算法。对数据源为 MySQL 且表的主键是 INT 的场景，该参数也有表内并发效果。
 - `-F` 选项用于指定单个文件的最大大小，单位为 `MiB`，可接受类似 `5GiB` 或 `8KB` 的输入。如果你想使用 TiDB Lightning 将该文件加载到 TiDB 实例中，建议将 `-F` 选项的值保持在 256 MiB 或以下。
 
 > **注意：**
@@ -291,21 +300,24 @@ Dumpling 导出 TiDB 较大单表（超过 1 TB）时，可能会因为导出数
 + 调小 `--tidb-mem-quota-query` 参数到 `8589934592` (8GB) 或更小。可控制 TiDB 单条查询语句的内存使用。
 + 调整 `--params "tidb_distsql_scan_concurrency=5"` 参数，即设置导出时的 session 变量 [`tidb_distsql_scan_concurrency`](/system-variables.md#tidb_distsql_scan_concurrency) 从而减少 TiDB scan 操作的并发度。
 
-### 导出大规模数据时的 TiDB GC 设置
+### 手动设置 TiDB GC 时间
 
 如果导出的 TiDB 版本为 v4.0.0 或更新版本，并且 Dumpling 可以访问 TiDB 集群的 PD 地址，Dumpling 会自动配置延长 GC 时间且不会对原集群造成影响。
 
-其他情况下，假如导出的数据量非常大，可以提前调长 GC 时间，以避免因为导出过程中发生 GC 导致导出失败：
+但是，在以下场景中，Dumpling 无法自动调整 GC 时间：
 
-{{< copyable "sql" >}}
+- 数据量非常大（超过 1 TB）。
+- Dumpling 无法直接连接到 PD，例如 TiDB 集群运行在 TiDB Cloud 上，或者 TiDB 集群运行在 Kubernetes 上且与 Dumpling 分离。
+
+在这些场景中，你必须提前手动调长 GC 时间，以避免因为导出过程中发生 GC 导致导出失败。
+
+使用以下 SQL 语句手动调整 GC 时间：
 
 ```sql
 SET GLOBAL tidb_gc_life_time = '720h';
 ```
 
-操作结束之后，再恢复 GC 时间为默认值 `10m`：
-
-{{< copyable "sql" >}}
+在 Dumpling 退出后，无论导出是否成功，都必须将 GC 时间恢复为其原始值（默认值为 `10m`）。
 
 ```sql
 SET GLOBAL tidb_gc_life_time = '10m';
@@ -322,7 +334,7 @@ SET GLOBAL tidb_gc_life_time = '10m';
 | --case-sensitive | table-filter 是否大小写敏感 | false，大小写不敏感 |
 | -h 或 --host| 连接的数据库主机的地址 | "127.0.0.1" |
 | -t 或 --threads | 备份并发线程数| 4 |
-| -r 或 --rows | 将 table 划分成 row 行数据，一般针对大表操作并发生成多个文件。当上游为 TiDB 且版本为 v3.0 或更新版本时，设置 `-r` 参数大于 0 表示使用 TiDB region 信息划分表内并发，具体取值不影响划分算法。 |
+| -r 或 --rows | 用于开启表内并发加速导出。默认值是 `0`，表示不开启。取值大于 0 表示开启，取值是 INT 类型。当数据源为 TiDB 时，设置 `-r` 参数大于 0 表示使用 TiDB region 信息划分区间，同时减少内存使用。具体取值不影响划分算法。对数据源为 MySQL 且表的主键是 INT 的场景，该参数也有表内并发效果。 |
 | -L 或 --logfile | 日志输出地址，为空时会输出到控制台 | "" |
 | --loglevel | 日志级别 {debug,info,warn,error,dpanic,panic,fatal} | "info" |
 | --logfmt | 日志输出格式 {text,json} | "text" |
@@ -333,7 +345,7 @@ SET GLOBAL tidb_gc_life_time = '10m';
 | -s 或--statement-size | 控制 `INSERT` SQL 语句的大小，单位 bytes |
 | -F 或 --filesize | 将 table 数据划分出来的文件大小，需指明单位（如 `128B`, `64KiB`, `32MiB`, `1.5GiB`） |
 | --filetype| 导出文件类型（csv/sql） | "sql" |
-| -o 或 --output | 导出本地文件路径或[外部存储 URI 格式](/br/backup-and-restore-storages.md#uri-格式) | "./export-${time}" |
+| -o 或 --output | 导出本地文件的绝对路径或[外部存储 URI 格式](/br/backup-and-restore-storages.md#uri-格式) | "./export-${time}" |
 | -S 或 --sql | 根据指定的 sql 导出数据，该选项不支持并发导出 |
 | --consistency | flush: dump 前用 FTWRL <br/> snapshot: 通过 TSO 来指定 dump 某个快照时间点的 TiDB 数据 <br/> lock: 对需要 dump 的所有表执行 `lock tables read` 命令 <br/> none: 不加锁 dump，无法保证一致性 <br/> auto: 对 MySQL 使用 --consistency flush；对 TiDB 使用 --consistency snapshot | "auto" |
 | --snapshot | snapshot tso，只在 consistency=snapshot 下生效 |

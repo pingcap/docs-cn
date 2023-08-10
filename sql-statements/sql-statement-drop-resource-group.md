@@ -10,14 +10,15 @@ summary: TiDB 数据库中 DROP RESOURCE GROUP 的使用概况。
 ## 语法图
 
 ```ebnf+diagram
-DropResourceGroupStmt:
+DropResourceGroupStmt ::=
     "DROP" "RESOURCE" "GROUP" IfExists ResourceGroupName
 
 IfExists ::=
     ('IF' 'EXISTS')?
 
-ResourceGroupName:
+ResourceGroupName ::=
     Identifier
+|   "DEFAULT"
 ```
 
 > **注意：**
@@ -50,11 +51,11 @@ SELECT * FROM information_schema.resource_groups WHERE NAME ='rg1';
 ```
 
 ```sql
-+------+------------+----------+-----------+
-| NAME | RU_PER_SEC | PRIORITY | BURSTABLE |
-+------+------------+----------+-----------+
-| rg1  |       500  | MEDIUM   | YES       |
-+------+------------+----------+-----------+
++------+------------+----------+-----------+-------------+
+| NAME | RU_PER_SEC | PRIORITY | BURSTABLE | QUERY_LIMIT |
++------+------------+----------+-----------+-------------+
+| rg1  | 500        | MEDIUM   | YES       | NULL        |
++------+------------+----------+-----------+-------------+
 1 row in set (0.01 sec)
 ```
 

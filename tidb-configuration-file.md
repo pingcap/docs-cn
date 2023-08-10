@@ -46,8 +46,12 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
 
 + TiDB 用于存放临时数据的路径。如果一个功能需要使用 TiDB 节点的本地存储，TiDB 将把对应数据临时存放在这个目录下。
 + 在创建索引的过程中，如果开启了[创建索引加速](/system-variables.md#tidb_ddl_enable_fast_reorg-从-v630-版本开始引入)，那么新创建索引需要回填的数据会被先存放在 TiDB 本地临时存储路径，然后批量导入到 TiKV，从而提升索引创建速度。
-+ 在使用 [`LOAD DATA`](/sql-statements/sql-statement-load-data.md) 的物理导入模式时，排序后的数据会被先存放在 TiDB 本地临时存储路径，然后批量导入到 TiKV。
++ 在使用 [`IMPORT INTO`](/sql-statements/sql-statement-import-into.md) 导入数据时，排序后的数据会被先存放在 TiDB 本地临时存储路径，然后批量导入到 TiKV。
 + 默认值："/tmp/tidb"
+
+> **注意：**
+>
+> 如果目录不存在，TiDB 在启动时会自动创建该目录。如果目录创建失败，或者 TiDB 对该目录没有读写权限，[Fast Online DDL](/system-variables.md#tidb_ddl_enable_fast_reorg-从-v630-版本开始引入) 在运行时可能产生不可预知的问题。
 
 ### `oom-use-tmp-storage`
 
@@ -115,9 +119,13 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
 
 + 用来修改 TiDB 在以下情况下返回的版本号：
     - 当使用内置函数 `VERSION()` 时。
-    - 当与客户端初始连接，TiDB 返回带有服务端版本号的初始握手包时。具体可以查看 MySQL 初始握手包的[描述](https://dev.mysql.com/doc/internals/en/connection-phase-packets.html#packet-Protocol::Handshake)。
+    - 当与客户端初始连接，TiDB 返回带有服务端版本号的初始握手包时。具体可以查看 MySQL 初始握手包的[描述](https://dev.mysql.com/doc/dev/mysql-server/latest/page_protocol_connection_phase.html#sect_protocol_connection_phase_initial_handshake)。
 + 默认值：""
 + 默认情况下，TiDB 版本号格式为：`5.7.${mysql_latest_minor_version}-TiDB-${tidb_version}`。
+
+> **注意：**
+>
+> `server-version` 的值会被 TiDB 节点用于验证当前 TiDB 的版本。因此在进行 TiDB 集群升级前，请将 `server-version` 的值设置为空或者当前 TiDB 真实的版本值，避免出现非预期行为。
 
 ### `repair-mode`
 
@@ -192,7 +200,18 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
 
 + 用于开启 Global Kill（跨节点终止查询或连接）功能。
 + 默认值：true
-+ 当该配置项值为 `true` 时，`KILL` 语句和 `KILL TIDB` 语句均能跨节点终止查询或连接，无需担心错误地终止其他查询或连接。当你使用客户端连接到任何一个 TiDB 节点执行 `KILL` 语句或 `KILL TIDB` 语句时，该语句会被转发给对应的 TiDB 节点。当客户端和 TiDB 中间有代理时，`KILL` 语句或 `KILL TIDB` 语句也会被转发给对应的 TiDB 节点执行。目前暂时不支持在 `enable-global-kill` 为 `true` 时用 MySQL 命令行 <kbd>ctrl</kbd>+<kbd>c</kbd> 终止查询或连接。关于 `KILL` 语句的更多信息，请参考 [KILL [TIDB]](/sql-statements/sql-statement-kill.md)。
++ 当该配置项值为 `true` 时，`KILL` 语句和 `KILL TIDB` 语句均能跨节点终止查询或连接，无需担心错误地终止其他查询或连接。当你使用客户端连接到任何一个 TiDB 节点执行 `KILL` 语句或 `KILL TIDB` 语句时，该语句会被转发给对应的 TiDB 节点。当客户端和 TiDB 中间有代理时，`KILL` 语句或 `KILL TIDB` 语句也会被转发给对应的 TiDB 节点执行。关于 `KILL` 语句的更多信息，请参考 [`KILL [TIDB]`](/sql-statements/sql-statement-kill.md)。
++ TiDB 从 v7.3.0 开始支持在 `enable-global-kill = true` 和 [`enable-32bits-connection-id = true`](#enable-32bits-connection-id-从-v730-版本开始引入) 时使用 MySQL 命令行 <kbd>Control+C</kbd> 终止查询或连接。
+
+### `enable-32bits-connection-id` <span class="version-mark">从 v7.3.0 版本开始引入</span>
+
++ 用于控制是否开启生成 32 位 connection ID 的功能。
++ 默认值：`true`
++ 当该配置项值以及 [`enable-global-kill`](#enable-global-kill-从-v610-版本开始引入) 为 `true` 时，生成 32 位 connection ID，从而支持在 MySQL 命令行中通过 <kbd>Control+C</kbd> 终止查询或连接。
+
+> **注意：**
+>
+> 当集群中 TiDB 实例数量超过 2048 或者单个 TiDB 实例的同时连接数超过 1048576 后，由于 32 位 connection ID 空间不足，将自动升级为 64 位 connection ID。升级过程中业务以及已建立的连接不受影响，但后续的新建连接将无法通过 MySQL 命令行 <kbd>Control+C</kbd> 终止。
 
 ### `initialize-sql-file` <span class="version-mark">从 v6.6.0 版本开始引入</span>
 
@@ -283,9 +302,20 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
 
 ### `expensive-threshold`
 
+> **警告：**
+>
+> 自 v5.4.0 起，该配置项被废弃。请使用 [`tidb_expensive_query_time_threshold`](/system-variables.md#tidb_expensive_query_time_threshold) 系统变量进行设置。
+
 + 输出 `expensive` 操作的行数阈值。
 + 默认值：10000
 + 当查询的行数（包括中间结果，基于统计信息）大于这个值，该操作会被认为是 `expensive` 查询，并输出一个前缀带有 `[EXPENSIVE_QUERY]` 的日志。
+
+### `timeout` <span class="version-mark">从 v7.1.0 版本开始引入</span>
+
++ 用于设置 TiDB 写日志操作的超时时间。当磁盘故障导致日志无法写入时，该配置可以让 TiDB 进程崩溃而不是卡死。
++ 默认值：0，表示不设置超时
++ 单位：秒
++ 在某些用户场景中，TiDB 日志可能是保存在热插拔盘或网络挂载盘上，这些磁盘可能会永久丢失。在这种场景下，TiDB 无法自动恢复，写日志操作会永久阻塞。尽管 TiDB 进程看起来仍在运行，但不会响应任何请求。该配置项用于处理这样的场景。
 
 ## log.file
 
@@ -529,19 +559,11 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
 
 ### `stats-load-concurrency` <span class="version-mark">从 v5.4.0 版本开始引入</span>
 
-> **警告：**
->
-> 统计信息同步加载功能目前为实验性特性，不建议在生产环境中使用。
-
 + TiDB 统计信息同步加载功能可以并发处理的最大列数
 + 默认值：5
 + 目前的合法值范围：`[1, 128]`
 
 ### `stats-load-queue-size` <span class="version-mark">从 v5.4.0 版本开始引入</span>
-
-> **警告：**
->
-> 统计信息同步加载功能目前为实验性特性，不建议在生产环境中使用。
 
 + 用于设置 TiDB 统计信息同步加载功能最多可以缓存多少列的请求
 + 默认值：1000
@@ -558,20 +580,16 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
 
 ### `lite-init-stats` <span class="version-mark">从 v7.1.0 版本开始引入</span>
 
-> **警告：**
->
-> 该变量控制的功能目前为实验特性，不建议在生产环境中使用。该功能可能会在未事先通知的情况下发生变化或删除。如果发现 bug，请在 GitHub 上提 [issue](https://github.com/pingcap/tidb/issues) 反馈。
-
 + 用于控制 TiDB 启动时是否采用轻量级的统计信息初始化。
-+ 默认值：false
++ 默认值：在 v7.2.0 之前版本中为 `false`，在 v7.2.0 及之后的版本中为 `true`。
 + 当 `lite-init-stats` 为 `true` 时，统计信息初始化时列和索引的直方图、TopN、Count-Min Sketch 均不会加载到内存中。当 `lite-init-stats` 为 `false` 时，统计信息初始化时索引和主键的直方图、TopN、Count-Min Sketch 会被加载到内存中，非主键列的直方图、TopN、Count-Min Sketch 不会加载到内存中。当优化器需要某一索引或者列的直方图、TopN、Count-Min Sketch 时，这些统计信息会被同步或异步加载到内存中（由 [`tidb_stats_load_sync_wait`](/system-variables.md#tidb_stats_load_sync_wait-从-v540-版本开始引入) 控制）。
 + 将 `lite-init-stats` 设置为 true，可以加速统计信息初始化，避免加载不必要的统计信息，从而降低 TiDB 的内存使用。详情请参考[统计信息的加载](/statistics.md#统计信息的加载)。
 
 ### `force-init-stats` <span class="version-mark">从 v7.1.0 版本开始引入</span>
 
 + 用于控制 TiDB 启动时是否在统计信息初始化完成后再对外提供服务。
-+ 默认值：false
-+ 当 `force-init-stats` 为 `true` 时，TiDB 启动时会等到统计信息初始化完成后再对外提供服务。在表和分区数量较多的情况下，将 `force-init-stats` 设置为 `true` 可能会导致 TiDB 从启动到开始对外提供服务的时间变长。
++ 默认值：在 v7.2.0 之前版本中为 `false`，在 v7.2.0 及之后的版本中为 `true`。
++ 当 `force-init-stats` 为 `true` 时，TiDB 启动时会等到统计信息初始化完成后再对外提供服务。需要注意的是，在表和分区数量较多且 [`lite-init-stats`](/tidb-configuration-file.md#lite-init-stats-从-v710-版本开始引入) 为 `false` 的情况下，`force-init-stats` 为 `true` 可能会导致 TiDB 从启动到开始对外提供服务的时间变长。
 + 当 `force-init-stats` 为 `false` 时，TiDB 在统计信息初始化未完成时即可对外提供服务，但由于统计信息初始化未完成，优化器会用 pseudo 统计信息进行决策，可能会产生不合理的执行计划。
 
 ## opentracing
@@ -832,6 +850,14 @@ TiDB 服务状态相关配置。
 
 + 缓存在内存中的最近使用的 slow query 个数。
 + 默认值：500
+
+### `tidb_expensive_query_time_threshold`
+
++ 控制打印 expensive query 日志的阈值时间，默认值是 60 秒。expensive query 日志和慢日志的差别是，慢日志是在语句执行完后才打印，expensive query 日志可以把正在执行中且执行时间超过该阈值的语句及其相关信息打印出来。
++ 默认值：60
++ 范围：`[10, 2147483647]`
++ 单位：秒
++ 在 v5.4.0 之前，该功能通过配置项 `expensive-threshold` 进行设置。
 
 ### `tidb_record_plan_in_slow_log`
 

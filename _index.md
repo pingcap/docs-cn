@@ -43,7 +43,7 @@ hide_commit: true
 
 [使用 TiUP 部署 TiDB（推荐）](https://docs.pingcap.com/zh/tidb/dev/production-deployment-using-tiup)
 
-[在 Kubernetes 上部署 TiDB](https://docs.pingcap.com/zh/tidb/dev/tidb-in-kubernetes)
+[在 Kubernetes 上部署 TiDB](https://docs.pingcap.com/zh/tidb-in-kubernetes/stable)
 
 </LearningPath>
 
@@ -120,6 +120,8 @@ hide_commit: true
 </LearningPath>
 
 <LearningPath label="参考" icon="cloud-dev">
+
+[TiDB 路线图](https://docs.pingcap.com/zh/tidb/dev/tidb-roadmap)
 
 [TiDB 配置文件参数](https://docs.pingcap.com/zh/tidb/dev/tidb-configuration-file)
 

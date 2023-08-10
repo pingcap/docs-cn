@@ -38,7 +38,7 @@ summary: 了解如何持续地收集 TiDB、TiKV、PD 各个实例的性能数�
 
 你可以通过以下任一方式访问持续性能分析页面：
 
-- 登录后，在左侧导航栏中点击**高级调试** (Advanced Debugging) > **实例性能分析** (Profiling Instances) > **持续分析** (Continuous Profiling)。
+- 登录 TiDB Dashboard 后，在左侧导航栏中点击**高级调试** (Advanced Debugging) > **实例性能分析** (Profiling Instances) > **持续分析** (Continuous Profiling)。
 
   ![访问页面](/media/dashboard/dashboard-conprof-access.png)
 

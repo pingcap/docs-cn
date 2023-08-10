@@ -20,7 +20,7 @@ TiDB 版本：5.2.0
 - 新增 TiFlash I/O 限流功能，提升 TiFlash 读写稳定性。
 - 为 TiKV 引入新的流控机制代替之前的 RocksDB write stall 流控机制，提升 TiKV 流控稳定性。
 - 简化 Data Migration (DM) 工具运维，降低运维管理的成本。
-- TiCDC 支持 HTTP 协议 OpenAPI 对 TiCDC 任务进行管理，在 Kubernetes 以及 On-Premises 环境下提供更友好的运维方式。(实验特性)
+- TiCDC 支持 HTTP 协议 OpenAPI 对 TiCDC 任务进行管理，在 Kubernetes 以及本地部署环境下提供更友好的运维方式。(实验特性)
 
 ## 兼容性更改
 
@@ -161,7 +161,7 @@ TiDB 版本：5.2.0
 
 ### TiDB 数据共享订阅
 
-TiCDC 支持 HTTP 协议 OpenAPI 对 TiCDC 任务进行管理，在 Kubernetes 以及 On-Premises 环境下提供更友好的运维方式。(实验特性）
+TiCDC 支持 HTTP 协议 OpenAPI 对 TiCDC 任务进行管理，在 Kubernetes 以及本地部署环境下提供更友好的运维方式。(实验特性）
 
 [#2411](https://github.com/pingcap/tiflow/issues/2411)
 

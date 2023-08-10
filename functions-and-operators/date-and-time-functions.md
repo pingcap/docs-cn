@@ -7,6 +7,11 @@ aliases: ['/docs-cn/dev/functions-and-operators/date-and-time-functions/','/docs
 
 TiDB 支持使用 MySQL 5.7 中提供的所有[日期和时间函数](https://dev.mysql.com/doc/refman/5.7/en/date-and-time-functions.html)。
 
+> **注意：**
+>
+> - MySQL 常常会接受格式不正确的日期和时间值。例如，`'2020-01-01\n\t01:01:01'` 和 `'2020-01_01\n\t01:01'` 被视为有效的日期和时间值。
+> - TiDB 会尽量与 MySQL 的行为保持一致，但可能无法在所有情况下完全匹配。建议使用正确的格式化日期，TiDB 文档中未记录将如何处理格式不正确的值。
+
 ## 日期时间函数表
 
 | 函数名 | 功能描述 |
@@ -71,6 +76,25 @@ TiDB 支持使用 MySQL 5.7 中提供的所有[日期和时间函数](https://de
 | [`WEEKOFYEAR()`](https://dev.mysql.com/doc/refman/5.7/en/date-and-time-functions.html#function_weekofyear) | 返回参数在日历中对应的一年中的星期数 |
 | [`YEAR()`](https://dev.mysql.com/doc/refman/5.7/en/date-and-time-functions.html#function_year) | 返回参数对应的年数|
 | [`YEARWEEK()`](https://dev.mysql.com/doc/refman/5.7/en/date-and-time-functions.html#function_yearweek) | 返回年数和星期数 |
+
+## MySQL 兼容性
+
+TiDB 支持 `str_to_date()` 函数，但是无法解析所有的日期和时间值。此外，TiDB 不支持以下日期和时间格式化选项：
+
+| 格式 | 说明                                                                           |
+|--------|---------------------------------------------------------------------------------------|
+| "%a"   | 星期名的缩写（例如 Sun..Sat）                                                  |
+| "%D"   | 带英文后缀的月份日期（例如 0th，1st，2nd，3rd）                             |
+| "%U"   | 星期 (00..53)，星期日是每周的第一天；WEEK() mode 0               |
+| "%u"   | 星期 (00..53)，星期一是每周的第一天；WEEK() mode 1               |
+| "%V"   | 星期 (01..53)，星期日是每周的第一天；WEEK() mode 2；和 "%X" 一起使用 |
+| "%v"   | 星期 (01..53)，星期一是每周的第一天；WEEK() mode 3；和 "%x" 一起使用 |
+| "%W"   | 星期名（例如 Sunday..Saturday）                                                       |
+| "%w"   | 一周中的天名 (0=Sunday..6=Saturday)                                                |
+| "%X"   | 星期天是每周第一天的年份，数字类型，四位数字   |
+| "%x"   |  星期一是每周第一天的年份，数字类型，四位数字   |
+
+更多信息，参见 [GitHub Issue #30082](https://github.com/pingcap/tidb/issues/30082)。
 
 ## 相关系统变量
 

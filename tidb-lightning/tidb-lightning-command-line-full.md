@@ -20,7 +20,7 @@ summary: 使用命令行配置 TiDB Lightning。
 | -d *directory* | 读取数据的本地目录或[外部存储 URI](/br/backup-and-restore-storages.md#uri-格式) | `mydumper.data-source-dir` |
 | -L *level* | 日志的等级： debug、info、warn、error 或 fatal (默认为 info) | `lightning.log-level` |
 | -f *rule* | [表库过滤的规则](/table-filter.md) (可多次指定) | `mydumper.filter` |
-| --backend [*backend*](/tidb-lightning/tidb-lightning-overview.md) | 选择导入的模式：`local`为 [Physical Import Mode](/tidb-lightning/tidb-lightning-physical-import-mode.md)，`tidb`为 [Logical Import Mode](/tidb-lightning/tidb-lightning-logical-import-mode.md) | `tikv-importer.backend` |
+| --backend [*backend*](/tidb-lightning/tidb-lightning-overview.md) | 选择导入的模式：`local` 为[物理导入模式](/tidb-lightning/tidb-lightning-physical-import-mode.md)，`tidb` 为[逻辑导入模式](/tidb-lightning/tidb-lightning-logical-import-mode.md) | `tikv-importer.backend` |
 | --log-file *file* | 日志文件路径（默认值为 `/tmp/lightning.log.{timestamp}`，设置为 '-' 表示日志输出到终端） | `lightning.log-file` |
 | --status-addr *ip:port* | TiDB Lightning 服务器的监听地址 | `lightning.status-port` |
 | --importer *host:port* | TiKV Importer 的地址 | `tikv-importer.addr` |
@@ -33,7 +33,7 @@ summary: 使用命令行配置 TiDB Lightning。
 | --enable-checkpoint *bool* | 是否启用断点 (默认值为 true) | `checkpoint.enable` |
 | --analyze *level* | 导入后分析表信息，可选值为 required、optional（默认值）、off | `post-restore.analyze` |
 | --checksum *level* | 导入后比较校验和，可选值为 required（默认值）、optional、off | `post-restore.checksum` |
-| --check-requirements *bool* | 开始之前检查集群版本兼容性（默认值为 true）| `lightning.check-requirements` |
+| --check-requirements *bool* | 任务开始之前检查集群版本兼容性，以及运行过程中检查 TiKV 的可用存储空间是否大于 10%（默认值为 true）| `lightning.check-requirements` |
 | --ca *file* | TLS 连接的 CA 证书路径 | `security.ca-path` |
 | --cert *file* | TLS 连接的证书路径 | `security.cert-path` |
 | --key *file* | TLS 连接的私钥路径 | `security.key-path` |

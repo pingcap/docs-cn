@@ -228,7 +228,7 @@ CREATE TABLE t1 (
 
 ## 时间值的小数部分
 
-`DATETIME` 和 `TIMESTAMP` 值最多可以有 6 位小数，精确到毫秒。如果包含小数部分，值的格式为 `YYYY-MM-DD HH:MM:SS[.fraction]`，小数部分的范围为 `000000` 到`999999`。必须使用小数点分隔小数部分与其他部分。
+`DATETIME` 和 `TIMESTAMP` 值最多可以有 6 位小数，精确到微秒。如果包含小数部分，值的格式为 `YYYY-MM-DD HH:MM:SS[.fraction]`，小数部分的范围为 `000000` 到`999999`。必须使用小数点分隔小数部分与其他部分。
 
 + 使用 `type_name(fsp)` 可以定义精确到小数的列，其中 `type_name` 可以是`TIME`、`DATETIME` 或 `TIMESTAMP`。例如：
 

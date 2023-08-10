@@ -5,7 +5,7 @@ summary: 本文档介绍了 TiDB Lightning 并行导入的概念、使用场景�
 
 # TiDB Lightning 并行导入
 
-TiDB Lightning 的 [Physical Import Mode](/tidb-lightning/tidb-lightning-physical-import-mode.md) 从 v5.3.0 版本开始支持单表或多表数据的并行导入。通过支持同步启动多个实例，并行导入不同的单表或多表的不同数据，使 TiDB Lightning 具备水平扩展的能力，可大大降低导入大量数据所需的时间。
+TiDB Lightning 的[物理导入模式](/tidb-lightning/tidb-lightning-physical-import-mode.md) 从 v5.3.0 版本开始支持单表或多表数据的并行导入。通过支持同步启动多个实例，并行导入不同的单表或多表的不同数据，使 TiDB Lightning 具备水平扩展的能力，可大大降低导入大量数据所需的时间。
 
 在技术实现上，TiDB Lightning 通过在目标 TiDB 中记录各个实例以及每个导入表导入数据的元信息，协调不同实例的 Row ID 分配范围、全局 Checksum 的记录和 TiKV 及 PD 的配置变更与恢复。
 
@@ -18,13 +18,13 @@ TiDB Lightning 并行导入可以用于以下场景：
 >
 > - 并行导入只支持初始化 TiDB 的空表，不支持导入数据到已有业务写入的数据表，否则可能会导致数据不一致的情况。
 >
-> - 并行导入一般用于 Physical Import 模式，需要设置 `incremental-import = true`
+> - 并行导入一般用于物理导入模式，需要设置 `parallel-import = true`。
 >
-> - 并行导入一般用于 Physical Import 模式；虽然也能用于 Logical Import 模式，但是一般不会带来明显的性能提升。
+> - 并行导入一般用于物理导入模式；虽然也能用于逻辑导入模式，但是一般不会带来明显的性能提升。
 
 ## 使用说明
 
-使用 TiDB Lightning 并行导入需要设置 `incremental-import = true`。TiDB Lightning 在启动时，会在下游 TiDB 中注册元信息，并自动检测是否有其他实例向目标集群导入数据。如果有，则自动进入并行导入模式。
+使用 TiDB Lightning 并行导入需要设置 `parallel-import = true`。TiDB Lightning 在启动时，会在下游 TiDB 中注册元信息，并自动检测是否有其他实例向目标集群导入数据。如果有，则自动进入并行导入模式。
 
 但是在并行导入时，需要注意以下情况：
 
@@ -33,7 +33,7 @@ TiDB Lightning 并行导入可以用于以下场景：
 
 ### 解决主键或者唯一索引的冲突
 
-在使用 [Physical Import Mode](/tidb-lightning/tidb-lightning-physical-import-mode.md) 并行导入时，需要确保多个 TiDB Lightning 的数据源之间，以及它们和 TiDB 的目标表中的数据没有主键或者唯一索引的冲突，并且导入的目标表不能有其他应用进行数据写入。否则，TiDB Lightning 将无法保证导入结果的正确性，并且导入完成后相关的数据表将处于数据索引不一致的状态。
+在使用[物理导入模式](/tidb-lightning/tidb-lightning-physical-import-mode.md)并行导入时，需要确保多个 TiDB Lightning 的数据源之间，以及它们和 TiDB 的目标表中的数据没有主键或者唯一索引的冲突，并且导入的目标表不能有其他应用进行数据写入。否则，TiDB Lightning 将无法保证导入结果的正确性，并且导入完成后相关的数据表将处于数据索引不一致的状态。
 
 ### 导入性能优化
 
@@ -95,9 +95,9 @@ data-source-dir = "/path/to/source-dir"
 [tikv-importer]
 # 是否允许向已存在数据的表导入数据。默认值为 false。
 # 当使用并行导入模式时，由于多个 TiDB Lightning 实例同时导入一张表，因此此开关必须设置为 true。
-incremental-import = true
-# "local"：Physical Import Mode，默认使用。适用于 TB 级以上大数据量，但导入期间下游 TiDB 无法对外提供服务。
-# "tidb"：Logical Import Mode。TB 级以下数据量也可以采用，下游 TiDB 可正常提供服务。
+parallel-import = true
+# "local"：物理导入模式，默认使用。适用于 TB 级以上大数据量，但导入期间下游 TiDB 无法对外提供服务。
+# "tidb"：逻辑导入模式。TB 级以下数据量也可以采用，下游 TiDB 可正常提供服务。
 backend = "local"
 
 # 设置本地排序数据的路径
@@ -175,7 +175,7 @@ type = "sql"
 [tikv-importer]
 # 是否允许向已存在数据的表导入数据。默认值为 false。
 # 当使用并行导入模式时，由于多个 TiDB Lightning 实例同时导入一张表，因此此开关必须设置为 true。
-incremental-import = true
+parallel-import = true
 ```
 
 另外一个实例的配置修改为只导入 `05001 ~ 10000` 数据文件即可。

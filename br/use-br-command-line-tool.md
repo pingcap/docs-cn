@@ -47,6 +47,7 @@ br backup full --pd "${PD_IP}:2379" \
 * `--cert`：指定 PEM 格式的 SSL 证书文件路径。
 * `--key`：指定 PEM 格式的 SSL 证书密钥文件路径。
 * `--status-addr`：向 Prometheus 提供统计数据的监听地址。
+* `--concurrency`：备份或恢复阶段的任务并发数。
 
 ## 全量备份命令行
 

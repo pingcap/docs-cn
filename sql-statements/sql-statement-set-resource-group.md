@@ -12,11 +12,12 @@ summary: TiDB 数据库中 SET RESOURCE GROUP 的使用概况。
 **SetResourceGroupStmt:**
 
 ```ebnf+diagram
-SetResourceGroupStmt:
-   "SET" "RESOURCE" "GROUP" ResourceGroupName
+SetResourceGroupStmt ::=
+    "SET" "RESOURCE" "GROUP" ResourceGroupName
 
-ResourceGroupName:
-   Identifier
+ResourceGroupName ::=
+    Identifier
+|   "DEFAULT"
 ```
 
 ## 示例
@@ -63,7 +64,7 @@ SELECT CURRENT_RESOURCE_GROUP();
 执行 `SET RESOURCE GROUP` 设置当前会话使用默认资源组。
 
 ```sql
-SET RESOURCE GROUP ``;
+SET RESOURCE GROUP `default`;
 SELECT CURRENT_RESOURCE_GROUP();
 ```
 

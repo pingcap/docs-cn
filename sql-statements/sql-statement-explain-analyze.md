@@ -282,6 +282,18 @@ commit_txn: {prewrite:48.564544ms, wait_prewrite_binlog:47.821579, get_commit_ts
 - `write_keys`：事务中写入 `key` 的数量。
 - `write_byte`：事务中写入 `key-value` 的总字节数量，单位是 byte。
 
+### RU (Request Unit) 消耗
+
+[Request Unit (RU)](/tidb-resource-control.md#什么是-request-unit-ru) 是资源管控对系统资源统一抽象的计量单位。执行计划顶层算子的 `execution info` 会显示 SQL 整体的 RU 消耗。
+
+```
+RU:273.842670
+```
+
+> **注意：**
+>
+> 该值仅表示本次执行的实际 RU 消耗。由于受缓存的影响（比如[下推计算结果缓存](/coprocessor-cache.md)），同一个 SQL 在每次执行时消耗的 RU 可能会不同。
+
 ### 其它常见执行信息
 
 Coprocessor 算子通常包含 `cop_task` 和 `tikv_task` 两部分执行时间信息。前者是 TiDB 端记录的时间，从发出请求到接收回复；后者是 TiKV Coprocessor 算子自己记录的时间。两者相差较大可能说明在等待、gRPC 或网络上耗时较长。

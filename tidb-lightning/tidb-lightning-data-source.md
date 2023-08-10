@@ -88,12 +88,10 @@ trim-last-separator = false
 - 如果 `delimiter` 为空，所有字段都会被取消引用。
 - 常用值：
 
-    * `'"'` 使用双引号引用字段，和 [RFC 4180] 一致。
+    * `'"'` 使用双引号引用字段，和 [RFC 4180](https://tools.ietf.org/html/rfc4180) 一致。
     * `''` 不引用
 
 - 对应 LOAD DATA 语句中的 `FIELDS ENCLOSED BY` 项。
-
-参考 [RFC 4180](https://tools.ietf.org/html/rfc4180)。
 
 #### `terminator`
 

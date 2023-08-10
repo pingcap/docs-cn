@@ -38,15 +38,35 @@ TiCDC 复制功能只会将指定时间点之后的增量变更复制到下游�
 
 ## 执行 DDL
 
-双向复制的集群不支持同步 DDL。
+开启双向复制功能后，TiCDC 不会同步任何 DDL。用户需要自行在上下游集群中分别执行 DDL。
 
-如果需要执行 DDL，采取以下步骤：
+需要注意的是，某些 DDL 会造成表结构变更或者数据更改时序问题，从而导致数据同步后出现不一致的情况。因此，在开启双向同步功能后，只有下表中的 DDL 可以在业务不停止数据写入的情况下执行。
 
-1. 暂停所有集群中需要执行 DDL 的对应的表的写入操作。如果是添加非唯一索引，不用暂停写入。
+| 事件                        | 是否会引起 changefeed 错误 | 说明    |
+| ---------------------------- | ------ |--------------------------|
+| create database              | 是     | 用户手动在上下游都执行了 DDL 之后，错误可以自动恢复|
+| drop database                | 是     | 需要手动重启 changefeed，指定 `--overwrite-checkpoint-ts` 为该条 DDL 的commitTs 来恢复         |
+| create table                 | 是   | 用户手动在上下游都执行了 DDL 之后，错误可以自动恢复       |
+| drop table                   | 是   | 需要手动重启 changefeed，指定 `--overwrite-checkpoint-ts` 为该条 ddl 的commitTs 来恢复        |
+| alter table comment          | 否   |    |
+| rename index                 | 否   |    |
+| alter table index visibility | 否   |    |
+| add partition                | 是   | 用户手动在上下游都执行了 DDL 之后，错误可以自动恢复    |
+| drop partition               | 否   |    |
+| create view                  | 否   |    |
+| drop view                    | 否   |    |
+| alter column default value   | 否  |    |
+| reorganize partition         | 是   | 用户手动在上下游都执行了 DDL 之后，错误可以自动恢复    |
+| alter table ttl              | 否   |    |
+| alter table remove ttl       | 否   |    |
+| add **not unique** index     | 否   |    |
+| drop **not unique** index    | 否   |    |
+
+如果需要执行以上列表中不存在的 DDL，需要采取以下步骤：
+
+1. 暂停所有集群中需要执行 DDL 的对应的表的写入操作。
 2. 等待所有集群中对应表的所有写入已经同步到其他集群后，手动在每一个 TiDB 集群上单独执行所有的 DDL。
 3. 等待 DDL 完成之后，重新恢复写入。
-
-注意，添加非唯一索引 DDL 不会引起双向复制链路中断，因此不用停止对应表的写入。
 
 ## 停止双向复制
 

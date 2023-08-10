@@ -194,10 +194,10 @@ SELECT USER, JSON_EXTRACT(User_attributes, "$.resource_group") FROM mysql.user W
 1 row in set (0.02 sec)
 ```
 
-取消用户绑定的资源组，即将用户绑定的资源组设置为空。取消后，用户会绑定到 `default` 资源组。
+取消用户绑定的资源组，即将用户绑定到 `default` 资源组。
 
 ```sql
-ALTER USER 'newuser' RESOURCE GROUP ``;
+ALTER USER 'newuser' RESOURCE GROUP `default`;
 SELECT USER, JSON_EXTRACT(User_attributes, "$.resource_group") FROM mysql.user WHERE user = "newuser";
 ```
 
@@ -205,7 +205,7 @@ SELECT USER, JSON_EXTRACT(User_attributes, "$.resource_group") FROM mysql.user W
 +---------+---------------------------------------------------+
 | USER    | JSON_EXTRACT(User_attributes, "$.resource_group") |
 +---------+---------------------------------------------------+
-| newuser | ""                                                |
+| newuser | "default"                                         |
 +---------+---------------------------------------------------+
 1 row in set (0.02 sec)
 ```
