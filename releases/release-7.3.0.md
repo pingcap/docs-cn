@@ -217,7 +217,6 @@ v7.3.0 引入了以下主要功能。[功能详情](#功能详情)中列出的�
 
     - 统计信息的[快速分析](/system-variables.md#tidb_enable_fast_analyze)(实验特性)计划在 v7.5.0 中废弃。
     - 统计信息的[增量收集](/statistics.md#增量收集)(实验特性)计划在 v7.5.0 中废弃。
-    - 统计信息的 Feedback 机制计划在 v7.5.0 中废弃。系统表 `mysql.stats_feedback` 和 TiDB Dashboard 中的 `Significant Feedback` 页面将被删除。
 
 ## 改进提升
 
