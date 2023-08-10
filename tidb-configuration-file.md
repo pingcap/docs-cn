@@ -830,7 +830,7 @@ TiDB 服务状态相关配置。
 
 ### `in-mem-slow-query-recent-num` <span class="version-mark">从 v7.3.0 版本开始引入</span>
 
-+ 缓存在内存中的最近的 slow query 个数。
++ 缓存在内存中的最近使用的 slow query 个数。
 + 默认值：500
 
 ### `tidb_record_plan_in_slow_log`
