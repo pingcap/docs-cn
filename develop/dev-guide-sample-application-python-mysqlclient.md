@@ -25,6 +25,9 @@ summary: 介绍如何使用 TiDB 和 mysqlclient 构造一个 CRUD 应用程序�
 
 ## 重点代码片段
 
+本章节仅介绍重点代码片段，完整代码及运行方式见 [tidb-example-python](https://github.com/pingcap-inc/tidb-example-python/blob/main/README-zh.md) GitHub 仓库。
+
+
 ### 连接到 TiDB
 
 下面函数示例使用 mysqlclient 连接到 TiDB：
@@ -103,8 +106,10 @@ with get_mysqlclient_connection(autocommit=True) as conn:
 
 ## 注意事项
 
-- 完整代码及运行方式见 [tidb-example-python](https://github.com/pingcap-inc/tidb-example-python/blob/main/README-zh.md) GitHub 仓库。
 - 由于 Driver 封装程度较低，程序内存在大量的 SQL 语句。需要注意，mysqlclient 的查询对象为元组 (tuple) 形式，与使用 ORM 的数据对象形式不同。
 - 关于 mysqlclient 的更多使用方法，你可以参考 [mysqlclient 官方文档](https://mysqlclient.readthedocs.io/)。
+
+## 探索更多
+
 - 你可以继续阅读开发者文档，以获取更多关于 TiDB 的应用开发知识。例如：[插入数据](/develop/dev-guide-insert-data.md)，[更新数据](/develop/dev-guide-update-data.md)，[删除数据](/develop/dev-guide-delete-data.md)，[单表读取](/develop/dev-guide-get-data-from-single-table.md)，[事务](/develop/dev-guide-transaction-overview.md)，[SQL 性能优化](/develop/dev-guide-optimize-sql-overview.md)等。
 - 你还可以通过视频学习 [TiDB 开发者课程](https://cn.pingcap.com/courses-catalog/back-end-developer/?utm_source=docs-cn-dev-guide)并获得[认证](https://learn.pingcap.com/learner/certification-center)。
