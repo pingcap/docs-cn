@@ -8,13 +8,12 @@ aliases: ['/docs/dev/functions-and-operators/information-functions/','/docs/dev/
 
 TiDB supports most of the [information functions](https://dev.mysql.com/doc/refman/5.7/en/information-functions.html) available in MySQL 5.7.
 
-## Supported functions
+## TiDB supported MySQL functions
 
 | Name | Description |
 |:-----|:------------|
 | [`BENCHMARK()`](https://dev.mysql.com/doc/refman/5.7/en/information-functions.html#function_benchmark) | Execute an expression in a loop |
 | [`CONNECTION_ID()`](https://dev.mysql.com/doc/refman/5.7/en/information-functions.html#function_connection-id) | Return the connection ID (thread ID) for the connection  |
-| `CURRENT_RESOURCE_GROUP()`  | Return the name of the resource group that the current session is bound to |
 | [`CURRENT_USER()`, `CURRENT_USER`](https://dev.mysql.com/doc/refman/5.7/en/information-functions.html#function_current-user) | Return the authenticated user name and host name |
 | [`DATABASE()`](https://dev.mysql.com/doc/refman/5.7/en/information-functions.html#function_database) | Return the default (current) database name  |
 | [`FOUND_ROWS()`](https://dev.mysql.com/doc/refman/5.7/en/information-functions.html#function_found-rows) | For a `SELECT` with a `LIMIT` clause, the number of the rows that are returned if there is no `LIMIT` clause |
@@ -25,6 +24,14 @@ TiDB supports most of the [information functions](https://dev.mysql.com/doc/refm
 | [`SYSTEM_USER()`](https://dev.mysql.com/doc/refman/5.7/en/information-functions.html#function_system-user) | Synonym for `USER()`   |
 | [`USER()`](https://dev.mysql.com/doc/refman/5.7/en/information-functions.html#function_user) | Return the user name and host name provided by the client    |
 | [`VERSION()`](https://dev.mysql.com/doc/refman/5.7/en/information-functions.html#function_version) | Return a string that indicates the MySQL server version   |
+
+## TiDB specific functions
+
+The following function is only supported by TiDB, and there is no equivalent function in MySQL.
+
+| Name | Description |
+|:-----|:------------|
+| [`CURRENT_RESOURCE_GROUP()`](/functions-and-operators/tidb-functions.md#current_resource_group)  | Return the name of the resource group that the current session is bound to |
 
 ## Unsupported functions
 
