@@ -282,7 +282,7 @@ v7.3.0 引入了以下主要功能。[功能详情](#功能详情)中列出的�
     - 修复读取元数据时间超过一个 DDL lease 导致升级 TiDB 卡住的问题 [#45176](https://github.com/pingcap/tidb/issues/45176) @[zimulala](https://github.com/zimulala)
     - 修复 `SELECT CAST(n AS CHAR)` 语句中的 `n` 为负数时，查询结果出错的问题 [#44786](https://github.com/pingcap/tidb/issues/44786) @[xhebox](https://github.com/xhebox)
     - 修复开启 `tidb_opt_agg_push_down` 时查询可能返回错误结果的问题 [#44795](https://github.com/pingcap/tidb/issues/44795) @[AilinKid](https://github.com/AilinKid)
-    - 修复了带有 `current_date()` 的查询使用 Plan Cache 导致的结果正确性问题 [#45086](https://github.com/pingcap/tidb/issues/45086) @[qw4990](https://github.com/qw4990)
+    - 修复带有 `current_date()` 的查询使用 Plan Cache 导致结果错误的问题 [#45086](https://github.com/pingcap/tidb/issues/45086) @[qw4990](https://github.com/qw4990)
     
 + TiKV
 
