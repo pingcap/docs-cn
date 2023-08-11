@@ -184,8 +184,8 @@ v7.3.0 引入了以下主要功能。[功能详情](#功能详情)中列出的�
 | 配置文件 | 配置项 | 修改类型 | 描述 |
 | -------- | -------- | -------- | -------- |
 | TiDB | [`enable-32bits-connection-id`](/tidb-configuration-file.md#enable-32bits-connection-id-从-v730-版本开始引入) | 新增 | 这个变量用于控制是否开启生成 32 位 connection ID 的功能。 |
-| TiDB | [`in-mem-slow-query-topn-num`](/tidb-configuration-file.md#in-mem-slow-query-topn-num-从-v730-版本开始引入) | 新增 | 这个变量用于控制缓存在内存中的最慢的 slow query 个数。 |
 | TiDB | [`in-mem-slow-query-recent-num`](/tidb-configuration-file.md#in-mem-slow-query-recent-num-从-v730-版本开始引入) | 新增 | 这个变量用于控制缓存在内存中的最近使用的 slow query 个数。 |
+| TiDB | [`in-mem-slow-query-topn-num`](/tidb-configuration-file.md#in-mem-slow-query-topn-num-从-v730-版本开始引入) | 新增 | 这个变量用于控制缓存在内存中的最慢的 slow query 个数。 |
 | TiKV | [`coprocessor.region-bucket-size`](/tikv-configuration-file.md#region-bucket-size-从-v610-版本开始引入) | 修改 | 为降低客户端超时的可能性，默认值从 `96MiB` 修改为 `50MiB`。 |
 | TiKV | [`raft-engine.format-version`](/tikv-configuration-file.md#format-version-从-v630-版本开始引入) | 修改 | 当使用 Partitioned Raft KV (`storage.engine="partitioned-raft-kv"`) 时，会引入 Ribbon filter，因此将默认值从 `2` 修改为 `5`。 |
 | TiKV | [`raftdb.max-total-wal-size`](/tikv-configuration-file.md#max-total-wal-size-1) | 修改 | 当使用 Partitioned Raft KV (`storage.engine="partitioned-raft-kv"`) 时，TiKV 会跳过写 WAL，因此默认值从 `"4GB"` 修改为 `1`，即禁用 WAL。 |
