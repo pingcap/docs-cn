@@ -77,7 +77,7 @@ CREATE TABLE player (
 );
 ```
 
-`sqldriver.go` is the main body of the `sqldriver`. TiDB is highly compatible with the MySQL protocol, so you need to initialize a MySQL source instance `db, err := sql.Open("mysql", dsn)` to connect to TiDB. Then, you can use `dao.go` to read, edit, add, and delete data.
+`sqldriver.go` is the main body of the `sqldriver`. Compared with GORM, the go-sql-driver/mysql implementation might be not a best practice, because you need to write error handling logic, close `*sql.Rows` manually and cannot reuse code easily, which makes your code slightly redundant. TiDB is highly compatible with the MySQL protocol, so you need to initialize a MySQL source instance `db, err := sql.Open("mysql", dsn)` to connect to TiDB. Then, you can use `dao.go` to read, edit, add, and delete data.
 
 ```go
 package main

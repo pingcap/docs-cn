@@ -168,7 +168,7 @@ trade_example()
 
 Compared with using drivers directly, peewee provides an abstraction for the specific details of different databases when you create a database connection. In addition, peewee encapsulates some operations such as session management and CRUD of basic objects, which greatly simplifies the code.
 
-The `Player` class is a mapping of a table to attributes in the application. Each attribute of `Player` corresponds to a field in the `player` table. To provide SQLAlchemy with more information, the attribute is defined as `id = Column(String(36), primary_key=True)` to indicate the field type and its additional attributes. For example, `id = Column(String(36), primary_key=True)` indicates that the `id` attribute is `String` type, the corresponding field in database is `VARCHAR` type, the length is `36`, and it is a primary key.
+The `Player` class is a mapping of a table to attributes in the application. Each attribute of `Player` corresponds to a field in the `player` table. To provide peewee with more information, the attribute is defined as `id = CharField(max_length=36, primary_key=True)` to indicate the field type and its additional attributes. For example, `id = CharField(max_length=36, primary_key=True)` indicates that the `id` attribute is `String` type, the corresponding field in database is `VARCHAR` type, the length is `36`, and it is a primary key.
 
 For more information about how to use peewee, refer to [peewee documentation](http://docs.peewee-orm.com/en/latest/).
 

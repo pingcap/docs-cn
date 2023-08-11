@@ -1,14 +1,16 @@
 ---
-title: Build a Simple CRUD App with TiDB and Mybatis
-summary: Learn how to build a simple CRUD application with TiDB and Mybatis.
+title: Build a Simple CRUD App with TiDB and MyBatis
+summary: Learn how to build a simple CRUD application with TiDB and MyBatis.
 ---
 
 <!-- markdownlint-disable MD024 -->
 <!-- markdownlint-disable MD029 -->
 
-# Build a Simple CRUD App with TiDB and Mybatis
+# Build a Simple CRUD App with TiDB and MyBatis
 
-This document describes how to use TiDB and Mybatis to build a simple CRUD application.
+[MyBatis](https://mybatis.org/mybatis-3/index.html) is a popular open-source Java class persistence framework.
+
+This document describes how to use TiDB and MyBatis to build a simple CRUD application.
 
 > **Note:**
 >
@@ -42,9 +44,9 @@ See [Create a TiDB Serverless cluster](/develop/dev-guide-build-cluster-in-cloud
 git clone https://github.com/pingcap-inc/tidb-example-java.git
 ```
 
-Compared with [Mybatis](https://mybatis.org/mybatis-3/index.html), the JDBC implementation might be not a best practice, because you need to write error handling logic manually and cannot reuse code easily, which makes your code slightly redundant.
+Compared with [MyBatis](https://mybatis.org/mybatis-3/index.html), the JDBC implementation might be not a best practice, because you need to write error handling logic manually and cannot reuse code easily, which makes your code slightly redundant.
 
-Mybatis is a popular open-source Java class persistence framework. The following uses [MyBatis Generator](https://mybatis.org/generator/quickstart.html) as a Maven plugin to generate the persistence layer code.
+The following uses [MyBatis Generator](https://mybatis.org/generator/quickstart.html) as a Maven plugin to generate the persistence layer code.
 
 Change to the `plain-java-mybatis` directory:
 
@@ -84,9 +86,9 @@ The automatically generated files are:
 
 - `src/main/java/com/pingcap/model/Player.java`: The `Player` entity class.
 - `src/main/java/com/pingcap/model/PlayerMapper.java`: The interface of `PlayerMapper`.
-- `src/main/resources/mapper/PlayerMapper.xml`: The XML mapping of `Player`. Mybatis uses this configuration to automatically generate the implementation class of the `PlayerMapper` interface.
+- `src/main/resources/mapper/PlayerMapper.xml`: The XML mapping of `Player`. MyBatis uses this configuration to automatically generate the implementation class of the `PlayerMapper` interface.
 
-The strategy for generating these files is written in `mybatis-generator.xml`, which is the configuration file for [Mybatis Generator](https://mybatis.org/generator/quickstart.html). There are comments in the following configuration file to describe how to use it.
+The strategy for generating these files is written in `mybatis-generator.xml`, which is the configuration file for [MyBatis Generator](https://mybatis.org/generator/quickstart.html). There are comments in the following configuration file to describe how to use it.
 
 ```xml
 <!DOCTYPE generatorConfiguration PUBLIC
@@ -146,7 +148,7 @@ The strategy for generating these files is written in `mybatis-generator.xml`, w
             Java code mapper interface file will be generated at ${targetProject}/${targetPackage}
 
             javaClientGenerator.type (context.targetRuntime is MyBatis3):
-                This attribute indicated Mybatis how to implement interface.
+                This attribute indicated MyBatis how to implement interface.
                 It has ANNOTATEDMAPPER / MIXEDMAPPER / XMLMAPPER 3 selection to choice.
         -->
         <javaClientGenerator type="XMLMAPPER" targetPackage="com.pingcap.model" targetProject="src/main/java"/>
@@ -200,7 +202,7 @@ Once included in the Maven plugin, you can delete the old generated files and ma
 >
 > The property `configuration.overwrite` in `mybatis-generator.xml` only ensures that the generated Java code files are overwritten. But the XML mapping files are still written as appended. Therefore, it is recommended to delete the old file before Mybaits Generator generating a new one.
 
-`Player.java` is a data entity class file generated using Mybatis Generator, which is a mapping of database tables in the application. Each property of the `Player` class corresponds to a field in the `player` table.
+`Player.java` is a data entity class file generated using MyBatis Generator, which is a mapping of database tables in the application. Each property of the `Player` class corresponds to a field in the `player` table.
 
 ```java
 package com.pingcap.model;
@@ -248,7 +250,7 @@ public class Player {
 }
 ```
 
-`PlayerMapper.java` is a mapping interface file generated using Mybatis Generator. This file only defines the interface, and the implementation classes of interface are automatically generated using XML or annotations.
+`PlayerMapper.java` is a mapping interface file generated using MyBatis Generator. This file only defines the interface, and the implementation classes of interface are automatically generated using XML or annotations.
 
 ```java
 package com.pingcap.model;
@@ -270,7 +272,7 @@ public interface PlayerMapper {
 }
 ```
 
-`PlayerMapper.xml` is a mapping XML file generated using Mybatis Generator. Mybatis uses this to automatically generate the implementation class of the `PlayerMapper` interface.
+`PlayerMapper.xml` is a mapping XML file generated using MyBatis Generator. MyBatis uses this to automatically generate the implementation class of the `PlayerMapper` interface.
 
 ```xml
 <?xml version="1.0" encoding="UTF-8"?>
@@ -348,7 +350,7 @@ public interface PlayerMapper {
 </mapper>
 ```
 
-Since Mybatis Generator needs to generate the source code from the table definition, the table needs to be created first. To create the table, you can use `dbinit.sql`.
+Since MyBatis Generator needs to generate the source code from the table definition, the table needs to be created first. To create the table, you can use `dbinit.sql`.
 
 ```sql
 USE test;
@@ -362,7 +364,7 @@ CREATE TABLE player (
 );
 ```
 
-Split the interface `PlayerMapperEx` additionally to extend from `PlayerMapper` and write a matching `PlayerMapperEx.xml` file. Avoid changing `PlayerMapper.java` and `PlayerMapper.xml` directly. This is to avoid overwrite by Mybatis Generator.
+Split the interface `PlayerMapperEx` additionally to extend from `PlayerMapper` and write a matching `PlayerMapperEx.xml` file. Avoid changing `PlayerMapper.java` and `PlayerMapper.xml` directly. This is to avoid overwrite by MyBatis Generator.
 
 Define the added interface in `PlayerMapperEx.java`:
 
@@ -419,7 +421,7 @@ Define the mapping rules in `PlayerMapperEx.xml`:
 </mapper>
 ```
 
-`PlayerDAO.java` is a class used to manage data, in which `DAO` means [Data Access Object](https://en.wikipedia.org/wiki/Data_access_object). The class defines a set of data manipulation methods for writing data. In it, Mybatis encapsulates a large number of operations such as object mapping and CRUD of basic objects, which greatly simplifies the code.
+`PlayerDAO.java` is a class used to manage data, in which `DAO` means [Data Access Object](https://en.wikipedia.org/wiki/Data_access_object). The class defines a set of data manipulation methods for writing data. In it, MyBatis encapsulates a large number of operations such as object mapping and CRUD of basic objects, which greatly simplifies the code.
 
 ```java
 package com.pingcap.dao;
@@ -613,7 +615,7 @@ The following content introduces how to run the code step by step.
 
 ### Step 3.1 Table initialization
 
-When using Mybatis, you need to initialize the database tables manually. If you are using a local cluster, and MySQL client has been installed locally, you can run it directly in the `plain-java-mybatis` directory:
+When using MyBatis, you need to initialize the database tables manually. If you are using a local cluster, and MySQL client has been installed locally, you can run it directly in the `plain-java-mybatis` directory:
 
 ```shell
 make prepare
@@ -738,4 +740,4 @@ Or run the `make` command directly, which is a combination of `make prepare`, `m
 
 ## Step 4. Expected output
 
-[Mybatis Expected Output](https://github.com/pingcap-inc/tidb-example-java/blob/main/Expected-Output.md#plain-java-mybatis)
+[MyBatis Expected Output](https://github.com/pingcap-inc/tidb-example-java/blob/main/Expected-Output.md#plain-java-mybatis)

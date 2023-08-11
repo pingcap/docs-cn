@@ -8,6 +8,8 @@ summary: Learn how to build a simple CRUD application with TiDB and Hibernate.
 
 # Build a Simple CRUD App with TiDB and Hibernate
 
+[Hibernate](https://hibernate.org/) is a popular open-source Java ORM, and it supports TiDB dialect starting from `v6.0.0.Beta2`, which fits TiDB features well.
+
 This document describes how to use TiDB and Hibernate to build a simple CRUD application.
 
 > **Note:**
@@ -44,7 +46,7 @@ git clone https://github.com/pingcap-inc/tidb-example-java.git
 
 Compared with Hibernate, the JDBC implementation might be not a best practice, because you need to write error handling logic manually and cannot reuse code easily, which makes your code slightly redundant.
 
-Hibernate is a popular open-source Java ORM, and it supports TiDB dialect starting from `v6.0.0.Beta2`, which fits TiDB features well. The following instructions take `v6.0.0.Beta2` as an example.
+The following instructions take `v6.0.0.Beta2` as an example.
 
 Change to the `plain-java-hibernate` directory:
 
@@ -335,11 +337,7 @@ public class HibernateExample
 
 The following content introduces how to run the code step by step.
 
-### Step 3.1 Table initialization
-
-No need to initialize tables manually.
-
-### Step 3.2 Modify parameters for TiDB Cloud
+### Step 3.1 Modify parameters for TiDB Cloud
 
 If you are using a TiDB Serverless cluster, modify the `hibernate.connection.url`, `hibernate.connection.username`, `hibernate.connection.password` in `hibernate.cfg.xml`.
 
@@ -403,20 +401,20 @@ In this case, you can modify the parameters as follows:
 </hibernate-configuration>
 ```
 
-### Step 3.3 Run
+### Step 3.2 Run
 
 To run the code, you can run `make build` and `make run` respectively:
 
 ```shell
 make build # this command executes `mvn clean package`
-make run # this command executes `java -jar target/plain-java-jdbc-0.0.1-jar-with-dependencies.jar`
+make run # this command executes `java -jar target/plain-java-hibernate-0.0.1-jar-with-dependencies.jar`
 ```
 
 Or you can use the native commands:
 
 ```shell
 mvn clean package
-java -jar target/plain-java-jdbc-0.0.1-jar-with-dependencies.jar
+java -jar target/plain-java-hibernate-0.0.1-jar-with-dependencies.jar
 ```
 
 Or run the `make` command directly, which is a combination of `make build` and `make run`.
