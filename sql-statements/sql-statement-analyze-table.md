@@ -123,7 +123,7 @@ EXPLAIN SELECT * FROM t1 WHERE c1 = 3;
 2 rows in set (0.00 sec)
 ```
 
-统计信息已经正确的更新和加载。
+统计信息已经正确地更新和加载。
 
 ## MySQL 兼容性
 
