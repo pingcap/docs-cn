@@ -27,7 +27,6 @@ summary: 介绍如何使用 TiDB 和 mysqlclient 构造一个 CRUD 应用程序�
 
 本章节仅介绍重点代码片段，完整代码及运行方式见 [tidb-example-python](https://github.com/pingcap-inc/tidb-example-python/blob/main/README-zh.md) GitHub 仓库。
 
-
 ### 连接到 TiDB
 
 下面函数示例使用 mysqlclient 连接到 TiDB：
