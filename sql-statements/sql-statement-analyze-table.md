@@ -94,10 +94,12 @@ EXPLAIN SELECT * FROM t1 WHERE c1 = 3;
 2 rows in set (0.00 sec)
 ```
 
+当前的统计信息状态为 `pseudo`，表示统计信息不准确。
+
 {{< copyable "sql" >}}
 
 ```sql
-analyze table t1;
+ANALYZE table t1;
 ```
 
 ```
