@@ -100,7 +100,7 @@ EXPLAIN SELECT * FROM t1 WHERE c1 = 3;
 {{< copyable "sql" >}}
 
 ```sql
-ANALYZE table t1;
+ANALYZE TABLE t1;
 ```
 
 ```
