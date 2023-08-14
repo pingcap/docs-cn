@@ -850,6 +850,16 @@ Configuration items related to read isolation.
 - Unit: Milliseconds
 - Before v6.1.0, this configuration is set by `slow-threshold`.
 
+### `in-mem-slow-query-topn-num` <span class="version-mark">New in v7.3.0</span>
+
++ The configuration controls the number of slowest queries that are cached in memory.
++ Default value: 30
+
+### `in-mem-slow-query-recent-num` <span class="version-mark">New in v7.3.0</span>
+
++ The configuration controls the number of recently used slow queries that are cached in memory.
++ Default value: 500
+
 ### `tidb_expensive_query_time_threshold`
 
 - This configuration is used to set the threshold value that determines whether to print expensive query logs. The difference between expensive query logs and slow query logs is:
