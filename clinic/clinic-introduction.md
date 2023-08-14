@@ -61,7 +61,7 @@ First, Diag gets cluster topology information from the deployment tool TiUP (tiu
 
 > **Note:**
 >
-> - Clinic Server is free from July 15, 2022 to July 14, 2023. You will be notified through email before July 14, 2023 if the service starts charging fee afterwards.
+> - Clinic Server is free from July 15, 2022 to July 14, 2024. You will be notified through email before July 14, 2024 if the service starts charging fee afterwards.
 > - If you want to adjust the usage limitations, [get support](/support.md) from PingCAP.
 
 | Service Type| Limitation |
