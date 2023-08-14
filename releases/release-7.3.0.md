@@ -124,8 +124,6 @@ v7.3.0 引入了以下主要功能。[功能详情](#功能详情)中列出的�
 
     更多信息，请参考[用户文档](/sql-plan-replayer.md)。
 
-### 安全
-
 ### 数据迁移
 
 * TiDB Lightning 引入新版冲突数据检测和处理机制 [#41629](https://github.com/pingcap/tidb/issues/41629) @[lance6716](https://github.com/lance6716)
@@ -229,7 +227,7 @@ v7.3.0 引入了以下主要功能。[功能详情](#功能详情)中列出的�
     - 支持锁函数 `IS_FREE_LOCK()` 和 `IS_USED_LOCK()` [#44493](https://github.com/pingcap/tidb/issues/44493) @[dveeden](https://github.com/dveeden)
     - 优化与落盘相关的 chunk 读取的性能 [#45125](https://github.com/pingcap/tidb/issues/45125) @[YangKeao](https://github.com/YangKeao)
     - 以 Optimizer Fix Controls 的方式改进了 Index Join 内表的高估问题 [#44855](https://github.com/pingcap/tidb/issues/44855) @[time-and-fate](https://github.com/time-and-fate)
-    
+
 + TiKV
 
     - 添加 `Max gap of safe-ts` 和 `Min safe ts region` 监控项以及 `tikv-ctl get_region_read_progress` 命令，用于更好地观测和诊断 resolved-ts 和 safe-ts 的状态 [#15082](https://github.com/tikv/tikv/issues/15082) @[ekexium](https://github.com/ekexium)
@@ -283,7 +281,7 @@ v7.3.0 引入了以下主要功能。[功能详情](#功能详情)中列出的�
     - 修复 `SELECT CAST(n AS CHAR)` 语句中的 `n` 为负数时，查询结果出错的问题 [#44786](https://github.com/pingcap/tidb/issues/44786) @[xhebox](https://github.com/xhebox)
     - 修复开启 `tidb_opt_agg_push_down` 时查询可能返回错误结果的问题 [#44795](https://github.com/pingcap/tidb/issues/44795) @[AilinKid](https://github.com/AilinKid)
     - 修复带有 `current_date()` 的查询使用 Plan Cache 导致结果错误的问题 [#45086](https://github.com/pingcap/tidb/issues/45086) @[qw4990](https://github.com/qw4990)
-    
+
 + TiKV
 
     - 修复在一些罕见的情况下，在 GC 的同时读取数据可能导致 TiKV panic 的问题 [#15109](https://github.com/tikv/tikv/issues/15109) @[MyonKeminta](https://github.com/MyonKeminta)
