@@ -4,7 +4,7 @@
 - [Docs Home](https://docs.pingcap.com/)
 - About TiDB
   - [TiDB Introduction](/overview.md)
-  - [TiDB 7.2 Release Notes](/releases/release-7.2.0.md)
+  - [TiDB 7.3 Release Notes](/releases/release-7.3.0.md)
   - [Features](/basic-features.md)
   - [MySQL Compatibility](/mysql-compatibility.md)
   - [TiDB Limitations](/tidb-limitations.md)
@@ -990,6 +990,8 @@
   - [Release Timeline](/releases/release-timeline.md)
   - [TiDB Versioning](/releases/versioning.md)
   - [TiDB Installation Packages](/binary-package.md)
+  - v7.3
+    - [7.3.0-DMR](/releases/release-7.3.0.md)
   - v7.2
     - [7.2.0-DMR](/releases/release-7.2.0.md)
   - v7.1
