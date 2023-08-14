@@ -841,6 +841,16 @@ TiDB 服务状态相关配置。
 + 当查询大于这个值，就会当做是一个慢查询，输出到慢查询日志。
 + 在 v6.1.0 之前，该功能通过配置项 `slow-threshold` 进行设置。
 
+### `in-mem-slow-query-topn-num` <span class="version-mark">从 v7.3.0 版本开始引入</span>
+
++ 缓存在内存中的最慢的 slow query 个数。
++ 默认值：30
+
+### `in-mem-slow-query-recent-num` <span class="version-mark">从 v7.3.0 版本开始引入</span>
+
++ 缓存在内存中的最近使用的 slow query 个数。
++ 默认值：500
+
 ### `tidb_expensive_query_time_threshold`
 
 + 控制打印 expensive query 日志的阈值时间，默认值是 60 秒。expensive query 日志和慢日志的差别是，慢日志是在语句执行完后才打印，expensive query 日志可以把正在执行中且执行时间超过该阈值的语句及其相关信息打印出来。
