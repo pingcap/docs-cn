@@ -5116,7 +5116,7 @@ For details, see [Identify Slow Queries](/identify-slow-queries.md).
 <CustomContent platform="tidb">
 
 > **Note:**
-> 
+>
 > - If TiDB nodes do not have [zone attributes](/schedule-replicas-by-topology-labels.md#optional-configure-labels-for-tidb) configured and `tiflash_replica_read` is not set to `all_replicas`, TiFlash ignores the replica selection strategy. Instead, it uses all TiFlash replicas for queries and returns the `The variable tiflash_replica_read is ignored.` warning.
 > - If TiFlash nodes do not have [zone attributes](/schedule-replicas-by-topology-labels.md#configure-labels-for-tikv-and-tiflash) configured, they are treated as nodes not belonging to any zone.
 
@@ -5258,7 +5258,7 @@ Internally, the TiDB parser transforms the `SET TRANSACTION ISOLATION LEVEL [REA
 
 - Scope: NONE
 - Default value: `5.7.25-TiDB-`(tidb version)
-- This variable returns the MySQL version, followed by the TiDB version. For example '5.7.25-TiDB-v7.2.0'.
+- This variable returns the MySQL version, followed by the TiDB version. For example '5.7.25-TiDB-v7.3.0'.
 
 ### version_comment
 
