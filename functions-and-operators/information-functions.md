@@ -30,7 +30,7 @@ TiDB 支持使用 MySQL 5.7 中提供的大部分[信息函数](https://dev.mysq
 
 | 函数名 | 功能描述                                 |
 | ------ | ---------------------------------------- |
-| `CURRENT_RESOURCE_GROUP()` | 返回当前连接的资源组名 |
+| [`CURRENT_RESOURCE_GROUP()`](/functions-and-operators/tidb-functions.md#current_resource_group) | 返回当前连接的资源组名 |
 
 ## TiDB 不支持的信息函数
 
