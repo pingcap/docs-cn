@@ -256,7 +256,7 @@ TiCDC 涉及的 Java SQL Type 及其 Code 映射关系如下表所示。
 
 ## Binary 和 Blob 类型
 
-TiCDC 在编码[二进制类型](/data-type-string.md#binary-type)的数据为 Canal-JSON 格式时，会按照以下规则将每个字节转换为其字符表示形式：
+TiCDC 在编码[二进制类型](/data-type-string.md#binary-类型)的数据为 Canal-JSON 格式时，会按照以下规则将每个字节转换为其字符表示形式：
 
 - 可打印字符：使用 ISO/IEC 8859-1 字符编码表示。
 - 不可打印字符和某些在 HTML 中具有特殊含义的字符：使用其 UTF-8 转义序列表示。
