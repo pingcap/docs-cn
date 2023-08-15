@@ -166,7 +166,7 @@ TiDB 中的 `ALTER TABLE` 语法主要存在以下限制：
 
 - 使用 `ALTER TABLE` 语句修改一个表的多个模式对象（如列、索引）时：
     - 不允许在多个更改中指定同一个模式对象。
-    - TiDB 根据**执行前**的表结构检查合法性。例如 `ALTER TABLE t ADD COLUMN c1 INT, ADD COLUMN c2 INT AFTER c1;` 会报错，因为表结构中不存在名字为 `c1` 的表。
+    - TiDB 根据**执行前**的表结构检查合法性。例如 `ALTER TABLE t ADD COLUMN c1 INT, ADD COLUMN c2 INT AFTER c1;` 会报错，因为表结构中不存在名字为 `c1` 的列。
     - TiDB 的执行顺序是从左往右逐个执行更改，该行为在个别场景下和 MySQL 不兼容。
 - 不支持主键列上 [Reorg-Data](/sql-statements/sql-statement-modify-column.md#reorg-data-change) 类型的变更。
 - 不支持分区表上的列类型变更。
