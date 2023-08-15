@@ -1,5 +1,5 @@
 ---
-title: 如何用 mysqlclient 连接到 TiDB
+title: 使用 mysqlclient 连接到 TiDB
 summary: 给出 TiDB 和 mysqlclient 的连接步骤和简单示例代码片段。
 ---
 
