@@ -32,6 +32,7 @@ git clone https://github.com/pingcap-inc/tidb-example-python.git
 ### 安装依赖 (包括 mysqlclient)
 
 ```bash
+cd tidb-example-python;
 pip install -r requirement.txt
 ```
 
