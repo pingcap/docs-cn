@@ -61,7 +61,8 @@ pip install -r requirement.txt
     cp .env.example .env
     ```
 
-5. 复制并粘贴对应连接字符串至 `.env` 中。示例结果如下。注意替换 {} 中的占位符为 **Connect** 窗口中获得的值，并且根据你的运行环境使用正确的证书路径（[参考文档](https://docs.pingcap.com/tidbcloud/secure-connections-to-serverless-clusters#root-certificate-default-path)）。
+5. 复制并粘贴对应连接字符串至 `.env` 中。示例结果如下。注意替换 {} 中的占位符为 **Connect** 窗口中获得的值。TiDB Serverless 要求使用 secure connection，由于 mysqlclient 的
+ssl_mode 默认为 `PREFERRED`，所以不需要你手动指定 `CA_PATH`，设置为空即可，但如果你有特殊原因需要手动指定 `CA_PATH`，可以参考 [文档](https://docs.pingcap.com/tidbcloud/secure-connections-to-serverless-clusters#root-certificate-default-path) 获取不同操作系统下证书的路径。
 
     ```python
     TIDB_HOST='{gateway-region}.aws.tidbcloud.com'
@@ -69,7 +70,7 @@ pip install -r requirement.txt
     TIDB_USER='{prefix}.root'
     TIDB_PASSWORD='{password}'
     TIDB_DB_NAME='test'
-    CA_PATH='{ssl_ca}'
+    CA_PATH=''
     ```
 
 6. 保存文件。
