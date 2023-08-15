@@ -15,26 +15,25 @@ TiDB是一个 MySQL 兼容的数据库。[mysqlclient](https://pypi.org/project/
 ## 前置需求
 
 - 推荐 [Python **3.10**](https://www.python.org/downloads/) 及以上版本
-- mysqlclient **2.1.1** 版本。在运行本教程的过程中会进行安装和配置。注意：安装和使用mysqlclient 要求本地已有 MySQL Server.
-- [Git](https://git-scm.com/downloads).
+- mysqlclient **2.1.1** 版本。在运行本教程的过程中会进行安装和配置，遇到安装问题请参考 [mysqlclient 官方文档](https://github.com/PyMySQL/mysqlclient#install)
+- [Git](https://git-scm.com/downloads)
 - TiDB 集群。如果你还没有 TiDB 集群：
-    - 推荐参考[创建 TiDB Serverless 集群](/develop/dev-guide-build-cluster-in-cloud.md#第-1-步创建-tidb-serverless-集群)文档创建你自己的 TiDB Cloud 集群。
-    - 备选参考[部署本地测试 TiDB 集群](/quick-start-with-tidb.md#部署本地测试集群)或[部署正式 TiDB 集群](/production-deployment-using-tiup.md)文档创建本地集群。
-
+    - 推荐参考[创建 TiDB Serverless 集群](/develop/dev-guide-build-cluster-in-cloud.md#第-1-步创建-tidb-serverless-集群)文档创建你自己的 TiDB Cloud 集群
+    - 备选参考[部署本地测试 TiDB 集群](/quick-start-with-tidb.md#部署本地测试集群)或[部署正式 TiDB 集群](/production-deployment-using-tiup.md)文档创建本地集群
 
 ## 运行代码并连接到 TiDB
 
 ### 克隆示例代码仓库到本地
 
-    ```bash
-    git clone https://github.com/pingcap-inc/tidb-example-python.git
-    ```
+```bash
+git clone https://github.com/pingcap-inc/tidb-example-python.git
+```
 
-### 安装依赖 (包括mysqlclient)
+### 安装依赖 (包括 mysqlclient)
 
-    ```bash
-    pip install -r requirement.txt
-    ```
+```bash
+pip install -r requirement.txt
+```
 
 ### 配置连接信息
 
@@ -50,10 +49,10 @@ TiDB是一个 MySQL 兼容的数据库。[mysqlclient](https://pypi.org/project/
     - Endpoint 为 **Public**
     - Connect With 选择 **General**
     - Operating System 为你的运行环境。
-        > 如果你在 Windows Subsystem for Linux (WSL) 中运行，请切换为对应的 Linux 发行版。
+      > 如果你在 Windows Subsystem for Linux (WSL) 中运行，请切换为对应的 Linux 发行版。
 
 3. 点击 **Generate Password** 生成密码。
-    > 如果你之前已经生成过密码，可以直接使用原密码或点击 **Reset Password** 重新生成密码。
+   > 如果你之前已经生成过密码，可以直接使用原密码或点击 **Reset Password** 重新生成密码。
 
 4. 运行下面的命令把 `.env.example` 复制一份，并改名为 `.env`
 
@@ -61,7 +60,7 @@ TiDB是一个 MySQL 兼容的数据库。[mysqlclient](https://pypi.org/project/
     cp .env.example .env
     ```
 
-5. 复制并粘贴对应连接字符串至 `.env` 中。示例结果如下。注意替换 {} 中的占位符为 **Connect** 窗口中获得的值，并且根据你的运行环境使用正确的证书路径。
+5. 复制并粘贴对应连接字符串至 `.env` 中。示例结果如下。注意替换 {} 中的占位符为 **Connect** 窗口中获得的值，并且根据你的运行环境使用正确的证书路径（[参考文档](https://docs.pingcap.com/tidbcloud/secure-connections-to-serverless-clusters#root-certificate-default-path)）。
 
     ```python
     TIDB_HOST='{gateway-region}.aws.tidbcloud.com'
@@ -69,11 +68,10 @@ TiDB是一个 MySQL 兼容的数据库。[mysqlclient](https://pypi.org/project/
     TIDB_USER='{prefix}.root'
     TIDB_PASSWORD='{password}'
     TIDB_DB_NAME='test'
-    CA_PATH='/etc/ssl/cert.pem'
+    CA_PATH='{ssl_ca}'
     ```
 
 6. 保存文件。
-
 
 </div>
 
@@ -104,7 +102,6 @@ TiDB是一个 MySQL 兼容的数据库。[mysqlclient](https://pypi.org/project/
 </div>
 
 <div label="自建 TiDB">
-
 
 1. 运行下面的命令把 `.env.example` 复制一份，并改名为 `.env`
 
@@ -138,8 +135,8 @@ TiDB是一个 MySQL 兼容的数据库。[mysqlclient](https://pypi.org/project/
 
 2. [点击查看示例输出](https://github.com/pingcap-inc/tidb-example-python/blob/main/Expected-Output.md#mysqlclient)，并进行比较。结果近似即为连接成功。
 
-
 ## 重点代码片段
+
 你可继续参考以下关键代码片段，完成自己的应用开发。
 
 ### 连接到 TiDB
@@ -155,25 +152,27 @@ def get_mysqlclient_connection(autocommit:bool=True) -> MySQLdb.Connection:
         "autocommit": autocommit
     }
 
-    if ${is_serverless}:
+    if ${ca_path}:
         db_conf["ssl_mode"] = "VERIFY_IDENTITY"
         db_conf["ssl"] = {"ca": ${ca_path}}
 
     return MySQLdb.connect(**db_conf)
 ```
 
-### 增加
+在使用该函数时，你需要将 `${tidb_host}`、`${tidb_port}`、`${tidb_user}`、`${tidb_password}`、`${tidb_db_name}` 等替换为你的 TiDB 集群的实际值。
+
+### 插入数据
 
 ```python
 with get_mysqlclient_connection(autocommit=True) as conn:
     with conn.cursor() as cur:
-        player = ("test", 1, 1)
+        player = ("1", 1, 1)
         cursor.execute("INSERT INTO player (id, coins, goods) VALUES (%s, %s, %s)", player)
 ```
 
-[更多插入数据参考文档](/develop/dev-guide-insert-data.md)
+更多信息参考[插入数据](/develop/dev-guide-insert-data.md)。
 
-### 查询
+### 查询数据
 
 ```python
 with get_mysqlclient_connection(autocommit=True) as conn:
@@ -182,29 +181,29 @@ with get_mysqlclient_connection(autocommit=True) as conn:
         print(cur.fetchone()[0])
 ```
 
-[更多查询数据参考文档](/develop/dev-guide-get-data-from-single-table.md)
+更多信息参考[查询数据](/develop/dev-guide-get-data-from-single-table.md)。
 
-### 更新
+### 更新数据
 
 ```python
 with get_mysqlclient_connection(autocommit=True) as conn:
     with conn.cursor() as cur:
-        sell_id, amount, price="2", 10, 500
-        cursor.execute("UPDATE player SET goods = goods + %s, coins = coins + %s WHERE id = %s", (-amount, price, sell_id))
+        player_id, amount, price="1", 10, 500
+        cursor.execute("UPDATE player SET goods = goods + %s, coins = coins + %s WHERE id = %s", (-amount, price, player_id))
 ```
 
-[更多更新数据参考文档](/develop/dev-guide-update-data.md)
+更多信息参考[更新数据](/develop/dev-guide-update-data.md)。
 
-### 删除
+### 删除数据
 
 ```python
 with get_mysqlclient_connection(autocommit=True) as conn:
     with conn.cursor() as cur:
-        player_id = "test"
+        player_id = "1"
         cursor.execute("DELETE FROM player WHERE id = %s", (player_id,))
 ```
 
-[更多删除数据参考文档](/develop/dev-guide-delete-data.md)
+更多信息参考[删除数据](/develop/dev-guide-delete-data.md)。
 
 ## 其他值得注意的事
 
@@ -215,4 +214,4 @@ with get_mysqlclient_connection(autocommit=True) as conn:
 ## 下一步
 
 - 你可以继续阅读开发者文档，以获取更多关于 TiDB 的开发者知识。例如：[插入数据](/develop/dev-guide-insert-data.md)，[更新数据](/develop/dev-guide-update-data.md)，[删除数据](/develop/dev-guide-delete-data.md)，[单表读取](/develop/dev-guide-get-data-from-single-table.md)，[事务](/develop/dev-guide-transaction-overview.md)，[SQL 性能优化](/develop/dev-guide-optimize-sql-overview.md)等。
-- 如果你更倾向于参与课程进行学习，我们也提供专业的 [TiDB 开发者课程](https://cn.pingcap.com/courses-catalog/back-end-developer/?utm_source=docs-cn-dev-guide)支持，并在考试后提供相应的[资格认证](https://learn.pingcap.com/learner/certification-center)。
+- 如果你更倾向于参与课程进行学习，我们也提供专业的 [TiDB 开发者课程](https://cn.pingcap.com/courses-catalog/back-end-developer/?utm_source=docs-cn-dev-guide) 支持，并在考试后提供相应的[资格认证](https://learn.pingcap.com/learner/certification-center)。
