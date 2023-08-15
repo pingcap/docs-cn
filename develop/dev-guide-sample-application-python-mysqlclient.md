@@ -1,6 +1,6 @@
 ---
 title: 使用 mysqlclient 连接到 TiDB
-summary: 给出 TiDB 和 mysqlclient 的连接步骤和简单示例代码片段。
+summary: 本文描述了 TiDB 和 mysqlclient 的连接步骤，并给出了简单示例代码片段。
 ---
 
 <!-- markdownlint-disable MD024 -->
