@@ -193,10 +193,9 @@ store-write-bwlimit = "128MiB"
 [tidb]
 # 使用更小的并发以降低计算 checksum 和执行 analyze 对事务延迟的影响。
 distsql-scan-concurrency = 3
-
-
 ```
-如果你的 TiDB 生产集群上有延迟敏感型业务，并且并发较小，**不建议**使用 TiDB Lightning 物理导入模式（local backend）导入数据到该集群，因为这可能会给在线业务带来较大影响。
+
+如果你的 TiDB 生产集群上有延迟敏感型业务，并且并发较小，**不建议**使用 TiDB Lightning 物理导入模式 (local backend) 导入数据到该集群，因为可能会影响在线业务。
 
 ## 性能调优
 
