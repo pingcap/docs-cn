@@ -63,10 +63,10 @@ summary: 了解 TiDB 系统表。
 
 * `GLOBAL_VARIABLES` 全局系统变量表
 * `tidb` 用于记录 TiDB 的一些全局信息
-  * `bootstrapped` 用于记录 TiDB 是否已经 bootstrap 完成
-  * `tidb_server_version` 用于记录 TiDB 在 bootstrap 时候的版本信息
-  * `system_tz` 用于记录 TiDB 的系统时区
-  * `new_collation_enabled` 用于记录 TiDB 是否开启了 [新排序规则框架](/character-set-and-collation.md#新框架下的排序规则支持)
+    * `bootstrapped` 用于记录 TiDB 是否已经 bootstrap 完成
+    * `tidb_server_version` 用于记录 TiDB 在 bootstrap 时候的版本信息
+    * `system_tz` 用于记录 TiDB 的系统时区
+    * `new_collation_enabled` 用于记录 TiDB 是否开启了 [新排序规则框架](/character-set-and-collation.md#新框架下的排序规则支持)
 * `expr_pushdown_blacklist` 表达式下推的黑名单
 * `opt_rule_blacklist` 逻辑优化规则的黑名单
 * `table_cache_meta` 缓存表的信息
