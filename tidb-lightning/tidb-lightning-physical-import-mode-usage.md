@@ -7,6 +7,8 @@ summary: 了解如何使用 TiDB Lightning 的物理导入模式。
 
 本文档介绍如何编写[物理导入模式](/tidb-lightning/tidb-lightning-physical-import-mode.md) 的配置文件，如何进行性能调优、使用磁盘资源配额等内容。
 
+使用物理导入模式有一些限制，使用前请务必阅读[必要条件及限制](/tidb-lightning/tidb-lightning-physical-import-mode.md#必要条件及限制)。
+
 ## 配置及使用
 
 可以通过以下配置文件使用物理导入模式执行数据导入：
