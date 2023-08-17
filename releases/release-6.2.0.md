@@ -22,7 +22,7 @@ TiDB 版本：6.2.0-DMR
 - 引入新的 DDL 并行执行框架，减少 DDL 阻塞，大幅提升执行效率。
 - TiKV 支持[自适应调整 CPU 使用率](/tikv-configuration-file.md#后台限流)，确保数据库稳定高效运行。
 - 支持 [point-in-time recovery (PITR)](/br/backup-and-restore-overview.md)，允许恢复备份集群的历史任意时间点的快照。
-- TiDB Lightning 使用 Physical Import Mode [导入时限制调度范围从集群降低到表级别](/tidb-lightning/tidb-lightning-physical-import-mode-usage.md#导入时限制调度范围从集群降低到表级别)。
+- TiDB Lightning 使用物理导入模式[导入时限制调度范围从集群降低到表级别](/tidb-lightning/tidb-lightning-physical-import-mode-usage.md#导入时暂停-pd-调度的范围)。
 - Backup & Restore (BR) 支持[恢复用户和权限数据](/br/br-snapshot-guide.md#恢复-mysql-数据库下的表)，备份恢复体验更平滑。
 - TiCDC 支持[过滤指定类型的 DDL 事件](/ticdc/ticdc-filter.md#event-filter-事件过滤器-从-v620-版本开始引入)，解锁更多数据同步场景。
 - 事务中支持 [`SAVEPOINT` 机制](/sql-statements/sql-statement-savepoint.md)，可以灵活地控制事务内的回退节点。
@@ -115,7 +115,7 @@ TiDB 版本：6.2.0-DMR
 
     v6.2.0 默认以新版本存储格式保存数据。从更低版本升级到 6.2.0 版本后，不支持原地降级，否则更低版本的 TiFlash 无法识别新版本的数据格式。
 
-    建议用户在升级前阅读 [TiFlash v6.2.0 升级帮助](/tiflash-620-upgrade-guide.md)。
+    建议用户在升级前阅读 [TiFlash 升级帮助](/tiflash-upgrade-guide.md)。
 
     [用户文档](/tiflash/tiflash-configuration.md#配置文件-tiflashtoml) [#3594](https://github.com/pingcap/tiflash/issues/3594) @[JaySon-Huang](https://github.com/JaySon-Huang) @[lidezhu](https://github.com/lidezhu) @[jiaqizho](https://github.com/jiaqizho)
 
@@ -204,7 +204,7 @@ TiDB 版本：6.2.0-DMR
 
     [用户文档](/tidb-lightning/tidb-lightning-physical-import-mode-usage.md#磁盘资源配额-从-v620-版本开始引入) [#446](https://github.com/pingcap/tidb-lightning/issues/446) @[buchuitoudegou](https://github.com/buchuitoudegou)
 
-* TiDB Lightning 支持使用 Physical Import Mode 导入数据到生产集群
+* TiDB Lightning 支持使用物理导入模式导入数据到生产集群
 
     TiDB Lightning 原有的物理导入模式 (backend='local') 对目标集群影响较大，例如导入过程将停止 PD 调度等，因此仅适用于目标集群初次导入数据。
 
@@ -212,15 +212,15 @@ TiDB 版本：6.2.0-DMR
 
     此特性无需手动配置，目标 TiDB 集群版本在 v6.1.0 及以上且 TiDB Lightning 在 v6.2.0 及以上时自动生效。
 
-    [用户文档](/tidb-lightning/tidb-lightning-physical-import-mode-usage.md#导入时限制调度范围从集群降低到表级别) [#35148](https://github.com/pingcap/tidb/issues/35148) @[gozssky](https://github.com/gozssky)
+    [用户文档](/tidb-lightning/tidb-lightning-physical-import-mode-usage.md#导入时暂停-pd-调度的范围) [#35148](https://github.com/pingcap/tidb/issues/35148) @[gozssky](https://github.com/gozssky)
 
-* 调整 [TiDB Lightning 在线文档](/tidb-lightning/tidb-lightning-overview.md)，使其目录结构更加合理和清晰。同时对文档中关于“后端模式”的描述进行了修改，使用 Physical Import Mode 替代原有 local backend，使用 Logical Import  Mode 替代原有 tidb backend ，以降低新用户的理解难度。
+* 调整 [TiDB Lightning 在线文档](/tidb-lightning/tidb-lightning-overview.md)，使其目录结构更加合理和清晰。同时对文档中关于“后端模式”的描述进行了修改，使用物理导入模式替代原有 `local` 后端模式，使用逻辑导入模式替代原有 `tidb` 后端模式，以降低新用户的理解难度。
 
 ### 数据共享与订阅
 
 * 支持 RawKV 跨集群复制（实验特性）
 
-    支持订阅 RawKV 的数据变更，并通过新的 TiKV-CDC 组件将变更实时同步到下游  TiKV 集群，从而实现 RawKV 的跨集群复制能力。
+    支持订阅 RawKV 的数据变更，并通过新的 TiKV-CDC 组件将变更实时同步到下游 TiKV 集群，从而实现 RawKV 的跨集群复制能力。
 
     [用户文档](/tikv-configuration-file.md#api-version-从-v610-版本开始引入) [#11965](https://github.com/tikv/tikv/issues/11965) @[pingyu](https://github.com/pingyu)
 
@@ -262,6 +262,9 @@ TiDB 版本：6.2.0-DMR
 | TiKV | [quota.background-write-bandwidth](/tikv-configuration-file.md#background-write-bandwidth-从-v620-版本开始引入) | 新增 | 限制后台事务写入的带宽（暂未生效）。|
 | TiKV | [quota.background-read-bandwidth](/tikv-configuration-file.md#background-read-bandwidth-从-v620-版本开始引入) | 新增 | 限制后台事务读取数据和 Coprocessor 读取数据的带宽（暂未生效）。 |
 | TiKV | [quota.enable-auto-tune](/tikv-configuration-file.md#enable-auto-tune-从-v620-版本开始引入) | 新增 | 是否支持 quota 动态调整。如果打开该配置项，TiKV 会根据 TiKV 实例的负载情况动态调整对后台请求的限制 quota。 |
+| TiKV | [rocksdb.defaultcf.format-version](/tikv-configuration-file.md#format-version-从-v620-版本开始引入) | 新增 | 设置 SST 文件的格式版本。 |
+| TiKV | [rocksdb.lockcf.format-version](/tikv-configuration-file.md#format-version-从-v620-版本开始引入) | 新增 | 设置 SST 文件的格式版本。 |
+| TiKV | [rocksdb.writecf.format-version](/tikv-configuration-file.md#format-version-从-v620-版本开始引入) | 新增 | 设置 SST 文件的格式版本。 |
 | TiKV | rocksdb.enable-pipelined-commit | 删除 | 该配置不再生效。 |
 | TiKV | gc-merge-rewrite | 删除 | 该配置不再生效。 |
 | TiKV | [log-backup.enable](/tikv-configuration-file.md#enable-从-v620-版本开始引入) | 新增 | TiKV 是否开启日志备份功能。 |
@@ -286,7 +289,7 @@ TiDB 版本：6.2.0-DMR
 
 ### 其他
 
-- TiFlash 的存储格式 (`format_version`) 不能直接从 4 降级到 3，详情请参考 [TiFlash v6.2.0 升级帮助](/tiflash-620-upgrade-guide.md)。
+- TiFlash 的存储格式 (`format_version`) 不能直接从 4 降级到 3，详情请参考 [TiFlash 升级帮助](/tiflash-upgrade-guide.md)。
 - 在 v6.2.0 以及后续版本，**强烈建议**保留 `dt_enable_logical_split` 的默认值 `false`，不要将其修改为 `true`。具体请参考已知问题 [#5576](https://github.com/pingcap/tiflash/issues/5576)。
 - 如果备份集群包含 TiFlash，执行 PITR 后恢复集群的数据不包含 TiFlash 副本，需要手动恢复 TiFlash 副本；执行 exchange partition DDL 会导致 PITR restore 出错；上游数据库使用 TiDB Lightning Physical 方式导入的数据，无法作为数据日志备份下来，数据导入后需要执行一次全量备份。关于 PITR 功能使用的其他事项，请参考 [PITR 使用限制](/br/backup-and-restore-overview.md#使用须知)。
 - 从 v6.2.0 开始，BR 支持通过手动指定参数 `--with-sys-table=true` 来恢复 mysql schema 下的表。

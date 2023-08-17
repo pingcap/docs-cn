@@ -8,6 +8,10 @@ title: TiDB 6.3.0 Release Notes
 
 TiDB 版本：6.3.0-DMR
 
+> **注意：**
+>
+> TiDB 6.3.0-DMR 的用户文档已[归档](https://docs-archive.pingcap.com/zh/tidb/v6.3)。如无特殊需求，建议使用 TiDB 数据库的[最新 LTS 版本](https://docs.pingcap.com/zh/tidb/stable)。
+
 试用链接：[快速体验](https://docs.pingcap.com/zh/tidb/v6.3/quick-start-with-tidb) | [下载离线包](https://cn.pingcap.com/product-community/?version=v6.3.0-DMR#version-list)
 
 在 6.3.0-DMR 版本中，你可以获得以下关键特性：
@@ -170,7 +174,7 @@ TiDB 版本：6.3.0-DMR
 
 * PITR 支持 [GCS 和 Azure Blob Storage](/br/backup-and-restore-storages.md) 作为备份存储 @[joccau](https://github.com/joccau)
 
-    部署在 GCP 或者 Azure 上的用户，将 TiDB 集群升级至 v6.3.0 就可以使用 PITR 功能。
+    部署在 Google Cloud 或者 Azure 上的用户，将 TiDB 集群升级至 v6.3.0 就可以使用 PITR 功能。
 
 * BR 支持 AWS S3 Object Lock [#13442](https://github.com/tikv/tikv/issues/13442) @[3pointer](https://github.com/3pointer)
 

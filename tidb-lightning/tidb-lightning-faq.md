@@ -79,16 +79,18 @@ ADMIN CHECKSUM TABLE `schema`.`table`;
 
 自 v5.1 起，TiDB Lightning 可以自动识别下游的库和表。如果你使用低于 v5.1 的 TiDB Lightning，需在配置文档中的 `[mydumper]` 部分将 `no-schema` 设置为 `true` 即可。`no-schema=true` 会默认下游已经创建好所需的数据库和表，如果没有创建，会报错。
 
-## 有些不合法的数据，能否通过关掉严格 SQL 模式 (Strict SQL Mode) 来导入？
+## 如何禁止导入不合规的数据？
 
-可以。TiDB Lightning 默认的 [`sql_mode`](https://dev.mysql.com/doc/refman/5.7/en/sql-mode.html) 为 `"STRICT_TRANS_TABLES,NO_ENGINE_SUBSTITUTION"`。
+可以通过开启严格 SQL 模式 (Strict SQL Mode) 来实现。
 
-这个设置不允许一些非法的数值，例如 `1970-00-00` 这样的日期。可以修改配置文件 `[tidb]` 下的 `sql-mode` 值。
+TiDB Lightning 默认的 [`sql_mode`](https://dev.mysql.com/doc/refman/5.7/en/sql-mode.html) 为 `"ONLY_FULL_GROUP_BY,NO_AUTO_CREATE_USER"`，允许导入某些不合规的数值，例如 `1970-00-00` 这样的日期。
+
+如果要禁止导入不合规的数据，需要修改配置文件 `[tidb]` 下的 `sql-mode` 值为 `"STRICT_TRANS_TABLES,NO_ENGINE_SUBSTITUTION"`。
 
 ```toml
 ...
 [tidb]
-sql-mode = ""
+sql-mode = "STRICT_TRANS_TABLES,NO_ENGINE_SUBSTITUTION"
 ...
 ```
 
@@ -110,7 +112,7 @@ sql-mode = ""
 
 使用 TiDB Lightning 的 SST Mode 建议配置万兆网卡。
 
-千兆网卡的总带宽只有 120 MB/s，而且需要与整个 TiKV 集群共享。在使用 TiDB Lightning Physical Import Mode 导入时，极易用尽所有带宽，继而因 PD 无法联络集群使集群断连。
+千兆网卡的总带宽只有 120 MB/s，而且需要与整个 TiKV 集群共享。在使用 TiDB Lightning 物理导入模式导入时，极易用尽所有带宽，继而因 PD 无法联络集群使集群断连。
 
 ## 为什么 TiDB Lightning 需要在 TiKV 集群预留这么多空间？
 

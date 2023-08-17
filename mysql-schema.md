@@ -39,7 +39,6 @@ aliases: ['/docs-cn/dev/system-tables/system-table-overview/','/docs-cn/dev/refe
 * `column_stats_usage` 列统计信息的使用情况
 * `schema_index_usage` 索引的使用情况
 * `analyze_jobs` 正在执行的统计信息收集任务以及过去 7 天内的历史任务记录
-* `load_data_jobs` 正在执行或历史执行的 `LOAD DATA` 任务
 
 ## 执行计划相关系统表
 
@@ -57,9 +56,15 @@ aliases: ['/docs-cn/dev/system-tables/system-table-overview/','/docs-cn/dev/refe
 
 ## TTL 相关系统表
 
-* `mysql.tidb_ttl_table_status` 所有 TTL 表的上一次执行与正在执行的 TTL 任务
-* `mysql.tidb_ttl_task` 正在执行的 TTL 子任务
-* `mysql.tidb_ttl_job_history` 过去 90 天内 TTL 任务的执行历史
+* `tidb_ttl_table_status` 所有 TTL 表的上一次执行与正在执行的 TTL 任务
+* `tidb_ttl_task` 正在执行的 TTL 子任务
+* `tidb_ttl_job_history` 过去 90 天内 TTL 任务的执行历史
+
+## Runaway Queries 相关系统表
+
+* `tidb_runaway_queries`：过去 7 天内所有识别到的 Runaway Queries 的历史记录
+* `tidb_runaway_watch`：Runaway Queries 的监控列表 (Watch List)
+* `tidb_runaway_watch_done`：被删除或者过期的 Runaway Queries 的监控列表
 
 ## 其它系统表
 
@@ -68,3 +73,5 @@ aliases: ['/docs-cn/dev/system-tables/system-table-overview/','/docs-cn/dev/refe
 * `expr_pushdown_blacklist` 表达式下推的黑名单
 * `opt_rule_blacklist` 逻辑优化规则的黑名单
 * `table_cache_meta` 缓存表的信息
+* `tidb_import_jobs` 记录 [`IMPORT INTO`](/sql-statements/sql-statement-import-into.md) 任务信息
+* `tidb_timers` 存储了内部定时器的相关元信息

@@ -7,6 +7,19 @@ aliases: ['/docs-cn/dev/releases/release-notes/','/docs-cn/dev/releases/rn/']
 
 TiDB 历史版本发布声明如下：
 
+## 7.3
+
+- [7.3.0-DMR](/releases/release-7.3.0.md): 2023-08-14
+
+## 7.2
+
+- [7.2.0-DMR](/releases/release-7.2.0.md): 2023-06-29
+
+## 7.1
+
+- [7.1.1](/releases/release-7.1.1.md): 2023-07-24
+- [7.1.0](/releases/release-7.1.0.md): 2023-05-31
+
 ## 7.0
 
 - [7.0.0-DMR](/releases/release-7.0.0.md): 2023-03-30
@@ -17,6 +30,7 @@ TiDB 历史版本发布声明如下：
 
 ## 6.5
 
+- [6.5.3](/releases/release-6.5.3.md): 2023-06-14
 - [6.5.2](/releases/release-6.5.2.md): 2023-04-21
 - [6.5.1](/releases/release-6.5.1.md): 2023-03-10
 - [6.5.0](/releases/release-6.5.0.md): 2022-12-29
@@ -35,6 +49,7 @@ TiDB 历史版本发布声明如下：
 
 ## 6.1
 
+- [6.1.7](/releases/release-6.1.7.md): 2023-07-12
 - [6.1.6](/releases/release-6.1.6.md): 2023-04-12
 - [6.1.5](/releases/release-6.1.5.md): 2023-02-28
 - [6.1.4](/releases/release-6.1.4.md): 2023-02-08
