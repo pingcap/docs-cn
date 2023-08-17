@@ -73,13 +73,15 @@ backend = "local"
 
 - 请勿直接使用物理导入模式向已经投入生产的 TiDB 集群导入数据，这将对在线业务产生严重影响。如需向生产集群导入数据，请参考[导入时限制调度范围从集群降低到表级别](/tidb-lightning/tidb-lightning-physical-import-mode-usage.md#导入时暂停-pd-调度的范围)。
 
+- 如果你的 TiDB 生产集群上有延迟敏感型业务，并且并发较小，**不建议**使用 TiDB Lightning 物理导入模式导入数据到该集群，因为可能会影响在线业务。
+
 - 默认情况下，不应同时启动多个 TiDB Lightning 实例向同一 TiDB 集群导入数据，而应考虑使用[并行导入](/tidb-lightning/tidb-lightning-distributed-import.md)特性。
 
 - 使用多个 TiDB Lightning 向同一目标导入时，请勿混用不同的 backend，即不可同时使用物理导入模式和逻辑导入模式导入同一 TiDB 集群。
 
 - 在导入数据的过程中，请勿在目标表进行 DDL 和 DML 操作，否则会导致导入失败或数据不一致。导入期间也不建议进行读操作，因为读取的数据可能不一致。请在导入操作完成后再进行读写操作。
 
-- 单个 Lightning 进程导入单表不应超过 10 TB。使用并行导入时，Lightning 实例不应超过 10 个。
+- 单个 TiDB Lightning 进程导入单表不应超过 10 TB。使用并行导入时，TiDB Lightning 实例不应超过 10 个。
 
 ### 与其他组件一同使用的注意事项
 
