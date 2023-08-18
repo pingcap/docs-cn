@@ -314,6 +314,8 @@ mysql> explain select /*+ use_index_merge(t, k1, k2, ka) */ * from t where (1 me
 3 rows in set, 3 warnings (0.00 sec)
 ```
 
+上述场景一种绕过的方式是使用 `Union All` 将查询进行改写。
+
 下面是一些更加复杂的暂时无法使用 IndexMerge 来访问多值索引的场景：
 
 ```sql
