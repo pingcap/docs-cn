@@ -148,11 +148,6 @@ store-write-bwlimit = "128MiB"
 # 使用更小的并发以降低计算 checksum 和执行 analyze 对事务延迟的影响。
 distsql-scan-concurrency = 3
 
-[cron]
-# 避免将 TiKV 切换到 import 模式。
-switch-mode = '0'
-```
-
 ## 性能调优
 
 **提高 Lightning Physical Import Mode 导入性能最直接有效的方法：**
