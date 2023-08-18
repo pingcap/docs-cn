@@ -57,8 +57,8 @@ aliases: ['/docs-cn/dev/basic-features/','/docs-cn/dev/experimental-features-4.0
 | [复合主键](/constraints.md#主键约束) | Y | Y | Y | Y | Y | Y | Y | Y | Y | Y | Y |
 | [`CHECK` 约束](/constraints.md#check-约束) | Y | Y | N | N | N | N | N | N | N | N | N |
 | [唯一约束](/constraints.md#唯一约束) | Y | Y | Y | Y | Y | Y | Y | Y | Y | Y | Y |
-| [整型主键上的聚簇索引](/constraints.md) | Y | Y | Y | Y | Y | Y | Y | Y | Y | Y | Y |
-| [复合或非整型主键上的聚簇索引](/constraints.md) | Y | Y | Y | Y | Y | Y | Y | Y | Y | Y | N |
+| [整型主键上的聚簇索引](/clustered-indexes.md) | Y | Y | Y | Y | Y | Y | Y | Y | Y | Y | Y |
+| [复合或非整型主键上的聚簇索引](/clustered-indexes.md) | Y | Y | Y | Y | Y | Y | Y | Y | Y | Y | N |
 | [多值索引](/sql-statements/sql-statement-create-index.md#多值索引) | Y | Y | Y | N | N | N | N | N | N | N | N |
 | [外键约束](/constraints.md#外键约束) | Y | Y | Y | N | N | N | N | N | N | N | N |
 | [TiFlash 延迟物化](/tiflash/tiflash-late-materialization.md) | Y | Y | Y | N | N | N | N | N | N | N | N |
