@@ -7,6 +7,8 @@ summary: Learn how to use the physical import mode in TiDB Lightning.
 
 This document introduces how to use the [physical import mode](/tidb-lightning/tidb-lightning-physical-import-mode.md) in TiDB Lightning, including writing the configuration file, tuning performance, and configuring disk quota.
 
+There are limitations on the physical import mode. Before using the physical import mode, make sure to read [Limitations](/tidb-lightning/tidb-lightning-physical-import-mode.md#limitations).
+
 ## Configure and use the physical import mode
 
 You can use the following configuration file to execute data import using the physical import mode:
@@ -200,30 +202,7 @@ store-write-bwlimit = "128MiB"
 [tidb]
 # Use smaller concurrency to reduce the impact of Checksum and Analyze on the transaction latency.
 distsql-scan-concurrency = 3
-
-[cron]
-# Prevent TiKV from switching to import mode.
-switch-mode = '0'
 ```
-
-You can measure the impact of data import on TPCC results by simulating the online application using TPCC and importing data into a TiDB cluster using TiDB Lightning. The test result is as follows:
-
-| Concurrency | TPM | P99 | P90 | AVG |
-| ----- | --- | --- | --- | --- |
-| 1     | 20%~30% | 60%~80% | 30%~50% | 30%~40% |
-| 8     | 15%~25% | 70%~80% | 35%~45% | 20%~35% |
-| 16    | 20%~25% | 55%~85% | 35%~40% | 20%~30% |
-| 64    | No significant impact |
-| 256   | No significant impact |
-
-The percentage in the preceding table indicates the impact of data import on TPCC results.
-
-* For the TPM column, the number indicates the percentage of TPM decrease.
-* For the P99, P90, and AVG columns, the number indicates the percentage of latency increase.
-
-The test results show that the smaller the concurrency, the larger the impact of data import on TPCC results. When the concurrency is 64 or more, the impact of data import on TPCC results is negligible.
-
-Therefore, if your TiDB cluster has a latency-sensitive application and a low concurrency, it is strongly recommended **not** to use TiDB Lightning to import data into the cluster. This will cause a significant impact on the online application.
 
 ## Performance tuning
 
