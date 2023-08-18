@@ -814,8 +814,8 @@ TiDB 服务状态相关配置。
 ### `engines`
 
 + 用于控制 TiDB 节点允许从哪种类型的引擎读取数据。
-+ 默认值：["tikv", "tiflash", "tidb"]，表示由优化器自动选择存储引擎。
-+ 可选值："tikv", "tiflash", "tidb" 的组合，如：["tikv", "tidb"]、["tiflash", "tidb"]。
++ 默认值：["tikv", "tiflash"]，表示由优化器自动选择存储引擎。
++ 可选值："tikv", "tiflash" 的组合，如：["tikv", "tiflash"]。
 
 ## instance
 
