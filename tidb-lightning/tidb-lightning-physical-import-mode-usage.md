@@ -153,6 +153,7 @@ store-write-bwlimit = "128MiB"
 [tidb]
 # 使用更小的并发以降低计算 checksum 和执行 analyze 对事务延迟的影响。
 distsql-scan-concurrency = 3
+```
 
 ## 性能调优
 
