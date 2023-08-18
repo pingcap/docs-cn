@@ -288,7 +288,34 @@ mysql> explain select /*+ use_index_merge(t, k1, k2, ka) */ * from t where (1 me
 
 ### 多值索引不支持的例子
 
-以下场景暂时无法使用 IndexMerge 来访问多值索引：
+如果多个条件通过 `OR` 进行组合，且这些条件对应多个不同的索引，则无法使用多值索引，如：
+
+```sql
+mysql> create table t(j1 json, j2 json, a int, INDEX k1((CAST(j1->'$.path' AS SIGNED ARRAY))), INDEX k2((CAST(j2->'$.path' AS SIGNED ARRAY))), INDEX ka(a));
+Query OK, 0 rows affected (0.03 sec)
+
+mysql> explain select /*+ use_index_merge(t, k1, k2, ka) */ * from t where (1 member of (j1->'$.path')) or (2 member of (j2->'$.path'));
++-------------------------+----------+-----------+---------------+----------------------------------------------------------------------------------------------------------------------------------------------------+
+| id                      | estRows  | task      | access object | operator info                                                                                                                                      |
++-------------------------+----------+-----------+---------------+----------------------------------------------------------------------------------------------------------------------------------------------------+
+| Selection_5             | 8000.00  | root      |               | or(json_memberof(cast(1, json BINARY), json_extract(test.t.j1, "$.path")), json_memberof(cast(2, json BINARY), json_extract(test.t.j2, "$.path"))) |
+| └─TableReader_7         | 10000.00 | root      |               | data:TableFullScan_6                                                                                                                               |
+|   └─TableFullScan_6     | 10000.00 | cop[tikv] | table:t       | keep order:false, stats:pseudo                                                                                                                     |
++-------------------------+----------+-----------+---------------+----------------------------------------------------------------------------------------------------------------------------------------------------+
+3 rows in set, 3 warnings (0.00 sec)
+
+mysql> explain select /*+ use_index_merge(t, k1, k2, ka) */ * from t where (1 member of (j1->'$.path')) or (a = 3);
++-------------------------+----------+-----------+---------------+---------------------------------------------------------------------------------------------+
+| id                      | estRows  | task      | access object | operator info                                                                               |
++-------------------------+----------+-----------+---------------+---------------------------------------------------------------------------------------------+
+| Selection_5             | 8000.00  | root      |               | or(json_memberof(cast(1, json BINARY), json_extract(test.t.j1, "$.path")), eq(test.t.a, 3)) |
+| └─TableReader_7         | 10000.00 | root      |               | data:TableFullScan_6                                                                        |
+|   └─TableFullScan_6     | 10000.00 | cop[tikv] | table:t       | keep order:false, stats:pseudo                                                              |
++-------------------------+----------+-----------+---------------+---------------------------------------------------------------------------------------------+
+3 rows in set, 3 warnings (0.00 sec)
+```
+
+下面是一些更加复杂的暂时无法使用 IndexMerge 来访问多值索引的场景：
 
 ```sql
 mysql> CREATE TABLE t4 (j JSON, INDEX idx((CAST(j AS SIGNED ARRAY))));
