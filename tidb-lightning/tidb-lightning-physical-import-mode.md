@@ -65,13 +65,7 @@ Physical Import Mode 对应的后端模式为 `local`。
 
 - 使用多个 TiDB Lightning 向同一目标导入时，请勿混用不同的 backend，即不可同时使用 Physical Import Mode 和 Logical Import Mode 导入同一 TiDB 集群。
 
-<<<<<<< HEAD
 - 单个 Lightning 进程导入单表不应超过 10TB，使用并行导入 Lightning 实例不应超过 10 个。
-=======
-- 在导入数据的过程中，请勿在目标表进行 DDL 和 DML 操作，否则会导致导入失败或数据不一致。导入期间也不建议进行读操作，因为读取的数据可能不一致。请在导入操作完成后再进行读写操作。
-
-- 单个 TiDB Lightning 进程导入单表不应超过 10 TB。使用并行导入时，TiDB Lightning 实例不应超过 10 个。
->>>>>>> 37a0ac8c38 (lightning: delete content about tpcc (#14798))
 
 ### 与其他组件一同使用的注意事项
 
