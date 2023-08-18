@@ -146,7 +146,7 @@ mysql> SHOW WARNINGS;
 
 多值索引的使用限制请参考 [`CREATE INDEX`](/sql-statements/sql-statement-create-index.md#特性与限制)。
 
-### 多值索引支持的例子
+### 多值索引支持的场景
 
 目前 TiDB 支持将 `json_member_of`、`json_contains` 和 `json_overlaps` 条件自动转换成 IndexMerge 来访问多值索引。既可以依赖优化器根据代价自动选择，也可通过 [`use_index_merge`](/optimizer-hints.md#use_index_merget1_name-idx1_name--idx2_name-) optimizer hint 或 [`use_index`](/optimizer-hints.md#use_indext1_name-idx1_name--idx2_name-) 指定选择多值索引，见下面例子：
 
@@ -252,7 +252,7 @@ mysql> EXPLAIN SELECT /*+ use_index_merge(t3, idx) */ * FROM t3 WHERE ((a=1 AND 
 +---------------------------------+---------+-----------+---------------------------------------------------+--------------------------------------------------------------------------------------------------------------------------------------------------+
 ```
 
-### 多值索引支持不完善的例子
+### 多值索引支持不完善的场景
 
 如果多个条件通过 `AND` 进行组合，且这些条件对应多个不同的索引，则最多只能使用一个索引来进行访问，如：
 
@@ -285,7 +285,7 @@ mysql> explain select /*+ use_index_merge(t, k1, k2, ka) */ * from t where (1 me
       └─TableRowIDScan
 ```
 
-### 多值索引不支持的例子
+### 多值索引不支持的场景
 
 如果多个条件通过 `OR` 进行组合，且这些条件对应多个不同的索引，则无法使用多值索引，如：
 
