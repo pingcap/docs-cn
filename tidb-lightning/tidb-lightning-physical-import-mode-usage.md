@@ -7,6 +7,8 @@ summary: 了解如何使用 TiDB Lightning 的 Physical Import Mode。
 
 本文档介绍如何编写 [Physical Import Mode](/tidb-lightning/tidb-lightning-physical-import-mode.md) 的配置文件，如何进行性能调优等内容。
 
+使用物理导入模式有一些限制，使用前请务必阅读[必要条件及限制](/tidb-lightning/tidb-lightning-physical-import-mode.md#必要条件及限制)。
+
 ## 配置及使用
 
 可以通过以下配置文件使用 Physical Import Mode 执行数据导入：
@@ -131,7 +133,7 @@ mysql> select table_name,index_name,key_data,row_data from conflict_error_v1 lim
 
 当然，Lightning 也提供了部分并发相关配置以影响 Physical Import Mode 的导入性能。但是从长期实践的经验总结来看，以下四个配置项一般保持默认值即可，调整其数值并不会带来显著的性能提升，可作为了解内容阅读。
 
-```
+```toml
 [lightning]
 # 引擎文件的最大并行数。
 # 每张表被切分成一个用于存储索引的“索引引擎”和若干存储行数据的“数据引擎”。
