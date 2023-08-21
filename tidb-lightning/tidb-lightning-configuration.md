@@ -31,6 +31,11 @@ file = "tidb-lightning.log"
 max-size = 128 # MB
 max-days = 28
 max-backups = 14
+
+# 是否开启诊断日志。默认为 false，即只输出和导入有关的日志，不会输出依赖的其他组件的日志。
+# 设置为 true 后，既输出和导入相关的日志，也输出依赖的其他组件的日志，并开启 GRPC debug，可用于问题诊断。
+# 该参数自 v7.3.0 开始引入。
+enable-diagnose-logs = false
 ```
 
 ### TiDB Lightning 任务配置
@@ -39,7 +44,7 @@ max-backups = 14
 ### tidb-lightning 任务配置
 
 [lightning]
-# 启动之前检查集群是否满足最低需求。
+# 启动之前检查集群是否满足最低需求，以及运行过程中检查 TiKV 的可用存储空间是否大于 10%。
 # check-requirements = true
 
 # 引擎文件的最大并行数。
@@ -100,7 +105,7 @@ driver = "file"
 
 # dsn 是数据源名称 (data source name)，表示断点的存放位置。
 # 若 driver = "file"，则 dsn 为断点信息存放的文件路径。
-#若不设置该路径，则默认存储路径为“/tmp/CHECKPOINT_SCHEMA.pb”。
+# 若不设置该路径，则默认存储路径为“/tmp/CHECKPOINT_SCHEMA.pb”。
 # 若 driver = "mysql"，则 dsn 为“用户:密码@tcp(地址:端口)/”格式的 URL。
 # 若不设置该 URL，则默认会使用 [tidb] 部分指定的 TiDB 服务器来存储断点。
 # 为减少目标 TiDB 集群的压力，建议指定另一台兼容 MySQL 的数据库服务器来存储断点。
@@ -110,22 +115,30 @@ driver = "file"
 # 保留断点有利于进行调试，但会泄漏关于数据源的元数据。
 # keep-after-success = false
 
+[conflict]
+# 从 v7.3.0 开始引入的新版冲突数据处理策略。默认值为 ""。
+# - ""：不进行冲突数据检测和处理。如果源文件存在主键或唯一键冲突的记录，后续步骤会报错
+# - "error"：检测到导入的数据存在主键或唯一键冲突的数据时，终止导入并报错
+# - "replace"：遇到主键或唯一键冲突的数据时，保留新的数据，覆盖旧的数据
+# - "ignore"：遇到主键或唯一键冲突的数据时，保留旧的数据，忽略新的数据
+# 目前不能与 tikv-importer.duplicate-resolution（旧版冲突检测处理策略）同时使用
+strategy = ""
+# 控制 strategy 为 "replace" 或 "ignore" 时，能处理的冲突数据上限。仅在 strategy 为 "replace" 或 "ignore" 时可配置。默认为 9223372036854775807，表示几乎可以容忍所有错误。
+# threshold = 9223372036854775807
+# 控制冲突数据记录表 (conflict_records) 中记录冲突数据的条数上限。默认为 100。如果 strategy 为 "ignore"，则会记录被忽略写入的冲突记录。如果 strategy 为 "replace"，则会记录被覆盖的冲突记录。但在逻辑导入模式下，replace 策略无法记录冲突记录。
+# max-record-rows = 100
+
 [tikv-importer]
 # "local"：物理导入模式（Physical Import Mode），默认使用。适用于 TB 级以上大数据量，但导入期间下游 TiDB 无法对外提供服务。
 # "tidb"：逻辑导入模式 (Logical Import Mode)。TB 级以下数据量可以采用，下游 TiDB 可正常提供服务。
 # backend = "local"
 # 是否允许启动多个 TiDB Lightning 实例（物理导入模式）并行导入数据到一个或多个目标表。默认取值为 false。
-# 注意，该参数**不是用于增量导入数据**，仅限目标表为空的场景使用。
+# 注意，该参数仅限目标表为空的场景使用。
 # 多个 TiDB Lightning 实例（物理导入模式）同时导入一张表时，此开关必须设置为 true。
 # 但前提是目标表不能存在数据，即所有的数据都只能是由 TiDB Lightning 导入。
-# incremental-import = false
+# parallel-import = false
 # 当后端是 “importer” 时，tikv-importer 的监听地址（需改为实际地址）。
 addr = "172.16.31.10:8287"
-# 逻辑导入模式插入冲突数据时执行的操作。关于冲突检测详细信息请查阅：https://docs.pingcap.com/zh/tidb/dev/tidb-lightning-logical-import-mode-usage#冲突数据检测
-# - replace：新数据替代已有数据
-# - ignore：保留已有数据，忽略新数据
-# - error：中止导入并报错
-# on-duplicate = "replace"
 
 # 物理导入模式设置是否检测和解决重复的记录（唯一键冲突）。
 # 目前支持两种解决方法：
@@ -134,7 +147,7 @@ addr = "172.16.31.10:8287"
 #            则会将 A 和 B 这两条冲突数据从目标表移除，同时记录到目标 TiDB 中的 `lightning_task_info.conflict_error_v1` 表中。
 #            你可以根据业务需求选择正确的记录重新手动写入到目标表中。注意，该方法要求目标 TiKV 的版本为 v5.2.0 或更新版本。
 #            如果版本过低，则会启用 'none' 模式。
-# 默认值为 'none'。 
+# 默认值为 'none'。
 # duplicate-resolution = 'none'
 # 物理导入模式下，向 TiKV 发送数据时一次请求中最大 KV 数量。
 # 自 v7.2.0 开始，该参数废弃，设置后不再生效。如果希望调整一次请求中向 TiKV 发送的数据量，请使用 `send-kv-size` 参数。
@@ -303,8 +316,8 @@ pd-addr = "172.16.31.4:2379"
 # 设置 TiDB 库的日志等级。
 log-level = "error"
 
-# 设置 TiDB 会话变量，提升 Checksum 和 Analyze 的速度。
-# 各参数定义可参阅”控制 Analyze 并发度“文档
+# 设置 TiDB 会话变量，提升 Checksum 和 Analyze 的速度。注意，如果将 checksum-via-sql 设置为 "true"，则会通过 TiDB 执行 ADMIN CHECKSUM TABLE <table> SQL 语句来进行 Checksum 操作。在这种情况下，以下参数设置 `distsql-scan-concurrency = 15` 和 `checksum-table-concurrency = 2` 将不会生效。
+# 各参数定义可参阅 “控制 Analyze 并发度文档” (https://docs.pingcap.com/zh/tidb/stable/statistics#%E6%8E%A7%E5%88%B6-analyze-%E5%B9%B6%E5%8F%91%E5%BA%A6)。
 build-stats-concurrency = 20
 distsql-scan-concurrency = 15
 index-serial-scan-concurrency = 20
@@ -350,6 +363,11 @@ max-allowed-packet = 67_108_864
 # 1. Checksum 对比失败通常表示导入异常（数据丢失或数据不一致），因此建议总是开启 Checksum。
 # 2. 考虑到与旧版本的兼容性，依然可以在本配置项设置 `true` 和 `false` 两个布尔值，其效果与 `required` 和 `off` 相同。
 checksum = "required"
+# 设置是否通过 TiDB 执行 ADMIN CHECKSUM TABLE <table> 操作。
+# 默认值为 "false"，表示通过 TiDB Lightning 下发 ADMIN CHECKSUM TABLE <table> 命令给 TiKV 执行。
+# 建议将该值设为 "true"，以便在 checksum 失败时更容易定位问题。
+# 同时，当该值为 "true" 时，如果需要调整并发，请在 TiDB 中设置 `tidb_checksum_table_concurrency` 变量 (https://docs.pingcap.com/zh/tidb/stable/system-variables#tidb_checksum_table_concurrency)。
+checksum-via-sql = "false"
 # 配置是否在 CHECKSUM 结束后对所有表逐个执行 `ANALYZE TABLE <table>` 操作。
 # 此配置的可选配置项与 `checksum` 相同，但默认值为 "optional"。
 analyze = "optional"
@@ -393,7 +411,7 @@ log-progress = "5m"
 | --enable-checkpoint *bool* | 是否启用断点 (默认值为 true) | `checkpoint.enable` |
 | --analyze *level* | 导入后分析表信息，可选值为 required、optional（默认值）、off | `post-restore.analyze` |
 | --checksum *level* | 导入后比较校验和，可选值为 required（默认值）、optional、off | `post-restore.checksum` |
-| --check-requirements *bool* | 开始之前检查集群版本兼容性（默认值为 true）| `lightning.check-requirements` |
+| --check-requirements *bool* | 开始任务之前检查集群版本兼容性，以及运行过程中检查 TiKV 的可用存储空间是否大于 10%（默认值为 true）| `lightning.check-requirements` |
 | --ca *file* | TLS 连接的 CA 证书路径 | `security.ca-path` |
 | --cert *file* | TLS 连接的证书路径 | `security.cert-path` |
 | --key *file* | TLS 连接的私钥路径 | `security.key-path` |

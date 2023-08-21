@@ -62,8 +62,9 @@ aliases: ['/docs-cn/dev/system-tables/system-table-overview/','/docs-cn/dev/refe
 
 ## Runaway Queries 相关系统表
 
-* `tidb_runaway_queries` 过去 7 天内所有识别到的 Runaway Queries 的历史记录
-* `tidb_runaway_quarantined_watch` 最近活动的 Runaway Queries 的快速识别规则（包含当前有效规则，也可能还包含近期失效的规则）
+* `tidb_runaway_queries`：过去 7 天内所有识别到的 Runaway Queries 的历史记录
+* `tidb_runaway_watch`：Runaway Queries 的监控列表 (Watch List)
+* `tidb_runaway_watch_done`：被删除或者过期的 Runaway Queries 的监控列表
 
 ## 其它系统表
 
@@ -72,3 +73,5 @@ aliases: ['/docs-cn/dev/system-tables/system-table-overview/','/docs-cn/dev/refe
 * `expr_pushdown_blacklist` 表达式下推的黑名单
 * `opt_rule_blacklist` 逻辑优化规则的黑名单
 * `table_cache_meta` 缓存表的信息
+* `tidb_import_jobs` 记录 [`IMPORT INTO`](/sql-statements/sql-statement-import-into.md) 任务信息
+* `tidb_timers` 存储了内部定时器的相关元信息

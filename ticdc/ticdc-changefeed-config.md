@@ -81,7 +81,7 @@ rules = ['*.*', '!test.*']
 # 默认值为空列表。
 # IgnoreTxnStartTs = []
 
-# 事件过滤器规则 
+# 事件过滤器规则
 # 事件过滤器的详细配置规则可参考：https://docs.pingcap.com/zh/tidb/stable/ticdc-filter
 # 第一个事件过滤器规则
 # [[filter.event-filters]]
@@ -138,6 +138,7 @@ write-key-threshold = 0
 # protocol = "canal-json"
 
 # delete-only-output-handle-key-columns 用于指定 Delete 事件的输出内容，只对 canal-json 和 open-protocol 协议有效。从 v7.2.0 开始引入。
+# 该参数和 `force-replicate` 参数不兼容，如果同时将该参数和 `force-replicate` 设置为 true，创建 changefeed 会报错。
 # 默认值为 false，即输出所有列的内容。当设置为 true 时，只输出主键列，或唯一索引列的内容。
 # Avro 协议不受该参数控制，总是只输出主键列，或唯一索引列的内容。
 # CSV 协议不受该参数控制，总是输出所有列的内容。
@@ -169,7 +170,7 @@ delete-only-output-handle-key-columns = false
 
 # 文件路径的日期分隔类型。可选类型有 `none`、`year`、`month` 和 `day`。默认值为 `none`，即不使用日期分隔。详见 <https://docs.pingcap.com/zh/tidb/dev/ticdc-sink-to-cloud-storage#数据变更记录>。
 # 注意：该参数只有当下游为存储服务时，才会生效。
-date-separator = 'none'
+date-separator = 'day'
 
 # 是否使用 partition 作为分隔字符串。默认值为 true，即一张表中各个 partition 的数据会分不同的目录来存储。建议保持该配置项为 true 以避免下游分区表可能丢数据的问题 <https://github.com/pingcap/tiflow/issues/8581>。使用示例详见 <https://docs.pingcap.com/zh/tidb/dev/ticdc-sink-to-cloud-storage#数据变更记录>。
 # 注意：该参数只有当下游为存储服务时，才会生效。
@@ -185,6 +186,8 @@ enable-partition-separator = true
 # null = '\N'
 # 是否在 CSV 行中包含 commit-ts。默认值为 false。
 # include-commit-ts = false
+# 二进制类型数据的编码方式，可选 'base64' 或 'hex'。默认值为 'base64'。
+# binary-encoding-method = 'base64'
 
 # consistent 中的字段用于配置 Changefeed 的数据一致性。详细的信息，请参考 <https://docs.pingcap.com/tidb/stable/ticdc-sink-to-mysql#eventually-consistent-replication-in-disaster-scenarios>。
 # 注意：一致性相关参数只有当下游为数据库并且开启 redo log 功能时，才会生效。
@@ -206,4 +209,21 @@ use-file-backend = false
 integrity-check-level = "none"
 # 当单行数据的 Checksum 校验失败时，Changefeed 打印错误行数据相关日志的级别。默认值为 "warn"，可选值为 "warn" 和 "error"。
 corruption-handle-level = "warn"
+
+# 以下参数仅在下游为 Kafka 时生效。
+[sink.kafka-config]
+# Kafka SASL 认证机制。该参数默认值为空，表示不使用 SASL 认证。
+sasl-mechanism = "OAUTHBEARER"
+# Kafka SASL OAUTHBEARER 认证机制中的 client-id。默认值为空。在使用该认证机制时，该参数必填。
+sasl-oauth-client-id = "producer-kafka"
+# Kafka SASL OAUTHBEARER 认证机制中的 client-secret。默认值为空。需要 Base64 编码。在使用该认证机制时，该参数必填。
+sasl-oauth-client-secret = "cHJvZHVjZXIta2Fma2E="
+# Kafka SASL OAUTHBEARER 认证机制中的 token-url 用于获取 token。默认值为空。在使用该认证机制时，该参数必填。
+sasl-oauth-token-url = "http://127.0.0.1:4444/oauth2/token"
+# Kafka SASL OAUTHBEARER 认证机制中的 scopes。默认值为空。在使用该认证机制时，该参数可选填。
+sasl-oauth-scopes = ["producer.kafka", "consumer.kafka"]
+# Kafka SASL OAUTHBEARER 认证机制中的 grant-type。默认值为 "client_credentials"。在使用该认证机制时，该参数可选填。
+sasl-oauth-grant-type = "client_credentials"
+# Kafka SASL OAUTHBEARER 认证机制中的 audience。默认值为空。在使用该认证机制时，该参数可选填。
+sasl-oauth-audience = "kafka"
 ```

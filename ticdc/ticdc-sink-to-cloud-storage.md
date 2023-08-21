@@ -108,7 +108,7 @@ NFS 配置样例如下：
 - `table`：表名。例如：<code>s3://bucket/bbb/ccc/test/**table1**</code>。
 - `table-version-separator`：将文件路径按照表的版本进行分隔。例如：<code>s3://bucket/bbb/ccc/test/table1/**9999**</code>。
 - `partition-separator`：将文件路径按照表的分区号进行分隔。例如：<code>s3://bucket/bbb/ccc/test/table1/9999/**20**</code>。
-- `date-separator`：将文件路径按照事务提交的日期进行分隔，可选值如下：
+- `date-separator`：将文件路径按照事务提交的日期进行分隔，默认值为 `day`，可选值如下：
     - `none`：不以 `date-separator` 分隔文件路径。例如：`test.table1` 版本号为 `9999` 的所有文件都存到 `s3://bucket/bbb/ccc/test/table1/9999` 路径下。
     - `year`：以事务提交的年份分隔文件路径。例如：<code>s3://bucket/bbb/ccc/test/table1/9999/**2022**</code>。
     - `month`：以事务提交的年份和月份分隔文件路径。例如：<code>s3://bucket/bbb/ccc/test/table1/9999/**2022-01**</code>。
