@@ -46,18 +46,18 @@ summary: 了解 TiCDC 支持同步的 DDL 和一些特殊情况
 
 由于同步过程中缺乏一些上下文信息，因此 TiCDC 对 rename table 类型的 DDL 同步有一些约束。
 
-### rename table ddl 
+### 一条 DDL 语句内 rename 单个表
 
-在同步 rename table DDL 时，只有旧的表名符合 filter 的规则，才会被同步，下面会使用具体的例子进行说明。
+在同步该类型的 DDL 时，只有旧的表名符合 filter 的规则，才会被同步，下面会使用具体的例子进行说明。
 
 假设你的 changefeed 的配置文件如下
 
 ```toml
 [filter]
-rules = ['db1.t*']
+rules = ['test.t*']
 ```
 
-那么，TiCDC 对 rename table ddl 的处理行为如下表所示
+那么，TiCDC 对该类型 DDL 的处理行为如下表所示
 
 | DDL | 是否同步 | 原因和处理方式 |
 | --- | --- | --- |
@@ -67,21 +67,22 @@ rules = ['db1.t*']
 | rename table test.n1 to test.t1 | 报错，并停止同步。 | test.n1 不符合 filter 规则，但是 test.t1 符合 filter 规则，这是非法操作。 请参考错误提示信息进行处理 |
 | rename table ignore.t1 to test.t1 | 报错，并停止同步。 | 理由同上 |
 
-### rename tables ddl 
+### 一条 DDL 语句内 rename 多个表
 
-TiCDC 仅会同步新旧库名都包含在 filter 规则中的 rename tables DDL。此外，TiCDC 不支持同步对表名进行交换的 rename tables DDL。下面会用具体的例子进行说明。
+TiCDC 仅会同步旧的表库名，新的库名都包含在 filter 规则中的该类型 DDL。此外，TiCDC 不支持同步对表名进行交换的 rename table DDL。下面会用具体的例子进行说明。
 
 假设你的 changefeed 的配置文件如下
 
 ```toml
 [filter]
-rules = ['db1.t*']
+rules = ['test.t*']
 ```
 
-那么，TiCDC 对 rename tables ddl 的处理行为如下表所示
+那么，TiCDC 对该类型的处理行为如下表所示
 
 | DDL | 是否同步 | 原因 |
 | --- | --- | --- |
 | rename table test.t1 to test.t2, test.t3 to test.t4 | 同步 | 新旧表库名都符合 filter 规则 |
-| rename table test.t1 to ignore.t1, test.t2 to test.t22; | 忽略 | ignore 这个库名不符合 filter 规则 |
+| rename table test.t1 to test.ignore1, test.t3 to test.ignore2 | 同步 | 旧的表库名，新的库名都符合 filter 规则 |
+| rename table test.t1 to ignore.t1, test.t2 to test.t22; | 报错 | 新的库名 ignore 不符合 filter 规则 |
 | rename table test.t1 to test1.t4, test.t3 to test.t1, test.t4 to test.t3; | 报错 | 在一条 DDL 中交换 test.t1 和 test.t3 两个表的名字，TiCDC 无法正确处理。请参考错误提示提示信息处理。 |
