@@ -277,13 +277,13 @@ mysql> explain select /*+ use_index_merge(t, k1, k2, ka) */ * from t where (1 me
 目前只能使用 1 个索引进行访问，而无法产生如下面这样同时使用多个索引的计划：
 
 ```
-  Selection
-  └─IndexMerge
-    ├─IndexRangeScan(k1)
-    ├─IndexRangeScan(k2)
-    ├─IndexRangeScan(ka)
-    └─Selection
-      └─TableRowIDScan
+Selection
+└─IndexMerge
+  ├─IndexRangeScan(k1)
+  ├─IndexRangeScan(k2)
+  ├─IndexRangeScan(ka)
+  └─Selection
+    └─TableRowIDScan
 ```
 
 ### 多值索引不支持的场景
