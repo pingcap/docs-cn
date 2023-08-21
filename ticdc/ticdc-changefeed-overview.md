@@ -23,16 +23,16 @@ Changefeed 是 TiCDC 中的单个同步任务。Changefeed 将一个 TiDB 集群
 
 > **注意：**
 >
-> 如果 changefeed 遭遇错误码为 ErrGCTTLExceeded, ErrSnapshotLostByGC 或者 ErrStartTsBeforeGC 类型的错误，那么就不会再阻塞 GC 推进。
+> 如果 changefeed 遭遇错误码为 ErrGCTTLExceeded, ErrSnapshotLostByGC 或者 ErrStartTsBeforeGC 类型的错误，则不再阻塞 GC 推进。
 
 以上状态流转图中的编号说明如下：
 
 - ① 执行 `changefeed pause` 命令。
 - ② 执行 `changefeed resume` 恢复同步任务。
 - ③ `changefeed` 运行过程中发生可恢复的错误，自动重试。
-- ④  `changefeed` 自动重试成功，checkpoint-ts 已经继续推进。
-- ⑤ `changefeed` 自动重试超过 30 分钟，重试失败，进入 failed 状态。此时 `changefeed` 会继续阻塞上游 GC ，阻塞时长为 `gc-ttl` 所配置的时长。
-- ⑥ `changefeed` 遇到不可重试错误，直接进入 failed 状态。此时 `changefeed` 会继续阻塞上游 GC ，阻塞时长为 `gc-ttl` 所配置的时长。
+- ④ `changefeed` 自动重试成功，checkpoint-ts 已经继续推进。
+- ⑤ `changefeed` 自动重试超过 30 分钟，重试失败，进入 failed 状态。此时 `changefeed` 会继续阻塞上游 GC，阻塞时长为 `gc-ttl` 所配置的时长。
+- ⑥ `changefeed` 遇到不可重试错误，直接进入 failed 状态。此时 `changefeed` 会继续阻塞上游 GC，阻塞时长为 `gc-ttl` 所配置的时长。
 - ⑦ `changefeed` 的同步进度到达 target-ts 设置的值，完成同步。
 - ⑧ `changefeed` 停滞时间超过 `gc-ttl` 所指定的时长，遭遇 GC 推进错误，不可被恢复。
 
