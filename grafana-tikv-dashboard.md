@@ -76,14 +76,21 @@ aliases: ['/docs-cn/dev/grafana-tikv-dashboard/','/docs-cn/dev/reference/key-mon
 
 - Raft store CPU：raftstore 线程的 CPU 使用率，通常应低于 80% * `raftstore.store-pool-size`
 - Async apply CPU：async apply 线程的 CPU 使用率，通常应低于 90% * `raftstore.apply-pool-size`
-- Scheduler worker CPU：scheduler worker 线程的 CPU 使用率，通常应低于 90% * `storage.scheduler-worker-pool-size`
+- Store writer CPU：async io 线程的 CPU 使用率，通常应低于 90% * `raftstore.store-io-pool-size`
 - gRPC poll CPU：gRPC 线程的 CPU 使用率，通常应低于 80% * `server.grpc-concurrency`
-- Unified read pool CPU：unified read pool 线程的 CPU 使用率
+- Scheduler worker CPU：scheduler worker 线程的 CPU 使用率，通常应低于 90% * `storage.scheduler-worker-pool-size`
 - Storage ReadPool CPU：storage read pool 线程的 CPU 使用率
-- Coprocessor CPU：coprocessor 线程的 CPU 使用率
+- Unified read pool CPU：unified read pool 线程的 CPU 使用率
 - RocksDB CPU：RocksDB 线程的 CPU 使用率
+- Coprocessor CPU：coprocessor 线程的 CPU 使用率
 - GC worker CPU：GC worker 线程的 CPU 使用率
 - BackGround worker CPU：background worker 线程的 CPU 使用率
+- Import CPU：Import 线程的 CPU 使用率
+- Backup Worker CPU：Backup 线程的 CPU 使用率
+- CDC Worker CPU：CDC Worker 线程的 CPU 使用率
+- CDC endpoint CPU：CDC endpoint 的 CPU 使用率
+- Raftlog fetch worker CPU：Async raft log fetcher worker 的 CPU 使用率
+- TSO Worker CPU: TSO Worker 线程的 CPU 使用率
 
 ### PD
 
@@ -113,9 +120,9 @@ aliases: ['/docs-cn/dev/grafana-tikv-dashboard/','/docs-cn/dev/reference/key-mon
     - append: ready 内 Raft log entry 的 ops
     - commit: ready 内 committed Raft log entry 的 ops
     - snapshot: 携带 snapshot 的 ready 的 ops
-- 0.99 Duration of Raft store events：99% 的 raftstore 事件所花费的时间
-- Process ready duration：处理 ready 所花费的时间
-- Process ready duration per server：每个 TiKV 实例处理 ready 所花费的时间，99.99% 的情况下，应该小于 2s
+- Max Duration of Raft store events：raftstore 处理事件最慢一次所花费的时间
+- Replica read lock checking duration：处理 Replica Read 时检查 lock 所花费的时间
+- Peer msg length distribution：每个 TiKV 中每个 region 一次性处理 Peer 消息的个数，消息越多说明 peer 越繁忙。
 
 ![TiKV Dashboard - Raft process metrics](/media/tikv-dashboard-raft-process.png)
 
@@ -330,6 +337,30 @@ aliases: ['/docs-cn/dev/grafana-tikv-dashboard/','/docs-cn/dev/reference/key-mon
 - Number files at each level：每一层的文件个数
 - Ingest SST duration seconds：ingest SST 所花费的时间
 - Stall conditions changed of each CF：每个 CF stall 的原因
+
+### Raft Engine
+
+- Operations
+    - write：Raft Engine 每秒写操作的次数
+    - read_entry：Raft Engine 每秒读 raft 日志的次数
+    - read_message：Raft Engine 每秒读 raft 元数据的次数
+- Write duration：Raft Engine 写操作的耗时，该耗时基本接近写入这些数据所包含的磁盘 IO 的 latency 之和
+- Flow
+    - write：Raft Engine 写流量
+    - rewrite append：重写 append 日志的流量
+    - rewrite rewrite：重写 rewrite 日志的流量
+- Write Duration Breakdown (99%)
+    - wal：写 Raft Engine WAL 的延迟
+    - wait：写入前等待时间
+    - apply：apply 到内存的时间
+- Bytes/Written 每次写入对应的 bytes
+- WAL Duration Breakdown (P99%)：写 WAL 内部各个阶段所花的时间
+- File Count
+    - append：Raft Engine 用于 append 数据的文件个数
+    - rewrite：Raft Engine 用于 rewrite 的文件个数（rewrite 类似于 RocksDB 的 compaction）
+- Entry Count
+    - rewrite：Raft Engine 中已经 rewrite 的记录条数
+    - append：Raft Engine 中已经 append 的记录条数
 
 ### Titan - All
 

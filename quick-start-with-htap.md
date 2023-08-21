@@ -88,7 +88,7 @@ tiup playground
     | test.lineitem |        6001215 | 0.7756G   | 0.0894G    | 0.8651G |
     +---------------+----------------+-----------+------------+---------+
     8 rows in set (0.06 sec)
-     ```
+    ```
 
     这是一个商业订购系统的数据库。其中，`test.nation` 表是国家信息、`test.region` 表是地区信息、`test.part` 表是零件信息、`test.supplier` 表是供货商信息、`test.partsupp` 表是供货商的零件信息、`test.customer` 表是消费者信息、`test.orders` 表是订单信息、`test.lineitem` 表是在线商品的信息。
 

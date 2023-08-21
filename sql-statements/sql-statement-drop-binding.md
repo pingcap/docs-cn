@@ -14,7 +14,7 @@ aliases: ['/docs-cn/dev/sql-statements/sql-statement-drop-binding/']
 
 ```ebnf+diagram
 DropBindingStmt ::=
-    'DROP' GlobalScope 'BINDING' 'FOR' ( BindableStmt ( 'USING' BindableStmt )? 
+    'DROP' GlobalScope 'BINDING' 'FOR' ( BindableStmt ( 'USING' BindableStmt )?
 |   'SQL' 'DIGEST' SqlDigest)
 
 GlobalScope ::=
@@ -34,11 +34,11 @@ BindableStmt ::=
 
 ```sql
 CREATE TABLE t1 (
-    ->  id INT NOT NULL PRIMARY KEY auto_increment,
-    ->  b INT NOT NULL,
-    ->  pad VARBINARY(255),
-    ->  INDEX(b)
-    -> );
+    id INT NOT NULL PRIMARY KEY auto_increment,
+    b INT NOT NULL,
+    pad VARBINARY(255),
+    INDEX(b)
+   );
 Query OK, 0 rows affected (0.07 sec)
 
 INSERT INTO t1 SELECT NULL, FLOOR(RAND()*1000), RANDOM_BYTES(255) FROM dual;
@@ -91,9 +91,9 @@ EXPLAIN ANALYZE SELECT * FROM t1 WHERE b = 123;
 3 rows in set (0.02 sec)
 
 CREATE SESSION BINDING FOR
-    ->  SELECT * FROM t1 WHERE b = 123
-    -> USING
-    ->  SELECT * FROM t1 IGNORE INDEX (b) WHERE b = 123;
+    SELECT * FROM t1 WHERE b = 123
+   USING
+    SELECT * FROM t1 IGNORE INDEX (b) WHERE b = 123;
 Query OK, 0 rows affected (0.00 sec)
 
 EXPLAIN ANALYZE  SELECT * FROM t1 WHERE b = 123;

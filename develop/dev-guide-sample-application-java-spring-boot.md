@@ -1,7 +1,7 @@
 ---
 title: 使用 Spring Boot 构建 TiDB 应用程序
 summary: 给出一个 Spring Boot 构建 TiDB 应用程序示例。
-aliases: ['/zh/tidb/dev/sample-application-spring-boot']
+aliases: ['/zh/tidb/dev/dev-guide-sample-application-spring-boot', '/zh/tidb/dev/sample-application-spring-boot']
 ---
 
 <!-- markdownlint-disable MD029 -->
@@ -16,43 +16,17 @@ aliases: ['/zh/tidb/dev/sample-application-spring-boot']
 
 你可以以此示例为基础，构建自己的应用程序。
 
-> **建议：**
->
-> 在[云原生开发环境](/develop/dev-guide-playground-gitpod.md)中尝试 Spring Boot 构建 TiDB 应用程序。
-> 预配置完成的环境，自动启动 TiDB 集群，获取和运行代码，只需要一个链接。
->
-> [现在就试试](https://gitpod.io/#targetFile=spring-jpa-hibernate_Makefile,targetMode=spring-jpa-hibernate/https://github.com/pingcap-inc/tidb-example-java)
-
 ## 第 1 步：启动你的 TiDB 集群
 
 本节将介绍 TiDB 集群的启动方法。
 
-<SimpleTab groupId="cluster">
+**使用 TiDB Serverless 集群**
 
-<div label="TiDB Cloud" value="serverless-cluster">
+详细步骤，请参考：[创建 TiDB Serverless 集群](/develop/dev-guide-build-cluster-in-cloud.md#第-1-步创建-tidb-serverless-集群)。
 
-[创建 TiDB Serverless 集群](/develop/dev-guide-build-cluster-in-cloud.md#第-1-步创建-tidb-serverless-集群)。
+**使用本地集群**
 
-</div>
-
-<div label="本地集群" value="local-cluster">
-
-你可以部署一个本地测试的 TiDB 集群或正式的 TiDB 集群。详细步骤，请参考：
-
-- [部署本地测试 TiDB 集群](/quick-start-with-tidb.md#部署本地测试集群)
-- [部署正式 TiDB 集群](/production-deployment-using-tiup.md)
-
-</div>
-
-<div label="Gitpod" value="gitpod-cluster">
-
-基于 Git 的预配置的开发环境：[现在就试试](/develop/dev-guide-playground-gitpod.md)
-
-该环境会自动克隆代码，并通过 TiUP 部署测试集群。
-
-</div>
-
-</SimpleTab>
+详细步骤，请参考：[部署本地测试 TiDB 集群](/quick-start-with-tidb.md#部署本地测试集群)或[部署正式 TiDB 集群](/production-deployment-using-tiup.md)。
 
 ## 第 2 步：安装 JDK
 
