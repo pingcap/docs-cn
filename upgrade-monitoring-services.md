@@ -15,7 +15,7 @@ summary: 介绍如何升级 TiDB 集群监控组件 Prometheus、Grafana 和 Ale
 > - TiDB 并未对监控组件新版本的兼容性进行测试，可能存在升级后部分功能无法正常使用的问题。如果遇到问题，请在 GitHub 上提 [issue](https://github.com/pingcap/tidb/issues) 反馈。
 > - 本文所述功能在 TiUP v1.9.0 及后续版本支持，使用本功能前请检查 TiUP 版本号。
 
-## 升级 Prometheus 
+## 升级 Prometheus
 
 为了更好地兼容 TiDB，推荐使用 TiDB 官方安装包中自带的 Prometheus 组件安装包，该组件包中的 Prometheus 版本是固定的。如果你需要使用更高版本的 Prometheus，可以在 Prometheus 官网的 [Release Note 页面](https://github.com/prometheus/prometheus/releases)查看新版本特性，选择适合你生产环境的版本，或者咨询 PingCAP 技术支持服务寻求版本建议。
 
@@ -44,12 +44,12 @@ summary: 介绍如何升级 TiDB 集群监控组件 Prometheus、Grafana 和 Ale
     tar -zcvf ../prometheus-v{new-version}.tar.gz ./
     ```
 
-### 第 4 步：使用新的组件包升级 Prometheus 
+### 第 4 步：使用新的组件包升级 Prometheus
 
 执行以下命令升级 Prometheus。
 
 ```bash
-tiup cluster patch <cluster-name> prometheus-{new-version}.tar.gz -R prometheus
+tiup cluster patch <cluster-name> prometheus-v{new-version}.tar.gz -R prometheus
 ```
 
 升级完成后，可以打开 Prometheus 主页（地址通常是 `http://<Prometheus-server-host-name>:9090`），点击顶部导航菜单中的 **Status**，然后打开 **Runtime & Build Information** 页面，查看 Prometheus 的版本信息，确认升级成功。
@@ -83,7 +83,7 @@ tiup cluster patch <cluster-name> prometheus-{new-version}.tar.gz -R prometheus
     tar -zcvf ../grafana-v{new-version}.tar.gz ./
     ```
 
-### 第 4 步：使用新的组件包升级 Grafana 
+### 第 4 步：使用新的组件包升级 Grafana
 
 执行以下命令升级 Grafana。
 
@@ -108,3 +108,5 @@ TiDB 安装包中直接使用了 AlertManager 官方组件包，因此升级 Ale
 ```bash
 tiup cluster patch <cluster-name> alertmanager-v{new-version}-linux-amd64.tar.gz -R alertmanager
 ```
+
+升级完成后，可以打开 AlertManager 主页（地址通常是 `http://<Alertmanager-server-host-name>:9093`），点击顶部导航菜单中的 **Status**，然后查看 Prometheus 的版本信息，确认升级成功。
