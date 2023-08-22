@@ -230,7 +230,7 @@ try (Session session = sessionFactory.openSession()) {
 
 ## 注意事项
 
-- 完整代码及其运行方式，见 [tidb-example-java](https://github.com/pingcap-inc/tidb-example-java/blob/main/README.md) GitHub 仓库。
+- 完整代码及其运行方式，见 [tidb-example-java](https://github.com/pingcap-inc/tidb-example-java/blob/main/README.md) GitHub 仓库下的 `plain-java-hibernate` 示例。
 - 关于 Hibernate 的更多使用方法及细节，可以参考 [Hibernate 官方文档](https://hibernate.org/orm/documentation)。
 
 ## 下一步
