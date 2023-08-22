@@ -177,7 +177,8 @@ implementation 'mysql:mysql-connector-java:5.1.49'
 
 > **注意：**
 >
-> tidb-loadbalance 需配合 mysql-connector-j 一起使用。
+> - 不要在生产环境中使用该组件。
+> - tidb-loadbalance 需配合 mysql-connector-j 一起使用。
 
 如果你使用的是 **Maven**，请将以下内容添加到你的 `<dependencies></dependencies>`：
 
