@@ -95,6 +95,8 @@ TiDB 版本：6.5.4
 + TiDB
 
     - 修复 load data assertion 报错问题 [#43849](https://github.com/pingcap/tidb/issues/43849) @[you06](https://github.com/you06) 
+    - 修复下推 ‘StreamAgg’ 算子时，可能报错 'index out of range' 的问题 [#41056](https://github.com/pingcap/tidb/issues/41056) @[Dousir9](https://github.com/Dousir9)
+    - 修复 `CREATE TABLE`语句包含子分区定义时，TiDB 会忽略所有分区信息创建出普通表的问题：目前 TiDB 会忽略子分区定义仍然创建分区表，并返回告警信息 [#41198](https://github.com/pingcap/tidb/issues/41198) [#41200](https://github.com/pingcap/tidb/issues/41200) @[mjonss](https://github.com/mjonss)
     - 修复 stale read ts 设置不正确可能导致 prepare statement 读数据不正确的问题 [#43044](https://github.com/pingcap/tidb/issues/43044) @[you06](https://github.com/you06) 
     - 修复activate txn 可能存在的 data race [#42092](https://github.com/pingcap/tidb/issues/42092) @[hawkingrei](https://github.com/hawkingrei)
     - 修复 coprocessor 请求 scan details 处理不准确的问题 [#41582](https://github.com/pingcap/tidb/issues/41582) @[you06](https://github.com/you06) 
