@@ -146,6 +146,8 @@ mysql> SHOW WARNINGS;
 
 多值索引的使用限制请参考 [`CREATE INDEX`](/sql-statements/sql-statement-create-index.md#特性与限制)。
 
+### 支持多值索引的场景
+
 目前 TiDB 支持将 `json_member_of`、`json_contains` 和 `json_overlaps` 条件自动转换成 IndexMerge 来访问多值索引。既可以依赖优化器根据代价自动选择，也可通过 [`use_index_merge`](/optimizer-hints.md#use_index_merget1_name-idx1_name--idx2_name-) optimizer hint 或 [`use_index`](/optimizer-hints.md#use_indext1_name-idx1_name--idx2_name-) 指定选择多值索引，见下面例子：
 
 ```sql
@@ -232,7 +234,7 @@ mysql> EXPLAIN SELECT /*+ use_index_merge(t2, idx) */ * FROM t2 WHERE a=1 AND JS
 6 rows in set, 1 warning (0.00 sec)
 ```
 
-对于由多个 `member of` 组成的 `OR` 条件，也可以使用 IndexMerge 进行访问：
+对于由多个 `member of` 组成的 `OR` 条件，且这些条件可以被作用在同一个多值索引上，也可以使用 IndexMerge 进行访问：
 
 ```sql
 mysql> CREATE TABLE t3 (a INT, j JSON, INDEX idx(a, (CAST(j AS SIGNED ARRAY))));
@@ -250,7 +252,71 @@ mysql> EXPLAIN SELECT /*+ use_index_merge(t3, idx) */ * FROM t3 WHERE ((a=1 AND 
 +---------------------------------+---------+-----------+---------------------------------------------------+--------------------------------------------------------------------------------------------------------------------------------------------------+
 ```
 
-以下场景暂时无法使用 IndexMerge 来访问多值索引：
+### 部分支持多值索引的场景
+
+如果多个条件通过 `AND` 进行组合，且这些条件对应多个不同的索引，则最多只能使用一个索引来进行访问，如：
+
+```sql
+mysql> create table t(j1 json, j2 json, a int, INDEX k1((CAST(j1->'$.path' AS SIGNED ARRAY))), INDEX k2((CAST(j2->'$.path' AS SIGNED ARRAY))), INDEX ka(a));
+Query OK, 0 rows affected (0.02 sec)
+
+mysql> explain select /*+ use_index_merge(t, k1, k2, ka) */ * from t where (1 member of (j1->'$.path')) and (2 member of (j2->'$.path')) and (a = 3);
++---------------------------------+---------+-----------+----------------------------------------------------------------------------+------------------------------------------------------------------------------------------------------------------------------------------------+
+| id                              | estRows | task      | access object                                                              | operator info                                                                                                                                  |
++---------------------------------+---------+-----------+----------------------------------------------------------------------------+------------------------------------------------------------------------------------------------------------------------------------------------+
+| Selection_5                     | 8.00    | root      |                                                                            | json_memberof(cast(1, json BINARY), json_extract(test.t.j1, "$.path")), json_memberof(cast(2, json BINARY), json_extract(test.t.j2, "$.path")) |
+| └─IndexMerge_9                  | 0.01    | root      |                                                                            | type: union                                                                                                                                    |
+|   ├─IndexRangeScan_6(Build)     | 10.00   | cop[tikv] | table:t, index:k1(cast(json_extract(`j1`, _utf8'$.path') as signed array)) | range:[1,1], keep order:false, stats:pseudo                                                                                                    |
+|   └─Selection_8(Probe)          | 0.01    | cop[tikv] |                                                                            | eq(test.t.a, 3)                                                                                                                                |
+|     └─TableRowIDScan_7          | 10.00   | cop[tikv] | table:t                                                                    | keep order:false, stats:pseudo                                                                                                                 |
++---------------------------------+---------+-----------+----------------------------------------------------------------------------+------------------------------------------------------------------------------------------------------------------------------------------------+
+5 rows in set, 6 warnings (0.01 sec)
+```
+
+目前只能使用 1 个索引进行访问，而无法产生如下面这样同时使用多个索引的计划：
+
+```
+Selection
+└─IndexMerge
+  ├─IndexRangeScan(k1)
+  ├─IndexRangeScan(k2)
+  ├─IndexRangeScan(ka)
+  └─Selection
+    └─TableRowIDScan
+```
+
+### 不支持多值索引的场景
+
+如果多个条件通过 `OR` 进行组合，且这些条件对应多个不同的索引，则无法使用多值索引，如：
+
+```sql
+mysql> create table t(j1 json, j2 json, a int, INDEX k1((CAST(j1->'$.path' AS SIGNED ARRAY))), INDEX k2((CAST(j2->'$.path' AS SIGNED ARRAY))), INDEX ka(a));
+Query OK, 0 rows affected (0.03 sec)
+
+mysql> explain select /*+ use_index_merge(t, k1, k2, ka) */ * from t where (1 member of (j1->'$.path')) or (2 member of (j2->'$.path'));
++-------------------------+----------+-----------+---------------+----------------------------------------------------------------------------------------------------------------------------------------------------+
+| id                      | estRows  | task      | access object | operator info                                                                                                                                      |
++-------------------------+----------+-----------+---------------+----------------------------------------------------------------------------------------------------------------------------------------------------+
+| Selection_5             | 8000.00  | root      |               | or(json_memberof(cast(1, json BINARY), json_extract(test.t.j1, "$.path")), json_memberof(cast(2, json BINARY), json_extract(test.t.j2, "$.path"))) |
+| └─TableReader_7         | 10000.00 | root      |               | data:TableFullScan_6                                                                                                                               |
+|   └─TableFullScan_6     | 10000.00 | cop[tikv] | table:t       | keep order:false, stats:pseudo                                                                                                                     |
++-------------------------+----------+-----------+---------------+----------------------------------------------------------------------------------------------------------------------------------------------------+
+3 rows in set, 3 warnings (0.00 sec)
+
+mysql> explain select /*+ use_index_merge(t, k1, k2, ka) */ * from t where (1 member of (j1->'$.path')) or (a = 3);
++-------------------------+----------+-----------+---------------+---------------------------------------------------------------------------------------------+
+| id                      | estRows  | task      | access object | operator info                                                                               |
++-------------------------+----------+-----------+---------------+---------------------------------------------------------------------------------------------+
+| Selection_5             | 8000.00  | root      |               | or(json_memberof(cast(1, json BINARY), json_extract(test.t.j1, "$.path")), eq(test.t.a, 3)) |
+| └─TableReader_7         | 10000.00 | root      |               | data:TableFullScan_6                                                                        |
+|   └─TableFullScan_6     | 10000.00 | cop[tikv] | table:t       | keep order:false, stats:pseudo                                                              |
++-------------------------+----------+-----------+---------------+---------------------------------------------------------------------------------------------+
+3 rows in set, 3 warnings (0.00 sec)
+```
+
+对于上述场景，你可以使用 `Union All` 改写查询以使用多值索引。
+
+下面是一些更加复杂且暂时无法使用 IndexMerge 来访问多值索引的场景：
 
 ```sql
 mysql> CREATE TABLE t4 (j JSON, INDEX idx((CAST(j AS SIGNED ARRAY))));
