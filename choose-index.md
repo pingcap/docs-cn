@@ -316,7 +316,7 @@ mysql> explain select /*+ use_index_merge(t, k1, k2, ka) */ * from t where (1 me
 
 对于上述场景，你可以使用 `Union All` 改写查询以使用多值索引。
 
-下面是一些更加复杂的暂时无法使用 IndexMerge 来访问多值索引的场景：
+下面是一些更加复杂且暂时无法使用 IndexMerge 来访问多值索引的场景：
 
 ```sql
 mysql> CREATE TABLE t4 (j JSON, INDEX idx((CAST(j AS SIGNED ARRAY))));
