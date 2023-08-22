@@ -283,16 +283,26 @@ middle_key_by_approximate_size:
 
 `compact` 命令可以对单个 TiKV 进行手动 compact。如果指定 `--from` 和 `--to` 选项，那么它们的参数也是 escaped raw key 形式的。
 
+<<<<<<< HEAD
 - `--host` 参数可以指定要 compact 的 TiKV。
 - `-d` 参数可以指定要 compact 的 RocksDB，有 `kv` 和 `raft` 参数值可以选。
 - `--threads` 参数可以指定 compact 的并发数，默认值是 8。一般来说，并发数越大，compact 的速度越快，但是也会对服务造成影响，所以需要根据情况选择合适的并发数。
 - `--bottommost` 参数可以指定 compact 是否包括最下层的文件。可选值为 `default`、`skip` 和 `force`，默认为 `default`。
+=======
+- `--from` 和 `--to` 选项以 escaped raw key 形式指定 compact 的范围。如果没有设置，表示 compact 整个 TiKV。
+- `--region` 选项指定 compact Region 的范围。如果设置，则 `--from` 和 `--to` 选项会被忽略。
+- `-c` 选项指定 column family 名称，默认值为 `default`，可选值为 `default`、`lock` 和 `write`。
+- `-d` 选项指定要 compact 的 RocksDB，默认值为 `kv`，可选值为 `kv` 和 `raft`。
+- `--threads` 选项可以指定 compact 的并发数，默认值是 8。一般来说，并发数越大，compact 的速度越快，但是也会对服务造成影响，所以需要根据情况选择合适的并发数。
+- `--bottommost` 选项可以指定 compact 是否包括最下层的文件。可选值为 `default`、`skip` 和 `force`，默认为 `default`。
+>>>>>>> 9b7e97a8dc (tikv: fixed some description about `--db` and `compact-cluster`  (#14851))
     - `default` 表示只有开启了 Compaction Filter 时 compact 才会包括最下层文件。
     - `skip` 表示 compact 不包括最下层文件。
     - `force` 表示 compact 总是包括最下层文件。
 
 {{< copyable "shell-regular" >}}
 
+<<<<<<< HEAD
 ```shell
 tikv-ctl --data-dir /path/to/tikv compact -d kv
 ```
@@ -300,10 +310,24 @@ tikv-ctl --data-dir /path/to/tikv compact -d kv
 ```
 success!
 ```
+=======
+    ```shell
+    tikv-ctl --data-dir /path/to/tikv compact -d kv
+    ```
+
+- 在远程模式 compact data，执行如下命令：
+
+    ```shell
+    tikv-ctl --host ip:port compact -d kv
+    ```
+>>>>>>> 9b7e97a8dc (tikv: fixed some description about `--db` and `compact-cluster`  (#14851))
 
 ### 手动 compact 整个 TiKV 集群的数据
 
-`compact-cluster` 命令可以对整个 TiKV 集群进行手动 compact。该命令参数的含义和使用与 `compact` 命令一样。
+`compact-cluster` 命令可以对整个 TiKV 集群进行手动 compact。该命令参数的含义和使用与 `compact` 命令一样，唯一的区别如下：
+
+- 使用 `compact-cluster` 命令时，通过 `--pd` 指定 PD 所在的地址，以便 `tikv-ctl` 可以找到集群中的所有 TiKV 节点作为 compact 目标。
+- 使用 `compact` 命令时，通过 `--data-dir` 或者 `--host` 指定单个 TiKV 作为 compact 目标。
 
 ### 设置一个 Region 副本为 tombstone 状态
 
