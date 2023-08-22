@@ -24,15 +24,15 @@ TiDB 版本：6.5.4
 
 + TiKV
 
--  Add get_region_read_progress command in tikv-ctl [#15082](https://github.com/tikv/tikv/issues/15082) @[ekexium](https://github.com/ekexium)
-- Compress traffic of check_leader requests. [#14839](https://github.com/tikv/tikv/issues/14839) @[you06](https://github.com/you06)
-- rawkv: fix ttl_checker for RawKV API v2. [#15142](https://github.com/tikv/tikv/issues/15142) @[pingyu](https://github.com/pingyu)
-- Make the checkpoint lag of PITR more stable when there are some leadership transforming. [#13638](https://github.com/tikv/tikv/issues/13638) @[YuJuncen](https://github.com/YuJuncen)
-- Add safe-ts related logs and Grafana panels. [#15082](https://github.com/tikv/tikv/issues/15082) @[ekexium](https://github.com/ekexium)
-- Fix occasional panic during shutdown [#13926](https://github.com/tikv/tikv/issues/13926) @[BusyJay](https://github.com/BusyJay)
-- Make online unsafe recovery abort on timeout [#15346](https://github.com/tikv/tikv/issues/15346) @[Connor1996](https://github.com/Connor1996)
-- 为 check leader 请求添加 gzip 压缩降低跨 tikv 节点之间相关流量开销 [#14553](https://github.com/tikv/tikv/issues/14553) @[you06](https://github.com/you06)
-- 新增 min_safe_ts, min_safe_ts_region 和 min_safe_ts_gap 监控指标，用于诊断 resolved-ts 相关问题 [#15082](https://github.com/tikv/tikv/issues/15082) @[ekexium](https://github.com/ekexium)   
+    -  Add get_region_read_progress command in tikv-ctl [#15082](https://github.com/tikv/tikv/issues/15082) @[ekexium](https://github.com/ekexium)
+    - Compress traffic of check_leader requests. [#14839](https://github.com/tikv/tikv/issues/14839) @[you06](https://github.com/you06)
+    - rawkv: fix ttl_checker for RawKV API v2. [#15142](https://github.com/tikv/tikv/issues/15142) @[pingyu](https://github.com/pingyu)
+    - Make the checkpoint lag of PITR more stable when there are some leadership transforming. [#13638](https://github.com/tikv/tikv/issues/13638) @[YuJuncen](https://github.com/YuJuncen)
+    - Add safe-ts related logs and Grafana panels. [#15082](https://github.com/tikv/tikv/issues/15082) @[ekexium](https://github.com/ekexium)
+    - Fix occasional panic during shutdown [#13926](https://github.com/tikv/tikv/issues/13926) @[BusyJay](https://github.com/BusyJay)
+    - Make online unsafe recovery abort on timeout [#15346](https://github.com/tikv/tikv/issues/15346) @[Connor1996](https://github.com/Connor1996)
+    - 为 check leader 请求添加 gzip 压缩降低跨 tikv 节点之间相关流量开销 [#14553](https://github.com/tikv/tikv/issues/14553) @[you06](https://github.com/you06)
+    - 新增 min_safe_ts, min_safe_ts_region 和 min_safe_ts_gap 监控指标，用于诊断 resolved-ts 相关问题 [#15082](https://github.com/tikv/tikv/issues/15082) @[ekexium](https://github.com/ekexium)   
     - note [#issue](https://github.com/tikv/tikv/issues/${issue-id}) @[贡献者 GitHub ID](https://github.com/${github-id})
     - (dup): release-7.3.0.md > 改进提升> TiKV - 添加 `Max gap of safe-ts` 和 `Min safe ts region` 监控项以及 `tikv-ctl get_region_read_progress` 命令，用于更好地观测和诊断 resolved-ts 和 safe-ts 的状态 [#15082](https://github.com/tikv/tikv/issues/15082) @[ekexium](https://github.com/ekexium)
 
@@ -129,17 +129,15 @@ TiDB 版本：6.5.4
 
 + TiKV
 
-- Fix an issue that Region merge may be blocked after flashback [#15258](https://github.com/tikv/tikv/issues/15258) @[overvenus](https://github.com/overvenus)
-- Fix an issue that may cause inconsistent reads when a TiKV node is isolated while another node restarts [#15035](https://github.com/tikv/tikv/issues/15035) @[overvenus](https://github.com/overvenus)
-- Fix the QPS drop to zero in dr SyncRecovery phase in DR mode [#14975](https://github.com/tikv/tikv/issues/14975) @[nolouch](https://github.com/nolouch)
-- Fix offset inconsistency between crypter and file that could cause data corruption when file I/O is interrupted. [#15080](https://github.com/tikv/tikv/issues/15080) @[tabokie](https://github.com/tabokie)
-- rust-rocks: expose ColumnFamilyOptions's ttl and periodic_compaction_seconds setting in tikv. They're disabled by default. [#14873](https://github.com/tikv/tikv/issues/14873) @[LykxSassinator](https://github.com/LykxSassinator)
-- pd_client: reduce store heartbeat retires to prevent heartbeat storm [#15184](https://github.com/tikv/tikv/issues/15184) @[nolouch](https://github.com/nolouch)
-- Fix the issue that flow control may not work when pending compaction bytes is high [#14392](https://github.com/tikv/tikv/issues/14392) @[Connor1996](https://github.com/Connor1996)
-- Fixed a bug that may cause PITR get stuck when the network between PD and TiKV is cut down. [#15279](https://github.com/tikv/tikv/issues/15279) @[YuJuncen](https://github.com/YuJuncen)
-- Fixed a bug that may cause TiKV use more memory than excepted when TiCDC and old value enabled. [#14815](https://github.com/tikv/tikv/issues/14815) @[YuJuncen](https://github.com/YuJuncen)
-
-    - note [#issue](https://github.com/tikv/tikv/issues/${issue-id}) @[贡献者 GitHub ID](https://github.com/${github-id})
+    - Fix an issue that Region merge may be blocked after flashback [#15258](https://github.com/tikv/tikv/issues/15258) @[overvenus](https://github.com/overvenus)
+    - Fix an issue that may cause inconsistent reads when a TiKV node is isolated while another node restarts [#15035](https://github.com/tikv/tikv/issues/15035) @[overvenus](https://github.com/overvenus)
+    - Fix the QPS drop to zero in dr SyncRecovery phase in DR mode [#14975](https://github.com/tikv/tikv/issues/14975) @[nolouch](https://github.com/nolouch)
+    - Fix offset inconsistency between crypter and file that could cause data corruption when file I/O is interrupted. [#15080](https://github.com/tikv/tikv/issues/15080) @[tabokie](https://github.com/tabokie)
+    - rust-rocks: expose ColumnFamilyOptions's ttl and periodic_compaction_seconds setting in tikv. They're disabled by default. [#14873](https://github.com/tikv/tikv/issues/14873) @[LykxSassinator](https://github.com/LykxSassinator)
+    - pd_client: reduce store heartbeat retires to prevent heartbeat storm [#15184](https://github.com/tikv/tikv/issues/15184) @[nolouch](https://github.com/nolouch)
+    - Fix the issue that flow control may not work when pending compaction bytes is high [#14392](https://github.com/tikv/tikv/issues/14392) @[Connor1996](https://github.com/Connor1996)
+    - Fixed a bug that may cause PITR get stuck when the network between PD and TiKV is cut down. [#15279](https://github.com/tikv/tikv/issues/15279) @[YuJuncen](https://github.com/YuJuncen)
+    - Fixed a bug that may cause TiKV use more memory than excepted when TiCDC and old value enabled. [#14815](https://github.com/tikv/tikv/issues/14815) @[YuJuncen](https://github.com/YuJuncen)
 
 + PD
 
