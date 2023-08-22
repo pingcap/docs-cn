@@ -147,6 +147,8 @@ The index selection can be controlled by a single query through [Optimizer Hints
 
 For the limitations of multi-valued indexes, refer to [`CREATE INDEX`](/sql-statements/sql-statement-create-index.md#limitations).
 
+### Supported scenarios
+
 Currently, TiDB supports accessing multi-valued indexes using IndexMerge that is automatically converted from `json_member_of`, `json_contains`, and `json_overlaps` conditions. You can either rely on the optimizer to automatically select IndexMerge based on cost, or specify the selection of multi-valued indexes through the optimizer hint [`use_index_merge`](/optimizer-hints.md#use_index_merget1_name-idx1_name--idx2_name-) or [`use_index`](/optimizer-hints.md#use_indext1_name-idx1_name--idx2_name-). See the following examples:
 
 ```sql
@@ -233,7 +235,7 @@ mysql> EXPLAIN SELECT /*+ use_index_merge(t2, idx) */ * FROM t2 WHERE a=1 AND JS
 6 rows in set, 1 warning (0.00 sec)
 ```
 
-For `OR` conditions composed of multiple `member of` expressions, IndexMerge can be used to access the multi-valued index:
+For `OR` conditions composed of multiple `member of` expressions that can access the same multi-valued index, IndexMerge can be used to access the multi-valued index:
 
 ```sql
 mysql> CREATE TABLE t3 (a INT, j JSON, INDEX idx(a, (CAST(j AS SIGNED ARRAY))));
@@ -251,7 +253,71 @@ mysql> EXPLAIN SELECT /*+ use_index_merge(t3, idx) */ * FROM t3 WHERE ((a=1 AND 
 +---------------------------------+---------+-----------+---------------------------------------------------+--------------------------------------------------------------------------------------------------------------------------------------------------+
 ```
 
-The following are some scenarios that are not yet supported.
+### Partially supported scenarios
+
+For `AND` conditions composed of multiple expressions that correspond to multiple different indexes, only one multi-valued index can be used to access:
+
+```sql
+mysql> create table t(j1 json, j2 json, a int, INDEX k1((CAST(j1->'$.path' AS SIGNED ARRAY))), INDEX k2((CAST(j2->'$.path' AS SIGNED ARRAY))), INDEX ka(a));
+Query OK, 0 rows affected (0.02 sec)
+
+mysql> explain select /*+ use_index_merge(t, k1, k2, ka) */ * from t where (1 member of (j1->'$.path')) and (2 member of (j2->'$.path')) and (a = 3);
++---------------------------------+---------+-----------+----------------------------------------------------------------------------+------------------------------------------------------------------------------------------------------------------------------------------------+
+| id                              | estRows | task      | access object                                                              | operator info                                                                                                                                  |
++---------------------------------+---------+-----------+----------------------------------------------------------------------------+------------------------------------------------------------------------------------------------------------------------------------------------+
+| Selection_5                     | 8.00    | root      |                                                                            | json_memberof(cast(1, json BINARY), json_extract(test.t.j1, "$.path")), json_memberof(cast(2, json BINARY), json_extract(test.t.j2, "$.path")) |
+| └─IndexMerge_9                  | 0.01    | root      |                                                                            | type: union                                                                                                                                    |
+|   ├─IndexRangeScan_6(Build)     | 10.00   | cop[tikv] | table:t, index:k1(cast(json_extract(`j1`, _utf8'$.path') as signed array)) | range:[1,1], keep order:false, stats:pseudo                                                                                                    |
+|   └─Selection_8(Probe)          | 0.01    | cop[tikv] |                                                                            | eq(test.t.a, 3)                                                                                                                                |
+|     └─TableRowIDScan_7          | 10.00   | cop[tikv] | table:t                                                                    | keep order:false, stats:pseudo                                                                                                                 |
++---------------------------------+---------+-----------+----------------------------------------------------------------------------+------------------------------------------------------------------------------------------------------------------------------------------------+
+5 rows in set, 6 warnings (0.01 sec)
+```
+
+Currently, TiDB only supports using one index to access instead of generating the following plan that uses multiple indexes to access at the same time:
+
+```
+Selection
+└─IndexMerge
+  ├─IndexRangeScan(k1)
+  ├─IndexRangeScan(k2)
+  ├─IndexRangeScan(ka)
+  └─Selection
+    └─TableRowIDScan
+```
+
+### Unsupported scenarios
+
+For `OR` conditions composed of multiple expressions that correspond to multiple different indexes, multi-valued indexes cannot be used:
+
+```sql
+mysql> create table t(j1 json, j2 json, a int, INDEX k1((CAST(j1->'$.path' AS SIGNED ARRAY))), INDEX k2((CAST(j2->'$.path' AS SIGNED ARRAY))), INDEX ka(a));
+Query OK, 0 rows affected (0.03 sec)
+
+mysql> explain select /*+ use_index_merge(t, k1, k2, ka) */ * from t where (1 member of (j1->'$.path')) or (2 member of (j2->'$.path'));
++-------------------------+----------+-----------+---------------+----------------------------------------------------------------------------------------------------------------------------------------------------+
+| id                      | estRows  | task      | access object | operator info                                                                                                                                      |
++-------------------------+----------+-----------+---------------+----------------------------------------------------------------------------------------------------------------------------------------------------+
+| Selection_5             | 8000.00  | root      |               | or(json_memberof(cast(1, json BINARY), json_extract(test.t.j1, "$.path")), json_memberof(cast(2, json BINARY), json_extract(test.t.j2, "$.path"))) |
+| └─TableReader_7         | 10000.00 | root      |               | data:TableFullScan_6                                                                                                                               |
+|   └─TableFullScan_6     | 10000.00 | cop[tikv] | table:t       | keep order:false, stats:pseudo                                                                                                                     |
++-------------------------+----------+-----------+---------------+----------------------------------------------------------------------------------------------------------------------------------------------------+
+3 rows in set, 3 warnings (0.00 sec)
+
+mysql> explain select /*+ use_index_merge(t, k1, k2, ka) */ * from t where (1 member of (j1->'$.path')) or (a = 3);
++-------------------------+----------+-----------+---------------+---------------------------------------------------------------------------------------------+
+| id                      | estRows  | task      | access object | operator info                                                                               |
++-------------------------+----------+-----------+---------------+---------------------------------------------------------------------------------------------+
+| Selection_5             | 8000.00  | root      |               | or(json_memberof(cast(1, json BINARY), json_extract(test.t.j1, "$.path")), eq(test.t.a, 3)) |
+| └─TableReader_7         | 10000.00 | root      |               | data:TableFullScan_6                                                                        |
+|   └─TableFullScan_6     | 10000.00 | cop[tikv] | table:t       | keep order:false, stats:pseudo                                                              |
++-------------------------+----------+-----------+---------------+---------------------------------------------------------------------------------------------+
+3 rows in set, 3 warnings (0.00 sec)
+```
+
+A workaround for the preceding scenario is to rewrite the query using `Union All`:
+
+The following are some more complex scenarios that are not yet supported.
 
 ```sql
 mysql> CREATE TABLE t4 (j JSON, INDEX idx((CAST(j AS SIGNED ARRAY))));
