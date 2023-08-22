@@ -24,7 +24,7 @@ TiDB 版本：6.5.4
 
 + TiKV
 
-    -  Add get_region_read_progress command in tikv-ctl [#15082](https://github.com/tikv/tikv/issues/15082) @[ekexium](https://github.com/ekexium)
+    - Add get_region_read_progress command in tikv-ctl [#15082](https://github.com/tikv/tikv/issues/15082) @[ekexium](https://github.com/ekexium)
     - Compress traffic of check_leader requests. [#14839](https://github.com/tikv/tikv/issues/14839) @[you06](https://github.com/you06)
     - rawkv: fix ttl_checker for RawKV API v2. [#15142](https://github.com/tikv/tikv/issues/15142) @[pingyu](https://github.com/pingyu)
     - Make the checkpoint lag of PITR more stable when there are some leadership transforming. [#13638](https://github.com/tikv/tikv/issues/13638) @[YuJuncen](https://github.com/YuJuncen)
