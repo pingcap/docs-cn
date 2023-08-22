@@ -324,18 +324,18 @@ middle_key_by_approximate_size:
 - 在本地模式 compact data，执行如下命令：
 
     ```shell
-    tikv-ctl --data-dir /path/to/tikv compact --db kv
+    tikv-ctl --data-dir /path/to/tikv compact -d kv
     ```
 
 - 在远程模式 compact data，执行如下命令：
 
     ```shell
-    tikv-ctl --host ip:port compact --db kv
+    tikv-ctl --host ip:port compact -d kv
     ```
 
 ### 手动 compact 整个 TiKV 集群的数据
 
-`compact-cluster` 命令可以对整个 TiKV 集群进行手动 compact。该命令参数的含义和使用与 `compact` 命令一样，唯一的区别是 compact 的目标要通过 `--pd` 指定 PD 所在的地址来确定，而不是用 `--data-dir` 或者 `--host` 指定的单个 TiKV。
+`compact-cluster` 命令可以对整个 TiKV 集群进行手动 compact。该命令参数的含义和使用与 `compact` 命令一样，唯一的区别是 compact 的目标要通过 `--pd` 指定 PD 所在的地址来确定，而不是用 `--data-dir` 或者 `--host` 指定单个 TiKV。
 
 ### 设置一个 Region 副本为 tombstone 状态
 
