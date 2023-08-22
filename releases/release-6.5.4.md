@@ -168,7 +168,14 @@ TiDB 版本：6.5.4
 
     + TiCDC
 
-        - note [#issue](https://github.com/pingcap/tiflow/issues/${issue-id}) @[贡献者 GitHub ID](https://github.com/${github-id})
+        - 修复在下游发生故障重试时可能导致同步任务卡住 [#9450](https://github.com/pingcap/tiflow/issues/9450) 
+        - 优化 TiCDC 因为故障重试时对外展示状态的方式 [#9483](https://github.com/pingcap/tiflow/issues/9483) 
+        - 修复同步到 kafka 时重试时间间隔过短导致同步任务失败的问题 [#9504](https://github.com/pingcap/tiflow/issues/9504) 
+        -  修复在上游同一个事务中修改多行 UK 场景下，CDC 可能导致同步写冲突的问题 [#9430](https://github.com/pingcap/tiflow/issues/9430) 
+        -  修复同步 rename ddl 存在可能不能正确同步的问题 [#9488](https://github.com/pingcap/tiflow/issues/9488) [#9378](https://github.com/pingcap/tiflow/issues/9378) [#9531](https://github.com/pingcap/tiflow/issues/9531)
+        - 修复下游发生短时间故障导致同步任务卡住的问题 [#9542](https://github.com/pingcap/tiflow/issues/9542)[#9272](https://github.com/pingcap/tiflow/issues/9272)[#9582](https://github.com/pingcap/tiflow/issues/9582)[#9592](https://github.com/pingcap/tiflow/issues/9592)
+        - 优化同步到 kafka 时消息过大超过限制的处理方式，允许只发送 PK 到下游 [#9574](https://github.com/pingcap/tiflow/issues/9574)
+        - 修复CDC 节点在发生网络隔离时可能导致数据不一致的问题[#9344](https://github.com/pingcap/tiflow/issues/9344)
         - note [#issue](https://github.com/pingcap/tiflow/issues/${issue-id}) @[贡献者 GitHub ID](https://github.com/${github-id})
         - (dup): release-7.3.0.md > 错误修复> Tools> TiCDC - 修复在 TiCDC 节点状态发生改变时可能引发的 panic 问题 [#9354](https://github.com/pingcap/tiflow/issues/9354) @[sdojjy](https://github.com/sdojjy)
         - (dup): release-7.3.0.md > 错误修复> Tools> TiCDC - 修复当 Kafka Sink 遇到错误时可能会无限阻塞同步任务推进的问题 [#9309](https://github.com/pingcap/tiflow/issues/9309) @[hicqu](https://github.com/hicqu)
