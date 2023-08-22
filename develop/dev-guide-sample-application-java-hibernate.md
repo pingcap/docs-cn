@@ -1,72 +1,162 @@
 ---
-title: TiDB 和 Hibernate 的简单 CRUD 应用程序
-summary: 给出一个 TiDB 和 Hibernate 的简单 CRUD 应用程序示例。
+title: 使用 Hibernate 连接到 TiDB
+summary: 本文描述了 TiDB 和 Hibernate 的连接步骤，并给出了简单示例代码片段。
 ---
 
 <!-- markdownlint-disable MD024 -->
 <!-- markdownlint-disable MD029 -->
 
-# TiDB 和 Hibernate 的简单 CRUD 应用程序
+# 如何用 Hibernate 连接到 TiDB
 
-[Hibernate](https://hibernate.org/) 是当前比较流行的开源 Java 应用持久层框架，且 Hibernate 在版本 `6.0.0.Beta2` 及以后支持了 TiDB 方言，完美适配了 TiDB 的特性。
+TiDB 是一个兼容 MySQL 的数据库。[Hibernate](https://hibernate.org/) 是当前比较流行的开源 Java 应用持久层框架，且 Hibernate 在版本 `6.0.0.Beta2` 及以上支持了 TiDB 方言，完美适配了 TiDB 的特性。
 
 本文档将展示如何使用 TiDB 和 Java 来构造一个简单的 CRUD 应用程序。
 
-> **注意：**
->
-> 推荐使用 Java 8 及以上版本进行 TiDB 的应用程序的编写。
+## 前置需求
 
-## 拓展学习视频
+- 推荐 **Java Development Kit** (JDK) **17** 及以上版本，你可以根据公司及个人需求，自行选择 [OpenJDK](https://openjdk.org/) 或 [Oracle JDK](https://www.oracle.com/hk/java/technologies/downloads/)。
+- [Maven](https://maven.apache.org/install.html) **3.8** 及以上版本。
+- [Git](https://git-scm.com/downloads)。
+- TiDB 集群。如果你还没有 TiDB 集群，可以按照以下方式创建：
+    - （推荐方式）参考[创建 TiDB Serverless 集群](/develop/dev-guide-build-cluster-in-cloud.md#第-1-步创建-tidb-serverless-集群)，创建你自己的 TiDB Cloud 集群。
+    - 参考[部署本地测试 TiDB 集群](/quick-start-with-tidb.md#部署本地测试集群)或[部署正式 TiDB 集群](/production-deployment-using-tiup.md)，创建本地集群。
 
-- [使用 Connector/J - TiDB v6](https://learn.pingcap.com/learner/course/840002/?utm_source=docs-cn-dev-guide)
-- [在 TiDB 上开发应用的最佳实践 - TiDB v6](https://learn.pingcap.com/learner/course/780002/?utm_source=docs-cn-dev-guide)
+## 运行代码并连接到 TiDB
 
-## 第 1 步：启动你的 TiDB 集群
+本小节演示如何运行示例应用程序的代码，并连接到 TiDB。
 
-本节将介绍 TiDB 集群的启动方法。
+### 第 1 步：克隆示例代码仓库到本地
 
-**使用 TiDB Serverless 集群**
-
-详细步骤，请参考：[创建 TiDB Serverless 集群](/develop/dev-guide-build-cluster-in-cloud.md#第-1-步创建-tidb-serverless-集群)。
-
-**使用本地集群**
-
-详细步骤，请参考：[部署本地测试 TiDB 集群](/quick-start-with-tidb.md#部署本地测试集群)或[部署正式 TiDB 集群](/production-deployment-using-tiup.md)。
-
-## 第 2 步：获取代码
-
-```shell
+```bash
 git clone https://github.com/pingcap-inc/tidb-example-java.git
+cd tidb-example-java
 ```
 
-与 [Hibernate](https://hibernate.org/orm/) 对比，JDBC 的实现方式并非最优体验。你需要自行编写错误处理逻辑，并且代码无法简单复用。这会使你的代码有些冗余。
+### 第 2 步：配置连接信息
 
-此处将以 `6.0.0.Beta2` 版本进行说明。
+根据不同的 TiDB 部署方式，使用不同的方法连接到 TiDB 集群。
 
-进入目录 `plain-java-hibernate`：
+<SimpleTab>
 
-```shell
-cd plain-java-hibernate
-```
+<div label="TiDB Serverless">
 
-目录结构如下所示：
+1. 在 TiDB Cloud Web Console 中，选择你的 TiDB Serverless 集群，进入 **Overview** 页面，点击右上角的 **Connect** 按钮。
 
-```
-.
-├── Makefile
-├── plain-java-hibernate.iml
-├── pom.xml
-└── src
-    └── main
-        ├── java
-        │   └── com
-        │       └── pingcap
-        │           └── HibernateExample.java
-        └── resources
-            └── hibernate.cfg.xml
-```
+2. 确认窗口中的配置和你的运行环境一致。
 
-其中，`hibernate.cfg.xml` 为 Hibernate 配置文件，定义了：
+    - Endpoint 为 **Public**
+    - Connect With 选择 **General**
+    - Operating System 为你的运行环境。
+
+    <Tip>如果你在 Windows Subsystem for Linux (WSL) 中运行，请切换为对应的 Linux 发行版。</Tip>
+
+3. 点击 **Generate Password** 生成密码。
+
+   <Tip>如果你之前已经生成过密码，可以直接使用原密码，或点击 **Reset Password** 重新生成密码。</Tip>
+
+4. 运行以下命令，将 `env.sh.example` 复制并重命名为 `env.sh`：
+
+    ```bash
+    cp env.sh.example env.sh
+    ```
+
+5. 复制并粘贴对应连接字符串至 `env.sh` 中。需更改部分示例结果如下。
+
+    ```shell
+    export TIDB_HOST='{gateway-region}.aws.tidbcloud.com'
+    export TIDB_PORT='4000'
+    export TIDB_USER='{prefix}.root'
+    export TIDB_PASSWORD='{password}'
+    export TIDB_DB_NAME='test'
+    export USE_SSL='true'
+    ```
+
+    注意替换 `{}` 中的占位符为 **Connect** 窗口中获得的值。
+
+    TiDB Serverless 要求使用 secure connection，因此 `USE_SSL` 的值应为 `true`。
+
+6. 保存文件。
+
+</div>
+
+<div label="TiDB Dedicated">
+
+1. 在 TiDB Cloud Web Console 中，选择你的 TiDB Dedicated 集群，进入 **Overview** 页面，点击右上角的 **Connect** 按钮。点击 **Allow Access from Anywhere**。
+
+    <Tip>
+
+    更多配置细节，可参考 [TiDB Dedicated 标准连接教程](https://docs.pingcap.com/tidbcloud/connect-via-standard-connection)。
+
+    </Tip>
+
+2. 运行以下命令，将 `env.sh.example` 复制并重命名为 `env.sh`：
+
+    ```bash
+    cp env.sh.example env.sh
+    ```
+
+3. 复制并粘贴对应的连接字符串至 `.env` 中。需更改部分示例结果如下。
+
+    ```shell
+    export TIDB_HOST='{host}.clusters.tidb-cloud.com'
+    export TIDB_PORT='4000'
+    export TIDB_USER='{prefix}.root'
+    export TIDB_PASSWORD='{password}'
+    export TIDB_DB_NAME='test'
+    export USE_SSL='false'
+    ```
+
+    注意替换 `{}` 中的占位符为 **Connect** 窗口中获得的值。
+
+4. 保存文件。
+
+</div>
+
+<div label="自建 TiDB">
+
+1. 运行以下命令，将 `env.sh.example` 复制并重命名为 `env.sh`：
+
+    ```bash
+    cp env.sh.example env.sh
+    ```
+
+2. 复制并粘贴对应的连接字符串至 `.env` 中。需更改部分示例结果如下。
+
+    ```shell
+    export TIDB_HOST='{tidb_server_host}'
+    export TIDB_PORT='4000'
+    export TIDB_USER='root'
+    export TIDB_PASSWORD='{password}'
+    export TIDB_DB_NAME='test'
+    export USE_SSL='false'
+    ```
+
+    注意替换 `{}` 中的占位符为你的 TiDB 对应的值，并设置 `USE_SSL` 为 `false`。如果你在本机运行 TiDB，默认 Host 地址为 `127.0.0.1`，密码为空。
+
+3. 保存文件。
+
+</div>
+
+</SimpleTab>
+
+### 第 3 步：运行代码并查看结果
+
+1. 运行下述命令，执行示例代码：
+
+    ```shell
+    cd plain-java-hibernate
+    make
+    ```
+
+2. 查看[示例输出](https://github.com/pingcap-inc/tidb-example-java/blob/main/Expected-Output.md#plain-java-hibernate)，并与你的程序输出进行比较。结果近似即为连接成功。
+
+## 重点代码片段
+
+你可参考以下关键代码片段，完成自己的应用开发。
+
+### 连接到 TiDB
+
+编写配置文件 `hibernate.cfg.xml`：
 
 ```xml
 <?xml version='1.0' encoding='utf-8'?>
@@ -79,9 +169,9 @@ cd plain-java-hibernate
         <!-- Database connection settings -->
         <property name="hibernate.connection.driver_class">com.mysql.cj.jdbc.Driver</property>
         <property name="hibernate.dialect">org.hibernate.dialect.TiDBDialect</property>
-        <property name="hibernate.connection.url">jdbc:mysql://localhost:4000/test</property>
-        <property name="hibernate.connection.username">root</property>
-        <property name="hibernate.connection.password"></property>
+        <property name="hibernate.connection.url">${tidb_jdbc_url}</property>
+        <property name="hibernate.connection.username">${tidb_user}</property>
+        <property name="hibernate.connection.password">${tidb_password}</property>
         <property name="hibernate.connection.autocommit">false</property>
 
         <!-- Required so a table can be created from the 'PlayerDAO' class -->
@@ -94,326 +184,57 @@ cd plain-java-hibernate
 </hibernate-configuration>
 ```
 
-`HibernateExample.java` 是 `plain-java-hibernate` 这个示例程序的主体。使用 Hibernate 时，相较于 JDBC，这里仅需写入配置文件地址，Hibernate 屏蔽了创建数据库连接时，不同数据库差异的细节。
-
-`PlayerDAO` 是程序用来管理数据对象的类。其中 `DAO` 是 [Data Access Object](https://en.wikipedia.org/wiki/Data_access_object) 的缩写。其中定义了一系列数据的操作方法，用来提供数据的写入能力。相较于 JDBC，Hibernate 封装了大量的操作，如对象映射、基本对象的 CRUD 等，极大地简化了代码量。
-
-`PlayerBean` 是数据实体类，为数据库表在程序内的映射。`PlayerBean` 的每个属性都对应着 `player` 表的一个字段。相较于 JDBC，Hibernate 的 `PlayerBean` 实体类为了给 Hibernate 提供更多的信息，加入了注解，用来指示映射关系。
+请将 `${tidb_jdbc_url}`、`${tidb_user}`、`${tidb_password}` 等替换为你的 TiDB 集群的实际值。随后编写以下函数：
 
 ```java
-package com.pingcap;
-
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
-import org.hibernate.JDBCException;
-import org.hibernate.Session;
-import org.hibernate.SessionFactory;
-import org.hibernate.Transaction;
-import org.hibernate.cfg.Configuration;
-import org.hibernate.query.NativeQuery;
-import org.hibernate.query.Query;
-
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
-import java.util.function.Function;
-
-@Entity
-@Table(name = "player_hibernate")
-class PlayerBean {
-    @Id
-    private String id;
-    @Column(name = "coins")
-    private Integer coins;
-    @Column(name = "goods")
-    private Integer goods;
-
-    public PlayerBean() {
-    }
-
-    public PlayerBean(String id, Integer coins, Integer goods) {
-        this.id = id;
-        this.coins = coins;
-        this.goods = goods;
-    }
-
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
-
-    public Integer getCoins() {
-        return coins;
-    }
-
-    public void setCoins(Integer coins) {
-        this.coins = coins;
-    }
-
-    public Integer getGoods() {
-        return goods;
-    }
-
-    public void setGoods(Integer goods) {
-        this.goods = goods;
-    }
-
-    @Override
-    public String toString() {
-        return String.format("    %-8s => %10s\n    %-8s => %10s\n    %-8s => %10s\n",
-                "id", this.id, "coins", this.coins, "goods", this.goods);
-    }
-}
-
-/**
- * Main class for the basic Hibernate example.
- **/
-public class HibernateExample
-{
-    public static class PlayerDAO {
-        public static class NotEnoughException extends RuntimeException {
-            public NotEnoughException(String message) {
-                super(message);
-            }
-        }
-
-        // Run SQL code in a way that automatically handles the
-        // transaction retry logic so we don't have to duplicate it in
-        // various places.
-        public Object runTransaction(Session session, Function<Session, Object> fn) {
-            Object resultObject = null;
-
-            Transaction txn = session.beginTransaction();
-            try {
-                resultObject = fn.apply(session);
-                txn.commit();
-                System.out.println("APP: COMMIT;");
-            } catch (JDBCException e) {
-                System.out.println("APP: ROLLBACK BY JDBC ERROR;");
-                txn.rollback();
-            } catch (NotEnoughException e) {
-                System.out.printf("APP: ROLLBACK BY LOGIC; %s", e.getMessage());
-                txn.rollback();
-            }
-            return resultObject;
-        }
-
-        public Function<Session, Object> createPlayers(List<PlayerBean> players) throws JDBCException {
-            return session -> {
-                Integer addedPlayerAmount = 0;
-                for (PlayerBean player: players) {
-                    session.persist(player);
-                    addedPlayerAmount ++;
-                }
-                System.out.printf("APP: createPlayers() --> %d\n", addedPlayerAmount);
-                return addedPlayerAmount;
-            };
-        }
-
-        public Function<Session, Object> buyGoods(String sellId, String buyId, Integer amount, Integer price) throws JDBCException {
-            return session -> {
-                PlayerBean sellPlayer = session.get(PlayerBean.class, sellId);
-                PlayerBean buyPlayer = session.get(PlayerBean.class, buyId);
-
-                if (buyPlayer == null || sellPlayer == null) {
-                    throw new NotEnoughException("sell or buy player not exist");
-                }
-
-                if (buyPlayer.getCoins() < price || sellPlayer.getGoods() < amount) {
-                    throw new NotEnoughException("coins or goods not enough, rollback");
-                }
-
-                buyPlayer.setGoods(buyPlayer.getGoods() + amount);
-                buyPlayer.setCoins(buyPlayer.getCoins() - price);
-                session.persist(buyPlayer);
-
-                sellPlayer.setGoods(sellPlayer.getGoods() - amount);
-                sellPlayer.setCoins(sellPlayer.getCoins() + price);
-                session.persist(sellPlayer);
-
-                System.out.printf("APP: buyGoods --> sell: %s, buy: %s, amount: %d, price: %d\n", sellId, buyId, amount, price);
-                return 0;
-            };
-        }
-
-        public Function<Session, Object> getPlayerByID(String id) throws JDBCException {
-            return session -> session.get(PlayerBean.class, id);
-        }
-
-        public Function<Session, Object> printPlayers(Integer limit) throws JDBCException {
-            return session -> {
-                NativeQuery<PlayerBean> limitQuery = session.createNativeQuery("SELECT * FROM player_hibernate LIMIT :limit", PlayerBean.class);
-                limitQuery.setParameter("limit", limit);
-                List<PlayerBean> players = limitQuery.getResultList();
-
-                for (PlayerBean player: players) {
-                    System.out.println("\n[printPlayers]:\n" + player);
-                }
-                return 0;
-            };
-        }
-
-        public Function<Session, Object> countPlayers() throws JDBCException {
-            return session -> {
-                Query<Long> countQuery = session.createQuery("SELECT count(player_hibernate) FROM PlayerBean player_hibernate", Long.class);
-                return countQuery.getSingleResult();
-            };
-        }
-    }
-
-    public static void main(String[] args) {
-        // 1. Create a SessionFactory based on our hibernate.cfg.xml configuration
-        // file, which defines how to connect to the database.
-        SessionFactory sessionFactory
-                = new Configuration()
-                .configure("hibernate.cfg.xml")
-                .addAnnotatedClass(PlayerBean.class)
-                .buildSessionFactory();
-
-        try (Session session = sessionFactory.openSession()) {
-            // 2. And then, create DAO to manager your data.
-            PlayerDAO playerDAO = new PlayerDAO();
-
-            // 3. Run some simple examples.
-
-            // Create a player who has 1 coin and 1 goods.
-            playerDAO.runTransaction(session, playerDAO.createPlayers(Collections.singletonList(
-                    new PlayerBean("test", 1, 1))));
-
-            // Get a player.
-            PlayerBean testPlayer = (PlayerBean)playerDAO.runTransaction(session, playerDAO.getPlayerByID("test"));
-            System.out.printf("PlayerDAO.getPlayer:\n    => id: %s\n    => coins: %s\n    => goods: %s\n",
-                    testPlayer.getId(), testPlayer.getCoins(), testPlayer.getGoods());
-
-            // Count players amount.
-            Long count = (Long)playerDAO.runTransaction(session, playerDAO.countPlayers());
-            System.out.printf("PlayerDAO.countPlayers:\n    => %d total players\n", count);
-
-            // Print 3 players.
-            playerDAO.runTransaction(session, playerDAO.printPlayers(3));
-
-            // 4. Explore more.
-
-            // Player 1: id is "1", has only 100 coins.
-            // Player 2: id is "2", has 114514 coins, and 20 goods.
-            PlayerBean player1 = new PlayerBean("1", 100, 0);
-            PlayerBean player2 = new PlayerBean("2", 114514, 20);
-
-            // Create two players "by hand", using the INSERT statement on the backend.
-            int addedCount = (Integer)playerDAO.runTransaction(session,
-                    playerDAO.createPlayers(Arrays.asList(player1, player2)));
-            System.out.printf("PlayerDAO.createPlayers:\n    => %d total inserted players\n", addedCount);
-
-            // Player 1 wants to buy 10 goods from player 2.
-            // It will cost 500 coins, but player 1 cannot afford it.
-            System.out.println("\nPlayerDAO.buyGoods:\n    => this trade will fail");
-            Integer updatedCount = (Integer)playerDAO.runTransaction(session,
-                    playerDAO.buyGoods(player2.getId(), player1.getId(), 10, 500));
-            System.out.printf("PlayerDAO.buyGoods:\n    => %d total update players\n", updatedCount);
-
-            // So player 1 has to reduce the incoming quantity to two.
-            System.out.println("\nPlayerDAO.buyGoods:\n    => this trade will success");
-            updatedCount = (Integer)playerDAO.runTransaction(session,
-                    playerDAO.buyGoods(player2.getId(), player1.getId(), 2, 100));
-            System.out.printf("PlayerDAO.buyGoods:\n    => %d total update players\n", updatedCount);
-        } finally {
-            sessionFactory.close();
-        }
-    }
+public SessionFactory getSessionFactory() {
+    return new Configuration()
+            .configure("hibernate.cfg.xml")
+            .addAnnotatedClass(${your_entity_class})
+            .buildSessionFactory();
 }
 ```
 
-## 第 3 步：运行代码
+请注意，你需要替换 `${your_entity_class}` 为自己的数据实体类。如果你有多个实体类，需要添加多个 `.addAnnotatedClass(${your_entity_class})` 语句。此外，这仅是 Hibernate 的其中一种配置方式。在配置中遇到任何问题，或想了解更多关于 Hibernate 的信息，你可参考 [Hibernate 官方文档](https://hibernate.org/orm/documentation)。
 
-本节将逐步介绍代码的运行方法。
+### 插入或更新数据
 
-### 第 3 步第 1 部分：TiDB Cloud 更改参数
-
-若你使用 TiDB Serverless 集群，更改 `hibernate.cfg.xml` 内关于 `hibernate.connection.url`、`hibernate.connection.username`、`hibernate.connection.password` 的参数：
-
-```xml
-<?xml version='1.0' encoding='utf-8'?>
-<!DOCTYPE hibernate-configuration PUBLIC
-        "-//Hibernate/Hibernate Configuration DTD 3.0//EN"
-        "http://www.hibernate.org/dtd/hibernate-configuration-3.0.dtd">
-<hibernate-configuration>
-    <session-factory>
-
-        <!-- Database connection settings -->
-        <property name="hibernate.connection.driver_class">com.mysql.cj.jdbc.Driver</property>
-        <property name="hibernate.dialect">org.hibernate.dialect.TiDBDialect</property>
-        <property name="hibernate.connection.url">jdbc:mysql://localhost:4000/test</property>
-        <property name="hibernate.connection.username">root</property>
-        <property name="hibernate.connection.password"></property>
-        <property name="hibernate.connection.autocommit">false</property>
-
-        <!-- Required so a table can be created from the 'PlayerDAO' class -->
-        <property name="hibernate.hbm2ddl.auto">create-drop</property>
-
-        <!-- Optional: Show SQL output for debugging -->
-        <property name="hibernate.show_sql">true</property>
-        <property name="hibernate.format_sql">true</property>
-    </session-factory>
-</hibernate-configuration>
+```java
+try (Session session = sessionFactory.openSession()) {
+    session.persist(new PlayerBean("id", 1, 1));
+}
 ```
 
-若你设定的密码为 `123456`，而且从 TiDB Serverless 集群面板中得到的连接信息为：
+更多信息参考[插入数据](/develop/dev-guide-insert-data.md)、[更新数据](/develop/dev-guide-update-data.md)。
 
-- Endpoint: `xxx.tidbcloud.com`
-- Port: `4000`
-- User: `2aEp24QWEDLqRFs.root`
+### 查询数据
 
-那么此处应将配置文件更改为：
-
-```xml
-<?xml version='1.0' encoding='utf-8'?>
-<!DOCTYPE hibernate-configuration PUBLIC
-        "-//Hibernate/Hibernate Configuration DTD 3.0//EN"
-        "http://www.hibernate.org/dtd/hibernate-configuration-3.0.dtd">
-<hibernate-configuration>
-    <session-factory>
-
-        <!-- Database connection settings -->
-        <property name="hibernate.connection.driver_class">com.mysql.cj.jdbc.Driver</property>
-        <property name="hibernate.dialect">org.hibernate.dialect.TiDBDialect</property>
-        <property name="hibernate.connection.url">jdbc:mysql://xxx.tidbcloud.com:4000/test?sslMode=VERIFY_IDENTITY&amp;enabledTLSProtocols=TLSv1.2,TLSv1.3</property>
-        <property name="hibernate.connection.username">2aEp24QWEDLqRFs.root</property>
-        <property name="hibernate.connection.password">123456</property>
-        <property name="hibernate.connection.autocommit">false</property>
-
-        <!-- Required so a table can be created from the 'PlayerDAO' class -->
-        <property name="hibernate.hbm2ddl.auto">create-drop</property>
-
-        <!-- Optional: Show SQL output for debugging -->
-        <property name="hibernate.show_sql">true</property>
-        <property name="hibernate.format_sql">true</property>
-    </session-factory>
-</hibernate-configuration>
+```java
+try (Session session = sessionFactory.openSession()) {
+    PlayerBean player = session.get(PlayerBean.class, "id");
+    System.out.println(player);
+}
 ```
 
-### 第 3 步第 2 部分：运行
+更多信息参考[查询数据](/develop/dev-guide-get-data-from-single-table.md)。
 
-你可以分别运行 `make build` 和 `make run` 以运行此代码：
+### 删除数据
 
-```shell
-make build # this command executes `mvn clean package`
-make run # this command executes `java -jar target/plain-java-hibernate-0.0.1-jar-with-dependencies.jar`
+```java
+try (Session session = sessionFactory.openSession()) {
+    session.remove(new PlayerBean("id", 1, 1));
+}
 ```
 
-或者你也可以直接使用原生的命令：
+更多信息参考[删除数据](/develop/dev-guide-delete-data.md)。
 
-```shell
-mvn clean package
-java -jar target/plain-java-hibernate-0.0.1-jar-with-dependencies.jar
-```
+## 注意事项
 
-再或者直接运行 `make` 命令，这是 `make build` 和 `make run` 的组合。
+- 完整代码及其运行方式，见 [tidb-example-java](https://github.com/pingcap-inc/tidb-example-java/blob/main/README.md) GitHub 仓库。
+- 关于 Hibernate 的更多使用方法及细节，可以参考 [Hibernate 官方文档](https://hibernate.org/orm/documentation)。
 
-## 第 4 步：预期输出
+## 下一步
 
-[Hibernate 预期输出](https://github.com/pingcap-inc/tidb-example-java/blob/main/Expected-Output.md#plain-java-hibernate)
+- 你可以继续阅读开发者文档，以获取更多关于 TiDB 的开发者知识。例如：[插入数据](/develop/dev-guide-insert-data.md)，[更新数据](/develop/dev-guide-update-data.md)，[删除数据](/develop/dev-guide-delete-data.md)，[单表读取](/develop/dev-guide-get-data-from-single-table.md)，[事务](/develop/dev-guide-transaction-overview.md)，[SQL 性能优化](/develop/dev-guide-optimize-sql-overview.md)等。
+- 如果你更倾向于参与课程进行学习，我们也提供专业的 [TiDB 开发者课程](https://cn.pingcap.com/courses-catalog/back-end-developer/?utm_source=docs-cn-dev-guide)支持，并在考试后提供相应的[资格认证](https://learn.pingcap.com/learner/certification-center)。
+- 我们还有额外针对 Java 开发者的课程：[使用 Connector/J - TiDB v6](https://learn.pingcap.com/learner/course/840002/?utm_source=docs-cn-dev-guide) 及[在 TiDB 上开发应用的最佳实践 - TiDB v6](https://learn.pingcap.com/learner/course/780002/?utm_source=docs-cn-dev-guide) 可供选择。
