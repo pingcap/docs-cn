@@ -19,13 +19,20 @@ TiDB 版本：6.5.4
 
 + TiDB
 
-    - note [#issue](https://github.com/pingcap/tidb/issues/${issue-id}) @[贡献者 GitHub ID](https://github.com/${github-id})
-    - note [#issue](https://github.com/pingcap/tidb/issues/${issue-id}) @[贡献者 GitHub ID](https://github.com/${github-id})
+    - 新增 stale read traffice 相关指标和监控面板 [#43325](https://github.com/pingcap/tidb/issues/43325) @[you06](https://github.com/you06)
     - (dup): release-7.3.0.md > 改进提升> TiDB - 优化与落盘相关的 chunk 读取的性能 [#45125](https://github.com/pingcap/tidb/issues/45125) @[YangKeao](https://github.com/YangKeao)
 
 + TiKV
 
-    - note [#issue](https://github.com/tikv/tikv/issues/${issue-id}) @[贡献者 GitHub ID](https://github.com/${github-id})
+-  Add get_region_read_progress command in tikv-ctl [#15082](https://github.com/tikv/tikv/issues/15082) @[ekexium](https://github.com/ekexium)
+- Compress traffic of check_leader requests. [#14839](https://github.com/tikv/tikv/issues/14839) @[you06](https://github.com/you06)
+- rawkv: fix ttl_checker for RawKV API v2. [#15142](https://github.com/tikv/tikv/issues/15142) @[pingyu](https://github.com/pingyu)
+- Make the checkpoint lag of PITR more stable when there are some leadership transforming. [#13638](https://github.com/tikv/tikv/issues/13638) @[YuJuncen](https://github.com/YuJuncen)
+- Add safe-ts related logs and Grafana panels. [#15082](https://github.com/tikv/tikv/issues/15082) @[ekexium](https://github.com/ekexium)
+- Fix occasional panic during shutdown [#13926](https://github.com/tikv/tikv/issues/13926) @[BusyJay](https://github.com/BusyJay)
+- Make online unsafe recovery abort on timeout [#15346](https://github.com/tikv/tikv/issues/15346) @[Connor1996](https://github.com/Connor1996)
+- 为 check leader 请求添加 gzip 压缩降低跨 tikv 节点之间相关流量开销 [#14553](https://github.com/tikv/tikv/issues/14553) @[you06](https://github.com/you06)
+- 新增 min_safe_ts, min_safe_ts_region 和 min_safe_ts_gap 监控指标，用于诊断 resolved-ts 相关问题 [#15082](https://github.com/tikv/tikv/issues/15082) @[ekexium](https://github.com/ekexium)   
     - note [#issue](https://github.com/tikv/tikv/issues/${issue-id}) @[贡献者 GitHub ID](https://github.com/${github-id})
     - (dup): release-7.3.0.md > 改进提升> TiKV - 添加 `Max gap of safe-ts` 和 `Min safe ts region` 监控项以及 `tikv-ctl get_region_read_progress` 命令，用于更好地观测和诊断 resolved-ts 和 safe-ts 的状态 [#15082](https://github.com/tikv/tikv/issues/15082) @[ekexium](https://github.com/ekexium)
 
@@ -85,8 +92,11 @@ TiDB 版本：6.5.4
 
 + TiDB
 
-    - note [#issue](https://github.com/pingcap/tidb/issues/${issue-id}) @[贡献者 GitHub ID](https://github.com/${github-id})
-    - note [#issue](https://github.com/pingcap/tidb/issues/${issue-id}) @[贡献者 GitHub ID](https://github.com/${github-id})
+    - 修复 load data assertion 报错问题 [#43849](https://github.com/pingcap/tidb/issues/43849) @[you06](https://github.com/you06) 
+    - 修复 stale read ts 设置不正确可能导致 prepare statement 读数据不正确的问题 [#43044](https://github.com/pingcap/tidb/issues/43044) @[you06](https://github.com/you06) 
+    - 修复activate txn 可能存在的 data race [#42092](https://github.com/pingcap/tidb/issues/42092) @[hawkingrei](https://github.com/hawkingrei)
+    - 修复 coprocessor 请求 scan details 处理不准确的问题 [#41582](https://github.com/pingcap/tidb/issues/41582) @[you06](https://github.com/you06) 
+    - 修复 batch client 重连不及时的问题 [#44431](https://github.com/pingcap/tidb/issues/44431) @[crazycs520](https://github.com/crazycs520)
     - (dup): release-6.1.7.md > 错误修复> TiDB - 修复 SQL compile 报错的日志未脱敏的问题 [#41831](https://github.com/pingcap/tidb/issues/41831) @[lance6716](https://github.com/lance6716)
     - (dup): release-7.1.1.md > 错误修复> TiDB - 修复同时使用 CTE 和关联子查询可能导致查询结果出错或者 panic 的问题 [#44649](https://github.com/pingcap/tidb/issues/44649) [#38170](https://github.com/pingcap/tidb/issues/38170) [#44774](https://github.com/pingcap/tidb/issues/44774) @[winoros](https://github.com/winoros) @[guo-shaoge](https://github.com/guo-shaoge)
     - (dup): release-6.6.0.md > 错误修复> TiDB - 修复了 TTL 任务不能及时触发统计信息更新的问题 [#40109](https://github.com/pingcap/tidb/issues/40109) @[YangKeao](https://github.com/YangKeao)
@@ -119,7 +129,16 @@ TiDB 版本：6.5.4
 
 + TiKV
 
-    - note [#issue](https://github.com/tikv/tikv/issues/${issue-id}) @[贡献者 GitHub ID](https://github.com/${github-id})
+- Fix an issue that Region merge may be blocked after flashback [#15258](https://github.com/tikv/tikv/issues/15258) @[overvenus](https://github.com/overvenus)
+- Fix an issue that may cause inconsistent reads when a TiKV node is isolated while another node restarts [#15035](https://github.com/tikv/tikv/issues/15035) @[overvenus](https://github.com/overvenus)
+- Fix the QPS drop to zero in dr SyncRecovery phase in DR mode [#14975](https://github.com/tikv/tikv/issues/14975) @[nolouch](https://github.com/nolouch)
+- Fix offset inconsistency between crypter and file that could cause data corruption when file I/O is interrupted. [#15080](https://github.com/tikv/tikv/issues/15080) @[tabokie](https://github.com/tabokie)
+- rust-rocks: expose ColumnFamilyOptions's ttl and periodic_compaction_seconds setting in tikv. They're disabled by default. [#14873](https://github.com/tikv/tikv/issues/14873) @[LykxSassinator](https://github.com/LykxSassinator)
+- pd_client: reduce store heartbeat retires to prevent heartbeat storm [#15184](https://github.com/tikv/tikv/issues/15184) @[nolouch](https://github.com/nolouch)
+- Fix the issue that flow control may not work when pending compaction bytes is high [#14392](https://github.com/tikv/tikv/issues/14392) @[Connor1996](https://github.com/Connor1996)
+- Fixed a bug that may cause PITR get stuck when the network between PD and TiKV is cut down. [#15279](https://github.com/tikv/tikv/issues/15279) @[YuJuncen](https://github.com/YuJuncen)
+- Fixed a bug that may cause TiKV use more memory than excepted when TiCDC and old value enabled. [#14815](https://github.com/tikv/tikv/issues/14815) @[YuJuncen](https://github.com/YuJuncen)
+
     - note [#issue](https://github.com/tikv/tikv/issues/${issue-id}) @[贡献者 GitHub ID](https://github.com/${github-id})
 
 + PD
