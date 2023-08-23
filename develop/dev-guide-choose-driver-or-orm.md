@@ -42,7 +42,7 @@ TiDB 兼容 MySQL 的协议，但存在部分与 MySQL 不兼容或有差异的�
 
 [TiDB-JDBC](https://github.com/pingcap/mysql-connector-j) 是基于 MySQL 8.0.29 的定制版本。TiDB-JDBC 基于 MySQL 官方 8.0.29 版本编译，修复了原 JDBC 在 prepare 模式下多参数、多字段 EOF 的错误，并新增 TiCDC snapshot 自动维护和 SM3 认证插件等功能。
 
-基于 SM3 的认证仅在 TiDB 版本的 MySQL Connector/J 中支持。
+基于 SM3 的认证仅在 TiDB 的 TiDB-JDBC 中支持。
 
 如果你使用的是 **Maven**，请将以下内容添加到你的 `<dependencies></dependencies>`：
 
