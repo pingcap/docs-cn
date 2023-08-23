@@ -207,7 +207,7 @@ TiDB 版本：6.5.4
 
     + Dumpling
 
-        - note [#issue](https://github.com/pingcap/tidb/issues/${issue-id}) @[贡献者 GitHub ID](https://github.com/${github-id})
+        - 修复导出到 S3 时 file writer 关闭报错被跳过导致导出时文件丢失问题 [#45353](https://github.com/pingcap/tidb/issues/45353) @[lichunzhu](https://github.com/lichunzhu)
 
     + TiUP
 
