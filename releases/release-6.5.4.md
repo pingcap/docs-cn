@@ -24,27 +24,27 @@ TiDB 版本：6.5.4
 
 + PD <!-- tw: ran-huang 5-->
 
-    - 未开启 Swagger server 时，PD 默认屏蔽 Swagger API [#6789](https://github.com/tikv/pd/issues/6789) @[bufferflies](https://github.com/bufferflies)
-    - 提升 etcd 的高可用性 [#6554](https://github.com/tikv/pd/issues/6554) [#6442](https://github.com/tikv/pd/issues/6442) @[lhy1024](https://github.com/lhy1024)
-    - 减少 `GetRegions` 请求的内存占用 [#6855](https://github.com/tikv/pd/issues/6835) @[lhy1024](https://github.com/lhy1024)
-    - 重复使用 http 连接 [#6916](​https://github.com/tikv/pd/issues/6916) @[nolouch](https://github.com/nolouch)
-    - 加上 halt 参数关闭 PD schedule 调度 [#6558](https://github.com/tikv/pd/issues/6493) @[JmPotato](https://github.com/JmPotato)
+    (dup) - 未开启 Swagger server 时，PD 默认屏蔽 Swagger API [#6786](https://github.com/tikv/pd/issues/6786) @[bufferflies](https://github.com/bufferflies)
+    (dup) - 提升 etcd 的高可用性 [#6554](https://github.com/tikv/pd/issues/6554) [#6442](https://github.com/tikv/pd/issues/6442) @[lhy1024](https://github.com/lhy1024)
+    (dup) - 减少 `GetRegions` 请求的内存占用 [#6855](https://github.com/tikv/pd/issues/6835) @[lhy1024](https://github.com/lhy1024)
+    - 支持重复使用 HTTP 连接 [#6913](​https://github.com/tikv/pd/issues/6913) @[nolouch](https://github.com/nolouch)
+    - 新增 halt-scheduling 配置项，用于关闭 PD 调度 [#6558](https://github.com/tikv/pd/issues/6493) @[JmPotato](https://github.com/JmPotato)
     - (dup): release-7.3.0.md > 改进提升> PD - 减少 `GetRegions` 请求的内存占用 [#6835](https://github.com/tikv/pd/issues/6835) @[lhy1024](https://github.com/lhy1024)
     - (dup): release-7.3.0.md > 改进提升> PD - 未开启 Swagger server 时，PD 默认屏蔽 Swagger API [#6786](https://github.com/tikv/pd/issues/6786) @[bufferflies](https://github.com/bufferflies)
 
 + TiFlash <!-- tw: ran-huang 2-->
 
-    - 使用 IO 攒批优化提高了 TiFlash 的数据写入性能 [#7735](https://github.com/pingcap/tiflash/issues/7735) @[lidezhu](https://github.com/lidezhu)
-    - 通过去掉不必要的文件 fsync 操作提高了 TiFlash 的数据写入性能 [#7736](https://github.com/pingcap/tiflash/issues/7736) @[lidezhu](https://github.com/lidezhu)
+    - 通过 IO 攒批优化提升了 TiFlash 的数据写入性能 [#7735](https://github.com/pingcap/tiflash/issues/7735) @[lidezhu](https://github.com/lidezhu)
+    - 通过去掉不必要的文件 fsync 操作提升了 TiFlash 的数据写入性能 [#7736](https://github.com/pingcap/tiflash/issues/7736) @[lidezhu](https://github.com/lidezhu)
+    - 限制了 TiFlash coprocessor task 队列的最大长度，避免过多的 coprocessor task 排队导致 TiFlash 无法正常服务的问题 [#7747](https://github.com/pingcap/tiflash/issues/7747) @[LittleFall](https://github.com/LittleFall)
 
 + Tools
 
     + Backup & Restore (BR) <!-- tw: ran-huang 4-->
 
-        - 通过设置 http 客户端 MaxIdleConns 和 MaxIdleConnsPerHost 参数加大对连接复用的的支持 https://github.com/pingcap/tidb/pull/46140 @Leavrth 
-        - 修复当 TiDB 集群不存在 PiTR 备份任务时，`resolve lock` 频率过高的问题 https://github.com/pingcap/tidb/pull/40761 @joccau 
+        - 通过设置 HTTP 客户端 MaxIdleConns 和 MaxIdleConnsPerHost 参数，增强对连接复用的支持 [#46011](https://github.com/pingcap/tidb/issues/46011) @[Leavrth](https://github.com/Leavrth)
         - 增强 BR 对连接 PD 或者是外部存储 S3 出错的容错能力 https://github.com/pingcap/tidb/pull/43611 @Leavrth 
-        - 增加一个新的 restore 参数 `WaitTiflashReady`, 这个参数打开后, restore 会等待 tiflash 副本复制成功后才会结束 https://github.com/pingcap/tidb/pull/45018 @3pointer 和 https://github.com/pingcap/tidb/pull/46301 @3pointer 
+        - 新增 restore 参数 `WaitTiflashReady`。当打开这个参数时，restore 操作将会等待 TiFlash 副本复制成功后才结束 [#43828](https://github.com/pingcap/tidb/issues/43828) [#46302](https://github.com/pingcap/tidb/issues/46302) @[3pointer](https://github.com/3pointer)
 
     + TiCDC <!-- tw: Oreoxmt 2-->
 
@@ -120,11 +120,12 @@ TiDB 版本：6.5.4
     - 修复当一个 TiKV 节点被隔离而另一个节点重启时，可能导致读取不一致的问题 [#15035](https://github.com/tikv/tikv/issues/15035) @[overvenus](https://github.com/overvenus)
     - 修复自适应同步模式下 sync-recover 阶段 QPS 下降到 0 的问题 [#14975](https://github.com/tikv/tikv/issues/14975) @[nolouch](https://github.com/nolouch)
     - 修复部分写入时加密可能导致数据损坏的问题 [#15080](https://github.com/tikv/tikv/issues/15080) @[tabokie](https://github.com/tabokie)
-    - rust-rocks: expose ColumnFamilyOptions's ttl and periodic_compaction_seconds setting in tikv. They're disabled by default. [#14873](https://github.com/tikv/tikv/issues/14873) @[LykxSassinator](https://github.com/LykxSassinator)
-    - pd_client: reduce store heartbeat retires to prevent heartbeat storm [#15184](https://github.com/tikv/tikv/issues/15184) @[nolouch](https://github.com/nolouch)
-    - Fix the issue that flow control may not work when pending compaction bytes is high [#14392](https://github.com/tikv/tikv/issues/14392) @[Connor1996](https://github.com/Connor1996)
-    - Fixed a bug that may cause PITR get stuck when the network between PD and TiKV is cut down. [#15279](https://github.com/tikv/tikv/issues/15279) @[YuJuncen](https://github.com/YuJuncen)
-    - Fixed a bug that may cause TiKV use more memory than excepted when TiCDC and old value enabled. [#14815](https://github.com/tikv/tikv/issues/14815) @[YuJuncen](https://github.com/YuJuncen)
+<!-- tw: ran-huang-->
+    - 在 TiKV 中暴露部分 RocksDB 配置，允许用户禁用 TTL 和定期数据整理等特性 [#14873](https://github.com/tikv/tikv/issues/14873) @[LykxSassinator](https://github.com/LykxSassinator)
+    - 减少 Store 心跳重试次数，防止心跳风暴 [#15184](https://github.com/tikv/tikv/issues/15184) @[nolouch](https://github.com/nolouch)
+    - 修复当待处理压缩字节数较高时流量控制可能无效的问题 [#14392](https://github.com/tikv/tikv/issues/14392) @[Connor1996](https://github.com/Connor1996)
+    - 修复 PD 和 TiKV 之间的网络中断可能导致 PITR 卡住的问题 [#15279](https://github.com/tikv/tikv/issues/15279) @[YuJuncen](https://github.com/YuJuncen)
+    - 修复在启用了 TiCDC 的 old value 功能时，TiKV 可能会使用更多内存的问题 [#14815](https://github.com/tikv/tikv/issues/14815) @[YuJuncen](https://github.com/YuJuncen)
 
 + PD <!-- tw: hfxsd 5-->
 
@@ -148,11 +149,11 @@ TiDB 版本：6.5.4
 
     + Backup & Restore (BR) <!-- tw: ran-huang 5-->
 
-        - 提升 br 使用的全局参数 TableColumnCountLimit 和 IndexLimit 到最大值, 避免恢复过程失败 https://github.com/pingcap/tidb/pull/46190 @Leavrth 
-        - 修复 PiTR 中处理 ddl meta 信息 rewrite 出错的问题 https://github.com/pingcap/tidb/pull/43344 @Leavrth 
-        - 修复 PiTR 执行中一个没有检查函数返回导致的 panic 问题 https://github.com/pingcap/tidb/pull/45854 @Leavrth 
-        - 修复使用非 AWS S3 而是 S3 兼容存储, 获取无效 region id 的问题  https://github.com/pingcap/tidb/pull/42968 @3pointer  
-        - 修复细粒度备份阶段的可能出错的一个问题 https://github.com/pingcap/tidb/pull/46167 @pingyu 
+        - 将 BR 使用的全局参数 `TableColumnCountLimit` 和 `IndexLimit` 的默认值提升到最大值，修复恢复过程失败的问题 [#45793](https://github.com/pingcap/tidb/issues/45793) @[Leavrth](https://github.com/Leavrth)
+        - 修复 PITR 中处理 ddl meta 信息时 rewrite 出错的问题 [#43184](https://github.com/pingcap/tidb/issues/43184) @[Leavrth](https://github.com/Leavrth)
+        - 修复 PITR 执行中没有检查函数返回而导致 panic 的问题 [#45853](https://github.com/pingcap/tidb/issues/45853) @[Leavrth](https://github.com/Leavrth) 
+        - 修复当使用非 AWS S3 而是其他 S3 兼容的存储时，获取无效 region id 的问题 [#41916](https://github.com/pingcap/tidb/issues/41916) [#42033](https://github.com/pingcap/tidb/issues/42033) @[3pointer](https://github.com/3pointer) 
+        - 修复细粒度备份阶段可能出错的问题 [#37085](https://github.com/pingcap/tidb/issues/37085) @[pingyu](https://github.com/pingyu)
         - (dup): release-6.6.0.md > 错误修复> Tools> Backup & Restore (BR) - 修复当 TiDB 集群不存在 PITR 备份任务时，`resolve lock` 频率过高的问题 [#40759](https://github.com/pingcap/tidb/issues/40759) @[joccau](https://github.com/joccau)
         - (dup): release-7.0.0.md > 错误修复> Tools> Backup & Restore (BR) - 缓解了 Region leadership 迁移导致 PITR 日志备份进度延迟变高的问题 [#13638](https://github.com/tikv/tikv/issues/13638) @[YuJuncen](https://github.com/YuJuncen)
 
