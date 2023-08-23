@@ -3146,6 +3146,16 @@ mysql> desc select count(distinct a) from test.t;
 - 默认值：`1.0`
 - 表示传输 1 比特数据的网络净开销。该变量是[代价模型](/cost-model.md)内部使用的变量，**不建议**修改该变量的值。
 
+### `tidb_opt_objective` <span class="version-mark">从 v7.4.0 版本开始引入</span>
+
+- 作用域：SESSION | GLOBAL
+- 是否持久化到集群：是
+- 类型：枚举型
+- 默认值：`moderate`
+- 可选值：`moderate`、`determined`
+- 表示优化器在生成执行计划时应该更保守、稳定还是利用更多信息尝试生成更优的计划。
+- 目前该变量只控制优化器是否利用实时统计信息来生成执行计划。实时统计信息是 TiDB 根据 DML 语句自动更新的表的总行数以及修改的行数。默认情况下，TiDB 会基于实时统计信息来生成执行计划。该变量设为 `determined` 后，TiDB 将不再使用这些信息。
+
 ### `tidb_opt_ordering_index_selectivity_threshold` <span class="version-mark">从 v7.0.0 版本开始引入</span>
 
 - 作用域：SESSION | GLOBAL
