@@ -42,7 +42,7 @@ Support level: **Full**
 
 [TiDB-JDBC](https://github.com/pingcap/mysql-connector-j) is a customized Java driver based on MySQL 8.0.29. Compiled based on MySQL official version 8.0.29, TiDB-JDBC fixes the bug of multi-parameter and multi-field EOF in the prepare mode in the original JDBC, and adds features such as automatic TiCDC snapshot maintenance and the SM3 authentication plugin.
 
-Using SM3-based authentication is only supported with the TiDB version of MySQL Connector/J.
+The authentication based on SM3 is only supported in TiDB's TiDB-JDBC.
 
 If you use Maven, add the following content to the `<dependencies></dependencies>` section in the `pom.xml` file:
 
