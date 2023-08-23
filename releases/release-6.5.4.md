@@ -13,12 +13,12 @@ TiDB 版本：6.5.4
 
 ## 改进提升
 
-+ TiDB <!-- tw: Oreoxmt-->
++ TiDB <!-- tw: Oreoxmt 1-->
 
     - 新增 stale read traffice 相关指标和监控面板 [#43325](https://github.com/pingcap/tidb/issues/43325) @[you06](https://github.com/you06)
     - (dup): release-7.3.0.md > 改进提升> TiDB - 优化与落盘相关的 chunk 读取的性能 [#45125](https://github.com/pingcap/tidb/issues/45125) @[YangKeao](https://github.com/YangKeao)
 
-+ TiKV <!-- tw: Oreoxmt-->
++ TiKV <!-- tw: Oreoxmt 9-->
 
     - Add get_region_read_progress command in tikv-ctl [#15082](https://github.com/tikv/tikv/issues/15082) @[ekexium](https://github.com/ekexium)
     - Compress traffic of check_leader requests. [#14839](https://github.com/tikv/tikv/issues/14839) @[you06](https://github.com/you06)
@@ -31,7 +31,7 @@ TiDB 版本：6.5.4
     - 新增 min_safe_ts, min_safe_ts_region 和 min_safe_ts_gap 监控指标，用于诊断 resolved-ts 相关问题 [#15082](https://github.com/tikv/tikv/issues/15082) @[ekexium](https://github.com/ekexium)   
     - (dup): release-7.3.0.md > 改进提升> TiKV - 添加 `Max gap of safe-ts` 和 `Min safe ts region` 监控项以及 `tikv-ctl get_region_read_progress` 命令，用于更好地观测和诊断 resolved-ts 和 safe-ts 的状态 [#15082](https://github.com/tikv/tikv/issues/15082) @[ekexium](https://github.com/ekexium)
 
-+ PD <!-- tw: ran-huang-->
++ PD <!-- tw: ran-huang 5-->
 
     - 未开启 Swagger server 时，PD 默认屏蔽 Swagger API [#6789](https://github.com/tikv/pd/issues/6789) @[bufferflies](https://github.com/bufferflies)
     - 提升 etcd 的高可用性 [#6554](https://github.com/tikv/pd/issues/6554) [#6442](https://github.com/tikv/pd/issues/6442) @[lhy1024](https://github.com/lhy1024)
@@ -41,14 +41,14 @@ TiDB 版本：6.5.4
     - (dup): release-7.3.0.md > 改进提升> PD - 减少 `GetRegions` 请求的内存占用 [#6835](https://github.com/tikv/pd/issues/6835) @[lhy1024](https://github.com/lhy1024)
     - (dup): release-7.3.0.md > 改进提升> PD - 未开启 Swagger server 时，PD 默认屏蔽 Swagger API [#6786](https://github.com/tikv/pd/issues/6786) @[bufferflies](https://github.com/bufferflies)
 
-+ TiFlash <!-- tw: ran-huang-->
++ TiFlash <!-- tw: ran-huang 2-->
 
     - 使用 IO 攒批优化提高了 TiFlash 的数据写入性能 [#7735](https://github.com/pingcap/tiflash/issues/7735) @[lidezhu](https://github.com/lidezhu)
     - 通过去掉不必要的文件 fsync 操作提高了 TiFlash 的数据写入性能 [#7736](https://github.com/pingcap/tiflash/issues/7736) @[lidezhu](https://github.com/lidezhu)
 
 + Tools
 
-    + Backup & Restore (BR) <!-- tw: ran-huang-->
+    + Backup & Restore (BR) <!-- tw: ran-huang 4-->
 
         - 通过设置 http 客户端 MaxIdleConns 和 MaxIdleConnsPerHost 参数加大对连接复用的的支持 https://github.com/pingcap/tidb/pull/46140 @Leavrth 
         - 修复当 TiDB 集群不存在 PiTR 备份任务时，`resolve lock` 频率过高的问题 https://github.com/pingcap/tidb/pull/40761 @joccau 
@@ -88,7 +88,7 @@ TiDB 版本：6.5.4
 
 ## 错误修复
 
-+ TiDB <!-- tw: qiancai-->
++ TiDB <!-- tw: qiancai 7-->
 
     - 修复 load data assertion 报错问题 [#43849](https://github.com/pingcap/tidb/issues/43849) @[you06](https://github.com/you06) 
     - 修复下推 ‘StreamAgg’ 算子时，可能报错 'index out of range' 的问题 [#41056](https://github.com/pingcap/tidb/issues/41056) @[Dousir9](https://github.com/Dousir9)
@@ -127,7 +127,7 @@ TiDB 版本：6.5.4
     - (dup): release-7.1.1.md > 错误修复> TiDB - 修复对于过长的 SQL 输入，`FormatSQL()` 方法无法正常截断的问题 [#44542](https://github.com/pingcap/tidb/issues/44542) @[hawkingrei](https://github.com/hawkingrei)
     - (dup): release-7.1.1.md > 错误修复> TiDB - 修复即使用户没有权限，也能查看 `INFORMATION_SCHEMA.TIFLASH_REPLICA` 表信息的问题 [#45320](https://github.com/pingcap/tidb/issues/45320) @[Lloyd-Pottiger](https://github.com/Lloyd-Pottiger)
 
-+ TiKV <!-- tw: qiancai-->
++ TiKV <!-- tw: qiancai 9-->
 
     - Fix an issue that Region merge may be blocked after flashback [#15258](https://github.com/tikv/tikv/issues/15258) @[overvenus](https://github.com/overvenus)
     - Fix an issue that may cause inconsistent reads when a TiKV node is isolated while another node restarts [#15035](https://github.com/tikv/tikv/issues/15035) @[overvenus](https://github.com/overvenus)
@@ -139,7 +139,7 @@ TiDB 版本：6.5.4
     - Fixed a bug that may cause PITR get stuck when the network between PD and TiKV is cut down. [#15279](https://github.com/tikv/tikv/issues/15279) @[YuJuncen](https://github.com/YuJuncen)
     - Fixed a bug that may cause TiKV use more memory than excepted when TiCDC and old value enabled. [#14815](https://github.com/tikv/tikv/issues/14815) @[YuJuncen](https://github.com/YuJuncen)
 
-+ PD <!-- tw: hfxsd-->
++ PD <!-- tw: hfxsd 5-->
 
     - 修复 `unsafe recovery` 中失败的 learner peer 在 `auto-detect` 模式中被忽略的问题 [#6683](​https://github.com/tikv/pd/issues/6683) @[v01dstar](https://github.com/v01dstar)
     - 修复当 etcd 已经启动，但 client 尚未连接上 etcd 时，调用 client 会导致 PD panic 的问题 [#6944](https://github.com/tikv/pd/issues/6944) @[HuSharp](https://github.com/HuSharp)
@@ -159,7 +159,7 @@ TiDB 版本：6.5.4
 
 + Tools
 
-    + Backup & Restore (BR) <!-- tw: Oreoxmt-->
+    + Backup & Restore (BR) <!-- tw: ran-huang 5-->
 
         - 提升 br 使用的全局参数 TableColumnCountLimit 和 IndexLimit 到最大值, 避免恢复过程失败 https://github.com/pingcap/tidb/pull/46190 @Leavrth 
         - 修复 PiTR 中处理 ddl meta 信息 rewrite 出错的问题 https://github.com/pingcap/tidb/pull/43344 @Leavrth 
@@ -169,7 +169,7 @@ TiDB 版本：6.5.4
         - (dup): release-6.6.0.md > 错误修复> Tools> Backup & Restore (BR) - 修复当 TiDB 集群不存在 PITR 备份任务时，`resolve lock` 频率过高的问题 [#40759](https://github.com/pingcap/tidb/issues/40759) @[joccau](https://github.com/joccau)
         - (dup): release-7.0.0.md > 错误修复> Tools> Backup & Restore (BR) - 缓解了 Region leadership 迁移导致 PITR 日志备份进度延迟变高的问题 [#13638](https://github.com/tikv/tikv/issues/13638) @[YuJuncen](https://github.com/YuJuncen)
 
-    + TiCDC <!-- tw: ran-huang-->
+    + TiCDC <!-- tw: Oreoxmt 8-->
 
         - 修复在下游发生故障重试时可能导致同步任务卡住 [#9450](https://github.com/pingcap/tiflow/issues/9450) 
         - 优化 TiCDC 因为故障重试时对外展示状态的方式 [#9483](https://github.com/pingcap/tiflow/issues/9483) 
