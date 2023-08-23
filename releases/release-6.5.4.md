@@ -15,20 +15,11 @@ TiDB 版本：6.5.4
 
 + TiDB <!-- tw: Oreoxmt 1-->
 
-    - 新增 stale read traffice 相关指标和监控面板 [#43325](https://github.com/pingcap/tidb/issues/43325) @[you06](https://github.com/you06)
     - (dup): release-7.3.0.md > 改进提升> TiDB - 优化与落盘相关的 chunk 读取的性能 [#45125](https://github.com/pingcap/tidb/issues/45125) @[YangKeao](https://github.com/YangKeao)
 
 + TiKV <!-- tw: Oreoxmt 9-->
 
-    - Add get_region_read_progress command in tikv-ctl [#15082](https://github.com/tikv/tikv/issues/15082) @[ekexium](https://github.com/ekexium)
-    - Compress traffic of check_leader requests. [#14839](https://github.com/tikv/tikv/issues/14839) @[you06](https://github.com/you06)
-    - rawkv: fix ttl_checker for RawKV API v2. [#15142](https://github.com/tikv/tikv/issues/15142) @[pingyu](https://github.com/pingyu)
-    - Make the checkpoint lag of PITR more stable when there are some leadership transforming. [#13638](https://github.com/tikv/tikv/issues/13638) @[YuJuncen](https://github.com/YuJuncen)
-    - Add safe-ts related logs and Grafana panels. [#15082](https://github.com/tikv/tikv/issues/15082) @[ekexium](https://github.com/ekexium)
-    - Fix occasional panic during shutdown [#13926](https://github.com/tikv/tikv/issues/13926) @[BusyJay](https://github.com/BusyJay)
-    - Make online unsafe recovery abort on timeout [#15346](https://github.com/tikv/tikv/issues/15346) @[Connor1996](https://github.com/Connor1996)
-    - 为 check leader 请求添加 gzip 压缩降低跨 tikv 节点之间相关流量开销 [#14553](https://github.com/tikv/tikv/issues/14553) @[you06](https://github.com/you06)
-    - 新增 min_safe_ts, min_safe_ts_region 和 min_safe_ts_gap 监控指标，用于诊断 resolved-ts 相关问题 [#15082](https://github.com/tikv/tikv/issues/15082) @[ekexium](https://github.com/ekexium)   
+    - (dup): 使用 gzip 压缩 `check_leader` 请求以减少流量 [#14553](https://github.com/tikv/tikv/issues/14553) @[you06](https://github.com/you06)
     - (dup): release-7.3.0.md > 改进提升> TiKV - 添加 `Max gap of safe-ts` 和 `Min safe ts region` 监控项以及 `tikv-ctl get_region_read_progress` 命令，用于更好地观测和诊断 resolved-ts 和 safe-ts 的状态 [#15082](https://github.com/tikv/tikv/issues/15082) @[ekexium](https://github.com/ekexium)
 
 + PD <!-- tw: ran-huang 5-->
@@ -55,8 +46,10 @@ TiDB 版本：6.5.4
         - 增强 BR 对连接 PD 或者是外部存储 S3 出错的容错能力 https://github.com/pingcap/tidb/pull/43611 @Leavrth 
         - 增加一个新的 restore 参数 `WaitTiflashReady`, 这个参数打开后, restore 会等待 tiflash 副本复制成功后才会结束 https://github.com/pingcap/tidb/pull/45018 @3pointer 和 https://github.com/pingcap/tidb/pull/46301 @3pointer 
 
-    + TiCDC
+    + TiCDC <!-- tw: Oreoxmt 2-->
 
+        - 优化 TiCDC 在故障重试时的状态展示信息 [#9483](https://github.com/pingcap/tiflow/issues/9483) @[asddongmen](https://github.com/asddongmen)
+        - 优化同步到 Kafka 时对超过限制的消息的处理方式，支持只发送主键到下游 [#9574](https://github.com/pingcap/tiflow/issues/9574) @[3AceShowHand](https://github.com/3AceShowHand)
         - (dup): release-7.3.0.md > 改进提升> Tools> TiCDC - Storage Sink 支持对 HEX 格式的数据进行十六进制编码输出，使其兼容 AWS DMS 的格式规范 [#9373](https://github.com/pingcap/tiflow/issues/9373) @[CharlesCheung96](https://github.com/CharlesCheung96)
 
     + TiDB Data Migration (DM)
@@ -120,10 +113,13 @@ TiDB 版本：6.5.4
 
 + TiKV <!-- tw: qiancai 9-->
 
-    - Fix an issue that Region merge may be blocked after flashback [#15258](https://github.com/tikv/tikv/issues/15258) @[overvenus](https://github.com/overvenus)
-    - Fix an issue that may cause inconsistent reads when a TiKV node is isolated while another node restarts [#15035](https://github.com/tikv/tikv/issues/15035) @[overvenus](https://github.com/overvenus)
-    - Fix the QPS drop to zero in dr SyncRecovery phase in DR mode [#14975](https://github.com/tikv/tikv/issues/14975) @[nolouch](https://github.com/nolouch)
-    - Fix offset inconsistency between crypter and file that could cause data corruption when file I/O is interrupted. [#15080](https://github.com/tikv/tikv/issues/15080) @[tabokie](https://github.com/tabokie)
+    <!-- tw: Oreoxmt 6-->
+    - 修复 `ttl-check-poll-interval` 配置项对 RawKV API V2 不生效的问题 [#15142](https://github.com/tikv/tikv/issues/15142) @[pingyu](https://github.com/pingyu)
+    - 修复 Online Unsafe Recovery 超时未中止的问题 [#15346](https://github.com/tikv/tikv/issues/15346) @[Connor1996](https://github.com/Connor1996)
+    - 修复在执行 `FLASHBACK` 后 Region Merge 可能被阻塞的问题 [#15258](https://github.com/tikv/tikv/issues/15258) @[overvenus](https://github.com/overvenus)
+    - 修复当一个 TiKV 节点被隔离而另一个节点重启时，可能导致读取不一致的问题 [#15035](https://github.com/tikv/tikv/issues/15035) @[overvenus](https://github.com/overvenus)
+    - 修复自适应同步模式下 sync-recover 阶段 QPS 下降到 0 的问题 [#14975](https://github.com/tikv/tikv/issues/14975) @[nolouch](https://github.com/nolouch)
+    - 修复部分写入时加密可能导致数据损坏的问题 [#15080](https://github.com/tikv/tikv/issues/15080) @[tabokie](https://github.com/tabokie)
     - rust-rocks: expose ColumnFamilyOptions's ttl and periodic_compaction_seconds setting in tikv. They're disabled by default. [#14873](https://github.com/tikv/tikv/issues/14873) @[LykxSassinator](https://github.com/LykxSassinator)
     - pd_client: reduce store heartbeat retires to prevent heartbeat storm [#15184](https://github.com/tikv/tikv/issues/15184) @[nolouch](https://github.com/nolouch)
     - Fix the issue that flow control may not work when pending compaction bytes is high [#14392](https://github.com/tikv/tikv/issues/14392) @[Connor1996](https://github.com/Connor1996)
@@ -162,14 +158,11 @@ TiDB 版本：6.5.4
 
     + TiCDC <!-- tw: Oreoxmt 8-->
 
-        - 修复在下游发生故障重试时可能导致同步任务卡住 [#9450](https://github.com/pingcap/tiflow/issues/9450) 
-        - 优化 TiCDC 因为故障重试时对外展示状态的方式 [#9483](https://github.com/pingcap/tiflow/issues/9483) 
-        - 修复同步到 kafka 时重试时间间隔过短导致同步任务失败的问题 [#9504](https://github.com/pingcap/tiflow/issues/9504) 
-        - 修复在上游同一个事务中修改多行 UK 场景下，CDC 可能导致同步写冲突的问题 [#9430](https://github.com/pingcap/tiflow/issues/9430) 
-        - 修复同步 rename ddl 存在可能不能正确同步的问题 [#9488](https://github.com/pingcap/tiflow/issues/9488) [#9378](https://github.com/pingcap/tiflow/issues/9378) [#9531](https://github.com/pingcap/tiflow/issues/9531)
-        - 修复下游发生短时间故障导致同步任务卡住的问题 [#9542](https://github.com/pingcap/tiflow/issues/9542)[#9272](https://github.com/pingcap/tiflow/issues/9272)[#9582](https://github.com/pingcap/tiflow/issues/9582)[#9592](https://github.com/pingcap/tiflow/issues/9592)
-        - 优化同步到 kafka 时消息过大超过限制的处理方式，允许只发送 PK 到下游 [#9574](https://github.com/pingcap/tiflow/issues/9574)
-        - 修复CDC 节点在发生网络隔离时可能导致数据不一致的问题[#9344](https://github.com/pingcap/tiflow/issues/9344)
+        - 修复下游发生故障重试时同步任务可能卡住的问题 [#9450](https://github.com/pingcap/tiflow/issues/9450) @[hicqu](https://github.com/hicqu)
+        - 修复同步到 Kafka 时重试间隔过短导致同步任务失败的问题 [#9504](https://github.com/pingcap/tiflow/issues/9504) @[3AceShowHand](https://github.com/3AceShowHand)
+        - 修复在上游同一个事务中修改多行唯一键场景下，TiCDC 可能导致同步写冲突的问题 [#9430](https://github.com/pingcap/tiflow/issues/9430) @[sdojjy](https://github.com/sdojjy)
+        - 修复可能无法正确同步 rename DDL 操作的问题 [#9488](https://github.com/pingcap/tiflow/issues/9488) [#9378](https://github.com/pingcap/tiflow/issues/9378) [#9531](https://github.com/pingcap/tiflow/issues/9531) @[asddongmen](https://github.com/asddongmen)
+        - 修复下游发生短时间故障导致同步任务卡住的问题 [#9542](https://github.com/pingcap/tiflow/issues/9542) [#9272](https://github.com/pingcap/tiflow/issues/9272)[#9582](https://github.com/pingcap/tiflow/issues/9582) [#9592](https://github.com/pingcap/tiflow/issues/9592) @[hicqu](https://github.com/hicqu)
         - (dup): release-7.3.0.md > 错误修复> Tools> TiCDC - 修复在 TiCDC 节点状态发生改变时可能引发的 panic 问题 [#9354](https://github.com/pingcap/tiflow/issues/9354) @[sdojjy](https://github.com/sdojjy)
         - (dup): release-7.3.0.md > 错误修复> Tools> TiCDC - 修复当 Kafka Sink 遇到错误时可能会无限阻塞同步任务推进的问题 [#9309](https://github.com/pingcap/tiflow/issues/9309) @[hicqu](https://github.com/hicqu)
         - (dup): release-7.1.1.md > 错误修复> Tools> TiCDC - 修复当下游为 Kafka 时，TiCDC 查询下游的元信息频率过高导致下游负载过大的问题 [#8957](https://github.com/pingcap/tiflow/issues/8957) [#8959](https://github.com/pingcap/tiflow/issues/8959) @[hi-rustin](https://github.com/hi-rustin)
