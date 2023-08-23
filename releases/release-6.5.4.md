@@ -190,7 +190,11 @@ TiDB 版本：6.5.4
 
     + TiDB Data Migration (DM)
 
-        - (dup): release-7.1.1.md > 错误修复> Tools> TiDB Data Migration (DM) - 修复 DM-master 在迁移唯一索引包含空列的表时异常退出的问题 [#9247](https://github.com/pingcap/tiflow/issues/9247) @[lance6716](https://github.com/lance6716)
+        - 修复唯一键列名为空时导致 panic 问题 [#9247](https://github.com/pingcap/tiflow/issues/9247) @[lance6716](https://github.com/lance6716)
+        - 修复 validator 处理错误时可能死锁的问题，并优化 retry [#9257](https://github.com/pingcap/tiflow/issues/9257) @[D3Hunter](https://github.com/D3Hunter)
+        - 修复计算 causality 时未考虑 collation 的问题 [#9489](https://github.com/pingcap/tiflow/issues/9489) @[hihihuhu](https://github.com/hihihuhu)
+        - 对不兼容的 DDL 支持严格的乐观模式 [#9112](https://github.com/pingcap/tiflow/issues/9112) @[GMHDBJD](https://github.com/GMHDBJD)
+
 
     + TiDB Lightning
 
