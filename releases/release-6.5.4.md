@@ -215,4 +215,4 @@ TiDB 版本：6.5.4
 
     + TiDB Binlog
 
-        - (dup): release-7.1.1.md > 错误修复> Tools> TiDB Binlog - 修复 etcd client 初始化时没有自动同步最新节点信息的问题 [#1236](https://github.com/pingcap/tidb-binlog/issues/1236) @[lichunzhu](https://github.com/lichunzhu)
+        - 修复 pd 地址变更时导致 binlog 失败的问题 [#1236](https://github.com/pingcap/tidb-binlog/issues/1236) @[lichunzhu](https://github.com/lichunzhu)
