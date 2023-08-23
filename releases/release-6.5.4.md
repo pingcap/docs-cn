@@ -38,8 +38,11 @@ TiDB 版本：6.5.4
 
 + PD
 
-    - note [#issue](https://github.com/tikv/pd/issues/${issue-id}) @[贡献者 GitHub ID](https://github.com/${github-id})
-    - note [#issue](https://github.com/tikv/pd/issues/${issue-id}) @[贡献者 GitHub ID](https://github.com/${github-id})
+    - 未开启 Swagger server 时，PD 默认屏蔽 Swagger API [#6789](https://github.com/tikv/pd/issues/6789) @[bufferflies](https://github.com/bufferflies)
+    - 提升 etcd 的高可用性 [#6554](https://github.com/tikv/pd/issues/6554) [#6442](https://github.com/tikv/pd/issues/6442) @[lhy1024](https://github.com/lhy1024)
+    - 减少 `GetRegions` 请求的内存占用 [#6855](https://github.com/tikv/pd/issues/6835) @[lhy1024](https://github.com/lhy1024)
+    - 重复使用 http 连接 [#6916](​https://github.com/tikv/pd/issues/6916) @[nolouch](https://github.com/nolouch)
+    - 加上 halt 参数关闭 PD schedule 调度 [#6558](https://github.com/tikv/pd/issues/6493) @[JmPotato](https://github.com/JmPotato)
     - (dup): release-7.3.0.md > 改进提升> PD - 减少 `GetRegions` 请求的内存占用 [#6835](https://github.com/tikv/pd/issues/6835) @[lhy1024](https://github.com/lhy1024)
     - (dup): release-7.3.0.md > 改进提升> PD - 未开启 Swagger server 时，PD 默认屏蔽 Swagger API [#6786](https://github.com/tikv/pd/issues/6786) @[bufferflies](https://github.com/bufferflies)
 
@@ -54,8 +57,10 @@ TiDB 版本：6.5.4
 
     + Backup & Restore (BR)
 
-        - note [#issue](https://github.com/pingcap/tidb/issues/${issue-id}) @[贡献者 GitHub ID](https://github.com/${github-id})
-        - note [#issue](https://github.com/pingcap/tidb/issues/${issue-id}) @[贡献者 GitHub ID](https://github.com/${github-id})
+        - 通过设置 http 客户端 MaxIdleConns 和 MaxIdleConnsPerHost 参数加大对连接复用的的支持 https://github.com/pingcap/tidb/pull/46140 @Leavrth 
+        - 修复当 TiDB 集群不存在 PiTR 备份任务时，`resolve lock` 频率过高的问题 https://github.com/pingcap/tidb/pull/40761 @joccau 
+        - 增强 BR 对连接 PD 或者是外部存储 S3 出错的容错能力 https://github.com/pingcap/tidb/pull/43611 @Leavrth 
+        - 增加一个新的 restore 参数 `WaitTiflashReady`, 这个参数打开后, restore 会等待 tiflash 副本复制成功后才会结束 https://github.com/pingcap/tidb/pull/45018 @3pointer  和 https://github.com/pingcap/tidb/pull/46301 @3pointer 
 
     + TiCDC
 
@@ -145,8 +150,11 @@ TiDB 版本：6.5.4
 
 + PD
 
-    - note [#issue](https://github.com/tikv/pd/issues/${issue-id}) @[贡献者 GitHub ID](https://github.com/${github-id})
-    - note [#issue](https://github.com/tikv/pd/issues/${issue-id}) @[贡献者 GitHub ID](https://github.com/${github-id})
+    - 修复 `unsafe recovery` 中失败的 learner peer 在 `auto-detect` 模式中被忽略的问题 [#6683](​https://github.com/tikv/pd/issues/6683) @[v01dstar](https://github.com/v01dstar)
+    - 修复当 etcd 已经启动，但 client 尚未连接上 etcd 时，调用 client 会导致 PD panic 的问题 [#6944](https://github.com/tikv/pd/issues/6944) @[HuSharp](https://github.com/HuSharp)
+    - 修复在 rule checker 选定 peer 时，unhealthy peer 无法被移除的问题 [#6843](​https://github.com/tikv/pd/issues/6843) @[nolouch](https://github.com/nolouch)
+    - 修复 leader 长时间无法退出的问题 [#6932]https://github.com/tikv/pd/pull/6932) @[bufferflies](https://github.com/bufferflies)
+    - 修复 Placement rule 在使用 location labels 时，SQL 和 rule checker 不兼容的问题 [#45271](https://github.com/pingcap/tidb/pull/45271) @[nolouch](https://github.com/nolouch)
     - (dup): release-6.1.4.md > Bug 修复> PD - 修复 PD 可能会非预期地向 Region 添加多个 Learner 的问题 [#5786](https://github.com/tikv/pd/issues/5786) @[HunDunDM](https://github.com/HunDunDM)
     - (dup): release-7.3.0.md > 错误修复> PD - 修复在 rule checker 选定 peer 时，unhealthy peer 无法被移除的问题 [#6559](https://github.com/tikv/pd/issues/6559) @[nolouch](https://github.com/nolouch)
     - (dup): release-7.3.0.md > 错误修复> PD - 修复 `unsafe recovery` 中失败的 learner peer 在 `auto-detect` 模式中被忽略的问题 [#6690](https://github.com/tikv/pd/issues/6690) @[v01dstar](https://github.com/v01dstar)
@@ -163,8 +171,11 @@ TiDB 版本：6.5.4
 
     + Backup & Restore (BR)
 
-        - note [#issue](https://github.com/pingcap/tidb/issues/${issue-id}) @[贡献者 GitHub ID](https://github.com/${github-id})
-        - note [#issue](https://github.com/pingcap/tidb/issues/${issue-id}) @[贡献者 GitHub ID](https://github.com/${github-id})
+        - 提升 br 使用的全局参数 TableColumnCountLimit 和 IndexLimit 到最大值, 避免恢复过程失败 https://github.com/pingcap/tidb/pull/46190 @Leavrth 
+        - 修复 PiTR 中处理 ddl meta 信息 rewrite 出错的问题 https://github.com/pingcap/tidb/pull/43344 @Leavrth 
+        - 修复 PiTR 执行中一个没有检查函数返回导致的 panic 问题 https://github.com/pingcap/tidb/pull/45854 @Leavrth 
+        - 修复使用非 AWS S3 而是 S3 兼容存储, 获取无效 region id 的问题  https://github.com/pingcap/tidb/pull/42968 @3pointer  
+        - 修复细粒度备份阶段的可能出错的一个问题 https://github.com/pingcap/tidb/pull/46167 @pingyu 
         - (dup): release-6.6.0.md > 错误修复> Tools> Backup & Restore (BR) - 修复当 TiDB 集群不存在 PITR 备份任务时，`resolve lock` 频率过高的问题 [#40759](https://github.com/pingcap/tidb/issues/40759) @[joccau](https://github.com/joccau)
         - (dup): release-7.0.0.md > 错误修复> Tools> Backup & Restore (BR) - 缓解了 Region leadership 迁移导致 PITR 日志备份进度延迟变高的问题 [#13638](https://github.com/tikv/tikv/issues/13638) @[YuJuncen](https://github.com/YuJuncen)
 
