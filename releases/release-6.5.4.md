@@ -192,12 +192,12 @@ TiDB 版本：6.5.4
     + TiDB Lightning <!-- tw: hfxsd 10-->
 
         - 修复当存在正在导入的 engine 时 disk quota 检查可能 block 的问题 [#44867](https://github.com/pingcap/tidb/issues/44867) @[D3Hunter](https://github.com/D3Hunter)
-        - 修复当目标集群启用 SSL 时 checksum 报 "Region is unavailable" 的问题 [#45462](https://github.com/pingcap/tidb/issues/45462) @[D3Hunter](https://github.com/D3Hunter)
+        - 修复当目标集群启用 SSL 时 checksum 报错 "Region is unavailable" 的问题 [#45462](https://github.com/pingcap/tidb/issues/45462) @[D3Hunter](https://github.com/D3Hunter)
         - 修复无法正确输出编码错误的问题 [#44321](https://github.com/pingcap/tidb/issues/44321) @[lyzx2001](https://github.com/lyzx2001)
         - 修复 CSV 数据导入时，route 可能 panic 的问题 [#43284](https://github.com/pingcap/tidb/issues/43284) @[lyzx2001](https://github.com/lyzx2001)
         - 修复逻辑导入模式下导入 A 表时可能误报 B 表不存在的问题 [#44614](https://github.com/pingcap/tidb/issues/44614) @[dsdashun](https://github.com/dsdashun)
         - 修复保存 `NEXT_GLOBAL_ROW_ID` 时类型错误问题 [#45427](https://github.com/pingcap/tidb/issues/45427) @[lyzx2001](https://github.com/lyzx2001)
-        - 修复 checksum = "optional" 时 checksum 阶段仍然报错的问题 [#45382](https://github.com/pingcap/tidb/issues/45382) @[lyzx2001](https://github.com/lyzx2001)
+        - 修复 `checksum = "optional"` 时 Checksum 阶段仍然报错的问题 [#45382](https://github.com/pingcap/tidb/issues/45382) @[lyzx2001](https://github.com/lyzx2001)
         - 修复当 PD 集群地址变更时数据导入失败的问题 [#43436](https://github.com/pingcap/tidb/issues/43436) @[lichunzhu](https://github.com/lichunzhu)
         - 修复部分 PD 节点失败导致数据导入失败的问题 [#43400](https://github.com/pingcap/tidb/issues/43400) @[lichunzhu](https://github.com/lichunzhu)
         - 修复当表使用 `AUTO_ID_CACHE=1` 且使用自增列时，ID 分配器初值错误问题 [#46100](https://github.com/pingcap/tidb/issues/46100) @[D3Hunter](https://github.com/D3Hunter)
