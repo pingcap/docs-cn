@@ -31,9 +31,7 @@ TiDB 版本：6.5.4
     (dup) - 提升 etcd 的高可用性 [#6554](https://github.com/tikv/pd/issues/6554) [#6442](https://github.com/tikv/pd/issues/6442) @[lhy1024](https://github.com/lhy1024)
     (dup) - 减少 `GetRegions` 请求的内存占用 [#6855](https://github.com/tikv/pd/issues/6835) @[lhy1024](https://github.com/lhy1024)
     - 支持重复使用 HTTP 连接 [#6913](​https://github.com/tikv/pd/issues/6913) @[nolouch](https://github.com/nolouch)
-    - 新增 halt-scheduling 配置项，用于关闭 PD 调度 [#6493](https://github.com/tikv/pd/issues/6493) @[JmPotato](https://github.com/JmPotato)
-    - (dup): release-7.3.0.md > 改进提升> PD - 减少 `GetRegions` 请求的内存占用 [#6835](https://github.com/tikv/pd/issues/6835) @[lhy1024](https://github.com/lhy1024)
-    - (dup): release-7.3.0.md > 改进提升> PD - 未开启 Swagger server 时，PD 默认屏蔽 Swagger API [#6786](https://github.com/tikv/pd/issues/6786) @[bufferflies](https://github.com/bufferflies)
+    - 新增 `halt-scheduling` 配置项，用于关闭 PD 调度 [#6493](https://github.com/tikv/pd/issues/6493) @[JmPotato](https://github.com/JmPotato)
 
 + TiFlash <!-- tw: ran-huang 2-->
 
@@ -46,7 +44,7 @@ TiDB 版本：6.5.4
     + Backup & Restore (BR) <!-- tw: ran-huang 4-->
 
         - 通过设置 HTTP 客户端 MaxIdleConns 和 MaxIdleConnsPerHost 参数，增强对连接复用的支持 [#46011](https://github.com/pingcap/tidb/issues/46011) @[Leavrth](https://github.com/Leavrth)
-        - 增强 BR 在连接 PD 或者是外部存储 S3 出错时的容错能力 [#42909](https://github.com/pingcap/tidb/issues/42909) @[Leavrth](https://github.com/Leavrth)
+        - 增强 BR 在连接 PD 或者是外部 S3 存储出错时的容错能力 [#42909](https://github.com/pingcap/tidb/issues/42909) @[Leavrth](https://github.com/Leavrth)
         - 新增 restore 参数 `WaitTiflashReady`。当打开这个参数时，restore 操作将会等待 TiFlash 副本复制成功后才结束 [#43828](https://github.com/pingcap/tidb/issues/43828) [#46302](https://github.com/pingcap/tidb/issues/46302) @[3pointer](https://github.com/3pointer)
 
     + TiCDC <!-- tw: Oreoxmt 2-->
@@ -120,7 +118,7 @@ TiDB 版本：6.5.4
     - 修复部分写入时加密可能导致数据损坏的问题 [#15080](https://github.com/tikv/tikv/issues/15080) @[tabokie](https://github.com/tabokie)
 <!-- tw: ran-huang-->
     - 减少 Store 心跳重试次数，修复心跳风暴的问题 [#15184](https://github.com/tikv/tikv/issues/15184) @[nolouch](https://github.com/nolouch)
-    - 修复当待处理压缩字节数较高时流量控制可能无效的问题 [#14392](https://github.com/tikv/tikv/issues/14392) @[Connor1996](https://github.com/Connor1996)
+    - 修复当待处理的数据整理字节数较高时流量控制可能无效的问题 [#14392](https://github.com/tikv/tikv/issues/14392) @[Connor1996](https://github.com/Connor1996)
     - 修复 PD 和 TiKV 之间的网络中断可能导致 PITR 卡住的问题 [#15279](https://github.com/tikv/tikv/issues/15279) @[YuJuncen](https://github.com/YuJuncen)
     - 修复在启用了 TiCDC 的 Old Value 功能时，TiKV 可能会使用更多内存的问题 [#14815](https://github.com/tikv/tikv/issues/14815) @[YuJuncen](https://github.com/YuJuncen)
 
@@ -150,7 +148,7 @@ TiDB 版本：6.5.4
         - 将 BR 使用的全局参数 `TableColumnCountLimit` 和 `IndexLimit` 的默认值提升到最大值，修复恢复过程失败的问题 [#45793](https://github.com/pingcap/tidb/issues/45793) @[Leavrth](https://github.com/Leavrth)
         - 修复 PITR 中处理 ddl meta 信息时 rewrite 出错的问题 [#43184](https://github.com/pingcap/tidb/issues/43184) @[Leavrth](https://github.com/Leavrth)
         - 修复 PITR 执行中没有检查函数返回而导致 panic 的问题 [#45853](https://github.com/pingcap/tidb/issues/45853) @[Leavrth](https://github.com/Leavrth) 
-        - 修复当使用非 AWS S3 而是其他 S3 兼容的存储时，获取无效 region id 的问题 [#41916](https://github.com/pingcap/tidb/issues/41916) [#42033](https://github.com/pingcap/tidb/issues/42033) @[3pointer](https://github.com/3pointer) 
+        - 修复当使用非 AWS S3 而是其他 S3 兼容的存储时，获取无效 region ID 的问题 [#41916](https://github.com/pingcap/tidb/issues/41916) [#42033](https://github.com/pingcap/tidb/issues/42033) @[3pointer](https://github.com/3pointer) 
         - 修复细粒度备份阶段可能出错的问题 [#37085](https://github.com/pingcap/tidb/issues/37085) @[pingyu](https://github.com/pingyu)
         - (dup): release-6.6.0.md > 错误修复> Tools> Backup & Restore (BR) - 修复当 TiDB 集群不存在 PITR 备份任务时，`resolve lock` 频率过高的问题 [#40759](https://github.com/pingcap/tidb/issues/40759) @[joccau](https://github.com/joccau)
         - (dup): release-7.0.0.md > 错误修复> Tools> Backup & Restore (BR) - 缓解了 Region leadership 迁移导致 PITR 日志备份进度延迟变高的问题 [#13638](https://github.com/tikv/tikv/issues/13638) @[YuJuncen](https://github.com/YuJuncen)
