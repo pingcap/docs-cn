@@ -28,8 +28,8 @@ TiDB 是一个兼容 MySQL 的数据库。[Hibernate](https://hibernate.org/orm/
 ### 第 1 步：克隆示例代码仓库到本地
 
 ```bash
-git clone https://github.com/pingcap-inc/tidb-example-java.git
-cd tidb-example-java
+git https://github.com/tidb-samples/tidb-java-hibernate-quickstart.git
+cd tidb-java-hibernate-quickstart
 ```
 
 ### 第 2 步：配置连接信息
@@ -148,7 +148,7 @@ cd tidb-example-java
     make
     ```
 
-2. 查看[示例输出](https://github.com/pingcap-inc/tidb-example-java/blob/main/Expected-Output.md#plain-java-hibernate)，并与你的程序输出进行比较。结果近似即为连接成功。
+2. 查看[示例输出](https://github.com/tidb-samples/tidb-java-hibernate-quickstart/blob/main/Expected-Output.txt)，并与你的程序输出进行比较。结果近似即为连接成功。
 
 ## 重点代码片段
 
@@ -230,7 +230,7 @@ try (Session session = sessionFactory.openSession()) {
 
 ## 注意事项
 
-- 完整代码及其运行方式，见 [tidb-example-java](https://github.com/pingcap-inc/tidb-example-java/blob/main/README.md) GitHub 仓库下的 `plain-java-hibernate` 示例。
+- 完整代码及其运行方式，见 [tidb-java-hibernate-quickstart](https://github.com/tidb-samples/tidb-java-hibernate-quickstart/blob/main/README-zh.md) GitHub 仓库。
 - 关于 Hibernate 的更多使用方法及细节，可以参考 [Hibernate 官方文档](https://hibernate.org/orm/documentation)。
 
 ## 下一步

@@ -28,8 +28,8 @@ TiDB 是一个兼容 MySQL 的数据库。**JDBC** 是 Java 的数据访问 API�
 ### 第 1 步：克隆示例代码仓库到本地
 
 ```bash
-git clone https://github.com/pingcap-inc/tidb-example-java.git
-cd tidb-example-java
+git clone https://github.com/tidb-samples/tidb-java-jdbc-quickstart.git
+cd tidb-java-jdbc-quickstart
 ```
 
 ### 第 2 步：配置连接信息
@@ -148,7 +148,7 @@ cd tidb-example-java
     make
     ```
 
-2. 查看[示例输出](https://github.com/pingcap-inc/tidb-example-java/blob/main/Expected-Output.md#plain-java-jdbc)，并与你的程序输出进行比较。结果近似即为连接成功。
+2. 查看[示例输出](https://github.com/tidb-samples/tidb-java-jdbc-quickstart/blob/main/Expected-Output.txt)，并与你的程序输出进行比较。结果近似即为连接成功。
 
 ## 重点代码片段
 
@@ -249,7 +249,7 @@ public void deletePlayer(String id) throws SQLException {
 
 ## 注意事项
 
-- 完整代码及其运行方式，见 [tidb-example-java](https://github.com/pingcap-inc/tidb-example-java/blob/main/README.md) GitHub 仓库下的 `plain-java-jdbc` 示例。
+- 完整代码及其运行方式，见 [tidb-java-jdbc-quickstart](https://github.com/tidb-samples/tidb-java-jdbc-quickstart/blob/main/README-zh.md) GitHub 仓库。
 - 关于 **MySQL Connector/J** 的更多使用方法及细节，可以参考 [MySQL Connector/J 官方文档](https://dev.mysql.com/doc/connector-j/8.1/en/)。
 
 ## 下一步

@@ -28,8 +28,8 @@ TiDB 是一个兼容 MySQL 的数据库。[Mybatis](https://mybatis.org/mybatis-
 ### 第 1 步：克隆示例代码仓库到本地
 
 ```bash
-git clone https://github.com/pingcap-inc/tidb-example-java.git
-cd tidb-example-java
+git clone https://github.com/tidb-samples/tidb-java-mybatis-quickstart.git
+cd tidb-java-mybatis-quickstart
 ```
 
 ### 第 2 步：配置连接信息
@@ -148,7 +148,7 @@ cd tidb-example-java
     make
     ```
 
-2. 查看[示例输出](https://github.com/pingcap-inc/tidb-example-java/blob/main/Expected-Output.md#plain-java-mybatis)，并与你的程序输出进行比较。结果近似即为连接成功。
+2. 查看[示例输出](https://github.com/tidb-samples/tidb-java-mybatis-quickstart/blob/main/Expected-Output.txt)，并与你的程序输出进行比较。结果近似即为连接成功。
 
 ## 重点代码片段
 
@@ -280,7 +280,7 @@ public SqlSessionFactory getSessionFactory() {
 
 ## 注意事项
 
-- 完整代码及其运行方式，见 [tidb-example-java](https://github.com/pingcap-inc/tidb-example-java/blob/main/README.md) GitHub 仓库下的 `plain-java-mybatis` 示例。
+- 完整代码及其运行方式，见 [tidb-java-mybatis-quickstart](https://github.com/tidb-samples/tidb-java-mybatis-quickstart/blob/main/README-zh.md) GitHub 仓库。
 - 关于 MyBatis 的更多使用方法及细节，可以参考 [MyBatis 官方文档](http://www.mybatis.org/mybatis-3/)。
 
 ## 下一步

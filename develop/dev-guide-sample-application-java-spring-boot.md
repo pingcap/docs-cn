@@ -28,8 +28,8 @@ TiDB 是一个兼容 MySQL 的数据库。[Spring](https://spring.io/) 是当前
 ### 第 1 步：克隆示例代码仓库到本地
 
 ```bash
-git clone https://github.com/pingcap-inc/tidb-example-java.git
-cd tidb-example-java
+git clone https://github.com/tidb-samples/tidb-java-springboot-jpa-quickstart.git
+cd tidb-java-springboot-jpa-quickstart
 ```
 
 ### 第 2 步：配置连接信息
@@ -154,7 +154,7 @@ cd tidb-example-java
     make request
     ```
 
-3. 查看[示例输出](https://github.com/pingcap-inc/tidb-example-java/blob/main/Expected-Output.md#spring-jpa-hibernate-service)，并与你的服务程序输出进行比较。结果近似即为连接成功。
+3. 查看[示例输出](https://github.com/tidb-samples/tidb-java-springboot-jpa-quickstart/blob/main/Expected-Output.txt)，并与你的服务程序输出进行比较。结果近似即为连接成功。
 
 ## 重点代码片段
 
@@ -227,7 +227,7 @@ playerRepository.deleteById(id);
 
 ## 注意事项
 
-- 完整代码及其运行方式，见 [tidb-example-java](https://github.com/pingcap-inc/tidb-example-java/blob/main/README.md) GitHub 仓库下的 `spring-jpa-hibernate` 示例。
+- 完整代码及其运行方式，见 [tidb-java-springboot-jpa-quickstart](https://github.com/tidb-samples/tidb-java-springboot-jpa-quickstart/blob/main/README-zh.md) GitHub 仓库。
 - 关于使用到的三方库及框架，可以参考各自官方文档：
 
     - [Spring Framework 官方文档](https://spring.io/projects/spring-framework)
