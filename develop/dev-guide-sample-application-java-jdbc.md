@@ -252,6 +252,19 @@ public void deletePlayer(String id) throws SQLException {
 - 完整代码及其运行方式，见 [tidb-java-jdbc-quickstart](https://github.com/tidb-samples/tidb-java-jdbc-quickstart/blob/main/README-zh.md) GitHub 仓库。
 - 关于 **MySQL Connector/J** 的更多使用方法及细节，可以参考 [MySQL Connector/J 官方文档](https://dev.mysql.com/doc/connector-j/8.1/en/)。
 
+### 使用驱动程序还是 ORM 框架？
+
+Python驱动程序提供对数据库的底层访问，但需要开发人员：
+
+- 手动建立和释放数据库连接。
+- 手动管理数据库事务。
+- 手动将数据行映射到数据对象。
+
+除非您需要编写复杂的SQL语句，否则建议使用 [ORM](https://en.wikipedia.org/w/index.php?title=Object-relational_mapping) 框架，数据持久化框架，或数据持久化 API 进行开发，例如：[Hibernate](/develop/dev-guide-sample-application-java-hibernate.md)、[MyBatis](/develop/dev-guide-sample-application-java-mybatis.md) 或 [Spring Data JPA](/develop/dev-guide-sample-application-java-spring-boot.md)。它可以帮助您：
+
+- 减少管理连接和事务的[模板代码](https://en.wikipedia.org/wiki/Boilerplate_code)。
+- 使用数据对象而不是大量SQL语句来操作数据。
+
 ## 下一步
 
 - 你可以继续阅读开发者文档，以获取更多关于 TiDB 的开发者知识。例如：[插入数据](/develop/dev-guide-insert-data.md)，[更新数据](/develop/dev-guide-update-data.md)，[删除数据](/develop/dev-guide-delete-data.md)，[单表读取](/develop/dev-guide-get-data-from-single-table.md)，[事务](/develop/dev-guide-transaction-overview.md)，[SQL 性能优化](/develop/dev-guide-optimize-sql-overview.md)等。
