@@ -58,20 +58,9 @@ TiDB 版本：6.5.4
     + TiDB Data Migration (DM)
 
 
-    + TiDB Lightning
-
-
     + Dumpling <!-- tw: hfxsd 1-->
 
         - 当使用 `--sql` 参数导出数据时跳过查询所有数据库和表，减少导出开销 [#45239](https://github.com/pingcap/tidb/issues/45239) @[lance6716](https://github.com/lance6716)
-
-    + TiUP
-
-        - note [#issue](https://github.com/pingcap/tiup/issues/${issue-id}) @[贡献者 GitHub ID](https://github.com/${github-id})
-        - note [#issue](https://github.com/pingcap/tiup/issues/${issue-id}) @[贡献者 GitHub ID](https://github.com/${github-id})
-
-    + TiDB Binlog
-
 
 ## 错误修复
 
