@@ -197,4 +197,4 @@ TiDB 版本：6.5.4
 
     + TiDB Binlog <!-- tw: hfxsd 1-->
 
-        - 修复 PD 地址变更时导致 binlog 失败的问题 [#1236](https://github.com/pingcap/tidb-binlog/issues/1236) @[lichunzhu](https://github.com/lichunzhu)
+        - 修复 etcd client 初始化时没有自动同步最新节点信息的问题 [#1236](https://github.com/pingcap/tidb-binlog/issues/1236) @[lichunzhu](https://github.com/lichunzhu)
