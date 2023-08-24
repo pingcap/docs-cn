@@ -65,9 +65,9 @@ TiDB 版本：6.5.4
 
 + TiDB <!-- tw: qiancai 7-->
 
-    - 修复下推 `STREAM_AGG()` 算子时，可能报错 'index out of range' 的问题 [#40857](https://github.com/pingcap/tidb/issues/40857) @[Dousir9](https://github.com/Dousir9)
+    - 修复下推 `STREAM_AGG()` 算子时，可能报错 `index out of range` 的问题 [#40857](https://github.com/pingcap/tidb/issues/40857) @[Dousir9](https://github.com/Dousir9)
     - 修复 `CREATE TABLE` 语句包含子分区定义时，TiDB 会忽略所有分区信息创建出普通表的问题 [#41198](https://github.com/pingcap/tidb/issues/41198) [#41200](https://github.com/pingcap/tidb/issues/41200) @[mjonss](https://github.com/mjonss)
-    - 修复 `stale_read_ts` 设置不正确可能导致 `PREPARE STMT` 读数据不正确的问题 [#43044](https://github.com/pingcap/tidb/issues/43044) @[you06](https://github.com/you06) 
+    - 修复 `stale_read_ts` 设置不正确可能导致 `PREPARE stmt` 读数据不正确的问题 [#43044](https://github.com/pingcap/tidb/issues/43044) @[you06](https://github.com/you06) 
     - 修复 ActivateTxn 可能出现数据竞争的问题 [#42092](https://github.com/pingcap/tidb/issues/42092) @[hawkingrei](https://github.com/hawkingrei)
     - 修复 batch client 重连不及时的问题 [#44431](https://github.com/pingcap/tidb/issues/44431) @[crazycs520](https://github.com/crazycs520)
     - (dup): release-6.1.7.md > 错误修复> TiDB - 修复 SQL compile 报错的日志未脱敏的问题 [#41831](https://github.com/pingcap/tidb/issues/41831) @[lance6716](https://github.com/lance6716)
@@ -100,11 +100,11 @@ TiDB 版本：6.5.4
     - (dup): release-7.1.1.md > 错误修复> TiDB - 修复对于过长的 SQL 输入，`FormatSQL()` 方法无法正常截断的问题 [#44542](https://github.com/pingcap/tidb/issues/44542) @[hawkingrei](https://github.com/hawkingrei)
     - (dup): release-7.1.1.md > 错误修复> TiDB - 修复即使用户没有权限，也能查看 `INFORMATION_SCHEMA.TIFLASH_REPLICA` 表信息的问题 [#45320](https://github.com/pingcap/tidb/issues/45320) @[Lloyd-Pottiger](https://github.com/Lloyd-Pottiger)
 <!-- tw: hfxsd 6-->
-    - 修复 `DATETIME` 或 `TIMESTAMP` 列与常数比较时，行为与 MySQL 不一致的问题 [#38361](https://github.com/pingcap/tidb/issues/38361) @[yibin87](https://github.com/yibin87)
-    - 修复 Index Join 出错可能导致 Index Join 卡住的问题 [#45716](https://github.com/pingcap/tidb/issues/45716) @[wshwsh12](https://github.com/wshwsh12)
-    - 修复 kill connection 之后可能会出现 go coroutine 泄露的问题 [#46034](https://github.com/pingcap/tidb/issues/46034) @[pingyu](https://github.com/pingyu)
+    - 修复 `DATETIME` 或 `TIMESTAMP` 列与数字值比较时，行为与 MySQL 不一致的问题 [#38361](https://github.com/pingcap/tidb/issues/38361) @[yibin87](https://github.com/yibin87)
+    - 修复 Index Join 出错可能导致查询卡住的问题 [#45716](https://github.com/pingcap/tidb/issues/45716) @[wshwsh12](https://github.com/wshwsh12)
+    - 修复 kill 连接之后可能会出现 go coroutine 泄露的问题 [#46034](https://github.com/pingcap/tidb/issues/46034) @[pingyu](https://github.com/pingyu)
     - 修复 `tmp-storage-quota` 配置无法生效的问题 [#45161](https://github.com/pingcap/tidb/issues/45161) [#26806](https://github.com/pingcap/tidb/issues/26806) @[wshwsh12](https://github.com/wshwsh12)
-    - 修复集群中有 TiFlash 节点宕机时，TiFlash Replica 可能不可用的问题 [#38484](https://github.com/pingcap/tidb/issues/38484) @[hehechen](https://github.com/hehechen)
+    - 修复集群中有 TiFlash 节点宕机时，TiFlash 副本可能不可用的问题 [#38484](https://github.com/pingcap/tidb/issues/38484) @[hehechen](https://github.com/hehechen)
     - 修复并发读写 `Config.Lables` 时可能出现数据竞争导致 TiDB crash 的问题 [#45561] (https://github.com/pingcap/tidb/issues/45561) @[genliqi](https://github.com/gengliqi)
 
 + TiKV <!-- tw: qiancai 9-->
@@ -139,7 +139,7 @@ TiDB 版本：6.5.4
     - 修复由于 Region 的边界的 Key 不合法导致 TiFlash 数据不一致的问题 [#7762](https://github.com/pingcap/tiflash/issues/7762) @[lidezhu](https://github.com/lidezhu)
     - (dup): release-7.3.0.md > 错误修复> TiFlash - 修复当同一个 MPP Task 内有多个 HashAgg 算子时，可能导致 MPP Task 编译时间过长而严重影响查询性能的问题 [#7810](https://github.com/pingcap/tiflash/issues/7810) @[SeaRise](https://github.com/SeaRise)
     - (dup): release-7.1.1.md > 错误修复> TiFlash - 修复 TiFlash 在使用 Online Unsafe Recovery 之后重启时间过长的问题 [#7671](https://github.com/pingcap/tiflash/issues/7671) @[hongyunyan](https://github.com/hongyunyan)
-    - 修复 TiFlash Decimal 除法在某些情况下对结果进行 round 时进位错误的问题 [#6462](https://github.com/pingcap/tiflash/issues/6462) @[LittleFall](https://github.com/LittleFall)
+    - 修复 TiFlash 在进行除法运算时对 `DECIMAL` 结果 round 进位错误的问题 [#6462](https://github.com/pingcap/tiflash/issues/6462) @[LittleFall](https://github.com/LittleFall)
 
 + Tools
 
@@ -175,10 +175,9 @@ TiDB 版本：6.5.4
         - 修复 validator 处理错误时可能死锁的问题，并优化了 retry 机制 [#9257](https://github.com/pingcap/tiflow/issues/9257) @[D3Hunter](https://github.com/D3Hunter)
         - 修复计算 causality key 时未考虑 collation 的问题 [#9489](https://github.com/pingcap/tiflow/issues/9489) @[hihihuhu](https://github.com/hihihuhu)
 
-
     + TiDB Lightning <!-- tw: hfxsd 10-->
 
-        - 修复当存在正在导入的 engine 时 disk quota 检查可能阻塞的问题 [#44867](https://github.com/pingcap/tidb/issues/44867) @[D3Hunter](https://github.com/D3Hunter)
+        - 修复当存在正在导入数据的 engine 时 disk quota 检查可能阻塞的问题 [#44867](https://github.com/pingcap/tidb/issues/44867) @[D3Hunter](https://github.com/D3Hunter)
         - 修复当目标集群启用 SSL 时 checksum 报错 `Region is unavailable` 的问题 [#45462](https://github.com/pingcap/tidb/issues/45462) @[D3Hunter](https://github.com/D3Hunter)
         - 修复无法正确输出编码错误的问题 [#44321](https://github.com/pingcap/tidb/issues/44321) @[lyzx2001](https://github.com/lyzx2001)
         - 修复 CSV 数据导入时，route 可能 panic 的问题 [#43284](https://github.com/pingcap/tidb/issues/43284) @[lyzx2001](https://github.com/lyzx2001)
@@ -187,7 +186,7 @@ TiDB 版本：6.5.4
         - 修复 `checksum = "optional"` 时 Checksum 阶段仍然报错的问题 [#45382](https://github.com/pingcap/tidb/issues/45382) @[lyzx2001](https://github.com/lyzx2001)
         - 修复当 PD 集群地址变更时数据导入失败的问题 [#43436](https://github.com/pingcap/tidb/issues/43436) @[lichunzhu](https://github.com/lichunzhu)
         - 修复部分 PD 节点失败导致数据导入失败的问题 [#43400](https://github.com/pingcap/tidb/issues/43400) @[lichunzhu](https://github.com/lichunzhu)
-        - 修复当表使用 `AUTO_ID_CACHE=1` 且使用自增列时，ID 分配器初值错误问题 [#46100](https://github.com/pingcap/tidb/issues/46100) @[D3Hunter](https://github.com/D3Hunter)
+        - 修复当表使用 `AUTO_ID_CACHE=1` 且使用自增列时，ID 分配器 base 值错误的问题 [#46100](https://github.com/pingcap/tidb/issues/46100) @[D3Hunter](https://github.com/D3Hunter)
 
     + Dumpling  <!-- tw: hfxsd 1-->
 
