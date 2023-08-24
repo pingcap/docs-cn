@@ -15,6 +15,7 @@ TiDB 版本：6.5.4
 
 + TiDB <!-- tw: Oreoxmt 1-->
 
+    - 优化 `LOAD DATA` 语句中包含赋值表达式时 `LOAD DATA` 的执行性能 [#46081](https://github.com/pingcap/tidb/issues/46081) @[gengliqi](https://github.com/gengliqi)
     - (dup): release-7.3.0.md > 改进提升> TiDB - 优化与落盘相关的 chunk 读取的性能 [#45125](https://github.com/pingcap/tidb/issues/45125) @[YangKeao](https://github.com/YangKeao)
 
 + TiKV <!-- tw: Oreoxmt 9-->
@@ -60,9 +61,9 @@ TiDB 版本：6.5.4
     + TiDB Lightning
 
 
-    + Dumpling
+    + Dumpling <!-- tw: hfxsd 1-->
 
-        - 当使用 --sql 参数导出时跳过查询所有数据库和表，减少导出开销 [#45239](https://github.com/pingcap/tidb/issues/45239) @[lance6716](https://github.com/lance6716)
+        - 当使用 `--sql` 参数导出数据时跳过查询所有数据库和表，减少导出开销 [#45239](https://github.com/pingcap/tidb/issues/45239) @[lance6716](https://github.com/lance6716)
 
     + TiUP
 
@@ -76,12 +77,10 @@ TiDB 版本：6.5.4
 
 + TiDB <!-- tw: qiancai 7-->
 
-    - 修复 load data assertion 报错问题 [#43849](https://github.com/pingcap/tidb/issues/43849) @[you06](https://github.com/you06) 
-    - 修复下推 ‘StreamAgg’ 算子时，可能报错 'index out of range' 的问题 [#41056](https://github.com/pingcap/tidb/issues/41056) @[Dousir9](https://github.com/Dousir9)
-    - 修复 `CREATE TABLE`语句包含子分区定义时，TiDB 会忽略所有分区信息创建出普通表的问题：目前 TiDB 会忽略子分区定义仍然创建分区表，并返回告警信息 [#41198](https://github.com/pingcap/tidb/issues/41198) [#41200](https://github.com/pingcap/tidb/issues/41200) @[mjonss](https://github.com/mjonss)
-    - 修复 stale read ts 设置不正确可能导致 prepare statement 读数据不正确的问题 [#43044](https://github.com/pingcap/tidb/issues/43044) @[you06](https://github.com/you06) 
-    - 修复activate txn 可能存在的 data race [#42092](https://github.com/pingcap/tidb/issues/42092) @[hawkingrei](https://github.com/hawkingrei)
-    - 修复 coprocessor 请求 scan details 处理不准确的问题 [#41582](https://github.com/pingcap/tidb/issues/41582) @[you06](https://github.com/you06) 
+    - 修复下推 `STREAM_AGG()` 算子时，可能报错 'index out of range' 的问题 [#40857](https://github.com/pingcap/tidb/issues/40857) @[Dousir9](https://github.com/Dousir9)
+    - 修复 `CREATE TABLE` 语句包含子分区定义时，TiDB 会忽略所有分区信息创建出普通表的问题 [#41198](https://github.com/pingcap/tidb/issues/41198) [#41200](https://github.com/pingcap/tidb/issues/41200) @[mjonss](https://github.com/mjonss)
+    - 修复 `stale_read_ts` 设置不正确可能导致 `PREPARE STMT` 读数据不正确的问题 [#43044](https://github.com/pingcap/tidb/issues/43044) @[you06](https://github.com/you06) 
+    - 修复 ActivateTxn 可能出现数据竞争的问题 [#42092](https://github.com/pingcap/tidb/issues/42092) @[hawkingrei](https://github.com/hawkingrei)
     - 修复 batch client 重连不及时的问题 [#44431](https://github.com/pingcap/tidb/issues/44431) @[crazycs520](https://github.com/crazycs520)
     - (dup): release-6.1.7.md > 错误修复> TiDB - 修复 SQL compile 报错的日志未脱敏的问题 [#41831](https://github.com/pingcap/tidb/issues/41831) @[lance6716](https://github.com/lance6716)
     - (dup): release-7.1.1.md > 错误修复> TiDB - 修复同时使用 CTE 和关联子查询可能导致查询结果出错或者 panic 的问题 [#44649](https://github.com/pingcap/tidb/issues/44649) [#38170](https://github.com/pingcap/tidb/issues/38170) [#44774](https://github.com/pingcap/tidb/issues/44774) @[winoros](https://github.com/winoros) @[guo-shaoge](https://github.com/guo-shaoge)
@@ -112,6 +111,13 @@ TiDB 版本：6.5.4
     - (dup): release-7.1.1.md > 错误修复> TiDB - 修复 index scan 中可能存在的数据竞争问题 [#45126](https://github.com/pingcap/tidb/issues/45126) @[wshwsh12](https://github.com/wshwsh12)
     - (dup): release-7.1.1.md > 错误修复> TiDB - 修复对于过长的 SQL 输入，`FormatSQL()` 方法无法正常截断的问题 [#44542](https://github.com/pingcap/tidb/issues/44542) @[hawkingrei](https://github.com/hawkingrei)
     - (dup): release-7.1.1.md > 错误修复> TiDB - 修复即使用户没有权限，也能查看 `INFORMATION_SCHEMA.TIFLASH_REPLICA` 表信息的问题 [#45320](https://github.com/pingcap/tidb/issues/45320) @[Lloyd-Pottiger](https://github.com/Lloyd-Pottiger)
+<!-- tw: hfxsd 6-->
+    - 修复 `DATETIME` 或 `TIMESTAMP` 列与常数比较时，行为与 MySQL 不一致的问题 [#38361](https://github.com/pingcap/tidb/issues/38361) @[yibin87](https://github.com/yibin87)
+    - 修复 Index Join 出错可能导致 Index Join 卡住的问题 [#45716](https://github.com/pingcap/tidb/issues/45716) @[wshwsh12](https://github.com/wshwsh12)
+    - 修复 kill connection 之后可能会出现 go coroutine 泄露的问题 [#46034](https://github.com/pingcap/tidb/issues/46034) @[pingyu](https://github.com/pingyu)
+    - 修复 `tmp-storage-quota` 配置无法生效的问题 [#45161](https://github.com/pingcap/tidb/issues/45161) [#26806](https://github.com/pingcap/tidb/issues/26806) @[wshwsh12](https://github.com/wshwsh12)
+    - 修复集群中有 TiFlash 节点宕机时，TiFlash Replica 可能不可用的问题 [#38484](https://github.com/pingcap/tidb/issues/38484) @[hehechen](https://github.com/hehechen)
+    - 修复并发读写 `Config.Lables` 时可能出现数据竞争导致 TiDB crash 的问题 [#45561] (https://github.com/pingcap/tidb/issues/45561) @[genliqi](https://github.com/gengliqi)
 
 + TiKV <!-- tw: qiancai 9-->
 
@@ -130,11 +136,11 @@ TiDB 版本：6.5.4
 
 + PD <!-- tw: hfxsd 5-->
 
-    - 修复 `unsafe recovery` 中失败的 learner peer 在 `auto-detect` 模式中被忽略的问题 [#6683](​https://github.com/tikv/pd/issues/6683) @[v01dstar](https://github.com/v01dstar)
-    - 修复当 etcd 已经启动，但 client 尚未连接上 etcd 时，调用 client 会导致 PD panic 的问题 [#6944](https://github.com/tikv/pd/issues/6944) @[HuSharp](https://github.com/HuSharp)
-    - 修复在 rule checker 选定 peer 时，unhealthy peer 无法被移除的问题 [#6843](​https://github.com/tikv/pd/issues/6843) @[nolouch](https://github.com/nolouch)
-    - 修复 leader 长时间无法退出的问题 [#6932]https://github.com/tikv/pd/pull/6932) @[bufferflies](https://github.com/bufferflies)
-    - 修复 Placement rule 在使用 location labels 时，SQL 和 rule checker 不兼容的问题 [#45271](https://github.com/pingcap/tidb/pull/45271) @[nolouch](https://github.com/nolouch)
+    - 修复 `unsafe recovery` 中失败的 learner peer 在 `auto-detect` 模式中被忽略的问题 [#6690](https://github.com/tikv/pd/issues/6690) @[v01dstar](https://github.com/v01dstar)
+    - 修复当 etcd 已经启动，但 client 尚未连接上 etcd 时，调用 client 会导致 PD panic 的问题 [#6860](https://github.com/tikv/pd/issues/6860) @[HuSharp](https://github.com/HuSharp)
+    - 修复在 rule checker 选定 peer 时，unhealthy peer 无法被移除的问题 [#6559](https://github.com/tikv/pd/issues/6559) @[nolouch](https://github.com/nolouch)
+    - 修复 leader 长时间无法退出的问题 [#6918](https://github.com/tikv/pd/issues/6918) @[bufferflies](https://github.com/bufferflies)
+    - 修复 Placement Rule 在使用 `LOCATION_LABLES` 时，SQL 和 Rule Checker 不兼容的问题 [#38605(https://github.com/pingcap/tidb/issues/38605) @[nolouch](https://github.com/nolouch)
     - (dup): release-6.1.4.md > Bug 修复> PD - 修复 PD 可能会非预期地向 Region 添加多个 Learner 的问题 [#5786](https://github.com/tikv/pd/issues/5786) @[HunDunDM](https://github.com/HunDunDM)
     - (dup): release-7.3.0.md > 错误修复> PD - 修复在 rule checker 选定 peer 时，unhealthy peer 无法被移除的问题 [#6559](https://github.com/tikv/pd/issues/6559) @[nolouch](https://github.com/nolouch)
     - (dup): release-7.3.0.md > 错误修复> PD - 修复 `unsafe recovery` 中失败的 learner peer 在 `auto-detect` 模式中被忽略的问题 [#6690](https://github.com/tikv/pd/issues/6690) @[v01dstar](https://github.com/v01dstar)
@@ -145,6 +151,7 @@ TiDB 版本：6.5.4
     - 修复由于 Region 的边界的 Key 不合法导致 TiFlash 数据不一致的问题 [#7762](https://github.com/pingcap/tiflash/issues/7762) @[lidezhu](https://github.com/lidezhu)
     - (dup): release-7.3.0.md > 错误修复> TiFlash - 修复当同一个 MPP Task 内有多个 HashAgg 算子时，可能导致 MPP Task 编译时间过长而严重影响查询性能的问题 [#7810](https://github.com/pingcap/tiflash/issues/7810) @[SeaRise](https://github.com/SeaRise)
     - (dup): release-7.1.1.md > 错误修复> TiFlash - 修复 TiFlash 在使用 Online Unsafe Recovery 之后重启时间过长的问题 [#7671](https://github.com/pingcap/tiflash/issues/7671) @[hongyunyan](https://github.com/hongyunyan)
+    - 修复 TiFlash Decimal 除法在某些情况下对结果进行 round 时进位错误的问题 [#6462](https://github.com/pingcap/tiflash/issues/6462) @[LittleFall](https://github.com/LittleFall)
 
 + Tools
 
@@ -174,7 +181,7 @@ TiDB 版本：6.5.4
         - (dup): release-7.2.0.md > 错误修复> Tools> TiCDC - 修复同步到 TiDB 或 MySQL 场景下，频繁设置下游双向复制相关变量导致下游日志过多的问题 [#9180](https://github.com/pingcap/tiflow/issues/9180) @[asddongmen](https://github.com/asddongmen)
         - (dup): release-7.3.0.md > 错误修复> Tools> TiCDC - 修复对默认 `ENUM` 值编码错误的问题 [#9259](https://github.com/pingcap/tiflow/issues/9259) @[3AceShowHand](https://github.com/3AceShowHand)
 
-    + TiDB Data Migration (DM)
+    + TiDB Data Migration (DM) <!-- tw: hfxsd 3-->
 
         - 修复唯一键列名为空时导致 panic 问题 [#9247](https://github.com/pingcap/tiflow/issues/9247) @[lance6716](https://github.com/lance6716)
         - 修复 validator 处理错误时可能死锁的问题，并优化 retry [#9257](https://github.com/pingcap/tiflow/issues/9257) @[D3Hunter](https://github.com/D3Hunter)
@@ -182,27 +189,23 @@ TiDB 版本：6.5.4
         - 对不兼容的 DDL 支持严格的乐观模式 [#9112](https://github.com/pingcap/tiflow/issues/9112) @[GMHDBJD](https://github.com/GMHDBJD)
 
 
-    + TiDB Lightning
+    + TiDB Lightning <!-- tw: hfxsd 10-->
 
         - 修复当存在正在导入的 engine 时 disk quota 检查可能 block 的问题 [#44867](https://github.com/pingcap/tidb/issues/44867) @[D3Hunter](https://github.com/D3Hunter)
-        - 修复当目标集群启用 SSL 时 lightning checksum 时报 "Region is unavailable" 的问题 [#45462](https://github.com/pingcap/tidb/issues/45462) @[D3Hunter](https://github.com/D3Hunter)
+        - 修复当目标集群启用 SSL 时 checksum 报 "Region is unavailable" 的问题 [#45462](https://github.com/pingcap/tidb/issues/45462) @[D3Hunter](https://github.com/D3Hunter)
         - 修复无法正确输出编码错误的问题 [#44321](https://github.com/pingcap/tidb/issues/44321) @[lyzx2001](https://github.com/lyzx2001)
-        - 修复 csv 数据导入时，route 可能 panic 的问题 [#43284](https://github.com/pingcap/tidb/issues/43284) @[lyzx2001](https://github.com/lyzx2001)
-        - 修复逻辑导入 A 表时可能 B 表不存在的问题 [#44614](https://github.com/pingcap/tidb/issues/44614) @[dsdashun](https://github.com/dsdashun)
-        - 修复保存 NEXT_GLOBAL_ROW_ID 时类型错误问题 [#45427](https://github.com/pingcap/tidb/issues/45427) @[lyzx2001](https://github.com/lyzx2001)
+        - 修复 CSV 数据导入时，route 可能 panic 的问题 [#43284](https://github.com/pingcap/tidb/issues/43284) @[lyzx2001](https://github.com/lyzx2001)
+        - 修复逻辑导入模式下导入 A 表时可能误报 B 表不存在的问题 [#44614](https://github.com/pingcap/tidb/issues/44614) @[dsdashun](https://github.com/dsdashun)
+        - 修复保存 `NEXT_GLOBAL_ROW_ID` 时类型错误问题 [#45427](https://github.com/pingcap/tidb/issues/45427) @[lyzx2001](https://github.com/lyzx2001)
         - 修复 checksum = "optional" 时 checksum 阶段仍然报错的问题 [#45382](https://github.com/pingcap/tidb/issues/45382) @[lyzx2001](https://github.com/lyzx2001)
-        - 修复当 pd 集群地址变更时导入失败的问题 [#43436](https://github.com/pingcap/tidb/issues/43436) @[lichunzhu](https://github.com/lichunzhu)
-        - 修复部分 pd 节点失败导致导入失败的问题 [#43400](https://github.com/pingcap/tidb/issues/43400) @[lichunzhu](https://github.com/lichunzhu)
-        - 修复当表使用 AUTO_ID_CACHE=1 且使用自增列时 id 分配器初值错误问题 [#46100](https://github.com/pingcap/tidb/issues/46100) @[D3Hunter](https://github.com/D3Hunter)
+        - 修复当 PD 集群地址变更时数据导入失败的问题 [#43436](https://github.com/pingcap/tidb/issues/43436) @[lichunzhu](https://github.com/lichunzhu)
+        - 修复部分 PD 节点失败导致数据导入失败的问题 [#43400](https://github.com/pingcap/tidb/issues/43400) @[lichunzhu](https://github.com/lichunzhu)
+        - 修复当表使用 `AUTO_ID_CACHE=1` 且使用自增列时，ID 分配器初值错误问题 [#46100](https://github.com/pingcap/tidb/issues/46100) @[D3Hunter](https://github.com/D3Hunter)
 
-    + Dumpling
+    + Dumpling  <!-- tw: hfxsd 1-->
 
-        - 修复导出到 S3 时 file writer 关闭报错被跳过导致导出时文件丢失问题 [#45353](https://github.com/pingcap/tidb/issues/45353) @[lichunzhu](https://github.com/lichunzhu)
+        - 修复导出到 S3 时 file writer 关闭报错未处理导致导出文件丢失的问题 [#45353](https://github.com/pingcap/tidb/issues/45353) @[lichunzhu](https://github.com/lichunzhu)
 
-    + TiUP
+    + TiDB Binlog <!-- tw: hfxsd 1-->
 
-        - note [#issue](https://github.com/pingcap/tiup/issues/${issue-id}) @[贡献者 GitHub ID](https://github.com/${github-id})
-
-    + TiDB Binlog
-
-        - 修复 pd 地址变更时导致 binlog 失败的问题 [#1236](https://github.com/pingcap/tidb-binlog/issues/1236) @[lichunzhu](https://github.com/lichunzhu)
+        - 修复 PD 地址变更时导致 binlog 失败的问题 [#1236](https://github.com/pingcap/tidb-binlog/issues/1236) @[lichunzhu](https://github.com/lichunzhu)
