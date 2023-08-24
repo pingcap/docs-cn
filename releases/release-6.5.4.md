@@ -55,8 +55,9 @@ TiDB 版本：6.5.4
         - 优化同步到 Kafka 时对超过限制的消息的处理方式，支持只发送主键到下游 [#9574](https://github.com/pingcap/tiflow/issues/9574) @[3AceShowHand](https://github.com/3AceShowHand)
         - (dup): release-7.3.0.md > 改进提升> Tools> TiCDC - Storage Sink 支持对 HEX 格式的数据进行十六进制编码输出，使其兼容 AWS DMS 的格式规范 [#9373](https://github.com/pingcap/tiflow/issues/9373) @[CharlesCheung96](https://github.com/CharlesCheung96)
 
-    + TiDB Data Migration (DM)
-
+    + TiDB Data Migration (DM) <!-- tw: hfxsd 1-->
+    
+        - 对不兼容的 DDL 支持严格的乐观模式 [#9112](https://github.com/pingcap/tiflow/issues/9112) @[GMHDBJD](https://github.com/GMHDBJD)
 
     + Dumpling <!-- tw: hfxsd 1-->
 
@@ -173,9 +174,8 @@ TiDB 版本：6.5.4
     + TiDB Data Migration (DM) <!-- tw: hfxsd 3-->
 
         - 修复唯一键列名为空时导致 panic 问题 [#9247](https://github.com/pingcap/tiflow/issues/9247) @[lance6716](https://github.com/lance6716)
-        - 修复 validator 处理错误时可能死锁的问题，并优化 retry [#9257](https://github.com/pingcap/tiflow/issues/9257) @[D3Hunter](https://github.com/D3Hunter)
-        - 修复计算 causality 时未考虑 collation 的问题 [#9489](https://github.com/pingcap/tiflow/issues/9489) @[hihihuhu](https://github.com/hihihuhu)
-        - 对不兼容的 DDL 支持严格的乐观模式 [#9112](https://github.com/pingcap/tiflow/issues/9112) @[GMHDBJD](https://github.com/GMHDBJD)
+        - 修复 validator 处理错误时可能死锁的问题，并优化了 retry 机制 [#9257](https://github.com/pingcap/tiflow/issues/9257) @[D3Hunter](https://github.com/D3Hunter)
+        - 修复计算 causality key 时未考虑 collation 的问题 [#9489](https://github.com/pingcap/tiflow/issues/9489) @[hihihuhu](https://github.com/hihihuhu)
 
 
     + TiDB Lightning <!-- tw: hfxsd 10-->
