@@ -31,7 +31,7 @@ TiDB 版本：6.5.4
     (dup) - 提升 etcd 的高可用性 [#6554](https://github.com/tikv/pd/issues/6554) [#6442](https://github.com/tikv/pd/issues/6442) @[lhy1024](https://github.com/lhy1024)
     (dup) - 减少 `GetRegions` 请求的内存占用 [#6855](https://github.com/tikv/pd/issues/6835) @[lhy1024](https://github.com/lhy1024)
     - 支持重复使用 HTTP 连接 [#6913](​https://github.com/tikv/pd/issues/6913) @[nolouch](https://github.com/nolouch)
-    - 新增 halt-scheduling 配置项，用于关闭 PD 调度 [#6558](https://github.com/tikv/pd/issues/6493) @[JmPotato](https://github.com/JmPotato)
+    - 新增 halt-scheduling 配置项，用于关闭 PD 调度 [#6493](https://github.com/tikv/pd/issues/6493) @[JmPotato](https://github.com/JmPotato)
     - (dup): release-7.3.0.md > 改进提升> PD - 减少 `GetRegions` 请求的内存占用 [#6835](https://github.com/tikv/pd/issues/6835) @[lhy1024](https://github.com/lhy1024)
     - (dup): release-7.3.0.md > 改进提升> PD - 未开启 Swagger server 时，PD 默认屏蔽 Swagger API [#6786](https://github.com/tikv/pd/issues/6786) @[bufferflies](https://github.com/bufferflies)
 
@@ -46,7 +46,7 @@ TiDB 版本：6.5.4
     + Backup & Restore (BR) <!-- tw: ran-huang 4-->
 
         - 通过设置 HTTP 客户端 MaxIdleConns 和 MaxIdleConnsPerHost 参数，增强对连接复用的支持 [#46011](https://github.com/pingcap/tidb/issues/46011) @[Leavrth](https://github.com/Leavrth)
-        - 增强 BR 对连接 PD 或者是外部存储 S3 出错的容错能力 https://github.com/pingcap/tidb/pull/43611 @Leavrth 
+        - 增强 BR 在连接 PD 或者是外部存储 S3 出错时的容错能力 [#42909](https://github.com/pingcap/tidb/issues/42909) @[Leavrth](https://github.com/Leavrth)
         - 新增 restore 参数 `WaitTiflashReady`。当打开这个参数时，restore 操作将会等待 TiFlash 副本复制成功后才结束 [#43828](https://github.com/pingcap/tidb/issues/43828) [#46302](https://github.com/pingcap/tidb/issues/46302) @[3pointer](https://github.com/3pointer)
 
     + TiCDC <!-- tw: Oreoxmt 2-->
