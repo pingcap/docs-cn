@@ -7,7 +7,7 @@ summary: 了解 TiCDC 支持同步的 DDL 和一些特殊情况
 
 ## DDL 白名单
 
-目前 TiCDC 在同步 DDL 时使用白名单策略，只有在白名单内部的 DDL 会同步到下游，不在白名单内的 DDL 不会被 TiCDC 同步到下游。
+目前 TiCDC 在同步 DDL 时使用白名单策略，只有在白名单中的 DDL 操作才会被同步到下游系统，不在白名单中的 DDL 操作将不会被 TiCDC 同步。
 
 以下为 TiCDC 支持同步的 DDL 的列表。
 
@@ -42,7 +42,7 @@ summary: 了解 TiCDC 支持同步的 DDL 和一些特殊情况
 - alter table ttl 
 - alter table remove ttl
 
-## DDl 同步注意事项
+## DDL 同步注意事项
 
 由于同步过程中缺乏一些上下文信息，因此 TiCDC 对 rename table 类型的 DDL 同步有一些约束。
 
@@ -50,35 +50,35 @@ summary: 了解 TiCDC 支持同步的 DDL 和一些特殊情况
 
 在同步该类型的 DDL 时，只有旧的表名符合 filter 的规则，才会被同步，下面会使用具体的例子进行说明。
 
-假设你的 changefeed 的配置文件如下
+假设你的 changefeed 的配置文件如下：
 
 ```toml
 [filter]
 rules = ['test.t*']
 ```
 
-那么，TiCDC 对该类型 DDL 的处理行为如下表所示
+那么，TiCDC 对该类型 DDL 的处理行为如下表所示：
 
 | DDL | 是否同步 | 原因和处理方式 |
 | --- | --- | --- |
 | rename table test.t1 to test.t2 | 同步 | test.t1 符合 filter 规则 |
 | rename table test.t1 to ignore.t1 | 同步 | test.t1 符合 filter 规则 |
 | rename table ignore.t1 to ignore.t2 | 忽略 | ignore.t1 不符合 filter 规则 |
-| rename table test.n1 to test.t1 | 报错，并停止同步。 | test.n1 不符合 filter 规则，但是 test.t1 符合 filter 规则，这是非法操作。 请参考错误提示信息进行处理 |
+| rename table test.n1 to test.t1 | 报错，并停止同步。 | test.n1 不符合 filter 规则，但是 test.t1 符合 filter 规则，这是非法操作。请参考错误提示信息进行处理 |
 | rename table ignore.t1 to test.t1 | 报错，并停止同步。 | 理由同上 |
 
 ### 一条 DDL 语句内 rename 多个表
 
 TiCDC 仅会同步旧的表库名，新的库名都包含在 filter 规则中的该类型 DDL。此外，TiCDC 不支持同步对表名进行交换的 rename table DDL。下面会用具体的例子进行说明。
 
-假设你的 changefeed 的配置文件如下
+假设你的 changefeed 的配置文件如下：
 
 ```toml
 [filter]
 rules = ['test.t*']
 ```
 
-那么，TiCDC 对该类型的处理行为如下表所示
+那么，TiCDC 对该类型的处理行为如下表所示：
 
 | DDL | 是否同步 | 原因 |
 | --- | --- | --- |
