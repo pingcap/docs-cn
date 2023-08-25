@@ -144,7 +144,6 @@ cd tidb-java-springboot-jpa-quickstart
 1. 运行下述命令，启动示例代码编写的服务：
 
     ```shell
-    cd spring-jpa-hibernate
     make
     ```
 

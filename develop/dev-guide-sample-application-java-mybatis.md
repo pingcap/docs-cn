@@ -144,7 +144,6 @@ cd tidb-java-mybatis-quickstart
 1. 运行下述命令，执行示例代码：
 
     ```shell
-    cd plain-java-mybatis
     make
     ```
 
