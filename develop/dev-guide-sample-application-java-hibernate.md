@@ -10,7 +10,15 @@ summary: 本文描述了 TiDB 和 Hibernate 的连接步骤，并给出了简单
 
 TiDB 是一个兼容 MySQL 的数据库。[Hibernate](https://hibernate.org/orm/) 是当前比较流行的开源 Java 应用持久层框架，且 Hibernate 在版本 `6.0.0.Beta2` 及以上支持了 TiDB 方言，完美适配了 TiDB 的特性。
 
-本文档将展示如何使用 TiDB 和 Hibernate 来构造一个简单的 CRUD 应用程序。
+本文档将展示如何使用 TiDB 和 Hibernate 来完成以下任务：
+
+- 配置你的环境。
+- 使用 Hibernate 连接到 TiDB 集群。
+- 构建并运行你的应用程序。你也可以参考示例代码片段，完成基本的 CRUD 操作。
+
+> **注意**
+>
+> 本文档适用于 TiDB Serverless、TiDB Dedicated 和本地部署的 TiDB。
 
 ## 前置需求
 
