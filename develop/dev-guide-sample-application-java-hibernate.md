@@ -62,7 +62,7 @@ cd tidb-java-hibernate-quickstart
 
     <Tip>如果你在 Windows Subsystem for Linux (WSL) 中运行，请切换为对应的 Linux 发行版。</Tip>
 
-3. 点击 **Generate Password** 生成密码。
+4. 点击 **Create password** 生成密码。
 
    <Tip>如果你之前已经生成过密码，可以直接使用原密码，或点击 **Reset Password** 重新生成密码。</Tip>
 
