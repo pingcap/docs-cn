@@ -6,7 +6,7 @@ summary: 本文描述了 TiDB 和 Hibernate 的连接步骤，并给出了简单
 <!-- markdownlint-disable MD024 -->
 <!-- markdownlint-disable MD029 -->
 
-# 如何用 Hibernate 连接到 TiDB
+# 使用 Hibernate 连接到 TiDB
 
 TiDB 是一个兼容 MySQL 的数据库。[Hibernate](https://hibernate.org/orm/) 是当前比较流行的开源 Java 应用持久层框架，且 Hibernate 在版本 `6.0.0.Beta2` 及以上支持了 TiDB 方言，完美适配了 TiDB 的特性。
 
