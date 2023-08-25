@@ -146,25 +146,25 @@ server_configs:
 tikv_servers:
 # z1
   - host: tikv-1
-     port：20160
+    port：20160
     config:
       server.labels:
         zone: z1
         host: h1
    - host: tikv-1
-      port：20161
+     port：20161
     config:
       server.labels:
         zone: z1
         host: h1
   - host: tikv-2
-     port：20160
+    port：20160
     config:
       server.labels:
         zone: z1
         host: h2
   - host: tikv-2
-     port：20161
+    port：20161
     config:
       server.labels:
         zone: z1
