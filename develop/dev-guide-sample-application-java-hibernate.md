@@ -52,7 +52,9 @@ cd tidb-java-hibernate-quickstart
 
 1. 在 TiDB Cloud Web Console 中，选择你的 TiDB Serverless 集群，进入 **Overview** 页面，点击右上角的 **Connect** 按钮。
 
-2. 确认窗口中的配置和你的运行环境一致。
+2. 点击右上角的 **Connect** 按钮，会显示连接对话框。
+
+3. 确认窗口中的配置和你的运行环境一致。
 
     - Endpoint 为 **Public**
     - Connect With 选择 **General**
