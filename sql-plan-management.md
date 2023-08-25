@@ -116,6 +116,7 @@ SELECT * FROM test . t WHERE a > ?
 >
 > 因此包含单个常量的 SQL 语句和包含被逗号连接起来多个常量的 SQL 语句，在被绑定时会被 TiDB 视作不同的 SQL 语句，需要分别创建绑定。
 > 例如：
+> 
 > ```sql
 > create table t(a int, b int, key idx(a));
 > create session binding for select * from t where a in (?) using select /*+ use_index(t, idx) */ * from t where a in (?);
