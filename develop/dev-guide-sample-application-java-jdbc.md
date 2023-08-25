@@ -254,13 +254,13 @@ public void deletePlayer(String id) throws SQLException {
 
 ### 使用驱动程序还是 ORM 框架？
 
-Python 驱动程序提供对数据库的底层访问，但需要开发人员：
+Java 驱动程序提供对数据库的底层访问，但需要开发人员：
 
 - 手动建立和释放数据库连接。
 - 手动管理数据库事务。
-- 手动将数据行映射到数据对象。
+- 手动将数据行映射为数据对象。
 
-除非您需要编写复杂的 SQL 语句，否则建议使用 [ORM](https://en.wikipedia.org/w/index.php?title=Object-relational_mapping) 框架，数据持久化框架，或数据持久化 API 进行开发，例如：[Hibernate](/develop/dev-guide-sample-application-java-hibernate.md)、[MyBatis](/develop/dev-guide-sample-application-java-mybatis.md) 或 [Spring Data JPA](/develop/dev-guide-sample-application-java-spring-boot.md)。它可以帮助您：
+除非需要编写复杂的 SQL 语句，否则建议使用 [ORM](https://en.wikipedia.org/w/index.php?title=Object-relational_mapping) 框架、数据持久化框架或数据持久化 API 进行开发。例如：[Hibernate](/develop/dev-guide-sample-application-java-hibernate.md)、[MyBatis](/develop/dev-guide-sample-application-java-mybatis.md) 或 [Spring Data JPA](/develop/dev-guide-sample-application-java-spring-boot.md)。它可以帮助你：
 
 - 减少管理连接和事务的[模板代码](https://en.wikipedia.org/wiki/Boilerplate_code)。
 - 使用数据对象而不是大量 SQL 语句来操作数据。
