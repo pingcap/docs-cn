@@ -99,13 +99,9 @@ cd tidb-java-hibernate-quickstart
 
 3. 点击 **Allow Access from Anywhere**。
 
-    <Tip>
-
     更多配置细节，可参考 [TiDB Dedicated 标准连接教程](https://docs.pingcap.com/tidbcloud/connect-via-standard-connection)。
 
-    </Tip>
-
-2. 运行以下命令，将 `env.sh.example` 复制并重命名为 `env.sh`：
+4. 运行以下命令，将 `env.sh.example` 复制并重命名为 `env.sh`：
 
     ```bash
     cp env.sh.example env.sh
@@ -124,11 +120,11 @@ cd tidb-java-hibernate-quickstart
 
     注意替换 `{}` 中的占位符为 **Connect** 窗口中获得的值。
 
-4. 保存文件。
+6. 保存文件。
 
 </div>
 
-<div label="自建 TiDB">
+<div label="本地部署 TiDB">
 
 1. 运行以下命令，将 `env.sh.example` 复制并重命名为 `env.sh`：
 
