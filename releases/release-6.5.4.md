@@ -20,7 +20,7 @@ TiDB 版本：6.5.4
 + TiDB
 
     - 优化 `LOAD DATA` 语句中包含赋值表达式时 `LOAD DATA` 的执行性能 [#46081](https://github.com/pingcap/tidb/issues/46081) @[gengliqi](https://github.com/gengliqi)
-    - (dup): release-7.3.0.md > 改进提升> TiDB - 优化与落盘相关的 chunk 读取的性能 [#45125](https://github.com/pingcap/tidb/issues/45125) @[YangKeao](https://github.com/YangKeao)
+    - 优化与落盘相关的 chunk 读取的性能 [#45125](https://github.com/pingcap/tidb/issues/45125) @[YangKeao](https://github.com/YangKeao)
 
 + TiKV
 
