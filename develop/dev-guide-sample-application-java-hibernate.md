@@ -87,7 +87,7 @@ cd tidb-java-hibernate-quickstart
 
     TiDB Serverless 要求使用 secure connection，因此 `USE_SSL` 的值应为 `true`。
 
-6. 保存文件。
+7. 保存文件。
 
 </div>
 
