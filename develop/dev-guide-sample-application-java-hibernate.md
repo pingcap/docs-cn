@@ -66,7 +66,7 @@ cd tidb-java-hibernate-quickstart
 
    <Tip>如果你之前已经生成过密码，可以直接使用原密码，或点击 **Reset password** 重新生成密码。</Tip>
 
-4. 运行以下命令，将 `env.sh.example` 复制并重命名为 `env.sh`：
+5. 运行以下命令，将 `env.sh.example` 复制并重命名为 `env.sh`：
 
     ```bash
     cp env.sh.example env.sh
