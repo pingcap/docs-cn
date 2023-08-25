@@ -11,6 +11,10 @@ TiDB 版本：6.5.4
 
 试用链接：[快速体验](https://docs.pingcap.com/zh/tidb/v6.5/quick-start-with-tidb) | [生产部署](https://docs.pingcap.com/zh/tidb/v6.5/production-deployment-using-tiup) | [下载离线包](https://cn.pingcap.com/product-community/?version=v6.5.4#version-list)
 
+## 兼容性变更
+
+    - 新增 `halt-scheduling` 配置项，用于关闭 PD 调度 [#6493](https://github.com/tikv/pd/issues/6493) @[JmPotato](https://github.com/JmPotato)
+
 ## 改进提升
 
 + TiDB <!-- tw: Oreoxmt 1-->
