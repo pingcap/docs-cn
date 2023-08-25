@@ -195,7 +195,7 @@ public SessionFactory getSessionFactory() {
 }
 ```
 
-请注意，你需要替换 `${your_entity_class}` 为自己的数据实体类。如果你有多个实体类，需要添加多个 `.addAnnotatedClass(${your_entity_class})` 语句。此外，这仅是 Hibernate 的其中一种配置方式。在配置中遇到任何问题，或想了解更多关于 Hibernate 的信息，你可参考 [Hibernate 官方文档](https://hibernate.org/orm/documentation)。
+在使用该函数时，你需要替换 `${your_entity_class}` 为自己的数据实体类。如果你有多个实体类，需要添加多个 `.addAnnotatedClass(${your_entity_class})` 语句。此外，这仅是 Hibernate 的其中一种配置方式。在配置中遇到任何问题，或想了解更多关于 Hibernate 的信息，你可参考 [Hibernate 官方文档](https://hibernate.org/orm/documentation)。
 
 ### 插入或更新数据
 
