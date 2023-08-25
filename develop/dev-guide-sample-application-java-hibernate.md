@@ -35,8 +35,10 @@ TiDB 是一个兼容 MySQL 的数据库。[Hibernate](https://hibernate.org/orm/
 
 ### 第 1 步：克隆示例代码仓库到本地
 
+在命令行中运行以下命令，克隆示例代码仓库到本地：
+
 ```bash
-git https://github.com/tidb-samples/tidb-java-hibernate-quickstart.git
+git clone https://github.com/tidb-samples/tidb-java-hibernate-quickstart.git
 cd tidb-java-hibernate-quickstart
 ```
 
