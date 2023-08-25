@@ -72,7 +72,7 @@ cd tidb-java-hibernate-quickstart
     cp env.sh.example env.sh
     ```
 
-5. 复制并粘贴对应连接字符串至 `env.sh` 中。需更改部分示例结果如下。
+6. 复制并粘贴对应连接字符串至 `env.sh` 中。需更改部分示例结果如下。
 
     ```shell
     export TIDB_HOST='{gateway-region}.aws.tidbcloud.com'
