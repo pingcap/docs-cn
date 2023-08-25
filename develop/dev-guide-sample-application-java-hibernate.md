@@ -56,9 +56,9 @@ cd tidb-java-hibernate-quickstart
 
 3. 确认窗口中的配置和你的运行环境一致。
 
-    - Endpoint 为 **Public**
-    - Connect With 选择 **General**
-    - Operating System 为你的运行环境。
+    - **Endpoint Type** 为 `Public`
+    - **Connect With** 选择 `General`
+    - **Operating System** 为你的运行环境
 
     <Tip>如果你在 Windows Subsystem for Linux (WSL) 中运行，请切换为对应的 Linux 发行版。</Tip>
 
