@@ -357,7 +357,7 @@ CREATE TABLE t(a int AUTO_INCREMENT key) AUTO_ID_CACHE 1;
 - 对于 v6.6.0 及更早的 TiDB 版本，定义的列必须为主键或者索引前缀。
 - 只能定义在类型为整数、`FLOAT` 或 `DOUBLE` 的列上。
 - 不支持与列的默认值 `DEFAULT` 同时指定在同一列上。
-- 不支持使用 `ALTER TABLE` 来添加 `AUTO_INCREMENT` 属性。
+- 不支持使用 `ALTER TABLE` 来添加带 `AUTO_INCREMENT` 属性的列。
 - 支持使用 `ALTER TABLE` 来移除 `AUTO_INCREMENT` 属性。但从 TiDB 2.1.18 和 3.0.4 版本开始，TiDB 通过 session 变量 `@@tidb_allow_remove_auto_inc` 控制是否允许通过 `ALTER TABLE MODIFY` 或 `ALTER TABLE CHANGE` 来移除列的 `AUTO_INCREMENT` 属性，默认是不允许移除。
 - `ALTER TABLE` 需要 `FORCE` 选项来将 `AUTO_INCREMENT` 设置为较小的值。
 - 将 `AUTO_INCREMENT` 设置为小于 `MAX(<auto_increment_column>)` 的值会导致重复键，因为预先存在的值不会被跳过。
