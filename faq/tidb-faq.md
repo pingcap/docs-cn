@@ -103,7 +103,7 @@ MySQL 是单机数据库，只能通过 XA 来满足跨数据库事务，而 TiD
 
 ### 1.1.15 TiFlash 是否具有事务一致性 (transactionally consistent)？
 
-是的，TiFlash 默认保持数据强一致性。Raft Learner 流程会更新数据。此外 TSO 检查可以确保查询中的数据与交易完全一致。更多信息，请参考 [异步复制](/tiflash/tiflash-overview.md#异步复制) 和 [一致性](/tiflash/tiflash-overview.md#一致性)。
+是的，TiFlash 默认保持数据强一致性。Raft Learner 流程会更新数据。此外 TSO 检查可以确保查询中的数据与事务完全一致。更多信息，请参考[异步复制](/tiflash/tiflash-overview.md#异步复制)和[一致性](/tiflash/tiflash-overview.md#一致性)。
 
 ## 1.2 TiDB 原理
 
