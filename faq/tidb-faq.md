@@ -113,9 +113,9 @@ As a standalone database, MySQL can only implement across-database transactions 
 - [TiFlash](/tiflash/tiflash-overview.md) introduces a special structure named DeltaTree to process the modification of the columnar engine.
 - TiFlash acts as the learner role in a Raft group, so it does not vote for the log commit or writes. This means that DML operations do not have to wait for the acknowledgment of TiFlash, which is why TiFlash does not slow down the OLTP performance. In addition, TiFlash and TiKV work in separate instances, so they do not affect each other.
 
-### Is TiFlash eventually consistent?
+### What kind of consistency does TiFlash provide?
 
-Yes. TiFlash maintains strong data consistency by default.
+TiFlash maintains strong data consistency by default. The raft learner process updates the data. There is also a TSO check to ensure the data in queries is fully consistent with the transaction. For more information, see [Asynchronous replication](/tiflash/tiflash-overview.md#asynchronous-replication) and [Consistency](/tiflash/tiflash-overview.md#consistency).
 
 ## TiDB techniques
 
