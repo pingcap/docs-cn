@@ -40,7 +40,7 @@ cd tidb-python-mysqlclient-quickstart
 
 ### 第 2 步：安装依赖
 
-运行以下命令，安装示例代码所需要的依赖 (包括 mysqlclient)：
+运行以下命令，安装示例代码所需要的依赖（包括 mysqlclient）：
 
 ```bash
 pip install -r requirements.txt
@@ -168,7 +168,7 @@ pip install -r requirements.txt
     python mysqlclient_example.py
     ```
 
-2. 查看[`Expected-Output.txt`](https://github.com/tidb-samples/tidb-python-mysqlclient-quickstart/blob/main/Expected-Output.txt)，并与你的程序输出进行比较。结果近似即为连接成功。
+2. 查看 [`Expected-Output.txt`](https://github.com/tidb-samples/tidb-python-mysqlclient-quickstart/blob/main/Expected-Output.txt)，并与你的程序输出进行比较。结果近似即为连接成功。
 
 ## 重点代码片段
 
