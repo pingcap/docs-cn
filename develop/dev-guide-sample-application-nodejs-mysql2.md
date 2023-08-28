@@ -21,7 +21,7 @@ TiDB 是一个兼容 MySQL 的数据库。[node-mysql2](https://github.com/sidor
 
 为了能够顺利完整该教程，你需要提前：
 
-- 在你的机器上安装 [Node.js](https://nodejs.org/en) 16.x 及以上版本。
+- 在你的机器上安装 [Node.js](https://nodejs.org/en) 16.x 或以上版本。
 - 在你的机器上安装 [Git](https://git-scm.com/downloads)。
 - 准备一个 TiDB 集群。
 
