@@ -19,7 +19,7 @@ TiDB 是一个兼容 MySQL 的数据库。[node-mysql2](https://github.com/sidor
 
 ## 前置需求
 
-为了能够顺利完整该教程，你需要提前：
+为了能够顺利完成本教程，你需要提前：
 
 - 在你的机器上安装 [Node.js](https://nodejs.org/en) 16.x 或以上版本。
 - 在你的机器上安装 [Git](https://git-scm.com/downloads)。
@@ -69,17 +69,17 @@ npm install mysql2 dotenv --save
 
 2. 点击右上角的 **Connect** 按钮，将会弹出连接对话框。
 
-3. 确认窗口中的配置和你的运行环境一致。
+3. 确认对话框中的选项配置和你的运行环境一致。
 
     - **Endpoint Type** 为 `Public`。
     - **Connect With** 选择 `General`。
-    - **Operating System** 为你的运行环境。
+    - **Operating System** 为运行示例代码所在的操作系统。
 
    > **Note**
    >
-   > 如果你在 Windows Subsystem for Linux (WSL) 中运行，请切换为对应的 Linux 发行版。
+   > 如果你的程序在 Windows Subsystem for Linux (WSL) 中运行，请切换为对应的 Linux 发行版。
 
-4. 点击 **Generate password** 生成密码。
+4. 点击 **Create password** 生成一个随机的密码。
 
    > **Note**
    >
