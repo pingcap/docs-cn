@@ -11,9 +11,10 @@ summary: 介绍如何升级 TiDB 集群监控组件 Prometheus、Grafana 和 Ale
 
 > **注意：**
 >
-> - 如果监控组件不是由 TiUP 部署和管理，可以直接升级监控组件，无需参考本文档。
+> - 如果现有的监控组件是[手动部署](deploy-monitoring-services.md)的，而不是由 TiUP 部署的，你可以直接升级监控组件，无需参考本文。
 > - TiDB 并未对监控组件新版本的兼容性进行测试，可能存在升级后部分功能无法正常使用的问题。如果遇到问题，请在 GitHub 上提 [issue](https://github.com/pingcap/tidb/issues) 反馈。
 > - 本文所述功能在 TiUP v1.9.0 及后续版本支持，使用本功能前请检查 TiUP 版本号。
+> - 使用 TiUP 升级 TiDB 群集时，TiUP 会将监控组件重新部署为其默认版本。因此，你需要在升级 TiDB 后重新升级监控组件。
 
 ## 升级 Prometheus
 
@@ -62,7 +63,8 @@ tiup cluster patch <cluster-name> prometheus-v{new-version}.tar.gz -R prometheus
 
 ### 第 1 步：从 Grafana 官网的下载新版本安装包
 
-从 [Grafana 官网下载页面](https://grafana.com/grafana/download?pg=get&plcmt=selfmanaged-box1-cta1)下载组件安装包，并解压。
+1. 从 [Grafana 官网下载页面](https://grafana.com/grafana/download?pg=get&plcmt=selfmanaged-box1-cta1)下载组件安装包。你可以根据需要选择下载 `OSS`版或 `Enterprise` 版。
+2. 解压下载的软件包。
 
 ### 第 2 步：下载 TiDB 官方 Grafana 安装包
 
