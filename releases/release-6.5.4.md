@@ -13,7 +13,7 @@ TiDB 版本：6.5.4
 
 ## 兼容性变更
 
-    - 为了修复当使用 `Cursor Fetch` 获取大结果集时 TiDB 占用大量内存的问题，TiDB 会自动将结果集写入磁盘以释放内存资源 [#43233](https://github.com/pingcap/tidb/issues/43233) @[YangKeao](https://github.com/YangKeao)
+- 为了修复当使用 `Cursor Fetch` 获取大结果集时 TiDB 占用大量内存的问题，TiDB 会自动将结果集写入磁盘以释放内存资源 [#43233](https://github.com/pingcap/tidb/issues/43233) @[YangKeao](https://github.com/YangKeao)
 
 ## 改进提升
 
@@ -107,7 +107,7 @@ TiDB 版本：6.5.4
     - 修复 kill 连接之后可能会出现 go coroutine 泄露的问题 [#46034](https://github.com/pingcap/tidb/issues/46034) @[pingyu](https://github.com/pingyu)
     - 修复 `tmp-storage-quota` 配置无法生效的问题 [#45161](https://github.com/pingcap/tidb/issues/45161) [#26806](https://github.com/pingcap/tidb/issues/26806) @[wshwsh12](https://github.com/wshwsh12)
     - 修复集群中有 TiFlash 节点宕机时，TiFlash 副本可能不可用的问题 [#38484](https://github.com/pingcap/tidb/issues/38484) @[hehechen](https://github.com/hehechen)
-    - 修复并发读写 `Config.Lables` 时可能出现数据竞争导致 TiDB crash 的问题 [#45561] (https://github.com/pingcap/tidb/issues/45561) @[genliqi](https://github.com/gengliqi)
+    - 修复并发读写 `Config.Lables` 时可能出现数据竞争导致 TiDB crash 的问题 [#45561](https://github.com/pingcap/tidb/issues/45561) @[genliqi](https://github.com/gengliqi)
 
 + TiKV 
 
