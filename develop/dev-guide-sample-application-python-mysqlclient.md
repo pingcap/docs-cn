@@ -11,7 +11,7 @@ TiDB 是一个兼容 MySQL 的数据库。[mysqlclient](https://github.com/PyMyS
 
 - 配置你的环境。
 - 使用 mysqlclient 连接到 TiDB 集群。
-- 构建并运行你的应用程序。你也可以参考示例代码片段，完成基本的 CRUD 操作。
+- 构建并运行你的应用程序。你也可以参考[示例代码片段](#示例代码片段)，完成基本的 CRUD 操作。
 
 > **注意**
 >
@@ -70,7 +70,7 @@ pip install -r requirements.txt
     >
     > 如果你在 Windows Subsystem for Linux (WSL) 中运行，请切换为对应的 Linux 发行版。
 
-4. 点击 **Generate password** 生成密码。
+4. 如果你还设置密码，点击 **Create password** 生成一个随机密码。
 
     > **Tip:**
     >
@@ -170,7 +170,7 @@ pip install -r requirements.txt
 
 2. 查看 [`Expected-Output.txt`](https://github.com/tidb-samples/tidb-python-mysqlclient-quickstart/blob/main/Expected-Output.txt)，并与你的程序输出进行比较。结果近似即为连接成功。
 
-## 重点代码片段
+## 示例代码片段
 
 你可参考以下关键代码片段，完成自己的应用开发。
 
