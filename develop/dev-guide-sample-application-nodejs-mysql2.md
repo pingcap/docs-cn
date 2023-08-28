@@ -39,8 +39,8 @@ TiDB 是一个兼容 MySQL 的数据库。[node-mysql2](https://github.com/sidor
 运行以下命令，将示例代码仓库克隆到本地：
 
 ```bash
-git clone https://github.com/tidb-samples/tidb-python-mysqlclient-quickstart.git
-cd tidb-python-mysqlclient-quickstart
+git clone https://github.com/tidb-samples/tidb-nodejs-mysql2-quickstart.git
+cd tidb-nodejs-mysql2-quickstart
 ```
 
 ### 第 2 步：安装依赖
@@ -129,7 +129,7 @@ npm install mysql2 dotenv --save
     ```dotenv
     TIDB_HOST={host}
     TIDB_PORT=4000
-    TIDB_USER={username}
+    TIDB_USER={user}
     TIDB_PASSWORD={password}
     TIDB_DATABASE=test
     TIDB_ENABLE_SSL=true
