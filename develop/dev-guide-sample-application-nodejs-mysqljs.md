@@ -1,16 +1,16 @@
 ---
-title: 使用 node-mysql2 连接到 TiDB
-summary: 本文描述了 TiDB 和 node-mysql2 的连接步骤，并给出了简单示例代码片段。
+title: 使用 mysql.js 连接到 TiDB
+summary: 本文描述了 TiDB 和 mysql.js 的连接步骤，并给出了简单示例代码片段。
 ---
 
-# 如何用 node-mysql2 连接到 TiDB
+# 如何用 mysql.js 连接到 TiDB
 
-TiDB 是一个兼容 MySQL 的数据库。[node-mysql2](https://github.com/sidorares/node-mysql2) 是一个与 [mysqljs/mysql](https://github.com/mysqljs/mysql) 兼容的面向 Node.js 的 MySQL 驱动。
+TiDB 是一个兼容 MySQL 的数据库。[mysql.js](https://github.com/mysqljs/mysql) 是一个纯 Node.js 代码编写的实现了 MySQL 协议的 JavaScript 客户端。
 
-本文档将展示如何使用 TiDB 和 node-mysql2 来构造一个简单的 CRUD 应用程序。
+本文档将展示如何使用 TiDB 和 mysql.js 来构造一个简单的 CRUD 应用程序。
 
 - 配置你的环境。
-- 使用 node-mysql2 驱动连接到 TiDB 集群。
+- 使用 mysql.js 驱动连接到 TiDB 集群。
 - 构建并运行你的应用程序。你也可以参考[示例代码片段](#示例代码片段)，完成基本的 CRUD 操作。
 
 > **注意**
@@ -39,22 +39,22 @@ TiDB 是一个兼容 MySQL 的数据库。[node-mysql2](https://github.com/sidor
 运行以下命令，将示例代码仓库克隆到本地：
 
 ```bash
-git clone https://github.com/tidb-samples/tidb-nodejs-mysql2-quickstart.git
-cd tidb-nodejs-mysql2-quickstart
+git clone https://github.com/tidb-samples/tidb-nodejs-mysqljs-quickstart.git
+cd tidb-nodejs-mysqljs-quickstart
 ```
 
 ### 第 2 步：安装依赖
 
-运行以下命令，安装示例代码所需要的依赖 (包括 `mysql2` 和 `dotenv` 依赖包)：
+运行以下命令，安装示例代码所需要的依赖 (包括 `mysql` 和 `dotenv` 依赖包)：
 
 ```bash
 npm install
 ```
 
-在你现有的项目当中，你可以通过以下命令安装 `mysql2` 和 `dotenv` 依赖包（`dotenv` 用于从 `.env` 文件中读取环境变量）：
+在你现有的项目当中，你可以通过以下命令安装 `mysql` 和 `dotenv` 依赖包（`dotenv` 用于从 `.env` 文件中读取环境变量）：
 
 ```bash
-npm install mysql2 dotenv --save
+npm install mysql dotenv --save
 ```
 
 ### 第 3 步：配置连接信息
@@ -97,10 +97,10 @@ npm install mysql2 dotenv --save
     TIDB_DATABASE=test
     TIDB_ENABLE_SSL=true
     ```
-
-   > **Note**
-   >
-   > 当你使用 Public Endpoint 连接 TiDB Serverless 集群时，**必须**启用 TLS 连接，请将 `TIDB_ENABLE_SSL` 修改为 `true`。
+   
+    > **Note**
+    >
+    > 当你使用 Public Endpoint 连接 TiDB Serverless 集群时，**必须**启用 TLS 连接，请将 `TIDB_ENABLE_SSL` 修改为 `true`。
 
 7. 保存 `.env` 文件。
 
@@ -112,7 +112,7 @@ npm install mysql2 dotenv --save
 2. 点击右上角的 **Connect** 按钮，将会出现连接对话框。
 3. 在对话框中点击 **Allow Access from Anywhere**，然后点击 **Download TiDB cluster CA** 下载 TiDB Cloud 提供的 CA 证书。
 
-   更多配置细节，可参考 [TiDB Dedicated 标准连接教程（英文）](https://docs.pingcap.com/tidbcloud/connect-via-standard-connection)。
+    更多配置细节，可参考 [TiDB Dedicated 标准连接教程（英文）](https://docs.pingcap.com/tidbcloud/connect-via-standard-connection)。
 
 4. 运行以下命令，将 `.env.example` 复制并重命名为 `.env`：
 
@@ -135,7 +135,7 @@ npm install mysql2 dotenv --save
     > **Note**
     >
     > 推荐在使用 Public Endpoint 连接 TiDB Dedicated 集群时，启用 TLS 连接。
-    >
+    > 
     > 为了启用 TLS (SSL) 连接，将 `TIDB_ENABLE_SSL` 修改为 `true`，并使用 `TIDB_CA_PATH` 指定从连接对话框中下载的 CA 证书的文件路径。
 
 6. 保存 `.env` 文件。
@@ -191,98 +191,129 @@ npm run start
 
 ## 示例代码片段
 
-你可参考以下关键代码片段，完成自己的应用开发。完整代码及其运行方式，见代码仓库 [tidb-samples/tidb-nodejs-mysql2-quickstart](https://github.com/tidb-samples/tidb-nodejs-mysql2-quickstart)。
+你可参考以下关键代码片段，完成自己的应用开发。完整代码及其运行方式，见代码仓库 [tidb-samples/tidb-nodejs-mysqljs-quickstart](https://github.com/tidb-samples/tidb-nodejs-mysqljs-quickstart)。
 
 ### 连接到 TiDB
 
 下面的代码使用环境变量中定义的连接选项来建立与 TiDB 集群的连接。
 
 ```javascript
-// 步骤 1. 导入 'mysql2' 和 'dotenv' 依赖包。
-import { createConnection } from "mysql2/promise";
+// Step 1. Import the 'mysql' and 'dotenv' packages.
+import { createConnection } from "mysql";
 import dotenv from "dotenv";
 import * as fs from "fs";
 
-// 步骤 2. 将连接参数从 .env 文件中读取到 process.env 中。
+// Step 2. Load environment variables from .env file to process.env.
 dotenv.config();
 
-async function main() {
-    // 步骤 3. 创建与 TiDB 集群的连接。
-    const options = {
-        host: process.env.TIDB_HOST || '127.0.0.1',
-        port: process.env.TIDB_PORT || 4000,
-        user: process.env.TIDB_USER || 'root',
-        password: process.env.TIDB_PASSWORD || '',
-        database: process.env.TIDB_DATABASE || 'test',
-        ssl: process.env.TIDB_ENABLE_SSL === 'true' ? {
-            minVersion: 'TLSv1.2',
-            ca: process.env.TIDB_CA_PATH ? fs.readFileSync(process.env.TIDB_CA_PATH) : undefined
-        } : null,
-    }
-    const conn = await createConnection(options);
-
-    // 步骤 4. 执行 SQL 语句。
-
-    // 步骤 5. 关闭连接。
-    await conn.end();
+// Step 3. Create a connection with the TiDB cluster.
+const options = {
+   host: process.env.TIDB_HOST || '127.0.0.1',
+   port: process.env.TIDB_PORT || 4000,
+   user: process.env.TIDB_USER || 'root',
+   password: process.env.TIDB_PASSWORD || '',
+   database: process.env.TIDB_DATABASE || 'test',
+   ssl: process.env.TIDB_ENABLE_SSL === 'true' ? {
+      minVersion: 'TLSv1.2',
+      ca: process.env.TIDB_CA_PATH ? fs.readFileSync(process.env.TIDB_CA_PATH) : undefined
+   } : null,
 }
+const conn = createConnection(options);
 
-void main();
+// Step 4. Perform some SQL operations...
+
+// Step 5. Close the connection.
+conn.end();
 ```
 
 > **Note**
->
+> 
 > 使用 Public Endpoint 连接 TiDB Serverless 时，**必须**启用 TLS 连接，请将 `TIDB_ENABLE_SSL` 修改为 `true`。但是你**不需要**通过 `TIDB_CA_PATH` 指定 SSL CA 证书，因为 Node.js 默认使用内置的 [Mozilla CA 证书](https://wiki.mozilla.org/CA/Included_Certificates)，该证书已被 TiDB Serverless 信任。
 
 ### 插入数据
 
+下面的代码创建了一条 `Player` 记录，并返回了该记录的 ID。
+
 ```javascript
-const [rsh] = await conn.query('INSERT INTO players (coins, goods) VALUES (?, ?);', [100, 100]);
-console.log(rsh.insertId);
+conn.query('INSERT INTO players (coins, goods) VALUES (?, ?);', [coins, goods], (err, ok) => {
+   if (err) {
+      console.error(err);
+   } else {
+      console.log(ok.insertId);
+   }
+});
 ```
 
 更多信息参考[插入数据](/develop/dev-guide-insert-data.md)。
 
 ### 查询数据
 
+下面的查询返回了 ID 为 1 的 `Player` 记录。
+
 ```javascript
-const [rows] = await conn.query('SELECT id, coins, goods FROM players WHERE id = ?;', [1]);
-console.log(rows[0]);
+conn.query('SELECT id, coins, goods FROM players WHERE id = ?;', [1], (err, rows) => {
+   if (err) {
+      console.error(err);
+   } else {
+      console.log(rows[0]);
+   }
+});
 ```
 
 更多信息参考[查询数据](/develop/dev-guide-get-data-from-single-table.md)。
 
 ### 更新数据
 
+下面的查询为 ID 为 1 的 `Player` 记录增加了 50 个金币和 50 个物品。
+
 ```javascript
-const [rsh] = await conn.query(
-    'UPDATE players SET coins = coins + ?, goods = goods + ? WHERE id = ?;',
-    [50, 50, 1]
+conn.query(
+   'UPDATE players SET coins = coins + ?, goods = goods + ? WHERE id = ?;',
+   [50, 50, 1],
+   (err, ok) => {
+      if (err) {
+         console.error(err);
+      } else {
+         console.log(ok.affectedRows);
+      }
+   }
 );
-console.log(rsh.affectedRows);
 ```
 
 更多信息参考[更新数据](/develop/dev-guide-update-data.md)。
 
 ### 删除数据
 
+下面的查询删除了 ID 为 1 的 `Player` 记录。
+
 ```javascript
-const [rsh] = await conn.query('DELETE FROM players WHERE id = ?;', [1]);
-console.log(rsh.affectedRows);
+conn.query('DELETE FROM players WHERE id = ?;', [1], (err, ok) => {
+   if (err) {
+      reject(err);
+   } else {
+      resolve(ok.affectedRows);
+   }
+});
 ```
 
 更多信息参考[删除数据](/develop/dev-guide-delete-data.md)。
 
 ## 注意事项
 
-- 推荐使用[连接池](https://github.com/sidorares/node-mysql2#using-connection-pools)来管理数据库连接，以减少频繁建立和销毁连接所带来的性能开销。
-- 为了避免 SQL 注入的风险，推荐使用[预处理语句](https://github.com/sidorares/node-mysql2#using-prepared-statements)执行 SQL.
+- 推荐使用[连接池](https://github.com/mysqljs/mysql#pooling-connections)来管理数据库连接，以减少频繁建立和销毁连接所带来的性能开销。
+- 为了避免 SQL 注入的风险，请在执行 SQL 语句前[传递到 SQL 中的值进行转义](https://github.com/mysqljs/mysql#escaping-query-values)。
+
+   > **Note**
+   > 
+   > `mysqljs/mysql` 包目前还不支持预处理语句，它只在客户端对值进行转义 (相关 issue: [mysqljs/mysql#274](https://github.com/mysqljs/mysql/issues/274))。
+   >
+   > 如果你希望使用预处理语句来避免 SQL 注入或提升批量插入/更新的效率，推荐使用 [mysql2](https://github.com/sidorares/node-mysql2) 包。
+
 - 在不涉及大量复杂 SQL 语句的场景下, 推荐使用 ORM 框架 (例如：[Sequelize](https://sequelize.org/), [TypeORM](https://typeorm.io/), 或 [Prisma](https://www.prisma.io/)) 来提升你的开发效率.
 - 当你在数据表中使用到 `BIGINT` 和 `DECIMAL` 类型列时，需要开启 Driver 的 `supportBigNumbers: true` 选项.
-- 为了避免由于网络原因出现的 `read ECONNRESET` Socket 错误，可以在 Driver 上开启 `enableKeepAlive: true` 选项. (相关 Issue: [sidorares/node-mysql2#683](https://github.com/sidorares/node-mysql2/issues/683))
 
 ## 下一步
 
-- 关于 node-mysql2 的更多使用方法，可以参考 [node-mysql2 的 GitHub 仓库](https://github.com/sidorares/node-mysql2)。
+- 关于 mysql.js 驱动的更多使用方法，可以参考 [mysql.js 的 GitHub 仓库](https://github.com/mysqljs/mysql)。
 - 你可以继续阅读开发者文档的其它章节来获取更多 TiDB 应用开发的最佳实践。例如：[插入数据](/develop/dev-guide-insert-data.md)，[更新数据](/develop/dev-guide-update-data.md)，[删除数据](/develop/dev-guide-delete-data.md)，[单表读取](/develop/dev-guide-get-data-from-single-table.md)，[事务](/develop/dev-guide-transaction-overview.md)，[SQL 性能优化](/develop/dev-guide-optimize-sql-overview.md)等。
 - 如果你更倾向于参与课程进行学习，我们也提供专业的 [TiDB 开发者课程](https://cn.pingcap.com/courses-catalog/back-end-developer/?utm_source=docs-cn-dev-guide)支持，并在考试后提供相应的[资格认证](https://learn.pingcap.com/learner/certification-center)。
