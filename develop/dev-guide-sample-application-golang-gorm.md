@@ -1,198 +1,168 @@
 ---
-title: TiDB 和 GORM 的简单 CRUD 应用程序
-summary: 给出一个 TiDB 和 GORM 的简单 CRUD 应用程序示例。
+title: 使用 GORM 连接到 TiDB
+summary: 本文描述了 TiDB 和 GORM 的连接步骤，并给出了简单示例代码片段。
 ---
 
 <!-- markdownlint-disable MD024 -->
 <!-- markdownlint-disable MD029 -->
 
-# TiDB 和 GORM 的简单 CRUD 应用程序
+# 如何用 GORM 连接到 TiDB
 
-[GORM](https://gorm.io/) 为当前比较流行的 Golang 开源 ORM 之一。
+TiDB 是一个兼容 MySQL 的数据库。[GORM](https://gorm.io/index.html) 是当前比较流行的开源 Golang ORM 框架，且 GORM 适配了 TiDB 的 `AUTO_RANDOM` 等特性，TiDB 为 [GORM 的默认支持数据库](https://gorm.io/zh_CN/docs/connecting_to_the_database.html#TiDB)。
 
 本文档将展示如何使用 TiDB 和 GORM 来构造一个简单的 CRUD 应用程序。
 
-> **注意：**
->
-> 推荐使用 Golang 1.20 以上版本进行 TiDB 的应用程序的编写。
+## 前置要求
 
-## 第 1 步：启动你的 TiDB 集群
+- 推荐 [Golang](https://go.dev/) **1.20** 及以上版本。
+- [Git](https://git-scm.com/downloads)。
+- TiDB 集群。如果你还没有 TiDB 集群，可以按照以下方式创建：
+    - （推荐方式）参考[创建 TiDB Serverless 集群](https://docs.pingcap.com/tidbcloud/dev-guide-build-cluster-in-cloud)，创建你自己的 TiDB Cloud 集群。
+    - 参考[部署本地测试 TiDB 集群](https://docs.pingcap.com/zh/tidb/stable/quick-start-with-tidb#部署本地测试集群)或[部署正式 TiDB 集群](https://docs.pingcap.com/zh/tidb/stable/production-deployment-using-tiup)，创建本地集群。
 
-本节将介绍 TiDB 集群的启动方法。
+## 运行代码并连接到 TiDB
 
-**使用 TiDB Serverless 集群**
+本小节演示如何运行示例应用程序的代码，并连接到 TiDB。
 
-详细步骤，请参考：[创建 TiDB Serverless 集群](/develop/dev-guide-build-cluster-in-cloud.md#第-1-步创建-tidb-serverless-集群)。
+### 第 1 步：克隆示例代码仓库到本地
 
-**使用本地集群**
-
-详细步骤，请参考：[部署本地测试 TiDB 集群](/quick-start-with-tidb.md#部署本地测试集群)或[部署正式 TiDB 集群](/production-deployment-using-tiup.md)。
-
-## 第 2 步：获取代码
+在命令行中运行以下命令，克隆示例代码仓库到本地：
 
 ```shell
-git clone https://github.com/pingcap-inc/tidb-example-golang.git
+git clone https://github.com/tidb-samples/tidb-golang-gorm-quickstart.git
+cd tidb-golang-gorm-quickstart
 ```
 
-此处将以 GORM v1.23.5 版本进行说明。
+### 第 2 步：配置连接信息
 
-封装一个用于适配 TiDB 事务的工具包 [util](https://github.com/pingcap-inc/tidb-example-golang/tree/main/util)，编写以下代码备用：
+根据不同的 TiDB 部署方式，使用不同的方法连接到 TiDB 集群。
 
-```go
-package util
+<SimpleTab>
 
-import (
-    "gorm.io/gorm"
-)
+<div label="TiDB Serverless">
 
-// TiDBGormBegin start a TiDB and Gorm transaction as a block. If no error is returned, the transaction will be committed. Otherwise, the transaction will be rolled back.
-func TiDBGormBegin(db *gorm.DB, pessimistic bool, fc func(tx *gorm.DB) error) (err error) {
-    session := db.Session(&gorm.Session{})
-    if session.Error != nil {
-        return session.Error
-    }
+1. 在 TiDB Cloud Web Console 中，选择你的 TiDB Serverless 集群，进入 **Overview** 页面。
 
-    if pessimistic {
-        session = session.Exec("set @@tidb_txn_mode=pessimistic")
-    } else {
-        session = session.Exec("set @@tidb_txn_mode=optimistic")
-    }
+2. 点击右上角的 **Connect** 按钮，会显示连接对话框。
 
-    if session.Error != nil {
-        return session.Error
-    }
-    return session.Transaction(fc)
-}
-```
+3. 确认窗口中的配置和你的运行环境一致。
 
-进入目录 `gorm`：
+    - **Endpoint Type** 为 `Public`
+    - **Connect With** 选择 `General`
+    - **Operating System** 为你的运行环境
 
-```shell
-cd gorm
-```
+    <Tip>如果你在 Windows Subsystem for Linux (WSL) 中运行，请切换为对应的 Linux 发行版。</Tip>
 
-目录结构如下所示：
+4. 点击 **Create password** 生成密码。
 
-```
-.
-├── Makefile
-├── go.mod
-├── go.sum
-└── gorm.go
-```
+   <Tip>如果你之前已经生成过密码，可以直接使用原密码，或点击 **Reset password** 重新生成密码。</Tip>
 
-其中，`gorm.go` 是 `gorm` 这个示例程序的主体。使用 gorm 时，相较于 go-sql-driver/mysql，gorm 屏蔽了创建数据库连接时，不同数据库差异的细节，其还封装了大量的操作，如 AutoMigrate、基本对象的 CRUD 等，极大地简化了代码量。
+5. 运行以下命令，将 `.env.example` 复制并重命名为 `.env`：
 
-`Player` 是数据结构体，为数据库表在程序内的映射。`Player` 的每个属性都对应着 `player` 表的一个字段。相较于 go-sql-driver/mysql，gorm 的 `Player` 数据结构体为了给 gorm 提供更多的信息，加入了形如 `gorm:"primaryKey;type:VARCHAR(36);column:id"` 的注解，用来指示映射关系。
+    ```bash
+    cp .env.example .env
+    ```
 
-```go
+6. 复制并粘贴对应连接字符串至 `.env` 中。需更改部分示例结果如下。
 
-package main
+    ```properties
+    TIDB_HOST='{gateway-region}.aws.tidbcloud.com'
+    TIDB_PORT='4000'
+    TIDB_USER='{prefix}.root'
+    TIDB_PASSWORD='{password}'
+    TIDB_DB_NAME='test'
+    USE_SSL='true'
+    ```
 
-import (
-    "fmt"
-    "math/rand"
+    注意替换 `{}` 中的占位符为 **Connect** 窗口中获得的值。
 
-    "github.com/google/uuid"
-    "github.com/pingcap-inc/tidb-example-golang/util"
+    TiDB Serverless 要求使用 secure connection，因此 `USE_SSL` 的值应为 `true`。
 
-    "gorm.io/driver/mysql"
-    "gorm.io/gorm"
-    "gorm.io/gorm/clause"
-    "gorm.io/gorm/logger"
-)
+7. 保存文件。
 
-type Player struct {
-    ID    string `gorm:"primaryKey;type:VARCHAR(36);column:id"`
-    Coins int    `gorm:"column:coins"`
-    Goods int    `gorm:"column:goods"`
-}
+</div>
 
-func (*Player) TableName() string {
-    return "player"
-}
+<div label="TiDB Dedicated">
 
-func main() {
-    // 1. Configure the example database connection.
-    db := createDB()
+1. 在 TiDB Cloud Web Console 中，选择你的 TiDB Dedicated 集群，进入 **Overview** 页面。
 
-    // AutoMigrate for player table
-    db.AutoMigrate(&Player{})
+2. 点击右上角的 **Connect** 按钮，会显示连接对话框。
 
-    // 2. Run some simple examples.
-    simpleExample(db)
+3. 点击 **Allow Access from Anywhere**。
 
-    // 3. Explore more.
-    tradeExample(db)
-}
+    更多配置细节，可参考 [TiDB Dedicated 标准连接教程](https://docs.pingcap.com/tidbcloud/connect-via-standard-connection)。
 
-func tradeExample(db *gorm.DB) {
-    // Player 1: id is "1", has only 100 coins.
-    // Player 2: id is "2", has 114514 coins, and 20 goods.
-    player1 := &Player{ID: "1", Coins: 100}
-    player2 := &Player{ID: "2", Coins: 114514, Goods: 20}
+4. 运行以下命令，将 `.env.example` 复制并重命名为 `.env`：
 
-    // Create two players "by hand", using the INSERT statement on the backend.
-    db.Clauses(clause.OnConflict{UpdateAll: true}).Create(player1)
-    db.Clauses(clause.OnConflict{UpdateAll: true}).Create(player2)
+    ```bash
+    cp .env.example .env
+    ```
 
-    // Player 1 wants to buy 10 goods from player 2.
-    // It will cost 500 coins, but player 1 cannot afford it.
-    fmt.Println("\nbuyGoods:\n    => this trade will fail")
-    if err := buyGoods(db, player2.ID, player1.ID, 10, 500); err == nil {
-        panic("there shouldn't be success")
-    }
+5. 复制并粘贴对应的连接字符串至 `.env` 中。需更改部分示例结果如下。
 
-    // So player 1 has to reduce the incoming quantity to two.
-    fmt.Println("\nbuyGoods:\n    => this trade will success")
-    if err := buyGoods(db, player2.ID, player1.ID, 2, 100); err != nil {
-        panic(err)
-    }
-}
+    ```properties
+    TIDB_HOST='{host}.clusters.tidb-cloud.com'
+    TIDB_PORT='4000'
+    TIDB_USER='{prefix}.root'
+    TIDB_PASSWORD='{password}'
+    TIDB_DB_NAME='test'
+    USE_SSL='false'
+    ```
 
-func simpleExample(db *gorm.DB) {
-    // Create a player, who has a coin and a goods.
-    if err := db.Clauses(clause.OnConflict{UpdateAll: true}).
-        Create(&Player{ID: "test", Coins: 1, Goods: 1}).Error; err != nil {
-        panic(err)
-    }
+    注意替换 `{}` 中的占位符为 **Connect** 窗口中获得的值。
 
-    // Get a player.
-    var testPlayer Player
-    db.Find(&testPlayer, "id = ?", "test")
-    fmt.Printf("getPlayer: %+v\n", testPlayer)
+6. 保存文件。
 
-    // Create players with bulk inserts. Insert 1919 players totally, with 114 players per batch.
-    bulkInsertPlayers := make([]Player, 1919, 1919)
-    total, batch := 1919, 114
-    for i := 0; i < total; i++ {
-        bulkInsertPlayers[i] = Player{
-            ID:    uuid.New().String(),
-            Coins: rand.Intn(10000),
-            Goods: rand.Intn(10000),
-        }
-    }
+</div>
 
-    if err := db.Session(&gorm.Session{Logger: db.Logger.LogMode(logger.Error)}).
-        CreateInBatches(bulkInsertPlayers, batch).Error; err != nil {
-        panic(err)
-    }
+<div label="本地部署 TiDB">
 
-    // Count players amount.
-    playersCount := int64(0)
-    db.Model(&Player{}).Count(&playersCount)
-    fmt.Printf("countPlayers: %d\n", playersCount)
+1. 运行以下命令，将 `.env.example` 复制并重命名为 `.env`：
 
-    // Print 3 players.
-    threePlayers := make([]Player, 3, 3)
-    db.Limit(3).Find(&threePlayers)
-    for index, player := range threePlayers {
-        fmt.Printf("print %d player: %+v\n", index+1, player)
-    }
-}
+    ```bash
+    cp .env.example .env
+    ```
 
+2. 复制并粘贴对应 TiDB 的连接字符串至 `.env` 中。需更改部分示例结果如下。
+
+    ```properties
+    TIDB_HOST='{tidb_server_host}'
+    TIDB_PORT='4000'
+    TIDB_USER='root'
+    TIDB_PASSWORD='{password}'
+    TIDB_DB_NAME='test'
+    USE_SSL='false'
+    ```
+
+    注意替换 `{}` 中的占位符为你的 TiDB 对应的值，并设置 `USE_SSL` 为 `false`。如果你在本机运行 TiDB，默认 Host 地址为 `127.0.0.1`，密码为空。
+
+3. 保存文件。
+
+</div>
+
+</SimpleTab>
+
+### 第 3 步：运行代码并查看结果
+
+1. 运行下述命令，执行示例代码：
+
+    ```shell
+    make
+    ```
+
+2. 查看[示例输出](https://github.com/tidb-samples/tidb-golang-gorm-quickstart/blob/main/Expected-Output.txt)，并与你的程序输出进行比较。结果近似即为连接成功。
+
+## 重点代码片段
+
+你可参考以下关键代码片段，完成自己的应用开发。
+
+### 连接到 TiDB
+
+```golang
 func createDB() *gorm.DB {
-    dsn := "root:@tcp(127.0.0.1:4000)/test?charset=utf8mb4"
+    dsn := fmt.Sprintf("%s:%s@tcp(%s:%s)/%s?charset=utf8mb4&tls=%s",
+        ${tidb_user}, ${tidb_password}, ${tidb_host}, ${tidb_port}, ${tidb_db_name}, ${use_ssl})
+
     db, err := gorm.Open(mysql.Open(dsn), &gorm.Config{
         Logger: logger.Default.LogMode(logger.Info),
     })
@@ -202,85 +172,50 @@ func createDB() *gorm.DB {
 
     return db
 }
-
-func buyGoods(db *gorm.DB, sellID, buyID string, amount, price int) error {
-    return util.TiDBGormBegin(db, true, func(tx *gorm.DB) error {
-        var sellPlayer, buyPlayer Player
-        if err := tx.Clauses(clause.Locking{Strength: "UPDATE"}).
-            Find(&sellPlayer, "id = ?", sellID).Error; err != nil {
-            return err
-        }
-
-        if sellPlayer.ID != sellID || sellPlayer.Goods < amount {
-            return fmt.Errorf("sell player %s goods not enough", sellID)
-        }
-
-        if err := tx.Clauses(clause.Locking{Strength: "UPDATE"}).
-            Find(&buyPlayer, "id = ?", buyID).Error; err != nil {
-            return err
-        }
-
-        if buyPlayer.ID != buyID || buyPlayer.Coins < price {
-            return fmt.Errorf("buy player %s coins not enough", buyID)
-        }
-
-        updateSQL := "UPDATE player set goods = goods + ?, coins = coins + ? WHERE id = ?"
-        if err := tx.Exec(updateSQL, -amount, price, sellID).Error; err != nil {
-            return err
-        }
-
-        if err := tx.Exec(updateSQL, amount, -price, buyID).Error; err != nil {
-            return err
-        }
-
-        fmt.Println("\n[buyGoods]:\n    'trade success'")
-        return nil
-    })
-}
 ```
 
-## 第 3 步：运行代码
+在使用该函数时，你需要将 `${tidb_host}`、`${tidb_port}`、`${tidb_user}`、`${tidb_password}`、`${tidb_db_name}` 等替换为你的 TiDB 集群的实际值。因为 TiDB Serverless 要求使用 secure connection，因此在使用 TiDB Serverless 时 `${use_ssl}` 的值应为 `true`。
 
-本节将逐步介绍代码的运行方法。
+### 插入数据
 
-### 第 3 步第 1 部分：TiDB Cloud 更改参数
-
-若你使用 TiDB Serverless 集群，更改 `gorm.go` 内 `dsn` 参数值：
-
-```go
-dsn := "root:@tcp(127.0.0.1:4000)/test?charset=utf8mb4"
+```golang
+db.Create(&Player{ID: "id", Coins: 1, Goods: 1})
 ```
 
-若你设定的密码为 `123456`，而且从 TiDB Serverless 集群面板中得到的连接信息为：
+更多信息参考[插入数据](/develop/dev-guide-insert-data.md)。
 
-- Endpoint: `xxx.tidbcloud.com`
-- Port: `4000`
-- User: `2aEp24QWEDLqRFs.root`
+### 查询数据
 
-那么此处应将 `dsn` 更改为：
-
-```go
-dsn := "2aEp24QWEDLqRFs.root:123456@tcp(xxx.tidbcloud.com:4000)/test?charset=utf8mb4&tls=true"
+```golang
+var queryPlayer Player
+db.Find(&queryPlayer, "id = ?", "id")
 ```
 
-### 第 3 步第 2 部分：运行
+更多信息参考[查询数据](/develop/dev-guide-get-data-from-single-table.md)。
 
-你可以分别运行 `make build` 和 `make run` 以运行此代码：
+### 更新数据
 
-```shell
-make build # this command executes `go build -o bin/gorm-example`
-make run # this command executes `./bin/gorm-example`
+```golang
+
+db.Save(&Player{ID: "id", Coins: 100, Goods: 1})
 ```
 
-或者你也可以直接使用原生的命令：
+更多信息参考[更新数据](/develop/dev-guide-update-data.md)。
 
-```shell
-go build -o bin/gorm-example
-./bin/gorm-example
+### 删除数据
+
+```golang
+db.Delete(&Player{ID: "id"})
 ```
 
-再或者直接运行 `make all` 命令，这是 `make build` 和 `make run` 的组合。
+更多信息参考[删除数据](/develop/dev-guide-delete-data.md)。
 
-## 第 4 步：预期输出
+## 注意事项
 
-[GORM 预期输出](https://github.com/pingcap-inc/tidb-example-golang/blob/main/Expected-Output.md#gorm)
+- 完整代码及其运行方式，见 [tidb-golang-gorm-quickstart](https://github.com/tidb-samples/tidb-golang-gorm-quickstart/blob/main/README-zh.md) GitHub 仓库。
+- 关于 GORM 的更多使用方法及细节，可以参考 [GORM 官方文档](https://gorm.io/docs/) 及 GORM 官方文档中的 [TiDB 章节](https://gorm.io/docs/connecting_to_the_database.html#TiDB)。
+
+## 下一步
+
+- 你可以继续阅读开发者文档，以获取更多关于 TiDB 的开发者知识。例如：[插入数据](https://docs.pingcap.com/zh/tidb/stable/dev-guide-insert-data)，[更新数据](https://docs.pingcap.com/zh/tidb/stable/dev-guide-update-data)，[删除数据](https://docs.pingcap.com/zh/tidb/stable/dev-guide-delete-data)，[单表读取](https://docs.pingcap.com/zh/tidb/stable/dev-guide-get-data-from-single-table)，[事务](https://docs.pingcap.com/zh/tidb/stable/dev-guide-transaction-overview)，[SQL 性能优化](https://docs.pingcap.com/zh/tidb/stable/dev-guide-optimize-sql-overview)等。
+- 如果你更倾向于参与课程进行学习，我们也提供专业的 [TiDB 开发者课程](https://cn.pingcap.com/courses-catalog/back-end-developer/)支持，并在考试后提供相应的[资格认证](https://learn.pingcap.com/learner/certification-center)。
