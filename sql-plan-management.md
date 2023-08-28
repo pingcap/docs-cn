@@ -119,58 +119,58 @@ SELECT * FROM test . t WHERE a > ?
 > 例如：
 >
 > ```sql
-> create table t(a int, b int, key idx(a));
-> create session binding for select * from t where a in (?) using select /*+ use_index(t, idx) */ * from t where a in (?);
-> show bindings;
+> CREATE TABLE t(a INT, b INT, KEY idx(a));
+> CREATE SESSION BINDING for SELECT * FROM t WHERE a IN (?) USING SELECT /*+ use_index(t, idx) */ * FROM t WHERE a in (?);
+> SHOW BINDINGS;
 > +-----------------------------------------------+----------------------------------------------------------------------+------------+---------+-------------------------+-------------------------+---------+--------------------+--------+------------------------------------------------------------------+-------------+
 > | Original_sql                                  | Bind_sql                                                             | Default_db | Status  | Create_time             | Update_time             | Charset | Collation          | Source | Sql_digest                                                       | Plan_digest |
 > +-----------------------------------------------+----------------------------------------------------------------------+------------+---------+-------------------------+-------------------------+---------+--------------------+--------+------------------------------------------------------------------+-------------+
-> | select * from `test` . `t` where `a` in ( ? ) | SELECT /*+ use_index(`t` `idx`)*/ * FROM `test`.`t` WHERE `a` IN (?) | test       | enabled | 2023-08-23 14:15:31.472 | 2023-08-23 14:15:31.472 | utf8mb4 | utf8mb4_general_ci | manual | 8b9c4e6ab8fad5ba29b034311dcbfc8a8ce57dde2e2d5d5b65313b90ebcdebf7 |             |
+> | SELECT * FROM `test` . `t` WHERE `a` IN ( ? ) | SELECT /*+ use_index(`t` `idx`)*/ * FROM `test`.`t` WHERE `a` IN (?) | test       | enabled | 2023-08-23 14:15:31.472 | 2023-08-23 14:15:31.472 | utf8mb4 | utf8mb4_general_ci | manual | 8b9c4e6ab8fad5ba29b034311dcbfc8a8ce57dde2e2d5d5b65313b90ebcdebf7 |             |
 > +-----------------------------------------------+----------------------------------------------------------------------+------------+---------+-------------------------+-------------------------+---------+--------------------+--------+------------------------------------------------------------------+-------------+
-> select * from t where a in (1);
+> SELECT * FROM t WHERE a IN (1);
 > SELECT @@LAST_PLAN_FROM_BINDING;
 > +--------------------------+
 > | @@LAST_PLAN_FROM_BINDING |
 > +--------------------------+
 > |                        1 |
 > +--------------------------+
-> select * from t where a in (1,2);
+> SELECT * FROM t WHERE a IN (1,2);
 > SELECT @@LAST_PLAN_FROM_BINDING;
 > +--------------------------+
 > | @@LAST_PLAN_FROM_BINDING |
 > +--------------------------+
 > |                        0 |
 > +--------------------------+
-> create session binding for select * from t where a in (?,?) using select /*+ use_index(t, idx) */ * from t where a in (?,?);
+> CREATE SESSION BINDING for SELECT * FROM t WHERE a IN (?,?) USING SELECT /*+ use_index(t, idx) */ * FROM t WHERE a IN (?,?);
 > show bindings;
 > +-------------------------------------------------+------------------------------------------------------------------------+------------+---------+-------------------------+-------------------------+---------+--------------------+--------+------------------------------------------------------------------+-------------+
 > | Original_sql                                    | Bind_sql                                                               | Default_db | Status  | Create_time             | Update_time             | Charset | Collation          | Source | Sql_digest                                                       | Plan_digest |
 > +-------------------------------------------------+------------------------------------------------------------------------+------------+---------+-------------------------+-------------------------+---------+--------------------+--------+------------------------------------------------------------------+-------------+
-> | select * from `test` . `t` where `a` in ( ... ) | SELECT /*+ use_index(`t` `idx`)*/ * FROM `test`.`t` WHERE `a` IN (?,?) | test       | enabled | 2023-08-23 14:16:30.762 | 2023-08-23 14:16:30.762 | utf8mb4 | utf8mb4_general_ci | manual | da38bf216db4a53e1a1e01c79ffa42306419442ad7238480bb7ac510723c8bdf |             |
-> | select * from `test` . `t` where `a` in ( ? )   | SELECT /*+ use_index(`t` `idx`)*/ * FROM `test`.`t` WHERE `a` IN (?)   | test       | enabled | 2023-08-23 14:15:31.472 | 2023-08-23 14:15:31.472 | utf8mb4 | utf8mb4_general_ci | manual | 8b9c4e6ab8fad5ba29b034311dcbfc8a8ce57dde2e2d5d5b65313b90ebcdebf7 |             |
+> | SELECT * FROM `test` . `t` WHERE `a` IN ( ... ) | SELECT /*+ use_index(`t` `idx`)*/ * FROM `test`.`t` WHERE `a` IN (?,?) | test       | enabled | 2023-08-23 14:16:30.762 | 2023-08-23 14:16:30.762 | utf8mb4 | utf8mb4_general_ci | manual | da38bf216db4a53e1a1e01c79ffa42306419442ad7238480bb7ac510723c8bdf |             |
+> | SELECT * FROM `test` . `t` WHERE `a` IN ( ? )   | SELECT /*+ use_index(`t` `idx`)*/ * FROM `test`.`t` WHERE `a` IN (?)   | test       | enabled | 2023-08-23 14:15:31.472 | 2023-08-23 14:15:31.472 | utf8mb4 | utf8mb4_general_ci | manual | 8b9c4e6ab8fad5ba29b034311dcbfc8a8ce57dde2e2d5d5b65313b90ebcdebf7 |             |
 > +-------------------------------------------------+------------------------------------------------------------------------+------------+---------+-------------------------+-------------------------+---------+--------------------+--------+------------------------------------------------------------------+-------------+
-> select * from t where a in (1,2);
+> SELECT * FROM t WHERE a IN (1,2);
 > SELECT @@LAST_PLAN_FROM_BINDING;
 > +--------------------------+
 > | @@LAST_PLAN_FROM_BINDING |
 > +--------------------------+
 > |                        1 |
 > +--------------------------+
-> select * from t where a in (1,2,3);
+> SELECT * FROM t WHERE a IN (1,2,3);
 > SELECT @@LAST_PLAN_FROM_BINDING;
 > +--------------------------+
 > | @@LAST_PLAN_FROM_BINDING |
 > +--------------------------+
 > |                        1 |
 > +--------------------------+
-> drop session binding for select * from t where a in (?);
-> show bindings;
+> DROP SESSION BINDING for SELECT * FROM t WHERE a IN (?);
+> SHOW BINDINGS;
 > +-------------------------------------------------+------------------------------------------------------------------------+------------+---------+-------------------------+-------------------------+---------+--------------------+--------+------------------------------------------------------------------+-------------+
 > | Original_sql                                    | Bind_sql                                                               | Default_db | Status  | Create_time             | Update_time             | Charset | Collation          | Source | Sql_digest                                                       | Plan_digest |
 > +-------------------------------------------------+------------------------------------------------------------------------+------------+---------+-------------------------+-------------------------+---------+--------------------+--------+------------------------------------------------------------------+-------------+
-> | select * from `test` . `t` where `a` in ( ... ) | SELECT /*+ use_index(`t` `idx`)*/ * FROM `test`.`t` WHERE `a` IN (?,?) | test       | enabled | 2023-08-23 14:16:30.762 | 2023-08-23 14:16:30.762 | utf8mb4 | utf8mb4_general_ci | manual | da38bf216db4a53e1a1e01c79ffa42306419442ad7238480bb7ac510723c8bdf |             |
+> | SELECT * FROM `test` . `t` WHERE `a` IN ( ... ) | SELECT /*+ use_index(`t` `idx`)*/ * FROM `test`.`t` WHERE `a` IN (?,?) | test       | enabled | 2023-08-23 14:16:30.762 | 2023-08-23 14:16:30.762 | utf8mb4 | utf8mb4_general_ci | manual | da38bf216db4a53e1a1e01c79ffa42306419442ad7238480bb7ac510723c8bdf |             |
 > +-------------------------------------------------+------------------------------------------------------------------------+------------+---------+-------------------------+-------------------------+---------+--------------------+--------+------------------------------------------------------------------+-------------+
-> select * from t where a in (1);
+> SELECT * FROM t WHERE a IN (1);
 > SELECT @@LAST_PLAN_FROM_BINDING;
 > +--------------------------+
 > | @@LAST_PLAN_FROM_BINDING |
@@ -178,7 +178,7 @@ SELECT * FROM test . t WHERE a > ?
 > |                        0 |
 > +--------------------------+
 > ```
-> 
+>
 
 值得注意的是，如果一条 SQL 语句在 GLOBAL 和 SESSION 作用域内都有与之绑定的执行计划，因为优化器在遇到 SESSION 绑定时会忽略 GLOBAL 绑定的执行计划，该语句在 SESSION 作用域内绑定的执行计划会屏蔽掉语句在 GLOBAL 作用域内绑定的执行计划。
 
