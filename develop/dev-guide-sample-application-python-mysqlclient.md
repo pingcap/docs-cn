@@ -36,7 +36,7 @@ cd tidb-python-mysqlclient-quickstart
 运行以下命令，安装示例代码所需要的依赖 (包括 mysqlclient)：
 
 ```bash
-pip install -r requirement.txt
+pip install -r requirements.txt
 ```
 
 ### 第 3 步：配置连接信息
