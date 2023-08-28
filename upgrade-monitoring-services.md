@@ -11,7 +11,7 @@ summary: 介绍如何升级 TiDB 集群监控组件 Prometheus、Grafana 和 Ale
 
 > **注意：**
 >
-> - 如果现有的监控组件是[手动部署](deploy-monitoring-services.md)的，而不是由 TiUP 部署的，你可以直接升级监控组件，无需参考本文。
+> - 如果现有的监控组件是[手动部署](/deploy-monitoring-services.md)的，而不是由 TiUP 部署的，你可以直接升级监控组件，无需参考本文。
 > - TiDB 并未对监控组件新版本的兼容性进行测试，可能存在升级后部分功能无法正常使用的问题。如果遇到问题，请在 GitHub 上提 [issue](https://github.com/pingcap/tidb/issues) 反馈。
 > - 本文所述功能在 TiUP v1.9.0 及后续版本支持，使用本功能前请检查 TiUP 版本号。
 > - 使用 TiUP 升级 TiDB 群集时，TiUP 会将监控组件重新部署为其默认版本。因此，你需要在升级 TiDB 后重新升级监控组件。
