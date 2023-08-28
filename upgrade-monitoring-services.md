@@ -7,7 +7,7 @@ summary: 介绍如何升级 TiDB 集群监控组件 Prometheus、Grafana 和 Ale
 
 使用 TiUP 部署 TiDB 集群时，TiUP 会同时自动部署 Prometheus、Grafana 和 Alertmanager 等监控组件，并且在集群扩容中自动为新增节点添加监控配置。通过 TiUP 自动部署的监控组件并不是这些三方组件的最新版本，如果你需要使用最新的三方组件，可以按照本文的方法升级所需的监控组件。
 
-需要注意的是，TiUP 会使用自己的配置参数覆盖监控组件的配置。如果你直接通过替换监控组件配置文件的方式升级监控组件，在之后对集群进行 `deploy`、`scale-out`、`scale-in`、`reload` 等操作时，该升级可能被 TiUP 所覆盖，导致升级出错。如果需要升级 Prometheus、Grafana 和 Alertmanager，请使用本文介绍的升级步骤。
+当管理集群时，TiUP 会使用自己的配置参数覆盖监控组件的配置。如果你直接通过替换监控组件配置文件的方式升级监控组件，在之后对集群进行 `deploy`、`scale-out`、`scale-in`、`reload` 等 TiUP 操作时，该升级可能被 TiUP 所覆盖，导致升级出错。如果需要升级 Prometheus、Grafana 和 Alertmanager，请参考本文介绍的升级步骤，而不是直接替换配置文件。
 
 > **注意：**
 >
