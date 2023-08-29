@@ -70,7 +70,7 @@ pip install -r requirements.txt
     >
     > 如果你在 Windows Subsystem for Linux (WSL) 中运行，请切换为对应的 Linux 发行版。
 
-4. 如果你还设置密码，点击 **Create password** 生成一个随机密码。
+4. 如果你还没有设置密码，点击 **Create password** 生成一个随机密码。
 
     > **Tip:**
     >
