@@ -142,7 +142,7 @@ pip install -r requirements.txt
     cp .env.example .env
     ```
 
-2. 复制并粘贴对应 TiDB 的连接字符串至 `.env` 中。示例结果如下。
+2. 复制并粘贴对应 TiDB 的连接字符串至 `.env` 中。示例结果如下：
 
     ```dotenv
     TIDB_HOST='{tidb_server_host}'
