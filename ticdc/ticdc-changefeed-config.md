@@ -78,10 +78,6 @@ enable-old-value = true
 # 以下规则会同步除了 `test` 数据库之外的其他所有数据库中的数据
 rules = ['*.*', '!test.*']
 
-# 忽略特定 start_ts 的事务
-# 默认值为空列表。
-# IgnoreTxnStartTs = []
-
 # 事件过滤器规则
 # 事件过滤器的详细配置规则可参考：https://docs.pingcap.com/zh/tidb/stable/ticdc-filter
 # 第一个事件过滤器规则
