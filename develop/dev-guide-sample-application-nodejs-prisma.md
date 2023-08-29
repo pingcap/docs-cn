@@ -5,12 +5,12 @@ summary: 本文描述了 TiDB 和 Prisma 的连接步骤，并给出了简单示
 
 # 如何用 Prisma 连接到 TiDB
 
-TiDB 是一个兼容 MySQL 的数据库。[Prisma](https://github.com/sidorares/Prisma) 是是一个流行的开源 ORM 框架。
+TiDB 是一个兼容 MySQL 的数据库。[Prisma](https://www.prisma.io/) 是当前流行的 Node.js ORM 框架之一。
 
 本文档将展示如何使用 TiDB 和 Prisma 来构造一个简单的 CRUD 应用程序。
 
 - 配置你的环境。
-- 使用 Prisma 驱动连接到 TiDB 集群。
+- 使用 Prisma 连接到 TiDB 集群。
 - 构建并运行你的应用程序。你也可以参考[示例代码片段](#示例代码片段)，完成基本的 CRUD 操作。
 
 > **注意**
@@ -212,7 +212,7 @@ model Profile {
 }
 ```
 
-你可以通过查阅 Prisma 的 [Data model]((https://www.prisma.io/docs/concepts/components/prisma-schema/data-model)) 文档来了解如何在 `prisma.schema` 文件里定义数据模型。
+你可以通过查阅 Prisma 的 [Data model](https://www.prisma.io/docs/concepts/components/prisma-schema/data-model) 文档来了解如何在 `prisma.schema` 文件里定义数据模型。
 
 **预期执行结果：**
 
@@ -222,7 +222,7 @@ Your database is now in sync with your schema.
 ✔ Generated Prisma Client (5.1.1 | library) to ./node_modules/@prisma/client in 54ms
 ```
 
-这个命令同时会根据 `prisma/schema.prisma` 文件中的定义，生成 [Prisma Client](https://www.prisma.io/docs/concepts/components/prisma-client) 的代码。
+这个命令同时会根据 `prisma/schema.prisma` 文件中的模型定义，生成用于与数据库交互的 [Prisma Client](https://www.prisma.io/docs/concepts/components/prisma-client) 的代码。
 
 
 ### 第 5 步：运行代码并查看结果
@@ -257,7 +257,7 @@ void main();
 
 **预期输出结果：**
 
-如果连接成功，你的终端将会输出所连接集群的版本信息：
+如果连接成功，在你的终端上会输出所连接集群的版本信息。
 
 ```
 🔌 Connected to TiDB cluster! (TiDB version: 5.7.25-TiDB-v6.6.0-serverless)
@@ -275,7 +275,7 @@ void main();
 
 ### 插入数据
 
-下面的查询会创建一条新的 `Player` 记录，并返回一个包含 ID 的 `Player` 对象：
+下面的查询会创建一条新的 `Player` 记录，并返回一个包含自增 ID 的 `Player` 对象：
 
 ```typescript
 const player: Player = await prisma.player.create({
@@ -286,6 +286,7 @@ const player: Player = await prisma.player.create({
     createdAt: new Date(),
   }
 });
+console.log(player.id);
 ```
 
 更多信息参考[插入数据](/develop/dev-guide-insert-data.md)。
