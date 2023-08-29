@@ -37,7 +37,7 @@
       - [peewee](/develop/dev-guide-sample-application-python-peewee.md)
       - [Django](/develop/dev-guide-sample-application-python-django.md)
     - Node.js
-      - [mysql2](/develop/dev-guide-sample-application-nodejs-mysql2.md)
+      - [node-mysql2](/develop/dev-guide-sample-application-nodejs-mysql2.md)
       - [mysql.js](/develop/dev-guide-sample-application-nodejs-mysqljs.md)
       - [Prisma](/develop/dev-guide-sample-application-nodejs-prisma.md)
   - 连接到 TiDB
