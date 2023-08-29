@@ -60,7 +60,7 @@ pip install -r requirements.txt
 
 2. 点击右上角的 **Connect** 按钮，将会弹出连接对话框。
 
-3. 确认窗口中的配置和你的运行环境一致。
+3. 确认对话框中的配置和你的运行环境一致。
 
     - **Endpoint Type** 为 `Public`。
     - **Connect With** 选择 `General`。
