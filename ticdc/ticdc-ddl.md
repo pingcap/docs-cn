@@ -71,7 +71,7 @@ rules = ['test.t*']
 
 ### 一条 DDL 语句内 rename 多个表
 
-TiCDC 仅会同步旧的表库名，新的库名都包含在 filter 规则中的该类型 DDL。此外，TiCDC 不支持同步对表名进行交换的 rename table DDL。下面会用具体的例子进行说明。
+如果一条 DDL 语句重命名多个表，则只有当旧的表库名和新的库名都包含在 filter 规则中时，TiCDC 才会同步该 DDL 语句。此外，TiCDC 不支持同步对表名进行交换的 rename table DDL。下面会用具体的例子进行说明。
 
 假设你的 changefeed 的配置文件如下：
 
