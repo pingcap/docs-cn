@@ -50,19 +50,19 @@ enable-old-value = true
 
 # 是否开启 Syncpoint 功能，从 v6.3.0 开始支持，该功能默认关闭。
 # 从 v6.4.0 开始，使用 Syncpoint 功能需要同步任务拥有下游集群的 SYSTEM_VARIABLES_ADMIN 或者 SUPER 权限。
-# 注意：该参数只有当下游为 Kafka 或存储服务时，才会生效。
+# 注意：该参数只有当下游为 TiDB 时，才会生效。
 # enable-sync-point = false
 
 # Syncpoint 功能对齐上下游 snapshot 的时间间隔
 # 配置格式为 h m s，例如 "1h30m30s"
 # 默认值为 10m，最小值为 30s
-# 注意：该参数只有当下游为 Kafka 或存储服务时，才会生效。
+# 注意：该参数只有当下游为 TiDB 时，才会生效。
 # sync-point-interval = "5m"
 
 # Syncpoint 功能在下游表中保存的数据的时长，超过这个时间的数据会被清理
 # 配置格式为 h m s，例如 "24h30m30s"
 # 默认值为 24h
-# 注意：该参数只有当下游为 Kafka 或存储服务时，才会生效。
+# 注意：该参数只有当下游为 TiDB 时，才会生效。
 # sync-point-retention = "1h"
 
 [mounter]
