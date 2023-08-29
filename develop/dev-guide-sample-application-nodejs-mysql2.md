@@ -9,7 +9,7 @@ TiDB 是一个兼容 MySQL 的数据库。[node-mysql2](https://github.com/sidor
 
 本文档将展示如何使用 TiDB 和 node-mysql2 来构造一个简单的 CRUD 应用程序。
 
-- 配置你的环境。
+- 配置环境。
 - 使用 node-mysql2 驱动连接到 TiDB 集群。
 - 构建并运行你的应用程序。你也可以参考[示例代码片段](#示例代码片段)，完成基本的 CRUD 操作。
 
