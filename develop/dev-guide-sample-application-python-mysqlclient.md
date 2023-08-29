@@ -82,7 +82,7 @@ pip install -r requirements.txt
     cp .env.example .env
     ```
 
-6. 复制并粘贴对应连接字符串至 `.env` 中。示例结果如下。
+6. 复制并粘贴对应连接字符串至 `.env` 中。示例结果如下：
 
     ```dotenv
     TIDB_HOST='{gateway-region}.aws.tidbcloud.com'
