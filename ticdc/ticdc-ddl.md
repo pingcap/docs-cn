@@ -5,6 +5,8 @@ summary: 了解 TiCDC 支持同步的 DDL 和一些特殊情况
 
 # Changefeed DDL 同步
 
+本文档介绍了 TiCDC 同步 DDL 的规则和特殊情况。
+
 ## DDL 白名单
 
 目前 TiCDC 在同步 DDL 时使用白名单策略，只有在白名单中的 DDL 操作才会被同步到下游系统，不在白名单中的 DDL 操作将不会被 TiCDC 同步。
