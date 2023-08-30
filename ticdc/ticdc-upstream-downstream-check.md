@@ -44,6 +44,10 @@ sync-point-retention = "1h"
 
 ## 数据一致性校验
 
+> **注意：**
+>
+> 使用数据一致性校验之前，请先[启用 TiCDC 的 Syncpoint 功能](#启用-syncpoint)。
+
 你只需要在 sync-diff-inspector 中配置 `snapshot` 即可对 TiDB 主从集群的数据进行校验。
 
 ### 获取 ts-map
