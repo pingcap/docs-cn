@@ -15,7 +15,7 @@ Syncpoint 通过利用 TiDB 提供的 snapshot 特性，让 TiCDC 在同步过�
 
 2. 同步过程中，TiCDC 还会定期（使用 `sync-point-interval` 参数配置）通过执行 `SET GLOBAL tidb_external_ts = @@tidb_current_ts` ，在备用集群中设置已复制完成的一致性快照点。
 
-以下 TiCDC 配置示例为创建的同步任务开启 Syncpoint 功能：
+以下是 TiCDC 配置示例，用于在创建同步任务时启用 Syncpoint 功能：
 
 ```toml
 # 开启 SyncPoint
