@@ -1,10 +1,6 @@
 ---
-<<<<<<< HEAD:sync-diff-inspector/upstream-downstream-diff.md
-title: TiDB 主从集群的数据校验
-=======
 title: 主从集群一致性读和数据校验
-aliases: ['/docs-cn/dev/sync-diff-inspector/upstream-downstream-diff/','/docs-cn/dev/reference/tools/sync-diff-inspector/tidb-diff/', '/zh/tidb/dev/upstream-downstream-diff']
->>>>>>> 53a2e9f210 (ticdc: refine changefeed scheduler configuration description (#14880)):ticdc/ticdc-upstream-downstream-check.md
+aliases: ['/zh/tidb/v7.2/upstream-downstream-diff']
 ---
 
 # TiDB 主从集群数据校验和快照读
