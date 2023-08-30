@@ -11,9 +11,9 @@ Syncpoint 通过利用 TiDB 提供的 snapshot 特性，让 TiCDC 在同步过�
 
 要开启 SyncPoint 功能，只需在创建同步任务时把 TiCDC 的配置项 `enable-sync-point` 设置为 `true`。开启 Syncpoint 功能后，TiCDC 会向下游 TiDB 集群写入如下信息：
 
-1. TiCDC 在数据的同步过程中，会定期 (`sync-point-interval`) 对齐上下游的 snapshot，并将上下游的 TSO 对应关系保存在下游的 `tidb_cdc.syncpoint_v1` 表中。
+1. 在数据的同步过程中，TiCDC 会定期（使用 `sync-point-interval` 参数配置）对齐上下游的快照，并将上下游的 TSO 的对应关系保存在下游的 `tidb_cdc.syncpoint_v1` 表中。
 
-2. TiCDC 在同步过程中，会定期 (`sync-point-interval`) 在备用集群中通过执行 `SET GLOBAL tidb_external_ts = @@tidb_current_ts` 设置已复制完成的一致性快照点。
+2. 同步过程中，TiCDC 还会定期（使用 `sync-point-interval` 参数配置）通过执行 `SET GLOBAL tidb_external_ts = @@tidb_current_ts` ，在备用集群中设置已复制完成的一致性快照点。
 
 以下 TiCDC 配置示例为创建的同步任务开启 Syncpoint 功能：
 
