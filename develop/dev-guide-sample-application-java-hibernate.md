@@ -14,7 +14,7 @@ TiDB 是一个兼容 MySQL 的数据库。[Hibernate](https://hibernate.org/orm/
 
 - 配置你的环境。
 - 使用 Hibernate 连接到 TiDB 集群。
-- 构建并运行你的应用程序。你也可以参考示例代码片段，完成基本的 CRUD 操作。
+- 构建并运行你的应用程序。你也可以参考[示例代码片段](#示例代码片段)，完成基本的 CRUD 操作。
 
 > **注意**
 >
@@ -167,7 +167,7 @@ cd tidb-java-hibernate-quickstart
 
 2. 查看[`Expected-Output.txt`](https://github.com/tidb-samples/tidb-java-hibernate-quickstart/blob/main/Expected-Output.txt)，并与你的程序输出进行比较。结果近似即为连接成功。
 
-## 重点代码片段
+## 示例代码片段
 
 你可参考以下关键代码片段，完成自己的应用开发。
 

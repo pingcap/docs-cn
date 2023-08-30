@@ -171,7 +171,7 @@ cd tidb-java-springboot-jpa-quickstart
 
 3. 查看[`Expected-Output.txt`](https://github.com/tidb-samples/tidb-java-springboot-jpa-quickstart/blob/main/Expected-Output.txt)，并与你的服务程序输出进行比较。结果近似即为连接成功。
 
-## 重点代码片段
+## 示例代码片段
 
 你可参考以下关键代码片段，完成自己的应用开发。
 
