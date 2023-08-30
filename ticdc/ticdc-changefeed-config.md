@@ -77,10 +77,6 @@ enable-old-value = true
 # 过滤规则语法：https://docs.pingcap.com/zh/tidb/stable/table-filter#表库过滤语法
 rules = ['*.*', '!test.*']
 
-# 忽略特定 start_ts 的事务
-# 默认值为空列表。
-# IgnoreTxnStartTs = []
-
 # 事件过滤器规则
 # 事件过滤器的详细配置规则可参考：https://docs.pingcap.com/zh/tidb/stable/ticdc-filter
 # 第一个事件过滤器规则
