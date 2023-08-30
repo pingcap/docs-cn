@@ -106,7 +106,7 @@ rules = ['*.*', '!test.*']
 # 默认为 "false"。设置为 "true" 以打开该功能。
 enable-table-across-nodes = false
 # enable-table-across-nodes 开启后，有两种分配模式
-# 1. 按 Region 的数量分配，即每个 CDC 节点处理 region 的个数基本相等 。当某个表 Region 个数大于 `region-threshold` 值时，会将表分配到多个节点处理。`region-threshold` 默认值为 10000。
+# 1. 按 Region 的数量分配，即每个 CDC 节点处理 region 的个数基本相等。当某个表 Region 个数大于 `region-threshold` 值时，会将表分配到多个节点处理。`region-threshold` 默认值为 10000。
 # region-threshold = 10000 
 # 2. 按写入的流量分配，即每个 CDC 节点处理 region 总修改行数基本相当。当表中每分钟修改行数大于 `write-key-threshold` 值的表生效。
 # write-key-threshold = 30000
