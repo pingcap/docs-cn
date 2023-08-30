@@ -112,7 +112,7 @@ enable-table-across-nodes = false
 # write-key-threshold = 30000
 # 注意：
 # `write-key-threshold` 参数默认值为 0，代表默认不会采用流量的分配模式。
-# 两种方式配置一种即可生效，当  `region-threshold` 和 `write-key-threshold` 同时配置时，TiCDC 将优先采用按流量分配的模式。            
+# 两种方式配置一种即可生效，当 `region-threshold` 和 `write-key-threshold` 同时配置时，TiCDC 将优先采用按流量分配的模式，即 `write-key-threshold`。      
 
 
 [sink]
