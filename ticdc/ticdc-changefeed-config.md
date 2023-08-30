@@ -123,6 +123,7 @@ write-key-threshold = 0
 # 支持 partition 及 topic（从 v6.1 开始支持）两种 event 分发器。二者的详细说明见下一节。
 # matcher 的匹配语法和过滤器规则语法相同，matcher 匹配规则的详细说明见下一节。
 # 注意：该参数只有当下游为消息队列时，才会生效。
+# 注意：当下游MQ为pulsar时，如果partition不为'ts','index-value','table','default'时，会自动透传你设置的字符串作为pulsar message中的key来路由消息。
 # dispatchers = [
 #    {matcher = ['test1.*', 'test2.*'], topic = "Topic 表达式 1", partition = "ts" },
 #    {matcher = ['test3.*', 'test4.*'], topic = "Topic 表达式 2", partition = "index-value" },
@@ -134,6 +135,7 @@ write-key-threshold = 0
 # 当下游类型是 Kafka 时，支持 canal-json、avro 和 open-protocol。
 # 当下游类型是存储服务时，目前仅支持 canal-json、csv 两种协议。
 # 注意：该参数只有当下游为 Kafka 或存储服务时，才会生效。
+# 当下游类型是 Pulsar 时，仅支持canal-json、canal、maxwell
 # protocol = "canal-json"
 
 # delete-only-output-handle-key-columns 用于指定 Delete 事件的输出内容，只对 canal-json 和 open-protocol 协议有效。从 v7.2.0 开始引入。
@@ -223,5 +225,50 @@ sasl-oauth-scopes = ["producer.kafka", "consumer.kafka"]
 # Kafka SASL OAUTHBEARER 认证机制中的 grant-type。默认值为 "client_credentials"。在使用该认证机制时，该参数可选填。
 sasl-oauth-grant-type = "client_credentials"
 # Kafka SASL OAUTHBEARER 认证机制中的 audience。默认值为空。在使用该认证机制时，该参数可选填。
-sasl-oauth-audience = "kafka"
+sasl-oauth-audience="kafka"
+
+
+# 以下参数仅在下游为 Pulsar 时生效。
+[sink.pulsar-config]
+# Pulsar 使用Token进行pulsar服务端的认证
+authentication-token = "xxxxxxxxxxxxx"
+# Pulsar 使用Token进行pulsar服务端的认证，但这里是token的路径，会从ticdc server组建所在机器上读取
+token-from-file="/data/pulsar/token-file.txt"
+# Pulsar 使用basic帐号密码验证身份
+basic-user-name="root"
+# Pulsar  使用basic帐号密码验证身份
+basic-password="password"
+# Pulsar TLS加密认证证书路径
+auth-tls-certificate-path="/data/pulsar/certificate"
+# Pulsar TLS加密认证私钥路径
+auth-tls-private-key-path="/data/pulsar/certificate.key"
+# Pulsar TLS加密可信证书文件路径
+tls-trust-certs-file-path="/data/pulsar/tls-trust-certs-file"
+# Pulsar oauth2 issuer-url 更多详细配置请看pulsar官方介绍：https://pulsar.apache.org/docs/2.10.x/client-libraries-go/#tls-encryption-and-authentication
+oauth2.oauth2-issuer-url="https://xxxx.auth0.com"
+# Pulsar oauth2 audience
+oauth2.oauth2-audience="https://xxxx.auth0.com/api/v2/"
+# Pulsar oauth2 private-key
+oauth2.oauth2-private-key="/data/pulsar/privateKey"
+# Pulsar oauth2 client-id
+oauth2.oauth2-client-id="0Xx...Yyxeny"
+# Pulsar oauth2 oauth2-scope
+oauth2.oauth2-scope="xxxx"
+
+# Pulsar ticdc缓存pulsar producer的个数，默认10240个
+pulsar-producer-cache-size=10240 
+# Pulsar 数据压缩方式，默认不压缩，可选 lz4,zlib,zstd
+compression-type= "lz4"
+# Pulsar Pulsar客户端TCP建立链接时间，默认5秒
+connection-timeout=5
+# Pulsar 操作超时时间，默认30秒
+operation-timeout=3
+# Pulsar pulsar 一批发送消息最大数量，默认1000
+batching-max-messages=1000
+# Pulsar pulsar 批量发送消息等待时间，默认10毫秒
+batching-max-publish-delay=10
+# Pulsar pulsar 发送超时时间，默认30秒
+send-timeout=30
+
+
 ```
