@@ -69,7 +69,7 @@ cd tidb-golang-sql-driver-quickstart
     ```properties
     TIDB_HOST='{gateway-region}.aws.tidbcloud.com'
     TIDB_PORT='4000'
-    TIDB_USER='{prefix}.root'
+    TIDB_USER='{user}'
     TIDB_PASSWORD='{password}'
     TIDB_DB_NAME='test'
     USE_SSL='true'
@@ -104,7 +104,7 @@ cd tidb-golang-sql-driver-quickstart
     ```properties
     TIDB_HOST='{host}.clusters.tidb-cloud.com'
     TIDB_PORT='4000'
-    TIDB_USER='{prefix}.root'
+    TIDB_USER='{user}'
     TIDB_PASSWORD='{password}'
     TIDB_DB_NAME='test'
     USE_SSL='false'
