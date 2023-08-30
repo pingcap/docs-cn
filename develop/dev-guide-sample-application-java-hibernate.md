@@ -93,7 +93,7 @@ cd tidb-java-hibernate-quickstart
 
 <div label="TiDB Dedicated">
 
-1. 在 TiDB Cloud Web Console 中，选择你的 TiDB Dedicated 集群，进入 **Overview** 页面。
+1. 在 TiDB Cloud 的 [**Clusters**](https://tidbcloud.com/console/clusters) 页面，选择你的 TiDB Dedicated 集群，进入 **Overview** 页面。
 
 2. 点击右上角的 **Connect** 按钮，会显示连接对话框。
 

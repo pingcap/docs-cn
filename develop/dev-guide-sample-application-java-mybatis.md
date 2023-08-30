@@ -81,21 +81,21 @@ cd tidb-java-mybatis-quickstart
 
 <div label="TiDB Dedicated">
 
-1. 在 TiDB Cloud Web Console 中，选择你的 TiDB Dedicated 集群，进入 **Overview** 页面，点击右上角的 **Connect** 按钮。点击 **Allow Access from Anywhere**。
+1. 在 TiDB Cloud 的 [**Clusters**](https://tidbcloud.com/console/clusters) 页面，选择你的 TiDB Dedicated 集群，进入 **Overview** 页面。
 
-    <Tip>
+2. 点击右上角的 **Connect** 按钮，会显示连接对话框。
+
+3. 点击 **Allow Access from Anywhere**。
 
     更多配置细节，可参考 [TiDB Dedicated 标准连接教程](https://docs.pingcap.com/tidbcloud/connect-via-standard-connection)。
 
-    </Tip>
-
-2. 运行以下命令，将 `env.sh.example` 复制并重命名为 `env.sh`：
+4. 运行以下命令，将 `env.sh.example` 复制并重命名为 `env.sh`：
 
     ```bash
     cp env.sh.example env.sh
     ```
 
-3. 复制并粘贴对应的连接字符串至 `env.sh` 中。需更改部分示例结果如下。
+5. 复制并粘贴对应的连接字符串至 `env.sh` 中。需更改部分示例结果如下。
 
     ```shell
     export TIDB_HOST='{host}.clusters.tidb-cloud.com'
@@ -108,7 +108,7 @@ cd tidb-java-mybatis-quickstart
 
     注意替换 `{}` 中的占位符为 **Connect** 窗口中获得的值。
 
-4. 保存文件。
+6. 保存文件。
 
 </div>
 
