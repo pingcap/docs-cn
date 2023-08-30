@@ -1,17 +1,25 @@
 ---
 title: 使用 Go-MySQL-Driver 连接到 TiDB
-summary: 本文描述了 TiDB 和 Go-MySQL-Driver 的连接步骤，并给出了简单示例代码片段。
+summary: 了解如何使用 Go-MySQL-Driver 连接到 TiDB。本文提供了使用 Go-MySQL-Driver 与 TiDB 交互的 Golang 示例代码片段。
 aliases: ['/zh/tidb/dev/dev-guide-sample-application-golang']
 ---
 
 <!-- markdownlint-disable MD024 -->
 <!-- markdownlint-disable MD029 -->
 
-# 如何用 Go-MySQL-Driver 连接到 TiDB
+# 使用 Go-MySQL-Driver 连接到 TiDB
 
 TiDB 是一个兼容 MySQL 的数据库。**JDBC** 是 Java 的数据访问 API。[Go-MySQL-Driver](https://github.com/go-sql-driver/mysql) 是 [database/sql](https://pkg.go.dev/database/sql) 接口的 MySQL 实现。
 
-本文档将展示如何使用 TiDB 和 Go-MySQL-Driver 来构造一个简单的 CRUD 应用程序。
+本文档将展示如何使用 TiDB 和 Go-MySQL-Driver 来完成以下任务：
+
+- 配置你的环境。
+- 使用 Go-MySQL-Driver 连接到 TiDB 集群。
+- 构建并运行你的应用程序。你也可以参考[示例代码片段](#示例代码片段)，完成基本的 CRUD 操作。
+
+> **注意**
+>
+> 本文档适用于 TiDB Serverless、TiDB Dedicated 和本地部署的 TiDB。
 
 ## 前置要求
 
@@ -42,21 +50,25 @@ cd tidb-golang-sql-driver-quickstart
 
 <div label="TiDB Serverless">
 
-1. 在 TiDB Cloud Web Console 中，选择你的 TiDB Serverless 集群，进入 **Overview** 页面。
+1. 在 TiDB Cloud 的 [**Clusters**](https://tidbcloud.com/console/clusters) 页面中，选择你的 TiDB Serverless 集群，进入集群的 **Overview** 页面。
 
-2. 点击右上角的 **Connect** 按钮，会显示连接对话框。
+2. 点击右上角的 **Connect** 按钮，将会弹出连接对话框。
 
-3. 确认窗口中的配置和你的运行环境一致。
+3. 确认对话框中的配置和你的运行环境一致。
 
-    - **Endpoint Type** 为 `Public`
-    - **Connect With** 选择 `General`
-    - **Operating System** 为你的运行环境
+    - **Endpoint Type** 为 `Public`。
+    - **Connect With** 选择 `General`。
+    - **Operating System** 为你的运行环境。
 
-    <Tip>如果你在 Windows Subsystem for Linux (WSL) 中运行，请切换为对应的 Linux 发行版。</Tip>
+    > **Tip:**
+    >
+    > 如果你在 Windows Subsystem for Linux (WSL) 中运行，请切换为对应的 Linux 发行版。
 
-4. 点击 **Create password** 生成密码。
+4. 如果你还没有设置密码，点击 **Create password** 生成一个随机密码。
 
-   <Tip>如果你之前已经生成过密码，可以直接使用原密码，或点击 **Reset password** 重新生成密码。</Tip>
+    > **Tip:**
+    >
+    > 如果你之前已经生成过密码，可以直接使用原密码，或点击 **Reset password** 重新生成密码。
 
 5. 运行以下命令，将 `.env.example` 复制并重命名为 `.env`：
 
@@ -64,9 +76,9 @@ cd tidb-golang-sql-driver-quickstart
     cp .env.example .env
     ```
 
-6. 复制并粘贴对应连接字符串至 `.env` 中。需更改部分示例结果如下。
+6. 复制并粘贴对应连接字符串至 `.env` 中。示例结果如下：
 
-    ```properties
+    ```dotenv
     TIDB_HOST='{gateway-region}.aws.tidbcloud.com'
     TIDB_PORT='4000'
     TIDB_USER='{user}'
@@ -75,9 +87,9 @@ cd tidb-golang-sql-driver-quickstart
     USE_SSL='true'
     ```
 
-    注意替换 `{}` 中的占位符为 **Connect** 窗口中获得的值。
+    注意替换 `{}` 中的占位符为连接对话框中获得的值。
 
-    TiDB Serverless 要求使用 secure connection，因此 `USE_SSL` 的值应为 `true`。
+    TiDB Serverless 要求使用 TLS (SSL) connection，因此 `USE_SSL` 的值应为 `true`。
 
 7. 保存文件。
 
@@ -85,13 +97,13 @@ cd tidb-golang-sql-driver-quickstart
 
 <div label="TiDB Dedicated">
 
-1. 在 TiDB Cloud Web Console 中，选择你的 TiDB Dedicated 集群，进入 **Overview** 页面。
+1. 在 TiDB Cloud 的 [**Clusters**](https://tidbcloud.com/console/clusters) 页面中，选择你的 TiDB Dedicated 集群，进入集群的 **Overview** 页面。
 
-2. 点击右上角的 **Connect** 按钮，会显示连接对话框。
+2. 点击右上角的 **Connect** 按钮，将会出现连接对话框。
 
-3. 点击 **Allow Access from Anywhere**。
+3. 在对话框中点击 **Allow Access from Anywhere**，然后点击 **Download TiDB cluster CA** 下载 TiDB Cloud 提供的 CA 证书。
 
-    更多配置细节，可参考 [TiDB Dedicated 标准连接教程](https://docs.pingcap.com/tidbcloud/connect-via-standard-connection)。
+    更多配置细节，可参考 [TiDB Dedicated 标准连接教程（英文）](https://docs.pingcap.com/tidbcloud/connect-via-standard-connection)。
 
 4. 运行以下命令，将 `.env.example` 复制并重命名为 `.env`：
 
@@ -99,7 +111,7 @@ cd tidb-golang-sql-driver-quickstart
     cp .env.example .env
     ```
 
-5. 复制并粘贴对应的连接字符串至 `.env` 中。需更改部分示例结果如下。
+5. 复制并粘贴对应的连接字符串至 `.env` 中。示例结果如下：
 
     ```properties
     TIDB_HOST='{host}.clusters.tidb-cloud.com'
@@ -110,7 +122,7 @@ cd tidb-golang-sql-driver-quickstart
     USE_SSL='false'
     ```
 
-    注意替换 `{}` 中的占位符为 **Connect** 窗口中获得的值。
+    注意替换 `{}` 中的占位符为连接对话框中获得的值。
 
 6. 保存文件。
 
@@ -124,10 +136,10 @@ cd tidb-golang-sql-driver-quickstart
     cp .env.example .env
     ```
 
-2. 复制并粘贴对应 TiDB 的连接字符串至 `.env` 中。需更改部分示例结果如下。
+2. 复制并粘贴对应 TiDB 的连接字符串至 `.env` 中。示例结果如下：
 
-    ```properties
-    TIDB_HOST='{tidb_server_host}'
+    ```dotenv
+    TIDB_HOST='{host}'
     TIDB_PORT='4000'
     TIDB_USER='root'
     TIDB_PASSWORD='{password}'
@@ -151,11 +163,13 @@ cd tidb-golang-sql-driver-quickstart
     make
     ```
 
-2. 查看[示例输出](https://github.com/tidb-samples/tidb-golang-sql-driver-quickstart/blob/main/Expected-Output.txt)，并与你的程序输出进行比较。结果近似即为连接成功。
+2. 查看[`Expected-Output.txt`](https://github.com/tidb-samples/tidb-golang-sql-driver-quickstart/blob/main/Expected-Output.txt)，并与你的程序输出进行比较。结果近似即为连接成功。
 
-## 重点代码片段
+## 示例代码片段
 
 你可参考以下关键代码片段，完成自己的应用开发。
+
+完整代码及其运行方式，见 [tidb-golang-sql-driver-quickstart](https://github.com/tidb-samples/tidb-golang-sql-driver-quickstart/blob/main/README-zh.md) GitHub 仓库。
 
 ### 连接到 TiDB
 
@@ -245,11 +259,6 @@ openDB("mysql", func(db *sql.DB) {
 
 更多信息参考[删除数据](/develop/dev-guide-delete-data.md)。
 
-## 注意事项
-
-- 完整代码及其运行方式，见 [tidb-golang-sql-driver-quickstart](https://github.com/tidb-samples/tidb-golang-sql-driver-quickstart/blob/main/README-zh.md) GitHub 仓库。
-- 关于 Go-MySQL-Driver 的更多使用方法及细节，可以参考 [Go-MySQL-Driver 官方文档](https://github.com/go-sql-driver/mysql/blob/master/README.md)。
-
 ### 使用驱动程序还是 ORM 框架？
 
 Golang 驱动程序提供对数据库的底层访问，但需要开发人员：
@@ -265,5 +274,10 @@ Golang 驱动程序提供对数据库的底层访问，但需要开发人员：
 
 ## 下一步
 
+- 关于 Go-MySQL-Driver 的更多使用方法及细节，可以参考 [Go-MySQL-Driver 官方文档](https://github.com/go-sql-driver/mysql/blob/master/README.md)。
 - 你可以继续阅读开发者文档，以获取更多关于 TiDB 的开发者知识。例如：[插入数据](https://docs.pingcap.com/zh/tidb/stable/dev-guide-insert-data)，[更新数据](https://docs.pingcap.com/zh/tidb/stable/dev-guide-update-data)，[删除数据](https://docs.pingcap.com/zh/tidb/stable/dev-guide-delete-data)，[单表读取](https://docs.pingcap.com/zh/tidb/stable/dev-guide-get-data-from-single-table)，[事务](https://docs.pingcap.com/zh/tidb/stable/dev-guide-transaction-overview)，[SQL 性能优化](https://docs.pingcap.com/zh/tidb/stable/dev-guide-optimize-sql-overview)等。
 - 如果你更倾向于参与课程进行学习，我们也提供专业的 [TiDB 开发者课程](https://cn.pingcap.com/courses-catalog/back-end-developer/)支持，并在考试后提供相应的[资格认证](https://learn.pingcap.com/learner/certification-center)。
+
+## 需要帮助?
+
+如果在开发的过程中遇到问题，可以在 [AskTUG](https://asktug.com/?utm_source=docs-cn-dev-guide) 上进行提问，寻求帮助。
