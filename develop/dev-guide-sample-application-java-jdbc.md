@@ -153,6 +153,8 @@ cd tidb-java-jdbc-quickstart
 
 你可参考以下关键代码片段，完成自己的应用开发。
 
+完整代码及其运行方式，见 [tidb-java-jdbc-quickstart](https://github.com/tidb-samples/tidb-java-jdbc-quickstart/blob/main/README-zh.md) GitHub 仓库。
+
 ### 连接到 TiDB
 
 ```java
@@ -246,11 +248,6 @@ public void deletePlayer(String id) throws SQLException {
 
 更多信息参考[删除数据](/develop/dev-guide-delete-data.md)。
 
-## 注意事项
-
-- 完整代码及其运行方式，见 [tidb-java-jdbc-quickstart](https://github.com/tidb-samples/tidb-java-jdbc-quickstart/blob/main/README-zh.md) GitHub 仓库。
-- 关于 **MySQL Connector/J** 的更多使用方法及细节，可以参考 [MySQL Connector/J 官方文档](https://dev.mysql.com/doc/connector-j/8.1/en/)。
-
 ### 使用驱动程序还是 ORM 框架？
 
 Java 驱动程序提供对数据库的底层访问，但需要开发人员：
@@ -266,6 +263,7 @@ Java 驱动程序提供对数据库的底层访问，但需要开发人员：
 
 ## 下一步
 
+- 关于 **MySQL Connector/J** 的更多使用方法及细节，可以参考 [MySQL Connector/J 官方文档](https://dev.mysql.com/doc/connector-j/8.1/en/)。
 - 你可以继续阅读开发者文档，以获取更多关于 TiDB 的开发者知识。例如：[插入数据](/develop/dev-guide-insert-data.md)，[更新数据](/develop/dev-guide-update-data.md)，[删除数据](/develop/dev-guide-delete-data.md)，[单表读取](/develop/dev-guide-get-data-from-single-table.md)，[事务](/develop/dev-guide-transaction-overview.md)，[SQL 性能优化](/develop/dev-guide-optimize-sql-overview.md)等。
 - 如果你更倾向于参与课程进行学习，我们也提供专业的 [TiDB 开发者课程](https://cn.pingcap.com/courses-catalog/back-end-developer/?utm_source=docs-cn-dev-guide)支持，并在考试后提供相应的[资格认证](https://learn.pingcap.com/learner/certification-center)。
 - 我们还有额外针对 Java 开发者的课程：[使用 Connector/J - TiDB v6](https://learn.pingcap.com/learner/course/840002/?utm_source=docs-cn-dev-guide) 及[在 TiDB 上开发应用的最佳实践 - TiDB v6](https://learn.pingcap.com/learner/course/780002/?utm_source=docs-cn-dev-guide) 可供选择。
