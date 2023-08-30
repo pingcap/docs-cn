@@ -1632,7 +1632,7 @@ mysql> SELECT job_info FROM mysql.analyze_jobs ORDER BY end_time DESC LIMIT 1;
 - 类型：布尔型
 - 默认值：`ON`
 - 这个变量用来控制是否开启[非 Prepare 语句执行计划缓存](/sql-non-prepared-plan-cache.md)。
-- 打开此功能可能会带来一些额外的内存开销，请根据具体的使用情况决定是否打开此项功能。
+- 打开此功能可能会带来一些额外的内存和 CPU 开销，并不一定适用于所有场景，请根据具体的使用情况决定是否打开此项功能。
 
 ### `tidb_enable_non_prepared_plan_cache_for_dml` <span class="version-mark">从 v7.1.0 版本开始引入</span>
 
