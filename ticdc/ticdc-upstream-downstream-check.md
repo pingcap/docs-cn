@@ -34,6 +34,10 @@ sync-point-retention = "1h"
 
 ## 一致性快照读
 
+> **注意：**
+>
+> 使用一致性快照读之前，请先[启用 TiCDC 的 Syncpoint 功能](#启用-syncpoint)。
+
 当你需要从备用集群查询数据的时候，在业务应用中设置 `SET GLOBAL|SESSION tidb_enable_external_ts_read = ON;` 就可以在备用集群上获得事务状态完成的数据。
 
 除此之外，你也可以通过查询 `ts-map` 的方式选取之前的时间点进行快照读。
