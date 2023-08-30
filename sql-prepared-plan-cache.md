@@ -33,6 +33,8 @@ TiDB 优化器对这两类查询的处理是一样的：`Prepare` 时将参数�
 - 会访问 `TiFlash` 的计划不会被缓存；
 - 大部分情况下计划中含有 `TableDual` 的计划将将不会被缓存，除非当前执行的 `Prepare` 语句不含参数，则对应的 `TableDual` 计划可以被缓存。
 
+TiDB 对 `?` 的个数有限制，如果超过了 65535 个，则会报错 `Prepared statement contains too many placeholders`。
+
 LRU 链表是设计成 session 级别的缓存，因为 `Prepare`/`Execute` 不能跨 session 执行。LRU 链表的每个元素是一个 key-value 对，value 是执行计划，key 由如下几部分组成：
 
 - 执行 `Execute` 时所在数据库的名字；
