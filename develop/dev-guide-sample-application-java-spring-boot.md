@@ -71,7 +71,7 @@ cd tidb-java-springboot-jpa-quickstart
     export USE_SSL='true'
     ```
 
-    注意替换 `{}` 中的占位符为 **Connect** 窗口中获得的值。
+    注意替换 `{}` 中的占位符为连接对话框中获得的值。
 
     TiDB Serverless 要求使用 secure connection，因此 `USE_SSL` 的值应为 `true`。
 
@@ -106,7 +106,7 @@ cd tidb-java-springboot-jpa-quickstart
     export USE_SSL='false'
     ```
 
-    注意替换 `{}` 中的占位符为 **Connect** 窗口中获得的值。
+    注意替换 `{}` 中的占位符为连接对话框中获得的值。
 
 6. 保存文件。
 
