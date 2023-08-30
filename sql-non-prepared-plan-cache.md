@@ -95,7 +95,9 @@ TiDB 对参数化后形式相同的查询，只能缓存一个计划。例如，
 
 ## 性能收益
 
-在内部测试中，开启 Non-Prepared Plan Cache 功能在大多数 TP 场景下可以获得显著的性能收益。但是它也有代价，其自身也有一些额外的性能开销，包括判断查询是否支持、对查询进行参数化等。如果此功能不支持负载中的大多数查询，开启此功能反而可能影响性能。
+在内部测试中，开启 Non-Prepared Plan Cache 功能在大多数 TP 场景下可以获得显著的性能收益。在内部测试中，TPCC 能获得约 4% 的提升，一些 Bank 负载上能获得 10+% 的提升，在 Sysbench RangeScan 上能获得 15% 的提升。
+
+但是这个功能本身也会带来一些额外的 CPU 和内存开销，包括判断查询是否支持、对查询进行参数化、在 Plan Cache 中进行搜索等。如果负载中的多数查询无法被 Cache 命中，开启此功能反而可能影响性能。
 
 此时，你需要观察 Grafana 监控中的 **Queries Using Plan Cache OPS** 面板中的 `non-prepared` 指标和 **Plan Cache Miss OPS** 面板中的 `non-prepared-unsupported` 指标。如果大多数查询都无法被支持，只有少部分查询能命中 Plan Cache，此时你可以关闭此功能。
 
