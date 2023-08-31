@@ -35,12 +35,12 @@ TiDB 是一个兼容 MySQL 的数据库。[Django](https://www.djangoproject.com
 
 ```bash
 git clone https://github.com/tidb-samples/tidb-python-django-quickstart.git
-cd tidb-python-django-quickstart;
+cd tidb-python-django-quickstart
 ```
 
 ### 第 2 步：安装依赖
 
-运行以下命令，安装示例代码所需要的依赖（包括 `django`、`django-tidb` 和 `mysqlclient`）：
+运行以下命令，安装示例代码所需要的依赖（包括 Django、django-tidb 和 mysqlclient）：
 
 ```bash
 pip install -r requirements.txt
@@ -229,14 +229,15 @@ if TIDB_CA_PATH:
 ```python
 from django.db import models
 
-
 class Player(models.Model):
-    name = models.CharField(max_length=32, blank=False, null=False, unique=True)
+    name = models.CharField(max_length=32, blank=False, null=False)
     coins = models.IntegerField(default=100)
     goods = models.IntegerField(default=1)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 ```
+
+更多信息参考 [Django 模型](https://docs.djangoproject.com/en/dev/topics/db/models/)。
 
 ### 插入数据
 
@@ -298,7 +299,7 @@ Player.objects.filter(coins=100).delete()
 
 ## 下一步
 
-- 关于 `Django` 的更多使用方法，可以参考 [Django 官方文档](https://www.djangoproject.com/)。
+- 关于 Django 的更多使用方法，可以参考 [Django 官方文档](https://www.djangoproject.com/)。
 - 你可以继续阅读开发者文档，以获取更多关于 TiDB 应用开发的最佳实践。例如：[插入数据](/develop/dev-guide-insert-data.md)、[更新数据](/develop/dev-guide-update-data.md)、[删除数据](/develop/dev-guide-delete-data.md)、[单表读取](/develop/dev-guide-get-data-from-single-table.md)、[事务](/develop/dev-guide-transaction-overview.md)、[SQL 性能优化](/develop/dev-guide-optimize-sql-overview.md)等。
 - 如果你更倾向于参与课程进行学习，我们也提供专业的 [TiDB 开发者课程](https://cn.pingcap.com/courses-catalog/back-end-developer/?utm_source=docs-cn-dev-guide)支持，并在考试后提供相应的[资格认证](https://learn.pingcap.com/learner/certification-center)。
 

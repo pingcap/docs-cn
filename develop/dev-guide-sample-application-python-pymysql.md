@@ -35,7 +35,7 @@ TiDB 是一个兼容 MySQL 的数据库。[PyMySQL](https://github.com/PyMySQL/P
 
 ```bash
 git clone https://github.com/tidb-samples/tidb-python-pymysql-quickstart.git
-cd tidb-python-pymysql-quickstart;
+cd tidb-python-pymysql-quickstart
 ```
 
 ### 第 2 步：安装依赖
@@ -265,7 +265,7 @@ Python 驱动程序提供对数据库的底层访问，但要求开发者：
 
 ## 下一步
 
-- 关于 `PyMySQL` 的更多使用方法，可以参考 [PyMySQL 官方文档](https://pymysql.readthedocs.io)。
+- 关于 PyMySQL 的更多使用方法，可以参考 [PyMySQL 官方文档](https://pymysql.readthedocs.io)。
 - 你可以继续阅读开发者文档，以获取更多关于 TiDB 应用开发的最佳实践。例如：[插入数据](/develop/dev-guide-insert-data.md)、[更新数据](/develop/dev-guide-update-data.md)、[删除数据](/develop/dev-guide-delete-data.md)、[单表读取](/develop/dev-guide-get-data-from-single-table.md)、[事务](/develop/dev-guide-transaction-overview.md)、[SQL 性能优化](/develop/dev-guide-optimize-sql-overview.md)等。
 - 如果你更倾向于参与课程进行学习，我们也提供专业的 [TiDB 开发者课程](https://cn.pingcap.com/courses-catalog/back-end-developer/?utm_source=docs-cn-dev-guide)支持，并在考试后提供相应的[资格认证](https://learn.pingcap.com/learner/certification-center)。
 
