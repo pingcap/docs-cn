@@ -7,6 +7,21 @@ summary: TiDB 数据库中 ADMIN CHECK [TABLE|INDEX] 的使用概况。
 
 `ADMIN CHECK [TABLE|INDEX]` 语句用于校验表中数据和对应索引的一致性。
 
+该语句不支持：
+
+- 当使用[聚簇索引](/clustered-indexes.md)时，校验主键索引。
+
+如果执行 `ADMIN CHECK [TABLE|INDEX]` 发现任何问题，你可以删除并重新创建索引来解决。如果问题仍未解决，你可以在 GitHub 上提 [issue](https://github.com/pingcap/tidb/issues/new/choose) 反馈。
+
+## 原理
+
+`ADMIN CHECK TABLE` 语句执行以下步骤来校验表：
+
+1. 对每个索引，检查索引中的记录数是否与表中的记录数一致。
+2. 对每个索引，遍历每行的值，并将其与表中的值进行比较。
+
+如果使用 `ADMIN CHECK INDEX` 语句，它只会校验指定的索引。
+
 ## 语法图
 
 ```ebnf+diagram
