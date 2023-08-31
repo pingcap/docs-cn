@@ -272,6 +272,7 @@ You might have been waiting on some items from the last version. The following l
 
 ## Recently shipped
 
+- [TiDB 7.3.0 Release Notes](https://docs.pingcap.com/tidb/v7.3/release-7.3.0)
 - [TiDB 7.2.0 Release Notes](https://docs.pingcap.com/tidb/v7.2/release-7.2.0)
 - [TiDB 7.1.0 Release Notes](https://docs.pingcap.com/tidb/v7.1/release-7.1.0)
 - [TiDB 7.0.0 Release Notes](https://docs.pingcap.com/tidb/v7.0/release-7.0.0)
