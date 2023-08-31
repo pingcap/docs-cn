@@ -227,6 +227,8 @@ class Player(Base):
     __tablename__ = "players"
 ```
 
+更多信息参考 [SQLAlchemy 声明式映射表](https://docs.sqlalchemy.org/en/20/orm/declarative_mapping.html)。
+
 ### 插入数据
 
 ```python
