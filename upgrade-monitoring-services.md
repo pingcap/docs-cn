@@ -95,9 +95,9 @@ tiup cluster patch <cluster-name> grafana-v{new-version}.tar.gz -R grafana
 
 升级完成后，可以打开 Grafana 主页（地址通常是 `http://<Grafana-server-host-name>:3000`），查看 Grafana 的版本信息，确认升级成功。
 
-## 升级 AlertManager
+## 升级 Alertmanager
 
-TiDB 安装包中直接使用了 AlertManager 官方组件包，因此升级 AlertManager 时你只需要下载并安装新版本的官方组件包。
+TiDB 安装包中直接使用了 Alertmanager 官方组件包，因此升级 Alertmanager 时你只需要下载并安装新版本的官方组件包。
 
 ### 第 1 步：从 Prometheus 官网下载新版本安装包
 
