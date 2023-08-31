@@ -40,7 +40,7 @@ Bug fixes:
 
 ## November 8, 2021
 
-* Launch [Developer Tier](/tidb-cloud/select-cluster-tier.md#serverless-tier-beta), which offers you a one-year free trial of TiDB Cloud
+* Launch [Developer Tier](/tidb-cloud/select-cluster-tier.md#tidb-serverless), which offers you a one-year free trial of TiDB Cloud
 
     Each Developer Tier cluster is a full-featured TiDB cluster and comes with the following:
 
@@ -53,7 +53,7 @@ Bug fixes:
 ## October 21, 2021
 
 * Open user registration to personal email accounts
-* Support [importing or migrating from Amazon S3 or GCS to TiDB Cloud](/tidb-cloud/migrate-from-amazon-s3-or-gcs.md)
+* Support [importing or migrating from Amazon S3 or GCS to TiDB Cloud](/tidb-cloud/import-csv-files.md)
 
 ## October 11, 2021
 

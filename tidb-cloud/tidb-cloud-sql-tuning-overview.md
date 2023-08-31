@@ -23,7 +23,7 @@ TiDB Cloud provides several tools to help you analyze slow queries on a cluster.
 
 ### Use Statement on the Diagnosis tab
 
-The TiDB Cloud console provides a **[SQL Statement](/tidb-cloud/tune-performance.md#statement-analysis)** sub-tab on the **SQL Diagnosis** tab. It collects the execution statistics of SQL statements of all databases on the cluster. You can use it to identify and analyze SQL statements that consume a long time in total or in a single execution.
+The TiDB Cloud console provides a **[SQL Statement](/tidb-cloud/tune-performance.md#statement-analysis)** sub-tab on the **Diagnosis** tab. It collects the execution statistics of SQL statements of all databases on the cluster. You can use it to identify and analyze SQL statements that consume a long time in total or in a single execution.
 
 Note that on this sub-tab, SQL queries with the same structure (even if the query parameters do not match) are grouped into the same SQL statement. For example, `SELECT * FROM employee WHERE id IN (1, 2, 3)` and `select * from EMPLOYEE where ID in (4, 5)` are both part of the same SQL statement `select * from employee where id in (...)`.
 
@@ -49,7 +49,7 @@ After parsing the original query text by `parser` and basic validity verificatio
 
 Through these equivalence changes, the query can become easier to handle in the logical execution plan. After the equivalence changes, TiDB gets a query plan structure that is equivalent to the original query, and then gets a final execution plan based on the data distribution and the specific execution overhead of an operator. For more information, see [SQL Physical Optimization](/sql-physical-optimization.md).
 
-Also, TiDB can choose to enable execution plan cache to reduce the creation overhead of the execution plan when executing the `PREPARE` statement, as introduced in [Prepared Execution Plan Cache](/sql-prepared-plan-cache.md).
+Also, TiDB can choose to enable execution plan cache to reduce the creation overhead of the execution plan when executing the `PREPARE` statement, as introduced in [Prepare Execution Plan Cache](/sql-prepared-plan-cache.md).
 
 ### Optimize full table scan
 

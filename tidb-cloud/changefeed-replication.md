@@ -17,6 +17,7 @@ With TiDB Cloud Replication, you can perform quick disaster recovery of a databa
 > * You cannot use a secondary cluster as a source of **TiDB Cloud Replication** to another cluster.
 > * **TiDB Cloud Replication** contradicts [**Sink to Apache Kafka**](/tidb-cloud/changefeed-sink-to-apache-kafka.md) and [**Sink to MySQL**](/tidb-cloud/changefeed-sink-to-mysql.md). When **TiDB Cloud Replication** is enabled, neither the primary nor the secondary cluster can use the **Sink to Apache Kafka** or **Sink to MySQL** changefeed and vice versa.
 > * Because TiDB Cloud uses TiCDC to establish replication, it has the same [restrictions as TiCDC](https://docs.pingcap.com/tidb/stable/ticdc-overview#restrictions).
+> * **TiDB Cloud Replication** is only available upon request. To request this feature, click **?** in the lower-right corner of the [TiDB Cloud console](https://tidbcloud.com) and click **Request Support**. Then, fill in "Apply for TiDB Cloud Replication" in the **Description** field and click **Send**.
 
 To support application replication, you must deploy your applications in both primary and secondary regions, and ensure that each application is connected to the TiDB cluster in the same region. The applications in the secondary region are on standby. When the primary region fails, you can initiate a "Detach" operation to make the TiDB cluster in the secondary region active, and then transfer all data traffic to the applications in the secondary region.
 

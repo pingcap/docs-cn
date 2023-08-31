@@ -6,7 +6,7 @@ category: intro
 
 # TiDB Cloud Introduction
 
-[TiDB Cloud](https://www.pingcap.com/tidb-cloud/) is a fully-managed Database-as-a-Service (DBaaS) that brings [TiDB](https://docs.pingcap.com/tidb/stable/overview), an open-source Hybrid Transactional and Analytical Processing (HTAP) database, to your cloud. TiDB Cloud offers an easy way to deploy and manage databases to let you focus on your applications, not the complexities of the databases. You can create TiDB Cloud clusters to quickly build mission-critical applications on Google Cloud Platform (GCP) and Amazon Web Services (AWS).
+[TiDB Cloud](https://www.pingcap.com/tidb-cloud/) is a fully-managed Database-as-a-Service (DBaaS) that brings [TiDB](https://docs.pingcap.com/tidb/stable/overview), an open-source Hybrid Transactional and Analytical Processing (HTAP) database, to your cloud. TiDB Cloud offers an easy way to deploy and manage databases to let you focus on your applications, not the complexities of the databases. You can create TiDB Cloud clusters to quickly build mission-critical applications on Google Cloud and Amazon Web Services (AWS).
 
 ![TiDB Cloud Overview](/media/tidb-cloud/tidb-cloud-overview.png)
 
@@ -30,7 +30,7 @@ With TiDB Cloud, you can get the following key features:
 
 - **MySQL Compatibility**
 
-    Increase productivity and shorten time-to-market for your applications with TiDB's MySQL compatibility. Easily migrate data from existing MySQL instances without the need to rewrite code. Feel free to write and run your SQL in TiDB Cloud [Playground](/tidb-cloud/tidb-cloud-glossary.md#playground) instantly, which contains a pre-loaded dataset of GitHub events.
+    Increase productivity and shorten time-to-market for your applications with TiDB's MySQL compatibility. Easily migrate data from existing MySQL instances without the need to rewrite code.
 
 - **High Availability and Reliability**
 
@@ -38,7 +38,7 @@ With TiDB Cloud, you can get the following key features:
 
 - **Real-Time Analytics**
 
-    Get real-time analytical query results with a built-in analytics engine. TiDB Cloud runs consistent analytical queries on current data without disturbing mission-critical applications. Feel free to experience TiDB Cloud's speed in [Playground](/tidb-cloud/tidb-cloud-glossary.md#playground), without loading your data or connecting to your client.
+    Get real-time analytical query results with a built-in analytics engine. TiDB Cloud runs consistent analytical queries on current data without disturbing mission-critical applications.
 
 - **Enterprise Grade Security**
 
@@ -50,7 +50,7 @@ With TiDB Cloud, you can get the following key features:
 
 - **Multi-Cloud Support**
 
-    Stay flexible without cloud vendor lock-in. TiDB Cloud is currently available on AWS and GCP.
+    Stay flexible without cloud vendor lock-in. TiDB Cloud is currently available on AWS and Google Cloud.
 
 - **Simple Pricing Plans**
 
@@ -59,6 +59,20 @@ With TiDB Cloud, you can get the following key features:
 - **World-Class Support**
 
     Get world-class support through our support portal, <a href="mailto:tidbcloud-support@pingcap.com">email</a>, chat, or video conferencing.
+
+## Deployment options
+
+TiDB Cloud provides the following two deployment options:
+
+- [TiDB Serverless](https://www.pingcap.com/tidb-serverless)
+
+    TiDB Serverless is a fully managed, multi-tenant TiDB offering. It delivers an instant, autoscaling MySQL-compatible database and offers a generous free tier and consumption based billing once free limits are exceeded.
+
+- [TiDB Dedicated](https://www.pingcap.com/tidb-dedicated)
+
+    TiDB Dedicated is for production use with the benefits of cross-zone high availability, horizontal scaling, and [HTAP](https://en.wikipedia.org/wiki/Hybrid_transactional/analytical_processing).
+
+For feature comparison between TiDB Serverless and TiDB Dedicated, see [TiDB: An advanced, open source, distributed SQL database](https://www.pingcap.com/get-started-tidb).
 
 ## Architecture
 

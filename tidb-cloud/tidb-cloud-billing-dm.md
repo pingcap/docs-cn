@@ -28,16 +28,7 @@ The Data Migration job measures incremental data migration performance in rows/s
 
 ## Price
 
-The following table lists the price of TiDB Cloud for each Data Migration RCU:
-
-| Cloud provider | Region                      | RCU price ($/hr) |
-|----------------|-----------------------------|------------------|
-| AWS            | Oregon (us-west-2)          |          $0.1307 |
-| AWS            | N. Virginia (us-east-1)     |          $0.1307 |
-| AWS            | Mumbai (ap-south-1)         |          $0.1393 |
-| AWS            | Singapore (ap-southeast-1)  |          $0.1623 |
-| AWS            | Tokyo (ap-northeast-1)      |          $0.1669 |
-| AWS            | Frankfurt (eu-central-1)    |          $0.1564 |
+To learn about the supported regions and the price of TiDB Cloud for each Data Migration RCU, see [Data Migration Cost](https://www.pingcap.com/tidb-cloud-pricing-details/#dm-cost).
 
 The Data Migration job is in the same region as the target TiDB cluster.
 

@@ -1,17 +1,17 @@
 ---
 title: Import CSV Files from Amazon S3 or GCS into TiDB Cloud
 summary: Learn how to import CSV files from Amazon S3 or GCS into TiDB Cloud.
+aliases: ['/tidbcloud/migrate-from-amazon-s3-or-gcs','/tidbcloud/migrate-from-aurora-bulk-import']
 ---
 
 # Import CSV Files from Amazon S3 or GCS into TiDB Cloud
 
-This document describes how to import uncompressed CSV files from Amazon Simple Storage Service (Amazon S3) or Google Cloud Storage (GCS) into TiDB Cloud.
+This document describes how to import CSV files from Amazon Simple Storage Service (Amazon S3) or Google Cloud Storage (GCS) into TiDB Cloud.
 
 > **Note:**
 >
-> - If your CSV source files are compressed, you must uncompress the files first before the import.
 > - To ensure data consistency, TiDB Cloud allows to import CSV files into empty tables only. To import data into an existing table that already contains data, you can use TiDB Cloud to import the data into a temporary empty table by following this document, and then use the `INSERT SELECT` statement to copy the data to the target existing table.
-> - If there is a changefeed in a Dedicated Tier cluster, you cannot import data to the cluster (the **Import Data** button will be disabled), because the current import data feature uses the [physical import mode](https://docs.pingcap.com/tidb/stable/tidb-lightning-physical-import-mode). In this mode, the imported data does not generate change logs, so the changefeed cannot detect the imported data.
+> - If there is a changefeed in a TiDB Dedicated cluster, you cannot import data to the cluster (the **Import Data** button will be disabled), because the current import data feature uses the [physical import mode](https://docs.pingcap.com/tidb/stable/tidb-lightning-physical-import-mode). In this mode, the imported data does not generate change logs, so the changefeed cannot detect the imported data.
 
 ## Step 1. Prepare the CSV files
 
@@ -23,10 +23,13 @@ This document describes how to import uncompressed CSV files from Amazon Simple 
 
     - If a CSV file contains all data of an entire table, name the file in the `${db_name}.${table_name}.csv` format, which maps to the `${db_name}.${table_name}` table when you import the data.
     - If the data of one table is separated into multiple CSV files, append a numeric suffix to these CSV files. For example, `${db_name}.${table_name}.000001.csv` and `${db_name}.${table_name}.000002.csv`. The numeric suffixes can be inconsecutive but must be in ascending order. You also need to add extra zeros before the number to ensure all the suffixes are in the same length.
+    - TiDB Cloud supports importing compressed files in the following formats: `.gzip`, `.gz`, `.zstd`, `.zst` and `.snappy`. If you want to import compressed CSV files, name the files in the `${db_name}.${table_name}.${suffix}.csv.${compress}` format, in which `${suffix}` is optional and can be any integer such as '000001'. For example, if you want to import the `trips.000001.csv.gz` file to the `bikeshare.trips` table, you need to rename the file as `bikeshare.trips.000001.csv.gz`.
 
     > **Note:**
     >
-    > If you cannot update the CSV filenames according to the preceding rules in some cases (for example, the CSV file links are also used by your other programs), you can keep the filenames unchanged and use the **File Pattern** in [Step 4](#step-4-import-csv-files-to-tidb-cloud) to import your source data to a single target table.
+    > - You only need to compress the data files, not the database or table schema files.
+    > - To achieve better performance, it is recommended to limit the size of each compressed file to 100 MiB.
+    > - For uncompressed files, if you cannot update the CSV filenames according to the preceding rules in some cases (for example, the CSV file links are also used by your other programs), you can keep the filenames unchanged and use the **Mapping Settings** in [Step 4](#step-4-import-csv-files-to-tidb-cloud) to import your source data to a single target table.
 
 ## Step 2. Create the target table schemas
 
@@ -77,7 +80,7 @@ To allow TiDB Cloud to access the CSV files in the Amazon S3 or GCS bucket, do o
 
 - If your CSV files are located in Amazon S3, [configure Amazon S3 access](/tidb-cloud/config-s3-and-gcs-access.md#configure-amazon-s3-access).
 
-    Once finished, make a note of the Role ARN value as you will need it in [Step 4](#step-4-import-csv-files-to-tidb-cloud).
+    You can use either an AWS access key or a Role ARN to access your bucket. Once finished, make a note of the access key (including the access key ID and secret access key) or the Role ARN value as you will need it in [Step 4](#step-4-import-csv-files-to-tidb-cloud).
 
 - If your CSV files are located in GCS, [configure GCS access](/tidb-cloud/config-s3-and-gcs-access.md#configure-gcs-access).
 
@@ -91,70 +94,44 @@ To import the CSV files to TiDB Cloud, take the following steps:
 
         > **Tip:**
         >
-        > If you have multiple projects, you can switch to the target project in the left navigation pane of the **Clusters** page.
+        > If you have multiple projects, you can click <MDSvgIcon name="icon-left-projects" /> in the lower-left corner and switch to another project.
 
     2. Click the name of your target cluster to go to its overview page, and then click **Import** in the left navigation pane.
 
 2. On the **Import** page:
-   - For a Dedicated Tier cluster, click **Import Data** in the upper-right corner.
-   - For a Serverless Tier cluster, click the **import data from S3** link above the upload area.
+   - For a TiDB Dedicated cluster, click **Import Data** in the upper-right corner.
+   - For a TiDB Serverless cluster, click the **import data from S3** link above the upload area.
 
 3. Provide the following information for the source CSV files:
 
-    - **Data format**: select **CSV**.
-    - **Bucket URI**: select the bucket URI where your CSV files are located.
-    - **Role ARN**: (This field is visible only for AWS S3): enter the Role ARN value for **Role ARN**.
-
-    If the region of the bucket is different from your cluster, confirm the compliance of cross region. Click **Next**.
-
-    TiDB Cloud starts validating whether it can access your data in the specified bucket URI. After validation, TiDB Cloud tries to scan all the files in the data source using the default file naming pattern, and returns a scan summary result on the left side of the next page. If you get the `AccessDenied` error, see [Troubleshoot Access Denied Errors during Data Import from S3](/tidb-cloud/troubleshoot-import-access-denied-error.md).
-
-4. Modify the file patterns and add the table filter rules if needed.
-
-    - **File Pattern**: modify the file pattern if you want to import CSV files whose filenames match a certain pattern to a single target table.
+    - **Location**: select **Amazon S3**.
+    - **Data Format**: select **CSV**. If you need to edit the CSV configurations, click **Edit CSV configuration** to update the CSV-specific configurations. For more information, see [CSV Configurations for Importing Data](/tidb-cloud/csv-config-for-import-data.md).
 
         > **Note:**
         >
-        > When you use this feature, one import task can only import data to a single table at a time. If you want to use this feature to import data into different tables, you need to import several times, each time specifying a different target table.
+        > For the configurations of separator and delimiter, you can use both alphanumeric characters and certain special characters. The supported special characters include `\t`, `\b`, `\n`, `\r`, `\f`, and `\u0001`.
 
-        To modify the file pattern, click **Modify**, specify a custom mapping rule between CSV files and a single target table in the following fields, and then click **Scan**. After that, the data source files will be re-scanned using the provided custom mapping rule.
+    - **Bucket URI**: select the bucket URI where your CSV files are located. Note that you must include `/` at the end of the URI, for example, `s3://sampledate/ingest/`.
+    - **Bucket Access** (This field is visible only for AWS S3): you can use either an AWS access key or an AWS Role ARN to access your bucket. For more information, see [Configure Amazon S3 access](/tidb-cloud/config-s3-and-gcs-access.md#configure-amazon-s3-access).
+        - **AWS Access Keys**: enter the AWS access key ID and AWS secret access key.
+        - **AWS Role ARN**: enter the AWS Role ARN value.
 
-        - **Source file name**: enter a pattern that matches the names of the CSV files to be imported. If you have one CSV file only, enter the file name here directly. Note that the names of the CSV files must include the suffix `.csv`.
+4. You can choose to **Import into Pre-created Tables**, or **Import Schema and Data from S3**.
 
-            For example:
+    - **Import into Pre-created Tables** allows you to create tables in TiDB in advance and select the tables that you want to import data into. In this case, you can choose up to 1000 tables to import. To create tables, click on **Chat2Qury** in the left navigation pane. For more information about how to use Chat2Qury, see [Explore Your Data with AI-Powered Chat2Query](/tidb-cloud/explore-data-with-chat2query.md).
+    - **Import Schema and Data from S3** allows you to import SQL scripts that creates a table along with its corresponding data stored in S3 directly into TiDB.
 
-            - `my-data?.csv`: all CSV files starting with `my-data` and one character (such as `my-data1.csv` and `my-data2.csv`) will be imported into the same target table.
-            - `my-data*.csv`: all CSV files starting with `my-data` will be imported into the same target table.
+5. If the source files do not meet the naming conventions, you can define a custom mapping rule for each target table and its corresponding CSV file. After that, the data source files will be re-scanned using the provided custom mapping rule. To modify the mapping, go to **Advanced Settings** and then click **Mapping Settings**. Note that **Mapping Settings** is available only when you choose **Import into Pre-created Tables**.
 
-        - **Target table name**: enter the name of the target table in TiDB Cloud, which must be in the `${db_name}.${table_name}` format. For example, `mydb.mytable`. Note that this field only accepts one specific table name, so wildcards are not supported.
+    - **Target Database**: enter the name of the target database you select.
 
-    - **Table Filter**: If you want to filter which tables to be imported, you can specify table filter rules in this area.
+    - **Target Tables**: enter the name of the target table you select. Note that this field only accepts one specific table name, so wildcards are not supported.
 
-        For example:
+    - **Source file URIs and names**: enter the source file URI and name in the following format `s3://[bucket_name]/[data_source_folder]/[file_name].csv`. For example, `s3://sampledate/ingest/TableName.01.csv`. You can also use wildcards to match the source files. For more information, see [Mapping Settings](#mapping-settings).
 
-        - `db01.*`: all tables in the `db01` database will be imported.
-        - `!db02.*`: except the tables in the `db02` database, all other tables will be imported. `!` is used to exclude tables that do not need to be imported.
-        - `*.*` : all tables will be imported.
+6. Click **Start Import**.
 
-        For more information, see [table filter syntax](/table-filter.md#syntax).
-
-5. Click **Next**.
-
-6. On the **Preview** page, you can have a preview of the data. If the previewed data is not what you expect, click the **Click here to edit csv configuration** link to update the CSV-specific configurations, including separator, delimiter, header, not-null, null, backslash-escape, and trim-last-separator. For more information, see [CSV Configurations for Importing Data](/tidb-cloud/csv-config-for-import-data.md).
-
-    > **Note:**
-    >
-    > For the configurations of separator, delimiter, and null, you can use both alphanumeric characters and certain special characters. The supported special characters include `\t`, `\b`, `\n`, `\r`, `\f`, and `\u0001`.
-
-    ![CSV Configurations](/media/tidb-cloud/import-data-csv-config.png)
-
-7. Click **Start Import**.
-
-8. When the import progress shows **Finished**, check the imported tables.
-
-    If the number is zero, it means no data files matched the value you entered in the **Source file name** field. In this case, ensure that there are no typos in the **Source file name** field and try again.
-
-9. After the import task is completed, you can click **Query Data** on the **Import** page to query your imported data. For more information about how to use Chat2Qury, see [Explore Your Data with AI-Powered Chat2Query](/tidb-cloud/explore-data-with-chat2query.md).
+7. When the import progress shows **Completed**, check the imported tables.
 
 When you run an import task, if any unsupported or invalid conversions are detected, TiDB Cloud terminates the import job automatically and reports an importing error.
 
@@ -164,3 +141,33 @@ If you get an importing error, do the following:
 2. Check the table schema file. If there are any errors, correct the table schema file.
 3. Check the data types in the CSV files.
 4. Try the import task again.
+
+## Mapping Settings
+
+If the source files do not meet the naming conventions, you can define a custom mapping rule for each target table and its corresponding CSV file. After that, the data source files will be re-scanned using the provided custom mapping rule. To modify the mapping, go to **Advanced Settings** and then click **Mapping Settings**. Note that **Mapping Settings** is available only when you choose **Import into Pre-created Tables**.
+
+When you enter the source file URI and name in **Source file URIs and names**, make sure it is in the following format `s3://[bucket_name]/[data_source_folder]/[file_name].csv`. For example, `s3://sampledate/ingest/TableName.01.csv`.
+
+You can also use wildcards to match the source files. For example:
+
+- `s3://[bucket_name]/[data_source_folder]/my-data?.csv`: all CSV files starting with `my-data` followed by one character (such as `my-data1.csv` and `my-data2.csv`) in that folder will be imported into the same target table.
+
+- `s3://[bucket_name]/[data_source_folder]/my-data*.csv`: all CSV files in the folder starting with `my-data` will be imported into the same target table.
+
+Note that only `?` and `*` are supported.
+
+> **Note:**
+>
+> The URI must contain the data source folder.
+
+## Troubleshooting
+
+### Resolve warnings during data import
+
+After clicking **Start Import**, if you see a warning message such as `can't find the corresponding source files`, resolve this by providing the correct source file, renaming the existing one according to [Naming Conventions for Data Import](/tidb-cloud/naming-conventions-for-data-import.md), or using **Advanced Settings** to make changes.
+
+After resolving these issues, you need to import the data again.
+
+### Zero rows in the imported tables
+
+After the import progress shows **Completed**, check the imported tables. If the number of rows is zero, it means no data files matched the Bucket URI that you entered. In this case, resolve this issue by providing the correct source file, renaming the existing one according to [Naming Conventions for Data Import](/tidb-cloud/naming-conventions-for-data-import.md), or using **Advanced Settings** to make changes. After that, import those tables again.

@@ -1,17 +1,17 @@
 ---
-title: Migrate from On-Premises TiDB to TiDB Cloud
-summary: Learn how to migrate data from on-premises TiDB to TiDB Cloud.
+title: Migrate from TiDB Self-Hosted to TiDB Cloud
+summary: Learn how to migrate data from TiDB Self-Hosted to TiDB Cloud.
 ---
 
-# Migrate from On-Premises TiDB to TiDB Cloud
+# Migrate from TiDB Self-Hosted to TiDB Cloud
 
-This document describes how to migrate data from your on-premises (OP) TiDB clusters to TiDB Cloud (AWS) through Dumpling and TiCDC.
+This document describes how to migrate data from your TiDB Self-Hosted clusters to TiDB Cloud (AWS) through Dumpling and TiCDC.
 
 The overall procedure is as follows:
 
 1. Build the environment and prepare the tools.
 2. Migrate full data. The process is as follows:
-   1. Export data from OP TiDB to Amazon S3 using Dumpling.
+   1. Export data from TiDB Self-Hosted to Amazon S3 using Dumpling.
    2. Import data from Amazon S3 to TiDB Cloud.
 3. Replicate incremental data by using TiCDC.
 4. Verify the migrated data.
@@ -24,7 +24,7 @@ Before migration, you need to prepare the following:
 
 - An [AWS account](https://docs.aws.amazon.com/AmazonS3/latest/userguide/setting-up-s3.html#sign-up-for-aws-gsg) with administrator access
 - An [AWS S3 bucket](https://docs.aws.amazon.com/AmazonS3/latest/userguide/creating-bucket.html)
-- [A TiDB Cloud account with the administrator access and a TiDB Cloud (AWS) cluster](/tidb-cloud/tidb-cloud-quickstart.md)
+- [A TiDB Cloud account](/tidb-cloud/tidb-cloud-quickstart.md) with at least the [`Project Data Access Read-Write`](/tidb-cloud/manage-user-access.md#user-roles) access to your target TiDB Cloud cluster hosted on AWS
 
 ## Prepare tools
 
@@ -35,7 +35,7 @@ You need to prepare the following tools:
 
 ### Dumpling
 
-[Dumpling](https://docs.pingcap.com/tidb/dev/dumpling-overview) is a tool that exports data from TiDB or MySQL into SQL or CSV files. You can use Dumpling to export full data from OP TiDB.
+[Dumpling](https://docs.pingcap.com/tidb/dev/dumpling-overview) is a tool that exports data from TiDB or MySQL into SQL or CSV files. You can use Dumpling to export full data from TiDB Self-Hosted.
 
 Before you deploy Dumpling, note the following:
 
@@ -102,18 +102,18 @@ You need to [deploy TiCDC](https://docs.pingcap.com/tidb/dev/deploy-ticdc) to re
 
 ## Migrate full data
 
-To migrate data from the OP TiDB cluster to TiDB Cloud, perform a full data migration as follows:
+To migrate data from the TiDB Self-Hosted cluster to TiDB Cloud, perform a full data migration as follows:
 
-1. Migrate data from the OP TiDB cluster to Amazon S3.
+1. Migrate data from the TiDB Self-Hosted cluster to Amazon S3.
 2. Migrate data from Amazon S3 to TiDB Cloud.
 
-### Migrate data from the OP TiDB cluster to Amazon S3
+### Migrate data from the TiDB Self-Hosted cluster to Amazon S3
 
-You need to migrate data from the OP TiDB cluster to Amazon S3 using Dumpling.
+You need to migrate data from the TiDB Self-Hosted cluster to Amazon S3 using Dumpling.
 
 If your TiDB cluster is in a local IDC, or the network between the Dumpling server and Amazon S3 is not connected, you can export the files to the local storage first, and then upload them to Amazon S3 later.
 
-#### Step 1. Disable the GC mechanism of the upstream OP TiDB cluster temporarily
+#### Step 1. Disable the GC mechanism of the upstream TiDB Self-Hosted cluster temporarily
 
 To ensure that newly written data is not lost during incremental migration, you need to disable the upstream cluster's garbage collection (GC) mechanism before starting the migration to prevent the system from cleaning up historical data.
 
@@ -199,7 +199,7 @@ Do the following to export data from the upstream TiDB cluster to Amazon S3 usin
 
 ### Migrate data from Amazon S3 to TiDB Cloud
 
-After you export data from the OP TiDB cluster to Amazon S3, you need to migrate the data to TiDB Cloud.
+After you export data from the TiDB Self-Hosted cluster to Amazon S3, you need to migrate the data to TiDB Cloud.
 
 1. Get the Account ID and External ID of the cluster in the TiDB Cloud console. For more information, see [Step 2. Configure Amazon S3 access](/tidb-cloud/tidb-cloud-auditing.md#step-2-configure-amazon-s3-access).
 
@@ -269,7 +269,7 @@ After you export data from the OP TiDB cluster to Amazon S3, you need to migrate
 
 5. Get the Role-ARN. Go to [AWS Console > IAM > Access Management > Roles](https://console.aws.amazon.com/iamv2/home#/roles). Switch to your region. Click the role you have created, and note down the ARN. You will use it when importing data into TiDB Cloud.
 
-6. Import data to TiDB Cloud. See [Step 3. Import data into TiDB Cloud](/tidb-cloud/migrate-from-amazon-s3-or-gcs.md#step-3-import-data-into-tidb-cloud).
+6. Import data to TiDB Cloud. See [Import CSV Files from Amazon S3 or GCS into TiDB Cloud](/tidb-cloud/import-csv-files.md).
 
 ## Replicate incremental data
 

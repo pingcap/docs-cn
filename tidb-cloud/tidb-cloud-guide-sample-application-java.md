@@ -1,7 +1,6 @@
 ---
 title: Build a Simple CRUD App with TiDB and Java
 summary: Learn how to build a simple CRUD application with TiDB and Java.
-aliases: ['/tidb/dev/dev-guide-outdated-for-hibernate-orm']
 ---
 
 <!-- markdownlint-disable MD024 -->

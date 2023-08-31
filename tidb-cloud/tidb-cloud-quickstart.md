@@ -2,63 +2,62 @@
 title: TiDB Cloud Quick Start
 summary: Sign up quickly to try TiDB Cloud and create your TiDB cluster.
 category: quick start
-aliases: ['/tidbcloud/beta/tidb-cloud-quickstart']
 ---
 
 # TiDB Cloud Quick Start
 
 *Estimated completion time: 20 minutes*
 
-This tutorial guides you through an easy way to get started with your TiDB Cloud.
+This tutorial guides you through an easy way to get started with TiDB Cloud. You can also follow the step-by-step tutorials on the [**Getting Started**](https://tidbcloud.com/console/getting-started) page in the TiDB Cloud console.
 
-In addition, you can try out TiDB features on [TiDB Playground](https://play.tidbcloud.com/?utm_source=docs&utm_medium=tidb_cloud_quick_start).
+Additionally, you can try out TiDB features on [TiDB Playground](https://play.tidbcloud.com/?utm_source=docs&utm_medium=tidb_cloud_quick_start).
 
-## Step 1. Create a TiDB cluster
+## Step 1: Create a TiDB cluster
 
-TiDB Cloud [Serverless Tier](/tidb-cloud/select-cluster-tier.md#serverless-tier-beta) (Beta) is the best way to get started with TiDB Cloud. To create a free Serverless Tier cluster, take the following steps:
+[TiDB Serverless](/tidb-cloud/select-cluster-tier.md#tidb-serverless) is the best way to get started with TiDB Cloud. To create a TiDB Serverless cluster, follow these steps:
 
-1. If you do not have a TiDB Cloud account, click [here](https://tidbcloud.com/free-trial) to sign up for an account.
+1. If you do not have a TiDB Cloud account, click [here](https://tidbcloud.com/free-trial) to sign up.
 
-    For Google or GitHub users, you can also sign up with your Google or GitHub account. Your email address and password will be managed by Google or GitHub and cannot be changed using the TiDB Cloud console.
+    You can sign up with your email and password to manage your password using TiDB Cloud, or choose to sign in with your Google, GitHub, or Microsoft account for single sign-on (SSO) to TiDB Cloud.
 
 2. [Log in](https://tidbcloud.com/) to your TiDB Cloud account.
 
-    The plan selection page is displayed by default.
+    The [**Clusters**](https://tidbcloud.com/console/clusters) page is displayed by default.
 
-3. On the plan selection page, click **Get Started for Free** in the **Serverless Tier** plan.
+3. For new sign-up users, TiDB Cloud automatically creates a default TiDB Serverless cluster named `Cluster0` for you.
 
-4. On the **Create Cluster** page, **Serverless Tier** is selected by default. Update the default cluster name if necessary, and then select the region where you want to create your cluster.
+    - To instantly try out TiDB Cloud features with this default cluster, proceed to [Step 2: Try AI-powered Chat2Query (beta)](#step-2-try-ai-powered-chat2query-beta).
+    - To create a new TiDB Serverless cluster on your own, follow these steps:
 
-5. Click **Create**.
+        1. Click **Create Cluster**.
+        2. On the **Create Cluster** page, **Serverless** is selected by default. Select the target region for your cluster, update the default cluster name if necessary, and then click **Create**. Your TiDB Serverless cluster will be created in approximately 30 seconds.
 
-    The cluster creation process starts and your Serverless Tier cluster will be created in approximately 30 seconds.
+## Step 2: Try AI-powered Chat2Query (beta)
 
-## Step 2. Try AI-powered Chat2Query (beta)
+TiDB Cloud is powered by AI. You can use Chat2Query (beta), an AI-powered SQL editor in the TiDB Cloud console, to maximize the value of your data.
 
-TiDB Cloud is powered by AI. You can use Chat2Query (beta), an AI-powered SQL editor in the TiDB Cloud console, to maximize your data value.
+In Chat2Query, you can either simply type `--` followed by your instructions to let AI automatically generate SQL queries, or write SQL queries manually and run them against databases without using a terminal.
 
-In Chat2Query, you can either simply type `--` followed by your instructions to let AI generate SQL queries automatically or write SQL queries manually, and then run SQL queries against databases without a terminal.
+1. On the [**Clusters**](https://tidbcloud.com/console/clusters) page, click on a cluster name to go to its overview page, and then click **Chat2Query** in the left navigation pane.
 
-1. On the [**Clusters**](https://tidbcloud.com/console/clusters) page, click your cluster name, and then click <MDSvgIcon name="icon-left-sql-editor" /> **Chat2Query** in the left navigation pane.
+2. To try the AI capacity of TiDB Cloud, follow the on-screen instructions to allow PingCAP and OpenAI to use your code snippets for research and service improvement, and then click **Save and Get Started**.
 
-2. To try TiDB Cloud AI capacity, follow the on-screen instructions to allow PingCAP and OpenAI to use your code snippets to research and improve the services, and then click **Save and Get Started**.
-
-3. In the editor, you can either simply type `--` followed by your instructions to let AI generate SQL queries automatically or write SQL queries manually.
+3. In the editor, you can either simply type `--` followed by your instructions to let AI automatically generate SQL queries, or write SQL queries manually.
 
     > **Note:**
     >
-    > SQL queries generated by AI are not 100% accurate and might still need your further tweak.
+    > SQL queries generated by AI are not 100% accurate and might still require further tweaking.
 
-4. Run SQL queries.
+4. Run the SQL queries.
 
     <SimpleTab>
     <div label="macOS">
 
     For macOS:
 
-    - If you have only one query in the editor, to run it, press **⌘ + Enter** or click <svg width="1rem" height="1rem" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M6.70001 20.7756C6.01949 20.3926 6.00029 19.5259 6.00034 19.0422L6.00034 12.1205L6 5.33028C6 4.75247 6.00052 3.92317 6.38613 3.44138C6.83044 2.88625 7.62614 2.98501 7.95335 3.05489C8.05144 3.07584 8.14194 3.12086 8.22438 3.17798L19.2865 10.8426C19.2955 10.8489 19.304 10.8549 19.3126 10.8617C19.4069 10.9362 20 11.4314 20 12.1205C20 12.7913 19.438 13.2784 19.3212 13.3725C19.307 13.3839 19.2983 13.3902 19.2831 13.4002C18.8096 13.7133 8.57995 20.4771 8.10002 20.7756C7.60871 21.0812 7.22013 21.0683 6.70001 20.7756Z" fill="currentColor"></path></svg>**Run**.
+    - If you have only one query in the editor, press **⌘ + Enter** or click <svg width="1rem" height="1rem" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M6.70001 20.7756C6.01949 20.3926 6.00029 19.5259 6.00034 19.0422L6.00034 12.1205L6 5.33028C6 4.75247 6.00052 3.92317 6.38613 3.44138C6.83044 2.88625 7.62614 2.98501 7.95335 3.05489C8.05144 3.07584 8.14194 3.12086 8.22438 3.17798L19.2865 10.8426C19.2955 10.8489 19.304 10.8549 19.3126 10.8617C19.4069 10.9362 20 11.4314 20 12.1205C20 12.7913 19.438 13.2784 19.3212 13.3725C19.307 13.3839 19.2983 13.3902 19.2831 13.4002C18.8096 13.7133 8.57995 20.4771 8.10002 20.7756C7.60871 21.0812 7.22013 21.0683 6.70001 20.7756Z" fill="currentColor"></path></svg>**Run** to execute it.
 
-    - If you have multiple queries in the editor, to run one or several of them sequentially, select the lines of the target queries with your cursor, and then press **⌘ + Enter** or click **Run**.
+    - If you have multiple queries in the editor, select the lines of the target queries with your cursor, and then press **⌘ + Enter** or click **Run** to execute them sequentially.
 
     - To run all queries in the editor sequentially, press **⇧ + ⌘ + Enter**, or select the lines of all queries with your cursor and click **Run**.
 
@@ -68,48 +67,29 @@ In Chat2Query, you can either simply type `--` followed by your instructions to 
 
     For Windows or Linux:
 
-    - If you have only one query in the editor, to run it, press **Ctrl + Enter** or click <svg width="1rem" height="1rem" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M6.70001 20.7756C6.01949 20.3926 6.00029 19.5259 6.00034 19.0422L6.00034 12.1205L6 5.33028C6 4.75247 6.00052 3.92317 6.38613 3.44138C6.83044 2.88625 7.62614 2.98501 7.95335 3.05489C8.05144 3.07584 8.14194 3.12086 8.22438 3.17798L19.2865 10.8426C19.2955 10.8489 19.304 10.8549 19.3126 10.8617C19.4069 10.9362 20 11.4314 20 12.1205C20 12.7913 19.438 13.2784 19.3212 13.3725C19.307 13.3839 19.2983 13.3902 19.2831 13.4002C18.8096 13.7133 8.57995 20.4771 8.10002 20.7756C7.60871 21.0812 7.22013 21.0683 6.70001 20.7756Z" fill="currentColor"></path></svg>**Run**.
+    - If you have only one query in the editor, press **Ctrl + Enter** or click <svg width="1rem" height="1rem" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M6.70001 20.7756C6.01949 20.3926 6.00029 19.5259 6.00034 19.0422L6.00034 12.1205L6 5.33028C6 4.75247 6.00052 3.92317 6.38613 3.44138C6.83044 2.88625 7.62614 2.98501 7.95335 3.05489C8.05144 3.07584 8.14194 3.12086 8.22438 3.17798L19.2865 10.8426C19.2955 10.8489 19.304 10.8549 19.3126 10.8617C19.4069 10.9362 20 11.4314 20 12.1205C20 12.7913 19.438 13.2784 19.3212 13.3725C19.307 13.3839 19.2983 13.3902 19.2831 13.4002C18.8096 13.7133 8.57995 20.4771 8.10002 20.7756C7.60871 21.0812 7.22013 21.0683 6.70001 20.7756Z" fill="currentColor"></path></svg>**Run** to execute it.
 
-    - If you have multiple queries in the editor, to run one or several of them sequentially, select the lines of the target queries with your cursor, and then press **Ctrl + Enter** or click **Run**.
+    - If you have multiple queries in the editor, select the lines of the target queries with your cursor, and then press **Ctrl + Enter** or click **Run** to execute them sequentially.
 
     - To run all queries in the editor sequentially, press **Shift + Ctrl + Enter**, or select the lines of all queries with your cursor and click **Run**.
 
     </div>
     </SimpleTab>
 
-After running the queries, you can see the query logs and results immediately at the bottom of the page.
+After running the queries, you can immediately see the query logs and results at the bottom of the page.
 
-## Step 3. Try Playground
+## Step 3: Try interactive tutorials
 
-After your TiDB Cloud cluster is created, you can also quickly start experimenting with TiDB using the pre-loaded sample data in TiDB Cloud Playground.
+TiDB Cloud offers interactive tutorials with carefully crafted sample datasets to help you quickly get started with TiDB Cloud. You can try these tutorials to learn how to use TiDB Cloud for high-performance data analytics.
 
-On the [**Clusters**](https://tidbcloud.com/console/clusters) page, click the name of your newly created cluster to go to its overview page, and then click **Playground** in the left navigation pane.
-
-## Step 4. Load sample data
-
-After trying **Plaground**, you can load sample data to your TiDB Cloud cluster. We provide Capital Bikeshare sample data for you to easily import data and run sample queries.
-
-1. On your cluster overview page, click **Import** in the left navigation pane.
-
-2. On the **Import** page, click **Import Data** in the upper-right corner, and then select **From S3**.
-
-3. Fill in the import parameters:
-
-    - **Data format**: select **SQL File**
-    - **Bucket URI**: `s3://tidbcloud-samples/data-ingestion/`
-    - **Role ARN**: `arn:aws:iam::385595570414:role/import-sample-access`
-
-    If the region of the bucket is different from your cluster, confirm the compliance of cross region. Click **Next**.
-
-4. Add the table filter rules if needed. For the sample data, you can skip this step. Click **Next**.
-
-5. On the **Preview** page, confirm the data to be imported and then click **Start Import**.
-
-The data import process will take several minutes. When the data import progress shows **Finished**, you have successfully imported the sample data and the database schema to your database in TiDB Cloud.
+1. Click on the **?** icon in the lower-right corner of the console and select **Interactive Tutorials**.
+2. In the tutorials list, select a tutorial card to start, such as **Steam Game Stats**.
+3. Choose a TiDB Serverless cluster that you want to use for the tutorial, and click **Import Dataset**. The import process might take approximately one minute.
+4. Once the sample data is imported, follow the on-screen instructions to complete the tutorial.
 
 ## What's next
 
-- For how to connect to your cluster via different methods, see [Connect to a TiDB cluster](/tidb-cloud/connect-to-tidb-cluster.md).
+- To learn how to connect to your cluster using different methods, see [Connect to a TiDB Serverless cluster](/tidb-cloud/connect-to-tidb-cluster-serverless.md).
 - For more information about how to use Chat2Query to explore your data, see [Chat2Query](/tidb-cloud/explore-data-with-chat2query.md).
 - For TiDB SQL usage, see [Explore SQL with TiDB](/basic-sql-operations.md).
-- For production use with the benefits of cross-zone high availability, horizontal scaling, and [HTAP](https://en.wikipedia.org/wiki/Hybrid_transactional/analytical_processing), see [Create a TiDB cluster](/tidb-cloud/create-tidb-cluster.md) to create a Dedicated Tier cluster.
+- For production use with the benefits of cross-zone high availability, horizontal scaling, and [HTAP](https://en.wikipedia.org/wiki/Hybrid_transactional/analytical_processing), see [Create a TiDB Dedicated cluster](/tidb-cloud/create-tidb-cluster.md).

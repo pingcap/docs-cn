@@ -9,7 +9,7 @@ summary: Learn how to connect TiDB Cloud to 5000+ Apps with Zapier.
 
 Using the [TiDB Cloud app](https://zapier.com/apps/tidb-cloud/integrations) on Zapier enables you to:
 
-- Use TiDB, a MySQL-compatible HTAP database, for free. No need to build locally.
+- Use TiDB, a MySQL-compatible HTAP database. No need to build locally.
 - Make it easier to manage your TiDB Cloud.
 - Connect TiDB Cloud to 5000+ apps and automate your workflows.
 
@@ -27,7 +27,7 @@ Before you start, you need:
 
 - A [Zapier account](https://zapier.com/app/login).
 - A [GitHub account](https://github.com/login).
-- A [TiDB Cloud account](https://tidbcloud.com/signup) and a Serverless Tier cluster on TiDB Cloud. For more details, see [TiDB Cloud Quick Start](https://docs.pingcap.com/tidbcloud/tidb-cloud-quickstart#step-1-create-a-tidb-cluster).
+- A [TiDB Cloud account](https://tidbcloud.com/signup) and a TiDB Serverless cluster on TiDB Cloud. For more details, see [TiDB Cloud Quick Start](https://docs.pingcap.com/tidbcloud/tidb-cloud-quickstart#step-1-create-a-tidb-cluster).
 
 ### Step 1: Get the template
 
@@ -119,15 +119,15 @@ In the editor page, you can see the trigger and action. Click the trigger to set
 
     Click **Test action** to create a new row in the table. If you check your TiDB Cloud cluster, you can find the data is written successfully.
 
-    ```sql
-    mysql> SELECT * FROM test.github_global_event;
-    +-------------+-------------+------------+-----------------+----------------------------------------------+--------+---------------------+
-    | id          | type        | actor      | repo_name       | repo_url                                     | public | created_at          |
-    +-------------+-------------+------------+-----------------+----------------------------------------------+--------+---------------------+
-    | 25324462424 | CreateEvent | shiyuhang0 | shiyuhang0/docs | https://api.github.com/repos/shiyuhang0/docs | True   | 2022-11-18 08:03:14 |
-    +-------------+-------------+------------+-----------------+----------------------------------------------+--------+---------------------+
-    1 row in set (0.17 sec)
-    ```
+   ```sql
+   mysql> SELECT * FROM test.github_global_event;
+   +-------------+-------------+------------+-----------------+----------------------------------------------+--------+---------------------+
+   | id          | type        | actor      | repo_name       | repo_url                                     | public | created_at          |
+   +-------------+-------------+------------+-----------------+----------------------------------------------+--------+---------------------+
+   | 25324462424 | CreateEvent | shiyuhang0 | shiyuhang0/docs | https://api.github.com/repos/shiyuhang0/docs | True   | 2022-11-18 08:03:14 |
+   +-------------+-------------+------------+-----------------+----------------------------------------------+--------+---------------------+
+   1 row in set (0.17 sec)
+   ```
 
 ### Step 5: Publish your zap
 
@@ -160,16 +160,16 @@ The following table lists the actions supported by TiDB Cloud App. Note that som
 
 | Action | Description | Resource |
 |---|---|---|
-| Find Cluster | Finds an existing Serverless tier or Dedicated tier. | None |
-| Create Cluster | Creates a new cluster. Only supports creating a free Serverless Tier cluster. | None |
-| Find Database | Finds an existing database. | A Serverless Tier cluster |
-| Create Database | Creates a new database. | A Serverless Tier cluster |
-| Find Table | Finds an existing Table. | A Serverless Tier cluster and a database |
-| Create Table | Creates a new table. | A Serverless Tier cluster and a database |
-| Create Row | Creates a new row. | A Serverless Tier cluster, a database, and a table |
-| Update Row | Updates an existing row. | A Serverless Tier cluster, a database, and a table |
-| Find Row | Finds a row in a table via a lookup column. | A Serverless Tier cluster, a database, and a table |
-| Find Row (Custom Query) | Finds a row in a table via a custom query the you provide. | A Serverless Tier cluster, a database, and a table |
+| Find Cluster | Finds an existing TiDB Serverless or TiDB Dedicated cluster. | None |
+| Create Cluster | Creates a new cluster. Only supports creating a TiDB Serverless cluster. | None |
+| Find Database | Finds an existing database. | A TiDB Serverless cluster |
+| Create Database | Creates a new database. | A TiDB Serverless cluster |
+| Find Table | Finds an existing Table. | A TiDB Serverless cluster and a database |
+| Create Table | Creates a new table. | A TiDB Serverless cluster and a database |
+| Create Row | Creates a new row. | A TiDB Serverless cluster, a database, and a table |
+| Update Row | Updates an existing row. | A TiDB Serverless cluster, a database, and a table |
+| Find Row | Finds a row in a table via a lookup column. | A TiDB Serverless cluster, a database, and a table |
+| Find Row (Custom Query) | Finds a row in a table via a custom query the you provide. | A TiDB Serverless cluster, a database, and a table |
 
 ## TiDB Cloud App templates
 

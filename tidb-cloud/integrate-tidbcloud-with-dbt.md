@@ -77,7 +77,7 @@ To configure the project, take the following steps:
 
     In the editor, add the following configuration:
 
-    ```yaml
+   ```yaml
     jaffle_shop_tidb:                                                 # Project name
       target: dev                                                     # Target
       outputs:
@@ -90,7 +90,7 @@ To configure the project, take the following steps:
           password: "your_password"                                   # The password to use for authenticating to the TiDB Cloud clusters
     ```
 
-    You can get the values of `server`, `port`, and `username` from the [**Connect**](/tidb-cloud/connect-via-standard-connection.md) dialog in TiDB Cloud console.
+    You can get the values of `server`, `port`, and `username` from the connection dialog of your cluster. To open this dialog, go to the [**Clusters**](https://tidbcloud.com/console/clusters) page of your project, click the name of your target cluster to go to its overview page, and then click **Connect** in the upper-right corner.
 
 2. Complete the project configuration.
 

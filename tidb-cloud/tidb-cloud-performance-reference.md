@@ -5,296 +5,150 @@ summary: Learn TiDB Cloud performance test results.
 
 # TiDB Cloud Performance Reference
 
-This document provides [TPC-C](https://www.tpc.org/tpcc/) and [Sysbench](https://github.com/akopytov/sysbench) performance test results of several TiDB cluster scales, which can be taken as a reference when you [determine the cluster size](/tidb-cloud/size-your-cluster.md).
+This document provides [Sysbench](https://github.com/akopytov/sysbench) performance test results of different TiDB cluster scales, which can be used as a reference when you [determine the cluster size](/tidb-cloud/size-your-cluster.md).
+
+> **Note:**
+>
+> The tests are performed on TiDB v6.1.1, and the test results are based on the condition that the P95 latency is below 105 ms.
+
+In this document, the transaction models `Read Only`, `Read Write`, and `Write Only` represent read workloads, mixed workloads, and write workloads. 
 
 ## 2 vCPU performance
 
 Currently, the 2 vCPU support of TiDB and TiKV is still in beta.
 
-Test environment:
+Test scales:
 
-- TiDB version: v6.1.0
-- Warehouses: 1,000
-- Data size: 80 GiB
-- Table size: 10,000,000
-- Table count: 32
-
-Test scale:
-
+- TiDB (2 vCPU, 8 GiB) \* 1; TiKV (2 vCPU, 8 GiB) \* 3
 - TiDB (2 vCPU, 8 GiB) \* 2; TiKV (2 vCPU, 8 GiB) \* 3
 
 Test results:
 
-- Optimal performance with low latency
+**TiDB (2 vCPU, 8 GiB) \* 1; TiKV (2 vCPU, 8 GiB) \* 3**
 
-    TPC-C performance:
+| Transaction model | Threads | QPS      | TPS    | Average latency (ms) | P95 latency (ms) |
+|-------------------|---------|----------|--------|----------------------|------------------|
+| Read Only         | 15      | 3,496.77 | 218.55 | 68.63                | 95.81            |
+| Read Write        | 5       | 1,545.90 | 77.29  | 64.68                | 94.10            |
+| Write Only        | 40      | 4,326.57 | 721.10 | 55.47                | 90.78            |
 
-    | Transaction model | Threads | tpmC  | Average latency (ms) |
-    |-------------------|---------|-------|----------------------|
-    | TPCC              | 25      | 4,486 | 2.24                 |
+**TiDB (2 vCPU, 8 GiB) \* 2; TiKV (2 vCPU, 8 GiB) \* 3**
 
-    Sysbench OLTP performance:
+Test results:
 
-    | Transaction model | Threads | TPS    | Average latency (ms) |
-    |-------------------|---------|--------|----------------------|
-    | Insert            | 25      | 2,508  | 7.92                 |
-    | Point Select      | 50      | 16,858 | 1.72                 |
-    | Read Write        | 50      | 360    | 4.95                 |
-    | Update Index      | 25      | 1,653  | 14.05                |
-    | Update Non-index  | 25      | 2,800  | 8.02                 |
-
-- Maximum TPS and QPS
-
-    TPC-C performance:
-
-    | Transaction model | Threads | tpmC  | Average latency (ms) |
-    |-------------------|---------|-------|----------------------|
-    | TPCC              | 100     | 7,592 | 6.68                 |
-
-    Sysbench OLTP performance:
-
-    | Transaction model | Threads | TPS    | Average latency (ms) |
-    |-------------------|---------|--------|----------------------|
-    | Insert            | 100     | 6,147  | 14.77                |
-    | Point Select      | 100     | 19,462 | 3.21                 |
-    | Read Write        | 100     | 378    | 9.58                 |
-    | Update Index      | 100     | 3,140  | 30.34                |
-    | Update Non-index  | 100     | 5,805  | 15.92                |
+| Transaction model | Threads | QPS      | TPS      | Average latency (ms) | P95 latency (ms) |
+|-------------------|---------|----------|----------|----------------------|------------------|
+| Read Only         | 30      | 7,584.08 | 474.00   | 63.29                | 99.33            |
+| Read Write        | 10      | 2,680.58 | 134.03   | 74.61                | 104.84           |
+| Write Only        | 80      | 7,618.77 | 1,269.79 | 63.00                | 97.55            |
 
 ## 4 vCPU performance
 
-Test environment:
+Test scales:
 
-- TiDB version: v5.4.0
-- Warehouses: 5,000
-- Data size: 366 GiB
-- Table size: 10,000,000
-- Table count: 16
-
-Test scale:
-
+- TiDB (4 vCPU, 16 GiB) \* 1; TiKV (4 vCPU, 16 GiB) \* 3
 - TiDB (4 vCPU, 16 GiB) \* 2; TiKV (4 vCPU, 16 GiB) \* 3
 
 Test results:
 
-- Optimal performance with low latency
+**TiDB (4 vCPU, 16 GiB) \* 1; TiKV (4 vCPU, 16 GiB) \* 3**
 
-    TPC-C performance:
+| Transaction model | Threads | QPS      | TPS      | Average latency (ms) | P95 latency (ms) |
+|-------------------|---------|----------|----------|----------------------|------------------|
+| Read Only         | 35      | 8,064.89 | 504.06   | 69.43                | 104.84           |
+| Read Write        | 25      | 6,747.60 | 337.38   | 74.10                | 102.97           |
+| Write Only        | 90      | 8,805.21 | 1,467.53 | 61.32                | 99.33            |
 
-    | Transaction model | Threads | tpmC   | QPS    | Average latency (ms) |
-    |-------------------|---------|--------|--------|----------------------|
-    | TPCC              | 300     | 14,532 | 13,137 | 608                  |
+**TiDB (4 vCPU, 16 GiB) \* 2; TiKV (4 vCPU, 16 GiB) \* 3**
 
-    Sysbench OLTP performance:
-
-    | Transaction model | Threads | TPS    | QPS    | Average latency (ms) |
-    |-------------------|---------|--------|--------|----------------------|
-    | Insert            | 300     | 8,848  | 8,848  | 36                   |
-    | Point Select      | 600     | 46,224 | 46,224 | 13                   |
-    | Read Write        | 150     | 719    | 14,385 | 209                  |
-    | Update Index      | 150     | 4,346  | 4,346  | 35                   |
-    | Update Non-index  | 600     | 13,603 | 13,603 | 44                   |
-
-- Maximum TPS and QPS
-
-    TPC-C performance:
-
-    | Transaction model | Threads | tpmC   | QPS    | Average latency (ms) |
-    |-------------------|---------|--------|--------|----------------------|
-    | TPCC              | 1,200   | 15,208 | 13,748 | 2,321                |
-
-    Sysbench OLTP performance:
-
-    | Transaction model | Threads | TPS    | QPS    | Average latency (ms) |
-    |-------------------|---------|--------|--------|----------------------|
-    | Insert            | 1,500   | 11,601 | 11,601 | 129                  |
-    | Point Select      | 600     | 46,224 | 46,224 | 13                   |
-    | Read Write        | 150     | 719    | 14,385 | 209                  |
-    | Update Index      | 1,200   | 6,526  | 6,526  | 184                  |
-    | Update Non-index  | 1,500   | 14,351 | 14,351 | 105                  |
+| Transaction model | Threads | QPS       | TPS      | Average latency (ms) | P95 latency (ms) |
+|-------------------|---------|-----------|----------|----------------------|------------------|
+| Read Only         | 65      | 16,805.76 | 1,050.36 | 61.88                | 95.81            |
+| Read Write        | 45      | 12,940.36 | 647.02   | 69.55                | 99.33            |
+| Write Only        | 200     | 19,265.93 | 3,210.99 | 62.28                | 102.97           |
 
 ## 8 vCPU performance
-
-Test environment:
-
-- TiDB version: v5.4.0
-- Warehouses: 5,000
-- Data size: 366 GiB
-- Table size: 10,000,000
-- Table count: 16
 
 Test scales:
 
 - TiDB (8 vCPU, 16 GiB) \* 2; TiKV (8 vCPU, 32 GiB) \* 3
+- TiDB (8 vCPU, 16 GiB) \* 4; TiKV (8 vCPU, 32 GiB) \* 3
 - TiDB (8 vCPU, 16 GiB) \* 4; TiKV (8 vCPU, 32 GiB) \* 6
+- TiDB (8 vCPU, 16 GiB) \* 6; TiKV (8 vCPU, 32 GiB) \* 9
+- TiDB (8 vCPU, 16 GiB) \* 9; TiKV (8 vCPU, 32 GiB) \* 6
+- TiDB (8 vCPU, 16 GiB) \* 12; TiKV (8 vCPU, 32 GiB) \* 9
 
 Test results:
 
 **TiDB (8 vCPU, 16 GiB) \* 2; TiKV (8 vCPU, 32 GiB) \* 3**
 
-- Optimal performance with low latency
+| Transaction model | Threads | QPS       | TPS      | Average latency (ms) | P95 latency (ms) |
+|-------------------|---------|-----------|----------|----------------------|------------------|
+| Read Only         | 150     | 37,863.64 | 2,366.48 | 63.38                | 99.33            |
+| Read Write        | 100     | 30,218.42 | 1,510.92 | 66.18                | 94.10            |
+| Write Only        | 350     | 30,763.72 | 5,127.29 | 68.26                | 104.84           |
 
-    TPC-C performance:
+**TiDB (8 vCPU, 16 GiB) \* 4; TiKV (8 vCPU, 32 GiB) \* 3**
 
-    | Transaction model | Threads | tpmC   | QPS    | Average latency (ms) |
-    |-------------------|---------|--------|--------|----------------------|
-    | TPCC              | 600     | 32,266 | 29,168 | 548                  |
-
-    Sysbench OLTP performance:
-
-    | Transaction model | Threads | TPS    | QPS    | Average latency (ms) |
-    |-------------------|---------|--------|--------|----------------------|
-    | Insert            | 600     | 17,831 | 17,831 | 34                   |
-    | Point Select      | 600     | 93,287 | 93,287 | 6                    |
-    | Read Write        | 300     | 1,486  | 29,729 | 202                  |
-    | Update Index      | 300     | 9,415  | 9,415  | 32                   |
-    | Update Non-index  | 1,200   | 31,092 | 31,092 | 39                   |
-
-- Maximum TPS and QPS
-
-    TPC-C performance:
-
-    | Transaction model | Threads | tpmC   | QPS    | Average latency (ms) |
-    |-------------------|---------|--------|--------|----------------------|
-    | TPCC              | 1,200   | 33,394 | 30,188 | 1,048                |
-
-    Sysbench OLTP performance:
-
-    | Transaction model | Threads | TPS    | QPS    | Average latency (ms) |
-    |-------------------|---------|--------|--------|----------------------|
-    | Insert            | 2,000   | 23,633 | 23,633 | 84                   |
-    | Point Select      | 600     | 93,287 | 93,287 | 6                    |
-    | Read Write        | 600     | 1,523  | 30,464 | 394                  |
-    | Update Index      | 2,000   | 15,146 | 15,146 | 132                  |
-    | Update Non-index  | 2,000   | 34,505 | 34,505 | 58                   |
+| Transaction model | Threads | QPS       | TPS      | Average latency (ms) | P95 latency (ms) |
+|-------------------|---------|-----------|----------|----------------------|------------------|
+| Read Only         | 300     | 74,190.40 | 4,636.90 | 64.69                | 104.84           |
+| Read Write        | 200     | 53,351.84 | 2,667.59 | 74.97                | 97.55            |
+| Write Only        | 400     | 36,036.40 | 5,926.66 | 67.49                | 95.81            |
 
 **TiDB (8 vCPU, 16 GiB) \* 4; TiKV (8 vCPU, 32 GiB) \* 6**
 
-- Optimal performance with low latency
+| Transaction model | Threads | QPS       | TPS       | Average latency (ms) | P95 latency (ms) |
+|-------------------|---------|-----------|-----------|----------------------|------------------|
+| Read Only         | 300     | 75,713.04 | 4,732.06  | 63.39                | 102.97           |
+| Read Write        | 200     | 62,640.62 | 3,132.03  | 63.85                | 95.81            |
+| Write Only        | 750     | 73,840.22 | 12,306.70 | 60.93                | 104.84           |
 
-    TPC-C performance:
+**TiDB (8 vCPU, 16 GiB) \* 6; TiKV (8 vCPU, 32 GiB) \* 9**
 
-    | Transaction model | Threads | tpmC   | QPS    | Average latency (ms) |
-    |-------------------|---------|--------|--------|----------------------|
-    | TPCC              | 1,200   | 62,918 | 56,878 | 310                  |
+| Transaction model | Threads | QPS        | TPS       | Average latency (ms) | P95 latency (ms) |
+|-------------------|---------|------------|-----------|----------------------|------------------|
+| Read Only         | 450     | 113,407.94 | 7,088.00  | 63.48                | 104.84           |
+| Read Write        | 300     | 92,387.31  | 4,619.37  | 64.93                | 99.33            |
+| Write Only        | 1100    | 112,631.72 | 18,771.95 | 58.59                | 99.33            |
 
-    Sysbench OLTP performance:
+**TiDB (8 vCPU, 16 GiB) \* 9; TiKV (8 vCPU, 32 GiB) \* 6**
 
-    | Transaction model | Threads | TPS     | QPS     | Average latency (ms) |
-    |-------------------|---------|---------|---------|----------------------|
-    | Insert            | 1,200   | 33,892  | 33,892  | 23                   |
-    | Point Select      | 1,200   | 185,574 | 181,255 | 4                    |
-    | Read Write        | 600     | 2,958   | 59,160  | 127                  |
-    | Update Index      | 600     | 18,735  | 18,735  | 21                   |
-    | Update Non-index  | 2,400   | 60,629  | 60,629  | 23                   |
+| Transaction model | Threads | QPS        | TPS       | Average latency (ms) | P95 latency (ms) |
+|-------------------|---------|------------|-----------|----------------------|------------------|
+| Read Only         | 650     | 168,486.65 | 10,530.42 | 61.72                | 101.13           |
+| Read Write        | 400     | 106,853.63 | 5,342.68  | 74.86                | 101.13           |
+| Write Only        | 950     | 88,461.20  | 14,743.53 | 64.42                | 102.97           |
 
-- Maximum TPS and QPS
+**TiDB (8 vCPU, 16 GiB) \* 12; TiKV (8 vCPU, 32 GiB) \* 9**
 
-    TPC-C performance:
-
-    | Transaction model | Threads | tpmC   | QPS    | Average latency (ms) |
-    |-------------------|---------|--------|--------|----------------------|
-    | TPCC              | 2,400   | 65,452 | 59,169 | 570                  |
-
-    Sysbench OLTP performance:
-
-    | Transaction model | Threads | TPS     | QPS     | Average latency (ms) |
-    |-------------------|---------|---------|---------|----------------------|
-    | Insert            | 4,000   | 47,029  | 47,029  | 43                   |
-    | Point Select      | 1,200   | 185,574 | 181,255 | 4                    |
-    | Read Write        | 1,200   | 3,030   | 60,624  | 197                  |
-    | Update Index      | 4,000   | 30,140  | 30,140  | 67                   |
-    | Update Non-index  | 4,000   | 68,664  | 68,664  | 29                   |
+| Transaction model | Threads | QPS        | TPS       | Average latency (ms) | P95 latency (ms) |
+|-------------------|---------|------------|-----------|----------------------|------------------|
+| Read Only         | 800     | 211,882.77 | 13,242.67 | 60.40                | 101.13           |
+| Read Write        | 550     | 139,393.46 | 6,969.67  | 78.90                | 104.84           |
+| Write Only        | 1500    | 139,330.14 | 23,221.69 | 64.58                | 99.33            |
 
 ## 16 vCPU performance
 
-Test environment:
-
-- TiDB version: v5.4.0
-- Warehouses: 5,000
-- Data size: 366 GiB
-- Table size: 10,000,000
-- Table count: 16
-
 Test scales:
 
+- TiDB (16 vCPU, 32 GiB) \* 1; TiKV (16 vCPU, 64 GiB) \* 3
 - TiDB (16 vCPU, 32 GiB) \* 2; TiKV (16 vCPU, 64 GiB) \* 3
-- TiDB (16 vCPU, 32 GiB) \* 4; TiKV (16 vCPU, 64 GiB) \* 6
 
 Test results:
 
+**TiDB (16 vCPU, 32 GiB) \* 1; TiKV (16 vCPU, 64 GiB) \* 3**
+
+| Transaction model | Threads | QPS      | TPS     | Average latency (ms) | P95 latency (ms) |
+|-------------------|---------|----------|---------|----------------------|------------------|
+| Read Only         | 125     | 37448.41 | 2340.53 | 53.40                | 89.16            |
+| Read Write        | 100     | 28903.99 | 1445.20 | 69.19                | 104.84           |
+| Write Only        | 400     | 40878.68 | 6813.11 | 58.71                | 101.13           |
+
 **TiDB (16 vCPU, 32 GiB) \* 2; TiKV (16 vCPU, 64 GiB) \* 3**
 
-- Optimal performance with low latency
-
-    TPC-C performance:
-
-    | Transaction model | Threads | tpmC   | QPS    | Average latency (ms) |
-    |-------------------|---------|--------|--------|----------------------|
-    | TPCC              | 1,200   | 67,941 | 61,419 | 540                  |
-
-    Sysbench OLTP performance:
-
-    | Transaction model | Threads | TPS     | QPS     | Average latency (ms) |
-    |-------------------|---------|---------|---------|----------------------|
-    | Insert            | 1,200   | 35,096  | 35,096  | 34                   |
-    | Point Select      | 1,200   | 228,600 | 228,600 | 5                    |
-    | Read Write        | 600     | 3,658   | 73,150  | 164                  |
-    | Update Index      | 600     | 18,886  | 18,886  | 32                   |
-    | Update Non-index  | 2,000   | 63,837  | 63,837  | 31                   |
-
-- Maximum TPS and QPS
-
-    TPC-C performance:
-
-    | Transaction model | Threads | tpmC   | QPS    | Average latency (ms) |
-    |-------------------|---------|--------|--------|----------------------|
-    | TPCC              | 1,200   | 67,941 | 61,419 | 540                  |
-
-    Sysbench OLTP performance:
-
-    | Transaction model | Threads | TPS     | QPS     | Average latency (ms) |
-    |-------------------|---------|---------|---------|----------------------|
-    | Insert            | 2,000   | 43,338  | 43,338  | 46                   |
-    | Point Select      | 1,200   | 228,600 | 228,600 | 5                    |
-    | Read Write        | 1,200   | 3,682   | 73,631  | 326                  |
-    | Update Index      | 3,000   | 29,576  | 29,576  | 101                  |
-    | Update Non-index  | 3,000   | 64,624  | 64,624  | 46                   |
-
-**TiDB (16 vCPU, 32 GiB) \* 4; TiKV (16 vCPU, 64 GiB) \* 6**
-
-- Optimal performance with low latency
-
-    TPC-C performance:
-
-    | Transaction model | Threads | tpmC    | QPS     | Average latency (ms) |
-    |-------------------|---------|---------|---------|----------------------|
-    | TPCC              | 2,400   | 133,164 | 120,380 | 305                  |
-
-    Sysbench OLTP performance:
-
-    | Transaction model | Threads | TPS     | QPS     | Average latency (ms) |
-    |-------------------|---------|---------|---------|----------------------|
-    | Insert            | 2,400   | 69,139  | 69,139  | 22                   |
-    | Point Select      | 2,400   | 448,056 | 448,056 | 4                    |
-    | Read Write        | 1,200   | 7,310   | 145,568 | 97                   |
-    | Update Index      | 1,200   | 36,638  | 36,638  | 20                   |
-    | Update Non-index  | 4,000   | 125,129 | 125,129 | 17                   |
-
-- Maximum TPS and QPS
-
-    TPC-C performance:
-
-    | Transaction model | Threads | tpmC    | QPS     | Average latency (ms) |
-    |-------------------|---------|---------|---------|----------------------|
-    | TPCC              | 2,400   | 133,164 | 120,380 | 305                  |
-
-    Sysbench OLTP performance:
-
-    | Transaction model | Threads | TPS     | QPS     | Average latency (ms) |
-    |-------------------|---------|---------|---------|----------------------|
-    | Insert            | 4,000   | 86,242  | 86,242  | 25                   |
-    | Point Select      | 2,400   | 448,056 | 448,056 | 4                    |
-    | Read Write        | 2,400   | 7,326   | 146,526 | 172                  |
-    | Update Index      | 6,000   | 58,856  | 58,856  | 51                   |
-    | Update Non-index  | 6,000   | 128,601 | 128,601 | 24                   |
+| Transaction model | Threads | QPS      | TPS      | Average latency (ms) | P95 latency (ms) |
+|-------------------|---------|----------|----------|----------------------|------------------|
+| Read Only         | 300     | 77238.30 | 4827.39  | 62.14                | 102.97           |
+| Read Write        | 200     | 58241.15 | 2912.06  | 68.67                | 97.55            |
+| Write Only        | 700     | 68829.89 | 11471.65 | 61.01                | 101.13           |

@@ -7,6 +7,10 @@ summary: Learn about how to audit a cluster in TiDB Cloud.
 
 TiDB Cloud provides you with a database audit logging feature to record a history of user access details (such as any SQL statements executed) in logs.
 
+> **Note:**
+>
+> Currently, the database audit logging feature is only available upon request. To request this feature, click **?** in the lower-right corner of the [TiDB Cloud console](https://tidbcloud.com) and click **Request Support**. Then, fill in "Apply for database audit logging" in the **Description** field and click **Send**.
+
 To assess the effectiveness of user access policies and other information security measures of your organization, it is a security best practice to conduct a periodic analysis of the database audit logs.
 
 The audit logging feature is disabled by default. To audit a cluster, you need to enable the audit logging first, and then specify the auditing filter rules.
@@ -17,10 +21,10 @@ The audit logging feature is disabled by default. To audit a cluster, you need t
 
 ## Prerequisites
 
-- You are using a TiDB Cloud Dedicated Tier cluster. Audit logging is not available for TiDB Cloud Serverless Tier clusters.
-- You are the audit administrator of your organization in TiDB Cloud. Otherwise, you cannot see the audit-related options in the TiDB Cloud console. For more information, see [Manage role access](/tidb-cloud/manage-user-access.md#manage-role-access).
+- You are using a TiDB Dedicated cluster. Audit logging is not available for TiDB Serverless clusters.
+- You are in the `Organization Owner` or `Project Owner` role of your organization. Otherwise, you cannot see the database audit-related options in the TiDB Cloud console. For more information, see [User roles](/tidb-cloud/manage-user-access.md#user-roles).
 
-## Enable audit logging for AWS or GCP
+## Enable audit logging for AWS or Google Cloud
 
 To allow TiDB Cloud to write audit logs to your cloud bucket, you need to enable audit logging first.
 
@@ -97,13 +101,13 @@ In the TiDB Cloud console, go back to the **Audit Logging** dialog box where you
 > - After enabling audit logging, if you make any new changes to the bucket URI, location, or ARN, you must click **Restart** to load the changes and rerun the **Test Connectivity** check to make the changes effective.
 > - To remove Amazon S3 access from TiDB Cloud, simply delete the trust policy that you added.
 
-### Enable audit logging for GCP
+### Enable audit logging for Google Cloud
 
-To enable audit logging for GCP, take the following steps:
+To enable audit logging for Google Cloud, take the following steps:
 
 #### Step 1. Create a GCS bucket
 
-Specify a Google Cloud Storage (GCS) bucket in your corporate-owned GCP account as a destination to which TiDB Cloud writes audit logs.
+Specify a Google Cloud Storage (GCS) bucket in your corporate-owned Google Cloud account as a destination to which TiDB Cloud writes audit logs.
 
 For more information, see [Creating storage buckets](https://cloud.google.com/storage/docs/creating-buckets) in the Google Cloud Storage documentation.
 
@@ -119,7 +123,7 @@ For more information, see [Creating storage buckets](https://cloud.google.com/st
     2. Select **Settings** > **Audit Settings**. The **Audit Logging** dialog box is displayed.
     3. Click **Show Google Cloud Service Account ID**, and then copy the Service Account ID for later use.
 
-2. In the Google Cloud Platform (GCP) Management Console, go to **IAM & Admin** > **Roles**, and then check whether a role with the following write-only permissions of the storage container exists.
+2. In the Google Cloud console, go to **IAM & Admin** > **Roles**, and then check whether a role with the following write-only permissions of the storage container exists.
 
     - storage.objects.create
     - storage.objects.delete
@@ -205,7 +209,7 @@ For each database event record in audit logs, TiDB provides the following fields
 | 6 | EVENT_CLASS | VARCHAR | 15 | Event type     |
 | 7 | EVENT_SUBCLASS     | VARCHAR | 15 | Event subtype |
 | 8 | STATUS_CODE | INTEGER |  | Response status of the statement   |
-| 9 | COST_TIME | INTEGER |  | Time consumed by the statement    |
+| 9 | COST_TIME | FLOAT |  | Time consumed by the statement    |
 | 10 | HOST | VARCHAR | 16 | Server IP    |
 | 11 | CLIENT_IP         | VARCHAR | 16 | Client IP   |
 | 12 | USER | VARCHAR | 17 | Login username    |

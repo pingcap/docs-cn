@@ -5,14 +5,18 @@ summary: Learn how to use restore resource.
 
 # Use Restore Resource
 
-You can learn how to create a restore task with the `tidbcloud_restore` resource in this document. The restore task will create a restored cluster according to your backup. 
+You can learn how to manage a restore task with the `tidbcloud_restore` resource in this document.
+
+The features of the `tidbcloud_restore` resource include the following:
+
+- Create restore tasks for TiDB Dedicated clusters according to your backup.
 
 ## Prerequisites
 
 - [Get TiDB Cloud Terraform Provider](/tidb-cloud/terraform-get-tidbcloud-provider.md).
-- The backup and restore feature is unavailable for Serverless Tier clusters. To use restore resources, make sure that you have created a Dedicated Tier cluster.
+- The backup and restore feature is unavailable for TiDB Serverless clusters. To use restore resources, make sure that you have created a TiDB Dedicated cluster.
 
-## Create a restore task with the restore resource
+## Create a restore task
 
 After creating a backup of a cluster, you can restore the cluster by creating a restore task with the `tidbcloud_restore` resource.
 
@@ -31,15 +35,13 @@ After creating a backup of a cluster, you can restore the cluster by creating a 
      required_providers {
        tidbcloud = {
          source = "tidbcloud/tidbcloud"
-         version = "~> 0.1.0"
        }
      }
-     required_version = ">= 1.0.0"
    }
 
    provider "tidbcloud" {
-     public_key = "fake_public_key"
-     private_key = "fake_private_key"
+     public_key = "your_public_key"
+     private_key = "your_private_key"
    }
     resource "tidbcloud_restore" "example_restore" {
       project_id = tidbcloud_cluster.example_cluster.project_id
@@ -180,6 +182,10 @@ After creating a backup of a cluster, you can restore the cluster by creating a 
 6. After the cluster status changes to `AVAILABLE`, the restore task will be `RUNNING` and turn to `SUCCESS` at last.
 
 Note that the restored cluster is not managed by Terraform. You can manage the restored cluster by [importing it](/tidb-cloud/terraform-use-cluster-resource.md#import-a-cluster).
+
+## Update a restore task
+
+Restore tasks cannot be updated.
 
 ## Delete a restore task
 

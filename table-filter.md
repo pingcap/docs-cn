@@ -30,7 +30,7 @@ Table filters can be applied to the tools using multiple `-f` or `--filter` comm
 
 </CustomContent>
 
-* [Dumpling](/dumpling-overview.md):
+* [Dumpling](https://docs.pingcap.com/tidb/stable/dumpling-overview):
 
     ```shell
     ./dumpling -f 'foo*.*' -f 'bar*.*' -P 3306 -o /tmp/data/

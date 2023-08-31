@@ -23,13 +23,39 @@ ACID refers to the four key properties of a transaction: atomicity, consistency,
 
 ## C
 
-### cluster tier
+### Chat2Query
 
-Determines the functionality and capacity of your cluster. Different cluster tiers provide different numbers of TiDB, TiKV, and TiFlash nodes in your cluster.
+TiDB Cloud is powered by AI. You can use Chat2Query (beta), an AI-powered SQL editor in the [TiDB Cloud console](https://tidbcloud.com/), to maximize your data value.
 
-## Credit
+In Chat2Query, you can either simply type `--` followed by your instructions to let AI generate SQL queries automatically or write SQL queries manually, and then run SQL queries against databases without a terminal. You can find the query results in tables intuitively and check the query logs easily. For more information, see [Chat2Query (beta)](/tidb-cloud/explore-data-with-chat2query.md).
+
+In addition, TiDB Cloud provides a Chat2Query API for TiDB Serverless clusters. After it is enabled, TiDB Cloud will automatically create a system Data App called **Chat2Query** and a Chat2Data endpoint in Data Service. You can call this endpoint to let AI generate and execute SQL statements by providing instructions. For more information, see [Get started with Chat2Query API](/tidb-cloud/use-chat2query-api.md).
+
+### Credit
 
 TiDB Cloud offers a certain number of credits for Proof of Concept (PoC) users. One credit is equivalent to one U.S. dollar. You can use credits to pay TiDB cluster fees before the credits become expired.
+
+## D
+
+### Data App
+
+A Data App in [Data Service (beta)](#data-service) is a collection of endpoints that you can use to access data for a specific application. You can configure authorization settings using API keys to restrict access to endpoints in a Data App.
+
+For more information, see [Manage a Data App](/tidb-cloud/data-service-manage-data-app.md).
+
+### Data Service
+
+Data Service (beta) enables you to access TiDB Cloud data via an HTTPS request using a custom API [endpoint](#endpoint). This feature uses a serverless architecture to handle computing resources and elastic scaling, so you can focus on the query logic in endpoints without worrying about infrastructure or maintenance costs.
+
+For more information, see [Data Service Overview](/tidb-cloud/data-service-overview.md).
+
+## E
+
+### Endpoint
+
+An endpoint in Data Service is a web API that you can customize to execute SQL statements. You can specify parameters for your SQL statements, such as the value used in the `WHERE` clause. When a client calls an endpoint and provides values for the parameters in a request URL, the endpoint executes the corresponding SQL statement with the provided parameters and returns the results as part of the HTTP response.
+
+For more information, see [Manage an endpoint](/tidb-cloud/data-service-manage-endpoint.md).
 
 ## M
 
@@ -51,15 +77,9 @@ An entity that you create to manage your TiDB Cloud accounts, including a manage
 
 ### organization members
 
-Organization members are users who are invited by the organization owner to join an organization. Organization members can view members of the organization and can be invited to projects within the organization.
+Organization members are users who are invited by the organization owner or project owner to join an organization. Organization members can view members of the organization and can be invited to projects within the organization.
 
 ## P
-
-### Playground
-
-Playground contains a pre-loaded dataset of GitHub events, which allows Serverless Tier users to get started with TiDB Cloud by running queries instantly, without importing data or connecting to a client.
-
-You can access Playground after [creating a Serverless Tier cluster](/tidb-cloud/tidb-cloud-quickstart.md#step-1-create-a-tidb-cluster).
 
 ### policy
 
@@ -96,6 +116,16 @@ A separate database that can be located in the same or different region and cont
 ### Replication Capacity Unit
 
 The replication of changefeed is charged according to the computing resources, which is the TiCDC replication capacity unit.
+
+### Request Unit
+
+A Request Unit (RU) is a unit of measure used to represent the amount of resources consumed by a single request to the database. The amount of RUs consumed by a request depends on various factors, such as the operation type or the amount of data being retrieved or modified. For more information, see [TiDB Serverless Pricing Details](https://www.pingcap.com/tidb-cloud-serverless-pricing-details).
+
+## S
+
+### Spending limit
+
+Spending limit refers to the maximum amount of money that you are willing to spend on a particular workload in a month. It is a cost-control mechanism that allows you to set a budget for your TiDB Serverless clusters. When the spending limit of a cluster is greater than 0, the cluster is considered a paid cluster. Also, the paid cluster can have a free quota if it meets the qualifications. The paid cluster with a free quota will consume the free quota first.
 
 ## T
 

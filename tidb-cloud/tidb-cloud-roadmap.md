@@ -34,13 +34,13 @@ The TiDB Cloud roadmap brings you what's coming in the near future, so you can s
     <td>In Chat2Query, you can either let AI generate SQL queries automatically or write SQL queries manually, and run SQL queries against databases without a terminal.</td>
   </tr>
   <tr>
-    <td>Support Data API.</td>
-    <td>Allow developers to read/write databases via data API.</td>
+    <td>✅ Support Data Service.</td>
+    <td>With Data Service (beta), you can read or write TiDB Cloud data via an HTTPS request using a custom API endpoint.</td>
   </tr>
   <tr>
     <td>Cloud provider marketplace</td>
-    <td>✅ Improve the user experience from AWS Marketplace and GCP Marketplace.</td>
-    <td>Improve the user journey and experience of users who sign up from AWS Marketplace and GCP Marketplace.</td>
+    <td>✅ Improve the user experience from AWS Marketplace and Google Cloud Marketplace.</td>
+    <td>Improve the user journey and experience of users who sign up from AWS Marketplace and Google Cloud Marketplace.</td>
   </tr>
   <tr>
     <td rowspan="2">Enterprise-grade features</td>
@@ -48,7 +48,7 @@ The TiDB Cloud roadmap brings you what's coming in the near future, so you can s
     <td>Allow a user to join multiple organizations by accepting the invitations.</td>
   </tr>
   <tr>
-    <td>Support hierarchical user roles and permissions.</td>
+    <td>✅ Support hierarchical user roles and permissions.</td>
     <td>Support role-based access control (RBAC) for the TiDB Cloud console. You can manage user permissions in a fine-grained manner, such as by cluster, billing, and member.</td>
   </tr>
   <tr>
@@ -62,14 +62,14 @@ The TiDB Cloud roadmap brings you what's coming in the near future, so you can s
   </tr>
   <tr>
     <td>Optimize Playground.</td>
-    <td>Improve interactivity combined with Chat2Query, and guide users to finish the tutorial.</td>
+    <td>Deliver context-driven tutorials to facilitate a deeper understanding of TiDB and TiDB Cloud for our users.</td>
   </tr>
 </tbody>
 </table>
 
 ## TiDB kernel
 
-For the roadmap of TiDB kernel, refer to [TiDB Roadmap](https://github.com/pingcap/tidb/blob/master/roadmap.md#tidb-kernel).
+For the roadmap of TiDB kernel, refer to [TiDB Roadmap](https://docs.pingcap.com/tidb/dev/tidb-roadmap).
 
 ## Diagnosis and maintenance
 
@@ -151,8 +151,8 @@ For the roadmap of TiDB kernel, refer to [TiDB Roadmap](https://github.com/pingc
   </tr>
   <tr>
     <td>Backup and restore</td>
-    <td>Backup and restore service based on AWS EBS or GCP persistent disk snapshots.</td>
-    <td>Provide backup and restore service on the cloud based on AWS EBS or GCP persistent disk snapshots.</td>
+    <td>Backup and restore service based on AWS EBS or Google Cloud persistent disk snapshots.</td>
+    <td>Provide backup and restore service on the cloud based on AWS EBS or Google Cloud persistent disk snapshots.</td>
   </tr>
   <tr>
     <td rowspan="2">Online data migration</td>
@@ -194,7 +194,7 @@ For the roadmap of TiDB kernel, refer to [TiDB Roadmap](https://github.com/pingc
   </tr>
   <tr>
     <td>Console audit logging</td>
-    <td>Support auditing TiDB Cloud console operations.</td>
+    <td>✅ Support auditing TiDB Cloud console operations.</td>
     <td>Support reliable auditing capabilities for various operations in the TiDB Cloud console.</td>
   </tr>
 </tbody>

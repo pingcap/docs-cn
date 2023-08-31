@@ -1,6 +1,7 @@
 ---
 title: Migration and Import Overview
 summary: Learn an overview of data migration and import scenarios for TiDB Cloud.
+aliases: ['/tidbcloud/export-data-from-tidb-cloud']
 ---
 
 # Migration and Import Overview
@@ -26,9 +27,9 @@ When you migrate data from a MySQL-compatible database, you can perform full dat
 
     If your application uses MySQL shards for data storage, you can migrate these shards into TiDB Cloud as one table. For more information, see [Migrate and Merge MySQL Shards of Large Datasets to TiDB Cloud](/tidb-cloud/migrate-sql-shards.md).
 
-- Migrate from on-premises TiDB
+- Migrate from TiDB Self-Hosted
 
-    You can migrate data from your on-premises (OP) TiDB clusters to TiDB Cloud (AWS) through Dumpling and TiCDC. For more information, see [Migrate from On-Premises TiDB to TiDB Cloud](/tidb-cloud/migrate-from-op-tidb.md).
+    You can migrate data from your TiDB Self-Hosted clusters to TiDB Cloud (AWS) through Dumpling and TiCDC. For more information, see [Migrate from TiDB Self-Hosted to TiDB Cloud](/tidb-cloud/migrate-from-op-tidb.md).
 
 ## Import data from files to TiDB Cloud
 

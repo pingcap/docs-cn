@@ -1,19 +1,30 @@
 ---
-title: Sink to Apache Kafka
+title: Sink to Apache Kafka (Beta)
 Summary: Learn how to create a changefeed to stream data from TiDB Cloud to Apache Kafka.
 ---
 
-# Sink to Apache Kafka
+# Sink to Apache Kafka (Beta)
 
 This document describes how to create a changefeed to stream data from TiDB Cloud to Apache Kafka.
 
 > **Note:**
 >
-> Currently, Kafka sink is in **beta**. To use the Changefeed feature, make sure that your TiDB cluster version is v6.4.0 or later and the TiKV node size is at least 8 vCPU and 16 GiB.
->
-> For [Serverless Tier clusters](/tidb-cloud/select-cluster-tier.md#serverless-tier-beta), the changefeed feature is unavailable.
+> - Currently, Kafka sink is in **beta**. To use the changefeed feature, make sure that your TiDB Dedicated cluster version is v6.4.0 or later.
+> - For [TiDB Serverless clusters](/tidb-cloud/select-cluster-tier.md#tidb-serverless), the changefeed feature is unavailable.
+
+## Restrictions
+
+- For each TiDB Cloud cluster, you can create up to 5 changefeeds.
+- Currently, TiDB Cloud does not support uploading self-signed TLS certificates to connect to Kafka brokers.
+- Because TiDB Cloud uses TiCDC to establish changefeeds, it has the same [restrictions as TiCDC](https://docs.pingcap.com/tidb/stable/ticdc-overview#unsupported-scenarios).
+- If the table to be replicated does not have a primary key or a non-null unique index, the absence of a unique constraint during replication could result in duplicated data being inserted downstream in some retry scenarios.
 
 ## Prerequisites
+
+Before creating a changefeed to stream data to Apache Kafka, you need to complete the following prerequisites:
+
+- Set up your network connection
+- Add permissions for Kafka ACL authorization
 
 ### Network
 
@@ -31,7 +42,7 @@ If your Apache Kafka service is in an AWS VPC that has no internet access, take 
     1. Follow the steps in [Enable DNS resolution for a VPC peering connection](https://docs.aws.amazon.com/vpc/latest/peering/modify-peering-connections.html#vpc-peering-dns).
     2. Enable the **Accepter DNS resolution** option.
 
-If your Apache Kafka service is in a GCP VPC that has no internet access, take the following steps:
+If your Apache Kafka service is in a Google Cloud VPC that has no internet access, take the following steps:
 
 1. [Set up a VPC peering connection](/tidb-cloud/set-up-vpc-peering-connections.md) between the VPC of the Apache Kafka service and your TiDB cluster.
 2. Modify the ingress firewall rules of the VPC where Apache Kafka is located.
@@ -124,16 +135,16 @@ For example, if your Kafka cluster is in Confluent Cloud, you can see [Resources
    - **Replication Factor**: controls how many Kafka servers each Kafka message is replicated to.
    - **Partition Number**: controls how many partitions exist in a topic.
 
-8. Click **Next** to check the configurations you set and go to the next page.
+8. Click **Next**.
 
-## Step 4. Review the configurations
+## Step 4. Configure your changefeed specification
+
+1. In the **Changefeed Specification** area, specify the number of Replication Capacity Units (RCUs) to be used by the changefeed.
+2. In the **Changefeed Name** area, specify a name for the changefeed.
+3. Click **Next** to check the configurations you set and go to the next page.
+
+## Step 5. Review the configurations
 
 On this page, you can review all the changefeed configurations that you set.
 
 If you find any error, you can go back to fix the error. If there is no error, you can click the check box at the bottom, and then click **Create** to create the changefeed.
-
-## Restrictions
-
-- For each TiDB Cloud cluster, you can create up to 10 changefeeds.
-- Currently, TiDB Cloud does not support uploading self-signed TLS certificates to connect to Kafka brokers.
-- Because TiDB Cloud uses TiCDC to establish changefeeds, it has the same [restrictions as TiCDC](https://docs.pingcap.com/tidb/stable/ticdc-overview#restrictions).

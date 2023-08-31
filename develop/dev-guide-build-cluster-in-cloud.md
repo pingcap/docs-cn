@@ -142,8 +142,8 @@ mysql  Ver 15.1 Distrib 5.5.68-MariaDB, for Linux (x86_64) using readline 5.1
 
 > **Note:**
 >
-> - When you connect to a TiDB Serverless cluster, you must [use the TLS connection](https://docs.pingcap.com/tidbcloud/secure-connections-to-serverless-tier-clusters).
-> - If you encounter problems when connecting to a TiDB Serverless cluster, you can read [Secure Connections to TiDB Serverless Clusters](https://docs.pingcap.com/tidbcloud/secure-connections-to-serverless-tier-clusters) for more information.
+> - When you connect to a TiDB Serverless cluster, you must [use the TLS connection](https://docs.pingcap.com/tidbcloud/secure-connections-to-serverless-clusters).
+> - If you encounter problems when connecting to a TiDB Serverless cluster, you can read [Secure Connections to TiDB Serverless Clusters](https://docs.pingcap.com/tidbcloud/secure-connections-to-serverless-clusters) for more information.
 
 </CustomContent>
 
@@ -151,8 +151,8 @@ mysql  Ver 15.1 Distrib 5.5.68-MariaDB, for Linux (x86_64) using readline 5.1
 
 > **Note:**
 >
-> - When you connect to a TiDB Serverless cluster, you must [use the TLS connection](/tidb-cloud/secure-connections-to-serverless-tier-clusters.md).
-> - If you encounter problems when connecting to a TiDB Serverless cluster, you can read [Secure Connections to TiDB Serverless Clusters](/tidb-cloud/secure-connections-to-serverless-tier-clusters.md) for more information.
+> - When you connect to a TiDB Serverless cluster, you must [use the TLS connection](/tidb-cloud/secure-connections-to-serverless-clusters.md).
+> - If you encounter problems when connecting to a TiDB Serverless cluster, you can read [Secure Connections to TiDB Serverless Clusters](/tidb-cloud/secure-connections-to-serverless-clusters.md) for more information.
 
 </CustomContent>
 

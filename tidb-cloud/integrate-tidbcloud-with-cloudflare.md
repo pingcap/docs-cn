@@ -21,7 +21,7 @@ This document shows how to deploy Cloudflare Workers with TiDB Cloud and Prisma 
 
 Before you try the steps in this article, you need to prepare the following things:
 
-- A TiDB Cloud account and a Serverless Tier cluster on TiDB Cloud. For more details, see [TiDB Cloud Quick Start](/tidb-cloud/tidb-cloud-quickstart.md#step-1-create-a-tidb-cluster).
+- A TiDB Cloud account and a TiDB Serverless cluster on TiDB Cloud. For more details, see [TiDB Cloud Quick Start](/tidb-cloud/tidb-cloud-quickstart.md#step-1-create-a-tidb-cluster).
 - A [Cloudflare Workers account](https://dash.cloudflare.com/login).
 - A [Prisma Data Platform account](https://cloud.prisma.io/).
 - A [GitHub account](https://github.com/login).
@@ -106,7 +106,7 @@ With Cloudflare Workers, you cannot directly access your database because there 
 
 1. To get started, sign in to the [Prisma Data Platform](https://cloud.prisma.io/) and click **New Project**.
 2. Fill in the **Connection string** with this pattern `mysql://USER:PASSWORD@HOST:PORT/DATABASE?sslaccept=strict`. You can find the connection information in your [TiDB Cloud console](https://tidbcloud.com/console/clusters).
-3. Leave the **Static IPs** as disabled because TiDB Cloud Serverless Tier is accessible from any IP address.
+3. Leave the **Static IPs** as disabled because TiDB Serverless is accessible from any IP address.
 4. Select a Data Proxy region that is geographically close to your TiDB Cloud cluster location. Then click **Create project**.
 
    ![Configure project settings](/media/tidb-cloud/cloudflare/cloudflare-project.png)

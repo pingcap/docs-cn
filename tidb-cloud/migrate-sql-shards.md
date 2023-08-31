@@ -68,14 +68,14 @@ If there are shards across multiple instances, you can create one first-level di
 
 ### Step 2. Use Dumpling to export data to Amazon S3
 
-For information about how to install Dumpling, see [Dumpling Introduction](/dumpling-overview.md).
+For information about how to install Dumpling, see [Dumpling Introduction](https://docs.pingcap.com/tidb/stable/dumpling-overview).
 
 When you use Dumpling to export data to Amazon S3, note the following:
 
 - Enable binlog for upstream clusters.
 - Choose the correct Amazon S3 directory and region.
-- Choose the appropriate concurrency by configuring the `-t` option to minimize the impact on the upstream cluster, or export directly from the backup database. For more information about how to use this parameter, see [Option list of Dumpling](/dumpling-overview.md#option-list-of-dumpling).
-- Set appropriate values for `--filetype csv` and `--no-schemas`. For more information about how to use these parameters, see [Option list of Dumpling](/dumpling-overview.md#option-list-of-dumpling).
+- Choose the appropriate concurrency by configuring the `-t` option to minimize the impact on the upstream cluster, or export directly from the backup database. For more information about how to use this parameter, see [Option list of Dumpling](https://docs.pingcap.com/tidb/stable/dumpling-overview#option-list-of-dumpling).
+- Set appropriate values for `--filetype csv` and `--no-schemas`. For more information about how to use these parameters, see [Option list of Dumpling](https://docs.pingcap.com/tidb/stable/dumpling-overview#option-list-of-dumpling).
 
 Name the CSV files as follows:
 
@@ -100,7 +100,7 @@ To export data to Amazon S3, do the following:
     [root@localhost ~]# tiup dumpling -u {username} -p {password} -P {port} -h {mysql01-ip} -B store_01,store_02 -r 20000 --filetype csv --no-schemas -o "s3://dumpling-s3/store/sales/instance01/" --s3.region "ap-northeast-1"
     ```
 
-    For more information about the parameters, see [Option list of Dumpling](/dumpling-overview.md#option-list-of-dumpling).
+    For more information about the parameters, see [Option list of Dumpling](https://docs.pingcap.com/tidb/stable/dumpling-overview#option-list-of-dumpling).
 
 3. Export data from MySQL instance2 to the `s3://dumpling-s3/store/sales/instance02/` directory in the Amazon S3 bucket.
 
@@ -108,7 +108,7 @@ To export data to Amazon S3, do the following:
     [root@localhost ~]# tiup dumpling -u {username} -p {password} -P {port} -h {mysql02-ip} -B store_01,store_02 -r 20000 --filetype csv --no-schemas -o "s3://dumpling-s3/store/sales/instance02/" --s3.region "ap-northeast-1"
     ```
 
-For detailed steps, see [Export data to Amazon S3 cloud storage](/dumpling-overview.md#export-data-to-amazon-s3-cloud-storage).
+For detailed steps, see [Export data to Amazon S3 cloud storage](https://docs.pingcap.com/tidb/stable/dumpling-overview#export-data-to-amazon-s3-cloud-storage).
 
 ### Step 3. Create schemas in TiDB Cloud cluster
 
@@ -181,7 +181,7 @@ After configuring the Amazon S3 access, you can perform the data import task in 
 
         > **Tip:**
         >
-        > If you have multiple projects, you can switch to the target project in the left navigation pane of the **Clusters** page.
+        > If you have multiple projects, you can click <MDSvgIcon name="icon-left-projects" /> in the lower-left corner and switch to another project.
 
     2. Click the name of your target cluster to go to its overview page, and then click **Import** in the left navigation pane.
 
@@ -220,7 +220,7 @@ After configuring the Amazon S3 access, you can perform the data import task in 
 
 5. Click **Next**.
 
-6. On the **Preview** page, you can have a preview of the data. If the previewed data is not what you expect, click the **Click here to edit csv configuration** link to update the CSV-specific configurations, including separator, delimiter, header, not-null, null, backslash-escape, and trim-last-separator.
+6. On the **Preview** page, you can have a preview of the data. If the previewed data is not what you expect, click the **Click here to edit csv configuration** link to update the CSV-specific configurations, including separator, delimiter, header, `backslash escape`, and `trim last separator`.
 
     > **Note:**
     >
@@ -238,7 +238,7 @@ To replicate the data changes based on binlog from a specified position in the u
 
 ### Before you begin
 
-The TiDB Cloud console does not provide any feature about incremental data replication yet. You need to deploy TiDB DM to migrate incremental data. For detailed steps, see [Deploy a DM Cluster Using TiUP](https://docs.pingcap.com/tidb/stable/deploy-a-dm-cluster-using-tiup).
+If you want to migrate incremental data and merge MySQL shards to TiDB Cloud, you need to manually deploy TiDB DM, because TiDB Cloud does not support migrating and merging MySQL shards yet. For detailed steps, see [Deploy a DM Cluster Using TiUP](https://docs.pingcap.com/tidb/stable/deploy-a-dm-cluster-using-tiup).
 
 ### Step 1. Add the data source
 
@@ -292,7 +292,7 @@ The TiDB Cloud console does not provide any feature about incremental data repli
     ```shell
     tiup is checking updates for component dmctl ...
 
-    Starting component `dmctl`: /root/.tiup/components/dmctl/v6.0.0/dmctl/dmctl /root/.tiup/components/dmctl/v6.0.0/dmctl/dmctl --master-addr 192.168.11.110:9261 operate-source create dm-source1.yaml
+    Starting component `dmctl`: /root/.tiup/components/dmctl/${tidb_version}/dmctl/dmctl /root/.tiup/components/dmctl/${tidb_version}/dmctl/dmctl --master-addr 192.168.11.110:9261 operate-source create dm-source1.yaml
 
     {
        "result": true,
@@ -320,7 +320,7 @@ The TiDB Cloud console does not provide any feature about incremental data repli
     ```shell
     tiup is checking updates for component dmctl ...
 
-    Starting component `dmctl`: /root/.tiup/components/dmctl/v6.0.0/dmctl/dmctl /root/.tiup/components/dmctl/v6.0.0/dmctl/dmctl --master-addr 192.168.11.110:9261 operate-source create dm-source2.yaml
+    Starting component `dmctl`: /root/.tiup/components/dmctl/${tidb_version}/dmctl/dmctl /root/.tiup/components/dmctl/${tidb_version}/dmctl/dmctl --master-addr 192.168.11.110:9261 operate-source create dm-source2.yaml
 
     {
        "result": true,
@@ -449,7 +449,7 @@ The following is an example output:
 ```shell
 tiup is checking updates for component dmctl ...
 
-Starting component `dmctl`: /root/.tiup/components/dmctl/v6.0.0/dmctl/dmctl /root/.tiup/components/dmctl/v6.0.0/dmctl/dmctl --master-addr 192.168.11.110:9261 check-task dm-task.yaml
+Starting component `dmctl`: /root/.tiup/components/dmctl/${tidb_version}/dmctl/dmctl /root/.tiup/components/dmctl/${tidb_version}/dmctl/dmctl --master-addr 192.168.11.110:9261 check-task dm-task.yaml
 
 {
    "result": true,
@@ -477,7 +477,7 @@ The following is an example output:
 ```shell
 tiup is checking updates for component dmctl ...
 
-Starting component `dmctl`: /root/.tiup/components/dmctl/v6.0.0/dmctl/dmctl /root/.tiup/components/dmctl/v6.0.0/dmctl/dmctl --master-addr 192.168.11.110:9261 start-task dm-task.yaml
+Starting component `dmctl`: /root/.tiup/components/dmctl/${tidb_version}/dmctl/dmctl /root/.tiup/components/dmctl/${tidb_version}/dmctl/dmctl --master-addr 192.168.11.110:9261 start-task dm-task.yaml
 
 {
    "result": true,

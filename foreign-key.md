@@ -311,7 +311,7 @@ Create Table | CREATE TABLE `child` (
 
 </CustomContent>
 
-- [Dumpling](/dumpling-overview.md) is compatible with foreign keys.
+- [Dumpling](https://docs.pingcap.com/tidb/stable/dumpling-overview) is compatible with foreign keys.
 
 <CustomContent platform="tidb">
 

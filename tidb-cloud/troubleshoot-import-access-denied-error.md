@@ -11,7 +11,104 @@ After you click **Next** on the **Data Import** page of the TiDB Cloud console a
 
 To troubleshoot the access denied errors, perform the following checks in the AWS Management Console.
 
-## Check the policy of the IAM role
+## Cannot assume the provided role 
+
+This section describes how to troubleshoot the issue that TiDB Cloud cannot assume the provided role to access the specified bucket. 
+
+### Check the trust entity
+
+1. In the AWS Management Console, go to **IAM** > **Access Management** > **Roles**. 
+2. In the list of roles, find and click the role you have created for the target TiDB cluster. The role summary page is displayed. 
+3. On the role summary page, click the **Trust relationships** tab, and you will see the trusted entities.
+
+The following is a sample trust entity:
+
+```
+{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Effect": "Allow",
+            "Principal": {
+                "AWS": "arn:aws:iam::380838443567:root"
+            },
+            "Action": "sts:AssumeRole",
+            "Condition": {
+                "StringEquals": {
+                    "sts:ExternalId": "696e6672612d617069a79c22fa5740944bf8bb32e4a0c4e3fe"
+                }
+            }
+        }
+    ]
+}
+```
+
+In the sample trust entity:
+
+- `380838443567` is the TiDB Cloud Account ID. Make sure that this field in your trust entity matches your TiDB Cloud Account ID.
+- `696e6672612d617069a79c22fa5740944bf8bb32e4a0c4e3fe` is the TiDB Cloud External ID. Make sure that this field in your trusted entity matches your TiDB Cloud External ID.
+
+### Check whether the IAM role exists
+
+If the IAM role does not exist, create a role following instructions in [Configure Amazon S3 access](/tidb-cloud/config-s3-and-gcs-access.md#configure-amazon-s3-access).
+
+### Check whether the external ID is set correctly
+
+Cannot assume the provided role `{role_arn}`. Check the trust relationships settings on the role. For example, check whether the trust entity has been set to the `TiDB Cloud account ID` and whether the `TiDB Cloud External ID` is correctly set in the trust condition. See [Check the trust entity](#check-the-trust-entity).
+
+## Access denied
+
+This section describes how to troubleshoot access issues.
+
+### Check the policy of the IAM user
+
+When you use the AWS access key of an IAM user to access the Amazon S3 bucket, you might encounter the following error:
+
+- "Access denied to the source '{bucket_uri}' using the access key ID '{access_key_id}' and the secret access key '{secret_access_key}'"
+
+It indicates that TiDB Cloud failed to access the Amazon S3 bucket due to insufficient permissions. You need the following permissions to access the Amazon S3 bucket:
+
+- `s3:GetObject`
+- `s3:ListBucket`
+- `s3:GetBucketLocation`
+
+To check the policy of the IAM user, perform the following steps:
+
+1. In the AWS Management Console, go to **IAM** > **Access Management** > **Users**.
+2. In the list of users, find and click the user you have used for importing data to TiDB Cloud. The user summary page is displayed.
+3. In the **Permission policies** area of the user summary page, a list of policies is displayed. Take the following steps for each policy:
+    1. Click the policy to enter the policy summary page.
+    2. On the policy summary page, click the **{}JSON** tab to check the permission policy. Make sure that the `Resource` fields in the policy are correctly configured.
+
+The following is a sample policy:
+
+```
+{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Sid": "VisualEditor0",
+            "Effect": "Allow",
+            "Action": [
+                "s3:GetObject"
+            ],
+            "Resource": "arn:aws:s3:::tidb-cloud-source-data/mydata/*"
+        },
+        {
+            "Sid": "VisualEditor1",
+            "Effect": "Allow",
+            "Action": [
+                "s3:ListBucket",
+                "s3:GetBucketLocation"
+            ],
+            "Resource": "arn:aws:s3:::tidb-cloud-source-data"
+        },
+}
+```
+
+For more information about how to grant a user permissions and test them, see [Controlling access to a bucket with user policies](https://docs.aws.amazon.com/AmazonS3/latest/userguide/walkthrough1.html).
+
+### Check the policy of the IAM role
 
 1. In the AWS Management Console, go to **IAM** > **Access Management** > **Roles**. 
 2. In the list of roles, find and click the role you have created for the target TiDB cluster. The role summary page is displayed.
@@ -82,7 +179,7 @@ If your policy is not correctly configured as the preceding example shows, corre
 >
 > Note that this might affect your other applications.
 
-## Check the bucket policy
+### Check the bucket policy
 
 1. In the AWS Management Console, open the Amazon S3 console, and then go to the **Buckets** page. A list of buckets is displayed.
 2. In the list, find and click the target bucket. The bucket information page is displayed.
@@ -90,40 +187,7 @@ If your policy is not correctly configured as the preceding example shows, corre
 
 If you see a denied policy, check whether the policy relates to the current data import. If yes, delete it from the area and retry the data import.
 
-## Check the trust entity
-
-1. In the AWS Management Console, go to **IAM** > **Access Management** > **Roles**. 
-2. In the list of roles, find and click the role you have created for the target TiDB cluster. The role summary page is displayed. 
-3. On the role summary page, click the **Trust relationships** tab, and you will see the trusted entities.
-
-The following is a sample trust entity:
-
-```
-{
-    "Version": "2012-10-17",
-    "Statement": [
-        {
-            "Effect": "Allow",
-            "Principal": {
-                "AWS": "arn:aws:iam::380838443567:root"
-            },
-            "Action": "sts:AssumeRole",
-            "Condition": {
-                "StringEquals": {
-                    "sts:ExternalId": "696e6672612d617069a79c22fa5740944bf8bb32e4a0c4e3fe"
-                }
-            }
-        }
-    ]
-}
-```
-
-In the sample trust entity:
-
-- `380838443567` is the TiDB Cloud Account ID. Make sure that this field in your trust entity matches your TiDB Cloud Account ID.
-- `696e6672612d617069a79c22fa5740944bf8bb32e4a0c4e3fe` is the TiDB Cloud External ID. Make sure that this field in your trusted entity matches your TiDB Cloud External ID.
-
-## Check the Object Ownership
+### Check the Object Ownership
 
 1. In the AWS Management Console, open the Amazon S3 console, and then go to the **Buckets** page. A list of buckets is displayed.
 2. In the list of buckets, find and click the target bucket. The bucket information page is displayed.
@@ -133,7 +197,7 @@ In the sample trust entity:
 
 To handle the error, click **Edit** in the upper-right corner of the Object Ownership area and change the ownership to "Bucket owner enforced". Note that this might affect your other applications that are using this bucket.
 
-## Check your bucket encryption type
+### Check your bucket encryption type
 
 There are more than one way to encrypt an S3 bucket. When you try to access the objects in a bucket, the role you have created must have the permission to access the encryption key for data decryption. Otherwise, the `AccessDenied` error occurs.
 
@@ -167,6 +231,6 @@ To solve the `AccessDenied` error in this situation, click the key ARN or manual
 >
 > If the objects in your bucket have been copied from an existing encrypted bucket, you also need to include the key of the source bucket in the AWS KMS key ARN. This is because the objects in the your bucket use the same encryption method as the source object encryption. For more information, see the AWS document [Using default encryption with replication](https://docs.aws.amazon.com/AmazonS3/latest/userguide/bucket-encryption.html).
 
-## Check the AWS article for instruction
+### Check the AWS article for instruction
 
 If you have performed all the checks above and still get the `AccessDenied` error, you can check the AWS article [How do I troubleshoot 403 Access Denied errors from Amazon S3](https://aws.amazon.com/premiumsupport/knowledge-center/s3-troubleshoot-403/) for more instruction.

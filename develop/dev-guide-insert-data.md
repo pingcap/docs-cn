@@ -234,7 +234,7 @@ If you need to quickly import a large amount of data into a TiDB cluster, it is 
 
 The following are the recommended tools for bulk-insert:
 
-- Data export: [Dumpling](/dumpling-overview.md). You can export MySQL or TiDB data to local or Amazon S3.
+- Data export: [Dumpling](https://docs.pingcap.com/tidb/stable/dumpling-overview). You can export MySQL or TiDB data to local or Amazon S3.
 
 <CustomContent platform="tidb">
 
@@ -246,7 +246,7 @@ The following are the recommended tools for bulk-insert:
 
 <CustomContent platform="tidb-cloud">
 
-- Data import: [Data Import Task](/tidb-cloud/import-sample-data.md) page in the TiDB Cloud console. You can import **Dumpling** exported data, a **CSV** file, or [Migrate Data from Amazon Aurora to TiDB](/tidb-cloud/migrate-from-aurora-bulk-import.md). It also supports reading data from a local disk, Amazon S3 cloud disk, or GCS cloud disk.
+- Data import: [Create Import](/tidb-cloud/import-sample-data.md) page in the [TiDB Cloud console](https://tidbcloud.com/). You can import **Dumpling** exported data, import a local **CSV** file, or [Import CSV Files from Amazon S3 or GCS into TiDB Cloud](/tidb-cloud/import-csv-files.md). It also supports reading data from a local disk, Amazon S3 cloud disk, or GCS cloud disk.
 - Data replication: [TiDB Data Migration](https://docs.pingcap.com/tidb/stable/dm-overview). You can replicate MySQL, MariaDB, and Amazon Aurora databases to TiDB. It also supports merging and migrating the sharded instances and tables from the source databases.
 - Data backup and restore: [Backup](/tidb-cloud/backup-and-restore.md) page in the TiDB Cloud console. Compared to **Dumpling**, backup and restore is more suitable for **_big data_** scenario.
 

@@ -7,12 +7,12 @@ summary: Learn the use of TiDB Cloud node in n8n.
 
 [n8n](https://n8n.io/) is an extendable workflow automation tool. With a [fair-code](https://faircode.io/) distribution model, n8n will always have visible source code, be available to self-host, and allow you to add your custom functions, logic, and apps.
 
-This document introduces how to build an auto-workflow: create a TiDB Cloud Serverless Tier cluster, gather Hacker News RSS, store it to TiDB and send a briefing email.
+This document introduces how to build an auto-workflow: create a TiDB Serverless cluster, gather Hacker News RSS, store it to TiDB and send a briefing email.
 
 ## Prerequisites: Get TiDB Cloud API key
 
 1. Access your TiDB Cloud dashboard.
-2. Click <MDSvgIcon name="icon-top-organization" /> **Organization** >  **Organization Settings** in the upper-right corner.
+2. Click <MDSvgIcon name="icon-top-organization" />, and then click **Organization Settings** in the lower-left corner.
 3. Click the **API Keys** tab.
 4. Click the **Create API Key** button to create a new API key.
 5. Save the created API key for later use in n8n.
@@ -76,9 +76,9 @@ The final workflow should look like the following image.
 
 ![img](/media/tidb-cloud/integration-n8n-workflow-rss.jpg)
 
-### (Optional) Create a TiDB Cloud Serverless Tier cluster
+### (Optional) Create a TiDB Serverless cluster
 
-If you don't have a TiDB Cloud Serverless Tier cluster, you can use this node to create one. Otherwise, feel free to skip this operation.
+If you don't have a TiDB Serverless cluster, you can use this node to create one. Otherwise, feel free to skip this operation.
 
 1. Navigate to **Workflows** panel, and click **Add workflow**.
 2. In new workflow workspace, click **+** in the top right corner and choose **All** field.
@@ -203,7 +203,7 @@ This trigger will execute your workflow every morning at 8 AM.
 
 After building up the workflow, you can click **Execute Workflow** to test run it.
 
-If the workflow runs as expected, you'll get Hacker News briefing emails. These news contents will be logged to your TiDB Cloud Serverless Tier cluster, so you don't have to worry about losing them.
+If the workflow runs as expected, you'll get Hacker News briefing emails. These news contents will be logged to your TiDB Serverless cluster, so you don't have to worry about losing them.
 
 Now you can activate this workflow in the **Workflows** panel. This workflow will help you get the front-page articles on Hacker News every day.
 
@@ -213,7 +213,7 @@ Now you can activate this workflow in the **Workflows** panel. This workflow wil
 
 TiDB Cloud node acts as a [regular node](https://docs.n8n.io/workflows/nodes/#regular-nodes) and only supports the following five operations:
 
-- **Create Serverless Cluster**: creates a TiDB Cloud Serverless Tier cluster.
+- **Create Serverless Cluster**: creates a TiDB Serverless cluster.
 - **Execute SQL**: executes an SQL statement in TiDB.
 - **Delete**: deletes rows in TiDB.
 - **Insert**: inserts rows in TiDB.

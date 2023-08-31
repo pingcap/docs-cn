@@ -1,11 +1,11 @@
 ---
-title: Integrate TiDB Cloud with Datadog
+title: Integrate TiDB Cloud with Datadog (Beta)
 summary: Learn how to monitor your TiDB cluster with the Datadog integration.
 ---
 
-# Integrate TiDB Cloud with Datadog
+# Integrate TiDB Cloud with Datadog (Beta)
 
-You can configure TiDB Cloud to send metric data about your TiDB clusters to [Datadog](https://www.datadoghq.com/). After that, you can view these metrics in your Datadog dashboards directly.
+TiDB Cloud supports Datadog integration (beta). You can configure TiDB Cloud to send metric data about your TiDB clusters to [Datadog](https://www.datadoghq.com/). After that, you can view these metrics in your Datadog dashboards directly.
 
 ## Prerequisites
 
@@ -17,19 +17,17 @@ You can configure TiDB Cloud to send metric data about your TiDB clusters to [Da
 
 ## Limitation
 
-You cannot use the Datadog integration in [Serverless Tier clusters](/tidb-cloud/select-cluster-tier.md#serverless-tier-beta).
+- You cannot use the Datadog integration in [TiDB Serverless](/tidb-cloud/select-cluster-tier.md#tidb-serverless) clusters.
+
+- Datadog integrations are not available when the cluster status is **CREATING**, **RESTORING**, **PAUSED**, or **RESUMING**.
 
 ## Steps
 
 ### Step 1. Integrate with your Datadog API Key
 
 1. Log in to the [TiDB Cloud console](https://tidbcloud.com).
-2. In the left navigation pane of the [**Clusters**](https://tidbcloud.com/console/clusters) page, do one of the following:
-
-    - If you have multiple projects, switch to the target project, and then click **Admin** > **Integrations**.
-    - If you only have one project, click **Admin** > **Integrations**.
-
-3. Click **Integration to Datadog**.
+2. Click <MDSvgIcon name="icon-left-projects" /> in the lower-left corner, switch to the target project if you have multiple projects, and then click **Project Settings**.
+3. On the **Project Settings** page of your project, click **Integrations** in the left navigation pane, and then click **Integration to Datadog (BETA)**.
 4. Enter your API key of Datadog and choose the site of Datadog.
 5. Click **Test Integration**.
 

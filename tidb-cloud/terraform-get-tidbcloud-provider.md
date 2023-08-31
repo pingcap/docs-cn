@@ -43,43 +43,43 @@ For detailed steps, see [TiDB Cloud API documentation](https://docs.pingcap.com/
 
 1. Create a `main.tf` file:
 
-    ```
-    terraform {
-      required_providers {
-        tidbcloud = {
-          source = "tidbcloud/tidbcloud"
-          version = "~> 0.1.0"
-        }
-      }
-      required_version = ">= 1.0.0"
-    }
-    ```
+   ```
+   terraform {
+     required_providers {
+       tidbcloud = {
+         source = "tidbcloud/tidbcloud"
+         version = "~> 0.1.0"
+       }
+     }
+     required_version = ">= 1.0.0"
+   }
+   ```
 
-    - The `source` attribute specifies the target Terraform provider to be downloaded from [Terraform Registry](https://registry.terraform.io/).
-    - The `version` attribute is optional, which specifies the version of the Terraform provider. If it is not specified, the latest provider version is used by default.
-    - The `required_version` is optional, which specifies the version of Terraform. If it is not specified, the latest Terraform version is used by default.
+   - The `source` attribute specifies the target Terraform provider to be downloaded from [Terraform Registry](https://registry.terraform.io/).
+   - The `version` attribute is optional, which specifies the version of the Terraform provider. If it is not specified, the latest provider version is used by default.
+   - The `required_version` is optional, which specifies the version of Terraform. If it is not specified, the latest Terraform version is used by default.
 
 2. Run the `terraform init` command to download TiDB Cloud Terraform Provider from Terraform Registry.
 
-    ```
-    $ terraform init
+   ```
+   $ terraform init
 
-    Initializing the backend...
+   Initializing the backend...
 
-    Initializing provider plugins...
-    - Reusing previous version of tidbcloud/tidbcloud from the dependency lock file
-    - Using previously-installed tidbcloud/tidbcloud v0.1.0
+   Initializing provider plugins...
+   - Reusing previous version of tidbcloud/tidbcloud from the dependency lock file
+   - Using previously-installed tidbcloud/tidbcloud v0.1.0
 
-    Terraform has been successfully initialized!
+   Terraform has been successfully initialized!
 
-    You may now begin working with Terraform. Try running "terraform plan" to see
-    any changes that are required for your infrastructure. All Terraform commands
-    should now work.
+   You may now begin working with Terraform. Try running "terraform plan" to see
+   any changes that are required for your infrastructure. All Terraform commands
+   should now work.
 
-    If you ever set or change modules or backend configuration for Terraform,
-    rerun this command to reinitialize your working directory. If you forget, other
-    commands will detect it and remind you to do so if necessary.
-    ```
+   If you ever set or change modules or backend configuration for Terraform,
+   rerun this command to reinitialize your working directory. If you forget, other
+   commands will detect it and remind you to do so if necessary.
+   ```
 
 ## Step 4. Configure TiDB Cloud Terraform Provider with the API key
 
@@ -90,15 +90,13 @@ terraform {
   required_providers {
     tidbcloud = {
       source = "tidbcloud/tidbcloud"
-      version = "~> 0.1.0"
     }
   }
-  required_version = ">= 1.0.0"
 }
 
 provider "tidbcloud" {
-  public_key = "fake_public_key"
-  private_key = "fake_private_key"
+  public_key = "your_public_key"
+  private_key = "your_private_key"
 }
 ```
 
