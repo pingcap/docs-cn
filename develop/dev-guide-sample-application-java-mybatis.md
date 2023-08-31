@@ -111,9 +111,9 @@ cd tidb-java-mybatis-quickstart
 5. 复制并粘贴对应的连接字符串至 `env.sh` 中。需更改部分示例结果如下：
 
     ```shell
-    export TIDB_HOST='{host}'
+    export TIDB_HOST='{host}'  # e.g. tidb.xxxx.clusters.tidb-cloud.com
     export TIDB_PORT='4000'
-    export TIDB_USER='{user}'
+    export TIDB_USER='{user}'  # e.g. root
     export TIDB_PASSWORD='{password}'
     export TIDB_DB_NAME='test'
     export USE_SSL='false'
