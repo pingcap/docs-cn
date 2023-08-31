@@ -1,6 +1,7 @@
 ---
 title: 使用 Spring Boot 连接到 TiDB
 summary: 了解如何使用 Spring Boot 连接到 TiDB。本文提供了使用 Spring Boot 与 TiDB 交互的 Java 示例代码片段。
+aliases: ['/zh/tidb/v7.2/dev-guide-sample-application-spring-boot']
 ---
 
 # 使用 Spring Boot 连接到 TiDB
