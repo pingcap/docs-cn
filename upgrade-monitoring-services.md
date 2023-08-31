@@ -111,4 +111,4 @@ TiDB 安装包中直接使用了 AlertManager 官方组件包，因此升级 Ale
 tiup cluster patch <cluster-name> alertmanager-v{new-version}-linux-amd64.tar.gz -R alertmanager
 ```
 
-升级完成后，可以打开 AlertManager 主页（地址通常是 `http://<Alertmanager-server-host-name>:9093`），点击顶部导航菜单中的 **Status**，然后查看 Alertmanager 的版本信息，确认升级成功。
+升级完成后，可以打开 Alertmanager 主页（地址通常是 `http://<Alertmanager-server-host-name>:9093`），点击顶部导航菜单中的 **Status**，然后查看 Alertmanager 的版本信息，确认升级成功。
