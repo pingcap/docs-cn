@@ -1,12 +1,6 @@
 ---
-<<<<<<< HEAD
-title: 使用 Spring Boot 构建 TiDB 应用程序
-summary: 给出一个 Spring Boot 构建 TiDB 应用程序示例。
-=======
 title: 使用 Spring Boot 连接到 TiDB
 summary: 了解如何使用 Spring Boot 连接到 TiDB。本文提供了使用 Spring Boot 与 TiDB 交互的 Java 示例代码片段。
-aliases: ['/zh/tidb/dev/dev-guide-sample-application-spring-boot', '/zh/tidb/dev/sample-application-spring-boot']
->>>>>>> 5d71f5a04b (feat: java example simplify (#14843))
 ---
 
 # 使用 Spring Boot 连接到 TiDB
