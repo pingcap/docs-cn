@@ -5,7 +5,7 @@ summary: 了解如何使用 SQLAlchemy 连接到 TiDB。本文提供了使用 SQ
 
 # 使用 PyMySQL 连接到 TiDB
 
-TiDB 是一个兼容 MySQL 的数据库。[SQLAlchemy](https://www.sqlalchemy.org/) 为当前流行的开源 Python ORM(Object Relational Mapper)。
+TiDB 是一个兼容 MySQL 的数据库。[SQLAlchemy](https://www.sqlalchemy.org/) 为当前流行的开源 Python ORM (Object Relational Mapper) 之一。
 
 本文档将展示如何使用 TiDB 和 SQLAlchemy 来完成以下任务：
 
@@ -35,12 +35,12 @@ TiDB 是一个兼容 MySQL 的数据库。[SQLAlchemy](https://www.sqlalchemy.or
 
 ```bash
 git clone https://github.com/tidb-samples/tidb-python-sqlalchemy-quickstart.git
-cd tidb-python-sqlalchemy-quickstart;
+cd tidb-python-sqlalchemy-quickstart
 ```
 
 ### 第 2 步：安装依赖
 
-运行以下命令，安装示例代码所需要的依赖（包括 `SQLAlchemy` 和 `PyMySQL`）：
+运行以下命令，安装示例代码所需要的依赖（包括 SQLAlchemy 和 PyMySQL）：
 
 ```bash
 pip install -r requirements.txt
@@ -48,9 +48,9 @@ pip install -r requirements.txt
 
 #### 为什么需要安装 PyMySQL？
 
-SQLAlchemy 是一个 ORM 库，支持多种数据库。它是对数据库的高层抽象，可以帮助我们以更面向对象的方式编写 SQL 语句。但它并不提供数据库驱动，我们需要安装数据库驱动来连接数据库。在本示例项目中，我们使用 PyMySQL 作为数据库驱动，它是一个纯 Python 实现的 MySQL 客户端库，兼容 TiDB，可以在所有平台上轻松安装。
+SQLAlchemy 是一个 ORM 库，支持多种数据库。它是对数据库的高层抽象，可以帮助开发者以更面向对象的方式编写 SQL 语句。但 SQLAlchemy 并不提供数据库驱动，因此需要单独安装用于连接 TiDB 的驱动。本示例项目使用 PyMySQL 作为数据库驱动。PyMySQL 是一个纯 Python 实现的 MySQL 客户端库，兼容 TiDB，可以在所有平台上轻松安装。
 
-你也可以使用其他数据库驱动，例如 [mysqlclient](https://github.com/PyMySQL/mysqlclient) 以及 [mysql-connector-python](https://dev.mysql.com/doc/connector-python/en/)，但是它们不是纯 Python 库，需要安装对应的 C/C++ 编译器和 MySQL 客户端库来编译它们。更多信息，参考 [SQLAlchemy 官方文档](https://docs.sqlalchemy.org/en/20/core/engines.html#mysql)。
+你也可以使用其他数据库驱动，例如 [mysqlclient](https://github.com/PyMySQL/mysqlclient) 以及 [mysql-connector-python](https://dev.mysql.com/doc/connector-python/en/)，但是它们不是纯 Python 库，需要安装对应的 C/C++ 编译器和 MySQL 客户端库来编译。更多信息，参考 [SQLAlchemy 官方文档](https://docs.sqlalchemy.org/en/20/core/engines.html#mysql)。
 
 ### 第 3 步：配置连接信息
 
@@ -272,7 +272,7 @@ with Session() as session:
 
 ## 下一步
 
-- 关于 `SQLAlchemy` 的更多使用方法，可以参考 [SQLAlchemy 官方文档](https://www.sqlalchemy.org/)。
+- 关于 SQLAlchemy 的更多使用方法，可以参考 [SQLAlchemy 官方文档](https://www.sqlalchemy.org/)。
 - 你可以继续阅读开发者文档，以获取更多关于 TiDB 应用开发的最佳实践。例如：[插入数据](/develop/dev-guide-insert-data.md)、[更新数据](/develop/dev-guide-update-data.md)、[删除数据](/develop/dev-guide-delete-data.md)、[单表读取](/develop/dev-guide-get-data-from-single-table.md)、[事务](/develop/dev-guide-transaction-overview.md)、[SQL 性能优化](/develop/dev-guide-optimize-sql-overview.md)等。
 - 如果你更倾向于参与课程进行学习，我们也提供专业的 [TiDB 开发者课程](https://cn.pingcap.com/courses-catalog/back-end-developer/?utm_source=docs-cn-dev-guide)支持，并在考试后提供相应的[资格认证](https://learn.pingcap.com/learner/certification-center)。
 
