@@ -240,3 +240,51 @@ tiup uninstall tikv --all
 ```shell
 tiup uninstall --all
 ```
+
+### 链接组件
+
+TiUP v1.13.0 添加了实验性的 `link` 和 `unlink` 命令，用于将组件的二进制符号链接到可执行文件目录（$TIUP_HOME/bin/）和删除链接。这个功能可以让用户不必在每次都经过 tiup 来调用组件，同时保留了多版本切换的能力。这种方式缺少了自动检查更新和设置某些环境变量的过程，一些组件例如 ctl 可能无法使用，请只在必要的场景来使用它。
+
+示例一： 安装并链接 cluster 组件的最新版本
+
+{{< copyable "shell-regular" >}}
+
+```shell
+tiup install cluster
+tiup link cluster
+```
+
+示例二： 切换 cluster 组件到 v1.13.0 版本
+
+{{< copyable "shell-regular" >}}
+
+```shell
+tiup link cluster：v1.13.0
+```
+
+`tiup link cluster` 命令会输出如下的内容
+
+```shell
+package cluster provides these executables: tiup-cluster
+```
+
+代表 cluster 组件的二进制文件名为 tiup-cluster,link 命令完成后可以直接在命令行敲击 tiup-cluster 来使用 cluster 组件。
+
+示例三： 取消 cluster 组件的链接
+
+{{< copyable "shell-regular" >}}
+
+```shell
+tiup unlink cluster
+```
+
+示例四： 对 tiup 自身进行版本管理
+
+在 v1.13.0 之前的版本，tiup 自身被安装到 ~/.tiup/bin/ 下，不能多版本共存。自 v1.13.0 开始，可以将它和所有其他组件一样进行安装、链接。
+
+{{< copyable "shell-regular" >}}
+
+```shell
+tiup update --self # update tiup itself to a version that supports link
+tiup link tiup：v1.13.0
+```
