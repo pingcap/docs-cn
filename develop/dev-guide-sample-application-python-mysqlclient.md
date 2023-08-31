@@ -85,9 +85,9 @@ pip install -r requirements.txt
 6. 复制并粘贴对应连接字符串至 `.env` 中。示例结果如下：
 
     ```dotenv
-    TIDB_HOST='{gateway-region}.aws.tidbcloud.com'
+    TIDB_HOST='{host}'  # e.g. gateway01.ap-northeast-1.prod.aws.tidbcloud.com
     TIDB_PORT='4000'
-    TIDB_USER='{prefix}.root'
+    TIDB_USER='{user}'  # e.g. xxxxxx.root
     TIDB_PASSWORD='{password}'
     TIDB_DB_NAME='test'
     CA_PATH=''
@@ -120,9 +120,9 @@ pip install -r requirements.txt
 5. 复制并粘贴对应的连接字符串至 `.env` 中。示例结果如下：
 
     ```dotenv
-    TIDB_HOST='{host}'
+    TIDB_HOST='{host}'  # e.g. tidb.xxxx.clusters.tidb-cloud.com
     TIDB_PORT='4000'
-    TIDB_USER='{username}'
+    TIDB_USER='{user}'  # e.g. root
     TIDB_PASSWORD='{password}'
     TIDB_DB_NAME='test'
     CA_PATH='{your-downloaded-ca-path}'
