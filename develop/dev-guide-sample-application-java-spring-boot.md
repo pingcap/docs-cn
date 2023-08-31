@@ -77,9 +77,9 @@ cd tidb-java-springboot-jpa-quickstart
 6. 复制并粘贴对应连接字符串至 `env.sh` 中。需更改部分示例结果如下：
 
     ```shell
-    export TIDB_HOST='{gateway-region}.aws.tidbcloud.com'
+    export TIDB_HOST='{host}'
     export TIDB_PORT='4000'
-    export TIDB_USER='{prefix}.root'
+    export TIDB_USER='{user}'
     export TIDB_PASSWORD='{password}'
     export TIDB_DB_NAME='test'
     export USE_SSL='true'
@@ -114,7 +114,7 @@ cd tidb-java-springboot-jpa-quickstart
     ```shell
     export TIDB_HOST='{host}'
     export TIDB_PORT='4000'
-    export TIDB_USER='{username}'
+    export TIDB_USER='{user}'
     export TIDB_PASSWORD='{password}'
     export TIDB_DB_NAME='test'
     export USE_SSL='false'
