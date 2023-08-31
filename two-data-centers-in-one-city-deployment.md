@@ -124,7 +124,7 @@ cat rule.json
       },
       {
         "group_id": "pd",
-        "id": "az-west",
+        "id": "az-west-1",
         "start_key": "",
         "end_key": "",
         "role": "follower",
@@ -146,7 +146,7 @@ cat rule.json
       },
       {
         "group_id": "pd",
-        "id": "az-west",
+        "id": "az-west-2",
         "start_key": "",
         "end_key": "",
         "role": "learner",
