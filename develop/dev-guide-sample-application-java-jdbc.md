@@ -261,6 +261,8 @@ public void deletePlayer(String id) throws SQLException {
 
 更多信息参考[删除数据](/develop/dev-guide-delete-data.md)。
 
+## 注意事项
+
 ### 使用驱动程序还是 ORM 框架？
 
 Java 驱动程序提供对数据库的底层访问，但要求开发者：
