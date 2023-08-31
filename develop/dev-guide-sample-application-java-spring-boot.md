@@ -4,11 +4,9 @@ summary: 了解如何使用 Spring Boot 连接到 TiDB。本文提供了使用 S
 aliases: ['/zh/tidb/dev/dev-guide-sample-application-spring-boot', '/zh/tidb/dev/sample-application-spring-boot']
 ---
 
-<!-- markdownlint-disable MD029 -->
-
 # 使用 Spring Boot 连接到 TiDB
 
-TiDB 是一个兼容 MySQL 的数据库。[Spring](https://spring.io/) 是当前流行的开源 Java 容器框架，我们选择使用 [Spring Boot](https://spring.io/projects/spring-boot) 作为使用 Spring 的方式。
+TiDB 是一个兼容 MySQL 的数据库。[Spring](https://spring.io/) 是当前比较流行的开源 Java 容器框架，本文选择 [Spring Boot](https://spring.io/projects/spring-boot) 作为使用 Spring 的方式。
 
 本文档将展示如何使用 TiDB 和 [Spring Data JPA](https://spring.io/projects/spring-data-jpa) 及 [Hibernate](https://hibernate.org/orm/) 作为 JPA 提供者来完成以下任务：
 
@@ -22,7 +20,7 @@ TiDB 是一个兼容 MySQL 的数据库。[Spring](https://spring.io/) 是当前
 
 ## 前置需求
 
-- 推荐 **Java Development Kit** (JDK) **17** 及以上版本，你可以根据公司及个人需求，自行选择 [OpenJDK](https://openjdk.org/) 或 [Oracle JDK](https://www.oracle.com/hk/java/technologies/downloads/)。
+- 推荐 **Java Development Kit** (JDK) **17** 及以上版本。你可以根据公司及个人需求，自行选择 [OpenJDK](https://openjdk.org/) 或 [Oracle JDK](https://www.oracle.com/hk/java/technologies/downloads/)。
 - [Maven](https://maven.apache.org/install.html) **3.8** 及以上版本。
 - [Git](https://git-scm.com/downloads)。
 - TiDB 集群。如果你还没有 TiDB 集群，可以按照以下方式创建：
@@ -54,11 +52,11 @@ cd tidb-java-springboot-jpa-quickstart
 
 2. 点击右上角的 **Connect** 按钮，将会弹出连接对话框。
 
-3. 确认窗口中的配置和你的运行环境一致。
+3. 确认对话框中的配置和你的运行环境一致。
 
-    - **Endpoint Type** 为 `Public`
-    - **Connect With** 选择 `General`
-    - **Operating System** 为你的运行环境
+    - **Endpoint Type** 为 `Public`。
+    - **Connect With** 选择 `General`。
+    - **Operating System** 为你的运行环境。
 
     > **Tip:**
     >
@@ -76,7 +74,7 @@ cd tidb-java-springboot-jpa-quickstart
     cp env.sh.example env.sh
     ```
 
-6. 复制并粘贴对应连接字符串至 `env.sh` 中。需更改部分示例结果如下。
+6. 复制并粘贴对应连接字符串至 `env.sh` 中。需更改部分示例结果如下：
 
     ```shell
     export TIDB_HOST='{gateway-region}.aws.tidbcloud.com'
@@ -91,19 +89,19 @@ cd tidb-java-springboot-jpa-quickstart
 
     TiDB Serverless 要求使用 TLS (SSL) connection，因此 `USE_SSL` 的值应为 `true`。
 
-7. 保存文件。
+7. 保存 `env.sh` 文件。
 
 </div>
 
 <div label="TiDB Dedicated">
 
-1. 在 TiDB Cloud 的 [**Clusters**](https://tidbcloud.com/console/clusters) 页面，选择你的 TiDB Dedicated 集群，进入 **Overview** 页面。
+1. 在 TiDB Cloud 的 [**Clusters**](https://tidbcloud.com/console/clusters) 页面中，选择你的 TiDB Dedicated 集群，进入集群的 **Overview** 页面。
 
-2. 点击右上角的 **Connect** 按钮，会显示连接对话框。
+2. 点击右上角的 **Connect** 按钮，将会出现连接对话框。
 
-3. 点击 **Allow Access from Anywhere**。
+3. 在对话框中点击 **Allow Access from Anywhere**。
 
-    更多配置细节，可参考 [TiDB Dedicated 标准连接教程](https://docs.pingcap.com/tidbcloud/connect-via-standard-connection)。
+    更多配置细节，可参考 [TiDB Dedicated 标准连接教程（英文）](https://docs.pingcap.com/tidbcloud/connect-via-standard-connection)。
 
 4. 运行以下命令，将 `env.sh.example` 复制并重命名为 `env.sh`：
 
@@ -111,12 +109,12 @@ cd tidb-java-springboot-jpa-quickstart
     cp env.sh.example env.sh
     ```
 
-5. 复制并粘贴对应的连接字符串至 `env.sh` 中。需更改部分示例结果如下:
+5. 复制并粘贴对应的连接字符串至 `env.sh` 中。需更改部分示例结果如下：
 
     ```shell
-    export TIDB_HOST='{host}.clusters.tidb-cloud.com'
+    export TIDB_HOST='{host}'
     export TIDB_PORT='4000'
-    export TIDB_USER='{prefix}.root'
+    export TIDB_USER='{username}'
     export TIDB_PASSWORD='{password}'
     export TIDB_DB_NAME='test'
     export USE_SSL='false'
@@ -124,7 +122,7 @@ cd tidb-java-springboot-jpa-quickstart
 
     注意替换 `{}` 中的占位符为连接对话框中获得的值。
 
-6. 保存文件。
+6. 保存 `env.sh` 文件。
 
 </div>
 
@@ -136,10 +134,10 @@ cd tidb-java-springboot-jpa-quickstart
     cp env.sh.example env.sh
     ```
 
-2. 复制并粘贴对应的连接字符串至 `env.sh` 中。需更改部分示例结果如下:
+2. 复制并粘贴对应 TiDB 的连接字符串至 `env.sh` 中。需更改部分示例结果如下：
 
     ```shell
-    export TIDB_HOST='{tidb_server_host}'
+    export TIDB_HOST='{host}'
     export TIDB_PORT='4000'
     export TIDB_USER='root'
     export TIDB_PASSWORD='{password}'
@@ -149,7 +147,7 @@ cd tidb-java-springboot-jpa-quickstart
 
     注意替换 `{}` 中的占位符为你的 TiDB 对应的值，并设置 `USE_SSL` 为 `false`。如果你在本机运行 TiDB，默认 Host 地址为 `127.0.0.1`，密码为空。
 
-3. 保存文件。
+3. 保存 `env.sh` 文件。
 
 </div>
 
@@ -169,13 +167,13 @@ cd tidb-java-springboot-jpa-quickstart
     make request
     ```
 
-3. 查看[`Expected-Output.txt`](https://github.com/tidb-samples/tidb-java-springboot-jpa-quickstart/blob/main/Expected-Output.txt)，并与你的服务程序输出进行比较。结果近似即为连接成功。
+3. 查看 [`Expected-Output.txt`](https://github.com/tidb-samples/tidb-java-springboot-jpa-quickstart/blob/main/Expected-Output.txt)，并与你的服务程序输出进行比较。结果近似即为连接成功。
 
 ## 示例代码片段
 
 你可参考以下关键代码片段，完成自己的应用开发。
 
-完整代码及其运行方式，见 [tidb-java-springboot-jpa-quickstart](https://github.com/tidb-samples/tidb-java-springboot-jpa-quickstart/blob/main/README-zh.md) GitHub 仓库。
+完整代码及其运行方式，见代码仓库 [tidb-java-springboot-jpa-quickstart](https://github.com/tidb-samples/tidb-java-springboot-jpa-quickstart/blob/main/README-zh.md)。
 
 ### 连接到 TiDB
 
@@ -195,15 +193,15 @@ spring:
       ddl-auto: create-drop
 ```
 
-请在配置后设置环境变量 `TIDB_JDBC_URL`、`TIDB_USER`、`TIDB_PASSWORD`。将其替换为你的 TiDB 集群的实际值。此配置文件带有环境变量默认配置，即在不配置环境变量时，变量的值为：
+请在配置后将环境变量 `TIDB_JDBC_URL`、`TIDB_USER` 和 `TIDB_PASSWORD` 设置为你的 TiDB 集群的实际值。此配置文件带有环境变量默认配置，即在不配置环境变量时，变量的值为：
 
-- TIDB_JDBC_URL: "jdbc:mysql://localhost:4000/test"
-- TIDB_USER: "root"
-- TIDB_PASSWORD: ""
+- `TIDB_JDBC_URL`: `"jdbc:mysql://localhost:4000/test"`
+- `TIDB_USER`: `"root"`
+- `TIDB_PASSWORD`: `""`
 
-### Repository
+### 数据管理：`@Repository`
 
-Spring Data JPA 使用 Repository 作为数据管理的接口类，此处需继承 JpaRepository，其已经帮助我们实现了增删改查函数。
+Spring Data JPA 通过 `@Repository` 接口来管理数据。你需要继承 `JpaRepository` 接口，以使用其提供的增删改查函数。
 
 ```java
 @Repository
@@ -211,7 +209,7 @@ public interface PlayerRepository extends JpaRepository<PlayerBean, Long> {
 }
 ```
 
-随后，你可以在需要使用 PlayerRepository 的类中使用自动装配后即可使用，代码如下：
+随后，在需要使用 `PlayerRepository` 的类中，你可以通过 `@Autowired` 自动装配，这样就可以直接使用增删改查函数了。示例代码如下：
 
 ```java
 @Autowired
@@ -224,7 +222,7 @@ private PlayerRepository playerRepository;
 playerRepository.save(player);
 ```
 
-更多信息参考[插入数据](/develop/dev-guide-insert-data.md)、[更新数据](/develop/dev-guide-update-data.md)。
+更多信息参考[插入数据](/develop/dev-guide-insert-data.md)和[更新数据](/develop/dev-guide-update-data.md)。
 
 ### 查询数据
 
@@ -244,15 +242,15 @@ playerRepository.deleteById(id);
 
 ## 下一步
 
-- 关于使用到的三方库及框架，可以参考各自官方文档：
+- 关于本文使用到的第三方库及框架，可以参考各自官方文档：
 
     - [Spring Framework 官方文档](https://spring.io/projects/spring-framework)
     - [Spring Boot 官方文档](https://spring.io/projects/spring-boot)
     - [Spring Data JPA 官方文档](https://spring.io/projects/spring-data-jpa)
     - [Hibernate 官方文档](https://hibernate.org/orm/documentation)
-- 你可以继续阅读开发者文档，以获取更多关于 TiDB 的开发者知识。例如：[插入数据](/develop/dev-guide-insert-data.md)，[更新数据](/develop/dev-guide-update-data.md)，[删除数据](/develop/dev-guide-delete-data.md)，[单表读取](/develop/dev-guide-get-data-from-single-table.md)，[事务](/develop/dev-guide-transaction-overview.md)，[SQL 性能优化](/develop/dev-guide-optimize-sql-overview.md)等。
+- 你可以继续阅读开发者文档，以获取更多关于 TiDB 应用开发的最佳实践。例如：[插入数据](/develop/dev-guide-insert-data.md)、[更新数据](/develop/dev-guide-update-data.md)、[删除数据](/develop/dev-guide-delete-data.md)、[单表读取](/develop/dev-guide-get-data-from-single-table.md)、[事务](/develop/dev-guide-transaction-overview.md)、[SQL 性能优化](/develop/dev-guide-optimize-sql-overview.md)等。
 - 如果你更倾向于参与课程进行学习，我们也提供专业的 [TiDB 开发者课程](https://cn.pingcap.com/courses-catalog/back-end-developer/?utm_source=docs-cn-dev-guide)支持，并在考试后提供相应的[资格认证](https://learn.pingcap.com/learner/certification-center)。
-- 我们还有额外针对 Java 开发者的课程：[使用 Connector/J - TiDB v6](https://learn.pingcap.com/learner/course/840002/?utm_source=docs-cn-dev-guide) 及[在 TiDB 上开发应用的最佳实践 - TiDB v6](https://learn.pingcap.com/learner/course/780002/?utm_source=docs-cn-dev-guide) 可供选择。
+- 我们还额外提供针对 Java 开发者的课程：[使用 Connector/J - TiDB v6](https://learn.pingcap.com/learner/course/840002/?utm_source=docs-cn-dev-guide) 及[在 TiDB 上开发应用的最佳实践 - TiDB v6](https://learn.pingcap.com/learner/course/780002/?utm_source=docs-cn-dev-guide)。
 
 ## 需要帮助?
 
