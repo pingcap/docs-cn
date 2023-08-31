@@ -3,12 +3,9 @@ title: 使用 GORM 连接到 TiDB
 summary: 了解如何使用 GORM 连接到 TiDB。本文提供了使用 GORM 与 TiDB 交互的 Golang 示例代码片段。
 ---
 
-<!-- markdownlint-disable MD024 -->
-<!-- markdownlint-disable MD029 -->
-
 # 使用 GORM 连接到 TiDB
 
-TiDB 是一个兼容 MySQL 的数据库。[GORM](https://gorm.io/index.html) 是当前比较流行的开源 Golang ORM 框架，且 GORM 适配了 TiDB 的 `AUTO_RANDOM` 等特性，TiDB 为 [GORM 的默认支持数据库](https://gorm.io/zh_CN/docs/connecting_to_the_database.html#TiDB)。
+TiDB 是一个兼容 MySQL 的数据库。[GORM](https://gorm.io/index.html) 是当前比较流行的开源 Golang ORM 框架并且适配了 TiDB 的 `AUTO_RANDOM` 等特性。同时，TiDB 为 [GORM 的默认支持数据库](https://gorm.io/zh_CN/docs/connecting_to_the_database.html#TiDB)。
 
 本文档将展示如何使用 TiDB 和 GORM 来完成以下任务：
 
@@ -20,13 +17,13 @@ TiDB 是一个兼容 MySQL 的数据库。[GORM](https://gorm.io/index.html) 是
 >
 > 本文档适用于 TiDB Serverless、TiDB Dedicated 和本地部署的 TiDB。
 
-## 前置要求
+## 前置需求
 
-- 推荐 [Golang](https://go.dev/) **1.20** 及以上版本。
+- 推荐 [Go](https://go.dev/) **1.20** 及以上版本。
 - [Git](https://git-scm.com/downloads)。
 - TiDB 集群。如果你还没有 TiDB 集群，可以按照以下方式创建：
-    - （推荐方式）参考[创建 TiDB Serverless 集群](https://docs.pingcap.com/tidbcloud/dev-guide-build-cluster-in-cloud)，创建你自己的 TiDB Cloud 集群。
-    - 参考[部署本地测试 TiDB 集群](https://docs.pingcap.com/zh/tidb/stable/quick-start-with-tidb#部署本地测试集群)或[部署正式 TiDB 集群](https://docs.pingcap.com/zh/tidb/stable/production-deployment-using-tiup)，创建本地集群。
+    - （推荐方式）参考[创建 TiDB Serverless 集群](/develop/dev-guide-build-cluster-in-cloud.md#第-1-步创建-tidb-serverless-集群)，创建你自己的 TiDB Cloud 集群。
+    - 参考[部署本地测试 TiDB 集群](/quick-start-with-tidb.md#部署本地测试集群)或[部署正式 TiDB 集群](/production-deployment-using-tiup.md)，创建本地集群。
 
 ## 运行代码并连接到 TiDB
 
@@ -34,7 +31,7 @@ TiDB 是一个兼容 MySQL 的数据库。[GORM](https://gorm.io/index.html) 是
 
 ### 第 1 步：克隆示例代码仓库到本地
 
-在命令行中运行以下命令，克隆示例代码仓库到本地：
+运行以下命令，将示例代码仓库克隆到本地：
 
 ```shell
 git clone https://github.com/tidb-samples/tidb-golang-gorm-quickstart.git
@@ -90,7 +87,7 @@ cd tidb-golang-gorm-quickstart
 
     TiDB Serverless 要求使用 TLS (SSL) connection，因此 `USE_SSL` 的值应为 `true`。
 
-7. 保存文件。
+7. 保存 `.env` 文件。
 
 </div>
 
@@ -100,7 +97,7 @@ cd tidb-golang-gorm-quickstart
 
 2. 点击右上角的 **Connect** 按钮，将会出现连接对话框。
 
-3. 在对话框中点击 **Allow Access from Anywhere**，然后点击 **Download TiDB cluster CA** 下载 TiDB Cloud 提供的 CA 证书。
+3. 在对话框中点击 **Allow Access from Anywhere**。
 
     更多配置细节，可参考 [TiDB Dedicated 标准连接教程（英文）](https://docs.pingcap.com/tidbcloud/connect-via-standard-connection)。
 
@@ -112,7 +109,7 @@ cd tidb-golang-gorm-quickstart
 
 5. 复制并粘贴对应的连接字符串至 `.env` 中。示例结果如下：
 
-    ```properties
+    ```dotenv
     TIDB_HOST='{host}.clusters.tidb-cloud.com'
     TIDB_PORT='4000'
     TIDB_USER='{user}'
@@ -123,7 +120,7 @@ cd tidb-golang-gorm-quickstart
 
     注意替换 `{}` 中的占位符为连接对话框中获得的值。
 
-6. 保存文件。
+6. 保存 `.env` 文件。
 
 </div>
 
@@ -148,7 +145,7 @@ cd tidb-golang-gorm-quickstart
 
     注意替换 `{}` 中的占位符为你的 TiDB 对应的值，并设置 `USE_SSL` 为 `false`。如果你在本机运行 TiDB，默认 Host 地址为 `127.0.0.1`，密码为空。
 
-3. 保存文件。
+3. 保存 `.env` 文件。
 
 </div>
 
@@ -162,13 +159,13 @@ cd tidb-golang-gorm-quickstart
     make
     ```
 
-2. 查看[`Expected-Output.txt`](https://github.com/tidb-samples/tidb-golang-gorm-quickstart/blob/main/Expected-Output.txt)，并与你的程序输出进行比较。结果近似即为连接成功。
+2. 查看 [`Expected-Output.txt`](https://github.com/tidb-samples/tidb-golang-gorm-quickstart/blob/main/Expected-Output.txt)，并与你的程序输出进行比较。结果近似即为连接成功。
 
 ## 示例代码片段
 
 你可参考以下关键代码片段，完成自己的应用开发。
 
-完整代码及其运行方式，见 [tidb-golang-gorm-quickstart](https://github.com/tidb-samples/tidb-golang-gorm-quickstart/blob/main/README-zh.md) GitHub 仓库。
+完整代码及其运行方式，见代码仓库 [tidb-golang-gorm-quickstart](https://github.com/tidb-samples/tidb-golang-gorm-quickstart)。
 
 ### 连接到 TiDB
 
@@ -188,7 +185,7 @@ func createDB() *gorm.DB {
 }
 ```
 
-在使用该函数时，你需要将 `${tidb_host}`、`${tidb_port}`、`${tidb_user}`、`${tidb_password}`、`${tidb_db_name}` 等替换为你的 TiDB 集群的实际值。因为 TiDB Serverless 要求使用 secure connection，因此在使用 TiDB Serverless 时 `${use_ssl}` 的值应为 `true`。
+在使用该函数时，你需要将 `${tidb_host}`、`${tidb_port}`、`${tidb_user}`、`${tidb_password}`、`${tidb_db_name}` 等替换为你的 TiDB 集群的实际值。因为 TiDB Serverless 要求使用 TLS (SSL) connection，因此在连接到 TiDB Serverless 时 `${use_ssl}` 的值应为 `true`。
 
 ### 插入数据
 
@@ -226,9 +223,9 @@ db.Delete(&Player{ID: "id"})
 
 ## 下一步
 
-- 关于 GORM 的更多使用方法及细节，可以参考 [GORM 官方文档](https://gorm.io/docs/) 及 GORM 官方文档中的 [TiDB 章节](https://gorm.io/docs/connecting_to_the_database.html#TiDB)。
-- 你可以继续阅读开发者文档，以获取更多关于 TiDB 的开发者知识。例如：[插入数据](https://docs.pingcap.com/zh/tidb/stable/dev-guide-insert-data)，[更新数据](https://docs.pingcap.com/zh/tidb/stable/dev-guide-update-data)，[删除数据](https://docs.pingcap.com/zh/tidb/stable/dev-guide-delete-data)，[单表读取](https://docs.pingcap.com/zh/tidb/stable/dev-guide-get-data-from-single-table)，[事务](https://docs.pingcap.com/zh/tidb/stable/dev-guide-transaction-overview)，[SQL 性能优化](https://docs.pingcap.com/zh/tidb/stable/dev-guide-optimize-sql-overview)等。
-- 如果你更倾向于参与课程进行学习，我们也提供专业的 [TiDB 开发者课程](https://cn.pingcap.com/courses-catalog/back-end-developer/)支持，并在考试后提供相应的[资格认证](https://learn.pingcap.com/learner/certification-center)。
+- 关于 GORM 的更多使用方法，可以参考 [GORM 官方文档](https://gorm.io/zh_CN/docs/index.html) 及 GORM 官方文档中的 [TiDB 章节](https://gorm.io/zh_CN/docs/connecting_to_the_database.html#TiDB)。
+- 你可以继续阅读开发者文档，以获取更多关于 TiDB 应用开发的最佳实践。例如：[插入数据](/develop/dev-guide-insert-data.md)、[更新数据](/develop/dev-guide-update-data.md)、[删除数据](/develop/dev-guide-delete-data.md)、[单表读取](/develop/dev-guide-get-data-from-single-table.md)、[事务](/develop/dev-guide-transaction-overview.md)、[SQL 性能优化](/develop/dev-guide-optimize-sql-overview.md)等。
+- 如果你更倾向于参与课程进行学习，我们也提供专业的 [TiDB 开发者课程](https://cn.pingcap.com/courses-catalog/back-end-developer/?utm_source=docs-cn-dev-guide)支持，并在考试后提供相应的[资格认证](https://learn.pingcap.com/learner/certification-center)。
 
 ## 需要帮助?
 
