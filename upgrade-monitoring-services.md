@@ -63,7 +63,7 @@ tiup cluster patch <cluster-name> prometheus-v{new-version}.tar.gz -R prometheus
 
 ### 第 1 步：从 Grafana 官网的下载新版本安装包
 
-1. 从 [Grafana 官网下载页面](https://grafana.com/grafana/download?pg=get&plcmt=selfmanaged-box1-cta1)下载组件安装包。你可以根据需要选择下载 `OSS`版或 `Enterprise` 版。
+1. 从 [Grafana 官网下载页面](https://grafana.com/grafana/download?pg=get&plcmt=selfmanaged-box1-cta1)下载组件安装包。你可以根据需要选择下载 `OSS` 版或 `Enterprise` 版。
 2. 解压下载的软件包。
 
 ### 第 2 步：下载 TiDB 官方 Grafana 安装包
