@@ -38,10 +38,11 @@ routes:
     target-schema: "test"
 ```
 
-在简单任务场景下，推荐使用通配符匹配库表名，但需注意以下版本差异：
+支持正则表达式和通配符来匹配库表名，在简单任务场景下，推荐使用通配符匹配库表名，但需注意以下几点：
++ 通配符仅支持`*、`?`以及`[]`。符号 `*` 只能有一个,且必须在末尾,如 tbl-name:"test*" 表示 test 开头的表,详情请参考[通配符匹配](https://en.wikipedia.org/wiki/Glob_(programming)#Syntax)。
++ table-regexp，schema-regexp，source-regexp 仅支持配置正则表达式，且不要以 "~" 符号开头。
++ schema-pattern，table-pattern，同时支持通配符和正则表达式，如需使用正则表达式需要以 "~" 符号开头。
 
-+ 对于 v1.0.5 版及后续版本，表路由支持[通配符匹配](https://en.wikipedia.org/wiki/Glob_(programming)#Syntax)。但注意所有版本中通配符匹配中的 `*` 符号 **只能有一个，且必须在末尾**。
-+ 对于 v1.0.5 以前的版本，表路由支持通配符，但不支持 `[...]` 与 `[!...]` 表达式。
 
 ## 参数解释
 
