@@ -76,7 +76,7 @@ cd tidb-golang-sql-driver-quickstart
 6. 复制并粘贴对应连接字符串至 `.env` 中。示例结果如下：
 
     ```dotenv
-    TIDB_HOST='{gateway-region}.aws.tidbcloud.com'
+    TIDB_HOST='{host}'
     TIDB_PORT='4000'
     TIDB_USER='{user}'
     TIDB_PASSWORD='{password}'
