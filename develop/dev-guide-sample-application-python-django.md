@@ -50,7 +50,11 @@ pip install -r requirements.txt
 
 #### `django-tidb` 是什么？
 
-django-tidb 解决了 TiDB 和 Django 之间的兼容性问题。安装的时候，你需要选择与你的 Django 版本对应的版本，例如，如果你使用的是 `django==4.2.*`，你需要安装 `django-tidb==4.2.*`，最小版本号不需要一致，使用各自最新的最小版本即可，更多信息，参考 [django-tidb 仓库](https://github.com/pingcap/django-tidb)。
+django-tidb 解决了 TiDB 和 Django 之间的兼容性问题。
+
+安装 django-tidb 的时候，你需要选择与你的 Django 版本对应的版本，例如，如果你使用的是 `django==4.2.*`，你需要安装 `django-tidb==4.2.*`，最小版本号不需要一致，使用各自最新的最小版本即可。
+
+更多信息，请参考 [django-tidb 仓库](https://github.com/pingcap/django-tidb)。
 
 ### 第 3 步：配置连接信息
 
@@ -164,7 +168,7 @@ django-tidb 解决了 TiDB 和 Django 之间的兼容性问题。安装的时候
 
 ### 第 4 步：初始化数据库
 
-切换到示例项目根目录，然后执行以下命令，初始化数据库：
+在示例项目根目录执行以下命令，初始化数据库：
 
 ```shell
 python manage.py migrate
@@ -178,7 +182,11 @@ python manage.py migrate
     python manage.py runserver
     ```
 
-    默认的端口号为 8000，如果你想要修改端口号，可以在命令后面添加端口号，例如：`python manage.py runserver 8080`。
+    默认的端口号为 8000，如果你想要修改端口号，可以在命令后面添加端口号，例如：
+
+    ```shell
+    python manage.py runserver 8080
+    ```
 
 2. 打开浏览器，在地址栏输入 `http://localhost:8000/`，访问示例应用程序，你可以进行以下操作：
 
@@ -193,11 +201,11 @@ python manage.py migrate
 
 你可参考以下关键代码片段，完成自己的应用开发。
 
-完整代码及其运行方式，见代码仓库 [tidb-samples/tidb-python-django-quickstart](https://github.com/tidb-samples/tidb-python-django-quickstart.git)。
+完整代码及其运行方式，见代码仓库 [tidb-samples/tidb-python-django-quickstart](https://github.com/tidb-samples/tidb-python-django-quickstart)。
 
 ### 配置数据库连接
 
-打开 `sample_project/settings.py` 文件，找到 `DATABASES` 配置项，将其修改为以下内容：
+打开 `sample_project/settings.py` 文件，添加以下配置：
 
 ```python
 DATABASES = {
