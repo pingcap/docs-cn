@@ -27,7 +27,7 @@ block-allow-list:             # 如果 DM 版本早于 v2.0.0-beta.2 则使用 b
     - db-name: "~^test.*"
       tbl-name: "~^t.*"
     - db-name: "test"
-      tbl-name: "t"
+      tbl-name: "t*"
     ignore-tables:
     - db-name: "test"
       tbl-name: "log"
