@@ -1,13 +1,7 @@
 ---
-<<<<<<< HEAD
-title: TiDB 和 Go-MySQL-Driver 的简单 CRUD 应用程序
-summary: 给出一个 TiDB 和 Go-MySQL-Driver 的简单 CRUD 应用程序示例。
-aliases: ['/zh/tidb/v6.5/dev-guide-sample-application-golang']
-=======
 title: 使用 Go-MySQL-Driver 连接到 TiDB
 summary: 了解如何使用 Go-MySQL-Driver 连接到 TiDB。本文提供了使用 Go-MySQL-Driver 与 TiDB 交互的 Golang 示例代码片段。
-aliases: ['/zh/tidb/dev/dev-guide-sample-application-golang']
->>>>>>> 1bab6e92be (feat: golang example simplify (#14890))
+aliases: ['/zh/tidb/v6.5/dev-guide-sample-application-golang']
 ---
 
 # 使用 Go-MySQL-Driver 连接到 TiDB
