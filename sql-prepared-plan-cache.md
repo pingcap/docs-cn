@@ -32,7 +32,7 @@ TiDB 优化器对这两类查询的处理是一样的：`Prepare` 时将参数�
 - 用参数进行 `int` 和 `string` 比较的查询，如 `c_int >= ?` 或者 `c_int in (?, ?)`等，其中 `?` 为字符串类型，如 `set @x='123'`；此时为了保证结果和 MySQL 兼容性，需要每次对参数进行调整，故不会缓存；
 - 会访问 `TiFlash` 的计划不会被缓存；
 - 大部分情况下计划中含有 `TableDual` 的计划将将不会被缓存，除非当前执行的 `Prepare` 语句不含参数，则对应的 `TableDual` 计划可以被缓存。
-- 访问 TiDB 系统视图（如 `information_schema.columns`）的查询不能使用 Plan Cache，建议不要使用 `Prepare`/`Execute` 语句来访问系统视图。
+- 访问 TiDB 系统视图的查询，如 `information_schema.columns`，并且建议不使用 `Prepare`/`Execute` 语句来访问系统视图。
 
 TiDB 对 `?` 的个数有限制，如果超过了 65535 个，则会报错 `Prepared statement contains too many placeholders`。
 
