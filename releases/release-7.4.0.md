@@ -35,6 +35,11 @@ TiDB 版本：7.4.0
 
     更多信息，请参考[用户文档](链接)。
 
+
+* 新增支持下推 [运算符](/functions-and-operators/expressions-pushed-down.md)到 TiKV [#46307](https://github.com/pingcap/tidb/issues/46307) @[wshwsh12](https://github.com/wshwsh12)  **tw@caiqian** <!--1234-->
+
+    * `value MEMBER OF(json_array)`
+
 ### 稳定性
 
 * 功能标题 [#issue号](链接) @[贡献者 GitHub ID](链接) **tw@xxx** <!--1234-->
@@ -58,6 +63,12 @@ TiDB 版本：7.4.0
     功能描述（需要包含这个功能是什么、在什么场景下对用户有什么价值、怎么用）
 
     更多信息，请参考[用户文档](链接)。
+
+* TiDB 支持完整的分区类型管理功能 [#42728](https://github.com/pingcap/tidb/issues/42728) @[mjonss](https://github.com/mjonss) **tw@qiancai** <!--1370-->
+
+    在 v7.4.0 之前，TiDB 中的分区表不能调整分区类型。从 v7.4.0 开始，TiDB 支持将分区表修改为非分区表、将非分区表修改为分区表、修改分区类型功能。你可以根据需要灵活调整表的分区类型、数量。例如，通过 `ALTER TABLE t PARTITION BY ...` 语句修改分区类型。
+
+    更多信息，请参考[用户文档](/partitioned-table.md#分区管理)。
 
 ### 数据库管理
 
