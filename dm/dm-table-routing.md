@@ -42,7 +42,7 @@ routes:
 
 + 通配符仅支持 `*`、`?` 以及 `[]`。符号 `*` 只能有一个，且必须在末尾。例如用 `tbl-name:"test*"` 表示 `test` 开头的表。详情请参考[通配符匹配](https://en.wikipedia.org/wiki/Glob_(programming)#Syntax)。
 + `table-regexp`、`schema-regexp` 和 `source-regexp` 仅支持配置正则表达式，且不能以 `~` 符号开头。
-+ `schema-pattern` 和 `table-pattern` 同时支持通配符和正则表达式。正则表达式必须以 "~" 符号开头。
++ `schema-pattern` 和 `table-pattern` 同时支持通配符和正则表达式。正则表达式必须以 `~` 符号开头。
 
 
 ## 参数解释
