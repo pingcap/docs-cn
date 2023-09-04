@@ -44,7 +44,6 @@ routes:
 + `table-regexp`、`schema-regexp` 和 `source-regexp` 仅支持配置正则表达式，且不能以 `~` 符号开头。
 + `schema-pattern` 和 `table-pattern` 同时支持通配符和正则表达式。正则表达式必须以 `~` 符号开头。
 
-
 ## 参数解释
 
 - 对于匹配上 [`schema-pattern`/`table-pattern`](/dm/table-selector.md) 规则的上游 MySQL/MariaDB 实例的表，DM 将它们迁移到下游的 `target-schema`/`target-table`。
