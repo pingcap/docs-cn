@@ -265,7 +265,7 @@ Support level: **Compatible**
 
 You can follow the [MySQL Connector/Python documentation](https://dev.mysql.com/doc/connector-python/en/connector-python-installation-binary.html) to download and configure the driver. It is recommended to use Connector/Python 8.0.31 or later versions.
 
-For an example of using MySQL Connector/Python to build a TiDB application, see [Build a simple CRUD app with TiDB and MySQL Connector/Python](/develop/dev-guide-sample-application-python-mysql-connector.md#step-2-get-the-code).
+For an example of using MySQL Connector/Python to build a TiDB application, see [Connect to TiDB with MySQL Connector/Python](/develop/dev-guide-sample-application-python-mysql-connector.md).
 
 </div>
 </SimpleTab>
