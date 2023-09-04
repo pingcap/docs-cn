@@ -1,249 +1,297 @@
 ---
-title: Build a Simple CRUD App with TiDB and SQLAlchemy
-summary: Learn how to build a simple CRUD application with TiDB and SQLAlchemy.
+title: Connect to TiDB with SQLAlchemy
+summary: Learn how to connect to TiDB using SQLAlchemy. This tutorial gives Python sample code snippets that work with TiDB using SQLAlchemy.
 aliases: ['/tidb/dev/dev-guide-outdated-for-sqlalchemy']
 ---
 
-<!-- markdownlint-disable MD024 -->
-<!-- markdownlint-disable MD029 -->
+# Connect to TiDB with SQLAlchemy
 
-# Build a Simple CRUD App with TiDB and SQLAlchemy
+TiDB is a MySQL-compatible database, and [SQLAlchemy](https://www.sqlalchemy.org/) is a popular Python SQL toolkit and Object Relational Mapper (ORM).
 
-[SQLAlchemy](https://www.sqlalchemy.org/) is a popular open-source ORM library for Python.
+In this tutorial, you can learn how to use TiDB and SQLAlchemy to accomplish the following tasks:
 
-This document describes how to use TiDB and SQLAlchemy to build a simple CRUD application.
+- Set up your environment.
+- Connect to your TiDB cluster using SQLAlchemy.
+- Build and run your application. Optionally, you can find sample code snippets for basic CRUD operations.
 
 > **Note:**
 >
-> It is recommended to use Python 3.10 or a later Python version.
+> This tutorial works with TiDB Serverless, TiDB Dedicated, and TiDB Self-Hosted clusters.
 
-## Step 1. Launch your TiDB cluster
+## Prerequisites
+
+To complete this tutorial, you need:
+
+- [Python 3.8 or higher](https://www.python.org/downloads/).
+- [Git](https://git-scm.com/downloads).
+- A TiDB cluster.
 
 <CustomContent platform="tidb">
 
-The following introduces how to start a TiDB cluster.
+**If you don't have a TiDB cluster, you can create one as follows:**
 
-**Use a TiDB Serverless cluster**
-
-For detailed steps, see [Create a TiDB Serverless cluster](/develop/dev-guide-build-cluster-in-cloud.md#step-1-create-a-tidb-serverless-cluster).
-
-**Use a local cluster**
-
-For detailed steps, see [Deploy a local test cluster](/quick-start-with-tidb.md#deploy-a-local-test-cluster) or [Deploy a TiDB cluster using TiUP](/production-deployment-using-tiup.md).
+- (Recommended) Follow [Creating a TiDB Serverless cluster](/develop/dev-guide-build-cluster-in-cloud.md) to create your own TiDB Cloud cluster.
+- Follow [Deploy a local test TiDB cluster](/quick-start-with-tidb.md#deploy-a-local-test-cluster) or [Deploy a production TiDB cluster](/production-deployment-using-tiup.md) to create a local cluster.
 
 </CustomContent>
-
 <CustomContent platform="tidb-cloud">
 
-See [Create a TiDB Serverless cluster](/develop/dev-guide-build-cluster-in-cloud.md#step-1-create-a-tidb-serverless-cluster).
+**If you don't have a TiDB cluster, you can create one as follows:**
+
+- (Recommended) Follow [Creating a TiDB Serverless cluster](/develop/dev-guide-build-cluster-in-cloud.md) to create your own TiDB Cloud cluster.
+- Follow [Deploy a local test TiDB cluster](https://docs.pingcap.com/tidb/stable/quick-start-with-tidb#deploy-a-local-test-cluster) or [Deploy a production TiDB cluster](https://docs.pingcap.com/tidb/stable/production-deployment-using-tiup) to create a local cluster.
 
 </CustomContent>
 
-## Step 2. Get the code
+## Run the sample app to connect to TiDB
+
+This section demonstrates how to run the sample application code and connect to TiDB.
+
+### Step 1: Clone the sample app repository
+
+Run the following commands in your terminal window to clone the sample code repository:
 
 ```shell
-git clone https://github.com/pingcap-inc/tidb-example-python.git
+git clone https://github.com/tidb-samples/tidb-python-sqlalchemy-quickstart.git
+cd tidb-python-sqlalchemy-quickstart
 ```
 
-The following uses SQLAlchemy 1.44 as an example.
+### Step 2: Install dependencies
+
+Run the following command to install the required packages (including SQLAlchemy and PyMySQL) for the sample app:
+
+```shell
+pip install -r requirements.txt
+```
+
+#### Why use PyMySQL?
+
+SQLAlchemy is an ORM library that works with multiple databases. It provides a high-level abstraction of the database, which helps developers write SQL statements in a more object-oriented way. However, SQLAlchemy does not include a database driver. To connect to a database, you need to install a database driver. This sample application uses PyMySQL as the database driver, which is a pure Python MySQL client library that is compatible with TiDB and can be installed on all platforms.
+
+You can also use other database drivers, such as [mysqlclient](https://github.com/PyMySQL/mysqlclient) and [mysql-connector-python](https://dev.mysql.com/doc/connector-python/en/). But they are not pure Python libraries and require the corresponding C/C++ compiler and MySQL client for compiling. For more information, refer to [SQLAlchemy official documentation](https://docs.sqlalchemy.org/en/20/core/engines.html#mysql).
+
+### Step 3: Configure connection information
+
+Connect to your TiDB cluster depending on the TiDB deployment option you've selected.
+
+<SimpleTab>
+<div label="TiDB Serverless">
+
+1. Navigate to the [**Clusters**](https://tidbcloud.com/console/clusters) page, and then click the name of your target cluster to go to its overview page.
+
+2. Click **Connect** in the upper-right corner. A connection dialog is displayed.
+
+3. Ensure the configurations in the connection dialog match your operating environment.
+
+    - **Endpoint Type** is set to `Public`
+    - **Connect With** is set to `General`
+    - **Operating System** matches your environment.
+
+    > **Tip:**
+    >
+    > If your program is running in Windows Subsystem for Linux (WSL), switch to the corresponding Linux distribution.
+
+4. Click **Create password** to create a random password.
+
+    > **Tip:**
+    > 
+    > If you have created a password before, you can either use the original password or click **Reset password** to generate a new one.
+
+5. Run the following command to copy `.env.example` and rename it to `.env`:
+
+    ```shell
+    cp .env.example .env
+    ```
+
+6. Copy and paste the corresponding connection string into the `.env` file. The example result is as follows:
+
+    ```dotenv
+    TIDB_HOST='{host}'  # e.g. gateway01.ap-northeast-1.prod.aws.tidbcloud.com
+    TIDB_PORT='4000'
+    TIDB_USER='{user}'  # e.g. xxxxxx.root
+    TIDB_PASSWORD='{password}'
+    TIDB_DB_NAME='test'
+    CA_PATH='{ssl_ca}'  # e.g. /etc/ssl/certs/ca-certificates.crt (Debian / Ubuntu / Arch)
+    ```
+
+    Be sure to replace the placeholders `{}` with the connection parameters obtained from the connection dialog.
+
+7. Save the `.env` file.
+
+</div>
+<div label="TiDB Dedicated">
+
+1. Navigate to the [**Clusters**](https://tidbcloud.com/console/clusters) page, and then click the name of your target cluster to go to its overview page.
+
+2. Click **Connect** in the upper-right corner. A connection dialog is displayed.
+
+3. Click **Allow Access from Anywhere** and then click **Download TiDB cluster CA** to download the CA certificate.
+
+    For more details about how to obtain the connection string, refer to [TiDB Dedicated standard connection](https://docs.pingcap.com/tidbcloud/connect-via-standard-connection).
+
+4. Run the following command to copy `.env.example` and rename it to `.env`:
+
+    ```shell
+    cp .env.example .env
+    ```
+
+5. Copy and paste the corresponding connection string into the `.env` file. The example result is as follows:
+
+    ```dotenv
+    TIDB_HOST='{host}'  # e.g. tidb.xxxx.clusters.tidb-cloud.com
+    TIDB_PORT='4000'
+    TIDB_USER='{user}'  # e.g. root
+    TIDB_PASSWORD='{password}'
+    TIDB_DB_NAME='test'
+    CA_PATH='{your-downloaded-ca-path}'
+    ```
+
+    Be sure to replace the placeholders `{}` with the connection parameters obtained from the connection dialog, and configure `CA_PATH` with the certificate path downloaded in the previous step.
+
+6. Save the `.env` file.
+
+</div>
+<div label="TiDB Self-Hosted">
+
+1. Run the following command to copy `.env.example` and rename it to `.env`:
+
+    ```shell
+    cp .env.example .env
+    ```
+
+2. Copy and paste the corresponding connection string into the `.env` file. The example result is as follows:
+
+    ```dotenv
+    TIDB_HOST='{tidb_server_host}'
+    TIDB_PORT='4000'
+    TIDB_USER='root'
+    TIDB_PASSWORD='{password}'
+    TIDB_DB_NAME='test'
+    ```
+
+    Be sure to replace the placeholders `{}` with the connection parameters, and remove the `CA_PATH` line. If you are running TiDB locally, the default host address is `127.0.0.1`, and the password is empty.
+
+3. Save the `.env` file.
+
+</div>
+</SimpleTab>
+
+### Step 4: Run the code and check the result
+
+1. Execute the following command to run the sample code:
+
+    ```shell
+    python sqlalchemy_example.py
+    ```
+
+2. Check the [Expected-Output.txt](https://github.com/tidb-samples/tidb-python-sqlalchemy-quickstart/blob/main/Expected-Output.txt) to see if the output matches.
+
+## Sample code snippets
+
+You can refer to the following sample code snippets to complete your own application development.
+
+For complete sample code and how to run it, check out the [tidb-samples/tidb-python-sqlalchemy-quickstart](https://github.com/tidb-samples/tidb-python-sqlalchemy-quickstart) repository.
+
+### Connect to TiDB
 
 ```python
-import uuid
-from typing import List
+from sqlalchemy import create_engine, URL
+from sqlalchemy.orm import sessionmaker
 
-from sqlalchemy import create_engine, String, Column, Integer, select, func
-from sqlalchemy.orm import declarative_base, sessionmaker
+def get_db_engine():
+    connect_args = {}
+    if ${ca_path}:
+        connect_args = {
+            "ssl_verify_cert": True,
+            "ssl_verify_identity": True,
+            "ssl_ca": ${ca_path},
+        }
+    return create_engine(
+        URL.create(
+            drivername="mysql+pymysql",
+            username=${tidb_user},
+            password=${tidb_password},
+            host=${tidb_host},
+            port=${tidb_port},
+            database=${tidb_db_name},
+        ),
+        connect_args=connect_args,
+    )
 
-engine = create_engine('mysql://root:@127.0.0.1:4000/test')
-Base = declarative_base()
-Base.metadata.create_all(engine)
+engine = get_db_engine()
 Session = sessionmaker(bind=engine)
+```
 
+When using this function, you need to replace `${tidb_host}`, `${tidb_port}`, `${tidb_user}`, `${tidb_password}`, `${tidb_db_name}` and `${ca_path}` with the actual values of your TiDB cluster.
+
+### Define a table
+
+```python
+from sqlalchemy import Column, Integer, String
+from sqlalchemy.orm import declarative_base
+
+Base = declarative_base()
 
 class Player(Base):
-    __tablename__ = "player"
-
-    id = Column(String(36), primary_key=True)
+    id = Column(Integer, primary_key=True)
+    name = Column(String(32), unique=True)
     coins = Column(Integer)
     goods = Column(Integer)
 
-    def __repr__(self):
-        return f'Player(id={self.id!r}, coins={self.coins!r}, goods={self.goods!r})'
-
-
-def random_player(amount: int) -> List[Player]:
-    players = []
-    for _ in range(amount):
-        players.append(Player(id=uuid.uuid4(), coins=10000, goods=10000))
-
-    return players
-
-
-def simple_example() -> None:
-    with Session() as session:
-        # create a player, who has a coin and a goods.
-        session.add(Player(id="test", coins=1, goods=1))
-
-        # get this player, and print it.
-        get_test_stmt = select(Player).where(Player.id == "test")
-        for player in session.scalars(get_test_stmt):
-            print(player)
-
-        # create players with bulk inserts.
-        # insert 1919 players totally, with 114 players per batch.
-        # each player has a random UUID
-        player_list = random_player(1919)
-        for idx in range(0, len(player_list), 114):
-            session.bulk_save_objects(player_list[idx:idx + 114])
-
-        # print the number of players
-        count = session.query(func.count(Player.id)).scalar()
-        print(f'number of players: {count}')
-
-        # print 3 players.
-        three_players = session.query(Player).limit(3).all()
-        for player in three_players:
-            print(player)
-
-        session.commit()
-
-
-def trade_check(session: Session, sell_id: str, buy_id: str, amount: int, price: int) -> bool:
-    # sell player goods check
-    sell_player = session.query(Player.goods).filter(Player.id == sell_id).with_for_update().one()
-    if sell_player.goods < amount:
-        print(f'sell player {sell_id} goods not enough')
-        return False
-
-    # buy player coins check
-    buy_player = session.query(Player.coins).filter(Player.id == buy_id).with_for_update().one()
-    if buy_player.coins < price:
-        print(f'buy player {buy_id} coins not enough')
-        return False
-
-
-def trade(sell_id: str, buy_id: str, amount: int, price: int) -> None:
-    with Session() as session:
-        if trade_check(session, sell_id, buy_id, amount, price) is False:
-            return
-
-        # deduct the goods of seller, and raise his/her the coins
-        session.query(Player).filter(Player.id == sell_id). \
-            update({'goods': Player.goods - amount, 'coins': Player.coins + price})
-        # deduct the coins of buyer, and raise his/her the goods
-        session.query(Player).filter(Player.id == buy_id). \
-            update({'goods': Player.goods + amount, 'coins': Player.coins - price})
-
-        session.commit()
-        print("trade success")
-
-
-def trade_example() -> None:
-    with Session() as session:
-        # create two players
-        # player 1: id is "1", has only 100 coins.
-        # player 2: id is "2", has 114514 coins, and 20 goods.
-        session.add(Player(id="1", coins=100, goods=0))
-        session.add(Player(id="2", coins=114514, goods=20))
-        session.commit()
-
-    # player 1 wants to buy 10 goods from player 2.
-    # it will cost 500 coins, but player 1 cannot afford it.
-    # so this trade will fail, and nobody will lose their coins or goods
-    trade(sell_id="2", buy_id="1", amount=10, price=500)
-
-    # then player 1 has to reduce the incoming quantity to 2.
-    # this trade will be successful
-    trade(sell_id="2", buy_id="1", amount=2, price=100)
-
-    with Session() as session:
-        traders = session.query(Player).filter(Player.id.in_(("1", "2"))).all()
-        for player in traders:
-            print(player)
-        session.commit()
-
-
-simple_example()
-trade_example()
+    __tablename__ = "players"
 ```
 
-Compared with using drivers directly, SQLAlchemy provides an abstraction for the specific details of different databases when you create a database connection. In addition, SQLAlchemy encapsulates some operations such as session management and CRUD of basic objects, which greatly simplifies the code.
+For more information, refer to [SQLAlchemy documentation: Mapping classes with declarative](https://docs.sqlalchemy.org/en/20/orm/declarative_mapping.html).
 
-The `Player` class is a mapping of a table to attributes in the application. Each attribute of `Player` corresponds to a field in the `player` table. To provide SQLAlchemy with more information, the attribute is defined as `id = Column(String(36), primary_key=True)` to indicate the field type and its additional attributes. For example, `id = Column(String(36), primary_key=True)` indicates that the `id` attribute is `String` type, the corresponding field in database is `VARCHAR` type, the length is `36`, and it is a primary key.
-
-For more information about how to use SQLAlchemy, refer to [SQLAlchemy documentation](https://www.sqlalchemy.org/).
-
-## Step 3. Run the code
-
-The following content introduces how to run the code step by step.
-
-### Step 3.1 Initialize table
-
-Before running the code, you need to initialize the table manually. If you are using a local TiDB cluster, you can run the following command:
-
-<SimpleTab groupId="cli">
-
-<div label="MySQL CLI" value="mysql-client">
-
-```shell
-mysql --host 127.0.0.1 --port 4000 -u root < player_init.sql
-```
-
-</div>
-
-<div label="MyCLI" value="mycli">
-
-```shell
-mycli --host 127.0.0.1 --port 4000 -u root --no-warn < player_init.sql
-```
-
-</div>
-
-</SimpleTab>
-
-If you are not using a local cluster, or have not installed a MySQL client, connect to your cluster using your preferred method (such as Navicat, DBeaver, or other GUI tools) and run the SQL statements in the `player_init.sql` file.
-
-### Step 3.2 Modify parameters for TiDB Cloud
-
-If you are using a TiDB Serverless cluster, you need to provide your CA root path and replace `<ca_path>` in the following examples with your CA path. To get the CA root path on your system, refer to [Where is the CA root path on my system?](https://docs.pingcap.com/tidbcloud/secure-connections-to-serverless-tier-clusters#where-is-the-ca-root-path-on-my-system).
-
-If you are using a TiDB Serverless cluster, modify the parameters of the `create_engine` function in `sqlalchemy_example.py`:
+### Insert data
 
 ```python
-engine = create_engine('mysql://root:@127.0.0.1:4000/test')
+with Session() as session:
+    player = Player(name="test", coins=100, goods=100)
+    session.add(player)
+    session.commit()
 ```
 
-Suppose that the password you set is `123456`, and the connection parameters you get from the cluster details page are the following:
+For more information, refer to [Insert data](/develop/dev-guide-insert-data.md).
 
-- Endpoint: `xxx.tidbcloud.com`
-- Port: `4000`
-- User: `2aEp24QWEDLqRFs.root`
-
-In this case, you can modify the `create_engine` as follows:
+### Query data
 
 ```python
-engine = create_engine('mysql://2aEp24QWEDLqRFs.root:123456@xxx.tidbcloud.com:4000/test', connect_args={
-    "ssl_mode": "VERIFY_IDENTITY",
-    "ssl": {
-        "ca": "<ca_path>"
-    }
-})
+with Session() as session:
+    player = session.query(Player).filter_by(name == "test").one()
+    print(player)
 ```
 
-### Step 3.3 Run the code
+For more information, refer to [Query data](/develop/dev-guide-get-data-from-single-table.md).
 
-Before running the code, use the following command to install dependencies:
+### Update data
 
-```bash
-pip3 install -r requirement.txt
+```python
+with Session() as session:
+    player = session.query(Player).filter_by(name == "test").one()
+    player.coins = 200
+    session.commit()
 ```
 
-If you need to run the script multiple times, follow the [Table initialization](#step-31-initialize-table) section to initialize the table again before each run.
+For more information, refer to [Update data](/develop/dev-guide-update-data.md).
 
-```bash
-python3 sqlalchemy_example.py
+### Delete data
+
+```python
+with Session() as session:
+    player = session.query(Player).filter_by(name == "test").one()
+    session.delete(player)
+    session.commit()
 ```
 
-## Step 4. Expected output
+For more information, refer to [Delete data](/develop/dev-guide-delete-data.md).
 
-[SQLAlchemy Expected Output](https://github.com/pingcap-inc/tidb-example-python/blob/main/Expected-Output.md#SQLAlchemy)
+## Next steps
+
+- Learn more usage of SQLAlchemy from [the documentation of SQLAlchemy](https://www.sqlalchemy.org/).
+- Learn the best practices for TiDB application development with the chapters in the [Developer guide](/develop/dev-guide-overview.md), such as [Insert data](/develop/dev-guide-insert-data.md), [Update data](/develop/dev-guide-update-data.md), [Delete data](/develop/dev-guide-delete-data.md), [Single table reading](/develop/dev-guide-get-data-from-single-table.md), [Transactions](/develop/dev-guide-transaction-overview.md), and [SQL performance optimization](/develop/dev-guide-optimize-sql-overview.md).
+- Learn through the professional [TiDB developer courses](https://www.pingcap.com/education/) and earn [TiDB certifications](https://www.pingcap.com/education/certification/) after passing the exam.
+
+## Need help?
+
+Ask questions on the [Discord](https://discord.gg/vYU9h56kAX), or [create a support ticket](https://support.pingcap.com/).
