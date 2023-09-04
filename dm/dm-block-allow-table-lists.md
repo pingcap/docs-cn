@@ -35,7 +35,7 @@ block-allow-list:             # 如果 DM 版本早于 v2.0.0-beta.2 则使用 b
 
 黑白名单支持通配符和正则表达式来匹配，在简单任务场景下，推荐使用通配符匹配库表名：
 
-+ 通配符支持`*`、`?` 以及 `[]`。注意通配符匹配中的 `*` 符号只能有一个，且必须在末尾，例如用 `tbl-name: "t*"` 表示以 `t` 开头的表。详情请参考[通配符匹配](https://en.wikipedia.org/wiki/Glob_(programming)#Syntax)。
++ 通配符支持`*`、`?` 以及 `[]`。注意通配符匹配中的 `*` 符号只能有一个，且必须在末尾，例如 `tbl-name: "t*"` 中的 `"t*"` 表示以 `t` 开头的表。详情请参考[通配符匹配](https://en.wikipedia.org/wiki/Glob_(programming)#Syntax)。
 + 正则表达式需要以 `~` 字符开头。 
 
 ## 参数解释
