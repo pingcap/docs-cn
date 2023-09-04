@@ -218,7 +218,7 @@ with get_connection(autocommit=True) as connection:
 
 For complete examples in Python, see:
 
-- [Use PyMySQL to build a simple CRUD app with TiDB and Python](/develop/dev-guide-sample-application-python-pymysql.md#step-2-get-the-code)
+- [Connect to TiDB with PyMySQL](/develop/dev-guide-sample-application-python-pymysql.md)
 - [Connect to TiDB with mysqlclient](https://github.com/tidb-samples/tidb-python-mysqlclient-quickstart)
 - [Use MySQL Connector/Python to build a simple CRUD app with TiDB and Python](/develop/dev-guide-sample-application-python-mysql-connector.md#step-2-get-the-code)
 - [Use SQLAlchemy to build a simple CRUD app with TiDB and Python](/develop/dev-guide-sample-application-python-sqlalchemy.md#step-2-get-the-code)

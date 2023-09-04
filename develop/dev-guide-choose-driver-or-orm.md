@@ -247,7 +247,7 @@ Support level: **Compatible**
 
 You can follow the [PyMySQL documentation](https://pypi.org/project/PyMySQL/) to download and configure the driver. It is recommended to use PyMySQL 1.0.2 or later versions.
 
-For an example of using PyMySQL to build a TiDB application, see [Build a simple CRUD app with TiDB and PyMySQL](/develop/dev-guide-sample-application-python-pymysql.md#step-2-get-the-code).
+For an example of using PyMySQL to build a TiDB application, see [Connect to TiDB with PyMySQL](/develop/dev-guide-sample-application-python-pymysql.md).
 
 </div>
 <div label="mysqlclient">
