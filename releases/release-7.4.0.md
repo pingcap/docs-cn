@@ -42,6 +42,13 @@ TiDB 版本：7.4.0
 
 ### 稳定性
 
+* TiFlash 引擎支持查询级别数据落盘 [#7738](https://github.com/pingcap/tiflash/issues/7738) @[windtalker](https://github.com/windtalker)
+
+    在 v7.0.0 版本中，TiFlash 支持 `GROUP BY`，`ORDER BY`，`JOIN` 三种算子的数据落盘功能，以避免数据量超过内存总大小时，TiFlash 会终止查询甚至系统崩溃的问题。控制单个算子的数据落盘，对于用户并不友好，在实际使用中，无法有效的进行整体资源控制。
+    在 v7.4.0 版本中，TiFlash 支持查询级别数据落盘功能。通过设定单个查询在单个 TiFlash 节点使用内存的上限[`tiflash_mem_quota_query_per_node`](/system-variables.md#tiflash_mem_quota_query_per_node-从-v740-版本开始引入)及触发数据落盘的内存阈值[`tiflash_query_spill_ratio`](/system-variables.md#tiflash_query_spill_ratio-从-v740-版本开始引入)，可以方便的控制单个查询的内存使用，更好的管控 TiFlash 内存资源。
+
+    更多信息，请参考[用户文档](/tiflash/tiflash-spill-disk.md)。
+
 * 功能标题 [#issue号](链接) @[贡献者 GitHub ID](链接) **tw@xxx** <!--1234-->
 
     功能描述（需要包含这个功能是什么、在什么场景下对用户有什么价值、怎么用）
@@ -162,7 +169,7 @@ TiDB 版本：7.4.0
 
 + TiFlash
     - 提升 TiFlash 在存算分离架构下的性能和稳定性（实验特性） [#6882](https://github.com/pingcap/tiflash/issues/6882)  @[JaySon-Huang](https://github.com/JaySon-Huang) @[breezewish](https://github.com/breezewish) @[JinheLin](https://github.com/JinheLin) **tw@caiqian** <!--1234-->
-    - note [#issue](链接) @[贡献者 GitHub ID](链接)
+    - 改进 TiFlash Compact Log 策略，提升随机写入负载下的读性能 [#7564](https://github.com/pingcap/tiflash/issues/7564) @[CalvinNeo](https://github.com/CalvinNeo) **tw@caiqian** <!--1234-->
     - note [#issue](链接) @[贡献者 GitHub ID](链接)
 
 + Tools
