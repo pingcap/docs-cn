@@ -153,7 +153,6 @@ The following `CREATE USER` options are not yet supported by TiDB, and will be p
 
 * TiDB does not support `WITH MAX_QUERIES_PER_HOUR`, `WITH MAX_UPDATES_PER_HOUR`, and `WITH MAX_USER_CONNECTIONS` options.
 * TiDB does not support the `DEFAULT ROLE` option.
-* TiDB does not support `PASSWORD EXPIRE`, `PASSWORD HISTORY` or other options related to password.
 
 ## See also
 
