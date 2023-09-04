@@ -87,6 +87,9 @@ const handleFiles = async (fileList = []) => {
   console.log(fileList);
   for (let file of fileList) {
     const { status, raw_url, filename, previous_filename } = file;
+    if (!filename.endsWith(".md")) {
+      continue;
+    }
     switch (status) {
       case "added":
       case "modified":
