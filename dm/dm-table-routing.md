@@ -41,7 +41,7 @@ routes:
 支持正则表达式和通配符来匹配库表名，在简单任务场景下，推荐使用通配符匹配库表名，但需注意以下几点：
 
 + 通配符仅支持 `*`、`?` 以及 `[]`。符号 `*` 只能有一个，且必须在末尾。例如用 `table-pattern: "t_*"` 表示 `t_` 开头的表。详情请参考[通配符匹配](https://en.wikipedia.org/wiki/Glob_(programming)#Syntax)。
-+ `table-regexp`、`schema-regexp` 和 `source-regexp` 仅支持配置正则表达式，且不能以 `~` 符号开头。
++ `table-regexp`、`schema-regexp` 和 `source-regexp` 仅支持配置正则表达式，但不能以 `~` 符号开头。
 + `schema-pattern` 和 `table-pattern` 同时支持通配符和正则表达式。正则表达式必须以 `~` 符号开头。
 
 ## 参数解释
