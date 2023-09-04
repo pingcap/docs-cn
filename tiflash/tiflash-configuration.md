@@ -41,9 +41,9 @@ listen_host = "0.0.0.0"
 ## 建议在任何 TiFlash 的部署中都不配置该端口。(注: 从 TiFlash v7.1.0 起，由 TiUP >= v1.12.5 或 TiDB Operator >= v1.5.0 部署的 TiFlash 默认为安全版本，即默认未开启该端口)
 # tcp_port = 9000
 ## 数据块元信息的内存 cache 大小限制，通常不需要修改
-mark_cache_size = 5368709120
+mark_cache_size = 1073741824
 ## 数据块 min-max 索引的内存 cache 大小限制，通常不需要修改
-minmax_index_cache_size = 5368709120
+minmax_index_cache_size = 1073741824
 ## DeltaIndex 内存 cache 大小限制，默认为 0，代表没有限制
 delta_index_cache_size = 0
 
