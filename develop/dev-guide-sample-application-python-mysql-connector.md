@@ -252,7 +252,7 @@ Python 驱动程序提供对数据库的底层访问，但要求开发者：
 
 - 手动建立和释放数据库连接
 - 手动管理数据库事务
-- 手动将数据行（在 `mysql-connector-python` 中表示为元组(tuple)或者字典(dict)）映射为数据对象
+- 手动将数据行（在 `mysql-connector-python` 中表示为元组 (tuple) 或者字典 (dict)）映射为数据对象
 
 建议仅在需要编写复杂的 SQL 语句时使用驱动程序。其他情况下，建议使用 [ORM](https://zh.wikipedia.org/wiki/对象关系映射) 框架进行开发，例如 [SQLAlchemy](/develop/dev-guide-sample-application-python-sqlalchemy.md)、[Peewee](/develop/dev-guide-sample-application-python-peewee.md) 和 Django。ORM 可以帮助你：
 
