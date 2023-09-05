@@ -750,7 +750,7 @@ SELECT /*+ MAX_EXECUTION_TIME(1000) */ * FROM t1 inner join t2 WHERE t1.id = t2.
 SELECT /*+ TIDB_KV_READ_TIMEOUT(1000) */ * FROM t1 WHERE id = 1;
 ```
 
-除了 Hint 之外，你也可以通过系统变量 [`tidb_kv_read_timeout`](/system-variables.md#tidb_kv_read_timeout) 来设置查询语句中 TiDB 发送 KV RPC 读请求的超时时间。
+除了 Hint 之外，你也可以通过系统变量 [`tidb_kv_read_timeout`](/system-variables.md#tidb_kv_read_timeout-从-v740-版本开始引入) 来设置查询语句中 TiDB 发送 KV RPC 读请求的超时时间。
 
 ### MEMORY_QUOTA(N)
 
