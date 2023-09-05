@@ -244,12 +244,11 @@ mysql> SHOW GLOBAL BINDINGS;
 当前执行计划绑定信息在备份恢复后的动态加载仍在优化中 [#46527](https://github.com/pingcap/tidb/issues/46527), [#46528](https://github.com/pingcap/tidb/issues/46528)，需要手动刷新执行计划绑定信息。
 ```sql
 -- 确保 mysql.bind_info 表中 builtin_pseudo_sql_for_bind_lock 的记录仅 1 行，如果多于 1 行，需要手动删除
-mysql> select count(*) from mysql.bind_info where original_sql = 'builtin_pseudo_sql_for_bind_lock';
+SELECT count(*) FROM mysql.bind_info WHERE original_sql = 'builtin_pseudo_sql_for_bind_lock';
+DELETE FROM bind_info WHERE original_sql = 'builtin_pseudo_sql_for_bind_lock' LIMIT 1;
 
-mysql> delete from bind_info where original_sql = 'builtin_pseudo_sql_for_bind_lock' limit 1;
-
--- 强制重新加载 Binding 信息
-mysql> ADMIN RELOAD BINDINGS;
+-- 强制重新加载绑定信息
+ADMIN RELOAD BINDINGS;
 ```
 
 ## 恢复加密的快照备份数据
