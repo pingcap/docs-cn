@@ -3,7 +3,7 @@ title: 使用 mysql.js 连接到 TiDB
 summary: 本文描述了 TiDB 和 mysql.js 的连接步骤，并给出了简单示例代码片段。
 ---
 
-# 如何用 mysql.js 连接到 TiDB
+# 使用 mysql.js 连接到 TiDB
 
 TiDB 是一个兼容 MySQL 的数据库。[mysql.js](https://github.com/mysqljs/mysql) 是一个纯 Node.js 代码编写的实现了 MySQL 协议的 JavaScript 客户端。
 

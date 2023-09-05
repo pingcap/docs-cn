@@ -3,7 +3,7 @@ title: 使用 Prisma 连接到 TiDB
 summary: 本文描述了 TiDB 和 Prisma 的连接步骤，并给出了简单示例代码片段。
 ---
 
-# 如何用 Prisma 连接到 TiDB
+# 使用 Prisma 连接到 TiDB
 
 TiDB 是一个兼容 MySQL 的数据库。[Prisma](https://www.prisma.io/) 是当前流行的 Node.js ORM 框架之一。
 
