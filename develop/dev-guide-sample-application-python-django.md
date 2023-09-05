@@ -183,7 +183,7 @@ python manage.py migrate
     python manage.py runserver
     ```
 
-    默认的端口号为 8000，如果你想要修改端口号，可以在命令后面添加端口号，例如：
+    应用程序默认在 `8000` 端口上运行。如果你想要使用其他端口号，可以在命令后添加端口号，例如：
 
     ```shell
     python manage.py runserver 8080
@@ -196,7 +196,7 @@ python manage.py migrate
     - 查看所有的 Player
     - 更新 Player
     - 删除 Player
-    - 在两个 Player 之间进行交易
+    - 在两个 Player 之间交易物品
 
 ## 示例代码片段
 
