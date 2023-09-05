@@ -238,7 +238,7 @@ br restore full \
 恢复完成后，可以通过 [`SHOW GLOBAL BINDINGS`](../sql-statements/sql-statement-show-bindings.md) 检查执行计划绑定信息的恢复情况。
 
 ```sql
-mysql> SHOW GLOBAL BINDINGS;
+SHOW GLOBAL BINDINGS;
 ```
 
 当前执行计划绑定信息在备份恢复后的动态加载仍在优化中（相关的 issue 为 [#46527](https://github.com/pingcap/tidb/issues/46527) 和 [#46528](https://github.com/pingcap/tidb/issues/46528)，你需要手动刷新执行计划绑定信息。
