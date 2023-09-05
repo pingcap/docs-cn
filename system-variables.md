@@ -2520,7 +2520,7 @@ v5.0 后，用户仍可以单独修改以上系统变量（会有废弃警告）
 - 默认值：`0`
 - 范围：`[0, 2147483647]`
 - 单位：毫秒
-- 该变量用于设置查询语句中 TiDB 发送 TiKV RPC 读请求的超时时间。通常不建议用户设置该变量的值。当 TiDB 集群在网络不稳定，或者 I/O 延迟抖动严重的环境下，且用户对查询 SQL 的延迟比较敏感时，可以通过设置 `tidb_kv_read_timeout` 调小 TiKV RPC 读请求的超时时间，这样当某个 TiKV 出现 I/O 延迟抖动时，TiDB 侧可以快速超时并重新发送 TiKV RPC 请求给下一个 TiKV Region Peer 所在的 TiKV。如果所有 TiKV Region Peer 都请求超时，则会用默认的超时时间进行重试。
+- 该变量用于设置查询语句中 TiDB 发送 TiKV RPC 读请求的超时时间。当 TiDB 集群在网络不稳定，或者 TiKV 的 I/O 延迟抖动严重的环境下，且用户对查询 SQL 的延迟比较敏感时，可以通过设置 `tidb_kv_read_timeout` 调小 TiKV RPC 读请求的超时时间，这样当某个 TiKV 出现 I/O 延迟抖动时，TiDB 侧可以快速超时并重新发送 TiKV RPC 请求给下一个 TiKV Region Peer 所在的 TiKV。如果所有 TiKV Region Peer 都请求超时，则会用默认的超时时间进行重试。
 - 你也可以通过 Hint [`TIDB_KV_READ_TIMEOUT(N)`](/optimizer-hints.md#tidb_kv_read_timeoutn) 来设置查询语句中 TiDB 发送 TiKV RPC 读请求的超时时间。如果同时设置了 Hint 和系统变量，则 Hint 优先级高。
 - 默认值 `0` 表示使用默认的超时时间（通常是 40 秒）。
 
