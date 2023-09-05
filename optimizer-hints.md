@@ -744,15 +744,13 @@ SELECT /*+ MAX_EXECUTION_TIME(1000) */ * FROM t1 inner join t2 WHERE t1.id = t2.
 
 ### TIDB_KV_READ_TIMEOUT(N)
 
-`TIDB_KV_READ_TIMEOUT` 用于设置查询语句中 TiDB 发送 KV RPC 读请求的超时时间。通常不建议用户设置该变量的值。当 TiDB 集群在网络不稳定或者 io 延迟抖动严重的环境下，且用户对查询 SQL 的延迟比较敏感时，可以通过设置 `tidb_kv_read_timeout` 调小 KV RPC 读请求的超时时间，这样当某个 TiKV 出现 io 延迟抖动时，TiDB 侧可以快速超时并重新发送 KV RPC 请求给下一个 KV Region Peer 所在的 TiKV。如果所有 KV Region Peer 都请求超时，则会用默认的超时时间进行重试。
-
-{{< copyable "sql" >}}
+`TIDB_KV_READ_TIMEOUT` 用于设置查询语句中 TiDB 发送 KV RPC 读请求的超时时间。通常不建议用户设置该变量的值。当 TiDB 集群在网络不稳定，或者 I/O 延迟抖动严重的环境下，且用户对查询 SQL 的延迟比较敏感时，可以通过设置 `TIDB_KV_READ_TIMEOUT` 调小 KV RPC 读请求的超时时间，这样当某个 TiKV 出现 I/O 延迟抖动时，TiDB 侧可以快速超时并重新发送 KV RPC 请求给下一个 KV Region Peer 所在的 TiKV。如果所有 KV Region Peer 都请求超时，则会用默认的超时时间进行重试。
 
 ```sql
 SELECT /*+ TIDB_KV_READ_TIMEOUT(1000) */ * FROM t1 WHERE id = 1;
 ```
 
-除了 Hint 之外，也能通过系统变量 [`tidb_kv_read_timeout`](/system-variables.md#tidb_kv_read_timeout) 来设置。
+除了 Hint 之外，你也能通过系统变量 [`tidb_kv_read_timeout`](/system-variables.md#tidb_kv_read_timeout) 来设置查询语句中 TiDB 发送 KV RPC 读请求的超时时间。
 
 ### MEMORY_QUOTA(N)
 
