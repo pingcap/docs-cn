@@ -177,7 +177,7 @@ python manage.py migrate
 
 ### 第 5 步：运行示例应用程序
 
-1. 运行以下命令，使用开发模式启动示例应用程序：
+1. 在开发模式下运行示例应用程序：
 
     ```shell
     python manage.py runserver
