@@ -53,7 +53,7 @@ pip install -r requirements.txt
 
 django-tidb 解决了 TiDB 和 Django 之间的兼容性问题。
 
-安装 django-tidb 的时候，你需要选择与你的 Django 版本对应的版本，例如，如果你使用的是 `django==4.2.*`，你需要安装 `django-tidb==4.2.*`，最小版本号不需要一致，使用各自最新的最小版本即可。
+安装 `django-tidb` 时，请选择与你的 Django 版本匹配的版本。例如，如果你使用的是 `django==4.2.*`，则应安装 `django-tidb==4.2.*`，其中 minor 版本号不需要完全相同。建议使用最新的 minor 版本。
 
 更多信息，请参考 [django-tidb 仓库](https://github.com/pingcap/django-tidb)。
 
