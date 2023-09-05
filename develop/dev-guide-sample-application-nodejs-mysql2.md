@@ -3,11 +3,11 @@ title: 使用 node-mysql2 连接到 TiDB
 summary: 本文描述了 TiDB 和 node-mysql2 的连接步骤，并给出了简单示例代码片段。
 ---
 
-# 如何用 node-mysql2 连接到 TiDB
+# 使用 node-mysql2 连接到 TiDB
 
 TiDB 是一个兼容 MySQL 的数据库。[node-mysql2](https://github.com/sidorares/node-mysql2) 是一个与 [mysqljs/mysql](https://github.com/mysqljs/mysql) 兼容的面向 Node.js 的 MySQL 驱动。
 
-本文档将展示如何使用 TiDB 和 node-mysql2 来构造一个简单的 CRUD 应用程序。
+本文档将展示如何使用 TiDB 和 node-mysql2 来完成以下任务：
 
 - 配置你的环境。
 - 使用 node-mysql2 驱动连接到 TiDB 集群。
@@ -112,7 +112,7 @@ npm install mysql2 dotenv --save
 2. 点击右上角的 **Connect** 按钮，将会出现连接对话框。
 3. 在对话框中点击 **Allow Access from Anywhere**，然后点击 **Download TiDB cluster CA** 下载 TiDB Cloud 提供的 CA 证书。
 
-   更多配置细节，可参考 [TiDB Dedicated 标准连接教程（英文）](https://docs.pingcap.com/tidbcloud/connect-via-standard-connection)。
+    更多配置细节，可参考 [TiDB Dedicated 标准连接教程（英文）](https://docs.pingcap.com/tidbcloud/connect-via-standard-connection)。
 
 4. 运行以下命令，将 `.env.example` 复制并重命名为 `.env`：
 
@@ -276,10 +276,10 @@ console.log(rsh.affectedRows);
 ## 注意事项
 
 - 推荐使用[连接池](https://github.com/sidorares/node-mysql2#using-connection-pools)来管理数据库连接，以减少频繁建立和销毁连接所带来的性能开销。
-- 为了避免 SQL 注入的风险，推荐使用[预处理语句](https://github.com/sidorares/node-mysql2#using-prepared-statements)执行 SQL.
-- 在不涉及大量复杂 SQL 语句的场景下, 推荐使用 ORM 框架 (例如：[Sequelize](https://sequelize.org/), [TypeORM](https://typeorm.io/), 或 [Prisma](https://www.prisma.io/)) 来提升你的开发效率.
-- 当你在数据表中使用到 `BIGINT` 和 `DECIMAL` 类型列时，需要开启 Driver 的 `supportBigNumbers: true` 选项.
-- 为了避免由于网络原因出现的 `read ECONNRESET` Socket 错误，可以在 Driver 上开启 `enableKeepAlive: true` 选项. (相关 Issue: [sidorares/node-mysql2#683](https://github.com/sidorares/node-mysql2/issues/683))
+- 为了避免 SQL 注入的风险，推荐使用[预处理语句](https://github.com/sidorares/node-mysql2#using-prepared-statements)执行 SQL。
+- 在不涉及大量复杂 SQL 语句的场景下，推荐使用 ORM 框架 (例如：[Sequelize](https://sequelize.org/)、[TypeORM](https://typeorm.io/) 或 [Prisma](https://www.prisma.io/)) 来提升你的开发效率。
+- 当你在数据表中使用到 `BIGINT` 和 `DECIMAL` 类型列时，需要开启 Driver 的 `supportBigNumbers: true` 选项。
+- 为了避免由于网络原因出现的 `read ECONNRESET` Socket 错误，可以在 Driver 上开启 `enableKeepAlive: true` 选项。（相关 Issue: [sidorares/node-mysql2#683](https://github.com/sidorares/node-mysql2/issues/683)）
 
 ## 下一步
 
