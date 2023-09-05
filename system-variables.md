@@ -4338,6 +4338,29 @@ Query OK, 0 rows affected, 1 warning (0.00 sec)
     * 大于 0: 表示使用细粒度 shuffle 功能，下推到 TiFlash 的窗口函数会以多线程方式执行，并发度为： min(`tiflash_fine_grained_shuffle_stream_count`, TiFlash 节点物理线程数)
 - 理论上窗口函数的性能会随着该值的增加线性提升。但是如果设置的值超过实际的物理线程数，反而会导致性能下降。
 
+### `tiflash_mem_quota_query_per_node` <span class="version-mark">从 v7.4.0 版本开始引入</span>
+
+- 作用域：SESSION | GLOBAL
+- 是否持久化到集群：是
+- 类型：整数型
+- 默认值：`0`
+- 范围：`[-1, 9223372036854775807]`
+- 用于设置 query 在每个 TiFlash 节点上的内存最大使用量，超过该限制时 TiFlash 会报错并终止该 query。-1 或者 0 表示无限制，当该变量设置为一个大于 0 的值且 [tiflash_query_spill_ratio](/system-variables.md#tiflash_mem_quota_query_per_node) 也设置为一个大于 0 的值时，TiFlash 在 query 内存超过 tiflash_mem_quota_query_per_node * tiflash_query_spill_ratio 会自动选择支持 spill 的算子（sort/aggregation/join）进行 spill。
+
+### `tiflash_query_spill_ratio` <span class="version-mark">从 v7.4.0 版本开始引入</span>
+
+- 作用域：SESSION | GLOBAL
+- 是否持久化到集群：是
+- 类型：浮点数
+- 默认值：`0.7`
+- 范围：`[0, 0.85]`
+- 用于控制 TiFlash query 自动 spill 机制：0 表示不进行 query 级别的自动 spill，大于 0 时，TiFlash 会在 query 内存超过 [tiflash_mem_quota_query_per_node](/system-variables.md#tiflash_query_spill_ratio) * tiflash_query_spill_ratio 自动选择支持 spill 的算子（sort/aggregation/join）进行 spill。
+
+> **注意：**
+>
+> - 该变量只在 [tiflash_mem_quota_query_per_node](/system-variables.md#tiflash_query_spill_ratio) 大于 0 时生效，即如果 [tiflash_mem_quota_query_per_node](/system-variables.md#tiflash_query_spill_ratio) 设置为 0 或 -1，即使 `tiflash_query_spill_ratio` 大于 0 也不会触发自动 spill。
+> - TiFlash query 级别自动 spill 机制开启时，TiFlash 单个算子的 spill 阈值会自动失效，即如果 [tiflash_mem_quota_query_per_node](/system-variables.md#tiflash_query_spill_ratio) 大于 0 且 `tiflash_query_spill_ratio` 大于 0 时 [tidb_max_bytes_before_tiflash_external_sort](/system-variables.md#tidb_max_bytes_before_tiflash_external_sort)/[tidb_max_bytes_before_tiflash_external_group_by](/system-variables.md#tidb_max_bytes_before_tiflash_external_group_by)/[tidb_max_bytes_before_tiflash_external_join](/system-variables.md#tidb_max_bytes_before_tiflash_external_join) 这三个参数会自动失效，等效于被设置为 0 。
+
 ### `tiflash_replica_read` <span class="version-mark">从 v7.3.0 版本开始引入</span>
 
 - 作用范围：SESSION | GLOBAL
