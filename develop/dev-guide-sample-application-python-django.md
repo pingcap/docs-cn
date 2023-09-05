@@ -51,7 +51,7 @@ pip install -r requirements.txt
 
 #### `django-tidb` 是什么？
 
-django-tidb 解决了 TiDB 和 Django 之间的兼容性问题。
+`django-tidb` 是一个为 Django 提供的 TiDB 适配器，它解决了 TiDB 与 Django 之间的兼容性问题。
 
 安装 `django-tidb` 时，请选择与你的 Django 版本匹配的版本。例如，如果你使用的是 `django==4.2.*`，则应安装 `django-tidb==4.2.*`，其中 minor 版本号不需要完全相同。建议使用最新的 minor 版本。
 
