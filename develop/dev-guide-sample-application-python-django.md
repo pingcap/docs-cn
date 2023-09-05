@@ -6,7 +6,7 @@ aliases: ['/zh/tidb/dev/dev-guide-sample-application-django']
 
 # 使用 Django 连接到 TiDB
 
-TiDB 是一个兼容 MySQL 的数据库。[Django](https://www.djangoproject.com/) 是一个非常流行的 Python Web 框架，它内部实现了一个强大的 ORM(Object Relational Mapper) 系统。
+TiDB 是一个兼容 MySQL 的数据库。[Django](https://www.djangoproject.com/) 为当前流行的 Python Web 框架之一，它内部实现了一个强大的 ORM (Object Relational Mapper) 系统。
 
 本文档将展示如何使用 TiDB 和 Django 来完成以下任务：
 
