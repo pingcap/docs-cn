@@ -221,7 +221,7 @@ br restore full \
 
 ### 恢复系统表中存储的执行计划绑定信息
 
-如果你需要恢复原集群的执行计划绑定信息，执行 `br restore full` 命令，并用 `--with-sys-table` 指定说明需要恢复系统表，通过 `--filter` 或 `-f` 指定恢复 `mysql.bind_info` 表。
+如果你需要恢复原集群的执行计划绑定信息，执行 `br restore full` 命令，设置 `--with-sys-table` 并通过 `--filter` 或 `-f` 指定需要恢复的系统表。
 
 下面是恢复 `mysql.bind_info` 表的示例：
 
