@@ -50,7 +50,7 @@ pip install -r requirements.txt
 
 SQLAlchemy 是一个支持多种数据库的 ORM 库。它是对数据库的高层抽象，可以帮助开发者以更面向对象的方式编写 SQL 语句。但 SQLAlchemy 并不提供数据库驱动，因此需要单独安装用于连接 TiDB 的驱动。本示例项目使用 PyMySQL 作为数据库驱动。PyMySQL 是一个与 TiDB 兼容的纯 Python 实现的 MySQL 客户端库，并可以在所有平台上安装。
 
-你也可以使用其他数据库驱动，例如 [mysqlclient](https://github.com/PyMySQL/mysqlclient) 以及 [mysql-connector-python](https://dev.mysql.com/doc/connector-python/en/)，但是它们不是纯 Python 库，需要安装对应的 C/C++ 编译器和 MySQL 客户端库来编译。更多信息，参考 [SQLAlchemy 官方文档](https://docs.sqlalchemy.org/en/20/core/engines.html#mysql)。
+你也可以使用其他数据库驱动，例如 [mysqlclient](https://github.com/PyMySQL/mysqlclient) 以及 [mysql-connector-python](https://dev.mysql.com/doc/connector-python/en/)。但是它们不是纯 Python 库，需要安装对应的 C/C++ 编译器和 MySQL 客户端库进行编译。更多信息，参考 [SQLAlchemy 官方文档](https://docs.sqlalchemy.org/en/20/core/engines.html#mysql)。
 
 ### 第 3 步：配置连接信息
 
