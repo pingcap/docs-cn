@@ -224,7 +224,6 @@ Your database is now in sync with your schema.
 
 这个命令同时会根据 `prisma/schema.prisma` 文件中的模型定义，生成用于与数据库交互的 [Prisma Client](https://www.prisma.io/docs/concepts/components/prisma-client) 的代码。
 
-
 ### 第 5 步：运行代码并查看结果
 
 运行下述命令，执行示例代码：
