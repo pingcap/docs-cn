@@ -40,7 +40,7 @@ TiDB 版本：7.4.0
 
     * `value MEMBER OF(json_array)`
 
-* 支持下推包含任何帧定义的窗口函数到 TiFlash [#111](https://github.com/pingcap/tiflash/issues/7427) @[xzhangxian1008](https://github.com/xzhangxian1008)  **tw@caiqian** <!--1234-->
+* 支持下推包含任何帧定义的窗口函数到 TiFlash [#7376](https://github.com/pingcap/tiflash/issues/7376) @[xzhangxian1008](https://github.com/xzhangxian1008)  **tw@caiqian** <!--1234-->
 
     在 v7.4.0 之前的版本中，TiFlash 不支持包含 PRECEDING 或 FOLLOWING 的窗口函数，所有包含此类帧定义的窗口函数都无法下推至 TiFlash。从 v7.4.0 开始，TiFlash 支持了所有的窗口函数的帧定义。该功能自动启用，满足要求时，会自动下推至 TiFlash 执行。
 
