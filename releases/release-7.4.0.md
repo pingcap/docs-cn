@@ -63,6 +63,12 @@ TiDB 版本：7.4.0
 
     更多信息，请参考[用户文档](/tidb-resource-control.md)。
 
+* TiFlash Pipeline 执行模型正式发布（GA）[#6518](https://github.com/pingcap/tiflash/issues/6518) @[SeaRise](https://github.com/SeaRise)
+
+    在 v7.2.0 版本中，TiFlash 以实验特性发布了 Pipeline 执行模型。TiFlash 引入 Pipeline 执行模型，对所有线程资源进行统一管理，并对所有任务的执行进行统一调度，充分利用线程资源，同时避免资源超用。从 v7.4.0 开始，TiFlash 完善了线程资源使用量的统计，将正式发布 Pipeline 执行模型。控制该特性是否启用的系统变量 [`tidb_enable_tiflash_pipeline_model`](/system-variables.md#tidb_enable_tiflash_pipeline_model-从-v720-版本开始引入) 的默认值将调整为 `true`，并且作用域调整为 `GLOBAL`。
+
+    更多信息，请参考[用户文档](/tiflash/tiflash-pipeline-model.md)。
+
 * 功能标题 [#issue号](链接) @[贡献者 GitHub ID](链接) **tw@xxx** <!--1234-->
 
     功能描述（需要包含这个功能是什么、在什么场景下对用户有什么价值、怎么用）
