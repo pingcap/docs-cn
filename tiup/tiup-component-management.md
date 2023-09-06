@@ -248,8 +248,6 @@ TiUP v1.13.0 添加了实验性的 `link` 和 `unlink` 命令，用于将组件�
 
 示例一： 安装并链接 cluster 组件的最新版本
 
-{{< copyable "shell-regular" >}}
-
 ```shell
 tiup install cluster
 tiup link cluster
