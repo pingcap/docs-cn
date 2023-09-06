@@ -258,7 +258,7 @@ tiup link cluster
 tiup link cluster：v1.13.0
 ```
 
-`tiup link cluster` 命令会输出如下的内容
+`tiup link cluster` 命令会输出如下的内容：
 
 ```shell
 package cluster provides these executables: tiup-cluster
