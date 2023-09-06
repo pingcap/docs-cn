@@ -227,11 +227,12 @@ with get_connection(autocommit=True) as connection:
 
 有关 Python 的完整示例，可参阅：
 
-- [TiDB 和 PyMySQL 的简单 CRUD 应用程序](/develop/dev-guide-sample-application-python-pymysql.md)
-- [TiDB 和 mysqlclient 的简单 CRUD 应用程序](/develop/dev-guide-sample-application-python-mysqlclient.md)
-- [TiDB 和 MySQL Connector/Python 的简单 CRUD 应用程序](/develop/dev-guide-sample-application-python-mysql-connector.md)
-- [TiDB 和 SQLAlchemy 的简单 CRUD 应用程序](/develop/dev-guide-sample-application-python-sqlalchemy.md)
-- [TiDB 和 peewee 的简单 CRUD 应用程序](/develop/dev-guide-sample-application-python-peewee.md)
+- [使用 PyMySQL 连接到 TiDB](/develop/dev-guide-sample-application-python-pymysql.md)
+- [使用 mysqlclient 连接到 TiDB](/develop/dev-guide-sample-application-python-mysqlclient.md)
+- [使用 MySQL Connector/Python 连接到 TiDB](/develop/dev-guide-sample-application-python-mysql-connector.md)
+- [使用 SQLAlchemy 连接到 TiDB](/develop/dev-guide-sample-application-python-sqlalchemy.md)
+- [使用 Django 连接到 TiDB](/develop/dev-guide-sample-application-python-django.md)
+- [使用 peewee 连接到 TiDB](/develop/dev-guide-sample-application-python-peewee.md)
 
 </div>
 
