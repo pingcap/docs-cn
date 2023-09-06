@@ -111,6 +111,14 @@ TiDB 版本：7.4.0
 
     更多信息，请参考[用户文档](链接)。
 
+* 新增排序规则 `utf8mb4_0900_ai_ci` 和 `utf8mb4_0900_bin` [#37566](https://github.com/pingcap/tidb/issues/37566) @[YangKeao](https://github.com/YangKeao) @[zimulala](https://github.com/zimulala) @[bb7133](https://github.com/bb7133)
+
+    TiDB 在新版本中增强了从 MySQL 8.0 迁移的支持。新增两个排序规则 (Collation) `utf8mb4_0900_ai_ci` 和 `utf8mb4_0900_bin`， 其中 `utf8mb4_0900_ai_ci` 为 MySQL 8.0 的默认排序规则。
+
+    同时新增支持 MySQL 8.0 兼容的系统变量 [`default_collation_for_utf8mb4`]()， 允许用户为 utf8mb4 字符集选择默认排序方式， 兼容从 MySQL 5.7 或更旧版本的迁移或数据复制场景。
+
+    更多信息，请参考[用户文档](/character-set-and-collation#支持的字符集和排序规则)。
+
 ### 可观测性
 
 * 功能标题 [#issue号](链接) @[贡献者 GitHub ID](链接) **tw@xxx** <!--1234-->
@@ -153,7 +161,7 @@ TiDB 版本：7.4.0
 
 | 变量名 | 修改类型 | 描述 |
 |---|----|------|
-|  | 新增/删除/修改 |  |
+| [`default_collation_for_utf8mb4`]() | 新增 | 为 utf8mb4 字符集选择默认排序方式， 兼容从 MySQL 5.7 或更旧版本的迁移或数据复制场景。 |
 |  | 新增/删除/修改 |  |
 |  | 新增/删除/修改 |  |
 |  | 新增/删除/修改 |  |
