@@ -8,7 +8,7 @@ if not parser.exists():
     sys.exit(f"{parser} doesn't exist")
 
 kwdocs = Path("keywords.md")
-if not parser.exists():
+if not kwdocs.exists():
     sys.exit(f"{kwdocs} doesn't exist")
 
 keywords = kwdocs.read_text()
