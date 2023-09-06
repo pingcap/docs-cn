@@ -55,6 +55,14 @@ TiDB 版本：7.4.0
 
     更多信息，请参考[用户文档](/tiflash/tiflash-spill-disk.md)。
 
+* 部分系统变量可通过优化器提示设置 [#issue号](链接) @[winoros](https://github.com/winoros) 
+
+    TiDB 新增支持了 MySQL 8.0 相似的优化器提示 [`SET_VAR()`]()。 通过在 SQL 添加 hint `SET_VAR()`，能够在语句运行过程中临时修改部分系统变量，达到针对不同语句设置环境的目的。 比如主动提升高消耗的 SQL 的并行度，或者利用变量修改优化器行为。 
+    
+    支持修改的系统变量请参考[用户文档](/system-variables.md)，不建议在提示中设置文档中没有明确支持的变量，可能造成不可预知的结果。 
+
+    更多信息，请参考[用户文档](/optimizer-hints.md)。
+
 * TiFlash 支持资源管控特性 [#7660](https://github.com/pingcap/tiflash/issues/7660) @[guo-shaoge](https://github.com/guo-shaoge)  **tw@caiqian** <!--1234-->
 
     TiDB 在 v7.1.0 中正式发布了基于资源组的资源管控特性，但是这个特性还不包含 TiFlash。在 v7.4.0 中，TiFlash 支持了资源管控特性，完善了整体 TiDB 的资源管控能力。TiFlash 的资源管控和已有的 TiDB 资源管控特性完全兼容，现有的资源组将同时管控 TiDB/TiKV/TiFlash 中的资源。
