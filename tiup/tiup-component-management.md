@@ -269,9 +269,7 @@ package cluster provides these executables: tiup-cluster
 
 代表 cluster 组件的二进制文件名为 tiup-cluster。link 命令完成后，你可以直接在命令行输入 tiup-cluster 来使用 cluster 组件。
 
-示例三： 取消 cluster 组件的链接
-
-{{< copyable "shell-regular" >}}
+示例三：取消 cluster 组件的链接
 
 ```shell
 tiup unlink cluster
