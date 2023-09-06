@@ -255,8 +255,6 @@ tiup link cluster
 
 示例二： 切换 cluster 组件到 v1.13.0 版本
 
-{{< copyable "shell-regular" >}}
-
 ```shell
 tiup link cluster：v1.13.0
 ```
