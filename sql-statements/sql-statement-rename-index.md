@@ -52,7 +52,7 @@ Create Table: CREATE TABLE `t1` (
 
 ## MySQL compatibility
 
-The `RENAME INDEX` statement in TiDB is fully compatible with MySQL. If you find any compatibility differences, report them via [an issue on GitHub](https://github.com/pingcap/tidb/issues/new/choose).
+The `RENAME INDEX` statement in TiDB is fully compatible with MySQL. If you find any compatibility differences, [report a bug](https://docs.pingcap.com/tidb/stable/support).
 
 ## See also
 

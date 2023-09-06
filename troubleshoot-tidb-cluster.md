@@ -6,7 +6,7 @@ aliases: ['/docs/dev/troubleshoot-tidb-cluster/','/docs/dev/how-to/troubleshoot/
 
 # TiDB Cluster Troubleshooting Guide
 
-You can use this guide to help you diagnose and solve basic problems while using TiDB. If your problem is not resolved, please collect the following information and [create an issue](https://github.com/pingcap/tidb/issues/new/choose):
+You can use this guide to help you diagnose and solve basic problems while using TiDB. If your problem is not resolved, please collect the following information and you can [report a bug](/support.md):
 
 - The exact error message and the operations while the error occurs
 - The state of all the components
@@ -25,7 +25,7 @@ For other information, see [Frequently Asked Questions (FAQ)](/faq/tidb-faq.md).
 
     + If all the processes are running, check the `tidb-server` log to see if the following messages are displayed:
         - InformationSchema is out of date: This message is displayed if the `tikv-server` cannot be connected. Check the state and log of `pd-server` and `tikv-server`.
-        - panic: This message is displayed if there is an issue with the program. Please provide the detailed panic log and [create an issue](https://github.com/pingcap/tidb/issues/new/choose).
+        - panic: This message is displayed if there is an issue with the program. Please provide the detailed panic log and you can [report a bug](/support.md).
 
 3. If the data is cleared and the services are re-deployed, make sure that:
 
@@ -87,7 +87,7 @@ See the following for the situations when the `pd-server` cannot be started:
 
 ## TiDB panic
 
-Please provide the panic log and [create an issue](https://github.com/pingcap/tidb/issues/new/choose).
+Please provide the panic log and you can [report a bug](/support.md).
 
 ## The connection is rejected
 

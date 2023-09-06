@@ -54,7 +54,7 @@ SHOW CREATE SCHEMA IF NOT EXISTS test;
 
 ## MySQL compatibility
 
-`SHOW CREATE DATABASE` is expected to be fully compatible with MySQL. If you find any compatibility differences, submit a GitHub [issue](https://github.com/pingcap/tidb/issues/new/choose).
+`SHOW CREATE DATABASE` is expected to be fully compatible with MySQL. If you find any compatibility differences, you can [report a bug](https://docs.pingcap.com/tidb/stable/support).
 
 ## See also
 

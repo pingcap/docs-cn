@@ -62,7 +62,7 @@ Query OK, 0 rows affected (0.11 sec)
 
 ## MySQL compatibility
 
-The `TRUNCATE` statement in TiDB is fully compatible with MySQL. If you find any compatibility differences, report them via [an issue on GitHub](https://github.com/pingcap/tidb/issues/new/choose).
+The `TRUNCATE` statement in TiDB is fully compatible with MySQL. If you find any compatibility differences, [report a bug](https://docs.pingcap.com/tidb/stable/support).
 
 ## See also
 

@@ -413,4 +413,4 @@ To build a bidirectional DR cluster, see [TiCDC bidirectional replication](/ticd
 
 ## Troubleshooting
 
-If you encounter any problem in the preceding steps, you can first find the solution to the problem in [TiDB FAQs](/faq/faq-overview.md). If the problem is not resolved, you can report an [issue](https://github.com/pingcap/tidb/issues/new/choose) on GitHub.
+If you encounter any problem in the preceding steps, you can first find the solution to the problem in [TiDB FAQs](/faq/faq-overview.md). If the problem is not resolved, you can [report a bug](/support.md).
