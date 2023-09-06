@@ -275,7 +275,7 @@ package cluster provides these executables: tiup-cluster
 tiup unlink cluster
 ```
 
-示例四： 对 tiup 自身进行版本管理
+示例四：对 TiUP 自身进行版本管理
 
 在 v1.13.0 之前的版本，tiup 自身被安装到 ~/.tiup/bin/ 下，不能多版本共存。自 v1.13.0 开始，可以将它和所有其他组件一样进行安装、链接。
 
