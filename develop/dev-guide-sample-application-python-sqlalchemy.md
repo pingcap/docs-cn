@@ -1,238 +1,283 @@
 ---
-title: TiDB 和 SQLAlchemy 的简单 CRUD 应用程序
-summary: 给出一个 TiDB 和 SQLAlchemy 的简单 CRUD 应用程序示例。
+title: 使用 SQLAlchemy 连接到 TiDB
+summary: 了解如何使用 SQLAlchemy 连接到 TiDB。本文提供了使用 SQLAlchemy 与 TiDB 交互的 Python 示例代码片段。
 ---
 
-<!-- markdownlint-disable MD024 -->
-<!-- markdownlint-disable MD029 -->
+# 使用 PyMySQL 连接到 TiDB
 
-# TiDB 和 SQLAlchemy 的简单 CRUD 应用程序
+TiDB 是一个兼容 MySQL 的数据库。[SQLAlchemy](https://www.sqlalchemy.org/) 为当前流行的开源 Python ORM (Object Relational Mapper) 之一。
 
-[SQLAlchemy](https://www.sqlalchemy.org/) 为当前比较流行的开源 Python ORM 之一。
+本文档将展示如何使用 TiDB 和 SQLAlchemy 来完成以下任务：
 
-本文档将展示如何使用 TiDB 和 SQLAlchemy 来构造一个简单的 CRUD 应用程序。
+- 配置你的环境。
+- 使用 SQLAlchemy 连接到 TiDB 集群。
+- 构建并运行你的应用程序。你也可以参考[示例代码片段](#示例代码片段)，完成基本的 CRUD 操作。
 
-> **注意：**
+> **注意**
 >
-> 推荐使用 Python 3.10 及以上版本进行 TiDB 的应用程序的编写。
+> 本文档适用于 TiDB Serverless、TiDB Dedicated 和本地部署的 TiDB。
 
-## 第 1 步：启动你的 TiDB 集群
+## 前置需求
 
-本节将介绍 TiDB 集群的启动方法。
+- 推荐 [Python 3.8](https://www.python.org/downloads/) 及以上版本。
+- [Git](https://git-scm.com/downloads)。
+- TiDB 集群。如果你还没有 TiDB 集群，可以按照以下方式创建：
+    - （推荐方式）参考[创建 TiDB Serverless 集群](/develop/dev-guide-build-cluster-in-cloud.md#第-1-步创建-tidb-serverless-集群)，创建你自己的 TiDB Cloud 集群。
+    - 参考[部署本地测试 TiDB 集群](/quick-start-with-tidb.md#部署本地测试集群)或[部署正式 TiDB 集群](/production-deployment-using-tiup.md)，创建本地集群。
 
-**使用 TiDB Serverless 集群**
+## 运行代码并连接到 TiDB
 
-详细步骤，请参考：[创建 TiDB Serverless 集群](/develop/dev-guide-build-cluster-in-cloud.md#第-1-步创建-tidb-serverless-集群)。
+本小节演示如何运行示例应用程序的代码，并连接到 TiDB。
 
-**使用本地集群**
+### 第 1 步：克隆示例代码仓库到本地
 
-详细步骤，请参考：[部署本地测试 TiDB 集群](/quick-start-with-tidb.md#部署本地测试集群)或[部署正式 TiDB 集群](/production-deployment-using-tiup.md)。
+运行以下命令，将示例代码仓库克隆到本地：
 
-## 第 2 步：获取代码
-
-```shell
-git clone https://github.com/pingcap-inc/tidb-example-python.git
+```bash
+git clone https://github.com/tidb-samples/tidb-python-sqlalchemy-quickstart.git
+cd tidb-python-sqlalchemy-quickstart
 ```
 
-此处将以 SQLAlchemy **1.4.44** 版本进行说明。
+### 第 2 步：安装依赖
 
-```python
-import uuid
-from typing import List
+运行以下命令，安装示例代码所需要的依赖（包括 SQLAlchemy 和 PyMySQL）：
 
-from sqlalchemy import create_engine, String, Column, Integer, select, func
-from sqlalchemy.orm import declarative_base, sessionmaker
-
-engine = create_engine('mysql://root:@127.0.0.1:4000/test')
-Base = declarative_base()
-Base.metadata.create_all(engine)
-Session = sessionmaker(bind=engine)
-
-
-class Player(Base):
-    __tablename__ = "player"
-
-    id = Column(String(36), primary_key=True)
-    coins = Column(Integer)
-    goods = Column(Integer)
-
-    def __repr__(self):
-        return f'Player(id={self.id!r}, coins={self.coins!r}, goods={self.goods!r})'
-
-
-def random_player(amount: int) -> List[Player]:
-    players = []
-    for _ in range(amount):
-        players.append(Player(id=uuid.uuid4(), coins=10000, goods=10000))
-
-    return players
-
-
-def simple_example() -> None:
-    with Session() as session:
-        # create a player, who has a coin and a goods.
-        session.add(Player(id="test", coins=1, goods=1))
-
-        # get this player, and print it.
-        get_test_stmt = select(Player).where(Player.id == "test")
-        for player in session.scalars(get_test_stmt):
-            print(player)
-
-        # create players with bulk inserts.
-        # insert 1919 players totally, with 114 players per batch.
-        # each player has a random UUID
-        player_list = random_player(1919)
-        for idx in range(0, len(player_list), 114):
-            session.bulk_save_objects(player_list[idx:idx + 114])
-
-        # print the number of players
-        count = session.query(func.count(Player.id)).scalar()
-        print(f'number of players: {count}')
-
-        # print 3 players.
-        three_players = session.query(Player).limit(3).all()
-        for player in three_players:
-            print(player)
-
-        session.commit()
-
-
-def trade_check(session: Session, sell_id: str, buy_id: str, amount: int, price: int) -> bool:
-    # sell player goods check
-    sell_player = session.query(Player.goods).filter(Player.id == sell_id).with_for_update().one()
-    if sell_player.goods < amount:
-        print(f'sell player {sell_id} goods not enough')
-        return False
-
-    # buy player coins check
-    buy_player = session.query(Player.coins).filter(Player.id == buy_id).with_for_update().one()
-    if buy_player.coins < price:
-        print(f'buy player {buy_id} coins not enough')
-        return False
-
-
-def trade(sell_id: str, buy_id: str, amount: int, price: int) -> None:
-    with Session() as session:
-        if trade_check(session, sell_id, buy_id, amount, price) is False:
-            return
-
-        # deduct the goods of seller, and raise his/her the coins
-        session.query(Player).filter(Player.id == sell_id). \
-            update({'goods': Player.goods - amount, 'coins': Player.coins + price})
-        # deduct the coins of buyer, and raise his/her the goods
-        session.query(Player).filter(Player.id == buy_id). \
-            update({'goods': Player.goods + amount, 'coins': Player.coins - price})
-
-        session.commit()
-        print("trade success")
-
-
-def trade_example() -> None:
-    with Session() as session:
-        # create two players
-        # player 1: id is "1", has only 100 coins.
-        # player 2: id is "2", has 114514 coins, and 20 goods.
-        session.add(Player(id="1", coins=100, goods=0))
-        session.add(Player(id="2", coins=114514, goods=20))
-        session.commit()
-
-    # player 1 wants to buy 10 goods from player 2.
-    # it will cost 500 coins, but player 1 cannot afford it.
-    # so this trade will fail, and nobody will lose their coins or goods
-    trade(sell_id="2", buy_id="1", amount=10, price=500)
-
-    # then player 1 has to reduce the incoming quantity to 2.
-    # this trade will be successful
-    trade(sell_id="2", buy_id="1", amount=2, price=100)
-
-    with Session() as session:
-        traders = session.query(Player).filter(Player.id.in_(("1", "2"))).all()
-        for player in traders:
-            print(player)
-        session.commit()
-
-
-simple_example()
-trade_example()
+```bash
+pip install -r requirements.txt
 ```
 
-相较于直接使用 Driver，SQLAlchemy 屏蔽了创建数据库连接时，不同数据库差异的细节。SQLAlchemy 还封装了大量的操作，如会话管理、基本对象的 CRUD 等，极大地简化了代码量。
+#### 为什么安装 PyMySQL？
 
-`Player` 类为数据库表在程序内的映射。`Player` 的每个属性都对应着 `player` 表的一个字段。SQLAlchemy 使用 `Player` 类为了给 SQLAlchemy 提供更多的信息，使用了形如以上示例中的 `id = Column(String(36), primary_key=True)` 的类型定义，用来指示字段类型和其附加属性。`id = Column(String(36), primary_key=True)` 表示 `id` 字段为 `String` 类型，对应数据库类型为 `VARCHAR`，长度为 `36`，且为主键。
+SQLAlchemy 是一个支持多种数据库的 ORM 库。它是对数据库的高层抽象，可以帮助开发者以更面向对象的方式编写 SQL 语句。但 SQLAlchemy 并不提供数据库驱动，因此需要单独安装用于连接 TiDB 的驱动。本示例项目使用 PyMySQL 作为数据库驱动。PyMySQL 是一个与 TiDB 兼容的纯 Python 实现的 MySQL 客户端库，并可以在所有平台上安装。
 
-关于 SQLAlchemy 的更多使用方法，你可以参考 [SQLAlchemy 官网](https://www.sqlalchemy.org/)。
+你也可以使用其他数据库驱动，例如 [mysqlclient](https://github.com/PyMySQL/mysqlclient) 以及 [mysql-connector-python](https://dev.mysql.com/doc/connector-python/en/)。但是它们不是纯 Python 库，需要安装对应的 C/C++ 编译器和 MySQL 客户端库进行编译。更多信息，参考 [SQLAlchemy 官方文档](https://docs.sqlalchemy.org/en/20/core/engines.html#mysql)。
 
-## 第 3 步：运行代码
+### 第 3 步：配置连接信息
 
-本节将逐步介绍代码的运行方法。
+根据不同的 TiDB 部署方式，使用不同的方法连接到 TiDB 集群。
 
-### 第 3 步第 1 部分：表初始化
+<SimpleTab>
 
-本示例需手动初始化表，若你使用本地集群，可直接运行：
+<div label="TiDB Serverless">
 
-<SimpleTab groupId="cli">
+1. 在 TiDB Cloud 的 [**Clusters**](https://tidbcloud.com/console/clusters) 页面中，选择你的 TiDB Serverless 集群，进入集群的 **Overview** 页面。
 
-<div label="MySQL CLI" value="mysql-client">
+2. 点击右上角的 **Connect** 按钮，将会弹出连接对话框。
 
-```shell
-mysql --host 127.0.0.1 --port 4000 -u root < player_init.sql
-```
+3. 确认对话框中的配置和你的运行环境一致。
+
+    - **Endpoint Type** 为 `Public`。
+    - **Connect With** 选择 `General`。
+    - **Operating System** 为你的运行环境。
+
+    > **Tip:**
+    >
+    > 如果你在 Windows Subsystem for Linux (WSL) 中运行，请切换为对应的 Linux 发行版。
+
+4. 如果你还没有设置密码，点击 **Create password** 生成一个随机密码。
+
+    > **Tip:**
+    >
+    > 如果你之前已经生成过密码，可以直接使用原密码，或点击 **Reset password** 重新生成密码。
+
+5. 运行以下命令，将 `.env.example` 复制并重命名为 `.env`：
+
+    ```bash
+    cp .env.example .env
+    ```
+
+6. 复制并粘贴对应连接字符串至 `.env` 中。示例结果如下：
+
+    ```dotenv
+    TIDB_HOST='{host}'  # e.g. gateway01.ap-northeast-1.prod.aws.tidbcloud.com
+    TIDB_PORT='4000'
+    TIDB_USER='{user}'  # e.g. xxxxxx.root
+    TIDB_PASSWORD='{password}'
+    TIDB_DB_NAME='test'
+    CA_PATH='{ssl_ca}'  # e.g. /etc/ssl/certs/ca-certificates.crt (Debian / Ubuntu / Arch)
+    ```
+
+    注意替换 `{}` 中的占位符为连接对话框中获得的值。
+
+7. 保存 `.env` 文件。
 
 </div>
 
-<div label="MyCLI" value="mycli">
+<div label="TiDB Dedicated">
 
-```shell
-mycli --host 127.0.0.1 --port 4000 -u root --no-warn < player_init.sql
-```
+1. 在 TiDB Cloud 的 [**Clusters**](https://tidbcloud.com/console/clusters) 页面中，选择你的 TiDB Dedicated 集群，进入集群的 **Overview** 页面。
+
+2. 点击右上角的 **Connect** 按钮，将会出现连接对话框。
+
+3. 在对话框中点击 **Allow Access from Anywhere**，然后点击 **Download TiDB cluster CA** 下载 TiDB Cloud 提供的 CA 证书。
+
+    更多配置细节，可参考 [TiDB Dedicated 标准连接教程（英文）](https://docs.pingcap.com/tidbcloud/connect-via-standard-connection)。
+
+4. 运行以下命令，将 `.env.example` 复制并重命名为 `.env`：
+
+    ```bash
+    cp .env.example .env
+    ```
+
+5. 复制并粘贴对应的连接字符串至 `.env` 中。示例结果如下：
+
+    ```dotenv
+    TIDB_HOST='{host}'  # e.g. tidb.xxxx.clusters.tidb-cloud.com
+    TIDB_PORT='4000'
+    TIDB_USER='{user}'  # e.g. root
+    TIDB_PASSWORD='{password}'
+    TIDB_DB_NAME='test'
+    CA_PATH='{your-downloaded-ca-path}'
+    ```
+
+    注意替换 `{}` 中的占位符为连接对话框中获得的值，并配置前面步骤中下载好的证书路径。
+
+6. 保存 `.env` 文件。
+
+</div>
+
+<div label="本地部署 TiDB">
+
+1. 运行以下命令，将 `.env.example` 复制并重命名为 `.env`：
+
+    ```bash
+    cp .env.example .env
+    ```
+
+2. 复制并粘贴对应 TiDB 的连接字符串至 `.env` 中。示例结果如下：
+
+    ```dotenv
+    TIDB_HOST='{host}'
+    TIDB_PORT='4000'
+    TIDB_USER='root'
+    TIDB_PASSWORD='{password}'
+    TIDB_DB_NAME='test'
+    ```
+
+    注意替换 `{}` 中的占位符为你的 TiDB 对应的值，并删除 `CA_PATH` 这行。如果你在本机运行 TiDB，默认 Host 地址为 `127.0.0.1`，密码为空。
+
+3. 保存 `.env` 文件。
 
 </div>
 
 </SimpleTab>
 
-若不使用本地集群，或未安装命令行客户端，请用喜欢的方式（如 Navicat、DBeaver 等 GUI 工具）直接登录集群，并运行 `player_init.sql` 文件内的 SQL 语句。
+### 第 4 步：运行代码并查看结果
 
-### 第 3 步第 2 部分：TiDB Cloud 更改参数
+1. 运行下述命令，执行示例代码：
 
-若你使用了 TiDB Serverless 集群，此处需使用系统本地的 CA 证书，并将证书路径记为 `<ca_path>` 以供后续指代。你可以参考 [Where is the CA root path on my system?](https://docs.pingcap.com/tidbcloud/secure-connections-to-serverless-tier-clusters#where-is-the-ca-root-path-on-my-system) 文档获取你所使用的操作系统的 CA 证书位置。
+    ```bash
+    python sqlalchemy_example.py
+    ```
 
-若你使用 TiDB Serverless 集群，更改 `sqlalchemy_example.py` 内 `create_engine` 函数的入参：
+2. 查看 [`Expected-Output.txt`](https://github.com/tidb-samples/tidb-python-sqlalchemy-quickstart/blob/main/Expected-Output.txt)，并与你的程序输出进行比较。结果近似即为连接成功。
 
-```python
-engine = create_engine('mysql://root:@127.0.0.1:4000/test')
-```
+## 示例代码片段
 
-若你设定的密码为 `123456`，而且从 TiDB Serverless 集群面板中得到的连接信息为：
+你可参考以下关键代码片段，完成自己的应用开发。
 
-- Endpoint: `xxx.tidbcloud.com`
-- Port: `4000`
-- User: `2aEp24QWEDLqRFs.root`
+完整代码及其运行方式，见代码仓库 [tidb-samples/tidb-python-sqlalchemy-quickstart](https://github.com/tidb-samples/tidb-python-sqlalchemy-quickstart)。
 
-那么此处应将 `create_engine` 更改为：
+### 连接到 TiDB
 
 ```python
-engine = create_engine('mysql://2aEp24QWEDLqRFs.root:123456@xxx.tidbcloud.com:4000/test', connect_args={
-    "ssl_mode": "VERIFY_IDENTITY",
-    "ssl": {
-        "ca": "<ca_path>"
-    }
-})
+from sqlalchemy import create_engine, URL
+from sqlalchemy.orm import sessionmaker
+
+def get_db_engine():
+    connect_args = {}
+    if ${ca_path}:
+        connect_args = {
+            "ssl_verify_cert": True,
+            "ssl_verify_identity": True,
+            "ssl_ca": ${ca_path},
+        }
+    return create_engine(
+        URL.create(
+            drivername="mysql+pymysql",
+            username=${tidb_user},
+            password=${tidb_password},
+            host=${tidb_host},
+            port=${tidb_port},
+            database=${tidb_db_name},
+        ),
+        connect_args=connect_args,
+    )
+
+engine = get_db_engine()
+Session = sessionmaker(bind=engine)
 ```
 
-### 第 3 步第 3 部分：运行
+在使用该函数时，你需要将 `${tidb_host}`、`${tidb_port}`、`${tidb_user}`、`${tidb_password}`、`${tidb_db_name}` 以及 `${ca_path}` 替换为你的 TiDB 集群的实际值。
 
-运行前请先安装依赖：
+### 声明数据对象
 
-```bash
-pip3 install -r requirement.txt
+```python
+from sqlalchemy import Column, Integer, String
+from sqlalchemy.orm import declarative_base
+
+Base = declarative_base()
+
+class Player(Base):
+    id = Column(Integer, primary_key=True)
+    name = Column(String(32), unique=True)
+    coins = Column(Integer)
+    goods = Column(Integer)
+
+    __tablename__ = "players"
 ```
 
-当以后需要多次运行脚本时，请在每次运行前先依照[表初始化](#第-3-步第-1-部分表初始化)一节再次进行表初始化。
+更多信息参考 [SQLAlchemy 声明式映射表](https://docs.sqlalchemy.org/en/20/orm/declarative_mapping.html)。
 
-```bash
-python3 sqlalchemy_example.py
+### 插入数据
+
+```python
+with Session() as session:
+    player = Player(name="test", coins=100, goods=100)
+    session.add(player)
+    session.commit()
 ```
 
-## 第 4 步：预期输出
+更多信息参考[插入数据](/develop/dev-guide-insert-data.md)。
 
-[SQLAlchemy 预期输出](https://github.com/pingcap-inc/tidb-example-python/blob/main/Expected-Output.md#SQLAlchemy)
+### 查询数据
+
+```python
+with Session() as session:
+    player = session.query(Player).filter_by(name == "test").one()
+    print(player)
+```
+
+更多信息参考[查询数据](/develop/dev-guide-get-data-from-single-table.md)。
+
+### 更新数据
+
+```python
+with Session() as session:
+    player = session.query(Player).filter_by(name == "test").one()
+    player.coins = 200
+    session.commit()
+```
+
+更多信息参考[更新数据](/develop/dev-guide-update-data.md)。
+
+### 删除数据
+
+```python
+with Session() as session:
+    player = session.query(Player).filter_by(name == "test").one()
+    session.delete(player)
+    session.commit()
+```
+
+更多信息参考[删除数据](/develop/dev-guide-delete-data.md)。
+
+## 下一步
+
+- 关于 SQLAlchemy 的更多使用方法，可以参考 [SQLAlchemy 官方文档](https://www.sqlalchemy.org/)。
+- 你可以继续阅读开发者文档，以获取更多关于 TiDB 应用开发的最佳实践。例如：[插入数据](/develop/dev-guide-insert-data.md)、[更新数据](/develop/dev-guide-update-data.md)、[删除数据](/develop/dev-guide-delete-data.md)、[单表读取](/develop/dev-guide-get-data-from-single-table.md)、[事务](/develop/dev-guide-transaction-overview.md)、[SQL 性能优化](/develop/dev-guide-optimize-sql-overview.md)等。
+- 如果你更倾向于参与课程进行学习，我们也提供专业的 [TiDB 开发者课程](https://cn.pingcap.com/courses-catalog/back-end-developer/?utm_source=docs-cn-dev-guide)支持，并在考试后提供相应的[资格认证](https://learn.pingcap.com/learner/certification-center)。
+
+## 需要帮助?
+
+如果在开发的过程中遇到问题，可以在 [AskTUG](https://asktug.com/?utm_source=docs-cn-dev-guide) 上进行提问，寻求帮助。
