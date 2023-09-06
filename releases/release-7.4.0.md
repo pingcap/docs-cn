@@ -88,6 +88,14 @@ TiDB 版本：7.4.0
 
     更多信息，请参考[用户文档](/tiflash/tiflash-pipeline-model.md)。
 
+* 新增优化器模式选择 [#46080](https://github.com/pingcap/tidb/issues/46080) @[time-and-fate](https://github.com/time-and-fate)
+
+    TiDB 在 v7.4.0 引入了一个新的系统变量 [`tidb_opt_objective`](/system-variables.md#tidb_opt_objective-从-v740-版本开始引入)，用于控制优化器的估算方式。 默认值 `moderate` 维持从前的优化器行为，优化器会利用运行时统计到的数据修改来校正估算。 如果设置为 `determinate`，优化器则不考虑运行时校正，只根据统计信息来生成执行计划。
+
+    对于长期稳定的 OLTP 业务，或者如果用户对已有的执行计划非常有把握，则推荐测试后切换到 `determinate` 模式减少执行计划跳变的可能。
+
+    更多信息，请参考[用户文档](/system-variables.md#tidb_opt_objective-从-v740-版本开始引入)。
+
 * 功能标题 [#issue号](链接) @[贡献者 GitHub ID](链接) **tw@xxx** <!--1234-->
 
     功能描述（需要包含这个功能是什么、在什么场景下对用户有什么价值、怎么用）
@@ -181,7 +189,7 @@ TiDB 版本：7.4.0
 | 变量名 | 修改类型 | 描述 |
 |---|----|------|
 | [`default_collation_for_utf8mb4`]() | 新增 | 为 utf8mb4 字符集选择默认排序方式， 兼容从 MySQL 5.7 或更旧版本的迁移或数据复制场景。 |
-|  | 新增/删除/修改 |  |
+| [`tidb_opt_objective`](/system-variables.md#tidb_opt_objective-从-v740-版本开始引入) | 新增 | 该变量用于设置优化器优化目标。moderate 维持旧版本的默认行为，优化器会利用更多信息尝试生成更优的计划；determinate 则倾向于保守，保持执行计划稳定。 |
 |  | 新增/删除/修改 |  |
 |  | 新增/删除/修改 |  |
 |  | 新增/删除/修改 |  |
