@@ -252,7 +252,7 @@ tiup install cluster
 tiup link cluster
 ```
 
-示例二： 切换 cluster 组件到 v1.13.0 版本
+示例二：切换 cluster 组件到 v1.13.0 版本
 
 ```shell
 tiup link cluster：v1.13.0
