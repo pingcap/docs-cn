@@ -2017,8 +2017,8 @@ Query OK, 0 rows affected (0.09 sec)
 - 类型：布尔型
 - 默认值：`ON`
 - 这个变量用来控制是否启用 TiFlash 新的执行模型 [Pipeline Model](/tiflash/tiflash-pipeline-model.md)。
-- 当设置该变量为 `OFF` 关闭 TiFlash Pipeline Model 时，下推到 TiFlash 的查询会使用 TiFlash 原有的执行模型 Stream Model 来执行。
 - 当设置该变量为 `ON` 开启 TiFlash Pipeline Model 时，下推到 TiFlash 的查询会使用 TiFlash 新的执行模型 Pipeline Model 来执行。
+- 当设置该变量为 `OFF` 关闭 TiFlash Pipeline Model 时，下推到 TiFlash 的查询会使用 TiFlash 原有的执行模型 Stream Model 来执行。
 
 ### `tidb_enable_tiflash_read_for_write_stmt` <span class="version-mark">从 v6.3.0 版本开始引入</span>
 
