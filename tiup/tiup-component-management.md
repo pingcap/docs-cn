@@ -277,8 +277,6 @@ tiup unlink cluster
 
 在 v1.13.0 之前的版本，TiUP 自身被安装到 `~/.tiup/bin/` 下，不能多版本共存。自 v1.13.0 开始，可以将 TiUP 和所有其他组件一样进行安装、链接。
 
-{{< copyable "shell-regular" >}}
-
 ```shell
 tiup update --self # update tiup itself to a version that supports link
 tiup link tiup：v1.13.0
