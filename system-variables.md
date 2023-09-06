@@ -2012,7 +2012,7 @@ Query OK, 0 rows affected (0.09 sec)
 
 ### `tidb_enable_tiflash_pipeline_model` <span class="version-mark">从 v7.2.0 版本开始引入</span>
 
-- 作用域：SESSION | GLOBAL
+- 作用域：GLOBAL
 - 是否持久化到集群：是
 - 类型：布尔型
 - 默认值：`ON`

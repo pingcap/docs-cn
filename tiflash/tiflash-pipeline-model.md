@@ -13,19 +13,7 @@ Pipeline Model 主要借鉴了 [Morsel-Driven Parallelism: A NUMA-Aware Query Ev
 
 ## 启用和禁用 TiFlash Pipeline Model
 
-你可以使用系统变量 [`tidb_enable_tiflash_pipeline_model`](/system-variables.md#tidb_enable_tiflash_pipeline_model-从-v720-版本开始引入) 来开启或禁用 TiFlash Pipeline Model。该变量可以在 Session 级别和 Global 级别生效。默认情况下，`tidb_enable_tiflash_pipeline_model=ON`，即开启 TiFlash Pipeline Model。你可以通过以下语句来查看对应的变量信息：
-
-```sql
-SHOW VARIABLES LIKE 'tidb_enable_tiflash_pipeline_model';
-```
-
-```
-+------------------------------------+-------+
-| Variable_name                      | Value |
-+------------------------------------+-------+
-| tidb_enable_tiflash_pipeline_model | ON    |
-+------------------------------------+-------+
-```
+你可以使用系统变量 [`tidb_enable_tiflash_pipeline_model`](/system-variables.md#tidb_enable_tiflash_pipeline_model-从-v720-版本开始引入) 来开启或禁用 TiFlash Pipeline Model。该变量在 Global 级别生效。默认情况下，`tidb_enable_tiflash_pipeline_model=ON`，即开启 TiFlash Pipeline Model。你可以通过以下语句来查看对应的变量信息：
 
 ```sql
 SHOW GLOBAL VARIABLES LIKE 'tidb_enable_tiflash_pipeline_model';
@@ -39,13 +27,7 @@ SHOW GLOBAL VARIABLES LIKE 'tidb_enable_tiflash_pipeline_model';
 +------------------------------------+-------+
 ```
 
-变量 `tidb_enable_tiflash_pipeline_model` 支持 session 级别和 global 级别的修改。
-
-- 如果需要在当前 session 中开启 TiFlash Pipeline Model，可以通过以下语句设置：
-
-    ```sql
-    SET SESSION tidb_enable_tiflash_pipeline_model=ON;
-    ```
+变量 `tidb_enable_tiflash_pipeline_model` 支持 global 级别的修改。
 
 - 如果需要在 global 级别开启 TiFlash Pipeline Model，可以通过以下语句设置：
 
@@ -53,13 +35,9 @@ SHOW GLOBAL VARIABLES LIKE 'tidb_enable_tiflash_pipeline_model';
     SET GLOBAL tidb_enable_tiflash_pipeline_model=ON;
     ```
 
-    设置 global 级别后，新建的会话中 session 和 global 级别的 `tidb_enable_tiflash_pipeline_model` 都将默认启用新值。
+    设置 global 级别后，新建的会话中 `tidb_enable_tiflash_pipeline_model` 将默认启用新值。
 
 如需关闭 TiFlash Pipeline Model，可以通过以下语句设置：
-
-```sql
-SET SESSION tidb_enable_tiflash_pipeline_model=OFF;
-```
 
 ```sql
 SET GLOBAL tidb_enable_tiflash_pipeline_model=OFF;
