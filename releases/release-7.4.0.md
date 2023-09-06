@@ -46,6 +46,17 @@ TiDB 版本：7.4.0
 
     更多信息，请参考[用户文档](/tiflash/tiflash-supported-pushdown-calculations.md)。
 
+* 支持缓存非 Prepare 语句的执行计划（GA）[#36598](https://github.com/pingcap/tidb/issues/36598) @[qw4990](https://github.com/qw4990)
+
+    自 v7.4.0，非 Prepare 语句的执行计划缓存基本可用。执行计划缓存技术将会被应用于更广泛的场景，从而提升 TiDB 的并发处理能力。
+
+    为了保持数据库行为向前兼容，非 Prepare 语句的执行计划缓存默认关闭，用户可以通过系统变量 [`tidb_enable_non_prepared_plan_cache`](/system-variables.md#tidb_enable_non_prepared_plan_cache) 按需打开，并通过系统变量 [`tidb_session_plan_cache_size`](/system-variables.md#tidb_session_plan_cache_size-从-v710-版本开始引入) 设置缓存大小。
+    
+    此外，该功能暂时不对 DML 语句生效，对 SQL 的模式也有一定的限制，具体参见[使用限制](/sql-non-prepared-plan-cache.md#限制)。
+
+
+    更多信息，请参考[用户文档](/sql-non-prepared-plan-cache.md)。
+
 ### 稳定性
 
 * TiFlash 引擎支持查询级别数据落盘 [#7738](https://github.com/pingcap/tiflash/issues/7738) @[windtalker](https://github.com/windtalker)  **tw@caiqian** <!--1234-->
