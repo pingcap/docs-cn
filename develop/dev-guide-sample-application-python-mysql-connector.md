@@ -1,13 +1,7 @@
 ---
-<<<<<<< HEAD
-title: TiDB 和 MySQL Connector/Python 的简单 CRUD 应用程序
-summary: 给出一个 TiDB 和 MySQL Connector/Python 的简单 CRUD 应用程序示例。
-aliases: ['/zh/tidb/v6.5/dev-guide-sample-application-python']
-=======
 title: 使用 MySQL Connector/Python 连接到 TiDB
 summary: 了解如何使用 MySQL Connector/Python 连接到 TiDB。本文提供了使用 MySQL Connector/Python 与 TiDB 交互的 Python 示例代码片段。
-aliases: ['/zh/tidb/dev/dev-guide-sample-application-python']
->>>>>>> 7171bc855c (develop: refactor Python dev guide (#14924))
+aliases: ['/zh/tidb/v6.5/dev-guide-sample-application-python']
 ---
 
 # 使用 MySQL Connector/Python 连接到 TiDB
