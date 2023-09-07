@@ -79,6 +79,14 @@ TiDB 版本：7.4.0
     在 v7.4.0 版本中，TiFlash 支持查询级别数据落盘功能。通过设定单个查询在单个 TiFlash 节点使用内存的上限[`tiflash_mem_quota_query_per_node`](/system-variables.md#tiflash_mem_quota_query_per_node-从-v740-版本开始引入)及触发数据落盘的内存阈值[`tiflash_query_spill_ratio`](/system-variables.md#tiflash_query_spill_ratio-从-v740-版本开始引入)，可以方便的控制单个查询的内存使用，更好的管控 TiFlash 内存资源。
 
     更多信息，请参考[用户文档](/tiflash/tiflash-spill-disk.md)。
+* 引入自定义 TiKV 读取超时时间 [#45380](https://github.com/pingcap/tidb/issues/45380) @[crazycs520](https://github.com/crazycs520) **tw@hfxsd** <!--1560-->
+
+    在通常情况下，TiKV 处理请求非常快，只需几毫秒。但是，当某个 TiKV 节点遇到磁盘 I/O 抖动或网络延迟时，请求处理时间可能会大幅增加，甚至达到几秒或更长。在 v7.4.0 以前的版本中，TiKV 请求的超时限制是固定的，不能调整，因此当 TiKV 节点出现问题时，TiDB 必须等待超时响应，这导致了抖动期间应用程序的查询性能受到明显影响。
+
+    TiDB 在 v7.4.0 中引入了一个新参数 [`TIDB_KV_READ_TIMEOUT(N)`](/system-variables.md#tidb_kv_read_timeout-从-v740-版本开始引入)，允许用户自定义查询语句中 TiDB 发送给 TiKV 的 RPC 读请求的超时时间，单位是毫秒。这意味着，当某个 TiKV 节点因磁盘或网络问题导致请求延迟时，TiDB 可以更快地超时并将请求重新发送给其他 TiKV 节点，从而降低查询延迟。如果所有 TiKV 节点的请求都超时，TiDB 将使用默认的超时时间进行重试。参数也支持通过 Hint [`TIDB_KV_READ_TIMEOUT(N)`](/optimizer-hints.md#tidb_kv_read_timeoutn) 来设置查询语句中 TiDB 发送 TiKV RPC 读请求的超时时间。如果同时设置了 Hint 和系统变量，则 Hint 优先级更高。
+
+    这一改进将使 TiDB 在面对不稳定的网络或存储环境时，更灵活地适应各种情况，提高查询性能，减少用户体验的不便。更多的信息，请参考[用户文档](/system-variables.md#tidb_kv_read_timeout-从-v740-版本开始引入)。
+
 
 * 部分系统变量可通过优化器提示设置 [#issue号](链接) @[winoros](https://github.com/winoros) **tw@Oreoxmt** <!--923-->
 
