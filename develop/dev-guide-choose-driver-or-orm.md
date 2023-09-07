@@ -273,7 +273,7 @@ go get -u gorm.io/driver/mysql
 
 支持等级：**Full**
 
-[Django](https://docs.djangoproject.com/) 是一个流行的 Python 的开发框架，你可以使用 `pip install Django==3.2.16 django-tidb>=3.0.0` 获取你的应用程序的所有依赖项。建议使用 Django **3.2.16** 及以上版本。
+[Django](https://docs.djangoproject.com/) 是一个流行的 Python 的 WEB 开发框架，我们为 Django 开发了一个专门的适配器 `django-tidb` 来解决兼容性问题, 安装请参考其[文档](https://github.com/pingcap/django-tidb#installation-guide)
 
 使用 Django 构建 TiDB 应用程序的例子，可参阅[使用 Django 连接到 TiDB](/develop/dev-guide-sample-application-python-django.md)。
 
