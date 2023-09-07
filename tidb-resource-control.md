@@ -349,7 +349,7 @@ Runaway Query 是指执行时间或消耗资源超出预期的查询。下面使
 
 目前 TiDB 支持如下几种后台任务的类型：
 
-- `lightning`：使用 [TiDB Lightning](tidb-lightning/tidb-lightning-overview.md) 执行导入任务。同时支持 TiDB Lightning 的物理和逻辑导入模式。
+- `lightning`：使用 [TiDB Lightning](/tidb-lightning/tidb-lightning-overview.md) 执行导入任务。同时支持 TiDB Lightning 的物理和逻辑导入模式。
 - `br`：使用 [BR](/br/backup-and-restore-overview.md) 执行数据备份和恢复。目前不支持 PITR。
 - `ddl`：对于 Reorg DDL，控制批量数据回写阶段的资源使用。
 - `analyze`：对应手动执行或系统自动触发的 [收集统计信息](/statistics.md#统计信息的收集) 任务。
