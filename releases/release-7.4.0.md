@@ -110,6 +110,23 @@ TiDB 版本：7.4.0
 
     更多信息，请参考[用户文档](/system-variables.md#tidb_opt_objective-从-v740-版本开始引入)。
 
+* 后台任务自动资源管控 (实验特性) [#issue号](链接) @[glorv](https://github.com/glorv) 
+
+    数据库集群中存在一些用户不感知的任务，用户对这部分任务的时延并不关注，而这些任务的资源消耗却可能造成系统整体性能的下降。 在新版本中，资源管控加入了对已知低优先级任务的自动管理。 默认情况下，下面任务将以低优先级运行：
+    
+    - [统计信息自动更新](/statistics.md#自动更新)
+    - [`MVCC`](/tidb-storage.md#mvcc) 数据自动清理
+    - [`TTL`](/time-to-live.md) 超时数据自动清理
+
+    通过对[资源组设定的修改](/sql-statements/sql-statement-alter-resource-group.md)，用户还可以主动将下列任务作为低优先级任务运行：
+
+    - 批量数据导入 [`Lightning`](/tidb-lightning/tidb-lightning-overview.md) 和 [`IMPORT INTO`](/sql-statements/sql-statement-import-into.md) 
+    - [DDL 语句](/ddl-introduction.md)
+
+    对已知后台任务的自动资源管控，降低了低优先级任务对线上业务的性能影响，实现资源的合理分配，大幅提升集群的稳定性。 
+
+    更多信息，请参考[用户文档](/tidb-resource-control.md)。
+
 ### 高可用
 
 * 功能标题 [#issue号](链接) @[贡献者 GitHub ID](链接) **tw@xxx** <!--1234-->
