@@ -26,7 +26,12 @@ TiDB 版本：7.4.0
     功能描述（需要包含这个功能是什么、在什么场景下对用户有什么价值、怎么用）
 
     更多信息，请参考[用户文档](链接)。
+* TiDB 引入设置 TiDB Service scope 的功能，用于选择适用的 TiDB 节点来执行并行的 Add index 或 import into 任务 [#46453](https://github.com/pingcap/tidb/pull/46453) @[ywqzzy](https://github.com/ywqzzy) **tw@hfxsd** <!--1505-->
 
+    功能描述 
+    在资源密集型集群中并行执行 Add index 或 import into 任务可能占用大量 TiDB 节点的资源，从而导致集群性能下降的问题。现在，TiDB 引入了该功能，用户可以对存量 TiDB 节点选择其中几个节点，或者对新增 TiDB 节点设置 TiDB Service Scope 后，所有并行执行的 Add index 和 import into 的任务只会运行在这些节点，避免对已有业务造成性能影响。
+
+    更多信息，请参考[用户文档](链接)。
 ### 性能
 
 * 功能标题 [#issue号](链接) @[贡献者 GitHub ID](链接) **tw@xxx** <!--1234-->
@@ -45,7 +50,18 @@ TiDB 版本：7.4.0
     在 v7.4.0 之前的版本中，TiFlash 不支持包含 PRECEDING 或 FOLLOWING 的窗口函数，所有包含此类帧定义的窗口函数都无法下推至 TiFlash。从 v7.4.0 开始，TiFlash 支持了所有的窗口函数的帧定义。该功能自动启用，满足要求时，会自动下推至 TiFlash 执行。
 
     更多信息，请参考[用户文档](/tiflash/tiflash-supported-pushdown-calculations.md)。
+* 引入基于云存储的全局排序能力，提升并行执行的 Add index 或 import into 任务的性能和稳定性[#issue号](链接) @[贡献者 GitHub ID](链接) **tw@ran-huang** <!--1456-->
 
+    功能描述
+    原先用户执行分布式并行执行框架的 Add index 或 import into 任务的 TiDB 节点，需要准备一块较大的本地磁盘，用于编码后的索引 kv pairs 以及表数据的 kv Paris 进行排序，如果磁盘空间不够大，各个 TiDB 节点本地编码排序后的数据之间会存在 overlap 的情况，导致把这些 kv pairs 导入 TiKV 时，TiKV 需要不断地进行 compaction ，降低了执行 Add index 或 import into 的性能和稳定性。引入该特性后，编码后的数据从写入本地并排序改成写入云存储并在云存储进行全局排序，之后将全局排序后的索引数据和表数据并行导入到 TiKV，从而提升性能和稳定性。 
+    更多信息，请参考[用户文档](链接)。
+
+* 优化 Parallel Multi Schema Change ，提升 1 个 SQL 添加多个索引的性能 [#issue号](链接) @[贡献者 GitHub ID](链接) **tw@xxx** <!--1307-->
+
+    功能描述 
+    原先用户使用 Parallel Multi Schema Change 在 1 个 SQL 中提交多个 Add index 操作，性能和多个独立的 SQL 执行 Add index 操作的性能是一样的，优化后，可大幅提升在 1 个 SQL 中添加多个索引的性能。
+
+    更多信息，请参考[用户文档](链接)。
 * 支持缓存非 Prepare 语句的执行计划（GA）[#36598](https://github.com/pingcap/tidb/issues/36598) @[qw4990](https://github.com/qw4990)
 
     自 v7.4.0，非 Prepare 语句的执行计划缓存基本可用。执行计划缓存技术将会被应用于更广泛的场景，从而提升 TiDB 的并发处理能力。
@@ -169,7 +185,25 @@ TiDB 版本：7.4.0
     功能描述（需要包含这个功能是什么、在什么场景下对用户有什么价值、怎么用）
 
     更多信息，请参考[用户文档](链接)。
+* DataMigration(DM) 支持拦截不兼容（破坏数据一致性）的 DDL 变更 [#9692](https://github.com/pingcap/tiflow/issues/9692) @[GMHDBJD](https://github.com/GMHDBJD) **tw@hfxsd** <!--1523-->
 
+    功能描述 
+    之前用户使用 DM 的 binlog filter 功能颗粒度比较粗，例如只能过滤 alter 这种大颗粒度的 DDL event，这在一些业务场景是受限的，例如业务允许将 Decimal 字段类型的精度调大，但是不允许减小。因此引入一个新的 event name “incompatible DDL changes” 用于拦截那些变更后会导致数据丢失，数据被截断，精度损失等问题的 DDL，并报错提示给用户及时介入处理，避免对下游的业务数据产生影响。  
+
+    更多信息，请参考[用户文档](链接)。
+    
+* 支持实时更新增量数据校验的 checkpoint [#issue号](链接) @[lichunzhu](https://github.com/lichunzhu) **tw@ranh-huang** <!--1496-->
+
+    功能描述 
+    过去，用户使用增量数据校验功能，判断 DM 同步到下游的数据是否和上游是一致的，并以此作为业务流量从上游数据库割接到 TiDB 的判断依据。而增量校验 checkpoint 受同步延迟，不一致的数据等待一段时间后重新校验等机制限制，需要每隔几分钟的时间来刷新校验后的 checkpoint，这在一些割接时间只有几十秒的业务场景是不可接受的，引入该功能后，用户可以传入上游数据库填写的 binlog Postion，一旦增量校验程序在内存里校验到该 binlog Postion 后会立即刷新 checkpoint，而不是每隔几分钟刷新 checkpoint，从而用户可以根据该立即返回的 checkpoint 来快速地割接。
+
+    更多信息，请参考[用户文档](链接)。
+    
+* import into 支持对导入的数据通过云存储进行全局排序提升导入性能和稳定性 [#46704](https://github.com/pingcap/tidb/issues/46704) @[D3Hunter](https://github.com/D3Hunter) **tw@qiancai** <!--1494-->
+
+    功能描述 
+    原先用户使用 import into 导入数据，会把该任务拆分成多个子任务调度到各个 TiDB 节点并行执行，这些 TiDB 节点，需要准备一块较大的本地磁盘，用于对编码后的索引 kv pairs 以及表 kv Paris 数据进行排序，如果磁盘空间不够大，各个 TiDB 节点本地编码排序后的数据之间会存在 overlap 的情况，导致把这些 kv pairs 导入 TiKV 时，TiKV 需要不断地进行 compaction ，降低了执行 import into 的性能和稳定性。引入该特性后，编码后的数据从写入本地并排序改成写入云存储并在云存储进行全局排序，之后将全局排序后的表数据和索引数据并行导入到 TiKV，从而提升性能和稳定性。 
+    更多信息，请参考[用户文档](链接)。
 ## 兼容性变更
 
 > **注意：**
@@ -198,7 +232,7 @@ TiDB 版本：7.4.0
 
 | 配置文件 | 配置项 | 修改类型 | 描述 |
 | -------- | -------- | -------- | -------- |
-|  | | 新增/删除/修改 | |
+| Import into |SPLIT_FILE | 新增| 对需要导入的大型 CSV 文件切割成多个 256 MiB 大小的 CSV 文件|
 |  | | 新增/删除/修改 | |
 |  | | 新增/删除/修改 | |
 |  | | 新增/删除/修改 | |
