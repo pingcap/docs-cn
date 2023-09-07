@@ -173,6 +173,14 @@ TiDB 版本：7.4.0
 
     更多信息，请参考[用户文档](链接)。
 
+* 向日志中添加会话标识和会话别名 [#46071](https://github.com/pingcap/tidb/issues/46071) @[lcwangchao](https://github.com/lcwangchao)
+
+    在对 SQL 执行问题做故障定位的时候，经常需要把 TiDB 各组件日志中的内容进行关联，由此找到问题的根本原因。从 v7.4.0 开始，TiDB 将会话标识 (CONNECTION_ID) 写入与会话相关的日志内容中，包括 TiDB 日志，慢查询日志，以及 TiKV 上 coprocessor 的慢日志记录。用户可以根据会话标识，将几个日志中的内容关联起来，提升故障定位和诊断的效率。 
+
+    除此之外，通过设置会话级变量 [`tidb_session_alias`](/system-variables.md#tidb_session_alias-从-v740-版本开始引入)，用户可以向上述日志中添加自定义的标识。借助这个能力，把业务识别信息注入日志，从而将日志中的内容与业务关联，把业务到日志的链路打通，降低诊断工作的难度。
+
+    更多信息，请参考[用户文档](/system-variables.md#tidb_session_alias-从-v740-版本开始引入)。
+
 ### 安全
 
 * 功能标题 [#issue号](链接) @[贡献者 GitHub ID](链接) **tw@xxx** <!--1234-->
@@ -221,7 +229,7 @@ TiDB 版本：7.4.0
 |---|----|------|
 | [`default_collation_for_utf8mb4`]() | 新增 | 为 utf8mb4 字符集选择默认排序方式， 兼容从 MySQL 5.7 或更旧版本的迁移或数据复制场景。 |
 | [`tidb_opt_objective`](/system-variables.md#tidb_opt_objective-从-v740-版本开始引入) | 新增 | 该变量用于设置优化器优化目标。moderate 维持旧版本的默认行为，优化器会利用更多信息尝试生成更优的计划；determinate 则倾向于保守，保持执行计划稳定。 |
-|  | 新增/删除/修改 |  |
+| [`tidb_session_alias`](/system-variables.md#tidb_session_alias-从-v740-版本开始引入) | 新增 | 用来自定义当前会话相关日志中 `session_alias` 列的值。 |
 |  | 新增/删除/修改 |  |
 |  | 新增/删除/修改 |  |
 
