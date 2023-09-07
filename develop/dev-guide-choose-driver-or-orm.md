@@ -273,6 +273,15 @@ For an example of using MySQL Connector/Python to build a TiDB application, see 
 ### Python ORM frameworks
 
 <SimpleTab>
+<div label="Django">
+
+Support level: **Full**
+
+[Django](https://docs.djangoproject.com/) is a popular Python web framework. To solve the compatibility issue between TiDB and Django, PingCAP provides a TiDB dialect `django-tidb`. To install it, you can see the [`django-tidb` documentation](https://github.com/pingcap/django-tidb#installation-guide).
+
+For an example of using Django to build a TiDB application, see [Connect to TiDB with Django](/develop/dev-guide-sample-application-python-django.md).
+
+</div>
 <div label="SQLAlchemy">
 
 Support level: **Full**
@@ -288,7 +297,7 @@ Support level: **Compatible**
 
 [peewee](http://docs.peewee-orm.com/en/latest/) is a popular ORM framework for Python. To get all dependencies in your application, you can use the `pip install peewee==3.15.4` command. It is recommended to use peewee 3.15.4 or later versions.
 
-For an example of using peewee to build a TiDB application, see [Build a simple CRUD app with TiDB and peewee](/develop/dev-guide-sample-application-python-peewee.md#step-2-get-the-code).
+For an example of using peewee to build a TiDB application, see [Connect to TiDB with peewee](/develop/dev-guide-sample-application-python-peewee.md#step-2-get-the-code).
 
 </div>
 </SimpleTab>
