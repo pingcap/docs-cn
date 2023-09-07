@@ -70,7 +70,6 @@ DirectBackgroundOption ::=
     "TASK_TYPES" EqOpt stringLit
 ```
 
-
 TiDB 支持以下 `DirectResourceGroupOption`, 其中 [Request Unit (RU)](/tidb-resource-control.md#什么是-request-unit-ru) 是 TiDB 对 CPU、IO 等系统资源统一抽象的单位。
 
 | 参数            | 含义           | 举例                                   |
