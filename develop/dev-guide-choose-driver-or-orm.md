@@ -273,7 +273,7 @@ go get -u gorm.io/driver/mysql
 
 支持等级：**Full**
 
-[Django](https://docs.djangoproject.com/) 是一个流行的 Python 的 WEB 开发框架，我们为 Django 开发了一个专门的适配器 `django-tidb` 来解决兼容性问题, 安装请参考其[文档](https://github.com/pingcap/django-tidb#installation-guide)
+[Django](https://docs.djangoproject.com/) 是一个流行的 Python Web 开发框架。为解决 TiDB 与 Django 的兼容性问题，PingCAP 开发了一个专门的适配器 `django-tidb`。你可以参考 [`django-tidb` 文档](https://github.com/pingcap/django-tidb#installation-guide)进行安装。
 
 使用 Django 构建 TiDB 应用程序的例子，可参阅[使用 Django 连接到 TiDB](/develop/dev-guide-sample-application-python-django.md)。
 
