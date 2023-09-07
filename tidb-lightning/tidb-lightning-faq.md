@@ -209,3 +209,48 @@ The steps are as follows:
 2. Configure the required labels for TiKV and PD.
 3. Create the placement rule policy and apply the created policy to the target table.
 4. Use TiDB Lightning to import data into the target table.
+
+## How can I use TiDB Lightning and Dumpling to copy a schema?
+
+If you want to copy both the schema definition and table data from one schema to a new schema, follow the steps in this section. In this example, you'll learn how to make a copy of the `test` schema into a new schema called `test2`.
+
+1. Create a backup of the original schema with `-B test` to select only the schema that you need.
+
+    ```
+    tiup dumpling -B test -o /tmp/bck1
+    ```
+
+2. Create a `/tmp/tidb-lightning.toml` file with the following content:
+
+    ```toml
+    [tidb]
+    host = "127.0.0.1"
+    port = 4000
+    user = "root"
+    
+    [tikv-importer]
+    backend = "tidb"
+    
+    [mydumper]
+    data-source-dir = "/tmp/bck1"
+    
+    [[mydumper.files]]
+    pattern = '^[a-z]*\.(.*)\.[0-9]*\.sql$'
+    schema = 'test2'
+    table = '$1'
+    type = 'sql'
+    
+    [[mydumper.files]]
+    pattern = '^[a-z]*\.(.*)\-schema\.sql$'
+    schema = 'test2'
+    table = '$1'
+    type = 'table-schema'
+    ```
+
+    In this configuration file, set `schema = 'test2'` as you want to use a different schema name than the one used in the original dump. The filename is used to determine the name of the table.
+
+3. Use this configuration file to run the import.
+
+    ```
+    tiup tidb-lightning -config /tmp/tidb-lightning.toml
+    ```
