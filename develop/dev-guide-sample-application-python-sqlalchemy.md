@@ -3,7 +3,7 @@ title: 使用 SQLAlchemy 连接到 TiDB
 summary: 了解如何使用 SQLAlchemy 连接到 TiDB。本文提供了使用 SQLAlchemy 与 TiDB 交互的 Python 示例代码片段。
 ---
 
-# 使用 PyMySQL 连接到 TiDB
+# 使用 SQLAlchemy 连接到 TiDB
 
 TiDB 是一个兼容 MySQL 的数据库。[SQLAlchemy](https://www.sqlalchemy.org/) 为当前流行的开源 Python ORM (Object Relational Mapper) 之一。
 
