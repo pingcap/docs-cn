@@ -942,6 +942,9 @@
         - [`VARIABLES_INFO`](/information-schema/information-schema-variables-info.md)
         - [`VIEWS`](/information-schema/information-schema-views.md)
       - [`METRICS_SCHEMA`](/metrics-schema.md)
+      - PERFORMANCE_SCHEMA
+        - [Overview](/performance-schema/performance-schema.md)
+        - [`SESSION_CONNECT_ATTRS`](/performance-schema/performance-schema-session-connect-attrs.md)
     - [Metadata Lock](/metadata-lock.md)
   - UI
     - TiDB Dashboard

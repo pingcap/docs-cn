@@ -548,6 +548,9 @@
         - [`USER_PRIVILEGES`](/information-schema/information-schema-user-privileges.md)
         - [`VARIABLES_INFO`](/information-schema/information-schema-variables-info.md)
         - [`VIEWS`](/information-schema/information-schema-views.md)
+      - PERFORMANCE_SCHEMA
+        - [Overview](/performance-schema/performance-schema.md)
+        - [`SESSION_CONNECT_ATTRS`](/performance-schema/performance-schema-session-connect-attrs.md)
     - [Metadata Lock](/metadata-lock.md)
     - [Use UUIDs](/best-practices/uuid.md)
   - [System Variables](/system-variables.md)
