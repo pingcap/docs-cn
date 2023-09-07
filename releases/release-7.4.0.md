@@ -26,6 +26,11 @@ TiDB 版本：7.4.0
     在资源密集型集群中并行执行 Add Index 或 `IMPORT INTO` 任务可能占用大量 TiDB 节点的资源，从而导致集群性能下降。TiDB v7.4.0 引入了设置 TiDB Service Scope 的功能，你可以在存量 TiDB 节点中选择几个节点，或者对新增 TiDB 节点设置 TiDB Service Scope，所有并行执行的 Add Index 和 `IMPORT INTO` 的任务只会运行在这些节点，避免对已有业务造成性能影响。
 
     更多信息，请参考[用户文档](链接)。
+* 进一步优化的 Partitioned Raft KV 引擎  [#issue号](链接) @[busyjay](https://github.com/busyjay) @[tonyxuqqi](https://github.com/tonyxuqqi) @[tabokie](https://github.com/tabokie) @[bufferflies](https://github.com/bufferflies) @[5kbpers](https://github.com/5kbpers) @[SpadeA-Tang](https://github.com/SpadeA-Tang) @[nolouch](https://github.com/nolouch)
+
+    相比之 v7.4.0 之前版本，Partitioned Raft KV 引擎在兼容性、稳定性有了进一步的提升。在 v7.4.0 版本中，Partitioned Raft KV 引擎经历了大规模数据测试，确保了对 DM、Dumpling、Lightning、TiCDC 、 BR / PITR 等关键生态组件的兼容性。同时 Partitioned Raft KV 引擎在读写混合工作负载下提供了更为稳定的性能指标，特别适合写多读少的场景。此外，每个 TiKV 节点支持 8 Core CPU 搭配 8TB 数据存储，64GB 内存。
+
+    尽管仍处于非 GA 阶段，但在 v7.4.0 版本中，Partitioned Raft KV 引擎进一步提升了稳定性和兼容性，使得用户可以更好地进行 POC 和短期性能基准测试。我们将继续努力改进该引擎，以提供更强大、更稳定的功能。更多信息请参考[用户文档](/partitioned-raft-kv.md)。
 
 ### 性能
 
