@@ -742,16 +742,6 @@ SELECT /*+ MAX_EXECUTION_TIME(1000) */ * FROM t1 inner join t2 WHERE t1.id = t2.
 
 除了 Hint 之外，系统变量 `global.max_execution_time` 也能对语句执行时间进行限制。
 
-### TIDB_KV_READ_TIMEOUT(N)
-
-`TIDB_KV_READ_TIMEOUT(N)` 用于设置查询语句中 TiDB 发送 TiKV RPC 读请求的超时时间为 `N` 毫秒。当 TiDB 集群在网络不稳定，或者 TiKV 的 I/O 延迟抖动严重的环境下，且用户对查询 SQL 的延迟比较敏感时，可以通过设置 `TIDB_KV_READ_TIMEOUT(N)` 调小 TiKV RPC 读请求的超时时间，这样当某个 TiKV 出现 I/O 延迟抖动时，TiDB 侧可以快速超时并重新发送 TiKV RPC 请求给下一个 TiKV Region Peer 所在的 TiKV。如果所有 TiKV Region Peer 都请求超时，则会用默认的超时时间进行重试。
-
-```sql
-SELECT /*+ TIDB_KV_READ_TIMEOUT(1000) */ * FROM t1 WHERE id = 1;
-```
-
-除了 Hint 之外，你也可以通过系统变量 [`tidb_kv_read_timeout`](/system-variables.md#tidb_kv_read_timeout-从-v740-版本开始引入) 来设置查询语句中 TiDB 发送 TiKV RPC 读请求的超时时间。如果同时设置了 Hint 和系统变量，则 Hint 优先级高。
-
 ### MEMORY_QUOTA(N)
 
 `MEMORY_QUOTA(N)` 用于限制语句执行时的内存使用。该 Hint 支持 MB 和 GB 两种单位。内存使用超过该限制时会根据当前设置的内存超限行为来打出一条 log 或者终止语句的执行。
