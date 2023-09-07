@@ -65,6 +65,14 @@ TiDB 版本：7.4.0
 
 ### 稳定性
 
+* 手动标记资源使用超出预期的查询 GA [#43691](https://github.com/pingcap/tidb/issues/43691) @[Connor1996](https://github.com/Connor1996) @[CabinfeverB](https://github.com/CabinfeverB) **tw@hfxsd** <!--1447-->
+
+    在 v7.2.0 中，TiDB 自动管理资源使用超出预期的查询 (Runaway Query)，即自动降级或取消运行时间超出预期的查询。在实际运行时，只依靠规则无法覆盖所有情况。因此，TiDB v7.3.0 新增手动标记查询的功能。利用新增的命令 [`QUERY WATCH`](/sql-statements/sql-statement-query-watch.md)，你可以根据 SQL 的文本、SQL Digest 或执行计划标记查询，命中的查询可以被降级或取消。在 v7.4.0 中，该特性正式 GA。
+
+    手动标记 Runaway Query 的功能为数据库中突发的性能问题提供了有效的干预手段。针对由查询引发的性能问题，在定位根本原因之前，该功能可以快速缓解其对整体性能的影响，从而提升系统服务质量。
+
+    更多信息，请参考[用户文档](/tidb-resource-control.md#query-watch-语句说明)。
+
 * TiFlash 引擎支持查询级别数据落盘 [#7738](https://github.com/pingcap/tiflash/issues/7738) @[windtalker](https://github.com/windtalker)  **tw@qiancai** <!--1493-->
 
     在 v7.0.0 版本中，TiFlash 支持 `GROUP BY`，`ORDER BY`，`JOIN` 三种算子的数据落盘功能，以避免数据量超过内存总大小时，TiFlash 会终止查询甚至系统崩溃的问题。控制单个算子的数据落盘，对于用户并不友好，在实际使用中，无法有效的进行整体资源控制。
