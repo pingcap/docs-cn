@@ -26,7 +26,8 @@ TiDB 版本：7.4.0
     在资源密集型集群中并行执行 Add Index 或 `IMPORT INTO` 任务可能占用大量 TiDB 节点的资源，从而导致集群性能下降。TiDB v7.4.0 引入了设置 TiDB Service Scope 的功能，你可以在存量 TiDB 节点中选择几个节点，或者对新增 TiDB 节点设置 TiDB Service Scope，所有并行执行的 Add Index 和 `IMPORT INTO` 的任务只会运行在这些节点，避免对已有业务造成性能影响。
 
     更多信息，请参考[用户文档](链接)。
-* 进一步优化的 Partitioned Raft KV 引擎  [#issue号](链接) @[busyjay](https://github.com/busyjay) @[tonyxuqqi](https://github.com/tonyxuqqi) @[tabokie](https://github.com/tabokie) @[bufferflies](https://github.com/bufferflies) @[5kbpers](https://github.com/5kbpers) @[SpadeA-Tang](https://github.com/SpadeA-Tang) @[nolouch](https://github.com/nolouch)
+    
+* 进一步优化的 Partitioned Raft KV 引擎  [#issue号](链接) @[busyjay](https://github.com/busyjay) @[tonyxuqqi](https://github.com/tonyxuqqi) @[tabokie](https://github.com/tabokie) @[bufferflies](https://github.com/bufferflies) @[5kbpers](https://github.com/5kbpers) @[SpadeA-Tang](https://github.com/SpadeA-Tang) @[nolouch](https://github.com/nolouch)  **tw@Oreoxmt** <!--1292-->
 
     相比之 v7.4.0 之前版本，Partitioned Raft KV 引擎在兼容性、稳定性有了进一步的提升。在 v7.4.0 版本中，Partitioned Raft KV 引擎经历了大规模数据测试，确保了对 DM、Dumpling、Lightning、TiCDC 、 BR / PITR 等关键生态组件的兼容性。同时 Partitioned Raft KV 引擎在读写混合工作负载下提供了更为稳定的性能指标，特别适合写多读少的场景。此外，每个 TiKV 节点支持 8 Core CPU 搭配 8TB 数据存储，64GB 内存。
 
@@ -180,19 +181,11 @@ TiDB 版本：7.4.0
 
 ### 可观测性
 
-* 功能标题 [#issue号](链接) @[贡献者 GitHub ID](链接) **tw@xxx** <!--1234-->
+* 向日志中添加会话标识和会话别名 [#46071](https://github.com/pingcap/tidb/issues/46071) @[lcwangchao](https://github.com/lcwangchao) **tw@hfxsd** <!--无 FD 及用户文档，只提供 release notes-->
 
-    功能描述（需要包含这个功能是什么、在什么场景下对用户有什么价值、怎么用）
+    在对 SQL 执行问题做故障定位的时候，经常需要把 TiDB 各组件日志中的内容进行关联，由此找到问题的根本原因。从 v7.4.0 开始，TiDB 将会话标识 (`CONNECTION_ID`) 写入与会话相关的日志内容中，包括 TiDB 日志、慢查询日志、以及 TiKV 上 coprocessor 的慢日志记录。你可以根据会话标识，将几个日志中的内容关联起来，提升故障定位和诊断的效率。 
 
-    更多信息，请参考[用户文档](链接)。
-
-* 向日志中添加会话标识和会话别名 [#46071](https://github.com/pingcap/tidb/issues/46071) @[lcwangchao](https://github.com/lcwangchao)
-
-    在对 SQL 执行问题做故障定位的时候，经常需要把 TiDB 各组件日志中的内容进行关联，由此找到问题的根本原因。从 v7.4.0 开始，TiDB 将会话标识 (CONNECTION_ID) 写入与会话相关的日志内容中，包括 TiDB 日志，慢查询日志，以及 TiKV 上 coprocessor 的慢日志记录。用户可以根据会话标识，将几个日志中的内容关联起来，提升故障定位和诊断的效率。 
-
-    除此之外，通过设置会话级变量 [`tidb_session_alias`](/system-variables.md#tidb_session_alias-从-v740-版本开始引入)，用户可以向上述日志中添加自定义的标识。借助这个能力，把业务识别信息注入日志，从而将日志中的内容与业务关联，把业务到日志的链路打通，降低诊断工作的难度。
-
-    更多信息，请参考[用户文档](/system-variables.md#tidb_session_alias-从-v740-版本开始引入)。
+    除此之外，通过设置会话级变量 [`tidb_session_alias`](/system-variables.md#tidb_session_alias-从-v740-版本开始引入)，你可以向上述日志中添加自定义的标识。借助这个能力，把业务识别信息注入日志，可以将日志中的内容与业务关联，打通了业务到日志的链路，降低了诊断工作的难度。
 
 ### 安全
 
