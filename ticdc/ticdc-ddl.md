@@ -46,9 +46,18 @@ summary: 了解 TiCDC 支持同步的 DDL 和一些特殊情况
 
 ## DDL 同步注意事项
 
+### Add/Create index DDL 异步执行
+为了减小对 Chnagefeed 同步延迟的影响，TiCDC 会将 Add/Create index DDL 异步执行。这意味着，当 TiCDC 同步到 Add/Create index DDL 时，该 DDL 操作并不会立即执行，而是会在后台异步执行。
+
+#### 需要注意的问题
+1. 如果 DML 执行依赖未完成同步的 index, 可能会导致 DML 执行很慢，进而会影响 TiCDC 同步延迟。
+2. 正在异步执行 Add Index 时 TiCDC 重启或者异常退出也会可能导致异步的 AddIndex 执行失败，所以扩缩容与升级都有一定的概率丢失 ADD INDEX DDL 的风险。
+3. 异步执行失败后，目前 TiCDC 会打一条报错日志在ticdc log 中，这样会导致上下游表结构不一致，从而导致后续 DML 同步速度慢， 且无法直观发现问题。
+
+### Rename table 类型的 DDL 注意事项
 由于同步过程中缺乏一些上下文信息，因此 TiCDC 对 rename table 类型的 DDL 同步有一些约束。
 
-### 一条 DDL 语句内 rename 单个表
+#### 一条 DDL 语句内 rename 单个表
 
 如果一条 DDL 语句重命名单个表，则只有旧表名符合过滤规则时，TiCDC 才会同步该 DDL 语句。下面使用具体示例进行说明。
 
@@ -69,7 +78,7 @@ rules = ['test.t*']
 | rename table test.n1 to test.t1 | 报错，并停止同步。 | test.n1 不符合 filter 规则，但是 test.t1 符合 filter 规则，这是非法操作。请参考错误提示信息进行处理 |
 | rename table ignore.t1 to test.t1 | 报错，并停止同步。 | 理由同上 |
 
-### 一条 DDL 语句内 rename 多个表
+#### 一条 DDL 语句内 rename 多个表
 
 如果一条 DDL 语句重命名多个表，则只有当旧的表库名和新的库名都符合过滤规则时，TiCDC 才会同步该 DDL 语句。此外，TiCDC 不支持同步对表名进行交换的 rename table DDL。下面使用具体示例进行说明。
 
