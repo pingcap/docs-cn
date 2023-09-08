@@ -77,8 +77,7 @@ TiDB 采用计算存储分离架构，具有出色的扩展性和弹性的扩缩
     * [`tidb_ddl_error_count_limit`](/system-variables.md#tidb_ddl_error_count_limit)
     * [`tidb_ddl_reorg_batch_size`](/system-variables.md#tidb_ddl_reorg_batch_size)：使用默认值即可，建议最大不超过 `1024`。
 
-3. 根据实际需求，调整执行后端任务的节点数量，在部署 TiDB server 时，为其配置 labels，将 `tidb_role` 设置为 `background` 即可执行后端任务，配置该 labels 的节点为 `regular` 将不可执行后端任务。默认未配置 labels 的节点将采用默认值 `all` 且均可执行后端任务。在升级时，所有未配置 labels 的节点将采取默认值 `all`。
-
+3. 在升级到 v7.4.0 版本之后，可根据实际需求，调整执行后端任务的节点数量，在部署 TiDB server 后为每一个 TiDB 节点设置 instance 级别系统变量 `tidb_service_scope`。`tidb_service_scope` 设置为 `background` 即可执行后端任务。`tidb_service_scope` 设置为默认值 `` 时，TiDB 节点不可执行后端任务。如果所有节点均为配置 `tidb_service_scope`，框架将调度所有节点执行任务。
 > **建议：**
 >
 > 对于分布式执行 `ADD INDEX` 语句，只需要设置 `tidb_ddl_reorg_worker_cnt`。
