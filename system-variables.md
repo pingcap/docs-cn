@@ -1269,7 +1269,7 @@ mysql> SELECT job_info FROM mysql.analyze_jobs ORDER BY end_time DESC LIMIT 1;
 
 - 作用域：GLOBAL
 - 是否持久化到集群：否
-- 类型：
+- 类型：字符串
 - 默认值： ``
 - 可选值：`background`
 - 该变量用于控制 [TiDB 后端任务分布式框架](/tidb-distributed-execution-framework.md) 下各 TiDB 节点的服务范围。当 TiDB 节点设置 `tidb_service_scope` 为 `background` 时，后端任务分布式框架将调度该节点执行后端任务。
