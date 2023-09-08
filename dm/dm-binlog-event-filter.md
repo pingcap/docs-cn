@@ -23,10 +23,10 @@ filters:
 
 从 DM v2.0.2 开始，你也可以在上游数据库配置文件中配置 Binlog 事件过滤。见[上游数据库配置文件介绍](/dm/dm-source-configuration-file.md)。
 
-在简单任务场景下，推荐使用通配符匹配库表名，但需注意以下版本差异：
+使用通配符匹配库表名时，注意以下事项：
 
-+ 对于 v1.0.5 版及后续版本，Binlog 事件过滤支持[通配符匹配](https://en.wikipedia.org/wiki/Glob_(programming)#Syntax)。但注意所有版本中通配符匹配中的 `*` 符号 **只能有一个，且必须在末尾**。
-+ 对于 v1.0.5 以前的版本，Binlog Event Filter 支持通配符，但不支持 `[...]` 与 `[!...]` 表达式。
++ `schema-pattern` 和 `​table-pattern` 仅支持通配符，支持的通配符包括 `*`、`?` 和 `[]`。注意通配符匹配中的 `*` 符号只能有一个，且必须在末尾。例如 `table-pattern: "t_*"` 中的 `"t_*"` 表示以 `t_` 开头的表。详情请参考[通配符匹配](https://en.wikipedia.org/wiki/Glob_(programming)#Syntax)。
++ `sql-pattern` 仅支持正则表达式。
 
 ## 参数解释
 
