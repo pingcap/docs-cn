@@ -27,16 +27,16 @@ block-allow-list:             # 如果 DM 版本早于 v2.0.0-beta.2 则使用 b
     - db-name: "~^test.*"
       tbl-name: "~^t.*"
     - db-name: "test"
-      tbl-name: "t"
+      tbl-name: "t*"
     ignore-tables:
     - db-name: "test"
       tbl-name: "log"
 ```
 
-在简单任务场景下，推荐使用通配符匹配库表名，但需注意以下版本差异：
+黑白名单支持通配符和正则表达式来匹配，在简单任务场景下，推荐使用通配符匹配库表名：
 
-+ 对于 v1.0.5 版及后续版本，黑白名单支持[通配符匹配](https://en.wikipedia.org/wiki/Glob_(programming)#Syntax)。但注意所有版本中通配符匹配中的 `*` 符号 **只能有一个，且必须在末尾**。
-+ 对于 v1.0.5 以前的版本，黑白名单仅支持正则表达式。
++ 支持的通配符包括 `*`、`?` 以及 `[]`。注意通配符匹配中的 `*` 符号只能有一个，且必须在末尾，例如 `tbl-name: "t*"` 中的 `"t*"` 表示以 `t` 开头的表。详情请参考[通配符匹配](https://en.wikipedia.org/wiki/Glob_(programming)#Syntax)。
++ 正则表达式必须以 `~` 字符开头。 
 
 ## 参数解释
 
