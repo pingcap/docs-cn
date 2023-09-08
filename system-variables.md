@@ -1261,20 +1261,6 @@ mysql> SELECT job_info FROM mysql.analyze_jobs ORDER BY end_time DESC LIMIT 1;
 - 从 TiDB v7.2.0 开始，支持分布式导入任务 [`IMPORT INTO`](/sql-statements/sql-statement-import-into.md)。
 - 该变量由 `tidb_ddl_distribute_reorg` 改名而来。
 
-### `tidb_service_scope` <span class="version-mark">从 v7.4.0 版本开始引入</span>
-
-> **警告：**
->
-> 该功能目前为实验特性，不建议在生产环境中使用。
-
-- 作用域：GLOBAL
-- 是否持久化到集群：否
-- 类型：字符串
-- 默认值： ``
-- 可选值：`background`
-- 该变量用于控制 [TiDB 后端任务分布式框架](/tidb-distributed-execution-framework.md) 下各 TiDB 节点的服务范围。当 TiDB 节点设置 `tidb_service_scope` 为 `background` 时，后端任务分布式框架将调度该节点执行后端任务。
-- 如果集群内所有节点均为配置 `tidb_service_scope`，后端任务分布式框架将默认调度所有节点执行后端任务。
-
 ### `tidb_ddl_error_count_limit`
 
 - 作用域：GLOBAL
@@ -3780,6 +3766,20 @@ EXPLAIN FORMAT='brief' SELECT COUNT(1) FROM t WHERE a = 1 AND b IS NOT NULL;
 - 默认值：`134217728`（即 128 MB）
 - 取值范围：`[128, 9223372036854775807]`，单位为 Byte。支持带单位的内存格式“KB|MB|GB|TB”。
 - 开启内存限制后，TiDB 会终止当前实例上内存用量最高的 SQL 语句。本变量指定此情况下 SQL 语句被终止的最小内存用量。如果 TiDB 实例的内存超限是由许多内存使用量不明显的会话导致的，可以适当调小该变量值，使得更多会话成为 Cancel 的对象。
+
+### `tidb_service_scope` <span class="version-mark">从 v7.4.0 版本开始引入</span>
+
+> **警告：**
+>
+> 该功能目前为实验特性，不建议在生产环境中使用。
+
+- 作用域：GLOBAL
+- 是否持久化到集群：否
+- 类型：字符串
+- 默认值： ``
+- 可选值：`background`
+- 该变量用于控制 [TiDB 后端任务分布式框架](/tidb-distributed-execution-framework.md) 下各 TiDB 节点的服务范围。当 TiDB 节点设置 `tidb_service_scope` 为 `background` 时，后端任务分布式框架将调度该节点执行后端任务。
+- 如果集群内所有节点均为配置 `tidb_service_scope`，后端任务分布式框架将默认调度所有节点执行后端任务。
 
 ### `tidb_session_plan_cache_size` <span class="version-mark">从 v7.1.0 版本开始引入</span>
 
