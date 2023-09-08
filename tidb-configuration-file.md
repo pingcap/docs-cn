@@ -179,6 +179,11 @@ The TiDB configuration file supports more options than command-line parameters. 
 - When this configuration is set to `true` on a TiDB instance, the telemetry collection in this TiDB instance is enabled and the [`tidb_enable_telemetry`](/system-variables.md#tidb_enable_telemetry-new-in-v402) system variable takes effect.
 - When this configuration is set to `false` on all TiDB instances, the telemetry collection in TiDB is disabled and the [`tidb_enable_telemetry`](/system-variables.md#tidb_enable_telemetry-new-in-v402) system variable does not take effect. See [Telemetry](/telemetry.md) for details.
 
+### `deprecate-integer-display-length`
+
+- Deprecates the display width for integer types when this configuration item is set to `true`.
+- Default value: `false`
+
 ### `enable-tcp4-only` <span class="version-mark">New in v5.0</span>
 
 - Enables or disables listening on TCP4 only.
