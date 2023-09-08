@@ -75,6 +75,16 @@ SELECT /*+ QB_NAME(QB1) */ * FROM (SELECT * FROM t) t1, (SELECT * FROM t) t2;
 >
 > 上述例子中，如果指定的 `QB_NAME` 为 `sel_2`，并且不给原本 `sel_2` 对应的第二个查询块指定新的 `QB_NAME`，则第二个查询块的默认名字 `sel_2` 会失效。
 
+### SET_VAR(VAR_NAME=VAR_VALUE)
+
+`SET_VAR(VAR_NAME=VAR_VALUE)` 通过 Hint 的形式在在单条 SQL 的生命周期内改变系统变量的值。通过这个 Hint 可以控制大多数和优化器、执行器相关的变量行为。在[系统变量](/system-variables.md)章节中可以看到具体哪些变量支持该 Hint。
+
+```sql
+SELECT /*+ SET_VAR(MAX_EXECUTION_TIME=1234) */ @@MAX_EXECUTION_TIME;
+```
+
+执行上述 SQL 会看到返回结果是 Hint 中设置的 1234，而不是变量 MAX_EXECUTION_TIME 的默认值。
+
 ### MERGE_JOIN(t1_name [, tl_name ...])
 
 `MERGE_JOIN(t1_name [, tl_name ...])` 提示优化器对指定表使用 Sort Merge Join 算法。这个算法通常会占用更少的内存，但执行时间会更久。当数据量太大，或系统内存不足时，建议尝试使用。例如：
