@@ -276,7 +276,6 @@ TiDB supports named timezones with the following considerations:
 
 The following column types are supported by MySQL but **not** by TiDB:
 
-- FLOAT4/FLOAT8
 - `SQL_TSI_*` (includes SQL_TSI_MONTH, SQL_TSI_WEEK, SQL_TSI_DAY, SQL_TSI_HOUR, SQL_TSI_MINUTE, and SQL_TSI_SECOND, but excludes SQL_TSI_YEAR)
 
 ### Incompatibility due to deprecated features
