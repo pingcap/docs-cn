@@ -28,7 +28,7 @@ block-allow-list:             # Use black-white-list if the DM version is earlie
     - db-name: "~^test.*"
       tbl-name: "~^t.*"
     - db-name: "test"
-      tbl-name: "t"
+      tbl-name: "t*"
     ignore-tables:
     - db-name: "test"
       tbl-name: "log"
@@ -36,9 +36,9 @@ block-allow-list:             # Use black-white-list if the DM version is earlie
 
 In simple scenarios, it is recommended that you use the wildcard for matching schemas and tables. However, note the following version differences:
 
-- For DM v1.0.5 or later versions, the block and allow lists support the [wildcard match](https://en.wikipedia.org/wiki/Glob_(programming)#Syntax), but there can be **only one** `*` in the wildcard expression, and `*` **must be placed at the end**.
+- Wildcards including `*`, `?`, and `[]` are supported. There can only be one `*` symbol in a wildcard match, and it must be at the end. For example, in `tbl-name: "t*"`, `"t*"` indicates all tables starting with `t`. See [wildcard matching](https://en.wikipedia.org/wiki/Glob_(programming)#Syntax) for details.
 
-- For DM versions earlier than v1.0.5, the block and allow lists only support regular expression matching.
+- A regular expression must begin with the `~` character.
 
 ## Parameter descriptions
 

@@ -38,11 +38,13 @@ routes:
     target-schema: "test"
 ```
 
-In simple scenarios, it is recommended that you use the wildcard for matching schemas and tables. However, note the following version differences:
+Regular expressions and wildcards are supported to match database and table names. In simple scenarios, it is recommended that you use the wildcard for matching schemas and tables. However, note the following:
 
-- For DM v1.0.5 or later versions, the table routing supports the [wildcard match](https://en.wikipedia.org/wiki/Glob_(programming)#Syntax), but there can be **only one** `*` in the wildcard expression, and `*` **must be placed at the end**.
+- Wildcards including `*`, `?`, and `[]` are supported. There can only be one `*` symbol in a wildcard match, and it must be at the end. For example, in `table-pattern: "t_*"`, `"t_*"` indicates all tables starting with `t_`. See [wildcard matching](https://en.wikipedia.org/wiki/Glob_(programming)#Syntax) for details.
 
-- For DM versions earlier than v1.0.5, the table routing supports the wildcard but does not support the `[...]` and `[!...]` expressions.
+- `table-regexp`, `schema-regexp`, and `source-regexp` only support regular expressions and cannot start with the `~` symbol.
+
+- `schema-pattern` and `table-pattern` support both wildcards and regular expressions. Regular expressions must begin with the `~` symbol.
 
 ## Parameter descriptions
 
