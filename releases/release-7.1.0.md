@@ -475,7 +475,7 @@ TiDB 7.1.0 为长期支持版本 (Long-Term Support Release, LTS)。
     - 修复在启用 `tidb_pessimistic_txn_fair_locking` 时，在某些极端情况下，RPC 失败重试导致的过期请求可能在 Resolve Lock 时影响数据正确性的问题 [#14551](https://github.com/tikv/tikv/issues/14551) @[MyonKeminta](https://github.com/MyonKeminta)
     - 修复在启用 `tidb_pessimistic_txn_fair_locking` 时，在某些极端情况下，RPC 失败重试导致的过期请求可能会造成事务冲突被忽略，从而影响事务一致性的问题 [#14311](https://github.com/tikv/tikv/issues/14311) @[MyonKeminta](https://github.com/MyonKeminta)
     - 修复加密 Key ID 冲突会导致旧 Key 被删除的问题 [#14585](https://github.com/tikv/tikv/issues/14585) @[tabokie](https://github.com/tabokie)
-    - 修复集群从较低版本升级到 v6.5 或更高版本时，由于累计的 Lock 记录可能导致性能下降到问题 [#14780](https://github.com/tikv/tikv/issues/14780) @[MyonKeminta](https://github.com/MyonKeminta)
+    - 修复集群从较低版本升级到 v6.5 或更高版本时，由于累计的 Lock 记录可能导致性能下降的问题 [#14780](https://github.com/tikv/tikv/issues/14780) @[MyonKeminta](https://github.com/MyonKeminta)
     - 修复 PITR 恢复过程中出现 `raft entry is too large` 的问题 [#14313](https://github.com/tikv/tikv/issues/14313) @[YuJuncen](https://github.com/YuJuncen)
     - 修复 PITR 恢复过程中由于 `log_batch` 超过 2 GB 导致 TiKV panic 的问题 [#13848](https://github.com/tikv/tikv/issues/13848) @[YuJuncen](https://github.com/YuJuncen)
 

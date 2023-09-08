@@ -43,7 +43,7 @@ TiDB 兼容 MySQL 的协议，但存在部分与 MySQL 不兼容或有差异的�
 
 [TiDB-JDBC](https://github.com/pingcap/mysql-connector-j) 是基于 MySQL 8.0.29 的定制版本。TiDB-JDBC 基于 MySQL 官方 8.0.29 版本编译，修复了原 JDBC 在 prepare 模式下多参数、多字段 EOF 的错误，并新增 TiCDC snapshot 自动维护和 SM3 认证插件等功能。
 
-基于 SM3 的认证仅在 TiDB 版本的 MySQL Connector/J 中支持。
+基于 SM3 的认证仅在 TiDB 的 TiDB-JDBC 中支持。
 
 如果你使用的是 **Maven**，请将以下内容添加到你的 `<dependencies></dependencies>`：
 
@@ -213,7 +213,7 @@ implementation group: 'io.github.lastincisor', name: 'tidb-loadbalance', version
 
 按照 [go-sql-driver/mysql 文档](https://github.com/go-sql-driver/mysql)中的说明获取并配置 Golang 驱动程序即可使用。
 
-有关一个完整的实例应用程序，可参阅使用 [TiDB 和 Go-MySQL-Driver 的简单 CRUD 应用程序](/develop/dev-guide-sample-application-golang-sql-driver.md)。
+有关一个完整的实例应用程序，可参阅[使用 Go-MySQL-Driver 连接到 TiDB](/develop/dev-guide-sample-application-golang-sql-driver.md)。
 
 ### Golang ORM 框架
 
@@ -228,7 +228,7 @@ go get -u gorm.io/gorm
 go get -u gorm.io/driver/mysql
 ```
 
-使用 GORM 进行 TiDB 应用程序构建的例子，可参阅 [TiDB 和 GORM 的简单 CRUD 应用程序](/develop/dev-guide-sample-application-golang-gorm.md)。
+使用 GORM 进行 TiDB 应用程序构建的例子，可参阅[使用 GORM 连接到 TiDB](/develop/dev-guide-sample-application-golang-gorm.md)。
 
 ## Python
 
@@ -243,7 +243,7 @@ go get -u gorm.io/driver/mysql
 
 按照 [PyMySQL 文档](https://pypi.org/project/PyMySQL/)中的说明下载并配置驱动程序即可使用。建议使用 **1.0.2** 及以上版本。
 
-使用 PyMySQL 构建 TiDB 应用程序的例子，可参阅 [TiDB 和 PyMySQL 的简单 CRUD 应用程序](/develop/dev-guide-sample-application-python-pymysql.md)。
+使用 PyMySQL 构建 TiDB 应用程序的例子，可参阅[使用 PyMySQL 连接到 TiDB](/develop/dev-guide-sample-application-python-pymysql.md)。
 
 </div>
 <div label="mysqlclient">
@@ -252,7 +252,7 @@ go get -u gorm.io/driver/mysql
 
 按照 [mysqlclient 文档](https://pypi.org/project/mysqlclient/)中的说明下载并配置驱动程序即可使用。建议使用 **2.1.1** 及以上版本。
 
-使用 mysqlclient 构建 TiDB 应用程序的例子，可参阅 [TiDB 和 mysqlclient 的简单 CRUD 应用程序](/develop/dev-guide-sample-application-python-mysqlclient.md)。
+使用 mysqlclient 构建 TiDB 应用程序的例子，可参阅[使用 mysqlclient 连接到 TiDB](/develop/dev-guide-sample-application-python-mysqlclient.md)。
 
 </div>
 <div label="MySQL Connector/Python">
@@ -261,7 +261,7 @@ go get -u gorm.io/driver/mysql
 
 按照 [MySQL Connector/Python 文档](https://dev.mysql.com/doc/connector-python/en/connector-python-installation-binary.html)中的说明下载并配置驱动程序即可使用。建议使用 **8.0.31** 及以上版本。
 
-使用 MySQL Connector/Python 构建 TiDB 应用程序的例子，可参阅 [TiDB 和 MySQL Connector/Python 的简单 CRUD 应用程序](/develop/dev-guide-sample-application-python-mysql-connector.md)。
+使用 MySQL Connector/Python 构建 TiDB 应用程序的例子，可参阅[使用 MySQL Connector/Python 连接到 TiDB](/develop/dev-guide-sample-application-python-mysql-connector.md)。
 
 </div>
 </SimpleTab>
@@ -274,9 +274,9 @@ go get -u gorm.io/driver/mysql
 
 支持等级：**Full**
 
-[Django](https://docs.djangoproject.com/) 是一个流行的 Python 的开发框架，你可以使用 `pip install Django==3.2.16 django-tidb>=3.0.0` 获取你的应用程序的所有依赖项。建议使用 Django **3.2.16** 及以上版本。
+[Django](https://docs.djangoproject.com/) 是一个流行的 Python Web 开发框架。为解决 TiDB 与 Django 的兼容性问题，PingCAP 开发了一个专门的适配器 `django-tidb`。你可以参考 [`django-tidb` 文档](https://github.com/pingcap/django-tidb#installation-guide)进行安装。
 
-使用 Django 构建 TiDB 应用程序的例子，可参阅[使用 Django 构建 TiDB 应用程序](/develop/dev-guide-sample-application-python-django.md)。
+使用 Django 构建 TiDB 应用程序的例子，可参阅[使用 Django 连接到 TiDB](/develop/dev-guide-sample-application-python-django.md)。
 
 </div>
 
@@ -286,7 +286,7 @@ go get -u gorm.io/driver/mysql
 
 [SQLAlchemy](https://www.sqlalchemy.org/) 是一个流行的 Python 的 ORM 框架，你可以使用 `pip install SQLAlchemy==1.4.44` 获取你的应用程序的所有依赖项。建议使用 **1.4.44** 及以上版本。
 
-使用 SQLAlchemy 构建 TiDB 应用程序的例子，可参阅 [TiDB 和 SQLAlchemy 的简单 CRUD 应用程序](/develop/dev-guide-sample-application-python-sqlalchemy.md)。
+使用 SQLAlchemy 构建 TiDB 应用程序的例子，可参阅[使用 SQLAlchemy 连接到 TiDB](/develop/dev-guide-sample-application-python-sqlalchemy.md)。
 
 </div>
 
@@ -296,7 +296,7 @@ go get -u gorm.io/driver/mysql
 
 [peewee](http://docs.peewee-orm.com/en/latest/) 是一个流行的 Python 的 ORM 框架，你可以使用 `pip install peewee==3.15.4` 获取你的应用程序的所有依赖项。建议使用 **3.15.4** 及以上版本。
 
-使用 peewee 构建 TiDB 应用程序的例子，可参阅 [TiDB 和 peewee 的简单 CRUD 应用程序](/develop/dev-guide-sample-application-python-peewee.md)。
+使用 peewee 构建 TiDB 应用程序的例子，可参阅[使用 peewee 连接到 TiDB](/develop/dev-guide-sample-application-python-peewee.md)。
 
 </div>
 
