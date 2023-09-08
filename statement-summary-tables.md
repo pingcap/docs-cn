@@ -185,7 +185,7 @@ select * from information_schema.statements_summary_evicted;
 2 row in set (0.001 sec)
 ```
 
-From the result above, you can see that a maximum of 59 SQL categories are evicted, which indicates that the proper size of the statement summary is 59 records.
+From the preceding result, you can see that a maximum of 59 SQL categories are evicted. In this case, it is recommended that you increase the size of the `statement_summary` table by at least 59 records, which means increasing the size to at least 3059 records.
 
 ## Limitation
 
