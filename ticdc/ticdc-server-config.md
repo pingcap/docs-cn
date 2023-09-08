@@ -31,6 +31,7 @@ summary: 了解 TiCDC 详细的命令行参数和配置文件定义。
 对于 `cdc server` 命令中 config 参数指定的配置文件说明如下：
 
 ```yaml
+# 下面的字段的配置含义与命令行参数相同，但是命令行参数优先级更高。
 addr = "127.0.0.1:8300"
 advertise-addr = ""
 log-file = ""
@@ -45,22 +46,34 @@ cluster-id = "default"
   cert-path = ""
   key-path = ""
 
-
+# TiCDC 与 etcd 服务间的 session 时长(单位为秒)，默认为 10，可选。 
 capture-session-ttl = 10 # 10s
+# TiCDC 集群中的 owner 模块尝试推进同步任务进度的周期，默认为 "50ms",  可选。
 owner-flush-interval = 50000000 # 50 ms
+# TiCDC 集群中的 processor 模块尝试推进同步任务进度的周期，默认为 "50ms",  可选。  
 processor-flush-interval = 50000000 # 50 ms
 
-[log]
-  error-output = "stderr"
-  [log.file]
-    max-size = 300 # 300 MiB
-    max-days = 0
-    max-backups = 0
+#[log]
+#  error-output = "stderr"
+#  [log.file]
+#    单个 log 文件的最大文件大小，单位为（MB) 。默认是 300， 可选
+#    max-size = 300 # 300 MiB
+#    log 文件最大保留天数，默认是永不删除（0），可选。  
+#    max-days = 0
+#    保留 log 文件数， 默认是保留所有(0)， 可选  
+#    max-backups = 0
 
+#[sorter]
+#  Sorter 模块给默认启动的 8 个 pebble DB 共享的 pebble block cache 的大小，单位为 MB, 默认值为 128.  
+#  cache-size-in-mb = 128
+#  Sorter 文件 相对于 data-dir 的目录，默认值 "/tmp/sorter", 可选  
+#  sorter-dir = ""
 
 # [kv-client]
+#   单个 region worker 中可使用的处理线程数，默认为 8， 可选。  
 #   worker-concurrent = 8
+#   TiCDC 中共享线程池的大小，主要用于处理 kv 事件，默认为 0， 表示为 cpu 核数的 2 倍， 可选。   
 #   worker-pool-size = 0
-#   region-scan-limit = 40
+#   Region 连接重试时间， 默认值为 1 分钟， 可选。
 #   region-retry-duration = 60000000000
 ```
