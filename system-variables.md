@@ -1261,11 +1261,18 @@ mysql> SELECT job_info FROM mysql.analyze_jobs ORDER BY end_time DESC LIMIT 1;
 - 从 TiDB v7.2.0 开始，支持分布式导入任务 [`IMPORT INTO`](/sql-statements/sql-statement-import-into.md)。
 - 该变量由 `tidb_ddl_distribute_reorg` 改名而来。
 
-### `tidb_service_scope`  <span class="version-mark">从 v7.4.0 版本开始引入</span>
+### `tidb_service_scope` <span class="version-mark">从 v7.4.0 版本开始引入</span>
+
+> **警告：**
+>
+> 该功能目前为实验特性，不建议在生产环境中使用。
+
 - 作用域：GLOBAL
 - 是否持久化到集群：否
+- 类型：
 - 默认值： ``
-- 该变量用于控制 [TiDB 后端任务分布式框架](/tidb-distributed-execution-framework.md) 下各个 TiDB 节点的服务范围。当 TiDB 节点设置 `tidb_service_scope` 为 `background` 时，后端任务分布式框架将调度该节点执行后端任务。
+- 可选值：`background`
+- 该变量用于控制 [TiDB 后端任务分布式框架](/tidb-distributed-execution-framework.md) 下各 TiDB 节点的服务范围。当 TiDB 节点设置 `tidb_service_scope` 为 `background` 时，后端任务分布式框架将调度该节点执行后端任务。
 - 如果集群内所有节点均为配置 `tidb_service_scope`，后端任务分布式框架将默认调度所有节点执行后端任务。
 
 ### `tidb_ddl_error_count_limit`
