@@ -271,6 +271,8 @@ The following list shows the keywords in TiDB. Reserved keywords are marked with
 - FIRST_VALUE (R-Window)
 - FIXED
 - FLOAT (R)
+- FLOAT4 (R)
+- FLOAT8 (R)
 - FLUSH
 - FOLLOWING
 - FOR (R)
@@ -413,6 +415,7 @@ The following list shows the keywords in TiDB. Reserved keywords are marked with
 - MEMORY
 - MERGE
 - MICROSECOND
+- MIDDLEINT (R)
 - MINUTE
 - MINUTE_MICROSECOND (R)
 - MINUTE_SECOND (R)
