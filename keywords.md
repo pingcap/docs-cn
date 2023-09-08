@@ -306,6 +306,7 @@ Query OK, 0 rows affected (0.08 sec)
 - HOUR_MICROSECOND (R)
 - HOUR_MINUTE (R)
 - HOUR_SECOND (R)
+- HYPO
 
 <a id="I" class="letter" href="#I">I</a>
 
@@ -563,6 +564,7 @@ Query OK, 0 rows affected (0.08 sec)
 - RLIKE (R)
 - ROLE
 - ROLLBACK
+- ROLLUP
 - ROUTINE
 - ROW (R)
 - ROW_COUNT
