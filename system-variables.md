@@ -4345,7 +4345,7 @@ Query OK, 0 rows affected, 1 warning (0.00 sec)
 - 类型：整数型
 - 默认值：`0`
 - 范围：`[-1, 9223372036854775807]`
-- 用于设置 query 在每个 TiFlash 节点上的内存最大使用量，超过该限制时 TiFlash 会报错并终止该 query。-1 或者 0 表示无限制，当该变量设置为一个大于 0 的值且 [tiflash_query_spill_ratio](/system-variables.md#tiflash_mem_quota_query_per_node) 也设置为一个大于 0 的值时，TiFlash 在 query 内存超过 tiflash_mem_quota_query_per_node * tiflash_query_spill_ratio 会自动选择支持 spill 的算子（sort/aggregation/join）进行 spill。
+- 用于设置 query 在每个 TiFlash 节点上的内存最大使用量，超过该限制时 TiFlash 会报错并终止该 query。-1 或者 0 表示无限制。当该变量设置为一个大于 0 的值且 [tiflash_query_spill_ratio](/system-variables.md#tiflash_mem_quota_query_per_node) 也设置为有效值时，TiFlash 将启用 query 自动 spill 机制。
 
 ### `tiflash_query_spill_ratio` <span class="version-mark">从 v7.4.0 版本开始引入</span>
 
@@ -4358,7 +4358,7 @@ Query OK, 0 rows affected, 1 warning (0.00 sec)
 
 > **注意：**
 >
-> - 该变量只在 [tiflash_mem_quota_query_per_node](/system-variables.md#tiflash_query_spill_ratio) 大于 0 时生效，即如果 [tiflash_mem_quota_query_per_node](/system-variables.md#tiflash_query_spill_ratio) 设置为 0 或 -1，即使 `tiflash_query_spill_ratio` 大于 0 也不会触发自动 spill。
+> - 该变量只在 [tiflash_mem_quota_query_per_node](/system-variables.md#tiflash_query_spill_ratio) 大于 0 时生效，即如果 [tiflash_mem_quota_query_per_node](/system-variables.md#tiflash_query_spill_ratio) 设置为 0 或 -1，即使 `tiflash_query_spill_ratio` 大于 0 也不会启用自动 spill 机制。
 > - TiFlash query 级别自动 spill 机制开启时，TiFlash 单个算子的 spill 阈值会自动失效，即如果 [tiflash_mem_quota_query_per_node](/system-variables.md#tiflash_query_spill_ratio) 大于 0 且 `tiflash_query_spill_ratio` 大于 0 时 [tidb_max_bytes_before_tiflash_external_sort](/system-variables.md#tidb_max_bytes_before_tiflash_external_sort)/[tidb_max_bytes_before_tiflash_external_group_by](/system-variables.md#tidb_max_bytes_before_tiflash_external_group_by)/[tidb_max_bytes_before_tiflash_external_join](/system-variables.md#tidb_max_bytes_before_tiflash_external_join) 这三个参数会自动失效，等效于被设置为 0 。
 
 ### `tiflash_replica_read` <span class="version-mark">从 v7.3.0 版本开始引入</span>
