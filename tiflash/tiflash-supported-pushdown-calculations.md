@@ -52,6 +52,7 @@ TiFlash 支持部分算子的下推，支持的算子如下：
     * HOUR
     * MINUTE
     * SECOND
+* 所有包含 [`ROWS` 或 `RANGE` 类型的 frame](https://dev.mysql.com/doc/refman/8.0/en/window-functions-frames.html) 的窗口函数均不支持下推到 TiFlash
 
 如查询遇到不支持的下推计算，则需要依赖 TiDB 完成剩余计算，可能会很大程度影响 TiFlash 加速效果。对于暂不支持的算子/表达式，将会在后续版本中陆续支持。
 
