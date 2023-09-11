@@ -81,7 +81,7 @@ TiFlash 数据落盘的触发机制有两种
 
 ### 查询级别的落盘
 
-从 v7.4.0 开始，TiFlash 支持 query 级别的自动落盘机制。TiDB 提供了以下系统变量，来控制 query 级别的自动落盘：
+从 v7.4.0 开始，TiFlash 支持查询级别的自动落盘机制。你可以通过以下系统变量，来控制查询级别的自动落盘：
 
 * [`tiflash_mem_quota_query_per_node`](/system-variables.md#tiflash_mem_quota_query_per_node-从-v740-版本开始引入)
 * [`tiflash_query_spill_ratio`](/system-variables.md#tiflash_query_spill_ratio-从-v740-版本开始引入)
