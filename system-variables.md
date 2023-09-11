@@ -3779,7 +3779,7 @@ EXPLAIN FORMAT='brief' SELECT COUNT(1) FROM t WHERE a = 1 AND b IS NOT NULL;
 - 默认值： ``
 - 可选值：``, `background`
 - 该变量是一个实例级别的变量，用于控制 [TiDB 后端任务分布式框架](/tidb-distributed-execution-framework.md) 下各 TiDB 节点的服务范围。当 TiDB 节点设置 `tidb_service_scope` 为 `background` 时，后端任务分布式框架将调度该节点执行后端任务（如 Add Index 和 `IMPORT INTO`）。
-- 如果集群内所有节点均为配置 `tidb_service_scope`，后端任务分布式框架将默认调度所有节点执行后端任务。
+- 如果集群内所有节点均未配置 `tidb_service_scope`，后端任务分布式框架将默认调度所有节点执行后端任务。
 
 ### `tidb_session_plan_cache_size` <span class="version-mark">从 v7.1.0 版本开始引入</span>
 
