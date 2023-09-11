@@ -4354,7 +4354,7 @@ Query OK, 0 rows affected, 1 warning (0.00 sec)
 - 类型：浮点数
 - 默认值：`0.7`
 - 范围：`[0, 0.85]`
-- 用于控制 TiFlash query 自动 spill 机制：0 表示不进行 query 级别的自动 spill，大于 0 时，TiFlash 会在 query 内存超过 [tiflash_mem_quota_query_per_node](/system-variables.md#tiflash_query_spill_ratio) * tiflash_query_spill_ratio 自动选择支持 spill 的算子（sort/aggregation/join）进行 spill。
+- 用于控制 TiFlash [查询级别的落盘](/tiflash/tiflash-spill-disk.md#查询级别的落盘)机制的阈值：`0` 表示关闭查询级别的自动落盘机制；大于 `0` 时，如果查询使用的内存超过 [`tiflash_mem_quota_query_per_node`](/system-variables.md#tiflash_query_spill_ratio) * `tiflash_query_spill_ratio` 时，TiFlash 会触发查询级别的落盘，即将查询中所有支持落盘的算子的数据进行落盘。
 
 > **注意：**
 >
