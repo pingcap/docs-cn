@@ -4345,7 +4345,7 @@ Query OK, 0 rows affected, 1 warning (0.00 sec)
 - 类型：整数型
 - 默认值：`0`
 - 范围：`[-1, 9223372036854775807]`
-- 用于设置 query 在每个 TiFlash 节点上的内存最大使用量，超过该限制时 TiFlash 会报错并终止该 query。-1 或者 0 表示无限制。当该变量设置为一个大于 0 的值且 [tiflash_query_spill_ratio](/system-variables.md#tiflash_mem_quota_query_per_node) 也设置为有效值时，TiFlash 将启用 query 自动 spill 机制。
+- 用于设置单个查询在单个 TiFlash 节点上的内存使用上限，超过该限制时 TiFlash 会报错并终止该查询。`-1` 或者 `0` 表示无限制。当该变量的值大于 `0` 且 [`tiflash_query_spill_ratio`](/system-variables.md#tiflash_mem_quota_query_per_node) 也设置为有效值时，TiFlash 将启用[查询级别的落盘机制](/tiflash/tiflash-spill-disk.md#查询级别的落盘)。
 
 ### `tiflash_query_spill_ratio` <span class="version-mark">从 v7.4.0 版本开始引入</span>
 
