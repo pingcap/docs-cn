@@ -52,6 +52,12 @@ advance-ts-interval = "20s" # The default value is "20s". You can set it to a sm
 >
 > Decreasing the preceding TiKV configuration item will lead to an increase in TiKV CPU usage and traffic between nodes.
 
+<CustomContent platform="tidb">
+
+For more information about the internals of Resolved TS and diagnostic techniques, see [Understanding Stale Read and safe-ts in TiKV](/troubleshoot-stale-read.md).
+
+</CustomContent>
+
 ## Restrictions
 
 When a Stale Read query for a table is pushed down to TiFlash, the query will return an error if this table has newer DDL operations executed after the read timestamp specified by the query. This is because TiFlash only supports reading data from the tables with the latest schemas.

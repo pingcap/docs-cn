@@ -407,6 +407,20 @@ This section provides a detailed description of these key metrics on the **TiKV-
 - Total pessimistic locks memory size: The memory size occupied by the in-memory pessimistic locks
 - In-memory pessimistic locking result: The result of only saving pessimistic locks to memory. `full` means the number of times that the pessimistic lock is not saved to memory because the memory limit is exceeded.
 
+### Resolved-TS
+
+- Resolved-TS worker CPU: The CPU utilization of the resolved-ts worker threads
+- Advance-TS worker CPU: The CPU utilization of the advance-ts worker threads
+- Scan lock worker CPU: The CPU utilization of the scan lock worker threads
+- Max gap of resolved-ts: The maximum time difference between the resolved-ts of all active Regions in this TiKV and the current time
+- Max gap of safe-ts: The maximum time difference between the safe-ts of all active Regions in this TiKV and the current time
+- Min Resolved TS Region: The ID of the Region whose resolved-ts is the minimal
+- Min Safe TS Region: The ID of the Region whose safe-ts is the minimal
+- Check Leader Duration: The distribution of time spent on processing leader requests. The duration is from sending requests to receiving responses in leader
+- Max gap of resolved-ts in Region leaders: The maximum time difference between the resolved-ts of all active Regions in this TiKV and the current time, only for Region leaders
+- Min Leader Resolved TS Region: The ID of the Region whose resolved-ts is the minimal, only for Region leaders
+- Lock heap size: The memory footprint of the heap that tracks locks in the resolved-ts module
+
 ### Memory
 
 - Allocator Stats: The statistics of the memory allocator
