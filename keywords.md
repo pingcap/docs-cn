@@ -309,6 +309,7 @@ The following list shows the keywords in TiDB. Reserved keywords are marked with
 - HOUR_MICROSECOND (R)
 - HOUR_MINUTE (R)
 - HOUR_SECOND (R)
+- HYPO
 
 <a id="I" class="letter" href="#I">I</a>
 
@@ -567,6 +568,7 @@ The following list shows the keywords in TiDB. Reserved keywords are marked with
 - RLIKE (R)
 - ROLE
 - ROLLBACK
+- ROLLUP
 - ROUTINE
 - ROW (R)
 - ROW_COUNT
