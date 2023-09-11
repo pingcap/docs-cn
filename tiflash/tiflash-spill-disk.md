@@ -117,7 +117,7 @@ TiFlash 数据落盘的触发机制有两种
     [DEBUG] [MemoryTracker.cpp:69] ["Peak memory usage (total): 29.55 GiB."] [source=MemoryTracker] [thread_id=468]
     ```
 
-4. 执行以下语句。该语句限制了 query 的最大内存使用量为 5 GiB。
+4. 执行以下语句。该语句限制了单个查询在单个 TiFlash 节点的最大内存使用量为 5 GiB。
 
     ```sql
     SET tiflash_mem_quota_query_per_node = 5368709120;
