@@ -7,10 +7,6 @@ summary: TiDB 数据库中 IMPORT INTO 的使用概况。
 
 `IMPORT INTO` 语句使用 TiDB Lightning 的[物理导入模式](/tidb-lightning/tidb-lightning-physical-import-mode.md)，用于将 `CSV`、`SQL`、`PARQUET` 等格式的数据导入到 TiDB 的一张空表中。
 
-> **警告：**
->
-> 目前该语句为实验特性，不建议在生产环境中使用。
-
 `IMPORT INTO` 支持导入存储在 Amazon S3、GCS 和 TiDB 本地的数据文件。
 
 - 对于存储在 S3 或 GCS 的数据文件，`IMPORT INTO` 支持通过[后端任务分布式框架](/tidb-distributed-execution-framework.md)运行。
@@ -20,13 +16,9 @@ summary: TiDB 数据库中 IMPORT INTO 的使用概况。
 
 - 对于存储在 TiDB 本地的数据文件，`IMPORT INTO` 仅支持在当前用户连接的 TiDB 节点上运行，因此数据文件需要存放在当前用户连接的 TiDB 节点上。如果是通过 PROXY 或者 Load Balancer 访问 TiDB，则无法导入存储在 TiDB 本地的数据文件。
 
-## 已知问题
-
-数据导入任务启动后，在对要导入的数据进行本地排序期间，当使用的 TiDB 磁盘空间超过了 [`DISK_QUOTA`](#withoptions) 的设定值或本地磁盘空间的 80%，并且 TiDB 已经开始向 TiKV 写入数据时，如果取消该任务或导入任务运行失败，后台导入线程会继续运行一段时间，然后才会真正退出。详情参考 [#45048](https://github.com/pingcap/tidb/issues/45048)。
-
 ## 使用限制
 
-- 目前该语句仅支持导入 1 TiB 以下的数据。
+- 目前该语句仅支持导入 100 TiB 以下的数据。
 - 只支持导入数据到数据库中已有的空表。
 - 不支持事务，也无法回滚。在显式事务 (`BEGIN`/`END`) 中执行会报错。
 - 在导入完成前会阻塞当前连接，如果需要异步执行，可以添加 `DETACHED` 选项。
@@ -127,12 +119,39 @@ SET 表达式左侧只能引用 `ColumnNameOrUserVarList` 中没有的列名。�
 | `FIELDS_DEFINED_NULL_BY='<string>'` | CSV | 指定字段为何值时将会被解析为 NULL，默认为 `\N`。 |
 | `LINES_TERMINATED_BY='<string>'` | CSV | 指定行分隔符，默认 `IMPORT INTO` 会自动识别分隔符为 `\n`、`\r` 或 `\r\n`，如果行分隔符为以上三种，无须显式指定该选项。 |
 | `SKIP_ROWS=<number>` | CSV | 指定需要跳过的行数，默认为 `0`。可通过该参数跳过 CSV 中的 header，如果是通过通配符来指定所需导入的源文件，该参数会对 fileLocation 中通配符匹配的所有源文件生效。 |
+| `SPLIT_FILE` | CSV | 将大 CSV 文件拆分为多个 256M 左右的小 chunk 以进行并发处理，提高导入效率。该参数仅对**非**压缩的 CSV 文件生效，且该参数跟 TiDB Lightning 的 [strict-format](/tidb-lightning/tidb-lightning-data-source.md#strict-format) 有相同的使用限制。 |
 | `DISK_QUOTA='<string>'` | 所有格式 | 指定数据排序期间可使用的磁盘空间阈值。默认值为 TiDB [临时目录](/tidb-configuration-file.md#temp-dir-从-v630-版本开始引入)所在磁盘空间的 80%。如果无法获取磁盘总大小，默认值为 50 GiB。当显式指定 DISK_QUOTA 时，该值同样不能超过 TiDB [临时目录](/tidb-configuration-file.md#temp-dir-从-v630-版本开始引入)所在磁盘空间的 80%。 |
 | `DISABLE_TIKV_IMPORT_MODE` | 所有格式 | 指定是否禁止导入期间将 TiKV 切换到导入模式。默认不禁止。如果当前集群存在正在运行的读写业务，为避免导入过程对这部分业务造成影响，可开启该参数。 |
 | `THREAD=<number>` | 所有格式 | 指定导入的并发度。默认值为 TiDB 节点的 CPU 核数的 50%，最小值为 1。可以显示指定该参数来控制对资源的占用，但最大值不能超过 CPU 核数。如需导入数据到一个空集群，建议可以适当调大该值，以提升导入性能。如果目标集群已经用于生产环境，请根据业务要求按需调整该参数值。 |
 | `MAX_WRITE_SPEED='<string>'` | 所有格式 | 控制写入到单个 TiKV 的速度，默认无速度限制。例如设置为 `1MiB`，则限制写入速度为 1 MiB/s。|
 | `CHECKSUM_TABLE='<string>'` | 所有格式 | 配置是否在导入完成后对目标表是否执行 CHECKSUM 检查来验证导入的完整性。可选的配置项为 `"required"`（默认）、`"optional"` 和 `"off"`。`"required"` 表示在导入完成后执行 CHECKSUM 检查，如果 CHECKSUM 检查失败，则会报错退出。`"optional"` 表示在导入完成后执行 CHECKSUM 检查，如果报错，会输出一条警告日志并忽略报错。`"off"` 表示导入结束后不执行 CHECKSUM 检查。 |
 | `DETACHED` | 所有格式 | 该参数用于控制 `IMPORT INTO` 是否异步执行。开启该参数后，执行 `IMPORT INTO` 会立即返回该导入任务的 `Job_ID` 等信息，且该任务会在后台异步执行。 |
+| `CLOUD_STORAGE_URI` | 所有格式 | 该参数用于指定全局排序的目标存储地址，当不为空时，会开启全局排序功能。不设置该参数时 `IMPORT INTO` 会根据全局变量 `tidb_cloud_storage_uri` 的值来确定是否使用全局排序。目前仅支持 S3，具体 URI 格式配置详见[外部存储](/br/backup-and-restore-storages.md#uri-格式)。注意当使用该功能时，所有 TiDB 节点都需要有目标 S3 bucket 的读写权限。 |
+
+## 压缩文件
+
+`IMPORT INTO` 支持导入压缩的 `CSV`、`SQL` 文件，会自动根据数据文件后缀来确定该文件是否为压缩文件以及压缩格式，文件后缀和压缩格式对应关系如下：
+
+| 后缀名 | 压缩格式 |
+|:---|:---|
+| `.gz`、`.gzip` | gzip 压缩格式 |
+| `.zstd`、`.zst` | ZStd 压缩格式 |
+| `.snappy` | snappy 压缩格式 |
+
+## 全局排序
+
+> **警告：**
+>
+> 目前该功能为实验特性，不建议在生产环境中使用。
+
+`IMPORT INTO` 执行时会将源数据文件划分到多个子任务中，各个子任务独立进行编码排序并导入，如果在各个子任务之间编码后的 KV(TiDB 将数据编码为 KV 的方式参考[TiDB 数据库的计算](/tidb-computing.md)) range overlap 过多，导入时 TiKV 需要不断地进行 compaction ，这会降低导入性能和稳定性，以下情况会导致较多的 key range overlap：
+- 分配到各子任务的数据文件中的行存在主键范围 overlap，那么各个子任务编码后的产生的数据 KV 会存在 overlap。
+    - 说明：`IMPORT INTO` 会按数据文件遍历顺序来划分子任务，一般遍历文件按文件名字典序来排列。
+- 目标表索引较多，且索引列值在数据文件中较分散，那么各个子任务编码后的产生的索引 KV 会存在 overlap。
+
+使用全局排序后，编码后的 KV 数据会从写入本地并排序改成写入云存储，并在云存储进行全局排序，之后将全局排序后的索引数据和表数据并行导入到 TiKV，从而避免因 overlap 导致的问题，以提升导入性能和稳定性。
+
+但如果源数据文件 key range overlap 较少，开启全局排序后可能会降低导入性能，因为全局排序需要等所有子任务的数据排序后，进行额外的排序动作，之后再进行导入。
 
 ## 输出内容
 
