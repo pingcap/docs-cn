@@ -79,7 +79,7 @@ TiFlash 数据落盘的触发机制有两种
     [DEBUG] [MemoryTracker.cpp:69] ["Peak memory usage (total): 12.80 GiB."] [source=MemoryTracker] [thread_id=110]
     ```
 
-### Query 级别的落盘
+### 查询级别的落盘
 
 从 v7.4.0 开始，TiFlash 支持 query 级别的自动落盘机制。TiDB 提供了以下系统变量，来控制 query 级别的自动落盘：
 
