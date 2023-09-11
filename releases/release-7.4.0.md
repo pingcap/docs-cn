@@ -25,7 +25,7 @@ TiDB 版本：7.4.0
 
     在资源密集型集群中并行执行 Add Index 或 `IMPORT INTO` 任务可能占用大量 TiDB 节点的资源，从而导致集群性能下降。TiDB v7.4.0 引入了设置 TiDB Service Scope 的功能，你可以在存量 TiDB 节点中选择几个节点，或者对新增 TiDB 节点设置 TiDB Service Scope，所有并行执行的 Add Index 和 `IMPORT INTO` 的任务只会运行在这些节点，避免对已有业务造成性能影响。
 
-    更多信息，请参考[用户文档](链接)。
+    更多信息，请参考[用户文档](/system-variables.md#tidb_service_scope-从-v740-版本开始引入)。
     
 * 进一步优化的 Partitioned Raft KV 引擎  [#issue号](链接) @[busyjay](https://github.com/busyjay) @[tonyxuqqi](https://github.com/tonyxuqqi) @[tabokie](https://github.com/tabokie) @[bufferflies](https://github.com/bufferflies) @[5kbpers](https://github.com/5kbpers) @[SpadeA-Tang](https://github.com/SpadeA-Tang) @[nolouch](https://github.com/nolouch)  **tw@Oreoxmt** <!--1292-->
 
@@ -47,7 +47,7 @@ TiDB 版本：7.4.0
 
     更多信息，请参考[用户文档](/tiflash/tiflash-supported-pushdown-calculations.md)。
 
-* 引入基于云存储的全局排序能力，提升并行执行的 Add index 或 import into 任务的性能和稳定性 [#issue号](链接) @[贡献者 GitHub ID](链接) **tw@ran-huang** <!--1456-->
+* 引入基于云存储的全局排序能力，提升并行执行的 Add index 或 import into 任务的性能和稳定性 [#45719](https://github.com/pingcap/tidb/issues/45719) @[wjhuang2016](https://github.com/wjhuang2016) **tw@ran-huang** <!--1456-->
 
     原先用户执行分布式并行执行框架的 Add index 或 import into 任务的 TiDB 节点，需要准备一块较大的本地磁盘，用于编码后的索引 kv pairs 以及表数据的 kv Paris 进行排序，如果磁盘空间不够大，各个 TiDB 节点本地编码排序后的数据之间会存在 overlap 的情况，导致把这些 kv pairs 导入 TiKV 时，TiKV 需要不断地进行 compaction ，降低了执行 Add index 或 import into 的性能和稳定性。引入该特性后，编码后的数据从写入本地并排序改成写入云存储并在云存储进行全局排序，之后将全局排序后的索引数据和表数据并行导入到 TiKV，从而提升性能和稳定性。
 
