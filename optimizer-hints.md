@@ -77,13 +77,14 @@ SELECT /*+ QB_NAME(QB1) */ * FROM (SELECT * FROM t) t1, (SELECT * FROM t) t2;
 
 ### SET_VAR(VAR_NAME=VAR_VALUE)
 
-`SET_VAR(VAR_NAME=VAR_VALUE)` 通过 Hint 的形式在在单条 SQL 的生命周期内改变系统变量的值。通过这个 Hint 可以控制大多数和优化器、执行器相关的变量行为。在[系统变量](/system-variables.md)章节中可以看到具体哪些变量支持该 Hint。
+`SET_VAR(VAR_NAME=VAR_VALUE)` 能够将会话级系统变量，以 Hint 的形式在语句运行期间进行修改。语句执行完毕后，变量自动在所处的会话中恢复到原值。通过这个 Hint 可以修改一部分和优化器、执行器相关的变量行为，支持修改的系统变量请查看[系统变量](/system-variables.md)。强烈建议不要利用此 Hint 修改没有明确支持的变量，可能由此引发不可预知的行为。 
 
 ```sql
 SELECT /*+ SET_VAR(MAX_EXECUTION_TIME=1234) */ @@MAX_EXECUTION_TIME;
+SELECT @@MAX_EXECUTION_TIME;
 ```
 
-执行上述 SQL 会看到返回结果是 Hint 中设置的 1234，而不是变量 MAX_EXECUTION_TIME 的默认值。
+执行上述 SQL 会看到返回结果是 Hint 中设置的 1234，而不是变量 MAX_EXECUTION_TIME 的默认值。再次执行时，又恢复了默认值。
 
 ### MERGE_JOIN(t1_name [, tl_name ...])
 
