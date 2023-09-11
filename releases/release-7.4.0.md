@@ -49,7 +49,7 @@ TiDB 版本：7.4.0
 
 * 引入基于云存储的全局排序能力，提升并行执行的 Add index 或 import into 任务的性能和稳定性 [#45719](https://github.com/pingcap/tidb/issues/45719) @[wjhuang2016](https://github.com/wjhuang2016) **tw@ran-huang** <!--1456-->
 
-    原先用户执行分布式并行执行框架的 Add index 或 import into 任务的 TiDB 节点，需要准备一块较大的本地磁盘，用于编码后的索引 kv pairs 以及表数据的 kv Paris 进行排序，如果磁盘空间不够大，各个 TiDB 节点本地编码排序后的数据之间会存在 overlap 的情况，导致把这些 kv pairs 导入 TiKV 时，TiKV 需要不断地进行 compaction ，降低了执行 Add index 或 import into 的性能和稳定性。引入该特性后，编码后的数据从写入本地并排序改成写入云存储并在云存储进行全局排序，之后将全局排序后的索引数据和表数据并行导入到 TiKV，从而提升性能和稳定性。
+    原先用户执行分布式并行执行框架的 `ADD INDEX` 或 `IMPORT INTO` 任务的 TiDB 节点，需要准备一块较大的本地磁盘，用于编码后的索引 kv pairs 以及表数据的 kv Paris 进行排序。由于未能从全局的角度进行排序，各个 TiDB 节点间以及节点内部导入的数据之间均有可能存在 overlap 的情况，导致把这些 kv pairs 导入 TiKV 时，TiKV 需要不断地进行 compaction ，降低了执行 `ADD INDEX` 或 `IMPORT INTO` 的性能和稳定性。引入该特性后，编码后的数据从写入本地并排序改成写入云存储并在云存储进行全局排序，之后将全局排序后的索引数据和表数据并行导入到 TiKV，从而提升性能和稳定性。
 
     更多信息，请参考[用户文档](链接)。
 
@@ -209,12 +209,19 @@ TiDB 版本：7.4.0
 
     更多信息，请参考[用户文档](链接)。
 
-* IMPORT INTO 支持对导入的数据通过云存储进行全局排序提升导入性能和稳定性 [#46704](https://github.com/pingcap/tidb/issues/46704) @[D3Hunter](https://github.com/D3Hunter) **tw@qiancai** <!--1494-->
+* import into 功能增强，支持对导入的数据通过云存储进行全局排序提升导入性能和稳定性等特性 [#46704](https://github.com/pingcap/tidb/issues/46704) @[D3Hunter](https://github.com/D3Hunter) **tw@qiancai** <!--1494-->
 
     在 v7.4.0 之前，使用 IMPORT INTO 导入数据，会把该任务拆分成多个子任务调度到各个 TiDB 节点并行执行，这些 TiDB 节点，需要准备一块较大的本地磁盘，用于对编码后的索引 kv pairs 以及表 kv Paris 数据进行排序，如果磁盘空间不够大，各个 TiDB 节点本地编码排序后的数据之间会存在 overlap 的情况，导致把这些 kv pairs 导入 TiKV 时，TiKV 需要不断地进行 compaction ，降低了执行 import into 的性能和稳定性。引入该特性后，编码后的数据从写入本地并排序改成写入云存储并在云存储进行全局排序，之后将全局排序后的表数据和索引数据并行导入到 TiKV，从而提升性能和稳定性。
+    同时还支了配置项 "Split_File" 可将单个大 CSV 文件切分成多个 256 MiB 的 CSV 小文件，提升并发导入的性能。支持导入压缩后的 CSV，SQL 文件，支持以下压缩格式 .gzip, .gz, .zstd, .zst and .snappy 。
 
     更多信息，请参考[用户文档](链接)。
 
+* TiCDC 支持同步数据至 Pulsar [#9413](https://github.com/pingcap/tiflow/issues/9413) @[yumchina](https://github.com/yumchina) @[asddongmen](https://github.com/asddongmen) **tw@hfxsd** <!--1552-->
+
+    TiCDC 现在支持与 Pulsar 无缝集成。Pulsar 是一款云原生的分布式消息流平台，它可以提升您的实时数据流体验。借助这一新功能，TiCDC 赋予你轻松捕获和同步 TiDB 变更数据到 Pulsar 的能力，为数据处理和分析功能提供新的可能性。你可以开发自己的消费应用程序，从 Pulsar 中读取并处理新生成的变更数据，以满足特定的业务需求。TiCDC 目前支持以 `canal-json` 格式同步变更数据。
+
+    更多信息，请参考[用户文档](/ticdc/ticdc-sink-to-pulsar.md)。
+    
 ## 兼容性变更
 
 > **注意：**
@@ -351,4 +358,4 @@ TiDB 版本：7.4.0
 
 感谢来自 TiDB 社区的贡献者们：
 
-+ [Contributor 1]()
++ [yumchina](https://github.com/yumchina)
