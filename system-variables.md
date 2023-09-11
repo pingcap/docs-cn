@@ -4359,7 +4359,7 @@ Query OK, 0 rows affected, 1 warning (0.00 sec)
 > **注意：**
 >
 > - 该变量只在 [`tiflash_mem_quota_query_per_node`](/system-variables.md#tiflash_query_spill_ratio) 大于 `0` 时生效，即如果 [tiflash_mem_quota_query_per_node](/system-variables.md#tiflash_query_spill_ratio) 为 `0` 或 `-1`，即使 `tiflash_query_spill_ratio` 大于 `0` 也不会启用查询级别的落盘机制。
-> - TiFlash query 级别自动 spill 机制开启时，TiFlash 单个算子的 spill 阈值会自动失效，即如果 [tiflash_mem_quota_query_per_node](/system-variables.md#tiflash_query_spill_ratio) 大于 0 且 `tiflash_query_spill_ratio` 大于 0 时 [tidb_max_bytes_before_tiflash_external_sort](/system-variables.md#tidb_max_bytes_before_tiflash_external_sort)/[tidb_max_bytes_before_tiflash_external_group_by](/system-variables.md#tidb_max_bytes_before_tiflash_external_group_by)/[tidb_max_bytes_before_tiflash_external_join](/system-variables.md#tidb_max_bytes_before_tiflash_external_join) 这三个参数会自动失效，等效于被设置为 0 。
+> - 当 TiFlash 查询级别的落盘机制开启时，TiFlash 单个算子的落盘阈值会自动失效，即如果 [`tiflash_mem_quota_query_per_node`](/system-variables.md#tiflash_query_spill_ratio) 和 `tiflash_query_spill_ratio` 均大于 0， [tidb_max_bytes_before_tiflash_external_sort](/system-variables.md#tidb_max_bytes_before_tiflash_external_sort)、[tidb_max_bytes_before_tiflash_external_group_by](/system-variables.md#tidb_max_bytes_before_tiflash_external_group_by)、[tidb_max_bytes_before_tiflash_external_join](/system-variables.md#tidb_max_bytes_before_tiflash_external_join) 这三个变量会自动失效，等效于被设置为 `0`。
 
 ### `tiflash_replica_read` <span class="version-mark">从 v7.3.0 版本开始引入</span>
 
