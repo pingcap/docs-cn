@@ -22,7 +22,7 @@ TiFlash 数据落盘的触发机制有两种：
 
 ### 算子级别的落盘
 
-从 v7.0.0 起，TiDB 提供了以下系统变量，来控制各算子数据落盘的阈值。当算子使用的内存超过阈值之后，TiFlash 会触发对应算子的落盘。
+从 v7.0.0 起，TiDB 支持算子级别的自动落盘。你可通过以下系统变量，来控制各算子数据落盘的阈值。当算子使用的内存超过阈值之后，TiFlash 会触发对应算子的落盘。
 
 * [`tidb_max_bytes_before_tiflash_external_group_by`](/system-variables.md#tidb_max_bytes_before_tiflash_external_group_by-从-v700-版本开始引入)
 * [`tidb_max_bytes_before_tiflash_external_join`](/system-variables.md#tidb_max_bytes_before_tiflash_external_join-从-v700-版本开始引入)
