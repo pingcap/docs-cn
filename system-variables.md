@@ -42,6 +42,10 @@ SET GLOBAL tidb_distsql_scan_concurrency = 10;
 >
 > 单位相同的多个变量可能会争夺同一组资源。
 
+## Optimizer Hint SET_VAR
+
+Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 能够将会话级系统变量，以 Hint 的形式在语句运行期间进行修改。语句执行完毕后，变量自动在所处的会话中恢复到原值。"受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：是"，表示此变量支持用 Hint `SET_VAR()` 在运行时修改。 
+
 ## 变量参考
 
 ### `allow_auto_random_explicit_insert` <span class="version-mark">从 v4.0.3 版本开始引入</span>
