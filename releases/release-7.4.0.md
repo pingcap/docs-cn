@@ -275,8 +275,8 @@ TiDB 版本：7.4.0
     - note [#issue](链接) @[贡献者 GitHub ID](链接)
 
 + TiFlash
-    - 提升 TiFlash 在存算分离架构下的性能和稳定性（实验特性） [#6882](https://github.com/pingcap/tiflash/issues/6882)  @[JaySon-Huang](https://github.com/JaySon-Huang) @[breezewish](https://github.com/breezewish) @[JinheLin](https://github.com/JinheLin) **tw@qiancai** <!--1234-->
-    - 改进 TiFlash Compact Log 策略，提升随机写入负载下的读性能 [#7564](https://github.com/pingcap/tiflash/issues/7564) @[CalvinNeo](https://github.com/CalvinNeo) **tw@qiancai** <!--1234-->
+    - TiFlash 存算分离架构 GA [#6882](https://github.com/pingcap/tiflash/issues/6882)  @[JaySon-Huang](https://github.com/JaySon-Huang) @[breezewish](https://github.com/breezewish) @[JinheLin](https://github.com/JinheLin) @[lidezhu](https://github.com/lidezhu)
+    - 改进 TiFlash 的写入策略，提升随机写入负载下的读性能 [#7564](https://github.com/pingcap/tiflash/issues/7564) @[CalvinNeo](https://github.com/CalvinNeo) **tw@qiancai** <!--1234-->
 
 + Tools
 
