@@ -229,7 +229,6 @@ br restore full \
     --pd "${PD_IP}:2379" \
     --filter 'mysql.bind_info' \
     --with-sys-table \
-    --ratelimit 128 \
     --storage "s3://${backup_collection_addr}/snapshot-${date}?access-key=${access-key}&secret-access-key=${secret-access-key}" \
     --log-file restore_system_table.log
 ```
