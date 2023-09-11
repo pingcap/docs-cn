@@ -84,7 +84,7 @@ TiFlash 数据落盘的触发机制有两种
 从 v7.4.0 开始，TiFlash 支持查询级别的自动落盘机制。你可以通过以下系统变量，来控制查询级别的自动落盘：
 
 * [`tiflash_mem_quota_query_per_node`](/system-variables.md#tiflash_mem_quota_query_per_node-从-v740-版本开始引入)：用于控制单个查询在单个 TiFlash 节点内存使用的上限
-* [`tiflash_query_spill_ratio`](/system-variables.md#tiflash_query_spill_ratio-从-v740-版本开始引入)
+* [`tiflash_query_spill_ratio`](/system-variables.md#tiflash_query_spill_ratio-从-v740-版本开始引入)：用于控制触发数据落盘的内存阈值
 
 当 `tiflash_mem_quota_query_per_node` 与 `tiflash_query_spill_ratio` 均设置为一个大于 0 的值时，TiFlash 会在单个 query 内存使用量超过 `tiflash_mem_quota_query_per_node * tiflash_query_spill_ratio` 时自动触发该 query 中可以支持落盘的算子的落盘。
 
