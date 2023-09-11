@@ -134,7 +134,7 @@ TiFlash 数据落盘的触发机制有两种
     HAVING SUM(l_quantity) > 314;
     ```
 
-5. 从 TiFlash 的日志中可以看出，通过配置 query 级别的自动落盘，TiFlash 触发了中间结果落盘，显著减小了查询所需的内存。
+5. 从 TiFlash 的日志中可以看出，通过配置查询级别的自动落盘，TiFlash 触发了中间结果落盘，显著减小了查询所需的内存。
 
     ```
     [DEBUG] [MemoryTracker.cpp:101] ["Peak memory usage (for query): 3.94 GiB."] [source=MemoryTracker] [thread_id=1547]
