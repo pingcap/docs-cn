@@ -234,7 +234,7 @@ br restore full \
     --log-file restore_system_table.log
 ```
 
-恢复完成后，可以通过 [`SHOW GLOBAL BINDINGS`](../sql-statements/sql-statement-show-bindings.md) 检查执行计划绑定信息的恢复情况。
+恢复完成后，可以通过 [`SHOW GLOBAL BINDINGS`](/sql-statements/sql-statement-show-bindings.md) 检查执行计划绑定信息的恢复情况：
 
 ```sql
 SHOW GLOBAL BINDINGS;
