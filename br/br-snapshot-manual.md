@@ -240,7 +240,7 @@ br restore full \
 SHOW GLOBAL BINDINGS;
 ```
 
-当前执行计划绑定信息在备份恢复后的动态加载仍在优化中（相关的 issue 为 [#46527](https://github.com/pingcap/tidb/issues/46527) 和 [#46528](https://github.com/pingcap/tidb/issues/46528)，你需要手动刷新执行计划绑定信息。
+当前执行计划绑定信息在备份恢复后的动态加载仍在优化中（相关的 issue 为 [#46527](https://github.com/pingcap/tidb/issues/46527) 和 [#46528](https://github.com/pingcap/tidb/issues/46528)），你需要手动刷新执行计划绑定信息。
 
 ```sql
 -- 确保 mysql.bind_info 表中 builtin_pseudo_sql_for_bind_lock 的记录仅 1 行，如果多于 1 行，需要手动删除
