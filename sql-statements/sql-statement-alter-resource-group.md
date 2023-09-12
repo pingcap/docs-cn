@@ -84,7 +84,7 @@ TiDB 支持以下 `DirectResourceGroupOption`, 其中 [Request Unit (RU)](/tidb-
 >
 > - `ALTER RESOURCE GROUP` 语句只能在全局变量 [`tidb_enable_resource_control`](/system-variables.md#tidb_enable_resource_control-从-v660-版本开始引入) 参数设置为 `ON` 时才能执行。
 > - `ALTER RESOURCE GROUP` 语句支持以增量方式修改，未指定的参数保持不变。但其中 `QUERY_LIMIT` 和 `BACKGROUND` 各自作为一个整体，无法部分修改其中的参数。
-> 目前仅 `default` 资源组支持修改 `BACKGROUND` 相关设置。
+> - 目前仅 `default` 资源组支持修改 `BACKGROUND` 相关设置。
 
 ## 示例
 
