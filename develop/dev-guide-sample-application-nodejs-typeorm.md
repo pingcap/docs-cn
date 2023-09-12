@@ -7,7 +7,7 @@ summary: 本文描述了 TiDB 和 TypeORM 的连接步骤，并给出了简单�
 
 TiDB 是一个兼容 MySQL 的数据库。[TypeORM](https://typeorm.io/) 是当前流行的 Node.js ORM 框架之一。
 
-本文档将展示如何使用 TiDB 和 TypeORM 来构造一个简单的 CRUD 应用程序。
+本文档将展示如何使用 TiDB 和 TypeORM 来完成以下任务：
 
 - 配置你的环境。
 - 使用 TypeORM 连接到 TiDB 集群。
@@ -45,7 +45,7 @@ cd tidb-nodejs-typeorm-quickstart
 
 ### 第 2 步：安装依赖
 
-运行以下命令，安装示例代码所需要的依赖 (包括 `typeorm` 依赖包)：
+运行以下命令，安装示例代码所需要的依赖（包括 `typeorm` 和 `mysql2` 依赖包）：
 
 ```bash
 npm install
@@ -56,12 +56,12 @@ npm install
 
 在你现有的项目当中，你可以通过以下命令安装所需要的依赖包：
 
-- `typeorm`: 面向 Node.js 应用的 ORM 框架。
-- `mysql2`: 面向 Node.js 的 MySQL Driver 包。（你也可以使用 `mysql` 包）
-- `dotenv`: 用于从 `.env` 文件中读取环境变量。
-- `typescript`: TypeScript 编译器。
-- `ts-node`: 用于在不编译的情况下直接执行 TypeScript 代码。
-- `@types/node`: 用于提供 Node.js 的 TypeScript 类型定义。
+- `typeorm`：面向 Node.js 应用的 ORM 框架。
+- `mysql2`：面向 Node.js 的 MySQL Driver 包。你也可以使用 `mysql`。
+- `dotenv`：用于从 `.env` 文件中读取环境变量。
+- `typescript`：TypeScript 编译器。
+- `ts-node`：用于在不编译的情况下直接执行 TypeScript 代码。
+- `@types/node`：用于提供 Node.js 的 TypeScript 类型定义。
 
 ```shell
 npm install typeorm mysql2 dotenv --save
@@ -88,9 +88,9 @@ npm install @types/node ts-node typescript --save-dev
     - **Connect With** 选择 `General`。
     - **Operating System** 为运行示例代码所在的操作系统。
 
-   > **Note**
-   >
-   > 如果你的程序在 Windows Subsystem for Linux (WSL) 中运行，请切换为对应的 Linux 发行版。
+    > **Note**
+    >
+    > 如果你的程序在 Windows Subsystem for Linux (WSL) 中运行，请切换为对应的 Linux 发行版。
 
 4. 如果你还没有设置密码，点击 **Create password** 按钮生成一个随机的密码。
 
@@ -111,9 +111,9 @@ npm install @types/node ts-node typescript --save-dev
     TIDB_ENABLE_SSL=true
     ```
 
-   > **Note**
-   >
-   > 当你使用 Public Endpoint 连接 TiDB Serverless 集群时，**必须**启用 TLS 连接，请将 `TIDB_ENABLE_SSL` 修改为 `true`。
+    > **Note**
+    >
+    > 当你使用 Public Endpoint 连接 TiDB Serverless 集群时，**必须**启用 TLS 连接，请将 `TIDB_ENABLE_SSL` 修改为 `true`。
 
 7. 保存 `.env` 文件。
 
@@ -125,7 +125,7 @@ npm install @types/node ts-node typescript --save-dev
 2. 点击右上角的 **Connect** 按钮，将会出现连接对话框。
 3. 在对话框中点击 **Allow Access from Anywhere**，然后点击 **Download TiDB cluster CA** 下载 TiDB Cloud 提供的 CA 证书。
 
-   更多配置细节，可参考 [TiDB Dedicated 标准连接教程（英文）](https://docs.pingcap.com/tidbcloud/connect-via-standard-connection)。
+    更多配置细节，可参考 [TiDB Dedicated 标准连接教程（英文）](https://docs.pingcap.com/tidbcloud/connect-via-standard-connection)。
 
 4. 运行以下命令，将 `.env.example` 复制并重命名为 `.env`：
 
@@ -145,11 +145,9 @@ npm install @types/node ts-node typescript --save-dev
     TIDB_CA_PATH={downloaded_ssl_ca_path}
     ```
 
-   > **Note**
-   >
-   > 推荐在使用 Public Endpoint 连接 TiDB Dedicated 集群时，启用 TLS 连接。
-   >
-   > 为了启用 TLS (SSL) 连接，将 `TIDB_ENABLE_SSL` 修改为 `true`，并使用 `TIDB_CA_PATH` 指定从连接对话框中下载的 CA 证书的文件路径。
+    > **Note**
+    >
+    > 推荐在使用 Public Endpoint 连接 TiDB Dedicated 集群时，启用 TLS 连接。为了启用 TLS (SSL) 连接，将 `TIDB_ENABLE_SSL` 修改为 `true`，并使用 `TIDB_CA_PATH` 指定从连接对话框中下载的 CA 证书的文件路径。
 
 6. 保存 `.env` 文件。
 
@@ -172,6 +170,8 @@ npm install @types/node ts-node typescript --save-dev
     TIDB_PASSWORD={password}
     TIDB_DATABASE=test
     ```
+
+    如果你在本机运行 TiDB，默认 Host 地址为 `127.0.0.1`，密码为空。
 
 3. 保存 `.env` 文件。
 
@@ -268,19 +268,21 @@ export const AppDataSource = new DataSource({
 ```
 
 > **Note**
-> 
-> 当你使用 Public Endpoint 连接 TiDB Serverless 集群时，**必须**启用 TLS 连接，请将 `TIDB_ENABLE_SSL` 修改为 `true`。但是你**不需要**通过 `TIDB_CA_PATH` 指定 SSL CA 证书，因为 Node.js 默认使用内置的 [Mozilla CA 证书](https://wiki.mozilla.org/CA/Included_Certificates)，该证书已被 TiDB Serverless 信任。
+>
+> 使用 Public Endpoint 连接 TiDB Serverless 时，**必须**启用 TLS 连接，请将 `TIDB_ENABLE_SSL` 修改为 `true`。
+>
+> 但是你**不需要**通过 `TIDB_CA_PATH` 指定 SSL CA 证书，因为 Node.js 默认使用内置的 [Mozilla CA 证书](https://wiki.mozilla.org/CA/Included_Certificates)，该证书已被 TiDB Serverless 信任。
 
 ### 插入数据
 
-下面的代码创建了一个 `Player` 记录，并返回该记录的 `id` 字段，该字段由 TiDB 自动生成：
+下面的代码创建了一条 `Player` 记录，并返回该记录的 `id` 字段，该字段由 TiDB 自动生成：
 
 ```typescript
 const player = new Player('Alice', 100, 100);
 await this.dataSource.manager.save(player);
 ```
 
-更多信息，请参考 [插入数据](/develop/dev-guide-insert-data.md)。
+更多信息参考[插入数据](/develop/dev-guide-insert-data.md)。
 
 ### 查询数据
 
@@ -292,7 +294,7 @@ const player: Player | null = await this.dataSource.manager.findOneBy(Player, {
 });
 ```
 
-更多信息，请参考 [查询数据](/develop/dev-guide-get-data-from-single-table.md)。
+更多信息参考[查询数据](/develop/dev-guide-get-data-from-single-table.md)。
 
 ### 更新数据
 
@@ -306,7 +308,7 @@ player.goods += 50;
 await this.dataSource.manager.save(player);
 ```
 
-更新信息，请参考 [更新数据](/develop/dev-guide-update-data.md)。
+更多信息参考[更新数据](/develop/dev-guide-update-data.md)。
 
 ### 删除数据
 
@@ -318,7 +320,7 @@ await this.dataSource.manager.delete(Player, {
 });
 ```
 
-更新信息，请参考 [删除数据](/develop/dev-guide-delete-data.md)。
+更多信息参考[删除数据](/develop/dev-guide-delete-data.md)。
 
 ### 执行原生 SQL 查询
 
@@ -329,13 +331,13 @@ const rows = await dataSource.query('SELECT VERSION() AS tidb_version;');
 console.log(rows[0]['tidb_version']);
 ```
 
-更多信息，请参考 [TypeORM: DataSource API](https://typeorm.io/data-source-api).
+更多信息参考 [TypeORM: DataSource API](https://typeorm.io/data-source-api)。
 
 ## 注意事项
 
 ### 外键约束
 
-使用外键约束可以通过在数据库层面添加检查来确保数据的[引用完整性](https://en.wikipedia.org/wiki/Referential_integrity)。但是，在大数据量的场景下，这可能会导致严重的性能问题。
+使用外键约束可以通过在数据库层面添加检查来确保数据的[引用完整性](https://zh.wikipedia.org/wiki/参照完整性)。但是，在大数据量的场景下，这可能会导致严重的性能问题。
 
 你可以通过使用 `createForeignKeyConstraints` 选项来控制在构建实体之间的关系时是否创建外键约束（默认值为 `true`）。
 
@@ -352,10 +354,14 @@ export class ActionLog {
 }
 ```
 
-更多信息，请参考 [TypeORM FAQ](https://typeorm.io/relations-faq#avoid-foreign-key-constraint-creation) 和 [外键约束](https://docs.pingcap.com/tidbcloud/foreign-key#foreign-key-constraints)。
+更多信息，请参考 [TypeORM FAQ](https://typeorm.io/relations-faq#avoid-foreign-key-constraint-creation) 和 [TiDB 外键约束](/foreign-key.md)。
 
 ## 下一步
 
 - 关于 TypeORM 的更多使用方法，可以参考 [TypeORM 的官方文档](https://typeorm.io)。
 - 你可以继续阅读开发者文档的其它章节来获取更多 TiDB 应用开发的最佳实践。例如：[插入数据](/develop/dev-guide-insert-data.md)，[更新数据](/develop/dev-guide-update-data.md)，[删除数据](/develop/dev-guide-delete-data.md)，[单表读取](/develop/dev-guide-get-data-from-single-table.md)，[事务](/develop/dev-guide-transaction-overview.md)，[SQL 性能优化](/develop/dev-guide-optimize-sql-overview.md)等。
 - 如果你更倾向于参与课程进行学习，我们也提供专业的 [TiDB 开发者课程](https://cn.pingcap.com/courses-catalog/back-end-developer/?utm_source=docs-cn-dev-guide)支持，并在考试后提供相应的[资格认证](https://learn.pingcap.com/learner/certification-center)。
+
+## 需要帮助?
+
+如果在开发的过程中遇到问题，可以在 [AskTUG](https://asktug.com/?utm_source=docs-cn-dev-guide) 上进行提问，寻求帮助。
