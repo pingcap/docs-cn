@@ -233,7 +233,7 @@ def create_player(client, coins, goods)
 end
 ```
 
-有关更多信息，请参考 [插入数据](/develop/dev-guide-insert-data.md)。
+更多信息，请参考[插入数据](/develop/dev-guide-insert-data.md)。
 
 ### 查询数据
 
