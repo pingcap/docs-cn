@@ -187,6 +187,12 @@ TiDB 版本：7.4.0
 
     除此之外，通过设置会话级变量 [`tidb_session_alias`](/system-variables.md#tidb_session_alias-从-v740-版本开始引入)，你可以向上述日志中添加自定义的标识。借助这个能力，把业务识别信息注入日志，可以将日志中的内容与业务关联，打通了业务到日志的链路，降低了诊断工作的难度。
 
+*  TiDB Dashboard 提供表格视图的执行计划 [#1589](https://github.com/pingcap/tidb-dashboard/issues/1589) @[baurine](https://github.com/baurine) **tw@Oreoxmt** <!--1434-->
+
+    在 v7.4.0，TiDB Dashboard 的 Slow Query 页面和 SQL Statement 页面添加了表格视图的执行计划，以为用户提供更好的诊断体验。
+
+    更多信息，请参考[用户文档](链接)。
+
 ### 安全
 
 * 功能标题 [#issue号](链接) @[贡献者 GitHub ID](链接) **tw@xxx** <!--1234-->
@@ -205,7 +211,7 @@ TiDB 版本：7.4.0
 
 * 支持实时更新增量数据校验的 Checkpoint [#issue号](链接) @[lichunzhu](https://github.com/lichunzhu) **tw@ran-huang** <!--1496-->
 
-    在 v7.4.0 之前，使用增量数据校验功能，判断 DM 同步到下游的数据是否和上游是一致的，并以此作为业务流量从上游数据库割接到 TiDB 的判断依据。而增量校验 checkpoint 受同步延迟，不一致的数据等待一段时间后重新校验等机制限制，需要每隔几分钟的时间来刷新校验后的 checkpoint，这在一些割接时间只有几十秒的业务场景是不可接受的，引入该功能后，用户可以传入上游数据库填写的 binlog Postion，一旦增量校验程序在内存里校验到该 binlog Postion 后会立即刷新 checkpoint，而不是每隔几分钟刷新 checkpoint，从而用户可以根据该立即返回的 checkpoint 来快速地割接。
+    在 v7.4.0 之前，使用增量数据校验功能，判断 DM 同步到下游的数据是否和上游是一致的，并以此作为业务流量从上游数据库割接到 TiDB 的判断依据。而增量校验 checkpoint 受同步延迟，不一致的数据等待一段时间后重新校验等机制限制，需要每隔几分钟的时间来刷新校验后的 checkpoint，这在一些割接时间只有几十秒的业务场景是不可接受的，引入该功能后，用户可以传入上游数据库填写的 binlog Position，一旦增量校验程序在内存里校验到该 binlog Postion 后会立即刷新 checkpoint，而不是每隔几分钟刷新 checkpoint，从而用户可以根据该立即返回的 checkpoint 来快速地割接。
 
     更多信息，请参考[用户文档](链接)。
 
@@ -224,7 +230,7 @@ TiDB 版本：7.4.0
 
 * TiCDC 支持 Claim-Check 功能 [#9153](https://github.com/pingcap/tiflow/issues/9153) @[3AceShowHand](https://github.com/3AceShowHand) **tw@ran-huang** <!--1550 英文 comment 原文 https://internal.pingcap.net/jira/browse/FD-1550?focusedCommentId=149207&page=com.atlassian.jira.plugin.system.issuetabpanels:comment-tabpanel#comment-149207-->
 
-    在配置下游为 Kafka 的 Changefeed 的时候，你可以配置一个外部存储位置，用于存储消息大小超过 Kafka 消息尺寸限制 (`max.message.bytes`) 的大消息，同时一条含有该条大消息在外部存储中的地址的引用消息，将会被发送到 Kafka，消息消费者在收到了该条引用消息后，可以根据其中记录的外部存储地址信息，获取对应的大消息内容。
+    在 v7.4.0 之前，TiCDC 无法向下游发送超过 Kafka 最大消息大小的大型消息。从  v7.4.0 开始，在配置下游为 Kafka 的 Changefeed 的时候，你可以配置一个外部存储位置，用于存储消息大小超过 Kafka 消息尺寸限制 (`max.message.bytes`) 的大消息，同时一条含有该条大消息在外部存储中的地址的引用消息，将会被发送到 Kafka，消息消费者在收到了该条引用消息后，可以根据其中记录的外部存储地址信息，获取对应的大消息内容。
 
     更多信息，请参考[用户文档](链接)。
 
