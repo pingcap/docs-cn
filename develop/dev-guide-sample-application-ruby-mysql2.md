@@ -248,7 +248,7 @@ def get_player_by_id(client, id)
 end
 ```
 
-有关更多信息，请参考 [查询数据](/develop/dev-guide-get-data-from-single-table.md)。
+更多信息，请参考[查询数据](/develop/dev-guide-get-data-from-single-table.md)。
 
 ### 更新数据
 
