@@ -15,7 +15,7 @@ TiDB 是一个兼容 MySQL 的数据库。 [mysql2](https://github.com/brianmari
 
 > **注意：**
 >
-> 本教程适用于 TiDB Serverless、TiDB Dedicated 以及本地部署的 TiDB。
+> 本文档适用于 TiDB Serverless、TiDB Dedicated 以及本地部署的 TiDB。
 
 ## 先决条件
 
