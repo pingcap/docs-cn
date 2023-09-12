@@ -108,7 +108,7 @@ bundle add mysql2 dotenv
 </div>
 <div label="TiDB Dedicated">
 
-1. 导航到 [**Clusters**](https://tidbcloud.com/console/clusters) 页面，然后点击你的目标集群的名称，进入其概览页面。
+1. 在 TiDB Cloud 的 [**Clusters**](https://tidbcloud.com/console/clusters) 页面中，点击你的目标集群的名称，进入集群的 **Overview** 页面。
 
 2. 点击右上角的 **Connect**。会显示一个连接对话框。
 
