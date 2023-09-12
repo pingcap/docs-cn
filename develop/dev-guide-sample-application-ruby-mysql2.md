@@ -193,7 +193,7 @@ ruby app.rb
 
 你可以参考以下示例代码片段来完成你自己的应用程序开发。
 
-要获取完整的示例代码以及如何运行它，请查看 [tidb-samples/tidb-ruby-mysql2-quickstart](https://github.com/tidb-samples/tidb-ruby-mysql2-quickstart) 仓库。
+完整代码及其运行方式，见代码仓库 [tidb-samples/tidb-ruby-mysql2-quickstart](https://github.com/tidb-samples/tidb-ruby-mysql2-quickstart)。
 
 ### 使用连接选项连接到 TiDB
 
