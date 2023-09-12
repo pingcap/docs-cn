@@ -191,7 +191,7 @@ ruby app.rb
 
 ## 示例代码片段
 
-你可以参考以下示例代码片段来完成你自己的应用程序开发。
+你可参考以下关键代码片段，完成自己的应用开发。
 
 完整代码及其运行方式，见代码仓库 [tidb-samples/tidb-ruby-mysql2-quickstart](https://github.com/tidb-samples/tidb-ruby-mysql2-quickstart)。
 
