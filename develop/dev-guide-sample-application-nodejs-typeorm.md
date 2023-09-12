@@ -354,7 +354,7 @@ export class ActionLog {
 }
 ```
 
-更多信息，请参考 [TypeORM FAQ](https://typeorm.io/relations-faq#avoid-foreign-key-constraint-creation) 和 [TiDB 外键约束](/foreign-key.md)。
+更多信息，请参考 [TypeORM FAQ](https://typeorm.io/relations-faq#avoid-foreign-key-constraint-creation) 和 [TiDB 外键约束](https://docs.pingcap.com/zh/tidb/stable/foreign-key)。
 
 ## 下一步
 
