@@ -21,10 +21,10 @@ TiDB 是一个兼容 MySQL 的数据库。 [mysql2](https://github.com/brianmari
 
 为了能够顺利完成本文中的操作，你需要提前：
 
-- 在你的机器上安装 [Ruby](https://www.ruby-lang.org/en/) >= 3.0
-- 在你的机器上安装 [Bundler](https://bundler.io/)
-- 在你的机器上安装 [Git](https://git-scm.com/downloads)
-- 运行一个 TiDB 集群
+- 在你的机器上安装 [Ruby](https://www.ruby-lang.org/en/) 3.0 或以上版本。
+- 在你的机器上安装 [Bundler](https://bundler.io/)。
+- 在你的机器上安装 [Git](https://git-scm.com/downloads)。
+- 准备一个 TiDB 集群。
 
 如果你还没有 TiDB 集群，可以按照以下方式创建：
 
