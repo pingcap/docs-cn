@@ -112,7 +112,7 @@ bundle add mysql2 dotenv
 
 2. 点击右上角的 **Connect** 按钮，将会弹出连接对话框。
 
-3. 点击 **Allow Access from Anywhere**，然后点击 **Download TiDB cluster CA** 以下载 CA 证书。
+3. 在对话框中点击 **Allow Access from Anywhere**，然后点击 **Download TiDB cluster CA** 下载 TiDB Cloud 提供的 CA 证书。
 
    关于如何获取连接字符串的更多细节，请参考 [TiDB Dedicated standard connection](https://docs.pingcap.com/tidbcloud/connect-via-standard-connection)。
 
