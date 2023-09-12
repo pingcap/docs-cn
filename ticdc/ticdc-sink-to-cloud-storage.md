@@ -122,11 +122,23 @@ NFS 配置样例如下：
 
 > **注意：**
 >
-> 表的版本可能在以下三种情况下发生变化：
->
-> - 发生 DDL 操作后，表的版本为该 DDL 在上游 TiDB 执行结束的 TSO。但是，表版本的变化并不意味着表结构的变化。例如，在表中的某一列添加注释，不会导致 `schema.json` 文件内容发生变化。
-> - 进程重启，表的版本为进程重启时 Changefeed 的 checkpoint TSO。在有很多表的情况下，重启时需要遍历所有目录并找到上一次重启时每张表写入的位置，这样的操作耗时较长。因此，TiCDC 选择在一个以 checkpoint TSO 为版本的新目录下写入数据，而不是在旧版本的目录下继续写入数据。
-> - 发生表调度后，表的版本为该表调度到当前节点时 Changefeed 的 checkpoint TSO。
+> 表的版本仅在上游表发生 DDL 操作后才改变：表的版本为该 DDL 在上游 TiDB 执行结束的 TSO。但是，表版本的变化并不意味着表结构的变化。例如，在表中的某一列添加注释，不会导致 schema 文件内容发生变化。
+
+### Index 文件
+
+Index 文件用于防止已写入的数据被错误覆盖，与数据变更记录存储在相同路径：
+
+```shell
+{scheme}://{prefix}/{schema}/{table}/{table-version-separator}/{partition-separator}/{date-separator}/meta/CDC.index
+```
+
+Index 文件记录了当前目录下所使用到的最大文件名，比如：
+
+```
+CDC000005.csv
+```
+
+上述内容表明该目录下 `CDC000001.csv` 到 `CDC000004.csv` 文件已被占用，当 TiCDC 集群中发生表调度或者节点重启时，新的节点会读取 Index 文件，并判断 `CDC000005.csv` 是否被占用。如果未被占用，则新节点会从 `CDC000005.csv` 开始写文件。如果已被占用，则从 `CDC000006.csv` 开始写文件，这样可防止覆盖其他节点写入的数据。
 
 ### 元数据
 
@@ -148,23 +160,27 @@ NFS 配置样例如下：
 
 ### DDL 事件
 
-当 DDL 事件引起表的版本变更时，TiCDC 将会切换到新的路径下写入数据变更记录，例如 `test.table1` 的版本从 `9999` 变更为 `10000` 时将会在 `s3://bucket/bbb/ccc/test/table1/10000/2022-01-02/CDC000001.csv` 路径中写入数据。并且，当 DDL 事件发生时，TiCDC 将生成一个 `schema.json` 文件存储表结构信息。
+#### 表级 DDL 事件
 
-表结构信息将会存储到以下路径：
+当上游表的 DDL 事件引起表的版本变更时，TiCDC 将会自动进行以下操作：
 
-```shell
-{scheme}://{prefix}/{schema}/{table}/{table-version-separator}/schema.json
-```
+- 切换到新的路径下写入数据变更记录。例如，当 `test.table1` 的版本变更为 `441349361156227074` 时，TiCDC 将会在 `s3://bucket/bbb/ccc/test/table1/441349361156227074/2022-01-02/` 路径下写入数据。
+- 生成一个 schema 文件存储表结构信息，文件路径如下：
 
-一个示例 `schema.json` 文件如下：
+    ```shell
+    {scheme}://{prefix}/{schema}/{table}/meta/schema_{table-version}_{hash}.json
+    ```
+
+以 `schema_441349361156227074_3131721815.json` 为例，表结构信息文件的内容如下：
 
 ```json
 {
     "Table":"table1",
     "Schema":"test",
     "Version":1,
-    "TableVersion":10000,
-    "Query": "ALTER TABLE test.table1 ADD OfficeLocation blob(20)",
+    "TableVersion":441349361156227074,
+    "Query":"ALTER TABLE test.table1 ADD OfficeLocation blob(20)",
+    "Type":5,
     "TableColumns":[
         {
             "ColumnName":"Id",
@@ -201,6 +217,7 @@ NFS 配置样例如下：
 - `Version`：Storage sink 协议版本号。
 - `TableVersion`：表的版本号。
 - `Query`：DDL 语句。
+- `Type`：DDL 类型。
 - `TableColumns`：该数组表示表中每一列的详细信息。
     - `ColumnName`：列名。
     - `ColumnType`：该列的类型。详见[数据类型](#数据类型)。
@@ -211,9 +228,32 @@ NFS 配置样例如下：
     - `ColumnIsPk`：值为 `true` 时表示该列是主键的一部分。
 - `TableColumnsTotal`：`TableColumns` 数组的大小。
 
+#### 库级 DDL 事件
+
+当上游数据库发生库级 DDL 事件时，TiCDC 将会自动生成一个 schema 文件存储数据库结构信息，文件路径如下：
+
+```shell
+{scheme}://{prefix}/{schema}/meta/schema_{table-version}_{hash}.json
+```
+
+以 `schema_441349361156227000_3131721815.json` 为例，数据库结构信息文件的内容如下：
+
+```json
+{
+  "Table": "",
+  "Schema": "schema1",
+  "Version": 1,
+  "TableVersion": 441349361156227000,
+  "Query": "CREATE DATABASE `schema1`",
+  "Type": 1,
+  "TableColumns": null,
+  "TableColumnsTotal": 0
+}
+```
+
 ## 数据类型
 
-本章节主要介绍 `schema.json` 文件中使用的各种数据类型。数据类型定义为 `T(M[, D])`，详见[数据类型概述](/data-type-overview.md#数据类型概述)。
+本章节主要介绍 `schema_{table-version}_{hash}.json` 文件（以下简称为 schema 文件）中使用的各种数据类型。数据类型定义为 `T(M[, D])`，详见[数据类型概述](/data-type-overview.md#数据类型概述)。
 
 ### 整数类型
 
@@ -222,7 +262,7 @@ TiDB 中整数类型可被定义为 `IT[(M)] [UNSIGNED]`，其中：
 - `IT` 为整数类型，包括 `TINYINT`、`SMALLINT`、`MEDIUMINT`、`INT`、`BIGINT` 和 `BIT`。
 - `M` 为该类型的显示宽度。
 
-`schema.json` 文件中对整数类型定义如下：
+schema 文件中对整数类型定义如下：
 
 ```json
 {
@@ -240,7 +280,7 @@ TiDB 中的小数类型可被定义为 `DT[(M,D)][UNSIGNED]`，其中：
 - `M` 为该类型数据的精度，即整数位加上小数位的总长度。
 - `D` 为小数位的长度。
 
-`schema.json` 文件中对小数类型的定义如下：
+schema 文件中对小数类型的定义如下：
 
 ```json
 {
@@ -257,7 +297,7 @@ TiDB 中的日期类型可被定义为 `DT`，其中：
 
 - `DT` 为日期类型，包括 `DATE` 和 `YEAR`。
 
-`schema.json` 文件中对日期类型的定义如下：
+schema 文件中对日期类型的定义如下：
 
 ```json
 {
@@ -271,7 +311,7 @@ TiDB 中的时间类型可被定义为 `TT[(M)]`，其中：
 - `TT` 为时间类型，包括 `TIME`、`DATETIME` 和 `TIMESTAMP`。
 - `M` 为秒的精度，取值范围为 0~6。
 
-`schema.json` 文件中对时间类型的定义如下：
+schema 文件中对时间类型的定义如下：
 
 ```json
 {
@@ -288,7 +328,7 @@ TiDB 中的字符串类型可被定义为 `ST[(M)]`，其中：
 - `ST` 为字符串类型，包括 `CHAR`、`VARCHAR`、`TEXT`、`BINARY`、`BLOB`、`JSON` 等。
 - `M` 表示字符串的最大长度。
 
-`schema.json` 文件中对字符串类型的定义如下：
+schema 文件中对字符串类型的定义如下：
 
 ```json
 {
@@ -300,7 +340,7 @@ TiDB 中的字符串类型可被定义为 `ST[(M)]`，其中：
 
 ### Enum/Set 类型
 
-`schema.json` 文件中对 Enum/Set 类型的定义如下：
+schema 文件中对 Enum/Set 类型的定义如下：
 
 ```json
 {
