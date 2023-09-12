@@ -218,7 +218,7 @@ client = Mysql2::Client.new(options)
 
 > **注意：**
 >
-> 对于 TiDB Serverless，当使用 Public Endpoint 时，必须通过 `DATABASE_ENABLE_SSL` 启用 TLS 连接，但是你**不必**通过 `DATABASE_SSL_CA` 指定 SSL CA 证书，因为 mysql2 gem 会按照特定的顺序搜索现有的 CA 证书，直到找到一个文件。
+> 对于 TiDB Serverless，当使用 Public Endpoint 时，**必须**通过 `DATABASE_ENABLE_SSL` 启用 TLS 连接，但是你**不需要**通过 `DATABASE_SSL_CA` 指定 SSL CA 证书，因为 mysql2 gem 会按照特定的顺序搜索现有的 CA 证书，直到找到相应的文件。
 
 ### 插入数据
 
