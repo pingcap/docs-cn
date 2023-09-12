@@ -44,7 +44,7 @@ git clone https://github.com/tidb-samples/tidb-ruby-mysql2-quickstart.git
 cd tidb-ruby-mysql2-quickstart
 ```
 
-### 步骤 2：安装依赖
+### 第 2 步：安装依赖
 
 运行以下命令，安装示例代码所需要的依赖（包括 `mysql2` 和 `dotenv` 依赖包）：
 
@@ -195,7 +195,7 @@ ruby app.rb
 
 完整代码及其运行方式，见代码仓库 [tidb-samples/tidb-ruby-mysql2-quickstart](https://github.com/tidb-samples/tidb-ruby-mysql2-quickstart)。
 
-### ### 连接到 TiDB
+### 连接到 TiDB
 
 下面的代码使用环境变量中定义的连接选项来建立与 TiDB 集群的连接。
 
