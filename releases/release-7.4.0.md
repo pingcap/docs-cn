@@ -221,7 +221,11 @@ TiDB 版本：7.4.0
     TiCDC 现在支持与 Pulsar 无缝集成。Pulsar 是一款云原生的分布式消息流平台，它可以提升您的实时数据流体验。借助这一新功能，TiCDC 赋予你轻松捕获和同步 TiDB 变更数据到 Pulsar 的能力，为数据处理和分析功能提供新的可能性。你可以开发自己的消费应用程序，从 Pulsar 中读取并处理新生成的变更数据，以满足特定的业务需求。TiCDC 目前支持以 `canal-json` 格式同步变更数据。
 
     更多信息，请参考[用户文档](/ticdc/ticdc-sink-to-pulsar.md)。
-    
+
+* TiCDC 支持 Claim-Check 功能，在配置下游为 Kafka 的 Changefeed 的时候，允许用户配置一个外部存储位置，用于存储消息大小超过 Kafka 消息尺寸限制 (`max.message.bytes`) 的大消息，同时一条含有该条大消息在挖不存储中的地址的引用消息，将会被发送到 Kafka，消息消费者在收到了该条引用消息后，可以根据其中记录的外部存储地址信息，获取对应的大消息内容 [#9153](https://github.com/pingcap/tiflow/issues/9153) @[3AceShowHand](https://github.com/3AceShowHand)
+
+    更多信息，请参考[用户文档](链接)。
+
 ## 兼容性变更
 
 > **注意：**
