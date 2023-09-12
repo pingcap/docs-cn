@@ -176,7 +176,7 @@ bundle add mysql2 dotenv
 ruby app.rb
 ```
 
-如果连接成功，控制台将输出 TiDB 集群的版本，如下所示：
+如果连接成功，你的终端将会输出所连接集群的版本信息：
 
 ```
 🔌 Connected to TiDB cluster! (TiDB version: 5.7.25-TiDB-v7.1.0)
