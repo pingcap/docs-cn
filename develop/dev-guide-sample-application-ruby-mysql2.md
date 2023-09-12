@@ -37,7 +37,7 @@ TiDB 是一个兼容 MySQL 的数据库。 [mysql2](https://github.com/brianmari
 
 ### 第 1 步：克隆示例代码仓库到本地
 
-在你的终端窗口中运行以下命令来克隆示例代码仓库：
+在你的终端窗口中运行以下命令，将示例代码仓库克隆到本地：
 
 ```shell
 git clone https://github.com/tidb-samples/tidb-ruby-mysql2-quickstart.git
