@@ -195,7 +195,7 @@ ruby app.rb
 
 完整代码及其运行方式，见代码仓库 [tidb-samples/tidb-ruby-mysql2-quickstart](https://github.com/tidb-samples/tidb-ruby-mysql2-quickstart)。
 
-### 使用连接选项连接到 TiDB
+### ### 连接到 TiDB
 
 以下代码使用环境变量中定义的选项建立到 TiDB 的连接：
 
