@@ -1,6 +1,6 @@
 ---
 title: 使用 mysql2 连接 TiDB
-summary: 学习如何使用 Ruby 的 mysql2 连接 TiDB。本教程提供了使用 mysql2 gem 与 TiDB 协同工作的 Ruby 示例代码片段。
+summary: 本文描述了 TiDB 和 mysql2 的连接步骤，并给出了使用 mysql2 gem 连接 TiDB 的简单示例代码片段。
 ---
 
 # 使用 mysql2 连接 TiDB
