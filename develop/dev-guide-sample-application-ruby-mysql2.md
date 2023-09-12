@@ -168,7 +168,7 @@ bundle add mysql2 dotenv
 </div>
 </SimpleTab>
 
-### 步骤 4：运行代码并检查结果
+### 第 4 步：运行代码并查看结果
 
 运行以下命令来执行示例代码：
 
