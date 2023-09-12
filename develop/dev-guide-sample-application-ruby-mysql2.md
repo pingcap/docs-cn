@@ -101,7 +101,7 @@ bundle add mysql2 dotenv
 
    > **注意：**
    >
-   > 对于 TiDB Serverless，当使用 Public Endpoint 时，必须通过 `DATABASE_ENABLE_SSL` 启用 TLS 连接。
+   > 对于 TiDB Serverless，当使用 Public Endpoint 时，**必须**通过 `DATABASE_ENABLE_SSL` 启用 TLS 连接。
 
 7. 保存 `.env` 文件。
 
