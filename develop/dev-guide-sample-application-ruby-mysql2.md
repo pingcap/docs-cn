@@ -65,7 +65,7 @@ bundle add mysql2 dotenv
 
 ### 第 3 步：配置连接信息
 
-根据你选择的 TiDB 部署选项，连接到你的 TiDB 集群。
+根据不同的 TiDB 部署方式，使用不同的方法连接到 TiDB 集群。
 
 <SimpleTab>
 <div label="TiDB Serverless">
