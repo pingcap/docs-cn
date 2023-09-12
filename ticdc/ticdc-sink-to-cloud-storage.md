@@ -107,7 +107,7 @@ Data change records are saved to the following path:
 - `table`: specifies the table name, for example, <code>s3://bucket/bbb/ccc/test/**table1**</code>.
 - `table-version-separator`: specifies the separator that separates the path by the table version, for example, <code>s3://bucket/bbb/ccc/test/table1/**9999**</code>.
 - `partition-separator`: specifies the separator that separates the path by the table partition, for example, <code>s3://bucket/bbb/ccc/test/table1/9999/**20**</code>.
-- `date-separator`: classifies the files by the transaction commit date. Value options are:
+- `date-separator`: classifies the files by the transaction commit date. The default value is `day`. Value options are:
     - `none`: no `date-separator`. For example, all files with `test.table1` version being `9999` are saved to `s3://bucket/bbb/ccc/test/table1/9999`.
     - `year`: the separator is the year of the transaction commit date, for example, <code>s3://bucket/bbb/ccc/test/table1/9999/**2022**</code>.
     - `month`: the separator is the year and month of the transaction commit date, for example, <code>s3://bucket/bbb/ccc/test/table1/9999/**2022-01**</code>.
