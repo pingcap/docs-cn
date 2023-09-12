@@ -202,7 +202,7 @@ ruby app.rb
 ```ruby
 require 'dotenv/load'
 require 'mysql2'
-Dotenv.load # Load the environment variables from the .env file
+Dotenv.load # 从 .env 文件中加载环境变量
 
 options = {
   host: ENV['DATABASE_HOST'] || '127.0.0.1',
