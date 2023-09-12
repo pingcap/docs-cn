@@ -267,7 +267,7 @@ end
 
 ### 删除数据
 
-以下查询删除特定玩家的记录：
+以下查询删除特定 player 的记录：
 
 ```ruby
 def delete_player_by_id(client, id)
