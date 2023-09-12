@@ -33,6 +33,7 @@ delimiter = ','
 quote = '"'
 null = '\N'
 include-commit-ts = true
+binary-encoding-method = 'base64'
 ```
 
 ## 数据保存的事务性约束
@@ -85,7 +86,7 @@ CREATE TABLE `employee` (
 | `TIME`                                                            | String  | `"23:59:59"`                   | 格式：`HH:mm:ss`                 |
 | `YEAR`                                                            | Integer | `1970`                         | -                             |
 | `VARCHAR`/`JSON`/`TINYTEXT`/`MEDIUMTEXT`/`LONGTEXT`/`TEXT`/`CHAR` | String  | `"test"`                       | 以 UTF-8 编码输出                  |
-| `VARBINARY`/`TINYBLOB`/`MEDIUMBLOB`/`LONGBLOB`/`BLOB`/`BINARY`    | String  | `"6Zi/5pav"`                   | 以 Base64 编码输出                 |
+| `VARBINARY`/`TINYBLOB`/`MEDIUMBLOB`/`LONGBLOB`/`BLOB`/`BINARY`    | String  | `"6Zi/5pav"` 或 `"e998bfe696af"`         | 以 Base64 或 Hex 编码输出                 |
 | `BIT`                                                             | Integer | `81`                           | -                             |
 | `DECIMAL`                                                         | String  | `"129012.1230000"`             | -                             |
 | `ENUM`                                                            | String  | `"a"`                          | -                             |
