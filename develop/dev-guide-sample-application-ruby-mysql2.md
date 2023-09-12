@@ -252,7 +252,7 @@ end
 
 ### 更新数据
 
-以下查询通过 ID 更新特定玩家的记录：
+以下查询通过 ID 更新特定 player 的记录：
 
 ```ruby
 def update_player(client, player_id, inc_coins, inc_goods)
