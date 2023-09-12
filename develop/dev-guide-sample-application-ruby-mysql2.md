@@ -263,7 +263,7 @@ def update_player(client, player_id, inc_coins, inc_goods)
 end
 ```
 
-有关更多信息，请参考 [更新数据](/develop/dev-guide-update-data.md)。
+更多信息，请参考[更新数据](/develop/dev-guide-update-data.md)。
 
 ### 删除数据
 
