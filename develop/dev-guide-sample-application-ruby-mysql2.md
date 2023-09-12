@@ -33,7 +33,7 @@ TiDB 是一个兼容 MySQL 的数据库。 [mysql2](https://github.com/brianmari
 
 ## 运行示例应用程序并连接到 TiDB
 
-本节将演示如何运行示例应用程序代码并连接到 TiDB。
+本小节演示如何运行示例应用程序的代码，并连接到 TiDB。
 
 ### 步骤 1：克隆示例应用程序仓库
 
