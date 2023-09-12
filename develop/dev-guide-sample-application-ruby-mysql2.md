@@ -5,7 +5,7 @@ summary: 本文描述了 TiDB 和 mysql2 的连接步骤，并给出了使用 my
 
 # 使用 mysql2 连接 TiDB
 
-TiDB 是一个与 MySQL 兼容的数据库，而 [mysql2](https://github.com/brianmario/mysql2) 是 Ruby 中最受欢迎的 MySQL 驱动之一。
+TiDB 是一个兼容 MySQL 的数据库。 [mysql2](https://github.com/brianmario/mysql2) 是 Ruby 中最受欢迎的 MySQL 驱动之一。
 
 在本教程中，你将学习如何使用 TiDB 和 mysql2 完成以下任务：
 
