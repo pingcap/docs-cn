@@ -278,7 +278,7 @@ def delete_player_by_id(client, id)
 end
 ```
 
-有关更多信息，请参考 [删除数据](/develop/dev-guide-delete-data.md)。
+更多信息，请参考[删除数据](/develop/dev-guide-delete-data.md)。
 
 ## 最佳实践
 
