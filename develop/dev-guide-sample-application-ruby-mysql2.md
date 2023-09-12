@@ -197,7 +197,7 @@ ruby app.rb
 
 ### ### 连接到 TiDB
 
-以下代码使用环境变量中定义的选项建立到 TiDB 的连接：
+下面的代码使用环境变量中定义的连接选项来建立与 TiDB 集群的连接。
 
 ```ruby
 require 'dotenv/load'
