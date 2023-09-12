@@ -46,7 +46,7 @@ cd tidb-ruby-mysql2-quickstart
 
 ### 步骤 2：安装依赖
 
-运行以下命令安装示例应用程序所需的包（包括 `mysql2` 和 `dotenv`）：
+运行以下命令，安装示例代码所需要的依赖（包括 `mysql2` 和 `dotenv` 依赖包）：
 
 ```shell
 bundle install
