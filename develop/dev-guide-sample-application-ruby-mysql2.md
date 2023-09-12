@@ -110,7 +110,7 @@ bundle add mysql2 dotenv
 
 1. 在 TiDB Cloud 的 [**Clusters**](https://tidbcloud.com/console/clusters) 页面中，点击你的目标集群的名称，进入集群的 **Overview** 页面。
 
-2. 点击右上角的 **Connect**。会显示一个连接对话框。
+2. 点击右上角的 **Connect** 按钮，将会弹出连接对话框。
 
 3. 点击 **Allow Access from Anywhere**，然后点击 **Download TiDB cluster CA** 以下载 CA 证书。
 
