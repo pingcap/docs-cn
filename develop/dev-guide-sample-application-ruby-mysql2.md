@@ -19,7 +19,7 @@ TiDB 是一个兼容 MySQL 的数据库。 [mysql2](https://github.com/brianmari
 
 ## 先决条件
 
-要完成本教程，你需要：
+为了能够顺利完成本文中的操作，你需要提前：
 
 - 在你的机器上安装 [Ruby](https://www.ruby-lang.org/en/) >= 3.0
 - 在你的机器上安装 [Bundler](https://bundler.io/)
