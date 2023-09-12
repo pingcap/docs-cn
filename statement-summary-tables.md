@@ -171,7 +171,7 @@ select * from information_schema.statements_summary_evicted;
 2 row in set (0.001 sec)
 ```
 
-由上可知，对最多 59 种 SQL 发生了 evict，也就是说最少应将 statement summary 的容量增大至 59 条记录。
+由上可知，对最多 59 种 SQL 发生了 evict。此时，建议将 `statements_summary` 表的容量至少增大 59 条记录，即至少增大至 3059 条。
 
 ## 目前的限制
 
