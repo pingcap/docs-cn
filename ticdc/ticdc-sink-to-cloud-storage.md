@@ -117,18 +117,14 @@ Data change records are saved to the following path:
 
 > **Note:**
 >
-> The table version changes in the following three cases:
->
-> - After a DDL operation is performed, the table version is the TSO when the DDL is executed in the upstream TiDB. However, the change of the table version does not mean the change of the table schema. For example, adding a comment to a column does not cause the `schema.json` file content to change.
-> - The changefeed process restarts. The table version is the checkpoint TSO when the process restarts. When there are many tables and the process restarts, it takes a long time to traverse all directories and find the position where each table was written last time. Therefore, data is written to a new directory with the version being the checkpoint TSO, instead of to the earlier directory.
-> - After a table scheduling occurs, the table version is the Changefeed checkpoint TSO when the table is scheduled to the current node.
+> The table version changes only after a DDL operation is performed on the upstream table, and the new table version is the TSO when the upstream TiDB completes the execution of the DDL. However, the change of the table version does not mean the change of the table schema. For example, adding a comment to a column does not cause the schema file content to change.
 
 ### Index files
 
 An index file is used to prevent written data from being overwritten by mistake. It is stored in the same path as the data change records.
 
 ```shell
-{scheme}://{prefix}/{schema}/{table}/{table-version-separator}/{partition-separator}/{date-separator}/CDC.index
+{scheme}://{prefix}/{schema}/{table}/{table-version-separator}/{partition-separator}/{date-separator}/meta/CDC.index
 ```
 
 The index file records the largest file name used in the current directory. For example:
@@ -159,23 +155,27 @@ Metadata is a JSON-formatted file, for example:
 
 ### DDL events
 
-When DDL events cause the table version to change, TiCDC switches to a new path to write data change records. For example, when the version of `test.table1` changes from `9999` to `10000`, data will be written to the path `s3://bucket/bbb/ccc/test/table1/10000/2022-01-02/CDC000001.csv`. In addition, when DDL events occur, TiCDC generates a `schema.json` file to save the table schema information.
+### DDL events at the table level
 
-Table schema information is saved in the following path:
+When a DDL event of an upstream table causes a table version change, TiCDC automatically does the following:
 
-```shell
-{scheme}://{prefix}/{schema}/{table}/{table-version-separator}/schema.json
-```
+- Switches to a new path to write data change records. For example, when the version of `test.table1` changes to `441349361156227074`, TiCDC changes to the `s3://bucket/bbb/ccc/test/table1/441349361156227074/2022-01-02/` path to write data change records.
+- Generates a schema file in the following path to store the table schema information:
 
-The following is a `schema.json` file:
+    ```shell
+    {scheme}://{prefix}/{schema}/{table}/meta/schema_{table-version}_{hash}.json
+    ```
+
+Taking the `schema_441349361156227074_3131721815.json` schema file as an example, the table schema information in this file is as follows:
 
 ```json
 {
     "Table":"table1",
     "Schema":"test",
     "Version":1,
-    "TableVersion":10000,
-    "Query": "ALTER TABLE test.table1 ADD OfficeLocation blob(20)",
+    "TableVersion":441349361156227074,
+    "Query":"ALTER TABLE test.table1 ADD OfficeLocation blob(20)",
+    "Type":5,
     "TableColumns":[
         {
             "ColumnName":"Id",
@@ -211,7 +211,8 @@ The following is a `schema.json` file:
 - `Schema`: Schema name.
 - `Version`: Protocol version of the storage sink.
 - `TableVersion`: Table version.
-- `Query`：DDL statement.
+- `Query`: DDL statement.
+- `Type`: DDL type.
 - `TableColumns`: An array of one or more maps, each of which describes a column in the source table.
     - `ColumnName`: Column name.
     - `ColumnType`: Column type. For details, see [Data type](#data-type).
@@ -222,9 +223,32 @@ The following is a `schema.json` file:
     - `ColumnIsPk`: The column is part of the primary key when the value of this option is `true`.
 - `TableColumnsTotal`: The size of the `TableColumns` array.
 
+### DDL events at the database level
+
+When a database-level DDL event is performed in the upstream database, TiCDC automatically generates a schema file in the following path to store the database schema information:
+
+```shell
+{scheme}://{prefix}/{schema}/meta/schema_{table-version}_{hash}.json
+```
+
+Taking the `schema_441349361156227000_3131721815.json` schema file as an example, the database schema information in this file is as follows:
+
+```json
+{
+  "Table": "",
+  "Schema": "schema1",
+  "Version": 1,
+  "TableVersion": 441349361156227000,
+  "Query": "CREATE DATABASE `schema1`",
+  "Type": 1,
+  "TableColumns": null,
+  "TableColumnsTotal": 0
+}
+```
+
 ### Data type
 
-This section describes the data types used in the `schema.json` file. The data types are defined as `T(M[, D])`. For details, see [Data Types](/data-type-overview.md).
+This section describes the data types used in the `schema_{table-version}_{hash}.json` file (hereafter referred to as "schema file" in the following sections). The data types are defined as `T(M[, D])`. For details, see [Data Types](/data-type-overview.md).
 
 #### Integer types
 
@@ -233,7 +257,7 @@ Integer types in TiDB are defined as `IT[(M)] [UNSIGNED]`, where
 - `IT` is the integer type, which can be `TINYINT`, `SMALLINT`, `MEDIUMINT`, `INT`, `BIGINT`, or `BIT`.
 - `M` is the display width of the type.
 
-Integer types are defined as follows in `schema.json`:
+Integer types are defined as follows in the schema file:
 
 ```json
 {
@@ -251,7 +275,7 @@ Decimal types in TiDB are defined as `DT[(M,D)][UNSIGNED]`, where
 - `M` is the precision of the data type, or the total number of digits.
 - `D` is the number of digits following the decimal point.
 
-Decimal types are defined as follows in `schema.json`:
+Decimal types are defined as follows in the schema file:
 
 ```json
 {
@@ -268,7 +292,7 @@ Date types in TiDB are defined as `DT`, where
 
 - `DT` is the date type, which can be `DATE` or `YEAR`.
 
-The date types are defined as follows in `schema.json`:
+The date types are defined as follows in the schema file:
 
 ```json
 {
@@ -282,7 +306,7 @@ The time types in TiDB are defined as `TT[(M)]`, where
 - `TT` is the time type, which can be `TIME`, `DATETIME`, or `TIMESTAMP`.
 - `M` is the precision of seconds in the range from 0 to 6.
 
-The time types are defined as follows in `schema.json`:
+The time types are defined as follows in the schema file:
 
 ```json
 {
@@ -299,7 +323,7 @@ The string types in TiDB are defined as `ST[(M)]`, where
 - `ST` is the string type, which can be `CHAR`, `VARCHAR`, `TEXT`, `BINARY`, `BLOB`, or `JSON`.
 - `M` is the maximum length of the string.
 
-The string types are defined as follows in `schema.json`:
+The string types are defined as follows in the schema file:
 
 ```json
 {
@@ -311,7 +335,7 @@ The string types are defined as follows in `schema.json`:
 
 #### Enum and Set types
 
-The Enum and Set types are defined as follows in `schema.json`:
+The Enum and Set types are defined as follows in the schema file:
 
 ```json
 {
