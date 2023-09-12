@@ -63,7 +63,7 @@ bundle add mysql2 dotenv
 
 </details>
 
-### 步骤 3：配置连接信息
+### 第 3 步：配置连接信息
 
 根据你选择的 TiDB 部署选项，连接到你的 TiDB 集群。
 
