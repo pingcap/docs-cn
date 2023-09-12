@@ -191,8 +191,8 @@ func buildBulkInsertSQL(amount int) string {
 
 For complete examples in Golang, see:
 
-- [Use Go-MySQL-Driver to build a simple CRUD app with TiDB and Golang](/develop/dev-guide-sample-application-golang-sql-driver.md#step-2-get-the-code)
-- [Use GORM to build a simple CRUD app with TiDB and Golang](/develop/dev-guide-sample-application-golang-gorm.md#step-2-get-the-code)
+- [Connect to TiDB with Go-MySQL-Driver](/develop/dev-guide-sample-application-golang-sql-driver.md)
+- [Connect to TiDB with GORM](/develop/dev-guide-sample-application-golang-gorm.md)
 
 </div>
 

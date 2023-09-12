@@ -217,7 +217,7 @@ Support level: **Full**
 
 To download and configure a Golang driver, refer to the [go-sql-driver/mysql documentation](https://github.com/go-sql-driver/mysql).
 
-For an example of how to build a complete application, see [Build a simple CRUD app with TiDB and Go-MySQL-Driver](/develop/dev-guide-sample-application-golang-sql-driver.md).
+For an example of how to build a complete application, see [Connect to TiDB with Go-MySQL-Driver](/develop/dev-guide-sample-application-golang-sql-driver.md).
 
 ### Golang ORM frameworks
 
@@ -232,7 +232,7 @@ go get -u gorm.io/gorm
 go get -u gorm.io/driver/mysql
 ```
 
-For an example of using GORM to build a TiDB application, see [Build a simple CRUD app with TiDB and GORM](/develop/dev-guide-sample-application-golang-gorm.md).
+For an example of using GORM to build a TiDB application, see [Connect to TiDB with GORM](/develop/dev-guide-sample-application-golang-gorm.md).
 
 ## Python
 

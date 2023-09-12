@@ -1,208 +1,192 @@
 ---
-title: Build a Simple CRUD App with TiDB and GORM
-summary: Learn how to build a simple CRUD application with TiDB and GORM.
+title: Connect to TiDB with GORM
+summary: Learn how to connect to TiDB using GORM. This tutorial gives Golang sample code snippets that work with TiDB using GORM.
 ---
 
-<!-- markdownlint-disable MD024 -->
-<!-- markdownlint-disable MD029 -->
+# Connect to TiDB with GORM
 
-# Build a Simple CRUD App with TiDB and GORM
+TiDB is a MySQL-compatible database, and [GORM](https://gorm.io/index.html) is a popular open-source ORM framework for Golang. GORM adapts to TiDB features such as `AUTO_RANDOM` and [supports TiDB as a default database option](https://gorm.io/docs/connecting_to_the_database.html#TiDB).
 
-[GORM](https://gorm.io/) is a popular open-source ORM library for Golang.
+In this tutorial, you can learn how to use TiDB and GORM to accomplish the following tasks:
 
-This document describes how to use TiDB and GORM to build a simple CRUD application.
+- Set up your environment.
+- Connect to your TiDB cluster using GORM.
+- Build and run your application. Optionally, you can find [sample code snippets](#sample-code-snippets) for basic CRUD operations.
 
 > **Note:**
 >
-> It is recommended to use Golang 1.20 or a later version.
+> This tutorial works with TiDB Serverless, TiDB Dedicated, and TiDB Self-Hosted.
 
-## Step 1. Launch your TiDB cluster
+## Prerequisites
+
+To complete this tutorial, you need:
+
+- [Go](https://go.dev/) **1.20** or higher.
+- [Git](https://git-scm.com/downloads).
+- A TiDB cluster.
 
 <CustomContent platform="tidb">
 
-The following introduces how to start a TiDB cluster.
+**If you don't have a TiDB cluster, you can create one as follows:**
 
-**Use a TiDB Serverless cluster**
-
-For detailed steps, see [Create a TiDB Serverless cluster](/develop/dev-guide-build-cluster-in-cloud.md#step-1-create-a-tidb-serverless-cluster).
-
-**Use a local cluster**
-
-For detailed steps, see [Deploy a local test cluster](/quick-start-with-tidb.md#deploy-a-local-test-cluster) or [Deploy a TiDB Cluster Using TiUP](/production-deployment-using-tiup.md).
+- (Recommended) Follow [Creating a TiDB Serverless cluster](/develop/dev-guide-build-cluster-in-cloud.md) to create your own TiDB Cloud cluster.
+- Follow [Deploy a local test TiDB cluster](/quick-start-with-tidb.md#deploy-a-local-test-cluster) or [Deploy a production TiDB cluster](/production-deployment-using-tiup.md) to create a local cluster.
 
 </CustomContent>
-
 <CustomContent platform="tidb-cloud">
 
-See [Create a TiDB Serverless cluster](/develop/dev-guide-build-cluster-in-cloud.md#step-1-create-a-tidb-serverless-cluster).
+**If you don't have a TiDB cluster, you can create one as follows:**
+
+- (Recommended) Follow [Creating a TiDB Serverless cluster](/develop/dev-guide-build-cluster-in-cloud.md) to create your own TiDB Cloud cluster.
+- Follow [Deploy a local test TiDB cluster](https://docs.pingcap.com/tidb/stable/quick-start-with-tidb#deploy-a-local-test-cluster) or [Deploy a production TiDB cluster](https://docs.pingcap.com/tidb/stable/production-deployment-using-tiup) to create a local cluster.
 
 </CustomContent>
 
-## Step 2. Get the code
+## Run the sample app to connect to TiDB
+
+This section demonstrates how to run the sample application code and connect to TiDB.
+
+### Step 1: Clone the sample app repository
+
+Run the following commands in your terminal window to clone the sample code repository:
 
 ```shell
-git clone https://github.com/pingcap-inc/tidb-example-golang.git
+git clone https://github.com/tidb-samples/tidb-golang-gorm-quickstart.git
+cd tidb-golang-gorm-quickstart
 ```
 
-The following instructions take `v1.23.5` as an example.
+### Step 2: Configure connection information
 
-To adapt TiDB transactions, write a toolkit [util](https://github.com/pingcap-inc/tidb-example-golang/tree/main/util) according to the following code:
+Connect to your TiDB cluster depending on the TiDB deployment option you've selected.
 
-```go
-package util
+<SimpleTab>
+<div label="TiDB Serverless">
 
-import (
-    "gorm.io/gorm"
-)
+1. Navigate to the [**Clusters**](https://tidbcloud.com/console/clusters) page, and then click the name of your target cluster to go to its overview page.
 
-// TiDBGormBegin start a TiDB and Gorm transaction as a block. If no error is returned, the transaction will be committed. Otherwise, the transaction will be rolled back.
-func TiDBGormBegin(db *gorm.DB, pessimistic bool, fc func(tx *gorm.DB) error) (err error) {
-    session := db.Session(&gorm.Session{})
-    if session.Error != nil {
-        return session.Error
-    }
+2. Click **Connect** in the upper-right corner. A connection dialog is displayed.
 
-    if pessimistic {
-        session = session.Exec("set @@tidb_txn_mode=pessimistic")
-    } else {
-        session = session.Exec("set @@tidb_txn_mode=optimistic")
-    }
+3. Ensure the configurations in the connection dialog match your operating environment.
 
-    if session.Error != nil {
-        return session.Error
-    }
-    return session.Transaction(fc)
-}
-```
+    - **Endpoint Type** is set to `Public`
+    - **Connect With** is set to `General`
+    - **Operating System** matches your environment.
 
-Change to the `gorm` directory:
+    > **Tip:**
+    >
+    > If your program is running in Windows Subsystem for Linux (WSL), switch to the corresponding Linux distribution.
 
-```shell
-cd gorm
-```
+4. Click **Create password** to create a random password.
 
-The structure of this directory is as follows:
+    > **Tip:**
+    > 
+    > If you have created a password before, you can either use the original password or click **Reset password** to generate a new one.
 
-```
-.
-├── Makefile
-├── go.mod
-├── go.sum
-└── gorm.go
-```
+5. Run the following command to copy `.env.example` and rename it to `.env`:
 
-`gorm.go` is the main body of the `gorm`. Compared with go-sql-driver/mysql, GORM avoids differences in database creation between different databases. It also implements a lot of operations, such as AutoMigrate and CRUD of objects, which greatly simplifies the code.
+    ```shell
+    cp .env.example .env
+    ```
 
-`Player` is a data entity struct that is a mapping for tables. Each property of a `Player` corresponds to a field in the `player` table. Compared with go-sql-driver/mysql, `Player` in GORM adds struct tags to indicate mapping relationships for more information, such as `gorm:"primaryKey;type:VARCHAR(36);column:id"`.
+6. Copy and paste the corresponding connection string into the `.env` file. The example result is as follows:
 
-```go
+    ```dotenv
+    TIDB_HOST='{host}'  # e.g. gateway01.ap-northeast-1.prod.aws.tidbcloud.com
+    TIDB_PORT='4000'
+    TIDB_USER='{user}'  # e.g. xxxxxx.root
+    TIDB_PASSWORD='{password}'
+    TIDB_DB_NAME='test'
+    USE_SSL='true'
+    ```
 
-package main
+    Be sure to replace the placeholders `{}` with the connection parameters obtained from the connection dialog.
 
-import (
-    "fmt"
-    "math/rand"
+    TiDB Serverless requires a secure connection. Therefore, you need to set the value of `USE_SSL` to `true`.
 
-    "github.com/google/uuid"
-    "github.com/pingcap-inc/tidb-example-golang/util"
+7. Save the `.env` file.
 
-    "gorm.io/driver/mysql"
-    "gorm.io/gorm"
-    "gorm.io/gorm/clause"
-    "gorm.io/gorm/logger"
-)
+</div>
+<div label="TiDB Dedicated">
 
-type Player struct {
-    ID    string `gorm:"primaryKey;type:VARCHAR(36);column:id"`
-    Coins int    `gorm:"column:coins"`
-    Goods int    `gorm:"column:goods"`
-}
+1. Navigate to the [**Clusters**](https://tidbcloud.com/console/clusters) page, and then click the name of your target cluster to go to its overview page.
 
-func (*Player) TableName() string {
-    return "player"
-}
+2. Click **Connect** in the upper-right corner. A connection dialog is displayed.
 
-func main() {
-    // 1. Configure the example database connection.
-    db := createDB()
+3. Click **Allow Access from Anywhere** and then click **Download TiDB cluster CA** to download the CA certificate.
 
-    // AutoMigrate for player table
-    db.AutoMigrate(&Player{})
+    For more details about how to obtain the connection string, refer to [TiDB Dedicated standard connection](https://docs.pingcap.com/tidbcloud/connect-via-standard-connection).
 
-    // 2. Run some simple examples.
-    simpleExample(db)
+4. Run the following command to copy `.env.example` and rename it to `.env`:
 
-    // 3. Explore more.
-    tradeExample(db)
-}
+    ```shell
+    cp .env.example .env
+    ```
 
-func tradeExample(db *gorm.DB) {
-    // Player 1: id is "1", has only 100 coins.
-    // Player 2: id is "2", has 114514 coins, and 20 goods.
-    player1 := &Player{ID: "1", Coins: 100}
-    player2 := &Player{ID: "2", Coins: 114514, Goods: 20}
+5. Copy and paste the corresponding connection string into the `.env` file. The example result is as follows:
 
-    // Create two players "by hand", using the INSERT statement on the backend.
-    db.Clauses(clause.OnConflict{UpdateAll: true}).Create(player1)
-    db.Clauses(clause.OnConflict{UpdateAll: true}).Create(player2)
+    ```dotenv
+    TIDB_HOST='{host}'  # e.g. tidb.xxxx.clusters.tidb-cloud.com
+    TIDB_PORT='4000'
+    TIDB_USER='{user}'  # e.g. root
+    TIDB_PASSWORD='{password}'
+    TIDB_DB_NAME='test'
+    USE_SSL='false'
+    ```
 
-    // Player 1 wants to buy 10 goods from player 2.
-    // It will cost 500 coins, but player 1 cannot afford it.
-    fmt.Println("\nbuyGoods:\n    => this trade will fail")
-    if err := buyGoods(db, player2.ID, player1.ID, 10, 500); err == nil {
-        panic("there shouldn't be success")
-    }
+    Be sure to replace the placeholders `{}` with the connection parameters obtained from the connection dialog.
 
-    // So player 1 has to reduce the incoming quantity to two.
-    fmt.Println("\nbuyGoods:\n    => this trade will success")
-    if err := buyGoods(db, player2.ID, player1.ID, 2, 100); err != nil {
-        panic(err)
-    }
-}
+6. Save the `.env` file.
 
-func simpleExample(db *gorm.DB) {
-    // Create a player, who has a coin and a goods.
-    if err := db.Clauses(clause.OnConflict{UpdateAll: true}).
-        Create(&Player{ID: "test", Coins: 1, Goods: 1}).Error; err != nil {
-        panic(err)
-    }
+</div>
+<div label="TiDB Self-Hosted">
 
-    // Get a player.
-    var testPlayer Player
-    db.Find(&testPlayer, "id = ?", "test")
-    fmt.Printf("getPlayer: %+v\n", testPlayer)
+1. Run the following command to copy `.env.example` and rename it to `.env`:
 
-    // Create players with bulk inserts. Insert 1919 players totally, with 114 players per batch.
-    bulkInsertPlayers := make([]Player, 1919, 1919)
-    total, batch := 1919, 114
-    for i := 0; i < total; i++ {
-        bulkInsertPlayers[i] = Player{
-            ID:    uuid.New().String(),
-            Coins: rand.Intn(10000),
-            Goods: rand.Intn(10000),
-        }
-    }
+    ```shell
+    cp .env.example .env
+    ```
 
-    if err := db.Session(&gorm.Session{Logger: db.Logger.LogMode(logger.Error)}).
-        CreateInBatches(bulkInsertPlayers, batch).Error; err != nil {
-        panic(err)
-    }
+2. Copy and paste the corresponding connection string into the `.env` file. The example result is as follows:
 
-    // Count players amount.
-    playersCount := int64(0)
-    db.Model(&Player{}).Count(&playersCount)
-    fmt.Printf("countPlayers: %d\n", playersCount)
+    ```dotenv
+    TIDB_HOST='{host}'
+    TIDB_PORT='4000'
+    TIDB_USER='root'
+    TIDB_PASSWORD='{password}'
+    TIDB_DB_NAME='test'
+    USE_SSL='false'
+    ```
 
-    // Print 3 players.
-    threePlayers := make([]Player, 3, 3)
-    db.Limit(3).Find(&threePlayers)
-    for index, player := range threePlayers {
-        fmt.Printf("print %d player: %+v\n", index+1, player)
-    }
-}
+    Be sure to replace the placeholders `{}` with the connection parameters, and set `USE_SSL` to `false`. If you are running TiDB locally, the default host address is `127.0.0.1`, and the password is empty.
 
+3. Save the `.env` file.
+
+</div>
+</SimpleTab>
+
+### Step 3: Run the code and check the result
+
+1. Execute the following command to run the sample code:
+
+    ```shell
+    make
+    ```
+
+2. Check the [Expected-Output.txt](https://github.com/tidb-samples/tidb-golang-gorm-quickstart/blob/main/Expected-Output.txt) to see if the output matches.
+
+## Sample code snippets
+
+You can refer to the following sample code snippets to complete your own application development.
+
+For complete sample code and how to run it, check out the [tidb-samples/tidb-golang-gorm-quickstart](https://github.com/tidb-samples/tidb-golang-gorm-quickstart) repository.
+
+### Connect to TiDB
+
+```golang
 func createDB() *gorm.DB {
-    dsn := "root:@tcp(127.0.0.1:4000)/test?charset=utf8mb4"
+    dsn := fmt.Sprintf("%s:%s@tcp(%s:%s)/%s?charset=utf8mb4&tls=%s",
+        ${tidb_user}, ${tidb_password}, ${tidb_host}, ${tidb_port}, ${tidb_db_name}, ${use_ssl})
+
     db, err := gorm.Open(mysql.Open(dsn), &gorm.Config{
         Logger: logger.Default.LogMode(logger.Info),
     })
@@ -212,85 +196,49 @@ func createDB() *gorm.DB {
 
     return db
 }
-
-func buyGoods(db *gorm.DB, sellID, buyID string, amount, price int) error {
-    return util.TiDBGormBegin(db, true, func(tx *gorm.DB) error {
-        var sellPlayer, buyPlayer Player
-        if err := tx.Clauses(clause.Locking{Strength: "UPDATE"}).
-            Find(&sellPlayer, "id = ?", sellID).Error; err != nil {
-            return err
-        }
-
-        if sellPlayer.ID != sellID || sellPlayer.Goods < amount {
-            return fmt.Errorf("sell player %s goods not enough", sellID)
-        }
-
-        if err := tx.Clauses(clause.Locking{Strength: "UPDATE"}).
-            Find(&buyPlayer, "id = ?", buyID).Error; err != nil {
-            return err
-        }
-
-        if buyPlayer.ID != buyID || buyPlayer.Coins < price {
-            return fmt.Errorf("buy player %s coins not enough", buyID)
-        }
-
-        updateSQL := "UPDATE player set goods = goods + ?, coins = coins + ? WHERE id = ?"
-        if err := tx.Exec(updateSQL, -amount, price, sellID).Error; err != nil {
-            return err
-        }
-
-        if err := tx.Exec(updateSQL, amount, -price, buyID).Error; err != nil {
-            return err
-        }
-
-        fmt.Println("\n[buyGoods]:\n    'trade success'")
-        return nil
-    })
-}
 ```
 
-## Step 3. Run the code
+When using this function, you need to replace `${tidb_host}`, `${tidb_port}`, `${tidb_user}`, `${tidb_password}`, and `${tidb_db_name}` with the actual values of your TiDB cluster. TiDB Serverless requires a secure connection. Therefore, you need to set the value of `${use_ssl}` to `true`.
 
-The following content introduces how to run the code step by step.
+### Insert data
 
-### Step 3.1 Modify parameters for TiDB Cloud
-
-If you are using a TiDB Serverless cluster, modify the value of the `dsn` in `gorm.go`:
-
-```go
-dsn := "root:@tcp(127.0.0.1:4000)/test?charset=utf8mb4"
+```golang
+db.Create(&Player{ID: "id", Coins: 1, Goods: 1})
 ```
 
-Suppose that the password you set is `123456`, and the connection parameters you get from the cluster details page are the following:
+For more information, refer to [Insert data](/develop/dev-guide-insert-data.md).
 
-- Endpoint: `xxx.tidbcloud.com`
-- Port: `4000`
-- User: `2aEp24QWEDLqRFs.root`
+### Query data
 
-In this case, you can modify the `dsn` as follows:
-
-```go
-dsn := "2aEp24QWEDLqRFs.root:123456@tcp(xxx.tidbcloud.com:4000)/test?charset=utf8mb4&tls=true"
+```golang
+var queryPlayer Player
+db.Find(&queryPlayer, "id = ?", "id")
 ```
 
-### Step 3.2 Run the code
+For more information, refer to [Query data](/develop/dev-guide-get-data-from-single-table.md).
 
-To run the code, you can run `make build` and `make run` respectively:
+### Update data
 
-```shell
-make build # this command executes `go build -o bin/gorm-example`
-make run # this command executes `./bin/gorm-example`
+```golang
+db.Save(&Player{ID: "id", Coins: 100, Goods: 1})
 ```
 
-Or you can use the native commands:
+For more information, refer to [Update data](/develop/dev-guide-update-data.md).
 
-```shell
-go build -o bin/gorm-example
-./bin/gorm-example
+### Delete data
+
+```golang
+db.Delete(&Player{ID: "id"})
 ```
 
-Or run the `make` command directly, which is a combination of `make build` and `make run`.
+For more information, refer to [Delete data](/develop/dev-guide-delete-data.md).
 
-## Step 4. Expected output
+## Next steps
 
-[GORM Expected Output](https://github.com/pingcap-inc/tidb-example-golang/blob/main/Expected-Output.md#gorm)
+- Learn more usage of GORM from [the documentation of GORM](https://gorm.io/docs/index.html) and the [TiDB section in the documentation of GORM](https://gorm.io/docs/connecting_to_the_database.html#TiDB).
+- Learn the best practices for TiDB application development with the chapters in the [Developer guide](/develop/dev-guide-overview.md), such as [Insert data](/develop/dev-guide-insert-data.md), [Update data](/develop/dev-guide-update-data.md), [Delete data](/develop/dev-guide-delete-data.md), [Single table reading](/develop/dev-guide-get-data-from-single-table.md), [Transactions](/develop/dev-guide-transaction-overview.md), and [SQL performance optimization](/develop/dev-guide-optimize-sql-overview.md).
+- Learn through the professional [TiDB developer courses](https://www.pingcap.com/education/) and earn [TiDB certifications](https://www.pingcap.com/education/certification/) after passing the exam.
+
+## Need help?
+
+Ask questions on the [Discord](https://discord.gg/vYU9h56kAX), or [create a support ticket](https://support.pingcap.com/).
