@@ -151,7 +151,7 @@ bundle add mysql2 dotenv
     cp .env.example .env
     ```
 
-2. 编辑 `.env` 文件，按照以下方式设置环境变量，并将连接对话框中的连接参数替换为相应的占位符 `<>`：
+2. 编辑 `.env` 文件，按照以下方式设置环境变量，并将占位符 `<>`替换为你的 TiDB 集群的连接参数：
 
     ```dotenv
     DATABASE_HOST=<host>
