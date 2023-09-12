@@ -237,7 +237,7 @@ end
 
 ### 查询数据
 
-以下查询通过 ID 返回特定玩家的记录：
+以下查询通过 ID 返回特定 player 的记录：
 
 ```ruby
 def get_player_by_id(client, id)
