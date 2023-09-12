@@ -222,7 +222,7 @@ client = Mysql2::Client.new(options)
 
 ### 插入数据
 
-以下查询创建一个具有两个字段的玩家，并返回 `last_insert_id`：
+以下查询创建一个具有两个字段的 player，并返回 `last_insert_id`：
 
 ```ruby
 def create_player(client, coins, goods)
