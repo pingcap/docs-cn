@@ -236,7 +236,7 @@ basic-user-name="root"
 basic-password="password"
 # Pulsar TLS 加密认证证书路径
 auth-tls-certificate-path="/data/pulsar/certificate"
-# Pulsar TLS加密认证私钥路径
+# Pulsar TLS 加密认证私钥路径
 auth-tls-private-key-path="/data/pulsar/certificate.key"
 # Pulsar TLS加密可信证书文件路径
 tls-trust-certs-file-path="/data/pulsar/tls-trust-certs-file"
