@@ -21,7 +21,9 @@ cdc cli changefeed create \
 
 ```shell
 
-todo ：创建成功的提示
+Create changefeed successfully!
+ID: simple-replication-task
+Info: {"upstream_id":7277814241002263370,"namespace":"default","id":"simple-replication-task","sink_uri":"pulsar://127.0.0.1:6650/consumer-test?protocol=canal-json","create_time":"2023-09-12T14:42:32.000904+08:00","start_ts":444203257406423044,"config":{"memory_quota":1073741824,"case_sensitive":true,"force_replicate":false,"ignore_ineligible_table":false,"check_gc_safe_point":true,"enable_sync_point":false,"bdr_mode":false,"sync_point_interval":600000000000,"sync_point_retention":86400000000000,"filter":{"rules":["pulsar_test.*"]},"mounter":{"worker_num":16},"sink":{"protocol":"canal-json","csv":{"delimiter":",","quote":"\"","null":"\\N","include_commit_ts":false,"binary_encoding_method":"base64"},"dispatchers":[{"matcher":["pulsar_test.*"],"partition":"","topic":"test_{schema}_{table}"}],"encoder_concurrency":16,"terminator":"\r\n","date_separator":"day","enable_partition_separator":true,"enable_kafka_sink_v2":false,"only_output_updated_columns":false,"delete_only_output_handle_key_columns":false,"pulsar_config":{"connection-timeout":30,"operation-timeout":30,"batching-max-messages":1000,"batching-max-publish-delay":10,"send-timeout":30},"advance_timeout":150},"consistent":{"level":"none","max_log_size":64,"flush_interval":2000,"use_file_backend":false},"scheduler":{"enable_table_across_nodes":false,"region_threshold":100000,"write_key_threshold":0},"integrity":{"integrity_check_level":"none","corruption_handle_level":"warn"}},"state":"normal","creator_version":"v7.4.0-master-dirty","resolved_ts":444203257406423044,"checkpoint_ts":444203257406423044,"checkpoint_time":"2023-09-12 14:42:31.410"}
 ```
 
 - `--server`：TiCDC 集群中任意一个 TiCDC 服务器的地址。
@@ -80,21 +82,21 @@ Changefeed config参数：
 
 # 以下参数仅在下游为 Pulsar 时生效。
 [sink.pulsar-config]
-# Pulsar 使用Token进行pulsar服务端的认证
+# 使用 token 进行 Pulsar 服务端的认证，此处为 token 的值
 authentication-token = "xxxxxxxxxxxxx"
-# Pulsar 使用Token进行pulsar服务端的认证，但这里是token的路径，会从ticdc server组建所在机器上读取
+# 指定使用 token 进行 Pulsar 服务端的认证，此处为 token 的所在文件的路径
 token-from-file="/data/pulsar/token-file.txt"
-# Pulsar 使用basic帐号密码验证身份
+# Pulsar 使用 basic 帐号密码验证身份
 basic-user-name="root"
-# Pulsar  使用basic帐号密码验证身份
+# Pulsar  使用 basic 帐号密码验证身份，此处为密码
 basic-password="password"
-# Pulsar TLS加密认证证书路径
+# Pulsar TLS 加密认证证书路径
 auth-tls-certificate-path="/data/pulsar/certificate"
-# Pulsar TLS加密认证私钥路径
+# Pulsar TLS 加密认证私钥路径
 auth-tls-private-key-path="/data/pulsar/certificate.key"
-# Pulsar TLS加密可信证书文件路径
+# Pulsar TLS 加密可信证书文件路径
 tls-trust-certs-file-path="/data/pulsar/tls-trust-certs-file"
-# Pulsar oauth2 issuer-url 更多详细配置请看pulsar官方介绍：https://pulsar.apache.org/docs/2.10.x/client-libraries-go/#oauth2-authentication
+# Pulsar oauth2 issuer-url 更多详细配置请看pulsar官方介绍：https://pulsar.apache.org/docs/2.10.x/client-libraries-go/#tls-encryption-and-authentication
 oauth2.oauth2-issuer-url="https://xxxx.auth0.com"
 # Pulsar oauth2 audience
 oauth2.oauth2-audience="https://xxxx.auth0.com/api/v2/"
@@ -104,20 +106,19 @@ oauth2.oauth2-private-key="/data/pulsar/privateKey"
 oauth2.oauth2-client-id="0Xx...Yyxeny"
 # Pulsar oauth2 oauth2-scope
 oauth2.oauth2-scope="xxxx"
-
-# Pulsar ticdc缓存pulsar producer的个数，默认10240个
+# TiCDC 中缓存 pulsar producer 的个数，默认上限为 10240 个。每个 pulsar producer 对应一个 topic，如果你需要同步的 topic 数量大于默认值，则需要调大该数量。
 pulsar-producer-cache-size=10240 
 # Pulsar 数据压缩方式，默认不压缩，可选 lz4,zlib,zstd
 compression-type= "lz4"
-# Pulsar Pulsar客户端TCP建立链接时间，默认5秒
+# Pulsar 客户端与服务端建立 TCP 连接的超时时间，默认5秒
 connection-timeout=5
-# Pulsar 操作超时时间，默认30秒
+# Pulsar 客户端发起创建、订阅等操作的超时时间，默认为 30 秒
 operation-timeout=3
-# Pulsar pulsar 一批发送消息最大数量，默认1000
+# Pulsar producer 发送消息时的单个 batch 内的消息数量上限，默认值为 1000
 batching-max-messages=1000
-# Pulsar pulsar 批量发送消息等待时间，默认10毫秒
+# Pulsar producer 消息攒批的时间间隔，默认10毫秒
 batching-max-publish-delay=10
-# Pulsar pulsar 发送超时时间，默认30秒
+# Pulsar producer 发送消息的超时时间，默认30秒
 send-timeout=30
 
 ```
