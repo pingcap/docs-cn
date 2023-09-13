@@ -277,7 +277,13 @@ TiDB 版本：7.4.0
 
 + TiKV
 
-    - note [#issue](链接) @[贡献者 GitHub ID](链接)
+      - [内存优化]改进resolver的内存使用，防止OOM [#15458](https://github.com/tikv/tikv/issues/15458) @[overvenus](https://github.com/overvenus)
+      - [内存优化]消除Router对象中的LRUCache，降低内存占用防止OOM[#15430](https://github.com/tikv/tikv/issues/15430) @[Connor1996](https://github.com/Connor1996)
+      - [内存优化] 降低TICDC Resolver的内存使用 [#15412] (https://github.com/tikv/tikv/issues/15412) @[overvenus](https://github.com/overvenus)
+      - [内存优化] 降低RocksDB compaction带来的内存抖动 [#15324] (https://github.com/tikv/tikv/issues/15324) @[overvenus](https://github.com/overvenus)
+      - [内存优化] 降低Partitioned-raft-kv中流控模块的内存占用 [#15269] (https://github.com/tikv/tikv/issues/15269) @[overvenus](https://github.com/overvenus)
+      - [PD调用优化]减少PD的MemberList请求[#15428](https://github.com/tikv/tikv/issues/15428)  @[nolouch](https://github.com/nolouch)
+      - [动态调参]增加动态调整rocksdb background_compaction的支持[#15424](https://github.com/tikv/tikv/issues/15424)  @[glorv](https://github.com/glorv)
     - note [#issue](链接) @[贡献者 GitHub ID](链接)
 
 + PD
@@ -325,7 +331,15 @@ TiDB 版本：7.4.0
 
 + TiKV
 
-    - note [#issue](链接) @[贡献者 GitHub ID](链接)
+    - [Titan] 用lightning导入数据，挂起集群然后取消集群后，tikv陷入 CrashLoopBackOff[#15454](https://github.com/tikv/tikv/issues/15454)  @[Connor1996](https://github.com/Connor1996)
+    - [监控] 修复Thread Voluntary/Nonvoluntary面板没有数据的问题 [#15413] (https://github.com/tikv/tikv/issues/15413) @[SpadeA-Tang] (https://github.com/SpadeA-Tang)
+    - [监控] 修复raftstore-applys一直不断增长的数据错误[#15371](https://github.com/tikv/tikv/issues/15371)  @[Connor1996] (https://github.com/Connor1996)
+    - [Jepsen] 修复由于meta数据不正确造成tikv的panic [#13311] (https://github.com/tikv/tikv/issues/13311) @[zyguan](https://github.com/zyguan]
+    - [dr-autosync] 切换sync_recovery到sync之后qps掉0 [#15366] (https://github.com/tikv/tikv/issues/13366) @[nolouch](https://github.com/nolouch)
+    - [dr-autosync] 当集群以sync-recover模式切换到备用集群后，在线恢复超时 [#15346] (https://github.com/tikv/tikv/issues/15346) @[Connor1996] (https://github.com/Connor1996)
+    - [内存泄漏] 修复CpuRecord可能的内存泄漏 [#15304] (https://github.com/tikv/tikv/issues/15304) @[overvenus] (https://github.com/overvenus)
+    - [dr-autosync] 当备用集群关闭后，主集群查询出现9002错误: tikv超时 [#12914] (https://github.com/tikv/tikv/issues/12914) @[Connor1996] (https://github.com/Connor1996)
+    - [dr-autosync]当主集群恢复后tikv再次启动，dr tikv会卡住 [#12320] (https://github.com/tikv/tikv/issues/12320) @[disksing] (https://github.com/disksing)
     - note [#issue](链接) @[贡献者 GitHub ID](链接)
 
 + PD
