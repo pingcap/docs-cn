@@ -265,7 +265,7 @@ Topic 表达式的基本规则为 `[prefix]{schema}[middle][{table}][suffix]`，
 在pulsar 中，一般习惯消费者连接该topic下所有partition来消费。
 partition 分发器用 partition = "xxx" 来指定，支持 default、ts、index-value、table 四种 partition 分发器,但如果用户填入其他字段，则会在发送给pulsar server的消息中将该字段透传给Message的`key`，具体分发规则如下：
 
-- default：有多个唯一索引（包括主键）时按照 table 模式分发；只有一个唯一索引（或主键）按照 index-value 模式分发；如果开启了 old value 特性，按照 table 分发
+- default：默认按照按照 schema 名和 table 名进行分发，和指定 'table' 时相同。
 - ts：以行变更的 commitTs 做 Hash 计算并进行 event 分发
 - index-value：以表的主键或者唯一索引的值做 Hash 计算并进行 event 分发
 - table：以表的 schema 名和 table 名做 Hash 计算并进行 event 分发
