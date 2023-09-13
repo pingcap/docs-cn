@@ -126,7 +126,7 @@ send-timeout=30
 ### 最佳实践
 
 * 由于Pulsar自动创建Topic，你至少需要在创建 changefeed 的时候设置 `protocol` 参数。 建议使用 `canal-json` 协议。
-* `pulsar-producer-cache-size` 参数表示client会缓存producer的数量，因为pulsar 的producer只能对应一个topic,所以默认限制为10240个，采用lru方式缓存，最大约消耗内存1.1G。 
+* `pulsar-producer-cache-size` 参数表示 pulsar 客户端中缓存 producer 的数量，因为 pulsar 的每个 producer 只能对应一个 topic, TiCDC 采用 LRU 方式缓存 producer，默认限制为10240个。
 
 
 ### TiCDC 使用 Pulsar 的认证与授权
