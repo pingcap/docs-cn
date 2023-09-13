@@ -226,7 +226,7 @@ sasl-oauth-audience="kafka"
 
 # 以下参数仅在下游为 Pulsar 时生效。
 [sink.pulsar-config]
-# Pulsar 使用Token进行pulsar服务端的认证
+# 使用 token 进行 Pulsar 服务端的认证，此处为 token 的值
 authentication-token = "xxxxxxxxxxxxx"
 # 指定使用 token 进行 Pulsar 服务端的认证，此处为 token 的所在文件的路径
 token-from-file="/data/pulsar/token-file.txt"
