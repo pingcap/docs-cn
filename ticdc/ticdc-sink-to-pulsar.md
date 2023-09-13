@@ -75,7 +75,7 @@ Changefeed config参数：
 # ]
 
 # protocol 用于指定编码消息时使用的格式协议
-# 当下游类型是 Pulsar 时，仅支持canal-json、canal、maxwell
+# 当下游类型是 Pulsar 时，仅支持 canal-json 协议
 # protocol = "canal-json"
 
 # 以下参数仅在下游为 Pulsar 时生效。
