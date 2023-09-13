@@ -65,7 +65,7 @@ Changefeed config参数：
 
 ```
 [sink]
-# 注意：当下游MQ为pulsar时，如果partition不为'ts','index-value','table','default'时，会自动透传你设置的字符串作为pulsar message中的key来路由消息。
+# 注意：当下游 MQ 为 pulsar 时，如果 partition 的路由规则未被指定为 'ts', 'index-value' , 'table' , 'default' 其中之一时，那么将会使用你设置的字符串作为每一条 pulsar message 的 key 进行路由。例如，如果你指定的路由规则为 'code'   这一个字符串，那么符合该 matcher 的所有 pulsar message 都将会以 'code' 作为 key 进行路由。
 # dispatchers = [
 #    {matcher = ['test1.*', 'test2.*'], topic = "Topic 表达式 1", partition = "ts" },
 #    {matcher = ['test3.*', 'test4.*'], topic = "Topic 表达式 2", partition = "index-value" },
