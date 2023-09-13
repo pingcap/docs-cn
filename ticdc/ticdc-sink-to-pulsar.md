@@ -59,7 +59,7 @@ URI 中可配置的的参数如下：
 | `127.0.0.1`          | 下游 Pulsar 对外提供服务的 IP。                                 |
 | `6650`               | 下游 Pulsar 的连接端口。                                          |
 | `persistent://abc/def/yktest`           |  指定pulsar的租户/命名空间/topic 的全名。                                      |
-| `yktest`    | 使用pulsar服务端的默认租户/默认命名空间的topic 的简写名。通常默认的租户是public，命名空间是default,yktest为具体的topic，相当于persistent://public/default/yktest |
+| `yktest`    | 使用 pulsar 服务端的默认租户/默认命名空间的 topic 的简写名。通常默认的租户是 public，命名空间是default。yktest 为具体的 topic，该写法相当于相当于指定 topic 为 persistent://public/default/yktest |
  
 Changefeed config参数：
 
