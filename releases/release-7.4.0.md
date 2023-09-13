@@ -101,9 +101,9 @@ TiDB 版本：7.4.0
 
     更多信息，请参考[用户文档](/tidb-resource-control.md)。
 
-* TiFlash Pipeline 执行模型正式发布（GA）[#6518](https://github.com/pingcap/tiflash/issues/6518) @[SeaRise](https://github.com/SeaRise) **tw@Oreoxmt** <!--1549-->
+* TiFlash 支持 Pipeline 执行模型 (GA) [#6518](https://github.com/pingcap/tiflash/issues/6518) @[SeaRise](https://github.com/SeaRise) **tw@Oreoxmt** <!--1549-->
 
-    在 v7.2.0 版本中，TiFlash 以实验特性发布了 Pipeline 执行模型。TiFlash 引入 Pipeline 执行模型，对所有线程资源进行统一管理，并对所有任务的执行进行统一调度，充分利用线程资源，同时避免资源超用。从 v7.4.0 开始，TiFlash 完善了线程资源使用量的统计，将正式发布 Pipeline 执行模型。控制该特性是否启用的系统变量 [`tidb_enable_tiflash_pipeline_model`](/system-variables.md#tidb_enable_tiflash_pipeline_model-从-v720-版本开始引入) 的默认值将调整为 `true`，并且作用域调整为 `GLOBAL`。
+    在 v7.2.0 中，TiFlash 引入了 Pipeline 执行模型作为实验特性，对所有线程资源进行统一管理，并对所有任务的执行进行统一调度，充分利用线程资源，同时避免资源超用。从 v7.4.0 开始，TiFlash 完善了线程资源使用量的统计，Pipeline 执行模型成为正式功能 (GA)。控制该功能是否启用的系统变量 [`tidb_enable_tiflash_pipeline_model`](/system-variables.md#tidb_enable_tiflash_pipeline_model-从-v720-版本开始引入) 的默认值调整为 `true`，即默认开启，并且作用域调整为 `GLOBAL`。
 
     更多信息，请参考[用户文档](/tiflash/tiflash-pipeline-model.md)。
 
@@ -176,9 +176,9 @@ TiDB 版本：7.4.0
 
     除此之外，通过设置会话级变量 [`tidb_session_alias`](/system-variables.md#tidb_session_alias-从-v740-版本开始引入)，你可以向上述日志中添加自定义的标识。借助这个能力，把业务识别信息注入日志，可以将日志中的内容与业务关联，打通了业务到日志的链路，降低了诊断工作的难度。
 
-*  TiDB Dashboard 提供表格视图的执行计划 [#1589](https://github.com/pingcap/tidb-dashboard/issues/1589) @[baurine](https://github.com/baurine) **tw@Oreoxmt** <!--1434-->
+* TiDB Dashboard 提供表格视图的执行计划 [#1589](https://github.com/pingcap/tidb-dashboard/issues/1589) @[baurine](https://github.com/baurine) **tw@Oreoxmt** <!--1434-->
 
-    在 v7.4.0，TiDB Dashboard 的 Slow Query 页面和 SQL Statement 页面添加了表格视图的执行计划，以为用户提供更好的诊断体验。
+    在 v7.4.0 中，TiDB Dashboard 的 **Slow Query** 页面和 **SQL Statement** 页面提供表格视图的执行计划，以提升用户的诊断体验。
 
     更多信息，请参考[用户文档](链接)。
 
