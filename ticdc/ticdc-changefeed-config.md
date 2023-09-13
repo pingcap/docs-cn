@@ -257,7 +257,7 @@ pulsar-producer-cache-size=10240
 compression-type= "lz4"
 # Pulsar Pulsar客户端TCP建立链接时间，默认5秒
 connection-timeout=5
-# Pulsar 操作超时时间，默认30秒
+# Pulsar 客户端发起创建、订阅等操作的超时时间，默认为 30 秒
 operation-timeout=3
 # Pulsar pulsar 一批发送消息最大数量，默认1000
 batching-max-messages=1000
