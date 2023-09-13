@@ -228,7 +228,7 @@ sasl-oauth-audience="kafka"
 [sink.pulsar-config]
 # Pulsar 使用Token进行pulsar服务端的认证
 authentication-token = "xxxxxxxxxxxxx"
-# Pulsar 使用Token进行pulsar服务端的认证，但这里是token的路径，会从ticdc server组建所在机器上读取
+# 指定使用 token 进行 Pulsar 服务端的认证，此处为 token 的所在文件的路径
 token-from-file="/data/pulsar/token-file.txt"
 # Pulsar 使用basic帐号密码验证身份
 basic-user-name="root"
