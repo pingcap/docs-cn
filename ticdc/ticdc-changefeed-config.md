@@ -259,7 +259,7 @@ compression-type= "lz4"
 connection-timeout=5
 # Pulsar 客户端发起创建、订阅等操作的超时时间，默认为 30 秒
 operation-timeout=3
-# Pulsar pulsar 一批发送消息最大数量，默认1000
+# Pulsar producer 发送消息时的单个 batch 内的消息数量上限，默认值为 1000
 batching-max-messages=1000
 # Pulsar pulsar 批量发送消息等待时间，默认10毫秒
 batching-max-publish-delay=10
