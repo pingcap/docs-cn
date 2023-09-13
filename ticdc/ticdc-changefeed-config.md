@@ -251,7 +251,7 @@ oauth2.oauth2-client-id="0Xx...Yyxeny"
 # Pulsar oauth2 oauth2-scope
 oauth2.oauth2-scope="xxxx"
 
-# Pulsar ticdc缓存pulsar producer的个数，默认10240个
+# TiCDC 中缓存 pulsar producer 的个数，默认上限为 10240 个。每个 pulsar producer 对应一个 topic，如果你需要同步的 topic 数量大于默认值，则需要调大该数量。
 pulsar-producer-cache-size=10240 
 # Pulsar 数据压缩方式，默认不压缩，可选 lz4,zlib,zstd
 compression-type= "lz4"
