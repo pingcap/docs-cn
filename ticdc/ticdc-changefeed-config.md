@@ -230,7 +230,7 @@ sasl-oauth-audience="kafka"
 authentication-token = "xxxxxxxxxxxxx"
 # 指定使用 token 进行 Pulsar 服务端的认证，此处为 token 的所在文件的路径
 token-from-file="/data/pulsar/token-file.txt"
-# Pulsar 使用basic帐号密码验证身份
+# Pulsar 使用 basic 帐号密码验证身份
 basic-user-name="root"
 # Pulsar  使用basic帐号密码验证身份
 basic-password="password"
