@@ -254,6 +254,7 @@ TiDB 路线图展示了 TiDB 未来的计划。随着我们发布长期稳定版
 
 ## 已发布版本
 
+- [TiDB 7.3.0 Release Notes](/releases/release-7.3.0.md)
 - [TiDB 7.2.0 Release Notes](/releases/release-7.2.0.md)
 - [TiDB 7.1.0 Release Notes](/releases/release-7.1.0.md)
 - [TiDB 7.0.0 Release Notes](/releases/release-7.0.0.md)

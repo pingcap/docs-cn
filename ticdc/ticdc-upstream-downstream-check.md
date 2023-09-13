@@ -1,17 +1,25 @@
 ---
-title: TiDB 主从集群的数据校验
-aliases: ['/docs-cn/dev/sync-diff-inspector/upstream-downstream-diff/','/docs-cn/dev/reference/tools/sync-diff-inspector/tidb-diff/']
+title: 主从集群一致性读和数据校验
+aliases: ['/docs-cn/dev/sync-diff-inspector/upstream-downstream-diff/','/docs-cn/dev/reference/tools/sync-diff-inspector/tidb-diff/', '/zh/tidb/dev/upstream-downstream-diff']
 ---
 
-# TiDB 主从集群的数据校验
+# TiDB 主从集群数据校验和快照读
 
-当你使用 TiCDC 搭建 TiDB 的主从集群时，可能会需要在不停止同步的情况下对上下游的数据进行一致性验证。在普通的同步模式中，TiCDC 只提供数据的最终一致性的保证，而无法确保在同步的过程中数据的一致性。因此，对动态变更的数据进行一致性校验非常困难，为了满足这一需求，TiCDC 提供了 Syncpoint 功能。
+当你使用 TiCDC 搭建 TiDB 的主从集群时，可能会需要在不停止同步的情况下对上下游进行一致性的快照读或者对数据进行一致性验证。在普通的同步模式中，TiCDC 只提供数据的最终一致性的保证，而无法确保在同步的过程中数据的一致性。因此，对动态变更的数据进行一致性读非常困难，为了满足这一需求，TiCDC 提供了 Syncpoint 功能。
 
 Syncpoint 通过利用 TiDB 提供的 snapshot 特性，让 TiCDC 在同步过程中维护了一个上下游具有一致性 snapshot 的 `ts-map`。把校验动态数据的一致性问题转化为了校验静态 snapshot 数据的一致性问题，达到了接近数据一致性实时校验的效果。
 
-要开启 SyncPoint 功能，你可以在创建同步任务时把 TiCDC 的配置项 `enable-sync-point` 设置为 `true`。开启 Syncpoint 功能后，TiCDC 在数据的同步过程中会根据你所配置的 TiCDC 参数 `sync-point-interval` 来定时对齐上下游的 snapshot，并将上下游的 TSO 对应关系保存在下游的 `tidb_cdc.syncpoint_v1` 表中。
+## 启用 Syncpoint
 
-然后，你只需要在 sync-diff-inspector 中配置 `snapshot` 即可对 TiDB 主从集群的数据进行校验。以下 TiCDC 配置示例为创建的同步任务开启 Syncpoint 功能：
+启用 Syncpoint 功能后，你可以使用[一致性快照读](#一致性快照读)和[数据一致性校验](#数据一致性校验)。
+
+要开启 Syncpoint 功能，只需在创建同步任务时把 TiCDC 的配置项 `enable-sync-point` 设置为 `true`。开启 Syncpoint 功能后，TiCDC 会向下游 TiDB 集群写入如下信息：
+
+1. 在数据的同步过程中，TiCDC 会定期（使用 `sync-point-interval` 参数配置）对齐上下游的快照，并将上下游的 TSO 的对应关系保存在下游的 `tidb_cdc.syncpoint_v1` 表中。
+
+2. 同步过程中，TiCDC 还会定期（使用 `sync-point-interval` 参数配置）通过执行 `SET GLOBAL tidb_external_ts = @@tidb_current_ts` ，在备用集群中设置已复制完成的一致性快照点。
+
+以下是 TiCDC 配置示例，用于在创建同步任务时启用 Syncpoint 功能：
 
 ```toml
 # 开启 SyncPoint
@@ -24,7 +32,25 @@ sync-point-interval = "5m"
 sync-point-retention = "1h"
 ```
 
-## 获取 ts-map
+## 一致性快照读
+
+> **注意：**
+>
+> 使用一致性快照读之前，请先[启用 TiCDC 的 Syncpoint 功能](#启用-syncpoint)。
+
+当你需要从备用集群查询数据的时候，在业务应用中设置 `SET GLOBAL|SESSION tidb_enable_external_ts_read = ON;` 就可以在备用集群上获得事务状态完成的数据。
+
+除此之外，你也可以通过查询 `ts-map` 的方式选取之前的时间点进行快照读。
+
+## 数据一致性校验
+
+> **注意：**
+>
+> 使用数据一致性校验之前，请先[启用 TiCDC 的 Syncpoint 功能](#启用-syncpoint)。
+
+你只需要在 sync-diff-inspector 中配置 `snapshot` 即可对 TiDB 主从集群的数据进行校验。
+
+### 获取 ts-map
 
 在下游 TiDB 中执行以下 SQL 语句，从结果中可以获取上游 TSO (primary_ts) 和下游 TSO (secondary_ts) 信息。
 
@@ -50,7 +76,7 @@ select * from tidb_cdc.syncpoint_v1;
 - `secondary_ts`：下游数据库 snapshot 的时间戳。
 - `created_at`：插入该条记录的时间。
 
-## 配置 snapshot
+### 配置 snapshot
 
 使用上一步骤获取的 ts-map 信息来配置上下游数据库的 snapshot 信息。其中的 `Datasource config` 部分示例配置如下：
 
@@ -74,6 +100,6 @@ select * from tidb_cdc.syncpoint_v1;
 ## 注意事项
 
 - TiCDC 在创建 Changefeed 前，请确保 TiCDC 的配置项 `enable-sync-point` 已设置为 `true`，这样才会开启 Syncpoint 功能，在下游保存 `ts-map`。完整的配置请参考 [TiCDC 同步任务配置文件描述](/ticdc/ticdc-changefeed-config.md)。
-- 需要调整 TiKV 的 GC 时间，保证在校验时 snapshot 对应的历史数据不会被执行 GC。建议调整为 1 个小时，在校验后再还原 GC 设置。
+- 在使用 Syncpoint 功能进行数据校验时，需要调整 TiKV 的 GC 时间，保证在校验时 snapshot 对应的历史数据不会被执行 GC。建议调整为 1 个小时，在校验后再还原 GC 设置。
 - 以上配置只展示了 `Datasource config` 部分，完整配置请参考 [sync-diff-inspector 用户文档](/sync-diff-inspector/sync-diff-inspector-overview.md)。
 - 从 v6.4.0 开始，TiCDC 使用 Syncpoint 功能需要同步任务拥有下游集群的 `SYSTEM_VARIABLES_ADMIN` 或者 `SUPER` 权限。

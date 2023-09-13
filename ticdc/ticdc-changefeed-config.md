@@ -50,19 +50,19 @@ enable-old-value = true
 
 # 是否开启 Syncpoint 功能，从 v6.3.0 开始支持，该功能默认关闭。
 # 从 v6.4.0 开始，使用 Syncpoint 功能需要同步任务拥有下游集群的 SYSTEM_VARIABLES_ADMIN 或者 SUPER 权限。
-# 注意：该参数只有当下游为 Kafka 或存储服务时，才会生效。
+# 注意：该参数只有当下游为 TiDB 时，才会生效。
 # enable-sync-point = false
 
 # Syncpoint 功能对齐上下游 snapshot 的时间间隔
 # 配置格式为 h m s，例如 "1h30m30s"
 # 默认值为 10m，最小值为 30s
-# 注意：该参数只有当下游为 Kafka 或存储服务时，才会生效。
+# 注意：该参数只有当下游为 TiDB 时，才会生效。
 # sync-point-interval = "5m"
 
 # Syncpoint 功能在下游表中保存的数据的时长，超过这个时间的数据会被清理
 # 配置格式为 h m s，例如 "24h30m30s"
 # 默认值为 24h
-# 注意：该参数只有当下游为 Kafka 或存储服务时，才会生效。
+# 注意：该参数只有当下游为 TiDB 时，才会生效。
 # sync-point-retention = "1h"
 
 [mounter]
@@ -97,22 +97,19 @@ rules = ['*.*', '!test.*']
 # ignore-insert-value-expr = "price > 1000 and origin = 'no where'" # 忽略包含 price > 1000 和 origin = 'no where' 条件的 insert DML
 
 [scheduler]
-# 将表按 Region 个数划分成多个同步范围，这些范围可由多个 TiCDC 节点同步。
+# 将表以 Region 为单位分配给多个 TiCDC 节点进行同步。
 # 注意：该功能只在 Kafka changefeed 上生效，暂不支持 MySQL changefeed。
 # 默认为 "false"。设置为 "true" 以打开该功能。
 enable-table-across-nodes = false
-
-# 打开该功能后，该功能会对 Region 个数大于 `region-threshold` 值的表生效。
-region-threshold = 100000
-
-# 打开该功能后，该功能会对每分钟修改行数大于 `write-key-threshold` 值的表生效。
+# enable-table-across-nodes 开启后，有两种分配模式
+# 1. 按 Region 的数量分配，即每个 CDC 节点处理 region 的个数基本相等。当某个表 Region 个数大于 `region-threshold` 值时，会将表分配到多个节点处理。`region-threshold` 默认值为 10000。
+# region-threshold = 10000 
+# 2. 按写入的流量分配，即每个 CDC 节点处理 region 总修改行数基本相当。只有当表中每分钟修改行数超过 `write-key-threshold` 值时，该表才会生效。
+# write-key-threshold = 30000
 # 注意：
-# * `write-key-threshold` 参数默认值为 0，代表该功能默认不会按表的修改行数来切分表的同步范围。
-# * 你可以根据集群负载来配置该参数，如 30000，代表当表每分钟的更新行数超过 30000 时，该功能将会切分表的同步范围。
-# * 当 `region-threshold` 和 `write-key-threshold` 同时配置时，
-#   TiCDC 将优先检查修改行数是否大于 `write-key-threshold`，
-#   如果不超过，则再检查 Region 个数是否大于 `region-threshold`。
-write-key-threshold = 0
+# `write-key-threshold` 参数默认值为 0，代表默认不会采用流量的分配模式。
+# 两种方式配置一种即可生效，当 `region-threshold` 和 `write-key-threshold` 同时配置时，TiCDC 将优先采用按流量分配的模式，即 `write-key-threshold`。      
+
 
 [sink]
 # 对于 MQ 类的 Sink，可以通过 dispatchers 配置 event 分发器
