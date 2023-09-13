@@ -238,7 +238,7 @@ basic-password="password"
 auth-tls-certificate-path="/data/pulsar/certificate"
 # Pulsar TLS 加密认证私钥路径
 auth-tls-private-key-path="/data/pulsar/certificate.key"
-# Pulsar TLS加密可信证书文件路径
+# Pulsar TLS 加密可信证书文件路径
 tls-trust-certs-file-path="/data/pulsar/tls-trust-certs-file"
 # Pulsar oauth2 issuer-url 更多详细配置请看pulsar官方介绍：https://pulsar.apache.org/docs/2.10.x/client-libraries-go/#tls-encryption-and-authentication
 oauth2.oauth2-issuer-url="https://xxxx.auth0.com"
