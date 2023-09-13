@@ -269,4 +269,4 @@ partition 分发器用 partition = "xxx" 来指定，支持 default、ts、index
 - ts：以行变更的 commitTs 做 Hash 计算并进行 event 分发
 - index-value：以表的主键或者唯一索引的值做 Hash 计算并进行 event 分发
 - table：以表的 schema 名和 table 名做 Hash 计算并进行 event 分发
-- 其他：透传给Message的`key`，使用 pulsar 自身的分发机制。
+- 其他：将会直接把该值作为 pulsar message 的 key，pulsar producer 会使用该 key 值进行分发。
