@@ -284,10 +284,10 @@ end
 
 默认情况下，mysql2 gem 可以按照特定的顺序搜索现有的 CA 证书，直到找到相应的文件。
 
-1. 对于 Debian、Ubuntu、Gentoo、Arch 或 Slackware，路径为 `/etc/ssl/certs/ca-certificates.crt`。
-2. 对于 RedHat、Fedora、CentOS、Mageia、Vercel 或 Netlify，路径为 `/etc/pki/tls/certs/ca-bundle.crt`。
-3. 对于 OpenSUSE，路径为 `/etc/ssl/ca-bundle.pem`。
-4. 对于 macOS 或 Alpine（docker 容器），路径为 `/etc/ssl/cert.pem`。
+1. 对于 Debian、Ubuntu、Gentoo、Arch 或 Slackware，证书的默认存储路径为 `/etc/ssl/certs/ca-certificates.crt`。
+2. 对于 RedHat、Fedora、CentOS、Mageia、Vercel 或 Netlify，证书的默认存储路径为 `/etc/pki/tls/certs/ca-bundle.crt`。
+3. 对于 OpenSUSE，证书的默认存储路径为 `/etc/ssl/ca-bundle.pem`。
+4. 对于 macOS 或 Alpine（docker 容器），证书的默认存储路径为 `/etc/ssl/cert.pem`。
 
 尽管可以手动指定 CA 证书路径，但在多环境部署场景中这可能会引起不必要的麻烦，因为不同的机器和环境可能存储 CA 证书的位置不同。因此，建议将 `sslca` 设置为 `nil`，方便在不同环境中灵活且方便地部署。
 
