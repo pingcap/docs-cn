@@ -33,7 +33,7 @@ todo ：创建成功的提示
 
 ## Sink URI & Changefeed config 配置 `pulsar`
 
-__Sink URI 用于指定 TiCDC 目标系统的连接信息，Changefeed config用来配置具体pulsar相关的参数。在实际使用过程中，SinkURI用来配置基本的连接信息，Changefeed config用来配置可控参数。__
+Sink URI 用于指定 TiCDC 目标系统的连接信息，Changefeed config 用来配置具体 pulsar 相关的参数。在实际使用过程中，SinkURI 用来配置基本的连接信息，Changefeed config 用来配置可控参数。
 
 Sink URI 遵循以下格式：
 
