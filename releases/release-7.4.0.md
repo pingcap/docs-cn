@@ -117,16 +117,14 @@ TiDB 版本：7.4.0
 
 * 后台任务自动资源管控 (实验特性) [#issue号](链接) @[glorv](https://github.com/glorv) **tw@Oreoxmt** <!--1448-->
 
-    数据库集群中存在一些用户不感知的任务，用户对这部分任务的时延并不关注，而这些任务的资源消耗却可能造成系统整体性能的下降。 在新版本中，资源管控加入了对已知低优先级任务的自动管理。 默认情况下，下面任务将以低优先级运行：
+    数据库集群中存在一些用户不感知的任务，用户对这部分任务的时延并不关注，而这些任务的资源消耗却可能造成系统整体性能的下降。 在新版本中，资源管控加入了对已知低优先级任务的自动管理。 可以被
     
-    - [统计信息自动更新](/statistics.md#自动更新)
-    - [`MVCC`](/tidb-storage.md#mvcc) 数据自动清理
-    - [`TTL`](/time-to-live.md) 超时数据自动清理
-
-    通过对[资源组设定的修改](/sql-statements/sql-statement-alter-resource-group.md)，用户还可以主动将下列任务作为低优先级任务运行：
-
-    - 批量数据导入 [`Lightning`](/tidb-lightning/tidb-lightning-overview.md) 和 [`IMPORT INTO`](/sql-statements/sql-statement-import-into.md) 
-    - [DDL 语句](/ddl-introduction.md)
+    - `lightning` 数据导入：使用 [TiDB Lightning](/tidb-lightning/tidb-lightning-overview.md) 执行导入任务。同时支持 TiDB Lightning 的物理和逻辑导入模式。
+    - 数据库备份：使用 [BR](/br/backup-and-restore-overview.md) 执行数据备份和恢复。目前不支持 PITR。
+    - DDL 操作：对于 Reorg DDL 生效，控制批量数据回写阶段的资源使用。
+    - 统计信息收集：对应手动执行或系统自动触发的[收集统计信息](/statistics.md#统计信息的收集)任务。
+    
+    默认情况下，后台任务的管理功能处于关闭状态，其行为与之前版本保持一致。用户需要手动对 `default` [资源组的设定做修改](/sql-statements/sql-statement-alter-resource-group.md) 以开启后台任务管理。
 
     对已知后台任务的自动资源管控，降低了低优先级任务对线上业务的性能影响，实现资源的合理分配，大幅提升集群的稳定性。 
 
