@@ -262,7 +262,7 @@ Topic 表达式的基本规则为 `[prefix]{schema}[middle][{table}][suffix]`，
 
 ### Partition 分发器
 
-在pulsar 中，一般习惯消费者连接该topic下所有partition来消费。
+目前 TiCDC 仅支持消费者使用 Exclusive 的订阅模式对消息进行消费，即每个消费者将会消费一个 topic 中所有 Partition 中的消息。
 partition 分发器用 partition = "xxx" 来指定，支持 default、ts、index-value、table 四种 partition 分发器,但如果用户填入其他字段，则会在发送给pulsar server的消息中将该字段透传给Message的`key`，具体分发规则如下：
 
 - default：默认按照按照 schema 名和 table 名进行分发，和指定 'table' 时相同。
