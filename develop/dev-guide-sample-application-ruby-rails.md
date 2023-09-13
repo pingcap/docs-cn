@@ -123,7 +123,7 @@ bundle add mysql2 dotenv
    >
    > 当使用 Public Endpoint 连接到 TiDB Dedicated 集群时，建议启用 TLS 连接。
    >
-   > 要启用 TLS 连接，将 `ssl_mode` 查询参数的值修改为 `verify_identity`，并将 `sslca` 的值设置为从连接对话框下载的 CA 证书的文件路径。
+   > 要启用 TLS 连接，请将 `ssl_mode` 查询参数的值修改为 `verify_identity`，并将 `sslca` 的值设置为从连接对话框下载的 CA 证书的文件路径。
 
 6. 保存 `.env` 文件。
 
