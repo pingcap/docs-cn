@@ -131,7 +131,7 @@ write-key-threshold = 0
 # 当下游类型是 Kafka 时，支持 canal-json、avro 和 open-protocol。
 # 当下游类型是存储服务时，目前仅支持 canal-json、csv 两种协议。
 # 注意：该参数只有当下游为 Kafka 或存储服务时，才会生效。
-# 当下游类型是 Pulsar 时，仅支持canal-json、canal、maxwell
+# 当下游类型是 Pulsar 时，仅支持 canal-json 协议
 # protocol = "canal-json"
 
 # delete-only-output-handle-key-columns 用于指定 Delete 事件的输出内容，只对 canal-json 和 open-protocol 协议有效。从 v7.2.0 开始引入。
