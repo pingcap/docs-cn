@@ -234,7 +234,7 @@ token-from-file="/data/pulsar/token-file.txt"
 basic-user-name="root"
 # Pulsar  使用 basic 帐号密码验证身份，此处为密码
 basic-password="password"
-# Pulsar TLS加密认证证书路径
+# Pulsar TLS 加密认证证书路径
 auth-tls-certificate-path="/data/pulsar/certificate"
 # Pulsar TLS加密认证私钥路径
 auth-tls-private-key-path="/data/pulsar/certificate.key"
