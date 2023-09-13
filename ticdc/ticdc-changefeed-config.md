@@ -263,7 +263,7 @@ operation-timeout=3
 batching-max-messages=1000
 # Pulsar producer 消息攒批的时间间隔，默认10毫秒
 batching-max-publish-delay=10
-# Pulsar pulsar 发送超时时间，默认30秒
+# Pulsar producer 发送消息的超时时间，默认30秒
 send-timeout=30
 
 
