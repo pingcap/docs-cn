@@ -213,7 +213,7 @@ production:
 
 > **注意**
 >
-> 对于 TiDB Serverless，当使用 Public Endpoint 时，**必须**通过在 `DATABASE_URL` 中设置 `ssl_mode` 查询参数为 `verify_identity` 来启用 TLS 连接，但是你**不需要**通过 `DATABASE_URL` 指定 SSL CA 证书，因为 mysql2 gem 会按照特定的顺序搜索现有的 CA 证书，直到找到一个文件。
+> 对于 TiDB Serverless，当使用 Public Endpoint 时，**必须**通过在 `DATABASE_URL` 中设置 `ssl_mode` 查询参数为 `verify_identity` 来启用 TLS 连接，但是你**不需要**通过 `DATABASE_URL` 指定 SSL CA 证书，因为 mysql2 gem 会按照特定的顺序搜索现有的 CA 证书，直到找到相应的文件。
 
 ### 插入数据
 
