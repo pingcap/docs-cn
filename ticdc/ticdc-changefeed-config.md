@@ -255,7 +255,7 @@ oauth2.oauth2-scope="xxxx"
 pulsar-producer-cache-size=10240 
 # Pulsar 数据压缩方式，默认不压缩，可选 lz4,zlib,zstd
 compression-type= "lz4"
-# Pulsar Pulsar客户端TCP建立链接时间，默认5秒
+# Pulsar 客户端与服务端建立 TCP 连接的超时时间，默认5秒
 connection-timeout=5
 # Pulsar 客户端发起创建、订阅等操作的超时时间，默认为 30 秒
 operation-timeout=3
