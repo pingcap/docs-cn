@@ -1,6 +1,6 @@
 ---
 title: 使用 Rails 框架和 ActiveRecord ORM 连接 TiDB
-summary: 学习如何使用 Rails 框架连接 TiDB。本文档提供了使用 Rails 框架和 ActiveRecord ORM 连接 TiDB 的 Ruby 代码片段示例。
+summary: 本文描述了 TiDB 和 Rails 框架的连接步骤，并给出了使用 Rails 框架和 ActiveRecord ORM 连接 TiDB 的简单示例代码片段。
 ---
 
 # 使用 Rails 框架和 ActiveRecord ORM 连接 TiDB
