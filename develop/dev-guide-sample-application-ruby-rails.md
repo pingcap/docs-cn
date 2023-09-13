@@ -191,7 +191,7 @@ bundle add mysql2 dotenv
 
 ### 连接到 TiDB
 
-`config/database.yml` 中的以下代码使用 `DATABASE_URL` 配置连接到 TiDB：
+`config/database.yml` 中的以下代码使用 `DATABASE_URL` 系统变量的配置连接到 TiDB：
 
 ```yml
 default: &default
