@@ -299,4 +299,4 @@ end
 
 ## 需要帮助？
 
-在 [Discord](https://discord.gg/vYU9h56kAX) 频道上提问。
+在 [AskTUG](https://asktug.com/) 论坛上提问。
