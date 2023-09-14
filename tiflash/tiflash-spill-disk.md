@@ -142,7 +142,7 @@ TiFlash 数据落盘的触发机制有两种：
 ## 注意
 
 * 当 Hash Aggregation 算子不带 `GROUP BY` key 时，不支持落盘。即使该 Hash Aggregation 中含有 `DISTINCT` 聚合函数，也不能触发落盘。
-* 目前算子级别落盘的阈值是针对单个算子来计算的。如果一个查询里有两个 Hash Aggregation 算子，并且阈值设置为 10 GiB，那么两个 Hash Aggregation 算子仅会在各自占用的内存超过 10 GiB 时才会触发数据落盘。
+* 目前算子级别落盘的阈值是针对单个算子来计算的。当未开启查询级别的数据落盘时，如果一个查询里有两个 Hash Aggregation 算子，并且阈值设置为 10 GiB，那么两个 Hash Aggregation 算子仅会在各自占用的内存超过 10 GiB 时才会触发数据落盘。
 * 目前 Hash Aggregation 与 TopN/Sort 在 restore 阶段采用的是 merge aggregation 和 merge sort 的算法，所以这两个算子只会触发一次数据落盘。如果需要的内存特别大以至于在 restore 阶段内存使用仍然超阈值，不会再次触发落盘。
 * 目前 Hash Join 采用基于分区的落盘策略，在 restore 阶段如果内存使用仍然超过阈值，会继续触发落盘。但是为了控制落盘的规模，落盘的轮数限制为三轮。如果第三轮落盘之后的 restore 阶段内存使用仍然超过阈值，则不会触发新的落盘。
 * 即使配置了查询级别的落盘，如果该查询中用到的算子均不支持落盘，该查询的中间计算结果仍然无法落盘。此时，如果查询的内存使用超过了相关阈值，TiFlash 会报错并终止查询。
