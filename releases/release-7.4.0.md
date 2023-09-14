@@ -47,15 +47,17 @@ TiDB 版本：7.4.0
 
     更多信息，请参考[用户文档](/tiflash/tiflash-supported-pushdown-calculations.md)。
 
-* 引入基于云存储的全局排序能力，提升并行执行的 Add index 或 import into 任务的性能和稳定性 [#45719](https://github.com/pingcap/tidb/issues/45719) @[wjhuang2016](https://github.com/wjhuang2016) **tw@ran-huang** <!--1456-->
+* 引入基于云存储的全局排序能力，提升并行执行的 `ADD INDEX` 或 `IMPORT INTO` 任务的性能和稳定性 [#45719](https://github.com/pingcap/tidb/issues/45719) @[wjhuang2016](https://github.com/wjhuang2016) **tw@ran-huang** <!--1456-->
 
-    原先用户执行分布式并行执行框架的 `ADD INDEX` 或 `IMPORT INTO` 任务的 TiDB 节点，需要准备一块较大的本地磁盘，用于编码后的索引 kv pairs 以及表数据的 kv Paris 进行排序。由于未能从全局的角度进行排序，各个 TiDB 节点间以及节点内部导入的数据之间均有可能存在 overlap 的情况，导致把这些 kv pairs 导入 TiKV 时，TiKV 需要不断地进行 compaction ，降低了执行 `ADD INDEX` 或 `IMPORT INTO` 的性能和稳定性。引入该特性后，编码后的数据从写入本地并排序改成写入云存储并在云存储进行全局排序，之后将全局排序后的索引数据和表数据并行导入到 TiKV，从而提升性能和稳定性。
+    在 v7.4.0 以前，用户执行分布式并行执行框架的 `ADD INDEX` 或 `IMPORT INTO` 任务时， TiDB 节点需要准备一块较大的本地磁盘，用于编码后的索引 KV pairs 以及表数据的 KV pairs 的排序。由于无法从全局角度进行排序，各个 TiDB 节点间以及节点内部导入的数据可能存在重叠情况。这会导致在将这些 KV pairs 导入到 TiKV 时，TiKV 需要不断进行数据整理 (compaction) 操作，降低了 `ADD INDEX` 或 `IMPORT INTO` 的性能和稳定性。
 
-    更多信息，请参考[用户文档](链接)。
+    v7.4.0 引入全局排序特性后，编码后的数据从写入本地并排序，改为了写入云存储并在云存储进行全局排序，然后将经过全局排序的索引数据和表数据并行导入到 TiKV 中，从而提升了性能和稳定性。
 
-* 优化 Parallel Multi Schema Change ，提升 1 个 SQL 添加多个索引的性能 [#issue号](链接) @[贡献者 GitHub ID](链接) **tw@ran-huang** <!--1307-->
+    更多信息，请参考[用户文档](/tidb-global-sort.md)。
 
-    原先用户使用 Parallel Multi Schema Change 在 1 个 SQL 中提交多个 Add index 操作，性能和多个独立的 SQL 执行 Add index 操作的性能是一样的，优化后，可大幅提升在 1 个 SQL 中添加多个索引的性能。
+* 优化 Parallel Multi Schema Change，提升一个 SQL 语句添加多个索引的性能 [#issue号](链接) @[贡献者 GitHub ID](链接) **tw@ran-huang** <!--1307-->
+
+    在 v7.4.0 之前，用户使用 Parallel Multi Schema Change 在一个 SQL 语句中提交多个 ADD INDEX 操作时，性能与使用多个独立的 SQL 语句进行 ADD INDEX 操作的性能相同。经过 v7.4.0 的优化后，在一个 SQL 语句中添加多个索引的性能得到了大幅提升。
 
     更多信息，请参考[用户文档](链接)。
 
@@ -109,9 +111,9 @@ TiDB 版本：7.4.0
 
 * 新增优化器模式选择 [#46080](https://github.com/pingcap/tidb/issues/46080) @[time-and-fate](https://github.com/time-and-fate) **tw@ran-huang** <!--1527-->
 
-    TiDB 在 v7.4.0 引入了一个新的系统变量 [`tidb_opt_objective`](/system-variables.md#tidb_opt_objective-从-v740-版本开始引入)，用于控制优化器的估算方式。 默认值 `moderate` 维持从前的优化器行为，优化器会利用运行时统计到的数据修改来校正估算。 如果设置为 `determinate`，优化器则不考虑运行时校正，只根据统计信息来生成执行计划。
+    TiDB 在 v7.4.0 引入了一个新的系统变量 [`tidb_opt_objective`](/system-variables.md#tidb_opt_objective-从-v740-版本开始引入)，用于控制优化器的估算方式。默认值 `moderate` 维持从前的优化器行为，即优化器会利用运行时统计到的数据修改来校正估算。如果设置为 `determinate`，优化器则不考虑运行时校正，只根据统计信息来生成执行计划。
 
-    对于长期稳定的 OLTP 业务，或者如果用户对已有的执行计划非常有把握，则推荐测试后切换到 `determinate` 模式减少执行计划跳变的可能。
+    对于长期稳定的 OLTP 业务，或者如果用户对已有的执行计划非常有把握的情况下，推荐在测试后切换到 `determinate` 模式，减少执行计划跳变的可能。
 
     更多信息，请参考[用户文档](/system-variables.md#tidb_opt_objective-从-v740-版本开始引入)。
 
@@ -132,7 +134,7 @@ TiDB 版本：7.4.0
 
 * 增强锁定统计信息的能力 [#issue号](链接) @[hi-rustin](https://github.com/hi-rustin) **tw@ran-huang** <!--1557-->
 
-    在 v7.4.0 中，TiDB 加强了[锁定统计信息](/statistics.md#锁定统计信息)的能力。 锁定和解锁统计信息，需要被赋予和收集统计信息相同的权限，操作的安全性得到保障。同时新增支持对特定分区的统计信息进行锁定和解锁操作，功能灵活性得以提升。  当用户数据库中的查询和执行计划有把握，不希望改变，可以利用锁定统计信息来提升统计信息的稳定性。
+    在 v7.4.0 中，TiDB 增强了[锁定统计信息](/statistics.md#锁定统计信息)的能力。现在，锁定和解锁统计信息需要与赋予和收集统计信息相同的权限，以确保操作的安全性。此外，还新增了对特定分区的统计信息进行锁定和解锁操作的支持，提高了功能灵活性。当用户对数据库中的查询和执行计划有把握，并且不希望发生变化时，可以使用锁定统计信息来提升统计信息的稳定性。
 
     更多信息，请参考[用户文档](/statistics.md#锁定统计信息)。
 
@@ -198,9 +200,11 @@ TiDB 版本：7.4.0
 
     更多信息，请参考[用户文档](链接)。
 
-* 支持实时更新增量数据校验的 Checkpoint [#issue号](链接) @[lichunzhu](https://github.com/lichunzhu) **tw@ran-huang** <!--1496-->
+* 支持实时更新增量数据校验的 checkpoint [#issue号](链接) @[lichunzhu](https://github.com/lichunzhu) **tw@ran-huang** <!--1496-->
 
-    在 v7.4.0 之前，使用增量数据校验功能，判断 DM 同步到下游的数据是否和上游是一致的，并以此作为业务流量从上游数据库割接到 TiDB 的判断依据。而增量校验 checkpoint 受同步延迟，不一致的数据等待一段时间后重新校验等机制限制，需要每隔几分钟的时间来刷新校验后的 checkpoint，这在一些割接时间只有几十秒的业务场景是不可接受的，引入该功能后，用户可以传入上游数据库填写的 binlog Position，一旦增量校验程序在内存里校验到该 binlog Postion 后会立即刷新 checkpoint，而不是每隔几分钟刷新 checkpoint，从而用户可以根据该立即返回的 checkpoint 来快速地割接。
+    在 v7.4.0 之前，使用增量数据校验功能判断 DM 同步到下游的数据是否与上游一致，并以此作为业务流量从上游数据库割接到 TiDB 的依据。然而，由于增量校验 checkpoint 受到较多因素限制，如同步延迟、不一致的数据等待重新校验等，需要每隔几分钟刷新一次校验后的 checkpoint。对于某些割接时间只有几十秒的业务场景来说，这是无法接受的。
+
+    引入实时更新增量数据校验的 checkpoint 后，用户可以传入上游数据库填写的 binlog position，一旦增量校验程序在内存里校验到该 binlog postion 后，会立即刷新 checkpoint，而不是每隔几分钟刷新 checkpoint。因此，用户可以根据该立即返回的 checkpoint 来快速进行割接操作。
 
     更多信息，请参考[用户文档](链接)。
 
@@ -219,7 +223,7 @@ TiDB 版本：7.4.0
 
 * TiCDC 支持 Claim-Check 功能 [#9153](https://github.com/pingcap/tiflow/issues/9153) @[3AceShowHand](https://github.com/3AceShowHand) **tw@ran-huang** <!--1550 英文 comment 原文 https://internal.pingcap.net/jira/browse/FD-1550?focusedCommentId=149207&page=com.atlassian.jira.plugin.system.issuetabpanels:comment-tabpanel#comment-149207-->
 
-    在 v7.4.0 之前，TiCDC 无法向下游发送超过 Kafka 最大消息大小的大型消息。从  v7.4.0 开始，在配置下游为 Kafka 的 Changefeed 的时候，你可以配置一个外部存储位置，用于存储消息大小超过 Kafka 消息尺寸限制 (`max.message.bytes`) 的大消息，同时一条含有该条大消息在外部存储中的地址的引用消息，将会被发送到 Kafka，消息消费者在收到了该条引用消息后，可以根据其中记录的外部存储地址信息，获取对应的大消息内容。
+    在 v7.4.0 之前，TiCDC 无法向下游发送超过 Kafka 最大消息大小的大型消息。从  v7.4.0 开始，在配置下游为 Kafka 的 Changefeed 的时候，你可以指定一个外部存储位置，用于存储消息大小超过 Kafka 消息尺寸限制 (`max.message.bytes`) 的大型消息，并将包含该大型消息在外部存储中的地址的一条引用消息发送到 Kafka。当消费者收到该引用消息后，可以根据其中记录的外部存储地址信息，获取对应的大型消息内容。
 
     更多信息，请参考[用户文档](链接)。
 
