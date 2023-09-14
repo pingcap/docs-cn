@@ -131,6 +131,15 @@ delta_index_cache_size = 0
     tidb_status_addr = tidb status 端口地址 # 多个地址以逗号分割
     service_addr =  TiFlash raft 服务 和 coprocessor 服务监听地址
 
+    ## 从 v7.4.0 引入，当当前 Raft 状态机推进的 applied_index 和上次落盘时的 applied_index 相差高于 compact_log_min_gap 时，
+    ## 不再拒绝来自 TiKV 的 CompactLog 命令，并进行落盘。调大该值会减少落盘频率，增大内存开销。调小该值不会让 TiFlash 落盘频率高于 TiKV。
+    ## 建议保持默认值。
+    compact_log_min_gap = 默认值 200
+    ## 从 v5.0 就存在，当 TiFlash 缓存的 Region 行数或者大小超过以下任一阈值时，不再拒绝来自 TiKV 的 CompactLog 命令，并进行落盘。
+    ## 建议保持默认值。
+    compact_log_min_rows = 默认值 40k
+    compact_log_min_bytes = 默认值 32MB
+
     ## 下面的配置只针对存算分离模式生效，详情请参考 TiFlash 存算分离架构与 S3 支持文档 https://docs.pingcap.com/zh/tidb/dev/tiflash-disaggregated-and-s3
     # disaggregated_mode = tiflash_write # 可选值为 tiflash_write 或者 tiflash_compute
 
