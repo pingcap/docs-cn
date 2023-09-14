@@ -210,10 +210,14 @@ TiDB 版本：7.4.0
 
 * import into 功能增强，支持对导入的数据通过云存储进行全局排序提升导入性能和稳定性等特性 [#46704](https://github.com/pingcap/tidb/issues/46704) @[D3Hunter](https://github.com/D3Hunter) **tw@qiancai** <!--1494-->
 
-    在 v7.4.0 之前，使用 IMPORT INTO 导入数据，会把该任务拆分成多个子任务调度到各个 TiDB 节点并行执行，这些 TiDB 节点，需要准备一块较大的本地磁盘，用于对编码后的索引 kv pairs 以及表 kv Paris 数据进行排序，如果磁盘空间不够大，各个 TiDB 节点本地编码排序后的数据之间会存在 overlap 的情况，导致把这些 kv pairs 导入 TiKV 时，TiKV 需要不断地进行 compaction ，降低了执行 import into 的性能和稳定性。引入该特性后，编码后的数据从写入本地并排序改成写入云存储并在云存储进行全局排序，之后将全局排序后的表数据和索引数据并行导入到 TiKV，从而提升性能和稳定性。
-    同时还支了配置项 "Split_File" 可将单个大 CSV 文件切分成多个 256 MiB 的 CSV 小文件，提升并发导入的性能。支持导入压缩后的 CSV，SQL 文件，支持以下压缩格式 .gzip, .gz, .zstd, .zst and .snappy 。
-
-    更多信息，请参考[用户文档](链接)。
+    从 v7.4.0 起，你可以通过在  `IMPORT INTO` 的 `CLOUD_STORAGE_URI` 选项中指定编码后数据的云存储地址，开启[全局排序功能](/....md)，提升性能和稳定性。
+    
+    此外，在 v7.4.0 中，`IMPORT INTO`  还引入了以下功能：
+    
+    - 支持配置 `Split_File` 选项，可将单个大 CSV 文件切分成多个 256 MiB 的小 CSV 文件进行并行处理，提升导入性能。
+    - 支持导入压缩后的 CSV 和 SQL 文件，支持的压缩格式包括 `.gzip`、`.gz`、`.zstd`、`.zst` 和 `.snappy` 。`
+·
+    更多信息，请参考[用户文档](sql-statements/sql-statement-import-into.md)。
 
 * TiCDC 支持同步数据至 Pulsar [#9413](https://github.com/pingcap/tiflow/issues/9413) @[yumchina](https://github.com/yumchina) @[asddongmen](https://github.com/asddongmen) **tw@hfxsd** <!--1552-->
 
