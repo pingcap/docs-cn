@@ -2010,17 +2010,6 @@ Query OK, 0 rows affected (0.09 sec)
 - 默认值：`OFF`
 - 这个变量用于动态地控制 TiDB 遥测功能是否开启，当前版本默认关闭 TiDB 的遥测功能。当所有 TiDB 实例都设置配置项 [`enable-telemetry`](/tidb-configuration-file.md#enable-telemetry-从-v402-版本开始引入) 为 `false` 时，将忽略该系统变量，并总是关闭 TiDB 遥测功能。参阅[遥测](/telemetry.md)了解该功能详情。
 
-### `tiflash_enable_pipeline_model` <span class="version-mark">从 v7.4.0 版本开始引入</span>
-
-- 作用域：GLOBAL
-- 是否持久化到集群：是
-- 类型：布尔型
-- 默认值：`ON`
-- 这个变量用来控制是否启用 TiFlash 新的执行模型 [Pipeline Model](/tiflash/tiflash-pipeline-model.md)。
-- 当设置该变量为 `ON` 开启 TiFlash Pipeline Model 时，下推到 TiFlash 的查询会使用 TiFlash 新的执行模型 Pipeline Model 来执行。
-- 当设置该变量为 `OFF` 关闭 TiFlash Pipeline Model 时，下推到 TiFlash 的查询会使用 TiFlash 原有的执行模型 Stream Model 来执行。
-- 该变量由 `tidb_enable_tiflash_pipeline_model` 改名而来。
-
 ### `tidb_enable_tiflash_read_for_write_stmt` <span class="version-mark">从 v6.3.0 版本开始引入</span>
 
 - 作用域：SESSION | GLOBAL
@@ -4299,6 +4288,17 @@ Query OK, 0 rows affected, 1 warning (0.00 sec)
 - 单位：线程
 - 这个变量用于设置 window 算子的并行度。
 - 默认值 `-1` 表示使用 `tidb_executor_concurrency` 的值。
+
+### `tiflash_enable_pipeline_model` <span class="version-mark">从 v7.4.0 版本开始引入</span>
+
+- 作用域：GLOBAL
+- 是否持久化到集群：是
+- 类型：布尔型
+- 默认值：`ON`
+- 这个变量用来控制是否启用 TiFlash 新的执行模型 [Pipeline Model](/tiflash/tiflash-pipeline-model.md)。
+- 当设置该变量为 `ON` 开启 TiFlash Pipeline Model 时，下推到 TiFlash 的查询会使用 TiFlash 新的执行模型 Pipeline Model 来执行。
+- 当设置该变量为 `OFF` 关闭 TiFlash Pipeline Model 时，下推到 TiFlash 的查询会使用 TiFlash 原有的执行模型 Stream Model 来执行。
+- 该变量由 `tidb_enable_tiflash_pipeline_model` 改名而来。
 
 ### `tiflash_fastscan` <span class="version-mark">从 v6.3.0 版本开始引入</span>
 
