@@ -32,6 +32,15 @@ TiDB 版本：7.4.0
     相比之 v7.4.0 之前版本，Partitioned Raft KV 引擎在兼容性、稳定性有了进一步的提升。在 v7.4.0 版本中，Partitioned Raft KV 引擎经历了大规模数据测试，确保了对 DM、Dumpling、Lightning、TiCDC 、 BR / PITR 等关键生态组件的兼容性。同时 Partitioned Raft KV 引擎在读写混合工作负载下提供了更为稳定的性能指标，特别适合写多读少的场景。此外，每个 TiKV 节点支持 8 Core CPU 搭配 8TB 数据存储，64GB 内存。
 
     尽管仍处于非 GA 阶段，但在 v7.4.0 版本中，Partitioned Raft KV 引擎进一步提升了稳定性和兼容性，使得用户可以更好地进行 POC 和短期性能基准测试。我们将继续努力改进该引擎，以提供更强大、更稳定的功能。更多信息请参考[用户文档](/partitioned-raft-kv.md)。
+ 
+ * TiFlash 存算分离架构正式发布 [#6882](https://github.com/pingcap/tiflash/issues/6882)  @[JaySon-Huang](https://github.com/JaySon-Huang) @[JinheLin](https://github.com/JinheLin) @[breezewish](https://github.com/breezewish) @[lidezhu](https://github.com/lidezhu) @[CalvinNeo](https://github.com/CalvinNeo)  **tw@qiancai** <!--1360-->
+
+    在 v7.0.0 版本，TiFlash 以实验特性发布了存算分离架构。经过持续改进，从 v7.4.0 版本开始，TiFlash 正式支持存算分离架构。
+    在存算分离架构下，TiFlash 节点分为 Compute Node （计算节点）和 Write Node（写入节点）两种类型，并使用兼容 S3 API 的对象存储。这两种节点都可以单独扩缩容，独立调整计算或数据存储能力。
+    存算一体或者存算分离架构下，TiFlash 的使用方式保持一致，包括创建 TiFlash 副本、查询、指定优化器 HINT 等。
+    注意：TiFlash 的存算分离架构和存算一体架构不能混合使用、相互转换，需要在部署 TiFlash 时进行相应的配置指定使用其中的一种架构。
+
+    更多信息，请参考[用户文档](/tiflash/tiflash-disaggregated-and-s3.md)。
 
 ### 性能
 
@@ -44,8 +53,6 @@ TiDB 版本：7.4.0
 * 支持下推包含任何帧定义的窗口函数到 TiFlash [#7376](https://github.com/pingcap/tiflash/issues/7376) @[xzhangxian1008](https://github.com/xzhangxian1008)  **tw@qiancai** <!--1381-->
 
     在 v7.4.0 之前的版本中，TiFlash 不支持包含 PRECEDING 或 FOLLOWING 的窗口函数，所有包含此类帧定义的窗口函数都无法下推至 TiFlash。从 v7.4.0 开始，TiFlash 支持了所有的窗口函数的帧定义。该功能自动启用，满足要求时，会自动下推至 TiFlash 执行。
-
-    更多信息，请参考[用户文档](/tiflash/tiflash-supported-pushdown-calculations.md)。
 
 * 引入基于云存储的全局排序能力，提升并行执行的 `ADD INDEX` 或 `IMPORT INTO` 任务的性能和稳定性 [#45719](https://github.com/pingcap/tidb/issues/45719) @[wjhuang2016](https://github.com/wjhuang2016) **tw@ran-huang** <!--1456-->
 
@@ -79,6 +86,7 @@ TiDB 版本：7.4.0
     在 v7.4.0 版本中，TiFlash 支持查询级别数据落盘功能。通过设定单个查询在单个 TiFlash 节点使用内存的上限[`tiflash_mem_quota_query_per_node`](/system-variables.md#tiflash_mem_quota_query_per_node-从-v740-版本开始引入)及触发数据落盘的内存阈值[`tiflash_query_spill_ratio`](/system-variables.md#tiflash_query_spill_ratio-从-v740-版本开始引入)，可以方便的控制单个查询的内存使用，更好的管控 TiFlash 内存资源。
 
     更多信息，请参考[用户文档](/tiflash/tiflash-spill-disk.md)。
+
 * 引入自定义 TiKV 读取超时时间 [#45380](https://github.com/pingcap/tidb/issues/45380) @[crazycs520](https://github.com/crazycs520) **tw@hfxsd** <!--1560-->
 
     在通常情况下，TiKV 处理请求非常快，只需几毫秒。但是，当某个 TiKV 节点遇到磁盘 I/O 抖动或网络延迟时，请求处理时间可能会大幅增加。在 v7.4.0 以前的版本中，TiKV 请求的超时限制是固定的，不能调整，因此当 TiKV 节点出现问题时，TiDB 必须等待超时响应，这导致了抖动期间应用程序的查询性能受到明显影响。
@@ -290,8 +298,7 @@ TiDB 版本：7.4.0
     - note [#issue](链接) @[贡献者 GitHub ID](链接)
 
 + TiFlash
-    - TiFlash 存算分离架构正式发布（GA）[#6882](https://github.com/pingcap/tiflash/issues/6882)  @[JaySon-Huang](https://github.com/JaySon-Huang) @[JinheLin](https://github.com/JinheLin) @[breezewish](https://github.com/breezewish) @[lidezhu](https://github.com/lidezhu) @[CalvinNeo](https://github.com/CalvinNeo)
-    - 改进 TiFlash 写入过程的落盘策略，提升随机写入负载下的写性能 [#7564](https://github.com/pingcap/tiflash/issues/7564) @[CalvinNeo](https://github.com/CalvinNeo) 
+    - 改进 TiFlash 写入过程的落盘策略，提升随机写入负载下的写性能 [#7564](https://github.com/pingcap/tiflash/issues/7564) @[CalvinNeo](https://github.com/CalvinNeo)   **tw@qiancai** <!--1309-->
 
 + Tools
 
