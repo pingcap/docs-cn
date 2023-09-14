@@ -15,57 +15,75 @@ This document introduces the user scenarios, supported upstreams and downstreams
 
 ## [TiDB Data Migration (DM)](/dm/dm-overview.md)
 
-| User scenario |<span style="font-weight:normal">Data migration from MySQL-compatible databases to TiDB</span>|
-|---|---|
-| **Upstream** | MySQL, MariaDB, Aurora |
-| **Downstream** | TiDB |
-| **Advantages** |<ul><li>A convenient and unified data migration task management tool that supports full data migration and incremental replication</li><li>Support filtering tables and operations</li><li>Support shard merge and migration</li></ul> |
-| **Limitation** | Data import speed is roughly the same as that of TiDB Lightning's [logical import mode](/tidb-lightning/tidb-lightning-logical-import-mode.md), and a lot lower than that of TiDB Lightning's [physical import mode](/tidb-lightning/tidb-lightning-physical-import-mode.md). So it is recommended to use DM to migrate full data with a size of less than 1 TiB. |
+- **User scenario**: Data migration from MySQL-compatible databases to TiDB
+- **Upstream**: MySQL, MariaDB, Aurora
+- **Downstream**: TiDB
+- **Advantages**:
+    - A convenient and unified data migration task management tool that supports full data migration and incremental replication
+    - Support filtering tables and operations
+    - Support shard merge and migration
+- **Limitation**: Data import speed is roughly the same as that of TiDB Lightning's [logical import mode](/tidb-lightning/tidb-lightning-logical-import-mode.md), and a lot lower than that of TiDB Lightning's [physical import mode](/tidb-lightning/tidb-lightning-physical-import-mode.md). So it is recommended to use DM to migrate full data with a size of less than 1 TiB.
 
 ## [TiDB Lightning](/tidb-lightning/tidb-lightning-overview.md)
 
-| User scenario | <span style="font-weight:normal">Full data import into TiDB</span> |
-|---|---|
-| **Upstream (the imported source file)** | <ul><li>Files exported from Dumpling</li><li>Parquet files exported by Amazon Aurora or Apache Hive</li><li>CSV files</li><li>Data from local disks or Amazon S3</li></ul> |
-| **Downstream** | TiDB |
-| **Advantages** | <ul><li>Support quickly importing a large amount of data and quickly initializing a specific table in a TiDB cluster </li><li>Support checkpoints to store the import progress, so that `tidb-lightning` continues importing from where it lefts off after restarting</li><li>Support data filtering</li></ul> |
-| **Limitation** | <ul><li>If [physical import mode](/tidb-lightning/tidb-lightning-physical-import-mode-usage.md) is used for data import, during the import process, the TiDB cluster cannot provide services.</li><li> If you do not want the TiDB services to be impacted, perform the data import according to TiDB Lightning [logical import mode](/tidb-lightning/tidb-lightning-logical-import-mode-usage.md).</li></ul> |
+- **User scenario**: Full data import into TiDB
+- **Upstream (the imported source file)**:
+    - Files exported from Dumpling
+    - Parquet files exported by Amazon Aurora or Apache Hive
+    - CSV files
+    - Data from local disks or Amazon S3
+- **Downstream**: TiDB
+- **Advantages**:
+    - Support quickly importing a large amount of data and quickly initializing a specific table in a TiDB cluster
+    - Support checkpoints to store the import progress, so that `tidb-lightning` continues importing from where it lefts off after restarting
+    - Support data filtering
+- **Limitation**:
+    - If [physical import mode](/tidb-lightning/tidb-lightning-physical-import-mode-usage.md) is used for data import, during the import process, the TiDB cluster cannot provide services.
+    - If you do not want the TiDB services to be impacted, perform the data import according to TiDB Lightning [logical import mode](/tidb-lightning/tidb-lightning-logical-import-mode-usage.md).
 
 ## [Dumpling](/dumpling-overview.md)
 
-| User scenario | <span style="font-weight:normal">Full data export from MySQL or TiDB</span> |
-|---|---|
-| **Upstream** | MySQL, TiDB |
-| **Downstream (the output file)** | SQL, CSV |
-| **Advantages** | <ul><li>Support the table-filter feature that enables you to filter data easier</li><li>Support exporting data to Amazon S3</li></ul> |
-| **Limitation** | <ul><li>If you want to restore the exported data to a database other than TiDB, it is recommended to use Dumpling.</li><li>If you want to restore the exported data to another TiDB cluster, it is recommended to use Backup & Restore (BR).</li></ul> |
+- **User scenario**: Full data export from MySQL or TiDB
+- **Upstream**: MySQL, TiDB
+- **Downstream (the output file)**: SQL, CSV
+- **Advantages**:
+    - Support the table-filter feature that enables you to filter data easier
+    - Support exporting data to Amazon S3
+- **Limitation**:
+    - If you want to restore the exported data to a database other than TiDB, it is recommended to use Dumpling.
+    - If you want to restore the exported data to another TiDB cluster, it is recommended to use Backup & Restore (BR).
 
 ## [TiCDC](/ticdc/ticdc-overview.md)
 
-| User scenario | <span style="font-weight:normal">This tool is implemented by pulling TiKV change logs. It can restore cluster data to a consistent state with any upstream TSO, and support other systems to subscribe to data changes.</span> |
-|---|---|
-| **Upstream** | TiDB |
-| **Downstream** | TiDB, MySQL, Kafka, Confluent |
-| **Advantages** | Provide TiCDC Open Protocol |
-| **Limitation** | TiCDC only replicates tables that have at least one valid index. The following scenarios are not supported:<ul><li>The TiKV cluster that uses RawKV alone.</li><li>The DDL operation `CREATE SEQUENCE` and the `SEQUENCE` function in TiDB.</li></ul> |
+- **User scenario**: This tool is implemented by pulling TiKV change logs. It can restore cluster data to a consistent state with any upstream TSO, and support other systems to subscribe to data changes.
+- **Upstream**: TiDB
+- **Downstream**: TiDB, MySQL, Kafka, Confluent
+- **Advantages**: Provide TiCDC Open Protocol
+- **Limitation**: TiCDC only replicates tables that have at least one valid index. The following scenarios are not supported:
+    - The TiKV cluster that uses RawKV alone.
+    - The DDL operation `CREATE SEQUENCE` and the `SEQUENCE` function in TiDB.
 
 ## [Backup & Restore (BR)](/br/backup-and-restore-overview.md)
 
-| User scenario | <span style="font-weight:normal">Migrate a large amount of TiDB cluster data by backing up and restoring data</span> |
-|---|---|
-| **Upstream** | TiDB |
-| **Downstream (the output file)** | SST, backup.meta files, backup.lock files |
-| **Advantages** |<ul><li>Suitable for migrating data to another TiDB cluster</li><li>Support backing up data to an external storage for disaster recovery</li></ul> |
-| **Limitation** |<ul><li>When BR restores data to the upstream cluster of TiCDC or Drainer, the restored data cannot be replicated to the downstream by TiCDC or Drainer.</li><li>BR supports operations only between clusters that have the same `new_collations_enabled_on_first_bootstrap` value.</li></ul> |
+- **User scenario**: Migrate a large amount of TiDB cluster data by backing up and restoring data
+- **Upstream**: TiDB
+- **Downstream (the output file)**: SST, backup.meta files, backup.lock files
+- **Advantages**:
+    - Suitable for migrating data to another TiDB cluster
+    - Support backing up data to an external storage for disaster recovery
+- **Limitation**:
+    - When BR restores data to the upstream cluster of TiCDC or Drainer, the restored data cannot be replicated to the downstream by TiCDC or Drainer.
+    - BR supports operations only between clusters that have the same `new_collations_enabled_on_first_bootstrap` value.
 
 ## [sync-diff-inspector](/sync-diff-inspector/sync-diff-inspector-overview.md)
 
-| User scenario | <span style="font-weight:normal">Comparing data stored in the databases with the MySQL protocol</span> |
-|---|---|
-| **Upstream** | TiDB, MySQL |
-| **Downstream** | TiDB, MySQL |
-| **Advantages** | Can be used to repair data in the scenario where a small amount of data is inconsistent |
-| **Limitation** | <ul><li>Online check is not supported for data migration between MySQL and TiDB.</li><li>JSON, BIT, BINARY, BLOB and other types of data are not supported.</li></ul> |
+- **User scenario**: Comparing data stored in the databases with the MySQL protocol
+- **Upstream**: TiDB, MySQL
+- **Downstream**: TiDB, MySQL
+- **Advantages**: Can be used to repair data in the scenario where a small amount of data is inconsistent
+- **Limitation**:
+    - Online check is not supported for data migration between MySQL and TiDB.
+    - JSON, BIT, BINARY, BLOB and other types of data are not supported.
 
 ## Install tools using TiUP
 

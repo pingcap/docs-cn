@@ -42,5 +42,7 @@ TiDB Lightning supports two import modes, configured by `backend`. The import mo
 | Whether the TiDB cluster can provide service during import | [Limited service](/tidb-lightning/tidb-lightning-physical-import-mode.md#limitations) | Yes |
 
 <Note>
+
 The preceding performance data is used to compare the import performance difference between the two modes. The actual import speed is affected by various factors such as hardware configuration, table schema, and the number of indexes.
+
 </Note>

@@ -5,7 +5,9 @@ title: tiup dm import
 # tiup dm import <span class="version-mark">Only for upgrading DM v1.0</span>
 
 <Note>
+
 This command is used only for upgrading DM clusters from v1.0 to v2.0 or later versions.
+
 </Note>
 
 In DM v1.0, the cluster is basically deployed using TiDB Ansible. TiUP DM provides the `import` command to import v1.0 clusters and redeploy the clusters in DM v2.0.

@@ -18,22 +18,72 @@ As an open-source distributed SQL database with high performance, TiDB can be de
 
 ## OS and platform requirements
 
-|  Operating systems   |   Supported CPU architectures   |
-|   :---   |   :---   |
-| Red Hat Enterprise Linux 8.4 or a later 8.x version  |  <ul><li>x86_64</li><li>ARM 64</li></ul>  |
-| <ul><li>Red Hat Enterprise Linux 7.3 or a later 7.x version</li><li>CentOS 7.3 or a later 7.x version</li></ul>  |  <ul><li>x86_64</li><li>ARM 64</li></ul>   |
-| Amazon Linux 2 | <ul><li>x86_64</li><li>ARM 64</li></ul> |
-| Kylin Euler V10 SP1/SP2   |   <ul><li>x86_64</li><li>ARM 64</li></ul>   |
-| UOS V20 |   <ul><li>x86_64</li><li>ARM 64</li></ul>   |
-| openEuler 22.03 LTS SP1 |   x86_64   |
-| macOS 12 (Monterey) or later |  <ul><li>x86_64</li><li>ARM 64</li></ul>  |
-| Oracle Enterprise Linux 7.3 or a later 7.x version  |  x86_64           |
-| Ubuntu LTS 18.04 or later   |  x86_64           |
-| CentOS 8 Stream | <ul><li>x86_64</li><li>ARM 64</li></ul> |
-| Debian 9 (Stretch) or later |  x86_64           |
-| Fedora 35 or later   |  x86_64           |
-| openSUSE Leap later than v15.3 (not including Tumbleweed) |  x86_64           |
-| SUSE Linux Enterprise Server 15  |  x86_64                        |
+<table>
+<thead>
+  <tr>
+    <th>Operating systems</th>
+    <th>Supported CPU architectures</th>
+  </tr>
+</thead>
+<tbody>
+  <tr>
+    <td>Red Hat Enterprise Linux 8.4 or a later 8.x version</td>
+    <td><ul><li>x86_64</li><li>ARM 64</li></ul></td>
+  </tr>
+  <tr>
+    <td><ul><li>Red Hat Enterprise Linux 7.3 or a later 7.x version</li><li>CentOS 7.3 or a later 7.x version</li></ul></td>
+    <td><ul><li>x86_64</li><li>ARM 64</li></ul></td>
+  </tr>
+  <tr>
+    <td>Amazon Linux 2</td>
+    <td><ul><li>x86_64</li><li>ARM 64</li></ul></td>
+  </tr>
+  <tr>
+    <td>Kylin Euler V10 SP1/SP2</td>
+    <td><ul><li>x86_64</li><li>ARM 64</li></ul></td>
+  </tr>
+  <tr>
+    <td>UOS V20</td>
+    <td><ul><li>x86_64</li><li>ARM 64</li></ul></td>
+  </tr>
+  <tr>
+    <td>openEuler 22.03 LTS SP1</td>
+    <td>x86_64</td>
+  </tr>
+  <tr>
+    <td>macOS 12 (Monterey) or later</td>
+    <td><ul><li>x86_64</li><li>ARM 64</li></ul></td>
+  </tr>
+  <tr>
+    <td>Oracle Enterprise Linux 7.3 or a later 7.x version</td>
+    <td>x86_64</td>
+  </tr>
+  <tr>
+    <td>Ubuntu LTS 18.04 or later</td>
+    <td>x86_64</td>
+  </tr>
+  <tr>
+    <td>CentOS 8 Stream</td>
+    <td><ul><li>x86_64</li><li>ARM 64</li></ul></td>
+  </tr>
+  <tr>
+    <td>Debian 9 (Stretch) or later</td>
+    <td>x86_64</td>
+  </tr>
+  <tr>
+    <td>Fedora 35 or later</td>
+    <td>x86_64</td>
+  </tr>
+  <tr>
+    <td>openSUSE Leap later than v15.3 (not including Tumbleweed)</td>
+    <td>x86_64</td>
+  </tr>
+  <tr>
+    <td>SUSE Linux Enterprise Server 15</td>
+    <td>x86_64</td>
+  </tr>
+</tbody>
+</table>
 
 > **Note:**
 >
@@ -169,14 +219,47 @@ As an open-source distributed SQL database, TiDB requires the following network 
 
 ## Disk space requirements
 
-| Component | Disk space requirement | Healthy disk usage |
-| :-- | :-- | :-- |
-| TiDB | <ul><li>At least 30 GB for the log disk</li> <li> Starting from v6.5.0, `Fast Online DDL` (controlled by the [`tidb_ddl_enable_fast_reorg`](/system-variables.md#tidb_ddl_enable_fast_reorg-new-in-v630) variable) is enabled by default to accelerate DDL operations, such as adding indexes. If DDL operations involving large objects exist in your application, it is highly recommended to prepare additional SSD disk space for TiDB (100 GB or more). For detailed configuration instructions, see [Set a temporary space for a TiDB instance](/check-before-deployment.md#set-temporary-spaces-for-tidb-instances-recommended) </li></ul> | Lower than 90% |
-| PD | At least 20 GB for the data disk and for the log disk, respectively | Lower than 90% |
-| TiKV | At least 100 GB for the data disk and for the log disk, respectively | Lower than 80% |
-| TiFlash | At least 100 GB for the data disk and at least 30 GB for the log disk, respectively | Lower than 80% |
-| TiUP | <ul><li>Control machine: No more than 1 GB space is required for deploying a TiDB cluster of a single version. The space required increases if TiDB clusters of multiple versions are deployed. </li> <li> Deployment servers (machines where the TiDB components run): TiFlash occupies about 700 MB space and other components (such as PD, TiDB, and TiKV) occupy about 200 MB space respectively. During the cluster deployment process, the TiUP cluster requires less than 1 MB of temporary space (`/tmp` directory) to store temporary files.</li></ul>| N/A |
-| Ngmonitoring | <ul><li>Conprof: 3 x 1 GB x Number of components (each component occupies about 1 GB per day, 3 days in total) + 20 GB reserved space </li><li> Top SQL: 30 x 50 MB x Number of components (each component occupies about 50 MB per day, 30 days in total) </li><li> Conprof and Top SQL share the reserved space</li></ul> | N/A |
+<table>
+<thead>
+  <tr>
+    <th>Component</th>
+    <th>Disk space requirement</th>
+    <th>Healthy disk usage</th>
+  </tr>
+</thead>
+<tbody>
+  <tr>
+    <td>TiDB</td>
+    <td><ul><li>At least 30 GB for the log disk</li><li>Starting from v6.5.0, Fast Online DDL (controlled by the <a href="https://docs.pingcap.com/tidb/dev/system-variables#tidb_ddl_enable_fast_reorg-new-in-v630">tidb_ddl_enable_fast_reorg</a> variable) is enabled by default to accelerate DDL operations, such as adding indexes. If DDL operations involving large objects exist in your application, it is highly recommended to prepare additional SSD disk space for TiDB (100 GB or more). For detailed configuration instructions, see <a href="https://docs.pingcap.com/tidb/dev/check-before-deployment#set-temporary-spaces-for-tidb-instances-recommended">Set a temporary space for a TiDB instance</a></li></ul></td>
+    <td>Lower than 90%</td>
+  </tr>
+  <tr>
+    <td>PD</td>
+    <td>At least 20 GB for the data disk and for the log disk, respectively</td>
+    <td>Lower than 90%</td>
+  </tr>
+  <tr>
+    <td>TiKV</td>
+    <td>At least 100 GB for the data disk and for the log disk, respectively</td>
+    <td>Lower than 80%</td>
+  </tr>
+  <tr>
+    <td>TiFlash</td>
+    <td>At least 100 GB for the data disk and at least 30 GB for the log disk, respectively</td>
+    <td>Lower than 80%</td>
+  </tr>
+  <tr>
+    <td>TiUP</td>
+    <td><ul><li>Control machine: No more than 1 GB space is required for deploying a TiDB cluster of a single version. The space required increases if TiDB clusters of multiple versions are deployed.</li><li>Deployment servers (machines where the TiDB components run): TiFlash occupies about 700 MB space and other components (such as PD, TiDB, and TiKV) occupy about 200 MB space respectively. During the cluster deployment process, the TiUP cluster requires less than 1 MB of temporary space (<code>/tmp</code> directory) to store temporary files.</li></ul></td>
+    <td>N/A</td>
+  </tr>
+  <tr>
+    <td>Ngmonitoring</td>
+    <td><ul><li>Conprof: 3 x 1 GB x Number of components (each component occupies about 1 GB per day, 3 days in total) + 20 GB reserved space</li><li>Top SQL: 30 x 50 MB x Number of components (each component occupies about 50 MB per day, 30 days in total)</li><li>Conprof and Top SQL share the reserved space</li></ul></td>
+    <td>N/A</td>
+  </tr>
+</tbody>
+</table>
 
 ## Web browser requirements
 

@@ -286,49 +286,254 @@ TiDB v6.0.0 is a DMR, and its version is 6.0.0-DMR.
 
 ### System variables
 
-| Variable name | Change type | Description |
-|:---|:---|:---|
-| `placement_checks` | Deleted | Controls whether the DDL statement validates the placement rules specified by [Placement Rules in SQL](/placement-rules-in-sql.md). Replaced by `tidb_placement_mode`. |
-| `tidb_enable_alter_placement` | Deleted | Controls whether to enable [placement rules in SQL](/placement-rules-in-sql.md). |
-| `tidb_mem_quota_hashjoin`<br/>`tidb_mem_quota_indexlookupjoin`<br/>`tidb_mem_quota_indexlookupreader` <br/>`tidb_mem_quota_mergejoin`<br/>`tidb_mem_quota_sort`<br/>`tidb_mem_quota_topn` | Deleted | Since v5.0, these variables have been replaced by `tidb_mem_quota_query` and removed from the [system variables](/system-variables.md) document. To ensure compatibility, these variables were kept in source code. Since TiDB 6.0.0, these variables are removed from the code, too. |
-| [`tidb_enable_mutation_checker`](/system-variables.md#tidb_enable_mutation_checker-new-in-v600) | Newly added | Controls whether to enable the mutation checker. The default value is `ON`. For existing clusters that upgrade from versions earlier than v6.0.0, the mutation checker is disabled by default. |
-| [`tidb_ignore_prepared_cache_close_stmt`](/system-variables.md#tidb_ignore_prepared_cache_close_stmt-new-in-v600) | Newly added | Controls whether to ignore the command that closes Prepared Statement. The default value is `OFF`. |
-| [`tidb_mem_quota_binding_cache`](/system-variables.md#tidb_mem_quota_binding_cache-new-in-v600) | Newly added | Sets the memory usage threshold for the cache holding `binding`. The default value is `67108864` (64 MiB). |
-| [`tidb_placement_mode`](/system-variables.md#tidb_placement_mode-new-in-v600) | Newly added | Controls whether DDL statements ignore the placement rules specified by [Placement Rules in SQL](/placement-rules-in-sql.md). The default value is `strict`, which means that DDL statements do not ignore placement rules. |
-| [`tidb_rc_read_check_ts`](/system-variables.md#tidb_rc_read_check_ts-new-in-v600) | Newly added | <ul><li> Optimizes read statement latency within a transaction. If read/write conflicts are more severe, turning this variable on will add additional overhead and latency, causing regressions in performance. The default value is `off`.</li><li> This variable is not yet compatible with [replica-read](/system-variables.md#tidb_replica_read-new-in-v40). If a read request has `tidb_rc_read_check_ts` on, it might not be able to use replica-read. Do not turn on both variables at the same time.</li></ul> |
-| [`tidb_sysdate_is_now`](/system-variables.md#tidb_sysdate_is_now-new-in-v600) | Newly added | Controls whether the `SYSDATE` function can be replaced by the `NOW` function. This configuration item has the same effect as the MySQL option [`sysdate-is-now`](https://dev.mysql.com/doc/refman/8.0/en/server-options.html#option_mysqld_sysdate-is-now). The default value is `OFF`. |
-| [`tidb_table_cache_lease`](/system-variables.md#tidb_table_cache_lease-new-in-v600) | Newly added | Controls the lease time of [table cache](/cached-tables.md), in seconds. The default value is `3`. |
-| [`tidb_top_sql_max_meta_count`](/system-variables.md#tidb_top_sql_max_meta_count-new-in-v600) | Newly added | Controls the maximum number of SQL statement types collected by [Top SQL](/dashboard/top-sql.md) per minute. The default value is `5000`. |
-| [`tidb_top_sql_max_time_series_count`](/system-variables.md#tidb_top_sql_max_time_series_count-new-in-v600) | Newly added | Controls how many SQL statements that contribute the most to the load (that is, top N) can be recorded by [Top SQL](/dashboard/top-sql.md) per minute. The default value is `100`. |
-| [`tidb_txn_assertion_level`](/system-variables.md#tidb_txn_assertion_level-new-in-v600) | Newly added | Controls the assertion level. The assertion is a consistency check between data and indexes, which checks whether a key being written exists in the transaction commit process. By default, the check enables most of the check items, with almost no impact on performance. For existing clusters that upgrade from versions earlier than v6.0.0, the check is disabled by default. |
+<table>
+<thead>
+  <tr>
+    <th>Variable name</th>
+    <th>Change type</th>
+    <th>Description</th>
+  </tr>
+</thead>
+<tbody>
+  <tr>
+    <td><code>placement_checks</code></td>
+    <td>Deleted</td>
+    <td>Controls whether the DDL statement validates the placement rules specified by <a href="https://docs.pingcap.com/tidb/dev/placement-rules-in-sql">Placement Rules in SQL</a>. Replaced by <code>tidb_placement_mode</code>.</td>
+  </tr>
+  <tr>
+    <td><code>tidb_enable_alter_placement</code></td>
+    <td>Deleted</td>
+    <td>Controls whether to enable <a href="https://docs.pingcap.com/tidb/dev/placement-rules-in-sql">placement rules in SQL</a>.</td>
+  </tr>
+  <tr>
+    <td>
+      <code>tidb_mem_quota_hashjoin</code><br/>
+      <code>tidb_mem_quota_indexlookupjoin</code><br/>
+      <code>tidb_mem_quota_indexlookupreader</code><br/>
+      <code>tidb_mem_quota_mergejoin</code><br/>
+      <code>tidb_mem_quota_sort</code><br/>
+      <code>tidb_mem_quota_topn</code>
+    </td>
+    <td>Deleted</td>
+    <td>Since v5.0, these variables have been replaced by <code>tidb_mem_quota_query</code> and removed from the <a href="https://docs.pingcap.com/tidb/dev/system-variables">system variables</a> document. To ensure compatibility, these variables were kept in source code. Since TiDB 6.0.0, these variables are removed from the code, too.</td>
+  </tr>
+  <tr>
+    <td><a href="https://docs.pingcap.com/tidb/dev/system-variables#tidb_enable_mutation_checker-new-in-v600"><code>tidb_enable_mutation_checker</code></a></td>
+    <td>Newly added</td>
+    <td>Controls whether to enable the mutation checker. The default value is <code>ON</code>. For existing clusters that upgrade from versions earlier than v6.0.0, the mutation checker is disabled by default.</td>
+  </tr>
+  <tr>
+    <td><a href="https://docs.pingcap.com/tidb/dev/system-variables#tidb_ignore_prepared_cache_close_stmt-new-in-v600"><code>tidb_ignore_prepared_cache_close_stmt</code></a></td>
+    <td>Newly added</td>
+    <td>Controls whether to ignore the command that closes Prepared Statement. The default value is <code>OFF</code>.</td>
+  </tr>
+  <tr>
+    <td><a href="https://docs.pingcap.com/tidb/dev/system-variables#tidb_mem_quota_binding_cache-new-in-v600"><code>tidb_mem_quota_binding_cache</code></a></td>
+    <td>Newly added</td>
+    <td>Sets the memory usage threshold for the cache holding binding. The default value is <code>67108864</code> (64 MiB).</td>
+  </tr>
+  <tr>
+    <td><a href="https://docs.pingcap.com/tidb/dev/system-variables#tidb_placement_mode-new-in-v600"><code>tidb_placement_mode</code></a></td>
+    <td>Newly added</td>
+    <td>Controls whether DDL statements ignore the placement rules specified by <a href="https://docs.pingcap.com/tidb/dev/placement-rules-in-sql">Placement Rules in SQL</a>. The default value is <code>strict</code>, which means that DDL statements do not ignore placement rules.</td>
+  </tr>
+  <tr>
+    <td><a href="https://docs.pingcap.com/tidb/dev/system-variables#tidb_rc_read_check_ts-new-in-v600"><code>tidb_rc_read_check_ts</code></a></td>
+    <td>Newly added</td>
+    <td>
+      <ul>
+        <li>Optimizes read statement latency within a transaction. If read/write conflicts are more severe, turning this variable on will add additional overhead and latency, causing regressions in performance. The default value is <code>off</code>.</li>
+        <li>This variable is not yet compatible with <a href="https://docs.pingcap.com/tidb/dev/system-variables#tidb_replica_read-new-in-v40">replica-read</a>. If a read request has <code>tidb_rc_read_check_ts</code> on, it might not be able to use replica-read. Do not turn on both variables at the same time.</li>
+      </ul>
+    </td>
+  </tr>
+  <tr>
+    <td><a href="https://docs.pingcap.com/tidb/dev/system-variables#tidb_sysdate_is_now-new-in-v600"><code>tidb_sysdate_is_now</code></a></td>
+    <td>Newly added</td>
+    <td>Controls whether the <code>SYSDATE</code> function can be replaced by the <code>NOW</code> function. This configuration item has the same effect as the MySQL option <a href="https://dev.mysql.com/doc/refman/8.0/en/server-options.html#option_mysqld_sysdate-is-now"><code>sysdate-is-now</code></a>. The default value is <code>OFF</code>.</td>
+  </tr>
+  <tr>
+    <td><a href="https://docs.pingcap.com/tidb/dev/system-variables#tidb_table_cache_lease-new-in-v600"><code>tidb_table_cache_lease</code></a></td>
+    <td>Newly added</td>
+    <td>Controls the lease time of <a href="https://docs.pingcap.com/tidb/dev/cached-tables">table cache</a>, in seconds. The default value is <code>3</code>.</td>
+  </tr>
+  <tr>
+    <td><a href="https://docs.pingcap.com/tidb/dev/system-variables#tidb_top_sql_max_meta_count-new-in-v600"><code>tidb_top_sql_max_meta_count</code></a></td>
+    <td>Newly added</td>
+    <td>Controls the maximum number of SQL statement types collected by <a href="https://docs.pingcap.com/tidb/dev/top-sql">Top SQL</a> per minute. The default value is <code>5000</code>.</td>
+  </tr>
+  <tr>
+    <td><a href="https://docs.pingcap.com/tidb/dev/system-variables#tidb_top_sql_max_time_series_count-new-in-v600"><code>tidb_top_sql_max_time_series_count</code></a></td>
+    <td>Newly added</td>
+    <td>Controls how many SQL statements that contribute the most to the load (that is, top N) can be recorded by <a href="https://docs.pingcap.com/tidb/dev/top-sql">Top SQL</a> per minute. The default value is <code>100</code>.</td>
+  </tr>
+  <tr>
+    <td><a href="https://docs.pingcap.com/tidb/dev/system-variables#tidb_txn_assertion_level-new-in-v600"><code>tidb_txn_assertion_level</code></a></td>
+    <td>Newly added</td>
+    <td>Controls the assertion level. The assertion is a consistency check between data and indexes, which checks whether a key being written exists in the transaction commit process. By default, the check enables most of the check items, with almost no impact on performance. For existing clusters that upgrade from versions earlier than v6.0.0, the check is disabled by default.</td>
+  </tr>
+</tbody>
+</table>
 
 ### Configuration file parameters
 
-| Configuration file | Configuration | Change type | Description |
-|:---|:---|:---|:---|
-| TiDB | `stmt-summary.enable` <br/> `stmt-summary.enable-internal-query` <br/> `stmt-summary.history-size` <br/> `stmt-summary.max-sql-length` <br/> `stmt-summary.max-stmt-count` <br/> `stmt-summary.refresh-interval` | Deleted | Configuration related to the [statement summary tables](/statement-summary-tables.md). All these configuration items are removed. You need to use SQL variables to control the statement summary tables. |
-| TiDB | [`new_collations_enabled_on_first_bootstrap`](/tidb-configuration-file.md#new_collations_enabled_on_first_bootstrap) | Modified | Controls whether to enable support for the new collation. Since v6.0, the default value is changed from `false` to `true`. This configuration item only takes effect when the cluster is initialized for the first time. After the first bootstrap, you cannot enable or disable the new collation framework using this configuration item. |
-| TiKV | [`backup.num-threads`](/tikv-configuration-file.md#num-threads-1) | Modified | The value range is modified to `[1, CPU]`.  |
-| TiKV | [`raftstore.apply-max-batch-size`](/tikv-configuration-file.md#apply-max-batch-size) | Modified | The maximum value is changed to `10240`. |
-| TiKV | [`raftstore.raft-max-size-per-msg`](/tikv-configuration-file.md#raft-max-size-per-msg) | Modified | <ul><li>The minimum value is changed from `0` to larger than `0`.</li><li>The maximum value is set to `3GB`.</li><li>The unit is changed from `MB` to <code>KB\|MB\|GB</code>.</li></ul> |
-| TiKV | [`raftstore.store-max-batch-size`](/tikv-configuration-file.md#store-max-batch-size) | Modified | The maximum value is set to `10240`. |
-| TiKV | [`readpool.unified.max-thread-count`](/tikv-configuration-file.md#max-thread-count) | Modified | The adjustable range is changed to `[min-thread-count, MAX(4, CPU)]`. |
-| TiKV | [`rocksdb.enable-pipelined-write`](/tikv-configuration-file.md#enable-pipelined-write) | Modified | The default value is changed from `true` to `false`. When this configuration is enabled, the previous Pipelined Write is used. When this configuration is disabled, the new Pipelined Commit mechanism is used. |
-| TiKV | [`rocksdb.max-background-flushes`](/tikv-configuration-file.md#max-background-flushes) | Modified | <ul><li>When the number of CPU cores is 10, the default value is `3`.</li><li>When the number of CPU cores is 8, the default value is `2`.</li></ul> |
-| TiKV | [`rocksdb.max-background-jobs`](/tikv-configuration-file.md#max-background-jobs) | Modified | <ul><li>When the number of CPU cores is 10, the default value is `9`.</li><li>When the number of CPU cores is 8, the default value is `7`.</li></ul> |
-| TiFlash | [`profiles.default.dt_enable_logical_split`](/tiflash/tiflash-configuration.md#configure-the-tiflashtoml-file) | Modified | Determines whether the segment of DeltaTree Storage Engine uses logical split. The default value is changed from `true` to `false`. |
-| TiFlash | [`profiles.default.enable_elastic_threadpool`](/tiflash/tiflash-configuration.md#configure-the-tiflashtoml-file) | Modified | Controls whether to enable the elastic thread pool. The default value is changed from `false` to `true`. |
-| TiFlash | [`storage.format_version`](/tiflash/tiflash-configuration.md#configure-the-tiflashtoml-file) | Modified | Controls the data validation feature of TiFlash. The default value is changed from `2` to `3`.<br/>When `format_version` is set to `3`, consistency check is performed on the read operations for all TiFlash data to avoid incorrect read due to hardware failure.<br/>Note that the new format version cannot be downgraded in place to versions earlier than v5.4. |
-| TiDB | [`pessimistic-txn.pessimistic-auto-commit`](/tidb-configuration-file.md#pessimistic-auto-commit-new-in-v600) | Newly added | Determines the transaction mode that the auto-commit transaction uses when the pessimistic transaction mode is globally enabled (`tidb_txn_mode='pessimistic'`). |
-| TiKV | [`pessimistic-txn.in-memory`](/tikv-configuration-file.md#in-memory-new-in-v600) | Newly added | Controls whether to enable the in-memory pessimistic lock. With this feature enabled, pessimistic transactions store pessimistic locks in TiKV memory as much as possible, instead of writing pessimistic locks to disks or replicating to other replicas. This improves the performance of pessimistic transactions; however, there is a low probability that a pessimistic lock will be lost, which might cause the pessimistic transaction to fail to commit. The default value is `true`. |
-| TiKV | [`quota`](/tikv-configuration-file.md#quota) | Newly added | Add configuration items related to Quota Limiter, which limit the resources occupied by frontend requests. Quota Limiter is an experimental feature and is disabled by default. New quota-related configuration items are `foreground-cpu-time`, `foreground-write-bandwidth`, `foreground-read-bandwidth`, and `max-delay-duration`. |
-| TiFlash | [`profiles.default.dt_compression_method`](/tiflash/tiflash-configuration.md#configure-the-tiflashtoml-file) | Newly added | Specifies the compression algorithm for TiFlash. The optional values are `LZ4`, `zstd` and `LZ4HC`, all case insensitive. The default value is `LZ4`. |
-| TiFlash | [`profiles.default.dt_compression_level`](/tiflash/tiflash-configuration.md#configure-the-tiflashtoml-file) | Newly added | Specifies the compression level of TiFlash. The default value is `1`. |
-| DM | [`loaders.<name>.import-mode`](/dm/task-configuration-file-full.md#task-configuration-file-template-advanced) | Newly added | The import mode during the full import phase. Since v6.0, DM uses TiDB Lightning's TiDB-backend mode to import data during the full import phase; the previous Loader component is no longer used. This is an internal replacement and has no obvious impact on daily operations.<br/>The default value is set to `sql`, which means using `tidb-backend` mode. In some rare cases, `tidb-backend` might not be fully compatible. You can fall back to Loader mode by configuring this parameter to `loader`. |
-| DM | [`loaders.<name>.on-duplicate`](/dm/task-configuration-file-full.md#task-configuration-file-template-advanced) | Newly added | Specifies the methods to resolve conflicts during the full import phase. The default value is `replace`, which means using the new data to replace the existing data. |
-| TiCDC | [`dial-timeout`](/ticdc/ticdc-sink-to-kafka.md#configure-sink-uri-for-kafka) | Newly added | The timeout in establishing a connection with the downstream Kafka. The default value is `10s`. |
-| TiCDC | [`read-timeout`](/ticdc/ticdc-sink-to-kafka.md#configure-sink-uri-for-kafka) | Newly added | The timeout in getting a response returned by the downstream Kafka. The default value is `10s`. |
-| TiCDC | [`write-timeout`](/ticdc/ticdc-sink-to-kafka.md#configure-sink-uri-for-kafka) | Newly added | The timeout in sending a request to the downstream Kafka. The default value is `10s`. |
+<table>
+<thead>
+  <tr>
+    <th>Configuration file</th>
+    <th>Configuration</th>
+    <th>Change type</th>
+    <th>Description</th>
+  </tr>
+</thead>
+<tbody>
+  <tr>
+    <td>TiDB</td>
+    <td>
+      <code>stmt-summary.enable</code><br/>
+      <code>stmt-summary.enable-internal-query</code><br/>
+      <code>stmt-summary.history-size</code><br/>
+      <code>stmt-summary.max-sql-length</code><br/>
+      <code>stmt-summary.max-stmt-count</code><br/>
+      <code>stmt-summary.refresh-interval</code>
+    </td>
+    <td>Deleted</td>
+    <td>Configuration related to the <a href="https://docs.pingcap.com/tidb/dev/statement-summary-tables">statement summary tables</a>. All these configuration items are removed. You need to use SQL variables to control the statement summary tables.</td>
+  </tr>
+  <tr>
+    <td>TiDB</td>
+    <td><a href="https://docs.pingcap.com/tidb/dev/tidb-configuration-file#new_collations_enabled_on_first_bootstrap"><code>new_collations_enabled_on_first_bootstrap</code></a></td>
+    <td>Modified</td>
+    <td>Controls whether to enable support for the new collation. Since v6.0, the default value is changed from <code>false</code> to <code>true</code>. This configuration item only takes effect when the cluster is initialized for the first time. After the first bootstrap, you cannot enable or disable the new collation framework using this configuration item.</td>
+  </tr>
+  <tr>
+    <td>TiKV</td>
+    <td><a href="https://docs.pingcap.com/tidb/dev/tikv-configuration-file#num-threads-1"><code>backup.num-threads</code></a></td>
+    <td>Modified</td>
+    <td>The value range is modified to <code>[1, CPU]</code>.</td>
+  </tr>
+  <tr>
+    <td>TiKV</td>
+    <td><a href="https://docs.pingcap.com/tidb/dev/tikv-configuration-file#apply-max-batch-size"><code>raftstore.apply-max-batch-size</code></a></td>
+    <td>Modified</td>
+    <td>The maximum value is changed to <code>10240</code>.</td>
+  </tr>
+  <tr>
+    <td>TiKV</td>
+    <td><a href="https://docs.pingcap.com/tidb/dev/tikv-configuration-file#raft-max-size-per-msg"><code>raftstore.raft-max-size-per-msg</code></a></td>
+    <td>Modified</td>
+    <td>The minimum value is changed from <code>0</code> to larger than <code>0</code>.<br/>The maximum value is set to <code>3GB</code>.<br/>The unit is changed from <code>MB</code> to <code>KB|MB|GB</code>.</td>
+  </tr>
+  <tr>
+    <td>TiKV</td>
+    <td><a href="https://docs.pingcap.com/tidb/dev/tikv-configuration-file#store-max-batch-size"><code>raftstore.store-max-batch-size</code></a></td>
+    <td>Modified</td>
+    <td>The maximum value is set to <code>10240</code>.</td>
+  </tr>
+  <tr>
+    <td>TiKV</td>
+    <td><a href="https://docs.pingcap.com/tidb/dev/tikv-configuration-file#max-thread-count"><code>readpool.unified.max-thread-count</code></a></td>
+    <td>Modified</td>
+    <td>The adjustable range is changed to <code>[min-thread-count, MAX(4, CPU)]</code>.</td>
+  </tr>
+  <tr>
+    <td>TiKV</td>
+    <td><a href="https://docs.pingcap.com/tidb/dev/tikv-configuration-file#enable-pipelined-write"><code>rocksdb.enable-pipelined-write</code></a></td>
+    <td>Modified</td>
+    <td>The default value is changed from <code>true</code> to <code>false</code>. When this configuration is enabled, the previous Pipelined Write is used. When this configuration is disabled, the new Pipelined Commit mechanism is used.</td>
+  </tr>
+  <tr>
+    <td>TiKV</td>
+    <td><a href="https://docs.pingcap.com/tidb/dev/tikv-configuration-file#max-background-flushes"><code>rocksdb.max-background-flushes</code></a></td>
+    <td>Modified</td>
+    <td>When the number of CPU cores is 10, the default value is <code>3</code>.<br/>When the number of CPU cores is 8, the default value is <code>2</code>.</td>
+  </tr>
+  <tr>
+    <td>TiKV</td>
+    <td><a href="https://docs.pingcap.com/tidb/dev/tikv-configuration-file#max-background-jobs"><code>rocksdb.max-background-jobs</code></a></td>
+    <td>Modified</td>
+    <td>When the number of CPU cores is 10, the default value is <code>9</code>.<br/>When the number of CPU cores is 8, the default value is <code>7</code>.</td>
+  </tr>
+  <tr>
+    <td>TiFlash</td>
+    <td><a href="https://docs.pingcap.com/tidb/dev/tiflash-configuration#configure-the-tiflashtoml-file"><code>profiles.default.dt_enable_logical_split</code></a></td>
+    <td>Modified</td>
+    <td>Determines whether the segment of DeltaTree Storage Engine uses logical split. The default value is changed from <code>true</code> to <code>false</code>.</td>
+  </tr>
+  <tr>
+    <td>TiFlash</td>
+    <td><a href="https://docs.pingcap.com/tidb/dev/tiflash-configuration#configure-the-tiflashtoml-file"><code>profiles.default.enable_elastic_threadpool</code></a></td>
+    <td>Modified</td>
+    <td>Controls whether to enable the elastic thread pool. The default value is changed from <code>false</code> to <code>true</code>.</td>
+  </tr>
+  <tr>
+    <td>TiFlash</td>
+    <td><a href="https://docs.pingcap.com/tidb/dev/tiflash-configuration#configure-the-tiflashtoml-file"><code>storage.format_version</code></a></td>
+    <td>Modified</td>
+    <td>Controls the data validation feature of TiFlash. The default value is changed from <code>2</code> to <code>3</code>.<br/>When <code>format_version</code> is set to <code>3</code>, consistency check is performed on the read operations for all TiFlash data to avoid incorrect read due to hardware failure.<br/>Note that the new format version cannot be downgraded in place to versions earlier than v5.4.</td>
+  </tr>
+  <tr>
+    <td>TiDB</td>
+    <td><a href="https://docs.pingcap.com/tidb/dev/tidb-configuration-file#pessimistic-auto-commit-new-in-v600"><code>pessimistic-txn.pessimistic-auto-commit</code></a></td>
+    <td>Newly added</td>
+    <td>Determines the transaction mode that the auto-commit transaction uses when the pessimistic transaction mode is globally enabled (<code>tidb_txn_mode='pessimistic'</code>).</td>
+  </tr>
+  <tr>
+    <td>TiKV</td>
+    <td><a href="https://docs.pingcap.com/tidb/dev/tikv-configuration-file#in-memory-new-in-v600"><code>pessimistic-txn.in-memory</code></a></td>
+    <td>Newly added</td>
+    <td>Controls whether to enable the in-memory pessimistic lock. With this feature enabled, pessimistic transactions store pessimistic locks in TiKV memory as much as possible, instead of writing pessimistic locks to disks or replicating to other replicas. This improves the performance of pessimistic transactions; however, there is a low probability that a pessimistic lock will be lost, which might cause the pessimistic transaction to fail to commit. The default value is <code>true</code>.</td>
+  </tr>
+  <tr>
+    <td>TiKV</td>
+    <td><a href="https://docs.pingcap.com/tidb/dev/tikv-configuration-file#quota"><code>quota</code></a></td>
+    <td>Newly added</td>
+    <td>Add configuration items related to Quota Limiter, which limit the resources occupied by frontend requests. Quota Limiter is an experimental feature and is disabled by default. New quota-related configuration items are <code>foreground-cpu-time</code>, <code>foreground-write-bandwidth</code>, <code>foreground-read-bandwidth</code>, and <code>max-delay-duration</code>.</td>
+  </tr>
+  <tr>
+    <td>TiFlash</td>
+    <td><a href="https://docs.pingcap.com/tidb/dev/tiflash-configuration#configure-the-tiflashtoml-file"><code>profiles.default.dt_compression_method</code></a></td>
+    <td>Newly added</td>
+    <td>Specifies the compression algorithm for TiFlash. The optional values are <code>LZ4</code>, <code>zstd</code> and <code>LZ4HC</code>, all case insensitive. The default value is <code>LZ4</code>.</td>
+  </tr>
+  <tr>
+    <td>TiFlash</td>
+    <td><a href="https://docs.pingcap.com/tidb/dev/tiflash-configuration#configure-the-tiflashtoml-file"><code>profiles.default.dt_compression_level</code></a></td>
+    <td>Newly added</td>
+    <td>Specifies the compression level of TiFlash. The default value is <code>1</code>.</td>
+  </tr>
+  <tr>
+    <td>DM</td>
+    <td><a href="https://docs.pingcap.com/tidb/dev/task-configuration-file-full#task-configuration-file-template-advanced"><code>loaders.&lt;name&gt;.import-mode</code></a></td>
+    <td>Newly added</td>
+    <td>The import mode during the full import phase. Since v6.0, DM uses TiDB Lightning's TiDB-backend mode to import data during the full import phase; the previous Loader component is no longer used. This is an internal replacement and has no obvious impact on daily operations.<br/>The default value is set to <code>sql</code>, which means using tidb-backend mode. In some rare cases, tidb-backend might not be fully compatible. You can fall back to Loader mode by configuring this parameter to <code>loader</code>.</td>
+  </tr>
+  <tr>
+    <td>DM</td>
+    <td><a href="https://docs.pingcap.com/tidb/dev/task-configuration-file-full#task-configuration-file-template-advanced"><code>loaders.&lt;name&gt;.on-duplicate</code></a></td>
+    <td>Newly added</td>
+    <td>Specifies the methods to resolve conflicts during the full import phase. The default value is <code>replace</code>, which means using the new data to replace the existing data.</td>
+  </tr>
+  <tr>
+    <td>TiCDC</td>
+    <td><a href="https://docs.pingcap.com/tidb/dev/ticdc-sink-to-kafka#configure-sink-uri-for-kafka"><code>dial-timeout</code></a></td>
+    <td>Newly added</td>
+    <td>The timeout in establishing a connection with the downstream Kafka. The default value is <code>10s</code>.</td>
+  </tr>
+  <tr>
+    <td>TiCDC</td>
+    <td><a href="https://docs.pingcap.com/tidb/dev/ticdc-sink-to-kafka#configure-sink-uri-for-kafka"><code>read-timeout</code></a></td>
+    <td>Newly added</td>
+    <td>The timeout in getting a response returned by the downstream Kafka. The default value is <code>10s</code>.</td>
+  </tr>
+  <tr>
+    <td>TiCDC</td>
+    <td><a href="https://docs.pingcap.com/tidb/dev/ticdc-sink-to-kafka#configure-sink-uri-for-kafka"><code>write-timeout</code></a></td>
+    <td>Newly added</td>
+    <td>The timeout in sending a request to the downstream Kafka. The default value is <code>10s</code>.</td>
+  </tr>
+</tbody>
+</table>
 
 ### Others
 

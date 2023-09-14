@@ -172,7 +172,9 @@ In 6.1.0, the key new features or improvements are as follows:
     * Data is scoped according to different usage and supports co-existence of a single TiDB cluster, Transactional KV, RawKV applications.
 
   <Warning>
+
   Due to significant changes in the underlying storage format, after enabling API V2, you cannot roll back a TiKV cluster to a version earlier than v6.1.0. Downgrading TiKV might result in data corruption.
+
   </Warning>
 
     [User document](/tikv-configuration-file.md#api-version-new-in-v610), [#11745](https://github.com/tikv/tikv/issues/11745)
