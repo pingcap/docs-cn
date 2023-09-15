@@ -360,7 +360,7 @@ SET GLOBAL tidb_gc_life_time = '10m';
 | --csv-delimiter | csv 文件中字符类型变量的定界符 | '"' |
 | --csv-separator | csv 文件中各值的分隔符，如果数据中可能有逗号，建议源文件导出时分隔符使用非常见组合字符| ','|
 | --csv-null-value | csv 文件空值的表示 | "\\N" |
-| --csv-line-terminator | csv 文件中表示行尾的换行符。将数据导出为 CSV 文件时，可以通过该参数传入所需的换行符。该参数支持 "\r\n" 和 "\n"，默认值为 "\r\n"，和历史版本保持一致。由于 bash 中不同的 quote 会应用不同的转义规则，如需指定 LF 为换行符，可使用类似语法 `--csv-line-terminator $'\n'`。| "\r\n" |
+| --csv-line-terminator | csv 文件中表示行尾的换行符。将数据导出为 CSV 文件时，可以通过该参数传入所需的换行符。该参数支持 "\r\n" 和 "\n"，默认值为 "\r\n"，和历史版本保持一致。由于 bash 中不同的 quote 会应用不同的转义规则，如需指定 LF 为换行符，可使用类似 `--csv-line-terminator $'\n'` 的语法。| "\r\n" |
 | --escape-backslash | 使用反斜杠 (`\`) 来转义导出文件中的特殊字符 | true |
 | --output-filename-template | 以 [golang template](https://golang.org/pkg/text/template/#hdr-Arguments) 格式表示的数据文件名格式 <br/> 支持 `{{.DB}}`、`{{.Table}}`、`{{.Index}}` 三个参数 <br/> 分别表示数据文件的库名、表名、分块 ID | '{{.DB}}.{{.Table}}.{{.Index}}' |
 | --status-addr | Dumpling 的服务地址，包含了 Prometheus 拉取 metrics 信息及 pprof 调试的地址 | ":8281" |
