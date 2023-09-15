@@ -229,7 +229,11 @@ TiDB 版本：7.4.0
     - 支持导入压缩后的 CSV 和 SQL 文件，支持的压缩格式包括 `.gzip`、`.gz`、`.zstd`、`.zst` 和 `.snappy` 。`
 ·
     更多信息，请参考[用户文档](sql-statements/sql-statement-import-into.md)。
+Dumpling 在将数据导出为 CSV 文件时支持用户自定义换行符 [#issue](https:// ) @[GMHDBJD](https://github.com/GMHDBJD) **tw@hfxsd** <!--1571-->
 
+在 v7.4.0 之前，Dumpling 导出数据为 CSV 文件时，换行符默认为 "\r\n"，无法被一些只能解析 "\n" 换行符的下游系统解析该 CSV 文件，或者要通过第三方工具转换后才能解析。在 v7.4.0 引入了新的参数 `--csv-line-terminator`，你将数据导出为 CSV 文件时，可以通过该参数传入所需的换行符。该参数支持 "\r\n" 和 "\n" ，默认值为 "\r\n" ，即和历史版本保持一致。 
+
+    更多信息，请参考[用户文档](链接)。
 * TiCDC 支持同步数据至 Pulsar [#9413](https://github.com/pingcap/tiflow/issues/9413) @[yumchina](https://github.com/yumchina) @[asddongmen](https://github.com/asddongmen) **tw@hfxsd** <!--1552-->
 
     TiCDC 现在支持与 Pulsar 无缝集成。Pulsar 是一款云原生的分布式消息流平台，它可以提升您的实时数据流体验。借助这一新功能，TiCDC 赋予你轻松捕获和同步 TiDB 变更数据到 Pulsar 的能力，为数据处理和分析功能提供新的可能性。你可以开发自己的消费应用程序，从 Pulsar 中读取并处理新生成的变更数据，以满足特定的业务需求。TiCDC 目前支持以 `canal-json` 格式同步变更数据。
