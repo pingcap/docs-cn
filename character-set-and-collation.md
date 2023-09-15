@@ -100,11 +100,13 @@ SHOW COLLATION;
 | utf8_bin           | utf8    |   83 | Yes     | Yes      |       1 |
 | utf8_general_ci    | utf8    |   33 |         | Yes      |       1 |
 | utf8_unicode_ci    | utf8    |  192 |         | Yes      |       1 |
+| utf8mb4_0900_ai_ci | utf8mb4 |  255 |         | Yes      |       1 |
+| utf8mb4_0900_bin   | utf8mb4 |  309 |         | Yes      |       1 |
 | utf8mb4_bin        | utf8mb4 |   46 | Yes     | Yes      |       1 |
 | utf8mb4_general_ci | utf8mb4 |   45 |         | Yes      |       1 |
 | utf8mb4_unicode_ci | utf8mb4 |  224 |         | Yes      |       1 |
 +--------------------+---------+------+---------+----------+---------+
-11 rows in set (0.00 sec)
+13 rows in set (0.00 sec)
 ```
 
 > **警告：**
@@ -113,7 +115,7 @@ SHOW COLLATION;
 
 > **注意：**
 >
-> TiDB 中的默认排序规则（后缀为 `_bin` 的二进制排序规则）与 [MySQL 中的默认排序规则](https://dev.mysql.com/doc/refman/8.0/en/charset-charsets.html)不同，后者通常是一般排序规则，后缀为 `_general_ci`。当用户指定了显式字符集，但依赖于待选的隐式默认排序规则时，这个差异可能导致兼容性问题。
+> TiDB 中的默认排序规则（后缀为 `_bin` 的二进制排序规则）与 [MySQL 中的默认排序规则](https://dev.mysql.com/doc/refman/8.0/en/charset-charsets.html)不同，后者通常是一般排序规则，后缀为 `_general_ci` 或 `_ai_ci`。当用户指定了显式字符集，但依赖于待选的隐式默认排序规则时，这个差异可能导致兼容性问题。
 
 利用以下的语句可以查看字符集对应的排序规则（以下是[新的排序规则框架](#新框架下的排序规则支持)）下的结果：
 
@@ -127,11 +129,14 @@ SHOW COLLATION WHERE Charset = 'utf8mb4';
 +--------------------+---------+------+---------+----------+---------+
 | Collation          | Charset | Id   | Default | Compiled | Sortlen |
 +--------------------+---------+------+---------+----------+---------+
+| utf8mb4_0900_ai_ci | utf8mb4 |  255 |         | Yes      |       1 |
+| utf8mb4_0900_bin   | utf8mb4 |  309 |         | Yes      |       1 |
 | utf8mb4_bin        | utf8mb4 |   46 | Yes     | Yes      |       1 |
 | utf8mb4_general_ci | utf8mb4 |   45 |         | Yes      |       1 |
 | utf8mb4_unicode_ci | utf8mb4 |  224 |         | Yes      |       1 |
 +--------------------+---------+------+---------+----------+---------+
-3 rows in set (0.00 sec)
+5 rows in set (0.00 sec)
+
 ```
 
 TiDB 对 GBK 字符集的支持详情见 [GBK](/character-set-gbk.md)。
@@ -330,7 +335,7 @@ CREATE TABLE t1(a int) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
 Query OK, 0 rows affected (0.08 sec)
 ```
 
-如果表的字符集和排序规则没有设置，那么数据库的字符集和排序规则就作为其默认值。
+如果表的字符集和排序规则没有设置，那么数据库的字符集和排序规则就作为其默认值。在仅指定字符集为 `utf8mb4`，但未设置排序规则时，排序规则为变量 [`default_collation_for_utf8mb4`](/system-variables.md#default_collation_for_utf8mb4-从-v740-版本开始引入) 指定的值。
 
 ### 列的字符集和排序规则
 
@@ -346,7 +351,7 @@ col_name {ENUM | SET} (val_list)
     [COLLATE collation_name]
 ```
 
-如果列的字符集和排序规则没有设置，那么表的字符集和排序规则就作为其默认值。
+如果列的字符集和排序规则没有设置，那么表的字符集和排序规则就作为其默认值。在仅指定字符集为 `utf8mb4`，但未设置排序规则时，排序规则为变量 [`default_collation_for_utf8mb4`](/system-variables.md#default_collation_for_utf8mb4-从-v740-版本开始引入) 指定的值。
 
 ### 字符串的字符集和排序规则
 
@@ -501,9 +506,9 @@ SELECT VARIABLE_VALUE FROM mysql.tidb WHERE VARIABLE_NAME='new_collation_enabled
 1 row in set (0.00 sec)
 ```
 
-在新的排序规则框架下，TiDB 能够支持 `utf8_general_ci`、`utf8mb4_general_ci`、`utf8_unicode_ci`、`utf8mb4_unicode_ci`、`gbk_chinese_ci` 和 `gbk_bin` 这几种排序规则，与 MySQL 兼容。
+在新的排序规则框架下，TiDB 能够支持 `utf8_general_ci`、`utf8mb4_general_ci`、`utf8_unicode_ci`、`utf8mb4_unicode_ci`、`utf8mb4_0900_bin`、`utf8mb4_0900_ai_ci`、`gbk_chinese_ci` 和 `gbk_bin` 这几种排序规则，与 MySQL 兼容。
 
-使用 `utf8_general_ci`、`utf8mb4_general_ci`、`utf8_unicode_ci` 、 `utf8mb4_unicode_ci` 和 `gbk_chinese_ci` 中任一种时，字符串之间的比较是大小写不敏感 (case-insensitive) 和口音不敏感 (accent-insensitive) 的。同时，TiDB 还修正了排序规则的 `PADDING` 行为：
+使用 `utf8_general_ci`、`utf8mb4_general_ci`、`utf8_unicode_ci` 、 `utf8mb4_unicode_ci`、 `utf8mb4_0900_ai_ci` 和 `gbk_chinese_ci` 中任一种时，字符串之间的比较是大小写不敏感 (case-insensitive) 和口音不敏感 (accent-insensitive) 的。同时，TiDB 还修正了排序规则的 `PADDING` 行为：
 
 {{< copyable "sql" >}}
 
