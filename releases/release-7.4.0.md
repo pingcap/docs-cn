@@ -229,9 +229,10 @@ TiDB 版本：7.4.0
     - 支持导入压缩后的 CSV 和 SQL 文件，支持的压缩格式包括 `.gzip`、`.gz`、`.zstd`、`.zst` 和 `.snappy` 。`
 ·
     更多信息，请参考[用户文档](sql-statements/sql-statement-import-into.md)。
-Dumpling 在将数据导出为 CSV 文件时支持用户自定义换行符 [#issue](https:// ) @[GMHDBJD](https://github.com/GMHDBJD) **tw@hfxsd** <!--1571-->
+    
+* Dumpling 在将数据导出为 CSV 文件时支持用户自定义换行符 [#issue](https:// ) @[GMHDBJD](https://github.com/GMHDBJD) **tw@hfxsd** <!--1571-->
 
-在 v7.4.0 之前，Dumpling 导出数据为 CSV 文件时，换行符默认为 "\r\n"，无法被一些只能解析 "\n" 换行符的下游系统解析该 CSV 文件，或者要通过第三方工具转换后才能解析。在 v7.4.0 引入了新的参数 `--csv-line-terminator`，你将数据导出为 CSV 文件时，可以通过该参数传入所需的换行符。该参数支持 "\r\n" 和 "\n" ，默认值为 "\r\n" ，即和历史版本保持一致。 
+    在 v7.4.0 之前，Dumpling 导出数据为 CSV 文件时，换行符默认为 "\r\n"，无法被一些只能解析 "\n" 换行符的下游系统解析该 CSV 文件，或者要通过第三方工具转换后才能解析。在 v7.4.0 引入了新的参数 `--csv-line-terminator`，你将数据导出为 CSV 文件时，可以通过该参数传入所需的换行符。该参数支持 "\r\n" 和 "\n" ，默认值为 "\r\n" ，即和历史版本保持一致。 
 
     更多信息，请参考[用户文档](链接)。
 * TiCDC 支持同步数据至 Pulsar [#9413](https://github.com/pingcap/tiflow/issues/9413) @[yumchina](https://github.com/yumchina) @[asddongmen](https://github.com/asddongmen) **tw@hfxsd** <!--1552-->
@@ -275,7 +276,7 @@ Dumpling 在将数据导出为 CSV 文件时支持用户自定义换行符 [#iss
 | 配置文件 | 配置项 | 修改类型 | 描述 |
 | -------- | -------- | -------- | -------- |
 | Import into |SPLIT_FILE | 新增| 对需要导入的大型 CSV 文件切割成多个 256 MiB 大小的 CSV 文件|
-|  | | 新增/删除/修改 | |
+| Dumpling  | `--csv-line-terminator` | 新增 | 你可以通过该参数传入导出数据为 CSV 文件的换行符，支持 "\r\n" 和 "\n"，默认值为 "\r\n"，即和历史版本保持一致。 |
 |  | | 新增/删除/修改 | |
 |  | | 新增/删除/修改 | |
 |  | | 新增/删除/修改 | |
