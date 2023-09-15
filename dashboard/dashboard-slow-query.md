@@ -79,9 +79,7 @@ TiDB Dashboard 提供三种方式查看执行计划：表格、文本和图形�
 - 如果执行计划内容较多，可以下载 txt 格式到本地分析
 - 允许隐藏任意列，并且能够在列选择中进行管理
 
-![可视化执行计划-选择列](/media/dashboard/dashboard-table-plan-columnpicker.png)
-
-
+![表格形态的执行计划-选择列](/media/dashboard/dashboard-table-plan-columnpicker.png)
 #### 图形形态的执行计划
 
 图形形态的执行计划更适合宏观地查看一个复杂 SQL 的执行计划树，并且详细了解每个算子及对应的内容。下图是一个图形形态的执行计划示例：
