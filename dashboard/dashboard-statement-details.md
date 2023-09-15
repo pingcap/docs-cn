@@ -75,31 +75,28 @@ aliases: ['/docs-cn/dev/dashboard/dashboard-statement-details/','/docs-cn/dev/da
 
 ### 执行计划
 
-执行计划可以被三种形态查看：表格、文本和图形。参阅[理解 TiDB 执行计划](/explain-overview.md)文档了解如何解读执行计划。
+TiDB Dashboard 提供三种方式查看执行计划：表格、文本和图形。关于如何解读执行计划，请参考[理解 TiDB 执行计划](/explain-overview.md)。
 
-#### 表格形态的执行计划介绍
+#### 表格形态的执行计划
 
-表格形态的执行计划，更适合了解详细的执行计划详情，快速发现算子指标的异常，并且对比不同算子之间的状态。
-下图为一个表格形态的执行计划展示：
+表格形态的执行计划提供详细的执行计划信息，便于你快速识别算子指标的异常情况，以及对比不同算子的状态。下图是一个表格形态的执行计划示例：
 
-![可视化执行计划](/media/dashboard/dashboard-table-plan.png)
+![表格形态的执行计划](/media/dashboard/dashboard-table-plan.png)
 
-表格形态的展示内容与文本形态相似，但是有更易用的交互：
+表格形态展示的内容与文本形态类似，但具有更易用的交互：
 
-- 列宽可以自由拖拽。
-- 自动截断超过列宽的内容，并提供悬浮窗展示完整信息。
-- 如果执行计划过长，通过 txt 格式下载到本地分析。
-- 支持隐藏任意列，并且能够在列选择中进行管理。
+- 支持自由调整列宽
+- 当内容超出列宽时，支持自动截断并提供悬浮窗展示完整信息
+- 如果执行计划内容较多，可以下载 txt 格式到本地分析
+- 允许隐藏任意列，并且能够在列选择中进行管理
 
-![可视化执行计划-选择列](/media/dashboard/dashboard-table-plan-columnpicker.png)
+![表格形态的执行计划-选择列](/media/dashboard/dashboard-table-plan-columnpicker.png)
 
+#### 图形形态的执行计划
 
-#### 图形形态的执行计划介绍
+图形形态的执行计划更适合宏观地查看一个复杂 SQL 的执行计划树，并且详细了解每个算子及对应的内容。下图是一个图形形态的执行计划示例：
 
-图形形态的执行计划，更适合于了解一个复杂 SQL 的执行计划树宏观的样貌，并且从宏观到微观的了解每一个的算子和对应的内容。
-下图为一个图形形态的执行计划展示：
-
-![可视化执行计划弹窗](/media/dashboard/dashboard-visual-plan-2.png)
+![图形形态的执行计划](/media/dashboard/dashboard-visual-plan-2.png)
 
 - 执行计划的展示顺序是从左到右，从上到下。
 - 上面的节点是父算子，下面的节点是子算子。
@@ -108,7 +105,7 @@ aliases: ['/docs-cn/dev/dashboard/dashboard-statement-details/','/docs-cn/dev/da
 
 点击节点区域，右侧将弹出算子的详细信息。
 
-![可视化执行计划弹窗-侧栏](/media/dashboard/dashboard-visual-plan-popup.png)
+![图形形态的执行计划-侧栏](/media/dashboard/dashboard-visual-plan-popup.png)
 
 ### SQL 执行相关信息
 
