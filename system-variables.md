@@ -4371,7 +4371,7 @@ Query OK, 0 rows affected, 1 warning (0.00 sec)
 >
 > - 一个普通查询通常耗时几毫秒，但偶尔可能会出现某个 TiKV 节点的网络不稳定或 I/O 抖动，导致查询耗时超过 1 秒甚至 10 秒。此时，你可以尝试在查询语句中使用 Optimizer Hint `/*+ SET_VAR(TIKV_CLIENT_READ_TIMEOUT=100) */` 将 TiKV RPC 读请求超时设置为 100 毫秒，这样即使遇到某个 TiKV 节点查询慢，也可以快速超时然后重新发送 RPC 请求给下一个 TiKV Region Peer 所在的 TiKV 节点。由于两个 TiKV 节点同时出现 I/O 抖动的概率较低，所以该查询语句的耗时通常可以预期在几毫秒到 110 毫秒之间。
 > - 不建议将 `tikv_client_read_timeout` 的值设置的太小（例如， 1 毫秒），否则 TiDB 集群在负载压力较大时会很容易导致请求超时，然后重试会进一步增加 TiDB 集群的压力。
-> - 建议使用 Optimizer Hint 为不同类型的查询语句设置不同的超时时间。
+> - 如需为不同类型的查询语句设置不同的超时时间，建议使用 Optimizer Hint。
 
 ### `time_zone`
 
