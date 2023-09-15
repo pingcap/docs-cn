@@ -4364,7 +4364,7 @@ Query OK, 0 rows affected, 1 warning (0.00 sec)
 - 范围：`[0, 2147483647]`
 - 单位：毫秒
 - 该变量用于设置查询语句中 TiDB 发送 TiKV RPC 读请求的超时时间。当 TiDB 集群在网络不稳定或 TiKV 的 I/O 延迟抖动严重的环境下，且用户对查询 SQL 的延迟比较敏感时，可以通过设置 `tikv_client_read_timeout` 调小 TiKV RPC 读请求的超时时间，这样当某个 TiKV 节点出现 I/O 延迟抖动时，TiDB 侧可以快速超时并重新发送 TiKV RPC 请求给下一个 TiKV Region Peer 所在的 TiKV 节点。如果所有 TiKV Region Peer 都请求超时，则会用默认的超时时间（通常是 40 秒）进行新一轮的重试。
-- 你也可以通过 Optimizer Hint `/*+ SET_VAR(TIKV_CLIENT_READ_TIMEOUT=N) */` 来设置查询语句中 TiDB 发送 TiKV RPC 读请求的超时时间。如果同时设置了 Optimizer Hint 和系统变量，则 Optimizer Hint 优先级高。
+- 你也可以在查询语句中使用 Optimizer Hint `/*+ SET_VAR(TIKV_CLIENT_READ_TIMEOUT=N) */` 来设置 TiDB 发送 TiKV RPC 读请求的超时时间。当同时设置了 Optimizer Hint 和该系统变量时，Optimizer Hint 的优先级更高。
 - 默认值 `0` 表示使用默认的超时时间（通常是 40 秒）。
 
 > **注意：**
