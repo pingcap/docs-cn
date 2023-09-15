@@ -355,6 +355,18 @@ TiDB Dashboard 中可以查看当前 [`RESOURCE_GROUPS`](/information-schema/inf
 
 资源管控不影响数据导入导出以及其他同步工具的正常使用，BR、TiDB Lightning、TiCDC 等工具不支持对资源管控相关 DDL 的处理，这些工具的资源消耗也不受资源管控的限制。
 
+## TiFlash Resource Control
+### 原理
+TiFlash 资源管控原理与 TiDB/TiKV 类似，总体思路同样是流控+优先级调度:
+1. 流控：借助 [TiFlash Pipeline Execution Engine](/tiflash/tiflash-pipeline-model.md), 可以更精确地获得不同查询的 CPU 消耗情况，并根据对资源的消耗情况选择是否调度某个查询的 PipelineTask
+2. 优先级调度：在系统资源不足时，多个 resource group 之间 PipelineTask 的调度会根据优先级调度，首先判断 user_priority，其次判断 CPU 使用情况，再结合 RU_PER_SEC 进行判断。例如 rg1 和 rg2 user_proiroty 一样，但是二者的 RU_PER_SEC 比例是 1:2 ，则 rg2 所能使用的 CPU 时间就是 rg1 的两倍
+
+目前 TiFlash 资源管控仅考虑了 CPU 以及 read bytes。3 毫秒的 CPU 使用时间消耗 1 RU, 64KB 的 read_bytes 消耗 1 RU。
+### 如何使用
+下面两个条件都满足时，下发到 TiFlash 的查询就会被资源管控系统管理:
+1. 打开 tidb_enable_resource_control 开关
+2. TiFlash 的 enable_pipeline 开关打开。因为 TiFlash 的资源管控依赖 Pipeline Execution Engine 才能获得查询精确的 CPU 用量，所以 TiFlash 资源管控是基于此实现的
+
 ## 常见问题
 
 1. 如果我暂时不想使用资源组对资源进行管控，是否一定要关闭这个特性？
