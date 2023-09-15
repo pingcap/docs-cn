@@ -64,7 +64,7 @@ aliases: ['/docs-cn/dev/dashboard/dashboard-slow-query/']
 
 ### 执行计划
 
-在慢查询详情页，执行计划可以被三种形态查看：表格、文本和图形。具体执行计划的理解方式，参阅[理解 TiDB 执行计划](/explain-overview.md)。
+执行计划可以被三种形态查看：表格、文本和图形。参阅[理解 TiDB 执行计划](/explain-overview.md)文档了解如何解读执行计划。
 
 #### 表格形态的执行计划介绍
 
@@ -101,6 +101,34 @@ aliases: ['/docs-cn/dev/dashboard/dashboard-slow-query/']
 
 ### SQL 执行相关信息
 
-点击标签页标题可切换显示不同分类的 SQL 执行信息：
+其他关于该 SQL 的基本信息、执行时间、Coprocessor 读取、事务、报错等信息，可点击相应标签页标题切换。
 
 ![显示不同分类执行信息](/media/dashboard/dashboard-slow-queries-detail2-v620.png)
+
+#### 基本信息
+
+包含关于表名、索引名、执行次数、累计耗时等信息。**描述** (Description) 列对各个字段进行了具体描述。
+
+![基本信息](/media/dashboard/dashboard-slow-queries-detail-plans-basic.png)
+
+#### 执行时间
+
+显示执行计划执行的各阶段所耗费时间。
+
+> **注意：**
+>
+> 由于单个 SQL 语句内部可能有并行执行的操作，因此各阶段累加时间可能超出该 SQL 语句的实际执行时间。
+
+![执行时间](/media/dashboard/dashboard-slow-queries-detail-plans-time.png)
+
+#### Coprocessor 读取
+
+显示 Coprocessor 读取的相关信息。
+
+![Coprocessor 读取](/media/dashboard/dashboard-slow-queries-detail-plans-cop-read.png)
+
+#### 事务
+
+显示执行计划与事务相关的信息，比如平均写入 key 个数，最大写入 key 个数等。
+
+![事务](/media/dashboard/dashboard-slow-queries-detail-plans-transaction.png)
