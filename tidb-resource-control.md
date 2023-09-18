@@ -12,6 +12,11 @@ TiDB 资源管控特性提供了两层资源管理能力，包括在 TiDB 层的
 - TiDB 流控：TiDB 流控使用[令牌桶算法](https://en.wikipedia.org/wiki/Token_bucket) 做流控。如果桶内令牌数不够，而且资源组没有指定 `BURSTABLE` 特性，属于该资源组的请求会等待令牌桶回填令牌并重试，重试可能会超时失败。
 - TiKV 调度：你可以为资源组设置绝对优先级 ([`PRIORITY`](/information-schema/information-schema-resource-groups.md#示例))，不同的资源按照 `PRIORITY` 的设置进行调度，`PRIORITY` 高的任务会被优先调度。如果没有设置绝对优先级 (`PRIORITY`)，TiKV 会将资源组的 `RU_PER_SEC` 取值映射成各自资源组读写请求的优先级，并基于各自的优先级在存储层使用优先级队列调度处理请求。
 
+从 v7.4.0 开始，TiDB 资源管控特性支持管控 TiFlash 资源，其原理与 TiDB 流控和 TiKV 调度类似：
+
+- TiFlash 流控：借助 [TiFlash Pipeline Model 执行模型](/tiflash/tiflash-pipeline-model.md)，可以更精确地获取不同查询的 CPU 消耗情况，并根据对资源消耗情况决定是否调度某个查询的 pipeline task。
+- TiFlash 调度：当系统资源不足时，多个资源组之间的 pipeline task 会根据优先级调度。首先判断资源组的优先级 `PRIORITY`，其次根据 CPU 使用情况，再结合 `RU_PER_SEC` 进行判断。例如，如果 rg1 和 rg2 的 `PRIORITY` 一样，但是 rg2 的 `RU_PER_SEC` 是 rg1 的两倍，那么 rg2 能使用的 CPU 时间就是 rg1 的两倍。
+
 ## 使用场景
 
 资源管控特性的引入对 TiDB 具有里程碑的意义。它能够将一个分布式数据库集群划分成多个逻辑单元，即使个别单元对资源过度使用，也不会挤占其他单元所需的资源。利用该特性：
@@ -69,6 +74,8 @@ Request Unit (RU) 是 TiDB 对 CPU、IO 等系统资源的统一抽象的计量�
     </tbody>
 </table>
 
+目前 TiFlash 资源管控仅考虑 SQL CPU 以及 read request payload。3 ms 消耗 1 RU，64 KiB read request payload 消耗 1 RU。
+
 > **注意：**
 >
 > - 每个写操作最终都被会复制到所有副本（TiKV 默认 3 个数据副本），并且每次复制都被认为是一个不同的写操作。
@@ -81,12 +88,13 @@ Request Unit (RU) 是 TiDB 对 CPU、IO 等系统资源的统一抽象的计量�
 
 ## 相关参数
 
-资源管控特性引入了两个新的全局开关变量：
+资源管控特性引入了如下系统变量或参数：
 
 - TiDB：通过配置全局变量 [`tidb_enable_resource_control`](/system-variables.md#tidb_enable_resource_control-从-v660-版本开始引入) 控制是否打开资源组流控。
 - TiKV：通过配置参数 [`resource-control.enabled`](/tikv-configuration-file.md#resource-control) 控制是否使用基于资源组配额的请求调度。
+- TiFlash：通过配置全局变量 [`tidb_enable_resource_control`](/system-variables.md#tidb_enable_resource_control-从-v660-版本开始引入) 和 TiFlash 参数 `enable_pipeline`（v7.4.0 开始引入）控制是否开启 TiFlash 资源管控。
 
-从 v7.0.0 开始，两个开关都被默认打开。这两个参数的组合效果见下表：
+从 v7.0.0 开始，`tidb_enable_resource_control` 和 `resource-control.enabled` 开关都被默认打开。这两个参数的组合效果见下表：
 
 | `resource-control.enabled`  | `tidb_enable_resource_control`= ON | `tidb_enable_resource_control`= OFF  |
 |:----------------------------|:-----------------------------------|:------------------------------------|
@@ -343,6 +351,8 @@ Runaway Query 是指执行时间或消耗资源超出预期的查询。下面使
 
 2. 将 TiKV 参数 [`resource-control.enabled`](/tikv-configuration-file.md#resource-control) 设为 `false`，关闭按照资源组配额调度。
 
+3. 将 TiFlash 参数 `enable_pipeline` 设为 `false`，关闭 TiFlash 资源管控。
+
 ## 监控与图表
 
 TiDB 会定时采集资源管控的运行时信息，并在 Grafana 的 **Resource Control Dashboard** 中提供了相关指标的可视化图表，详见 [Resource Control 监控指标详解](/grafana-resource-control-dashboard.md)。
@@ -354,18 +364,6 @@ TiDB Dashboard 中可以查看当前 [`RESOURCE_GROUPS`](/information-schema/inf
 ## 工具兼容性
 
 资源管控不影响数据导入导出以及其他同步工具的正常使用，BR、TiDB Lightning、TiCDC 等工具不支持对资源管控相关 DDL 的处理，这些工具的资源消耗也不受资源管控的限制。
-
-## TiFlash Resource Control
-### 原理
-TiFlash 资源管控原理与 TiDB/TiKV 类似，总体思路同样是流控+优先级调度:
-1. 流控：借助 [TiFlash Pipeline Execution Engine](/tiflash/tiflash-pipeline-model.md), 可以更精确地获得不同查询的 CPU 消耗情况，并根据对资源的消耗情况选择是否调度某个查询的 PipelineTask
-2. 优先级调度：在系统资源不足时，多个 resource group 之间 PipelineTask 的调度会根据优先级调度，首先判断 user_priority，其次判断 CPU 使用情况，再结合 RU_PER_SEC 进行判断。例如 rg1 和 rg2 user_proiroty 一样，但是二者的 RU_PER_SEC 比例是 1:2 ，则 rg2 所能使用的 CPU 时间就是 rg1 的两倍
-
-目前 TiFlash 资源管控仅考虑了 CPU 以及 read bytes。3 毫秒的 CPU 使用时间消耗 1 RU, 64KB 的 read_bytes 消耗 1 RU。
-### 如何使用
-下面两个条件都满足时，下发到 TiFlash 的查询就会被资源管控系统管理:
-1. 打开 tidb_enable_resource_control 开关
-2. TiFlash 的 enable_pipeline 开关打开。因为 TiFlash 的资源管控依赖 Pipeline Execution Engine 才能获得查询精确的 CPU 用量，所以 TiFlash 资源管控是基于此实现的
 
 ## 常见问题
 
