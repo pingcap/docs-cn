@@ -250,7 +250,7 @@ oauth2.oauth2-scope="xxxx"
 # TiCDC 中缓存 Pulsar Producer 的个数，默认上限为 10240 个。每个 Pulsar Producer 对应一个 topic，如果你需要同步的 topic 数量大于默认值，则需要调大该数量。
 pulsar-producer-cache-size=10240
 # Pulsar 数据压缩方式，默认不压缩，可选 "lz4"、"zlib"、"zstd"。
-compression-type= "lz4"
+compression-type= ""
 # Pulsar 客户端与服务端建立 TCP 连接的超时时间，默认 5 秒。
 connection-timeout=5
 # Pulsar 客户端发起创建、订阅等操作的超时时间，默认为 30 秒。
