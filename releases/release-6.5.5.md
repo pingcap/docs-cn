@@ -58,30 +58,30 @@ TiDB 版本：6.5.5
 + PD **tw@ran-huang**
 
     - 修复调度器启动时间长的问题 [#6920](https://github.com/tikv/pd/issues/6920) @[HuSharp](https://github.com/HuSharp)
-    - 修复 scatter region 处理 leader 和 peer 逻辑不一致的问题 [#6962](https://github.com/tikv/pd/issues/6962) @[bufferflies](https://github.com/bufferflies)
+    - 修复 Scatter Region 处理 Leader 和 Peer 的逻辑不一致的问题 [#6962](https://github.com/tikv/pd/issues/6962) @[bufferflies](https://github.com/bufferflies)
 
 + Tools
 
     + Backup & Restore (BR) **tw@ran-huang**
 
-        - 修复一个 pitr 恢复隐式主键可能冲突的问题 [#46520](https://github.com/pingcap/tidb/issues/46520) @[3pointer](https://github.com/3pointer)
-        - 修复一个 pitr 恢复 metakv 出错的问题 [#46578](https://github.com/pingcap/tidb/issues/46578) @[Leavrth](https://github.com/Leavrth)
-        - 修复一个 br 集成测试用例出错的问题 [#45561](https://github.com/pingcap/tidb/issues/46561) @[purelind](https://github.com/purelind)
+        - 修复 PITR 恢复隐式主键可能冲突的问题 [#46520](https://github.com/pingcap/tidb/issues/46520) @[3pointer](https://github.com/3pointer)
+        - 修复 PITR 恢复 meta-kv 出错的问题 [#46578](https://github.com/pingcap/tidb/issues/46578) @[Leavrth](https://github.com/Leavrth)
+        - 修复 br 集成测试用例出错的问题 [#45561](https://github.com/pingcap/tidb/issues/46561) @[purelind](https://github.com/purelind)
         - (dup): release-7.0.0.md > 错误修复> Tools> Backup & Restore (BR) - 缓解了 Region leadership 迁移导致 PITR 日志备份进度延迟变高的问题 [#13638](https://github.com/tikv/tikv/issues/13638) @[YuJuncen](https://github.com/YuJuncen)
 
     + TiCDC
 
-        - 修复了 PD 节点出现网络隔离时引起 CDC 同步延时变高的问题 [#9565](https://github.com/pingcap/tiflow/issues/9565)
-        - 修复采用 CSV 格式时将 update 操作错误修改为 insert 的问题 [#9658](https://github.com/pingcap/tiflow/issues/9658)
+        - 修复 PD 节点出现网络隔离时引起 TiCDC 同步延时变高的问题 [#9565](https://github.com/pingcap/tiflow/issues/9565)
+        - 修复采用 CSV 格式时将 `UPDATE` 操作错误修改为 `INSERT` 的问题 [#9658](https://github.com/pingcap/tiflow/issues/9658)
         <!--以上 **tw@ran-huang**-->
         - 修复在部分日志中记录了用户密码的问题 [#9690](https://github.com/pingcap/tiflow/issues/9690)
-        - 修复使用 SASL认证时可能导致 CDC出现 panic 的问题 [#9669](https://github.com/pingcap/tiflow/issues/9669)
-        - 修复CDC 同步任务在某些特殊场景可能会出现失败的问题 [#9685](https://github.com/pingcap/tiflow/issues/9685)[#9697](https://github.com/pingcap/tiflow/issues/9697)[#9695](https://github.com/pingcap/tiflow/issues/9695)[#9736](https://github.com/pingcap/tiflow/issues/9736)
-        - 修复上游在 region 非常多时 ，tikv 节点出现故障 CDC 不能同步任务不能快速恢复的问题[#9741](https://github.com/pingcap/tiflow/issues/9741)
+        - 修复使用 SASL 认证时可能导致 TiCDC出现 panic 的问题 [#9669](https://github.com/pingcap/tiflow/issues/9669)
+        - 修复 TiCDC 同步任务在某些特殊场景可能失败的问题 [#9685](https://github.com/pingcap/tiflow/issues/9685)[#9697](https://github.com/pingcap/tiflow/issues/9697)[#9695](https://github.com/pingcap/tiflow/issues/9695)[#9736](https://github.com/pingcap/tiflow/issues/9736)
+        - 修复上游在 Region 非常多时，TiKV 节点出现故障导致 TiCDC 不能同步任务以及不能快速恢复的问题 [#9741](https://github.com/pingcap/tiflow/issues/9741)
          <!--以上 **tw@hfxsd**-->
     + TiDB Lightning **tw@hfxsd**
 
         - 修复 TiDB Lightning 在目标服务器部署 TiCDC 时无法启动的问题 [#41040](https://github.com/pingcap/tidb/issues/41040) @[lance6716](https://github.com/lance6716)
         - 修复 TiDB Lightning 在 PD 拓扑变更时无法启动的问题 [#46688](https://github.com/pingcap/tidb/issues/46688) @[lance6716](https://github.com/lance6716)
-        - 修复 TiDB Lightning 在 PD 切换 Leader 后无法继续导入的问题 [#46540](https://github.com/pingcap/tidb/issues/46540) @[lance6716](https://github.com/lance6716)
+        - 修复 TiDB Lightning 在 PD 切换 Leader 后无法继续导入数据的问题 [#46540](https://github.com/pingcap/tidb/issues/46540) @[lance6716](https://github.com/lance6716)
         - (dup): release-6.6.0.md > 错误修复> Tools> TiDB Lightning - 修复 precheck 无法准确检测目标集群是否存在运行中的 TiCDC 的问题 [#41040](https://github.com/pingcap/tidb/issues/41040) @[lance6716](https://github.com/lance6716)
