@@ -39,15 +39,16 @@ TiDB 版本：6.5.5
 
 + TiDB **tw@Oreoxmt**
 
-    - 修复读副本选择会可能选到不可用副本的问题 [#46198](https://github.com/pingcap/tidb/issues/46198) @[zyguan](https://github.com/zyguan)
+    - 修复 Stale Read 可能选择不可用副本的问题 [#46198](https://github.com/pingcap/tidb/issues/46198) @[zyguan](https://github.com/zyguan)
     - 修复 Stale Read 和 Schema Cache 不适配导致额外开销的问题 [#43481](https://github.com/pingcap/tidb/issues/43481) @[crazycs520](https://github.com/crazycs520)
 
 + TiKV **tw@Oreoxmt**
 
-    - 修复错误: 当tikv一个节点失败时，对应region的peers不应该不正确的进入休眠模式 [#14547](https://github.com/tikv/tikv/issues/14547) @[hicqu](https://github.com/hicqu)
-    - 当size based split触发时发现没有可以分裂的key时，触发一次手动compaction用来消除过多的MVCC版本 [#15282](https://github.com/tikv/tikv/issues/15282) @[SpadeA-Tang](https://github.com/SpadeA-Tang)
-    - 修复在线恢复数据时无法处理merge abort的问题 [#15580](https://github.com/tikv/tikv/issues/15580) @[v01dstar](https://github.com/v01dstar)
-    - 修复PiTR潜在可能被阻塞的问题，当PD和TiKV之间网络隔离时. [#15279](https://github.com/tikv/tikv/issues/15279) @[YuJuncen](https://github.com/YuJuncen)
+    - 修复当一个 TiKV 节点失败时，对应 Region 的 peers 错误地进入休眠模式的问题 [#14547](https://github.com/tikv/tikv/issues/14547) @[hicqu](https://github.com/hicqu)
+    - 修复开启 Titan 后，TiKV 遇到 `Blob file deleted twice` 报错无法正常启动的问题 [#15454](https://github.com/tikv/tikv/issues/15454) @[Connor1996](https://github.com/Connor1996)
+    - 优化数据整理检查机制，当触发 Region Split 时，如果没有可以分裂的 key，触发一次数据整理，以消除过多的 MVCC 版本 [#15282](https://github.com/tikv/tikv/issues/15282) @[SpadeA-Tang](https://github.com/SpadeA-Tang)
+    - 修复 Online Unsafe Recovery 时无法处理 merge abort 的问题 [#15580](https://github.com/tikv/tikv/issues/15580) @[v01dstar](https://github.com/v01dstar)
+    - 修复 PD 和 TiKV 之间的网络中断可能导致 PITR 卡住的问题 [#15279](https://github.com/tikv/tikv/issues/15279) @[YuJuncen](https://github.com/YuJuncen)
 
 + PD **tw@ran-huang**
 
