@@ -19,7 +19,7 @@ Example: Resource utilization during [CH-benCHmark workload](/benchmark/benchmar
 
 This TiFlash cluster consists of two nodes, each node configured with 16 cores and 48 GB of memory. During the CH-benCHmark workload, CPU utilization can reach up to 1500%, memory usage can reach up to 20 GB, and IO utilization can reach up to 91%. These metrics indicate that TiFlash node resources are approaching saturation.
 
-![CH-TiFlash-MPP](/media/performance/tiflash/ch-2tiflash-op.png)
+![CH-TiFlash-MPP](/media/performance/tiflash/tiflash-resource-usage.png)  
 
 ## Key metrics for TiFlash performance
 
