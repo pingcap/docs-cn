@@ -15,9 +15,9 @@ TiDB 版本：6.5.5
 
 + TiDB **tw@qiancai**
 
-    - 支持从高版本回退到 6.5 [#45570](https://github.com/pingcap/tidb/issues/45570) @[wjhuang2016](https://github.com/wjhuang2016)
-    - (dup): release-7.3.0.md > # 稳定性 * 新增部分优化器提示 [#45520](https://github.com/pingcap/tidb/issues/45520) @[qw4990](https://github.com/qw4990)
-    - 添加 coprocessor 相关 request source 信息 [#46514](https://github.com/pingcap/tidb/issues/46514) @[you06](https://github.com/you06)
+    - 支持从高版本 TiDB 回退到 v6.5 [#45570](https://github.com/pingcap/tidb/issues/45570) @[wjhuang2016](https://github.com/wjhuang2016)
+    - (dup): release-7.3.0.md > # 稳定性 * 新增部分优化器提示，包括 [`NO_MERGE_JOIN()`]、[`NO_INDEX_JOIN()`](/optimizer-hints.md#no_index_joint1_name--tl_name-)、[`NO_INDEX_MERGE_JOIN()`](/optimizer-hints.md#no_index_merge_joint1_name--tl_name-)、[`NO_HASH_JOIN()`](/optimizer-hints.md#no_hash_joint1_name--tl_name-)、[`NO_INDEX_HASH_JOIN()`](/optimizer-hints.md#no_index_hash_joint1_name--tl_name-) [#45520](https://github.com/pingcap/tidb/issues/45520) @[qw4990](https://github.com/qw4990)
+    - 添加 coprocessor 相关的 request source 信息 [#46514](https://github.com/pingcap/tidb/issues/46514) @[you06](https://github.com/you06)
 
 + TiKV **tw@qiancai**
 
@@ -25,9 +25,9 @@ TiDB 版本：6.5.5
     - Titan：避免写Titan manifest文件时持有锁 [#15351](https://github.com/tikv/tikv/issues/15351) @[Connor1996](https://github.com/Connor1996)
     - 压缩check_leader请求. [#14839](https://github.com/tikv/tikv/issues/14839) @[you06](https://github.com/you06)
     - 增加snapshot相关的监控 [#15401](https://github.com/tikv/tikv/issues/15401) @[SpadeA-Tang](https://github.com/SpadeA-Tang)
-    - 当leader转移时提高PiTR checkpoint lag的稳定性. [#13638](https://github.com/tikv/tikv/issues/13638) @[YuJuncen](https://github.com/YuJuncen)
-    - 增加safe-ts相关的日志和监控 [#15082](https://github.com/tikv/tikv/issues/15082) @[ekexium](https://github.com/ekexium)
-    - 更多resolved-ts相关的日志和监控. [#15082](https://github.com/tikv/tikv/issues/15082) @[ekexium](https://github.com/ekexium)
+    - 提高 PiTR checkpoint lag 在 leader 转移时的稳定性 [#13638](https://github.com/tikv/tikv/issues/13638) @[YuJuncen](https://github.com/YuJuncen)
+    - 增加 `safe-ts` 相关的日志和监控指标 [#15082](https://github.com/tikv/tikv/issues/15082) @[ekexium](https://github.com/ekexium)
+    - 为 `resolved-ts` 提供更多的相关日志和监控指标 [#15082](https://github.com/tikv/tikv/issues/15082) @[ekexium](https://github.com/ekexium)
     - (dup): release-7.3.0.md > 改进提升> TiKV - 添加 `Max gap of safe-ts` 和 `Min safe ts region` 监控项以及 `tikv-ctl get_region_read_progress` 命令，用于更好地观测和诊断 resolved-ts 和 safe-ts 的状态 [#15082](https://github.com/tikv/tikv/issues/15082) @[ekexium](https://github.com/ekexium)
 
 + Tools **tw@Oreoxmt**
