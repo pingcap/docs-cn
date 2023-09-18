@@ -22,12 +22,13 @@ TiDB 版本：6.5.4
     - 优化 `LOAD DATA` 语句中包含赋值表达式时 `LOAD DATA` 的执行性能 [#46081](https://github.com/pingcap/tidb/issues/46081) @[gengliqi](https://github.com/gengliqi)
     - 优化与落盘相关的 chunk 读取的性能 [#45125](https://github.com/pingcap/tidb/issues/45125) @[YangKeao](https://github.com/YangKeao)
     - 新增 `halt-scheduling` 配置项，用于关闭 PD 调度 [#6493](https://github.com/tikv/pd/issues/6493) @[JmPotato](https://github.com/JmPotato)
-    
+
 + TiKV
 
     - 使用 gzip 压缩 `check_leader` 请求以减少流量 [#14553](https://github.com/tikv/tikv/issues/14553) @[you06](https://github.com/you06)
     - 添加 `Max gap of safe-ts` 和 `Min safe ts region` 监控项以及 `tikv-ctl get_region_read_progress` 命令，用于更好地观测和诊断 resolved-ts 和 safe-ts 的状态 [#15082](https://github.com/tikv/tikv/issues/15082) @[ekexium](https://github.com/ekexium)
     - 在 TiKV 中暴露部分 RocksDB 配置，允许用户禁用 TTL 和定期数据整理等特性 [#14873](https://github.com/tikv/tikv/issues/14873) @[LykxSassinator](https://github.com/LykxSassinator)
+    - 避免写 Titan manifest 文件时持有锁导致影响其他线程 [#15351](https://github.com/tikv/tikv/issues/15351) @[Connor1996](https://github.com/Connor1996)
 
 + PD
 
