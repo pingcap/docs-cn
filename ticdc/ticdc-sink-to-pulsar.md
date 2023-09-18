@@ -33,9 +33,11 @@ Info: {"upstream_id":7277814241002263370,"namespace":"default","id":"simple-repl
 - `--target-ts`：指定 changefeed 的目标 TSO。TiCDC 集群拉取数据直到这个 TSO 停止。默认为空，即 TiCDC 不会自动停止。
 - `--config`：指定 changefeed 配置文件，详见：[TiCDC Changefeed 配置参数](/ticdc/ticdc-changefeed-config.md)。
 
-## Sink URI & Changefeed config 配置 `pulsar`
+## 使用Sink URI 和 Changefeed config 配置 Pulsar
 
 Sink URI 用于指定 TiCDC 目标系统的连接信息，Changefeed config 用来配置具体 Pulsar 相关的参数。
+
+### Sink URI
 
 Sink URI 遵循以下格式：
 
@@ -64,11 +66,13 @@ URI 中可配置的的参数如下：
 | `persistent://abc/def/yktest`   |  指定 Pulsar 的租户/命名空间/topic 的全名。                                      |
 | `yktest`    | 使用 Pulsar 服务端的默认租户/默认命名空间的 topic 的简写名。通常默认的租户是 `public`，命名空间是 `default`。`yktest` 为具体的 topic，该写法相当于指定 topic 为 `persistent://public/default/yktest` |
 
-Changefeed config 参数：
+### Changefeed config 参数
+
+以下为 Changefeed config 参数示例：
 
 ```toml
 [sink]
-# 注意：当下游 MQ 为 Pulsar 时，如果 partition 的路由规则未被指定为 `ts`, `index-value`, `table`, `default` 其中之一时，那么将会使用你设置的字符串作为每一条 Pulsar message 的 key 进行路由。例如，如果你指定的路由规则为 `code` 这一个字符串，那么符合该 matcher 的所有 Pulsar message 都将会以 `code`` 作为 key 进行路由。
+# 注意：当下游 MQ 为 Pulsar 时，如果 partition 的路由规则未被指定为 `ts`、`index-value`、`table`、或 `default` 中的任意一种，将会使用你设置的字符串作为每一条 Pulsar message 的 key 进行路由。例如，如果你指定的路由规则为字符串 `code`，那么符合该 matcher 的所有 Pulsar message 都将会以 `code`` 作为 key 进行路由。
 # dispatchers = [
 #    {matcher = ['test1.*', 'test2.*'], topic = "Topic 表达式 1", partition = "ts" },
 #    {matcher = ['test3.*', 'test4.*'], topic = "Topic 表达式 2", partition = "index-value" },
@@ -89,7 +93,7 @@ authentication-token = "xxxxxxxxxxxxx"
 token-from-file="/data/pulsar/token-file.txt"
 # Pulsar 使用 basic 账号密码验证身份。
 basic-user-name="root"
-# Pulsar  使用 basic 账号密码验证身份，此处为密码。
+# Pulsar 使用 basic 账号密码验证身份，此处为密码。
 basic-password="password"
 # Pulsar TLS 加密认证证书路径。
 auth-tls-certificate-path="/data/pulsar/certificate"
@@ -97,7 +101,7 @@ auth-tls-certificate-path="/data/pulsar/certificate"
 auth-tls-private-key-path="/data/pulsar/certificate.key"
 # Pulsar TLS 加密可信证书文件路径。
 tls-trust-certs-file-path="/data/pulsar/tls-trust-certs-file"
-# Pulsar oauth2 issuer-url 更多详细配置请看pulsar官方介绍：https://pulsar.apache.org/docs/2.10.x/client-libraries-go/#tls-encryption-and-authentication
+# Pulsar oauth2 issuer-url 更多详细配置请看 Pulsar 官方介绍：https://pulsar.apache.org/docs/2.10.x/client-libraries-go/#tls-encryption-and-authentication
 oauth2.oauth2-issuer-url="https://xxxx.auth0.com"
 # Pulsar oauth2 audience
 oauth2.oauth2-audience="https://xxxx.auth0.com/api/v2/"
@@ -243,7 +247,7 @@ Topic 表达式的基本规则为 `[prefix]{schema}[middle][{table}][suffix]`，
 
 其中 `prefix`、`middle` 以及 `suffix` 仅允许出现大小写字母（`a-z`、`A-Z`）、数字（`0-9`）、点号（`.`）、下划线（`_`）和中划线（`-`）。`{schema}`、`{table}` 均为小写，诸如 `{Schema}` 以及 `{TABLE}` 等包含大写字母的占位符是无效的。
 
-一些示例如下：
+下面是一些示例：
 
 - `matcher = ['test1.table1', 'test2.table2'], topic = "hello_{schema}_{table}"`
     - 对于表 `test1.table1` 对应的数据变更事件，发送到名为 `hello_test1_table1` 的 topic 中。
@@ -251,10 +255,10 @@ Topic 表达式的基本规则为 `[prefix]{schema}[middle][{table}][suffix]`，
 
 - `matcher = ['test3.*', 'test4.*'], topic = "hello_{schema}_world"`
     - 对于 `test3` 下的所有表对应的数据变更事件，发送到名为 `hello_test3_world` 的 topic 中。
-    - 对于 `test4` 下的所有表对应的数据变更事件，发送到名为 `hello_test4_ world` 的 topic 中。
+    - 对于 `test4` 下的所有表对应的数据变更事件，发送到名为 `hello_test4_world` 的 topic 中。
 
 - `matcher = ['*.*'], topic = "{schema}_{table}"`
-    - 对于 TiCDC 监听的所有表，按照“库名_表名”的规则分别分发到独立的 topic 中；例如对于 `test.account` 表，TiCDC 会将其数据变更日志分发到名为 `test_account` 的 Topic 中。
+    - 对于 TiCDC 监听的所有表，按照“库名_表名”的规则分别分发到独立的 topic 中；例如对于 `test.account` 表，TiCDC 会将其数据变更日志分发到名为 `test_account` 的 topic 中。
 
 ### DDL 事件的分发
 
@@ -268,14 +272,20 @@ Topic 表达式的基本规则为 `[prefix]{schema}[middle][{table}][suffix]`，
 
 例如，对于 `matcher = ['test.*'], topic = {schema}_{table}` 这样的 dispatchers 配置，DDL 事件分发情况如下：
 
-- 若 DDL 事件中涉及单张表，则将 DDL 事件原样发送到相应的 topic 中。对于 DDL 事件 `drop table test.table1`，该事件会被发送到名为 `test_table1` 的 topic 中。
+- 若 DDL 事件中涉及单张表，则将 DDL 事件原样发送到相应的 topic 中。对于 DDL 事件 `DROP TABLE test.table1`，该事件会被发送到名为 `test_table1` 的 topic 中。
 
-- 若 DDL 事件中涉及多张表（`RENAME TABLE`、`DROP TABLE`、`DROP VIEW` 都可能涉及多张表），则将单个 DDL 事件拆分为多个发送到相应的 topic 中。对于 DDL 事件 `RENAME TABLE test.table1 TO test.table10, test.table2 TO test.table20`，则将 `RENAME TABLE test.table1 TO test.table10` 的 DDL 事件发送到名为 `test_table1` 的 topic 中，将 `RENAME TABLE test.table2 TO test.table20` 的 DDL 事件发送到名为 `test.table2` 的 topic 中。
+- 若 DDL 事件中涉及多张表（`RENAME TABLE`、`DROP TABLE`、`DROP VIEW` 都可能涉及多张表），则将单个 DDL 事件拆分为多个发送到相应的 topic 中。例如，对于 DDL 事件 `RENAME TABLE test.table1 TO test.table10, test.table2 TO test.table20`，处理如下：
+
+    - 将 `RENAME TABLE test.table1 TO test.table10` 的 DDL 事件发送到名为 `test_table1` 的 topic 中，
+    - 将 `RENAME TABLE test.table2 TO test.table20` 的 DDL 事件发送到名为 `test.table2` 的 topic 中。
 
 ### Partition 分发器
 
 目前 TiCDC 仅支持消费者使用 Exclusive 的订阅模式对消息进行消费，即每个消费者将会消费一个 topic 中所有 Partition 中的消息。
-Partition 分发器用 `partition = "xxx"` 来指定，支持 `default`、`ts`、`index-value`、`table` 四种 Partition 分发器，但如果你填入其他字段，则会在发送给 Pulsar Server 的消息中将该字段透传给 Message 的`key`。具体分发规则如下：
+
+Partition 分发器用 `partition = "xxx"` 来指定，支持 `default`、`ts`、`index-value`、`table` 四种 Partition 分发器。但如果你填入其他字段，则会在发送给 Pulsar Server 的消息中将该字段透传给 Message 的`key`。
+
+具体分发规则如下：
 
 - `default`：默认按照按照 schema 名和 table 名进行分发，和指定 `table` 时相同。
 - `ts`：以行变更的 commitTs 做 Hash 计算并进行 event 分发。
