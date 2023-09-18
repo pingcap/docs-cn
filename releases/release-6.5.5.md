@@ -19,7 +19,7 @@ TiDB 版本：6.5.5
     - (dup): release-7.3.0.md > # 稳定性 * 新增部分优化器提示 [#45520](https://github.com/pingcap/tidb/issues/45520) @[qw4990](https://github.com/qw4990)
     - 添加 coprocessor 相关 request source 信息 [#46514](https://github.com/pingcap/tidb/issues/46514) @[you06](https://github.com/you06)
 
-+ TiKV
++ TiKV **tw@qiancai**
 
     - 增加 pd-client中连接重试过程中backoff的功能，减小PD压力 [#15428](https://github.com/tikv/tikv/issues/15428) @[nolouch](https://github.com/nolouch)
     - Titan：避免写Titan manifest文件时持有锁 [#15351](https://github.com/tikv/tikv/issues/15351) @[Connor1996](https://github.com/Connor1996)
