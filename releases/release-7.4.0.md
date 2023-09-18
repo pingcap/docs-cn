@@ -27,11 +27,13 @@ TiDB 版本：7.4.0
 
     更多信息，请参考[用户文档](/system-variables.md#tidb_service_scope-从-v740-版本开始引入)。
     
-* 进一步优化的 Partitioned Raft KV 引擎  [#issue号](链接) @[busyjay](https://github.com/busyjay) @[tonyxuqqi](https://github.com/tonyxuqqi) @[tabokie](https://github.com/tabokie) @[bufferflies](https://github.com/bufferflies) @[5kbpers](https://github.com/5kbpers) @[SpadeA-Tang](https://github.com/SpadeA-Tang) @[nolouch](https://github.com/nolouch)  **tw@Oreoxmt** <!--1292-->
+* 增强 Partitioned Raft KV 存储引擎（实验特性）[#issue号](链接) @[busyjay](https://github.com/busyjay) @[tonyxuqqi](https://github.com/tonyxuqqi) @[tabokie](https://github.com/tabokie) @[bufferflies](https://github.com/bufferflies) @[5kbpers](https://github.com/5kbpers) @[SpadeA-Tang](https://github.com/SpadeA-Tang) @[nolouch](https://github.com/nolouch)  **tw@Oreoxmt** <!--1292-->
 
-    相比之 v7.4.0 之前版本，Partitioned Raft KV 引擎在兼容性、稳定性有了进一步的提升。在 v7.4.0 版本中，Partitioned Raft KV 引擎经历了大规模数据测试，确保了对 DM、Dumpling、Lightning、TiCDC 、 BR / PITR 等关键生态组件的兼容性。同时 Partitioned Raft KV 引擎在读写混合工作负载下提供了更为稳定的性能指标，特别适合写多读少的场景。此外，每个 TiKV 节点支持 8 Core CPU 搭配 8TB 数据存储，64GB 内存。
+    TiDB v6.6.0 引入了 Partitioned Raft KV 存储引擎作为实验特性，该引擎使用多个 RocksDB 实例存储 TiKV 的 Region 数据，每个 Region 的数据都独立存储在单独的 RocksDB 实例中。
 
-    尽管仍处于非 GA 阶段，但在 v7.4.0 版本中，Partitioned Raft KV 引擎进一步提升了稳定性和兼容性，使得用户可以更好地进行 POC 和短期性能基准测试。我们将继续努力改进该引擎，以提供更强大、更稳定的功能。更多信息请参考[用户文档](/partitioned-raft-kv.md)。
+    在 TiDB v7.4.0 中，Partitioned Raft KV 引擎在兼容性和稳定性方面得到了了进一步的提升。通过大规模数据测试，确保了 Partitioned Raft KV 引擎与 DM、Dumpling、TiDB Lightning、TiCDC、BR、PITR 等关键生态组件或功能的兼容性。同时，在读写混合工作负载下，Partitioned Raft KV 引擎提供了更稳定的性能，特别适合写多读少的场景。此外，每个 TiKV 节点支持 8 core CPU，可搭配 8 TB 数据存储和 64 GB 内存。
+
+    更多信息，请参考[用户文档](/partitioned-raft-kv.md)。
  
  * TiFlash 存算分离架构成为正式功能 (GA) [#6882](https://github.com/pingcap/tiflash/issues/6882)  @[JaySon-Huang](https://github.com/JaySon-Huang) @[JinheLin](https://github.com/JinheLin) @[breezewish](https://github.com/breezewish) @[lidezhu](https://github.com/lidezhu) @[CalvinNeo](https://github.com/CalvinNeo)  **tw@qiancai** <!--1360-->
 
