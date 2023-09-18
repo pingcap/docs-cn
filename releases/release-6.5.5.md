@@ -31,12 +31,10 @@ TiDB 版本：6.5.5
 
     + Backup & Restore (BR)
 
-        - 减少日志备份 resolve lock 的 cpu 开销 [40759](https://github.com/pingcap/tidb/issues/40759) @[3pointer](https://github.com/3pointer)
+        - 减少日志备份 `resolve lock` 的 CPU 开销 [#40759](https://github.com/pingcap/tidb/issues/40759) @[3pointer](https://github.com/3pointer)
 
     + TiDB Lightning
 
-        - 修复 TiDB Lightning 在目标服务器部署 TiCDC 时无法启动的问题 [#41040](https://github.com/pingcap/tidb/issues/41040) @[lance6716](https://github.com/lance6716)
-        - 修复 TiDB Lightning 在 PD 拓扑变更时无法启动的问题 [#46688](https://github.com/pingcap/tidb/issues/46688) @[lance6716](https://github.com/lance6716)
 
 ## 错误修复
 
