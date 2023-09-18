@@ -69,7 +69,7 @@ delta_index_cache_size = 0
     ## * format_version = 3 v6.0.0 及 v6.1.x 版本的默认文件格式，具有更完善的检验功能
     ## * format_version = 4 v7.3.0 及以前版本的默认文件格式，优化了写放大问题，同时减少了后台线程消耗
     ## * format_version = 5 v7.4.0 及以后版本的默认文件格式（从 v7.3.0 开始引入），该格式可以合并小文件从而减少了物理文件数量。
-    # format_version = 4
+    # format_version = 5
 
     [storage.main]
     ## 用于存储主要的数据，该目录列表中的数据占总数据的 90% 以上。
