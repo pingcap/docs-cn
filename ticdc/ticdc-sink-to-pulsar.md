@@ -114,7 +114,7 @@ compression-type= ""
 # Pulsar 客户端与服务端建立 TCP 连接的超时时间，默认 5 秒。
 connection-timeout=5
 # Pulsar 客户端发起创建、订阅等操作的超时时间，默认为 30 秒。
-operation-timeout=3
+operation-timeout=30
 # Pulsar producer 发送消息时的单个 batch 内的消息数量上限，默认值为 1000。
 batching-max-messages=1000
 # Pulsar producer 消息攒批的时间间隔，默认 10 毫秒。
