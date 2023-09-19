@@ -60,18 +60,18 @@ tidb> SELECT year, SUM(profit) AS profit from bank group by year;
 ```
 对于银行报表来说，有时候出来分析计算每年的利润之后，通常我们还会算下所有年份的利润综合，甚至每个月的利润总成来达到高维度或者是更细粒度的利润分析；然后这并不是一个简单的 GROUP-BY 语句能做的，通常是要多个 GROUP-BY 语句跟上不同的聚合粒度，然后将所有的所有用 UNION 链接起来呈现。在有了 ROLLUP 语法之后，其实可以这样做：
 ```sql
-tidb> SELECT year, month, SUM(profit) AS profit from bank GROUP BY year, month WITH ROLLUP;
+TiDB [test]> SELECT year, month, SUM(profit) AS profit from bank GROUP BY year, month WITH ROLLUP order by year desc, month desc;
 +------+-------+--------------------+
 | year | month | profit             |
 +------+-------+--------------------+
-| 2000 | Jan   | 10.300000190734863 |
-| 2001 | NULL  | 22.399999618530273 |
-| 2000 | NULL  |  41.90000057220459 |
 | 2001 | Feb   | 22.399999618530273 |
+| 2001 | NULL  | 22.399999618530273 |
 | 2000 | Mar   | 31.600000381469727 |
+| 2000 | Jan   | 10.300000190734863 |
+| 2000 | NULL  |  41.90000057220459 |
 | NULL | NULL  |  64.30000019073486 |
 +------+-------+--------------------+
-6 rows in set (0.05 sec)
+6 rows in set (0.025 sec)
 ```
 在这份结果中，联合了在不同的月份，年份，以及全域上的所有维度的聚合输出；其中 month 和 year 部分出现的 `NULL` 值表示这个 month 或 year 是被高维度聚合分组所 GROUP 掉的列，该行 profit 所呈现的聚合结果 profit，是仅在没有被 `NULL` 化的 month 和 year 所组成的名文所对应的分组上所聚合出来的。
 
@@ -87,7 +87,8 @@ tidb> SELECT year, month, SUM(profit) AS profit from bank GROUP BY year, month W
 考虑到这种 `NULL` 有特殊的含义 --- 分组表达式所呈现出来的 `NULL` 值可以被认为是在高维度聚合中被 GROUP 掉的那一列，因此使用整个分组转向于更高维度的聚合粒度。这种 `NULL` 值的赋予动作是 Expand 算子在复制逻辑中添加的，而 Expand 算子的构建就在 Aggregate 算子的前序动作当中，因此该分组表达式所呈现出来的 `NULL` 可以被逻辑 Aggregate 算子之后的所有其他子句所利用，主要表现为 select-list / having / order-by 当中表达式的应用。 比如：我们可以利用 having 子句过滤并只看 2 维度分组下的聚合结果输出。
 
 ```sql
-tidb> SELECT year, month, SUM(profit) AS profit from bank GROUP BY year, month WITH ROLLUP having year is not null and month is not null;
+TiDB [test]> SELECT year, month, SUM(profit) AS profit from bank GROUP BY year, month WITH ROLLUP having year is not null and 
+  month is not null;
 +------+-------+--------------------+
 | year | month | profit             |
 +------+-------+--------------------+
@@ -101,18 +102,20 @@ tidb> SELECT year, month, SUM(profit) AS profit from bank GROUP BY year, month W
 也是考虑到这种分组表达式所呈现出来的 `NULL` 的特殊含义，如果分组表达式原有数据本身就包含有原生 `NULL` 值，那么可能会影响我们对聚合结果所在的分组粒度上有所误判。因为为了区分更好的区别这两种 `NULL` 值的来源，我们配套引入了 `GROUPING()` 函数来接受分组表达式作为参数，并输出 `0` 或者 `1` 表示该分组表达式在当前聚合结果输出行中是否被 GROUP 掉了。`1` 表示是，意味着该分组聚合结果转向了更高维的聚合，而 `0` 则反之。
 
 ```sql
-tidb> SELECT year, month, SUM(profit) AS profit, grouping(year) as grp_year, grouping(month) as grp_month from bank GROUP BY year, month WITH ROLLUP;
+TiDB [test]> SELECT year, month, SUM(profit) AS profit, grouping(year) as grp_year, grouping(month) as grp_month from 
+  bank GROUP BY year, month WITH ROLLUP order by year desc, month desc;
 +------+-------+--------------------+----------+-----------+
 | year | month | profit             | grp_year | grp_month |
 +------+-------+--------------------+----------+-----------+
-| 2000 | Jan   | 10.300000190734863 |        0 |         0 |
-| 2000 | Mar   | 31.600000381469727 |        0 |         0 |
-| NULL | NULL  |  64.30000019073486 |        1 |         1 |
-| 2000 | NULL  |  41.90000057220459 |        0 |         1 |
 | 2001 | Feb   | 22.399999618530273 |        0 |         0 |
 | 2001 | NULL  | 22.399999618530273 |        0 |         1 |
+| 2000 | Mar   | 31.600000381469727 |        0 |         0 |
+| 2000 | Jan   | 10.300000190734863 |        0 |         0 |
+| 2000 | NULL  |  41.90000057220459 |        0 |         1 |
+| NULL | NULL  |  64.30000019073486 |        1 |         1 |
 +------+-------+--------------------+----------+-----------+
-6 rows in set (0.07 sec)
+6 rows in set (0.028 sec)
+
 ```
 
 可以看到我们不再依赖分组表达式 year 和 month 的输出去判断该聚合结果行所在的聚合维度，而是依赖于 grp_year 和 grp_month 的 GROUPING 函数结果来判断，以防止分组表达式 year 和 month 自有原生 `NULL` 值的干扰。
@@ -128,15 +131,18 @@ GROUPING(day, month, year):
 
 使用组合参数的 `GROUPING()` 的函数可以快速过滤掉出任何高维度的聚合结果，就像这样只查看高维度聚合的结果：
 ```sql
-tidb> SELECT year, month, SUM(profit) AS profit, grouping(year) as grp_year, grouping(month) as grp_month from bank GROUP BY year, month WITH ROLLUP having GROUPING(year, month) <> 0;
+TiDB [test]> SELECT year, month, SUM(profit) AS profit, grouping(year) as grp_year, grouping(month) as grp_month from 
+  bank
+  ->    GROUP BY year, month WITH ROLLUP having GROUPING(year, month) <> 0 order by year desc, month desc;
 +------+-------+--------------------+----------+-----------+
 | year | month | profit             | grp_year | grp_month |
 +------+-------+--------------------+----------+-----------+
+| 2001 | NULL  | 22.399999618530273 |        0 |         1 |
 | 2000 | NULL  |  41.90000057220459 |        0 |         1 |
 | NULL | NULL  |  64.30000019073486 |        1 |         1 |
-| 2001 | NULL  | 22.399999618530273 |        0 |         1 |
 +------+-------+--------------------+----------+-----------+
-3 rows in set (0.11 sec)
+3 rows in set (0.023 sec)
+
 ```
 
 ## 如何阅读 ROLLUP 的执行计划
