@@ -32,6 +32,7 @@ select count(1) from t GROUP BY a,b,c WITH ROLLUP;
 更多信息，请参考[扩容 TiFlash 节点](/scale-tidb-using-tiup.md#扩容-tiflash-节点)。
 
 ## 使用示例
+
 假如有一张名为 `bank` 的银行利润表，包含年（`year`）、月（`month`）、日（`day`）和利润（`profit`）列。
 
 
