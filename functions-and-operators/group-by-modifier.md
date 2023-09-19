@@ -51,7 +51,7 @@ INSERT INTO bank VALUES(2000, "Jan", 1, 10.3),(2001, "Feb", 2, 22.4),(2000,"Mar"
 如需查看银行每年的利润，可以用一个简单的 `GROUP BY` 的子句来实现：
 
 ```sql
-tidb> SELECT year, SUM(profit) AS profit from bank group by year;
+SELECT year, SUM(profit) AS profit FROM bank GROUP BY year;
 +------+--------------------+
 | year | profit             |
 +------+--------------------+
