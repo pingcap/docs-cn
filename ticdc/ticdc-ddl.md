@@ -47,12 +47,10 @@ summary: 了解 TiCDC 支持同步的 DDL 和一些特殊情况
 ## DDL 同步注意事项
 
 ### Add/Create index DDL 异步执行
-为了减小对 Chnagefeed 同步延迟的影响，TiCDC 会将 Add/Create index DDL 异步执行。这意味着，当 TiCDC 同步到 Add/Create index DDL 时，该 DDL 操作并不会立即执行，而是会在后台异步执行。
+为了减小对 Chnagefeed 同步延迟的影响，TiCDC 会将 Add/Create index DDL 异步执行，即 TiCDC 会将 Add/Create index DDL 同步到下游执行，并立刻返回，不会阻塞后续的 DML 执行。
 
 #### 需要注意的问题
-1. 如果 DML 执行依赖未完成同步的 Index, 可能会导致 DML 执行很慢，进而会影响 TiCDC 同步延迟。
-2. 正在异步执行 DDL 时， 如果 TiCDC 重启或者异常退出也会导致未完成的异步 DDL 执行失败，所以扩缩容与升级都有一定的概率丢失 Add/Create index DDL。
-3. 异步执行且多次重试失败后，TiCDC 只会输出一条包含 DDL 语句错误日志在 log 中，无法彻底重试，这样会导致上下游表结构不一致，从而导致后续 DML 同步速度慢，但无法直观发现问题。
+如果 DML 执行依赖未完成同步的 Index, 可能会导致 DML 执行很慢，进而会影响 TiCDC 同步延迟。
 
 ### Rename table 类型的 DDL 注意事项
 由于同步过程中缺乏一些上下文信息，因此 TiCDC 对 rename table 类型的 DDL 同步有一些约束。
