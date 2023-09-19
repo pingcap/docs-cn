@@ -23,7 +23,7 @@ select count(1) from t GROUP BY a,b,c WITH ROLLUP;
 ```
 ## 使用场景
 
-多列数据的聚合汇总输出一般常用于 OLAP（Online Analytical Processing）场景。目前 ROLLUP 的实现引入了一个新的算子 Expand，该算子能够根据不同的分组规则，进行底层数据的特殊复制，不同复制的数据份对应于一个特定的分组规则；利用 TiDB MPP 模式下对 Expand 之后的大批量数据的灵活 shuffle 来进行实现高效分组和聚合计算，均摊多节点算力。
+多列数据的聚合汇总输出一般常用于 OLAP（Online Analytical Processing）场景。通过使用 `WITH ROLLUP` 修饰符，你可以在聚合结果中得到额外的行，以展示不同维度的汇总信息，从而实现高级的数据分析和报表生成。
 
 ## 准备条件
 
