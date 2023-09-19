@@ -184,7 +184,9 @@ Query OK, 0 rows affected (0.28 sec)
 
 你可以在 `GROUP BY` 子句中指定一个或多个列，形成一个分组列表，然后添加 `WITH ROLLUP` 修饰符。TiDB 将会按照分组列表中的列进行多层次的递减分组，并在输出中为你提供各个分组数据的汇总结果。
 
-> 注意：TiDB 暂时不支持 Cube 语法; TiDB 目前仅在 MPP 模式下支持 ROLLUP 语法的计划。
+> **注意**
+>
+> TiDB 暂不支持 Cube 语法; TiDB 目前仅在 MPP 模式下支持为 `WITH ROLLUP` 语法生成有效的执行计划。
 
 ```sql
 explain SELECT year, month, grouping(year), grouping(month), SUM(profit) AS profit FROM bank GROUP BY year, month WITH ROLLUP;
