@@ -104,7 +104,9 @@ TiDB [test]> SELECT year, month, SUM(profit) AS profit from bank GROUP BY year, 
 3 rows in set (0.02 sec)
 ```
 
-也是考虑到这种分组表达式所呈现出来的 `NULL` 的特殊含义，如果分组表达式原有数据本身就包含有原生 `NULL` 值，那么可能会影响我们对聚合结果所在的分组粒度上有所误判。因为为了区分更好的区别这两种 `NULL` 值的来源，我们配套引入了 `GROUPING()` 函数来接受分组表达式作为参数，并输出 `0` 或者 `1` 表示该分组表达式在当前聚合结果输出行中是否被 GROUP 掉了。`1` 表示是，意味着该分组聚合结果转向了更高维的聚合，而 `0` 则反之。
+需要注意的是，如果 `GROUP BY` 分组列表中的某列包含原生的 `NULL` 值，`WITH ROLLUP` 和分组聚合可能会对查询结果产生误导。为了解决这个问题，你可以使用 `GROUPING ()` 函数区分原生 `NULL` 值和 `WITH ROLLUP` 生成的 `NULL` 值。该函数接受分组表达式作为参数，并输出 `0` 或 `1`，表示该分组表达式是否在当前结果中被聚合。`1` 表示被聚合，`0` 表示没有。
+
+以下是如何使用 `GROUPING ()` 函数的示例：
 
 ```sql
 TiDB [test]> SELECT year, month, SUM(profit) AS profit, grouping(year) as grp_year, grouping(month) as grp_month from 
