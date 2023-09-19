@@ -81,14 +81,11 @@ TiDB [test]> SELECT year, month, SUM(profit) AS profit from bank GROUP BY year, 
 
 以上结果包含了按照年份、月份、以及整体所有层次的聚合数据。其中，未出现 `NULL` 值的行表示该行 profit 是按照年份和月份分组计算的结果，`month` 列的 `NULL` 值表示该行 profit 是按照所有月份聚合计算的结果，`year` 列的 `NULL` 值表示该行 profit 是按照所有年份聚合计算的结果，
 
-简单就示例来说：
-* 第一行的 profit 结果是来源于在 year 和 month 都没有被 GROUP 掉的情况下，并来自 2 维分组 {year, month} 且其具体值为 {2000, “Jan”} 的细粒度小分组的聚合结果。
+具体来说：
 
-
-* 第二行的 profit 结果是来源于仅在 month 被 GROUP 掉的情况下，来自 1 维分组 {year} 且其具体值为 {2001} 的中层粒度分组下的聚合结果。
-
-
-* 最后一行的 profit 结果是来源于在 year 和 month 都被 GROUP 掉的情况下，来自 0 维分组 {} 即在全域范围内展开的结果聚合。
+* 第一行的 profit 值来自 2 维分组 {year, month}，为 {2000, “Jan”} 的细粒度分组的聚合结果。
+* 第二行的 profit 值来自 1 维分组 {year}，为 {2001} 的中层粒度分组下的聚合结果。
+* 最后一行的 profit 值来自 0 维分组 {}，即整体的聚合结果。
 
 考虑到这种 `NULL` 有特殊的含义 --- 分组表达式所呈现出来的 `NULL` 值可以被认为是在高维度聚合中被 GROUP 掉的那一列，因此使用整个分组转向于更高维度的聚合粒度。这种 `NULL` 值的赋予动作是 Expand 算子在复制逻辑中添加的，而 Expand 算子的构建就在 Aggregate 算子的前序动作当中，因此该分组表达式所呈现出来的 `NULL` 可以被逻辑 Aggregate 算子之后的所有其他子句所利用，主要表现为 select-list / having / order-by 当中表达式的应用。 比如：我们可以利用 having 子句过滤并只看 2 维度分组下的聚合结果输出。
 
