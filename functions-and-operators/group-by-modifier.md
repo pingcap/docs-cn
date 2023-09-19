@@ -157,25 +157,7 @@ SELECT year, month, SUM(profit) AS profit, grouping(year) as grp_year, grouping(
 
 多维度聚合目前依赖于 `Expand` 算子来实现底层的数据特殊复制，每个复制数据的副本都一一对应于一个特定的 GROUPING SET 或者说是 GROUPING LAYOUT。`Expand` 算子依赖 MPP 的数据 shuffle 能力，能够快速的将大批量的数据在多 TiFlash 节点之间进行重组并计算，充分利用每个节点的计算能力。
 
-目前 `Expand` 算子的实现有点类似 `Projection` 算子的实现，该方案的灵感是由 SparkSQL 的同名算子而来的；然而其中的区别就在于 `Expand` 是多层 `Projection` 的联合表现，多层 `Projection` 的表达式生成是由 TiDB 优化器在优化阶段根据由 ROLLUP 语法生成的 GROUPING SETS 推演而来。
-
-```go
-// LogicalExpand represents a logical Expand OP serves for data replication requirement.
-type LogicalExpand struct {
-	// The level projections is generated from grouping sets，make execution more clearly.
-	LevelExprs [][]expression.Expression
-	// ...
-}
-
-// LogicalExpand represents a logical Expand OP serves for data replication requirement.
-type LogicalProjection struct {
-	// Exprs describe how to generate the projected columns
-	Exprs []expression.Expression 
-    // ...
-}
-```
-
-这意味着对于每一原生数据行，`Projection` 算子根据投影运算表达式会对应生成一行结果输出，而由于 `Expand` 算子具有多层级投影运算表达式，所以对于每一原生数据行，其会依次投影输出 N 行（其中 N 等于多层级投影运算表达式的层次数，即 len(`LevelExprs`) = N）。N 行的输出顺序依次对应层级投影表达式的排列顺序。我们就以以下 SQL 作为样例讲解：
+目前 `Expand` 算子的实现类似 `Projection` 算子，其中区别就在于 `Expand` 是多层 `Projection` 的联合，这意味着对于每一原生数据行，`Projection` 算子根据投影运算表达式会对应生成一行结果输出，而由于 `Expand` 算子具有多层级投影运算表达式，所以对于每一原生数据行，其会依次投影输出 N 行（其中 N 等于多层级投影运算表达式的层数）。
 
 示例参考计划: [explain](/explain-aggregation.md#多维度数据聚合 ROLLUP)
 
@@ -183,22 +165,8 @@ type LogicalProjection struct {
 bank.profit, Column#6, <nil>->Column#7, 1->gid],[test.bank.profit, Column#6, Column#7, 3->gid]`。其由 2 维表达式组成，尾部后缀有 
 `Expand` 算子的 Schema 信息：`schema: [test.bank.profit,Column#6,Column#7,gid]`。
 
-正如你所见，在 `Expand` 算子的 Schema 信息中，`GID` 会作为额外的生成列来输出，其值也是由 `Expand` 算子根据 GROUPING SETS 的逻辑计算得来的，反应了当前数据副本和对应的 GROUPING SETS 的关系，该值的生成有以下几种模式：
+正上所示，在 `Expand` 算子的 Schema 信息中，`GID` 会作为额外的生成列来输出，其值也是由 `Expand` 算子根据不同的维度分组逻辑计算得来的，反应了当前数据副本和维度分组的关系。其中最常见的属是位掩码运算, 其可以容纳 63 种 GROUP BY ITEMS 的 ROLLUP 组合，对应维度分组的数量为 64 种。这种模式下 `GID` 值的生成根据当前数据副本复制时所需维度分组中 GROUPING EXPRESSION 的有无，按照 GROUP BY ITEMS 的序列，顺序填充一个 64 位的 UINT64 的值。
 
-```go
-type GroupingMode int32
+例如这里 GROUP BY ITEMS 序列顺序是 [year, month], 而 ROLLUP 的语法生成的维度分组集合为：{year, month}, {year}, {}。对于维度分组 {year, month} 来说，其 `year` 和 `month` 两个 GROUPING ITEM 都是当前维度分组所需的列，对应填充对应比特位为 1 和 1，组成 UINT64 为 11...0 即 3。相应的 `year` 和 `month` 两个 GROUPING ITEM 都是当前维度分组所需的列，所在当前投影表达式构建时要保留这两个列的完整输出，所以投影表达式为 `[test.bank.profit, Column#6, Column#7, 3->gid]`。（column#6 = year, column#7 = month）
 
-const (
-	GroupingMode_ModeBitAnd     GroupingMode = 1
-	GroupingMode_ModeNumericCmp GroupingMode = 2
-	GroupingMode_ModeNumericSet GroupingMode = 3
-)
-```
-
-其中最常见的属是 `GroupingMode_ModeBitAnd`, 其可以容纳 63 种 GROUP BY ITEMS 的 ROLLUP 组合，对应生成 GROUPING SETS 的数量刚好为 N+1 = 64 种。这种模式下 `GID` 值的生成根据当前数据副本复制时所需的 GROUPING SET 中 GROUPING EXPRESSION 的有无，按照 GROUP BY ITEMS 的序列，顺序填充一个 64 位的 UINT64 的值。
-
-例如这里 GROUP BY ITEMS 序列顺序是 [year, month], 而 ROLLUP 的语法生成的 GROUPING SETS 集合为：{year, month}, {year}, {}。对于 GROUPING SET {year, month} 来说，其 `year` 和 `month` 两个 GROUPING ITEM 都是当前 GROUPING SET 所需的列，对应填充对应比特位为 1 和 1，组成 UINT64 为 11...0 即 3。相应的，投影表达式的生成也是顺利成章，`year` 和 `month` 两个 GROUPING ITEM 都是当前 GROUPING SET 所需的列，所在当前投影表达式构建的时，要保留这两个列的完整输出，所以投影表达式为 `[test.bank.profit, Column#6, Column#7, 3->gid]`。（column#6 = year, column#7 = month）
-
-对于 GROUPING SET {year} 来说，仅有其 `year` 的 GROUPING ITEM 是当前 GROUPING SET 的所序列，`GID` 对应填充的比特位为 1 和 0，组成 UINT64 为 10...0 即 1。相应的，投影表达式的生成也只需要保留 `year` 列即可，对不需要的 `month` 列可以主动将之投影为 `NULL`，因为 `NULL` 值在 GROUP 的分组动作中可以被归类到统一的分组中，并且其分组代表输出值 `NULL` 跟上述提到的代表低维度分组表达式被 GROUP 掉的理念是不谋而合的。所以投影表达式为 `[test.bank.profit, Column#6, <nil>->Column#7, 1->gid]`。相似的，对应 GROUPING SET {} 的 `GID` 值生成为 0，其相应的投影表达式生成为 `[test.bank.profit, <nil>->Column#6, <nil>->Column#7, 0->gid]`。
-
-注意到，上述 `Expand` 的所有投影表达式中，对于无关的 GROUP BY ITEM 的其他列都会保留作为 Schema 的前缀来输出，比如这里的 `test.bank.profit`。此外，观察到 select list 中使用了 `GROUPING` 函数；对于无论是 select list / having / order by 中的使用到的 `GROUPING` 函数，TiDB 会在逻辑优化阶段对其进行改写，将函数原有的由 GROUP BY ITEM 所代表的与 GROUPING SETS 的关系，转化为由 `GID` 所代表的与 GROUPING SETS 计算逻辑，并填充到新的 `GROUPING` 函数当中，以 `GROUPING(gid) with metadata` 的形式来呈现，这里的 metadata 蕴含了 `GID` 与原有参数的目前 GROUPING SETS 计算逻辑。
+注意到 select list 中使用了 `GROUPING` 函数。对于 select list / having / order by 中的使用到的 `GROUPING` 函数，TiDB 会在逻辑优化阶段对其进行改写，将函数原有的由 GROUP BY ITEM 所代表的与维度分组的关系，转化为由 `GID` 所代表的与维度分组计算逻辑，以 metadata 形式填充到新的 `GROUPING` 函数当中。
