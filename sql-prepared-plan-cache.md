@@ -22,7 +22,7 @@ TiDB 优化器对这两类查询的处理是一样的：`Prepare` 时将参数�
 - 访问分区表、临时表或访问表中包含生成列的查询；
 - 查询中包含非关联子查询，例如 `SELECT * FROM t1 WHERE t1.a > (SELECT 1 FROM t2 WHERE t2.b < 1)`；
 - 执行计划中带有 `PhysicalApply` 算子的关联子查询，例如 `SELECT * FROM t1 WHERE t1.a > (SELECT a FROM t2 WHERE t1.b > t2.b)`；
-- 包含 `ignore_plan_cache` 这一 Hint 的查询，例如 `select /*+ ignore_plan_cache() */ * from t`；
+- 包含 `ignore_plan_cache` 或 `set_var` 这两 Hint 的查询，例如 `select /*+ ignore_plan_cache() */ * from t` 或 `select /*+ SET_VAR(max_execution_time=1) */ * from t`；
 - 包含除 `?` 外其他变量（即系统变量或用户自定义变量）的查询，例如 `select * from t where a>? and b>@x`；
 - 查询包含无法被缓存函数。目前不能被缓存的函数有：`database()`、`current_user`、`current_role`、`user`、`connection_id`、`last_insert_id`、`row_count`、`version`、`like`；
 - `LIMIT` 后面带有变量（例如 `LIMIT ?` 或 `LIMIT 10, ?`）且变量值大于 10000 的执行计划不缓存；
