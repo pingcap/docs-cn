@@ -21,7 +21,7 @@ summary: 了解如何使用 TiDB GROUP BY 修饰符。
 ```sql
 select count(1) from t GROUP BY a,b,c WITH ROLLUP;
 
--- 其意味着，count(1) 的结果需要数据分别在，{a,b,c}, {a,b}, {a},{} 一共 N+1 个分组上进行聚合，然后联合输出（考虑 GROUP BY ITEMS 的长度为 N）。
+-- 在此示例中，count(1) 的结果需要数据分别在，{a,b,c}, {a,b}, {a},{} 一共 N+1 个分组上进行聚合，然后联合输出分组的汇总数据（考虑 GROUP BY ITEMS 的长度为 N）。
 ```
 
 高维度聚合联合输出一般是用在 OLAP（Online Analytical Processing）场景下居多，因此目前，TiDB 仅在 MPP 模式下才支持 对 ROLLUP 语法产生有效的执行计划，这也意味客户集群需要包含 TiFlash 节点，并且对目标分析表进行了正确的 TiFlash 副本的配置。目前 ROLLUP 的实现引入了一个新的算子 Expand，该算子能够根据不同的分组规则，进行底层数据的特殊复制，不同复制的数据份对应于一个特定的分组规则；利用 TiDB MPP 模式下对 Expand 之后的大批量数据的灵活 shuffle 来进行实现高效分组和聚合计算，均摊多节点算力。
