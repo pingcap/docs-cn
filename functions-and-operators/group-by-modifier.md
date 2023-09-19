@@ -48,7 +48,8 @@ ALTER TABLE bank set SET TIFLASH REPLICA 1; -- 为该表添加一个 TiFlash 副
 
 INSERT INTO bank VALUES(2000, "Jan", 1, 10.3),(2001, "Feb", 2, 22.4),(2000,"Mar", 3, 31.6)
 ```
-对于想看下银行每年的利润，我们可以用一个简单的 GROUP 的语句来实现：
+如需查看银行每年的利润，可以用一个简单的 `GROUP BY` 的子句来实现：
+
 ```sql
 tidb> SELECT year, SUM(profit) AS profit from bank group by year;
 +------+--------------------+
