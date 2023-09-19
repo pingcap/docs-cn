@@ -205,7 +205,7 @@ explain SELECT year, month, grouping(year), grouping(month), SUM(profit) AS prof
 ```
 整个语句的 SQL 聚合可以在 `GROUP BY year, month WITH ROLLUP` 规范的多重分组布局 GROUPING SETS {year, month}, {year}, {} 中分别计算并连接结果。
 
-更多详情参考: [group-by-modifier](/functions-and-operators/group-by-modifier.md)
+更多详情参考: [GROUP BY 修饰符](/functions-and-operators/group-by-modifier.md)
 
 ## 其他类型查询的执行计划
 
