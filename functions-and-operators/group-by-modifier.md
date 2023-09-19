@@ -22,6 +22,7 @@ select count(1) from t GROUP BY a,b,c WITH ROLLUP;
 -- 在此示例中，count(1) 的结果需要数据分别在，{a,b,c}, {a,b}, {a},{} 一共 N+1 个分组上进行聚合，然后联合输出分组的汇总数据（考虑 GROUP BY ITEMS 的长度为 N）。
 ```
 ## 使用场景
+
 多列数据的聚合汇总输出一般常用于 OLAP（Online Analytical Processing）场景。目前 ROLLUP 的实现引入了一个新的算子 Expand，该算子能够根据不同的分组规则，进行底层数据的特殊复制，不同复制的数据份对应于一个特定的分组规则；利用 TiDB MPP 模式下对 Expand 之后的大批量数据的灵活 shuffle 来进行实现高效分组和聚合计算，均摊多节点算力。
 
 ## 准备条件
