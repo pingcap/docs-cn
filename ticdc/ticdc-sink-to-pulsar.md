@@ -7,7 +7,7 @@ summary: 了解如何使用 TiCDC 将数据同步到 Pulsar。
 
 本文介绍如何使用 TiCDC 创建一个将增量数据复制到 Pulsar 的 Changefeed。
 
-## 创建同步任务，复制增量数据 Pulsar
+## 创建同步任务，复制增量数据到 Pulsar
 
 使用以下命令来创建同步任务：
 
@@ -33,9 +33,9 @@ Info: {"upstream_id":7277814241002263370,"namespace":"default","id":"simple-repl
 - `--target-ts`：指定 changefeed 的目标 TSO。TiCDC 集群拉取数据直到这个 TSO 停止。默认为空，即 TiCDC 不会自动停止。
 - `--config`：指定 changefeed 配置文件，详见：[TiCDC Changefeed 配置参数](/ticdc/ticdc-changefeed-config.md)。
 
-## 使用Sink URI 和 Changefeed config 配置 Pulsar
+## 使用 Sink URI 和 Changefeed config 配置 Pulsar
 
-Sink URI 用于指定 TiCDC 目标系统的连接信息，Changefeed config 用来配置具体 Pulsar 相关的参数。
+Sink URI 用于指定 TiCDC 目标系统的连接信息，Changefeed config 用来配置 Pulsar 相关的参数。
 
 ### Sink URI
 
@@ -45,13 +45,13 @@ Sink URI 遵循以下格式：
 [scheme]://[userinfo@][host]:[port][/path]?[query_parameters]
 ```
 
-一个通用的配置样例如下所示：
+配置示例 1：
 
 ```shell
 --sink-uri="pulsar://127.0.0.1:6650/persistent://abc/def/yktest?protocol=canal-json"
 ```
 
-或者：
+配置示例 2:
 
 ```shell
 --sink-uri="pulsar://127.0.0.1:6650/yktest?protocol=canal-json"
@@ -63,8 +63,8 @@ URI 中可配置的的参数如下：
 | :------------------ | :------------------------------------------------------------ |
 | `127.0.0.1`          | 下游 Pulsar 对外提供服务的 IP。                                 |
 | `6650`               | 下游 Pulsar 的连接端口。                                          |
-| `persistent://abc/def/yktest`   |  指定 Pulsar 的租户/命名空间/topic 的全名。                                      |
-| `yktest`    | 使用 Pulsar 服务端的默认租户/默认命名空间的 topic 的简写名。通常默认的租户是 `public`，命名空间是 `default`。`yktest` 为具体的 topic，该写法相当于指定 topic 为 `persistent://public/default/yktest` |
+| `persistent://abc/def/yktest`   |  参考上面的示例 1，该参数用于指定 Pulsar 的租户、命名空间、topic。                                      |
+| `yktest`    | 参考上面的示例 2，如果你想要指定的 topic 在 Pulsar 的默认租户 `public` 下的默认命名空间 `default` 中，你可以在 URI 中只配置 topic 名，例如 `yktest`。该写法相当于指定 topic 为 `persistent://public/default/yktest`。 |
 
 ### Changefeed config 参数
 
@@ -72,7 +72,8 @@ URI 中可配置的的参数如下：
 
 ```toml
 [sink]
-# 注意：当下游 MQ 为 Pulsar 时，如果 partition 的路由规则未被指定为 `ts`、`index-value`、`table`、或 `default` 中的任意一种，将会使用你设置的字符串作为每一条 Pulsar message 的 key 进行路由。例如，如果你指定的路由规则为字符串 `code`，那么符合该 matcher 的所有 Pulsar message 都将会以 `code`` 作为 key 进行路由。
+# `dispatchers` 用于指定 matcher 匹配规则
+# 注意：当下游 MQ 为 Pulsar 时，如果 `partition` 的路由规则未被指定为 `ts`、`index-value`、`table`、或 `default` 中的任意一种，将会使用你设置的字符串作为每一条 Pulsar message 的 key 进行路由。例如，如果你指定的路由规则为字符串 `code`，那么符合该 matcher 的所有 Pulsar message 都将会以 `code` 作为 key 进行路由。
 # dispatchers = [
 #    {matcher = ['test1.*', 'test2.*'], topic = "Topic 表达式 1", partition = "ts" },
 #    {matcher = ['test3.*', 'test4.*'], topic = "Topic 表达式 2", partition = "index-value" },
@@ -89,7 +90,7 @@ URI 中可配置的的参数如下：
 [sink.pulsar-config]
 # 使用 token 进行 Pulsar 服务端的认证，此处为 token 的值。
 authentication-token = "xxxxxxxxxxxxx"
-# 指定使用 token 进行 Pulsar 服务端的认证，此处为 token 的所在文件的路径。
+# 指定使用 token 进行 Pulsar 服务端的认证，此处为 token 所在文件的路径。
 token-from-file="/data/pulsar/token-file.txt"
 # Pulsar 使用 basic 账号密码验证身份。
 basic-user-name="root"
@@ -129,8 +130,8 @@ send-timeout=30
 
 ### 最佳实践
 
-* 你需要在创建 Changefeed 的时候设置 `protocol` 参数。目前仅支持使用 `canal-json` 协议。
-* `pulsar-producer-cache-size` 参数表示 Pulsar 客户端中缓存 Producer 的数量，因为 Pulsar 的每个 Producer 只能对应一个 topic，TiCDC 采用 LRU 方式缓存 Producer，默认限制为 10240 个。
+* 你需要在创建 Changefeed 的时候设置 `protocol` 参数。目前同步数据到 Pulsar 仅支持使用 `canal-json` 协议。
+* `pulsar-producer-cache-size` 参数表示 Pulsar 客户端中缓存 Producer 的数量，因为 Pulsar 的每个 Producer 只能对应一个 topic，TiCDC 采用 LRU 方式缓存 Producer，默认限制为 10240 个。如果你需要同步的 topic 数量大于默认值，则需要调大该数量。
 
 ### TiCDC 使用 Pulsar 的认证与授权
 
@@ -138,13 +139,13 @@ send-timeout=30
 
 - Token
 
-    Sink-URI
+    Sink URI：
 
     ```shell
     --sink-uri="pulsar://127.0.0.1:6650/persistent://public/default/yktest?protocol=canal-json"
     ```
 
-    config：
+    config 参数：
 
     ```shell
     [sink.pulsar-config]
@@ -153,49 +154,49 @@ send-timeout=30
 
 - Token from file
 
-    Sink-URI
+    Sink URI：
 
     ```shell
     --sink-uri="pulsar://127.0.0.1:6650/persistent://public/default/yktest?protocol=canal-json"
     ```
 
-    config：
+    config 参数：
 
     ```toml
     [sink.pulsar-config]
-    # Pulsar 使用 token 进行 Pulsar 服务端的认证，但这里是 token 文件的路径，会从 TiCDC Server 所在机器上读取。
+    # Pulsar 使用 token 进行 Pulsar 服务端的认证，但这里配置的是 token 文件的路径，会从 TiCDC Server 所在机器上读取。
     token-from-file="/data/pulsar/token-file.txt"
     ```
 
 - TLS 加密认证
 
-    Sink-URI
+    Sink URI：
 
     ```shell
     --sink-uri="pulsar+ssl://127.0.0.1:6650/persistent://public/default/yktest?protocol=canal-json"
     ```
 
-    config：
+    config 参数：
 
     ```toml
     [sink.pulsar-config]
-    # Pulsar TLS加密认证证书路径
+    # Pulsar TLS 加密认证证书路径
     auth-tls-certificate-path="/data/pulsar/certificate"
-    # Pulsar TLS加密认证私钥路径
+    # Pulsar TLS 加密认证私钥路径
     auth-tls-private-key-path="/data/pulsar/certificate.key"
-    # Pulsar TLS加密可信证书文件路径
+    # Pulsar TLS 加密可信证书文件路径
     tls-trust-certs-file-path="/data/pulsar/tls-trust-certs-file"
     ```
 
 - OAuth2 认证
 
-    Sink-URI
+    Sink URI：
 
     ```shell
     --sink-uri="pulsar+ssl://127.0.0.1:6650/persistent://public/default/yktest?protocol=canal-json"
     ```
 
-    config：
+    config 参数：
 
     ```toml
     [sink.pulsar-config]
@@ -211,7 +212,7 @@ send-timeout=30
     oauth2.oauth2-scope="xxxx"
     ```
 
-## 自定义 Kafka Sink 的 Topic 和 Partition 的分发规则
+## 自定义 Pulsar Sink 的 Topic 和 Partition 的分发规则
 
 ### Matcher 匹配规则
 
@@ -228,10 +229,10 @@ dispatchers = [
 ]
 ```
 
-- 对于匹配了 matcher 规则的表，按照对应的 topic 表达式指定的策略进行分发。例如表 `test3.aa`，按照 topic 表达式 2 分发；表 `test5.aa`，按照 topic 表达式 3 分发。
-- 对于匹配了多个 matcher 规则的表，以靠前的 matcher 对应的 topic 表达式为准。例如表 `test1.aa`，按照 topic 表达式 1 分发。
-- 对于没有匹配任何 matcher 的表，将对应的数据变更事件发送到 `--sink-uri` 中指定的默认 topic 中。例如表 `test10.aa` 发送到默认 topic。
-- 对于匹配了 matcher 规则但是没有指定 topic 分发器的表，将对应的数据变更发送到 `--sink-uri` 中指定的默认 topic 中。例如表 `test9.abc` 发送到默认 topic。
+- 对于匹配了 matcher 规则的表，按照对应的 topic 表达式指定的策略进行分发。例如，表 `test3.aa` 会按照 `Topic 表达式 2` 分发，表 `test5.aa` 会按照 `Topic 表达式 3` 分发。
+- 对于匹配了多个 matcher 规则的表，以靠前的 matcher 对应的 topic 表达式为准。例如，表 `test1.aa` 会按照 `Topic 表达式 1` 分发。
+- 对于没有匹配任何 matcher 的表，将对应的数据变更事件发送到 `--sink-uri` 中指定的默认 topic 中。例如，表 `test10.aa` 会发送到默认 topic。
+- 对于匹配了 matcher 规则但是没有指定 topic 分发器的表，将对应的数据变更发送到 `--sink-uri` 中指定的默认 topic 中。例如，表 `test9.abc` 会发送到默认 topic。
 
 ### Topic 分发器
 
@@ -258,7 +259,7 @@ Topic 表达式的基本规则为 `[prefix]{schema}[middle][{table}][suffix]`，
     - 对于 `test4` 下的所有表对应的数据变更事件，发送到名为 `hello_test4_world` 的 topic 中。
 
 - `matcher = ['*.*'], topic = "{schema}_{table}"`
-    - 对于 TiCDC 监听的所有表，按照“库名_表名”的规则分别分发到独立的 topic 中；例如对于 `test.account` 表，TiCDC 会将其数据变更日志分发到名为 `test_account` 的 topic 中。
+    - 对于 TiCDC 监听的所有表，按照“库名_表名”的规则分别分发到独立的 topic 中。例如，对于 `test.account` 表，TiCDC 会将其数据变更日志分发到名为 `test_account` 的 topic 中。
 
 ### DDL 事件的分发
 
@@ -268,11 +269,11 @@ Topic 表达式的基本规则为 `[prefix]{schema}[middle][{table}][suffix]`，
 
 #### 表级别 DDL
 
-诸如 `ALTER TABLE`、`CREATE TABLE` 这类和某一张具体的表相关的 DDL，称之为表级别 DDL。对于表级别 DDL 对应的事件，按照 dispatchers 的配置，被发送到相应的 topic 中。
+诸如 `ALTER TABLE`、`CREATE TABLE` 这类和某一张具体的表相关的 DDL，称之为表级别 DDL。对于表级别 DDL 对应的事件，按照 `dispatchers` 的配置，被发送到相应的 topic 中。
 
-例如，对于 `matcher = ['test.*'], topic = {schema}_{table}` 这样的 dispatchers 配置，DDL 事件分发情况如下：
+例如，对于 `matcher = ['test.*'], topic = {schema}_{table}` 这样的 `dispatchers` 配置，DDL 事件分发情况如下：
 
-- 若 DDL 事件中涉及单张表，则将 DDL 事件原样发送到相应的 topic 中。对于 DDL 事件 `DROP TABLE test.table1`，该事件会被发送到名为 `test_table1` 的 topic 中。
+- 若 DDL 事件中涉及单张表，则将 DDL 事件原样发送到相应的 topic 中。例如，对于 DDL 事件 `DROP TABLE test.table1`，该事件会被发送到名为 `test_table1` 的 topic 中。
 
 - 若 DDL 事件中涉及多张表（`RENAME TABLE`、`DROP TABLE`、`DROP VIEW` 都可能涉及多张表），则将单个 DDL 事件拆分为多个发送到相应的 topic 中。例如，对于 DDL 事件 `RENAME TABLE test.table1 TO test.table10, test.table2 TO test.table20`，处理如下：
 
