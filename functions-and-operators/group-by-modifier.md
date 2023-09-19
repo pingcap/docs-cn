@@ -155,7 +155,7 @@ SELECT year, month, SUM(profit) AS profit, grouping(year) as grp_year, grouping(
 
 ## 如何阅读 ROLLUP 的执行计划
 
-多维度聚合目前依赖于 `Expand` 算子来实现底层的数据特殊复制，每个复制数据的副本都一一对应于一个特定的 GROUPING SET 或者说是 GROUPING LAYOUT。`Expand` 算子依赖 MPP 的数据 shuffle 能力，能够快速的将大批量的数据在多 TiFlash 节点之间进行重组并计算，充分利用每个节点的计算能力。
+多维度聚合目前依赖于 `Expand` 算子来实现底层的数据特殊复制，每个复制数据的副本都一一对应于一个特定的维度分组。`Expand` 算子依赖 MPP 的数据 shuffle 能力，能够快速的将大批量的数据在多 TiFlash 节点之间进行重组并计算，充分利用每个节点的计算能力。
 
 目前 `Expand` 算子的实现类似 `Projection` 算子，其中区别就在于 `Expand` 是多层 `Projection` 的联合，这意味着对于每一原生数据行，`Projection` 算子根据投影运算表达式会对应生成一行结果输出，而由于 `Expand` 算子具有多层级投影运算表达式，所以对于每一原生数据行，其会依次投影输出 N 行（其中 N 等于多层级投影运算表达式的层数）。
 
