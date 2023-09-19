@@ -61,7 +61,9 @@ SELECT year, SUM(profit) AS profit FROM bank GROUP BY year;
 +------+--------------------+
 2 rows in set (0.15 sec)
 ```
-对于银行报表来说，有时候出来分析计算每年的利润之后，通常我们还会算下所有年份的利润综合，甚至每个月的利润总成来达到高维度或者是更细粒度的利润分析；然后这并不是一个简单的 GROUP-BY 语句能做的，通常是要多个 GROUP-BY 语句跟上不同的聚合粒度，然后将所有的所有用 UNION 链接起来呈现。在有了 ROLLUP 语法之后，其实可以这样做：
+
+对于银行报表来说，除了每年的利润之外，通常还需要计算所有年份的总利润，甚至每个月的总利润，以进行更高层次或更详细的利润分析。在 v7.4.0 之前的版本中，你需要多次使用不同的 `GROUP BY` 子句，并将结果使用 UNION 连接，才能得到聚合汇总的结果。从 v7.4.0 起，你可以直接在 `GROUP BY` 子句中添加 `WITH ROLLUP` 修饰符，即可得到所需的结果：
+
 ```sql
 TiDB [test]> SELECT year, month, SUM(profit) AS profit from bank GROUP BY year, month WITH ROLLUP order by year desc, month desc;
 +------+-------+--------------------+
