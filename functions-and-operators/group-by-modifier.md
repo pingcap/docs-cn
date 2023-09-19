@@ -65,7 +65,7 @@ SELECT year, SUM(profit) AS profit FROM bank GROUP BY year;
 对于银行报表来说，除了每年的利润之外，通常还需要计算所有年份的总利润，甚至每个月的总利润，以进行更高层次或更详细的利润分析。在 v7.4.0 之前的版本中，你需要多次使用不同的 `GROUP BY` 子句，并将结果使用 UNION 连接，才能得到聚合汇总的结果。从 v7.4.0 起，你可以直接在 `GROUP BY` 子句中添加 `WITH ROLLUP` 修饰符，即可得到所需的结果：
 
 ```sql
-TiDB [test]> SELECT year, month, SUM(profit) AS profit from bank GROUP BY year, month WITH ROLLUP order by year desc, month desc;
+SELECT year, month, SUM(profit) AS profit from bank GROUP BY year, month WITH ROLLUP order by year desc, month desc;
 +------+-------+--------------------+
 | year | month | profit             |
 +------+-------+--------------------+
