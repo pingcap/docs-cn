@@ -23,10 +23,17 @@ select count(1) from t GROUP BY a,b,c WITH ROLLUP;
 
 -- 在此示例中，count(1) 的结果需要数据分别在，{a,b,c}, {a,b}, {a},{} 一共 N+1 个分组上进行聚合，然后联合输出分组的汇总数据（考虑 GROUP BY ITEMS 的长度为 N）。
 ```
+## 使用场景
+多列数据的聚合汇总输出一般常用于 OLAP（Online Analytical Processing）场景。目前 ROLLUP 的实现引入了一个新的算子 Expand，该算子能够根据不同的分组规则，进行底层数据的特殊复制，不同复制的数据份对应于一个特定的分组规则；利用 TiDB MPP 模式下对 Expand 之后的大批量数据的灵活 shuffle 来进行实现高效分组和聚合计算，均摊多节点算力。
 
-高维度聚合联合输出一般是用在 OLAP（Online Analytical Processing）场景下居多，因此目前，TiDB 仅在 MPP 模式下才支持 对 ROLLUP 语法产生有效的执行计划，这也意味客户集群需要包含 TiFlash 节点，并且对目标分析表进行了正确的 TiFlash 副本的配置。目前 ROLLUP 的实现引入了一个新的算子 Expand，该算子能够根据不同的分组规则，进行底层数据的特殊复制，不同复制的数据份对应于一个特定的分组规则；利用 TiDB MPP 模式下对 Expand 之后的大批量数据的灵活 shuffle 来进行实现高效分组和聚合计算，均摊多节点算力。
+## 准备条件
+目前，TiDB 仅在 TiFlash MPP 模式下支持为 `WITH ROLLUP` 语法生成有效的执行计划，因此你的 TiDB 集群需要包含 TiFlash 节点，并且对目标分析表进行了正确的 TiFlash 副本的配置。
 
+更多信息，请参考[扩容 TiFlash 节点](/scale-tidb-using-tiup.md#扩容-tiflash-节点)。
+
+## 使用示例
 以下是一个示例，假如一张表有: 年，月，日三个时间维度，并且有一个利润字段。
+
 ```sql
 CREATE TABLE bank
 (
