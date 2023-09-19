@@ -44,9 +44,9 @@ CREATE TABLE bank
     profit  FLOAT
 );
 
-alter table bank set tiflash replica 1;
+ALTER TABLE bank set SET TIFLASH REPLICA 1; -- 为该表添加一个 TiFlash 副本
 
-insert into bank values(2000, "Jan", 1, 10.3),(2001, "Feb", 2, 22.4),(2000,"Mar", 3, 31.6)
+INSERT INTO bank VALUES(2000, "Jan", 1, 10.3),(2001, "Feb", 2, 22.4),(2000,"Mar", 3, 31.6)
 ```
 对于想看下银行每年的利润，我们可以用一个简单的 GROUP 的语句来实现：
 ```sql
