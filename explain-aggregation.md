@@ -178,6 +178,32 @@ Query OK, 0 rows affected (0.28 sec)
 5 rows in set (0.00 sec)
 ```
 
+## 多维度数据聚合 ROLLUP
+从 v7.4 开始，TiDB GROUP-BY 条项允许后接 WITH ROLLUP 修饰符来对 GROUP BY ITEMS 进行多个分组维度的描述，从而使得聚合输出是能够包含在各个分组维度上聚合结果的并集。ROLLUP 的语法规定，对前缀 GROUP-BY 所包含的分组表达式列表，依次递减列表尾端的分组表达式元素，每次递减一项，形成新的分组高维度序列，该语句所有上层执行流需要在新的分组维度上也进行依次计算，并将输出结果和前序其他聚合结果进行并集累加；分组表达式列表最终可以递减到空集序列，语义上意味着聚合逻辑需要在全域数据范围进行计算，最终的输出结果依旧是和前序其他聚合结果进行并集累加，最终统一输出到客户端。
+> 注意：TiDB 暂时不支持 Cube 语法; TiDB 目前仅在 MPP 模式下支持 ROLLUP 语法的计划。
+
+```sql
+tidb> explain SELECT year, month, grouping(year), grouping(month), SUM(profit) AS profit from bank GROUP BY year, month WITH ROLLUP;
++----------------------------------------+---------+--------------+---------------+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| id                                     | estRows | task         | access object | operator info                                                                                                                                                                                                                        |
++----------------------------------------+---------+--------------+---------------+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| TableReader_44                         | 2.40    | root         |               | MppVersion: 2, data:ExchangeSender_43                                                                                                                                                                                                |
+| └─ExchangeSender_43                    | 2.40    | mpp[tiflash] |               | ExchangeType: PassThrough                                                                                                                                                                                                            |
+|   └─Projection_8                       | 2.40    | mpp[tiflash] |               | Column#6->Column#12, Column#7->Column#13, grouping(gid)->Column#14, grouping(gid)->Column#15, Column#9->Column#16                                                                                                                    |
+|     └─Projection_38                    | 2.40    | mpp[tiflash] |               | Column#9, Column#6, Column#7, gid                                                                                                                                                                                                    |
+|       └─HashAgg_36                     | 2.40    | mpp[tiflash] |               | group by:Column#6, Column#7, gid, funcs:sum(test.bank.profit)->Column#9, funcs:firstrow(Column#6)->Column#6, funcs:firstrow(Column#7)->Column#7, funcs:firstrow(gid)->gid, stream_count: 8                                           |
+|         └─ExchangeReceiver_22          | 3.00    | mpp[tiflash] |               | stream_count: 8                                                                                                                                                                                                                      |
+|           └─ExchangeSender_21          | 3.00    | mpp[tiflash] |               | ExchangeType: HashPartition, Compression: FAST, Hash Cols: [name: Column#6, collate: binary], [name: Column#7, collate: utf8mb4_bin], [name: gid, collate: binary], stream_count: 8                                                  |
+|             └─Expand_20                | 3.00    | mpp[tiflash] |               | level-projection:[test.bank.profit, <nil>->Column#6, <nil>->Column#7, 0->gid],[test.bank.profit, Column#6, <nil>->Column#7, 1->gid],[test.bank.profit, Column#6, Column#7, 3->gid]; schema: [test.bank.profit,Column#6,Column#7,gid] |
+|               └─Projection_16          | 3.00    | mpp[tiflash] |               | test.bank.profit, test.bank.year->Column#6, test.bank.month->Column#7                                                                                                                                                                |
+|                 └─TableFullScan_17     | 3.00    | mpp[tiflash] | table:bank    | keep order:false, stats:pseudo                                                                                                                                                                                                       |
++----------------------------------------+---------+--------------+---------------+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+10 rows in set (0.05 sec)
+```
+整个语句的 SQL 聚合可以在 `GROUP BY year, month WITH ROLLUP` 规范的多重分组布局 GROUPING SETS {year, month}, {year}, {} 中分别计算并连接结果。
+
+更多详情参考: [group-by-modifier](/functions-and-operators/group-by-modifier.md)
+
 ## 其他类型查询的执行计划
 
 + [MPP 模式查询的执行计划](/explain-mpp.md)

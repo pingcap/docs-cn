@@ -1,13 +1,13 @@
 ---
 title: GROUP BY 修饰符
-summary: 关于 TiDB GROUP BY 修饰符的使用
-aliases: ['/docs/dev/functions-and-operators/group-by-modifiers/','/docs/dev/reference/sql/functions-and-operators/group-by-modifiers/']
+summary: 了解如何使用 TiDB GROUP BY 修饰符。
 ---
-# GROUP BY Modifiers
+# GROUP BY 修饰符
 
 ## 普通使用指南
 
 从 v7.4 开始，TiDB GROUP-BY 条项允许后接 WITH ROLLUP 修饰符来对 GROUP BY ITEMS 进行多个分组维度的描述，从而使得聚合输出是能够包含在各个分组维度上聚合结果的并集。ROLLUP 的语法规定，对前缀 GROUP-BY 所包含的分组表达式列表，依次递减列表尾端的分组表达式元素，每次递减一项，形成新的分组高维度序列，该语句所有上层执行流需要在新的分组维度上也进行依次计算，并将输出结果和前序其他聚合结果进行并集累加；分组表达式列表最终可以递减到空集序列，语义上意味着聚合逻辑需要在全域数据范围进行计算，最终的输出结果依旧是和前序其他聚合结果进行并集累加，最终统一输出到客户端。
+> 注意：TiDB 暂时不支持 Cube 语法
 
 ```sql
 select count(1) from t GROUP BY a,b,c WITH ROLLUP;
@@ -15,7 +15,7 @@ select count(1) from t GROUP BY a,b,c WITH ROLLUP;
 -- 其意味着，count(1) 的结果需要数据分别在，{a,b,c}, {a,b}, {a},{} 一共 N+1 个分组上进行聚合，然后联合输出（考虑 GROUP BY ITEMS 的长度为 N）。
 ```
 
-高维度聚合联合输出一般是用在 OLAP（Online Analytical Processing）场景下居多，因此目前，TiDB 仅在 MPP 模式下才支持 对ROLLUP 语法产生有效的执行计划，这也意味客户集群需要包含 TiFlash 节点，并且对目标分析表进行了正确的 TiFlash 副本的配置。目前 ROLLUP 的实现引入了一个新的算子 Expand，该算子能够根据不同的分组规则，进行底层数据的特殊复制，不同复制的数据份对应于一个特定的分组规则；利用 TiDB MPP 模式下对 Expand 之后的大批量数据的灵活 shuffle 来进行实现高效分组和聚合计算，均摊多节点算力。
+高维度聚合联合输出一般是用在 OLAP（Online Analytical Processing）场景下居多，因此目前，TiDB 仅在 MPP 模式下才支持 对 ROLLUP 语法产生有效的执行计划，这也意味客户集群需要包含 TiFlash 节点，并且对目标分析表进行了正确的 TiFlash 副本的配置。目前 ROLLUP 的实现引入了一个新的算子 Expand，该算子能够根据不同的分组规则，进行底层数据的特殊复制，不同复制的数据份对应于一个特定的分组规则；利用 TiDB MPP 模式下对 Expand 之后的大批量数据的灵活 shuffle 来进行实现高效分组和聚合计算，均摊多节点算力。
 
 以下是一个示例，假如一张表有: 年，月，日三个时间维度，并且有一个利润字段。
 ```sql
@@ -42,7 +42,7 @@ tidb> SELECT year, SUM(profit) AS profit from bank group by year;
 +------+--------------------+
 2 rows in set (0.15 sec)
 ```
-对于银行报表来说，有时候出来分析计算每年的利润之后，通常我们还会算下所有年份的利润综合，甚至每个月的利润总成来达到高纬度或者是更细粒度的利润分析；然后这并不是一个简单的 GROUP-BY 语句能做的，通常是要多个 GROUP-BY 语句跟上不同的聚合粒度，然后将所有的所有用 UNION 链接起来呈现。在有了 ROLLUP 语法之后，其实可以这样做：
+对于银行报表来说，有时候出来分析计算每年的利润之后，通常我们还会算下所有年份的利润综合，甚至每个月的利润总成来达到高维度或者是更细粒度的利润分析；然后这并不是一个简单的 GROUP-BY 语句能做的，通常是要多个 GROUP-BY 语句跟上不同的聚合粒度，然后将所有的所有用 UNION 链接起来呈现。在有了 ROLLUP 语法之后，其实可以这样做：
 ```sql
 tidb> SELECT year, month, SUM(profit) AS profit from bank GROUP BY year, month WITH ROLLUP;
 +------+-------+--------------------+
@@ -147,26 +147,11 @@ type LogicalProjection struct {
 
 这意味着对于每一原生数据行，`Projection` 算子根据投影运算表达式会对应生成一行结果输出，而由于 `Expand` 算子具有多层级投影运算表达式，所以对于每一原生数据行，其会依次投影输出 N 行（其中 N 等于多层级投影运算表达式的层次数，即 len(`LevelExprs`) = N）。N 行的输出顺序依次对应层级投影表达式的排列顺序。我们就以以下 SQL 作为样例讲解：
 
-```sql
-tidb> explain SELECT year, month, grouping(year), grouping(month), SUM(profit) AS profit from bank GROUP BY year, month WITH ROLLUP;
-+----------------------------------------+---------+--------------+---------------+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
-| id                                     | estRows | task         | access object | operator info                                                                                                                                                                                                                        |
-+----------------------------------------+---------+--------------+---------------+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
-| TableReader_44                         | 2.40    | root         |               | MppVersion: 2, data:ExchangeSender_43                                                                                                                                                                                                |
-| └─ExchangeSender_43                    | 2.40    | mpp[tiflash] |               | ExchangeType: PassThrough                                                                                                                                                                                                            |
-|   └─Projection_8                       | 2.40    | mpp[tiflash] |               | Column#6->Column#12, Column#7->Column#13, grouping(gid)->Column#14, grouping(gid)->Column#15, Column#9->Column#16                                                                                                                    |
-|     └─Projection_38                    | 2.40    | mpp[tiflash] |               | Column#9, Column#6, Column#7, gid                                                                                                                                                                                                    |
-|       └─HashAgg_36                     | 2.40    | mpp[tiflash] |               | group by:Column#6, Column#7, gid, funcs:sum(test.bank.profit)->Column#9, funcs:firstrow(Column#6)->Column#6, funcs:firstrow(Column#7)->Column#7, funcs:firstrow(gid)->gid, stream_count: 8                                           |
-|         └─ExchangeReceiver_22          | 3.00    | mpp[tiflash] |               | stream_count: 8                                                                                                                                                                                                                      |
-|           └─ExchangeSender_21          | 3.00    | mpp[tiflash] |               | ExchangeType: HashPartition, Compression: FAST, Hash Cols: [name: Column#6, collate: binary], [name: Column#7, collate: utf8mb4_bin], [name: gid, collate: binary], stream_count: 8                                                  |
-|             └─Expand_20                | 3.00    | mpp[tiflash] |               | level-projection:[test.bank.profit, <nil>->Column#6, <nil>->Column#7, 0->gid],[test.bank.profit, Column#6, <nil>->Column#7, 1->gid],[test.bank.profit, Column#6, Column#7, 3->gid]; schema: [test.bank.profit,Column#6,Column#7,gid] |
-|               └─Projection_16          | 3.00    | mpp[tiflash] |               | test.bank.profit, test.bank.year->Column#6, test.bank.month->Column#7                                                                                                                                                                |
-|                 └─TableFullScan_17     | 3.00    | mpp[tiflash] | table:bank    | keep order:false, stats:pseudo                                                                                                                                                                                                       |
-+----------------------------------------+---------+--------------+---------------+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
-10 rows in set (0.05 sec)
-```
+示例参考计划: [explain](/explain-aggregation.md#多维度数据聚合 ROLLUP)
 
-`Expand_20` 算子信息展示了所谓生成的层级表达式：`level-projection:[test.bank.profit, <nil>->Column#6, <nil>->Column#7, 0->gid],[test.bank.profit, Column#6, <nil>->Column#7, 1->gid],[test.bank.profit, Column#6, Column#7, 3->gid]`。其有 2 维表达式数组组成，尾部后缀有 `Expand` 算子的 Schema 信息：`schema: [test.bank.profit,Column#6,Column#7,gid]`。
+`Expand_20` 算子信息展示了所谓生成的层级表达式：`level-projection:[test.bank.profit, <nil>->Column#6, <nil>->Column#7, 0->gid],[test.
+bank.profit, Column#6, <nil>->Column#7, 1->gid],[test.bank.profit, Column#6, Column#7, 3->gid]`。其由 2 维表达式组成，尾部后缀有 
+`Expand` 算子的 Schema 信息：`schema: [test.bank.profit,Column#6,Column#7,gid]`。
 
 正如你所见，在 `Expand` 算子的 Schema 信息中，`GID` 会作为额外的生成列来输出，其值也是由 `Expand` 算子根据 GROUPING SETS 的逻辑计算得来的，反应了当前数据副本和对应的 GROUPING SETS 的关系，该值的生成有以下几种模式：
 
@@ -180,10 +165,10 @@ const (
 )
 ```
 
-其中最常见的属是 `GroupingMode_ModeBitAnd`, 其可以容纳 63 种 GROUP BY ITEMS 的 ROLLUP 组合，对应生成 GROUPING SETS 的数量刚好为 N+1 = 64 种。这种模式下 `GID` 值的生成根据当前数据副本复制时所对应的 GROUPING SET 中 GROUPING EXPRESSION 的需要与否，对应按照 GROUP BY ITEMS 的序列顺序填充一个 64 位的 UINT64 的值。
+其中最常见的属是 `GroupingMode_ModeBitAnd`, 其可以容纳 63 种 GROUP BY ITEMS 的 ROLLUP 组合，对应生成 GROUPING SETS 的数量刚好为 N+1 = 64 种。这种模式下 `GID` 值的生成根据当前数据副本复制时所需的 GROUPING SET 中 GROUPING EXPRESSION 的有无，按照 GROUP BY ITEMS 的序列，顺序填充一个 64 位的 UINT64 的值。
 
-这里 GROUP BY ITEMS 序列顺序是 [year, month], 而 ROLLUP 的语法生成的 GROUPING SETS 集合为：{year, month}, {year}, {}。对于 GROUPING SET {year, month} 来说，其 `year` 和 `month` 两个 GROUPING ITEM 都是当前 GROUPING SET 所需的列，对应填充对应比特位为 1 和 1，组成 UINT64 为 11...0 即 3。相应的，投影表达式的生成也是顺利成章，因为 `year` 和 `month` 两个 GROUPING ITEM 都是当前 GROUPING SET 所需的列，所以在当前投影表达式构建的时候，要保留这两个列的完整输出，所以投影表达式为 `[test.bank.profit, Column#6, Column#7, 3->gid]`。（column#6 = year, column#7 = month）
+例如这里 GROUP BY ITEMS 序列顺序是 [year, month], 而 ROLLUP 的语法生成的 GROUPING SETS 集合为：{year, month}, {year}, {}。对于 GROUPING SET {year, month} 来说，其 `year` 和 `month` 两个 GROUPING ITEM 都是当前 GROUPING SET 所需的列，对应填充对应比特位为 1 和 1，组成 UINT64 为 11...0 即 3。相应的，投影表达式的生成也是顺利成章，`year` 和 `month` 两个 GROUPING ITEM 都是当前 GROUPING SET 所需的列，所在当前投影表达式构建的时，要保留这两个列的完整输出，所以投影表达式为 `[test.bank.profit, Column#6, Column#7, 3->gid]`。（column#6 = year, column#7 = month）
 
-对于 GROUPING SET {year} 来说，仅有其 `year` 的 GROUPING ITEM 是当前 GROUPING SET 的所序列，`GID` 对应填充的比特位为 1 和 0，组成 UINT64 为 10...0 即 1。相应的，投影表达式的生成也只需要保留 `year` 列即可，对应不需要的 `month` 列可以主动将之投影为 `NULL`，因为 `NULL` 值在 GROUP 的分组动作中可以被归类到统一的分组中，并且其分组代表输出值 `NULL` 跟上述提到的代表低维度分组表达式被 GROUP 掉的理念是不谋而合的。所以投影表达式为 `[test.bank.profit, Column#6, <nil>->Column#7, 1->gid]`。相似的，对应 GROUPING SET {} 的 `GID` 值生成为 0，其相应的投影表达式生成为 `[test.bank.profit, <nil>->Column#6, <nil>->Column#7, 0->gid]`。
+对于 GROUPING SET {year} 来说，仅有其 `year` 的 GROUPING ITEM 是当前 GROUPING SET 的所序列，`GID` 对应填充的比特位为 1 和 0，组成 UINT64 为 10...0 即 1。相应的，投影表达式的生成也只需要保留 `year` 列即可，对不需要的 `month` 列可以主动将之投影为 `NULL`，因为 `NULL` 值在 GROUP 的分组动作中可以被归类到统一的分组中，并且其分组代表输出值 `NULL` 跟上述提到的代表低维度分组表达式被 GROUP 掉的理念是不谋而合的。所以投影表达式为 `[test.bank.profit, Column#6, <nil>->Column#7, 1->gid]`。相似的，对应 GROUPING SET {} 的 `GID` 值生成为 0，其相应的投影表达式生成为 `[test.bank.profit, <nil>->Column#6, <nil>->Column#7, 0->gid]`。
 
 注意到，上述 `Expand` 的所有投影表达式中，对于无关的 GROUP BY ITEM 的其他列都会保留作为 Schema 的前缀来输出，比如这里的 `test.bank.profit`。此外，观察到 select list 中使用了 `GROUPING` 函数；对于无论是 select list / having / order by 中的使用到的 `GROUPING` 函数，TiDB 会在逻辑优化阶段对其进行改写，将函数原有的由 GROUP BY ITEM 所代表的与 GROUPING SETS 的关系，转化为由 `GID` 所代表的与 GROUPING SETS 计算逻辑，并填充到新的 `GROUPING` 函数当中，以 `GROUPING(gid) with metadata` 的形式来呈现，这里的 metadata 蕴含了 `GID` 与原有参数的目前 GROUPING SETS 计算逻辑。
