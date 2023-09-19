@@ -75,7 +75,8 @@ TiDB [test]> SELECT year, month, SUM(profit) AS profit from bank GROUP BY year, 
 +------+-------+--------------------+
 6 rows in set (0.025 sec)
 ```
-在这份结果中，联合了在不同的月份，年份，以及全域上的所有维度的聚合输出；其中 month 和 year 部分出现的 `NULL` 值表示这个 month 或 year 是被高维度聚合分组所 GROUP 掉的列，该行 profit 所呈现的聚合结果 profit，是仅在没有被 `NULL` 化的 month 和 year 所组成的名文所对应的分组上所聚合出来的。
+
+以上结果包含了按照年份、月份、以及整体所有层次的聚合数据。其中，未出现 `NULL` 值的行表示该行 profit 是按照年份和月份分组计算的结果，`month` 列的 `NULL` 值表示该行 profit 是按照所有月份聚合计算的结果，`year` 列的 `NULL` 值表示该行 profit 是按照所有年份聚合计算的结果，
 
 简单就示例来说：
 * 第一行的 profit 结果是来源于在 year 和 month 都没有被 GROUP 掉的情况下，并来自 2 维分组 {year, month} 且其具体值为 {2000, “Jan”} 的细粒度小分组的聚合结果。
