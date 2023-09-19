@@ -26,6 +26,7 @@ select count(1) from t GROUP BY a,b,c WITH ROLLUP;
 多列数据的聚合汇总输出一般常用于 OLAP（Online Analytical Processing）场景。目前 ROLLUP 的实现引入了一个新的算子 Expand，该算子能够根据不同的分组规则，进行底层数据的特殊复制，不同复制的数据份对应于一个特定的分组规则；利用 TiDB MPP 模式下对 Expand 之后的大批量数据的灵活 shuffle 来进行实现高效分组和聚合计算，均摊多节点算力。
 
 ## 准备条件
+
 目前，TiDB 仅在 TiFlash MPP 模式下支持为 `WITH ROLLUP` 语法生成有效的执行计划，因此你的 TiDB 集群需要包含 TiFlash 节点，并且对目标分析表进行了正确的 TiFlash 副本的配置。
 
 更多信息，请参考[扩容 TiFlash 节点](/scale-tidb-using-tiup.md#扩容-tiflash-节点)。
