@@ -51,7 +51,8 @@ TiDB 版本：6.5.5
 
     - 修复调度器启动时间长的问题 [#6920](https://github.com/tikv/pd/issues/6920) @[HuSharp](https://github.com/HuSharp)
     - 修复 Scatter Region 处理 Leader 和 Peer 的逻辑不一致的问题 [#6962](https://github.com/tikv/pd/issues/6962) @[bufferflies](https://github.com/bufferflies)
-
+    - 修复集群重启或者 PD Leader 切换时，空 Region 数量监控指标异常的问题 [#7008](https://github.com/tikv/pd/issues/7008) @[CabinfeverB](https://github.com/CabinfeverB)
+    
 + Tools
 
     + Backup & Restore (BR)
