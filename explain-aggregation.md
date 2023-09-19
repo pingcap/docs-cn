@@ -179,6 +179,7 @@ Query OK, 0 rows affected (0.28 sec)
 ```
 
 ## 多维度数据聚合 ROLLUP
+
 自 v7.4.0 起，TiDB 的 `GROUP BY` 子句支持 `WITH ROLLUP` 修饰符。
 
 你可以在 `GROUP BY` 子句中指定一个或多个列，形成一个分组列表，然后添加 `WITH ROLLUP` 修饰符。TiDB 将会按照分组列表中的列进行多层次的递减分组，并在输出中为你提供各个分组数据的汇总结果。
