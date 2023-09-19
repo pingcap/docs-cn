@@ -107,7 +107,7 @@ SELECT year, month, SUM(profit) AS profit FROM bank GROUP BY year, month WITH RO
 3 rows in set (0.02 sec)
 ```
 
-需要注意的是，如果 `GROUP BY` 分组列表中的某列包含原生的 `NULL` 值，`WITH ROLLUP` 和分组聚合可能会对查询结果产生误导。为了解决这个问题，你可以使用 `GROUPING ()` 函数区分原生 `NULL` 值和 `WITH ROLLUP` 生成的 `NULL` 值。该函数接受分组表达式作为参数，并输出 `0` 或 `1`，表示该分组表达式是否在当前结果中被聚合。`1` 表示被聚合，`0` 表示没有。
+需要注意的是，如果 `GROUP BY` 分组列表中的某列包含原生的 `NULL` 值，`WITH ROLLUP` 的分组聚合可能会对查询结果产生误导。为了解决这个问题，你可以使用 `GROUPING ()` 函数区分原生的 `NULL` 值和 `WITH ROLLUP` 生成的 `NULL` 值。该函数接受分组表达式作为参数，并输出 `0` 或 `1`，表示该分组表达式是否在当前结果中被聚合。`1` 表示被聚合，`0` 表示没有。
 
 以下是如何使用 `GROUPING ()` 函数的示例：
 
