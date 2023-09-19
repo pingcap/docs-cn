@@ -87,7 +87,9 @@ TiDB [test]> SELECT year, month, SUM(profit) AS profit from bank GROUP BY year, 
 * 第二行的 profit 值来自 1 维分组 {year}，为 {2001} 的中层粒度分组下的聚合结果。
 * 最后一行的 profit 值来自 0 维分组 {}，即整体的聚合结果。
 
-考虑到这种 `NULL` 有特殊的含义 --- 分组表达式所呈现出来的 `NULL` 值可以被认为是在高维度聚合中被 GROUP 掉的那一列，因此使用整个分组转向于更高维度的聚合粒度。这种 `NULL` 值的赋予动作是 Expand 算子在复制逻辑中添加的，而 Expand 算子的构建就在 Aggregate 算子的前序动作当中，因此该分组表达式所呈现出来的 `NULL` 可以被逻辑 Aggregate 算子之后的所有其他子句所利用，主要表现为 select-list / having / order-by 当中表达式的应用。 比如：我们可以利用 having 子句过滤并只看 2 维度分组下的聚合结果输出。
+`WITH ROLLUP` 结果中的  `NULL` 值是在应用 Aggregate 算子之前生成的，因此你可以将 `NULL` 值应用于 `SELECT`、`HAVING`、`ORDER BY` 子句中，进一步过滤聚合结果。
+
+例如，你可以在 `HAVING` 子句中通过 `NULL` 过滤并只看 2 维度分组下的聚合结果输出。
 
 ```sql
 TiDB [test]> SELECT year, month, SUM(profit) AS profit from bank GROUP BY year, month WITH ROLLUP having year is not null and 
