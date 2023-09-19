@@ -74,6 +74,7 @@ Compared to Mydumper, Dumpling has the following improvements:
 
 ### Required privileges
 
+- PROCESS: Required to query the cluster information to obtain the PD address and then control GC via the PD.
 - SELECT: Required when exporting tables.
 - RELOAD: Required when using `consistency flush`. Note that only TiDB supports this privilege. When the upstream is an RDS database or a managed service, you can ignore this privilege.
 - LOCK TABLES: Required when using `consistency lock`. This privilege must be granted for all the databases and tables to be exported.
