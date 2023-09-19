@@ -32,9 +32,6 @@ TiDB 版本：6.5.5
 
         - 减少日志备份 `resolve lock` 的 CPU 开销 [#40759](https://github.com/pingcap/tidb/issues/40759) @[3pointer](https://github.com/3pointer)
 
-    + TiDB Lightning
-
-
 ## 错误修复
 
 + TiDB
@@ -50,7 +47,7 @@ TiDB 版本：6.5.5
     - 修复 Online Unsafe Recovery 时无法处理 merge abort 的问题 [#15580](https://github.com/tikv/tikv/issues/15580) @[v01dstar](https://github.com/v01dstar)
     - 修复 PD 和 TiKV 之间的网络中断可能导致 PITR 卡住的问题 [#15279](https://github.com/tikv/tikv/issues/15279) @[YuJuncen](https://github.com/YuJuncen)
 
-+ PD **tw@ran-huang**
++ PD
 
     - 修复调度器启动时间长的问题 [#6920](https://github.com/tikv/pd/issues/6920) @[HuSharp](https://github.com/HuSharp)
     - 修复 Scatter Region 处理 Leader 和 Peer 的逻辑不一致的问题 [#6962](https://github.com/tikv/pd/issues/6962) @[bufferflies](https://github.com/bufferflies)
@@ -73,6 +70,7 @@ TiDB 版本：6.5.5
         - 修复使用 SASL 认证时可能导致 TiCDC 出现 panic 的问题 [#9669](https://github.com/pingcap/tiflow/issues/9669)
         - 修复 TiCDC 同步任务在某些特殊场景可能失败的问题 [#9685](https://github.com/pingcap/tiflow/issues/9685)[#9697](https://github.com/pingcap/tiflow/issues/9697)[#9695](https://github.com/pingcap/tiflow/issues/9695)[#9736](https://github.com/pingcap/tiflow/issues/9736)
         - 修复上游在 Region 非常多时，TiKV 节点出现故障导致 TiCDC 不能同步任务以及不能快速恢复的问题 [#9741](https://github.com/pingcap/tiflow/issues/9741)
+    
     + TiDB Lightning 
         - 修复 TiDB Lightning 在目标服务器部署 TiCDC 时无法启动的问题 [#41040](https://github.com/pingcap/tidb/issues/41040) @[lance6716](https://github.com/lance6716)
         - 修复 TiDB Lightning 在 PD 拓扑变更时无法启动的问题 [#46688](https://github.com/pingcap/tidb/issues/46688) @[lance6716](https://github.com/lance6716)
