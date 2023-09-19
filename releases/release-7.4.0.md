@@ -73,11 +73,11 @@ TiDB 版本：7.4.0
 
 * 支持缓存非 Prepare 语句的执行计划 (GA) [#36598](https://github.com/pingcap/tidb/issues/36598) @[qw4990](https://github.com/qw4990) **tw@Oreoxmt** <!--1355-->
 
-    TiDB v7.0.0 引入了非 Prepare 语句的执行计划缓存作为实验特性，以提升在线交易场景的并发处理能力。在 v7.1.0 中，该功能正式 GA。执行计划缓存技术将会被应用于更广泛的场景，从而提升 TiDB 的并发处理能力。
+    TiDB v7.0.0 引入了非 Prepare 语句的执行计划缓存作为实验特性，以提升在线交易场景的并发处理能力。在 v7.4.0 中，该功能正式 GA。执行计划缓存技术将会被应用于更广泛的场景，从而提升 TiDB 的并发处理能力。
 
-     对于不依赖非 Prepare 语句执行计划缓存的客户，开启缓存会引入少量性能回退，因此非 Prepare 语句的执行计划缓存从 7.4.0 开始默认关闭，用户可以通过系统变量 [`tidb_enable_non_prepared_plan_cache`](/system-variables.md#tidb_enable_non_prepared_plan_cache) 按需打开，并通过系统变量 [`tidb_session_plan_cache_size`](/system-variables.md#tidb_session_plan_cache_size-从-v710-版本开始引入) 设置缓存大小。
+    开启非 Prepare 语句执行计划缓存可能会带来额外的内存和 CPU 开销，并不一定适用于所有场景。从 v7.4.0 开始，非 Prepare 语句的执行计划缓存默认关闭。你可以通过系统变量 [`tidb_enable_non_prepared_plan_cache`](/system-variables.md#tidb_enable_non_prepared_plan_cache) 控制是否开启该功能并通过 [`tidb_session_plan_cache_size`](/system-variables.md#tidb_session_plan_cache_size-从-v710-版本开始引入) 设置缓存大小。
 
-    此外，该功能暂时不对 DML 语句生效，对 SQL 的模式也有一定的限制，具体参见[使用限制](/sql-non-prepared-plan-cache.md#限制)。
+    此外，该功能默认不支持 DML 语句，对 SQL 的模式也有一定的限制，具体参见[使用限制](/sql-non-prepared-plan-cache.md#限制)。
 
     更多信息，请参考[用户文档](/sql-non-prepared-plan-cache.md)。
 
@@ -100,11 +100,11 @@ TiDB 版本：7.4.0
     
     更多的信息，请参考[用户文档](/system-variables.md#tidb_kv_read_timeout-从-v740-版本开始引入)。
 
-* 部分系统变量可通过优化器提示设置 [#issue号](链接) @[winoros](https://github.com/winoros) **tw@Oreoxmt** <!--923-->
+* 支持通过优化器提示临时修改部分系统变量的值 [#issue号](链接) @[winoros](https://github.com/winoros) **tw@Oreoxmt** <!--923-->
 
-    TiDB 新增支持了 MySQL 8.0 相似的优化器提示 [`SET_VAR()`]()。 通过在 SQL 添加 hint `SET_VAR()`，能够在语句运行过程中临时修改部分系统变量，达到针对不同语句设置环境的目的。 比如主动提升高消耗的 SQL 的并行度，或者利用变量修改优化器行为。
+    TiDB v7.4.0 新增支持与 MySQL 8.0 相似的优化器提示 `SET_VAR()`。通过在 SQL 语句中添加 Hint `SET_VAR()`，可以在语句运行过程中临时修改部分系统变量，以针对不同语句设置环境。例如，可以主动提升高消耗 SQL 的并行度，或者通过变量修改优化器行为。
 
-    支持修改的系统变量请参考[用户文档](/system-variables.md)，不建议在提示中设置文档中没有明确支持的变量，可能造成不可预知的结果。
+    支持使用 Hint `SET_VAR()` 修改的系统变量请参考[系统变量](/system-variables.md)。强烈建议不要利用此 Hint 修改没有明确支持的变量，这可能会引发不可预知的行为。
 
     更多信息，请参考[用户文档](/optimizer-hints.md)。
 
@@ -130,18 +130,18 @@ TiDB 版本：7.4.0
 
     更多信息，请参考[用户文档](/system-variables.md#tidb_opt_objective-从-v740-版本开始引入)。
 
-* 后台任务自动资源管控 (实验特性) [#issue号](链接) @[glorv](https://github.com/glorv) **tw@Oreoxmt** <!--1448-->
+* 资源管控支持自动管理后台任务（实验特性）[#issue号](链接) @[glorv](https://github.com/glorv) **tw@Oreoxmt** <!--1448-->
 
-    数据库集群中存在一些用户不感知的任务，用户对这部分任务的时延并不关注，而这些任务的资源消耗却可能造成系统整体性能的下降。 在新版本中，资源管控加入了对已知低优先级任务的自动管理。 可以被
-    
-    - `lightning` 数据导入：使用 [TiDB Lightning](/tidb-lightning/tidb-lightning-overview.md) 执行导入任务。同时支持 TiDB Lightning 的物理和逻辑导入模式。
-    - 数据库备份：使用 [BR](/br/backup-and-restore-overview.md) 执行数据备份和恢复。目前不支持 PITR。
-    - DDL 操作：对于 Reorg DDL 生效，控制批量数据回写阶段的资源使用。
-    - 统计信息收集：对应手动执行或系统自动触发的[收集统计信息](/statistics.md#统计信息的收集)任务。
-    
-    默认情况下，后台任务的管理功能处于关闭状态，其行为与之前版本保持一致。用户需要手动对 `default` [资源组的设定做修改](/sql-statements/sql-statement-alter-resource-group.md) 以开启后台任务管理。
+    后台任务是指那些优先级不高但是需要消耗大量资源的任务，如数据备份和自动统计信息收集等。这些任务通常定期或不定期触发，在执行的时候会消耗大量资源，从而影响在线的高优先级任务的性能。在 TiDB v7.4.0 中，资源管控引入了对后台任务的自动管理。该功能有助于降低低优先级任务对在线业务的性能影响，实现资源的合理分配，大幅提升集群的稳定性。
 
-    对已知后台任务的自动资源管控，降低了低优先级任务对线上业务的性能影响，实现资源的合理分配，大幅提升集群的稳定性。 
+    目前 TiDB 支持如下几种后台任务的类型：
+
+    - `lightning`：使用 [TiDB Lightning](/tidb-lightning/tidb-lightning-overview.md) 执行导入任务。同时支持 TiDB Lightning 的物理和逻辑导入模式。
+    - `br`：使用 [BR](/br/backup-and-restore-overview.md) 执行数据备份和恢复。目前不支持 PITR。
+    - `ddl`：对于 Reorg DDL，控制批量数据回写阶段的资源使用。
+    - `analyze`：对应手动执行或系统自动触发的[收集统计信息](/statistics.md#统计信息的收集)任务。
+
+    默认情况下，被标记为后台任务的任务类型为空，此时后台任务的管理功能处于关闭状态，其行为与 TiDB v7.4.0 之前版本保持一致。你需要手动修改 `default` 资源组的后台任务类型以开启后台任务管理。
 
     更多信息，请参考[用户文档](/tidb-resource-control.md)。
 
