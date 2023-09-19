@@ -168,7 +168,7 @@ delete-only-output-handle-key-columns = false
 # 换行符，用来分隔两个数据变更事件。默认值为空，表示使用 "\r\n" 作为换行符。
 # terminator = ''
 
-# 文件路径的日期分隔类型。可选类型有 `none`、`year`、`month` 和 `day`。默认值为 `none`，即不使用日期分隔。详见 <https://docs.pingcap.com/zh/tidb/dev/ticdc-sink-to-cloud-storage#数据变更记录>。
+# 文件路径的日期分隔类型。可选类型有 `none`、`year`、`month` 和 `day`。默认值为 `day`，即按天分隔。详见 <https://docs.pingcap.com/zh/tidb/stable/ticdc-sink-to-cloud-storage#数据变更记录>。
 # 注意：该参数只有当下游为存储服务时，才会生效。
 date-separator = 'day'
 
