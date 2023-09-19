@@ -137,6 +137,7 @@ GROUPING(day, month, year):
 ```
 
 使用组合参数的 `GROUPING()` 的函数可以快速过滤掉出任何高维度的聚合结果，就像这样只查看高维度聚合的结果：
+
 ```sql
 TiDB [test]> SELECT year, month, SUM(profit) AS profit, grouping(year) as grp_year, grouping(month) as grp_month from 
   bank
