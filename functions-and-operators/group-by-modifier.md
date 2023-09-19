@@ -92,8 +92,7 @@ TiDB [test]> SELECT year, month, SUM(profit) AS profit from bank GROUP BY year, 
 例如，你可以在 `HAVING` 子句中通过 `NULL` 过滤并只看 2 维度分组下的聚合结果输出。
 
 ```sql
-TiDB [test]> SELECT year, month, SUM(profit) AS profit from bank GROUP BY year, month WITH ROLLUP having year is not null and 
-  month is not null;
+SELECT year, month, SUM(profit) AS profit FROM bank GROUP BY year, month WITH ROLLUP HAVING year IS NOT null AND month IS NOT null; 
 +------+-------+--------------------+
 | year | month | profit             |
 +------+-------+--------------------+
@@ -109,8 +108,7 @@ TiDB [test]> SELECT year, month, SUM(profit) AS profit from bank GROUP BY year, 
 以下是如何使用 `GROUPING ()` 函数的示例：
 
 ```sql
-TiDB [test]> SELECT year, month, SUM(profit) AS profit, grouping(year) as grp_year, grouping(month) as grp_month from 
-  bank GROUP BY year, month WITH ROLLUP order by year desc, month desc;
+SELECT year, month, SUM(profit) AS profit, grouping(year) as grp_year, grouping(month) as grp_month FROM bank GROUP BY year, month WITH ROLLUP ORDER BY year DESC, month DESC;
 +------+-------+--------------------+----------+-----------+
 | year | month | profit             | grp_year | grp_month |
 +------+-------+--------------------+----------+-----------+
@@ -139,9 +137,7 @@ GROUPING(day, month, year):
 使用组合参数的 `GROUPING()` 的函数可以快速过滤掉出任何高维度的聚合结果，就像这样只查看高维度聚合的结果：
 
 ```sql
-TiDB [test]> SELECT year, month, SUM(profit) AS profit, grouping(year) as grp_year, grouping(month) as grp_month from 
-  bank
-  ->    GROUP BY year, month WITH ROLLUP having GROUPING(year, month) <> 0 order by year desc, month desc;
+SELECT year, month, SUM(profit) AS profit, grouping(year) as grp_year, grouping(month) as grp_month FROM bank GROUP BY year, month WITH ROLLUP HAVING GROUPING(year, month) <> 0 ORDER BY year DESC, month DESC;
 +------+-------+--------------------+----------+-----------+
 | year | month | profit             | grp_year | grp_month |
 +------+-------+--------------------+----------+-----------+
