@@ -4,8 +4,6 @@ summary: 了解如何使用 TiDB GROUP BY 修饰符。
 ---
 # GROUP BY 修饰符
 
-## 普通使用指南
-
 自 v7.4.0 起，TiDB 的 `GROUP BY` 子句支持 `WITH ROLLUP` 修饰符。
 
 你可以在 `GROUP BY` 子句中指定一个或多个列，形成一个分组列表，然后添加 `WITH ROLLUP` 修饰符。TiDB 将会按照分组列表中的列进行多层次的递减分组，并在输出中为你提供各个分组数据的汇总结果。
