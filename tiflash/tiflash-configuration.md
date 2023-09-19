@@ -131,7 +131,7 @@ delta_index_cache_size = 0
     tidb_status_addr = tidb status 端口地址 # 多个地址以逗号分割
     service_addr =  TiFlash raft 服务 和 coprocessor 服务监听地址
 
-    ## 从 v7.4.0 引入，当当前 Raft 状态机推进的 applied_index 和上次落盘时的 applied_index 相差高于 compact_log_min_gap 时，
+    ## 从 v7.4.0 引入，在当前 Raft 状态机推进的 applied_index 和上次落盘时的 applied_index 的差值高于 compact_log_min_gap 时，
     ## 不再拒绝来自 TiKV 的 CompactLog 命令，并进行落盘。调大该值会减少落盘频率，增大内存开销。调小该值不会让 TiFlash 落盘频率高于 TiKV。
     ## 建议保持默认值。
     # compact_log_min_gap = 200
