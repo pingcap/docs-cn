@@ -51,7 +51,7 @@ Sink URI 遵循以下格式：
 --sink-uri="pulsar://127.0.0.1:6650/persistent://abc/def/yktest?protocol=canal-json"
 ```
 
-配置示例 2:
+配置示例 2：
 
 ```shell
 --sink-uri="pulsar://127.0.0.1:6650/yktest?protocol=canal-json"
