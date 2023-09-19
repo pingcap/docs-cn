@@ -127,7 +127,7 @@ TiDB [test]> SELECT year, month, SUM(profit) AS profit, grouping(year) as grp_ye
 
 可以看到我们不再依赖分组表达式 year 和 month 的输出去判断该聚合结果行所在的聚合维度，而是依赖于 grp_year 和 grp_month 的 GROUPING 函数结果来判断，以防止分组表达式 year 和 month 自有原生 `NULL` 值的干扰。
 
-`GROUPING()` 函数最大可以接受 64 个分组表达式作为参数，而多参数的他们输出不再是简单的 `0` 和 `1`, 而是每个参数都可以生成一个 `0` 或 `1` 的结果，综合组成一个比特位的 `0` 或 `1` 总体是 64 位的 `UNSIGNED LONGLONG`，而其所在该比特数位中的位置可以通过以下公式计算：
+`GROUPING()` 函数最多可以接受 64 个分组表达式作为参数。在多参数的输出中，每个参数都可以生成一个 `0` 或 `1` 的结果，综合组成一个比特位的 `0` 或 `1` 总体是 64 位的 `UNSIGNED LONGLONG`。而其所在该比特数位中的位置可以通过以下公式计算：
 
 ```go
 GROUPING(day, month, year):
