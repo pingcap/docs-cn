@@ -177,7 +177,7 @@ SELECT year, month, SUM(profit) AS profit, grouping(year) as grp_year, grouping(
 | 2000 | Jan   |    1 | 10.3000000 |
 +------+-------+------+------------+
 
-经过 Expland 算子之后，可以得到以下三行结果：
+经过 Expand 算子之后，可以得到以下三行结果：
 +------------+------+-------+-----+
 | profit     | year | month | gid |
 +------------+------+-------+-----+
