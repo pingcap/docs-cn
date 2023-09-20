@@ -196,7 +196,7 @@ explain SELECT year, month, grouping(year), grouping(month), SUM(profit) AS prof
 +------+-------+------+------------+
 ```
 
-经过 Expand 算子之后，可以得到以下三行结果：
+经过 `Expand` 算子之后，可以得到以下三行结果：
 
 ```sql
 +------------+------+-------+-----+ 
