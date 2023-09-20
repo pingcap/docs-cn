@@ -184,7 +184,7 @@ explain SELECT year, month, grouping(year), grouping(month), SUM(profit) AS prof
 
 在 `Expand` 算子的 schema 信息中，`GID` 会作为额外的生成列来输出，其值是由 `Expand` 算子根据不同维度的分组逻辑计算得出，反映了当前数据副本和维度分组的关系。最常见的情况是使用位掩码运算, 它可以表示 63 种分组项的 ROLLUP 组合，对应 64 种维度的分组。在这种模式下，`GID` 值的生成根据当前数据副本复制时所需维度分组中是否有分组表达式，按照要进行分组的列，顺序填充一个 64 位的 UINT64 的值。
 
-例如这里 GROUP BY ITEMS 序列顺序是 [year, month], 而 ROLLUP 的语法生成的维度分组集合为：{year, month}, {year}, {}。对于维度分组 {year, month} 来说，其 `year` 和 `month` 两个 GROUPING ITEM 都是当前维度分组所需的列，对应填充对应比特位为 1 和 1，组成 UINT64 为 11...0 即 3。相应的 `year` 和 `month` 两个 GROUPING ITEM 都是当前维度分组所需的列，所在当前投影表达式构建时要保留这两个列的完整输出，所以投影表达式为 `[test.bank.profit, Column#6, Column#7, 3->gid]`。（column#6 = year, column#7 = month）
+例如，这里分组列表中列的顺序是 [year, month]，而 ROLLUP 语法生成的维度分组集合为：{year, month}, {year}, {}。对于维度分组 {year, month} 来说，`year` 和 `month` 都是当前维度分组所需的列，对应填充比特位 1 和 1，组成 UINT64 为 11...0 即 3，因投影表达式为 `[test.bank.profit, Column#6, Column#7, 3->gid]`。（column#6 对应 year，column#7对应 month）
 
 ```
 以原始数据中的一行为例：
