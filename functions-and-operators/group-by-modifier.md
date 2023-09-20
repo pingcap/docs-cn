@@ -159,7 +159,7 @@ SELECT year, month, SUM(profit) AS profit, grouping(year) as grp_year, grouping(
 
 目前 `Expand` 算子的实现类似 `Projection` 算子，其中区别就在于 `Expand` 是多层 `Projection` 的联合，这意味着对于每一原生数据行，`Projection` 算子根据投影运算表达式会对应生成一行结果输出，而由于 `Expand` 算子具有多层级投影运算表达式，所以对于每一原生数据行，其会依次投影输出 N 行（其中 N 等于多层级投影运算表达式的层数）。
 
-示例参考计划: [explain](/explain-aggregation.md#多维度数据聚合-ROLLUP)
+示例参考计划: [explain](/explain-aggregation.md#多维度数据聚合-rollup)
 
 `Expand_20` 算子信息展示了所谓生成的层级表达式：`level-projection:[test.bank.profit, <nil>->Column#6, <nil>->Column#7, 0->gid],[test.
 bank.profit, Column#6, <nil>->Column#7, 1->gid],[test.bank.profit, Column#6, Column#7, 3->gid]`。其由 2 维表达式组成，尾部后缀有 
