@@ -55,7 +55,7 @@ SET GLOBAL tidb_distsql_scan_concurrency = 10;
 
 - 作用域：SESSION | GLOBAL
 - 是否持久化到集群：是
-- 受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
 - 类型：布尔型
 - 默认值：`OFF`
 - 是否允许在 `INSERT` 语句中显式指定含有 `AUTO_RANDOM` 属性的列的值。
@@ -64,7 +64,7 @@ SET GLOBAL tidb_distsql_scan_concurrency = 10;
 
 - 作用域：GLOBAL
 - 是否持久化到集群：是
-- 受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
 - 类型：枚举型
 - 默认值：`SCRAM-SHA-1`
 - 可选值：`SCRAM-SHA-1`、`SCRAM-SHA-256`、`GSSAPI`
@@ -74,7 +74,7 @@ SET GLOBAL tidb_distsql_scan_concurrency = 10;
 
 - 作用域：GLOBAL
 - 是否持久化到集群：是
-- 受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
 - 类型：字符串
 - 默认值：""
 - LDAP SASL 身份验证中，搜索用户的范围。如果创建用户时没有通过 `AS ...` 指定 `dn`，TiDB 会自动在 LDAP Server 的该范围中根据用户名搜索用户 `dn`。例如 `dc=example,dc=org`。
@@ -83,7 +83,7 @@ SET GLOBAL tidb_distsql_scan_concurrency = 10;
 
 - 作用域：GLOBAL
 - 是否持久化到集群：是
-- 受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
 - 类型：字符串
 - 默认值：""
 - LDAP SASL 身份验证中，TiDB 登录 LDAP Server 搜索用户时使用的 `dn`。
@@ -92,7 +92,7 @@ SET GLOBAL tidb_distsql_scan_concurrency = 10;
 
 - 作用域：GLOBAL
 - 是否持久化到集群：是
-- 受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
 - 类型：字符串
 - 默认值：""
 - LDAP SASL 身份验证中，TiDB 登录 LDAP Server 搜索用户时使用的密码。
@@ -101,7 +101,7 @@ SET GLOBAL tidb_distsql_scan_concurrency = 10;
 
 - 作用域：GLOBAL
 - 是否持久化到集群：是
-- 受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
 - 类型：字符串
 - 默认值：""
 - LDAP SASL 身份验证中，TiDB 对 StartTLS 连接使用的 CA 证书的路径。
@@ -110,7 +110,7 @@ SET GLOBAL tidb_distsql_scan_concurrency = 10;
 
 - 作用域：GLOBAL
 - 是否持久化到集群：是
-- 受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
 - 类型：整数型
 - 默认值：`10`
 - 范围：`[1, 32767]`
@@ -120,7 +120,7 @@ SET GLOBAL tidb_distsql_scan_concurrency = 10;
 
 - 作用域：GLOBAL
 - 是否持久化到集群：是
-- 受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
 - 类型：整数型
 - 默认值：`1000`
 - 范围：`[1, 32767]`
@@ -130,7 +130,7 @@ SET GLOBAL tidb_distsql_scan_concurrency = 10;
 
 - 作用域：GLOBAL
 - 是否持久化到集群：是
-- 受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
 - 类型：字符串
 - 默认值：""
 - LDAP SASL 身份验证中，LDAP Server 的主机名或地址。
@@ -139,7 +139,7 @@ SET GLOBAL tidb_distsql_scan_concurrency = 10;
 
 - 作用域：GLOBAL
 - 是否持久化到集群：是
-- 受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
 - 类型：整数型
 - 默认值：`389`
 - 范围：`[1, 65535]`
@@ -149,7 +149,7 @@ SET GLOBAL tidb_distsql_scan_concurrency = 10;
 
 - 作用域：GLOBAL
 - 是否持久化到集群：是
-- 受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
 - 类型：布尔型
 - 默认值：`OFF`
 - LDAP SASL 身份验证中，是否使用 StartTLS 对连接加密。
@@ -158,7 +158,7 @@ SET GLOBAL tidb_distsql_scan_concurrency = 10;
 
 - 作用域：GLOBAL
 - 是否持久化到集群：是
-- 受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
 - 类型：枚举型
 - 默认值：`SIMPLE`
 - 可选值：`SIMPLE`
@@ -168,7 +168,7 @@ SET GLOBAL tidb_distsql_scan_concurrency = 10;
 
 - 作用域：GLOBAL
 - 是否持久化到集群：是
-- 受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
 - 类型：字符串
 - 默认值：""
 - LDAP simple 身份验证中，搜索用户的范围。如果创建用户时没有通过 `AS ...` 指定 `dn`，TiDB 会自动在 LDAP Server 的该范围中根据用户名搜索用户 `dn`。例如 `dc=example,dc=org`。
@@ -177,7 +177,7 @@ SET GLOBAL tidb_distsql_scan_concurrency = 10;
 
 - 作用域：GLOBAL
 - 是否持久化到集群：是
-- 受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
 - 类型：字符串
 - 默认值：""
 - LDAP simple 身份验证中，TiDB 登录 LDAP Server 搜索用户时使用的 `dn`。
@@ -186,7 +186,7 @@ SET GLOBAL tidb_distsql_scan_concurrency = 10;
 
 - 作用域：GLOBAL
 - 是否持久化到集群：是
-- 受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
 - 类型：字符串
 - 默认值：""
 - LDAP simple 身份验证中，TiDB 登录 LDAP Server 搜索用户时使用的密码。
@@ -195,7 +195,7 @@ SET GLOBAL tidb_distsql_scan_concurrency = 10;
 
 - 作用域：GLOBAL
 - 是否持久化到集群：是
-- 受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
 - 类型：字符串
 - 默认值：""
 - LDAP simple 身份验证中，TiDB 对 StartTLS 连接使用的 CA 证书的路径。
@@ -204,7 +204,7 @@ SET GLOBAL tidb_distsql_scan_concurrency = 10;
 
 - 作用域：GLOBAL
 - 是否持久化到集群：是
-- 受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
 - 类型：整数型
 - 默认值：`10`
 - 范围：`[1, 32767]`
@@ -214,7 +214,7 @@ SET GLOBAL tidb_distsql_scan_concurrency = 10;
 
 - 作用域：GLOBAL
 - 是否持久化到集群：是
-- 受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
 - 类型：整数型
 - 默认值：`1000`
 - 范围：`[1, 32767]`
@@ -224,7 +224,7 @@ SET GLOBAL tidb_distsql_scan_concurrency = 10;
 
 - 作用域：GLOBAL
 - 是否持久化到集群：是
-- 受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
 - 类型：字符串
 - 默认值：""
 - LDAP simple 身份验证中，LDAP Server 的主机名或地址。
@@ -233,7 +233,7 @@ SET GLOBAL tidb_distsql_scan_concurrency = 10;
 
 - 作用域：GLOBAL
 - 是否持久化到集群：是
-- 受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
 - 类型：整数型
 - 默认值：`389`
 - 范围：`[1, 65535]`
@@ -243,7 +243,7 @@ SET GLOBAL tidb_distsql_scan_concurrency = 10;
 
 - 作用域：GLOBAL
 - 是否持久化到集群：是
-- 受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
 - 类型：布尔型
 - 默认值：`OFF`
 - LDAP simple 身份验证中，是否使用 StartTLS 对连接加密。
@@ -252,7 +252,7 @@ SET GLOBAL tidb_distsql_scan_concurrency = 10;
 
 - 作用域：SESSION | GLOBAL
 - 是否持久化到集群：是
-- 受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
 - 类型：整数型
 - 默认值：`1`
 - 范围：`[1, 65535]`
@@ -262,7 +262,7 @@ SET GLOBAL tidb_distsql_scan_concurrency = 10;
 
 - 作用域：SESSION | GLOBAL
 - 是否持久化到集群：是
-- 受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
 - 类型：整数型
 - 默认值：`1`
 - 范围：`[1, 65535]`
@@ -298,7 +298,7 @@ mysql> SELECT * FROM t1;
 
 - 作用域：SESSION | GLOBAL
 - 是否持久化到集群：是
-- 受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
 - 类型：布尔型
 - 默认值：`ON`
 - 用于设置在非显式事务时是否自动提交事务。更多信息，请参见[事务概述](/transaction-overview.md#自动提交)。
@@ -307,7 +307,7 @@ mysql> SELECT * FROM t1;
 
 - 作用域：SESSION | GLOBAL
 - 是否持久化到集群：是
-- 受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
 - 类型：枚举型
 - 默认值：`aes-128-ecb`
 - 可选值：`aes-128-ecb`、`aes-192-ecb`、`aes-256-ecb`、`aes-128-cbc`、`aes-192-cbc`、`aes-256-cbc`、`aes-128-ofb`、`aes-192-ofb`、`aes-256-ofb`、`aes-128-cfb`、`aes-192-cfb`、`aes-256-cfb`
@@ -317,7 +317,7 @@ mysql> SELECT * FROM t1;
 
 - 作用域：SESSION | GLOBAL
 - 是否持久化到集群：是
-- 受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
 - 默认值：`utf8mb4`
 - 这个变量表示从客户端发出的数据所用的字符集。有关更多 TiDB 支持的字符集和排序规则，参阅[字符集和排序规则](/character-set-and-collation.md)文档。如果需要更改字符集，建议使用 [`SET NAMES`](/sql-statements/sql-statement-set-names.md) 语句。
 
@@ -325,7 +325,7 @@ mysql> SELECT * FROM t1;
 
 - 作用域：SESSION | GLOBAL
 - 是否持久化到集群：是
-- 受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
 - 默认值：`utf8mb4`
 - 若没有为字符串常量指定字符集，该变量表示这些字符串常量所使用的字符集。
 
@@ -333,7 +333,7 @@ mysql> SELECT * FROM t1;
 
 - 作用域：SESSION | GLOBAL
 - 是否持久化到集群：是
-- 受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
 - 默认值：`utf8mb4`
 - 该变量表示当前默认在用数据库的字符集，**不建议设置该变量**。选择新的默认数据库后，服务器会更改该变量的值。
 
@@ -341,7 +341,7 @@ mysql> SELECT * FROM t1;
 
 - 作用域：SESSION | GLOBAL
 - 是否持久化到集群：是
-- 受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
 - 默认值：`utf8mb4`
 - 该变量表示数据发送至客户端时所使用的字符集。
 
@@ -349,7 +349,7 @@ mysql> SELECT * FROM t1;
 
 - 作用域：SESSION | GLOBAL
 - 是否持久化到集群：是
-- 受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
 - 默认值：`utf8mb4`
 - 当 `CREATE SCHEMA` 中没有指定字符集时，该变量表示这些新建的表结构所使用的字符集。
 
@@ -357,7 +357,7 @@ mysql> SELECT * FROM t1;
 
 - 作用域：SESSION | GLOBAL
 - 是否持久化到集群：是
-- 受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
 - 默认值：`utf8mb4_bin`
 - 该变量表示连接中所使用的排序规则。与 MySQL 中的 `collation_connection` 一致。
 
@@ -365,7 +365,7 @@ mysql> SELECT * FROM t1;
 
 - 作用域：SESSION | GLOBAL
 - 是否持久化到集群：是
-- 受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
 - 默认值：`utf8mb4_bin`
 - 该变量表示当前数据库默认所使用的排序规则。与 MySQL 中的 `collation_database` 一致。**不建议设置此变量**，当前使用的数据库变动时，此变量会被 TiDB 修改。
 
@@ -373,7 +373,7 @@ mysql> SELECT * FROM t1;
 
 - 作用域：SESSION | GLOBAL
 - 是否持久化到集群：是
-- 受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
 - 默认值：`utf8mb4_bin`
 - 该变量表示创建数据库时默认的排序规则。
 
@@ -381,7 +381,7 @@ mysql> SELECT * FROM t1;
 
 - 作用域：SESSION | GLOBAL
 - 是否持久化到集群：是
-- 受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：是
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：是
 - 类型：整数型
 - 默认值：`1000`
 - 范围：`[0, 4294967295]`
@@ -399,7 +399,7 @@ mysql> SELECT * FROM t1;
 
 - 作用域：GLOBAL
 - 是否持久化到集群：否，仅作用于当前连接的 TiDB 实例
-- 受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
 - 类型：整数型
 - 默认值：`300`
 - 取值范围：`[0, 2147483647]`
@@ -410,7 +410,7 @@ mysql> SELECT * FROM t1;
 
 - 作用域：GLOBAL
 - 是否持久化到集群：是
-- 受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
 - 类型：枚举型
 - 默认值：`mysql_native_password`
 - 可选值：`mysql_native_password`，`caching_sha2_password`，`tidb_sm3_password`，`tidb_auth_token`，`authentication_ldap_sasl` 或 `authentication_ldap_simple`。
@@ -422,7 +422,7 @@ mysql> SELECT * FROM t1;
 
 - 作用域：GLOBAL
 - 是否持久化到集群：是
-- 受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
 - 类型：整数型
 - 默认值：`0`
 - 取值范围：`[0, 65535]`
@@ -432,7 +432,7 @@ mysql> SELECT * FROM t1;
 
 - 作用域：SESSION | GLOBAL
 - 是否持久化到集群：是
-- 受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
 - 类型：整数型
 - 默认值：`0`
 - 取值范围：`[0, 7]`
@@ -441,7 +441,7 @@ mysql> SELECT * FROM t1;
 ### `disconnect_on_expired_password` <span class="version-mark">从 v6.5.0 版本开始引入</span>
 
 - 作用域：GLOBAL
-- 受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
 - 类型：布尔型
 - 默认值：`ON`
 - 该变量是一个只读变量，用来显示 TiDB 是否会直接断开密码已过期用户的连接。当其值为 `ON`，表示 TiDB 会断开密码已过期用户的连接。当其值为 `OFF`，表示 TiDB 会将密码已过期用户的连接置于“沙盒模式”，允许该用户建立连接并执行密码重置操作。
@@ -451,7 +451,7 @@ mysql> SELECT * FROM t1;
 
 - 作用域：SESSION
 - 默认值：`0`
-- 受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
 - 类型：整数型
 - 表示上一条生成消息的 SQL 语句中的错误数。该变量为只读变量。
 
@@ -459,7 +459,7 @@ mysql> SELECT * FROM t1;
 
 - 作用域：SESSION | GLOBAL
 - 是否持久化到集群：是
-- 受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
 - 类型：布尔型
 - 默认值：在 v6.6.0 之前版本中为 `OFF`，在 v6.6.0 及之后的版本中为 `ON`。
 - 表示是否开启外键约束检查。
@@ -468,7 +468,7 @@ mysql> SELECT * FROM t1;
 
 - 作用域：SESSION | GLOBAL
 - 是否持久化到集群：是
-- 受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
 - 类型：整数型
 - 默认值：`1024`
 - 取值范围：`[4, 18446744073709551615]`
@@ -477,7 +477,7 @@ mysql> SELECT * FROM t1;
 ### `have_openssl`
 
 - 作用域：NONE
-- 受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
 - 类型：布尔型
 - 默认值：`DISABLED`
 - 用于 MySQL 兼容性的只读变量。当服务器启用 TLS 时，服务器将其设置为 `YES`。
@@ -485,7 +485,7 @@ mysql> SELECT * FROM t1;
 ### `have_ssl`
 
 - 作用域：NONE
-- 受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
 - 类型：布尔型
 - 默认值：`DISABLED`
 - 用于 MySQL 兼容性的只读变量。当服务器启用 TLS 时，服务器将其设置为 `YES`。
@@ -504,7 +504,7 @@ mysql> SELECT * FROM t1;
 
 - 作用域：GLOBAL
 - 是否持久化到集群：是
-- 受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
 - 默认值：""
 - 用户首次连接到 TiDB 服务器时，`init_connect` 特性允许 TiDB 自动执行一条或多条 SQL 语句。如果你有 `CONNECTION_ADMIN` 或者 `SUPER` 权限，这些 SQL 语句将不会被自动执行。如果这些语句执行报错，你的用户连接将被终止。
 
@@ -512,7 +512,7 @@ mysql> SELECT * FROM t1;
 
 - 作用域：SESSION | GLOBAL
 - 是否持久化到集群：是
-- 受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
 - 类型：整数型
 - 默认值：`50`
 - 范围：`[1, 3600]`
@@ -523,7 +523,7 @@ mysql> SELECT * FROM t1;
 
 - 作用域：SESSION | GLOBAL
 - 是否持久化到集群：是
-- 受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
 - 类型：整数型
 - 默认值：`28800`
 - 范围：`[1, 31536000]`
@@ -533,7 +533,7 @@ mysql> SELECT * FROM t1;
 ### `last_insert_id` <span class="version-mark">从 v5.3.0 版本开始引入</span>
 
 - 作用域：SESSION
-- 受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
 - 类型：整数型
 - 默认值：`0`
 - 取值范围：`[0, 18446744073709551615]`
@@ -542,7 +542,7 @@ mysql> SELECT * FROM t1;
 ### `last_plan_from_binding` <span class="version-mark">从 v4.0 版本开始引入</span>
 
 - 作用域：SESSION
-- 受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
 - 类型：布尔型
 - 默认值：`OFF`
 - 该变量用来显示上一条执行的语句所使用的执行计划是否来自 binding 的[执行计划](/sql-plan-management.md)。
@@ -550,7 +550,7 @@ mysql> SELECT * FROM t1;
 ### `last_plan_from_cache` <span class="version-mark">从 v4.0 版本开始引入</span>
 
 - 作用域：SESSION
-- 受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
 - 类型：布尔型
 - 默认值：`OFF`
 - 这个变量用来显示上一个 `execute` 语句所使用的执行计划是不是直接从 plan cache 中取出来的。
@@ -570,7 +570,7 @@ mysql> SELECT * FROM t1;
 ### `log_bin`
 
 - 作用域：NONE
-- 受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
 - 类型：布尔型
 - 默认值：`OFF`
 - 该变量表示是否使用 [TiDB Binlog](/tidb-binlog/tidb-binlog-overview.md)。
@@ -579,7 +579,7 @@ mysql> SELECT * FROM t1;
 
 - 作用域：GLOBAL
 - 是否持久化到集群：否，仅作用于当前连接的 TiDB 实例
-- 受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
 - 类型：整数型
 - 默认值：`0`
 - 取值范围：`[0, 100000]`
@@ -590,7 +590,7 @@ mysql> SELECT * FROM t1;
 
 - 作用域：SESSION | GLOBAL
 - 是否持久化到集群：是
-- 受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：是
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：是
 - 类型：整数型
 - 默认值：`0`
 - 范围：`[0, 2147483647]`
@@ -606,7 +606,7 @@ mysql> SELECT * FROM t1;
 
 - 作用域：GLOBAL
 - 是否持久化到集群：是
-- 受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
 - 类型：整数型
 - 默认值：`-1`
 - 范围：`[-1, 1048576]`
@@ -639,7 +639,7 @@ mysql> SHOW GLOBAL VARIABLES LIKE 'max_prepared_stmt_count';
 
 - 作用域：SESSION | GLOBAL
 - 是否持久化到集群：是
-- 受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
 - 类型：整数型
 - 默认值：`67108864`
 - 取值范围：`[1024, 1073741824]`
@@ -651,7 +651,7 @@ mysql> SHOW GLOBAL VARIABLES LIKE 'max_prepared_stmt_count';
 
 - 作用域：SESSION | GLOBAL
 - 是否持久化到集群：是
-- 受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
 - 默认值：`UNSPECIFIED`
 - 可选值：`NONE`，`FAST`，`HIGH_COMPRESSION`，`UNSPECIFIED`
 - 该变量用于选择 MPP Exchange 算子的数据压缩模式，当 TiDB 选择版本号为 `1` 的 MPP 执行计划时生效。该变量值的含义如下：
@@ -664,7 +664,7 @@ mysql> SHOW GLOBAL VARIABLES LIKE 'max_prepared_stmt_count';
 
 - 作用域：SESSION | GLOBAL
 - 是否持久化到集群：是
-- 受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：是
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：是
 - 默认值：`UNSPECIFIED`
 - 可选值：`UNSPECIFIED`，`0`，`1`
 - 该变量用于指定不同版本的 MPP 执行计划。指定后，TiDB 会选择指定版本的 MPP 执行计划。该变量值含义如下：
@@ -676,7 +676,7 @@ mysql> SHOW GLOBAL VARIABLES LIKE 'max_prepared_stmt_count';
 
 - 作用域：GLOBAL
 - 是否持久化到集群：是
-- 受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
 - 类型：整数型
 - 默认值：`0`
 - 范围：`[0, 4294967295]`
@@ -686,7 +686,7 @@ mysql> SHOW GLOBAL VARIABLES LIKE 'max_prepared_stmt_count';
 
 - 作用域：GLOBAL
 - 是否持久化到集群：是
-- 受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
 - 类型：整数型
 - 默认值：`0`
 - 范围：`[0, 4294967295]`
@@ -696,7 +696,7 @@ mysql> SHOW GLOBAL VARIABLES LIKE 'max_prepared_stmt_count';
 
 - 作用域：GLOBAL
 - 是否持久化到集群：否，仅作用于当前连接的 TiDB 实例
-- 受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
 - 默认值：""
 - 指定加载插件的目录。
 
@@ -704,14 +704,14 @@ mysql> SHOW GLOBAL VARIABLES LIKE 'max_prepared_stmt_count';
 
 - 作用域：GLOBAL
 - 是否持久化到集群：否，仅作用于当前连接的 TiDB 实例
-- 受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
 - 默认值：""
 - 指定 TiDB 启动时加载的插件，多个插件之间用逗号（,）分隔。
 
 ### `port`
 
 - 作用域：NONE
-- 受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
 - 类型：整数型
 - 默认值：`4000`
 - 范围：`[0, 65535]`
@@ -720,7 +720,7 @@ mysql> SHOW GLOBAL VARIABLES LIKE 'max_prepared_stmt_count';
 ### `rand_seed1`
 
 - 作用域：SESSION
-- 受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
 - 类型：整数型
 - 默认值：`0`
 - 范围：`[0, 2147483647]`
@@ -730,7 +730,7 @@ mysql> SHOW GLOBAL VARIABLES LIKE 'max_prepared_stmt_count';
 ### `rand_seed2`
 
 - 作用域：SESSION
-- 受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
 - 类型：整数型
 - 默认值：`0`
 - 范围：`[0, 2147483647]`
@@ -741,7 +741,7 @@ mysql> SHOW GLOBAL VARIABLES LIKE 'max_prepared_stmt_count';
 
 - 作用域：GLOBAL
 - 是否持久化到集群：是
-- 受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
 - 类型：布尔型
 - 默认值：`OFF`
 - 该变量控制是否所有 TiDB 的连接都在本地 socket 上进行通信，或使用 TLS。详情见[为 TiDB 客户端服务端间通信开启加密传输](/enable-tls-between-clients-and-servers.md)。
@@ -752,7 +752,7 @@ mysql> SHOW GLOBAL VARIABLES LIKE 'max_prepared_stmt_count';
 
 - 作用域：GLOBAL
 - 是否持久化到集群：是
-- 受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
 - 类型：布尔型
 - 默认值：`OFF`
 - 该变量控制 `tidb-server` 实例是否将主机名作为连接握手的一部分来解析。
@@ -778,7 +778,7 @@ mysql> SHOW GLOBAL VARIABLES LIKE 'max_prepared_stmt_count';
 
 - 作用域：SESSION | GLOBAL
 - 是否持久化到集群：是
-- 受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
 - 类型：布尔型
 - 默认值：`ON`
 - 表示是否将更改写入 TiDB Binlog。
@@ -791,7 +791,7 @@ mysql> SHOW GLOBAL VARIABLES LIKE 'max_prepared_stmt_count';
 
 - 作用域：SESSION | GLOBAL
 - 是否持久化到集群：是
-- 受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：是
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：是
 - 默认值：`ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION`
 - 这个变量控制许多 MySQL 兼容行为。详情见 [SQL 模式](/sql-mode.md)。
 
@@ -799,7 +799,7 @@ mysql> SHOW GLOBAL VARIABLES LIKE 'max_prepared_stmt_count';
 
 - 作用域：SESSION | GLOBAL
 - 是否持久化到集群：是
-- 受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
 - 类型：布尔型
 - 默认值：`OFF`
 - 这个变量用于控制表是否必须有主键。启用该变量后，如果在没有主键的情况下创建或修改表，将返回错误。
@@ -810,7 +810,7 @@ mysql> SHOW GLOBAL VARIABLES LIKE 'max_prepared_stmt_count';
 
 - 作用域：SESSION | GLOBAL
 - 是否持久化到集群：是
-- 受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
 - 类型：整数型
 - 默认值：`18446744073709551615`
 - 范围：`[0, 18446744073709551615]`
@@ -845,7 +845,7 @@ mysql> SHOW GLOBAL VARIABLES LIKE 'max_prepared_stmt_count';
 
 - 作用域：SESSION | GLOBAL
 - 是否持久化到集群：是
-- 受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
 - 默认值：`4096`
 - 取值范围：`[0, 9223372036854775807]`
 - 单位：字节
@@ -855,7 +855,7 @@ mysql> SHOW GLOBAL VARIABLES LIKE 'max_prepared_stmt_count';
 
 - 作用域：SESSION | GLOBAL
 - 是否持久化到集群：是
-- 受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：是
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：是
 - 类型：整数型
 - 默认值：`1`
 - 范围：`[0, 2]`
@@ -869,7 +869,7 @@ mysql> SHOW GLOBAL VARIABLES LIKE 'max_prepared_stmt_count';
 
 - 作用域：SESSION | GLOBAL
 - 是否持久化到集群：是
-- 受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
 - 默认值：""
 - 这个变量表示将 TiKV 作为备用存储引擎的存储引擎列表。当该列表中的存储引擎发生故障导致 SQL 语句执行失败时，TiDB 会使用 TiKV 作为存储引擎再次执行该 SQL 语句。目前支持设置该变量为 "" 或者 "tiflash"。如果设置该变量为 "tiflash"，当 TiFlash 返回超时错误（对应的错误码为 ErrTiFlashServerTimeout）时，TiDB 会使用 TiKV 作为存储引擎再次执行该 SQL 语句。
 
@@ -883,7 +883,7 @@ mysql> SHOW GLOBAL VARIABLES LIKE 'max_prepared_stmt_count';
 
 - 作用域：SESSION | GLOBAL
 - 是否持久化到集群：是
-- 受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：是
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：是
 - 类型：布尔型
 - 默认值：`ON`
 - 这个变量用于控制是否使用 TiFlash 的 MPP 模式执行查询，可以设置的值包括：
@@ -895,7 +895,7 @@ MPP 是 TiFlash 引擎提供的分布式计算框架，允许节点之间的数�
 ### `tidb_allow_remove_auto_inc` <span class="version-mark">从 v2.1.18 和 v3.0.4 版本开始引入</span>
 
 - 作用域：SESSION
-- 受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
 - 类型：布尔型
 - 默认值：`OFF`
 - 这个变量用来控制是否允许通过 `ALTER TABLE MODIFY` 或 `ALTER TABLE CHANGE` 来移除某个列的 `AUTO_INCREMENT` 属性。默认 (`OFF`) 为不允许。
@@ -908,7 +908,7 @@ MPP 是 TiFlash 引擎提供的分布式计算框架，允许节点之间的数�
 
 - 作用域：SESSION | GLOBAL
 - 是否持久化到集群：是
-- 受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
 - 默认值：`1`
 - 这个变量用于 TiDB analyze 分区表时，对分区表统计信息进行读写的并发度。
 
@@ -916,7 +916,7 @@ MPP 是 TiFlash 引擎提供的分布式计算框架，允许节点之间的数�
 
 - 作用域：SESSION | GLOBAL
 - 是否持久化到集群：是
-- 受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
 - 类型：整数型
 - 默认值：`2`
 - 范围：`[1, 2]`
@@ -927,7 +927,7 @@ MPP 是 TiFlash 引擎提供的分布式计算框架，允许节点之间的数�
 
 - 作用域：SESSION | GLOBAL
 - 是否持久化到集群：是
-- 受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
 - 默认值："json,blob,mediumblob,longblob"
 - 可选值："json,blob,mediumblob,longblob,text,mediumtext,longtext"
 - 这个变量表示在执行 `ANALYZE` 命令收集统计信息时，跳过哪些类型的列的统计信息收集。该变量仅适用于 [`tidb_analyze_version = 2`](#tidb_analyze_version-从-v510-版本开始引入) 的情况。即使使用 `ANALYZE TABLE t COLUMNS c1, ..., cn` 语法指定列，如果指定的列的类型在 `tidb_analyze_skip_column_types` 中，也不会收集该列的统计信息。
@@ -982,7 +982,7 @@ mysql> SELECT job_info FROM mysql.analyze_jobs ORDER BY end_time DESC LIMIT 1;
 
 - 作用域：GLOBAL
 - 是否持久化到集群：是
-- 受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
 - 类型：时间
 - 默认值：`23:59 +0000`
 - 这个变量用来设置一天中允许自动 ANALYZE 更新统计信息的结束时间。例如，只允许在 UTC 时间的凌晨 1:00 至 3:00 之间自动更新统计信息，可以设置如下：
@@ -994,7 +994,7 @@ mysql> SELECT job_info FROM mysql.analyze_jobs ORDER BY end_time DESC LIMIT 1;
 
 - 作用域：GLOBAL
 - 是否持久化到集群：是
-- 受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
 - 默认值：`1`
 - 范围：`[1, 1024]`
 - 用于设置 TiDB [自动 analyze](/statistics.md#自动更新) 分区表（即自动收集分区表上的统计信息）时，每次同时 analyze 分区的个数。
@@ -1005,7 +1005,7 @@ mysql> SELECT job_info FROM mysql.analyze_jobs ORDER BY end_time DESC LIMIT 1;
 
 - 作用域：GLOBAL
 - 是否持久化到集群：是
-- 受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
 - 类型：浮点数
 - 默认值：`0.5`
 - 范围：`[0, 18446744073709551615]`
@@ -1019,7 +1019,7 @@ mysql> SELECT job_info FROM mysql.analyze_jobs ORDER BY end_time DESC LIMIT 1;
 
 - 作用域：GLOBAL
 - 是否持久化到集群：是
-- 受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
 - 类型：时间
 - 默认值：`00:00 +0000`
 - 这个变量用来设置一天中允许自动 ANALYZE 更新统计信息的开始时间。例如，只允许在 UTC 时间的凌晨 1:00 至 3:00 之间自动更新统计信息，可以设置如下：
@@ -1031,7 +1031,7 @@ mysql> SELECT job_info FROM mysql.analyze_jobs ORDER BY end_time DESC LIMIT 1;
 
 - 作用域：GLOBAL
 - 是否持久化到集群：是
-- 受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
 - 类型：整数型
 - 默认值：`1`
 - 范围：`[1, 256]`
@@ -1041,7 +1041,7 @@ mysql> SELECT job_info FROM mysql.analyze_jobs ORDER BY end_time DESC LIMIT 1;
 
 - 作用域：SESSION | GLOBAL
 - 是否持久化到集群：是
-- 受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
 - 类型：整数型
 - 默认值：`10`
 - 范围：`[1, 2147483647]`
@@ -1051,7 +1051,7 @@ mysql> SELECT job_info FROM mysql.analyze_jobs ORDER BY end_time DESC LIMIT 1;
 
 - 作用域：SESSION | GLOBAL
 - 是否持久化到集群：是
-- 受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
 - 类型：整数型
 - 默认值：`2`
 - 范围：`[0, 2147483647]`
@@ -1068,7 +1068,7 @@ mysql> SELECT job_info FROM mysql.analyze_jobs ORDER BY end_time DESC LIMIT 1;
 > **不建议**开启此变量。
 
 - 作用域：SESSION
-- 受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
 - 类型：布尔型
 - 默认值：`OFF`
 - 该变量控制是否启用已废弃的 batch-commit 特性。当该变量开启时，事务可能会通过分组一些语句被拆分为多个事务，并被非原子地提交。不推荐使用这种方式。
@@ -1080,7 +1080,7 @@ mysql> SELECT job_info FROM mysql.analyze_jobs ORDER BY end_time DESC LIMIT 1;
 > 该变量与废弃的 batch-dml 特性相关，可能会导致数据损坏。因此，不建议开启该变量来使用 batch-dml。作为替代，请使用[非事务 DML 语句](/non-transactional-dml.md)。
 
 - 作用域：SESSION
-- 受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
 - 类型：布尔型
 - 默认值：`OFF`
 - 该变量控制是否启用已废弃的 batch-dml 特性中的 batch-delete 特性。当该变量开启时，`DELETE` 语句可能会被拆分为多个事务，并被非原子地提交。要使该特性生效，还需要开启 `tidb_enable_batch_dml` 并将 `tidb_dml_batch_size` 的值设置为正数。不推荐使用这种方式。
@@ -1092,7 +1092,7 @@ mysql> SELECT job_info FROM mysql.analyze_jobs ORDER BY end_time DESC LIMIT 1;
 > 该变量与废弃的 batch-dml 特性相关，可能会导致数据损坏。因此，不建议开启该变量来使用 batch-dml。作为替代，请使用[非事务 DML 语句](/non-transactional-dml.md)。
 
 - 作用域：SESSION
-- 受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
 - 类型：布尔型
 - 默认值：`OFF`
 - 该变量控制是否启用已废弃的 batch-dml 特性中的 batch-insert 特性。当该变量开启时，`INSERT` 语句可能会被拆分为多个事务，并被非原子地提交。要使该特性生效，还需要开启 `tidb_enable_batch_dml` 并将 `tidb_dml_batch_size` 的值设置为正数。不推荐使用这种方式。
@@ -1101,7 +1101,7 @@ mysql> SELECT job_info FROM mysql.analyze_jobs ORDER BY end_time DESC LIMIT 1;
 
 - 作用域：SESSION | GLOBAL
 - 是否持久化到集群：是
-- 受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
 - 类型：整数型
 - 默认值：`4000`
 - 范围：`[0, 4294967295]`
@@ -1111,7 +1111,7 @@ mysql> SELECT job_info FROM mysql.analyze_jobs ORDER BY end_time DESC LIMIT 1;
 
 - 作用域：SESSION | GLOBAL
 - 是否持久化到集群：是
-- 受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：是
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：是
 - 类型：整数型
 - 默认值：`10240`
 - 范围：`[0, 9223372036854775807]`
@@ -1123,7 +1123,7 @@ mysql> SELECT job_info FROM mysql.analyze_jobs ORDER BY end_time DESC LIMIT 1;
 
 - 作用域：SESSION | GLOBAL
 - 是否持久化到集群：是
-- 受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：是
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：是
 - 类型：整数型
 - 默认值：`104857600` (100 MiB)
 - 范围：`[0, 9223372036854775807]`
@@ -1135,7 +1135,7 @@ mysql> SELECT job_info FROM mysql.analyze_jobs ORDER BY end_time DESC LIMIT 1;
 
 - 作用域：SESSION | GLOBAL
 - 是否持久化到集群：是
-- 受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
 - 类型：整数型
 - 单位：线程
 - 默认值：`4`
@@ -1147,7 +1147,7 @@ mysql> SELECT job_info FROM mysql.analyze_jobs ORDER BY end_time DESC LIMIT 1;
 
 - 作用域：GLOBAL
 - 是否持久化到集群：是
-- 受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
 - 类型：布尔型
 - 默认值：`OFF`
 - 这个变量用于控制是否开启[自动捕获绑定](/sql-plan-management.md#自动捕获绑定-baseline-capturing)功能。该功能依赖 Statement Summary，因此在使用自动绑定之前需打开 Statement Summary 开关。
@@ -1157,7 +1157,7 @@ mysql> SELECT job_info FROM mysql.analyze_jobs ORDER BY end_time DESC LIMIT 1;
 
 - 作用域：SESSION
 - 是否持久化到集群：否
-- 受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
 - 类型：整数型
 - 默认值： `0`
 - 范围：`[0, 15]`
@@ -1167,7 +1167,7 @@ mysql> SELECT job_info FROM mysql.analyze_jobs ORDER BY end_time DESC LIMIT 1;
 
 - 作用域：GLOBAL
 - 是否持久化到集群：否，仅作用于当前连接的 TiDB 实例
-- 受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
 - 类型：布尔型
 - 默认值：`ON`
 - 设置该变量为 `ON` 可强制只存储[基本多文种平面 (BMP)](https://zh.wikipedia.org/zh-hans/Unicode字符平面映射) 编码区段内的 `utf8` 字符值。若要存储 BMP 区段外的 `utf8` 值，推荐使用 `utf8mb4` 字符集。
@@ -1177,7 +1177,7 @@ mysql> SELECT job_info FROM mysql.analyze_jobs ORDER BY end_time DESC LIMIT 1;
 
 - 作用域：GLOBAL
 - 是否持久化到集群：是
-- 受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
 - 类型：整数型
 - 默认值：`128`
 - 范围：`[1, 10000]`
@@ -1188,7 +1188,7 @@ mysql> SELECT job_info FROM mysql.analyze_jobs ORDER BY end_time DESC LIMIT 1;
 ### `tidb_checksum_table_concurrency`
 
 - 作用域：SESSION
-- 受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
 - 类型：整数型
 - 默认值：`4`
 - 取值范围：`[1, 256]`
@@ -1199,7 +1199,7 @@ mysql> SELECT job_info FROM mysql.analyze_jobs ORDER BY end_time DESC LIMIT 1;
 
 - 作用域：GLOBAL
 - 是否持久化到集群：否，仅作用于当前连接的 TiDB 实例
-- 受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
 - 默认值：""
 - 这个变量是一个只读变量，用来获取当前 TiDB Server 的配置信息。
 
@@ -1207,7 +1207,7 @@ mysql> SELECT job_info FROM mysql.analyze_jobs ORDER BY end_time DESC LIMIT 1;
 
 - 作用域：SESSION | GLOBAL
 - 是否持久化到集群：是
-- 受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
 - 类型：布尔型
 - 默认值：`OFF`
 - 该变量仅适用于乐观事务模型。悲观事务模式中的行为由 [`tidb_constraint_check_in_place_pessimistic`](#tidb_constraint_check_in_place_pessimistic-从-v630-版本开始引入) 控制。
@@ -1255,7 +1255,7 @@ mysql> SELECT job_info FROM mysql.analyze_jobs ORDER BY end_time DESC LIMIT 1;
 ### `tidb_constraint_check_in_place_pessimistic` <span class="version-mark">从 v6.3.0 版本开始引入</span>
 
 - 作用域：SESSION
-- 受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
 - 类型：布尔型
 - 默认值：当配置项 [`pessimistic-txn.constraint-check-in-place-pessimistic`](/tidb-configuration-file.md#constraint-check-in-place-pessimistic-从-v640-版本开始引入) 为默认值 `true` 时，该变量的默认值为 `ON`。当配置项 [`pessimistic-txn.constraint-check-in-place-pessimistic`](/tidb-configuration-file.md#constraint-check-in-place-pessimistic-从-v640-版本开始引入) 为 `false` 时，该变量的默认值为 `OFF`。
 - 该变量仅适用于悲观事务模型。乐观事务模式中的行为由 [`tidb_constraint_check_in_place`](#tidb_constraint_check_in_place) 控制。
@@ -1309,7 +1309,7 @@ mysql> SELECT job_info FROM mysql.analyze_jobs ORDER BY end_time DESC LIMIT 1;
 
 - 作用域：SESSION | GLOBAL
 - 是否持久化到集群：是
-- 受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：是
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：是
 - 类型：整数型
 - 默认值：`2`
 - 取值范围：`[1, 2]`
@@ -1321,7 +1321,7 @@ mysql> SELECT job_info FROM mysql.analyze_jobs ORDER BY end_time DESC LIMIT 1;
 ### `tidb_current_ts`
 
 - 作用域：SESSION
-- 受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
 - 类型：整数型
 - 默认值：`0`
 - 取值范围：`[0, 9223372036854775807]`
@@ -1331,7 +1331,7 @@ mysql> SELECT job_info FROM mysql.analyze_jobs ORDER BY end_time DESC LIMIT 1;
 
 - 作用域：GLOBAL
 - 是否持久化到集群：是
-- 受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
 - 默认值：`107374182400` (100 GiB)
 - 范围：`[107374182400, 1125899906842624]` ([100 GiB, 1 PiB])
 - 单位：字节
@@ -1341,7 +1341,7 @@ mysql> SELECT job_info FROM mysql.analyze_jobs ORDER BY end_time DESC LIMIT 1;
 
 - 作用域：GLOBAL
 - 是否持久化到集群：是
-- 受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
 - 类型：布尔型
 - 默认值：`ON`
 - 这个变量用来控制是否开启添加索引加速功能，来提升创建索引回填过程的速度。开启该变量对于数据量较大的表有一定的性能提升。
@@ -1366,7 +1366,7 @@ mysql> SELECT job_info FROM mysql.analyze_jobs ORDER BY end_time DESC LIMIT 1;
 
 - 作用域：GLOBAL
 - 是否持久化到集群：是
-- 受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
 - 默认值：`OFF`
 - 这个变量用于控制是否开启 [TiDB 后端任务分布式框架](/tidb-distributed-execution-framework.md)。开启分布式框架后，DDL 和 Import 等后端任务将会由集群中多个 TiDB 节点共同完成。
 - 从 TiDB v7.1.0 开始，支持分布式执行分区表的 [`ADD INDEX`](/sql-statements/sql-statement-add-index.md)。
@@ -1377,7 +1377,7 @@ mysql> SELECT job_info FROM mysql.analyze_jobs ORDER BY end_time DESC LIMIT 1;
 
 - 作用域：GLOBAL
 - 是否持久化到集群：是
-- 受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
 - 类型：整数型
 - 默认值：`512`
 - 范围：`[0, 9223372036854775807]`
@@ -1387,7 +1387,7 @@ mysql> SELECT job_info FROM mysql.analyze_jobs ORDER BY end_time DESC LIMIT 1;
 
 - 作用域：GLOBAL
 - 是否持久化到集群：是
-- 受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
 - 类型：整数型
 - 默认值：`64`
 - 范围：`[1, 256]`
@@ -1397,7 +1397,7 @@ mysql> SELECT job_info FROM mysql.analyze_jobs ORDER BY end_time DESC LIMIT 1;
 
 - 作用域：GLOBAL
 - 是否持久化到集群：是
-- 受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
 - 类型：整数型
 - 默认值：`256`
 - 范围：`[32, 10240]`
@@ -1410,7 +1410,7 @@ mysql> SELECT job_info FROM mysql.analyze_jobs ORDER BY end_time DESC LIMIT 1;
 ### `tidb_ddl_reorg_priority`
 
 - 作用域：SESSION
-- 受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
 - 类型：枚举型
 - 默认值：`PRIORITY_LOW`
 - 可选值：`PRIORITY_LOW`、`PRIORITY_NORMAL`、`PRIORITY_HIGH`
@@ -1420,7 +1420,7 @@ mysql> SELECT job_info FROM mysql.analyze_jobs ORDER BY end_time DESC LIMIT 1;
 
 - 作用域：GLOBAL
 - 是否持久化到集群：是
-- 受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
 - 类型：整数型
 - 默认值：`4`
 - 范围：`[1, 256]`
@@ -1431,7 +1431,7 @@ mysql> SELECT job_info FROM mysql.analyze_jobs ORDER BY end_time DESC LIMIT 1;
 
 - 作用域：SESSION | GLOBAL
 - 是否持久化到集群：是
-- 受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：是
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：是
 - 类型：浮点型
 - 默认值：`0.8`
 - 范围：`[0, 1]`
@@ -1445,7 +1445,7 @@ mysql> SELECT job_info FROM mysql.analyze_jobs ORDER BY end_time DESC LIMIT 1;
 
 - 作用域：SESSION | GLOBAL
 - 是否持久化到集群：是
-- 受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
 - 类型：布尔型
 - 默认值：`ON`
 - 这个变量用来设置是否禁用显式的乐观事务自动重试，设置为 `ON` 时，不会自动重试，如果遇到事务冲突需要在应用层重试。
@@ -1462,7 +1462,7 @@ mysql> SELECT job_info FROM mysql.analyze_jobs ORDER BY end_time DESC LIMIT 1;
 
 - 作用域：SESSION | GLOBAL
 - 是否持久化到集群：是
-- 受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：是
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：是
 - 类型：整数型
 - 默认值：`15`
 - 范围：`[1, 256]`
@@ -1479,7 +1479,7 @@ mysql> SELECT job_info FROM mysql.analyze_jobs ORDER BY end_time DESC LIMIT 1;
 
 - 作用域：SESSION | GLOBAL
 - 是否持久化到集群：是
-- 受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
 - 类型：整数型
 - 默认值：`0`
 - 范围：`[0, 2147483647]`
@@ -1496,7 +1496,7 @@ mysql> SELECT job_info FROM mysql.analyze_jobs ORDER BY end_time DESC LIMIT 1;
 
 - 作用域：SESSION | GLOBAL
 - 是否持久化到集群：是
-- 受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
 - 类型：布尔型
 - 默认值：`ON`
 - 指定是否在只涉及一个 Region 的事务上启用一阶段提交特性。比起传统两阶段提交，一阶段提交能大幅降低事务提交延迟并提升吞吐。
@@ -1511,7 +1511,7 @@ mysql> SELECT job_info FROM mysql.analyze_jobs ORDER BY end_time DESC LIMIT 1;
 
 - 作用域：SESSION | GLOBAL
 - 是否持久化到集群：是
-- 受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
 - 类型：布尔型
 - 默认值：`OFF`
 - 该变量控制 `ANALYZE` 读取历史时刻的数据还是读取最新的数据。当该变量设置为 `ON` 时，`ANALYZE` 读取 `ANALYZE` 开始时刻的历史数据。当该变量设置为 `OFF` 时，`ANALYZE` 读取最新的数据。
@@ -1525,7 +1525,7 @@ mysql> SELECT job_info FROM mysql.analyze_jobs ORDER BY end_time DESC LIMIT 1;
 
 - 作用域：SESSION | GLOBAL
 - 是否持久化到集群：是
-- 受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
 - 类型：布尔型
 - 默认值：`ON`
 - 该变量控制是否启用 Async Commit 特性，使事务两阶段提交的第二阶段于后台异步进行。开启本特性能降低事务提交的延迟。
@@ -1540,7 +1540,7 @@ mysql> SELECT job_info FROM mysql.analyze_jobs ORDER BY end_time DESC LIMIT 1;
 
 - 作用域：GLOBAL
 - 是否持久化到集群：是
-- 受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
 - 类型：布尔型
 - 默认值：`ON`
 - 该变量控制 TiDB 是否以后台操作自动更新表的统计信息。
@@ -1550,7 +1550,7 @@ mysql> SELECT job_info FROM mysql.analyze_jobs ORDER BY end_time DESC LIMIT 1;
 
 - 作用域：SESSION | GLOBAL
 - 是否持久化到集群：是
-- 受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
 - 类型：布尔型
 - 默认值：`OFF`
 - 这个变量用于控制是否允许在创建生成列或者表达式索引时引用自增列。
@@ -1563,7 +1563,7 @@ mysql> SELECT job_info FROM mysql.analyze_jobs ORDER BY end_time DESC LIMIT 1;
 
 - 作用域：GLOBAL
 - 是否持久化到集群：是
-- 受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
 - 类型：布尔型
 - 默认值：`OFF`
 - 该变量控制是否启用废弃的 batch-dml 特性。启用该变量后，部分语句可能会被拆分为多个事务执行，这是非原子性的，使用时需谨慎。使用 batch-dml 时，必须确保正在操作的数据没有并发操作。要使该变量生效，还需要为 `tidb_batch_dml_size` 指定一个正值，并启用 `tidb_batch_insert` 和 `tidb_batch_delete` 中的至少一个。
@@ -1576,7 +1576,7 @@ mysql> SELECT job_info FROM mysql.analyze_jobs ORDER BY end_time DESC LIMIT 1;
 
 - 作用域：SESSION | GLOBAL
 - 是否持久化到集群：是
-- 受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：是
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：是
 - 类型：布尔型
 - 默认值：`OFF`
 - 这个变量用于控制是否开启 cascades planner。
@@ -1585,7 +1585,7 @@ mysql> SELECT job_info FROM mysql.analyze_jobs ORDER BY end_time DESC LIMIT 1;
 
 - 作用域：GLOBAL
 - 是否持久化到集群：是
-- 受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
 - 类型：布尔型
 - 默认值：`OFF`
 - 这个变量用于控制是否启用 [`CHECK` 约束](/constraints.md#check-约束)。
@@ -1593,7 +1593,7 @@ mysql> SELECT job_info FROM mysql.analyze_jobs ORDER BY end_time DESC LIMIT 1;
 ### `tidb_enable_chunk_rpc` <span class="version-mark">从 v4.0 版本开始引入</span>
 
 - 作用域：SESSION
-- 受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
 - 类型：布尔型
 - 默认值：`ON`
 - 这个变量用来设置是否启用 Coprocessor 的 `Chunk` 数据编码格式。
@@ -1602,7 +1602,7 @@ mysql> SELECT job_info FROM mysql.analyze_jobs ORDER BY end_time DESC LIMIT 1;
 
 - 作用域：SESSION | GLOBAL
 - 是否持久化到集群：是
-- 受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
 - 类型：枚举型
 - 默认值：`ON`
 - 可选值：`OFF`，`ON`，`INT_ONLY`
@@ -1615,7 +1615,7 @@ mysql> SELECT job_info FROM mysql.analyze_jobs ORDER BY end_time DESC LIMIT 1;
 
 - 作用域：GLOBAL
 - 是否持久化到集群：否，仅作用于当前连接的 TiDB 实例
-- 受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
 - 类型：布尔型
 - 默认值：`ON`
 - 这个变量用于控制是否同时将各个执行算子的执行信息记录入 slow query log 中。
@@ -1628,7 +1628,7 @@ mysql> SELECT job_info FROM mysql.analyze_jobs ORDER BY end_time DESC LIMIT 1;
 
 - 作用域：GLOBAL
 - 是否持久化到集群：是
-- 受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
 - 类型：布尔型
 - 默认值：`OFF`
 - 这个变量用于控制是否开启 TiDB 对 `PREDICATE COLUMNS` 的收集。关闭该变量后，之前收集的 `PREDICATE COLUMNS` 会被清除。详情见[收集部分列的统计信息](/statistics.md#收集部分列的统计信息)。
@@ -1637,7 +1637,7 @@ mysql> SELECT job_info FROM mysql.analyze_jobs ORDER BY end_time DESC LIMIT 1;
 
 - 作用域：GLOBAL
 - 是否持久化到集群：否，仅作用于当前连接的 TiDB 实例
-- 受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
 - 默认值：`ON`
 - 可选值：`OFF`，`ON`
 - 用于设置该 TiDB 实例是否可以成为 DDL owner。若当前 TiDB 集群中只有一台 TiDB 实例，则不能禁止该实例成为 DDL owner，即不能设置为 `OFF`。
@@ -1645,7 +1645,7 @@ mysql> SELECT job_info FROM mysql.analyze_jobs ORDER BY end_time DESC LIMIT 1;
 ### `tidb_enable_enhanced_security`
 
 - 作用域：NONE
-- 受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
 - 类型：布尔型
 - 默认值：`OFF`
 - 这个变量表示所连接的 TiDB 服务器是否启用了安全增强模式 (SEM)。若要改变该变量值，你需要在 TiDB 服务器的配置文件中修改 `enable-sem` 项的值，并重启 TiDB 服务器。
@@ -1660,7 +1660,7 @@ mysql> SELECT job_info FROM mysql.analyze_jobs ORDER BY end_time DESC LIMIT 1;
 
 - 作用域：SESSION | GLOBAL
 - 是否持久化到集群：是
-- 受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
 - 类型：布尔型
 - 默认值：`OFF`
 - 当此变量设置为 `ON` 时，TiDB 会读取 [`tidb_external_ts`](#tidb_external_ts-从-v640-版本开始引入) 指定时间戳前的历史数据。
@@ -1669,7 +1669,7 @@ mysql> SELECT job_info FROM mysql.analyze_jobs ORDER BY end_time DESC LIMIT 1;
 
 - 作用域：GLOBAL
 - 是否持久化到集群：是
-- 受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
 - 类型：整数型
 - 默认值：`0`
 - 当 [`tidb_enable_external_ts_read`](#tidb_enable_external_ts_read-从-v640-版本开始引入) 设置为 `ON` 时，TiDB 会依据该变量指定的时间戳读取历史数据。
@@ -1678,7 +1678,7 @@ mysql> SELECT job_info FROM mysql.analyze_jobs ORDER BY end_time DESC LIMIT 1;
 
 - 作用域：GLOBAL
 - 是否持久化到集群：是
-- 受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
 - 类型：布尔型
 - 默认值：`OFF`
 - 可选值：`OFF` 和 `ON`
@@ -1704,7 +1704,7 @@ mysql> SELECT job_info FROM mysql.analyze_jobs ORDER BY end_time DESC LIMIT 1;
 
 - 作用域：SESSION | GLOBAL
 - 是否持久化到集群：是
-- 受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
 - 类型：布尔型
 - 默认值：`ON`
 - 该变量用于设置是否启用 [`exchange partitions with tables`](/partitioned-table.md#分区管理) 特性。默认值为 `ON`，即默认开启该功能。
@@ -1714,7 +1714,7 @@ mysql> SELECT job_info FROM mysql.analyze_jobs ORDER BY end_time DESC LIMIT 1;
 
 - 作用域：SESSION | GLOBAL
 - 是否持久化到集群：是
-- 受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：是
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：是
 - 类型：布尔型
 - 默认值：`OFF`
 - 该变量指定 TiDB 是否收集扩展统计信息来指导优化器。
@@ -1727,7 +1727,7 @@ mysql> SELECT job_info FROM mysql.analyze_jobs ORDER BY end_time DESC LIMIT 1;
 
 - 作用域：SESSION | GLOBAL
 - 是否持久化到集群：是
-- 受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
 - 类型：布尔型
 - 默认值：`OFF`
 - 这个变量用来控制是否启用统计信息快速分析功能。默认值 0 表示不开启。
@@ -1741,7 +1741,7 @@ mysql> SELECT job_info FROM mysql.analyze_jobs ORDER BY end_time DESC LIMIT 1;
 
 - 作用域：SESSION | GLOBAL
 - 是否持久化到集群：是
-- 受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
 - 类型：布尔型
 - 默认值：`ON`
 - 这个变量用于控制是否使用基于校验和的方式来快速检查表中数据和索引的一致性。默认值 `ON` 表示该功能默认开启。
@@ -1751,7 +1751,7 @@ mysql> SELECT job_info FROM mysql.analyze_jobs ORDER BY end_time DESC LIMIT 1;
 
 - 作用域：GLOBAL
 - 是否持久化到集群：是
-- 受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
 - 类型：布尔型
 - 默认值：在 v6.6.0 之前版本中为 `OFF`，在 v6.6.0 及之后的版本中为 `ON`。
 - 这个变量用于控制是否开启 `FOREIGN KEY` 特性。
@@ -1764,7 +1764,7 @@ mysql> SELECT job_info FROM mysql.analyze_jobs ORDER BY end_time DESC LIMIT 1;
 
 - 作用域：GLOBAL
 - 是否持久化到集群：是
-- 受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
 - 类型：布尔型
 - 默认值：`OFF`
 - 这个变量用于控制是否开启可感知到垃圾回收的内存追踪 (GC-Aware memory track)。
@@ -1777,7 +1777,7 @@ mysql> SELECT job_info FROM mysql.analyze_jobs ORDER BY end_time DESC LIMIT 1;
 
 - 作用域：SESSION | GLOBAL
 - 是否持久化到集群：是
-- 受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：是
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：是
 - 类型：布尔型
 - 默认值：`ON`
 - 这个变量用来控制是否开启[非 Prepare 语句执行计划缓存](/sql-non-prepared-plan-cache.md)。
@@ -1790,7 +1790,7 @@ mysql> SELECT job_info FROM mysql.analyze_jobs ORDER BY end_time DESC LIMIT 1;
 
 - 作用域：SESSION | GLOBAL
 - 是否持久化到集群：是
-- 受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
 - 类型：布尔型
 - 默认值：`OFF`
 - 这个变量用来控制[非 Prepare 语句执行计划缓存](/sql-non-prepared-plan-cache.md)是否支持 DML 语句。
@@ -1799,7 +1799,7 @@ mysql> SELECT job_info FROM mysql.analyze_jobs ORDER BY end_time DESC LIMIT 1;
 
 - 作用域：GLOBAL
 - 是否持久化到集群：是
-- 受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
 - 类型：布尔型
 - 默认值：`ON`
 - 该变量来用控制是否开启 GOGC Tuner。
@@ -1808,7 +1808,7 @@ mysql> SELECT job_info FROM mysql.analyze_jobs ORDER BY end_time DESC LIMIT 1;
 
 - 作用域：GLOBAL
 - 是否持久化到集群：是
-- 受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
 - 类型：布尔型
 - 默认值：`ON`
 - 这个变量用来控制是否开启历史统计信息。默认值为 `ON` 表示默认开启历史统计信息。
@@ -1821,7 +1821,7 @@ mysql> SELECT job_info FROM mysql.analyze_jobs ORDER BY end_time DESC LIMIT 1;
 
 - 作用域：GLOBAL
 - 是否持久化到集群：是
-- 受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
 - 类型：布尔型
 - 默认值：`OFF`
 - 这个变量用来控制 `PLAN REPLAYER CAPTURE` 抓取的内容是否默认带历史统计信息。默认值为 `OFF`，表示默认不带历史统计信息。
@@ -1836,7 +1836,7 @@ mysql> SELECT job_info FROM mysql.analyze_jobs ORDER BY end_time DESC LIMIT 1;
 
 - 作用域：SESSION | GLOBAL
 - 是否持久化到集群：是
-- 受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：是
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：是
 - 类型：布尔型
 - 默认值：`ON`
 - 这个变量用于控制是否开启 index merge 功能。
@@ -1845,7 +1845,7 @@ mysql> SELECT job_info FROM mysql.analyze_jobs ORDER BY end_time DESC LIMIT 1;
 
 - 作用域：SESSION | GLOBAL
 - 是否持久化到集群：是
-- 受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：是
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：是
 - 类型：布尔型
 - 默认值：`OFF`
 - 表示是否启用 `IndexMergeJoin` 算子。
@@ -1855,7 +1855,7 @@ mysql> SELECT job_info FROM mysql.analyze_jobs ORDER BY end_time DESC LIMIT 1;
 
 - 作用域：SESSION | GLOBAL
 - 是否持久化到集群：是
-- 受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
 - 类型：布尔型
 - 默认值：`ON`
 - 这个变量用于允许使用 `SET SESSION` 对 `INSTANCE` 作用域的变量进行设置，用法同 `SET GLOBAL`。
@@ -1865,7 +1865,7 @@ mysql> SELECT job_info FROM mysql.analyze_jobs ORDER BY end_time DESC LIMIT 1;
 
 - 作用域：SESSION | GLOBAL
 - 是否持久化到集群：是
-- 受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
 - 类型：布尔型
 - 默认值：`ON`
 - 这个变量用来设置是否开启 `LIST (COLUMNS) TABLE PARTITION` 特性。
@@ -1874,7 +1874,7 @@ mysql> SELECT job_info FROM mysql.analyze_jobs ORDER BY end_time DESC LIMIT 1;
 
 - 作用域：GLOBAL
 - 是否持久化到集群：是
-- 受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
 - 类型：布尔型
 - 默认值：`OFF`
 - 该变量用于一个未发布的特性，**请勿修改该变量值**。
@@ -1883,7 +1883,7 @@ mysql> SELECT job_info FROM mysql.analyze_jobs ORDER BY end_time DESC LIMIT 1;
 
 - 作用域：GLOBAL
 - 是否持久化到集群：是
-- 受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
 - 类型：布尔型
 - 默认值：`ON`
 - 这个变量用来设置是否开启[元数据锁](/metadata-lock.md)特性。需要注意，在设置该变量时，集群中不能有 DDL 任务，以免造成非预期数据正确性、一致性问题。
@@ -1892,7 +1892,7 @@ mysql> SELECT job_info FROM mysql.analyze_jobs ORDER BY end_time DESC LIMIT 1;
 
 - 作用域：SESSION | GLOBAL
 - 是否持久化到集群：是
-- 受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
 - 类型：布尔型
 - 默认值：`ON`
 - 这个变量用于设置是否开启 mutation checker。mutation checker 是一项在 DML 语句执行过程中进行的数据索引一致性校验，校验报错会回滚当前语句。开启该校验会导致 CPU 使用轻微上升。详见[数据索引一致性报错](/troubleshoot-data-inconsistency-errors.md)。
@@ -1902,7 +1902,7 @@ mysql> SELECT job_info FROM mysql.analyze_jobs ORDER BY end_time DESC LIMIT 1;
 
 - 作用域：SESSION | GLOBAL
 - 是否持久化到集群：是
-- 受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：是
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：是
 - 类型：布尔型
 - 默认值：`ON`
 - TiDB v6.2.0 对代价模型的实现进行了代码层面的重构，这个变量用来控制是否使用重构后的代价模型 [Cost Model Version 2](/cost-model.md#cost-model-version-2)。
@@ -1913,7 +1913,7 @@ mysql> SELECT job_info FROM mysql.analyze_jobs ORDER BY end_time DESC LIMIT 1;
 
 - 作用域：SESSION | GLOBAL
 - 是否持久化到集群：是
-- 受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：是
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：是
 - 类型：布尔型
 - 默认值：`OFF`
 - 该变量用于控制 TiDB 执行 `ONLY_FULL_GROUP_BY` 检查时的行为。有关 `ONLY_FULL_GROUP_BY` 的信息可以参考 [MySQL 文档](https://dev.mysql.com/doc/refman/8.0/en/sql-mode.html#sqlmode_only_full_group_by)。在 v6.1 中 TiDB 对该项检查做了更严格正确的处理。
@@ -1923,7 +1923,7 @@ mysql> SELECT job_info FROM mysql.analyze_jobs ORDER BY end_time DESC LIMIT 1;
 
 - 作用域：SESSION | GLOBAL
 - 是否持久化到集群：是
-- 受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
 - 类型：枚举型
 - 默认值：`OFF`
 - 可选值：`ON`、`OFF`、`WARN`
@@ -1943,7 +1943,7 @@ mysql> SELECT job_info FROM mysql.analyze_jobs ORDER BY end_time DESC LIMIT 1;
 
 - 作用域：GLOBAL
 - 是否持久化到集群：是
-- 受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
 - 类型：布尔型
 - 默认值：`ON`
 - 若该变量值为 `OFF`，TiDB 具有以下行为：
@@ -1956,7 +1956,7 @@ mysql> SELECT job_info FROM mysql.analyze_jobs ORDER BY end_time DESC LIMIT 1;
 
 - 作用域：SESSION | GLOBAL
 - 是否持久化到集群：是
-- 受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：是
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：是
 - 类型：布尔型
 - 默认值：在 v7.0.0 之前版本中为 `OFF`，即默认关闭。在 v7.0.0 及之后的版本中为 `ON`，即默认开启。
 - 这个变量用于控制 TiDB 对特殊集合算子 `NOT IN` 和 `!= ALL` 引导的子查询产生的 ANTI JOIN 是否采用 Null Aware Hash Join 的执行方式。
@@ -1966,7 +1966,7 @@ mysql> SELECT job_info FROM mysql.analyze_jobs ORDER BY end_time DESC LIMIT 1;
 
 - 作用域：SESSION | GLOBAL
 - 是否持久化到集群：是
-- 受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：是
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：是
 - 类型：布尔型
 - 默认值：`ON`
 - 自 v6.1.0 起，TiDB 的 [Join Reorder 算法](/join-reorder.md)开始支持 Outer Join。该变量用于控制是否启用 Outer Join 的 Join Reorder。
@@ -1979,7 +1979,7 @@ mysql> SELECT job_info FROM mysql.analyze_jobs ORDER BY end_time DESC LIMIT 1;
 
 - 作用域：SESSION | GLOBAL
 - 是否持久化到集群：是
-- 受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：是
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：是
 - 类型：布尔型
 - 默认值：`OFF`
 - 该变量用于控制当内表上有 `Selection`/`Projection` 算子时是否支持 Index Join。`OFF` 表示不支持。
@@ -1988,7 +1988,7 @@ mysql> SELECT job_info FROM mysql.analyze_jobs ORDER BY end_time DESC LIMIT 1;
 
 - 作用域：SESSION | GLOBAL
 - 是否持久化到集群：是
-- 受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：是
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：是
 - 类型：布尔型
 - 默认值：`OFF`
 - 指定是否对最终的输出结果进行自动排序。
@@ -1998,7 +1998,7 @@ mysql> SELECT job_info FROM mysql.analyze_jobs ORDER BY end_time DESC LIMIT 1;
 
 - 作用域：SESSION | GLOBAL
 - 是否持久化到集群：是
-- 受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：是
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：是
 - 类型：布尔型
 - 默认值：`ON`
 - 这个变量用于控制是否使用分页 (paging) 方式发送 Coprocessor 请求。对于 [v5.4.0, v6.2.0) 区间的 TiDB 版本，该变量只对 `IndexLookup` 算子生效；对于 v6.2.0 以及之后的版本，该变量对全局生效。从 v6.4.0 版本开始，该变量默认值由 `OFF` 改成 `ON`。
@@ -2016,7 +2016,7 @@ mysql> SELECT job_info FROM mysql.analyze_jobs ORDER BY end_time DESC LIMIT 1;
 
 - 作用域：SESSION | GLOBAL
 - 是否持久化到集群：是
-- 受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
 - 类型：布尔型
 - 默认值：`OFF`
 - 这个变量用于控制是否开启 Apply 算子并发，并发数由 `tidb_executor_concurrency` 变量控制。Apply 算子用来处理关联子查询且默认无并发，所以执行速度较慢。打开 Apply 并发开关可增加并发度，提高执行速度。目前默认关闭。
@@ -2025,7 +2025,7 @@ mysql> SELECT job_info FROM mysql.analyze_jobs ORDER BY end_time DESC LIMIT 1;
 
 - 作用域：SESSION | GLOBAL
 - 是否持久化到集群：是
-- 受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
 - 类型：布尔型
 - 默认值：`ON`
 - 该变量指定是否对窗口函数采用流水线的执行算法。
@@ -2034,7 +2034,7 @@ mysql> SELECT job_info FROM mysql.analyze_jobs ORDER BY end_time DESC LIMIT 1;
 
 - 作用域：SESSION | GLOBAL
 - 是否持久化到集群：是
-- 受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
 - 类型：布尔型
 - 默认值：`ON`
 - 这个变量用来控制 Prepared Plan Cache 是否缓存 `LIMIT` 后面带变量 (`LIMIT ?`) 的执行计划。目前不支持缓存 `LIMIT` 后面带变量且变量值大于 10000 的执行计划。
@@ -2043,7 +2043,7 @@ mysql> SELECT job_info FROM mysql.analyze_jobs ORDER BY end_time DESC LIMIT 1;
 
 - 作用域：SESSION | GLOBAL
 - 是否持久化到集群：是
-- 受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
 - 类型：布尔型
 - 默认值：`ON`
 - 这个变量用来控制 Prepared Plan Cache 是否缓存包含子查询的查询。
@@ -2052,7 +2052,7 @@ mysql> SELECT job_info FROM mysql.analyze_jobs ORDER BY end_time DESC LIMIT 1;
 
 - 作用域：SESSION | GLOBAL
 - 是否持久化到集群：是
-- 受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
 - 类型：布尔型
 - 默认值：`ON`
 - 这个变量用来控制是否开启 [`PLAN REPLAYER CAPTURE` 功能](/sql-plan-replayer.md#使用-plan-replayer-capture-抓取目标计划)。默认值 `ON` 代表开启 `PLAN REPLAYER CAPTURE` 功能。
@@ -2061,7 +2061,7 @@ mysql> SELECT job_info FROM mysql.analyze_jobs ORDER BY end_time DESC LIMIT 1;
 
 - 作用域：SESSION | GLOBAL
 - 是否持久化到集群：是
-- 受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
 - 类型：布尔型
 - 默认值：`OFF`
 - 这个变量用来控制是否开启 [`PLAN REPLAYER CONTINUOUS CAPTURE` 功能](/sql-plan-replayer.md#使用-plan-replayer-continuous-capture)。默认值 `OFF` 代表关闭功能。
@@ -2070,7 +2070,7 @@ mysql> SELECT job_info FROM mysql.analyze_jobs ORDER BY end_time DESC LIMIT 1;
 
 - 作用域：SESSION | GLOBAL
 - 是否持久化到集群：是
-- 受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：是
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：是
 - 类型：布尔型
 - 默认值：`ON`
 - 这个变量用来控制是否开启 [Prepared Plan Cache](/sql-prepared-plan-cache.md)。开启后，对 `Prepare`、`Execute` 请求的执行计划会进行缓存，以便在后续执行时跳过查询计划优化这个步骤，获得性能上的提升。
@@ -2080,7 +2080,7 @@ mysql> SELECT job_info FROM mysql.analyze_jobs ORDER BY end_time DESC LIMIT 1;
 
 - 作用域：SESSION | GLOBAL
 - 是否持久化到集群：是
-- 受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
 - 类型：布尔型
 - 默认值：`ON`
 - 这个变量用来控制是否统计 Prepared Plan Cache 中所缓存的执行计划占用的内存。具体可见 [Prepared Plan Cache 的内存管理](/sql-prepared-plan-cache.md#prepared-plan-cache-的内存管理)。
@@ -2089,7 +2089,7 @@ mysql> SELECT job_info FROM mysql.analyze_jobs ORDER BY end_time DESC LIMIT 1;
 
 - 作用域：SESSION | GLOBAL
 - 是否持久化到集群：是
-- 受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：是
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：是
 - 类型：布尔型
 - 默认值：`OFF`
 - 这个变量用来控制优化器在一张表上的统计信息过期时的行为。
@@ -2101,7 +2101,7 @@ mysql> SELECT job_info FROM mysql.analyze_jobs ORDER BY end_time DESC LIMIT 1;
 
 - 作用域：SESSION | GLOBAL
 - 是否持久化到集群：是
-- 受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
 - 类型：布尔型
 - 默认值：`OFF`
 - 这个变量控制是否为读数据的算子开启动态内存控制功能。读数据的算子默认启用 [`tidb_distsql_scan_concurrency`](/system-variables.md#tidb_distsql_scan_concurrency) 所允许的最大线程数来读取数据。当单条 SQL 语句的内存使用每超过 [`tidb_mem_quota_query`](/system-variables.md#tidb_mem_quota_query) 一次，读数据的算子会停止一个线程。
@@ -2112,7 +2112,7 @@ mysql> SELECT job_info FROM mysql.analyze_jobs ORDER BY end_time DESC LIMIT 1;
 
 - 作用域：GLOBAL
 - 是否持久化到集群：是
-- 受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
 - 默认值：`ON`
 - 类型：布尔型
 - 该变量是[资源管控特性](/tidb-resource-control.md)的开关。该变量设置为 `ON` 时，集群支持应用按照资源组做资源隔离。
@@ -2121,7 +2121,7 @@ mysql> SELECT job_info FROM mysql.analyze_jobs ORDER BY end_time DESC LIMIT 1;
 
 - 作用域：SESSION | GLOBAL
 - 是否持久化到集群：是
-- 受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
 - 类型：布尔型
 - 默认值：`ON`
 - 可选值：`OFF`，`ON`
@@ -2131,7 +2131,7 @@ mysql> SELECT job_info FROM mysql.analyze_jobs ORDER BY end_time DESC LIMIT 1;
 
 - 作用域：GLOBAL
 - 是否持久化到集群：否，仅作用于当前连接的 TiDB 实例
-- 受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
 - 类型：布尔型
 - 默认值：`ON`
 - 这个变量用于控制是否开启 slow log 功能。
@@ -2140,7 +2140,7 @@ mysql> SELECT job_info FROM mysql.analyze_jobs ORDER BY end_time DESC LIMIT 1;
 
 - 作用域：GLOBAL
 - 是否持久化到集群：是
-- 受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
 - 类型：布尔型
 - 默认值：`ON`
 - 这个变量用来控制是否开启 statement summary 功能。如果开启，SQL 的耗时等执行信息将被记录到系统表 `information_schema.STATEMENTS_SUMMARY` 中，用于定位和排查 SQL 性能问题。
@@ -2149,7 +2149,7 @@ mysql> SELECT job_info FROM mysql.analyze_jobs ORDER BY end_time DESC LIMIT 1;
 
 - 作用域：SESSION | GLOBAL
 - 是否持久化到集群：是
-- 受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
 - 类型：布尔型
 - 默认值：`ON`
 - 这个变量用来控制是否可以用 `DOUBLE` 类型的无效定义创建表。该设置的目的是提供一个从 TiDB 早期版本升级的方法，因为早期版本在验证类型方面不太严格。
@@ -2174,7 +2174,7 @@ Query OK, 0 rows affected (0.09 sec)
 
 - 作用域：SESSION | GLOBAL
 - 是否持久化到集群：是
-- 受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
 - 默认值：`ON`
 - 类型：枚举型
 - 可选值：`OFF`，`ON`，`AUTO`
@@ -2187,7 +2187,7 @@ Query OK, 0 rows affected (0.09 sec)
 
 - 作用域：GLOBAL
 - 是否持久化到集群：是
-- 受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
 - 类型：布尔型
 - 默认值：`OFF`
 - 这个变量用于动态地控制 TiDB 遥测功能是否开启，当前版本默认关闭 TiDB 的遥测功能。当所有 TiDB 实例都设置配置项 [`enable-telemetry`](/tidb-configuration-file.md#enable-telemetry-从-v402-版本开始引入) 为 `false` 时，将忽略该系统变量，并总是关闭 TiDB 遥测功能。参阅[遥测](/telemetry.md)了解该功能详情。
@@ -2196,7 +2196,7 @@ Query OK, 0 rows affected (0.09 sec)
 
 - 作用域：SESSION | GLOBAL
 - 是否持久化到集群：是
-- 受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
 - 类型：布尔型
 - 默认值：`OFF`
 - 这个变量用来控制是否启用 TiFlash 新的执行模型 [Pipeline Model](/tiflash/tiflash-pipeline-model.md)。
@@ -2215,7 +2215,7 @@ Query OK, 0 rows affected (0.09 sec)
 
 - 作用域：SESSION | GLOBAL
 - 是否持久化到集群：是
-- 受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
 - 类型：布尔型
 - 默认值：`ON`
 - 这个变量用于控制包含增删改的 SQL 语句中的读取操作能否下推到 TiFlash，比如：
@@ -2228,7 +2228,7 @@ Query OK, 0 rows affected (0.09 sec)
 
 - 作用域：GLOBAL
 - 是否持久化到集群：是
-- 受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
 - 类型：布尔型
 - 默认值：`ON`
 - 设置是否在单条 SQL 语句的内存使用超出系统变量 [`tidb_mem_quota_query`](/system-variables.md#tidb_mem_quota_query) 限制时为某些算子启用临时磁盘。
@@ -2242,7 +2242,7 @@ Query OK, 0 rows affected (0.09 sec)
 
 - 作用域：GLOBAL
 - 是否持久化到集群：是
-- 受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
 - 类型：布尔型
 - 默认值：`OFF`
 - 这个变量用于控制是否开启 [Top SQL 特性](/dashboard/top-sql.md)。
@@ -2251,7 +2251,7 @@ Query OK, 0 rows affected (0.09 sec)
 
 - 作用域：GLOBAL
 - 是否持久化到集群：是
-- 受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
 - 类型：布尔型
 - 默认值：`OFF`
 - 这个变量用来开启 TSO Follower Proxy 特性。当该值为 `OFF` 时，TiDB 仅会从 PD leader 获取 TSO。开启该特性之后，TiDB 在获取 TSO 时会将请求均匀地发送到所有 PD 节点上，通过 PD follower 转发 TSO 请求，从而降低 PD leader 的 CPU 压力。
@@ -2267,7 +2267,7 @@ Query OK, 0 rows affected (0.09 sec)
 
 - 作用域：SESSION | GLOBAL
 - 是否持久化到集群：是
-- 受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
 - 类型：布尔型
 - 默认值：`OFF`
 - 这个变量用于控制是否对生成列中表达式替换使用不安全的替换方式。默认值为 `OFF`，即默认关闭不安全的替换方式。详情见[生成列](/generated-columns.md)。
@@ -2276,7 +2276,7 @@ Query OK, 0 rows affected (0.09 sec)
 
 - 作用域：SESSION | GLOBAL
 - 是否持久化到集群：是
-- 受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：是
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：是
 - 类型：布尔型
 - 默认值：`ON`
 - 这个变量用于控制是否开启向量化执行。
@@ -2285,7 +2285,7 @@ Query OK, 0 rows affected (0.09 sec)
 
 - 作用域：SESSION | GLOBAL
 - 是否持久化到集群：是
-- 受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
 - 类型：布尔型
 - 默认值：`ON`
 - 这个变量用来控制是否开启窗口函数的支持。默认值 1 代表开启窗口函数的功能。
@@ -2295,7 +2295,7 @@ Query OK, 0 rows affected (0.09 sec)
 
 - 作用域：GLOBAL
 - 是否持久化到集群：是
-- 受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
 - 类型：布尔型
 - 默认值：`OFF`
 - 这个变量用于控制是否开启 [TiCDC 单行数据正确性校验](/ticdc/ticdc-integrity-check.md)功能。
@@ -2303,7 +2303,7 @@ Query OK, 0 rows affected (0.09 sec)
 ### `tidb_enforce_mpp` <span class="version-mark">从 v5.1 版本开始引入</span>
 
 - 作用域：SESSION
-- 受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：是
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：是
 - 类型：布尔型
 - 默认值：`OFF`（表示关闭）。如需修改此变量的默认值，请配置 [`performance.enforce-mpp`](/tidb-configuration-file.md#enforce-mpp) 参数。
 - 这个变量用于控制是否忽略优化器代价估算，强制使用 TiFlash 的 MPP 模式执行查询，可以设置的值包括：
@@ -2316,7 +2316,7 @@ MPP 是 TiFlash 引擎提供的分布式计算框架，允许节点之间的数�
 
 - 作用域：SESSION | GLOBAL
 - 是否持久化到集群：是
-- 受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
 - 类型：布尔型
 - 默认值：`OFF`
 - 这个变量用于控制是否启用自动演进绑定功能。该功能的详细介绍和使用方法可以参考[自动演进绑定](/sql-plan-management.md#自动演进绑定-baseline-evolution)。
@@ -2329,7 +2329,7 @@ MPP 是 TiFlash 引擎提供的分布式计算框架，允许节点之间的数�
 
 - 作用域：GLOBAL
 - 是否持久化到集群：是
-- 受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
 - 类型：时间
 - 默认值：`23:59 +0000`
 - 这个变量用来设置一天中允许自动演进的结束时间。
@@ -2338,7 +2338,7 @@ MPP 是 TiFlash 引擎提供的分布式计算框架，允许节点之间的数�
 
 - 作用域：GLOBAL
 - 是否持久化到集群：是
-- 受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
 - 类型：整数型
 - 默认值：`600`
 - 范围：`[-1, 9223372036854775807]`
@@ -2349,7 +2349,7 @@ MPP 是 TiFlash 引擎提供的分布式计算框架，允许节点之间的数�
 
 - 作用域：GLOBAL
 - 是否持久化到集群：是
-- 受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
 - 类型：时间
 - 默认值：`00:00 +0000`
 - 这个变量用来设置一天中允许自动演进的开始时间。
@@ -2358,7 +2358,7 @@ MPP 是 TiFlash 引擎提供的分布式计算框架，允许节点之间的数�
 
 - 作用域：SESSION | GLOBAL
 - 是否持久化到集群：是
-- 受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：是
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：是
 - 类型：整数型
 - 默认值：`5`
 - 范围：`[1, 256]`
@@ -2391,7 +2391,7 @@ v5.0 后，用户仍可以单独修改以上系统变量（会有废弃警告）
 
 - 作用域：GLOBAL
 - 是否持久化到集群：否，仅作用于当前连接的 TiDB 实例
-- 受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
 - 类型：整数型
 - 默认值：`60`
 - 范围：`[10, 2147483647]`
@@ -2402,7 +2402,7 @@ v5.0 后，用户仍可以单独修改以上系统变量（会有废弃警告）
 
 - 作用域：GLOBAL
 - 是否持久化到集群：否，仅作用于当前连接的 TiDB 实例
-- 受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
 - 类型：整数型
 - 默认值：`600`
 - 范围：`[60, 2147483647]`
@@ -2413,7 +2413,7 @@ v5.0 后，用户仍可以单独修改以上系统变量（会有废弃警告）
 
 - 作用域：GLOBAL
 - 是否持久化到集群：否，仅作用于当前连接的 TiDB 实例
-- 受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
 - 类型：枚举型
 - 默认值：`NO_PRIORITY`
 - 可选值：`NO_PRIORITY`、`LOW_PRIORITY`、`DELAYED`、`HIGH_PRIORITY`
@@ -2424,7 +2424,7 @@ v5.0 后，用户仍可以单独修改以上系统变量（会有废弃警告）
 
 - 作用域：GLOBAL
 - 是否持久化到集群：是
-- 受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
 - 类型：整数型
 - 默认值：`-1`
 - 范围：`[1, 256]`
@@ -2435,7 +2435,7 @@ v5.0 后，用户仍可以单独修改以上系统变量（会有废弃警告）
 
 - 作用域：GLOBAL
 - 是否持久化到集群：是
-- 受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
 - 类型：布尔型
 - 默认值：`ON`
 - 这个变量用于控制是否启用 TiKV 的垃圾回收 (GC) 机制。如果不启用 GC 机制，系统将不再清理旧版本的数据，因此会有损系统性能。
@@ -2444,7 +2444,7 @@ v5.0 后，用户仍可以单独修改以上系统变量（会有废弃警告）
 
 - 作用域：GLOBAL
 - 是否持久化到集群：是
-- 受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
 - 类型：Duration
 - 默认值：`10m0s`
 - 范围：`[10m0s, 8760h0m0s]`
@@ -2461,7 +2461,7 @@ v5.0 后，用户仍可以单独修改以上系统变量（会有废弃警告）
 
 - 作用域：GLOBAL
 - 是否持久化到集群：是
-- 受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
 - 类型：整数型
 - 默认值：`86400`
 - 范围：`[600, 31536000]`
@@ -2472,7 +2472,7 @@ v5.0 后，用户仍可以单独修改以上系统变量（会有废弃警告）
 
 - 作用域：GLOBAL
 - 是否持久化到集群：是
-- 受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
 - 类型：Duration
 - 默认值：`10m0s`
 - 范围：`[10m0s, 8760h0m0s]`
@@ -2486,7 +2486,7 @@ v5.0 后，用户仍可以单独修改以上系统变量（会有废弃警告）
 
 - 作用域：GLOBAL
 - 是否持久化到集群：是
-- 受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
 - 类型：枚举型
 - 默认值：`LEGACY`
 - 可设置为：`PHYSICAL`，`LEGACY`
@@ -2498,7 +2498,7 @@ v5.0 后，用户仍可以单独修改以上系统变量（会有废弃警告）
 
 - 作用域：GLOBAL
 - 是否持久化到集群：否，仅作用于当前连接的 TiDB 实例
-- 受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
 - 类型：布尔型
 - 默认值：`OFF`
 - 这个变量用来设置是否在[日志](/tidb-configuration-file.md#logfile)里记录所有的 SQL 语句。该功能默认关闭。如果系统运维人员在定位问题过程中需要追踪所有 SQL 记录，可考虑开启该功能。
@@ -2521,7 +2521,7 @@ v5.0 后，用户仍可以单独修改以上系统变量（会有废弃警告）
 
 - 作用域：SESSION | GLOBAL
 - 是否持久化到集群：是
-- 受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
 - 类型：整数型
 - 默认值：`100`
 - 范围：`[1, 100000]`
@@ -2531,7 +2531,7 @@ v5.0 后，用户仍可以单独修改以上系统变量（会有废弃警告）
 
 - 作用域：GLOBAL
 - 是否持久化到集群：是
-- 受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
 - 类型：布尔型
 - 默认值：`ON`
 - 这个变量用于指定是否在 slow log 和 statement summary 里包含以二进制格式编码的执行计划。
@@ -2542,7 +2542,7 @@ v5.0 后，用户仍可以单独修改以上系统变量（会有废弃警告）
 
 - 作用域：GLOBAL
 - 是否持久化到集群：是
-- 受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
 - 默认值：`0.6`
 - 范围：`[0, 0.9)`
 - 这个变量用来控制 GOGC Tuner 自动调节的最大内存阈值，超过阈值后 GOGC Tuner 会停止工作。
@@ -2551,7 +2551,7 @@ v5.0 后，用户仍可以单独修改以上系统变量（会有废弃警告）
 
 - 作用域：SESSION | GLOBAL
 - 是否持久化到集群：是
-- 受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
 - 类型：布尔型
 - 默认值：`ON`
 - 此变量控制异步提交 (Async Commit) 中提交时间戳的计算方式。默认情况下（使用 `ON` 值），两阶段提交从 PD 服务器请求一个新的时间戳，并使用该时间戳计算最终提交的时间戳，这样可保证所有并发事务可线性化。
@@ -2562,7 +2562,7 @@ v5.0 后，用户仍可以单独修改以上系统变量（会有废弃警告）
 
 - 作用域：SESSION | GLOBAL
 - 是否持久化到集群：是
-- 受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
 - 类型：布尔型
 - 默认值：`ON`
 - 该值表示是否在开启 new collation 的集群里生成 MPP hash partition exchange 算子。`true` 表示生成此算子，`false`表示不生成。
@@ -2576,7 +2576,7 @@ v5.0 后，用户仍可以单独修改以上系统变量（会有废弃警告）
 
 - 作用域：SESSION | GLOBAL
 - 是否持久化到集群：是
-- 受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
 - 类型：整数型
 - 默认值：`-1`
 - 范围：`[1, 256]`
@@ -2592,7 +2592,7 @@ v5.0 后，用户仍可以单独修改以上系统变量（会有废弃警告）
 
 - 作用域：SESSION | GLOBAL
 - 是否持久化到集群：是
-- 受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
 - 类型：整数型
 - 默认值：`-1`
 - 范围：`[1, 256]`
@@ -2608,7 +2608,7 @@ v5.0 后，用户仍可以单独修改以上系统变量（会有废弃警告）
 
 - 作用域：SESSION | GLOBAL
 - 是否持久化到集群：是
-- 受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
 - 类型：整数型
 - 默认值：`-1`
 - 范围：`[1, 256]`
@@ -2620,7 +2620,7 @@ v5.0 后，用户仍可以单独修改以上系统变量（会有废弃警告）
 
 - 作用域：GLOBAL
 - 是否持久化到集群：是
-- 受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
 - 类型：Duration
 - 默认值：`168h`，即 7 天
 - 这个变量用来控制历史统计信息在存储中的保留时间。
@@ -2629,7 +2629,7 @@ v5.0 后，用户仍可以单独修改以上系统变量（会有废弃警告）
 
 - 作用域：SESSION | GLOBAL
 - 是否持久化到集群：是
-- 受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
 - 类型：布尔型
 - 默认值：`OFF`
 - 这个变量用来设置是否忽略关闭 Prepared Statement 的指令。
@@ -2639,7 +2639,7 @@ v5.0 后，用户仍可以单独修改以上系统变量（会有废弃警告）
 
 - 作用域：SESSION | GLOBAL
 - 是否持久化到集群：是
-- 受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：是
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：是
 - 类型：整数型
 - 默认值：`25000`
 - 范围：`[1, 2147483647]`
@@ -2650,7 +2650,7 @@ v5.0 后，用户仍可以单独修改以上系统变量（会有废弃警告）
 
 - 作用域：SESSION | GLOBAL
 - 是否持久化到集群：是
-- 受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：是
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：是
 - 类型：浮点数
 - 默认值：`0`
 - 范围：`[0, 18446744073709551615]`
@@ -2666,7 +2666,7 @@ v5.0 后，用户仍可以单独修改以上系统变量（会有废弃警告）
 
 - 作用域：SESSION | GLOBAL
 - 是否持久化到集群：是
-- 受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
 - 默认值：`-1`
 - 范围：`[1, 256]`
 - 单位：线程
@@ -2681,7 +2681,7 @@ v5.0 后，用户仍可以单独修改以上系统变量（会有废弃警告）
 
 - 作用域：SESSION | GLOBAL
 - 是否持久化到集群：是
-- 受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
 - 默认值：`-1`
 - 范围：`[1, 256]`
 - 单位：线程
@@ -2692,7 +2692,7 @@ v5.0 后，用户仍可以单独修改以上系统变量（会有废弃警告）
 
 - 作用域：SESSION | GLOBAL
 - 是否持久化到集群：是
-- 受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：是
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：是
 - 默认值：`-1`
 - 范围：`[1, 256]`
 - 这个变量用来设置索引合并进行交集操作时的最大并发度，仅在以动态裁剪模式访问分区表时有效。实际并发度为 `tidb_index_merge_intersection_concurrency` 与分区表分区数目两者中较小的值。
@@ -2702,7 +2702,7 @@ v5.0 后，用户仍可以单独修改以上系统变量（会有废弃警告）
 
 - 作用域：SESSION | GLOBAL
 - 是否持久化到集群：是
-- 受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：是
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：是
 - 类型：整数型
 - 默认值：`20000`
 - 范围：`[1, 2147483647]`
@@ -2713,7 +2713,7 @@ v5.0 后，用户仍可以单独修改以上系统变量（会有废弃警告）
 
 - 作用域：SESSION | GLOBAL
 - 是否持久化到集群：是
-- 受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：是
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：是
 - 类型：整数型
 - 默认值：`1`
 - 范围：`[1, 256]`
@@ -2724,7 +2724,7 @@ v5.0 后，用户仍可以单独修改以上系统变量（会有废弃警告）
 
 - 作用域：SESSION | GLOBAL
 - 是否持久化到集群：是
-- 受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
 - 类型：整数型
 - 默认值：`32`
 - 范围：`[1, 32]`
@@ -2741,7 +2741,7 @@ v5.0 后，用户仍可以单独修改以上系统变量（会有废弃警告）
 
 - 作用域：SESSION
 - 默认值：""
-- 受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：是
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：是
 - 类型：字符串
 - 该变量为只读变量，TiDB 内部使用该变量获取当前会话中上一个 DDL 操作的信息。
     - "query"：上一个 DDL 查询字符串。
@@ -2760,7 +2760,7 @@ v5.0 后，用户仍可以单独修改以上系统变量（会有废弃警告）
 ### `tidb_last_txn_info` <span class="version-mark">从 v4.0.9 版本开始引入</span>
 
 - 作用域：SESSION
-- 受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
 - 类型：字符串
 - 此变量用于获取当前会话中最后一个事务的信息。这是一个只读变量。事务信息包括：
     - 事务的范围
@@ -2772,7 +2772,7 @@ v5.0 后，用户仍可以单独修改以上系统变量（会有废弃警告）
 ### `tidb_last_plan_replayer_token` <span class="version-mark">从 v6.3.0 版本开始引入</span>
 
 - 作用域：SESSION
-- 受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
 - 类型：字符串
 - 这个变量是一个只读变量，用于获取当前会话中最后一个 `PLAN REPLAYER dump` 的结果。
 
@@ -2780,7 +2780,7 @@ v5.0 后，用户仍可以单独修改以上系统变量（会有废弃警告）
 
 - 作用域：SESSION | GLOBAL
 - 是否持久化到集群：是
-- 受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
 - 默认值：`"1s"`
 - 范围：`[0s, 1h]`
 - 类型：字符串
@@ -2790,7 +2790,7 @@ v5.0 后，用户仍可以单独修改以上系统变量（会有废弃警告）
 
 - 作用域：SESSION | GLOBAL
 - 是否持久化到集群：是
-- 受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
 - 类型：布尔型
 - 默认值：`ON`
 - 该变量控制在以下场景是否对某些 key 加锁。设置为 `ON` 时，都加锁，设置为 `OFF` 时，都不加锁。
@@ -2802,7 +2802,7 @@ v5.0 后，用户仍可以单独修改以上系统变量（会有废弃警告）
 
 - 作用域：GLOBAL
 - 是否持久化到集群：否，仅作用于当前连接的 TiDB 实例
-- 受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
 - 类型：整数型
 - 默认值：`0`
 - 范围：`[0, 2147483647]`
@@ -2811,7 +2811,7 @@ v5.0 后，用户仍可以单独修改以上系统变量（会有废弃警告）
 ### `tidb_low_resolution_tso`
 
 - 作用域：SESSION
-- 受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
 - 类型：布尔型
 - 默认值：`OFF`
 - 这个变量用来设置是否启用低精度 TSO 特性。开启该功能之后，新事务会使用一个每 2s 更新一次的 TS 来读取数据。
@@ -2821,7 +2821,7 @@ v5.0 后，用户仍可以单独修改以上系统变量（会有废弃警告）
 
 - 作用域：SESSION | GLOBAL
 - 是否持久化到集群：是
-- 受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
 - 类型：布尔型
 - 默认值：`OFF`
 - 这个变量用来设置是否在非事务语句中立刻返回错误。当设为 `OFF` 时，在碰到第一个报错的 batch 时，非事务 DML 语句即中止，取消其后的所有 batch，返回错误。当设为 `ON` 时，当某个 batch 执行报错时，其后的 batch 会继续执行，直到所有 batch 执行完毕，返回结果时把这些错误合并后返回。
@@ -2830,7 +2830,7 @@ v5.0 后，用户仍可以单独修改以上系统变量（会有废弃警告）
 
 - 作用域：GLOBAL
 - 是否持久化到集群：是
-- 受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
 - 类型：整数型
 - 默认值：`43200`
 - 范围：`[0, 2147483647]`
@@ -2841,7 +2841,7 @@ v5.0 后，用户仍可以单独修改以上系统变量（会有废弃警告）
 
 - 作用域：SESSION | GLOBAL
 - 是否持久化到集群：是
-- 受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：是
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：是
 - 类型：整数型
 - 默认值：`-1`
 - 范围：`[-1, 9223372036854775807]`
@@ -2856,7 +2856,7 @@ v5.0 后，用户仍可以单独修改以上系统变量（会有废弃警告）
 
 - 作用域：SESSION | GLOBAL
 - 是否持久化到集群：是
-- 受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：是
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：是
 - 类型：整数型
 - 默认值：`-1`
 - 范围：`[-1, 9223372036854775807]`
@@ -2871,7 +2871,7 @@ v5.0 后，用户仍可以单独修改以上系统变量（会有废弃警告）
 
 - 作用域：SESSION | GLOBAL
 - 是否持久化到集群：是
-- 受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：是
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：是
 - 类型：整数型
 - 默认值：`-1`
 - 范围：`[-1, 9223372036854775807]`
@@ -2886,7 +2886,7 @@ v5.0 后，用户仍可以单独修改以上系统变量（会有废弃警告）
 
 - 作用域：SESSION | GLOBAL
 - 是否持久化到集群：是
-- 受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
 - 类型：整数型
 - 默认值：`1024`
 - 范围：`[32, 2147483647]`
@@ -2897,7 +2897,7 @@ v5.0 后，用户仍可以单独修改以上系统变量（会有废弃警告）
 
 - 作用域：GLOBAL
 - 是否持久化到集群：是
-- 受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
 - 类型：整数型
 - 默认值：`1024`
 - 范围：`[100, 16384]`
@@ -2907,7 +2907,7 @@ v5.0 后，用户仍可以单独修改以上系统变量（会有废弃警告）
 
 - 作用域：SESSION | GLOBAL
 - 是否持久化到集群：是
-- 受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：是
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：是
 - 类型：整数型
 - 默认值：`50000`
 - 范围：`[1, 9223372036854775807]`
@@ -2918,7 +2918,7 @@ v5.0 后，用户仍可以单独修改以上系统变量（会有废弃警告）
 
 - 作用域：SESSION | GLOBAL
 - 是否持久化到集群：是
-- 受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
 - 类型：整数型
 - 默认值：`-1`
 - 范围：`[-1, 256]`
@@ -2929,7 +2929,7 @@ v5.0 后，用户仍可以单独修改以上系统变量（会有废弃警告）
 
 - 作用域：GLOBAL
 - 是否持久化到集群：是
-- 受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
 - 类型：枚举型
 - 默认值：`CANCEL`
 - 可选值：`CANCEL`，`LOG`
@@ -2945,7 +2945,7 @@ v5.0 后，用户仍可以单独修改以上系统变量（会有废弃警告）
 
 - 作用域：GLOBAL
 - 是否持久化到集群：是
-- 受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
 - 类型：整数型
 - 默认值：`-1`
 - 单位：字节
@@ -2960,7 +2960,7 @@ v5.0 后，用户仍可以单独修改以上系统变量（会有废弃警告）
 
 - 作用域：SESSION | GLOBAL
 - 是否持久化到集群：是
-- 受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
 - 类型：整数型
 - 默认值：`33554432` (32 MiB)
 - 范围：`[0, 9223372036854775807]`
@@ -2972,7 +2972,7 @@ v5.0 后，用户仍可以单独修改以上系统变量（会有废弃警告）
 
 - 作用域：GLOBAL
 - 是否持久化到集群：是
-- 受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
 - 类型：整数型
 - 默认值：`67108864` (64 MiB)
 - 范围：`[0, 2147483647]`
@@ -2984,7 +2984,7 @@ v5.0 后，用户仍可以单独修改以上系统变量（会有废弃警告）
 
 - 作用域：SESSION | GLOBAL
 - 是否持久化到集群：是
-- 受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
 - 类型：整数型
 - 默认值：`1073741824` (1 GiB)
 - 范围：`[-1, 9223372036854775807]`
@@ -2997,7 +2997,7 @@ v5.0 后，用户仍可以单独修改以上系统变量（会有废弃警告）
 ### `tidb_memory_debug_mode_alarm_ratio`
 
 - 作用域：SESSION
-- 受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
 - 类型：浮点型
 - 默认值：`0`
 - 该变量表示在 TiDB memory debug 模式下，允许的内存统计误差值。
@@ -3006,7 +3006,7 @@ v5.0 后，用户仍可以单独修改以上系统变量（会有废弃警告）
 ### `tidb_memory_debug_mode_min_heap_inuse`
 
 - 作用域：SESSION
-- 受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
 - 类型：整数型
 - 默认值：`0`
 - 该变量用于 TiDB 内部测试，**不推荐修改该变量值**，因为开启后会影响 TiDB 的性能。
@@ -3016,7 +3016,7 @@ v5.0 后，用户仍可以单独修改以上系统变量（会有废弃警告）
 
 - 作用域：GLOBAL
 - 是否持久化到集群：是
-- 受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
 - 类型：浮点数
 - 默认值：`0.7`
 - 范围：`[0.0, 1.0]`
@@ -3031,7 +3031,7 @@ v5.0 后，用户仍可以单独修改以上系统变量（会有废弃警告）
 
 - 作用域：GLOBAL
 - 是否持久化到集群：是
-- 受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
 - 默认值：`5`
 - 范围：`[1, 10000]`
 - 当 tidb-server 内存占用超过内存报警阈值并触发报警时，TiDB 默认只保留最近 5 次报警时所生成的状态文件。你可以通过该变量调整该次数。
@@ -3040,7 +3040,7 @@ v5.0 后，用户仍可以单独修改以上系统变量（会有废弃警告）
 
 - 作用域：SESSION | GLOBAL
 - 是否持久化到集群：是
-- 受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：是
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：是
 - 类型：整数型
 - 默认值：`1`
 - 取值范围：`[1, 256]`
@@ -3055,14 +3055,14 @@ v5.0 后，用户仍可以单独修改以上系统变量（会有废弃警告）
 
 - 作用域：SESSION | GLOBAL
 - 是否持久化到集群：是
-- 受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
 - 默认值：`1`
 - 这个变量用于 TiDB analyze 分区表时，对分区表统计信息进行合并时的并发度。
 
 ### `tidb_metric_query_range_duration` <span class="version-mark">从 v4.0 版本开始引入</span>
 
 - 作用域：SESSION
-- 受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
 - 类型：整数型
 - 默认值：`60`
 - 范围：`[10, 216000]`
@@ -3072,7 +3072,7 @@ v5.0 后，用户仍可以单独修改以上系统变量（会有废弃警告）
 ### `tidb_metric_query_step` <span class="version-mark">从 v4.0 版本开始引入</span>
 
 - 作用域：SESSION
-- 受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
 - 类型：整数型
 - 默认值：`60`
 - 范围：`[10, 216000]`
@@ -3083,7 +3083,7 @@ v5.0 后，用户仍可以单独修改以上系统变量（会有废弃警告）
 
 - 作用域：SESSION | GLOBAL
 - 是否持久化到集群：是
-- 受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：是
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：是
 - 类型：整数型
 - 默认值：`128`
 - 范围：`[1, 9223372036854775807]`
@@ -3098,7 +3098,7 @@ v5.0 后，用户仍可以单独修改以上系统变量（会有废弃警告）
 
 - 作用域：SESSION | GLOBAL
 - 是否持久化到集群：是
-- 受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
 - 类型：Duration
 - 默认值：`60s`
 - 刚重启的 TiFlash 可能不能正常提供服务。为了防止查询失败，TiDB 会限制 tidb-server 向刚重启的 TiFlash 节点发送查询。这个变量表示刚重启的 TiFlash 不被发送请求的时间范围。
@@ -3107,7 +3107,7 @@ v5.0 后，用户仍可以单独修改以上系统变量（会有废弃警告）
 
 - 作用域：SESSION | GLOBAL
 - 是否持久化到集群：是
-- 受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
 - 类型：枚举型
 - 默认值：`OFF`
 - 可选值：`OFF`，`ON`，`WARN`
@@ -3136,7 +3136,7 @@ v5.0 后，用户仍可以单独修改以上系统变量（会有废弃警告）
 
 - 作用域：SESSION | GLOBAL
 - 是否持久化到集群：是
-- 受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：是
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：是
 - 类型：布尔型
 - 默认值：`OFF`
 - 这个变量用来设置优化器是否执行聚合函数下推到 Join，Projection 和 UnionAll 之前的优化操作。当查询中聚合操作执行很慢时，可以尝试设置该变量为 ON。
@@ -3145,7 +3145,7 @@ v5.0 后，用户仍可以单独修改以上系统变量（会有废弃警告）
 
 - 作用域：SESSION | GLOBAL
 - 是否持久化到集群：是
-- 受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：是
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：是
 - 类型：整数型
 - 默认值：`1`
 - 范围：`[0, 2]`
@@ -3157,7 +3157,7 @@ v5.0 后，用户仍可以单独修改以上系统变量（会有废弃警告）
 
 - 作用域：SESSION | GLOBAL
 - 是否持久化到集群：是
-- 受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：是
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：是
 - 类型：浮点数
 - 范围：`[0, 18446744073709551615]`
 - 默认值：`3.0`
@@ -3167,7 +3167,7 @@ v5.0 后，用户仍可以单独修改以上系统变量（会有废弃警告）
 
 - 作用域：SESSION | GLOBAL
 - 是否持久化到集群：是
-- 受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：是
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：是
 - 类型：浮点数
 - 范围：`[0, 18446744073709551615]`
 - 默认值：`3.0`
@@ -3177,7 +3177,7 @@ v5.0 后，用户仍可以单独修改以上系统变量（会有废弃警告）
 
 - 作用域：SESSION | GLOBAL
 - 是否持久化到集群：是
-- 受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：是
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：是
 - 类型：整数型
 - 默认值：`1`
 - 范围：`[0, 2147483647]`
@@ -3187,7 +3187,7 @@ v5.0 后，用户仍可以单独修改以上系统变量（会有废弃警告）
 
 - 作用域：SESSION | GLOBAL
 - 是否持久化到集群：是
-- 受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：是
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：是
 - 类型：浮点数
 - 默认值：`0.9`
 - 范围：`[0, 1]`
@@ -3198,7 +3198,7 @@ v5.0 后，用户仍可以单独修改以上系统变量（会有废弃警告）
 
 - 作用域：SESSION | GLOBAL
 - 是否持久化到集群：是
-- 受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：是
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：是
 - 类型：浮点数
 - 范围：`[0, 2147483647]`
 - 默认值：`3.0`
@@ -3208,7 +3208,7 @@ v5.0 后，用户仍可以单独修改以上系统变量（会有废弃警告）
 
 - 作用域：SESSION | GLOBAL
 - 是否持久化到集群：是
-- 受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：是
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：是
 - 类型：布尔型
 - 默认值：`OFF`
 - 表示是否开启[从窗口函数中推导 TopN 或 Limit](/derive-topn-from-window.md) 的优化规则。
@@ -3217,7 +3217,7 @@ v5.0 后，用户仍可以单独修改以上系统变量（会有废弃警告）
 
 - 作用域：SESSION | GLOBAL
 - 是否持久化到集群：是
-- 受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：是
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：是
 - 类型：浮点数
 - 范围：`[0, 18446744073709551615]`
 - 默认值：`3.0`
@@ -3227,7 +3227,7 @@ v5.0 后，用户仍可以单独修改以上系统变量（会有废弃警告）
 
 - 作用域：SESSION | GLOBAL
 - 是否持久化到集群：是
-- 受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：是
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：是
 - 类型：浮点数
 - 范围：`[0, 18446744073709551615]`
 - 默认值：`1.5`
@@ -3236,7 +3236,7 @@ v5.0 后，用户仍可以单独修改以上系统变量（会有废弃警告）
 ### `tidb_opt_distinct_agg_push_down`
 
 - 作用域：SESSION
-- 受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：是
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：是
 - 类型：布尔型
 - 默认值：`OFF`
 - 这个变量用来设置优化器是否执行带有 `Distinct` 的聚合函数（比如 `select count(distinct a) from t`）下推到 Coprocessor 的优化操作。当查询中带有 `Distinct` 的聚合操作执行很慢时，可以尝试设置该变量为 `1`。
@@ -3273,7 +3273,7 @@ mysql> desc select count(distinct a) from test.t;
 
 - 作用域：SESSION | GLOBAL
 - 是否持久化到集群：是
-- 受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：是
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：是
 - 类型：布尔型
 - 默认值：`ON`
 - 这个变量用来控制优化器是否开启交叉估算。
@@ -3282,7 +3282,7 @@ mysql> desc select count(distinct a) from test.t;
 
 - 作用域：SESSION | GLOBAL
 - 是否持久化到集群：是
-- 受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
 - 类型：布尔型
 - 默认值：`OFF`
 - 这个变量用来控制 `EXPLAIN` 语句是否禁止提前执行可以在优化阶段展开的常量子查询。该变量设置为 `OFF` 时，`EXPLAIN` 语句会在优化阶段提前展开子查询。该变量设置为 `ON` 时，`EXPLAIN` 语句不会在优化阶段展开子查询。更多信息请参考[禁止子查询提前展开](/explain-walkthrough.md#禁止子查询提前执行)。
@@ -3291,7 +3291,7 @@ mysql> desc select count(distinct a) from test.t;
 
 - 作用域：SESSION | GLOBAL
 - 是否持久化到集群：是
-- 受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：是
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：是
 - 类型：布尔型
 - 默认值：`ON`
 - 这个变量用来控制是否启用 [TiFlash 延迟物化](/tiflash/tiflash-late-materialization.md)功能。注意在 TiFlash [Fast Scan 模式](/tiflash/use-fastscan.md)下，延迟物化功能暂不可用。
@@ -3305,7 +3305,7 @@ mysql> desc select count(distinct a) from test.t;
 
 - 作用域：SESSION | GLOBAL
 - 是否持久化到集群：是
-- 受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：是
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：是
 - 类型：布尔型
 - 默认值：`OFF`
 - 该变量控制非递归的[公共表表达式 (CTE)](/sql-statements/sql-statement-with.md) 是否可以在 TiFlash MPP 执行。默认情况下，未开启该变量时，CTE 在 TiDB 执行，相较于开启该功能，执行性能有较大差距。
@@ -3314,7 +3314,7 @@ mysql> desc select count(distinct a) from test.t;
 
 - 作用域：SESSION | GLOBAL
 - 是否持久化到集群：是
-- 受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：是
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：是
 - 类型：字符串
 - 默认值：`""`
 - 这个变量用来控制优化器的一些内部行为。
@@ -3325,7 +3325,7 @@ mysql> desc select count(distinct a) from test.t;
 
 - 作用域：SESSION | GLOBAL
 - 是否持久化到集群：是
-- 受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：是
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：是
 - 类型：布尔型
 - 默认值：`OFF`
 - 这个变量用来控制是否强制 inline CTE。默认值为 `OFF`，即默认不强制 inline CTE。注意，此时依旧可以通过 `MERGE()` hint 来开启个别 CTE 的 inline。如果设置为 `ON`，则当前 session 中所有查询的 CTE（递归 CTE 除外）都会 inline。
@@ -3334,7 +3334,7 @@ mysql> desc select count(distinct a) from test.t;
 
 - 作用域：SESSION | GLOBAL
 - 是否持久化到集群：是
-- 受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：是
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：是
 - 类型：布尔型
 - 默认值：`ON`
 - 这个变量用来控制包括 [`HASH_JOIN()` Hint](/optimizer-hints.md#hash_joint1_name--tl_name-)、[`MERGE_JOIN()` Hint](/optimizer-hints.md#merge_joint1_name--tl_name-) 等用于控制连接算法的 Join Method Hint 是否会影响 Join Reorder 的优化过程，包括 [`LEADING()` Hint](/optimizer-hints.md#leadingt1_name--tl_name-) 的使用。默认值为 `ON`，即默认不影响。如果设置为 `OFF`，在一些同时使用 Join Method Hint 和 `LEADING()` Hint 的场景下可能会产生冲突。
@@ -3347,7 +3347,7 @@ mysql> desc select count(distinct a) from test.t;
 
 - 作用域：SESSION | GLOBAL
 - 是否持久化到集群：是
-- 受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：是
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：是
 - 类型：布尔型
 - 默认值：`ON`
 - 这个变量用来设置是否开启优化规则：将子查询转成 join 和 aggregation。
@@ -3380,7 +3380,7 @@ mysql> desc select count(distinct a) from test.t;
 
 - 作用域: SESSION | GLOBAL
 - 是否持久化到集群：是
-- 受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：是
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：是
 - 类型：整数型
 - 默认值：`0`
 - 范围：`[0, 2147483647]`
@@ -3391,7 +3391,7 @@ mysql> desc select count(distinct a) from test.t;
 
 - 作用域：SESSION | GLOBAL
 - 是否持久化到集群：是
-- 受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：是
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：是
 - 类型：整数型
 - 默认值：`100`
 - 范围：`[0, 2147483647]`
@@ -3402,7 +3402,7 @@ mysql> desc select count(distinct a) from test.t;
 
 - 作用域：SESSION | GLOBAL
 - 是否持久化到集群：是
-- 受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：是
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：是
 - 类型：浮点数
 - 范围：`[0, 2147483647]`
 - 默认值：`0.001`
@@ -3412,7 +3412,7 @@ mysql> desc select count(distinct a) from test.t;
 
 - 作用域：SESSION | GLOBAL
 - 是否持久化到集群：是
-- 受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：是
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：是
 - 类型：布尔型
 - 默认值：`OFF`
 - 当该变量值为 `ON` 时，左连接始终使用内表作为构建端，右连接始终使用外表作为构建端。将该变量值设为 `OFF` 后，外连接可以灵活选择任意一边表作为构建端。
@@ -3421,7 +3421,7 @@ mysql> desc select count(distinct a) from test.t;
 
 - 作用域：SESSION | GLOBAL
 - 是否持久化
-- 受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：是
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：是
 - 类型：浮点数
 - 范围：`[0, 2147483647]`
 - 默认值：`1.0`
@@ -3431,7 +3431,7 @@ mysql> desc select count(distinct a) from test.t;
 
 - 作用域：SESSION | GLOBAL
 - 是否持久化到集群：是
-- 受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：是
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：是
 - 类型：浮点数
 - 默认值：`0`
 - 范围：`[0, 1]`
@@ -3472,7 +3472,7 @@ mysql> desc select count(distinct a) from test.t;
 
 - 作用域：SESSION | GLOBAL
 - 是否持久化到集群：是
-- 受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：是
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：是
 - 类型：布尔型
 - 默认值：`OFF`
 - 将该变量值设为 `ON` 后，优化器总是偏好区间扫描而不是全表扫描。
@@ -3505,7 +3505,7 @@ explain select * from t where age=5;
 ### `tidb_opt_projection_push_down` <span class="version-mark">从 v6.1.0 版本开始引入</span>
 
 - 作用域：SESSION
-- 受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：是
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：是
 - 类型：布尔型
 - 默认值：`OFF`
 - 指定是否允许优化器将 `Projection` 算子下推到 TiKV 或者 TiFlash。
@@ -3514,7 +3514,7 @@ explain select * from t where age=5;
 
 - 作用域：SESSION | GLOBAL
 - 是否持久化到集群：是
-- 受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：是
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：是
 - 默认值：`67108864` (64 MiB)
 - 取值范围：`[0, 9223372036854775807]`
 - 单位：字节
@@ -3645,7 +3645,7 @@ SHOW WARNINGS;
 
 - 作用域：SESSION | GLOBAL
 - 是否持久化到集群：是
-- 受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：是
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：是
 - 类型：浮点数
 - 范围：`[0, 2147483647]`
 - 默认值：`1.5`
@@ -3655,7 +3655,7 @@ SHOW WARNINGS;
 
 - 作用域：SESSION | GLOBAL
 - 是否持久化到集群：是
-- 受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：是
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：是
 - 类型：浮点数
 - 范围：`[0, 2147483647]`
 - 默认值：`20`
@@ -3669,7 +3669,7 @@ SHOW WARNINGS;
 
 - 作用域：SESSION | GLOBAL
 - 是否持久化到集群：是
-- 受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：是
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：是
 - 类型：布尔型
 - 默认值：`OFF`
 - 这个变量用来设置优化器是否将带有 `DISTINCT` 的聚合函数（例如 `SELECT b, count(DISTINCT a) FROM t GROUP BY b`）改写为两层聚合函数（例如 `SELECT b, count(a) FROM (SELECT b, a FROM t GROUP BY b, a) t GROUP BY b`）。当聚合列有严重的数据倾斜，且 `DISTINCT` 列有很多不同的值时，这种改写能够避免查询执行过程中的数据倾斜，从而提升查询性能。
@@ -3678,7 +3678,7 @@ SHOW WARNINGS;
 
 - 作用域：SESSION | GLOBAL
 - 是否持久化到集群：是
-- 受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：是
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：是
 - 类型：布尔型
 - 默认值：`ON`
 - 该变量用于控制在 MPP 模式下是否将 `COUNT(DISTINCT)` 聚合改写为三阶段分布式执行的聚合。
@@ -3688,7 +3688,7 @@ SHOW WARNINGS;
 
 - 作用域：SESSION | GLOBAL
 - 是否持久化到集群：是
-- 受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：是
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：是
 - 类型：浮点数
 - 范围：`[0, 2147483647]`
 - 默认值：`24.0`
@@ -3697,7 +3697,7 @@ SHOW WARNINGS;
 ### `tidb_opt_write_row_id`
 
 - 作用域：SESSION
-- 受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：是
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：是
 - 类型：布尔型
 - 默认值：`OFF`
 - 这个变量用来设置是否允许 `INSERT`、`REPLACE` 和 `UPDATE` 操作 `_tidb_rowid` 列，默认是不允许操作。该选项仅用于 TiDB 工具导数据时使用。
@@ -3705,7 +3705,7 @@ SHOW WARNINGS;
 ### `tidb_optimizer_selectivity_level`
 
 - 作用域：SESSION
-- 受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：是
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：是
 - 类型：整数型
 - 默认值：`0`
 - 范围：`[0, 2147483647]`
@@ -3715,7 +3715,7 @@ SHOW WARNINGS;
 
 - 作用域：SESSION | GLOBAL
 - 是否持久化到集群：是
-- 受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：是
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：是
 - 类型：枚举型
 - 默认值：`dynamic`
 - 可选值：`static`、`dynamic`、`static-only`、`dynamic-only`
@@ -3725,7 +3725,7 @@ SHOW WARNINGS;
 
 - 作用域：GLOBAL
 - 是否持久化到集群：是
-- 受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
 - 类型：布尔型
 - 默认值：`ON`
 - 这个变量用于控制是否开启 [ANALYZE 配置持久化](/statistics.md#analyze-配置持久化)特性。
@@ -3734,7 +3734,7 @@ SHOW WARNINGS;
 
 - 作用域：SESSION | GLOBAL
 - 是否持久化到集群：是
-- 受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
 - 类型：布尔型
 - 默认值：`ON`
 - 是否对悲观锁启用加强的悲观锁唤醒模型。该模型可严格控制悲观锁单点冲突场景下事务的唤醒顺序，避免无效唤醒，大大降低原有唤醒机制中的随机性对事务延迟带来的不确定性。如果业务场景中遇到了单点悲观锁冲突频繁的情况（如高频更新同一行数据等），并进而引起语句重试频繁、尾延迟高，甚至偶尔发生 `pessimistic lock retry limit reached` 错误，可以尝试开启该变量来解决问题。
@@ -3750,7 +3750,7 @@ SHOW WARNINGS;
 
 - 作用域：SESSION | GLOBAL
 - 是否持久化到集群：是
-- 受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
 - 类型：枚举型
 - 默认值：`STRICT`
 - 可选值：`STRICT`，`IGNORE`
@@ -3761,7 +3761,7 @@ SHOW WARNINGS;
 
 - 作用域：SESSION | GLOBAL
 - 是否持久化到集群：是
-- 受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
 - 类型：布尔型
 - 默认值：`ON`
 - 该变量用于控制当某张表上的统计信息更新后，与该表相关的 Plan Cache 是否自动失效。
@@ -3774,7 +3774,7 @@ SHOW WARNINGS;
 
 - 作用域：SESSION | GLOBAL
 - 是否持久化到集群：是
-- 受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：是
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：是
 - 默认值：`2097152`（即 2 MB）
 - 取值范围：`[0, 9223372036854775807]`，单位为 Byte。支持带单位的内存格式“KB|MB|GB|TB”。`0` 表示表示不设限制。
 - 这个变量用来控制可以缓存的 Prepare 或非 Prepare 语句执行计划的最大大小。超过该值的执行计划将不会被缓存到 Plan Cache 中。详情请参考 [Prepare 语句执行计划缓存](/sql-prepared-plan-cache.md#prepared-plan-cache-的内存管理)和[非 Prepare 语句执行计划缓存](/sql-non-prepared-plan-cache.md#使用方法)。
@@ -3783,7 +3783,7 @@ SHOW WARNINGS;
 
 - 作用域：GLOBAL
 - 是否持久化到集群：否，仅作用于当前连接的 TiDB 实例
-- 受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
 - 类型：整数型
 - 默认值：`0`
 - 范围：`[0, 1]`
@@ -3793,7 +3793,7 @@ SHOW WARNINGS;
 
 - 作用域：SESSION | GLOBAL
 - 是否持久化到集群：是
-- 受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：是
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：是
 - 类型：布尔型
 - 默认值：`ON`
 - 这个变量用于控制 TiDB 优化器是否将某些过滤条件下推到前缀索引，尽量避免不必要的回表，从而提高查询性能。
@@ -3858,7 +3858,7 @@ EXPLAIN FORMAT='brief' SELECT COUNT(1) FROM t WHERE a = 1 AND b IS NOT NULL;
 
 - 作用域：SESSION | GLOBAL
 - 是否持久化到集群：是
-- 受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：是
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：是
 - 类型：布尔型
 - 默认值：`OFF`
 - 这个变量用于设定 TiDB 选择 [MPP Hash Join 算法](/tiflash/use-tiflash-mpp-mode.md#mpp-模式的算法支持)时，是否使用最小网络交换的数据量策略。开启该变量后，TiDB 会估算 Broadcast Hash Join 和 Shuffled Hash Join 两种算法所需进行网络交换的数据量，并选择网络交换数据量较小的算法。
@@ -3868,7 +3868,7 @@ EXPLAIN FORMAT='brief' SELECT COUNT(1) FROM t WHERE a = 1 AND b IS NOT NULL;
 
 - 作用域：GLOBAL
 - 是否持久化到集群：是
-- 受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
 - 类型：浮点数
 - 默认值：`0.1`
 - 范围：`[0, 1]`
@@ -3883,7 +3883,7 @@ EXPLAIN FORMAT='brief' SELECT COUNT(1) FROM t WHERE a = 1 AND b IS NOT NULL;
 
 - 作用域：SESSION | GLOBAL
 - 是否持久化到集群：是
-- 受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
 - 类型：整数型
 - 默认值：`100`
 - 范围：`[1, 100000]`
@@ -3898,7 +3898,7 @@ EXPLAIN FORMAT='brief' SELECT COUNT(1) FROM t WHERE a = 1 AND b IS NOT NULL;
 
 - 作用域：SESSION | GLOBAL
 - 是否持久化到集群：是
-- 受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
 - 类型：整数型
 - 默认值：`-1`
 - 范围：`[-1, 256]`
@@ -3910,7 +3910,7 @@ EXPLAIN FORMAT='brief' SELECT COUNT(1) FROM t WHERE a = 1 AND b IS NOT NULL;
 
 - 作用域：GLOBAL
 - 是否持久化到集群：是
-- 受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
 - 类型：整数型
 - 默认值：`4096` (4 KiB)
 - 范围：`[0, 1073741824]`
@@ -3928,7 +3928,7 @@ EXPLAIN FORMAT='brief' SELECT COUNT(1) FROM t WHERE a = 1 AND b IS NOT NULL;
 
 - 作用域：GLOBAL
 - 是否持久化到集群：否，仅作用于当前连接的 TiDB 实例
-- 受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
 - 类型：布尔型
 - 默认值：`OFF`
 - 该变量用于优化时间戳的获取，适用于悲观事务 `READ-COMMITTED` 隔离级别下读写冲突较少的场景，开启此变量可以避免获取全局 timestamp 带来的延迟和开销，并优化事务内读语句延迟。
@@ -3942,7 +3942,7 @@ EXPLAIN FORMAT='brief' SELECT COUNT(1) FROM t WHERE a = 1 AND b IS NOT NULL;
 
 - 作用域：SESSION | GLOBAL
 - 是否持久化到集群：是
-- 受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
 - 类型：布尔型
 - 默认值：`OFF`
 - 该变量用于优化时间戳的获取，适用于悲观事务 `READ-COMMITTED` 隔离级别下点写冲突较少的场景。开启此变量可以避免点写语句获取全局时间戳带来的延迟和开销。目前该变量适用的点写语句包括 `UPDATE`、`DELETE`、`SELECT ...... FOR UPDATE` 三种类型。点写语句是指将主键或者唯一键作为过滤条件且最终执行算子包含 `POINT-GET` 的写语句。
@@ -3951,7 +3951,7 @@ EXPLAIN FORMAT='brief' SELECT COUNT(1) FROM t WHERE a = 1 AND b IS NOT NULL;
 ### `tidb_read_consistency` <span class="version-mark">New in v5.4.0</span>
 
 - 作用域：SESSION
-- 受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：是
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：是
 - 类型：字符串
 - 默认值：`strict`
 - 此变量用于控制自动提交的读语句的读一致性。
@@ -3961,7 +3961,7 @@ EXPLAIN FORMAT='brief' SELECT COUNT(1) FROM t WHERE a = 1 AND b IS NOT NULL;
 ### `tidb_read_staleness` <span class="version-mark">从 v5.4.0 版本开始引入</span>
 
 - 作用域：SESSION
-- 受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：是
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：是
 - 类型：整数型
 - 默认值：`0`
 - 范围 `[-2147483648, 0]`
@@ -3971,7 +3971,7 @@ EXPLAIN FORMAT='brief' SELECT COUNT(1) FROM t WHERE a = 1 AND b IS NOT NULL;
 
 - 作用域：GLOBAL
 - 是否持久化到集群：否，仅作用于当前连接的 TiDB 实例
-- 受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
 - 类型：布尔型
 - 默认值：`ON`
 - 这个变量用于控制是否在 slow log 里包含慢查询的执行计划。
@@ -3980,7 +3980,7 @@ EXPLAIN FORMAT='brief' SELECT COUNT(1) FROM t WHERE a = 1 AND b IS NOT NULL;
 
 - 作用域：SESSION | GLOBAL
 - 是否持久化到集群：是
-- 受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
 - 类型：布尔型
 - 默认值：`OFF`
 - 这个变量用于控制在记录 TiDB 日志和慢日志时，是否将 SQL 中的用户信息遮蔽。
@@ -3990,7 +3990,7 @@ EXPLAIN FORMAT='brief' SELECT COUNT(1) FROM t WHERE a = 1 AND b IS NOT NULL;
 
 - 作用域：SESSION | GLOBAL
 - 是否持久化到集群：是
-- 受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
 - 类型：布尔型
 - 默认值：`ON`
 - 这个变量用来控制优化器是否可以将包含 null 的等值条件作为前缀条件来访问索引。
@@ -4000,7 +4000,7 @@ EXPLAIN FORMAT='brief' SELECT COUNT(1) FROM t WHERE a = 1 AND b IS NOT NULL;
 
 - 作用域：SESSION | GLOBAL
 - 是否持久化到集群：是
-- 受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
 - 类型：布尔型
 - 默认值：在 v7.2.0 之前版本中为 `OFF`，在 v7.2.0 及之后版本中为 `ON`。
 - 指定是否在子查询中移除 `ORDER BY` 子句。
@@ -4009,7 +4009,7 @@ EXPLAIN FORMAT='brief' SELECT COUNT(1) FROM t WHERE a = 1 AND b IS NOT NULL;
 
 - 作用域：SESSION | GLOBAL
 - 是否持久化到集群：是
-- 受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：是
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：是
 - 类型：枚举型
 - 默认值：`leader`
 - 可选值：`leader`、`follower`、`leader-and-follower`、`prefer-leader`、`closest-replicas`、`closest-adaptive` 和 `learner`。其中，`learner` 从 v6.6.0 开始引入。
@@ -4020,7 +4020,7 @@ EXPLAIN FORMAT='brief' SELECT COUNT(1) FROM t WHERE a = 1 AND b IS NOT NULL;
 
 - 作用域：SESSION | GLOBAL
 - 是否持久化到集群：是
-- 受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
 - 类型：整数型
 - 默认值：`10`
 - 范围：`[-1, 9223372036854775807]`
@@ -4030,7 +4030,7 @@ EXPLAIN FORMAT='brief' SELECT COUNT(1) FROM t WHERE a = 1 AND b IS NOT NULL;
 
 - 作用域：SESSION | GLOBAL
 - 是否持久化到集群：是
-- 受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
 - 类型：整数型
 - 默认值：`2`
 - 范围：`[1, 2]`
@@ -4044,7 +4044,7 @@ EXPLAIN FORMAT='brief' SELECT COUNT(1) FROM t WHERE a = 1 AND b IS NOT NULL;
 
 - 作用域：SESSION | GLOBAL
 - 是否持久化到集群：是
-- 受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：是
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：是
 - 类型：枚举型
 - 默认值：`OFF`
 - 可选值：`OFF`，`LOCAL`
@@ -4054,7 +4054,7 @@ EXPLAIN FORMAT='brief' SELECT COUNT(1) FROM t WHERE a = 1 AND b IS NOT NULL;
 
 - 作用域：SESSION | GLOBAL
 - 是否持久化到集群：是
-- 受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：是
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：是
 - 类型：枚举型
 - 默认值：`IN`
 - 可选值：`IN`
@@ -4064,7 +4064,7 @@ EXPLAIN FORMAT='brief' SELECT COUNT(1) FROM t WHERE a = 1 AND b IS NOT NULL;
 
 - 作用域：GLOBAL
 - 是否持久化到集群：是
-- 受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
 - 类型：布尔型
 - 默认值：`OFF`
 - TiDB 默认会在建表时为新表分裂 Region。开启该变量后，会在建表语句执行时，同步打散刚分裂出的 Region。适用于批量建表后紧接着批量写入数据，能让刚分裂出的 Region 先在 TiKV 分散而不用等待 PD 进行调度。为了保证后续批量写入数据的稳定性，建表语句会等待打散 Region 完成后再返回建表成功，建表语句执行时间会是该变量关闭时的数倍。
@@ -4074,7 +4074,7 @@ EXPLAIN FORMAT='brief' SELECT COUNT(1) FROM t WHERE a = 1 AND b IS NOT NULL;
 
 - 作用域：GLOBAL
 - 是否持久化到集群：是
-- 受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
 - 默认值：`80%`
 - 取值范围：
     - 你可以将该变量值设为百分比格式，表示内存用量占总内存的百分比，取值范围为 `[1%, 99%]`。
@@ -4088,7 +4088,7 @@ EXPLAIN FORMAT='brief' SELECT COUNT(1) FROM t WHERE a = 1 AND b IS NOT NULL;
 
 - 作用域：GLOBAL
 - 是否持久化到集群：是
-- 受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
 - 默认值：`70%`
 - 取值范围：`[50%, 99%]`
 - TiDB 尝试触发 GC 的阈值。当 TiDB 的内存使用达到 `tidb_server_memory_limit` 值 \* `tidb_server_memory_limit_gc_trigger` 值时，则会主动触发一次 Golang GC。在一分钟之内只会主动触发一次 GC。
@@ -4097,7 +4097,7 @@ EXPLAIN FORMAT='brief' SELECT COUNT(1) FROM t WHERE a = 1 AND b IS NOT NULL;
 
 - 作用域：GLOBAL
 - 是否持久化到集群：是
-- 受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
 - 默认值：`134217728`（即 128 MB）
 - 取值范围：`[128, 9223372036854775807]`，单位为 Byte。支持带单位的内存格式“KB|MB|GB|TB”。
 - 开启内存限制后，TiDB 会终止当前实例上内存用量最高的 SQL 语句。本变量指定此情况下 SQL 语句被终止的最小内存用量。如果 TiDB 实例的内存超限是由许多内存使用量不明显的会话导致的，可以适当调小该变量值，使得更多会话成为 Cancel 的对象。
@@ -4106,7 +4106,7 @@ EXPLAIN FORMAT='brief' SELECT COUNT(1) FROM t WHERE a = 1 AND b IS NOT NULL;
 
 - 作用域：SESSION | GLOBAL
 - 是否持久化到集群：是
-- 受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
 - 类型：整数型
 - 默认值：`100`
 - 范围：`[1, 100000]`
@@ -4117,7 +4117,7 @@ EXPLAIN FORMAT='brief' SELECT COUNT(1) FROM t WHERE a = 1 AND b IS NOT NULL;
 
 - 作用域：SESSION | GLOBAL
 - 是否持久化到集群：是
-- 受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
 - 类型：整数型
 - 默认值：`9223372036854775807`
 - 范围：`[1, 9223372036854775807]`
@@ -4127,7 +4127,7 @@ EXPLAIN FORMAT='brief' SELECT COUNT(1) FROM t WHERE a = 1 AND b IS NOT NULL;
 
 - 作用域：GLOBAL
 - 是否持久化到集群：是
-- 受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
 - 类型：布尔型
 - 默认值：`OFF`
 - 该变量开启后，TiDB 将不会收集或记录 Grafana 面板未使用到的 metrics。
@@ -4136,7 +4136,7 @@ EXPLAIN FORMAT='brief' SELECT COUNT(1) FROM t WHERE a = 1 AND b IS NOT NULL;
 
 - 作用域：SESSION | GLOBAL
 - 是否持久化到集群：是
-- 受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
 - 类型：布尔型
 - 默认值：`OFF`
 - 这个变量用来设置是否校验 ASCII 字符的合法性。
@@ -4146,7 +4146,7 @@ EXPLAIN FORMAT='brief' SELECT COUNT(1) FROM t WHERE a = 1 AND b IS NOT NULL;
 
 - 作用域：SESSION | GLOBAL
 - 是否持久化到集群：是
-- 受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
 - 类型：布尔型
 - 默认值：`OFF`
 - 开启这个开关之后，如果对 `tx_isolation` 赋值一个 TiDB 不支持的隔离级别，不会报错，有助于兼容其他设置了（但不依赖于）不同隔离级别的应用。
@@ -4165,7 +4165,7 @@ Query OK, 0 rows affected, 1 warning (0.00 sec)
 
 - 作用域：SESSION | GLOBAL
 - 是否持久化到集群：是
-- 受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
 - 类型：布尔型
 - 默认值：`ON`
 - 分区表在开启[动态裁剪模式](/partitioned-table.md#动态裁剪模式)时，TiDB 会汇总各个分区的统计信息生成 GlobalStats。这个变量用于控制当分区统计信息缺失时生成 GlobalStats 的行为。
@@ -4177,7 +4177,7 @@ Query OK, 0 rows affected, 1 warning (0.00 sec)
 
 - 作用域：SESSION | GLOBAL
 - 是否持久化到集群：是
-- 受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
 - 类型：布尔型
 - 默认值：`OFF`
 - 这个变量用来设置是否校验 UTF-8 字符的合法性。
@@ -4191,7 +4191,7 @@ Query OK, 0 rows affected, 1 warning (0.00 sec)
 
 - 作用域：GLOBAL
 - 是否持久化到集群：否，仅作用于当前连接的 TiDB 实例
-- 受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
 - 默认值：`300`
 - 类型：整数型
 - 范围：`[-1, 9223372036854775807]`
@@ -4214,7 +4214,7 @@ Query OK, 0 rows affected, 1 warning (0.00 sec)
 
 - 作用域：GLOBAL
 - 是否持久化到集群：是
-- 受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
 - 默认值： `1`
 - 范围：`[1, 15]`
 - 这个变量用来设置在[双向复制](/ticdc/ticdc-bidirectional-replication.md)系统内不同集群的 ID。
@@ -4227,7 +4227,7 @@ Query OK, 0 rows affected, 1 warning (0.00 sec)
 
 - 作用域：GLOBAL
 - 是否持久化到集群：是
-- 受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
 - 类型：整数型
 - 默认值：`0`
 - 这个变量用于控制 TiDB 内部统计信息缓存使用内存的上限。
@@ -4236,7 +4236,7 @@ Query OK, 0 rows affected, 1 warning (0.00 sec)
 
 - 作用域：SESSION | GLOBAL
 - 是否持久化到集群：是
-- 受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：是
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：是
 - 类型：整数型
 - 默认值：`100`
 - 单位：毫秒
@@ -4247,7 +4247,7 @@ Query OK, 0 rows affected, 1 warning (0.00 sec)
 
 - 作用域：GLOBAL
 - 是否持久化到集群：是
-- 受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
 - 类型：布尔型
 - 默认值：`ON`
 - 这个变量用于控制统计信息同步加载超时后，SQL 是执行失败（`OFF`），还是退回使用 pseudo 的统计信息（`ON`）。
@@ -4259,7 +4259,7 @@ Query OK, 0 rows affected, 1 warning (0.00 sec)
 > statements summary 持久化目前为实验特性，不建议在生产环境中使用。该功能可能会在未事先通知的情况下发生变化或删除。如果发现 bug，请在 GitHub 上提 [issue](https://github.com/pingcap/tidb/issues) 反馈。
 
 - 作用域：GLOBAL
-- 受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
 - 类型：布尔型
 - 默认值：`OFF`
 - 只读变量。表示是否开启 [statement summary tables 持久化](/statement-summary-tables.md#持久化-statements-summary)。该变量的值与配置文件中 [`tidb_stmt_summary_enable_persistent`](/tidb-configuration-file.md#tidb_stmt_summary_enable_persistent-从-v660-版本开始引入) 的取值相同。
@@ -4271,7 +4271,7 @@ Query OK, 0 rows affected, 1 warning (0.00 sec)
 > statements summary 持久化目前为实验特性，不建议在生产环境中使用。该功能可能会在未事先通知的情况下发生变化或删除。如果发现 bug，请在 GitHub 上提 [issue](https://github.com/pingcap/tidb/issues) 反馈。
 
 - 作用域：GLOBAL
-- 受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
 - 类型：字符串
 - 默认值：`"tidb-statements.log"`
 - 只读变量。表示当开启 [statement summary tables 持久化](/statement-summary-tables.md#持久化-statements-summary)后持久化数据所写入的文件。该变量的值与配置文件中 [`tidb_stmt_summary_filename`](/tidb-configuration-file.md#tidb_stmt_summary_filename-从-v660-版本开始引入) 的取值相同。
@@ -4283,7 +4283,7 @@ Query OK, 0 rows affected, 1 warning (0.00 sec)
 > statements summary 持久化目前为实验特性，不建议在生产环境中使用。该功能可能会在未事先通知的情况下发生变化或删除。如果发现 bug，请在 GitHub 上提 [issue](https://github.com/pingcap/tidb/issues) 反馈。
 
 - 作用域：GLOBAL
-- 受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
 - 类型：整数型
 - 默认值：`0`
 - 只读变量。表示当开启 [statement summary tables 持久化](/statement-summary-tables.md#持久化-statements-summary)后持久化数据文件的最大数量限制。该变量的值与配置文件中 [`tidb_stmt_summary_file_max_backups`](/tidb-configuration-file.md#tidb_stmt_summary_file_max_backups-从-v660-版本开始引入) 的取值相同。
@@ -4295,7 +4295,7 @@ Query OK, 0 rows affected, 1 warning (0.00 sec)
 > statements summary 持久化目前为实验特性，不建议在生产环境中使用。该功能可能会在未事先通知的情况下发生变化或删除。如果发现 bug，请在 GitHub 上提 [issue](https://github.com/pingcap/tidb/issues) 反馈。
 
 - 作用域：GLOBAL
-- 受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
 - 类型：整数型
 - 默认值：`3`
 - 单位：天
@@ -4308,7 +4308,7 @@ Query OK, 0 rows affected, 1 warning (0.00 sec)
 > statements summary 持久化目前为实验特性，不建议在生产环境中使用。该功能可能会在未事先通知的情况下发生变化或删除。如果发现 bug，请在 GitHub 上提 [issue](https://github.com/pingcap/tidb/issues) 反馈。
 
 - 作用域：GLOBAL
-- 受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
 - 类型：整数型
 - 默认值：`64`
 - 单位：MiB
@@ -4318,7 +4318,7 @@ Query OK, 0 rows affected, 1 warning (0.00 sec)
 
 - 作用域：GLOBAL
 - 是否持久化到集群：是
-- 受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
 - 类型：整数型
 - 默认值：`24`
 - 范围：`[0, 255]`
@@ -4328,7 +4328,7 @@ Query OK, 0 rows affected, 1 warning (0.00 sec)
 
 - 作用域：GLOBAL
 - 是否持久化到集群：是
-- 受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
 - 类型：布尔型
 - 默认值：`OFF`
 - 这个变量用来控制是否在 [statement summary tables](/statement-summary-tables.md) 中包含 TiDB 内部 SQL 的信息。
@@ -4337,7 +4337,7 @@ Query OK, 0 rows affected, 1 warning (0.00 sec)
 
 - 作用域：GLOBAL
 - 是否持久化到集群：是
-- 受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
 - 类型：整数型
 - 默认值：`4096`
 - 范围：`[0, 2147483647]`
@@ -4347,7 +4347,7 @@ Query OK, 0 rows affected, 1 warning (0.00 sec)
 
 - 作用域：GLOBAL
 - 是否持久化到集群：是
-- 受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
 - 类型：整数型
 - 默认值：`3000`
 - 范围：`[1, 32767]`
@@ -4357,7 +4357,7 @@ Query OK, 0 rows affected, 1 warning (0.00 sec)
 
 - 作用域：GLOBAL
 - 是否持久化到集群：是
-- 受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
 - 类型：整数型
 - 默认值：`1800`
 - 范围：`[1, 2147483647]`
@@ -4368,7 +4368,7 @@ Query OK, 0 rows affected, 1 warning (0.00 sec)
 
 - 作用域：SESSION | GLOBAL
 - 是否持久化到集群：是
-- 受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：是
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：是
 - 类型：整数型
 - 默认值：`4`
 - 范围：`[0, 25000]`
@@ -4378,7 +4378,7 @@ Query OK, 0 rows affected, 1 warning (0.00 sec)
 
 - 作用域：SESSION | GLOBAL
 - 是否持久化到集群：是
-- 受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
 - 类型：整数型
 - 默认值：`1`
 - 设置 `StreamAgg` 算子执行查询时的并发度。
@@ -4388,7 +4388,7 @@ Query OK, 0 rows affected, 1 warning (0.00 sec)
 
 - 作用域：GLOBAL
 - 是否持久化到集群：是
-- 受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
 - 类型：整数型
 - 默认值：`5000`
 - 范围：`[1, 10000]`
@@ -4398,7 +4398,7 @@ Query OK, 0 rows affected, 1 warning (0.00 sec)
 
 - 作用域：GLOBAL
 - 是否持久化到集群：是
-- 受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
 - 类型：整数型
 - 默认值：`100`
 - 范围：`[1, 5000]`
@@ -4412,7 +4412,7 @@ Query OK, 0 rows affected, 1 warning (0.00 sec)
 
 - 作用域：GLOBAL
 - 是否持久化到集群：是
-- 受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
 - 类型：整数型
 - 默认值：`0`
 - 范围：`[0, 9223372036854775807]`
@@ -4422,7 +4422,7 @@ Query OK, 0 rows affected, 1 warning (0.00 sec)
 
 - 作用域：GLOBAL
 - 是否持久化到集群：是
-- 受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
 - 类型：布尔型
 - 默认值: `OFF`。
 - `tidb_super_read_only` 用于实现对 MySQL 变量 `super_read_only` 的替代。然而，由于 TiDB 是一个分布式数据库，开启 `tidb_super_read_only` 后数据库各个 TiDB 服务器进入只读模式的时刻不是强一致的，而是最终一致的。
@@ -4441,7 +4441,7 @@ Query OK, 0 rows affected, 1 warning (0.00 sec)
 
 - 作用域：SESSION | GLOBAL
 - 是否持久化到集群：是
-- 受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
 - 类型：布尔型
 - 默认值：`OFF`
 - 这个变量用于控制 `SYSDATE` 函数能否替换为 `NOW` 函数，其效果与 MYSQL 中的 [`sysdate-is-now`](https://dev.mysql.com/doc/refman/8.0/en/server-options.html#option_mysqld_sysdate-is-now) 一致。
@@ -4450,7 +4450,7 @@ Query OK, 0 rows affected, 1 warning (0.00 sec)
 
 - 作用域：GLOBAL
 - 是否持久化到集群：是
-- 受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
 - 类型：整数型
 - 默认值：`1`
 - 范围：`[1, 256]`
@@ -4460,7 +4460,7 @@ Query OK, 0 rows affected, 1 warning (0.00 sec)
 
 - 作用域：GLOBAL
 - 是否持久化到集群：是
-- 受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
 - 类型：整数型
 - 默认值：`3`
 - 范围：`[1, 10]`
@@ -4471,7 +4471,7 @@ Query OK, 0 rows affected, 1 warning (0.00 sec)
 
 - 作用域：SESSION | GLOBAL
 - 是否持久化到集群：是
-- 受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
 - 类型：整数型
 - 默认值：`67108864`
 - 范围：`[1048576, 137438953472]`
@@ -4482,7 +4482,7 @@ Query OK, 0 rows affected, 1 warning (0.00 sec)
 
 - 作用域：SESSION | GLOBAL
 - 是否持久化到集群：是
-- 受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
 - 类型：布尔型
 - 默认值：`ON`
 - 本变量控制 TiDB 是否跟踪聚合函数的内存使用情况。
@@ -4495,7 +4495,7 @@ Query OK, 0 rows affected, 1 warning (0.00 sec)
 
 - 作用域：GLOBAL
 - 是否持久化到集群：是
-- 受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
 - 类型：浮点数
 - 默认值：`0`
 - 范围：`[0, 10]`
@@ -4516,7 +4516,7 @@ Query OK, 0 rows affected, 1 warning (0.00 sec)
 
 - 作用域：GLOBAL
 - 是否持久化到集群：是
-- 受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
 - 类型：整数型
 - 默认值：`0`
 - 范围：`[0, 9223372036854775807]`
@@ -4526,7 +4526,7 @@ Query OK, 0 rows affected, 1 warning (0.00 sec)
 
 - 作用域：GLOBAL
 - 是否持久化到集群：是
-- 受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
 - 默认值：`100`
 - 范围：`[1, 10240]`
 - 这个变量用于设置 TTL 任务中单个删除事务中允许删除的最大行数。更多信息，请参考 [Time to Live](/time-to-live.md)。
@@ -4535,7 +4535,7 @@ Query OK, 0 rows affected, 1 warning (0.00 sec)
 
 - 作用域：GLOBAL
 - 是否持久化到集群：是
-- 受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
 - 默认值：`4`
 - 范围：`[1, 256]`
 - 这个变量用于设置每个 TiDB 节点上 TTL 删除任务的最大并发数。更多信息，请参考 [Time to Live](/time-to-live.md)。
@@ -4544,7 +4544,7 @@ Query OK, 0 rows affected, 1 warning (0.00 sec)
 
 - 作用域：GLOBAL
 - 是否持久化到集群：是
-- 受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
 - 默认值：`ON`
 - 类型：布尔型
 - 这个变量用于控制是否启动 TTL 后台清理任务。如果设置为 `OFF`，所有具有 TTL 属性的表会自动停止对过期数据的清理。更多信息，请参考 [Time to Live](/time-to-live.md)。
@@ -4553,7 +4553,7 @@ Query OK, 0 rows affected, 1 warning (0.00 sec)
 
 - 作用域：GLOBAL
 - 是否持久化到集群：是
-- 受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
 - 默认值：`500`
 - 范围：`[1, 10240]`
 - 这个变量用于设置 TTL 任务中用来扫描过期数据的每个 `SELECT` 语句的 `LIMIT` 的值。更多信息，请参考 [Time to Live](/time-to-live.md)。
@@ -4562,7 +4562,7 @@ Query OK, 0 rows affected, 1 warning (0.00 sec)
 
 - 作用域：GLOBAL
 - 是否持久化到集群：是
-- 受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
 - 默认值：`4`
 - 范围：`[1, 256]`
 - 这个变量用于设置每个 TiDB 节点 TTL 扫描任务的最大并发数。更多信息，请参考 [Time to Live](/time-to-live.md)。
@@ -4570,7 +4570,7 @@ Query OK, 0 rows affected, 1 warning (0.00 sec)
 ### `tidb_ttl_job_schedule_window_start_time` <span class="version-mark">从 v6.5.0 版本开始引入</span>
 
 - 作用域：GLOBAL
-- 受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
 - 类型：时间
 - 是否持久化到集群：是
 - 默认值：`00:00 +0000`
@@ -4579,7 +4579,7 @@ Query OK, 0 rows affected, 1 warning (0.00 sec)
 ### `tidb_ttl_job_schedule_window_end_time` <span class="version-mark">从 v6.5.0 版本开始引入</span>
 
 - 作用域：GLOBAL
-- 受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
 - 类型：时间
 - 是否持久化到集群：是
 - 默认值：`23:59 +0000`
@@ -4589,7 +4589,7 @@ Query OK, 0 rows affected, 1 warning (0.00 sec)
 
 - 作用域：GLOBAL
 - 是否持久化到集群：是
-- 受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
 - 类型：整数型
 - 默认值：`-1`
 - 范围：`-1` 或 `[1, 256]`
@@ -4599,7 +4599,7 @@ Query OK, 0 rows affected, 1 warning (0.00 sec)
 
 - 作用域：SESSION | GLOBAL
 - 是否持久化到集群：是
-- 受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
 - 类型：枚举型
 - 默认值：`FAST`
 - 可选值：`OFF`，`FAST`，`STRICT`
@@ -4614,7 +4614,7 @@ Query OK, 0 rows affected, 1 warning (0.00 sec)
 
 - 作用域：GLOBAL
 - 是否持久化到集群：是
-- 受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
 - 类型：整数型
 - 默认值：`16384`
 - 范围：`[1, 1073741824]`
@@ -4625,7 +4625,7 @@ Query OK, 0 rows affected, 1 warning (0.00 sec)
 
 - 作用域：SESSION | GLOBAL
 - 是否持久化到集群：是
-- 受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
 - 类型：枚举型
 - 默认值：`pessimistic`
 - 可选值：`pessimistic`，`optimistic`
@@ -4637,7 +4637,7 @@ Query OK, 0 rows affected, 1 warning (0.00 sec)
 
 - 作用域：SESSION | GLOBAL
 - 是否持久化到集群：是
-- 受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
 - 类型：布尔型
 - 默认值：`ON`
 - 这个变量用于控制是否开启执行计划绑定功能，默认打开，可通过赋值 `OFF` 来关闭。关于执行计划绑定功能的使用可以参考[执行计划绑定文档](/sql-plan-management.md#创建绑定)。
@@ -4645,7 +4645,7 @@ Query OK, 0 rows affected, 1 warning (0.00 sec)
 ### `tidb_wait_split_region_finish`
 
 - 作用域：SESSION
-- 受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
 - 类型：布尔型
 - 默认值：`ON`
 - 由于打散 Region 的时间可能比较长，主要由 PD 调度以及 TiKV 的负载情况所决定。这个变量用来设置在执行 `SPLIT REGION` 语句时，是否同步等待所有 Region 都打散完成后再返回结果给客户端。
@@ -4656,7 +4656,7 @@ Query OK, 0 rows affected, 1 warning (0.00 sec)
 ### `tidb_wait_split_region_timeout`
 
 - 作用域：SESSION
-- 受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
 - 类型：整数型
 - 默认值：`300`
 - 范围：`[1, 2147483647]`
@@ -4671,7 +4671,7 @@ Query OK, 0 rows affected, 1 warning (0.00 sec)
 
 - 作用域：SESSION | GLOBAL
 - 是否持久化到集群：是
-- 受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
 - 类型：整数型
 - 默认值：`-1`
 - 范围：`[1, 256]`
@@ -4683,7 +4683,7 @@ Query OK, 0 rows affected, 1 warning (0.00 sec)
 
 - 作用域：SESSION | GLOBAL
 - 是否持久化到集群：是
-- 受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
 - 默认值：`OFF`
 - 类型：布尔型
 - 如果开启 [FastScan 功能](/tiflash/use-fastscan.md)（设置为 `ON` 时），TiFlash 可以提供更高效的查询性能，但不保证查询结果的精度和数据一致性。
@@ -4692,7 +4692,7 @@ Query OK, 0 rows affected, 1 warning (0.00 sec)
 
 - 作用域：SESSION | GLOBAL
 - 是否持久化到集群：是
-- 受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
 - 默认值：`8192`
 - 范围：`[1, 18446744073709551615]`
 - 细粒度 shuffle 功能开启时，下推到 TiFlash 的窗口函数可以并行执行。该变量控制发送端发送数据的攒批大小。
@@ -4702,7 +4702,7 @@ Query OK, 0 rows affected, 1 warning (0.00 sec)
 
 - 作用域：SESSION | GLOBAL
 - 是否持久化到集群：是
-- 受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
 - 类型：整数型
 - 默认值：`0`
 - 范围：`[-1, 1024]`
@@ -4717,7 +4717,7 @@ Query OK, 0 rows affected, 1 warning (0.00 sec)
 
 - 作用范围：SESSION | GLOBAL
 - 持久化至集群：是
-- 受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
 - 类型：枚举型
 - 默认值：`all_replicas`
 - 可选值：`all_replicas`、`closest_adaptive`、`closest_replicas`
@@ -4735,7 +4735,7 @@ Query OK, 0 rows affected, 1 warning (0.00 sec)
 
 - 作用域：SESSION | GLOBAL
 - 是否持久化到集群：是
-- 受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
 - 默认值：`SYSTEM`
 - 数据库所使用的时区。这个变量值可以写成时区偏移的形式，如 '-8:00'，也可以写成一个命名时区，如 'America/Los_Angeles'。
 - 默认值 `SYSTEM` 表示时区应当与系统主机的时区相同。系统的时区可通过 [`system_time_zone`](#system_time_zone) 获取。
@@ -4743,7 +4743,7 @@ Query OK, 0 rows affected, 1 warning (0.00 sec)
 ### `timestamp`
 
 - 作用域：SESSION
-- 受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
 - 类型：浮点数
 - 默认值：`0`
 - 取值范围：`[0, 2147483647]`
@@ -4753,7 +4753,7 @@ Query OK, 0 rows affected, 1 warning (0.00 sec)
 
 - 作用域：SESSION | GLOBAL
 - 是否持久化到集群：是
-- 受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
 - 类型：枚举型
 - 默认值：`REPEATABLE-READ`
 - 可选值：`READ-UNCOMMITTED`，`READ-COMMITTED`，`REPEATABLE-READ`，`SERIALIZABLE`
@@ -4790,7 +4790,7 @@ Query OK, 0 rows affected, 1 warning (0.00 sec)
 
 - 作用域：GLOBAL
 - 是否持久化到集群：是
-- 受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
 - 默认值：`ON`
 - 类型：布尔型
 - 该变量是密码复杂度策略检查中的一个检查项，用于进行密码与用户名匹配检查。只有 [`validate_password.enable`](/system-variables.md#validate_passwordenable-从-v650-版本开始引入) 开启时，该变量才生效。
@@ -4801,7 +4801,7 @@ Query OK, 0 rows affected, 1 warning (0.00 sec)
 
 - 作用域：GLOBAL
 - 是否持久化到集群：是
-- 受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
 - 默认值：""
 - 类型：字符串
 - 该变量是密码复杂度策略检查中的一个检查项，用于进行密码与字典字符串匹配检查。只有当 [`validate_password.enable`](/system-variables.md#validate_passwordenable-从-v650-版本开始引入) 开启且 [validate_password.policy](/system-variables.md#validate_passwordpolicy-从-v650-版本开始引入) 设置为 `2` (STRONG) 时，该变量才生效。
@@ -4812,7 +4812,7 @@ Query OK, 0 rows affected, 1 warning (0.00 sec)
 
 - 作用域：GLOBAL
 - 是否持久化到集群：是
-- 受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
 - 默认值：`OFF`
 - 类型：布尔型
 - 该变量是密码复杂度策略检查的开关。该变量设置为 `ON` 后，当设置账户密码时，TiDB 才会进行密码复杂度的各项检查。
@@ -4821,7 +4821,7 @@ Query OK, 0 rows affected, 1 warning (0.00 sec)
 
 - 作用域：GLOBAL
 - 是否持久化到集群：是
-- 受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
 - 类型：整数型
 - 默认值：`8`
 - 范围：`[0, 2147483647]`
@@ -4833,7 +4833,7 @@ Query OK, 0 rows affected, 1 warning (0.00 sec)
 
 - 作用域：GLOBAL
 - 是否持久化到集群：是
-- 受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
 - 类型：整数型
 - 默认值：`1`
 - 范围：`[0, 2147483647]`
@@ -4844,7 +4844,7 @@ Query OK, 0 rows affected, 1 warning (0.00 sec)
 
 - 作用域：GLOBAL
 - 是否持久化到集群：是
-- 受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
 - 类型：整数型
 - 默认值：`1`
 - 范围：`[0, 2147483647]`
@@ -4854,7 +4854,7 @@ Query OK, 0 rows affected, 1 warning (0.00 sec)
 
 - 作用域：GLOBAL
 - 是否持久化到集群：是
-- 受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
 - 类型：枚举型
 - 默认值：`1`
 - 可选值：`[0, 1, 2]`
@@ -4868,7 +4868,7 @@ Query OK, 0 rows affected, 1 warning (0.00 sec)
 
 - 作用域：GLOBAL
 - 是否持久化到集群：是
-- 受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
 - 类型：整数型
 - 默认值：`1`
 - 范围：`[0, 2147483647]`
@@ -4902,7 +4902,7 @@ Query OK, 0 rows affected, 1 warning (0.00 sec)
 
 - 作用域：SESSION | GLOBAL
 - 是否持久化到集群：是
-- 受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
 - 类型：整数型
 - 默认值：`28800`
 - 范围：`[0, 31536000]`
@@ -4919,7 +4919,7 @@ Query OK, 0 rows affected, 1 warning (0.00 sec)
 
 - 作用域：SESSION | GLOBAL
 - 是否持久化到集群：是
-- 受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制：否
 - 类型：布尔型
 - 默认值：`ON`
 - 这个变量用于控制计算窗口函数时是否采用高精度模式。
