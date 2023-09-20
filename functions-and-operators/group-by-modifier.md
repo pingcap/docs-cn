@@ -152,7 +152,6 @@ SELECT year, month, SUM(profit) AS profit, grouping(year) as grp_year, grouping(
 | NULL | NULL  |  64.30000019073486 |        1 |         1 |
 +------+-------+--------------------+----------+-----------+
 3 rows in set (0.023 sec)
-
 ```
 
 ## 如何阅读 ROLLUP 的执行计划
