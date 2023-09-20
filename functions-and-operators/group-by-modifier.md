@@ -140,7 +140,7 @@ GROUPING(day, month, year):
 + result for GROUPING(day) << 2
 ```
 
-使用组合参数的 `GROUPING()` 的函数可以快速过滤掉出任何高维度的聚合结果，就像这样只查看高维度聚合的结果：
+在 `GROUPING()` 的函数中使用组合参数可以快速过滤出任何高维度的聚合结果。例如，你可以通过 `GROUPING(year, month)` 快速过滤出每年以及所有年份的聚合结果：
 
 ```sql
 SELECT year, month, SUM(profit) AS profit, grouping(year) as grp_year, grouping(month) as grp_month FROM bank GROUP BY year, month WITH ROLLUP HAVING GROUPING(year, month) <> 0 ORDER BY year DESC, month DESC;
