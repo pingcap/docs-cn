@@ -56,6 +56,7 @@ summary: 了解 TiCDC 支持同步的 DDL 和一些特殊情况
 > -在同步 DDL 到下游之前，如果 TiCDC 节点宕机或者下游有其他写操作，该 DDL 存在极低的失败概率，用户可自行检查。
 
 ### Rename table 类型的 DDL 注意事项
+
 由于同步过程中缺乏一些上下文信息，因此 TiCDC 对 rename table 类型的 DDL 同步有一些约束。
 
 #### 一条 DDL 语句内 rename 单个表
