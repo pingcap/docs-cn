@@ -135,7 +135,7 @@ delta_index_cache_size = 0
     ## TiFlash 将执行来自 TiKV 的 CompactLog 命令，并进行数据落盘。调大该差值可能降低 TiFlash 的落盘频率，从而减少随机写场景下的读延迟，但会增大内存开销。调小该差值可能提升 TiFlash 的落盘频率，从而缓解 TiFlash 内存压力。但无论如何，在目前阶段，TiFlash 的落盘频率不会高于 TiKV，即使设置该差值为 0。
     ## 建议保持默认值。
     # compact_log_min_gap = 200
-    ## 从 v5.0 引入，当 TiFlash 缓存的 Region 行数或者大小超过以下任一阈值时，不再拒绝来自 TiKV 的 CompactLog 命令，并进行落盘。
+    ## 从 v5.0 引入，当 TiFlash 缓存的 Region 行数或者大小超过以下任一阈值时，TiFlash 将执行来自 TiKV 的 CompactLog 命令，并进行落盘。
     ## 建议保持默认值。
     # compact_log_min_rows = 40960 # 40k
     # compact_log_min_bytes = 33554432 # 32MB
