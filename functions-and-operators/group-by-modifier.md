@@ -46,10 +46,10 @@ CREATE TABLE bank
     year    INT,
     month   VARCHAR(32),
     day     INT,
-    profit  FLOAT
+    profit  DECIMAL(13, 7)
 );
 
-ALTER TABLE bank set SET TIFLASH REPLICA 1; -- 为该表添加一个 TiFlash 副本
+ALTER TABLE bank SET TIFLASH REPLICA 1; -- 为该表添加一个 TiFlash 副本
 
 INSERT INTO bank VALUES(2000, "Jan", 1, 10.3),(2001, "Feb", 2, 22.4),(2000,"Mar", 3, 31.6)
 ```
@@ -168,5 +168,25 @@ bank.profit, Column#6, <nil>->Column#7, 1->gid],[test.bank.profit, Column#6, Col
 正上所示，在 `Expand` 算子的 Schema 信息中，`GID` 会作为额外的生成列来输出，其值也是由 `Expand` 算子根据不同的维度分组逻辑计算得来的，反应了当前数据副本和维度分组的关系。其中最常见的属是位掩码运算, 其可以容纳 63 种 GROUP BY ITEMS 的 ROLLUP 组合，对应维度分组的数量为 64 种。这种模式下 `GID` 值的生成根据当前数据副本复制时所需维度分组中 GROUPING EXPRESSION 的有无，按照 GROUP BY ITEMS 的序列，顺序填充一个 64 位的 UINT64 的值。
 
 例如这里 GROUP BY ITEMS 序列顺序是 [year, month], 而 ROLLUP 的语法生成的维度分组集合为：{year, month}, {year}, {}。对于维度分组 {year, month} 来说，其 `year` 和 `month` 两个 GROUPING ITEM 都是当前维度分组所需的列，对应填充对应比特位为 1 和 1，组成 UINT64 为 11...0 即 3。相应的 `year` 和 `month` 两个 GROUPING ITEM 都是当前维度分组所需的列，所在当前投影表达式构建时要保留这两个列的完整输出，所以投影表达式为 `[test.bank.profit, Column#6, Column#7, 3->gid]`。（column#6 = year, column#7 = month）
+
+```
+以原始数据中的一行为例：
++------+-------+------+------------+
+| year | month | day  | profit     |
++------+-------+------+------------+
+| 2000 | Jan   |    1 | 10.3000000 |
++------+-------+------+------------+
+
+根据 Projection 表达式投影之后，可以得到以下三行结果：
++------------+------+-------+-----+
+| profit     | year | month | gid |
++------------+------+-------+-----+
+| 10.3000000 | 2000 | Jan   |  3  |
++------------+------+-------+-----+
+| 10.3000000 | 2000 | NULL  |  1  |
++------------+------+-------+-----+
+| 10.3000000 | NULL | NULL  |  0  |
++------------+------+-------+-----+
+```
 
 注意到 select list 中使用了 `GROUPING` 函数。对于 select list / having / order by 中的使用到的 `GROUPING` 函数，TiDB 会在逻辑优化阶段对其进行改写，将函数原有的由 GROUP BY ITEM 所代表的与维度分组的关系，转化为由 `GID` 所代表的与维度分组计算逻辑，以 metadata 形式填充到新的 `GROUPING` 函数当中。
