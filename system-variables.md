@@ -3783,7 +3783,7 @@ EXPLAIN FORMAT='brief' SELECT COUNT(1) FROM t WHERE a = 1 AND b IS NOT NULL;
 > **注意：**
 >
 > - 如果集群内所有节点均未配置 `tidb_service_scope`，所有节点均会执行分布式框架的任务。如果你担心对存量业务有性能影响，可以对其中几个 TiDB 节点设置为 `background`，只有这些节点才会执行分布式框架的任务。
-> - 对于新扩容的节点，如果有运行中的分布式框架的任务还未调度到各个 TiDB 节点，这这个扩容的节点也会执行分布式框架的任务，如果您希望避免占用扩容节点的资源。你需要手动设置所有或者部分存量 TiDB 节点的 `tidb_service_scop` 为 `background`，这样只有这些节点才会执行分布式框架的任务。
+> - 对于新扩容的节点，如果有运行中的分布式框架的任务还未调度到各个 TiDB 节点，则这个扩容的节点也会执行分布式框架的任务。如果您希望避免占用扩容节点的资源，你需要手动设置所有或者部分存量 TiDB 节点的 `tidb_service_scope` 为 `background`，保证配置为 `background` 的节点执行分布式框架的任务。
 
 ### `tidb_session_plan_cache_size` <span class="version-mark">从 v7.1.0 版本开始引入</span>
 
