@@ -186,8 +186,9 @@ explain SELECT year, month, grouping(year), grouping(month), SUM(profit) AS prof
 
 例如，这里分组列表中列的顺序是 [year, month]，而 ROLLUP 语法生成的维度分组集合为：{year, month}, {year}, {}。对于维度分组 {year, month} 来说，`year` 和 `month` 都是当前维度分组所需的列，对应填充比特位 1 和 1，组成 UINT64 为 11...0 即 3，因投影表达式为 `[test.bank.profit, Column#6, Column#7, 3->gid]`。（column#6 对应 year，column#7对应 month）
 
-```
-以原始数据中的一行为例：
+以原始数据中的下面这行为例：
+
+```sql
 +------+-------+------+------------+
 | year | month | day  | profit     |
 +------+-------+------+------------+
