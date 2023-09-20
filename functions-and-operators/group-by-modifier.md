@@ -180,7 +180,7 @@ explain SELECT year, month, grouping(year), grouping(month), SUM(profit) AS prof
 +----------------------------------------+---------+--------------+---------------+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
 10 rows in set (0.05 sec)
 
-`Expand_20` 算子信息展示了所谓生成的层级表达式：`level-projection:[test.bank.profit, <nil>->Column#6, <nil>->Column#7, 0->gid],[test.bank.profit, Column#6, <nil>->Column#7, 1->gid],[test.bank.profit, Column#6, Column#7, 3->gid]`。其由 2 维表达式组成，尾部后缀有 `Expand` 算子的 Schema 信息：`schema: [test.bank.profit,Column#6,Column#7,gid]`。
+在这个示例执行计划中，你可以在 `Expand_20` 这行查看`Expand` 算子的层级表达式，其由 2 维表达式组成，行末有 `Expand` 算子的 Schema 信息 `schema: [test.bank.profit,Column#6,Column#7,gid]`。
 
 正上所示，在 `Expand` 算子的 Schema 信息中，`GID` 会作为额外的生成列来输出，其值也是由 `Expand` 算子根据不同的维度分组逻辑计算得来的，反应了当前数据副本和维度分组的关系。其中最常见的属是位掩码运算, 其可以容纳 63 种 GROUP BY ITEMS 的 ROLLUP 组合，对应维度分组的数量为 64 种。这种模式下 `GID` 值的生成根据当前数据副本复制时所需维度分组中 GROUPING EXPRESSION 的有无，按照 GROUP BY ITEMS 的序列，顺序填充一个 64 位的 UINT64 的值。
 
