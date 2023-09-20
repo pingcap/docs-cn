@@ -25,7 +25,8 @@ SELECT count(1) FROM t GROUP BY a,b,c WITH ROLLUP;
 
 > **注意：**
 >
->  TiDB 暂不支持 Cube 语法。
+> TiDB 暂不支持 Cube 语法。
+
 ## 使用场景
 
 多列数据的聚合汇总输出一般常用于 OLAP（Online Analytical Processing）场景。通过使用 `WITH ROLLUP` 修饰符，你可以在聚合结果中得到额外的行，以展示不同维度的汇总信息，从而实现高级的数据分析和报表生成。
@@ -39,7 +40,6 @@ SELECT count(1) FROM t GROUP BY a,b,c WITH ROLLUP;
 ## 使用示例
 
 假如有一张名为 `bank` 的银行利润表，包含年（`year`）、月（`month`）、日（`day`）和利润（`profit`）列。
-
 
 ```sql
 CREATE TABLE bank
