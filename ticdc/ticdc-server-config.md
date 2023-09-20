@@ -50,7 +50,7 @@ cluster-id = "default"
 capture-session-ttl = 10 # 10s
 # TiCDC 集群中的 owner 模块尝试推进同步任务进度的周期，默认为 "50ms"，可选。
 owner-flush-interval = 50000000 # 50 ms
-# TiCDC 集群中的 processor 模块尝试推进同步任务进度的周期，默认为 "50ms",  可选。  
+# TiCDC 集群中的 processor 模块尝试推进同步任务进度的周期，默认为 "50ms"，可选。  
 processor-flush-interval = 50000000 # 50 ms
 
 #[log]
