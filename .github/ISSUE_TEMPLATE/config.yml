@@ -1,5 +1,5 @@
 blank_issues_enabled: false
 contact_links:
-  - name: TiDB Forum
-    url: https://ask.pingcap.com/
-    about: Ask a question on the TiDB Forum.
+  - name: TiDB Community
+    url: https://discord.com/invite/DQZ2dy3cuc?utm_source=doc
+    about: Join the TiDB community for collaborative discussions, problem solving, and insights sharing.
