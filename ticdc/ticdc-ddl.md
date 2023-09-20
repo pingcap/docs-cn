@@ -46,8 +46,9 @@ summary: 了解 TiCDC 支持同步的 DDL 和一些特殊情况
 
 ## DDL 同步注意事项
 
-### Add/Create index DDL 异步执行
-为了减小对 Chnagefeed 同步延迟的影响，如果下游是 TiDB, TiCDC 会将 Add/Create index DDL 异步执行，即 TiCDC 会将 Add/Create index DDL 同步到下游执行，并立刻返回，不会阻塞后续的 DML 执行。
+### 创建和添加索引 DDL 的异步执行
+
+为了减小对 Changefeed 同步延迟的影响，如果下游是 TiDB，TiCDC 会异步执行创建和添加索引的 DDL 操作，即 TiCDC 将 `ADD INDEX` 和 `CREATE INDEX` DDL 同步到下游执行后，会立刻返回，而不会等待 DDL 操作完成。这样可以避免阻塞后续的 DML 执行。
 
 > **注意：**
 >
