@@ -46,7 +46,7 @@ cluster-id = "default"
   cert-path = ""
   key-path = ""
 
-# TiCDC 与 etcd 服务间的 session 时长(单位为秒)，默认为 10，可选。 
+# TiCDC 与 etcd 服务间的 session 时长（单位为秒），默认为 10，可选。 
 capture-session-ttl = 10 # 10s
 # TiCDC 集群中的 owner 模块尝试推进同步任务进度的周期，默认为 "50ms"，可选。
 owner-flush-interval = 50000000 # 50 ms
