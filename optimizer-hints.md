@@ -964,7 +964,7 @@ EXPLAIN SELECT /*+ inl_join(t1, t3) */ * FROM t1, t2, t3 WHERE t1.id = t2.id AND
 
 在上面例子中，`t1` 和 `t3` 并没有直接被一个 `IndexJoin` 连接起来。
 
-如果想要直接使用 `IndexJoin` 来连接 `t1` 和 `t3`，需要先使用 [`LEADING` Hint](#leadingt1_name--tl_name-) 指定 `t1` 和 `t3` 的连接顺序，然后再配合使用 `INL_JION`。例如：
+如果想要直接使用 `IndexJoin` 来连接 `t1` 和 `t3`，需要先使用 [`LEADING` Hint](#leadingt1_name--tl_name-) 指定 `t1` 和 `t3` 的连接顺序，然后再配合使用 `INL_JOIN`。例如：
 
 ```sql
 EXPLAIN SELECT /*+ leading(t1, t3), inl_join(t3) */ * FROM t1, t2, t3 WHERE t1.id = t2.id AND t2.id = t3.id AND t1.id = t3.id;
