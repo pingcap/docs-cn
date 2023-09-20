@@ -73,7 +73,7 @@ processor-flush-interval = 50000000 # 50 ms
 # [kv-client]
 #   单个 region worker 中可使用的处理线程数，默认为 8， 可选。  
 #   worker-concurrent = 8
-#   TiCDC 中共享线程池的大小，主要用于处理 kv 事件，默认为 0， 表示为 cpu 核数的 2 倍， 可选。   
+#   TiCDC 中共享线程池的大小，主要用于处理 KV 事件，默认为 0， 表示为 CPU 核数的 2 倍， 可选。   
 #   worker-pool-size = 0
 #   Region 连接重试时间，默认值为 1 分钟，可选。
 #   region-retry-duration = 60000000000
