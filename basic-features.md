@@ -49,7 +49,7 @@ aliases: ['/zh/tidb/v6.5/experimental-features','/zh/tidb/stable/experimental-fe
 | ---------------------------------------------------------------------- | --- | --- | :------: | :------: | :------: | :------: | :------: | :------: |
 | [表达式索引](/sql-statements/sql-statement-create-index.md#表达式索引) [^2] | Y | E  | E | E | E | E | E | E |
 | [列式存储 (TiFlash)](/tiflash/tiflash-overview.md)                     |  Y   |  Y    |    Y     |    Y     |    Y     |    Y     |    Y     |    Y     |
-| [使用 FastScan 加速 OLAP 场景下的查询](/develop/dev-guide-use-fastscan.md) | E | N | N | N | N | N | N | N |
+| [使用 FastScan 加速 OLAP 场景下的查询](/tiflash/use-fastscan.md) | E | N | N | N | N | N | N | N |
 | [RocksDB 引擎](/storage-engine/rocksdb-overview.md)                    |  Y   |  Y    |    Y     |    Y     |    Y     |    Y     |    Y     |    Y     |
 | [Titan 插件](/storage-engine/titan-overview.md)                        |  Y   |  Y    |    Y     |    Y     |    Y     |    Y     |    Y     |    Y     |
 | [Titan Level Merge](/storage-engine/titan-configuration.md#level-merge实验功能)   |  E   |  E    |    E     |    E     |    E     |    E     |    E     |    E     |
