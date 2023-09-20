@@ -2010,24 +2010,6 @@ Query OK, 0 rows affected (0.09 sec)
 - 默认值：`OFF`
 - 这个变量用于动态地控制 TiDB 遥测功能是否开启，当前版本默认关闭 TiDB 的遥测功能。当所有 TiDB 实例都设置配置项 [`enable-telemetry`](/tidb-configuration-file.md#enable-telemetry-从-v402-版本开始引入) 为 `false` 时，将忽略该系统变量，并总是关闭 TiDB 遥测功能。参阅[遥测](/telemetry.md)了解该功能详情。
 
-### `tidb_enable_tiflash_pipeline_model` <span class="version-mark">从 v7.2.0 版本开始引入</span>
-
-- 作用域：SESSION | GLOBAL
-- 是否持久化到集群：是
-- 类型：布尔型
-- 默认值：`OFF`
-- 这个变量用来控制是否启用 TiFlash 新的执行模型 [Pipeline Model](/tiflash/tiflash-pipeline-model.md)。
-- 当设置该变量为 `OFF` 关闭 TiFlash Pipeline Model 时，下推到 TiFlash 的查询会使用 TiFlash 原有的执行模型 Stream Model 来执行。
-- 当设置该变量为 `ON` 开启 TiFlash Pipeline Model 时，下推到 TiFlash 的查询会使用 TiFlash 新的执行模型 Pipeline Model 来执行。
-
-> **注意：**
->
-> - TiFlash Pipeline Model 目前为实验特性，不建议在生产环境中使用。
-> - TiFlash Pipeline Model 目前不支持以下功能。当下列功能开启时，即使 `tidb_enable_tiflash_pipeline_model` 设置为 `ON`，下推到 TiFlash 的查询仍会使用原有的执行模型 Stream Model 来执行。
->
->     - [Join 算子落盘](#tidb_max_bytes_before_tiflash_external_join-从-v700-版本开始引入)
->     - [TiFlash 存算分离架构与 S3](/tiflash/tiflash-disaggregated-and-s3.md)
-
 ### `tidb_enable_tiflash_read_for_write_stmt` <span class="version-mark">从 v6.3.0 版本开始引入</span>
 
 - 作用域：SESSION | GLOBAL
@@ -4351,7 +4333,7 @@ Query OK, 0 rows affected, 1 warning (0.00 sec)
     - `closest_replicas` 表示仅使用与发起当前查询请求的 TiDB 节点相同区域的 TiFlash 副本进行分析计算。如果此区域的 TiFlash 副本未包含查询所需的全部数据，则查询将报错。
 
 > **注意：**
->
+> 
 > - 如果 TiDB 节点未设置[区域属性](/schedule-replicas-by-topology-labels.md#设置-tidb-的-labels可选)，并且 TiFlash 副本选择策略不是 `all_replicas` 时，TiFlash 引擎将忽略 TiFlash 副本选择策略，使用所有 TiFlash 副本进行 TiFlash 查询，并且返回警告 `The variable tiflash_replica_read is ignored`。
 > - 如果 TiFlash 节点未设置[区域属性](/schedule-replicas-by-topology-labels.md#设置-tikv-和-tiflash-的-labels)，则将其视为不属于任何区域的节点。
 
@@ -4491,7 +4473,7 @@ Query OK, 0 rows affected, 1 warning (0.00 sec)
 
 - 作用域：NONE
 - 默认值：`5.7.25-TiDB-(tidb version)`
-- 这个变量的值是 MySQL 的版本和 TiDB 的版本，例如 '5.7.25-TiDB-v7.3.0'。
+- 这个变量的值是 MySQL 的版本和 TiDB 的版本，例如 '5.7.25-TiDB-v7.2.0'。
 
 ### `version_comment`
 
