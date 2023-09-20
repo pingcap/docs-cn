@@ -207,4 +207,4 @@ explain SELECT year, month, grouping(year), grouping(month), SUM(profit) AS prof
 +------------+------+-------+-----+
 ```
 
-注意到 select list 中使用了 `GROUPING` 函数。对于 select list / having / order by 中的使用到的 `GROUPING` 函数，TiDB 会在逻辑优化阶段对其进行改写，将函数原有的由 GROUP BY ITEM 所代表的与维度分组的关系，转化为由 `GID` 所代表的与维度分组计算逻辑，以 metadata 形式填充到新的 `GROUPING` 函数当中。
+`SELECT` 子句中使用了 `GROUPING` 函数。当在 `SELECT`、`HAVING`、`ORDER BY` 子句中使用 `GROUPING` 函数时，TiDB 会在逻辑优化阶段对其进行改写，将 `GROUPING` 函数与分组项（`GROUP BY` items）之间的关系，转化为与维度分组计算逻辑有关的 `GID`，并将此 `GID` 以 metadata 形式填充到新的 `GROUPING` 函数当中。
