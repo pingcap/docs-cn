@@ -56,7 +56,7 @@ TiFlash 存算分离架构适用于高性价比的数据分析服务的场景。
     - GetObjectTagging
     - PutBucketLifecycle
 
-2. 确保 TiDB 集群中没有任何存算一体的 TiFlash 节点。如果有，则需要将所有表的 TiFlash 副本数设置为 0，然后缩容掉所有 TiFlash 节点。比如：
+2. 确保 TiDB 集群中没有任何存算一体架构的 TiFlash 节点。如果有，则需要将所有表的 TiFlash 副本数设置为 0，然后缩容掉所有 TiFlash 节点。比如：
 
     ```sql
     SELECT * FROM INFORMATION_SCHEMA.TIFLASH_REPLICA; # 查询所有带有 TiFlash 副本的表
