@@ -77,14 +77,35 @@ SELECT /*+ QB_NAME(QB1) */ * FROM (SELECT * FROM t) t1, (SELECT * FROM t) t2;
 
 ### SET_VAR(VAR_NAME=VAR_VALUE)
 
-`SET_VAR(VAR_NAME=VAR_VALUE)` 能够将会话级系统变量，以 Hint 的形式在语句运行期间进行修改。语句执行完毕后，变量自动在所处的会话中恢复到原值。通过这个 Hint 可以修改一部分和优化器、执行器相关的变量行为，支持修改的系统变量请查看[系统变量](/system-variables.md)。强烈建议不要利用此 Hint 修改没有明确支持的变量，可能由此引发不可预知的行为。 
+`SET_VAR(VAR_NAME=VAR_VALUE)` 允许在语句执行期间以 Hint 形式临时修改会话级系统变量的值。当语句执行完成后，系统变量将在当前会话中自动恢复为原始值。通过这个 Hint 可以修改一部分与优化器、执行器相关的系统变量行为。支持通过 `SET_VAR(VAR_NAME=VAR_VALUE)` Hint 修改的系统变量请查看[系统变量](/system-variables.md)。
+
+> **注意：**
+>
+> 强烈建议不要利用此 Hint 修改没有明确支持的变量，这可能会引发不可预知的行为。
+
+下面是一个使用示例：
 
 ```sql
 SELECT /*+ SET_VAR(MAX_EXECUTION_TIME=1234) */ @@MAX_EXECUTION_TIME;
 SELECT @@MAX_EXECUTION_TIME;
 ```
 
-执行上述 SQL 会看到返回结果是 Hint 中设置的 1234，而不是变量 MAX_EXECUTION_TIME 的默认值。再次执行时，又恢复了默认值。
+执行上述 SQL，第一个查询返回的结果是 Hint 中设置的 `1234`，而不是变量 `MAX_EXECUTION_TIME` 的默认值。第二个查询会返回变量的默认值。
+
+```sql
++----------------------+
+| @@MAX_EXECUTION_TIME |
++----------------------+
+|                 1234 |
++----------------------+
+1 row in set (0.00 sec)
++----------------------+
+| @@MAX_EXECUTION_TIME |
++----------------------+
+|                    0 |
++----------------------+
+1 row in set (0.00 sec)
+```
 
 ### MERGE_JOIN(t1_name [, tl_name ...])
 
