@@ -20,6 +20,7 @@ summary: 了解如何使用 TiDB GROUP BY 修饰符。
 ```sql
 SELECT count(1) FROM t GROUP BY a,b,c WITH ROLLUP;
 ```
+
 在此示例中，count(1) 的计算结果将分别在 {a,b,c}、{a,b}、{a}、{} 一共 4 个分组上进行聚合，然后输出各分组的汇总数据。
 
 > **注意：**
@@ -53,6 +54,7 @@ ALTER TABLE bank SET TIFLASH REPLICA 1; -- 为该表添加一个 TiFlash 副本
 
 INSERT INTO bank VALUES(2000, "Jan", 1, 10.3),(2001, "Feb", 2, 22.4),(2000,"Mar", 3, 31.6)
 ```
+
 如需查看银行每年的利润，可以用一个简单的 `GROUP BY` 的子句来实现：
 
 ```sql
@@ -161,9 +163,7 @@ SELECT year, month, SUM(profit) AS profit, grouping(year) as grp_year, grouping(
 
 示例参考计划: [explain](/explain-aggregation.md#多维度数据聚合-rollup)
 
-`Expand_20` 算子信息展示了所谓生成的层级表达式：`level-projection:[test.bank.profit, <nil>->Column#6, <nil>->Column#7, 0->gid],[test.
-bank.profit, Column#6, <nil>->Column#7, 1->gid],[test.bank.profit, Column#6, Column#7, 3->gid]`。其由 2 维表达式组成，尾部后缀有 
-`Expand` 算子的 Schema 信息：`schema: [test.bank.profit,Column#6,Column#7,gid]`。
+`Expand_20` 算子信息展示了所谓生成的层级表达式：`level-projection:[test.bank.profit, <nil>->Column#6, <nil>->Column#7, 0->gid],[test.bank.profit, Column#6, <nil>->Column#7, 1->gid],[test.bank.profit, Column#6, Column#7, 3->gid]`。其由 2 维表达式组成，尾部后缀有 `Expand` 算子的 Schema 信息：`schema: [test.bank.profit,Column#6,Column#7,gid]`。
 
 正上所示，在 `Expand` 算子的 Schema 信息中，`GID` 会作为额外的生成列来输出，其值也是由 `Expand` 算子根据不同的维度分组逻辑计算得来的，反应了当前数据副本和维度分组的关系。其中最常见的属是位掩码运算, 其可以容纳 63 种 GROUP BY ITEMS 的 ROLLUP 组合，对应维度分组的数量为 64 种。这种模式下 `GID` 值的生成根据当前数据副本复制时所需维度分组中 GROUPING EXPRESSION 的有无，按照 GROUP BY ITEMS 的序列，顺序填充一个 64 位的 UINT64 的值。
 
