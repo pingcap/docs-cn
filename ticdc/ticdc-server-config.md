@@ -57,7 +57,7 @@ processor-flush-interval = 50000000 # 50 ms
 #  用于指定 zap log 模块内部的错误日志的输出位置。默认是 "stderr"，可选。  
 #  error-output = "stderr"
 #  [log.file]
-#    单个 log 文件的最大文件大小，单位为（MB) 。默认是 300， 可选
+#    单个 log 文件的最大文件大小，单位为 MB。默认是 300， 可选
 #    max-size = 300 # 300 MiB
 #    log 文件最大保留天数，默认是永不删除（0），可选。  
 #    max-days = 0
