@@ -126,7 +126,7 @@ SET 表达式左侧只能引用 `ColumnNameOrUserVarList` 中没有的列名。�
 | `MAX_WRITE_SPEED='<string>'` | 所有格式 | 控制写入到单个 TiKV 的速度，默认无速度限制。例如设置为 `1MiB`，则限制写入速度为 1 MiB/s。|
 | `CHECKSUM_TABLE='<string>'` | 所有格式 | 配置是否在导入完成后对目标表是否执行 CHECKSUM 检查来验证导入的完整性。可选的配置项为 `"required"`（默认）、`"optional"` 和 `"off"`。`"required"` 表示在导入完成后执行 CHECKSUM 检查，如果 CHECKSUM 检查失败，则会报错退出。`"optional"` 表示在导入完成后执行 CHECKSUM 检查，如果报错，会输出一条警告日志并忽略报错。`"off"` 表示导入结束后不执行 CHECKSUM 检查。 |
 | `DETACHED` | 所有格式 | 该参数用于控制 `IMPORT INTO` 是否异步执行。开启该参数后，执行 `IMPORT INTO` 会立即返回该导入任务的 `Job_ID` 等信息，且该任务会在后台异步执行。 |
-| `CLOUD_STORAGE_URI` | 所有格式 | 指定编码后的 KV 数据[全局排序](/sql-statements/sql-statement-import-into.md)的目标存储地址。当该地址有效时，`IMPORT INTO` 会开启全局排序功能。不设置该参数时，`IMPORT INTO` 会根据全局变量 `tidb_cloud_storage_uri` 的值来确定是否使用全局排序。目前仅支持 S3，具体 URI 格式配置详见[外部存储](/br/backup-and-restore-storages.md#uri-格式)。注意当使用该功能时，所有 TiDB 节点都需要有目标 S3 bucket 的读写权限。 |
+| `CLOUD_STORAGE_URI` | 所有格式 | 指定编码后的 KV 数据[全局排序](/sql-statements/sql-statement-import-into.md)的目标存储地址。当该地址有效时，`IMPORT INTO` 会开启全局排序功能。不设置该参数时，`IMPORT INTO` 会根据全局变量 [`tidb_cloud_storage_uri`]((/system-variables.md#tidb_cloud_storage_uri-从-v740-引入)) 的值来确定是否使用全局排序。目前仅支持 S3，具体 URI 格式配置详见[外部存储](/br/backup-and-restore-storages.md#uri-格式)。注意当使用该功能时，所有 TiDB 节点都需要有目标 S3 bucket 的读写权限。 |
 
 ## 压缩文件
 
