@@ -11,7 +11,7 @@ summary: TiDB 数据库中 LOCK STATS 的使用概况。
 
 ```ebnf+diagram
 LockStatsStmt ::=
-    'LOCK' 'STATS' (TableNameList) | (TableName 'PARTITION' PartitionNameList) | (TableName 'PARTITION' (PartitionNameList))
+    'LOCK' 'STATS' (TableNameList) | (TableName 'PARTITION' PartitionNameList)
 
 TableNameList ::=
     TableName (',' TableName)*
