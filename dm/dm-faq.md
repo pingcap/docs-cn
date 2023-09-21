@@ -52,7 +52,7 @@ When an exception occurs during data migration and the data migration task canno
    - Specify a new task name in the task configuration file. Then execute `start-task {task-config-file}`.
    - Execute `start-task --remove-meta {task-config-file}`.
 
-## How to handle the error returned by the DDL operation related to the gh-ost table, after `online-ddl-scheme: "gh-ost"` is set?
+## How to handle the error returned by the DDL operation related to the gh-ost table, after `online-ddl: true` is set?
 
 ```
 [unit=Sync] ["error information"="{\"msg\":\"[code=36046:class=sync-unit:scope=internal:level=high] online ddls on ghost table `xxx`.`_xxxx_gho`\\ngithub.com/pingcap/dm/pkg/terror.(*Error).Generate ......
@@ -71,13 +71,13 @@ Therefore, in the process of incremental replication, if the specified Pos has s
 
 You can avoid this error by the following steps:
 
-1. Remove the `online-ddl-scheme` configuration of the task.
+1. Remove the `online-ddl-scheme` or `online-ddl` configuration of the task.
 
 2. Configure `_{table_name}_gho`, `_{table_name}_ghc`, and `_{table_name}_del` in `block-allow-list.ignore-tables`.
 
 3. Execute the upstream DDL in the downstream TiDB manually.
 
-4. After the Pos is replicated to the position after the gh-ost process, re-enable the `online-ddl-scheme` and comment out `block-allow-list.ignore-tables`.
+4. After the Pos is replicated to the position after the gh-ost process, re-enable the `online-ddl-scheme` or `online-ddl` configuration and comment out `block-allow-list.ignore-tables`.
 
 ## How to add tables to the existing data migration tasks?
 
