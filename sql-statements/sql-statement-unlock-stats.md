@@ -7,7 +7,6 @@ summary: TiDB 数据库中 UNLOCK STATS 的使用概况。
 
 `UNLOCK STATS` 语句用于解锁统计信息被锁定的表。
 
-
 ## 语法图
 
 ```ebnf+diagram
