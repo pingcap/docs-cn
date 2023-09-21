@@ -14,8 +14,8 @@ TiDB 资源管控特性提供了两层资源管理能力，包括在 TiDB 层的
 
 从 v7.4.0 开始，TiDB 资源管控特性支持管控 TiFlash 资源，其原理与 TiDB 流控和 TiKV 调度类似：
 
-- TiFlash 流控：借助 [TiFlash Pipeline Model 执行模型](/tiflash/tiflash-pipeline-model.md)，可以更精确地获取不同查询的 CPU 消耗情况并转换为 RU 进行扣除，通过令牌桶算法进行流量控制
-- TiFlash 调度：当系统资源不足时，多个资源组之间的 pipeline task 会根据优先级调度。具体逻辑包括：先判断资源组的优先级 `PRIORITY`，其次根据 CPU 使用情况，再结合 `RU_PER_SEC` 进行判断。最终效果：如果 rg1 和 rg2 的 `PRIORITY` 一样，但是 rg2 的 `RU_PER_SEC` 是 rg1 的两倍，那么 rg2 能使用的 CPU 时间就是 rg1 的两倍。
+- TiFlash 流控：借助 [TiFlash Pipeline Model 执行模型](/tiflash/tiflash-pipeline-model.md)，可以更精确地获取不同查询的 CPU 消耗情况并转换为 [Request Unit (RU)](#什么是-request-unit-ru) 进行扣除。流量控制是通过令牌桶算法实现。
+- TiFlash 调度：当系统资源不足时，多个资源组之间的 pipeline task 会根据优先级进行调度。具体逻辑是：首先判断资源组的优先级 `PRIORITY`，然后根据 CPU 使用情况，再结合 `RU_PER_SEC` 进行判断。最终效果是，如果 rg1 和 rg2 的 `PRIORITY` 一样，但是 rg2 的 `RU_PER_SEC` 是 rg1 的两倍，那么 rg2 可使用的 CPU 时间是 rg1 的两倍。
 
 ## 使用场景
 
@@ -92,7 +92,7 @@ Request Unit (RU) 是 TiDB 对 CPU、IO 等系统资源的统一抽象的计量�
 
 - TiDB：通过配置全局变量 [`tidb_enable_resource_control`](/system-variables.md#tidb_enable_resource_control-从-v660-版本开始引入) 控制是否打开资源组流控。
 - TiKV：通过配置参数 [`resource-control.enabled`](/tikv-configuration-file.md#resource-control) 控制是否使用基于资源组配额的请求调度。
-- TiFlash：通过配置全局变量 [`tidb_enable_resource_control`](/system-variables.md#tidb_enable_resource_control-从-v660-版本开始引入) 和 TiFlash 参数 [`enable_resource_control`](/tiflash/tiflash-configuration.md#配置文件-tiflashtoml)（v7.4.0 开始引入）控制是否开启 TiFlash 资源管控。
+- TiFlash：通过配置全局变量 [`tidb_enable_resource_control`](/system-variables.md#tidb_enable_resource_control-从-v660-版本开始引入) 和 TiFlash 配置项 [`enable_resource_control`](/tiflash/tiflash-configuration.md#配置文件-tiflashtoml)（v7.4.0 开始引入）控制是否开启 TiFlash 资源管控。
 
 从 v7.0.0 开始，`tidb_enable_resource_control` 和 `resource-control.enabled` 开关都被默认打开。这两个参数的组合效果见下表：
 
@@ -101,9 +101,9 @@ Request Unit (RU) 是 TiDB 对 CPU、IO 等系统资源的统一抽象的计量�
 | `resource-control.enabled`= true  | 流控和调度（推荐组合）                        | 无效配置                         |
 | `resource-control.enabled`= false | 仅流控（不推荐）                           |  特性被关闭                   |
 
-关于资源管控实现机制及相关参数的详细介绍，请参考 [RFC: Global Resource Control in TiDB](https://github.com/pingcap/tidb/blob/master/docs/design/2022-11-25-global-resource-control.md) 以及 [TiFlash Resource Control Design Doc](https://github.com/pingcap/tiflash/blob/master/docs/design/2023-09-21-tiflash-resource-control.md)
+从 v7.4.0 开始，TiFlash 配置项 `enable_resource_control` 默认打开，与 `tidb_enable_resource_control` 一起控制 TiFlash 资源管控功能。只有二者都启用时，TiFlash 资源管控功能才能进行流控以及优先级调度。同时，在开启 `enable_resource_control` 时，TiFlash 会使用 [Pipeline Model 执行模型](/tiflash/tiflash-pipeline-model.md)。
 
-从 v7.4.0 开始，TiFlash 配置项 [`enable_resource_control`](/tiflash/tiflash-configuration.md#配置文件-tiflashtoml) 默认打开，与 [`tidb_enable_resource_control`](/system-variables.md#tidb_enable_resource_control-从-v660-版本开始引入) 一起配合，控制 TiFlash 资源管控的效果，只有二者都打开时，TiFlash 资源管控功能才会正常工作，否则 TiFlash 不会进行流控以及优先级调度。同时 TiFlash 配置项 [`enable_resource_control`](/tiflash/tiflash-configuration.md#配置文件-tiflashtoml) 打开时，会使用 [Pipeline Model 执行模型](/tiflash/tiflash-pipeline-model.md)。
+关于资源管控实现机制及相关参数的详细介绍，请参考 [RFC: Global Resource Control in TiDB](https://github.com/pingcap/tidb/blob/master/docs/design/2022-11-25-global-resource-control.md) 以及 [TiFlash Resource Control Design Doc](https://github.com/pingcap/tiflash/blob/master/docs/design/2023-09-21-tiflash-resource-control.md)
 
 ## 使用方法
 
