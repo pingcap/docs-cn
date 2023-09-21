@@ -147,4 +147,4 @@ TiFlash 数据落盘的触发机制有两种：
 * 目前 Hash Join 采用基于分区的落盘策略，在 restore 阶段如果内存使用仍然超过阈值，会继续触发落盘。但是为了控制落盘的规模，落盘的轮数限制为三轮。如果第三轮落盘之后的 restore 阶段内存使用仍然超过阈值，则不会触发新的落盘。
 * 即使配置了查询级别的落盘，如果该查询中用到的算子均不支持落盘，该查询的中间计算结果仍然无法落盘。此时，如果查询的内存使用超过了相关阈值，TiFlash 会报错并终止查询。
 * 即使配置了查询级别的落盘，且查询中也含有支持落盘的算子，但是如果查询中其他不能落盘的算子占用了过多的内存或者支持落盘的算子落盘不及时，查询仍然有可能因为内存超过阈值而报错。对于落盘算子落盘不及时的情况，可以尝试调小 [`tiflash_query_spill_ratio`](/system-variables.md#tiflash_query_spill_ratio-从-v740-版本开始引入) 来避免查询内存超阈值报错。
-* 当配置了查询级别的落盘机制（即 [`tiflash_mem_quota_query_per_node`](/system-variables.md#tiflash_query_spill_ratio) 和 `tiflash_query_spill_ratio` 均大于 0）时，TiFlash 单个算子的落盘阈值会被忽略，TiFlash 会根据查询级别的落盘阈值来自动触发该查询中相关算子的落盘。
+* 当配置了查询级别的落盘机制（即 [`tiflash_mem_quota_query_per_node`](/system-variables.md#tiflash_mem_quota_query_per_node-从-v740-版本开始引入) 和 `tiflash_query_spill_ratio` 均大于 0）时，TiFlash 单个算子的落盘阈值会被忽略，TiFlash 会根据查询级别的落盘阈值来自动触发该查询中相关算子的落盘。
