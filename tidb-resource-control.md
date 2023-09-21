@@ -92,7 +92,7 @@ Request Unit (RU) 是 TiDB 对 CPU、IO 等系统资源的统一抽象的计量�
 
 - TiDB：通过配置全局变量 [`tidb_enable_resource_control`](/system-variables.md#tidb_enable_resource_control-从-v660-版本开始引入) 控制是否打开资源组流控。
 - TiKV：通过配置参数 [`resource-control.enabled`](/tikv-configuration-file.md#resource-control) 控制是否使用基于资源组配额的请求调度。
-- TiFlash：通过配置全局变量 [`tidb_enable_resource_control`](/system-variables.md#tidb_enable_resource_control-从-v660-版本开始引入) 和 TiFlash 参数 `enable_resource_control`（v7.4.0 开始引入）控制是否开启 TiFlash 资源管控。
+- TiFlash：通过配置全局变量 [`tidb_enable_resource_control`](/system-variables.md#tidb_enable_resource_control-从-v660-版本开始引入) 和 TiFlash 参数 [`enable_resource_control`](/tiflash/tiflash-configuration.md#配置文件-tiflashtoml)（v7.4.0 开始引入）控制是否开启 TiFlash 资源管控。
 
 从 v7.0.0 开始，`tidb_enable_resource_control` 和 `resource-control.enabled` 开关都被默认打开。这两个参数的组合效果见下表：
 
@@ -103,7 +103,7 @@ Request Unit (RU) 是 TiDB 对 CPU、IO 等系统资源的统一抽象的计量�
 
 关于资源管控实现机制及相关参数的详细介绍，请参考 [RFC: Global Resource Control in TiDB](https://github.com/pingcap/tidb/blob/master/docs/design/2022-11-25-global-resource-control.md)。
 
-从 v7.4.0 开始，TiFlash 配置项 `enable_resource_control` 默认打开，与 [`tidb_enable_resource_control`](/system-variables.md#tidb_enable_resource_control-从-v660-版本开始引入) 一起配合，控制 TiFlash 资源管控的效果，只有二者都打开时，TiFlash 资源管控功能才会正常工作，否则 TiFlash 不会进行流控以及优先级调度。同时 TiFlash 配置项 `enable_resource_control` 打开时，会使用 [Pipeline Model 执行模型](/tiflash/tiflash-pipeline-model.md)。
+从 v7.4.0 开始，TiFlash 配置项 [`enable_resource_control`](/tiflash/tiflash-configuration.md#配置文件-tiflashtoml) 默认打开，与 [`tidb_enable_resource_control`](/system-variables.md#tidb_enable_resource_control-从-v660-版本开始引入) 一起配合，控制 TiFlash 资源管控的效果，只有二者都打开时，TiFlash 资源管控功能才会正常工作，否则 TiFlash 不会进行流控以及优先级调度。同时 TiFlash 配置项 [`enable_resource_control`](/tiflash/tiflash-configuration.md#配置文件-tiflashtoml) 打开时，会使用 [Pipeline Model 执行模型](/tiflash/tiflash-pipeline-model.md)。
 
 ## 使用方法
 
@@ -353,7 +353,7 @@ Runaway Query 是指执行时间或消耗资源超出预期的查询。下面使
 
 2. 将 TiKV 参数 [`resource-control.enabled`](/tikv-configuration-file.md#resource-control) 设为 `false`，关闭按照资源组配额调度。
 
-3. 将 TiFlash 参数 [`enable_resource_control`](/tiflash/tiflash-configuration.md#配置文件 tiflash.toml) 设为 `false`，关闭 TiFlash 资源管控。
+3. 将 TiFlash 参数 [`enable_resource_control`](/tiflash/tiflash-configuration.md#配置文件-tiflashtoml) 设为 `false`，关闭 TiFlash 资源管控。
 
 ## 监控与图表
 
