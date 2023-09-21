@@ -152,7 +152,7 @@ SET 表达式左侧只能引用 `ColumnNameOrUserVarList` 中没有的列名。�
     - 说明：`IMPORT INTO` 会按数据文件遍历顺序来划分子任务，一般遍历文件按文件名字典序来排列。
 - 目标表索引较多，或索引列值在数据文件中较分散，那么各个子任务编码后产生的索引 KV 会存在重叠。
 
-当开启 [后端任务分布式框架](/tidb-distributed-execution-framework.md) 时，可通过 `IMPORT INTO` 的 `CLOUD_STORAGE_URI` 参数，或者使用 [`tidb_cloud_storage_uri`]((/system-variables.md#tidb_cloud_storage_uri-从-v740-引入)) 来开启全局排序，目前仅支持使用 S3 作为全局排序存储地址。开启后编码后的 KV 数据将改成写入云存储，并在云存储进行全局排序，之后将全局排序后的索引数据和表数据并行导入到 TiKV，从而避免因 KV 重叠导致的问题，以提升导入的稳定性。
+当开启[后端任务分布式框架](/tidb-distributed-execution-framework.md) 时，可通过 `IMPORT INTO` 的 `CLOUD_STORAGE_URI` 参数，或者使用 [`tidb_cloud_storage_uri`](/system-variables.md#tidb_cloud_storage_uri-从-v740-引入) 指定编码后的 KV 数据的目标存储地址来开启全局排序。需要注意的是，目前仅支持使用 S3 作为全局排序存储地址。开启全局排序后，`IMPORT INTO` 会将编码后的 KV 数据写入云存储并在云存储进行全局排序，之后再将全局排序后的索引数据和表数据并行导入到 TiKV，从而避免因 KV 重叠导致的问题，以提升导入的稳定性。
 
 但如果源数据文件 KV range 重叠较少，开启全局排序后可能会降低导入性能，因为全局排序需要等所有子任务的数据排序后，进行额外的排序动作，之后再进行导入。
 
