@@ -110,9 +110,9 @@ TiDB 版本：7.4.0
 
 * TiFlash 支持资源管控特性 [#7660](https://github.com/pingcap/tiflash/issues/7660) @[guo-shaoge](https://github.com/guo-shaoge)  **tw@Oreoxmt** <!--1506-->
 
-    TiDB 在 v7.1.0 中正式发布了基于资源组的资源管控特性，但是这个特性还不包含 TiFlash。在 v7.4.0 中，TiFlash 支持了资源管控特性，完善了整体 TiDB 的资源管控能力。TiFlash 的资源管控和已有的 TiDB 资源管控特性完全兼容，现有的资源组将同时管控 TiDB/TiKV/TiFlash 中的资源。
+    在 TiDB v7.1.0 中，资源管控成为正式功能，提供对 TiDB 和 TiKV 的资源管理能力。在 v7.4.0 中，TiFlash 支持资源管控特性，完善了 TiDB 整体的资源管控能力。TiFlash 的资源管控与已有的 TiDB 资源管控特性完全兼容，现有的资源组将同时管控 TiDB、TiKV 和 TiFlash 中的资源。
 
-    通过 TiFlash 配置参数 `enable_resource_control` 启用 TiFlash 资源管控特性后，TiFlash 将根据 TiDB 的资源组配置，进行资源调度管理，确保整体资源的合理分配使用。
+    通过配置 TiFlash 参数 `enable_resource_control`，你可以控制是否开启 TiFlash 资源管控特性。开启后，TiFlash 将根据 TiDB 的资源组配置进行资源调度管理，确保整体资源的合理分配和使用。
 
     更多信息，请参考[用户文档](/tidb-resource-control.md)。
 
