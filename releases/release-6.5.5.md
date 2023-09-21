@@ -1,6 +1,6 @@
 ---
 title: TiDB 6.5.5 Release Notes
-summary: 了解 TiDB 6.5.5 版本的兼容性变更、改进提升，以及错误修复。
+summary: 了解 TiDB 6.5.5 版本的改进提升与错误修复。
 ---
 
 # TiDB 6.5.5 Release Notes
