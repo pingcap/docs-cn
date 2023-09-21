@@ -1117,7 +1117,7 @@ Query OK, 0 rows affected (0.03 sec)
 ALTER TABLE <table_name> REMOVE PARTITIONING
 ```
 
-例如，要分区表 `members` 转换为非分区表，可以执行以下语句：
+例如，要将分区表 `members` 转换为非分区表，可以执行以下语句：
 
 ```sql
 ALTER TABLE members REMOVE PARTITIONING
