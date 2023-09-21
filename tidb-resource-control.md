@@ -101,9 +101,9 @@ Request Unit (RU) 是 TiDB 对 CPU、IO 等系统资源的统一抽象的计量�
 | `resource-control.enabled`= true  | 流控和调度（推荐组合）                        | 无效配置                         |
 | `resource-control.enabled`= false | 仅流控（不推荐）                           |  特性被关闭                   |
 
-关于资源管控实现机制及相关参数的详细介绍，请参考 [RFC: Global Resource Control in TiDB](https://github.com/pingcap/tidb/blob/master/docs/design/2022-11-25-global-resource-control.md)。
+从 v7.4.0 开始，TiFlash 配置项 `enable_resource_control` 默认打开，与 `tidb_enable_resource_control` 一起控制 TiFlash 资源管控功能。只有二者都启用时，TiFlash 资源管控功能才能进行流控以及优先级调度。同时，在开启 `enable_resource_control` 时，TiFlash 会使用 [Pipeline Model 执行模型](/tiflash/tiflash-pipeline-model.md)。
 
-从 v7.4.0 开始，TiFlash 配置项 [`enable_resource_control`](/tiflash/tiflash-configuration.md#配置文件-tiflashtoml) 默认打开，与 [`tidb_enable_resource_control`](/system-variables.md#tidb_enable_resource_control-从-v660-版本开始引入) 一起配合，控制 TiFlash 资源管控的效果，只有二者都打开时，TiFlash 资源管控功能才会正常工作，否则 TiFlash 不会进行流控以及优先级调度。同时 TiFlash 配置项 [`enable_resource_control`](/tiflash/tiflash-configuration.md#配置文件-tiflashtoml) 打开时，会使用 [Pipeline Model 执行模型](/tiflash/tiflash-pipeline-model.md)。
+关于资源管控实现机制及相关参数的详细介绍，请参考 [RFC: Global Resource Control in TiDB](https://github.com/pingcap/tidb/blob/master/docs/design/2022-11-25-global-resource-control.md)。
 
 ## 使用方法
 
