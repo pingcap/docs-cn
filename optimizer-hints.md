@@ -79,7 +79,7 @@ SELECT /*+ QB_NAME(QB1) */ * FROM (SELECT * FROM t) t1, (SELECT * FROM t) t2;
 
 `SET_VAR(VAR_NAME=VAR_VALUE)` 允许在语句执行期间以 Hint 形式临时修改会话级系统变量的值。当语句执行完成后，系统变量将在当前会话中自动恢复为原始值。通过这个 Hint 可以修改一部分与优化器、执行器相关的系统变量行为。支持通过 `SET_VAR(VAR_NAME=VAR_VALUE)` Hint 修改的系统变量请查看[系统变量](/system-variables.md)。
 
-> **注意：**
+> **警告：**
 >
 > 强烈建议不要利用此 Hint 修改没有明确支持的变量，这可能会引发不可预知的行为。
 

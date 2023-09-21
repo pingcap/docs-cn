@@ -42,7 +42,7 @@ SET GLOBAL tidb_distsql_scan_concurrency = 10;
 >
 > 单位相同的多个变量可能会争夺同一组资源。
 
-从 v7.4.0 开始，部分 `SESSION` 作用域的变量可以通过 [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) Hint 在语句执行期间临时修改变量的值。当语句执行完成后，系统变量将在当前会话中自动恢复为原始值。通过这个 Hint 可以修改一部分与优化器、执行器相关的系统变量行为。文档中的变量有一个“是否受 Hint [SET_VAR](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制”的说明，可以为“是”或者“否”。
+从 v7.4.0 开始，部分 `SESSION` 作用域的变量可以通过 [`SET_VAR`](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) Hint 在语句执行期间临时修改变量的值。当语句执行完成后，系统变量将在当前会话中自动恢复为原始值。通过这个 Hint 可以修改一部分与优化器、执行器相关的系统变量行为。文档中的变量有一个“是否受 Hint [`SET_VAR`](/optimizer-hints.md#SET_VAR(VAR_NAME=VAR_VALUE)) 控制”的说明，可以为“是”或者“否”。
 
 - 对于受 Hint SET_VAR 控制的变量，你可以在语句中使用 `/*+ SET_VAR(...) */` 修改语句执行期间变量的值。
 - 对于不受 Hint SET_VAR 控制的变量，你不能在语句中使用 `/*+ SET_VAR(...) */` 修改语句执行期间变量的值。
