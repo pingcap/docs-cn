@@ -28,6 +28,7 @@ summary: TiDB 数据库中 IMPORT INTO 的使用概况。
 - 导入期间会占用大量系统资源，建议 TiDB 节点使用 32 核以上的 CPU 和 64 GiB 以上内存以获得更好的性能。导入期间会将排序好的数据写入到 TiDB [临时目录](/tidb-configuration-file.md#temp-dir-从-v630-版本开始引入)下，建议优先考虑配置闪存等高性能存储介质。详情请参考[物理导入使用限制](/tidb-lightning/tidb-lightning-physical-import-mode.md#必要条件及限制)。
 - TiDB [临时目录](/tidb-configuration-file.md#temp-dir-从-v630-版本开始引入)至少需要有 90 GiB 的可用空间。建议预留大于等于所需导入数据的存储空间，以保证最佳导入性能。
 - 一个导入任务只支持导入数据到一张目标表中。如需导入数据到多张目标表，需要在一张目标表导入完成后，再新建一个任务导入下一张目标表。
+- TiDB 集群升级期间不支持使用该语句。
 
 ## 导入前准备
 
@@ -126,7 +127,7 @@ SET 表达式左侧只能引用 `ColumnNameOrUserVarList` 中没有的列名。�
 | `MAX_WRITE_SPEED='<string>'` | 所有格式 | 控制写入到单个 TiKV 的速度，默认无速度限制。例如设置为 `1MiB`，则限制写入速度为 1 MiB/s。|
 | `CHECKSUM_TABLE='<string>'` | 所有格式 | 配置是否在导入完成后对目标表是否执行 CHECKSUM 检查来验证导入的完整性。可选的配置项为 `"required"`（默认）、`"optional"` 和 `"off"`。`"required"` 表示在导入完成后执行 CHECKSUM 检查，如果 CHECKSUM 检查失败，则会报错退出。`"optional"` 表示在导入完成后执行 CHECKSUM 检查，如果报错，会输出一条警告日志并忽略报错。`"off"` 表示导入结束后不执行 CHECKSUM 检查。 |
 | `DETACHED` | 所有格式 | 该参数用于控制 `IMPORT INTO` 是否异步执行。开启该参数后，执行 `IMPORT INTO` 会立即返回该导入任务的 `Job_ID` 等信息，且该任务会在后台异步执行。 |
-| `CLOUD_STORAGE_URI` | 所有格式 | 指定编码后的 KV 数据[全局排序](/sql-statements/sql-statement-import-into.md)的目标存储地址。当该地址有效时，`IMPORT INTO` 会开启全局排序功能。不设置该参数时，`IMPORT INTO` 会根据全局变量 `tidb_cloud_storage_uri` 的值来确定是否使用全局排序。目前仅支持 S3，具体 URI 格式配置详见[外部存储](/br/backup-and-restore-storages.md#uri-格式)。注意当使用该功能时，所有 TiDB 节点都需要有目标 S3 bucket 的读写权限。 |
+| `CLOUD_STORAGE_URI` | 所有格式 | 指定编码后的 KV 数据[全局排序](/sql-statements/sql-statement-import-into.md)的目标存储地址。不指定该参数时，`IMPORT INTO` 会根据全局变量 [`tidb_cloud_storage_uri`]((/system-variables.md#tidb_cloud_storage_uri-从-v740-引入)) 的值来确定是否使用全局排序，如果开启，则使用 [`tidb_cloud_storage_uri`]((/system-variables.md#tidb_cloud_storage_uri-从-v740-引入)) 作为目标存储地址；当指定该参数后，如果参数值为空，则表示强制使用本地排序，否则 `IMPORT INTO` 会使用该参数值作为目标存储地址。目前仅支持 S3，具体 URI 格式配置详见[外部存储](/br/backup-and-restore-storages.md#uri-格式)。注意当使用该功能时，所有 TiDB 节点都需要有目标 S3 bucket 的读写权限。 |
 
 ## 压缩文件
 
@@ -149,9 +150,9 @@ SET 表达式左侧只能引用 `ColumnNameOrUserVarList` 中没有的列名。�
 在以下情况中，可能存在较多的 KV range 重叠：
 - 分配到各子任务的数据文件中的行存在主键范围的重叠，那么各个子任务编码后的产生的数据 KV 会存在重叠。
     - 说明：`IMPORT INTO` 会按数据文件遍历顺序来划分子任务，一般遍历文件按文件名字典序来排列。
-- 目标表索引较多，且索引列值在数据文件中较分散，那么各个子任务编码后的产生的索引 KV 会存在重叠。
+- 目标表索引较多，或索引列值在数据文件中较分散，那么各个子任务编码后的产生的索引 KV 会存在重叠。
 
-使用全局排序前，编码后的 KV 数据从写入本地并排序。使用全局排序后，编码后的 KV 数据将改成写入云存储，并在云存储进行全局排序，之后将全局排序后的索引数据和表数据并行导入到 TiKV，从而避免因 KV 重叠导致的问题，以提升导入性能和稳定性。
+当开启 [后端任务分布式框架](/tidb-distributed-execution-framework.md) 时，可通过 `IMPORT INTO` 的 `CLOUD_STORAGE_URI` 参数，或者使用 [`tidb_cloud_storage_uri`]((/system-variables.md#tidb_cloud_storage_uri-从-v740-引入)) 来开启全局排序，此时编码后的 KV 数据将改成写入云存储，并在云存储进行全局排序，之后将全局排序后的索引数据和表数据并行导入到 TiKV，从而避免因 KV 重叠导致的问题，以提升导入的稳定性。
 
 但如果源数据文件 KV range 重叠较少，开启全局排序后可能会降低导入性能，因为全局排序需要等所有子任务的数据排序后，进行额外的排序动作，之后再进行导入。
 
