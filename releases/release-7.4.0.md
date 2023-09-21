@@ -246,7 +246,7 @@ TiDB 版本：7.4.0
 
 * TiCDC 支持 Claim-Check 功能，改进对大型消息的处理 [#9153](https://github.com/pingcap/tiflow/issues/9153) @[3AceShowHand](https://github.com/3AceShowHand) **tw@ran-huang** <!--1550 英文 comment 原文 https://internal.pingcap.net/jira/browse/FD-1550?focusedCommentId=149207&page=com.atlassian.jira.plugin.system.issuetabpanels:comment-tabpanel#comment-149207-->
 
-    在 v7.4.0 之前，TiCDC 无法向下游发送超过 Kafka 最大消息大小的大型消息。从  v7.4.0 开始，在配置下游为 Kafka 的 Changefeed 的时候，你可以指定一个外部存储位置，用于存储消息大小超过 Kafka 消息尺寸限制 (`max.message.bytes`) 的大型消息，并将一条包含该大型消息在外部存储中的地址的引用消息发送到 Kafka。当消费者收到该引用消息后，可以根据其中记录的外部存储地址信息，获取对应的大型消息内容。
+    在 v7.4.0 之前，TiCDC 无法向下游发送超过 Kafka 最大消息大小 (`max.message.bytes`) 的大型消息。从  v7.4.0 开始，在配置下游为 Kafka 的 Changefeed 的时候，你可以指定一个外部存储位置，用于存储超过 Kafka 限制的大型消息，并将一条包含该大型消息在外部存储中的地址的引用消息发送到 Kafka。当消费者收到该引用消息后，可以根据其中记录的外部存储地址信息，获取对应的消息内容。
 
     更多信息，请参考[用户文档](链接)。
 
