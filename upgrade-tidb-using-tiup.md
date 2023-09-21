@@ -47,13 +47,14 @@ title: 使用 TiUP 升级 TiDB
 
 查阅 TiDB release notes 中的兼容性变更。如果有任何变更影响到了你的升级，请采取相应的措施。
 
-以下为从 v6.4.0 升级至当前版本 (v6.5.4) 所需兼容性变更信息。如果从 v6.3.0 或之前版本升级到当前版本，可能也需要考虑和查看中间版本 [release notes](/releases/release-notes.md) 中提到的兼容性变更信息。
+以下为从 v6.4.0 升级至当前版本 (v6.5.5) 所需兼容性变更信息。如果从 v6.3.0 或之前版本升级到当前版本，可能也需要考虑和查看中间版本 [release notes](/releases/release-notes.md) 中提到的兼容性变更信息。
 
 - TiDB v6.5.0 release notes 中的[兼容性变更](/releases/release-6.5.0.md#兼容性变更)和[废弃功能](/releases/release-6.5.0.md#废弃功能)
 - TiDB v6.5.1 release notes 中的[兼容性变更](/releases/release-6.5.1.md#兼容性变更)
 - TiDB v6.5.2 release notes 中的[兼容性变更](/releases/release-6.5.2.md#兼容性变更)
 - TiDB v6.5.3 [release notes](/releases/release-6.5.3.md)
 - TiDB v6.5.4 [release notes](/releases/release-6.5.4.md)
+- TiDB v6.5.5 [release notes](/releases/release-6.5.5.md)
 
 ### 2.2 升级 TiUP 或更新 TiUP 离线镜像
 
@@ -183,12 +184,12 @@ tiup cluster check <cluster-name> --cluster
 tiup cluster upgrade <cluster-name> <version>
 ```
 
-以升级到 6.5.4 版本为例：
+以升级到 6.5.5 版本为例：
 
 {{< copyable "shell-regular" >}}
 
 ```
-tiup cluster upgrade <cluster-name> v6.5.4
+tiup cluster upgrade <cluster-name> v6.5.5
 ```
 
 > **注意：**
@@ -212,7 +213,7 @@ tiup cluster upgrade <cluster-name> v6.5.4
 tiup cluster stop <cluster-name>
 ```
 
-之后通过 `upgrade` 命令添加 `--offline` 参数来进行停机升级，其中 `<cluster-name>` 为集群名，`<version>` 为升级的目标版本，例如 `v6.5.4`。
+之后通过 `upgrade` 命令添加 `--offline` 参数来进行停机升级，其中 `<cluster-name>` 为集群名，`<version>` 为升级的目标版本，例如 `v6.5.5`。
 
 {{< copyable "shell-regular" >}}
 
@@ -241,7 +242,7 @@ tiup cluster display <cluster-name>
 ```
 Cluster type:       tidb
 Cluster name:       <cluster-name>
-Cluster version:    v6.5.4
+Cluster version:    v6.5.5
 ```
 
 ## 4. 升级 FAQ
@@ -272,7 +273,7 @@ Cluster version:    v6.5.4
 
 ### 4.2 升级过程中 evict leader 等待时间过长，如何跳过该步骤快速升级
 
-可以指定 `--force`，升级时会跳过 `PD transfer leader` 和 `TiKV evict leader` 过程，直接重启并升级版本，对线上运行的集群性能影响较大。命令如下，其中 `<version>` 为升级的目标版本，例如 `v6.5.4`：
+可以指定 `--force`，升级时会跳过 `PD transfer leader` 和 `TiKV evict leader` 过程，直接重启并升级版本，对线上运行的集群性能影响较大。命令如下，其中 `<version>` 为升级的目标版本，例如 `v6.5.5`：
 
 {{< copyable "shell-regular" >}}
 
@@ -287,5 +288,5 @@ tiup cluster upgrade <cluster-name> <version> --force
 {{< copyable "" >}}
 
 ```
-tiup install ctl:v6.5.4
+tiup install ctl:v6.5.5
 ```
