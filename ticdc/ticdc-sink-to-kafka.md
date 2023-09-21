@@ -354,3 +354,27 @@ Kafka 消费者收到消息之后，首先检查 `onlyHandleKey` 字段。如果
 > **警告：**
 >
 > 在 Kafka 消费者处理数据并查询 TiDB 时，可能发生数据已经被 GC 的情况。你需要[调整 TiDB 集群的 GC Lifetime 设置](/system-variables.md#tidb_gc_life_time-从-v50-版本开始引入) 为一个较大的值，以避免该情况。
+
+### 发送大消息到外部存储
+
+从 v7.4.0 开始，TiCDC Kafka sink 支持在消息大小超过限制时将该条消息发送到外部存储服务，同时发送一条含有该条大消息在外部存储服务中的地址的消息到 Kafka。这样可以避免因为消息大小超过 Kafka Topic 限制而导致 changefeed 发生错误和同步任务失败的情况。
+
+目前，该功能支持 Canal-JSON 和 Open Protocol 两种编码协议。使用 Canal-JSON 协议时，你需要在 `sink-uri` 中指定 `enable-tidb-extension=true` 参数。
+
+配置样例如下所示：
+
+```toml
+[sink.kafka-config.large-message-handle]
+# 该参数从 v7.3.0 开始引入
+# 默认为空，即消息超过大小限制后，同步任务失败
+# 设置为 "handle-key-only" 时，如果消息超过大小，data 字段内容只发送 handle key；如果依旧超过大小，同步任务失败
+large-message-handle-option = "claim-check"
+claim-check-storage-uri = "s3://claim-check-bucket"
+```
+
+当指定 `large-message-handle-option` 为 `claim-check` 时，`claim-check-storage-uri` 必须设置为一个有效的外部存储服务地址，否则创建 Changefeed 将会报错。
+
+> **建议：**
+> 
+> 目前支持的外部存储服务与 BR 相同。详细参数说明请参考 [BR 备份存储服务的 URI 格式](/br/backup-and-restore-storages.md#格式说明)。
+
