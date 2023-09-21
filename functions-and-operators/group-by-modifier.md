@@ -2,6 +2,7 @@
 title: GROUP BY 修饰符
 summary: 了解如何使用 TiDB GROUP BY 修饰符。
 ---
+
 # GROUP BY 修饰符
 
 自 v7.4.0 起，TiDB 的 `GROUP BY` 子句支持 `WITH ROLLUP` 修饰符。
@@ -71,7 +72,7 @@ SELECT year, SUM(profit) AS profit FROM bank GROUP BY year;
 对于银行报表来说，除了每年的利润之外，通常还需要计算所有年份的总利润和每个月的总利润，以进行更高层次或更详细的利润分析。在 v7.4.0 之前的版本中，你需要在多个查询中使用不同的 `GROUP BY` 子句，并将结果使用 UNION 连接，才能得到聚合汇总的结果。从 v7.4.0 起，你可以直接在单个查询的 `GROUP BY` 子句中添加 `WITH ROLLUP` 修饰符，即可得到所需的结果：
 
 ```sql
-SELECT year, month, SUM(profit) AS profit from bank GROUP BY year, month WITH ROLLUP order by year desc, month desc;
+SELECT year, month, SUM(profit) AS profit from bank GROUP BY year, month WITH ROLLUP ORDER BY year desc, month desc;
 +------+-------+--------------------+
 | year | month | profit             |
 +------+-------+--------------------+
@@ -85,13 +86,13 @@ SELECT year, month, SUM(profit) AS profit from bank GROUP BY year, month WITH RO
 6 rows in set (0.025 sec)
 ```
 
-以上结果包含了按照年份、月份、以及整体所有维度的聚合数据。其中，未出现 `NULL` 值的行表示该行 profit 是按照年份和月份分组计算的结果，`month` 列的 `NULL` 值表示该行 profit 是按照月份聚合计算的结果，`year` 列的 `NULL` 值表示该行 profit 是按照年份聚合计算的结果，
+以上结果包含了按照年份、月份、以及整体所有维度的聚合数据。其中，未出现 `NULL` 值的行表示该行 `profit` 是按照年份和月份分组计算的结果，`month` 列的 `NULL` 值表示该行 `profit` 是按照月份聚合计算的结果，`year` 列的 `NULL` 值表示该行 `profit` 是按照年份聚合计算的结果。
 
 具体来说：
 
-* 第一行的 profit 值来自 2 维分组 {year, month}，为 {2000, “Jan”} 的细粒度分组的聚合结果。
-* 第二行的 profit 值来自 1 维分组 {year}，为 {2001} 的中层粒度分组下的聚合结果。
-* 最后一行的 profit 值来自 0 维分组 {}，即整体的聚合结果。
+* 第一行的 `profit` 值来自 2 维分组 {year, month}，为 {2000, “Jan”} 的细粒度分组的聚合结果。
+* 第二行的 `profit` 值来自 1 维分组 {year}，为 {2001} 的中层粒度分组下的聚合结果。
+* 最后一行的 `profit` 值来自 0 维分组 {}，即整体的聚合结果。
 
 `WITH ROLLUP` 结果中的  `NULL` 值是在应用 Aggregate 算子之前生成的，因此你可以将 `NULL` 值应用于 `SELECT`、`HAVING`、`ORDER BY` 子句中，进一步过滤聚合结果。
 
@@ -159,7 +160,7 @@ SELECT year, month, SUM(profit) AS profit, grouping(year) as grp_year, grouping(
 
 `Expand` 算子的实现类似 `Projection` 算子，但区别在于 `Expand` 是多层级的 `Projection`，具有多层级投影运算表达式。对于每行原始数据行，`Projection` 算子只会生成一行结果输出，而 `Expand` 算子会生成多行结果（行数等于多层级投影运算表达式的层数）。
 
-以下为一个示例执行计划：
+以下为一个执行计划示例：
 
 ```sql
 explain SELECT year, month, grouping(year), grouping(month), SUM(profit) AS profit FROM bank GROUP BY year, month WITH ROLLUP;

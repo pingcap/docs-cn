@@ -68,7 +68,7 @@ TiDB 支持的 MySQL `GROUP BY` 聚合函数如下所示：
 
 ## GROUP BY 修饰符
 
-详情参阅 [GROUP BY 修饰符](/functions-and-operators/group-by-modifier.md)。
+详情请参阅 [GROUP BY 修饰符](/functions-and-operators/group-by-modifier.md)。
 
 ## 对 SQL 模式的支持
 

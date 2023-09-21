@@ -209,7 +209,7 @@ explain SELECT year, month, grouping(year), grouping(month), SUM(profit) AS prof
 
 该语句的 SQL 聚合可以按照 `GROUP BY year, month WITH ROLLUP` 语法在 {year, month}、{year}、{} 这 3 个分组中分别计算并连接结果。
 
-更多信息，请参考[GROUP BY 修饰符](/functions-and-operators/group-by-modifier.md)。
+更多信息，请参考 [GROUP BY 修饰符](/functions-and-operators/group-by-modifier.md)。
 
 ## 其他类型查询的执行计划
 
