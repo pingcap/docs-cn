@@ -55,6 +55,7 @@ TiDB 还提供了其他工具，你可以根据需要选择使用：
 
 ### 需要的权限
 
+- PROCESS：需要该权限用于查询集群信息以获取 PD 地址，从而通过 PD 控制 GC。
 - SELECT：导出目标表时需要。
 - RELOAD：使用 consistency flush 时需要。注意，只有 TiDB 支持该权限，当上游为 RDS 或采用托管服务时，可忽略该权限。
 - LOCK TABLES：使用 consistency lock 时需要，需要导出的库表都有该权限。
