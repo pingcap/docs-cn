@@ -88,6 +88,16 @@ SELECT /*+ MERGE_JOIN(t1, t2) */ * FROM t1, t2 WHERE t1.id = t2.id;
 >
 > `MERGE_JOIN` 的别名是 `TIDB_SMJ`，在 3.0.x 及之前版本仅支持使用该别名；之后的版本同时支持使用这两种名称，但推荐使用 `MERGE_JOIN`。
 
+### NO_MERGE_JOIN(t1_name [, tl_name ...])
+
+`NO_MERGE_JOIN(t1_name [, tl_name ...])` 提示优化器对指定表不要使用 Sort Merge Join 算法。例如：
+
+{{< copyable "sql" >}}
+
+```sql
+SELECT /*+ NO_MERGE_JOIN(t1, t2) */ * FROM t1, t2 WHERE t1.id = t2.id;
+```
+
 ### INL_JOIN(t1_name [, tl_name ...])
 
 `INL_JOIN(t1_name [, tl_name ...])` 提示优化器对指定表使用 Index Nested Loop Join 算法。这个算法可能会在某些场景更快，消耗更少系统资源，有的场景会更慢，消耗更多系统资源。对于外表经过 WHERE 条件过滤后结果集较小（小于 1 万行）的场景，可以尝试使用。例如：
@@ -104,9 +114,31 @@ SELECT /*+ INL_JOIN(t1, t2) */ * FROM t1, t2 WHERE t1.id = t2.id;
 >
 > `INL_JOIN` 的别名是 `TIDB_INLJ`，在 3.0.x 及之前版本仅支持使用该别名；之后的版本同时支持使用这两种名称，但推荐使用 `INL_JOIN`。
 
+### NO_INDEX_JOIN(t1_name [, tl_name ...])
+
+`NO_INDEX_JOIN(t1_name [, tl_name ...])` 提示优化器对指定表不要使用 Index Nested Loop Join 算法。例如：
+
+{{< copyable "sql" >}}
+
+```sql
+SELECT /*+ NO_INDEX_JOIN(t1, t2) */ * FROM t1, t2 WHERE t1.id = t2.id;
+```
+
 ### INL_HASH_JOIN
 
 `INL_HASH_JOIN(t1_name [, tl_name])` 提示优化器使用 Index Nested Loop Hash Join 算法。该算法与 Index Nested Loop Join 使用条件完全一样，两者的区别是 `INL_JOIN` 会在连接的内表上建哈希表，而 `INL_HASH_JOIN` 会在连接的外表上建哈希表，后者对于内存的使用是有固定上限的，而前者使用的内存使用取决于内表匹配到的行数。
+
+### NO_INDEX_HASH_JOIN(t1_name [, tl_name ...])
+
+`NO_INDEX_HASH_JOIN(t1_name [, tl_name ...])` 提示优化器对指定表不要使用 Index Nested Loop Hash Join 算法。
+
+### INL_MERGE_JOIN
+
+`INL_MERGE_JOIN(t1_name [, tl_name])` 提示优化器使用 Index Nested Loop Merge Join 算法，该算法与 Index Nested Loop Join 使用条件完全一样。
+
+### NO_INDEX_MERGE_JOIN(t1_name [, tl_name ...])
+
+`NO_INDEX_MERGE_JOIN(t1_name [, tl_name ...])` 提示优化器对指定表不要使用 Index Nested Loop Merge Join 算法。
 
 ### HASH_JOIN(t1_name [, tl_name ...])
 
@@ -121,6 +153,16 @@ SELECT /*+ HASH_JOIN(t1, t2) */ * FROM t1, t2 WHERE t1.id = t2.id;
 > **注意：**
 >
 > `HASH_JOIN` 的别名是 `TIDB_HJ`，在 3.0.x 及之前版本仅支持使用该别名；之后的版本同时支持使用这两种名称，推荐使用 `HASH_JOIN`。
+
+### NO_HASH_JOIN(t1_name [, tl_name ...])
+
+`NO_HASH_JOIN(t1_name [, tl_name ...])` 提示优化器对指定表不要使用 Hash Join 算法。例如：
+
+{{< copyable "sql" >}}
+
+```sql
+SELECT /*+ NO_HASH_JOIN(t1, t2) */ * FROM t1, t2 WHERE t1.id = t2.id;
+```
 
 ### HASH_JOIN_BUILD(t1_name [, tl_name ...])
 
@@ -879,4 +921,18 @@ EXPLAIN SELECT /*+ leading(t1, t3), inl_join(t3) */ * FROM t1, t2, t3 WHERE t1.i
 |       └─TableRangeScan_24       | 10000.00 | cop[tikv] | table:t3      | range: decided by [test.t1.id], keep order:false, stats:pseudo                                                      |
 +---------------------------------+----------+-----------+---------------+---------------------------------------------------------------------------------------------------------------------+
 9 rows in set (0.01 sec)
+```
+
+### 使用 Hint 导致错误 `Can't find a proper physical plan for this query`
+
+在下面几种情况下，可能会出现 `Can't find a proper physical plan for this query` 错误：
+
+- 查询本身并不需要按顺序读取索引，即在不使用 Hint 的前提下，优化器在任何情况下都不会生成按顺序读取索引的计划。此时，如果指定了 `ORDER_INDEX` Hint，会出现此报错，此时应考虑移除对应的 `ORDER_INDEX` Hint。 
+- 查询使用了 `NO_JOIN` 相关的 Hint 排除了所有可能的 Join 方式。
+
+```sql
+CREATE TABLE t1 (a INT);
+CREATE TABLE t2 (a INT);
+EXPLAIN SELECT /*+ NO_HASH_JOIN(t1), NO_MERGE_JOIN(t1) */ * FROM t1, t2 WHERE t1.a=t2.a;
+ERROR 1815 (HY000): Internal : Can't find a proper physical plan for this query
 ```
