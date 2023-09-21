@@ -139,7 +139,6 @@ TiFlash 数据落盘的触发机制有两种：
     [DEBUG] [MemoryTracker.cpp:101] ["Peak memory usage (for query): 3.94 GiB."] [source=MemoryTracker] [thread_id=1547]
     ```
 
-
 ## 注意
 
 * 当 Hash Aggregation 算子不带 `GROUP BY` key 时，不支持落盘。即使该 Hash Aggregation 中含有 `DISTINCT` 聚合函数，也不能触发落盘。
