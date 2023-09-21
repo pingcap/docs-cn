@@ -4473,7 +4473,7 @@ Query OK, 0 rows affected, 1 warning (0.00 sec)
 
 - 作用域：NONE
 - 默认值：`5.7.25-TiDB-(tidb version)`
-- 这个变量的值是 MySQL 的版本和 TiDB 的版本，例如 '5.7.25-TiDB-v7.2.0'。
+- 这个变量的值是 MySQL 的版本和 TiDB 的版本，例如 '5.7.25-TiDB-v7.3.0'。
 
 ### `version_comment`
 

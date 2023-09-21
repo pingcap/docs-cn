@@ -74,7 +74,7 @@ Request Unit (RU) 是 TiDB 对 CPU、IO 等系统资源的统一抽象的计量�
     </tbody>
 </table>
 
-目前 TiFlash 资源管控仅考虑 SQL CPU 以及 read request payload。3 ms 消耗 1 RU，64 KiB read request payload 消耗 1 RU。
+目前 TiFlash 资源管控仅考虑 SQL CPU 以及 read request payload。
 
 > **注意：**
 >
@@ -353,7 +353,7 @@ Runaway Query 是指执行时间或消耗资源超出预期的查询。下面使
 
 2. 将 TiKV 参数 [`resource-control.enabled`](/tikv-configuration-file.md#resource-control) 设为 `false`，关闭按照资源组配额调度。
 
-3. 将 TiFlash 参数 `enable_pipeline` 设为 `false`，关闭 TiFlash 资源管控。
+3. 将 TiFlash 参数 [`enable_resource_control`](/tiflash/tiflash-configuration.md#配置文件 tiflash.toml) 设为 `false`，关闭 TiFlash 资源管控。
 
 ## 监控与图表
 
