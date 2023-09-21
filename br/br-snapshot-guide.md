@@ -132,6 +132,7 @@ tiup br restore full --pd "${PD_IP}:2379" \
 | mysql.role_edges                 |
 | mysql.tables_priv                |
 | mysql.user                       |
+| mysql.bind_info                  |
 +----------------------------------+
 ```
 
@@ -140,6 +141,28 @@ tiup br restore full --pd "${PD_IP}:2379" \
 - 统计信息表 (`mysql.stat_*`)
 - 系统变量表 (`mysql.tidb`、`mysql.global_variables`)
 - [其他系统表](https://github.com/pingcap/tidb/blob/master/br/pkg/restore/systable_restore.go#L31)
+
+```
++-----------------------------------------------------+
+| capture_plan_baselines_blacklist                    |
+| column_stats_usage                                  |
+| gc_delete_range                                     |
+| gc_delete_range_done                                |
+| global_variables                                    |
+| schema_index_usage                                  |
+| stats_buckets                                       |
+| stats_extended                                      |
+| stats_feedback                                      |
+| stats_fm_sketch                                     |
+| stats_histograms                                    |
+| stats_history                                       |
+| stats_meta                                          |
+| stats_meta_history                                  |
+| stats_table_locked                                  |
+| stats_top_n                                         |
+| tidb                                                |
++-----------------------------------------------------+
+```
 
 当恢复系统权限相关数据的时候，请注意：
 
