@@ -46,7 +46,7 @@ TiFlash 存算分离架构适用于高性价比的数据分析服务的场景。
 
     也可以使用兼容 S3 的其他对象存储，比如 [MinIO](https://min.io/)。
 
-    需要确保 TiFlash 部署的节点有以下 S3 API 的权限，TiFlash 使用的 S3 API 接口列表包括：
+    TiFlash 将使用以下 S3 API 接口进行数据读写，需要确保部署 TiFlash 的节点有这些接口的权限：
 
     - PutObject
     - GetObject
