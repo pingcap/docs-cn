@@ -92,7 +92,7 @@ Request Unit (RU) 是 TiDB 对 CPU、IO 等系统资源的统一抽象的计量�
 
 - TiDB：通过配置全局变量 [`tidb_enable_resource_control`](/system-variables.md#tidb_enable_resource_control-从-v660-版本开始引入) 控制是否打开资源组流控。
 - TiKV：通过配置参数 [`resource-control.enabled`](/tikv-configuration-file.md#resource-control) 控制是否使用基于资源组配额的请求调度。
-- TiFlash：通过配置全局变量 [`tidb_enable_resource_control`](/system-variables.md#tidb_enable_resource_control-从-v660-版本开始引入) 和 TiFlash 参数 [`enable_resource_control`](/tiflash/tiflash-configuration.md#配置文件-tiflashtoml)（v7.4.0 开始引入）控制是否开启 TiFlash 资源管控。
+- TiFlash：通过配置全局变量 [`tidb_enable_resource_control`](/system-variables.md#tidb_enable_resource_control-从-v660-版本开始引入) 和 TiFlash 配置项 [`enable_resource_control`](/tiflash/tiflash-configuration.md#配置文件-tiflashtoml)（v7.4.0 开始引入）控制是否开启 TiFlash 资源管控。
 
 从 v7.0.0 开始，`tidb_enable_resource_control` 和 `resource-control.enabled` 开关都被默认打开。这两个参数的组合效果见下表：
 
