@@ -26,9 +26,11 @@ ID: simple-replication-task
 Info: {"upstream_id":7277814241002263370,"namespace":"default","id":"simple-replication-task","sink_uri":"pulsar://127.0.0.1:6650/consumer-test?protocol=canal-json","create_time":"2023-09-12T14:42:32.000904+08:00","start_ts":444203257406423044,"config":{"memory_quota":1073741824,"case_sensitive":true,"force_replicate":false,"ignore_ineligible_table":false,"check_gc_safe_point":true,"enable_sync_point":false,"bdr_mode":false,"sync_point_interval":600000000000,"sync_point_retention":86400000000000,"filter":{"rules":["pulsar_test.*"]},"mounter":{"worker_num":16},"sink":{"protocol":"canal-json","csv":{"delimiter":",","quote":"\"","null":"\\N","include_commit_ts":false,"binary_encoding_method":"base64"},"dispatchers":[{"matcher":["pulsar_test.*"],"partition":"","topic":"test_{schema}_{table}"}],"encoder_concurrency":16,"terminator":"\r\n","date_separator":"day","enable_partition_separator":true,"enable_kafka_sink_v2":false,"only_output_updated_columns":false,"delete_only_output_handle_key_columns":false,"pulsar_config":{"connection-timeout":30,"operation-timeout":30,"batching-max-messages":1000,"batching-max-publish-delay":10,"send-timeout":30},"advance_timeout":150},"consistent":{"level":"none","max_log_size":64,"flush_interval":2000,"use_file_backend":false},"scheduler":{"enable_table_across_nodes":false,"region_threshold":100000,"write_key_threshold":0},"integrity":{"integrity_check_level":"none","corruption_handle_level":"warn"}},"state":"normal","creator_version":"v7.4.0-master-dirty","resolved_ts":444203257406423044,"checkpoint_ts":444203257406423044,"checkpoint_time":"2023-09-12 14:42:31.410"}
 ```
 
+各参数的含义如下：
+
 - `--server`：TiCDC 集群中任意一个 TiCDC 服务器的地址。
 - `--changefeed-id`：同步任务的 ID，格式需要符合正则表达式 `^[a-zA-Z0-9]+(\-[a-zA-Z0-9]+)*$`。如果不指定该 ID，TiCDC 会自动生成一个 UUID（version 4 格式）作为 ID。
-- `--sink-uri`：同步任务下游的地址，详见：[Sink URI 配置 Pulsar](/ticdc/ticdc-sink-to-pulsar.md#sink-uri-配置-pulsar)。
+- `--sink-uri`：同步任务下游的地址，详见：[使用 Sink URI 配置 Pulsar](#sink-uri)。
 - `--start-ts`：指定 changefeed 的开始 TSO。TiCDC 集群将从这个 TSO 开始拉取数据。默认为当前时间。
 - `--target-ts`：指定 changefeed 的目标 TSO。TiCDC 集群拉取数据直到这个 TSO 停止。默认为空，即 TiCDC 不会自动停止。
 - `--config`：指定 changefeed 配置文件，详见：[TiCDC Changefeed 配置参数](/ticdc/ticdc-changefeed-config.md)。
@@ -284,7 +286,7 @@ Topic 表达式的基本规则为 `[prefix]{schema}[middle][{table}][suffix]`，
 
 目前 TiCDC 仅支持消费者使用 Exclusive 的订阅模式对消息进行消费，即每个消费者将会消费一个 topic 中所有 Partition 中的消息。
 
-Partition 分发器用 `partition = "xxx"` 来指定，支持 `default`、`ts`、`index-value`、`table` 四种 Partition 分发器。但如果你填入其他字段，则会在发送给 Pulsar Server 的消息中将该字段透传给 Message 的`key`。
+Partition 分发器用 `partition = "xxx"` 来指定，支持 `default`、`ts`、`index-value`、`table` 四种 Partition 分发器。但如果你填入其他字段，则会在发送给 Pulsar Server 的消息中将该字段透传给 Message 的 `key`。
 
 具体分发规则如下：
 
