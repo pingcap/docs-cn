@@ -31,7 +31,7 @@ TiDB 版本：7.4.0
 
     TiDB v6.6.0 引入了 Partitioned Raft KV 存储引擎作为实验特性，该引擎使用多个 RocksDB 实例存储 TiKV 的 Region 数据，每个 Region 的数据都独立存储在单独的 RocksDB 实例中。
 
-在 TiDB v7.4.0 中，Partitioned Raft KV 引擎在兼容性和稳定性方面得到了进一步提升。通过大规模数据测试，确保了 Partitioned Raft KV 引擎与 DM、Dumpling、TiDB Lightning、TiCDC、BR、PITR 等关键生态组件或功能的兼容性。同时，在读写混合工作负载下，Partitioned Raft KV 引擎提供了更稳定的性能，特别适合写多读少的场景。此外，每个 TiKV 节点支持 8 core CPU，并可搭配 8 TB 的数据存储和 64 GB 的内存。
+    在 TiDB v7.4.0 中，Partitioned Raft KV 引擎在兼容性和稳定性方面得到了进一步提升。通过大规模数据测试，确保了 Partitioned Raft KV 引擎与 DM、Dumpling、TiDB Lightning、TiCDC、BR、PITR 等关键生态组件或功能的兼容性。同时，在读写混合工作负载下，Partitioned Raft KV 引擎提供了更稳定的性能，特别适合写多读少的场景。此外，每个 TiKV 节点支持 8 core CPU，并可搭配 8 TB 的数据存储和 64 GB 的内存。
 
     更多信息，请参考[用户文档](/partitioned-raft-kv.md)。
  
