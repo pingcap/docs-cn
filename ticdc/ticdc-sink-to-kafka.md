@@ -378,3 +378,49 @@ claim-check-storage-uri = "s3://claim-check-bucket"
 > 
 > 目前支持的外部存储服务与 BR 相同。详细参数说明请参考 [BR 备份存储服务的 URI 格式](/br/backup-and-restore-storages.md#格式说明)。
 
+### 消费外部存储中的大消息
+
+首先，Kafka consumer 会收到一条含有大消息在外部存储服务中的地址的消息，格式如下：
+
+```json
+{
+    "id": 0,
+    "database": "test",
+    "table": "tp_int",
+    "pkNames": [
+        "id"
+    ],
+    "isDdl": false,
+    "type": "INSERT",
+    "es": 1639633141221,
+    "ts": 1639633142960,
+    "sql": "",
+    "sqlType": {
+        "id": 4
+    },
+    "mysqlType": {
+        "id": "int"
+    },
+    "data": [
+        {
+          "id": "2"
+        }
+    ],
+    "old": null,
+    "_tidb": {     // TiDB 的扩展字段
+        "commitTs": 163963314122145239,
+        "claimCheckLocation": "s3:/claim-check-bucket/${uuid}.json"
+    }
+}
+```
+
+如果收到的消息有 `claimCheckLocation` 字段，根据该字段提供的地址，读取出以 JSON 格式存储的大消息数据。消息格式如下：
+
+```json
+{
+  key: "xxx",
+  value: "xxx",
+}
+```
+
+key 和 value 分别存有编码后的大消息，原本应该发送到 Kafka 消息中的对应字段。消费者可以通过解析这两部分的数据，还原大消息的内容。
