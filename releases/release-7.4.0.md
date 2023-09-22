@@ -21,9 +21,9 @@ TiDB 版本：7.4.0
 
 <!-- 请将 **tw@xxx** 中的 xxx 替换为这个 feature 的 writer 的 ID，这个标记会在发布前删除-->
 
-* TiDB 引入设置 TiDB Service Scope 的功能，用于选择适用的 TiDB 节点来执行并行的 `ADD INDEX` 或 `IMPORT INTO` 任务 [#46453](https://github.com/pingcap/tidb/pull/46453) @[ywqzzy](https://github.com/ywqzzy) **tw@hfxsd** <!--1505-->
+* TiDB 引入设置 TiDB Service Scope 的功能，用于选择适用的 TiDB 节点来执行并行的 `ADD INDEX` 或 `IMPORT INTO` 任务（实验特性）[#46453](https://github.com/pingcap/tidb/pull/46453) @[ywqzzy](https://github.com/ywqzzy) **tw@hfxsd** <!--1505-->
 
-    在资源密集型集群中并行执行 `ADD INDEX` 或 `IMPORT INTO` 任务可能占用大量 TiDB 节点的资源，从而导致集群性能下降。TiDB v7.4.0 引入了设置 TiDB Service Scope 的功能，你可以在存量 TiDB 节点中选择几个节点，或者对新增 TiDB 节点设置 TiDB Service Scope，所有并行执行的 `ADD INDEX` 和 `IMPORT INTO` 的任务只会运行在这些节点，避免对已有业务造成性能影响。
+    在资源密集型集群中并行执行 `ADD INDEX` 或 `IMPORT INTO` 任务可能占用大量 TiDB 节点的资源，从而导致集群性能下降。TiDB v7.4.0 引入了设置 TiDB Service Scope 的功能作为实验特性，你可以在存量 TiDB 节点中选择几个节点，或者对新增 TiDB 节点设置 TiDB Service Scope，所有并行执行的 `ADD INDEX` 和 `IMPORT INTO` 的任务只会运行在这些节点，避免对已有业务造成性能影响。
 
     更多信息，请参考[用户文档](/system-variables.md#tidb_service_scope-从-v740-版本开始引入)。
     
@@ -207,9 +207,11 @@ TiDB 版本：7.4.0
 
 ### 数据迁移
 
-* Data Migration (DM) 支持拦截不兼容（破坏数据一致性）的 DDL 变更 [#9692](https://github.com/pingcap/tiflow/issues/9692) @[GMHDBJD](https://github.com/GMHDBJD) **tw@hfxsd** <!--1523-->
+* Data Migration (DM) 支持拦截不兼容（破坏数据一致性）的 DDL 变更（实验特性） [#9692](https://github.com/pingcap/tiflow/issues/9692) @[GMHDBJD](https://github.com/GMHDBJD) **tw@hfxsd** <!--1523-->
 
-    在 v7.4.0 之前，使用 DM 的 Binlog Filter 功能颗粒度比较粗，例如只能过滤 ALTER 这种大颗粒度的 DDL Event，这种方式在某些业务场景会收到限制，例如业务允许将 Decimal 字段类型的精度调大，但是不允许减小。因此，在 v7.4.0 引入一个新的 Event Name `incompatible DDL changes`，用于拦截那些变更后会导致数据丢失、数据被截断、精度损失等问题的 DDL，并报错提示，让你可以及时介入处理，避免对下游的业务数据产生影响。
+    在 v7.4.0 之前，使用 DM 的 Binlog Filter 功能颗粒度比较粗，例如只能过滤 ALTER 这种大颗粒度的 DDL Event，这种方式在某些业务场景会收到限制，例如业务允许将 Decimal 字段类型的精度调大，但是不允许减小。
+    
+    因此，在 v7.4.0 引入一个新的 Event Name `incompatible DDL changes`，用于拦截那些变更后会导致数据丢失、数据被截断、精度损失等问题的 DDL，并报错提示，让你可以及时介入处理，避免对下游的业务数据产生影响。
 
     更多信息，请参考[用户文档](链接)。
 
@@ -232,7 +234,7 @@ TiDB 版本：7.4.0
 ·
     更多信息，请参考[用户文档](sql-statements/sql-statement-import-into.md)。
     
-* Dumpling 在将数据导出为 CSV 文件时支持用户自定义换行符 [#issue](https:// ) @[GMHDBJD](https://github.com/GMHDBJD) **tw@hfxsd** <!--1571-->
+* Dumpling 在将数据导出为 CSV 文件时支持用户自定义换行符 [#46982](https://github.com/pingcap/tidb/issues/46982) @[GMHDBJD](https://github.com/GMHDBJD) **tw@hfxsd** <!--1571-->
 
     在 v7.4.0 之前，Dumpling 导出数据为 CSV 文件时，换行符默认为 "\r\n"，无法被一些只能解析 "\n" 换行符的下游系统解析该 CSV 文件，或者要通过第三方工具转换后才能解析。在 v7.4.0 引入了新的参数 `--csv-line-terminator`，你将数据导出为 CSV 文件时，可以通过该参数传入所需的换行符。该参数支持 "\r\n" 和 "\n" ，默认值为 "\r\n" ，即和历史版本保持一致。 
 
@@ -260,7 +262,7 @@ TiDB 版本：7.4.0
 
 <!-- 此小节包含 MySQL 兼容性变更-->
 
-* 兼容性 1
+* 自 v7.4.0 起， TiDB 已经兼容 MySQL 8.0 的核心功能，`version()` 将返回以 `8.0.11` 为前缀的版本信息。 
 
 * 兼容性 2
 
