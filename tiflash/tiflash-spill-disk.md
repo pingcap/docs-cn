@@ -86,7 +86,7 @@ TiFlash 数据落盘的触发机制有两种：
 
 当 `tiflash_mem_quota_query_per_node` 与 `tiflash_query_spill_ratio` 均设置为一个大于 0 的值时，TiFlash 会在一个查询的内存使用量超过 `tiflash_mem_quota_query_per_node * tiflash_query_spill_ratio` 时自动触发该查询中可以支持落盘的算子的落盘。
 
-### 示例
+#### 示例
 
 本示例构造一个占用大量内存的 SQL 语句来对查询级别的落盘功能进行演示：
 
