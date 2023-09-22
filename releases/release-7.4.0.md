@@ -221,7 +221,7 @@ TiDB 版本：7.4.0
 
     更多信息，请参考[用户文档](链接)。
 
-* 增强 `IMPORT INTO` 功能，支持对导入的数据通过云存储进行全局排序，并提升导入性能和稳定性 [#46704](https://github.com/pingcap/tidb/issues/46704) @[D3Hunter](https://github.com/D3Hunter) **tw@qiancai** <!--1494-->
+* 增强 `IMPORT INTO` 功能，支持对导入的数据通过云存储进行全局排序（实验特性），并提升导入性能和稳定性 [#46704](https://github.com/pingcap/tidb/issues/46704) @[D3Hunter](https://github.com/D3Hunter) **tw@qiancai** <!--1494-->
 
     从 v7.4.0 起，你可以通过在  `IMPORT INTO` 的 `CLOUD_STORAGE_URI` 选项中指定编码后数据的云存储地址，开启[全局排序功能](/....md)，提升性能和稳定性。
     
