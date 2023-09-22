@@ -28,7 +28,7 @@ TiFlash 数据落盘的触发机制有两种：
 * [`tidb_max_bytes_before_tiflash_external_join`](/system-variables.md#tidb_max_bytes_before_tiflash_external_join-从-v700-版本开始引入)
 * [`tidb_max_bytes_before_tiflash_external_sort`](/system-variables.md#tidb_max_bytes_before_tiflash_external_sort-从-v700-版本开始引入)
 
-### 示例
+#### 示例
 
 本示例构造一个占用大量内存的 SQL 语句来对 Hash Aggregation 算子的落盘功能进行演示：
 
