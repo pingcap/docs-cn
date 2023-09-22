@@ -1125,7 +1125,7 @@ ALTER TABLE members REMOVE PARTITIONING
 
 ## 对现有表进行分区
 
-要对现有的非分区表进行分区或修改现有分区表的分区类型，你可以使用以下语句。该语句在执行时将根据新的分区定义复制表中的所有行并在线重新创建索引：
+要对现有的非分区表进行分区或修改现有分区表的分区类型，你可以使用以下语句。该语句在执行时，将根据新的分区定义复制表中的所有行，并在线重新创建索引：
 
 ```sql
 ALTER TABLE <table_name> PARTITION BY <new partition type and definitions>
