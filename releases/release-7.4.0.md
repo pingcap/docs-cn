@@ -118,7 +118,7 @@ TiDB 版本：7.4.0
 
 * TiFlash 支持 Pipeline 执行模型 (GA) [#6518](https://github.com/pingcap/tiflash/issues/6518) @[SeaRise](https://github.com/SeaRise) **tw@Oreoxmt** <!--1549-->
 
-    在 v7.2.0 中，TiFlash 引入了 Pipeline 执行模型作为实验特性，对所有线程资源进行统一管理，并对所有任务的执行进行统一调度，充分利用线程资源，同时避免资源超用。从 v7.4.0 开始，TiFlash 完善了线程资源使用量的统计，Pipeline 执行模型成为正式功能 (GA) 并默认开启。由于该功能与 TiFlash 资源管控特性相互依赖，TiDB v7.4.0 移除了之前版本中用于控制是否启用 Pipeline 执行模型的变量 `tidb_enable_tiflash_pipeline_model`，你可以通过 TiFlash 参数 `tidb_enable_resource_control` 同时开启或关闭 Pipeline 执行模型和 TiFlash 资源管控特性。
+    在 v7.2.0 中，TiFlash 引入了 Pipeline 执行模型作为实验特性。该模型对所有线程资源进行统一管理，并对所有任务的执行进行统一调度，充分利用线程资源，同时避免资源超用。从 v7.4.0 开始，TiFlash 完善了线程资源使用量的统计，Pipeline 执行模型成为正式功能 (GA) 并默认开启。由于该功能与 TiFlash 资源管控特性相互依赖，TiDB v7.4.0 移除了之前版本中用于控制是否启用 Pipeline 执行模型的变量 `tidb_enable_tiflash_pipeline_model`。现在你可以通过 TiFlash 参数 `tidb_enable_resource_control` 同时开启或关闭 Pipeline 执行模型和 TiFlash 资源管控特性。
 
     更多信息，请参考[用户文档](/tiflash/tiflash-pipeline-model.md)。
 
