@@ -51,7 +51,6 @@ After you set this variable, when the memory usage of a tidb-server instance rea
 Currently, the memory limit set by `tidb_server_memory_limit` **DOES NOT** terminate the following SQL operations:
 
 - DDL operations
-- INSERT, UPDATE, and DELETE operations
 - SQL operations that contain window functions and common table expressions
 
 > **Warning:**
