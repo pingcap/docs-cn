@@ -74,7 +74,7 @@ Request Unit (RU) 是 TiDB 对 CPU、IO 等系统资源的统一抽象的计量�
     </tbody>
 </table>
 
-目前 TiFlash 资源管控仅考虑 SQL CPU 以及 read request payload。
+目前 TiFlash 资源管控仅考虑 SQL CPU (即查询的 pipeline task 运行所占用的 CPU 时间) 以及 read request payload。
 
 > **注意：**
 >
