@@ -68,7 +68,7 @@ TiDB 支持的 MySQL `GROUP BY` 聚合函数如下所示：
 
 ## GROUP BY 修饰符
 
-详情请参阅 [GROUP BY 修饰符](/functions-and-operators/group-by-modifier.md)。
+自 v7.4.0 起，TiDB 的 `GROUP BY` 子句支持 `WITH ROLLUP` 修饰符。详情请参阅 [GROUP BY 修饰符](/functions-and-operators/group-by-modifier.md)。
 
 ## 对 SQL 模式的支持
 
