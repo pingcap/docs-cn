@@ -35,7 +35,7 @@ TiDB 版本：7.4.0
 
     更多信息，请参考[用户文档](/partitioned-raft-kv.md)。
  
- * TiFlash 存算分离架构成为正式功能 (GA) [#6882](https://github.com/pingcap/tiflash/issues/6882)  @[JaySon-Huang](https://github.com/JaySon-Huang) @[JinheLin](https://github.com/JinheLin) @[breezewish](https://github.com/breezewish) @[lidezhu](https://github.com/lidezhu) @[CalvinNeo](https://github.com/CalvinNeo)  **tw@qiancai** <!--1360-->
+ * TiFlash 存算分离架构成为正式功能 (GA) [#6882](https://github.com/pingcap/tiflash/issues/6882) @[JaySon-Huang](https://github.com/JaySon-Huang) @[JinheLin](https://github.com/JinheLin) @[breezewish](https://github.com/breezewish) @[lidezhu](https://github.com/lidezhu) @[CalvinNeo](https://github.com/CalvinNeo)  **tw@qiancai** <!--1360-->
 
     在 v7.0.0 中，TiFlash 以实验特性引入了存算分离架构。经过一系列的改进，从 v7.4.0 起，TiFlash 正式支持存算分离架构。
     
@@ -83,7 +83,7 @@ TiDB 版本：7.4.0
 
 ### 稳定性
 
-* TiFlash 引擎支持查询级别的数据落盘 [#7738](https://github.com/pingcap/tiflash/issues/7738) @[windtalker](https://github.com/windtalker)  **tw@qiancai** <!--1493-->
+* TiFlash 支持查询级别的数据落盘 [#7738](https://github.com/pingcap/tiflash/issues/7738) @[windtalker](https://github.com/windtalker)  **tw@qiancai** <!--1493-->
 
     从 v7.0.0 起，TiFlash 支持控制 `GROUP BY`、`ORDER BY`、`JOIN` 这三种算子的数据落盘功能，避免数据量超过内存总大小时，导致查询终止甚至系统崩溃的问题。然而，单独控制每个算子的落盘较为麻烦，也无法有效进行整体资源控制。
 
@@ -167,11 +167,11 @@ TiDB 版本：7.4.0
 
     更多信息，请参考[用户文档](/partitioned-table.md#分区管理)。
 
-* TiDB 支持 ROLLUP 修饰符和 GROUPING 函数 [#44487](https://github.com/pingcap/tidb/issues/44487) @[AilinKid](https://github.com/AilinKid) **tw@qiancai** <!--1287-->
+* TiDB 支持 `WITH ROLLUP` 修饰符和 `GROUPING` 函数 [#44487](https://github.com/pingcap/tidb/issues/44487) @[AilinKid](https://github.com/AilinKid) **tw@qiancai** <!--1287-->
 
-    在 v7.4.0 之前，TiDB 不支持 ROLLUP 修饰符和 GROUPING 函数。ROLLUP 修饰符和 GROUPING 函数是数据分析中常用的功能，用于对数据进行分级汇总。从 v7.4.0 开始，TiDB 支持 ROLLUP 修饰符和 GROUPING 函数。ROLLUP 修饰符的使用方式为：`SELECT ... FROM ... GROUP BY ... WITH ROLLUP`
+    `WITH ROLLUP` 修饰符和 `GROUPING` 函数是数据分析中常用的功能，用于对数据进行多维度的汇总。从 v7.4.0 开始，TiDB 支持在 `GROUP BY` 子句中使用 `WITH ROLLUP` 修饰符和 `GROUPING` 函数。例如，你可以通过 `SELECT ... FROM ... GROUP BY ... WITH ROLLUP` 语法使用 `WITH ROLLUP` 修饰符。
 
-    更多信息，请参考[用户文档](/functions-and-operators/aggregate-group-by-functions.md#group-by-修饰符)。
+    更多信息，请参考[用户文档](functions-and-operators/group-by-modifier.md)。
 
 ### 数据库管理
 
@@ -223,9 +223,9 @@ TiDB 版本：7.4.0
 
     更多信息，请参考[用户文档](链接)。
 
-* 增强 `IMPORT INTO` 功能，支持对导入的数据通过云存储进行全局排序（实验特性），并提升导入性能和稳定性 [#46704](https://github.com/pingcap/tidb/issues/46704) @[D3Hunter](https://github.com/D3Hunter) **tw@qiancai** <!--1494-->
+* 增强 `IMPORT INTO` 功能 [#46704](https://github.com/pingcap/tidb/issues/46704) @[D3Hunter](https://github.com/D3Hunter) **tw@qiancai** <!--1494-->
 
-    从 v7.4.0 起，你可以通过在  `IMPORT INTO` 的 `CLOUD_STORAGE_URI` 选项中指定编码后数据的云存储地址，开启[全局排序功能](/....md)，提升性能和稳定性。
+    从 v7.4.0 起，你可以通过在 `IMPORT INTO` 的 `CLOUD_STORAGE_URI` 选项中指定编码后数据的云存储地址，开启[全局排序功能](/....md)（实验特性），提升性能和稳定性。
     
     此外，在 v7.4.0 中，`IMPORT INTO`  还引入了以下功能：
     
