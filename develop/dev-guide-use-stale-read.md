@@ -101,7 +101,7 @@ SELECT id, title, type, price FROM books AS OF TIMESTAMP '2022-04-20 15:20:00' O
 - `AS OF TIMESTAMP TIDB_BOUNDED_STALENESS('2016-10-08 16:45:26', '2016-10-08 16:45:29')` 表示读取在 2016 年 10 月 8 日 16 点 45 分 26 秒到 29 秒的时间范围内尽可能新的数据。
 - `AS OF TIMESTAMP TIDB_BOUNDED_STALENESS(NOW() - INTERVAL 20 SECOND, NOW())` 表示读取 20 秒前到现在的时间范围内尽可能新的数据。
 
-需要注意的是，设定的时间戳或时间戳的范围不能过早或晚于当前时间。此外 `NOW()` 默认精确到秒，当精度要求较高时，需要添加参数，例如 `NOW(3)` 精确到毫秒。详情请参考 [MySQL 文档](https://dev.mysql.com/doc/refman/5.7/en/date-and-time-functions.html#function_now)。
+需要注意的是，设定的时间戳或时间戳的范围不能过早或晚于当前时间。此外 `NOW()` 默认精确到秒，当精度要求较高时，需要添加参数，例如 `NOW(3)` 精确到毫秒。详情请参考 [MySQL 文档](https://dev.mysql.com/doc/refman/8.0/en/date-and-time-functions.html#function_now)。
 
 过期的数据在 TiDB 当中会由[垃圾回收器](/garbage-collection-overview.md)进行回收，数据在被清除之前会被保留一小段时间，这段时间被称为 [GC Life Time (默认 10 分钟)](/system-variables.md#tidb_gc_life_time-从-v50-版本开始引入)。每次进行 GC 时，将以当前时间减去该时间周期的值作为 **GC Safe Point**。如果尝试读取 GC Safe Point 之前数据，TiDB 会报如下错误：
 
