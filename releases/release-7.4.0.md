@@ -21,9 +21,9 @@ TiDB 版本：7.4.0
 
 <!-- 请将 **tw@xxx** 中的 xxx 替换为这个 feature 的 writer 的 ID，这个标记会在发布前删除-->
 
-* TiDB 引入设置 TiDB Service Scope 的功能，用于选择适用的 TiDB 节点来执行并行的 `ADD INDEX` 或 `IMPORT INTO` 任务（实验特性）[#46453](https://github.com/pingcap/tidb/pull/46453) @[ywqzzy](https://github.com/ywqzzy) **tw@hfxsd** <!--1505-->
+* 支持设置 TiDB 节点的服务范围，用于选择适用的 TiDB 节点来执行并行的 `ADD INDEX` 或 `IMPORT INTO` 任务（实验特性）[#46453](https://github.com/pingcap/tidb/pull/46453) @[ywqzzy](https://github.com/ywqzzy) **tw@hfxsd** <!--1505-->
 
-    在资源密集型集群中并行执行 `ADD INDEX` 或 `IMPORT INTO` 任务可能占用大量 TiDB 节点的资源，从而导致集群性能下降。TiDB v7.4.0 引入了设置 TiDB Service Scope 的功能作为实验特性，你可以在存量 TiDB 节点中选择几个节点，或者对新增 TiDB 节点设置 TiDB Service Scope，所有并行执行的 `ADD INDEX` 和 `IMPORT INTO` 的任务只会运行在这些节点，避免对已有业务造成性能影响。
+    在资源密集型集群中，并行执行 `ADD INDEX` 或 `IMPORT INTO` 任务可能占用大量 TiDB 节点的资源，从而导致集群性能下降。从 v7.4.0 起，你可以通过变量 [`tidb_service_scope`](/system-variables.md#tidb_service_scope-从-v740-版本开始引入) 控制 [TiDB 后端任务分布式框架](/tidb-distributed-execution-framework.md) 下各 TiDB 节点的服务范围。你可以从现有 TiDB 节点中选择几个节点，或者对新增 TiDB 节点设置服务范围。所有并行执行的 `ADD INDEX` 和 `IMPORT INTO` 的任务只会运行在这些节点，避免对已有业务造成性能影响。
 
     更多信息，请参考[用户文档](/system-variables.md#tidb_service_scope-从-v740-版本开始引入)。
     
@@ -92,11 +92,11 @@ TiDB 版本：7.4.0
     更多信息，请参考[用户文档](/tiflash/tiflash-spill-disk.md)。
 
 
-* 引入自定义 TiKV 读取超时时间 [#45380](https://github.com/pingcap/tidb/issues/45380) @[crazycs520](https://github.com/crazycs520) **tw@hfxsd** <!--1560-->
+* 支持自定义 TiKV 读取超时时间 [#45380](https://github.com/pingcap/tidb/issues/45380) @[crazycs520](https://github.com/crazycs520) **tw@hfxsd** <!--1560-->
 
     在通常情况下，TiKV 处理请求非常快，只需几毫秒。但是，当某个 TiKV 节点遇到磁盘 I/O 抖动或网络延迟时，请求处理时间可能会大幅增加。在 v7.4.0 以前的版本中，TiKV 请求的超时限制是固定的，不能调整，因此当 TiKV 节点出现问题时，TiDB 必须等待超时响应，这导致了抖动期间应用程序的查询性能受到明显影响。
 
-    TiDB 在 v7.4.0 中引入了一个新系统变量 [`tikv_client_read_timeout`](/system-variables.md#tikv_client_read_timeout-从-v740-版本开始引入)，你可以自定义查询语句中 TiDB 发送给 TiKV 的 RPC 读请求的超时时间。这意味着，当某个 TiKV 节点因磁盘或网络问题导致请求延迟时，TiDB 可以更快地超时并将请求重新发送给其他 TiKV 节点，从而降低查询延迟。如果所有 TiKV 节点的请求都超时，TiDB 将使用默认的超时时间进行重试。该参数也支持通过 Hint [`TIDB_KV_READ_TIMEOUT(N)`](/optimizer-hints.md#tidb_kv_read_timeoutn) 来设置查询语句中 TiDB 发送 TiKV RPC 读请求的超时时间。这一改进将使 TiDB 在面对不稳定的网络或存储环境时，更灵活地适应各种情况，提高查询性能，提升用户体验。
+    TiDB 在 v7.4.0 中引入了一个新系统变量 [`tikv_client_read_timeout`](/system-variables.md#tikv_client_read_timeout-从-v740-版本开始引入)，你可以自定义查询语句中 TiDB 发送给 TiKV 的 RPC 读请求的超时时间。这意味着，当某个 TiKV 节点因磁盘或网络问题导致请求延迟时，TiDB 可以更快地超时并将请求重新发送给其他 TiKV 节点，从而降低查询延迟。如果所有 TiKV 节点的请求都超时，TiDB 将使用默认的超时时间进行重试。此外，你也可以在查询语句中使用 Hint [`TIDB_KV_READ_TIMEOUT(N)`](/optimizer-hints.md#tidb_kv_read_timeoutn) 来设置查询语句中 TiDB 发送 TiKV RPC 读请求的超时时间。这一改进将使 TiDB 在面对不稳定的网络或存储环境时，更灵活地适应各种情况，提高查询性能，提升用户体验。
     
     更多的信息，请参考[用户文档](/system-variables.md#tikv_client_read_timeout-从-v740-版本开始引入)。
 
@@ -185,7 +185,7 @@ TiDB 版本：7.4.0
 
 ### 可观测性
 
-* 向日志中添加会话标识和会话别名 [#46071](https://github.com/pingcap/tidb/issues/46071) @[lcwangchao](https://github.com/lcwangchao) **tw@hfxsd** <!--无 FD 及用户文档，只提供 release notes-->
+* 支持向日志中添加会话标识和会话别名 [#46071](https://github.com/pingcap/tidb/issues/46071) @[lcwangchao](https://github.com/lcwangchao) **tw@hfxsd** <!--无 FD 及用户文档，只提供 release notes-->
 
     在对 SQL 执行问题做故障定位的时候，经常需要把 TiDB 各组件日志中的内容进行关联，由此找到问题的根本原因。从 v7.4.0 开始，TiDB 将会话标识 (`CONNECTION_ID`) 写入与会话相关的日志内容中，包括 TiDB 日志、慢查询日志、以及 TiKV 上 coprocessor 的慢日志记录。你可以根据会话标识，将几个日志中的内容关联起来，提升故障定位和诊断的效率。 
 
@@ -207,21 +207,6 @@ TiDB 版本：7.4.0
 
 ### 数据迁移
 
-* Data Migration (DM) 支持拦截不兼容（破坏数据一致性）的 DDL 变更（实验特性） [#9692](https://github.com/pingcap/tiflow/issues/9692) @[GMHDBJD](https://github.com/GMHDBJD) **tw@hfxsd** <!--1523-->
-
-    在 v7.4.0 之前，使用 DM 的 Binlog Filter 功能颗粒度比较粗，例如只能过滤 ALTER 这种大颗粒度的 DDL Event，这种方式在某些业务场景会收到限制，例如业务允许将 Decimal 字段类型的精度调大，但是不允许减小。
-    
-    因此，在 v7.4.0 引入一个新的 Event Name `incompatible DDL changes`，用于拦截那些变更后会导致数据丢失、数据被截断、精度损失等问题的 DDL，并报错提示，让你可以及时介入处理，避免对下游的业务数据产生影响。
-
-    更多信息，请参考[用户文档](链接)。
-
-* 支持实时更新增量数据校验的 checkpoint [#issue号](链接) @[lichunzhu](https://github.com/lichunzhu) **tw@ran-huang** <!--1496-->
-
-    在 v7.4.0 之前，你可以使用[增量数据校验功能](/dm/dm-continuous-data-validation.md)来判断 DM 同步到下游的数据是否与上游一致，并以此作为业务流量从上游数据库割接到 TiDB 的依据。然而，由于增量校验 checkpoint 受到较多限制，如同步延迟、不一致的数据等待重新校验等因素，需要每隔几分钟刷新一次校验后的 checkpoint。对于某些只有几十秒割接时间的业务场景来说，这是无法接受的。
-
-    v7.4.0 引入实时更新增量数据校验的 checkpoint 后，你可以传入上游数据库填写的 binlog 位置。一旦增量校验程序在内存里校验到该 binlog 位置，会立即刷新 checkpoint，而不是每隔几分钟刷新 checkpoint。因此，你可以根据该立即返回的 checkpoint 快速进行割接操作。
-
-    更多信息，请参考[用户文档](链接)。
 
 * 增强 `IMPORT INTO` 功能 [#46704](https://github.com/pingcap/tidb/issues/46704) @[D3Hunter](https://github.com/D3Hunter) **tw@qiancai** <!--1494-->
 
@@ -236,13 +221,13 @@ TiDB 版本：7.4.0
     
 * Dumpling 在将数据导出为 CSV 文件时支持用户自定义换行符 [#46982](https://github.com/pingcap/tidb/issues/46982) @[GMHDBJD](https://github.com/GMHDBJD) **tw@hfxsd** <!--1571-->
 
-    在 v7.4.0 之前，Dumpling 导出数据为 CSV 文件时，换行符默认为 "\r\n"，无法被一些只能解析 "\n" 换行符的下游系统解析该 CSV 文件，或者要通过第三方工具转换后才能解析。在 v7.4.0 引入了新的参数 `--csv-line-terminator`，你将数据导出为 CSV 文件时，可以通过该参数传入所需的换行符。该参数支持 "\r\n" 和 "\n" ，默认值为 "\r\n" ，即和历史版本保持一致。 
+    在 v7.4.0 之前，Dumpling 导出数据为 CSV 文件时，换行符为 "\r\n"，导致一些只能解析 "\n" 换行符的下游系统无法解析该 CSV 文件，或者要通过第三方工具转换后才能解析。在 v7.4.0 中，Dumpling 引入了新的参数 `--csv-line-terminator`。当你将数据导出为 CSV 文件时，可以通过该参数传入所需的换行符。该参数支持 "\r\n" 和 "\n" ，默认值为 "\r\n"，即和历史版本保持一致。 
 
     更多信息，请参考[用户文档](/dumpling-overview.md#dumpling-主要选项表)。
     
 * TiCDC 支持同步数据至 Pulsar [#9413](https://github.com/pingcap/tiflow/issues/9413) @[yumchina](https://github.com/yumchina) @[asddongmen](https://github.com/asddongmen) **tw@hfxsd** <!--1552-->
 
-    TiCDC 现在支持与 Pulsar 无缝集成。Pulsar 是一款云原生的分布式消息流平台，它可以提升您的实时数据流体验。借助这一新功能，TiCDC 赋予你轻松捕获和同步 TiDB 变更数据到 Pulsar 的能力，为数据处理和分析功能提供新的可能性。你可以开发自己的消费应用程序，从 Pulsar 中读取并处理新生成的变更数据，以满足特定的业务需求。TiCDC 目前支持以 `canal-json` 格式同步变更数据。
+    Pulsar 是一款云原生的分布式消息流平台，它能够显著提升你的实时数据流体验。从 v7.4.0 起，TiCDC 支持以 `canal-json` 格式同步变更数据至 Pulsar，实现与 Pulsar 的无缝集成。通过该功能 ，TiCDC 可以让你轻松捕获和同步 TiDB 变更数据到 Pulsar，为数据处理和分析功能提供新的可能性。你可以开发自己的消费应用程序，从 Pulsar 中读取并处理新生成的变更数据，以满足特定的业务需求。
 
     更多信息，请参考[用户文档](/ticdc/ticdc-sink-to-pulsar.md)。
 
