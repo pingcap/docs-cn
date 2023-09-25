@@ -292,6 +292,29 @@ SELECT COUNT(*) FROM INFORMATION_SCHEMA.TIKV_REGION_STATUS WHERE DB_NAME="databa
 
 Kafka Topic 对可以接收的消息大小有限制，该限制由 [`max.message.bytes`](https://kafka.apache.org/documentation/#topicconfigs_max.message.bytes) 参数控制。当 TiCDC Kafka sink 在发送数据时，如果发现数据大小超过了该限制，会导致 changefeed 报错，无法继续同步数据。为了解决这个问题，TiCDC 新增一个参数 `large-message-handle-option` 并提供如下解决方案。
 
+目前，该功能支持 Canal-JSON 和 Open Protocol 两种编码协议。使用 Canal-JSON 协议时，你需要在 `sink-uri` 中指定 `enable-tidb-extension=true` 参数。
+
+### TiCDC 层数据压缩功能
+
+从 v7.4.0 开始，TiCDC Kafka sink 支持在编码消息后立马对数据进行压缩，然后和消息大小限制参数比较。该功能能够有效减少超过消息大小限制的情况发生。
+
+配置样例如下所示：
+
+```toml
+[sink.kafka-config.large-message-handle]
+# 该参数从 v7.4.0 开始引入
+# 默认为空，即不开启编码时的压缩功能
+# 可选值有 "none"、"lz4"、"snappy", 默认为 "none"
+large-message-handle-compression = "none"
+```
+
+该功能和 Kafka producer 的压缩功能不同：
+
+* `large-message-handle-compression` 中指定的压缩算法，它所启用的压缩功能是在单条 Kafka 消息上，并且是在和消息大小限制参数比较之前进行的。
+* 用户可以在 `sink-uri` 中配置压缩算法，它所启用的压缩功能应用在整个发送数据请求，其中包含多条 Kafka 消息，并且是在和消息大小限制参数比较之后进行的。
+
+开启了 `large-message-handle-compression` 之后，消费者收到的消息是经过特定压缩协议编码的，消费者应用者需要使用指定的压缩协议进行数据解码。
+
 ### 只发送 Handle Key
 
 从 v7.3.0 开始，TiCDC Kafka sink 支持在消息大小超过限制时只发送 Handle Key 的数据。这样可以显著减少消息的大小，避免因为消息大小超过 Kafka Topic 限制而导致 changefeed 发生错误和同步任务失败的情况。
@@ -300,8 +323,6 @@ Handle Key 指的是：
 
 * 如果被同步的表有定义主键，主键即为 Handle Key 。
 * 如果没有主键，但是有定义 Not NULL Unique Key，Unique Key 即为 Handle Key。
-
-目前，该功能支持 Canal-JSON 和 Open Protocol 两种编码协议。使用 Canal-JSON 协议时，你需要在 `sink-uri` 中指定 `enable-tidb-extension=true` 参数。
 
 配置样例如下所示：
 
@@ -377,6 +398,8 @@ claim-check-storage-uri = "s3://claim-check-bucket"
 > **建议：**
 > 
 > 目前支持的外部存储服务与 BR 相同。详细参数说明请参考 [BR 备份存储服务的 URI 格式](/br/backup-and-restore-storages.md#格式说明)。
+
+TiCDC 不会清理外部存储服务上的消息，数据消费者需要自行管理外部存储服务。
 
 ### 消费外部存储中的大消息
 
