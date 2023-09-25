@@ -435,7 +435,7 @@ TiCDC 不会清理外部存储服务上的消息，数据消费者需要自行�
 }
 ```
 
-如果收到的消息有 `claimCheckLocation` 字段，根据该字段提供的地址，读取出以 JSON 格式存储的大消息数据。消息格式如下：
+如果收到的消息有 `claimCheckLocation` 字段，Kafka consumer 根据该字段提供的地址，读取出以 JSON 格式存储的大消息数据。消息格式如下：
 
 ```json
 {
