@@ -543,6 +543,7 @@
       - [日志过滤器](/ticdc/ticdc-filter.md)
       - [DDL 同步](/ticdc/ticdc-ddl.md)
       - [双向复制](/ticdc/ticdc-bidirectional-replication.md)
+      - [主从集群一致性读和数据校验](/ticdc/ticdc-upstream-downstream-check.md)
     - 监控告警
       - [监控指标](/ticdc/monitor-ticdc.md)
       - [报警规则](/ticdc/ticdc-alert-rules.md)
@@ -595,7 +596,6 @@
     - [概述](/sync-diff-inspector/sync-diff-inspector-overview.md)
     - [不同库名或表名的数据校验](/sync-diff-inspector/route-diff.md)
     - [分库分表场景下的数据校验](/sync-diff-inspector/shard-diff.md)
-    - [TiDB 主从集群的数据校验](/sync-diff-inspector/upstream-downstream-diff.md)
     - [基于 DM 同步场景下的数据校验](/sync-diff-inspector/dm-diff.md)
   - TiUniManager
     - [概述](/tiunimanager/tiunimanager-overview.md)

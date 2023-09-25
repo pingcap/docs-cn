@@ -196,7 +196,7 @@ TiDB 版本：6.3.0-DMR
 
 * TiCDC 支持维护上下游数据一致性快照 (Sync point) [#6977](https://github.com/pingcap/tiflow/issues/6977) @[asddongmen](https://github.com/asddongmen)
 
-    在灾备复制场景下，TiCDC 支持[周期性地维护一个下游数据快照](/sync-diff-inspector/upstream-downstream-diff.md#tidb-主从集群的数据校验)，使得该下游快照能与上游数据的快照保持一致。借助此能力，TiCDC 能更好地匹配读写分离应用场景，帮助用户降本增效。
+    在灾备复制场景下，TiCDC 支持[周期性地维护一个下游数据快照](/ticdc/ticdc-upstream-downstream-check.md)，使得该下游快照能与上游数据的快照保持一致。借助此能力，TiCDC 能更好地匹配读写分离应用场景，帮助用户降本增效。
 
 * TiCDC 支持平滑升级 [#4757](https://github.com/pingcap/tiflow/issues/4757) @[overvenus](https://github.com/overvenus) @[3AceShowHand](https://github.com/3AceShowHand)
 
