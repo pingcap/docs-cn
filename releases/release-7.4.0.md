@@ -59,7 +59,7 @@ TiDB 版本：7.4.0
 
 * 引入基于云存储的全局排序能力，提升并行执行的 `ADD INDEX` 或 `IMPORT INTO` 任务的性能和稳定性 [#45719](https://github.com/pingcap/tidb/issues/45719) @[wjhuang2016](https://github.com/wjhuang2016) **tw@ran-huang** <!--1456-->
 
-    在 v7.4.0 以前，当用户执行分布式并行执行框架的 `ADD INDEX` 或 `IMPORT INTO` 任务时，TiDB 节点需要准备一块较大的本地磁盘，对编码后的索引 KV pairs 和表数据 KV pairs 进行排序。由于无法从全局角度进行排序，各个 TiDB 节点间以及节点内部导入的数据可能存在重叠情况。这会导致在将这些 KV pairs 导入到 TiKV 时，TiKV 需要不断进行数据整理 (compaction) 操作，降低了 `ADD INDEX` 或 `IMPORT INTO` 的性能和稳定性。
+    在 v7.4.0 以前，当用户执行分布式并行执行框架的 `ADD INDEX` 或 `IMPORT INTO` 任务时，TiDB 节点需要准备一块较大的本地磁盘，对编码后的索引 KV pairs 和表数据 KV pairs 进行排序。由于无法从全局角度进行排序，各个 TiDB 节点间以及节点内部导入的数据可能存在重叠情况。这会导致在将这些 KV pairs 导入到 TiKV 时，TiKV 需要频繁进行数据整理 (compaction)，降低了 `ADD INDEX` 或 `IMPORT INTO` 的性能和稳定性。
 
     v7.4.0 引入全局排序特性后，编码后的数据不再写入本地进行排序，而是写入云存储，并在云存储中进行全局排序。然后，TiDB 将经过全局排序的索引数据和表数据并行导入到 TiKV 中，从而提升了性能和稳定性。
 
@@ -124,9 +124,9 @@ TiDB 版本：7.4.0
 
 * 新增优化器模式选择 [#46080](https://github.com/pingcap/tidb/issues/46080) @[time-and-fate](https://github.com/time-and-fate) **tw@ran-huang** <!--1527-->
 
-    TiDB 在 v7.4.0 引入了一个新的系统变量 [`tidb_opt_objective`](/system-variables.md#tidb_opt_objective-从-v740-版本开始引入)，用于控制优化器的估算方式。默认值 `moderate` 维持从前的优化器行为，即优化器会利用运行时统计到的数据修改来校正估算。如果设置为 `determinate`，则优化器不考虑运行时校正，只根据统计信息来生成执行计划。
+    TiDB 在 v7.4.0 引入了一个新的系统变量 [`tidb_opt_objective`](/system-variables.md#tidb_opt_objective-从-v740-版本开始引入)，用于控制优化器的估算方式。默认值 `moderate` 维持之前版本的优化器行为，即优化器会利用运行时统计到的数据修改来校正估算。如果设置为 `determinate`，则优化器不考虑运行时校正，只根据统计信息来生成执行计划。
 
-    对于长期稳定的 OLTP 业务，或者如果用户对已有的执行计划非常有把握的情况下，推荐在测试后切换到 `determinate` 模式，减少执行计划跳变的可能。
+    对于长期稳定的 OLTP 业务，或者用户对已有的执行计划非常有把握的情况，推荐在测试后切换到 `determinate` 模式，减少执行计划跳变的可能。
 
     更多信息，请参考[用户文档](/system-variables.md#tidb_opt_objective-从-v740-版本开始引入)。
 
@@ -147,7 +147,7 @@ TiDB 版本：7.4.0
 
 * 增强锁定统计信息的能力 [#issue号](链接) @[hi-rustin](https://github.com/hi-rustin) **tw@ran-huang** <!--1557-->
 
-    在 v7.4.0 中，TiDB 增强了[锁定统计信息](/statistics.md#锁定统计信息)的能力。现在，锁定和解锁统计信息需要赋予与收集统计信息 (`ANALYZE TABLE`) 相同的权限，以确保操作的安全性。此外，还新增了对特定分区的统计信息进行锁定和解锁操作的支持，提高了功能灵活性。当用户对数据库中的查询和执行计划有把握，并且不希望发生变化时，可以使用锁定统计信息来提升统计信息的稳定性。
+    在 v7.4.0 中，TiDB 增强了[锁定统计信息](/statistics.md#锁定统计信息)的能力。现在，锁定和解锁统计信息需要与收集统计信息 (`ANALYZE TABLE`) 相同的权限，以确保操作的安全性。此外，还新增了对特定分区的统计信息进行锁定和解锁操作的支持，提高了功能灵活性。当用户对数据库中的查询和执行计划有把握，并且不希望发生变化时，可以使用锁定统计信息来提升统计信息的稳定性。
 
     更多信息，请参考[用户文档](/statistics.md#锁定统计信息)。
 
@@ -219,7 +219,7 @@ TiDB 版本：7.4.0
 
     在 v7.4.0 之前，你可以使用[增量数据校验功能](/dm/dm-continuous-data-validation.md)来判断 DM 同步到下游的数据是否与上游一致，并以此作为业务流量从上游数据库割接到 TiDB 的依据。然而，由于增量校验 checkpoint 受到较多限制，如同步延迟、不一致的数据等待重新校验等因素，需要每隔几分钟刷新一次校验后的 checkpoint。对于某些只有几十秒割接时间的业务场景来说，这是无法接受的。
 
-    v7.4.0 引入实时更新增量数据校验的 checkpoint 后，你可以传入上游数据库填写的 binlog position。一旦增量校验程序在内存里校验到该 binlog postion，会立即刷新 checkpoint，而不是每隔几分钟刷新 checkpoint。因此，用户可以根据该立即返回的 checkpoint 来快速进行割接操作。
+    v7.4.0 引入实时更新增量数据校验的 checkpoint 后，你可以传入上游数据库填写的 binlog 位置。一旦增量校验程序在内存里校验到该 binlog 位置，会立即刷新 checkpoint，而不是每隔几分钟刷新 checkpoint。因此，你可以根据该立即返回的 checkpoint 快速进行割接操作。
 
     更多信息，请参考[用户文档](链接)。
 
@@ -248,7 +248,7 @@ TiDB 版本：7.4.0
 
 * TiCDC 支持 Claim-Check 功能，改进对大型消息的处理 [#9153](https://github.com/pingcap/tiflow/issues/9153) @[3AceShowHand](https://github.com/3AceShowHand) **tw@ran-huang** <!--1550 英文 comment 原文 https://internal.pingcap.net/jira/browse/FD-1550?focusedCommentId=149207&page=com.atlassian.jira.plugin.system.issuetabpanels:comment-tabpanel#comment-149207-->
 
-    在 v7.4.0 之前，TiCDC 无法向下游发送超过 Kafka 最大消息大小 (`max.message.bytes`) 的大型消息。从  v7.4.0 开始，在配置下游为 Kafka 的 Changefeed 的时候，你可以指定一个外部存储位置，用于存储超过 Kafka 限制的大型消息，并将一条包含该大型消息在外部存储中的地址的引用消息发送到 Kafka。当消费者收到该引用消息后，可以根据其中记录的外部存储地址信息，获取对应的消息内容。
+    在 v7.4.0 之前，TiCDC 无法向下游发送超过 Kafka 最大消息大小 (`max.message.bytes`) 的大型消息。从 v7.4.0 开始，在配置下游为 Kafka 的 Changefeed 的时候，你可以指定一个外部存储位置，用于存储超过 Kafka 限制的大型消息。TiCDC 会向 Kafka 发送一条引用消息，其中记录了该大型消息在外部存储中的地址。当消费者收到该引用消息后，可以根据其中记录的外部存储地址信息，获取对应的消息内容。
 
     更多信息，请参考[用户文档](链接)。
 
