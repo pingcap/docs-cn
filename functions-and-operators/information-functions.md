@@ -5,7 +5,7 @@ aliases: ['/docs-cn/dev/functions-and-operators/information-functions/','/docs-c
 
 # 信息函数
 
-TiDB 支持使用 MySQL 5.7 中提供的大部分[信息函数](https://dev.mysql.com/doc/refman/8.0/en/information-functions.html)。
+TiDB 支持使用 MySQL 5.7 中提供的大部分[信息函数](https://dev.mysql.com/doc/refman/5.7/en/information-functions.html)。
 
 ## TiDB 支持的 MySQL 信息函数
 

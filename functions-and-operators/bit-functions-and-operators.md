@@ -5,7 +5,7 @@ aliases: ['/docs-cn/dev/functions-and-operators/bit-functions-and-operators/','/
 
 # 位函数和操作符
 
-TiDB 支持使用 MySQL 5.7 中提供的所有[位函数和操作符](https://dev.mysql.com/doc/refman/8.0/en/bit-functions.html)。
+TiDB 支持使用 MySQL 5.7 中提供的所有[位函数和操作符](https://dev.mysql.com/doc/refman/5.7/en/bit-functions.html)。
 
 **位函数和操作符表**
 

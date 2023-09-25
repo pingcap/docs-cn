@@ -5,7 +5,7 @@ aliases: ['/docs-cn/dev/functions-and-operators/control-flow-functions/','/docs-
 
 # 控制流程函数
 
-TiDB 支持使用 MySQL 5.7 中提供的所有[控制流程函数](https://dev.mysql.com/doc/refman/8.0/en/flow-control-functions.html)。
+TiDB 支持使用 MySQL 5.7 中提供的所有[控制流程函数](https://dev.mysql.com/doc/refman/5.7/en/flow-control-functions.html)。
 
 | 函数名                                                                                            | 功能描述                       |
 |:--------------------------------------------------------------------------------------------------|:----------------------------------|
