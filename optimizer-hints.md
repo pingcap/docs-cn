@@ -539,7 +539,7 @@ SELECT /*+ LEADING(t1, t2) */ * FROM t1, t2, t3 WHERE t1.id = t2.id and t2.id = 
 + 优化器无法按照 `LEADING` hint 指定的顺序进行表连接
 + 已经存在 `straight_join()` hint
 + 查询语句中包含 outer join 且同时指定了包含笛卡尔积的情况
-+ 和选择 join 算法的 hint（即 `MERGE_JOIN`、`INL_JOIN`、`INL_HASH_JOIN`、`HASH_JOIN`）同时使用, 且相互冲突时
++ 和选择 join 算法的 hint（即 `MERGE_JOIN`、`INL_JOIN`、`INL_HASH_JOIN`、`HASH_JOIN`）同时使用且相互冲突时
 
 当出现了上述失效的情况，会输出 warning 警告。
 
