@@ -56,7 +56,7 @@ By the automatic backup, you can back up the TiDB Dedicated cluster data every d
         - Resolve cases of data write errors by restoring point-in-time that is before the error event.
         - Audit the historical data of the business.
 
-        If you have one of the preceding needs and want to use the PITR feature, make sure that your TiDB Dedicated cluster version is at least v6.4.0 and the TiKV node is at least 8 vCPU and 16 GiB.
+        If you have one of the preceding needs and want to use the PITR feature, make sure that your TiDB Dedicated cluster version is at least v6.4.0.
 
     - In **Backup Storage Region**, select the regions where you want to store your backup data.
 
