@@ -151,6 +151,12 @@ TiDB 版本：7.4.0
 
     更多信息，请参考[用户文档](/statistics.md#锁定统计信息)。
 
+* 引入系统变量禁用表的哈希连接 [#46695](https://github.com/pingcap/tidb/issues/46695) @[coderplay](https://github.com/coderplay)
+
+    表的哈希连接是 MySQL 8.0 引入的新特性，主要用于连接两个相对较大的表和结果集。但对于交易类负载，或者一部分在 MySQL 5.7 稳定运行的业务来说，选择到表的哈希连接可能会对性能产生风险。MySQL 通过[`优化器开关`](https://dev.mysql.com/doc/refman/8.0/en/switchable-optimizations.html#optflag_block-nested-loop)能够在全局或者会话级控制哈希连接的选择。TiDB 同样在新版本中引入系统变量 [tidb_opt_enable_hash_join](#) 对表的哈希连接进行控制。默认开启，如果客户非常确定执行计划中不需要选择表之间的哈希连接，则可以修改变量为 `NO`，降低执行计划回退的可能性，提升系统稳定性。 
+
+    更多信息，请参考[用户文档](#)。
+
 ### 高可用
 
 * 功能标题 [#issue号](链接) @[贡献者 GitHub ID](链接) **tw@xxx** <!--1234-->
@@ -262,6 +268,7 @@ TiDB 版本：7.4.0
 | [`tiflash_mem_quota_query_per_node`](/system-variables.md#tiflash_mem_quota_query_per_node-从-v740-版本开始引入) | 新增 | 用于设置单个查询在单个 TiFlash 节点上的内存使用上限，超过该限制时 TiFlash 会报错并终止该查询。默认值为 `0`，表示无限制。 |
 | [`tiflash_query_spill_ratio`](/system-variables.md#tiflash_query_spill_ratio-从-v740-版本开始引入) | 新增 |  用于控制 TiFlash [查询级别的落盘](/tiflash/tiflash-spill-disk.md#查询级别的落盘)机制的阈值。默认值为 `0.7`。  |
 | [`tikv_client_read_timeout`](/system-variables.md#tikv_client_read_timeout-从-v740-版本开始引入) | 新增 | 该变量用于设置查询语句中 TiDB 发送 TiKV RPC 读请求的超时时间。当 TiDB 集群在网络不稳定或 TiKV 的 I/O 延迟抖动严重的环境下，且用户对查询 SQL 的延迟比较敏感时，可以通过设置 `tikv_client_read_timeout` 调小 TiKV RPC 读请求的超时时间，这样当某个 TiKV 节点出现 I/O 延迟抖动时，TiDB 侧可以快速超时并重新发送 TiKV RPC 请求给下一个 TiKV Region Peer 所在的 TiKV 节点。如果所有 TiKV Region Peer 都请求超时，则会用默认的超时时间（通常是 40 秒）进行新一轮的重试。 |
+| [tidb_opt_enable_hash_join](#) | 新增 | 控制优化器是否会选择表的哈希连接。默认打开，设置为 `NO` 时，除非没有计划可用，否则优化器会避免选择表的哈希连接。 |
 |  | 新增/删除/修改 |  |
 
 ### 配置文件参数
