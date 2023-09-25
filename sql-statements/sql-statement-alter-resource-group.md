@@ -78,7 +78,7 @@ TiDB 支持以下 `DirectResourceGroupOption`, 其中 [Request Unit (RU)](/tidb-
 | `PRIORITY`    | 任务在 TiKV 上处理的绝对优先级  | `PRIORITY = HIGH` 表示优先级高。若未指定则默认为 `MEDIUM`。 |
 | `BURSTABLE`   | 允许对应的资源组超出配额后使用空余的系统资源。 |
 | `QUERY_LIMIT` | 当查询执行满足该条件时，识别该查询为 Runaway Query 并执行相应的操作 | `QUERY_LIMIT=(EXEC_ELAPSED='60s', ACTION=KILL, WATCH=EXACT DURATION='10m')` 表示当执行时间超过 60 秒后识别为 Runaway Query，对该查询执行终止操作，并在 10 分钟内对同样的 SQL 直接执行终止操作。`QUERY_LIMIT=()` 或 `QUERY_LIMIT=NULL` 则表示不进行 Runaway 控制。具体参数介绍参见[管理资源消耗超出预期的查询 (Runaway Queries)](/tidb-resource-control.md#管理资源消耗超出预期的查询-runaway-queries)。 ｜
-| `BACKGROUND`  | 后台任务相关的设置。具体参数介绍参见[管理后台任务](/tidb-resource-control.md#管理后台任务) | `BACKGROUND=(TASK_TYPES="br,analyze")` 表示将备份恢复和收集统计信息相关的任务作为后台任务调度。 |
+| `BACKGROUND`  | 后台任务相关的设置。具体参数介绍参见[管理后台任务](/tidb-resource-control.md#管理后台任务) | `BACKGROUND=(TASK_TYPES="br,stats")` 表示将备份恢复和收集统计信息相关的任务作为后台任务调度。 |
 
 > **注意：**
 >

@@ -64,14 +64,6 @@ ResourceGroupRunawayActionOption ::=
     DRYRUN
 |   COOLDOWN
 |   KILL
-
-BackgroundOptionList ::= 
-    DirectBackgroundOption
-|   BackgroundOptionList DirectBackgroundOption
-|   BackgroundOptionList ',' DirectBackgroundOption
-
-DirectBackgroundOption ::= 
-    "TASK_TYPES" EqOpt stringLit
 ```
 
 资源组的 `ResourceGroupName` 是全局唯一的，不允许重复。
