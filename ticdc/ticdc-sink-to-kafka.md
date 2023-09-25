@@ -292,7 +292,7 @@ SELECT COUNT(*) FROM INFORMATION_SCHEMA.TIKV_REGION_STATUS WHERE DB_NAME="databa
 
 Kafka Topic 对可以接收的消息大小有限制，该限制由 [`max.message.bytes`](https://kafka.apache.org/documentation/#topicconfigs_max.message.bytes) 参数控制。当 TiCDC Kafka sink 在发送数据时，如果发现数据大小超过了该限制，会导致 changefeed 报错，无法继续同步数据。为了解决这个问题，TiCDC 新增一个参数 `large-message-handle-option` 并提供如下解决方案。
 
-目前，该功能支持 Canal-JSON 和 Open Protocol 两种编码协议。使用 Canal-JSON 协议时，你需要在 `sink-uri` 中指定 `enable-tidb-extension=true` 参数。
+目前，如下功能支持 Canal-JSON 和 Open Protocol 两种编码协议。使用 Canal-JSON 协议时，你需要在 `sink-uri` 中指定 `enable-tidb-extension=true` 参数。
 
 ### TiCDC 层数据压缩功能
 
@@ -378,9 +378,7 @@ Kafka 消费者收到消息之后，首先检查 `onlyHandleKey` 字段。如果
 
 ### 发送大消息到外部存储
 
-从 v7.4.0 开始，TiCDC Kafka sink 支持在消息大小超过限制时将该条消息发送到外部存储服务，同时发送一条含有该条大消息在外部存储服务中的地址的消息到 Kafka。这样可以避免因为消息大小超过 Kafka Topic 限制而导致 changefeed 发生错误和同步任务失败的情况。
-
-目前，该功能支持 Canal-JSON 和 Open Protocol 两种编码协议。使用 Canal-JSON 协议时，你需要在 `sink-uri` 中指定 `enable-tidb-extension=true` 参数。
+从 v7.4.0 开始，TiCDC Kafka sink 支持在消息大小超过限制时将该条消息发送到外部存储服务，同时发送一条含有该条大消息在外部存储服务中的地址的消息到 Kafka。这样可以避免因为消息大小超过 Kafka Topic 限制而导致 changefeed 失败的情况。
 
 配置样例如下所示：
 
