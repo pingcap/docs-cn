@@ -47,7 +47,7 @@ TiDB 版本：7.4.0
 
 ### 性能
 
-* 支持下推 JSON [运算符](/functions-and-operators/expressions-pushed-down.md) `MEMBER OF` 到 TiKV [#46307](https://github.com/pingcap/tidb/issues/46307) @[wshwsh12](https://github.com/wshwsh12)  **tw@qiancai** <!--1551-->
+* 支持下推 JSON 运算符 `MEMBER OF` 到 TiKV [#46307](https://github.com/pingcap/tidb/issues/46307) @[wshwsh12](https://github.com/wshwsh12)  **tw@qiancai** <!--1551-->
 
     * `value MEMBER OF(json_array)`
 
