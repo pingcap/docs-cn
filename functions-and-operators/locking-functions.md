@@ -5,7 +5,7 @@ summary: 了解 TiDB 中的用户级锁函数。
 
 # 锁函数
 
-TiDB 支持 MySQL 5.7 中的大部分用户级[锁函数](https://dev.mysql.com/doc/refman/8.0/en/locking-functions.html)。
+TiDB 支持 MySQL 5.7 中的大部分用户级[锁函数](https://dev.mysql.com/doc/refman/5.7/en/locking-functions.html)。
 
 ## 支持的函数
 
