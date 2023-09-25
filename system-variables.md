@@ -2051,10 +2051,6 @@ Query OK, 0 rows affected (0.09 sec)
 
 ### `tidb_enable_top_sql` <span class="version-mark">从 v5.4.0 版本开始引入</span>
 
-> **警告：**
->
-> Top SQL 目前是实验性功能，不建议在生产环境中使用。
-
 - 作用域：GLOBAL
 - 是否持久化到集群：是
 - 类型：布尔型
