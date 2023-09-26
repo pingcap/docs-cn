@@ -379,6 +379,7 @@ mysql> SELECT * FROM t1;
 
 - 作用域：GLOBAL | SESSION
 - 是否持久化到集群：是
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：否
 - 类型：字符串
 - 默认值：`utf8mb4_bin`
 - 可选值：`utf8mb4_bin`、`utf8mb4_general_ci`、`utf8mb4_0900_ai_ci`
