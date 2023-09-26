@@ -5,7 +5,7 @@ aliases: ['/docs-cn/dev/data-type-date-and-time/','/docs-cn/dev/reference/sql/da
 
 # 日期和时间类型
 
-TiDB 支持 MySQL 所有的日期和时间类型，包括 [`DATE`](#date-类型)、[`TIME`](#time-类型)、[`DATETIME`](#datetime-类型)、[`TIMESTAMP`](#timestamp-类型) 以及 [`YEAR`](#year-类型)。完整信息可以参考 [MySQL 中的时间和日期类型](https://dev.mysql.com/doc/refman/5.7/en/date-and-time-types.html)。
+TiDB 支持 MySQL 所有的日期和时间类型，包括 [`DATE`](#date-类型)、[`TIME`](#time-类型)、[`DATETIME`](#datetime-类型)、[`TIMESTAMP`](#timestamp-类型) 以及 [`YEAR`](#year-类型)。完整信息可以参考 [MySQL 中的时间和日期类型](https://dev.mysql.com/doc/refman/8.0/en/date-and-time-types.html)。
 
 每种类型都有有效值范围，值为 0 表示无效值。此外，`TIMESTAMP` 和 `DATETIME` 类型能自动生成新的时间值。
 
