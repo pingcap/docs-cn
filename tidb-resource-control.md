@@ -333,6 +333,55 @@ Runaway Query 是指执行时间或消耗资源超出预期的查询。下面使
 
 + `information_schema.runaway_watches` 表中包含了 Runaway Queries 的快速识别规则记录。详见 [`RUNAWAY_WATCHES`](/information-schema/information-schema-runaway-watches.md)。
 
+### 管理后台任务
+
+> **警告：**
+>
+> 该功能目前为实验特性，不建议在生产环境中使用。该功能可能会在未事先通知的情况下发生变化或删除。如果发现 bug，请在 GitHub 上提 [issue](https://github.com/pingcap/tidb/issues/new/choose) 反馈。
+
+后台任务是指那些优先级不高但是需要消耗大量资源的任务，如数据备份和自动统计信息收集等。这些任务通常定期或不定期触发，在执行的时候会消耗大量资源，从而影响在线的高优先级任务的性能。
+
+自 v7.4.0 开始，TiDB 资源管控引入了对后台任务的管理。当一种任务被标记为后台任务时，TiKV 会动态地限制该任务的资源使用，以尽量避免此类任务在执行时对其他前台任务的性能产生影响。TiKV 通过实时地监测所有前台任务所消耗的 CPU 和 IO 等资源，并根据实例总的资源上限计算出后台任务可使用的资源阈值，所有后台任务在执行时会受此阈值的限制。
+
+#### `BACKGROUND` 参数说明
+
+`TASK_TYPES`：设置需要作为后台任务管理的任务类型，多个任务类型以 `,` 分隔。
+
+目前 TiDB 支持如下几种后台任务的类型：
+
+- `lightning`：使用 [TiDB Lightning](/tidb-lightning/tidb-lightning-overview.md) 执行导入任务。同时支持 TiDB Lightning 的物理和逻辑导入模式。
+- `br`：使用 [BR](/br/backup-and-restore-overview.md) 执行数据备份和恢复。目前不支持 PITR。
+- `ddl`：对于 Reorg DDL，控制批量数据回写阶段的资源使用。
+- `stats`：对应手动执行或系统自动触发的[收集统计信息](/statistics.md#统计信息的收集)任务。
+
+默认情况下，被标记为后台任务的任务类型为空，此时后台任务的管理功能处于关闭状态，其行为与 TiDB v7.4.0 之前版本保持一致。你需要手动修改 `default` 资源组的后台任务类型以开启后台任务管理。
+
+#### 示例
+
+1. 创建 `rg1` 资源组，并将 `br` 和 `stats` 标记为后台任务。
+
+    ```sql
+    CREATE RESOURCE GROUP IF NOT EXISTS rg1 RU_PER_SEC = 500 BACKGROUND=(TASK_TYPES='br,stats');
+    ```
+
+2. 修改 `rg1` 资源组，将 `br` 和 `ddl` 标记为后台任务。
+
+    ```sql
+    ALTER RESOURCE GROUP rg1 BACKGROUND=(TASK_TYPES='br,ddl');
+    ```
+
+3. 修改 `rg1` 资源组，将后台任务的类型还原为默认值。此时后台任务的类型将使用 `default` 资源组的配置。
+
+    ```sql
+    ALTER RESOURCE GROUP rg1 BACKGROUND=NULL;
+    ```
+
+4. 修改 `rg1` 资源组，将后台任务的类型设置为空，此时此资源组的所有任务类型都不会作为后台任务处理。
+
+    ```sql
+    ALTER RESOURCE GROUP rg1 BACKGROUND=(TASK_TYPES="");
+    ```
+
 ## 关闭资源管控特性
 
 1. 执行以下命令关闭资源管控特性：
