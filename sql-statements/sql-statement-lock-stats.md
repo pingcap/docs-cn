@@ -5,7 +5,7 @@ summary: TiDB 数据库中 LOCK STATS 的使用概况。
 
 # LOCK STATS
 
-`LOCK STATS` 语句用于锁定表或分区的统计信息，使得在锁定期间，TiDB 不会自动更新统计信息。
+`LOCK STATS` 语句用于锁定表或分区的统计信息，使得在锁定期间，TiDB 不会自动更新统计信息。具体行为请参见[锁定统计信息的行为说明](/statistics.md#锁定统计信息的行为说明)
 
 ## 语法图
 
