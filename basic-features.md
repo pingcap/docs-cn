@@ -158,6 +158,8 @@ aliases: ['/docs-cn/dev/basic-features/','/docs-cn/dev/experimental-features-4.0
 | [动态裁剪](/partitioned-table.md#动态裁剪模式) | Y | Y | Y | Y | Y | Y | E | E | E | E | N | N |
 | [Range COLUMNS 分区](/partitioned-table.md#range-columns-分区) | Y | Y | Y | Y | Y | N | N | N | N | N | N | N |
 | [Range INTERVAL 分区](/partitioned-table.md#range-interval-分区) | Y | Y | Y | Y | E | N | N | N | N | N | N | N |
+| [分区表转换为非分区表](/partitioned-table.md#将分区表转换为非分区表) | Y | N | N | N | N | N | N | N | N | N | N | N |
+| [对现有表进行分区](/partitioned-table.md#对现有表进行分区) | Y | N | N | N | N | N | N | N | N | N | N | N |
 
 ## 统计信息
 
