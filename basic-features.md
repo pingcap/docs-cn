@@ -92,7 +92,7 @@ aliases: ['/docs-cn/dev/basic-features/','/docs-cn/dev/experimental-features-4.0
 | 高级 SQL 功能 | 7.4 | 7.3 | 7.2 | 7.1 | 6.5 | 6.1 | 5.4 | 5.3 | 5.2 | 5.1 | 5.0 | 4.0 |
 |---|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|
 | [Prepare 语句执行计划缓存](/sql-prepared-plan-cache.md) | Y | Y | Y | Y | Y | Y | Y | Y | E | E | E | E |
-| [非 Prepare 语句执行计划缓存](/sql-non-prepared-plan-cache.md) | E | E | E | E | N | N | N | N | N | N | N | N |
+| [非 Prepare 语句执行计划缓存](/sql-non-prepared-plan-cache.md) | Y | E | E | E | N | N | N | N | N | N | N | N |
 | [执行计划管理 (SPM)](/sql-plan-management.md) | Y | Y | Y | Y | Y | Y | Y | Y | Y | Y | Y | Y |
 | [根据历史执行计划创建绑定](/sql-plan-management.md#根据历史执行计划创建绑定) | Y | Y | Y | Y | E | N | N | N | N | N | N | N |
 | [下推计算结果缓存 (Coprocessor Cache)](/coprocessor-cache.md) | Y | Y | Y | Y | Y | Y | Y | Y | Y | Y | Y | E |
