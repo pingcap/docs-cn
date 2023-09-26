@@ -74,23 +74,7 @@ mysql> SHOW WARNINGS;
 2 rows in set (0.00 sec)
 ```
 
-解锁表 `t` 的统计信息，成功执行 `ANALYZE` 语句。
-
-```sql
-mysql> UNLOCK STATS t;
-Query OK, 0 rows affected (0.01 sec)
-
-mysql> ANALYZE TABLE t;
-Query OK, 0 rows affected, 1 warning (0.03 sec)
-
-mysql> SHOW WARNINGS;
-+-------+------+-----------------------------------------------------------------------------------------------------------------------------------------+
-| Level | Code | Message                                                                                                                                 |
-+-------+------+-----------------------------------------------------------------------------------------------------------------------------------------+
-| Note  | 1105 | Analyze use auto adjusted sample rate 1.000000 for table test.t, reason to use this rate is "use min(1, 110000/8) as the sample-rate=1" |
-+-------+------+-----------------------------------------------------------------------------------------------------------------------------------------+
-1 row in set (0.00 sec)
-```
+解锁统计信息请参考 [UNLOCK STATS](/sql-statements/sql-statement-unlock-stats.md)。
 
 另外，你也可以通过 `LOCK STATS` 语句锁定分区的统计信息。用例如下：
 
@@ -148,23 +132,7 @@ mysql> SHOW WARNINGS;
 2 rows in set (0.00 sec)
 ```
 
-解锁分区 `p1` 的统计信息，成功执行 `ANALYZE` 语句。
-
-```sql
-mysql> UNLOCK STATS t PARTITION p1;
-Query OK, 0 rows affected (0.00 sec)
-
-mysql> ANALYZE TABLE t PARTITION p1;
-Query OK, 0 rows affected, 1 warning (0.01 sec)
-
-mysql> SHOW WARNINGS;
-+-------+------+----------------------------------------------------------------------------------------------------------------------------------------------------------------------+
-| Level | Code | Message                                                                                                                                                              |
-+-------+------+----------------------------------------------------------------------------------------------------------------------------------------------------------------------+
-| Note  | 1105 | Analyze use auto adjusted sample rate 1.000000 for table test.t's partition p1, reason to use this rate is "TiDB assumes that the table is empty, use sample-rate=1" |
-+-------+------+----------------------------------------------------------------------------------------------------------------------------------------------------------------------+
-1 row in set (0.00 sec)
-```
+解锁统计信息请参考 [UNLOCK STATS](/sql-statements/sql-statement-unlock-stats.md)。
 
 ## MySQL 兼容性
 
