@@ -3150,6 +3150,7 @@ mysql> desc select count(distinct a) from test.t;
 
 - 作用域：SESSION | GLOBAL
 - 是否持久化到集群：是
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：是
 - 类型：枚举型
 - 默认值：`moderate`
 - 可选值：`moderate`、`determinate`
