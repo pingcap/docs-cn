@@ -87,7 +87,7 @@ TiDB 版本：7.4.0
 
     从 v7.0.0 起，TiFlash 支持控制 `GROUP BY`、`ORDER BY`、`JOIN` 这三种算子的数据落盘功能，避免数据量超过内存总大小时，导致查询终止甚至系统崩溃的问题。然而，单独控制每个算子的落盘较为麻烦，也无法有效进行整体资源控制。
 
-    在 v7.4.0 中，TiFlash 引入了查询级别数的据落盘功能。通过设置单个查询在单个 TiFlash 节点使用内存的上限 [`tiflash_mem_quota_query_per_node`](/system-variables.md#tiflash_mem_quota_query_per_node-从-v740-版本开始引入)及触发数据落盘的内存阈值 [`tiflash_query_spill_ratio`](/system-variables.md#tiflash_query_spill_ratio-从-v740-版本开始引入)，你可以方便地控制单个查询的内存使用，更好地管控 TiFlash 内存资源。
+    在 v7.4.0 中，TiFlash 引入了查询级别数的据落盘功能。通过设置单个查询在单个 TiFlash 节点使用内存的上限 [`tiflash_mem_quota_query_per_node`](/system-variables.md#tiflash_mem_quota_query_per_node-从-v740-版本开始引入) 及触发数据落盘的内存阈值 [`tiflash_query_spill_ratio`](/system-variables.md#tiflash_query_spill_ratio-从-v740-版本开始引入)，你可以方便地控制单个查询的内存使用，更好地管控 TiFlash 内存资源。
 
     更多信息，请参考[用户文档](/tiflash/tiflash-spill-disk.md)。
 
@@ -216,7 +216,7 @@ TiDB 版本：7.4.0
 
 * 增强 `IMPORT INTO` 功能 [#46704](https://github.com/pingcap/tidb/issues/46704) @[D3Hunter](https://github.com/D3Hunter) **tw@qiancai** <!--1494-->
 
-    从 v7.4.0 起，你可以通过在 `IMPORT INTO` 的 `CLOUD_STORAGE_URI` 选项中指定编码后数据的云存储地址，开启[全局排序功能](/....md)（实验特性），提升性能和稳定性。
+    从 v7.4.0 起，你可以通过在 `IMPORT INTO` 的 `CLOUD_STORAGE_URI` 选项中指定编码后数据的云存储地址，开启[全局排序功能](/tidb-global-sort.md)（实验特性），提升性能和稳定性。
     
     此外，在 v7.4.0 中，`IMPORT INTO`  还引入了以下功能：
     
