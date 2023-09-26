@@ -27,6 +27,18 @@ Before you contribute, please take a quick look at some general information abou
 
     To keep a consistent style for diagrams, we recommend using [Figma](https://www.figma.com/) to draw or design diagrams. If you need to draw a diagram, refer to the guide and use shapes or colors provided in the template.
 
+### Pick a doc template
+
+We provide [several doc templates](/resources/doc-templates) for you to use to create documentation that aligns with our style.
+
+Please check out these templates before you submit a pull request:
+
+- [Concept](/resources/doc-templates/template-concept.md)
+- [Task](/resources/doc-templates/template-task.md)
+- [Reference](/resources/doc-templates/template-reference.md)
+- [New Feature](/resources/doc-templates/template-new-feature.md)
+- [Troubleshooting](/resources/doc-templates/template-troubleshooting.md)
+
 ### Learn about docs versions
 
 Currently, we maintain the following versions of TiDB documentation, each with a separate branch:

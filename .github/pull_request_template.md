@@ -1,4 +1,9 @@
 <!--Thanks for your contribution to TiDB documentation. Please answer the following questions.-->
+<!--
+We provide several doc templates for you to use to create documentation that aligns with our style.
+Please check out these templates before you submit the pull request:
+https://github.com/pingcap/docs/tree/master/resources/doc-templates
+-->
 
 ### First-time contributors' checklist <!--Remove this section if you're not a first-time contributor.-->
 
