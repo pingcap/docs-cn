@@ -263,8 +263,8 @@ TiDB 版本：7.4.0
 |---|----|------|
 | [`default_collation_for_utf8mb4`](/system-variables.md#default_collation_for_utf8mb4-从-v740-版本开始引入) | 新增 | 该变量用于设置 utf8mb4 字符集的默认排序规则，默认值为 `utf8mb4_bin`。 |
 | [`tidb_opt_objective`](/system-variables.md#tidb_opt_objective-从-v740-版本开始引入) | 新增 | 该变量用于设置优化器优化目标。`moderate` 维持旧版本的默认行为，优化器会利用更多信息尝试生成更优的计划；`determinate` 则倾向于保守，保持执行计划稳定。 |
-| [`tidb_session_alias`](/system-variables.md#tidb_session_alias-从-v740-版本开始引入) | 新增 | 用来自定义当前会话相关日志中 `session_alias` 列的值。 |
 | [`tidb_service_scope`](/system-variables.md#tidb_service_scope-从-v740-版本开始引入) | 新增 | 该变量是一个实例级别的变量，用于控制 [TiDB 后端任务分布式框架](/tidb-distributed-execution-framework.md) 下各 TiDB 节点的服务范围。当设置 TiDB 节点的 `tidb_service_scope` 为 `background` 时，后端任务分布式框架将调度该节点执行后端任务（如 [`ADD INDEX`](/sql-statements/sql-statement-add-index.md) 和 [`IMPORT INTO`](/sql-statements/sql-statement-import-into.md)）。 |
+| [`tidb_session_alias`](/system-variables.md#tidb_session_alias-从-v740-版本开始引入) | 新增 | 用来自定义当前会话相关日志中 `session_alias` 列的值。 |
 | [`tiflash_mem_quota_query_per_node`](/system-variables.md#tiflash_mem_quota_query_per_node-从-v740-版本开始引入) | 新增 | 用于设置单个查询在单个 TiFlash 节点上的内存使用上限，超过该限制时 TiFlash 会报错并终止该查询。默认值为 `0`，表示无限制。 |
 | [`tiflash_query_spill_ratio`](/system-variables.md#tiflash_query_spill_ratio-从-v740-版本开始引入) | 新增 |  用于控制 TiFlash [查询级别的落盘](/tiflash/tiflash-spill-disk.md#查询级别的落盘)机制的阈值。默认值为 `0.7`。  |
 | [`tikv_client_read_timeout`](/system-variables.md#tikv_client_read_timeout-从-v740-版本开始引入) | 新增 | 该变量用于设置查询语句中 TiDB 发送 TiKV RPC 读请求的超时时间。当 TiDB 集群在网络不稳定或 TiKV 的 I/O 延迟抖动严重的环境下，且用户对查询 SQL 的延迟比较敏感时，可以通过设置 `tikv_client_read_timeout` 调小 TiKV RPC 读请求的超时时间，这样当某个 TiKV 节点出现 I/O 延迟抖动时，TiDB 侧可以快速超时并重新发送 TiKV RPC 请求给下一个 TiKV Region Peer 所在的 TiKV 节点。如果所有 TiKV Region Peer 都请求超时，则会用默认的超时时间（通常是 40 秒）进行新一轮的重试。 |
@@ -279,7 +279,7 @@ TiDB 版本：7.4.0
 | -------- | -------- | -------- | -------- |
 | TiDB | [enable-stats-cache-mem-quota](/tidb-configuration-file.md#enable-stats-cache-mem-quota-从-v610-版本开始引入) | 修改 | 默认值由 `false` 改为 `true`，即默认开启 TiDB 统计信息缓存的内存上限。 |
 | Import into |SPLIT_FILE | 新增| 对需要导入的大型 CSV 文件切割成多个 256 MiB 大小的 CSV 文件|
-| Dumpling  | [`--csv-line-terminator`](/dumpling-overview.md#dumpling-主要选项表) | 新增 | 你可以通过该参数传入导出数据为 CSV 文件的换行符，支持 "\r\n" 和 "\n"，默认值为 "\r\n"，即和历史版本保持一致。 |
+| Dumpling  | [`--csv-line-terminator`](/dumpling-overview.md#dumpling-主要选项表) | 新增 | 控制导出数据为 CSV 文件的换行符，支持 "\r\n" 和 "\n"，默认值为 "\r\n"，即和历史版本保持一致。 |
 | TiFlash | [`enable_resource_control`](/tiflash/tiflash-configuration.md) | 新增 | 控制是否开启 TiFlash 资源管控功能。 |
 | TiFlash | [`compact_log_min_gap`](/tiflash/tiflash-configuration.md) | 新增 | 在当前 Raft 状态机推进的 applied_index 和上次落盘时的 applied_index 的差值高于 `compact_log_min_gap` 时，TiFlash 将执行来自 TiKV 的 CompactLog 命令，并进行数据落盘。 |
 | TiFlash | [`storage.format_version`](/tiflash/tiflash-configuration.md) | 修改 | 默认值从 `4` 修改为 `5`，该格式可以合并小文件从而减少了物理文件数量。 |
