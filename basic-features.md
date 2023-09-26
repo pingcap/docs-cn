@@ -220,7 +220,7 @@ summary: 了解 TiDB 的功能概览。
 | [TiDB Dashboard Top SQL 功能](/dashboard/top-sql.md) | Y | Y | Y | Y | Y | Y | E | N | N | N | N | N |
 | [TiDB Dashboard SQL 诊断功能](/information-schema/information-schema-sql-diagnostics.md) | Y | Y | Y | Y | Y | E | E | E | E | E | E | E |
 | [TiDB Dashboard 集群诊断功能](/dashboard/dashboard-diagnostics-access.md) | Y | Y | Y | Y | Y | E | E | E | E | E | E | E |
-| [Grafana 中的 TiKV-FastTune 面板](/grafana-tikv-dashboard.md#tikv-fasttune-面板) | Y | E | E | E | E | E | E | E | E | E | E | E |
+| [Grafana 中的 TiKV-FastTune 面板](/grafana-tikv-dashboard.md#tikv-fasttune-面板) | E | E | E | E | E | E | E | E | E | E | E | E |
 | [Information schema](/information-schema/information-schema.md) | Y | Y | Y | Y | Y | Y | Y | Y | Y | Y | Y | Y |
 | [Metrics schema](/metrics-schema.md) | Y | Y | Y | Y | Y | Y | Y | Y | Y | Y | Y | Y |
 | [Statements summary tables](/statement-summary-tables.md) | Y | Y | Y | Y | Y | Y | Y | Y | Y | Y | Y | Y |
