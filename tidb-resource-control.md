@@ -320,11 +320,11 @@ The parameters are as follows:
     ```
 
 - Get the watch item ID by querying `INFORMATION_SCHEMA.RUNAWAY_WATCHES` and delete the watch item.
-   
+
     ```sql
     SELECT * from information_schema.runaway_watches ORDER BY id;
     ```
-    
+
     ```sql
     *************************** 1. row ***************************
                     ID: 20003
@@ -337,11 +337,11 @@ The parameters are as follows:
                 ACTION: Kill
     1 row in set (0.00 sec)
     ```
-    
+
     ```sql
     QUERY WATCH REMOVE 20003;
     ```
-    
+
 #### Observability
 
 You can get more information about runaway queries from the following system tables and `INFORMATION_SCHEMA`:
@@ -366,6 +366,68 @@ You can get more information about runaway queries from the following system tab
     - `watch` means that it matches the quick identification rule in the watch list.
 
 + The `information_schema.runaway_watches` table contains records of quick identification rules for runaway queries. For more information, see [`RUNAWAY_WATCHES`](/information-schema/information-schema-runaway-watches.md).
+
+### Manage background tasks
+
+> **Warning:**
+>
+> This feature is experimental. It is not recommended that you use it in the production environment. This feature might be changed or removed without prior notice. If you find a bug, you can report an [issue](https://github.com/pingcap/tidb/issues/new/choose) on GitHub.
+
+Background tasks, such as data backup and automatic statistics collection, are low-priority but consume many resources. These tasks are usually triggered periodically or irregularly. During execution, they consume a lot of resources, thus affecting the performance of online high-priority tasks.
+
+Starting from v7.4.0, the TiDB resource control feature supports managing background tasks. When a task is marked as a background task, TiKV dynamically limits the resources used by this type of task to avoid the impact on the performance of other foreground tasks. TiKV monitors the CPU and IO resources consumed by all foreground tasks in real time, and calculates the resource threshold that can be used by background tasks based on the total resource limit of the instance. All background tasks are restricted by this threshold during execution.
+
+#### `BACKGROUND` parameters
+
+`TASK_TYPES`: specifies the task types that need to be managed as background tasks. Use commas (`,`) to separate multiple task types.
+
+TiDB supports the following types of background tasks:
+
+<CustomContent platform="tidb">
+
+- `lightning`: perform import tasks using [TiDB Lightning](/tidb-lightning/tidb-lightning-overview.md). Both physical and logical import modes of TiDB Lightning are supported.
+- `br`: perform backup and restore tasks using [BR](/br/backup-and-restore-overview.md). PITR is not supported.
+- `ddl`: control the resource usage during the batch data write back phase of Reorg DDLs.
+- `stats`: the [collect statistics](/statistics.md#collect-statistics) tasks that are manually executed or automatically triggered by TiDB.
+
+</CustomContent>
+
+<CustomContent platform="tidb-cloud">
+
+- `lightning`: perform import tasks using [TiDB Lightning](https://docs.pingcap.com/tidb/stable/tidb-lightning-overview). Both physical and logical import modes of TiDB Lightning are supported.
+- `br`: perform backup and restore tasks using [BR](https://docs.pingcap.com/tidb/stable/backup-and-restore-overview). PITR is not supported.
+- `ddl`: control the resource usage during the batch data write back phase of Reorg DDLs.
+- `stats`: the [collect statistics](/statistics.md#collect-statistics) tasks that are manually executed or automatically triggered by TiDB.
+
+</CustomContent>
+
+By default, the task types that are marked as background tasks are empty, and the management of background tasks is disabled. This default behavior is the same as that of versions prior to TiDB v7.4.0. To manage background tasks, you need to manually modify the background task types of the `default` resource group.
+
+#### Examples
+
+1. Create the `rg1` resource group and set `br` and `stats` as background tasks.
+
+    ```sql
+    CREATE RESOURCE GROUP IF NOT EXISTS rg1 RU_PER_SEC = 500 BACKGROUND=(TASK_TYPES='br,stats');
+    ```
+
+2. Change the `rg1` resource group to set `br` and `ddl` as background tasks.
+
+    ```sql
+    ALTER RESOURCE GROUP rg1 BACKGROUND=(TASK_TYPES='br,ddl');
+    ```
+
+3. Restore the background tasks of `rg1` resource group to the default value. In this case, the background task types follow the configuration of the `default` resource group.
+
+    ```sql
+    ALTER RESOURCE GROUP rg1 BACKGROUND=NULL;
+    ```
+
+4. Change the `rg1` resource group to set the background task types to empty. In this case, all tasks of this resource group are not treated as background tasks.
+
+    ```sql
+    ALTER RESOURCE GROUP rg1 BACKGROUND=(TASK_TYPES="");
+    ```
 
 ## Disable resource control
 
