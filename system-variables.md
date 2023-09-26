@@ -390,6 +390,7 @@ mysql> SELECT * FROM t1;
 ### `datadir`
 
 - 作用域：NONE
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：否
 - 默认值：使用的组件和部署方式不同，默认值也不同。
     - `/tmp/tidb`：如果你将 [`--store`](/command-line-flags-for-tidb-configuration.md#--store) 设置为 `"unistore"` 或没有设置 `--store`，则默认值为 `/tmp/tidb`。
     - `${pd-ip}:${pd-port}`：如果你设置的存储引擎是 TiKV（如果使用 TiUP 和 TiDB Operator 部署，则默认的存储引擎为 TiKV），则默认值为 `${pd-ip}:${pd-port}`。
@@ -493,6 +494,7 @@ mysql> SELECT * FROM t1;
 ### `hostname`
 
 - 作用域：NONE
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：否
 - 默认值：（系统主机名）
 - 这个变量一个只读变量，表示 TiDB server 的主机名。
 
@@ -558,12 +560,14 @@ mysql> SELECT * FROM t1;
 ### `last_sql_use_alloc` <span class="version-mark">从 v6.4.0 版本开始引入</span>
 
 - 作用域：SESSION
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：否
 - 默认值：`OFF`
 - 这个变量是一个只读变量，用来显示上一个语句是否使用了缓存的 Chunk 对象 (Chunk allocation)。
 
 ### `license`
 
 - 作用域：NONE
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：否
 - 默认值：`Apache License 2.0`
 - 这个变量表示 TiDB 服务器的安装许可证。
 
@@ -771,6 +775,7 @@ mysql> SHOW GLOBAL VARIABLES LIKE 'max_prepared_stmt_count';
 ### `socket`
 
 - 作用域：NONE
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：否
 - 默认值：""
 - 使用 MySQL 协议时，tidb-server 所监听的本地 unix 套接字文件。
 
@@ -820,24 +825,28 @@ mysql> SHOW GLOBAL VARIABLES LIKE 'max_prepared_stmt_count';
 ### `ssl_ca`
 
 - 作用域：NONE
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：否
 - 默认值：""
 - 证书颁发机构 (CA) 文件的位置。若文件不存在，则变量值为空。该变量的值由 TiDB 配置项 [`ssl-ca`](/tidb-configuration-file.md#ssl-ca) 定义。
 
 ### `ssl_cert`
 
 - 作用域：NONE
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：否
 - 默认值：""
 - 用于 SSL/TLS 连接的证书文件的位置。若文件不存在，则变量值为空。该变量的值由 TiDB 配置项 [`ssl-cert`](/tidb-configuration-file.md#ssl-cert) 定义。
 
 ### `ssl_key`
 
 - 作用域：NONE
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：否
 - 默认值：""
 - 用于 SSL/TLS 连接的私钥文件的位置。若文件不存在，则变量值为空。该变量的值由 TiDB 配置项 [`ssl-key`](/tidb-configuration-file.md#ssl-cert) 定义。
 
 ### `system_time_zone`
 
 - 作用域：NONE
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：否
 - 默认值：（随系统）
 - 该变量显示首次引导启动 TiDB 时的系统时区。另请参阅 [`time_zone`](#time_zone)。
 
@@ -876,6 +885,7 @@ mysql> SHOW GLOBAL VARIABLES LIKE 'max_prepared_stmt_count';
 ### `tidb_allow_function_for_expression_index` <span class="version-mark">从 v5.2.0 版本开始引入</span>
 
 - 作用域：NONE
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：否
 - 默认值：`json_array`、`json_array_append`、`json_array_insert`、`json_contains`、`json_contains_path`、`json_depth`、`json_extract`、`json_insert`、`json_keys`、`json_length`、`json_merge_patch`、`json_merge_preserve`、`json_object`、`json_pretty`、`json_quote`、`json_remove`、`json_replace`、`json_search`、`json_set`、`json_storage_size`、`json_type`、`json_unquote`、`json_valid`、`lower`、`md5`、`reverse`、`tidb_shard`、`upper`、`vitess_hash`
 - 这个变量用于显示创建表达式索引所允许使用的函数。
 
@@ -2734,6 +2744,7 @@ v5.0 后，用户仍可以单独修改以上系统变量（会有废弃警告）
 ### `tidb_isolation_read_engines` <span class="version-mark">从 v4.0 版本开始引入</span>
 
 - 作用域：SESSION
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：否
 - 默认值：`tikv,tiflash,tidb`
 - 这个变量用于设置 TiDB 在读取数据时可以使用的存储引擎列表。
 
@@ -2750,6 +2761,7 @@ v5.0 后，用户仍可以单独修改以上系统变量（会有废弃警告）
 ### `tidb_last_query_info` <span class="version-mark">从 v4.0.14 版本开始引入</span>
 
 - 作用域：SESSION
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：否
 - 默认值：""
 - 这是一个只读变量。用于在 TiDB 内部查询上一条 DML 语句的事务信息。查询的事务信息包括：
     - `txn_scope`：事务的作用域，可能为 `global` 或 `local`。
@@ -4201,12 +4213,14 @@ Query OK, 0 rows affected, 1 warning (0.00 sec)
 ### `tidb_slow_query_file`
 
 - 作用域：SESSION
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：否
 - 默认值：""
 - 查询 `INFORMATION_SCHEMA.SLOW_QUERY` 只会解析配置文件中 `slow-query-file` 设置的慢日志文件名，默认是 "tidb-slow.log"。但如果想要解析其他的日志文件，可以通过设置 session 变量 `tidb_slow_query_file` 为具体的文件路径，然后查询 `INFORMATION_SCHEMA.SLOW_QUERY` 就会按照设置的路径去解析慢日志文件。更多详情可以参考 [SLOW_QUERY 文档](/identify-slow-queries.md)。
 
 ### `tidb_snapshot`
 
 - 作用域：SESSION
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：否
 - 默认值：""
 - 这个变量用来设置当前会话期待读取的历史数据所处时刻。比如当设置为 `"2017-11-11 20:20:20"` 时或者一个 TSO 数字 "400036290571534337"，当前会话将能读取到该时刻的数据。
 
@@ -4774,6 +4788,7 @@ Query OK, 0 rows affected, 1 warning (0.00 sec)
 ### `tx_read_ts`
 
 - 作用域：SESSION
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：否
 - 默认值：""
 - 在 Stale Read 场景下，该会话变量用于帮助记录 Stable Read TS 值。
 - 该变量仅用于 TiDB 内部实现，**不推荐设置该变量**。
@@ -4781,6 +4796,7 @@ Query OK, 0 rows affected, 1 warning (0.00 sec)
 ### `txn_scope`
 
 - 作用域：SESSION
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：否
 - 默认值：`global`
 - 可选值：`global` 和 `local`
 - 该变量用于设置当前会话下事务为全局事务（设为 `global`）还是局部事务（设为 `local`）。
@@ -4877,24 +4893,28 @@ Query OK, 0 rows affected, 1 warning (0.00 sec)
 ### `version`
 
 - 作用域：NONE
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：否
 - 默认值：`5.7.25-TiDB-(tidb version)`
 - 这个变量的值是 MySQL 的版本和 TiDB 的版本，例如 '5.7.25-TiDB-v7.3.0'。
 
 ### `version_comment`
 
 - 作用域：NONE
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：否
 - 默认值：(string)
 - 这个变量的值是 TiDB 版本号的其他信息，例如 'TiDB Server (Apache License 2.0) Community Edition, MySQL 5.7 compatible'。
 
 ### `version_compile_os`
 
 - 作用域：NONE
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：否
 - 默认值：(string)
 - 这个变量值是 TiDB 所在操作系统的名称。
 
 ### `version_compile_machine`
 
 - 作用域：NONE
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：否
 - 默认值：(string)
 - 这个变量值是运行 TiDB 的 CPU 架构的名称。
 
@@ -4912,6 +4932,7 @@ Query OK, 0 rows affected, 1 warning (0.00 sec)
 ### `warning_count`
 
 - 作用域：SESSION
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：否
 - 默认值：`0`
 - 这个只读变量表示之前执行语句中出现的警告数。
 
