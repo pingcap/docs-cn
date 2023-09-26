@@ -267,7 +267,7 @@ TiDB 版本：7.4.0
 | [`tidb_session_alias`](/system-variables.md#tidb_session_alias-从-v740-版本开始引入) | 新增 | 用来自定义当前会话相关日志中 `session_alias` 列的值。 |
 | [`tiflash_mem_quota_query_per_node`](/system-variables.md#tiflash_mem_quota_query_per_node-从-v740-版本开始引入) | 新增 | 用于设置单个查询在单个 TiFlash 节点上的内存使用上限，超过该限制时 TiFlash 会报错并终止该查询。默认值为 `0`，表示无限制。 |
 | [`tiflash_query_spill_ratio`](/system-variables.md#tiflash_query_spill_ratio-从-v740-版本开始引入) | 新增 |  用于控制 TiFlash [查询级别的落盘](/tiflash/tiflash-spill-disk.md#查询级别的落盘)机制的阈值。默认值为 `0.7`。  |
-| [`tikv_client_read_timeout`](/system-variables.md#tikv_client_read_timeout-从-v740-版本开始引入) | 新增 | 该变量用于设置查询语句中 TiDB 发送 TiKV RPC 读请求的超时时间。当 TiDB 集群在网络不稳定或 TiKV 的 I/O 延迟抖动严重的环境下，且用户对查询 SQL 的延迟比较敏感时，可以通过设置 `tikv_client_read_timeout` 调小 TiKV RPC 读请求的超时时间，这样当某个 TiKV 节点出现 I/O 延迟抖动时，TiDB 侧可以快速超时并重新发送 TiKV RPC 请求给下一个 TiKV Region Peer 所在的 TiKV 节点。如果所有 TiKV Region Peer 都请求超时，则会用默认的超时时间（通常是 40 秒）进行新一轮的重试。 |
+| [`tikv_client_read_timeout`](/system-variables.md#tikv_client_read_timeout-从-v740-版本开始引入) | 新增 | 该变量用于设置查询语句中 TiDB 发送 TiKV RPC 读请求的超时时间。默认值 `0` 表示使用默认的超时时间（通常是 40 秒）。 |
 | [tidb_opt_enable_hash_join](#) | 新增 | 控制优化器是否会选择表的哈希连接。默认打开，设置为 `NO` 时，除非没有计划可用，否则优化器会避免选择表的哈希连接。 |
 | [`tidb_enable_non_prepared_plan_cache`](/system-variables.md#tidb_enable_non_prepared_plan_cache) | 修改 | 经进一步的测试后，该变量默认值从 `ON` 修改为 `OFF`，即默认关闭非 Prepare 语句执行计划缓存。 |
 | `tidb_enable_tiflash_pipeline_model` | 删除 | 这个变量用来控制是否启用 TiFlash Pipeline Model。从 v7.4.0 开启，开启 TiFlash 资源管控功能时，Pipeline Model 模型将自动启用。 |
