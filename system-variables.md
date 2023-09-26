@@ -3775,6 +3775,7 @@ EXPLAIN FORMAT='brief' SELECT COUNT(1) FROM t WHERE a = 1 AND b IS NOT NULL;
 
 - 作用域：GLOBAL
 - 是否持久化到集群：否
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：否
 - 类型：字符串
 - 默认值：""
 - 可选值："" 或 `background`
