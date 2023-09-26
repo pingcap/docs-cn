@@ -183,4 +183,4 @@ SELECT @col FROM t;
 
 Except for `SELECT ... INTO <variable>`, the syntax supported in MySQL and TiDB is identical.
 
-For more information, see [User-Defined Variables in MySQL](https://dev.mysql.com/doc/refman/5.7/en/user-variables.html).
+For more information, see [User-Defined Variables in MySQL](https://dev.mysql.com/doc/refman/8.0/en/user-variables.html).

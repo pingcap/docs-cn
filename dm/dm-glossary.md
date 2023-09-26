@@ -32,7 +32,7 @@ Binlog replication processing unit is the processing unit used in DM-worker to r
 
 ### Block & allow table list
 
-Block & allow table list is the feature that filters or only migrates all operations of some databases or some tables. Refer to [block & allow table lists](/dm/dm-block-allow-table-lists.md) for details. This feature is similar to [MySQL Replication Filtering](https://dev.mysql.com/doc/refman/5.6/en/replication-rules.html) and [MariaDB Replication Filters](https://mariadb.com/kb/en/replication-filters/).
+Block & allow table list is the feature that filters or only migrates all operations of some databases or some tables. Refer to [block & allow table lists](/dm/dm-block-allow-table-lists.md) for details. This feature is similar to [MySQL Replication Filtering](https://dev.mysql.com/doc/refman/8.0/en/replication-rules.html) and [MariaDB Replication Filters](https://mariadb.com/kb/en/replication-filters/).
 
 ## C
 
@@ -55,7 +55,7 @@ The dump processing unit is the processing unit used in DM-worker to export all 
 
 ### GTID
 
-The GTID is the global transaction ID of MySQL or MariaDB. With this feature enabled, the GTID information is recorded in the binlog files. Multiple GTIDs form a GTID set. Refer to [MySQL GTID Format and Storage](https://dev.mysql.com/doc/refman/5.7/en/replication-gtids-concepts.html) and [MariaDB Global Transaction ID](https://mariadb.com/kb/en/library/gtid/) for details.
+The GTID is the global transaction ID of MySQL or MariaDB. With this feature enabled, the GTID information is recorded in the binlog files. Multiple GTIDs form a GTID set. Refer to [MySQL GTID Format and Storage](https://dev.mysql.com/doc/refman/8.0/en/replication-gtids-concepts.html) and [MariaDB Global Transaction ID](https://mariadb.com/kb/en/library/gtid/) for details.
 
 ## L
 
@@ -75,7 +75,7 @@ In the case of clearly mentioning "full", not explicitly mentioning "full or inc
 
 ### Relay log
 
-The relay log refers to the binlog files that DM-worker pulls from the upstream MySQL or MariaDB, and stores in the local disk. The format of the relay log is the standard binlog file, which can be parsed by tools such as [mysqlbinlog](https://dev.mysql.com/doc/refman/8.0/en/mysqlbinlog.html) of a compatible version. Its role is similar to [MySQL Relay Log](https://dev.mysql.com/doc/refman/5.7/en/replica-logs-relaylog.html) and [MariaDB Relay Log](https://mariadb.com/kb/en/library/relay-log/).
+The relay log refers to the binlog files that DM-worker pulls from the upstream MySQL or MariaDB, and stores in the local disk. The format of the relay log is the standard binlog file, which can be parsed by tools such as [mysqlbinlog](https://dev.mysql.com/doc/refman/8.0/en/mysqlbinlog.html) of a compatible version. Its role is similar to [MySQL Relay Log](https://dev.mysql.com/doc/refman/8.0/en/replica-logs-relaylog.html) and [MariaDB Relay Log](https://mariadb.com/kb/en/library/relay-log/).
 
 For more details such as the relay log's directory structure, initial migration rules, and data purge in TiDB DM, see [TiDB DM relay log](/dm/relay-log.md).
 

@@ -83,7 +83,7 @@ Use "dmctl binlog [command] --help" for more information about a command.
     - Type: string.
     - Specifies a binlog position. When the position of the binlog event matches `binlog-pos`, the operation is executed. If it is not specified, DM automatically sets `binlog-pos` to the currently failed DDL statement.
     - Format: `binlog-filename:binlog-pos`, for example, `mysql-bin|000001.000003:3270`.
-    - After the migration returns an error, the binlog position can be obtained from `position` in `startLocation` returned by `query-status`. Before the migration returns an error, the binlog position can be obtained by using [`SHOW BINLOG EVENTS`](https://dev.mysql.com/doc/refman/5.7/en/show-binlog-events.html) in the upstream MySQL instance.
+    - After the migration returns an error, the binlog position can be obtained from `position` in `startLocation` returned by `query-status`. Before the migration returns an error, the binlog position can be obtained by using [`SHOW BINLOG EVENTS`](https://dev.mysql.com/doc/refman/8.0/en/show-binlog-events.html) in the upstream MySQL instance.
 
 + `-s, --source`:
     - Type: string.

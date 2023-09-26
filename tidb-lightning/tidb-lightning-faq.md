@@ -82,7 +82,7 @@ Starting from v5.1, TiDB Lightning can automatically recognize the schema and ta
 
 You can prohibit importing invalid data by enabling Strict SQL Mode.
 
-By default, the [`sql_mode`](https://dev.mysql.com/doc/refman/5.7/en/sql-mode.html) used by TiDB Lightning is `"ONLY_FULL_GROUP_BY,NO_AUTO_CREATE_USER"`, which allows invalid data such as the date `1970-00-00`.
+By default, the [`sql_mode`](https://dev.mysql.com/doc/refman/8.0/en/sql-mode.html) used by TiDB Lightning is `"ONLY_FULL_GROUP_BY,NO_AUTO_CREATE_USER"`, which allows invalid data such as the date `1970-00-00`.
 
 To prohibit importing invalid data, you need to change the `sql-mode` setting to `"STRICT_TRANS_TABLES,NO_ENGINE_SUBSTITUTION"` in the `[tidb]` section in `tidb-lightning.toml`.
 

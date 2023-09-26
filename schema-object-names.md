@@ -77,7 +77,7 @@ SELECT 1 AS `identifier`, 2 AS 'string';
 1 row in set (0.00 sec)
 ```
 
-For more information, see [MySQL Schema Object Names](https://dev.mysql.com/doc/refman/5.7/en/identifiers.html).
+For more information, see [MySQL Schema Object Names](https://dev.mysql.com/doc/refman/8.0/en/identifiers.html).
 
 ## Identifier qualifiers
 
@@ -113,4 +113,4 @@ Instead of:
 `table_name.col_name`
 ```
 
-For more information, see [MySQL Identifier Qualifiers](https://dev.mysql.com/doc/refman/5.7/en/identifier-qualifiers.html).
+For more information, see [MySQL Identifier Qualifiers](https://dev.mysql.com/doc/refman/8.0/en/identifier-qualifiers.html).

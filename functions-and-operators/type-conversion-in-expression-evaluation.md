@@ -6,4 +6,4 @@ aliases: ['/docs/dev/functions-and-operators/type-conversion-in-expression-evalu
 
 # Type Conversion in Expression Evaluation
 
-TiDB behaves the same as MySQL: [https://dev.mysql.com/doc/refman/5.7/en/type-conversion.html](https://dev.mysql.com/doc/refman/5.7/en/type-conversion.html)
+TiDB behaves the same as MySQL: [https://dev.mysql.com/doc/refman/8.0/en/type-conversion.html](https://dev.mysql.com/doc/refman/8.0/en/type-conversion.html)

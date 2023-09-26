@@ -6,7 +6,7 @@ aliases: ['/docs/dev/data-type-string/','/docs/dev/reference/sql/data-types/stri
 
 # String Types
 
-TiDB supports all the MySQL string types, including `CHAR`, `VARCHAR`, `BINARY`, `VARBINARY`, `BLOB`, `TEXT`, `ENUM`, and `SET`. For more information, see [String Types in MySQL](https://dev.mysql.com/doc/refman/5.7/en/string-types.html).
+TiDB supports all the MySQL string types, including `CHAR`, `VARCHAR`, `BINARY`, `VARBINARY`, `BLOB`, `TEXT`, `ENUM`, and `SET`. For more information, see [String Types in MySQL](https://dev.mysql.com/doc/refman/8.0/en/string-types.html).
 
 ## Supported types
 
@@ -173,7 +173,7 @@ The value of the `ENUM` data type is stored as numbers. Each value is converted 
 | 'orange' | 2 |
 | 'pear' | 3 |
 
-For more information, see [the ENUM type in MySQL](https://dev.mysql.com/doc/refman/5.7/en/enum.html).
+For more information, see [the ENUM type in MySQL](https://dev.mysql.com/doc/refman/8.0/en/enum.html).
 
 ### `SET` type
 
@@ -206,4 +206,4 @@ In TiDB, the values of the `SET` type is internally converted to `Int64`. The ex
 
 In this case, for an element of `('a', 'c')`, it is `0101` in binary.
 
-For more information, see [the SET type in MySQL](https://dev.mysql.com/doc/refman/5.7/en/set.html).
+For more information, see [the SET type in MySQL](https://dev.mysql.com/doc/refman/8.0/en/set.html).

@@ -74,7 +74,7 @@ To represent some special characters in a string, you can use escape characters 
 
 If you want to represent `"` in the string surrounded by `'`, or `'` in the string surrounded by `"`, you do not need to use escape characters.
 
-For more information, see [String Literals in MySQL](https://dev.mysql.com/doc/refman/5.7/en/string-literals.html).
+For more information, see [String Literals in MySQL](https://dev.mysql.com/doc/refman/8.0/en/string-literals.html).
 
 ## Numeric literals
 
@@ -86,7 +86,7 @@ Exact-value numeric literals can be represented as `1, .2, 3.4, -5, -6.78, +9.10
 
 Numeric literals can also be represented in scientific notation, such as `1.2E3, 1.2E-3, -1.2E3, -1.2E-3`.
 
-For more information, see [Numeric Literals in MySQL](https://dev.mysql.com/doc/refman/5.7/en/number-literals.html).
+For more information, see [Numeric Literals in MySQL](https://dev.mysql.com/doc/refman/8.0/en/number-literals.html).
 
 ## Date and time literals
 
@@ -122,7 +122,7 @@ TiDB supports the following formats for time values:
 
 The decimal point of the Time type is also `.`, with a precision of up to 6 digits after the decimal point.
 
-See [MySQL date and time literals](https://dev.mysql.com/doc/refman/5.7/en/date-and-time-literals.html) for more details.
+See [MySQL date and time literals](https://dev.mysql.com/doc/refman/8.0/en/date-and-time-literals.html) for more details.
 
 ## Boolean Literals
 

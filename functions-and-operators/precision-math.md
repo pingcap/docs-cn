@@ -6,7 +6,7 @@ aliases: ['/docs/dev/functions-and-operators/precision-math/','/docs/dev/referen
 
 # Precision Math
 
-The precision math support in TiDB is consistent with MySQL. For more information, see [Precision Math in MySQL](https://dev.mysql.com/doc/refman/5.7/en/precision-math.html).
+The precision math support in TiDB is consistent with MySQL. For more information, see [Precision Math in MySQL](https://dev.mysql.com/doc/refman/8.0/en/precision-math.html).
 
 ## Numeric types
 

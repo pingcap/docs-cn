@@ -16,33 +16,33 @@ The solutions vary depending on your upstream database.
 ### Error message: Check whether mysql server_id has been greater than 0
 
 - Amazon Aurora MySQL or Amazon RDS: `server_id` is configured by default. You do not need to configure it. Make sure you are using Amazon Aurora MySQL writer instances to support both full and incremental data migration.
-- MySQL: to configure `server_id` for MySQL, see [Setting the Replication Source Configuration](https://dev.mysql.com/doc/refman/5.7/en/replication-howto-masterbaseconfig.html).
+- MySQL: to configure `server_id` for MySQL, see [Setting the Replication Source Configuration](https://dev.mysql.com/doc/refman/8.0/en/replication-howto-masterbaseconfig.html).
 
 ### Error message: Check whether mysql binlog is enabled
 
 - Amazon Aurora MySQL: see [How do I turn on binary logging for my Amazon Aurora MySQL-Compatible cluster](https://aws.amazon.com/premiumsupport/knowledge-center/enable-binary-logging-aurora/?nc1=h_ls). Make sure you are using Amazon Aurora MySQL writer instances to support both full and incremental data migration.
 - Amazon RDS: see [Configuring MySQL binary logging](https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/USER_LogAccess.MySQL.BinaryFormat.html).
 - Google Cloud SQL for MySQL: Google enables binary logging through point-in-time recovery for MySQL master databases. See [Enable point-in-time recovery](https://cloud.google.com/sql/docs/mysql/backup-recovery/pitr#enablingpitr).
-- MySQL: see [Setting the Replication Source Configuration](https://dev.mysql.com/doc/refman/5.7/en/replication-howto-masterbaseconfig.html).
+- MySQL: see [Setting the Replication Source Configuration](https://dev.mysql.com/doc/refman/8.0/en/replication-howto-masterbaseconfig.html).
 
 ### Error message: Check whether mysql binlog_format is ROW
 
 - Amazon Aurora MySQL: see [How do I turn on binary logging for my Amazon Aurora MySQL-Compatible cluster](https://aws.amazon.com/premiumsupport/knowledge-center/enable-binary-logging-aurora/?nc1=h_ls). Make sure you are using Amazon Aurora MySQL writer instances to support both full and incremental data migration.
 - Amazon RDS: see [Configuring MySQL binary logging](https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/USER_LogAccess.MySQL.BinaryFormat.html).
-- MySQL: execute `set global binlog_format=ROW;`. See [Setting The Binary Log Format](https://dev.mysql.com/doc/refman/5.7/en/binary-log-setting.html).
+- MySQL: execute `set global binlog_format=ROW;`. See [Setting The Binary Log Format](https://dev.mysql.com/doc/refman/8.0/en/binary-log-setting.html).
 
 ### Error message: Check whether mysql binlog_row_image is FULL
 
 - Amazon Aurora MySQL: `binlog_row_image` is not configurable. This precheck item does not fail for it. Make sure you are using Amazon Aurora MySQL writer instances to support both full and incremental data migration.
 - Amazon RDS: the process is similar to setting the `binlog_format` parameter. The only difference is that the parameter you need to change is `binlog_row_image` instead of `binlog_format`. See [Configuring MySQL binary logging](https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/USER_LogAccess.MySQL.BinaryFormat.html).
-- MySQL: `set global binlog_row_image = FULL;`. See [Binary Logging Options and Variables](https://dev.mysql.com/doc/refman/5.7/en/replication-options-binary-log.html#sysvar_binlog_row_image).
+- MySQL: `set global binlog_row_image = FULL;`. See [Binary Logging Options and Variables](https://dev.mysql.com/doc/refman/8.0/en/replication-options-binary-log.html#sysvar_binlog_row_image).
 
 ### Error message: Check whether migrated dbs are in binlog_do_db/binlog_ignore_db
 
 Make sure that binlog has been enabled in the upstream database. See [Check whether mysql binlog is enabled](#error-message-check-whether-mysql-binlog-is-enabled). After that, resolve the issue according to the message you get:
 
-- If the message is similar to `These dbs xxx are not in binlog_do_db xxx`, make sure all the databases that you want to migrate are in the list. See [--binlog-do-db=db_name](https://dev.mysql.com/doc/refman/5.7/en/replication-options-binary-log.html#option_mysqld_binlog-do-db).
-- If the message is similar to `These dbs xxx are in binlog_ignore_db xxx`, make sure all the databases that you want to migrate are not in the ignore list. See [--binlog-ignore-db=db_name](https://dev.mysql.com/doc/refman/5.7/en/replication-options-binary-log.html#option_mysqld_binlog-ignore-db).
+- If the message is similar to `These dbs xxx are not in binlog_do_db xxx`, make sure all the databases that you want to migrate are in the list. See [--binlog-do-db=db_name](https://dev.mysql.com/doc/refman/8.0/en/replication-options-binary-log.html#option_mysqld_binlog-do-db).
+- If the message is similar to `These dbs xxx are in binlog_ignore_db xxx`, make sure all the databases that you want to migrate are not in the ignore list. See [--binlog-ignore-db=db_name](https://dev.mysql.com/doc/refman/8.0/en/replication-options-binary-log.html#option_mysqld_binlog-ignore-db).
 
 For Amazon Aurora MySQL, this precheck item does not fail for it. Make sure you are using Amazon Aurora MySQL writer instances to support both full and incremental data migration.
 
@@ -54,7 +54,7 @@ If the error occurs in the upstream database, set `max_connections` as follows:
 
 - Amazon Aurora MySQL: the process is similar to setting the `binlog_format`. The only difference is that the parameter you change is `max_connections` instead of `binlog_format`. See [How do I turn on binary logging for my Amazon Aurora MySQL-Compatible cluster](https://aws.amazon.com/premiumsupport/knowledge-center/enable-binary-logging-aurora/?nc1=h_ls).
 - Amazon RDS: the process is similar to setting the `binlog_format`. The only difference is that the parameter you change is `max_connections` instead of `binlog_format`.  See [Configuring MySQL binary logging](https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/USER_LogAccess.MySQL.BinaryFormat.html).
-- MySQL: configure `max_connections` following the document [max_connections](https://dev.mysql.com/doc/refman/5.7/en/server-system-variables.html#sysvar_max_connections).
+- MySQL: configure `max_connections` following the document [max_connections](https://dev.mysql.com/doc/refman/8.0/en/server-system-variables.html#sysvar_max_connections).
 
 If the error occurs in the TiDB Cloud cluster, configure `max_connections` following the document [max_connections](https://docs.pingcap.com/tidb/stable/system-variables#max_connections).
 

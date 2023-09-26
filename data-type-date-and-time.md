@@ -6,7 +6,7 @@ aliases: ['/docs/dev/data-type-date-and-time/','/docs/dev/reference/sql/data-typ
 
 # Date and Time Types
 
-TiDB supports all MySQL date and time data types to store temporal values: [`DATE`](#date-type), [`TIME`](#time-type), [`DATETIME`](#datetime-type), [`TIMESTAMP`](#timestamp-type), and [`YEAR`](#year-type). For more information, see [Date and Time Data Types in MySQL](https://dev.mysql.com/doc/refman/5.7/en/date-and-time-types.html).
+TiDB supports all MySQL date and time data types to store temporal values: [`DATE`](#date-type), [`TIME`](#time-type), [`DATETIME`](#datetime-type), [`TIMESTAMP`](#timestamp-type), and [`YEAR`](#year-type). For more information, see [Date and Time Data Types in MySQL](https://dev.mysql.com/doc/refman/8.0/en/date-and-time-types.html).
 
 Each of these types has its range of valid values, and uses a zero value to indicate that it is an invalid value. In addition, the `TIMESTAMP` and `DATETIME` types can automatically generate new time values on modification.
 
