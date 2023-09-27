@@ -26,7 +26,7 @@ After installing TiUP, you can use `tiup ctl:v<CLUSTER_VERSION> tidb` command to
 
 ### Compile from source code
 
-- Compilation environment requirement: [Go](https://golang.org/) 1.20 or later
+- Compilation environment requirement: [Go](https://golang.org/) 1.21 or later
 - Compilation procedures: Go to the root directory of the [TiDB Control project](https://github.com/pingcap/tidb-ctl), use the `make` command to compile, and generate `tidb-ctl`.
 - Compilation documentation: you can find the help files in the `doc` directory; if the help files are lost or you want to update them, use the `make doc` command to generate the help files.
 

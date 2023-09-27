@@ -10,7 +10,7 @@ PD Recover is a disaster recovery tool of PD, used to recover the PD cluster whi
 
 ## Compile from source code
 
-+ [Go](https://golang.org/) 1.20 or later is required because the Go modules are used.
++ [Go](https://golang.org/) 1.21 or later is required because the Go modules are used.
 + In the root directory of the [PD project](https://github.com/pingcap/pd), use the `make pd-recover` command to compile and generate `bin/pd-recover`.
 
 > **Note:**
