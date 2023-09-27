@@ -74,7 +74,6 @@ mysql> SHOW WARNINGS;
 2 rows in set (0.00 sec)
 ```
 
-
 另外，你也可以通过 `LOCK STATS` 语句锁定分区的统计信息。用例如下：
 
 创建分区表 `t`，插入一些数据，在未锁定分区 `p1` 的统计信息的情况下成功执行 `ANALYZE` 语句。
