@@ -16,20 +16,20 @@ TiDB 版本：7.4.0
 <table>
 <thead>
   <tr>
-    <th>Category</th>
-    <th>Feature</th>
-    <th>Description</th>
+    <th>分类</th>
+    <th>功能</th>
+    <th>描述</th>
   </tr>
 </thead>
 <tbody>
   <tr>
-    <td>Scalability and Performance</td>
+    <td>可扩展性与性能</td>
     <td>Enhance the performance for adding several indexes of a table in a single ALTER statement (experimental) <!--Frank, tw@ran-huang--></td>
     <td>From v6.2 the user can add several indexes of a table in a single ALTER statement. However, the performance is the same as running two single add index DDL statements x, y, which used to take x-time +y-time, they now take significantly less.</td>
     </td>
   </tr>
   <tr>
-    <td rowspan="3">Reliability and Availability</td>
+    <td rowspan="3">稳定性与高可用</td>
     <td>Improving the performance and stability of 'Import into' and 'Add Index' operations via `global sorting` <!--Frank, tw@ran-huang--></td>
     <td>Before v7.4.0, tasks like ADD INDEX or IMPORT INTO in the distributed parallel execution framework required TiDB nodes to allocate local disk space for sorting data before importing it into TiKV. This approach, involving partial and localized sorting, often led to data overlaps, increasing TiKV's resource consumption and lower performance and stability. With the Global Sorting feature in v7.4.0, data is temporarily stored in S3 for global sorting. Then the data is imported into TiKV in an orderly, eliminating the need for TiKV to consume extra resources on compactions. This significantly enhances the performance and stability of operations like IMPORT INTO and ADD INDEX.</td>
   </tr>
@@ -71,9 +71,9 @@ In this version, TiDB partition management adds:
     <td> Prior to v7.4, TiDB resource control can not manage resource of TiFlash. In v7.4, TiFlash can manage resource better, and improving the overall resource management capabilities of TiDB. </td>
   </tr>
   <tr>
-    <td>DB Operations and Observability</td>
-    <td>Specify the respective TiDB nodes to execute the 'IMPORT INTO' and 'ADD INDEX' SQL statements. <!--Frank, tw@hfxsd--></td>
-    <td>You have the flexibility to specify whether to execute 'IMPORT INTO' or 'ADD INDEX' SQL statements on some of the existing TiDB nodes or newly added TiDB nodes. This approach enables resource isolation from the rest of the TiDB nodes, preventing any impact on business operations while ensuring optimal performance for executing 'IMPORT INTO' or 'ADD INDEX' SQL statements.</td>
+    <td>数据库管理与可观测性</td>
+    <td>选择适用的 TiDB 节点来执行并行的 `ADD INDEX` 或 `IMPORT INTO` SQL 语句（实验特性）<!--Frank, tw@hfxsd--></td>
+    <td>你可以选择在现有 TiDB 节点、或者新增 TiDB 节点执行 `ADD INDEX` 和 `IMPORT INTO` SQL 语句。该方法可以实现与其他 TiDB 节点的资源隔离，确保在执行上述语句时的最佳性能，并避免对已有业务造成性能影响。</td>
   </tr>
 </tbody>
 </table>
