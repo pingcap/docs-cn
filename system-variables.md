@@ -419,6 +419,20 @@ mysql> SELECT * FROM t1;
 - 服务器和客户端建立连接时，这个变量用于设置服务器对外通告的默认身份验证方式。如要了解该变量的其他可选值，参见[可用的身份验证插件](/security-compatibility-with-mysql.md#可用的身份验证插件)。
 - 若要在用户登录时使用 `tidb_sm3_password` 插件，需要使用 [TiDB-JDBC](https://github.com/pingcap/mysql-connector-j/tree/release/8.0-sm3) 进行连接。
 
+### `default_collation_for_utf8mb4` <span class="version-mark">从 v7.4.0 版本开始引入</span>
+
+- 作用域：GLOBAL | SESSION
+- 是否持久化到集群：是
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：否
+- 类型：字符串
+- 默认值：`utf8mb4_bin`
+- 可选值：`utf8mb4_bin`、`utf8mb4_general_ci`、`utf8mb4_0900_ai_ci`
+- 该变量用于设置 utf8mb4 字符集的默认[排序规则](/character-set-and-collation.md)。它会影响以下语句的行为：
+    - [`SHOW COLLATION`](/sql-statements/sql-statement-show-collation.md) 和 [`SHOW CHARACTER SET`](/sql-statements/sql-statement-show-character-set.md) 语句显示的默认排序规则。
+    - [`CREATE TABLE`](/sql-statements/sql-statement-create-table.md) 和 [`ALTER TABLE`](/sql-statements/sql-statement-alter-table.md) 语句中对表或列使用 `CHARACTER SET` 语法明确指定 utf8mb4 字符集而未指定排序规则时，将使用该变量指定的排序规则。不影响未使用 `CHARACTER SET` 语法时的行为。
+    - [`CREATE DATABASE`](/sql-statements/sql-statement-create-database.md) 和 [`ALTER DATABASE`](/sql-statements/sql-statement-alter-database.md) 语句中使用 `CHARACTER SET` 语法明确指定 utf8mb4 字符集而未指定排序规则时，将使用该变量指定的排序规则。不影响未使用 `CHARACTER SET` 语法时的行为。
+    - 任何使用 `_utf8mb4'string'` 形式的字面量在未使用 `COLLATE` 语法指定排序规则时，将使用该变量指定的排序规则。
+
 ### `default_password_lifetime` <span class="version-mark">从 v6.5.0 版本开始引入</span>
 
 - 作用域：GLOBAL
