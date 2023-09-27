@@ -88,7 +88,7 @@ TiFlash 在 v6.2.0 将数据格式升级到 V3 版本，因此，从 v5.x 或 v6
 
 在 TiFlash 升级到 v7.3 并且使用了 V3 版本的 DTFile 后，如需回退到之前的 TiFlash 版本，可以通过 DTTool 离线将 DTFile 重新写回 V2 版本，详见 [DTTool 迁移工具](/tiflash/tiflash-command-line-flags.md#dttool-migrate)。
 
-## 从 v6.x 或 v7.x 升级至 v7.4
+## 从 v6.x 或 v7.x 升级至 v7.4 或以上版本
 
 从 v7.4 开始，为了减少数据整理时产生的读、写放大，PageStorage V3 数据整理时逻辑进行了优化，导致底层部分存储文件名发生改动，因此升级到 v7.4 后，不支持原地降级到之前的版本。
 
