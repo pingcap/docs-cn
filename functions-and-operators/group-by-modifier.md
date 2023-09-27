@@ -86,7 +86,7 @@ SELECT year, month, SUM(profit) AS profit from bank GROUP BY year, month WITH RO
 6 rows in set (0.025 sec)
 ```
 
-以上结果包含了按照年份、月份、以及整体所有维度的聚合数据。其中，未出现 `NULL` 值的行表示该行 `profit` 是按照年份和月份分组计算的结果，`month` 列的 `NULL` 值表示该行 `profit` 是按照月份聚合计算的结果，`year` 列的 `NULL` 值表示该行 `profit` 是按照年份聚合计算的结果。
+以上结果包含了按照年份和月份、按照年份、以及整体所有维度的聚合数据。其中，未出现 `NULL` 值的行表示该行 `profit` 是同时按照年份和月份分组计算的结果，`month` 列的 `NULL` 值表示该行 `profit` 是按照该年份的所有月份聚合计算的结果，`year` 列的 `NULL` 值表示该行 `profit` 是按照所有年份聚合计算的结果。
 
 具体来说：
 
