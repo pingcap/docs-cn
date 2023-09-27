@@ -92,7 +92,6 @@ cdc cli changefeed query --server=http://10.0.10.25:8300 --changefeed-id=simple-
     "sort-dir": ".",
     "config": {
       "case-sensitive": true,
-      "enable-old-value": false,
       "filter": {
         "rules": [
           "*.*"
@@ -256,18 +255,6 @@ cdc cli changefeed resume -c test-cf --server=http://10.0.10.25:8300
 - `resolved-ts` 代表当前 Processor 中已经排序数据的最大 TSO。
 - `checkpoint-ts` 代表当前 Processor 已经成功写入下游的事务的最大 TSO。
 
-## 输出行变更的历史值 <span class="version-mark">从 v4.0.5 版本开始引入</span>
-
-默认配置下，同步任务输出的 TiCDC Open Protocol 行变更数据只包含变更后的值，不包含变更前行的值，因此该输出数据不满足 TiCDC Open Protocol 的消费端使用行变更历史值的需求。
-
-从 v4.0.5 开始，TiCDC 支持输出行变更数据的历史值。若要开启该特性，需要在 changefeed 的配置文件的根级别指定以下配置：
-
-```toml
-enable-old-value = true
-```
-
-从 v5.0 开始默认启用该特性，开启该特性后 TiCDC Open Protocol 的输出格式参考 [TiCDC 开放数据协议 - Row Changed Event](/ticdc/ticdc-open-protocol.md#row-changed-event)。
-
 ## 同步启用了 TiDB 新的 Collation 框架的表
 
 从 v4.0.15、v5.0.4、v5.1.1 和 v5.2.0 开始，TiCDC 支持同步启用了 TiDB [新的 Collation 框架](/character-set-and-collation.md#新框架下的排序规则支持)的表。
@@ -277,7 +264,6 @@ enable-old-value = true
 从 v4.0.8 开始，TiCDC 支持通过修改任务配置来同步没有有效索引的表。若要开启该特性，需要在 `changefeed` 配置文件的根级别进行如下指定：
 
 ```toml
-enable-old-value = true
 force-replicate = true
 ```
 
