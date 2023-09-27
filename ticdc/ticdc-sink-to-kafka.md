@@ -311,7 +311,7 @@ large-message-handle-compression = "none"
 该功能和 Kafka producer 的压缩功能不同：
 
 * `large-message-handle-compression` 中指定的压缩算法，它启用的是对单条 Kafka 消息进行压缩，并且压缩是在与消息大小限制参数比较之前进行。
-* 用户可以在 `sink-uri` 中配置压缩算法，它所启用的压缩功能应用在整个发送数据请求，其中包含多条 Kafka 消息，并且是在和消息大小限制参数比较之后进行的。
+* 用户可以在 `sink-uri` 中配置压缩算法，它所启用的压缩功能应用在整个发送数据请求，其中包含多条 Kafka 消息，并且压缩是在和消息大小限制参数比较之后进行的。
 
 开启了 `large-message-handle-compression` 之后，消费者收到的消息经过特定压缩协议编码，消费者应用程序需要使用指定的压缩协议进行数据解码。
 
@@ -387,6 +387,7 @@ Kafka 消费者收到消息之后，首先检查 `onlyHandleKey` 字段。如果
 # 该参数从 v7.3.0 开始引入
 # 默认为空，即消息超过大小限制后，同步任务失败
 # 设置为 "handle-key-only" 时，如果消息超过大小，data 字段内容只发送 handle key；如果依旧超过大小，同步任务失败
+# 设置为 `claim-check` 时，将该条消息发送到外部存储服务
 large-message-handle-option = "claim-check"
 claim-check-storage-uri = "s3://claim-check-bucket"
 ```
