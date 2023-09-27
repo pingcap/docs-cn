@@ -234,7 +234,7 @@ dispatchers = [
 - 对于匹配了 matcher 规则的表，按照对应的 topic 表达式指定的策略进行分发。例如，表 `test3.aa` 会按照 `Topic 表达式 2` 分发，表 `test5.aa` 会按照 `Topic 表达式 3` 分发。
 - 对于匹配了多个 matcher 规则的表，以靠前的 matcher 对应的 topic 表达式为准。例如，表 `test1.aa` 会按照 `Topic 表达式 1` 分发。
 - 对于没有匹配任何 matcher 的表，将对应的数据变更事件发送到 `--sink-uri` 中指定的默认 topic 中。例如，表 `test10.aa` 会发送到默认 topic。
-- 对于匹配了 matcher 规则但是没有指定 topic 分发器的表，将对应的数据变更发送到 `--sink-uri` 中指定的默认 topic 中。例如，表 `test9.abc` 会发送到默认 topic。
+- 对于匹配了 matcher 规则但是没有指定 topic 分发器的表，将对应的数据变更发送到 `--sink-uri` 中指定的默认 topic 中。例如，表 `test6.abc` 会发送到默认 topic。
 
 ### Topic 分发器
 
