@@ -4900,15 +4900,11 @@ For details, see [Identify Slow Queries](/identify-slow-queries.md).
 
 ### tidb_stats_cache_mem_quota <span class="version-mark">New in v6.1.0</span>
 
-> **Warning:**
->
-> This variable is an experimental feature. It is not recommended to use it in production environments.
-
 - Scope: GLOBAL
 - Persists to cluster: Yes
 - Applies to hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value): No
 - Type: Integer
-- Default value: `0`
+- Default value: `0`, which means that the memory quota is automatically set to half of the total memory size of the TiDB instance.
 - Range: `[0, 1099511627776]`
 - This variable sets the memory quota for the TiDB statistics cache.
 

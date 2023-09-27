@@ -565,12 +565,8 @@ Configuration items related to performance.
 
 ### `enable-stats-cache-mem-quota` <span class="version-mark">New in v6.1.0</span>
 
-> **Warning:**
->
-> This variable is an experimental feature. It is not recommended to use it in production environments.
-
 + Controls whether to enable the memory quota for the statistics cache.
-+ Default value: `false`
++ Default value: `true`
 
 ### `stats-load-concurrency` <span class="version-mark">New in v5.4.0</span>
 
