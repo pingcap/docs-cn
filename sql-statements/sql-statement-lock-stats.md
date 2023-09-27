@@ -88,7 +88,7 @@ Query OK, 4 rows affected (0.00 sec)
 Records: 4  Duplicates: 0  Warnings: 0
 
 mysql> ANALYZE TABLE t;
-Query OK, 0 rows affected, 1 warning (0.02 sec)
+Query OK, 0 rows affected, 6 warning (0.02 sec)
 
 mysql> SHOW WARNINGS;
 +---------+------+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
