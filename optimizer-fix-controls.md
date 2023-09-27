@@ -57,3 +57,10 @@ SET SESSION tidb_opt_fix_control = '44262:ON,44389:ON';
 - In some scenarios, when the `Probe` side of an `IndexJoin` operator contains a `Selection` operator, TiDB severely overestimates the row count of `IndexScan`. This might cause suboptimal query plans to be selected instead of `IndexJoin`.
 - To mitigate this issue, TiDB has introduced an improvement. However, due to potential query plan fallback risks, this improvement is disabled by default.
 - This variable controls whether to enable the preceding improvement.
+
+### [`45132`](https://github.com/pingcap/tidb/issues/45132) <span class="version-mark">New in v7.4.0</span>
+
+- Default value: `1000`
+- Possible values: `[0, 2147483647]`
+- This variable sets the threshold for the optimizer's heuristic strategy to select access paths. If the estimated rows for an access path (such as `Index_A`) is much smaller than that of other access paths (default `1000` times), the optimizer skips the cost comparison and directly selects `Index_A`.
+- `0` means to disable this heuristic strategy.

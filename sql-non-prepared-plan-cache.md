@@ -5,11 +5,9 @@ summary: Learn about the principle, usage, and examples of the SQL non-prepared 
 
 # SQL Non-Prepared Execution Plan Cache
 
-> **Warning:**
->
-> The non-prepared execution plan cache is an experimental feature. It is not recommended that you use it in the production environment. This feature might be changed or removed without prior notice. If you find a bug, you can report an [issue](https://github.com/pingcap/tidb/issues) on GitHub.
-
 TiDB supports execution plan caching for some non-`PREPARE` statements, similar to the [`Prepare`/`Execute` statements](/sql-prepared-plan-cache.md). This feature allows these statements to skip the optimization phase and improve performance.
+
+Enabling the non-prepared plan cache might incur additional memory and CPU overhead and might not be suitable for all situations. To determine whether to enable this feature in your scenario, refer to the [Performance benefits](#performance-benefits) and [Memory monitoring](#monitoring) sections.
 
 ## Principle
 
@@ -97,7 +95,9 @@ After you enable this feature, the optimizer quickly evaluates the query. If it 
 
 ## Performance benefits
 
-In internal tests, enabling the non-prepared plan cache feature can achieve significant performance benefits in most TP scenarios. However, it also introduces some additional performance overhead, including determining whether the query is supported and parameterizing the query. If this feature cannot support the majority of queries in your workload, enabling it might actually adversely affect performance.
+In internal tests, enabling the non-prepared plan cache feature can achieve significant performance benefits in most TP scenarios. For example, a performance improvement of about 4% in TPC-C tests, over 10% in some banking workloads, and 15% in Sysbench RangeScan.
+
+However, this feature also introduces some additional memory and CPU overhead, including determining whether the query is supported, parameterizing the query, and searching for a plan in the cache. If the cache cannot hit the majority of queries in your workload, enabling it might actually adversely affect performance.
 
 In this case, you need to observe the `non-prepared` metric in the **Queries Using Plan Cache OPS** panel and the `non-prepared-unsupported` metric in the **Plan Cache Miss OPS** panel on Grafana. If most queries are not supported and only a few can hit the plan cache, you can disable this feature.
 
