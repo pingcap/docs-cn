@@ -13,7 +13,70 @@ TiDB 版本：7.4.0
 
 在 7.4.0 版本中，你可以获得以下关键特性：
 
-<!-- to be added -->
+<table>
+<thead>
+  <tr>
+    <th>Category</th>
+    <th>Feature</th>
+    <th>Description</th>
+  </tr>
+</thead>
+<tbody>
+  <tr>
+    <td>Scalability and Performance</td>
+    <td>Enhance the performance for adding several indexes of a table in a single ALTER statement (experimental) <!--Frank, tw@ran-huang--></td>
+    <td>From v6.2 the user can add several indexes of a table in a single ALTER statement. However, the performance is the same as running two single add index DDL statements x, y, which used to take x-time +y-time, they now take significantly less.</td>
+    </td>
+  </tr>
+  <tr>
+    <td rowspan="3">Reliability and Availability</td>
+    <td>Improving the performance and stability of 'Import into' and 'Add Index' operations via `global sorting` <!--Frank, tw@ran-huang--></td>
+    <td>Before v7.4.0, tasks like ADD INDEX or IMPORT INTO in the distributed parallel execution framework required TiDB nodes to allocate local disk space for sorting data before importing it into TiKV. This approach, involving partial and localized sorting, often led to data overlaps, increasing TiKV's resource consumption and lower performance and stability. With the Global Sorting feature in v7.4.0, data is temporarily stored in S3 for global sorting. Then the data is imported into TiKV in an orderly, eliminating the need for TiKV to consume extra resources on compactions. This significantly enhances the performance and stability of operations like IMPORT INTO and ADD INDEX.</td>
+  </tr>
+  <tr>
+    <td>Resource Control for background jobs (experimental) <!--Roger, tw@Oreoxmt--></td>
+    <td>v7.1 introduced Resource Control to mitigate resource and storage access interference between workloads. v7.4 applies this contorl to background tasks as well. Now the resource produced by background tasks can be identified and managed by resource control. The first to realize this benefit are: Auto-analyze, Backup & Recovery, Load Data, and Online DDL. This should apply to all background tasks eventually. </td>
+  </tr>
+  <tr>
+    <td>TiFlash supports storage-computing separation and S3 <!--Zhang Ye, tw@qiancai--></td>
+    <td>TiFlash introduces a cloud-native architecture as an option:
+      <ul>
+        <li>Disaggregates TiFlash's compute and storage, which is a milestone for elastic HTAP resource utilization.</li>
+        <li>Introduces S3-based storage engine, which can provide shared storage at a lower cost.</li>
+      </ul>
+    </td>
+  </tr>
+  <tr>
+    <td rowspan="4">SQL</td>
+    <td>More complete partition management <!--Zhang Ye, tw@qiancai--></td>
+    <td>Prior to v7.4, TiDB supported truncate partition, exchange partition, add/drop/reorganize partition on Range/List Partitioning, and add/coalesce partition on Hash/Key partitioning
+In this version, TiDB partition management adds:
+      <ul>
+        <li>Remove partition</li>
+        <li>Partitioning existing non-partitioned tables</li>
+        <li>Modifying existing partition types on tables</li>
+      </ul>
+    </td>
+  </tr>
+  <tr>
+    <td>MySQL 8.0 compatibility: Include collation utf8mb4_0900_ai_ci <!--Roger, tw@Oreoxmt--></td>
+    <td> One of remarkable change in MySQL 8.0: the default characterset is utf8mb4, while the default collation of utf8mb4 is utf8mb4_0900_ai_ci. If the database was created on MySQL 8.0 with default collection, it can be migrated or replicated to TiDB smoothly. This was the last piece waiting to call TiDB generally MySQL 8.0 compatible.</td>
+  </tr>
+  <tr>
+    <td>TiDB&TiFlash support modifier ROLLUP and function GROUPING() <!--Zhang Ye, tw@qiancai--></td>
+    <td> ROLLUP modifier can cause summary output to include extra rows that represent higher-level summary operations, thus enables you to answer questions at multiple levels of analysis with a single query. ROLLUP modifier is commonly used in data analysis and is used to summarize data in multiple dimensions. </td>
+  </tr>
+  <tr>
+    <td>TiFlash supports resource control <!--Zhang Ye, tw@Oreoxmt --></td>
+    <td> Prior to v7.4, TiDB resource control can not manage resource of TiFlash. In v7.4, TiFlash can manage resource better, and improving the overall resource management capabilities of TiDB. </td>
+  </tr>
+  <tr>
+    <td>DB Operations and Observability</td>
+    <td>Specify the respective TiDB nodes to execute the 'IMPORT INTO' and 'ADD INDEX' SQL statements. <!--Frank, tw@hfxsd--></td>
+    <td>You have the flexibility to specify whether to execute 'IMPORT INTO' or 'ADD INDEX' SQL statements on some of the existing TiDB nodes or newly added TiDB nodes. This approach enables resource isolation from the rest of the TiDB nodes, preventing any impact on business operations while ensuring optimal performance for executing 'IMPORT INTO' or 'ADD INDEX' SQL statements.</td>
+  </tr>
+</tbody>
+</table>
 
 ## 功能详情
 
