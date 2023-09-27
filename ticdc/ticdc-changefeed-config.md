@@ -122,6 +122,8 @@ write-key-threshold = 0
 # Since v6.1.0, TiDB supports two types of event dispatchers: partition and topic. For more information, see <partition and topic link>.
 # The matching syntax of matcher is the same as the filter rule syntax. For details about the matcher rules, see <>.
 # Note: This configuration item only takes effect if the downstream is MQ.
+# Note: When the downstream MQ is Pulsar, if the routing rule for `partition` is not specified as any of `ts`, `index-value`, `table`, or `default`, each Pulsar message will be routed using the string you set as the key.
+# For example, if you specify the routing rule for a matcher as the string `code`, then all Pulsar messages that match that matcher will be routed with `code` as the key.
 # dispatchers = [
 #     {matcher = ['test1.*', 'test2.*'], topic = "Topic expression 1", partition = "ts" },
 #     {matcher = ['test3.*', 'test4.*'], topic = "Topic expression 2", partition = "index-value" },
@@ -131,8 +133,9 @@ write-key-threshold = 0
 
 # The protocol configuration item specifies the protocol format used for encoding messages.
 # When the downstream is Kafka, the protocol can only be canal-json, avro, or open-protocol.
+# When the downstream is Pulsar, the protocol can only be canal-json.
 # When the downstream is a storage service, the protocol can only be canal-json or csv.
-# Note: This configuration item only takes effect if the downstream is Kafka or a storage service.
+# Note: This configuration item only takes effect if the downstream is Kafka, Pulsar, or a storage service.
 # protocol = "canal-json"
 
 # Starting from v7.2.0, the `delete-only-output-handle-key-columns` parameter specifies the output of DELETE events. This parameter is valid only for canal-json and open-protocol protocols.
@@ -224,4 +227,45 @@ sasl-oauth-scopes = ["producer.kafka", "consumer.kafka"]
 sasl-oauth-grant-type = "client_credentials"
 # The audience in the Kafka SASL OAUTHBEARER authentication. The default value is empty. This parameter is optional when the OAUTHBEARER authentication is used.
 sasl-oauth-audience = "kafka"
+
+# The following parameters take effect only when the downstream is Pulsar.
+[sink.pulsar-config]
+# Authentication on the Pulsar server is done using a token. Specify the value of the token.
+authentication-token = "xxxxxxxxxxxxx"
+# When you use a token for Pulsar server authentication, specify the path to the file where the token is located.
+token-from-file="/data/pulsar/token-file.txt"
+# Pulsar uses the basic account and password to authenticate the identity. Specify the account.
+basic-user-name="root"
+# Pulsar uses the basic account and password to authenticate the identity. Specify the password.
+basic-password="password"
+# The certificate path for Pulsar TLS encrypted authentication.
+auth-tls-certificate-path="/data/pulsar/certificate"
+# The private key path for Pulsar TLS encrypted authentication.
+auth-tls-private-key-path="/data/pulsar/certificate.key"
+# Path to trusted certificate file of the Pulsar TLS encrypted authentication.
+tls-trust-certs-file-path="/data/pulsar/tls-trust-certs-file"
+# Pulsar oauth2 issuer-url. For more information, see the Pulsar website: https://pulsar.apache.org/docs/2.10.x/client-libraries-go/#tls-encryption-and-authentication
+oauth2.oauth2-issuer-url="https://xxxx.auth0.com"
+# Pulsar oauth2 audience
+oauth2.oauth2-audience="https://xxxx.auth0.com/api/v2/"
+# Pulsar oauth2 private-key
+oauth2.oauth2-private-key="/data/pulsar/privateKey"
+# Pulsar oauth2 client-id
+oauth2.oauth2-client-id="0Xx...Yyxeny"
+# Pulsar oauth2 oauth2-scope
+oauth2.oauth2-scope="xxxx"
+# The number of cached Pulsar producers in TiCDC. The value is 10240 by default. Each Pulsar producer corresponds to one topic. If the number of topics you need to replicate is larger than the default value, you need to increase the number.
+pulsar-producer-cache-size=10240
+# Pulsar data compression method. No compression is used by default. Optional values are "lz4", "zlib", and "zstd".
+compression-type=""
+# The timeout for the Pulsar client to establish a TCP connection with the server. The value is 5 seconds by default.
+connection-timeout=5
+# The timeout for Pulsar clients to initiate operations such as creating and subscribing to a topic. The value is 30 seconds by default.
+operation-timeout=30
+# The maximum number of messages in a single batch for a Pulsar producer to send. The value is 1000 by default.
+batching-max-messages=1000
+# The interval at which Pulsar producer messages are saved for batching. The value is 10 milliseconds by default.
+batching-max-publish-delay=10
+# The timeout for a Pulsar producer to send a message. The value is 30 seconds by default.
+send-timeout=30
 ```
