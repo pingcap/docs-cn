@@ -74,7 +74,6 @@ mysql> SHOW WARNINGS;
 2 rows in set (0.00 sec)
 ```
 
-解锁统计信息请参考 [UNLOCK STATS](/sql-statements/sql-statement-unlock-stats.md)。
 
 另外，你也可以通过 `LOCK STATS` 语句锁定分区的统计信息。用例如下：
 
