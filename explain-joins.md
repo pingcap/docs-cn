@@ -39,7 +39,7 @@ ANALYZE TABLE t1, t2;
 
 ## Index Join
 
-If the number of estimated rows that need to be joined is small (typically less than 10000 rows), it is preferable to use the index join method. This method of join works similar to the primary method of join used in MySQL. In the following example, the operator `├─TableReader_28(Build)` first reads the table `t1`. For each row that matches, TiDB will probe the table `t2`:
+If the number of estimated rows that need to be joined is small (typically less than 10000 rows), it is preferable to use the index join method. This method of join works similar to the primary method of join used in MySQL. In the following example, the operator `├─TableReader_29(Build)` first reads the table `t1`. For each row that matches, TiDB will probe the table `t2`:
 
 > **Note:**
 >
