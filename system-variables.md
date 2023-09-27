@@ -449,6 +449,20 @@ For more possible values of this variable, see [Authentication plugin status](/s
 
 </CustomContent>
 
+### default_collation_for_utf8mb4 <span class="version-mark">New in v7.4.0</span>
+
+- Scope: GLOBAL | SESSION
+- Persists to cluster: Yes
+- Applies to hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value): No
+- Type: String
+- Default value: `utf8mb4_bin`
+- Value options: `utf8mb4_bin`, `utf8mb4_general_ci`, `utf8mb4_0900_ai_ci`
+- This variable is used to set the default [collation](/character-set-and-collation.md) for the `utf8mb4` character set. It affects the behavior of the following statements:
+    - The default collation displayed in the [`SHOW COLLATION`](/sql-statements/sql-statement-show-collation.md) and [`SHOW CHARACTER SET`](/sql-statements/sql-statement-show-character-set.md) statements.
+    - If [`CREATE TABLE`](/sql-statements/sql-statement-create-table.md) and [`ALTER TABLE`](/sql-statements/sql-statement-alter-table.md) statements contain the `CHARACTER SET utf8mb4` clause against a table or a column without specifying a collation, the collation specified by this variable is used. This does not affect the behavior when `CHARACTER SET` clause is not used.
+    - If [`CREATE DATABASE`](/sql-statements/sql-statement-create-database.md) and [`ALTER DATABASE`](/sql-statements/sql-statement-alter-database.md) statements contain `CHARACTER SET utf8mb4` clause without specifying a collation, the collation specified by this variable is used. This does not affect the behavior when `CHARACTER SET` clause is not used.
+    - If the `COLLATE` clause is not used, any literal string in the format of `_utf8mb4'string'` uses the collation specified by this variable.
+
 ### default_password_lifetime <span class="version-mark">New in v6.5.0</span>
 
 - Scope: GLOBAL
