@@ -47,7 +47,7 @@ BACKUP DATABASE * TO 's3://bucket-name/prefix' SEND_CREDENTIALS_TO_TIKV = FALSE;
 
     - `access-key`：访问密钥
     - `secret-access-key`：秘密访问密钥
-    - `session-token`：会话令牌
+    - `session-token`：临时会话令牌（BR 尚不支持该参数）
     - `use-accelerate-endpoint`：是否在 Amazon S3 上使用加速端点，默认为 `false`
     - `endpoint`：Amazon S3 兼容服务自定义端点的 URL，例如 `<https://s3.example.com/>`
     - `force-path-style`：使用路径类型 (path-style)，而不是虚拟托管类型 (virtual-hosted-style)，默认为 `true`
