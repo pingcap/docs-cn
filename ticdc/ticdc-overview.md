@@ -27,7 +27,7 @@ TiCDC has the following key capabilities:
 - Replicating incremental data from a TiDB cluster to a Kafka cluster. The recommended data format includes [Canal-JSON](/ticdc/ticdc-canal-json.md) and [Avro](/ticdc/ticdc-avro-protocol.md).
 - Replicating tables with the ability to filter databases, tables, DMLs, and DDLs.
 - High availability with no single point of failure, supporting dynamically adding and deleting TiCDC nodes.
-- Cluster management through [Open API](/ticdc/ticdc-open-api.md), including querying task status, dynamically modifying task configuration, and creating or deleting tasks.
+- Cluster management through [Open API](/ticdc/ticdc-open-api-v2.md), including querying task status, dynamically modifying task configuration, and creating or deleting tasks.
 
 ### Replication order
 

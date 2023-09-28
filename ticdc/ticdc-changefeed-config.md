@@ -118,6 +118,7 @@ region-threshold = 100000
 write-key-threshold = 0
 
 [sink]
+############ MQ sink configuration items ############
 # For the sink of MQ type, you can use dispatchers to configure the event dispatcher.
 # Since v6.1.0, TiDB supports two types of event dispatchers: partition and topic. For more information, see <partition and topic link>.
 # The matching syntax of matcher is the same as the filter rule syntax. For details about the matcher rules, see <>.
@@ -145,16 +146,6 @@ write-key-threshold = 0
 # The CSV protocol is not controlled by this parameter and always outputs all columns.
 delete-only-output-handle-key-columns = false
 
-# The following three configuration items are only used when you replicate data to storage sinks and can be ignored when replicating data to MQ or MySQL sinks.
-# Row terminator, used for separating two data change events. The default value is an empty string, which means "\r\n" is used.
-# terminator = ''
-# Date separator type used in the file directory. Value options are `none`, `year`, `month`, and `day`. `day` is the default value and means separating files by day. For more information, see <https://docs.pingcap.com/tidb/stable/ticdc-sink-to-cloud-storage#data-change-records>.
-# Note: This configuration item only takes effect if the downstream is a storage service.
-date-separator = 'day'
-# Whether to use partitions as the separation string. The default value is true, which means that partitions in a table are stored in separate directories. It is recommended that you keep the value as `true` to avoid potential data loss in downstream partitioned tables <https://github.com/pingcap/tiflow/issues/8724>. For usage examples, see <https://docs.pingcap.com/tidb/dev/ticdc-sink-to-cloud-storage#data-change-records)>.
-# Note: This configuration item only takes effect if the downstream is a storage service.
-enable-partition-separator = true
-
 # Schema registry URL.
 # Note: This configuration item only takes effect if the downstream is MQ.
 # schema-registry = "http://localhost:80801/subjects/{subject-name}/versions/{version-number}/schema"
@@ -173,6 +164,17 @@ enable-partition-separator = true
 # Note: This configuration item only applies to the MQ downstream using the open-protocol and canal-json.
 # The default value is false.
 # only-output-updated-columns = false
+
+############ Storage sink configuration items ############
+# The following three configuration items are only used when you replicate data to storage sinks and can be ignored when replicating data to MQ or MySQL sinks.
+# Row terminator, used for separating two data change events. The default value is an empty string, which means "\r\n" is used.
+# terminator = ''
+# Date separator type used in the file directory. Value options are `none`, `year`, `month`, and `day`. `day` is the default value and means separating files by day. For more information, see <https://docs.pingcap.com/tidb/stable/ticdc-sink-to-cloud-storage#data-change-records>.
+# Note: This configuration item only takes effect if the downstream is a storage service.
+date-separator = 'day'
+# Whether to use partitions as the separation string. The default value is true, which means that partitions in a table are stored in separate directories. It is recommended that you keep the value as `true` to avoid potential data loss in downstream partitioned tables <https://github.com/pingcap/tiflow/issues/8724>. For usage examples, see <https://docs.pingcap.com/tidb/dev/ticdc-sink-to-cloud-storage#data-change-records)>.
+# Note: This configuration item only takes effect if the downstream is a storage service.
+enable-partition-separator = true
 
 # Since v6.5.0, TiCDC supports saving data changes to storage services in CSV format. Ignore the following configurations if you replicate data to MQ or MySQL sinks.
 # [sink.csv]
