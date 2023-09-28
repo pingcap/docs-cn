@@ -49,7 +49,6 @@ cluster-id = "default"
 capture-session-ttl = 10 # 10s
 owner-flush-interval = 50000000 # 50 ms
 processor-flush-interval = 50000000 # 50 ms
-per-table-memory-quota = 10485760 # 10 MiB
 
 [log]
   error-output = "stderr"
