@@ -267,7 +267,6 @@ curl -X GET http://127.0.0.1:8300/api/v2/health
 | `case_sensitive`          | `BOOLEAN` 类型，过滤表名时大小写是否敏感，默认值为 `true`。（非必选）                                                |
 | `check_gc_safe_point`     | `BOOLEAN` 类型，是否检查同步任务的开始时间早于 GC 时间，默认值为 `true`。（非必选）                                               |
 | `consistent`              | Redo log 配置。（非必选）                                                                                   |
-| `enable_old_value`        | `BOOLEAN` 类型，是否输出 old value 值（即变更前的值），默认值为 `true`。（非必选）                                                                 |
 | `enable_sync_point`       | `BOOLEAN` 类型，是否开启 `sync point` 功能。（非必选）                                                             |
 | `filter`                  | filter 配置。（非必选）                                                                                     |
 | `force_replicate`         | `BOOLEAN` 类型，该值默认为 `false`，当指定为 `true` 时，同步任务会尝试强制同步没有唯一索引的表。（非必选）                                  |
@@ -350,7 +349,7 @@ curl -X GET http://127.0.0.1:8300/api/v2/health
 
 `sink.dispatchers`：对于 MQ 类的 Sink，可以通过该参数配置 event 分发器，支持以下分发器：`default`、`ts`、`rowid`、`table` 。分发规则如下：
 
-- `default`：有多个唯一索引（包括主键）时按照 table 模式分发；只有一个唯一索引（或主键）时按照 rowid 模式分发；如果开启了 old value 特性，按照 table 模式分发。
+- `default`：按照 table 分发。
 - `ts`：以行变更的 commitTs 做 Hash 计算并进行 event 分发。
 - `rowid`：以所选的 HandleKey 列名和列值做 Hash 计算并进行 event 分发。
 - `table`：以表的 schema 名和 table 名做 Hash 计算并进行 event 分发。

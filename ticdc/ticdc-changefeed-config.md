@@ -45,9 +45,6 @@ Info: {"upstream_id":7178706266519722477,"namespace":"default","id":"simple-repl
 # 该配置会同时影响 filter 和 sink 相关配置，默认为 true
 case-sensitive = true
 
-# 是否输出 old value，从 v4.0.5 开始支持，从 v5.0 开始默认为 true
-enable-old-value = true
-
 # 是否开启 Syncpoint 功能，从 v6.3.0 开始支持，该功能默认关闭。
 # 从 v6.4.0 开始，使用 Syncpoint 功能需要同步任务拥有下游集群的 SYSTEM_VARIABLES_ADMIN 或者 SUPER 权限。
 # 注意：该参数只有当下游为 TiDB 时，才会生效。
