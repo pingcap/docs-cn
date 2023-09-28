@@ -29,12 +29,7 @@ aliases: ['/docs-cn/dev/ticdc/troubleshoot-ticdc/','/docs-cn/dev/reference/tools
 cdc cli changefeed query --server=http://127.0.0.1:8300 --changefeed-id 28c43ffc-2316-4f4f-a70b-d1a7c59ba79f
 ```
 
-上述命令的输出中 `admin-job-type` 标志这个同步的任务的状态：
-
-- `0`: 任务进行中，没有被人为停止。
-- `1`: 任务暂停，停止任务后所有同步 `processor` 会结束退出，同步任务的配置和同步状态都会保留，可以从 `checkpoint-ts` 恢复任务。
-- `2`: 任务恢复，同步任务从 `checkpoint-ts` 继续同步。
-- `3`: 任务已删除，接口请求后会结束所有同步 `processor`，并清理同步任务配置信息。同步状态保留，只提供查询，没有其他实际功能。
+上述命令的输出中 `state` 标志这个同步的任务的状态，状态的值和含义参考 [TiCDC 同步任务状态](/ticdc/ticdc-changefeed-overview.md)。
 
 ### 如何处理 TiCDC 同步任务的中断？
 
