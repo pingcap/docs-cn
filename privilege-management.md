@@ -398,6 +398,14 @@ SELECT * FROM INFORMATION_SCHEMA.USER_PRIVILEGES WHERE grantee = "'root'@'%'";
 
 需要对所操作的表拥有 `INSERT` 和 `SELECT` 权限。
 
+### LOCK STATS
+
+需要对所操作的表拥有 `INSERT` 和 `SELECT` 权限。
+
+### UNLOCK STATS
+
+需要对所操作的表拥有 `INSERT` 和 `SELECT` 权限。
+
 ### SHOW
 
 `SHOW CREATE TABLE` 需要任意一种权限。
@@ -409,6 +417,8 @@ SELECT * FROM INFORMATION_SCHEMA.USER_PRIVILEGES WHERE grantee = "'root'@'%'";
 `SHOW PROCESSLIST` 需要 `SUPER` 权限来显示属于其他用户的连接。
 
 `SHOW IMPORT JOB` 需要 `SUPER` 权限来显示属于其他用户的任务，否则只能看到当前用户创建的任务。
+
+`SHOW STATS_LOCKED` 需要拥有 `mysql.stats_table_locked` 表的 `SELECT` 权限。
 
 ### CREATE ROLE/USER
 
