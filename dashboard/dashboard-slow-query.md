@@ -64,25 +64,68 @@ Click the **Expand** button to view the detailed information of an item. Click t
 
 ### Execution plans
 
-On TiDB Dashboard, you can view execution plans in two ways: Graph and text. Visual execution plans allow you to learn each operator of a statement and detailed information more intuitively. See [Understand the Query Execution Plan](/explain-overview.md) to learn how to read a execution plan.
+On TiDB Dashboard, you can view execution plans in three ways: table, text, and graph. To learn how to read an execution plan, see [Understand the query execution plan](/explain-overview.md).
 
-#### Visual execution plans
+#### Execution plan in table format
 
-The following figure shows a visual execution plan.
+The table format provides detailed information about the execution plan, which helps you quickly identify abnormal operator metrics and compare the status of different operators. The following figure shows an execution plan in table format:
 
-![Visual execution plan](/media/dashboard/dashboard-visual-plan-2.png)
+![Execution plan in table format](/media/dashboard/dashboard-table-plan.png)
+
+The table format displays similar information to the text format but provides more user-friendly interactions:
+
+- You can adjust the column width freely.
+- When content exceeds the column width, it is automatically truncated and a tooltip is shown for the full information.
+- If the execution plan is large, you can download it as a text file for local analysis.
+- You can hide and manage columns using the column picker.
+
+![Execution plan in table format - column picker](/media/dashboard/dashboard-table-plan-columnpicker.png)
+
+#### Execution plan in graph format
+
+The graph format is more suitable for viewing the execution plan tree of a complex SQL statement and understanding each operator and its corresponding content in detail. The following figure shows an execution plan in graph format:
+
+![Execution plan in graph format](/media/dashboard/dashboard-visual-plan-2.png)
 
 - The graph shows the execution from left to right, and from top to bottom.
 - Upper nodes are parent operators and lower nodes are child operators.
 - The color of the title bar indicates the component where the operator is executed: yellow stands for TiDB, blue stands for TiKV, and pink stands for TiFlash.
-- The title bar shows the operator name and the text shown below is the basic information of the operator. 
+- The title bar shows the operator name and the text shown below is the basic information of the operator.
 
 Click the node area, and the detailed operator information is displayed on the right sidebar.
 
-![Visual execution plan - sidebar](/media/dashboard/dashboard-visual-plan-popup.png)
+![Execution plan in graph format - sidebar](/media/dashboard/dashboard-visual-plan-popup.png)
 
 ### SQL execution details
 
-Click the corresponding tab titles to switch information of SQL executions.
+For basic information, execution time, Coprocessor read, transaction, and slow query of the SQL statement, you can click the corresponding tab titles to switch among different information.
 
 ![Show different execution information](/media/dashboard/dashboard-slow-queries-detail2-v620.png)
+
+#### Basic tab
+
+The basic information of a SQL execution includes the table names, index name, execution count, and total latency. The **Description** column provides detailed description of each field.
+
+![Basic information](/media/dashboard/dashboard-slow-queries-detail-plans-basic.png)
+
+#### Time tab
+
+Click the **Time** tab, and you can see how long each stage of the execution plan lasts.
+
+> **Note:**
+>
+> Because some operations might be performed in parallel within a single SQL statement, the cumulative duration of each stage might exceed the actual execution time of the SQL statement.
+
+![Execution time](/media/dashboard/dashboard-slow-queries-detail-plans-time.png)
+
+#### Coprocessor tab
+
+Click the **Coprocessor** tab, and you can see information related to Coprocessor read.
+
+![Coprocessor read](/media/dashboard/dashboard-slow-queries-detail-plans-cop-read.png)
+
+#### Transaction tab
+
+Click the **Transaction** tab, and you can see information related to execution plans and transactions, such as the average number of written keys or the maximum number of written keys.
+
+![Transaction](/media/dashboard/dashboard-slow-queries-detail-plans-transaction.png)

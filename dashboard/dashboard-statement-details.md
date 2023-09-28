@@ -64,18 +64,62 @@ To use this feature, you must have the SUPER privilege. If you encounter permiss
 The execution detail of plans includes the following information:
 
 - SQL sample: The text of a certain SQL statement that is actually executed corresponding to the plan. Any SQL statement that has been executed within the time range might be used as a SQL sample.
-- Execution plan: Complete information about execution plans, displayed in graph and text. For details of the execution plan, see [Understand the Query Execution Plan](/explain-overview.md). If multiple execution plans are selected, only (any) one of them is displayed.
+- Execution plan: Complete information about execution plans, displayed in table, graph, and text. For details of the execution plan, see [Understand the Query Execution Plan](/explain-overview.md). If multiple execution plans are selected, only (any) one of them is displayed.
 - For basic information, execution time, Coprocessor read, transaction, and slow query of the SQL statement, you can click the corresponding tab titles to switch among different information.
 
 ![Execution details of plans](/media/dashboard/dashboard-statement-plans-detail.png)
 
-### Basic Tab
+### SQL sample
+
+To view the detailed information of an item, you can click **Expand**. To copy the detailed information to the clipboard, click **Copy**.
+
+### Execution plans
+
+On TiDB Dashboard, you can view execution plans in three ways: table, text, and graph. To learn how to read an execution plan, see [Understand the query execution plan](/explain-overview.md).
+
+#### Execution plan in table format
+
+The table format provides detailed information about the execution plan, which helps you quickly identify abnormal operator metrics and compare the status of different operators. The following figure shows an execution plan in table format:
+
+![Execution plan in table format](/media/dashboard/dashboard-table-plan.png)
+
+The table format displays similar information to the text format but provides more user-friendly interactions:
+
+- You can adjust the column width freely.
+- When content exceeds the column width, it is automatically truncated and a tooltip is shown for the full information.
+- If the execution plan is large, you can download it as a text file for local analysis.
+- You can hide and manage columns using the column picker.
+
+![Execution plan in table format - column picker](/media/dashboard/dashboard-table-plan-columnpicker.png)
+
+#### Execution plan in graph format
+
+The graph format is more suitable for viewing the execution plan tree of a complex SQL statement and understanding each operator and its corresponding content in detail. The following figure shows an execution plan in graph format:
+
+![Execution plan in graph format](/media/dashboard/dashboard-visual-plan-2.png)
+
+- The graph shows the execution from left to right, and from top to bottom.
+- Upper nodes are parent operators and lower nodes are child operators.
+- The color of the title bar indicates the component where the operator is executed: yellow stands for TiDB, blue stands for TiKV, and pink stands for TiFlash.
+- The title bar shows the operator name and the text shown below is the basic information of the operator.
+
+Click the node area, and the detailed operator information is displayed on the right sidebar.
+
+![Execution plan in graph format - sidebar](/media/dashboard/dashboard-visual-plan-popup.png)
+
+### SQL execution details
+
+For basic information, execution time, Coprocessor read, transaction, and slow query of the SQL statement, you can click the corresponding tab titles to switch among different information.
+
+![Show different execution information](/media/dashboard/dashboard-slow-queries-detail2-v620.png)
+
+#### Basic tab
 
 The basic information of a SQL execution includes the table names, index name, execution count, and total latency. The **Description** column provides detailed description of each field.
 
 ![Basic information](/media/dashboard/dashboard-statement-plans-basic.png)
 
-### Time Tab
+#### Time tab
 
 Click the **Time** tab, and you can see how long each stage of the execution plan lasts.
 
@@ -85,19 +129,19 @@ Click the **Time** tab, and you can see how long each stage of the execution pla
 
 ![Execution time](/media/dashboard/dashboard-statement-plans-time.png)
 
-### Coprocessor Read Tab
+#### Coprocessor Read tab
 
 Click the **Coprocessor Read** tab, and you can see information related to Coprocessor read.
 
 ![Coprocessor read](/media/dashboard/dashboard-statement-plans-cop-read.png)
 
-### Transaction Tab
+#### Transaction tab
 
 Click the **Transaction** tab, and you can see information related to execution plans and transactions, such as the average number of written keys or the maximum number of written keys.
 
 ![Transaction](/media/dashboard/dashboard-statement-plans-transaction.png)
 
-### Slow Query Tab
+#### Slow Query tab
 
 If an execution plan is executed too slowly, you can see its associated slow query records under the **Slow Query** tab.
 

@@ -14,7 +14,7 @@ TiDB version: 6.2.0-DMR
 
 In v6.2.0-DMR, the key new features and improvements are as follows:
 
-* TiDB Dashboard supports [visual execution plans](/dashboard/dashboard-slow-query.md#visual-execution-plans), allowing more intuitive display of execution plans.
+* TiDB Dashboard supports [visual execution plans](https://docs.pingcap.com/tidb/v6.2/dashboard-slow-query#visual-execution-plans), allowing more intuitive display of execution plans.
 * Add a [Monitoring page](/dashboard/dashboard-monitoring.md) in TiDB Dashboard to make the performance analysis and tuning more efficient.
 * The [Lock View](/information-schema/information-schema-data-lock-waits.md) of TiDB feature supports showing the waiting information of optimistic transactions, facilitating quick locating of lock conflicts.
 * TiFlash supports [a newer version of storage format](/tiflash/tiflash-configuration.md#configure-the-tiflashtoml-file), enhancing stability and performance.
@@ -63,7 +63,7 @@ In v6.2.0-DMR, the key new features and improvements are as follows:
 
     This feature is particularly useful when you are trying to learn the execution of complex and large queries. Meanwhile, for each query execution plan, TiDB Dashboard automatically analyzes the execution details, spots potential problems, and provides optimization suggestions to reduce the time required for executing specific query plans.
 
-    [User document](/dashboard/dashboard-slow-query.md#visual-execution-plans) [#1224](https://github.com/pingcap/tidb-dashboard/issues/1224) @[time-and-fate](https://github.com/time-and-fate)
+    [User document](https://docs.pingcap.com/tidb/v6.2/dashboard-slow-query#visual-execution-plans) [#1224](https://github.com/pingcap/tidb-dashboard/issues/1224) @[time-and-fate](https://github.com/time-and-fate)
 
 * Lock View supports showing the waiting information of optimistic transactions
 
