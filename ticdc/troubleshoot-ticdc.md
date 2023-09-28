@@ -10,7 +10,7 @@ aliases: ['/docs-cn/dev/ticdc/troubleshoot-ticdc/','/docs-cn/dev/reference/tools
 
 > **注意：**
 >
-> 本文档 `cdc cli` 命令中指定 PD 地址为 `--server=http://127.0.0.1:8300`，在使用时需根据实际地址进行替换。
+> 本文档 `cdc cli` 命令中指定 TiCDC Server 地址为 `--server=http://127.0.0.1:8300`，在使用时需根据实际地址进行替换。
 
 ## TiCDC 同步任务出现中断
 
@@ -43,7 +43,7 @@ cdc cli changefeed query --server=http://127.0.0.1:8300 --changefeed-id 28c43ffc
 - 下游持续异常，TiCDC 多次重试后仍然失败。
 
     - 该场景下 TiCDC 会保存任务信息，由于 TiCDC 已经在 PD 中设置的 service GC safepoint，在 `gc-ttl` 的有效期内，同步任务 checkpoint 之后的数据不会被 TiKV GC 清理掉。
-    - 处理方法：在下游恢复正常后，通过 HTTP 接口恢复同步任务。
+    - 处理方法：在下游恢复正常后，通过 `cdc cli changefeed resume` 恢复同步任务。
 
 - 因下游存在不兼容的 SQL 语句，导致同步不能继续。
 
@@ -51,7 +51,9 @@ cdc cli changefeed query --server=http://127.0.0.1:8300 --changefeed-id 28c43ffc
     - 处理方法：
         1. 先通过 `cdc cli changefeed query` 查询同步任务状态信息，记录 `checkpoint-ts` 值。
         2. 使用新的任务配置文件，增加`ignore-txn-start-ts` 参数跳过指定 `start-ts` 对应的事务。
-        3. 通过 HTTP API 停止旧的同步任务，使用 `cdc cli changefeed create`，指定新的任务配置文件，指定 `start-ts` 为刚才记录的 `checkpoint-ts`，启动新的同步任务恢复同步。
+        3. 通过 `cdc cli changefeed pause -c <changefeed-id>` 停止同步任务。
+        4. 通过 `cdc cli changefeed update -c <changefeed-id> --config <config-file-path>` 并指定新的任务配置文件
+        5. 通过 `cdc cli changefeed resume -c <changefeed-id>` 启动同步任务恢复同步。
 
 - 在 v4.0.13 及之前的版本中 TiCDC 同步分区表存在问题，导致同步停止。
 
