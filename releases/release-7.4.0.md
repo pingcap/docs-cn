@@ -318,7 +318,7 @@ In this version, TiDB partition management adds:
 
 * 自 v7.4.0 起， TiDB 已经兼容 MySQL 8.0 的核心功能，`version()` 将返回以 `8.0.11` 为前缀的版本信息。 
 
-* 兼容性 2
+* 升级到 TiFlash v7.4 后，不支持原地降级到之前的版本。这是因为，从 v7.4 开始，为了减少数据整理时产生的读、写放大，TiFlash 对 PageStorage V3 数据整理时的逻辑进行了优化，导致底层部分存储文件名发生了改动。详情请参考 [TiFlash 升级帮助](/tiflash-upgrade-guide.md#从-v6x-或-v7x-升级至-v74-或以上版本)。
 
 ### 系统变量
 
