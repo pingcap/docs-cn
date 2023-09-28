@@ -283,7 +283,11 @@ TiCDC 需要磁盘是为了缓冲上游写入高峰时下游消费不及时堆�
 
 ## 单表数据同步只能在一个 TiCDC 节点上运行，TiCDC 是否考虑使用多个节点同步多表数据？
 
-目前正在开发中，未来 TiCDC 会支持按照 TiKV Region 粒度来同步数据变更日志，实现处理能力上的可扩展性。
+v7.1 版本后的 TiCDC 支持 MQ sink 按照 TiKV Region 粒度来同步数据变更日志，实现处理能力上的可扩展性, 开启方式在 [TiCDC 配置文件](/ticdc/ticdc-changefeed-config.md) 中配置：
+```toml
+[scheduler]
+enable-table-across-nodes = true
+```
 
 ## 上游有运行时间比较长的未提交事务，TiCDC 同步是否会被卡住？
 
