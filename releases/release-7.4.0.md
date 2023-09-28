@@ -163,7 +163,7 @@ In this version, TiDB partition management adds:
     
     更多的信息，请参考[用户文档](/system-variables.md#tikv_client_read_timeout-从-v740-版本开始引入)。
 
-* 支持通过优化器提示临时修改部分系统变量的值 [#issue号](链接) @[winoros](https://github.com/winoros) **tw@Oreoxmt** <!--923-->
+* 支持通过优化器提示临时修改部分系统变量的值 [#45892](https://github.com/pingcap/tidb/issues/45892) @[winoros](https://github.com/winoros) **tw@Oreoxmt** <!--923-->
 
     TiDB v7.4.0 新增支持与 MySQL 8.0 相似的优化器提示 `SET_VAR()`。通过在 SQL 语句中添加 Hint `SET_VAR()`，可以在语句运行过程中临时修改部分系统变量，以针对不同语句设置环境。例如，可以主动提升高消耗 SQL 的并行度，或者通过变量修改优化器行为。
 
