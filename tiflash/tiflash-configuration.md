@@ -224,6 +224,9 @@ delta_index_cache_size = 0
     ## 从 v7.0.0 引入，表示带等值 join 条件的 HashJoin 算子在触发 spill 之前的最大可用内存，超过该阈值之后 HashJoin 算子会采用 spill to disk 的方式来减小内存使用。默认值为 0，表示内存使用无限制，即不会触发 spill。
     max_bytes_before_external_join = 0
 
+    ## 从 v7.4.0 引入，表示是否开启 TiFlash 资源管控功能。当设置为 true 时，TiFlash 会使用 Pipeline Model 执行模型。
+    enable_resource_control = true
+
 ## 安全相关配置，从 v4.0.5 开始生效
 [security]
     ## 从 v5.0 引入，控制是否开启日志脱敏
