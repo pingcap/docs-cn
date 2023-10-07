@@ -385,7 +385,7 @@ Kafka 消费者收到消息之后，首先检查 `onlyHandleKey` 字段。如果
 ```toml
 [sink.kafka-config.large-message-handle]
 # large-message-handle-option 从 v7.3.0 开始引入
-# 默认为空，即消息超过大小限制后，同步任务失败
+# 默认为 "none"，即消息超过大小限制后，同步任务失败
 # 设置为 "handle-key-only" 时，如果消息超过大小，data 字段内容只发送 Handle Key。如果依旧超过大小，同步任务失败
 # 设置为 "claim-check" 时，如果消息超过大小，将该条消息发送到外部存储服务
 large-message-handle-option = "claim-check"
