@@ -193,7 +193,6 @@ For more information, refer to [`ANALYZE TABLE`](/sql-statements/sql-statement-a
 TiDB does not support the following `SELECT` syntax:
 
 - `SELECT ... INTO @variable`
-- `SELECT ... GROUP BY ... WITH ROLLUP`
 - `SELECT .. GROUP BY expr` does not imply `GROUP BY expr ORDER BY expr` as it does in MySQL 5.7.
 
 For more details, see the [`SELECT`](/sql-statements/sql-statement-select.md) statement reference.

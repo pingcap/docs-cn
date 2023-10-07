@@ -67,7 +67,7 @@ Except for the `GROUP_CONCAT()` and `APPROX_PERCENTILE()` functions, all the pre
 
 ## GROUP BY modifiers
 
-TiDB does not currently support `GROUP BY` modifiers such as `WITH ROLLUP`. We plan to add support in the future. See [TiDB #4250](https://github.com/pingcap/tidb/issues/4250).
+Starting from v7.4.0, the `GROUP BY` clause of TiDB supports the `WITH ROLLUP` modifier. For more information, see [GROUP BY modifiers](/functions-and-operators/group-by-modifier.md).
 
 ## SQL mode support
 

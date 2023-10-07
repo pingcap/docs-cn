@@ -166,7 +166,6 @@ The above example uses data generated with `tiup bench tpcc prepare`. The first 
 ## MySQL compatibility
 
 - The syntax `SELECT ... INTO @variable` is not supported.
-- The syntax `SELECT ... GROUP BY ... WITH ROLLUP` is not supported.
 - The syntax `SELECT .. GROUP BY expr` does not imply `GROUP BY expr ORDER BY expr` as it does in MySQL 5.7. TiDB instead matches the behavior of MySQL 8.0 and does not imply a default order.
 - The syntax `SELECT ... TABLESAMPLE ...` is a TiDB extension and not supported by MySQL.
 
