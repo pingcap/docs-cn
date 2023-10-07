@@ -289,7 +289,30 @@ SELECT COUNT(*) FROM INFORMATION_SCHEMA.TIKV_REGION_STATUS WHERE DB_NAME="databa
 
 ## Handle messages that exceed the Kafka topic limit
 
-Kafka topic sets a limit on the size of messages it can receive. This limit is controlled by the [`max.message.bytes`](https://kafka.apache.org/documentation/#topicconfigs_max.message.bytes) parameter. If TiCDC Kafka sink sends data that exceeds this limit, the changefeed reports an error and cannot proceed to replicate data. To solve this problem, TiCDC provides the following solution.
+Kafka topic sets a limit on the size of messages it can receive. This limit is controlled by the [`max.message.bytes`](https://kafka.apache.org/documentation/#topicconfigs_max.message.bytes) parameter. If TiCDC Kafka sink sends data that exceeds this limit, the changefeed reports an error and cannot proceed to replicate data. To solve this problem, TiCDC adds a new configuration `large-message-handle-option` and provides the following solution.
+
+Currently, this feature supports two encoding protocols: Canal-JSON and Open Protocol. When using the Canal-JSON protocol, you must specify `enable-tidb-extension=true` in `sink-uri`.
+
+### TiCDC data compression
+
+Starting from v7.4.0, TiCDC Kafka sink supports compressing data immediately after encoding and comparing the compressed data size with the message size limit. This feature can effectively reduce the occurrence of messages exceeding the size limit.
+
+An example configuration is as follows:
+
+```toml
+[sink.kafka-config.large-message-handle]
+# This configuration is introduced in v7.4.0.
+# "none" by default, which means that the compression feature is disabled.
+# Possible values are "none", "lz4", and "snappy". The default value is "none".
+large-message-handle-compression = "none"
+```
+
+This feature is different from the compression feature of the Kafka producer:
+
+* The compression algorithm specified in `large-message-handle-compression` compresses a single Kafka message. The compression is performed before comparing with the message size limit.
+* You can configure the compression algorithm in `sink-uri`. The compression is applied to the entire data sending request, which contains multiple Kafka messages. The compression is performed after comparing with the message size limit.
+
+When `large-message-handle-compression` is enabled, the message received by the consumer is encoded using a specific compression protocol, and the consumer application needs to use the specified compression protocol to decode the data.
 
 ### Send handle keys only
 
@@ -298,16 +321,14 @@ Starting from v7.3.0, TiCDC Kafka sink supports sending only the handle keys whe
 * If the table to be replicated has primary key, the primary key is the handle key.
 * If the table does not have primary key but has NOT NULL Unique Key, the NOT NULL Unique Key is the handle key.
 
-Currently, this feature supports two encoding protocols: Canal-JSON and Open Protocol. When using the Canal-JSON protocol, you must specify `enable-tidb-extension=true` in `sink-uri`.
-
 The sample configuration is as follows:
 
 ```toml
 [sink.kafka-config.large-message-handle]
-# This configuration is introduced in v7.3.0.
-# Empty by default, which means when the message size exceeds the limit, the changefeed fails.
-# If this configuration is set to "handle-key-only", when the message size exceeds the limit, only the handle key is sent in the data field. If the message size still exceeds the limit, the changefeed fails.
-large-message-handle-option = "handle-key-only"
+# large-message-handle-option is introduced in v7.3.0.
+# Defaults to "none". When the message size exceeds the limit, the changefeed fails.
+# When set to "handle-key-only", if the message size exceeds the limit, only the handle key is sent in the data field. If the message size still exceeds the limit, the changefeed fails.
+large-message-handle-option = "claim-check"
 ```
 
 ### Consume messages with handle keys only
@@ -351,3 +372,74 @@ When a Kafka consumer receives a message, it first checks the `onlyHandleKey` fi
 > **Warning:**
 >
 > When the Kafka consumer processes data and queries TiDB, the data might have been deleted by GC. You need to [modify the GC Lifetime of the TiDB cluster](/system-variables.md#tidb_gc_life_time-new-in-v50) to a larger value to avoid this situation.
+
+### Send large messages to external storage
+
+Starting from v7.4.0, TiCDC Kafka sink supports sending large messages to external storage when the message size exceeds the limit. Meanwhile, TiCDC sends a message to Kafka that contains the address of the large message in the external storage. This can avoid changefeed failures caused by the message size exceeding the Kafka topic limit.
+
+An example configuration is as follows:
+
+```toml
+[sink.kafka-config.large-message-handle]
+# large-message-handle-option is introduced in v7.3.0.
+# Defaults to "none". When the message size exceeds the limit, the changefeed fails.
+# When set to "handle-key-only", if the message size exceeds the limit, only the handle key is sent in the data field. If the message size still exceeds the limit, the changefeed fails.
+# When set to "claim-check", if the message size exceeds the limit, the message is sent to external storage.
+large-message-handle-option = "claim-check"
+claim-check-storage-uri = "s3://claim-check-bucket"
+```
+
+When `large-message-handle-option` is set to `"claim-check"`, `claim-check-storage-uri` must be set to a valid external storage address. Otherwise, creating the changefeed will fail.
+
+> **Tip**
+>
+> Currently, the external storage services supported by TiCDC are the same as BR. For detailed parameter descriptions, see [Backup storages URI format](/br/backup-and-restore-storages.md#uri-format-description).
+
+TiCDC does not clean up messages on external storage services. Data consumers need to manage external storage services on their own.
+
+### Consume large messages from external storage
+
+The Kafka consumer receives a message that contains the address of the large message in the external storage. The message format is as follows:
+
+```json
+{
+    "id": 0,
+    "database": "test",
+    "table": "tp_int",
+    "pkNames": [
+        "id"
+    ],
+    "isDdl": false,
+    "type": "INSERT",
+    "es": 1639633141221,
+    "ts": 1639633142960,
+    "sql": "",
+    "sqlType": {
+        "id": 4
+    },
+    "mysqlType": {
+        "id": "int"
+    },
+    "data": [
+        {
+          "id": "2"
+        }
+    ],
+    "old": null,
+    "_tidb": {     // TiDB extension fields
+        "commitTs": 163963314122145239,
+        "claimCheckLocation": "s3:/claim-check-bucket/${uuid}.json"
+    }
+}
+```
+
+If the message contains the `claimCheckLocation` field, the Kafka consumer reads the large message data stored in JSON format according to the address provided by the field. The message format is as follows:
+
+```json
+{
+  key: "xxx",
+  value: "xxx",
+}
+```
+
+The `key` and `value` fields contain the encoded large message, which should have been sent to the corresponding field in the Kafka message. Consumers can parse the data in these two parts to restore the content of the large message.
