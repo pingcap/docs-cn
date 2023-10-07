@@ -1,11 +1,11 @@
 ---
 title: CHECK_CONSTRAINTS
-summary: 了解 information_schema 表 `CHECK_CONSTRAINTS`。
+summary: 了解 INFORMATION_SCHEMA 表 `CHECK_CONSTRAINTS`。
 ---
 
 # CHECK\_CONSTRAINTS
 
-`CHECK_CONSTRAINTS` 表提供关于表上 [`CHECK` 约束](/constraints.md#check-约束) 的信息。
+`CHECK_CONSTRAINTS` 表提供关于表上 [`CHECK` 约束](/constraints.md#check-约束)的信息。
 
 ```sql
 USE INFORMATION_SCHEMA;
@@ -46,7 +46,7 @@ CONSTRAINT_CATALOG: def
 
 `CHECK_CONSTRAINTS` 表的字段描述如下：
 
-* `CONSTRAINT_CATALOG`：约束的目录，始终为`def`。  
+* `CONSTRAINT_CATALOG`：约束的目录，始终为 `def`。
 * `CONSTRAINT_SCHEMA`：约束的库名。
 * `CONSTRAINT_NAME`：约束的名字。
 * `CHECK_CLAUSE`：检查约束的子句。
