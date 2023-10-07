@@ -128,11 +128,9 @@ In this version, TiDB partition management adds:
 
     更多信息，请参考[用户文档](/tidb-global-sort.md)。
 
-* 优化 Parallel Multi Schema Change，提升一个 SQL 语句添加多个索引的性能 [#issue号](链接) @[贡献者 GitHub ID](链接) **tw@ran-huang** <!--1307-->
+* 优化 Parallel Multi Schema Change，提升一个 SQL 语句添加多个索引的性能 [#41602](https://github.com/pingcap/tidb/issues/41602) @[Defined2014](https://github.com/Defined2014) **tw@ran-huang** <!--1307-->
 
     在 v7.4.0 之前，用户使用 Parallel Multi Schema Change 在一个 SQL 语句中提交多个 `ADD INDEX` 操作时，其性能与使用多个独立的 SQL 语句进行 `ADD INDEX` 操作的性能相同。经过 v7.4.0 的优化后，在一个 SQL 语句中添加多个索引的性能得到了大幅提升。
-
-    更多信息，请参考[用户文档](链接)。
 
 * 支持缓存非 Prepare 语句的执行计划 (GA) [#36598](https://github.com/pingcap/tidb/issues/36598) @[qw4990](https://github.com/qw4990) **tw@Oreoxmt** <!--1355-->
 
@@ -214,19 +212,14 @@ In this version, TiDB partition management adds:
 
     更多信息，请参考[用户文档](/statistics.md#锁定统计信息)。
 
-* 引入系统变量禁用表的哈希连接 [#46695](https://github.com/pingcap/tidb/issues/46695) @[coderplay](https://github.com/coderplay)
+* 引入系统变量控制是否选择表的哈希连接 [#46695](https://github.com/pingcap/tidb/issues/46695) @[coderplay](https://github.com/coderplay)
 
-    表的哈希连接是 MySQL 8.0 引入的新特性，主要用于连接两个相对较大的表和结果集。但对于交易类负载，或者一部分在 MySQL 5.7 稳定运行的业务来说，选择到表的哈希连接可能会对性能产生风险。MySQL 通过[`优化器开关`](https://dev.mysql.com/doc/refman/8.0/en/switchable-optimizations.html#optflag_block-nested-loop)能够在全局或者会话级控制哈希连接的选择。TiDB 同样在新版本中引入系统变量 [tidb_opt_enable_hash_join](#) 对表的哈希连接进行控制。默认开启，如果客户非常确定执行计划中不需要选择表之间的哈希连接，则可以修改变量为 `NO`，降低执行计划回退的可能性，提升系统稳定性。 
+    表的哈希连接是 MySQL 8.0 引入的新特性，主要用于连接两个相对较大的表和结果集。但对于交易类负载，或者一部分在 MySQL 5.7 稳定运行的业务来说，选择到表的哈希连接可能会对性能产生风险。MySQL 通过[`优化器开关`](https://dev.mysql.com/doc/refman/8.0/en/switchable-optimizations.html#optflag_block-nested-loop)能够在全局或者会话级控制哈希连接的选择。
+    
+    从 v7.4.0 开始，TiDB 引入系统变量 [`tidb_opt_enable_hash_join`](/system-variables.md#tidb_opt_enable_hash_join-从-v740-版本开始引入) 对表的哈希连接进行控制。默认开启
+(`ON`)。如果你非常确定执行计划中不需要选择表之间的哈希连接，则可以修改变量为 `OFF`，降低执行计划回退的可能性，提升系统稳定性。 
 
-    更多信息，请参考[用户文档](#)。
-
-### 高可用
-
-* 功能标题 [#issue号](链接) @[贡献者 GitHub ID](链接) **tw@xxx** <!--1234-->
-
-    功能描述（需要包含这个功能是什么、在什么场景下对用户有什么价值、怎么用）
-
-    更多信息，请参考[用户文档](链接)。
+    更多信息，请参考[用户文档](/system-variables.md#tidb_opt_enable_hash_join-从-v740-版本开始引入)。
 
 ### SQL 功能
 
@@ -265,14 +258,6 @@ In this version, TiDB partition management adds:
     在 v7.4.0 中，TiDB Dashboard 的 **Slow Query** 页面和 **SQL Statement** 页面提供表格视图的执行计划，以提升用户的诊断体验。
 
     更多信息，请参考[用户文档](/dashboard/dashboard-statement-details.md)。
-
-### 安全
-
-* 功能标题 [#issue号](链接) @[贡献者 GitHub ID](链接) **tw@xxx** <!--1234-->
-
-    功能描述（需要包含这个功能是什么、在什么场景下对用户有什么价值、怎么用）
-
-    更多信息，请参考[用户文档](链接)。
 
 ### 数据迁移
 
@@ -318,7 +303,7 @@ In this version, TiDB partition management adds:
 
 * 自 v7.4.0 起， TiDB 已经兼容 MySQL 8.0 的核心功能，`version()` 将返回以 `8.0.11` 为前缀的版本信息。 
 
-* 升级到 TiFlash v7.4 后，不支持原地降级到之前的版本。这是因为，从 v7.4 开始，为了减少数据整理时产生的读、写放大，TiFlash 对 PageStorage V3 数据整理时的逻辑进行了优化，导致底层部分存储文件名发生了改动。详情请参考 [TiFlash 升级帮助](/tiflash-upgrade-guide.md#从-v6x-或-v7x-升级至-v74-或以上版本)。
+* 升级到 TiFlash v7.4.0 后，不支持原地降级到之前的版本。这是因为，从 v7.4.0 开始，为了减少数据整理时产生的读、写放大，TiFlash 对 PageStorage V3 数据整理时的逻辑进行了优化，导致底层部分存储文件名发生了改动。详情请参考 [TiFlash 升级帮助](/tiflash-upgrade-guide.md#从-v6x-或-v7x-升级至-v74-或以上版本)。
 
 ### 系统变量
 
