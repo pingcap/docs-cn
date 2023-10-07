@@ -31,7 +31,7 @@ TiDB 引入平滑升级功能前，对于升级过程中的 DDL 操作有如下�
 
 #### TiUP 方式
 
-目前 TiUP v1.13.0 版本不支持此功能，下一个版本会自适应支持此功能(TiDB v7.5.0 时会发布此版本)，即不需要改动 `tiup cluster upgrade` 操作流程。
+目前 TiUP v1.13.0 版本不支持此功能。下一个版本（TiDB v7.5.0）会自适应支持此功能 ，即不需要改动 `tiup cluster upgrade` 操作流程。
 
 #### Operator 方式
 
@@ -39,12 +39,12 @@ TiDB 引入平滑升级功能前，对于升级过程中的 DDL 操作有如下�
 
 #### 其它方式
 
-如果手动或者自己脚本升级，需要如下操作：
+如果手动升级或者使用脚本升级，需要如下操作：
 
-1. 用户需要给集群中的任意一台 TiDB 发送 HTTP 升级开始请求：`curl -X POST http://{TiDBIP}:10080/upgrade/start`。
-   * TiDB 集群会进入 upgrading 状态。
-   * 接下来将要执行的用户的 DDL 操作都会被暂停。
-2. 用户替换 TiDB binary，并进行滚动升级。此过程和原升级过程一致。
+1. 你需要给集群中的任意一台 TiDB 发送 HTTP 升级开始请求：`curl -X POST http://{TiDBIP}:10080/upgrade/start`。
+   * TiDB 集群会进入 **Upgrading** 状态。
+   * 接下来将要执行的 DDL 操作都会被暂停。
+2. 替换 TiDB binary，并进行滚动升级。此过程和原升级过程一致。
    * 执行升级过程中的系统 DDL 操作。
 3. 等集群中所有 TiDB 升级成功后，给任意一台 TiDB 发送 HTTP 升级结束请求：`curl -X POST http://{TiDBIP}:10080/upgrade/finsh`。
    * 恢复被暂停的用户的 DDL 操作。
