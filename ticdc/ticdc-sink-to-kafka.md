@@ -303,7 +303,7 @@ Kafka Topic 对可以接收的消息大小有限制，该限制由 [`max.message
 ```toml
 [sink.kafka-config.large-message-handle]
 # 该参数从 v7.4.0 开始引入
-# 默认为空，即不开启编码时的压缩功能
+# 默认为 "none"，即不开启编码时的压缩功能
 # 可选值有 "none"、"lz4"、"snappy"，默认为 "none"
 large-message-handle-compression = "none"
 ```
