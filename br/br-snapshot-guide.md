@@ -135,14 +135,37 @@ Starting from BR v5.1.0, when you back up snapshots, BR backs up the **system ta
 | mysql.role_edges                 |
 | mysql.tables_priv                |
 | mysql.user                       |
+| mysql.bind_info                  |
 +----------------------------------+
 ```
 
 **BR does not restore the following system tables:**
 
-- Statistics tables (`mysql.stats_*`)
+- Statistics tables (`mysql.stat_*`)
 - System variable tables (`mysql.tidb` and `mysql.global_variables`)
 - [Other system tables](https://github.com/pingcap/tidb/blob/master/br/pkg/restore/systable_restore.go#L31)
+
+```
++-----------------------------------------------------+
+| capture_plan_baselines_blacklist                    |
+| column_stats_usage                                  |
+| gc_delete_range                                     |
+| gc_delete_range_done                                |
+| global_variables                                    |
+| schema_index_usage                                  |
+| stats_buckets                                       |
+| stats_extended                                      |
+| stats_feedback                                      |
+| stats_fm_sketch                                     |
+| stats_histograms                                    |
+| stats_history                                       |
+| stats_meta                                          |
+| stats_meta_history                                  |
+| stats_table_locked                                  |
+| stats_top_n                                         |
+| tidb                                                |
++-----------------------------------------------------+
+```
 
 When you restore data related to system privilege, note the following:
 
