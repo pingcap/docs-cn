@@ -3012,8 +3012,8 @@ mysql> desc select count(distinct a) from test.t;
 - 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：否
 - 类型：布尔型
 - 默认值：`ON`
-- 控制优化器是否会选择表的哈希连接。默认打开 (`ON`)。设置为 `OFF` 时，除非没有计划可用，否则优化器在生成执行计划时会避免选择表的哈希连接。
-- 如果同时使用了 `tidb_opt_enable_hash_join` 和 `HASH_JOIN` Hint，则 `HASH_JOIN` Hint 优先级更高。即使 `tidb_opt_enable_hash_join` 被设置为 `off`，如果在查询中指定了 `HASH_JOIN` Hint，TiDB 优化器仍然会强制执行哈希连接计划。
+- 控制优化器是否会选择表的哈希连接。默认打开 (`ON`)。设置为 `OFF` 时，优化器在生成执行计划时会避免选择表的哈希连接，除非没有其他连接方式可用。
+- 如果同时使用了 `tidb_opt_enable_hash_join` 和 `HASH_JOIN` Hint，则 `HASH_JOIN` Hint 优先级更高。即使 `tidb_opt_enable_hash_join` 被设置为 `OFF`，如果在查询中指定了 `HASH_JOIN` Hint，TiDB 优化器仍然会强制执行哈希连接计划。
 
 ### `tidb_opt_enable_non_eval_scalar_subquery` <span class="version-mark">从 v7.3.0 版本开始引入</span>
 
