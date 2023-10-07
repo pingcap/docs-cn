@@ -335,12 +335,11 @@ In this version, TiDB partition management adds:
 
 ## 改进提升
 
-+ TiDB
++ TiDB **tw@qiancai 1**
 
     - 优化 Analyze partition table 的内存开销和性能 [#47275](https://github.com/pingcap/tidb/issues/47275) @[hawkingrei](https://github.comm/hawkingrei)
-    - note [#issue](链接) @[贡献者 GitHub ID](链接)
 
-+ TiKV
++ TiKV **tw@qiancai 7**
 
       - [内存优化]改进resolver的内存使用，防止OOM [#15458](https://github.com/tikv/tikv/issues/15458) @[overvenus](https://github.com/overvenus)
       - [内存优化]消除Router对象中的LRUCache，降低内存占用防止OOM[#15430](https://github.com/tikv/tikv/issues/15430) @[Connor1996](https://github.com/Connor1996)
@@ -349,55 +348,37 @@ In this version, TiDB partition management adds:
       - [内存优化] 降低Partitioned-raft-kv中流控模块的内存占用 [#15269] (https://github.com/tikv/tikv/issues/15269) @[overvenus](https://github.com/overvenus)
       - [PD调用优化]减少PD的MemberList请求[#15428](https://github.com/tikv/tikv/issues/15428)  @[nolouch](https://github.com/nolouch)
       - [动态调参]增加动态调整rocksdb background_compaction的支持[#15424](https://github.com/tikv/tikv/issues/15424)  @[glorv](https://github.com/glorv)
-    - note [#issue](链接) @[贡献者 GitHub ID](链接)
 
-+ PD
++ PD **tw@qiancai 5**
 
     - 改进获取 `min-resolved-ts` 的方法，减少网络连接数 [#46664](https://github.com/pingcap/tidb/issues/46664) @[HuSharp](https://github.com/HuSharp)
     - 优化 tso 的追踪信息，方便调查 tso 相关问题  [#6856](https://github.com/tikv/pd/pull/6856) @[tiancaiamao](https://github.com/tiancaiamao)
     - 优化 HTTP Client 链接复用 [6914](https://github.com/tikv/pd/pull/6914) @[nolouch](https://github.com/nolouch)
     - 优化 dr-autosync 的状态跟新速度 [#6874](https://github.com/tikv/pd/pull/6874) @[disksing](https://github.com/disksing)
     - 改进 resource control client 的配置获取方式，使其可以动态获取最新配置 [#7042](https://github.com/tikv/pd/pull/7042) @[nolouch](https://github.com/nolouch)
-    - note [#issue](链接) @[贡献者 GitHub ID](链接)
 
-+ TiFlash
++ TiFlash **tw@qiancai 3**
 
-    - 改进 TiFlash 写入过程的落盘策略，提升随机写入负载下的写性能 [#7564](https://github.com/pingcap/tiflash/issues/7564) @[CalvinNeo](https://github.com/CalvinNeo)   **tw@qiancai** <!--1309-->
+    - 改进 TiFlash 写入过程的落盘策略，提升随机写入负载下的写性能 [#7564](https://github.com/pingcap/tiflash/issues/7564) @[CalvinNeo](https://github.com/CalvinNeo) 
     - 添加 TiFlash 处理 Raft 同步过程中更多观测指标 [#8068](https://github.com/pingcap/tiflash/issues/8068) @[CalvinNeo](https://github.com/CalvinNeo)
     - 改进 TiFlash 文件格式，减少小文件数量以避免造成文件系统 inode 耗尽的问题 [#7595](https://github.com/pingcap/tiflash/issues/7595) @[hongyunyan](https://github.com/hongyunyan)
 
 + Tools
 
-    + Backup & Restore (BR)
+    + Backup & Restore (BR) **tw@Oreoxmt 1**
+  
         - 缓解了 Region leadership 迁移导致 PITR 日志备份进度延迟变高的问题 [#13638](https://github.com/tikv/tikv/issues/13638) @[YuJuncen](https://github.com/YuJuncen)
 
-        - note [#issue](链接) @[贡献者 GitHub ID](链接)
-        - note [#issue](链接) @[贡献者 GitHub ID](链接)
-
-    + TiCDC
+    + TiCDC **tw@Oreoxmt 1**
     
         - 优化同步 add index DDL 的执行逻辑，从而不阻塞后续的 DML 语句 [#9644](https://github.com/pingcap/tiflow/issues/9644)
 
-        - note [#issue](链接) @[贡献者 GitHub ID](链接)
-        - note [#issue](链接) @[贡献者 GitHub ID](链接)
+    + TiDB Lightning **tw@Oreoxmt 4**
 
-    + TiDB Data Migration (DM)
-
-        - note [#issue](链接) @[贡献者 GitHub ID](链接)
-        - note [#issue](链接) @[贡献者 GitHub ID](链接)
-
-    + TiDB Lightning
-
-        - note [#issue](链接) @[贡献者 GitHub ID](链接)
         - 优化 Lightning checksum 配置为 optional 的逻辑使其在校验失败时不报错退出 [#45382](https://github.com/pingcap/tidb/issues/45382) @[lyzx2001](https://github.com/lyzx2001)
         - 优化 Lightning 使在其地址中的所有 pd 都被 scale-in 时仍能继续工作 [#43436](https://github.com/pingcap/tidb/issues/43436) @[lichunzhu](https://github.com/lichunzhu)
         - 改善 Lightning 在 region scatter 阶段的重试逻辑 [#46203](https://github.com/pingcap/tidb/issues/46203) @[mittalrishabh](https://github.com/mittalrishabh)
         - 改善 Lightning 在导入数据阶段时对 no leader 错误的重试逻辑 [#46253](https://github.com/pingcap/tidb/issues/46253) @[lance6716](https://github.com/lance6716)
-
-    + TiUP
-
-        - note [#issue](链接) @[贡献者 GitHub ID](链接)
-        - note [#issue](链接) @[贡献者 GitHub ID](链接)
 
 ## 错误修复
 
@@ -406,7 +387,7 @@ In this version, TiDB partition management adds:
     - 修复 `BatchPointGet` 算子在非 HASH 分区表下执行结果错误的问题 [#45891](https://github.com/pingcap/tidb/pull/45891) @[Defined2014](https://github.com/Defined2014)
     - 修复 `BatchPointGet` 算子在 HASH 分区表下执行结果错误的问题 [#46779](https://github.com/pingcap/tidb/pull/46779) @[jiyfhust](https://github.com/jiyfhust)
     - 修复 parser 状态残留导致解析失败的问题 [#45903](https://github.com/pingcap/tidb/pull/45903) @[qw4990](https://github.com/qw4990)
-    -  修复 exchange partiton 之后导致表消失的问题 [#45920](https://github.com/pingcap/tidb/issues/45920) @[mjonss](https://github.com/mjonss)
+    - 修复 exchange partiton 之后导致表消失的问题 [#45920](https://github.com/pingcap/tidb/issues/45920) @[mjonss](https://github.com/mjonss)
     - 修复 exchange partiton 没有检查 Constraints 的问题 [#45922](https://github.com/pingcap/tidb/issues/45920) @[mjonss](https://github.com/mjonss)
     - 修复 exchange partition 错误交换成功的问题 [#46492](https://github.com/pingcap/tidb/issues/46492) @[mjonss](https://github.com/mjonss)
     - 修复 `tidb_enforce_mpp` 系统变量不能被正确还原的问题 [#46214](https://github.com/pingcap/tidb/issues/46214) @[djshow832](https://github.com/djshow832)
@@ -415,6 +396,7 @@ In this version, TiDB partition management adds:
     - 修复 `AUTO_ID_CACHE=1` 时可能导致重复的问题 [#46444](https://github.com/pingcap/tidb/issues/46444) @[tiancaiamao](https://github.com/tiancaiamao)
     - 修复 `AUTO_ID_CACHE=1` 时 TiDB panic 后恢复过慢的问题 [#46454](https://github.com/pingcap/tidb/issues/46454) @[tiancaiamao](https://github.com/tiancaiamao)
     - 修复 `AUTO_ID_CACHE=1` 时 `show create table` 中 `next_row_id` 错误的问题 [#46545](https://github.com/pingcap/tidb/issues/46545) @[tiancaiamao](https://github.com/tiancaiamao)
+    <!-- tw@Oreoxmt 以上 10 条-->
     - 将 `Arrary` 类型的字符集设置为 `binary` 避免执行失败 [#46717](https://github.com/pingcap/tidb/issues/46717) @[YangKeao](https://github.com/YangKeao) 
     - 修复子查询中存在 CTE 会导致 Parse 时 panic 的问题 [#45916](https://github.com/pingcap/tidb/pull/45916) @[djshow832](https://github.com/djshow832)
     - 修复 Exchange Partition 失败或取消时分区表的限制残留在原表上的问题 [#45877](https://github.com/pingcap/tidb/pull/45877) @[mjonss](https://github.com/mjonss)
@@ -425,9 +407,9 @@ In this version, TiDB partition management adds:
     - 修复 Index Join 在超过内存限额时可能产生的 Hang [#45716](https://github.com/pingcap/tidb/issues/45716) @[wshwsh12](https://github.com/wshwsh12)
     - 修复 Datetime 类型与数字常量比较时产生的结果错误问题 [#38361](https://github.com/pingcap/tidb/issues/38361) @[yibin87](https://github.com/yibin87)
     - 修复无符号类型与 Duration 类型常量比较时产生的结果错误 [#45410](https://github.com/pingcap/tidb/issues/45410) @[wshwsh12](https://github.com/wshwsh12)
-    - note [#issue](链接) @[贡献者 GitHub ID](链接)
+    <!-- tw@ran-huang 以上 10 条-->
 
-+ TiKV
++ TiKV **tw@ran-huang 9**
 
     - [Titan] 用lightning导入数据，挂起集群然后取消集群后，tikv陷入 CrashLoopBackOff[#15454](https://github.com/tikv/tikv/issues/15454)  @[Connor1996](https://github.com/Connor1996)
     - [监控] 修复Thread Voluntary/Nonvoluntary面板没有数据的问题 [#15413] (https://github.com/tikv/tikv/issues/15413) @[SpadeA-Tang] (https://github.com/SpadeA-Tang)
@@ -437,19 +419,17 @@ In this version, TiDB partition management adds:
     - [dr-autosync] 当集群以sync-recover模式切换到备用集群后，在线恢复超时 [#15346] (https://github.com/tikv/tikv/issues/15346) @[Connor1996] (https://github.com/Connor1996)
     - [内存泄漏] 修复CpuRecord可能的内存泄漏 [#15304] (https://github.com/tikv/tikv/issues/15304) @[overvenus] (https://github.com/overvenus)
     - [dr-autosync] 当备用集群关闭后，主集群查询出现9002错误: tikv超时 [#12914] (https://github.com/tikv/tikv/issues/12914) @[Connor1996] (https://github.com/Connor1996)
-    - [dr-autosync]当主集群恢复后tikv再次启动，dr tikv会卡住 [#12320] (https://github.com/tikv/tikv/issues/12320) @[disksing] (https://github.com/disksing)
-    - note [#issue](链接) @[贡献者 GitHub ID](链接)
+    - [dr-autosync] 当主集群恢复后tikv再次启动，dr tikv会卡住 [#12320] (https://github.com/tikv/tikv/issues/12320) @[disksing] (https://github.com/disksing)
 
-+ PD
++ PD **tw@hfxsd 5**
 
     - 修复在 Flashback 时不更新保存 region 信息的问题  [#6911](https://github.com/tikv/pd/pull/6911) @[overvenus](https://github.com/overvenus)
     - 修复因为同步 store config 慢而导致 PD Leader 切换慢的问题  [#6919](https://github.com/tikv/pd/pull/6919) @[bufferflies](https://github.com/bufferflies)
     - 修复 Scatter Peer 时未考虑 group 的问题  [#6962](https://github.com/tikv/pd/issues/6962) @[bufferflies](https://github.com/bufferflies)
     - 修复 RU 消耗小于 0 导致 PD 崩溃的问题 [#6983](https://github.com/tikv/pd/pull/6983) @[CabinfeverB](https://github.com/CabinfeverB)
     - 修复修改隔离等级时未同步到默认放置规则中的问题 [#7121](https://github.com/tikv/pd/issues/7121) @[rleungx](https://github.com/rleungx)
-    - note [#issue](链接) @[贡献者 GitHub ID](链接)
 
-+ TiFlash
++ TiFlash **tw@hfxsd 3**
 
     - 修复 TiFlash 监控页面无法正确显示读取请求持续的最长时间的问题 [#7713](https://github.com/pingcap/tiflash/issues/7713) @[JaySon-Huang](https://github.com/JaySon-Huang)
     - 修复 TiFlash 部分监控页面最长耗时指标显示错误的问题 [#8076](https://github.com/pingcap/tiflash/issues/8076) @[CalvinNeo](https://github.com/CalvinNeo)
@@ -457,14 +437,14 @@ In this version, TiDB partition management adds:
 
 + Tools
 
-    + Backup & Restore (BR)
+    + Backup & Restore (BR) **tw@hfxsd 4**
 
         - 修复备份失败时 BR 的报错信息 "resolve lock timeout" 具有误导性，掩盖了实际错误的问题 [#43236](https://github.com/pingcap/tidb/issues/43236) @[YuJuncen](https://github.com/YuJuncen)
         - 修复 PITR 恢复隐式主键可能冲突的问题 [#46520](https://github.com/pingcap/tidb/issues/46520) @[3pointer](https://github.com/3pointer)
         - 修复 PITR 恢复 meta-kv 出错的问题 [#46578](https://github.com/pingcap/tidb/issues/46578) @[Leavrth](https://github.com/Leavrth)
         - 修复 BR 集成测试用例出错的问题 [#45561](https://github.com/pingcap/tidb/issues/46561) @[purelind](https://github.com/purelind)
 
-    + TiCDC
+    + TiCDC **tw@hfxsd 8**
 
         - 修复 PD 做扩缩容场景下 CDC 访问原无效地址的问题 [#9054](https://github.com/pingcap/tiflow/issues/9054)
         - 修复某些特殊场景下会导致 changefeed 失败的问题 [#9309](https://github.com/pingcap/tiflow/issues/9309)[#9450](https://github.com/pingcap/tiflow/issues/9450)[#9542](https://github.com/pingcap/tiflow/issues/9542)[#9685](https://github.com/pingcap/tiflow/issues/9685)
@@ -475,9 +455,8 @@ In this version, TiDB partition management adds:
         - 修复开启 scale-out 时流量在节点间分配不均匀问题 [#9665](https://github.com/pingcap/tiflow/issues/9665)
         - 修复日志中记录了用户敏感信息的问题 [#9690](https://github.com/pingcap/tiflow/issues/9690)
 
-    + TiDB Data Migration (DM)
+    + TiDB Data Migration (DM) **tw@hfxsd 6**
 
-        - note [#issue](链接) @[贡献者 GitHub ID](链接)
         - 修复 DM 在大小写不敏感的 collation 下无法正确处理冲突的问题 [#9489](https://github.com/pingcap/tiflow/issues/9489) @[hihihuhu](https://github.com/hihihuhu)
         - 修复 DM validator 死锁问题并增强重试 [#9257](https://github.com/pingcap/tiflow/issues/9257) @[D3Hunter](https://github.com/D3Hunter)
         - 修复 DM 在跳过失败 DDL 并且后续无 DDL 执行时显示延迟持续增长的问题 [#9605](https://github.com/pingcap/tiflow/issues/9605) @[D3Hunter](https://github.com/D3Hunter)
@@ -485,17 +464,10 @@ In this version, TiDB partition management adds:
         - 修复 DM 在乐观模式恢复任务时跳过所有 dml 的问题 [#9588](https://github.com/pingcap/tiflow/issues/9588) @[GMHDBJD](https://github.com/GMHDBJD)
         - 修复 DM 下跳过添加 partition ddl 的问题 [#9788](https://github.com/pingcap/tiflow/issues/9788) @[GMHDBJD](https://github.com/GMHDBJD)
 
-    + TiDB Lightning
+    + TiDB Lightning **tw@hfxsd 1**
 
-        - note [#issue](链接) @[贡献者 GitHub ID](链接)
         - 修复 Lightning 导入 NONCLUSTERED auto_increment 和 AUTO_ID_CACHE=1 的表后，插入数据报错重复的问题 [#46100](https://github.com/pingcap/tidb/issues/46100) @[tiancaiamao](https://github.com/tiancaiamao)
         
-
-    + TiUP
-
-        - note [#issue](链接) @[贡献者 GitHub ID](链接)
-        - note [#issue](链接) @[贡献者 GitHub ID](链接)
-
 ## 贡献者
 
 感谢来自 TiDB 社区的贡献者们：
