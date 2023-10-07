@@ -239,6 +239,9 @@ delta_index_cache_size = 0
     ## New in v7.0.0. This item specifies the maximum memory available for the HashJoin operator with EquiJoin before a disk spill is triggered. When the memory usage exceeds the threshold, HashJoin reduces memory usage by spilling to disk. This item defaults to 0, which means that the memory usage is unlimited and spill to disk is never used for HashJoin with EquiJoin.
     max_bytes_before_external_join = 0
 
+    ## New in v7.4.0. This item controls whether to enable the TiFlash resource control feature. When it is set to true, TiFlash uses the pipeline execution model.
+    enable_resource_control = true
+
 ## Security settings take effect starting from v4.0.5.
 [security]
     ## New in v5.0. This configuration item enables or disables log redaction. If the configuration value
