@@ -141,9 +141,9 @@ delete-only-output-handle-key-columns = false
 # schema-registry = "http://localhost:80801/subjects/{subject-name}/versions/{version-number}/schema"
 
 # 编码数据时所用编码器的线程数。
-# 默认值为 16。
+# 默认值为 32。
 # 注意：该参数只有当下游为消息队列时，才会生效。
-# encoder-concurrency = 16
+# encoder-concurrency = 32
 
 # 是否开启 Kafka Sink V2。Kafka Sink V2 内部使用 kafka-go 实现。
 # 默认值为 false。
