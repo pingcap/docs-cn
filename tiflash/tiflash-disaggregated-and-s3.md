@@ -5,10 +5,6 @@ summary: Learn about TiFlash disaggregated storage and compute architecture and 
 
 # TiFlash Disaggregated Storage and Compute Architecture and S3 Support
 
-> **Warning:**
->
-> Currently, TiFlash disaggregated storage and compute architecture is an experimental feature. It is not recommended for use in production environments. This feature might be modified or removed without prior notice. If you find a bug, you can report an [issue](https://github.com/pingcap/tiflash/issues) on GitHub.
-
 By default, TiFlash is deployed using the coupled storage and compute architecture, in which each TiFlash node acts as both storage and compute node. Starting from TiDB v7.0.0, TiFlash supports the disaggregated storage and compute architecture and allows to store data in Amazon S3 or S3-compatible object storage (such as MinIO).
 
 ## Architecture overview
@@ -50,7 +46,7 @@ TiFlash disaggregated storage and compute architecture is suitable for cost-effe
 
     You can also use other S3-compatible object storage, such as [MinIO](https://min.io/).
 
-    The S3 APIs used by TiFlash are as follows:
+    TiFlash needs to use the following S3 APIs for accessing data. Make sure that TiFlash nodes in your TiDB cluster have the necessary permissions for these APIs.
 
     - PutObject
     - GetObject
@@ -60,26 +56,7 @@ TiFlash disaggregated storage and compute architecture is suitable for cost-effe
     - GetObjectTagging
     - PutBucketLifecycle
 
-2. Add a [lifecycle](https://docs.aws.amazon.com/AmazonS3/latest/userguide/object-lifecycle-mgmt.html) to the prepared S3 bucket for cleaning up deleted data:
-
-    ```shell
-    "ID": "tiflash-clean",
-    "Expiration": {
-        "Days": 1
-    },
-    "Filter": {
-        "And": {
-            "Tags": [
-                {
-                    "Value": "tiflash_deleted", 
-                    "Key": "true"
-                }
-            ]
-        }
-    }
-    ```
-
-3. Make sure that there are no TiFlash nodes in the TiDB cluster. If any, set the TiFlash replica count of all tables to `0` and then remove all TiFlash nodes. For example:
+2. Make sure that your TiDB cluster has no TiFlash nodes deployed using the coupled storage and compute architecture. If any, set the TiFlash replica count of all tables to `0` and then remove all TiFlash nodes. For example:
 
     ```sql
     SELECT * FROM INFORMATION_SCHEMA.TIFLASH_REPLICA; # Query all tables with TiFlash replicas
@@ -194,7 +171,7 @@ By default, TiUP deploys TiFlash in the coupled storage and computation architec
 
 ## Restrictions
 
-- TiFlash does not support in-place switching between the **disaggregated storage and compute architecture** and the **coupled storage and compute architecture**. Before switching architectures, you must remove all existing TiFlash nodes.
+- TiFlash does not support in-place switching between the **disaggregated storage and compute architecture** and the **coupled storage and compute architecture**. Before switching to the disaggregated architecture, you must remove all existing TiFlash nodes deployed using the coupled architecture.
 - After the migration from one architecture to another, all TiFlash data needs to be replicated again.
 - Only TiFlash nodes with the same architecture are allowed in the same TiDB cluster. Two architectures cannot coexist in one cluster.
 - The disaggregated storage and compute architecture only supports object storage using the S3 API, while the coupled storage and compute architecture only supports local storage.
