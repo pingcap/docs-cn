@@ -292,7 +292,7 @@ SELECT COUNT(*) FROM INFORMATION_SCHEMA.TIKV_REGION_STATUS WHERE DB_NAME="databa
 
 Kafka Topic 对可以接收的消息大小有限制，该限制由 [`max.message.bytes`](https://kafka.apache.org/documentation/#topicconfigs_max.message.bytes) 参数控制。当 TiCDC Kafka sink 在发送数据时，如果发现数据大小超过了该限制，会导致 changefeed 报错，无法继续同步数据。为了解决这个问题，TiCDC 新增一个参数 `large-message-handle-option` 并提供如下解决方案。
 
-目前，如下功能支持 Canal-JSON 和 Open Protocol 两种编码协议。使用 Canal-JSON 协议时，你需要在 `sink-uri` 中指定 `enable-tidb-extension=true` 参数。
+目前，如下功能支持 Canal-JSON 和 Open Protocol 两种编码协议。使用 Canal-JSON 协议时，你需要在 `sink-uri` 中设置 `enable-tidb-extension=true`。
 
 ### TiCDC 层数据压缩功能
 
@@ -304,7 +304,7 @@ Kafka Topic 对可以接收的消息大小有限制，该限制由 [`max.message
 [sink.kafka-config.large-message-handle]
 # 该参数从 v7.4.0 开始引入
 # 默认为空，即不开启编码时的压缩功能
-# 可选值有 "none"、"lz4"、"snappy", 默认为 "none"
+# 可选值有 "none"、"lz4"、"snappy"，默认为 "none"
 large-message-handle-compression = "none"
 ```
 
@@ -378,21 +378,21 @@ Kafka 消费者收到消息之后，首先检查 `onlyHandleKey` 字段。如果
 
 ### 发送大消息到外部存储
 
-从 v7.4.0 开始，TiCDC Kafka sink 支持在消息大小超过限制时将该条消息发送到外部存储服务，同时向 Kafka 发送一条含有该大消息在外部存储服务中的地址的消息。这样可以避免因为消息大小超过 Kafka Topic 限制而导致 changefeed 失败的情况。
+从 v7.4.0 开始，TiCDC Kafka sink 支持在消息大小超过限制时将该条消息发送到外部存储服务，同时向 Kafka 发送一条含有该大消息在外部存储服务中地址的消息。这样可以避免因为消息大小超过 Kafka Topic 限制而导致 changefeed 失败的情况。
 
 配置样例如下所示：
 
 ```toml
 [sink.kafka-config.large-message-handle]
-# 该参数从 v7.3.0 开始引入
+# large-message-handle-option 从 v7.3.0 开始引入
 # 默认为空，即消息超过大小限制后，同步任务失败
-# 设置为 "handle-key-only" 时，如果消息超过大小，data 字段内容只发送 handle key；如果依旧超过大小，同步任务失败
-# 设置为 `claim-check` 时，如果消息超过大小，将该条消息发送到外部存储服务
+# 设置为 "handle-key-only" 时，如果消息超过大小，data 字段内容只发送 Handle Key。如果依旧超过大小，同步任务失败
+# 设置为 "claim-check" 时，如果消息超过大小，将该条消息发送到外部存储服务
 large-message-handle-option = "claim-check"
 claim-check-storage-uri = "s3://claim-check-bucket"
 ```
 
-当指定 `large-message-handle-option` 为 `claim-check` 时，`claim-check-storage-uri` 必须设置为一个有效的外部存储服务地址，否则创建 Changefeed 将会报错。
+当指定 `large-message-handle-option` 为 `claim-check` 时，`claim-check-storage-uri` 必须设置为一个有效的外部存储服务地址，否则创建 changefeed 将会报错。
 
 > **建议：**
 > 
@@ -402,7 +402,7 @@ TiCDC 不会清理外部存储服务上的消息，数据消费者需要自行�
 
 ### 消费外部存储中的大消息
 
-Kafka consumer 会收到一条含有大消息在外部存储服务中的地址的消息，格式如下：
+Kafka 消费者会收到一条含有大消息在外部存储服务中的地址的消息，格式如下：
 
 ```json
 {
@@ -436,7 +436,7 @@ Kafka consumer 会收到一条含有大消息在外部存储服务中的地址�
 }
 ```
 
-如果收到的消息有 `claimCheckLocation` 字段，Kafka consumer 根据该字段提供的地址，读取出以 JSON 格式存储的大消息数据。消息格式如下：
+如果收到的消息有 `claimCheckLocation` 字段，Kafka 消费者根据该字段提供的地址读取以 JSON 格式存储的大消息数据。消息格式如下：
 
 ```json
 {
@@ -445,4 +445,4 @@ Kafka consumer 会收到一条含有大消息在外部存储服务中的地址�
 }
 ```
 
-key 和 value 分别存有编码后的大消息，该消息原本应该发送到 Kafka 消息中的对应字段。消费者可以通过解析这两部分的数据，还原大消息的内容。
+`key` 和 `value` 分别存有编码后的大消息，该消息原本应该发送到 Kafka 消息中的对应字段。消费者可以通过解析这两部分的数据，还原大消息的内容。
