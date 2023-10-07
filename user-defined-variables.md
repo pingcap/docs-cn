@@ -183,4 +183,4 @@ SELECT @col FROM t;
 
 除 `SELECT ... INTO <variable>` 外，MySQL 和 TiDB 支持的语法相同。
 
-更多细节，请参考 [MySQL 文档](https://dev.mysql.com/doc/refman/5.7/en/user-variables.html)。
+更多细节，请参考 [MySQL 文档](https://dev.mysql.com/doc/refman/8.0/en/user-variables.html)。

@@ -14,7 +14,7 @@ TiDB 版本：6.2.0-DMR
 
 在 6.2.0-DMR 版本中，你可以获得以下关键特性：
 
-- TiDB Dashboard 支持[可视化执行计划](/dashboard/dashboard-slow-query.md#图形化执行计划介绍)，查询计划展示更直观。
+- TiDB Dashboard 支持[可视化执行计划](https://docs.pingcap.com/zh/tidb/v6.2/dashboard-slow-query#图形化执行计划介绍)，查询计划展示更直观。
 - TiDB Dashboard 新增 [Monitoring 页面](/dashboard/dashboard-monitoring.md)用于性能分析和优化。
 - TiDB [锁视图支持乐观事务被阻塞的信息](/information-schema/information-schema-data-lock-waits.md)，方便快速定位锁冲突。
 - TiFlash 引入[新的存储格式 PageStorage V3](/tiflash/tiflash-configuration.md#配置文件-tiflashtoml)，提升稳定性和性能。
@@ -57,7 +57,7 @@ TiDB 版本：6.2.0-DMR
 
     在 Statements 和 Slow Query 中提供可视化执行计划和基础问题诊断的能力。这是一种全新的查询计划的展示方式，目标是通过图形化的手段展示 Query 查询计划的每个步骤，从而使得用户能够更加直观方便地了解查询执行计划的细节。对于复杂的大型查询语句，可视化的展示方式对于深入理解其执行过程大有裨益。另外，系统会自动对每一个 Query 的执行计划进行分析，发现执行计划中潜在问题，提供优化方向。用户可以采用这些优化建议，降低特定 Query 的查询时长。
 
-    [用户文档](/dashboard/dashboard-slow-query.md#图形化执行计划介绍) [#1224](https://github.com/pingcap/tidb-dashboard/issues/1224) @[time-and-fate](https://github.com/time-and-fate)
+    [用户文档](https://docs.pingcap.com/zh/tidb/v6.2/dashboard-slow-query#图形化执行计划介绍) [#1224](https://github.com/pingcap/tidb-dashboard/issues/1224) @[time-and-fate](https://github.com/time-and-fate)
 
 * 锁视图支持乐观事务被阻塞的信息
 
@@ -115,7 +115,7 @@ TiDB 版本：6.2.0-DMR
 
     v6.2.0 默认以新版本存储格式保存数据。从更低版本升级到 6.2.0 版本后，不支持原地降级，否则更低版本的 TiFlash 无法识别新版本的数据格式。
 
-    建议用户在升级前阅读 [TiFlash v6.2.0 升级帮助](/tiflash-620-upgrade-guide.md)。
+    建议用户在升级前阅读 [TiFlash 升级帮助](/tiflash-upgrade-guide.md)。
 
     [用户文档](/tiflash/tiflash-configuration.md#配置文件-tiflashtoml) [#3594](https://github.com/pingcap/tiflash/issues/3594) @[JaySon-Huang](https://github.com/JaySon-Huang) @[lidezhu](https://github.com/lidezhu) @[jiaqizho](https://github.com/jiaqizho)
 
@@ -262,7 +262,9 @@ TiDB 版本：6.2.0-DMR
 | TiKV | [quota.background-write-bandwidth](/tikv-configuration-file.md#background-write-bandwidth-从-v620-版本开始引入) | 新增 | 限制后台事务写入的带宽（暂未生效）。|
 | TiKV | [quota.background-read-bandwidth](/tikv-configuration-file.md#background-read-bandwidth-从-v620-版本开始引入) | 新增 | 限制后台事务读取数据和 Coprocessor 读取数据的带宽（暂未生效）。 |
 | TiKV | [quota.enable-auto-tune](/tikv-configuration-file.md#enable-auto-tune-从-v620-版本开始引入) | 新增 | 是否支持 quota 动态调整。如果打开该配置项，TiKV 会根据 TiKV 实例的负载情况动态调整对后台请求的限制 quota。 |
-| TiKV | [rocksdb.defaultcf|writecf|lockcf.format-version](/tikv-configuration-file.md#format-version-从-v620-版本开始引入) | 新增 | 设置 SST 文件的格式版本。 |
+| TiKV | [rocksdb.defaultcf.format-version](/tikv-configuration-file.md#format-version-从-v620-版本开始引入) | 新增 | 设置 SST 文件的格式版本。 |
+| TiKV | [rocksdb.lockcf.format-version](/tikv-configuration-file.md#format-version-从-v620-版本开始引入) | 新增 | 设置 SST 文件的格式版本。 |
+| TiKV | [rocksdb.writecf.format-version](/tikv-configuration-file.md#format-version-从-v620-版本开始引入) | 新增 | 设置 SST 文件的格式版本。 |
 | TiKV | rocksdb.enable-pipelined-commit | 删除 | 该配置不再生效。 |
 | TiKV | gc-merge-rewrite | 删除 | 该配置不再生效。 |
 | TiKV | [log-backup.enable](/tikv-configuration-file.md#enable-从-v620-版本开始引入) | 新增 | TiKV 是否开启日志备份功能。 |
@@ -287,7 +289,7 @@ TiDB 版本：6.2.0-DMR
 
 ### 其他
 
-- TiFlash 的存储格式 (`format_version`) 不能直接从 4 降级到 3，详情请参考 [TiFlash v6.2.0 升级帮助](/tiflash-620-upgrade-guide.md)。
+- TiFlash 的存储格式 (`format_version`) 不能直接从 4 降级到 3，详情请参考 [TiFlash 升级帮助](/tiflash-upgrade-guide.md)。
 - 在 v6.2.0 以及后续版本，**强烈建议**保留 `dt_enable_logical_split` 的默认值 `false`，不要将其修改为 `true`。具体请参考已知问题 [#5576](https://github.com/pingcap/tiflash/issues/5576)。
 - 如果备份集群包含 TiFlash，执行 PITR 后恢复集群的数据不包含 TiFlash 副本，需要手动恢复 TiFlash 副本；执行 exchange partition DDL 会导致 PITR restore 出错；上游数据库使用 TiDB Lightning Physical 方式导入的数据，无法作为数据日志备份下来，数据导入后需要执行一次全量备份。关于 PITR 功能使用的其他事项，请参考 [PITR 使用限制](/br/backup-and-restore-overview.md#使用须知)。
 - 从 v6.2.0 开始，BR 支持通过手动指定参数 `--with-sys-table=true` 来恢复 mysql schema 下的表。

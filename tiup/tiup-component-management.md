@@ -14,6 +14,8 @@ TiUP 主要通过以下一些命令来管理组件：
 - status：查看组件运行状态
 - clean：清理组件实例
 - help：打印帮助信息，后面跟其他 TiUP 命令则是打印该命令的使用方法
+- link：将组件的二进制符号链接到可执行文件目录 (`$TIUP_HOME/bin/`)
+- unlink：删除 `tiup link` 命令生成的软链接
 
 本文介绍常用的组件管理操作及相应命令。
 
@@ -69,12 +71,12 @@ tiup install tidb
 tiup install tidb:nightly
 ```
 
-示例三：使用 TiUP 安装 v7.2.0 版本的 TiKV
+示例三：使用 TiUP 安装 v7.3.0 版本的 TiKV
 
 {{< copyable "shell-regular" >}}
 
 ```shell
-tiup install tikv:v7.2.0
+tiup install tikv:v7.3.0
 ```
 
 ## 升级组件
@@ -127,12 +129,12 @@ Flags:
 
 如果想要多次启动同一个组件并复用之前的工作目录，就可以在启动时用 `--tag` 指定相同的名字。指定 tag 后，在实例终止时就*不会自动删除*工作目录，方便下次启动时复用。
 
-示例一：运行 v7.2.0 版本的 TiDB
+示例一：运行 v7.3.0 版本的 TiDB
 
 {{< copyable "shell-regular" >}}
 
 ```shell
-tiup tidb:v7.2.0
+tiup tidb:v7.3.0
 ```
 
 示例二：指定 tag 运行 TiKV
@@ -218,12 +220,12 @@ component 为要卸载的组件名称，version 为要卸载的版本，这两�
 - 若省略版本，加 `--all` 表示卸载该组件所有版本
 - 若版本和组件都省略，则加 `--all` 表示卸载所有组件及其所有版本
 
-示例一：卸载 v7.2.0 版本的 TiDB
+示例一：卸载 v7.3.0 版本的 TiDB
 
 {{< copyable "shell-regular" >}}
 
 ```shell
-tiup uninstall tidb:v7.2.0
+tiup uninstall tidb:v7.3.0
 ```
 
 示例二：卸载所有版本的 TiKV
@@ -240,4 +242,44 @@ tiup uninstall tikv --all
 
 ```shell
 tiup uninstall --all
+```
+
+### 链接组件
+
+TiUP v1.13.0 添加了实验性的 `link` 和 `unlink` 命令，用于将组件的二进制符号链接到可执行文件目录 (`$TIUP_HOME/bin/`) 和删除链接。这个功能可以让用户不必在每次都经过 TiUP 来调用组件，同时保留了多版本切换的能力。然而，这种方式缺少了自动检查更新和设置某些环境变量的过程，一些组件（例如 ctl）可能无法使用，请只在必要的场景来使用它。
+
+示例一：安装并链接 cluster 组件的最新版本
+
+```shell
+tiup install cluster
+tiup link cluster
+```
+
+示例二：切换 cluster 组件到 v1.13.0 版本
+
+```shell
+tiup link cluster：v1.13.0
+```
+
+`tiup link cluster` 命令会输出如下的内容：
+
+```shell
+package cluster provides these executables: tiup-cluster
+```
+
+代表 cluster 组件的二进制文件名为 tiup-cluster。link 命令完成后，你可以直接在命令行输入 tiup-cluster 来使用 cluster 组件。
+
+示例三：取消 cluster 组件的链接
+
+```shell
+tiup unlink cluster
+```
+
+示例四：对 TiUP 自身进行版本管理
+
+在 v1.13.0 之前的版本，TiUP 自身被安装到 `~/.tiup/bin/` 下，不能多版本共存。自 v1.13.0 开始，可以将 TiUP 和所有其他组件一样进行安装、链接。
+
+```shell
+tiup update --self # update tiup itself to a version that supports link
+tiup link tiup：v1.13.0
 ```

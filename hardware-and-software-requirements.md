@@ -23,7 +23,7 @@ TiDB 作为一款开源一栈式实时 HTAP 数据库，可以很好地部署和
 | <ul><li>Red Hat Enterprise Linux 7.3 及以上的 7.x 版本</li><li>CentOS 7.3 及以上的 7.x 版本</li></ul>  |  <ul><li>x86_64</li><li>ARM 64</li></ul>   |
 |  Amazon Linux 2         |  <ul><li>x86_64</li><li>ARM 64</li></ul>   |
 | 麒麟欧拉版 V10 SP1/SP2   |   <ul><li>x86_64</li><li>ARM 64</li></ul>   |
-| UOS V20                 |   <ul><li>x86_64</li><li>ARM 64</li></ul>   |
+| 统信操作系统 (UOS) V20                 |   <ul><li>x86_64</li><li>ARM 64</li></ul>   |
 | openEuler 22.03 LTS SP1 |   x86_64   |
 | macOS 12 (Monterey) 及以上的版本 |  <ul><li>x86_64</li><li>ARM 64</li></ul>  |
 |  Oracle Enterprise Linux 7.3 及以上的 7.x 版本  |  x86_64           |
@@ -46,7 +46,7 @@ TiDB 作为一款开源一栈式实时 HTAP 数据库，可以很好地部署和
 
 |  编译和构建 TiDB 所需的依赖库   |  版本   |
 |   :---   |   :---   |
-|   Golang  |  1.20 及以上版本  |
+|   Golang  |  1.21 及以上版本  |
 |   Rust    |   nightly-2022-07-31 及以上版本  |
 |  GCC      |   7.x      |
 |  LLVM     |  13.0 及以上版本  |
@@ -166,7 +166,7 @@ TiDB 作为开源一栈式实时 HTAP 数据库，其正常运行需要网络环
 
 | 组件 | 磁盘空间要求 | 健康水位使用率 |
 | :-- | :-- | :-- |
-| TiDB | 日志盘建议最少预留 30 GB | 低于 90% |
+| TiDB | <ul><li>日志盘建议最少预留 30 GB。</li> <li>v6.5.0 及以上版本默认启用了 Fast Online DDL 对添加索引等 DDL 操作进行加速（通过变量 [`tidb_ddl_enable_fast_reorg`](/system-variables.md#tidb_ddl_enable_fast_reorg-从-v630-版本开始引入) 控制）。如果业务中可能存在针对大对象的 DDL 操作，推荐为 TiDB 准备额外的 SSD 磁盘空间（建议 100 GB+）。配置方式详见[设置 TiDB 节点的临时空间](/check-before-deployment.md#设置-tidb-节点的临时空间推荐)。</li></ul>| 低于 90% |
 | PD | 数据盘和日志盘建议最少各预留 20 GB | 低于 90% |
 | TiKV | 数据盘和日志盘建议最少各预留 100 GB | 低于 80% |
 | TiFlash | 数据盘建议最少预留 100 GB，日志盘建议最少预留 30 GB | 低于 80% |

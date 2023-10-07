@@ -28,11 +28,11 @@ PD Control 是 PD 的命令行工具，用于获取集群状态信息和调整�
 
 > **注意：**
 >
-> 下载链接中的 `{version}` 为 TiDB 的版本号。例如，amd64 架构的 `v7.2.0` 版本的下载链接为 `https://download.pingcap.org/tidb-community-server-v7.2.0-linux-amd64.tar.gz`。
+> 下载链接中的 `{version}` 为 TiDB 的版本号。例如，amd64 架构的 `v7.3.0` 版本的下载链接为 `https://download.pingcap.org/tidb-community-server-v7.3.0-linux-amd64.tar.gz`。
 
 ### 源码编译
 
-1. [Go](https://golang.org/) 1.20 或以上版本
+1. [Go](https://golang.org/) 1.21 或以上版本
 2. 在 PD 项目根目录使用 `make` 或者 `make pd-ctl` 命令进行编译，生成 bin/pd-ctl
 
 ## 简单例子

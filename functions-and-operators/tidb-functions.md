@@ -14,6 +14,7 @@ summary: 学习使用 TiDB 特有的函数。
 | [`TIDB_DECODE_PLAN(str)`](#tidb_decode_plan) | `TIDB_DECODE_PLAN` 函数用于解码 TiDB 执行计划。 |
 | `TIDB_IS_DDL_OWNER()` | `TIDB_IS_DDL_OWNER` 函数用于检查你连接的 TiDB 实例是否是 DDL Owner。DDL Owner 代表集群中所有其他节点执行 DDL 语句的 TiDB 实例。 |
 | [`TIDB_PARSE_TSO(num)`](#tidb_parse_tso) | `TIDB_PARSE_TSO` 函数用于从 TiDB TSO 时间戳中提取物理时间戳。参见 [`tidb_current_ts`](/system-variables.md#tidb_current_ts)。 |
+| `TIDB_PARSE_TSO_LOGICAL(num)` | `TIDB_PARSE_TSO_LOGICAL` 函数用于从 TiDB TSO 时间戳中提取逻辑时间戳。|
 | [`TIDB_VERSION()`](#tidb_version) | `TIDB_VERSION` 函数用于获取当前连接的 TiDB 服务器版本和构建详细信息。 |
 | [`TIDB_DECODE_SQL_DIGESTS(digests, stmtTruncateLength)`](#tidb_decode_sql_digests) | `TIDB_DECODE_SQL_DIGESTS` 函数用于在集群中查询一组 SQL Digest 所对应的 SQL 语句的归一化形式（即去除格式和参数后的形式）。 |
 | `VITESS_HASH(str)` |  `VITESS_HASH` 函数返回与 Vitess 的 `HASH` 函数兼容的字符串哈希值，有助于从 Vitess 迁移数据。 |
@@ -316,4 +317,52 @@ SELECT *, TIDB_ROW_CHECKSUM() FROM t WHERE id = 1;
 |  1 |   10 | a    | 3813955661          |
 +----+------+------+---------------------+
 1 row in set (0.000 sec)
+```
+
+### CURRENT_RESOURCE_GROUP
+
+`CURRENT_RESOURCE_GROUP` 函数用于查询当前连接绑定的资源组名称。当开启[资源管控 (Resource Control)](/tidb-resource-control.md) 功能时，执行 SQL 语句对资源的占用会受到所绑定的资源组资源配置的限制。
+
+在会话建立时，TiDB 默认会将连接绑定至登录用户绑定的资源组，如果用户没有绑定任何资源组，则会将连接绑定至 `default` 资源组。在会话建立之后，绑定的资源组默认不会发生变化，即使执行了[修改用户绑定的资源组](/sql-statements/sql-statement-alter-user.md#修改用户绑定的资源组)。如需修改当前会话绑定的资源组，可以使用 [`SET RESOURCE GROUP`](/sql-statements/sql-statement-set-resource-group.md) 语句。
+
+#### 示例
+
+创建一个用户 `user1`，创建两个资源组 `rg1` 和 `rg2`，并将用户 `user1` 绑定资源组 `rg1`：
+
+```sql
+CREATE USER 'user1';
+CREATE RESOURCE GROUP 'rg1' RU_PER_SEC = 1000;
+CREATE RESOURCE GROUP 'rg2' RU_PER_SEC = 2000;
+ALTER USER 'user1' RESOURCE GROUP `rg1`;
+```
+
+使用 `user1` 登录，查看当前用户绑定的资源组：
+
+```sql
+SELECT CURRENT_RESOURCE_GROUP();
+```
+
+```sql
++--------------------------+
+| CURRENT_RESOURCE_GROUP() |
++--------------------------+
+| rg1                      |
++--------------------------+
+1 row in set (0.00 sec)
+```
+
+执行 `SET RESOURCE GROUP` 将当前会话的资源组设置为 `rg2`，然后查看当前用户绑定的资源组：
+
+```sql
+SET RESOURCE GROUP `rg2`;
+SELECT CURRENT_RESOURCE_GROUP();
+```
+
+```sql
++--------------------------+
+| CURRENT_RESOURCE_GROUP() |
++--------------------------+
+| rg2                      |
++--------------------------+
+1 row in set (0.00 sec)
 ```
