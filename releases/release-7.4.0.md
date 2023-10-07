@@ -451,8 +451,9 @@ In this version, TiDB partition management adds:
 
 + TiFlash
 
-    - note [#issue](链接) @[贡献者 GitHub ID](链接)
-    - note [#issue](链接) @[贡献者 GitHub ID](链接)
+    - 修复 TiFlash 监控页面无法正确显示读取请求持续的最长时间的问题 [#7713](https://github.com/pingcap/tiflash/issues/7713) @[JaySon-Huang](https://github.com/JaySon-Huang)
+    - 修复 TiFlash 部分监控页面最长耗时指标显示错误的问题 [#8076](https://github.com/pingcap/tiflash/issues/8076) @[CalvinNeo](https://github.com/CalvinNeo)
+    - 修复 TiDB 错误的认为 MPP 任务失败的问题 [#7177](https://github.com/pingcap/tiflash/issues/7177) @[yibin87](https://github.com/yibin87)
 
 + Tools
 
