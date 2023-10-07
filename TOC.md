@@ -882,6 +882,7 @@
       - [信息函数](/functions-and-operators/information-functions.md)
       - [JSON 函数](/functions-and-operators/json-functions.md)
       - [GROUP BY 聚合函数](/functions-and-operators/aggregate-group-by-functions.md)
+      - [GROUP BY 修饰符](/functions-and-operators/group-by-modifier.md)
       - [窗口函数](/functions-and-operators/window-functions.md)
       - [其它函数](/functions-and-operators/miscellaneous-functions.md)
       - [精度数学](/functions-and-operators/precision-math.md)
