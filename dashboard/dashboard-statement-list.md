@@ -64,3 +64,13 @@ See [Configurations of Statement Summary Tables](/statement-summary-tables.md#pa
 > + Because the statement system table is only stored in memory, after the SQL Statements feature is disabled, the data in the system table will be cleared.
 >
 > + The values of `Collect interval` and `retain duration` affect the memory usage, so it is recommended to adjust these values according to the actual situation. The value of `retain duration` should not be set too large.
+
+### Others
+
+[`tidb_stmt_summary_max_stmt_count`](/system-variables.md#tidb_stmt_summary_max_stmt_count-new-in-v40) limits the number of SQL statements that can be stored in statement summary tables. If the limit is exceeded, TiDB clears the SQL statements that recently remain unused. These cleared SQL statements are represented as rows with `DIGEST` set to `NULL`. On the SQL statement page of TiDB Dashboard, the information of these rows is displayed as `Others`.
+
+![Others](/media/dashboard/dashboard-statement-other-row.png)
+
+## Next step
+
+For more information about how to view the execution details of SQL statements, see [Statement execution details of TiDB Dashboard](/dashboard/dashboard-statement-details.md).
