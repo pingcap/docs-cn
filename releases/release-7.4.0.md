@@ -304,7 +304,7 @@ In this version, TiDB partition management adds:
 
     在 v7.4.0 之前，TiCDC 无法向下游发送超过 Kafka 最大消息大小 (`max.message.bytes`) 的大型消息。从 v7.4.0 开始，在配置下游为 Kafka 的 Changefeed 的时候，你可以指定一个外部存储位置，用于存储超过 Kafka 限制的大型消息。TiCDC 会向 Kafka 发送一条引用消息，其中记录了该大型消息在外部存储中的地址。当消费者收到该引用消息后，可以根据其中记录的外部存储地址信息，获取对应的消息内容。
 
-    更多信息，请参考[用户文档](链接)。
+    更多信息，请参考[用户文档](/ticdc/ticdc-sink-to-kafka.md#发送大消息到外部存储)。
 
 ## 兼容性变更
 
