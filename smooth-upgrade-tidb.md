@@ -13,7 +13,8 @@ summary: 本文介绍支持无需手动取消 DDL 的平滑升级集群功能。
 
 从 v7.1.0 起，当将 TiDB 升级至更高的版本时，TiDB 支持平滑升级功能，取消了升级过程中的限制，提供更平滑的升级体验。
 
-### 版本支持情况
+## 版本支持情况
+
 * 从 v7.1.0 升级到 [v7.1.1, v7.4.0）版本时，此功能默认开启，且无开关控制。
 * 从 v7.4.0 升级到更高的版本时, 通过是否发送 `/upgrade/start` HTTP 请求控制此功能开关。如果发送 `/upgrade/start` 请求，则开启此功能。具体方式可以参考：[TiDB HTTP API 文档](https://github.com/pingcap/tidb/blob/master/docs/tidb_http_api.md)。
 
@@ -29,12 +30,15 @@ TiDB 引入平滑升级功能前，对于升级过程中的 DDL 操作有如下�
 ### 升级步骤
 
 #### TiUP 方式
+
 目前 TiUP v1.13.0 版本不支持此功能，下一个版本会自适应支持此功能(TiDB v7.5.0 时会发布此版本)，即不需要改动 `tiup cluster upgrade` 操作流程。
 
 #### Operator 方式
+
 目前不支持此功能，会尽早自适应支持此功能。
 
 #### 其它方式
+
 如果手动或者自己脚本升级，需要如下操作：
 
 1. 用户需要给集群中的任意一台 TiDB 发送 HTTP 升级开始请求：`curl -X POST http://{TiDBIP}:10080/upgrade/start`。
@@ -72,3 +76,7 @@ TiDB 引入平滑升级功能前，对于升级过程中的 DDL 操作有如下�
 * BR：BR 可能会将处于 paused 状态的 DDL 拷贝到 TiDB 中，而此状态的 DDL 不能自动 resume，可能导致后续 DDL 卡住的情况。
 
 * DM 和 TiCDC：如果在升级过程中使用 DM 和 TiCDC 向 TiDB 导入 SQL，并且其中包含 DDL 操作，则该导入操作会被阻塞，并可能出现未定义错误。
+
+### 插件使用限制
+
+TiDB 安装的插件可能自带 DDL 操作。在升级过程中，插件自带 DDL 操作中不能是非系统表的 DDL 操作，否则可能导致升级卡住情况。
