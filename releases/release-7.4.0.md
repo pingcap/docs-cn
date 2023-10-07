@@ -34,8 +34,8 @@ TiDB 版本：7.4.0
     <td>Before v7.4.0, tasks like ADD INDEX or IMPORT INTO in the distributed parallel execution framework required TiDB nodes to allocate local disk space for sorting data before importing it into TiKV. This approach, involving partial and localized sorting, often led to data overlaps, increasing TiKV's resource consumption and lower performance and stability. With the Global Sorting feature in v7.4.0, data is temporarily stored in S3 for global sorting. Then the data is imported into TiKV in an orderly, eliminating the need for TiKV to consume extra resources on compactions. This significantly enhances the performance and stability of operations like IMPORT INTO and ADD INDEX.</td>
   </tr>
   <tr>
-    <td>Resource Control for background jobs (experimental) <!--Roger, tw@Oreoxmt--></td>
-    <td>v7.1 introduced Resource Control to mitigate resource and storage access interference between workloads. v7.4 applies this contorl to background tasks as well. Now the resource produced by background tasks can be identified and managed by resource control. The first to realize this benefit are: Auto-analyze, Backup & Recovery, Load Data, and Online DDL. This should apply to all background tasks eventually. </td>
+    <td>资源管控支持自动管理后台任务（实验特性）<!--Roger, tw@Oreoxmt--></td>
+    <td>从 v7.1.0 开始，资源管控成为正式功能，该特性有助于缓解不同工作负载间的资源与存储访问干扰。TiDB v7.4.0 将此资源控制应用于后台任务。资源管控可以识别和管理后台任务，例如自动收集统计信息、备份和恢复、LOAD DATA 以及在线 DDL。未来，所有后台任务都将纳入资源管控。</td>
   </tr>
   <tr>
     <td>TiFlash supports storage-computing separation and S3 <!--Zhang Ye, tw@qiancai--></td>
@@ -59,16 +59,16 @@ In this version, TiDB partition management adds:
     </td>
   </tr>
   <tr>
-    <td>MySQL 8.0 compatibility: Include collation utf8mb4_0900_ai_ci <!--Roger, tw@Oreoxmt--></td>
-    <td> One of remarkable change in MySQL 8.0: the default characterset is utf8mb4, while the default collation of utf8mb4 is utf8mb4_0900_ai_ci. If the database was created on MySQL 8.0 with default collection, it can be migrated or replicated to TiDB smoothly. This was the last piece waiting to call TiDB generally MySQL 8.0 compatible.</td>
+    <td>MySQL 8.0 兼容性：支持排序规则 <code>utf8mb4_0900_ai_ci</code> <!--Roger, tw@Oreoxmt--></td>
+    <td>MySQL 8.0 的一个显著变化是默认字符集更改为 utf8mb4，其默认排序规则是 <code>utf8mb4_0900_ai_ci</code>。TiDB v7.4.0 增强了与 MySQL 8.0 的兼容性。现在你可以更轻松地迁移或复制在 MySQL 8.0 中使用默认排序规则创建的数据库到 TiDB。</td>
   </tr>
   <tr>
     <td>TiDB&TiFlash support modifier ROLLUP and function GROUPING() <!--Zhang Ye, tw@qiancai--></td>
     <td> ROLLUP modifier can cause summary output to include extra rows that represent higher-level summary operations, thus enables you to answer questions at multiple levels of analysis with a single query. ROLLUP modifier is commonly used in data analysis and is used to summarize data in multiple dimensions. </td>
   </tr>
   <tr>
-    <td>TiFlash supports resource control <!--Zhang Ye, tw@Oreoxmt --></td>
-    <td> Prior to v7.4, TiDB resource control can not manage resource of TiFlash. In v7.4, TiFlash can manage resource better, and improving the overall resource management capabilities of TiDB. </td>
+    <td>TiFlash 支持资源管控<!--Zhang Ye, tw@Oreoxmt --></td>
+    <td>在 v7.4.0 之前，TiDB 资源管控无法管理 TiFlash 资源。从 v7.4.0 开始，TiFlash 支持资源管控特性，进一步完善了 TiDB 整体的资源管控能力。</td>
   </tr>
   <tr>
     <td>数据库管理与可观测性</td>
