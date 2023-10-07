@@ -224,7 +224,7 @@ Topic 表达式的基本规则为 `[prefix]{schema}[middle][{table}][suffix]`，
 
 partition 分发器用 partition = "xxx" 来指定，支持 default、ts、index-value、table 四种 partition 分发器，分发规则如下：
 
-- default：有多个唯一索引（包括主键）时按照 table 模式分发；只有一个唯一索引（或主键）按照 index-value 模式分发；如果开启了 old value 特性，按照 table 分发
+- default：按照 table 分发
 - ts：以行变更的 commitTs 做 Hash 计算并进行 event 分发
 - index-value：以表的主键或者唯一索引的值做 Hash 计算并进行 event 分发
 - table：以表的 schema 名和 table 名做 Hash 计算并进行 event 分发
@@ -246,12 +246,6 @@ partition 分发器用 partition = "xxx" 来指定，支持 default、ts、index
 > ```
 > {matcher = ['*.*'], dispatcher = "ts", partition = "table"},
 > ```
-
-> **警告：**
->
-> 当开启 [Old Value 功能](/ticdc/ticdc-manage-changefeed.md#输出行变更的历史值-从-v405-版本开始引入)时 (`enable-old-value = true`)，使用 index-value 分发器可能导致无法确保相同索引值的行变更顺序。因此，建议使用 default 分发器。
->
-> 具体原因请参考 [TiCDC 在开启 Old Value 功能后更新事件格式有何变化？](/ticdc/ticdc-faq.md#ticdc-在开启-old-value-功能后更新事件格式有何变化)
 
 ## 横向扩展大单表的负载到多个 TiCDC 节点
 

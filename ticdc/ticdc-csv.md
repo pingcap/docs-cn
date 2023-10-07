@@ -7,12 +7,6 @@ summary: 了解 TiCDC CSV Protocol 的概念和使用方法。
 
 当使用云存储服务作为下游 sink 时，你可以使用 CSV 格式将 DML 事件发送到下游云存储服务。
 
-> **警告：**
->
-> 当开启 [Old Value 功能](/ticdc/ticdc-manage-changefeed.md#输出行变更的历史值-从-v405-版本开始引入)时 (`enable-old-value = true`)，CSV 协议数据格式无法输出更新事件的旧值。
->
-> 具体原因请参考 [TiCDC 在开启 Old Value 功能后更新事件格式有何变化？](/ticdc/ticdc-faq.md#ticdc-在开启-old-value-功能后更新事件格式有何变化)
-
 ## 使用 CSV
 
 使用 CSV 时的配置样例如下所示：
