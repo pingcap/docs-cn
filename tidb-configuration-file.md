@@ -571,12 +571,8 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
 
 ### `enable-stats-cache-mem-quota` <span class="version-mark">从 v6.1.0 版本开始引入</span>
 
-> **警告：**
->
-> 该变量为实验特性，不推荐在生产环境中使用。
-
 + 用于控制 TiDB 是否开启统计信息缓存的内存上限。
-+ 默认值：false
++ 默认值：true
 
 ### `lite-init-stats` <span class="version-mark">从 v7.1.0 版本开始引入</span>
 

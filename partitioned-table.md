@@ -671,7 +671,7 @@ PARTITIONS 4;
 
 ### TiDB 对 Linear Hash 分区的处理
 
-在 v6.4.0 之前，如果在 TiDB 上执行 [MySQL Linear Hash 分区](https://dev.mysql.com/doc/refman/5.7/en/partitioning-linear-hash.html) 的 DDL 语句，TiDB 只能创建非分区表。在这种情况下，如果你仍然想要在 TiDB 中创建分区表，你需要修改这些 DDL 语句。
+在 v6.4.0 之前，如果在 TiDB 上执行 [MySQL Linear Hash 分区](https://dev.mysql.com/doc/refman/8.0/en/partitioning-linear-hash.html) 的 DDL 语句，TiDB 只能创建非分区表。在这种情况下，如果你仍然想要在 TiDB 中创建分区表，你需要修改这些 DDL 语句。
 
 从 v6.4.0 起，TiDB 支持解析 MySQL 的 `PARTITION BY LINEAR HASH` 语法，但会忽略其中的 `LINEAR` 关键字。你可以直接在 TiDB 中执行现有的 MySQL Linear Hash 分区的 SQL 语句，而无需修改。
 

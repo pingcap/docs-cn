@@ -57,3 +57,10 @@ SET SESSION tidb_opt_fix_control = '44262:ON,44389:ON';
 - 在某些场景下，当 `IndexJoin` 算子的 `Probe` 端包含 `Selection` 算子时，TiDB 会严重高估 `IndexScan` 的行数，导致在 `IndexJoin` 更好的时候选择了其它的执行计划。
 - TiDB 已经引入了缓解这类问题的改进逻辑。但是由于潜在的计划回退风险，该改进并没有被默认启用。
 - 此开关控制是否启用这个改进。
+
+### [`45132`](https://github.com/pingcap/tidb/issues/45132) <span class="version-mark">从 v7.4.0 版本开始引入</span>
+
+- 默认值：`1000`
+- 可选值：`[0, 2147483647]`
+- 此开关控制优化器进行启发式访问路径选择的阈值。当某个访问路径（如 `Index_A`）的估算行数远小于其他访问路径时（默认为 `1000` 倍），优化器会跳过代价比较直接选择 `Index_A`。
+- `0` 表示关闭此启发式访问路径选择策略。
