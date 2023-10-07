@@ -319,7 +319,6 @@ In this version, TiDB partition management adds:
 | [`tidb_enable_non_prepared_plan_cache`](/system-variables.md#tidb_enable_non_prepared_plan_cache) | 修改 | 经进一步的测试后，该变量默认值从 `ON` 修改为 `OFF`，即默认关闭非 Prepare 语句执行计划缓存。 |
 | `tidb_enable_tiflash_pipeline_model` | 删除 | 这个变量用来控制是否启用 TiFlash Pipeline Model。从 v7.4.0 开启，开启 TiFlash 资源管控功能时，Pipeline Model 模型将自动启用。 |
 | `tidb_schema_version_cache_limit` | 新增 | 这个变量用来控制 schema cache 的容量 |
-|  | 新增/删除/修改 |  |
 
 ### 配置文件参数
 
