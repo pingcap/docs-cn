@@ -5,7 +5,7 @@ aliases: ['/docs-cn/dev/statement-summary-tables/','/docs-cn/dev/reference/perfo
 
 # Statement Summary Tables
 
-针对 SQL 性能相关的问题，MySQL 在 `performance_schema` 提供了 [statement summary tables](https://dev.mysql.com/doc/refman/5.7/en/performance-schema-statement-summary-tables.html)，用来监控和统计 SQL。例如其中的一张表 `events_statements_summary_by_digest`，提供了丰富的字段，包括延迟、执行次数、扫描行数、全表扫描次数等，有助于用户定位 SQL 问题。
+针对 SQL 性能相关的问题，MySQL 在 `performance_schema` 提供了 [statement summary tables](https://dev.mysql.com/doc/refman/8.0/en/performance-schema-statement-summary-tables.html)，用来监控和统计 SQL。例如其中的一张表 `events_statements_summary_by_digest`，提供了丰富的字段，包括延迟、执行次数、扫描行数、全表扫描次数等，有助于用户定位 SQL 问题。
 
 为此，从 4.0.0-rc.1 版本开始，TiDB 在 `information_schema`（_而不是_ `performance_schema`）中提供与 `events_statements_summary_by_digest` 功能相似的系统表：
 
@@ -171,7 +171,7 @@ select * from information_schema.statements_summary_evicted;
 2 row in set (0.001 sec)
 ```
 
-由上可知，对最多 59 种 SQL 发生了 evict，也就是说最少应将 statement summary 的容量增大至 59 条记录。
+由上可知，对最多 59 种 SQL 发生了 evict。此时，建议将 `statements_summary` 表的容量至少增大 59 条记录，即至少增大至 3059 条。
 
 ## 目前的限制
 

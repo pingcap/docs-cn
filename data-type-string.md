@@ -5,7 +5,7 @@ aliases: ['/docs-cn/dev/data-type-string/','/docs-cn/dev/reference/sql/data-type
 
 # 字符串类型
 
-TiDB 支持 MySQL 所有的字符串类型，包括 `CHAR`、`VARCHAR`、`BINARY`、`VARBINARY`、`BLOB`、`TEXT`、`ENUM` 以及 `SET`，完整信息参考[这篇](https://dev.mysql.com/doc/refman/5.7/en/string-types.html)文档。
+TiDB 支持 MySQL 所有的字符串类型，包括 `CHAR`、`VARCHAR`、`BINARY`、`VARBINARY`、`BLOB`、`TEXT`、`ENUM` 以及 `SET`，完整信息参考[这篇](https://dev.mysql.com/doc/refman/8.0/en/string-types.html)文档。
 
 ## 类型定义
 
@@ -167,7 +167,7 @@ ENUM('apple', 'orange', 'pear')
 | 'orange' | 2 |
 | 'pear' | 3 |
 
-更多信息参考 [MySQL 枚举文档](https://dev.mysql.com/doc/refman/5.7/en/enum.html)。
+更多信息参考 [MySQL 枚举文档](https://dev.mysql.com/doc/refman/8.0/en/enum.html)。
 
 ### `SET` 类型
 
@@ -207,4 +207,4 @@ SET('1', '2') NOT NULL
 
 这样对于值为 `('a', 'c')` 的元素，其二进制表示即为 0101。
 
-更多信息参考 [MySQL 集合文档](https://dev.mysql.com/doc/refman/5.7/en/set.html)。
+更多信息参考 [MySQL 集合文档](https://dev.mysql.com/doc/refman/8.0/en/set.html)。

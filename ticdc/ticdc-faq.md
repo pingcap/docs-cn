@@ -101,7 +101,6 @@ TiCDC 为 service GC safepoint 设置的存活有效期为 24 小时，即 TiCDC
 在使用 `cdc cli changefeed create` 命令时如果不指定 `--config` 参数，TiCDC 会按照以下默认行为创建同步任务：
 
 * 同步所有的非系统表
-* 开启 old value 功能
 * 只同步包含[有效索引](/ticdc/ticdc-overview.md#最佳实践)的表
 
 ## TiCDC 是否支持输出 Canal 格式的变更数据？
@@ -171,8 +170,6 @@ Open protocol 的输出中 type = 6 即为 null，比如：
 更多信息请参考 [Open protocol Event 格式定义](/ticdc/ticdc-open-protocol.md#column-的类型码)。
 
 ## 如何区分 TiCDC Open Protocol 中的 Row Changed Event 是 `INSERT` 事件还是 `UPDATE` 事件？
-
-如果没有开启 Old Value 功能，你无法区分 TiCDC Open Protocol 中的 Row Changed Event 是 `INSERT` 事件还是 `UPDATE` 事件。如果开启了 Old Value 功能，则可以通过事件中的字段判断事件类型：
 
 * 如果同时存在 `"p"` 和 `"u"` 字段为 `UPDATE` 事件
 * 如果只存在 `"u"` 字段则为 `INSERT` 事件
@@ -288,72 +285,6 @@ TiCDC 需要磁盘是为了缓冲上游写入高峰时下游消费不及时堆�
 ## 上游有运行时间比较长的未提交事务，TiCDC 同步是否会被卡住？
 
 TiDB 有事务超时的机制，当事务运行超过 [`max-txn-ttl`](/tidb-configuration-file.md#max-txn-ttl) 后，会被 TiDB 强制回滚。TiCDC 遇到未提交的事务，会等待其提交后再继续同步其数据，因此会出现同步延迟。
-
-## TiCDC 在开启 Old Value 功能后更新事件格式有何变化？
-
-在下面的说明中，有效索引的定义如下：
-
-- 主键 (`PRIMARY KEY`) 为有效索引。
-- 唯一索引 (`UNIQUE INDEX`) 中每一列在表结构中明确定义非空 (`NOT NULL`) 且不存在虚拟生成列 (`VIRTUAL GENERATED COLUMNS`)。
-
-聚簇索引指的是 TiDB 从 v5.0 开始支持的特性，用于控制含有主键的表数据的存储方式。详见[聚簇索引](/clustered-indexes.md)。
-
-在开启 [Old Value 功能](/ticdc/ticdc-manage-changefeed.md#输出行变更的历史值-从-v405-版本开始引入)后，TiCDC 的表现如下：
-
-- 对于非有效索引列的更新事件，输出的数据中会同时包含新值和旧值。
-- 对于有效索引列的更新事件，输出的数据视不同情况而定：
-    - 更新唯一索引列 (`UNIQUE INDEX`)，并且该表不存在主键时，输出的数据中会同时包含新值和旧值。
-    - 当上游 TiDB 集群未开启聚簇索引，更新非 INT 类型的主键列时，输出的数据中会同时包含新值和旧值。
-    - 在其他情况下，更新事件会被拆分为对旧数据的删除事件和对新数据的插入事件。
-
-以上行为的变化可能导致以下问题：
-
-### 当更新有效索引列的事件同时包含新值和旧值时，Kafka Sink 的分发行为可能无法保证将具有相同索引列的更新事件分发到同一分区
-
-Kafka Sink 的 index-value 分发行为是根据索引列的值来分发的。当更新事件同时包含新值和旧值时，索引列的值会发生变化，从而导致相同索引列的更新事件被分发到不同的分区。下面是一个示例：
-
-在关闭 TiDB 聚簇索引功能时，创建表 `t`：
-
-```sql
-CREATE TABLE t (a VARCHAR(255) PRIMARY KEY NONCLUSTERED);
-```
-
-执行如下 DML 语句：
-
-```sql
-INSERT INTO t VALUES ("2");
-UPDATE t SET a="1" WHERE a="2";
-INSERT INTO t VALUES ("2");
-UPDATE t SET a="3" WHERE a="2";
-```
-
-- 在未开启 Old Value 功能时，更新事件被拆分为删除旧值事件和插入新值事件。Kafka Sink 的 index-value 分发模式针对每个事件计算相应的分区。上述 DML 产生的事件会被发送到如下分区：
-
-    | partition-1  | partition-2  | partition-3  |
-    | ------------ | ------------ | ------------ |
-    | INSERT a = 2 | INSERT a = 1 | INSERT a = 3 |
-    | DELETE a = 2 |              |              |
-    | INSERT a = 2 |              |              |
-    | DELETE a = 2 |              |              |
-
-    因为 Kafka 的每个分区内可以保证消息的顺序，Kafka 消费者可以独立地消费每个分区中的数据，最终结果和 DML 执行顺序相同。
-
-- 在开启 Old Value 功能时，Kafka Sink 的 index-value 分发模式会将相同索引列的更新事件分发到不同的分区。因此上述 DML 会被分发到如下分区（更新事件同时包含新值和旧值）：
-
-    | partition-1  | partition-2              | partition-3              |
-    | ------------ | ------------------------ | ------------------------ |
-    | INSERT a = 2 | UPDATE a = 1 WHERE a = 2 | UPDATE a = 3 WHERE a = 2 |
-    | INSERT a = 2 |                          |                          |
-
-    因为 Kafka 的各个分区之间不能保证消息的顺序，因此上述 DML 在消费过程中可能无法保证索引列的更新顺序。如果需要在输出的数据中会同时包含新值和旧值时保证索引列的更新顺序，建议在开启 Old Value 功能时，使用 default 分发模式。
-
-### 对于非有效索引列的更新事件和有效索引列的更新事件同时包含新值和旧值时，Kafka Sink 的 Avro 格式无法正确输出旧值
-
-在 Avro 实现中，Kafka 消息的 Value 格式只包含当前列值，因此当一个事件既有新值也有旧值时，无法正确输出旧值。如果需要输出旧值，建议关闭 Old Value 功能以获取拆分后的删除和插入事件。
-
-### 对于非有效索引列的更新事件和有效索引列的更新事件同时包含新值和旧值时，Cloud Storage Sink 的 CSV 格式无法正确输出旧值
-
-因为 CSV 文件的列数是固定的，当一个事件既有新值也有旧值时，无法正确输出旧值。如果需要输出旧值，建议使用 Canal-JSON 格式。
 
 ## 为什么通过 TiDB Operator 部署的 TiCDC 集群无法使用 cdc cli 命令进行操作？
 

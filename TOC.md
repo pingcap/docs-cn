@@ -36,6 +36,14 @@
       - [SQLAlchemy](/develop/dev-guide-sample-application-python-sqlalchemy.md)
       - [peewee](/develop/dev-guide-sample-application-python-peewee.md)
       - [Django](/develop/dev-guide-sample-application-python-django.md)
+    - Node.js
+      - [node-mysql2](/develop/dev-guide-sample-application-nodejs-mysql2.md)
+      - [mysql.js](/develop/dev-guide-sample-application-nodejs-mysqljs.md)
+      - [Prisma](/develop/dev-guide-sample-application-nodejs-prisma.md)
+      - [TypeORM](/develop/dev-guide-sample-application-nodejs-typeorm.md)
+    - Ruby
+      - [mysql2](/develop/dev-guide-sample-application-ruby-mysql2.md)
+      - [Rails](/develop/dev-guide-sample-application-ruby-rails.md)
   - 连接到 TiDB
     - [选择驱动或 ORM 框架](/develop/dev-guide-choose-driver-or-orm.md)
     - [连接到 TiDB](/develop/dev-guide-connect-to-tidb.md)
@@ -539,11 +547,14 @@
       - 创建 Changefeed
         - [同步数据到 MySQL 兼容的数据库](/ticdc/ticdc-sink-to-mysql.md)
         - [同步数据到 Kafka](/ticdc/ticdc-sink-to-kafka.md)
+        - [同步数据到 Pulsar](/ticdc/ticdc-sink-to-pulsar.md)
         - [同步数据到存储服务](/ticdc/ticdc-sink-to-cloud-storage.md)
       - [管理 Changefeed](/ticdc/ticdc-manage-changefeed.md)
       - [日志过滤器](/ticdc/ticdc-filter.md)
+      - [DDL 同步](/ticdc/ticdc-ddl.md)
       - [双向复制](/ticdc/ticdc-bidirectional-replication.md)
       - [单行数据正确性校验](/ticdc/ticdc-integrity-check.md)
+      - [主从集群一致性读和数据校验](/ticdc/ticdc-upstream-downstream-check.md)
     - 监控告警
       - [基本监控指标](/ticdc/ticdc-summary-monitor.md)
       - [详细监控指标](/ticdc/monitor-ticdc.md)
@@ -599,7 +610,6 @@
     - [概述](/sync-diff-inspector/sync-diff-inspector-overview.md)
     - [不同库名或表名的数据校验](/sync-diff-inspector/route-diff.md)
     - [分库分表场景下的数据校验](/sync-diff-inspector/shard-diff.md)
-    - [TiDB 主从集群的数据校验](/sync-diff-inspector/upstream-downstream-diff.md)
     - [基于 DM 同步场景下的数据校验](/sync-diff-inspector/dm-diff.md)
   - TiUniManager
     - [概述](/tiunimanager/tiunimanager-overview.md)
@@ -872,6 +882,7 @@
       - [信息函数](/functions-and-operators/information-functions.md)
       - [JSON 函数](/functions-and-operators/json-functions.md)
       - [GROUP BY 聚合函数](/functions-and-operators/aggregate-group-by-functions.md)
+      - [GROUP BY 修饰符](/functions-and-operators/group-by-modifier.md)
       - [窗口函数](/functions-and-operators/window-functions.md)
       - [其它函数](/functions-and-operators/miscellaneous-functions.md)
       - [精度数学](/functions-and-operators/precision-math.md)
@@ -904,6 +915,7 @@
       - INFORMATION_SCHEMA
         - [Overview](/information-schema/information-schema.md)
         - [`ANALYZE_STATUS`](/information-schema/information-schema-analyze-status.md)
+        - [`CHECK_CONSTRAINTS`](/information-schema/information-schema-check-constraints.md)
         - [`CLIENT_ERRORS_SUMMARY_BY_HOST`](/information-schema/client-errors-summary-by-host.md)
         - [`CLIENT_ERRORS_SUMMARY_BY_USER`](/information-schema/client-errors-summary-by-user.md)
         - [`CLIENT_ERRORS_SUMMARY_GLOBAL`](/information-schema/client-errors-summary-global.md)
@@ -1026,6 +1038,7 @@
   - v6.6
     - [6.6.0-DMR](/releases/release-6.6.0.md)
   - v6.5
+    - [6.5.5](/releases/release-6.5.5.md)
     - [6.5.4](/releases/release-6.5.4.md)
     - [6.5.3](/releases/release-6.5.3.md)
     - [6.5.2](/releases/release-6.5.2.md)
