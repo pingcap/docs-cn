@@ -1131,6 +1131,46 @@ ALTER TABLE example TRUNCATE PARTITION p0;
 Query OK, 0 rows affected (0.03 sec)
 ```
 
+### Convert a partitioned table to a non-partitioned table
+
+To convert a partitioned table to a non-partitioned table, you can use the following statement, which removes the partitioning, copies all rows of the table, and recreates the indexes online for the table:
+
+```sql
+ALTER TABLE <table_name> REMOVE PARTITIONING
+```
+
+For example, to convert the `members` partitioned table to the non-partitioned table, you can execute the following statement:
+
+```sql
+ALTER TABLE members REMOVE PARTITIONING
+```
+
+### Partition an existing table
+
+To partition an existing non-partitioned table or modify the partition type of an existing partitioned table, you can use the following statement, which copies all rows and recreates the indexes online according to the new partition definitions:
+
+```sql
+ALTER TABLE <table_name> PARTITION BY <new partition type and definitions>
+```
+
+Examples:
+
+To convert the existing `members` table to a HASH partitioned table with 10 partitions, you can execute the following statement:
+
+```sql
+ALTER TABLE members PARTITION BY HASH(id) PARTITIONS 10;
+```
+
+To convert the existing `member_level` table to a RANGE partitioned table, you can execute the following statement:
+
+```sql
+ALTER TABLE member_level PARTITION BY RANGE(level)
+(PARTITION pLow VALUES LESS THAN (1),
+ PARTITION pMid VALUES LESS THAN (3),
+ PARTITION pHigh VALUES LESS THAN (7)
+ PARTITION pMax VALUES LESS THAN (MAXVALUE));
+```
+
 ## Partition pruning
 
 [Partition pruning](/partition-pruning.md) is an optimization which is based on a very simple idea - do not scan the partitions that do not match.
