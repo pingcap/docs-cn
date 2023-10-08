@@ -11,12 +11,12 @@ summary: 本文介绍支持无需手动取消 DDL 的平滑升级集群功能。
 
 本文档介绍 TiDB 的平滑升级集群功能，支持无需手动取消 DDL 的操作。
 
-从 v7.1.0 起，当将 TiDB 升级至更高的版本时，TiDB 支持平滑升级功能，取消了升级过程中的限制，提供更平滑的升级体验。
+从 v7.1.0 起，当将 TiDB 升级至更高的版本时，TiDB 支持平滑升级功能，取消了升级过程中的限制（用户需要保证升级过程中无用户 DDL 操作），提供更平滑的升级体验。
 
 ## 版本支持情况
 
 * 从 v7.1.0 升级到 [v7.1.1, v7.4.0）版本时，此功能默认开启，且无开关控制。
-* 从 v7.4.0 升级到更高的版本时, 通过是否发送 `/upgrade/start` HTTP 请求控制此功能开关。如果发送 `/upgrade/start` 请求，则开启此功能。具体方式可以参考：[TiDB HTTP API 文档](https://github.com/pingcap/tidb/blob/master/docs/tidb_http_api.md)。
+* 从 v7.4.0 升级到更高的版本时, 通过是否发送 `/upgrade/start` HTTP 请求控制此功能开关。即此功能默认关闭，可通过发送 `/upgrade/start` 请求，开启此功能。具体方式可以参考：[TiDB HTTP API 文档](https://github.com/pingcap/tidb/blob/master/docs/tidb_http_api.md)。
 
 ## 功能简介
 
@@ -25,7 +25,7 @@ TiDB 引入平滑升级功能前，对于升级过程中的 DDL 操作有如下�
 - 在升级过程中执行 DDL 操作，TiDB 可能会出现未定义的行为。
 - 在 DDL 操作执行过程中升级 TiDB，TiDB 可能会出现未定义的行为。
 
-引入平滑升级后，TiDB 升级过程不再受上述限制。
+上述限制可概括为用户需要保证在升级过程中无用户 DDL 操作。引入平滑升级后，TiDB 升级过程不再受此限制。
 
 ### 升级步骤
 
