@@ -1109,6 +1109,46 @@ ALTER TABLE example TRUNCATE PARTITION p0;
 Query OK, 0 rows affected (0.03 sec)
 ```
 
+### 将分区表转换为非分区表
+
+要将分区表转换为非分区表，你可以使用以下语句。该语句在执行时将会删除分区，复制表中的所有行，并为表在线重新创建索引。
+
+```sql
+ALTER TABLE <table_name> REMOVE PARTITIONING
+```
+
+例如，要将分区表 `members` 转换为非分区表，可以执行以下语句：
+
+```sql
+ALTER TABLE members REMOVE PARTITIONING
+```
+
+### 对现有表进行分区
+
+要对现有的非分区表进行分区或修改现有分区表的分区类型，你可以使用以下语句。该语句在执行时，将根据新的分区定义复制表中的所有行，并在线重新创建索引：
+
+```sql
+ALTER TABLE <table_name> PARTITION BY <new partition type and definitions>
+```
+
+示例：
+
+要将现有的 `members` 表转换为一个包含 10 个分区的 HASH 分区表，可以执行以下语句：
+
+```sql
+ALTER TABLE members PARTITION BY HASH(id) PARTITIONS 10;
+```
+
+要将现有的 `member_level` 表转换为 RANGE 分区表，可以执行以下语句：
+
+```sql
+ALTER TABLE member_level PARTITION BY RANGE(level)
+(PARTITION pLow VALUES LESS THAN (1),
+ PARTITION pMid VALUES LESS THAN (3),
+ PARTITION pHigh VALUES LESS THAN (7)
+ PARTITION pMax VALUES LESS THAN (MAXVALUE));
+```
+
 ## 分区裁剪
 
 有一个优化叫做[“分区裁剪”](/partition-pruning.md)，它基于一个非常简单的概念：不需要扫描那些匹配不上的分区。
