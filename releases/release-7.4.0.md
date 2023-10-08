@@ -405,7 +405,7 @@ In this version, TiDB partition management adds:
     - 修复 `AUTO_ID_CACHE=1` 时 TiDB panic 后恢复过慢的问题 [#46454](https://github.com/pingcap/tidb/issues/46454) @[tiancaiamao](https://github.com/tiancaiamao)
     - 修复 `AUTO_ID_CACHE=1` 时 `SHOW CREATE TABLE` 中 `next_row_id` 错误的问题 [#46545](https://github.com/pingcap/tidb/issues/46545) @[tiancaiamao](https://github.com/tiancaiamao)
     <!-- tw@Oreoxmt 以上 10 条-->
-    - 将多值索引列字符集从 `array` 变更为 `binary`，避免执行失败 [#46717](https://github.com/pingcap/tidb/issues/46717) @[YangKeao](https://github.com/YangKeao) 
+    - 将多值索引列的排序规则变更为 `binary`，避免执行失败 [#46717](https://github.com/pingcap/tidb/issues/46717) @[YangKeao](https://github.com/YangKeao) 
     - 修复在子查询中使用 CTE 时，解析出现 panic 的问题 [#45838](https://github.com/pingcap/tidb/issues/45838) @[djshow832](https://github.com/djshow832)
     - 修复在交换分区失败或被取消时，分区表的限制残留在原表上的问题 [#45920](https://github.com/pingcap/tidb/issues/45920) [#45791](https://github.com/pingcap/tidb/issues/45791) @[mjonss](https://github.com/mjonss)
     - 修复 List 分区的定义中不允许同时使用 `NULL` 和空字符串的问题 [#45694](https://github.com/pingcap/tidb/issues/45694) @[mjonss](https://github.com/mjonss)
@@ -420,14 +420,14 @@ In this version, TiDB partition management adds:
 + TiKV **tw@ran-huang 9**
 
     (dup) - 修复开启 Titan 后，TiKV 遇到 `Blob file deleted twice` 报错无法正常启动的问题 [#15454](https://github.com/tikv/tikv/issues/15454) @[Connor1996](https://github.com/Connor1996)
-    - 修复 Thread Voluntary/Nonvoluntary 监控面板没有数据的问题 [#15413] (https://github.com/tikv/tikv/issues/15413) @[SpadeA-Tang] (https://github.com/SpadeA-Tang)
+    - 修复 Thread Voluntary/Nonvoluntary 监控面板没有数据的问题 [#15413](https://github.com/tikv/tikv/issues/15413) @[SpadeA-Tang](https://github.com/SpadeA-Tang)
     - 修复 raftstore-applys 不断增长的数据错误 [#15371](https://github.com/tikv/tikv/issues/15371) @[Connor1996] (https://github.com/Connor1996)
     - 修复由于 Region 的元数据不正确造成 TiKV panic 的问题 [#13311] (https://github.com/tikv/tikv/issues/13311) @[zyguan](https://github.com/zyguan)
     - 修复切换 sync_recovery 到 sync 后 QPS 降至 0 的问题 [#15366] (https://github.com/tikv/tikv/issues/15366) @[nolouch](https://github.com/nolouch)
     (dup) - 修复 Online Unsafe Recovery 超时未中止的问题 [#15346](https://github.com/tikv/tikv/issues/15346) @[Connor1996](https://github.com/Connor1996)
-    - 修复 CpuRecord 可能导致的内存泄漏 [#15304] (https://github.com/tikv/tikv/issues/15304) @[overvenus] (https://github.com/overvenus)
-    - 修复当备用集群关闭后，主集群查询出现 `"Error 9002: TiKV server timeout"` 的问题 [#12914] (https://github.com/tikv/tikv/issues/12914) @[Connor1996] (https://github.com/Connor1996)
-    - 修复当主集群恢复后 TiKV 再次启动时，备用 TiKV 会卡住的问题 [#12320] (https://github.com/tikv/tikv/issues/12320) @[disksing] (https://github.com/disksing)
+    - 修复 CpuRecord 可能导致的内存泄漏 [#15304](https://github.com/tikv/tikv/issues/15304) @[overvenus](https://github.com/overvenus)
+    - 修复当备用集群关闭后，查询主集群出现 `"Error 9002: TiKV server timeout"` 的问题 [#12914](https://github.com/tikv/tikv/issues/12914) @[Connor1996](https://github.com/Connor1996)
+    - 修复当主集群恢复后 TiKV 再次启动时，备用 TiKV 会卡住的问题 [#12320](https://github.com/tikv/tikv/issues/12320) @[disksing](https://github.com/disksing)
 
 + PD **tw@hfxsd 5**
 
