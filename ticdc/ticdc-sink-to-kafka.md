@@ -200,7 +200,7 @@ Topic 表达式的基本规则为 `[prefix][{schema}][middle][{table}][suffix]`�
 - `matcher = ['test3.*', 'test4.*'], topic = "hello_{schema}_world"`
     - 对于 `test3` 下的所有表对应的数据变更事件，发送到名为 `hello_test3_world` 的 topic 中。
     - 对于 `test4` 下的所有表对应的数据变更事件，发送到名为 `hello_test4_world` 的 topic 中。
-- `matcher = ['test5.*, 'test6.*'], topic = "hard_code_topic_name`
+- `matcher = ['test5.*, 'test6.*'], topic = "hard_code_topic_name"`
     - 对于 `test5` 和 `test6` 下的所有表对应的数据变更事件，发送到名为 `hard_code_topic_name` 的 topic 中。你可以直接指定 topic 名称。
 - `matcher = ['*.*'], topic = "{schema}_{table}"`
     - 对于 TiCDC 监听的所有表，按照“库名_表名”的规则分别分发到独立的 topic 中；例如对于 `test.account` 表，TiCDC 会将其数据变更日志分发到名为 `test_account` 的 Topic 中。
