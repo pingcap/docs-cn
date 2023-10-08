@@ -382,8 +382,6 @@ In this version, TiDB partition management adds:
 
     + TiDB Lightning **tw@Oreoxmt 4**
 
-        - 修复 `checksum = "optional"` 时 Checksum 阶段仍然报错的问题 [#45382](https://github.com/pingcap/tidb/issues/45382) @[lyzx2001](https://github.com/lyzx2001)
-        - 修复当 PD 集群地址变更时数据导入失败的问题 [#43436](https://github.com/pingcap/tidb/issues/43436) @[lichunzhu](https://github.com/lichunzhu)
         - 优化 TiDB Lightning 在 Region scatter 阶段的重试逻辑 [#46203](https://github.com/pingcap/tidb/issues/46203) @[mittalrishabh](https://github.com/mittalrishabh)
         - 优化 TiDB Lightning 在导入数据阶段对 `no leader` 错误的重试逻辑 [#46253](https://github.com/pingcap/tidb/issues/46253) @[lance6716](https://github.com/lance6716)
 
@@ -394,9 +392,7 @@ In this version, TiDB partition management adds:
     - 修复 `BatchPointGet` 算子在非 Hash 分区表下执行结果错误的问题 [#45889](https://github.com/pingcap/tidb/issues/45889) @[Defined2014](https://github.com/Defined2014)
     - 修复 `BatchPointGet` 算子在 Hash 分区表下执行结果错误的问题 [#46779](https://github.com/pingcap/tidb/issues/46779) @[jiyfhust](https://github.com/jiyfhust)
     - 修复 TiDB parser 状态残留导致解析失败的问题 [#45898](https://github.com/pingcap/tidb/issues/45898) @[qw4990](https://github.com/qw4990)
-    - 修复执行 `EXCHANGE PARTITION` 后表消失的问题 [#45920](https://github.com/pingcap/tidb/issues/45920) @[mjonss](https://github.com/mjonss)
-    - 修复 `EXCHANGE PARTITION` 没有检查约束的问题 [#45922](https://github.com/pingcap/tidb/issues/45920) @[mjonss](https://github.com/mjonss)
-    - 修复 `EXCHANGE PARTITION` 错误交换成功的问题 [#46492](https://github.com/pingcap/tidb/issues/46492) @[mjonss](https://github.com/mjonss)
+    - 修复 `EXCHANGE PARTITION` 没有检查约束的问题 [#45922](https://github.com/pingcap/tidb/issues/45922) @[mjonss](https://github.com/mjonss)
     - 修复 `tidb_enforce_mpp` 系统变量不能被正确还原的问题 [#46214](https://github.com/pingcap/tidb/issues/46214) @[djshow832](https://github.com/djshow832)
     - 修复 `LIKE` 语句中 `_` 没有被正确处理的问题 [#46287](https://github.com/pingcap/tidb/issues/46287) [#46618](https://github.com/pingcap/tidb/issues/46618) @[Defined2014](https://github.com/Defined2014)
     - 修复当获取 schema 失败时会导致 `schemaTs` 被设置为 0 的问题 [#46325](https://github.com/pingcap/tidb/issues/46325) @[hihihuhu](https://github.com/hihihuhu)
@@ -474,6 +470,9 @@ In this version, TiDB partition management adds:
     + TiDB Lightning **tw@hfxsd 1**
 
         - 修复 TiDB Lightning 导入 `NONCLUSTERED auto_increment` 和 `AUTO_ID_CACHE=1` 表后，插入数据报错的问题 [#46100](https://github.com/pingcap/tidb/issues/46100) @[tiancaiamao](https://github.com/tiancaiamao)
+        <!-- **tw@Oreoxmt 2** -->
+        - 修复 `checksum = "optional"` 时 Checksum 阶段仍然报错的问题 [#45382](https://github.com/pingcap/tidb/issues/45382) @[lyzx2001](https://github.com/lyzx2001)
+        - 修复当 PD 集群地址变更时数据导入失败的问题 [#43436](https://github.com/pingcap/tidb/issues/43436) @[lichunzhu](https://github.com/lichunzhu)
         
 ## 贡献者
 
