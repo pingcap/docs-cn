@@ -52,10 +52,7 @@ In addition, the rational use of the resource control feature can reduce the num
 
 ## Limitations
 
-Currently, the resource control feature has the following limitations:
-
-* This feature only supports flow control and scheduling of read and write requests initiated by foreground clients. It does not support flow control and scheduling of background tasks such as DDL operations and auto analyze.
-* Resource control incurs additional scheduling overhead. Therefore, there might be a slight performance degradation when this feature is enabled.
+Resource control incurs additional scheduling overhead. Therefore, there might be a slight performance degradation (less than 5%) when this feature is enabled.
 
 ## What is Request Unit (RU)
 
