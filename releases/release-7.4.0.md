@@ -426,10 +426,10 @@ In this version, TiDB partition management adds:
 
 + PD **tw@hfxsd 5**
 
-    - 修复在 Flashback 时不更新保存 region 信息的问题  [#6911](https://github.com/tikv/pd/pull/6911) @[overvenus](https://github.com/overvenus)
-    - 修复因为同步 store config 慢而导致 PD Leader 切换慢的问题  [#6919](https://github.com/tikv/pd/pull/6919) @[bufferflies](https://github.com/bufferflies)
-    - 修复 Scatter Peer 时未考虑 group 的问题  [#6962](https://github.com/tikv/pd/issues/6962) @[bufferflies](https://github.com/bufferflies)
-    - 修复 RU 消耗小于 0 导致 PD 崩溃的问题 [#6983](https://github.com/tikv/pd/pull/6983) @[CabinfeverB](https://github.com/CabinfeverB)
+    - 修复在 Flashback 时不更新保存 Region 信息的问题 [#6912](https://github.com/tikv/pd/issues/6912) @[overvenus](https://github.com/overvenus)
+    - 修复因为同步 store config 慢而导致 PD Leader 切换慢的问题 [#6918](https://github.com/tikv/pd/issues/6918) @[bufferflies](https://github.com/bufferflies)
+    - 修复 Scatter Peer 时未考虑 Group 的问题 [#6962](https://github.com/tikv/pd/issues/6962) @[bufferflies](https://github.com/bufferflies)
+    - 修复 RU 消耗小于 0 导致 PD 崩溃的问题 [#6973](https://github.com/tikv/pd/issues/6973) @[CabinfeverB](https://github.com/CabinfeverB)
     - 修复修改隔离等级时未同步到默认放置规则中的问题 [#7121](https://github.com/tikv/pd/issues/7121) @[rleungx](https://github.com/rleungx)
 
 + TiFlash **tw@hfxsd 3**
@@ -442,34 +442,34 @@ In this version, TiDB partition management adds:
 
     + Backup & Restore (BR) **tw@hfxsd 4**
 
-        - 修复备份失败时 BR 的报错信息 "resolve lock timeout" 具有误导性，掩盖了实际错误的问题 [#43236](https://github.com/pingcap/tidb/issues/43236) @[YuJuncen](https://github.com/YuJuncen)
+        - 修复备份失败时 BR 的误导性报错信息 "resolve lock timeout" 掩盖了实际错误的问题 [#43236](https://github.com/pingcap/tidb/issues/43236) @[YuJuncen](https://github.com/YuJuncen)
         - 修复 PITR 恢复隐式主键可能冲突的问题 [#46520](https://github.com/pingcap/tidb/issues/46520) @[3pointer](https://github.com/3pointer)
         - 修复 PITR 恢复 meta-kv 出错的问题 [#46578](https://github.com/pingcap/tidb/issues/46578) @[Leavrth](https://github.com/Leavrth)
         - 修复 BR 集成测试用例出错的问题 [#45561](https://github.com/pingcap/tidb/issues/46561) @[purelind](https://github.com/purelind)
 
     + TiCDC **tw@hfxsd 8**
 
-        - 修复 PD 做扩缩容场景下 CDC 访问原无效地址的问题 [#9054](https://github.com/pingcap/tiflow/issues/9054)
-        - 修复某些特殊场景下会导致 changefeed 失败的问题 [#9309](https://github.com/pingcap/tiflow/issues/9309)[#9450](https://github.com/pingcap/tiflow/issues/9450)[#9542](https://github.com/pingcap/tiflow/issues/9542)[#9685](https://github.com/pingcap/tiflow/issues/9685)
-        - 修复上游在同一个事务中同时修改多个UK导致下游同步可能会失败的问题 [#9430](https://github.com/pingcap/tiflow/issues/9430)
-        - 修复上游在同一条 DDL 中 rename 多个 table 场景下同步出错的问题 [#9476](https://github.com/pingcap/tiflow/issues/9476) [#9488](https://github.com/pingcap/tiflow/issues/9488)
-        - 修复CSV格式下没有校验中文分隔符的问题 [#9609](https://github.com/pingcap/tiflow/issues/9609)
-        - 修复在没有changefeed 时会阻塞上游 tidb gc 的问题 [#9633](https://github.com/pingcap/tiflow/issues/9633)
-        - 修复开启 scale-out 时流量在节点间分配不均匀问题 [#9665](https://github.com/pingcap/tiflow/issues/9665)
-        - 修复日志中记录了用户敏感信息的问题 [#9690](https://github.com/pingcap/tiflow/issues/9690)
+        - 修复 PD 做扩缩容场景下 TiCDC 访问无效旧地址的问题 [#9584](https://github.com/pingcap/tiflow/issues/9584) @[fubinzh](https://github.com/fubinzh) @[asddongmen](https://github.com/asddongmen)
+        - 修复某些特殊场景下 changefeed 失败的问题 [#9309](https://github.com/pingcap/tiflow/issues/9309) [#9450](https://github.com/pingcap/tiflow/issues/9450) [#9542](https://github.com/pingcap/tiflow/issues/9542) [#9685](https://github.com/pingcap/tiflow/issues/9685) @[hicqu](https://github.com/hicqu) @[CharlesCheung96](https://github.com/CharlesCheung96) 
+        - 修复在上游同一个事务中修改多行唯一键场景下，TiCDC 可能导致同步写冲突的问题 [#9430](https://github.com/pingcap/tiflow/issues/9430) @[sdojjy](https://github.com/sdojjy)
+        - 修复上游在同一条 DDL 中重命名多个表的场景下同步出错的问题 [#9476](https://github.com/pingcap/tiflow/issues/9476) [#9488](https://github.com/pingcap/tiflow/issues/9488) @[CharlesCheung96](https://github.com/CharlesCheung96) @[asddongmen](https://github.com/asddongmen)
+        - 修复 CSV 格式下没有校验中文分隔符的问题 [#9609](https://github.com/pingcap/tiflow/issues/9609) @[CharlesCheung96](https://github.com/CharlesCheung96)
+        - 修复所有 changefeed 被移除时会阻塞上游 TiDB GC 的问题 [#9633](https://github.com/pingcap/tiflow/issues/9633) @[sdojjy](https://github.com/sdojjy)
+        - 修复开启 `scale-out` 时流量在节点间分配不均匀问题 [#9665](https://github.com/pingcap/tiflow/issues/9665) @[sdojjy](https://github.com/sdojjy)
+        - 修复日志中记录了用户敏感信息的问题 [#9690](https://github.com/pingcap/tiflow/issues/9690) @[sdojjy](https://github.com/sdojjy)
 
     + TiDB Data Migration (DM) **tw@hfxsd 6**
 
         - 修复 DM 在大小写不敏感的 collation 下无法正确处理冲突的问题 [#9489](https://github.com/pingcap/tiflow/issues/9489) @[hihihuhu](https://github.com/hihihuhu)
         - 修复 DM validator 死锁问题并增强重试 [#9257](https://github.com/pingcap/tiflow/issues/9257) @[D3Hunter](https://github.com/D3Hunter)
         - 修复 DM 在跳过失败 DDL 并且后续无 DDL 执行时显示延迟持续增长的问题 [#9605](https://github.com/pingcap/tiflow/issues/9605) @[D3Hunter](https://github.com/D3Hunter)
-        - 修复 DM 在跳过 online ddl 无法正确追踪上游表结构的问题 [#9587](https://github.com/pingcap/tiflow/issues/9587) @[GMHDBJD](https://github.com/GMHDBJD)
-        - 修复 DM 在乐观模式恢复任务时跳过所有 dml 的问题 [#9588](https://github.com/pingcap/tiflow/issues/9588) @[GMHDBJD](https://github.com/GMHDBJD)
-        - 修复 DM 下跳过添加 partition ddl 的问题 [#9788](https://github.com/pingcap/tiflow/issues/9788) @[GMHDBJD](https://github.com/GMHDBJD)
+        - 修复 DM 在跳过 Online DDL 时无法正确追踪上游表结构的问题 [#9587](https://github.com/pingcap/tiflow/issues/9587) @[GMHDBJD](https://github.com/GMHDBJD)
+        - 修复 DM 在乐观模式恢复任务时跳过所有 DML 的问题 [#9588](https://github.com/pingcap/tiflow/issues/9588) @[GMHDBJD](https://github.com/GMHDBJD)
+        - 修复 DM 在乐观模式中跳过添加 Partition DDL 的问题 [#9788](https://github.com/pingcap/tiflow/issues/9788) @[GMHDBJD](https://github.com/GMHDBJD)
 
     + TiDB Lightning **tw@hfxsd 1**
 
-        - 修复 Lightning 导入 NONCLUSTERED auto_increment 和 AUTO_ID_CACHE=1 的表后，插入数据报错重复的问题 [#46100](https://github.com/pingcap/tidb/issues/46100) @[tiancaiamao](https://github.com/tiancaiamao)
+        - 修复 TiDB Lightning 导入 `NONCLUSTERED auto_increment` 和 `AUTO_ID_CACHE=1` 表后，插入数据报错的问题 [#46100](https://github.com/pingcap/tidb/issues/46100) @[tiancaiamao](https://github.com/tiancaiamao)
         
 ## 贡献者
 
