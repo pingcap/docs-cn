@@ -182,10 +182,10 @@ dispatchers = [
 
 You can use topic = "xxx" to specify a Topic dispatcher and use topic expressions to implement flexible topic dispatching policies. It is recommended that the total number of topics be less than 1000.
 
-The format of the Topic expression is `[prefix]{schema}[middle][{table}][suffix]`.
+The format of the Topic expression is `[prefix][{schema}][middle][{table}][suffix]`.
 
 - `prefix`: optional. Indicates the prefix of the Topic Name.
-- `{schema}`: required. Used to match the schema name.
+- `[{schema}]`: optional. Used to match the schema name.
 - `middle`: optional. Indicates the delimiter between schema name and table name.
 - `{table}`: optional. Used to match the table name.
 - `suffix`: optional. Indicates the suffix of the Topic Name.
@@ -200,6 +200,8 @@ Some examples:
 - `matcher = ['test3.*', 'test4.*'], topic = "hello_{schema}_world"`
     - The data change events corresponding to all tables in `test3` are sent to the topic named `hello_test3_world`.
     - The data change events corresponding to all tables in `test4` are sent to the topic named `hello_test4_world`.
+- `matcher = ['test5.*, 'test6.*'], topic = "hard_code_topic_name"`
+    - The data change events corresponding to all tables in `test5` and `test6` are sent to the topic named `hard_code_topic_name`. You can specify the topic name directly.
 - `matcher = ['*.*'], topic = "{schema}_{table}"`
     - All tables listened by TiCDC are dispatched to separate topics according to the "schema_table" rule. For example, for the `test.account` table, TiCDC dispatches its data change log to a Topic named `test_account`.
 
