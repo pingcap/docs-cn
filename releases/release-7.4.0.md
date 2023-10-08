@@ -337,34 +337,34 @@ In this version, TiDB partition management adds:
 
 + TiDB **tw@qiancai 1**
 
-    - 优化了 Analyze partition table 的内存开销和性能 [#47275](https://github.com/pingcap/tidb/issues/47275) @[hawkingrei](https://github.com/hawkingrei)
-    - 优化了统计信息垃圾回收的内存开销和性能 [#46138](https://github.com/pingcap/tidb/issues/31778) @[winoros](https://github.com/winoros)
-    - 优化了 Index Merge intersection 类型的 limit 下推 [#46862] (https://github.com/pingcap/tidb/issues/46863) @[AilinKid](https://github.com/AilinKid) 
-    - 改进了 cost model 以尽可能避免在 IndexLookup 回表多时错误地选择 FullScan  [#46559] (https://github.com/pingcap/tidb/issues/45132) @[qw4990](https://github.com/qw4990)
+    - 优化 `ANALYZE` 分区表的内存使用和性能 [#47275](https://github.com/pingcap/tidb/issues/47275) @[hawkingrei](https://github.com/hawkingrei)
+    - 优化统计信息垃圾回收的内存使用和性能 [#31778](https://github.com/pingcap/tidb/issues/31778) @[winoros](https://github.com/winoros)
+    - 优化索引合并进行交集操作时的 `limit` 下推，提高查询性能 [#46863](https://github.com/pingcap/tidb/issues/46863) @[AilinKid](https://github.com/AilinKid) 
+    - 改进代价模型 (Cost Model) 以尽量避免在 `IndexLookup` 回表任务多时错误地选择全表扫描 [#45132](https://github.com/pingcap/tidb/issues/45132) @[qw4990](https://github.com/qw4990)
     
 
 + TiKV **tw@qiancai 7**
 
-      - [内存优化]改进resolver的内存使用，防止OOM [#15458](https://github.com/tikv/tikv/issues/15458) @[overvenus](https://github.com/overvenus)
-      - [内存优化]消除Router对象中的LRUCache，降低内存占用防止OOM[#15430](https://github.com/tikv/tikv/issues/15430) @[Connor1996](https://github.com/Connor1996)
-      - [内存优化] 降低TICDC Resolver的内存使用 [#15412] (https://github.com/tikv/tikv/issues/15412) @[overvenus](https://github.com/overvenus)
-      - [内存优化] 降低RocksDB compaction带来的内存抖动 [#15324] (https://github.com/tikv/tikv/issues/15324) @[overvenus](https://github.com/overvenus)
-      - [内存优化] 降低Partitioned-raft-kv中流控模块的内存占用 [#15269] (https://github.com/tikv/tikv/issues/15269) @[overvenus](https://github.com/overvenus)
-      - [PD调用优化]减少PD的MemberList请求[#15428](https://github.com/tikv/tikv/issues/15428)  @[nolouch](https://github.com/nolouch)
-      - [动态调参]增加动态调整rocksdb background_compaction的支持[#15424](https://github.com/tikv/tikv/issues/15424)  @[glorv](https://github.com/glorv)
+      - 改进 Resolver 的内存使用，防止 OOM [#15458](https://github.com/tikv/tikv/issues/15458) @[overvenus](https://github.com/overvenus)
+      - 消除 Router 对象中的 LRUCache，降低内存占用，防止 OOM [#15430](https://github.com/tikv/tikv/issues/15430) @[Connor1996](https://github.com/Connor1996)
+      - 降低 TiCDC Resolver 的内存占用 [#15412] (https://github.com/tikv/tikv/issues/15412) @[overvenus](https://github.com/overvenus)
+      - 降低 RocksDB compaction 带来的内存抖动 [#15324] (https://github.com/tikv/tikv/issues/15324) @[overvenus](https://github.com/overvenus)
+      - 降低 Partitioned Raft KV 中流控模块的内存占用 [#15269] (https://github.com/tikv/tikv/issues/15269) @[overvenus](https://github.com/overvenus)
+      - 减少 PD 的 `MemberList` 请求，优化 PD 调用 [#15428](https://github.com/tikv/tikv/issues/15428) @[nolouch](https://github.com/nolouch)
+      - 支持动态调整 RocksDB 的 `background_compaction` [#15424](https://github.com/tikv/tikv/issues/15424) @[glorv](https://github.com/glorv)
 
 + PD **tw@qiancai 5**
 
     - 改进获取 `min-resolved-ts` 的方法，减少网络连接数 [#46664](https://github.com/pingcap/tidb/issues/46664) @[HuSharp](https://github.com/HuSharp)
-    - 优化 tso 的追踪信息，方便调查 tso 相关问题  [#6856](https://github.com/tikv/pd/pull/6856) @[tiancaiamao](https://github.com/tiancaiamao)
-    - 优化 HTTP Client 链接复用 [6914](https://github.com/tikv/pd/pull/6914) @[nolouch](https://github.com/nolouch)
-    - 优化 dr-autosync 的状态跟新速度 [#6874](https://github.com/tikv/pd/pull/6874) @[disksing](https://github.com/disksing)
-    - 改进 resource control client 的配置获取方式，使其可以动态获取最新配置 [#7042](https://github.com/tikv/pd/pull/7042) @[nolouch](https://github.com/nolouch)
+    - 优化 TSO 的追踪信息，方便调查 TSO 相关问题  [#6856](https://github.com/tikv/pd/pull/6856) @[tiancaiamao](https://github.com/tiancaiamao)
+    - 优化 HTTP Client 链接复用，降低内存占用 [#6913](https://github.com/tikv/pd/issues/6913) @[nolouch](https://github.com/nolouch)
+    - 优化无法连接到备份集群时 PD 自动更新集群状态的速度 [#6883](https://github.com/tikv/pd/issues/6883) @[disksing](https://github.com/disksing)
+    - 改进 resource control client 的配置获取方式，使其可以动态获取最新配置 [#7043](https://github.com/tikv/pd/issues/7043) @[nolouch](https://github.com/nolouch)
 
 + TiFlash **tw@qiancai 3**
 
     - 改进 TiFlash 写入过程的落盘策略，提升随机写入负载下的写性能 [#7564](https://github.com/pingcap/tiflash/issues/7564) @[CalvinNeo](https://github.com/CalvinNeo) 
-    - 添加 TiFlash 处理 Raft 同步过程中更多观测指标 [#8068](https://github.com/pingcap/tiflash/issues/8068) @[CalvinNeo](https://github.com/CalvinNeo)
+    - 为 TiFlash 处理 Raft 同步过程添加更多观测指标 [#8068](https://github.com/pingcap/tiflash/issues/8068) @[CalvinNeo](https://github.com/CalvinNeo)
     - 改进 TiFlash 文件格式，减少小文件数量以避免造成文件系统 inode 耗尽的问题 [#7595](https://github.com/pingcap/tiflash/issues/7595) @[hongyunyan](https://github.com/hongyunyan)
 
 + Tools
