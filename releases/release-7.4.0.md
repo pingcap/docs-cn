@@ -366,39 +366,39 @@ In this version, TiDB partition management adds:
 + Tools
 
     + Backup & Restore (BR) **tw@Oreoxmt 5**
-  
+
         - 缓解了 Region leadership 迁移导致 PITR 日志备份进度延迟变高的问题 [#13638](https://github.com/tikv/tikv/issues/13638) @[YuJuncen](https://github.com/YuJuncen)
-            - 通过设置 HTTP 客户端 MaxIdleConns 和 MaxIdleConnsPerHost 参数，增强 Log 备份以及 PiTR 恢复任务对连接复用的支持 [#46011](https://github.com/pingcap/tidb/issues/46011) @[Leavrth](https://github.com/Leavrth)
-            - 增强备份恢复任务在连接 PD 或者是外部 S3 存储出错时的容错能力 [#42909](https://github.com/pingcap/tidb/issues/42909) @[Leavrth](https://github.com/Leavrth)
-            - 新增恢复参数 `WaitTiflashReady`。当打开这个参数时，restore 操作将会等待 TiFlash 副本复制成功后才结束 [#43828](https://github.com/pingcap/tidb/issues/43828) [#46302](https://github.com/pingcap/tidb/issues/46302) @[3pointer](https://github.com/3pointer)
-            - 减少日志备份 `resolve lock` 的 CPU 开销 [#40759](https://github.com/pingcap/tidb/issues/40759) @[3pointer](https://github.com/3pointer)
+        - 通过设置 HTTP 客户端 MaxIdleConns 和 MaxIdleConnsPerHost 参数，增强日志备份以及 PITR 恢复任务对连接复用的支持 [#46011](https://github.com/pingcap/tidb/issues/46011) @[Leavrth](https://github.com/Leavrth)
+        - 增强 BR 在连接 PD 或者是外部 S3 存储出错时的容错能力 [#42909](https://github.com/pingcap/tidb/issues/42909) @[Leavrth](https://github.com/Leavrth)
+        - 新增 restore 参数 `WaitTiflashReady`。当打开这个参数时，restore 操作将会等待 TiFlash 副本复制成功后才结束 [#43828](https://github.com/pingcap/tidb/issues/43828) [#46302](https://github.com/pingcap/tidb/issues/46302) @[3pointer](https://github.com/3pointer)
+        - 减少日志备份 `resolve lock` 的 CPU 开销 [#40759](https://github.com/pingcap/tidb/issues/40759) @[3pointer](https://github.com/3pointer)
     + TiCDC **tw@Oreoxmt 1**
-    
-        - 优化同步 add index DDL 的执行逻辑，从而不阻塞后续的 DML 语句 [#9644](https://github.com/pingcap/tiflow/issues/9644)
+
+        - 优化同步 `ADD INDEX` DDL 的执行逻辑，从而不阻塞后续的 DML 语句 [#9644](https://github.com/pingcap/tiflow/issues/9644)
 
     + TiDB Lightning **tw@Oreoxmt 4**
 
-        - 优化 Lightning checksum 配置为 optional 的逻辑使其在校验失败时不报错退出 [#45382](https://github.com/pingcap/tidb/issues/45382) @[lyzx2001](https://github.com/lyzx2001)
-        - 优化 Lightning 使在其地址中的所有 pd 都被 scale-in 时仍能继续工作 [#43436](https://github.com/pingcap/tidb/issues/43436) @[lichunzhu](https://github.com/lichunzhu)
-        - 改善 Lightning 在 region scatter 阶段的重试逻辑 [#46203](https://github.com/pingcap/tidb/issues/46203) @[mittalrishabh](https://github.com/mittalrishabh)
-        - 改善 Lightning 在导入数据阶段时对 no leader 错误的重试逻辑 [#46253](https://github.com/pingcap/tidb/issues/46253) @[lance6716](https://github.com/lance6716)
+        - 修复 `checksum = "optional"` 时 Checksum 阶段仍然报错的问题 [#45382](https://github.com/pingcap/tidb/issues/45382) @[lyzx2001](https://github.com/lyzx2001)
+        - 修复当 PD 集群地址变更时数据导入失败的问题 [#43436](https://github.com/pingcap/tidb/issues/43436) @[lichunzhu](https://github.com/lichunzhu)
+        - 优化 TiDB Lightning 在 Region scatter 阶段的重试逻辑 [#46203](https://github.com/pingcap/tidb/issues/46203) @[mittalrishabh](https://github.com/mittalrishabh)
+        - 优化 TiDB Lightning 在导入数据阶段对 `no leader` 错误的重试逻辑 [#46253](https://github.com/pingcap/tidb/issues/46253) @[lance6716](https://github.com/lance6716)
 
 ## 错误修复
 
 + TiDB
 
-    - 修复 `BatchPointGet` 算子在非 HASH 分区表下执行结果错误的问题 [#45891](https://github.com/pingcap/tidb/pull/45891) @[Defined2014](https://github.com/Defined2014)
-    - 修复 `BatchPointGet` 算子在 HASH 分区表下执行结果错误的问题 [#46779](https://github.com/pingcap/tidb/pull/46779) @[jiyfhust](https://github.com/jiyfhust)
-    - 修复 parser 状态残留导致解析失败的问题 [#45903](https://github.com/pingcap/tidb/pull/45903) @[qw4990](https://github.com/qw4990)
-    - 修复 exchange partiton 之后导致表消失的问题 [#45920](https://github.com/pingcap/tidb/issues/45920) @[mjonss](https://github.com/mjonss)
-    - 修复 exchange partiton 没有检查 Constraints 的问题 [#45922](https://github.com/pingcap/tidb/issues/45920) @[mjonss](https://github.com/mjonss)
-    - 修复 exchange partition 错误交换成功的问题 [#46492](https://github.com/pingcap/tidb/issues/46492) @[mjonss](https://github.com/mjonss)
+    - 修复 `BatchPointGet` 算子在非 Hash 分区表下执行结果错误的问题 [#45891](https://github.com/pingcap/tidb/pull/45891) @[Defined2014](https://github.com/Defined2014)
+    - 修复 `BatchPointGet` 算子在 Hash 分区表下执行结果错误的问题 [#46779](https://github.com/pingcap/tidb/pull/46779) @[jiyfhust](https://github.com/jiyfhust)
+    - 修复 TiDB parser 状态残留导致解析失败的问题 [#45903](https://github.com/pingcap/tidb/pull/45903) @[qw4990](https://github.com/qw4990)
+    - 修复执行 `EXCHANGE PARTITION` 后表消失的问题 [#45920](https://github.com/pingcap/tidb/issues/45920) @[mjonss](https://github.com/mjonss)
+    - 修复 `EXCHANGE PARTITION` 没有检查约束的问题 [#45922](https://github.com/pingcap/tidb/issues/45920) @[mjonss](https://github.com/mjonss)
+    - 修复 `EXCHANGE PARTITION` 错误交换成功的问题 [#46492](https://github.com/pingcap/tidb/issues/46492) @[mjonss](https://github.com/mjonss)
     - 修复 `tidb_enforce_mpp` 系统变量不能被正确还原的问题 [#46214](https://github.com/pingcap/tidb/issues/46214) @[djshow832](https://github.com/djshow832)
-    - 修复 like 语句中 `_` 没有被正确处理的问题 [#46287](https://github.com/pingcap/tidb/issues/46287) [#46618](https://github.com/pingcap/tidb/issues/46618) @[Defined2014](https://github.com/Defined2014)
+    - 修复 `LIKE` 语句中 `_` 没有被正确处理的问题 [#46287](https://github.com/pingcap/tidb/issues/46287) [#46618](https://github.com/pingcap/tidb/issues/46618) @[Defined2014](https://github.com/Defined2014)
     - 修复当获取 schema 失败时会导致 `schemaTs` 被设置为 0 的问题 [#46325](https://github.com/pingcap/tidb/issues/46325) @[hihihuhu](https://github.com/hihihuhu)
-    - 修复 `AUTO_ID_CACHE=1` 时可能导致重复的问题 [#46444](https://github.com/pingcap/tidb/issues/46444) @[tiancaiamao](https://github.com/tiancaiamao)
+    - 修复 `AUTO_ID_CACHE=1` 时可能导致 `Duplicate entry` 的问题 [#46444](https://github.com/pingcap/tidb/issues/46444) @[tiancaiamao](https://github.com/tiancaiamao)
     - 修复 `AUTO_ID_CACHE=1` 时 TiDB panic 后恢复过慢的问题 [#46454](https://github.com/pingcap/tidb/issues/46454) @[tiancaiamao](https://github.com/tiancaiamao)
-    - 修复 `AUTO_ID_CACHE=1` 时 `show create table` 中 `next_row_id` 错误的问题 [#46545](https://github.com/pingcap/tidb/issues/46545) @[tiancaiamao](https://github.com/tiancaiamao)
+    - 修复 `AUTO_ID_CACHE=1` 时 `SHOW CREATE TABLE` 中 `next_row_id` 错误的问题 [#46545](https://github.com/pingcap/tidb/issues/46545) @[tiancaiamao](https://github.com/tiancaiamao)
     <!-- tw@Oreoxmt 以上 10 条-->
     - 将 `Arrary` 类型的字符集设置为 `binary` 避免执行失败 [#46717](https://github.com/pingcap/tidb/issues/46717) @[YangKeao](https://github.com/YangKeao) 
     - 修复子查询中存在 CTE 会导致 Parse 时 panic 的问题 [#45916](https://github.com/pingcap/tidb/pull/45916) @[djshow832](https://github.com/djshow832)
