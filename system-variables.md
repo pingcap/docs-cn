@@ -4099,8 +4099,8 @@ EXPLAIN FORMAT='brief' SELECT COUNT(1) FROM t WHERE a = 1 AND b IS NOT NULL;
 - 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：否
 - 默认值：`16`
 - 取值范围：`[2, 255]`
-- 该变量指定 TiDB 实例中历史版本的 schema 信息缓存数量。默认值为 `16`，即默认缓存 16 个历史版本的 schema 信息。
-- 一般不需要修改该变量。当使用 [Stale Read](/stale-read.md) 功能且 DDL 执行非常频繁时，会导致 schema version 变更非常频繁，进而导致 Stale Read 在获取 snapshot schema 信息时，可能会因为 schema 缓存不命中导致消耗大量时间重新构建 snapshot schema 信息。此时可以适当调大 `tidb_schema_version_cache_limit` 的值（例如 `32` ）来避免 schema 缓存不命中的问题。
+- 该变量用于限制 TiDB 实例可以缓存多少个历史版本的表结构信息。默认值为 `16`，即默认缓存 16 个历史版本的表结构信息。
+- 一般不需要修改该变量。当使用 [Stale Read](/stale-read.md) 功能且 DDL 执行非常频繁时，会导致表结构信息的版本号变更非常频繁，进而导致 Stale Read 在获取 Snapshot 的表结构信息时，可能会因为未命中表结构信息的缓存而需要消耗大量时间重新构建该信息。此时可以适当调大 `tidb_schema_version_cache_limit` 的值（例如 `32` ）来避免表结构信息的缓存不命中的问题。
 - 修改该变量会使 TiDB 的内存占用轻微上升。使用时请注意 TiDB 的内存占用，避免出现 OOM 问题。
 
 ### `tidb_server_memory_limit` <span class="version-mark">从 v6.4.0 版本开始引入</span>
