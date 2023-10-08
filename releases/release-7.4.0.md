@@ -338,7 +338,11 @@ In this version, TiDB partition management adds:
 
 + TiDB **tw@qiancai 1**
 
-    - 优化 Analyze partition table 的内存开销和性能 [#47275](https://github.com/pingcap/tidb/issues/47275) @[hawkingrei](https://github.comm/hawkingrei)
+    - 优化了 Analyze partition table 的内存开销和性能 [#47275](https://github.com/pingcap/tidb/issues/47275) @[hawkingrei](https://github.com/hawkingrei)
+    - 优化了统计信息垃圾回收的内存开销和性能 [#46138](https://github.com/pingcap/tidb/issues/31778) @[winoros](https://github.com/winoros)
+    - 优化了 Index Merge intersection 类型的 limit 下推 [#46862] (https://github.com/pingcap/tidb/issues/46863) @[AilinKid](https://github.com/AilinKid) 
+    - 改进了 cost model 以尽可能避免在 IndexLookup 回表多时错误地选择 FullScan  [#46559] (https://github.com/pingcap/tidb/issues/45132) @[qw4990](https://github.com/qw4990)
+    
 
 + TiKV **tw@qiancai 7**
 
