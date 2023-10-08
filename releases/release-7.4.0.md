@@ -411,7 +411,18 @@ In this version, TiDB partition management adds:
     (dup) - 修复 `DATETIME` 或 `TIMESTAMP` 列与数字值比较时，行为与 MySQL 不一致的问题 [#38361](https://github.com/pingcap/tidb/issues/38361) @[yibin87](https://github.com/yibin87)
     - 修复无符号类型与 `Duration` 类型常量比较时产生的结果错误 [#45410](https://github.com/pingcap/tidb/issues/45410) @[wshwsh12](https://github.com/wshwsh12)
     <!-- tw@ran-huang 以上 10 条-->
-
+    - 修复 access path 的启发式规则会忽略 `READ_FROM_STORAGE(TIFLASH[...])` Hint 导致 `Can't find a proper physical plan` 的问题 [#40146] (https://github.com/pingcap/tidb/issues/40146) @[AilinKid](https://github.com/AilinKid)
+    - 修复 `group_concat` 无法解析 `ordery_by` 列的问题 [#41986] (https://github.com/pingcap/tidb/issues/41986) @[AilinKid](https://github.com/AilinKid)
+    - 修复深嵌套的表达式的 HashCode 重复计算导致的高内存占用和 OOM 问题 [#42788] (https://github.com/pingcap/tidb/issues/42788) @[AilinKid](https://github.com/AilinKid)
+    - 修复 `cast(col)=range` 条件在 CAST 无精度损失的情况下会导致 FullScan 的问题 [#45199] (https://github.com/pingcap/tidb/issues/45199) @[AilinKid](https://github.com/AilinKid)
+    - 修复 MPP 执行计划中 Aggregation 下推过 Union 导致的结果错误 [#45850] (https://github.com/pingcap/tidb/issues/45850) @[AilinKid](https://github.com/AilinKid)
+    - 修复带 `in (?)` 条件的 binding 无法匹配 `in (?,...?)` 的问题 [#44298] (https://github.com/pingcap/tidb/issues/44298) @[qw4990](https://github.com/qw4990)
+    - 修复 `non-prep plan cache` 复用执行计划时未考虑 connection collation 导致的错误 [#47008] (https://github.com/pingcap/tidb/issues/47008) @[qw4990](https://github.com/qw4990)
+    - 修复执行计划走不到 plan cache 但不报 warning 的问题 [#46159] (https://github.com/pingcap/tidb/issues/46159) @[qw4990](https://github.com/qw4990)
+    - 修复 `plan replayer dump explain` 会报错的问题 [#46197] (https://github.com/pingcap/tidb/issues/46197) @[time-and-fate](https://github.com/time-and-fate)
+    - 修复 DML 带 CTE 会 panic 的问题 [#46083] (https://github.com/pingcap/tidb/issues/46083) @[winoros](https://github.com/winoros)
+    - 修复当两个子查询 join `TIDB_INLJ ` Hint 不生效的问题 [#46160] (https://github.com/pingcap/tidb/issues/46160) @[qw4990](https://github.com/qw4990)
+<!-- tw@hfxsd 以上 10 条-->
 + TiKV **tw@ran-huang 9**
 
     (dup) - 修复开启 Titan 后，TiKV 遇到 `Blob file deleted twice` 报错无法正常启动的问题 [#15454](https://github.com/tikv/tikv/issues/15454) @[Connor1996](https://github.com/Connor1996)
@@ -493,4 +504,4 @@ In this version, TiDB partition management adds:
 - [shawn0915](https://github.com/shawn0915)
 - [tedyu](https://github.com/tedyu)
 - [yumchina](https://github.com/yumchina)
-- [ZhuohaoHe](https://github.com/)
+- [ZhuohaoHe](https://github.com/ZhuohaoHe)
