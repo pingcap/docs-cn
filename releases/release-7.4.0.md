@@ -355,9 +355,8 @@ In this version, TiDB partition management adds:
 
 + PD **tw@qiancai 5**
 
-    - 改进获取 `min-resolved-ts` 的方法，减少网络连接数 [#46664](https://github.com/pingcap/tidb/issues/46664) @[HuSharp](https://github.com/HuSharp)
-    - 优化 TSO 的追踪信息，方便调查 TSO 相关问题  [#6856](https://github.com/tikv/pd/pull/6856) @[tiancaiamao](https://github.com/tiancaiamao)
-    - 优化 HTTP Client 链接复用，降低内存占用 [#6913](https://github.com/tikv/pd/issues/6913) @[nolouch](https://github.com/nolouch)
+    - 优化 TSO 的追踪信息，方便调查 TSO 相关问题 [#6856](https://github.com/tikv/pd/pull/6856) @[tiancaiamao](https://github.com/tiancaiamao)
+    - 支持复用 HTTP Client 连接，降低内存占用 [#6913](https://github.com/tikv/pd/issues/6913) @[nolouch](https://github.com/nolouch)
     - 优化无法连接到备份集群时 PD 自动更新集群状态的速度 [#6883](https://github.com/tikv/pd/issues/6883) @[disksing](https://github.com/disksing)
     - 改进 resource control client 的配置获取方式，使其可以动态获取最新配置 [#7043](https://github.com/tikv/pd/issues/7043) @[nolouch](https://github.com/nolouch)
 
