@@ -329,6 +329,14 @@ Requires the `ALTER` and `DROP` privileges for the table before renaming and the
 
 Requires the `INSERT` and `SELECT` privileges for the table.
 
+### LOCK STATS
+
+Requires the `INSERT` and `SELECT` privileges for the table.
+
+### UNLOCK STATS
+
+Requires the `INSERT` and `SELECT` privileges for the table.
+
 ### SHOW
 
 `SHOW CREATE TABLE` requires any single privilege to the table.
@@ -340,6 +348,8 @@ Requires the `INSERT` and `SELECT` privileges for the table.
 `SHOW PROCESSLIST` requires the `SUPER` privilege to show connections belonging to other users.
 
 `SHOW IMPORT JOB` requires the `SUPER` privilege to show connections belonging to other users. Otherwise, it only shows jobs created by the current user.
+
+`SHOW STATS_LOCKED` requires the `SELECT` privilege to the `mysql.stats_table_locked` table.
 
 ### CREATE ROLE/USER
 

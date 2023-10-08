@@ -7,89 +7,61 @@ summary: An overview of the usage of UNLOCK STATS for the TiDB database.
 
 `UNLOCK STATS` is used to unlock the statistics of a table or tables.
 
-> **Warning:**
->
-> Locking statistics is an experimental feature for the current version. It is not recommended to use it in the production environment.
-
 ## Synopsis
 
 ```ebnf+diagram
 UnlockStatsStmt ::=
-    'UNLOCK' 'STATS' TableNameList
+    'UNLOCK' 'STATS' (TableNameList) | (TableName 'PARTITION' PartitionNameList)
 
 TableNameList ::=
     TableName (',' TableName)*
 
 TableName ::=
     Identifier ( '.' Identifier )?
+
+PartitionNameList ::=
+    Identifier ( ',' Identifier )*
 ```
 
 ## Examples
 
-Create table `t`, and insert data into it. When the statistics of table `t` are not locked, the `ANALYZE` statement can be successfully executed.
+Refer to the examples in [LOCK STATS](/sql-statements/sql-statement-lock-stats.md) and create a table `t` and lock its statistics.
+
+Unlock the statistics of table `t`, and `ANALYZE` can be successfully executed.
 
 ```sql
-mysql> create table t(a int, b int);
-Query OK, 0 rows affected (0.03 sec)
+mysql> UNLOCK STATS t;
+Query OK, 0 rows affected (0.01 sec)
 
-mysql> insert into t values (1,2), (3,4), (5,6), (7,8);
-Query OK, 4 rows affected (0.00 sec)
-Records: 4  Duplicates: 0  Warnings: 0
+mysql> ANALYZE TABLE t;
+Query OK, 0 rows affected, 1 warning (0.03 sec)
 
-mysql> analyze table t;
-Query OK, 0 rows affected, 1 warning (0.02 sec)
-
-mysql> show warnings;
-+-------+------+-----------------------------------------------------------------+
-| Level | Code | Message                                                         |
-+-------+------+-----------------------------------------------------------------+
-| Note  | 1105 | Analyze use auto adjusted sample rate 1.000000 for table test.t |
-+-------+------+-----------------------------------------------------------------+
+mysql> SHOW WARNINGS;
++-------+------+-----------------------------------------------------------------------------------------------------------------------------------------+
+| Level | Code | Message                                                                                                                                 |
++-------+------+-----------------------------------------------------------------------------------------------------------------------------------------+
+| Note  | 1105 | Analyze use auto adjusted sample rate 1.000000 for table test.t, reason to use this rate is "use min(1, 110000/8) as the sample-rate=1" |
++-------+------+-----------------------------------------------------------------------------------------------------------------------------------------+
 1 row in set (0.00 sec)
 ```
 
-Lock the statistics of table `t` and execute `ANALYZE`. From the output of `SHOW STATS_LOCKED`, you can see that the statistics of table `t` have been locked. The warning message shows that the `ANALYZE` statement has skipped table `t`.
+Refer to examples in [LOCK STATS](/sql-statements/sql-statement-lock-stats.md) and create a table `t` and lock the statistics of its partition `p1`.
+
+Unlock the statistics of partition `p1`, and `ANALYZE` can be successfully executed.
 
 ```sql
-mysql> lock stats t;
+mysql> UNLOCK STATS t PARTITION p1;
 Query OK, 0 rows affected (0.00 sec)
 
-mysql> show stats_locked;
-+---------+------------+----------------+--------+
-| Db_name | Table_name | Partition_name | Status |
-+---------+------------+----------------+--------+
-| test    | t          |                | locked |
-+---------+------------+----------------+--------+
-1 row in set (0.01 sec)
+mysql> ANALYZE TABLE t PARTITION p1;
+Query OK, 0 rows affected, 1 warning (0.01 sec)
 
-mysql> analyze table t;
-Query OK, 0 rows affected, 2 warnings (0.00 sec)
-
-mysql> show warnings;
-+---------+------+-----------------------------------------------------------------+
-| Level   | Code | Message                                                         |
-+---------+------+-----------------------------------------------------------------+
-| Note    | 1105 | Analyze use auto adjusted sample rate 1.000000 for table test.t |
-| Warning | 1105 | skip analyze locked table: t                                    |
-+---------+------+-----------------------------------------------------------------+
-2 rows in set (0.00 sec)
-```
-
-Unlock the statistics of table `t` and `ANALYZE` can be successfully executed again.
-
-```sql
-mysql> unlock stats t;
-Query OK, 0 rows affected (0.01 sec)
-
-mysql> analyze table t;
-Query OK, 0 rows affected, 1 warning (0.03 sec)
-
-mysql> show warnings;
-+-------+------+-----------------------------------------------------------------+
-| Level | Code | Message                                                         |
-+-------+------+-----------------------------------------------------------------+
-| Note  | 1105 | Analyze use auto adjusted sample rate 1.000000 for table test.t |
-+-------+------+-----------------------------------------------------------------+
+mysql> SHOW WARNINGS;
++-------+------+----------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| Level | Code | Message                                                                                                                                                              |
++-------+------+----------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| Note  | 1105 | Analyze use auto adjusted sample rate 1.000000 for table test.t's partition p1, reason to use this rate is "TiDB assumes that the table is empty, use sample-rate=1" |
++-------+------+----------------------------------------------------------------------------------------------------------------------------------------------------------------------+
 1 row in set (0.00 sec)
 ```
 
