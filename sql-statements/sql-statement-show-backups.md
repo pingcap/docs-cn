@@ -12,6 +12,10 @@ Both statements require `SUPER` privilege to run.
 
 Use `SHOW BACKUPS` to query `BACKUP` tasks and use `SHOW RESTORES` to query `RESTORE` tasks.
 
+> **Note:**
+>
+> This feature is not available on [TiDB Serverless](https://docs.pingcap.com/tidbcloud/select-cluster-tier#tidb-serverless) clusters.
+
 Backups and restores that were started with the `br` commandline tool are not shown.
 
 ## Synopsis

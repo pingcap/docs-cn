@@ -61,15 +61,15 @@ The above statement is used to reload the blocklist of logic optimization rules.
 
 ## `ADMIN PLUGINS` related statement
 
-{{< copyable "sql" >}}
+> **Note:**
+>
+> This feature is not available on [TiDB Serverless](https://docs.pingcap.com/tidbcloud/select-cluster-tier#tidb-serverless) clusters.
 
 ```sql
 ADMIN PLUGINS ENABLE plugin_name [, plugin_name] ...;
 ```
 
 The above statement is used to enable the `plugin_name` plugin.
-
-{{< copyable "sql" >}}
 
 ```sql
 ADMIN PLUGINS DISABLE plugin_name [, plugin_name] ...;
@@ -137,13 +137,13 @@ Here "untrusted" means that you need to manually ensure that the metadata of the
 
 ## `ADMIN SHOW SLOW` statement
 
-{{< copyable "sql" >}}
+> **Note:**
+>
+> This feature is not available on [TiDB Serverless](https://docs.pingcap.com/tidbcloud/select-cluster-tier#tidb-serverless) clusters.
 
 ```sql
 ADMIN SHOW SLOW RECENT N;
 ```
-
-{{< copyable "sql" >}}
 
 ```sql
 ADMIN SHOW SLOW TOP [INTERNAL | ALL] N;
@@ -151,7 +151,7 @@ ADMIN SHOW SLOW TOP [INTERNAL | ALL] N;
 
 <CustomContent platform="tidb">
 
-For details, refer to [admin show slow statement](/identify-slow-queries.md#admin-show-slow-command)
+For details, refer to [`ADMIN SHOW SLOW` command](/identify-slow-queries.md#admin-show-slow-command).
 
 </CustomContent>
 

@@ -8,6 +8,10 @@ aliases: ['/docs/dev/sql-statements/sql-statement-show-table-regions/','/docs/de
 
 The `SHOW TABLE REGIONS` statement is used to show the Region information of a table in TiDB.
 
+> **Note:**
+>
+> This feature is not available on [TiDB Serverless](https://docs.pingcap.com/tidbcloud/select-cluster-tier#tidb-serverless) clusters.
+
 ## Syntax
 
 ```sql

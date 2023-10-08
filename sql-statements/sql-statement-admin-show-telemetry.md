@@ -7,6 +7,10 @@ summary: An overview of the usage of ADMIN SHOW TELEMETRY for the TiDB database.
 
 The `ADMIN SHOW TELEMETRY` statement shows the information that will be reported back to PingCAP as part of the [telemetry](/telemetry.md) feature.
 
+> **Note:**
+>
+> This feature is only applicable to TiDB Self-Hosted and not available on [TiDB Cloud](https://docs.pingcap.com/tidbcloud/).
+
 ## Synopsis
 
 ```ebnf+diagram

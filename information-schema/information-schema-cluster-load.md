@@ -8,6 +8,10 @@ aliases: ['/docs/dev/system-tables/system-table-cluster-load/','/docs/dev/refere
 
 The `CLUSTER_LOAD` cluster load table provides the current load information of the server where each instance of the TiDB cluster is located.
 
+> **Note:**
+>
+> This table is only applicable to TiDB Self-Hosted and not available on [TiDB Cloud](https://docs.pingcap.com/tidbcloud/).
+
 {{< copyable "sql" >}}
 
 ```sql

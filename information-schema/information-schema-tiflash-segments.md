@@ -11,7 +11,7 @@ summary: Learn the `TIFLASH_SEGMENTS` information_schema table.
 
 > **Note:**
 >
-> This statement is not applicable to TiDB Serverless clusters.
+> This table is not available on [TiDB Serverless](https://docs.pingcap.com/tidbcloud/select-cluster-tier#tidb-serverless) clusters.
 
 The `TIFLASH_SEGMENTS` table provides statistical information about data tables in TiFlash.
 

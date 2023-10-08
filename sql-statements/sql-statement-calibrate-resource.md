@@ -7,13 +7,9 @@ summary: An overview of the usage of CALIBRATE RESOURCE for the TiDB database.
 
 The `CALIBRATE RESOURCE` statement is used to estimate and output the ['Request Unit (RU)`](/tidb-resource-control#what-is-request-unit-ru) capacity of the current cluster.
 
-<CustomContent platform="tidb-cloud">
-
 > **Note:**
 >
-> This feature is not available on [TiDB Serverless clusters](https://docs.pingcap.com/tidbcloud/select-cluster-tier#tidb-serverless).
-
-</CustomContent>
+> This feature is only applicable to TiDB Self-Hosted and not available on [TiDB Cloud](https://docs.pingcap.com/tidbcloud/).
 
 ## Synopsis
 

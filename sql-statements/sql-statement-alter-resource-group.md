@@ -5,15 +5,11 @@ summary: Learn the usage of ALTER RESOURCE GROUP in TiDB.
 
 # ALTER RESOURCE GROUP
 
-<CustomContent platform="tidb-cloud">
+The `ALTER RESOURCE GROUP` statement is used to modify a resource group in a database.
 
 > **Note:**
 >
-> This feature is not available on [TiDB Serverless clusters](https://docs.pingcap.com/tidbcloud/select-cluster-tier#tidb-serverless).
-
-</CustomContent>
-
-The `ALTER RESOURCE GROUP` statement is used to modify a resource group in a database.
+> This feature is not available on [TiDB Serverless](https://docs.pingcap.com/tidbcloud/select-cluster-tier#tidb-serverless) clusters.
 
 ## Synopsis
 

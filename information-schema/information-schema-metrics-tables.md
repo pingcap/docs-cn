@@ -8,6 +8,10 @@ aliases: ['/docs/dev/system-tables/system-table-metrics-tables/','/docs/dev/refe
 
 The `METRICS_TABLES` table provides the PromQL (Prometheus Query Language) definition for each of the views in the [`METRICS_SCHEMA`](/metrics-schema.md) database.
 
+> **Note:**
+>
+> This table is only applicable to TiDB Self-Hosted and not available on [TiDB Cloud](https://docs.pingcap.com/tidbcloud/).
+
 ```sql
 USE INFORMATION_SCHEMA;
 DESC METRICS_TABLES;

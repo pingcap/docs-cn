@@ -5,13 +5,9 @@ summary: Learn how to use the resource control feature to control and schedule a
 
 # Use Resource Control to Achieve Resource Isolation
 
-<CustomContent platform="tidb-cloud">
-
 > **Note:**
 >
-> This feature is not available on [TiDB Serverless clusters](https://docs.pingcap.com/tidbcloud/select-cluster-tier#tidb-serverless).
-
-</CustomContent>
+> This feature is not available on [TiDB Serverless](https://docs.pingcap.com/tidbcloud/select-cluster-tier#tidb-serverless) clusters.
 
 As a cluster administrator, you can use the resource control feature to create resource groups, set quotas for resource groups, and bind users to those groups.
 

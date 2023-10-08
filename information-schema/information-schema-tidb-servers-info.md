@@ -7,6 +7,10 @@ summary: Learn the `TIDB_SERVERS_INFO` INFORMATION_SCHEMA table.
 
 The `TIDB_SERVERS_INFO` table provides information about TiDB servers in the TiDB Cluster (namely, tidb-server processes).
 
+> **Note:**
+>
+> This table is not available on [TiDB Serverless](https://docs.pingcap.com/tidbcloud/select-cluster-tier#tidb-serverless) clusters.
+
 ```sql
 USE INFORMATION_SCHEMA;
 DESC tidb_servers_info;

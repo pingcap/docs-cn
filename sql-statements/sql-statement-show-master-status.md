@@ -31,7 +31,17 @@ The output of `SHOW MASTER STATUS` is designed to match MySQL. However, the exec
 
 ## See also
 
+<CustomContent platform="tidb">
+
 * [SHOW PUMP STATUS](/sql-statements/sql-statement-show-pump-status.md)
 * [SHOW DRAINER STATUS](/sql-statements/sql-statement-show-drainer-status.md)
 * [CHANGE PUMP STATUS](/sql-statements/sql-statement-change-pump.md)
 * [CHANGE DRAINER STATUS](/sql-statements/sql-statement-change-drainer.md)
+
+</CustomContent>
+
+<CustomContent platform="tidb-cloud">
+
+* [`SHOW TABLE STATUS`](/sql-statements/sql-statement-show-table-status.md)
+
+</CustomContent>

@@ -24,7 +24,7 @@ TiDB supports most of the [miscellaneous functions](https://dev.mysql.com/doc/re
 | [`IS_IPV4_MAPPED()`](https://dev.mysql.com/doc/refman/8.0/en/miscellaneous-functions.html#function_is-ipv4-mapped)    | Whether argument is an IPv4-mapped address        |
 | [`IS_IPV6()`](https://dev.mysql.com/doc/refman/8.0/en/miscellaneous-functions.html#function_is-ipv6)                  | Whether argument is an IPv6 address               |
 | [`NAME_CONST()`](https://dev.mysql.com/doc/refman/8.0/en/miscellaneous-functions.html#function_name-const)            | Can be used to rename a column name               |
-| [`SLEEP()`](https://dev.mysql.com/doc/refman/8.0/en/miscellaneous-functions.html#function_sleep)                      | Sleep for a number of seconds                     |
+| [`SLEEP()`](https://dev.mysql.com/doc/refman/8.0/en/miscellaneous-functions.html#function_sleep)                      | Sleep for a number of seconds. Note that for [TiDB Serverless](https://docs.pingcap.com/tidbcloud/select-cluster-tier#tidb-serverless) clusters, the `SLEEP()` function has a limitation wherein it can only support a maximum sleep time of 300 seconds.       |
 | [`UUID()`](https://dev.mysql.com/doc/refman/8.0/en/miscellaneous-functions.html#function_uuid)                        | Return a Universal Unique Identifier (UUID)       |
 | [`UUID_TO_BIN()`](https://dev.mysql.com/doc/refman/8.0/en/miscellaneous-functions.html#function_uuid-to-bin)          | Convert UUID from text format to binary format    |
 | [`VALUES()`](https://dev.mysql.com/doc/refman/8.0/en/miscellaneous-functions.html#function_values)                    | Defines the values to be used during an INSERT    |

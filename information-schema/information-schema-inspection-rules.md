@@ -7,6 +7,10 @@ summary: Learn the `INSPECTION_RULES` information_schema table.
 
 The `INSPECTION_RULES` table provides information about which diagnostic tests are run in an inspection result. See [inspection result](/information-schema/information-schema-inspection-result.md) for example usage.
 
+> **Note:**
+>
+> This table is only applicable to TiDB Self-Hosted and not available on [TiDB Cloud](https://docs.pingcap.com/tidbcloud/).
+
 {{< copyable "sql" >}}
 
 ```sql

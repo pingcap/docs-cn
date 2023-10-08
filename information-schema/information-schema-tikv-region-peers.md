@@ -7,6 +7,10 @@ summary: Learn the `TIKV_REGION_PEERS` INFORMATION_SCHEMA table.
 
 The `TIKV_REGION_PEERS` table shows detailed information of a single Region node in TiKV, such as whether it is a learner or leader.
 
+> **Note:**
+>
+> This table is not available on [TiDB Serverless](https://docs.pingcap.com/tidbcloud/select-cluster-tier#tidb-serverless) clusters.
+
 ```sql
 USE INFORMATION_SCHEMA;
 DESC TIKV_REGION_PEERS;

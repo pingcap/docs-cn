@@ -11,6 +11,10 @@ The TiDB cluster has many monitoring metrics. To make it easy to detect abnormal
 * `information_schema.metrics_summary`
 * `information_schema.metrics_summary_by_label`
 
+> **Note:**
+>
+> The preceding two monitoring summary tables are only applicable to TiDB Self-Hosted and not available on [TiDB Cloud](https://docs.pingcap.com/tidbcloud/).
+
 The two tables summarize all monitoring data for you to check each monitoring metric efficiently. Compared with `information_schema.metrics_summary`, the `information_schema.metrics_summary_by_label` table has an additional `label` column and performs differentiated statistics according to different labels.
 
 {{< copyable "sql" >}}

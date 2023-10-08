@@ -7,6 +7,10 @@ summary: Learn the `TIKV_STORE_STATUS` INFORMATION_SCHEMA table.
 
 The `TIKV_STORE_STATUS` table shows some basic information of TiKV nodes via PD's API, like the ID allocated in the cluster, address and port, and status, capacity, and the number of Region leaders of the current node.
 
+> **Note:**
+>
+> This table is not available on [TiDB Serverless](https://docs.pingcap.com/tidbcloud/select-cluster-tier#tidb-serverless) clusters.
+
 ```sql
 USE INFORMATION_SCHEMA;
 DESC TIKV_STORE_STATUS;

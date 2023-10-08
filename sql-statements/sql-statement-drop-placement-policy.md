@@ -7,6 +7,10 @@ summary: The usage of ALTER PLACEMENT POLICY in TiDB.
 
 `DROP PLACEMENT POLICY` is used to drop a previously created placement policy.
 
+> **Note:**
+>
+> This feature is not available on [TiDB Serverless](https://docs.pingcap.com/tidbcloud/select-cluster-tier#tidb-serverless) clusters.
+
 ## Synopsis
 
 ```ebnf+diagram

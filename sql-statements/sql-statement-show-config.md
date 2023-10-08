@@ -8,6 +8,10 @@ aliases: ['/docs/dev/sql-statements/sql-statement-show-config/']
 
 The `SHOW CONFIG` statement is used to show the current configuration of various components of TiDB. Note that the configuration and system variables act on different dimensions and should not be mixed up. If you want to obtain the system variable information, use the [SHOW VARIABLES](/sql-statements/sql-statement-show-variables.md) syntax.
 
+> **Note:**
+>
+> This feature is only applicable to TiDB Self-Hosted and not available on [TiDB Cloud](https://docs.pingcap.com/tidbcloud/). 
+
 ## Synopsis
 
 **ShowStmt:**

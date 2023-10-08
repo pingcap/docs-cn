@@ -8,6 +8,10 @@ aliases: ['/docs/dev/system-tables/system-table-cluster-info/','/docs/dev/refere
 
 The `CLUSTER_INFO` cluster topology table provides the current topology information of the cluster, the version information of each instance, the Git Hash corresponding to the instance version, the starting time of each instance, and the running time of each instance.
 
+> **Note:**
+>
+> This table is not available on [TiDB Serverless](https://docs.pingcap.com/tidbcloud/select-cluster-tier#tidb-serverless) clusters.
+
 {{< copyable "sql" >}}
 
 ```sql

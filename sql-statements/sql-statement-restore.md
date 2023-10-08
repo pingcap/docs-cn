@@ -8,7 +8,11 @@ aliases: ['/docs/dev/sql-statements/sql-statement-restore/']
 
 This statement performs a distributed restore from a backup archive previously produced by a [`BACKUP` statement](/sql-statements/sql-statement-backup.md).
 
-The `RESTORE` statement uses the same engine as the [BR tool](/br/backup-and-restore-overview.md), except that the restore process is driven by TiDB itself rather than a separate BR tool. All benefits and caveats of BR also apply here. In particular, **`RESTORE` is currently not ACID-compliant**. Before running `RESTORE`, ensure that the following requirements are met:
+> **Note:**
+>
+> This feature is not available on [TiDB Serverless](https://docs.pingcap.com/tidbcloud/select-cluster-tier#tidb-serverless) clusters.
+
+The `RESTORE` statement uses the same engine as the [BR tool](https://docs.pingcap.com/tidb/stable/backup-and-restore-overview), except that the restore process is driven by TiDB itself rather than a separate BR tool. All benefits and caveats of BR also apply here. In particular, **`RESTORE` is currently not ACID-compliant**. Before running `RESTORE`, ensure that the following requirements are met:
 
 * The cluster is "offline", and the current TiDB session is the only active SQL connection to access all tables being restored.
 * When a full restore is being performed, the tables being restored should not already exist, because existing data might be overridden and causes inconsistency between the data and indices.
@@ -99,7 +103,17 @@ BR supports restoring data from S3 or GCS:
 RESTORE DATABASE * FROM 's3://example-bucket-2020/backup-05/';
 ```
 
+<CustomContent platform="tidb">
+
 The URL syntax is further explained in [external storage URI](/br/backup-and-restore-storages.md#uri-format).
+
+</CustomContent>
+
+<CustomContent platform="tidb-cloud">
+
+The URL syntax is further explained in [external storage URI](https://docs.pingcap.com/tidb/stable/backup-and-restore-storages#uri-format).
+
+</CustomContent>
 
 When running on cloud environment where credentials should not be distributed, set the `SEND_CREDENTIALS_TO_TIKV` option to `FALSE`:
 

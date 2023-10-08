@@ -8,6 +8,10 @@ aliases: ['/docs/dev/system-tables/system-table-inspection-summary/','/docs/dev/
 
 In some scenarios, you might need to pay attention only to the monitoring summary of specific links or modules. For example, the number of threads for Coprocessor in the thread pool is configured as 8. If the CPU usage of Coprocessor reaches 750%, you can determine that a risk exists and Coprocessor might become a bottleneck in advance. However, some monitoring metrics vary greatly due to different user workloads, so it is difficult to define specific thresholds. It is important to troubleshoot issues in this scenario, so TiDB provides the `inspection_summary` table for link summary.
 
+> **Note:**
+>
+> This table is only applicable to TiDB Self-Hosted and not available on [TiDB Cloud](https://docs.pingcap.com/tidbcloud/).
+
 The structure of the `information_schema.inspection_summary` inspection summary table is as follows:
 
 {{< copyable "sql" >}}

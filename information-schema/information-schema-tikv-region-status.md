@@ -7,6 +7,10 @@ summary: Learn the `TIKV_REGION_STATUS` information_schema table.
 
 The `TIKV_REGION_STATUS` table shows some basic information of TiKV Regions via PD's API, like the Region ID, starting and ending key-values, and read and write traffic.
 
+> **Note:**
+>
+> This table is not available on [TiDB Serverless](https://docs.pingcap.com/tidbcloud/select-cluster-tier#tidb-serverless) clusters.
+
 {{< copyable "sql" >}}
 
 ```sql

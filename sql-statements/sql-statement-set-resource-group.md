@@ -7,13 +7,9 @@ summary: An overview of the usage of SET RESOURCE GROUP in the TiDB database.
 
 `SET RESOURCE GROUP` is used to set the resource group for the current session.
 
-<CustomContent platform="tidb-cloud">
-
 > **Note:**
 >
-> This feature is not available on [TiDB Serverless clusters](https://docs.pingcap.com/tidbcloud/select-cluster-tier#tidb-serverless).
-
-</CustomContent>
+> This feature is not available on [TiDB Serverless](https://docs.pingcap.com/tidbcloud/select-cluster-tier#tidb-serverless) clusters.
 
 ## Synopsis
 

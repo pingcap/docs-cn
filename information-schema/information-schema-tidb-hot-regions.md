@@ -7,6 +7,10 @@ summary: Learn the `TIDB_HOT_REGIONS` information_schema table.
 
 The `TIDB_HOT_REGIONS` table provides information about the current hot Regions. For information about history hot Regions, see `[TIDB_HOT_REGIONS_HISTORY](/information-schema/information-schema-tidb-hot-regions-history.md)`.
 
+> **Note:**
+>
+> This table is only applicable to TiDB Self-Hosted and not available on [TiDB Cloud](https://docs.pingcap.com/tidbcloud/).
+
 {{< copyable "sql" >}}
 
 ```sql

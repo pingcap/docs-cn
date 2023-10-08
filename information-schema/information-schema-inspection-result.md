@@ -8,7 +8,11 @@ aliases: ['/docs/dev/system-tables/system-table-inspection-result/','/docs/dev/r
 
 TiDB has some built-in diagnostic rules for detecting faults and hidden issues in the system.
 
-The `INSPECTION_RESULT` diagnostic feature can help you quickly find problems and reduce your repetitive manual work. You can use the `select * from information_schema.inspection_result` statement to trigger the internal diagnostics.
+The `INSPECTION_RESULT` diagnostic table can help you quickly find problems and reduce your repetitive manual work. You can use the `select * from information_schema.inspection_result` statement to trigger the internal diagnostics.
+
+> **Note:**
+>
+> This table is only applicable to TiDB Self-Hosted and not available on [TiDB Cloud](https://docs.pingcap.com/tidbcloud/).
 
 The structure of the `information_schema.inspection_result` diagnostic result table `information_schema.inspection_result` is as follows:
 

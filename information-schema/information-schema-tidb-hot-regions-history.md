@@ -7,6 +7,10 @@ summary: Learn the `TIDB_HOT_REGIONS_HISTORY` information_schema table.
 
 The `TIDB_HOT_REGIONS_HISTORY` table provides information about history hot Regions that are periodically recorded locally by PD.
 
+> **Note:**
+>
+> This table is not available on [TiDB Serverless](https://docs.pingcap.com/tidbcloud/select-cluster-tier#tidb-serverless) clusters.
+
 <CustomContent platform="tidb">
 
 You can specify the record interval by configuring [`hot-regions-write-interval`](/pd-configuration-file.md#hot-regions-write-interval-new-in-v540). The default value is 10 minutes. You can specify the period for reserving history information about hot Regions by configuring [`hot-regions-reserved-days`](/pd-configuration-file.md#hot-regions-reserved-days-new-in-v540). The default value is 7 days. See [PD configuration file description](/pd-configuration-file.md#hot-regions-write-interval-new-in-v540) for details.

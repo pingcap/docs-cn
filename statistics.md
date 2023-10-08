@@ -723,13 +723,9 @@ The preceding statement only deletes GlobalStats generated in dynamic pruning mo
 
 ## Load statistics
 
-<CustomContent platform="tidb-cloud">
-
 > **Note:**
 >
-> This section is not applicable to TiDB Cloud.
-
-</CustomContent>
+> Loading statistics is not available on [TiDB Serverless](https://docs.pingcap.com/tidbcloud/select-cluster-tier#tidb-serverless) clusters.
 
 By default, depending on the size of column statistics, TiDB loads statistics differently as follows:
 
@@ -756,6 +752,12 @@ Starting from v7.1.0, TiDB introduces [`lite-init-stats`](/tidb-configuration-fi
 - When the value of `lite-init-stats` is `false`, statistics initialization loads histograms, TopN, and Count-Min Sketch of indexes and primary keys into memory but does not load any histogram, TopN, or Count-Min Sketch of non-primary key columns into memory. When the optimizer needs the histogram, TopN, and Count-Min Sketch of a specific index or column, the necessary statistics are loaded into memory synchronously or asynchronously.
 
 The default value of `lite-init-stats` is `true`, which means to enable lightweight statistics initialization. Setting `lite-init-stats` to `true` speeds up statistics initialization and reduces TiDB memory usage by avoiding unnecessary statistics loading.
+
+</CustomContent>
+
+<CustomContent platform="tidb-cloud">
+
+After enabling the synchronously loading statistics feature, you can control how TiDB behaves when the waiting time of SQL optimization reaches the timeout by modifing the value of the [`tidb_stats_load_pseudo_timeout`](/system-variables.md#tidb_stats_load_pseudo_timeout-new-in-v540) system variable. The default value of this variable is `ON`, indicating that after the timeout, the SQL optimization process does not use any histogram, TopN, or CMSketch statistics on any columns. If this variable is set to `OFF`, after the timeout, SQL execution fails.
 
 </CustomContent>
 
@@ -896,9 +898,17 @@ mysql> show warnings;
 
 * [LOAD STATS](/sql-statements/sql-statement-load-stats.md)
 * [DROP STATS](/sql-statements/sql-statement-drop-stats.md)
-
-</CustomContent>
-
 * [LOCK STATS](/sql-statements/sql-statement-lock-stats.md)
 * [UNLOCK STATS](/sql-statements/sql-statement-unlock-stats.md)
 * [SHOW STATS_LOCKED](/sql-statements/sql-statement-show-stats-locked.md)
+
+</CustomContent>
+
+<CustomContent platform="tidb-cloud">
+
+* [LOAD STATS](/sql-statements/sql-statement-load-stats.md)
+* [LOCK STATS](/sql-statements/sql-statement-lock-stats.md)
+* [UNLOCK STATS](/sql-statements/sql-statement-unlock-stats.md)
+* [SHOW STATS_LOCKED](/sql-statements/sql-statement-show-stats-locked.md)
+
+</CustomContent>

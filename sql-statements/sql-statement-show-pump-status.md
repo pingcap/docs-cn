@@ -8,6 +8,10 @@ aliases: ['/docs/dev/sql-statements/sql-statement-show-pump-status/']
 
 The `SHOW PUMP STATUS` statement displays the status information for all Pump nodes in the cluster.
 
+> **Note:**
+>
+> This feature is only applicable to TiDB Self-Hosted and not available on [TiDB Cloud](https://docs.pingcap.com/tidbcloud/).
+
 ## Examples
 
 {{< copyable "sql" >}}

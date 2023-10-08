@@ -5,15 +5,11 @@ summary: Learn the usage of CREATE RESOURCE GROUP in TiDB.
 
 # CREATE RESOURCE GROUP
 
-<CustomContent platform="tidb-cloud">
+You can use the `CREATE RESOURCE GROUP` statement to create a resource group.
 
 > **Note:**
 >
-> This feature is not available on [TiDB Serverless clusters](https://docs.pingcap.com/tidbcloud/select-cluster-tier#tidb-serverless).
-
-</CustomContent>
-
-You can use the `CREATE RESOURCE GROUP` statement to create a resource group.
+> This feature is not available on [TiDB Serverless](https://docs.pingcap.com/tidbcloud/select-cluster-tier#tidb-serverless) clusters.
 
 ## Synopsis
 

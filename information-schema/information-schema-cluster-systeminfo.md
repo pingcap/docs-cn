@@ -8,6 +8,10 @@ aliases: ['/docs/dev/system-tables/system-table-cluster-systeminfo/','/docs/dev/
 
 You can use the `CLUSTER_SYSTEMINFO` kernel parameter table to query the kernel configuration information of the server where all instances of the cluster are located. Currently, you can query the information of the `sysctl` system.
 
+> **Note:**
+>
+> This table is only applicable to TiDB Self-Hosted and not available on [TiDB Cloud](https://docs.pingcap.com/tidbcloud/).
+
 {{< copyable "sql" >}}
 
 ```sql

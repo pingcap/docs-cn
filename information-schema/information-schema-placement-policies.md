@@ -8,6 +8,10 @@ aliases: ['/tidb/dev/information-schema-placement-rules']
 
 The `PLACEMENT_POLICIES` table provides information on all placement policies. For details, refer to [Placement Rules in SQL](/placement-rules-in-sql.md).
 
+> **Note:**
+>
+> This table is not available on [TiDB Serverless](https://docs.pingcap.com/tidbcloud/select-cluster-tier#tidb-serverless) clusters.
+
 {{< copyable "sql" >}}
 
 ```sql

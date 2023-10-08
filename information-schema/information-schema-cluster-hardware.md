@@ -8,6 +8,10 @@ aliases: ['/docs/dev/system-tables/system-table-cluster-hardware/','/docs/dev/re
 
 The `CLUSTER_HARDWARE` hardware system table provides the hardware information of the server where each instance of the cluster is located.
 
+> **Note:**
+>
+> This table is only applicable to TiDB Self-Hosted and not available on [TiDB Cloud](https://docs.pingcap.com/tidbcloud/).
+
 {{< copyable "sql" >}}
 
 ```sql

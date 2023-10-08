@@ -8,9 +8,23 @@ aliases: ['/docs/dev/sql-statements/sql-statement-alter-instance/','/docs/dev/re
 
 The `ALTER INSTANCE` statement is used to make changes to a single TiDB instance. Currently, TiDB only supports the `RELOAD TLS` clause.
 
+> **Note:**
+>
+> [TiDB Serverless](https://docs.pingcap.com/tidbcloud/select-cluster-tier#tidb-serverless) can automatically refresh the TLS certificate, so this feature is not applicable to [TiDB Serverless](https://docs.pingcap.com/tidbcloud/select-cluster-tier#tidb-serverless) clusters.
+
 ## RELOAD TLS
 
+<CustomContent platform="tidb">
+
 You can execute the `ALTER INSTANCE RELOAD TLS` statement to reload the certificate ([`ssl-cert`](/tidb-configuration-file.md#ssl-cert)), the key ([`ssl-key`](/tidb-configuration-file.md#ssl-key)), and the CA ([`ssl-ca`](/tidb-configuration-file.md#ssl-ca)) from the original configuration path.
+
+</CustomContent>
+
+<CustomContent platform="tidb-cloud">
+
+You can execute the `ALTER INSTANCE RELOAD TLS` statement to reload the certificate ([`ssl-cert`](https://docs.pingcap.com/tidb/stable/tidb-configuration-file#ssl-cert)), the key ([`ssl-key`](https://docs.pingcap.com/tidb/stable/tidb-configuration-file#ssl-key)), and the CA ([`ssl-ca`](https://docs.pingcap.com/tidb/stable/tidb-configuration-file#ssl-ca)) from the original configuration path.
+
+</CustomContent>
 
 The newly loaded certificate, key, and CA take effect on the connection that is established after the statement is successfully executed. The connection established before this statement execution is not affected.
 
@@ -42,4 +56,14 @@ The `ALTER INSTANCE RELOAD TLS` statement only supports reloading from the origi
 
 ## See also
 
+<CustomContent platform="tidb">
+
 [Enable TLS Between TiDB Clients and Servers](/enable-tls-between-clients-and-servers.md).
+
+</CustomContent>
+
+<CustomContent platform="tidb-cloud">
+
+[Enable TLS Between TiDB Clients and Servers](https://docs.pingcap.com/tidb/stable/enable-tls-between-clients-and-servers).
+
+</CustomContent>
