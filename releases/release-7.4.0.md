@@ -37,23 +37,23 @@ TiDB 版本：7.4.0
     <td>从 v7.1.0 开始，资源管控成为正式功能，该特性有助于缓解不同工作负载间的资源与存储访问干扰。TiDB v7.4.0 将此资源控制应用于后台任务。资源管控可以识别和管理后台任务，例如自动收集统计信息、备份和恢复、LOAD DATA 以及在线 DDL。未来，所有后台任务都将纳入资源管控。</td>
   </tr>
   <tr>
-    <td>TiFlash supports storage-computing separation and S3</td>
-    <td>TiFlash introduces a cloud-native architecture as an option:
+    <td>TiFlash 支持 <a href="https://docs.pingcap.com/zh/tidb/v7.4/tiflash-disaggregated-and-s3" target="_blank">存储计算资源分离和 S3 共享存储</a> (GA) </td>
+    <td>TiFlash 存算分离架构和 S3 共享存储成为正式功能：
       <ul>
-        <li>Disaggregates TiFlash's compute and storage, which is a milestone for elastic HTAP resource utilization.</li>
-        <li>Introduces S3-based storage engine, which can provide shared storage at a lower cost.</li>
+        <li>支持分离 TiFlash 的存储和计算资源，提升 HTAP 资源的弹性能力。</li>
+        <li>支持基于 S3 的存储引擎，以更低的成本提供共享存储。</li>
       </ul>
     </td>
   </tr>
   <tr>
     <td rowspan="2">SQL</td>
-    <td>More complete partition management</td>
-    <td>Prior to v7.4, TiDB supported truncate partition, exchange partition, add/drop/reorganize partition on Range/List Partitioning, and add/coalesce partition on Hash/Key partitioning
-In this version, TiDB partition management adds:
-      <ul>
-        <li>Remove partition</li>
-        <li>Partitioning existing non-partitioned tables</li>
-        <li>Modifying existing partition types on tables</li>
+    <td><a href="https://docs.pingcap.com/zh/tidb/v7.4/partitioned-table#将分区表转换为非分区表" target="_blank">TiDB 支持完整的分区类型管理功能</a> </td>
+    <td>在 v7.4.0 之前，Range/List 分区表支持分区管理操作包括 <code>TRUNCATE</code>、<code>EXCHANGE</code>、<code>ADD</code>、<code>DROP</code>、<code>REORGANIZE</code> 等，Hash/Key 分区表支持分区管理操作包括 <code>ADD</code> and <code>COALESCE</code> 等。
+    <p>现在 TiDB 新增支持了以下分区管理操作：</p>
+    <ul>
+        <li>将分区表转换为非分区表</li>
+        <li>对现有的非分区表进行分区</li>
+        <li>修改现有分区表的分区类型</li>
       </ul>
     </td>
   </tr>
@@ -328,7 +328,7 @@ In this version, TiDB partition management adds:
 
 + TiDB **tw@qiancai 1**
 
-    - 优化 `ANALYZE` 分区表的内存使用和性能 [#47275](https://github.com/pingcap/tidb/issues/47275) @[hawkingrei](https://github.com/hawkingrei)
+    - 优化 `ANALYZE` 分区表的内存使用和性能 [#47071](https://github.com/pingcap/tidb/issues/47071) [#47104](https://github.com/pingcap/tidb/issues/47104) [#46804](https://github.com/pingcap/tidb/issues/46804) @[hawkingrei](https://github.com/hawkingrei)
     - 优化统计信息垃圾回收的内存使用和性能 [#31778](https://github.com/pingcap/tidb/issues/31778) @[winoros](https://github.com/winoros)
     - 优化索引合并进行交集操作时的 `limit` 下推，提高查询性能 [#46863](https://github.com/pingcap/tidb/issues/46863) @[AilinKid](https://github.com/AilinKid) 
     - 改进代价模型 (Cost Model) 以尽量避免在 `IndexLookup` 回表任务多时错误地选择全表扫描 [#45132](https://github.com/pingcap/tidb/issues/45132) @[qw4990](https://github.com/qw4990)
