@@ -63,11 +63,11 @@ rules = ['test.t*']
 
 | DDL | 是否同步 | 原因和处理方式 |
 | --- | --- | --- |
-| rename table test.t1 to test.t2 | 同步 | test.t1 符合 filter 规则 |
-| rename table test.t1 to ignore.t1 | 同步 | test.t1 符合 filter 规则 |
-| rename table ignore.t1 to ignore.t2 | 忽略 | ignore.t1 不符合 filter 规则 |
-| rename table test.n1 to test.t1 | 报错，并停止同步。 | test.n1 不符合 filter 规则，但是 test.t1 符合 filter 规则，这是非法操作。请参考错误提示信息进行处理 |
-| rename table ignore.t1 to test.t1 | 报错，并停止同步。 | 理由同上 |
+| `RENAME TABLE test.t1 TO test.t2` | 同步 | test.t1 符合 filter 规则 |
+| `RENAME TABLE test.t1 TO ignore.t1` | 同步 | test.t1 符合 filter 规则 |
+| `RENAME TABLE ignore.t1 TO ignore.t2` | 忽略 | ignore.t1 不符合 filter 规则 |
+| `RENAME TABLE test.n1 TO test.t1` | 报错，并停止同步。 | test.n1 不符合 filter 规则，但是 test.t1 符合 filter 规则，这是非法操作。请参考错误提示信息进行处理 |
+| `RENAME TABLE ignore.t1 TO test.t1` | 报错，并停止同步。 | 理由同上 |
 
 ### 一条 DDL 语句内 rename 多个表
 
@@ -84,7 +84,7 @@ rules = ['test.t*']
 
 | DDL | 是否同步 | 原因 |
 | --- | --- | --- |
-| rename table test.t1 to test.t2, test.t3 to test.t4 | 同步 | 新旧表库名都符合 filter 规则 |
-| rename table test.t1 to test.ignore1, test.t3 to test.ignore2 | 同步 | 旧的表库名，新的库名都符合 filter 规则 |
-| rename table test.t1 to ignore.t1, test.t2 to test.t22; | 报错 | 新的库名 ignore 不符合 filter 规则 |
-| rename table test.t1 to test1.t4, test.t3 to test.t1, test.t4 to test.t3; | 报错 | 在一条 DDL 中交换 test.t1 和 test.t3 两个表的名字，TiCDC 无法正确处理。请参考错误提示提示信息处理。 |
+| `RENAME TABLE test.t1 TO test.t2, test.t3 TO test.t4` | 同步 | 新旧表库名都符合 filter 规则 |
+| `RENAME TABLE test.t1 TO test.ignore1, test.t3 TO test.ignore2` | 同步 | 旧的表库名，新的库名都符合 filter 规则 |
+| `RENAME TABLE test.t1 TO ignore.t1, test.t2 TO test.t22;` | 报错 | 新的库名 ignore 不符合 filter 规则 |
+| `RENAME TABLE test.t1 TO test.t4, test.t3 TO test.t1, test.t4 TO test.t3;` | 报错 | 在一条 DDL 中交换 test.t1 和 test.t3 两个表的名字，TiCDC 无法正确处理。请参考错误提示提示信息处理。 |
