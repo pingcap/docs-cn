@@ -341,6 +341,7 @@ In this version, TiDB partition management adds:
     - 优化统计信息垃圾回收的内存使用和性能 [#31778](https://github.com/pingcap/tidb/issues/31778) @[winoros](https://github.com/winoros)
     - 优化索引合并进行交集操作时的 `limit` 下推，提高查询性能 [#46863](https://github.com/pingcap/tidb/issues/46863) @[AilinKid](https://github.com/AilinKid) 
     - 改进代价模型 (Cost Model) 以尽量避免在 `IndexLookup` 回表任务多时错误地选择全表扫描 [#45132](https://github.com/pingcap/tidb/issues/45132) @[qw4990](https://github.com/qw4990)
+    - 优化 join 消除规则，提高 `join on unique keys` 时的查询性能 [#46248](https://github.com/pingcap/tidb/issues/46248) @[fixdb](https://github.com/fixdb) 
     
 
 + TiKV **tw@qiancai 7**
