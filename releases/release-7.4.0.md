@@ -230,7 +230,7 @@ TiDB 版本：7.4.0
 
     同时新增支持 MySQL 8.0 兼容的系统变量 `default_collation_for_utf8mb4`，允许用户为 utf8mb4 字符集指定默认的排序方式，以兼容从 MySQL 5.7 或之前版本迁移或数据复制的场景。
 
-    更多信息，请参考[用户文档](/character-set-and-collation#支持的字符集和排序规则)。
+    更多信息，请参考[用户文档](/character-set-and-collation.md#支持的字符集和排序规则)。
 
 ### 可观测性
 
