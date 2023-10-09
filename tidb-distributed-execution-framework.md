@@ -67,7 +67,7 @@ TiDB 采用计算存储分离架构，具有出色的扩展性和弹性的扩缩
     SET GLOBAL tidb_enable_dist_task = ON;
     ```
 
-    在运行后端任务时，框架支持的语句会采用分布式方式执行。
+    在运行后端任务时，框架支持的语句（如 [`ADD INDEX`](/sql-statements/sql-statement-add-index.md) 和 [`IMPORT INTO`](/sql-statements/sql-statement-import-into.md)）会采用分布式方式执行。默认集群内部所有节点均会执行后端任务。
 
 2. 根据实际需求，调整可能影响 DDL 任务分布式执行的系统变量：
 
@@ -75,6 +75,12 @@ TiDB 采用计算存储分离架构，具有出色的扩展性和弹性的扩缩
     * [`tidb_ddl_reorg_priority`](/system-variables.md#tidb_ddl_reorg_priority)
     * [`tidb_ddl_error_count_limit`](/system-variables.md#tidb_ddl_error_count_limit)
     * [`tidb_ddl_reorg_batch_size`](/system-variables.md#tidb_ddl_reorg_batch_size)：使用默认值即可，建议最大不超过 `1024`。
+
+3. 从 v7.4.0 开始，你可以根据实际需求，调整执行后端任务的 TiDB 节点数量，在部署 TiDB 后为每一个 TiDB 节点设置 Instance 级别系统变量 [`tidb_service_scope`](/system-variables.md#tidb_service_scope-从-v740-版本开始引入)。`tidb_service_scope` 设置为 `background` 时，TiDB 节点可执行后端任务。`tidb_service_scope` 设置为默认值 "" 时，TiDB 节点不可执行后端任务。如果所有节点均未配置 `tidb_service_scope`，框架将调度所有节点执行后端任务。
+
+    > **警告：**
+    >
+    > `tidb_service_scope` 目前为实验特性，不建议在生产环境中使用。该功能可能会在未事先通知的情况下发生变化或删除。如果发现 bug，请在 GitHub 上提 [issue](https://github.com/pingcap/tidb/issues) 反馈。
 
 > **建议：**
 >

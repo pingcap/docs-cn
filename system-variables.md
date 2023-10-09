@@ -1397,6 +1397,21 @@ mysql> SELECT job_info FROM mysql.analyze_jobs ORDER BY end_time DESC LIMIT 1;
 - 从 TiDB v7.2.0 开始，支持分布式导入任务 [`IMPORT INTO`](/sql-statements/sql-statement-import-into.md)。
 - 该变量由 `tidb_ddl_distribute_reorg` 改名而来。
 
+### `tidb_cloud_storage_uri` <span class="version-mark">从 v7.4.0 版本开始引入</span>
+
+> **警告：**
+>
+> 该变量目前为实验特性，不建议在生产环境中使用。该功能可能会在未事先通知的情况下发生变化或删除。如果发现 bug，请在 GitHub 上提 [issue](https://github.com/pingcap/tidb/issues) 反馈。
+
+- 作用域：GLOBAL
+- 是否持久化到集群：是
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：否
+- 默认值：`""`
+- 该变量用来指定[全局排序](/tidb-global-sort.md)中使用的云存储的 URI。在开启 [TiDB 后端任务分布式框架](/tidb-distributed-execution-framework.md)后，你可以配置 URI 指向具有访问存储所需权限的云存储路径，以此来实现全局排序的功能。更多详情，参考 [URI 格式](/br/backup-and-restore-storages.md#uri-格式)。
+- 以下语句支持全局排序功能：
+    - [`ADD INDEX`](/sql-statements/sql-statement-add-index.md) 语句。
+    - 用于将数据导入本地部署的 TiDB 的 [`IMPORT INTO`](/sql-statements/sql-statement-import-into.md) 语句。对于 TiDB Cloud，`IMPORT INTO` 语句不适用全局排序。
+
 ### `tidb_ddl_error_count_limit`
 
 - 作用域：GLOBAL
@@ -4092,6 +4107,17 @@ EXPLAIN FORMAT='brief' SELECT COUNT(1) FROM t WHERE a = 1 AND b IS NOT NULL;
 - TiDB 默认会在建表时为新表分裂 Region。开启该变量后，会在建表语句执行时，同步打散刚分裂出的 Region。适用于批量建表后紧接着批量写入数据，能让刚分裂出的 Region 先在 TiKV 分散而不用等待 PD 进行调度。为了保证后续批量写入数据的稳定性，建表语句会等待打散 Region 完成后再返回建表成功，建表语句执行时间会是该变量关闭时的数倍。
 - 如果建表时设置了 `SHARD_ROW_ID_BITS` 和 `PRE_SPLIT_REGIONS`，建表成功后会均匀切分出指定数量的 Region。
 
+### `tidb_schema_version_cache_limit` <span class="version-mark">从 v7.4.0 版本开始引入</span>
+
+- 作用域：GLOBAL
+- 是否持久化到集群：是
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：否
+- 默认值：`16`
+- 取值范围：`[2, 255]`
+- 该变量用于限制 TiDB 实例可以缓存多少个历史版本的表结构信息。默认值为 `16`，即默认缓存 16 个历史版本的表结构信息。
+- 一般不需要修改该变量。当使用 [Stale Read](/stale-read.md) 功能且 DDL 执行非常频繁时，会导致表结构信息的版本号变更非常频繁，进而导致 Stale Read 在获取 Snapshot 的表结构信息时，可能会因为未命中表结构信息的缓存而需要消耗大量时间重新构建该信息。此时可以适当调大 `tidb_schema_version_cache_limit` 的值（例如 `32` ）来避免表结构信息的缓存不命中的问题。
+- 修改该变量会使 TiDB 的内存占用轻微上升。使用时请注意 TiDB 的内存占用，避免出现 OOM 问题。
+
 ### `tidb_server_memory_limit` <span class="version-mark">从 v6.4.0 版本开始引入</span>
 
 - 作用域：GLOBAL
@@ -4123,6 +4149,25 @@ EXPLAIN FORMAT='brief' SELECT COUNT(1) FROM t WHERE a = 1 AND b IS NOT NULL;
 - 默认值：`134217728`（即 128 MB）
 - 取值范围：`[128, 9223372036854775807]`，单位为 Byte。支持带单位的内存格式“KB|MB|GB|TB”。
 - 开启内存限制后，TiDB 会终止当前实例上内存用量最高的 SQL 语句。本变量指定此情况下 SQL 语句被终止的最小内存用量。如果 TiDB 实例的内存超限是由许多内存使用量不明显的会话导致的，可以适当调小该变量值，使得更多会话成为 Cancel 的对象。
+
+### `tidb_service_scope` <span class="version-mark">从 v7.4.0 版本开始引入</span>
+
+> **警告：**
+>
+> 该功能目前为实验特性，不建议在生产环境中使用。该功能可能会在未事先通知的情况下发生变化或删除。如果发现 bug，请在 GitHub 上提 [issue](https://github.com/pingcap/tidb/issues) 反馈。
+
+- 作用域：GLOBAL
+- 是否持久化到集群：否
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：否
+- 类型：字符串
+- 默认值：""
+- 可选值："" 或 `background`
+- 该变量是一个实例级别的变量，用于控制 [TiDB 后端任务分布式框架](/tidb-distributed-execution-framework.md) 下各 TiDB 节点的服务范围。当设置 TiDB 节点的 `tidb_service_scope` 为 `background` 时，后端任务分布式框架将调度该节点执行后端任务（如 [`ADD INDEX`](/sql-statements/sql-statement-add-index.md) 和 [`IMPORT INTO`](/sql-statements/sql-statement-import-into.md)）。
+
+> **注意：**
+>
+> - 如果集群内所有节点均未配置 `tidb_service_scope`，所有节点均会执行分布式框架的任务。如果你担心对存量业务有性能影响，可以对其中几个 TiDB 节点设置为 `background`，只有这些节点才会执行分布式框架的任务。
+> - 对于新扩容的节点，如果有运行中的分布式框架的任务还未调度到各个 TiDB 节点，则这个扩容的节点也会执行分布式框架的任务。如果您希望避免占用扩容节点的资源，你需要手动设置所有或者部分存量 TiDB 节点的 `tidb_service_scope` 为 `background`，保证配置为 `background` 的节点执行分布式框架的任务。
 
 ### `tidb_session_alias` <span class="version-mark">从 v7.4.0 版本开始引入</span>
 
