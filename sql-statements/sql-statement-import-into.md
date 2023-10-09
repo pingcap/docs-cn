@@ -160,7 +160,6 @@ SET 表达式左侧只能引用 `ColumnNameOrUserVarList` 中没有的列名。�
 > - 如果源数据文件 KV range 重叠较少，开启全局排序后可能会降低导入性能，因为全局排序需要等所有子任务的数据本地排序后，再进行额外的全局排序操作，之后才进行导入。
 > - 使用全局排序的任务完成后，存放在云存储里用于全局排序的文件会在后台线程中异步清理。
 
-
 ## 输出内容
 
 当 `IMPORT INTO` 导入完成，或者开启了 `DETACHED` 模式时，`IMPORT INTO` 会返回当前任务的信息。以下为一些示例，字段的含义描述请参考 [`SHOW IMPORT JOB(s)`](/sql-statements/sql-statement-show-import-job.md)。
