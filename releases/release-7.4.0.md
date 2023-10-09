@@ -427,10 +427,10 @@ In this version, TiDB partition management adds:
 + TiKV **tw@ran-huang 9**
 
     (dup) - 修复开启 Titan 后，TiKV 遇到 `Blob file deleted twice` 报错无法正常启动的问题 [#15454](https://github.com/tikv/tikv/issues/15454) @[Connor1996](https://github.com/Connor1996)
-    - 修复 Thread Voluntary/Nonvoluntary 监控面板没有数据的问题 [#15413](https://github.com/tikv/tikv/issues/15413) @[SpadeA-Tang](https://github.com/SpadeA-Tang)
-    - 修复 raftstore-applys 不断增长的数据错误 [#15371](https://github.com/tikv/tikv/issues/15371) @[Connor1996] (https://github.com/Connor1996)
-    - 修复由于 Region 的元数据不正确造成 TiKV panic 的问题 [#13311] (https://github.com/tikv/tikv/issues/13311) @[zyguan](https://github.com/zyguan)
-    - 修复切换 sync_recovery 到 sync 后 QPS 降至 0 的问题 [#15366] (https://github.com/tikv/tikv/issues/15366) @[nolouch](https://github.com/nolouch)
+    - 修复 Thread Voluntary 和 Thread Nonvoluntary 监控面板没有数据的问题 [#15413](https://github.com/tikv/tikv/issues/15413) @[SpadeA-Tang](https://github.com/SpadeA-Tang)
+    - 修复 raftstore-applys 不断增长的数据错误 [#15371](https://github.com/tikv/tikv/issues/15371) @[Connor1996](https://github.com/Connor1996)
+    - 修复由于 Region 的元数据不正确造成 TiKV panic 的问题 [#13311](https://github.com/tikv/tikv/issues/13311) @[zyguan](https://github.com/zyguan)
+    - 修复切换 sync_recovery 到 sync 后 QPS 降至 0 的问题 [#15366](https://github.com/tikv/tikv/issues/15366) @[nolouch](https://github.com/nolouch)
     (dup) - 修复 Online Unsafe Recovery 超时未中止的问题 [#15346](https://github.com/tikv/tikv/issues/15346) @[Connor1996](https://github.com/Connor1996)
     - 修复 CpuRecord 可能导致的内存泄漏 [#15304](https://github.com/tikv/tikv/issues/15304) @[overvenus](https://github.com/overvenus)
     - 修复当备用集群关闭后，查询主集群出现 `"Error 9002: TiKV server timeout"` 的问题 [#12914](https://github.com/tikv/tikv/issues/12914) @[Connor1996](https://github.com/Connor1996)
