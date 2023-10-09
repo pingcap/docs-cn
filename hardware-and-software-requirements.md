@@ -23,7 +23,7 @@ TiDB 作为一款开源一栈式实时 HTAP 数据库，可以很好地部署和
 | <ul><li>Red Hat Enterprise Linux 7.3 及以上的 7.x 版本</li><li>CentOS 7.3 及以上的 7.x 版本</li></ul>  |  <ul><li>x86_64</li><li>ARM 64</li></ul>   |
 |  Amazon Linux 2         |  <ul><li>x86_64</li><li>ARM 64</li></ul>   |
 | 麒麟欧拉版 V10 SP1/SP2   |   <ul><li>x86_64</li><li>ARM 64</li></ul>   |
-| UOS V20                 |   <ul><li>x86_64</li><li>ARM 64</li></ul>   |
+| 统信操作系统 (UOS) V20                 |   <ul><li>x86_64</li><li>ARM 64</li></ul>   |
 | openEuler 22.03 LTS SP1 |   x86_64   |
 | macOS 12 (Monterey) 及以上的版本 |  <ul><li>x86_64</li><li>ARM 64</li></ul>  |
 |  Oracle Enterprise Linux 7.3 及以上的 7.x 版本  |  x86_64           |
@@ -46,7 +46,7 @@ TiDB 作为一款开源一栈式实时 HTAP 数据库，可以很好地部署和
 
 |  编译和构建 TiDB 所需的依赖库   |  版本   |
 |   :---   |   :---   |
-|   Golang  |  1.20 及以上版本  |
+|   Golang  |  1.21 及以上版本  |
 |   Rust    |   nightly-2022-07-31 及以上版本  |
 |  GCC      |   7.x      |
 |  LLVM     |  13.0 及以上版本  |

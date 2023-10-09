@@ -65,7 +65,7 @@ MySQL 5.7 及以上版本自带的客户端默认尝试使用安全连接，若�
 - `--ssl-mode=VERIFY_CA`：根据 `--ssl-ca` 签发的 CA 验证来自服务器的证书。
 - `--ssl-mode=VERIFY_IDENTITY`：与 `VERIFY_CA` 相同，但也验证所连接的主机名是否与证书匹配。
 
-详细信息请参阅 MySQL 文档中关于[客户端配置安全连接](https://dev.mysql.com/doc/refman/5.7/en/using-encrypted-connections.html#using-encrypted-connections-client-side-configuration)的部分。
+详细信息请参阅 MySQL 文档中关于[客户端配置安全连接](https://dev.mysql.com/doc/refman/8.0/en/using-encrypted-connections.html#using-encrypted-connections-client-side-configuration)的部分。
 
 ## 配置启用身份验证
 
