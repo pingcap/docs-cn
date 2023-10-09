@@ -37,7 +37,7 @@ TiDB 版本：7.4.0
     <td>从 v7.1.0 开始，资源管控成为正式功能，该特性有助于缓解不同工作负载间的资源与存储访问干扰。TiDB v7.4.0 将此资源控制应用于后台任务。资源管控可以识别和管理后台任务，例如自动收集统计信息、备份和恢复、LOAD DATA 以及在线 DDL。未来，所有后台任务都将纳入资源管控。</td>
   </tr>
   <tr>
-    <td>TiFlash 支持 <a href="https://docs.pingcap.com/zh/tidb/v7.4/tiflash-disaggregated-and-s3" target="_blank">存储计算资源分离和 S3 共享存储</a> (GA) </td>
+    <td>TiFlash 支持<a href="https://docs.pingcap.com/zh/tidb/v7.4/tiflash-disaggregated-and-s3" target="_blank">存储计算资源分离和 S3 共享存储</a> (GA) </td>
     <td>TiFlash 存算分离架构和 S3 共享存储成为正式功能：
       <ul>
         <li>支持分离 TiFlash 的存储和计算资源，提升 HTAP 资源的弹性能力。</li>
@@ -47,7 +47,7 @@ TiDB 版本：7.4.0
   </tr>
   <tr>
     <td rowspan="2">SQL</td>
-    <td><a href="https://docs.pingcap.com/zh/tidb/v7.4/partitioned-table#将分区表转换为非分区表" target="_blank">TiDB 支持完整的分区类型管理功能</a> </td>
+    <td>TiDB 支持完整的 <a href="https://docs.pingcap.com/zh/tidb/v7.4/partitioned-table#将分区表转换为非分区表" target="_blank">分区类型管理功能</a> </td>
     <td>在 v7.4.0 之前，Range/List 分区表支持分区管理操作包括 <code>TRUNCATE</code>、<code>EXCHANGE</code>、<code>ADD</code>、<code>DROP</code>、<code>REORGANIZE</code> 等，Hash/Key 分区表支持分区管理操作包括 <code>ADD</code> and <code>COALESCE</code> 等。
     <p>现在 TiDB 新增支持了以下分区管理操作：</p>
     <ul>
