@@ -269,7 +269,6 @@ The descriptions of the `replica_config` parameters are as follows.
 | `case_sensitive`          | `BOOLEAN` type. Determines whether to be case-sensitive when filtering table names. The default value is `true`. (Optional)   |
 | `check_gc_safe_point`     | `BOOLEAN` type. Determines whether to check that the start time of the replication task is earlier than the GC time. The default value is `true`. (Optional)                                  |
 | `consistent`              | The configuration parameters of redo log. (Optional) |
-| `enable_old_value`        | `BOOLEAN` type. Determines whether to output the old value (that is, the value before the update). The default value is `true`. (Optional)         |
 | `enable_sync_point`       | `BOOLEAN` type. Determines whether to enable `sync point`. (Optional)         |
 | `filter`                  | The configuration parameters of `filter`. (Optional)           |
 | `force_replicate`         | `BOOLEAN` type. The default value is `false`. When you set it to `true`, the replication task forcibly replicates the tables without unique indexes. (Optional)                |
@@ -351,7 +350,7 @@ The `sink.csv` parameters are described as follows:
 
 `sink.dispatchers`: for the sink of MQ type, you can use this parameter to configure the event dispatcher. The following dispatchers are supported: `default`, `ts`, `rowid`, and `table`. The dispatcher rules are as follows:
 
-- `default`: when multiple unique indexes (including the primary key) exist, events are dispatched in the table mode. When only one unique index (or the primary key) exists, events are dispatched in the rowid mode. If the Old Value feature is enabled, events are dispatched in the table mode.
+- `default`: dispatches events in the `table` mode.
 - `ts`: uses the commitTs of the row change to create the hash value and dispatch events.
 - `rowid`: uses the name and value of the selected HandleKey column to create the hash value and dispatch events.
 - `table`: uses the schema name of the table and the table name to create the hash value and dispatch events.

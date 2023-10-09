@@ -107,37 +107,6 @@ Since v4.0.9, you can try to enable the unified sorter feature in your replicati
 4. Modify the changefeed configuration and add the above `start-ts` to the `ignore-txn-start-ts` configuration item.
 5. Resume the paused changefeed.
 
-## After I upgrade the TiCDC cluster to v4.0.8, the `[CDC:ErrKafkaInvalidConfig]Canal requires old value to be enabled` error is reported when I execute a changefeed. What should I do?
-
-Since v4.0.8, if the `canal-json`, `canal` or `maxwell` protocol is used for output in a changefeed, TiCDC enables the old value feature automatically. However, if you have upgraded TiCDC from an earlier version to v4.0.8 or later, when the changefeed uses the `canal-json`, `canal` or `maxwell` protocol and the old value feature is disabled, this error is reported.
-
-To fix the error, take the following steps:
-
-1. Set the value of `enable-old-value` in the changefeed configuration file to `true`.
-2. Execute `cdc cli changefeed pause` to pause the replication task.
-
-    {{< copyable "shell-regular" >}}
-
-    ```shell
-    cdc cli changefeed pause -c test-cf --server=http://127.0.0.1:8300
-    ```
-
-3. Execute `cdc cli changefeed update` to update the original changefeed configuration.
-
-    {{< copyable "shell-regular" >}}
-
-    ```shell
-    cdc cli changefeed update -c test-cf --server=http://127.0.0.1:8300 --sink-uri="mysql://127.0.0.1:3306/?max-txn-row=20&worker-number=8" --config=changefeed.toml
-    ```
-
-4. Execute `cdc cli changfeed resume` to resume the replication task.
-
-    {{< copyable "shell-regular" >}}
-
-    ```shell
-    cdc cli changefeed resume -c test-cf --server=http://127.0.0.1:8300
-    ```
-
 ## The `[tikv:9006]GC life time is shorter than transaction duration, transaction starts at xx, GC safe point is yy` error is reported when I use TiCDC to create a changefeed. What should I do?
 
 You need to run the `pd-ctl service-gc-safepoint --pd <pd-addrs>` command to query the current GC safepoint and service GC safepoint. If the GC safepoint is smaller than the `start-ts` of the TiCDC replication task (changefeed), you can directly add the `--disable-gc-check` option to the `cdc cli create changefeed` command to create a changefeed.

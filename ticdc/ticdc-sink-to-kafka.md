@@ -222,12 +222,12 @@ For example, for a dispatcher like `matcher = ['test.*'], topic = {schema}_{tabl
 
 ### Partition dispatchers
 
-You can use `partition = "xxx"` to specify a partition dispatcher. It supports four dispatchers: default, ts, index-value, and table. The dispatcher rules are as follows:
+You can use `partition = "xxx"` to specify a partition dispatcher. It supports four dispatchers: `default`, `ts`, `index-value`, and `table`. The dispatcher rules are as follows:
 
-- default: When multiple unique indexes (including the primary key) exist or the Old Value feature is enabled, events are dispatched in the table mode. When only one unique index (or the primary key) exists, events are dispatched in the index-value mode.
-- ts: Use the commitTs of the row change to hash and dispatch events.
-- index-value: Use the value of the primary key or the unique index of the table to hash and dispatch events.
-- table: Use the schema name of the table and the table name to hash and dispatch events.
+- `default`: dispatches events in the `table` mode.
+- `ts`: uses the commitTs of the row change to hash and dispatch events.
+- `index-value`: uses the value of the primary key or the unique index of the table to hash and dispatch events.
+- `table`: uses the schema name of the table and the table name to hash and dispatch events.
 
 > **Note:**
 >
@@ -247,12 +247,6 @@ You can use `partition = "xxx"` to specify a partition dispatcher. It supports f
 > ```
 > {matcher = ['*.*'], dispatcher = "ts", partition = "table"},
 > ```
-
-> **Warning:**
->
-> When the [Old Value feature](/ticdc/ticdc-manage-changefeed.md#output-the-historical-value-of-a-row-changed-event) is enabled (`enable-old-value = true`), using the index-value dispatcher might fail to ensure the order of row changes with the same index value. Therefore, it is recommended to use the default dispatcher.
->
-> For more information, see [What changes occur to the change event format when TiCDC enables the Old Value feature?](/ticdc/ticdc-faq.md#what-changes-occur-to-the-change-event-format-when-ticdc-enables-the-old-value-feature).
 
 ## Scale out the load of a single large table to multiple TiCDC nodes
 

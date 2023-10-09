@@ -88,7 +88,7 @@ This section introduces the formats of Row Changed Event, DDL Event, and Resolve
     }
     ```
 
-    `Update` event. The newly added row data ("u") and the row data before the update ("p") are output. The latter ("p") is output only when the old value feature is enabled.
+    `Update` event. The newly added row data ("u") and the row data before the update ("p") are output.
 
     ```
     {
@@ -123,7 +123,7 @@ This section introduces the formats of Row Changed Event, DDL Event, and Resolve
     }
     ```
 
-    `Delete` event. The deleted row data is output. When the old value feature is enabled, the `Delete` event includes all the columns of the deleted row data; when this feature is disabled, the `Delete` event only includes the [HandleKey](#bit-flags-of-columns) column.
+    `Delete` event. The deleted row data is output.
 
     ```
     {

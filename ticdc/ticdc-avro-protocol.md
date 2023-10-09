@@ -9,10 +9,6 @@ Avro is a data exchange format protocol defined by [Apache Avro™](https://avro
 
 > **Warning:**
 >
-> When the [Old Value feature](/ticdc/ticdc-manage-changefeed.md#output-the-historical-value-of-a-row-changed-event) is enabled (`enable-old-value = true`), the Avro data format cannot output the old value of change events.
->
-> For more information, see [What changes occur to the change event format when TiCDC enables the Old Value feature?](/ticdc/ticdc-faq.md#what-changes-occur-to-the-change-event-format-when-ticdc-enables-the-old-value-feature).
->
 > Starting from v7.3.0, if you enable TiCDC to [replicate tables without a valid index](/ticdc/ticdc-manage-changefeed.md#replicate-tables-without-a-valid-index), TiCDC will report an error when you create a changefeed that uses the Avro protocol.
 
 ## Use Avro

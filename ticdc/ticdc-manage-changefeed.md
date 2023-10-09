@@ -91,7 +91,6 @@ cdc cli changefeed query --server=http://10.0.10.25:8300 --changefeed-id=simple-
     "sort-dir": ".",
     "config": {
       "case-sensitive": true,
-      "enable-old-value": false,
       "filter": {
         "rules": [
           "*.*"
@@ -257,18 +256,6 @@ Currently, you can modify the following configuration items:
     - `resolved-ts`: The largest TSO among the sorted data in the current processor.
     - `checkpoint-ts`: The largest TSO that has been successfully written to the downstream in the current processor.
 
-## Output the historical value of a Row Changed Event
-
-In the default configuration, the Row Changed Event of TiCDC Open Protocol output in a replication task only contains the changed value, not the value before the change. Therefore, the output value cannot be used by the consumer ends of TiCDC Open Protocol as the historical value of a Row Changed Event.
-
-Starting from v4.0.5, TiCDC supports outputting the historical value of a Row Changed Event. To enable this feature, specify the following configuration in the changefeed configuration file at the root level:
-
-```toml
-enable-old-value = true
-```
-
-This feature is enabled by default since v5.0. To learn the output format of the TiCDC Open Protocol after this feature is enabled, see [TiCDC Open Protocol - Row Changed Event](/ticdc/ticdc-open-protocol.md#row-changed-event).
-
 ## Replicate tables with the new framework for collations enabled
 
 Starting from v4.0.15, v5.0.4, v5.1.1 and v5.2.0, TiCDC supports tables that have enabled [new framework for collations](/character-set-and-collation.md#new-framework-for-collations).
@@ -278,7 +265,6 @@ Starting from v4.0.15, v5.0.4, v5.1.1 and v5.2.0, TiCDC supports tables that hav
 Since v4.0.8, TiCDC supports replicating tables that have no valid index by modifying the task configuration. To enable this feature, configure in the changefeed configuration file as follows:
 
 ```toml
-enable-old-value = true
 force-replicate = true
 ```
 

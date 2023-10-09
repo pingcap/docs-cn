@@ -7,12 +7,6 @@ summary: Learn the concept of TiCDC CSV Protocol and how to use it.
 
 When using a cloud storage service as the downstream sink, you can send DML events to the cloud storage service in CSV format.
 
-> **Warning:**
->
-> When the [Old Value feature](/ticdc/ticdc-manage-changefeed.md#output-the-historical-value-of-a-row-changed-event) is enabled (`enable-old-value = true`), the CSV data format cannot output the old value of change events.
->
-> For more information, see [What changes occur to the change event format when TiCDC enables the Old Value feature?](/ticdc/ticdc-faq.md#what-changes-occur-to-the-change-event-format-when-ticdc-enables-the-old-value-feature).
-
 ## Use CSV
 
 The following is an example of the configuration when using the CSV protocol:

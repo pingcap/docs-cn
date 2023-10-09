@@ -156,10 +156,10 @@ The configuration parameters of sink are as follows:
 
 `dispatchers`: For the sink of MQ type, you can use dispatchers to configure the event dispatcher. Four dispatchers are supported: `default`, `ts`, `rowid`, and `table`. The dispatcher rules are as follows:
 
-- `default`: When multiple unique indexes (including the primary key) exist or the Old Value feature is enabled, events are dispatched in the `table` mode. When only one unique index (or the primary key) exists, events are dispatched in the `rowid` mode.
-- `ts`: Uses the commitTs of the row change to create the hash value and dispatch events.
-- `rowid`: Uses the name and value of the selected HandleKey column to create the hash value and dispatch events.
-- `table`: Uses the schema name of the table and the table name to create the hash value and dispatch events.
+- `default`: dispatches events in the `table` mode.
+- `ts`: uses the commitTs of the row change to create the hash value and dispatch events.
+- `rowid`: uses the name and value of the selected HandleKey column to create the hash value and dispatch events.
+- `table`: uses the schema name of the table and the table name to create the hash value and dispatch events.
 
 `matcher`: The matching syntax of matcher is the same as the filter rule syntax.
 
