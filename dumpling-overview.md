@@ -55,6 +55,7 @@ TiDB 还提供了其他工具，你可以根据需要选择使用：
 
 ### 需要的权限
 
+- PROCESS：需要该权限用于查询集群信息以获取 PD 地址，从而通过 PD 控制 GC。
 - SELECT：导出目标表时需要。
 - RELOAD：使用 consistency flush 时需要。注意，只有 TiDB 支持该权限，当上游为 RDS 或采用托管服务时，可忽略该权限。
 - LOCK TABLES：使用 consistency lock 时需要，需要导出的库表都有该权限。
@@ -357,9 +358,10 @@ SET GLOBAL tidb_gc_life_time = '10m';
 | --ca | 用于 TLS 连接的 certificate authority 文件的地址 |
 | --cert | 用于 TLS 连接的 client certificate 文件的地址 |
 | --key | 用于 TLS 连接的 client private key 文件的地址 |
-| --csv-delimiter | csv 文件中字符类型变量的定界符 | '"' |
-| --csv-separator | csv 文件中各值的分隔符，如果数据中可能有逗号，建议源文件导出时分隔符使用非常见组合字符| ','|
-| --csv-null-value | csv 文件空值的表示 | "\\N" |
+| --csv-delimiter | CSV 文件中字符类型变量的定界符 | '"' |
+| --csv-separator | CSV 文件中各值的分隔符，如果数据中可能有逗号，建议源文件导出时分隔符使用非常见组合字符| ','|
+| --csv-null-value | CSV 文件空值的表示 | "\\N" |
+| --csv-line-terminator | CSV 文件中表示行尾的换行符。将数据导出为 CSV 文件时，可以通过该选项传入所需的换行符。该选项支持 "\\r\\n" 和 "\\n"，默认值为 "\\r\\n"，和历史版本保持一致。由于 bash 中不同的引号会应用不同的转义规则，如需指定 LF 为换行符，可使用类似 `--csv-line-terminator $'\n'` 的语法。| "\\r\\n" |
 | --escape-backslash | 使用反斜杠 (`\`) 来转义导出文件中的特殊字符 | true |
 | --output-filename-template | 以 [golang template](https://golang.org/pkg/text/template/#hdr-Arguments) 格式表示的数据文件名格式 <br/> 支持 `{{.DB}}`、`{{.Table}}`、`{{.Index}}` 三个参数 <br/> 分别表示数据文件的库名、表名、分块 ID | '{{.DB}}.{{.Table}}.{{.Index}}' |
 | --status-addr | Dumpling 的服务地址，包含了 Prometheus 拉取 metrics 信息及 pprof 调试的地址 | ":8281" |

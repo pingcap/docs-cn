@@ -67,9 +67,9 @@ delta_index_cache_size = 0
     ## DTFile 储存文件格式
     ## * format_version = 2 v6.0.0 以前版本的默认文件格式
     ## * format_version = 3 v6.0.0 及 v6.1.x 版本的默认文件格式，具有更完善的检验功能
-    ## * format_version = 4 v6.2.0 及以后版本的默认文件格式，优化了写放大问题，同时减少了后台线程消耗
-    ## * format_version = 5 从 v7.3.0 开始引入的文件格式（非 v7.3.0 默认格式），该格式可以合并小文件从而减少了物理文件数量。注意该格式目前为实验特性，不建议在生产环境中使用。
-    # format_version = 4
+    ## * format_version = 4 v7.3.0 及以前版本的默认文件格式，优化了写放大问题，同时减少了后台线程消耗。
+    ## * format_version = 5 v7.4.0 及以后版本的默认文件格式（从 v7.3.0 开始引入），该格式可以合并小文件从而减少了物理文件数量。
+    # format_version = 5
 
     [storage.main]
     ## 用于存储主要的数据，该目录列表中的数据占总数据的 90% 以上。
@@ -130,6 +130,15 @@ delta_index_cache_size = 0
 [flash]
     tidb_status_addr = tidb status 端口地址 # 多个地址以逗号分割
     service_addr =  TiFlash raft 服务 和 coprocessor 服务监听地址
+
+    ## 从 v7.4.0 引入，在当前 Raft 状态机推进的 applied_index 和上次落盘时的 applied_index 的差值高于 compact_log_min_gap 时，
+    ## TiFlash 将执行来自 TiKV 的 CompactLog 命令，并进行数据落盘。调大该差值可能降低 TiFlash 的落盘频率，从而减少随机写场景下的读延迟，但会增大内存开销。调小该差值可能提升 TiFlash 的落盘频率，从而缓解 TiFlash 内存压力。但无论如何，在目前阶段，TiFlash 的落盘频率不会高于 TiKV，即使设置该差值为 0。
+    ## 建议保持默认值。
+    # compact_log_min_gap = 200
+    ## 从 v5.0 引入，当 TiFlash 缓存的 Region 行数或者大小超过以下任一阈值时，TiFlash 将执行来自 TiKV 的 CompactLog 命令，并进行落盘。
+    ## 建议保持默认值。
+    # compact_log_min_rows = 40960 # 40k
+    # compact_log_min_bytes = 33554432 # 32MB
 
     ## 下面的配置只针对存算分离模式生效，详情请参考 TiFlash 存算分离架构与 S3 支持文档 https://docs.pingcap.com/zh/tidb/dev/tiflash-disaggregated-and-s3
     # disaggregated_mode = tiflash_write # 可选值为 tiflash_write 或者 tiflash_compute
@@ -223,6 +232,9 @@ delta_index_cache_size = 0
 
     ## 从 v7.0.0 引入，表示带等值 join 条件的 HashJoin 算子在触发 spill 之前的最大可用内存，超过该阈值之后 HashJoin 算子会采用 spill to disk 的方式来减小内存使用。默认值为 0，表示内存使用无限制，即不会触发 spill。
     max_bytes_before_external_join = 0
+
+    ## 从 v7.4.0 引入，表示是否开启 TiFlash 资源管控功能。当设置为 true 时，TiFlash 会使用 Pipeline Model 执行模型。
+    enable_resource_control = true
 
 ## 安全相关配置，从 v4.0.5 开始生效
 [security]

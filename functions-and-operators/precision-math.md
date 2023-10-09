@@ -5,7 +5,7 @@ aliases: ['/docs-cn/dev/functions-and-operators/precision-math/','/docs-cn/dev/r
 
 # 精度数学
 
-TiDB 中精度数学计算与 MySQL 中基本一致。详情请参见：[Precision Math](https://dev.mysql.com/doc/refman/5.7/en/precision-math.html)
+TiDB 中精度数学计算与 MySQL 中基本一致。详情请参见：[Precision Math](https://dev.mysql.com/doc/refman/8.0/en/precision-math.html)
 
 - 数值类型
 - DECIMAL 数据类型的特性
