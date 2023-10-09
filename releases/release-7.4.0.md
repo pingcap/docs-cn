@@ -30,7 +30,7 @@ TiDB 版本：7.4.0
   <tr>
     <td rowspan="3">稳定性与高可用</td>
     <td><a href="https://docs.pingcap.com/zh/tidb/v7.4/tidb-global-sort" target="_blank">引入全局排序能力，提升<code>IMPORT INTO</code>和<code>ADD INDEX</code>任务的性能和稳定性</a></td>
-    <td>在 v7.4.0 以前，当用户执行<a href="https://docs.pingcap.com/zh/tidb/v7.4/tidb-resource-control#use-resource-control-to-achieve-resource-isolation" target="_blank">分布式并行执行框架</a>的 <code>ADD INDEX</code> 或 <code>IMPORT INTO</code> 等任务时，TiDB 节点需要在将数据导入到 TiKV 之前为数据分配本地磁盘空间以进行排序。这种方式仅能进行部分数据的局部排序，往往会导致数据重叠，从而增加资源消耗，并降低 TiKV 的性能和稳定性。随着 v7.4.0 引入全局排序特性，数据可暂时存储在 S3 中，进行全局排序后再按顺序导入到 TiKV 中。这一改进降低了 TiKV 在数据整理过程中对资源的额外消耗，并显著提高了 <code>ADD INDEX</code> 和 <code>IMPORT INTO</ code > 等操作的性能和稳定性。</td>
+    <td>在 v7.4.0 以前，当用户执行<a href="https://docs.pingcap.com/zh/tidb/v7.4/tidb-resource-control#use-resource-control-to-achieve-resource-isolation" target="_blank">分布式并行执行框架</a>的 <code>ADD INDEX</code> 或 <code>IMPORT INTO</code> 等任务时，TiDB 节点需要在将数据导入到 TiKV 之前为数据分配本地磁盘空间以进行排序。这种方式仅能进行部分数据的局部排序，往往会导致数据重叠，从而增加资源消耗，并降低 TiKV 的性能和稳定性。随着 v7.4.0 引入全局排序特性，数据可暂时存储在 S3 中，进行全局排序后再按顺序导入到 TiKV 中。这一改进降低了 TiKV 在数据整理过程中对资源的额外消耗，并显著提高了 <code>ADD INDEX</code> 和 <code>IMPORT INTO</code> 等操作的性能和稳定性。</td>
   </tr>
   <tr>
     <td>资源管控支持自动管理后台任务（实验特性）</td>
@@ -58,7 +58,7 @@ TiDB 版本：7.4.0
     </td>
   </tr>
   <tr>
-    <td>MySQL 8.0 兼容性：支持排序规则 <code>utf8mb4_0900_ai_ci</code> </td>
+    <td>MySQL 8.0 兼容性：支持排序规则 <code>utf8mb4_0900_ai_ci</code></td>
     <td>MySQL 8.0 的一个显著变化是默认字符集更改为 utf8mb4，其默认排序规则是 <code>utf8mb4_0900_ai_ci</code>。TiDB v7.4.0 增强了与 MySQL 8.0 的兼容性。现在你可以更轻松地迁移或复制在 MySQL 8.0 中使用默认排序规则创建的数据库到 TiDB。</td>
   </tr>
   <tr>
