@@ -1009,6 +1009,7 @@
   - [通过拓扑 label 进行副本调度](/schedule-replicas-by-topology-labels.md)
   - 内部组件介绍
     - [TiDB 后端任务分布式并行执行框架](/tidb-distributed-execution-framework.md)
+    - [TiDB 全局排序](/tidb-global-sort.md)
 - 常见问题解答 (FAQ)
   - [FAQ 汇总](/faq/faq-overview.md)
   - [产品 FAQ](/faq/tidb-faq.md)
