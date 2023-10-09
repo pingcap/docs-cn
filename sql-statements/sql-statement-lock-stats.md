@@ -7,6 +7,10 @@ summary: An overview of the usage of LOCK STATS for the TiDB database.
 
 `LOCK STATS` is used to lock the statistics of tables or partitions. When the statistics is locked, TiDB does not automatically update the statistics of the table or partition. For details on the behavior, see [Behaviors of locking statistics](/statistics.md#behaviors-of-locking-statistics).
 
+> **Warning:**
+>
+> Locking statistics is an experimental feature for the current version. It is not recommended to use it in the production environment.
+
 ## Synopsis
 
 ```ebnf+diagram

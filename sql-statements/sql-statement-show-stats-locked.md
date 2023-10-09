@@ -7,6 +7,10 @@ summary: An overview of the usage of SHOW STATS_LOCKED for the TiDB database.
 
 `SHOW STATS_LOCKED` shows the tables whose statistics are locked.
 
+> **Warning:**
+>
+> Locking statistics is an experimental feature for the current version. It is not recommended to use it in the production environment.
+
 ## Synopsis
 
 ```ebnf+diagram

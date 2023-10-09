@@ -7,6 +7,10 @@ summary: An overview of the usage of UNLOCK STATS for the TiDB database.
 
 `UNLOCK STATS` is used to unlock the statistics of a table or tables.
 
+> **Warning:**
+>
+> Locking statistics is an experimental feature for the current version. It is not recommended to use it in the production environment.
+
 ## Synopsis
 
 ```ebnf+diagram

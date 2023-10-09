@@ -819,6 +819,10 @@ LOAD STATS 'file_name'
 
 ## Lock statistics
 
+> **Warning:**
+>
+> Locking statistics is an experimental feature for the current version. It is not recommended to use it in the production environment.
+
 Starting from v6.5.0, TiDB supports locking statistics. After the statistics of a table or a partition are locked, the statistics of the table cannot be modified and the `ANALYZE` statement cannot be executed on the table. For example:
 
 Create table `t`, and insert data into it. When the statistics of table `t` are not locked, the `ANALYZE` statement can be successfully executed.
