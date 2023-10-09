@@ -29,8 +29,8 @@ TiDB 版本：7.4.0
   </tr>
   <tr>
     <td rowspan="3">稳定性与高可用</td>
-    <td>Improving the performance and stability of 'Import into' and 'Add Index' operations via `global sorting`</td>
-    <td>Before v7.4.0, tasks like ADD INDEX or IMPORT INTO in the distributed parallel execution framework required TiDB nodes to allocate local disk space for sorting data before importing it into TiKV. This approach, involving partial and localized sorting, often led to data overlaps, increasing TiKV's resource consumption and lower performance and stability. With the Global Sorting feature in v7.4.0, data is temporarily stored in S3 for global sorting. Then the data is imported into TiKV in an orderly, eliminating the need for TiKV to consume extra resources on compactions. This significantly enhances the performance and stability of operations like IMPORT INTO and ADD INDEX.</td>
+    <td><a href="https://docs.pingcap.com/zh/tidb/v7.4/tidb-global-sort" target="_blank">引入全局排序能力，提升<code>IMPORT INTO</code>和<code>ADD INDEX</code>任务的性能和稳定性</a></td>
+    <td>在 v7.4.0 以前，当用户执行<a href="https://docs.pingcap.com/zh/tidb/v7.4/tidb-resource-control#use-resource-control-to-achieve-resource-isolation" target="_blank">分布式并行执行框架</a>的 <code>ADD INDEX</code> 或 <code>IMPORT INTO</code> 等任务时，TiDB 节点需要在将数据导入到 TiKV 之前为数据分配本地磁盘空间以进行排序。这种方式仅能进行部分数据的局部排序，往往会导致数据重叠，从而增加资源消耗，并降低 TiKV 的性能和稳定性。随着 v7.4.0 引入全局排序特性，数据可暂时存储在 S3 中，进行全局排序后再按顺序导入到 TiKV 中。这一改进降低了 TiKV 在数据整理过程中对资源的额外消耗，并显著提高了 <code>ADD INDEX</code> 和 <code>IMPORT INTO</ code > 等操作的性能和稳定性。</td>
   </tr>
   <tr>
     <td>资源管控支持自动管理后台任务（实验特性）</td>
