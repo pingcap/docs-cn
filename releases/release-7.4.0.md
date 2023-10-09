@@ -26,7 +26,6 @@ TiDB 版本：7.4.0
     <td>可扩展性与性能</td>
     <td>Enhance the performance for adding several indexes of a table in a single ALTER statement (experimental)</td>
     <td>From v6.2 the user can add several indexes of a table in a single ALTER statement. However, the performance is the same as running two single add index DDL statements x, y, which used to take x-time +y-time, they now take significantly less.</td>
-    </td>
   </tr>
   <tr>
     <td rowspan="3">稳定性与高可用</td>
