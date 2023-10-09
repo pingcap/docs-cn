@@ -24,21 +24,21 @@ TiDB 版本：7.4.0
 <tbody>
   <tr>
     <td>可扩展性与性能</td>
-    <td>Enhance the performance for adding several indexes of a table in a single ALTER statement (experimental) <!--Frank, tw@ran-huang--></td>
+    <td>Enhance the performance for adding several indexes of a table in a single ALTER statement (experimental)</td>
     <td>From v6.2 the user can add several indexes of a table in a single ALTER statement. However, the performance is the same as running two single add index DDL statements x, y, which used to take x-time +y-time, they now take significantly less.</td>
     </td>
   </tr>
   <tr>
     <td rowspan="3">稳定性与高可用</td>
-    <td>Improving the performance and stability of 'Import into' and 'Add Index' operations via `global sorting` <!--Frank, tw@ran-huang--></td>
+    <td>Improving the performance and stability of 'Import into' and 'Add Index' operations via `global sorting`</td>
     <td>Before v7.4.0, tasks like ADD INDEX or IMPORT INTO in the distributed parallel execution framework required TiDB nodes to allocate local disk space for sorting data before importing it into TiKV. This approach, involving partial and localized sorting, often led to data overlaps, increasing TiKV's resource consumption and lower performance and stability. With the Global Sorting feature in v7.4.0, data is temporarily stored in S3 for global sorting. Then the data is imported into TiKV in an orderly, eliminating the need for TiKV to consume extra resources on compactions. This significantly enhances the performance and stability of operations like IMPORT INTO and ADD INDEX.</td>
   </tr>
   <tr>
-    <td>资源管控支持自动管理后台任务（实验特性）<!--Roger, tw@Oreoxmt--></td>
+    <td>资源管控支持自动管理后台任务（实验特性）</td>
     <td>从 v7.1.0 开始，资源管控成为正式功能，该特性有助于缓解不同工作负载间的资源与存储访问干扰。TiDB v7.4.0 将此资源控制应用于后台任务。资源管控可以识别和管理后台任务，例如自动收集统计信息、备份和恢复、LOAD DATA 以及在线 DDL。未来，所有后台任务都将纳入资源管控。</td>
   </tr>
   <tr>
-    <td>TiFlash supports storage-computing separation and S3 <!--Zhang Ye, tw@qiancai--></td>
+    <td>TiFlash supports storage-computing separation and S3</td>
     <td>TiFlash introduces a cloud-native architecture as an option:
       <ul>
         <li>Disaggregates TiFlash's compute and storage, which is a milestone for elastic HTAP resource utilization.</li>
@@ -47,8 +47,8 @@ TiDB 版本：7.4.0
     </td>
   </tr>
   <tr>
-    <td rowspan="4">SQL</td>
-    <td>More complete partition management <!--Zhang Ye, tw@qiancai--></td>
+    <td rowspan="2">SQL</td>
+    <td>More complete partition management</td>
     <td>Prior to v7.4, TiDB supported truncate partition, exchange partition, add/drop/reorganize partition on Range/List Partitioning, and add/coalesce partition on Hash/Key partitioning
 In this version, TiDB partition management adds:
       <ul>
@@ -59,20 +59,12 @@ In this version, TiDB partition management adds:
     </td>
   </tr>
   <tr>
-    <td>MySQL 8.0 兼容性：支持排序规则 <code>utf8mb4_0900_ai_ci</code> <!--Roger, tw@Oreoxmt--></td>
+    <td>MySQL 8.0 兼容性：支持排序规则 <code>utf8mb4_0900_ai_ci</code> </td>
     <td>MySQL 8.0 的一个显著变化是默认字符集更改为 utf8mb4，其默认排序规则是 <code>utf8mb4_0900_ai_ci</code>。TiDB v7.4.0 增强了与 MySQL 8.0 的兼容性。现在你可以更轻松地迁移或复制在 MySQL 8.0 中使用默认排序规则创建的数据库到 TiDB。</td>
   </tr>
   <tr>
-    <td>TiDB&TiFlash support modifier ROLLUP and function GROUPING() <!--Zhang Ye, tw@qiancai--></td>
-    <td> ROLLUP modifier can cause summary output to include extra rows that represent higher-level summary operations, thus enables you to answer questions at multiple levels of analysis with a single query. ROLLUP modifier is commonly used in data analysis and is used to summarize data in multiple dimensions. </td>
-  </tr>
-  <tr>
-    <td>TiFlash 支持资源管控<!--Zhang Ye, tw@Oreoxmt --></td>
-    <td>在 v7.4.0 之前，TiDB 资源管控无法管理 TiFlash 资源。从 v7.4.0 开始，TiFlash 支持资源管控特性，进一步完善了 TiDB 整体的资源管控能力。</td>
-  </tr>
-  <tr>
     <td>数据库管理与可观测性</td>
-    <td><a href="https://docs.pingcap.com/zh/tidb/v7.4/system-variables#tidb_service_scope-从-v740-版本开始引入" target="_blank">选择适用的 TiDB 节点来执行并行的 <code>ADD INDEX</code> 或 <code>IMPORT INTO</code> SQL 语句（实验特性）</a> <!--Frank, tw@hfxsd--></td>
+    <td><a href="https://docs.pingcap.com/zh/tidb/v7.4/system-variables#tidb_service_scope-从-v740-版本开始引入" target="_blank">选择适用的 TiDB 节点来执行并行的 <code>ADD INDEX</code> 或 <code>IMPORT INTO</code> SQL 语句（实验特性）</a></td>
     <td>你可以选择在现有 TiDB 节点、或者新增 TiDB 节点执行 <code>ADD INDEX</code> 和 <code>IMPORT INTO</code> SQL 语句。该方法可以实现与其他 TiDB 节点的资源隔离，确保在执行上述语句时的最佳性能，并避免对已有业务造成性能影响。</td>
   </tr>
 </tbody>
