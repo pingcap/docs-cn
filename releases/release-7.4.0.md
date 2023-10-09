@@ -103,7 +103,7 @@ TiDB 版本：7.4.0
 
     * `value MEMBER OF(json_array)`
 
-    更多信息，请参考[用户文档](/functions-and-operators/expressions-pushed-down.md)。
+  更多信息，请参考[用户文档](/functions-and-operators/expressions-pushed-down.md)。
 
 * 支持下推包含任意帧定义类型的窗口函数到 TiFlash [#7376](https://github.com/pingcap/tiflash/issues/7376) @[xzhangxian1008](https://github.com/xzhangxian1008)
 
