@@ -76,9 +76,9 @@ delta_index_cache_size = 0
     ## DTFile format
     ## * format_version = 2, the default format for versions < v6.0.0.
     ## * format_version = 3, the default format for v6.0.0 and v6.1.x, which provides more data validation features.
-    ## * format_version = 4, the default format for v6.2.0 and later versions, which reduces write amplification and background task resource consumption
-    ## * format_version = 5, a new format introduced in v7.3.0 (not the default format for v7.3.0) that reduces the number of physical files by merging smaller files. Note that this format is experimental and not recommended to be used in a production environment.
-    # format_version = 4
+    ## * format_version = 4, the default format for versions from v6.2.0 to v7.3.0, which reduces write amplification and background task resource consumption
+    ## * format_version = 5, the default format for v7.4.0 and later versions (introduced in v7.3.0), which reduces the number of physical files by merging smaller files. 
+    # format_version = 5
 
     [storage.main]
     ## The list of directories to store the main data. More than 90% of the total data is stored in
