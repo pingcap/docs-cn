@@ -342,7 +342,7 @@ In this version, TiDB partition management adds:
     - 优化索引合并进行交集操作时的 `limit` 下推，提高查询性能 [#46863](https://github.com/pingcap/tidb/issues/46863) @[AilinKid](https://github.com/AilinKid) 
     - 改进代价模型 (Cost Model) 以尽量避免在 `IndexLookup` 回表任务多时错误地选择全表扫描 [#45132](https://github.com/pingcap/tidb/issues/45132) @[qw4990](https://github.com/qw4990)
     - 优化 join 消除规则，提高 `join on unique keys` 时的查询性能 [#46248](https://github.com/pingcap/tidb/issues/46248) @[fixdb](https://github.com/fixdb) 
-    
+    - 将多值索引列的排序规则变更为 `binary`，避免执行失败 [#46717](https://github.com/pingcap/tidb/issues/46717) @[YangKeao](https://github.com/YangKeao) 
 
 + TiKV **tw@qiancai 7**
 
@@ -401,7 +401,6 @@ In this version, TiDB partition management adds:
     - 修复 `AUTO_ID_CACHE=1` 时 TiDB panic 后恢复过慢的问题 [#46454](https://github.com/pingcap/tidb/issues/46454) @[tiancaiamao](https://github.com/tiancaiamao)
     - 修复 `AUTO_ID_CACHE=1` 时 `SHOW CREATE TABLE` 中 `next_row_id` 错误的问题 [#46545](https://github.com/pingcap/tidb/issues/46545) @[tiancaiamao](https://github.com/tiancaiamao)
     <!-- tw@Oreoxmt 以上 10 条-->
-    - 将多值索引列的排序规则变更为 `binary`，避免执行失败 [#46717](https://github.com/pingcap/tidb/issues/46717) @[YangKeao](https://github.com/YangKeao) 
     - 修复在子查询中使用 CTE 时，解析出现 panic 的问题 [#45838](https://github.com/pingcap/tidb/issues/45838) @[djshow832](https://github.com/djshow832)
     - 修复在交换分区失败或被取消时，分区表的限制残留在原表上的问题 [#45920](https://github.com/pingcap/tidb/issues/45920) [#45791](https://github.com/pingcap/tidb/issues/45791) @[mjonss](https://github.com/mjonss)
     - 修复 List 分区的定义中不允许同时使用 `NULL` 和空字符串的问题 [#45694](https://github.com/pingcap/tidb/issues/45694) @[mjonss](https://github.com/mjonss)
