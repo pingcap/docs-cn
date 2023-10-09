@@ -79,10 +79,6 @@ enable-old-value = true
 # Filter syntax: <https://docs.pingcap.com/tidb/stable/table-filter#syntax>.
 rules = ['*.*', '!test.*']
 
-# Specifies the transaction that will be ignored with the specified start_ts.
-# The default value is an empty list.
-# IgnoreTxnStartTs = []
-
 # Event filter rules.
 # The detailed syntax is described in <https://docs.pingcap.com/tidb/stable/ticdc-filter>
 # The first event filter rule.
