@@ -345,13 +345,13 @@ In this version, TiDB partition management adds:
 
 + TiKV **tw@qiancai 7**
 
-      - 改进 Resolver 的内存使用，防止 OOM [#15458](https://github.com/tikv/tikv/issues/15458) @[overvenus](https://github.com/overvenus)
-      - 消除 Router 对象中的 LRUCache，降低内存占用，防止 OOM [#15430](https://github.com/tikv/tikv/issues/15430) @[Connor1996](https://github.com/Connor1996)
-      - 降低 TiCDC Resolver 的内存占用 [#15412] (https://github.com/tikv/tikv/issues/15412) @[overvenus](https://github.com/overvenus)
-      - 降低 RocksDB compaction 带来的内存抖动 [#15324] (https://github.com/tikv/tikv/issues/15324) @[overvenus](https://github.com/overvenus)
-      - 降低 Partitioned Raft KV 中流控模块的内存占用 [#15269] (https://github.com/tikv/tikv/issues/15269) @[overvenus](https://github.com/overvenus)
-      - 减少 PD 的 `MemberList` 请求，优化 PD 调用 [#15428](https://github.com/tikv/tikv/issues/15428) @[nolouch](https://github.com/nolouch)
-      - 支持动态调整 RocksDB 的 `background_compaction` [#15424](https://github.com/tikv/tikv/issues/15424) @[glorv](https://github.com/glorv)
+     - 改进 Resolver 的内存使用，防止 OOM [#15458](https://github.com/tikv/tikv/issues/15458) @[overvenus](https://github.com/overvenus)
+     - 消除 Router 对象中的 LRUCache，降低内存占用，防止 OOM [#15430](https://github.com/tikv/tikv/issues/15430) @[Connor1996](https://github.com/Connor1996)
+     - 降低 TiCDC Resolver 的内存占用 [#15412](https://github.com/tikv/tikv/issues/15412) @[overvenus](https://github.com/overvenus)
+     - 降低 RocksDB compaction 带来的内存抖动 [#15324](https://github.com/tikv/tikv/issues/15324) @[overvenus](https://github.com/overvenus)
+     - 降低 Partitioned Raft KV 中流控模块的内存占用 [#15269](https://github.com/tikv/tikv/issues/15269) @[overvenus](https://github.com/overvenus)
+     - (dup) 新增 PD Client 连接重试过程中的 backoff 机制。异常错误重试期间，逐步增加重试时间间隔，减小 PD 压力 [#15428](https://github.com/tikv/tikv/issues/15428) @[nolouch](https://github.com/nolouch)
+     - 支持动态调整 RocksDB 的 `background_compaction` [#15424](https://github.com/tikv/tikv/issues/15424) @[glorv](https://github.com/glorv)
 
 + PD **tw@qiancai 5**
 
