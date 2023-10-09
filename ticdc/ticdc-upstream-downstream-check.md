@@ -1,6 +1,5 @@
 ---
 title: 主从集群一致性读和数据校验
-aliases: ['/docs-cn/dev/sync-diff-inspector/upstream-downstream-diff/','/docs-cn/dev/reference/tools/sync-diff-inspector/tidb-diff/', '/zh/tidb/dev/upstream-downstream-diff']
 ---
 
 # TiDB 主从集群数据校验和快照读

@@ -1,6 +1,5 @@
 ---
 title: TiDB Dashboard 概况页面
-aliases: ['/docs-cn/dev/dashboard/dashboard-overview/']
 ---
 
 # TiDB Dashboard 概况页面

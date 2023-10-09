@@ -1,7 +1,6 @@
 ---
 title: SHOW PROFILES
 summary: TiDB 数据库中 SHOW PROFILES 的使用概况。
-aliases: ['/docs-cn/dev/sql-statements/sql-statement-show-profiles/']
 ---
 
 # SHOW PROFILES

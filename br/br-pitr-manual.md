@@ -1,7 +1,6 @@
 ---
 title: TiDB 日志备份与 PITR 命令行手册
 summary: 介绍 TiDB 日志备份与 PITR 的命令行。
-aliases: ['/zh/tidb/dev/br-log-command-line/']
 ---
 
 # TiDB 日志备份与 PITR 命令行手册
