@@ -77,7 +77,7 @@ PingCAP 与开源社区合作，通过三方工具提供以下支持：
    </thead>
    <tbody>
       <tr>
-         <td rowspan="5">Go</td>
+         <td rowspan="4">Go</td>
          <td><a href="https://github.com/go-gorm/gorm" target="_blank" referrerpolicy="no-referrer-when-downgrade">gorm</a></td>
          <td>v1.23.5</td>
          <td>Full</td>
@@ -143,7 +143,7 @@ PingCAP 与开源社区合作，通过三方工具提供以下支持：
          <td>N/A</td>
       </tr>
       <tr>
-         <td rowspan="4">JavaScript / TypeScript</td>
+         <td rowspan="2">JavaScript / TypeScript</td>
          <td><a href="https://www.npmjs.com/package/sequelize" target="_blank" referrerpolicy="no-referrer-when-downgrade">sequelize</a></td>
          <td>v6.20.1</td>
          <td>Full</td>
@@ -158,7 +158,7 @@ PingCAP 与开源社区合作，通过三方工具提供以下支持：
          <td>N/A</td>
       </tr>
       <tr>
-         <td rowspan="4">Python</td>
+         <td rowspan="2">Python</td>
          <td><a href="https://pypi.org/project/Django/" target="_blank" referrerpolicy="no-referrer-when-downgrade">Django</a></td>
          <td>v4.1</td>
          <td>Full</td>
