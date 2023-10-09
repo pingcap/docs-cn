@@ -178,6 +178,14 @@ absent -> delete only -> write only -> write reorg -> public
 
     取消一个已经执行完成的 DDL 任务会在 `RESULT` 列看到 `DDL Job:90 not found` 的错误，表示该任务已从 DDL 等待队列中被移除。
 
+- `ADMIN PAUSE DDL JOBS job_id [, job_id]`：用于暂停正在执行的 DDL 任务。执行该命令后，执行 DDL 任务的 SQL 语句体现为正在执行，后台任务暂停执行。详情参阅 [`ADMIN PAUSE DDL JOBS`](/sql-statements/sql-statement-admin-pause-ddl.md)。（实验特性）
+
+    只有处于执行中或仍在等待中的 DDL 任务可以暂停，否则会在 `RESULT` 列看到 `Job 3 can't be paused now`。
+
+- `ADMIN RESUME DDL JOBS job_id [, job_id]`：用于恢复已被暂停的 DDL 任务。执行该命令后，执行 DDL 任务的 SQL 语句体现为正在执行，后台任务正常执行。详情参阅 [`ADMIN RESUME DDL JOBS`](/sql-statements/sql-statement-admin-resume-ddl.md)。（实验特性）
+
+    你只能对暂停状态的 DDL 任务进行恢复操作，否则会在 `RESULT` 列看到 `Job 3 can't be resumed`。
+
 ## 常见问题
 
 DDL 语句执行相关的常见问题，参考 [SQL FAQ - DDL 执行](/faq/sql-faq.md#ddl-执行)。

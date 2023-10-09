@@ -90,15 +90,15 @@ fn checksum(columns) {
     * BIT、ENUM 和 SET 类型会被转换为 UINT64 类型。
 
         * BIT 类型按照二进制转换为 UINT64 类型。
-        * ENUM 和 SET 类型按照其对应的 INT 值转换为 UINT64 类型。例如，`SET('a','b','c')` 类型 column 的数据值为 `'a,c'`，则该值将被编码为 `0b101`。
+        * ENUM 和 SET 类型按照其对应的 INT 值转换为 UINT64 类型。例如，`SET('a','b','c')` 类型 column 的数据值为 `'a,c'`，则该值将被编码为 `0b101`，即 `5`。
 
-    * TIMESTAMP、DATE、DURATION、DATETIME、JSON 和 DECIMAL 类型会被转换为 STRING 类型，然后转换为 UTF8 编码的字节。
-    * VARBIANRY、BINARY 和 BLOB（包括 TINY、MEDIUM 和 LONG）类型会直接使用它的字节。
-    * VARCHAR、CHAR 和 TEXT（包括 TINY、MEDIUM 和 LONG）类型会被编码为 UTF8 编码的字节。
+    * TIMESTAMP、DATE、DURATION、DATETIME、JSON 和 DECIMAL 类型会被转换为 STRING 类型，然后转换为字节。
+    * CHAR、VARCHAR、VARSTRING、STRING、TEXT、BLOB（包括 TINY、MEDIUM 和 LONG）等字符类型，会直接使用字节。
     * NULL 和 GEOMETRY 类型不会被纳入到 Checksum 计算中，返回空字节。
+
+基于 Golang 的 Avro 数据消费和 Checksum 校验，可以参考 [TiCDC 行数据 Checksum 校验](/ticdc/ticdc-avro-checksum-verification.md)。
 
 > **注意：**
 >
-> 开启 Checksum 校验功能后，DECIMAL 和 UNSIGNED BIGINT 类型的数据会被转换为字符串类型。因此在下游消费者代码中需要将其转换为对应的数值类型，然后进行 Checksum 相关计算。
-
-Golang 消费者代码实现了解码从 Kafka 读取到的数据、按照 schema fields 排序以及 Checksum 计算等步骤。详情请参考 [`avro/decoder.go`](https://github.com/pingcap/tiflow/blob/master/pkg/sink/codec/avro/decoder.go)。
+> - 开启 Checksum 校验功能后，DECIMAL 和 UNSIGNED BIGINT 类型的数据会被转换为字符串类型。因此在下游消费者代码中需要将其转换为对应的数值类型，然后进行 Checksum 相关计算。
+> - Delete 事件只含有 Handle Key 列的内容，而 Checksum 是基于所有列计算的，所以 Delete 事件不参与到 Checksum 的校验中。

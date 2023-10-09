@@ -9,7 +9,7 @@ summary: 了解 TiDB 7.1.0 版本的新功能、兼容性变更、改进提升�
 
 TiDB 版本：7.1.0
 
-试用链接：[快速体验](https://docs.pingcap.com/zh/tidb/v7.1/quick-start-with-tidb) | [生产部署](https://docs.pingcap.com/zh/tidb/v7.1/production-deployment-using-tiup) | [下载离线包](https://cn.pingcap.com/product-community)
+试用链接：[快速体验](https://docs.pingcap.com/zh/tidb/v7.1/quick-start-with-tidb) | [生产部署](https://docs.pingcap.com/zh/tidb/v7.1/production-deployment-using-tiup) | [下载离线包](https://cn.pingcap.com/product-community/?version=v7.1.0#version-list)
 
 TiDB 7.1.0 为长期支持版本 (Long-Term Support Release, LTS)。
 
@@ -43,8 +43,8 @@ TiDB 7.1.0 为长期支持版本 (Long-Term Support Release, LTS)。
     <td>在读热点场景中，TiDB 可以将热点 TiKV 节点的读请求转发到副本。该功能有效地打散了读热点并优化了集群资源的利用。你可以通过调整系统变量 <a href="https://docs.pingcap.com/zh/tidb/v7.1/system-variables#tidb_load_based_replica_read_threshold-从-v700-版本开始引入" target="_blank"><code>tidb_load_based_replica_read_threshold</code></a> 控制基于负载的副本读取的触发阈值。</td>
   </tr>
   <tr>
-      <td>TiKV 支持<a href="https://docs.pingcap.com/zh/tidb/v7.1/partitioned-raft-kv" target="_blank">分区 Raft KV 存储引擎 </a>（实验特性）</td>
-    <td>TiKV 引入新一代存储引擎分区 Raft KV，通过每个数据 Region 独享 RocksDB 实例，可将集群的存储能力从 TB 级扩展到 PB 级，并提供更稳定的写入延迟和更强大的扩容能力。</td>
+      <td>TiKV 支持 <a href="https://docs.pingcap.com/zh/tidb/v7.1/partitioned-raft-kv" target="_blank">Partitioned Raft KV 存储引擎 </a>（实验特性）</td>
+    <td>TiKV 引入新一代存储引擎 Partitioned Raft KV，通过每个数据 Region 独享 RocksDB 实例，可将集群的存储能力从 TB 级扩展到 PB 级，并提供更稳定的写入延迟和更强大的扩容能力。</td>
   </tr>
   <tr>
     <td rowspan="2">稳定性与高可用</td>
@@ -84,11 +84,11 @@ TiDB 7.1.0 为长期支持版本 (Long-Term Support Release, LTS)。
 
 ### 性能
 
-* 增强分区 Raft KV 存储引擎（实验特性）[#11515](https://github.com/tikv/tikv/issues/11515) [#12842](https://github.com/tikv/tikv/issues/12842) @[busyjay](https://github.com/busyjay) @[tonyxuqqi](https://github.com/tonyxuqqi) @[tabokie](https://github.com/tabokie) @[bufferflies](https://github.com/bufferflies) @[5kbpers](https://github.com/5kbpers) @[SpadeA-Tang](https://github.com/SpadeA-Tang) @[nolouch](https://github.com/nolouch)
+* 增强 Partitioned Raft KV 存储引擎（实验特性）[#11515](https://github.com/tikv/tikv/issues/11515) [#12842](https://github.com/tikv/tikv/issues/12842) @[busyjay](https://github.com/busyjay) @[tonyxuqqi](https://github.com/tonyxuqqi) @[tabokie](https://github.com/tabokie) @[bufferflies](https://github.com/bufferflies) @[5kbpers](https://github.com/5kbpers) @[SpadeA-Tang](https://github.com/SpadeA-Tang) @[nolouch](https://github.com/nolouch)
 
-    TiDB v6.6.0 引入了分区 Raft KV 存储引擎作为实验特性，该引擎使用多个 RocksDB 实例存储 TiKV 的 Region 数据，每个 Region 的数据都独立存储在单独的 RocksDB 实例中。分区 Raft KV 能够更好地控制 RocksDB 实例的文件数和层级，实现 Region 间数据操作的物理隔离，并支持平稳管理更多的数据。与原 TiKV 存储引擎相比，使用分区 Raft KV 引擎在相同硬件条件和读写混合场景下，可以实现大约两倍的写入吞吐并缩短大约 4/5 的弹性扩展时间。
+    TiDB v6.6.0 引入了 Partitioned Raft KV 存储引擎作为实验特性，该引擎使用多个 RocksDB 实例存储 TiKV 的 Region 数据，每个 Region 的数据都独立存储在单独的 RocksDB 实例中。Partitioned Raft KV 能够更好地控制 RocksDB 实例的文件数和层级，实现 Region 间数据操作的物理隔离，并支持平稳管理更多的数据。与原 TiKV 存储引擎相比，使用 Partitioned Raft KV 引擎在相同硬件条件和读写混合场景下，可以实现大约两倍的写入吞吐并缩短大约 4/5 的弹性扩展时间。
 
-    在 TiDB v7.1.0 中，分区 Raft KV 引擎与 TiFlash 兼容，并支持 TiDB Lightning、BR 和 TiCDC 等工具。
+    在 TiDB v7.1.0 中，Partitioned Raft KV 引擎支持 TiDB Lightning、BR 和 TiCDC 等工具。
 
     该功能目前是实验特性，不推荐在生产环境中使用。目前仅支持在新集群中使用新引擎，暂不支持从原 TiKV 存储引擎直接升级到该引擎。
 
@@ -209,7 +209,7 @@ TiDB 7.1.0 为长期支持版本 (Long-Term Support Release, LTS)。
 
     更多信息，请参考[用户文档](/tiflash/tiflash-results-materialization.md)。
 
-* MySQL 兼容的多值索引 (Multi-Valued Index) 成为正式功能 (GA) [#39592](https://github.com/pingcap/tidb/issues/39592) @[xiongjiwei](https://github.com/xiongjiwei) @[qw4990](https://github.com/qw4990) @[YangKeao](https://github.com/YangKeao)
+* MySQL 兼容的多值索引 (Multi-Valued Indexes) 成为正式功能 (GA) [#39592](https://github.com/pingcap/tidb/issues/39592) @[xiongjiwei](https://github.com/xiongjiwei) @[qw4990](https://github.com/qw4990) @[YangKeao](https://github.com/YangKeao)
 
     过滤 JSON 列中某个数组的值是一种常见操作，但使用普通索引无法加速此过程。在数组上创建多值索引可以大幅提升过滤性能。如果 JSON 列中的某个数组上存在多值索引，则函数 `MEMBER OF()`、`JSON_CONTAINS()` 和 `JSON_OVERLAPS()` 的检索条件可以利用该多值索引进行过滤，从而减少大量的 I/O 消耗，提升执行速度。
 
@@ -239,7 +239,7 @@ TiDB 7.1.0 为长期支持版本 (Long-Term Support Release, LTS)。
 
 ### 数据库管理
 
-* 支持无需手动取消 DDL 的平滑升级集群功能 [#39751](https://github.com/pingcap/tidb/issues/39751) @[zimulala](https://github.com/zimulala)
+* 支持无需手动取消 DDL 的平滑升级集群功能（实验特性） [#39751](https://github.com/pingcap/tidb/issues/39751) @[zimulala](https://github.com/zimulala)
 
     在 TiDB v7.1.0 之前的版本中，升级集群时需要先手动取消正在运行或排队的 DDL 任务，并在升级完成后再手动添加这些任务。
 
@@ -348,11 +348,12 @@ TiDB 7.1.0 为长期支持版本 (Long-Term Support Release, LTS)。
 | TiDB | [`performance.force-init-stats`](/tidb-configuration-file.md#force-init-stats-从-v710-版本开始引入) | 新增 | 用于控制 TiDB 启动时是否在统计信息初始化完成后再对外提供服务。 |
 | TiDB | [`performance.lite-init-stats`](/tidb-configuration-file.md#lite-init-stats-从-v710-版本开始引入) | 新增 | 用于控制 TiDB 启动时是否采用轻量级的统计信息初始化。 |
 | TiDB | [`log.timeout`](/tidb-configuration-file.md#timeout-从-v710-版本开始引入) | 新增 | 用于控制 TiDB 写日志操作的超时时间，当磁盘故障导致日志无法写入时，该配置可以让 TiDB 进程崩溃而不是卡死。默认值为 `0`，即不设定超时时间。 |
-| TiKV | [<code>rocksdb.\[defaultcf\|writecf\|lockcf\].optimize-filters-for-memory</code>](/tikv-configuration-file.md#optimize-filters-for-memory-从-v710-版本开始引入) | 新增 | 控制是否生成能够最小化内存碎片的 Bloom/Ribbon filter。 |
-| TiKV | [<code>rocksdb.\[defaultcf\|writecf\|lockcf\].ribbon-filter-above-level</code>](/tikv-configuration-file.md#ribbon-filter-above-level-从-v710-版本开始引入) | 新增 | 控制是否对于大于等于该值的 level 使用 Ribbon filter，对于小于该值的 level，使用非 block-based bloom filter。 |
+| TiKV | [`region-compact-min-redundant-rows`](/tikv-configuration-file.md#region-compact-min-redundant-rows-从-v710-版本开始引入) | 新增 | 触发 RocksDB compaction 需要的冗余的 MVCC 数据行数。默认值为 `50000`。 |
+| TiKV | [`region-compact-redundant-rows-percent`](/tikv-configuration-file.md#region-compact-redundant-rows-percent-从-v710-版本开始引入) | 新增 | 触发 RocksDB compaction 需要的冗余的 MVCC 数据行所占比例。默认值为 `20`。 |
 | TiKV | [`split.byte-threshold`](/tikv-configuration-file.md#byte-threshold-从-v50-版本开始引入) | 修改 | 当 [`region-split-size`](/tikv-configuration-file.md#region-split-size) 大于等于 4 GB 时，默认值从 `30MiB` 修改为 `100MiB`。 |
 | TiKV | [`split.qps-threshold`](/tikv-configuration-file.md#qps-threshold) | 修改 | 当 [`region-split-size`](/tikv-configuration-file.md#region-split-size) 大于等于 4 GB 时，默认值从 `3000` 修改为 `7000`。 |
 | TiKV | [`split.region-cpu-overload-threshold-ratio`](/tikv-configuration-file.md#region-cpu-overload-threshold-ratio-从-v620-版本开始引入) | 修改 | 当 [`region-split-size`](/tikv-configuration-file.md#region-split-size) 大于等于 4 GB 时，默认值从 `0.25` 修改为 `0.75`。 |
+| TiKV | [`region-compact-check-step`](/tikv-configuration-file.md#region-compact-check-step) | 修改 | 当使用 Partitioned Raft KV (`storage.engine="partitioned-raft-kv"`) 时，默认值从 `100` 修改为 `5`。 |
 | PD | [`store-limit-version`](/pd-configuration-file.md#store-limit-version-从-v710-版本开始引入) | 新增 | 用于设置 store limit 工作模式。可选值为 `"v1"` 和 `"v2"`。 |
 | PD | [`schedule.enable-diagnostic`](/pd-configuration-file.md#enable-diagnostic-从-v630-版本开始引入) | 修改 | 默认值从 `false` 修改为 `true`，默认打开调度器的诊断功能。 |
 | TiFlash | `http_port` | 删除 | 废弃 TiFlash HTTP 服务端口（默认 `8123`）。 |
@@ -361,6 +362,7 @@ TiDB 7.1.0 为长期支持版本 (Long-Term Support Release, LTS)。
 | TiDB Lightning | [`tikv-importer.region-split-batch-size`](/tidb-lightning/tidb-lightning-configuration.md) | 新增 | 用于控制一个 batch 中执行 split 和 scatter 操作的最大 Region 数量，默认值为 `4096`。 |
 | TiDB Lightning | [`tikv-importer.region-split-concurrency`](/tidb-lightning/tidb-lightning-configuration.md) | 新增 | 用于控制 Split Region 时的并发度，默认值为 CPU 核心数。 |
 | TiCDC | [`insecure-skip-verify`](/ticdc/ticdc-sink-to-kafka.md) | 新增 | 用于控制在同步数据到 Kafka 的场景下，启用 TLS 时是否设置认证算法。 |
+| TiCDC | [`sink.only-output-updated-columns`](/ticdc/ticdc-changefeed-config.md#ticdc-changefeed-配置文件说明) | 新增 | 用于控制是否是否只向下游同步有内容更新的列，默认值为 `false`。 |
 | TiCDC | [`integrity.corruption-handle-level`](/ticdc/ticdc-changefeed-config.md#ticdc-changefeed-配置文件说明) | 新增 | 用于控制当单行数据的 Checksum 校验失败时，Changefeed 打印错误行数据相关日志的级别。默认值为 `"warn"`，可选值为 `"warn"` 和 `"error"`。 |
 | TiCDC | [`integrity.integrity-check-level`](/ticdc/ticdc-changefeed-config.md#ticdc-changefeed-配置文件说明) | 新增 | 用于控制是否开启单行数据的 Checksum 校验功能，默认值为 `"none"`，即不开启。 |
 | TiCDC | [`sink.enable-partition-separator`](/ticdc/ticdc-changefeed-config.md#ticdc-changefeed-配置文件说明) | 修改 | 默认值从 `false` 修改为 `true`，代表默认会将表中各个分区的数据分不同的目录来存储。建议保持该配置项为 `true` 以避免同步分区表到存储服务时可能丢数据的问题。 |
@@ -377,8 +379,8 @@ TiDB 7.1.0 为长期支持版本 (Long-Term Support Release, LTS)。
 
 + TiKV
 
-    - 降低使用分区 Raft KV 时 Split 对写 QPS 的影响 [#14447](https://github.com/tikv/tikv/issues/14447) @[SpadeA-Tang](https://github.com/SpadeA-Tang)
-    - 优化使用分区 Raft KV 时 Snapshot 占用的空间 [#14581](https://github.com/tikv/tikv/issues/14581) @[bufferflies](https://github.com/bufferflies)
+    - 降低使用 Partitioned Raft KV 时 Split 对写 QPS 的影响 [#14447](https://github.com/tikv/tikv/issues/14447) @[SpadeA-Tang](https://github.com/SpadeA-Tang)
+    - 优化使用 Partitioned Raft KV 时 Snapshot 占用的空间 [#14581](https://github.com/tikv/tikv/issues/14581) @[bufferflies](https://github.com/bufferflies)
     - 为 TiKV 处理请求的各个阶段提供更详细的时间信息 [#12362](https://github.com/tikv/tikv/issues/12362) @[cfzjywxk](https://github.com/cfzjywxk)
     - 在日志备份中使用 PD 作为元数据存储 [#13867](https://github.com/tikv/tikv/issues/13867) @[YuJuncen](https://github.com/YuJuncen)
 
@@ -444,7 +446,6 @@ TiDB 7.1.0 为长期支持版本 (Long-Term Support Release, LTS)。
     - 修复查询分区表时使用 `Limit` 返回错误值的问题 [#24636](https://github.com/pingcap/tidb/issues/24636) @[winoros](https://github.com/winoros)
     - 修复 IPv6 环境下显示错误的 TiDB 地址的问题 [#43260](https://github.com/pingcap/tidb/issues/43260) @[nexustar](https://github.com/nexustar)
     - 修复系统变量 `tidb_enable_tiflash_read_for_write_stmt` 和 `tidb_enable_exchange_partition` 显示错误的值的问题 [#43281](https://github.com/pingcap/tidb/issues/43281) @[gengliqi](https://github.com/gengliqi)
-    - 修复代理协议在处理某些错误数据时报错 `Header read timeout` 的问题 [#43205](https://github.com/pingcap/tidb/issues/43205) @[blacktear23](https://github.com/blacktear23)
     - 修复当 `tidb_scatter_region` 变量设置为开启时，对某个分区进行 TRUNCATE 操作后没有自动分裂 Region 的问题 [#43174](https://github.com/pingcap/tidb/issues/43174) [#43028](https://github.com/pingcap/tidb/issues/43028) @[jiyfhust](https://github.com/jiyfhust)
     - 在具有生成列的表上增加检查，并对不支持的列的 DDL 操作报错 [#38988](https://github.com/pingcap/tidb/issues/38988) [#24321](https://github.com/pingcap/tidb/issues/24321) @[tiancaiamao](https://github.com/tiancaiamao)
     - 修复在某些类型转换出错的情况下报错信息不对的问题 [#41730](https://github.com/pingcap/tidb/issues/41730) @[hawkingrei](https://github.com/hawkingrei)
@@ -474,7 +475,7 @@ TiDB 7.1.0 为长期支持版本 (Long-Term Support Release, LTS)。
     - 修复在启用 `tidb_pessimistic_txn_fair_locking` 时，在某些极端情况下，RPC 失败重试导致的过期请求可能在 Resolve Lock 时影响数据正确性的问题 [#14551](https://github.com/tikv/tikv/issues/14551) @[MyonKeminta](https://github.com/MyonKeminta)
     - 修复在启用 `tidb_pessimistic_txn_fair_locking` 时，在某些极端情况下，RPC 失败重试导致的过期请求可能会造成事务冲突被忽略，从而影响事务一致性的问题 [#14311](https://github.com/tikv/tikv/issues/14311) @[MyonKeminta](https://github.com/MyonKeminta)
     - 修复加密 Key ID 冲突会导致旧 Key 被删除的问题 [#14585](https://github.com/tikv/tikv/issues/14585) @[tabokie](https://github.com/tabokie)
-    - 修复集群从较低版本升级到 v6.5 或更高版本时，由于累计的 Lock 记录可能导致性能下降到问题 [#14780](https://github.com/tikv/tikv/issues/14780) @[MyonKeminta](https://github.com/MyonKeminta)
+    - 修复集群从较低版本升级到 v6.5 或更高版本时，由于累计的 Lock 记录可能导致性能下降的问题 [#14780](https://github.com/tikv/tikv/issues/14780) @[MyonKeminta](https://github.com/MyonKeminta)
     - 修复 PITR 恢复过程中出现 `raft entry is too large` 的问题 [#14313](https://github.com/tikv/tikv/issues/14313) @[YuJuncen](https://github.com/YuJuncen)
     - 修复 PITR 恢复过程中由于 `log_batch` 超过 2 GB 导致 TiKV panic 的问题 [#13848](https://github.com/tikv/tikv/issues/13848) @[YuJuncen](https://github.com/YuJuncen)
 
@@ -533,7 +534,7 @@ TiDB 7.1.0 为长期支持版本 (Long-Term Support Release, LTS)。
 
 ## 性能测试
 
-如需了解 TiDB v7.1.0 的性能表现，你可以参考 TiDB Dedicated 集群的 [TPC-C 性能测试报告](https://docs.pingcap.com/tidbcloud/v7.1.0-performance-benchmarking-with-tpcc)（英文版）。
+如需了解 TiDB v7.1.0 的性能表现，你可以参考 TiDB Dedicated 集群的 [TPC-C 性能测试报告](https://docs.pingcap.com/tidbcloud/v7.1.0-performance-benchmarking-with-tpcc)和 [Sysbench 性能测试报告](https://docs.pingcap.com/tidbcloud/v7.1.0-performance-benchmarking-with-sysbench)（英文版）。
 
 ## 贡献者
 

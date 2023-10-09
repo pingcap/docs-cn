@@ -22,7 +22,7 @@ AnalyzeOptionListOpt ::=
 ( WITH AnalyzeOptionList )?
 
 AnalyzeOptionList ::=
-AnalyzeOption ( ',' AnlyzeOption )*
+AnalyzeOption ( ',' AnalyzeOption )*
 
 AnalyzeOption ::=
 ( NUM ( 'BUCKETS' | 'TOPN' | ( 'CMSKETCH' ( 'DEPTH' | 'WIDTH' ) ) | 'SAMPLES' ) ) | ( FLOATNUM 'SAMPLERATE' )
@@ -95,10 +95,12 @@ EXPLAIN SELECT * FROM t1 WHERE c1 = 3;
 2 rows in set (0.00 sec)
 ```
 
+当前的统计信息状态为 `pseudo`，表示统计信息不准确。
+
 {{< copyable "sql" >}}
 
 ```sql
-analyze table t1;
+ANALYZE TABLE t1;
 ```
 
 ```
@@ -120,6 +122,8 @@ EXPLAIN SELECT * FROM t1 WHERE c1 = 3;
 +------------------------+---------+-----------+------------------------+-------------------------------+
 2 rows in set (0.00 sec)
 ```
+
+统计信息已经正确地更新和加载。
 
 ## MySQL 兼容性
 

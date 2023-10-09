@@ -159,6 +159,17 @@ pd-server 相关配置项。
 >
 > 如果是从 v4.0 升级至当前版本，升级后的 `flow-round-by-digit` 行为和升级前的 `trace-region-flow` 行为默认保持一致：如果升级前 `trace-region-flow` 为 false，则升级后 `flow-round-by-digit` 为 127；如果升级前 `trace-region-flow` 为 true，则升级后 `flow-round-by-digit` 为 3。
 
+### `min-resolved-ts-persistence-interval` <span class="version-mark">从 v6.0.0 版本开始引入</span>
+
++ 设置 PD leader 对集群中 Resolved TS 最小值进行持久化的间隔时间。如果该值设置为 `0`，表示禁用该功能。
++ 默认值：在 v6.3.0 之前版本中为 `"0s"`，在 v6.3.0 及之后的版本中为 `"1s"`，即最小正值。
++ 最小值：`"0s"`
++ 单位：秒
+
+> **注意：**
+>
+> 对于从 v6.0.0~v6.2.0 升级上来的集群，`min-resolved-ts-persistence-interval` 的默认值在升级后将不会发生变化，即仍然为 `"0s"`。若要开启该功能，需要手动修改该配置项的值。
+
 ## security
 
 安全相关配置项。
@@ -355,7 +366,7 @@ pd-server 相关配置项。
 ### `enable-diagnostic` <span class="version-mark">从 v6.3.0 版本开始引入</span>
 
 + 是否开启诊断功能。开启特性时，PD 将会记录调度中的一些状态来帮助诊断。开启时会略微影响调度速度，在 Store 数量较多时会消耗较大内存。
-+ 默认值：true 
++ 默认值：从 v7.1.0 起，默认值从 `false` 变更为 `true`。如果从 v7.1.0 之前版本的集群升级至 v7.1.0 及之后的版本，该默认值不发生变化。
 
 ### `hot-regions-write-interval` <span class="version-mark">从 v5.4.0 版本开始引入</span>
 

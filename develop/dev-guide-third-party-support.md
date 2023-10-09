@@ -142,6 +142,36 @@ PingCAP 与开源社区合作，通过三方工具提供以下支持：
          <td>N/A</td>
          <td>N/A</td>
       </tr>
+      <tr>
+         <td rowspan="4">JavaScript / TypeScript</td>
+         <td><a href="https://www.npmjs.com/package/sequelize" target="_blank" referrerpolicy="no-referrer-when-downgrade">sequelize</a></td>
+         <td>v6.20.1</td>
+         <td>Full</td>
+         <td>N/A</td>
+         <td>N/A</td>
+      </tr>
+      <tr>
+         <td><a href="https://www.prisma.io/" target="_blank" referrerpolicy="no-referrer-when-downgrade">Prisma Client</a></td>
+         <td>4.16.2</td>
+         <td>Full</td>
+         <td>N/A</td>
+         <td>N/A</td>
+      </tr>
+      <tr>
+         <td rowspan="4">Python</td>
+         <td><a href="https://pypi.org/project/Django/" target="_blank" referrerpolicy="no-referrer-when-downgrade">Django</a></td>
+         <td>v4.1</td>
+         <td>Full</td>
+         <td><a href="https://github.com/pingcap/django-tidb" target="_blank" referrerpolicy="no-referrer-when-downgrade">django-tidb</a></td>
+         <td><a href="/zh/tidb/dev/dev-guide-sample-application-django">TiDB 和 Django 的简单 CRUD 应用程序</a></td>
+      </tr>
+      <tr>
+         <td><a href="https://www.sqlalchemy.org/" target="_blank" referrerpolicy="no-referrer-when-downgrade">SQLAlchemy</a></td>
+         <td>v1.4.37</td>
+         <td>Full</td>
+         <td>N/A</td>
+         <td><a href="/zh/tidb/dev/dev-guide-sample-application-python">TiDB 和 Python 的简单 CRUD 应用程序</a></td>
+      </tr>
    </tbody>
 </table>
 

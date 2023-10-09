@@ -9,6 +9,10 @@ summary: 了解 TiDB 6.6.0 版本的新功能、兼容性变更、改进提升�
 
 TiDB 版本：6.6.0-[DMR](/releases/versioning.md#开发里程碑版本)
 
+> **注意：**
+>
+> TiDB 6.6.0-DMR 的用户文档已[归档](https://docs-archive.pingcap.com/zh/tidb/v6.6)。如无特殊需求，建议使用 TiDB 数据库的[最新 LTS 版本](https://docs.pingcap.com/zh/tidb/stable)。
+
 试用链接：[快速体验](https://docs.pingcap.com/zh/tidb/v6.6/quick-start-with-tidb) | [下载离线包](https://cn.pingcap.com/product-community/?version=v6.6.0-DMR#version-list)
 
 在 6.6.0 版本中，你可以获得以下关键特性：
@@ -24,8 +28,8 @@ TiDB 版本：6.6.0-[DMR](/releases/versioning.md#开发里程碑版本)
 <tbody>
   <tr>
     <td rowspan="3">可扩展性与性能<br /></td>
-      <td>TiKV 支持<a href="https://docs.pingcap.com/zh/tidb/v6.6/partitioned-raft-kv" target="_blank">分区 Raft KV 存储引擎</a>（实验特性）</td>
-      <td>TiKV 引入下一代存储引擎分区 Raft KV，通过每个数据 Region 独享 RocksDB 实例，可将集群的存储能力从 TB 级扩展到 PB 级，并提供更稳定的写入延迟和更强大的扩容能力。</td>
+      <td>TiKV 支持 <a href="https://docs.pingcap.com/zh/tidb/v6.6/partitioned-raft-kv" target="_blank">Partitioned Raft KV 存储引擎</a>（实验特性）</td>
+      <td>TiKV 引入下一代存储引擎 Partitioned Raft KV，通过每个数据 Region 独享 RocksDB 实例，可将集群的存储能力从 TB 级扩展到 PB 级，并提供更稳定的写入延迟和更强大的扩容能力。</td>
   </tr>
   <tr>
       <td>TiKV 支持<a href="https://docs.pingcap.com/zh/tidb/v6.6/system-variables#tidb_store_batch_size" target="_blank">批量聚合数据请求</a></td>
@@ -56,7 +60,7 @@ TiDB 版本：6.6.0-[DMR](/releases/versioning.md#开发里程碑版本)
   <tr>
     <td>数据库管理与可观测性<br /></td>
     <td><a href="https://docs.pingcap.com/zh/tidb/v6.6/dm-precheck/#physical-import-检查项" target="_blank">DM 集成物理导入模式</a>（实验特性）</td>
-    <td>TiDB Data Migration (DM) 集成 TiDB Lightning 的 Physical Import 模式，提升 DM 全量数据迁移时的性能，大数据量场景下的迁移时间最多可提升 10 倍。</td>
+    <td>TiDB Data Migration (DM) 集成 TiDB Lightning 的物理导入模式模式，提升 DM 全量数据迁移时的性能，大数据量场景下的迁移时间最多可提升 10 倍。</td>
   </tr>
 </tbody>
 </table>
@@ -65,9 +69,9 @@ TiDB 版本：6.6.0-[DMR](/releases/versioning.md#开发里程碑版本)
 
 ### 可扩展性
 
-* 支持下一代分区 Raft KV 存储引擎（实验特性）[#11515](https://github.com/tikv/tikv/issues/11515) [#12842](https://github.com/tikv/tikv/issues/12842) @[busyjay](https://github.com/busyjay) @[tonyxuqqi](https://github.com/tonyxuqqi) @[tabokie](https://github.com/tabokie) @[bufferflies](https://github.com/bufferflies) @[5kbpers](https://github.com/5kbpers) @[SpadeA-Tang](https://github.com/SpadeA-Tang) @[nolouch](https://github.com/nolouch)
+* 支持下一代 Partitioned Raft KV 存储引擎（实验特性）[#11515](https://github.com/tikv/tikv/issues/11515) [#12842](https://github.com/tikv/tikv/issues/12842) @[busyjay](https://github.com/busyjay) @[tonyxuqqi](https://github.com/tonyxuqqi) @[tabokie](https://github.com/tabokie) @[bufferflies](https://github.com/bufferflies) @[5kbpers](https://github.com/5kbpers) @[SpadeA-Tang](https://github.com/SpadeA-Tang) @[nolouch](https://github.com/nolouch)
 
-    TiDB v6.6.0 之前，TiKV 基于 Raft 的存储引擎使用一个单一的 RocksDB 实例存储该 TiKV 实例所有 Region 的数据。为了更平稳地支持更大的集群，从 TiDB v6.6.0 开始，引入了一个全新的 TiKV 存储引擎，该引擎使用多个 RocksDB 实例来存储 TiKV 的 Region 数据，每个 Region 的数据都独立存储在单独的 RocksDB 实例中。新引擎能够更好地控制 RocksDB 实例的文件数和层级，并实现 Region 间数据操作的物理隔离，避免互相影响，还支持平稳管理更多的数据。可以理解为 TiKV 通过分区管理多个 RocksDB 实例，这也是该特性分区 Raft KV 名字的由来。该功能的主要优势在于更好的写入性能，更快的扩缩容，相同硬件下可以支持更大的数据，也能支持更大的集群规模。
+    TiDB v6.6.0 之前，TiKV 基于 Raft 的存储引擎使用一个单一的 RocksDB 实例存储该 TiKV 实例所有 Region 的数据。为了更平稳地支持更大的集群，从 TiDB v6.6.0 开始，引入了一个全新的 TiKV 存储引擎，该引擎使用多个 RocksDB 实例来存储 TiKV 的 Region 数据，每个 Region 的数据都独立存储在单独的 RocksDB 实例中。新引擎能够更好地控制 RocksDB 实例的文件数和层级，并实现 Region 间数据操作的物理隔离，避免互相影响，还支持平稳管理更多的数据。可以理解为 TiKV 通过分区管理多个 RocksDB 实例，这也是该特性 Partitioned Raft KV 名字的由来。该功能的主要优势在于更好的写入性能，更快的扩缩容，相同硬件下可以支持更大的数据，也能支持更大的集群规模。
 
     该功能目前是实验特性，不推荐在生产环境中使用。
 
@@ -174,9 +178,9 @@ TiDB 版本：6.6.0-[DMR](/releases/versioning.md#开发里程碑版本)
 
     更多信息，请参考[用户文档](/foreign-key.md)。
 
-* 支持 MySQL 兼容的多值索引 (Multi-Valued Index)（实验特性）[#39592](https://github.com/pingcap/tidb/issues/39592) @[xiongjiwei](https://github.com/xiongjiwei) @[qw4990](https://github.com/qw4990)
+* 支持 MySQL 兼容的多值索引 (Multi-Valued Indexes)（实验特性）[#39592](https://github.com/pingcap/tidb/issues/39592) @[xiongjiwei](https://github.com/xiongjiwei) @[qw4990](https://github.com/qw4990)
 
-    TiDB 在 v6.6.0 引入了 MySQL 兼容的多值索引 (Multi-Valued Index)。过滤 JSON 列中某个数组的值是常见的操作，但普通索引对这类操作起不到加速作用。在数组上创建多值索引能够大幅提升过滤的性能。如果 JSON 列中的某个数组上存在多值索引，那么可以利用多值索引过滤带有 `MEMBER OF()`、`JSON_CONTAINS()`、`JSON_OVERLAPS()` 函数的检索条件，从而减少大量的 I/O 消耗，提升运行速度。
+    TiDB 在 v6.6.0 引入了 MySQL 兼容的多值索引 (Multi-Valued Indexes)。过滤 JSON 列中某个数组的值是常见的操作，但普通索引对这类操作起不到加速作用。在数组上创建多值索引能够大幅提升过滤的性能。如果 JSON 列中的某个数组上存在多值索引，那么可以利用多值索引过滤带有 `MEMBER OF()`、`JSON_CONTAINS()`、`JSON_OVERLAPS()` 函数的检索条件，从而减少大量的 I/O 消耗，提升运行速度。
 
     多值索引的引入，进一步增强了 TiDB 对 JSON 类型的支持，同时也提升了 TiDB 对 MySQL 8.0 的兼容性。
 
@@ -398,11 +402,11 @@ TiDB 版本：6.6.0-[DMR](/releases/versioning.md#开发里程碑版本)
 | PD  |  [`pd-server.server-memory-limit-gc-trigger`](/pd-configuration-file.md#server-memory-limit-gc-trigger-从-v660-版本开始引入) | 新增 | PD 尝试触发 GC 的阈值比例。默认值为 `0.7`。 |
 | TiCDC | [`scheduler.region-per-span`](/ticdc/ticdc-changefeed-config.md#ticdc-changefeed-配置文件说明) | 新增 | 该配置项用于将表按 Region 个数划分成多个同步范围，这些范围可由多个 TiCDC 节点同步，默认值为 `50000`。 |
 | TiDB Lightning | [`compress-kv-pairs`](/tidb-lightning/tidb-lightning-configuration.md#tidb-lightning-任务配置) | 新增 | 该配置项控制物理导入模式向 TiKV 发送 KV 时是否启用压缩，默认值为空，表示不启用压缩。 |
-| DM | [`checksum-physical`](/dm/task-configuration-file-full.md) | 新增 | 该配置项控制 Physical Import 在导入完成一张表后，对每一个表执行 `ADMIN CHECKSUM TABLE <table>` 进行数据校验。默认值为 `"required"`，表示导入完成后进行数据校验，如果校验失败会暂停任务，需要你手动处理。|
+| DM | [`checksum-physical`](/dm/task-configuration-file-full.md) | 新增 | 该配置项控制物理导入模式在导入完成一张表后，对每一个表执行 `ADMIN CHECKSUM TABLE <table>` 进行数据校验。默认值为 `"required"`，表示导入完成后进行数据校验，如果校验失败会暂停任务，需要你手动处理。|
 | DM | [`disk-quota-physical`](/dm/task-configuration-file-full.md) | 新增 | 该配置项设置了磁盘的空间限制，对应 TiDB Lightning 的 [`disk-quota` 配置](/tidb-lightning/tidb-lightning-physical-import-mode-usage.md#磁盘资源配额-从-v620-版本开始引入)。|
-| DM | [`on-duplicate-logical`](/dm/task-configuration-file-full.md) | 新增 | 该配置项控制 Logical Import 针对冲突数据的解决方式。默认值为 `"replace"`，表示用最新数据替代已有数据。 |
-| DM | [`on-duplicate-physical`](/dm/task-configuration-file-full.md) | 新增 | 该配置项控制 Physical Import 针对冲突数据的解决方式。默认值为 `"none"`，表示遇到冲突数据时不进行处理。该模式性能最佳，但下游数据库会出现数据索引不一致的问题。  |
-| DM | [`sorting-dir-physical`](/dm/task-configuration-file-full.md) | 新增 | 该配置项控制 Physical Import 用作本地排序的目录位置，该选项的默认值与 `dir` 配置项一致。 |
+| DM | [`on-duplicate-logical`](/dm/task-configuration-file-full.md) | 新增 | 该配置项控制物理导入模式针对冲突数据的解决方式。默认值为 `"replace"`，表示用最新数据替代已有数据。 |
+| DM | [`on-duplicate-physical`](/dm/task-configuration-file-full.md) | 新增 | 该配置项控制物理导入模式针对冲突数据的解决方式。默认值为 `"none"`，表示遇到冲突数据时不进行处理。该模式性能最佳，但下游数据库会出现数据索引不一致的问题。  |
+| DM | [`sorting-dir-physical`](/dm/task-configuration-file-full.md) | 新增 | 该配置项控制物理导入模式用作本地排序的目录位置，该选项的默认值与 `dir` 配置项一致。 |
 | sync-diff-inspector   | [`skip-non-existing-table`](/sync-diff-inspector/sync-diff-inspector-overview.md#配置文件说明)   |  新增 | 当下游数据库的表在上游不存在时，该配置项决定是否跳过对上下游数据库表数量不一致场景的校验。  |
 | TiSpark | [`spark.tispark.replica_read`](/tispark-overview.md#tispark-配置) | 新增 | 控制读取副本的类型，可选值为 `leader`、`follower`、`learner`。 |
 | TiSpark | [`spark.tispark.replica_read.label`](/tispark-overview.md#tispark-配置) | 新增 | 设置目标 TiKV 节点的标签。 |

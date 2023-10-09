@@ -342,6 +342,10 @@ SELECT * FROM INFORMATION_SCHEMA.USER_PRIVILEGES WHERE grantee = "'root'@'%'";
 
 需要拥有 `SUPER` 或者 `BACKUP_ADMIN` 权限。
 
+### CANCEL IMPORT JOB
+
+需要 `SUPER` 权限来取消属于其他用户的任务，否则只能取消当前用户创建的任务。
+
 ### CREATE DATABASE
 
 需要拥有全局 `CREATE` 权限。
@@ -374,6 +378,10 @@ SELECT * FROM INFORMATION_SCHEMA.USER_PRIVILEGES WHERE grantee = "'root'@'%'";
 
 需要对所操作的表拥有 `DROP` 权限。
 
+### IMPORT INTO
+
+需要对目标表拥有 `SELECT`、`UPDATE`、`INSERT`、`DELETE` 和 `ALTER` 权限。如果是导入存储在 TiDB 本地的文件，还需要有 `FILE` 权限。
+
 ### LOAD DATA
 
 `LOAD DATA` 需要对所操作的表拥有 `INSERT` 权限。执行 `REPLACE INTO` 语句还需要对所操作的表拥有 `DELETE` 权限。
@@ -390,6 +398,14 @@ SELECT * FROM INFORMATION_SCHEMA.USER_PRIVILEGES WHERE grantee = "'root'@'%'";
 
 需要对所操作的表拥有 `INSERT` 和 `SELECT` 权限。
 
+### LOCK STATS
+
+需要对所操作的表拥有 `INSERT` 和 `SELECT` 权限。
+
+### UNLOCK STATS
+
+需要对所操作的表拥有 `INSERT` 和 `SELECT` 权限。
+
 ### SHOW
 
 `SHOW CREATE TABLE` 需要任意一种权限。
@@ -399,6 +415,10 @@ SELECT * FROM INFORMATION_SCHEMA.USER_PRIVILEGES WHERE grantee = "'root'@'%'";
 `SHOW GRANTS` 需要拥有对 `mysql` 数据库的 `SELECT` 权限。如果是使用 `SHOW GRANTS` 查看当前用户权限，则不需要任何权限。
 
 `SHOW PROCESSLIST` 需要 `SUPER` 权限来显示属于其他用户的连接。
+
+`SHOW IMPORT JOB` 需要 `SUPER` 权限来显示属于其他用户的任务，否则只能看到当前用户创建的任务。
+
+`SHOW STATS_LOCKED` 需要拥有 `mysql.stats_table_locked` 表的 `SELECT` 权限。
 
 ### CREATE ROLE/USER
 

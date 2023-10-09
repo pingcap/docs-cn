@@ -5,26 +5,30 @@ summary: 学习使用 TiDB 特有的函数。
 
 # TiDB 特有的函数
 
-本文档介绍 TiDB 特有的函数。
+以下函数为 TiDB 中特有的函数，与 MySQL 不兼容：
 
-## TIDB_BOUNDED_STALENESS
+| 函数名 | 函数说明 |
+| :-------------- | :------------------------------------- |
+| `TIDB_BOUNDED_STALENESS()` |  `TIDB_BOUNDED_STALENESS` 函数指示 TiDB 在指定时间范围内读取尽可能新的数据。参见[使用 AS OF TIMESTAMP 语法读取历史数据](/as-of-timestamp.md)。 |
+| [`TIDB_DECODE_KEY(str)`](#tidb_decode_key) | `TIDB_DECODE_KEY` 函数用于将 TiDB 编码的键输入解码为包含 `_tidb_rowid` 和 `table_id` 的 JSON 结构。你可以在一些系统表和日志输出中找到 TiDB 的编码键。 |
+| [`TIDB_DECODE_PLAN(str)`](#tidb_decode_plan) | `TIDB_DECODE_PLAN` 函数用于解码 TiDB 执行计划。 |
+| `TIDB_IS_DDL_OWNER()` | `TIDB_IS_DDL_OWNER` 函数用于检查你连接的 TiDB 实例是否是 DDL Owner。DDL Owner 代表集群中所有其他节点执行 DDL 语句的 TiDB 实例。 |
+| [`TIDB_PARSE_TSO(num)`](#tidb_parse_tso) | `TIDB_PARSE_TSO` 函数用于从 TiDB TSO 时间戳中提取物理时间戳。参见 [`tidb_current_ts`](/system-variables.md#tidb_current_ts)。 |
+| `TIDB_PARSE_TSO_LOGICAL(num)` | `TIDB_PARSE_TSO_LOGICAL` 函数用于从 TiDB TSO 时间戳中提取逻辑时间戳。|
+| [`TIDB_VERSION()`](#tidb_version) | `TIDB_VERSION` 函数用于获取当前连接的 TiDB 服务器版本和构建详细信息。 |
+| [`TIDB_DECODE_SQL_DIGESTS(digests, stmtTruncateLength)`](#tidb_decode_sql_digests) | `TIDB_DECODE_SQL_DIGESTS` 函数用于在集群中查询一组 SQL Digest 所对应的 SQL 语句的归一化形式（即去除格式和参数后的形式）。 |
+| `VITESS_HASH(str)` |  `VITESS_HASH` 函数返回与 Vitess 的 `HASH` 函数兼容的字符串哈希值，有助于从 Vitess 迁移数据。 |
+| `TIDB_SHARD()` | `TIDB_SHARD` 函数用于创建一个 SHARD INDEX 来打散热点索引。SHARD INDEX 是一种以 `TIDB_SHARD` 函数为前缀的表达式索引。 |
+| `TIDB_ROW_CHECKSUM()` | `TIDB_ROW_CHECKSUM()` 函数用于查询行数据的 Checksum 值。该函数只能用于 FastPlan 流程的 `SELECT` 语句，即你可通过形如 `SELECT TIDB_ROW_CHECKSUM() FROM t WHERE id = ?` 或 `SELECT TIDB_ROW_CHECKSUM() FROM t WHERE id IN (?, ?, ...)` 的语句进行查询。参见[数据正确性校验](/ticdc/ticdc-integrity-check.md)。 |
+| `CURRENT_RESOURCE_GROUP()` | `CURRENT_RESOURCE_GROUP()` 用于查询当前连接绑定的资源组名。参见[使用资源管控 (Resource Control) 实现资源隔离](/tidb-resource-control.md)。 |
 
-`TIDB_BOUNDED_STALENESS` 是 TiDB 的内部函数，用于指定一个时间范围。用法为 `TIDB_BOUNDED_STALENESS(t1, t2)`，其中 t1 和 t2 为时间范围的两端，支持使用日期时间和时间函数。
+## 示例
 
-使用该函数，TiDB 会在指定的时间范围内选择一个合适的时间戳，该时间戳能保证所访问的副本上不存在开始于这个时间戳之前且还没有提交的相关事务，即能保证所访问的可用副本上执行读取操作而且不会被阻塞。
+下面为部分以上函数的示例。
 
-## TIDB_DECODE_KEY
+### TIDB_DECODE_KEY
 
 `TIDB_DECODE_KEY` 函数用于将 TiDB 编码的键输入解码为包含 `_tidb_rowid` 和 `table_id` 的 JSON 结构。你可以在一些系统表和日志输出中找到 TiDB 的编码键。
-
-### 语法图
-
-```ebnf+diagram
-TableStmt ::=
-    "TIDB_DECODE_KEY(" STR ")"
-```
-
-### 示例
 
 以下示例中，表 `t1` 有一个隐藏的 `rowid`，该 `rowid` 由 TiDB 生成。语句中使用了 `TIDB_DECODE_KEY` 函数。结果显示，隐藏的 `rowid` 被解码后并输出，这是典型的非聚簇主键结果。
 
@@ -104,24 +108,11 @@ select tidb_decode_key('7480000000000000FF3E5F720400000000FF0000000601633430FF33
 1 row in set (0.001 sec)
 ```
 
-### MySQL 兼容性
+### TIDB_DECODE_PLAN
 
-`TIDB_DECODE_KEY` 是 TiDB 特有的函数，和 MySQL 不兼容。
+你可以在慢查询日志中找到编码形式的 TiDB 执行计划，然后使用 `TIDB_DECODE_PLAN()` 函数将编码的执行计划解码为易读的形式。
 
-## TIDB_DECODE_PLAN
-
-`TIDB_DECODE_PLAN` 函数用于解码 TiDB 执行计划。你可以在慢查询日志中找到 TiDB 执行计划。
-
-### 语法图
-
-```ebnf+diagram
-TableStmt ::=
-    "TIDB_DECODE_PLAN(" STR ")"
-```
-
-### 示例
-
-{{< copyable "sql" >}}
+该函数很有用，因为在执行语句时 TiDB 会捕获执行计划。重新执行 `EXPLAIN` 中的语句可能会产生不同的结果，因为数据分布和统计数据会随着时间的推移而变化。
 
 ```sql
 SELECT tidb_decode_plan('8QIYMAkzMV83CQEH8E85LjA0CWRhdGE6U2VsZWN0aW9uXzYJOTYwCXRpbWU6NzEzLjHCtXMsIGxvb3BzOjIsIGNvcF90YXNrOiB7bnVtOiAxLCBtYXg6IDU2OC41wgErRHByb2Nfa2V5czogMCwgcnBjXxEpAQwFWBAgNTQ5LglZyGNvcHJfY2FjaGVfaGl0X3JhdGlvOiAwLjAwfQkzLjk5IEtCCU4vQQoxCTFfNgkxXzAJMwm2SGx0KHRlc3QudC5hLCAxMDAwMCkNuQRrdgmiAHsFbBQzMTMuOMIBmQnEDDk2MH0BUgEEGAoyCTQzXzUFVwX1oGFibGU6dCwga2VlcCBvcmRlcjpmYWxzZSwgc3RhdHM6cHNldWRvCTk2ISE2aAAIMTUzXmYA')\G
@@ -135,68 +126,14 @@ SELECT tidb_decode_plan('8QIYMAkzMV83CQEH8E85LjA0CWRhdGE6U2VsZWN0aW9uXzYJOTYwCXR
       └─TableFullScan_5    cop[tikv]    960        table:t, keep order:false, stats:pseudo    960        tikv_task:{time:153µs, loops:960}                                                                                                     N/A        N/A
 ```
 
-### MySQL 兼容性
-
-`TIDB_DECODE_PLAN` 是 TiDB 特有的函数，和 MySQL 不兼容。
-
-## TIDB_IS_DDL_OWNER
-
-`TIDB_IS_DDL_OWNER` 函数用于检查你连接的 TiDB 实例是否是 DDL Owner。DDL Owner 代表集群中所有其他节点执行 DDL 语句的 TiDB 实例。
-
-### 语法图
-
-```ebnf+diagram
-TableStmt ::=
-    "TIDB_IS_DDL_OWNER())"
-```
-
-### 示例
-
-{{< copyable "sql" >}}
-
-```sql
-SELECT tidb_is_ddl_owner();
-```
-
-```sql
-+---------------------+
-| tidb_is_ddl_owner() |
-+---------------------+
-|                   1 |
-+---------------------+
-1 row in set (0.00 sec)
-```
-
-### MySQL 兼容性
-
-`TIDB_IS_DDL_OWNER` 是 TiDB 特有的函数，和 MySQL 不兼容。
-
-### 另请参阅
-
-- [ADMIN SHOW DDL](/sql-statements/sql-statement-admin-show-ddl.md)
-- [ADMIN CANCEL DDL](/sql-statements/sql-statement-admin-cancel-ddl.md)
-
-## TIDB_PARSE_TSO
+### TIDB_PARSE_TSO
 
 `TIDB_PARSE_TSO` 函数用于从 TiDB TSO 时间戳中提取物理时间戳。
 
-TSO 指 Time Stamp Oracle，是 PD (Placement Driver) 为每个事务提供的单调递增的时间戳。
-
-TSO 是一串数字，包含以下两部分：
+TSO 指 Time Stamp Oracle，是 PD (Placement Driver) 为每个事务提供的单调递增的时间戳。TSO 是一串数字，包含以下两部分：
 
 - 一个物理时间戳
 - 一个逻辑计数器
-
-### 语法图
-
-```ebnf+diagram
-TableStmt ::=
-    "TIDB_PARSE_TSO(" NUM ")"
-```
-
-### 示例
-
-{{< copyable "sql" >}}
 
 ```sql
 BEGIN;
@@ -215,28 +152,9 @@ ROLLBACK;
 
 以上示例使用 `TIDB_PARSE_TSO` 函数从 `tidb_current_ts` 会话变量提供的可用时间戳编号中提取物理时间戳。因为每个事务都会分配到时间戳，所以此函数在事务中运行。
 
-### MySQL 兼容性
-
-`TIDB_PARSE_TSO` 是 TiDB 特有的函数，和 MySQL 不兼容。
-
-### 另请参阅
-
-- [`tidb_current_ts`](/system-variables.md#tidb_current_ts)
-
-## TIDB_VERSION
+### TIDB_VERSION
 
 `TIDB_VERSION` 函数用于获取当前连接的 TiDB 服务器版本和构建详细信息。向 GitHub 上提交 issue 时，你可使用此函数获取相关信息。
-
-### 语法图
-
-```ebnf+diagram
-TableStmt ::=
-    "TIDB_VERSION()"
-```
-
-### 示例
-
-{{< copyable "sql" >}}
 
 ```sql
 SELECT TIDB_VERSION()\G
@@ -256,13 +174,9 @@ Check Table Before Drop: false
 1 row in set (0.00 sec)
 ```
 
-### MySQL 兼容性
+### TIDB_DECODE_SQL_DIGESTS
 
-`TIDB_VERSION` 是 TiDB 特有的函数，和 MySQL 不兼容。如果要求兼容 MySQL，可以使用 `VERSION` 获取版本信息，但结果不包含详细的构建信息。
-
-## TIDB_DECODE_SQL_DIGESTS
-
-`TIDB_DECODE_SQL_DIGESTS` 函数用于在集群中查询一组 SQL Digest 所对应的 SQL 语句的归一化形式（即去除格式和参数后的形式）。函数接受 1 个或 2 个参数：
+`TIDB_DECODE_SQL_DIGESTS()` 函数用于在集群中查询一组 SQL Digest 所对应的 SQL 语句的归一化形式（即去除格式和参数后的形式）。函数接受 1 个或 2 个参数：
 
 * `digests`：字符串类型，该参数应符合 JSON 字符串数组的格式，数组中的每个字符串应为一个 SQL Digest。
 * `stmtTruncateLength`：可选参数，整数类型，用来限制返回结果中每条 SQL 语句的长度，超过指定的长度会被截断。0 表示不限制长度。
@@ -275,17 +189,6 @@ Check Table Before Drop: false
 > * `TIDB_DECODE_SQL_DIGESTS` 执行时，TiDB 内部从 Statement Summary 一系列表中查询每个 SQL Digest 所对应的语句，因而并不能保证对任意 SQL Digest 都总是能查询到对应的语句，只有在集群中执行过的语句才有可能被查询到，且是否能查询到受 Statement Summary 表相关配置的影响。有关 Statement Summary 表的详细说明，参见 [Statement Summary Tables](/statement-summary-tables.md)。
 > * 该函数开销较大，在行数很多的查询中（比如在规模较大、比较繁忙的集群上查询 `information_schema.cluster_tidb_trx` 全表时）直接使用该函数可能导致查询运行时间较长。请谨慎使用。
 >     * 该函数开销大的原因是，其每次被调用时，都会在内部发起对 `STATEMENTS_SUMMARY`、`STATEMENTS_SUMMARY_HISTORY`、`CLUSTER_STATEMENTS_SUMMARY` 和 `CLUSTER_STATEMENTS_SUMMARY_HISTORY` 这几张表的查询，且其中涉及 `UNION` 操作。且该函数目前不支持向量化，即对于多行数据调用该函数时，对每行都会独立进行一次上述的查询。
-
-### 语法图
-
-```ebnf+diagram
-DecodeSQLDigestsExpr ::=
-    "TIDB_DECODE_SQL_DIGESTS" "(" digests ( "," stmtTruncateLength )? ")"
-```
-
-### 示例
-
-{{< copyable "sql" >}}
 
 ```sql
 set @digests = '["e6f07d43b5c21db0fbb9a31feac2dc599787763393dd5acbfad80e247eb02ad5","38b03afa5debbdf0326a014dbe5012a62c51957f1982b3093e748460f8b00821","e5796985ccafe2f71126ed6c0ac939ffa015a8c0744a24b7aee6d587103fd2f7"]';
@@ -304,8 +207,6 @@ select tidb_decode_sql_digests(@digests);
 
 上面的例子中，参数是一个包含 3 个 SQL Digest 的 JSON 数组，其对应的 SQL 语句分别为查询结果中给出的三项。但是其中第二条 SQL Digest 所对应的 SQL 语句未能从集群中找到，因而结果中的第二项为 `null`。
 
-{{< copyable "sql" >}}
-
 ```sql
 select tidb_decode_sql_digests(@digests, 10);
 ```
@@ -321,20 +222,14 @@ select tidb_decode_sql_digests(@digests, 10);
 
 上述调用指定了第二个参数（即截断长度）为 10，而查询结果中的第三条语句的长度大于 10，因而仅保留了前 10 个字符，并在尾部添加了 `"..."` 表示发生了截断。
 
-### MySQL 兼容性
-
-`TIDB_DECODE_SQL_DIGESTS` 是 TiDB 特有的函数，和 MySQL 不兼容。
-
-### 另请参阅
+另请参阅：
 
 - [`Statement Summary Tables`](/statement-summary-tables.md)
 - [`INFORMATION_SCHEMA.TIDB_TRX`](/information-schema/information-schema-tidb-trx.md)
 
-## TIDB_SHARD
+### TIDB_SHARD
 
 `TIDB_SHARD` 函数用于创建一个 SHARD INDEX 来打散热点索引。SHARD INDEX 是一种以 `TIDB_SHARD` 函数为前缀的表达式索引。
-
-### SHARD INDEX
 
 - 创建方式：
 
@@ -358,14 +253,7 @@ select tidb_decode_sql_digests(@digests, 10);
     - SHARD INDEX 无法走 FastPlan 流程，影响优化器性能。
     - SHARD INDEX 无法使用执行计划缓存。
 
-### 语法图
-
-```ebnf+diagram
-TIDBShardExpr ::=
-    "TIDB_SHARD" "(" expr ")"
-```
-
-### 示例
+`TIDB_SHARD` 函数的使用示例如下：
 
 - 使用 `TIDB_SHARD` 函数计算 SHARD 值
 
@@ -396,22 +284,9 @@ TIDBShardExpr ::=
     CREATE TABLE test(id INT PRIMARY KEY CLUSTERED, a INT, b INT, UNIQUE KEY uk((tidb_shard(a)), a));
     ```
 
-### MySQL 兼容性
-
-`TIDB_SHARD` 是 TiDB 特有的函数，和 MySQL 不兼容。
-
-## TIDB_ROW_CHECKSUM
+### TIDB_ROW_CHECKSUM
 
 `TIDB_ROW_CHECKSUM` 函数用于查询行数据的 Checksum 值。该函数只能用于 FastPlan 流程的 `SELECT` 语句，即你可通过形如 `SELECT TIDB_ROW_CHECKSUM() FROM t WHERE id = ?` 或 `SELECT TIDB_ROW_CHECKSUM() FROM t WHERE id IN (?, ?, ...)` 的语句进行查询。
-
-### 语法图
-
-```ebnf+diagram
-TableStmt ::=
-    "TIDB_ROW_CHECKSUM()"
-```
-
-### 示例
 
 在 TiDB 中开启行数据 Checksum 功能 [`tidb_enable_row_level_checksum`](/system-variables.md#tidb_enable_row_level_checksum-从-v710-版本开始引入)：
 
@@ -433,6 +308,8 @@ INSERT INTO TABLE t values (1, 10, a);
 SELECT *, TIDB_ROW_CHECKSUM() FROM t WHERE id = 1;
 ```
 
+输出结果如下：
+
 ```sql
 +----+------+------+---------------------+
 | id | k    | c    | TIDB_ROW_CHECKSUM() |
@@ -442,10 +319,50 @@ SELECT *, TIDB_ROW_CHECKSUM() FROM t WHERE id = 1;
 1 row in set (0.000 sec)
 ```
 
-### MySQL 兼容性
+### CURRENT_RESOURCE_GROUP
 
-`TIDB_ROW_CHECKSUM` 是 TiDB 特有的函数，和 MySQL 不兼容。
+`CURRENT_RESOURCE_GROUP` 函数用于查询当前连接绑定的资源组名称。当开启[资源管控 (Resource Control)](/tidb-resource-control.md) 功能时，执行 SQL 语句对资源的占用会受到所绑定的资源组资源配置的限制。
 
-### 另请参阅
+在会话建立时，TiDB 默认会将连接绑定至登录用户绑定的资源组，如果用户没有绑定任何资源组，则会将连接绑定至 `default` 资源组。在会话建立之后，绑定的资源组默认不会发生变化，即使执行了[修改用户绑定的资源组](/sql-statements/sql-statement-alter-user.md#修改用户绑定的资源组)。如需修改当前会话绑定的资源组，可以使用 [`SET RESOURCE GROUP`](/sql-statements/sql-statement-set-resource-group.md) 语句。
 
-- [数据正确性校验](/ticdc/ticdc-integrity-check.md)
+#### 示例
+
+创建一个用户 `user1`，创建两个资源组 `rg1` 和 `rg2`，并将用户 `user1` 绑定资源组 `rg1`：
+
+```sql
+CREATE USER 'user1';
+CREATE RESOURCE GROUP 'rg1' RU_PER_SEC = 1000;
+CREATE RESOURCE GROUP 'rg2' RU_PER_SEC = 2000;
+ALTER USER 'user1' RESOURCE GROUP `rg1`;
+```
+
+使用 `user1` 登录，查看当前用户绑定的资源组：
+
+```sql
+SELECT CURRENT_RESOURCE_GROUP();
+```
+
+```sql
++--------------------------+
+| CURRENT_RESOURCE_GROUP() |
++--------------------------+
+| rg1                      |
++--------------------------+
+1 row in set (0.00 sec)
+```
+
+执行 `SET RESOURCE GROUP` 将当前会话的资源组设置为 `rg2`，然后查看当前用户绑定的资源组：
+
+```sql
+SET RESOURCE GROUP `rg2`;
+SELECT CURRENT_RESOURCE_GROUP();
+```
+
+```sql
++--------------------------+
+| CURRENT_RESOURCE_GROUP() |
++--------------------------+
+| rg2                      |
++--------------------------+
+1 row in set (0.00 sec)
+```

@@ -82,37 +82,9 @@ Warning: Unable to load '/usr/share/zoneinfo/zone.tab' as time zone. Skipping it
 Warning: Unable to load '/usr/share/zoneinfo/zone1970.tab' as time zone. Skipping it.
 ```
 
-如果下游是特殊的 MySQL 环境（某种公有云 RDS 或某些 MySQL 衍生版本等），使用上述方式导入时区失败，就需要通过 sink-uri 中的 `time-zone` 参数指定下游的 MySQL 时区。可以首先在 MySQL 中查询其使用的时区：
+如果下游是特殊的 MySQL 环境（某种公有云 RDS 或某些 MySQL 衍生版本等），使用上述方式导入时区失败，则可以通过设置 `time-zone` 为空值来使用下游默认时区，例如：`time-zone=""`。
 
-```shell
-show variables like '%time_zone%';
-```
-
-```shell
-+------------------+--------+
-| Variable_name    | Value  |
-+------------------+--------+
-| system_time_zone | CST    |
-| time_zone        | SYSTEM |
-+------------------+--------+
-```
-
-然后在创建同步任务和创建 TiCDC 服务时使用该时区：
-
-```shell
-cdc cli changefeed create --sink-uri="mysql://root@127.0.0.1:3306/?time-zone=CST" --server=http://127.0.0.1:8300
-```
-
-> **注意：**
->
-> CST 可能是以下四个不同时区的缩写：
->
-> - 美国中部时间：Central Standard Time (USA) UT-6:00
-> - 澳大利亚中部时间：Central Standard Time (Australia) UT+9:30
-> - 中国标准时间：China Standard Time UT+8:00
-> - 古巴标准时间：Cuba Standard Time UT-4:00
->
-> 在中国，CST 通常表示中国标准时间，使用时请注意甄别。
+在 TiCDC 中使用时区时，建议显式指定时区，例如：`time-zone="Asia/Shanghai"`。同时，请确保 TiCDC Server 的 `tz` 时区配置、Sink URI 中的 `time-zone` 时区配置和下游数据库的时区配置保持一致。这样可以避免因时区不一致导致的数据不一致问题。
 
 ## 如何处理升级 TiCDC 后配置文件不兼容的问题？
 
@@ -129,29 +101,6 @@ cdc cli changefeed create --sink-uri="mysql://root@127.0.0.1:3306/?time-zone=CST
 3. 手动在下游执行该 DDL 语句，执行完毕后进行下面的操作。
 4. 修改 changefeed 配置，将上述 `start-ts` 添加到 `ignore-txn-start-ts` 配置项中。
 5. 恢复被暂停的 changefeed。
-
-## TiCDC 集群升级到 v4.0.8 之后，changefeed 报错 `[CDC:ErrKafkaInvalidConfig]Canal requires old value to be enabled`，为什么？
-
-自 v4.0.8 起，如果 changefeed 使用 `canal-json`、`canal` 或者 `maxwell` 协议输出，TiCDC 会自动开启 Old Value 功能。但是，当 TiCDC 是从较旧版本升级到 v4.0.8 或以上版本时，在 changefeed 使用 `canal-json`、`canal` 或 `maxwell` 协议的同时 TiCDC 的 Old Value 功能会被禁用。此时，会出现该报错。可以按照以下步骤解决该报错：
-
-1. 将 changefeed 配置文件中 `enable-old-value` 的值设为 `true`。
-2. 使用 `cdc cli changefeed pause` 暂停同步任务。
-
-    ```shell
-    cdc cli changefeed pause -c test-cf --server=http://127.0.0.1:8300
-    ```
-
-3. 使用 `cdc cli changefeed update` 更新原有 changefeed 的配置。
-
-    ```shell
-    cdc cli changefeed update -c test-cf --server=http://127.0.0.1:8300 --sink-uri="mysql://127.0.0.1:3306/?max-txn-row=20&worker-number=8" --config=changefeed.toml
-    ```
-
-4. 使用 `cdc cli changefeed resume` 恢复同步任务。
-
-    ```shell
-    cdc cli changefeed resume -c test-cf --server=http://127.0.0.1:8300
-    ```
 
 ## 使用 TiCDC 创建 changefeed 时报错 `[tikv:9006]GC life time is shorter than transaction duration, transaction starts at xx, GC safe point is yy`，该如何处理？
 

@@ -8,6 +8,10 @@ title: TiDB 6.3.0 Release Notes
 
 TiDB 版本：6.3.0-DMR
 
+> **注意：**
+>
+> TiDB 6.3.0-DMR 的用户文档已[归档](https://docs-archive.pingcap.com/zh/tidb/v6.3)。如无特殊需求，建议使用 TiDB 数据库的[最新 LTS 版本](https://docs.pingcap.com/zh/tidb/stable)。
+
 试用链接：[快速体验](https://docs.pingcap.com/zh/tidb/v6.3/quick-start-with-tidb) | [下载离线包](https://cn.pingcap.com/product-community/?version=v6.3.0-DMR#version-list)
 
 在 6.3.0-DMR 版本中，你可以获得以下关键特性：
@@ -192,7 +196,7 @@ TiDB 版本：6.3.0-DMR
 
 * TiCDC 支持维护上下游数据一致性快照 (Sync point) [#6977](https://github.com/pingcap/tiflow/issues/6977) @[asddongmen](https://github.com/asddongmen)
 
-    在灾备复制场景下，TiCDC 支持[周期性地维护一个下游数据快照](/sync-diff-inspector/upstream-downstream-diff.md#tidb-主从集群的数据校验)，使得该下游快照能与上游数据的快照保持一致。借助此能力，TiCDC 能更好地匹配读写分离应用场景，帮助用户降本增效。
+    在灾备复制场景下，TiCDC 支持[周期性地维护一个下游数据快照](/ticdc/ticdc-upstream-downstream-check.md)，使得该下游快照能与上游数据的快照保持一致。借助此能力，TiCDC 能更好地匹配读写分离应用场景，帮助用户降本增效。
 
 * TiCDC 支持平滑升级 [#4757](https://github.com/pingcap/tiflow/issues/4757) @[overvenus](https://github.com/overvenus) @[3AceShowHand](https://github.com/3AceShowHand)
 

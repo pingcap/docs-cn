@@ -83,7 +83,7 @@ URI 中可配置的的参数如下：
 | `read-timeout` | 读取下游 Kafka 返回的 response 的超时时长，默认值为 `10s`。 |
 | `write-timeout` | 向下游 Kafka 发送 request 的超时时长，默认值为 `10s`。 |
 | `avro-decimal-handling-mode` | 仅在输出协议是 `avro` 时有效。该参数决定了如何处理 DECIMAL 类型的字段，值可以是 `string` 或 `precise`，表明映射成字符串还是浮点数。 |
-| `avro-bigint-unsigned-handling-mode` | 仅在输出协议是 `avro` 时有效。该参数决定了如何处理 BIGINT UNSIGNED 类型的字段，值可以是 `string` 或 `long`，表明映射成字符串还是 64 位整形。|
+| `avro-bigint-unsigned-handling-mode` | 仅在输出协议是 `avro` 时有效。该参数决定了如何处理 BIGINT UNSIGNED 类型的字段，值可以是 `string` 或 `long`，表明映射成字符串还是 64 位整型。|
 
 ### 最佳实践
 
@@ -135,7 +135,7 @@ URI 中可配置的的参数如下：
 
   TiCDC 能够正常工作所需的最小权限集合如下：
 
-    - 对 Topic [资源类型](https://docs.confluent.io/platform/current/kafka/authorization.html#resources)的 `Create` 和 `Write` 权限。
+    - 对 Topic [资源类型](https://docs.confluent.io/platform/current/kafka/authorization.html#resources)的 `Create` 、`Write` 和 `Describe` 权限。
     - 对 Cluster 资源类型的 `DescribeConfigs` 权限。
 
 ### TiCDC 集成 Kafka Connect (Confluent Platform)
@@ -161,7 +161,17 @@ dispatchers = [
 
 ### Matcher 匹配规则
 
-以上一节示例配置文件中的 dispatchers 配置项为例：
+以如下示例配置文件中的 `dispatchers` 配置项为例：
+
+```toml
+[sink]
+dispatchers = [
+  {matcher = ['test1.*', 'test2.*'], topic = "Topic 表达式 1", partition = "ts" },
+  {matcher = ['test3.*', 'test4.*'], topic = "Topic 表达式 2", partition = "index-value" },
+  {matcher = ['test1.*', 'test5.*'], topic = "Topic 表达式 3", partition = "table"},
+  {matcher = ['test6.*'], partition = "ts"}
+]
+```
 
 - 对于匹配了 matcher 规则的表，按照对应的 topic 表达式指定的策略进行分发。例如表 test3.aa，按照 topic 表达式 2 分发；表 test5.aa，按照 topic 表达式 3 分发。
 - 对于匹配了多个 matcher 规则的表，以靠前的 matcher 对应的 topic 表达式为准。例如表 test1.aa，按照 topic 表达式 1 分发。
@@ -172,10 +182,10 @@ dispatchers = [
 
 Topic 分发器用 topic = "xxx" 来指定，并使用 topic 表达式来实现灵活的 topic 分发策略。topic 的总数建议小于 1000。
 
-Topic 表达式的基本规则为 `[prefix]{schema}[middle][{table}][suffix]`，详细解释如下：
+Topic 表达式的基本规则为 `[prefix][{schema}][middle][{table}][suffix]`，详细解释如下：
 
 - `prefix`：可选项，代表 Topic Name 的前缀。
-- `{schema}`：必选项，用于匹配库名。
+- `{schema}`：可选项，用于匹配库名。
 - `middle`：可选项，代表库表名之间的分隔符。
 - `{table}`：可选项，用于匹配表名。
 - `suffix`：可选项，代表 Topic Name 的后缀。
@@ -185,11 +195,13 @@ Topic 表达式的基本规则为 `[prefix]{schema}[middle][{table}][suffix]`，
 一些示例如下：
 
 - `matcher = ['test1.table1', 'test2.table2'], topic = "hello_{schema}_{table}"`
-    - 对于表 `test1.table1` 对应的数据变更事件，发送到名为 `hello_test1_table1` 的 topic 中
-    - 对于表 `test2.table2` 对应的数据变更事件，发送到名为 `hello_test2_table2` 的 topic 中
+    - 对于表 `test1.table1` 对应的数据变更事件，发送到名为 `hello_test1_table1` 的 topic 中。
+    - 对于表 `test2.table2` 对应的数据变更事件，发送到名为 `hello_test2_table2` 的 topic 中。
 - `matcher = ['test3.*', 'test4.*'], topic = "hello_{schema}_world"`
-    - 对于 `test3` 下的所有表对应的数据变更事件，发送到名为 `hello_test3_world` 的 topic 中
-    - 对于 `test4` 下的所有表对应的数据变更事件，发送到名为 `hello_test4_ world` 的 topic 中
+    - 对于 `test3` 下的所有表对应的数据变更事件，发送到名为 `hello_test3_world` 的 topic 中。
+    - 对于 `test4` 下的所有表对应的数据变更事件，发送到名为 `hello_test4_world` 的 topic 中。
+- `matcher = ['test5.*, 'test6.*'], topic = "hard_code_topic_name"`
+    - 对于 `test5` 和 `test6` 下的所有表对应的数据变更事件，发送到名为 `hard_code_topic_name` 的 topic 中。你可以直接指定 topic 名称。
 - `matcher = ['*.*'], topic = "{schema}_{table}"`
     - 对于 TiCDC 监听的所有表，按照“库名_表名”的规则分别分发到独立的 topic 中；例如对于 `test.account` 表，TiCDC 会将其数据变更日志分发到名为 `test_account` 的 Topic 中。
 
@@ -214,7 +226,7 @@ Topic 表达式的基本规则为 `[prefix]{schema}[middle][{table}][suffix]`，
 
 partition 分发器用 partition = "xxx" 来指定，支持 default、ts、index-value、table 四种 partition 分发器，分发规则如下：
 
-- default：有多个唯一索引（包括主键）时按照 table 模式分发；只有一个唯一索引（或主键）按照 index-value 模式分发；如果开启了 old value 特性，按照 table 分发
+- default：按照 table 分发
 - ts：以行变更的 commitTs 做 Hash 计算并进行 event 分发
 - index-value：以表的主键或者唯一索引的值做 Hash 计算并进行 event 分发
 - table：以表的 schema 名和 table 名做 Hash 计算并进行 event 分发
@@ -236,12 +248,6 @@ partition 分发器用 partition = "xxx" 来指定，支持 default、ts、index
 > ```
 > {matcher = ['*.*'], dispatcher = "ts", partition = "table"},
 > ```
-
-> **警告：**
->
-> 当开启 [Old Value 功能](/ticdc/ticdc-manage-changefeed.md#输出行变更的历史值-从-v405-版本开始引入)时 (`enable-old-value = true`)，使用 index-value 分发器可能导致无法确保相同索引值的行变更顺序。因此，建议使用 default 分发器。
->
-> 具体原因请参考 [TiCDC 在开启 Old Value 功能后更新事件格式有何变化？](/ticdc/ticdc-faq.md#ticdc-在开启-old-value-功能后更新事件格式有何变化)
 
 ## 横向扩展大单表的负载到多个 TiCDC 节点
 
@@ -277,3 +283,162 @@ write-key-threshold = 30000
 ```sql
 SELECT COUNT(*) FROM INFORMATION_SCHEMA.TIKV_REGION_STATUS WHERE DB_NAME="database1" AND TABLE_NAME="table1" AND IS_INDEX=0;
 ```
+
+## 处理超过 Kafka Topic 限制的消息
+
+Kafka Topic 对可以接收的消息大小有限制，该限制由 [`max.message.bytes`](https://kafka.apache.org/documentation/#topicconfigs_max.message.bytes) 参数控制。当 TiCDC Kafka sink 在发送数据时，如果发现数据大小超过了该限制，会导致 changefeed 报错，无法继续同步数据。为了解决这个问题，TiCDC 新增一个参数 `large-message-handle-option` 并提供如下解决方案。
+
+目前，如下功能支持 Canal-JSON 和 Open Protocol 两种编码协议。使用 Canal-JSON 协议时，你需要在 `sink-uri` 中设置 `enable-tidb-extension=true`。
+
+### TiCDC 层数据压缩功能
+
+从 v7.4.0 开始，TiCDC Kafka sink 支持在编码消息后立即对数据进行压缩，并与消息大小限制参数比较。该功能能够有效减少超过消息大小限制的情况发生。
+
+配置样例如下所示：
+
+```toml
+[sink.kafka-config.large-message-handle]
+# 该参数从 v7.4.0 开始引入
+# 默认为 "none"，即不开启编码时的压缩功能
+# 可选值有 "none"、"lz4"、"snappy"，默认为 "none"
+large-message-handle-compression = "none"
+```
+
+该功能和 Kafka producer 的压缩功能不同：
+
+* `large-message-handle-compression` 中指定的压缩算法，它启用的是对单条 Kafka 消息进行压缩，并且压缩是在与消息大小限制参数比较之前进行。
+* 用户可以在 `sink-uri` 中配置压缩算法，它所启用的压缩功能应用在整个发送数据请求，其中包含多条 Kafka 消息，并且压缩是在和消息大小限制参数比较之后进行的。
+
+开启了 `large-message-handle-compression` 之后，消费者收到的消息经过特定压缩协议编码，消费者应用程序需要使用指定的压缩协议进行数据解码。
+
+### 只发送 Handle Key
+
+从 v7.3.0 开始，TiCDC Kafka sink 支持在消息大小超过限制时只发送 Handle Key 的数据。这样可以显著减少消息的大小，避免因为消息大小超过 Kafka Topic 限制而导致 changefeed 发生错误和同步任务失败的情况。
+
+Handle Key 指的是：
+
+* 如果被同步的表有定义主键，主键即为 Handle Key 。
+* 如果没有主键，但是有定义 Not NULL Unique Key，Unique Key 即为 Handle Key。
+
+配置样例如下所示：
+
+```toml
+[sink.kafka-config.large-message-handle]
+# 该参数从 v7.3.0 开始引入
+# 默认为空，即消息超过大小限制后，同步任务失败
+# 设置为 "handle-key-only" 时，如果消息超过大小，data 字段内容只发送 handle key；如果依旧超过大小，同步任务失败
+large-message-handle-option = "handle-key-only"
+```
+
+### 消费只有 Handle Key 的消息
+
+只有 Handle Key 数据的消息格式如下：
+
+```json
+{
+    "id": 0,
+    "database": "test",
+    "table": "tp_int",
+    "pkNames": [
+        "id"
+    ],
+    "isDdl": false,
+    "type": "INSERT",
+    "es": 1639633141221,
+    "ts": 1639633142960,
+    "sql": "",
+    "sqlType": {
+        "id": 4
+    },
+    "mysqlType": {
+        "id": "int"
+    },
+    "data": [
+        {
+          "id": "2"
+        }
+    ],
+    "old": null,
+    "_tidb": {     // TiDB 的扩展字段
+        "commitTs": 163963314122145239,
+        "onlyHandleKey": true
+    }
+}
+```
+
+Kafka 消费者收到消息之后，首先检查 `onlyHandleKey` 字段。如果该字段存在且为 `true`，表示该消息只包含 Handle Key 的数据。此时，你需要查询上游 TiDB，通过 [`tidb_snapshot` 读取历史数据](/read-historical-data.md)来获取完整的数据。
+
+> **警告：**
+>
+> 在 Kafka 消费者处理数据并查询 TiDB 时，可能发生数据已经被 GC 的情况。你需要[调整 TiDB 集群的 GC Lifetime 设置](/system-variables.md#tidb_gc_life_time-从-v50-版本开始引入) 为一个较大的值，以避免该情况。
+
+### 发送大消息到外部存储
+
+从 v7.4.0 开始，TiCDC Kafka sink 支持在消息大小超过限制时将该条消息发送到外部存储服务，同时向 Kafka 发送一条含有该大消息在外部存储服务中地址的消息。这样可以避免因为消息大小超过 Kafka Topic 限制而导致 changefeed 失败的情况。
+
+配置样例如下所示：
+
+```toml
+[sink.kafka-config.large-message-handle]
+# large-message-handle-option 从 v7.3.0 开始引入
+# 默认为 "none"，即消息超过大小限制后，同步任务失败
+# 设置为 "handle-key-only" 时，如果消息超过大小，data 字段内容只发送 Handle Key。如果依旧超过大小，同步任务失败
+# 设置为 "claim-check" 时，如果消息超过大小，将该条消息发送到外部存储服务
+large-message-handle-option = "claim-check"
+claim-check-storage-uri = "s3://claim-check-bucket"
+```
+
+当指定 `large-message-handle-option` 为 `claim-check` 时，`claim-check-storage-uri` 必须设置为一个有效的外部存储服务地址，否则创建 changefeed 将会报错。
+
+> **建议：**
+> 
+> 目前支持的外部存储服务与 BR 相同。详细参数说明请参考 [BR 备份存储服务的 URI 格式](/br/backup-and-restore-storages.md#格式说明)。
+
+TiCDC 不会清理外部存储服务上的消息，数据消费者需要自行管理外部存储服务。
+
+### 消费外部存储中的大消息
+
+Kafka 消费者会收到一条含有大消息在外部存储服务中的地址的消息，格式如下：
+
+```json
+{
+    "id": 0,
+    "database": "test",
+    "table": "tp_int",
+    "pkNames": [
+        "id"
+    ],
+    "isDdl": false,
+    "type": "INSERT",
+    "es": 1639633141221,
+    "ts": 1639633142960,
+    "sql": "",
+    "sqlType": {
+        "id": 4
+    },
+    "mysqlType": {
+        "id": "int"
+    },
+    "data": [
+        {
+          "id": "2"
+        }
+    ],
+    "old": null,
+    "_tidb": {     // TiDB 的扩展字段
+        "commitTs": 163963314122145239,
+        "claimCheckLocation": "s3:/claim-check-bucket/${uuid}.json"
+    }
+}
+```
+
+如果收到的消息有 `claimCheckLocation` 字段，Kafka 消费者根据该字段提供的地址读取以 JSON 格式存储的大消息数据。消息格式如下：
+
+```json
+{
+  key: "xxx",
+  value: "xxx",
+}
+```
+
+`key` 和 `value` 分别存有编码后的大消息，该消息原本应该发送到 Kafka 消息中的对应字段。消费者可以通过解析这两部分的数据，还原大消息的内容。

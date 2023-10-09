@@ -5,7 +5,7 @@ aliases: ['/docs-cn/dev/data-type-string/','/docs-cn/dev/reference/sql/data-type
 
 # 字符串类型
 
-TiDB 支持 MySQL 所有的字符串类型，包括 `CHAR`、`VARCHAR`、`BINARY`、`VARBINARY`、`BLOB`、`TEXT`、`ENUM` 以及 `SET`，完整信息参考[这篇](https://dev.mysql.com/doc/refman/5.7/en/string-types.html)文档。
+TiDB 支持 MySQL 所有的字符串类型，包括 `CHAR`、`VARCHAR`、`BINARY`、`VARBINARY`、`BLOB`、`TEXT`、`ENUM` 以及 `SET`，完整信息参考[这篇](https://dev.mysql.com/doc/refman/8.0/en/string-types.html)文档。
 
 ## 类型定义
 
@@ -61,7 +61,7 @@ TINYTEXT [CHARACTER SET charset_name] [COLLATE collation_name]
 
 ### `MEDIUMTEXT` 类型
 
-类似于 [`TEXT`](#text-类型)，区别在于最大列长度为 16,777,215。但由于 [TiDB 单列的限制](/tidb-limitations.md#单列的限制)，TiDB 中默认单列存储最大不超过 6 MiB，可通过配置项将该限制调整至 120 MiB。
+类似于 [`TEXT`](#text-类型)，区别在于最大列长度为 16,777,215。但由于 [`txn-entry-size-limit`](/tidb-configuration-file.md#txn-entry-size-limit-从-v50-版本开始引入) 的限制，TiDB 中默认单行存储最大不超过 6 MiB，可通过配置项将该限制调整至 120 MiB。
 
 {{< copyable "sql" >}}
 
@@ -71,7 +71,7 @@ MEDIUMTEXT [CHARACTER SET charset_name] [COLLATE collation_name]
 
 ### `LONGTEXT` 类型
 
-类似于 [`TEXT`](#text-类型)，区别在于最大列长度为 4,294,967,295。但由于 [TiDB 单列的限制](/tidb-limitations.md#单列的限制)，TiDB 中默认单列存储最大不超过 6 MiB，可通过配置项将该限制调整至 120 MiB。
+类似于 [`TEXT`](#text-类型)，区别在于最大列长度为 4,294,967,295。但由于 [`txn-entry-size-limit`](/tidb-configuration-file.md#txn-entry-size-limit-从-v50-版本开始引入) 的限制，TiDB 中默认单行存储最大不超过 6 MiB，可通过配置项将该限制调整至 120 MiB。
 
 {{< copyable "sql" >}}
 
@@ -121,7 +121,7 @@ TINYBLOB
 
 ### `MEDIUMBLOB` 类型
 
-类似于 [`BLOB`](#blob-类型)，区别在于最大列长度为 16,777,215。但由于 [TiDB 单列的限制](/tidb-limitations.md#单列的限制)，TiDB 中默认单列存储最大不超过 6 MiB，可通过配置项将该限制调整至 120 MiB。
+类似于 [`BLOB`](#blob-类型)，区别在于最大列长度为 16,777,215。但由于 [`txn-entry-size-limit`](/tidb-configuration-file.md#txn-entry-size-limit-从-v50-版本开始引入) 的限制，TiDB 中默认单行存储最大不超过 6 MiB，可通过配置项将该限制调整至 120 MiB。
 
 {{< copyable "sql" >}}
 
@@ -131,7 +131,7 @@ MEDIUMBLOB
 
 ### `LONGBLOB` 类型
 
-类似于 [`BLOB`](#blob-类型)，区别在于最大列长度为 4,294,967,295。但由于 [TiDB 单列的限制](/tidb-limitations.md#单列的限制)，TiDB 中默认单列存储最大不超过 6 MB，可通过配置项将该限制调整至 120 MiB。
+类似于 [`BLOB`](#blob-类型)，区别在于最大列长度为 4,294,967,295。但由于 [`txn-entry-size-limit`](/tidb-configuration-file.md#txn-entry-size-limit-从-v50-版本开始引入) 的限制，TiDB 中默认单行存储最大不超过 6 MiB，可通过配置项将该限制调整至 120 MiB。
 
 {{< copyable "sql" >}}
 
@@ -167,7 +167,7 @@ ENUM('apple', 'orange', 'pear')
 | 'orange' | 2 |
 | 'pear' | 3 |
 
-更多信息参考 [MySQL 枚举文档](https://dev.mysql.com/doc/refman/5.7/en/enum.html)。
+更多信息参考 [MySQL 枚举文档](https://dev.mysql.com/doc/refman/8.0/en/enum.html)。
 
 ### `SET` 类型
 
@@ -207,4 +207,4 @@ SET('1', '2') NOT NULL
 
 这样对于值为 `('a', 'c')` 的元素，其二进制表示即为 0101。
 
-更多信息参考 [MySQL 集合文档](https://dev.mysql.com/doc/refman/5.7/en/set.html)。
+更多信息参考 [MySQL 集合文档](https://dev.mysql.com/doc/refman/8.0/en/set.html)。

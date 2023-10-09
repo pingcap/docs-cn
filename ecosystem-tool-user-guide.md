@@ -96,8 +96,8 @@ TiUniManager 不仅提供对 TiDB 集群的全生命周期的可视化管理，�
 
 使用 TiDB Lightning 导入数据到 TiDB 时，有以下模式：
 
-- `Physical Import Mode` 模式：TiDB Lightning 将数据解析为有序的键值对，并直接将其导入 TiKV。这种模式一般用于导入大量的数据（TB 级别）到新集群，但在数据导入过程中集群无法提供正常的服务。
-- `Logical Import Mode` 模式：以 TiDB/MySQL 作为后端，这种模式相比 `Physical Import Mode`，导入速度较慢，但是可以在线导入，同时也支持将数据导入到 MySQL。
+- [物理导入模式](/tidb-lightning/tidb-lightning-physical-import-mode.md)：TiDB Lightning 将数据解析为有序的键值对，并直接将其导入 TiKV。这种模式一般用于导入大量的数据（TB 级别）到新集群，但在数据导入过程中集群无法提供正常的服务。
+- [逻辑导入模式](/tidb-lightning/tidb-lightning-logical-import-mode.md)：以 TiDB/MySQL 作为后端，这种模式相比物理导入模式，导入速度较慢，但是可以在线导入，同时也支持将数据导入到 MySQL。
 
 基本信息：
 

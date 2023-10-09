@@ -121,7 +121,7 @@ TiDB 版本：6.5.1
     - 修复 Resolved TS 导致网络流量升高的问题 [#14092](https://github.com/tikv/tikv/issues/14092) @[overvenus](https://github.com/overvenus)
     - 修复 TiDB 中事务在执行悲观 DML 失败后，再执行其他 DML 时，如果 TiDB 和 TiKV 之间存在网络故障，可能会造成数据不一致的问题 [#14038](https://github.com/tikv/tikv/issues/14038) @[MyonKeminta](https://github.com/MyonKeminta)
     - 修复转换 `const Enum` 类型到其他类型时报错的问题 [#14156](https://github.com/tikv/tikv/issues/14156) @[wshwsh12](https://github.com/wshwsh12)
-    - 修复 cop task 分页计算错误的问题 [#14254](https://github.com/tikv/tikv/issues/14254)  @[you06](https://github.com/you06)
+    - 修复 cop task 分页计算错误的问题 [#14254](https://github.com/tikv/tikv/issues/14254) @[you06](https://github.com/you06)
     - 修复 `batch cop` 模式下 `scan_detail` 不准确问题 [#14109](https://github.com/tikv/tikv/issues/14109) @[you06](https://github.com/you06)
     - 修复 Raft Engine 中的一个潜在错误，该错误可能导致 TiKV 检测到 Raft 数据损坏而无法重启 [#14338](https://github.com/tikv/tikv/issues/14338) @[tonyxuqqi](https://github.com/tonyxuqqi)
 
@@ -155,7 +155,7 @@ TiDB 版本：6.5.1
         - 修复当 TiDB 集群不存在 PITR 备份任务时，`resolve lock` 频率过高的问题 [#40759](https://github.com/pingcap/tidb/issues/40759) @[joccau](https://github.com/joccau)
         - 修复恢复数据到正在运行日志备份的集群，导致日志备份文件无法恢复的问题 [#40797](https://github.com/pingcap/tidb/issues/40797) @[Leavrth](https://github.com/Leavrth)
         - 修复全量备份失败后，从断点重启备份时 BR 会 panic 的问题 [#40704](https://github.com/pingcap/tidb/issues/40704) @[Leavrth](https://github.com/Leavrth)
-        - 修复 PITR 错误被覆盖的问题 [#40576](https://github.com/pingcap/tidb/issues/40576)@[Leavrth](https://github.com/Leavrth)
+        - 修复 PITR 错误被覆盖的问题 [#40576](https://github.com/pingcap/tidb/issues/40576) @[Leavrth](https://github.com/Leavrth)
         - 修复 PITR 备份任务在 advance owner 与 gc owner 不同时 checkpoint 不推进的问题 [#41806](https://github.com/pingcap/tidb/issues/41806) @[joccau](https://github.com/joccau)
 
     + TiCDC

@@ -6,7 +6,7 @@ aliases: ['/docs-cn/dev/mysql-compatibility/','/docs-cn/dev/reference/mysql-comp
 
 # 与 MySQL 兼容性对比
 
-TiDB 高度兼容 MySQL 5.7 协议、MySQL 5.7 常用的功能及语法。MySQL 5.7 生态中的系统工具（PHPMyAdmin、Navicat、MySQL Workbench、mysqldump、Mydumper/Myloader）、客户端等均适用于 TiDB。
+TiDB 高度兼容 MySQL 协议，以及 MySQL 5.7 和 MySQL 8.0 常用的功能及语法。MySQL 生态中的系统工具（PHPMyAdmin、Navicat、MySQL Workbench、DBeaver 和[其他工具](/develop/dev-guide-third-party-support.md#gui)）、客户端等均适用于 TiDB。
 
 但 TiDB 尚未支持一些 MySQL 功能，可能的原因如下：
 
@@ -46,6 +46,9 @@ TiDB 高度兼容 MySQL 5.7 协议、MySQL 5.7 常用的功能及语法。MySQL 
 * `HANDLER` 语句
 * `CREATE TABLESPACE` 语句
 * "Session Tracker: 将 GTID 上下文信息添加到 OK 包中"
+* 降序索引 [#2519](https://github.com/pingcap/tidb/issues/2519)
+* `SKIP LOCKED` 语法 [#18207](https://github.com/pingcap/tidb/issues/18207)
+* 横向派生表 [#40328](https://github.com/pingcap/tidb/issues/40328)
 
 ## 与 MySQL 有差异的特性详细说明
 
@@ -140,7 +143,6 @@ TiDB 中的[信息统计](/statistics.md#手动收集)与 MySQL 中的有所不�
 ### `SELECT` 的限制
 
 - 不支持 `SELECT ... INTO @变量` 语法。
-- 不支持 `SELECT ... GROUP BY ... WITH ROLLUP` 语法。
 - TiDB 中的 `SELECT .. GROUP BY expr` 的返回结果与 MySQL 5.7 并不一致。MySQL 5.7 的结果等价于 `GROUP BY expr ORDER BY expr`。
 
 详情参见 [`SELECT`](/sql-statements/sql-statement-select.md)。

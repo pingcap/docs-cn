@@ -31,6 +31,11 @@ file = "tidb-lightning.log"
 max-size = 128 # MB
 max-days = 28
 max-backups = 14
+
+# 是否开启诊断日志。默认为 false，即只输出和导入有关的日志，不会输出依赖的其他组件的日志。
+# 设置为 true 后，既输出和导入相关的日志，也输出依赖的其他组件的日志，并开启 GRPC debug，可用于问题诊断。
+# 该参数自 v7.3.0 开始引入。
+enable-diagnose-logs = false
 ```
 
 ### TiDB Lightning 任务配置
@@ -39,7 +44,7 @@ max-backups = 14
 ### tidb-lightning 任务配置
 
 [lightning]
-# 启动之前检查集群是否满足最低需求。
+# 启动之前检查集群是否满足最低需求，以及运行过程中检查 TiKV 的可用存储空间是否大于 10%。
 # check-requirements = true
 
 # 引擎文件的最大并行数。
@@ -52,7 +57,7 @@ table-concurrency = 6
 
 # 数据的并发数。默认与逻辑 CPU 的数量相同。
 # 混合部署的情况下可以将其大小配置为逻辑 CPU 数的 75%，以限制 CPU 的使用。
-# region-concurrency = 
+# region-concurrency =
 
 # I/O 最大并发数。I/O 并发量太高时，会因硬盘内部缓存频繁被刷新
 # 而增加 I/O 等待时间，导致缓存未命中和读取速度降低。
@@ -100,7 +105,7 @@ driver = "file"
 
 # dsn 是数据源名称 (data source name)，表示断点的存放位置。
 # 若 driver = "file"，则 dsn 为断点信息存放的文件路径。
-#若不设置该路径，则默认存储路径为“/tmp/CHECKPOINT_SCHEMA.pb”。
+# 若不设置该路径，则默认存储路径为“/tmp/CHECKPOINT_SCHEMA.pb”。
 # 若 driver = "mysql"，则 dsn 为“用户:密码@tcp(地址:端口)/”格式的 URL。
 # 若不设置该 URL，则默认会使用 [tidb] 部分指定的 TiDB 服务器来存储断点。
 # 为减少目标 TiDB 集群的压力，建议指定另一台兼容 MySQL 的数据库服务器来存储断点。
@@ -110,32 +115,47 @@ driver = "file"
 # 保留断点有利于进行调试，但会泄漏关于数据源的元数据。
 # keep-after-success = false
 
+[conflict]
+# 从 v7.3.0 开始引入的新版冲突数据处理策略。默认值为 ""。
+# - ""：不进行冲突数据检测和处理。如果源文件存在主键或唯一键冲突的记录，后续步骤会报错
+# - "error"：检测到导入的数据存在主键或唯一键冲突的数据时，终止导入并报错
+# - "replace"：遇到主键或唯一键冲突的数据时，保留新的数据，覆盖旧的数据
+# - "ignore"：遇到主键或唯一键冲突的数据时，保留旧的数据，忽略新的数据
+# 目前不能与 tikv-importer.duplicate-resolution（旧版冲突检测处理策略）同时使用
+strategy = ""
+# 控制 strategy 为 "replace" 或 "ignore" 时，能处理的冲突数据上限。仅在 strategy 为 "replace" 或 "ignore" 时可配置。默认为 9223372036854775807，表示几乎可以容忍所有错误。
+# threshold = 9223372036854775807
+# 控制冲突数据记录表 (conflict_records) 中记录冲突数据的条数上限。默认为 100。如果 strategy 为 "ignore"，则会记录被忽略写入的冲突记录。如果 strategy 为 "replace"，则会记录被覆盖的冲突记录。但在逻辑导入模式下，replace 策略无法记录冲突记录。
+# max-record-rows = 100
+
 [tikv-importer]
 # "local"：物理导入模式（Physical Import Mode），默认使用。适用于 TB 级以上大数据量，但导入期间下游 TiDB 无法对外提供服务。
 # "tidb"：逻辑导入模式 (Logical Import Mode)。TB 级以下数据量可以采用，下游 TiDB 可正常提供服务。
 # backend = "local"
 # 是否允许启动多个 TiDB Lightning 实例（物理导入模式）并行导入数据到一个或多个目标表。默认取值为 false。
-# 注意，该参数**不是用于增量导入数据**，仅限目标表为空的场景使用。
+# 注意，该参数仅限目标表为空的场景使用。
 # 多个 TiDB Lightning 实例（物理导入模式）同时导入一张表时，此开关必须设置为 true。
 # 但前提是目标表不能存在数据，即所有的数据都只能是由 TiDB Lightning 导入。
-# incremental-import = false
+# parallel-import = false
 # 当后端是 “importer” 时，tikv-importer 的监听地址（需改为实际地址）。
 addr = "172.16.31.10:8287"
-# 逻辑导入模式插入冲突数据时执行的操作。关于冲突检测详细信息请查阅：https://docs.pingcap.com/zh/tidb/dev/tidb-lightning-logical-import-mode-usage#冲突数据检测
-# - replace：新数据替代已有数据
-# - ignore：保留已有数据，忽略新数据
-# - error：中止导入并报错
-# on-duplicate = "replace"
 
 # 物理导入模式设置是否检测和解决重复的记录（唯一键冲突）。
-# 目前支持三种解决方法：
-#  - record: 数据写入目标表后，将目标表中重复记录添加到目标 TiDB 中的 `lightning_task_info.conflict_error_v1` 表中。
-#            注意，该方法要求目标 TiKV 的版本为 v5.2.0 或更新版本。如果版本过低，则会启用下面的 'none' 模式。
-#  - none: 不检测重复记录。该模式是三种模式中性能最佳的，但是如果数据源存在重复记录，会导致 TiDB 中出现数据不一致的情况。
-#  - remove: 记录所有目标表中的重复记录，和 'record' 模式相似。但是会删除目标表所有的重复记录，以确保目标 TiDB 中的数据状态保持一致。
+# 目前支持两种解决方法：
+#  - none: 不检测重复记录。该模式是两种模式中性能最佳的，但是如果数据源存在重复记录，会导致 TiDB 中出现数据不一致的情况。
+#  - remove：如果写入的数据 A 和 B 存在 Primary Key 或 Unique Key 冲突，
+#            则会将 A 和 B 这两条冲突数据从目标表移除，同时记录到目标 TiDB 中的 `lightning_task_info.conflict_error_v1` 表中。
+#            你可以根据业务需求选择正确的记录重新手动写入到目标表中。注意，该方法要求目标 TiKV 的版本为 v5.2.0 或更新版本。
+#            如果版本过低，则会启用 'none' 模式。
+# 默认值为 'none'。
 # duplicate-resolution = 'none'
-# 物理导入模式一次请求中发送的 KV 数量。
+# 物理导入模式下，向 TiKV 发送数据时一次请求中最大 KV 数量。
+# 自 v7.2.0 开始，该参数废弃，设置后不再生效。如果希望调整一次请求中向 TiKV 发送的数据量，请使用 `send-kv-size` 参数。
 # send-kv-pairs = 32768
+# 物理导入模式下，向 TiKV 发送数据时一次请求的最大大小。
+# 默认值为 "16K"，一般情况下不建议调整该参数。
+# 该参数自 v7.2.0 开始引入。
+# send-kv-size = "16K"
 # 物理导入模式向 TiKV 发送 KV 时是否启用压缩。目前只支持 Gzip 压缩算法，可填写 "gzip" 或者 "gz"。默认不启用压缩。
 # compress-kv-pairs = ""
 # 物理导入模式本地进行 KV 排序的路径。如果磁盘性能较低（如使用机械盘），建议设置成与 `data-source-dir` 不同的磁盘，这样可有效提升导入性能。
@@ -205,6 +225,7 @@ data-source-dir = "/data/my_database"
 #  - utf8mb4：表结构文件必须使用 UTF-8 编码，否则会报错。
 #  - gb18030：表结构文件必须使用 GB-18030 编码，否则会报错。
 #  - auto：自动判断文件编码是 UTF-8 还是 GB-18030，两者皆非则会报错（默认）。
+#  - latin1：源数据文件使用 MySQL latin1 字符集编码（也被称为 Code Page 1252）。
 #  - binary：不尝试转换编码。
 character-set = "auto"
 
@@ -213,6 +234,7 @@ character-set = "auto"
 #  - utf8mb4：源数据文件使用 UTF-8 编码。
 #  - GB18030：源数据文件使用 GB-18030 编码。
 #  - GBK：源数据文件使用 GBK 编码（GBK 编码是对 GB-2312 字符集的拓展，也被称为 Code Page 936）。
+#  - latin1：源数据文件使用 MySQL latin1 字符集编码（也被称为 Code Page 1252）。
 #  - binary：不尝试转换编码（默认）。
 # 留空此配置将默认使用 "binary"，即不尝试转换编码。
 # 需要注意的是，Lightning 不会对源数据文件的字符集做假定，仅会根据此配置对数据进行转码并导入。
@@ -294,8 +316,8 @@ pd-addr = "172.16.31.4:2379"
 # 设置 TiDB 库的日志等级。
 log-level = "error"
 
-# 设置 TiDB 会话变量，提升 Checksum 和 Analyze 的速度。
-# 各参数定义可参阅”控制 Analyze 并发度“文档
+# 设置 TiDB 会话变量，提升 Checksum 和 Analyze 的速度。注意，如果将 checksum-via-sql 设置为 "true"，则会通过 TiDB 执行 ADMIN CHECKSUM TABLE <table> SQL 语句来进行 Checksum 操作。在这种情况下，以下参数设置 `distsql-scan-concurrency = 15` 和 `checksum-table-concurrency = 2` 将不会生效。
+# 各参数定义可参阅 “控制 Analyze 并发度文档” (https://docs.pingcap.com/zh/tidb/stable/statistics#%E6%8E%A7%E5%88%B6-analyze-%E5%B9%B6%E5%8F%91%E5%BA%A6)。
 build-stats-concurrency = 20
 distsql-scan-concurrency = 15
 index-serial-scan-concurrency = 20
@@ -341,6 +363,11 @@ max-allowed-packet = 67_108_864
 # 1. Checksum 对比失败通常表示导入异常（数据丢失或数据不一致），因此建议总是开启 Checksum。
 # 2. 考虑到与旧版本的兼容性，依然可以在本配置项设置 `true` 和 `false` 两个布尔值，其效果与 `required` 和 `off` 相同。
 checksum = "required"
+# 设置是否通过 TiDB 执行 ADMIN CHECKSUM TABLE <table> 操作。
+# 默认值为 "false"，表示通过 TiDB Lightning 下发 ADMIN CHECKSUM TABLE <table> 命令给 TiKV 执行。
+# 建议将该值设为 "true"，以便在 checksum 失败时更容易定位问题。
+# 同时，当该值为 "true" 时，如果需要调整并发，请在 TiDB 中设置 `tidb_checksum_table_concurrency` 变量 (https://docs.pingcap.com/zh/tidb/stable/system-variables#tidb_checksum_table_concurrency)。
+checksum-via-sql = "false"
 # 配置是否在 CHECKSUM 结束后对所有表逐个执行 `ANALYZE TABLE <table>` 操作。
 # 此配置的可选配置项与 `checksum` 相同，但默认值为 "optional"。
 analyze = "optional"
@@ -384,7 +411,7 @@ log-progress = "5m"
 | --enable-checkpoint *bool* | 是否启用断点 (默认值为 true) | `checkpoint.enable` |
 | --analyze *level* | 导入后分析表信息，可选值为 required、optional（默认值）、off | `post-restore.analyze` |
 | --checksum *level* | 导入后比较校验和，可选值为 required（默认值）、optional、off | `post-restore.checksum` |
-| --check-requirements *bool* | 开始之前检查集群版本兼容性（默认值为 true）| `lightning.check-requirements` |
+| --check-requirements *bool* | 开始任务之前检查集群版本兼容性，以及运行过程中检查 TiKV 的可用存储空间是否大于 10%（默认值为 true）| `lightning.check-requirements` |
 | --ca *file* | TLS 连接的 CA 证书路径 | `security.ca-path` |
 | --cert *file* | TLS 连接的证书路径 | `security.cert-path` |
 | --key *file* | TLS 连接的私钥路径 | `security.key-path` |

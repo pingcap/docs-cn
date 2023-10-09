@@ -55,6 +55,7 @@ TiDB 还提供了其他工具，你可以根据需要选择使用：
 
 ### 需要的权限
 
+- PROCESS：需要该权限用于查询集群信息以获取 PD 地址，从而通过 PD 控制 GC。
 - SELECT：导出目标表时需要。
 - RELOAD：使用 consistency flush 时需要。注意，只有 TiDB 支持该权限，当上游为 RDS 或采用托管服务时，可忽略该权限。
 - LOCK TABLES：使用 consistency lock 时需要，需要导出的库表都有该权限。
@@ -75,9 +76,9 @@ dumpling -u root -P 4000 -h 127.0.0.1 --filetype sql -t 8 -o /tmp/test -r 200000
 以上命令中：
 
 - `-h`、`-P`、`-u` 分别代表地址、端口、用户。如果需要密码验证，可以使用 `-p $YOUR_SECRET_PASSWORD` 将密码传给 Dumpling。
-- `-o`（或 `--output`）用于选择存储导出文件的目录，支持本地文件路径或[外部存储 URI 格式](/br/backup-and-restore-storages.md#uri-格式)。
+- `-o`（或 `--output`）用于选择存储导出文件的目录，支持本地文件的绝对路径或[外部存储 URI 格式](/br/backup-and-restore-storages.md#uri-格式)。
 - `-t` 用于指定导出的线程数。增加线程数会增加 Dumpling 并发度提高导出速度，但也会加大数据库内存消耗，因此不宜设置过大。一般不超过 64。
-- `-r` 用于指定单个文件的最大行数，指定该参数后 Dumpling 会开启表内并发加速导出，同时减少内存使用。当上游为 TiDB 且版本为 v3.0 或更新版本时，设置 `-r` 参数大于 0 表示使用 TiDB region 信息划分表内并发，具体取值不影响划分算法。对上游为 MySQL 且表的主键是 int 的场景，该参数也有表内并发效果。
+- `-r` 用于开启表内并发加速导出。默认值是 `0`，表示不开启。取值大于 0 表示开启，取值是 INT 类型。当数据源为 TiDB 时，设置 `-r` 参数大于 0 表示使用 TiDB region 信息划分区间，同时减少内存使用。具体取值不影响划分算法。对数据源为 MySQL 且表的主键是 INT 的场景，该参数也有表内并发效果。
 - `-F` 选项用于指定单个文件的最大大小，单位为 `MiB`，可接受类似 `5GiB` 或 `8KB` 的输入。如果你想使用 TiDB Lightning 将该文件加载到 TiDB 实例中，建议将 `-F` 选项的值保持在 256 MiB 或以下。
 
 > **注意：**
@@ -334,7 +335,7 @@ SET GLOBAL tidb_gc_life_time = '10m';
 | --case-sensitive | table-filter 是否大小写敏感 | false，大小写不敏感 |
 | -h 或 --host| 连接的数据库主机的地址 | "127.0.0.1" |
 | -t 或 --threads | 备份并发线程数| 4 |
-| -r 或 --rows | 将 table 划分成 row 行数据，一般针对大表操作并发生成多个文件。当上游为 TiDB 且版本为 v3.0 或更新版本时，设置 `-r` 参数大于 0 表示使用 TiDB region 信息划分表内并发，具体取值不影响划分算法。 |
+| -r 或 --rows | 用于开启表内并发加速导出。默认值是 `0`，表示不开启。取值大于 0 表示开启，取值是 INT 类型。当数据源为 TiDB 时，设置 `-r` 参数大于 0 表示使用 TiDB region 信息划分区间，同时减少内存使用。具体取值不影响划分算法。对数据源为 MySQL 且表的主键是 INT 的场景，该参数也有表内并发效果。 |
 | -L 或 --logfile | 日志输出地址，为空时会输出到控制台 | "" |
 | --loglevel | 日志级别 {debug,info,warn,error,dpanic,panic,fatal} | "info" |
 | --logfmt | 日志输出格式 {text,json} | "text" |
@@ -345,7 +346,7 @@ SET GLOBAL tidb_gc_life_time = '10m';
 | -s 或--statement-size | 控制 `INSERT` SQL 语句的大小，单位 bytes |
 | -F 或 --filesize | 将 table 数据划分出来的文件大小，需指明单位（如 `128B`, `64KiB`, `32MiB`, `1.5GiB`） |
 | --filetype| 导出文件类型（csv/sql） | "sql" |
-| -o 或 --output | 导出本地文件路径或[外部存储 URI 格式](/br/backup-and-restore-storages.md#uri-格式) | "./export-${time}" |
+| -o 或 --output | 导出本地文件的绝对路径或[外部存储 URI 格式](/br/backup-and-restore-storages.md#uri-格式) | "./export-${time}" |
 | -S 或 --sql | 根据指定的 sql 导出数据，该选项不支持并发导出 |
 | --consistency | flush: dump 前用 FTWRL <br/> snapshot: 通过 TSO 来指定 dump 某个快照时间点的 TiDB 数据 <br/> lock: 对需要 dump 的所有表执行 `lock tables read` 命令 <br/> none: 不加锁 dump，无法保证一致性 <br/> auto: 对 MySQL 使用 --consistency flush；对 TiDB 使用 --consistency snapshot | "auto" |
 | --snapshot | snapshot tso，只在 consistency=snapshot 下生效 |
@@ -357,9 +358,10 @@ SET GLOBAL tidb_gc_life_time = '10m';
 | --ca | 用于 TLS 连接的 certificate authority 文件的地址 |
 | --cert | 用于 TLS 连接的 client certificate 文件的地址 |
 | --key | 用于 TLS 连接的 client private key 文件的地址 |
-| --csv-delimiter | csv 文件中字符类型变量的定界符 | '"' |
-| --csv-separator | csv 文件中各值的分隔符，如果数据中可能有逗号，建议源文件导出时分隔符使用非常见组合字符| ','|
-| --csv-null-value | csv 文件空值的表示 | "\\N" |
+| --csv-delimiter | CSV 文件中字符类型变量的定界符 | '"' |
+| --csv-separator | CSV 文件中各值的分隔符，如果数据中可能有逗号，建议源文件导出时分隔符使用非常见组合字符| ','|
+| --csv-null-value | CSV 文件空值的表示 | "\\N" |
+| --csv-line-terminator | CSV 文件中表示行尾的换行符。将数据导出为 CSV 文件时，可以通过该选项传入所需的换行符。该选项支持 "\\r\\n" 和 "\\n"，默认值为 "\\r\\n"，和历史版本保持一致。由于 bash 中不同的引号会应用不同的转义规则，如需指定 LF 为换行符，可使用类似 `--csv-line-terminator $'\n'` 的语法。| "\\r\\n" |
 | --escape-backslash | 使用反斜杠 (`\`) 来转义导出文件中的特殊字符 | true |
 | --output-filename-template | 以 [golang template](https://golang.org/pkg/text/template/#hdr-Arguments) 格式表示的数据文件名格式 <br/> 支持 `{{.DB}}`、`{{.Table}}`、`{{.Index}}` 三个参数 <br/> 分别表示数据文件的库名、表名、分块 ID | '{{.DB}}.{{.Table}}.{{.Index}}' |
 | --status-addr | Dumpling 的服务地址，包含了 Prometheus 拉取 metrics 信息及 pprof 调试的地址 | ":8281" |

@@ -28,6 +28,8 @@ TiDB Data Migration (DM) 提供 OpenAPI 功能，你可以通过 OpenAPI 方便�
 > - DM 提供符合 OpenAPI 3.0.0 标准的 [Spec 文档](https://github.com/pingcap/tiflow/blob/master/dm/openapi/spec/dm.yaml)，其中包含了所有 API 的请求参数和返回体，你可自行复制到如 [Swagger Editor](https://editor.swagger.io/) 等工具中在线预览文档。
 >
 > - 部署 DM-master 后，你可访问 `http://{master-addr}/api/v1/docs` 在线预览文档。
+>
+> - 配置文件中支持的某些功能在 OpenAPI 中是不支持的，二者的功能没有完全对齐。在生产环境中，建议使用[配置文件](/dm/dm-config-overview.md)。
 
 你可以通过 OpenAPI 完成 DM 集群的如下运维操作：
 
