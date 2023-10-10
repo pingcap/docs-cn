@@ -29,11 +29,11 @@ TiDB 版本：7.4.0
   </tr>
   <tr>
     <td rowspan="3">稳定性与高可用</td>
-    <td><a href="https://docs.pingcap.com/zh/tidb/v7.4/tidb-global-sort" target="_blank">引入全局排序能力，提升<code>IMPORT INTO</code>和<code>ADD INDEX</code>任务的性能和稳定性</a></td>
-    <td>在 v7.4.0 以前，当用户执行<a href="https://docs.pingcap.com/zh/tidb/v7.4/tidb-resource-control#use-resource-control-to-achieve-resource-isolation" target="_blank">分布式并行执行框架</a>的 <code>ADD INDEX</code> 或 <code>IMPORT INTO</code> 等任务时，TiDB 节点需要在将数据导入到 TiKV 之前为数据分配本地磁盘空间以进行排序。这种方式仅能进行部分数据的局部排序，往往会导致数据重叠，从而增加资源消耗，并降低 TiKV 的性能和稳定性。随着 v7.4.0 引入全局排序特性，数据可暂时存储在 S3 中，进行全局排序后再按顺序导入到 TiKV 中。这一改进降低了 TiKV 在数据整理过程中对资源的额外消耗，并显著提高了 <code>ADD INDEX</code> 和 <code>IMPORT INTO</code> 等操作的性能和稳定性。</td>
+    <td>引入<a href="https://docs.pingcap.com/zh/tidb/v7.4/tidb-global-sort" target="_blank">全局排序能力</a>，提升<code>IMPORT INTO</code>和<code>ADD INDEX</code>任务的性能和稳定性</td>
+    <td>在 v7.4.0 以前，当你执行<a href="https://docs.pingcap.com/zh/tidb/v7.4/tidb-distributed-execution-framework" target="_blank">分布式并行执行框架</a>的 <code>ADD INDEX</code> 或 <code>IMPORT INTO</code> 等任务时，TiDB 节点需要在将数据导入到 TiKV 之前为数据分配本地磁盘空间以进行排序。这种方式仅能进行部分数据的局部排序，往往会导致数据重叠，从而增加资源消耗，并降低 TiKV 的性能和稳定性。随着 v7.4.0 引入全局排序特性，数据可暂时存储在 S3 中，进行全局排序后再按顺序导入到 TiKV 中。这一改进降低了 TiKV 在数据整理过程中对资源的额外消耗，并显著提高了 <code>ADD INDEX</code> 和 <code>IMPORT INTO</code> 等操作的性能和稳定性。</td>
   </tr>
   <tr>
-    <td>资源管控支持自动管理后台任务（实验特性）</td>
+    <td><a href="https://docs.pingcap.com/zh/tidb/v7.4/tidb-resource-control#manage-background-tasks" target="_blank">资源管控</a>支持自动管理后台任务（实验特性）</td>
     <td>从 v7.1.0 开始，资源管控成为正式功能，该特性有助于缓解不同工作负载间的资源与存储访问干扰。TiDB v7.4.0 将此资源控制应用于后台任务。资源管控可以识别和管理后台任务，例如自动收集统计信息、备份和恢复、LOAD DATA 以及在线 DDL。未来，所有后台任务都将纳入资源管控。</td>
   </tr>
   <tr>
@@ -47,7 +47,7 @@ TiDB 版本：7.4.0
   </tr>
   <tr>
     <td rowspan="2">SQL</td>
-    <td>TiDB 支持完整的 <a href="https://docs.pingcap.com/zh/tidb/v7.4/partitioned-table#将分区表转换为非分区表" target="_blank">分区类型管理功能</a> </td>
+    <td>TiDB 支持完整的<a href="https://docs.pingcap.com/zh/tidb/v7.4/partitioned-table#将分区表转换为非分区表" target="_blank">分区类型管理功能</a> </td>
     <td>在 v7.4.0 之前，Range/List 分区表支持分区管理操作包括 <code>TRUNCATE</code>、<code>EXCHANGE</code>、<code>ADD</code>、<code>DROP</code>、<code>REORGANIZE</code> 等，Hash/Key 分区表支持分区管理操作包括 <code>ADD</code> and <code>COALESCE</code> 等。
     <p>现在 TiDB 新增支持了以下分区管理操作：</p>
     <ul>
@@ -58,12 +58,12 @@ TiDB 版本：7.4.0
     </td>
   </tr>
   <tr>
-    <td>MySQL 8.0 兼容性：支持排序规则 <code>utf8mb4_0900_ai_ci</code></td>
+    <td>MySQL 8.0 兼容性：支持<a href="https://docs.pingcap.com/zh/tidb/v7.4/character-set-and-collation#character-sets-and-collations-supported-by-tidb" target="_blank">排序规则 <code>utf8mb4_0900_ai_ci</code></a></td>
     <td>MySQL 8.0 的一个显著变化是默认字符集更改为 utf8mb4，其默认排序规则是 <code>utf8mb4_0900_ai_ci</code>。TiDB v7.4.0 增强了与 MySQL 8.0 的兼容性。现在你可以更轻松地迁移或复制在 MySQL 8.0 中使用默认排序规则创建的数据库到 TiDB。</td>
   </tr>
   <tr>
     <td>数据库管理与可观测性</td>
-    <td><a href="https://docs.pingcap.com/zh/tidb/v7.4/system-variables#tidb_service_scope-从-v740-版本开始引入" target="_blank">选择适用的 TiDB 节点来执行并行的 <code>ADD INDEX</code> 或 <code>IMPORT INTO</code> SQL 语句（实验特性）</a></td>
+    <td>选择<a href="https://docs.pingcap.com/zh/tidb/v7.4/system-variables#tidb_service_scope-从-v740-版本开始引入" target="_blank">适用的 TiDB 节点</a>来执行并行的 <code>ADD INDEX</code> 或 <code>IMPORT INTO</code> SQL 语句（实验特性）</td>
     <td>你可以选择在现有 TiDB 节点、或者新增 TiDB 节点执行 <code>ADD INDEX</code> 和 <code>IMPORT INTO</code> SQL 语句。该方法可以实现与其他 TiDB 节点的资源隔离，确保在执行上述语句时的最佳性能，并避免对已有业务造成性能影响。</td>
   </tr>
 </tbody>
@@ -297,7 +297,7 @@ TiDB 版本：7.4.0
 | [`tidb_opt_enable_hash_join`](/system-variables.md#tidb_opt_enable_hash_join-从-v740-版本开始引入) | 新增 | 控制优化器是否会选择表的哈希连接。默认打开 (`ON`)。设置为 `OFF` 时，除非没有计划可用，否则优化器会避免选择表的哈希连接。 |
 | [`tidb_opt_objective`](/system-variables.md#tidb_opt_objective-从-v740-版本开始引入) | 新增 | 该变量用于设置优化器优化目标。`moderate` 维持旧版本的默认行为，优化器会利用更多信息尝试生成更优的计划；`determinate` 则倾向于保守，保持执行计划稳定。 |
 | [`tidb_schema_version_cache_limit`](/system-variables.md#tidb_schema_version_cache_limit-从-v740-版本开始引入) | 新增 | 该变量用于限制 TiDB 实例可以缓存多少个历史版本的表结构信息。默认值为 `16`，即默认缓存 16 个历史版本的表结构信息。|
-| [`tidb_service_scope`](/system-variables.md#tidb_service_scope-从-v740-版本开始引入) | 新增 | 该变量是一个实例级别的变量，用于控制 [TiDB 后端任务分布式框架](/tidb-distributed-execution-framework.md) 下各 TiDB 节点的服务范围。当设置 TiDB 节点的 `tidb_service_scope` 为 `background` 时，后端任务分布式框架将调度该节点执行后端任务（如 [`ADD INDEX`](/sql-statements/sql-statement-add-index.md) 和 [`IMPORT INTO`](/sql-statements/sql-statement-import-into.md)）。 |
+| [`tidb_service_scope`](/system-variables.md#tidb_service_scope-从-v740-版本开始引入) | 新增 | 该变量是一个实例级别的变量，用于控制 [TiDB 后端任务分布式框架](/tidb-distributed-execution-framework.md)下各 TiDB 节点的服务范围。当设置 TiDB 节点的 `tidb_service_scope` 为 `background` 时，后端任务分布式框架将调度该节点执行后端任务（如 [`ADD INDEX`](/sql-statements/sql-statement-add-index.md) 和 [`IMPORT INTO`](/sql-statements/sql-statement-import-into.md)）。 |
 | [`tidb_session_alias`](/system-variables.md#tidb_session_alias-从-v740-版本开始引入) | 新增 | 用来自定义当前会话相关日志中 `session_alias` 列的值。 |
 | [`tikv_client_read_timeout`](/system-variables.md#tikv_client_read_timeout-从-v740-版本开始引入) | 新增 | 该变量用于设置查询语句中 TiDB 发送 TiKV RPC 读请求的超时时间。默认值 `0` 表示使用默认的超时时间（通常是 40 秒）。 |
 | [`tiflash_mem_quota_query_per_node`](/system-variables.md#tiflash_mem_quota_query_per_node-从-v740-版本开始引入) | 新增 | 用于设置单个查询在单个 TiFlash 节点上的内存使用上限，超过该限制时 TiFlash 会报错并终止该查询。默认值为 `0`，表示无限制。 |
@@ -311,9 +311,9 @@ TiDB 版本：7.4.0
 | -------- | -------- | -------- | -------- |
 | TiDB | [`enable-stats-cache-mem-quota`](/tidb-configuration-file.md#enable-stats-cache-mem-quota-从-v610-版本开始引入) | 修改 | 默认值由 `false` 改为 `true`，即默认开启 TiDB 统计信息缓存的内存上限。 |
 | TiFlash | [`profiles.default.enable_resource_control`](/tiflash/tiflash-configuration.md) | 新增 | 控制是否开启 TiFlash 资源管控功能。 |
-| TiFlash | [`flash.compact_log_min_gap`](/tiflash/tiflash-configuration.md) | 新增 | 在当前 Raft 状态机推进的 applied_index 和上次落盘时的 applied_index 的差值高于 `compact_log_min_gap` 时，TiFlash 将执行来自 TiKV 的 CompactLog 命令，并进行数据落盘。 |
+| TiFlash | [`flash.compact_log_min_gap`](/tiflash/tiflash-configuration.md) | 新增 | 在当前 Raft 状态机推进的 `applied_index` 和上次落盘时的 `applied_index` 的差值高于 `compact_log_min_gap` 时，TiFlash 将执行来自 TiKV 的 CompactLog 命令，并进行数据落盘。 |
 | TiFlash | [`storage.format_version`](/tiflash/tiflash-configuration.md) | 修改 | 默认值从 `4` 修改为 `5`，该格式可以合并小文件从而减少了物理文件数量。 |
-| Dumpling  | [`--csv-line-terminator`](/dumpling-overview.md#dumpling-主要选项表) | 新增 | 控制导出数据为 CSV 文件的换行符，支持 "\r\n" 和 "\n"，默认值为 "\r\n"，即和历史版本保持一致。 |
+| Dumpling  | [`--csv-line-terminator`](/dumpling-overview.md#dumpling-主要选项表) | 新增 | 控制导出数据为 CSV 文件的换行符，支持 `"\r\n"` 和 `"\n"`，默认值为 `"\r\n"`，即和历史版本保持一致。 |
 | TiCDC | [`large-message-handle-option`](/ticdc/ticdc-sink-to-kafka.md#发送大消息到外部存储) | 修改 | 该配置项新增一个可选值 `claim-check`。当设置为 `claim-check` 时，TiCDC Kafka sink 支持在消息大小超过限制时将该条消息发送到外部存储服务，同时向 Kafka 发送一条含有该大消息在外部存储服务中的地址的消息。 |
 | TiCDC | [`claim-check-storage-uri`](/ticdc/ticdc-sink-to-kafka.md#发送大消息到外部存储) | 新增 | 当指定 `large-message-handle-option` 为 `claim-check` 时，`claim-check-storage-uri` 必须设置为一个有效的外部存储服务地址，否则创建 Changefeed 将会报错。|
 | TiCDC | [`large-message-handle-compression`](/ticdc/ticdc-sink-to-kafka.md#ticdc-层数据压缩功能) | 新增 | 控制是否开启编码时的压缩功能，默认为空，即不开启。|
