@@ -257,7 +257,7 @@ TiDB 版本：7.4.0
     - 支持配置 `Split_File` 选项，可将单个大 CSV 文件切分成多个 256 MiB 的小 CSV 文件进行并行处理，提升导入性能。
     - 支持导入压缩后的 CSV 和 SQL 文件，支持的压缩格式包括 `.gzip`、`.gz`、`.zstd`、`.zst` 和 `.snappy`。
 
-    更多信息，请参考[用户文档](/sql-statements/sql-statement-import-into.md)。
+  更多信息，请参考[用户文档](/sql-statements/sql-statement-import-into.md)。
 
 * Dumpling 在将数据导出为 CSV 文件时支持用户自定义换行符 [#46982](https://github.com/pingcap/tidb/issues/46982) @[GMHDBJD](https://github.com/GMHDBJD)
 
@@ -285,7 +285,7 @@ TiDB 版本：7.4.0
 
 ### 行为变更
 
-* 自 v7.4.0 起， TiDB 已经兼容 MySQL 8.0 的核心功能，`version()` 将返回以 `8.0.11` 为前缀的版本信息。
+* 自 v7.4.0 起，TiDB 已经兼容 MySQL 8.0 的核心功能，`version()` 将返回以 `8.0.11` 为前缀的版本信息。
 
 * 升级到 TiFlash v7.4.0 后，不支持原地降级到之前的版本。这是因为，从 v7.4.0 开始，为了减少数据整理时产生的读、写放大，TiFlash 对 PageStorage V3 数据整理时的逻辑进行了优化，导致底层部分存储文件名发生了改动。详情请参考 [TiFlash 升级帮助](/tiflash-upgrade-guide.md#从-v6x-或-v7x-升级至-v74-或以上版本)。
 
