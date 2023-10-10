@@ -293,17 +293,17 @@ TiDB 版本：7.4.0
 
 | 变量名 | 修改类型 | 描述 |
 |---|----|------|
+| `tidb_enable_tiflash_pipeline_model` | 删除 | 这个变量用来控制是否启用 TiFlash Pipeline Model。从 v7.4.0 开启，开启 TiFlash 资源管控功能时，Pipeline Model 模型将自动启用。 |
+| [`tidb_enable_non_prepared_plan_cache`](/system-variables.md#tidb_enable_non_prepared_plan_cache) | 修改 | 经进一步的测试后，该变量默认值从 `ON` 修改为 `OFF`，即默认关闭非 Prepare 语句执行计划缓存。 |
 | [`default_collation_for_utf8mb4`](/system-variables.md#default_collation_for_utf8mb4-从-v740-版本开始引入) | 新增 | 该变量用于设置 utf8mb4 字符集的默认排序规则，默认值为 `utf8mb4_bin`。 |
 | [`tidb_opt_enable_hash_join`](/system-variables.md#tidb_opt_enable_hash_join-从-v740-版本开始引入) | 新增 | 控制优化器是否会选择表的哈希连接。默认打开 (`ON`)。设置为 `OFF` 时，除非没有计划可用，否则优化器会避免选择表的哈希连接。 |
 | [`tidb_opt_objective`](/system-variables.md#tidb_opt_objective-从-v740-版本开始引入) | 新增 | 该变量用于设置优化器优化目标。`moderate` 维持旧版本的默认行为，优化器会利用更多信息尝试生成更优的计划；`determinate` 则倾向于保守，保持执行计划稳定。 |
 | [`tidb_schema_version_cache_limit`](/system-variables.md#tidb_schema_version_cache_limit-从-v740-版本开始引入) | 新增 | 该变量用于限制 TiDB 实例可以缓存多少个历史版本的表结构信息。默认值为 `16`，即默认缓存 16 个历史版本的表结构信息。|
 | [`tidb_service_scope`](/system-variables.md#tidb_service_scope-从-v740-版本开始引入) | 新增 | 该变量是一个实例级别的变量，用于控制 [TiDB 后端任务分布式框架](/tidb-distributed-execution-framework.md)下各 TiDB 节点的服务范围。当设置 TiDB 节点的 `tidb_service_scope` 为 `background` 时，后端任务分布式框架将调度该节点执行后端任务（如 [`ADD INDEX`](/sql-statements/sql-statement-add-index.md) 和 [`IMPORT INTO`](/sql-statements/sql-statement-import-into.md)）。 |
 | [`tidb_session_alias`](/system-variables.md#tidb_session_alias-从-v740-版本开始引入) | 新增 | 用来自定义当前会话相关日志中 `session_alias` 列的值。 |
-| [`tikv_client_read_timeout`](/system-variables.md#tikv_client_read_timeout-从-v740-版本开始引入) | 新增 | 该变量用于设置查询语句中 TiDB 发送 TiKV RPC 读请求的超时时间。默认值 `0` 表示使用默认的超时时间（通常是 40 秒）。 |
 | [`tiflash_mem_quota_query_per_node`](/system-variables.md#tiflash_mem_quota_query_per_node-从-v740-版本开始引入) | 新增 | 用于设置单个查询在单个 TiFlash 节点上的内存使用上限，超过该限制时 TiFlash 会报错并终止该查询。默认值为 `0`，表示无限制。 |
 | [`tiflash_query_spill_ratio`](/system-variables.md#tiflash_query_spill_ratio-从-v740-版本开始引入) | 新增 |  用于控制 TiFlash [查询级别的落盘](/tiflash/tiflash-spill-disk.md#查询级别的落盘)机制的阈值。默认值为 `0.7`。  |
-| [`tidb_enable_non_prepared_plan_cache`](/system-variables.md#tidb_enable_non_prepared_plan_cache) | 修改 | 经进一步的测试后，该变量默认值从 `ON` 修改为 `OFF`，即默认关闭非 Prepare 语句执行计划缓存。 |
-| `tidb_enable_tiflash_pipeline_model` | 删除 | 这个变量用来控制是否启用 TiFlash Pipeline Model。从 v7.4.0 开启，开启 TiFlash 资源管控功能时，Pipeline Model 模型将自动启用。 |
+| [`tikv_client_read_timeout`](/system-variables.md#tikv_client_read_timeout-从-v740-版本开始引入) | 新增 | 该变量用于设置查询语句中 TiDB 发送 TiKV RPC 读请求的超时时间。默认值 `0` 表示使用默认的超时时间（通常是 40 秒）。 |
 
 ### 配置文件参数
 
