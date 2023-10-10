@@ -310,13 +310,13 @@ TiDB 版本：7.4.0
 | 配置文件 | 配置项 | 修改类型 | 描述 |
 | -------- | -------- | -------- | -------- |
 | TiDB | [`enable-stats-cache-mem-quota`](/tidb-configuration-file.md#enable-stats-cache-mem-quota-从-v610-版本开始引入) | 修改 | 默认值由 `false` 改为 `true`，即默认开启 TiDB 统计信息缓存的内存上限。 |
-| TiFlash | [`profiles.default.enable_resource_control`](/tiflash/tiflash-configuration.md) | 新增 | 控制是否开启 TiFlash 资源管控功能。 |
 | TiFlash | [`flash.compact_log_min_gap`](/tiflash/tiflash-configuration.md) | 新增 | 在当前 Raft 状态机推进的 `applied_index` 和上次落盘时的 `applied_index` 的差值高于 `compact_log_min_gap` 时，TiFlash 将执行来自 TiKV 的 CompactLog 命令，并进行数据落盘。 |
+| TiFlash | [`profiles.default.enable_resource_control`](/tiflash/tiflash-configuration.md) | 新增 | 控制是否开启 TiFlash 资源管控功能。 |
 | TiFlash | [`storage.format_version`](/tiflash/tiflash-configuration.md) | 修改 | 默认值从 `4` 修改为 `5`，该格式可以合并小文件从而减少了物理文件数量。 |
 | Dumpling  | [`--csv-line-terminator`](/dumpling-overview.md#dumpling-主要选项表) | 新增 | 控制导出数据为 CSV 文件的换行符，支持 `"\r\n"` 和 `"\n"`，默认值为 `"\r\n"`，即和历史版本保持一致。 |
-| TiCDC | [`large-message-handle-option`](/ticdc/ticdc-sink-to-kafka.md#发送大消息到外部存储) | 修改 | 该配置项新增一个可选值 `claim-check`。当设置为 `claim-check` 时，TiCDC Kafka sink 支持在消息大小超过限制时将该条消息发送到外部存储服务，同时向 Kafka 发送一条含有该大消息在外部存储服务中的地址的消息。 |
 | TiCDC | [`claim-check-storage-uri`](/ticdc/ticdc-sink-to-kafka.md#发送大消息到外部存储) | 新增 | 当指定 `large-message-handle-option` 为 `claim-check` 时，`claim-check-storage-uri` 必须设置为一个有效的外部存储服务地址，否则创建 Changefeed 将会报错。|
 | TiCDC | [`large-message-handle-compression`](/ticdc/ticdc-sink-to-kafka.md#ticdc-层数据压缩功能) | 新增 | 控制是否开启编码时的压缩功能，默认为空，即不开启。|
+| TiCDC | [`large-message-handle-option`](/ticdc/ticdc-sink-to-kafka.md#发送大消息到外部存储) | 修改 | 该配置项新增一个可选值 `claim-check`。当设置为 `claim-check` 时，TiCDC Kafka sink 支持在消息大小超过限制时将该条消息发送到外部存储服务，同时向 Kafka 发送一条含有该大消息在外部存储服务中的地址的消息。 |
 
 ## 改进提升
 
