@@ -272,7 +272,7 @@ TiCDC 需要磁盘是为了缓冲上游写入高峰时下游消费不及时堆�
 
 ## 如何理解 DML 和 DDL 语句之间的执行顺序？
 
-目前 TiCDC 采用了简洁的方式处理该问题。首先，TiCDC 会将受 DDL 影响的表的同步进度阻塞到 DDL CommiTs 时间点，确保 DDL CommiTs 之前的 DML 都同步到下游之后，再同步 DDL。并且，DDL 是以串行的方式进行同步的，TiCDC 会在 DDL 执行完毕之后才继续同步 DML。
+目前 TiCDC 采用了一种简洁的方式处理该问题。首先，TiCDC 会阻塞受 DDL 影响的表的同步进度，直到 DDL CommiTs 的时间点，以确保在 DDL CommiTs 之前执行的 DML 都已经成功同步到下游，然后才会继续同步 DDL。此外，DDL 是以串行的方式进行同步的，TiCDC 会在 DDL 执行完成之后才继续同步 DML。
 
 ## 如何对比上下游数据的一致性？
 
