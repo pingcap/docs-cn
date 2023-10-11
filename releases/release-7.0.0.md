@@ -362,6 +362,8 @@ TiDB 版本：7.0.0
 | PD         |  [`read-cpu-ms-cost`](/pd-configuration-file.md#read-cpu-ms-cost)      | 新增         |  PD 中内置的 [Resource Control](/tidb-resource-control.md) 相关配置项。用于设置 CPU 转换成 RU 的基准系数。默认值为 `1/3`。 |
 | PD         |  [`write-base-cost`](/pd-configuration-file.md#write-base-cost)      | 新增         |  PD 中内置的 [Resource Control](/tidb-resource-control.md) 相关配置项。用于设置每次写请求转换成 RU 的基准系数。默认值为 `1`。 |
 | PD         |  [`write-cost-per-byte`](/pd-configuration-file.md#write-cost-per-byte)      | 新增         |  PD 中内置的 [Resource Control](/tidb-resource-control.md) 相关配置项。用于设置写流量转换成 RU 的基准系数。默认值为 `1/1024`。 |
+| TiFlash | [`mark_cache_size`](/tiflash/tiflash-configuration.md) |  修改  | TiFlash 中数据块元信息的内存 cache 上限，默认值从 `5368709120` 修改为 `1073741824`，以减少不必要的内存占用 |
+| TiFlash | [`minmax_index_cache_size`](/tiflash/tiflash-configuration.md) |  修改  | TiFlash 中数据块 min-max 索引的内存 cache 上限，默认值从 `5368709120` 修改为 `1073741824`，以减少不必要的内存占用  |
 | TiFlash | [`flash.disaggregated_mode`](/tiflash/tiflash-disaggregated-and-s3.md) |  新增  | 在 TiFlash 的存算分离架构中，表示此 TiFlash 节点是 Write Node 还是 Compute Node。可选值为 `tiflash_write` 或者 `tiflash_compute`。 |
 | TiFlash | [`storage.s3.endpoint`](/tiflash/tiflash-disaggregated-and-s3.md) |  新增  | S3 的 endpoint 地址。 |
 | TiFlash | [`storage.s3.bucket`](/tiflash/tiflash-disaggregated-and-s3.md) |  新增  | TiFlash 的所有数据存储的 bucket。 |
