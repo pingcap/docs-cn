@@ -1,6 +1,6 @@
 ---
 title: TiDB 支持的第三方工具
-aliases: ['/zh/tidb/dev/supported-by-pingcap']
+aliases: ['/zh/tidb/v6.1/supported-by-pingcap']
 ---
 
 # TiDB 支持的第三方工具
@@ -39,32 +39,8 @@ PingCAP 与开源社区合作，通过三方工具提供以下支持：
    </thead>
    <tbody>
       <tr>
-         <td>C</td>
-         <td><a href="https://dev.mysql.com/doc/c-api/8.0/en/c-api-introduction.html" target="_blank" referrerpolicy="no-referrer-when-downgrade">libmysqlclient</a></td>
-         <td>8.0</td>
-         <td>Compatible</td>
-         <td>N/A</td>
-         <td>N/A</td>
-      </tr>
-      <tr>
-         <td>C#(.Net)</td>
-         <td><a href="https://downloads.mysql.com/archives/c-net/" target="_blank" referrerpolicy="no-referrer-when-downgrade">MySQL Connector/NET</a></td>
-         <td>8.0</td>
-         <td>Compatible</td>
-         <td>N/A</td>
-         <td>N/A</td>
-      </tr>
-      <tr>
-         <td>ODBC</td>
-         <td><a href="https://downloads.mysql.com/archives/c-odbc/" target="_blank" referrerpolicy="no-referrer-when-downgrade">MySQL Connector/ODBC</a></td>
-         <td>8.0</td>
-         <td>Compatible</td>
-         <td>N/A</td>
-         <td>N/A</td>
-      </tr>
-      <tr>
          <td>Go</td>
-         <td><a href="https://github.com/go-sql-driver/mysql" target="_blank" referrerpolicy="no-referrer-when-downgrade">go-sql-driver/mysql</a></td>
+         <td><a href="https://github.com/go-sql-driver/mysql" target="_blank" referrerpolicy="no-referrer-when-downgrade">Go-MySQL-Driver</a></td>
          <td>v1.6.0</td>
          <td>Full</td>
          <td>N/A</td>
@@ -82,44 +58,6 @@ PingCAP 与开源社区合作，通过三方工具提供以下支持：
             </ul>
          </td>
          <td><a href="/zh/tidb/v6.1/dev-guide-sample-application-java">TiDB 和 Java 的简单 CRUD 应用程序</a></td>
-      </tr>
-      <tr>
-         <td>JavaScript</td>
-         <td><a href="https://github.com/mysqljs/mysql" target="_blank" referrerpolicy="no-referrer-when-downgrade">mysql</a></td>
-         <td>v2.18.1</td>
-         <td>Compatible</td>
-         <td>N/A</td>
-         <td>N/A</td>
-      </tr>
-      <tr>
-         <td>PHP</td>
-         <td><a href="https://dev.mysql.com/downloads/connector/php-mysqlnd/" target="_blank" referrerpolicy="no-referrer-when-downgrade">mysqlnd</a></td>
-         <td>PHP 5.4+</td>
-         <td>Compatible</td>
-         <td>N/A</td>
-         <td>N/A</td>
-      </tr>
-      <tr>
-         <td rowspan="3">Python</td>
-         <td><a href="https://dev.mysql.com/doc/connector-python/en/" target="_blank" referrerpolicy="no-referrer-when-downgrade">mysql-connector-python</a></td>
-         <td>8.0</td>
-         <td>Compatible</td>
-         <td>N/A</td>
-         <td><a href="/zh/tidb/v6.1/dev-guide-sample-application-python">TiDB 和 Python 的简单 CRUD 应用程序</a></td>
-      </tr>
-      <tr>
-         <td><a href="https://mysqlclient.readthedocs.io/" target="_blank" referrerpolicy="no-referrer-when-downgrade">mysqlclient</a></td>
-         <td>2.1.1</td>
-         <td>Compatible</td>
-         <td>N/A</td>
-         <td><a href="/zh/tidb/v6.1/dev-guide-sample-application-python">TiDB 和 Python 的简单 CRUD 应用程序</a></td>
-      </tr>
-      <tr>
-         <td><a href="https://pypi.org/project/PyMySQL/" target="_blank" referrerpolicy="no-referrer-when-downgrade">PyMySQL</a></td>
-         <td>1.0.2</td>
-         <td>Compatible</td>
-         <td>N/A</td>
-         <td><a href="/zh/tidb/v6.1/dev-guide-sample-application-python">TiDB 和 Python 的简单 CRUD 应用程序</a></td>
       </tr>
    </tbody>
 </table>
@@ -139,7 +77,7 @@ PingCAP 与开源社区合作，通过三方工具提供以下支持：
    </thead>
    <tbody>
       <tr>
-         <td rowspan="5">Go</td>
+         <td rowspan="4">Go</td>
          <td><a href="https://github.com/go-gorm/gorm" target="_blank" referrerpolicy="no-referrer-when-downgrade">gorm</a></td>
          <td>v1.23.5</td>
          <td>Full</td>
@@ -164,13 +102,6 @@ PingCAP 与开源社区合作，通过三方工具提供以下支持：
          <td><a href="https://gitea.com/xorm/xorm" target="_blank" referrerpolicy="no-referrer-when-downgrade">xorm</a></td>
          <td>v1.3.1</td>
          <td>Full</td>
-         <td>N/A</td>
-         <td>N/A</td>
-      </tr>
-      <tr>
-         <td><a href="https://github.com/ent/ent" target="_blank" referrerpolicy="no-referrer-when-downgrade">ent</a></td>
-         <td>v0.11.0</td>
-         <td>Compatible</td>
          <td>N/A</td>
          <td>N/A</td>
       </tr>
@@ -212,17 +143,10 @@ PingCAP 与开源社区合作，通过三方工具提供以下支持：
          <td>N/A</td>
       </tr>
       <tr>
-         <td rowspan="4">JavaScript / TypeScript</td>
+         <td rowspan="2">JavaScript / TypeScript</td>
          <td><a href="https://www.npmjs.com/package/sequelize" target="_blank" referrerpolicy="no-referrer-when-downgrade">sequelize</a></td>
          <td>v6.20.1</td>
          <td>Full</td>
-         <td>N/A</td>
-         <td>N/A</td>
-      </tr>
-      <tr>
-         <td><a href="https://knexjs.org/" target="_blank" referrerpolicy="no-referrer-when-downgrade">Knex.js</a></td>
-         <td>v1.0.7</td>
-         <td>Compatible</td>
          <td>N/A</td>
          <td>N/A</td>
       </tr>
@@ -234,22 +158,7 @@ PingCAP 与开源社区合作，通过三方工具提供以下支持：
          <td>N/A</td>
       </tr>
       <tr>
-         <td><a href="https://www.npmjs.com/package/typeorm" target="_blank" referrerpolicy="no-referrer-when-downgrade">TypeORM</a></td>
-         <td>v0.3.6</td>
-         <td>Compatible</td>
-         <td>N/A</td>
-         <td>N/A</td>
-      </tr>
-      <tr>
-         <td>PHP</td>
-         <td><a href="https://laravel.com/" target="_blank" referrerpolicy="no-referrer-when-downgrade">laravel</a></td>
-         <td>v9.1.10</td>
-         <td>Compatible</td>
-         <td><a href="https://github.com/colopl/laravel-tidb" target="_blank" referrerpolicy="no-referrer-when-downgrade">laravel-tidb</a></td>
-         <td>N/A</td>
-      </tr>
-      <tr>
-         <td rowspan="4">Python</td>
+         <td rowspan="2">Python</td>
          <td><a href="https://pypi.org/project/Django/" target="_blank" referrerpolicy="no-referrer-when-downgrade">Django</a></td>
          <td>v4.1</td>
          <td>Full</td>
@@ -263,13 +172,6 @@ PingCAP 与开源社区合作，通过三方工具提供以下支持：
          <td>N/A</td>
          <td><a href="/zh/tidb/v6.1/dev-guide-sample-application-python">TiDB 和 Python 的简单 CRUD 应用程序</a></td>
       </tr>
-      <tr>
-         <td><a href="https://github.com/coleifer/peewee/" target="_blank" referrerpolicy="no-referrer-when-downgrade">peewee</a></td>
-         <td>v3.14.10</td>
-         <td>Compatible</td>
-         <td>N/A</td>
-         <td><a href="/zh/tidb/v6.1/dev-guide-sample-application-python">TiDB 和 Python 的简单 CRUD 应用程序</a></td>
-      </tr>
    </tbody>
 </table>
 
@@ -277,42 +179,4 @@ PingCAP 与开源社区合作，通过三方工具提供以下支持：
 
 | GUI | 最新已测试版本 | 支持等级 | 教程 |
 | - | - | - | - |
-| [DBeaver](https://dbeaver.io/) | 22.1.0 | Compatible | N/A |
-| [Navicat for MySQL](https://www.navicat.com/) | 16.0.14 | Compatible | N/A |
-| [MySQL Workbench](https://www.mysql.com/products/workbench/) | 8.0 | Compatible | N/A |
-
-<table>
-   <thead>
-      <tr>
-         <th>IDE</th>
-         <th>插件</th>
-         <th>支持等级</th>
-         <th>教程</th>
-      </tr>
-   </thead>
-   <tbody>
-      <tr>
-         <td><a href="https://www.jetbrains.com/datagrip/" target="_blank" referrerpolicy="no-referrer-when-downgrade">DataGrip</a></td>
-         <td>N/A</td>
-         <td>Compatible</td>
-         <td>N/A</td>
-      </tr>
-      <tr>
-         <td><a href="https://www.jetbrains.com/idea/" target="_blank" referrerpolicy="no-referrer-when-downgrade">IntelliJ IDEA</a></td>
-         <td>N/A</td>
-         <td>Compatible</td>
-         <td>N/A</td>
-      </tr>
-      <tr>
-         <td rowspan="2"><a href="https://code.visualstudio.com/" target="_blank" referrerpolicy="no-referrer-when-downgrade">Visual Studio Code</a></td>
-         <td><a href="https://marketplace.visualstudio.com/items?itemName=dragonly.ticode" target="_blank" referrerpolicy="no-referrer-when-downgrade">TiDE</a></td>
-         <td>Compatible</td>
-         <td>N/A</td>
-      </tr>
-      <tr>
-         <td><a href="https://marketplace.visualstudio.com/items?itemName=formulahendry.vscode-mysql" target="_blank" referrerpolicy="no-referrer-when-downgrade">MySQL</a></td>
-         <td>Compatible</td>
-         <td>N/A</td>
-      </tr>
-   </tbody>
-</table>
+| [DBeaver](https://dbeaver.io/) | 23.0.1 | Full | N/A |
