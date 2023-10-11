@@ -272,7 +272,7 @@ TiCDC 需要磁盘是为了缓冲上游写入高峰时下游消费不及时堆�
 
 ## 如何理解 DML 和 DDL 语句之间的执行顺序？
 
-在数据同步过程中，为了确保 DML 事件在下游执行时有对应正确的表结构，需要协调 DDL 和 DML 的执行顺序。目前 TiCDC 采用了简洁的方式处理该问题，受 DDL 影响的表的同步进度会被 DDL 卡住，直到 DDL 执行完毕，才会继续同步 DML。 相反，TiCDC 会将 DDL ts 之前的 DML 都同步到下游之后，再同步 DDL。
+目前 TiCDC 采用了简洁的方式处理该问题。首先，TiCDC 会将受 DDL 影响的表的同步进度阻塞到 DDL CommiTs 时间点，确保 DDL CommiTs 之前的 DML 都同步到下游之后，再同步 DDL。并且，DDL 是以串行的方式进行同步的，TiCDC 会在 DDL 执行完毕之后才继续同步 DML。
 
 ## 如何对比上下游数据的一致性？
 
@@ -280,7 +280,7 @@ TiCDC 需要磁盘是为了缓冲上游写入高峰时下游消费不及时堆�
 
 ## 单表数据同步只能在一个 TiCDC 节点上运行，TiCDC 是否考虑使用多个节点同步多表数据？
 
-v7.1 版本后的 TiCDC 支持 MQ sink 按照 TiKV Region 粒度来同步数据变更日志，实现处理能力上的可扩展性, 开启方式在 [TiCDC 配置文件](/ticdc/ticdc-changefeed-config.md) 中配置：
+v7.1 版本后的 TiCDC 支持 MQ sink 按照 TiKV Region 粒度来同步数据变更日志，实现处理能力上的可扩展性, 使得 TiCDC 能够同步 Region 数量庞大的单表，开启方式在 [TiCDC 配置文件](/ticdc/ticdc-changefeed-config.md) 中配置：
 ```toml
 [scheduler]
 enable-table-across-nodes = true
