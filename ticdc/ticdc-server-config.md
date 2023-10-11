@@ -65,7 +65,7 @@ processor-flush-interval = 50000000 # 50 ms
 #    max-backups = 0
 
 #[sorter]
-#  Sorter 模块给默认启动的 8 个 pebble DB 共享的 pebble block cache 的大小，单位为 MB, 默认值为 128.  
+#  Sorter 模块给默认启动的 8 个 pebble DB 共享的 pebble block cache 的大小，单位为 MiB，默认值为 128.  
 #  cache-size-in-mb = 128
 #  Sorter 文件相对于 data-dir 的目录，默认值为 "/tmp/sorter"，可选。  
 #  sorter-dir = ""
