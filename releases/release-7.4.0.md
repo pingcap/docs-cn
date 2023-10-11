@@ -59,7 +59,7 @@ TiDB 版本：7.4.0
   </tr>
   <tr>
     <td>MySQL 8.0 兼容性：支持<a href="https://docs.pingcap.com/zh/tidb/v7.4/character-set-and-collation#支持的字符集和排序规则" target="_blank">排序规则 <code>utf8mb4_0900_ai_ci</code></a></td>
-    <td>MySQL 8.0 的一个显著变化是默认字符集更改为 utf8mb4，其默认排序规则是 <code>utf8mb4_0900_ai_ci</code>。TiDB v7.4.0 增强了与 MySQL 8.0 的兼容性。现在你可以更轻松地迁移或复制在 MySQL 8.0 中使用默认排序规则创建的数据库到 TiDB。</td>
+    <td>MySQL 8.0 的一个显著变化是默认字符集更改为 utf8mb4，其默认排序规则是 <code>utf8mb4_0900_ai_ci</code>。TiDB v7.4.0 增强了与 MySQL 8.0 的兼容性。现在你可以更轻松地将在 MySQL 8.0 中使用默认排序规则创建的数据库迁移或复制到 TiDB。</td>
   </tr>
   <tr>
     <td>数据库管理与可观测性</td>
