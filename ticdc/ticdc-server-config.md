@@ -48,7 +48,7 @@ cluster-id = "default"
 
 # TiCDC 与 etcd 服务间的 session 时长（单位为秒），默认为 10，可选。 
 capture-session-ttl = 10 # 10s
-# TiCDC 集群中的 owner 模块尝试推进同步任务进度的周期，默认为 "50ms"，可选。
+# TiCDC 集群中的 owner 模块尝试推进同步任务进度的周期，默认值为 `50000000` 纳秒（即 50 毫秒），可选。该参数有两种配置方式：只指定数字（例如，配置为 `40000000` 表示 40000000 纳秒，即 40 毫秒），或同时指定数字和单位（例如，直接配置为 `40ms`）。
 owner-flush-interval = 50000000 # 50 ms
 # TiCDC 集群中的 processor 模块尝试推进同步任务进度的周期，默认为 "50ms"，可选。  
 processor-flush-interval = 50000000 # 50 ms
