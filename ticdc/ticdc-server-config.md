@@ -71,7 +71,7 @@ processor-flush-interval = 50000000 # 50 ms
 #  sorter-dir = ""
 
 # [kv-client]
-#   单个 region worker 中可使用的处理线程数，默认为 8， 可选。  
+#   单个 Region worker 中可使用的线程数量，默认为 8，可选。  
 #   worker-concurrent = 8
 #   TiCDC 中共享线程池中线程的数量，主要用于处理 KV 事件，默认值为 `0`，表示CPU 核数的 2 倍，可选。   
 #   worker-pool-size = 0
