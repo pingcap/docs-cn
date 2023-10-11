@@ -1,7 +1,6 @@
 ---
 title: 多表连接查询
 summary: 介绍 TiDB 中的多表连接查询功能。
-aliases: ['/zh/tidb/dev/join-tables']
 ---
 
 # 多表连接查询
