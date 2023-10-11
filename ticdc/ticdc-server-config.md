@@ -61,7 +61,7 @@ processor-flush-interval = 50000000 # 50 ms
 #    max-size = 300 # 300 MiB
 #    log 文件最长保留天数，默认值为 `0`，代表永不删除，可选。  
 #    max-days = 0
-#    log 文件数的保留个数，默认值为 `0`，代表保留所有 log 文件，可选。  
+#    log 文件的保留个数，默认值为 `0`，代表保留所有 log 文件，可选。  
 #    max-backups = 0
 
 #[sorter]
