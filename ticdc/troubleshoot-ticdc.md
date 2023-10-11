@@ -50,13 +50,6 @@ cdc cli changefeed query --server=http://127.0.0.1:8300 --changefeed-id 28c43ffc
         4. 通过 `cdc cli changefeed update -c <changefeed-id> --config <config-file-path>` 并指定新的任务配置文件
         5. 通过 `cdc cli changefeed resume -c <changefeed-id>` 启动同步任务恢复同步。
 
-- 在 v4.0.13 及之前的版本中 TiCDC 同步分区表存在问题，导致同步停止。
-
-    - 该场景下 TiCDC 会保存任务信息，由于 TiCDC 已经在 PD 中设置的 service GC safepoint，在 `gc-ttl` 的有效期内，同步任务 checkpoint 之后的数据不会被 TiKV GC 清理掉。
-    - 处理方法：
-        1. 通过 `cdc cli changefeed pause -c <changefeed-id>` 暂停同步。
-        2. 等待约一分钟后，通过 `cdc cli changefeed resume -c <changefeed-id>` 恢复同步。
-
 ### 同步任务中断，尝试再次启动后 TiCDC 发生 OOM，应该如何处理？
 
 升级 TiDB 集群和 TiCDC 集群到最新版本。该 OOM 问题在 **v4.0.14 及之后的 v4.0 版本，v5.0.2 及之后的 v5.0 版本，更新的版本**上已得到缓解。
