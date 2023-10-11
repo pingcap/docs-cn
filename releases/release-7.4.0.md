@@ -9,7 +9,7 @@ summary: 了解 TiDB 7.4.0 版本的新功能、兼容性变更、改进提升�
 
 TiDB 版本：7.4.0
 
-试用链接：[快速体验](https://docs.pingcap.com/zh/tidb/v7.3/quick-start-with-tidb) | [下载离线包](https://cn.pingcap.com/product-community/)
+试用链接：[快速体验](https://docs.pingcap.com/zh/tidb/v7.4/quick-start-with-tidb) | [下载离线包](https://cn.pingcap.com/product-community/)
 
 在 7.4.0 版本中，你可以获得以下关键特性：
 
@@ -25,7 +25,7 @@ TiDB 版本：7.4.0
   <tr>
     <td>可扩展性与性能</td>
     <td>提升在一个 <code>ADD INDEX</code> 语句中添加多个索引的性能（实验特性）</td>
-    <td>自 v6.2.0 起，你可以在单个 <code>ADD INDEX</code> 语句中为表添加多个索引，然而这样做的性能与运行多个 <code>ADD INDEX</code> 语句相同。经过 v7.4.0 的优化后，在一个 SQL 语句中添加多个索引的性能得到了大幅改进。</td>
+    <td>自 v6.2.0 起，你可以在单个 <code>ADD INDEX</code> 语句中为表添加多个索引，然而其性能与运行多个 <code>ADD INDEX</code> 语句相同。经过 v7.4.0 的优化后，在一个 SQL 语句中添加多个索引的性能得到了大幅改进。</td>
   </tr>
   <tr>
     <td rowspan="3">稳定性与高可用</td>
@@ -49,7 +49,7 @@ TiDB 版本：7.4.0
     <td rowspan="2">SQL</td>
     <td>TiDB 支持完整的<a href="https://docs.pingcap.com/zh/tidb/v7.4/partitioned-table#将分区表转换为非分区表" target="_blank">分区类型管理功能</a> </td>
     <td>在 v7.4.0 之前，Range/List 分区表支持分区管理操作包括 <code>TRUNCATE</code>、<code>EXCHANGE</code>、<code>ADD</code>、<code>DROP</code>、<code>REORGANIZE</code> 等，Hash/Key 分区表支持分区管理操作包括 <code>ADD</code> and <code>COALESCE</code> 等。
-    <p>现在 TiDB 新增支持了以下分区管理操作：</p>
+    <p>现在 TiDB 新增支持了以下分区类型管理操作：</p>
     <ul>
         <li>将分区表转换为非分区表</li>
         <li>对现有的非分区表进行分区</li>
