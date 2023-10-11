@@ -47,7 +47,7 @@ cdc cli changefeed list --server=http://127.0.0.1:8300
 ```
 
 * `checkpoint`：即为 TiCDC 已经将该时间点前的数据同步到了下游。
-* `state` 为该同步任务的状态, 状态的值和含义参考 [TiCDC 同步任务状态](/ticdc/ticdc-changefeed-overview.md)。
+* `state` 为该同步任务的状态, 状态的值和含义参考 [TiCDC 同步任务状态](/ticdc/ticdc-changefeed-overview.md#changefeed-状态流转)。
 
 > **注意：**
 >
