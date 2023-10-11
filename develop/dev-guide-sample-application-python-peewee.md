@@ -1,255 +1,307 @@
 ---
-title: Build a Simple CRUD App with TiDB and peewee
-summary: Learn how to build a simple CRUD application with TiDB and peewee.
+title: Connect to TiDB with peewee
+summary: Learn how to connect to TiDB using peewee. This tutorial gives Python sample code snippets that work with TiDB using peewee.
 ---
 
-<!-- markdownlint-disable MD024 -->
-<!-- markdownlint-disable MD029 -->
+# Connect to TiDB with peewee
 
-# Build a Simple CRUD App with TiDB and peewee
+TiDB is a MySQL-compatible database, and [peewee](https://docs.peewee-orm.com/) is a popular Object Relational Mapper (ORM) for Python.
 
-[peewee](http://docs.peewee-orm.com/en/latest/) is a popular open-source ORM library for Python.
+In this tutorial, you can learn how to use TiDB and peewee to accomplish the following tasks:
 
-This document describes how to use TiDB and peewee to build a simple CRUD application.
+- Set up your environment.
+- Connect to your TiDB cluster using peewee.
+- Build and run your application. Optionally, you can find sample code snippets for basic CRUD operations.
 
 > **Note:**
 >
-> It is recommended to use Python 3.10 or a later Python version.
+> This tutorial works with TiDB Serverless, TiDB Dedicated, and TiDB Self-Hosted clusters.
 
-## Step 1. Launch your TiDB cluster
+## Prerequisites
+
+To complete this tutorial, you need:
+
+- [Python 3.8 or higher](https://www.python.org/downloads/).
+- [Git](https://git-scm.com/downloads).
+- A TiDB cluster.
 
 <CustomContent platform="tidb">
 
-The following introduces how to start a TiDB cluster.
+**If you don't have a TiDB cluster, you can create one as follows:**
 
-**Use a TiDB Serverless cluster**
-
-For detailed steps, see [Create a TiDB Serverless cluster](/develop/dev-guide-build-cluster-in-cloud.md#step-1-create-a-tidb-serverless-cluster).
-
-**Use a local cluster**
-
-For detailed steps, see [Deploy a local test cluster](/quick-start-with-tidb.md#deploy-a-local-test-cluster) or [Deploy a TiDB cluster using TiUP](/production-deployment-using-tiup.md).
+- (Recommended) Follow [Creating a TiDB Serverless cluster](/develop/dev-guide-build-cluster-in-cloud.md) to create your own TiDB Cloud cluster.
+- Follow [Deploy a local test TiDB cluster](/quick-start-with-tidb.md#deploy-a-local-test-cluster) or [Deploy a production TiDB cluster](/production-deployment-using-tiup.md) to create a local cluster.
 
 </CustomContent>
-
 <CustomContent platform="tidb-cloud">
 
-See [Create a TiDB Serverless cluster](/develop/dev-guide-build-cluster-in-cloud.md#step-1-create-a-tidb-serverless-cluster).
+**If you don't have a TiDB cluster, you can create one as follows:**
+
+- (Recommended) Follow [Creating a TiDB Serverless cluster](/develop/dev-guide-build-cluster-in-cloud.md) to create your own TiDB Cloud cluster.
+- Follow [Deploy a local test TiDB cluster](https://docs.pingcap.com/tidb/stable/quick-start-with-tidb#deploy-a-local-test-cluster) or [Deploy a production TiDB cluster](https://docs.pingcap.com/tidb/stable/production-deployment-using-tiup) to create a local cluster.
 
 </CustomContent>
 
-## Step 2. Get the code
+## Run the sample app to connect to TiDB
+
+This section demonstrates how to run the sample application code and connect to TiDB.
+
+### Step 1: Clone the sample app repository
+
+Run the following commands in your terminal window to clone the sample code repository:
 
 ```shell
-git clone https://github.com/pingcap-inc/tidb-example-python.git
+git clone https://github.com/tidb-samples/tidb-python-peewee-quickstart.git
+cd tidb-python-peewee-quickstart
 ```
 
-The following uses peewee 3.15.4 as an example.
+### Step 2: Install dependencies
 
-```python
-import os
-import uuid
-from typing import List
-
-from peewee import *
-
-from playhouse.db_url import connect
-
-db = connect('mysql://root:@127.0.0.1:4000/test')
-
-
-class Player(Model):
-    id = CharField(max_length=36, primary_key=True)
-    coins = IntegerField()
-    goods = IntegerField()
-
-    class Meta:
-        database = db
-        table_name = "player"
-
-
-def random_player(amount: int) -> List[Player]:
-    players = []
-    for _ in range(amount):
-        players.append(Player(id=uuid.uuid4(), coins=10000, goods=10000))
-
-    return players
-
-
-def simple_example() -> None:
-    # create a player, who has a coin and a goods.
-    Player.create(id="test", coins=1, goods=1)
-
-    # get this player, and print it.
-    test_player = Player.select().where(Player.id == "test").get()
-    print(f'id:{test_player.id}, coins:{test_player.coins}, goods:{test_player.goods}')
-
-    # create players with bulk inserts.
-    # insert 1919 players totally, with 114 players per batch.
-    # each player has a random UUID
-    player_list = random_player(1919)
-    Player.bulk_create(player_list, 114)
-
-    # print the number of players
-    count = Player.select().count()
-    print(f'number of players: {count}')
-    
-    # print 3 players.
-    three_players = Player.select().limit(3)
-    for player in three_players:
-        print(f'id:{player.id}, coins:{player.coins}, goods:{player.goods}')
-
-
-def trade_check(sell_id: str, buy_id: str, amount: int, price: int) -> bool:
-    sell_goods = Player.select(Player.goods).where(Player.id == sell_id).get().goods
-    if sell_goods < amount:
-        print(f'sell player {sell_id} goods not enough')
-        return False
-
-    buy_coins = Player.select(Player.coins).where(Player.id == buy_id).get().coins
-    if buy_coins < price:
-        print(f'buy player {buy_id} coins not enough')
-        return False
-
-    return True
-
-
-def trade(sell_id: str, buy_id: str, amount: int, price: int) -> None:
-    with db.atomic() as txn:
-        try:
-            if trade_check(sell_id, buy_id, amount, price) is False:
-                txn.rollback()
-                return
-
-            # deduct the goods of seller, and raise his/her the coins
-            Player.update(goods=Player.goods - amount, coins=Player.coins + price).where(Player.id == sell_id).execute()
-            # deduct the coins of buyer, and raise his/her the goods
-            Player.update(goods=Player.goods + amount, coins=Player.coins - price).where(Player.id == buy_id).execute()
-
-        except Exception as err:
-            txn.rollback()
-            print(f'something went wrong: {err}')
-        else:
-            txn.commit()
-            print("trade success")
-
-
-def trade_example() -> None:
-    # create two players
-    # player 1: id is "1", has only 100 coins.
-    # player 2: id is "2", has 114514 coins, and 20 goods.
-    Player.create(id="1", coins=100, goods=0)
-    Player.create(id="2", coins=114514, goods=20)
-
-    # player 1 wants to buy 10 goods from player 2.
-    # it will cost 500 coins, but player 1 cannot afford it.
-    # so this trade will fail, and nobody will lose their coins or goods
-    trade(sell_id="2", buy_id="1", amount=10, price=500)
-
-    # then player 1 has to reduce the incoming quantity to 2.
-    # this trade will be successful
-    trade(sell_id="2", buy_id="1", amount=2, price=100)
-
-    # let's take a look for player 1 and player 2 currently
-    after_trade_players = Player.select().where(Player.id.in_(["1", "2"]))
-    for player in after_trade_players:
-        print(f'id:{player.id}, coins:{player.coins}, goods:{player.goods}')
-
-
-db.connect()
-
-# recreate the player table
-db.drop_tables([Player])
-db.create_tables([Player])
-
-simple_example()
-trade_example()
-```
-
-Compared with using drivers directly, peewee provides an abstraction for the specific details of different databases when you create a database connection. In addition, peewee encapsulates some operations such as session management and CRUD of basic objects, which greatly simplifies the code.
-
-The `Player` class is a mapping of a table to attributes in the application. Each attribute of `Player` corresponds to a field in the `player` table. To provide peewee with more information, the attribute is defined as `id = CharField(max_length=36, primary_key=True)` to indicate the field type and its additional attributes. For example, `id = CharField(max_length=36, primary_key=True)` indicates that the `id` attribute is `String` type, the corresponding field in database is `VARCHAR` type, the length is `36`, and it is a primary key.
-
-For more information about how to use peewee, refer to [peewee documentation](http://docs.peewee-orm.com/en/latest/).
-
-## Step 3. Run the code
-
-The following content introduces how to run the code step by step.
-
-### Step 3.1 Initialize table
-
-Before running the code, you need to initialize the table manually. If you are using a local TiDB cluster, you can run the following command:
-
-<SimpleTab groupId="cli">
-
-<div label="MySQL CLI" value="mysql-client">
+Run the following command to install the required packages (including peewee and PyMySQL) for the sample app:
 
 ```shell
-mysql --host 127.0.0.1 --port 4000 -u root < player_init.sql
+pip install -r requirements.txt
 ```
+
+#### Why use PyMySQL?
+
+peewee is an ORM library that works with multiple databases. It provides a high-level abstraction of the database, which helps developers write SQL statements in a more object-oriented way. However, peewee does not include a database driver. To connect to a database, you need to install a database driver. This sample application uses PyMySQL as the database driver, which is a pure Python MySQL client library that is compatible with TiDB and can be installed on all platforms. For more information, refer to [peewee official documentation](https://docs.peewee-orm.com/en/latest/peewee/database.html?highlight=mysql#using-mysql).
+
+### Step 3: Configure connection information
+
+Connect to your TiDB cluster depending on the TiDB deployment option you've selected.
+
+<SimpleTab>
+<div label="TiDB Serverless">
+
+1. Navigate to the [**Clusters**](https://tidbcloud.com/console/clusters) page, and then click the name of your target cluster to go to its overview page.
+
+2. Click **Connect** in the upper-right corner. A connection dialog is displayed.
+
+3. Ensure the configurations in the connection dialog match your operating environment.
+
+    - **Endpoint Type** is set to `Public`
+    - **Connect With** is set to `General`
+    - **Operating System** matches your environment.
+
+    > **Tip:**
+    >
+    > If your program is running in Windows Subsystem for Linux (WSL), switch to the corresponding Linux distribution.
+
+4. Click **Create password** to create a random password.
+
+    > **Tip:**
+    > 
+    > If you have created a password before, you can either use the original password or click **Reset password** to generate a new one.
+
+5. Run the following command to copy `.env.example` and rename it to `.env`:
+
+    ```shell
+    cp .env.example .env
+    ```
+
+6. Copy and paste the corresponding connection string into the `.env` file. The example result is as follows:
+
+    ```dotenv
+    TIDB_HOST='{host}'  # e.g. gateway01.ap-northeast-1.prod.aws.tidbcloud.com
+    TIDB_PORT='4000'
+    TIDB_USER='{user}'  # e.g. xxxxxx.root
+    TIDB_PASSWORD='{password}'
+    TIDB_DB_NAME='test'
+    CA_PATH='{ssl_ca}'  # e.g. /etc/ssl/certs/ca-certificates.crt (Debian / Ubuntu / Arch)
+    ```
+
+    Be sure to replace the placeholders `{}` with the connection parameters obtained from the connection dialog.
+
+7. Save the `.env` file.
 
 </div>
+<div label="TiDB Dedicated">
 
-<div label="MyCLI" value="mycli">
+1. Navigate to the [**Clusters**](https://tidbcloud.com/console/clusters) page, and then click the name of your target cluster to go to its overview page.
 
-```shell
-mycli --host 127.0.0.1 --port 4000 -u root --no-warn < player_init.sql
-```
+2. Click **Connect** in the upper-right corner. A connection dialog is displayed.
+
+3. Click **Allow Access from Anywhere** and then click **Download TiDB cluster CA** to download the CA certificate.
+
+    For more details about how to obtain the connection string, refer to [TiDB Dedicated standard connection](https://docs.pingcap.com/tidbcloud/connect-via-standard-connection).
+
+4. Run the following command to copy `.env.example` and rename it to `.env`:
+
+    ```shell
+    cp .env.example .env
+    ```
+
+5. Copy and paste the corresponding connection string into the `.env` file. The example result is as follows:
+
+    ```dotenv
+    TIDB_HOST='{host}'  # e.g. tidb.xxxx.clusters.tidb-cloud.com
+    TIDB_PORT='4000'
+    TIDB_USER='{user}'  # e.g. root
+    TIDB_PASSWORD='{password}'
+    TIDB_DB_NAME='test'
+    CA_PATH='{your-downloaded-ca-path}'
+    ```
+
+    Be sure to replace the placeholders `{}` with the connection parameters obtained from the connection dialog, and configure `CA_PATH` with the certificate path downloaded in the previous step.
+
+6. Save the `.env` file.
 
 </div>
+<div label="TiDB Self-Hosted">
 
+1. Run the following command to copy `.env.example` and rename it to `.env`:
+
+    ```shell
+    cp .env.example .env
+    ```
+
+2. Copy and paste the corresponding connection string into the `.env` file. The example result is as follows:
+
+    ```dotenv
+    TIDB_HOST='{tidb_server_host}'
+    TIDB_PORT='4000'
+    TIDB_USER='root'
+    TIDB_PASSWORD='{password}'
+    TIDB_DB_NAME='test'
+    ```
+
+    Be sure to replace the placeholders `{}` with the connection parameters, and remove the `CA_PATH` line. If you are running TiDB locally, the default host address is `127.0.0.1`, and the password is empty.
+
+3. Save the `.env` file.
+
+</div>
 </SimpleTab>
 
-If you are not using a local cluster, or have not installed a MySQL client, connect to your cluster using your preferred method (such as Navicat, DBeaver, or other GUI tools) and run the SQL statements in the `player_init.sql` file.
+### Step 4: Run the code and check the result
 
-### Step 3.2 Modify parameters for TiDB Cloud
+1. Execute the following command to run the sample code:
 
-If you are using a TiDB Serverless cluster, you need to provide your CA root path and replace `<ca_path>` in the following examples with your CA path. To get the CA root path on your system, refer to [Where is the CA root path on my system?](https://docs.pingcap.com/tidbcloud/secure-connections-to-serverless-tier-clusters#where-is-the-ca-root-path-on-my-system).
+    ```shell
+    python peewee_example.py
+    ```
 
-If you are using a TiDB Serverless cluster, modify the parameters of the `connect` function in `peewee_example.py`:
+2. Check the [Expected-Output.txt](https://github.com/tidb-samples/tidb-python-peewee-quickstart/blob/main/Expected-Output.txt) to see if the output matches.
+
+## Sample code snippets
+
+You can refer to the following sample code snippets to complete your own application development.
+
+For complete sample code and how to run it, check out the [tidb-samples/tidb-python-peewee-quickstart](https://github.com/tidb-samples/tidb-python-peewee-quickstart) repository.
+
+### Connect to TiDB
 
 ```python
-db = connect('mysql://root:@127.0.0.1:4000/test')
+from peewee import MySQLDatabase
+
+def get_db_engine():
+    config = Config()
+    connect_params = {}
+    if ${ca_path}:
+        connect_params = {
+            "ssl_verify_cert": True,
+            "ssl_verify_identity": True,
+            "ssl_ca": ${ca_path},
+        }
+    return MySQLDatabase(
+        ${tidb_db_name},
+        host=${tidb_host},
+        port=${tidb_port},
+        user=${tidb_user},
+        password=${tidb_password},
+        **connect_params,
+    )
 ```
 
-Suppose that the password you set is `123456`, and the connection parameters you get from the cluster details page are the following:
+When using this function, you need to replace `${tidb_host}`, `${tidb_port}`, `${tidb_user}`, `${tidb_password}`, `${tidb_db_name}` and `${ca_path}` with the actual values of your TiDB cluster.
 
-- Endpoint: `xxx.tidbcloud.com`
-- Port: `4000`
-- User: `2aEp24QWEDLqRFs.root`
+### Define a table
 
-In this case, you can modify the `connect` as follows:
+```python
+from peewee import Model, CharField, IntegerField
 
-- When peewee uses PyMySQL as the driver:
+db = get_db_engine()
 
-    ```python
-    db = connect('mysql://2aEp24QWEDLqRFs.root:123456@xxx.tidbcloud.com:4000/test', 
-        ssl_verify_cert=True, ssl_ca="<ca_path>")
-    ```
+class BaseModel(Model):
+    class Meta:
+        database = db
 
-- When peewee uses mysqlclient as the driver:
+class Player(BaseModel):
+    name = CharField(max_length=32, unique=True)
+    coins = IntegerField(default=0)
+    goods = IntegerField(default=0)
 
-    ```python
-    db = connect('mysql://2aEp24QWEDLqRFs.root:123456@xxx.tidbcloud.com:4000/test',
-        ssl_mode="VERIFY_IDENTITY", ssl={"ca": "<ca_path>"})
-    ```
-
-Because peewee will pass parameters to the driver, you need to pay attention to the usage type of the driver when using peewee.
-
-### Step 3.3 Run the code
-
-Before running the code, use the following command to install dependencies:
-
-```bash
-pip3 install -r requirement.txt
+    class Meta:
+        table_name = "players"
 ```
 
-If you need to run the script multiple times, follow the [Table initialization](#step-31-initialize-table) section to initialize the table again before each run.
+For more information, refer to [peewee documentation: Models and Fields](https://docs.peewee-orm.com/en/latest/peewee/models.html).
 
-```bash
-python3 peewee_example.py
+### Insert data
+
+```python
+# Insert a single record
+Player.create(name="test", coins=100, goods=100)
+
+# Insert multiple records
+Player.insert_many(
+    [
+        {"name": "test1", "coins": 100, "goods": 100},
+        {"name": "test2", "coins": 100, "goods": 100},
+    ]
+).execute()
 ```
 
-## Step 4. Expected output
+For more information, refer to [Insert data](/develop/dev-guide-insert-data.md).
 
-[peewee Expected Output](https://github.com/pingcap-inc/tidb-example-python/blob/main/Expected-Output.md#peewee)
+### Query data
+
+```python
+# Query all records
+players = Player.select()
+
+# Query a single record
+player = Player.get(Player.name == "test")
+
+# Query multiple records
+players = Player.select().where(Player.coins == 100)
+```
+
+For more information, refer to [Query data](/develop/dev-guide-get-data-from-single-table.md).
+
+### Update data
+
+```python
+# Update a single record
+player = Player.get(Player.name == "test")
+player.coins = 200
+player.save()
+
+# Update multiple records
+Player.update(coins=200).where(Player.coins == 100).execute()
+```
+
+For more information, refer to [Update data](/develop/dev-guide-update-data.md).
+
+### Delete data
+
+```python
+# Delete a single record
+player = Player.get(Player.name == "test")
+player.delete_instance()
+
+# Delete multiple records
+Player.delete().where(Player.coins == 100).execute()
+```
+
+For more information, refer to [Delete data](/develop/dev-guide-delete-data.md).
+
+## Next steps
+
+- Learn more usage of peewee from [the documentation of peewee](https://docs.peewee-orm.com/).
+- Learn the best practices for TiDB application development with the chapters in the [Developer guide](/develop/dev-guide-overview.md), such as [Insert data](/develop/dev-guide-insert-data.md), [Update data](/develop/dev-guide-update-data.md), [Delete data](/develop/dev-guide-delete-data.md), [Single table reading](/develop/dev-guide-get-data-from-single-table.md), [Transactions](/develop/dev-guide-transaction-overview.md), and [SQL performance optimization](/develop/dev-guide-optimize-sql-overview.md).
+- Learn through the professional [TiDB developer courses](https://www.pingcap.com/education/) and earn [TiDB certifications](https://www.pingcap.com/education/certification/) after passing the exam.
+
+## Need help?
+
+Ask questions on the [Discord](https://discord.gg/vYU9h56kAX), or [create a support ticket](https://support.pingcap.com/).
