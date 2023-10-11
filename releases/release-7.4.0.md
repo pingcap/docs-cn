@@ -33,7 +33,7 @@ TiDB 版本：7.4.0
     <td>在 v7.4.0 以前，当你执行<a href="https://docs.pingcap.com/zh/tidb/v7.4/tidb-distributed-execution-framework" target="_blank">分布式并行执行框架</a>的 <code>ADD INDEX</code> 或 <code>IMPORT INTO</code> 等任务时，TiDB 节点需要在将数据导入到 TiKV 之前为数据分配本地磁盘空间以进行排序。这种方式仅能进行部分数据的局部排序，往往会导致数据重叠，从而增加资源消耗，并降低 TiKV 的性能和稳定性。随着 v7.4.0 引入全局排序特性，数据可暂时存储在 S3 中，进行全局排序后再按顺序导入到 TiKV 中。这一改进降低了 TiKV 在数据整理过程中对资源的额外消耗，并显著提高了 <code>ADD INDEX</code> 和 <code>IMPORT INTO</code> 等操作的性能和稳定性。</td>
   </tr>
   <tr>
-    <td><a href="https://docs.pingcap.com/zh/tidb/v7.4/tidb-resource-control#manage-background-tasks" target="_blank">资源管控</a>支持自动管理后台任务（实验特性）</td>
+    <td><a href="https://docs.pingcap.com/zh/tidb/v7.4/tidb-resource-control#管理后台任务" target="_blank">资源管控</a>支持自动管理后台任务（实验特性）</td>
     <td>从 v7.1.0 开始，资源管控成为正式功能，该特性有助于缓解不同工作负载间的资源与存储访问干扰。TiDB v7.4.0 将此资源控制应用于后台任务。资源管控可以识别和管理后台任务，例如自动收集统计信息、备份和恢复、LOAD DATA 以及在线 DDL。未来，所有后台任务都将纳入资源管控。</td>
   </tr>
   <tr>
@@ -58,7 +58,7 @@ TiDB 版本：7.4.0
     </td>
   </tr>
   <tr>
-    <td>MySQL 8.0 兼容性：支持<a href="https://docs.pingcap.com/zh/tidb/v7.4/character-set-and-collation#character-sets-and-collations-supported-by-tidb" target="_blank">排序规则 <code>utf8mb4_0900_ai_ci</code></a></td>
+    <td>MySQL 8.0 兼容性：支持<a href="https://docs.pingcap.com/zh/tidb/v7.4/character-set-and-collation#支持的字符集和排序规则" target="_blank">排序规则 <code>utf8mb4_0900_ai_ci</code></a></td>
     <td>MySQL 8.0 的一个显著变化是默认字符集更改为 utf8mb4，其默认排序规则是 <code>utf8mb4_0900_ai_ci</code>。TiDB v7.4.0 增强了与 MySQL 8.0 的兼容性。现在你可以更轻松地迁移或复制在 MySQL 8.0 中使用默认排序规则创建的数据库到 TiDB。</td>
   </tr>
   <tr>
