@@ -24,7 +24,7 @@ TiDB 版本：7.4.0
 <tbody>
   <tr>
     <td>可扩展性与性能</td>
-    <td>提升在一个 <code>ADD INDEX</code> 语句中添加多个索引的性能</td>
+    <td>提升在一个 <code>ADD INDEX</code> 语句中添加多个索引的性能（实验特性）</td>
     <td>自 v6.2.0 起，你可以在单个 <code>ADD INDEX</code> 语句中为表添加多个索引，然而这样做的性能与运行多个 <code>ADD INDEX</code> 语句相同。经过 v7.4.0 的优化后，在一个 SQL 语句中添加多个索引的性能得到了大幅改进。</td>
   </tr>
   <tr>
