@@ -63,7 +63,7 @@ TiDB 版本：7.4.0
   </tr>
   <tr>
     <td>数据库管理与可观测性</td>
-    <td>选择<a href="https://docs.pingcap.com/zh/tidb/v7.4/system-variables#tidb_service_scope-从-v740-版本开始引入" target="_blank">适用的 TiDB 节点</a>来执行并行的 <code>ADD INDEX</code> 或 <code>IMPORT INTO</code> SQL 语句（实验特性）</td>
+    <td>选择<a href="https://docs.pingcap.com/zh/tidb/v7.4/system-variables#tidb_service_scope-从-v740-版本开始引入" target="_blank">适用的 TiDB 节点</a>来并行执行 <code>ADD INDEX</code> 或 <code>IMPORT INTO</code> SQL 语句（实验特性）</td>
     <td>你可以选择在现有 TiDB 节点、或者新增 TiDB 节点执行 <code>ADD INDEX</code> 和 <code>IMPORT INTO</code> SQL 语句。该方法可以实现与其他 TiDB 节点的资源隔离，确保在执行上述语句时的最佳性能，并避免对已有业务造成性能影响。</td>
   </tr>
 </tbody>
