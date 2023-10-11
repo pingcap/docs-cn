@@ -117,7 +117,7 @@ TiDB 版本：7.4.0
 
     更多信息，请参考[用户文档](/tidb-global-sort.md)。
 
-* 优化 Parallel Multi Schema Change，提升一个 SQL 语句添加多个索引的性能 [#41602](https://github.com/pingcap/tidb/issues/41602) @[tangenta] (https://github.com/tangenta) @[Defined2014](https://github.com/Defined2014)
+* 优化 Parallel Multi Schema Change，提升一个 SQL 语句添加多个索引的性能 [#41602](https://github.com/pingcap/tidb/issues/41602) @[tangenta](https://github.com/tangenta) @[Defined2014](https://github.com/Defined2014)
 
     在 v7.4.0 之前，用户使用 Parallel Multi Schema Change 在一个 SQL 语句中提交多个 `ADD INDEX` 操作时，其性能与使用多个独立的 SQL 语句进行 `ADD INDEX` 操作的性能相同。经过 v7.4.0 的优化后，在一个 SQL 语句中添加多个索引的性能得到了大幅提升。
 
