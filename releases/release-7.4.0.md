@@ -48,7 +48,7 @@ TiDB 版本：7.4.0
   <tr>
     <td rowspan="2">SQL</td>
     <td>TiDB 支持完整的<a href="https://docs.pingcap.com/zh/tidb/v7.4/partitioned-table#将分区表转换为非分区表" target="_blank">分区类型管理功能</a> </td>
-    <td>在 v7.4.0 之前，Range/List 分区表支持分区管理操作包括 <code>TRUNCATE</code>、<code>EXCHANGE</code>、<code>ADD</code>、<code>DROP</code>、<code>REORGANIZE</code> 等，Hash/Key 分区表支持分区管理操作包括 <code>ADD</code> and <code>COALESCE</code> 等。
+    <td>在 v7.4.0 之前，Range/List 分区表支持分区管理操作包括 <code>TRUNCATE</code>、<code>EXCHANGE</code>、<code>ADD</code>、<code>DROP</code>、<code>REORGANIZE</code> 等，Hash/Key 分区表支持分区管理操作包括 <code>ADD</code> 和 <code>COALESCE</code> 等。
     <p>现在 TiDB 新增支持了以下分区类型管理操作：</p>
     <ul>
         <li>将分区表转换为非分区表</li>
