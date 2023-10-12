@@ -28,9 +28,9 @@ summary: 了解 TiCDC 详细的命令行参数和配置文件定义。
 
 ## `cdc server` 配置文件说明
 
-对于 `cdc server` 命令中 config 参数指定的配置文件说明如下：
+对于 `cdc server` 命令中 `config` 参数指定的配置文件说明如下：
 
-```yaml
+```toml
 # 下面的字段的配置含义与命令行参数相同，但是命令行参数优先级更高。
 addr = "127.0.0.1:8300"
 advertise-addr = ""
@@ -53,16 +53,16 @@ owner-flush-interval = 50000000 # 50 ms
 # TiCDC 集群中的 processor 模块尝试推进同步任务进度的周期，默认值为 `50000000` 纳秒（即 50 毫秒），可选。该参数配置方式与 `owner-flush-interval` 相同。
 processor-flush-interval = 50000000 # 50 ms
 
-#[log]
-#  用于指定 zap log 模块内部的错误日志的输出位置。默认是 "stderr"，可选。  
-#  error-output = "stderr"
-#  [log.file]
-#    单个 log 文件的最大文件大小，单位为 MiB。默认值为 300，可选。
-#    max-size = 300 # 300 MiB
-#    log 文件最长保留天数，默认值为 `0`，代表永不删除，可选。  
-#    max-days = 0
-#    log 文件的保留个数，默认值为 `0`，代表保留所有 log 文件，可选。  
-#    max-backups = 0
+# [log]
+# # 用于指定 zap log 模块内部的错误日志的输出位置。默认是 "stderr"，可选。
+#   error-output = "stderr"
+#   [log.file]
+#     # 单个 log 文件的最大文件大小，单位为 MiB。默认值为 300，可选。
+#     max-size = 300 # 300 MiB
+#     # log 文件最长保留天数，默认值为 `0`，代表永不删除，可选。
+#     max-days = 0
+#     # log 文件的保留个数，默认值为 `0`，代表保留所有 log 文件，可选。
+#     max-backups = 0
 
 #[sorter]
 #  Sorter 模块给默认启动的 8 个 pebble DB 共享的 pebble block cache 的大小，单位为 MiB，默认值为 128。 
