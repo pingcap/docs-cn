@@ -1027,6 +1027,8 @@
   - [版本发布时间线](/releases/release-timeline.md)
   - [TiDB 版本规则](/releases/versioning.md)
   - [TiDB 离线包](/binary-package.md)
+  - v7.4
+    - [7.4.0-DMR](/releases/release-7.4.0.md)
   - v7.3
     - [7.3.0-DMR](/releases/release-7.3.0.md)
   - v7.2
