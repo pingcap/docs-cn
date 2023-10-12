@@ -5,7 +5,7 @@ summary: 了解 TiDB 7.4.0 版本的新功能、兼容性变更、改进提升�
 
 # TiDB 7.4.0 Release Notes
 
-发版日期：2023 年 x 月 x 日
+发版日期：2023 年 10 月 12 日
 
 TiDB 版本：7.4.0
 
@@ -34,7 +34,7 @@ TiDB 版本：7.4.0
   </tr>
   <tr>
     <td><a href="https://docs.pingcap.com/zh/tidb/v7.4/tidb-resource-control#管理后台任务" target="_blank">资源管控</a>支持自动管理后台任务（实验特性）</td>
-    <td>从 v7.1.0 开始，资源管控成为正式功能，该特性有助于缓解不同工作负载间的资源与存储访问干扰。TiDB v7.4.0 将此资源控制应用于后台任务。资源管控可以识别和管理后台任务，例如自动收集统计信息、备份和恢复、LOAD DATA 以及在线 DDL。未来，所有后台任务都将纳入资源管控。</td>
+    <td>从 v7.1.0 开始，资源管控成为正式功能，该特性有助于缓解不同工作负载间的资源与存储访问干扰。TiDB v7.4.0 将此资源控制应用于后台任务。资源管控可以识别和管理后台任务，例如自动收集统计信息、备份和恢复、TiDB Lightening 批量数据导入以及在线 DDL。未来，所有后台任务都将纳入资源管控。</td>
   </tr>
   <tr>
     <td>TiFlash 支持<a href="https://docs.pingcap.com/zh/tidb/v7.4/tiflash-disaggregated-and-s3" target="_blank">存储计算资源分离和 S3 共享存储</a> (GA) </td>
@@ -185,7 +185,7 @@ TiDB 版本：7.4.0
 
     目前 TiDB 支持如下几种后台任务的类型：
 
-    - `lightning`：使用 [TiDB Lightning](/tidb-lightning/tidb-lightning-overview.md) 执行导入任务。同时支持 TiDB Lightning 的物理和逻辑导入模式。
+    - `lightning`：使用 [TiDB Lightning](/tidb-lightning/tidb-lightning-overview.md) 或 [`IMPORT INTO`](/sql-statements/sql-statement-import-into.md) 执行导入任务。
     - `br`：使用 [BR](/br/backup-and-restore-overview.md) 执行数据备份和恢复。目前不支持 PITR。
     - `ddl`：对于 Reorg DDL，控制批量数据回写阶段的资源使用。
     - `stats`：对应手动执行或系统自动触发的[收集统计信息](/statistics.md#统计信息的收集)任务。
