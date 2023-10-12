@@ -261,9 +261,9 @@ Quick access: [Quick start](https://docs.pingcap.com/tidb/v7.4/quick-start-with-
 
 * Dumpling supports the user-defined terminator when exporting data to CSV files [#46982](https://github.com/pingcap/tidb/issues/46982) @[GMHDBJD](https://github.com/GMHDBJD)
 
-    Before v7.4.0, Dumpling uses "\r\n" as the line terminator when exporting data to a CSV file. As a result, certain downstream systems that only recognize "\n" as the terminator cannot parse the exported CSV file, or have to use a third-party tool for conversion before parsing the file.
+    Before v7.4.0, Dumpling uses `"\r\n"` as the line terminator when exporting data to a CSV file. As a result, certain downstream systems that only recognize `"\n"` as the terminator cannot parse the exported CSV file, or have to use a third-party tool for conversion before parsing the file.
 
-    Starting from v7.4.0, Dumpling introduces a new parameter `--csv-line-terminator`. This parameter allows you to specify a desired terminator when you export data to a CSV file. This parameter supports "\r\n" and "\n". The default terminator is "\r\n" to keep consistent with earlier versions.
+    Starting from v7.4.0, Dumpling introduces a new parameter `--csv-line-terminator`. This parameter allows you to specify a desired terminator when you export data to a CSV file. This parameter supports `"\r\n"` and `"\n"`. The default terminator is `"\r\n"` to keep consistent with earlier versions.
 
     For more information, see [documentation](/dumpling-overview.md#option-list-of-dumpling).
 
