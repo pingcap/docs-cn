@@ -261,7 +261,9 @@ TiDB 版本：7.4.0
 
 * Dumpling 在将数据导出为 CSV 文件时支持用户自定义换行符 [#46982](https://github.com/pingcap/tidb/issues/46982) @[GMHDBJD](https://github.com/GMHDBJD)
 
-    在 v7.4.0 之前，Dumpling 导出数据为 CSV 文件时，换行符为 "\r\n"，导致一些只能解析 "\n" 换行符的下游系统无法解析该 CSV 文件，或者要通过第三方工具转换后才能解析。在 v7.4.0 中，Dumpling 引入了新的参数 `--csv-line-terminator`。当你将数据导出为 CSV 文件时，可以通过该参数传入所需的换行符。该参数支持 "\r\n" 和 "\n" ，默认值为 "\r\n"，即和历史版本保持一致。
+    在 v7.4.0 之前，Dumpling 导出数据为 CSV 文件时，换行符为 `"\r\n"`，导致一些只能解析 `"\n"` 换行符的下游系统无法解析该 CSV 文件，或者要通过第三方工具转换后才能解析。
+
+    从 v7.4.0 起，Dumpling 引入了新的参数 `--csv-line-terminator`。当你将数据导出为 CSV 文件时，可以通过该参数传入所需的换行符。该参数支持 `"\r\n\"` 和 `"\n"`，默认值为 `"\r\n"`，即和历史版本保持一致。
 
     更多信息，请参考[用户文档](/dumpling-overview.md#dumpling-主要选项表)。
 
