@@ -24,6 +24,7 @@ Currently, we maintain the following versions of TiDB documentation in different
 | Branch name | TiDB docs version |
 | :---------|:----------|
 | [`master`](https://github.com/pingcap/docs/tree/master) | The latest development version |
+| [`release-7.4`](https://github.com/pingcap/docs/tree/release-7.4) | 7.4 Development Milestone Release |
 | [`release-7.3`](https://github.com/pingcap/docs/tree/release-7.3) | 7.3 Development Milestone Release |
 | [`release-7.2`](https://github.com/pingcap/docs/tree/release-7.2) | 7.2 Development Milestone Release |
 | [`release-7.1`](https://github.com/pingcap/docs/tree/release-7.1) | 7.1 LTS (Long-Term Support) version |
