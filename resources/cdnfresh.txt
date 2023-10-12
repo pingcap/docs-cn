@@ -2,8 +2,14 @@ https://download.pingcap.org/tidb-dev-zh-manual.pdf
 https://download.pingcap.org/tidb-dev-en-manual.pdf
 https://download.pingcap.org/tidb-stable-zh-manual.pdf
 https://download.pingcap.org/tidb-stable-en-manual.pdf
+https://download.pingcap.org/tidb-v7.4-zh-manual.pdf
+https://download.pingcap.org/tidb-v7.4-en-manual.pdf
+https://download.pingcap.org/tidb-v7.3-zh-manual.pdf
+https://download.pingcap.org/tidb-v7.3-en-manual.pdf
 https://download.pingcap.org/tidb-v7.2-zh-manual.pdf
 https://download.pingcap.org/tidb-v7.2-en-manual.pdf
+https://download.pingcap.org/tidb-v7.1-zh-manual.pdf
+https://download.pingcap.org/tidb-v7.1-en-manual.pdf
 https://download.pingcap.org/tidb-v7.0-zh-manual.pdf
 https://download.pingcap.org/tidb-v7.0-en-manual.pdf
 https://download.pingcap.org/tidb-v6.5-zh-manual.pdf
