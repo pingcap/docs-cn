@@ -9,7 +9,7 @@ summary: 了解 TiDB 7.3.0 版本的新功能、兼容性变更、改进提升�
 
 TiDB 版本：7.3.0
 
-试用链接：[快速体验](https://docs.pingcap.com/zh/tidb/v7.3/quick-start-with-tidb) | [下载离线包](https://cn.pingcap.com/product-community/)
+试用链接：[快速体验](https://docs.pingcap.com/zh/tidb/v7.3/quick-start-with-tidb) | [下载离线包](https://cn.pingcap.com/product-community/?version=v7.3.0-DMR#version-list)
 
 v7.3.0 引入了以下主要功能。[功能详情](#功能详情)中列出的部分功能旨在增强 TiDB 和 TiFlash 的查询稳定性，不直接面向用户，因此未包含在下表中。
 
