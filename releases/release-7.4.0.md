@@ -30,7 +30,7 @@ TiDB 版本：7.4.0
   <tr>
     <td rowspan="3">稳定性与高可用</td>
     <td>引入<a href="https://docs.pingcap.com/zh/tidb/v7.4/tidb-global-sort" target="_blank">全局排序能力</a>，提升<code>IMPORT INTO</code>和<code>ADD INDEX</code>任务的性能和稳定性</td>
-    <td>在 v7.4.0 以前，当你执行<a href="https://docs.pingcap.com/zh/tidb/v7.4/tidb-distributed-execution-framework" target="_blank">分布式并行执行框架</a>的 <code>ADD INDEX</code> 或 <code>IMPORT INTO</code> 等任务时，TiDB 节点需要在将数据导入到 TiKV 之前为数据分配本地磁盘空间以进行排序。这种方式仅能进行部分数据的局部排序，往往会导致数据重叠，从而增加资源消耗，并降低 TiKV 的性能和稳定性。随着 v7.4.0 引入全局排序特性，数据可暂时存储在 S3 中，进行全局排序后再按顺序导入到 TiKV 中。这一改进降低了 TiKV 在数据整理过程中对资源的额外消耗，并显著提高了 <code>ADD INDEX</code> 和 <code>IMPORT INTO</code> 等操作的性能和稳定性。</td>
+    <td>在 v7.4.0 以前，使用<a href="https://docs.pingcap.com/zh/tidb/v7.4/tidb-distributed-execution-framework" target="_blank">分布式并行执行框架</a>执行 <code>ADD INDEX</code> 或 <code>IMPORT INTO</code> 等任务时，只能对部分数据进行局部排序。这导致 TiKV 需要采取额外操作，并且在将数据导入到 TiKV 之前，TiDB 节点还需要为其分配本地磁盘空间以进行排序。<br/>随着 v7.4.0 引入全局排序特性，可以将数据暂时存储在外部存储（如 S3）中进行全局排序后再导入到 TiKV 中。这一改进降低了 TiKV 对资源的额外消耗，并显著提高了 <code>ADD INDEX</code> 和 <code>IMPORT INTO</code> 等操作的性能和稳定性。</td>
   </tr>
   <tr>
     <td><a href="https://docs.pingcap.com/zh/tidb/v7.4/tidb-resource-control#管理后台任务" target="_blank">资源管控</a>支持自动管理后台任务（实验特性）</td>
