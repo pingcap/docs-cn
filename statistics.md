@@ -341,7 +341,7 @@ ANALYZE INCREMENTAL TABLE TableName PARTITION PartitionNameList INDEX [IndexName
 | [`tidb_auto_analyze_ratio`](/system-variables.md#tidb_auto_analyze_ratio) | 0.5 | 自动更新阈值 |
 | [`tidb_auto_analyze_start_time`](/system-variables.md#tidb_auto_analyze_start_time) | `00:00 +0000` | 一天中能够进行自动更新的开始时间 |
 | [`tidb_auto_analyze_end_time`](/system-variables.md#tidb_auto_analyze_end_time) | `23:59 +0000` | 一天中能够进行自动更新的结束时间 |
-| [`tidb_auto_analyze_partition_batch_size`](/system-variables.md#tidb_auto_analyze_partition_batch_size-从-v640-版本开始引入)   | `1` | TiDB 自动 analyze 分区表统计信息时，每次同时 analyze 分区的个数 |
+| [`tidb_auto_analyze_partition_batch_size`](/system-variables.md#tidb_auto_analyze_partition_batch_size-从-v640-版本开始引入)   | `1` | TiDB 自动 analyze 分区表（即自动更新分区表的统计信息）时，每次同时 analyze 分区的个数 |
 
 当某个表 `tbl` 的修改行数与总行数的比值大于 `tidb_auto_analyze_ratio`，并且当前时间在 `tidb_auto_analyze_start_time` 和 `tidb_auto_analyze_end_time` 之间时，TiDB 会在后台执行 `ANALYZE TABLE tbl` 语句自动更新这个表的统计信息。
 
