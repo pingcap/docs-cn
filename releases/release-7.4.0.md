@@ -23,11 +23,6 @@ Quick access: [Quick start](https://docs.pingcap.com/tidb/v7.4/quick-start-with-
 </thead>
 <tbody>
   <tr>
-    <td>Scalability and Performance</td>
-    <td>Enhance the performance of adding multiple indexes for a table in a single <code>ADD INDEX</code> statement (experimental) </td>
-    <td>Since v6.2.0, you can add multiple indexes for a table in a single <code>ADD INDEX</code> statement. However, the performance is the same as running multiple <code>ADD INDEX</code> statements. After optimization in v7.4.0, the performance of adding multiple indexes in a single SQL statement has been greatly improved.</td>
-  </tr>
-  <tr>
     <td rowspan="3">Reliability and Availability</td>
     <td>Improve the performance and stability of <code>IMPORT INTO</code> and <code>ADD INDEX</code> operations via <a href="https://docs.pingcap.com/tidb/v7.4/tidb-global-sort" target="_blank">global sort</a></td>
     <td>Before v7.4.0, tasks such as <code>ADD INDEX</code> or <code>IMPORT INTO</code> using the <a href="https://docs.pingcap.com/tidb/v7.4/tidb-distributed-execution-framework" target="_blank">distributed execution framework</a> meant localized and partial sorting, which ultimately led to TiKV doing a lot of extra work to make up for the partial sorting. These jobs also required TiDB nodes to allocate local disk space for sorting, before loading to TiKV.<br/>With the introduction of the Global Sorting feature in v7.4.0, data is temporarily stored in external shared storage (S3 in this version) for global sorting before being loaded into TiKV. This eliminates the need for TiKV to consume extra resources and significantly improves the performance and stability of operations like <code>ADD INDEX</code> and <code>IMPORT INTO</code>.</td>
@@ -116,10 +111,6 @@ Quick access: [Quick start](https://docs.pingcap.com/tidb/v7.4/quick-start-with-
     In v7.4.0, TiDB introduces the [Global Sort](/tidb-global-sort.md) feature. Instead of writing the encoded data locally and sorting it there, the data is now written to cloud storage for global sorting. Once sorted, both the indexed data and table data are imported into TiKV in parallel, thereby improving performance and stability.
 
     For more information, see [documentation](/tidb-global-sort.md).
-
-* Improve the performance of adding multiple indexes in a single SQL statement by optimizing parallel multi schema change [#41602](https://github.com/pingcap/tidb/issues/41602) @[tangenta](https://github.com/tangenta) @[Defined2014](https://github.com/Defined2014)
-
-    Before v7.4.0, when you use parallel multi schema change to commit multiple `ADD INDEX` operations in a single SQL statement, the performance is the same as using multiple independent SQL statements for `ADD INDEX` operations. However, after optimization in v7.4.0, the performance of adding multiple indexes in a single SQL statement has been greatly improved.
 
 * Support caching execution plans for non-prepared statements (GA) [#36598](https://github.com/pingcap/tidb/issues/36598) @[qw4990](https://github.com/qw4990)
 
@@ -454,7 +445,7 @@ Quick access: [Quick start](https://docs.pingcap.com/tidb/v7.4/quick-start-with-
     + TiCDC
 
         - Fix the issue that TiCDC accesses the invalid old address during PD scaling up and down [#9584](https://github.com/pingcap/tiflow/issues/9584) @[fubinzh](https://github.com/fubinzh) @[asddongmen](https://github.com/asddongmen)
-        - Fix the issue that changefeed fails in some scenarios [#9309](https://github.com/pingcap/tiflow/issues/9309) [#9450](https://github.com/pingcap/tiflow/issues/9450) [#9542](https://github.com/pingcap/tiflow/issues/9542) [#9685](https://github.com/pingcap/tiflow/issues/9685) @[hicqu](https://github.com/hicqu) @[CharlesCheung96](https://github.com/CharlesCheung96) 
+        - Fix the issue that changefeed fails in some scenarios [#9309](https://github.com/pingcap/tiflow/issues/9309) [#9450](https://github.com/pingcap/tiflow/issues/9450) [#9542](https://github.com/pingcap/tiflow/issues/9542) [#9685](https://github.com/pingcap/tiflow/issues/9685) @[hicqu](https://github.com/hicqu) @[CharlesCheung96](https://github.com/CharlesCheung96)
         - Fix the issue that replication write conflicts might occur when the unique keys for multiple rows are modified in one transaction on the upstream [#9430](https://github.com/pingcap/tiflow/issues/9430) @[sdojjy](https://github.com/sdojjy)
         - Fix the issue that a replication error occurs when multiple tables are renamed in the same DDL statement on the upstream [#9476](https://github.com/pingcap/tiflow/issues/9476) [#9488](https://github.com/pingcap/tiflow/issues/9488) @[CharlesCheung96](https://github.com/CharlesCheung96) @[asddongmen](https://github.com/asddongmen)
         - Fix the issue that Chinese characters are not validated in CSV files [#9609](https://github.com/pingcap/tiflow/issues/9609) @[CharlesCheung96](https://github.com/CharlesCheung96)
