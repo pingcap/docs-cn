@@ -57,7 +57,7 @@ This document introduces the user scenarios, supported upstreams and downstreams
 
 - **User scenario**: This tool is implemented by pulling TiKV change logs. It can restore cluster data to a consistent state with any upstream TSO, and support other systems to subscribe to data changes.
 - **Upstream**: TiDB
-- **Downstream**: TiDB, MySQL, Kafka, Confluent
+- **Downstream**: TiDB, MySQL, Kafka, MQ, Confluent, storage services such as Amazon S3, GCS, Azure Blob Storage, and NFS.
 - **Advantages**: Provide TiCDC Open Protocol
 - **Limitation**: TiCDC only replicates tables that have at least one valid index. The following scenarios are not supported:
     - The TiKV cluster that uses RawKV alone.
