@@ -12,7 +12,7 @@ summary: TiDB 数据库中 ADMIN CHECK [TABLE|INDEX] 的使用概况。
 - 校验[外键约束](/foreign-key.md)。
 - 当使用[聚簇索引](/clustered-indexes.md)时，校验主键索引。
 
-如果执行 `ADMIN CHECK [TABLE|INDEX]` 发现任何问题，你可以删除并重新创建索引来解决。如果问题仍未解决，你可以在 GitHub 上提 [issue](https://github.com/pingcap/tidb/issues/new/choose) 反馈。
+如果执行 `ADMIN CHECK [TABLE|INDEX]` 发现任何问题，你可以删除并重新创建索引来解决。如果问题仍未解决，你可以尝试 [TiDB 支持资源](/support.md)。
 
 ## 原理
 
