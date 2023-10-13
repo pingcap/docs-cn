@@ -324,7 +324,7 @@ TiDB 版本：7.4.0
 ## 废弃功能
 
 + Mydumper 计划在 v7.5.0 中废弃，其绝大部分功能已经被 [Dumpling](/dumpling-overview.md) 取代，强烈建议切换到 Dumpling。
-+ TiKV-importer 计划在 v7.5.0 中废弃，建议使用 [TiDB Lightning local backend](/tidb-lightning/tidb-lightning-physical-import-mode.md) 作为替代方案。
++ TiKV-importer 组件计划在 v7.5.0 中废弃，建议使用 [TiDB Lightning 物理导入模式](/tidb-lightning/tidb-lightning-physical-import-mode.md)作为替代方案。
     
 ## 改进提升
 
