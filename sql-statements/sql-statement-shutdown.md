@@ -31,4 +31,4 @@ Query OK, 0 rows affected (0.00 sec)
 >
 > 由于 TiDB 是分布式数据库，因此 TiDB 中的停机操作停止的是客户端连接的 TiDB 实例，而不是整个 TiDB 集群。
 
-`SHUTDOWN` 语句与 MySQL 不完全兼容。如发现任何其他兼容性差异，请在 GitHub 上提交 [issue](https://github.com/pingcap/tidb/issues/new/choose)。
+`SHUTDOWN` 语句与 MySQL 不完全兼容。如发现任何其他兼容性差异，请尝试 [TiDB 支持资源](/support.md)。
