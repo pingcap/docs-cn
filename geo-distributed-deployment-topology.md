@@ -18,7 +18,7 @@ summary: 介绍跨数据中心部署 TiDB 集群的拓扑结构。
 
 ### 拓扑模版
 
-[跨机房配置模板](https://github.com/pingcap/docs-cn/blob/master/config-templates/geo-redundancy-deployment.yaml)
+[跨机房配置模板](https://github.com/pingcap/docs/blob/master/config-templates/geo-redundancy-deployment.yaml)
 
 以上 TiDB 集群拓扑文件中，详细的配置项说明见[通过 TiUP 部署 TiDB 集群的拓扑文件配置](/tiup/tiup-cluster-topology-reference.md)。
 
