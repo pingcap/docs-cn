@@ -134,6 +134,7 @@ TiDB Cloud works with almost all workloads that TiDB supports, but there are som
 | `max_allowed_packet` | No limitation | Read-only [^11] |
 | `plugin_dir` | No limitation | Not supported [^8] |
 | `plugin_load` | No limitation | Not supported [^8] |
+| `require_secure_transport` | Not supported [^13] | Read-only [^11] |
 | `skip_name_resolve` | No limitation | Read-only [^11] |
 | `sql_log_bin` | No limitation | Read-only [^11] |
 | `tidb_cdc_write_source` | No limitation | Read-only [^11] |
@@ -246,3 +247,5 @@ TiDB Cloud works with almost all workloads that TiDB supports, but there are som
 [^11]: The variable is read-only on TiDB Serverless.
 
 [^12]: Customizing cache size using [`AUTO_ID_CACHE`](/auto-increment.md#cache-size-control) is temporarily unavailable on TiDB Serverless.
+
+[^13]: Not supported. Enabling `require_secure_transport` for TiDB Dedicated clusters will result in SQL client connection failures.
