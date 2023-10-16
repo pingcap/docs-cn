@@ -47,7 +47,7 @@ cdc cli changefeed list --server=http://127.0.0.1:8300
 ```
 
 * `checkpoint`：即为 TiCDC 已经将该时间点前的数据同步到了下游。
-* `state` 为该同步任务的状态, 状态的值和含义参考 [TiCDC 同步任务状态](/ticdc/ticdc-changefeed-overview.md#changefeed-状态流转)。
+* `state` 为该同步任务的状态，状态的值和含义参考 [TiCDC 同步任务状态](/ticdc/ticdc-changefeed-overview.md#changefeed-状态流转)。
 
 > **注意：**
 >
@@ -272,7 +272,11 @@ TiCDC 需要磁盘是为了缓冲上游写入高峰时下游消费不及时堆�
 
 ## 如何理解 DML 和 DDL 语句之间的执行顺序？
 
-目前 TiCDC 采用了一种简洁的方式处理该问题。首先，TiCDC 会阻塞受 DDL 影响的表的同步进度，直到 DDL CommiTs 的时间点，以确保在 DDL CommiTs 之前执行的 DML 都已经成功同步到下游，然后才会继续同步 DDL。此外，多个 DDL 是以串行的方式进行同步的，TiCDC 会在 DDL 执行完成之后才继续同步 CommiTs 之后执行的 DML。
+目前，TiCDC 采用了以下执行顺序：
+
+1. TiCDC 阻塞受 DDL 影响的表的同步进度，直到 DDL CommiTs 的时间点，以确保在 DDL CommiTs 之前执行的 DML 先成功同步到下游。
+2. TiCDC 继续同步 DDL。当存在多个 DDL 时，TiCDC 是以串行的方式进行同步的。
+3. 当 DDL 在下游执行完成之后，TiCDC 继续同步 DDL CommiTs 之后执行的 DML。
 
 ## 如何对比上下游数据的一致性？
 
