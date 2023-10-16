@@ -23,11 +23,6 @@ TiDB 版本：7.4.0
 </thead>
 <tbody>
   <tr>
-    <td>可扩展性与性能</td>
-    <td>提升在一个 <code>ADD INDEX</code> 语句中添加多个索引的性能（实验特性）</td>
-    <td>自 v6.2.0 起，你可以在单个 <code>ADD INDEX</code> 语句中为表添加多个索引，然而其性能与运行多个 <code>ADD INDEX</code> 语句相同。经过 v7.4.0 的优化后，在一个 SQL 语句中添加多个索引的性能得到了大幅改进。</td>
-  </tr>
-  <tr>
     <td rowspan="3">稳定性与高可用</td>
     <td>引入<a href="https://docs.pingcap.com/zh/tidb/v7.4/tidb-global-sort" target="_blank">全局排序能力</a>，提升<code>IMPORT INTO</code>和<code>ADD INDEX</code>任务的性能和稳定性</td>
     <td>在 v7.4.0 以前，使用<a href="https://docs.pingcap.com/zh/tidb/v7.4/tidb-distributed-execution-framework" target="_blank">分布式并行执行框架</a>执行 <code>ADD INDEX</code> 或 <code>IMPORT INTO</code> 等任务时，只能对部分数据进行局部排序。这导致 TiKV 需要采取额外操作，并且在将数据导入到 TiKV 之前，TiDB 节点还需要为其分配本地磁盘空间以进行排序。<br/>随着 v7.4.0 引入全局排序特性，可以将数据暂时存储在外部存储（如 S3）中进行全局排序后再导入到 TiKV 中。这一改进降低了 TiKV 对资源的额外消耗，并显著提高了 <code>ADD INDEX</code> 和 <code>IMPORT INTO</code> 等操作的性能和稳定性。</td>
@@ -116,10 +111,6 @@ TiDB 版本：7.4.0
     v7.4.0 引入全局排序特性后，编码后的数据不再写入本地进行排序，而是写入云存储，并在云存储中进行全局排序。然后，TiDB 将经过全局排序的索引数据和表数据并行导入到 TiKV 中，从而提升了性能和稳定性。
 
     更多信息，请参考[用户文档](/tidb-global-sort.md)。
-
-* 优化 Parallel Multi Schema Change，提升一个 SQL 语句添加多个索引的性能 [#41602](https://github.com/pingcap/tidb/issues/41602) @[tangenta](https://github.com/tangenta) @[Defined2014](https://github.com/Defined2014)
-
-    在 v7.4.0 之前，用户使用 Parallel Multi Schema Change 在一个 SQL 语句中提交多个 `ADD INDEX` 操作时，其性能与使用多个独立的 SQL 语句进行 `ADD INDEX` 操作的性能相同。经过 v7.4.0 的优化后，在一个 SQL 语句中添加多个索引的性能得到了大幅提升。
 
 * 支持缓存非 Prepare 语句的执行计划 (GA) [#36598](https://github.com/pingcap/tidb/issues/36598) @[qw4990](https://github.com/qw4990)
 
@@ -261,7 +252,9 @@ TiDB 版本：7.4.0
 
 * Dumpling 在将数据导出为 CSV 文件时支持用户自定义换行符 [#46982](https://github.com/pingcap/tidb/issues/46982) @[GMHDBJD](https://github.com/GMHDBJD)
 
-    在 v7.4.0 之前，Dumpling 导出数据为 CSV 文件时，换行符为 "\r\n"，导致一些只能解析 "\n" 换行符的下游系统无法解析该 CSV 文件，或者要通过第三方工具转换后才能解析。在 v7.4.0 中，Dumpling 引入了新的参数 `--csv-line-terminator`。当你将数据导出为 CSV 文件时，可以通过该参数传入所需的换行符。该参数支持 "\r\n" 和 "\n" ，默认值为 "\r\n"，即和历史版本保持一致。
+    在 v7.4.0 之前，Dumpling 导出数据为 CSV 文件时，换行符为 `"\r\n"`，导致一些只能解析 `"\n"` 换行符的下游系统无法解析该 CSV 文件，或者要通过第三方工具转换后才能解析。
+
+    从 v7.4.0 起，Dumpling 引入了新的参数 `--csv-line-terminator`。当你将数据导出为 CSV 文件时，可以通过该参数传入所需的换行符。该参数支持 `"\r\n\"` 和 `"\n"`，默认值为 `"\r\n"`，即和历史版本保持一致。
 
     更多信息，请参考[用户文档](/dumpling-overview.md#dumpling-主要选项表)。
 
@@ -318,6 +311,11 @@ TiDB 版本：7.4.0
 | TiCDC | [`claim-check-storage-uri`](/ticdc/ticdc-sink-to-kafka.md#发送大消息到外部存储) | 新增 | 当指定 `large-message-handle-option` 为 `claim-check` 时，`claim-check-storage-uri` 必须设置为一个有效的外部存储服务地址，否则创建 Changefeed 将会报错。|
 | TiCDC | [`large-message-handle-compression`](/ticdc/ticdc-sink-to-kafka.md#ticdc-层数据压缩功能) | 新增 | 控制是否开启编码时的压缩功能，默认为空，即不开启。|
 | TiCDC | [`large-message-handle-option`](/ticdc/ticdc-sink-to-kafka.md#发送大消息到外部存储) | 修改 | 该配置项新增一个可选值 `claim-check`。当设置为 `claim-check` 时，TiCDC Kafka sink 支持在消息大小超过限制时将该条消息发送到外部存储服务，同时向 Kafka 发送一条含有该大消息在外部存储服务中的地址的消息。 |
+
+## 废弃功能
+
++ [Mydumper](https://docs.pingcap.com/zh/tidb/v4.0/mydumper-overview) 计划在 v7.5.0 中废弃，其绝大部分功能已经被 [Dumpling](/dumpling-overview.md) 取代，强烈建议切换到 Dumpling。
++ TiKV-importer 组件计划在 v7.5.0 中废弃，建议使用 [TiDB Lightning 物理导入模式](/tidb-lightning/tidb-lightning-physical-import-mode.md)作为替代方案。
 
 ## 改进提升
 
