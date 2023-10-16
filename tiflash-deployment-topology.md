@@ -19,9 +19,9 @@ summary: 了解在部署最小拓扑集群的基础上，部署 TiFlash 的拓�
 
 ### 拓扑模版
 
-- [简单 TiFlash 配置模版](https://github.com/pingcap/docs-cn/blob/master/config-templates/simple-tiflash.yaml)
+- [简单 TiFlash 配置模版](https://github.com/pingcap/docs/blob/master/config-templates/simple-tiflash.yaml)
 
-- [详细 TiFlash 配置模版](https://github.com/pingcap/docs-cn/blob/master/config-templates/complex-tiflash.yaml)
+- [详细 TiFlash 配置模版](https://github.com/pingcap/docs/blob/master/config-templates/complex-tiflash.yaml)
 
 以上 TiDB 集群拓扑文件中，详细的配置项说明见[通过 TiUP 部署 TiDB 集群的拓扑文件配置](/tiup/tiup-cluster-topology-reference.md#tiflash_servers)。
 
