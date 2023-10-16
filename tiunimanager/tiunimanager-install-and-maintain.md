@@ -191,7 +191,6 @@ filebeat_servers:
 
 </details>
 
-
 如果 TiUniManager 中控机通过用户名密钥访问 TiDB 资源机，需要参照指定 TiUniManager 中控机登录 TiDB 资源机的用户名和密钥，在配置文件 `config.yaml` 中指定用户名和密钥。
 
 ## 离线部署 TiUniManager
