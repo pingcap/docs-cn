@@ -301,10 +301,10 @@ For example, the following 16 bytes `[5 7 10 15 36 50 43 99 120 60 38 255 254 45
 
 The way that TiCDC implements the Canal-JSON data format, including the `Update` Event and the `mysqlType` field, differs from the official Canal. The following table shows the main differences.
 
-| Item            | TiCDC Canal-JSON                  | Canal                                |
-|:----------------|:-------------------------|:-------------------------------------|
-| Event of `Update` Type  | The `old` field contains all the column data | The `old` field contains only the modified column data    |
-| `mysqlType` field  | For types with parameters, it does not contain the information of the type parameter      | For types with parameters, it contains the full information of the type parameter    |
+| Item            | TiCDC Canal-JSON                                                                                                                             | Canal                                |
+|:----------------|:---------------------------------------------------------------------------------------------------------------------------------------------|:-------------------------------------|
+| Event of `Update` Type  | By default, the `old` field contains all the column data. When `only_output_updated_columns` is `true`, the `old` field contains only the modified column data.  | The `old` field contains only the modified column data    |
+| `mysqlType` field  | For types with parameters, it does not contain the information of the type parameter                                                         | For types with parameters, it contains the full information of the type parameter    |
 
 ### Event of `Update` Type
 
