@@ -20,9 +20,15 @@ aliases: ['/docs-cn/stable/tiflash-deployment-topology/','/docs-cn/v4.0/tiflash-
 
 ### 拓扑模版
 
+<<<<<<< HEAD
 - [简单 TiFlash 配置模版](https://github.com/pingcap/docs-cn/blob/release-4.0/config-templates/simple-tiflash.yaml)
 
 - [详细 TiFlash 配置模版](https://github.com/pingcap/docs-cn/blob/release-4.0/config-templates/complex-tiflash.yaml)
+=======
+- [简单 TiFlash 配置模版](https://github.com/pingcap/docs/blob/master/config-templates/simple-tiflash.yaml)
+
+- [详细 TiFlash 配置模版](https://github.com/pingcap/docs/blob/master/config-templates/complex-tiflash.yaml)
+>>>>>>> 380ccfafda (link to docs repo (#15215))
 
 以上 TiDB 集群拓扑文件中，详细的配置项说明见[通过 TiUP 部署 TiDB 集群的拓扑文件配置](/tiup/tiup-cluster-topology-reference.md#tiflash_servers)。
 

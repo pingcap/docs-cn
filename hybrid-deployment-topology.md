@@ -19,9 +19,15 @@ aliases: ['/docs-cn/stable/hybrid-deployment-topology/','/docs-cn/v4.0/hybrid-de
 
 ### 拓扑模版
 
+<<<<<<< HEAD
 [简单混部配置模板](https://github.com/pingcap/docs-cn/blob/release-4.0/config-templates/simple-multi-instance.yaml)
 
 [详细混部配置模板](https://github.com/pingcap/docs-cn/blob/release-4.0/config-templates/complex-multi-instance.yaml)
+=======
+[简单混部配置模板](https://github.com/pingcap/docs/blob/master/config-templates/simple-multi-instance.yaml)
+
+[详细混部配置模板](https://github.com/pingcap/docs/blob/master/config-templates/complex-multi-instance.yaml)
+>>>>>>> 380ccfafda (link to docs repo (#15215))
 
 以上 TiDB 集群拓扑文件中，详细的配置项说明见[通过 TiUP 部署 TiDB 集群的拓扑文件配置](/tiup/tiup-cluster-topology-reference.md)。
 

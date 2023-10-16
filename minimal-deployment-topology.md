@@ -19,9 +19,15 @@ aliases: ['/docs-cn/stable/minimal-deployment-topology/','/docs-cn/v4.0/minimal-
 
 ### 拓扑模版
 
+<<<<<<< HEAD
 [简单最小配置模板](https://github.com/pingcap/docs-cn/blob/release-4.0/config-templates/simple-mini.yaml)
 
 [详细最小配置模板](https://github.com/pingcap/docs-cn/blob/release-4.0/config-templates/complex-mini.yaml)
+=======
+[简单最小配置模板](https://github.com/pingcap/docs/blob/master/config-templates/simple-mini.yaml)
+
+[详细最小配置模板](https://github.com/pingcap/docs/blob/master/config-templates/complex-mini.yaml)
+>>>>>>> 380ccfafda (link to docs repo (#15215))
 
 以上 TiDB 集群拓扑文件中，详细的配置项说明见[通过 TiUP 部署 TiDB 集群的拓扑文件配置](/tiup/tiup-cluster-topology-reference.md)。
 
