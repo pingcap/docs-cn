@@ -83,7 +83,114 @@ TiUniManager 正常运行需要网络环境提供如下端口配置，管理员�
 
 ## 拓扑模板
 
-在线部署 TiUniManager 前，你需要准备好 YAML 拓扑文件。TiUniManager 离线包中包含 YAML 拓扑文件模板。本节介绍用于部署 TiUniManager 拓扑配置模版。见 [TiUniManager 拓扑配置模版 config.yaml（单机版）](https://github.com/pingcap/docs-cn/blob/master/config-templates/em-topology-config.yaml)。
+在线部署 TiUniManager 前，你需要准备好 YAML 拓扑文件。TiUniManager 离线包中包含 YAML 拓扑文件模板。本节介绍用于部署 TiUniManager 拓扑配置模版。
+
+<details>
+<summary>TiUniManager 拓扑配置模版 config.yaml（单机版）</summary>
+
+```yaml
+global:
+  user: "tidb"
+  group: "tidb"
+  ssh_port: 22
+  deploy_dir: "/em-deploy"
+  data_dir: "/em-data"
+  arch: "amd64"
+  log_level: "info"
+  # specify the external elasticsearch address. default is empty
+  # and elasticsearch_servers can only have one value
+  external_elasticsearch_url: ""
+  login_host_user: ""
+  login_private_key_path: ""
+  login_public_key_path: ""
+
+monitored:
+  node_exporter_port: 4124
+
+em_cluster_servers:
+  - host: {ip}
+  # port: 4101
+  # metrics_port: 4104
+  # registry_client_port: 4106
+  # registry_peer_port: 4107
+  # deploy_dir: "/em-deploy/cluster-server-4101"
+  # data_dir: "/em-data/cluster-server-41101"
+
+em_api_servers:
+  - host: {ip}
+  # port: 4100
+  # metrics_port: 4103
+  # deploy_dir: "/em-deploy/openapi-server-4100"
+  # data_dir: "/em-data/openapi-server-4100"
+
+em_web_servers:
+  - host: {ip}
+  # port: 4180
+  # deploy_dir: "/em-deploy/em-web-4180"
+  # data_dir: "/em-data/em-web-4180"
+
+em_file_servers:
+  - host: {ip}
+  # port: 4102
+  # metrics_port: 4105
+  # deploy_dir: "/em-deploy/file-server-4102"
+  # data_dir: "/em-data/file-server-4102"
+
+elasticsearch_servers:
+  - host: {ip}
+  # port: 4108
+  # heap_size: "4g"
+  # deploy_dir: "/em-deploy/elasticsearch-4108"
+  # data_dir: "/em-data/elasticsearch-4108"
+
+tracer_servers:
+  - host: {ip}
+  # port: 4114
+  # web_port: 4115
+  # zipkin_thrift_port: 4116
+  # compact_thrift_port: 4117
+  # binary_thrift_port: 4118
+  # agent_serve_port: 4119
+  # jaeger_thrift_port: 4120
+  # jaeger_host_port: 4121
+  # collector_port: 4122
+  # grpc_serve_port: 4123
+  # deploy_dir: "/em-deploy/tracer-4114"
+  # data_dir: "/em-data/tracer-4114"
+
+kibana_servers:
+  - host: {ip}
+  # port: 4109
+  # deploy_dir: "/em-deploy/kibana-4109"
+  # data_dir: "/em-data/kibana-4109"
+
+monitoring_servers:
+  - host: {ip}
+  # port: 4110
+  # deploy_dir: "/em-deploy/prometheus-4110"
+  # data_dir: "/em-data/prometheus-4110"
+
+alertmanager_servers:
+  - host: {ip}
+  # web_port: 4112
+  # cluster_port: 4113
+  # deploy_dir: "/em-deploy/alertmanager-4112"
+  # data_dir: "/em-data/alertmanager-4112"
+
+grafana_servers:
+  - host: {ip}
+  # port: 4111
+  # deploy_dir: "/em-deploy/grafana-4111"
+  # data_dir: "/em-data/grafana-4111"
+
+filebeat_servers:
+  - host: {ip}
+  # deploy_dir: "/em-deploy/filebeat-0"
+  # data_dir: "/em-data/filebeat-0"
+```
+
+</details>
+
 
 如果 TiUniManager 中控机通过用户名密钥访问 TiDB 资源机，需要参照指定 TiUniManager 中控机登录 TiDB 资源机的用户名和密钥，在配置文件 `config.yaml` 中指定用户名和密钥。
 
@@ -387,7 +494,7 @@ TiUniManager 正常运行需要网络环境提供如下端口配置，管理员�
     db_path: "/home/tidb/em.db"
     ```
 
-    从备份的元数据中恢复到新集群，流程和部署新集群相同。唯一的区别是在集群 yaml 配置中，`em_cluster_servers` 里增加了 `db_path: "/home/tidb/em.db"`，详细见 [TiUniManager 根据元数据恢复新集群拓扑配置模版 em.yaml（单机版）](https://github.com/pingcap/docs-cn/blob/master/config-templates/em-metadata-restore-config.yaml)。
+    从备份的元数据中恢复到新集群，流程和部署新集群相同。唯一的区别是在集群 yaml 配置中，`em_cluster_servers` 里增加了 `db_path: "/home/tidb/em.db"`，详细见 [TiUniManager 根据元数据恢复新集群拓扑配置模版 em.yaml（单机版）](#拓扑模板)。
 
 ## 修改默认的集群备份路径
 
@@ -494,7 +601,7 @@ TiUniManager 可以通过 `config.yaml` 文件中全局的 `external_elasticsear
 
 在 `config.yaml` 文件中，`external_elasticsearch_url` 和 `elasticsearch_servers` 都是用来指定 Elasticsearch 部署信息的，不能同时指定。如果指定了 `external_elasticsearch_url` 的值，则需要注释掉 `elasticsearch_servers` 组件的配置信息注释。
 
-配置格式参考 [TiUniManager 拓扑配置模版 config.yaml（单机版）](https://github.com/pingcap/docs-cn/blob/master/config-templates/em-topology-config.yaml)。
+配置格式参考 [TiUniManager 拓扑配置模版 config.yaml（单机版）](#拓扑模板)。
 
 ## 手动指定部署的 Elasticsearch 组件堆内存大小
 
@@ -502,7 +609,7 @@ TiUniManager 可以通过 `config.yaml` 文件中全局的 `external_elasticsear
 
 `heap_size` 是选填参数，不手工指定会使用默认值。默认值为 `4g`。
 
-配置格式参考 [TiUniManager 拓扑配置模版 config.yaml（单机版）](https://github.com/pingcap/docs-cn/blob/master/config-templates/em-topology-config.yaml)。
+配置格式参考 [TiUniManager 拓扑配置模版 config.yaml（单机版）](#拓扑模板)。
 
 ## 安装 Kibana 组件（可选）
 
