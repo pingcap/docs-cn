@@ -12,8 +12,9 @@ TiDB uses statistics to decide [which index to choose](/choose-index.md).
 
 The `tidb_analyze_version` variable controls the statistics collected by TiDB. Currently, two versions of statistics are supported: `tidb_analyze_version = 1` and `tidb_analyze_version = 2`.
 
-- For TiDB Self-Hosted, the default value of this variable is `1` before v5.1.0. In v5.3.0 and later versions, the default value of this variable is `2`. If your cluster is upgraded from a version earlier than v5.3.0 to v5.3.0 or later, the default value of `tidb_analyze_version` does not change.
-- For TiDB Cloud, the default value of this variable is `1`.
+- For TiDB Self-Hosted, the default value of this variable changes from `1` to `2` starting from v5.3.0.
+- For TiDB Cloud, the default value of this variable changes from `1` to `2` starting from v6.5.0.
+- If your cluster is upgraded from an earlier version, the default value of `tidb_analyze_version` does not change after the upgrade.
 
 Compared to Version 1, Version 2 statistics avoids the potential inaccuracy caused by hash collision when the data volume is huge. It also maintains the estimate precision in most scenarios.
 
