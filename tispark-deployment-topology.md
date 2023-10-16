@@ -25,9 +25,9 @@ summary: 介绍 TiUP 部署包含 TiSpark 组件的 TiDB 集群的拓扑结构�
 
 ### 拓扑模版
 
-[简单 TiSpark 配置模板](https://github.com/pingcap/docs-cn/blob/master/config-templates/simple-tispark.yaml)
+[简单 TiSpark 配置模板](https://github.com/pingcap/docs/blob/master/config-templates/simple-tispark.yaml)
 
-[详细 TiSpark 配置模板](https://github.com/pingcap/docs-cn/blob/master/config-templates/complex-tispark.yaml)
+[详细 TiSpark 配置模板](https://github.com/pingcap/docs/blob/master/config-templates/complex-tispark.yaml)
 
 以上 TiDB 集群拓扑文件中，详细的配置项说明见[通过 TiUP 部署 TiDB 集群的拓扑文件配置](/tiup/tiup-cluster-topology-reference.md#tispark_masters)。
 
