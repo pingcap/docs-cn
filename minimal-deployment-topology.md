@@ -18,9 +18,9 @@ summary: 介绍 TiDB 集群的最小拓扑。
 
 ### 拓扑模版
 
-[简单最小配置模板](https://github.com/pingcap/docs-cn/blob/master/config-templates/simple-mini.yaml)
+[简单最小配置模板](https://github.com/pingcap/docs/blob/master/config-templates/simple-mini.yaml)
 
-[详细最小配置模板](https://github.com/pingcap/docs-cn/blob/master/config-templates/complex-mini.yaml)
+[详细最小配置模板](https://github.com/pingcap/docs/blob/master/config-templates/complex-mini.yaml)
 
 以上 TiDB 集群拓扑文件中，详细的配置项说明见[通过 TiUP 部署 TiDB 集群的拓扑文件配置](/tiup/tiup-cluster-topology-reference.md)。
 
