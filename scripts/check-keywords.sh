@@ -3,7 +3,7 @@ import re
 import sys
 from pathlib import Path
 
-parser = Path("../tidb/parser/parser.y")
+parser = Path("../tidb/pkg/parser/parser.y")
 if not parser.exists():
     sys.exit(f"{parser} doesn't exist")
 
