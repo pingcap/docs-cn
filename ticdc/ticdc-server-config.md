@@ -28,9 +28,10 @@ The following are descriptions of options available in a `cdc server` command:
 
 ## `cdc server` configuration file parameters
 
-The following are configurations in the configuration file of `cdc server`:
+The following describes the configuration file specified by the `config` option in the `cdc server` command:
 
-```yaml
+```toml
+# The configuration method of the following parameters is the same as that of CLI parameters, but the CLI parameters have higher priorities.
 addr = "127.0.0.1:8300"
 advertise-addr = ""
 log-file = ""
@@ -45,30 +46,37 @@ cluster-id = "default"
   cert-path = ""
   key-path = ""
 
-
+# The session duration between TiCDC and etcd services, measured in seconds. This parameter is optional and its default value is 10.
 capture-session-ttl = 10 # 10s
+
+# The interval at which the Owner module in the TiCDC cluster attempts to push the replication progress. This parameter is optional and its default value is `50000000` nanoseconds (that is, 50 milliseconds). You can configure this parameter in two ways: specifying only the number (for example, configuring it as `40000000` represents 40000000 nanoseconds, which is 40 milliseconds), or specifying both the number and unit (for example, directly configuring it as `40ms`).
 owner-flush-interval = 50000000 # 50 ms
+
+# The interval at which the Processor module in the TiCDC cluster attempts to push the replication progress. This parameter is optional and its default value is `50000000` nanoseconds (that is, 50 milliseconds). The configuration method of this parameter is the same as that of `owner-flush-interval`.
 processor-flush-interval = 50000000 # 50 ms
-per-table-memory-quota = 10485760 # 10 MiB
 
-[log]
-  error-output = "stderr"
-  [log.file]
-    max-size = 300 # 300 MiB
-    max-days = 0
-    max-backups = 0
+# [log]
+# # The output location for internal error logs of the zap log module. This parameter is optional and its default value is "stderr".
+#   error-output = "stderr"
+#   [log.file]
+#     # The maximum size of a single log file, measured in MiB. This parameter is optional and its default value is 300.
+#     max-size = 300 # 300 MiB
+#     # The maximum number of days to retain log files. This parameter is optional and its default value is `0`, indicating never to delete.
+#     max-days = 0
+#     # The number of log files to retain. This parameter is optional and its default value is `0`, indicating to keep all log files.
+#     max-backups = 0
 
-[sorter]
-  num-concurrent-worker = 4
-  chunk-size-limit = 999
-  max-memory-percentage = 30
-  max-memory-consumption = 17179869184
-  num-workerpool-goroutine = 16
-  sort-dir = "/tmp/sorter"
+#[sorter]
+# The size of the shared pebble block cache in the Sorter module for the 8 pebble DBs started by default, measured in MiB. The default value is 128.
+# cache-size-in-mb = 128
+# The directory where sorter files are stored relative to the data directory (`data-dir`). This parameter is optional and its default value is "/tmp/sorter".
+# sorter-dir = "/tmp/sorter"
 
 # [kv-client]
-#  worker-concurrent = 8
-#  worker-pool-size = 0
-#  region-scan-limit = 40
-#  region-retry-duration = 60000000000
+#   The number of threads that can be used in a single Region worker. This parameter is optional and its default value is 8.
+#   worker-concurrent = 8
+#   The number of threads in the shared thread pool of TiCDC, mainly used for processing KV events. This parameter is optional and its default value is 0, indicating that the default pool size is twice the number of CPU cores.
+#   worker-pool-size = 0
+#   The retry duration of Region connections. This parameter is optional and its default value is `60000000000` nanoseconds (that is, 1 minute). You can configure this parameter in two ways: specifying only the number (for example, configuring it as `50000000` represents 50000000 nanoseconds, which is 50 milliseconds), or specifying both the number and unit (for example, directly configuring it as `50ms`).
+#   region-retry-duration = 60000000000
 ```
