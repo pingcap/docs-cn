@@ -278,9 +278,13 @@ Quick access: [Quick start](https://docs.pingcap.com/tidb/v7.4/quick-start-with-
 
 ### Behavior changes
 
-* Starting with v7.4.0, TiDB is compatible with core features of MySQL 8.0, and `version()` returns the version prefixed with `8.0.11`.
+- Starting with v7.4.0, TiDB is compatible with essential features of MySQL 8.0, and `version()` returns the version prefixed with `8.0.11`.
 
-* After TiFlash is upgraded to v7.4.0 from an earlier version, in-place downgrading to the original version is not supported. This is because, starting from v7.4, TiFlash optimizes the data compaction logic of PageStorage V3 to reduce the read and write amplification generated during data compaction, which leads to changes to some of the underlying storage file names.
+- After TiFlash is upgraded to v7.4.0 from an earlier version, in-place downgrading to the original version is not supported. This is because, starting from v7.4, TiFlash optimizes the data compaction logic of PageStorage V3 to reduce the read and write amplification generated during data compaction, which leads to changes to some of the underlying storage file names.
+
+- A [`TIDB_PARSE_TSO_LOGICAL()`](/functions-and-operators/tidb-functions.md#tidb-specific-functions) function is added to allow the extraction of the logical part of the TSO timestamp.
+
+- The [`information_schema.CHECK_CONSTRAINTS`](/information-schema/information-schema-check-constraints.md) table is added for improved compatibility with MySQL 8.0.
 
 ### System variables
 
