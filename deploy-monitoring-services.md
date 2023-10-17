@@ -226,7 +226,7 @@ To import a Grafana dashboard for the PD server, the TiKV server, and the TiDB s
 
 2. In the sidebar menu, click **Dashboards** -> **Import** to open the **Import Dashboard** window.
 
-3. Click **Upload .json File** to upload a JSON file (Download TiDB Grafana configuration files from [pingcap/tidb](https://github.com/pingcap/tidb/tree/master/metrics/grafana), [tikv/tikv](https://github.com/tikv/tikv/tree/master/metrics/grafana), and [tikv/pd](https://github.com/tikv/pd/tree/master/metrics/grafana)).
+3. Click **Upload .json File** to upload a JSON file (Download TiDB Grafana configuration files from [pingcap/tidb](https://github.com/pingcap/tidb/tree/master/pkg/metrics/grafana), [tikv/tikv](https://github.com/tikv/tikv/tree/master/metrics/grafana), and [tikv/pd](https://github.com/tikv/pd/tree/master/metrics/grafana)).
 
     > **Note:**
     >

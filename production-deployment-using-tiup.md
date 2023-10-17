@@ -291,7 +291,7 @@ The following examples cover seven common scenarios. You need to modify the conf
 
 For more configuration description, see the following configuration examples:
 
-- [TiDB `config.toml.example`](https://github.com/pingcap/tidb/blob/master/config/config.toml.example)
+- [TiDB `config.toml.example`](https://github.com/pingcap/tidb/blob/master/pkg/config/config.toml.example)
 - [TiKV `config.toml.example`](https://github.com/tikv/tikv/blob/master/etc/config-template.toml)
 - [PD `config.toml.example`](https://github.com/pingcap/pd/blob/master/conf/config.toml)
 - [TiFlash `config.toml.example`](https://github.com/pingcap/tiflash/blob/master/etc/config-template.toml)

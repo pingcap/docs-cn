@@ -14,3 +14,4 @@ file://.*?http:/\$%7BPD_IP%7D:\$%7BPD_PORT%7D/dashboard.*
 http://\{grafana-ip\}:3000
 http://\{pd-ip\}:2379/dashboard
 http://localhost:\d+/
+https://github\.com/\$user/(docs|docs-cn)

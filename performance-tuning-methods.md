@@ -489,6 +489,6 @@ For the `Store` thread, `Commit Log Duration` is obviously higher than `Apply Lo
 
 ## If my TiDB version is earlier than v6.1.0, what should I do to use the Performance Overview dashboard?
 
-Starting from v6.1.0, Grafana has a built-in Performance Overview dashboard by default. This dashboard is compatible with TiDB v4.x and v5.x versions. If your TiDB is earlier than v6.1.0, you need to manually import [`performance_overview.json`](https://github.com/pingcap/tidb/blob/master/metrics/grafana/performance_overview.json), as shown in the following figure:
+Starting from v6.1.0, Grafana has a built-in Performance Overview dashboard by default. This dashboard is compatible with TiDB v4.x and v5.x versions. If your TiDB is earlier than v6.1.0, you need to manually import [`performance_overview.json`](https://github.com/pingcap/tidb/blob/master/pkg/metrics/grafana/performance_overview.json), as shown in the following figure:
 
 ![Store](/media/performance/import_dashboard.png)

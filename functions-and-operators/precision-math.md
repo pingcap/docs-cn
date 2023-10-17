@@ -51,7 +51,7 @@ DECIMAL columns do not store a leading `+` character or `-` character or leading
 
 DECIMAL columns do not permit values larger than the range implied by the column definition. For example, a `DECIMAL(3,0)` column supports a range of `-999` to `999`. A `DECIMAL(M,D)` column permits at most `M - D` digits to the left of the decimal point.
 
-For more information about the internal format of the DECIMAL values, see [`mydecimal.go`](https://github.com/pingcap/tidb/blob/master/types/mydecimal.go) in TiDB souce code.
+For more information about the internal format of the DECIMAL values, see [`mydecimal.go`](https://github.com/pingcap/tidb/blob/master/pkg/types/mydecimal.go) in TiDB souce code.
 
 ## Expression handling
 
