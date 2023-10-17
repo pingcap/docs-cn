@@ -198,7 +198,7 @@ In v6.3.0-DMR, the key new features and improvements are as follows:
 
 * TiCDC supports keeping the snapshots consistent between the upstream and the downstream (sync point) [#6977](https://github.com/pingcap/tiflow/issues/6977) @[asddongmen](https://github.com/asddongmen)
 
-    In the scenarios of data replication for disaster recovery, TiCDC supports [periodically maintaining a downstream data snapshot](/sync-diff-inspector/upstream-downstream-diff.md#data-check-for-tidb-upstream-and-downstream-clusters) so that the downstream snapshot is consistent with the upstream snapshot. With this feature, TiCDC can better support the scenarios where reads and writes are separate, and help you lower the cost.
+    In the scenarios of data replication for disaster recovery, TiCDC supports [periodically maintaining a downstream data snapshot](/ticdc/ticdc-upstream-downstream-check.md) so that the downstream snapshot is consistent with the upstream snapshot. With this feature, TiCDC can better support the scenarios where reads and writes are separate, and help you lower the cost.
 
 * TiCDC supports graceful upgrade [#4757](https://github.com/pingcap/tiflow/issues/4757) @[overvenus](https://github.com/overvenus) @[3AceShowHand](https://github.com/3AceShowHand)
 

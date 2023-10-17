@@ -1,18 +1,25 @@
 ---
-title: Data Check for TiDB Upstream and Downstream Clusters
+title: Upstream and Downstream Clusters Data Validation and Snapshot Read
 summary: Learn how to check data for TiDB upstream and downstream clusters.
-aliases: ['/docs/dev/sync-diff-inspector/upstream-downstream-diff/','/docs/dev/reference/tools/sync-diff-inspector/tidb-diff/']
+aliases: ['/docs/dev/sync-diff-inspector/upstream-downstream-diff/','/docs/dev/reference/tools/sync-diff-inspector/tidb-diff/', '/tidb/dev/upstream-downstream-diff']
 ---
 
-# Data Check for TiDB Upstream and Downstream Clusters
+# Upstream and Downstream Clusters Data Validation and Snapshot Read
 
-When you use TiCDC to build upstream and downstream clusters of TiDB, you might need to verify the consistency of upstream and downstream data without stopping replication. In the regular replication mode, TiCDC only guarantees that the data is eventually consistent, but cannot guarantee that the data is consistent during the replication process. Therefore, it is difficult to verify the consistency of dynamically changing data. To meet such a need, TiCDC provides the Syncpoint feature.
+When you use TiCDC to build upstream and downstream clusters of TiDB, you might need to perform consistent snapshot read or data consistency validation on the upstream and downstream without stopping the replication. In the regular replication mode, TiCDC only guarantees that the data is eventually consistent, but cannot guarantee that the data is consistent during the replication process. Therefore, it is difficult to perform consistent read of dynamically changing data. To meet such a need, TiCDC provides the Syncpoint feature.
 
 Syncpoint uses the snapshot feature provided by TiDB and enables TiCDC to maintain a `ts-map` that has consistency between upstream and downstream snapshots during the replication process. In this way, the issue of verifying the consistency of dynamic data is converted to the issue of verifying the consistency of static snapshot data, which achieves the effect of nearly real-time verification.
 
-To enable the Syncpoint feature, set the value of the TiCDC configuration item `enable-sync-point` to `true` when creating a replication task. After enabling Syncpoint, TiCDC will periodically align the upstream and downstream snapshots according to the TiCDC parameter `sync-point-interval` during the data replication process, and will save the upstream and downstream TSO correspondences in the downstream `tidb_cdc.syncpoint_v1` table.
+## Enable Syncpoint
 
-Then, you only need to configure `snapshot` in sync-diff-inspector to verify the data of the TiDB upstream-downstream clusters. The following TiCDC configuration example enables Syncpoint for a created replication task:
+After enabling the Syncpoint feature, you can use [Consistent snapshot read](#consistent-snapshot-read) and [Data consistency validation](#data-consistency-validation).
+
+To enable the Syncpoint feature, set the value of the TiCDC configuration item `enable-sync-point` to `true` when creating a replication task. After enabling Syncpoint, TiCDC writes the following information to the downstream TiDB cluster:
+
+1. During the replication, TiCDC periodically (configured by `sync-point-interval`) aligns snapshots between the upstream and downstream and saves the upstream and downstream TSO correspondences in the downstream `tidb_cdc.syncpoint_v1` table.
+2. During the replication, TiCDC also periodically (configured by `sync-point-interval`) executes `SET GLOBAL tidb_external_ts = @@tidb_current_ts`, which sets a consistent snapshot point that has been replicated in backup clusters.
+
+The following TiCDC configuration example enables Syncpoint when creating a replication task:
 
 ```toml
 # Enables SyncPoint.
@@ -25,7 +32,25 @@ sync-point-interval = "5m"
 sync-point-retention = "1h"
 ```
 
-## Step 1: obtain `ts-map`
+## Consistent snapshot read
+
+> **Note:**
+>
+> Before you perform consistent snapshot read, make sure that you have [enabled the Syncpoint feature](#enable-syncpoint).
+
+When you need to query the data from the backup cluster, you can set `SET GLOBAL|SESSION tidb_enable_external_ts_read = ON;` for the application to obtain transactionally consistent data on the backup cluster.
+
+In addition, you can also select a previous point in time for snapshot read by querying `ts-map`.
+
+## Data consistency validation
+
+> **Note:**
+>
+> Before you perform data consistency validation, make sure that you have [enabled the Syncpoint feature](#enable-syncpoint).
+
+To validate the data of upstream and downstream clusters, you only need to configure `snapshot` in sync-diff-inspector.
+
+### Step 1: obtain `ts-map`
 
 You can execute the following SQL statement in the downstream TiDB cluster to obtain the upstream TSO (`primary_ts`) and downstream TSO (`secondary_ts`):
 
@@ -46,7 +71,7 @@ The fields in the preceding `syncpoint_v1` table are described as follows:
 - `secondary_ts`: The timestamp of the downstream database snapshot.
 - `created_at`: The time when this record is inserted.
 
-## Step 2: configure snapshot
+### Step 2: configure snapshot
 
 Then configure the snapshot information of the upstream and downstream databases by using the `ts-map` information obtained in [Step 1](#step-1-obtain-ts-map).
 
@@ -71,6 +96,6 @@ Here is a configuration example of the `Datasource config` section:
 ## Notes
 
 - Before TiCDC creates a changefeed, make sure that the value of the TiCDC configuration item `enable-sync-point` is set to `true`. Only in this way, Syncpoint is enabled and the `ts-map` is saved in the downstream. For the complete configuration, see [TiCDC task configuration file](/ticdc/ticdc-changefeed-config.md).
-- Modify the Garbage Collection (GC) time of TiKV to ensure that the historical data corresponding to snapshot is not collected by GC during the data check. It is recommended that you modify the GC time to 1 hour and recover the setting after the check.
+- When you perform data validation using Syncpoint, you need to modify the Garbage Collection (GC) time of TiKV to ensure that the historical data corresponding to snapshot is not collected by GC during the data check. It is recommended that you modify the GC time to 1 hour and recover the setting after the check.
 - The above example only shows the section of `Datasource config`. For complete configuration, refer to [sync-diff-inspector User Guide](/sync-diff-inspector/sync-diff-inspector-overview.md).
 - Since v6.4.0, only the changefeed with the `SYSTEM_VARIABLES_ADMIN` or `SUPER` privilege can use the TiCDC Syncpoint feature.
