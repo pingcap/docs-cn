@@ -138,7 +138,7 @@ TiDB 中的[信息统计](/statistics.md#手动收集)与 MySQL 中的有所不�
 
 ### `SELECT` 的限制
 
-TiDB 不支持以下 `SELECT` 语法：
+TiDB 的 `SELECT` 语法有以下限制：
 
 - 不支持 `SELECT ... INTO @变量` 语法。
 - 不支持 `SELECT ... GROUP BY ... WITH ROLLUP` 语法。
