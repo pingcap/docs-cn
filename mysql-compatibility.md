@@ -20,7 +20,7 @@ TiDB 高度兼容 MySQL 5.7 协议、MySQL 5.7 常用的功能及语法。MySQL 
 
 > **注意：**
 >
-> 本页内容仅涉及 MySQL 与 TiDB 的总体差异。关于[安全特性](/security-compatibility-with-mysql.md)、[悲观事务模式](/pessimistic-transaction.md#和-mysql-innodb-的差异)相关的兼容信息请查看各自具体页面。
+> 本页内容仅涉及 MySQL 与 TiDB 的总体差异。关于[安全特性](/security-compatibility-with-mysql.md)、[悲观事务模式](/pessimistic-transaction.md#和-mysql-innodb-的差异)相关的兼容信息，请查看各自具体页面。
 
 ## 不支持的功能特性
 
@@ -50,13 +50,13 @@ TiDB 高度兼容 MySQL 5.7 协议、MySQL 5.7 常用的功能及语法。MySQL 
 
 ### 自增 ID
 
-- TiDB 的自增列既能保证唯一，也能保证在单个 TiDB server 中自增，使用 [`AUTO_INCREMENT` MySQL 兼容模式](/auto-increment.md#mysql-兼容模式)能保证多个 TiDB server 中自增 ID，但不保证自动分配的值的连续性。不建议将缺省值和自定义值混用，若混用可能会收到 `Duplicated Error` 的错误信息。
+- TiDB 的自增列既能保证唯一，也能保证在单个 TiDB server 中自增，使用 [`AUTO_INCREMENT` MySQL 兼容模式](/auto-increment.md#mysql-兼容模式)能保证多个 TiDB server 中自增 ID，但不保证自动分配的值的连续性。建议避免将缺省值和自定义值混用，以免出现 `Duplicated Error` 的错误。
 
 - TiDB 可通过 `tidb_allow_remove_auto_inc` 系统变量开启或者关闭允许移除列的 `AUTO_INCREMENT` 属性。删除列属性的语法是：`ALTER TABLE MODIFY` 或 `ALTER TABLE CHANGE`。
 
 - TiDB 不支持添加列的 `AUTO_INCREMENT` 属性，移除该属性后不可恢复。
 
-- 对于 v6.6.0 及更早的 TiDB 版本，TiDB 的行为与 MySQL InnoDB 保持一致，要求自增列必须为主键或者索引前缀。从 v7.0.0 开始，TiDB 移除自增列必须是索引或索引前缀的限制，允许用户更灵活地定义表的主键。关于此更改的详细信息，请参阅 [#40580](https://github.com/pingcap/tidb/issues/40580)
+- 对于 v6.6.0 及更早的 TiDB 版本，TiDB 的自增列行为与 MySQL InnoDB 保持一致，要求自增列必须为主键或者索引前缀。从 v7.0.0 开始，TiDB 移除了该限制，允许用户更灵活地定义表的主键。关于此更改的详细信息，请参阅 [#40580](https://github.com/pingcap/tidb/issues/40580)
 
 自增 ID 详情可参阅 [AUTO_INCREMENT](/auto-increment.md)。
 
@@ -96,7 +96,7 @@ mysql> SELECT _tidb_rowid, id FROM t;
 
 ### Performance schema
 
-TiDB 主要使用 Prometheus 和 Grafana 来存储及查询相关的性能监控指标，所以 Performance schema 部分表是空表。
+TiDB 主要使用 Prometheus 和 Grafana 来存储及查询相关的性能监控指标。因此，TiDB 的 Performance schema 表返回空结果。
 
 ### 查询计划
 
@@ -132,11 +132,13 @@ TiDB 中，所有支持的 DDL 变更操作都是在线执行的。与 MySQL 相
 
 ### `ANALYZE TABLE`
 
-TiDB 中的[信息统计](/statistics.md#手动收集)与 MySQL 中的有所不同：TiDB 中的信息统计会完全重构表的统计数据，语句执行过程较长，但在 MySQL/InnoDB 中，它是一个轻量级语句，执行过程较短。
+TiDB 中的[信息统计](/statistics.md#手动收集)与 MySQL 中的有所不同：TiDB 中的信息统计会完全重构表的统计数据，语句消耗较多资源，执行过程较长，但在 MySQL/InnoDB 中，它是一个轻量级语句，执行过程较短。
 
 更多信息统计的差异请参阅 [`ANALYZE TABLE`](/sql-statements/sql-statement-analyze-table.md)。
 
 ### `SELECT` 的限制
+
+TiDB 的 `SELECT` 语法有以下限制：
 
 - 不支持 `SELECT ... INTO @变量` 语法。
 - 不支持 `SELECT ... GROUP BY ... WITH ROLLUP` 语法。
@@ -178,6 +180,8 @@ TiDB 支持大部分 [SQL 模式](/sql-mode.md)。不支持的 SQL 模式如下�
 
 ### 默认设置
 
+TiDB 的默认设置与 MySQL 5.7 和 MySQL 8.0 有以下区别：
+
 - 字符集：
     + TiDB 默认：`utf8mb4`。
     + MySQL 5.7 默认：`latin1`。
@@ -207,13 +211,15 @@ TiDB 支持大部分 [SQL 模式](/sql-mode.md)。不支持的 SQL 模式如下�
 
 ### 日期时间处理的区别
 
-#### 时区
+TiDB 与 MySQL 在日期时间处理上有如下差异：
 
-- TiDB 采用系统当前安装的所有时区规则进行计算（一般为 `tzdata` 包），不需要导入时区表数据就能使用所有时区名称，无法通过导入时区表数据的形式修改计算规则。
+- TiDB 采用系统当前安装的所有时区规则进行计算（一般为 `tzdata` 包），不需要导入时区表数据就能使用所有时区名称，导入时区表数据不会修改计算规则。
 
 - MySQL 默认使用本地时区，依赖于系统内置的当前的时区规则（例如什么时候开始夏令时等）进行计算；且在未[导入时区表数据](https://dev.mysql.com/doc/refman/8.0/en/time-zone-support.html#time-zone-installation)的情况下不能通过时区名称来指定时区。
 
 ### 类型系统
+
+MySQL 支持以下列类型，但 TiDB 不支持：
 
 + 不支持 FLOAT4/FLOAT8。
 
