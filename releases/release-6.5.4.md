@@ -14,6 +14,7 @@ TiDB 版本：6.5.4
 ## 兼容性变更
 
 - 为了修复当使用 `Cursor Fetch` 获取大结果集时 TiDB 占用大量内存的问题，TiDB 会自动将结果集写入磁盘以释放内存资源 [#43233](https://github.com/pingcap/tidb/issues/43233) @[YangKeao](https://github.com/YangKeao)
+- 默认将 rocksdb 的周期性 compaction 修改为关闭状态，使 TiKV rocksdb 的默认行为和 v6.5.0 之前的版本保持一致。同时 TiKV 新增 `rocksdb.[defaultcf|writecf|lockcf].periodic-compaction-seconds` 和 `rocksdb.[defaultcf|writecf|lockcf].ttl`，支持手动配置 rocksdb 的周期性 compaction [#15355](https://github.com/tikv/tikv/issues/15355) @[LykxSassinator](https://github.com/LykxSassinator)
 
 ## 改进提升
 
