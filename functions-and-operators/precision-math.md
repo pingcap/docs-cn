@@ -56,7 +56,7 @@ DECIMAL 列不存储前导的字符 `+` 或字符 `-` 或数字 `0`。如果将 
 
 DECIMAL 列不允许插入大于列定义的隐含范围的值。例如：DECIMAL(3, 0) 列范围为`-999` 到 `999`。DECIMAL(M, D) 列小数点左边部分最多支持 M-D 位数字。
 
-有关 DECIMAL 值的内部格式完整说明，请参阅 TiDB 源码文件 [types/mydecimal.go](https://github.com/pingcap/tidb/blob/master/types/mydecimal.go)。
+有关 DECIMAL 值的内部格式完整说明，请参阅 TiDB 源码文件 [`types/mydecimal.go`](https://github.com/pingcap/tidb/blob/release-6.1/types/mydecimal.go)。
 
 ## 表达式计算
 
