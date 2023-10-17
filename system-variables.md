@@ -1495,6 +1495,7 @@ SET tidb_query_log_max_len = 20;
 ### `tidb_read_consistency` <span class="version-mark">从 v5.4.0 版本开始引入</span>
 
 - 作用域：SESSION
+- 是否持久化到集群：否
 - 类型：字符串
 - 默认值：`strict`
 - 此变量用于控制自动提交的读语句的读一致性。
