@@ -326,7 +326,7 @@ RU 计数可以通过 `EXPLAIN ANALYZE` 中的其他值计算得出，特别是 
 
 关于基础成本信息，请参考 [pd source](https://github.com/tikv/pd/blob/aeb259335644d65a97285d7e62b38e7e43c6ddca/client/resource_group/controller/config.go#L58C19-L67)。相关计算是通过 [model.go](https://github.com/tikv/pd/blob/54219d649fb4c8834cd94362a63988f3c074d33e/client/resource_group/controller/model.go#L107) 完成的。
 
-如果您使用的是 7.1+ 版本，计算方法是 `pd/pd-client/model.go` 中的 `BeforeKVRequest() + AfterKVRequest()`，即总和：
+如果您使用的是 7.1 版本，计算方法是 `pd/pd-client/model.go` 中的 `BeforeKVRequest() + AfterKVRequest()`，即总和：
 
 ```
 before key/value request is processed:
