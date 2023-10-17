@@ -376,18 +376,18 @@ CREATE TABLE t1 (a INT) PLACEMENT POLICY=eastandwest;
 
 ### 数据隔离场景
 
-以下示例设置了一个约束，要求数据必须位于某个 TiKV 节点，且该节点的 `disk` 标签必须匹配特定的值：
+以下示例设置了一个约束，要求数据必须位于某些 TiKV 节点，且节点的 `app` 标签必须匹配特定的值：
 
 ```sql
-CREATE PLACEMENT POLICY storageonnvme CONSTRAINTS="[+disk=nvme]";
-CREATE PLACEMENT POLICY storageonssd CONSTRAINTS="[+disk=ssd]";
+CREATE PLACEMENT POLICY app_order CONSTRAINTS="[+app=order]";
+CREATE PLACEMENT POLICY app_list CONSTRAINTS="[+app=list_collection]";
 CREATE TABLE tpapp (id INT, name VARCHAR(50), purchased DATE)
-PLACEMENT POLICY=storageonnvme；
+PLACEMENT POLICY=apptp1
 CREATE TABLE apapp (id INT, name VARCHAR(50), purchased DATE)
-PLACEMENT POLICY=storageonssd
+PLACEMENT POLICY=apptp1
 ```
 
-该约束可通过列表格式 (`[+disk=ssd]`) 或字典格式 (`{+disk=ssd: 1,+disk=nvme: 2}`) 指定。将应用 `tpapp` 数据放置在 `disk` 为 `nvme` 的 tikv 节点上，应用 `apapp` 的数据放置在 `disk` 为 `ssd` 的 tikv 节点上，从而在存储上达到了物理隔离的效果。
+该约束可通过列表格式 (`[+app=order]`) 或字典格式 (`{+app=order: 3}`) 指定。将应用 `app_order` 数据放置在标记了标签 `app` 为 `order` 的 tikv 节点上，应用 `app_list` 的数据放置在标记了标签 `app` 为 `list_collection` 的 tikv 节点上，从而在存储上达到了物理隔离的效果。
 
 ## 工具兼容性
 
