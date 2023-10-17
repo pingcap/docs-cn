@@ -68,7 +68,7 @@ DROP PLACEMENT POLICY myplacementpolicy;
 
 ## 查看放置规则
 
-可以用 [`SHOW CREATE PLACEMENT POLICY`](/sql-statements/sql-statement-show-create-placement-policy.md) 来查看已经创建的放置策略。如果一张表绑定了放置规则，你可以用 [`SHOW CREATE TABLE`](/sql-statements/sql-statement-show-create-table.md) 来查看。还
+可以用 [`SHOW CREATE PLACEMENT POLICY`](/sql-statements/sql-statement-show-create-placement-policy.md) 来查看已经创建的指定放置策略。如果一张表绑定了放置规则，你可以用 [`SHOW CREATE TABLE`](/sql-statements/sql-statement-show-create-table.md) 来查看。
 
 ```sql
 tidb> SHOW CREATE PLACEMENT POLICY myplacementpolicy\G
