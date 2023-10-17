@@ -381,10 +381,10 @@ CREATE TABLE t1 (a INT) PLACEMENT POLICY=eastandwest;
 ```sql
 CREATE PLACEMENT POLICY app_order CONSTRAINTS="[+app=order]";
 CREATE PLACEMENT POLICY app_list CONSTRAINTS="[+app=list_collection]";
-CREATE TABLE tpapp (id INT, name VARCHAR(50), purchased DATE)
-PLACEMENT POLICY=apptp1
-CREATE TABLE apapp (id INT, name VARCHAR(50), purchased DATE)
-PLACEMENT POLICY=apptp1
+CREATE TABLE order (id INT, name VARCHAR(50), purchased DATE)
+PLACEMENT POLICY=app_order
+CREATE TABLE list (id INT, name VARCHAR(50), purchased DATE)
+PLACEMENT POLICY=app_list
 ```
 
 该约束可通过列表格式 (`[+app=order]`) 或字典格式 (`{+app=order: 3}`) 指定。将应用 `app_order` 数据放置在标记了标签 `app` 为 `order` 的 tikv 节点上，应用 `app_list` 的数据放置在标记了标签 `app` 为 `list_collection` 的 tikv 节点上，从而在存储上达到了物理隔离的效果。
