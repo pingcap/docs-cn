@@ -293,6 +293,51 @@ RU:273.842670
 >
 > 该值仅表示本次执行的实际 RU 消耗。由于受缓存的影响（比如[下推计算结果缓存](/coprocessor-cache.md)），同一个 SQL 在每次执行时消耗的 RU 可能会不同。
 
+RU 计数可以通过 `EXPLAIN ANALYZE` 中的其他值计算得出，特别是 `execution info` 列。例如：
+
+```
+ 'executeInfo':
+     time:2.55ms,
+     loops:2,
+     RU:0.329460,
+     Get:{
+         num_rpc:1,
+         total_time:2.13ms
+     },
+     total_process_time: 231.5µs,
+     total_wait_time: 732.9µs,
+     tikv_wall_time: 995.8µs,
+     scan_detail: {
+        total_process_keys: 1,
+        total_process_keys_size: 150,
+        total_keys: 1,
+        get_snapshot_time: 691.7µs,
+        rocksdb: {
+            block: {
+                cache_hit_count: 2,
+                read_count: 1,
+                read_byte: 8.19 KB,
+                read_time: 10.3µs
+            }
+        }
+    },
+```
+
+关于基础成本信息，请参考 [`tikv/pd` 源码](https://github.com/tikv/pd/blob/aeb259335644d65a97285d7e62b38e7e43c6ddca/client/resource_group/controller/config.go#L58C19-L67)。相关计算是通过 [`model.go`](https://github.com/tikv/pd/blob/54219d649fb4c8834cd94362a63988f3c074d33e/client/resource_group/controller/model.go#L107) 完成的。
+
+如果你使用的是 TiDB v7.1，计算方法是 `pd/pd-client/model.go` 中的 `BeforeKVRequest() + AfterKVRequest()`，即总和：
+
+```
+before key/value request is processed:
+      consumption.RRU += float64(kc.ReadBaseCost) -> kv.ReadBaseCost * rpc_nums
+
+after key/value request is processed:
+      consumption.RRU += float64(kc.ReadBytesCost) * readBytes -> kc.ReadBytesCost * total_process_keys_size
+      consumption.RRU += float64(kc.CPUMsCost) * kvCPUMs -> kc.CPUMsCost * total_process_time
+```
+
+对于 writes 和 batch gets，计算方法相似，只是基础成本不同。
+
 ### 其它常见执行信息
 
 Coprocessor 算子通常包含 `cop_task` 和 `tikv_task` 两部分执行时间信息。前者是 TiDB 端记录的时间，从发出请求到接收回复；后者是 TiKV Coprocessor 算子自己记录的时间。两者相差较大可能说明在等待、gRPC 或网络上耗时较长。
