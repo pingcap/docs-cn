@@ -481,7 +481,7 @@ Store 线程的 Commit Log Duration 明显比 Apply Log Duration 高，并且 Ap
 
 ## 低于 v6.1.0 的 TiDB 版本如何使用 Performance overview 面板
 
-从 v6.1.0 起，TiDB Grafana 组件默认内置了 Performance Overview 面板。Performance overview 面板兼容 TiDB v4.x 和 v5.x 版本。如果你的 TiDB 版本低于 v6.1.0，需要手动导入 [`performance_overview.json`](https://github.com/pingcap/tidb/blob/master/metrics/grafana/performance_overview.json)。
+从 v6.1.0 起，TiDB Grafana 组件默认内置了 Performance Overview 面板。Performance overview 面板兼容 TiDB v4.x 和 v5.x 版本。如果你的 TiDB 版本低于 v6.1.0，需要手动导入 [`performance_overview.json`](https://github.com/pingcap/tidb/blob/release-7.2/metrics/grafana/performance_overview.json)。
 
 导入方法如图所示：
 
