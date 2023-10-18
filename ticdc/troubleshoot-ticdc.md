@@ -46,7 +46,7 @@ cdc cli changefeed query --server=http://127.0.0.1:8300 --changefeed-id 28c43ffc
     - 处理方法：
         1. 先通过 `cdc cli changefeed query` 查询同步任务状态信息，记录 `checkpoint-ts` 值。
         2. 使用新的任务配置文件，增加 `ignore-txn-start-ts` 参数跳过指定 `start-ts` 对应的事务。
-        3. 通过 `cdc cli changefeed pause -c <changefeed-id>` 停止同步任务。
+        3. 通过 `cdc cli changefeed pause -c <changefeed-id>` 暂停同步任务。
         4. 通过 `cdc cli changefeed update -c <changefeed-id> --config <config-file-path>` 指定新的任务配置文件。
         5. 通过 `cdc cli changefeed resume -c <changefeed-id>` 恢复同步任务。
 
