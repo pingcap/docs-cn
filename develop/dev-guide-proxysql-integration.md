@@ -30,7 +30,7 @@ summary: 介绍 TiDB 与 ProxySQL 集成的方法。
 
     ```shell
     git clone git@github.com:pingcap/tidb.git
-    cd tidb/tidb-server
+    cd tidb/cmd/tidb-server
     go build
     ```
 
