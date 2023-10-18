@@ -44,7 +44,6 @@ TiDB 版本：7.1.2
 
 + TiFlash
 
-    - 修复 Sort 算子在 Spill 时可能发生的 Crash [#47538](https://github.com/pingcap/tidb/issues/47538) @[windtalker](https://github.com/windtalker)
     - note [#issue](https://github.com/pingcap/tiflash/issues/${issue-id}) @[贡献者 GitHub ID](https://github.com/${github-id})
 
 + Tools
