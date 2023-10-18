@@ -30,21 +30,21 @@ Placement Rules in SQL 特性用于通过 SQL 接口配置数据在 TiKV 集群�
 | 级别                | 描述                                                                                    |
 |----------------------------|------------------------------------------------------------------------------------------------|
 | `Cluster`          | TiDB 默认会配置为集群设置 3 副本的策略，你可以另外为全局放置策略进行置配置，参考[集群配置](#为集群指定全局的副本数)  |
-| `Database`         | 你可以另外对 Databases 配置放置策略，参考[为数据库配置默认的放置规则](#为数据库配置默认的放置规则) | 
-| `Table`            | 你可以另外对 Tables 配置放置策略，参考[为表指定放置规则](#为表指定放置规则)  |
-| `Row`              | 你可以另外对特定的 Row 通过定义 Partition 来配置放置策略，参考[为分区表指定放置规则](#为分区表指定放置规则) |
+| `Database`         | 你可以另外对 Databases 配置放置策略，参考[为数据库配置默认的放置策略](#为数据库配置默认的放置策略) | 
+| `Table`            | 你可以另外对 Tables 配置放置策略，参考[为表指定放置策略](#为表指定放置策略)  |
+| `Row`              | 你可以另外对特定的 Row 通过定义 Partition 来配置放置策略，参考[为分区表指定放置策略](#为分区表指定放置策略) |
 
-这些对象绑定 PLACEMENT POLICY， 都可以使用 `ALTER .... PLACEMENT POLICY policy_name` 语法，具体可参考示例。 `PLACEMENT POLICY` 具体的放置规则需要提前创建好。创建 POLICY 方式下面会介绍。 
+这些对象绑定 PLACEMENT POLICY， 都可以使用 `ALTER .... PLACEMENT POLICY policy_name` 语法，具体可参考示例。 `PLACEMENT POLICY` 具体的放置策略需要提前创建好。创建 POLICY 方式下面会介绍。 
 
-## 创建放置规则
+## 创建放置策略
 
-创建放置规则，首先需要通过 [`CREATE PLACEMENT POLICY`](/sql-statements/sql-statement-create-placement-policy.md) 语句创建**放置策略 (placement policy)**。
+创建放置策略，首先需要通过 [`CREATE PLACEMENT POLICY`](/sql-statements/sql-statement-create-placement-policy.md) 语句创建**放置策略 (placement policy)**。
 
 ```sql
 CREATE PLACEMENT POLICY myplacementpolicy PRIMARY_REGION="us-east-1" REGIONS="us-east-1,us-west-1";
 ```
 
-然后可以使用 `CREATE TABLE` 或者 `ALTER TABLE` 将规则绑定至表或分区表，这样就在表或分区上指定了放置规则：
+然后可以使用 `CREATE TABLE` 或者 `ALTER TABLE` 将策略绑定至表或分区表，这样就在表或分区上指定了放置策略：
 
 ```sql
 CREATE TABLE t1 (a INT) PLACEMENT POLICY=myplacementpolicy;
@@ -52,7 +52,7 @@ CREATE TABLE t2 (a INT);
 ALTER TABLE t2 PLACEMENT POLICY=myplacementpolicy;
 ```
 
-`PLACEMENT POLICY` 为全局作用域，不与任何数据库表结构相关联。因此，通过 `CREATE TABLE` 指定放置规则时，无需任何额外的权限。
+`PLACEMENT POLICY` 为全局作用域，不与任何数据库表结构相关联。因此，通过 `CREATE TABLE` 指定放置策略时，无需任何额外的权限。
 
 要修改放置策略，你可以使用 [`ALTER PLACEMENT POLICY`](/sql-statements/sql-statement-alter-placement-policy.md) 语句。修改将传播到所有绑定此放置策略的对象。
 
@@ -66,9 +66,9 @@ ALTER PLACEMENT POLICY myplacementpolicy FOLLOWERS=5;
 DROP PLACEMENT POLICY myplacementpolicy;
 ```
 
-## 查看放置规则
+## 查看放置策略
 
-可以用 [`SHOW CREATE PLACEMENT POLICY`](/sql-statements/sql-statement-show-create-placement-policy.md) 来查看已经创建的指定放置策略。如果一张表绑定了放置规则，你可以用 [`SHOW CREATE TABLE`](/sql-statements/sql-statement-show-create-table.md) 来查看。
+可以用 [`SHOW CREATE PLACEMENT POLICY`](/sql-statements/sql-statement-show-create-placement-policy.md) 来查看已经创建的指定放置策略。如果一张表绑定了放置策略，你可以用 [`SHOW CREATE TABLE`](/sql-statements/sql-statement-show-create-table.md) 来查看。
 
 ```sql
 tidb> SHOW CREATE PLACEMENT POLICY myplacementpolicy\G
@@ -107,14 +107,14 @@ LEARNERS             | 0
 1 row in set
 ```
 
-`information_schema.tables` 表和 `information_schema.partitions` 表也有一列 `tidb_placement_policy_name`，用于展示所有绑定了放置规则的对象：
+`information_schema.tables` 表和 `information_schema.partitions` 表也有一列 `tidb_placement_policy_name`，用于展示所有绑定了放置策略的对象：
 
 ```sql
 SELECT * FROM information_schema.tables WHERE tidb_placement_policy_name IS NOT NULL;
 SELECT * FROM information_schema.partitions WHERE tidb_placement_policy_name IS NOT NULL;
 ```
 
-所有绑定规则的对象都是异步调度的。可以用 [`SHOW PLACEMENT`](/sql-statements/sql-statement-show-placement.md) 来查看放置规则的调度进度。
+所有绑定策略的对象都是异步调度的。可以用 [`SHOW PLACEMENT`](/sql-statements/sql-statement-show-placement.md) 来查看放置策略的调度进度。
 
 ## 放置选项参考
 
@@ -134,7 +134,7 @@ SELECT * FROM information_schema.partitions WHERE tidb_placement_policy_name IS 
 >     3 rows in set (0.00 sec)
 >     ```
 >
-> - 使用 `CREATE PLACEMENT POLICY` 创建放置规则时，TiDB 不会检查标签是否存在，而是在绑定表的时候进行检查。
+> - 使用 `CREATE PLACEMENT POLICY` 创建放置策略时，TiDB 不会检查标签是否存在，而是在绑定表的时候进行检查。
 
 | 选项名                | 描述                                                                                    |
 |----------------------------|------------------------------------------------------------------------------------------------|
@@ -163,7 +163,7 @@ SELECT * FROM information_schema.partitions WHERE tidb_placement_policy_name IS 
 | Constraint Type | 描述 |
 |----------------------------|-----------------------------------------------------------------------------------------------------------|
 | 列表格式 (All Replicas) | 约束以键值对列表格式。键以 `+` 或 `-` 开头。`+disk=nvme` 表示 `disk` 标签必须设为 `nvme`，`-disk=nvme` 表示 `disk` 标签值不能为 `nvme`。 |
-| 字典格式 (Per Replica) | 在字典格式中，约束还指定了适用于该规则的多个实例。例如，`FOLLOWER_CONSTRAINTS="{+region=us-east-1: 1,+region=us-east-2: 1,+region=us-west-1: 1}";` 表示 1 个 follower 位于 `us-east-1`，1 个 follower 位于 `us-east-2`，1 个 follower 位于 `us-west-1`。再例如，`FOLLOWER_CONSTRAINTS='{"+region=us-east-1,+disk=nvme": 1,"+region=us-west-1": 1}';` 表示 1 个 follower 位于 `us-east-1` 区域中有 `nvme` 硬盘的机器上，1 个 follower 位于 `us-west-1`。|
+| 字典格式 (Per Replica) | 在字典格式中，约束还指定了适用于该策略的多个实例。例如，`FOLLOWER_CONSTRAINTS="{+region=us-east-1: 1,+region=us-east-2: 1,+region=us-west-1: 1}";` 表示 1 个 follower 位于 `us-east-1`，1 个 follower 位于 `us-east-2`，1 个 follower 位于 `us-west-1`。再例如，`FOLLOWER_CONSTRAINTS='{"+region=us-east-1,+disk=nvme": 1,"+region=us-west-1": 1}';` 表示 1 个 follower 位于 `us-east-1` 区域中有 `nvme` 硬盘的机器上，1 个 follower 位于 `us-west-1`。|
 
 > **注意：**
 >
@@ -186,7 +186,7 @@ ALTER RANGE global PLACEMENT POLICY five_replicas;
 
 注意，配置中默认会认定 leader 数是 1。因此，5 个副本为 4 个 follower + 1 个 leader。
 
-### 为数据库配置默认的放置规则
+### 为数据库配置默认的放置策略
 
 你可以为某个数据库指定默认的放置策略，类似于为数据库设置默认字符集或排序规则。如果没有指定其他选项，就会使用数据库上指定的配置。示例如下：
 
@@ -197,15 +197,15 @@ CREATE PLACEMENT POLICY p2 FOLLOWERS=4;
 
 CREATE PLACEMENT POLICY p3 FOLLOWERS=2;
 
-CREATE TABLE t1 (a INT);  -- 创建表 t1，且未指定放置规则。
+CREATE TABLE t1 (a INT);  -- 创建表 t1，且未指定放置策略。
 
-ALTER DATABASE test PLACEMENT POLICY=p2;  -- 更改默认的放置规则，但更改不影响已有的表 t1。
+ALTER DATABASE test PLACEMENT POLICY=p2;  -- 更改默认的放置策略，但更改不影响已有的表 t1。
 
 CREATE TABLE t2 (a INT);  -- 创建表 t2，默认的放置策略 p2 在 t2 上生效。
 
-CREATE TABLE t3 (a INT) PLACEMENT POLICY=p1;  -- 创建表 t3。因为语句中已经指定了其他放置规则，默认的 p2 策略在 t3 上不生效。
+CREATE TABLE t3 (a INT) PLACEMENT POLICY=p1;  -- 创建表 t3。因为语句中已经指定了其他放置策略，默认的 p2 策略在 t3 上不生效。
 
-ALTER DATABASE test PLACEMENT POLICY=p3;  -- 再次更改默认的放置规则，此更改不影响已有的表。
+ALTER DATABASE test PLACEMENT POLICY=p3;  -- 再次更改默认的放置策略，此更改不影响已有的表。
 
 CREATE TABLE t4 (a INT);  -- 创建表 t4，默认的放置策略 p3 生效。
 
@@ -214,7 +214,7 @@ ALTER PLACEMENT POLICY p3 FOLLOWERS=3; -- 绑定策略 p3 的表，也就是 t4�
 
 注意分区与表之间的继承和这里的继承不同。改变表的放置策略，也会让分区应用新的策略。但是只有建表时没有指定放置策略的时候，表才会从数据库继承放置策略，且之后再改变数据库也不影响已经继承的表。
 
-### 为表指定放置规则
+### 为表指定放置策略
 
 你可以为某个表制定默认的放置策略。
 
@@ -227,7 +227,7 @@ ALTER TABLE t PLACEMENT POLICY=default; -- 删除已绑定的放置策略
 
 ```
 
-### 为分区表指定放置规则
+### 为分区表指定放置策略
 
 除了给表绑定放置策略之外，你还可以给表分区绑定放置策略。示例如下：
 
@@ -261,7 +261,7 @@ ALTER TABLE t1 PARTITION p1 PLACEMENT POLICY=storageonssd;
 
 **如何给节点打上标签**
 
-放置规则依赖给存储节点标记上相应的属性，才能正常使用。 标记方式为：
+放置策略依赖给存储节点标记上相应的属性，才能正常使用。 标记方式为：
 
 {{< copyable "" >}}
 
@@ -339,7 +339,7 @@ mysql> show placement;
 +-------------------+---------------------------------------------------------------------------------------------+------------------+
 ```
 
-通过为系统全局设置 `deploy221` 的放置规则后，TiDB 调度器会将数据根据该规则来分布数据： `us-east-1` 区域放置两个副本，`us-east-2` 区域放置两个副本，`us-west-1` 区域放置一个副本。
+通过为系统全局设置 `deploy221` 的放置策略后，TiDB 调度器会将数据根据该策略来分布数据： `us-east-1` 区域放置两个副本，`us-east-2` 区域放置两个副本，`us-west-1` 区域放置一个副本。
 
 #### 指定 Leader/Follower 分布
 
@@ -361,7 +361,7 @@ CREATE PLACEMENT POLICY deploy221_primary_east1 LEADER_CONSTRAINTS="[+region=us-
 
 ##### 使用 PRIMARY_REGION 指定
 
-如果你的集群拓扑是使用 `region` label 标记的，上面例子你还可使用 `PRIMARY_REGION` 和 `REGIONS` 选项来描述 follower 的放置规则：
+如果你的集群拓扑是使用 `region` label 标记的，上面例子你还可使用 `PRIMARY_REGION` 和 `REGIONS` 选项来描述 follower 的放置策略：
 
 ```sql
 CREATE PLACEMENT POLICY eastandwest PRIMARY_REGION="us-east-1" REGIONS="us-east-1,us-east-2,us-west-1" SCHEDULE="MAJORITY_IN_PRIMARY" FOLLOWERS=4;
@@ -393,16 +393,16 @@ PLACEMENT POLICY=app_list
 
 | 工具名称 | 最低兼容版本 | 说明 |
 | --- | --- | --- |
-| Backup & Restore (BR) | 6.0 | BR 在 v6.0 之前不支持放置规则的备份与恢复，见[恢复 Placement Rule 到集群时为什么会报错？](/faq/backup-and-restore-faq.md#恢复-placement-rule-到集群时为什么会报错) |
+| Backup & Restore (BR) | 6.0 | BR 在 v6.0 之前不支持放置策略的备份与恢复，见[恢复 Placement Rule 到集群时为什么会报错？](/faq/backup-and-restore-faq.md#恢复-placement-rule-到集群时为什么会报错) |
 | TiDB Lightning | 暂时不兼容 | 导入包含放置策略的数据时会报错 |
-| TiCDC | 6.0 | 忽略放置规则，不同步规则到下游集群 |
-| TiDB Binlog | 6.0 | 忽略放置规则，不同步规则到下游集群 |
+| TiCDC | 6.0 | 忽略放置策略，不同步策略到下游集群 |
+| TiDB Binlog | 6.0 | 忽略放置策略，不同步策略到下游集群 |
 
 ## 使用限制
 
 目前已知 Placement Rules in SQL 特性存在以下限制：
 
-* 临时表不支持放置规则。
-* 放置规则仅保证静态数据被放置在正确的 TiKV 节点上。该规则不保证传输中的数据（通过用户查询或内部操作）只出现在特定区域内。
+* 临时表不支持放置策略。
+* 放置策略仅保证静态数据被放置在正确的 TiKV 节点上。该策略不保证传输中的数据（通过用户查询或内部操作）只出现在特定区域内。
 * 设置 `TiFlash` 的副本要通过[构建 TiFlash 副本](/tiflash/create-tiflash-replicas.md)的方式创建，不能使用该特性。 
 * 设置 `PRIMARY_REGION` 和 `REGIONS` 时允许存在语法糖。但在未来版本中，我们计划为 `PRIMARY_RACK`、`PRIMARY_ZONE` 和 `PRIMARY_HOST` 添加变体支持，见 [issue #18030](https://github.com/pingcap/tidb/issues/18030)。
