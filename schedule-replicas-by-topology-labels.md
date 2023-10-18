@@ -151,8 +151,8 @@ tikv_servers:
       server.labels:
         zone: z1
         host: tikv-host-machine-1
-   - host: tikv-1
-     port：20161
+  - host: tikv-1
+    port：20161
     config:
       server.labels:
         zone: z1
@@ -175,7 +175,7 @@ tikv_servers:
       server.labels:
         zone: z2
         host: h1
-   - host: tikv-6
+  - host: tikv-6
     config:
       server.labels:
         zone: z2
@@ -199,7 +199,7 @@ tiflash_servers:
       server.labels:
         zone: z1
         host: tiflash-host-machine-1
-   - host: tiflash-2
+  - host: tiflash-2
     learner_config:
       server.labels:
         zone: z1
@@ -210,7 +210,7 @@ tiflash_servers:
       server.labels:
         zone: z2
         host: tiflash-host-machine-1
-   - host: tiflash-4
+  - host: tiflash-4
     learner_config:
       server.labels:
         zone: z2
