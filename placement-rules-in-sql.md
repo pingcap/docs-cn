@@ -30,11 +30,11 @@ Placement Rules in SQL 特性用于通过 SQL 接口配置数据在 TiKV 集群�
 | 级别                | 描述                                                                                    |
 |----------------------------|------------------------------------------------------------------------------------------------|
 | `Cluster`          | TiDB 默认会配置为集群设置 3 副本的策略，你可以另外为全局放置策略进行置配置，参考[集群配置](#为集群指定全局的副本数)  |
-| `Database`         | 你可以另外对 Databases 配置放置策略，参考[为数据库配置默认的放置策略](#为数据库配置默认的放置策略) | 
+| `Database`         | 你可以另外对 Databases 配置放置策略，参考[为数据库配置默认的放置策略](#为数据库配置默认的放置策略) |
 | `Table`            | 你可以另外对 Tables 配置放置策略，参考[为表指定放置策略](#为表指定放置策略)  |
 | `Row`              | 你可以另外对特定的 Row 通过定义 Partition 来配置放置策略，参考[为分区表指定放置策略](#为分区表指定放置策略) |
 
-这些对象绑定 PLACEMENT POLICY， 都可以使用 `ALTER .... PLACEMENT POLICY policy_name` 语法，具体可参考示例。 `PLACEMENT POLICY` 具体的放置策略需要提前创建好。创建 POLICY 方式下面会介绍。 
+这些对象绑定 PLACEMENT POLICY， 都可以使用 `ALTER .... PLACEMENT POLICY policy_name` 语法，具体可参考示例。 `PLACEMENT POLICY` 具体的放置策略需要提前创建好。创建 POLICY 方式下面会介绍。
 
 ## 创建放置策略
 
@@ -162,14 +162,14 @@ SELECT * FROM information_schema.partitions WHERE tidb_placement_policy_name IS 
 
 | Constraint Type | 描述 |
 |----------------------------|-----------------------------------------------------------------------------------------------------------|
-| 列表格式 (All Replicas) | 约束以键值对列表格式。键以 `+` 或 `-` 开头。`+disk=nvme` 表示 `disk` 标签必须设为 `nvme`，`-disk=nvme` 表示 `disk` 标签值不能为 `nvme`。 |
-| 字典格式 (Per Replica) | 在字典格式中，约束还指定了适用于该策略的多个实例。例如，`FOLLOWER_CONSTRAINTS="{+region=us-east-1: 1,+region=us-east-2: 1,+region=us-west-1: 1}";` 表示 1 个 follower 位于 `us-east-1`，1 个 follower 位于 `us-east-2`，1 个 follower 位于 `us-west-1`。再例如，`FOLLOWER_CONSTRAINTS='{"+region=us-east-1,+disk=nvme": 1,"+region=us-west-1": 1}';` 表示 1 个 follower 位于 `us-east-1` 区域中有 `nvme` 硬盘的机器上，1 个 follower 位于 `us-west-1`。|
+| 列表格式 (All Replicas) | 约束以键值对列表格式。键以 `+` 或 `-` 开头。`[+region=us-east-1]` 表示放置数据在 `region` 标签为 `us-east-1` 的节点上。`[+region=us-east-1,-type=fault]` 表示放置数据在 `region` 标签值 `us-east-1` 且 `type` 标签值不为 `fault` 的节点上。 |
+| 字典格式 (Per Replica) | 在字典格式中，还将约束映射到了副本数。例如，`FOLLOWER_CONSTRAINTS="{+region=us-east-1: 1,+region=us-east-2: 1,+region=us-west-1: 1}";` 表示 1 个 follower 位于 `us-east-1`，1 个 follower 位于 `us-east-2`，1 个 follower 位于 `us-west-1`。再例如，`FOLLOWER_CONSTRAINTS='{"+region=us-east-1,+type=scale-node": 1,"+region=us-west-1": 1}';` 表示 1 个 follower 位于 `us-east-1` 区域中有标签 `type` 为 `scale-node` 的机器上，1 个 follower 位于 `us-west-1`。|
 
 > **注意：**
 >
 > LEADER_CONSTRAINTS 只支持列表格式。
 >
-> 字典和列表格式都基于 YAML 解析，但 YAML 语法有些时候不能被正常解析。例如 YAML 会把 `"{+disk=ssd:1,+disk=nvme:2}"`（`:` 后无空格）错误地解析成 `'{"+disk=ssd:1": null, "+disk=nvme:2": null}'`，不符合预期。但 `"{+disk=ssd: 1,+disk=nvme: 2}"`（`:` 后有空格）能被正确解析成 `'{"+disk=ssd": 1, "+disk=nvme": 2}'`。
+> 字典和列表格式都基于 YAML 解析，但 YAML 语法有些时候不能被正常解析。例如 YAML 会把 `"{+region=east:1,+region=west:2}"`（`:` 后无空格）错误地解析成 `'{"+region=east:1": null, "+region=west:2": null}'`，不符合预期。但 `"{+region=east: 1,+region=west: 2}"`（`:` 后有空格）能被正确解析成 `'{"+region=east": 1, "+region=west": 2}'`。
 >
 > 字典格式支持以 `+` 或 `-` 开头的键，还支持另外一个特殊的属性 `#reject-leader`, 如 `FOLLOWER_CONSTRAINTS='{ "+region=us-east-1":1, "+region=us-east-2": 2}' FOLLOWER_CONSTRAINTS='{"+region=us-west-1,#reject-leader": 1}'` 表示当进行容灾时，`us-west-1` 上尽可能驱逐当选的 leader。  
 
@@ -223,7 +223,7 @@ CREATE PLACEMENT POLICY five_replicas FOLLOWERS=4;
 
 CREATE TABLE t (a INT) PLACEMENT POLICY=five_replicas;  -- 创建表 t。绑定放置策略为 five_replicas。
 
-ALTER TABLE t PLACEMENT POLICY=default; -- 删除已绑定的放置策略
+ALTER TABLE t PLACEMENT POLICY=default; -- 删除表 t 已绑定的放置策略 five_replicas, 重置为默认的。
 
 ```
 
