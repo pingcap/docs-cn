@@ -135,7 +135,7 @@ pd-ctl config set isolation-level zone
 
 如果使用 TiUP 部署集群，可以在[初始化配置文件](/production-deployment-using-tiup.md#第-3-步初始化集群拓扑文件)中统一进行 location 相关配置。TiUP 会负责在部署时生成对应的 TiKV、PD 和 TiFlash 配置文件。
 
-下面的例子定义了 `zone` 和 `host` 两层拓扑结构。集群的 TiKV 和 TiFlash 分布在三个 zone，z1、z2 和 z3。每个 zone 内有四台主机，z1 两台主机分别部署两个 TiKV 实例，另外两台分别部署一个 TiFlash 实例，z2 和 z3 其中两台主机分别部署一个 TiKV 实例，另外两台分别部署一个 TiFlash 实例。以下例子中 `tikv-n` 代表第 n 个 TiKV 节点的 IP 地址，`tiflash-n` 代表第 n 个 TiFlash 节点的 IP 地址。
+下面的例子定义了 `zone` 和 `host` 两层拓扑结构。集群的 TiKV 和 TiFlash 分布在三个 zone，z1、z2 和 z3。每个 zone 内有四台主机，z1 两台主机分别部署两个 TiKV 实例，另外两台分别部署一个 TiFlash 实例，z2 和 z3 其中两台主机分别部署一个 TiKV 实例，另外两台分别部署一个 TiFlash 实例。以下例子中 `tikv-host-machine-n` 代表第 n 个 TiKV 节点的 IP 地址，`tiflash-host-machine-n` 代表第 n 个 TiFlash 节点的 IP 地址。
 
 ```
 server_configs:
@@ -144,56 +144,56 @@ server_configs:
 
 tikv_servers:
 # z1
-  - host: tikv-1
+  - host: tikv-host-machine-1
     port：20160
     config:
       server.labels:
         zone: z1
         host: tikv-host-machine-1
-  - host: tikv-1
+  - host: tikv-host-machine-1
     port：20161
     config:
       server.labels:
         zone: z1
         host: tikv-host-machine-1
-  - host: tikv-2
+  - host: tikv-host-machine-2
     port：20160
     config:
       server.labels:
         zone: z1
         host: tikv-host-machine-2
-  - host: tikv-2
+  - host: tikv-host-machine-2
     port：20161
     config:
       server.labels:
         zone: z1
         host: tikv-host-machine-2
 # z2
-  - host: tikv-5
+  - host: tikv-host-machine-3
     config:
       server.labels:
         zone: z2
-        host: h1
-  - host: tikv-6
+        host: tikv-host-machine-3
+  - host: tikv-host-machine-3
     config:
       server.labels:
         zone: z2
-        host: tikv-host-machine-2
+        host: tikv-host-machine-3
 # z3
-  - host: tikv-7
+  - host: tikv-host-machine-4
     config:
       server.labels:
         zone: z3
-        host: tikv-host-machine-1
-  - host: tikv-8
+        host: tikv-host-machine-4
+  - host: tikv-host-machine-4
     config:
       server.labels:
         zone: z3
-        host: tikv-host-machine-2
+        host: tikv-host-machine-4
 
 tiflash_servers:
 # z1
-  - host: tiflash-1
+  - host: tiflash-host-machine-1
     learner_config:
       server.labels:
         zone: z1
@@ -204,27 +204,27 @@ tiflash_servers:
         zone: z1
         host: tiflash-host-machine-2
 # z2
-  - host: tiflash-3
+  - host: tiflash-host-machine-3
     learner_config:
       server.labels:
         zone: z2
-        host: tiflash-host-machine-1
-  - host: tiflash-4
+        host: tiflash-host-machine-3
+  - host: tiflash-host-machine-4
     learner_config:
       server.labels:
         zone: z2
-        host: tiflash-host-machine-2
+        host: tiflash-host-machine-4
 # z3
-  - host: tiflash-5
+  - host: tiflash-host-machine-5
     learner_config:
       server.labels:
         zone: z3
-        host: tiflash-host-machine-1
-  - host: tiflash-6
+        host: tiflash-host-machine-5
+  - host: tiflash-host-machine-6
     learner_config:
       server.labels:
         zone: z3
-        host: tiflash-host-machine-2
+        host: tiflash-host-machine-6
 ```
 
 详情参阅 [TiUP 跨数据中心部署拓扑](/geo-distributed-deployment-topology.md)。
