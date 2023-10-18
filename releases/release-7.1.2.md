@@ -44,7 +44,7 @@ TiDB 版本：7.1.2
 
 + TiFlash
 
-    - note [#issue](https://github.com/pingcap/tiflash/issues/${issue-id}) @[贡献者 GitHub ID](https://github.com/${github-id})
+    - 添加索引数据内存使用的监控 [#8050](https://github.com/pingcap/tiflash/issues/8050) @[hongyunyan](https://github.com/hongyunyan)
 
 + Tools
 
