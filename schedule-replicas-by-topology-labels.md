@@ -144,6 +144,7 @@ server_configs:
 
 tikv_servers:
 # z1
+  # machine-1 on z1
   - host: tikv-host-machine-1
     port：20160
     config:
@@ -156,6 +157,7 @@ tikv_servers:
       server.labels:
         zone: z1
         host: tikv-host-machine-1
+  # machine-2 on z1
   - host: tikv-host-machine-2
     port：20160
     config:
@@ -174,22 +176,22 @@ tikv_servers:
       server.labels:
         zone: z2
         host: tikv-host-machine-3
-  - host: tikv-host-machine-3
+  - host: tikv-host-machine-4
     config:
       server.labels:
         zone: z2
-        host: tikv-host-machine-3
+        host: tikv-host-machine-4
 # z3
-  - host: tikv-host-machine-4
+  - host: tikv-host-machine-5
     config:
       server.labels:
         zone: z3
-        host: tikv-host-machine-4
-  - host: tikv-host-machine-4
+        host: tikv-host-machine-5
+  - host: tikv-host-machine-6
     config:
       server.labels:
         zone: z3
-        host: tikv-host-machine-4
+        host: tikv-host-machine-6
 
 tiflash_servers:
 # z1
@@ -198,7 +200,7 @@ tiflash_servers:
       server.labels:
         zone: z1
         host: tiflash-host-machine-1
-  - host: tiflash-2
+  - host: tiflash-host-machine-2
     learner_config:
       server.labels:
         zone: z1
