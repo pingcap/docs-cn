@@ -150,25 +150,25 @@ tikv_servers:
     config:
       server.labels:
         zone: z1
-        host: h1
+        host: tikv-host-machine-1
    - host: tikv-1
      port：20161
     config:
       server.labels:
         zone: z1
-        host: h1
+        host: tikv-host-machine-1
   - host: tikv-2
     port：20160
     config:
       server.labels:
         zone: z1
-        host: h2
+        host: tikv-host-machine-2
   - host: tikv-2
     port：20161
     config:
       server.labels:
         zone: z1
-        host: h2
+        host: tikv-host-machine-2
 # z2
   - host: tikv-5
     config:
@@ -179,18 +179,18 @@ tikv_servers:
     config:
       server.labels:
         zone: z2
-        host: h2
+        host: tikv-host-machine-2
 # z3
   - host: tikv-7
     config:
       server.labels:
         zone: z3
-        host: h1
+        host: tikv-host-machine-1
   - host: tikv-8
     config:
       server.labels:
         zone: z3
-        host: h2
+        host: tikv-host-machine-2
 
 tiflash_servers:
 # z1
@@ -198,34 +198,34 @@ tiflash_servers:
     learner_config:
       server.labels:
         zone: z1
-        host: h3
+        host: tiflash-host-machine-1
    - host: tiflash-2
     learner_config:
       server.labels:
         zone: z1
-        host: h4
+        host: tiflash-host-machine-2
 # z2
   - host: tiflash-3
     learner_config:
       server.labels:
         zone: z2
-        host: h3
+        host: tiflash-host-machine-1
    - host: tiflash-4
     learner_config:
       server.labels:
         zone: z2
-        host: h4
+        host: tiflash-host-machine-2
 # z3
   - host: tiflash-5
     learner_config:
       server.labels:
         zone: z3
-        host: h3
+        host: tiflash-host-machine-1
   - host: tiflash-6
     learner_config:
       server.labels:
         zone: z3
-        host: h4
+        host: tiflash-host-machine-2
 ```
 
 详情参阅 [TiUP 跨数据中心部署拓扑](/geo-distributed-deployment-topology.md)。
