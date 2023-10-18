@@ -32,7 +32,7 @@ DM-worker 内部用于读取上游 Binlog 或本地 Relay log 并迁移到下游
 
 ### Block & allow table list
 
-针对上游数据库实例表的黑白名单过滤功能，具体可参考 [Block & Allow Table Lists](/dm/dm-block-allow-table-lists.md)。该功能与 [MySQL Replication Filtering](https://dev.mysql.com/doc/refman/5.6/en/replication-rules.html) 及 [MariaDB Replication Filters](https://mariadb.com/kb/en/library/replication-filters/) 类似。
+针对上游数据库实例表的黑白名单过滤功能，具体可参考 [Block & Allow Table Lists](/dm/dm-block-allow-table-lists.md)。该功能与 [MySQL Replication Filtering](https://dev.mysql.com/doc/refman/8.0/en/replication-rules.html) 及 [MariaDB Replication Filters](https://mariadb.com/kb/en/library/replication-filters/) 类似。
 
 ## C
 
@@ -63,7 +63,7 @@ DM-worker 内部用于从上游导出全量数据的处理单元，每个 Subtas
 
 ### GTID
 
-MySQL/MariaDB 的全局事务 ID，当启用该功能后会在 Binlog 文件中记录 GTID 相关信息，多个 GTID 即组成为 GTID Set，具体请参考 [MySQL GTID Format and Storage](https://dev.mysql.com/doc/refman/5.7/en/replication-gtids-concepts.html) 与 [MariaDB Global Transaction ID](https://mariadb.com/kb/en/library/gtid/)。
+MySQL/MariaDB 的全局事务 ID，当启用该功能后会在 Binlog 文件中记录 GTID 相关信息，多个 GTID 即组成为 GTID Set，具体请参考 [MySQL GTID Format and Storage](https://dev.mysql.com/doc/refman/8.0/en/replication-gtids-concepts.html) 与 [MariaDB Global Transaction ID](https://mariadb.com/kb/en/library/gtid/)。
 
 ## L
 
@@ -83,7 +83,7 @@ DM-worker 内部用于将全量导出数据导入到下游的处理单元，每�
 
 ### Relay log
 
-DM-worker 从上游 MySQL/MariaDB 拉取 Binlog 后存储在本地的文件，当前其格式为标准的 Binlog 格式，可使用版本兼容的 [mysqlbinlog](https://dev.mysql.com/doc/refman/8.0/en/mysqlbinlog.html) 等工具进行解析。其作用与 [MySQL Relay Log](https://dev.mysql.com/doc/refman/5.7/en/replica-logs-relaylog.html) 及 [MariaDB Relay Log](https://mariadb.com/kb/en/library/relay-log/) 相近。
+DM-worker 从上游 MySQL/MariaDB 拉取 Binlog 后存储在本地的文件，当前其格式为标准的 Binlog 格式，可使用版本兼容的 [mysqlbinlog](https://dev.mysql.com/doc/refman/8.0/en/mysqlbinlog.html) 等工具进行解析。其作用与 [MySQL Relay Log](https://dev.mysql.com/doc/refman/8.0/en/replica-logs-relaylog.html) 及 [MariaDB Relay Log](https://mariadb.com/kb/en/library/relay-log/) 相近。
 
 有关 TiDB DM 内 Relay log 的目录结构、初始迁移规则、数据清理等内容，可参考 [TiDB DM Relay Log](/dm/relay-log.md)。
 

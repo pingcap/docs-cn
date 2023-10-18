@@ -81,10 +81,10 @@ TiDB 是一个分布式系统。最基础的 TiDB 测试集群通常由 2 个 Ti
         {{< copyable "shell-regular" >}}
 
         ```shell
-        tiup playground v7.3.0 --db 2 --pd 3 --kv 3
+        tiup playground v7.4.0 --db 2 --pd 3 --kv 3
         ```
 
-        上述命令会在本地下载并启动某个版本的集群（例如 v7.3.0）。最新版本可以通过执行 `tiup list tidb` 来查看。运行结果将显示集群的访问方式：
+        上述命令会在本地下载并启动某个版本的集群（例如 v7.4.0）。最新版本可以通过执行 `tiup list tidb` 来查看。运行结果将显示集群的访问方式：
 
         ```log
         CLUSTER START SUCCESSFULLY, Enjoy it ^-^
@@ -198,10 +198,10 @@ TiDB 是一个分布式系统。最基础的 TiDB 测试集群通常由 2 个 Ti
         {{< copyable "shell-regular" >}}
 
         ```shell
-        tiup playground v7.3.0 --db 2 --pd 3 --kv 3
+        tiup playground v7.4.0 --db 2 --pd 3 --kv 3
         ```
 
-        上述命令会在本地下载并启动某个版本的集群（例如 v7.3.0）。最新版本可以通过执行 `tiup list tidb` 来查看。运行结果将显示集群的访问方式：
+        上述命令会在本地下载并启动某个版本的集群（例如 v7.4.0）。最新版本可以通过执行 `tiup list tidb` 来查看。运行结果将显示集群的访问方式：
 
         ```log
         CLUSTER START SUCCESSFULLY, Enjoy it ^-^
@@ -270,12 +270,12 @@ TiDB 是一个分布式系统。最基础的 TiDB 测试集群通常由 2 个 Ti
 
 ### 准备环境
 
-准备一台部署主机，确保其软件满足需求：
+开始部署 TiDB 集群前，准备一台部署主机，确保其软件满足需求：
 
 - 推荐安装 CentOS 7.3 及以上版本
 - 运行环境可以支持互联网访问，用于下载 TiDB 及相关软件安装包
 
-最小规模的 TiDB 集群拓扑：
+最小规模的 TiDB 集群拓扑包含以下实例：
 
 > **注意：**
 >
@@ -289,7 +289,7 @@ TiDB 是一个分布式系统。最基础的 TiDB 测试集群通常由 2 个 Ti
 | TiFlash | 1 | 10.0.1.1 | 默认端口 <br/> 全局目录配置 |
 | Monitor | 1 | 10.0.1.1 | 默认端口 <br/> 全局目录配置 |
 
-部署主机软件和环境要求：
+部署主机软件和环境要求如下：
 
 - 部署需要使用部署主机的 root 用户及密码
 - 部署主机[关闭防火墙](/check-before-deployment.md#检测及关闭目标部署机器的防火墙)或者开放 TiDB 集群的节点间所需端口
@@ -432,7 +432,7 @@ TiDB 是一个分布式系统。最基础的 TiDB 测试集群通常由 2 个 Ti
     ```
 
     - 参数 `<cluster-name>` 表示设置集群名称
-    - 参数 `<version>` 表示设置集群版本，例如 `v7.3.0`。可以通过 `tiup list tidb` 命令来查看当前支持部署的 TiDB 版本
+    - 参数 `<version>` 表示设置集群版本，例如 `v7.4.0`。可以通过 `tiup list tidb` 命令来查看当前支持部署的 TiDB 版本
     - 参数 `-p` 表示在连接目标机器时使用密码登录
 
         > **注意：**
@@ -492,14 +492,17 @@ TiDB 是一个分布式系统。最基础的 TiDB 测试集群通常由 2 个 Ti
 
 ## 探索更多
 
-- 如果你刚刚部署好一套 TiDB 本地测试集群：
-    - 学习 [TiDB SQL 操作](/basic-sql-operations.md)
-    - [迁移数据到 TiDB](/migration-overview.md)
+如果你刚刚部署好一套 TiDB 本地测试集群，你可以继续：
 
-- 如果你准备好在生产环境部署 TiDB 了：
-    - 在线部署：[使用 TiUP 部署 TiDB 集群](/production-deployment-using-tiup.md)
-    - [使用 TiDB Operator 在云上部署 TiDB](https://docs.pingcap.com/zh/tidb-in-kubernetes/stable)
+- 学习 [TiDB SQL 操作](/basic-sql-operations.md)
+- [迁移数据到 TiDB](/migration-overview.md)
 
-- 如果你想使用 TiFlash 作为数据分析的解决方案，可参阅以下文档：
-    - [使用 TiFlash](/tiflash/tiflash-overview.md#使用-tiflash)
-    - [TiFlash 简介](/tiflash/tiflash-overview.md)
+如果你准备好在生产环境部署 TiDB，你可以继续：
+
+- [使用 TiUP 部署 TiDB 集群](/production-deployment-using-tiup.md)
+- [使用 TiDB Operator 在 Kubernetes 上部署 TiDB](https://docs.pingcap.com/zh/tidb-in-kubernetes/stable)
+
+如果你想使用 TiFlash 作为数据分析的解决方案，可参阅以下文档：
+
+- [使用 TiFlash](/tiflash/tiflash-overview.md#使用-tiflash)
+- [TiFlash 简介](/tiflash/tiflash-overview.md)

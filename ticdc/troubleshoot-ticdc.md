@@ -102,29 +102,6 @@ Warning: Unable to load '/usr/share/zoneinfo/zone1970.tab' as time zone. Skippin
 4. 修改 changefeed 配置，将上述 `start-ts` 添加到 `ignore-txn-start-ts` 配置项中。
 5. 恢复被暂停的 changefeed。
 
-## TiCDC 集群升级到 v4.0.8 之后，changefeed 报错 `[CDC:ErrKafkaInvalidConfig]Canal requires old value to be enabled`，为什么？
-
-自 v4.0.8 起，如果 changefeed 使用 `canal-json`、`canal` 或者 `maxwell` 协议输出，TiCDC 会自动开启 Old Value 功能。但是，当 TiCDC 是从较旧版本升级到 v4.0.8 或以上版本时，在 changefeed 使用 `canal-json`、`canal` 或 `maxwell` 协议的同时 TiCDC 的 Old Value 功能会被禁用。此时，会出现该报错。可以按照以下步骤解决该报错：
-
-1. 将 changefeed 配置文件中 `enable-old-value` 的值设为 `true`。
-2. 使用 `cdc cli changefeed pause` 暂停同步任务。
-
-    ```shell
-    cdc cli changefeed pause -c test-cf --server=http://127.0.0.1:8300
-    ```
-
-3. 使用 `cdc cli changefeed update` 更新原有 changefeed 的配置。
-
-    ```shell
-    cdc cli changefeed update -c test-cf --server=http://127.0.0.1:8300 --sink-uri="mysql://127.0.0.1:3306/?max-txn-row=20&worker-number=8" --config=changefeed.toml
-    ```
-
-4. 使用 `cdc cli changefeed resume` 恢复同步任务。
-
-    ```shell
-    cdc cli changefeed resume -c test-cf --server=http://127.0.0.1:8300
-    ```
-
 ## 使用 TiCDC 创建 changefeed 时报错 `[tikv:9006]GC life time is shorter than transaction duration, transaction starts at xx, GC safe point is yy`，该如何处理？
 
 执行 `pd-ctl service-gc-safepoint --pd <pd-addrs>` 命令查询当前的 GC safepoint 与 service GC safepoint。如果 GC safepoint 小于 TiCDC changefeed 同步任务的开始时间戳 `start-ts`，可以直接在 `cdc cli create changefeed` 命令后加上 `--disable-gc-check` 参数创建 changefeed。

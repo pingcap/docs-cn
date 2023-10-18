@@ -145,6 +145,7 @@ br backup full\
 ```shell
 br restore full \
     --pd "${PD_IP}:2379" \
+    --with-sys-table \
     --storage "s3://${backup_collection_addr}/snapshot-${date}?access-key=${access-key}&secret-access-key=${secret-access-key}" \
     --ratelimit 128 \
     --log-file restorefull.log
@@ -152,8 +153,9 @@ br restore full \
 
 以上命令中，
 
-- `--ratelimit`：**每个 TiKV** 执行恢复任务的速度上限（单位 MiB/s）
-- `--log-file`：备份日志写入的目标文件
+- `--with-sys-table`：恢复集群数据的同时恢复**部分系统表**的数据，包括恢复账号权限数据和 SQL Binding 信息，但暂不支持恢复统计信息 (`mysql.stat_*`) 和系统参数 (`mysql.tidb`, `mysql.global_variables`) 等信息，更多信息详见[恢复 `mysql` 数据库下的表](/br/br-snapshot-guide.md#恢复-mysql-数据库下的表)。
+- `--ratelimit`：**每个 TiKV** 执行恢复任务的速度上限（单位 MiB/s）。
+- `--log-file`：备份日志写入的目标文件。
 
 恢复期间终端会显示进度条，效果如下。当进度条达到 100% 时，表示恢复完成。在完成恢复后，br 工具为了确保数据安全性，还会校验恢复数据。
 
