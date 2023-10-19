@@ -19,16 +19,12 @@ TiDB 版本：7.1.2
 
 + TiDB
 
-    - note [#issue](https://github.com/pingcap/tidb/issues/${issue-id}) @[贡献者 GitHub ID](https://github.com/${github-id})
-    - note [#issue](https://github.com/pingcap/tidb/issues/${issue-id}) @[贡献者 GitHub ID](https://github.com/${github-id})
     - (dup): release-6.5.5.md > 改进提升> TiDB - 添加 coprocessor 相关的 request source 信息 [#46514](https://github.com/pingcap/tidb/issues/46514) @[you06](https://github.com/you06)
     - 修复 client-go 中 batch-client panic 的问题 [#47691](https://github.com/pingcap/tidb/issues/47691) @[crazycs520](https://github.com/crazycs520)
-- 增加 /upgrade/start 和 upgrade/finish APIs 用户来标记集群 TiDB 节点开始进入升级状态和结束升级状态[#47172](https://github.com/pingcap/tidb/issues/47172)@@[zimulala](https://github.com/zimulala)
+    - 增加 /upgrade/start 和 upgrade/finish APIs 用户来标记集群 TiDB 节点开始进入升级状态和结束升级状态[#47172](https://github.com/pingcap/tidb/issues/47172)@@[zimulala](https://github.com/zimulala)
 
 + TiKV
 
-    - note [#issue](https://github.com/tikv/tikv/issues/${issue-id}) @[贡献者 GitHub ID](https://github.com/${github-id})
-    - note [#issue](https://github.com/tikv/tikv/issues/${issue-id}) @[贡献者 GitHub ID](https://github.com/${github-id})
     - (dup): release-6.5.5.md > 改进提升> TiKV - 优化数据整理检查机制，当触发 Region Split 时，如果没有可以分裂的 key，触发一次数据整理，以消除过多的 MVCC 版本 [#15282](https://github.com/tikv/tikv/issues/15282) @[SpadeA-Tang](https://github.com/SpadeA-Tang)
     - (dup): release-7.4.0.md > 改进提升> TiKV - 消除 Router 对象中的 LRUCache，降低内存占用，防止 OOM [#15430](https://github.com/tikv/tikv/issues/15430) @[Connor1996](https://github.com/Connor1996)
     - (dup): release-7.3.0.md > 改进提升> TiKV - 添加 `Max gap of safe-ts` 和 `Min safe ts region` 监控项以及 `tikv-ctl get_region_read_progress` 命令，用于更好地观测和诊断 resolved-ts 和 safe-ts 的状态 [#15082](https://github.com/tikv/tikv/issues/15082) @[ekexium](https://github.com/ekexium)
@@ -39,10 +35,8 @@ TiDB 版本：7.1.2
 
 + PD
 
-- 优化 PD 调用方 backoff 机制，减少在调用失败时的 RPC 请求频率 [#6556](https://github.com/tikv/pd/issues/6556) @[nolouch](https://github.com/nolouch) @[rleungx](https://github.com/rleungx) @[HuSharp](https://github.com/HuSharp)
-- 增加 Region 获取接口的 Cancel 机制，在调用方断连时及时释放 CPU、内存资源 [#6835](https://github.com/tikv/pd/issues/6835) @[lhy1024](https://github.com/lhy1024)
-    - note [#issue](https://github.com/tikv/pd/issues/${issue-id}) @[贡献者 GitHub ID](https://github.com/${github-id})
-    - note [#issue](https://github.com/tikv/pd/issues/${issue-id}) @[贡献者 GitHub ID](https://github.com/${github-id})
+    - 优化 PD 调用方 backoff 机制，减少在调用失败时的 RPC 请求频率 [#6556](https://github.com/tikv/pd/issues/6556) @[nolouch](https://github.com/nolouch) @[rleungx](https://github.com/rleungx) @[HuSharp](https://github.com/HuSharp)
+    - 增加 Region 获取接口的 Cancel 机制，在调用方断连时及时释放 CPU、内存资源 [#6835](https://github.com/tikv/pd/issues/6835) @[lhy1024](https://github.com/lhy1024)
     - (dup): release-7.3.0.md > 改进提升> PD - 减少 `GetRegions` 请求的内存占用 [#6835](https://github.com/tikv/pd/issues/6835) @[lhy1024](https://github.com/lhy1024)
 
 + TiFlash
@@ -61,12 +55,7 @@ TiDB 版本：7.1.2
     + TiCDC
 
         - 优化 TiCDC 部分监控项和报警项 [#9047](https://github.com/pingcap/tiflow/issues/9047)
-        - 修复处于异常状态的同步任务阻塞上游 GC 的问题 [#9543](https://github.com/pingcap/tiflow/issues/9543)
-        - 修复同步到对象存储时，在某些特殊场景下可能导致数据不一致的问题[#9592](https://github.com/pingcap/tiflow/issues/9592)
-        - 修复开启 redo 时，在某些特殊场景下可能导致 changefeed 失败的问题 [#9769](https://github.com/pingcap/tiflow/issues/9769)
         - 优化 Kafka 场景下，当消息过大时只发送 handle key 避免同步任务失败的问题 [#9680](https://github.com/pingcap/tiflow/issues/9680)
-        - 修复在某些特殊的操作系统下，获取内存信息不对可能会导致 TiCDC 节点 OOM 的问题  [#9762](https://github.com/pingcap/tiflow/issues/9762)
-        - note [#issue](https://github.com/pingcap/tiflow/issues/${issue-id}) @[贡献者 GitHub ID](https://github.com/${github-id})
         - (dup): release-7.4.0.md > 改进提升> Tools> TiCDC - 优化同步 `ADD INDEX` DDL 的执行逻辑，从而不阻塞后续的 DML 语句 [#9644](https://github.com/pingcap/tiflow/issues/9644) @[sdojjy](https://github.com/sdojjy)
         - (dup): release-6.5.4.md > 改进提升> Tools> TiCDC - 优化 TiCDC 在故障重试时的状态展示信息 [#9483](https://github.com/pingcap/tiflow/issues/9483) @[asddongmen](https://github.com/asddongmen)
 
@@ -101,8 +90,6 @@ TiDB 版本：7.1.2
 
 + TiDB
 
-    - 修复 Sort 算子在 Spill 时可能发生的 Crash [#47538](https://github.com/pingcap/tidb/issues/47538) @[windtalker](https://github.com/windtalker)
-    - note [#issue](https://github.com/pingcap/tidb/issues/${issue-id}) @[贡献者 GitHub ID](https://github.com/${github-id})
     - (dup): release-7.4.0.md > 错误修复> TiDB - 修复 `group_concat` 无法解析 `ORDER BY` 列的问题 [#41986](https://github.com/pingcap/tidb/issues/41986) @[AilinKid](https://github.com/AilinKid)
     - (dup): release-7.3.0.md > 错误修复> TiDB - 修复某些情况下查询系统表 `INFORMATION_SCHEMA.TIKV_REGION_STATUS` 返回结果错误的问题 [#45531](https://github.com/pingcap/tidb/issues/45531) @[Defined2014](https://github.com/Defined2014)
     - (dup): release-7.3.0.md > 错误修复> TiDB - 修复读取元数据时间超过一个 DDL lease 导致升级 TiDB 卡住的问题 [#45176](https://github.com/pingcap/tidb/issues/45176) @[zimulala](https://github.com/zimulala)
@@ -126,6 +113,7 @@ TiDB 版本：7.1.2
     - (dup): release-7.4.0.md > 错误修复> TiDB - 修复 TiDB parser 状态残留导致解析失败的问题 [#45898](https://github.com/pingcap/tidb/issues/45898) @[qw4990](https://github.com/qw4990)
     - (dup): release-7.4.0.md > 错误修复> TiDB - 修复 MPP 执行计划中通过 Union 下推 Aggregation 导致的结果错误 [#45850](https://github.com/pingcap/tidb/issues/45850) @[AilinKid](https://github.com/AilinKid)
     - (dup): release-7.4.0.md > 错误修复> TiDB - 修复 `AUTO_ID_CACHE=1` 时 TiDB panic 后恢复过慢的问题 [#46454](https://github.com/pingcap/tidb/issues/46454) @[tiancaiamao](https://github.com/tiancaiamao)
+    - 修复 Sort 算子在 Spill 时可能发生的 Crash [#47538](https://github.com/pingcap/tidb/issues/47538) @[windtalker](https://github.com/windtalker)
     - 修复使用 BR 恢复 `AUTO_ID_CACHE=1` 的非聚簇索引表时发生重复主键的问题 [#46093](https://github.com/pingcap/tidb/issues/46093) @[tiancaiamao](https://github.com/tiancaiamao)
     - 修复在静态分区裁剪模式下查询分区表且查询计划中带有 `IndexLookUp` 时可能报错的问题 [#45757](https://github.com/pingcap/tidb/issues/45757) @[Defined2014](https://github.com/Defined2014)
     - 修复在分区表与有 Placement Policy 的表进行分区交换后再往分区表中插入数据可能失败的问题 [#45791](https://github.com/pingcap/tidb/issues/45791) @[mjonss ](https://github.com/mjonss)
@@ -152,25 +140,24 @@ TiDB 版本：7.1.2
     - (dup): release-6.5.4.md > 错误修复> TiKV - 减少 Store 心跳重试次数，修复心跳风暴的问题 [#15184](https://github.com/tikv/tikv/issues/15184) @[nolouch](https://github.com/nolouch)
     - (dup): release-7.4.0.md > 错误修复> TiKV - 修复 Online Unsafe Recovery 超时未中止的问题 [#15346](https://github.com/tikv/tikv/issues/15346) @[Connor1996](https://github.com/Connor1996)
     - (dup): release-6.5.4.md > 错误修复> TiKV - 修复部分写入时加密可能导致数据损坏的问题 [#15080](https://github.com/tikv/tikv/issues/15080) @[tabokie](https://github.com/tabokie)
- - 修复由于 Region 的元数据不正确造成 TiKV panic 的问题 [#13311](https://github.com/tikv/tikv/issues/13311)@[cfzjywxk](https://github.com/cfzjywxk))
- - 使用请求中的deadline字段作为coprocessor请求的超时时间 [#15565](https://github.com/tikv/tikv/issues/15565) @[lance6716](https://github.com/lance6716)
- - 修复一个可能在移动peer时使得follower read性能变差的缺陷. [#15468](https://github.com/tikv/tikv/issues/15468) @[YuJuncen](https://github.com/YuJuncen)
+    - 修复由于 Region 的元数据不正确造成 TiKV panic 的问题 [#13311](https://github.com/tikv/tikv/issues/13311)@[cfzjywxk](https://github.com/cfzjywxk))
+    - 使用请求中的deadline字段作为coprocessor请求的超时时间 [#15565](https://github.com/tikv/tikv/issues/15565) @[lance6716](https://github.com/lance6716)
+    - 修复一个可能在移动peer时使得follower read性能变差的缺陷. [#15468](https://github.com/tikv/tikv/issues/15468) @[YuJuncen](https://github.com/YuJuncen)
+
 + PD
 
-- 修复 Hot Region 在 V2 策略下可能不调度的问题 [#6645](https://github.com/tikv/pd/issues/6645) @[lhy1024](https://github.com/lhy1024)
-- 修复空集群下 TLS 握手导致 CPU 资源消耗过高的问题 [#6913](https://github.com/tikv/pd/issues/6913) @[nolouch](https://github.com/nolouch)
-- 修复 PD 节点间注入错误可能导致 PD Panic 的问题 [#6858](https://github.com/tikv/pd/issues/6858) @[HuSharp](https://github.com/HuSharp)
-- 修复 Store 信息同步可能导致 PD Leader 退出卡住的问题 [#6918](https://github.com/tikv/pd/issues/6918) @[rleungx](https://github.com/rleungx)
-- 修复 flashback 后 Region 信息没有更新的问题 [#6912](https://github.com/tikv/pd/issues/6912) @[overvenus](https://github.com/overvenus)
-- 修复 PD 退出时可能 Panic 的问题 [#7053](https://github.com/tikv/pd/issues/7053) @[HuSharp](https://github.com/HuSharp) 
-- 修复 Context Timeout 可能导致 Lease Timeout 的问题 [#6926](https://github.com/tikv/pd/issues/6926) @[rleungx](https://github.com/rleungx)
-- 修复 Peer 没有按照 Group 进行 Scatter 的问题，可能会导致 Scatter 不均衡 [#6962](https://github.com/tikv/pd/issues/6962) @[rleungx](https://github.com/rleungx)
-- 修复 pd-ctl 更新 Isolation Level 标签不同步的问题 [#7121](https://github.com/tikv/pd/issues/7121) @[rleungx](https://github.com/rleungx)
-- 修复 evict-leader-scheduler 丢失配置的问题 [#6897](https://github.com/tikv/pd/issues/6897) @[HuSharp](https://github.com/HuSharp)  
-- 修复 Plugin 目录、文件内容可能存在安全隐患的问题 [#7094](https://github.com/tikv/pd/issues/7094) @[HuSharp](https://github.com/HuSharp)
-- 修复开启 Resource Control 后 DDL 可能不能保证原子性的问题 [#45050](https://github.com/pingcap/tidb/issues/45050) @[glorv](https://github.com/glorv)
-    - note [#issue](https://github.com/tikv/pd/issues/${issue-id}) @[贡献者 GitHub ID](https://github.com/${github-id})
-    - note [#issue](https://github.com/tikv/pd/issues/${issue-id}) @[贡献者 GitHub ID](https://github.com/${github-id})
+    - 修复 Hot Region 在 V2 策略下可能不调度的问题 [#6645](https://github.com/tikv/pd/issues/6645) @[lhy1024](https://github.com/lhy1024)
+    - 修复空集群下 TLS 握手导致 CPU 资源消耗过高的问题 [#6913](https://github.com/tikv/pd/issues/6913) @[nolouch](https://github.com/nolouch)
+    - 修复 PD 节点间注入错误可能导致 PD Panic 的问题 [#6858](https://github.com/tikv/pd/issues/6858) @[HuSharp](https://github.com/HuSharp)
+    - 修复 Store 信息同步可能导致 PD Leader 退出卡住的问题 [#6918](https://github.com/tikv/pd/issues/6918) @[rleungx](https://github.com/rleungx)
+    - 修复 flashback 后 Region 信息没有更新的问题 [#6912](https://github.com/tikv/pd/issues/6912) @[overvenus](https://github.com/overvenus)
+    - 修复 PD 退出时可能 Panic 的问题 [#7053](https://github.com/tikv/pd/issues/7053) @[HuSharp](https://github.com/HuSharp) 
+    - 修复 Context Timeout 可能导致 Lease Timeout 的问题 [#6926](https://github.com/tikv/pd/issues/6926) @[rleungx](https://github.com/rleungx)
+    - 修复 Peer 没有按照 Group 进行 Scatter 的问题，可能会导致 Scatter 不均衡 [#6962](https://github.com/tikv/pd/issues/6962) @[rleungx](https://github.com/rleungx)
+    - 修复 pd-ctl 更新 Isolation Level 标签不同步的问题 [#7121](https://github.com/tikv/pd/issues/7121) @[rleungx](https://github.com/rleungx)
+    - 修复 evict-leader-scheduler 丢失配置的问题 [#6897](https://github.com/tikv/pd/issues/6897) @[HuSharp](https://github.com/HuSharp)
+    - 修复 Plugin 目录、文件内容可能存在安全隐患的问题 [#7094](https://github.com/tikv/pd/issues/7094) @[HuSharp](https://github.com/HuSharp)
+    - 修复开启 Resource Control 后 DDL 可能不能保证原子性的问题 [#45050](https://github.com/pingcap/tidb/issues/45050) @[glorv](https://github.com/glorv)
     - (dup): release-7.3.0.md > 错误修复> PD - 修复在 rule checker 选定 peer 时，unhealthy peer 无法被移除的问题 [#6559](https://github.com/tikv/pd/issues/6559) @[nolouch](https://github.com/nolouch)
     - (dup): release-7.3.0.md > 错误修复> PD - 修复当 etcd 已经启动，但 client 尚未连接上 etcd 时，调用 client 会导致 PD panic 的问题 [#6860](https://github.com/tikv/pd/issues/6860) @[HuSharp](https://github.com/HuSharp)
     - (dup): release-7.4.0.md > 错误修复> PD - 修复 RU 消耗小于 0 导致 PD 崩溃的问题 [#6973](https://github.com/tikv/pd/issues/6973) @[CabinfeverB](https://github.com/CabinfeverB)
@@ -178,7 +165,6 @@ TiDB 版本：7.1.2
 
 + TiFlash
 
-    - note [#issue](https://github.com/pingcap/tiflash/issues/${issue-id}) @[贡献者 GitHub ID](https://github.com/${github-id})
     - 修复内存使用跟踪不准确的问题 [#8128](https://github.com/pingcap/tiflash/issues/8128) @[JinheLin](https://github.com/JinheLin)
     - (dup): release-6.5.4.md > 错误修复> TiFlash - 修复由于 Region 的边界的 Key 不合法导致 TiFlash 数据不一致的问题 [#7762](https://github.com/pingcap/tiflash/issues/7762) @[lidezhu](https://github.com/lidezhu)
     - (dup): release-6.5.4.md > 错误修复> TiFlash - 修复在更改 `DATETIME`、`TIMESTAMP`、`TIME` 数据类型的 `fsp` 之后查询失败的问题 [#7809](https://github.com/pingcap/tiflash/issues/7809) @[JaySon-Huang](https://github.com/JaySon-Huang)
@@ -199,8 +185,10 @@ TiDB 版本：7.1.2
 
     + TiCDC
 
-        - note [#issue](https://github.com/pingcap/tiflow/issues/${issue-id}) @[贡献者 GitHub ID](https://github.com/${github-id})
-        - note [#issue](https://github.com/pingcap/tiflow/issues/${issue-id}) @[贡献者 GitHub ID](https://github.com/${github-id})
+        - 修复处于异常状态的同步任务阻塞上游 GC 的问题 [#9543](https://github.com/pingcap/tiflow/issues/9543)
+        - 修复同步到对象存储时，在某些特殊场景下可能导致数据不一致的问题[#9592](https://github.com/pingcap/tiflow/issues/9592)
+        - 修复开启 redo 时，在某些特殊场景下可能导致 changefeed 失败的问题 [#9769](https://github.com/pingcap/tiflow/issues/9769)
+        - 修复在某些特殊的操作系统下，获取内存信息不对可能会导致 TiCDC 节点 OOM 的问题  [#9762](https://github.com/pingcap/tiflow/issues/9762)
         - (dup): release-7.4.0.md > 错误修复> Tools> TiCDC - 修复开启 `scale-out` 时流量在节点间分配不均匀问题 [#9665](https://github.com/pingcap/tiflow/issues/9665) @[sdojjy](https://github.com/sdojjy)
         - (dup): release-7.4.0.md > 错误修复> Tools> TiCDC - 修复日志中记录了用户敏感信息的问题 [#9690](https://github.com/pingcap/tiflow/issues/9690) @[sdojjy](https://github.com/sdojjy)
         - (dup): release-6.5.4.md > 错误修复> Tools> TiCDC - 修复可能无法正确同步 rename DDL 操作的问题 [#9488](https://github.com/pingcap/tiflow/issues/9488) [#9378](https://github.com/pingcap/tiflow/issues/9378) [#9531](https://github.com/pingcap/tiflow/issues/9531) @[asddongmen](https://github.com/asddongmen)
