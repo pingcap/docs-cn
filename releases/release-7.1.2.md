@@ -23,6 +23,7 @@ TiDB 版本：7.1.2
     - note [#issue](https://github.com/pingcap/tidb/issues/${issue-id}) @[贡献者 GitHub ID](https://github.com/${github-id})
     - (dup): release-6.5.5.md > 改进提升> TiDB - 添加 coprocessor 相关的 request source 信息 [#46514](https://github.com/pingcap/tidb/issues/46514) @[you06](https://github.com/you06)
     - 修复 client-go 中 batch-client panic 的问题 [#47691](https://github.com/pingcap/tidb/issues/47691) @[crazycs520](https://github.com/crazycs520)
+- 增加 /upgrade/start 和 upgrade/finish APIs 用户来标记集群 TiDB 节点开始进入升级状态和结束升级状态[#47172](https://github.com/pingcap/tidb/issues/47172)@@[zimulala](https://github.com/zimulala)
 
 + TiKV
 
@@ -122,6 +123,15 @@ TiDB 版本：7.1.2
     - 修复使用 BR 恢复 `AUTO_ID_CACHE=1` 的非聚簇索引表时发生重复主键的问题 [#46093](https://github.com/pingcap/tidb/issues/46093) @[tiancaiamao](https://github.com/tiancaiamao)
     - 修复在静态分区裁剪模式下查询分区表且查询计划中带有 `IndexLookUp` 时可能报错的问题 [#45757](https://github.com/pingcap/tidb/issues/45757) @[Defined2014](https://github.com/Defined2014)
     - 修复在分区表与有 Placement Policy 的表进行分区交换后再往分区表中插入数据可能失败的问题 [#45791](https://github.com/pingcap/tidb/issues/45791) @[mjonss ](https://github.com/mjonss)
+    - 修复使用正确的 timezone 信息对于时间字段进行编码。[#46044](https://github.com/pingcap/tidb/issues/46033)@[tangenta](https://github.com/tangenta)
+    - 自动为快速加索引创建 temp-dir [#45456](https://github.com/pingcap/tidb/issues/45456)@[tangenta](https://github.com/tangenta)
+    - 去除暂停所有系统 DDL 任务功能，防止升级 block [#46288](https://github.com/pingcap/tidb/issues/46228)@[zimulala](https://github.com/zimulala)
+    - 使用 Table ID 为关联分区表各分区为一组，使得 PD 整体进行 split and scatter 分区表。 [#46135](https://github.com/pingcap/tidb/issues/46135)@[zimulala](https://github.com/zimulala)
+    - 修复 TiDB 重启 DDL 卡住问题 [#46751](https://github.com/pingcap/tidb/issues/46751)@[wjhuang2016](https://github.com/wjhuang2016)
+    - 禁止非整型聚簇索引进行 split table [#47350](https://github.com/pingcap/tidb/issues/47350)@[tangenta](https://github.com/tangenta)
+    - 修复一个 DDL 可能由于 MDL 处理不正确导致永久阻塞问题 [#46920](https://github.com/pingcap/tidb/issues/46920)@[wjhuang2016](https://github.com/wjhuang2016)
+    - 修复 rename table 导致表中出现重复列 [#47064](https://github.com/pingcap/tidb/issues/47064)@[jiyfhust](https://github.com/jiyfhust)
+
 + TiKV
 
     - note [#issue](https://github.com/tikv/tikv/issues/${issue-id}) @[贡献者 GitHub ID](https://github.com/${github-id})
