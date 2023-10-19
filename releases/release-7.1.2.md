@@ -133,7 +133,7 @@ TiDB 版本：7.1.2
     - 修复 Flashback 后 Region 信息没有更新的问题 [#6912](https://github.com/tikv/pd/issues/6912) @[overvenus](https://github.com/overvenus)
     - 修复 PD 退出时可能 panic 的问题 [#7053](https://github.com/tikv/pd/issues/7053) @[HuSharp](https://github.com/HuSharp)
     - 修复 context timeout 可能导致 `lease timeout` 的问题 [#6926](https://github.com/tikv/pd/issues/6926) @[rleungx](https://github.com/rleungx)
-    - 修复 peer 没有按照 Group 进行 scatter 的问题，可能会导致 scatter 不均衡 [#6962](https://github.com/tikv/pd/issues/6962) @[rleungx](https://github.com/rleungx)
+    - 修复 peer 没有按照 Group 进行 scatter 的问题，可能会导致 leader 分布不均衡 [#6962](https://github.com/tikv/pd/issues/6962) @[rleungx](https://github.com/rleungx)
     - 修复 pd-ctl 更新隔离级别标签不同步的问题 [#7121](https://github.com/tikv/pd/issues/7121) @[rleungx](https://github.com/rleungx)
     - 修复 `evict-leader-scheduler` 丢失配置的问题 [#6897](https://github.com/tikv/pd/issues/6897) @[HuSharp](https://github.com/HuSharp)
     - 修复 Plugin 目录、文件内容可能存在安全隐患的问题 [#7094](https://github.com/tikv/pd/issues/7094) @[HuSharp](https://github.com/HuSharp)
