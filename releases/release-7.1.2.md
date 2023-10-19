@@ -161,6 +161,9 @@ TiDB 版本：7.1.2
         - (dup): release-7.4.0.md > 错误修复> Tools> Backup & Restore (BR) - 修复 PITR 恢复数据元信息 (meta-kv) 出错的问题 [#46578](https://github.com/pingcap/tidb/issues/46578) @[Leavrth](https://github.com/Leavrth)
         - (dup): release-7.4.0.md > 错误修复> Tools> Backup & Restore (BR) - 修复 BR 集成测试用例出错的问题 [#45561](https://github.com/pingcap/tidb/issues/46561) @[purelind](https://github.com/purelind)
         - (dup): release-6.5.4.md > 错误修复> Tools> Backup & Restore (BR) - 将 BR 使用的全局参数 `TableColumnCountLimit` 和 `IndexLimit` 的默认值提升到最大值，修复恢复过程失败的问题 [#45793](https://github.com/pingcap/tidb/issues/45793) @[Leavrth](https://github.com/Leavrth)
+       - 修复 cli 扫描恢复后数据卡住的问题 [#45476](https://github.com/pingcap/tidb/issues/45476) @[3pointer](https://github.com/3pointer)
+       - 修复 PiTR 可能跳过恢复 create index ddl 问题[#47482](https://github.com/pingcap/tidb/issues/47482) @[Leavrth](https://github.com/Leavrth)
+       - 修复1分钟之内多次做 PiTR 可能丢失数据问题[#15483](https://github.com/tikv/tikv/issues/15483) @[YuJuncen](https://github.com/YuJuncen)
 
     + TiCDC <!--tw@hfxsd--4 条-->
 
