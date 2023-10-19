@@ -60,7 +60,12 @@ TiDB 版本：7.1.2
 
     + TiCDC
 
-        - note [#issue](https://github.com/pingcap/tiflow/issues/${issue-id}) @[贡献者 GitHub ID](https://github.com/${github-id})
+        - 优化 TiCDC 部分监控项和报警项 [#9047](https://github.com/pingcap/tiflow/issues/9047)
+        - 修复处于异常状态的同步任务阻塞上游 GC 的问题 [#9543](https://github.com/pingcap/tiflow/issues/9543)
+        - 修复同步到对象存储时，在某些特殊场景下可能导致数据不一致的问题[#9592](https://github.com/pingcap/tiflow/issues/9592)
+        - 修复开启 redo 时，在某些特殊场景下可能导致 changefeed 失败的问题 [#9769](https://github.com/pingcap/tiflow/issues/9769)
+        - 优化 Kafka 场景下，当消息过大时只发送 handle key 避免同步任务失败的问题 [#9680](https://github.com/pingcap/tiflow/issues/9680)
+        - 修复在某些特殊的操作系统下，获取内存信息不对可能会导致 TiCDC 节点 OOM 的问题  [#9762](https://github.com/pingcap/tiflow/issues/9762)
         - note [#issue](https://github.com/pingcap/tiflow/issues/${issue-id}) @[贡献者 GitHub ID](https://github.com/${github-id})
         - (dup): release-7.4.0.md > 改进提升> Tools> TiCDC - 优化同步 `ADD INDEX` DDL 的执行逻辑，从而不阻塞后续的 DML 语句 [#9644](https://github.com/pingcap/tiflow/issues/9644) @[sdojjy](https://github.com/sdojjy)
         - (dup): release-6.5.4.md > 改进提升> Tools> TiCDC - 优化 TiCDC 在故障重试时的状态展示信息 [#9483](https://github.com/pingcap/tiflow/issues/9483) @[asddongmen](https://github.com/asddongmen)
