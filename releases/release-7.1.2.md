@@ -216,11 +216,10 @@ TiDB 版本：7.1.2
         - (dup): release-7.4.0.md > 错误修复> Tools> TiDB Data Migration (DM) - 修复 DM 在乐观模式中跳过 Partition DDL 的问题 [#9788](https://github.com/pingcap/tiflow/issues/9788) @[GMHDBJD](https://github.com/GMHDBJD)
 
 
-- 将 checksum-via-sql 默认值设置为 false，提升导入任务执行性能。[#45368](https://github.com/pingcap/tidb/issues/45368) , [#45094](https://github.com/pingcap/tidb/issues/45094) @[GMHDBJD](https://github.com/GMHDBJD)
-- 当导入表设置了 AUTO_ID_CACHE=1 会导致分配错误的 rowid [#46100](https://github.com/pingcap/tidb/issues/46100) @[D3Hunter](https://github.com/D3Hunter)
+    + TiDB Lightning
 
-        - note [#issue](https://github.com/pingcap/tidb/issues/${issue-id}) @[贡献者 GitHub ID](https://github.com/${github-id})
-        - note [#issue](https://github.com/pingcap/tidb/issues/${issue-id}) @[贡献者 GitHub ID](https://github.com/${github-id})
+        - 将 checksum-via-sql 默认值设置为 false，提升导入任务执行性能。[#45368](https://github.com/pingcap/tidb/issues/45368) , [#45094](https://github.com/pingcap/tidb/issues/45094) @[GMHDBJD](https://github.com/GMHDBJD)
+        - 当导入表设置了 AUTO_ID_CACHE=1 会导致分配错误的 rowid [#46100](https://github.com/pingcap/tidb/issues/46100) @[D3Hunter](https://github.com/D3Hunter)
         - (dup): release-6.5.4.md > 错误修复> Tools> TiDB Lightning - 修复保存 `NEXT_GLOBAL_ROW_ID` 时类型错误问题 [#45427](https://github.com/pingcap/tidb/issues/45427) @[lyzx2001](https://github.com/lyzx2001)
         - (dup): release-7.4.0.md > 错误修复> Tools> TiDB Lightning - 修复 `checksum = "optional"` 时 Checksum 阶段仍然报错的问题 [#45382](https://github.com/pingcap/tidb/issues/45382) @[lyzx2001](https://github.com/lyzx2001)
         - (dup): release-7.4.0.md > 错误修复> Tools> TiDB Lightning - 修复当 PD 集群地址变更时数据导入失败的问题 [#43436](https://github.com/pingcap/tidb/issues/43436) @[lichunzhu](https://github.com/lichunzhu)
