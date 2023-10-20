@@ -294,7 +294,7 @@ Kafka Topic 对可以接收的消息大小有限制，该限制由 [`max.message
 
 ### 只发送 Handle Key
 
-从 v7.3.0 开始，TiCDC Kafka sink 支持在消息大小超过限制时只发送 Handle Key 的数据。这样可以显著减少消息的大小，避免因为消息大小超过 Kafka Topic 限制而导致 changefeed 发生错误和同步任务失败的情况。
+从 v7.1.2 开始，TiCDC Kafka sink 支持在消息大小超过限制时只发送 Handle Key 的数据。这样可以显著减少消息的大小，避免因为消息大小超过 Kafka Topic 限制而导致 changefeed 发生错误和同步任务失败的情况。
 
 Handle Key 指的是：
 
