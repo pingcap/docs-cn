@@ -64,7 +64,7 @@ TiDB 版本：7.1.2
 
         - (dup): release-6.5.4.md > 改进提升> Tools> TiDB Data Migration (DM) - 对不兼容的 DDL 支持严格的乐观模式 [#9112](https://github.com/pingcap/tiflow/issues/9112) @[GMHDBJD](https://github.com/GMHDBJD)
 
-    + TiDB Lightning
+    + TiDB Lightning <!--tw@hfxsd--1 条-->
 
         - 将 `checksum-via-sql` 默认值设置为 `false`，提升导入任务执行性能 [#45368](https://github.com/pingcap/tidb/issues/45368) [#45094](https://github.com/pingcap/tidb/issues/45094) @[GMHDBJD](https://github.com/GMHDBJD)
         - (dup): release-7.4.0.md > 改进提升> Tools> TiDB Lightning - 优化 TiDB Lightning 在导入数据阶段对 `no leader` 错误的重试逻辑 [#46253](https://github.com/pingcap/tidb/issues/46253) @[lance6716](https://github.com/lance6716)
