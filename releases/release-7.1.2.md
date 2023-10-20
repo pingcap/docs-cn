@@ -109,7 +109,10 @@ TiDB 版本：7.1.2
     - 修复一个 DDL 可能由于 MDL 处理不正确导致永久阻塞问题 [#46920](https://github.com/pingcap/tidb/issues/46920)@[wjhuang2016](https://github.com/wjhuang2016)
     - 修复 rename table 导致表中出现重复列 [#47064](https://github.com/pingcap/tidb/issues/47064)@[jiyfhust](https://github.com/jiyfhust)
     - 修复 `client-go` 中 `batch-client` panic 的问题 [#47691](https://github.com/pingcap/tidb/issues/47691) @[crazycs520](https://github.com/crazycs520)
-
+    - 修复分区表统计信息收集内存超出限制时不能被及时 kill 的问题 [#45706] (https://github.com/pingcap/tidb/issues/45706) @[hawkingrei](https://github.com/hawkingrei)
+    - 修复带 UNHEX 查询条件的结果正确性问题 [#45378](https://github.com/pingcap/tidb/issues/45378) @[qw4990](https://github.com/qw4990)
+    - 修复使用 GROUP_CONCAT 时会报 Can't find column 的问题 [#41957](https://github.com/pingcap/tidb/issues/41957) @[AilinKid](https://github.com/AilinKid)
+    
 + TiKV <!--tw@hfxsd--3 条-->
 
     - (dup): release-6.5.4.md > 错误修复> TiKV - 修复 `ttl-check-poll-interval` 配置项对 RawKV API V2 不生效的问题 [#15142](https://github.com/tikv/tikv/issues/15142) @[pingyu](https://github.com/pingyu)
