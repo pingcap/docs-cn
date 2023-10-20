@@ -71,7 +71,7 @@ TiDB 版本：7.1.2
 
 ## 错误修复
 
-+ TiDB  <!--tw@ran-huang--12 条-->
++ TiDB  <!--tw@ran-huang--前 12 条，tw@qiancai--后 4 条-->
 
     - (dup): release-7.4.0.md > 错误修复> TiDB - 修复 `group_concat` 无法解析 `ORDER BY` 列的问题 [#41986](https://github.com/pingcap/tidb/issues/41986) @[AilinKid](https://github.com/AilinKid)
     - (dup): release-7.3.0.md > 错误修复> TiDB - 修复某些情况下查询系统表 `INFORMATION_SCHEMA.TIKV_REGION_STATUS` 返回结果错误的问题 [#45531](https://github.com/pingcap/tidb/issues/45531) @[Defined2014](https://github.com/Defined2014)
