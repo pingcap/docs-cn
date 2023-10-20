@@ -39,7 +39,7 @@ TiDB 版本：7.1.2
 + PD  <!--tw@Oreoxmt--2 条-->
 
     - 优化 PD 调用方 backoff 机制，减少在调用失败时的 RPC 请求频率 [#6556](https://github.com/tikv/pd/issues/6556) @[nolouch](https://github.com/nolouch) @[rleungx](https://github.com/rleungx) @[HuSharp](https://github.com/HuSharp)
-    - (dup): release-7.3.0.md > 改进提升> PD - 减少 `GetRegions` 请求的内存占用 [#6835](https://github.com/tikv/pd/issues/6835) @[lhy1024](https://github.com/lhy1024)
+    - 增加 `GetRegions` 接口的 Cancel 机制，在调用方断连时及时释放 CPU 和内存资源 [#6835](https://github.com/tikv/pd/issues/6835) @[lhy1024](https://github.com/lhy1024)
 
 + TiFlash  <!--tw@qiancai--1 条-->
 
