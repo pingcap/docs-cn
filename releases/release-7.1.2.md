@@ -16,6 +16,7 @@ TiDB 版本：7.1.2
 - 引入系统变量 [`tidb_opt_enable_hash_join`](/system-variables.md#tidb_opt_enable_hash_join-从-v712-版本开始引入) 控制是否选择表的哈希连接 [#46695](https://github.com/pingcap/tidb/issues/46695) @[coderplay](https://github.com/coderplay)
 - 默认关闭 RocksDB 的周期性 compaction，使 TiKV RocksDB 的默认行为和 v6.5.0 之前的版本保持一致，避免在升级之后集中产生大量 compaction 影响系统的性能。同时，TiKV 新增 [`rocksdb.[defaultcf|writecf|lockcf].periodic-compaction-seconds`](/tikv-configuration-file.md#periodic-compaction-seconds-从-v654-版本开始引入) 和 [`rocksdb.[defaultcf|writecf|lockcf].ttl`](/tikv-configuration-file.md#ttl-从-v654-版本开始引入) 配置项，支持手动配置 RocksDB 的周期性 compaction [#15355](https://github.com/tikv/tikv/issues/15355) @[LykxSassinator](https://github.com/LykxSassinator)
 - 新增 TiCDC 配置项 [`sink.csv.binary-encoding-method`](/ticdc/ticdc-changefeed-config.md#ticdc-changefeed-配置文件说明)，控制 CSV 协议中二进制类型数据的编码方式，默认值为 `'base64'`
+- 新增 TiCDC 配置项 [`large-message-handle-option`](/ticdc/ticdc-sink-to-kafka.md#处理超过-kafka-topic-限制的消息)。默认为空，即消息大小超过 Kafka Topic 的限制后，同步任务失败。设置为 "handle-key-only" 时，如果消息超过大小，只发送 handle key 以减少消息的大小；如果依旧超过大小，则同步任务失败 [#9680](https://github.com/pingcap/tiflow/issues/9680) @[3AceShowHand](https://github.com/3AceShowHand)
 
 ## 改进提升
 
@@ -55,8 +56,8 @@ TiDB 版本：7.1.2
 
     + TiCDC  <!--tw@qiancai--2 条-->
 
-        - 优化 TiCDC 部分监控项和报警项 [#9047](https://github.com/pingcap/tiflow/issues/9047)
-        - 优化 Kafka 场景下，当消息过大时只发送 handle key 避免同步任务失败的问题 [#9680](https://github.com/pingcap/tiflow/issues/9680)
+        - 优化 TiCDC 部分监控项和报警项 [#9047](https://github.com/pingcap/tiflow/issues/9047) @[asddongmen](https://github.com/asddongmen)
+        - Kafka Sink 支持在消息过大时[只发送 Handle Key 数据](/ticdc/ticdc-sink-to-kafka.md#只发送-handle-key)，避免同步任务失败 [#9680](https://github.com/pingcap/tiflow/issues/9680) @[3AceShowHand](https://github.com/3AceShowHand)
         - (dup): release-7.4.0.md > 改进提升> Tools> TiCDC - 优化同步 `ADD INDEX` DDL 的执行逻辑，从而不阻塞后续的 DML 语句 [#9644](https://github.com/pingcap/tiflow/issues/9644) @[sdojjy](https://github.com/sdojjy)
         - (dup): release-6.5.4.md > 改进提升> Tools> TiCDC - 优化 TiCDC 在故障重试时的状态展示信息 [#9483](https://github.com/pingcap/tiflow/issues/9483) @[asddongmen](https://github.com/asddongmen)
 
