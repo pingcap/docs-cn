@@ -196,7 +196,7 @@ TiDB 版本：7.1.2
         - (dup): release-7.4.0.md > 错误修复> Tools> TiDB Data Migration (DM) - 修复 DM 在乐观模式中跳过 Partition DDL 的问题 [#9788](https://github.com/pingcap/tiflow/issues/9788) @[GMHDBJD](https://github.com/GMHDBJD)
 
 
-    + TiDB Lightning <!--tw@hfxsd--2 条-->
+    + TiDB Lightning <!--tw@hfxsd--1 条-->
 
         - 修复当导入表设置了 `AUTO_ID_CACHE=1` 会导致分配错误的 `row_id` 的问题 [#46100](https://github.com/pingcap/tidb/issues/46100) @[D3Hunter](https://github.com/D3Hunter)
         - (dup): release-6.5.4.md > 错误修复> Tools> TiDB Lightning - 修复保存 `NEXT_GLOBAL_ROW_ID` 时类型错误问题 [#45427](https://github.com/pingcap/tidb/issues/45427) @[lyzx2001](https://github.com/lyzx2001)
