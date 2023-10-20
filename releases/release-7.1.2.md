@@ -67,7 +67,7 @@ TiDB 版本：7.1.2
 
     + TiDB Lightning <!--tw@hfxsd--1 条-->
 
-        - 将 `checksum-via-sql` 默认值设置为 `false`，提升导入任务执行性能 [#45368](https://github.com/pingcap/tidb/issues/45368) [#45094](https://github.com/pingcap/tidb/issues/45094) @[GMHDBJD](https://github.com/GMHDBJD)
+        - 将 `checksum-via-sql` 默认值修改为 `false`，提升导入任务执行性能 [#45368](https://github.com/pingcap/tidb/issues/45368) [#45094](https://github.com/pingcap/tidb/issues/45094) @[GMHDBJD](https://github.com/GMHDBJD)
         - (dup): release-7.4.0.md > 改进提升> Tools> TiDB Lightning - 优化 TiDB Lightning 在导入数据阶段对 `no leader` 错误的重试逻辑 [#46253](https://github.com/pingcap/tidb/issues/46253) @[lance6716](https://github.com/lance6716)
 
 ## 错误修复
@@ -123,7 +123,7 @@ TiDB 版本：7.1.2
     - (dup): release-7.4.0.md > 错误修复> TiKV - 修复 Online Unsafe Recovery 超时未中止的问题 [#15346](https://github.com/tikv/tikv/issues/15346) @[Connor1996](https://github.com/Connor1996)
     - (dup): release-6.5.4.md > 错误修复> TiKV - 修复部分写入时加密可能导致数据损坏的问题 [#15080](https://github.com/tikv/tikv/issues/15080) @[tabokie](https://github.com/tabokie)
     - 修复由于 Region 的元数据不正确造成 TiKV panic 的问题 [#13311](https://github.com/tikv/tikv/issues/13311) @[cfzjywxk](https://github.com/cfzjywxk)
-    - 修复有线上负载时，TiDB Lightning 的 Checksum Coprocessor 的请求超时的问题 [#15565](https://github.com/tikv/tikv/issues/15565) @[lance6716](https://github.com/lance6716)
+    - 修复有线上负载时，TiDB Lightning 的 Checksum Coprocessor 请求超时的问题 [#15565](https://github.com/tikv/tikv/issues/15565) @[lance6716](https://github.com/lance6716)
     - 修复在移动 Peer 时可能导致 Follower Read 性能变差的问题 [#15468](https://github.com/tikv/tikv/issues/15468) @[YuJuncen](https://github.com/YuJuncen)
 
 + PD <!--tw@Oreoxmt--12 条-->
@@ -162,7 +162,7 @@ TiDB 版本：7.1.2
         - (dup): release-7.4.0.md > 错误修复> Tools> Backup & Restore (BR) - 修复 PITR 恢复数据元信息 (meta-kv) 出错的问题 [#46578](https://github.com/pingcap/tidb/issues/46578) @[Leavrth](https://github.com/Leavrth)
         - (dup): release-7.4.0.md > 错误修复> Tools> Backup & Restore (BR) - 修复 BR 集成测试用例出错的问题 [#45561](https://github.com/pingcap/tidb/issues/46561) @[purelind](https://github.com/purelind)
         - (dup): release-6.5.4.md > 错误修复> Tools> Backup & Restore (BR) - 将 BR 使用的全局参数 `TableColumnCountLimit` 和 `IndexLimit` 的默认值提升到最大值，修复恢复过程失败的问题 [#45793](https://github.com/pingcap/tidb/issues/45793) @[Leavrth](https://github.com/Leavrth)
-        - 修复 CLI 客户端扫描恢复后的数据时卡住的问题 [#45476](https://github.com/pingcap/tidb/issues/45476) @[3pointer](https://github.com/3pointer)
+        - 修复 br CLI 客户端扫描恢复后的数据时卡住的问题 [#45476](https://github.com/pingcap/tidb/issues/45476) @[3pointer](https://github.com/3pointer)
         - 修复 PITR 可能跳过恢复 `CREATE INDEX` DDL 的问题 [#47482](https://github.com/pingcap/tidb/issues/47482) @[Leavrth](https://github.com/Leavrth)
         - 修复 1 分钟之内多次执行 PITR 可能导致数据丢失的问题 [#15483](https://github.com/tikv/tikv/issues/15483) @[YuJuncen](https://github.com/YuJuncen)
 
@@ -199,7 +199,7 @@ TiDB 版本：7.1.2
 
     + TiDB Lightning <!--tw@hfxsd--1 条-->
 
-        - 修复当导入表设置了 `AUTO_ID_CACHE=1` 会导致分配错误的 `row_id` 的问题 [#46100](https://github.com/pingcap/tidb/issues/46100) @[D3Hunter](https://github.com/D3Hunter)
+        - 修复导入表设置 `AUTO_ID_CACHE=1` 会导致分配错误的 `row_id` 的问题 [#46100](https://github.com/pingcap/tidb/issues/46100) @[D3Hunter](https://github.com/D3Hunter)
         - (dup): release-6.5.4.md > 错误修复> Tools> TiDB Lightning - 修复保存 `NEXT_GLOBAL_ROW_ID` 时类型错误问题 [#45427](https://github.com/pingcap/tidb/issues/45427) @[lyzx2001](https://github.com/lyzx2001)
         - (dup): release-7.4.0.md > 错误修复> Tools> TiDB Lightning - 修复 `checksum = "optional"` 时 Checksum 阶段仍然报错的问题 [#45382](https://github.com/pingcap/tidb/issues/45382) @[lyzx2001](https://github.com/lyzx2001)
         - (dup): release-7.4.0.md > 错误修复> Tools> TiDB Lightning - 修复当 PD 集群地址变更时数据导入失败的问题 [#43436](https://github.com/pingcap/tidb/issues/43436) @[lichunzhu](https://github.com/lichunzhu)
