@@ -24,8 +24,7 @@ TiDB 版本：7.1.2
 
     - (dup): release-6.5.5.md > 改进提升> TiDB - 新增部分优化器提示，包括 [`NO_MERGE_JOIN()`](/optimizer-hints.md#no_merge_joint1_name--tl_name-)、[`NO_INDEX_JOIN()`](/optimizer-hints.md#no_index_joint1_name--tl_name-)、[`NO_INDEX_MERGE_JOIN()`](/optimizer-hints.md#no_index_merge_joint1_name--tl_name-)、[`NO_HASH_JOIN()`](/optimizer-hints.md#no_hash_joint1_name--tl_name-)、[`NO_INDEX_HASH_JOIN()`](/optimizer-hints.md#no_index_hash_joint1_name--tl_name-) [#45520](https://github.com/pingcap/tidb/issues/45520) @[qw4990](https://github.com/qw4990)
     - (dup): release-6.5.5.md > 改进提升> TiDB - 添加 coprocessor 相关的 request source 信息 [#46514](https://github.com/pingcap/tidb/issues/46514) @[you06](https://github.com/you06)
-    - 修复 client-go 中 batch-client panic 的问题 [#47691](https://github.com/pingcap/tidb/issues/47691) @[crazycs520](https://github.com/crazycs520)
-    - 增加 /upgrade/start 和 upgrade/finish APIs 用户来标记集群 TiDB 节点开始进入升级状态和结束升级状态[#47172](https://github.com/pingcap/tidb/issues/47172)@@[zimulala](https://github.com/zimulala)
+    - 增加 `/upgrade/start` 和 `upgrade/finish` APIs 用来标记集群 TiDB 节点开始进入升级状态和结束升级状态 [#47172](https://github.com/pingcap/tidb/issues/47172) @[zimulala](https://github.com/zimulala)
 
 + TiKV
 
@@ -44,7 +43,7 @@ TiDB 版本：7.1.2
 
 + TiFlash  <!--tw@qiancai--1 条-->
 
-    - 添加索引数据内存使用的监控 [#8050](https://github.com/pingcap/tiflash/issues/8050) @[hongyunyan](https://github.com/hongyunyan)
+    - 在 Grafana 中新增关于索引数据内存使用的监控指标 [#8050](https://github.com/pingcap/tiflash/issues/8050) @[hongyunyan](https://github.com/hongyunyan)
 
 + Tools
 
@@ -109,6 +108,7 @@ TiDB 版本：7.1.2
     - 禁止非整型聚簇索引进行 split table [#47350](https://github.com/pingcap/tidb/issues/47350)@[tangenta](https://github.com/tangenta)
     - 修复一个 DDL 可能由于 MDL 处理不正确导致永久阻塞问题 [#46920](https://github.com/pingcap/tidb/issues/46920)@[wjhuang2016](https://github.com/wjhuang2016)
     - 修复 rename table 导致表中出现重复列 [#47064](https://github.com/pingcap/tidb/issues/47064)@[jiyfhust](https://github.com/jiyfhust)
+    - 修复 `client-go` 中 `batch-client` panic 的问题 [#47691](https://github.com/pingcap/tidb/issues/47691) @[crazycs520](https://github.com/crazycs520)
 
 + TiKV <!--tw@hfxsd--3 条-->
 
