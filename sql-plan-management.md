@@ -142,6 +142,7 @@ SELECT * FROM test . t WHERE a > ?
 > 在 v7.4.0 之前版本的 TiDB 集群中创建的绑定可能会包含 `IN (?)`，在升级到 v7.4.0 或更高版本后，这些绑定会被统一修改为 `IN (...)`。
 > 
 > 例如：
+>
 > ```sql
 > -- 在 v7.3 集群上创建绑定
 > mysql> CREATE GLOBAL BINDING FOR SELECT * FROM t WHERE a IN (1) USING SELECT /*+ use_index(t, a) */ * FROM t WHERE a IN (1);
