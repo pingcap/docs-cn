@@ -103,7 +103,7 @@ TiDB 版本：7.1.2
     - 修复使用错误的时区信息对时间字段进行编码的问题 [#46044](https://github.com/pingcap/tidb/issues/46033) @[tangenta](https://github.com/tangenta)
     - 修复当 temp-dir 不存在时快速添加索引的 DDL 会卡住的问题 [#45456](https://github.com/pingcap/tidb/issues/45456) @[tangenta](https://github.com/tangenta)
     - 修复同时升级多个 TiDB 时可能阻塞升级过程的问题 [#46288](https://github.com/pingcap/tidb/issues/46228) @[zimulala](https://github.com/zimulala)
-    - 使用 Table ID 为关联分区表各分区为一组，使得 PD 整体进行 split and scatter 分区表。 [#46135](https://github.com/pingcap/tidb/issues/46135)@[zimulala](https://github.com/zimulala)
+    - 修复分区表由于 split region 使用参数有误导致 region 打散效果差的问题 [#46135](https://github.com/pingcap/tidb/issues/46135) @[zimulala](https://github.com/zimulala)
     - 修复 TiDB 重启后 DDL 操作可能卡住的问题 [#46751](https://github.com/pingcap/tidb/issues/46751) @[wjhuang2016](https://github.com/wjhuang2016)
     - 禁止非整型聚簇索引进行 split table 操作 [#47350](https://github.com/pingcap/tidb/issues/47350) @[tangenta](https://github.com/tangenta)
     - 修复由于 MDL 处理不正确可能导致 DDL 永久阻塞的问题 [#46920](https://github.com/pingcap/tidb/issues/46920) @[wjhuang2016](https://github.com/wjhuang2016)
