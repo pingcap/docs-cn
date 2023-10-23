@@ -56,7 +56,7 @@ TiDB 版本：7.1.2
     + TiCDC  <!--tw@qiancai--2 条-->
 
         - 优化 TiCDC 部分监控项和报警项 [#9047](https://github.com/pingcap/tiflow/issues/9047) @[asddongmen](https://github.com/asddongmen)
-        - Kafka Sink 支持在消息过大时[只发送 Handle Key 数据](/ticdc/ticdc-sink-to-kafka.md#只发送-handle-key)，避免同步任务失败 [#9680](https://github.com/pingcap/tiflow/issues/9680) @[3AceShowHand](https://github.com/3AceShowHand)
+        - Kafka Sink 支持在消息过大时[只发送 Handle Key 数据](/ticdc/ticdc-sink-to-kafka.md#只发送-handle-key)，避免因消息大小超限导致同步任务失败 [#9680](https://github.com/pingcap/tiflow/issues/9680) @[3AceShowHand](https://github.com/3AceShowHand)
         - (dup): release-7.4.0.md > 改进提升> Tools> TiCDC - 优化同步 `ADD INDEX` DDL 的执行逻辑，从而不阻塞后续的 DML 语句 [#9644](https://github.com/pingcap/tiflow/issues/9644) @[sdojjy](https://github.com/sdojjy)
         - (dup): release-6.5.4.md > 改进提升> Tools> TiCDC - 优化 TiCDC 在故障重试时的状态展示信息 [#9483](https://github.com/pingcap/tiflow/issues/9483) @[asddongmen](https://github.com/asddongmen)
 
@@ -111,7 +111,7 @@ TiDB 版本：7.1.2
     - 修复 `client-go` 中 `batch-client` panic 的问题 [#47691](https://github.com/pingcap/tidb/issues/47691) @[crazycs520](https://github.com/crazycs520)
     - 修复分区表统计信息收集的内存使用超出限制时不能被及时 kill 的问题 [#45706] (https://github.com/pingcap/tidb/issues/45706) @[hawkingrei](https://github.com/hawkingrei)
     - 修复查询包含 `UNHEX` 条件时结果不准确的问题 [#45378](https://github.com/pingcap/tidb/issues/45378) @[qw4990](https://github.com/qw4990)
-    - 修复查询使用 `GROUP_CONCAT` 时报 `Can't find column` 的问题 [#41957](https://github.com/pingcap/tidb/issues/41957) @[AilinKid](https://github.com/AilinKid)
+    - 修复查询使用 `GROUP_CONCAT` 时报错 `Can't find column` 的问题 [#41957](https://github.com/pingcap/tidb/issues/41957) @[AilinKid](https://github.com/AilinKid)
     
 + TiKV <!--tw@hfxsd--3 条-->
 
