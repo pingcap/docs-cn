@@ -118,6 +118,7 @@ SELECT * FROM test . t WHERE a > ?
 > 不同长度的 `IN` 表达式被标准化后，会被识别为同一条语句，因此只需要创建一条绑定，对这些表达式同时生效。
 >
 > 例如：
+>
 > ```sql
 > CREATE TABLE t (a INT, KEY(a));
 > CREATE BINDING FOR SELECT * FROM t WHERE a IN (?) USING SELECT /*+ use_index(t, a) */ * FROM t WHERE a in (?);
