@@ -247,7 +247,7 @@ export AWS_ACCESS_KEY_ID=${AccessKey}
 export AWS_SECRET_ACCESS_KEY=${SecretKey}
 ```
 
-Dumpling 同时还支持从 `~/.aws/credentials` 读取凭证文件。Dumpling 导出到 Amazon S3 的配置参数与 BR 大致相同，更多参数描述，请参考[外部存储 URI 格式](/br/backup-and-restore-storages.md#uri-格式)。
+Dumpling 同时还支持从 `~/.aws/credentials` 读取凭证文件。Dumpling 导出到 Amazon S3 的配置参数与 BR 大致相同，更多参数描述，请参考[存储服务的 URI 格式说明](#存储服务的-uri-格式说明)。
 
 {{< copyable "shell-regular" >}}
 
@@ -402,7 +402,7 @@ SET GLOBAL tidb_gc_life_time = '10m';
 | -s 或--statement-size | 控制 `INSERT` SQL 语句的大小，单位 bytes |
 | -F 或 --filesize | 将 table 数据划分出来的文件大小，需指明单位（如 `128B`, `64KiB`, `32MiB`, `1.5GiB`） |
 | --filetype| 导出文件类型（csv/sql） | "sql" |
-| -o 或 --output | 导出本地文件的绝对路径或[外部存储 URI 格式](/br/backup-and-restore-storages.md#uri-格式) | "./export-${time}" |
+| -o 或 --output | 导出本地文件的绝对路径或[存储服务的 URI 格式说明](#存储服务的-uri-格式说明) | "./export-${time}" |
 | -S 或 --sql | 根据指定的 sql 导出数据，该选项不支持并发导出 |
 | --consistency | flush: dump 前用 FTWRL <br/> snapshot: 通过 TSO 来指定 dump 某个快照时间点的 TiDB 数据 <br/> lock: 对需要 dump 的所有表执行 `lock tables read` 命令 <br/> none: 不加锁 dump，无法保证一致性 <br/> auto: 对 MySQL 使用 --consistency flush；对 TiDB 使用 --consistency snapshot | "auto" |
 | --snapshot | snapshot tso，只在 consistency=snapshot 下生效 |
