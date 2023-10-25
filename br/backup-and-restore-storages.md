@@ -31,59 +31,13 @@ BACKUP DATABASE * TO 's3://bucket-name/prefix' SEND_CREDENTIALS_TO_TIKV = FALSE;
 
 ### 格式说明
 
-本部分介绍存储服务的 URI 格式：
+外部存储服务的 URI 格式如下：
 
 ```shell
 [scheme]://[host]/[path]?[parameters]
 ```
 
-<SimpleTab groupId="storage">
-<div label="Amazon S3" value="amazon">
-
-- `scheme`：`s3`
-- `host`：`bucket name`
-- `parameters`：
-
-    - `access-key`：访问密钥
-    - `secret-access-key`：秘密访问密钥
-    - `session-token`：临时会话令牌（BR 尚不支持该参数）
-    - `use-accelerate-endpoint`：是否在 Amazon S3 上使用加速端点，默认为 `false`
-    - `endpoint`：Amazon S3 兼容服务自定义端点的 URL，例如 `<https://s3.example.com/>`
-    - `force-path-style`：使用路径类型 (path-style)，而不是虚拟托管类型 (virtual-hosted-style)，默认为 `true`
-    - `storage-class`：上传对象的存储类别，例如 `STANDARD`、`STANDARD_IA`
-    - `sse`：加密上传的服务端加密算法，可以设置为空、`AES256` 或 `aws:kms`
-    - `sse-kms-key-id`：如果 `sse` 设置为 `aws:kms`，则使用该参数指定 KMS ID
-    - `acl`：上传对象的标准 ACL (Canned ACL)，例如 `private`、`authenticated-read`
-    - `role-arn`：当需要使用特定的 [IAM 角色](https://docs.aws.amazon.com/zh_cn/IAM/latest/UserGuide/id_roles.html)来访问第三方 Amazon S3 的数据时，使用这个参数来指定 IAM 角色的对应 [Amazon Resource Name (ARN)](https://docs.aws.amazon.com/zh_cn/general/latest/gr/aws-arns-and-namespaces.html)（例如 `arn:aws:iam::888888888888:role/my-role`）。关于使用 IAM 角色访问第三方 Amazon S3 数据的场景，请参考 [AWS 相关文档介绍](https://docs.aws.amazon.com/zh_cn/IAM/latest/UserGuide/id_roles_common-scenarios_third-party.html)。
-    - `external-id`：当需要使用特定的 [IAM 角色](https://docs.aws.amazon.com/zh_cn/IAM/latest/UserGuide/id_roles.html)来访问第三方 Amazon S3 的数据时，可能需要同时提供正确的[外部 ID](https://docs.aws.amazon.com/zh_cn/IAM/latest/UserGuide/id_roles_create_for-user_externalid.html) 来确保用户有权限代入该 IAM 角色。这个参数用来指定对应的外部 ID，确保成功代入 IAM 角色。外部 ID 可以是任意字符串，并且不是必须的，一般由控制 Amazon S3 数据访问的第三方来指定。如果第三方对于 IAM 角色没有要求指定外部 ID，则可以不需要提供该参数也能顺利代入对应的 IAM 角色，从而访问对应的 Amazon S3 数据。
-
-</div>
-<div label="GCS" value="gcs">
-
-- `scheme`：`gcs` 或 `gs`
-- `host`：`bucket name`
-- `parameters`：
-
-    - `credentials-file`：迁移工具节点上凭证 JSON 文件的路径
-    - `storage-class`：上传对象的存储类别，例如 `STANDARD` 或 `COLDLINE`
-    - `predefined-acl`：上传对象的预定义 ACL，例如 `private` 或 `project-private`
-
-</div>
-<div label="Azure Blob Storage" value="azure">
-
-- `scheme`：`azure` 或 `azblob`
-- `host`：`container name`
-- `parameters`：
-
-    - `account-name`：存储账户名
-    - `account-key`：访问密钥
-    - `sas-token`：共享访问签名令牌
-    - `access-tier`：上传对象的存储类别，例如 `Hot`、`Cool`、`Archive`，默认值为该存储账户的默认访问层。
-    - `encryption-scope`：服务端的[加密范围 (Encryption Scope)](https://learn.microsoft.com/zh-cn/azure/storage/blobs/encryption-scope-manage?tabs=powershell#upload-a-blob-with-an-encryption-scope)
-    - `encryption-key`：服务端使用的[加密密钥 (Encryption Key)](https://learn.microsoft.com/zh-cn/azure/storage/blobs/encryption-customer-provided-keys)，采用的加密算法为 AES256
-
-</div>
-</SimpleTab>
+关于 URI 格式的详细信息，请参考[外部存储服务的 URI 格式](/external-storage-uri.md)。
 
 ### URI 示例
 
