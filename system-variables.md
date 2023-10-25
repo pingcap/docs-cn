@@ -17,7 +17,7 @@ SET SESSION tidb_distsql_scan_concurrency = 10;
 
 # 以下两个语句等价地改变一个 Global 变量
 SET @@global.tidb_distsql_scan_concurrency = 10;
-SET  GLOBAL tidb_distsql_scan_concurrency = 10;
+SET GLOBAL tidb_distsql_scan_concurrency = 10;
 ```
 
 > **注意：**
@@ -1956,10 +1956,6 @@ Query OK, 0 rows affected (0.09 sec)
 
 ### `tidb_enable_top_sql` <span class="version-mark">从 v5.4.0 版本开始引入</span>
 
-> **警告：**
->
-> Top SQL 目前是实验性功能，不建议在生产环境中使用。
-
 - 作用域：GLOBAL
 - 是否持久化到集群：是
 - 类型：布尔型
@@ -2904,6 +2900,15 @@ mysql> desc select count(distinct a) from test.t;
 - 默认值：`ON`
 - 这个变量用来控制优化器是否开启交叉估算。
 
+### `tidb_opt_enable_hash_join` <span class="version-mark">从 v7.1.2 版本开始引入</span>
+
+- 作用域：SESSION | GLOBAL
+- 是否持久化到集群：是
+- 类型：布尔型
+- 默认值：`ON`
+- 控制优化器是否会选择表的哈希连接。默认打开 (`ON`)。设置为 `OFF` 时，优化器在生成执行计划时会避免选择表的哈希连接，除非没有其他连接方式可用。
+- 如果同时使用了 `tidb_opt_enable_hash_join` 和 `HASH_JOIN` Hint，则 `HASH_JOIN` Hint 优先级更高。即使 `tidb_opt_enable_hash_join` 被设置为 `OFF`，如果在查询中指定了 `HASH_JOIN` Hint，TiDB 优化器仍然会强制执行哈希连接计划。
+
 ### `tidb_opt_enable_late_materialization` <span class="version-mark">从 v7.0.0 版本开始引入</span>
 
 - 作用域：SESSION | GLOBAL
@@ -3516,7 +3521,7 @@ EXPLAIN FORMAT='brief' SELECT COUNT(1) FROM t WHERE a = 1 AND b IS NOT NULL;
 - 该变量用于优化时间戳的获取，适用于悲观事务 `READ-COMMITTED` 隔离级别下点写冲突较少的场景。开启此变量可以避免点写语句获取全局时间戳带来的延迟和开销。目前该变量适用的点写语句包括 `UPDATE`、`DELETE`、`SELECT ...... FOR UPDATE` 三种类型。点写语句是指将主键或者唯一键作为过滤条件且最终执行算子包含 `POINT-GET` 的写语句。
 - 如果点写冲突较为严重，开启此变量会增加额外开销和延迟，造成性能回退。更详细的说明，请参考[读已提交隔离级别 (Read Committed) 文档](/transaction-isolation-levels.md#读已提交隔离级别-read-committed)。
 
-### `tidb_read_consistency` <span class="version-mark">New in v5.4.0</span>
+### `tidb_read_consistency` <span class="version-mark">从 v5.4.0 版本开始引入</span>
 
 - 作用域：SESSION
 - 类型：字符串

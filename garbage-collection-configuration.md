@@ -6,12 +6,14 @@ title: GC 配置
 
 你可以通过以下系统变量进行 GC 配置：
 
-* [`tidb_gc_enable`](/system-variables.md#tidb_gc_enable-从-v50-版本开始引入)
-* [`tidb_gc_run_interval`](/system-variables.md#tidb_gc_run_interval-从-v50-版本开始引入)
-* [`tidb_gc_life_time`](/system-variables.md#tidb_gc_life_time-从-v50-版本开始引入)
-* [`tidb_gc_concurrency`](/system-variables.md#tidb_gc_concurrency-从-v50-版本开始引入)
-* [`tidb_gc_scan_lock_mode`](/system-variables.md#tidb_gc_scan_lock_mode-从-v50-版本开始引入)
-* [`tidb_gc_max_wait_time`](/system-variables.md#tidb_gc_max_wait_time-从-v610-版本开始引入)
+* [`tidb_gc_enable`](/system-variables.md#tidb_gc_enable-从-v50-版本开始引入)：控制是否启用 TiKV 的垃圾回收 (GC) 机制。
+* [`tidb_gc_run_interval`](/system-variables.md#tidb_gc_run_interval-从-v50-版本开始引入)：指定垃圾回收 (GC) 运行的时间间隔。
+* [`tidb_gc_life_time`](/system-variables.md#tidb_gc_life_time-从-v50-版本开始引入)：指定每次进行垃圾回收 (GC) 时保留数据的时限。
+* [`tidb_gc_concurrency`](/system-variables.md#tidb_gc_concurrency-从-v50-版本开始引入)：指定 GC 在 [Resolve Locks（清理锁）](/garbage-collection-overview.md#resolve-locks清理锁)步骤中线程的数量。
+* [`tidb_gc_scan_lock_mode`](/system-variables.md#tidb_gc_scan_lock_mode-从-v50-版本开始引入)：指定垃圾回收 (GC) 的 Resolve Locks（清理锁）步骤中扫描锁的方式。
+* [`tidb_gc_max_wait_time`](/system-variables.md#tidb_gc_max_wait_time-从-v610-版本开始引入)：指定活跃事务阻碍 GC safe point 推进的最大时间。
+
+关于如何修改系统变量的值，请参考[系统变量](/system-variables.md)。
 
 ## 流控
 

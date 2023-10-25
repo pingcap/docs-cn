@@ -107,22 +107,25 @@ summary: 了解部署 TiDB 前的环境检查操作。
 
 ## 检测及关闭系统 swap
 
-TiDB 运行需要有足够的内存。如果内存不足，不建议使用 swap 作为内存不足的缓冲，因为这会降低性能。建议永久关闭系统 swap。
+TiDB 运行需要有足够的内存。如果想保持性能稳定，则建议永久关闭系统 swap，但可能在内存偏小时触发 OOM 问题；如果想避免此类 OOM 问题，则可只将 swap 优先级调低，但不做永久关闭。
 
-要永久关闭 swap，可执行以如下命令:
+- 开启并使用 swap 可能会引入性能抖动问题，对于低延迟、稳定性要求高的数据库服务，建议永久关闭操作系统层 swap。要永久关闭 swap，可使用以下方法：
 
-{{< copyable "shell-regular" >}}
+    - 在操作系统初始化阶段，不单独划分 swap 分区盘。
+    - 如果在操作系统初始化阶段，已经单独划分了 swap 分区盘，并且启用了 swap，则使用以下命令进行关闭：
 
-```bash
-echo "vm.swappiness = 0">> /etc/sysctl.conf
-swapoff -a && swapon -a
-sysctl -p
-```
+        ```bash
+        echo "vm.swappiness = 0">> /etc/sysctl.conf
+        swapoff -a
+        sysctl -p
+        ```
 
-> **注意：**
->
-> - 一起执行 `swapoff -a` 和 `swapon -a` 命令是为了刷新 swap，将 swap 里的数据转储回内存，并清空 swap 里的数据。不可省略 swappiness 设置而只执行 `swapoff -a`；否则，重启后 swap 会再次自动打开，使得操作失效。
-> - 执行 `sysctl -p` 命令是为了在不重启的情况下使配置生效。
+- 如果主机内存偏小，关闭系统 swap 可能会更容易触发 OOM 问题，可参考以如下方法将 swap 优先级调低，但不做永久关闭：
+
+    ```bash
+    echo "vm.swappiness = 0">> /etc/sysctl.conf
+    sysctl -p
+    ```
 
 ## 设置 TiDB 节点的临时空间（推荐）
 

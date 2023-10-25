@@ -23,7 +23,7 @@ summary: 如何通过 TiUniManager 管理主机资源。
 > - 你需要按照主机模板完整、正确地填写字段信息。详情参见本节中[主机模板字段说明](#主机模板字段说明)。
 > - 导入主机时，TiDB 会对主机进行检查，参见 [TiDB 环境与系统配置检查](/check-before-deployment.md)。
 
-TiUniManager 中控机通过 SSH 连接主机，默认连接端口为 `22`。如果环境中 SSH 端口不为默认的 `22`，可通过 OpenAPI 修改 `config_default_ssh_port` 参数来配置主机的默认登陆端口，该参数默认值为 `22`。以下示例通过 OpenAPI 修改 `config_default_ssh_port` 参数的值，从而修改主机的默认登陆端口：
+TiUniManager 中控机通过 SSH 连接主机，默认连接端口为 `22`。如果环境中 SSH 端口不为默认的 `22`，可通过 OpenAPI 修改 `config_default_ssh_port` 参数来配置主机的默认登录端口，该参数默认值为 `22`。以下示例通过 OpenAPI 修改 `config_default_ssh_port` 参数的值，从而修改主机的默认登录端口：
 
 1. 登录 TiUniManager 获取用户 Token。
 

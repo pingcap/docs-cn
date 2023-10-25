@@ -50,7 +50,7 @@ Query OK, 1 row affected (0.03 sec)
 
 ## `CHECK` 约束
 
-TiDB 会解析并忽略 `CHECK` 约束。该行为与 MySQL 5.7 的相兼容。
+TiDB 会解析并忽略 `CHECK` 约束。该行为与 MySQL 5.7 仅为语法兼容，实际上并不支持。 
 
 示例如下：
 

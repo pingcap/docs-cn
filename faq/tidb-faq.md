@@ -100,9 +100,9 @@ MySQL 是单机数据库，只能通过 XA 来满足跨数据库事务，而 TiD
 - [TiFlash](/tiflash/tiflash-overview.md) 引入了 DeltaTree 这种特殊结构来处理列存引擎的修改。
 - TiFlash 作为 Raft Group 中的 Learner 角色，不参与 log commit 选举，也不会写入数据。这意味着 DML 操作不需要等待 TiFlash 的确认，所以 TiFlash 不会影响 OLTP 的性能。另外，TiFlash 和 TiKV 分开部署在不同的实例上，不会相互影响。
 
-### 1.1.15 TiFlash 是否具有最终一致性？
+### 1.1.15 TiFlash 提供什么样的一致性保证？
 
-是的，TiFlash 默认保持数据强一致性。
+TiFlash 默认保持数据强一致性。Raft Learner 流程会更新数据。此外 TSO 检查可以确保查询中的数据与事务完全一致。更多信息，请参考[异步复制](/tiflash/tiflash-overview.md#异步复制)和[一致性](/tiflash/tiflash-overview.md#一致性)。
 
 ## 1.2 TiDB 原理
 

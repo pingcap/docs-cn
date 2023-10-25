@@ -55,8 +55,8 @@ summary: 了解 TiDB 的功能概览。
 | [不可见索引](/sql-statements/sql-statement-add-index.md) | Y | Y | Y | Y | Y | Y | Y | Y | N |
 | [复合主键](/constraints.md#主键约束) | Y | Y | Y | Y | Y | Y | Y | Y | Y |
 | [唯一约束](/constraints.md#唯一约束) | Y | Y | Y | Y | Y | Y | Y | Y | Y |
-| [整型主键上的聚簇索引](/constraints.md) | Y | Y | Y | Y | Y | Y | Y | Y | Y |
-| [复合或非整型主键上的聚簇索引](/constraints.md) | Y | Y | Y | Y | Y | Y | Y | Y | N |
+| [整型主键上的聚簇索引](/clustered-indexes.md) | Y | Y | Y | Y | Y | Y | Y | Y | Y |
+| [复合或非整型主键上的聚簇索引](/clustered-indexes.md) | Y | Y | Y | Y | Y | Y | Y | Y | N |
 | [多值索引](/sql-statements/sql-statement-create-index.md#多值索引) | Y | N | N | N | N | N | N | N | N |
 | [外键约束](/constraints.md#外键约束) | Y | N | N | N | N | N | N | N | N |
 | [TiFlash 延迟物化](/tiflash/tiflash-late-materialization.md) | Y | N | N | N | N | N | N | N | N |

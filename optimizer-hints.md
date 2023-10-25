@@ -539,7 +539,7 @@ SELECT /*+ LEADING(t1, t2) */ * FROM t1, t2, t3 WHERE t1.id = t2.id and t2.id = 
 + 优化器无法按照 `LEADING` hint 指定的顺序进行表连接
 + 已经存在 `straight_join()` hint
 + 查询语句中包含 outer join 且同时指定了包含笛卡尔积的情况
-+ 和选择 join 算法的 hint（即 `MERGE_JOIN`、`INL_JOIN`、`INL_HASH_JOIN`、`HASH_JOIN`）同时使用时
++ 和选择 join 算法的 hint（即 `MERGE_JOIN`、`INL_JOIN`、`INL_HASH_JOIN`、`HASH_JOIN`）同时使用且相互冲突时
 
 当出现了上述失效的情况，会输出 warning 警告。
 
@@ -963,7 +963,7 @@ EXPLAIN SELECT /*+ inl_join(t1, t3) */ * FROM t1, t2, t3 WHERE t1.id = t2.id AND
 
 在上面例子中，`t1` 和 `t3` 并没有直接被一个 `IndexJoin` 连接起来。
 
-如果想要直接使用 `IndexJoin` 来连接 `t1` 和 `t3`，需要先使用 [`LEADING` Hint](#leadingt1_name--tl_name-) 指定 `t1` 和 `t3` 的连接顺序，然后再配合使用 `INL_JION`。例如：
+如果想要直接使用 `IndexJoin` 来连接 `t1` 和 `t3`，需要先使用 [`LEADING` Hint](#leadingt1_name--tl_name-) 指定 `t1` 和 `t3` 的连接顺序，然后再配合使用 `INL_JOIN`。例如：
 
 ```sql
 EXPLAIN SELECT /*+ leading(t1, t3), inl_join(t3) */ * FROM t1, t2, t3 WHERE t1.id = t2.id AND t2.id = t3.id AND t1.id = t3.id;
@@ -994,5 +994,15 @@ EXPLAIN SELECT /*+ leading(t1, t3), inl_join(t3) */ * FROM t1, t2, t3 WHERE t1.i
 CREATE TABLE t1 (a INT);
 CREATE TABLE t2 (a INT);
 EXPLAIN SELECT /*+ NO_HASH_JOIN(t1), NO_MERGE_JOIN(t1) */ * FROM t1, t2 WHERE t1.a=t2.a;
+ERROR 1815 (HY000): Internal : Can't find a proper physical plan for this query
+```
+
+- 系统变量 [`tidb_opt_enable_hash_join`](/system-variables.md#tidb_opt_enable_hash_join-从-v712-版本开始引入) 设置为 `OFF`，而且其他 Join 方式也都被排除了。
+
+```sql
+CREATE TABLE t1 (a INT);
+CREATE TABLE t2 (a INT);
+set tidb_opt_enable_hash_join=off;
+EXPLAIN SELECT /*+ NO_MERGE_JOIN(t1) */ * FROM t1, t2 WHERE t1.a=t2.a;
 ERROR 1815 (HY000): Internal : Can't find a proper physical plan for this query
 ```
