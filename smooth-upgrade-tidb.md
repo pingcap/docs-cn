@@ -47,13 +47,15 @@ TiUP 会在 v1.14.0 版本自适应支持此功能，即无需特殊操作，直
 
 #### 其它方式
 
-如果手动升级或者使用脚本升级，需要如下操作：
+手动升级或者使用脚本升级的操作如下：
 
-1. 你需要给集群中的任意一台 TiDB 发送 HTTP 升级开始请求：`curl -X POST http://{TiDBIP}:10080/upgrade/start`。
+1. 给集群中的任意一台 TiDB 发送 HTTP 升级开始请求：`curl -X POST http://{TiDBIP}:10080/upgrade/start`。
    * TiDB 集群会进入 **Upgrading** 状态。
    * 接下来将要执行的 DDL 操作都会被暂停。
+
 2. 替换 TiDB binary，并进行滚动升级。此过程和原升级过程一致。
    * 执行升级过程中的系统 DDL 操作。
+
 3. 等集群中所有 TiDB 升级成功后，给任意一台 TiDB 发送 HTTP 升级结束请求：`curl -X POST http://{TiDBIP}:10080/upgrade/finsh`。
    * 恢复被暂停的用户的 DDL 操作。
 
