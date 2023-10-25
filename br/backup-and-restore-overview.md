@@ -100,7 +100,7 @@ TiDB 备份恢复功能可以用于满足以下业务的需求：
 
 TiDB 支持将数据备份到 Amazon S3、Google Cloud Storage (GCS)、Azure Blob Storage、NFS，或者实现 S3 协议的其他文件存储服务。更多备份存储的详细信息，请参考如下内容：
 
-- [使用 URI 格式指定备份存储](/br/backup-and-restore-storages.md#uri-格式)
+- [使用 URI 格式指定备份存储](/external-storage-uri.md)
 - [配置备份存储的访问权限](/br/backup-and-restore-storages.md#鉴权)
 
 ## 兼容性

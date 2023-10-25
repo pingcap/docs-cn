@@ -241,10 +241,10 @@ IMPORT INTO t FROM '/path/to/file-*.csv'
 - 从 GCS 导入数据
 
     ```sql
-    IMPORT INTO t FROM 'gs://bucket-name/test.csv';
+    IMPORT INTO t FROM 'gs://bucket-name/test.csv?credentials-file=${credentials-file-path}';
     ```
 
-S3 或 GCS 的 URI 路径配置详见[外部存储](/br/backup-and-restore-storages.md#uri-格式)。
+S3 或 GCS 的 URI 路径配置详见[外部存储服务的 URI 格式](/external-storage-uri.md)。
 
 ### 通过 SetClause 语句计算列值
 
