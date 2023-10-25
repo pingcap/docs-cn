@@ -287,3 +287,70 @@ write-key-threshold = 30000
 ```sql
 SELECT COUNT(*) FROM INFORMATION_SCHEMA.TIKV_REGION_STATUS WHERE DB_NAME="database1" AND TABLE_NAME="table1" AND IS_INDEX=0;
 ```
+
+## 处理超过 Kafka Topic 限制的消息
+
+Kafka Topic 对可以接收的消息大小有限制，该限制由 [`max.message.bytes`](https://kafka.apache.org/documentation/#topicconfigs_max.message.bytes) 参数控制。当 TiCDC Kafka sink 在发送数据时，如果发现数据大小超过了该限制，会导致 changefeed 报错，无法继续同步数据。为了解决这个问题，TiCDC 新增一个参数 `large-message-handle-option` 并提供如下解决方案。
+
+### 只发送 Handle Key
+
+从 v7.1.2 开始，TiCDC Kafka sink 支持在消息大小超过限制时只发送 Handle Key 的数据。这样可以显著减少消息的大小，避免因为消息大小超过 Kafka Topic 限制而导致 changefeed 发生错误和同步任务失败的情况。
+
+Handle Key 指的是：
+
+* 如果被同步的表有定义主键，主键即为 Handle Key 。
+* 如果没有主键，但是有定义 Not NULL Unique Key，Unique Key 即为 Handle Key。
+
+目前，该功能支持 Canal-JSON 和 Open Protocol 两种编码协议。使用 Canal-JSON 协议时，你需要在 `sink-uri` 中指定 `enable-tidb-extension=true` 参数。
+
+配置样例如下所示：
+
+```toml
+[sink.kafka-config.large-message-handle]
+# 该参数从 v7.1.2 开始引入
+# 默认为空，即消息超过大小限制后，同步任务失败
+# 设置为 "handle-key-only" 时，如果消息超过大小，data 字段内容只发送 handle key；如果依旧超过大小，同步任务失败
+large-message-handle-option = "handle-key-only"
+```
+
+### 消费只有 Handle Key 的消息
+
+只有 Handle Key 数据的消息格式如下：
+
+```json
+{
+    "id": 0,
+    "database": "test",
+    "table": "tp_int",
+    "pkNames": [
+        "id"
+    ],
+    "isDdl": false,
+    "type": "INSERT",
+    "es": 1639633141221,
+    "ts": 1639633142960,
+    "sql": "",
+    "sqlType": {
+        "id": 4
+    },
+    "mysqlType": {
+        "id": "int"
+    },
+    "data": [
+        {
+          "id": "2"
+        }
+    ],
+    "old": null,
+    "_tidb": {     // TiDB 的扩展字段
+        "commitTs": 163963314122145239,
+        "onlyHandleKey": true
+    }
+}
+```
+
+Kafka 消费者收到消息之后，首先检查 `onlyHandleKey` 字段。如果该字段存在且为 `true`，表示该消息只包含 Handle Key 的数据。此时，你需要查询上游 TiDB，通过 [`tidb_snapshot` 读取历史数据](/read-historical-data.md)来获取完整的数据。
+
+> **警告：**
+>
+> 在 Kafka 消费者处理数据并查询 TiDB 时，可能发生数据已经被 GC 的情况。你需要[调整 TiDB 集群的 GC Lifetime 设置](/system-variables.md#tidb_gc_life_time-从-v50-版本开始引入) 为一个较大的值，以避免该情况。
