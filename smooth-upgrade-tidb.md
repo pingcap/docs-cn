@@ -37,7 +37,7 @@ TiDB 引入平滑升级功能前，对于升级过程中的 DDL 操作有如下�
 
 #### TiUP 方式
 
-TiUP 会在 v1.14.0 版本自适应支持此功能，即无需特殊操作，直接使用 `tiup cluster upgrade` 操作流程即可。
+TiUP 会在 v1.14.0 版本自适应支持此功能，即无需特殊操作，直接使用 `tiup cluster upgrade` 操作流程即可。注意：目前不支持 `tiup cluster patch` 方式。
 
 #### Operator 方式
 
