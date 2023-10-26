@@ -3144,7 +3144,7 @@ v5.0 后，用户仍可以单独修改以上系统变量（会有废弃警告）
 
 >
 > * [go-sql-driver](https://github.com/go-sql-driver/mysql#multistatements) (`multiStatements`)
-> * [Connector/J](https://dev.mysql.com/doc/connector-j/8.0/en/connector-j-reference-configuration-properties.html) (`allowMultiQueries`)
+> * [Connector/J](https://dev.mysql.com/doc/connector-j/en/connector-j-reference-configuration-properties.html) (`allowMultiQueries`)
 > * PHP [mysqli](https://www.php.net/manual/en/mysqli.quickstart.multiple-statement.php) (`mysqli_multi_query`)
 
 ### `tidb_opt_agg_push_down`
