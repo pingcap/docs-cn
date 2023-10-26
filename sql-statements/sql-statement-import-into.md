@@ -230,7 +230,7 @@ IMPORT INTO t(id, name, @1) FROM '/path/to/file.csv' WITH skip_rows=1;
 IMPORT INTO t FROM '/path/to/file-*.csv'
 ```
 
-### 从 S3、GCS 导入数据
+### 从 S3、GCS、和 Azure Blob Storage 导入数据
 
 - 从 S3 导入数据
 
