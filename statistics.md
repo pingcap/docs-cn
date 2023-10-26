@@ -116,7 +116,7 @@ ANALYZE TABLE TableNameList [WITH NUM BUCKETS|TOPN|CMSKETCH DEPTH|CMSKETCH WIDTH
 >
 > 通常情况下，`STATS_META` 相对 `TABLE_KEYS` 更可信，但是通过 [TiDB Lightning](/tidb-lightning/tidb-lightning-overview.md) 等方式导入数据结束后，`STATS_META` 结果是 `0`。为了处理这个情况，你可以在 `STATS_META` 的结果远小于 `TABLE_KEYS` 的结果时，使用 `TABLE_KEYS` 计算采样率。
 
-##### 收集部分列的统计信息
+#### 收集部分列的统计信息
 
 执行 SQL 语句时，优化器在大多数情况下只会用到部分列（例如，`WHERE`、`JOIN`、`ORDER BY`、`GROUP BY` 子句中出现的列）的统计信息，这些被用到的列称为 `PREDICATE COLUMNS`。
 
