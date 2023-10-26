@@ -100,7 +100,7 @@ TiDB 版本：7.1.2
     - 修复使用 BR 恢复 `AUTO_ID_CACHE=1` 的非聚簇索引表时发生重复主键的问题 [#46093](https://github.com/pingcap/tidb/issues/46093) @[tiancaiamao](https://github.com/tiancaiamao)
     - 修复在静态裁剪模式下查询分区表且查询计划中带有 `IndexLookUp` 时可能报错的问题 [#45757](https://github.com/pingcap/tidb/issues/45757) @[Defined2014](https://github.com/Defined2014)
     - 修复在对分区表和有 Placement Policy 的表进行分区交换后，往分区表中插入数据可能失败的问题 [#45791](https://github.com/pingcap/tidb/issues/45791) @[mjonss](https://github.com/mjonss)
-    - 修复使用错误的时区信息对时间字段进行编码的问题 [#46044](https://github.com/pingcap/tidb/issues/46033) @[tangenta](https://github.com/tangenta)
+    - 修复使用错误的时区信息对时间字段进行编码的问题 [#46033](https://github.com/pingcap/tidb/issues/46033) @[tangenta](https://github.com/tangenta)
     - 修复当 `tmp` 路径不存在时快速添加索引的 DDL 会卡住的问题 [#45456](https://github.com/pingcap/tidb/issues/45456) @[tangenta](https://github.com/tangenta)
     - 修复同时升级多个 TiDB 节点时可能阻塞升级过程的问题 [#46288](https://github.com/pingcap/tidb/issues/46228) @[zimulala](https://github.com/zimulala)
     - 修复分区表由于 split Region 使用参数有误导致 Region 打散效果差的问题 [#46135](https://github.com/pingcap/tidb/issues/46135) @[zimulala](https://github.com/zimulala)
