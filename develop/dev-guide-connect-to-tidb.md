@@ -45,7 +45,7 @@ mysqlsh --sql mysql://root@<tidb_server_host>:4000
 
 ## JDBC
 
-You can connect to TiDB using the [JDBC](https://dev.mysql.com/doc/connector-j/8.0/en/) driver. To do that, you need to create a `MysqlDataSource` or `MysqlConnectionPoolDataSource` object (both objects support the `DataSource` interface), and then set the connection string using the `setURL` function.
+You can connect to TiDB using the [JDBC](https://dev.mysql.com/doc/connector-j/en/) driver. To do that, you need to create a `MysqlDataSource` or `MysqlConnectionPoolDataSource` object (both objects support the `DataSource` interface), and then set the connection string using the `setURL` function.
 
 For example:
 
@@ -54,7 +54,7 @@ MysqlDataSource mysqlDataSource = new MysqlDataSource();
 mysqlDataSource.setURL("jdbc:mysql://{host}:{port}/{database}?user={username}&password={password}");
 ```
 
-For more information on JDBC connections, see the [JDBC documentation](https://dev.mysql.com/doc/connector-j/8.0/en/)
+For more information on JDBC connections, see the [JDBC documentation](https://dev.mysql.com/doc/connector-j/en/)
 
 ### Connection parameters
 

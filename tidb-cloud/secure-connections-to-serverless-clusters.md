@@ -71,7 +71,7 @@ mycli -u <username> -h <host> -P 4000 -D test --ssl-ca=<CA_root_path> --ssl-veri
 
 <div label="JDBC">
 
-[MySQL Connector/J](https://dev.mysql.com/doc/connector-j/8.0/en/)'s TLS connection configurations are used here as an example.
+[MySQL Connector/J](https://dev.mysql.com/doc/connector-j/en/)'s TLS connection configurations are used here as an example.
 
 ```
 jdbc:mysql://<host>:4000/test?user=<username>&password=<your_password>&sslMode=VERIFY_IDENTITY&enabledTLSProtocols=TLSv1.2,TLSv1.3

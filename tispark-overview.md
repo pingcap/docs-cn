@@ -343,7 +343,7 @@ spark.tispark.jdbc.client_cert_password                        jdbc_clientstore_
 ```
 
 - For details about how to open TiDB TLS, see [Enable TLS between TiDB Clients and Servers](/enable-tls-between-clients-and-servers.md).
-- For details about how to generate a JAVA key store, see [Connecting Securely Using SSL](https://dev.mysql.com/doc/connector-j/8.0/en/connector-j-reference-using-ssl.html).
+- For details about how to generate a JAVA key store, see [Connecting Securely Using SSL](https://dev.mysql.com/doc/connector-j/en/connector-j-reference-using-ssl.html).
 
 ### Log4j configuration
 
