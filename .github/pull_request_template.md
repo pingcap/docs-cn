@@ -20,8 +20,8 @@ For details, see [tips for choosing the affected versions (in Chinese)](https://
 
 - [ ] master (the latest development version)
 - [ ] v7.5 (TiDB 7.5 versions)
+- [ ] v7.4 (TiDB 7.4 versions)
 - [ ] v7.3 (TiDB 7.3 versions)
-- [ ] v7.2 (TiDB 7.2 versions)
 - [ ] v7.1 (TiDB 7.1 versions)
 - [ ] v6.5 (TiDB 6.5 versions)
 - [ ] v6.1 (TiDB 6.1 versions)
