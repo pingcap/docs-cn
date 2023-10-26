@@ -5,7 +5,7 @@ summary: 介绍了外部存储服务 Amazon S3、GCS、和 Azure Blob Storage �
 
 # 外部存储服务的 URI 格式
 
-本部分介绍 Amazon S3、GCS、和 Azure Blob Storage 存储服务的 URI 格式。基本格式如下：
+本文介绍 Amazon S3、GCS、和 Azure Blob Storage 存储服务的 URI 格式。基本格式如下：
 
 ```shell
 [scheme]://[host]/[path]?[parameters]
