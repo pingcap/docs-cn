@@ -25,27 +25,8 @@ TiDB Lightning 的版本应与集群相同。如果使用 Local-backend 模式�
 
 ## 如何正确重启 TiDB Lightning？
 
-如果使用 Importer-backend，根据 `tikv-importer` 的状态，重启 TiDB Lightning 的基本顺序如下：
-
-如果 `tikv-importer` 仍在运行：
-
 1. [结束 `tidb-lightning` 进程](#如何正确结束-tidb-lightning-进程)。
-2. 执行修改操作（如修复数据源、更改设置、更换硬件等）。
-3. 如果上面的修改操作更改了任何表，你还需要[清除对应的断点](/tidb-lightning/tidb-lightning-checkpoints.md#--checkpoint-remove)。
-4. 重启 `tidb-lightning`。
-
-如果 `tikv-importer` 需要重启：
-
-1. [结束 `tidb-lightning` 进程](#如何正确结束-tidb-lightning-进程)。
-2. [结束 `tikv-importer` 进程](#如何正确结束-tikv-importer-进程)。
-3. 执行修改操作（如修复数据源、更改设置、更换硬件等）。
-4. 重启 `tikv-importer`。
-5. 重启 `tidb-lightning` 并等待，**直到程序因校验和错误（如果有的话）而失败**。
-    * 重启 `tikv-importer` 将清除所有仍在写入的引擎文件，但是 `tidb-lightning` 并不会感知到该操作。从 v3.0 开始，最简单的方法是让 `tidb-lightning` 继续，然后再重试。
-6. [清除失败的表及断点](/tidb-lightning/troubleshoot-tidb-lightning.md#checkpoint-for--has-invalid-status错误码)。
-7. 再次重启 `tidb-lightning`。
-
-如果使用 Local-backend 和 TiDB-backend，操作和 Importer-backend 的 `tikv-importer` 仍在运行时相同。
+2. 启动一个新的 `tidb-lightning` 任务：执行之前的启动命令，例如 `nohup tiup tidb-lightning -config tidb-lightning.toml`。
 
 ## 如何校验导入的数据的正确性？
 
@@ -94,14 +75,6 @@ sql-mode = "STRICT_TRANS_TABLES,NO_ENGINE_SUBSTITUTION"
 ...
 ```
 
-## 可以启用一个 `tikv-importer`，同时有多个 `tidb-lightning` 进程导入数据吗？
-
-只要每个 TiDB Lightning 操作的表互不相同就可以。
-
-## 如何正确结束 `tikv-importer` 进程？
-
-手动部署：如果 `tikv-importer` 正在前台运行，可直接按 <kbd>Ctrl</kbd>+<kbd>C</kbd> 退出。否则，可通过 `ps aux | grep tikv-importer` 获取进程 ID，然后通过 `kill «pid»` 结束进程。
-
 ## 如何正确结束 `tidb-lightning` 进程？
 
 根据部署方式，选择相应操作结束进程。
@@ -121,10 +94,6 @@ sql-mode = "STRICT_TRANS_TABLES,NO_ENGINE_SUBSTITUTION"
 - 索引会占据额外的空间
 - RocksDB 的空间放大效应
 
-## TiDB Lightning 使用过程中是否可以重启 TiKV Importer？
-
-不能，TiKV Importer 会在内存中存储一些引擎文件，重启后，`tidb-lightning` 会因连接失败而停止。此时，你需要[清除失败的断点](/tidb-lightning/tidb-lightning-checkpoints.md#--checkpoint-error-destroy)，因为这些 TiKV Importer 特有的信息丢失了。你可以在之后[重启 TiDB Lightning](#如何正确重启-tidb-lightning)。
-
 ## 如何清除所有与 TiDB Lightning 相关的中间数据？
 
 1. 删除断点文件。
@@ -137,7 +106,7 @@ sql-mode = "STRICT_TRANS_TABLES,NO_ENGINE_SUBSTITUTION"
 
     如果出于某些原因而无法运行该命令，你可以尝试手动删除 `/tmp/tidb_lightning_checkpoint.pb` 文件。
 
-2. 如果使用 Local-backend，删除配置中 `sorted-kv-dir` 对应的目录；如果使用 Importer-backend，删除 `tikv-importer` 所在机器上的整个 `import` 文件目录。
+2. 如果使用 Local-backend，删除配置中 `sorted-kv-dir` 对应的目录。
 
 3. 如果需要的话，删除 TiDB 集群上创建的所有表和库。
 

@@ -121,26 +121,6 @@ tidb-lightning-ctl --config conf/tidb-lightning.toml --checkpoint-error-destroy=
 
 其他解决方法请参考[断点续传的控制](/tidb-lightning/tidb-lightning-checkpoints.md#断点续传的控制)。
 
-### `ResourceTemporarilyUnavailable("Too many open engines …: …")`
-
-**原因**：并行打开的引擎文件 (engine files) 超出 `tikv-importer` 里的限制。这可能由配置错误引起。即使配置没问题，如果 `tidb-lightning` 曾经异常退出，也有可能令引擎文件残留在打开的状态，占据可用的数量。
-
-**解决办法**：
-
-1. 提高 `tikv-importer.toml` 内 `max-open-engines` 的值。这个设置主要由内存决定，计算公式为：
-
-    最大内存使用量 ≈ `max-open-engines` × `write-buffer-size` × `max-write-buffer-number`
-
-2. 降低 `table-concurrency` + `index-concurrency`，使之低于 `max-open-engines`。
-
-3. 重启 `tikv-importer` 来强制移除所有引擎文件 (默认值为 `./data.import/`)。这样也会丢弃导入了一半的表，所以启动 TiDB Lightning 前必须清除过期的断点记录：
-
-    {{< copyable "shell-regular" >}}
-
-    ```sh
-    tidb-lightning-ctl --config conf/tidb-lightning.toml --checkpoint-error-destroy=all
-    ```
-
 ### `cannot guess encoding for input file, please convert to UTF-8 manually`
 
 **原因**：TiDB Lightning 只支持 UTF-8 和 GB-18030 编码的表架构。此错误代表数据源不是这里任一个编码。也有可能是文件中混合了不同的编码，例如，因为在不同的环境运行过 `ALTER TABLE`，使表架构同时出现 UTF-8 和 GB-18030 的字符。
@@ -169,9 +149,7 @@ tidb-lightning-ctl --config conf/tidb-lightning.toml --checkpoint-error-destroy=
         TZ='Asia/Shanghai' bin/tidb-lightning -config tidb-lightning.toml
         ```
 
-2. 导出数据时，必须加上 `--skip-tz-utc` 选项。
-
-3. 确保整个集群使用的是同一最新版本的 `tzdata` (2018i 或更高版本)。
+2. 确保整个集群使用的是同一最新版本的 `tzdata` (2018i 或更高版本)。
 
     如果你使用的是 CentOS 机器，你可以运行 `yum info tzdata` 命令查看 `tzdata` 的版本及是否有更新。然后运行 `yum upgrade tzdata` 命令升级 `tzdata`。
 
