@@ -221,11 +221,7 @@ TiDB 与 MySQL 在日期时间处理上有如下差异：
 
 ### 类型系统
 
-MySQL 支持以下列类型，但 TiDB 不支持：
-
-+ 不支持 FLOAT4/FLOAT8。
-
-+ 不支持 `SQL_TSI_*`（包括 `SQL_TSI_MONTH`、`SQL_TSI_WEEK`、`SQL_TSI_DAY`、`SQL_TSI_HOUR`、`SQL_TSI_MINUTE` 和 `SQL_TSI_SECOND`，但不包括 `SQL_TSI_YEAR`）。
+MySQL 支持 `SQL_TSI_*`（包括 `SQL_TSI_MONTH`、`SQL_TSI_WEEK`、`SQL_TSI_DAY`、`SQL_TSI_HOUR`、`SQL_TSI_MINUTE` 和 `SQL_TSI_SECOND`，但不包括 `SQL_TSI_YEAR`），但 TiDB 不支持。
 
 ### MySQL 弃用功能导致的不兼容问题
 
