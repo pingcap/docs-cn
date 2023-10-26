@@ -83,7 +83,7 @@ Top-N 即是这个列或者这个索引中，出现次数前 n 的值。TiDB 会
 
 > **注意：**
 >
-> 在 TiDB 中执行 `ANALYZE TABLE` 语句比在 MySQL 或 InnoDB 中耗时更长。InnoDB 采样的只是少量页面，但 TiDB 会完全重构一系列统计信息。适用于 MySQL 的脚本会误以为执行 `ANALYZE TABLE` 耗时较短。
+> - 在 TiDB 中执行 `ANALYZE TABLE` 语句比在 MySQL 或 InnoDB 中耗时更长。InnoDB 采样的只是少量页面，但 TiDB 会完全重构一系列统计信息。适用于 MySQL 的脚本会误以为执行 `ANALYZE TABLE` 耗时较短。
 > 从 v7.5.0 开始，统计信息[快速分析 (`tidb_enable_fast_analyze`)](https://docs.pingcap.com/zh/tidb/v7.4/system-variables#tidb_enable_fast_analyze) 和[增量收集](https://docs.pingcap.com/zh/tidb/v7.4/statistics#增量收集)废弃。
 
 可以通过以下几种语法进行全量收集。
