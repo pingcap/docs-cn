@@ -5,7 +5,7 @@ summary: 了解如何通过 SQL 接口调度表和分区的放置位置。
 
 # Placement Rules in SQL
 
-Placement Rules in SQL 特性用于通过 SQL 接口配置数据在 TiKV 集群中的放置位置。通过该功能，你可以将表、分区、或指定的数据范围部署到不同的地域、机房、机柜、主机。
+Placement Rules in SQL 特性用于通过 SQL 接口配置数据在 TiKV 集群中的放置位置。通过该功能，你可以将集群、数据库、表、或分区的数据部署到不同的地域、机房、机柜、主机。
 
 该功能可以实现以下业务场景：
 
@@ -13,128 +13,184 @@ Placement Rules in SQL 特性用于通过 SQL 接口配置数据在 TiKV 集群�
 - 合并多个不同业务的数据库，物理隔离不同用户的数据，满足实例内部不同用户的隔离需求
 - 增加重要数据的副本数，提高业务可用性和数据可靠性
 
-## 使用限制
+## 功能概述
 
-- 为了降低运维难度，建议将一个集群的 placement policy 数量限制在 10 个以内。
-- 建议使用推荐的[常见场景](#常用场景示例)应用，不建议使用复杂的放置策略。
-- 建议将绑定了 placement policy 的表和分区数的总数限制在 10000 以内。为过多的表和分区绑定 policy，会增加 PD 上规则计算的负担，从而影响服务性能。
+通过 Placement Rules in SQL 功能, 你可以[创建放置策略 (placement policy)](#创建并绑定放置策略)，并为不同的数据级别配置所需的放置策略，粒度从粗到细为：
+
+| 级别                | 描述                                                                                    |
+|----------------------------|------------------------------------------------------------------------------------------------|
+| 集群          | TiDB 默认为集群配置 3 副本的策略。你可以为集群配置全局放置策略，参考[集群配置](#为集群指定全局的副本数)。  |
+| 数据库        | 你可以为指定的 Database 配置放置策略，参考[为数据库配置默认的放置策略](#为数据库配置默认的放置策略)。 |
+| 表            | 你可以为指定的 Table 配置放置策略，参考[为表指定放置策略](#为表指定放置策略)。  |
+| 分区          | 你可以为表中不同的 Row 创建分区，并单独对分区配置放置策略，参考[为分区表指定放置策略](#为分区表指定放置策略)。 |
+
 
 > **建议：**
 >
 > Placement Rules in SQL 底层的实现依赖 PD 提供的放置规则 (placement rules) 功能，参考 [Placement Rules 使用文档](/configure-placement-rules.md)。在 Placement Rules in SQL 语境下，放置规则既可以代指绑定对象的放置策略 (placement policy)，也可以代指 TiDB 发给 PD 的放置规则。
 
-## 概览
+## 使用限制
 
-通过 Placement Rules in SQL 功能, 你可以为不同的数据级别配置放置策略，粒度从粗到细为：
+Placement Rules in SQL 特性目前存在以下限制：
 
-| 级别                | 描述                                                                                    |
-|----------------------------|------------------------------------------------------------------------------------------------|
-| `Cluster`          | TiDB 默认会配置为集群设置 3 副本的策略，你可以另外为全局放置策略进行置配置，参考[集群配置](#为集群指定全局的副本数)  |
-| `Database`         | 你可以另外对 Databases 配置放置策略，参考[为数据库配置默认的放置策略](#为数据库配置默认的放置策略) |
-| `Table`            | 你可以另外对 Tables 配置放置策略，参考[为表指定放置策略](#为表指定放置策略)  |
-| `Row`              | 你可以另外对特定的 Row 通过定义 Partition 来配置放置策略，参考[为分区表指定放置策略](#为分区表指定放置策略) |
+- 临时表不支持放置策略。
+- 放置策略仅保证静态数据被放置在正确的 TiKV 节点上。该策略不保证传输中的数据（通过用户查询或内部操作）只出现在特定区域内。
+- 设置 `TiFlash` 的副本要通过[构建 TiFlash 副本](/tiflash/create-tiflash-replicas.md)的方式创建，不能使用该特性。
+- 设置 `PRIMARY_REGION` 和 `REGIONS` 时允许存在语法糖。但在未来版本中，我们计划为 `PRIMARY_RACK`、`PRIMARY_ZONE` 和 `PRIMARY_HOST` 添加变体支持，见 [issue #18030](https://github.com/pingcap/tidb/issues/18030)。
+- 为了降低运维难度，建议将一个集群的 placement policy 数量限制在 10 个以内。
+- 建议使用推荐的[常见场景](#常用场景示例)应用，不建议使用复杂的放置策略。
+- 建议将绑定了 placement policy 的表和分区数的总数限制在 10000 以内。为过多的表和分区绑定 policy，会增加 PD 上规则计算的负担，从而影响服务性能。
 
-这些对象绑定 PLACEMENT POLICY， 都可以使用 `ALTER .... PLACEMENT POLICY policy_name` 语法，具体可参考示例。 `PLACEMENT POLICY` 具体的放置策略需要提前创建好。创建 POLICY 方式下面会介绍。
+## 前提条件
 
-## 创建放置策略
+放置策略依赖于 TiKV 节点标签 (label) 的配置。例如，`PRIMARY_REGION` 选项依赖 TiKV 中的 `region` 标签。
 
-创建放置策略，首先需要通过 [`CREATE PLACEMENT POLICY`](/sql-statements/sql-statement-create-placement-policy.md) 语句创建**放置策略 (placement policy)**。
+创建放置策略时，TiDB 不会检查标签是否存在，而是在绑定表的时候进行检查。因此，在绑定放置策略前，请确保各个 TiKV 节点已配置正确的 labels。配置方法为：
 
-```sql
-CREATE PLACEMENT POLICY myplacementpolicy PRIMARY_REGION="us-east-1" REGIONS="us-east-1,us-west-1";
+```
+tikv-server --labels region=<region>,zone=<zone>,host=<host>
 ```
 
-然后可以使用 `CREATE TABLE` 或者 `ALTER TABLE` 将策略绑定至表或分区表，这样就在表或分区上指定了放置策略：
+详细配置方法可参考以下示例:
+
+| 方式 | 示例 |
+| --- | --- |
+| 手动部署 | [通过拓扑 label 进行副本调度](/schedule-replicas-by-topology-labels.md) |
+| TiUP 部署 | [跨机房部署拓扑结构](/geo-distributed-deployment-topology.md) |
+| Operator 部署| [在 Kubernetes 中配置 TiDB 集群](https://docs.pingcap.com/zh/tidb-in-kubernetes/stable/configure-a-tidb-cluster#高数据的高可用) |
+
+如需查看当前 TiKV 集群中所有可用的标签，可以使用 [`SHOW PLACEMENT LABELS`](/sql-statements/sql-statement-show-placement-labels.md) 语句：
 
 ```sql
-CREATE TABLE t1 (a INT) PLACEMENT POLICY=myplacementpolicy;
-CREATE TABLE t2 (a INT);
-ALTER TABLE t2 PLACEMENT POLICY=myplacementpolicy;
+SHOW PLACEMENT LABELS;
++--------+----------------+
+| Key    | Values         |
++--------+----------------+
+| disk   | ["ssd"]        |
+| region | ["us-east-1"]  |
+| zone   | ["us-east-1a"] |
++--------+----------------+
+3 rows in set (0.00 sec)
 ```
 
-`PLACEMENT POLICY` 为全局作用域，不与任何数据库表结构相关联。因此，通过 `CREATE TABLE` 指定放置策略时，无需任何额外的权限。
+## 使用方法
 
-要修改放置策略，你可以使用 [`ALTER PLACEMENT POLICY`](/sql-statements/sql-statement-alter-placement-policy.md) 语句。修改将传播到所有绑定此放置策略的对象。
+本节介绍如何通过 SQL 语句创建、绑定、查看、修改、删除放置策略。
+
+### 创建并绑定放置策略
+
+1. 使用 [`CREATE PLACEMENT POLICY`](/sql-statements/sql-statement-create-placement-policy.md) 语句创建放置策略：
+
+    ```sql
+    CREATE PLACEMENT POLICY myplacementpolicy PRIMARY_REGION="us-east-1" REGIONS="us-east-1,us-west-1";
+    ```
+
+    在该语句中：
+
+    - `PRIMARY_REGION="us-east-1"` 选项代表 Raft leader 被放置在 `region` 标签为 `us-east-1` 的节点上。
+    - `REGIONS="us-east-1,us-west-1"` 选项代表 Raft followers 被放置在`region` 标签为 `us-east-1` 和 `us-west-1` 的节点上。
+
+    更多可配置的放置选项和对应的含义，请参考[放置选项](#放置选项参考)。
+
+2. 使用 `CREATE TABLE` 或者 `ALTER TABLE` 将放置策略绑定至表或分区表，这样就在表或分区上指定了放置策略：
+
+    ```sql
+    CREATE TABLE t1 (a INT) PLACEMENT POLICY=myplacementpolicy;
+    CREATE TABLE t2 (a INT);·
+    ALTER TABLE t2 PLACEMENT POLICY=myplacementpolicy;
+    ```
+
+    `PLACEMENT POLICY` 为全局作用域，不与任何数据库表结构相关联。因此，通过 `CREATE TABLE` 指定放置策略时，无需任何额外的权限。
+
+### 查看放置策略
+
+- 要查看某条已创建的放置策略，可以使用 [`SHOW CREATE PLACEMENT POLICY`](/sql-statements/sql-statement-show-create-placement-policy.md) 语句：
+
+    ```sql
+    SHOW CREATE PLACEMENT POLICY myplacementpolicy\G
+    *************************** 1. row ***************************
+           Policy: myplacementpolicy
+    Create Policy: CREATE PLACEMENT POLICY myplacementpolicy PRIMARY_REGION="us-east-1" REGIONS="us-east-1,us-west-1"
+    1 row in set (0.00 sec)
+    ```
+
+- 要查看某张表绑定的放置策略，可以使用 [`SHOW CREATE TABLE`](/sql-statements/sql-statement-show-create-table.md) 语句：
+
+    ```sql
+    SHOW CREATE TABLE t1\G
+    *************************** 1. row ***************************
+           Table: t1
+    Create Table: CREATE TABLE `t1` (
+      `a` int(11) DEFAULT NULL
+    ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin /*T![placement] PLACEMENT POLICY=`myplacementpolicy` */
+    1 row in set (0.00 sec)
+    ```
+
+- 要查看集群中所有放置策略的定义，可以查询 [`INFORMATION_SCHEMA.PLACEMENT_POLICIES`](/information-schema/information-schema-placement-policies.md) 系统表：
+
+    ```sql
+    SELECT * FROM information_schema.placement_policies\G
+    ***************************[ 1. row ]***************************
+    POLICY_ID            | 1
+    CATALOG_NAME         | def
+    POLICY_NAME          | p1
+    PRIMARY_REGION       | us-east-1
+    REGIONS              | us-east-1,us-west-1
+    CONSTRAINTS          |
+    LEADER_CONSTRAINTS   |
+    FOLLOWER_CONSTRAINTS |
+    LEARNER_CONSTRAINTS  |
+    SCHEDULE             |
+    FOLLOWERS            | 4
+    LEARNERS             | 0
+    1 row in set
+    ```
+
+- 要查看集群中所有绑定了放置策略的表，可以查询 `information_schema.tables` 系统表的 `tidb_placement_policy_name` 列：
+
+    ```sql
+    SELECT * FROM information_schema.tables WHERE tidb_placement_policy_name IS NOT NULL;
+    SELECT * FROM information_schema.partitions WHERE tidb_placement_policy_name IS NOT NULL;
+    ```
+
+- 要查看集群中所有绑定了放置策略的分区，可以查询 `information_schema.partitions` 系统表的 `tidb_placement_policy_name` 列：
+
+    ```sql
+    SELECT * FROM information_schema.tables WHERE tidb_placement_policy_name IS NOT NULL;
+    SELECT * FROM information_schema.partitions WHERE tidb_placement_policy_name IS NOT NULL;
+    ```
+
+- 所有绑定放置策略的对象都是异步调度的。要查看放置策略的调度进度，可以使用 [`SHOW PLACEMENT`](/sql-statements/sql-statement-show-placement.md) 语句。
+
+### 修改放置策略
+
+要修改放置策略，可以使用 [`ALTER PLACEMENT POLICY`](/sql-statements/sql-statement-alter-placement-policy.md) 语句。该修改将应用于所有绑定了此放置策略的对象。
 
 ```sql
 ALTER PLACEMENT POLICY myplacementpolicy FOLLOWERS=5;
 ```
 
-要删除没有绑定任何分区或表的放置策略，你可以使用 [`DROP PLACEMENT POLICY`](/sql-statements/sql-statement-drop-placement-policy.md)：
+在该语句中，`FOLLOWERS=5` 选项代表数据有 5 个副本，包括 4 个 follower 和 1 个 leader。更多可配置的放置选项和对应的含义，请参考[放置选项](#放置选项参考)。
+
+### 删除放置策略
+
+要删除没有绑定任何表或分区的放置策略，可以使用 [`DROP PLACEMENT POLICY`](/sql-statements/sql-statement-drop-placement-policy.md) 语句：
 
 ```sql
 DROP PLACEMENT POLICY myplacementpolicy;
 ```
 
-## 查看放置策略
-
-可以用 [`SHOW CREATE PLACEMENT POLICY`](/sql-statements/sql-statement-show-create-placement-policy.md) 来查看已经创建的指定放置策略。如果一张表绑定了放置策略，你可以用 [`SHOW CREATE TABLE`](/sql-statements/sql-statement-show-create-table.md) 来查看。
-
-```sql
-tidb> SHOW CREATE PLACEMENT POLICY myplacementpolicy\G
-*************************** 1. row ***************************
-       Policy: myplacementpolicy
-Create Policy: CREATE PLACEMENT POLICY myplacementpolicy PRIMARY_REGION="us-east-1" REGIONS="us-east-1,us-west-1"
-1 row in set (0.00 sec)
-
-
-tidb> SHOW CREATE TABLE t1\G
-*************************** 1. row ***************************
-       Table: t1
-Create Table: CREATE TABLE `t1` (
-  `a` int(11) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin /*T![placement] PLACEMENT POLICY=`myplacementpolicy` */
-1 row in set (0.00 sec)
-```
-
-你也可以用 [`INFORMATION_SCHEMA.PLACEMENT_POLICIES`](/information-schema/information-schema-placement-policies.md) 系统表查看所有放置策略的定义。
-
-```sql
-tidb> select * from information_schema.placement_policies\G
-***************************[ 1. row ]***************************
-POLICY_ID            | 1
-CATALOG_NAME         | def
-POLICY_NAME          | p1
-PRIMARY_REGION       | us-east-1
-REGIONS              | us-east-1,us-west-1
-CONSTRAINTS          | 
-LEADER_CONSTRAINTS   | 
-FOLLOWER_CONSTRAINTS | 
-LEARNER_CONSTRAINTS  | 
-SCHEDULE             | 
-FOLLOWERS            | 4
-LEARNERS             | 0
-1 row in set
-```
-
-`information_schema.tables` 表和 `information_schema.partitions` 表也有一列 `tidb_placement_policy_name`，用于展示所有绑定了放置策略的对象：
-
-```sql
-SELECT * FROM information_schema.tables WHERE tidb_placement_policy_name IS NOT NULL;
-SELECT * FROM information_schema.partitions WHERE tidb_placement_policy_name IS NOT NULL;
-```
-
-所有绑定策略的对象都是异步调度的。可以用 [`SHOW PLACEMENT`](/sql-statements/sql-statement-show-placement.md) 来查看放置策略的调度进度。
-
 ## 放置选项参考
+
+在创建和修改放置策略时，你可以按需配置放置选项。
 
 > **注意：**
 >
-> - 放置选项依赖于正确地指定在每个 TiKV 节点配置中的标签 (label)。例如，`PRIMARY_REGION` 选项依赖 TiKV 中的 `region` 标签。若要查看当前 TiKV 集群中所有可用的标签，可执行 [`SHOW PLACEMENT LABELS`](/sql-statements/sql-statement-show-placement-labels.md) 语句。
->
->     ```sql
->     mysql> show placement labels;
->     +--------+----------------+
->     | Key    | Values         |
->     +--------+----------------+
->     | disk   | ["ssd"]        |
->     | region | ["us-east-1"]  |
->     | zone   | ["us-east-1a"] |
->     +--------+----------------+
->     3 rows in set (0.00 sec)
->     ```
->
-> - 使用 `CREATE PLACEMENT POLICY` 创建放置策略时，TiDB 不会检查标签是否存在，而是在绑定表的时候进行检查。
+> `PRIMARY_REGION`、`REGIONS` 和 `SCHEDULE` 选项不可与 `CONSTRAINTS` 选项同时指定，否则会报错。
+
+### 常规放置选项
+
+常规放置选项可以满足数据放置的基本需求。
 
 | 选项名                | 描述                                                                                    |
 |----------------------------|------------------------------------------------------------------------------------------------|
@@ -143,13 +199,13 @@ SELECT * FROM information_schema.partitions WHERE tidb_placement_policy_name IS 
 | `SCHEDULE`                 |  用于调度 follower 放置位置的策略。可选值为 `EVEN`（默认值）或 `MAJORITY_IN_PRIMARY`。 |
 | `FOLLOWERS`                |  Follower 的数量。例如 `FOLLOWERS=2` 表示数据有 3 个副本（2 个 follower 和 1 个 leader）。 |
 
-### 高级配置选项
+### 高级放置选项
 
-除以上配置选项外，你还可以使用更高级的配置选项，使用起来相对更复杂一些，需要对集群拓扑和 TiDB 数据分片有更近一步了解才能使用得当。
+高级配置选项可以更灵活地放置数据，满足复杂的场景需求，但其配置方法相对常规配置选项更复杂一些，需要你对集群拓扑和 TiDB 数据分片有深入的了解。
 
 | 选项名                | 描述                                                                                    |
 |----------------------------|------------------------------------------------------------------------------------------------|
-| `CONSTRAINTS`              | 适用于所有角色 (role) 的约束列表。例如，`CONSTRAINTS="[+disk=ssd]"`。      |
+| `CONSTRAINTS`              | 适用于所有角色 (role) 的约束列表。例如，`CONSTRAINTS="[+disk=ssd]"`。|
 | `LEADER_CONSTRAINTS`       | 仅适用于 leader 的约束列表。                                         |
 | `FOLLOWER_CONSTRAINTS`     | 仅适用于 follower 的约束列表。                                           |
 | `LEARNER_CONSTRAINTS`      | 仅适用于 learner 的约束列表。                                           |
@@ -158,20 +214,19 @@ SELECT * FROM information_schema.partitions WHERE tidb_placement_policy_name IS 
 
 ### CONSTRAINTS 格式
 
-`CONSTRAINTS` 支持两种类型的格式:
+`CONSTRAINTS`、`FOLLOWER_CONSTRAINTS`、`LEARNER_CONSTRAINTS` 放置选项支持以下两种配置格式:
 
-| Constraint Type | 描述 |
+| CONSTRAINTS 格式 | 描述 |
 |----------------------------|-----------------------------------------------------------------------------------------------------------|
-| 列表格式 (All Replicas) | 约束以键值对列表格式。键以 `+` 或 `-` 开头。`[+region=us-east-1]` 表示放置数据在 `region` 标签为 `us-east-1` 的节点上。`[+region=us-east-1,-type=fault]` 表示放置数据在 `region` 标签值 `us-east-1` 且 `type` 标签值不为 `fault` 的节点上。 |
-| 字典格式 (Per Replica) | 在字典格式中，还将约束映射到了副本数。例如，`FOLLOWER_CONSTRAINTS="{+region=us-east-1: 1,+region=us-east-2: 1,+region=us-west-1: 1}";` 表示 1 个 follower 位于 `us-east-1`，1 个 follower 位于 `us-east-2`，1 个 follower 位于 `us-west-1`。再例如，`FOLLOWER_CONSTRAINTS='{"+region=us-east-1,+type=scale-node": 1,"+region=us-west-1": 1}';` 表示 1 个 follower 位于 `us-east-1` 区域中有标签 `type` 为 `scale-node` 的机器上，1 个 follower 位于 `us-west-1`。|
+| 列表格式 (All Replicas) | 约束使用键值对列表格式。键以 `+` 或 `-` 开头。例如：<br/> <ul><li>`[+region=us-east-1]` 表示放置数据在 `region` 标签为 `us-east-1` 的节点上。</li><li>`[+region=us-east-1,-type=fault]` 表示放置数据在 `region` 标签值 `us-east-1` 且 `type` 标签值不为 `fault` 的节点上。</li></ul><br/>  |
+| 字典格式 (Per Replica) | 在字典格式中，约束可以指定对应的副本数。例如：<br/> <ul><li>`FOLLOWER_CONSTRAINTS="{+region=us-east-1: 1,+region=us-east-2: 1,+region=us-west-1: 1}";` 表示 1 个 follower 位于 `us-east-1`，1 个 follower 位于 `us-east-2`，1 个 follower 位于 `us-west-1`。</li><li>`FOLLOWER_CONSTRAINTS='{"+region=us-east-1,+type=scale-node": 1,"+region=us-west-1": 1}';` 表示 1 个 follower 位于 `us-east-1` 区域中有标签 `type` 为 `scale-node` 的机器上，1 个 follower 位于 `us-west-1`。</li></ul>字典格式支持以 `+` 或 `-` 开头的键，还支持一个特殊的 `#reject-leader` 属性。例如，`FOLLOWER_CONSTRAINTS='{ "+region=us-east-1":1, "+region=us-east-2": 2}' FOLLOWER_CONSTRAINTS='{"+region=us-west-1,#reject-leader": 1}'` 表示当进行容灾时，`us-west-1` 上尽可能驱逐当选的 leader。|
 
 > **注意：**
 >
-> LEADER_CONSTRAINTS 只支持列表格式。
+> - `LEADER_CONSTRAINTS` 放置选项只支持列表格式。
 >
-> 字典和列表格式都基于 YAML 解析，但 YAML 语法有些时候不能被正常解析。例如 YAML 会把 `"{+region=east:1,+region=west:2}"`（`:` 后无空格）错误地解析成 `'{"+region=east:1": null, "+region=west:2": null}'`，不符合预期。但 `"{+region=east: 1,+region=west: 2}"`（`:` 后有空格）能被正确解析成 `'{"+region=east": 1, "+region=west": 2}'`。
+> - 字典和列表格式都基于 YAML 解析，但 YAML 语法有时不能被正常解析。例如 YAML 会把 `"{+region=east:1,+region=west:2}"`（`:` 后无空格）错误地解析成 `'{"+region=east:1": null, "+region=west:2": null}'`，不符合预期。但 `"{+region=east: 1,+region=west: 2}"`（`:` 后有空格）能被正确解析成 `'{"+region=east": 1, "+region=west": 2}'`。
 >
-> 字典格式支持以 `+` 或 `-` 开头的键，还支持另外一个特殊的属性 `#reject-leader`, 如 `FOLLOWER_CONSTRAINTS='{ "+region=us-east-1":1, "+region=us-east-2": 2}' FOLLOWER_CONSTRAINTS='{"+region=us-west-1,#reject-leader": 1}'` 表示当进行容灾时，`us-west-1` 上尽可能驱逐当选的 leader。  
 
 ## 基础示例
 
@@ -184,9 +239,9 @@ CREATE PLACEMENT POLICY five_replicas FOLLOWERS=4;
 ALTER RANGE global PLACEMENT POLICY five_replicas;
 ```
 
-注意，配置中默认会认定 leader 数是 1。因此，5 个副本为 4 个 follower + 1 个 leader。
+注意，TiDB 默认 leader 个数是 1。因此，5 个副本为 4 个 follower 和 1 个 leader。
 
-### 为数据库配置默认的放置策略
+### 为数据库指定默认的放置策略
 
 你可以为某个数据库指定默认的放置策略，类似于为数据库设置默认字符集或排序规则。如果没有指定其他选项，就会使用数据库上指定的配置。示例如下：
 
@@ -216,7 +271,7 @@ ALTER PLACEMENT POLICY p3 FOLLOWERS=3; -- 绑定策略 p3 的表，也就是 t4�
 
 ### 为表指定放置策略
 
-你可以为某个表制定默认的放置策略。
+你可以为某个表指定默认的放置策略。示例如下：
 
 ```sql
 CREATE PLACEMENT POLICY five_replicas FOLLOWERS=4;
@@ -229,7 +284,7 @@ ALTER TABLE t PLACEMENT POLICY=default; -- 删除表 t 已绑定的放置策略 
 
 ### 为分区表指定放置策略
 
-除了给表绑定放置策略之外，你还可以给表分区绑定放置策略。示例如下：
+你还可以给表分区指定放置策略。示例如下：
 
 ```sql
 CREATE PLACEMENT POLICY storageonnvme CONSTRAINTS="[+disk=nvme]";
@@ -247,7 +302,7 @@ PARTITION BY RANGE( YEAR(purchased) ) (
 );
 ```
 
-如果分区没有绑定任何放置策略，分区将尝试继承表上可能存在的策略。比如，`p0` 分区将会应用 `storageonssd` 策略，`p4`  分区将会应用 `storageonnvme` 策略，而 `p1`,`p2`,`p3` 分区将会应用表 `t1` 的放置策略 `companystandardpolicy`。如果 `t1` 没有绑定任何策略，`p1`,`p2`,`p3`  就不会应用任何策略，即继承表或数据库或全局的默认策略。
+如果某个分区没有绑定任何放置策略，分区将尝试继承表上可能存在的策略。比如，`p0` 分区将会应用 `storageonssd` 策略，`p4`  分区将会应用 `storageonnvme` 策略，而 `p1`,`p2`,`p3` 分区将会应用表 `t1` 的放置策略 `companystandardpolicy`。如果 `t1` 没有绑定任何策略，`p1`,`p2`,`p3` 就会继承数据库或全局的默认策略。
 
 给分区绑定放置策略后，你可以更改指定分区的放置策略。示例如下：
 
@@ -255,34 +310,12 @@ PARTITION BY RANGE( YEAR(purchased) ) (
 ALTER TABLE t1 PARTITION p1 PLACEMENT POLICY=storageonssd;
 ```
 
-## 常用场景示例
+## 高可用场景示例
 
-放置选项 `PRIMARY_REGION`、`REGIONS` 和 `SCHEDULE` 可满足数据放置的基本需求，但会缺乏一些灵活性。在较复杂的场景下，若需要更灵活地放置数据，可以使用高级放置选项 `CONSTRAINTS` 和 `FOLLOWER_CONSTRAINTS`。其中 `PRIMARY_REGION`、`REGIONS` 和 `SCHEDULE` 选项不可与 `CONSTRAINTS` 选项同时指定，否则会报错。具体可参考[放置选项参考](#放置选项参考)。
-
-**如何给节点打上标签**
-
-放置策略依赖给存储节点标记上相应的属性，才能正常使用。 标记方式为：
-
-{{< copyable "" >}}
-
-```
-tikv-server --labels region=<region>,zone=<zone>,host=<host>
-```
-
-详细可参考相关示例:
-
-| 方式 | 示例 |
-| --- | --- |
-| 手动部署 | [通过拓扑 label 进行副本调度](/schedule-replicas-by-topology-labels.md) |
-| TiUP 部署 | [跨机房部署拓扑结构](/geo-distributed-deployment-topology.md) |
-| Operator 部署| [在 Kubernetes 中配置 TiDB 集群](https://docs.pingcap.com/zh/tidb-in-kubernetes/stable/configure-a-tidb-cluster#高数据的高可用) |
-
-### 高可用场景
-
-假设集群的拓扑扑结构如下：
+假设集群的拓扑扑结构如下，集群的 TiKV 数据节点分布在 3 个 `region`（区域），每个 `region` 有两个可用的 `zone` （可用区）：
 
 ```sql
-mysql> SELECT store_id,address,label from INFORMATION_SCHEMA.TIKV_STORE_STATUS;
+SELECT store_id,address,label from INFORMATION_SCHEMA.TIKV_STORE_STATUS;
 +----------+-----------------+--------------------------------------------------------------------------------------------------------------------------+
 | store_id | address         | label                                                                                                                    |
 +----------+-----------------+--------------------------------------------------------------------------------------------------------------------------+
@@ -299,13 +332,11 @@ mysql> SELECT store_id,address,label from INFORMATION_SCHEMA.TIKV_STORE_STATUS;
 
 ```
 
-集群的 TiKV 数据节点分布在 3 个 `region` 区域，每个中心有两个可用的 `zone`。
+### 指定生存偏好
 
-#### 指定生存偏好
+如果你不特别在意数据的具体分布，只希望能满足容灾生存要求，可以使用 `SURVIVAL_PREFERENCES` 选项设置数据的生存能力偏好。
 
-如果你不特别在意数据的分布，只希望能满足容灾生存要求，你可以使用 `SURVIVAL_PREFERENCES` 选项设置数据的生存能力偏好。
-
-例如，在例子中 TiDB 集群分布在 3 个 `region`（区域），且每个区域有多个 `zone`（即可用区）。在为该集群创建放置策略时，假设 `SURVIVAL_PREFERENCES` 的设置如下：
+在上面的例子中， TiDB 集群分布在 3 个 `region`，且每个区域有两个 `zone`。在为该集群创建放置策略时，假设 `SURVIVAL_PREFERENCES` 的设置如下：
 
 ``` sql
 CREATE PLACEMENT POLICY multiaz SURVIVAL_PREFERENCES="[region, zone, host]";
@@ -314,23 +345,23 @@ CREATE PLACEMENT POLICY singleaz CONSTRAINTS="[+region=us-east-1]" SURVIVAL_PREF
 
 创建好放置策略后，你可以按需将放置策略绑定到对应的表上：
 
-- 对于绑定了 `multiaz` 放置策略的表，数据将以 3 副本的形式放置在不同的可用区里，优先满足跨 `region` 级别的生存目标，再满足跨 `zone` 级别的生存目标, 再满足跨 `host` 级别的生存目标。
-- 对于绑定了 `singleaz` 放置策略的表，数据会优先以 3 副本的形式全部放置在 `us-east-1` 这个可用区里，再满足跨 `zone` 级别的数据隔离的生存目标。
+- 对于绑定了 `multiaz` 放置策略的表，数据将以 3 副本的形式放置在不同的 `region` 里，优先满足跨 `region` 级别的生存目标，再满足跨 `zone` 级别的生存目标，最后再满足跨 `host` 级别的生存目标。
+- 对于绑定了 `singleaz` 放置策略的表，数据会优先以 3 副本的形式全部放置在 `us-east-1` 这个 `region` 里，再满足跨 `zone` 级别的数据隔离的生存目标。
 
 > **注意：**
 >
 > `SURVIVAL_PREFERENCES` 和 PD 中的 `location-labels` 是等价的，更多信息可以参考[通过拓扑 label 进行副本调度](/schedule-replicas-by-topology-labels.md)。
 
-#### 指定集群多数据中心 5 副本 2:2:1 分布
+### 指定集群多数据中心 5 副本 2:2:1 分布
 
-如果要特定的数据分布，可以使用 `CONSTRAINTS` 配置 `Per-Replica` [字典格式](#constraints-格式)的策略:
+如需特定的数据分布（如 5 副本 2:2:1 分布），可以使用 `CONSTRAINTS` 配置 `Per-Replica` [字典格式](#constraints-格式)的策略:
 
 ```sql
-tidb> CREATE PLACEMENT POLICY `deploy221` CONSTRAINTS='{"+region=us-east-1":2, "+region=us-east-2": 2, "+region=us-west-1": 1}';
+CREATE PLACEMENT POLICY `deploy221` CONSTRAINTS='{"+region=us-east-1":2, "+region=us-east-2": 2, "+region=us-west-1": 1}';
 
-tidb> ALTER RANGE global PLACEMENT POLICY = "deploy221";
+ALTER RANGE global PLACEMENT POLICY = "deploy221";
 
-mysql> show placement;
+SHOW PLACEMENT;
 +-------------------+---------------------------------------------------------------------------------------------+------------------+
 | Target            | Placement                                                                                   | Scheduling_State |
 +-------------------+---------------------------------------------------------------------------------------------+------------------+
@@ -339,44 +370,45 @@ mysql> show placement;
 +-------------------+---------------------------------------------------------------------------------------------+------------------+
 ```
 
-通过为系统全局设置 `deploy221` 的放置策略后，TiDB 调度器会将数据根据该策略来分布数据： `us-east-1` 区域放置两个副本，`us-east-2` 区域放置两个副本，`us-west-1` 区域放置一个副本。
+通过为集群全局设置 `deploy221` 放置策略后，TiDB 会根据该策略来分布数据： `us-east-1` 区域放置两个副本，`us-east-2` 区域放置两个副本，`us-west-1` 区域放置一个副本。
 
-#### 指定 Leader/Follower 分布
+### 指定 Leader/Follower 分布
 
-以下两种方式都可以制定特殊的 Leader/Follower 的分布
+你可以通过 Constraints 或 PRIMARY_REGION 指定特殊的 Leader/Follower 的分布。
 
-##### 使用 Constraints 指定
+#### 使用 Constraints 指定
 
-如果你对 Leader 的分布要要求，可以使用如下语句指定。
+如果你对 Raft Leader 的分布节点有要求，可以使用如下语句指定：
 
 ```sql
 CREATE PLACEMENT POLICY deploy221_primary_east1 LEADER_CONSTRAINTS="[+region=us-east-1]" FOLLOWER_CONSTRAINTS='{"+region=us-east-1": 1, "+region=us-east-2": 2, "+region=us-west-1: 1}';
 ```
 
-该语句创建好后，绑定改策略的数据会将副本组的 Raft Leader 放置在 `us-east-1` 中，其他副本在其他区域。值得注意的是，如果集群发生故障，比如 leader 所在区域 `us-east-1` 的节点都挂了，这时候即时其他区域设置的都是 FOLLOWER_CONSTRAINTS, 也会选举出一个新的 leader，也就是说保证服务可用的优先级是最高的。如果希望在 `us-east-1` 区域故障发生时，leader 不要在 `us-west-1`，可以配置特殊的属性，驱逐上面新的 leader:
+该语句创建好放置策略后，绑定该策略的数据会将副本中的 Raft Leader 放置在 `us-east-1` 中，其他副本在其他区域。需要注意的是，如果集群发生故障，比如 leader 所在区域 `us-east-1` 的节点宕机，这时候即使其他区域设置的都是 `FOLLOWER_CONSTRAINTS`, 也会从中选举出一个新的 Leader，也就是说保证服务可用的优先级是最高的。
+
+在 `us-east-1` 区域故障发生时，如果希望新的 Leader 不要放置在 `us-west-1`，可以配置特殊的 `reject-leader` 属性，驱逐上面新的 Leader:
 
 ```sql
 CREATE PLACEMENT POLICY deploy221_primary_east1 LEADER_CONSTRAINTS="[+region=us-east-1]" FOLLOWER_CONSTRAINTS='{"+region=us-east-1": 1, "+region=us-east-2": 2, "+region=us-west-1,#reject-leader: 1}';
 ```
 
-##### 使用 PRIMARY_REGION 指定
+#### 使用 PRIMARY_REGION 指定
 
-如果你的集群拓扑是使用 `region` label 标记的，上面例子你还可使用 `PRIMARY_REGION` 和 `REGIONS` 选项来描述 follower 的放置策略：
+如果你的集群拓扑配置了 `region` label，你还可以使用 `PRIMARY_REGION` 和 `REGIONS` 选项来指定 follower 的放置策略：
 
 ```sql
 CREATE PLACEMENT POLICY eastandwest PRIMARY_REGION="us-east-1" REGIONS="us-east-1,us-east-2,us-west-1" SCHEDULE="MAJORITY_IN_PRIMARY" FOLLOWERS=4;
 CREATE TABLE t1 (a INT) PLACEMENT POLICY=eastandwest;
 ```
 
-`PRIMARY_REGION` 为 LEADER 分布的 REGION，只能指定一个。
+- `PRIMARY_REGION` 为 Leader 分布的区域，只能指定一个。
+- `SCHEDULE` 选项指定 TiDB 如何平衡 follower 的分布。
+    - 该选项默认的 `EVEN` 调度规则确保 follower 在所有区域内分布平衡。
+    - 如需保证在 `PRIMARY_REGION`（即 `us-east-1`）内 放置足够多的 follower 副本，你可以使用 `MAJORITY_IN_PRIMARY` 调度规则来使该区域的 follower 达到指定数量。该调度牺牲一些可用性来换取更低的事务延迟。如果主区域宕机`MAJORITY_IN_PRIMARY` 无法提供自动故障转移。
 
-`SCHEDULE` 选项指示 TiDB 如何平衡 follower。该选项默认的 `EVEN` 调度规则确保 follower 在所有区域内分布平衡。
+## 数据隔离场景示例
 
-如要保证在主区域内 (`us-east-1`) 放置足够多的 follower 副本，你可以使用 `MAJORITY_IN_PRIMARY` 调度规则来使该区域的 follower 达到指定数量。该调度牺牲一些可用性来换取更低的事务延迟。如果主区域宕机，`MAJORITY_IN_PRIMARY` 无法提供自动故障转移。
-
-### 数据隔离场景
-
-以下示例设置了一个约束，要求数据必须位于某些 TiKV 节点，且节点的 `app` 标签必须匹配特定的值：
+以下示例在创建放置策略时，设置了一个约束，要求数据必须放置在配置了指定的 `app` 标签的 TiKV 节点：
 
 ```sql
 CREATE PLACEMENT POLICY app_order CONSTRAINTS="[+app=order]";
@@ -387,7 +419,9 @@ CREATE TABLE list (id INT, name VARCHAR(50), purchased DATE)
 PLACEMENT POLICY=app_list
 ```
 
-该约束可通过列表格式 (`[+app=order]`) 或字典格式 (`{+app=order: 3}`) 指定。将应用 `app_order` 数据放置在标记了标签 `app` 为 `order` 的 tikv 节点上，应用 `app_list` 的数据放置在标记了标签 `app` 为 `list_collection` 的 tikv 节点上，从而在存储上达到了物理隔离的效果。
+在该示例中，约束是通过列表格式 (`[+app=order]`) 指定的。你也可以使用字典格式指定，例如 (`{+app=order: 3}`)。
+
+执行示例中的语句后，TiDB 会将 `app_order` 的数据放置在配置了 `app` 标签为 `order` 的 TiKV 节点上，将 `app_list` 的数据放置在配置了 `app` 标签为 `list_collection` 的 TiKV 节点上，从而在存储上达到了物理隔离的效果。
 
 ## 工具兼容性
 
@@ -397,12 +431,3 @@ PLACEMENT POLICY=app_list
 | TiDB Lightning | 暂时不兼容 | 导入包含放置策略的数据时会报错 |
 | TiCDC | 6.0 | 忽略放置策略，不同步策略到下游集群 |
 | TiDB Binlog | 6.0 | 忽略放置策略，不同步策略到下游集群 |
-
-## 使用限制
-
-目前已知 Placement Rules in SQL 特性存在以下限制：
-
-* 临时表不支持放置策略。
-* 放置策略仅保证静态数据被放置在正确的 TiKV 节点上。该策略不保证传输中的数据（通过用户查询或内部操作）只出现在特定区域内。
-* 设置 `TiFlash` 的副本要通过[构建 TiFlash 副本](/tiflash/create-tiflash-replicas.md)的方式创建，不能使用该特性。 
-* 设置 `PRIMARY_REGION` 和 `REGIONS` 时允许存在语法糖。但在未来版本中，我们计划为 `PRIMARY_RACK`、`PRIMARY_ZONE` 和 `PRIMARY_HOST` 添加变体支持，见 [issue #18030](https://github.com/pingcap/tidb/issues/18030)。
