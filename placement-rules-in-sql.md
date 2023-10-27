@@ -223,7 +223,7 @@ DROP PLACEMENT POLICY myplacementpolicy;
 
 ### 为集群指定全局的副本数
 
-集群初始化后，副本数默认值为 `3`。如要为特定的表调大该值，可使用配置策略，示例如下：
+集群初始化后，副本数默认值为 `3`。集群如需更多的副本数，可使用配置策略调大该值，示例如下：
 
 ```sql
 CREATE PLACEMENT POLICY five_replicas FOLLOWERS=4;
