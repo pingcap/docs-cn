@@ -77,7 +77,7 @@ tiup dumpling -h ${ip} -P 3306 -u root -t 16 -r 200000 -F 256MB -B my_db1 -f 'my
 | `-P` 或 `--port`       | MySQL 数据库的端口 |
 | `-h` 或 `--host`       | MySQL 数据库的 IP 地址 |
 | `-t` 或 `--thread`     | 导出的线程数。增加线程数会增加 Dumpling 并发度提高导出速度，但也会加大数据库内存消耗，因此不宜设置过大，一般不超过 64|
-| `-o` 或 `--output`     | 存储导出文件的目录，支持本地文件路径或[外部存储 URI 格式](/br/backup-and-restore-storages.md#uri-格式) |
+| `-o` 或 `--output`     | 存储导出文件的目录，支持本地文件路径或[外部存储服务的 URI 格式](/external-storage-uri.md) |
 | `-r` 或 `--row`        | 用于指定单个文件的最大行数，指定该参数后 Dumpling 会开启表内并发加速导出，同时减少内存使用 |
 | `-F`                   | 指定单个文件的最大大小，单位为 MiB。强烈建议使用`-F`参数以避免单表过大导致备份过程中断 |
 | `-B` 或 `--database`   | 导出指定数据库 |

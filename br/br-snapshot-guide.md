@@ -34,7 +34,7 @@ tiup br backup full --pd "${PD_IP}:2379" \
 以上命令中：
 
 - `--backupts`：快照对应的物理时间点，格式可以是 [TSO](/glossary.md#tso) 或者时间戳，例如 `400036290571534337` 或者 `2018-05-11 01:42:23`。如果该快照的数据被垃圾回收 (GC) 了，那么 `br backup` 命令会报错并退出。如果你没有指定该参数，那么 br 会选取备份开始的时间点所对应的快照。
-- `--storage`：数据备份到的存储地址。快照备份支持以 Amazon S3、Google Cloud Storage、Azure Blob Storage 为备份存储，以上命令以 Amazon S3 为示例。详细存储地址格式请参考[备份存储 URI 配置](/br/backup-and-restore-storages.md#uri-格式)。
+- `--storage`：数据备份到的存储地址。快照备份支持以 Amazon S3、Google Cloud Storage、Azure Blob Storage 为备份存储，以上命令以 Amazon S3 为示例。详细存储地址格式请参考[外部存储服务的 URI 格式](/external-storage-uri.md)。
 - `--ratelimit`：**每个 TiKV** 备份数据的速度上限，单位为 MiB/s。
 
 在快照备份过程中，终端会显示备份进度条。在备份完成后，会输出备份耗时、速度、备份数据大小等信息。

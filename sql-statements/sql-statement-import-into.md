@@ -11,9 +11,9 @@ summary: TiDB 数据库中 IMPORT INTO 的使用概况。
 >
 > 目前该语句为实验特性，不建议在生产环境中使用。
 
-`IMPORT INTO` 支持导入存储在 Amazon S3、GCS 和 TiDB 本地的数据文件。
+`IMPORT INTO` 支持导入存储在 Amazon S3、GCS、Azure Blob Storage 和 TiDB 本地的数据文件。
 
-- 对于存储在 S3 或 GCS 的数据文件，`IMPORT INTO` 支持通过[后端任务分布式框架](/tidb-distributed-execution-framework.md)运行。
+- 对于存储在 S3、GCS 或 Azure Blob Storage 的数据文件，`IMPORT INTO` 支持通过[后端任务分布式框架](/tidb-distributed-execution-framework.md)运行。
 
     - 当此框架功能开启时（即 [tidb_enable_dist_task](/system-variables.md#tidb_enable_dist_task-从-v710-版本开始引入) 为 `ON`），`IMPORT INTO` 会将一个数据导入任务拆分成多个子任务并分配到各个 TiDB 节点上运行，以提高导入效率。
     - 当此框架功能关闭时，`IMPORT INTO` 仅支持在当前用户连接的 TiDB 节点上运行。
@@ -88,9 +88,9 @@ SET 表达式左侧只能引用 `ColumnNameOrUserVarList` 中没有的列名。�
 
 ### fileLocation
 
-用于指定数据文件的存储位置，该位置可以是 S3 或 GCS URI 路径，也可以是 TiDB 本地文件路径。
+用于指定数据文件的存储位置，该位置可以是 S3、GCS 或 Azure Blob Storage URI 路径，也可以是 TiDB 本地文件路径。
 
-- S3 或 GCS URI 路径：配置详见[外部存储](/br/backup-and-restore-storages.md#uri-格式)。
+- S3、GCS 或 Azure Blob Storage URI 路径：配置详见[外部存储服务的 URI 格式](/external-storage-uri.md)。
 - TiDB 本地文件路径：必须为绝对路径，数据文件后缀必须为 `.csv`、`.sql` 或 `.parquet`。确保该路径对应的文件存储在当前用户连接的 TiDB 节点上，且当前连接的用户有 `FILE` 权限。
 
 > **注意：**
@@ -131,7 +131,7 @@ SET 表达式左侧只能引用 `ColumnNameOrUserVarList` 中没有的列名。�
 | `MAX_WRITE_SPEED='<string>'` | 所有格式 | 控制写入到单个 TiKV 的速度，默认无速度限制。例如设置为 `1MiB`，则限制写入速度为 1 MiB/s。|
 | `CHECKSUM_TABLE='<string>'` | 所有格式 | 配置是否在导入完成后对目标表是否执行 CHECKSUM 检查来验证导入的完整性。可选的配置项为 `"required"`（默认）、`"optional"` 和 `"off"`。`"required"` 表示在导入完成后执行 CHECKSUM 检查，如果 CHECKSUM 检查失败，则会报错退出。`"optional"` 表示在导入完成后执行 CHECKSUM 检查，如果报错，会输出一条警告日志并忽略报错。`"off"` 表示导入结束后不执行 CHECKSUM 检查。 |
 | `DETACHED` | 所有格式 | 该参数用于控制 `IMPORT INTO` 是否异步执行。开启该参数后，执行 `IMPORT INTO` 会立即返回该导入任务的 `Job_ID` 等信息，且该任务会在后台异步执行。 |
-| `CLOUD_STORAGE_URI` | 所有格式 | 指定编码后的 KV 数据[全局排序](#全局排序)的目标存储地址。未指定该参数时，`IMPORT INTO` 会根据系统变量 [`tidb_cloud_storage_uri`](/system-variables.md#tidb_cloud_storage_uri-从-v740-版本开始引入) 的值来确定是否使用全局排序，如果该系统变量指定了目标存储地址，就使用指定的地址进行全局排序。当指定该参数时，如果参数值不为空，`IMPORT INTO` 会使用该参数值作为目标存储地址；如果参数值为空，则表示强制使用本地排序。目前目标存储地址仅支持 S3，具体 URI 格式配置详见[外部存储](/br/backup-and-restore-storages.md#uri-格式)。注意当使用该功能时，所有 TiDB 节点都需要有目标 S3 bucket 的读写权限。 |
+| `CLOUD_STORAGE_URI` | 所有格式 | 指定编码后的 KV 数据[全局排序](#全局排序)的目标存储地址。未指定该参数时，`IMPORT INTO` 会根据系统变量 [`tidb_cloud_storage_uri`](/system-variables.md#tidb_cloud_storage_uri-从-v740-版本开始引入) 的值来确定是否使用全局排序，如果该系统变量指定了目标存储地址，就使用指定的地址进行全局排序。当指定该参数时，如果参数值不为空，`IMPORT INTO` 会使用该参数值作为目标存储地址；如果参数值为空，则表示强制使用本地排序。目前目标存储地址仅支持 Amazon S3，具体 Amazon S3 URI 格式配置，请参见 [Amazon S3 URI 格式](/external-storage-uri.md#amazon-s3-uri-格式)。注意当使用该功能时，所有 TiDB 节点都需要有目标 Amazon S3 bucket 的读写权限。 |
 
 ## 压缩文件
 
@@ -230,7 +230,7 @@ IMPORT INTO t(id, name, @1) FROM '/path/to/file.csv' WITH skip_rows=1;
 IMPORT INTO t FROM '/path/to/file-*.csv'
 ```
 
-### 从 S3、GCS 导入数据
+### 从 S3、GCS 或 Azure Blob Storage 导入数据
 
 - 从 S3 导入数据
 
@@ -241,10 +241,16 @@ IMPORT INTO t FROM '/path/to/file-*.csv'
 - 从 GCS 导入数据
 
     ```sql
-    IMPORT INTO t FROM 'gs://bucket-name/test.csv';
+    IMPORT INTO t FROM 'gs://import/test.csv?credentials-file=${credentials-file-path}';
     ```
 
-S3 或 GCS 的 URI 路径配置详见[外部存储](/br/backup-and-restore-storages.md#uri-格式)。
+- 从 Azure Blob Storage 导入数据
+
+    ```sql
+    IMPORT INTO t FROM 'azure://import/test.csv?credentials-file=${credentials-file-path}';
+    ```
+
+关于 Amazon S3、GCS 和 Azure Blob Storage 的 URI 路径配置，详见[外部存储服务的 URI 格式](/external-storage-uri.md)。
 
 ### 通过 SetClause 语句计算列值
 
