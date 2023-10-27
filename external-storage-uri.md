@@ -33,7 +33,7 @@ summary: 介绍了外部存储服务 Amazon S3、GCS、和 Azure Blob Storage �
 示例：
 
 ```shell
-s3://external/backup-20220915?access-key=${access-key}&secret-access-key=${secret-access-key}"
+s3://external/test.csv?access-key=${access-key}&secret-access-key=${secret-access-key}"
 ```
 
 ## GCS URI 格式
@@ -49,7 +49,7 @@ s3://external/backup-20220915?access-key=${access-key}&secret-access-key=${secre
 示例：
 
 ```shell
-gcs://external/backup-20220915?credentials-file=${credentials-file-path}
+gcs://external/test.csv?credentials-file=${credentials-file-path}
 ```
 
 ## Azure Blob Storage URI 格式
@@ -68,5 +68,5 @@ gcs://external/backup-20220915?credentials-file=${credentials-file-path}
 示例：
 
 ```shell
-azure://external/backup-20220915account-name=${account-name}&account-key=${account-key}
+azure://external/test.csv?account-name=${account-name}&account-key=${account-key}
 ```
