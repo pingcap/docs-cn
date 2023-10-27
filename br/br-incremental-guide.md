@@ -30,7 +30,7 @@ tiup br backup full --pd "${PD_IP}:2379" \
 
 - `--lastbackupts`: The last backup timestamp.
 - `--ratelimit`: The maximum speed **per TiKV** performing backup tasks (in MiB/s).
-- `storage`: The storage path of backup data. You need to save the incremental backup data under a different path from the previous snapshot backup. In the preceding example, incremental backup data is saved in the `incr` directory under the full backup data. For details, see [Backup storage URI configuration](/br/backup-and-restore-storages.md#uri-format).
+- `storage`: The storage path of backup data. You need to save the incremental backup data under a different path from the previous snapshot backup. In the preceding example, incremental backup data is saved in the `incr` directory under the full backup data. For details, see [URI Formats of External Storage Services](/external-storage-uri.md).
 
 ## Restore incremental data
 

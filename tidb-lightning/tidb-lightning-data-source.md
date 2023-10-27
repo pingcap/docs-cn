@@ -334,7 +334,7 @@ type = '$3'
 
 ## Import data from Amazon S3
 
-The following examples show how to import data from Amazon S3 using TiDB Lightning. For more parameter configurations, see [external storage URI](/br/backup-and-restore-storages.md#uri-format).
+The following examples show how to import data from Amazon S3 using TiDB Lightning. For more parameter configurations, see [URI Formats of External Storage Services](/external-storage-uri.md).
 
 + Use the locally configured permissions to access S3 data:
 

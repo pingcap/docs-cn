@@ -389,7 +389,7 @@ When `large-message-handle-option` is set to `"claim-check"`, `claim-check-stora
 
 > **Tip**
 >
-> Currently, the external storage services supported by TiCDC are the same as BR. For detailed parameter descriptions, see [Backup storages URI format](/br/backup-and-restore-storages.md#uri-format-description).
+> For more information about the URI parameters of Amazon S3, GCS, and Azure Blob Storage in TiCDC, see [URI Formats of External Storage Services](/external-storage-uri.md).
 
 TiCDC does not clean up messages on external storage services. Data consumers need to manage external storage services on their own.
 

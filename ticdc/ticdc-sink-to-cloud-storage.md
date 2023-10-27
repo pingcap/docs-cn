@@ -79,7 +79,7 @@ The following is an example configuration for Azure Blob Storage:
 
 > **Tip:**
 >
-> The URI parameters of Amazon S3, GCS, and Azure Blob Storage in TiCDC are the same as their URI parameters in BR. For details, see [Backup storage URI format](/br/backup-and-restore-storages.md#uri-format-description).
+> For more information about the URI parameters of Amazon S3, GCS, and Azure Blob Storage in TiCDC, see [URI Formats of External Storage Services](/external-storage-uri.md).
 
 ### Configure sink URI for NFS
 
