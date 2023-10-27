@@ -297,7 +297,7 @@ PARTITION BY RANGE( YEAR(purchased) ) (
 给分区绑定放置策略后，你可以更改指定分区的放置策略。示例如下：
 
 ```sql
-ALTER TABLE t1 PARTITION p1 PLACEMENT POLICY=storageonssd;
+ALTER TABLE t1 PARTITION p1 PLACEMENT POLICY=storageforhisotrydata;
 ```
 
 ## 高可用场景示例
