@@ -131,9 +131,9 @@ TiDB 7.5.0 为长期支持版本 (Long-Term Support Release, LTS)。
 
 ## 废弃功能
 
-* 废弃功能 1
+* 统计信息的[快速分析](https://docs.pingcap.com/zh/tidb/v7.3/system-variables#tidb_enable_fast_analyze)(实验特性)在 v7.5.0 中废弃。
 
-* 废弃功能 2
+* 统计信息的[增量收集](https://docs.pingcap.com/zh/tidb/v7.3/statistics#增量收集)(实验特性)在 v7.5.0 中废弃。
 
 * 废弃功能 3
 
