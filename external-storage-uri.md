@@ -30,10 +30,16 @@ summary: 介绍了外部存储服务 Amazon S3、GCS、和 Azure Blob Storage �
     - `role-arn`：当需要使用特定的 [IAM 角色](https://docs.aws.amazon.com/zh_cn/IAM/latest/UserGuide/id_roles.html)来访问第三方 Amazon S3 的数据时，使用这个参数来指定 IAM 角色的对应 [Amazon Resource Name (ARN)](https://docs.aws.amazon.com/zh_cn/general/latest/gr/aws-arns-and-namespaces.html)（例如 `arn:aws:iam::888888888888:role/my-role`）。关于使用 IAM 角色访问第三方 Amazon S3 数据的场景，请参考 [AWS 相关文档介绍](https://docs.aws.amazon.com/zh_cn/IAM/latest/UserGuide/id_roles_common-scenarios_third-party.html)。
     - `external-id`：当需要使用特定的 [IAM 角色](https://docs.aws.amazon.com/zh_cn/IAM/latest/UserGuide/id_roles.html)来访问第三方 Amazon S3 的数据时，可能需要同时提供正确的[外部 ID](https://docs.aws.amazon.com/zh_cn/IAM/latest/UserGuide/id_roles_create_for-user_externalid.html) 来确保用户有权限代入该 IAM 角色。这个参数用来指定对应的外部 ID，确保成功代入 IAM 角色。外部 ID 可以是任意字符串，并且不是必须的，一般由控制 Amazon S3 数据访问的第三方来指定。如果第三方对于 IAM 角色没有要求指定外部 ID，则可以不需要提供该参数也能顺利代入对应的 IAM 角色，从而访问对应的 Amazon S3 数据。
 
-示例：
+以下是用于 TiDB Lightning 和 BR 的 Amazon S3 URI 示例，需要指定文件夹路径 `testfolder`：
 
 ```shell
-s3://external/backup-20220915?access-key=${access-key}&secret-access-key=${secret-access-key}"
+s3://external/testfolder?access-key=${access-key}&secret-access-key=${secret-access-key}"
+```
+
+以下是用于 [`IMPORT INTO`](/sql-statements/sql-statement-import-into.md) 的 Amazon S3 URI 示例，需要指定具体的文件名 `test.csv`：
+
+```shell
+s3://external/test.csv?access-key=${access-key}&secret-access-key=${secret-access-key}"
 ```
 
 ## GCS URI 格式
@@ -46,10 +52,16 @@ s3://external/backup-20220915?access-key=${access-key}&secret-access-key=${secre
     - `storage-class`：上传对象的存储类别，例如 `STANDARD` 或 `COLDLINE`
     - `predefined-acl`：上传对象的预定义 ACL，例如 `private` 或 `project-private`
 
-示例：
+以下是用于 TiDB Lightning 和 BR 的 GCS URI 示例，需要指定文件夹路径 `testfolder`：
 
 ```shell
-gcs://external/backup-20220915?credentials-file=${credentials-file-path}
+gcs://external/testfolder?credentials-file=${credentials-file-path}
+```
+
+以下是用于 [`IMPORT INTO`](/sql-statements/sql-statement-import-into.md) 的 GCS URI 示例，需要指定具体的文件名 `test.csv`：
+
+```shell
+gcs://external/test.csv?credentials-file=${credentials-file-path}
 ```
 
 ## Azure Blob Storage URI 格式
@@ -65,8 +77,14 @@ gcs://external/backup-20220915?credentials-file=${credentials-file-path}
     - `encryption-scope`：服务端的[加密范围 (Encryption Scope)](https://learn.microsoft.com/zh-cn/azure/storage/blobs/encryption-scope-manage?tabs=powershell#upload-a-blob-with-an-encryption-scope)
     - `encryption-key`：服务端使用的[加密密钥 (Encryption Key)](https://learn.microsoft.com/zh-cn/azure/storage/blobs/encryption-customer-provided-keys)，采用的加密算法为 AES256
 
-示例：
+以下是用于 TiDB Lightning 和 BR 的 Azure Blob Storage URI 示例，需要指定文件夹路径 `testfolder`：
 
 ```shell
-azure://external/backup-20220915account-name=${account-name}&account-key=${account-key}
+azure://external/testfolder?account-name=${account-name}&account-key=${account-key}
+```
+
+以下是用于 [`IMPORT INTO`](/sql-statements/sql-statement-import-into.md) 的 Azure Blob Storage URI 示例，需要指定具体的文件名 `test.csv`：
+
+```shell
+azure://external/test.csv?account-name=${account-name}&account-key=${account-key}
 ```
