@@ -328,7 +328,7 @@ type = '$3'
 
 ## 从 Amazon S3 导入数据
 
-如下为从 Amazon S3 导入数据的示例，更多配置参数描述，可参考[外部存储 URI 格式](/br/backup-and-restore-storages.md#uri-格式)。
+如下为从 Amazon S3 导入数据的示例，更多配置参数描述，可参考[外部存储服务的 URI 格式](/external-storage-uri.md)。
 
 * 使用本地已设置的权限访问 S3：
 
