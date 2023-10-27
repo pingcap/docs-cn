@@ -148,7 +148,6 @@ SHOW PLACEMENT LABELS;
 - 要查看集群中所有绑定了放置策略的分区，可以查询 `information_schema.partitions` 系统表的 `tidb_placement_policy_name` 列：
 
     ```sql
-    SELECT * FROM information_schema.tables WHERE tidb_placement_policy_name IS NOT NULL;
     SELECT * FROM information_schema.partitions WHERE tidb_placement_policy_name IS NOT NULL;
     ```
 
