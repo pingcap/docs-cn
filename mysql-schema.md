@@ -69,6 +69,7 @@ summary: 了解 TiDB 系统表。
 * `mysql.tidb_ttl_job_history` 过去 90 天内 TTL 任务的执行历史
 
 ## 元数据锁相关系统表
+
 * `tidb_mdl_view`：元数据锁的视图，可以用于查看当前阻塞的 DDL 的相关信息
 * `tidb_mdl_info`：内部用于同步各节点的元数据锁
 
