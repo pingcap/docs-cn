@@ -20,7 +20,7 @@ Placement Rules in SQL 特性用于通过 SQL 接口配置数据在 TiKV 集群�
 | 级别                | 描述                                                                                    |
 |----------------------------|------------------------------------------------------------------------------------------------|
 | 集群          | TiDB 默认为集群配置 3 副本的策略。你可以为集群配置全局放置策略，参考[集群配置](#为集群指定全局的副本数)。  |
-| 数据库        | 你可以为指定的 Database 配置放置策略，参考[为数据库配置默认的放置策略](#为数据库配置默认的放置策略)。 |
+| 数据库        | 你可以为指定的 Database 配置放置策略，参考[为数据库指定默认的放置策略](#为数据库指定默认的放置策略)。 |
 | 表            | 你可以为指定的 Table 配置放置策略，参考[为表指定放置策略](#为表指定放置策略)。  |
 | 分区          | 你可以为表中不同的 Row 创建分区，并单独对分区配置放置策略，参考[为分区表指定放置策略](#为分区表指定放置策略)。 |
 
@@ -210,7 +210,7 @@ DROP PLACEMENT POLICY myplacementpolicy;
 | CONSTRAINTS 格式 | 描述 |
 |----------------------------|-----------------------------------------------------------------------------------------------------------|
 | 列表格式  | 如果指定的约束适用于所有副本，可以使用键值对列表格式。键以 `+` 或 `-` 开头。例如：<br/> <ul><li>`[+region=us-east-1]` 表示放置数据在 `region` 标签为 `us-east-1` 的节点上。</li><li>`[+region=us-east-1,-type=fault]` 表示放置数据在 `region` 标签为 `us-east-1` 且 `type` 标签不为 `fault` 的节点上。</li></ul><br/>  |
-| 字典格式 | 如果需要为不同的约束指定不同数量的副本，可以使用字典格式。例如：<br/> <ul><li>`FOLLOWER_CONSTRAINTS="{+region=us-east-1: 1,+region=us-east-2: 1,+region=us-west-1: 1}";` 表示 1 个 follower 位于 `us-east-1`，1 个 follower 位于 `us-east-2`，1 个 follower 位于 `us-west-1`。</li><li>`FOLLOWER_CONSTRAINTS='{"+region=us-east-1,+type=scale-node": 1,"+region=us-west-1": 1}';` 表示 1 个 follower 位于 `us-east-1` 区域中有标签 `type` 为 `scale-node` 的机器上，1 个 follower 位于 `us-west-1`。</li></ul>字典格式支持以 `+` 或 `-` 开头的键，并支持配置特殊的 `#reject-leader` 属性。例如，`FOLLOWER_CONSTRAINTS='{ "+region=us-east-1":1, "+region=us-east-2": 2}' FOLLOWER_CONSTRAINTS='{"+region=us-west-1,#reject-leader": 1}'` 表示当进行容灾时，`us-west-1` 上尽可能驱逐当选的 leader。|
+| 字典格式 | 如果需要为不同的约束指定不同数量的副本，可以使用字典格式。例如：<br/> <ul><li>`FOLLOWER_CONSTRAINTS="{+region=us-east-1: 1,+region=us-east-2: 1,+region=us-west-1: 1}";` 表示 1 个 follower 位于 `us-east-1`，1 个 follower 位于 `us-east-2`，1 个 follower 位于 `us-west-1`。</li><li>`FOLLOWER_CONSTRAINTS='{"+region=us-east-1,+type=scale-node": 1,"+region=us-west-1": 1}';` 表示 1 个 follower 位于 `us-east-1` 区域中有标签 `type` 为 `scale-node` 的机器上，1 个 follower 位于 `us-west-1`。</li></ul>字典格式支持以 `+` 或 `-` 开头的键，并支持配置特殊的 `#reject-leader` 属性。例如，`FOLLOWER_CONSTRAINTS='{ "+region=us-east-1":1, "+region=us-east-2": 2, +region=us-west-1,#reject-leader": 1}'` 表示当进行容灾时，`us-west-1` 上尽可能驱逐当选的 leader。|
 
 > **注意：**
 >
@@ -277,22 +277,22 @@ ALTER TABLE t PLACEMENT POLICY=default; -- 删除表 t 已绑定的放置策略 
 你还可以给表分区指定放置策略。示例如下：
 
 ```sql
-CREATE PLACEMENT POLICY storageonnvme CONSTRAINTS="[+disk=nvme]";
-CREATE PLACEMENT POLICY storageonssd CONSTRAINTS="[+disk=ssd]";
+CREATE PLACEMENT POLICY storageforhisotrydata CONSTRAINTS="[+node=history]";
+CREATE PLACEMENT POLICY storagefornewdata CONSTRAINTS="[+node=new]";
 CREATE PLACEMENT POLICY companystandardpolicy CONSTRAINTS="";
 
 CREATE TABLE t1 (id INT, name VARCHAR(50), purchased DATE)
 PLACEMENT POLICY=companystandardpolicy
 PARTITION BY RANGE( YEAR(purchased) ) (
-  PARTITION p0 VALUES LESS THAN (2000) PLACEMENT POLICY=storageonssd,
+  PARTITION p0 VALUES LESS THAN (2000) PLACEMENT POLICY=storageforhisotrydata,
   PARTITION p1 VALUES LESS THAN (2005),
   PARTITION p2 VALUES LESS THAN (2010),
   PARTITION p3 VALUES LESS THAN (2015),
-  PARTITION p4 VALUES LESS THAN MAXVALUE PLACEMENT POLICY=storageonnvme
+  PARTITION p4 VALUES LESS THAN MAXVALUE PLACEMENT POLICY=storagefornewdata
 );
 ```
 
-如果某个分区没有绑定任何放置策略，分区将尝试继承表上可能存在的策略。比如，`p0` 分区将会应用 `storageonssd` 策略，`p4`  分区将会应用 `storageonnvme` 策略，而 `p1`,`p2`,`p3` 分区将会应用表 `t1` 的放置策略 `companystandardpolicy`。如果 `t1` 没有绑定任何策略，`p1`,`p2`,`p3` 就会继承数据库或全局的默认策略。
+如果某个分区没有绑定任何放置策略，分区将尝试继承表上可能存在的策略。比如，`p0` 分区将会应用 `storageforhisotrydata` 策略，`p4`  分区将会应用 `storagefornewdata` 策略，而 `p1`,`p2`,`p3` 分区将会应用表 `t1` 的放置策略 `companystandardpolicy`。如果 `t1` 没有绑定任何策略，`p1`,`p2`,`p3` 就会继承数据库或全局的默认策略。
 
 给分区绑定放置策略后，你可以更改指定分区的放置策略。示例如下：
 
