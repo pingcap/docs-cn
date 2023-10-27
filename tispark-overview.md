@@ -339,7 +339,7 @@ spark.tispark.jdbc.client_cert_password                        jdbc_clientstore_
 ```
 
 - 对于如何开启 TiDB TLS，请参考 [Enable TLS between TiDB Clients and Servers](/enable-tls-between-clients-and-servers.md)。
-- 对于如何生成 JAVA key store，请参考 [Connecting Securely Using SSL](https://dev.mysql.com/doc/connector-j/8.0/en/connector-j-reference-using-ssl.html)。
+- 对于如何生成 JAVA key store，请参考 [Connecting Securely Using SSL](https://dev.mysql.com/doc/connector-j/en/connector-j-reference-using-ssl.html)。
 
 ### 时区配置
 
