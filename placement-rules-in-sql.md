@@ -36,7 +36,7 @@ Placement Rules in SQL 特性用于通过 SQL 接口配置数据在 TiKV 集群�
 
 ## 前提条件
 
-放置策略依赖于 TiKV 节点标签 (label) 的配置。例如，`PRIMARY_REGION` 选项依赖 TiKV 中的 `region` 标签。
+放置策略依赖于 TiKV 节点标签 (label) 的配置。例如，放置选项 `PRIMARY_REGION` 依赖 TiKV 中的 `region` 标签。
 
 创建放置策略时，TiDB 不会检查标签是否存在，而是在绑定表的时候进行检查。因此，在绑定放置策略前，请确保各个 TiKV 节点已配置正确的 labels。配置方法为：
 
