@@ -394,7 +394,7 @@ CREATE TABLE t1 (a INT) PLACEMENT POLICY=eastandwest;
 - `PRIMARY_REGION` 为 Leader 分布的区域，只能指定一个。
 - `SCHEDULE` 选项指定 TiDB 如何平衡 follower 的分布。
     - 该选项默认的 `EVEN` 调度规则确保 follower 在所有区域内分布平衡。
-    - 如需保证在 `PRIMARY_REGION`（即 `us-east-1`）内 放置足够多的 follower 副本，你可以使用 `MAJORITY_IN_PRIMARY` 调度规则来使该区域的 follower 达到指定数量。该调度牺牲一些可用性来换取更低的事务延迟。如果主区域宕机`MAJORITY_IN_PRIMARY` 无法提供自动故障转移。
+    - 如需保证在 `PRIMARY_REGION`（即 `us-east-1`）内放置足够多的 follower 副本，你可以使用 `MAJORITY_IN_PRIMARY` 调度规则来使该区域的 follower 达到指定数量。该调度牺牲一些可用性来换取更低的事务延迟。如果主区域宕机，`MAJORITY_IN_PRIMARY` 无法提供自动故障转移。
 
 ## 数据隔离场景示例
 
