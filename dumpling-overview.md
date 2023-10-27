@@ -201,7 +201,7 @@ export AWS_ACCESS_KEY_ID=${AccessKey}
 export AWS_SECRET_ACCESS_KEY=${SecretKey}
 ```
 
-Dumpling 同时还支持从 `~/.aws/credentials` 读取凭证文件。Dumpling 导出到 Amazon S3 的配置参数与 BR 大致相同，更多参数描述，请参考[外部存储服务的 URI 格式](/external-storage-uri.md)。
+Dumpling 同时还支持从 `~/.aws/credentials` 读取凭证文件。更多参数描述，请参考[外部存储服务的 URI 格式](/external-storage-uri.md)。
 
 {{< copyable "shell-regular" >}}
 
