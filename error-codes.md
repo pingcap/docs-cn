@@ -306,7 +306,7 @@ TiDB 兼容 MySQL 的错误码，在大多数情况下，返回和 MySQL 一样�
 
 * Error Number: 8158
 
-    传入的文件路径不合法。请根据具体的错误提示进行处理。S3/GCS 路径设置可参考[外部存储](/br/backup-and-restore-storages.md#uri-格式)。
+    传入的文件路径不合法。请根据具体的错误提示进行处理。S3 和 GCS 路径设置可参考[外部存储服务的 URI 格式](/external-storage-uri.md)。
 
 * Error Number: 8159
 

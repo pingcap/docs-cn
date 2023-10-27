@@ -32,7 +32,7 @@ tiup br backup full --pd "${PD_IP}:2379" \
 
 - `--lastbackupts`：上一次的备份时间戳。
 - `--ratelimit`：**每个 TiKV** 执行备份任务的速度上限（单位 MiB/s）。
-- `storage`：数据备份到存储地址。增量备份数据需要与快照备份数据保存在不同的路径下，例如上例保存在全量备份数据下的 `incr` 目录中。详细参考[备份存储 URI 配置](/br/backup-and-restore-storages.md#uri-格式)。
+- `storage`：数据备份到存储地址。增量备份数据需要与快照备份数据保存在不同的路径下，例如上例保存在全量备份数据下的 `incr` 目录中。关于 URI 格式的详细信息，请参考[外部存储服务的 URI 格式](/external-storage-uri.md)。
 
 ## 恢复增量备份数据
 
