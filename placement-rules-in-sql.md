@@ -344,7 +344,7 @@ CREATE PLACEMENT POLICY singleaz CONSTRAINTS="[+region=us-east-1]" SURVIVAL_PREF
 
 ### 指定集群多数据中心 5 副本 2:2:1 分布
 
-如需特定的数据分布（如 5 副本 2:2:1 分布），可以使用 `CONSTRAINTS` 配置 `Per-Replica` [字典格式](#constraints-格式)的策略:
+如需特定的数据分布（如 5 副本 2:2:1 分布），可以配置[字典格式](#constraints-格式)的 `CONSTRAINTS` 为不同的约束指定不同数量的副本：
 
 ```sql
 CREATE PLACEMENT POLICY `deploy221` CONSTRAINTS='{"+region=us-east-1":2, "+region=us-east-2": 2, "+region=us-west-1": 1}';
