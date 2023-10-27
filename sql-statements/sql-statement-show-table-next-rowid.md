@@ -5,7 +5,7 @@ summary: TiDB 数据库中 SHOW TABLE NEXT_ROW_ID 的使用概况。
 
 # SHOW TABLE NEXT_ROW_ID
 
-`SHOW TABLE NEXT_ROW_ID` 语句用于显示用表中某些特殊列的详情，主要包含以下几种类型：
+`SHOW TABLE NEXT_ROW_ID` 语句用于显示用户表中某些特殊列的详情，主要包含以下几种类型：
 
 * TiDB 创建的 `AUTO_INCREMENT` 类型列，即 `_tidb_rowid` 列
 * 用户创建的 `AUTO_INCREMENT` 类型列
@@ -24,7 +24,7 @@ summary: TiDB 数据库中 SHOW TABLE NEXT_ROW_ID 的使用概况。
 
 ## 示例
 
-对于新建的表，由于没有任何的 Row ID 分配，NEXT_GLOBAL_ROW_ID 值为 1
+下面示例中，对于新建的表，由于没有任何的 Row ID 分配，NEXT_GLOBAL_ROW_ID 值为 `1`。
 
 {{< copyable "sql" >}}
 
@@ -43,7 +43,7 @@ show table t next_row_id;
 1 row in set (0.00 sec)
 ```
 
-表中写入了数据，负责写入的 TiDB Server 一次性向存储层请求了 30000 个 ID 缓存起来，NEXT_GLOBAL_ROW_ID 值为 30001
+下面示例中，表中写入了数据，负责写入的 TiDB Server 一次性向存储层请求了 30000 个 ID 缓存起来，NEXT_GLOBAL_ROW_ID 值为 `30001`。
 
 ```sql
 insert into t values (), (), ();
