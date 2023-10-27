@@ -391,8 +391,8 @@ claim-check-storage-uri = "s3://claim-check-bucket"
 当指定 `large-message-handle-option` 为 `claim-check` 时，`claim-check-storage-uri` 必须设置为一个有效的外部存储服务地址，否则创建 changefeed 将会报错。
 
 > **建议：**
-> 
-> 目前支持的外部存储服务与 BR 相同。详细参数说明请参考 [BR 备份存储服务的 URI 格式](/br/backup-and-restore-storages.md#格式说明)。
+>
+> 关于 Amazon S3、GCS 以及 Azure Blob Storage 的 URI 参数的详细参数说明，请参考[外部存储服务的 URI 格式](/external-storage-uri.md)。
 
 TiCDC 不会清理外部存储服务上的消息，数据消费者需要自行管理外部存储服务。
 
