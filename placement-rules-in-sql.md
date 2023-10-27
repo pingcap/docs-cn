@@ -24,22 +24,15 @@ Placement Rules in SQL 特性用于通过 SQL 接口配置数据在 TiKV 集群�
 | 表            | 你可以为指定的 Table 配置放置策略，参考[为表指定放置策略](#为表指定放置策略)。  |
 | 分区          | 你可以为表中不同的 Row 创建分区，并单独对分区配置放置策略，参考[为分区表指定放置策略](#为分区表指定放置策略)。 |
 
-
 > **建议：**
 >
 > Placement Rules in SQL 底层的实现依赖 PD 提供的放置规则 (placement rules) 功能，参考 [Placement Rules 使用文档](/configure-placement-rules.md)。在 Placement Rules in SQL 语境下，放置规则既可以代指绑定对象的放置策略 (placement policy)，也可以代指 TiDB 发给 PD 的放置规则。
 
 ## 使用限制
 
-Placement Rules in SQL 特性目前存在以下限制：
-
-- 临时表不支持放置策略。
-- 放置策略仅保证静态数据被放置在正确的 TiKV 节点上。该策略不保证传输中的数据（通过用户查询或内部操作）只出现在特定区域内。
-- 设置 `TiFlash` 的副本要通过[构建 TiFlash 副本](/tiflash/create-tiflash-replicas.md)的方式创建，不能使用该特性。
-- 设置 `PRIMARY_REGION` 和 `REGIONS` 时允许存在语法糖。但在未来版本中，我们计划为 `PRIMARY_RACK`、`PRIMARY_ZONE` 和 `PRIMARY_HOST` 添加变体支持，见 [issue #18030](https://github.com/pingcap/tidb/issues/18030)。
 - 为了降低运维难度，建议将一个集群的 placement policy 数量限制在 10 个以内。
-- 建议使用推荐的[常见场景](#常用场景示例)应用，不建议使用复杂的放置策略。
 - 建议将绑定了 placement policy 的表和分区数的总数限制在 10000 以内。为过多的表和分区绑定 policy，会增加 PD 上规则计算的负担，从而影响服务性能。
+- 建议按照本文中提到的示例场景使用 Placement Rules in SQL 功能，不建议使用复杂的放置策略。
 
 ## 前提条件
 
@@ -423,7 +416,16 @@ PLACEMENT POLICY=app_list
 
 执行示例中的语句后，TiDB 会将 `app_order` 的数据放置在配置了 `app` 标签为 `order` 的 TiKV 节点上，将 `app_list` 的数据放置在配置了 `app` 标签为 `list_collection` 的 TiKV 节点上，从而在存储上达到了物理隔离的效果。
 
-## 工具兼容性
+## 兼容性说明
+
+### 功能兼容性
+
+- 临时表不支持放置策略。
+- 放置策略仅保证静态数据被放置在正确的 TiKV 节点上。该策略不保证传输中的数据（通过用户查询或内部操作）只出现在特定区域内。
+- 设置 `TiFlash` 的副本要通过[构建 TiFlash 副本](/tiflash/create-tiflash-replicas.md)的方式创建，不能使用该特性。
+- 设置 `PRIMARY_REGION` 和 `REGIONS` 时允许存在语法糖。但在未来版本中，我们计划为 `PRIMARY_RACK`、`PRIMARY_ZONE` 和 `PRIMARY_HOST` 添加变体支持，见 [issue #18030](https://github.com/pingcap/tidb/issues/18030)。
+
+### 工具兼容性
 
 | 工具名称 | 最低兼容版本 | 说明 |
 | --- | --- | --- |
