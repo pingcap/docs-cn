@@ -36,12 +36,6 @@ summary: 介绍了外部存储服务 Amazon S3、GCS、和 Azure Blob Storage �
 s3://external/testfolder?access-key=${access-key}&secret-access-key=${secret-access-key}"
 ```
 
-以下是用于 [`IMPORT INTO`](/sql-statements/sql-statement-import-into.md) 的 Amazon S3 URI 示例，需要指定具体的文件名 `test.csv`：
-
-```shell
-s3://external/test.csv?access-key=${access-key}&secret-access-key=${secret-access-key}"
-```
-
 ## GCS URI 格式
 
 - `scheme`：`gcs` 或 `gs`
@@ -56,12 +50,6 @@ s3://external/test.csv?access-key=${access-key}&secret-access-key=${secret-acces
 
 ```shell
 gcs://external/testfolder?credentials-file=${credentials-file-path}
-```
-
-以下是用于 [`IMPORT INTO`](/sql-statements/sql-statement-import-into.md) 的 GCS URI 示例，需要指定具体的文件名 `test.csv`：
-
-```shell
-gcs://external/test.csv?credentials-file=${credentials-file-path}
 ```
 
 ## Azure Blob Storage URI 格式
@@ -81,10 +69,4 @@ gcs://external/test.csv?credentials-file=${credentials-file-path}
 
 ```shell
 azure://external/testfolder?account-name=${account-name}&account-key=${account-key}
-```
-
-以下是用于 [`IMPORT INTO`](/sql-statements/sql-statement-import-into.md) 的 Azure Blob Storage URI 示例，需要指定具体的文件名 `test.csv`：
-
-```shell
-azure://external/test.csv?account-name=${account-name}&account-key=${account-key}
 ```
