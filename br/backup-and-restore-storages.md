@@ -31,12 +31,13 @@ BACKUP DATABASE * TO 's3://bucket-name/prefix' SEND_CREDENTIALS_TO_TIKV = FALSE;
 
 ### 格式说明
 
-本部分介绍存储服务的 URI 格式：
+外部存储服务的 URI 格式如下：
 
 ```shell
 [scheme]://[host]/[path]?[parameters]
 ```
 
+<<<<<<< HEAD
 <SimpleTab groupId="storage">
 <div label="Amazon S3" value="amazon">
 
@@ -81,6 +82,9 @@ BACKUP DATABASE * TO 's3://bucket-name/prefix' SEND_CREDENTIALS_TO_TIKV = FALSE;
 
 </div>
 </SimpleTab>
+=======
+关于 URI 格式的详细信息，请参考[外部存储服务的 URI 格式](/external-storage-uri.md)。
+>>>>>>> 3f4cb95a9a (dumpling: add URI formats (#15289))
 
 ### URI 示例
 
