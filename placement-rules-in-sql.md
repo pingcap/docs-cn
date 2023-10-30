@@ -153,6 +153,10 @@ SHOW PLACEMENT LABELS;
 
 - 所有绑定放置策略的对象都是异步调度的。要查看放置策略的调度进度，可以使用 [`SHOW PLACEMENT`](/sql-statements/sql-statement-show-placement.md) 语句。
 
+    ```sql
+    SHOW PLACEMENT;
+    ```
+
 ### 修改放置策略
 
 要修改放置策略，可以使用 [`ALTER PLACEMENT POLICY`](/sql-statements/sql-statement-alter-placement-policy.md) 语句。该修改将应用于所有绑定了此放置策略的对象。
@@ -302,7 +306,7 @@ ALTER TABLE t1 PARTITION p1 PLACEMENT POLICY=storageforhisotrydata;
 
 ## 高可用场景示例
 
-假设集群的拓扑扑结构如下，集群的 TiKV 数据节点分布在 3 个 `region`（区域），每个 `region` 有两个可用的 `zone` （可用区）：
+假设集群的拓扑扑结构如下，集群的 TiKV 数据节点分布在 3 个 `region`（区域），每个 `region` 有 3 个可用的 `zone` （可用区）：
 
 ```sql
 SELECT store_id,address,label from INFORMATION_SCHEMA.TIKV_STORE_STATUS;
@@ -326,7 +330,7 @@ SELECT store_id,address,label from INFORMATION_SCHEMA.TIKV_STORE_STATUS;
 
 如果你不特别在意数据的具体分布，只希望能满足容灾生存要求，可以使用 `SURVIVAL_PREFERENCES` 选项设置数据的生存能力偏好。
 
-在上面的例子中， TiDB 集群分布在 3 个 `region`，且每个区域有两个 `zone`。在为该集群创建放置策略时，假设 `SURVIVAL_PREFERENCES` 的设置如下：
+在上面的例子中， TiDB 集群分布在 3 个 `region`，且每个区域有 3 个 `zone`。在为该集群创建放置策略时，假设 `SURVIVAL_PREFERENCES` 的设置如下：
 
 ``` sql
 CREATE PLACEMENT POLICY multiaz SURVIVAL_PREFERENCES="[region, zone, host]";
