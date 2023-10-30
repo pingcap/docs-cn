@@ -224,7 +224,7 @@ mysql> SELECT * FROM t INTO OUTFILE '/tmp/tmp_file2' FIELDS TERMINATED BY ',' EN
 Query OK, 3 rows affected (0.00 sec)
 ```
 
-在此示例中，你可以在 `/tmp/tmp_file2`中看到以下查询结果：
+在此示例中，你可以在 `/tmp/tmp_file2` 中看到以下查询结果：
 
 ```
 "1","a","1.10"
@@ -240,7 +240,7 @@ mysql> SELECT * FROM t INTO OUTFILE '/tmp/tmp_file3'
 Query OK, 3 rows affected (0.00 sec)
 ```
 
-在此示例中，你可以在 `/tmp/tmp_file3`中看到以下查询结果：
+在此示例中，你可以在 `/tmp/tmp_file3` 中看到以下查询结果：
 
 ```
 '1','a','1.10'<<<
