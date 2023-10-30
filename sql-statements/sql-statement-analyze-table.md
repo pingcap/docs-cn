@@ -127,7 +127,7 @@ EXPLAIN SELECT * FROM t1 WHERE c1 = 3;
 
 ## MySQL 兼容性
 
-* `ANALYZE TABLE` 在语法上与 MySQL 类似。但 `ANALYZE TABLE` 在 TiDB 上的执行时间可能长得多，因为它的内部运行方式不同。
+`ANALYZE TABLE` 在语法上与 MySQL 类似。但 `ANALYZE TABLE` 在 TiDB 上的执行时间可能长得多，因为它的内部运行方式不同。
 
 TiDB 与 MySQL 在以下方面存在区别：所收集的统计信息，以及查询执行过程中统计信息是如何被使用的。虽然 TiDB 中的 `ANALYZE` 语句在语法上与 MySQL 类似，但存在以下差异：
 
