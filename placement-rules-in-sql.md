@@ -268,7 +268,7 @@ CREATE PLACEMENT POLICY five_replicas FOLLOWERS=4;
 
 CREATE TABLE t (a INT) PLACEMENT POLICY=five_replicas;  -- 创建表 t。绑定放置策略为 five_replicas。
 
-ALTER TABLE t PLACEMENT POLICY=default; -- 删除表 t 已绑定的放置策略 five_replicas, 重置为默认的。
+ALTER TABLE t PLACEMENT POLICY=default; -- 删除表 t 已绑定的放置策略 five_replicas, 重置为默认的放置策略。
 
 ```
 
