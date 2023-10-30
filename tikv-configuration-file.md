@@ -1577,13 +1577,13 @@ Configuration items related to `rocksdb.defaultcf`, `rocksdb.writecf`, and `rock
 ### `ttl` <span class="version-mark">New in v7.2.0</span>
 
 + SST files with updates older than the TTL will be automatically selected for compaction. These SST files will go through the compaction in a cascading way so that they can be compacted to the bottommost level or file.
-+ Default value: `"30d"`
++ Default value: `"0s"`, meaning that no SST file is selected by default.
 + Unit: s(second)|h(hour)|d(day)
 
 ### `periodic-compaction-seconds` <span class="version-mark">New in v7.2.0</span>
 
 + The time interval for periodic compaction. SST files with updates older than this value will be selected for compaction and rewritten to the same level where these SST files originally reside.
-+ Default value: `"30d"`
++ Default value: `"0s"`, meaning that periodic compaction is disabled by default.
 + Unit: s(second)|h(hour)|d(day)
 
 ## rocksdb.defaultcf.titan
