@@ -182,7 +182,7 @@ mysql> SELECT AVG(s_quantity), COUNT(s_quantity) FROM stock;
 
 > **注意：**
 >
-> 该语句不支持将查询结果写入任何[外部存储](https://docs.pingcap.com/tidb/stable/backup-and-restore-storages)，如 Amazon S3 或 GCS。
+> 该语句不支持将查询结果写入任何[外部存储](/br/backup-and-restore-storages.md)，如 Amazon S3 或 GCS。
 
 在该语句中，你可以使用以下子句来指定输出文件的格式：
 
