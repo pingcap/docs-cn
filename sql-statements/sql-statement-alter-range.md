@@ -29,4 +29,4 @@ CREATE PLACEMENT POLICY `deploy221` CONSTRAINTS='{"+region=us-east-1":2, "+regio
 ALTER RANGE global PLACEMENT POLICY = "deploy221";
 ```
 
-上述示例创建了一个名为 "deploy221" 的放置策略，并为不同的区域指定了约束条件。然后，为整个集群内的数据使用了 "deploy221" 放置策略。
+上述示例创建了一个名为 `deploy221` 的放置策略，为不同的区域指定了约束条件。然后，将该放置策略应用到了整个集群范围内的数据。
