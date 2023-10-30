@@ -219,7 +219,7 @@ DROP PLACEMENT POLICY myplacementpolicy;
 > **注意：**
 >
 > - `LEADER_CONSTRAINTS` 放置选项只支持列表格式。
-> - 字典和列表格式都基于 YAML 解析，但 YAML 语法有时不能被正常解析。例如 YAML 会把 `"{+region=east:1,+region=west:2}"`（`:` 后无空格）错误地解析成 `'{"+region=east:1": null, "+region=west:2": null}'`，不符合预期。但 `"{+region=east: 1,+region=west: 2}"`（`:` 后有空格）能被正确解析成 `'{"+region=east": 1, "+region=west": 2}'`。
+> - 字典和列表格式都基于 YAML 解析，但 YAML 语法有时不能被正常解析。例如 YAML 会把 `"{+region=east:1,+region=west:2}"`（`:` 后无空格）错误地解析成 `'{"+region=east:1": null, "+region=west:2": null}'`，不符合预期。但 `"{+region=east: 1,+region=west: 2}"`（`:` 后有空格）能被正确解析成 `'{"+region=east": 1, "+region=west": 2}'`。因此建议 `:` 后加上空格。
 >
 
 ## 基础示例
