@@ -65,6 +65,11 @@ TiDB 7.5.0 为长期支持版本 (Long-Term Support Release, LTS)。
 
     更多信息，请参考[用户文档](链接)。
 
+* BR 支持备份和恢复表统计信息 [#issue号](链接) @[Leavrth](https://github.com/Leavrth) **tw@hfxsd** <!--1437-->
+
+    BR 备份工具 从 v7.5.0 开始支持备份和恢复数据库统计信息，包括列、索引和表级别的统计信息。通过支持该功能，从备份中恢复的 TiDB 数据库不再需要手动运行统计信息收集任务或等待自动收集任务的完成，简化了数据库维护并提升高了恢复库的查询性能。可以通过 [--新参数](待添加链接)  启用该功能。
+
+    更多信息，请参考[用户文档](链接)。
 ### 可观测性
 
 * 功能标题 [#issue号](链接) @[贡献者 GitHub ID](链接)
@@ -135,7 +140,7 @@ TiDB 7.5.0 为长期支持版本 (Long-Term Support Release, LTS)。
 
 * 统计信息的[增量收集](https://docs.pingcap.com/zh/tidb/v7.3/statistics#增量收集)(实验特性)在 v7.5.0 中废弃。
 
-* 废弃功能 3
+* [TiDB Binlog](/tidb-binlog/tidb-binlog-overview.md) 在 v7.5.0 废弃数据同步功能，强烈建议使用 [TiCDC](/ticdc/ticdc-overview.md) 来实现高效稳定的数据同步。尽管 TiDB Binlog 在 v7.5.0 仍支持 Point-in-Time Recovery (PITR) 场景，但是该组件在未来 LTS 版本中将被完全废弃，推荐使用 [PITR](/br/br-pitr-guide.md) 替代。**tw@Oreoxmt** <!--1575-->
 
 * 废弃功能 4
 
