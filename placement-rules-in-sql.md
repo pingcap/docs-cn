@@ -292,7 +292,7 @@ PARTITION BY RANGE( YEAR(purchased) ) (
 );
 ```
 
-如果某个分区没有绑定任何放置策略，分区将尝试继承表上可能存在的策略。比如，`p0` 分区将会应用 `storageforhisotrydata` 策略，`p4`  分区将会应用 `storagefornewdata` 策略，而 `p1`,`p2`,`p3` 分区将会应用表 `t1` 的放置策略 `companystandardpolicy`。如果 `t1` 没有绑定任何策略，`p1`,`p2`,`p3` 就会继承数据库或全局的默认策略。
+如果某个分区没有绑定任何放置策略，分区将尝试继承表上可能存在的策略。比如，`p0` 分区将会应用 `storageforhisotrydata` 策略，`p4` 分区将会应用 `storagefornewdata` 策略，而 `p1`,`p2`,`p3` 分区将会应用表 `t1` 的放置策略 `companystandardpolicy`。如果 `t1` 没有绑定任何策略，`p1`,`p2`,`p3` 就会继承数据库或全局的默认策略。
 
 给分区绑定放置策略后，你可以更改指定分区的放置策略。示例如下：
 
