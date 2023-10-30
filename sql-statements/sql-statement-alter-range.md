@@ -14,7 +14,7 @@ AlterRangeStmt ::=
     'ALTER' 'RANGE' Identifier PlacementPolicyOption
 ```
 
-目前 ALTER RANGE 能作用的只有 `global` 和 `meta` 两个：
+目前 `ALTER RANGE` 能起作用的有 `global` 和 `meta` 两个参数：
 
 - global: 表示集群内全域数据范围
 - meta: 表示 TiDB 内部存储的元信息的数据范围
