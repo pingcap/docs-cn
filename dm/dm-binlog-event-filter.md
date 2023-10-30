@@ -5,7 +5,7 @@ summary: 了解 DM 的关键特性 binlog 事件过滤 (Binlog event filter) 的
 
 ## TiDB Data Migration Binlog 事件过滤
 
-TiDB Data Migration (DM) 的 Binlog 事件过滤 (Binlog event filter) 是比迁移表[黑白名单](/dm/dm-block-allow-table-lists.md)更加细粒度的过滤规则，可以指定只迁移，过滤，或者报错某些 `schema / table` 的指定类型 binlog，比如 `INSERT`、`TRUNCATE TABLE`。
+TiDB Data Migration (DM) 的 Binlog 事件过滤 (Binlog event filter) 是比迁移表[黑白名单](/dm/dm-block-allow-table-lists.md)更加细粒度的过滤规则，可以指定只迁移、过滤、或者报错某些 `schema / table` 的指定类型 binlog，比如 `INSERT` 和 `TRUNCATE TABLE`。
 
 ## 配置 Binlog 事件过滤
 
@@ -55,25 +55,25 @@ filters:
     | rename table    | DDL  | rename table event            |
     | drop index      | DDL  | drop index event              |
     | alter table     | DDL  | alter table event             |
-    | value range decrease | incompatible DDL  | 使列字段变小的 DDL 语句，如将 VARCHAR(20) 改为 VARCHAR(10) 的 ALTER TABLE MODIFY COLUMN 语句 |
-    | precision decrease | incompatible DDL  | 使列字段精度变小的 DDL 语句，如将 Decimal(10, 2) 改为 Decimal(10, 1) 的 ALTER TABLE MODIFY COLUMN 语句 |
-    | modify column | incompatible DDL  | 变更列字段类型的 DDL 语句，如将 INT 改为 VARCHAR 的 ALTER TABLE MODIFY COLUMN 语句 |
-    | rename | incompatible DDL  | 变更数据库名，列名和索引名的 DDL 语句，如 ALTER TABLE RENAME INDEX 语句 |
-    | drop | incompatible DDL  | 删除表中的列，索引，views 等的 DDL 语句，如 ALTER TABLE DROP COLUMN 语句 |
-    | truncate | incompatible DDL  | truncate 表中的 partition 的 DDL 语句，如 ALTER TABLE TRUNCATE PARTITION 语句 |
-    | modify pk | incompatible DDL  | 修改主键的 DDL 语句，如 ALTER TABLE DROP PRIMARY KEY 语句 |
-    | modify uk | incompatible DDL  | 修改唯一键的 DDL 语句，如 ALTER TABLE DROP UNIQUE KEY 语句 |
-    | modify default value | incompatible DDL  | 修改列默认值的 DDL 语句，如 ALTER TABLE CHANGE DEFAULT 语句 |
-    | modify constraint | incompatible DDL  | 修改 constraint 的 DDL 语句，如 ALTER TABLE ADD CONSTRAINT 语句 |
-    | modify columns order | incompatible DDL  | 修改列顺序的 DDL 语句，如 ALTER TABLE CHANGE AFTER 语句 |
-    | modify charset | incompatible DDL  | 修改列 charset 的 DDL 语句，如 ALTER TABLE MODIFY CHARSET 语句 |
-    | modify collation | incompatible DDL  | 修改列 collation 的 DDL 语句，如 ALTER TABLE MODIFY COLLATE 语句 |
+    | value range decrease | incompatible DDL  | 使列字段变小的 DDL 语句，如将 `VARCHAR(20)` 改为 `VARCHAR(10)` 的 `ALTER TABLE MODIFY COLUMN` 语句 |
+    | precision decrease | incompatible DDL  | 使列字段精度变小的 DDL 语句，如将 `Decimal(10, 2)` 改为 `Decimal(10, 1)` 的 `ALTER TABLE MODIFY COLUMN` 语句 |
+    | modify column | incompatible DDL  | 变更列字段类型的 DDL 语句，如将 `INT` 改为 `VARCHAR` 的 `ALTER TABLE MODIFY COLUMN` 语句 |
+    | rename | incompatible DDL  | 变更数据库名，列名和索引名的 DDL 语句，如 `ALTER TABLE RENAME INDEX` 语句 |
+    | drop | incompatible DDL  | 删除表中的列、索引、views 等的 DDL 语句，如 ALTER TABLE DROP COLUMN 语句 |
+    | truncate | incompatible DDL  | truncate 表中的 partition 的 DDL 语句，如 `ALTER TABLE TRUNCATE PARTITION` 语句 |
+    | modify pk | incompatible DDL  | 修改主键的 DDL 语句，如 `ALTER TABLE DROP PRIMARY KEY` 语句 |
+    | modify uk | incompatible DDL  | 修改唯一键的 DDL 语句，如 `ALTER TABLE DROP UNIQUE KEY` 语句 |
+    | modify default value | incompatible DDL  | 修改列默认值的 DDL 语句，如 `ALTER TABLE CHANGE DEFAULT` 语句 |
+    | modify constraint | incompatible DDL  | 修改 constraint 的 DDL 语句，如 `ALTER TABLE ADD CONSTRAINT` 语句 |
+    | modify columns order | incompatible DDL  | 修改列顺序的 DDL 语句，如 `ALTER TABLE CHANGE AFTER` 语句 |
+    | modify charset | incompatible DDL  | 修改列 charset 的 DDL 语句，如 `ALTER TABLE MODIFY CHARSET` 语句 |
+    | modify collation | incompatible DDL  | 修改列 collation 的 DDL 语句，如 `ALTER TABLE MODIFY COLLATE` 语句 |
     | remove auto increment | incompatible DDL  | 删除自增键的 DDL 语句 |
-    | modify storage engine | incompatible DDL  | 修改表存储引擎的 DDL 语句，如 ALTER TABLE ENGINE = MyISAM 语句 |
-    | reorganize partiton | incompatible DDL  | reorganize partiton 的 DDL 语句，如 ALTER TABLE REORGANIZE PARTITION 语句 |
-    | rebuild partiton | incompatible DDL  | rebuild partiton 的 DDL 语句，如 ALTER TABLE REBUILD PARTITION 语句 |
-    | exchange partiton | incompatible DDL  | exchange partiton 的 DDL 语句，如 ALTER TABLE EXCHANGE PARTITION 语句 |
-    | coalesce partiton | incompatible DDL  | coalesce partiton 的 DDL 语句，如 ALTER COALESCE PARTITION 语句 |
+    | modify storage engine | incompatible DDL  | 修改表存储引擎的 DDL 语句，如 `ALTER TABLE ENGINE = MyISAM` 语句 |
+    | reorganize partiton | incompatible DDL  | reorganize partiton 的 DDL 语句，如 `ALTER TABLE REORGANIZE PARTITION` 语句 |
+    | rebuild partiton | incompatible DDL  | rebuild partiton 的 DDL 语句，如 `ALTER TABLE REBUILD PARTITION` 语句 |
+    | exchange partiton | incompatible DDL  | exchange partiton 的 DDL 语句，如 `ALTER TABLE EXCHANGE PARTITION` 语句 |
+    | coalesce partiton | incompatible DDL  | coalesce partiton 的 DDL 语句，如 `ALTER COALESCE PARTITION` 语句 |
 
 - `sql-pattern`：用于过滤指定的 DDL SQL 语句，支持正则表达式匹配，例如上面示例中的 `"^DROP\\s+PROCEDURE"`。
 
@@ -88,7 +88,7 @@ filters:
     - `Error`：报错名单。如果满足下面两个条件之一就会报错：
         - 在该 rule 的 `events` 中。
         - 如果规则的 `sql-pattern` 不为空的话，对应的 SQL 可以匹配上 `sql-pattern` 中任意一项。
-    - 同一个表匹配上多个规则时，将会顺序应用这些规则，并且黑名单的优先级高于报错名单高于白名单，即如果同时存在规则 `Ignore` 和 `Error` 应用在某个表上，那么 `Ignore` 生效；如果同时存在规则 `Error` 和 `Do` 应用在某个表上，那么 `Error` 生效。
+    - 同一个表匹配上多个规则时，将会顺序应用这些规则，并且黑名单的优先级高于报错名单，报错名单的优先级高于白名单，即如果同时存在规则 `Ignore` 和 `Error` 应用在某个表上，那么 `Ignore` 生效；如果同时存在规则 `Error` 和 `Do` 应用在某个表上，那么 `Error` 生效。
 
 ## 使用示例
 
