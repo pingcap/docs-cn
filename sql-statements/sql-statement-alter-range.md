@@ -21,8 +21,6 @@ AlterRangeStmt ::=
 
 ## 示例
 
-{{< copyable "sql" >}}
-
 ```sql
 CREATE PLACEMENT POLICY `deploy221` CONSTRAINTS='{"+region=us-east-1":2, "+region=us-east-2": 2, "+region=us-west-1": 1}';
 
