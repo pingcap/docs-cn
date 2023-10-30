@@ -101,6 +101,8 @@ dmctl --master-addr=127.0.0.1:8261 validation start --start-time 2021-10-21T00:0
             "stage": "Running", // 当前状态，Running 或者 Stopped
             "validatorBinlog": "(mysql-bin.000001, 5989)", // 校验到的 binlog 位置
             "validatorBinlogGtid": "1642618e-cf65-11ec-9e3d-0242ac110002:1-30", // 同上，用 GTID 表示
+            "cutoverBinlogPos": "", // 设置的 cutover binlog 位置
+            "cutoverBinlogGTID": "1642618e-cf65-11ec-9e3d-0242ac110002:1-30", // 同上，用 GTID 表示
             "result": null, // 当增量校验异常时，显示异常信息
             "processedRowsStatus": "insert/update/delete: 0/0/0", // 已经处理的 binlog 数据行的统计信息
             "pendingRowsStatus": "insert/update/delete: 0/0/0", // 还未校验或者校验失败，但还没标记为`错误行`的数据行统计信息
@@ -133,6 +135,8 @@ Flags:
             "stage": "Running",
             "validatorBinlog": "(mysql-bin.000001, 6571)",
             "validatorBinlogGtid": "",
+            "cutoverBinlogPos": "(mysql-bin.000001, 6571)",
+            "cutoverBinlogGTID": "",
             "result": null,
             "processedRowsStatus": "insert/update/delete: 2/0/0",
             "pendingRowsStatus": "insert/update/delete: 0/0/0",
@@ -242,6 +246,25 @@ Flags:
 ```
 
 用法可参考 [`dmctl validation start` 命令](#方法-2通过-dmctl-开启)。
+
+
+## 设置增量校验切换点
+
+如果你需要希望增量校验在积攒数据同步到某个位点后立即进行校验完整性，以便于后续业务做数据库切换，可以使用 `validation update` 命令：
+
+```
+Usage:
+  dmctl validation update [task-name] [flags]
+
+Flags:
+      --cutover-binlog-gtid string   specify the cutover binlog gtid for validation, only valid when source config's gtid is enabled, e.g. '1642618e-cf65-11ec-9e3d-0242ac110002:1-30'
+      --cutover-binlog-pos string    specify the cutover binlog name for validation, should include binlog name and pos in brackets, e.g. '(mysql-bin.000001, 5989)'
+  -h, --help                         help for update
+```
+
+* `--cutover-binlog-gtid`：指定希望 validator 立即校验的位置，格式是：1642618e-cf65-11ec-9e3d-0242ac110002:1-30。
+* `--cutover-binlog-pos`：指定希望 validator 立即校验的位置，格式是：(mysql-bin.000001, 5989)。
+* `task-name`：需要立即补充增量数据校验位点的任务名，该项**必须**填写。
 
 ## 原理
 
