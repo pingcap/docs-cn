@@ -251,6 +251,7 @@ Query OK, 3 rows affected (0.00 sec)
 ## MySQL 兼容性
 
 - 不支持 `SELECT ... INTO @variable` 语法。
+- 不支持 `SELECT ... INTO DUMPFILE` 语法。
 - 不支持 MySQL 5.7 中支持的 `SELECT .. GROUP BY expr` 语法，而是匹配 MySQL 8.0 的行为，不按照默认的顺序进行排序。
 - `SELECT ... TABLESAMPLE ...` 是 TiDB 的扩展语法，MySQL 不支持该语法。
 
