@@ -331,7 +331,7 @@ The `sink` parameters are described as follows:
 | `schema_registry`       | `STRING` type. The schema registry address. (Optional)                                                                                                                                                         |
 | `terminator`            | `STRING` type. The terminator is used to separate two data change events. The default value is null, which means `"\r\n"` is used as the terminator. (Optional)                                                |
 | `transaction_atomicity` | `STRING` type. The atomicity level of the transaction. (Optional)                                                                                                                                              |
-| `only_output_updated_columns` | `BOOLEAN` type. For MQ sinks using the `canal-json` or `open-protocol` protocol, you can specify whether only output the modified columns. The default value is `false`.  |
+| `only_output_updated_columns` | `BOOLEAN` type. For MQ sinks using the `canal-json` or `open-protocol` protocol, you can specify whether only output the modified columns. The default value is `false`. (Optional) |
 
 `sink.column_selectors` is an array. The parameters are described as follows:
 

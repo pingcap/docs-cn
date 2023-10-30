@@ -75,14 +75,17 @@ As shown in the architecture diagram, TiCDC supports replicating data to TiDB, M
 
 ## Best practices
 
-- If the network latency between two TiDB clusters is higher than 100 ms, it is recommended to deploy TiCDC in the region (IDC) where the downstream TiDB cluster is located when replicating data between the two clusters.
+- When you use TiCDC to replicate data between two TiDB clusters, if the network latency between the two clusters is higher than 100 ms:
+
+    - For TiCDC versions earlier than v6.5.2, it is recommended to deploy TiCDC in the region (IDC) where the downstream TiDB cluster is located.
+    - With a series of improvements introduced starting from TiCDC v6.5.2, it is recommended to deploy TiCDC in the region (IDC) where the upstream TiDB cluster is located.
+
 - TiCDC only replicates tables that have at least one valid index. A valid index is defined as follows:
 
     - A primary key (`PRIMARY KEY`) is a valid index.
     - A unique index (`UNIQUE INDEX`) is valid if every column of the index is explicitly defined as non-nullable (`NOT NULL`) and the index does not have a virtual generated column (`VIRTUAL GENERATED COLUMNS`).
 
 - To use TiCDC in disaster recovery scenarios, you need to configure [redo log](/ticdc/ticdc-sink-to-mysql.md#eventually-consistent-replication-in-disaster-scenarios).
-- When you replicate a wide table with a large single row (greater than 1K), it is recommended to configure the [`per-table-memory-quota`](/ticdc/ticdc-server-config.md) so that `per-table-memory-quota` = `ticdcTotalMemory`/(`tableCount` * 2). `ticdcTotalMemory` is the memory of a TiCDC node, and `tableCount` is the number of target tables that a TiCDC node replicates.
 
 ## Unsupported scenarios
 
