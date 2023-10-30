@@ -16,8 +16,8 @@ AlterRangeStmt ::=
 
 目前 `ALTER RANGE` 能起作用的有 `global` 和 `meta` 两个参数：
 
-- global: 表示集群内全域数据范围
-- meta: 表示 TiDB 内部存储的元信息的数据范围
+- `global`: 表示集群内全域数据的范围
+- `meta`: 表示 TiDB 内部存储的元信息的数据范围
 
 ## 示例
 
