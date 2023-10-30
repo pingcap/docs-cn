@@ -38,7 +38,7 @@ Placement Rules in SQL 特性用于通过 SQL 接口配置数据在 TiKV 集群�
 
 放置策略依赖于 TiKV 节点标签 (label) 的配置。例如，放置选项 `PRIMARY_REGION` 依赖 TiKV 中的 `region` 标签。
 
-创建放置策略时，TiDB 不会检查标签是否存在，而是在绑定表的时候进行检查。因此，在绑定放置策略前，请确保各个 TiKV 节点已配置正确的 labels。配置方法为：
+创建放置策略时，TiDB 不会检查标签是否存在，而是在绑定表的时候进行检查。因此，在绑定放置策略前，请确保各个 TiKV 节点已配置正确的标签。配置方法为：
 
 ```
 tikv-server --labels region=<region>,zone=<zone>,host=<host>
@@ -272,7 +272,7 @@ CREATE PLACEMENT POLICY five_replicas FOLLOWERS=4;
 
 CREATE TABLE t (a INT) PLACEMENT POLICY=five_replicas;  -- 创建表 t。绑定放置策略为 five_replicas。
 
-ALTER TABLE t PLACEMENT POLICY=default; -- 删除表 t 已绑定的放置策略 five_replicas, 重置为默认的。
+ALTER TABLE t PLACEMENT POLICY=default; -- 删除表 t 已绑定的放置策略 five_replicas, 重置为默认的放置策略。
 
 ```
 
@@ -296,7 +296,12 @@ PARTITION BY RANGE( YEAR(purchased) ) (
 );
 ```
 
-如果某个分区没有绑定任何放置策略，分区将尝试继承表上可能存在的策略。比如，`p0` 分区将会应用 `storageforhisotrydata` 策略，`p4` 分区将会应用 `storagefornewdata` 策略，而 `p1`,`p2`,`p3` 分区将会应用表 `t1` 的放置策略 `companystandardpolicy`。如果 `t1` 没有绑定任何策略，`p1`,`p2`,`p3` 就会继承数据库或全局的默认策略。
+如果某个分区没有绑定任何放置策略，分区将尝试继承表上可能存在的策略。比如，上面示例中：
+
+- `p0` 分区将会应用 `storageforhisotrydata` 策略
+- `p4` 分区将会应用 `storagefornewdata` 策略
+- `p1`、`p2`、`p3` 分区将会应用表 `t1` 的放置策略 `companystandardpolicy`
+- 如果 `t1` 没有绑定任何策略，`p1`、`p2`、`p3` 会继承数据库或全局的默认策略
 
 给分区绑定放置策略后，你可以更改指定分区的放置策略。示例如下：
 
@@ -364,7 +369,7 @@ SHOW PLACEMENT;
 +-------------------+---------------------------------------------------------------------------------------------+------------------+
 ```
 
-通过为集群全局设置 `deploy221` 放置策略后，TiDB 会根据该策略来分布数据： `us-east-1` 区域放置两个副本，`us-east-2` 区域放置两个副本，`us-west-1` 区域放置一个副本。
+通过为集群全局设置 `deploy221` 放置策略后，TiDB 会根据该策略来分布数据：`us-east-1` 区域放置两个副本，`us-east-2` 区域放置两个副本，`us-west-1` 区域放置一个副本。
 
 ### 指定 Leader/Follower 分布
 
