@@ -103,7 +103,7 @@ tidb-server 无法启动的常见情况包括：
 
 + 检查 dmesg 或者 syslog 里面是否有 OOM 信息
 
-    如果有 OOM 信息并且杀掉的进程为 TiKV，请减少 TiKV 的 RocksDB 的各个 CF 的 `block-cache-size` 值。
+    如果有 OOM 信息并且杀掉的进程为 TiKV，请减少 TiKV 的 RocksDB 的 [`storage.block-cache.capacity`](/tikv-configuration-file.md#capacity) 值。
 
 + 检查 TiKV 日志是否有 panic 的 log
 

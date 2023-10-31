@@ -1341,7 +1341,7 @@ rocksdb defaultcf、rocksdb writecf 和 rocksdb lockcf 相关的配置项。
 
 > **警告：**
 >
-> 从 v6.6.0 起，该配置项被废弃。
+> 从 v6.6.0 起，该配置项被废弃，你可以使用 [storage.block-cache.capacity](#capacity) 配置共享 block cache 的大小。
 
 + 一个 RocksDB block 的默认缓存大小。
 + `defaultcf` 默认值：机器总内存 * 25%

@@ -190,7 +190,6 @@ show warnings;
 | {db-name}.bytes-per-sync | 异步同步的限速速率 |
 | {db-name}.wal-bytes-per-sync | WAL 同步的限速速率 |
 | {db-name}.writable-file-max-buffer-size | WritableFileWrite 所使用的最大的 buffer 大小 |
-| {db-name}.{cf-name}.block-cache-size | block cache size 大小 |
 | {db-name}.{cf-name}.write-buffer-size | memtable 大小 |
 | {db-name}.{cf-name}.max-write-buffer-number | 最大 memtable 个数 |
 | {db-name}.{cf-name}.max-bytes-for-level-base | base level (L1) 最大字节数 |
