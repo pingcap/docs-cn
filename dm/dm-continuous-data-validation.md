@@ -250,7 +250,9 @@ Flags:
 
 ## 设置增量校验切换点
 
-如果你需要希望增量校验在积攒数据同步到某个位点后立即进行校验完整性，以便于后续业务做数据库切换，可以使用 `validation update` 命令：
+在将后续业务切换到另一个数据库前，有时需要在数据同步到特定位置后立即进行增量数据校验，以确保数据完整性。此时，你可以将这个特定位置设置为增量校验的切换点。
+
+要设置增量校验的切换点，使用 `validation update` 命令：
 
 ```
 Usage:
@@ -262,8 +264,8 @@ Flags:
   -h, --help                         help for update
 ```
 
-* `--cutover-binlog-gtid`：指定希望 validator 立即校验的位置，格式是：1642618e-cf65-11ec-9e3d-0242ac110002:1-30。
-* `--cutover-binlog-pos`：指定希望 validator 立即校验的位置，格式是：(mysql-bin.000001, 5989)。
+* `--cutover-binlog-gtid`：指定希望 validator 立即校验的位置，格式是：`1642618e-cf65-11ec-9e3d-0242ac110002:1-30`。仅在上游开启 GTID 时生效。
+* `--cutover-binlog-pos`：指定希望 validator 立即校验的位置，格式是：`(mysql-bin.000001, 5989)`。
 * `task-name`：需要立即补充增量数据校验位点的任务名，该项**必须**填写。
 
 ## 原理
