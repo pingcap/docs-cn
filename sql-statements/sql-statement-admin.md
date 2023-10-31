@@ -11,6 +11,7 @@ aliases: ['/docs-cn/dev/sql-statements/sql-statement-admin/','/docs-cn/dev/refer
 - [`ADMIN PLUGIN`](#admin-plugin-语句)
 - [`ADMIN ... BINDINGS`](#admin--bindings-语句)
 - [`ADMIN REPAIR TABLE`](#admin-repair-table-语句)
+- [`ADMIN SHOW NEXT_ROW_ID`](#admin-show-next_row_id-语句)
 - [`ADMIN SHOW SLOW`](#admin-show-slow-语句)
 
 ## ADMIN 与 DDL 相关的扩展语句
