@@ -3076,8 +3076,8 @@ v5.0 后，用户仍可以单独修改以上系统变量（会有废弃警告）
 - 是否持久化到集群：是
 - 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：否
 - 类型：布尔型
-- 默认值：`ON`, 从 v7.5.0 之前集群升级到 v7.5.0 之后版本时，该变量默认值为 `OFF`
-- 这个变量用于 TiDB merge global stats 阶段使用 async 方式进行统计信息合并, 可以有效避免 OOM 问题发生。
+- 默认值：`ON`。从 v7.5.0 之前版本升级到 v7.5.0 或之后版本时，默认值为 `OFF`。
+- 这个变量用于 TiDB 使用 async 方式合并统计信息, 可以避免 OOM 问题发生。
 
 ### `tidb_metric_query_range_duration` <span class="version-mark">从 v4.0 版本开始引入</span>
 
