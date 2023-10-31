@@ -114,7 +114,7 @@ br backup full \
 
 在默认情况下 BR 不会备份统计信息。但恢复数据后的集群可能会因为没有统计信息，无法选择最佳的执行计划。
 
-从 TiDB v7.5.0 起，备份恢复特性引入了备份统计信息的功能。该功能可以在备份数据的同时备份每张表的统计信息。
+从 TiDB v7.5.0 起，备份恢复特性引入了备份统计信息的功能。该功能可以在备份数据的同时备份每张表的统计信息。默认设置为 `ignore-stats=true`，即不备份统计信息。
 
 当你想要在备份集群数据的同时备份统计信息，你可以关闭参数 `--ignore-stats`：
 
@@ -131,7 +131,7 @@ br restore full \
 --storage local:///br_data/ --pd "${PD_IP}:2379" --log-file restore.log 
 ```
 
-备份恢复功能在备份时将统计信息通过 json 格式存储在 backupmeta 中，在恢复时将 json 格式的统计信息导入到集群中。详细内容可以参考 [LOAD STATS](/sql-statements/sql-statement-load-stats.md)。
+备份恢复功能在备份时，将统计信息通过 JSON 格式存储在 `backupmeta` 文件中。在恢复时，将 JSON 格式的统计信息导入到集群中。详情请参考 [LOAD STATS](/sql-statements/sql-statement-load-stats.md)。
 
 ## 备份数据加密
 
