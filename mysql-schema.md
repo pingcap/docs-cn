@@ -22,6 +22,15 @@ aliases: ['/docs-cn/dev/system-tables/system-table-overview/','/docs-cn/dev/refe
 * `global_priv` 基于证书的认证信息
 * `role_edges` 角色之间的关系信息
 
+## 集群状态系统表
+
+* `tidb` 用于记录 TiDB 的一些全局信息
+
+    * `bootstrapped` 用于记录 TiDB 集群是否已完成初始化，注意该值为只读，不可修改。
+    * `tidb_server_version` 用于记录 TiDB 在初始化时的版本信息，注意该值为只读，不可修改。
+    * `system_tz` 用于记录 TiDB 的系统时区
+    * `new_collation_enabled` 用于记录 TiDB 是否开启了[新排序规则框架](/character-set-and-collation.md#新框架下的排序规则支持)，注意该值为只读，不可修改。
+
 ## 服务端帮助信息系统表
 
 * `help_topic` 目前为空
@@ -69,7 +78,6 @@ aliases: ['/docs-cn/dev/system-tables/system-table-overview/','/docs-cn/dev/refe
 ## 其它系统表
 
 * `GLOBAL_VARIABLES` 全局系统变量表
-* `tidb` 用于 TiDB 在 bootstrap 的时候记录相关版本信息
 * `expr_pushdown_blacklist` 表达式下推的黑名单
 * `opt_rule_blacklist` 逻辑优化规则的黑名单
 * `table_cache_meta` 缓存表的信息
