@@ -160,7 +160,13 @@ TiDB 7.5.0 为长期支持版本 (Long-Term Support Release, LTS)。
 
 + TiDB
 
-    - note [#issue](链接) @[贡献者 GitHub ID](链接)
+    - 改进 merge global stats 并发模型 [#47219](https://github.com/pingcap/tidb/issues/47219) @[hawkingrei](https://github.com/hawkingrei)
+
+        v7.5.0 引入了 tidb_enable_async_merge_global_stats（默认打开，升级集群默认关闭），可以同时 load stats 并 merge，加速 partition table 下的 merge global stats 过程。优化了 merge global stats 的内存使用，避免 OOM，减少 memory allocation。
+
+    - 优化 Analyze [#47275](https://github.com/pingcap/tidb/issues/47275) @[hawkingrei](https://github.com/hawkingrei)
+
+        优化了 Analyze 流程，引入 tidb_build_sampling_stats_concurrency，精细化控制 Analyze 并发，减少资源消耗。同时优化了 Analyze 的内存使用，复用部分中间结果，减少 memory allocation，避免频繁 GC。
     - note [#issue](链接) @[贡献者 GitHub ID](链接)
 
 + TiKV
