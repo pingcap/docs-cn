@@ -3064,15 +3064,20 @@ v5.0 后，用户仍可以单独修改以上系统变量（会有废弃警告）
 
 ### `tidb_merge_partition_stats_concurrency`
 
-> **警告：**
->
-> 当前版本中该变量控制的功能尚未完全生效，请保留默认值。
-
 - 作用域：SESSION | GLOBAL
 - 是否持久化到集群：是
 - 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：否
 - 默认值：`1`
 - 这个变量用于 TiDB analyze 分区表时，对分区表统计信息进行合并时的并发度。
+
+### `tidb_enable_async_merge_global_stats`
+
+- 作用域：SESSION | GLOBAL
+- 是否持久化到集群：是
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：否
+- 类型：布尔型
+- 默认值：`ON`, 从 v7.5.0 之前集群升级到 v7.5.0 之后版本时，该变量默认值为 `OFF`
+- 这个变量用于 TiDB merge global stats 阶段使用 async 方式进行统计信息合并, 可以有效避免 OOM 问题发生。
 
 ### `tidb_metric_query_range_duration` <span class="version-mark">从 v4.0 版本开始引入</span>
 
