@@ -102,6 +102,14 @@ ADMIN REPAIR TABLE tbl_name CREATE TABLE STATEMENT;
 
 `ADMIN REPAIR TABLE tbl_name CREATE TABLE STATEMENT` 用于在极端情况下，对存储层中的表的元信息进行非可信的覆盖。“非可信”是指需要人为保证原表的元信息可以完全由 `CREATE TABLE STATEMENT` 提供。该语句需要打开配置文件项中的 [`repair-mode`](/tidb-configuration-file.md#repair-mode) 开关，并且需要确保所修复的表名在 [`repair-table-list`](/tidb-configuration-file.md#repair-table-list) 名单中。
 
+## `ADMIN SHOW NEXT_ROW_ID` 语句
+
+```sql
+ADMIN SHOW t NEXT_ROW_ID;
+```
+
+以上语句可以查看表中某些特殊列的详情。输出结果与 [SHOW TABLE NEXT_ROW_ID](/sql-statements/sql-statement-show-table-next-rowid.md) 相同。
+
 ## `ADMIN SHOW SLOW` 语句
 
 {{< copyable "sql" >}}
