@@ -87,6 +87,7 @@ TiDB 版本：6.5.3
 
 + TiKV
 
+    - 修复当一个 TiKV 节点失败时，对应 Region 的 peers 错误地进入休眠模式的问题 [#14547](https://github.com/tikv/tikv/issues/14547) @[hicqu](https://github.com/hicqu)
     - 修复 Continuous Profiling 中的文件句柄泄露的问题 [#14224](https://github.com/tikv/tikv/issues/14224) @[tabokie](https://github.com/tabokie)
     - 修复 PD 宕机可能造成 PITR 无法推进的问题 [#14184](https://github.com/tikv/tikv/issues/14184) @[YuJuncen](https://github.com/YuJuncen)
     - 修复加密 Key ID 冲突会导致旧 Key 被删除的问题 [#14585](https://github.com/tikv/tikv/issues/14585) @[tabokie](https://github.com/tabokie)
