@@ -256,7 +256,7 @@ Flags:
 
 ```
 Usage:
-  dmctl validation update [task-name] [flags]
+  dmctl validation update <task-name> [flags]
 
 Flags:
       --cutover-binlog-gtid string   specify the cutover binlog gtid for validation, only valid when source config's gtid is enabled, e.g. '1642618e-cf65-11ec-9e3d-0242ac110002:1-30'
@@ -266,7 +266,7 @@ Flags:
 
 * `--cutover-binlog-gtid`：指定希望 validator 立即校验的位置，格式是：`1642618e-cf65-11ec-9e3d-0242ac110002:1-30`。仅在上游开启 GTID 时生效。
 * `--cutover-binlog-pos`：指定希望 validator 立即校验的位置，格式是：`(mysql-bin.000001, 5989)`。
-* `task-name`：需要立即补充增量数据校验位点的任务名，该项**必须**填写。
+* `task-name`：需要更新的增量数据校验的任务名，该项**必须**填写。
 
 ## 原理
 
