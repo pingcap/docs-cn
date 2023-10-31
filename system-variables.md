@@ -672,7 +672,7 @@ This variable is an alias for [`last_insert_id`](#last_insert_id).
 
 - Scope: SESSION | GLOBAL
 - Persists to cluster: Yes
-- Applies to hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value): No
+- Applies to hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value): Yes
 - Default value: `UNSPECIFIED`
 - Value options: `NONE`, `FAST`, `HIGH_COMPRESSION`, `UNSPECIFIED`
 - This variable is used to specify the data compression mode of the MPP Exchange operator. This variable takes effect when TiDB selects the MPP execution plan with the version number `1`. The meanings of the variable values are as follows:
@@ -1027,7 +1027,7 @@ mysql> SHOW GLOBAL VARIABLES LIKE 'max_prepared_stmt_count';
 
 - Scope: SESSION | GLOBAL
 - Persists to cluster: Yes
-- Applies to hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value): No
+- Applies to hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value): Yes
 - Default value: ""
 - This variable is used to specify a list of storage engines that might fall back to TiKV. If the execution of a SQL statement fails due to a failure of the specified storage engine in the list, TiDB retries executing this SQL statement with TiKV. This variable can be set to "" or "tiflash". When this variable is set to "tiflash", if TiFlash returns a timeout error (error code: ErrTiFlashServerTimeout), TiDB retries executing this SQL statement with TiKV.
 
@@ -1591,7 +1591,7 @@ mysql> SELECT job_info FROM mysql.analyze_jobs ORDER BY end_time DESC LIMIT 1;
 - This variable is used to specify the cloud storage URI to enable [Global Sort](/tidb-global-sort.md). After enabling the [distributed execution framework](/tidb-distributed-execution-framework.md), you can use the Global Sort feature by configuring the URI and pointing it to an appropriate cloud storage path with the necessary permissions to access the storage. For more details, see [URI Formats of External Storage Services](https://docs.pingcap.com/tidb/stable/external-storage-uri).
 - The following statements can use the Global Sort feature.
     - The [`ADD INDEX`](/sql-statements/sql-statement-add-index.md) statement.
-    - The [`IMPORT INTO`](https://docs.pingcap.com/tidb/dev/sql-statement-import-into) statement for import jobs of TiDB Self-Hosted. For TiDB Cloud, the `IMPORT INTO` statement is not applicable.
+    - The [`IMPORT INTO`](https://docs.pingcap.com/tidb/v7.2/sql-statement-import-into) statement for import jobs of TiDB Self-Hosted. For TiDB Cloud, the `IMPORT INTO` statement is not applicable.
 
 </CustomContent>
 
@@ -2172,7 +2172,7 @@ mysql> SELECT job_info FROM mysql.analyze_jobs ORDER BY end_time DESC LIMIT 1;
 
 - Scope: SESSION | GLOBAL
 - Persists to cluster: Yes
-- Applies to hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value): Yes
+- Applies to hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value): No
 - Type: Boolean
 - Default value: `ON`
 - TiDB v6.2.0 refactors the implementation of previous cost model. This variable controls whether to enable the refactored Cost Model implementation.
@@ -3188,14 +3188,14 @@ For a system upgraded to v5.0 from an earlier version, if you have not modified 
 > This variable is read-only for [TiDB Serverless](https://docs.pingcap.com/tidbcloud/select-cluster-tier#tidb-serverless).
 
 - Scope: SESSION
-- Applies to hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value): No
+- Applies to hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value): Yes
 - Default value: `tikv,tiflash,tidb`
 - This variable is used to set the storage engine list that TiDB can use when reading data.
 
 ### tidb_last_ddl_info <span class="version-mark">New in v6.0.0</span>
 
 - Scope: SESSION
-- Applies to hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value): Yes
+- Applies to hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value): No
 - Default value: ""
 - Type: String
 - This is a read-only variable. It is internally used in TiDB to get the information of the last DDL operation within the current session.
@@ -5647,7 +5647,7 @@ For details, see [Identify Slow Queries](/identify-slow-queries.md).
 ### tiflash_fastscan <span class="version-mark">New in v6.3.0</span>
 
 - Scope: SESSION | GLOBAL
-- Applies to hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value): No
+- Applies to hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value): Yes
 - Default value: `OFF`
 - Type: Boolean
 - If [FastScan](/tiflash/use-fastscan.md) is enabled (set to `ON`), TiFlash provides more efficient query performance, but does not guarantee the accuracy of the query results or data consistency.
@@ -5655,7 +5655,7 @@ For details, see [Identify Slow Queries](/identify-slow-queries.md).
 ### tiflash_fine_grained_shuffle_batch_size <span class="version-mark">New in v6.2.0</span>
 
 - Scope: SESSION | GLOBAL
-- Applies to hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value): No
+- Applies to hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value): Yes
 - Default value: `8192`
 - Range: `[1, 18446744073709551615]`
 - When Fine Grained Shuffle is enabled, the window function pushed down to TiFlash can be executed in parallel. This variable controls the batch size of the data sent by the sender.
@@ -5665,7 +5665,7 @@ For details, see [Identify Slow Queries](/identify-slow-queries.md).
 
 - Scope: SESSION | GLOBAL
 - Persists to cluster: Yes
-- Applies to hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value): No
+- Applies to hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value): Yes
 - Type: Integer
 - Default value: `0`
 - Range: `[-1, 1024]`
