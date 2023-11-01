@@ -217,4 +217,13 @@ sasl-oauth-scopes = ["producer.kafka", "consumer.kafka"]
 sasl-oauth-grant-type = "client_credentials"
 # Kafka SASL OAUTHBEARER 认证机制中的 audience。默认值为空。在使用该认证机制时，该参数可选填。
 sasl-oauth-audience = "kafka"
+
+# 以下配置仅在选用 avro 作为协议，并且使用 AWS Glue Schema Registry 时需要配置
+# 请参考 "同步数据到 Kafka" 这一文档中 "使用 AWS Glue Schema Registry" 这一节内容
+# [sink.kafka-config.glue-schema-registry-config]
+# region="us-west-1"  
+# registry-name="ticdc-test"
+# access-key="xxxx"
+# secret-access-key="xxxx"
+# tokne="xxxx"
 ```
