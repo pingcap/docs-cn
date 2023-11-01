@@ -177,7 +177,7 @@ ALTER USER usr2 RESOURCE GROUP rg2;
 ALTER USER 'usr3'@'%' RESOURCE GROUP `default`;
 ```
 
-更多信息，请参见 [`ALTER USER ... RESOURCE GROUP`](/sql-statements/sql-statement-alter-user.md#modify-the-resource-group-bound-to-the-user)。
+更多信息，请参见 [`ALTER USER ... RESOURCE GROUP`](/sql-statements/sql-statement-alter-user.md#修改用户绑定的资源组)。
 
 #### 将当前会话绑定到资源组
 
