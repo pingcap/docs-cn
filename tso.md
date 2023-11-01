@@ -89,7 +89,7 @@ The `>> 18` operation signifies a bitwise [right shift](/functions-and-operators
 你也可以通过 CLI 工具查看时间戳，命令如下：
 
 ```shell
-$ tiup ctl:v7.4.0 pd tso 443852055297916932
+$ tiup ctl:v7.1.0 pd tso 443852055297916932
 system:  2023-08-27 20:33:41.687 +0200 CEST
 logic:   4
 ```
