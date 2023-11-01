@@ -160,13 +160,8 @@ TiDB 7.5.0 为长期支持版本 (Long-Term Support Release, LTS)。
 
 + TiDB
 
-    - 改进 merge global stats 并发模型 [#47219](https://github.com/pingcap/tidb/issues/47219) @[hawkingrei](https://github.com/hawkingrei)
-
-        v7.5.0 引入了 tidb_enable_async_merge_global_stats（默认打开，升级集群默认关闭），可以同时 load stats 并 merge，加速 partition table 下的 merge global stats 过程。优化了 merge global stats 的内存使用，避免 OOM，减少 memory allocation。
-
-    - 优化 Analyze [#47275](https://github.com/pingcap/tidb/issues/47275) @[hawkingrei](https://github.com/hawkingrei)
-
-        优化了 Analyze 流程，引入 tidb_build_sampling_stats_concurrency，精细化控制 Analyze 并发，减少资源消耗。同时优化了 Analyze 的内存使用，复用部分中间结果，减少 memory allocation，避免频繁 GC。
+    - 优化合并 GlobalStats 的并发模型：引入 `tidb_enable_async_merge_global_stats` 实现同时加载统计信息并合并，从而加速分区表场景下的合并 GlobalStats。同时优化合并 GlobalStats 的内存使用，以避免 OOM 并减少内存分配 [#47219](https://github.com/pingcap/tidb/issues/47219) @[hawkingrei](https://github.com/hawkingrei) <!--**tw@hfxsd** -->
+    - 优化 Analyze 流程：引入 `tidb_build_sampling_stats_concurrency` 精细化控制 Analyze 并发度，减少资源消耗。同时优化 Analyze 的内存使用，通过复用部分中间结果，减少内存分配，避免频繁 GC [#47275](https://github.com/pingcap/tidb/issues/47275) @[hawkingrei](https://github.com/hawkingrei) <!--**tw@hfxsd** -->
     - 改进 Placement Policy 的使用：增加对全局范围的策略配置，完善常用场景的语法支持  [#45384](https://github.com/pingcap/tidb/issues/45384) @[nolouch](https://github.com/nolouch) <!--**tw@qiancai** -->
 
 + TiKV
