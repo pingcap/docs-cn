@@ -167,7 +167,7 @@ TiDB 7.5.0 为长期支持版本 (Long-Term Support Release, LTS)。
     - 优化 Analyze [#47275](https://github.com/pingcap/tidb/issues/47275) @[hawkingrei](https://github.com/hawkingrei)
 
         优化了 Analyze 流程，引入 tidb_build_sampling_stats_concurrency，精细化控制 Analyze 并发，减少资源消耗。同时优化了 Analyze 的内存使用，复用部分中间结果，减少 memory allocation，避免频繁 GC。
-    - note [#issue](链接) @[贡献者 GitHub ID](链接)
+    - 改进 Placement Policy 的使用：增加对全局范围的策略配置，完善常用场景的语法支持  [#45384](https://github.com/pingcap/tidb/issues/45384) @[nolouch](https://github.com/nolouch) <!--**tw@qiancai** -->
 
 + TiKV
 
