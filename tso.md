@@ -76,7 +76,7 @@ FROM_UNIXTIME((@ts >> 18)/1000): 2023-08-27 20:33:41.6870
 1 row in set (0.00 sec)
 ```
 
-`>> 18` 操作表示按位[右移](/functions-and-operators/bit-functions-and-operators.md) 18 位，用于滤除物理时间戳。由于物理时间戳是以毫秒为单位的，与更常用的以秒为单位的 UNIX 时间戳格式不同，因此需要除以 1000 将其转换为与 [`FROM_UNIXTIME()`](/functions-and-operators/date-and-f-time-functions.md) 兼容的格式。这个过程基本与 `TIDB_PARSE_TSO()` 的功能一致。
+`>> 18` 操作表示按位[右移](/functions-and-operators/bit-functions-and-operators.md) 18 位，用于滤除物理时间戳。由于物理时间戳是以毫秒为单位的，与更常用的以秒为单位的 UNIX 时间戳格式不同，因此需要除以 1000 将其转换为与 [`FROM_UNIXTIME()`](/functions-and-operators/date-and-time-functions.md) 兼容的格式。这个过程基本与 `TIDB_PARSE_TSO()` 的功能一致。
 
 你还可以将二进制中的逻辑时间戳 `000000000000000100`（即十进制中的 `4`）过滤掉。
 
