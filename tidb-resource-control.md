@@ -178,6 +178,14 @@ ALTER USER usr2 RESOURCE GROUP rg2;
 > - 使用 `CREATE USER` 或者 `ALTER USER` 将用户绑定到资源组后，只会对该用户新建的会话生效，不会对该用户已有的会话生效。
 > - TiDB 集群在初始化时会自动创建 `default` 资源组，其 `RU_PER_SEC` 的默认值为 `UNLIMITED` (等同于 `INT` 类型最大值，即 `2147483647`)，且为 `BURSTABLE` 模式。对于没有绑定资源组的语句会自动绑定至此资源组。此资源组不支持删除，但允许修改其 RU 的配置。
 
+要解除用户与资源组的绑定，只需将其重新绑定到 `default` 资源组即可，如下所示：
+
+```sql
+ALTER USER 'usr3'@'%' RESOURCE GROUP `default`;
+```
+
+更多信息，请参见 [`ALTER USER ... RESOURCE GROUP`](/sql-statements/sql-statement-alter-user.md#修改用户绑定的资源组)。
+
 #### 将当前会话绑定到资源组
 
 通过把当前会话绑定到资源组，会话对资源的占用会受到指定用量 (RU) 的限制。
