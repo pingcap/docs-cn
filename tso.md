@@ -3,7 +3,7 @@ title: TimeStamp Oracle
 summary: 了解 TiDB 中的 TSO (TimeStamp Oracle) timestamps in TiDB.
 ---
 
-在 TiDB 中，Placement Driver (PD) 在为各种集群组件分配时间戳方面发挥着关键作用。这些时间戳有助于为事务和数据分配时间标记。该机制对于在 TiDB 中启用 [Percolator](https://research.google.com/pubs/pub36726.html) 模型至关重要。Percolator 模型用于支持多版本并发控制（Multi-Version Concurrency Control, MVCC）和[事务管理](/transaction-overview.md)。
+在 TiDB 中，Placement Driver (PD) 在为各种集群组件分配时间戳方面发挥着关键作用。这些时间戳用于为事务和数据分配时间标记。该机制对于在 TiDB 中启用 [Percolator](https://research.google.com/pubs/pub36726.html) 模型至关重要。Percolator 模型用于支持多版本并发控制（Multi-Version Concurrency Control, MVCC）和[事务管理](/transaction-overview.md)。
 
 下面是 TimeStamp Oracle (TSO) 时间戳的示例：
 
@@ -60,7 +60,7 @@ SELECT TIDB_PARSE_TSO_LOGICAL(443852055297916932);
 TSO 时间戳由两部分组成：
 
 - 物理时间戳：自 1970 年 1 月 1 日以来的 UNIX 时间戳，单位为毫秒。
-- 逻辑时间戳：递增计数器，用于需要在同一毫秒内使用多个时间戳的情况，或某些事件可能触发时钟进程逆转的情况。在这种情况下，物理时间戳保持不变，而逻辑时间戳稳步递增。该机制可以确保 TSO 时间戳的完整性，保证时间戳始终向前，不会倒退。
+- 逻辑时间戳：递增计数器，用于需要在同一毫秒内使用多个时间戳的情况，或某些事件可能触发时钟进程逆转的情况。在这种情况下，物理时间戳保持不变，而逻辑时间戳保持递增。该机制可以确保 TSO 时间戳的完整性，保证时间戳始终递增而不会倒退。
 
 你可以在 SQL 中更深入地检查 TSO 时间戳，示例如下：
 
@@ -76,7 +76,7 @@ FROM_UNIXTIME((@ts >> 18)/1000): 2023-08-27 20:33:41.6870
 1 row in set (0.00 sec)
 ```
 
-`>> 18` 操作表示按位[右移](/functions-and-operators/bit-functions-and-operators.md) 18 位，用于滤除物理时间戳。由于物理时间戳是以毫秒为单位的，与更常用的以秒为单位的 UNIX 时间戳格式不同，因此需要除以 1000 才能将其转换为与 [`FROM_UNIXTIME()`](/functions-and-operators/date-and-f-time-functions.md) 兼容的格式。这个过程基本与 `TIDB_PARSE_TSO()` 的功能一致。
+`>> 18` 操作表示按位[右移](/functions-and-operators/bit-functions-and-operators.md) 18 位，用于滤除物理时间戳。由于物理时间戳是以毫秒为单位的，与更常用的以秒为单位的 UNIX 时间戳格式不同，因此需要除以 1000 将其转换为与 [`FROM_UNIXTIME()`](/functions-and-operators/date-and-f-time-functions.md) 兼容的格式。这个过程基本与 `TIDB_PARSE_TSO()` 的功能一致。
 
 你还可以将二进制中的逻辑时间戳 `000000000000000100`（即十进制中的 `4`）过滤掉。
 
@@ -88,4 +88,4 @@ system:  2023-08-27 20:33:41.687 +0200 CEST
 logic:   4
 ```
 
-在以 `system:` 开头的行中可以看到物理时间戳，在以 `logic:` 开头的行中可以看到逻辑时间戳。
+可以看到在以 `system:` 开头的行中的物理时间戳，在以 `logic:` 开头的行中的逻辑时间戳。
