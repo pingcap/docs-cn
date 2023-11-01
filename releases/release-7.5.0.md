@@ -19,11 +19,6 @@ TiDB 7.5.0 为长期支持版本 (Long-Term Support Release, LTS)。
 
 ### 可扩展性
 
-* 功能标题 [#issue号](链接) @[贡献者 GitHub ID](链接)
-
-    功能描述（需要包含这个功能是什么、在什么场景下对用户有什么价值、怎么用）
-
-    更多信息，请参考[用户文档](链接)。
 * 支持设置 TiDB 节点的服务范围，用于选择适用的 TiDB 节点来执行并行的 ADD INDEX 或 IMPORT INTO 任务成为正式功能（GA）[#46453](https://github.com/pingcap/tidb/pull/46453 )@[ywqzzy](https://github.com/ywqzzy)<!--**tw@hfxsd** 1581-->
 
     在资源密集型集群中，并行执行 ADD INDEX 或 IMPORT INTO 任务可能占用大量 TiDB 节点的资源，从而导致集群性能下降。从 v7.4.0 起， 你可以通过变量 [tidb_service_scope](https://github.com/pingcap/docs-cn/blob/master/system-variables.md#tidb_service_scope-%E4%BB%8E-v740-%E7%89%88%E6%9C%AC%E5%BC%80%E5%A7%8B%E5%BC%95%E5%85%A5) 控制 [TiDB 后端任务分布式框架](https://github.com/pingcap/docs-cn/blob/master/tidb-distributed-execution-framework.md)下各 TiDB 节点的服务范围。你可以从现有 TiDB 节点中选择几个节点，或者对新增 TiDB 节点设置服务范围。所有并行执行的 ADD INDEX 和 IMPORT INTO 的任务只会运行在这些节点，避免对已有业务造成性能影响。
@@ -32,13 +27,7 @@ TiDB 7.5.0 为长期支持版本 (Long-Term Support Release, LTS)。
 
 ### 性能
 
-* 功能标题 [#issue号](链接) @[贡献者 GitHub ID](链接)
-
-    功能描述（需要包含这个功能是什么、在什么场景下对用户有什么价值、怎么用）
-
-    更多信息，请参考[用户文档](链接)。
-
-* TiDB 后端任务分布式并行执行框架成为正式功能（GA），该框架中基于云存储的全局排序能力成为正式功能（GA），可提升并行执行的 ADD INDEX 或 IMPORT INTO 任务的性能和稳定性 https://github.com/pingcap/tidb/issues/45719 @[wjhuang2016](https://github.com/wjhuang2016)<!--**tw@ran-huang** 1580--> 
+* TiDB 后端任务分布式并行执行框架成为正式功能（GA），该框架中基于云存储的全局排序能力成为正式功能（GA），可提升并行执行的 ADD INDEX 或 IMPORT INTO 任务的性能和稳定性 [#45719](https://github.com/pingcap/tidb/issues/45719) @[wjhuang2016](https://github.com/wjhuang2016)<!--**tw@ran-huang** 1580-->
 
     在 v7.4.0 以前，当用户执行分布式并行执行框架的 ADD INDEX 或 IMPORT INTO 任务时，TiDB 节点需要准备一块较大的本地磁盘，对编码后的索引 KV pairs 和表数据 KV pairs 进行排序。由于无法从全局角度进行排序，各个 TiDB 节点间以及节点内部导入的数据可能存在重叠情况。这会导致在将这些 KV pairs 导入到 TiKV 时，TiKV 需要频繁进行数据整理 (compaction)，降低了 ADD INDEX 或 IMPORT INTO 的性能和稳定性。
 
@@ -101,7 +90,8 @@ TiDB 7.5.0 为长期支持版本 (Long-Term Support Release, LTS)。
     更多信息，请参考[用户文档](链接)。
 
 ### 数据迁移
-* "IMPORT INTO" SQL 语句成为正式功能（GA） [#46704]https://github.com/pingcap/tidb/issues/46704 @[D3Hunter](https://github.com/D3Hunter)<!--**tw@qiancai** 1579-->
+
+* "IMPORT INTO" SQL 语句成为正式功能（GA） [#46704](https://github.com/pingcap/tidb/issues/46704) @[D3Hunter](https://github.com/D3Hunter)<!--**tw@qiancai** 1579-->
 
     从 v7.4.0 起，你可以通过在 IMPORT INTO 的 CLOUD_STORAGE_URI 选项中指定编码后数据的云存储地址，开启[全局排序功能](https://github.com/pingcap/docs-cn/blob/master/tidb-global-sort.md)，提升性能和稳定性，该功能在 7.5 版本成为正式功能（GA）。
 
