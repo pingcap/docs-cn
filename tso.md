@@ -24,7 +24,7 @@ SELECT @ts;
 1 row in set (0.00 sec)
 ```
 
-注意由于 TSO 时间戳是分配给事务的，所以该时间戳是在带有 (`BEGIN; ...; ROLLBACK`) 的事务中生成的。
+注意由于 TSO 时间戳是分配给事务的，所以该时间戳是在带有 `BEGIN; ...; ROLLBACK` 的事务中生成的。
 
 You can use the following SQL functions to inspect the numbers that you get:
 
