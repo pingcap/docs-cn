@@ -230,6 +230,14 @@ If there are too many requests that result in insufficient resources for the res
 > - When you bind a user to a resource group by using `CREATE USER` or `ALTER USER`, it will not take effect for the user's existing sessions, but only for the user's new sessions.
 > - TiDB automatically creates a `default` resource group during cluster initialization. For this resource group, the default value of `RU_PER_SEC` is `UNLIMITED` (equivalent to the maximum value of the `INT` type, that is, `2147483647`) and it is in `BURSTABLE` mode. Statements that are not bound to a resource group are automatically bound to this resource group. This resource group does not support deletion, but you can modify the configuration of its RU.
 
+To unbind users from a resource group, you can simply bind them to the `default` group again as follows:
+
+```sql
+ALTER USER 'usr3'@'%' RESOURCE GROUP `default`;
+```
+
+For more details, see [`ALTER USER ... RESOURCE GROUP`](/sql-statements/sql-statement-alter-user.md#modify-the-resource-group-bound-to-the-user).
+
 #### Bind the current session to a resource group
 
 By binding a session to a resource group, the resource usage of the corresponding session is limited by the specified usage (RU).
