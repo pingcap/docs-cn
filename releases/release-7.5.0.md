@@ -35,7 +35,7 @@ TiDB 7.5.0 为长期支持版本 (Long-Term Support Release, LTS)。
 
     更多信息，请参考[用户文档](/tidb-global-sort.md)。
 
-* 1 个 SQL 语句里同时添加多个索引的性能提升 [#41602](https://github.com/pingcap/tidb/issues/41602) @[tangenta](https://github.com/tangenta) <!--**tw@ran-huang** 1582-->
+* 单个 SQL 语句里同时添加多个索引的性能提升 [#41602](https://github.com/pingcap/tidb/issues/41602) @[tangenta](https://github.com/tangenta) <!--**tw@ran-huang** 1582-->
 
     在 7.5.0 版本之前，用户在 1 个 SQL 语句里添加多个索引的功能，和用户使用多个 SQL 语句添加多个索引的性能接近，在 7.5.0 版本开始，1 个 SQL 语句里添加多个索引的性能有了显著的变化，提升了 XX （等待最终测试结果数据），可大大缩短业务添加索引所需的时间。
 
