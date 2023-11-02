@@ -301,4 +301,4 @@ Region Merge 速度慢也很有可能是受到 limit 配置的限制（`merge-sc
 
 > **注意：**
 >
-> 在开启 `evict-slow-store-scheduler` 时，慢节点上的部分 leader 可能存在需要等待滞后的请求处理完后才能推进 leader 驱逐工作的情况，造成整体的 evict-leader 的时间过长。建议同步配置 [`store-io-pool-size`](/tikv-configuration-file.md#store-io-pool-size-从-v530-版本开始引入) 以避免该情况。
+> 在开启 `evict-slow-store-scheduler` 时，慢节点上的部分 leader 可能存在需要等待滞后的请求处理完后才能推进 leader 驱逐工作的情况，造成整体的 evict-leader 的时间过长。建议同步配置 [`store-io-pool-size`](/tikv-configuration-file.md#store-io-pool-size-从-v530-版本开始引入) 以缓解该情况。
