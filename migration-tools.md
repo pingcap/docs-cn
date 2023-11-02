@@ -41,7 +41,7 @@ TiDB 提供了丰富的数据迁移相关的工具，用于全量迁移、增量
 | 使用场景 | <span style="font-weight:normal">通过拉取 TiKV 变更日志实现的 TiDB 增量数据同步工具，具有将数据还原到与上游任意 TSO 一致状态的能力，支持其他系统订阅数据变更</span> |
 |---|---|
 | **上游** | TiDB |
-| **下游** | TiDB，MySQL，Kafka，Confluent |
+| **下游** | TiDB，MySQL，Kafka，MQ，Confluent，存储服务（如 Amazon S3、GCS、Azure Blob Storage 和 NFS） |
 | **主要优势** | 提供开放数据协议 (TiCDC Open Protocol)。|
 | **使用限制** | TiCDC 只能同步至少存在一个有效索引的表。暂不支持以下场景：<ul><li>单独使用 RawKV 的 TiKV 集群。</li><li>在 TiDB 中创建 SEQUENCE 的 DDL 操作和 SEQUENCE 函数。</li></ul> |
 
@@ -52,7 +52,7 @@ TiDB 提供了丰富的数据迁移相关的工具，用于全量迁移、增量
 | **上游** | TiDB |
 | **下游（输出文件）** | SST，backup.meta 文件，backup.lock 文件 |
 | **主要优势** | <ul><li>适用于向另一个 TiDB 迁移数据。</li><li>支持数据冷备份到外部存储，可以用于灾备恢复。</li></ul> |
-| **使用限制** | <ul><li>BR 恢复到 TiCDC / Drainer 的上游集群时，恢复数据无法由 TiCDC / Drainer 同步到下游。</li><li>BR 只支持在 `new_collations_enabled_on_first_bootstrap` 开关值相同的集群之间进行操作。</li></ul> |
+| **使用限制** | <ul><li>BR 恢复到 TiCDC / Drainer 的上游集群时，恢复数据无法由 TiCDC / Drainer 同步到下游。</li><li>BR 只支持在 `mysql.tidb` 表中 `new_collation_enabled` 开关值相同的集群之间进行操作。</li></ul> |
 
 ## [sync-diff-inspector](/sync-diff-inspector/sync-diff-inspector-overview.md)
 

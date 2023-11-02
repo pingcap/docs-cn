@@ -121,7 +121,7 @@ SELECT * FROM t1;
 
 ## MySQL 兼容性
 
-`DROP VIEW` 语句与 MySQL 完全兼容。如发现任何兼容性差异，请在 GitHub 上提交 [issue](https://github.com/pingcap/tidb/issues/new/choose)。
+`DROP VIEW` 语句与 MySQL 完全兼容。如发现任何兼容性差异，请尝试 [TiDB 支持资源](/support.md)。
 
 ## See also
 
