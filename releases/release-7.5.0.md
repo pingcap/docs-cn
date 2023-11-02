@@ -19,11 +19,11 @@ TiDB 7.5.0 为长期支持版本 (Long-Term Support Release, LTS)。
 
 ### 可扩展性
 
-* 支持设置 TiDB 节点的服务范围，用于选择适用的 TiDB 节点来执行并行的 ADD INDEX 或 IMPORT INTO 任务成为正式功能（GA）[#46453](https://github.com/pingcap/tidb/pull/46453 )@[ywqzzy](https://github.com/ywqzzy)<!--**tw@hfxsd** 1581-->
+* 支持设置 TiDB 节点的服务范围，用于选择适用的 TiDB 节点来执行并行的 `ADD INDEX` 或 `IMPORT INTO` 任务 (GA) [#46453](https://github.com/pingcap/tidb/pull/46453 )@[ywqzzy](https://github.com/ywqzzy)<!--**tw@hfxsd** 1581-->
 
-    在资源密集型集群中，并行执行 ADD INDEX 或 IMPORT INTO 任务可能占用大量 TiDB 节点的资源，从而导致集群性能下降。从 v7.4.0 起， 你可以通过变量 [tidb_service_scope](https://github.com/pingcap/docs-cn/blob/master/system-variables.md#tidb_service_scope-%E4%BB%8E-v740-%E7%89%88%E6%9C%AC%E5%BC%80%E5%A7%8B%E5%BC%95%E5%85%A5) 控制 [TiDB 后端任务分布式框架](https://github.com/pingcap/docs-cn/blob/master/tidb-distributed-execution-framework.md)下各 TiDB 节点的服务范围。你可以从现有 TiDB 节点中选择几个节点，或者对新增 TiDB 节点设置服务范围。所有并行执行的 ADD INDEX 和 IMPORT INTO 的任务只会运行在这些节点，避免对已有业务造成性能影响。
+    在资源密集型集群中，并行执行 `ADD INDEX` 或 `IMPORT INTO` 任务可能占用大量 TiDB 节点的资源，从而导致集群性能下降。从 v7.4.0 起，你可以通过变量 [tidb_service_scope](/system-variables.md#tidb_service_scope-从-v740-版本开始引入) 控制 [TiDB 后端任务分布式框架](/tidb-distributed-execution-framework.md)下各 TiDB 节点的服务范围。你可以从现有 TiDB 节点中选择几个节点，或者对新增 TiDB 节点设置服务范围。所有并行执行的 `ADD INDEX` 和 `IMPORT INTO` 的任务只会运行在这些节点，避免对已有业务造成性能影响。在 v7.5.0 中，该功能正式 GA。
 
-    更多信息，请参考[用户文档](/system-variables.md#tidb_service_scope-%E4%BB%8E-v740-%E7%89%88%E6%9C%AC%E5%BC%80%E5%A7%8B%E5%BC%95%E5%85%A5)。
+    更多信息，请参考[用户文档](/system-variables.md#tidb_service_scope-从-v740-版本开始引入)。
 
 ### 性能
 
@@ -67,9 +67,9 @@ TiDB 7.5.0 为长期支持版本 (Long-Term Support Release, LTS)。
 
 ### 数据库管理
 
-* BR 支持备份和恢复表统计信息 [#issue号](链接) @[Leavrth](https://github.com/Leavrth) <!--**tw@hfxsd** 1437-->
+* BR 支持备份和恢复统计信息 [#48008](https://github.com/pingcap/tidb/issues/48008) @[Leavrth](https://github.com/Leavrth) <!--**tw@hfxsd** 1437-->
 
-    BR 备份工具 从 v7.5.0 开始支持备份和恢复数据库统计信息，包括列、索引和表级别的统计信息。通过支持该功能，从备份中恢复的 TiDB 数据库不再需要手动运行统计信息收集任务或等待自动收集任务的完成，简化了数据库维护并提升高了恢复库的查询性能。可以通过 [`--ignore-stats=false`](/br/br-snapshot-manual.md#备份统计信息) 启用该功能。
+    从 TiDB v7.5.0 开始，BR 备份工具开始支持备份和恢复数据库统计信息，引入了参数 `--ignore-stats`。当指定该参数值为 `false` 时，BR 备份工具支持备份和恢复数据库的列、索引、和表级别的统计信息，因此从备份中恢复的 TiDB 数据库不再需要手动运行统计信息收集任务，也无需等待自动收集任务的完成，从而简化了数据库维护工作，并提升了查询性能。
 
     更多信息，请参考[用户文档](/br/br-snapshot-manual.md#备份统计信息)。
 
@@ -135,7 +135,8 @@ TiDB 7.5.0 为长期支持版本 (Long-Term Support Release, LTS)。
 
 | 变量名  | 修改类型（包括新增/修改/删除）    | 描述 |
 |--------|------------------------------|------|
-|        |                              |      |
+|  [`tidb_build_sampling_stats_concurrency`](/system-variables.md#tidb_build_sampling_stats_concurrency-从-v750-版本开始引入)      |   新增 | 该变量用来设置 `ANALYZE` 过程中的采样并发度。     |
+|  [`tidb_enable_async_merge_global_stats`](/system-variables.md#tidb_enable_async_merge_global_stats-从-v750-版本开始引入)      |   新增 | 该变量用于 TiDB 使用异步方式合并统计信息, 以避免 OOM 问题。    |
 |        |                              |      |
 |        |                              |      |
 |        |                              |      |
@@ -144,7 +145,7 @@ TiDB 7.5.0 为长期支持版本 (Long-Term Support Release, LTS)。
 
 | 配置文件 | 配置项 | 修改类型 | 描述 |
 | -------- | -------- | -------- | -------- |
-|          |          |          |          |
+|    BR      |   [`--ignore-stats`](/br/br-snapshot-manual.md#备份统计信息)       |   新增       |   用于备份和恢复数据库统计信息。当指定该参数值为 `false` 时，BR 备份工具支持备份和恢复数据库的列、索引、和表级别的统计信息。      |
 |          |          |          |          |
 |          |          |          |          |
 |          |          |          |          |
