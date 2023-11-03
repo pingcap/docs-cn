@@ -72,10 +72,10 @@ filters:
     | modify collation | incompatible DDL  | 修改列 collation 的 DDL 语句，如 `ALTER TABLE MODIFY COLLATE` 语句 |
     | remove auto increment | incompatible DDL  | 删除自增键的 DDL 语句 |
     | modify storage engine | incompatible DDL  | 修改表存储引擎的 DDL 语句，如 `ALTER TABLE ENGINE = MyISAM` 语句 |
-    | reorganize partiton | incompatible DDL  | reorganize partiton 的 DDL 语句，如 `ALTER TABLE REORGANIZE PARTITION` 语句 |
-    | rebuild partiton | incompatible DDL  | rebuild partiton 的 DDL 语句，如 `ALTER TABLE REBUILD PARTITION` 语句 |
-    | exchange partiton | incompatible DDL  | exchange partiton 的 DDL 语句，如 `ALTER TABLE EXCHANGE PARTITION` 语句 |
-    | coalesce partiton | incompatible DDL  | coalesce partiton 的 DDL 语句，如 `ALTER COALESCE PARTITION` 语句 |
+    | reorganize table partiton | incompatible DDL  | reorganize partiton 的 DDL 语句，如 `ALTER TABLE REORGANIZE PARTITION` 语句 |
+    | rebuild table partiton | incompatible DDL  | rebuild partiton 的 DDL 语句，如 `ALTER TABLE REBUILD PARTITION` 语句 |
+    | exchange table partiton | incompatible DDL  | exchange partiton 的 DDL 语句，如 `ALTER TABLE EXCHANGE PARTITION` 语句 |
+    | coalesce table partiton | incompatible DDL  | coalesce partiton 的 DDL 语句，如 `ALTER COALESCE PARTITION` 语句 |
 
 - `sql-pattern`：用于过滤指定的 DDL SQL 语句，支持正则表达式匹配，例如上面示例中的 `"^DROP\\s+PROCEDURE"`。
 
