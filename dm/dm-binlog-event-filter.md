@@ -47,22 +47,24 @@ filters:
     | update          | DML  | update DML event              |
     | delete          | DML  | delete DML event              |
     | create database | DDL  | create database event         |
-    | drop database   | DDL  | drop database event           |
+    | drop database   | incompatible DDL  | drop database event           |
     | create table    | DDL  | create table event            |
     | create index    | DDL  | create index event            |
-    | drop table      | DDL  | drop table event              |
-    | truncate table  | DDL  | truncate table event          |
-    | rename table    | DDL  | rename table event            |
-    | drop index      | DDL  | drop index event              |
+    | drop table      | incompatible DDL  | drop table event              |
+    | truncate table  | incompatible DDL  | truncate table event          |
+    | rename table    | incompatible DDL  | rename table event            |
+    | drop index      | incompatible DDL  | drop index event              |
     | alter table     | DDL  | alter table event             |
     | value range decrease | incompatible DDL  | 使列字段变小的 DDL 语句，如将 `VARCHAR(20)` 改为 `VARCHAR(10)` 的 `ALTER TABLE MODIFY COLUMN` 语句 |
     | precision decrease | incompatible DDL  | 使列字段精度变小的 DDL 语句，如将 `Decimal(10, 2)` 改为 `Decimal(10, 1)` 的 `ALTER TABLE MODIFY COLUMN` 语句 |
     | modify column | incompatible DDL  | 变更列字段类型的 DDL 语句，如将 `INT` 改为 `VARCHAR` 的 `ALTER TABLE MODIFY COLUMN` 语句 |
-    | rename | incompatible DDL  | 变更数据库名，列名和索引名的 DDL 语句，如 `ALTER TABLE RENAME INDEX` 语句 |
-    | drop | incompatible DDL  | 删除表中的列、索引、views 等的 DDL 语句，如 `ALTER TABLE DROP COLUMN` 语句 |
-    | truncate | incompatible DDL  | truncate 表中的 partition 的 DDL 语句，如 `ALTER TABLE TRUNCATE PARTITION` 语句 |
-    | modify pk | incompatible DDL  | 修改主键的 DDL 语句，如 `ALTER TABLE DROP PRIMARY KEY` 语句 |
-    | modify uk | incompatible DDL  | 修改唯一键的 DDL 语句，如 `ALTER TABLE DROP UNIQUE KEY` 语句 |
+    | rename column | incompatible DDL  | 变更列名的 DDL 语句，如 `ALTER TABLE RENAME COLUMN` 语句 |
+    | rename index | incompatible DDL  | 变更索引名的 DDL 语句，如 `ALTER TABLE RENAME INDEX` 语句 |
+    | drop column | incompatible DDL  | 删除表中的列的 DDL 语句，如 `ALTER TABLE DROP COLUMN` 语句 |
+    | drop index | incompatible DDL  | 删除表中的索引的 DDL 语句，如 `ALTER TABLE DROP INDEX` 语句 |
+    | truncate table partition | incompatible DDL  | truncate 表中的 partition 的 DDL 语句，如 `ALTER TABLE TRUNCATE PARTITION` 语句 |
+    | drop primary key | incompatible DDL  | 修改主键的 DDL 语句，如 `ALTER TABLE DROP PRIMARY KEY` 语句 |
+    | drop unqiue key | incompatible DDL  | 修改唯一键的 DDL 语句，如 `ALTER TABLE DROP UNIQUE KEY` 语句 |
     | modify default value | incompatible DDL  | 修改列默认值的 DDL 语句，如 `ALTER TABLE CHANGE DEFAULT` 语句 |
     | modify constraint | incompatible DDL  | 修改 constraint 的 DDL 语句，如 `ALTER TABLE ADD CONSTRAINT` 语句 |
     | modify columns order | incompatible DDL  | 修改列顺序的 DDL 语句，如 `ALTER TABLE CHANGE AFTER` 语句 |
@@ -165,4 +167,17 @@ filters:
     schema-pattern: "*"
     sql-pattern: ["ALTER\\s+TABLE[\\s\\S]*ADD\\s+PARTITION", "ALTER\\s+TABLE[\\s\\S]*DROP\\s+PARTITION"]
     action: Ignore
+```
+
+### 对部分 DDL 语句报错
+
+如需对部分上游业务的 DDL 语句报错，可采用如下设置
+
+```yaml
+filters:
+  filter-procedure-rule:
+    schema-pattern: "test_*"
+    table-pattern: "t_*"
+    events: ["truncate table", "truncate table partition"]
+    action: Error
 ```
