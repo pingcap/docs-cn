@@ -98,15 +98,15 @@ Resolver:
 
 - 锁是否阻塞了 resolved-ts。
 - apply index 是否太小而无法更新 safe-ts。
-- 当存在 follower peer 时，leader 是否发送了足够更新的 resolved-ts。
+- 当存在 follower peer 时，leader 是否发送了更新的 resolved-ts。
 
 ### 使用日志诊断
 
 TiKV 每 10 秒检查以下监控项：
 
 - resolved-ts 最小的 Region leader
-- safe-ts 最小的 Region follower
 - resolved-ts 最小的 Region follower
+- safe-ts 最小的 Region follower
 
 如果这些时间戳中的任何一个异常地小，TiKV 就会打印日志。
 
@@ -139,7 +139,6 @@ TiKV 每 10 秒检查以下监控项：
     [2023/07/17 19:32:09.403 +08:00] [WARN] [expensivequery.go:145] [expensive_query] [cost_time=60.025022732s] [cop_time=0.00346666s] [process_time=8.358409508s] [wait_time=0.013582596s] [request_count=278] [total_keys=9943616] [process_keys=9943360] [num_cop_tasks=278] [process_avg_time=0.030066221s] [process_p90_time=0.045296042s] [process_max_time=0.052828934s] [process_max_addr=192.168.31.244:20160] [wait_avg_time=0.000048858s] [wait_p90_time=0.00006057s] [wait_max_time=0.00040991s] [wait_max_addr=192.168.31.244:20160] [stats=t:442916666913587201] [conn=2826881778407440457] [user=root] [database=test] [table_ids="[100]"] [**txn_start_ts**=442916790435840001] [mem_max="2514229289 Bytes (2.34 GB)"] [sql="update t set b = b + 1"]
     ```
 
-- Use the [`CLUSTER_TIDB_TRX`](/information-schema/information-schema-tidb-trx.md#cluster_tidb_trx) table to find active transactions if you cannot get enough information about the locks from logs.
 - 如果你无法从日志中获取关于锁的足够信息，可以使用 [`CLUSTER_TIDB_TRX`](/information-schema/information-schema-tidb-trx.md#cluster_tidb_trx) 表查找活跃的事务。
 - 执行 [`SHOW PROCESSLIST`](/sql-statements/sql-statement-show-processlist.md) 查看当前连接到同一个 TiDB 服务器的会话及其在当前语句上花费的时间。但是它不会显示 start_ts。
 
@@ -149,7 +148,7 @@ TiKV 每 10 秒检查以下监控项：
 
 ### 处理长事务
 
-长时间保持活跃的事务可能会阻塞 resolved-ts 的进度，即使它们最终很快就提交了。这是因为这些长期存在的事务的 start-ts 用于计算 resolved-ts。
+长时间保持活跃的事务，即使最终提交了，也可能会阻塞 resolved-ts 的进度。这是因为这些长期存在的事务的 start-ts 用于计算 resolved-ts。
 
 要解决这个问题，你可以：
 
@@ -205,7 +204,7 @@ Resolver:
     stopped: false,
 ```
 
-值得注意的是，`applied_index` 等于 resolver 中的 `tracked index`。因此，resolver 可能是这个问题的根源。你还可以看到，有 1 个事务在这个 Region 中留下了 480000 个锁，这可能是问题的原因。
+值得注意的是，`applied_index` 等于 resolver 中的 `tracked index`，均为 `2477`。因此，resolver 可能是这个问题的根源。你还可以看到，有 1 个事务在这个 Region 中留下了 480000 个锁，这可能是问题的原因。
 
 为了获取确切的事务和一些锁的 keys，你可以检查 TiKV 日志并搜索 `locks with`。输出结果如下：
 
