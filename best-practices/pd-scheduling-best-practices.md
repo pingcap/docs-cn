@@ -301,4 +301,4 @@ Region Merge 速度慢也很有可能是受到 limit 配置的限制（`merge-sc
 
 > **注意：**
 >
-> "leader 驱逐"是通过 PD 向慢节点发送调度请求来完成的，TiKV 对于收到的请求需要按序执行。慢节点上可能存在请求堆积的情况，使得部分 leader 可能存在需要等待滞后的请求处理完后才能推进 leader 驱逐工作的情况，造成整体 leader 驱逐的时间过长。因此，在开启 `evict-slow-store-scheduler` 时，建议同步配置[`store-io-pool-size`](/tikv-configuration-file.md#store-io-pool-size-从-v530-版本开始引入) 以缓解该情况。
+> "leader 驱逐"是通过 PD 向慢节点发送调度请求来完成的，TiKV 对于收到的请求需要按序执行。慢节点受" I/O 慢"或者其他因素的影响，可能存在请求堆积的情况，使得部分 leader 需要等待滞后的请求处理完后才能推进 leader 驱逐工作的情况，造成整体 leader 驱逐的时间过长。因此，在开启 `evict-slow-store-scheduler` 时，建议同步配置[`store-io-pool-size`](/tikv-configuration-file.md#store-io-pool-size-从-v530-版本开始引入) 以缓解该情况。
