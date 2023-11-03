@@ -108,7 +108,7 @@ summary: 了解 Grafana Dashboard 中展示的关键指标。
 
 ### KV Request
 
-下面的监控指标与发送给 TiKV 的请求相关。重试请求会被计数多次。
+下面的监控指标与发送给 TiKV 的请求相关。重试请求会被多次计数。
 
 - KV Request OPS：KV Request 根据 TiKV 显示执行次数
 - KV Request Duration 99 by store：根据 TiKV 显示 KV Request 执行时间
