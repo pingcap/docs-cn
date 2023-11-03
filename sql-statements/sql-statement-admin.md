@@ -12,6 +12,7 @@ This statement is a TiDB extension syntax, used to view the status of TiDB and c
 - [`ADMIN PLUGINS`](#admin-plugins-related-statement)
 - [`ADMIN ... BINDINGS`](#admin-bindings-related-statement)
 - [`ADMIN REPAIR`](#admin-repair-statement)
+- [`ADMIN SHOW NEXT_ROW_ID`](#admin-show-next_row_id-statement)
 - [`ADMIN SHOW SLOW`](#admin-show-slow-statement)
 
 ## DDL related statement
@@ -135,6 +136,14 @@ Here "untrusted" means that you need to manually ensure that the metadata of the
 
 </CustomContent>
 
+## `ADMIN SHOW NEXT_ROW_ID` statement
+
+```sql
+ADMIN SHOW t NEXT_ROW_ID;
+```
+
+The above statement is used to view the details of some special columns of a table. The output is the same as [SHOW TABLE NEXT_ROW_ID](/sql-statements/sql-statement-show-table-next-rowid.md).
+
 ## `ADMIN SHOW SLOW` statement
 
 > **Note:**
@@ -209,6 +218,22 @@ ADMIN SHOW DDL JOBS 5;
 | 41     | test    | t1         | add index     | public               | 32        | 37       | 0         | 2019-01-10 12:33:22.62 +0800 CST  | 2019-01-10 12:33:24.625 +0800 CST | synced        |
 | 40     | test    | t1         | drop column   | none                 | 32        | 37       | 0         | 2019-01-10 12:33:08.212 +0800 CST | 2019-01-10 12:33:09.78 +0800 CST  | synced        |
 +--------+---------+------------+---------------------+----------------+-----------+----------+-----------+-----------------------------------+-----------------------------------+---------------+
+```
+
+Run the following command to view the details of some special columns of a table. The output is the same as [SHOW TABLE NEXT_ROW_ID](/sql-statements/sql-statement-show-table-next-rowid.md).
+
+```sql
+ADMIN SHOW t NEXT_ROW_ID;
+```
+
+```sql
++---------+------------+-------------+--------------------+----------------+
+| DB_NAME | TABLE_NAME | COLUMN_NAME | NEXT_GLOBAL_ROW_ID | ID_TYPE        |
++---------+------------+-------------+--------------------+----------------+
+| test    | t          | _tidb_rowid |                101 | _TIDB_ROWID    |
+| test    | t          | _tidb_rowid |                  1 | AUTO_INCREMENT |
++---------+------------+-------------+--------------------+----------------+
+2 rows in set (0.01 sec)
 ```
 
 Run the following command to view the uncompleted DDL jobs in the test database. The results include the DDL jobs that are running and the last 5 DDL jobs that are completed but failed.
