@@ -52,6 +52,10 @@ BlobFile 的实现上有几点值得关注的地方：
 + 每个 blob record 都保留了 value 对应的 user key 的拷贝，这样做的目的是在进行 GC 的时候，可以通过查询 user key 是否更新来确定对应 value 是否已经过期，但同时也带来了一定的写放大。
 + BlobFile 支持 blob record 粒度的 compression，并且支持多种 compression algorithm，包括 [Snappy](https://github.com/google/snappy)、[LZ4](https://github.com/lz4/lz4) 和 [Zstd](https://github.com/facebook/zstd) 等，目前 Titan 默认使用的 compression algorithm 是 LZ4。
 
+> **注意：**
+>
+> Snappy 压缩文件必须遵循[官方 Snappy 格式](https://github.com/google/snappy)。不支持其他非官方压缩格式。
+
 ### TitanTableBuilder
 
 ![TitanTableBuilder](/media/titan/titan-3.png)
