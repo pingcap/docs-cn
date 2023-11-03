@@ -3070,7 +3070,7 @@ v5.0 后，用户仍可以单独修改以上系统变量（会有废弃警告）
 - 默认值：`1`
 - 这个变量用于 TiDB analyze 分区表时，对分区表统计信息进行合并时的并发度。
 
-### `tidb_enable_async_merge_global_stats` <span class="version-mark">从 v7.5 版本开始引入</span>
+### `tidb_enable_async_merge_global_stats` <span class="version-mark">从 v7.5.0 版本开始引入</span>
 
 - 作用域：SESSION | GLOBAL
 - 是否持久化到集群：是
