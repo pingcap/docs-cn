@@ -108,11 +108,11 @@ TiDB 7.5.0 为长期支持版本 (Long-Term Support Release, LTS)。
 
 * Data Migration (DM) 支持拦截不兼容（破坏数据一致性）的 DDL 变更 [#9692](https://github.com/pingcap/tiflow/issues/9692) @[GMHDBJD](https://github.com/GMHDBJD) <!--**tw@hfxsd** 1523-->
 
-    在 v7.5.0 之前，使用 DM 的 Binlog Filter 功能只能迁移或过滤指定的 event，且颗粒度比较粗，例如只能过滤 ALTER 这种大颗粒度的 DDL Event，这种方式在某些业务场景会受限，如业务允许 Add Column，但是不允许 Drop Column，但之前的版本都会被 Alter 这个 Event 过滤。
+    在 v7.5.0 之前，使用 DM 的 Binlog Filter 功能只能迁移或过滤指定的 Event，且颗粒度比较粗，例如只能过滤 `ALTER` 这种大颗粒度的 DDL Event，这种方式在某些业务场景会受限，如业务允许 Add Column，但是不允许 Drop Column，但之前的版本都会被 `ALTER` Event 过滤。
 
-    因此，在 v7.5.0 在原先基础上细化了支持的 DDL event，如新增 Modify Column（修改列数据类型），Drop column 等会导致数据丢失、数据被截断、精度损失等问题的细粒度 DDL event，用户可以按需配置，同时还支持拦截这些 DDL，并报错提示用户，用户可以及时介入手工处理，避免对下游的业务数据产生影响。
+    因此，v7.5.0 细化了支持的 DDL Event，如新增 `MODIFY COLUMN`（修改列数据类型）、`DROP COLUMN` 等会导致数据丢失、数据被截断、精度损失等问题的细粒度 DDL Event。你可以按需配置，同时还支持拦截 DDL，并报错提示，你可以及时介入手工处理，避免对下游的业务数据产生影响。
 
-    更多信息，请参考[用户文档](https://github.com/pingcap/docs-cn/pull/15309)。
+    更多信息，请参考[用户文档](/dm/dm-binlog-event-filter.md#参数解释)。
 
 * 支持实时更新增量数据校验的 checkpoint [issue号](链接) @[lichunzhu](https://github.com/lichunzhu) <!--**tw@ran-huang** 1496-->
 
