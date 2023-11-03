@@ -177,7 +177,7 @@ br restore full \
 
 以上命令中，
 
-- `--with-sys-table`：恢复集群数据的同时恢复**部分系统表**的数据，包括恢复账号权限数据和 SQL Binding 信息，但暂不支持恢复统计信息 (`mysql.stat_*`) 和系统参数 (`mysql.tidb`, `mysql.global_variables`) 等信息，更多信息详见[恢复 `mysql` 数据库下的表](/br/br-snapshot-guide.md#恢复-mysql-数据库下的表)。
+- `--with-sys-table`：恢复集群数据的同时恢复**部分系统表**的数据，包括恢复账号权限数据、 SQL Binding 信息和统计信息数据(详细参考[备份统计信息](/br/br-snapshot-manual.md#备份统计信息))，但暂不支持恢复统计信息表 (`mysql.stat_*`) 和系统参数 (`mysql.tidb`, `mysql.global_variables`) 等信息，更多信息详见[恢复 `mysql` 数据库下的表](/br/br-snapshot-guide.md#恢复-mysql-数据库下的表)。
 - `--ratelimit`：**每个 TiKV** 执行恢复任务的速度上限（单位 MiB/s）。
 - `--log-file`：备份日志写入的目标文件。
 

@@ -293,7 +293,7 @@ br restore full -f 'mysql.usertable' -s $external_storage_url --with-sys-table
 
 此外请注意，即使设置了 [table filter](/table-filter.md#表库过滤语法)，**BR 也不会恢复以下系统表**：
 
-- 统计信息表（`mysql.stat_*`）
+- 统计信息表（`mysql.stat_*`）(但可以恢复统计信息，详细参考[备份统计信息](/br/br-snapshot-manual.md#备份统计信息))
 - 系统变量表（`mysql.tidb`、`mysql.global_variables`）
 - [其他系统表](https://github.com/pingcap/tidb/blob/master/br/pkg/restore/systable_restore.go#L31)
 
