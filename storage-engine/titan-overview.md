@@ -54,6 +54,7 @@ A blob file mainly consists of blob records, meta blocks, a meta index block, an
 > + The Key-Value pairs in the blob file are stored in order, so that when the Iterator is implemented, the sequential reading performance can be improved via prefetching.
 > + Each blob record keeps a copy of the user key corresponding to the value. This way, when Titan performs Garbage Collection (GC), it can query the user key and identify whether the corresponding value is outdated. However, this process introduces some write amplification.
 > + BlobFile supports compression at the blob record level. Titan supports multiple compression algorithms, such as [Snappy](https://github.com/google/snappy), [LZ4](https://github.com/lz4/lz4), and [Zstd](https://github.com/facebook/zstd). Currently, the default compression algorithm Titan uses is LZ4.
+> + The Snappy compressed file must be in the [official Snappy format](https://github.com/google/snappy). Other variants of Snappy compression are not supported.
 
 ### TitanTableBuilder
 

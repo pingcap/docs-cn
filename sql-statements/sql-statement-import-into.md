@@ -149,6 +149,10 @@ The supported options are described as follows:
 | `.zstd`, `.zst` | ZStd compression format |
 | `.snappy` | snappy compression format |
 
+> **Note:**
+>
+> The Snappy compressed file must be in the [official Snappy format](https://github.com/google/snappy). Other variants of Snappy compression are not supported.
+
 ## Global sorting
 
 `IMPORT INTO` splits the data import job of a source data file into multiple sub-jobs, each sub-job independently encoding and sorting data before importing. If the encoded KV ranges of these sub-jobs have significant overlap (to learn how TiDB encodes data to KV, see [TiDB computing](/tidb-computing.md)), TiKV needs to keep compaction during import, leading to a decrease in import performance and stability.

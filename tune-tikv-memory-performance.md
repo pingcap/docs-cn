@@ -149,7 +149,7 @@ max-manifest-file-size = "20MB"
 block-size = "64KB"
 
 # The compaction mode of each layer of RocksDB data. The optional values include no, snappy, zlib,
-# bzip2, lz4, lz4hc, and zstd.
+# bzip2, lz4, lz4hc, and zstd. Note that the Snappy compressed file must be in the [official Snappy format](https://github.com/google/snappy). Other variants of Snappy compression are not supported.
 # "no:no:lz4:lz4:lz4:zstd:zstd" indicates there is no compaction of level0 and level1; lz4 compaction algorithm is used
 # from level2 to level4; zstd compaction algorithm is used from level5 to level6.
 # "no" means no compaction. "lz4" is a compaction algorithm with moderate speed and compaction ratio. The

@@ -156,6 +156,10 @@ You can use the `--compress <format>` option to compress the CSV and SQL data an
 - This option can save disk space, but it also slows down the export speed and increases CPU consumption. Use this option with caution in scenarios where the export speed is critical.
 - For TiDB Lightning v6.5.0 and later versions, you can use compressed files exported by Dumpling as the data source without additional configuration.
 
+> **Note:**
+>
+> The Snappy compressed file must be in the [official Snappy format](https://github.com/google/snappy). Other variants of Snappy compression are not supported.
+
 ### Format of exported files
 
 - `metadata`: The start time of the exported files and the position of the master binary log.

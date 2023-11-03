@@ -1603,6 +1603,10 @@ Configuration items related to `rocksdb.defaultcf.titan`.
 + Optional values: `"no"`, `"snappy"`, `"zlib"`, `"bzip2"`, `"lz4"`, `"lz4hc"`, `"zstd"`
 + Default value: `"lz4"`
 
+> **Note:**
+>
+> The Snappy compressed file must be in the [official Snappy format](https://github.com/google/snappy). Other variants of Snappy compression are not supported.
+
 ### `blob-cache-size`
 
 + The cache size of a Blob file
