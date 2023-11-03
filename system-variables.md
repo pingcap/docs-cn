@@ -3077,7 +3077,7 @@ v5.0 后，用户仍可以单独修改以上系统变量（会有废弃警告）
 - 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：否
 - 类型：布尔型
 - 默认值：`ON`。从 v7.5.0 之前版本升级到 v7.5.0 或之后版本时，默认值为 `OFF`。
-- 这个变量用于设置 TiDB 使用异步方式合并统计信息时, 以避免 OOM 问题。
+- 这个变量用于设置 TiDB 使用异步方式合并统计信息，以避免 OOM 问题。
 
 ### `tidb_metric_query_range_duration` <span class="version-mark">从 v4.0 版本开始引入</span>
 
