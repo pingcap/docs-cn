@@ -75,6 +75,11 @@ aliases: ['/docs-cn/dev/system-tables/system-table-overview/','/docs-cn/dev/refe
 * `tidb_runaway_watch`：Runaway Queries 的监控列表 (Watch List)
 * `tidb_runaway_watch_done`：被删除或者过期的 Runaway Queries 的监控列表
 
+## 元数据锁相关系统表
+
+* `tidb_mdl_view`：元数据锁的视图，可以用于查看当前阻塞的 DDL 的相关信息
+* `tidb_mdl_info`：TiDB 内部用于同步各节点的元数据锁的相关信息
+
 ## 其它系统表
 
 * `GLOBAL_VARIABLES` 全局系统变量表
