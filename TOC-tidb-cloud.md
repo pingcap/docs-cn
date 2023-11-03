@@ -300,6 +300,7 @@
     - [Storage](/tidb-storage.md)
     - [Computing](/tidb-computing.md)
     - [Scheduling](/tidb-scheduling.md)
+    - [TSO](/tso.md)
   - [TiDB Dedicated Limitations and Quotas](/tidb-cloud/limitations-and-quotas.md)
   - [TiDB Serverless Limitations](/tidb-cloud/serverless-limitations.md)
   - [Limited SQL Features on TiDB Cloud](/tidb-cloud/limited-sql-features.md)

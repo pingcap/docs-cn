@@ -619,6 +619,7 @@
     - [Storage](/tidb-storage.md)
     - [Computing](/tidb-computing.md)
     - [Scheduling](/tidb-scheduling.md)
+    - [TSO](/tso.md)
   - Storage Engine - TiKV
     - [TiKV Overview](/tikv-overview.md)
     - [RocksDB Overview](/storage-engine/rocksdb-overview.md)
