@@ -7,7 +7,7 @@ summary: 了解 TiDB 中的 TimeStamp Oracle (TSO)。
 
 在 TiDB 中，Placement Driver (PD) 在为各种集群组件分配时间戳方面发挥着关键作用。这些时间戳用于为事务和数据分配时间标记。该机制对于在 TiDB 中启用 [Percolator](https://research.google.com/pubs/pub36726.html) 模型至关重要。Percolator 模型用于支持多版本并发控制（Multi-Version Concurrency Control, MVCC）和[事务管理](/transaction-overview.md)。
 
-下面示例显示了如何获取 TiDB 中的 TSO：
+下面示例显示了如何获取 TiDB 当前的 TSO：
 
 ```sql
 BEGIN; SET @ts := @@tidb_current_ts; ROLLBACK;
