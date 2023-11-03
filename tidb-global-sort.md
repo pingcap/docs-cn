@@ -41,6 +41,8 @@ TiDB 全局排序功能增强了数据导入和 DDL（数据定义语言）操�
     SET GLOBAL tidb_cloud_storage_uri = 's3://my-bucket/test-data?role-arn=arn:aws:iam::888888888888:role/my-role'
     ```
 
+[`IMPORT INTO`](/sql-statements/sql-statement-import-into.md) 也可使用 `CLOUD_STORAGE_URI` 参数来控制云存储路径。
+
 ## 实现原理
 
 全局排序功能的算法如下图所示：
