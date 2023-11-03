@@ -64,7 +64,18 @@ TiDB 7.5.0 为长期支持版本 (Long-Term Support Release, LTS)。
     更多信息，请参考[用户文档](链接)。
 
 ### 数据库管理
+* DDL 任务支持暂停和恢复操作成为正式功能 (GA) [#issue](issue链接) @[contributor](https://github.com/xxx)
 
+    在 v7.2.0 中引入的 DDL 任务的暂停和恢复功能成为正式功能 (GA)。该功能允许临时暂停资源密集型的 DDL 操作（如创建索引），以节省资源并最小化对在线流量的影响。当资源允许时，你可以无缝恢复 DDL 任务，而无需取消和重新开始。DDL 任务的暂停和恢复功能提高了资源利用率，改善了用户体验，并简化了 schema 变更过程。
+
+    你可以通过如下 `ADMIN PAUSE DDL JOBS` 或 `ADMIN RESUME DDL JOBS` 语句暂停或者恢复多个 DDL 任务：
+
+    ```sql
+    ADMIN PAUSE DDL JOBS 1,2;
+    ADMIN RESUME DDL JOBS 1,2;
+    ```
+
+    更多信息，请参考[用户文档](/ddl-introduction.md#ddl-相关的命令介绍)。
 * BR 支持备份和恢复统计信息 [#48008](https://github.com/pingcap/tidb/issues/48008) @[Leavrth](https://github.com/Leavrth) <!--**tw@hfxsd** 1437-->
 
     从 TiDB v7.5.0 开始，BR 备份工具开始支持备份和恢复数据库统计信息，引入了参数 `--ignore-stats`。当指定该参数值为 `false` 时，BR 备份工具支持备份和恢复数据库的列、索引、和表级别的统计信息，因此从备份中恢复的 TiDB 数据库不再需要手动运行统计信息收集任务，也无需等待自动收集任务的完成，从而简化了数据库维护工作，并提升了查询性能。
