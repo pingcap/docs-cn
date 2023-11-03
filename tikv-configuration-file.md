@@ -1606,6 +1606,10 @@ rocksdb defaultcf titan 相关的配置项。
 + Blob 文件所使用的压缩算法，可选值：no、snappy、zlib、bz2、lz4、lz4hc、zstd。
 + 默认值：lz4
 
+> **注意：**
+>
+> Snappy 压缩文件必须遵循[官方 Snappy 格式](https://github.com/google/snappy)。不支持其他非官方压缩格式。
+
 ### `blob-cache-size`
 
 + Blob 文件的 cache 大小。
