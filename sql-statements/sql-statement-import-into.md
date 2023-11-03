@@ -143,6 +143,10 @@ SET 表达式左侧只能引用 `ColumnNameOrUserVarList` 中没有的列名。�
 | `.zstd`、`.zst` | ZStd 压缩格式 |
 | `.snappy` | snappy 压缩格式 |
 
+> **注意：**
+>
+> Snappy 压缩文件必须遵循[官方 Snappy 格式](https://github.com/google/snappy)。不支持其他非官方压缩格式。
+
 ## 全局排序
 
 `IMPORT INTO` 会将源数据文件的导入拆分到多个子任务中，各个子任务独立进行编码排序并导入。如果各个子任务编码后的 KV (TiDB 将数据编码为 KV 的方式，参考 [TiDB 数据库的计算](/tidb-computing.md)) range 重叠过多，导入时 TiKV 需要不断地进行 compaction，会降低导入的性能和稳定性。
