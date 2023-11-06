@@ -224,7 +224,7 @@ Topic 表达式的基本规则为 `[prefix][{schema}][middle][{table}][suffix]`�
 
 ### Partition 分发器
 
-partition 分发器用 partition = "xxx" 来指定，支持 default、index-value、columns、table、ts 共 5 种 partition 分发器，分发规则如下：
+partition 分发器用 `partition = "xxx"` 来指定，支持 default、index-value、columns、table 和 ts 共五种 partition 分发器，分发规则如下：
 
 - default：默认使用 table 分发规则。 所属库名和表名计算 Partition 编号。一张表的数据被发送到相同的 Partition。单表数据仅在一个 Partition 中并保证有序，但是发送吞吐量有限，无法通过添加消费者的方式提升消费速度。
 - index-value：使用事件所属表的主键或者唯一索引，或者明确指定名字的 index 的值计算 Partition 编号。一张表的数据被发送到多个 Partition。单表数据被发送到多个 Partition 中，每个 Partition 中的数据有序，可以通过添加消费者的方式提升消费速度。
