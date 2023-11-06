@@ -226,11 +226,11 @@ Topic 表达式的基本规则为 `[prefix][{schema}][middle][{table}][suffix]`�
 
 partition 分发器用 `partition = "xxx"` 来指定，支持 default、index-value、columns、table 和 ts 共五种 partition 分发器，分发规则如下：
 
-- default：默认使用 table 分发规则。 所属库名和表名计算 Partition 编号。一张表的数据被发送到相同的 Partition。单表数据仅在一个 Partition 中并保证有序，但是发送吞吐量有限，无法通过添加消费者的方式提升消费速度。
-- index-value：使用事件所属表的主键或者唯一索引，或者明确指定名字的 index 的值计算 Partition 编号。一张表的数据被发送到多个 Partition。单表数据被发送到多个 Partition 中，每个 Partition 中的数据有序，可以通过添加消费者的方式提升消费速度。
-- columns：使用明确指定的列的值计算 Partition 编号。一张表的数据被发送到多个 Partition。单表数据被发送到多个 Partition 中，每个 Partition 中的数据有序，可以通过添加消费者的方式提升消费速度。
-- table：使用事件所属的表的 schema 名和 table 名计算 Partition 编号。
-- ts：使用事件的 commitTs 计算 Partition 编号。一张表的数据被发送到多个 Partition。单表数据被发送到多个 Partition 中，每个 Partition 中的数据有序，可以通过添加消费者的方式提升消费速度。一条数据的多次修改可能被发送到不同的 Partition 中，消费者消费进度不同，可能导致消费端数据不一致，消费端需要将从多个 Partitions 读取到的数据按照 CommitTs 做排序，然后进行消费。
+- default：默认使用 table 分发规则。使用所属库名和表名计算 partition 编号，一张表的数据被发送到相同的 partition。单表数据只存在于一个 partition 中并保证有序，但是发送吞吐量有限，无法通过添加消费者的方式提升消费速度。
+- index-value：使用事件所属表的主键、唯一索引或者明确指定名字的索引值计算 partition 编号，一张表的数据被发送到多个 partition。单表数据被发送到多个 partition 中，每个 partition 中的数据有序，可以通过添加消费者的方式提升消费速度。
+- columns：使用明确指定的列值计算 partition 编号。一张表的数据被发送到多个 partition。单表数据被发送到多个 partition 中，每个 partition 中的数据有序，可以通过添加消费者的方式提升消费速度。
+- table：使用事件所属的表的库名和表名计算 partition 编号。
+- ts：使用事件的 commitTs 计算 partition 编号。一张表的数据被发送到多个 partition。单表数据被发送到多个 partition 中，每个 partition 中的数据有序，可以通过添加消费者的方式提升消费速度。一条数据的多次修改可能被发送到不同的 partition 中。消费者消费进度不同可能导致消费端数据不一致。因此，消费端需要对来自多个 partition 的数据按 commitTs 排序后再进行消费。
 
 以如下示例配置文件中的 `dispatchers` 配置项为例：
 
@@ -244,10 +244,10 @@ dispatchers = [
 ]
 ```
 
-- 任何属于库 `test` 的表，均使用 `index-value` 分发规则，即使用主键或者唯一索引的值计算 Partition 编号。(有主键则使用主键，无主键使用最短的唯一索引)
-- 任何属于库 `test1` 的表，均使用 `index-value` 分发规则，并且使用名为 `index1` 的索引的所有列的值计算 Partition 编号，如果指定的索引不存在，则报错。(`index-name` 指定的索引必须是唯一索引)
-- 任何属于库 `test2` 的表，均使用 `columns` 分发规则，并且使用列 `id` 和 `a` 的值计算 Partition 编号。如果任一列不存在，则报错。
-- 任何属于库 `test3` 的表，均使用 `table` 分发规则。
+- 任何属于库 `test` 的表均使用 `index-value` 分发规则，即使用主键或者唯一索引的值计算 partition 编号。如果有主键则使用主键，否则使用最短的唯一索引。
+- 任何属于库 `test1` 的表均使用 `index-value` 分发规则，并且使用名为 `index1` 的索引的所有列的值计算 partition 编号。如果指定的索引不存在，则报错。注意，`index-name` 指定的索引必须是唯一索引。
+- 任何属于库 `test2` 的表均使用 `columns` 分发规则，并且使用列 `id` 和 `a` 的值计算 partition 编号。如果任一列不存在，则报错。
+- 任何属于库 `test3` 的表均使用 `table` 分发规则。
 - 对于属于库 `test4` 的表，因为不匹配上述任何一个规则，所以使用默认的 `default`，即 `table` 分发规则。
 
 如果一张表，匹配了多个分发规则，以第一个匹配的规则为准。
