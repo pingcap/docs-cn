@@ -168,7 +168,7 @@ TiDB 7.5.0 为长期支持版本 (Long-Term Support Release, LTS)。
 
 ## 离线包变更
 
-从 v7.5.0 开始，`TiDB-community-toolkit` 二进制软件包中移除了以下内容：
+从 v7.5.0 开始，`TiDB-community-toolkit` 二进制软件包中移除了以下内容：<!--**tw@Oreoxmt** 1593+1594 -->
 
 - `tikv-importer-{version}-linux-{arch}.tar.gz`
 - `mydumper`
@@ -179,7 +179,7 @@ TiDB 7.5.0 为长期支持版本 (Long-Term Support Release, LTS)。
 
 * TiKV-importer 组件在 v7.5.0 中废弃，建议使用 [TiDB Lightning 物理导入模式](/tidb-lightning/tidb-lightning-physical-import-mode.md)作为替代方案。<!--**tw@Oreoxmt** 1594-->
 
-* [TiDB Binlog](/tidb-binlog/tidb-binlog-overview.md) 在 v7.5.0 废弃数据同步功能，强烈建议使用 [TiCDC](/ticdc/ticdc-overview.md) 来实现高效稳定的数据同步。尽管 TiDB Binlog 在 v7.5.0 仍支持 Point-in-Time Recovery (PITR) 场景，但是该组件在未来 LTS 版本中将被完全废弃，推荐使用 [PITR](/br/br-pitr-guide.md) 替代。<!--**tw@Oreoxmt** 1575-->
+* 从 v7.5.0 开始，不再提供 [TiDB Binlog](/tidb-binlog/tidb-binlog-overview.md) 数据同步功能的技术支持，强烈建议使用 [TiCDC](/ticdc/ticdc-overview.md) 实现高效稳定的数据同步。尽管 TiDB Binlog 在 v7.5.0 仍支持 Point-in-Time Recovery (PITR) 场景，但是该组件在未来 LTS 版本中将被完全废弃，推荐使用 [PITR](/br/br-pitr-guide.md) 替代。<!--**tw@Oreoxmt** 1575-->
 
 * 统计信息的[快速分析](https://docs.pingcap.com/zh/tidb/v7.4/system-variables#tidb_enable_fast_analyze)（实验特性）在 v7.5.0 中废弃。<!--**tw@Oreoxmt** -->
 
