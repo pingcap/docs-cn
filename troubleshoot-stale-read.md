@@ -25,7 +25,7 @@ resolved-ts 是一个时间戳，它保证所有时间戳小于该值的事务�
 
 ### safe-ts 的维护
 
-`RegionReadProgress` 模块维护 safe-ts。Region leader 维护 resolved-ts，并定期通过 CheckLeader RPC 将 resolved-ts、最小的 apply index（用于验证 resolved-ts）和 Region 本身发送给所有副本的 `RegionReadProgerss` 模块。
+`RegionReadProgress` 模块维护 safe-ts。Region leader 维护 resolved-ts，并定期通过 CheckLeader RPC 将 resolved-ts、最小的（使 resolved-ts 生效的）apply index和 Region 本身发送给所有副本的 `RegionReadProgerss` 模块。
 
 当一个 peer apply 数据时，它会更新 apply index，并检查是否有 pending resolved-ts 可以成为新的 safe-ts。
 
@@ -126,7 +126,7 @@ TiKV 每 10 秒检查以下监控项：
 
 ### 处理慢事务提交
 
-提交时间长的事务通常是大事务。这个慢事务的 prewrite 阶段会留下一些锁，但是在 commit 阶段清理锁之前需要很长时间。为了解决这个问题，你可以尝试识别锁所属的事务，并找出它们存在的原因，例如使用日志。
+提交时间长的事务通常是大事务。这个慢事务的 prewrite 阶段会留下一些锁，但是在 commit 阶段清理掉锁之前需要很长时间。为了解决这个问题，你可以尝试识别锁所属的事务，并找出它们存在的原因，例如使用日志。
 
 下面是一些你可以采取的措施：
 
@@ -212,7 +212,7 @@ Resolver:
 [2023/07/17 21:16:44.257 +08:00] [INFO] [resolver.rs:213] ["locks with the minimum start_ts in resolver"] [keys="[74800000000000006A5F7280000000000405F6, ... , 74800000000000006A5F72800000000000EFF6, 74800000000000006A5F7280000000000721D9, 74800000000000006A5F72800000000002F691]"] [start_ts=442918429687808001] [region_id=3121]
 ```
 
-从 TiKV 日志中，你可以获取事务的 start_ts，即 `442918429687808001`。为了获取关于语句和事务的更多信息，你可以在 TiDB 日志中搜索 `start_ts`。输出结果如下：
+从 TiKV 日志中，你可以获取事务的 start_ts，即 `442918429687808001`。为了获取关于语句和事务的更多信息，你可以在 TiDB 日志中搜索这个时间戳。找到结果如下：
 
 ```log
 [2023/07/17 21:16:18.287 +08:00] [INFO] [2pc.go:685] ["[BIG_TXN]"] [session=2826881778407440457] ["key sample"=74800000000000006a5f728000000000000000] [size=319967171] [keys=10000000] [puts=10000000] [dels=0] [locks=0] [checks=0] [txnStartTS=442918429687808001]
