@@ -155,8 +155,8 @@ SET 表达式左侧只能引用 `ColumnNameOrUserVarList` 中没有的列名。�
 全局排序对内存资源的使用较高，在数据导入开始前，建议先设置 [tidb_server_memory_limit_gc_trigger](/system-variables.md#tidb_server_memory_limit_gc_trigger-从-v640-版本开始引入) 和 [tidb_server_memory_limit](/system-variables.md#tidb_server_memory_limit-从-v640-版本开始引入) 两个变量，避免频繁触发 golang GC 从而影响导入效率:
 
 ```sql
-set global tidb_server_memory_limit_gc_trigger=0.99;
-set global tidb_server_memory_limit='88%';
+SET GLOBAL tidb_server_memory_limit_gc_trigger=0.99;
+SET GLOBAL tidb_server_memory_limit='88%';
 ```
 
 > **注意：**
