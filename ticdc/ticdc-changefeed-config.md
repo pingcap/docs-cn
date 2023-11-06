@@ -123,6 +123,14 @@ enable-table-across-nodes = false
 #    {matcher = ['test7.*'], partition = "ts"}
 # ]
 
+# 仅对 Kafka Sink 生效，column-selectors 用于选择部分列进行同步。
+# column-selectors = [
+#     {matcher = ['test.t1'], columns = ['a', 'b']},
+#     {matcher = ['test.*'], columns = ["*", "!b"]},
+#     {matcher = ['test1.t1'], columns = ['column*', '!column1']},
+#     {matcher = ['test3.t'], columns = ["column?", "!column1"]},
+# ]
+
 # protocol 用于指定编码消息时使用的格式协议
 # 当下游类型是 Kafka 时，支持 canal-json、avro 和 open-protocol。
 # 当下游类型是 Pulsar 时，仅支持 canal-json 协议。
