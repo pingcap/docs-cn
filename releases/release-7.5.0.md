@@ -65,6 +65,7 @@ TiDB 7.5.0 为长期支持版本 (Long-Term Support Release, LTS)。
 
 
 ### 数据库管理
+
 * DDL 任务支持暂停和恢复操作成为正式功能 (GA) [#issue](issue链接) @[contributor](https://github.com/xxx)
 
     在 v7.2.0 中引入的 DDL 任务的暂停和恢复功能成为正式功能 (GA)。该功能允许临时暂停资源密集型的 DDL 操作（如创建索引），以节省资源并最小化对在线流量的影响。当资源允许时，你可以无缝恢复 DDL 任务，而无需取消和重新开始。DDL 任务的暂停和恢复功能提高了资源利用率，改善了用户体验，并简化了 schema 变更过程。
@@ -77,6 +78,7 @@ TiDB 7.5.0 为长期支持版本 (Long-Term Support Release, LTS)。
     ```
 
     更多信息，请参考[用户文档](/ddl-introduction.md#ddl-相关的命令介绍)。
+
 * BR 支持备份和恢复统计信息 [#48008](https://github.com/pingcap/tidb/issues/48008) @[Leavrth](https://github.com/Leavrth) <!--**tw@hfxsd** 1437-->
 
     从 TiDB v7.5.0 开始，BR 备份工具开始支持备份和恢复数据库统计信息，引入了参数 `--ignore-stats`。当指定该参数值为 `false` 时，BR 备份工具支持备份和恢复数据库的列、索引、和表级别的统计信息，因此从备份中恢复的 TiDB 数据库不再需要手动运行统计信息收集任务，也无需等待自动收集任务的完成，从而简化了数据库维护工作，并提升了查询性能。
@@ -111,7 +113,7 @@ TiDB 7.5.0 为长期支持版本 (Long-Term Support Release, LTS)。
 
     在 v7.5.0 之前，使用 DM 的 Binlog Filter 功能只能迁移或过滤指定的 Event，且颗粒度比较粗，例如只能过滤 `ALTER` 这种大颗粒度的 DDL Event，这种方式在某些业务场景会受限，如业务允许 Add Column，但是不允许 Drop Column，但之前的版本都会被 `ALTER` Event 过滤。
 
-    因此，v7.5.0 细化了支持的 DDL Event，如新增 `MODIFY COLUMN`（修改列数据类型）、`DROP COLUMN` 等会导致数据丢失、数据被截断、精度损失等问题的细粒度 DDL Event。你可以按需配置，同时还支持拦截 DDL，并报错提示，你可以及时介入手工处理，避免对下游的业务数据产生影响。
+    因此，v7.5.0 细化了支持的 DDL Event，如新增 `MODIFY COLUMN`（修改列数据类型）、`DROP COLUMN` 等会导致数据丢失、数据被截断、精度损失等问题的细粒度 DDL Event。你可以按需配置。同时还支持拦截 DDL，并报错提示，你可以及时介入手工处理，避免对下游的业务数据产生影响。
 
     更多信息，请参考[用户文档](/dm/dm-binlog-event-filter.md#参数解释)。
 
@@ -185,8 +187,8 @@ TiDB 7.5.0 为长期支持版本 (Long-Term Support Release, LTS)。
 
 + TiDB
 
-    - 优化合并 GlobalStats 的并发模型：引入 `tidb_enable_async_merge_global_stats` 实现同时加载统计信息并合并，从而加速分区表场景下的合并 GlobalStats。同时优化合并 GlobalStats 的内存使用，以避免 OOM 并减少内存分配 [#47219](https://github.com/pingcap/tidb/issues/47219) @[hawkingrei](https://github.com/hawkingrei) <!--**tw@hfxsd** -->
-    - 优化 Analyze 流程：引入 `tidb_build_sampling_stats_concurrency` 精细化控制 Analyze 并发度，减少资源消耗。同时优化 Analyze 的内存使用，通过复用部分中间结果，减少内存分配，避免频繁 GC [#47275](https://github.com/pingcap/tidb/issues/47275) @[hawkingrei](https://github.com/hawkingrei) <!--**tw@hfxsd** -->
+    - 优化合并 GlobalStats 的并发模型：引入 [`tidb_enable_async_merge_global_stats`](/system-variables.md#tidb_enable_async_merge_global_stats-从-v750-版本开始引入) 实现同时加载统计信息并合并，从而加速分区表场景下的合并 GlobalStats。同时优化合并 GlobalStats 的内存使用，以避免 OOM 并减少内存分配 [#47219](https://github.com/pingcap/tidb/issues/47219) @[hawkingrei](https://github.com/hawkingrei) <!--**tw@hfxsd** -->
+    - 优化 Analyze 流程：引入 [`tidb_build_sampling_stats_concurrency`](/system-variables.md#tidb_build_sampling_stats_concurrency-从-v750-版本开始引入) 精细化控制 Analyze 并发度，减少资源消耗。同时优化 Analyze 的内存使用，通过复用部分中间结果，减少内存分配，避免频繁 GC [#47275](https://github.com/pingcap/tidb/issues/47275) @[hawkingrei](https://github.com/hawkingrei) <!--**tw@hfxsd** -->
     - 改进 Placement Policy 的使用：增加对全局范围的策略配置，完善常用场景的语法支持  [#45384](https://github.com/pingcap/tidb/issues/45384) @[nolouch](https://github.com/nolouch) <!--**tw@qiancai** -->
 
 + TiKV
