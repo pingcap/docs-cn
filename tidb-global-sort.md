@@ -41,7 +41,9 @@ TiDB 全局排序功能增强了数据导入和 DDL（数据定义语言）操�
     SET GLOBAL tidb_cloud_storage_uri = 's3://my-bucket/test-data?role-arn=arn:aws:iam::888888888888:role/my-role'
     ```
 
-[`IMPORT INTO`](/sql-statements/sql-statement-import-into.md) 也可使用 `CLOUD_STORAGE_URI` 参数来控制云存储路径。
+> **注意：**
+>
+> [`IMPORT INTO`](/sql-statements/sql-statement-import-into.md) 也可使用 [`CLOUD_STORAGE_URI`](/sql-statements/sql-statement-import-into.md#withoptions) 参数来控制云存储路径。如果 [`tidb_cloud_storage_uri`](/system-variables.md#tidb_cloud_storage_uri-从-v740-版本开始引入) 和 `CLOUD_STORAGE_URI` 都设置了有效的目标存储地址，[`IMPORT INTO`](/sql-statements/sql-statement-import-into.md) 将以 `CLOUD_STORAGE_URI` 参数的配置为准。
 
 ## 实现原理
 
