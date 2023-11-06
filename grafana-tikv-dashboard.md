@@ -415,7 +415,7 @@ title: TiKV 监控指标详解
 - Check Leader Duration：处理 leader 请求所花费的时间的直方图，从发送请求到接收到 leader 的响应
 - Max gap of resolved-ts in Region leaders：在当前 TiKV 中，所有活跃 Region 的 resolved-ts 与当前时间的最大差值，只包含 Region leader
 - Min Leader Resolved TS Region：resolved-ts 最小的 Region 的 ID，只包含 Region leader
-- Lock heap size：resolved-ts 模块中用于跟踪锁的堆的内存占用
+- Lock heap size：resolved-ts 模块中用于跟踪锁的堆的大小
 
 ### Memory
 
