@@ -192,7 +192,7 @@ In the preceding command:
 
 ## Update task configuration
 
-Starting from v4.0.4, TiCDC supports modifying the configuration of the replication task (not dynamically). To modify the changefeed configuration, pause the task, modify the configuration, and then resume the task.
+TiCDC supports modifying the configuration of the replication task (not dynamically). To modify the changefeed configuration, pause the task, modify the configuration, and then resume the task.
 
 ```shell
 cdc cli changefeed pause -c test-cf --server=http://10.0.10.25:8300
@@ -204,7 +204,6 @@ Currently, you can modify the following configuration items:
 
 - `sink-uri` of the changefeed.
 - The changefeed configuration file and all configuration items in the file.
-- Whether to use the file sorting feature and the sorting directory.
 - The `target-ts` of the changefeed.
 
 ## Manage processing units of replication sub-tasks (`processor`)
