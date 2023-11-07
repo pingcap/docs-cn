@@ -382,7 +382,7 @@ SHOW PLACEMENT;
 CREATE PLACEMENT POLICY deploy221_primary_east1 LEADER_CONSTRAINTS="[+region=us-east-1]" FOLLOWER_CONSTRAINTS='{"+region=us-east-1": 1, "+region=us-east-2": 2, "+region=us-west-1: 1}';
 ```
 
-该语句创建好放置策略后，绑定该策略的数据会将副本中的 Raft Leader 放置在 `us-east-1` 中，其他副本在其他区域。需要注意的是，如果集群发生故障，比如 Leader 所在区域 `us-east-1` 的节点宕机，这时候即使其他区域设置的都是 `FOLLOWER_CONSTRAINTS`, 也会从中选举出一个新的 Leader，也就是说保证服务可用的优先级是最高的。
+该放置策略创建好并绑定到所需的数据后，这些数据的 Raft Leader 副本将会放置在 `LEADER_CONSTRAINTS` 选项指定的 `us-east-1` 区域中，其他副本将会放置在`FOLLOWER_CONSTRAINTS` 选项指定的区域。需要注意的是，如果集群发生故障，比如 Leader 所在区域 `us-east-1` 的节点宕机，这时候即使其他区域设置的都是 `FOLLOWER_CONSTRAINTS`, 也会从中选举出一个新的 Leader，也就是说保证服务可用的优先级是最高的。
 
 在 `us-east-1` 区域故障发生时，如果希望新的 Leader 不要放置在 `us-west-1`，可以配置特殊的 `reject-leader` 属性，驱逐上面新的 Leader:
 
