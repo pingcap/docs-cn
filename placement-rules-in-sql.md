@@ -334,7 +334,7 @@ SELECT store_id,address,label from INFORMATION_SCHEMA.TIKV_STORE_STATUS;
 
 如果你不特别在意数据的具体分布，只希望能满足容灾生存要求，可以使用 `SURVIVAL_PREFERENCES` 选项设置数据的生存能力偏好。
 
-在上面的例子中， TiDB 集群分布在 3 个 `region`，且每个区域有 3 个 `zone`。在为该集群创建放置策略时，假设 `SURVIVAL_PREFERENCES` 的设置如下：
+在上面的例子中，TiDB 集群分布在 3 个 `region`，且每个区域有 3 个 `zone`。在为该集群创建放置策略时，假设 `SURVIVAL_PREFERENCES` 的设置如下：
 
 ``` sql
 CREATE PLACEMENT POLICY multiaz SURVIVAL_PREFERENCES="[region, zone, host]";
