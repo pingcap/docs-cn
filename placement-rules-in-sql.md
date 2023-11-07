@@ -254,7 +254,7 @@ CREATE TABLE t2 (a INT);  -- 创建表 t2，默认的放置策略 p2 在 t2 上�
 
 CREATE TABLE t3 (a INT) PLACEMENT POLICY=p1;  -- 创建表 t3。因为语句中已经指定了其他放置策略，默认的 p2 策略在 t3 上不生效。
 
-ALTER DATABASE test PLACEMENT POLICY=p3;  -- 再次更改默认的放置策略，此更改不影响已有的表。
+ALTER DATABASE test PLACEMENT POLICY=p3;  -- 再次更改数据库默认的放置策略，此更改不影响已有的表。
 
 CREATE TABLE t4 (a INT);  -- 创建表 t4，默认的放置策略 p3 生效。
 
