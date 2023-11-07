@@ -5,7 +5,7 @@ summary: 了解如何通过 SQL 接口调度表和分区的放置位置。
 
 # Placement Rules in SQL
 
-Placement Rules in SQL 特性用于通过 SQL 接口配置数据在 TiKV 集群中的放置位置。通过该功能，你可以将集群、数据库、表、或分区的数据部署到不同的地域、机房、机柜、主机。
+Placement Rules in SQL 特性用于通过 SQL 语句配置数据在 TiKV 集群中的放置位置。通过该功能，你可以将集群、数据库、表、或分区的数据部署到不同的地域、机房、机柜、主机。
 
 该功能可以实现以下业务场景：
 
