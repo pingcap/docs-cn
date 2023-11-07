@@ -162,10 +162,10 @@ SHOW PLACEMENT LABELS;
 要修改放置策略，可以使用 [`ALTER PLACEMENT POLICY`](/sql-statements/sql-statement-alter-placement-policy.md) 语句。该修改将应用于所有绑定了此放置策略的对象。
 
 ```sql
-ALTER PLACEMENT POLICY myplacementpolicy FOLLOWERS=5;
+ALTER PLACEMENT POLICY myplacementpolicy FOLLOWERS=4;
 ```
 
-在该语句中，`FOLLOWERS=5` 选项代表数据有 5 个副本，包括 4 个 follower 和 1 个 leader。更多可配置的放置选项和对应的含义，请参考[放置选项](#放置选项参考)。
+在该语句中，`FOLLOWERS=4` 选项代表数据有 5 个副本，包括 4 个 follower 和 1 个 leader。更多可配置的放置选项和对应的含义，请参考[放置选项](#放置选项参考)。
 
 ### 删除放置策略
 
