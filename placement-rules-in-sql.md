@@ -89,7 +89,7 @@ SHOW PLACEMENT LABELS;
 
     ```sql
     CREATE TABLE t1 (a INT) PLACEMENT POLICY=myplacementpolicy;
-    CREATE TABLE t2 (a INT);·
+    CREATE TABLE t2 (a INT);
     ALTER TABLE t2 PLACEMENT POLICY=myplacementpolicy;
     ```
 
