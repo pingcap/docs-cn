@@ -237,7 +237,7 @@ ALTER RANGE global PLACEMENT POLICY five_replicas;
 
 ### 为数据库指定默认的放置策略
 
-你可以为某个数据库指定默认的放置策略，类似于为数据库设置默认字符集或排序规则。如果没有指定其他选项，就会使用数据库上指定的配置。示例如下：
+你可以为某个数据库指定默认的放置策略，类似于为数据库设置默认字符集或排序规则。如果数据库中的表或分区没有单独指定其他放置策略，就会使用数据库上指定的放置策略。示例如下：
 
 ```sql
 CREATE PLACEMENT POLICY p1 PRIMARY_REGION="us-east-1" REGIONS="us-east-1,us-east-2";  -- 创建放置策略
