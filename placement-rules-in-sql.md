@@ -248,7 +248,7 @@ CREATE PLACEMENT POLICY p3 FOLLOWERS=2;
 
 CREATE TABLE t1 (a INT);  -- 创建表 t1，且未指定放置策略。
 
-ALTER DATABASE test PLACEMENT POLICY=p2;  -- 更改默认的放置策略，但更改不影响已有的表 t1。
+ALTER DATABASE test PLACEMENT POLICY=p2;  -- 更改数据库默认的放置策略为 p2，但更改不影响已有的表 t1。
 
 CREATE TABLE t2 (a INT);  -- 创建表 t2，默认的放置策略 p2 在 t2 上生效。
 
