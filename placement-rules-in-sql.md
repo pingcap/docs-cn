@@ -310,7 +310,7 @@ ALTER TABLE t1 PARTITION p1 PLACEMENT POLICY=storageforhisotrydata;
 
 ## 高可用场景示例
 
-假设集群的拓扑扑结构如下，集群的 TiKV 数据节点分布在 3 个 `region`（区域），每个 `region` 有 3 个可用的 `zone` （可用区）：
+假设集群的拓扑结构如下，集群的 TiKV 节点分布在 3 个 `region`（区域），每个 `region` 有 3 个可用的 `zone` （可用区）：
 
 ```sql
 SELECT store_id,address,label from INFORMATION_SCHEMA.TIKV_STORE_STATUS;
