@@ -256,7 +256,7 @@ CREATE TABLE t3 (a INT) PLACEMENT POLICY=p1;  -- 创建表 t3。因为语句中�
 
 ALTER DATABASE test PLACEMENT POLICY=p3;  -- 再次更改数据库默认的放置策略，此更改不影响已有的表。
 
-CREATE TABLE t4 (a INT);  -- 创建表 t4，默认的放置策略 p3 生效。
+CREATE TABLE t4 (a INT);  -- 创建表 t4，默认的放置策略 p3 在 t4 生效。
 
 ALTER PLACEMENT POLICY p3 FOLLOWERS=3; -- 绑定策略 p3 的表，也就是 t4，会采用 FOLLOWERS=3。
 ```
