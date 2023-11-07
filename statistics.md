@@ -385,13 +385,13 @@ ANALYZE INCREMENTAL TABLE TableName PARTITION PartitionNameList INDEX [IndexName
 
 目前 ANALYZE 执行的时候会被切分成一个个小的任务，每个任务只负责某一个列或者索引。`tidb_build_stats_concurrency` 可以控制同时执行的任务的数量，其默认值是 2。
 
-### tidb_build_sampling_stats_concurrency
+#### tidb_build_sampling_stats_concurrency
 
-在执行分析普通列任务的时候，`tidb_build_sampling_stats_concurrency` 可以用于控制执行采样任务的并发数量，其默认值是 2。
+在执行 ANALYZE 普通列任务的时候，[`tidb_build_sampling_stats_concurrency`](/system-variables.md#tidb_build_sampling_stats_concurrency-从-v750-版本开始引入) 可以用于控制执行采样任务的并发数量，其默认值是 2。
 
-### tidb_analyze_partition_concurrency
+#### tidb_analyze_partition_concurrency
 
-在执行 analyze 的时候，`tidb_analyze_partition_concurrency` 可以用于控制任务写入的并发度，其默认值是 2。
+在执行 ANALYZE 的时候，[`tidb_analyze_partition_concurrency`](/system-variables.md#tidb_analyze_partition_concurrency) 可以用于控制任务写入的并发度，其默认值是 2。
 
 #### tidb_distsql_scan_concurrency
 
