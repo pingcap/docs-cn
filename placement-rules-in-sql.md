@@ -427,7 +427,7 @@ PLACEMENT POLICY=app_list
 
 - 临时表不支持放置策略。
 - 放置策略仅保证静态数据被放置在正确的 TiKV 节点上。该策略不保证传输中的数据（通过用户查询或内部操作）只出现在特定区域内。
-- 设置 `TiFlash` 的副本要通过[构建 TiFlash 副本](/tiflash/create-tiflash-replicas.md)的方式创建，不能使用该特性。
+- 设置数据的 TiFlash 副本需要通过[构建 TiFlash 副本](/tiflash/create-tiflash-replicas.md)的方式创建，不能使用该特性。
 - 设置 `PRIMARY_REGION` 和 `REGIONS` 时允许存在语法糖。但在未来版本中，我们计划为 `PRIMARY_RACK`、`PRIMARY_ZONE` 和 `PRIMARY_HOST` 添加变体支持，见 [issue #18030](https://github.com/pingcap/tidb/issues/18030)。
 
 ### 工具兼容性
