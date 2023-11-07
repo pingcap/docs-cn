@@ -47,10 +47,7 @@ cdc cli changefeed list --server=http://127.0.0.1:8300
 ```
 
 * `checkpoint`：即为 TiCDC 已经将该时间点前的数据同步到了下游。
-* `state` 为该同步任务的状态：
-    * `normal`：正常同步。
-    * `stopped`：停止同步（手动暂停或出错）。
-    * `removed`：已删除任务。
+* `state` 为该同步任务的状态，状态的值和含义参考 [TiCDC 同步任务状态](/ticdc/ticdc-changefeed-overview.md#changefeed-状态流转)。
 
 > **注意：**
 >
@@ -275,7 +272,11 @@ TiCDC 需要磁盘是为了缓冲上游写入高峰时下游消费不及时堆�
 
 ## 如何理解 DML 和 DDL 语句之间的执行顺序？
 
-按照 DML -> DDL -> DML 的顺序执行。在数据同步过程中，为了确保 DML 事件在下游执行时有对应正确的表结构，需要协调 DDL 和 DML 的执行顺序。目前 TiCDC 采用了简洁的方式处理该问题，会将 DDL ts 之前的 DML 都同步到下游之后，再同步 DDL。
+目前，TiCDC 采用了以下执行顺序：
+
+1. TiCDC 阻塞受 DDL 影响的表的同步进度，直到 DDL CommiTs 的时间点，以确保在 DDL CommiTs 之前执行的 DML 先成功同步到下游。
+2. TiCDC 继续同步 DDL。当存在多个 DDL 时，TiCDC 是以串行的方式进行同步的。
+3. 当 DDL 在下游执行完成之后，TiCDC 继续同步 DDL CommiTs 之后执行的 DML。
 
 ## 如何对比上下游数据的一致性？
 
@@ -283,7 +284,12 @@ TiCDC 需要磁盘是为了缓冲上游写入高峰时下游消费不及时堆�
 
 ## 单表数据同步只能在一个 TiCDC 节点上运行，TiCDC 是否考虑使用多个节点同步多表数据？
 
-目前正在开发中，未来 TiCDC 会支持按照 TiKV Region 粒度来同步数据变更日志，实现处理能力上的可扩展性。
+从 v7.1.0 起，TiCDC 支持 MQ sink 按照 TiKV Region 粒度来同步数据变更日志，实现处理能力上的可扩展性，使得 TiCDC 能够同步 Region 数量庞大的单表。如需开启，请在 [TiCDC 配置文件](/ticdc/ticdc-changefeed-config.md)中配置以下参数：
+
+```toml
+[scheduler]
+enable-table-across-nodes = true
+```
 
 ## 上游有运行时间比较长的未提交事务，TiCDC 同步是否会被卡住？
 
