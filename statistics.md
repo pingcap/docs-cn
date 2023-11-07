@@ -383,7 +383,15 @@ ANALYZE INCREMENTAL TABLE TableName PARTITION PartitionNameList INDEX [IndexName
 
 #### tidb_build_stats_concurrency
 
-目前 ANALYZE 执行的时候会被切分成一个个小的任务，每个任务只负责某一个列或者索引。`tidb_build_stats_concurrency` 可以控制同时执行的任务的数量，其默认值是 4。
+目前 ANALYZE 执行的时候会被切分成一个个小的任务，每个任务只负责某一个列或者索引。`tidb_build_stats_concurrency` 可以控制同时执行的任务的数量，其默认值是 2。
+
+### tidb_build_sampling_stats_concurrency
+
+在执行分析普通列任务的时候，`tidb_build_sampling_stats_concurrency` 可以用于控制执行采样任务的并发数量，其默认值是 2。
+
+### tidb_analyze_partition_concurrency
+
+在执行 analyze 的时候，`tidb_analyze_partition_concurrency` 可以用于控制任务写入的并发度，其默认值是 2。
 
 #### tidb_distsql_scan_concurrency
 
@@ -392,6 +400,14 @@ ANALYZE INCREMENTAL TABLE TableName PARTITION PartitionNameList INDEX [IndexName
 #### tidb_index_serial_scan_concurrency
 
 在执行分析索引列任务的时候，`tidb_index_serial_scan_concurrency` 可以用于控制一次读取的 Region 数量，其默认值是 1。
+
+
+> **注意：**
+>
+>  `tidb_build_stats_concurrency`, `tidb_build_sampling_stats_concurrency` 和 `tidb_analyze_partition_concurrency` 其实是上下游关系。
+>   以在变更这些参数的时候，需要同时考虑这三个参数的值。建议按 `tidb_analyze_partition_concurrency`，
+>   `tidb_build_sampling_stats_concurrency`， `tidb_build_stats_concurrency` 逐个调节，并观察对系统的影响。这三个参数的值越大，对系统的资源开销就越大。
+
 
 ### ANALYZE 配置持久化
 
