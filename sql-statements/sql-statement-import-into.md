@@ -152,7 +152,7 @@ SET 表达式左侧只能引用 `ColumnNameOrUserVarList` 中没有的列名。�
 
 当开启[后端任务分布式框架](/tidb-distributed-execution-framework.md) 时，可通过 `IMPORT INTO` 的 `CLOUD_STORAGE_URI` 参数，或者使用系统变量 [`tidb_cloud_storage_uri`](/system-variables.md#tidb_cloud_storage_uri-从-v740-版本开始引入) 指定编码后的 KV 数据的目标存储地址来开启全局排序。注意目前仅支持使用 S3 作为全局排序存储地址。开启全局排序后，`IMPORT INTO` 会将编码后的 KV 数据写入云存储，并在云存储进行全局排序，之后再将全局排序后的索引数据和表数据并行导入到 TiKV，从而避免因 KV 重叠导致的问题，以提升导入的稳定性。
 
-全局排序对内存资源的使用较高，在数据导入开始前，建议先设置 [tidb_server_memory_limit_gc_trigger](/system-variables.md#tidb_server_memory_limit_gc_trigger-从-v640-版本开始引入) 和 [tidb_server_memory_limit](/system-variables.md#tidb_server_memory_limit-从-v640-版本开始引入) 两个变量，避免频繁触发 golang GC 从而影响导入效率:
+全局排序对内存资源的使用较高，在数据导入开始前，建议先设置 [`tidb_server_memory_limit_gc_trigger`](/system-variables.md#tidb_server_memory_limit_gc_trigger-从-v640-版本开始引入) 和 [`tidb_server_memory_limit`](/system-variables.md#tidb_server_memory_limit-从-v640-版本开始引入) 两个变量，避免频繁触发 golang GC 从而影响导入效率:
 
 ```sql
 SET GLOBAL tidb_server_memory_limit_gc_trigger=0.99;
