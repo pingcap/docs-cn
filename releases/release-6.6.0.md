@@ -331,7 +331,7 @@ TiDB 版本：6.6.0-[DMR](/releases/versioning.md#开发里程碑版本)
 
 ### MySQL 兼容性
 
-* 支持兼容 MySQL 语法的外键约束 [#18209](https://github.com/pingcap/tidb/issues/18209) @[crazycs520](https://github.com/crazycs520)
+* 支持兼容 MySQL 语法的外键约束（实验特性）[#18209](https://github.com/pingcap/tidb/issues/18209) @[crazycs520](https://github.com/crazycs520)
 
     更多信息，请参考本文的 [SQL 部分](#sql-功能)以及[用户文档](/foreign-key.md)。
 
