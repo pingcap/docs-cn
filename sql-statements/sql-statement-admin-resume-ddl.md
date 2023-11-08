@@ -17,10 +17,6 @@ summary: TiDB 数据库中 ADMIN RESUME DDL 的使用概况。
 > + 处于非暂停状态中的作业无法被恢复，操作将失败。
 > + 如果重复恢复同一个 DDL 作业，会报错 `Error Number: 8261`。
 
-> **警告：**
->
-> 该功能目前为实验特性，不建议在生产环境中使用。该功能可能会在未事先通知的情况下发生变化或删除。如果发现 bug，请在 GitHub 上提 [issue](https://github.com/pingcap/tidb/issues) 反馈。
-
 ## 语法图
 
 ```ebnf+diagram
