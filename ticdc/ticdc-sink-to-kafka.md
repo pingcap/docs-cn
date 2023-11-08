@@ -294,7 +294,7 @@ column-selectors = [
 
 > **注意：**
 >
-> 一张表存在主键时，主键列必须被包含在同步过程中。不含有主键时，唯一索引列必须被包含在同步过程中。在创建 changefeed 或 changefeed 运行时，如果发现此规则被违背，changefeed 会报错。
+> 经过 column selector 规则过滤后，表中的数据必须要有主键或者唯一键被同步，否则在 changefeed 创建或运行时会报错。
 
 ## 横向扩展大单表的负载到多个 TiCDC 节点
 
