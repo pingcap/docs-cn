@@ -32,8 +32,6 @@ TiCDC only replicates incremental data changes that occur after a specified time
     bdr-mode = true
     ```
 
-5. (Optional) If you need to track the data source, set a unique data source ID for each cluster using the [`tidb_source_id`](/system-variables.md#tidb_source_id-new-in-v650) system variable.
-
 After the configuration takes effect, the clusters can perform bi-directional replication.
 
 ## Execute DDL
