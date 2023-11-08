@@ -123,7 +123,8 @@ enable-table-across-nodes = false
 #    {matcher = ['test7.*'], partition = "ts"}
 # ]
 
-# 仅对 Kafka Sink 生效，column-selectors 用于选择部分列进行同步。
+# column-selectors 从 v7.5.0 开始引入，仅对 Kafka Sink 生效。
+# column-selectors 用于选择部分列进行同步。
 # column-selectors = [
 #     {matcher = ['test.t1'], columns = ['a', 'b']},
 #     {matcher = ['test.*'], columns = ["*", "!b"]},
