@@ -16,10 +16,6 @@ summary: TiDB 数据库中 ADMIN PAUSE DDL JOBS 的使用概况。
 > + 该操作可以同时暂停多个 DDL 作业，可以通过 [`ADMIN SHOW DDL JOBS`](/sql-statements/sql-statement-admin-show-ddl.md) 语句来获取 DDL 作业的 `job_id`。
 > + 如果希望暂停的作业已经执行完毕或接近执行完毕，暂停操作将失败。
 
-> **警告：**
->
-> 该功能目前为实验特性，不建议在生产环境中使用。该功能可能会在未事先通知的情况下发生变化或删除。如果发现 bug，请在 GitHub 上提 [issue](https://github.com/pingcap/tidb/issues) 反馈。
-
 ## 语法图
 
 ```ebnf+diagram
