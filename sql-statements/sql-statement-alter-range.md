@@ -29,4 +29,4 @@ ALTER RANGE global PLACEMENT POLICY = "deploy111";
 ALTER RANGE meta PLACEMENT POLICY = "five_replicas";
 ```
 
-上述示例创建了一个名为 `deploy221` 和 `five_replicas` 的放置策略，为不同的区域指定了约束条件。然后将 `deploy111` 放置策略应用到了整个集群范围内的数据，将 `five_replicas` 放置策略应用到元数据范围内。
+上述示例创建了一个名为 `deploy111` 和 `five_replicas` 的放置策略，为不同的区域指定了约束条件。然后将 `deploy111` 放置策略应用到了整个集群范围内的数据，将 `five_replicas` 放置策略应用到元数据范围内。
