@@ -32,8 +32,6 @@ TiCDC 复制功能只会将指定时间点之后的增量变更复制到下游�
     bdr-mode = true
     ```
 
-5. （可选）如果需要追踪数据写入源，可以使用 TiDB 系统变量 [`tidb_source_id`](/system-variables.md#tidb_source_id-从-v650-版本开始引入) 为集群设置不同的数据源 ID。
-
 这样，以上搭建好的集群即可对数据进行双向复制。
 
 ## 执行 DDL
