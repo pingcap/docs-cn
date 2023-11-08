@@ -15,6 +15,54 @@ TiDB 7.5.0 为长期支持版本 (Long-Term Support Release, LTS)。
 
 相比于前一个 LTS（即 7.1.0 版本），7.5.0 版本包含 [7.2.0-DMR](/releases/release-7.2.0.md)、[7.3.0-DMR](/releases/release-7.3.0.md) 和 [7.4.0-DMR](/releases/release-7.4.0.md) 中已发布的新功能、提升改进和错误修复，并引入了以下关键特性：
 
+<table>
+<thead>
+  <tr>
+    <th>Category</th>
+    <th>Feature</th>
+    <th>Description</th>
+  </tr>
+</thead>
+<tbody>
+  <tr>
+    <td>Scalability and Performance</td>
+    <td>Support for running multiple <code>ADD INDEX</code> statements in parallel {/* tw@ran-huang */}</td>
+    <td>Different from distributed and parallel DDL jobs, this feature allows for concurrent jobs to run where they were otherwise running syncrhonsously. Where running DDL statements x, y at the same time used to take x-time +y-time, they now take significantly less.</td>
+  </tr>
+  <tr>
+    <td rowspan="3">Reliability and Availability</td>
+    <td><a href="https://docs.pingcap.com/tidb/v7.5/tidb-global-sort" target="_blank">Global sort</a> optimization {/* tw@ran-huang */}</td>
+    <td>Laying the groundwork with the <a href="https://docs.pingcap.com/tidb/v7.5/tidb-distributed-execution-framework" target="_blank">distributed framework</a> in v7.2, TiDB introduces global sorting to eliminate the unnecessary I/O, CPU, and memory spikes caused from temporarily out of order data during data re-organization tasks. The global sorting will take advantage of external shared object storage (S3 in this first iteration) to store intermediary files during the job, adding flexibility and cost savings.Operations like ADD INDEX and IMPORT INTO will be faster, more resilient, more stable, more flexible, and cost less to run.</td>
+  </tr>
+  <tr>
+    <td><a href="https://docs.pingcap.com/tidb/v7.5/tidb-resource-control#manage-background-tasks" target="_blank">Resource control</a> for background tasks (experimental) {/* tw@Oreoxmt */}</td>
+    <td>In v7.1.0, the <a href="https://docs.pingcap.com/tidb/v7.5/tidb-resource-control#use-resource-control-to-achieve-resource-isolation" target="_blank">Resource Control</a> feature was introduced to mitigate resource and storage access interference between workloads. TiDB v7.4.0 applies this control to background tasks as well. In v7.4.0, Resource Control now identifies and manages the resources produced by background tasks, such as auto-analyze, Backup & Restore, bulk load with TiDB Lightning, and online DDL. This will eventually apply to all background tasks.</td>
+  </tr>
+  <tr>
+    <td>Resource groups support <a href="https://docs.pingcap.com/tidb/v7.5/tidb-resource-control#manage-queries-that-consume-more-resources-than-expected-runaway-queries"> managing runaway queries</a> (experimental) {/* tw@hfxsd */}</td>
+    <td><a href="https://docs.pingcap.com/tidb/v7.5/tidb-resource-control#use-resource-control-to-achieve-resource-isolation" target="_blank">Resource Control</a> is a framework for resource-isolating workloads by Resource Groups, but it makes no calls on how individual queries affect work inside of each group. TiDB v7.2 introduced "runaway query conrol" to let operators control how TiDB identifies and treats these queries per Resource Group. Depending on need, long running queries may be terminated or throttled, and the queries can be identified by exact SQL text or their plan digests, for better generalization. In v7.4, TiDB allows operators to proactively watch for known bad queries, similar to a SQL blocklist at the database level. </td>
+  </tr>
+  <tr>
+    <td>SQL</td>
+    <td>MySQL 8.0 compatibility {/* tw@Oreoxmt */}</td>
+    <td>In MySQL 8.0, the default characterset is utf8mb4, and the default collation of utf8mb4 is <code>utf8mb4_0900_ai_ci</code>. TiDB v7.4.0 adding support for this enhances compatibility with MySQL 8.0 so that migrations and replications from MySQL 8.0 databases with the default collation are now much smoother.</td>
+  </tr>
+  <tr>
+    <td rowspan="3">DB Operations and Observability</td>
+    <td>TiDB Lightning's physical import mode integrated into TiDB with <a href="https://docs.pingcap.com/tidb/v7.5/sql-statement-import-into">IMPORT INTO</a> {/* tw@qiancai */}</td>
+    <td>Prior to v7.2, file system level (backdoor) importing was done with <a href="https://docs.pingcap.com/tidb/v7.5/tidb-lightning-overview">TiDB Lightning</a>. The same functionality is now incorporated into TiDB server nodes and is operated by the SQL interface using the IMPORT INTO command. This feature also uses the new distributed execution framework and global sort feature, which speeds it up and allows for more stability during very large imports (i.e., 100TB tables).</td>
+  </tr>
+  <tr>
+    <td>Specify<a href="https://docs.pingcap.com/tidb/v7.5/system-variables#tidb_service_scope-new-in-v740" target="_blank"> the respective TiDB nodes</a> to execute the <code>IMPORT INTO</code> and <code>ADD INDEX</code> SQL statements (experimental) {/* tw@hfxsd */}</td>
+    <td>You have the flexibility to specify whether to execute <code>IMPORT INTO</code> or <code>ADD INDEX</code> SQL statements on some of the existing TiDB nodes or newly added TiDB nodes. This approach enables resource isolation from the rest of the TiDB nodes, preventing any impact on business operations while ensuring optimal performance for executing the preceding SQL statements.</td>
+  </tr>
+  <tr>
+    <td>DDL supports <a href="https://docs.pingcap.com/tidb/v7.5/ddl-introduction#ddl-related-commands">pause and resume operations</a> {/* tw@ran-huang */}</td>
+    <td>Adding indexes can be big resource consumers and can affect online traffic. Even when throttled in a Resource Group or isolated to labeled nodes, there may still be a need to suspend these jobs in emergencies. As of v7.2, TiDB now natively supports suspending any number of these background jobs at once, freeing up needed resources while avoiding have to cancel and restart the jobs.</td>
+  </tr>
+</tbody>
+</table>
+
 ## 功能详情
 
 ### 可扩展性
