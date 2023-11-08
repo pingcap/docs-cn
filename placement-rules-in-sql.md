@@ -81,7 +81,7 @@ SHOW PLACEMENT LABELS;
     在该语句中：
 
     - `PRIMARY_REGION="us-east-1"` 选项代表 Raft leader 被放置在 `region` 标签为 `us-east-1` 的节点上。
-    - `REGIONS="us-east-1,us-west-1"` 选项代表 Raft followers 被放置在`region` 标签为 `us-east-1` 和 `us-west-1` 的节点上。
+    - `REGIONS="us-east-1,us-west-1"` 选项代表 Raft followers 被放置在 `region` 标签为 `us-east-1` 和 `region` 标签为 `us-west-1` 的节点上。
 
     更多可配置的放置选项和对应的含义，请参考[放置选项](#放置选项参考)。
 
