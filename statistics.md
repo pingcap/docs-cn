@@ -84,12 +84,6 @@ Top-N 即是这个列或者这个索引中，出现次数前 n 的值。TiDB 会
 > **注意：**
 >
 > 在 TiDB 中执行 `ANALYZE TABLE` 语句比在 MySQL 或 InnoDB 中耗时更长。InnoDB 采样的只是少量页面，但 TiDB 会完全重构一系列统计信息。适用于 MySQL 的脚本会误以为执行 `ANALYZE TABLE` 耗时较短。
->
-> 如需更快的分析速度，可将 `tidb_enable_fast_analyze` 设置为 `1` 来打开快速分析功能。该参数的默认值为 `0`。
->
-> 快速分析功能开启后，TiDB 会随机采样约 10000 行的数据来构建统计信息。因此在数据分布不均匀或者数据量比较少的情况下，统计信息的准确度会比较差。可能导致执行计划不优，比如选错索引。如果可以接受普通 `ANALYZE` 语句的执行时间，则推荐关闭快速分析功能。
->
-> `tidb_enable_fast_analyze` 为实验性功能，目前与 `tidb_analyze_version=2` 的统计信息**不完全匹配**。因此开启 `tidb_enable_fast_analyze` 时需要将 `tidb_analyze_version` 的值设置为 `1`。
 
 #### 全量收集
 
@@ -403,7 +397,7 @@ ANALYZE INCREMENTAL TABLE TableName PARTITION PartitionNameList INDEX [IndexName
 
 > **注意：**
 >
-> `tidb_build_stats_concurrency`、`tidb_build_sampling_stats_concurrency` 和 `tidb_analyze_partition_concurrency` 其实是上下游关系。所以在变更这些参数的时候，需要同时考虑这三个参数的值。建议按 `tidb_analyze_partition_concurrency`、`tidb_build_sampling_stats_concurrency`、`tidb_build_stats_concurrency` 的顺序逐个调节，并观察对系统的影响。这三个参数的值越大，对系统的资源开销就越大。
+> `tidb_build_stats_concurrency`、`tidb_build_sampling_stats_concurrency` 和 `tidb_analyze_partition_concurrency` 其实是上下游关系, 实际的总并发为: `tidb_build_stats_concurrency`* (`tidb_build_sampling_stats_concurrency` + `tidb_analyze_partition_concurrency`) 。所以在变更这些参数的时候，需要同时考虑这三个参数的值。建议按 `tidb_analyze_partition_concurrency`、`tidb_build_sampling_stats_concurrency`、`tidb_build_stats_concurrency` 的顺序逐个调节，并观察对系统的影响。这三个参数的值越大，对系统的资源开销就越大。
 
 ### ANALYZE 配置持久化
 
