@@ -39,3 +39,5 @@ advance-ts-interval = "20s" # 默认为 20 秒，可适当调小该值以加快 
 > **注意：**
 >
 > 调小该参数会增加 TiKV CPU 使用率和各节点之间的流量。
+
+关于 Resolved TS 的内部原理和诊断方法，请参阅[理解 TiKV 中的 Stale Read 和 safe-ts](/troubleshoot-stale-read.md)。
