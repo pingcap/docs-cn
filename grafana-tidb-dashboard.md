@@ -108,9 +108,22 @@ summary: 了解 Grafana Dashboard 中展示的关键指标。
 
 ### KV Request
 
+下面的监控指标与发送给 TiKV 的请求相关。重试请求会被多次计数。
+
 - KV Request OPS：KV Request 根据 TiKV 显示执行次数
 - KV Request Duration 99 by store：根据 TiKV 显示 KV Request 执行时间
 - KV Request Duration 99 by type：根据类型显示 KV Request 的执行时间
+- Stale Read Hit/Miss Ops
+    - **hit**：每秒成功执行 Stale Read 的请求数量
+    - **miss**：每秒尝试执行 Stale Read 但失败的请求数量
+- Stale Read Req Ops
+    - **cross-zone**：每秒尝试在远程可用区执行 Stale Read 的请求数量
+    - **local**：每秒尝试在本地可用区执行 Stale Read 的请求数量
+- Stale Read Req Traffic
+    - **cross-zone-in**：尝试在远程可用区执行 Stale Read 的请求的响应的传入流量
+    - **cross-zone-out**：尝试在远程可用区执行 Stale Read 的请求的响应的传出流量
+    - **local-in**：尝试在本地可用区执行 Stale Read 的请求的响应的传入流量
+    - **local-out**：尝试在本地可用区执行 Stale Read 的请求的响应的传出流量
 
 ### PD Client
 
