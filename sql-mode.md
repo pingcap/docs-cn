@@ -24,7 +24,7 @@ Modes 是用逗号 (',') 间隔开的一系列不同的模式。使用 `SELECT @
 | PIPES_AS_CONCAT | 将 "\|\|" 视为字符串连接操作符（＋）(同CONCAT())，而不视为OR（支持) |
 | ANSI_QUOTES | 将 `"` 视为识别符，如果启用 ANSI_QUOTES，只单引号内的会被认为是 String Literals，双引号被解释为识别符，因此不能用双引号来引用字符串（支持）|
 | IGNORE_SPACE | 若开启该模式，系统忽略空格。例如：“user” 和 “user “ 是相同的（支持）|
-| ONLY_FULL_GROUP_BY | 如果 GROUP BY 出现的列并没有在 SELECT，HAVING，ORDER BY 中出现，此 SQL 不合法，因为不在 GROUP BY 中的列被查询展示出来不符合正常现象（支持) |
+| ONLY_FULL_GROUP_BY | 如果未被聚合函数处理或未被 GROUP BY 的列出现在 SELECT，HAVING，ORDER BY 中，此 SQL 不合法，因为不在 GROUP BY 中且未被聚合处理的列被查询展示出来不符合正常现象（支持) |
 | NO_UNSIGNED_SUBTRACTION | 在减运算中，如果某个操作数没有符号，不要将结果标记为UNSIGNED（支持）|
 | NO_DIR_IN_CREATE | 创建表时，忽视所有 INDEX DIRECTORY 和 DATA DIRECTORY 指令，该选项仅对从复制服务器有用 （仅语法支持）|
 | NO_KEY_OPTIONS | 使用 SHOW CREATE TABLE 时不会输出 MySQL 特有的语法部分，如 ENGINE，使用 mysqldump 跨 DB 种类迁移的时需要考虑此选项（仅语法支持）|
