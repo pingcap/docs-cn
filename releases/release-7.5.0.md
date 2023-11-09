@@ -232,6 +232,8 @@ TiDB 7.5.0 为长期支持版本 (Long-Term Support Release, LTS)。
 
 - `tikv-importer-{version}-linux-{arch}.tar.gz`
 - `mydumper`
+- `spark-{version}-any-any.tar.gz`
+- `tispark-{version}-any-any.tar.gz`
 
 ## 废弃功能
 
