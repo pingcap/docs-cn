@@ -633,6 +633,7 @@
     - [存储](/tidb-storage.md)
     - [计算](/tidb-computing.md)
     - [调度](/tidb-scheduling.md)
+    - [TSO](/tso.md)
   - 存储引擎 TiKV
     - [TiKV 简介](/tikv-overview.md)
     - [RocksDB 简介](/storage-engine/rocksdb-overview.md)
