@@ -7,9 +7,10 @@ summary: An overview of the usage of FOREIGN KEY constraints for the TiDB databa
 
 Starting from v6.6.0, TiDB supports the foreign key feature, which allows cross-table referencing of related data, and foreign key constraints to maintain data consistency.
 
-> **Note:**
+> **Warning:**
 >
-> The foreign key feature is usually used for providing integrity and consistency constraint checks for data in small or medium volumes. However, for large data volumes in a distributed database system, the use of foreign keys might lead to serious performance issues and could have unpredictable effects on the system. If you plan to use foreign keys, conduct thorough validation first and use them with caution.
+> - Currently, the foreign key feature is experimental. It is not recommended that you use it in production environments. This feature might be changed or removed without prior notice. If you find a bug, you can report an [issue](https://github.com/pingcap/tidb/issues) on GitHub.
+> - The foreign key feature is usually used for providing integrity and consistency constraint checks for data in small or medium volumes. However, for large data volumes in a distributed database system, the use of foreign keys might lead to serious performance issues and could have unpredictable effects on the system. If you plan to use foreign keys, conduct thorough validation first and use them with caution.
 
 The foreign key is defined in the child table. The syntax is as follows:
 

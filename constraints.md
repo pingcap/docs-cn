@@ -412,7 +412,7 @@ For more details about the primary key of the `CLUSTERED` type, refer to [cluste
 
 > **Note:**
 >
-> Starting from v6.6.0, TiDB supports the [FOREIGN KEY constraints](/foreign-key.md) feature. Before v6.6.0, TiDB supports creating and deleting foreign key constraints, but the constraints are not actually effective. After upgrading TiDB to v6.6.0, you can delete the invalid foreign key and create a new one to make the foreign key constraints effective.
+> Starting from v6.6.0, TiDB supports the [FOREIGN KEY constraints](/foreign-key.md) as an experimental feature. Before v6.6.0, TiDB supports creating and deleting foreign key constraints, but the constraints are not actually effective. After upgrading TiDB to v6.6.0, you can delete the invalid foreign key and create a new one to make the foreign key constraints effective.
 
 TiDB supports creating `FOREIGN KEY` constraints in DDL commands.
 
