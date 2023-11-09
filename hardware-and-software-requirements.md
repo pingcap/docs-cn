@@ -169,7 +169,7 @@ You can deploy and run TiDB on the 64-bit generic hardware server platform in th
 > **Note:**
 >
 > - In the production environment, the TiDB and PD instances can be deployed on the same server. If you have a higher requirement for performance and reliability, try to deploy them separately.
-> - It is strongly recommended to use higher configuration in the production environment.
+> - It is strongly recommended to configure TiDB, TiKV, and TiFlash with at least 8 CPU cores each in the production environment. To get better performance, a higher configuration is recommended.
 > - It is recommended to keep the size of TiKV hard disk within 4 TB if you are using PCIe SSDs or within 1.5 TB if you are using regular SSDs.
 
 Before you deploy TiFlash, note the following items:
