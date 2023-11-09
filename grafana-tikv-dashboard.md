@@ -419,7 +419,7 @@ This section provides a detailed description of these key metrics on the **TiKV-
 - Check Leader Duration: The distribution of time spent on processing leader requests. The duration is from sending requests to receiving responses in leader
 - Max gap of resolved-ts in Region leaders: The maximum time difference between the resolved-ts of all active Regions in this TiKV and the current time, only for Region leaders
 - Min Leader Resolved TS Region: The ID of the Region whose resolved-ts is the minimal, only for Region leaders
-- Lock heap size: The memory footprint of the heap that tracks locks in the resolved-ts module
+- Lock heap size: The size of the heap that tracks locks in the resolved-ts module
 
 ### Memory
 

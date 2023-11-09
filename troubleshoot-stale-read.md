@@ -35,7 +35,7 @@ The Region leader uses a resolver to manage resolved-ts. This resolver tracks lo
 
 ## Diagnose Stale Read issues
 
-This section introduces how to diagnose Stale Read issues using Grafana and `tikv-ctl`.
+This section introduces how to diagnose Stale Read issues using Grafana, `tikv-ctl`, and logs.
 
 ### Identify issues
 
@@ -99,6 +99,28 @@ The preceding output helps you determine:
 - Whether locks are blocking resolved-ts.
 - Whether the apply index is too small to update safe-ts.
 - Whether the leader is sending a sufficiently updated resolved-ts when a follower peer exists.
+
+### Use logs to diagnose
+
+Every 10 seconds, TiKV checks the following metrics:
+
+- The Region leader whose resolved-ts is the minimal
+- The Region follower whose safe-ts is the minimal
+- The Region follower whose resolved-ts is the minimal
+
+If any of these timestamps is abnormally small, TiKV prints a log.
+
+These logs are especially useful when you want to diagnose a historical problem that is no longer present.
+
+The following shows an example of the logs:
+
+```log
+[2023/08/29 16:48:18.118 +08:00] [INFO] [endpoint.rs:505] ["the max gap of leader resolved-ts is large"] [last_resolve_attempt="Some(LastAttempt { success: false, ts: TimeStamp(443888082736381953), reason: \"lock\", lock: Some(7480000000000000625F728000000002512B5C) })"] [duration_to_last_update_safe_ts=10648ms] [min_memory_lock=None] [txn_num=0] [lock_num=0] [min_lock=None] [safe_ts=443888117326544897] [gap=110705ms] [region_id=291]
+
+[2023/08/29 16:48:18.118 +08:00] [INFO] [endpoint.rs:526] ["the max gap of follower safe-ts is large"] [oldest_candidate=None] [latest_candidate=None] [applied_index=3276] [duration_to_last_consume_leader=11460ms] [resolved_ts=443888117117353985] [safe_ts=443888117117353985] [gap=111503ms] [region_id=273]
+
+[2023/08/29 16:48:18.118 +08:00] [INFO] [endpoint.rs:547] ["the max gap of follower resolved-ts is large; it's the same region that has the min safe-ts"]
+```
 
 ## Troubleshooting tips
 
@@ -190,7 +212,7 @@ To get the exact transaction and the keys of some of the locks, you can check Ti
 [2023/07/17 21:16:44.257 +08:00] [INFO] [resolver.rs:213] ["locks with the minimum start_ts in resolver"] [keys="[74800000000000006A5F7280000000000405F6, ... , 74800000000000006A5F72800000000000EFF6, 74800000000000006A5F7280000000000721D9, 74800000000000006A5F72800000000002F691]"] [start_ts=442918429687808001] [region_id=3121]
 ```
 
-From the TiKV log, you can get the start_ts of the transaction, that is `442918429687808001`. To get more information about the statement and transaction, you can grep `start_ts` in TiDB logs. The output is as follows:
+From the TiKV log, you can get the start_ts of the transaction, that is `442918429687808001`. To get more information about the statement and transaction, you can grep this timestamp in TiDB logs. The output is as follows:
 
 ```log
 [2023/07/17 21:16:18.287 +08:00] [INFO] [2pc.go:685] ["[BIG_TXN]"] [session=2826881778407440457] ["key sample"=74800000000000006a5f728000000000000000] [size=319967171] [keys=10000000] [puts=10000000] [dels=0] [locks=0] [checks=0] [txnStartTS=442918429687808001]
