@@ -669,7 +669,7 @@ corruption analysis has completed
 
 ### 获取一个 Region 的 `RegionReadProgress` 状态
 
-从 v6.5.4 和 v7.3.0 开始，TiKV 引入 `get-region-read-progress` 子命令，用于获取 resolver 和 `RegionReadProgress` 的最新状态。你需要指定一个 Region ID 和一个 TiKV，这可以从 Grafana（`Min Resolved TS Region` 和 `Min Safe TS Region`）或 `DataIsNotReady` 日志中获得。
+从 v6.5.4、v7.1.2 和 v7.3.0 开始，TiKV 引入 `get-region-read-progress` 子命令，用于获取 resolver 和 `RegionReadProgress` 的最新状态。你需要指定一个 Region ID 和一个 TiKV，这可以从 Grafana（`Min Resolved TS Region` 和 `Min Safe TS Region`）或 `DataIsNotReady` 日志中获得。
 
 - `--log`（可选）：如果指定，TiKV 会在 `INFO` 日志级别下记录该 TiKV 中 Region 的 resolver 中最小的锁 `start_ts`。该选项有助于提前识别可能阻塞 resolved-ts 的锁。
 
