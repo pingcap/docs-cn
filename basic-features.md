@@ -43,6 +43,7 @@ summary: 了解 TiDB 的功能概览。
 
 ## 索引和约束
 
+<<<<<<< HEAD
 | 索引和约束 | 7.1 | 6.5 | 6.1 | 5.4 | 5.3 | 5.2 | 5.1 | 5.0 | 4.0 |
 |---|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|
 | [表达式索引](/sql-statements/sql-statement-create-index.md#表达式索引) [^2] | Y | Y | E | E | E | E | E | E | E |
@@ -60,6 +61,26 @@ summary: 了解 TiDB 的功能概览。
 | [多值索引](/sql-statements/sql-statement-create-index.md#多值索引) | Y | N | N | N | N | N | N | N | N |
 | [外键约束](/constraints.md#外键约束) | Y | N | N | N | N | N | N | N | N |
 | [TiFlash 延迟物化](/tiflash/tiflash-late-materialization.md) | Y | N | N | N | N | N | N | N | N |
+=======
+| 索引和约束 | 7.4 | 7.3 | 7.2 | 7.1 | 6.5 | 6.1 | 5.4 | 5.3 | 5.2 | 5.1 | 5.0 | 4.0 |
+|---|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|
+| [表达式索引](/sql-statements/sql-statement-create-index.md#表达式索引) [^2] | Y | Y | Y | Y | Y | E | E | E | E | E | E | E |
+| [列式存储 (TiFlash)](/tiflash/tiflash-overview.md) | Y | Y | Y | Y | Y | Y | Y | Y | Y | Y | Y | Y |
+| [使用 FastScan 加速 OLAP 场景下的查询](/tiflash/use-fastscan.md) | Y | Y | Y | Y | E | N | N | N | N | N | N | N |
+| [RocksDB 引擎](/storage-engine/rocksdb-overview.md) | Y | Y | Y | Y | Y | Y | Y | Y | Y | Y | Y | Y |
+| [Titan 插件](/storage-engine/titan-overview.md) | Y | Y | Y | Y | Y | Y | Y | Y | Y | Y | Y | Y |
+| [Titan Level Merge](/storage-engine/titan-configuration.md#level-merge实验功能) | E | E | E | E | E | E | E | E | E | E | E | E |
+| [使用 bucket 提高数据扫描并发度](/tune-region-performance.md#使用-bucket-增加并发) | E | E | E | E | E | E | N | N | N | N | N | N |
+| [不可见索引](/sql-statements/sql-statement-add-index.md) | Y | Y | Y | Y | Y | Y | Y | Y | Y | Y | Y | N |
+| [复合主键](/constraints.md#主键约束) | Y| Y | Y | Y | Y | Y | Y | Y | Y | Y | Y | Y |
+| [`CHECK` 约束](/constraints.md#check-约束) | Y| Y | Y | N | N | N | N | N | N | N | N | N |
+| [唯一约束](/constraints.md#唯一约束) | Y | Y | Y | Y | Y | Y | Y | Y | Y | Y | Y | Y |
+| [整型主键上的聚簇索引](/clustered-indexes.md) | Y | Y | Y | Y | Y | Y | Y | Y | Y | Y | Y | Y |
+| [复合或非整型主键上的聚簇索引](/clustered-indexes.md) | Y | Y | Y | Y | Y | Y | Y | Y | Y | Y | Y | N |
+| [多值索引](/sql-statements/sql-statement-create-index.md#多值索引) | Y | Y | Y | Y | N | N | N | N | N | N | N | N |
+| [外键约束](/constraints.md#外键约束) | E | E | E | E | N | N | N | N | N | N | N | N |
+| [TiFlash 延迟物化](/tiflash/tiflash-late-materialization.md) | Y | Y | Y | Y | N | N | N | N | N | N | N | N |
+>>>>>>> 6f3cbee70d (mark the support of foreign key as experimental (#15391))
 
 ## SQL 语句
 
