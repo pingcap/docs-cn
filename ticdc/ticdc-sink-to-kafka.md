@@ -294,7 +294,7 @@ column-selectors = [
 
 > **注意：**
 >
-> 经过 column selector 规则过滤后，表中的数据必须要有主键或者唯一键被同步，否则在 changefeed 创建或运行时会报错。
+> 经过 `column-selectors` 规则过滤后，表中的数据必须要有主键或者唯一键被同步，否则在 changefeed 创建或运行时会报错。
 
 ## 横向扩展大单表的负载到多个 TiCDC 节点
 
