@@ -5,7 +5,7 @@ summary: 了解 DM 的关键特性 binlog 事件过滤 (Binlog event filter) 的
 
 ## TiDB Data Migration Binlog 事件过滤
 
-TiDB Data Migration (DM) 的 Binlog 事件过滤 (Binlog event filter) 是比迁移表[黑白名单](/dm/dm-block-allow-table-lists.md)更加细粒度的过滤规则，可以指定只迁移、过滤、或者报错某些 `schema / table` 的指定类型 binlog，比如 `INSERT` 和 `TRUNCATE TABLE`。
+TiDB Data Migration (DM) 的 Binlog 事件过滤 (Binlog event filter) 是比迁移表[黑白名单](/dm/dm-block-allow-table-lists.md)更加细粒度的过滤规则，可以指定只迁移、过滤、或者拦截并报错某些 `schema / table` 的指定类型 binlog，比如 `INSERT` 和 `TRUNCATE TABLE`。
 
 ## 配置 Binlog 事件过滤
 
