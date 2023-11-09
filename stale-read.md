@@ -38,42 +38,6 @@ advance-ts-interval = "20s" # 默认为 20 秒，可适当调小该值以加快 
 
 > **注意：**
 >
-<<<<<<< HEAD
-> 调小该参数会增加 TiKV CPU 使用率和各节点之间的流量。
-=======
 > 调小该参数会增加 TiKV CPU 使用率和各节点之间的流量。
 
 关于 Resolved TS 的内部原理和诊断方法，请参阅[理解 TiKV 中的 Stale Read 和 safe-ts](/troubleshoot-stale-read.md)。
-
-## 限制
-
-当对表的 Stale Read 查询下推到 TiFlash 时，如果该表在 Stale Read 所指定的读取时间戳之后执行过 DDL 操作，此查询将会报错。原因是 TiFlash 只支持从最新的表结构读取数据。
-
-例如：
-
-```sql
-create table t1(id int);
-alter table t1 set tiflash replica 1;
-```
-
-一分钟后进行 DDL 操作：
-
-```sql
-alter table t1 add column c1 int not null;
-```
-
-然后使用 Stale Read 读取一分钟前的数据：
-
-```sql
-set @@session.tidb_enforce_mpp=1;
-select * from t1 as of timestamp NOW() - INTERVAL 1 minute;
-```
-
-此时 TiFlash 会报错：
-
-```
-ERROR 1105 (HY000): other error for mpp stream: From MPP<query:<query_ts:1673950975508472943, local_query_id:18, server_id:111947, start_ts:438816196526080000>,task_id:1>: Code: 0, e.displayText() = DB::TiFlashException: Table 323 schema version 104 newer than query schema version 100, e.what() = DB::TiFlashException,
-```
-
-把 Stale Read 指定的读取时间戳改成 DDL 操作完成之后的时间，即可避免该错误。
->>>>>>> bf686f16a8 (tikv: add the user's guide of stale read and safe ts (#15365))
