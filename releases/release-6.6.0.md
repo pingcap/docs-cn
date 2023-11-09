@@ -50,7 +50,7 @@ TiDB 版本：6.6.0-[DMR](/releases/versioning.md#开发里程碑版本)
   </tr>
   <tr>
     <td rowspan="2">功能特性与兼容性<br /></td>
-    <td><a href="https://docs.pingcap.com/zh/tidb/v6.6/foreign-key" target="_blank">外键约束</a></td>
+    <td><a href="https://docs.pingcap.com/zh/tidb/v6.6/foreign-key" target="_blank">外键约束</a>（实验特性）</td>
     <td>支持 MySQL 兼容的外键约束，帮助保持数据一致性和提升数据质量。</td>
   </tr>
   <tr>
@@ -172,7 +172,7 @@ TiDB 版本：6.6.0-[DMR](/releases/versioning.md#开发里程碑版本)
 
 ### SQL 功能
 
-* 支持兼容 MySQL 语法的外键约束 [#18209](https://github.com/pingcap/tidb/issues/18209) @[crazycs520](https://github.com/crazycs520)
+* 支持兼容 MySQL 语法的外键约束（实验特性）[#18209](https://github.com/pingcap/tidb/issues/18209) @[crazycs520](https://github.com/crazycs520)
 
     TiDB v6.6.0 引入了兼容 MySQL 语法的外键约束功能，支持在表内、表间关联数据并进行约束校验，并且支持级联操作。该特性有助于将 MySQL 上的应用迁移到 TiDB、保持数据一致性、提升数据质量并且方便数据建模。
 
@@ -331,7 +331,7 @@ TiDB 版本：6.6.0-[DMR](/releases/versioning.md#开发里程碑版本)
 
 ### MySQL 兼容性
 
-* 支持兼容 MySQL 语法的外键约束 [#18209](https://github.com/pingcap/tidb/issues/18209) @[crazycs520](https://github.com/crazycs520)
+* 支持兼容 MySQL 语法的外键约束（实验特性）[#18209](https://github.com/pingcap/tidb/issues/18209) @[crazycs520](https://github.com/crazycs520)
 
     更多信息，请参考本文的 [SQL 部分](#sql-功能)以及[用户文档](/foreign-key.md)。
 
