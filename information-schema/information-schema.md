@@ -17,6 +17,7 @@ Many `INFORMATION_SCHEMA` tables have a corresponding `SHOW` command. The benefi
 | Table Name                                                                              | Description                 |
 |-----------------------------------------------------------------------------------------|-----------------------------|
 | [`CHARACTER_SETS`](/information-schema/information-schema-character-sets.md)            | Provides a list of character sets the server supports. |
+| [`CHECK_CONSTRAINTS`](/information-schema/information-schema-check-constraints.md)            | Provides information about [`CHECK` constraints](/constraints.md#check) on tables. |
 | [`COLLATIONS`](/information-schema/information-schema-collations.md)                    | Provides a list of collations that the server supports. |
 | [`COLLATION_CHARACTER_SET_APPLICABILITY`](/information-schema/information-schema-collation-character-set-applicability.md) | Explains which collations apply to which character sets. |
 | [`COLUMNS`](/information-schema/information-schema-columns.md)                          | Provides a list of columns for all tables. |
@@ -58,6 +59,7 @@ Many `INFORMATION_SCHEMA` tables have a corresponding `SHOW` command. The benefi
 | Table Name                                                                              | Description                 |
 |-----------------------------------------------------------------------------------------|-----------------------------|
 | [`CHARACTER_SETS`](/information-schema/information-schema-character-sets.md)            | Provides a list of character sets the server supports. |
+| [`CHECK_CONSTRAINTS`](/information-schema/information-schema-check-constraints.md)            | Provides information about [`CHECK` constraints](/constraints.md#check) on tables. |
 | [`COLLATIONS`](/information-schema/information-schema-collations.md)                    | Provides a list of collations that the server supports. |
 | [`COLLATION_CHARACTER_SET_APPLICABILITY`](/information-schema/information-schema-collation-character-set-applicability.md) | Explains which collations apply to which character sets. |
 | [`COLUMNS`](/information-schema/information-schema-columns.md)                          | Provides a list of columns for all tables. |
