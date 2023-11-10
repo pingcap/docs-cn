@@ -144,9 +144,11 @@ TiDB 7.5.0 为长期支持版本 (Long-Term Support Release, LTS)。
 
 | 变量名  | 修改类型（包括新增/修改/删除）    | 描述 |
 |--------|------------------------------|------|
-|  [`tidb_build_sampling_stats_concurrency`](/system-variables.md#tidb_build_sampling_stats_concurrency-从-v750-版本开始引入)      |   新增 | 该变量用来设置 `ANALYZE` 过程中的采样并发度。     |
-|  [`tidb_enable_async_merge_global_stats`](/system-variables.md#tidb_enable_async_merge_global_stats-从-v750-版本开始引入)      |   新增 | 该变量用于 TiDB 使用异步方式合并统计信息, 以避免 OOM 问题。    |
-|        |                              |      |
+| [`tidb_build_sampling_stats_concurrency`](/system-variables.md#tidb_build_sampling_stats_concurrency-从-v750-版本开始引入)      |   新增 | 该变量用来设置 `ANALYZE` 过程中的采样并发度。     |
+| [`tidb_enable_async_merge_global_stats`](/system-variables.md#tidb_enable_async_merge_global_stats-从-v750-版本开始引入)      |   新增 | 该变量用于 TiDB 使用异步方式合并统计信息, 以避免 OOM 问题。    |
+| [`tidb_gogc_tuner_max_value`](/system-variables.md#tidb_gogc_tuner_max_value-从-v750-版本开始引入) | 新增 | 用来控制 GOGC Tuner 可调节 GOGC 的最大值。 |
+| [`tidb_gogc_tuner_min_value`](/system-variables.md#tidb_gogc_tuner_min_value-从-v750-版本开始引入) | 新增 | 用来控制 GOGC Tuner 可调节 GOGC 的最小值。 |
+| `tidb_enable_fast_analyze` | 删除 | 用于控制是否启用统计信息快速分析功能。自 v7.5.0 起，统计信息快速分析功能被废弃。 |
 |        |                              |      |
 |        |                              |      |
 
@@ -154,10 +156,11 @@ TiDB 7.5.0 为长期支持版本 (Long-Term Support Release, LTS)。
 
 | 配置文件 | 配置项 | 修改类型 | 描述 |
 | -------- | -------- | -------- | -------- |
-|    BR      |   [`--ignore-stats`](/br/br-snapshot-manual.md#备份统计信息)       |   新增       |   用于备份和恢复数据库统计信息。当指定该参数值为 `false` 时，BR 备份工具支持备份和恢复数据库的列、索引、和表级别的统计信息。      |
+| BR |   [`--ignore-stats`](/br/br-snapshot-manual.md#备份统计信息)       |   新增       |   用于备份和恢复数据库统计信息。当指定该参数值为 `false` 时，BR 备份工具支持备份和恢复数据库的列、索引、和表级别的统计信息。      |
 | TiCDC | [`sink.column-selectors`](/ticdc/ticdc-changefeed-config.md) | 新增 | 控制 TiCDC 将增量数据分发到 Kafka 时，只发送指定的列的数据变更事件。 |
 | TiCDC | [`sink.dispatchers.partition`](/ticdc/ticdc-changefeed-config.md) | 修改 | 控制增量数据的 Kafka Partition 分发策略，可选值新增 `columns` 选项，即使用明确指定的列值计算 partition 编号。 |
 | TiCDC | [`sql-mode`](/ticdc/ticdc-changefeed-config.md) | 新增 | 设置 TiCDC 解析 DDL 时使用的 SQL 模式，默认值和 TiDB 的默认 SQL 模式一致。 |
+| TiDB Lightning | 删除 | `--importer` | 该配置项用于指定 TiKV-importer 的地址。从 v7.5.0 起，TiKV-importer 组件被废弃。 |
 |          |          |          |          |
 
 ### 其他
