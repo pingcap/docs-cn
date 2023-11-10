@@ -396,8 +396,10 @@ ANALYZE INCREMENTAL TABLE TableName PARTITION PartitionNameList INDEX [IndexName
 在执行分析索引列任务的时候，`tidb_index_serial_scan_concurrency` 可以用于控制一次读取的 Region 数量，其默认值是 1。
 
 > **注意：**
+>  
+> ![analyze_concurrency](/media/analyze_concurrency.png)
 >
-> `tidb_build_stats_concurrency`、`tidb_build_sampling_stats_concurrency` 和 `tidb_analyze_partition_concurrency` 其实是上下游关系, 实际的总并发为: `tidb_build_stats_concurrency`* (`tidb_build_sampling_stats_concurrency` + `tidb_analyze_partition_concurrency`) 。所以在变更这些参数的时候，需要同时考虑这三个参数的值。建议按 `tidb_analyze_partition_concurrency`、`tidb_build_sampling_stats_concurrency`、`tidb_build_stats_concurrency` 的顺序逐个调节，并观察对系统的影响。这三个参数的值越大，对系统的资源开销就越大。
+> `tidb_build_stats_concurrency`、`tidb_build_sampling_stats_concurrency` 和 `tidb_analyze_partition_concurrency` 其实如图所示，为上下游关系, 实际的总并发为: `tidb_build_stats_concurrency`* (`tidb_build_sampling_stats_concurrency` + `tidb_analyze_partition_concurrency`) 。所以在变更这些参数的时候，需要同时考虑这三个参数的值。建议按 `tidb_analyze_partition_concurrency`、`tidb_build_sampling_stats_concurrency`、`tidb_build_stats_concurrency` 的顺序逐个调节，并观察对系统的影响。这三个参数的值越大，对系统的资源开销就越大。
 
 ### ANALYZE 配置持久化
 
