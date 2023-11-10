@@ -53,8 +53,8 @@ TiDB 7.5.0 为长期支持版本 (Long-Term Support Release, LTS)。
     <td>Prior to v7.2, file system level (backdoor) importing was done with <a href="https://docs.pingcap.com/tidb/v7.5/tidb-lightning-overview">TiDB Lightning</a>. The same functionality is now incorporated into TiDB server nodes and is operated by the SQL interface using the IMPORT INTO command. This feature also uses the new distributed execution framework and global sort feature, which speeds it up and allows for more stability during very large imports (i.e., 100TB tables).</td>
   </tr>
   <tr>
-    <td>Specify<a href="https://docs.pingcap.com/tidb/v7.5/system-variables#tidb_service_scope-new-in-v740" target="_blank"> the respective TiDB nodes</a> to execute the <code>IMPORT INTO</code> and <code>ADD INDEX</code> SQL statements (experimental) {/* tw@hfxsd */}</td>
-    <td>You have the flexibility to specify whether to execute <code>IMPORT INTO</code> or <code>ADD INDEX</code> SQL statements on some of the existing TiDB nodes or newly added TiDB nodes. This approach enables resource isolation from the rest of the TiDB nodes, preventing any impact on business operations while ensuring optimal performance for executing the preceding SQL statements.</td>
+    <td>选择<a href="https://docs.pingcap.com/zh/tidb/v7.5/system-variables#tidb_service_scope-从-v740-版本开始引入" target="_blank">适用的 TiDB 节点</a>来并行执行 <code>ADD INDEX</code> 或 <code>IMPORT INTO</code> SQL 语句 (GA)</td>
+    <td>你可以选择在现有 TiDB 节点、或者新增 TiDB 节点执行 <code>ADD INDEX</code> 和 <code>IMPORT INTO</code> SQL 语句。该方法可以实现与其他 TiDB 节点的资源隔离，确保在执行上述语句时的最佳性能，并避免对已有业务造成性能影响。在 v7.5.0 中，该功能正式 GA。</td>
   </tr>
   <tr>
     <td>DDL supports <a href="https://docs.pingcap.com/tidb/v7.5/ddl-introduction#ddl-related-commands">pause and resume operations</a> {/* tw@ran-huang */}</td>
