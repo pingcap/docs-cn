@@ -101,4 +101,4 @@ explain select * from t1 where t1.a < (select sum(t2.a) from t2 where t2.b = t1.
 +------------------------------------------+-----------+-----------+------------------------+--------------------------------------------------------------------------------------+
 ```
 
-在执行了关闭关联规则的语句后，可以在 `IndexRangeScan_25(Build)` 的 `operator info` 中看到 `range: decided by [eq(test.t2.b, test.t1.b)]`。这部分信息就是关联依赖未被解除时，TiDB 使用关联条件进行索引范围查询的显示结果。
+在执行了关闭关联规则的语句后，可以在 `IndexRangeScan_42(Build)` 的 `operator info` 中看到 `range: decided by [eq(test.t2.b, test.t1.b)]`。这部分信息就是关联依赖未被解除时，TiDB 使用关联条件进行索引范围查询的显示结果。
