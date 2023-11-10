@@ -2559,7 +2559,7 @@ v5.0 后，用户仍可以单独修改以上系统变量（会有废弃警告）
 - 类型：整数型
 - 默认值：`500`
 - 范围：`[10, 2147483647]`
-- 该变量来用控制 GOGC Tuner 可调节 GOGC 的最大值。
+- 该变量用来控制 GOGC Tuner 可调节 GOGC 的最大值。
 
 ### `tidb_gogc_tuner_min_value` <span class="version-mark">从 v7.5.0 版本开始引入</span>
 
@@ -2569,7 +2569,7 @@ v5.0 后，用户仍可以单独修改以上系统变量（会有废弃警告）
 - 类型：整数型
 - 默认值：`100`
 - 范围：`[10, 2147483647]`
-- 该变量来用控制 GOGC Tuner 可调节 GOGC 的最小值。
+- 该变量用来控制 GOGC Tuner 可调节 GOGC 的最小值。
 
 ### `tidb_gogc_tuner_threshold` <span class="version-mark">从 v6.4.0 版本开始引入</span>
 
