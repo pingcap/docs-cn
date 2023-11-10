@@ -148,7 +148,7 @@ TiDB 7.5.0 为长期支持版本 (Long-Term Support Release, LTS)。
 | [`tidb_enable_async_merge_global_stats`](/system-variables.md#tidb_enable_async_merge_global_stats-从-v750-版本开始引入)      |   新增 | 该变量用于 TiDB 使用异步方式合并统计信息, 以避免 OOM 问题。    |
 | [`tidb_gogc_tuner_max_value`](/system-variables.md#tidb_gogc_tuner_max_value-从-v750-版本开始引入) | 新增 | 用来控制 GOGC Tuner 可调节 GOGC 的最大值。 |
 | [`tidb_gogc_tuner_min_value`](/system-variables.md#tidb_gogc_tuner_min_value-从-v750-版本开始引入) | 新增 | 用来控制 GOGC Tuner 可调节 GOGC 的最小值。 |
-| `tidb_enable_fast_analyze` | 删除 | 用于控制是否启用统计信息快速分析功能。自 v7.5.0 起，统计信息快速分析功能被废弃。 |
+| `tidb_enable_fast_analyze` | 废弃 | 用于控制是否启用统计信息快速分析功能。自 v7.5.0 起，统计信息快速分析功能被废弃。 |
 |        |                              |      |
 |        |                              |      |
 
