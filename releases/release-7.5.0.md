@@ -126,16 +126,6 @@ TiDB 7.5.0 为长期支持版本 (Long-Term Support Release, LTS)。
     ```
 
     更多信息，请参考[用户文档](/ddl-introduction.md#ddl-相关的命令介绍)。
-* 闪回功能支持精确 TSO [#48372](https://github.com/pingcap/tidb/issues/48372) @[BornChanger](https://github.com/BornChanger/BornChanger)  <!--**tw@qiancai** 1615-->
-
-    TiDB v7.5.0 提供了更加强大和精确的闪回功能，不仅支持回溯到过去指定的时间点，还可以精确的指定 [TSO](https://docs.pingcap.com/tidb/stable/tso) 时间戳，实现更加灵活的数据恢复。例如，此功能可和 TiCDC 联合使用，允许下游 TiDB 集群在暂停数据同步、开启预上线读写测试后，优雅快速地回溯到暂停的 TSO 时间戳并继续通过 TiCDC 同步数据，简化了预上线验证流程和数据管理。
-    
-    你可以通过 `SELECT ... FROM ... AS OF TIMESTAMP` 语句查询指定的 [TSO](https://docs.pingcap.com/tidb/stable/tso) 时间戳的数据，验证后通过 `FLASHBACK CLUSTER` 语句回到指定 [TSO](https://docs.pingcap.com/tidb/stable/tso) 。
-
-    ```sql
-    SELECT * FROM users AS OF TIMESTAMP '445494839813079041';
-    FLASHBACK CLUSTER TO TIMESTAMP '445494839813079041';
-    ````
     
     更多信息，请参考[用户文档](/sql-statements/sql-statement-flashback-to-timestamp.md)。
 * BR 支持备份和恢复统计信息 [#48008](https://github.com/pingcap/tidb/issues/48008) @[Leavrth](https://github.com/Leavrth) <!--**tw@hfxsd** 1437-->
@@ -164,7 +154,7 @@ TiDB 7.5.0 为长期支持版本 (Long-Term Support Release, LTS)。
 
 * `IMPORT INTO` SQL 语句成为正式功能（GA）[#46704](https://github.com/pingcap/tidb/issues/46704) @[D3Hunter](https://github.com/D3Hunter)<!--**tw@qiancai** 1579-->
 
-   在 v7.5.0 中，`IMPORT INTO` SQL 语句正式 GA。`IMPORT INTO` 集成了 TiDB Lightning [物理导入模式](/tidb-lightning/tidb-lightning-physical-import-mode.md)的能力。通过该语句，你可以将 CSV、SQL 和 PARQUET 等格式的数据快速导入到 TiDB 的一张空表中。这种导入方式无需单独部署和管理 TiDB Lightning，在降低了数据导入难度的同时，大幅提升了数据导入效率。
+   在 v7.5.0 中，`IMPORT INTO` SQL 语句正式 GA。该语句集成了 TiDB Lightning [物理导入模式](/tidb-lightning/tidb-lightning-physical-import-mode.md)的能力，可以将 CSV、SQL 和 PARQUET 等格式的数据快速导入到 TiDB 的一张空表中。这种导入方式无需单独部署和管理 TiDB Lightning，在降低了数据导入难度的同时，大幅提升了数据导入效率。
 
   此外，你可以通过在 `IMPORT INTO` 的 `CLOUD_STORAGE_URI` 选项中指定编码后数据的云存储地址，开启[全局排序功能](/tidb-global-sort.md)，提升导入的性能和稳定性。
 
@@ -228,7 +218,7 @@ TiDB 7.5.0 为长期支持版本 (Long-Term Support Release, LTS)。
 
 ## 离线包变更
 
-从 v7.5.0 开始，`TiDB-community-toolkit` 二进制软件包中移除了以下内容：<!--**tw@Oreoxmt** 1593+1594 -->
+从 v7.5.0 开始，`TiDB-community-toolkit` [二进制软件包](/binary-package.md)中移除了以下内容：<!--**tw@Oreoxmt** 1593+1594 -->
 
 - `tikv-importer-{version}-linux-{arch}.tar.gz`
 - `mydumper`
