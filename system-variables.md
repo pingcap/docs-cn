@@ -1771,6 +1771,7 @@ mysql> SELECT job_info FROM mysql.analyze_jobs ORDER BY end_time DESC LIMIT 1;
 - 默认值：`OFF`
 - 这个变量用来控制是否启用统计信息快速分析功能。默认值 0 表示不开启。
 - 快速分析功能开启后，TiDB 会随机采样约 10000 行的数据来构建统计信息。因此在数据分布不均匀或者数据量比较少的情况下，统计信息的准确度会比较低。这可能导致执行计划不优，比如选错索引。如果可以接受普通 `ANALYZE` 语句的执行时间，则推荐关闭快速分析功能。
+
 ### `tidb_enable_fast_table_check` <span class="version-mark">从 v7.2.0 版本开始引入</span>
 
 > **注意：**
