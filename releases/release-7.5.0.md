@@ -39,8 +39,8 @@ TiDB 7.5.0 为长期支持版本 (Long-Term Support Release, LTS)。
     <td>In v7.1.0, the <a href="https://docs.pingcap.com/tidb/v7.5/tidb-resource-control#use-resource-control-to-achieve-resource-isolation" target="_blank">Resource Control</a> feature was introduced to mitigate resource and storage access interference between workloads. TiDB v7.4.0 applies this control to background tasks as well. In v7.4.0, Resource Control now identifies and manages the resources produced by background tasks, such as auto-analyze, Backup & Restore, bulk load with TiDB Lightning, and online DDL. This will eventually apply to all background tasks.</td>
   </tr>
   <tr>
-    <td>Resource groups support <a href="https://docs.pingcap.com/tidb/v7.5/tidb-resource-control#manage-queries-that-consume-more-resources-than-expected-runaway-queries"> managing runaway queries</a> (experimental) {/* tw@hfxsd */}</td>
-    <td><a href="https://docs.pingcap.com/tidb/v7.5/tidb-resource-control#use-resource-control-to-achieve-resource-isolation" target="_blank">Resource Control</a> is a framework for resource-isolating workloads by Resource Groups, but it makes no calls on how individual queries affect work inside of each group. TiDB v7.2 introduced "runaway query conrol" to let operators control how TiDB identifies and treats these queries per Resource Group. Depending on need, long running queries may be terminated or throttled, and the queries can be identified by exact SQL text or their plan digests, for better generalization. In v7.4, TiDB allows operators to proactively watch for known bad queries, similar to a SQL blocklist at the database level. </td>
+    <td>资源组支持<a href="https://docs.pingcap.com/zh/tidb/v7.5/tidb-resource-control#管理资源消耗超出预期的查询-runaway-queries">管理资源消耗超出预期的查询</a>（实验特性）{/* tw@hfxsd */}</td>
+    <td><a href="https://docs.pingcap.com/tidb/v7.5/tidb-resource-control" target="_blank">资源管控 (Resource Group)</a> 是一个通过资源组 (Resource Group) 对工作负载进行资源隔离的框架，但它并不调用单个查询如何影响每个组内的工作。TiDB v7.2.0 引入了管控资源消耗超出预期的查询 (Runaway Queries)，你可以控制 TiDB 如何识别和处理每个资源组的查询。根据需要，长时间运行的查询可能会被终止或节流，你可以通过准确的 SQL test、SQL Digest 或其 Plan Digest来识别查询。在 TiDB v7.3.0，你可以主动监视已知的不良查询，类似于数据库级别的 SQL Blocklist。</td>
   </tr>
   <tr>
     <td>SQL</td>
@@ -49,8 +49,8 @@ TiDB 7.5.0 为长期支持版本 (Long-Term Support Release, LTS)。
   </tr>
   <tr>
     <td rowspan="3">DB Operations and Observability</td>
-    <td>TiDB Lightning's physical import mode integrated into TiDB with <a href="https://docs.pingcap.com/tidb/v7.5/sql-statement-import-into">IMPORT INTO</a> {/* tw@qiancai */}</td>
-    <td>Prior to v7.2, file system level (backdoor) importing was done with <a href="https://docs.pingcap.com/tidb/v7.5/tidb-lightning-overview">TiDB Lightning</a>. The same functionality is now incorporated into TiDB server nodes and is operated by the SQL interface using the IMPORT INTO command. This feature also uses the new distributed execution framework and global sort feature, which speeds it up and allows for more stability during very large imports (i.e., 100TB tables).</td>
+    <td><a href="https://docs.pingcap.com/zh/tidb/v7.5/sql-statement-import-into">IMPORT INTO</a> 语句集成 TiDB Lightning 物理导入模式的能力 {/* tw@qiancai */}</td>
+    <td>在 v7.2 之前，如需基于文件系统进行数据导入，你需要安装 <a href="https://docs.pingcap.com/zh/tidb/v7.5/tidb-lightning-overview">TiDB Lightning</a> 并使用其物理导入模式。目前，该功能已集成到 <code>IMPORT INTO</code> 语句中，你可以使用此语句快速导入数据，而无需安装任何额外的工具。该语句还支持新的 <a href="https://docs.pingcap.com/zh/tidb/v7.5/tidb-distributed-execution-framework" target="_blank">分布式执行框架</a> 和 <a href="https://docs.pingcap.com/zh/tidb/v7.5/tidb-global-sort" target="_blank">全局排序</a> 功能，提升了大规模数据导入时的效率和稳定性。</td>
   </tr>
   <tr>
     <td>选择<a href="https://docs.pingcap.com/zh/tidb/v7.5/system-variables#tidb_service_scope-从-v740-版本开始引入" target="_blank">适用的 TiDB 节点</a>来并行执行 <code>ADD INDEX</code> 或 <code>IMPORT INTO</code> SQL 语句 (GA)</td>
