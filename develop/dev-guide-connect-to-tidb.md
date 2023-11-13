@@ -46,7 +46,7 @@ mysqlsh --sql mysql://root@<tidb_server_host>:4000
 
 ## JDBC
 
-你可以使用 [JDBC](https://dev.mysql.com/doc/connector-j/8.0/en/) 驱动连接到 TiDB，这需要创建一个 `MysqlDataSource` 或 `MysqlConnectionPoolDataSource` 对象（它们都实现了 `DataSource` 接口），并使用 `setURL` 函数设置连接字符串。
+你可以使用 [JDBC](https://dev.mysql.com/doc/connector-j/en/) 驱动连接到 TiDB，这需要创建一个 `MysqlDataSource` 或 `MysqlConnectionPoolDataSource` 对象（它们都实现了 `DataSource` 接口），并使用 `setURL` 函数设置连接字符串。
 
 例如：
 
@@ -55,7 +55,7 @@ MysqlDataSource mysqlDataSource = new MysqlDataSource();
 mysqlDataSource.setURL("jdbc:mysql://{host}:{port}/{database}?user={username}&password={password}");
 ```
 
-有关 JDBC 连接的更多信息，可参考 [JDBC 官方文档](https://dev.mysql.com/doc/connector-j/8.0/en/)。
+有关 JDBC 连接的更多信息，可参考 [JDBC 官方文档](https://dev.mysql.com/doc/connector-j/en/)。
 
 **连接参数**
 

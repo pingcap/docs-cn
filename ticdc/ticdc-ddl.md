@@ -99,3 +99,26 @@ rules = ['test.t*']
 | `RENAME TABLE test.t1 TO test.ignore1, test.t3 TO test.ignore2` | 同步 | 旧的表库名，新的库名都符合 filter 规则 |
 | `RENAME TABLE test.t1 TO ignore.t1, test.t2 TO test.t22;` | 报错 | 新的库名 ignore 不符合 filter 规则 |
 | `RENAME TABLE test.t1 TO test.t4, test.t3 TO test.t1, test.t4 TO test.t3;` | 报错 | 在一条 DDL 中交换 test.t1 和 test.t3 两个表的名字，TiCDC 无法正确处理。请参考错误提示提示信息处理。 |
+
+### SQL 模式
+
+TiCDC 默认采用 TiDB 的默认 SQL 模式来解析 DDL 语句。如果你的上游 TiDB 集群使用了非默认的 SQL 模式，你需要在 TiCDC 的配置文件中指定 SQL 模式，否则 TiCDC 可能无法正确解析 DDL。关于 TiDB SQL 模式的更多信息，请参考 [SQL 模式](/sql-mode.md)。
+
+例如，如果你的上游 TiDB 集群设置了 `ANSI_QUOTES` 模式，你需要在 changefeed 的配置文件中指定 SQL 模式：
+
+```toml
+# 其中，前面的 "ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION" 是 TiDB 默认的 SQL 模式
+# 后面的 "ANSI_QUOTES" 是你的上游 TiDB 集群添加的 SQL 模式
+
+sql-mode = "ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION,ANSI_QUOTES"
+```
+
+如果未设置 SQL 模式，那么 TiCDC 可能无法正确解析一些 DDL 语句，例如：
+
+```sql
+CREATE TABLE "t1" ("a" int PRIMARY KEY);
+```
+
+因为在 TiDB 的默认 SQL 模式下，双引号会被视为字符串而不是标志符，这将会导致 TiCDC 无法正确解析该 DDL 语句。
+
+因此，在创建同步任务的时候，建议在配置文件中指定使用上游 TiDB 集群设置的 SQL 模式。

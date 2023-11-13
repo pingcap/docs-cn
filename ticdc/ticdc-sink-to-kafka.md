@@ -58,7 +58,7 @@ URI 中可配置的的参数如下：
 | `max-message-bytes`  | 每次向 Kafka broker 发送消息的最大数据量（可选，默认值 `10MB`）。从 v5.0.6 和 v4.0.6 开始，默认值分别从 64MB 和 256MB 调整至 10 MB。|
 | `replication-factor` | Kafka 消息保存副本数（可选，默认值 `1`），需要大于等于 Kafka 中 [`min.insync.replicas`](https://kafka.apache.org/33/documentation.html#brokerconfigs_min.insync.replicas) 的值。 |
 | `required-acks`      | 在 `Produce` 请求中使用的配置项，用于告知 broker 需要收到多少副本确认后才进行响应。可选值有：`0`（`NoResponse`：不发送任何响应，只有 TCP ACK），`1`（`WaitForLocal`：仅等待本地提交成功后再响应）和 `-1`（`WaitForAll`：等待所有同步副本提交后再响应。最小同步副本数量可通过 broker 的 [`min.insync.replicas`](https://kafka.apache.org/33/documentation.html#brokerconfigs_min.insync.replicas) 配置项进行配置）。（可选，默认值为 `-1`）。                      |
-| `compression`        | 设置发送消息时使用的压缩算法（可选值为 `none`、`lz4`、`gzip`、`snappy` 和 `zstd`，默认值为 `none`）。|
+| `compression`        | 设置发送消息时使用的压缩算法（可选值为 `none`、`lz4`、`gzip`、`snappy` 和 `zstd`，默认值为 `none`）。注意 Snappy 压缩文件必须遵循[官方 Snappy 格式](https://github.com/google/snappy)。不支持其他非官方压缩格式。|
 | `protocol` | 输出到 Kafka 的消息协议，可选值有 `canal-json`、`open-protocol`、`canal`、`avro`、`maxwell`。 |
 | `auto-create-topic` | 当传入的 `topic-name` 在 Kafka 集群不存在时，TiCDC 是否要自动创建该 topic（可选，默认值 `true`）。 |
 | `enable-tidb-extension` | 可选，默认值是 `false`。当输出协议为 `canal-json` 时，如果该值为 `true`，TiCDC 会发送 [WATERMARK 事件](/ticdc/ticdc-canal-json.md#watermark-event)，并在 Kafka 消息中添加 TiDB 扩展字段。从 6.1.0 开始，该参数也可以和输出协议 `avro` 一起使用。如果该值为 `true`，TiCDC 会在 Kafka 消息中添加[三个 TiDB 扩展字段](/ticdc/ticdc-avro-protocol.md#tidb-扩展字段)。|
@@ -224,12 +224,33 @@ Topic 表达式的基本规则为 `[prefix][{schema}][middle][{table}][suffix]`�
 
 ### Partition 分发器
 
-partition 分发器用 partition = "xxx" 来指定，支持 default、ts、index-value、table 四种 partition 分发器，分发规则如下：
+partition 分发器用 `partition = "xxx"` 来指定，支持 `default`、`index-value`、`columns`、`table` 和 `ts` 共五种 partition 分发器，分发规则如下：
 
-- default：按照 table 分发
-- ts：以行变更的 commitTs 做 Hash 计算并进行 event 分发
-- index-value：以表的主键或者唯一索引的值做 Hash 计算并进行 event 分发
-- table：以表的 schema 名和 table 名做 Hash 计算并进行 event 分发
+- `default`：默认使用 table 分发规则。使用所属库名和表名计算 partition 编号，一张表的数据被发送到相同的 partition。单表数据只存在于一个 partition 中并保证有序，但是发送吞吐量有限，无法通过添加消费者的方式提升消费速度。
+- `index-value`：使用事件所属表的主键、唯一索引或由 `index-name` 指定的索引的值计算 partition 编号，一张表的数据被发送到多个 partition。单表数据被发送到多个 partition 中，每个 partition 中的数据有序，可以通过添加消费者的方式提升消费速度。
+- `columns`：使用由 `columns` 指定的列的值计算 partition 编号。一张表的数据被发送到多个 partition。单表数据被发送到多个 partition 中，每个 partition 中的数据有序，可以通过添加消费者的方式提升消费速度。
+- `table`：使用事件所属的表的库名和表名计算 partition 编号。
+- `ts`：使用事件的 commitTs 计算 partition 编号。一张表的数据被发送到多个 partition。单表数据被发送到多个 partition 中，每个 partition 中的数据有序，可以通过添加消费者的方式提升消费速度。一条数据的多次修改可能被发送到不同的 partition 中。消费者消费进度不同可能导致消费端数据不一致。因此，消费端需要对来自多个 partition 的数据按 commitTs 排序后再进行消费。
+
+以如下示例配置文件中的 `dispatchers` 配置项为例：
+
+```toml
+[sink]
+dispatchers = [
+    {matcher = ['test.*'], partition = "index-value"},
+    {matcher = ['test1.*'], partition = "index-value", index-name = "index1"},
+    {matcher = ['test2.*'], partition = "columns", columns = ["id", "a"]},
+    {matcher = ['test3.*'], partition = "table"},
+]
+```
+
+- 任何属于库 `test` 的表均使用 `index-value` 分发规则，即使用主键或者唯一索引的值计算 partition 编号。如果有主键则使用主键，否则使用最短的唯一索引。
+- 任何属于库 `test1` 的表均使用 `index-value` 分发规则，并且使用名为 `index1` 的索引的所有列的值计算 partition 编号。如果指定的索引不存在，则报错。注意，`index-name` 指定的索引必须是唯一索引。
+- 任何属于库 `test2` 的表均使用 `columns` 分发规则，并且使用列 `id` 和 `a` 的值计算 partition 编号。如果任一列不存在，则报错。
+- 任何属于库 `test3` 的表均使用 `table` 分发规则。
+- 对于属于库 `test4` 的表，因为不匹配上述任何一个规则，所以使用默认的 `default`，即 `table` 分发规则。
+
+如果一张表，匹配了多个分发规则，以第一个匹配的规则为准。
 
 > **注意：**
 >
@@ -238,16 +259,42 @@ partition 分发器用 partition = "xxx" 来指定，支持 default、ts、index
 > ```
 > [sink]
 > dispatchers = [
->    {matcher = ['*.*'], dispatcher = "ts"},
->    {matcher = ['*.*'], partition = "ts"},
+>    {matcher = ['*.*'], dispatcher = "index-value"},
+>    {matcher = ['*.*'], partition = "index-value"},
 > ]
 > ```
 >
 > 但是 `dispatcher` 与 `partition` 不能出现在同一条规则中。例如，以下规则非法：
 >
 > ```
-> {matcher = ['*.*'], dispatcher = "ts", partition = "table"},
+> {matcher = ['*.*'], dispatcher = "index-value", partition = "table"},
 > ```
+
+## 列选择功能
+
+列选择功能支持对事件中的列进行选择，只将指定的列的数据变更事件发送到下游。
+
+以如下示例配置文件中的 `column-selectors` 配置项为例：
+
+```toml
+[sink]
+column-selectors = [
+    {matcher = ['test.t1'], columns = ['a', 'b']},
+    {matcher = ['test.*'], columns = ["*", "!b"]},
+    {matcher = ['test1.t1'], columns = ['column*', '!column1']},
+    {matcher = ['test3.t'], columns = ["column?", "!column1"]},
+]
+```
+
+- 对于表 `test.t1`，只发送 `a` 和 `b` 两列的数据。
+- 对于属于库 `test` 的表（除 `t1` 外），发送除 `b` 列之外的所有列的数据。
+- 对于表 `test1.t1`，发送所有以 `column` 开头的列，但是不发送 `column1` 列的数据。
+- 对于表 `test3.t`，发送所有以 `column` 开头且列名长度为 7 的列，但是不发送 `column1` 列的数据。
+- 不匹配任何规则的表将不进行列过滤，发送所有列的数据。
+
+> **注意：**
+>
+> 经过 `column-selectors` 规则过滤后，表中的数据必须要有主键或者唯一键被同步，否则在 changefeed 创建或运行时会报错。
 
 ## 横向扩展大单表的负载到多个 TiCDC 节点
 
@@ -391,8 +438,8 @@ claim-check-storage-uri = "s3://claim-check-bucket"
 当指定 `large-message-handle-option` 为 `claim-check` 时，`claim-check-storage-uri` 必须设置为一个有效的外部存储服务地址，否则创建 changefeed 将会报错。
 
 > **建议：**
-> 
-> 目前支持的外部存储服务与 BR 相同。详细参数说明请参考 [BR 备份存储服务的 URI 格式](/br/backup-and-restore-storages.md#格式说明)。
+>
+> 关于 Amazon S3、GCS 以及 Azure Blob Storage 的 URI 参数的详细参数说明，请参考[外部存储服务的 URI 格式](/external-storage-uri.md)。
 
 TiCDC 不会清理外部存储服务上的消息，数据消费者需要自行管理外部存储服务。
 

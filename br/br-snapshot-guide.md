@@ -34,7 +34,7 @@ tiup br backup full --pd "${PD_IP}:2379" \
 以上命令中：
 
 - `--backupts`：快照对应的物理时间点，格式可以是 [TSO](/glossary.md#tso) 或者时间戳，例如 `400036290571534337` 或者 `2018-05-11 01:42:23`。如果该快照的数据被垃圾回收 (GC) 了，那么 `br backup` 命令会报错并退出。如果你没有指定该参数，那么 br 会选取备份开始的时间点所对应的快照。
-- `--storage`：数据备份到的存储地址。快照备份支持以 Amazon S3、Google Cloud Storage、Azure Blob Storage 为备份存储，以上命令以 Amazon S3 为示例。详细存储地址格式请参考[备份存储 URI 配置](/br/backup-and-restore-storages.md#uri-格式)。
+- `--storage`：数据备份到的存储地址。快照备份支持以 Amazon S3、Google Cloud Storage、Azure Blob Storage 为备份存储，以上命令以 Amazon S3 为示例。详细存储地址格式请参考[外部存储服务的 URI 格式](/external-storage-uri.md)。
 - `--ratelimit`：**每个 TiKV** 备份数据的速度上限，单位为 MiB/s。
 
 在快照备份过程中，终端会显示备份进度条。在备份完成后，会输出备份耗时、速度、备份数据大小等信息。
@@ -188,7 +188,7 @@ TiDB 备份功能对集群性能（事务延迟和 QPS）有一定的影响，�
 
 你可以通过如下方案手动控制备份对集群性能带来的影响。但是，这两种方案在减少备份对集群的影响的同时，也会降低备份任务的速度。
 
-- 使用 `--ratelimit` 参数对备份任务进行限速。请注意，这个参数限制的是**把备份文件存储到外部存储**的速度。计算备份文件的大小时，请以备份日志中的 `backup data size(after compressed)` 为准。
+- 使用 `--ratelimit` 参数对备份任务进行限速。请注意，这个参数限制的是**把备份文件存储到外部存储**的速度。计算备份文件的大小时，请以备份日志中的 `backup data size(after compressed)` 为准。设置 `--ratelimit` 后，为了避免任务数过多导致限速失效，br 的 `concurrency` 参数会自动调整为 1。
 - 调节 TiKV 配置项 [`backup.num-threads`](/tikv-configuration-file.md#num-threads-1)，限制备份任务使用的工作线程数量。内部测试数据表明，当备份的线程数量不大于 `8`、集群总 CPU 利用率不超过 60% 时，备份任务对集群（无论读写负载）几乎没有影响。
 
 通过限制备份的线程数量可以降低备份对集群性能的影响，但是这会影响到备份的性能，以上的多次备份测试结果显示，单 TiKV 存储节点上备份速度和备份线程数量呈正比。在线程数量较少的时候，备份速度约为 20 MiB/线程数。例如，单 TiKV 节点 5 个备份线程可达到 100 MiB/s 的备份速度。

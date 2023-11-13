@@ -222,6 +222,7 @@
     - [使用 Top SQL 定位系统资源消耗过多的查询](/dashboard/top-sql.md)
     - [通过日志定位消耗系统资源多的查询](/identify-expensive-queries.md)
     - [保存和恢复集群现场信息](/sql-plan-replayer.md)
+    - [理解 TiKV 中的 Stale Read 和 safe-ts](/troubleshoot-stale-read.md)
   - [获取支持](/support.md)
 - 性能调优
   - 优化手册
@@ -634,6 +635,7 @@
     - [存储](/tidb-storage.md)
     - [计算](/tidb-computing.md)
     - [调度](/tidb-scheduling.md)
+    - [TSO](/tso.md)
   - 存储引擎 TiKV
     - [TiKV 简介](/tikv-overview.md)
     - [RocksDB 简介](/storage-engine/rocksdb-overview.md)
@@ -1007,6 +1009,7 @@
   - [遥测](/telemetry.md)
   - [错误码](/error-codes.md)
   - [通过拓扑 label 进行副本调度](/schedule-replicas-by-topology-labels.md)
+  - [外部存储服务的 URI 格式](/external-storage-uri.md)
   - 内部组件介绍
     - [TiDB 后端任务分布式并行执行框架](/tidb-distributed-execution-framework.md)
     - [TiDB 全局排序](/tidb-global-sort.md)
@@ -1034,6 +1037,7 @@
   - v7.2
     - [7.2.0-DMR](/releases/release-7.2.0.md)
   - v7.1
+    - [7.1.2](/releases/release-7.1.2.md)
     - [7.1.1](/releases/release-7.1.1.md)
     - [7.1.0](/releases/release-7.1.0.md)
   - v7.0
