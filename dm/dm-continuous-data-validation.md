@@ -103,6 +103,8 @@ Method 1: run the `dmctl query-status <task-name>` command. If continuous data v
             "stage": "Running", // Current stage. "Running" or "Stopped".
             "validatorBinlog": "(mysql-bin.000001, 5989)", // The binlog position of the validation
             "validatorBinlogGtid": "1642618e-cf65-11ec-9e3d-0242ac110002:1-30", // The GTID position of the validation
+            "cutoverBinlogPos": "", // The specified binlog position for cutover
+            "cutoverBinlogGTID": "1642618e-cf65-11ec-9e3d-0242ac110002:1-30", // The specified GTID position for cutover
             "result": null, // When the validation is abnormal, show the error message
             "processedRowsStatus": "insert/update/delete: 0/0/0", // Statistics of the processed binlog rows.
             "pendingRowsStatus": "insert/update/delete: 0/0/0", // Statistics of the binlog rows that are not validated yet or that fail to be validated but are not marked as "error rows"
@@ -135,6 +137,8 @@ In the preceding command, you can use `--table-stage` to filter the tables that 
             "stage": "Running",
             "validatorBinlog": "(mysql-bin.000001, 6571)",
             "validatorBinlogGtid": "",
+            "cutoverBinlogPos": "(mysql-bin.000001, 6571)",
+            "cutoverBinlogGTID": "",
             "result": null,
             "processedRowsStatus": "insert/update/delete: 2/0/0",
             "pendingRowsStatus": "insert/update/delete: 0/0/0",
@@ -244,6 +248,26 @@ Flags:
 ```
 
 For detailed usage, refer to [`dmctl validation start`](#method-2-enable-using-dmctl).
+
+## Set the cutover point for continuous data validation
+
+Before switching the application to another database, you might need to perform continuous data validation immediately after the data is replicated to a specific position to ensure data integrity. To achieve this, you can set this specific position as the cutover point for continuous validation.
+
+To set the cutover point for continuous data validation, use the `validation update` command:
+
+```
+Usage:
+  dmctl validation update <task-name> [flags]
+
+Flags:
+      --cutover-binlog-gtid string   specify the cutover binlog gtid for validation, only valid when source config's gtid is enabled, e.g. '1642618e-cf65-11ec-9e3d-0242ac110002:1-30'
+      --cutover-binlog-pos string    specify the cutover binlog name for validation, should include binlog name and pos in brackets, e.g. '(mysql-bin.000001, 5989)'
+  -h, --help                         help for update
+```
+
+* `--cutover-binlog-gtid`: specifies the cutover position for validation, in the format of `1642618e-cf65-11ec-9e3d-0242ac110002:1-30`. Only valid when GTID is enabled in the upstream cluster.
+* `--cutover-binlog-pos`: specifies the cutover position for validation, in the format of `(mysql-bin.000001, 5989)`.
+* `task-name`: the name of the task for continuous data validation. This parameter is **required**.
 
 ## Implementation
 
