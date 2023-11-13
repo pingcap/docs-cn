@@ -101,3 +101,26 @@ TiCDC processes this type of DDL as follows:
 | `RENAME TABLE test.t1 TO test.ignore1, test.t3 TO test.ignore2` | Replicate | The old database name, the old table names, and the new database name match the filter rule. |
 | `RENAME TABLE test.t1 TO ignore.t1, test.t2 TO test.t22;` | Report an error | The new database name `ignore` does not match the filter rule. |
 | `RENAME TABLE test.t1 TO test.t4, test.t3 TO test.t1, test.t4 TO test.t3;` | Report an error | The `RENAME TABLE` DDL swaps the names of `test.t1` and `test.t3` in one DDL statement, which TiCDC cannot handle correctly. In this case, refer to the error message for handling. |
+
+### SQL mode
+
+By default, TiCDC uses the default SQL mode of TiDB to parse DDL statements. If your upstream TiDB cluster uses a non-default SQL mode, you must specify the SQL mode in the TiCDC configuration file. Otherwise, TiCDC might fail to parse DDL statements correctly. For more information about TiDB SQL mode, see [SQL Mode](/sql-mode.md).
+
+For example, if the upstream TiDB cluster uses the `ANSI_QUOTES` mode, you must specify the SQL mode in the changefeed configuration file as follows:
+
+```toml
+# In the value, "ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION" is the default SQL mode of TiDB.
+# "ANSI_QUOTES" is the SQL mode added to your upstream TiDB cluster.
+
+sql-mode = "ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION,ANSI_QUOTES"
+```
+
+If the SQL mode is not configured, TiCDC might fail to parse some DDL statements correctly. For example:
+
+```sql
+CREATE TABLE "t1" ("a" int PRIMARY KEY);
+```
+
+Because in the default SQL mode of TiDB, double quotation marks are treated as strings rather than identifiers, TiCDC fails to parse the DDL statement correctly.
+
+Therefore, when creating a replication task, it is recommended that you specify the SQL mode used by the upstream TiDB cluster in the configuration file.
