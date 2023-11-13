@@ -13,7 +13,7 @@ TiDB 版本：7.5.0
 
 TiDB 7.5.0 为长期支持版本 (Long-Term Support Release, LTS)。
 
-相比于前一个 LTS（即 7.1.0 版本），7.5.0 版本包含 [7.2.0-DMR](/releases/release-7.2.0.md)、[7.3.0-DMR](/releases/release-7.3.0.md) 和 [7.4.0-DMR](/releases/release-7.4.0.md) 中已发布的新功能、提升改进和错误修复，并引入了以下关键特性：
+相比于前一个 LTS（即 7.1.0 版本），7.5.0 版本包含 [7.2.0-DMR](/releases/release-7.2.0.md)、[7.3.0-DMR](/releases/release-7.3.0.md) 和 [7.4.0-DMR](/releases/release-7.4.0.md) 中已发布的新功能、提升改进和错误修复。下表列出了从 7.2.0 到 7.5.0 的一些关键特性：
 
 <table>
 <thead>
@@ -30,7 +30,7 @@ TiDB 7.5.0 为长期支持版本 (Long-Term Support Release, LTS)。
     <td>与分布式和并行 DDL 任务不同，在该功能中，原来为同步运行的任务可以变为并发运行。以前同时运行 DDL 语句 X 和 Y 需要花费 X 的时间 + Y 的时间，并发运行后，DDL 总耗时显著减少了。</td>
   </tr>
   <tr>
-    <td rowspan="3">Reliability and Availability</td>
+    <td rowspan="3">稳定性与高可用</td>
     <td><a href="https://docs.pingcap.com/tidb/v7.5/tidb-global-sort" target="_blank">Global sort</a> optimization {/* tw@ran-huang */}</td>
     <td>Laying the groundwork with the <a href="https://docs.pingcap.com/tidb/v7.5/tidb-distributed-execution-framework" target="_blank">distributed framework</a> in v7.2, TiDB introduces global sorting to eliminate the unnecessary I/O, CPU, and memory spikes caused from temporarily out of order data during data re-organization tasks. The global sorting will take advantage of external shared object storage (S3 in this first iteration) to store intermediary files during the job, adding flexibility and cost savings.Operations like ADD INDEX and IMPORT INTO will be faster, more resilient, more stable, more flexible, and cost less to run.</td>
   </tr>
@@ -48,7 +48,7 @@ TiDB 7.5.0 为长期支持版本 (Long-Term Support Release, LTS)。
     <td>MySQL 8.0 的默认字符集为 utf8mb4，其默认排序规则是 <code>utf8mb4_0900_ai_ci</code>。TiDB v7.4.0 增强了与 MySQL 8.0 的兼容性。现在你可以更轻松地将在 MySQL 8.0 中使用默认排序规则创建的数据库迁移或复制到 TiDB。</td>
   </tr>
   <tr>
-    <td rowspan="3">DB Operations and Observability</td>
+    <td rowspan="3">数据库管理与可观测性</td>
     <td><a href="https://docs.pingcap.com/zh/tidb/v7.5/sql-statement-import-into">IMPORT INTO</a> 语句集成 TiDB Lightning 物理导入模式的能力 {/* tw@qiancai */}</td>
     <td>在 v7.2 之前，如需基于文件系统进行数据导入，你需要安装 <a href="https://docs.pingcap.com/zh/tidb/v7.5/tidb-lightning-overview">TiDB Lightning</a> 并使用其物理导入模式。目前，该功能已集成到 <code>IMPORT INTO</code> 语句中，你可以使用此语句快速导入数据，而无需安装任何额外的工具。该语句还支持新的 <a href="https://docs.pingcap.com/zh/tidb/v7.5/tidb-distributed-execution-framework" target="_blank">分布式执行框架</a> 和 <a href="https://docs.pingcap.com/zh/tidb/v7.5/tidb-global-sort" target="_blank">全局排序</a> 功能，提升了大规模数据导入时的效率和稳定性。</td>
   </tr>
@@ -75,7 +75,7 @@ TiDB 7.5.0 为长期支持版本 (Long-Term Support Release, LTS)。
 
 ### 性能
 
-* TiDB 后端任务分布式并行执行框架成为正式功能（GA），其中基于云存储的全局排序功能也成为正式功能，提升并行执行的 `ADD INDEX` 或 `IMPORT INTO` 任务的性能和稳定性 [#45719](https://github.com/pingcap/tidb/issues/45719) @[wjhuang2016](https://github.com/wjhuang2016) <!--**tw@ran-huang** 1580-->
+* TiDB 后端任务分布式并行执行框架成为正式功能 (GA)，其中基于云存储的全局排序功能也成为正式功能，提升并行执行的 `ADD INDEX` 或 `IMPORT INTO` 任务的性能和稳定性 [#45719](https://github.com/pingcap/tidb/issues/45719) @[wjhuang2016](https://github.com/wjhuang2016) <!--**tw@ran-huang** 1580-->
 
     在 v7.4.0 以前，当用户执行分布式并行执行框架的 `ADD INDEX` 或 `IMPORT INTO` 任务时，TiDB 节点需要准备一块较大的本地磁盘，对编码后的索引 KV pairs 和表数据 KV pairs 进行排序。由于无法从全局角度进行排序，各个 TiDB 节点间以及节点内部导入的数据可能存在重叠情况。这会导致在将这些 KV pairs 导入到 TiKV 时，TiKV 需要频繁进行数据整理 (compaction)，降低了 `ADD INDEX` 或 `IMPORT INTO` 的性能和稳定性。
 
@@ -110,7 +110,7 @@ TiDB 7.5.0 为长期支持版本 (Long-Term Support Release, LTS)。
 
 ### 数据迁移
 
-* `IMPORT INTO` SQL 语句成为正式功能（GA）[#46704](https://github.com/pingcap/tidb/issues/46704) @[D3Hunter](https://github.com/D3Hunter)<!--**tw@qiancai** 1579-->
+* `IMPORT INTO` SQL 语句成为正式功能 (GA) [#46704](https://github.com/pingcap/tidb/issues/46704) @[D3Hunter](https://github.com/D3Hunter)<!--**tw@qiancai** 1579-->
 
    在 v7.5.0 中，`IMPORT INTO` SQL 语句正式 GA。该语句集成了 TiDB Lightning [物理导入模式](/tidb-lightning/tidb-lightning-physical-import-mode.md)的能力，可以将 CSV、SQL 和 PARQUET 等格式的数据快速导入到 TiDB 的一张空表中。这种导入方式无需单独部署和管理 TiDB Lightning，在降低了数据导入难度的同时，大幅提升了数据导入效率。
 
@@ -142,29 +142,26 @@ TiDB 7.5.0 为长期支持版本 (Long-Term Support Release, LTS)。
 
 ### 系统变量
 
-| 变量名  | 修改类型（包括新增/修改/删除）    | 描述 |
+| 变量名  | 修改类型     | 描述 |
 |--------|------------------------------|------|
-| [`tidb_analyze_partition_concurrency`](/system-variables.md#tidb_analyze_partition_concurrency)      |  修改 |  经进一步的测试后，默认值由 `1` 改为 `2`。    |
-| [`tidb_build_stats_concurrency`](/system-variables.md#tidb_build_stats_concurrency)      |  修改 |  经进一步的测试后，默认值由 `4` 改为 `2`。    |
-| [`tidb_merge_partition_stats_concurrency`](/system-variables.md#tidb_merge_partition_stats_concurrency)    |  修改    |  该变量从 v7.5.0 开始生效，用于设置 TiDB 使用异步方式合并统计信息，以避免 OOM 问题。    |
-| [`tidb_build_sampling_stats_concurrency`](/system-variables.md#tidb_build_sampling_stats_concurrency-从-v750-版本开始引入)      |   新增 | 该变量用来设置 `ANALYZE` 过程中的采样并发度。     |
-| [`tidb_enable_async_merge_global_stats`](/system-variables.md#tidb_enable_async_merge_global_stats-从-v750-版本开始引入)      |   新增 | 该变量用于 TiDB 使用异步方式合并统计信息, 以避免 OOM 问题。    |
-| [`tidb_gogc_tuner_max_value`](/system-variables.md#tidb_gogc_tuner_max_value-从-v750-版本开始引入) | 新增 | 用来控制 GOGC Tuner 可调节 GOGC 的最大值。 |
-| [`tidb_gogc_tuner_min_value`](/system-variables.md#tidb_gogc_tuner_min_value-从-v750-版本开始引入) | 新增 | 用来控制 GOGC Tuner 可调节 GOGC 的最小值。 |
-| `tidb_enable_fast_analyze` | 废弃 | 用于控制是否启用统计信息快速分析功能。自 v7.5.0 起，统计信息快速分析功能被废弃。 |
-|        |                              |      |
-|        |                              |      |
+| [`tidb_enable_fast_analyze`](/system-variables.md#tidb_enable_fast_analyze) | 废弃 | 用于控制是否启用统计信息快速分析功能。自 v7.5.0 起，统计信息快速分析功能被废弃。 |
+| [`tidb_analyze_partition_concurrency`](/system-variables.md#tidb_analyze_partition_concurrency)      |  修改 | 经进一步的测试后，默认值由 `1` 改为 `2`。 |
+| [`tidb_build_stats_concurrency`](/system-variables.md#tidb_build_stats_concurrency) | 修改 | 经进一步的测试后，默认值由 `4` 改为 `2`。 |
+| [`tidb_merge_partition_stats_concurrency`](/system-variables.md#tidb_merge_partition_stats_concurrency) | 修改 | 该变量从 v7.5.0 开始生效，用于设置 TiDB analyze 分区表时，对分区表统计信息进行合并时的并发度。 |
+| [`tidb_build_sampling_stats_concurrency`](/system-variables.md#tidb_build_sampling_stats_concurrency-从-v750-版本开始引入) | 新增 | 设置 `ANALYZE` 过程中的采样并发度。 |
+| [`tidb_enable_async_merge_global_stats`](/system-variables.md#tidb_enable_async_merge_global_stats-从-v750-版本开始引入) | 新增 | 设置 TiDB 使用异步方式合并统计信息，以避免 OOM 问题。|
+| [`tidb_gogc_tuner_max_value`](/system-variables.md#tidb_gogc_tuner_max_value-从-v750-版本开始引入) | 新增 | 控制 GOGC Tuner 可调节 GOGC 的最大值。 |
+| [`tidb_gogc_tuner_min_value`](/system-variables.md#tidb_gogc_tuner_min_value-从-v750-版本开始引入) | 新增 | 控制 GOGC Tuner 可调节 GOGC 的最小值。 |
 
 ### 配置文件参数
 
 | 配置文件 | 配置项 | 修改类型 | 描述 |
 | -------- | -------- | -------- | -------- |
-| BR |   [`--ignore-stats`](/br/br-snapshot-manual.md#备份统计信息)       |   新增       |   用于备份和恢复数据库统计信息。当指定该参数值为 `false` 时，BR 备份工具支持备份和恢复数据库的列、索引、和表级别的统计信息。      |
+| BR | [`--ignore-stats`](/br/br-snapshot-manual.md#备份统计信息) | 新增 | 用于备份和恢复数据库统计信息。当指定该参数值为 `false` 时，BR 备份工具支持备份和恢复数据库的列、索引、和表级别的统计信息。 |
 | TiCDC | [`sink.column-selectors`](/ticdc/ticdc-changefeed-config.md) | 新增 | 控制 TiCDC 将增量数据分发到 Kafka 时，只发送指定的列的数据变更事件。 |
 | TiCDC | [`sink.dispatchers.partition`](/ticdc/ticdc-changefeed-config.md) | 修改 | 控制增量数据的 Kafka Partition 分发策略，可选值新增 `columns` 选项，即使用明确指定的列值计算 partition 编号。 |
 | TiCDC | [`sql-mode`](/ticdc/ticdc-changefeed-config.md) | 新增 | 设置 TiCDC 解析 DDL 时使用的 SQL 模式，默认值和 TiDB 的默认 SQL 模式一致。 |
 | TiDB Lightning | 删除 | `--importer` | 该配置项用于指定 TiKV-importer 的地址。从 v7.5.0 起，TiKV-importer 组件被废弃。 |
-|          |          |          |          |
 
 ### 其他
 
@@ -309,4 +306,5 @@ TiDB 7.5.0 为长期支持版本 (Long-Term Support Release, LTS)。
 
 感谢来自 TiDB 社区的贡献者们：
 
-- [贡献者 GitHub ID]()
+- [jgrande](https://github.com/jgrande)（首次贡献者）
+- [shawn0915](https://github.com/shawn0915)
