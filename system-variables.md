@@ -1982,7 +1982,7 @@ mysql> SELECT job_info FROM mysql.analyze_jobs ORDER BY end_time DESC LIMIT 1;
 
 > **Warning:**
 >
-> Currently, `Fast Analyze` is an experimental feature. It is not recommended that you use it in production environments.
+> Starting from v7.5.0, this variable is deprecated.
 
 - Scope: SESSION | GLOBAL
 - Persists to cluster: Yes

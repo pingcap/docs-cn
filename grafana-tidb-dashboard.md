@@ -168,7 +168,6 @@ The following metrics relate to requests sent to TiKV. Retry requests are counte
 - Store Query Feedback QPS: the number of operations per second to store the feedback information of the union query, which is performed in TiDB memory
 - Significant Feedback: the number of significant feedback pieces that update the statistics information
 - Update Stats OPS: the number of operations of updating statistics with feedback
-- Fast Analyze Status 100: the status for quickly collecting statistical information
 
 ### Owner
 

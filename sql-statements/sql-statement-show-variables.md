@@ -57,7 +57,6 @@ mysql> SHOW GLOBAL VARIABLES LIKE 'tidb%';
 | tidb_enable_cascades_planner        | 0                   |
 | tidb_enable_chunk_rpc               | 1                   |
 | tidb_enable_collect_execution_info  | 1                   |
-| tidb_enable_fast_analyze            | 0                   |
 | tidb_enable_index_merge             | 0                   |
 | tidb_enable_noop_functions          | 0                   |
 | tidb_enable_radix_join              | 0                   |
