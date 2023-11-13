@@ -39,7 +39,7 @@ filters:
     | all             |      | 代表包含下面所有的 events        |
     | all dml         |      | 代表包含下面所有 DML events     |
     | all ddl         |      | 代表包含下面所有 DDL events     |
-    | incompatible ddl changes         |      | 代表包含下面所有 incompatible DDL events     |
+    | incompatible ddl changes         |      | 代表包含下面所有 incompatible DDL events，即可能导致数据丢失的 DDL     |
     | none            |      | 代表不包含下面所有 events        |
     | none ddl        |      | 代表不包含下面所有 DDL events    |
     | none dml        |      | 代表不包含下面所有 DML events    |
