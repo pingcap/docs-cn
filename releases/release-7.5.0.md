@@ -25,9 +25,9 @@ TiDB 7.5.0 为长期支持版本 (Long-Term Support Release, LTS)。
 </thead>
 <tbody>
   <tr>
-    <td>Scalability and Performance</td>
-    <td>Support for running multiple <code>ADD INDEX</code> statements in parallel {/* tw@ran-huang */}</td>
-    <td>Different from distributed and parallel DDL jobs, this feature allows for concurrent jobs to run where they were otherwise running syncrhonsously. Where running DDL statements x, y at the same time used to take x-time +y-time, they now take significantly less.</td>
+    <td>可扩展性与性能</td>
+    <td>支持并行运行多个 <code>ADD INDEX</code> 语句 {/* tw@ran-huang */}</td>
+    <td>与分布式和并行 DDL 任务不同，在该功能中，原来为同步运行的任务可以变为并发运行。以前同时运行 DDL 语句 X 和 Y 需要花费 X 的时间 + Y 的时间，并发运行后，DDL 总耗时显著减少了。</td>
   </tr>
   <tr>
     <td rowspan="3">Reliability and Availability</td>
@@ -57,8 +57,8 @@ TiDB 7.5.0 为长期支持版本 (Long-Term Support Release, LTS)。
     <td>你可以选择在现有 TiDB 节点、或者新增 TiDB 节点执行 <code>ADD INDEX</code> 和 <code>IMPORT INTO</code> SQL 语句。该方法可以实现与其他 TiDB 节点的资源隔离，确保在执行上述语句时的最佳性能，并避免对已有业务造成性能影响。在 v7.5.0 中，该功能正式 GA。</td>
   </tr>
   <tr>
-    <td>DDL supports <a href="https://docs.pingcap.com/tidb/v7.5/ddl-introduction#ddl-related-commands">pause and resume operations</a> {/* tw@ran-huang */}</td>
-    <td>Adding indexes can be big resource consumers and can affect online traffic. Even when throttled in a Resource Group or isolated to labeled nodes, there may still be a need to suspend these jobs in emergencies. As of v7.2, TiDB now natively supports suspending any number of these background jobs at once, freeing up needed resources while avoiding have to cancel and restart the jobs.</td>
+    <td>DDL 任务支持<a href="https://docs.pingcap.com/zh/tidb/v7.5/ddl-introduction#ddl-相关的命令介绍">暂停和恢复操作</a> {/* tw@ran-huang */}</td>
+    <td>添加索引可能会消耗大量资源并影响在线流量。即使在资源组中进行了限制，或对标记的节点进行了隔离，你仍然可能需要在紧急情况下暂停这些任务。从 v7.2 开始，TiDB现在原生支持同时暂停任意数量的后台任务，释放所需的资源，无需取消或重启任务。</td>
   </tr>
 </tbody>
 </table>
