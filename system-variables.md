@@ -2551,6 +2551,26 @@ v5.0 后，用户仍可以单独修改以上系统变量（会有废弃警告）
 - 开启该变量后，即可在 TiDB Dashboard 中查看查询的图形化执行计划。注意，TiDB Dashboard 只显示变量开启时产生的查询的执行计划。
 - 用 `select tidb_decode_binary_plan('xxx...')` SQL 语句可以从编码后的执行计划解析出具体的执行计划。
 
+### `tidb_gogc_tuner_max_value` <span class="version-mark">从 v7.5.0 版本开始引入</span>
+
+- 作用域：GLOBAL
+- 是否持久化到集群：是
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：否
+- 类型：整数型
+- 默认值：`500`
+- 范围：`[10, 2147483647]`
+- 该变量用来控制 GOGC Tuner 可调节 GOGC 的最大值。
+
+### `tidb_gogc_tuner_min_value` <span class="version-mark">从 v7.5.0 版本开始引入</span>
+
+- 作用域：GLOBAL
+- 是否持久化到集群：是
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：否
+- 类型：整数型
+- 默认值：`100`
+- 范围：`[10, 2147483647]`
+- 该变量用来控制 GOGC Tuner 可调节 GOGC 的最小值。
+
 ### `tidb_gogc_tuner_threshold` <span class="version-mark">从 v6.4.0 版本开始引入</span>
 
 - 作用域：GLOBAL
