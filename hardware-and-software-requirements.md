@@ -79,6 +79,10 @@ As an open-source distributed SQL database with high performance, TiDB can be de
     <td>x86_64</td>
   </tr>
   <tr>
+    <td>Rocky Linux 9.1 or later</td>
+    <td><ul><li>x86_64</li><li>ARM 64</li></ul></td>
+  </tr>
+  <tr>
     <td>SUSE Linux Enterprise Server 15</td>
     <td>x86_64</td>
   </tr>
