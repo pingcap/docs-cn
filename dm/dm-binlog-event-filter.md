@@ -55,31 +55,31 @@ filters:
     | rename table    | incompatible DDL  | rename table event            |
     | drop index      | incompatible DDL  | drop index event              |
     | alter table     | DDL  | alter table event             |
-    | value range decrease | incompatible DDL  | 使列字段变小的 DDL 语句，如将 `VARCHAR(20)` 改为 `VARCHAR(10)` 的 `ALTER TABLE MODIFY COLUMN` 语句 |
-    | precision decrease | incompatible DDL  | 使列字段精度变小的 DDL 语句，如将 `Decimal(10, 2)` 改为 `Decimal(10, 1)` 的 `ALTER TABLE MODIFY COLUMN` 语句 |
+    | value range decrease | incompatible DDL  | 缩短列字段长度的 DDL 语句，如将 `VARCHAR(20)` 改为 `VARCHAR(10)` 的 `ALTER TABLE MODIFY COLUMN` 语句 |
+    | precision decrease | incompatible DDL  | 降低列字段精度的 DDL 语句，如将 `Decimal(10, 2)` 改为 `Decimal(10, 1)` 的 `ALTER TABLE MODIFY COLUMN` 语句 |
     | modify column | incompatible DDL  | 变更列字段类型的 DDL 语句，如将 `INT` 改为 `VARCHAR` 的 `ALTER TABLE MODIFY COLUMN` 语句 |
     | rename column | incompatible DDL  | 变更列名的 DDL 语句，如 `ALTER TABLE RENAME COLUMN` 语句 |
     | rename index | incompatible DDL  | 变更索引名的 DDL 语句，如 `ALTER TABLE RENAME INDEX` 语句 |
     | drop column | incompatible DDL  | 删除表中的列的 DDL 语句，如 `ALTER TABLE DROP COLUMN` 语句 |
     | drop index | incompatible DDL  | 删除表中的索引的 DDL 语句，如 `ALTER TABLE DROP INDEX` 语句 |
-    | truncate table partition | incompatible DDL  | truncate 表中的 partition 的 DDL 语句，如 `ALTER TABLE TRUNCATE PARTITION` 语句 |
+    | truncate table partition | incompatible DDL  | 清空表中指定分区的 DDL 语句，如 `ALTER TABLE TRUNCATE PARTITION` 语句 |
     | drop primary key | incompatible DDL  | 删除主键的 DDL 语句，如 `ALTER TABLE DROP PRIMARY KEY` 语句 |
     | drop unqiue key | incompatible DDL  |  删除唯一键的 DDL 语句，如 `ALTER TABLE DROP UNIQUE KEY` 语句 |
     | modify default value | incompatible DDL  | 修改列默认值的 DDL 语句，如 `ALTER TABLE CHANGE DEFAULT` 语句 |
-    | modify constraint | incompatible DDL  | 修改 constraint 的 DDL 语句，如 `ALTER TABLE ADD CONSTRAINT` 语句 |
+    | modify constraint | incompatible DDL  | 修改约束条件的 DDL 语句，如 `ALTER TABLE ADD CONSTRAINT` 语句 |
     | modify columns order | incompatible DDL  | 修改列顺序的 DDL 语句，如 `ALTER TABLE CHANGE AFTER` 语句 |
-    | modify charset | incompatible DDL  | 修改列 charset 的 DDL 语句，如 `ALTER TABLE MODIFY CHARSET` 语句 |
-    | modify collation | incompatible DDL  | 修改列 collation 的 DDL 语句，如 `ALTER TABLE MODIFY COLLATE` 语句 |
+    | modify charset | incompatible DDL  | 修改列字符集的 DDL 语句，如 `ALTER TABLE MODIFY CHARSET` 语句 |
+    | modify collation | incompatible DDL  | 修改列排序规则的 DDL 语句，如 `ALTER TABLE MODIFY COLLATE` 语句 |
     | remove auto increment | incompatible DDL  | 删除自增键的 DDL 语句 |
     | modify storage engine | incompatible DDL  | 修改表存储引擎的 DDL 语句，如 `ALTER TABLE ENGINE = MyISAM` 语句 |
-    | reorganize table partiton | incompatible DDL  | reorganize partiton 的 DDL 语句，如 `ALTER TABLE REORGANIZE PARTITION` 语句 |
-    | rebuild table partiton | incompatible DDL  | rebuild partiton 的 DDL 语句，如 `ALTER TABLE REBUILD PARTITION` 语句 |
-    | exchange table partiton | incompatible DDL  | exchange partiton 的 DDL 语句，如 `ALTER TABLE EXCHANGE PARTITION` 语句 |
-    | coalesce table partiton | incompatible DDL  | coalesce partiton 的 DDL 语句，如 `ALTER COALESCE PARTITION` 语句 |
+    | reorganize table partition | incompatible DDL  | 重组分区的 DDL 语句，如 `ALTER TABLE REORGANIZE PARTITION` 语句 |
+    | rebuild table partition | incompatible DDL  | 重建分区的 DDL 语句，如 `ALTER TABLE REBUILD PARTITION` 语句 |
+    | exchange table partition | incompatible DDL  | 交换分区的 DDL 语句，如 `ALTER TABLE EXCHANGE PARTITION` 语句 |
+    | coalesce table partition | incompatible DDL  | 减少分区数量的 DDL 语句，如 `ALTER COALESCE PARTITION` 语句 |
 
 - `sql-pattern`：用于过滤指定的 DDL SQL 语句，支持正则表达式匹配，例如上面示例中的 `"^DROP\\s+PROCEDURE"`。
 
-- `action`：string (`Do` / `Ignore`/ `Error`)；进行下面规则判断，满足其中之一则过滤或报错，否则不过滤。
+- `action`：string (`Do` / `Ignore`/ `Error`)；进行下面规则判断：
 
     - `Do`：白名单。binlog event 如果满足下面两个条件之一就会被过滤掉：
         - 不在该 rule 的 `events` 中。
@@ -171,7 +171,7 @@ filters:
 
 ### 对部分 DDL 语句报错
 
-如需对部分上游业务产生的 DDL 语句在 DM 同步到 TiDB 之前进行拦截并报错，可采用如下设置：
+如需在 DM 同步上游业务数据到 TiDB 之前对部分 DDL 语句进行拦截并报错，可采用如下设置：
 
 ```yaml
 filters:
