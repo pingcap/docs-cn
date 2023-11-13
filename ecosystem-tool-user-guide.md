@@ -87,7 +87,7 @@ TiUniManager 不仅提供对 TiDB 集群的全生命周期的可视化管理，�
 
 > **注意：**
 >
-> PingCAP 之前维护的 Mydumper 工具 fork 自 [Mydumper project](https://github.com/maxbube/mydumper)，针对 TiDB 的特性进行了优化。Mydumper 已经被 [Dumpling](/dumpling-overview.md) 工具取代，并使用 Go 语言编写，支持更多针对 TiDB 特性的优化。建议切换到 Dumpling。
+> PingCAP 之前维护的 Mydumper 工具 fork 自 [Mydumper project](https://github.com/maxbube/mydumper)，针对 TiDB 的特性进行了优化。从 v7.5.0 开始，[Mydumper](https://docs.pingcap.com/tidb/v4.0/mydumper-overview) 废弃，其绝大部分功能已经被 [Dumpling](/dumpling-overview.md) 取代，强烈建议切换到 Dumpling。
 
 ### 全量导入 - TiDB Lightning
 
