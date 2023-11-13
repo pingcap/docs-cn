@@ -166,7 +166,6 @@ aliases: ['/docs-cn/dev/grafana-tidb-dashboard/','/docs-cn/dev/reference/key-mon
 - Store Query Feedback QPS：存储合并查询的 Feedback 信息的每秒操作数量，该操作在 TiDB 内存中进行
 - Significant Feedback：重要的 Feedback 更新统计信息的数量
 - Update Stats OPS：利用 Feedback 更新统计信息的数量
-- Fast Analyze Status 100：快速收集统计信息的状态
 
 ### Owner
 
