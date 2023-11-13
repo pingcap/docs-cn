@@ -73,7 +73,7 @@ Components Manifest:
   use "tiup list" to fetch the latest components manifest
 
 Flags:
-  -B, --binary <component>[:version]   Print binary path of a specific version of a component <component>[:version]
+      --binary <component>[:version]   Print binary path of a specific version of a component <component>[:version]
                                        and the latest version installed will be selected if no version specified
       --binpath string                 Specify the binary path of component instance
   -h, --help                           help for tiup

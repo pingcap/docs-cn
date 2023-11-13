@@ -17,22 +17,13 @@ TiDB Lightning 并行导入可以用于以下场景：
 > **注意：**
 >
 > - 并行导入只支持初始化 TiDB 的空表，不支持导入数据到已有业务写入的数据表，否则可能会导致数据不一致的情况。
-> 
-> - 并行导入一般用于 local-backend 模式。
->
-> - 使用多个 TiDB Lightning 向同一目标导入时，禁止混用不同的 backend，例如，不可同时使用 Local-backend 和 TiDB-backend 导入同一 TiDB 集群。
-
-下图展示了并行导入分库分表的工作流程。在该场景中，你可以使用多个 TiDB Lightning 实例导入 MySQL 的分表到下游的 TiDB 集群。
-
-![并行导入分库分表](/media/parallel-import-shard-tables.png)
-
-下图展示了并行导入单表的工作流程。在该场景中，你可以使用多个 TiDB Lightning 实例，将单个表中的数据拆分后，并行导入到下游的 TiDB 集群。
-
-![并行导入单表](/media/parallel-import-single-tables.png)
+> - 并行导入一般用于 local backend 模式，需要设置 `incremental-import = true`。
+> - 并行导入一般用于 local backend 模式；虽然也能用于 tidb backend 模式，但是一般不会带来明显的性能提升。
+> - 使用多个 TiDB Lightning 向同一目标导入时，禁止混用不同的 backend，例如，不可同时使用 local backend 和 tidb backend 导入同一 TiDB 集群。
 
 ## 使用说明
 
-使用 TiDB Lightning 并行导入无须额外配置。TiDB Lightning 在启动时，会在下游 TiDB 中注册元信息，并自动检测是否有其他实例向目标集群导入数据。如果有，则自动进入并行导入模式。
+使用 TiDB Lightning 并行导入需要设置 `incremental-import = true`。TiDB Lightning 在启动时，会在下游 TiDB 中注册元信息，并自动检测是否有其他实例向目标集群导入数据。如果有，则自动进入并行导入模式。
 
 但是在并行导入时，需要注意以下情况：
 
@@ -179,6 +170,11 @@ pattern = '(?i)^(?:[^/]*/)*my_db\.my_table\.(0[0-4][0-9][0-9][0-9]|05000)\.sql'
 schema = "my_db"
 table = "my_table"
 type = "sql"
+
+[tikv-importer]
+# 是否允许向已存在数据的表导入数据。默认值为 false。
+# 当使用并行导入模式时，由于多个 TiDB Lightning 实例同时导入一张表，因此此开关必须设置为 true。
+incremental-import = true
 ```
 
 另外一个实例的配置修改为只导入 `05001 ~ 10000` 数据文件即可。
@@ -191,11 +187,19 @@ type = "sql"
 
 在并行导入过程中，如果一个或多个 TiDB Lightning 节点异常终止，需要首先根据日志中的报错明确异常退出的原因，然后根据错误类型做不同处理：
 
-1. 如果是正常退出(如手动 Kill 等)，或内存溢出被操作系统终止等，可以在适当调整配置后直接重启 TiDB Lightning，无须任何其他操作。
+- 如果是正常退出，例如手动 Kill 或内存溢出被操作系统终止等，可以在适当调整配置后直接重启 TiDB Lightning，无须任何其他操作。
 
-2. 如果是不影响数据正确性的报错，如网络超时，可以在每一个失败的节点上使用 tidb-lightning-ctl 工具清除断点续传源数据中记录的错误，然后重启这些异常的节点，从断点位置继续导入，详见 [checkpoint-error-ignore](/tidb-lightning/tidb-lightning-checkpoints.md#--checkpoint-error-ignore)。
+- 如果是不影响数据正确性的报错，例如网络超时，请按以下步骤解决：
 
-3. 如果是影响数据正确性的报错，如 checksum mismatched，表示源文件中有非法的数据，则需要在每一个失败的节点上使用 tidb-lightning-ctl 工具，清除失败的表中已导入的数据及断点续传相关的源数据，详见 [checkpoint-error-destroy](/tidb-lightning/tidb-lightning-checkpoints.md#--checkpoint-error-destroy)。此命令会删除下游导入失败表中已导入的数据，因此，应在所有 TiDB Lightning 节点（包括任务正常结束的）重新配置和导入失败的表的数据，可以配置 filters 参数只导入报错失败的表。
+    1. 在每一个失败的节点上，执行 [checkpoint-error-ignore](/tidb-lightning/tidb-lightning-checkpoints.md#--checkpoint-error-ignore) 命令，值设置为 `all`，以清除断点续传源数据中记录的错误。
+
+    2. 重启这些异常的节点，从断点位置继续导入。
+
+- 如果在日志中看到影响数据正确性的报错，如 checksum mismatched，表示源文件中有非法的数据，请按以下步骤解决：
+
+    1. 在每一个 Lightning 节点（包括成功导入数据的节点）上执行 [checkpoint-error-destroy](/tidb-lightning/tidb-lightning-checkpoints.md#--checkpoint-error-destroy) 命令，以清除失败的表中已导入的数据，并将这些表的 checkpoint 状态重置为 "not yet started"。
+
+    2. 使用 [`filter`](/table-filter.md) 参数在所有 TiDB Lightning 节点（包括任务正常结束的节点）上重新配置和导入失败表的数据。重新配置任务时，不要将 checkpoint-error-destroy 命令放在每一个 Lightning 节点的启动脚本中，否则会删除多个并行导入任务使用的共享元数据，可能会导致数据导入过程出现问题。例如，如果启动了第二个 Lightning 导入任务，它将删除第一个数据导入任务写入的元数据，导致数据导入异常。
 
 ### 导入过程中报错 "Target table is calculating checksum. Please wait until the checksum is finished and try again"
 

@@ -93,6 +93,13 @@ mysql> SELECT * FROM t1;
 - 默认值：`ON`
 - 用于设置在非显式事务时是否自动提交事务。更多信息，请参见[事务概述](/transaction-overview.md#自动提交)。
 
+### `block_encryption_mode`
+
+- 作用域：SESSION | GLOBAL
+- 是否持久化到集群：是
+- 默认值：`aes-128-ecb`
+- 用于设置 `AES_ENCRYPT()` 和 `AES_DECRYPT()` 函数的加密模式。
+
 ### character_set_client
 
 - 作用域：SESSION | GLOBAL
@@ -151,11 +158,47 @@ mysql> SELECT * FROM t1;
 - 可选值：`mysql_native_password`，`caching_sha2_password`
 - 服务器和客户端建立连接时，这个变量用于设置服务器对外通告的默认身份验证方式。如要了解该变量的其他可选值，参见[可用的身份验证插件](/security-compatibility-with-mysql.md#可用的身份验证插件)。
 
+### `default_week_format`
+
+- 作用域：SESSION | GLOBAL
+- 是否持久化到集群：是
+- 类型：整数
+- 默认值：`0`
+- 取值范围：`[0, 7]`
+- 设置 `WEEK()` 函数使用的周格式。
+
+### `error_count`
+
+- 作用域：NONE
+- 类型：整数
+- 表示上一条生成消息的 SQL 语句中的错误数。该变量为只读变量。
+
 ### `foreign_key_checks`
 
 - 作用域：SESSION | GLOBAL
 - 默认值：`OFF`
 - 为保持兼容，TiDB 对外键检查返回 `OFF`。
+
+### `group_concat_max_len`
+
+- 作用域：SESSION | GLOBAL
+- 是否持久化到集群：是
+- 类型：整数
+- 默认值：`1024`
+- 取值范围：`[4, 18446744073709551615]`
+- 表示 `GROUP_CONCAT()` 函数中，项目的最大缓冲区大小。
+
+### `have_openssl`
+
+- 作用域：NONE
+- 默认值：`DISABLED`
+- 用于 MySQL 兼容性的只读变量。当服务器启用 TLS 时，服务器将其设置为 `YES`。
+
+### `have_ssl`
+
+- 作用域：NONE
+- 默认值：`DISABLED`
+- 用于 MySQL 兼容性的只读变量。当服务器启用 TLS 时，服务器将其设置为 `YES`。
 
 ### `hostname`
 
@@ -183,7 +226,7 @@ mysql> SELECT * FROM t1;
 - 默认值：`28800`
 - 范围：`[1, 31536000]`
 - 单位：秒
-- 该变量表示交互式用户会话的空闲超时。交互式用户会话是指使用 `CLIENT_INTERACTIVE` 选项调用 [`mysql_real_connect()`](https://dev.mysql.com/doc/c-api/5.7/en/mysql-real-connect.html) API 建立的会话（例如：MySQL shell 客户端）。该变量与 MySQL 完全兼容。
+- 该变量表示交互式用户会话的空闲超时。交互式用户会话是指使用 `CLIENT_INTERACTIVE` 选项调用 [`mysql_real_connect()`](https://dev.mysql.com/doc/c-api/5.7/en/mysql-real-connect.html) API 建立的会话（例如：MySQL shell 和 MySQL client）。该变量与 MySQL 完全兼容。
 
 ### `last_plan_from_binding` <span class="version-mark">从 v4.0 版本开始引入</span>
 
@@ -202,6 +245,23 @@ mysql> SELECT * FROM t1;
 - 作用域：NONE
 - 默认值：`Apache License 2.0`
 - 这个变量表示 TiDB 服务器的安装许可证。
+
+### `log_bin`
+
+- 作用域：NONE
+- 类型：布尔型
+- 默认值：`OFF`
+- 该变量表示是否使用 [TiDB Binlog](/tidb-binlog/tidb-binlog-overview.md)。
+
+### `max_connections`
+
+- 作用域：GLOBAL
+- 是否持久化到集群：否
+- 类型：整数
+- 默认值：`0`
+- 取值范围：`[0, 100000]`
+- 该变量表示 TiDB 实例允许的最大连接数。
+- 该变量值为 `0` 时表示无限制。
 
 ### `max_execution_time`
 
@@ -237,7 +297,7 @@ mysql> SELECT * FROM t1;
 - 该变量用于为 SQL 函数 `RAND()` 中使用的随机值生成器添加种子。
 - 该变量的行为与 MySQL 兼容。
 
-### rand_seed2
+### `rand_seed2`
 
 - 作用域：SESSION
 - 默认值：`0`
@@ -268,6 +328,18 @@ mysql> SELECT * FROM t1;
 - 默认值：""
 - 使用 MySQL 协议时，tidb-server 所监听的本地 unix 套接字文件。
 
+### `sql_log_bin`
+
+- 作用域：SESSION | GLOBAL
+- 是否持久化到集群：是
+- 类型：布尔型
+- 默认值：`ON`
+- 表示是否将更改写入 TiDB Binlog。
+
+> **注意：**
+>
+> 不建议将 `sql_log_bin` 设置为全局变量，因为 TiDB 的未来版本可能只允许将其设置为会话变量。
+
 ### `sql_mode`
 
 - 作用域：SESSION | GLOBAL
@@ -279,7 +351,26 @@ mysql> SELECT * FROM t1;
 - 作用域：SESSION | GLOBAL
 - 默认值：`18446744073709551615`
 - 范围：`[0, 18446744073709551615]`
+- 单位：行
 - `SELECT` 语句返回的最大行数。
+
+### `ssl_ca`
+
+- 作用域：NONE
+- 默认值：""
+- 证书颁发机构 (CA) 文件的位置。若文件不存在，则变量值为空。该变量的值由 TiDB 配置项 [`ssl-ca`](/tidb-configuration-file.md#ssl-ca) 定义。
+
+### `ssl_cert`
+
+- 作用域：NONE
+- 默认值：""
+- 用于 SSL/TLS 连接的证书文件的位置。若文件不存在，则变量值为空。该变量的值由 TiDB 配置项 [`ssl-cert`](/tidb-configuration-file.md#ssl-cert) 定义。
+
+### `ssl_key`
+
+- 作用域：NONE
+- 默认值：""
+- 用于 SSL/TLS 连接的私钥文件的位置。若文件不存在，则变量值为空。该变量的值由 TiDB 配置项 [`ssl-key`](/tidb-configuration-file.md#ssl-cert) 定义。
 
 ### `system_time_zone`
 
@@ -331,7 +422,7 @@ MPP 是 TiFlash 引擎提供的分布式计算框架，允许节点之间的数�
 - 默认值：`2`
 - 范围：`[1, 2]`
 - 这个变量用于控制 TiDB 收集统计信息的行为。
-- 在 v5.3.0 及之后的版本中，该变量的默认值为 `2`，作为实验特性启用，具体可参照[统计信息简介](/statistics.md)文档。如果从 v5.3.0 之前版本的集群升级至 v5.3.0 及之后的版本，`tidb_analyze_version` 的默认值不发生变化。
+- 在 v5.3.0 及之后的版本中，该变量的默认值为 `2`，具体可参照[统计信息简介](/statistics.md)文档。如果从 v5.3.0 之前版本的集群升级至 v5.3.0 及之后的版本，`tidb_analyze_version` 的默认值不发生变化。
 
 ### `tidb_auto_analyze_end_time`
 
@@ -391,7 +482,8 @@ MPP 是 TiFlash 引擎提供的分布式计算框架，允许节点之间的数�
 - 作用域：SESSION | GLOBAL
 - 默认值：`10240`
 - 范围：`[0, 9223372036854775807]`
-- 单位为行数。如果 join 的对象为子查询，优化器无法估计子查询结果集大小，在这种情况下通过结果集行数判断。如果子查询的行数估计值小于该变量，则选择 Broadcast Hash Join 算法。否则选择 Shuffled Hash Join 算法。
+- 单位：行
+- 如果 join 的对象为子查询，优化器无法估计子查询结果集大小，在这种情况下通过结果集行数判断。如果子查询的行数估计值小于该变量，则选择 Broadcast Hash Join 算法。否则选择 Shuffled Hash Join 算法。
 
 ### `tidb_broadcast_join_threshold_size` <span class="version-mark">从 v5.0 版本开始引入</span>
 
@@ -405,6 +497,7 @@ MPP 是 TiFlash 引擎提供的分布式计算框架，允许节点之间的数�
 
 - 作用域：SESSION | GLOBAL
 - 默认值：`4`
+- 单位：线程
 - 这个变量用来设置 ANALYZE 语句执行时并发度。
 - 当这个变量被设置得更大时，会对其它的查询语句执行性能产生一定影响。
 
@@ -426,6 +519,7 @@ MPP 是 TiFlash 引擎提供的分布式计算框架，允许节点之间的数�
 
 - 作用域：SESSION
 - 默认值：`4`
+- 单位：线程
 - 这个变量用来设置 `ADMIN CHECKSUM TABLE` 语句执行时扫描索引的并发度。当这个变量被设置得更大时，会对其它的查询语句执行性能产生一定影响。
 
 ### `tidb_config`
@@ -499,10 +593,11 @@ MPP 是 TiFlash 引擎提供的分布式计算框架，允许节点之间的数�
 - 作用域：GLOBAL
 - 默认值：`256`
 - 范围：`[32, 10240]`
+- 单位：行
 - 这个变量用来设置 DDL 操作 `re-organize` 阶段的 batch size。比如 `ADD INDEX` 操作，需要回填索引数据，通过并发 `tidb_ddl_reorg_worker_cnt` 个 worker 一起回填数据，每个 worker 以 batch 为单位进行回填。
 
     - 如果 `ADD INDEX` 操作时有较多 `UPDATE` 操作或者 `REPLACE` 等更新操作，batch size 越大，事务冲突的概率也会越大，此时建议调小 batch size 的值，最小值是 32。
-    - 在没有事务冲突的情况下，batch size 可设为较大值（需要参考 worker 数量，见[线上负载与 `ADD INDEX` 相互影响测试](/benchmark/online-workloads-and-add-index-operations.md)），最大值是 10240，这样回填数据的速度更快，但是 TiKV 的写入压力也会变大。
+    - 在没有事务冲突的情况下，batch size 可设为较大值（需要参考 worker 数量，见[线上负载与 `ADD INDEX` 相互影响测试](/benchmark/online-workloads-and-add-index-operations.md)），这样回填数据的速度更快，但是 TiKV 的写入压力也会变大。
 
 ### `tidb_ddl_reorg_priority`
 
@@ -515,6 +610,7 @@ MPP 是 TiFlash 引擎提供的分布式计算框架，允许节点之间的数�
 - 作用域：GLOBAL
 - 默认值：`4`
 - 范围：`[1, 256]`
+- 单位：线程
 - 这个变量用来设置 DDL 操作 `re-organize` 阶段的并发度。
 
 ### `tidb_disable_txn_auto_retry`
@@ -536,6 +632,7 @@ MPP 是 TiFlash 引擎提供的分布式计算框架，允许节点之间的数�
 - 作用域：SESSION | GLOBAL
 - 默认值：`15`
 - 范围：`[1, 256]`
+- 单位：线程
 - 这个变量用来设置 scan 操作的并发度。
 - AP 类应用适合较大的值，TP 类应用适合较小的值。对于 AP 类应用，最大值建议不要超过所有 TiKV 节点的 CPU 核数。
 - 若表的分区较多可以适当调小该参数（取决于扫描数据量的大小以及扫描频率），避免 TiKV 内存溢出 (OOM)。
@@ -545,6 +642,7 @@ MPP 是 TiFlash 引擎提供的分布式计算框架，允许节点之间的数�
 - 作用域：SESSION | GLOBAL
 - 默认值：`0`
 - 范围：`[0, 2147483647]`
+- 单位：行
 - 这个变量的值大于 `0` 时，TiDB 会将 `INSERT` 或 `LOAD DATA` 等语句在更小的事务中批量提交。这样可减少内存使用，确保大批量修改时事务大小不会达到 `txn-total-size-limit` 限制。
 - 要使 `tidb_dml_batch_size` 作用于 `INSERT` 语句，你还需要将系统变量 [`tidb_batch_insert`](#tidb_batch_insert) 设置为 `ON`。
 - 只有变量值为 `0` 时才符合 ACID 要求。否则无法保证 TiDB 的原子性和隔离性要求。
@@ -673,9 +771,22 @@ MPP 是 TiFlash 引擎提供的分布式计算框架，允许节点之间的数�
 
 ### `tidb_restricted_read_only` <span class="version-mark">从 v5.2.0 版本开始引入</span>
 
+> **警告：**
+>
+> 在 v5.3.1 或 v5.4.1 之前的 TiDB 版本中，使用该变量可能导致非预期的结果。如需使用该变量，请确保你的 TiDB 版本高于 v5.3.1 或 v5.4.1。
+
 - 作用域：GLOBAL
 - 默认值：`OFF`
 - 可选值：`OFF` 和 `ON`
+- `tidb_restricted_read_only`和 [`tidb_super_read_only`](#tidb_super_read_only-从-v531-版本开始引入) 的作用相似。在大多数情况下，你只需要使用 [`tidb_super_read_only`](#tidb_super_read_only-从-v531-版本开始引入) 即可。
+- 拥有 `SUPER` 或 `SYSTEM_VARIABLES_ADMIN` 权限的用户可以修改该变量。如果 TiDB 开启了[安全增强模式](#tidb_enable_enhanced_security)，你还需要额外的 `RESTRICTED_VARIABLES_ADMIN` 权限才能读取或修改该变量。
+- `tidb_restricted_read_only` 的设置将影响 [`tidb_super_read_only`](#tidb_super_read_only-从-v531-版本开始引入) 的值：
+
+    - 当设置 `tidb_restricted_read_only` 为 `ON` 时，[`tidb_super_read_only`](#tidb_super_read_only-从-v531-版本开始引入) 的将自动被设置为 `ON`。
+    - 当设置 `tidb_restricted_read_only` 为 `OFF` 时，[`tidb_super_read_only`](#tidb_super_read_only-从-v531-版本开始引入) 的值将不受影响。
+    - 当 `tidb_restricted_read_only` 为 `ON` 时，[`tidb_super_read_only`](#tidb_super_read_only-从-v531-版本开始引入) 的值无法设置为 `OFF`。
+
+- 对于 TiDB 的 DBaaS 供应商，当 TiDB 为另一个数据库的下游数据库时，如果要将整个 TiDB 集群设置为只读模式，你需要开启[安全增强模式](#tidb_enable_enhanced_security) 并将 `tidb_restricted_read_only` 设置为 `ON`，从而防止你的用户通过 [`tidb_super_read_only`](#tidb_super_read_only-从-v531-版本开始引入) 将 TiDB 集群设置为可写。实现方法：首先开启[安全增强模式](#tidb_enable_enhanced_security)，然后由你（作为 DBaaS 的控制面）使用一个 admin 用户控制 `tidb_restricted_read_only`（需要拥有 `SYSTEM_VARIABLES_ADMIN` 和 `RESTRICTED_VARIABLES_ADMIN` 权限），由你的数据库用户使用 root 用户控制 [`tidb_super_read_only`](#tidb_super_read_only-从-v531-版本开始引入)（需要拥有 `SUPER` 权限）。
 - 该变量可以控制整个集群的只读状态。开启后（即该值为 `ON`），整个集群中的 TiDB 服务器都将进入只读状态，只有 `SELECT`、`USE`、`SHOW` 等不会修改数据的语句才能被执行，其他如 `INSERT`、`UPDATE` 等语句会被拒绝执行。
 - 该变量开启只读模式只保证整个集群最终进入只读模式，当变量修改状态还没被同步到其他 TiDB 服务器时，尚未同步的 TiDB 仍然停留在非只读模式。
 - 在变量开启时，正在执行的 SQL 语句不会受影响，只对新执行的 SQL 语句进行是否只读的检查。
@@ -684,7 +795,6 @@ MPP 是 TiFlash 引擎提供的分布式计算框架，允许节点之间的数�
     - 如果尚未提交的事务为非只读事务，在事务内执行写入的 SQL 语句会被拒绝。
     - 如果尚未提交的事务已经有数据改动，其提交也会被拒绝。
 - 当集群开启只读模式后，所有用户（包括 `SUPER` 用户）都无法执行可能写入数据的 SQL 语句，除非该用户被显式地授予了 `RESTRICTED_REPLICA_WRITER_ADMIN` 权限。
-- 拥有 `RESTRICTED_VARIABLES_ADMIN` 或 `SUPER` 权限的用户可以修改该变量。如果用户开启了[安全增强模式 (Security Enhanced Mode)](/system-variables.md#tidb_enable_enhanced_security)，则只有 `RESTRICTED_VARIABLES_ADMIN` 权限的用户才能修改该变量。
 
 ### `tidb_enable_fast_analyze`
 
@@ -716,6 +826,7 @@ MPP 是 TiFlash 引擎提供的分布式计算框架，允许节点之间的数�
 > 目前 List 分区和 List COLUMNS 分区类型为实验特性，不建议在生产环境中使用。
 
 - 作用域：SESSION | GLOBAL
+- 类型：布尔型
 - 默认值：`OFF`
 - 这个变量用来设置是否开启 `LIST (COLUMNS) TABLE PARTITION` 特性。
 
@@ -760,6 +871,10 @@ MPP 是 TiFlash 引擎提供的分布式计算框架，允许节点之间的数�
 - 如果表数据修改较频繁，没有及时对表执行 `ANALYZE`，但又希望执行计划保持稳定，可以将该变量值设为 `OFF`。
 
 ### `tidb_enable_rate_limit_action`
+
+> **注意：**
+>
+> 该变量默认开启，但可能导致内存不受 [`tidb_mem_quota_query`](#tidb_mem_quota_query) 控制，从而加剧 OOM 风险，因此建议将该变量值调整为 `OFF`。
 
 - 作用域：SESSION | GLOBAL
 - 默认值：`ON`
@@ -887,6 +1002,7 @@ MPP 是 TiFlash 引擎提供的分布式计算框架，允许节点之间的数�
 - 作用域：SESSION | GLOBAL
 - 默认值：`5`
 - 范围：`[1, 256]`
+- 单位：线程
 
 变量用来统一设置各个 SQL 算子的并发度，包括：
 
@@ -931,6 +1047,7 @@ v5.0 后，用户仍可以单独修改以上系统变量（会有废弃警告）
 - 作用域：GLOBAL
 - 默认值：`-1`
 - 范围：`[1, 256]`
+- 单位：线程
 - 这个变量用于指定 GC 在[Resolve Locks（清理锁）](/garbage-collection-overview.md#resolve-locks清理锁)步骤中线程的数量。默认值 `-1` 表示由 TiDB 自主判断运行 GC 要使用的线程的数量。
 
 ### `tidb_gc_enable` <span class="version-mark">从 v5.0 版本开始引入</span>
@@ -978,7 +1095,7 @@ v5.0 后，用户仍可以单独修改以上系统变量（会有废弃警告）
 - 作用域：INSTANCE
 - 默认值：`OFF`
 - 这个变量用来设置是否在[日志](/tidb-configuration-file.md#logfile)里记录所有的 SQL 语句。该功能默认关闭。如果系统运维人员在定位问题过程中需要追踪所有 SQL 记录，可考虑开启该功能。
-- 通过查询 `"GENERAL_LOG"` 字符串可以定位到该功能在日志中的所有记录。日志会记录以下内容：
+- 在 TiDB 配置项 [`log.level`](/tidb-configuration-file.md#level) 为 `"info"` 或 `"debug"` 时，通过查询 `"GENERAL_LOG"` 字符串可以定位到该功能在日志中的所有记录。日志会记录以下内容：
     - `conn`：当前会话对应的 ID
     - `user`：当前会话用户
     - `schemaVersion`：当前 schema 版本
@@ -998,6 +1115,7 @@ v5.0 后，用户仍可以单独修改以上系统变量（会有废弃警告）
 - 作用域：SESSION | GLOBAL
 - 默认值：`-1`
 - 范围：`[1, 256]`
+- 单位：线程
 - 这个变量用来设置 hash join 算法的并发度。
 - 默认值 `-1` 表示使用 `tidb_executor_concurrency` 的值。
 
@@ -1010,6 +1128,7 @@ v5.0 后，用户仍可以单独修改以上系统变量（会有废弃警告）
 - 作用域：SESSION | GLOBAL
 - 默认值：`-1`
 - 范围：`[1, 256]`
+- 单位：线程
 - 这个变量用来设置并行 hash aggregation 算法 final 阶段的执行并发度。对于聚合函数参数不为 distinct 的情况，HashAgg 分为 partial 和 final 阶段分别并行执行。
 - 默认值 `-1` 表示使用 `tidb_executor_concurrency` 的值。
 
@@ -1022,6 +1141,7 @@ v5.0 后，用户仍可以单独修改以上系统变量（会有废弃警告）
 - 作用域：SESSION | GLOBAL
 - 默认值：`-1`
 - 范围：`[1, 256]`
+- 单位：线程
 - 这个变量用来设置并行 hash aggregation 算法 partial 阶段的执行并发度。对于聚合函数参数不为 distinct 的情况，HashAgg 分为 partial 和 final 阶段分别并行执行。
 - 默认值 `-1` 表示使用 `tidb_executor_concurrency` 的值。
 
@@ -1030,6 +1150,7 @@ v5.0 后，用户仍可以单独修改以上系统变量（会有废弃警告）
 - 作用域：SESSION | GLOBAL
 - 默认值：`25000`
 - 范围：`[1, 2147483647]`
+- 单位：行
 - 这个变量用来设置 index lookup join 操作的 batch 大小，AP 类应用适合较大的值，TP 类应用适合较小的值。
 
 ### `tidb_index_lookup_concurrency`
@@ -1041,6 +1162,7 @@ v5.0 后，用户仍可以单独修改以上系统变量（会有废弃警告）
 - 作用域：SESSION | GLOBAL
 - 默认值：`-1`
 - 范围：`[1, 256]`
+- 单位：线程
 - 这个变量用来设置 index lookup 操作的并发度，AP 类应用适合较大的值，TP 类应用适合较小的值。
 - 默认值 `-1` 表示使用 `tidb_executor_concurrency` 的值。
 
@@ -1053,6 +1175,7 @@ v5.0 后，用户仍可以单独修改以上系统变量（会有废弃警告）
 - 作用域：SESSION | GLOBAL
 - 默认值：`-1`
 - 范围：`[1, 256]`
+- 单位：线程
 - 这个变量用来设置 index lookup join 算法的并发度。
 - 默认值 `-1` 表示使用 `tidb_executor_concurrency` 的值。
 
@@ -1061,6 +1184,7 @@ v5.0 后，用户仍可以单独修改以上系统变量（会有废弃警告）
 - 作用域：SESSION | GLOBAL
 - 默认值：`20000`
 - 范围：`[1, 2147483647]`
+- 单位：行
 - 这个变量用来设置 index lookup 操作的 batch 大小，AP 类应用适合较大的值，TP 类应用适合较小的值。
 
 ### `tidb_index_serial_scan_concurrency`
@@ -1068,6 +1192,7 @@ v5.0 后，用户仍可以单独修改以上系统变量（会有废弃警告）
 - 作用域：SESSION | GLOBAL
 - 默认值：`1`
 - 范围：`[1, 256]`
+- 单位：线程
 - 这个变量用来设置顺序 scan 操作的并发度，AP 类应用适合较大的值，TP 类应用适合较小的值。
 
 ### `tidb_init_chunk_size`
@@ -1075,6 +1200,7 @@ v5.0 后，用户仍可以单独修改以上系统变量（会有废弃警告）
 - 作用域：SESSION | GLOBAL
 - 默认值：`32`
 - 范围：`[1, 32]`
+- 单位：行
 - 这个变量用来设置执行过程中初始 chunk 的行数。默认值是 32，可设置的范围是 1～32。
 
 ### `tidb_isolation_read_engines` <span class="version-mark">从 v4.0 版本开始引入</span>
@@ -1102,6 +1228,7 @@ v5.0 后，用户仍可以单独修改以上系统变量（会有废弃警告）
 - 作用域：SESSION | GLOBAL
 - 默认值：`1024`
 - 范围：`[32, 2147483647]`
+- 单位：行
 - 这个变量用来设置执行过程中一个 chunk 最大的行数，设置过大可能引起缓存局部性的问题。
 
 ### `tidb_max_delta_schema_count`
@@ -1345,6 +1472,7 @@ explain select * from t where age=5;
 - 作用域：SESSION | GLOBAL
 - 默认值：`-1`
 - 范围：`[-1, 256]`
+- 单位：线程
 - 这个变量用来设置 `Projection` 算子的并发度。
 - 默认值 `-1` 表示使用 `tidb_executor_concurrency` 的值。
 
@@ -1363,6 +1491,16 @@ explain select * from t where age=5;
 ```sql
 SET tidb_query_log_max_len = 20;
 ```
+
+### `tidb_read_consistency` <span class="version-mark">从 v5.4.0 版本开始引入</span>
+
+- 作用域：SESSION
+- 是否持久化到集群：否
+- 类型：字符串
+- 默认值：`strict`
+- 此变量用于控制自动提交的读语句的读一致性。
+- 如果将变量值设置为 `weak`，则直接跳过读语句遇到的锁，读的执行可能会更快，这就是弱一致性读模式。但在该模式下，事务语义（例如原子性）和分布式一致性（线性一致性）并不能得到保证。
+- 如果用户场景中需要快速返回自动提交的读语句，并且可接受弱一致性的读取结果，则可以使用弱一致性读取模式。
 
 ### `tidb_read_staleness` <span class="version-mark">从 v5.4.0 版本开始引入</span>
 
@@ -1392,7 +1530,7 @@ SET tidb_query_log_max_len = 20;
 
 ### `tidb_replica_read` <span class="version-mark">从 v4.0 版本开始引入</span>
 
-- 作用域：SESSION
+- 作用域：SESSION | GLOBAL
 - 默认值：`leader`
 - 可选值：`leader`，`follower`，`leader-and-follower`
 - 这个变量用于控制 TiDB 读取数据的位置，有以下三个选择：
@@ -1564,6 +1702,28 @@ set tidb_slow_log_threshold = 200;
 - 范围：`[0, 9223372036854775807]`
 - 这个变量用于限制 TiDB 同时向 TiKV 发送的请求的最大数量，0 表示没有限制。
 
+### `tidb_super_read_only` <span class="version-mark">从 v5.3.1 版本开始引入</span>
+
+> **警告：**
+>
+> 在 v5.3.1 或 v5.4.1 之前的 TiDB 版本中，使用该变量可能导致非预期的结果。如需使用该变量，请确保你的 TiDB 版本高于 v5.3.1 或 v5.4.1。
+
+- 作用域：GLOBAL
+- 是否持久化到集群：是
+- 类型：布尔型
+- 默认值: `OFF`
+- `tidb_super_read_only` 用于实现对 MySQL 变量 `super_read_only` 的替代。然而，由于 TiDB 是一个分布式数据库，开启 `tidb_super_read_only` 后数据库各个 TiDB 服务器进入只读模式的时刻不是强一致的，而是最终一致的。
+- 拥有 `SUPER` 或 `SYSTEM_VARIABLES_ADMIN` 权限的用户可以修改该变量。
+- 该变量可以控制整个集群的只读状态。开启后（即该值为 `ON`），整个集群中的 TiDB 服务器都将进入只读状态，只有 `SELECT`、`USE`、`SHOW` 等不会修改数据的语句才能被执行，其他如 `INSERT`、`UPDATE` 等语句会被拒绝执行。
+- 该变量开启只读模式只保证整个集群最终进入只读模式，当变量修改状态还没被同步到其他 TiDB 服务器时，尚未同步的 TiDB 仍然停留在非只读模式。
+- 在变量开启时，正在执行的 SQL 语句不会受影响，只对新执行的 SQL 语句进行是否只读的检查。
+- 在变量开启时，对于尚未提交的事务：
+    - 如果有尚未提交的只读事务，可正常提交该事务。
+    - 如果尚未提交的事务为非只读事务，在事务内执行写入的 SQL 语句会被拒绝。
+    - 如果尚未提交的事务已经有数据改动，其提交也会被拒绝。
+- 当集群开启只读模式后，所有用户（包括 `SUPER` 用户）都无法执行可能写入数据的 SQL 语句，除非该用户被显式地授予了 `RESTRICTED_REPLICA_WRITER_ADMIN` 权限。
+- 当系统变量 [`tidb_restricted_read_only`](#tidb_restricted_read_only-从-v520-版本开始引入) 为 `ON` 时，`tidb_super_read_only` 的值会受到 [`tidb_restricted_read_only`](#tidb_restricted_read_only-从-v520-版本开始引入) 的影响。详情请参见[`tidb_restricted_read_only`](#tidb_restricted_read_only-从-v520-版本开始引入) 中的描述。
+
 ### `tidb_tmp_table_max_size` <span class="version-mark">从 v5.3 版本开始引入</span>
 
 - 作用域：SESSION | GLOBAL
@@ -1631,6 +1791,7 @@ set tidb_slow_log_threshold = 200;
 - 作用域：SESSION | GLOBAL
 - 默认值：`-1`
 - 范围：`[1, 256]`
+- 单位：线程
 - 这个变量用于设置 window 算子的并行度。
 - 默认值 `-1` 表示使用 `tidb_executor_concurrency` 的值。
 
@@ -1640,6 +1801,14 @@ set tidb_slow_log_threshold = 200;
 - 默认值：`SYSTEM`
 - 数据库所使用的时区。这个变量值可以写成时区偏移的形式，如 '-8:00'，也可以写成一个命名时区，如 'America/Los_Angeles'。
 - 默认值 `SYSTEM` 表示时区应当与系统主机的时区相同。系统的时区可通过 [`system_time_zone`](#system_time_zone) 获取。
+
+### `timestamp`
+
+- 作用域：SESSION
+- 类型：浮点数
+- 默认值：`0`
+- 取值范围：`[0, 2147483647]`
+- 一个 Unix 时间戳。变量值非空时，表示 `CURRENT_TIMESTAMP()`、`NOW()` 等函数的时间戳。该变量通常用于数据恢复或数据复制。
 
 ### `transaction_isolation`
 

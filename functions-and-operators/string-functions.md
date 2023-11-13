@@ -6,6 +6,8 @@ title: 字符串函数
 
 TiDB 支持使用大部分 MySQL 5.7 中提供的[字符串函数](https://dev.mysql.com/doc/refman/5.7/en/string-functions.html)和一部分 Oracle 21 所提供的[函数](https://docs.oracle.com/en/database/oracle/oracle-database/21/sqlqr/SQL-Functions.html#GUID-93EC62F8-415D-4A7E-B050-5D5B2C127009)。
 
+关于 Oracle 函数和 TiDB 函数的对照关系，请参考 [Oracle 与 TiDB 函数和语法差异对照](/oracle-functions-to-tidb.md)。
+
 ## 支持的函数
 
 | 函数名   | 功能描述          |
@@ -67,7 +69,6 @@ TiDB 支持使用大部分 MySQL 5.7 中提供的[字符串函数](https://dev.m
 ## 不支持的函数
 
 * `LOAD_FILE()`
-* `MATCH`
+* `MATCH()`
 * `SOUNDEX()`
-* `SOUNDS LIKE`
 * `WEIGHT_STRING()`

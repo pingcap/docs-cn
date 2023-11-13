@@ -182,9 +182,31 @@ EXPLAIN DELETE FROM t1 WHERE c1=3;
 4 rows in set (0.01 sec)
 ```
 
-如果未指定 `FORMAT`，或未指定 `FORMAT ="row"`，那么 `EXPLAIN` 语句将以表格格式输出结果。更多信息，可参阅 [Understand the Query Execution Plan](https://pingcap.com/docs/dev/reference/performance/understanding-the-query-execution-plan/)。
+在 `EXPLAIN` 中使用 `FORMAT = "xxx"` 语法可以指定输出的内容和格式。
 
-除 MySQL 标准结果格式外，TiDB 还支持 DotGraph。需按照下列所示指定 `FORMAT ="dot"`：
+如果 `EXPLAIN` 语句中未指定 `FORMAT`，或指定 `FORMAT = "row"`，那么 `EXPLAIN` 语句将以表格格式输出结果。更多信息，可参阅 [TiDB 执行计划概览](/explain-overview.md)。
+
+如果在 `EXPLAIN` 中指定了 `FORMAT = "brief"`，那么 `EXPLAIN` 语句输出结果中的算子 ID，较之未指定 `FORMAT` 时输出结果的算子 ID 更为简化：
+
+{{< copyable "sql" >}}
+
+```sql
+EXPLAIN FORMAT = "brief" DELETE FROM t1 WHERE c1=3;
+```
+
+```
++-------------------------+---------+-----------+---------------+--------------------------------+
+| id                      | estRows | task      | access object | operator info                  |
++-------------------------+---------+-----------+---------------+--------------------------------+
+| Delete                  | N/A     | root      |               | N/A                            |
+| └─TableReader           | 0.00    | root      |               | data:Selection                 |
+|   └─Selection           | 0.00    | cop[tikv] |               | eq(test.t1.c1, 3)              |
+|     └─TableFullScan     | 3.00    | cop[tikv] | table:t1      | keep order:false, stats:pseudo |
++-------------------------+---------+-----------+---------------+--------------------------------+
+4 rows in set (0.001 sec)
+```
+
+除 MySQL 标准结果格式外，TiDB 还支持 DotGraph，需要在 `EXPLAIN` 中指定 `FORMAT = "dot"`，示例如下：
 
 {{< copyable "sql" >}}
 
@@ -251,7 +273,8 @@ The `xx.dot` is the result returned by the above statement.
 
 `EXPLAIN FOR CONNECTION` 用于获得一个连接中当前正在执行 SQL 的执行计划或者是最后执行 SQL 的执行计划，其输出格式与 `EXPLAIN` 完全一致。但 TiDB 中的实现与 MySQL 不同，除了输出格式之外，还有以下区别：
 
-- MySQL 返回的是**正在执行**的查询计划，而 TiDB 返回的是**最后执行**的查询计划。
+- 如果连接处于睡眠状态，MySQL 返回为空，而 TiDB 返回的是最后执行的查询计划。
+- 如果获取当前会话连接的执行计划，MySQL 会报错，而 TiDB 会正常返回。
 - MySQL 的文档中指出，MySQL 要求登录用户与被查询的连接相同，或者拥有 `PROCESS` 权限，而 TiDB 则要求登录用户与被查询的连接相同，或者拥有 `SUPER` 权限。
 
 ## 另请参阅

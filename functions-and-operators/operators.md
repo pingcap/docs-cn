@@ -13,7 +13,7 @@ title: 操作符
 | [`BINARY`](https://dev.mysql.com/doc/refman/5.7/en/cast-functions.html#operator_binary) | 将一个字符串转换为一个二进制字符串 |
 | [&](https://dev.mysql.com/doc/refman/5.7/en/bit-functions.html#operator_bitwise-and) | 位与 |
 | [~](https://dev.mysql.com/doc/refman/5.7/en/bit-functions.html#operator_bitwise-invert) | 位非 |
-| [`\|`](https://dev.mysql.com/doc/refman/5.7/en/bit-functions.html#operator_bitwise-or) | 位或 |
+| [\|](https://dev.mysql.com/doc/refman/5.7/en/bit-functions.html#operator_bitwise-or) | 位或 |
 | [`^`](https://dev.mysql.com/doc/refman/5.7/en/bit-functions.html#operator_bitwise-xor) | 按位异或 |
 | [`CASE`](https://dev.mysql.com/doc/refman/5.7/en/flow-control-functions.html#operator_case) | case 操作符 |
 | [`DIV`](https://dev.mysql.com/doc/refman/5.7/en/arithmetic-functions.html#operator_div) | 整数除 |
@@ -37,7 +37,7 @@ title: 操作符
 | [`!=`, `<>`](https://dev.mysql.com/doc/refman/5.7/en/comparison-operators.html#operator_not-equal) | 不等于 |
 | [`NOT LIKE`](https://dev.mysql.com/doc/refman/5.7/en/string-comparison-functions.html#operator_not-like) | 不符合简单模式匹配 |
 | [`NOT REGEXP`](https://dev.mysql.com/doc/refman/5.7/en/regexp.html#operator_not-regexp) | 不符合正则表达式模式匹配 |
-| [`\|\|`, `OR`](https://dev.mysql.com/doc/refman/5.7/en/logical-operators.html#operator_or) | 逻辑或 |
+| [\|\|, `OR`](https://dev.mysql.com/doc/refman/5.7/en/logical-operators.html#operator_or) | 逻辑或 |
 | [`+`](https://dev.mysql.com/doc/refman/5.7/en/arithmetic-functions.html#operator_plus) | 加 |
 | [`REGEXP`](https://dev.mysql.com/doc/refman/5.7/en/regexp.html#operator_regexp) | 使用正则表达式进行模式匹配 |
 | [`>>`](https://dev.mysql.com/doc/refman/5.7/en/bit-functions.html#operator_right-shift) | 右移 |
@@ -45,6 +45,10 @@ title: 操作符
 | [`*`](https://dev.mysql.com/doc/refman/5.7/en/arithmetic-functions.html#operator_times) | 乘 |
 | [`-`](https://dev.mysql.com/doc/refman/5.7/en/arithmetic-functions.html#operator_unary-minus) | 取反符号 |
 | [`XOR`](https://dev.mysql.com/doc/refman/5.7/en/logical-operators.html#operator_xor) | 逻辑亦或 |
+
+## 不支持的操作符
+
+* [`SOUNDS LIKE`](https://dev.mysql.com/doc/refman/5.7/en/string-functions.html#operator_sounds-like)
 
 ## 操作符优先级
 
@@ -108,7 +112,7 @@ OR, ||
 | ------- | -------------------------------- |
 | [`AND`, &&](https://dev.mysql.com/doc/refman/5.7/en/logical-operators.html#operator_and) | 逻辑与 |
 | [`NOT`, `!`](https://dev.mysql.com/doc/refman/5.7/en/logical-operators.html#operator_not) | 逻辑非 |
-| [`\|\|`, `OR`](https://dev.mysql.com/doc/refman/5.7/en/logical-operators.html#operator_or) | 逻辑或 |
+| [\|\|, `OR`](https://dev.mysql.com/doc/refman/5.7/en/logical-operators.html#operator_or) | 逻辑或 |
 | [`XOR`](https://dev.mysql.com/doc/refman/5.7/en/logical-operators.html#operator_xor) | 逻辑异或 |
 
 详情参见[这里](https://dev.mysql.com/doc/refman/5.7/en/group-by-handling.html)。

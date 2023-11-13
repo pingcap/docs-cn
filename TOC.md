@@ -1,6 +1,7 @@
 <!-- markdownlint-disable MD007 -->
 <!-- markdownlint-disable MD041 -->
 
+- [文档中心](https://docs.pingcap.com/zh)
 - 关于 TiDB
   - [TiDB 简介](/overview.md)
   - [TiDB 5.4 Release Notes](/releases/release-5.4.0.md)
@@ -30,7 +31,7 @@
     - [跨机房部署拓扑结构](/geo-distributed-deployment-topology.md)
     - [混合部署拓扑结构](/hybrid-deployment-topology.md)
   - 安装与启动
-    - [使用 TiUP 部署（推荐）](/production-deployment-using-tiup.md)
+    - [使用 TiUP 部署](/production-deployment-using-tiup.md)
     - [在 Kubernetes 上部署](/tidb-in-kubernetes.md)
   - [验证集群状态](/post-installation-check.md)
   - 测试集群性能
@@ -55,7 +56,7 @@
     - [如何通过 SQL 表达式过滤 DML binlog 事件](/filter-dml-event.md)
 - 运维操作
   - 升级 TiDB 版本
-    - [使用 TiUP 升级（推荐）](/upgrade-tidb-using-tiup.md)
+    - [使用 TiUP 升级](/upgrade-tidb-using-tiup.md)
     - [使用 TiDB Operator](https://docs.pingcap.com/zh/tidb-in-kubernetes/stable/upgrade-a-tidb-cluster)
   - 扩缩容
     - [使用 TiUP（推荐）](/scale-tidb-using-tiup.md)
@@ -211,6 +212,7 @@
       - TiUP Cluster 命令
         - [TiUP Cluster 命令概览](/tiup/tiup-component-cluster.md)
         - [tiup cluster audit](/tiup/tiup-component-cluster-audit.md)
+        - [tiup cluster audit cleanup](/tiup/tiup-component-cluster-audit-cleanup.md)
         - [tiup cluster check](/tiup/tiup-component-cluster-check.md)
         - [tiup cluster clean](/tiup/tiup-component-cluster-clean.md)
         - [tiup cluster deploy](/tiup/tiup-component-cluster-deploy.md)
@@ -287,6 +289,7 @@
     - [监控告警](/tidb-lightning/monitor-tidb-lightning.md)
     - [FAQ](/tidb-lightning/tidb-lightning-faq.md)
     - [术语表](/tidb-lightning/tidb-lightning-glossary.md)
+    - [日志信息详解](/tidb-lightning/tidb-lightning-log-message-explanation.md)
   - TiDB Data Migration
     - 关于 TiDB Data Migration
       - [TiDB Data Migration 简介](/dm/dm-overview.md)
@@ -429,6 +432,31 @@
     - [存储](/tidb-storage.md)
     - [计算](/tidb-computing.md)
     - [调度](/tidb-scheduling.md)
+  - 存储引擎 TiKV
+    - [TiKV 简介](/tikv-overview.md)
+    - [RocksDB 简介](/storage-engine/rocksdb-overview.md)
+    - [Titan 简介](/storage-engine/titan-overview.md)
+    - [Titan 配置说明](/storage-engine/titan-configuration.md)
+  - 存储引擎 TiFlash
+    - [TiFlash 简介](/tiflash/tiflash-overview.md)
+    - [使用 TiFlash](/tiflash/use-tiflash.md)
+  - [系统变量](/system-variables.md)
+  - 配置文件参数
+    - [tidb-server](/tidb-configuration-file.md)
+    - [tikv-server](/tikv-configuration-file.md)
+    - [tiflash-server](/tiflash/tiflash-configuration.md)
+    - [pd-server](/pd-configuration-file.md)
+  - CLI
+    - [tikv-ctl](/tikv-control.md)
+    - [pd-ctl](/pd-control.md)
+    - [tidb-ctl](/tidb-control.md)
+    - [pd-recover](/pd-recover.md)
+    - [binlog-ctl](/tidb-binlog/binlog-control.md)
+  - 命令行参数
+    - [tidb-server](/command-line-flags-for-tidb-configuration.md)
+    - [tikv-server](/command-line-flags-for-tikv-configuration.md)
+    - [tiflash-server](/tiflash/tiflash-command-line-flags.md)
+    - [pd-server](/command-line-flags-for-pd-configuration.md)
   - 监控指标
     - [Overview 面板](/grafana-overview-dashboard.md)
     - [TiDB 面板](/grafana-tidb-dashboard.md)
@@ -468,6 +496,8 @@
       - [`ADMIN CANCEL DDL`](/sql-statements/sql-statement-admin-cancel-ddl.md)
       - [`ADMIN CHECKSUM TABLE`](/sql-statements/sql-statement-admin-checksum-table.md)
       - [`ADMIN CHECK [TABLE|INDEX]`](/sql-statements/sql-statement-admin-check-table-index.md)
+      - [`ADMIN CLEANUP`](/sql-statements/sql-statement-admin-cleanup.md)
+      - [`ADMIN RECOVER INDEX`](/sql-statements/sql-statement-admin-recover.md)
       - [`ADMIN SHOW DDL [JOBS|QUERIES]`](/sql-statements/sql-statement-admin-show-ddl.md)
       - [`ADMIN SHOW TELEMETRY`](/sql-statements/sql-statement-admin-show-telemetry.md)
       - [`ALTER DATABASE`](/sql-statements/sql-statement-alter-database.md)
@@ -522,6 +552,7 @@
       - [`KILL [TIDB]`](/sql-statements/sql-statement-kill.md)
       - [`LOAD DATA`](/sql-statements/sql-statement-load-data.md)
       - [`LOAD STATS`](/sql-statements/sql-statement-load-stats.md)
+      - [`LOCK TABLES` 和 `UNLOCK TABLES`](/sql-statements/sql-statement-lock-tables-and-unlock-tables.md)
       - [`MODIFY COLUMN`](/sql-statements/sql-statement-modify-column.md)
       - [`PREPARE`](/sql-statements/sql-statement-prepare.md)
       - [`RECOVER TABLE`](/sql-statements/sql-statement-recover-table.md)
@@ -617,6 +648,7 @@
       - [集合运算](/functions-and-operators/set-operators.md)
       - [下推到 TiKV 的表达式列表](/functions-and-operators/expressions-pushed-down.md)
       - [TiDB 特有的函数](/functions-and-operators/tidb-functions.md)
+      - [Oracle 与 TiDB 函数和语法差异对照](/oracle-functions-to-tidb.md)
     - [聚簇索引](/clustered-indexes.md)
     - [约束](/constraints.md)
     - [生成列](/generated-columns.md)
@@ -719,32 +751,6 @@
         - [分享会话](/dashboard/dashboard-session-share.md)
         - [配置 SSO 登录](/dashboard/dashboard-session-sso.md)
       - [常见问题](/dashboard/dashboard-faq.md)
-  - CLI
-    - [tikv-ctl](/tikv-control.md)
-    - [pd-ctl](/pd-control.md)
-    - [tidb-ctl](/tidb-control.md)
-    - [pd-recover](/pd-recover.md)
-    - [binlog-ctl](/tidb-binlog/binlog-control.md)
-  - 命令行参数
-    - [tidb-server](/command-line-flags-for-tidb-configuration.md)
-    - [tikv-server](/command-line-flags-for-tikv-configuration.md)
-    - [tiflash-server](/tiflash/tiflash-command-line-flags.md)
-    - [pd-server](/command-line-flags-for-pd-configuration.md)
-  - 配置文件参数
-    - [tidb-server](/tidb-configuration-file.md)
-    - [tikv-server](/tikv-configuration-file.md)
-    - [tiflash-server](/tiflash/tiflash-configuration.md)
-    - [pd-server](/pd-configuration-file.md)
-  - [系统变量](/system-variables.md)
-  - 存储引擎
-    - TiKV
-      - [TiKV 简介](/tikv-overview.md)
-      - [RocksDB 简介](/storage-engine/rocksdb-overview.md)
-      - [Titan 简介](/storage-engine/titan-overview.md)
-      - [Titan 配置说明](/storage-engine/titan-configuration.md)
-    - TiFlash
-      - [TiFlash 简介](/tiflash/tiflash-overview.md)
-      - [使用 TiFlash](/tiflash/use-tiflash.md)
   - [遥测](/telemetry.md)
   - [错误码](/error-codes.md)
   - [通过拓扑 label 进行副本调度](/schedule-replicas-by-topology-labels.md)
@@ -763,10 +769,13 @@
   - [版本发布时间线](/releases/release-timeline.md)
   - [TiDB 版本规则](/releases/versioning.md)
   - v5.4
+    - [5.4.3](/releases/release-5.4.3.md)
     - [5.4.2](/releases/release-5.4.2.md)
     - [5.4.1](/releases/release-5.4.1.md)
     - [5.4.0](/releases/release-5.4.0.md)
   - v5.3
+    - [5.3.4](/releases/release-5.3.4.md)
+    - [5.3.3](/releases/release-5.3.3.md)
     - [5.3.2](/releases/release-5.3.2.md)
     - [5.3.1](/releases/release-5.3.1.md)
     - [5.3.0](/releases/release-5.3.0.md)
@@ -777,6 +786,7 @@
     - [5.2.1](/releases/release-5.2.1.md)
     - [5.2.0](/releases/release-5.2.0.md)
   - v5.1
+    - [5.1.5](/releases/release-5.1.5.md)
     - [5.1.4](/releases/release-5.1.4.md)
     - [5.1.3](/releases/release-5.1.3.md)
     - [5.1.2](/releases/release-5.1.2.md)

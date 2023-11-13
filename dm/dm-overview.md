@@ -105,3 +105,39 @@ DM 支持对源数据的分库分表进行合并迁移，但有一些使用限�
 + GBK 字符集兼容性限制
 
     - DM 在 v5.4.0 之前不支持将 `charset=GBK` 的表迁移到 TiDB。
+
+## Contributing
+
+欢迎参与 DM 开源项目并万分感谢您的贡献，可以查看 [CONTRIBUTING.md](https://github.com/pingcap/tiflow/blob/master/dm/CONTRIBUTING.md) 了解更多信息。
+
+## 社区技术支持
+
+您可以通过在线文档了解和使用 DM，如果您遇到无法解决的问题，可以选择以下途径之一联系我们。
+
+- [GitHub](https://github.com/pingcap/tiflow/tree/master/dm)
+- [AskTUG](https://asktug.com/tags/dm)
+
+## License
+
+DM 遵循 Apache 2.0 协议，在 [LICENSE](https://github.com/pingcap/tiflow/blob/master/LICENSE) 了解更多信息。
+
+## 版本变更说明
+
+在 v5.4 之前，DM 工具的文档独立于 TiDB 文档。要访问这些早期版本的 DM 文档，请点击以下链接：
+
+- [DM v5.3 文档](https://docs.pingcap.com/zh/tidb-data-migration/v5.3)
+- [DM v2.0 文档](https://docs.pingcap.com/zh/tidb-data-migration/v2.0/)
+- [DM v1.0 文档](https://docs.pingcap.com/zh/tidb-data-migration/v1.0/)
+
+> **注意：**
+>
+> - DM 的 GitHub 代码仓库已于 2021 年 10 月迁移至 [pingcap/tiflow](https://github.com/pingcap/tiflow/tree/master/dm)。如有任何关于 DM 的问题，请在 `pingcap/tiflow` 仓库提交，以获得后续支持。
+> - 在较早版本中（v1.0 和 v2.0），DM 采用独立于 TiDB 的版本号。从 DM v5.3 起，DM 采用与 TiDB 相同的版本号。DM v2.0 的下一个版本为 DM v5.3。DM v2.0 到 v5.3 无兼容性变更，升级过程与正常升级无差异。
+
+要快速了解 DM 的原理架构、适用场景，建议先观看下面的培训视频。注意本视频只作为学习参考，具体操作步骤和最新功能，请以文档内容为准。
+
+<video src="https://download.pingcap.com/docs-cn%2FLesson20_dm_part01.mp4" width="100%" height="100%" controls="controls" poster="https://download.pingcap.com/docs-cn/poster_lesson20.png"></video>
+
+<video src="https://download.pingcap.com/docs-cn/Lesson20_dm_part02.mp4" width="100%" height="100%" controls="controls" poster="https://download.pingcap.com/docs-cn/poster_lesson20.png"></video>
+
+<video src="https://download.pingcap.com/docs-cn/Lesson20_part03.mp4" width="100%" height="100%" controls="controls" poster="https://download.pingcap.com/docs-cn/poster_lesson20.png"></video>

@@ -72,7 +72,6 @@ server_configs:
     server.grpc-compression-type: gzip
   pd:
     replication.location-labels:  ["dc","zone","rack","host"]
-    schedule.tolerant-size-ratio: 20.0
 
 pd_servers:
   - host: 10.63.10.10
@@ -167,12 +166,6 @@ tikv_servers:
     server.grpc-compression-type: gzip
     ```
 
-- 调整 PD balance 缓冲区大小，提高 PD 容忍度，因为 PD 会根据节点情况计算出各个对象的 score 作为调度的依据，当两个 store 的 leader 或 Region 的得分差距小于指定倍数的 Region size 时，PD 会认为此时 balance 达到均衡状态。
-
-    ```
-    schedule.tolerant-size-ratio: 20.0
-    ```
-
 - 异地 DC3 TiKV 节点网络优化，单独修改异地 TiKV 此参数，拉长异地副本参与选举的时间，尽量避免异地 TiKV 中的副本参与 Raft 选举。
 
     ```
@@ -180,7 +173,7 @@ tikv_servers:
     raftstore.raft-max-election-timeout-ticks: 1200
     ```
 
-- 调度设置。在集群启动后，通过 `tiup ctl pd` 工具进行调度策略修改。修改 TiKV Raft 副本数按照安装时规划好的副本数进行设置，在本例中为 5 副本。
+- 调度设置。在集群启动后，通过 `tiup ctl:<cluster-version> pd` 工具进行调度策略修改。修改 TiKV Raft 副本数按照安装时规划好的副本数进行设置，在本例中为 5 副本。
 
     ```
     config set max-replicas 5

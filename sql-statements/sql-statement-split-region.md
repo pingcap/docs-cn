@@ -220,6 +220,12 @@ SPLIT TABLE t INDEX idx3 BETWEEN ("2010-01-01 00:00:00", "a") AND ("2010-01-01 0
 
 该语句在 a 列时间前缀相同的情况下，根据 b 列的值从 a~z 切了 10 个 Region。如果指定的 a 列的值不相同，那么可能不会用到 b 列的值。
 
+如果表的主键为非聚簇索引 [`NONCLUSTERED`](/clustered-indexes.md)，切分 Region 时需要用反引号 ``` ` ``` 来转义 `PRIMARY` 关键字。例如：
+
+```sql
+SPLIT TABLE t INDEX `PRIMARY` BETWEEN (-9223372036854775808) AND (9223372036854775807) REGIONS 16;
+```
+
 #### 不均匀切分
 
 索引数据也可以根据用户指定的索引值来做切分。

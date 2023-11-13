@@ -19,7 +19,7 @@ TiKV Control（以下简称 tikv-ctl）是 TiKV 的命令行工具，用于管�
 {{< copyable "shell-regular" >}}
 
 ```bash
-tiup ctl tikv
+tiup ctl:<cluster-version> tikv
 ```
 
 ```
@@ -45,18 +45,18 @@ FLAGS:
     -V, --version                 Prints version information
 
 OPTIONS:
-        --ca-path <ca_path>              Set the CA certificate path
-        --cert-path <cert_path>          Set the certificate path
-        --config <config>                Set the config for rocksdb
-        --db <db>                        Set the rocksdb path
+        --ca-path <ca-path>              Set the CA certificate path
+        --cert-path <cert-path>          Set the certificate path
+        --config <config>                TiKV config path, by default it's <deploy-dir>/conf/tikv.toml
+        --data-dir <data-dir>            TiKV data directory path, check <deploy-dir>/scripts/run.sh to get it
         --decode <decode>                Decode a key in escaped format
         --encode <encode>                Encode a key in escaped format
         --to-hex <escaped-to-hex>        Convert an escaped key to hex key
         --to-escaped <hex-to-escaped>    Convert a hex key to escaped key
         --host <host>                    Set the remote host
-        --key-path <key_path>            Set the private key path
+        --key-path <key-path>            Set the private key path
+        --log-level <log-level>          Set the log level [default:warn]
         --pd <pd>                        Set the address of pd
-        --raftdb <raftdb>                Set the raft rocksdb path
 
 SUBCOMMANDS:
     bad-regions           Get all regions with corrupt raft
@@ -88,7 +88,7 @@ SUBCOMMANDS:
     unsafe-recover        Unsafely recover the cluster when the majority replicas are failed
 ```
 
-你可以在 `tiup ctl tikv` 后面再接上相应的参数与子命令。
+你可以在 `tiup ctl:<cluster-version> tikv` 后面再接上相应的参数与子命令。
 
 ## 通用参数
 
@@ -114,7 +114,12 @@ tikv-ctl 提供以下两种运行模式：
     store:"127.0.0.1:20160" compact db:KV cf:default range:([], []) success!
     ```
 
-- **本地模式**。通过 `--data-dir` 选项来指定本地 TiKV 数据的目录路径。在此模式下，需要停止正在运行的 TiKV 实例。
+- **本地模式**：
+
+    - 通过 `--data-dir` 选项来指定本地 TiKV 数据的目录路径。
+    - 通过 `--config` 选项来指定本地 TiKV 配置文件到路径。
+
+  在此模式下，需要停止正在运行的 TiKV 实例。
 
 以下如无特殊说明，所有命令都同时支持这两种模式。
 
@@ -281,30 +286,36 @@ middle_key_by_approximate_size:
 
 ### 手动 compact 单个 TiKV 的数据
 
-`compact` 命令可以对单个 TiKV 进行手动 compact。如果指定 `--from` 和 `--to` 选项，那么它们的参数也是 escaped raw key 形式的。
+`compact` 命令可以对单个 TiKV 进行手动 compact。
 
-- `--host` 参数可以指定要 compact 的 TiKV。
-- `-d` 参数可以指定要 compact 的 RocksDB，有 `kv` 和 `raft` 参数值可以选。
-- `--data-dir` 参数指定本地 TiKV 数据的目录路径。
-- `--threads` 参数可以指定 compact 的并发数，默认值是 8。一般来说，并发数越大，compact 的速度越快，但是也会对服务造成影响，所以需要根据情况选择合适的并发数。
-- `--bottommost` 参数可以指定 compact 是否包括最下层的文件。可选值为 `default`、`skip` 和 `force`，默认为 `default`。
+- `--from` 和 `--to` 选项以 escaped raw key 形式指定 compact 的范围。如果没有设置，表示 compact 整个 TiKV。
+- `--region` 选项指定 compact Region 的范围。如果设置，则 `--from` 和 `--to` 选项会被忽略。
+- `-c` 选项指定 column family 名称，默认值为 `default`，可选值为 `default`、`lock` 和 `write`。
+- `-d` 选项指定要 compact 的 RocksDB，默认值为 `kv`，可选值为 `kv` 和 `raft`。
+- `--threads` 选项可以指定 compact 的并发数，默认值是 8。一般来说，并发数越大，compact 的速度越快，但是也会对服务造成影响，所以需要根据情况选择合适的并发数。
+- `--bottommost` 选项可以指定 compact 是否包括最下层的文件。可选值为 `default`、`skip` 和 `force`，默认为 `default`。
     - `default` 表示只有开启了 Compaction Filter 时 compact 才会包括最下层文件。
     - `skip` 表示 compact 不包括最下层文件。
     - `force` 表示 compact 总是包括最下层文件。
 
-{{< copyable "shell-regular" >}}
+- 在本地模式 compact data，执行如下命令：
 
-```shell
-tikv-ctl --data-dir /path/to/tikv compact -d kv
-```
+    ```shell
+    tikv-ctl --data-dir /path/to/tikv compact -d kv
+    ```
 
-```
-success!
-```
+- 在远程模式 compact data，执行如下命令：
+
+    ```shell
+    tikv-ctl --host ip:port compact -d kv
+    ```
 
 ### 手动 compact 整个 TiKV 集群的数据
 
-`compact-cluster` 命令可以对整个 TiKV 集群进行手动 compact。该命令参数的含义和使用与 `compact` 命令一样。
+`compact-cluster` 命令可以对整个 TiKV 集群进行手动 compact。该命令参数的含义和使用与 `compact` 命令一样，唯一的区别如下：
+
+- 使用 `compact-cluster` 命令时，通过 `--pd` 指定 PD 所在的地址，以便 `tikv-ctl` 可以找到集群中的所有 TiKV 节点作为 compact 目标。
+- 使用 `compact` 命令时，通过 `--data-dir` 或者 `--host` 指定单个 TiKV 作为 compact 目标。
 
 ### 设置一个 Region 副本为 tombstone 状态
 
@@ -638,7 +649,7 @@ TiKV 中损坏的 SST 文件会导致 TiKV 进程崩溃。为了清理掉这些�
 > 执行此命令前，请保证关闭当前运行的 TiKV 实例。
 
 ```bash
-$ tikv-ctl bad-ssts --data-dir </path/to/tikv> --pd <endpoint>
+$ tikv-ctl --data-dir </path/to/tikv> bad-ssts --pd <endpoint>
 ```
 
 ```bash

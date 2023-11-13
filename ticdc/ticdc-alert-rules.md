@@ -33,7 +33,7 @@ summary: 了解 TiCDC 集群监控报警规则以及处理方法。
 
 * 规则描述：
 
-    TiCDC 某个同步任务的 resolved ts 延迟超过 10 分钟。
+    TiCDC 某个同步任务的 resolved ts 延迟超过 5 分钟。
 
 * 处理方法：
 

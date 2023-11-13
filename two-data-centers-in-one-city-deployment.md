@@ -9,7 +9,7 @@ summary: 了解同城使用两中心自适应同步模式部署方式。
 
 ## 简介
 
-TiDB 在 on-premises 部署的场景下，通常采用多中心部署方案，以保证高可用和容灾能力。多中心部署方案包括两地三中心部署模式、同城三中心部署模式等多种部署模式。本文介绍同城两中心部署方案，即在一座城市部署两个数据中心，成本更低，同样能满足高可用和容灾要求。该部署方案采用自适应同步模式，即 Data Replication Auto Synchronous，简称 DR Auto-Sync。
+TiDB 在本地部署的场景下，通常采用多中心部署方案，以保证高可用和容灾能力。多中心部署方案包括两地三中心部署模式、同城三中心部署模式等多种部署模式。本文介绍同城两中心部署方案，即在一座城市部署两个数据中心，成本更低，同样能满足高可用和容灾要求。该部署方案采用自适应同步模式，即 Data Replication Auto Synchronous，简称 DR Auto-Sync。
 
 同城两中心部署方案下，两个数据中心距离在 50 km 以内，通常位于同一个城市或两个相邻城市（例如北京和廊坊），数据中心间的网络连接延迟小于 1.5 ms，带宽大于 10 Gbps。
 
@@ -20,7 +20,7 @@ TiDB 在 on-premises 部署的场景下，通常采用多中心部署方案，�
 下图为集群部署架构图，具体如下：
 
 - 集群采用同城两种中心部署方案，主数据中心 IDC1 在城东，从数据中心 IDC2 在城西。
-- 集群采用推荐的 4 副本模式，其中 IDC1 中放 2 个 Voter 副本，IDC2 中放 1 个 Voter 副本 + 1 个 Learner 副本；TiKV 按机房的实际情况打上合适的 Label。
+- 集群采用推荐的 6 副本模式，其中 IDC1 中放 3 个 Voter 副本，IDC2 中放 2 个 Follower 副本 + 1 个 Learner 副本；TiKV 按机房的实际情况打上合适的 Label。
 - 副本间通过 Raft 协议保证数据的一致性和高可用，对用户完全透明。
 
 ![同城两中心集群架构图](/media/two-dc-replication-1.png)
@@ -68,10 +68,16 @@ tikv_servers:
       server.labels: { zone: "east", rack: "east-2", host: "31" }
   - host: 10.63.10.32
     config:
-      server.labels: { zone: "west", rack: "west-1", host: "32" }
+      server.labels: { zone: "east", rack: "east-3", host: "32" }
   - host: 10.63.10.33
     config:
-      server.labels: { zone: "west", rack: "west-2", host: "33" }
+      server.labels: { zone: "west", rack: "west-1", host: "33" }
+  - host: 10.63.10.34
+    config:
+      server.labels: { zone: "west", rack: "west-2", host: "34" }
+  - host: 10.63.10.35
+    config:
+      server.labels: { zone: "west", rack: "west-3", host: "35" }
 monitoring_servers:
   - host: 10.63.10.60
 grafana_servers:
@@ -82,7 +88,7 @@ alertmanager_servers:
 
 ### Placement Rules 规划
 
-为了按照规划的集群拓扑进行部署，你需要使用 [Placement Rules](/configure-placement-rules.md) 来规划集群副本的放置位置。以 4 副本（2 Voter 副本在主数据中心，1 Voter 和 1 Learner 在从数据中心）的部署方式为例，可使用 Placement Rules 进行如下副本配置：
+为了按照规划的集群拓扑进行部署，你需要使用 [Placement Rules](/configure-placement-rules.md) 来规划集群副本的放置位置。以 6 副本（3 Voter 副本在主数据中心，2 Follower 和 1 Learner 在从数据中心）的部署方式为例，可使用 Placement Rules 进行如下副本配置：
 
 ```
 cat rule.json
@@ -98,7 +104,7 @@ cat rule.json
         "start_key": "",
         "end_key": "",
         "role": "voter",
-        "count": 2,
+        "count": 3,
         "label_constraints": [
           {
             "key": "zone",
@@ -119,8 +125,8 @@ cat rule.json
         "id": "zone-west",
         "start_key": "",
         "end_key": "",
-        "role": "voter",
-        "count": 1,
+        "role": "follower",
+        "count": 2,
         "label_constraints": [
           {
             "key": "zone",
@@ -188,7 +194,7 @@ cat default.json
         "start_key": "",
         "end_key": "",
         "role": "voter",
-        "count": 3
+        "count": 5
       }
     ]
   }
@@ -210,8 +216,8 @@ cat default.json
     label-key = "zone"
     primary = "east"
     dr = "west"
-    primary-replicas = 2
-    dr-replicas = 1
+    primary-replicas = 3
+    dr-replicas = 2
     wait-store-timeout = "1m"
     wait-sync-timeout = "1m"
     ```
@@ -225,8 +231,8 @@ cat default.json
     config set replication-mode dr-auto-sync label-key zone
     config set replication-mode dr-auto-sync primary east
     config set replication-mode dr-auto-sync dr west
-    config set replication-mode dr-auto-sync primary-replicas 2
-    config set replication-mode dr-auto-sync dr-replicas 1
+    config set replication-mode dr-auto-sync primary-replicas 3
+    config set replication-mode dr-auto-sync dr-replicas 2
     ```
 
 配置项说明：

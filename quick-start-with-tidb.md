@@ -22,7 +22,7 @@ summary: 了解如何快速上手使用 TiDB 数据库。
 
 要快速了解 TiUP 的基本功能、使用 TiUP 快速搭建 TiDB 集群的方法与连接 TiDB 集群并执行 SQL 的方法，建议先观看下面的培训视频（时长 15 分钟）。注意本视频只作为学习参考，如需了解 [TiUP](/tiup/tiup-overview.md) 的具体使用方法和 [TiDB 快速上手具体操作步骤](#部署本地测试集群)，请以文档内容为准。
 
-<video src="https://tidb-docs.s3.us-east-2.amazonaws.com/compressed+-+Lesson+7.mp4" width="600px" height="450px" controls="controls" poster="https://tidb-docs.s3.us-east-2.amazonaws.com/thumbnail+-+lesson+7.png"></video>
+<video src="https://download.pingcap.com/docs-cn%2FLesson07_quick_start.mp4" width="100%" height="100%" controls="controls" poster="https://download.pingcap.com/docs-cn/poster_lesson7.png"></video>
 
 ## 部署本地测试集群
 
@@ -82,10 +82,10 @@ TiDB 是一个分布式系统。最基础的 TiDB 测试集群通常由 2 个 Ti
         {{< copyable "shell-regular" >}}
 
         ```shell
-        tiup playground v5.4.2 --db 2 --pd 3 --kv 3
+        tiup playground v5.4.3 --db 2 --pd 3 --kv 3
         ```
 
-        上述命令会在本地下载并启动某个版本的集群（例如 v5.4.2）。最新版本可以通过执行 `tiup list tidb` 来查看。运行结果将显示集群的访问方式：
+        上述命令会在本地下载并启动某个版本的集群（例如 v5.4.3）。最新版本可以通过执行 `tiup list tidb` 来查看。运行结果将显示集群的访问方式：
 
         ```log
         CLUSTER START SUCCESSFULLY, Enjoy it ^-^
@@ -199,10 +199,10 @@ TiDB 是一个分布式系统。最基础的 TiDB 测试集群通常由 2 个 Ti
         {{< copyable "shell-regular" >}}
 
         ```shell
-        tiup playground v5.4.2 --db 2 --pd 3 --kv 3
+        tiup playground v5.4.3 --db 2 --pd 3 --kv 3
         ```
 
-        上述命令会在本地下载并启动某个版本的集群（例如 v5.4.2）。最新版本可以通过执行 `tiup list tidb` 来查看。运行结果将显示集群的访问方式：
+        上述命令会在本地下载并启动某个版本的集群（例如 v5.4.3）。最新版本可以通过执行 `tiup list tidb` 来查看。运行结果将显示集群的访问方式：
 
         ```log
         CLUSTER START SUCCESSFULLY, Enjoy it ^-^

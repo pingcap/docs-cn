@@ -50,17 +50,17 @@ LINES TERMINATED BY '\n'
 
 ```sql
 CREATE TABLE trips (
-    ->  trip_id bigint NOT NULL PRIMARY KEY AUTO_INCREMENT,
-    ->  duration integer not null,
-    ->  start_date datetime,
-    ->  end_date datetime,
-    ->  start_station_number integer,
-    ->  start_station varchar(255),
-    ->  end_station_number integer,
-    ->  end_station varchar(255),
-    ->  bike_number varchar(255),
-    ->  member_type varchar(255)
-    -> );
+    trip_id bigint NOT NULL PRIMARY KEY AUTO_INCREMENT,
+    duration integer not null,
+    start_date datetime,
+    end_date datetime,
+    start_station_number integer,
+    start_station varchar(255),
+    end_station_number integer,
+    end_station varchar(255),
+    bike_number varchar(255),
+    member_type varchar(255)
+    );
 ```
 
 ```
@@ -96,16 +96,17 @@ LOAD DATA LOCAL INFILE '/mnt/evo970/data-sets/bikeshare-data/2017Q4-capitalbikes
 
 ## MySQL 兼容性
 
-除 `LOAD DATA...REPLACE INTO` 语法 [#24515](https://github.com/pingcap/tidb/issues/24515) 之外，`LOAD DATA` 语句应该完全兼容 MySQL。若发现任何兼容性差异，请在 GitHub 上提 [issue](https://github.com/pingcap/tidb/issues/new/choose)。
+除 `LOAD DATA...REPLACE INTO` 语法 [#24515](https://github.com/pingcap/tidb/issues/24515) 之外，`LOAD DATA` 语句语法上兼容 MySQL。若发现任何语法兼容性差异，请在 GitHub 上提 [issue](https://github.com/pingcap/tidb/issues/new/choose)。
 
 > **注意：**
 >
-> 在 TiDB 的早期版本中，`LOAD DATA` 语句每 20000 行进行一次提交。新版本的 TiDB 默认在一个事务中提交所有行。从 TiDB 4.0 及以前版本升级后，可能出现 `ERROR 8004 (HY000) at line 1: Transaction is too large, size: 100000058` 错误。
->
-> 要解决该问题，建议调大 `tidb.toml` 文件中的 `txn-total-size-limit` 值。如果无法增加此限制，还可以将 [`tidb_dml_batch_size`](/system-variables.md#tidb_dml_batch_size) 的值设置为 `20000` 来恢复升级前的行为。
+> - 在 TiDB 的早期版本中，`LOAD DATA` 语句每 20000 行进行一次提交。新版本的 TiDB 默认在一个事务中提交所有行。从 TiDB 4.0 及以前版本升级后，可能出现 `ERROR 8004 (HY000) at line 1: Transaction is too large, size: 100000058` 错误。要解决该问题，建议调大 `tidb.toml` 文件中的 `txn-total-size-limit` 值。如果无法增加此限制，还可以将 [`tidb_dml_batch_size`](/system-variables.md#tidb_dml_batch_size) 的值设置为 `20000` 来恢复升级前的行为。
+> - 无论以多少行为一个事务提交，`LOAD DATA` 都不会被显式事务中的 [`ROLLBACK`](/sql-statements/sql-statement-rollback.md) 语句回滚。
+> - `LOAD DATA` 语句始终以乐观事务模式执行，不受 TiDB 事务模式设置的影响。
 
 ## 另请参阅
 
 * [INSERT](/sql-statements/sql-statement-insert.md)
 * [乐观事务模型](/optimistic-transaction.md)
+* [悲观事务模式](/pessimistic-transaction.md)
 * [TiDB Lightning](/tidb-lightning/tidb-lightning-overview.md)

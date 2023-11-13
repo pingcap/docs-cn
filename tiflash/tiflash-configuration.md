@@ -8,7 +8,7 @@ title: TiFlash 配置参数
 
 ## PD 调度参数
 
-可通过 [pd-ctl](/pd-control.md) 调整参数。如果你使用 TiUP 部署，可以用 `tiup ctl pd` 代替 `pd-ctl -u <pd_ip:pd_port>` 命令。
+可通过 [pd-ctl](/pd-control.md) 调整参数。如果你使用 TiUP 部署，可以用 `tiup ctl:<cluster-version> pd` 代替 `pd-ctl -u <pd_ip:pd_port>` 命令。
 
 - [`replica-schedule-limit`](/pd-configuration-file.md#replica-schedule-limit)：用来控制 replica 相关 operator 的产生速度（涉及到下线、补副本的操作都与该参数有关）
 
@@ -59,11 +59,8 @@ tmp_path = "/tidb-data/tiflash-9000/tmp"
 
 ## 存储路径相关配置，从 v4.0.9 开始生效
 [storage]
-    ## 该参数从 v5.2.0 开始废弃，请使用 `[storage.io_rate_limit]` 相关配置
-    # bg_task_io_rate_limit = 0
 
     ## DTFile 储存文件格式
-    ## * format_version = 1 老旧文件格式，已废弃
     ## * format_version = 2 默认文件格式
     ## * format_version = 3 新文件格式，具有更完善的检验功能
     # format_version = 2
@@ -209,7 +206,7 @@ tmp_path = "/tidb-data/tiflash-9000/tmp"
 
 ### 多盘部署
 
-TiFlash 支持单节点多盘部署。如果你的部署节点上有多块硬盘，可以通过以下的方式配置参数，提高节点的硬盘 I/O 利用率。TiUP 中参数配置格式参照[详细 TiFlash 配置模版](https://github.com/pingcap/docs-cn/blob/master/config-templates/complex-tiflash.yaml)。
+TiFlash 支持单节点多盘部署。如果你的部署节点上有多块硬盘，可以通过以下的方式配置参数，提高节点的硬盘 I/O 利用率。TiUP 中参数配置格式参照[详细 TiFlash 配置模版](https://github.com/pingcap/docs/blob/master/config-templates/complex-tiflash.yaml)。
 
 #### TiDB 集群版本低于 v4.0.9
 

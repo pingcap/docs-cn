@@ -688,7 +688,7 @@ sudo yum -y install numactl
 1. 使用 TiUP 安装 TiDB 集群，参考[使用 TiUP 部署 TiDB 集群](/production-deployment-using-tiup.md)完成 `tidb-test` 集群的部署。如果本地已有集群，可跳过这一步。
 
     ```bash
-    tiup cluster deploy tidb-test v5.4.2 ./topology.yaml --user root [-p] [-i /home/root/.ssh/gcp_rsa]
+    tiup cluster deploy tidb-test v5.4.3 ./topology.yaml --user root [-p] [-i /home/root/.ssh/gcp_rsa]
     ```
 
 2. 执行 `tiup cluster exec` 命令，以 `sudo` 权限在 `tidb-test` 集群所有目标主机上安装 NUMA。

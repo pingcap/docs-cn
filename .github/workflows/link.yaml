@@ -13,7 +13,7 @@ jobs:
       - uses: actions/checkout@v2
 
       - name: Link Checker
-        uses: lycheeverse/lychee-action@v1.1.1
+        uses: lycheeverse/lychee-action@v1.6.1
         with:
           # For parameter description, see https://github.com/lycheeverse/lychee#commandline-parameters
           args: -E --exclude-mail -v -i -n -a 429 -t 45 --exclude-file ./.github/exclude-links.txt -- **/*.md *.md
@@ -21,11 +21,10 @@ jobs:
           GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
 
       - name: Create Issue From File
-        uses: peter-evans/create-issue-from-file@v3
+        uses: peter-evans/create-issue-from-file@v4
         with:
           title: Broken Link Detected
-          content-filepath: ./lychee/out.md
-          assignees: TomShawn
+          content-filepath: out.md
 
 #      - name: Fail if there were link errors
 #        run: exit ${{ steps.lychee.outputs.exit_code }}

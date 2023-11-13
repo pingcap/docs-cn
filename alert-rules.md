@@ -227,7 +227,7 @@ summary: TiDB 集群中各组件的报警规则详解。
 
 * 报警规则：
 
-    `(sum(pd_regions_status{type="miss_peer_region_count"}) by (instance)  > 100) and (sum(etcd_server_is_leader) by (instance) > 0)`
+    `(sum(pd_regions_status{type="miss-peer-region-count"}) by (instance)  > 100) and (sum(etcd_server_is_leader) by (instance) > 0)`
 
 * 规则描述：
 
@@ -236,7 +236,7 @@ summary: TiDB 集群中各组件的报警规则详解。
 * 处理方法：
 
     * 查看是否有 TiKV 宕机或在做下线操作，尝试定位问题产生的原因。
-    * 观察 region health 面板，查看 `miss_peer_region_count` 是否在不断减少。
+    * 观察 region health 面板，查看 `miss-peer-region-count` 是否在不断减少。
 
 ### 警告级别报警项
 
@@ -397,6 +397,21 @@ summary: TiDB 集群中各组件的报警规则详解。
 
     * 检查 store 是否空间不足。
     * 根据 label 配置（如果有这个配置的话）来检查是否有可以补副本的 store。
+
+#### `PD_cluster_slow_tikv_nums`
+
+* 报警规则：
+
+    `sum(pd_cluster_status{type="store_slow_count"}) by (instance) > 0) and (sum(etcd_server_is_leader) by (instance) > 0`
+
+* 规则描述：
+
+    某一个 TiKV 被检测为慢节点。慢节点的检测由 TiKV `raftstore.inspect-interval` 参数控制，参见 [TiKV 配置文件描述](/tikv-configuration-file.md#inspect-interval)。
+
+* 处理方法：
+
+    * 检查 store 性能是否异常
+    * 调大 TiKV `raftstore.inspect-interval` 参数，提高延迟检测的超时上限
 
 ## TiKV 报警规则
 
@@ -659,7 +674,7 @@ summary: TiDB 集群中各组件的报警规则详解。
 
 * 报警规则：
 
-    `histogram_quantile(0.99, sum(rate(tikv_scheduler_command_duration_seconds_bucket[1m])) by (le, instance, type)  / 1000) > 1`
+    `histogram_quantile(0.99, sum(rate(tikv_scheduler_command_duration_seconds_bucket[1m])) by (le, instance, type)) > 1`
 
 * 规则描述：
 
@@ -771,7 +786,7 @@ summary: TiDB 集群中各组件的报警规则详解。
 
 * 报警规则：
 
-    `node_filesystem_avail{fstype=~"(ext.|xfs)", mountpoint!~"/boot"} / node_filesystem_size{fstype=~"(ext.|xfs)", mountpoint!~"/boot"} * 100 <= 20`
+    `node_filesystem_avail_bytes{fstype=~"(ext.|xfs)", mountpoint!~"/boot"} / node_filesystem_size_bytes{fstype=~"(ext.|xfs)", mountpoint!~"/boot"} * 100 <= 20`
 
 * 规则描述：
 
@@ -816,7 +831,7 @@ summary: TiDB 集群中各组件的报警规则详解。
 
 * 报警规则：
 
-    `(((node_memory_MemTotal-node_memory_MemFree-node_memory_Cached)/(node_memory_MemTotal)*100)) >= 80`
+    `(((node_memory_MemTotal_bytes-node_memory_MemFree_bytes-node_memory_Cached_bytes)/(node_memory_MemTotal_bytes)*100)) >= 80`
 
 * 规则描述：
 

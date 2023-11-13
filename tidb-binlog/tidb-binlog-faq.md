@@ -29,6 +29,7 @@ Drainer 同步帐号需要有如下权限：
 * Execute
 * Index
 * Select
+* Create View
 
 ## Pump 磁盘快满了怎么办？
 

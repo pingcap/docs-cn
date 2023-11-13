@@ -88,6 +88,13 @@ TiKV 配置文件比命令行参数支持更多的选项。你可以在 [etc/con
     + 如果把此参数设置为非 `0` 的值，TiKV 最多会保留 `max-backups` 中指定的数量的旧日志文件。比如，如果该值设置为 `7`，TiKV 最多会保留 7 个旧的日志文件。
 + 默认值：0
 
+### `pd.enable-forwarding` <span class="version-mark">从 v5.0.0 版本开始引入</span>
+
++ 控制 TiKV 中的 PD client 在疑似网络隔离的情况下是否通过 follower 将请求转发给 leader。
++ 默认值：false
++ 如果确认环境存在网络隔离的可能，开启这个参数可以减少服务不可用的窗口期。
++ 如果无法准确判断隔离、网络中断、宕机等情况，这个机制存在误判情况从而导致可用性、性能降低。如果网络中从未发生过网络故障，不推荐开启此选项。
+
 ## server
 
 服务器相关的配置项。
@@ -198,6 +205,11 @@ TiKV 配置文件比命令行参数支持更多的选项。你可以在 [etc/con
 
 + 该配置项指定 TiKV 中发送 Raft 消息的缓冲区大小。如果存在消息发送不及时导致缓冲区满、消息被丢弃的情况，可以适当调大该配置项值以提升系统运行的稳定性。
 + 默认值：8192
+
+### `forward-max-connections-per-address` <span class="version-mark">从 v5.0.0 版本开始引入</span>
+
++ 设置服务与转发请求的连接池大小。设置过小会影响请求的延迟和负载均衡。
++ 默认值：4
 
 ## readpool.unified
 
@@ -1504,6 +1516,16 @@ Raft Engine 相关的配置项。
 
 + 在集群资源占用率较高的情况下，是否允许 BR 自动限制备份使用的资源，减少对集群的影响。详情见[自动调节](/br/br-auto-tune.md)。
 + 默认值：true
+
+### `s3-multi-part-size` <span class="version-mark">从 v5.3.2 版本开始引入</span>
+
+> **注意：**
+>
+> 引入该配置项是为了解决备份期间遇到的 S3 限流导致备份失败的问题。该问题已通过[优化 BR 备份数据存储的目录结构](https://docs.pingcap.com/zh/tidb/stable/backup-and-restore-design#备份文件布局)得到解决。因此，该配置项自 v6.1.1 起开始废弃，不再推荐使用。
+
++ 备份阶段 S3 分块上传的块大小。可通过调整该参数来控制备份时发往 S3 的请求数量。
++ TiKV 备份数据到 S3 时，如果备份文件大于该配置项的值，会自动进行[分块上传](https://docs.aws.amazon.com/zh_cn/AmazonS3/latest/API/API_UploadPart.html)。根据压缩率的不同，96 MiB Region 产生的备份文件大约在 10 MiB~30 MiB 之间。
++ 默认值：5MiB
 
 ## cdc
 

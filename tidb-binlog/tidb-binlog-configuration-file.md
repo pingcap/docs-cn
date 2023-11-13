@@ -316,6 +316,7 @@ tbl-name = "~^a.*"
 * `port`：如果没有设置，会尝试检查环境变量 `MYSQL_PORT`，默认值为 `3306`。
 * `user`：如果没有设置，会尝试检查环境变量 `MYSQL_USER`，默认值为 `"root"`。
 * `password`：如果没有设置，会尝试检查环境变量 `MYSQL_PSWD`，默认值为 `""`。
+* `read-timeout`：指定下游数据库连接的 IO 读取超时时间，默认值为 `1m`。如果 drainer 在一些耗时长的 DDL 上不断失败，你可以将这个变量设置为更大的值。
 
 #### file
 

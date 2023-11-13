@@ -31,6 +31,8 @@ title: PD 重要监控指标详解
 - Current ID allocation：当前可分配 ID 的最大值
 - Region label isolation level：不同 label 所在的 level 的 Region 数量
 - Label distribution：集群中 TiKV 节点的 label 分布情况
+- Store Limit：Store 的调度限流状态
+
 ![PD Dashboard - Cluster metrics](/media/pd-dashboard-cluster-v4.png)
 
 ## Operator
@@ -102,7 +104,6 @@ title: PD 重要监控指标详解
 - Filter target：尝试选择 Store 作为调度 taget 时没有通过 Filter 的计数
 - Filter source：尝试选择 Store 作为调度 source 时没有通过 Filter 的计数
 - Balance Direction：Store 被选作调度 target 或 source 的次数
-- Store Limit：Store 的调度限流状态
 
 ![PD Dashboard - Scheduler metrics](/media/pd-dashboard-scheduler-v4.png)
 

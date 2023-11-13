@@ -4,7 +4,7 @@ title: 统计信息简介
 
 # 统计信息简介
 
-TiDB 使用统计信息来决定[索引的选择](/choose-index.md)。变量 `tidb_analyze_version` 用于控制所收集到的统计信息。目前 TiDB 中支持两种统计信息：`tidb_analyze_version = 1` 以及 `tidb_analyze_version = 2`。在 v5.3.0 及之后的版本中，该变量的默认值为 `2`，作为实验特性启用。如果从 v5.3.0 之前版本的集群升级至 v5.3.0 及之后的版本，`tidb_analyze_version` 的默认值不发生变化。
+TiDB 使用统计信息来决定[索引的选择](/choose-index.md)。变量 `tidb_analyze_version` 用于控制所收集到的统计信息。目前 TiDB 中支持两种统计信息：`tidb_analyze_version = 1` 以及 `tidb_analyze_version = 2`。在 v5.3.0 及之后的版本中，该变量的默认值为 `2`。如果从 v5.3.0 之前版本的集群升级至 v5.3.0 及之后的版本，`tidb_analyze_version` 的默认值不发生变化。
 
 > **注意：**
 >
@@ -12,19 +12,22 @@ TiDB 使用统计信息来决定[索引的选择](/choose-index.md)。变量 `ti
 >
 > - 如果 ANALYZE 语句是手动执行的，请手动 analyze 每张需要的表：
 >
->   {{< copyable "sql" >}}
->
->   ```sql
->   select distinct(concat('ANALYZE ',table_schema, '.', table_name,';')) from information_schema.tables, mysql.stats_histograms where stats_ver = 2 and table_id = tidb_table_id ;
->    ```
+>    ```sql
+>    SELECT DISTINCT(CONCAT('ANALYZE TABLE ', table_schema, '.', table_name, ';')) FROM information_schema.tables, mysql.stats_histograms WHERE stats_ver = 2 AND table_id = tidb_table_id;
+>     ```
 >
 > - 如果 ANALYZE 语句是开启了自动 analyze 后 TiDB 自动执行的，请使用以下 SQL 语句生成 DROP STATS 的语句并执行：
 >
->   {{< copyable "sql" >}}
+>    ```sql
+>    SELECT DISTINCT(CONCAT('DROP STATS ', table_schema, '.', table_name, ';')) FROM information_schema.tables, mysql.stats_histograms WHERE stats_ver = 2 AND table_id = tidb_table_id;
+>    ```
 >
->   ```sql
->   select distinct(concat('DROP STATS ',table_schema, '.', table_name,';')) from information_schema.tables, mysql.stats_histograms where stats_ver = 2 and table_id = tidb_table_id ;
->   ```
+> - 如果上一条语句返回结果太长，不方便拷贝粘贴，可以将结果导出到临时文件后，再执行:
+>
+>    ```sql
+>    select distinct... into outfile '/tmp/sql.txt';
+>    mysql -h XXX -u user -P 4000 ... < '/tmp/sql.txt';
+>    ```
 
 两种版本中，TiDB 维护的统计信息如下：
 
@@ -139,7 +142,7 @@ ANALYZE TABLE TableNameList [WITH NUM BUCKETS|TOPN|CMSKETCH DEPTH|CMSKETCH WIDTH
 
     > **注意：**
     >
-    > 该语法为全量收集。例如，在使用该语法收集了 a 列和 b 列的统计信息之后，如果还想要增加收集 c 列的统计信息，需要在语法中同时指定这三列 `ANALYZE table t columns a, b, c`，而不是只指定新增的那一列 `ANALYZE TABLE t COLUMNS c`。
+    > 该语法为全量收集。例如，在使用该语法收集了 a 列和 b 列的统计信息之后，如果还想要增加收集 c 列的统计信息，需要在语法中同时指定这三列 `ANALYZE TABLE t columns a, b, c`，而不是只指定新增的那一列 `ANALYZE TABLE t COLUMNS c`。
 
 - 如果要收集 `PREDICATE COLUMNS` 的统计信息，请进行以下操作：
 
@@ -325,7 +328,9 @@ ANALYZE INCREMENTAL TABLE TableName PARTITION PartitionNameList INDEX [IndexName
 
 当某个表 `tbl` 的修改行数与总行数的比值大于 `tidb_auto_analyze_ratio`，并且当前时间在 `tidb_auto_analyze_start_time` 和 `tidb_auto_analyze_end_time` 之间时，TiDB 会在后台执行 `ANALYZE TABLE tbl` 语句自动更新这个表的统计信息。
 
-在 v5.0 版本之前，执行查询语句时，TiDB 会以 [`feedback-probability`](/tidb-configuration-file.md#feedback-probability) 的概率收集反馈信息，并将其用于更新直方图和 Count-Min Sketch。**从 v5.0 版本起，该功能默认关闭，暂不建议开启此功能。**
+为了避免小表因为少量数据修改而频繁触发自动更新，当表的行数小于 1000 时，TiDB 不会触发对此表的自动更新。你可以通过 `SHOW STATS_META` 来查看表的行数情况。
+
+在 TiDB v5.0 之前，执行查询语句时，TiDB 会以 [`feedback-probability`](/tidb-configuration-file.md#feedback-probability) 的概率收集反馈信息，并将其用于更新直方图和 Count-Min Sketch。**从 v5.0 起，该功能默认关闭。从 v5.4 起，该功能已被废弃。不建议开启此功能。**
 
 ### 控制 ANALYZE 并发度
 

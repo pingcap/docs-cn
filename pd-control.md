@@ -26,7 +26,7 @@ PD Control 是 PD 的命令行工具，用于获取集群状态信息和调整�
 
 > **注意：**
 >
-> 下载链接中的 `{version}` 为 TiDB 的版本号。例如 `v5.4.2` 版本的下载链接为 `https://download.pingcap.org/tidb-v5.4.2-linux-amd64.tar.gz`。
+> 下载链接中的 `{version}` 为 TiDB 的版本号。例如 `v5.4.3` 版本的下载链接为 `https://download.pingcap.org/tidb-v5.4.3-linux-amd64.tar.gz`。
 
 ### 源码编译
 
@@ -40,7 +40,7 @@ PD Control 是 PD 的命令行工具，用于获取集群状态信息和调整�
 {{< copyable "shell-regular" >}}
 
 ```bash
-tiup ctl pd store -u http://127.0.0.1:2379
+tiup ctl:<cluster-version> pd store -u http://127.0.0.1:2379
 ```
 
 交互模式：
@@ -48,7 +48,7 @@ tiup ctl pd store -u http://127.0.0.1:2379
 {{< copyable "shell-regular" >}}
 
 ```bash
-tiup ctl pd -i -u http://127.0.0.1:2379
+tiup ctl:<cluster-version> pd -i -u http://127.0.0.1:2379
 ```
 
 使用环境变量：
@@ -57,7 +57,7 @@ tiup ctl pd -i -u http://127.0.0.1:2379
 
 ```bash
 export PD_ADDR=http://127.0.0.1:2379 &&
-tiup ctl pd
+tiup ctl:<cluster-version> pd
 ```
 
 使用 TLS 加密：
@@ -65,7 +65,7 @@ tiup ctl pd
 {{< copyable "shell-regular" >}}
 
 ```bash
-tiup ctl pd -u https://127.0.0.1:2379 --cacert="path/to/ca" --cert="path/to/cert" --key="path/to/key"
+tiup ctl:<cluster-version> pd -u https://127.0.0.1:2379 --cacert="path/to/ca" --cert="path/to/cert" --key="path/to/key"
 ```
 
 ## 命令行参数 (flags)
@@ -1207,6 +1207,23 @@ Encoding 格式示例：
     >> scheduler config balance-hot-region-scheduler set enable-for-tiflash true
     ```
 
+### `service-gc-safepoint`
+
+用于查询当前的 GC safepoint 与 service GC safepoint，输出结果示例如下：
+
+```bash
+{
+  "service_gc_safe_points": [
+    {
+      "service_id": "gc_worker",
+      "expired_at": 9223372036854775807,
+      "safe_point": 439923410637160448
+    }
+  ],
+  "gc_safe_point": 0
+}
+```
+
 ### `store [delete | label | weight | remove-tombstone | limit ] <store_id> [--jq="<query string>"]`
 
 用于显示 store 信息或者删除指定 store。使用 jq 格式化输出请参考 [jq 格式化 json 输出示例](#jq-格式化-json-输出示例)。示例如下。
@@ -1296,8 +1313,7 @@ Encoding 格式示例：
 
 > **注意：**
 >
-> * `store limit` 命令原有的 `region-add` 和 `region-remove` 子命令已废弃，请使用 `add-peer` 和 `remove-peer` 来替代。
-> * 使用 `pd-ctl` 可以查看 TiKV 节点的状态信息，即 Up，Disconnect，Offline，Down，或 Tombstone。如需查看各个状态之间的关系，请参考 [TiKV Store 状态之间的关系](/tidb-scheduling.md#信息收集)。
+> 使用 `pd-ctl` 可以查看 TiKV 节点的状态信息，即 Up，Disconnect，Offline，Down，或 Tombstone。如需查看各个状态之间的关系，请参考 [TiKV Store 状态之间的关系](/tidb-scheduling.md#信息收集)。
 
 ### `log [fatal | error | warn | info | debug]`
 

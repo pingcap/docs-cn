@@ -41,7 +41,7 @@ mysql -h 127.0.0.1 -uroot -P4000
 
 如需快速了解 TiDB 节点、TiKV 节点、PD 节点的配置文件、数据文件及日志文件的相关介绍与其存放位置，建议观看下面的培训视频（时长 9 分钟）。
 
-<video src="https://tidb-docs.s3.us-east-2.amazonaws.com/compressed+-+Lesson+12.mp4" width="600px" height="450px" controls="controls" poster="https://tidb-docs.s3.us-east-2.amazonaws.com/thumbnail+-+lesson+12.png"></video>
+<video src="https://tidb-docs.s3.us-east-2.amazonaws.com/compressed+-+Lesson+12.mp4" width="100%" height="100%" controls="controls" poster="https://download.pingcap.com/docs-cn/poster_lesson12.png"></video>
 
 ### 如何规范停止 TiDB？
 
@@ -63,19 +63,13 @@ mysql -h 127.0.0.1 -uroot -P4000
 
 TiDB 目前支持 [`wait_timeout`](/system-variables.md#wait_timeout) 和 [`interactive_timeout`](/system-variables.md#interactive_timeout) 两种超时。
 
-### TiDB 生产环境的版本管理策略是怎么样的？如何尽可能避免频繁升级？
+### TiDB 的版本管理策略是怎么样的？
 
-TiDB 版本目前逐步标准化，每次 Release 都包含详细的 Change log，版本功能[变化详情](https://github.com/pingcap/TiDB/releases)，生产环境是否有必要升级取决于业务系统，建议升级之前详细了解前后版本的功能差异。
-
-版本号说明参考：Release Version: `v1.0.3-1-ga80e796`
-
-- `v1.0.3` 表示 GA 标准版
-- `1` 表示该版本 commit 1 次
-- `ga80e796` 代表版本的 `git-hash`
+关于 TiDB 版本的管理策略，可以参考 [TiDB 版本规则](/releases/versioning.md)。
 
 ### 分不清 TiDB master 版本之间的区别，应该怎么办？
 
-TiDB 目前社区非常活跃，在 1.0 GA 版本发布后，还在不断的优化和修改 BUG，因此 TiDB 的版本更新周期比较快，会不定期有新版本发布，请关注我们的[新版本发布官方网站](https://pingcap.com/weekly/)。此外 TiDB 安装推荐[使用 TiUP 进行安装](/production-deployment-using-tiup.md)。此外，在 TiDB 1.0 GA 版本后，对 TiDB 的版本号进行了统一管理，TiDB 的版本可以通过以下两种方式进行查看：
+TiDB 目前社区非常活跃，同时，我们还在不断的优化和修改 BUG，因此 TiDB 的版本更新周期比较快，会不定期有新版本发布，请关注我们的[版本发布时间线](/releases/release-timeline.md)。此外 TiDB 安装推荐[使用 TiUP 进行安装](/production-deployment-using-tiup.md)或[使用 TiDB Operator 进行安装](https://docs.pingcap.com/zh/tidb-in-kubernetes/stable)。TiDB 的版本号目前实现了统一管理，你可以通过如下任意方式查看 TiDB 的版本号：
 
 - 通过 `select tidb_version()` 进行查看
 - 通过执行 `tidb-server -V` 进行查看
@@ -320,7 +314,7 @@ Region 不是前期划分好的，但确实有 Region 分裂机制。当 Region 
 
 ### TiKV 是否有类似 MySQL 的 `innodb_flush_log_trx_commit` 参数，来保证提交数据不丢失？
 
-是的。TiKV 单机的存储引擎目前使用两个 RocksDB 实例，其中一个存储 raft-log。TiKV 有个 sync-log 参数，在 ture 的情况下，每次提交都会强制刷盘到 raft-log，如果发生 crash 后，通过 raft-log 进行 KV 数据的恢复。
+是的。TiKV 单机的存储引擎目前使用两个 RocksDB 实例，其中一个存储 raft-log。TiKV 有个 sync-log 参数，在 true 的情况下，每次提交都会强制刷盘到 raft-log，如果发生 crash 后，通过 raft-log 进行 KV 数据的恢复。
 
 ### 对 WAL 存储有什么推荐的硬件配置，例如 SSD，RAID 级别，RAID 卡 cache 策略，NUMA 设置，文件系统选择，操作系统的 IO 调度策略等？
 

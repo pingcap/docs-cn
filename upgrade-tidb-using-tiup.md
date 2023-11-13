@@ -115,12 +115,6 @@ tiup update cluster
 > **注意：**
 >
 > 升级到 5.4 版本前，请确认已在 4.0 修改的参数在 5.4 版本中是兼容的，可参考 [TiKV 配置文件描述](/tikv-configuration-file.md)。
->
-> 以下 TiKV 参数在 TiDB v5.0 已废弃。如果在原集群配置过以下参数，需要通过 `edit-config` 编辑模式删除这些参数：
->
-> - pessimistic-txn.enabled
-> - server.request-batch-enable-cross-command
-> - server.request-batch-wait-duration
 
 ### 2.3 检查当前集群的健康状况
 
@@ -150,12 +144,12 @@ tiup cluster check <cluster-name> --cluster
 tiup cluster upgrade <cluster-name> <version>
 ```
 
-以升级到 5.4.2 版本为例：
+以升级到 5.4.3 版本为例：
 
 {{< copyable "shell-regular" >}}
 
 ```
-tiup cluster upgrade <cluster-name> v5.4.2
+tiup cluster upgrade <cluster-name> v5.4.3
 ```
 
 > **注意：**
@@ -207,7 +201,7 @@ tiup cluster display <cluster-name>
 ```
 Cluster type:       tidb
 Cluster name:       <cluster-name>
-Cluster version:    v5.4.2
+Cluster version:    v5.4.3
 ```
 
 > **注意：**
@@ -257,7 +251,7 @@ tiup cluster upgrade <cluster-name> <version> --force
 {{< copyable "" >}}
 
 ```
-tiup install ctl:v5.4.2
+tiup install ctl:v5.4.3
 ```
 
 ## 5. TiDB 5.4 兼容性变化

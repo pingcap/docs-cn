@@ -167,11 +167,11 @@ PARTITION BY RANGE( YEAR(purchased) ) (
 
 > **注意：**
 >
-> 字典和列表格式都基于YAML解析，但 YAML 语法有些时候不能被正常解析。例如 YAML 会把 "{+disk=ssd:1,+disk=nvme:2}" 错误地解析成 '{"+disk=ssd:1": null, "+disk=nvme:2": null}'，不符合预期。但 "{+disk=ssd: 1,+disk=nvme: 2}" 能被正确解析成 '{"+disk=ssd": 1, "+disk=nvme": 2}'。
+> 字典和列表格式都基于 YAML 解析，但 YAML 语法有些时候不能被正常解析。例如 YAML 会把 `"{+disk=ssd:1,+disk=nvme:2}"`（`:` 后无空格）错误地解析成 `'{"+disk=ssd:1": null, "+disk=nvme:2": null}'`，不符合预期。但 `"{+disk=ssd: 1,+disk=nvme: 2}"`（`:` 后有空格）能被正确解析成 `'{"+disk=ssd": 1, "+disk=nvme": 2}'`。
 
 ## 使用限制
 
-目前已知 Placement Rules in SQL 实验特性存在以下限制：
+目前已知 Placement Rules in SQL 存在以下限制：
 
 * Dumpling 不支持导出放置策略，见 [issue #29371](https://github.com/pingcap/tidb/issues/29371)。
 * TiDB 生态工具，包括 Backup & Restore (BR)、TiCDC、TiDB Lightning 和 TiDB Data Migration (DM)，不支持放置规则。

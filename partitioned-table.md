@@ -797,7 +797,7 @@ SELECT fname, lname, region_code, dob
     create table t (id int) partition by range (id) (
         partition p0 values less than (5),
         partition p1 values less than (10));
-    select * from t where t > 6;
+    select * from t where id > 6;
     ```
 
     分区表达式是 `fn(col)` 的形式，`fn` 是我们支持的单调函数 `to_days`：
@@ -808,7 +808,7 @@ SELECT fname, lname, region_code, dob
     create table t (dt datetime) partition by range (to_days(id)) (
         partition p0 values less than (to_days('2020-04-01')),
         partition p1 values less than (to_days('2020-05-01')));
-    select * from t where t > '2020-04-18';
+    select * from t where dt > '2020-04-18';
     ```
 
     有一处例外是 `floor(unix_timestamp(ts))` 作为分区表达式，TiDB 针对这个场景做了特殊处理，可以支持分区裁剪。
@@ -820,7 +820,7 @@ SELECT fname, lname, region_code, dob
     partition by range (floor(unix_timestamp(ts))) (
         partition p0 values less than (unix_timestamp('2020-04-01 00:00:00')),
         partition p1 values less than (unix_timestamp('2020-05-01 00:00:00')));
-    select * from t where t > '2020-04-18 02:00:42.123';
+    select * from t where ts > '2020-04-18 02:00:42.123';
     ```
 
 ## 分区选择

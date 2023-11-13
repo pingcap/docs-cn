@@ -52,7 +52,7 @@ summary: 了解 TiDB 的基本功能。
 | `INSERT ON DUPLICATE KEY UPDATE`                                                                         | Y           | Y            | Y            | Y            | Y            | Y            |
 | `LOAD DATA INFILE`                                                                                       | Y           | Y            | Y            | Y            | Y            | Y            |
 | `SELECT INTO OUTFILE`                                                                                    | Y           | Y            | Y            | Y            | Y            | Y            |
-| `INNER JOIN`, `LEFT\|RIGHT [OUTER] JOIN`                                                                 | Y           | Y            | Y            | Y            | Y            | Y            |
+| `INNER JOIN`, <code>LEFT\|RIGHT [OUTER] JOIN</code>                                                                 | Y           | Y            | Y            | Y            | Y            | Y            |
 | `UNION`，`UNION ALL`                                                                                     | Y           | Y            | Y            | Y            | Y            | Y            |
 | [`EXCEPT` 和 `INTERSECT` 运算符](/functions-and-operators/set-operators.md)                          | Y           | Y            | Y            | Y            | Y            | N            |
 | `GROUP BY`，`ORDER BY`                                                                                   | Y           | Y            | Y            | Y            | Y            | Y            |
@@ -62,6 +62,7 @@ summary: 了解 TiDB 的基本功能。
 | [`EXPLAIN`](/sql-statements/sql-statement-explain.md)                                                    | Y           | Y            | Y            | Y            | Y            | Y            |
 | [`EXPLAIN ANALYZE`](/sql-statements/sql-statement-explain-analyze.md)                                    | Y           | Y            | Y            | Y            | Y            | Y            |
 | [用户自定义变量](/user-defined-variables.md)                                                     | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 |
+| [表级锁 (Table Lock)](/sql-statements/sql-statement-lock-tables-and-unlock-tables.md) | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 |
 
 ## 高级 SQL 功能
 
@@ -89,7 +90,7 @@ summary: 了解 TiDB 的基本功能。
 | [`AUTO_INCREMENT` 列](/auto-increment.md)                                                                     | Y           | Y            | Y            | Y            | Y            | Y            |
 | [`AUTO_RANDOM` 列](/auto-random.md)                                                                           | Y           | Y            | Y            | Y            | Y            | Y            |
 | [DDL 算法断言](/sql-statements/sql-statement-alter-table.md)                                 | Y           | Y            | Y            | Y            | Y            | Y            |
-| 在单条语句中添加多列                                                                       | 实验特性        | 实验特性            | 实验特性            | 实验特性           | 实验特性            | 实验特性           |
+| [在单条语句中添加多列](/system-variables.md#tidb_enable_change_multi_schema)                                                                       | 实验特性        | 实验特性            | 实验特性            | 实验特性           | 实验特性            | 实验特性           |
 | [更改列类型](/sql-statements/sql-statement-modify-column.md)                                     | Y           | Y            | Y            | Y            | N            | N            |
 | [临时表](/temporary-tables.md)                                                                    | Y          | Y           |  N  |   N  |  N  |  N  |
 
@@ -122,7 +123,7 @@ summary: 了解 TiDB 的基本功能。
 |----------------------------------------------------------------------------------------------------------|:------------:|:------------:|:------------:|:------------:|:------------:|----------------------------------------------------------------------------------------------------------|
 | [CM-Sketch](/statistics.md)                                                                               | 已废弃 | 已废弃   | 已废弃   | 已废弃   | 已废弃   | Y            |
 | [直方图](/statistics.md)                                                                             | Y           | Y            | Y            | Y            | Y            | Y            |
-| [扩展统计信息（多列）](/statistics.md)                                                 | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 | N            |
+| 扩展统计信息（多列）                                                 | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 | N            |
 | [统计反馈](/statistics.md#自动更新)                                                   | 已废弃 | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 |
 | [快速分析](/system-variables.md#tidb_enable_fast_analyze)                                            | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 |
 
@@ -145,8 +146,8 @@ summary: 了解 TiDB 的基本功能。
 | 数据导入和导出                                                                               | 5.4       | 5.3          | 5.2          | 5.1      | 5.0      | 4.0      |
 |----------------------------------------------------------------------------------------------------------|:------------:|:------------:|:------------:|:------------:|:------------:|:------------:|
 | [快速导入 (TiDB Lightning)](/tidb-lightning/tidb-lightning-overview.md)                             | Y           | Y            | Y            | Y            | Y            | Y            |
-| mydumper 逻辑导入                                                                                  | 已废弃 | 已废弃   | 已废弃   | 已废弃   | 已废弃   | 已废弃   |
-| [Dumpling 逻辑导入](/dumpling-overview.md)                                                         | Y           | Y            | Y            | Y            | Y            | Y            |
+| mydumper 逻辑导出                                                                                  | 已废弃 | 已废弃   | 已废弃   | 已废弃   | 已废弃   | 已废弃   |
+| [Dumpling 逻辑导出](/dumpling-overview.md)                                                         | Y           | Y            | Y            | Y            | Y            | Y            |
 | [事务 `LOAD DATA`](/sql-statements/sql-statement-load-data.md)                                  | Y           | Y            | Y            | Y            | Y            | N [^3]            |
 | [数据迁移工具](/migration-overview.md)                                                | Y           | Y            | Y            | Y            | Y            | Y            |
 | [TiDB Binlog](/tidb-binlog/tidb-binlog-overview.md)                                                      | Y  | Y   | Y   | Y   | Y   | Y   |
@@ -169,7 +170,7 @@ summary: 了解 TiDB 的基本功能。
 | [Global Kill](/sql-statements/sql-statement-kill.md)                                                     | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 |
 | [Lock View](/information-schema/information-schema-data-lock-waits.md)                                   | Y           | Y            | Y            | 实验特性 | 实验特性 | 实验特性 |
 | [`SHOW CONFIG`](/sql-statements/sql-statement-show-config.md)                                            | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 |
-| [`SET CONFIG`](/dynamic-config.md)                                                                       | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 |
+| [`SET CONFIG`](/dynamic-config.md)                                                                       | Y | Y | Y | Y | Y | Y |
 | [持续性能分析](/dashboard/continuous-profiling.md) | 实验特性 | 实验特性 | N | N | N | N |
 | [Top SQL](/dashboard/top-sql.md) | 实验特性 | N | N | N | N | N |
 

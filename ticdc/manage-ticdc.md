@@ -8,14 +8,14 @@ title: TiCDC 运维操作及任务管理
 
 ## 使用 TiUP 升级 TiCDC
 
-本部分介绍如何使用 TiUP 来升级 TiCDC 集群。在以下例子中，假设需要将 TiCDC 组件和整个 TiDB 集群升级到 v5.4.2。
+本部分介绍如何使用 TiUP 来升级 TiCDC 集群。在以下例子中，假设需要将 TiCDC 组件和整个 TiDB 集群升级到 v5.4.3。
 
 {{< copyable "shell-regular" >}}
 
 ```shell
 tiup update --self && \
 tiup update --all && \
-tiup cluster upgrade <cluster-name> v5.4.2
+tiup cluster upgrade <cluster-name> v5.4.3
 ```
 
 ### 升级的注意事项
@@ -64,7 +64,7 @@ tiup cluster edit-config <cluster-name>
 >
 > PD 监听的 IP 和端口对应为 `pd-server` 启动时指定的 `advertise-client-urls` 参数。多个 `pd-server` 会包含多个该参数，用户可以指定其中任意一个或多个参数。例如 `--pd=http://10.0.10.25:2379` 或 `--pd=http://10.0.10.25:2379,http://10.0.10.26:2379,http://10.0.10.27:2379`。
 
-如果你使用的 TiCDC 是用 TiUP 部署的，需要将以下命令中的 `cdc cli` 替换为 `tiup ctl cdc`。
+如果你使用的 TiCDC 是用 TiUP 部署的，需要将以下命令中的 `cdc cli` 替换为 `tiup ctl:<cluster-version> cdc`。
 
 ### 管理 TiCDC 服务进程 (`capture`)
 
@@ -207,6 +207,7 @@ URI 中可配置的的参数如下：
 | `partition-num`      | 下游 Kafka partition 数量（可选，不能大于实际 partition 数量，否则创建同步任务会失败，默认值 `3`）|
 | `max-message-bytes`  | 每次向 Kafka broker 发送消息的最大数据量（可选，默认值 `10MB`）。从 v5.0.6 和 v4.0.6 开始，默认值分别从 64MB 和 256MB 调整至 10MB。|
 | `replication-factor` | Kafka 消息保存副本数（可选，默认值 `1`）                       |
+| `compression` | 设置发送消息时使用的压缩算法（可选值为 `none`、`lz4`、`gzip`、`snappy` 和 `zstd`，默认值为 `none`）。|
 | `protocol` | 输出到 Kafka 的消息协议，可选值有 `canal-json`、`open-protocol`、`canal`、`avro`、`maxwell` |
 | `auto-create-topic` | 当传入的 `topic-name` 在 Kafka 集群不存在时，TiCDC 是否要自动创建该 topic（可选，默认值 `true`） |
 | `enable-tidb-extension` | 当输出协议为 `canal-json` 时，如果该值为 `true`，TiCDC 会发送 Resolved 事件，并在 Kafka 消息中添加 TiDB 扩展字段（可选，默认值 `false`）|
@@ -654,7 +655,7 @@ cdc cli --pd="http://10.0.10.25:2379" changefeed query --changefeed-id=simple-re
 
 > **警告：**
 >
-> 暂不推荐使用灾难场景的最终一致性复制功能。详见 [critical bug #6189](https://github.com/pingcap/tiflow/issues/6189)。
+> 不推荐在 v5.3.0 和 v5.4.0 版本使用灾难场景的最终一致性复制功能，详见 [#6189](https://github.com/pingcap/tiflow/issues/6189)。该问题已在 v6.1.1 及以上版本修复，因此建议使用 TiDB v6.1.1 及以上版本。
 
 从 v5.3.0 版本开始，TiCDC 支持将上游 TiDB 的增量数据备份到下游集群的 S3 存储或 NFS 文件系统。当上游集群出现了灾难，完全无法使用时，TiCDC 可以将下游集群恢复到最近的一致状态，即提供灾备场景的最终一致性复制能力，确保应用可以快速切换到下游集群，避免数据库长时间不可用，提高业务连续性。
 

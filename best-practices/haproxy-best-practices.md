@@ -107,7 +107,7 @@ HAProxy 配置 Database 负载均衡场景操作简单，以下部署操作具�
     {{< copyable "shell-regular" >}}
 
     ```bash
-    echo 'export PATH=/app/haproxy:$PATH' >> /etc/profile
+    echo 'export PATH=/app/haproxy/bin:$PATH' >> /etc/profile
     ```
 
 5. 检查 HAProxy 是否安装成功：
@@ -206,14 +206,14 @@ listen tidb-cluster                        # 配置 database 负载均衡。
 如要通过 `SHOW PROCESSLIST` 查看连接来源 IP，需要配置使用 [PROXY 协议](https://www.haproxy.org/download/1.8/doc/proxy-protocol.txt)连接 TiDB。
 
 ```yaml
-   server tidb-1 10.9.18.229:4000 send-proxy check inter 2000 rise 2 fall 3       
+   server tidb-1 10.9.18.229:4000 send-proxy check inter 2000 rise 2 fall 3
    server tidb-2 10.9.39.208:4000 send-proxy check inter 2000 rise 2 fall 3
    server tidb-3 10.9.64.166:4000 send-proxy check inter 2000 rise 2 fall 3
 ```
 
 > **注意：**
 >
-> 使用 PROXY 协议时，你需要在 tidb-server 的 `proxy-protocol.networks` 配置文件中添加对应的参数。
+> 使用 PROXY 协议时，你需要在 tidb-server 的配置文件中设置 [`proxy-protocol.networks`](/tidb-configuration-file.md#networks)。
 
 ### 启动 HAProxy
 

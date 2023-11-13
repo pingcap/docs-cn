@@ -12,7 +12,7 @@ PD Recover 是对 PD 进行灾难性恢复的工具，用于恢复无法正常�
 
 ### 从源代码编译
 
-* [Go](https://golang.org/)：PD Recover 使用了 Go 模块，请安装 Go v1.13 或更新版本。
+* [Go](https://golang.org/)：PD Recover 使用了 Go 模块，请安装 Go v1.16 或更新版本。
 * 在 [PD](https://github.com/pingcap/pd) 根目录下，运行 `make pd-recover` 命令来编译源代码并生成 `bin/pd-recover`。
 
 > **注意：**
@@ -29,7 +29,7 @@ PD Recover 包含在 TiDB 安装包中。直接下载 TiDB 安装包即可获取
 
 > **注意：**
 >
-> `{version}` 是 TiDB 的版本号。例如，`v5.4.2` 的安装包下载链接为 `https://download.pingcap.org/tidb-v5.4.2-linux-amd64.tar.gz`。
+> `{version}` 是 TiDB 的版本号。例如，`v5.4.3` 的安装包下载链接为 `https://download.pingcap.org/tidb-v5.4.3-linux-amd64.tar.gz`。
 
 ## 快速开始
 

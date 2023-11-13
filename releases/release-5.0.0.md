@@ -37,7 +37,7 @@ TiDB 版本：5.0.0
 
 + 临时表的语法兼容性受到 [`tidb_enable_noop_functions`](/system-variables.md#tidb_enable_noop_functions-从-v40-版本开始引入) 系统变量的控制：当 `tidb_enable_noop_functions` 为 `OFF` 时，`CREATE TEMPORARY TABLE` 语法将会报错。
 + 新增 [`tidb_gc_concurrency`](/system-variables.md#tidb_gc_concurrency-从-v50-版本开始引入)、[`tidb_gc_enable`](/system-variables.md#tidb_gc_enable-从-v50-版本开始引入)、[`tidb_gc_life_time`](/system-variables.md#tidb_gc_life_time-从-v50-版本开始引入)、[`tidb_gc_run_interval`](/system-variables.md#tidb_gc_run_interval-从-v50-版本开始引入)、[`tidb_gc_scan_lock_mode`](/system-variables.md#tidb_gc_scan_lock_mode-从-v50-版本开始引入) 系统变量，用于直接通过系统变量调整垃圾回收相关参数。
-+ 系统变量 [`enable-joint-consensus`](/pd-configuration-file.md#enable-joint-consensus-从-v50-版本开始引入) 默认值由 `false` 改成 `ture`，默认开启 Joint consensus 功能。
++ 系统变量 [`enable-joint-consensus`](/pd-configuration-file.md#enable-joint-consensus-从-v50-版本开始引入) 默认值由 `false` 改成 `true`，默认开启 Joint consensus 功能。
 + 系统变量 [`tidb_enable_amend_pessimistic_txn`](/system-variables.md#tidb_enable_amend_pessimistic_txn-从-v407-版本开始引入) 的值由数字 0 或者 1 变更成 ON 或者 OFF。
 + 系统变量 [`tidb_enable_clustered_index`](/system-variables.md#tidb_enable_clustered_index-从-v50-版本开始引入) 默认值由 OFF 改成 INT_ONLY 且含义有如下变化：
     + ON：开启聚簇索引，支持添加或者删除非聚簇索引。

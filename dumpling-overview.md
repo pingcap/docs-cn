@@ -13,7 +13,7 @@ summary: 使用 Dumpling 从 TiDB 导出数据。
 
 要快速了解 Dumpling 的基本功能，建议先观看下面的培训视频（时长 28 分钟）。注意本视频只作为功能介绍、学习参考，具体操作步骤和最新功能，请以文档内容为准。
 
-<video src="https://tidb-docs.s3.us-east-2.amazonaws.com/compressed+-+Lesson+18.mp4" width="600px" height="450px" controls="controls" poster="https://tidb-docs.s3.us-east-2.amazonaws.com/thumbnail+-+lesson+18.png"></video>
+<video src="https://download.pingcap.com/docs-cn%2FLesson18_dumpling.mp4" width="100%" height="100%" controls="controls" poster="https://download.pingcap.com/docs-cn/poster_lesson18.png"></video>
 
 你可以通过下列任意方式获取 Dumpling：
 
@@ -32,7 +32,7 @@ TiDB 还提供了其他工具，你可以根据需要选择使用：
 
 > **注意：**
 >
-> PingCAP 之前维护的 Mydumper 工具 fork 自 [mydumper project](https://github.com/maxbube/mydumper)，针对 TiDB 的特性进行了优化。关于 Mydumper 的更多信息，请参考 [v4.0 版 Mydumper 使用文档](https://docs.pingcap.com/zh/tidb/v4.0/mydumper-overview)。Mydumper 目前已经不再开发新功能，其绝大部分功能已经被 [Dumpling](/dumpling-overview.md) 取代，请切换到 Dumpling。
+> PingCAP 之前维护的 Mydumper 工具 fork 自 [mydumper project](https://github.com/maxbube/mydumper)，针对 TiDB 的特性进行了优化。关于 Mydumper 的更多信息，请参考 [v4.0 版 Mydumper 使用文档](https://docs.pingcap.com/zh/tidb/v4.0/mydumper-overview)。从 v7.5.0 开始，[Mydumper](https://docs.pingcap.com/tidb/v4.0/mydumper-overview) 废弃，其绝大部分功能已经被 [Dumpling](/dumpling-overview.md) 取代，强烈建议切换到 Dumpling。
 
 相比 Mydumper，Dumpling 做了如下改进：
 

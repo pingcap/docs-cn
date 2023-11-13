@@ -175,6 +175,23 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
 - 默认值：0
 - 在 TiDB 等待服务器关闭期间，HTTP 状态会显示失败，使得负载均衡器可以重新路由流量。
 
+### `enable-forwarding` <span class="version-mark">从 v5.0.0 版本开始引入</span>
+
++ 控制 TiDB 中的 PD client 以及 TiKV client 在疑似网络隔离的情况下是否通过 follower 将请求转发给 leader。
++ 默认值：false
++ 如果确认环境存在网络隔离的可能，开启这个参数可以减少服务不可用的窗口期。
++ 如果无法准确判断隔离、网络中断、宕机等情况，这个机制存在误判情况从而导致可用性、性能降低。如果网络中从未发生过网络故障，不推荐开启此选项。
+
+### `enable-table-lock` <span class="version-mark">从 v4.0.0 版本开始引入</span>
+
+> **警告：**
+>
+> 表级锁 (Table Lock) 为实验特性，不建议在生产环境中使用。
+
++ 控制是否开启表级锁特性。
++ 默认值：false
++ 表级锁用于协调多个 session 之间对同一张表的并发访问。目前已支持的锁种类包括 `READ`、`WRITE` 和 `WRITE LOCAL`。当该配置项为 `false` 时，执行 `LOCK TABLES` 和 `UNLOCK TABLES` 语句不会生效，并且会报 "LOCK/UNLOCK TABLES is not supported" 的警告。更多信息，请参考 [`LOCK TABLES` 和 `UNLOCK TABLES`](/sql-statements/sql-statement-lock-tables-and-unlock-tables.md)。
+
 ## log
 
 日志相关的配置项。
@@ -432,6 +449,10 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
 
 ### `feedback-probability`
 
+> **警告：**
+>
+> 从 v5.4 起，该功能已被废弃。不建议开启此功能。
+
 + TiDB 对查询收集统计信息反馈的概率。
 + 默认值：0
 + 此功能默认关闭，暂不建议开启。如果开启此功能，对于每一个查询，TiDB 会以 `feedback-probability` 的概率收集查询的反馈，用于更新统计信息。
@@ -508,16 +529,16 @@ opentracing.sampler 相关的设置。
 
 ### `type`
 
-+ opentracing 采样器的类型。
++ opentracing 采样器的类型。字符串取值大小写不敏感。
 + 默认值："const"
-+ 可选值："const"，"probabilistic"，"rateLimiting"，remote"
++ 可选值："const"，"probabilistic"，"ratelimiting"，remote"
 
 ### `param`
 
 + 采样器参数。
     - 对于 const 类型，可选值为 0 或 1，表示是否开启。
     - 对于 probabilistic 类型，参数为采样概率，可选值为 0 到 1 之间的浮点数。
-    - 对于 rateLimiting 类型，参数为每秒采样 span 的个数。
+    - 对于 ratelimiting 类型，参数为每秒采样 span 的个数。
     - 对于 remote 类型，参数为采样概率，可选值为 0 到 1 之间的浮点数。
 + 默认值：1.0
 
