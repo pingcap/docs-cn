@@ -8,8 +8,8 @@ summary: Learn the overview of data migration scenarios and the solutions.
 This document gives an overview of the data migration solutions that you can use with TiDB. The data migration solutions are as follows:
 
 - Full data migration.
-    - To import Amazon Aurora snapshots, CSV files, or Mydumper SQL files into TiDB, you can use TiDB Lightning to perform the full migration.
-    - To export all TiDB data as CSV files or Mydumper SQL files, you can use Dumpling to perform the full migration, which makes data migration from MySQL or MariaDB easier.
+    - To import Amazon Aurora snapshots, CSV files, or SQL dump files into TiDB, you can use TiDB Lightning to perform the full migration.
+    - To export all TiDB data as CSV files or SQL dump files, you can use Dumpling to perform the full migration, which makes data migration from MySQL or MariaDB easier.
     - To migrate all data from a database with a small data size volume (for example, less than 1 TiB), you can also use TiDB Data Migration (DM).
 
 - Quick initialization of TiDB. TiDB Lightning supports quickly importing data and can quickly initialize a specific table in TiDB. Before you use this feature, pay attention that the quick initialization has a great impact on TiDB and the cluster does not provide services during the initialization period.

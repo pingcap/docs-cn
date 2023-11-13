@@ -69,7 +69,6 @@ It is recommended that you allocate CPU more than 32 cores and memory greater th
 
 - TiDB Lightning >= v4.0.3.
 - TiDB >= v4.0.0.
-- If the target TiDB cluster is v3.x or earlier, you need to use Importer-backend to complete the data import. In this mode, `tidb-lightning` needs to send the parsed key-value pairs to `tikv-importer` via gRPC, and `tikv-importer` will complete the data import.
 
 ### Limitations
 

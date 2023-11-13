@@ -26,27 +26,8 @@ If only one table has an error encountered, the rest will still be processed nor
 
 ## How to properly restart TiDB Lightning?
 
-If you are using Importer-backend, depending on the status of `tikv-importer`, the basic sequence of restarting TiDB Lightning is like this:
-
-If `tikv-importer` is still running:
-
-1. [Stop `tidb-lightning`](#how-to-stop-the-tidb-lightning-process).
-2. Perform the intended modifications, such as fixing the source data, changing settings, replacing hardware etc.
-3. If the modification previously has changed any table, [remove the corresponding checkpoint](/tidb-lightning/tidb-lightning-checkpoints.md#--checkpoint-remove) too.
-4. Start `tidb-lightning`.
-
-If `tikv-importer` needs to be restarted:
-
-1. [Stop `tidb-lightning`](#how-to-stop-the-tidb-lightning-process).
-2. [Stop `tikv-importer`](#how-to-stop-the-tikv-importer-process).
-3. Perform the intended modifications, such as fixing the source data, changing settings, replacing hardware etc.
-4. Start `tikv-importer`.
-5. Start `tidb-lightning` *and wait until the program fails with CHECKSUM error, if any*.
-    * Restarting `tikv-importer` would destroy all engine files still being written, but `tidb-lightning` did not know about it. As of v3.0 the simplest way is to let `tidb-lightning` go on and retry.
-6. [Destroy the failed tables and checkpoints](/tidb-lightning/troubleshoot-tidb-lightning.md#checkpoint-for--has-invalid-status-error-code)
-7. Start `tidb-lightning` again.
-
-If you are using Local-backend or TiDB-backend, the operations are the same as those of using Importer-backend when the `tikv-importer` is still running.
+1. [Stop the `tidb-lightning` process](#how-to-stop-the-tidb-lightning-process).
+2. Start a new `tidb-lightning` task: execute the previous start command, such as `nohup tiup tidb-lightning -config tidb-lightning.toml`.
 
 ## How to ensure the integrity of the imported data?
 
@@ -93,16 +74,6 @@ sql-mode = "STRICT_TRANS_TABLES,NO_ENGINE_SUBSTITUTION"
 ...
 ```
 
-## Can one `tikv-importer` serve multiple `tidb-lightning` instances?
-
-Yes, as long as every `tidb-lightning` instance operates on different tables.
-
-## How to stop the `tikv-importer` process?
-
-To stop the `tikv-importer` process, you can choose the corresponding operation according to your deployment method.
-
-- For manual deployment: if `tikv-importer` is running in foreground, press <kbd>Ctrl</kbd>+<kbd>C</kbd> to exit. Otherwise, obtain the process ID using the `ps aux | grep tikv-importer` command and then terminate the process using the `kill ${PID}` command.
-
 ## How to stop the `tidb-lightning` process?
 
 To stop the `tidb-lightning` process, you can choose the corresponding operation according to your deployment method.
@@ -122,12 +93,6 @@ With the default settings of 3 replicas, the space requirement of the target TiK
 - The space occupied by indices
 - Space amplification in RocksDB
 
-## Can TiKV Importer be restarted while TiDB Lightning is running?
-
-No. TiKV Importer stores some information of engines in memory. If `tikv-importer` is restarted, `tidb-lightning` will be stopped due to lost connection. At this point, you need to [destroy the failed checkpoints](/tidb-lightning/tidb-lightning-checkpoints.md#--checkpoint-error-destroy) as those TiKV Importer-specific information is lost. You can restart TiDB Lightning afterwards.
-
-See also [How to properly restart TiDB Lightning?](#how-to-properly-restart-tidb-lightning) for the correct sequence.
-
 ## How to completely destroy all intermediate data associated with TiDB Lightning?
 
 1. Delete the checkpoint file.
@@ -140,7 +105,7 @@ See also [How to properly restart TiDB Lightning?](#how-to-properly-restart-tidb
 
     If, for some reason, you cannot run this command, try manually deleting the file `/tmp/tidb_lightning_checkpoint.pb`.
 
-2. If you are using Local-backend, delete the `sorted-kv-dir` directory in the configuration. If you are using Importer-backend, delete the entire `import` directory on the machine hosting `tikv-importer`.
+2. If you are using Local-backend, delete the `sorted-kv-dir` directory in the configuration.
 
 3. Delete all tables and databases created on the TiDB cluster, if needed.
 

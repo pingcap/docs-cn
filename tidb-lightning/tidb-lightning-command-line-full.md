@@ -23,7 +23,6 @@ You can configure the following parameters using `tidb-lightning`:
 | `--backend <backend>` | Select an import mode. `local` refers to [physical import mode](/tidb-lightning/tidb-lightning-physical-import-mode.md); `tidb` refers to [logical import mode](/tidb-lightning/tidb-lightning-logical-import-mode.md). | `tikv-importer.backend` |
 | `--log-file <file>` | Log file path. By default, it is `/tmp/lightning.log.{timestamp}`. If set to '-', it means that the log files will be output to stdout. | `lightning.log-file` |
 | `--status-addr <ip:port>` | Listening address of the TiDB Lightning server | `lightning.status-port` |
-| `--importer <host:port>` | Address of TiKV Importer | `tikv-importer.addr` |
 | `--pd-urls <host:port>` | PD endpoint address | `tidb.pd-addr` |
 | `--tidb-host <host>` | TiDB server host | `tidb.host` |
 | `--tidb-port <port>` | TiDB server port (default = 4000) | `tidb.port` |
