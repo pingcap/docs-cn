@@ -144,6 +144,9 @@ TiDB 7.5.0 为长期支持版本 (Long-Term Support Release, LTS)。
 
 | 变量名  | 修改类型（包括新增/修改/删除）    | 描述 |
 |--------|------------------------------|------|
+| [`tidb_analyze_partition_concurrency`](/system-variables.md#tidb_analyze_partition_concurrency)      |  修改 |  经进一步的测试后，默认值由 `1` 改为 `2`。    |
+| [`tidb_build_stats_concurrency`](/system-variables.md#tidb_build_stats_concurrency)      |  修改 |  经进一步的测试后，默认值由 `4` 改为 `2`。    |
+| [`tidb_merge_partition_stats_concurrency`](/system-variables.md#tidb_merge_partition_stats_concurrency)    |  修改    |  该变量从 v7.5.0 开始生效，用于设置 TiDB 使用异步方式合并统计信息，以避免 OOM 问题。    |
 | [`tidb_build_sampling_stats_concurrency`](/system-variables.md#tidb_build_sampling_stats_concurrency-从-v750-版本开始引入)      |   新增 | 该变量用来设置 `ANALYZE` 过程中的采样并发度。     |
 | [`tidb_enable_async_merge_global_stats`](/system-variables.md#tidb_enable_async_merge_global_stats-从-v750-版本开始引入)      |   新增 | 该变量用于 TiDB 使用异步方式合并统计信息, 以避免 OOM 问题。    |
 | [`tidb_gogc_tuner_max_value`](/system-variables.md#tidb_gogc_tuner_max_value-从-v750-版本开始引入) | 新增 | 用来控制 GOGC Tuner 可调节 GOGC 的最大值。 |
