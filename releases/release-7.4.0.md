@@ -29,7 +29,7 @@ TiDB 版本：7.4.0
   </tr>
   <tr>
     <td><a href="https://docs.pingcap.com/zh/tidb/v7.4/tidb-resource-control#管理后台任务" target="_blank">资源管控</a>支持自动管理后台任务（实验特性）</td>
-    <td>从 v7.1.0 开始，资源管控成为正式功能，该特性有助于缓解不同工作负载间的资源与存储访问干扰。TiDB v7.4.0 将此资源控制应用于后台任务。资源管控可以识别和管理后台任务，例如自动收集统计信息、备份和恢复、TiDB Lightening 批量数据导入以及在线 DDL。未来，所有后台任务都将纳入资源管控。</td>
+    <td>从 v7.1.0 开始，资源管控成为正式功能，该特性有助于缓解不同工作负载间的资源与存储访问干扰。TiDB v7.4.0 将此资源控制应用于后台任务。资源管控可以识别和管理后台任务，例如自动收集统计信息、备份和恢复、TiDB Lightning 批量数据导入以及在线 DDL。未来，所有后台任务都将纳入资源管控。</td>
   </tr>
   <tr>
     <td>TiFlash 支持<a href="https://docs.pingcap.com/zh/tidb/v7.4/tiflash-disaggregated-and-s3" target="_blank">存储计算资源分离和 S3 共享存储</a> (GA) </td>
