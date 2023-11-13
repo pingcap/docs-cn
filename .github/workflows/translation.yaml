@@ -1,0 +1,108 @@
+name: translation
+
+on:
+  workflow_dispatch:
+
+jobs:
+  ja:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+        name: Download translator repo
+        with:
+          repository: "shczhen/markdown-translator"
+          ref: "openai"
+          path: "markdown-translator"
+      - uses: actions/checkout@v3
+        name: Download docs repo and specified branch
+        with:
+          ref: "i18n-ja-release-7.1"
+          path: "docs"
+      - uses: actions/setup-node@v3
+        name: Setup node 18
+        with:
+          node-version: 18
+
+      - run: |
+          sudo apt install tree -y
+
+      - name: Download files by comparing commits
+        run: |
+          export GH_TOKEN=${{github.token}}
+          cd docs
+          npm i
+          node scripts/filterUpdateFiles.js
+          tree tmp
+          cd ..
+      - name: Copy new files to translator folder
+        run: |
+          cp -r docs/tmp markdown-translator/markdowns
+      - name: Config and translate
+        run: |
+          cd markdown-translator
+          export LANGLINK_ACCESS_KEY=${{ secrets.LANGLINK_ACCESS_KEY }}
+          export LANGLINK_ACCESS_SECRET=${{ secrets.LANGLINK_ACCESS_SECRET }}
+          export LANGLINK_USER=${{ secrets.LANGLINK_USER }}
+          yarn
+          node src/index.js
+          cd ..
+      - name: Copy translated files to docs repo
+        run: |
+          cp -r markdown-translator/output/markdowns/* docs/
+
+      - name: Git commit and push
+        run: |
+          cd docs
+          git status
+          git config user.name github-actions
+          git config user.email github-actions@github.com
+          git add .
+          if git status | grep -q "Changes to be committed"
+          then
+            git commit -m "Update translated files"
+            echo "::set-output name=committed::1"
+          else
+            echo "No changes detected, skipped"
+          fi
+      - name: Set build ID
+        id: build_id
+        run: echo "::set-output name=id::$(date +%s)"
+      - name: Create PR
+        uses: peter-evans/create-pull-request@v5
+        if: steps.git_commit.outputs.committed == 1
+        with:
+          token: ${{ github.token }}
+          branch: jp-translation/${{ steps.build_id.outputs.id }}
+          title: "ci: JP translation ${{ steps.build_id.outputs.id }}"
+          body: |
+            ### What is changed, added or deleted? (Required)
+
+            Translate docs to Japanese.
+
+            ### Which TiDB version(s) do your changes apply to? (Required)
+
+            <!-- Fill in "x" in [] to tick the checkbox below.-->
+
+            **Tips for choosing the affected version(s):**
+
+            By default, **CHOOSE MASTER ONLY** so your changes will be applied to the next TiDB major or minor releases. If your PR involves a product feature behavior change or a compatibility change, **CHOOSE THE AFFECTED RELEASE BRANCH(ES) AND MASTER**.
+
+            For details, see [tips for choosing the affected versions](https://github.com/pingcap/docs/blob/master/CONTRIBUTING.md#guideline-for-choosing-the-affected-versions).
+
+            - [x] i18n-ja-release-7.1 (TiDB 7.1 versions)
+
+            ### What is the related PR or file link(s)?
+
+            <!--Reference link(s) will help reviewers review your PR quickly.-->
+
+            - This PR is translated from: en
+            - Other reference link(s):
+
+            ### Do your changes match any of the following descriptions?
+
+            - [ ] Delete files
+            - [ ] Change aliases
+            - [ ] Need modification after applied to another branch <!-- If yes, please comment "/label version-specific-changes-required" below to trigger the bot to add the label. -->
+            - [ ] Might cause conflicts after applied to another branch
+          delete-branch: true
