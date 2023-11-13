@@ -33,7 +33,7 @@ TiDB 还提供了其他工具，你可以根据需要选择使用：
 
 > **注意：**
 >
-> PingCAP 之前维护的 Mydumper 工具 fork 自 [mydumper project](https://github.com/maxbube/mydumper)，针对 TiDB 的特性进行了优化。关于 Mydumper 的更多信息，请参考 [v4.0 版 Mydumper 使用文档](https://docs.pingcap.com/zh/tidb/v4.0/mydumper-overview)。Mydumper 目前已经不再开发新功能，其绝大部分功能已经被 [Dumpling](/dumpling-overview.md) 取代，请切换到 Dumpling。
+> PingCAP 之前维护的 Mydumper 工具 fork 自 [mydumper project](https://github.com/maxbube/mydumper)，针对 TiDB 的特性进行了优化。关于 Mydumper 的更多信息，请参考 [v4.0 版 Mydumper 使用文档](https://docs.pingcap.com/zh/tidb/v4.0/mydumper-overview)。从 v7.5.0 开始，[Mydumper](https://docs.pingcap.com/tidb/v4.0/mydumper-overview) 废弃，其绝大部分功能已经被 [Dumpling](/dumpling-overview.md) 取代，强烈建议切换到 Dumpling。
 
 相比 Mydumper，Dumpling 做了如下改进：
 
