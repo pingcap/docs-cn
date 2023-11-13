@@ -32,6 +32,7 @@ TiDB 作为一款开源一栈式实时 HTAP 数据库，可以很好地部署和
 |  Debian 9 (Stretch) 及以上的版本  |  x86_64           |
 |  Fedora 35 及以上的版本   |  x86_64           |
 |  openSUSE Leap 15.3 以上的版本（不包含 Tumbleweed） |  x86_64           |
+|  Rocky Linux 9.1 及以上的版本 |  <ul><li>x86_64</li><li>ARM 64</li></ul> |
 |  SUSE Linux Enterprise Server 15  |  x86_64                        |
 
 > **注意：**
