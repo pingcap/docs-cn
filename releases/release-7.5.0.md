@@ -18,9 +18,9 @@ TiDB 7.5.0 为长期支持版本 (Long-Term Support Release, LTS)。
 <table>
 <thead>
   <tr>
-    <th>Category</th>
-    <th>Feature</th>
-    <th>Description</th>
+    <th>分类</th>
+    <th>功能</th>
+    <th>描述</th>
   </tr>
 </thead>
 <tbody>
@@ -35,17 +35,17 @@ TiDB 7.5.0 为长期支持版本 (Long-Term Support Release, LTS)。
     <td>Laying the groundwork with the <a href="https://docs.pingcap.com/tidb/v7.5/tidb-distributed-execution-framework" target="_blank">distributed framework</a> in v7.2, TiDB introduces global sorting to eliminate the unnecessary I/O, CPU, and memory spikes caused from temporarily out of order data during data re-organization tasks. The global sorting will take advantage of external shared object storage (S3 in this first iteration) to store intermediary files during the job, adding flexibility and cost savings.Operations like ADD INDEX and IMPORT INTO will be faster, more resilient, more stable, more flexible, and cost less to run.</td>
   </tr>
   <tr>
-    <td><a href="https://docs.pingcap.com/tidb/v7.5/tidb-resource-control#manage-background-tasks" target="_blank">Resource control</a> for background tasks (experimental) {/* tw@Oreoxmt */}</td>
-    <td>In v7.1.0, the <a href="https://docs.pingcap.com/tidb/v7.5/tidb-resource-control#use-resource-control-to-achieve-resource-isolation" target="_blank">Resource Control</a> feature was introduced to mitigate resource and storage access interference between workloads. TiDB v7.4.0 applies this control to background tasks as well. In v7.4.0, Resource Control now identifies and manages the resources produced by background tasks, such as auto-analyze, Backup & Restore, bulk load with TiDB Lightning, and online DDL. This will eventually apply to all background tasks.</td>
+    <td><a href="https://docs.pingcap.com/zh/tidb/v7.5/tidb-resource-control#管理后台任务" target="_blank">资源管控</a>支持自动管理后台任务（实验特性） {/* tw@Oreoxmt */}</td>
+    <td>从 v7.1.0 开始，<a href="https://docs.pingcap.com/zh/tidb/v7.5/tidb-resource-control#use-resource-control-to-achieve-resource-isolation" target="_blank">资源管控</a>成为正式功能，该特性有助于缓解不同工作负载间的资源与存储访问干扰。TiDB v7.4.0 将此资源控制应用于后台任务。资源管控可以识别和管理后台任务，例如自动收集统计信息、备份和恢复、TiDB Lightning 批量数据导入以及在线 DDL。未来，所有后台任务都将纳入资源管控。</td>
   </tr>
   <tr>
     <td>资源组支持<a href="https://docs.pingcap.com/zh/tidb/v7.5/tidb-resource-control#管理资源消耗超出预期的查询-runaway-queries">管理资源消耗超出预期的查询</a>（实验特性）{/* tw@hfxsd */}</td>
-    <td><a href="https://docs.pingcap.com/tidb/v7.5/tidb-resource-control" target="_blank">资源管控 (Resource Group)</a> 是一个通过资源组 (Resource Group) 对工作负载进行资源隔离的框架，但它并不调用单个查询如何影响每个组内的工作。TiDB v7.2.0 引入了管控资源消耗超出预期的查询 (Runaway Queries)，你可以控制 TiDB 如何识别和处理每个资源组的查询。根据需要，长时间运行的查询可能会被终止或节流，你可以通过准确的 SQL test、SQL Digest 或其 Plan Digest来识别查询。在 TiDB v7.3.0，你可以主动监视已知的不良查询，类似于数据库级别的 SQL Blocklist。</td>
+    <td><a href="https://docs.pingcap.com/zh/tidb/v7.5/tidb-resource-control" target="_blank">资源管控 (Resource Group)</a> 是一个通过资源组 (Resource Group) 对工作负载进行资源隔离的框架，但它并不调用单个查询如何影响每个组内的工作。TiDB v7.2.0 引入了管控资源消耗超出预期的查询 (Runaway Queries)，你可以控制 TiDB 如何识别和处理每个资源组的查询。根据需要，长时间运行的查询可能会被终止或节流，你可以通过准确的 SQL test、SQL Digest 或其 Plan Digest来识别查询。在 TiDB v7.3.0，你可以主动监视已知的不良查询，类似于数据库级别的 SQL Blocklist。</td>
   </tr>
   <tr>
     <td>SQL</td>
-    <td>MySQL 8.0 compatibility {/* tw@Oreoxmt */}</td>
-    <td>In MySQL 8.0, the default characterset is utf8mb4, and the default collation of utf8mb4 is <code>utf8mb4_0900_ai_ci</code>. TiDB v7.4.0 adding support for this enhances compatibility with MySQL 8.0 so that migrations and replications from MySQL 8.0 databases with the default collation are now much smoother.</td>
+    <td>MySQL 8.0 兼容性 {/* tw@Oreoxmt */}</td>
+    <td>MySQL 8.0 的默认字符集为 utf8mb4，其默认排序规则是 <code>utf8mb4_0900_ai_ci</code>。TiDB v7.4.0 增强了与 MySQL 8.0 的兼容性。现在你可以更轻松地将在 MySQL 8.0 中使用默认排序规则创建的数据库迁移或复制到 TiDB。</td>
   </tr>
   <tr>
     <td rowspan="3">DB Operations and Observability</td>
