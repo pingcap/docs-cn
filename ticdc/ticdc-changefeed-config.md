@@ -120,10 +120,20 @@ enable-table-across-nodes = false
 # 注意：该参数只有当下游为消息队列时，才会生效。
 # 注意：当下游 MQ 为 Pulsar 时，如果 partition 的路由规则未指定为 'ts', 'index-value', 'table', 'default' 中的任意一个，那么将会使用你设置的字符串作为每一条 Pulsar message 的 key 进行路由。例如，如果你指定的路由规则为 'code' 字符串，那么符合该 matcher 的所有 Pulsar message 都将会以 'code' 作为 key 进行路由。
 # dispatchers = [
-#    {matcher = ['test1.*', 'test2.*'], topic = "Topic 表达式 1", partition = "ts" },
-#    {matcher = ['test3.*', 'test4.*'], topic = "Topic 表达式 2", partition = "index-value" },
+#    {matcher = ['test1.*', 'test2.*'], topic = "Topic 表达式 1", partition = "index-value"},
+#    {matcher = ['test3.*', 'test4.*'], topic = "Topic 表达式 2", partition = "index-value", index-name="index1"},
 #    {matcher = ['test1.*', 'test5.*'], topic = "Topic 表达式 3", partition = "table"},
-#    {matcher = ['test6.*'], partition = "ts"}
+#    {matcher = ['test6.*'], partition = "columns", columns = "['a', 'b']"}
+#    {matcher = ['test7.*'], partition = "ts"}
+# ]
+
+# column-selectors 从 v7.5.0 开始引入，仅对 Kafka Sink 生效。
+# column-selectors 用于选择部分列进行同步。
+# column-selectors = [
+#     {matcher = ['test.t1'], columns = ['a', 'b']},
+#     {matcher = ['test.*'], columns = ["*", "!b"]},
+#     {matcher = ['test1.t1'], columns = ['column*', '!column1']},
+#     {matcher = ['test3.t'], columns = ["column?", "!column1"]},
 # ]
 
 # protocol 用于指定编码消息时使用的格式协议
