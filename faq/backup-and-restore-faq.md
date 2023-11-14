@@ -292,7 +292,7 @@ br restore full -f 'mysql.usertable' -s $external_storage_url --with-sys-table
 
 Note that even if you configures [table filter](/table-filter.md#syntax), **BR does not restore the following system tables**:
 
-- Statistics tables (`mysql.stat_*`)
+- Statistics tables (`mysql.stat_*`). But statistics can be restored. See [Back up statistics](/br/br-snapshot-manual.md#back-up-statistics).
 - System variable tables (`mysql.tidb`, `mysql.global_variables`)
 - [Other system tables](https://github.com/pingcap/tidb/blob/master/br/pkg/restore/systable_restore.go#L31)
 
