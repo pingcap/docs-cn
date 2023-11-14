@@ -353,23 +353,23 @@ ANALYZE TABLE TableName INDEX [IndexNameList] [WITH NUM BUCKETS|TOPN|CMSKETCH DE
 
 `tidb_build_stats_concurrency`、`tidb_build_sampling_stats_concurrency` 和 `tidb_analyze_partition_concurrency` 为上下游关系。实际的总并发为：`tidb_build_stats_concurrency`* (`tidb_build_sampling_stats_concurrency` + `tidb_analyze_partition_concurrency`) 。所以在变更这些参数的时候，需要同时考虑这三个参数的值。建议按 `tidb_analyze_partition_concurrency`、`tidb_build_sampling_stats_concurrency`、`tidb_build_stats_concurrency` 的顺序逐个调节，并观察对系统的影响。这三个参数的值越大，对系统的资源开销就越大。
 
-#### tidb_build_stats_concurrency
+#### `tidb_build_stats_concurrency`
 
 `ANALYZE` 在执行时会被切分成一个个小任务，每个任务只负责某一个列或者索引的统计信息收集。`tidb_build_stats_concurrency` 用于控制可以同时执行的小任务的数量，其默认值是 `2`。TiDB v7.4.0 及其之前版本默认值为 `4`。
 
-#### tidb_build_sampling_stats_concurrency
+#### `tidb_build_sampling_stats_concurrency`
 
 在执行 `ANALYZE` 普通列任务的时候，[`tidb_build_sampling_stats_concurrency`](/system-variables.md#tidb_build_sampling_stats_concurrency-从-v750-版本开始引入) 可以用于控制执行采样任务的并发数量，其默认值是 `2`。
 
-#### tidb_analyze_partition_concurrency
+#### `tidb_analyze_partition_concurrency`
 
 在执行 `ANALYZE` 的时候，[`tidb_analyze_partition_concurrency`](/system-variables.md#tidb_analyze_partition_concurrency) 可以用于控制任务写入的并发度，其默认值是 `2`。TiDB v7.4.0 及其之前版本默认值为 `1`。
 
-#### tidb_distsql_scan_concurrency
+#### `tidb_distsql_scan_concurrency`
 
 在执行分析普通列任务的时候，[`tidb_distsql_scan_concurrency`](/system-variables.md#tidb_distsql_scan_concurrency) 可以用于控制一次读取的 Region 数量，其默认值是 15。修改该变量值会影响查询性能，请谨慎调整。
 
-#### tidb_index_serial_scan_concurrency
+#### `tidb_index_serial_scan_concurrency`
 
 在执行分析索引列任务的时候，[`tidb_index_serial_scan_concurrency`](/system-variables.md#tidb_index_serial_scan_concurrency) 可以用于控制一次读取的 Region 数量，其默认值是 1。修改该变量值会影响查询性能，请谨慎调整。
 
