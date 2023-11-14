@@ -64,7 +64,7 @@ filters:
     | drop index | incompatible DDL  | 删除表中的索引的 DDL 语句，如 `ALTER TABLE DROP INDEX` 语句 |
     | truncate table partition | incompatible DDL  | 清空表中指定分区的 DDL 语句，如 `ALTER TABLE TRUNCATE PARTITION` 语句 |
     | drop primary key | incompatible DDL  | 删除主键的 DDL 语句，如 `ALTER TABLE DROP PRIMARY KEY` 语句 |
-    | drop unqiue key | incompatible DDL  |  删除唯一键的 DDL 语句，如 `ALTER TABLE DROP UNIQUE KEY` 语句 |
+    | drop unique key | incompatible DDL  |  删除唯一键的 DDL 语句，如 `ALTER TABLE DROP UNIQUE KEY` 语句 |
     | modify default value | incompatible DDL  | 修改列默认值的 DDL 语句，如 `ALTER TABLE CHANGE DEFAULT` 语句 |
     | modify constraint | incompatible DDL  | 修改约束条件的 DDL 语句，如 `ALTER TABLE ADD CONSTRAINT` 语句 |
     | modify columns order | incompatible DDL  | 修改列顺序的 DDL 语句，如 `ALTER TABLE CHANGE AFTER` 语句 |
