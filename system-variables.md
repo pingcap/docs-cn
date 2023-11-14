@@ -3637,15 +3637,20 @@ For a system upgraded to v5.0 from an earlier version, if you have not modified 
 
 ### tidb_merge_partition_stats_concurrency
 
-> **Warning:**
->
-> The feature controlled by this variable is not fully functional in the current TiDB version. Do not change the default value.
-
 - Scope: SESSION | GLOBAL
 - Persists to cluster: Yes
 - Applies to hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value): No
 - Default value: `1`
 - This variable specifies the concurrency of merging statistics for a partitioned table when TiDB analyzes the partitioned table.
+
+### tidb_enable_async_merge_global_stats <span class="version-mark">New in v7.5.0</span>
+
+- Scope: SESSION | GLOBAL
+- Persists to cluster: Yes
+- Applies to hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value): No
+- Type: Boolean
+- Default value: `ON`. When you upgrade TiDB from a version earlier than v7.5.0 to v7.5.0 or a later version, the default value is `OFF`. 
+- This variable is used for TiDB to merge global statistics asynchronously to avoid OOM issues.
 
 ### tidb_metric_query_range_duration <span class="version-mark">New in v4.0</span>
 
