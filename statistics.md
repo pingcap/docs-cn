@@ -398,19 +398,33 @@ For more information on the `KILL` statement, see [`KILL`](/sql-statements/sql-s
 
 ### Control `ANALYZE` concurrency
 
-When you run the `ANALYZE` statement, you can adjust the concurrency using the following parameters, to control its effect on the system.
+When you run the `ANALYZE` statement, you can adjust the concurrency using system variables, to control its effect on the system.
+
+The relationships of the relevant system variables are shown below:
+
+![analyze_concurrency](/media/analyze_concurrency.png)
+
+`tidb_build_stats_concurrency`, `tidb_build_sampling_stats_concurrency`, and `tidb_analyze_partition_concurrency` are in an upstream-downstream relationship, as shown in the preceding diagram. The actual total concurrency is: `tidb_build_stats_concurrency` * (`tidb_build_sampling_stats_concurrency` + `tidb_analyze_partition_concurrency`). When modifying these variables, you need to consider their respective values at the same time. It is recommended to adjust them one by one in the order of `tidb_analyze_partition_concurrency`, `tidb_build_sampling_stats_concurrency`, `tidb_build_stats_concurrency`, and observe the impact on the system. The larger the values of these three variables, the greater the resource overhead on the system.
 
 #### `tidb_build_stats_concurrency`
 
-Currently, when you run the `ANALYZE` statement, the task is divided into multiple small tasks. Each task only works on one column or index. You can use the `tidb_build_stats_concurrency` parameter to control the number of simultaneous tasks. The default value is `4`.
+When you run the `ANALYZE` statement, the task is divided into multiple small tasks. Each task only works on statistics of one column or index. You can use the [`tidb_build_stats_concurrency`](/system-variables.md#tidb_build_stats_concurrency) variable to control the number of simultaneous small tasks. The default value is `2`. The default value is `4` for v7.4.0 and earlier versions.
+
+#### `tidb_build_sampling_stats_concurrency`
+
+When analyzing ordinary columns, you can use [`tidb_build_sampling_stats_concurrency`](/system-variables.md#tidb_build_sampling_stats_concurrency-new-in-v750) to control the concurrency of executing sampling tasks. The default value is `2`.
+
+#### `tidb_analyze_partition_concurrency`
+
+When running the `ANALYZE` statement, you can use [`tidb_analyze_partition_concurrency`](/system-variables.md#tidb_analyze_partition_concurrency) to control the concurrency of reading and writing statistics for a partitioned table. The default value is `2`. The default value is `1` for v7.4.0 and earlier versions.
 
 #### `tidb_distsql_scan_concurrency`
 
-When you analyze regular columns, you can use the `tidb_distsql_scan_concurrency` parameter to control the number of Region to be read at one time. The default value is `15`.
+When you analyze regular columns, you can use the [`tidb_distsql_scan_concurrency`](/system-variables.md#tidb_distsql_scan_concurrency) variable to control the number of Regions to be read at one time. The default value is `15`. Note that changing the value will affect query performance. Adjust the value carefully.
 
 #### `tidb_index_serial_scan_concurrency`
 
-When you analyze index columns, you can use the `tidb_index_serial_scan_concurrency` parameter to control the number of Region to be read at one time. The default value is `1`.
+When you analyze index columns, you can use the [`tidb_index_serial_scan_concurrency`](/system-variables.md#tidb_index_serial_scan_concurrency) variable to control the number of Regions to be read at one time. The default value is `1`. Note that changing the value will affect query performance. Adjust the value carefully.
 
 ### Persist ANALYZE configurations
 
