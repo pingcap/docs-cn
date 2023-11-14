@@ -933,7 +933,7 @@ MPP 是 TiFlash 引擎提供的分布式计算框架，允许节点之间的数�
 - 作用域：SESSION | GLOBAL
 - 是否持久化到集群：是
 - 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：否
-- 默认值：`1`
+- 默认值：`2`。TiDB v7.4.0 及其之前版本默认值为 `1`。
 - 这个变量用于 TiDB analyze 分区表时，对分区表统计信息进行读写的并发度。
 
 ### `tidb_analyze_version` <span class="version-mark">从 v5.1.0 版本开始引入</span>
@@ -1162,9 +1162,21 @@ mysql> SELECT job_info FROM mysql.analyze_jobs ORDER BY end_time DESC LIMIT 1;
 - 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：否
 - 类型：整数型
 - 单位：线程
-- 默认值：`4`
+- 默认值：`2`。TiDB v7.4.0 及其之前版本默认值为 `4`。
 - 取值范围：`[1, 256]`
 - 这个变量用来设置 ANALYZE 语句执行时并发度。
+- 当这个变量被设置得更大时，会对其它的查询语句执行性能产生一定影响。
+
+### `tidb_build_sampling_stats_concurrency` <span class="version-mark">从 v7.5.0 版本开始引入</span>
+
+- 作用域：SESSION | GLOBAL
+- 是否持久化到集群：是
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：否
+- 类型：整数型
+- 单位：线程
+- 默认值：`2`
+- 取值范围：`[1, 256]`
+- 这个变量用来设置 `ANALYZE` 过程中的采样并发度。
 - 当这个变量被设置得更大时，会对其它的查询语句执行性能产生一定影响。
 
 ### `tidb_capture_plan_baselines` <span class="version-mark">从 v4.0 版本开始引入</span>
