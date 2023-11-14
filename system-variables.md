@@ -1076,7 +1076,7 @@ MPP is a distributed computing framework provided by the TiFlash engine, which a
 - Scope: SESSION | GLOBAL
 - Persists to cluster: Yes
 - Applies to hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value): No
-- Default value: `1`
+- Default value: `2`. The default value is `1` for v7.4.0 and earlier versions.
 - This variable specifies the concurrency of reading and writing statistics for a partitioned table when TiDB analyzes the partitioned table.
 
 ### tidb_analyze_version <span class="version-mark">New in v5.1.0</span>
@@ -1301,10 +1301,22 @@ mysql> SELECT job_info FROM mysql.analyze_jobs ORDER BY end_time DESC LIMIT 1;
 - Persists to cluster: Yes
 - Applies to hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value): No
 - Type: Integer
-- Default value: `4`
+- Default value: `2`. The default value is `4` for v7.4.0 and earlier versions.
 - Range: `[1, 256]`
 - Unit: Threads
 - This variable is used to set the concurrency of executing the `ANALYZE` statement.
+- When the variable is set to a larger value, the execution performance of other queries is affected.
+
+### tidb_build_sampling_stats_concurrency <span class="version-mark">New in v7.5.0</span>
+
+- Scope: GLOBAL
+- Persists to cluster: Yes
+- Applies to hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value): No
+- Type: Integer
+- Unit: Threads
+- Default value：`2`
+- Range: `[1, 256]`
+- This variable is used to set the sampling concurrency in the `ANALYZE` process.
 - When the variable is set to a larger value, the execution performance of other queries is affected.
 
 ### tidb_capture_plan_baselines <span class="version-mark">New in v4.0</span>
