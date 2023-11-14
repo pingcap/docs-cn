@@ -280,6 +280,15 @@ TiDB 7.5.0 为长期支持版本 (Long-Term Support Release, LTS)。
 
     + TiCDC
 
+        - 修复同步到对象存储时访问 NFS 目录导致的性能问题 [#10041](https://github.com/pingcap/tiflow/issues/10041)
+        - 修复开启 claim-check 功能，存储路径拼写不对的问题 [#10036](https://github.com/pingcap/tiflow/issues/10036)
+        - 修复开启 column filter 功能时列设置不对的问题 [#10042](https://github.com/pingcap/tiflow/issues/10042)
+        - 优化设置过滤规则时是否忽略大小写的默认值[#10047](https://github.com/pingcap/tiflow/issues/10047)
+        - 修复 cdc 在某些情况下调度不均衡的问题 [#9845](https://github.com/pingcap/tiflow/issues/9845)
+        - 修复同步到 Kafka 时 callback 可能出现丢失的问题 [#9855](https://github.com/pingcap/tiflow/issues/9855)
+        - 修复某些特殊场景下 processor 可能 panic 的问题 [#9849](https://github.com/pingcap/tiflow/issues/9849)[#9917](https://github.com/pingcap/tiflow/issues/9917)
+        - 修复某些场景下，TiCDC 丢失了对 Region 错误的处理导致同步任务卡住的问题 [#9673](https://github.com/pingcap/tiflow/issues/9673)
+        - 修复开启 Redo log 时，NFS 出现故障导致 owner 节点卡住的问题 [#9886](https://github.com/pingcap/tiflow/issues/9886)
         - note [#issue](链接) @[贡献者 GitHub ID](链接)
         - note [#issue](链接) @[贡献者 GitHub ID](链接)
 
