@@ -53,8 +53,6 @@ The `TiDB-community-toolkit` package contains the following contents.
 | dm-master-{version}-linux-{arch}.tar.gz |  |
 | dmctl-{version}-linux-{arch}.tar.gz |  |
 | br-{version}-linux-{arch}.tar.gz |  |
-| spark-{version}-any-any.tar.gz |  |
-| tispark-{version}-any-any.tar.gz |  |
 | package-{version}-linux-{arch}.tar.gz |  |
 | bench-{version}-linux-{arch}.tar.gz |  |
 | errdoc-{version}-linux-{arch}.tar.gz |  |
