@@ -399,7 +399,7 @@ ANALYZE INCREMENTAL TABLE TableName PARTITION PartitionNameList INDEX [IndexName
 
 #### tidb_index_serial_scan_concurrency
 
-在执行分析索引列任务的时候，[`tidb_index_serial_scan_concurrency`](/system-variables.md#tidb_index_serial_scan_concurrency) 可以用于控制一次读取的 Region 数量，其默认值是 1。同时其会影响查询性能，请谨慎调整。
+在执行分析索引列任务的时候，[`tidb_index_serial_scan_concurrency`](/system-variables.md#tidb_index_serial_scan_concurrency) 可以用于控制一次读取的 Region 数量，其默认值是 1。修改该变量值会影响查询性能，请谨慎调整。
 
 ### ANALYZE 配置持久化
 
