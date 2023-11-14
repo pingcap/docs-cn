@@ -78,9 +78,10 @@ TiDB 采用计算存储分离架构，具有出色的扩展性和弹性的扩缩
 
 3. 从 v7.4.0 开始，你可以根据实际需求，调整执行后端任务的 TiDB 节点数量，在部署 TiDB 后为每一个 TiDB 节点设置 Instance 级别系统变量 [`tidb_service_scope`](/system-variables.md#tidb_service_scope-从-v740-版本开始引入)。`tidb_service_scope` 设置为 `background` 时，TiDB 节点可执行后端任务。`tidb_service_scope` 设置为默认值 "" 时，TiDB 节点不可执行后端任务。如果所有节点均未配置 `tidb_service_scope`，框架将调度所有节点执行后端任务。
 
-    > **警告：**
+    > **注意：**
     >
-    > `tidb_service_scope` 目前为实验特性，不建议在生产环境中使用。该功能可能会在未事先通知的情况下发生变化或删除。如果发现 bug，请在 GitHub 上提 [issue](https://github.com/pingcap/tidb/issues) 反馈。
+    > - 在分布式任务执行过程中，如果某些 TiDB 节点下线，分布式任务将随机分配子任务到其他可用的 TiDB 节点上，此时无法通过 `tidb_service_scope` 来动态控制子任务的分配。 
+    > - 在分布式任务执行过程中，修改 `tidb_service_scope` 的配置不会对当前任务生效，会从下次任务开始生效。
 
 > **建议：**
 >
