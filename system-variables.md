@@ -4821,10 +4821,6 @@ SHOW WARNINGS;
 
 ### tidb_service_scope <span class="version-mark">New in v7.4.0</span>
 
-> **Warning:**
->
-> This feature is an experimental feature. It is not recommended to use it in production environments. This feature might be changed or removed without prior notice. If you find a bug, you can report an [issue](https://github.com/pingcap/tidb/issues) on GitHub.
-
 <CustomContent platform="tidb">
 
 - Scope: GLOBAL
