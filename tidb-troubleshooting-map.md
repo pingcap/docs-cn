@@ -489,7 +489,7 @@ TiDB 支持完整的分布式事务，自 v3.0 版本起，提供乐观事务与
         - 如果 TiDB Lightning 与其他服务（如 TiKV Importer）共用一台服务器，必需手动将 `region-concurrency` 设为该服务器 CPU 数量的 `75%`；
         - 如果 CPU 设有限额（例如从 Kubernetes 指定的上限），TiDB Lightning 可能无法自动判断出来，此时亦需要手动调整 `region-concurrency`。
 
-    - 表结构太复杂。每条索引都会额外增加 KV 对，如果有 N 条索引，实际导入的大小就差不多是 [Mydumper](https://docs.pingcap.com/zh/tidb/v4.0/mydumper-overview) 文件的 N+1 倍。如果索引不太重要，可以考虑先从 schema 去掉，待导入完成后再使用 `CREATE INDEX` 加回去。
+    - 表结构太复杂。每条索引都会额外增加 KV 对，如果有 N 条索引，实际导入的大小就差不多是 [Dumpling](/dumpling-overview.md) 文件的 N+1 倍。如果索引不太重要，可以考虑先从 schema 去掉，待导入完成后再使用 `CREATE INDEX` 加回去。
 
     - TiDB Lightning 版本太旧。尝试使用最新的版本，可能会有改善。
 
@@ -499,7 +499,7 @@ TiDB 支持完整的分布式事务，自 v3.0 版本起，提供乐观事务与
 
     - 原因 2：如果目标数据库的校验和全是 0，表示没有发生任何导入，有可能是集群太忙无法接收任何数据。
 
-    - 原因 3：如果数据源是由机器生成而不是从 [Mydumper](https://docs.pingcap.com/zh/tidb/v4.0/mydumper-overview) 备份的，需确保数据符合表的限制。例如：
+    - 原因 3：如果数据源是由机器生成而不是从 [Dumpling](/dumpling-overview.md) 备份的，需确保数据符合表的限制。例如：
 
         - 自增 (AUTO_INCREMENT) 的列需要为正数，不能为 0。
         - 单一键和主键 (UNIQUE and PRIMARY KEYs) 不能有重复的值。
@@ -512,19 +512,13 @@ TiDB 支持完整的分布式事务，自 v3.0 版本起，提供乐观事务与
 
     - 解决办法：参考[官网步骤](/tidb-lightning/troubleshoot-tidb-lightning.md#checkpoint-for--has-invalid-status错误码)处理。
 
-- 6.3.5 `ResourceTemporarilyUnavailable("Too many open engines …: 8")`
-
-    - 原因：并行打开的引擎文件 (engine files) 超出 tikv-importer 里的限制。这可能由配置错误引起。即使配置没问题，如果 tidb-lightning 曾经异常退出，也有可能令引擎文件残留在打开的状态，占据可用的数量。
-
-    - 解决办法：参考[官网步骤处理](/tidb-lightning/troubleshoot-tidb-lightning.md#resourcetemporarilyunavailabletoo-many-open-engines--)。
-
-- 6.3.6 `cannot guess encoding for input file, please convert to UTF-8 manually`
+- 6.3.5 `cannot guess encoding for input file, please convert to UTF-8 manually`
 
     - 原因：TiDB Lightning 只支持 UTF-8 和 GB-18030 编码的表架构。此错误代表数据源不是这里任一个编码。也有可能是文件中混合了不同的编码，例如在不同的环境运行过 `ALTER TABLE`，使表架构同时出现 UTF-8 和 GB-18030 的字符。
 
     - 解决办法：参考[官网步骤](/tidb-lightning/troubleshoot-tidb-lightning.md#cannot-guess-encoding-for-input-file-please-convert-to-utf-8-manually)处理。
 
-- 6.3.7 `[sql2kv] sql encode error = [types:1292]invalid time format: '{1970 1 1 0 45 0 0}'`
+- 6.3.6 `[sql2kv] sql encode error = [types:1292]invalid time format: '{1970 1 1 0 45 0 0}'`
 
     - 原因：一个 timestamp 类型的时间戳记录了不存在的时间值。时间值不存在是由于夏令时切换或超出支持的范围（1970 年 1 月 1 日至 2038 年 1 月 19 日）。
 

@@ -933,7 +933,7 @@ MPP 是 TiFlash 引擎提供的分布式计算框架，允许节点之间的数�
 - 作用域：SESSION | GLOBAL
 - 是否持久化到集群：是
 - 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：否
-- 默认值：`1`
+- 默认值：`2`。TiDB v7.4.0 及其之前版本默认值为 `1`。
 - 这个变量用于 TiDB analyze 分区表时，对分区表统计信息进行读写的并发度。
 
 ### `tidb_analyze_version` <span class="version-mark">从 v5.1.0 版本开始引入</span>
@@ -1162,9 +1162,21 @@ mysql> SELECT job_info FROM mysql.analyze_jobs ORDER BY end_time DESC LIMIT 1;
 - 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：否
 - 类型：整数型
 - 单位：线程
-- 默认值：`4`
+- 默认值：`2`。TiDB v7.4.0 及其之前版本默认值为 `4`。
 - 取值范围：`[1, 256]`
 - 这个变量用来设置 ANALYZE 语句执行时并发度。
+- 当这个变量被设置得更大时，会对其它的查询语句执行性能产生一定影响。
+
+### `tidb_build_sampling_stats_concurrency` <span class="version-mark">从 v7.5.0 版本开始引入</span>
+
+- 作用域：SESSION | GLOBAL
+- 是否持久化到集群：是
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：否
+- 类型：整数型
+- 单位：线程
+- 默认值：`2`
+- 取值范围：`[1, 256]`
+- 这个变量用来设置 `ANALYZE` 过程中的采样并发度。
 - 当这个变量被设置得更大时，会对其它的查询语句执行性能产生一定影响。
 
 ### `tidb_capture_plan_baselines` <span class="version-mark">从 v4.0 版本开始引入</span>
@@ -1762,7 +1774,7 @@ mysql> SELECT job_info FROM mysql.analyze_jobs ORDER BY end_time DESC LIMIT 1;
 
 > **警告：**
 >
-> 目前快速分析功能为实验特性，不建议在生产环境中使用。
+> 从 v7.5.0 开始，该变量被废弃。
 
 - 作用域：SESSION | GLOBAL
 - 是否持久化到集群：是
@@ -2551,6 +2563,26 @@ v5.0 后，用户仍可以单独修改以上系统变量（会有废弃警告）
 - 开启该变量后，即可在 TiDB Dashboard 中查看查询的图形化执行计划。注意，TiDB Dashboard 只显示变量开启时产生的查询的执行计划。
 - 用 `select tidb_decode_binary_plan('xxx...')` SQL 语句可以从编码后的执行计划解析出具体的执行计划。
 
+### `tidb_gogc_tuner_max_value` <span class="version-mark">从 v7.5.0 版本开始引入</span>
+
+- 作用域：GLOBAL
+- 是否持久化到集群：是
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：否
+- 类型：整数型
+- 默认值：`500`
+- 范围：`[10, 2147483647]`
+- 该变量用来控制 GOGC Tuner 可调节 GOGC 的最大值。
+
+### `tidb_gogc_tuner_min_value` <span class="version-mark">从 v7.5.0 版本开始引入</span>
+
+- 作用域：GLOBAL
+- 是否持久化到集群：是
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：否
+- 类型：整数型
+- 默认值：`100`
+- 范围：`[10, 2147483647]`
+- 该变量用来控制 GOGC Tuner 可调节 GOGC 的最小值。
+
 ### `tidb_gogc_tuner_threshold` <span class="version-mark">从 v6.4.0 版本开始引入</span>
 
 - 作用域：GLOBAL
@@ -3064,15 +3096,20 @@ v5.0 后，用户仍可以单独修改以上系统变量（会有废弃警告）
 
 ### `tidb_merge_partition_stats_concurrency`
 
-> **警告：**
->
-> 当前版本中该变量控制的功能尚未完全生效，请保留默认值。
-
 - 作用域：SESSION | GLOBAL
 - 是否持久化到集群：是
 - 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：否
 - 默认值：`1`
 - 这个变量用于 TiDB analyze 分区表时，对分区表统计信息进行合并时的并发度。
+
+### `tidb_enable_async_merge_global_stats` <span class="version-mark">从 v7.5.0 版本开始引入</span>
+
+- 作用域：SESSION | GLOBAL
+- 是否持久化到集群：是
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：否
+- 类型：布尔型
+- 默认值：`ON`。从 v7.5.0 之前版本升级到 v7.5.0 或之后版本时，默认值为 `OFF`。
+- 这个变量用于设置 TiDB 使用异步方式合并统计信息，以避免 OOM 问题。
 
 ### `tidb_metric_query_range_duration` <span class="version-mark">从 v4.0 版本开始引入</span>
 
@@ -4151,10 +4188,6 @@ EXPLAIN FORMAT='brief' SELECT COUNT(1) FROM t WHERE a = 1 AND b IS NOT NULL;
 - 开启内存限制后，TiDB 会终止当前实例上内存用量最高的 SQL 语句。本变量指定此情况下 SQL 语句被终止的最小内存用量。如果 TiDB 实例的内存超限是由许多内存使用量不明显的会话导致的，可以适当调小该变量值，使得更多会话成为 Cancel 的对象。
 
 ### `tidb_service_scope` <span class="version-mark">从 v7.4.0 版本开始引入</span>
-
-> **警告：**
->
-> 该功能目前为实验特性，不建议在生产环境中使用。该功能可能会在未事先通知的情况下发生变化或删除。如果发现 bug，请在 GitHub 上提 [issue](https://github.com/pingcap/tidb/issues) 反馈。
 
 - 作用域：GLOBAL
 - 是否持久化到集群：否
