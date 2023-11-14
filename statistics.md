@@ -345,7 +345,7 @@ ANALYZE TABLE TableName INDEX [IndexNameList] [WITH NUM BUCKETS|TOPN|CMSKETCH DE
 
 ### 控制 ANALYZE 并发度
 
-执行 ANALYZE 语句的时候，你可以通过一些参数来调整并发度，以控制对系统的影响。
+执行 ANALYZE 语句的时候，你可以通过一些系统变量来调整并发度，以控制对系统的影响。
 
 相关系统变量的关系如下图所示：
 
@@ -355,7 +355,7 @@ ANALYZE TABLE TableName INDEX [IndexNameList] [WITH NUM BUCKETS|TOPN|CMSKETCH DE
 
 #### `tidb_build_stats_concurrency`
 
-`ANALYZE` 在执行时会被切分成一个个小任务，每个任务只负责某一个列或者索引的统计信息收集。`tidb_build_stats_concurrency` 用于控制可以同时执行的小任务的数量，其默认值是 `2`。TiDB v7.4.0 及其之前版本默认值为 `4`。
+`ANALYZE` 在执行时会被切分成一个个小任务，每个任务只负责某一个列或者索引的统计信息收集。[`tidb_build_stats_concurrency`](/system-variables.md#tidb_build_stats_concurrency) 用于控制可以同时执行的小任务的数量，其默认值是 `2`。TiDB v7.4.0 及其之前版本默认值为 `4`。
 
 #### `tidb_build_sampling_stats_concurrency`
 
@@ -363,7 +363,7 @@ ANALYZE TABLE TableName INDEX [IndexNameList] [WITH NUM BUCKETS|TOPN|CMSKETCH DE
 
 #### `tidb_analyze_partition_concurrency`
 
-在执行 `ANALYZE` 的时候，[`tidb_analyze_partition_concurrency`](/system-variables.md#tidb_analyze_partition_concurrency) 可以用于控制任务写入的并发度，其默认值是 `2`。TiDB v7.4.0 及其之前版本默认值为 `1`。
+在执行 `ANALYZE` 的时候，[`tidb_analyze_partition_concurrency`](/system-variables.md#tidb_analyze_partition_concurrency) 可以用于控制对分区表统计信息进行读写的并发度，其默认值是 `2`。TiDB v7.4.0 及其之前版本默认值为 `1`。
 
 #### `tidb_distsql_scan_concurrency`
 
