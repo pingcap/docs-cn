@@ -194,6 +194,27 @@ tiup cluster upgrade <cluster-name> v7.4.0
 >   3. reload 整个集群：`tiup cluster reload <cluster-name>`。此时，TiFlash 也会正常启动，无需额外操作。
 > - 在对使用 TiDB Binlog 的集群进行滚动升级过程中，请避免新创建聚簇索引表。
 
+#### 升级时指定组件版本
+
+从 tiup-cluster v1.14.0 开始，支持在升级集群的时候指定其中某些组件到特定版本。指定的这些组件会被固定到指定的版本，在下次升级中不会改变版本号，除非再次指定版本。
+
+{{< copyable "shell-regular" >}}
+
+```shell
+tiup cluster upgrade -h | grep "version string"
+      --alertmanager-version string        Fix the version of alertmanager and no longer follows the cluster version.
+      --blackbox-exporter-version string   Fix the version of blackbox-exporter and no longer follows the cluster version.
+      --cdc-version string                 Fix the version of cdc and no longer follows the cluster version.
+      --ignore-version-check               Ignore checking if target version is bigger than current version
+      --node-exporter-version string       Fix the version of node-exporter and no longer follows the cluster version.
+      --pd-version string                  Fix the version of pv and no longer follows the cluster version.
+      --tidb-dashboard-version string      Fix the version of tidb-dashboard and no longer follows the cluster version.
+      --tiflash-version string             Fix the version of tiflash and no longer follows the cluster version.
+      --tikv-cdc-version string            Fix the version of tikv-cdc and no longer follows the cluster version.
+      --tikv-version string                Fix the version of tikv and no longer follows the cluster version.
+      --tiproxy-version string             Fix the version of tiproxy and no longer follows the cluster version.
+```
+
 #### 停机升级
 
 在停机升级前，首先需要将整个集群关停。
