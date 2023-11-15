@@ -42,8 +42,8 @@ Info: {"upstream_id":7178706266519722477,"namespace":"default","id":"simple-repl
 # memory-quota = 1073741824
 
 # 指定配置文件中涉及的库名、表名是否为大小写敏感
-# 该配置会同时影响 filter 和 sink 相关配置，默认为 true
-case-sensitive = true
+# 该配置会同时影响 filter 和 sink 相关配置，默认为 false
+case-sensitive = false
 
 # 是否开启 Syncpoint 功能，从 v6.3.0 开始支持，该功能默认关闭。
 # 从 v6.4.0 开始，使用 Syncpoint 功能需要同步任务拥有下游集群的 SYSTEM_VARIABLES_ADMIN 或者 SUPER 权限。
