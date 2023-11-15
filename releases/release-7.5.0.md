@@ -202,6 +202,7 @@ TiDB 7.5.0 为长期支持版本 (Long-Term Support Release, LTS)。
 
 + PD
 
+    - 提升 evict-slow-trend 调度的稳定性和易用性 [#7156](https://github.com/tikv/pd/issues/7156) @[LykxSassinato](https://github.com/LykxSassinator)
     - note [#issue](链接) @[贡献者 GitHub ID](链接)
     - note [#issue](链接) @[贡献者 GitHub ID](链接)
 
@@ -262,7 +263,14 @@ TiDB 7.5.0 为长期支持版本 (Long-Term Support Release, LTS)。
 + PD
 
     - (dup): release-7.1.2.md > 错误修复> PD - 修复 `evict-leader-scheduler` 丢失配置的问题 [#6897](https://github.com/tikv/pd/issues/6897) @[HuSharp](https://github.com/HuSharp)
-    - note [#issue](链接) @[贡献者 GitHub ID](链接)
+    - 修复 store 下线后对应的打点统计数据未删除的问题 [#7180](https://github.com/tikv/pd/issues/7180) @[rleungx](https://github.com/rleungx)
+    - 修复 DR-AutoSync 在 Placement Rule 配置比较复杂时，canSync 和 hasMajority 可能计算错误的问题 [#7201](https://github.com/tikv/pd/issues/7201) @[disksing](https://github.com/disksing)
+    - 修复 rule checker 未按照设定的 Placement Rule 添加 Learner 的问题 [#7185](https://github.com/tikv/pd/issues/7185) @[nolouch](https://github.com/nolouch)
+    - 修复 TiDB Dashboard 不能正常抓取 PD Trace 数据的问题 [#7253](https://github.com/tikv/pd/issues/7253) @[nolouch](https://github.com/nolouch)
+    - 修复 PD 内部获取的 Region 可能为空导致 PD Panic 的问题 [#7261](https://github.com/tikv/pd/issues/7261) @[lhy1024](https://github.com/lhy1024)
+    - 修复 DR-AutoSync available_stores 计算错误的问题 [#7221](https://github.com/tikv/pd/issues/7221) @[disksing](https://github.com/disksing)
+    - 修复 TiKV 节点不可用时有一定几率删除正常 Peers 的问题 [#7249](https://github.com/tikv/pd/issues/7249) @[lhy1024](https://github.com/lhy1024)
+    - 修复在大集群中添加多个 TiKV 节点可能导致 TiKV 心跳上报变慢或卡住的问题 [#7248](https://github.com/tikv/pd/issues/7248) @[rleungx](https://github.com/rleungx)
     - note [#issue](链接) @[贡献者 GitHub ID](链接)
 
 + TiFlash
