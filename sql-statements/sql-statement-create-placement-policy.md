@@ -44,6 +44,7 @@ AdvancedPlacementOption ::=
 |   "LEADER_CONSTRAINTS" EqOpt stringLit
 |   "FOLLOWER_CONSTRAINTS" EqOpt stringLit
 |   "LEARNER_CONSTRAINTS" EqOpt stringLit
+|   "SURVIVAL_PREFERENCES" EqOpt stringLit
 ```
 
 ## Examples

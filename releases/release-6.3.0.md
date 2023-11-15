@@ -152,7 +152,7 @@ In v6.3.0-DMR, the key new features and improvements are as follows:
 
 * Address the conflict between SQL-based data Placement Rules and TiFlash replicas [#37171](https://github.com/pingcap/tidb/issues/37171) @[lcwangchao](https://github.com/lcwangchao)
 
-    TiDB v6.0.0 provides SQL-based data Placement Rules. But this feature conflicts with TiFlash replicas due to implementation issues. TiDB v6.3.0 optimizes the implementation mechanisms, and [resolves the conflict between SQL-based data Placement Rules and TiFlash](/placement-rules-in-sql.md#known-limitations).
+    TiDB v6.0.0 provides [SQL-based data Placement Rules](/placement-rules-in-sql.md). But this feature conflicts with TiFlash replicas due to implementation issues. TiDB v6.3.0 optimizes the implementation mechanisms, and resolves the conflict between SQL-based data Placement Rules and TiFlash.
 
 ### MySQL compatibility
 
