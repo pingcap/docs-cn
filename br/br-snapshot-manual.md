@@ -12,6 +12,7 @@ summary: 介绍备份与恢复 TiDB 集群快照的命令行。
     - [备份单个数据库的数据](#备份单个数据库的数据)
     - [备份单张表的数据](#备份单张表的数据)
     - [使用表库过滤功能备份多张表的数据](#使用表库过滤功能备份多张表的数据)
+- [备份统计信息](#备份统计信息)
 - [备份数据加密](#备份数据加密)
 - [恢复快照备份数据](#恢复快照备份数据)
 - [恢复备份数据中指定库表的数据](#恢复备份数据中指定库表的数据)
@@ -109,6 +110,29 @@ br backup full \
     --log-file backupfull.log
 ```
 
+## 备份统计信息
+
+从 TiDB v7.5.0 开始，br 命令行工具引入参数 `--ignore-stats`。当指定该参数值为 `false` 时，br 命令行工具支持备份和恢复数据库的列、索引、和表级别的统计信息，因此从备份中恢复的 TiDB 数据库不再需要手动运行统计信息收集任务，也无需等待自动收集任务的完成，从而简化了数据库维护工作，并提升了查询性能。
+
+当未指定该参数值为 `false` 时，br 命令行工具默认 `--ignore-stats=true`，即在备份数据时不备份统计信息。
+
+下面是备份集群快照数据并备份表统计信息的示例，需要设置 `--ignore-stats=false`：
+
+```shell
+br backup full \
+--storage local:///br_data/ --pd "${PD_IP}:2379" --log-file restore.log \
+--ignore-stats=false
+```
+
+完成上述配置后，在恢复数据时，如果备份中包含了统计信息，br 命令行工具在恢复数据时会自动恢复备份的统计信息：
+
+```shell
+br restore full \
+--storage local:///br_data/ --pd "${PD_IP}:2379" --log-file restore.log 
+```
+
+备份恢复功能在备份时，将统计信息通过 JSON 格式存储在 `backupmeta` 文件中。在恢复时，将 JSON 格式的统计信息导入到集群中。详情请参考 [LOAD STATS](/sql-statements/sql-statement-load-stats.md)。
+
 ## 备份数据加密
 
 > **警告：**
@@ -153,7 +177,7 @@ br restore full \
 
 以上命令中，
 
-- `--with-sys-table`：恢复集群数据的同时恢复**部分系统表**的数据，包括恢复账号权限数据和 SQL Binding 信息，但暂不支持恢复统计信息 (`mysql.stat_*`) 和系统参数 (`mysql.tidb`, `mysql.global_variables`) 等信息，更多信息详见[恢复 `mysql` 数据库下的表](/br/br-snapshot-guide.md#恢复-mysql-数据库下的表)。
+- `--with-sys-table`：恢复集群数据的同时恢复**部分系统表**的数据，包括恢复账号权限数据、 SQL Binding 信息和统计信息数据(详细参考[备份统计信息](/br/br-snapshot-manual.md#备份统计信息))，但暂不支持恢复统计信息表 (`mysql.stat_*`) 和系统参数 (`mysql.tidb`, `mysql.global_variables`) 等信息，更多信息详见[恢复 `mysql` 数据库下的表](/br/br-snapshot-guide.md#恢复-mysql-数据库下的表)。
 - `--ratelimit`：**每个 TiKV** 执行恢复任务的速度上限（单位 MiB/s）。
 - `--log-file`：备份日志写入的目标文件。
 

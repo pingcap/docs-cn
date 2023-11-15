@@ -42,7 +42,7 @@ br backup full --pd "${PD_IP}:2379" \
 ### 常用选项
 
 * `--pd`：PD 访问地址选项，例如 `"${PD_IP}:2379"`。
-* `-s` 或 `--storage`：备份数据的存储地址选项。TiDB 备份恢复支持以 Amazon S3、Google Cloud Storage (GCS)、Azure Blob Storage 及 NFS 为备份存储。详细参考[备份存储 URI 配置](/br/backup-and-restore-storages.md#uri-格式)。
+* `-s` 或 `--storage`：备份数据的存储地址选项。TiDB 备份恢复支持以 Amazon S3、Google Cloud Storage (GCS)、Azure Blob Storage 及 NFS 为备份存储。关于 URI 格式的详细信息，请参考[外部存储服务的 URI 格式](/external-storage-uri.md)。
 * `--ca`：指定 PEM 格式的受信任 CA 的证书文件路径。
 * `--cert`：指定 PEM 格式的 SSL 证书文件路径。
 * `--key`：指定 PEM 格式的 SSL 证书密钥文件路径。

@@ -45,9 +45,6 @@ Info: {"upstream_id":7178706266519722477,"namespace":"default","id":"simple-repl
 # 该配置会同时影响 filter 和 sink 相关配置，默认为 true
 case-sensitive = true
 
-# 是否输出 old value，从 v4.0.5 开始支持，从 v5.0 开始默认为 true
-enable-old-value = true
-
 # 是否开启 Syncpoint 功能，从 v6.3.0 开始支持，该功能默认关闭。
 # 从 v6.4.0 开始，使用 Syncpoint 功能需要同步任务拥有下游集群的 SYSTEM_VARIABLES_ADMIN 或者 SUPER 权限。
 # 注意：该参数只有当下游为 TiDB 时，才会生效。
@@ -64,6 +61,10 @@ enable-old-value = true
 # 默认值为 24h
 # 注意：该参数只有当下游为 TiDB 时，才会生效。
 # sync-point-retention = "1h"
+
+# 设置解析 DDL 时使用的 SQL 模式，多个模式之间用逗号分隔
+# 默认值和 TiDB 的默认 SQL 模式一致
+# sql-mode = "ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION"
 
 [mounter]
 # mounter 解码 KV 数据的线程数，默认值为 16
@@ -119,10 +120,20 @@ enable-table-across-nodes = false
 # 注意：该参数只有当下游为消息队列时，才会生效。
 # 注意：当下游 MQ 为 Pulsar 时，如果 partition 的路由规则未指定为 'ts', 'index-value', 'table', 'default' 中的任意一个，那么将会使用你设置的字符串作为每一条 Pulsar message 的 key 进行路由。例如，如果你指定的路由规则为 'code' 字符串，那么符合该 matcher 的所有 Pulsar message 都将会以 'code' 作为 key 进行路由。
 # dispatchers = [
-#    {matcher = ['test1.*', 'test2.*'], topic = "Topic 表达式 1", partition = "ts" },
-#    {matcher = ['test3.*', 'test4.*'], topic = "Topic 表达式 2", partition = "index-value" },
+#    {matcher = ['test1.*', 'test2.*'], topic = "Topic 表达式 1", partition = "index-value"},
+#    {matcher = ['test3.*', 'test4.*'], topic = "Topic 表达式 2", partition = "index-value", index-name="index1"},
 #    {matcher = ['test1.*', 'test5.*'], topic = "Topic 表达式 3", partition = "table"},
-#    {matcher = ['test6.*'], partition = "ts"}
+#    {matcher = ['test6.*'], partition = "columns", columns = "['a', 'b']"}
+#    {matcher = ['test7.*'], partition = "ts"}
+# ]
+
+# column-selectors 从 v7.5.0 开始引入，仅对 Kafka Sink 生效。
+# column-selectors 用于选择部分列进行同步。
+# column-selectors = [
+#     {matcher = ['test.t1'], columns = ['a', 'b']},
+#     {matcher = ['test.*'], columns = ["*", "!b"]},
+#     {matcher = ['test1.t1'], columns = ['column*', '!column1']},
+#     {matcher = ['test3.t'], columns = ["column?", "!column1"]},
 # ]
 
 # protocol 用于指定编码消息时使用的格式协议
@@ -144,9 +155,9 @@ delete-only-output-handle-key-columns = false
 # schema-registry = "http://localhost:80801/subjects/{subject-name}/versions/{version-number}/schema"
 
 # 编码数据时所用编码器的线程数。
-# 默认值为 16。
+# 默认值为 32。
 # 注意：该参数只有当下游为消息队列时，才会生效。
-# encoder-concurrency = 16
+# encoder-concurrency = 32
 
 # 是否开启 Kafka Sink V2。Kafka Sink V2 内部使用 kafka-go 实现。
 # 默认值为 false。

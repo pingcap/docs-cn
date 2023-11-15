@@ -16,9 +16,9 @@ summary: 了解 TiCDC 软硬件环境要求以及如何安装部署和运维 TiC
 | Red Hat Enterprise Linux | 7.3 及以上   |
 | CentOS                   | 7.3 及以上   |
 
-| CPU | 内存 | 硬盘类型 | 网络 | TiCDC 集群实例数量（生产环境最低要求） |
-| --- | --- | --- | --- | --- |
-| 16 核+ | 64 GB+ | SSD | 万兆网卡（2 块最佳） | 2 |
+| CPU | 内存 | 硬盘               | 网络 | TiCDC 集群实例数量（生产环境最低要求） |
+| --- | --- |------------------| --- | --- |
+| 16 核+ | 64 GB+ | 500 GB+ SSD 类型硬盘 | 万兆网卡（2 块最佳） | 2 |
 
 更多信息参见 [TiDB 软件和硬件环境建议配置](/hardware-and-software-requirements.md)。
 
@@ -95,7 +95,7 @@ tiup cluster upgrade <cluster-name> <version> --transfer-timeout 600
 
 > **注意：**
 >
-> 命令中的 `<cluster-name>` 需要替换为集群名字，`<version>` 需要替换为目标版本号，例如 v7.3.0。
+> 命令中的 `<cluster-name>` 需要替换为集群名字，`<version>` 需要替换为目标版本号，例如 v7.4.0。
 
 ### 升级的注意事项
 
@@ -152,7 +152,7 @@ tiup cluster upgrade <cluster-name> <version> --transfer-timeout 600
 
 ## 使用 TiCDC 命令行工具来查看集群状态
 
-执行以下命令来查看 TiCDC 集群运行状态，注意需要将 `v<CLUSTER_VERSION>` 替换为 TiCDC 集群版本，例如 `v7.3.0`：
+执行以下命令来查看 TiCDC 集群运行状态，注意需要将 `v<CLUSTER_VERSION>` 替换为 TiCDC 集群版本，例如 `v7.4.0`：
 
 ```shell
 tiup ctl:v<CLUSTER_VERSION> cdc capture list --server=http://10.0.10.25:8300

@@ -17,13 +17,12 @@ summary: 使用命令行配置 TiDB Lightning。
 |:----|:----|:----|
 | --config *file* | 从 *file* 读取全局设置。如果没有指定则使用默认设置。 | |
 | -V | 输出程序的版本 | |
-| -d *directory* | 读取数据的本地目录或[外部存储 URI](/br/backup-and-restore-storages.md#uri-格式) | `mydumper.data-source-dir` |
+| -d *directory* | 读取数据的本地目录或[外部存储服务的 URI 格式](/external-storage-uri.md) | `mydumper.data-source-dir` |
 | -L *level* | 日志的等级： debug、info、warn、error 或 fatal (默认为 info) | `lightning.log-level` |
 | -f *rule* | [表库过滤的规则](/table-filter.md) (可多次指定) | `mydumper.filter` |
 | --backend [*backend*](/tidb-lightning/tidb-lightning-overview.md) | 选择导入的模式：`local` 为[物理导入模式](/tidb-lightning/tidb-lightning-physical-import-mode.md)，`tidb` 为[逻辑导入模式](/tidb-lightning/tidb-lightning-logical-import-mode.md) | `tikv-importer.backend` |
 | --log-file *file* | 日志文件路径（默认值为 `/tmp/lightning.log.{timestamp}`，设置为 '-' 表示日志输出到终端） | `lightning.log-file` |
 | --status-addr *ip:port* | TiDB Lightning 服务器的监听地址 | `lightning.status-port` |
-| --importer *host:port* | TiKV Importer 的地址 | `tikv-importer.addr` |
 | --pd-urls *host:port* | PD endpoint 的地址 | `tidb.pd-addr` |
 | --tidb-host *host* | TiDB Server 的 host | `tidb.host` |
 | --tidb-port *port* | TiDB Server 的端口（默认为 4000） | `tidb.port` |
