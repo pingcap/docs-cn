@@ -26,6 +26,17 @@ TiDB Lightning 运行时将查找 `data-source-dir` 中所有符合命令规则�
 
 TiDB Lightning 尽量并行处理数据，由于文件必须顺序读取，所以数据处理协程是文件级别的并发（通过 `region-concurrency` 配置控制）。因此导入大文件时性能比较差。通常建议单个文件尺寸为 256MiB，以获得最好的性能。
 
+## 表库重命名
+
+TiDB Lightning 运行时按照文件的命令规则导入到对应的表库位置。如果数据库和表名的位置发生变化，推荐重命名文件后再进行导入。
+RedHat-Like Linux 可以使用以下的 `rename` 命令对 `data-source-dir` 目录下的文件进行批量重命名。
+
+    ```bash
+    rename srcdb. tgtdb. *.sql
+    ```
+
+文件中的数据库名修改后，推荐删除 `data-source-dir` 目录下包含 `CREATE DATABASE` DDL 语句的 Schema 文件。如果是表名进行修改，还需要修改包含表名的 `CREATE TABLE` DDL 语句的 Schema 文件。
+
 ## CSV
 
 ### 表结构
