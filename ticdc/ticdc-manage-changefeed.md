@@ -90,7 +90,7 @@ cdc cli changefeed query --server=http://10.0.10.25:8300 --changefeed-id=simple-
     "sort-engine": "unified",
     "sort-dir": ".",
     "config": {
-      "case-sensitive": true,
+      "case-sensitive": false,
       "filter": {
         "rules": [
           "*.*"
