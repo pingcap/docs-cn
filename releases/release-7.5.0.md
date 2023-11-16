@@ -215,6 +215,7 @@ TiDB 7.5.0 为长期支持版本 (Long-Term Support Release, LTS)。
 
     + Backup & Restore (BR)
 
+        - 快照备份恢复支持通过 Session token 和 assume role 来设置权限 [#39832](https://github.com/pingcap/tidb/issues/39832) @[3pointer](https://github.com/3pointer)
         - note [#issue](链接) @[贡献者 GitHub ID](链接)
         - note [#issue](链接) @[贡献者 GitHub ID](链接)
 
@@ -282,6 +283,7 @@ TiDB 7.5.0 为长期支持版本 (Long-Term Support Release, LTS)。
 
     + Backup & Restore (BR)
 
+        - 修复大宽表场景下，日志备份在某些场景中可能卡住的问题 [#15714](https://github.com/tikv/tikv/issues/15714) @[YuJuncen](https://github.com/YuJuncen)
         - (dup): release-7.1.2.md > 错误修复> Tools> Backup & Restore (BR) - 修复 PITR 可能跳过恢复 `CREATE INDEX` DDL 的问题 [#47482](https://github.com/pingcap/tidb/issues/47482) @[Leavrth](https://github.com/Leavrth)
         - note [#issue](链接) @[贡献者 GitHub ID](链接)
         - note [#issue](链接) @[贡献者 GitHub ID](链接)
