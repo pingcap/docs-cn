@@ -133,9 +133,9 @@ Error: failed to check gc safePoint, checkpoint ts 433177834291200000: GC safepo
 
 TiCDC 可以通过配置项中的 [`filter.rules`](https://github.com/pingcap/tiflow/blob/7c3c2336f98153326912f3cf6ea2fbb7bcc4a20c/cmd/changefeed.toml#L16) 项完成，Drainer 则可以通过 [`syncer.ignore-table`](/tidb-binlog/tidb-binlog-configuration-file.md#ignore-table) 完成。
 
-### 恢复时为什么会报 `new_collations_enabled_on_first_bootstrap` 不匹配？
+### 恢复时为什么会报 `new_collation_enabled` 不匹配？
 
-从 TiDB v6.0.0 版本开始，[`new_collations_enabled_on_first_bootstrap`](/tidb-configuration-file.md#new_collations_enabled_on_first_bootstrap) 配置项的默认值由 `false` 改为 `true`。BR 会备份上游集群的 `new_collations_enabled_on_first_bootstrap` 配置项。当上下游集群的此项配置相同时，BR 才会将上游集群的备份数据安全地恢复到下游集群中。若上下游的该配置不相同，BR 会拒绝恢复，并报此配置项不匹配的错误。
+从 TiDB v6.0.0 版本开始，[`new_collations_enabled_on_first_bootstrap`](/tidb-configuration-file.md#new_collations_enabled_on_first_bootstrap) 配置项的默认值由 `false` 改为 `true`。BR 会备份上游集群的 `mysql.tidb` 表中的 `new_collation_enabled` 配置项。当上下游集群的此项配置相同时，BR 才会将上游集群的备份数据安全地恢复到下游集群中。若上下游的该配置不相同，BR 会拒绝恢复，并报此配置项不匹配的错误。
 
 如果需要将旧版本的备份数据恢复到 TiDB v6.0.0 或更新版本的 TiDB 集群中，你需要检查上下游集群中的该配置项是否相同：
 
@@ -293,7 +293,7 @@ br restore full -f 'mysql.usertable' -s $external_storage_url --with-sys-table
 
 此外请注意，即使设置了 [table filter](/table-filter.md#表库过滤语法)，**BR 也不会恢复以下系统表**：
 
-- 统计信息表（`mysql.stat_*`）
+- 统计信息表（`mysql.stat_*`）(但可以恢复统计信息，详细参考[备份统计信息](/br/br-snapshot-manual.md#备份统计信息))
 - 系统变量表（`mysql.tidb`、`mysql.global_variables`）
 - [其他系统表](https://github.com/pingcap/tidb/blob/master/br/pkg/restore/systable_restore.go#L31)
 

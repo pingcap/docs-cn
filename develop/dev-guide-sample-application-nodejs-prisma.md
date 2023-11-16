@@ -344,13 +344,15 @@ await prisma.player.delete({
 
 ### 外键约束与 Prisma Relation Mode
 
-对于 TiDB v6.6.0 或更高版本，推荐使用[外键约束](https://docs.pingcap.com/zh/tidb/stable/foreign-key)来替代 [Prisma Relation Mode](https://www.prisma.io/docs/concepts/components/prisma-schema/relations/relation-mode) 来实现[参照完整性](https://zh.wikipedia.org/wiki/%E5%8F%82%E7%85%A7%E5%AE%8C%E6%95%B4%E6%80%A7)检查。
+你可以使用外键约束或 Prisma Relation Mode 来检查[参照完整性](https://zh.wikipedia.org/wiki/%E5%8F%82%E7%85%A7%E5%AE%8C%E6%95%B4%E6%80%A7)：
 
-Relation Mode 是 Prisma Client 端对外键约束的模拟。该特性会对应用程序的性能产生一些影响，因为它需要额外的数据库查询来维护参照完整性。
+- [外键](/foreign-key.md)是 TiDB 从 v6.6.0 开始支持的实验特性，外键允许跨表交叉引用相关数据，外键约束则可以保证相关数据的一致性。
 
-> **Note**
->
-> 外键功能通常适用于为**中小规模**的数据提供完整性和一致性约束校验，但是在大数据量和分布式数据库系统下，使用外键可能会导致严重的性能问题，并对系统产生不可预知的影响。如果计划使用外键，请进行充分验证后谨慎使用。
+    > **警告：**
+    >
+    > 外键功能通常适用于为**中小规模**的数据提供完整性和一致性约束校验，但是在大数据量和分布式数据库系统下，使用外键可能会导致严重的性能问题，并对系统产生不可预知的影响。如果计划使用外键，请进行充分验证后谨慎使用。
+
+- [Prisma Relation Mode](https://www.prisma.io/docs/concepts/components/prisma-schema/relations/relation-mode) 是 Prisma Client 端对外键约束的模拟。该特性会对应用程序的性能产生一些影响，因为它需要额外的数据库查询来维护参照完整性。
 
 ## 下一步
 

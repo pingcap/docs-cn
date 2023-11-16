@@ -12,6 +12,11 @@ TiDB 资源管控特性提供了两层资源管理能力，包括在 TiDB 层的
 - TiDB 流控：TiDB 流控使用[令牌桶算法](https://en.wikipedia.org/wiki/Token_bucket) 做流控。如果桶内令牌数不够，而且资源组没有指定 `BURSTABLE` 特性，属于该资源组的请求会等待令牌桶回填令牌并重试，重试可能会超时失败。
 - TiKV 调度：你可以为资源组设置绝对优先级 ([`PRIORITY`](/information-schema/information-schema-resource-groups.md#示例))，不同的资源按照 `PRIORITY` 的设置进行调度，`PRIORITY` 高的任务会被优先调度。如果没有设置绝对优先级 (`PRIORITY`)，TiKV 会将资源组的 `RU_PER_SEC` 取值映射成各自资源组读写请求的优先级，并基于各自的优先级在存储层使用优先级队列调度处理请求。
 
+从 v7.4.0 开始，TiDB 资源管控特性支持管控 TiFlash 资源，其原理与 TiDB 流控和 TiKV 调度类似：
+
+- TiFlash 流控：借助 [TiFlash Pipeline Model 执行模型](/tiflash/tiflash-pipeline-model.md)，可以更精确地获取不同查询的 CPU 消耗情况，并转换为 [Request Unit (RU)](#什么是-request-unit-ru) 进行扣除。流量控制通过令牌桶算法实现。
+- TiFlash 调度：当系统资源不足时，会根据优先级对多个资源组之间的 pipeline task 进行调度。具体逻辑是：首先判断资源组的优先级 `PRIORITY`，然后根据 CPU 使用情况，再结合 `RU_PER_SEC` 进行判断。最终效果是，如果 rg1 和 rg2 的 `PRIORITY` 一样，但是 rg2 的 `RU_PER_SEC` 是 rg1 的两倍，那么 rg2 可使用的 CPU 时间是 rg1 的两倍。
+
 ## 使用场景
 
 资源管控特性的引入对 TiDB 具有里程碑的意义。它能够将一个分布式数据库集群划分成多个逻辑单元，即使个别单元对资源过度使用，也不会挤占其他单元所需的资源。利用该特性：
@@ -25,10 +30,7 @@ TiDB 资源管控特性提供了两层资源管理能力，包括在 TiDB 层的
 
 ## 使用限制
 
-目前，资源管控特性具有以下限制:
-
-- 只支持对前台客户发起的读写请求做限流和调度，不支持对 DDL 以及 Auto Analyze 等后台任务的限流和调度。
-- 资源管控将带来额外的调度开销。因此，开启该特性后，性能可能会有轻微下降。
+资源管控将带来额外的调度开销。因此，开启该特性后，性能可能会有轻微下降（低于 5%）。
 
 ## 什么是 Request Unit (RU)
 
@@ -69,6 +71,8 @@ Request Unit (RU) 是 TiDB 对 CPU、IO 等系统资源的统一抽象的计量�
     </tbody>
 </table>
 
+目前 TiFlash 资源管控仅考虑 SQL CPU（即查询的 pipeline task 运行所占用的 CPU 时间）以及 read request payload。
+
 > **注意：**
 >
 > - 每个写操作最终都被会复制到所有副本（TiKV 默认 3 个数据副本），并且每次复制都被认为是一个不同的写操作。
@@ -81,19 +85,22 @@ Request Unit (RU) 是 TiDB 对 CPU、IO 等系统资源的统一抽象的计量�
 
 ## 相关参数
 
-资源管控特性引入了两个新的全局开关变量：
+资源管控特性引入了如下系统变量或参数：
 
 - TiDB：通过配置全局变量 [`tidb_enable_resource_control`](/system-variables.md#tidb_enable_resource_control-从-v660-版本开始引入) 控制是否打开资源组流控。
 - TiKV：通过配置参数 [`resource-control.enabled`](/tikv-configuration-file.md#resource-control) 控制是否使用基于资源组配额的请求调度。
+- TiFlash：通过配置全局变量 [`tidb_enable_resource_control`](/system-variables.md#tidb_enable_resource_control-从-v660-版本开始引入) 和 TiFlash 配置项 [`enable_resource_control`](/tiflash/tiflash-configuration.md#配置文件-tiflashtoml)（v7.4.0 开始引入）控制是否开启 TiFlash 资源管控。
 
-从 v7.0.0 开始，两个开关都被默认打开。这两个参数的组合效果见下表：
+从 v7.0.0 开始，`tidb_enable_resource_control` 和 `resource-control.enabled` 开关都被默认打开。这两个参数的组合效果见下表：
 
 | `resource-control.enabled`  | `tidb_enable_resource_control`= ON | `tidb_enable_resource_control`= OFF  |
 |:----------------------------|:-----------------------------------|:------------------------------------|
 | `resource-control.enabled`= true  | 流控和调度（推荐组合）                        | 无效配置                         |
 | `resource-control.enabled`= false | 仅流控（不推荐）                           |  特性被关闭                   |
 
-关于资源管控实现机制及相关参数的详细介绍，请参考 [RFC: Global Resource Control in TiDB](https://github.com/pingcap/tidb/blob/master/docs/design/2022-11-25-global-resource-control.md)。
+从 v7.4.0 开始，TiFlash 配置项 `enable_resource_control` 默认打开，与 `tidb_enable_resource_control` 一起控制 TiFlash 资源管控功能。只有二者都启用时，TiFlash 资源管控功能才能进行流控以及优先级调度。同时，在开启 `enable_resource_control` 时，TiFlash 会使用 [Pipeline Model 执行模型](/tiflash/tiflash-pipeline-model.md)。
+
+关于资源管控实现机制及相关参数的详细介绍，请参考 [RFC: Global Resource Control in TiDB](https://github.com/pingcap/tidb/blob/master/docs/design/2022-11-25-global-resource-control.md) 以及 [TiFlash Resource Control](https://github.com/pingcap/tiflash/blob/master/docs/design/2023-09-21-tiflash-resource-control.md)。
 
 ## 使用方法
 
@@ -170,6 +177,14 @@ ALTER USER usr2 RESOURCE GROUP rg2;
 >
 > - 使用 `CREATE USER` 或者 `ALTER USER` 将用户绑定到资源组后，只会对该用户新建的会话生效，不会对该用户已有的会话生效。
 > - TiDB 集群在初始化时会自动创建 `default` 资源组，其 `RU_PER_SEC` 的默认值为 `UNLIMITED` (等同于 `INT` 类型最大值，即 `2147483647`)，且为 `BURSTABLE` 模式。对于没有绑定资源组的语句会自动绑定至此资源组。此资源组不支持删除，但允许修改其 RU 的配置。
+
+要解除用户与资源组的绑定，只需将其重新绑定到 `default` 资源组即可，如下所示：
+
+```sql
+ALTER USER 'usr3'@'%' RESOURCE GROUP `default`;
+```
+
+更多信息，请参见 [`ALTER USER ... RESOURCE GROUP`](/sql-statements/sql-statement-alter-user.md#修改用户绑定的资源组)。
 
 #### 将当前会话绑定到资源组
 
@@ -333,6 +348,55 @@ Runaway Query 是指执行时间或消耗资源超出预期的查询。下面使
 
 + `information_schema.runaway_watches` 表中包含了 Runaway Queries 的快速识别规则记录。详见 [`RUNAWAY_WATCHES`](/information-schema/information-schema-runaway-watches.md)。
 
+### 管理后台任务
+
+> **警告：**
+>
+> 该功能目前为实验特性，不建议在生产环境中使用。该功能可能会在未事先通知的情况下发生变化或删除。如果发现 bug，请[提交 issue](/support.md) 反馈。
+
+后台任务是指那些优先级不高但是需要消耗大量资源的任务，如数据备份和自动统计信息收集等。这些任务通常定期或不定期触发，在执行的时候会消耗大量资源，从而影响在线的高优先级任务的性能。
+
+自 v7.4.0 开始，TiDB 资源管控引入了对后台任务的管理。当一种任务被标记为后台任务时，TiKV 会动态地限制该任务的资源使用，以尽量避免此类任务在执行时对其他前台任务的性能产生影响。TiKV 通过实时地监测所有前台任务所消耗的 CPU 和 IO 等资源，并根据实例总的资源上限计算出后台任务可使用的资源阈值，所有后台任务在执行时会受此阈值的限制。
+
+#### `BACKGROUND` 参数说明
+
+`TASK_TYPES`：设置需要作为后台任务管理的任务类型，多个任务类型以 `,` 分隔。
+
+目前 TiDB 支持如下几种后台任务的类型：
+
+- `lightning`：使用 [TiDB Lightning](/tidb-lightning/tidb-lightning-overview.md) 执行导入任务。同时支持 TiDB Lightning 的物理和逻辑导入模式。
+- `br`：使用 [BR](/br/backup-and-restore-overview.md) 执行数据备份和恢复。目前不支持 PITR。
+- `ddl`：对于 Reorg DDL，控制批量数据回写阶段的资源使用。
+- `stats`：对应手动执行或系统自动触发的[收集统计信息](/statistics.md#统计信息的收集)任务。
+
+默认情况下，被标记为后台任务的任务类型为空，此时后台任务的管理功能处于关闭状态，其行为与 TiDB v7.4.0 之前版本保持一致。你需要手动修改 `default` 资源组的后台任务类型以开启后台任务管理。
+
+#### 示例
+
+1. 创建 `rg1` 资源组，并将 `br` 和 `stats` 标记为后台任务。
+
+    ```sql
+    CREATE RESOURCE GROUP IF NOT EXISTS rg1 RU_PER_SEC = 500 BACKGROUND=(TASK_TYPES='br,stats');
+    ```
+
+2. 修改 `rg1` 资源组，将 `br` 和 `ddl` 标记为后台任务。
+
+    ```sql
+    ALTER RESOURCE GROUP rg1 BACKGROUND=(TASK_TYPES='br,ddl');
+    ```
+
+3. 修改 `rg1` 资源组，将后台任务的类型还原为默认值。此时后台任务的类型将使用 `default` 资源组的配置。
+
+    ```sql
+    ALTER RESOURCE GROUP rg1 BACKGROUND=NULL;
+    ```
+
+4. 修改 `rg1` 资源组，将后台任务的类型设置为空，此时此资源组的所有任务类型都不会作为后台任务处理。
+
+    ```sql
+    ALTER RESOURCE GROUP rg1 BACKGROUND=(TASK_TYPES="");
+    ```
+
 ## 关闭资源管控特性
 
 1. 执行以下命令关闭资源管控特性：
@@ -342,6 +406,8 @@ Runaway Query 是指执行时间或消耗资源超出预期的查询。下面使
     ```
 
 2. 将 TiKV 参数 [`resource-control.enabled`](/tikv-configuration-file.md#resource-control) 设为 `false`，关闭按照资源组配额调度。
+
+3. 将 TiFlash 参数 [`enable_resource_control`](/tiflash/tiflash-configuration.md#配置文件-tiflashtoml) 设为 `false`，关闭 TiFlash 资源管控。
 
 ## 监控与图表
 
