@@ -145,7 +145,7 @@ TiDB 7.5.0 为长期支持版本 (Long-Term Support Release, LTS)。
 | 变量名  | 修改类型     | 描述 |
 |--------|------------------------------|------|
 | [`tidb_enable_fast_analyze`](/system-variables.md#tidb_enable_fast_analyze) | 废弃 | 用于控制是否启用统计信息快速分析功能。自 v7.5.0 起，统计信息快速分析功能被废弃。 |
-| [`tidb_analyze_partition_concurrency`](/system-variables.md#tidb_analyze_partition_concurrency)      |  修改 | 经进一步的测试后，默认值由 `1` 改为 `2`。 |
+| [`tidb_analyze_partition_concurrency`](/system-variables.md#tidb_analyze_partition_concurrency) |  修改 | 经进一步的测试后，默认值由 `1` 改为 `2`。 |
 | [`tidb_build_stats_concurrency`](/system-variables.md#tidb_build_stats_concurrency) | 修改 | 经进一步的测试后，默认值由 `4` 改为 `2`。 |
 | [`tidb_merge_partition_stats_concurrency`](/system-variables.md#tidb_merge_partition_stats_concurrency) | 修改 | 该变量从 v7.5.0 开始生效，用于设置 TiDB analyze 分区表时，对分区表统计信息进行合并时的并发度。 |
 | [`tidb_build_sampling_stats_concurrency`](/system-variables.md#tidb_build_sampling_stats_concurrency-从-v750-版本开始引入) | 新增 | 设置 `ANALYZE` 过程中的采样并发度。 |
@@ -158,8 +158,9 @@ TiDB 7.5.0 为长期支持版本 (Long-Term Support Release, LTS)。
 | 配置文件 | 配置项 | 修改类型 | 描述 |
 | -------- | -------- | -------- | -------- |
 | BR | [`--ignore-stats`](/br/br-snapshot-manual.md#备份统计信息) | 新增 | 用于备份和恢复数据库统计信息。当指定该参数值为 `false` 时，BR 备份工具支持备份和恢复数据库的列、索引、和表级别的统计信息。 |
-| TiCDC | [`sink.column-selectors`](/ticdc/ticdc-changefeed-config.md) | 新增 | 控制 TiCDC 将增量数据分发到 Kafka 时，只发送指定的列的数据变更事件。 |
+| TiCDC | [`case-sensitive`](/ticdc/ticdc-changefeed-config.md) | 修改 | 经进一步的测试后，默认值由 `true` 改为 `false`，即默认情况下 TiCDC 配置文件中涉及的表名、库名大小写不敏感。 |
 | TiCDC | [`sink.dispatchers.partition`](/ticdc/ticdc-changefeed-config.md) | 修改 | 控制增量数据的 Kafka Partition 分发策略，可选值新增 `columns` 选项，即使用明确指定的列值计算 partition 编号。 |
+| TiCDC | [`sink.column-selectors`](/ticdc/ticdc-changefeed-config.md) | 新增 | 控制 TiCDC 将增量数据分发到 Kafka 时，只发送指定的列的数据变更事件。 |
 | TiCDC | [`sql-mode`](/ticdc/ticdc-changefeed-config.md) | 新增 | 设置 TiCDC 解析 DDL 时使用的 SQL 模式，默认值和 TiDB 的默认 SQL 模式一致。 |
 | TiDB Lightning | `--importer` | 删除 | 该配置项用于指定 TiKV-importer 的地址。从 v7.5.0 起，TiKV-importer 组件被废弃。 |
 
@@ -201,7 +202,7 @@ TiDB 7.5.0 为长期支持版本 (Long-Term Support Release, LTS)。
 + PD
 
   <!--**tw@Oreoxmt**: 1-->
-    - 提升 evict-slow-trend 调度的稳定性和易用性 [#7156](https://github.com/tikv/pd/issues/7156) @[LykxSassinato](https://github.com/LykxSassinator)
+    - 提升 `evict-slow-trend` 调度的稳定性和易用性 [#7156](https://github.com/tikv/pd/issues/7156) @[LykxSassinato](https://github.com/LykxSassinator)
 
 + TiFlash
 
@@ -210,12 +211,9 @@ TiDB 7.5.0 为长期支持版本 (Long-Term Support Release, LTS)。
     + Backup & Restore (BR)
 
       <!--**tw@Oreoxmt**: 1-->
-        - 快照备份恢复支持通过 Session token 和 assume role 来设置权限 [#39832](https://github.com/pingcap/tidb/issues/39832) @[3pointer](https://github.com/3pointer)
+        - 快照备份恢复支持通过 AWS 会话令牌和 IAM 角色设置权限 [#39832](https://github.com/pingcap/tidb/issues/39832) @[3pointer](https://github.com/3pointer)
 
     + TiCDC
-
-      <!--**tw@Oreoxmt**: 1-->
-        - 优化设置过滤规则时是否忽略大小写的默认值 [#10047](https://github.com/pingcap/tiflow/issues/10047)
 
     + TiDB Data Migration (DM)
 
@@ -267,7 +265,7 @@ TiDB 7.5.0 为长期支持版本 (Long-Term Support Release, LTS)。
 + TiFlash
 
   <!--**tw@Oreoxmt**: 3-->
-    - 修复 UPPER/LOWER 函数在 TiDB 和 TiFlash 中计算结果不一致的问题 [#7695](https://github.com/pingcap/tiflash/issues/7695) @[windtalker](https://github.com/windtalker)
+    - 修复 `UPPER()` 和 `LOWER()` 函数在 TiDB 和 TiFlash 中计算结果不一致的问题 [#7695](https://github.com/pingcap/tiflash/issues/7695) @[windtalker](https://github.com/windtalker)
     - 修复在空分区上执行查询报错的问题 [#8220](https://github.com/pingcap/tiflash/issues/8220) @[JaySon-Huang](https://github.com/JaySon-Huang)
     - 修复同步 TiFlash 副本时可能创建表失败导致 panic 的问题 [#8217](https://github.com/pingcap/tiflash/issues/8217) @[hongyunyan](https://github.com/hongyunyan)
 
