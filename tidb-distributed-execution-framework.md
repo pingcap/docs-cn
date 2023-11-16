@@ -5,10 +5,6 @@ summary: Learn the use cases, limitations, usage, and implementation principles 
 
 # TiDB Backend Task Distributed Execution Framework
 
-> **Warning:**
->
-> This feature is an experimental feature. It is not recommended to use it in production environments.
-
 <CustomContent platform="tidb-cloud">
 
 > **Note:**

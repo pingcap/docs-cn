@@ -1566,10 +1566,6 @@ mysql> SELECT job_info FROM mysql.analyze_jobs ORDER BY end_time DESC LIMIT 1;
 
 ### tidb_enable_dist_task <span class="version-mark">New in v7.1.0</span>
 
-> **Warning:**
->
-> This feature is still in the experimental stage. It is not recommended to enable this feature in production environments.
-
 - Scope: GLOBAL
 - Persists to cluster: Yes
 - Applies to hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value): No
@@ -3661,7 +3657,7 @@ For a system upgraded to v5.0 from an earlier version, if you have not modified 
 - Persists to cluster: Yes
 - Applies to hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value): No
 - Type: Boolean
-- Default value: `ON`. When you upgrade TiDB from a version earlier than v7.5.0 to v7.5.0 or a later version, the default value is `OFF`. 
+- Default value: `ON`. When you upgrade TiDB from a version earlier than v7.5.0 to v7.5.0 or a later version, the default value is `OFF`.
 - This variable is used for TiDB to merge global statistics asynchronously to avoid OOM issues.
 
 ### tidb_metric_query_range_duration <span class="version-mark">New in v4.0</span>
@@ -4790,7 +4786,7 @@ SHOW WARNINGS;
 - Range: `[2, 255]`
 - This variable limits how many historical schema versions can be cached in a TiDB instance. The default value is `16`, which means that TiDB caches 16 historical schema versions by default.
 - Generally, you do not need to modify this variable. When the [Stale Read](/stale-read.md) feature is used and DDL operations are executed very frequently, it will cause the schema version to change very frequently. Consequently, when Stale Read tries to obtain schema information from a snapshot, it might take a lot of time to rebuild the information due to schema cache misses. In this case, you can increase the value of `tidb_schema_version_cache_limit` (for example, `32`) to avoid the problem of schema cache misses.
-- Modifying this variable causes the memory usage of TiDB to increase slightly. Monitor the memory usage of TiDB to avoid OOM problems. 
+- Modifying this variable causes the memory usage of TiDB to increase slightly. Monitor the memory usage of TiDB to avoid OOM problems.
 
 ### tidb_server_memory_limit <span class="version-mark">New in v6.4.0</span>
 
