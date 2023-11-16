@@ -208,8 +208,8 @@ TiDB 7.5.0 为长期支持版本 (Long-Term Support Release, LTS)。
 
 + TiFlash
 
-    - note [#issue](链接) @[贡献者 GitHub ID](链接)
-    - note [#issue](链接) @[贡献者 GitHub ID](链接)
+    - 修复在空分区上执行查询报错的问题 [#8220](https://github.com/pingcap/tiflash/issues/8220) @[JaySon-Huang](https://github.com/JaySon-Huang)
+    - 修复同步 TiFlash 副本时可能创建表失败导致 panic 的问题 [#8217](https://github.com/pingcap/tiflash/issues/8217) @[hongyunyan](https://github.com/hongyunyan)
 
 + Tools
 
