@@ -16,5 +16,6 @@ aliases: ['/docs-cn/dev/tiup/tiup-documentation-guide/']
 
 ## 资源
 
+- [TiUP 版本发布说明](https://github.com/pingcap/tiup/releases)
 - [AskTUG TiUP 主题](https://asktug.com/tags/tiup)
 - [TiUP Issues](https://github.com/pingcap/tiup/issues)：TiUP Github Issues 列表

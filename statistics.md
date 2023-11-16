@@ -79,19 +79,12 @@ Top-N 即是这个列或者这个索引中，出现次数前 n 的值。TiDB 会
 
 ### 手动收集
 
-可以通过执行 `ANALYZE` 语句来收集统计信息。
+目前 TiDB 收集统计信息为全量收集，通过 `ANALYZE TABLE` 语句来实现。
 
 > **注意：**
 >
-> 在 TiDB 中执行 `ANALYZE TABLE` 语句比在 MySQL 或 InnoDB 中耗时更长。InnoDB 采样的只是少量页面，但 TiDB 会完全重构一系列统计信息。适用于 MySQL 的脚本会误以为执行 `ANALYZE TABLE` 耗时较短。
->
-> 如需更快的分析速度，可将 `tidb_enable_fast_analyze` 设置为 `1` 来打开快速分析功能。该参数的默认值为 `0`。
->
-> 快速分析功能开启后，TiDB 会随机采样约 10000 行的数据来构建统计信息。因此在数据分布不均匀或者数据量比较少的情况下，统计信息的准确度会比较差。可能导致执行计划不优，比如选错索引。如果可以接受普通 `ANALYZE` 语句的执行时间，则推荐关闭快速分析功能。
->
-> `tidb_enable_fast_analyze` 为实验性功能，目前与 `tidb_analyze_version=2` 的统计信息**不完全匹配**。因此开启 `tidb_enable_fast_analyze` 时需要将 `tidb_analyze_version` 的值设置为 `1`。
-
-#### 全量收集
+> - 在 TiDB 中执行 `ANALYZE TABLE` 语句比在 MySQL 或 InnoDB 中耗时更长。InnoDB 采样的只是少量页面，但 TiDB 会完全重构一系列统计信息。适用于 MySQL 的脚本会误以为执行 `ANALYZE TABLE` 耗时较短。
+> - 从 v7.5.0 开始，统计信息[快速分析 (`tidb_enable_fast_analyze`)](/system-variables.md#tidb_enable_fast_analyze) 和[增量收集](https://docs.pingcap.com/zh/tidb/v7.4/statistics#增量收集)废弃。
 
 可以通过以下几种语法进行全量收集。
 
@@ -123,7 +116,7 @@ ANALYZE TABLE TableNameList [WITH NUM BUCKETS|TOPN|CMSKETCH DEPTH|CMSKETCH WIDTH
 >
 > 通常情况下，`STATS_META` 相对 `TABLE_KEYS` 更可信，但是通过 [TiDB Lightning](/tidb-lightning/tidb-lightning-overview.md) 等方式导入数据结束后，`STATS_META` 结果是 `0`。为了处理这个情况，你可以在 `STATS_META` 的结果远小于 `TABLE_KEYS` 的结果时，使用 `TABLE_KEYS` 计算采样率。
 
-##### 收集部分列的统计信息
+#### 收集部分列的统计信息
 
 执行 SQL 语句时，优化器在大多数情况下只会用到部分列（例如，`WHERE`、`JOIN`、`ORDER BY`、`GROUP BY` 子句中出现的列）的统计信息，这些被用到的列称为 `PREDICATE COLUMNS`。
 
@@ -245,7 +238,7 @@ SHOW COLUMN_STATS_USAGE WHERE db_name = 'test' AND table_name = 't' AND last_ana
 3 rows in set (0.00 sec)
 ```
 
-##### 收集索引的统计信息
+#### 收集索引的统计信息
 
 如果要收集 TableName 中 IndexNameList 里所有索引的统计信息，请使用以下语法：
 
@@ -261,7 +254,7 @@ ANALYZE TABLE TableName INDEX [IndexNameList] [WITH NUM BUCKETS|TOPN|CMSKETCH DE
 >
 > 为了保证前后统计信息的一致性，当设置 `tidb_analyze_version=2` 时，该语句也会收集整个表的统计信息（包括所有列和所有索引的统计信息）而不限于索引的统计信息。
 
-##### 收集分区的统计信息
+#### 收集分区的统计信息
 
 - 如果要收集 TableName 中所有的 PartitionNameList 中分区的统计信息，请使用以下语法：
 
@@ -291,7 +284,7 @@ ANALYZE TABLE TableName INDEX [IndexNameList] [WITH NUM BUCKETS|TOPN|CMSKETCH DE
     ANALYZE TABLE TableName PARTITION PartitionNameList [COLUMNS ColumnNameList|PREDICATE COLUMNS|ALL COLUMNS] [WITH NUM BUCKETS|TOPN|CMSKETCH DEPTH|CMSKETCH WIDTH]|[WITH NUM SAMPLES|WITH FLOATNUM SAMPLERATE];
     ```
 
-##### 动态裁剪模式下的分区表统计信息
+#### 动态裁剪模式下的分区表统计信息
 
 分区表在开启[动态裁剪模式](/partitioned-table.md#动态裁剪模式)的情况下，TiDB 将收集表级别的汇总统计信息，以下称 GlobalStats。 目前 GlobalStats 由分区统计信息合并汇总得到。在动态裁剪模式开启的情况下，任一分区上的统计信息更新都会触发 GlobalStats 的更新。
 
@@ -307,33 +300,6 @@ ANALYZE TABLE TableName INDEX [IndexNameList] [WITH NUM BUCKETS|TOPN|CMSKETCH DE
 >     如果某些分区缺失全部或者部分列的统计信息，TiDB 生成 GlobalStats 时会跳过缺失的分区统计信息，不影响 GlobalStats 生成。
 >
 > - 在动态裁剪模式开启的情况下，分区和表的 ANALYZE 配置需要保持一致，因此 ANALYZE TABLE TableName PARTITION PartitionNameList 命令后指定的 COLUMNS 配置和 WITH 后指定的 OPTIONS 配置将被忽略，并会通过 warning 信息提示用户。
-
-#### 增量收集
-
-对于类似时间列这样的单调不减列，在进行全量收集后，可以使用增量收集来单独分析新增的部分，以提高分析的速度。
-
-> **注意：**
->
-> 1. 目前只有索引提供了增量收集的功能
-> 2. 使用增量收集时，必须保证表上只有插入操作，且应用方需要保证索引列上新插入的值是单调不减的，否则会导致统计信息不准，影响 TiDB 优化器选择合适的执行计划
-
-可以通过以下几种语法进行增量收集。
-
-增量收集 TableName 中所有的 IndexNameList 中的索引列的统计信息：
-
-{{< copyable "sql" >}}
-
-```sql
-ANALYZE INCREMENTAL TABLE TableName INDEX [IndexNameList] [WITH NUM BUCKETS|TOPN|CMSKETCH DEPTH|CMSKETCH WIDTH]|[WITH NUM SAMPLES|WITH FLOATNUM SAMPLERATE];
-```
-
-增量收集 TableName 中所有的 PartitionNameList 中分区的索引列统计信息：
-
-{{< copyable "sql" >}}
-
-```sql
-ANALYZE INCREMENTAL TABLE TableName PARTITION PartitionNameList INDEX [IndexNameList] [WITH NUM BUCKETS|TOPN|CMSKETCH DEPTH|CMSKETCH WIDTH]|[WITH NUM SAMPLES|WITH FLOATNUM SAMPLERATE];
-```
 
 ### 自动更新
 
@@ -379,19 +345,33 @@ ANALYZE INCREMENTAL TABLE TableName PARTITION PartitionNameList INDEX [IndexName
 
 ### 控制 ANALYZE 并发度
 
-执行 ANALYZE 语句的时候，你可以通过一些参数来调整并发度，以控制对系统的影响。
+执行 ANALYZE 语句的时候，你可以通过一些系统变量来调整并发度，以控制对系统的影响。
 
-#### tidb_build_stats_concurrency
+相关系统变量的关系如下图所示：
 
-目前 ANALYZE 执行的时候会被切分成一个个小的任务，每个任务只负责某一个列或者索引。`tidb_build_stats_concurrency` 可以控制同时执行的任务的数量，其默认值是 4。
+![analyze_concurrency](/media/analyze_concurrency.png)
 
-#### tidb_distsql_scan_concurrency
+`tidb_build_stats_concurrency`、`tidb_build_sampling_stats_concurrency` 和 `tidb_analyze_partition_concurrency` 为上下游关系。实际的总并发为：`tidb_build_stats_concurrency`* (`tidb_build_sampling_stats_concurrency` + `tidb_analyze_partition_concurrency`) 。所以在变更这些参数的时候，需要同时考虑这三个参数的值。建议按 `tidb_analyze_partition_concurrency`、`tidb_build_sampling_stats_concurrency`、`tidb_build_stats_concurrency` 的顺序逐个调节，并观察对系统的影响。这三个参数的值越大，对系统的资源开销就越大。
 
-在执行分析普通列任务的时候，`tidb_distsql_scan_concurrency` 可以用于控制一次读取的 Region 数量，其默认值是 15。
+#### `tidb_build_stats_concurrency`
 
-#### tidb_index_serial_scan_concurrency
+`ANALYZE` 在执行时会被切分成一个个小任务，每个任务只负责某一个列或者索引的统计信息收集。[`tidb_build_stats_concurrency`](/system-variables.md#tidb_build_stats_concurrency) 用于控制可以同时执行的小任务的数量，其默认值是 `2`。TiDB v7.4.0 及其之前版本默认值为 `4`。
 
-在执行分析索引列任务的时候，`tidb_index_serial_scan_concurrency` 可以用于控制一次读取的 Region 数量，其默认值是 1。
+#### `tidb_build_sampling_stats_concurrency`
+
+在执行 `ANALYZE` 普通列任务的时候，[`tidb_build_sampling_stats_concurrency`](/system-variables.md#tidb_build_sampling_stats_concurrency-从-v750-版本开始引入) 可以用于控制执行采样任务的并发数量，其默认值是 `2`。
+
+#### `tidb_analyze_partition_concurrency`
+
+在执行 `ANALYZE` 的时候，[`tidb_analyze_partition_concurrency`](/system-variables.md#tidb_analyze_partition_concurrency) 可以用于控制对分区表统计信息进行读写的并发度，其默认值是 `2`。TiDB v7.4.0 及其之前版本默认值为 `1`。
+
+#### `tidb_distsql_scan_concurrency`
+
+在执行分析普通列任务的时候，[`tidb_distsql_scan_concurrency`](/system-variables.md#tidb_distsql_scan_concurrency) 可以用于控制一次读取的 Region 数量，其默认值是 15。修改该变量值会影响查询性能，请谨慎调整。
+
+#### `tidb_index_serial_scan_concurrency`
+
+在执行分析索引列任务的时候，[`tidb_index_serial_scan_concurrency`](/system-variables.md#tidb_index_serial_scan_concurrency) 可以用于控制一次读取的 Region 数量，其默认值是 1。修改该变量值会影响查询性能，请谨慎调整。
 
 ### ANALYZE 配置持久化
 

@@ -109,11 +109,22 @@ aliases: ['/docs-cn/dev/grafana-tidb-dashboard/','/docs-cn/dev/reference/key-mon
 
 ### KV Request
 
+下面的监控指标与发送给 TiKV 的请求相关。重试请求会被多次计数。
+
 - KV Request OPS：KV Request 根据 TiKV 显示执行次数
 - KV Request Duration 99 by store：根据 TiKV 显示 KV Request 执行时间
 - KV Request Duration 99 by type：根据类型显示 KV Request 的执行时间
-- Stale Read OPS：每秒执行的 Stale Read 的数量，根据结果分为 hit 和 miss 进行统计
-- Stale Read Traffic：Stale Read 消耗的流量，根据结果分为 hit 和 miss 进行统计
+- Stale Read Hit/Miss Ops
+    - **hit**：每秒成功执行 Stale Read 的请求数量
+    - **miss**：每秒尝试执行 Stale Read 但失败的请求数量
+- Stale Read Req Ops
+    - **cross-zone**：每秒尝试在远程可用区执行 Stale Read 的请求数量
+    - **local**：每秒尝试在本地可用区执行 Stale Read 的请求数量
+- Stale Read Req Traffic
+    - **cross-zone-in**：尝试在远程可用区执行 Stale Read 的请求的响应的传入流量
+    - **cross-zone-out**：尝试在远程可用区执行 Stale Read 的请求的响应的传出流量
+    - **local-in**：尝试在本地可用区执行 Stale Read 的请求的响应的传入流量
+    - **local-out**：尝试在本地可用区执行 Stale Read 的请求的响应的传出流量
 
 ### PD Client
 
@@ -155,7 +166,6 @@ aliases: ['/docs-cn/dev/grafana-tidb-dashboard/','/docs-cn/dev/reference/key-mon
 - Store Query Feedback QPS：存储合并查询的 Feedback 信息的每秒操作数量，该操作在 TiDB 内存中进行
 - Significant Feedback：重要的 Feedback 更新统计信息的数量
 - Update Stats OPS：利用 Feedback 更新统计信息的数量
-- Fast Analyze Status 100：快速收集统计信息的状态
 
 ### Owner
 

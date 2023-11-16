@@ -112,6 +112,8 @@ SHOW COLLATION;
 > **警告：**
 >
 > TiDB 会错误地将 `latin1` 视为 `utf8` 的子集。当用户存储不同于 `latin1` 和 `utf8` 编码的字符时，可能会导致意外情况出现。因此强烈建议使用 `utf8mb4` 字符集。详情参阅 [TiDB #18955](https://github.com/pingcap/tidb/issues/18955)。
+>
+> 如果查询条件中包含对字符串前缀的 `LIKE` 过滤， 比如 `LIKE 'prefix%'`，并且该列被设置为非二进制排序规则（即排序规则的后缀不是以 `_bin` 结尾），那么 TiDB 优化器暂时无法把这个过滤条件转化为范围扫描 (Range Scan)，而是用全量扫描代替。因此这类 SQL 有可能造成超出预期的资源消耗。
 
 > **注意：**
 >
@@ -488,7 +490,13 @@ Query OK, 1 row affected
 
 ### 新框架下的排序规则支持
 
-TiDB 4.0 新增了完整的排序规则支持框架，从语义上支持了排序规则，并新增了配置开关 `new_collations_enabled_on_first_bootstrap`，在集群初次初始化时决定是否启用新排序规则框架。如需启用新排序规则框架，可将 `new_collations_enabled_on_first_bootstrap` 的值设为 `true`，详情参见 [`new_collations_enabled_on_first_bootstrap`](/tidb-configuration-file.md#new_collations_enabled_on_first_bootstrap)。要在该配置开关打开之后初始化集群，可以通过 `mysql`.`tidb` 表中的 `new_collation_enabled` 变量确认是否启用了新排序规则框架：
+TiDB 4.0 新增了完整的排序规则支持框架，从语义上支持了排序规则，并新增了配置开关 `new_collations_enabled_on_first_bootstrap`，在集群初次初始化时决定是否启用新排序规则框架。如需启用新排序规则框架，可将 `new_collations_enabled_on_first_bootstrap` 的值设为 `true`，详情参见 [`new_collations_enabled_on_first_bootstrap`](/tidb-configuration-file.md#new_collations_enabled_on_first_bootstrap)。
+
+对于一个已经初始化完成的 TiDB 集群，可以通过 `mysql.tidb` 表中的 `new_collation_enabled` 变量确认是否启用了新排序规则框架。
+
+> **注意：**
+>
+> 当 `mysql.tidb` 表查询结果和 `new_collations_enabled_on_first_bootstrap` 的值不同时，以 `mysql.tidb` 表的结果为准。
 
 {{< copyable "sql" >}}
 
