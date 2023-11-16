@@ -88,6 +88,8 @@ SHOW COLLATION WHERE CHARSET = 'gbk';
 
 * 对于 `ENUM` 和 `SET` 类型中的二进制字符，TiDB 目前都会将其作为 `utf8mb4` 字符集处理。
 
+* 如果查询条件中包含对字符串前缀的 `LIKE` 过滤，比如 `LIKE 'prefix%'`，并且该列被设置为 GBK 的排序规则（`gbk_bin` 或 `gbk_chinese_ci`），那么 TiDB 优化器暂时无法把这个过滤条件转化为范围扫描 (Range Scan)，而是用全量扫描代替。因此这类 SQL 有可能造成超出预期的资源消耗。
+
 ## 组件兼容性
 
 * TiFlash 目前不支持 GBK 字符集。
