@@ -40,13 +40,13 @@ TiDB guarantees atomicity for all statements between the start of `BEGIN` and th
 
 <CustomContent platform="tidb">
 
-If you are not sure what an **optimistic transaction** is, do ***NOT*** use it yet. Because **optimistic transactions** require that the application can correctly handle [all errors](/error-codes.md) returned by the `COMMIT` statement. If you are not sure how your application handles them, use a **pessimistic transaction** instead.
+If you are not sure what an **optimistic transaction** is, do **_NOT_** use it yet. Because **optimistic transactions** require that the application can correctly handle [all errors](/error-codes.md) returned by the `COMMIT` statement. If you are not sure how your application handles them, use a **pessimistic transaction** instead.
 
 </CustomContent>
 
 <CustomContent platform="tidb-cloud">
 
-If you are not sure what an **optimistic transaction** is, do ***NOT*** use it yet. Because **optimistic transactions** require that the application can correctly handle [all errors](https://docs.pingcap.com/tidb/stable/error-codes) returned by the `COMMIT` statement. If you are not sure how your application handles them, use a **pessimistic transaction** instead.
+If you are not sure what an **optimistic transaction** is, do **_NOT_** use it yet. Because **optimistic transactions** require that the application can correctly handle [all errors](https://docs.pingcap.com/tidb/stable/error-codes) returned by the `COMMIT` statement. If you are not sure how your application handles them, use a **pessimistic transaction** instead.
 
 </CustomContent>
 
@@ -74,13 +74,30 @@ Since TiDB is compatible with the MySQL protocol and MySQL syntax, most of the O
 
 <CustomContent platform="tidb-cloud">
 
+Here you can find additional resources to connect, manage and develop with TiDB Cloud.
+
+**To explore your data**
+
 - [Quick Start](/develop/dev-guide-build-cluster-in-cloud.md)
+- [Use AI-powered SQL Editor <sup>beta</sup>](/tidb-cloud/explore-data-with-chat2query.md)
+- Connect with client tools such as [VSCode](/develop/dev-guide-gui-vscode-sqltools.md), [DBeaver](/develop/dev-guide-gui-dbeaver.md) or [DataGrip](/develop/dev-guide-gui-datagrip.md)
+
+**To build your application**
+
 - [Choose Driver or ORM](/develop/dev-guide-choose-driver-or-orm.md)
+- [Use TiDB Cloud Data API <sup>beta</sup>](/tidb-cloud/data-service-overview.md)
+
+**To manage your cluster**
+
+- [TiDB Cloud Command Line Tools](/tidb-cloud/get-started-with-cli.md)
+- [TiDB Cloud Administration API](https://docs.pingcap.com/tidbcloud/api/v1beta1)
+
+**To learn more about TiDB**
+
 - [Database Schema Design](/develop/dev-guide-schema-design-overview.md)
 - [Write Data](/develop/dev-guide-insert-data.md)
 - [Read Data](/develop/dev-guide-get-data-from-single-table.md)
 - [Transaction](/develop/dev-guide-transaction-overview.md)
 - [Optimize](/develop/dev-guide-optimize-sql-overview.md)
-- [Example Applications](/develop/dev-guide-sample-application-java-spring-boot.md)
 
 </CustomContent>
