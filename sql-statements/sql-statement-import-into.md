@@ -7,10 +7,6 @@ summary: TiDB 数据库中 IMPORT INTO 的使用概况。
 
 `IMPORT INTO` 语句使用 TiDB Lightning 的[物理导入模式](/tidb-lightning/tidb-lightning-physical-import-mode.md)，用于将 `CSV`、`SQL`、`PARQUET` 等格式的数据导入到 TiDB 的一张空表中。
 
-> **警告：**
->
-> 目前该语句为实验特性，不建议在生产环境中使用。
-
 `IMPORT INTO` 支持导入存储在 Amazon S3、GCS、Azure Blob Storage 和 TiDB 本地的数据文件。
 
 - 对于存储在 S3、GCS 或 Azure Blob Storage 的数据文件，`IMPORT INTO` 支持通过[后端任务分布式框架](/tidb-distributed-execution-framework.md)运行。
@@ -22,7 +18,7 @@ summary: TiDB 数据库中 IMPORT INTO 的使用概况。
 
 ## 使用限制
 
-- 目前该语句支持导入 1 TiB 以内的数据。
+- 目前该语句支持导入 10 TiB 以内的数据。
 - 只支持导入数据到数据库中已有的空表。
 - 不支持事务，也无法回滚。在显式事务 (`BEGIN`/`END`) 中执行会报错。
 - 在导入完成前会阻塞当前连接，如果需要异步执行，可以添加 `DETACHED` 选项。
@@ -33,8 +29,9 @@ summary: TiDB 数据库中 IMPORT INTO 的使用概况。
 - TiDB [临时目录](/tidb-configuration-file.md#temp-dir-从-v630-版本开始引入)至少需要有 90 GiB 的可用空间。建议预留大于等于所需导入数据的存储空间，以保证最佳导入性能。
 - 一个导入任务只支持导入数据到一张目标表中。如需导入数据到多张目标表，需要在一张目标表导入完成后，再新建一个任务导入下一张目标表。
 - TiDB 集群升级期间不支持使用该语句。
-- 当使用[全局排序](/tidb-global-sort.md)时，编码后单行数据的总长度不能超过 32 MiB，单个索引键的长度不能超过 16 MiB。
-当使用全局排序导入数据时，如果任务还未完成，把 TiDB 集群删除了，会在 S3 残留用于全局排序的临时数据，该场景需要手动介入删除这部分数据，以免增加 S3 的存储成本。
+- 当使用[全局排序](/tidb-global-sort.md)时，单行数据的总长度不能超过 32 MiB。
+- 当使用全局排序导入数据时，如果任务还未完成，把 TiDB 集群删除了，会在 S3 残留用于全局排序的临时数据，该场景需要手动介入删除这部分数据，以免增加 S3 的存储成本。
+
 ## 导入前准备
 
 在使用 `IMPORT INTO` 开始导入数据前，请确保：
@@ -145,6 +142,10 @@ SET 表达式左侧只能引用 `ColumnNameOrUserVarList` 中没有的列名。�
 | `.snappy` | snappy 压缩格式 |
 
 ## 全局排序
+
+> **警告：**
+>
+> 全局排序为实验特性，不建议在生产环境中使用。
 
 `IMPORT INTO` 会将源数据文件的导入拆分到多个子任务中，各个子任务独立进行编码排序并导入。如果各个子任务编码后的 KV (TiDB 将数据编码为 KV 的方式，参考 [TiDB 数据库的计算](/tidb-computing.md)) range 重叠过多，导入时 TiKV 需要不断地进行 compaction，会降低导入的性能和稳定性。
 
