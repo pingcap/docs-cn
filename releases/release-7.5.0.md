@@ -194,6 +194,7 @@ TiDB 7.5.0 为长期支持版本 (Long-Term Support Release, LTS)。
     - 改进 Placement Policy 的使用：增加对全局范围的策略配置，完善常用场景的语法支持 [#45384](https://github.com/pingcap/tidb/issues/45384) @[nolouch](https://github.com/nolouch) <!--**tw@qiancai** -->
     <!--**tw@Oreoxmt**: 1-->
     - 提升启用索引加速功能 `tidb_ddl_enable_fast_reorg` 后添加索引的性能，在内部测试中 v7.5.0 相比 v6.5.0 性能最高提升 62.5% [#47757](https://github.com/pingcap/tidb/issues/47757) @[tangenta](https://github.com/tangenta)
+
 + TiKV
 
     - (dup): release-7.1.2.md > 改进提升> TiKV - 避免写 Titan manifest 文件时持有锁导致影响其他线程 [#15351](https://github.com/tikv/tikv/issues/15351) @[Connor1996](https://github.com/Connor1996)
