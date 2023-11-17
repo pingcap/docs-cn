@@ -9,7 +9,7 @@ summary: 了解如何解决使用 TiCDC 时经常遇到的问题。
 
 > **注意：**
 >
-> 本文档 `cdc cli` 命令中指定 PD 地址为 `--server=http://127.0.0.1:8300`，在使用时需根据实际地址进行替换。
+> 本文档 `cdc cli` 命令中指定 TiCDC Server 地址为 `--server=http://127.0.0.1:8300`，在使用时需根据实际地址进行替换。
 
 ## TiCDC 同步任务出现中断
 
@@ -28,12 +28,7 @@ summary: 了解如何解决使用 TiCDC 时经常遇到的问题。
 cdc cli changefeed query --server=http://127.0.0.1:8300 --changefeed-id 28c43ffc-2316-4f4f-a70b-d1a7c59ba79f
 ```
 
-上述命令的输出中 `admin-job-type` 标志这个同步的任务的状态：
-
-- `0`: 任务进行中，没有被人为停止。
-- `1`: 任务暂停，停止任务后所有同步 `processor` 会结束退出，同步任务的配置和同步状态都会保留，可以从 `checkpoint-ts` 恢复任务。
-- `2`: 任务恢复，同步任务从 `checkpoint-ts` 继续同步。
-- `3`: 任务已删除，接口请求后会结束所有同步 `processor`，并清理同步任务配置信息。同步状态保留，只提供查询，没有其他实际功能。
+上述命令的输出中 `state` 标志这个同步任务的状态，状态的值和含义参考 [TiCDC 同步任务状态](/ticdc/ticdc-changefeed-overview.md#changefeed-状态流转)。
 
 ### 如何处理 TiCDC 同步任务的中断？
 
@@ -42,22 +37,17 @@ cdc cli changefeed query --server=http://127.0.0.1:8300 --changefeed-id 28c43ffc
 - 下游持续异常，TiCDC 多次重试后仍然失败。
 
     - 该场景下 TiCDC 会保存任务信息，由于 TiCDC 已经在 PD 中设置的 service GC safepoint，在 `gc-ttl` 的有效期内，同步任务 checkpoint 之后的数据不会被 TiKV GC 清理掉。
-    - 处理方法：在下游恢复正常后，通过 HTTP 接口恢复同步任务。
+    - 处理方法：在下游恢复正常后，通过 `cdc cli changefeed resume` 恢复同步任务。
 
 - 因下游存在不兼容的 SQL 语句，导致同步不能继续。
 
     - 该场景下 TiCDC 会保存任务信息，由于 TiCDC 已经在 PD 中设置的 service GC safepoint，在 `gc-ttl` 的有效期内，同步任务 checkpoint 之后的数据不会被 TiKV GC 清理掉。
     - 处理方法：
         1. 先通过 `cdc cli changefeed query` 查询同步任务状态信息，记录 `checkpoint-ts` 值。
-        2. 使用新的任务配置文件，增加`ignore-txn-start-ts` 参数跳过指定 `start-ts` 对应的事务。
-        3. 通过 HTTP API 停止旧的同步任务，使用 `cdc cli changefeed create`，指定新的任务配置文件，指定 `start-ts` 为刚才记录的 `checkpoint-ts`，启动新的同步任务恢复同步。
-
-- 在 v4.0.13 及之前的版本中 TiCDC 同步分区表存在问题，导致同步停止。
-
-    - 该场景下 TiCDC 会保存任务信息，由于 TiCDC 已经在 PD 中设置的 service GC safepoint，在 `gc-ttl` 的有效期内，同步任务 checkpoint 之后的数据不会被 TiKV GC 清理掉。
-    - 处理方法：
-        1. 通过 `cdc cli changefeed pause -c <changefeed-id>` 暂停同步。
-        2. 等待约一分钟后，通过 `cdc cli changefeed resume -c <changefeed-id>` 恢复同步。
+        2. 使用新的任务配置文件，增加 `ignore-txn-start-ts` 参数跳过指定 `start-ts` 对应的事务。
+        3. 通过 `cdc cli changefeed pause -c <changefeed-id>` 暂停同步任务。
+        4. 通过 `cdc cli changefeed update -c <changefeed-id> --config <config-file-path>` 指定新的任务配置文件。
+        5. 通过 `cdc cli changefeed resume -c <changefeed-id>` 恢复同步任务。
 
 ### 同步任务中断，尝试再次启动后 TiCDC 发生 OOM，应该如何处理？
 
