@@ -6,6 +6,7 @@ on:
       - ".github/**"
     branches:
       - master
+      - release-7.5
       - release-7.2
       - release-7.1
       - release-7.0
