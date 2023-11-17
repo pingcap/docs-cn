@@ -75,17 +75,21 @@ TiDB 7.5.0 为长期支持版本 (Long-Term Support Release, LTS)。
 
 ### 性能
 
-* TiDB 后端任务分布式并行执行框架成为正式功能 (GA)，其中基于云存储的全局排序功能也成为正式功能，提升并行执行的 `ADD INDEX` 或 `IMPORT INTO` 任务的性能和稳定性 [#45719](https://github.com/pingcap/tidb/issues/45719) @[wjhuang2016](https://github.com/wjhuang2016) <!--**tw@ran-huang** 1580-->
+* TiDB 后端任务分布式并行执行框架成为正式功能 (GA)，提升并行执行的 `ADD INDEX` 或 `IMPORT INTO` 任务的性能和稳定性 [#45719](https://github.com/pingcap/tidb/issues/45719) @[wjhuang2016](https://github.com/wjhuang2016) <!--**tw@ran-huang** 1580-->
 
-    在 v7.4.0 以前，当用户执行分布式并行执行框架的 `ADD INDEX` 或 `IMPORT INTO` 任务时，TiDB 节点需要准备一块较大的本地磁盘，对编码后的索引 KV pairs 和表数据 KV pairs 进行排序。由于无法从全局角度进行排序，各个 TiDB 节点间以及节点内部导入的数据可能存在重叠情况。这会导致在将这些 KV pairs 导入到 TiKV 时，TiKV 需要频繁进行数据整理 (compaction)，降低了 `ADD INDEX` 或 `IMPORT INTO` 的性能和稳定性。
+    在 v6.6.0 中引入的 TiDB 后端任务分布式并行执行框架成为正式功能 (GA)。TiDB v7.1.0 之前的版本中，在同一时间只有一个 TiDB 节点能够执行 DDL 任务。从 v7.1.0 开始，在分布式并行执行框架下，多个 TiDB 节点可以并行执行同一项 DDL 任务。从 v7.2.0 开始，分布式并行执行框架支持多个 TiDB 节点并行执行同一个 `IMPORT INTO` 任务，从而更好地利用 TiDB 集群的资源，大幅提升 DDL 和 `IMPORT INTO` 任务的性能。此外，你还可以通过增加 TiDB 节点来线性提升 DDL 和 `IMPORT INTO` 任务的性能。
 
-    v7.4.0 引入全局排序特性后，编码后的数据不再写入本地进行排序，而是写入云存储，并在云存储中进行全局排序。然后，TiDB 将经过全局排序的索引数据和表数据并行导入到 TiKV 中，从而提升了性能和稳定性。
+    如果要使用分布式并行执行框架，只需将 [`tidb_enable_dist_task`](/system-variables.md#tidb_enable_dist_task-从-v710-版本开始引入) 的值设置为 `ON`：
 
-    更多信息，请参考[用户文档](/tidb-global-sort.md)。
+    ```sql
+    SET GLOBAL tidb_enable_dist_task = ON;
+    ```
+
+    更多信息，请参考[用户文档](/tidb-distributed-execution-framework.md)。
 
 * 提升了在一个 SQL 语句中同时添加多个索引的性能 [#41602](https://github.com/pingcap/tidb/issues/41602) @[tangenta](https://github.com/tangenta) <!--**tw@ran-huang** 1582-->
 
-    在 v7.5.0 之前，用户在一个 SQL 语句里添加多个索引 (`ADD INDEX`) 时，其性能与使用多个独立的 SQL 语句添加多个索引的性能接近。从 v7.5.0 起，在一个 SQL 语句中添加多个索引的性能有了显著的变化，提升了 XX （等待最终测试结果数据），可大大缩短业务添加索引所需的时间。
+    在 v7.5.0 之前，用户在一个 SQL 语句里添加多个索引 (`ADD INDEX`) 时，其性能与使用多个独立的 SQL 语句添加多个索引的性能接近。从 v7.5.0 起，在一个 SQL 语句中添加多个索引的性能有了显著的变化，尤其是在宽表的场景，内部测试数据显示最高性能可提升 94%。
 
 ### 数据库管理
 
