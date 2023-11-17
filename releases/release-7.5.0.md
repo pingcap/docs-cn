@@ -285,7 +285,7 @@ TiDB 7.5.0 为长期支持版本 (Long-Term Support Release, LTS)。
         - 修复开启 `column filter` 时列设置错误的问题 [#10042](https://github.com/pingcap/tiflow/issues/10042) @[3AceShowHand](https://github.com/3AceShowHand)
         - 修复 TiCDC 在某些情况下调度不均衡的问题 [#9845](https://github.com/pingcap/tiflow/issues/9845) @[3AceShowHand](https://github.com/3AceShowHand)
         - 修复同步到 Kafka 时可能丢失 callback 的问题 [#9855](https://github.com/pingcap/tiflow/issues/9855) @[hicqu](https://github.com/hicqu)
-        - 修复某些场景下 Processor 可能 panic 的问题 [#9849](https://github.com/pingcap/tiflow/issues/9849)[#9915](https://github.com/pingcap/tiflow/issues/9915) @[hicqu](https://github.com/hicqu) @[3AceShowHand](https://github.com/3AceShowHand)
+        - 修复某些场景下 Processor 可能 panic 的问题 [#9849](https://github.com/pingcap/tiflow/issues/9849) [#9915](https://github.com/pingcap/tiflow/issues/9915) @[hicqu](https://github.com/hicqu) @[3AceShowHand](https://github.com/3AceShowHand)
         - 修复开启 `kv-client.enable-multiplexing` 导致同步任务卡住的问题 [#9673](https://github.com/pingcap/tiflow/issues/9673) @[fubinzh](https://github.com/fubinzh)
         - 修复开启 Redo log 时，NFS 出现故障导致 Owner 节点卡住的问题 [#9886](https://github.com/pingcap/tiflow/issues/9886) @[3AceShowHand](https://github.com/3AceShowHand)
 
