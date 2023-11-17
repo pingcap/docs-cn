@@ -114,7 +114,7 @@ delta_index_cache_size = 0
     ## auto_tune_sec 表示自动调整的执行间隔，单位为秒。设为 0 表示关闭自动调整。
     # auto_tune_sec = 5
 
-    ## 下面的配置只针对存算分离模式生效，详细请参考 TiFlash 存算分离架构与 S3 支持文档 https://docs.pingcap.com/zh/tidb/dev/tiflash-disaggregated-and-s3
+    ## 下面的配置只针对存算分离模式生效，详细请参考 TiFlash 存算分离架构与 S3 支持文档 https://docs.pingcap.com/zh/tidb/v7.5/tiflash-disaggregated-and-s3
     # [storage.s3]
     # endpoint: http://s3.{region}.amazonaws.com # S3 的 endpoint 地址
     # bucket: mybucket                           # TiFlash 的所有数据存储在这个 bucket 中
@@ -139,7 +139,7 @@ delta_index_cache_size = 0
     # compact_log_min_rows = 40960 # 40k
     # compact_log_min_bytes = 33554432 # 32MB
 
-    ## 下面的配置只针对存算分离模式生效，详情请参考 TiFlash 存算分离架构与 S3 支持文档 https://docs.pingcap.com/zh/tidb/dev/tiflash-disaggregated-and-s3
+    ## 下面的配置只针对存算分离模式生效，详情请参考 TiFlash 存算分离架构与 S3 支持文档 https://docs.pingcap.com/zh/tidb/v7.5/tiflash-disaggregated-and-s3
     # disaggregated_mode = tiflash_write # 可选值为 tiflash_write 或者 tiflash_compute
 
 # 多个 TiFlash 节点会选一个 master 来负责往 PD 增删 placement rule，通过 flash.flash_cluster 中的参数控制。
@@ -281,10 +281,10 @@ delta_index_cache_size = 0
     data-key-rotation-period = "168h" # 7 days
 
 [security.encryption.master-key]
-    ## 指定启用加密时的主密钥。若要了解如何配置主密钥，可以参考《静态加密 - 配置加密》：https://docs.pingcap.com/zh/tidb/dev/encryption-at-rest#配置加密
+    ## 指定启用加密时的主密钥。若要了解如何配置主密钥，可以参考《静态加密 - 配置加密》：https://docs.pingcap.com/zh/tidb/v7.5/encryption-at-rest#配置加密
 
 [security.encryption.previous-master-key]
-    ## 指定轮换新主密钥时的旧主密钥。旧主密钥的配置格式与主密钥相同。若要了解如何配置主密钥，可以参考《静态加密 - 配置加密》：https://docs.pingcap.com/zh/tidb/dev/encryption-at-rest#配置加密
+    ## 指定轮换新主密钥时的旧主密钥。旧主密钥的配置格式与主密钥相同。若要了解如何配置主密钥，可以参考《静态加密 - 配置加密》：https://docs.pingcap.com/zh/tidb/v7.5/encryption-at-rest#配置加密
 ```
 
 除以上几项外，其余功能参数和 TiKV 的配置相同。需要注意的是：`key` 为 `engine` 的 `label` 是保留项，不可手动配置。

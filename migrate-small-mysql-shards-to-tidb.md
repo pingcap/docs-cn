@@ -111,7 +111,7 @@ name: "shard_merge"
 # all： 全量 + binlog 迁移
 task-mode: all
 # 分库分表合并任务则需要配置 shard-mode。默认使用悲观协调模式 "pessimistic"，在深入了解乐观协调模式的原理和使用限制后，也可以设置为乐观协调模式 "optimistic"
-# 详细信息可参考：https://docs.pingcap.com/zh/tidb/dev/feature-shard-merge/
+# 详细信息可参考：https://docs.pingcap.com/zh/tidb/v7.5/feature-shard-merge/
 shard-mode: "pessimistic"
 meta-schema: "dm_meta"                          # 将在下游数据库创建 schema 用于存放元数据
 ignore-checking-items: ["auto_increment_ID"]    # 本示例中上游存在自增主键，因此需要忽略掉该检查项

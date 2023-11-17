@@ -178,7 +178,7 @@ delete-only-output-handle-key-columns = false
 # 注意：该参数只有当下游为存储服务时，才会生效。
 date-separator = 'day'
 
-# 是否使用 partition 作为分隔字符串。默认值为 true，即一张表中各个 partition 的数据会分不同的目录来存储。建议保持该配置项为 true 以避免下游分区表可能丢数据的问题 <https://github.com/pingcap/tiflow/issues/8581>。使用示例详见 <https://docs.pingcap.com/zh/tidb/dev/ticdc-sink-to-cloud-storage#数据变更记录>。
+# 是否使用 partition 作为分隔字符串。默认值为 true，即一张表中各个 partition 的数据会分不同的目录来存储。建议保持该配置项为 true 以避免下游分区表可能丢数据的问题 <https://github.com/pingcap/tiflow/issues/8581>。使用示例详见 <https://docs.pingcap.com/zh/tidb/v7.5/ticdc-sink-to-cloud-storage#数据变更记录>。
 # 注意：该参数只有当下游为存储服务时，才会生效。
 enable-partition-separator = true
 

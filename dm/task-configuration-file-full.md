@@ -58,7 +58,7 @@ routes:                           # 上游和下游表之间的路由 table rout
     table-pattern: "t_*"          # 表名匹配规则，支持通配符 "*" 和 "?"
     target-schema: "test"         # 目标库名称
     target-table: "t"             # 目标表名称
-    # 可选配置：提取各分库分表的源信息，并写入下游用户自建的列，用于标识合表中各行数据的来源。如果配置该项，需要提前在下游手动创建合表，具体可参考 “table routing 文档” <https://docs.pingcap.com/zh/tidb/dev/dm-key-features#table-routing>。
+    # 可选配置：提取各分库分表的源信息，并写入下游用户自建的列，用于标识合表中各行数据的来源。如果配置该项，需要提前在下游手动创建合表，具体可参考 “table routing 文档” <https://docs.pingcap.com/zh/tidb/v7.5/dm-key-features#table-routing>。
     # extract-table:                                        # 提取分表去除 t_ 的后缀信息，并写入下游合表 c_table 列，例如，t_01 分表的数据会提取 01 写入下游 c_table 列
     #   table-regexp: "t_(.*)"
     #   target-column: "c_table"
