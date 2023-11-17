@@ -1,7 +1,6 @@
 ---
 title: 海量 Region 集群调优最佳实践
 summary: 了解海量 Region 导致性能问题的原因和优化方法。
-aliases: ['/docs-cn/dev/best-practices/massive-regions-best-practices/','/docs-cn/dev/reference/best-practices/massive-regions/']
 ---
 
 # 海量 Region 集群调优最佳实践

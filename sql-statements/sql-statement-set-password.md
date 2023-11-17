@@ -1,7 +1,6 @@
 ---
 title: SET PASSWORD
 summary: TiDB 数据库中 SET PASSWORD 的使用概况。
-aliases: ['/docs-cn/dev/sql-statements/sql-statement-set-password/','/docs-cn/dev/reference/sql/statements/set-password/']
 ---
 
 # SET PASSWORD

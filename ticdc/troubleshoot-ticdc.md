@@ -1,7 +1,6 @@
 ---
 title: TiCDC 故障处理
 summary: 了解如何解决使用 TiCDC 时经常遇到的问题。
-aliases: ['/docs-cn/dev/ticdc/troubleshoot-ticdc/','/docs-cn/dev/reference/tools/ticdc/troubleshoot/']
 ---
 
 # TiCDC 故障处理
