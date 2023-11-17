@@ -21,7 +21,7 @@ summary: 了解备份恢复的监控告警。
 
 - 通过 TiUP 部署的集群，[Grafana](https://grafana.com/) 中内置了 Backup log 的面板。
 
-- 手动部署的集群，需要参考[导入 Grafana 面板](/deploy-monitoring-services.md#第-2-步导入-grafana-面板)，将 [tikv_details.json](https://github.com/tikv/tikv/blob/master/metrics/grafana/tikv_details.json) 文件上传到 Grafana 中。之后在 TiKV-Details Dashboard 中找到 Backup Log 面板即可。
+- 手动部署的集群，需要参考[导入 Grafana 面板](/deploy-monitoring-services.md#第-2-步导入-grafana-面板)，将 [tikv_details.json](https://github.com/tikv/tikv/blob/release-7.5/metrics/grafana/tikv_details.json) 文件上传到 Grafana 中。之后在 TiKV-Details Dashboard 中找到 Backup Log 面板即可。
 
 ### 监控指标
 

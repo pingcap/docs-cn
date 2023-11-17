@@ -6,7 +6,7 @@ title: PD 配置文件描述
 
 <!-- markdownlint-disable MD001 -->
 
-PD 配置文件比命令行参数支持更多的选项。你可以在 [conf/config.toml](https://github.com/pingcap/pd/blob/master/conf/config.toml) 找到默认的配置文件。
+PD 配置文件比命令行参数支持更多的选项。你可以在 [conf/config.toml](https://github.com/pingcap/pd/blob/release-7.5/conf/config.toml) 找到默认的配置文件。
 
 本文档只阐述未包含在命令行参数中的参数，命令行参数参见 [PD 配置参数](/command-line-flags-for-pd-configuration.md)。
 

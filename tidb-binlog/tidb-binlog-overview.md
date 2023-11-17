@@ -27,15 +27,15 @@ TiDB Binlog 集群主要分为 Pump 和 Drainer 两个组件，以及 binlogctl 
 
 ### Pump
 
-[Pump](https://github.com/pingcap/tidb-binlog/blob/master/pump) 用于实时记录 TiDB 产生的 Binlog，并将 Binlog 按照事务的提交时间进行排序，再提供给 Drainer 进行消费。
+[Pump](https://github.com/pingcap/tidb-binlog/blob/release-7.5/pump) 用于实时记录 TiDB 产生的 Binlog，并将 Binlog 按照事务的提交时间进行排序，再提供给 Drainer 进行消费。
 
 ### Drainer
 
-[Drainer](https://github.com/pingcap/tidb-binlog/tree/master/drainer) 从各个 Pump 中收集 Binlog 进行归并，再将 Binlog 转化成 SQL 或者指定格式的数据，最终同步到下游。
+[Drainer](https://github.com/pingcap/tidb-binlog/tree/release-7.5/drainer) 从各个 Pump 中收集 Binlog 进行归并，再将 Binlog 转化成 SQL 或者指定格式的数据，最终同步到下游。
 
 ### binlogctl 工具
 
-[`binlogctl`](https://github.com/pingcap/tidb-binlog/tree/master/binlogctl) 是一个 TiDB Binlog 配套的运维工具，具有如下功能：
+[`binlogctl`](https://github.com/pingcap/tidb-binlog/tree/release-7.5/binlogctl) 是一个 TiDB Binlog 配套的运维工具，具有如下功能：
 
 * 获取 TiDB 集群当前的 TSO
 * 查看 Pump/Drainer 状态
@@ -65,7 +65,7 @@ TiDB Binlog 集群主要分为 Pump 和 Drainer 两个组件，以及 binlogctl 
 
 * Drainer 支持将 Binlog 同步到 MySQL、TiDB、Kafka 或者本地文件。如果需要将 Binlog 同步到其他 Drainer 不支持的类型的系统中，可以设置 Drainer 将 Binlog 同步到 Kafka，然后根据 binlog consumer protocol 进行定制处理，参考 [Binlog Consumer Client 用户文档](/tidb-binlog/binlog-consumer-client.md)。
 
-* 如果 TiDB Binlog 用于增量恢复，可以设置配置项 `db-type="file"`，Drainer 会将 binlog 转化为指定的 [proto buffer 格式](https://github.com/pingcap/tidb-binlog/blob/master/proto/pb_binlog.proto)的数据，再写入到本地文件中。这样就可以使用 [Reparo](/tidb-binlog/tidb-binlog-reparo.md) 恢复增量数据。
+* 如果 TiDB Binlog 用于增量恢复，可以设置配置项 `db-type="file"`，Drainer 会将 binlog 转化为指定的 [proto buffer 格式](https://github.com/pingcap/tidb-binlog/blob/release-7.5/proto/pb_binlog.proto)的数据，再写入到本地文件中。这样就可以使用 [Reparo](/tidb-binlog/tidb-binlog-reparo.md) 恢复增量数据。
 
     关于 `db-type` 的取值，应注意：
 
