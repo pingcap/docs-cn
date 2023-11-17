@@ -259,7 +259,7 @@ tiup dmctl --master-addr ${advertise-addr} operate-source create source1.yaml
 name: task-test               # 任务名称，需要全局唯一。
 task-mode: incremental        # 任务模式，设为 "incremental" 即只进行增量数据迁移。
 # 分库分表合并任务则需要配置 shard-mode。默认使用悲观协调模式 "pessimistic"，在深入了解乐观协调模式的原理和使用限制后，也可以设置为乐观协调模式 "optimistic"
-# 详细信息可参考：https://docs.pingcap.com/zh/tidb/dev/feature-shard-merge/
+# 详细信息可参考：https://docs.pingcap.com/zh/tidb/v7.5/feature-shard-merge/
 shard-mode: "pessimistic"
 
 ## 配置下游 TiDB 数据库实例访问信息
