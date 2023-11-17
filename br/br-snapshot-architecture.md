@@ -77,7 +77,7 @@ summary: 了解 TiDB 快照备份与恢复功能的架构设计。
     * 如果存在备份数据不可重试的恢复失败，则恢复任务失败。
     * 全部备份都恢复成功后，则整个恢复任务成功。
 
-详细的快照数据备份恢与恢复流程设计，可以参考[备份恢复设计方案](https://github.com/pingcap/tidb/blob/master/br/docs/cn/2019-08-05-new-design-of-backup-restore.md)。
+详细的快照数据备份恢与恢复流程设计，可以参考[备份恢复设计方案](https://github.com/pingcap/tidb/blob/release-7.5/br/docs/cn/2019-08-05-new-design-of-backup-restore.md)。
 
 ## 备份文件
 

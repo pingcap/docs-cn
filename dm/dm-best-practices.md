@@ -5,7 +5,7 @@ summary: 了解使用 TiDB Data Migration (DM) 进行数据迁移的一些最佳
 
 # DM 数据迁移最佳实践
 
-[TiDB Data Migration (DM)](https://github.com/pingcap/tiflow/tree/master/dm) 是由 PingCAP 开发维护的数据迁移同步工具，主要支持的源数据库类型为各类遵循 MySQL 协议标准的关系型数据库，如 MySQL、Percona MySQL、MariaDB、Amazon RDS for MySQL、Amazon Aurora 等。
+[TiDB Data Migration (DM)](https://github.com/pingcap/tiflow/tree/release-7.5/dm) 是由 PingCAP 开发维护的数据迁移同步工具，主要支持的源数据库类型为各类遵循 MySQL 协议标准的关系型数据库，如 MySQL、Percona MySQL、MariaDB、Amazon RDS for MySQL、Amazon Aurora 等。
 
 DM 的使用场景主要有：
 

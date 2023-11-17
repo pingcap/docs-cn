@@ -13,7 +13,7 @@ summary: 了解如何设计与实现一个消费程序来消费 storage sink 中
 
 TiCDC 不提供消费存储服务的数据的标准实现。本文介绍一个基于 Golang 的消费示例程序，该示例程序能够读取存储服务中的数据并写入到兼容 MySQL 的下游数据库。你可以参考本文提供的数据格式和以下示例代码实现消费端。
 
-[Golang 示例代码](https://github.com/pingcap/tiflow/tree/master/cmd/storage-consumer)
+[Golang 示例代码](https://github.com/pingcap/tiflow/tree/release-7.5/cmd/storage-consumer)
 
 ## Consumer 设计
 
