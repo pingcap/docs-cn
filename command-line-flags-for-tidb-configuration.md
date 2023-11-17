@@ -1,6 +1,5 @@
 ---
 title: TiDB 配置参数
-aliases: ['/docs-cn/dev/command-line-flags-for-tidb-configuration/','/docs-cn/dev/reference/configuration/tidb-server/configuration/']
 ---
 
 # TiDB 配置参数

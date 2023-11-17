@@ -1,7 +1,6 @@
 ---
 title: FLUSH STATUS
 summary: TiDB 数据库中 FLUSH STATUS 的使用概况。
-aliases: ['/docs-cn/dev/sql-statements/sql-statement-flush-status/','/docs-cn/dev/reference/sql/statements/flush-status/']
 ---
 
 # FLUSH STATUS

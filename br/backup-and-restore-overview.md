@@ -1,7 +1,6 @@
 ---
 title: TiDB 备份与恢复概述
 summary: 了解不同场景下如何使用 TiDB 的备份与恢复功能，以及不同功能、版本间的兼容性。
-aliases: ['/docs-cn/dev/br/backup-and-restore-tool/','/docs-cn/dev/reference/tools/br/br/','/docs-cn/dev/how-to/maintain/backup-and-restore/br/','/zh/tidb/dev/backup-and-restore-tool/','/zh/tidb/dev/point-in-time-recovery/']
 ---
 
 # TiDB 备份与恢复概述
