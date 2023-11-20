@@ -205,7 +205,7 @@ tiup cluster upgrade -h | grep "version string"
       --alertmanager-version string        Fix the version of alertmanager and no longer follows the cluster version.
       --blackbox-exporter-version string   Fix the version of blackbox-exporter and no longer follows the cluster version.
       --cdc-version string                 Fix the version of cdc and no longer follows the cluster version.
-      --ignore-version-check               Ignore checking if target version is bigger than current version
+      --ignore-version-check               Ignore checking if target version is bigger than current version.
       --node-exporter-version string       Fix the version of node-exporter and no longer follows the cluster version.
       --pd-version string                  Fix the version of pd and no longer follows the cluster version.
       --tidb-dashboard-version string      Fix the version of tidb-dashboard and no longer follows the cluster version.
