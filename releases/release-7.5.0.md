@@ -253,6 +253,8 @@ TiDB 7.5.0 为长期支持版本 (Long-Term Support Release, LTS)。
     - 修复默认内联且带聚合函数或窗口函数的公共表表达式 (CTE) 被递归的 CTE 引用时会报错的问题 [#47881](https://github.com/pingcap/tidb/issues/47881) @[elsa0520](https://github.com/elsa0520)
     - 修复优化器为减少窗口函数引入的 sort 而错误地选择了 IndexFullScan 的问题 [#46177](https://github.com/pingcap/tidb/issues/46177) @[qw4990](https://github.com/qw4990)
     - 修复当 CTE 被多次引用时，条件下推 CTE 导致结果错误的问题 [#47881](https://github.com/pingcap/tidb/issues/47881) @[winoros](https://github.com/winoros)
+    - 修复 mysql 压缩协议无法处理超大负载 (>=16M) 的问题 [#47152](https://github.com/pingcap/tidb/issues/47152) [#47157](https://github.com/pingcap/tidb/issues/47157) [#47161](https://github.com/pingcap/tidb/issues/47161) @[dveeden](https://github.com/dveeden)
+    - 修复 TiDB 无法读取 systemd cgroup 资源限制 [#47442](https://github.com/pingcap/tidb/issues/47442) @[hawkingrei](https://github.com/hawkingrei)
 
 + TiKV
 
