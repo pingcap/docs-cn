@@ -32,7 +32,7 @@ TiDB 7.5.0 为长期支持版本 (Long-Term Support Release, LTS)。
   <tr>
     <td rowspan="3">稳定性与高可用</td>
     <td>优化<a href="https://docs.pingcap.com/zh/tidb/v7.5/tidb-global-sort" target="_blank">全局排序</a>（实验特性，从 v7.4.0 开始引入）{/* tw@ran-huang */}</td>
-    <td>在 v7.4.0 中，TiDB 以<a href="https://docs.pingcap.com/zh/tidb/v7.5/tidb-distributed-execution-framework" target="_blank">后端任务分布式并行执行框架</a>为基础，引入全局排序，消除了数据 reorg 任务期间临时无序数据导致的不必要的 I/O、CPU 和内存峰值。全局排序利用外部对象存储（目前为 S3）来存储系统作业期间的中间文件，提高灵活性并降低成本。<code>ADD INDEX</code> 和 <code>IMPORT INTO</code> 等操作将更快速灵活、稳定可靠，且运行成本较低。</td>
+    <td>TiDB v7.2.0 中引入了<a href="https://docs.pingcap.com/zh/tidb/v7.5/tidb-distributed-execution-framework" target="_blank">后端任务分布式并行执行框架</a>。在 v7.4.0 中，TiDB 以该框架为基础，引入全局排序，消除了数据 reorg 任务期间临时无序数据导致的不必要的 I/O、CPU 和内存峰值。全局排序利用外部对象存储（目前为 S3）来存储系统作业期间的中间文件，提高灵活性并降低成本。<code>ADD INDEX</code> 和 <code>IMPORT INTO</code> 等操作将更快速灵活、稳定可靠，且运行成本较低。</td>
   </tr>
   <tr>
     <td><a href="https://docs.pingcap.com/zh/tidb/v7.5/tidb-resource-control#管理后台任务" target="_blank">资源管控</a>支持自动管理后台任务（实验特性，从 v7.4.0 开始引入） {/* tw@Oreoxmt */}</td>
@@ -40,7 +40,7 @@ TiDB 7.5.0 为长期支持版本 (Long-Term Support Release, LTS)。
   </tr>
   <tr>
     <td>资源组支持<a href="https://docs.pingcap.com/zh/tidb/v7.5/tidb-resource-control#管理资源消耗超出预期的查询-runaway-queries">管理资源消耗超出预期的查询</a>（实验特性，从 v7.2.0 开始引入）{/* tw@hfxsd */}</td>
-    <td><a href="https://docs.pingcap.com/zh/tidb/v7.5/tidb-resource-control" target="_blank">资源管控 (Resource Group)</a> 是一个通过资源组 (Resource Group) 对工作负载进行资源隔离的框架，但它并不调用单个查询如何影响每个组内的工作。TiDB v7.2.0 引入了管控资源消耗超出预期的查询 (Runaway Queries)，你可以控制 TiDB 如何识别和处理每个资源组的查询。根据需要，长时间运行的查询可能会被终止或节流，你可以通过准确的 SQL test、SQL Digest 或其 Plan Digest来识别查询。在 TiDB v7.3.0，你可以主动监视已知的不良查询，类似于数据库级别的 SQL Blocklist。</td>
+    <td><a href="https://docs.pingcap.com/zh/tidb/v7.5/tidb-resource-control" target="_blank">资源管控 (Resource Group)</a> 是一个通过资源组 (Resource Group) 对工作负载进行资源隔离的框架，但它并不对每个资源组内的查询产生影响。TiDB v7.2.0 引入了运行超出预期的查询 (Runaway Queries) 时的资源控制功能，你可以控制 TiDB 如何识别和处理每个资源组的查询。根据需要，长时间运行的查询可能会被终止或节流，你可以通过准确的 SQL 文本、SQL Digest 或 Plan Digest 来识别查询。在 TiDB v7.3.0，你可以主动监视已知的不良查询，类似于数据库级别的 SQL Blocklist。</td>
   </tr>
   <tr>
     <td>SQL</td>
@@ -50,15 +50,15 @@ TiDB 7.5.0 为长期支持版本 (Long-Term Support Release, LTS)。
   <tr>
     <td rowspan="3">数据库管理与可观测性</td>
     <td><a href="https://docs.pingcap.com/zh/tidb/v7.5/sql-statement-import-into"><code>IMPORT INTO</code></a> 语句集成 TiDB Lightning 物理导入模式的能力 (GA) {/* tw@qiancai */}</td>
-    <td>在 v7.2 之前，如需基于文件系统进行数据导入，你需要安装 <a href="https://docs.pingcap.com/zh/tidb/v7.5/tidb-lightning-overview">TiDB Lightning</a> 并使用其物理导入模式。目前，该功能已集成到 <code>IMPORT INTO</code> 语句中，你可以使用此语句快速导入数据，而无需安装任何额外的工具。该语句还支持<a href="https://docs.pingcap.com/zh/tidb/v7.5/tidb-distributed-execution-framework" target="_blank">分布式执行框架</a>，可分布式执行导入任务，提升了大规模数据导入时的效率。</td>
+    <td>在 v7.2.0 之前，如需基于文件系统进行数据导入，你需要安装 <a href="https://docs.pingcap.com/zh/tidb/v7.5/tidb-lightning-overview">TiDB Lightning</a> 并使用其物理导入模式。目前，该功能已集成到 <code>IMPORT INTO</code> 语句中，你可以使用此语句快速导入数据，而无需安装任何额外的工具。该语句还支持<a href="https://docs.pingcap.com/zh/tidb/v7.5/tidb-distributed-execution-framework" target="_blank">分布式执行框架</a>，可分布式执行导入任务，提升了大规模数据导入时的效率。</td>
   </tr>
   <tr>
     <td>选择<a href="https://docs.pingcap.com/zh/tidb/v7.5/system-variables#tidb_service_scope-从-v740-版本开始引入" target="_blank">适用的 TiDB 节点</a>来并行执行 <code>ADD INDEX</code> 或 <code>IMPORT INTO</code> SQL 语句 (GA) {/* tw@hfxsd */}</td>
-    <td>你可以选择在现有 TiDB 节点、或者新增 TiDB 节点执行 <code>ADD INDEX</code> 和 <code>IMPORT INTO</code> SQL 语句。该方法可以实现与其他 TiDB 节点的资源隔离，确保在执行上述语句时的最佳性能，并避免对已有业务造成性能影响。在 v7.5.0 中，该功能正式 GA。</td>
+    <td>你可以灵活选择在现有 TiDB 节点或新增 TiDB 节点执行 <code>ADD INDEX</code> 和 <code>IMPORT INTO</code> SQL 语句。该方法可以实现与其他 TiDB 节点的资源隔离，确保在执行上述语句时的最佳性能，并避免对已有业务造成性能影响。在 v7.5.0 中，该功能正式 GA。</td>
   </tr>
   <tr>
     <td>DDL 任务支持<a href="https://docs.pingcap.com/zh/tidb/v7.5/ddl-introduction#ddl-相关的命令介绍">暂停和恢复操作</a> (GA) {/* tw@ran-huang */}</td>
-    <td>添加索引可能会消耗大量资源并影响在线流量。即使在资源组中进行了限制，或对标记的节点进行了隔离，你仍然可能需要在紧急情况下暂停这些任务。从 v7.2 开始，TiDB 原生支持同时暂停任意数量的后台任务，释放所需的资源，无需取消或重启任务。</td>
+    <td>添加索引可能会消耗大量资源并影响在线流量。即使在资源组中进行了限制，或对标记的节点进行了隔离，你仍然可能需要在紧急情况下暂停这些任务。从 v7.2.0 开始，TiDB 原生支持同时暂停任意数量的后台任务，释放所需的资源，无需取消或重启任务。</td>
   </tr>
 </tbody>
 </table>
