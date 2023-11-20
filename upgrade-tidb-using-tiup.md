@@ -207,7 +207,7 @@ tiup cluster upgrade -h | grep "version string"
       --cdc-version string                 Fix the version of cdc and no longer follows the cluster version.
       --ignore-version-check               Ignore checking if target version is bigger than current version
       --node-exporter-version string       Fix the version of node-exporter and no longer follows the cluster version.
-      --pd-version string                  Fix the version of pv and no longer follows the cluster version.
+      --pd-version string                  Fix the version of pd and no longer follows the cluster version.
       --tidb-dashboard-version string      Fix the version of tidb-dashboard and no longer follows the cluster version.
       --tiflash-version string             Fix the version of tiflash and no longer follows the cluster version.
       --tikv-cdc-version string            Fix the version of tikv-cdc and no longer follows the cluster version.
