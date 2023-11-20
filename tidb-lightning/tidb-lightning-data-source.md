@@ -43,7 +43,7 @@ RedHat-Like Linux 可以使用以下的 `rename` 命令对 `data-source-dir` 目
 ### 正则表达式在线名称替换
 
 在 [[mydumper.files]] 内使用 `pattern` 匹配文件名，将 `schema` 和 `table` 换成目标名。请参考[自定义文件匹配](/tidb-lightning/tidb-lightning-data-source.md#自定义文件匹配)。
-`pattern` 的匹配规则是 '^({schema_regrex})\.({table_regrex})\.({file_serial_regrex})\.(csv|parquet|sql)'
+数据文件 `pattern` 的匹配规则是 '^({schema_regrex})\.({table_regrex})\.({file_serial_regrex})\.(csv|parquet|sql)'
 `schema` 可以指定为 '$1' 代表第一个正则表达式 schema_regrex 取值不变，或者是一个字符串，如 'tgtdb'，代表固定的目标数据库。
 `table` 可以指定为 '$2' 代表第二个正则表达式 table_regrex 取值不变，或者是一个字符串，如 't1'，代表固定的目标表。
 `type` 可以指定为 '$3' 代表是数据文件类型，"table-schema" 代表是 schema.sql 文件，或 "schema-schema" 代表是 schema-create.sql 文件。
@@ -65,6 +65,32 @@ pattern = '^(srcdb)\.(.*?)\.(?:[0-9]+)\.(csv|parquet|sql)'
 schema = 'tgtdb'
 table = '$2'
 type = '$3'
+```
+
+如果是使用 `gzip` 方式备份的数据文件，需要对应地配置压缩格式。
+数据文件 `pattern` 的匹配规则是 '^({schema_regrex})\.({table_regrex})\.({file_serial_regrex})\.(csv|parquet|sql)\.(gz)'
+`compression` 可以指定为 '$4' 代表是压缩文件格式。
+
+```
+[mydumper]
+data-source-dir = "/some-subdir/some-database/"
+[[mydumper.files]]
+pattern = '^(srcdb)\.(.*?)-schema-create\.(sql)\.(gz)'
+schema = 'tgtdb'
+type = "schema-schema"
+compression = '$4'
+[[mydumper.files]]
+pattern = '^(srcdb)\.(.*?)-schema\.(sql)\.(gz)'
+schema = 'tgtdb'
+table = '$2'
+type = "table-schema"
+compression = '$4'
+[[mydumper.files]]
+pattern = '^(srcdb)\.(.*?)\.(?:[0-9]+)\.(sql)\.(gz)'
+schema = 'tgtdb'
+table = '$2'
+type = '$3'
+compression = '$4'
 ```
 
 ## CSV
