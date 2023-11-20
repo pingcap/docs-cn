@@ -215,7 +215,7 @@ TiDB 7.5.0 为长期支持版本 (Long-Term Support Release, LTS)。
     + Backup & Restore (BR)
   <!--**tw@hfxsd**: 2-->
         - 快照备份新增表间备份参数 `table-concurrency`，用于控制统计信息备份、数据校验等元信息的表间并发度 [48571](https://github.com/pingcap/tidb/issues/48571) @[3pointer](https://github.com/3pointer)
-        - 快照备份恢复会在遇到某些网络错误时进行重试 [48528](https://github.com/pingcap/tidb/issues/48528) @[Leavrth](https://github.com/Leavrth)
+        - 快照备份恢复在遇到某些网络错误时会进行重试 [48528](https://github.com/pingcap/tidb/issues/48528) @[Leavrth](https://github.com/Leavrth)
       <!--**tw@Oreoxmt**: 1-->
         - 快照备份恢复支持通过 AWS 会话令牌和 IAM 角色设置权限 [#39832](https://github.com/pingcap/tidb/issues/39832) @[3pointer](https://github.com/3pointer)
 
