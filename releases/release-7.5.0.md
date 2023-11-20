@@ -31,8 +31,8 @@ TiDB 7.5.0 为长期支持版本 (Long-Term Support Release, LTS)。
   </tr>
   <tr>
     <td rowspan="3">稳定性与高可用</td>
-    <td><a href="https://docs.pingcap.com/tidb/v7.5/tidb-global-sort" target="_blank">Global sort</a> optimization {/* tw@ran-huang */}</td>
-    <td>Laying the groundwork with the <a href="https://docs.pingcap.com/tidb/v7.5/tidb-distributed-execution-framework" target="_blank">distributed framework</a> in v7.2, TiDB introduces global sorting to eliminate the unnecessary I/O, CPU, and memory spikes caused from temporarily out of order data during data re-organization tasks. The global sorting will take advantage of external shared object storage (S3 in this first iteration) to store intermediary files during the job, adding flexibility and cost savings.Operations like ADD INDEX and IMPORT INTO will be faster, more resilient, more stable, more flexible, and cost less to run.</td>
+    <td>优化<a href="https://docs.pingcap.com/zh/tidb/v7.5/tidb-global-sort" target="_blank">全局排序</a> {/* tw@ran-huang */}</td>
+    <td>在 v7.2 中，TiDB 以<a href="https://docs.pingcap.com/zh/tidb/v7.5/tidb-distributed-execution-framework" target="_blank">后端任务分布式并行执行框架</a>为基础，引入全局排序，消除了数据 reorg 任务期间临时无序数据导致的不必要的 I/O、CPU 和内存峰值。全局排序利用外部对象存储（目前为 S3）来存储系统作业期间的中间文件，增强灵活性并降低成本。<code>ADD INDEX</code> 和 <code>IMPORT INTO</code> 等操作将更快速灵活、稳定可靠，且运行成本较低。</td>
   </tr>
   <tr>
     <td><a href="https://docs.pingcap.com/zh/tidb/v7.5/tidb-resource-control#管理后台任务" target="_blank">资源管控</a>支持自动管理后台任务（实验特性） {/* tw@Oreoxmt */}</td>
