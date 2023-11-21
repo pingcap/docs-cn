@@ -4787,7 +4787,8 @@ Query OK, 0 rows affected, 1 warning (0.00 sec)
 - 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：否
 - 类型：字符串
 - 默认值：`""`
-- 显示指定当前会话的任务类型，用于资源控制能识别并进行控制。如 `set @@tidb_request_source_type = "background"`。
+- 可选值：
+- 显式指定当前会话的任务类型，用于[资源管控](/tidb-resource-control.md)识别并控制。如 `SET @@tidb_request_source_type = "background"`。
 
 ### `tiflash_fastscan` <span class="version-mark">从 v6.3.0 版本开始引入</span>
 

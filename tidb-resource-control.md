@@ -366,13 +366,13 @@ Runaway Query 是指执行时间或消耗资源超出预期的查询。下面使
 - `br`：使用 [BR](/br/backup-and-restore-overview.md) 执行数据备份和恢复。目前不支持 PITR。
 - `ddl`：对于 Reorg DDL，控制批量数据回写阶段的资源使用。
 - `stats`：对应手动执行或系统自动触发的[收集统计信息](/statistics.md#统计信息的收集)任务。
-- `background`: 预留的一个任务类型，可使用 [tidb_request_source_type](/system-variables.md#tidb_request_source_type-从-v740-版本开始引入) 系统变量指定当前会话的任务类型为 `background`.
+- `background`：预留的任务类型，可使用 [`tidb_request_source_type`](/system-variables.md#tidb_request_source_type-从-v740-版本开始引入) 系统变量指定当前会话的任务类型为 `background`。
 
-默认情况下，被标记为后台任务的任务类型为`空`，此时后台任务的管理功能处于关闭状态。如需开启后台任务管理功能，你需要手动修改 `default` 资源组的后台任务类型以开启后台任务管理。后台任务类型被识别匹配后，资源控制会自动控制。具体行为为当系统资源紧张，后台任务会自动降为最低优先级，保证前台任务的执行。
+默认情况下，被标记为后台任务的任务类型为 `""`，此时后台任务的管理功能处于关闭状态。如需开启后台任务管理功能，你需要手动修改 `default` 资源组的后台任务类型以开启后台任务管理。后台任务类型被识别匹配后，资源管控会自动进行，即当系统资源紧张时，后台任务会自动降为最低优先级，保证前台任务的执行。
 
 > **注意：**
 >
-> 目前所有资源组的后台任务默认都会绑定到默认资源组 `default` 下面进行管控，可以通过 `default` 全局管控后台任务类型，还不支持将后台任务绑定到其他资源组。
+> 目前，所有资源组的后台任务默认都会绑定到默认资源组 `default` 下进行管控，你可以通过 `default` 全局管控后台任务类型。暂不支持将后台任务绑定到其他资源组。
 
 #### 示例
 
@@ -397,7 +397,12 @@ Runaway Query 是指执行时间或消耗资源超出预期的查询。下面使
 4. 查看 `default` 资源组的后台任务类型。
 
     ```sql
-    mysql> select * from information_schema.resource_groups where name="default";
+    SELECT * FROM information_schema.resource_groups WHERE NAME="default";
+    ```
+
+    输出结果如下：
+
+    ```
     +---------+------------+----------+-----------+-------------+---------------------+
     | NAME    | RU_PER_SEC | PRIORITY | BURSTABLE | QUERY_LIMIT | BACKGROUND          |
     +---------+------------+----------+-----------+-------------+---------------------+
@@ -405,14 +410,14 @@ Runaway Query 是指执行时间或消耗资源超出预期的查询。下面使
     +---------+------------+----------+-----------+-------------+---------------------+
     ```
 
-5. 某些情况下，用户也希望显示将会话里面的任务标记为后台类型。使用 `tidb_request_source_type`，可以显示指定任务类型，如：
+5. 如果希望将当前会话里的任务显式标记为后台类型，你可以使用 `tidb_request_source_type` 显式指定任务类型，如：
 
     ``` sql
-    set @@tidb_request_source_type="background";
-    /* then we can add task type */
-    alter resource group default background=(task_types="background");
-    /* then run the command in this session */
-    load data infile "s3://resource-control/Lightning/test.customer.aaaa.csv"
+    SET @@tidb_request_source_type="background";
+    /* 添加 background 任务类型 */
+    ALTER RESOURCE GROUP `default` BACKGROUND=(TASK_TYPES="background");
+    /* 在当前会话中执行 LOAD DATA */
+    LOAD DATA INFILE "s3://resource-control/Lightning/test.customer.aaaa.csv"
     ```
 
 ## 关闭资源管控特性
