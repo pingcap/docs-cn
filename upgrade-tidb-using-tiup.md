@@ -205,6 +205,29 @@ tiup cluster upgrade <cluster-name> v7.4.0
 >
 > + Try to avoid creating a new clustered index table when you apply rolling updates to the clusters using TiDB Binlog.
 
+#### Specify the component version during upgrade
+
+Starting from tiup-cluster v1.14.0, you can specify certain components to a specific version during cluster upgrade. These components will remain at their fixed version in the subsequent upgrade unless you specify a different version.
+
+> **Note:**
+>
+> For components that share a version number, such as TiDB, TiKV, PD, and TiCDC, there are no complete tests to ensure that they work properly in a mixed-version deployment scenario. Ensure that you use this section only in test environments, or with the help of [technical support](/support.md).
+
+```shell
+tiup cluster upgrade -h | grep "version string"
+      --alertmanager-version string        Fix the version of alertmanager and no longer follows the cluster version.
+      --blackbox-exporter-version string   Fix the version of blackbox-exporter and no longer follows the cluster version.
+      --cdc-version string                 Fix the version of cdc and no longer follows the cluster version.
+      --ignore-version-check               Ignore checking if target version is bigger than current version.
+      --node-exporter-version string       Fix the version of node-exporter and no longer follows the cluster version.
+      --pd-version string                  Fix the version of pd and no longer follows the cluster version.
+      --tidb-dashboard-version string      Fix the version of tidb-dashboard and no longer follows the cluster version.
+      --tiflash-version string             Fix the version of tiflash and no longer follows the cluster version.
+      --tikv-cdc-version string            Fix the version of tikv-cdc and no longer follows the cluster version.
+      --tikv-version string                Fix the version of tikv and no longer follows the cluster version.
+      --tiproxy-version string             Fix the version of tiproxy and no longer follows the cluster version.
+```
+
 #### Offline upgrade
 
 1. Before the offline upgrade, you first need to stop the entire cluster.

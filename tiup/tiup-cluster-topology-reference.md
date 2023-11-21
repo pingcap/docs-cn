@@ -15,6 +15,7 @@ A topology configuration file for TiDB deployment using TiUP might contain the f
 - [global](#global): The cluster's global configuration. Some of the configuration items use the default values and you can configure them separately in each instance.
 - [monitored](#monitored): Configuration for monitoring services, namely, the blackbox_exporter and the `node_exporter`. On each machine, a `node_exporter` and a `blackbox_exporter` are deployed.
 - [server_configs](#server_configs): Components' global configuration. You can configure each component separately. If an instance has a configuration item with the same name, the instance's configuration item will take effect.
+- [component_versions](#component_versions): Component version. You can configure it when a component does not use the cluster version. This section is introduced in tiup-cluster v1.14.0.
 - [pd_servers](#pd_servers): The configuration of the PD instance. This configuration specifies the machines to which the PD component is deployed.
 - [tidb_servers](#tidb_servers): The configuration of the TiDB instance. This configuration specifies the machines to which the TiDB component is deployed.
 - [tikv_servers](#tikv_servers): The configuration of the TiKV instance. This configuration specifies the machines to which the TiKV component is deployed.
@@ -39,6 +40,8 @@ The `global` section corresponds to the cluster's global configuration and has t
 - `ssh_port`: Specifies the SSH port to connect to the target machine for operations. The default value is `22`.
 
 - `enable_tls`: Specifies whether to enable TLS for the cluster. After TLS is enabled, the generated TLS certificate must be used for connections between components or between the client and the component. The default value is `false`.
+
+- `listen_host`: Specifies the default listening IP address. If it is empty, each instance automatically sets it to `::` or `0.0.0.0` based on whether its `host` field contains `:`. This field is introduced in tiup-cluster v1.14.0. 
 
 - `deploy_dir`: The deployment directory of each component. The default value is `"deployed"`. Its application rules are as follows:
 
@@ -152,6 +155,43 @@ server_configs:
 ```
 
 The above configuration specifies the global configuration of TiDB and TiKV.
+
+### `component_versions`
+
+> **Note:**
+>
+> For components that share a version number, such as TiDB, TiKV, PD, and TiCDC, there are no complete tests to ensure that they work properly in a mixed-version deployment scenario. Ensure that you use this section only in test environments, or with the help of [technical support](/support.md).
+
+`component_versions` is used to specify the version number of a certain component. 
+
+- When `component_versions` is not configured, each component either uses the same version number as the TiDB cluster (such as PD and TiKV), or uses the latest version (such as Alertmanager). 
+- When `component_versions` is configured, the corresponding component will use the specified version, and this version will be used in subsequent cluster scaling and upgrade operations. 
+
+Make sure you only configure it when you need to use a specific version of a component. 
+
+`component_versions` contains the following fields:
+
+- `tikv`: The version of the TiKV component
+- `tiflash`: The version of the TiFlash component
+- `pd`: The version of the PD component
+- `tidb_dashboard`: The version of the standalone TiDB Dashboard component
+- `pump`: The version of the Pump component
+- `drainer`: The version of the Drainer component
+- `cdc`: The version of the CDC component
+- `kvcdc`: The version of the TiKV-CDC component
+- `tiproxy`: The version of the TiProxy component
+- `prometheus`: The version of the Prometheus component
+- `grafana`: The version of the Grafana component
+- `alertmanager`: The version of the Alertmanager component
+
+The following is an example configuration for `component_versions`:
+
+```yaml
+component_versions:
+  kvcdc: "v1.1.1"
+```
+
+The preceding configuration specifies the version number of TiKV-CDC to be `v1.1.1`.
 
 ### `pd_servers`
 
