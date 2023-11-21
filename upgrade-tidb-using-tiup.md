@@ -196,7 +196,11 @@ tiup cluster upgrade <cluster-name> v7.4.0
 
 #### 升级时指定组件版本
 
-从 tiup-cluster v1.14.0 开始，支持在升级集群的时候指定其中某些组件到特定版本。指定的这些组件会被固定到指定的版本，在下次升级中不会改变版本号，除非再次指定版本。
+从 tiup-cluster v1.14.0 开始，支持在升级集群的时候指定其中某些组件到特定版本。指定的组件在后续升级中保持固定版本，除非重新指定版本。
+
+> **注意：**
+>
+> 对于 TiDB、TiKV、PD、TiCDC 等共用版本号的组件，尚未有完整的测试保证它们在跨版本混合部署的场景下能正常工作。请仅在测试场景或在[获取支持](/support.md)的情况下使用此配置。
 
 ```shell
 tiup cluster upgrade -h | grep "version string"
