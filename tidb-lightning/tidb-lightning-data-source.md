@@ -49,7 +49,7 @@ rename srcdb. tgtdb. *.sql
 - `table` 可以指定为 '$2'，代表第二个正则表达式 `table_regrex` 取值不变，或者是一个字符串，如 `t1`，代表固定的目标表。
 - `type` 可以指定为 '$3'，代表是数据文件类型，`"table-schema"` 代表是 `schema.sql` 文件，或 `"schema-schema"` 代表是 `schema-create.sql` 文件。
 
-```
+```toml
 [mydumper]
 data-source-dir = "/some-subdir/some-database/"
 [[mydumper.files]]
@@ -70,7 +70,7 @@ type = '$3'
 
 如果是使用 `gzip` 方式备份的数据文件，需要对应地配置压缩格式。数据文件 `pattern` 的匹配规则是 '^({schema_regrex})\.({table_regrex})\.({file_serial_regrex})\.(csv|parquet|sql)\.(gz)'。`compression` 可以指定为 '$4' 代表是压缩文件格式。
 
-```
+```toml
 [mydumper]
 data-source-dir = "/some-subdir/some-database/"
 [[mydumper.files]]
