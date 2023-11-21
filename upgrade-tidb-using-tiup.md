@@ -198,8 +198,6 @@ tiup cluster upgrade <cluster-name> v7.4.0
 
 从 tiup-cluster v1.14.0 开始，支持在升级集群的时候指定其中某些组件到特定版本。指定的这些组件会被固定到指定的版本，在下次升级中不会改变版本号，除非再次指定版本。
 
-{{< copyable "shell-regular" >}}
-
 ```shell
 tiup cluster upgrade -h | grep "version string"
       --alertmanager-version string        Fix the version of alertmanager and no longer follows the cluster version.
