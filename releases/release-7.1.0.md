@@ -74,7 +74,7 @@ Compared with the previous LTS 6.5.0, 7.1.0 not only includes new features, impr
     <td>TiDB supports LDAP authentication, which is compatible with <a href="https://dev.mysql.com/doc/refman/8.0/en/ldap-pluggable-authentication.html" target="_blank">MySQL 8.0</a>.</td>
   </tr>
   <tr>
-    <td> Audit log enhancement (<a href="https://www.pingcap.com/tidb-enterprise" target="_blank">Enterprise Edition</a> only)</td>
+    <td><a href="https://static.pingcap.com/files/2023/09/18204824/TiDB-Database-Auditing-User-Guide1.pdf" target="_blank">Audit log enhancement</a> (<a href="https://www.pingcap.com/tidb-enterprise" target="_blank">Enterprise Edition</a> only)</td>
     <td>TiDB Enterprise Edition enhances the database auditing feature. It significantly improves the system auditing capacity by providing more fine-grained event filtering controls, more user-friendly filter settings, a new file output format in JSON, and lifecycle management of audit logs.</td>
   </tr>
 </tbody>
@@ -283,7 +283,7 @@ Compared with the previous LTS 6.5.0, 7.1.0 not only includes new features, impr
 
   Database auditing is an important feature in TiDB Enterprise Edition. This feature provides a powerful monitoring and auditing tool for enterprises to ensure data security and compliance. It can help enterprise managers in tracking the source and impact of database operations to prevent illegal data theft or tampering. Furthermore, database auditing can also help enterprises meet various regulatory and compliance requirements, ensuring legal and ethical compliance. This feature has important application value for enterprise information security.
 
-    This feature is included in TiDB Enterprise Edition. To use this feature and its documentation, navigate to the [TiDB Enterprise](https://www.pingcap.com/tidb-enterprise) page.
+    For more information, see [user guide](https://static.pingcap.com/files/2023/09/18204824/TiDB-Database-Auditing-User-Guide1.pdf). This feature is included in TiDB Enterprise Edition. To use this feature, navigate to the [TiDB Enterprise](https://www.pingcap.com/tidb-enterprise) page to get TiDB Enterprise Edition.
 
 ## Compatibility changes
 
