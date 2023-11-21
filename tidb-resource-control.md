@@ -366,8 +366,7 @@ Runaway Query 是指执行时间或消耗资源超出预期的查询。下面使
 - `br`：使用 [BR](/br/backup-and-restore-overview.md) 执行数据备份和恢复。目前不支持 PITR。
 - `ddl`：对于 Reorg DDL，控制批量数据回写阶段的资源使用。
 - `stats`：对应手动执行或系统自动触发的[收集统计信息](/statistics.md#统计信息的收集)任务。
-- `background`: 预留的一个任务类型，可使用 [tidb_request_source_type](/system-variables.md#tidb_request_source_type) 系统变量指定当前会话的任务类型为 `background`.
-
+- `background`: 预留的一个任务类型，可使用 [tidb_request_source_type](/system-variables.md#tidb_request_source_type-从-v740-版本开始引入) 系统变量指定当前会话的任务类型为 `background`.
 
 默认情况下，被标记为后台任务的任务类型为`空`，此时后台任务的管理功能处于关闭状态。如需开启后台任务管理功能，你需要手动修改 `default` 资源组的后台任务类型以开启后台任务管理。后台任务类型被识别匹配后，资源控制会自动控制。具体行为为当系统资源紧张，后台任务会自动降为最低优先级，保证前台任务的执行。
 
@@ -394,6 +393,7 @@ Runaway Query 是指执行时间或消耗资源超出预期的查询。下面使
     ```sql
     ALTER RESOURCE GROUP `default` BACKGROUND=(TASK_TYPES="");
     ```
+
 4. 查看 `default` 资源组的后台任务类型。
 
     ```sql
@@ -404,6 +404,7 @@ Runaway Query 是指执行时间或消耗资源超出预期的查询。下面使
     | default | UNLIMITED  | MEDIUM   | YES       | NULL        | TASK_TYPES='br,ddl' |
     +---------+------------+----------+-----------+-------------+---------------------+
     ```
+
 5. 某些情况下，用户也希望显示将会话里面的任务标记为后台类型。使用 `tidb_request_source_type`，可以显示指定任务类型，如：
 
     ``` sql
