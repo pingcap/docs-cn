@@ -41,11 +41,13 @@ rename srcdb. tgtdb. *.sql
 
 ### 使用正则表达式在线替换名称
 
-在 [[mydumper.files]] 内使用 `pattern` 匹配文件名，将 `schema` 和 `table` 换成目标名。请参考[自定义文件匹配](/tidb-lightning/tidb-lightning-data-source.md#自定义文件匹配)。
+要使用正则表达式在线替换名称，你需要在 [[mydumper.files]] 内使用 `pattern` 匹配文件名，将 `schema` 和 `table` 换成目标名。请参考[自定义文件匹配](#自定义文件匹配)。
 
-- 数据文件 `pattern` 的匹配规则是 '^({schema_regrex})\.({table_regrex})\.({file_serial_regrex})\.(csv|parquet|sql)'
-- `schema` 可以指定为 '$1'，代表第一个正则表达式 `schema_regrex` 取值不变，或者是一个字符串，如 `tgtdb`，代表固定的目标数据库。
-- `table` 可以指定为 '$2'，代表第二个正则表达式 `table_regrex` 取值不变，或者是一个字符串，如 `t1`，代表固定的目标表。
+下面是使用正则表达式在线替换名称的示例。其中：
+
+- 数据文件 `pattern` 的匹配规则是 '^({schema_regrex})\.({table_regrex})\.({file_serial_regrex})\.(csv|parquet|sql)'。
+- `schema` 可以指定为 '$1'，代表第一个正则表达式 `schema_regrex` 取值不变，或者是一个字符串，如 'tgtdb'，代表固定的目标数据库。
+- `table` 可以指定为 '$2'，代表第二个正则表达式 `table_regrex` 取值不变，或者是一个字符串，如 't1'，代表固定的目标表。
 - `type` 可以指定为 '$3'，代表是数据文件类型，`"table-schema"` 代表是 `schema.sql` 文件，或 `"schema-schema"` 代表是 `schema-create.sql` 文件。
 
 ```toml
