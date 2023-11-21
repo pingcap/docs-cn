@@ -63,7 +63,7 @@ Query OK, 0 rows affected (0.30 sec)
 
 ## See also
 
-* [SHOW INDEX](/sql-statements/sql-statement-show-index.md)
+* [SHOW INDEXES](/sql-statements/sql-statement-show-indexes.md)
 * [CREATE INDEX](/sql-statements/sql-statement-create-index.md)
 * [ADD INDEX](/sql-statements/sql-statement-add-index.md)
 * [RENAME INDEX](/sql-statements/sql-statement-rename-index.md)

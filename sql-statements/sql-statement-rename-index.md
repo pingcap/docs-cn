@@ -59,5 +59,5 @@ The `RENAME INDEX` statement in TiDB is fully compatible with MySQL. If you find
 * [SHOW CREATE TABLE](/sql-statements/sql-statement-show-create-table.md)
 * [CREATE INDEX](/sql-statements/sql-statement-create-index.md)
 * [DROP INDEX](/sql-statements/sql-statement-drop-index.md)
-* [SHOW INDEX](/sql-statements/sql-statement-show-index.md)
+* [SHOW INDEXES](/sql-statements/sql-statement-show-indexes.md)
 * [ALTER INDEX](/sql-statements/sql-statement-alter-index.md)
