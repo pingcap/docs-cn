@@ -128,7 +128,7 @@ server_configs:
 
 `component_versions` 用于指定某个组件的版本号。
 
-- 如果没有配置 `component_versions`，各个组件要么使用和 TiDB 集群一致的版本号（如 PD、TiKV），要么使用最新版本号（如 Alertmanager）。
+- 如果没有配置 `component_versions`，各个组件默认使用与 TiDB 集群相同的版本号（如 PD、TiKV），或使用组件的最新版本号（如 Alertmanager）。
 - 如果配置了该字段，对应的组件将会固定使用对应的版本，并且在后续的扩容和升级集群操作中都使用该版本。
 
 请仅在需要使用某个固定组件的版本号时配置该参数。
