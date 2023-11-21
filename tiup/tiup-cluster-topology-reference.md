@@ -37,7 +37,7 @@ title: 通过 TiUP 部署 TiDB 集群的拓扑文件配置
 - `group`：自动创建用户时指定用户所属的用户组，默认和 `<user>` 字段值相同，若指定的组不存在，则自动创建
 - `ssh_port`：指定连接目标机器进行操作的时候使用的 SSH 端口，默认值：22
 - `enable_tls`：是否对集群启用 TLS。启用之后，组件之间、客户端与组件之间都必须使用生成的 TLS 证书进行连接，默认值：false
-- `listen_host`：默认使用的 listen host。如果为空，每个实例会通过判断自身的 `Host` 字段是否包含 `:` 来自动设置成 `::` 或者 `0.0.0.0`。tiup-cluster v1.14.0 引入该配置
+- `listen_host`：默认使用的监听 IP。如果为空，每个实例会根据其 `host` 字段是否包含 `:` 来自动设置为 `::` 或 `0.0.0.0`。tiup-cluster v1.14.0 引入该配置
 - `deploy_dir`：每个组件的部署目录，默认值："deploy"。其应用规则如下：
     - 如果在实例级别配置了绝对路径的 `deploy_dir`，那么实际部署目录为该实例设定的 `deploy_dir`
     - 对于每个实例，如果用户未配置 `deploy_dir`，其默认值为相对路径 `<component-name>-<component-port>`
