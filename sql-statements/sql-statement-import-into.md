@@ -7,10 +7,6 @@ summary: TiDB 数据库中 IMPORT INTO 的使用概况。
 
 `IMPORT INTO` 语句使用 TiDB Lightning 的[物理导入模式](/tidb-lightning/tidb-lightning-physical-import-mode.md)，用于将 `CSV`、`SQL`、`PARQUET` 等格式的数据导入到 TiDB 的一张空表中。
 
-> **警告：**
->
-> 目前该语句为实验特性，不建议在生产环境中使用。
-
 `IMPORT INTO` 支持导入存储在 Amazon S3、GCS、Azure Blob Storage 和 TiDB 本地的数据文件。
 
 - 对于存储在 S3、GCS 或 Azure Blob Storage 的数据文件，`IMPORT INTO` 支持通过[后端任务分布式框架](/tidb-distributed-execution-framework.md)运行。
@@ -22,7 +18,7 @@ summary: TiDB 数据库中 IMPORT INTO 的使用概况。
 
 ## 使用限制
 
-- 目前该语句支持导入 1 TiB 以内的数据。
+- 目前该语句支持导入 10 TiB 以内的数据。
 - 只支持导入数据到数据库中已有的空表。
 - 不支持事务，也无法回滚。在显式事务 (`BEGIN`/`END`) 中执行会报错。
 - 在导入完成前会阻塞当前连接，如果需要异步执行，可以添加 `DETACHED` 选项。
@@ -33,6 +29,9 @@ summary: TiDB 数据库中 IMPORT INTO 的使用概况。
 - TiDB [临时目录](/tidb-configuration-file.md#temp-dir-从-v630-版本开始引入)至少需要有 90 GiB 的可用空间。建议预留大于等于所需导入数据的存储空间，以保证最佳导入性能。
 - 一个导入任务只支持导入数据到一张目标表中。如需导入数据到多张目标表，需要在一张目标表导入完成后，再新建一个任务导入下一张目标表。
 - TiDB 集群升级期间不支持使用该语句。
+- 当使用[全局排序](/tidb-global-sort.md)导入数据时，单行数据的总长度不能超过 32 MiB。
+- 当使用全局排序导入数据时，如果 TiDB 集群在导入任务尚未完成时被删除了，Amazon S3 上可能会残留用于全局排序的临时数据。该场景需要手动删除这些数据，以免增加 S3 存储成本。
+- 所需导入的数据不能存在主键或非空唯一索引冲突的记录，否则会导致任务失败。
 
 ## 导入前准备
 
@@ -131,7 +130,7 @@ SET 表达式左侧只能引用 `ColumnNameOrUserVarList` 中没有的列名。�
 | `MAX_WRITE_SPEED='<string>'` | 所有格式 | 控制写入到单个 TiKV 的速度，默认无速度限制。例如设置为 `1MiB`，则限制写入速度为 1 MiB/s。|
 | `CHECKSUM_TABLE='<string>'` | 所有格式 | 配置是否在导入完成后对目标表是否执行 CHECKSUM 检查来验证导入的完整性。可选的配置项为 `"required"`（默认）、`"optional"` 和 `"off"`。`"required"` 表示在导入完成后执行 CHECKSUM 检查，如果 CHECKSUM 检查失败，则会报错退出。`"optional"` 表示在导入完成后执行 CHECKSUM 检查，如果报错，会输出一条警告日志并忽略报错。`"off"` 表示导入结束后不执行 CHECKSUM 检查。 |
 | `DETACHED` | 所有格式 | 该参数用于控制 `IMPORT INTO` 是否异步执行。开启该参数后，执行 `IMPORT INTO` 会立即返回该导入任务的 `Job_ID` 等信息，且该任务会在后台异步执行。 |
-| `CLOUD_STORAGE_URI` | 所有格式 | 指定编码后的 KV 数据[全局排序](#全局排序)的目标存储地址。未指定该参数时，`IMPORT INTO` 会根据系统变量 [`tidb_cloud_storage_uri`](/system-variables.md#tidb_cloud_storage_uri-从-v740-版本开始引入) 的值来确定是否使用全局排序，如果该系统变量指定了目标存储地址，就使用指定的地址进行全局排序。当指定该参数时，如果参数值不为空，`IMPORT INTO` 会使用该参数值作为目标存储地址；如果参数值为空，则表示强制使用本地排序。目前目标存储地址仅支持 Amazon S3，具体 Amazon S3 URI 格式配置，请参见 [Amazon S3 URI 格式](/external-storage-uri.md#amazon-s3-uri-格式)。注意当使用该功能时，所有 TiDB 节点都需要有目标 Amazon S3 bucket 的读写权限。 |
+| `CLOUD_STORAGE_URI` | 所有格式 | 指定编码后的 KV 数据[全局排序](/tidb-global-sort.md)的目标存储地址。未指定该参数时，`IMPORT INTO` 会根据系统变量 [`tidb_cloud_storage_uri`](/system-variables.md#tidb_cloud_storage_uri-从-v740-版本开始引入) 的值来确定是否使用全局排序，如果该系统变量指定了目标存储地址，就使用指定的地址进行全局排序。当指定该参数时，如果参数值不为空，`IMPORT INTO` 会使用该参数值作为目标存储地址；如果参数值为空，则表示强制使用本地排序。目前目标存储地址仅支持 Amazon S3，具体 Amazon S3 URI 格式配置，请参见 [Amazon S3 URI 格式](/external-storage-uri.md#amazon-s3-uri-格式)。注意当使用该功能时，所有 TiDB 节点都需要有目标 Amazon S3 bucket 的读写权限。 |
 
 ## 压缩文件
 
@@ -149,6 +148,10 @@ SET 表达式左侧只能引用 `ColumnNameOrUserVarList` 中没有的列名。�
 
 ## 全局排序
 
+> **警告：**
+>
+> 全局排序为实验特性，不建议在生产环境中使用。
+
 `IMPORT INTO` 会将源数据文件的导入拆分到多个子任务中，各个子任务独立进行编码排序并导入。如果各个子任务编码后的 KV (TiDB 将数据编码为 KV 的方式，参考 [TiDB 数据库的计算](/tidb-computing.md)) range 重叠过多，导入时 TiKV 需要不断地进行 compaction，会降低导入的性能和稳定性。
 
 在以下情况中，可能存在较多的 KV range 重叠：
@@ -157,7 +160,14 @@ SET 表达式左侧只能引用 `ColumnNameOrUserVarList` 中没有的列名。�
     - 说明：`IMPORT INTO` 会按数据文件遍历顺序来划分子任务，一般遍历文件按文件名字典序来排列。
 - 如果目标表索引较多，或索引列值在数据文件中较分散，那么各个子任务编码后产生的索引 KV 也会存在重叠。
 
-当开启[后端任务分布式框架](/tidb-distributed-execution-framework.md) 时，可通过 `IMPORT INTO` 的 `CLOUD_STORAGE_URI` 参数，或者使用系统变量 [`tidb_cloud_storage_uri`](/system-variables.md#tidb_cloud_storage_uri-从-v740-版本开始引入) 指定编码后的 KV 数据的目标存储地址来开启全局排序。注意目前仅支持使用 S3 作为全局排序存储地址。开启全局排序后，`IMPORT INTO` 会将编码后的 KV 数据写入云存储，并在云存储进行全局排序，之后再将全局排序后的索引数据和表数据并行导入到 TiKV，从而避免因 KV 重叠导致的问题，以提升导入的稳定性。
+当开启[后端任务分布式框架](/tidb-distributed-execution-framework.md) 时，可通过 `IMPORT INTO` 的 `CLOUD_STORAGE_URI` 参数，或者使用系统变量 [`tidb_cloud_storage_uri`](/system-variables.md#tidb_cloud_storage_uri-从-v740-版本开始引入) 指定编码后的 KV 数据的目标存储地址来开启[全局排序](/tidb-global-sort.md)。注意目前仅支持使用 S3 作为全局排序存储地址。开启全局排序后，`IMPORT INTO` 会将编码后的 KV 数据写入云存储，并在云存储进行全局排序，之后再将全局排序后的索引数据和表数据并行导入到 TiKV，从而避免因 KV 重叠导致的问题，以提升导入的稳定性。
+
+全局排序对内存资源的使用较高，在数据导入开始前，建议先设置 [`tidb_server_memory_limit_gc_trigger`](/system-variables.md#tidb_server_memory_limit_gc_trigger-从-v640-版本开始引入) 和 [`tidb_server_memory_limit`](/system-variables.md#tidb_server_memory_limit-从-v640-版本开始引入) 两个变量，避免频繁触发 golang GC 从而影响导入效率：
+
+```sql
+SET GLOBAL tidb_server_memory_limit_gc_trigger=0.99;
+SET GLOBAL tidb_server_memory_limit='88%';
+```
 
 > **注意：**
 >

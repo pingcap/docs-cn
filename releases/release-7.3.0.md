@@ -216,7 +216,7 @@ v7.3.0 引入了以下主要功能。[功能详情](#功能详情)中列出的�
 * TiDB
 
     - 统计信息的[快速分析](/system-variables.md#tidb_enable_fast_analyze)(实验特性)计划在 v7.5.0 中废弃。
-    - 统计信息的[增量收集](/statistics.md#增量收集)(实验特性)计划在 v7.5.0 中废弃。
+    - 统计信息的[增量收集](https://docs.pingcap.com/zh/tidb/v7.3/statistics#增量收集)(实验特性)计划在 v7.5.0 中废弃。
 
 ## 改进提升
 

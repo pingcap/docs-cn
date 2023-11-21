@@ -67,7 +67,6 @@ backend = "local"
 
 - TiDB Lightning 版本 ≥ 4.0.3。
 - TiDB 集群版本 ≥ v4.0.0。
-- 如果目标 TiDB 集群是 v3.x 或以下的版本，需要使用 Importer-backend 来完成数据的导入。在这个模式下，`tidb-lightning` 需要将解析的键值对通过 gRPC 发送给 `tikv-importer` 并由 `tikv-importer` 完成数据的导入。
 
 ### 使用限制
 
