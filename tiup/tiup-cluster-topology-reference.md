@@ -15,7 +15,7 @@ title: 通过 TiUP 部署 TiDB 集群的拓扑文件配置
 - [global](/tiup/tiup-cluster-topology-reference.md#global)：集群全局配置，其中一些是集群的默认值，可以在实例里面单独配置
 - [monitored](/tiup/tiup-cluster-topology-reference.md#monitored)：监控服务配置，即 blackbox exporter 和 node exporter，每台机器上都会部署一个 node exporter 和一个 blackbox exporter
 - [server_configs](/tiup/tiup-cluster-topology-reference.md#server_configs)：组件全局配置，可单独针对每个组件配置，若在实例中存在同名配置项，那么以实例中配置的为准
-- [component_versions](/tiup/tiup-cluster-topology-reference.md#component_versions)：组件版本号，当有组件使用和集群不一致的版本号时使用。tiup-cluster v1.14.0 引入该配置
+- [component_versions](/tiup/tiup-cluster-topology-reference.md#component_versions)：组件版本号，当某个组件需要使用与集群不一致的版本时使用此配置。tiup-cluster v1.14.0 引入该配置
 - [pd_servers](/tiup/tiup-cluster-topology-reference.md#pd_servers)：PD 实例的配置，用来指定 PD 组件部署到哪些机器上
 - [tidb_servers](/tiup/tiup-cluster-topology-reference.md#tidb_servers)：TiDB 实例的配置，用来指定 TiDB 组件部署到哪些机器上
 - [tikv_servers](/tiup/tiup-cluster-topology-reference.md#tikv_servers)：TiKV 实例的配置，用来指定 TiKV 组件部署到哪些机器上
