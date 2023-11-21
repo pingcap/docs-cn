@@ -88,7 +88,7 @@ TiDB 支持部署和运行在 Intel x86-64 架构的 64 位通用硬件服务器
 
 | **组件** | **CPU** | **内存** | **本地存储** | **网络** | **实例数量(最低要求)** |
 | --- | --- | --- | --- | --- | --- |
-| TiDB | 8 核+ | 16 GB+ | 无特殊要求 | 千兆网卡 | 1（可与 PD 同机器） |
+| TiDB | 8 核+ | 16 GB+ | [磁盘空间要求](#磁盘空间要求) | 千兆网卡 | 1（可与 PD 同机器） |
 | PD | 4 核+ | 8 GB+ | SAS, 200 GB+ | 千兆网卡 | 1（可与 TiDB 同机器） |
 | TiKV | 8 核+ | 32 GB+ | SSD, 200 GB+ | 千兆网卡 | 3 |
 | TiFlash | 32 核+ | 64 GB+ | SSD, 200 GB+ | 千兆网卡 | 1 |
@@ -100,7 +100,6 @@ TiDB 支持部署和运行在 Intel x86-64 架构的 64 位通用硬件服务器
 > - 如进行性能相关的测试，避免采用低性能存储和网络硬件配置，防止对测试结果的正确性产生干扰。
 > - TiKV 的 SSD 盘推荐使用 NVME 接口以保证读写更快。
 > - 如果仅验证功能，建议使用 [TiDB 数据库快速上手指南](/quick-start-with-tidb.md)进行单机功能测试。
-> - TiDB 对于磁盘的使用以存放日志为主，因此在测试环境中对于磁盘类型和容量并无特殊要求。
 > - 从 v6.3.0 开始，在 Linux AMD64 架构的硬件平台部署 TiFlash 时，CPU 必须支持 AVX2 指令集。确保命令 `cat /proc/cpuinfo | grep avx2` 有输出。而在 Linux ARM64 架构的硬件平台部署 TiFlash 时，CPU 必须支持 ARMv8 架构。确保命令 `cat /proc/cpuinfo | grep 'crc32' | grep 'asimd'` 有输出。通过使用向量扩展指令集，TiFlash 的向量化引擎能提供更好的性能。
 
 ### 生产环境
@@ -165,7 +164,7 @@ TiDB 作为开源一栈式实时 HTAP 数据库，其正常运行需要网络环
 
 | 组件 | 磁盘空间要求 | 健康水位使用率 |
 | :-- | :-- | :-- |
-| TiDB | <ul><li>日志盘建议最少预留 30 GB。</li> <li>v6.5.0 及以上版本默认启用了 Fast Online DDL 对添加索引等 DDL 操作进行加速（通过变量 [`tidb_ddl_enable_fast_reorg`](/system-variables.md#tidb_ddl_enable_fast_reorg-从-v630-版本开始引入) 控制）。如果业务中可能存在针对大对象的 DDL 操作，推荐为 TiDB 准备额外的 SSD 磁盘空间（建议 100 GB+）。配置方式详见[设置 TiDB 节点的临时空间](/check-before-deployment.md#设置-tidb-节点的临时空间推荐)。</li></ul>| 低于 90% |
+| TiDB | <ul><li>日志盘建议最少预留 30 GB。</li> <li>v6.5.0 及以上版本默认启用了 Fast Online DDL 对添加索引等 DDL 操作进行加速（通过变量 [`tidb_ddl_enable_fast_reorg`](/system-variables.md#tidb_ddl_enable_fast_reorg-从-v630-版本开始引入) 控制）。如果业务中可能存在针对大对象的 DDL 操作，或需要使用 [<code>IMPORT INTO</code>](/sql-statements/sql-statement-import-into.md) SQL 语句导入数据，推荐为 TiDB 准备额外的 SSD 磁盘空间（建议 100 GB+）。配置方式详见[设置 TiDB 节点的临时空间](/check-before-deployment.md#设置-tidb-节点的临时空间推荐)。</li></ul>| 低于 90% |
 | PD | 数据盘和日志盘建议最少各预留 20 GB | 低于 90% |
 | TiKV | 数据盘和日志盘建议最少各预留 100 GB | 低于 80% |
 | TiFlash | 数据盘建议最少预留 100 GB，日志盘建议最少预留 30 GB | 低于 80% |
