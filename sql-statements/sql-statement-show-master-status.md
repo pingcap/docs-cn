@@ -29,6 +29,8 @@ SHOW MASTER STATUS;
 
 The output of `SHOW MASTER STATUS` is designed to match MySQL. However, the execution results are different in that the MySQL result is the binlog location information and the TiDB result is the latest TSO information.
 
+The `SHOW BINARY LOG STATUS` statement was added in TiDB as an alias for `SHOW MASTER STATUS`, which has been deprecated in MySQL 8.2.0 and newer versions. 
+
 ## See also
 
 <CustomContent platform="tidb">
