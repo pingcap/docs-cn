@@ -133,7 +133,7 @@ server_configs:
 
 请仅在需要使用某个固定组件的版本号时配置该参数。
 
-主要包含以下字段：
+`component_versions` 区块主要包含以下字段：
 
 - `tikv`：TiKV 组件的版本
 - `tiflash`：TiFlash 组件的版本
