@@ -28,7 +28,7 @@ TiDB Lightning 尽量并行处理数据，由于文件必须顺序读取，所�
 
 ## 表库重命名
 
-TiDB Lightning 运行时按照文件的命令规则导入到对应的表库位置。如果数据库和表名的位置发生变化，可以重命名文件，然后再导入，或者使用正则表达式在线替换对象名称后再导入。
+TiDB Lightning 运行时按照文件的命令规则导入到对应的表库位置。如果数据库和表名的位置发生变化，可以重命名文件，然后再导入，或者使用正则表达式在线替换对象名称。
 
 ### 批量重命名文件
 
@@ -70,7 +70,7 @@ table = '$2'
 type = '$3'
 ```
 
-如果是使用 `gzip` 方式备份的数据文件，需要对应地配置压缩格式。数据文件 `pattern` 的匹配规则是 '^({schema_regrex})\.({table_regrex})\.({file_serial_regrex})\.(csv|parquet|sql)\.(gz)'。`compression` 可以指定为 '$4' 代表是压缩文件格式。
+如果是使用 `gzip` 方式备份的数据文件，需要对应地配置压缩格式。数据文件 `pattern` 的匹配规则是 '^({schema_regrex})\.({table_regrex})\.({file_serial_regrex})\.(csv|parquet|sql)\.(gz)'。`compression` 可以指定为 '$4' 代表是压缩文件格式。示例如下：
 
 ```toml
 [mydumper]
