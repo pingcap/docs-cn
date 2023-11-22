@@ -23,6 +23,7 @@ aliases: ['/docs-cn/dev/upgrade-tidb-using-tiup/','/docs-cn/dev/how-to/upgrade/u
 > **注意：**
 >
 > - 如果原集群是 3.0 或 3.1 或更早的版本，不支持直接升级到 v7.5.0 及后续修订版本。你需要先从早期版本升级到 4.0 后，再从 4.0 升级到 v7.5.0 及后续修订版本。
+> - 如果原集群是 6.2 之前的版本，升级到 6.2 及以上版本时，部分场景会遇到升级卡住的情况，你可以参考[如何解决升级卡住的问题](#42-升级到-v620-及以上版本时如何解决升级卡住的问题)。
 > - 配置参数 [`server-version`](/tidb-configuration-file.md#server-version) 的值会被 TiDB 节点用于验证当前 TiDB 的版本。因此在进行 TiDB 集群升级前，请将 `server-version` 的值设置为空或者当前 TiDB 真实的版本值，避免出现非预期行为。
 
 ## 1. 升级兼容性说明
@@ -194,6 +195,29 @@ tiup cluster upgrade <cluster-name> v7.5.0
 >   3. reload 整个集群：`tiup cluster reload <cluster-name>`。此时，TiFlash 也会正常启动，无需额外操作。
 > - 在对使用 TiDB Binlog 的集群进行滚动升级过程中，请避免新创建聚簇索引表。
 
+#### 升级时指定组件版本
+
+从 tiup-cluster v1.14.0 开始，支持在升级集群的时候指定其中某些组件到特定版本。指定的组件在后续升级中保持固定版本，除非重新指定版本。
+
+> **注意：**
+>
+> 对于 TiDB、TiKV、PD、TiCDC 等共用版本号的组件，尚未有完整的测试保证它们在跨版本混合部署的场景下能正常工作。请仅在测试场景或在[获取支持](/support.md)的情况下使用此配置。
+
+```shell
+tiup cluster upgrade -h | grep "version string"
+      --alertmanager-version string        Fix the version of alertmanager and no longer follows the cluster version.
+      --blackbox-exporter-version string   Fix the version of blackbox-exporter and no longer follows the cluster version.
+      --cdc-version string                 Fix the version of cdc and no longer follows the cluster version.
+      --ignore-version-check               Ignore checking if target version is bigger than current version.
+      --node-exporter-version string       Fix the version of node-exporter and no longer follows the cluster version.
+      --pd-version string                  Fix the version of pd and no longer follows the cluster version.
+      --tidb-dashboard-version string      Fix the version of tidb-dashboard and no longer follows the cluster version.
+      --tiflash-version string             Fix the version of tiflash and no longer follows the cluster version.
+      --tikv-cdc-version string            Fix the version of tikv-cdc and no longer follows the cluster version.
+      --tikv-version string                Fix the version of tikv and no longer follows the cluster version.
+      --tiproxy-version string             Fix the version of tiproxy and no longer follows the cluster version.
+```
+
 #### 停机升级
 
 在停机升级前，首先需要将整个集群关停。
@@ -262,7 +286,31 @@ Cluster version:    v7.5.0
     tiup cluster replay <audit-id>
     ```
 
-### 4.2 升级过程中 evict leader 等待时间过长，如何跳过该步骤快速升级
+### 4.2 升级到 v6.2.0 及以上版本时，如何解决升级卡住的问题
+
+从 v6.2.0 开始，TiDB 默认开启[并发 DDL 框架](/ddl-introduction.md#tidb-在线-ddl-异步变更的原理)执行并发 DDL。该框架改变了 DDL 作业存储方式，由 KV 队列变为表队列。这一变化可能会导致部分升级场景卡住。下面是一些会触发该问题的场景及解决方案：
+
+- 加载插件导致的卡住
+
+    升级过程中加载部分插件时需要执行 DDL 语句，此时会卡住升级。
+
+    **解决方案**：升级过程中避免加载插件。待升级完成后再执行插件加载。
+
+- 使用 `kill -9` 命令停机升级导致的卡住
+
+    - 预防措施：避免使用 `kill -9` 命令停机升级。如需使用，应在 2 分钟后再启动新版本 TiDB 节点。
+    - 如果升级已经被卡住：重启受影响的 TiDB 节点。如果问题刚发生，建议等待 2 分钟后再重启。
+
+- DDL Owner 变更导致的卡住
+
+    在多 TiDB 实例场景升级时，网络或机器故障可能引起 DDL Owner 变更。如果此时存在未完成的升级阶段 DDL 语句，升级可能会卡住。
+
+    **解决方案**：
+
+    1. 先 Kill 卡住的 TiDB 节点（避免使用 `kill -9`）。
+    2. 重新启动新版本 TiDB 节点。
+
+### 4.3 升级过程中 evict leader 等待时间过长，如何跳过该步骤快速升级
 
 可以指定 `--force`，升级时会跳过 `PD transfer leader` 和 `TiKV evict leader` 过程，直接重启并升级版本，对线上运行的集群性能影响较大。命令如下，其中 `<version>` 为升级的目标版本，例如 `v7.5.0`：
 
@@ -272,7 +320,7 @@ Cluster version:    v7.5.0
 tiup cluster upgrade <cluster-name> <version> --force
 ```
 
-### 4.3 升级完成后，如何更新 pd-ctl 等周边工具版本
+### 4.4 升级完成后，如何更新 pd-ctl 等周边工具版本
 
 可通过 TiUP 安装对应版本的 `ctl` 组件来更新相关工具版本：
 
