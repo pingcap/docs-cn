@@ -220,7 +220,7 @@ sasl-oauth-grant-type = "client_credentials"
 sasl-oauth-audience="kafka"
 
 # 以下配置仅在选用 avro 作为协议，并且使用 AWS Glue Schema Registry 时需要配置
-# 请参考 "同步数据到 Kafka" 这一文档中 "使用 AWS Glue Schema Registry" 这一节内容
+# 请参考 "同步数据到 Kafka" 这一文档中 "使用 AWS Glue Schema Registry" 这一节内容：https://docs.pingcap.com/zh/tidb/dev/ticdc-sink-to-kafka#ticdc-集成-aws-glue-schema-registry
 # [sink.kafka-config.glue-schema-registry-config]
 # region="us-west-1"  
 # registry-name="ticdc-test"
