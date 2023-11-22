@@ -256,8 +256,8 @@ TiDB 7.5.0 为长期支持版本 (Long-Term Support Release, LTS)。
     - 修复优化器为减少窗口函数引入的 sort 而错误地选择了 `IndexFullScan` 的问题 [#46177](https://github.com/pingcap/tidb/issues/46177) @[qw4990](https://github.com/qw4990)
     - 修复当 CTE 被多次引用时，条件下推 CTE 导致结果错误的问题 [#47881](https://github.com/pingcap/tidb/issues/47881) @[winoros](https://github.com/winoros)
   <!--**tw@qiancai**: 2-->
-    - 修复 mysql 压缩协议无法处理超大负载 (>=16M) 的问题 [#47152](https://github.com/pingcap/tidb/issues/47152) [#47157](https://github.com/pingcap/tidb/issues/47157) [#47161](https://github.com/pingcap/tidb/issues/47161) @[dveeden](https://github.com/dveeden)
-    - 修复 TiDB 无法读取 systemd cgroup 资源限制 [#47442](https://github.com/pingcap/tidb/issues/47442) @[hawkingrei](https://github.com/hawkingrei)
+    - 修复了 MySQL 压缩协议无法处理超大负载数据 (>= 16M) 的问题 [#47152](https://github.com/pingcap/tidb/issues/47152) [#47157](https://github.com/pingcap/tidb/issues/47157) [#47161](https://github.com/pingcap/tidb/issues/47161) @[dveeden](https://github.com/dveeden)
+    - 修复 TiDB 在通过 `systemd` 启动时无法读取 `cgroup` 资源限制的问题 [#47442](https://github.com/pingcap/tidb/issues/47442) @[hawkingrei](https://github.com/hawkingrei)
 
 + TiKV
 
