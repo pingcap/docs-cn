@@ -784,13 +784,13 @@ raftstore 相关的配置项。
 
 ### `region-compact-min-redundant-rows` <span class="version-mark">从 v7.1.0 版本开始引入</span>
 
-+ 触发 RocksDB compaction 需要的冗余的 MVCC 数据行数。该配置只对 Partitioned Raft KV (storage.engine="partitioned-raft-kv") 生效。
++ 触发 RocksDB compaction 需要的冗余的 MVCC 数据行数。
 + 默认值：`50000`
 + 最小值：`0`
 
 ### `region-compact-redundant-rows-percent` <span class="version-mark">从 v7.1.0 版本开始引入</span>
 
-+ 触发 RocksDB compaction 需要的冗余的 MVCC 数据行所占比例。该配置只对 Partitioned Raft KV (`storage.engine="partitioned-raft-kv"`) 生效。
++ 触发 RocksDB compaction 需要的冗余的 MVCC 数据行所占比例。
 + 默认值：`20`
 + 最小值：`1`
 + 最大值：`100`
@@ -1023,6 +1023,11 @@ raftstore 相关的配置项。
 + 最小值：0
 + 单位：秒
 
+### `evict-cache-on-memory-ratio` <span class="version-mark">从 v7.5.0 版本开始引入</span> 
++ 当TiKV内存使用超过可用内存90%时，且raft entry cache的内存使用超过已使用内存*evict-cache-on-memory-ratio时,TiKV会evict raft entry cache。
++ 设置0表示禁用该功能。
++ 默认值: 0.1
++ 最小值: 0
 ## coprocessor
 
 Coprocessor 相关的配置项。
@@ -2337,3 +2342,16 @@ Raft Engine 相关的配置项。
 
     + 当 [`region-split-size`](#region-split-size) 小于 4 GB 时，默认值为 `0.25`。
     + 当 [`region-split-size`](#region-split-size) 大于或等于 4 GB 时，默认值为 `0.75`。
+
+
+## memory   <span class="version-mark">从 v7.5.0 版本开始引入</span>
+
+### `enable-heap-profiling`
+
++ 开启heap profiling，用来跟踪tikv内存使用
++ 默认值: true
+  
+### `profiling-sample-per-bytes`
+
++ heap profiling每次采样的数据, 以2的指数次幂向上取整
++ 默认值: 512KB
