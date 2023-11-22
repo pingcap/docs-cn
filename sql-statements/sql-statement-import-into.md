@@ -36,6 +36,7 @@ The `IMPORT INTO` statement is used to import data in formats such as `CSV`, `SQ
 - When the [Global Sort](/tidb-global-sort.md) feature is used for data import, the data size of a single row after encoding must not exceed 32 MiB.
 - When the Global Sort feature is used for data import, if the target TiDB cluster is deleted before the import task is completed, temporary data used for global sorting might remain on Amazon S3. In this case, you need to delete the residual data manually to avoid increasing S3 storage costs.
 - Ensure that the data to be imported does not contain any records with primary key or non-null unique index conflicts. Otherwise, the conflicts can result in import task failures.
+- Known issue: the `IMPORT INTO` task might fail if the PD address in the TiDB node configuration file is inconsistent with the current PD topology of the cluster. This inconsistency can arise in situations such as that PD was scaled in previously, but the TiDB configuration file was not updated accordingly or the TiDB node was not restarted after the configuration file update.
 
 ## Prerequisites for import
 
