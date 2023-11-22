@@ -233,6 +233,15 @@ sasl-oauth-grant-type = "client_credentials"
 # Kafka SASL OAUTHBEARER 认证机制中的 audience。默认值为空。在使用该认证机制时，该参数可选填。
 sasl-oauth-audience="kafka"
 
+# 以下配置仅在选用 avro 作为协议，并且使用 AWS Glue Schema Registry 时需要配置
+# 请参考 "同步数据到 Kafka" 这一文档中 "使用 AWS Glue Schema Registry" 这一节内容：https://docs.pingcap.com/zh/tidb/dev/ticdc-sink-to-kafka#ticdc-集成-aws-glue-schema-registry
+# [sink.kafka-config.glue-schema-registry-config]
+# region="us-west-1"  
+# registry-name="ticdc-test"
+# access-key="xxxx"
+# secret-access-key="xxxx"
+# tokne="xxxx"
+
 # 以下参数仅在下游为 Pulsar 时生效。
 [sink.pulsar-config]
 # 使用 token 进行 Pulsar 服务端的认证，此处为 token 的值。
