@@ -175,7 +175,9 @@ secret-access-key="xxxx"
 tokne="xxxx"
 ```
 
-在以上配置中 `region` 和 `registry-name` 是必填项。而 `access-key`、`secret-access-key` 和 `token` 是可选项。最佳实践是将 AWS 连接凭证设置为环境变量或存储在 `~/.aws/credentials` 文件中，而不是将它们设置在 changefeed的 配置文件中。有关更多信息，请参阅[AWS官方文档](https://aws.github.io/aws-sdk-go-v2/docs/configuring-sdk/#specifying-credentials)。
+在以上配置中，`region` 和 `registry-name` 是必填项，`access-key`、`secret-access-key` 和 `token` 是可选项。最佳实践是将 AWS 连接凭证设置为环境变量或存储在 `~/.aws/credentials` 文件中，而不是将它们设置在 changefeed 的配置文件中。
+
+更多信息，请参阅 [AWS官方文档](https://aws.github.io/aws-sdk-go-v2/docs/configuring-sdk/#specifying-credentials)。
 
 ## 自定义 Kafka Sink 的 Topic 和 Partition 的分发规则
 
