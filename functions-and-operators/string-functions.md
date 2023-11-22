@@ -11,9 +11,9 @@ TiDB 支持使用大部分 MySQL 5.7 中提供的[字符串函数](https://dev.m
 
 ## 支持的函数
 
-### [`ASCII()`](https://dev.mysql.com/doc/refman/8.0/en/string-functions.html#function_ascii)
+### [`ASCII(str)`](https://dev.mysql.com/doc/refman/8.0/en/string-functions.html#function_ascii)
 
-`ASCII()` 函数用于获取给定字符串中最左字符的 ASCII 值。
+`ASCII(str)` 函数用于获取给定字符串中最左字符的 ASCII 值。
 
 - 如果输入字符串不为空，该函数返回字符串中最左字符的 ASCII 值。
 - 如果输入字符串为空字符串，该函数返回 0。
