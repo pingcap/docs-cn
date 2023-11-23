@@ -147,7 +147,7 @@ This interface is used to submit a replication task to TiCDC. If the request is 
   "changefeed_id": "string",
   "replica_config": {
     "bdr_mode": true,
-    "case_sensitive": true,
+    "case_sensitive": false,
     "check_gc_safe_point": true,
     "consistent": {
       "flush_interval": 0,
@@ -266,7 +266,7 @@ The descriptions of the `replica_config` parameters are as follows.
 | Parameter name | Description |
 | :------------------------ | :----------------------------------------------------- |
 | `bdr_mode`                | `BOOLEAN` type. Determines whether to enable [bidirectional replication](/ticdc/ticdc-bidirectional-replication.md). The default value is `false`. (Optional)               |
-| `case_sensitive`          | `BOOLEAN` type. Determines whether to be case-sensitive when filtering table names. The default value is `true`. (Optional)   |
+| `case_sensitive`          | `BOOLEAN` type. Determines whether to be case-sensitive when filtering table names. Starting from v7.5.0, the default value changes from `true` to `false`. (Optional)   |
 | `check_gc_safe_point`     | `BOOLEAN` type. Determines whether to check that the start time of the replication task is earlier than the GC time. The default value is `true`. (Optional)                                  |
 | `consistent`              | The configuration parameters of redo log. (Optional) |
 | `enable_sync_point`       | `BOOLEAN` type. Determines whether to enable `sync point`. (Optional)         |
@@ -383,7 +383,7 @@ If the request is successful, `200 OK` is returned. If the request fails, an err
   "checkpoint_ts": 0,
   "config": {
     "bdr_mode": true,
-    "case_sensitive": true,
+    "case_sensitive": false,
     "check_gc_safe_point": true,
     "consistent": {
       "flush_interval": 0,
@@ -587,7 +587,7 @@ To modify the changefeed configuration, follow the steps of `pause the replicati
 {
   "replica_config": {
     "bdr_mode": true,
-    "case_sensitive": true,
+    "case_sensitive": false,
     "check_gc_safe_point": true,
     "consistent": {
       "flush_interval": 0,
