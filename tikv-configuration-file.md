@@ -2343,15 +2343,14 @@ Raft Engine 相关的配置项。
     + 当 [`region-split-size`](#region-split-size) 小于 4 GB 时，默认值为 `0.25`。
     + 当 [`region-split-size`](#region-split-size) 大于或等于 4 GB 时，默认值为 `0.75`。
 
+## memory <span class="version-mark">从 v7.5.0 版本开始引入</span>
 
-## memory   <span class="version-mark">从 v7.5.0 版本开始引入</span>
+### `enable-heap-profiling` <span class="version-mark">从 v7.5.0 版本开始引入</span>
 
-### `enable-heap-profiling`
++ 控制是否开启 Heap Profiling 功能，以跟踪 TiKV 的内存使用情况
++ 默认值：true
 
-+ 开启heap profiling，用来跟踪tikv内存使用
-+ 默认值: true
-  
-### `profiling-sample-per-bytes`
+### `profiling-sample-per-bytes` <span class="version-mark">从 v7.5.0 版本开始引入</span>
 
-+ heap profiling每次采样的数据, 以2的指数次幂向上取整
-+ 默认值: 512KB
++ 设置 Heap Profiling 每次采样的数据量，以 2 的指数次幂向上取整
++ 默认值：512KB
