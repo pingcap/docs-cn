@@ -1029,6 +1029,7 @@ raftstore 相关的配置项。
 + 设置 `0` 表示禁用该功能。
 + 默认值：0.1
 + 最小值：0
+
 ## coprocessor
 
 Coprocessor 相关的配置项。
