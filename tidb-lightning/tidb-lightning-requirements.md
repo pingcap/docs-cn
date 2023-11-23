@@ -84,7 +84,7 @@ The target TiKV cluster must have enough disk space to store the imported data. 
 - Indexes might take extra space.
 - RocksDB has a space amplification effect.
 
-It is difficult to calculate the exact data volume exported by Dumpling from MySQL. However, you can estimate the data volume by using the following SQL statement to summarize the data-length field in the information_schema.tables table:
+It is difficult to calculate the exact data volume exported by Dumpling from MySQL. However, you can estimate the data volume by using the following SQL statement to summarize the `DATA_LENGTH` field in the information_schema.tables table:
 
 Calculate the size of all schemas, in MiB. Replace ${schema_name} with your schema name.
 

@@ -55,7 +55,7 @@ The target TiKV cluster must have enough disk space to store the imported data. 
 - Indexes might take extra space.
 - RocksDB has a space amplification effect.
 
-You can estimate the data volume by using the following SQL statements to summarize the `data-length` field:
+You can estimate the data volume by using the following SQL statements to summarize the `DATA_LENGTH` field:
 
 - Calculate the size of all schemas, in MiB. Replace `${schema_name}` with your schema name.
 

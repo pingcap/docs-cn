@@ -7,20 +7,22 @@ summary: Learn how to use Dumpling and TiDB Lightning to back up and restore ful
 
 This document introduces how to use Dumpling and TiDB Lightning to back up and restore full data of TiDB.
 
-If you need to back up a small amount of data (for example, less than 50 GB) and do not require high backup speed, you can use [Dumpling](/dumpling-overview.md) to export data from the TiDB database and then use [TiDB Lightning](/tidb-lightning/tidb-lightning-overview.md) to import the data into another TiDB database. For more information about backup and restore, see [TiDB Backup & Restore Overview](/br/backup-and-restore-overview.md).
+If you need to back up a small amount of data (for example, less than 50 GiB) and do not require high backup speed, you can use [Dumpling](/dumpling-overview.md) to export data from the TiDB database and then use [TiDB Lightning](/tidb-lightning/tidb-lightning-overview.md) to restore the data into another TiDB database. 
+
+If you need to back up larger databases, the recommended method is to use [BR](/br/backup-and-restore-overview.md). Note that Dumpling can be used to export large databases, but BR is a better tool for that.
 
 ## Requirements
 
-- Install and start Dumpling:
+- Install Dumpling:
 
     ```shell
-    tiup install dumpling && tiup dumpling
+    tiup install dumpling
     ```
 
-- Install and start TiDB Lightning:
+- Install TiDB Lightning:
 
     ```shell
-    tiup install tidb lightning && tiup tidb lightning
+    tiup install tidb-lightning
     ```
 
 - [Grant the source database privileges required for Dumpling](/dumpling-overview.md#export-data-from-tidb-or-mysql)
@@ -41,14 +43,35 @@ If you need to save data of one backup task to the local disk, note the followin
 - Dumpling requires a disk space that can store the whole data source (or to store all upstream tables to be exported). To calculate the required space, see [Downstream storage space requirements](/tidb-lightning/tidb-lightning-requirements.md#storage-space-of-the-target-database).
 - During the import, TiDB Lightning needs temporary space to store the sorted key-value pairs. The disk space should be enough to hold the largest single table from the data source.
 
-**Note**: It is difficult to calculate the exact data volume exported by Dumpling from MySQL, but you can estimate the data volume by using the following SQL statement to summarize the `data-length` field in the `information_schema.tables` table:
+**Note**: It is difficult to calculate the exact data volume exported by Dumpling from MySQL, but you can estimate the data volume by using the following SQL statement to summarize the `DATA_LENGTH` field in the `information_schema.tables` table:
 
 ```sql
-/* Calculate the size of all schemas, in MiB. Replace ${schema_name} with your schema name. */
-SELECT table_schema,SUM(data_length)/1024/1024 AS data_length,SUM(index_length)/1024/1024 AS index_length,SUM(data_length+index_length)/1024/1024 AS SUM FROM information_schema.tables WHERE table_schema = "${schema_name}" GROUP BY table_schema;
+-- Calculate the size of all schemas
+SELECT
+  TABLE_SCHEMA,
+  FORMAT_BYTES(SUM(DATA_LENGTH)) AS 'Data Size',
+  FORMAT_BYTES(SUM(INDEX_LENGTH)) 'Index Size'
+FROM
+  information_schema.tables
+GROUP BY
+  TABLE_SCHEMA;
 
-/* Calculate the size of the largest table, in MiB. Replace ${schema_name} with your schema name. */
-SELECT table_name,table_schema,SUM(data_length)/1024/1024 AS data_length,SUM(index_length)/1024/1024 AS index_length,SUM(data_length+index_length)/1024/1024 AS SUM from information_schema.tables WHERE table_schema = "${schema_name}" GROUP BY table_name,table_schema ORDER BY SUM DESC LIMIT 5;
+-- Calculate the 5 largest tables
+SELECT 
+  TABLE_NAME,
+  TABLE_SCHEMA,
+  FORMAT_BYTES(SUM(data_length)) AS 'Data Size',
+  FORMAT_BYTES(SUM(index_length)) AS 'Index Size',
+  FORMAT_BYTES(SUM(data_length+index_length)) AS 'Total Size'
+FROM
+  information_schema.tables
+GROUP BY
+  TABLE_NAME,
+  TABLE_SCHEMA
+ORDER BY
+  SUM(DATA_LENGTH+INDEX_LENGTH) DESC
+LIMIT
+  5;
 ```
 
 ### Disk space for the target TiKV cluster
