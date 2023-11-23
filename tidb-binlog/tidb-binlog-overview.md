@@ -17,7 +17,9 @@ TiDB Binlog has the following features:
 
 > **Note:**
 >
-> TiDB Binlog is not compatible with some features introduced in TiDB v5.0 and they cannot be used together. For details, see [Notes](#notes). It is recommended to use [TiCDC](/ticdc/ticdc-overview.md) instead of TiDB Binlog.
+> - TiDB Binlog is not compatible with some features introduced in TiDB v5.0 and they cannot be used together. For details, see [Notes](#notes).
+> - Starting from TiDB v7.5.0, technical support for the data replication feature of TiDB Binlog is no longer provided. It is strongly recommended to use [TiCDC](/ticdc/ticdc-overview.md) as an alternative solution for data replication.
+> - Although TiDB v7.5.0 still supports the real-time backup and restoration feature of TiDB Binlog, this component will be completely deprecated in future versions. It is recommended to use [PITR](/br/br-pitr-guide.md) as an alternative solution for data recovery.
 
 ## TiDB Binlog architecture
 
