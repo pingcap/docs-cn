@@ -56,7 +56,7 @@ Request Unit (RU) 是 TiDB 对 CPU、IO 等系统资源的统一抽象的计量�
         </tr>
         <tr>
             <td rowspan="3">Write</td>
-            <td>1 storage write batch 消耗 1 RU * 副本数</td>
+            <td>1 storage write batch 消耗 1 RU</td>
         </tr>
         <tr>
             <td>1 storage write request 消耗 1 RU</td>
@@ -71,13 +71,11 @@ Request Unit (RU) 是 TiDB 对 CPU、IO 等系统资源的统一抽象的计量�
     </tbody>
 </table>
 
-目前 TiFlash 资源管控仅考虑 SQL CPU（即查询的 pipeline task 运行所占用的 CPU 时间）以及 read request payload。
-
 > **注意：**
 >
 > - 每个写操作最终都被会复制到所有副本（TiKV 默认 3 个数据副本），并且每次复制都被认为是一个不同的写操作。
-> - 除了用户执行的查询之外，RU 还可以被后台任务消耗，例如自动统计信息收集。
 > - 上表只列举了本地部署的 TiDB 计算 RU 时涉及的相关资源，其中不包括网络和存储部分。TiDB Serverless 的 RU 可参考 [TiDB Serverless Pricing Details](https://www.pingcap.com/tidb-cloud-serverless-pricing-details/)。
+> - 目前 TiFlash 资源管控仅考虑 SQL CPU（即查询的 pipeline task 运行所占用的 CPU 时间）以及 read request payload。
 
 ## 估算 SQL 所消耗的 RU
 
@@ -368,33 +366,58 @@ Runaway Query 是指执行时间或消耗资源超出预期的查询。下面使
 - `br`：使用 [BR](/br/backup-and-restore-overview.md) 执行数据备份和恢复。目前不支持 PITR。
 - `ddl`：对于 Reorg DDL，控制批量数据回写阶段的资源使用。
 - `stats`：对应手动执行或系统自动触发的[收集统计信息](/statistics.md#统计信息的收集)任务。
+- `background`：预留的任务类型，可使用 [`tidb_request_source_type`](/system-variables.md#tidb_request_source_type-从-v740-版本开始引入) 系统变量指定当前会话的任务类型为 `background`。
 
-默认情况下，被标记为后台任务的任务类型为空，此时后台任务的管理功能处于关闭状态，其行为与 TiDB v7.4.0 之前版本保持一致。你需要手动修改 `default` 资源组的后台任务类型以开启后台任务管理。
+默认情况下，被标记为后台任务的任务类型为 `""`，此时后台任务的管理功能处于关闭状态。如需开启后台任务管理功能，你需要手动修改 `default` 资源组的后台任务类型以开启后台任务管理。后台任务类型被识别匹配后，资源管控会自动进行，即当系统资源紧张时，后台任务会自动降为最低优先级，保证前台任务的执行。
+
+> **注意：**
+>
+> 目前，所有资源组的后台任务默认都会绑定到默认资源组 `default` 下进行管控，你可以通过 `default` 全局管控后台任务类型。暂不支持将后台任务绑定到其他资源组。
 
 #### 示例
 
-1. 创建 `rg1` 资源组，并将 `br` 和 `stats` 标记为后台任务。
+1. 修改 `default` 资源组，将 `br` 和 `ddl` 标记为后台任务。
 
     ```sql
-    CREATE RESOURCE GROUP IF NOT EXISTS rg1 RU_PER_SEC = 500 BACKGROUND=(TASK_TYPES='br,stats');
+    ALTER RESOURCE GROUP `default` BACKGROUND=(TASK_TYPES='br,ddl');
     ```
 
-2. 修改 `rg1` 资源组，将 `br` 和 `ddl` 标记为后台任务。
+2. 修改 `default` 资源组，将后台任务的类型还原为默认值。
 
     ```sql
-    ALTER RESOURCE GROUP rg1 BACKGROUND=(TASK_TYPES='br,ddl');
+    ALTER RESOURCE GROUP `default` BACKGROUND=NULL;
     ```
 
-3. 修改 `rg1` 资源组，将后台任务的类型还原为默认值。此时后台任务的类型将使用 `default` 资源组的配置。
+3. 修改 `default` 资源组，将后台任务的类型设置为空，此时此资源组的所有任务类型都不会作为后台任务处理。
 
     ```sql
-    ALTER RESOURCE GROUP rg1 BACKGROUND=NULL;
+    ALTER RESOURCE GROUP `default` BACKGROUND=(TASK_TYPES="");
     ```
 
-4. 修改 `rg1` 资源组，将后台任务的类型设置为空，此时此资源组的所有任务类型都不会作为后台任务处理。
+4. 查看 `default` 资源组的后台任务类型。
 
     ```sql
-    ALTER RESOURCE GROUP rg1 BACKGROUND=(TASK_TYPES="");
+    SELECT * FROM information_schema.resource_groups WHERE NAME="default";
+    ```
+
+    输出结果如下：
+
+    ```
+    +---------+------------+----------+-----------+-------------+---------------------+
+    | NAME    | RU_PER_SEC | PRIORITY | BURSTABLE | QUERY_LIMIT | BACKGROUND          |
+    +---------+------------+----------+-----------+-------------+---------------------+
+    | default | UNLIMITED  | MEDIUM   | YES       | NULL        | TASK_TYPES='br,ddl' |
+    +---------+------------+----------+-----------+-------------+---------------------+
+    ```
+
+5. 如果希望将当前会话里的任务显式标记为后台类型，你可以使用 `tidb_request_source_type` 显式指定任务类型，如：
+
+    ``` sql
+    SET @@tidb_request_source_type="background";
+    /* 添加 background 任务类型 */
+    ALTER RESOURCE GROUP `default` BACKGROUND=(TASK_TYPES="background");
+    /* 在当前会话中执行 LOAD DATA */
+    LOAD DATA INFILE "s3://resource-control/Lightning/test.customer.aaaa.csv"
     ```
 
 ## 关闭资源管控特性
