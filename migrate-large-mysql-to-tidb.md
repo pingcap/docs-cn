@@ -31,14 +31,33 @@ This document describes how to perform the full migration using Dumpling and TiD
 
 **Note**: It is difficult to calculate the exact data volume exported by Dumpling from MySQL, but you can estimate the data volume by using the following SQL statement to summarize the `DATA_LENGTH` field in the `information_schema.tables` table:
 
-{{< copyable "" >}}
-
 ```sql
-/* Calculate the size of all schemas, in MiB. Replace ${schema_name} with your schema name. */
-SELECT table_schema,SUM(data_length)/1024/1024 AS data_length,SUM(index_length)/1024/1024 AS index_length,SUM(data_length+index_length)/1024/1024 AS SUM FROM information_schema.tables WHERE table_schema = "${schema_name}" GROUP BY table_schema;
+-- Calculate the size of all schemas
+SELECT
+  TABLE_SCHEMA,
+  FORMAT_BYTES(SUM(DATA_LENGTH)) AS 'Data Size',
+  FORMAT_BYTES(SUM(INDEX_LENGTH)) 'Index Size'
+FROM
+  information_schema.tables
+GROUP BY
+  TABLE_SCHEMA;
 
-/* Calculate the size of the largest table, in MiB. Replace ${schema_name} with your schema name. */
-SELECT table_name,table_schema,SUM(data_length)/1024/1024 AS data_length,SUM(index_length)/1024/1024 AS index_length,SUM(data_length+index_length)/1024/1024 AS SUM from information_schema.tables WHERE table_schema = "${schema_name}" GROUP BY table_name,table_schema ORDER BY SUM DESC LIMIT 5;
+-- Calculate the 5 largest tables
+SELECT 
+  TABLE_NAME,
+  TABLE_SCHEMA,
+  FORMAT_BYTES(SUM(data_length)) AS 'Data Size',
+  FORMAT_BYTES(SUM(index_length)) AS 'Index Size',
+  FORMAT_BYTES(SUM(data_length+index_length)) AS 'Total Size'
+FROM
+  information_schema.tables
+GROUP BY
+  TABLE_NAME,
+  TABLE_SCHEMA
+ORDER BY
+  SUM(DATA_LENGTH+INDEX_LENGTH) DESC
+LIMIT
+  5;
 ```
 
 ### Disk space for the target TiKV cluster

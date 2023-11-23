@@ -57,18 +57,31 @@ The target TiKV cluster must have enough disk space to store the imported data. 
 
 You can estimate the data volume by using the following SQL statements to summarize the `DATA_LENGTH` field:
 
-- Calculate the size of all schemas, in MiB. Replace `${schema_name}` with your schema name.
+```sql
+-- Calculate the size of all schemas
+SELECT
+  TABLE_SCHEMA,
+  FORMAT_BYTES(SUM(DATA_LENGTH)) AS 'Data Size',
+  FORMAT_BYTES(SUM(INDEX_LENGTH)) 'Index Size'
+FROM
+  information_schema.tables
+GROUP BY
+  TABLE_SCHEMA;
 
-    {{< copyable "sql" >}}
-
-    ```sql
-    select table_schema,sum(data_length)/1024/1024 as data_length,sum(index_length)/1024/1024 as index_length,sum(data_length+index_length)/1024/1024 as sum from information_schema.tables where table_schema = "${schema_name}" group by table_schema;
-    ```
-
-- Calculate the size of the largest table, in MiB. Replace ${schema_name} with your schema name.
-
-    {{< copyable "sql" >}}
-
-    ```sql
-    select table_name,table_schema,sum(data_length)/1024/1024 as data_length,sum(index_length)/1024/1024 as index_length,sum(data_length+index_length)/1024/1024 as sum from information_schema.tables where table_schema = "${schema_name}" group by table_name,table_schema order by sum desc limit 5;
-    ```
+-- Calculate the 5 largest tables
+SELECT 
+  TABLE_NAME,
+  TABLE_SCHEMA,
+  FORMAT_BYTES(SUM(data_length)) AS 'Data Size',
+  FORMAT_BYTES(SUM(index_length)) AS 'Index Size',
+  FORMAT_BYTES(SUM(data_length+index_length)) AS 'Total Size'
+FROM
+  information_schema.tables
+GROUP BY
+  TABLE_NAME,
+  TABLE_SCHEMA
+ORDER BY
+  SUM(DATA_LENGTH+INDEX_LENGTH) DESC
+LIMIT
+  5;
+```
