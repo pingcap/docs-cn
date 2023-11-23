@@ -145,7 +145,7 @@ curl -X GET http://127.0.0.1:8300/api/v2/health
   "changefeed_id": "string",
   "replica_config": {
     "bdr_mode": true,
-    "case_sensitive": true,
+    "case_sensitive": false,
     "check_gc_safe_point": true,
     "consistent": {
       "flush_interval": 0,
@@ -261,21 +261,21 @@ curl -X GET http://127.0.0.1:8300/api/v2/health
 
 `replica_config` 参数说明如下：
 
-| 参数名                       | 说明                                                                                                  |
-|:--------------------------|:----------------------------------------------------------------------------------------------------|
-| `bdr_mode`                | `BOOLEAN` 类型，是否开启[双向同步复制](/ticdc/ticdc-bidirectional-replication.md)。默认值为 `false`。（非必选）            |
-| `case_sensitive`          | `BOOLEAN` 类型，过滤表名时大小写是否敏感，默认值为 `true`。（非必选）                                                |
-| `check_gc_safe_point`     | `BOOLEAN` 类型，是否检查同步任务的开始时间早于 GC 时间，默认值为 `true`。（非必选）                                               |
-| `consistent`              | Redo log 配置。（非必选）                                                                                   |
-| `enable_sync_point`       | `BOOLEAN` 类型，是否开启 `sync point` 功能。（非必选）                                                             |
-| `filter`                  | filter 配置。（非必选）                                                                                     |
-| `force_replicate`         | `BOOLEAN` 类型，该值默认为 `false`，当指定为 `true` 时，同步任务会尝试强制同步没有唯一索引的表。（非必选）                                  |
-| `ignore_ineligible_table` | `BOOLEAN` 类型，该值默认为 `false`，当指定为 `true` 时，同步任务会忽略无法进行同步的表。（非必选）                                      |
-| `memory_quota`            | `UINT64` 类型，同步任务的内存 quota。（非必选）                                                                     |
-| `mounter`                 | 同步任务 `mounter` 配置。（非必选）                                                                             |
-| `sink`                    | 同步任务的`sink`配置。（非必选）                                                                                 |
+| 参数名                       | 说明                                                                                                       |
+|:--------------------------|:---------------------------------------------------------------------------------------------------------|
+| `bdr_mode`                | `BOOLEAN` 类型，是否开启[双向同步复制](/ticdc/ticdc-bidirectional-replication.md)。默认值为 `false`。（非必选）                  |
+| `case_sensitive`          | `BOOLEAN` 类型，过滤表名时大小写是否敏感。自 v7.5.0 起，默认值由 `true` 改为 `false`。（非必选）                                                             |
+| `check_gc_safe_point`     | `BOOLEAN` 类型，是否检查同步任务的开始时间早于 GC 时间，默认值为 `true`。（非必选）                                                     |
+| `consistent`              | Redo log 配置。（非必选）                                                                                        |
+| `enable_sync_point`       | `BOOLEAN` 类型，是否开启 `sync point` 功能。（非必选）                                                                  |
+| `filter`                  | filter 配置。（非必选）                                                                                          |
+| `force_replicate`         | `BOOLEAN` 类型，该值默认为 `false`，当指定为 `true` 时，同步任务会尝试强制同步没有唯一索引的表。（非必选）                                       |
+| `ignore_ineligible_table` | `BOOLEAN` 类型，该值默认为 `false`，当指定为 `true` 时，同步任务会忽略无法进行同步的表。（非必选）                                           |
+| `memory_quota`            | `UINT64` 类型，同步任务的内存 quota。（非必选）                                                                          |
+| `mounter`                 | 同步任务 `mounter` 配置。（非必选）                                                                                  |
+| `sink`                    | 同步任务的`sink`配置。（非必选）                                                                                      |
 | `sync_point_interval`     | `STRING` 类型，注意返回值为 `UINT64` 类型的纳秒级时间，`sync point` 功能开启时，对齐上下游 snapshot 的时间间隔。默认值为 `10m`，最小值为 `30s`。（非必选） |
-| `sync_point_retention`    | `STRING` 类型，注意返回值为 `UINT64` 类型的纳秒级时间，`sync point` 功能开启时，在下游表中保存的数据的时长，超过这个时间的数据会被清理。默认值为 `24h`。（非必选） |
+| `sync_point_retention`    | `STRING` 类型，注意返回值为 `UINT64` 类型的纳秒级时间，`sync point` 功能开启时，在下游表中保存的数据的时长，超过这个时间的数据会被清理。默认值为 `24h`。（非必选）     |
 
 `consistent` 参数说明如下：
 
@@ -381,7 +381,7 @@ curl -X POST -H "'Content-type':'application/json'" http://127.0.0.1:8300/api/v2
   "checkpoint_ts": 0,
   "config": {
     "bdr_mode": true,
-    "case_sensitive": true,
+    "case_sensitive": false,
     "check_gc_safe_point": true,
     "consistent": {
       "flush_interval": 0,
@@ -585,7 +585,7 @@ curl -X DELETE http://127.0.0.1:8300/api/v2/changefeeds/test1
 {
   "replica_config": {
     "bdr_mode": true,
-    "case_sensitive": true,
+    "case_sensitive": false,
     "check_gc_safe_point": true,
     "consistent": {
       "flush_interval": 0,
