@@ -1025,7 +1025,7 @@ raftstore 相关的配置项。
 ### `evict-cache-on-memory-ratio` <span class="version-mark">从 v7.5.0 版本开始引入</span> 
 
 + 当 TiKV 的内存使用超过系统可用内存的 90%，并且 Raft 缓存条目占用的内存超过已使用内存 * `evict-cache-on-memory-ratio` 时，TiKV 会逐出 Raft 缓存条目。
-+ 设置 `0` 表示禁用该功能。
++ 设置为 `0` 表示禁用该功能。
 + 默认值：0.1
 + 最小值：0
 
