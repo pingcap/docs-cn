@@ -23,7 +23,7 @@ summary: 了解如何收集集群各个实例当前性能数据，从而分析�
 
   > ARM 环境中暂不支持对 TiKV 和 TiFlash 的 CPU 开销情况进行分析。
 
-- Heap：TiDB、PD 实例上各个内部函数的内存占用开销情况
+- Heap：TiDB、PD、TiKV 实例上各个内部函数的内存占用开销情况
 
 - Mutex：TiDB、PD 实例上各个处于等待状态的 Mutex 情况
 
