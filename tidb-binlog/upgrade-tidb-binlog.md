@@ -6,6 +6,12 @@ title: TiDB Binlog 版本升级方法
 
 如未特别指明，文中出现的 TiDB Binlog 均指最新的 [Cluster](/tidb-binlog/tidb-binlog-overview.md) 版本。
 
+> **注意：**
+>
+> - TiDB Binlog 与 TiDB v5.0 开始引入的一些特性不兼容，无法一起使用，详情参照[注意事项](/tidb-binlog/tidb-binlog-overview.md#注意事项)。
+> - 从 TiDB v7.5.0 开始，TiDB Binlog 组件的数据同步功能不再提供技术支持，强烈建议使用 [TiCDC](/ticdc/ticdc-overview.md) 作为数据同步的替代方案。
+> - 尽管 TiDB v7.5.0 仍支持 TiDB Binlog 组件的实时备份和恢复，但该组件在未来版本中将被完全废弃，推荐使用 [PITR](/br/br-pitr-guide.md) 作为数据恢复的替代方案。
+
 本文介绍通过手动部署的 TiDB Binlog 的版本升级方法，另外有一小节介绍如何从更早的不兼容版本（Kafka/Local 版本）升级到最新版本。
 
 ## 手动部署
