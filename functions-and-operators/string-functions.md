@@ -55,7 +55,7 @@ SELECT ASCII('TiDB');
 +------------+
 ```
 
-### [`BIN()`](https://dev.mysql.com/doc/refman/8.0/en/string-functions.html#function_bin)
+### [`BIN(N)`](https://dev.mysql.com/doc/refman/8.0/en/string-functions.html#function_bin)
 
 `BIN(N)` 函数用于将 `BIGINT` 类型的数字 `N` 转换为其二进制值的字符串表示形式。
 
