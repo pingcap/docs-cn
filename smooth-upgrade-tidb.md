@@ -56,7 +56,7 @@ TiUP 会在 v1.14.0 版本自适应支持此功能，即无需特殊操作，直
 2. 替换 TiDB binary，并进行滚动升级。此过程和原升级过程一致。
    * 执行升级过程中的系统 DDL 操作。
 
-3. 等集群中所有 TiDB 升级成功后，给任意一台 TiDB 发送 HTTP 升级结束请求：`curl -X POST http://{TiDBIP}:10080/upgrade/finsh`。
+3. 等集群中所有 TiDB 升级成功后，给任意一台 TiDB 发送 HTTP 升级结束请求：`curl -X POST http://{TiDBIP}:10080/upgrade/finish`。
    * 恢复被暂停的用户的 DDL 操作。
 
 其中，恢复的 DDL job 仍会按升级前的顺序执行。
