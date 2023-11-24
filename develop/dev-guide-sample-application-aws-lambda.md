@@ -211,20 +211,20 @@ You can deploy the AWS Lambda Function using either the [SAM CLI](#sam-cli-deplo
     #        Setting default arguments for 'sam deploy'
     #        =========================================
     #        Stack Name [sam-app]: tidb-aws-lambda-quickstart
-    #        AWS Region [us-east-1]: 
+    #        AWS Region [us-east-1]:
     #        #Shows you resources changes to be deployed and require a 'Y' to initiate deploy
-    #        Confirm changes before deploy [y/N]: 
+    #        Confirm changes before deploy [y/N]:
     #        #SAM needs permission to be able to create roles to connect to the resources in your template
-    #        Allow SAM CLI IAM role creation [Y/n]: 
+    #        Allow SAM CLI IAM role creation [Y/n]:
     #        #Preserves the state of previously provisioned resources when an operation fails
-    #        Disable rollback [y/N]: 
+    #        Disable rollback [y/N]:
     #        tidbHelloWorldFunction may not have authorization defined, Is this okay? [y/N]: y
     #        tidbHelloWorldFunction may not have authorization defined, Is this okay? [y/N]: y
     #        tidbHelloWorldFunction may not have authorization defined, Is this okay? [y/N]: y
     #        tidbHelloWorldFunction may not have authorization defined, Is this okay? [y/N]: y
-    #        Save arguments to configuration file [Y/n]: 
-    #        SAM configuration file [samconfig.toml]: 
-    #        SAM configuration environment [default]: 
+    #        Save arguments to configuration file [Y/n]:
+    #        SAM configuration file [samconfig.toml]:
+    #        SAM configuration environment [default]:
 
     #        Looking for resources needed for deployment:
     #        Creating the required resources...
@@ -352,7 +352,7 @@ For more information, refer to [Delete data](/develop/dev-guide-delete-data.md).
 
 - Using [connection pools](https://github.com/sidorares/node-mysql2#using-connection-pools) to manage database connections can reduce the performance overhead caused by frequently establishing and destroying connections.
 - To avoid SQL injection, it is recommended to use [prepared statements](https://github.com/sidorares/node-mysql2#using-prepared-statements).
-- In scenarios where there are not many complex SQL statements involved, using ORM frameworks like [Sequelize](https://sequelize.org/), [TypeORM](https://typeorm.io/), or [Prisma](https://www.prisma.io/) can greatly improve development efficiency. 
+- In scenarios where there are not many complex SQL statements involved, using ORM frameworks like [Sequelize](https://sequelize.org/), [TypeORM](https://typeorm.io/), or [Prisma](https://www.prisma.io/) can greatly improve development efficiency.
 - For building a RESTful API for your application, it is recommended to [use AWS Lambda with API Gateway](https://docs.aws.amazon.com/lambda/latest/dg/services-apigateway.html).
 - For designing high-performance applications using TiDB Serverless and AWS Lambda, refer to [this blog](https://aws.amazon.com/blogs/apn/designing-high-performance-applications-using-serverless-tidb-cloud-and-aws-lambda/).
 
@@ -366,4 +366,14 @@ For more information, refer to [Delete data](/develop/dev-guide-delete-data.md).
 
 ## Need help?
 
-Ask questions on the [Discord](https://discord.gg/vYU9h56kAX), or [create a support ticket](https://support.pingcap.com/).
+<CustomContent platform="tidb">
+
+Ask questions on the [Discord](https://discord.gg/DQZ2dy3cuc?utm_source=doc), or [create a support ticket](/support.md).
+
+</CustomContent>
+
+<CustomContent platform="tidb-cloud">
+
+Ask questions on the [Discord](https://discord.gg/DQZ2dy3cuc?utm_source=doc), or [create a support ticket](https://support.pingcap.com/).
+
+</CustomContent>

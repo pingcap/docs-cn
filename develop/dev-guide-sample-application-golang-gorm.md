@@ -79,7 +79,7 @@ Connect to your TiDB cluster depending on the TiDB deployment option you've sele
 4. Click **Create password** to create a random password.
 
     > **Tip:**
-    > 
+    >
     > If you have created a password before, you can either use the original password or click **Reset password** to generate a new one.
 
 5. Run the following command to copy `.env.example` and rename it to `.env`:
@@ -241,4 +241,14 @@ For more information, refer to [Delete data](/develop/dev-guide-delete-data.md).
 
 ## Need help?
 
-Ask questions on the [Discord](https://discord.gg/vYU9h56kAX), or [create a support ticket](https://support.pingcap.com/).
+<CustomContent platform="tidb">
+
+Ask questions on the [Discord](https://discord.gg/DQZ2dy3cuc?utm_source=doc), or [create a support ticket](/support.md).
+
+</CustomContent>
+
+<CustomContent platform="tidb-cloud">
+
+Ask questions on the [Discord](https://discord.gg/DQZ2dy3cuc?utm_source=doc), or [create a support ticket](https://support.pingcap.com/).
+
+</CustomContent>
