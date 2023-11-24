@@ -38,7 +38,7 @@ TiDB Lightning 运行时会按照数据文件的命名规则将数据导入到�
 rename srcdb. tgtdb. *.sql
 ```
 
-文件中的数据库名修改后，建议删除 `data-source-dir` 目录下包含 `CREATE DATABASE` DDL 语句的 `schema-create.sql` 文件。如果修改的是表名，还需要修改包含表名的 `CREATE TABLE` DDL 语句的 `schema.sql` 文件。
+修改了文件中的数据库名后，建议删除 `data-source-dir` 目录下包含 `CREATE DATABASE` DDL 语句的 `schema-create.sql` 文件。如果修改的是表名，还需要修改包含表名的 `CREATE TABLE` DDL 语句的 `schema.sql` 文件。
 
 ### 使用正则表达式在线替换名称
 
