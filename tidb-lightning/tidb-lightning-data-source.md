@@ -31,7 +31,7 @@ TiDB Lightning 运行时会按照数据文件的命名规则将数据导入到�
 
 ### 批量重命名文件
 
-如果你使用的是 Red Hat Linux 或基于 Red Hat 的 Linux 发行版，可以使用以下的 `rename` 命令对 `data-source-dir` 目录下的文件进行批量重命名：
+如果你使用的是 Red Hat Linux 或基于 Red Hat 的 Linux 发行版，可以使用 `rename` 命令对 `data-source-dir` 目录下的文件进行批量重命名。例如：
 
 ```shell
 rename srcdb. tgtdb. *.sql
