@@ -69,7 +69,7 @@ table = '$2'
 type = '$3'
 ```
 
-如果是使用 `gzip` 方式备份的数据文件，需要对应地配置压缩格式。数据文件 `pattern` 的匹配规则是 '^({schema_regrex})\.({table_regrex})\.({file_serial_regrex})\.(csv|parquet|sql)\.(gz)'。`compression` 可以指定为 '$4' 代表是压缩文件格式。示例如下：
+如果是使用 `gzip` 方式备份的数据文件，需要对应地配置压缩格式。数据文件 `pattern` 的匹配规则是 `'^({schema_regrex})\.({table_regrex})\.({file_serial_regrex})\.(csv|parquet|sql)\.(gz)'`。`compression` 可以指定为 `'$4'` 代表是压缩文件格式。示例如下：
 
 ```toml
 [mydumper]
