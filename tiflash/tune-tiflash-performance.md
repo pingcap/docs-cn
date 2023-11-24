@@ -303,7 +303,7 @@ mysql> explain analyze select max(l_shipdate), max(l_commitdate), max(l_receiptd
 set @@tidb_max_tiflash_threads = 20;
 ```
 
-在以下示例中，`tidb_max_tiflash_threads` 设置前，所有 TiFlash 的算子的执行线程数为 24。`tidb_max_tiflash_threads` 设置后，所有 TiFlash 的算子的执行线程数为 60。
+在以下示例中，设置 `tidb_max_tiflash_threads` 前，单个 TiFlash 实例的 request 执行的并发度为 8 个线程。该集群一共有 3 个 TiFlash 实例，因此所有 TiFlash 实例上的 request 执行的线程总数是 24。当将 `tidb_max_tiflash_threads` 设置为 `20` 后，所有 TiFlash 实例上的 request 执行的线程总数是 60。
 
 `tidb_max_tiflash_threads` 设置前：
 
