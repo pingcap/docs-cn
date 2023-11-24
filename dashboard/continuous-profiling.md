@@ -28,7 +28,7 @@ All performance data in [Manual Profiling](/dashboard/dashboard-profiling.md#sup
 
 - CPU: The CPU overhead of each internal function on TiDB, TiKV, TiFlash, and PD instances
 
-- Heap: The memory consumption of each internal function on TiDB and PD instances
+- Heap: The memory consumption of each internal function on TiDB, TiKV, and PD instances
 
 - Mutex: The mutex contention states on TiDB and PD instances
 

@@ -24,7 +24,7 @@ The following performance data are currently supported:
 
   > The CPU overhead of TiKV and TiFlash instances is currently not supported in ARM architecture.
 
-- Heap: The memory consumption of each internal function on TiDB and PD instances
+- Heap: The memory consumption of each internal function on TiDB, TiKV, and PD instances
 
 - Mutex: The mutex contention states on TiDB and PD instances
 
