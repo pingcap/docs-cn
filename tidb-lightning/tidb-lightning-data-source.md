@@ -26,6 +26,74 @@ TiDB Lightning 运行时将查找 `data-source-dir` 中所有符合命令规则�
 
 TiDB Lightning 尽量并行处理数据，由于文件必须顺序读取，所以数据处理协程是文件级别的并发（通过 `region-concurrency` 配置控制）。因此导入大文件时性能比较差。通常建议单个文件尺寸为 256MiB，以获得最好的性能。
 
+## 表库重命名
+
+TiDB Lightning 运行时会按照数据文件的命名规则将数据导入到相应的数据库和表。如果数据库名或表名发生了变化，你可以先重命名文件，然后再导入，或者使用正则表达式在线替换对象名称。
+
+### 批量重命名文件
+
+如果你使用的是 Red Hat Linux 或基于 Red Hat 的 Linux 发行版，可以使用 `rename` 命令对 `data-source-dir` 目录下的文件进行批量重命名。例如：
+
+```shell
+rename srcdb. tgtdb. *.sql
+```
+
+修改了文件中的数据库名后，建议删除 `data-source-dir` 目录下包含 `CREATE DATABASE` DDL 语句的 `${db_name}-schema-create.sql` 文件。如果修改的是表名，还需要修改包含 `CREATE TABLE` DDL 语句的 ${db_name}.${table_name}-schema.sql` 文件中的表名。
+
+### 使用正则表达式在线替换名称
+
+要使用正则表达式在线替换名称，你需要在 `[[mydumper.files]]` 配置中使用 `pattern` 匹配文件名，将 `schema` 和 `table` 换成目标名。具体配置请参考[自定义文件匹配](#自定义文件匹配)。
+
+下面是使用正则表达式在线替换名称的示例。其中：
+
+- 数据文件 `pattern` 的匹配规则是 `'^({schema_regrex})\.({table_regrex})\.({file_serial_regrex})\.(csv|parquet|sql)'`。
+- `schema` 可以指定为 `'$1'`，代表第一个正则表达式 `schema_regrex` 取值不变；`schema` 也可以指定为一个字符串，如 `'tgtdb'`，代表固定的目标数据库名。
+- `table` 可以指定为 `'$2'`，代表第二个正则表达式 `table_regrex` 取值不变；`table` 也可以指定为一个字符串，如 `'t1'`，代表固定的目标表名。
+- `type` 可以指定为 `'$3'`，代表数据文件类型；`type` 可以指定为 `"table-schema"`（代表 `schema.sql` 文件） 或 `"schema-schema"`（代表 `schema-create.sql` 文件）。
+
+```toml
+[mydumper]
+data-source-dir = "/some-subdir/some-database/"
+[[mydumper.files]]
+pattern = '^(srcdb)\.(.*?)-schema-create\.sql'
+schema = 'tgtdb'
+type = "schema-schema"
+[[mydumper.files]]
+pattern = '^(srcdb)\.(.*?)-schema\.sql'
+schema = 'tgtdb'
+table = '$2'
+type = "table-schema"
+[[mydumper.files]]
+pattern = '^(srcdb)\.(.*?)\.(?:[0-9]+)\.(csv|parquet|sql)'
+schema = 'tgtdb'
+table = '$2'
+type = '$3'
+```
+
+如果是使用 `gzip` 方式备份的数据文件，需要对应地配置压缩格式。数据文件 `pattern` 的匹配规则是 `'^({schema_regrex})\.({table_regrex})\.({file_serial_regrex})\.(csv|parquet|sql)\.(gz)'`。`compression` 可以指定为 `'$4'` 代表是压缩文件格式。示例如下：
+
+```toml
+[mydumper]
+data-source-dir = "/some-subdir/some-database/"
+[[mydumper.files]]
+pattern = '^(srcdb)\.(.*?)-schema-create\.(sql)\.(gz)'
+schema = 'tgtdb'
+type = "schema-schema"
+compression = '$4'
+[[mydumper.files]]
+pattern = '^(srcdb)\.(.*?)-schema\.(sql)\.(gz)'
+schema = 'tgtdb'
+table = '$2'
+type = "table-schema"
+compression = '$4'
+[[mydumper.files]]
+pattern = '^(srcdb)\.(.*?)\.(?:[0-9]+)\.(sql)\.(gz)'
+schema = 'tgtdb'
+table = '$2'
+type = '$3'
+compression = '$4'
+```
+
 ## CSV
 
 ### 表结构
@@ -272,7 +340,7 @@ TiDB Lightning 目前仅支持由 Amazon Aurora 或者 Hive 导出快照生成�
 ```
 [[mydumper.files]]
 # 解析 AWS Aurora parquet 文件所需的表达式
-pattern = '(?i)^(?:[^/]*/)*([a-z0-9_]+)\.([a-z0-9_]+)/(?:[^/]*/)*(?:[a-z0-9\-_.]+\.(parquet))$'
+pattern = '(?i)^(?:[^/]*/)*([a-z0-9\-_]+).([a-z0-9\-_]+)/(?:[^/]*/)*(?:[a-z0-9\-_.]+\.(parquet))$'
 schema = '$1'
 table = '$2'
 type = '$3'
@@ -304,14 +372,14 @@ TiDB Lightning 仅识别符合命名要求的数据文件，但在某些情况�
 
 通常 `data-source-dir` 会被配置为`S3://some-bucket/some-subdir/some-database/` 以导入 `some-database` 库。
 
-根据上述 Parquet 文件的路径，你可以编写正则表达式 `(?i)^(?:[^/]*/)*([a-z0-9_]+)\.([a-z0-9_]+)/(?:[^/]*/)*(?:[a-z0-9\-_.]+\.(parquet))$`，得到的 match group 中 index=1 的内容为 `some-database`，index=2 的内容为 `some-table`，index=3 的内容为 `parquet`。
+根据上述 Parquet 文件的路径，你可以编写正则表达式 `(?i)^(?:[^/]*/)*([a-z0-9\-_]+).([a-z0-9\-_]+)/(?:[^/]*/)*(?:[a-z0-9\-_.]+\.(parquet))$`，得到的 match group 中 index=1 的内容为 `some-database`，index=2 的内容为 `some-table`，index=3 的内容为 `parquet`。
 
 根据上述正则表达式及相应的 index 编写配置文件，TiDB Lightning 即可识别非默认命名规则的文件，最终实际配置如下：
 
 ```
 [[mydumper.files]]
 # 解析 AWS Aurora parquet 文件所需的表达式
-pattern = '(?i)^(?:[^/]*/)*([a-z0-9_]+)\.([a-z0-9_]+)/(?:[^/]*/)*(?:[a-z0-9\-_.]+\.(parquet))$'
+pattern = '(?i)^(?:[^/]*/)*([a-z0-9\-_]+).([a-z0-9\-_]+)/(?:[^/]*/)*(?:[a-z0-9\-_.]+\.(parquet))$'
 schema = '$1'
 table = '$2'
 type = '$3'
