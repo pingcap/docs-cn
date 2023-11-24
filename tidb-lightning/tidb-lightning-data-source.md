@@ -45,7 +45,7 @@ rename srcdb. tgtdb. *.sql
 
 下面是使用正则表达式在线替换名称的示例。其中：
 
-- 数据文件 `pattern` 的匹配规则是 '^({schema_regrex})\.({table_regrex})\.({file_serial_regrex})\.(csv|parquet|sql)'。
+- 数据文件 `pattern` 的匹配规则是 `'^({schema_regrex})\.({table_regrex})\.({file_serial_regrex})\.(csv|parquet|sql)'`。
 - `schema` 可以指定为 `'$1'`，代表第一个正则表达式 `schema_regrex` 取值不变；`schema` 也可以指定为一个字符串，如 `'tgtdb'`，代表固定的目标数据库名。
 - `table` 可以指定为 `'$2'`，代表第二个正则表达式 `table_regrex` 取值不变；`table` 也可以指定为一个字符串，如 `'t1'`，代表固定的目标表名。
 - `type` 可以指定为 `'$3'`，代表数据文件类型；`type` 可以指定为 `"table-schema"`（代表 `schema.sql` 文件） 或 `"schema-schema"`（代表 `schema-create.sql` 文件）。
