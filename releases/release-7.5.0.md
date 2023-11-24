@@ -112,6 +112,14 @@ TiDB 7.5.0 为长期支持版本 (Long-Term Support Release, LTS)。
 
     更多信息，请参考[用户文档](/br/br-snapshot-manual.md#备份统计信息)。
 
+### 可观测性
+
+* TiDB Dashboard 性能分析支持 TiKV 堆内存分析 [#15927](https://github.com/tikv/tikv/issues/15927) @[Connor1996](https://github.com/Connor1996)
+
+    在之前版本中调查 TiKV OOM 或内存使用高的问题时，往往需要在实例环境下手动运行 `jeprof` 生成 Heap Profile。从 v7.5.0 开始，TiKV 支持远程处理 Heap Profile，你可以通过 TiDB Dashboard 直接获取 Heap Profile 的火焰图和调用图。该功能提供了与 Go 堆内存分析同等的简单易用体验。
+
+    更多信息，请参考[用户文档](/dashboard/dashboard-profiling.md)。
+
 ### 数据迁移
 
 * `IMPORT INTO` SQL 语句成为正式功能 (GA) [#46704](https://github.com/pingcap/tidb/issues/46704) @[D3Hunter](https://github.com/D3Hunter)
