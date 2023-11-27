@@ -785,13 +785,13 @@ Configuration items related to Raftstore.
 
 ### `region-compact-min-redundant-rows` <span class="version-mark">New in v7.1.0</span>
 
-+ The number of redundant MVCC rows required to trigger RocksDB compaction. This configuration only takes effect for Partitioned Raft KV (`storage.engine="partitioned-raft-kv"`).
++ The number of redundant MVCC rows required to trigger RocksDB compaction.
 + Default value: `50000`
 + Minimum value: `0`
 
 ### `region-compact-redundant-rows-percent` <span class="version-mark">New in v7.1.0</span>
 
-+ The percentage of redundant MVCC rows required to trigger RocksDB compaction. This configuration only takes effect for Partitioned Raft KV (`storage.engine="partitioned-raft-kv"`).
++ The percentage of redundant MVCC rows required to trigger RocksDB compaction.
 + Default value: `20`
 + Minimum value: `1`
 + Maximum value: `100`
@@ -1023,6 +1023,13 @@ Configuration items related to Raftstore.
 + Default value: Before v6.3.0, the default value is `"0s"`. Starting from v6.3.0, the default value is `"1s"`, which is the smallest positive value.
 + Minimum value: `0`
 + Unit: second
+
+### `evict-cache-on-memory-ratio` <span class="version-mark">New in v7.5.0</span>
+
++ When the memory usage of TiKV exceeds 90% of the system available memory, and the memory occupied by Raft entry cache exceeds the used memory * `evict-cache-on-memory-ratio`, TiKV evicts the Raft entry cache.
++ If this value is set to `0`, it means that this feature is disabled.
++ Default value: `0.1`
++ Minimum value: `0`
 
 ## coprocessor
 
@@ -2333,3 +2340,15 @@ Configuration items related to [Load Base Split](/configure-load-base-split.md).
 
     + `0.25` when [`region-split-size`](#region-split-size) is less than 4 GB.
     + `0.75` when  [`region-split-size`](#region-split-size) is greater than or equal to 4 GB.
+
+## memory <span class="version-mark">New in v7.5.0</span>
+
+### `enable-heap-profiling` <span class="version-mark">New in v7.5.0</span>
+
++ Controls whether to enable Heap Profiling to track the memory usage of TiKV.
++ Default value: `true`
+
+### `profiling-sample-per-bytes` <span class="version-mark">New in v7.5.0</span>
+
++ Specifies the amount of data sampled by Heap Profiling each time, rounding up to the nearest power of 2.
++ Default value: `512KB`
