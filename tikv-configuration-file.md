@@ -2349,10 +2349,10 @@ Raft Engine 相关的配置项。
 
 ### `enable-heap-profiling` <span class="version-mark">从 v7.5.0 版本开始引入</span>
 
-+ 控制是否开启 Heap Profiling 功能，以跟踪 TiKV 的内存使用情况。
++ 控制是否开启 TiKV 堆内存分析功能，以跟踪 TiKV 的内存使用情况。
 + 默认值：true
 
 ### `profiling-sample-per-bytes` <span class="version-mark">从 v7.5.0 版本开始引入</span>
 
-+ 设置 Heap Profiling 每次采样的数据量，以 2 的指数次幂向上取整。
++ 设置 TiKV 堆内存分析每次采样的数据量，以 2 的指数次幂向上取整。
 + 默认值：512KB
