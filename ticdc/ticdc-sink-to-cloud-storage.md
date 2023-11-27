@@ -79,8 +79,8 @@ Azure Blob Storage 配置样例如下：
 ```
 
 > **建议：**
-> 
-> Amazon S3、GCS 以及 Azure Blob Storage 的 URI 参数与 BR 中这三种外部存储的 URI 参数相同。详细参数说明请参考 [BR 备份存储服务的 URI 格式](/br/backup-and-restore-storages.md#格式说明)。
+>
+> 关于 Amazon S3、GCS 以及 Azure Blob Storage 的 URI 参数的详细参数说明，请参考[外部存储服务的 URI 格式](/external-storage-uri.md)。
 
 ### 配置 NFS
 

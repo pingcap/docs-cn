@@ -79,19 +79,12 @@ Top-N 即是这个列或者这个索引中，出现次数前 n 的值。TiDB 会
 
 ### 手动收集
 
-可以通过执行 `ANALYZE` 语句来收集统计信息。
+目前 TiDB 收集统计信息为全量收集，通过 `ANALYZE TABLE` 语句来实现。
 
 > **注意：**
 >
-> 在 TiDB 中执行 `ANALYZE TABLE` 语句比在 MySQL 或 InnoDB 中耗时更长。InnoDB 采样的只是少量页面，但 TiDB 会完全重构一系列统计信息。适用于 MySQL 的脚本会误以为执行 `ANALYZE TABLE` 耗时较短。
->
-> 如需更快的分析速度，可将 `tidb_enable_fast_analyze` 设置为 `1` 来打开快速分析功能。该参数的默认值为 `0`。
->
-> 快速分析功能开启后，TiDB 会随机采样约 10000 行的数据来构建统计信息。因此在数据分布不均匀或者数据量比较少的情况下，统计信息的准确度会比较差。可能导致执行计划不优，比如选错索引。如果可以接受普通 `ANALYZE` 语句的执行时间，则推荐关闭快速分析功能。
->
-> `tidb_enable_fast_analyze` 为实验性功能，目前与 `tidb_analyze_version=2` 的统计信息**不完全匹配**。因此开启 `tidb_enable_fast_analyze` 时需要将 `tidb_analyze_version` 的值设置为 `1`。
-
-#### 全量收集
+> - 在 TiDB 中执行 `ANALYZE TABLE` 语句比在 MySQL 或 InnoDB 中耗时更长。InnoDB 采样的只是少量页面，但 TiDB 会完全重构一系列统计信息。适用于 MySQL 的脚本会误以为执行 `ANALYZE TABLE` 耗时较短。
+> - 从 v7.5.0 开始，统计信息[快速分析 (`tidb_enable_fast_analyze`)](/system-variables.md#tidb_enable_fast_analyze) 和[增量收集](https://docs.pingcap.com/zh/tidb/v7.4/statistics#增量收集)废弃。
 
 可以通过以下几种语法进行全量收集。
 
@@ -123,7 +116,7 @@ ANALYZE TABLE TableNameList [WITH NUM BUCKETS|TOPN|CMSKETCH DEPTH|CMSKETCH WIDTH
 >
 > 通常情况下，`STATS_META` 相对 `TABLE_KEYS` 更可信，但是通过 [TiDB Lightning](/tidb-lightning/tidb-lightning-overview.md) 等方式导入数据结束后，`STATS_META` 结果是 `0`。为了处理这个情况，你可以在 `STATS_META` 的结果远小于 `TABLE_KEYS` 的结果时，使用 `TABLE_KEYS` 计算采样率。
 
-##### 收集部分列的统计信息
+#### 收集部分列的统计信息
 
 执行 SQL 语句时，优化器在大多数情况下只会用到部分列（例如，`WHERE`、`JOIN`、`ORDER BY`、`GROUP BY` 子句中出现的列）的统计信息，这些被用到的列称为 `PREDICATE COLUMNS`。
 
@@ -245,7 +238,7 @@ SHOW COLUMN_STATS_USAGE WHERE db_name = 'test' AND table_name = 't' AND last_ana
 3 rows in set (0.00 sec)
 ```
 
-##### 收集索引的统计信息
+#### 收集索引的统计信息
 
 如果要收集 TableName 中 IndexNameList 里所有索引的统计信息，请使用以下语法：
 
@@ -261,7 +254,7 @@ ANALYZE TABLE TableName INDEX [IndexNameList] [WITH NUM BUCKETS|TOPN|CMSKETCH DE
 >
 > 为了保证前后统计信息的一致性，当设置 `tidb_analyze_version=2` 时，该语句也会收集整个表的统计信息（包括所有列和所有索引的统计信息）而不限于索引的统计信息。
 
-##### 收集分区的统计信息
+#### 收集分区的统计信息
 
 - 如果要收集 TableName 中所有的 PartitionNameList 中分区的统计信息，请使用以下语法：
 
@@ -291,7 +284,7 @@ ANALYZE TABLE TableName INDEX [IndexNameList] [WITH NUM BUCKETS|TOPN|CMSKETCH DE
     ANALYZE TABLE TableName PARTITION PartitionNameList [COLUMNS ColumnNameList|PREDICATE COLUMNS|ALL COLUMNS] [WITH NUM BUCKETS|TOPN|CMSKETCH DEPTH|CMSKETCH WIDTH]|[WITH NUM SAMPLES|WITH FLOATNUM SAMPLERATE];
     ```
 
-##### 动态裁剪模式下的分区表统计信息
+#### 动态裁剪模式下的分区表统计信息
 
 分区表在开启[动态裁剪模式](/partitioned-table.md#动态裁剪模式)的情况下，TiDB 将收集表级别的汇总统计信息，以下称 GlobalStats。 目前 GlobalStats 由分区统计信息合并汇总得到。在动态裁剪模式开启的情况下，任一分区上的统计信息更新都会触发 GlobalStats 的更新。
 
@@ -303,37 +296,10 @@ ANALYZE TABLE TableName INDEX [IndexNameList] [WITH NUM BUCKETS|TOPN|CMSKETCH DE
 >     - 若某些列的统计信息合并过程中，缺少某些分区在该列上的统计信息（在不同分区上 analyze 时指定了不同的列），会停止生成 GlobalStats，并通过 warning 信息提示用户缺少列在分区上的统计信息。
 >
 > - 当触发 GlobalStats 更新时，如果 [`tidb_skip_missing_partition_stats`](/system-variables.md#tidb_skip_missing_partition_stats-从-v730-版本开始引入) 开启：
-> 
+>
 >     如果某些分区缺失全部或者部分列的统计信息，TiDB 生成 GlobalStats 时会跳过缺失的分区统计信息，不影响 GlobalStats 生成。
 >
 > - 在动态裁剪模式开启的情况下，分区和表的 ANALYZE 配置需要保持一致，因此 ANALYZE TABLE TableName PARTITION PartitionNameList 命令后指定的 COLUMNS 配置和 WITH 后指定的 OPTIONS 配置将被忽略，并会通过 warning 信息提示用户。
-
-#### 增量收集
-
-对于类似时间列这样的单调不减列，在进行全量收集后，可以使用增量收集来单独分析新增的部分，以提高分析的速度。
-
-> **注意：**
->
-> 1. 目前只有索引提供了增量收集的功能
-> 2. 使用增量收集时，必须保证表上只有插入操作，且应用方需要保证索引列上新插入的值是单调不减的，否则会导致统计信息不准，影响 TiDB 优化器选择合适的执行计划
-
-可以通过以下几种语法进行增量收集。
-
-增量收集 TableName 中所有的 IndexNameList 中的索引列的统计信息：
-
-{{< copyable "sql" >}}
-
-```sql
-ANALYZE INCREMENTAL TABLE TableName INDEX [IndexNameList] [WITH NUM BUCKETS|TOPN|CMSKETCH DEPTH|CMSKETCH WIDTH]|[WITH NUM SAMPLES|WITH FLOATNUM SAMPLERATE];
-```
-
-增量收集 TableName 中所有的 PartitionNameList 中分区的索引列统计信息：
-
-{{< copyable "sql" >}}
-
-```sql
-ANALYZE INCREMENTAL TABLE TableName PARTITION PartitionNameList INDEX [IndexNameList] [WITH NUM BUCKETS|TOPN|CMSKETCH DEPTH|CMSKETCH WIDTH]|[WITH NUM SAMPLES|WITH FLOATNUM SAMPLERATE];
-```
 
 ### 自动更新
 
@@ -343,9 +309,10 @@ ANALYZE INCREMENTAL TABLE TableName PARTITION PartitionNameList INDEX [IndexName
 
 |  系统变量名 | 默认值 | 功能 |
 |---|---|---|
-| `tidb_auto_analyze_ratio`| 0.5 | 自动更新阈值 |
-| `tidb_auto_analyze_start_time` | `00:00 +0000` | 一天中能够进行自动更新的开始时间 |
-| `tidb_auto_analyze_end_time`   | `23:59 +0000` | 一天中能够进行自动更新的结束时间 |
+| [`tidb_auto_analyze_ratio`](/system-variables.md#tidb_auto_analyze_ratio) | 0.5 | 自动更新阈值 |
+| [`tidb_auto_analyze_start_time`](/system-variables.md#tidb_auto_analyze_start_time) | `00:00 +0000` | 一天中能够进行自动更新的开始时间 |
+| [`tidb_auto_analyze_end_time`](/system-variables.md#tidb_auto_analyze_end_time) | `23:59 +0000` | 一天中能够进行自动更新的结束时间 |
+| [`tidb_auto_analyze_partition_batch_size`](/system-variables.md#tidb_auto_analyze_partition_batch_size-从-v640-版本开始引入)   | `1` | TiDB 自动 analyze 分区表（即自动更新分区表的统计信息）时，每次同时 analyze 分区的个数 |
 
 当某个表 `tbl` 的修改行数与总行数的比值大于 `tidb_auto_analyze_ratio`，并且当前时间在 `tidb_auto_analyze_start_time` 和 `tidb_auto_analyze_end_time` 之间时，TiDB 会在后台执行 `ANALYZE TABLE tbl` 语句自动更新这个表的统计信息。
 
@@ -373,24 +340,38 @@ ANALYZE INCREMENTAL TABLE TableName PARTITION PartitionNameList INDEX [IndexName
 
    - 如果 [`enable-global-kill`](/tidb-configuration-file.md#enable-global-kill-从-v610-版本开始引入) 的值为 `true` (默认为 `true`），你可以直接执行 `KILL TIDB ${id};` 语句。其中，${id} 为上一步中查询得到的后台 `ANALYZE` 任务的 `ID`。
    - 如果 `enable-global-kill` 的值为 `false`，你需要先使用客户端连接到执行后台 `ANALYZE` 任务的 TiDB 实例，然后再执行 `KILL TIDB ${id};` 语句。如果使用客户端连接到其他 TiDB 实例，或者客户端和 TiDB 中间有代理，`KILL` 语句不能终止后台的 `ANALYZE` 任务。
-  
+
 关于 `KILL` 语句的更多信息，请参考 [`KILL [TIDB]`](/sql-statements/sql-statement-kill.md)。
 
 ### 控制 ANALYZE 并发度
 
-执行 ANALYZE 语句的时候，你可以通过一些参数来调整并发度，以控制对系统的影响。
+执行 ANALYZE 语句的时候，你可以通过一些系统变量来调整并发度，以控制对系统的影响。
 
-#### tidb_build_stats_concurrency
+相关系统变量的关系如下图所示：
 
-目前 ANALYZE 执行的时候会被切分成一个个小的任务，每个任务只负责某一个列或者索引。`tidb_build_stats_concurrency` 可以控制同时执行的任务的数量，其默认值是 4。
+![analyze_concurrency](/media/analyze_concurrency.png)
 
-#### tidb_distsql_scan_concurrency
+`tidb_build_stats_concurrency`、`tidb_build_sampling_stats_concurrency` 和 `tidb_analyze_partition_concurrency` 为上下游关系。实际的总并发为：`tidb_build_stats_concurrency`* (`tidb_build_sampling_stats_concurrency` + `tidb_analyze_partition_concurrency`) 。所以在变更这些参数的时候，需要同时考虑这三个参数的值。建议按 `tidb_analyze_partition_concurrency`、`tidb_build_sampling_stats_concurrency`、`tidb_build_stats_concurrency` 的顺序逐个调节，并观察对系统的影响。这三个参数的值越大，对系统的资源开销就越大。
 
-在执行分析普通列任务的时候，`tidb_distsql_scan_concurrency` 可以用于控制一次读取的 Region 数量，其默认值是 15。
+#### `tidb_build_stats_concurrency`
 
-#### tidb_index_serial_scan_concurrency
+`ANALYZE` 在执行时会被切分成一个个小任务，每个任务只负责某一个列或者索引的统计信息收集。[`tidb_build_stats_concurrency`](/system-variables.md#tidb_build_stats_concurrency) 用于控制可以同时执行的小任务的数量，其默认值是 `2`。TiDB v7.4.0 及其之前版本默认值为 `4`。
 
-在执行分析索引列任务的时候，`tidb_index_serial_scan_concurrency` 可以用于控制一次读取的 Region 数量，其默认值是 1。
+#### `tidb_build_sampling_stats_concurrency`
+
+在执行 `ANALYZE` 普通列任务的时候，[`tidb_build_sampling_stats_concurrency`](/system-variables.md#tidb_build_sampling_stats_concurrency-从-v750-版本开始引入) 可以用于控制执行采样任务的并发数量，其默认值是 `2`。
+
+#### `tidb_analyze_partition_concurrency`
+
+在执行 `ANALYZE` 的时候，[`tidb_analyze_partition_concurrency`](/system-variables.md#tidb_analyze_partition_concurrency) 可以用于控制对分区表统计信息进行读写的并发度，其默认值是 `2`。TiDB v7.4.0 及其之前版本默认值为 `1`。
+
+#### `tidb_distsql_scan_concurrency`
+
+在执行分析普通列任务的时候，[`tidb_distsql_scan_concurrency`](/system-variables.md#tidb_distsql_scan_concurrency) 可以用于控制一次读取的 Region 数量，其默认值是 15。修改该变量值会影响查询性能，请谨慎调整。
+
+#### `tidb_index_serial_scan_concurrency`
+
+在执行分析索引列任务的时候，[`tidb_index_serial_scan_concurrency`](/system-variables.md#tidb_index_serial_scan_concurrency) 可以用于控制一次读取的 Region 数量，其默认值是 1。修改该变量值会影响查询性能，请谨慎调整。
 
 ### ANALYZE 配置持久化
 
@@ -497,9 +478,9 @@ SHOW ANALYZE STATUS [ShowLikeOrWhere];
 ```sql
 mysql> SHOW ANALYZE STATUS [ShowLikeOrWhere];
 +--------------+------------+----------------+-------------------------------------------------------------------------------------------+----------------+---------------------+---------------------+----------+-------------------------------------------------------------------------------|
-| Table_schema | Table_name | Partition_name | Job_info                                                                                  | Processed_rows | Start_time          | End_time            | State    | Fail_reason                                                                   | 
+| Table_schema | Table_name | Partition_name | Job_info                                                                                  | Processed_rows | Start_time          | End_time            | State    | Fail_reason                                                                   |
 +--------------+------------+----------------+-------------------------------------------------------------------------------------------+----------------+---------------------+---------------------+----------+-------------------------------------------------------------------------------|
-| test         | sbtest1    |                | retry auto analyze table all columns with 100 topn, 0.055 samplerate                      |        2000000 | 2022-05-07 16:41:09 | 2022-05-07 16:41:20 | finished | NULL                                                                          | 
+| test         | sbtest1    |                | retry auto analyze table all columns with 100 topn, 0.055 samplerate                      |        2000000 | 2022-05-07 16:41:09 | 2022-05-07 16:41:20 | finished | NULL                                                                          |
 | test         | sbtest1    |                | auto analyze table all columns with 100 topn, 0.5 samplerate                              |              0 | 2022-05-07 16:40:50 | 2022-05-07 16:41:09 | failed   | analyze panic due to memory quota exceeds, please try with smaller samplerate |
 ```
 
@@ -760,37 +741,37 @@ LOAD STATS 'file_name';
 >
 > 锁定统计信息目前为实验特性，不建议在生产环境中使用。
 
-从 v6.5.0 开始，TiDB 引入了锁定统计信息的特性。当一张表的统计信息被锁定以后，该表的统计信息将无法被修改，也无法对该表进行 `ANALYZE` 操作。用例如下：
+从 v6.5.0 开始，TiDB 引入了锁定统计信息的特性。当一张表或一个分区的统计信息被锁定以后，该表或分区的统计信息将无法被修改，也无法对该表进行 `ANALYZE` 操作。用例如下：
 
 创建表 `t`，插入一些数据，在未锁定表 `t` 的统计信息的情况下成功执行 `ANALYZE` 语句。
 
 ```sql
-mysql> create table t(a int, b int);
+mysql> CREATE TABLE t(a INT, b INT);
 Query OK, 0 rows affected (0.03 sec)
 
-mysql> insert into t values (1,2), (3,4), (5,6), (7,8);
+mysql> INSERT INTO t VALUES (1,2), (3,4), (5,6), (7,8);
 Query OK, 4 rows affected (0.00 sec)
 Records: 4  Duplicates: 0  Warnings: 0
 
-mysql> analyze table t;
+mysql> ANALYZE TABLE t;
 Query OK, 0 rows affected, 1 warning (0.02 sec)
 
-mysql> show warnings;
-+-------+------+-----------------------------------------------------------------+
-| Level | Code | Message                                                         |
-+-------+------+-----------------------------------------------------------------+
-| Note  | 1105 | Analyze use auto adjusted sample rate 1.000000 for table test.t |
-+-------+------+-----------------------------------------------------------------+
+mysql> SHOW WARNINGS;
++-------+------+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| Level | Code | Message                                                                                                                                                                                                               |
++-------+------+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| Note  | 1105 | Analyze use auto adjusted sample rate 1.000000 for table test.t, reason to use this rate is "Row count in stats_meta is much smaller compared with the row count got by PD, use min(1, 15000/4) as the sample-rate=1" |
++-------+------+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
 1 row in set (0.00 sec)
 ```
 
 锁定表 `t` 的统计信息，执行 `ANALYZE` 语句，warning 提示跳过对表 `t` 的 `ANALYZE`。
 
 ```sql
-mysql> lock stats t;
+mysql> LOCK STATS t;
 Query OK, 0 rows affected (0.00 sec)
 
-mysql> show stats_locked;
+mysql> SHOW STATS_LOCKED;
 +---------+------------+----------------+--------+
 | Db_name | Table_name | Partition_name | Status |
 +---------+------------+----------------+--------+
@@ -798,36 +779,123 @@ mysql> show stats_locked;
 +---------+------------+----------------+--------+
 1 row in set (0.01 sec)
 
-mysql> analyze table t;
+mysql> ANALYZE TABLE t;
 Query OK, 0 rows affected, 2 warnings (0.00 sec)
 
-mysql> show warnings;
-+---------+------+-----------------------------------------------------------------+
-| Level   | Code | Message                                                         |
-+---------+------+-----------------------------------------------------------------+
-| Note    | 1105 | Analyze use auto adjusted sample rate 1.000000 for table test.t |
-| Warning | 1105 | skip analyze locked table: t                                    |
-+---------+------+-----------------------------------------------------------------+
+mysql> SHOW WARNINGS;
++---------+------+-----------------------------------------------------------------------------------------------------------------------------------------+
+| Level   | Code | Message                                                                                                                                 |
++---------+------+-----------------------------------------------------------------------------------------------------------------------------------------+
+| Note    | 1105 | Analyze use auto adjusted sample rate 1.000000 for table test.t, reason to use this rate is "use min(1, 110000/8) as the sample-rate=1" |
+| Warning | 1105 | skip analyze locked table: test.t                                                                                                       |
++---------+------+-----------------------------------------------------------------------------------------------------------------------------------------+
 2 rows in set (0.00 sec)
 ```
 
 解锁表 `t` 的统计信息，成功执行 `ANALYZE` 语句。
 
 ```sql
-mysql> unlock stats t;
+mysql> UNLOCK STATS t;
 Query OK, 0 rows affected (0.01 sec)
 
-mysql> analyze table t;
+mysql> ANALYZE TABLE t;
 Query OK, 0 rows affected, 1 warning (0.03 sec)
 
-mysql> show warnings;
-+-------+------+-----------------------------------------------------------------+
-| Level | Code | Message                                                         |
-+-------+------+-----------------------------------------------------------------+
-| Note  | 1105 | Analyze use auto adjusted sample rate 1.000000 for table test.t |
-+-------+------+-----------------------------------------------------------------+
+mysql> SHOW WARNINGS;
++-------+------+-----------------------------------------------------------------------------------------------------------------------------------------+
+| Level | Code | Message                                                                                                                                 |
++-------+------+-----------------------------------------------------------------------------------------------------------------------------------------+
+| Note  | 1105 | Analyze use auto adjusted sample rate 1.000000 for table test.t, reason to use this rate is "use min(1, 110000/8) as the sample-rate=1" |
++-------+------+-----------------------------------------------------------------------------------------------------------------------------------------+
 1 row in set (0.00 sec)
 ```
+
+另外，你也可以通过 `LOCK STATS` 语句锁定分区的统计信息。用例如下：
+
+创建分区表 `t`，插入一些数据，在未锁定分区 `p1` 的统计信息的情况下成功执行 `ANALYZE` 语句。
+
+```sql
+mysql> CREATE TABLE t(a INT, b INT) PARTITION BY RANGE (a) (PARTITION p0 VALUES LESS THAN (10), PARTITION p1 VALUES LESS THAN (20), PARTITION p2 VALUES LESS THAN (30));
+Query OK, 0 rows affected (0.03 sec)
+
+mysql> INSERT INTO t VALUES (1,2), (3,4), (5,6), (7,8);
+Query OK, 4 rows affected (0.00 sec)
+Records: 4  Duplicates: 0  Warnings: 0
+
+mysql> ANALYZE TABLE t;
+Query OK, 0 rows affected, 6 warning (0.02 sec)
+
+mysql> SHOW WARNINGS;
++---------+------+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| Level   | Code | Message                                                                                                                                                                                                                              |
++---------+------+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| Warning | 1105 | disable dynamic pruning due to t has no global stats                                                                                                                                                                                 |
+| Note    | 1105 | Analyze use auto adjusted sample rate 1.000000 for table test.t's partition p0, reason to use this rate is "Row count in stats_meta is much smaller compared with the row count got by PD, use min(1, 15000/4) as the sample-rate=1" |
+| Warning | 1105 | disable dynamic pruning due to t has no global stats                                                                                                                                                                                 |
+| Note    | 1105 | Analyze use auto adjusted sample rate 1.000000 for table test.t's partition p1, reason to use this rate is "TiDB assumes that the table is empty, use sample-rate=1"                                                                 |
+| Warning | 1105 | disable dynamic pruning due to t has no global stats                                                                                                                                                                                 |
+| Note    | 1105 | Analyze use auto adjusted sample rate 1.000000 for table test.t's partition p2, reason to use this rate is "TiDB assumes that the table is empty, use sample-rate=1"                                                                 |
++---------+------+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+6 rows in set (0.01 sec)
+```
+
+锁定分区 `p1` 的统计信息，执行 `ANALYZE` 语句，warning 提示跳过对分区 `p1` 的 `ANALYZE`。
+
+```sql
+mysql> LOCK STATS t PARTITION p1;
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> SHOW STATS_LOCKED;
++---------+------------+----------------+--------+
+| Db_name | Table_name | Partition_name | Status |
++---------+------------+----------------+--------+
+| test    | t          | p1             | locked |
++---------+------------+----------------+--------+
+1 row in set (0.00 sec)
+
+mysql> ANALYZE TABLE t PARTITION p1;
+Query OK, 0 rows affected, 2 warnings (0.01 sec)
+
+mysql> SHOW WARNINGS;
++---------+------+----------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| Level   | Code | Message                                                                                                                                                              |
++---------+------+----------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| Note    | 1105 | Analyze use auto adjusted sample rate 1.000000 for table test.t's partition p1, reason to use this rate is "TiDB assumes that the table is empty, use sample-rate=1" |
+| Warning | 1105 | skip analyze locked table: test.t partition (p1)                                                                                                                     |
++---------+------+----------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+2 rows in set (0.00 sec)
+```
+
+解锁分区 `p1` 的统计信息，成功执行 `ANALYZE` 语句。
+
+```sql
+mysql> UNLOCK STATS t PARTITION p1;
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> ANALYZE TABLE t PARTITION p1;
+Query OK, 0 rows affected, 1 warning (0.01 sec)
+
+mysql> SHOW WARNINGS;
++-------+------+----------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| Level | Code | Message                                                                                                                                                              |
++-------+------+----------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| Note  | 1105 | Analyze use auto adjusted sample rate 1.000000 for table test.t's partition p1, reason to use this rate is "TiDB assumes that the table is empty, use sample-rate=1" |
++-------+------+----------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+1 row in set (0.00 sec)
+```
+
+### 锁定统计信息的行为说明
+
+* 如果统计信息在分区表上锁定，那么该分区表上所有分区的统计信息就都保持锁定。
+* 如果表或者分区被 truncate，该表或分区上的统计信息锁定将会被解除。
+
+具体行为参见下面表格：
+
+|                            | 删除整张表 | Truncate 整张表                                                | Truncate 某个分区                                              | 创建一个新分区 | 删除某个分区                                 | Reorganize 某个分区                          | 交换某个分区             |
+|----------------------------|------------|----------------------------------------------------------------|----------------------------------------------------------------|----------------|----------------------------------------------|----------------------------------------------|--------------------------|
+| 非分区表被锁定             | 锁定失效   | 锁定失效，因为 TiDB 删除了旧表，所以锁定信息也一起被删除       | /                                                              | /              | /                                            | /                                            | /                        |
+| 分区表并且整张表被锁定     | 锁定失效   | 锁定失效，因为 TiDB 删除了旧表，所以锁定信息也一起被删除       | 旧的分区锁定信息失效，自动锁定新的分区                         | 自动锁定新分区 | 被删除的分区锁定信息被清理，整张表锁继续生效 | 被删除的分区锁定信息被清理，新分区被自动锁定 | 锁定信息被转移到被交换表，新分区被自动锁定 |
+| 分区表并且只锁定了某些分区 | 锁定失效   | 锁定失效，因为 TiDB 删除了旧的分区表，所以锁定信息也一起被删除 | 锁定失效，因为 TiDB 删除了旧的分区表，所以锁定信息也一起被删除 | /              | 被删除的分区锁定信息被清理                   | 被删除的分区锁定信息被清理                   | 锁定信息被转移到被交换表 |
 
 ## 另请参阅
 

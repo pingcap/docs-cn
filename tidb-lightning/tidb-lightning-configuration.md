@@ -49,9 +49,7 @@ enable-diagnose-logs = false
 
 # 引擎文件的最大并行数。
 # 每张表被切分成一个用于存储索引的“索引引擎”和若干存储行数据的“数据引擎”。
-# 这两项设置控制两种引擎文件的最大并发数。
-# 这两项设置的值会影响 tikv-importer 的内存和磁盘用量。
-# 两项数值之和不能超过 tikv-importer 的 max-open-engines 的设定。
+# 这两项设置控制两种引擎文件的最大并发数。通常情况下，你可以使用默认值。
 index-concurrency = 2
 table-concurrency = 6
 
@@ -395,13 +393,12 @@ log-progress = "5m"
 |:----|:----|:----|
 | --config *file* | 从 *file* 读取全局设置。如果没有指定则使用默认设置。 | |
 | -V | 输出程序的版本 | |
-| -d *directory* | 读取数据的本地目录或[外部存储 URI](/br/backup-and-restore-storages.md#uri-格式) | `mydumper.data-source-dir` |
+| -d *directory* | 读取数据的本地目录或[外部存储服务的 URI](/external-storage-uri.md) | `mydumper.data-source-dir` |
 | -L *level* | 日志的等级： debug、info、warn、error 或 fatal (默认为 info) | `lightning.log-level` |
 | -f *rule* | [表库过滤的规则](/table-filter.md) (可多次指定) | `mydumper.filter` |
 | --backend [*backend*](/tidb-lightning/tidb-lightning-overview.md) | 选择导入的模式：`local` 为物理导入模式，`tidb` 为逻辑导入模式  | `local` |
 | --log-file *file* | 日志文件路径（默认值为 `/tmp/lightning.log.{timestamp}`，设置为 '-' 表示日志输出到终端） | `lightning.log-file` |
 | --status-addr *ip:port* | TiDB Lightning 服务器的监听地址 | `lightning.status-port` |
-| --importer *host:port* | TiKV Importer 的地址 | `tikv-importer.addr` |
 | --pd-urls *host:port* | PD endpoint 的地址 | `tidb.pd-addr` |
 | --tidb-host *host* | TiDB Server 的 host | `tidb.host` |
 | --tidb-port *port* | TiDB Server 的端口（默认为 4000） | `tidb.port` |

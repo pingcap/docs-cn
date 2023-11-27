@@ -22,7 +22,7 @@ TiDB 优化器对这两类查询的处理是一样的：`Prepare` 时将参数�
 - 访问分区表、临时表或访问表中包含生成列的查询；
 - 查询中包含非关联子查询，例如 `SELECT * FROM t1 WHERE t1.a > (SELECT 1 FROM t2 WHERE t2.b < 1)`；
 - 执行计划中带有 `PhysicalApply` 算子的关联子查询，例如 `SELECT * FROM t1 WHERE t1.a > (SELECT a FROM t2 WHERE t1.b > t2.b)`；
-- 包含 `ignore_plan_cache` 这一 Hint 的查询，例如 `select /*+ ignore_plan_cache() */ * from t`；
+- 包含 `ignore_plan_cache` 或 `set_var` 这两个 Hint 的查询，例如 `SELECT /*+ ignore_plan_cache() */ * FROM t` 或 `SELECT /*+ set_var(max_execution_time=1) */ * FROM t`；
 - 包含除 `?` 外其他变量（即系统变量或用户自定义变量）的查询，例如 `select * from t where a>? and b>@x`；
 - 查询包含无法被缓存函数。目前不能被缓存的函数有：`database()`、`current_user`、`current_role`、`user`、`connection_id`、`last_insert_id`、`row_count`、`version`、`like`；
 - `LIMIT` 后面带有变量（例如 `LIMIT ?` 或 `LIMIT 10, ?`）且变量值大于 10000 的执行计划不缓存；
@@ -32,6 +32,9 @@ TiDB 优化器对这两类查询的处理是一样的：`Prepare` 时将参数�
 - 用参数进行 `int` 和 `string` 比较的查询，如 `c_int >= ?` 或者 `c_int in (?, ?)`等，其中 `?` 为字符串类型，如 `set @x='123'`；此时为了保证结果和 MySQL 兼容性，需要每次对参数进行调整，故不会缓存；
 - 会访问 `TiFlash` 的计划不会被缓存；
 - 大部分情况下计划中含有 `TableDual` 的计划将将不会被缓存，除非当前执行的 `Prepare` 语句不含参数，则对应的 `TableDual` 计划可以被缓存。
+- 访问 TiDB 系统视图的查询，如 `information_schema.columns`。不建议使用 `Prepare`/`Execute` 语句访问系统视图。
+
+TiDB 对 `?` 的个数有限制，如果超过了 65535 个，则会报错 `Prepared statement contains too many placeholders`。
 
 LRU 链表是设计成 session 级别的缓存，因为 `Prepare`/`Execute` 不能跨 session 执行。LRU 链表的每个元素是一个 key-value 对，value 是执行计划，key 由如下几部分组成：
 

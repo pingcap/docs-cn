@@ -43,6 +43,7 @@ TiDB 提供两种预估方式：
 - `OLTP_WRITE_ONLY`：数据写入较重的负载，根据类似 `sysbench oltp_write_only` 的负载模型预测。
 - `OLTP_READ_WRITE`：数据读写平衡的负载，根据类似 `sysbench oltp_read_write` 的负载模型预测。
 - `OLTP_READ_ONLY`：数据读取较重的负载，根据类似 `sysbench oltp_read_only` 的负载模型预测。
+- `TPCH_10`：AP 类型查询，根据 TPCH-10G 的 22 条查询进行负载预测。
 
 > **注意：**
 >
@@ -91,7 +92,7 @@ CALIBRATE RESOURCE START_TIME '2023-04-18 08:00:00' DURATION '9m';
 ERROR 1105 (HY000): the duration of calibration is too short, which could lead to inaccurate output. Please make the duration between 10m0s and 24h0m0s
 ```
 
-[根据实际负载估算容量](#根据实际负载估算容量)功能的监控指标包括 `tikv_cpu_quota`、`tidb_server_maxprocs`、`resource_manager_resource_unit`、`process_cpu_usage`。如果 CPU quota 监控数据为空，会有对应监控项名称的报错，如下面例子所示。
+[根据实际负载估算容量](#根据实际负载估算容量)功能的监控指标包括 `tikv_cpu_quota`、`tidb_server_maxprocs`、`resource_manager_resource_unit`、`process_cpu_usage`、`tiflash_cpu_quota`、`tiflash_resource_manager_resource_unit`、`tiflash_process_cpu_usage`。如果 CPU quota 监控数据为空，会有对应监控项名称的报错，如下面例子所示。
 
 ```sql
 CALIBRATE RESOURCE START_TIME '2023-04-18 08:00:00' DURATION '60m';

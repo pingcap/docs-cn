@@ -177,7 +177,6 @@ mysql> SELECT AVG(s_quantity), COUNT(s_quantity) FROM stock;
 ## MySQL 兼容性
 
 - 不支持 `SELECT ... INTO @variable` 语法。
-- 不支持 `SELECT ... GROUP BY ... WITH ROLLUP` 语法。
 - 不支持 MySQL 5.7 中支持的 `SELECT .. GROUP BY expr` 语法，而是匹配 MySQL 8.0 的行为，不按照默认的顺序进行排序。
 - `SELECT ... TABLESAMPLE ...` 是 TiDB 的扩展语法，MySQL 不支持该语法。
 

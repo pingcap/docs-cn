@@ -58,7 +58,7 @@ SELECT 1 AS `identifier`, 2 AS 'string';
 1 row in set (0.00 sec)
 ```
 
-更多细节，请参考 [MySQL 文档](https://dev.mysql.com/doc/refman/5.7/en/identifiers.html)。
+更多细节，请参考 [MySQL 文档](https://dev.mysql.com/doc/refman/8.0/en/identifiers.html)。
 
 ## Identifier Qualifiers
 
@@ -92,4 +92,4 @@ CREATE TABLE test.t (i int);
 `table_name.col_name`
 ```
 
-更多细节，请参考 [MySQL 文档](https://dev.mysql.com/doc/refman/5.7/en/identifier-qualifiers.html)。
+更多细节，请参考 [MySQL 文档](https://dev.mysql.com/doc/refman/8.0/en/identifier-qualifiers.html)。

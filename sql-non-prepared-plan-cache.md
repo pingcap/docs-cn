@@ -5,11 +5,9 @@ summary: 介绍 TiDB 中非 Prepare 语句执行计划缓存的原理、使用�
 
 # 非 Prepare 语句执行计划缓存
 
-> **警告：**
->
-> 非 Prepare 语句执行计划缓存 (Non-Prepared Plan Cache) 目前为实验特性，不建议在生产环境中使用。该功能可能会在未事先通知的情况下发生变化或删除。如果发现 bug，请在 GitHub 上提 [issue](https://github.com/pingcap/tidb/issues) 反馈。
-
 对于某些非 `PREPARE` 语句，TiDB 可以像 [`Prepare`/`Execute` 语句](/sql-prepared-plan-cache.md)一样支持执行计划缓存。这可以让这些语句跳过优化器阶段，以提升性能。
+
+开启非 Prepare 语句执行计划缓存可能会带来额外的内存和 CPU 开销，并不一定适用于所有场景。建议参考[性能收益](#性能收益)和[内存监控](#监控)章节，根据具体的使用情况决定是否开启该功能。
 
 ## 原理
 
@@ -97,7 +95,9 @@ TiDB 对参数化后形式相同的查询，只能缓存一个计划。例如，
 
 ## 性能收益
 
-在内部测试中，开启 Non-Prepared Plan Cache 功能在大多数 TP 场景下可以获得显著的性能收益。但是它也有代价，其自身也有一些额外的性能开销，包括判断查询是否支持、对查询进行参数化等。如果此功能不支持负载中的大多数查询，开启此功能反而可能影响性能。
+在内部测试中，开启 Non-Prepared Plan Cache 功能在大多数 TP 场景下可以获得显著的性能收益。例如：TPCC 测试中性能提升约 4%，一些 Bank 负载上提升超过 10%，在 Sysbench RangeScan 上提升达到 15%。
+
+但是这个功能本身也会带来额外的 CPU 和内存开销，包括判断查询是否支持、对查询进行参数化、在 Plan Cache 中进行搜索等。如果负载中的多数查询无法被 Cache 命中，开启此功能反而可能影响性能。
 
 此时，你需要观察 Grafana 监控中的 **Queries Using Plan Cache OPS** 面板中的 `non-prepared` 指标和 **Plan Cache Miss OPS** 面板中的 `non-prepared-unsupported` 指标。如果大多数查询都无法被支持，只有少部分查询能命中 Plan Cache，此时你可以关闭此功能。
 

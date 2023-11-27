@@ -22,7 +22,7 @@ DM-worker 任务包含如下多个逻辑处理单元。
 
 Relay log 持久化保存从上游 MySQL 或 MariaDB 读取的 binlog，并对 binlog replication 处理单元提供读取 binlog event 的功能。
 
-其原理和功能与 MySQL relay log 类似，详见 [MySQL Relay Log](https://dev.mysql.com/doc/refman/5.7/en/replica-logs-relaylog.html)。
+其原理和功能与 MySQL relay log 类似，详见 [MySQL Relay Log](https://dev.mysql.com/doc/refman/8.0/en/replica-logs-relaylog.html)。
 
 ### dump 处理单元
 

@@ -82,10 +82,16 @@ TiFlash 在 v6.2.0 将数据格式升级到 V3 版本，因此，从 v5.x 或 v6
 
 从 v6.1 升级至 v6.2 时，需要注意 PageStorage 变更数据版本带来的影响。具体请参考[从 v5.x 或 v6.0 升级至 v6.2](#从-v5x-或-v60-升级至-v62) 中关于 PageStorage 的描述。
 
-## 从 v6.x 或 v7.x 升级至 v7.3 或以上版本
+## 从 v6.x 或 v7.x 升级至 v7.3，并且设置了 `storage.format_version = 5`
 
 从 v7.3 开始，TiFlash 支持新的 DTFile 版本 V3 (实验特性），可以将多个小文件合并成一个大文件，减少文件数量。DTFile 在 v7.3 的默认版本是 V2，如需使用 V3，可通过 [TiFlash 配置参数](/tiflash/tiflash-configuration.md) `storage.format_version = 5` 来设置。设置后，TiFlash 仍可以读 V2 版本的 DTFile，并且在后续的数据整理 (Compaction) 中会将这些 V2 版本的 DMFile 逐步重新写为 V3 版本的 DTFile。
 
-从 v7.4 开始，DTFile 版本 V3 正式 GA，成为 TiFlash DTFile 的默认版本。
+在 TiFlash 升级到 v7.3 并且使用了 V3 版本的 DTFile 后，如需回退到之前的 TiFlash 版本，可以通过 DTTool 离线将 DTFile 重新写回 V2 版本，详见 [DTTool 迁移工具](/tiflash/tiflash-command-line-flags.md#dttool-migrate)。
 
-在 TiFlash 升级到 v7.3 并且使用了 V3 版本的 DTFile 或者升级到 v7.4 后，如需回退到之前的 TiFlash 版本，可以通过 DTTool 离线将 DTFile 重新写回 V2 版本，详见 [DTTool 迁移工具](/tiflash/tiflash-command-line-flags.md#dttool-migrate)。
+## 从 v6.x 或 v7.x 升级至 v7.4 或以上版本
+
+从 v7.4 开始，为了减少数据整理时产生的读、写放大，PageStorage V3 数据整理时逻辑进行了优化，导致底层部分存储文件名发生改动。因此，升级 TiFlash 到 v7.4 或以上版本后，不支持原地降级到之前的版本。
+
+**测试环境及特殊回退需求下的对策**
+
+如果在测试环境下或者其他有特殊回退需求的场景下，可以强制缩容 TiFlash 节点，并重新同步数据。操作步骤详见[缩容 TiFlash 节点](/scale-tidb-using-tiup.md#缩容-tiflash-节点)。

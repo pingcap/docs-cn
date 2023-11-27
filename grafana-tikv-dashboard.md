@@ -404,6 +404,20 @@ aliases: ['/docs-cn/dev/grafana-tikv-dashboard/','/docs-cn/dev/reference/key-mon
 - Total pessimistic locks memory size：内存悲观锁占用内存的总大小
 - In-memory pessimistic locking result：将悲观锁仅保存到内存的结果，其中 full 表示因为超过内存限制而无法将悲观锁保存至内存的次数
 
+### Resolved-TS
+
+- Resolved-TS worker CPU：resolved-ts worker 线程的 CPU 使用率
+- Advance-TS worker CPU：advance-ts worker 线程的 CPU 使用率
+- Scan lock worker CPU：scan lock worker 线程的 CPU 使用率
+- Max gap of resolved-ts：在当前 TiKV 中，所有活跃 Region 的 resolved-ts 与当前时间的最大差值
+- Max gap of safe-ts：在当前 TiKV 中，所有活跃 Region 的 safe-ts 与当前时间的最大差值
+- Min Resolved TS Region：resolved-ts 最小的 Region 的 ID
+- Min Safe TS Region：safe-ts 最小的 Region 的 ID
+- Check Leader Duration：处理 leader 请求所花费的时间的直方图，从发送请求到接收到 leader 的响应
+- Max gap of resolved-ts in Region leaders：在当前 TiKV 中，所有活跃 Region 的 resolved-ts 与当前时间的最大差值，只包含 Region leader
+- Min Leader Resolved TS Region：resolved-ts 最小的 Region 的 ID，只包含 Region leader
+- Lock heap size：resolved-ts 模块中用于跟踪锁的堆的大小
+
 ### Memory
 
 - Allocator Stats：内存分配器的统计信息

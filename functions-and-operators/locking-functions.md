@@ -11,11 +11,11 @@ TiDB 支持 MySQL 5.7 中的大部分用户级[锁函数](https://dev.mysql.com/
 
 | 函数名                                                                                                                 | 功能描述                                                           |
 |:---------------------------------------------------------------------------------------------------------------------|:----------------------------------------------------------------------|
-| [`GET_LOCK(lockName, timeout)`](https://dev.mysql.com/doc/refman/5.7/en/locking-functions.html#function_get-lock)    | 获取咨询锁。`lockName` 参数不得超过 64 个字符。在超时前，TiDB 最长等待 `timeout` 秒并返回失败。        |
-| [`IS_FREE_LOCK(lockName)`](https://dev.mysql.com/doc/refman/5.7/en/locking-functions.html#function_is-free-lock) | 检查锁是否空闲。 |
-| [`IS_USED_LOCK(lockName)`](https://dev.mysql.com/doc/refman/5.7/en/locking-functions.html#function_is-used-lock) | 检查锁是否正在使用。如果正在使用，则返回相应的连接 ID。 |
-| [`RELEASE_LOCK(lockName)`](https://dev.mysql.com/doc/refman/5.7/en/locking-functions.html#function_release-lock)     | 释放先前获取的锁。`lockName` 参数不得超过 64 个字符。  |
-| [`RELEASE_ALL_LOCKS()`](https://dev.mysql.com/doc/refman/5.7/en/locking-functions.html#function_release-all-locks)   | 释放当前会话持有的所有锁。                       |
+| [`GET_LOCK(lockName, timeout)`](https://dev.mysql.com/doc/refman/8.0/en/locking-functions.html#function_get-lock)    | 获取咨询锁。`lockName` 参数不得超过 64 个字符。在超时前，TiDB 最长等待 `timeout` 秒并返回失败。        |
+| [`IS_FREE_LOCK(lockName)`](https://dev.mysql.com/doc/refman/8.0/en/locking-functions.html#function_is-free-lock) | 检查锁是否空闲。 |
+| [`IS_USED_LOCK(lockName)`](https://dev.mysql.com/doc/refman/8.0/en/locking-functions.html#function_is-used-lock) | 检查锁是否正在使用。如果正在使用，则返回相应的连接 ID。 |
+| [`RELEASE_LOCK(lockName)`](https://dev.mysql.com/doc/refman/8.0/en/locking-functions.html#function_release-lock)     | 释放先前获取的锁。`lockName` 参数不得超过 64 个字符。  |
+| [`RELEASE_ALL_LOCKS()`](https://dev.mysql.com/doc/refman/8.0/en/locking-functions.html#function_release-all-locks)   | 释放当前会话持有的所有锁。                       |
 
 ## MySQL 兼容性
 

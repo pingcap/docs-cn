@@ -14,7 +14,7 @@ TiDB 版本：6.2.0-DMR
 
 在 6.2.0-DMR 版本中，你可以获得以下关键特性：
 
-- TiDB Dashboard 支持[可视化执行计划](/dashboard/dashboard-slow-query.md#图形化执行计划介绍)，查询计划展示更直观。
+- TiDB Dashboard 支持[可视化执行计划](https://docs.pingcap.com/zh/tidb/v6.2/dashboard-slow-query#图形化执行计划介绍)，查询计划展示更直观。
 - TiDB Dashboard 新增 [Monitoring 页面](/dashboard/dashboard-monitoring.md)用于性能分析和优化。
 - TiDB [锁视图支持乐观事务被阻塞的信息](/information-schema/information-schema-data-lock-waits.md)，方便快速定位锁冲突。
 - TiFlash 引入[新的存储格式 PageStorage V3](/tiflash/tiflash-configuration.md#配置文件-tiflashtoml)，提升稳定性和性能。
@@ -57,7 +57,7 @@ TiDB 版本：6.2.0-DMR
 
     在 Statements 和 Slow Query 中提供可视化执行计划和基础问题诊断的能力。这是一种全新的查询计划的展示方式，目标是通过图形化的手段展示 Query 查询计划的每个步骤，从而使得用户能够更加直观方便地了解查询执行计划的细节。对于复杂的大型查询语句，可视化的展示方式对于深入理解其执行过程大有裨益。另外，系统会自动对每一个 Query 的执行计划进行分析，发现执行计划中潜在问题，提供优化方向。用户可以采用这些优化建议，降低特定 Query 的查询时长。
 
-    [用户文档](/dashboard/dashboard-slow-query.md#图形化执行计划介绍) [#1224](https://github.com/pingcap/tidb-dashboard/issues/1224) @[time-and-fate](https://github.com/time-and-fate)
+    [用户文档](https://docs.pingcap.com/zh/tidb/v6.2/dashboard-slow-query#图形化执行计划介绍) [#1224](https://github.com/pingcap/tidb-dashboard/issues/1224) @[time-and-fate](https://github.com/time-and-fate)
 
 * 锁视图支持乐观事务被阻塞的信息
 

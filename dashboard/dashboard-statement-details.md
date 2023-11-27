@@ -64,18 +64,62 @@ aliases: ['/docs-cn/dev/dashboard/dashboard-statement-details/','/docs-cn/dev/da
 执行计划详情包括以下内容：
 
 - SQL 样本：该计划对应的实际执行的某一条 SQL 语句文本。时间范围内任何出现过的 SQL 都可能作为 SQL 样本。
-- 执行计划：执行计划的完整内容，有图形和文本两种展示形式。参阅[理解 TiDB 执行计划](/explain-overview.md)文档了解如何解读执行计划。如果选择了多个执行计划，则显示的是其中任意一个。
+- 执行计划：执行计划的完整内容，有表格、图形和文本三种展示形式。参阅[理解 TiDB 执行计划](/explain-overview.md)文档了解如何解读执行计划。如果选择了多个执行计划，则显示的是其中任意一个。
 - 其他关于该 SQL 的基本信息、执行时间、Coprocessor 读取、事务、慢查询等信息，可点击相应标签页标题切换。
 
 ![执行计划详情](/media/dashboard/dashboard-statement-plans-detail.png)
 
-### 基本信息
+### SQL 样本
+
+点击**展开** (**Expand**) 可以展开相应项的完整内容，点击**复制** (**Copy**) 可以复制内容到剪贴板。
+
+### 执行计划
+
+TiDB Dashboard 提供三种方式查看执行计划：表格、文本和图形。关于如何解读执行计划，请参考[理解 TiDB 执行计划](/explain-overview.md)。
+
+#### 表格形态的执行计划
+
+表格形态的执行计划提供详细的执行计划信息，便于你快速识别算子指标的异常情况，以及对比不同算子的状态。下图是一个表格形态的执行计划示例：
+
+![表格形态的执行计划](/media/dashboard/dashboard-table-plan.png)
+
+表格形态展示的内容与文本形态类似，但具有更易用的交互：
+
+- 支持自由调整列宽
+- 当内容超出列宽时，支持自动截断并提供悬浮窗展示完整信息
+- 如果执行计划内容较多，可以下载 txt 格式到本地分析
+- 允许隐藏任意列，并且能够在列选择中进行管理
+
+![表格形态的执行计划-选择列](/media/dashboard/dashboard-table-plan-columnpicker.png)
+
+#### 图形形态的执行计划
+
+图形形态的执行计划更适合宏观地查看一个复杂 SQL 的执行计划树，并且详细了解每个算子及对应的内容。下图是一个图形形态的执行计划示例：
+
+![图形形态的执行计划](/media/dashboard/dashboard-visual-plan-2.png)
+
+- 执行计划的展示顺序是从左到右，从上到下。
+- 上面的节点是父算子，下面的节点是子算子。
+- 节点顶栏的颜色代表算子执行的组件：黄色代表 TiDB，蓝色代表 TiKV，粉色代表 TiFlash。
+- 节点的顶栏为算子的名称，正文为算子的基本信息。
+
+点击节点区域，右侧将弹出算子的详细信息。
+
+![图形形态的执行计划-侧栏](/media/dashboard/dashboard-visual-plan-popup.png)
+
+### SQL 执行相关信息
+
+其他关于该 SQL 的基本信息、执行时间、Coprocessor 读取、事务、慢查询等信息，可点击相应标签页标题切换。
+
+![显示不同分类执行信息](/media/dashboard/dashboard-slow-queries-detail2-v620.png)
+
+#### 基本信息
 
 包含关于表名、索引名、执行次数、累计耗时等信息。**描述** (Description) 列对各个字段进行了具体描述。
 
 ![基本信息](/media/dashboard/dashboard-statement-plans-basic.png)
 
-### 执行时间
+#### 执行时间
 
 显示执行计划执行的各阶段所耗费时间。
 
@@ -85,19 +129,19 @@ aliases: ['/docs-cn/dev/dashboard/dashboard-statement-details/','/docs-cn/dev/da
 
 ![执行时间](/media/dashboard/dashboard-statement-plans-time.png)
 
-### Coprocessor 读取
+#### Coprocessor 读取
 
 显示 Coprocessor 读取的相关信息。
 
 ![Coprocessor 读取](/media/dashboard/dashboard-statement-plans-cop-read.png)
 
-### 事务
+#### 事务
 
 显示执行计划与事务相关的信息，比如平均写入 key 个数，最大写入 key 个数等。
 
 ![事务](/media/dashboard/dashboard-statement-plans-transaction.png)
 
-### 慢查询
+#### 慢查询
 
 如果该执行计划执行过慢，则在慢查询标签页下可以看到其关联的慢查询记录。
 

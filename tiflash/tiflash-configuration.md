@@ -42,9 +42,9 @@ listen_host = "0.0.0.0"
 ## 建议在任何 TiFlash 的部署中都不配置该端口。(注: 从 TiFlash v7.1.0 起，由 TiUP >= v1.12.5 或 TiDB Operator >= v1.5.0 部署的 TiFlash 默认为安全版本，即默认未开启该端口)
 # tcp_port = 9000
 ## 数据块元信息的内存 cache 大小限制，通常不需要修改
-mark_cache_size = 5368709120
+mark_cache_size = 1073741824
 ## 数据块 min-max 索引的内存 cache 大小限制，通常不需要修改
-minmax_index_cache_size = 5368709120
+minmax_index_cache_size = 1073741824
 ## DeltaIndex 内存 cache 大小限制，默认为 0，代表没有限制
 delta_index_cache_size = 0
 
@@ -130,6 +130,15 @@ delta_index_cache_size = 0
 [flash]
     tidb_status_addr = tidb status 端口地址 # 多个地址以逗号分割
     service_addr =  TiFlash raft 服务 和 coprocessor 服务监听地址
+
+    ## 从 v7.4.0 引入，在当前 Raft 状态机推进的 applied_index 和上次落盘时的 applied_index 的差值高于 compact_log_min_gap 时，
+    ## TiFlash 将执行来自 TiKV 的 CompactLog 命令，并进行数据落盘。调大该差值可能降低 TiFlash 的落盘频率，从而减少随机写场景下的读延迟，但会增大内存开销。调小该差值可能提升 TiFlash 的落盘频率，从而缓解 TiFlash 内存压力。但无论如何，在目前阶段，TiFlash 的落盘频率不会高于 TiKV，即使设置该差值为 0。
+    ## 建议保持默认值。
+    # compact_log_min_gap = 200
+    ## 从 v5.0 引入，当 TiFlash 缓存的 Region 行数或者大小超过以下任一阈值时，TiFlash 将执行来自 TiKV 的 CompactLog 命令，并进行落盘。
+    ## 建议保持默认值。
+    # compact_log_min_rows = 40960 # 40k
+    # compact_log_min_bytes = 33554432 # 32MB
 
     ## 下面的配置只针对存算分离模式生效，详情请参考 TiFlash 存算分离架构与 S3 支持文档 https://docs.pingcap.com/zh/tidb/dev/tiflash-disaggregated-and-s3
     # disaggregated_mode = tiflash_write # 可选值为 tiflash_write 或者 tiflash_compute
@@ -224,6 +233,9 @@ delta_index_cache_size = 0
     ## 从 v7.0.0 引入，表示带等值 join 条件的 HashJoin 算子在触发 spill 之前的最大可用内存，超过该阈值之后 HashJoin 算子会采用 spill to disk 的方式来减小内存使用。默认值为 0，表示内存使用无限制，即不会触发 spill。
     max_bytes_before_external_join = 0
 
+    ## 从 v7.4.0 引入，表示是否开启 TiFlash 资源管控功能。当设置为 true 时，TiFlash 会使用 Pipeline Model 执行模型。
+    enable_resource_control = true
+
 ## 安全相关配置，从 v4.0.5 开始生效
 [security]
     ## 从 v5.0 引入，控制是否开启日志脱敏
@@ -284,7 +296,7 @@ delta_index_cache_size = 0
 
 ### 多盘部署
 
-TiFlash 支持单节点多盘部署。如果你的部署节点上有多块硬盘，可以通过以下的方式配置参数，提高节点的硬盘 I/O 利用率。TiUP 中参数配置格式参照[详细 TiFlash 配置模版](https://github.com/pingcap/docs-cn/blob/master/config-templates/complex-tiflash.yaml)。
+TiFlash 支持单节点多盘部署。如果你的部署节点上有多块硬盘，可以通过以下的方式配置参数，提高节点的硬盘 I/O 利用率。TiUP 中参数配置格式参照[详细 TiFlash 配置模版](/tiflash-deployment-topology.md#拓扑模版)。
 
 #### TiDB 集群版本低于 v4.0.9
 

@@ -7,7 +7,7 @@ aliases: ['/docs-cn/dev/tidb-configuration-file/','/docs-cn/dev/reference/config
 
 # TiDB 配置文件描述
 
-TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/config.toml.example](https://github.com/pingcap/tidb/blob/master/config/config.toml.example) 找到默认值的配置文件，重命名为 `config.toml` 即可。本文档只介绍未包含在[命令行参数](/command-line-flags-for-tidb-configuration.md)中的参数。
+TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/config.toml.example](https://github.com/pingcap/tidb/blob/master/pkg/config/config.toml.example) 找到默认值的配置文件，重命名为 `config.toml` 即可。本文档只介绍未包含在[命令行参数](/command-line-flags-for-tidb-configuration.md)中的参数。
 
 > **Tip:**
 >
@@ -177,6 +177,11 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
 + 默认值：false
 + 如果在 TiDB 实例上该配置项设为 `true`，该 TiDB 实例上将开启遥测功能，且 [`tidb_enable_telemetry`](/system-variables.md#tidb_enable_telemetry-从-v402-版本开始引入) 系统变量生效。
 + 如果所有 TiDB 实例上该选项都设置为 `false`，那么将完全禁用 TiDB 遥测功能，且忽略 `tidb_enable_telemetry` 系统变量。参阅[遥测](/telemetry.md)了解该功能详情。
+
+### `deprecate-integer-display-length`
+
++ 当此配置项设置为 `true` 时，弃用整数类型的显示宽度。
++ 默认值：`false`
 
 ### `enable-tcp4-only` <span class="version-mark">从 v5.0 版本开始引入</span>
 
@@ -571,12 +576,8 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
 
 ### `enable-stats-cache-mem-quota` <span class="version-mark">从 v6.1.0 版本开始引入</span>
 
-> **警告：**
->
-> 该变量为实验特性，不推荐在生产环境中使用。
-
 + 用于控制 TiDB 是否开启统计信息缓存的内存上限。
-+ 默认值：false
++ 默认值：true
 
 ### `lite-init-stats` <span class="version-mark">从 v7.1.0 版本开始引入</span>
 

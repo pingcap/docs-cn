@@ -5,7 +5,7 @@ summary: 了解 DM 的关键特性 binlog 事件过滤 (Binlog event filter) 的
 
 ## TiDB Data Migration Binlog 事件过滤
 
-TiDB Data Migration (DM) 的 Binlog 事件过滤 (Binlog event filter) 是比迁移表[黑白名单](/dm/dm-block-allow-table-lists.md)更加细粒度的过滤规则，可以指定只迁移或者过滤掉某些 `schema / table` 的指定类型 binlog，比如 `INSERT`、`TRUNCATE TABLE`。
+TiDB Data Migration (DM) 的 Binlog 事件过滤 (Binlog event filter) 是比迁移表[黑白名单](/dm/dm-block-allow-table-lists.md)更加细粒度的过滤规则，可以指定只迁移、过滤、或者拦截并报错某些 `schema / table` 的指定类型 binlog，比如 `INSERT` 和 `TRUNCATE TABLE`。
 
 ## 配置 Binlog 事件过滤
 
@@ -39,6 +39,7 @@ filters:
     | all             |      | 代表包含下面所有的 events        |
     | all dml         |      | 代表包含下面所有 DML events     |
     | all ddl         |      | 代表包含下面所有 DDL events     |
+    | incompatible ddl changes         |      | 代表包含下面所有 incompatible DDL events，即可能导致数据丢失的 DDL     |
     | none            |      | 代表不包含下面所有 events        |
     | none ddl        |      | 代表不包含下面所有 DDL events    |
     | none dml        |      | 代表不包含下面所有 DML events    |
@@ -46,18 +47,39 @@ filters:
     | update          | DML  | update DML event              |
     | delete          | DML  | delete DML event              |
     | create database | DDL  | create database event         |
-    | drop database   | DDL  | drop database event           |
+    | drop database   | incompatible DDL  | drop database event           |
     | create table    | DDL  | create table event            |
     | create index    | DDL  | create index event            |
-    | drop table      | DDL  | drop table event              |
-    | truncate table  | DDL  | truncate table event          |
-    | rename table    | DDL  | rename table event            |
-    | drop index      | DDL  | drop index event              |
+    | drop table      | incompatible DDL  | drop table event              |
+    | truncate table  | incompatible DDL  | truncate table event          |
+    | rename table    | incompatible DDL  | rename table event            |
+    | drop index      | incompatible DDL  | drop index event              |
     | alter table     | DDL  | alter table event             |
+    | value range decrease | incompatible DDL  | 缩短列字段长度的 DDL 语句，如将 `VARCHAR(20)` 改为 `VARCHAR(10)` 的 `ALTER TABLE MODIFY COLUMN` 语句 |
+    | precision decrease | incompatible DDL  | 降低列字段精度的 DDL 语句，如将 `Decimal(10, 2)` 改为 `Decimal(10, 1)` 的 `ALTER TABLE MODIFY COLUMN` 语句 |
+    | modify column | incompatible DDL  | 变更列字段类型的 DDL 语句，如将 `INT` 改为 `VARCHAR` 的 `ALTER TABLE MODIFY COLUMN` 语句 |
+    | rename column | incompatible DDL  | 变更列名的 DDL 语句，如 `ALTER TABLE RENAME COLUMN` 语句 |
+    | rename index | incompatible DDL  | 变更索引名的 DDL 语句，如 `ALTER TABLE RENAME INDEX` 语句 |
+    | drop column | incompatible DDL  | 删除表中的列的 DDL 语句，如 `ALTER TABLE DROP COLUMN` 语句 |
+    | drop index | incompatible DDL  | 删除表中的索引的 DDL 语句，如 `ALTER TABLE DROP INDEX` 语句 |
+    | truncate table partition | incompatible DDL  | 清空表中指定分区的 DDL 语句，如 `ALTER TABLE TRUNCATE PARTITION` 语句 |
+    | drop primary key | incompatible DDL  | 删除主键的 DDL 语句，如 `ALTER TABLE DROP PRIMARY KEY` 语句 |
+    | drop unique key | incompatible DDL  |  删除唯一键的 DDL 语句，如 `ALTER TABLE DROP UNIQUE KEY` 语句 |
+    | modify default value | incompatible DDL  | 修改列默认值的 DDL 语句，如 `ALTER TABLE CHANGE DEFAULT` 语句 |
+    | modify constraint | incompatible DDL  | 修改约束条件的 DDL 语句，如 `ALTER TABLE ADD CONSTRAINT` 语句 |
+    | modify columns order | incompatible DDL  | 修改列顺序的 DDL 语句，如 `ALTER TABLE CHANGE AFTER` 语句 |
+    | modify charset | incompatible DDL  | 修改列字符集的 DDL 语句，如 `ALTER TABLE MODIFY CHARSET` 语句 |
+    | modify collation | incompatible DDL  | 修改列排序规则的 DDL 语句，如 `ALTER TABLE MODIFY COLLATE` 语句 |
+    | remove auto increment | incompatible DDL  | 删除自增键的 DDL 语句 |
+    | modify storage engine | incompatible DDL  | 修改表存储引擎的 DDL 语句，如 `ALTER TABLE ENGINE = MyISAM` 语句 |
+    | reorganize table partition | incompatible DDL  | 重组分区的 DDL 语句，如 `ALTER TABLE REORGANIZE PARTITION` 语句 |
+    | rebuild table partition | incompatible DDL  | 重建分区的 DDL 语句，如 `ALTER TABLE REBUILD PARTITION` 语句 |
+    | exchange table partition | incompatible DDL  | 交换分区的 DDL 语句，如 `ALTER TABLE EXCHANGE PARTITION` 语句 |
+    | coalesce table partition | incompatible DDL  | 减少分区数量的 DDL 语句，如 `ALTER COALESCE PARTITION` 语句 |
 
 - `sql-pattern`：用于过滤指定的 DDL SQL 语句，支持正则表达式匹配，例如上面示例中的 `"^DROP\\s+PROCEDURE"`。
 
-- `action`：string (`Do` / `Ignore`)；进行下面规则判断，满足其中之一则过滤，否则不过滤。
+- `action`：string (`Do` / `Ignore`/ `Error`)；进行下面规则判断：
 
     - `Do`：白名单。binlog event 如果满足下面两个条件之一就会被过滤掉：
         - 不在该 rule 的 `events` 中。
@@ -65,7 +87,10 @@ filters:
     - `Ignore`：黑名单。如果满足下面两个条件之一就会被过滤掉：
         - 在该 rule 的 `events` 中。
         - 如果规则的 `sql-pattern` 不为空的话，对应的 SQL 可以匹配上 `sql-pattern` 中任意一项。
-    - 同一个表匹配上多个规则时，将会顺序应用这些规则，并且黑名单的优先级高于白名单，即如果同时存在规则 `Ignore` 和 `Do` 应用在某个表上，那么 `Ignore` 生效。
+    - `Error`：报错名单。如果满足下面两个条件之一就会报错：
+        - 在该 rule 的 `events` 中。
+        - 如果规则的 `sql-pattern` 不为空的话，对应的 SQL 可以匹配上 `sql-pattern` 中任意一项。
+    - 同一个表匹配上多个规则时，将会按顺序依次应用这些规则，并且黑名单的优先级高于报错名单，报错名单的优先级高于白名单，即如果同时存在规则 `Ignore` 和 `Error` 应用在某个表上，那么 `Ignore` 生效；如果同时存在规则 `Error` 和 `Do` 应用在某个表上，那么 `Error` 生效。
 
 ## 使用示例
 
@@ -142,4 +167,17 @@ filters:
     schema-pattern: "*"
     sql-pattern: ["ALTER\\s+TABLE[\\s\\S]*ADD\\s+PARTITION", "ALTER\\s+TABLE[\\s\\S]*DROP\\s+PARTITION"]
     action: Ignore
+```
+
+### 对部分 DDL 语句报错
+
+如需在 DM 同步上游业务数据到 TiDB 之前对部分 DDL 语句进行拦截并报错，可采用如下设置：
+
+```yaml
+filters:
+  filter-procedure-rule:
+    schema-pattern: "test_*"
+    table-pattern: "t_*"
+    events: ["truncate table", "truncate table partition"]
+    action: Error
 ```

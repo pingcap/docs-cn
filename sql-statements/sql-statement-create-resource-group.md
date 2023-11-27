@@ -33,6 +33,9 @@ DirectResourceGroupOption ::=
 |   "QUERY_LIMIT" EqOpt '(' ResourceGroupRunawayOptionList ')'
 |   "QUERY_LIMIT" EqOpt '(' ')'
 |   "QUERY_LIMIT" EqOpt "NULL"
+|   "BACKGROUND" EqOpt '(' BackgroundOptionList ')'
+|   "BACKGROUND" EqOpt '(' ')'
+|   "BACKGROUND" EqOpt "NULL"
 
 ResourceGroupPriorityOption ::=
     LOW
@@ -78,6 +81,7 @@ TiDB 支持以下 `DirectResourceGroupOption`, 其中 [Request Unit (RU)](/tidb-
 >
 > - `CREATE RESOURCE GROUP` 语句只能在全局变量 [`tidb_enable_resource_control`](/system-variables.md#tidb_enable_resource_control-从-v660-版本开始引入) 设置为 `ON` 时才能执行。
 > - TiDB 集群在初始化时会自动创建 `default` 资源组，其 `RU_PER_SEC` 的默认值为 `UNLIMITED` (等同于 `INT` 类型最大值，即 `2147483647`)，且为 `BURSTABLE` 模式。所有未绑定资源组的请求都将自动绑定至此资源组。在新建配置其他资源组时，建议根据实际情况修改 `default` 资源组的配置。
+> - 目前仅 `default` 资源组支持修改 `BACKGROUND` 相关设置。
 
 ## 示例
 

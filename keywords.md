@@ -271,6 +271,8 @@ Query OK, 0 rows affected (0.08 sec)
 - FIRST_VALUE (R-Window)
 - FIXED
 - FLOAT (R)
+- FLOAT4 (R)
+- FLOAT8 (R)
 - FLUSH
 - FOLLOWING
 - FOR (R)
@@ -414,6 +416,7 @@ Query OK, 0 rows affected (0.08 sec)
 - MEMORY
 - MERGE
 - MICROSECOND
+- MIDDLEINT (R)
 - MINUTE
 - MINUTE_MICROSECOND (R)
 - MINUTE_SECOND (R)
@@ -684,6 +687,7 @@ Query OK, 0 rows affected (0.08 sec)
 - TOKEN_ISSUER
 - TOPN (R)
 - TPCC
+- TPCH_10
 - TRACE
 - TRADITIONAL
 - TRAILING (R)
