@@ -5,6 +5,10 @@ summary: TiDB 数据库中 BACKUP 的使用概况。
 
 # BACKUP
 
+> **警告：**
+>
+> `BACKUP` 语句目前为实验特性，不建议在生产环境中使用。该功能可能会在未事先通知的情况下发生变化或删除。如果发现 bug，请在 GitHub 上提 [issue](https://github.com/pingcap/tidb/issues) 反馈。
+
 `BACKUP` 语句用于对 TiDB 集群执行分布式备份操作。
 
 `BACKUP` 语句使用的引擎与 [BR](/br/backup-and-restore-overview.md) 相同，但备份过程是由 TiDB 本身驱动，而非单独的 BR 工具。BR 工具的优势和警告也适用于 `BACKUP` 语句。
