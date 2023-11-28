@@ -69,13 +69,13 @@ TiCDC 作为 TiDB 的增量数据同步工具，通过 PD 内部的 etcd 实现�
 
 - 使用 TiCDC 在两个 TiDB 集群间同步数据时，如果上下游的延迟超过 100 ms：
     - 对于 v6.5.2 之前的版本，推荐将 TiCDC 部署在下游 TiDB 集群所在的区域 (IDC, region)
-    - 经过优化后，对于 v6.5.2 及之后的版本，在能够保证存储发生灾难的时候可用的情况下，推荐将 TiCDC 部署在上游集群所在的区域 (IDC, region)，否则部署在下游。
+    - 经过优化后，对于 v6.5.2 及之后的版本，推荐将 TiCDC 部署在上游集群所在的区域 (IDC, region)。
 - TiCDC 同步的表需要至少存在一个**有效索引**的表，**有效索引**的定义如下：
 
     - 主键 (`PRIMARY KEY`) 为有效索引。
     - 唯一索引 (`UNIQUE INDEX`) 中每一列在表结构中明确定义非空 (`NOT NULL`) 且不存在虚拟生成列 (`VIRTUAL GENERATED COLUMNS`)。
 
-- 容灾场景下使用 TiCDC 需要配置 [redo log](/ticdc/ticdc-sink-to-mysql.md#灾难场景的最终一致性复制) 实现最终一致性。
+- 在使用 TiCDC 实现容灾的场景下，为实现最终一致性，需要配置 [redo log](/ticdc/ticdc-sink-to-mysql.md#灾难场景的最终一致性复制) 并确保 redo log 写入的存储系统在上游发生灾难时可以正常读取。
 
 ### 暂不支持的场景
 
