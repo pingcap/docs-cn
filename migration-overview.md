@@ -30,13 +30,9 @@ When you migrate data from Aurora to a TiDB cluster deployed on AWS, your data m
 
 ## Migrate data from MySQL to TiDB
 
-If cloud storage (S3) service is not used, the network connectivity is good, and the network latency is low, you can use the following method to migrate data from MySQL to TiDB.
+If cloud storage (S3) service is not used, the network connectivity is good, and the network latency is low, you can follow instructions in [Migrate Small Datasets from MySQL to TiDB](/migrate-small-mysql-to-tidb.md) to migrate data from MySQL to TiDB.
 
-- [Migrate MySQL of Small Datasets to TiDB](/migrate-small-mysql-to-tidb.md)
-
-If you have a high demand on migration speed, or if the data size is large (for example, larger than 1 TiB), and you do not allow other applications to write to TiDB during the migration period, you can use TiDB Lightning to quickly import data. Then, you can use DM to replicate incremental data (binlog) based on your application needs.
-
-- [Migrate MySQL of Large Datasets to TiDB](/migrate-large-mysql-to-tidb.md)
+If you have a high demand on migration speed, or if the data size is large (for example, larger than 1 TiB), and you do not allow other applications to write to TiDB during the migration period, you can use TiDB Lightning to quickly import data. Then, you can use DM to replicate incremental data (binlog) based on your application needs. See [Migrate Large Datasets from MySQL to TiDB](/migrate-large-mysql-to-tidb.md).
 
 ## Migrate and merge MySQL shards into TiDB
 

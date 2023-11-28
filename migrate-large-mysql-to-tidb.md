@@ -1,9 +1,9 @@
 ---
-title: Migrate MySQL of Large Datasets to TiDB
-summary: Learn how to migrate MySQL of large datasets to TiDB.
+title: Migrate Large Datasets from MySQL to TiDB
+summary: Learn how to migrate large datasets from MySQL to TiDB.
 ---
 
-# Migrate MySQL of Large Datasets to TiDB
+# Migrate Large Datasets from MySQL to TiDB
 
 When the data volume to be migrated is small, you can easily [use DM to migrate data](/migrate-small-mysql-to-tidb.md), both for full migration and incremental replication. However, because DM imports data at a slow speed (30~50 GiB/h), when the data volume is large, the migration might take a long time. "Large datasets" in this document usually mean data around one TiB or more.
 

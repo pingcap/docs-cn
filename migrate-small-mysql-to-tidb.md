@@ -1,12 +1,12 @@
 ---
-title: Migrate MySQL of Small Datasets to TiDB
-summary: Learn how to migrate MySQL of small datasets to TiDB.
+title: Migrate Small Datasets from MySQL to TiDB
+summary: Learn how to migrate small datasets from MySQL to TiDB.
 aliases: ['/tidb/dev/usage-scenario-incremental-migration/']
 ---
 
-# Migrate MySQL of Small Datasets to TiDB
+# Migrate Small Datasets from MySQL to TiDB
 
-This document describes how to use TiDB Data Migration (DM) to migrate MySQL of small datasets to TiDB in the full migration mode and incremental replication mode. "Small datasets" in this document mean data size less than 1 TiB.
+This document describes how to use TiDB Data Migration (DM) to migrate small datasets from MySQL to TiDB in the full migration mode and incremental replication mode. "Small datasets" in this document mean data size less than 1 TiB.
 
 The migration speed varies from 30 GB/h to 50 GB/h, depending on multiple factors such as the number of indexes in the table schema, hardware, and network environment. <!--The migration process using DM is shown in the figure below.-->
 

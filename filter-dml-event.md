@@ -7,8 +7,8 @@ summary: Learn how to filter DML events using SQL expressions.
 
 This document introduces how to filter binlog events using SQL expressions when you use DM to perform continuous incremental data replication. For the detailed replication instruction, refer to the following documents:
 
-- [Migrate MySQL of Small Datasets to TiDB](/migrate-small-mysql-to-tidb.md)
-- [Migrate MySQL of Large Datasets to TiDB](/migrate-large-mysql-to-tidb.md)
+- [Migrate Small Datasets from MySQL to TiDB](/migrate-small-mysql-to-tidb.md)
+- [Migrate Large Datasets from MySQL to TiDB](/migrate-large-mysql-to-tidb.md)
 - [Migrate and Merge MySQL Shards of Small Datasets to TiDB](/migrate-small-mysql-shards-to-tidb.md)
 - [Migrate and Merge MySQL Shards of Large Datasets to TiDB](/migrate-large-mysql-shards-to-tidb.md)
 

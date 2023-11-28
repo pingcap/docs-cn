@@ -22,7 +22,7 @@ This section takes the example of a region where two availability zones AZ1 and 
 
 The architecture of the cluster deployment is as follows:
 
-- The cluster has four replicas: two Voter replicas in AZ1, one Voter replica, and one Learner replica in AZ2. For the TiKV component, each rack has a proper label.
+- The cluster has six replicas: three Voter replicas in AZ1, and two Voter replicas along with one Learner replica in AZ2. For the TiKV component, each rack has a proper label.
 - The Raft protocol is adopted to ensure consistency and high availability of data, which is transparent to users.
 
 ![2-AZ-in-1-region architecture](/media/two-dc-replication-1.png)

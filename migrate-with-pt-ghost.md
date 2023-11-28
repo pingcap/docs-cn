@@ -11,8 +11,8 @@ When using DM to migrate data from MySQL to TiDB, you can enbale `online-ddl` to
 
 For the detailed replication instructions, refer to the following documents by scenarios:
 
-- [Migrate MySQL of Small Datasets to TiDB](/migrate-small-mysql-to-tidb.md)
-- [Migrate MySQL of Large Datasets to TiDB](/migrate-large-mysql-to-tidb.md)
+- [Migrate Small Datasets from MySQL to TiDB](/migrate-small-mysql-to-tidb.md)
+- [Migrate Large Datasets from MySQL to TiDB](/migrate-large-mysql-to-tidb.md)
 - [Migrate and Merge MySQL Shards of Small Datasets to TiDB](/migrate-small-mysql-shards-to-tidb.md)
 - [Migrate and Merge MySQL Shards of Large Datasets to TiDB](/migrate-large-mysql-shards-to-tidb.md)
 

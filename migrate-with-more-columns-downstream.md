@@ -8,8 +8,8 @@ aliases: ['/tidb/dev/usage-scenario-downstream-more-columns/']
 
 This document provides the additional steps to be taken when you migrate data to a downstream TiDB table with more columns than the corresponding upstream table. For regular migration steps, see the following migration scenarios:
 
-- [Migrate MySQL of Small Datasets to TiDB](/migrate-small-mysql-to-tidb.md)
-- [Migrate MySQL of Large Datasets to TiDB](/migrate-large-mysql-to-tidb.md)
+- [Migrate Small Datasets from MySQL to TiDB](/migrate-small-mysql-to-tidb.md)
+- [Migrate Large Datasets from MySQL to TiDB](/migrate-large-mysql-to-tidb.md)
 - [Migrate and Merge MySQL Shards of Small Datasets to TiDB](/migrate-small-mysql-shards-to-tidb.md)
 - [Migrate and Merge MySQL Shards of Large Datasets to TiDB](/migrate-large-mysql-shards-to-tidb.md)
 

@@ -133,8 +133,8 @@
   - [Import Best Practices](/tidb-lightning/data-import-best-practices.md)
   - Migration Scenarios
     - [Migrate from Aurora](/migrate-aurora-to-tidb.md)
-    - [Migrate MySQL of Small Datasets](/migrate-small-mysql-to-tidb.md)
-    - [Migrate MySQL of Large Datasets](/migrate-large-mysql-to-tidb.md)
+    - [Migrate Small Datasets from MySQL](/migrate-small-mysql-to-tidb.md)
+    - [Migrate Large Datasets from MySQL](/migrate-large-mysql-to-tidb.md)
     - [Migrate and Merge MySQL Shards of Small Datasets](/migrate-small-mysql-shards-to-tidb.md)
     - [Migrate and Merge MySQL Shards of Large Datasets](/migrate-large-mysql-shards-to-tidb.md)
     - [Migrate from CSV Files](/migrate-from-csv-files-to-tidb.md)
