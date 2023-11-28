@@ -250,11 +250,8 @@ Query OK, 3 rows affected (0.00 sec)
 ## MySQL 兼容性
 
 - 不支持 `SELECT ... INTO @variable` 语法。
-<<<<<<< HEAD
 - 不支持 `SELECT ... GROUP BY ... WITH ROLLUP` 语法。
-=======
 - 不支持 `SELECT ... INTO DUMPFILE` 语法。
->>>>>>> d4b510d9d9 (add more explains and examples for `SELECT ... INTO OUTFILE` statements (#15328))
 - 不支持 MySQL 5.7 中支持的 `SELECT .. GROUP BY expr` 语法，而是匹配 MySQL 8.0 的行为，不按照默认的顺序进行排序。
 - `SELECT ... TABLESAMPLE ...` 是 TiDB 的扩展语法，用于兼容其他数据库以及 [ISO/IEC 9075-2](https://standards.iso.org/iso-iec/9075/-2/ed-6/en/) 标准，但 MySQL 不支持该语法。
 
