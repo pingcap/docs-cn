@@ -5,6 +5,10 @@ summary: TiDB 数据库中 RESTORE 的使用概况。
 
 # RESTORE
 
+> **警告：**
+>
+> 基于 SQL 发起的 RESTORE 目前是实验性功能，不建议在生产环境中使用。
+
 `RESTORE` 语句用于执行分布式恢复，把 [`BACKUP` 语句](/sql-statements/sql-statement-backup.md)生成的备份文件恢复到 TiDB 集群中。
 
 `RESTORE` 语句使用的引擎与 [BR](/br/backup-and-restore-overview.md) 相同，但恢复过程是由 TiDB 本身驱动，而非单独的 BR 工具。BR 工具的优势和警告也适用于 `RESTORE` 语句。需要注意的是，**`RESTORE` 语句目前不遵循 ACID 原则**。
