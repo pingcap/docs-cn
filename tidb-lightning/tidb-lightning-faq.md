@@ -179,7 +179,7 @@ CREATE PLACEMENT POLICY p1 PRIMARY_REGION="us-east" REGIONS="us-east,us-west";
 
 如果你想要将一个 schema 的定义和表数据复制到一个新的 schema 中，可以按照以下步骤进行操作。通过下面的示例，你可以了解如何将 `test` schema 复制到一个名为 `test2` 的新 schema 中。
 
-1. 创建原 schema 的备份，使用 `-B test` 选项来选定需要的 schema。
+1. 创建原 schema 的备份，使用 `-B test` 来选定需要的 schema。
 
     ```
     tiup dumpling -B test -o /tmp/bck1
