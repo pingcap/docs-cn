@@ -21,6 +21,7 @@ TiDB 版本：6.5.6
 
     - note [#issue](https://github.com/pingcap/tidb/issues/${issue-id}) @[贡献者 GitHub ID](https://github.com/${github-id})
     - note [#issue](https://github.com/pingcap/tidb/issues/${issue-id}) @[贡献者 GitHub ID](https://github.com/${github-id})
+    - 在 Hash Join 中复用 Chunk 以避免内存分配带来的性能问题 [#48082](https://github.com/pingcap/tidb/issues/48082) @[wshwsh12](https://github.com/wshwsh12)
     - 新增变量 `tidb_opt_enable_hash_join` 控制是否可以选择 Hash Join [#46695](https://github.com/pingcap/tidb/issues/46695) @[qw4990](https://github.com/qw4990)
     - 
 
