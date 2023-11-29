@@ -95,19 +95,19 @@ The following statement takes the table structure in the TPC-H test set as an ex
 
 ```sql
 explain select count(*) from customer c join nation n on c.c_nationkey=n.n_nationkey;
-+------------------------------------------+------------+-------------------+---------------+----------------------------------------------------------------------------+
-| id                                       | estRows    | task              | access object | operator info                                                              |
-+------------------------------------------+------------+-------------------+---------------+----------------------------------------------------------------------------+
-| HashAgg_23                               | 1.00       | root              |               | funcs:count(Column#16)->Column#15                                          |
-| └─TableReader_25                         | 1.00       | root              |               | data:ExchangeSender_24                                                     |
-|   └─ExchangeSender_24                    | 1.00       | batchCop[tiflash] |               | ExchangeType: PassThrough                                                  |
-|     └─HashAgg_12                         | 1.00       | batchCop[tiflash] |               | funcs:count(1)->Column#16                                                  |
-|       └─HashJoin_17                      | 3000000.00 | batchCop[tiflash] |               | inner join, equal:[eq(tpch.nation.n_nationkey, tpch.customer.c_nationkey)] |
-|         ├─ExchangeReceiver_21(Build)     | 25.00      | batchCop[tiflash] |               |                                                                            |
-|         │ └─ExchangeSender_20            | 25.00      | batchCop[tiflash] |               | ExchangeType: Broadcast                                                    |
-|         │   └─TableFullScan_18           | 25.00      | batchCop[tiflash] | table:n       | keep order:false                                                           |
-|         └─TableFullScan_22(Probe)        | 3000000.00 | batchCop[tiflash] | table:c       | keep order:false                                                           |
-+------------------------------------------+------------+-------------------+---------------+----------------------------------------------------------------------------+
++------------------------------------------+------------+--------------+---------------+----------------------------------------------------------------------------+
+| id                                       | estRows    | task         | access object | operator info                                                              |
++------------------------------------------+------------+--------------+---------------+----------------------------------------------------------------------------+
+| HashAgg_23                               | 1.00       | root         |               | funcs:count(Column#16)->Column#15                                          |
+| └─TableReader_25                         | 1.00       | root         |               | data:ExchangeSender_24                                                     |
+|   └─ExchangeSender_24                    | 1.00       | mpp[tiflash] |               | ExchangeType: PassThrough                                                  |
+|     └─HashAgg_12                         | 1.00       | mpp[tiflash] |               | funcs:count(1)->Column#16                                                  |
+|       └─HashJoin_17                      | 3000000.00 | mpp[tiflash] |               | inner join, equal:[eq(tpch.nation.n_nationkey, tpch.customer.c_nationkey)] |
+|         ├─ExchangeReceiver_21(Build)     | 25.00      | mpp[tiflash] |               |                                                                            |
+|         │ └─ExchangeSender_20            | 25.00      | mpp[tiflash] |               | ExchangeType: Broadcast                                                    |
+|         │   └─TableFullScan_18           | 25.00      | mpp[tiflash] | table:n       | keep order:false                                                           |
+|         └─TableFullScan_22(Probe)        | 3000000.00 | mpp[tiflash] | table:c       | keep order:false                                                           |
++------------------------------------------+------------+--------------+---------------+----------------------------------------------------------------------------+
 9 rows in set (0.00 sec)
 ```
 
