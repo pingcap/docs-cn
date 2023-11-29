@@ -67,7 +67,7 @@ TiFlash 在 v6.2.0 将数据格式升级到 V3 版本，因此，从 v5.x 或 v6
 
     2. 重启 TiFlash 节点。
 
-你可以在 Grafana 监控查看是否还有表使用旧的数据版本：Tiflash summary > storage pool > Storage Pool Run Mode
+你可以在 Grafana 监控查看是否还有表使用旧的数据版本：**TiFlash-Summary** > **Storage Pool** > **Storage Pool Run Mode**
 
 - Only V2：使用 PageStorage V2 的表数量（包括分区数）
 - Only V3：使用 PageStorage V3 的表数量（包括分区数）
