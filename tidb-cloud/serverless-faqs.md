@@ -42,6 +42,18 @@ Yes, your Developer Tier cluster has been automatically migrated to the TiDB Ser
 
 TiDB Serverless adopts a pay-as-you-go model, meaning that you only pay for the storage space and cluster usage. In this model, all cluster activities such as SQL queries, bulk operations, and background jobs are quantified in [Request Units (RUs)](/tidb-cloud/tidb-cloud-glossary.md#request-unit). RU is an abstract measurement for the size and intricacy of requests initiated on your cluster. For more information, see [TiDB Serverless Pricing Details](https://www.pingcap.com/tidb-cloud-serverless-pricing-details/).
 
+### How can I view the RU costs for my SQL statements in TiDB Serverless?
+
+You can view both the **Total RU** and **Mean RU** costs per SQL statement in [TiDB Serverless](/tidb-cloud/select-cluster-tier.md#tidb-serverless). This feature helps in identifying and analyzing RU costs, which can lead to potential cost savings in your operations. 
+
+To check your SQL statement RU details, perform the following steps:
+
+1. Log in to the [TiDB Cloud console](https://tidbcloud.com/) and navigate to the [**Clusters**](https://tidbcloud.com/console/clusters) page of your project.
+
+2. Navigate to the **Diagnosis** page of [your TiDB Serverless cluster](https://tidbcloud.com/console/clusters).
+
+3. Click the **SQL Statement** tab.
+
 ### Is there any free plan available for TiDB Serverless?
 
 For the first five TiDB Serverless clusters in your organization, TiDB Cloud provides a free usage quota for each of them as follows:
