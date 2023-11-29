@@ -8,7 +8,7 @@ aliases: ['/docs/dev/functions-and-operators/expressions-pushed-down/','/docs/de
 
 When TiDB reads data from TiKV, TiDB tries to push down some expressions (including calculations of functions or operators) to be processed to TiKV. This reduces the amount of transferred data and offloads processing from a single TiDB node. This document introduces the expressions that TiDB already supports pushing down and how to prohibit specific expressions from being pushed down using blocklist.
 
-Tiflash also supports pushdown for the functions and operators [listed on this page](/tiflash/tiflash-supported-pushdown-calculations.md).
+TiFlash also supports pushdown for the functions and operators [listed on this page](/tiflash/tiflash-supported-pushdown-calculations.md).
 
 ## Supported expressions for pushdown to TiKV
 
