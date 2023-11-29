@@ -5,7 +5,7 @@ summary: 了解 TiDB 7.5.0 版本的新功能、兼容性变更、改进提升�
 
 # TiDB 7.5.0 Release Notes
 
-发版日期：2023 年 11 月 28 日
+发版日期：2023 年 12 月 1 日
 
 TiDB 版本：7.5.0
 
@@ -27,12 +27,12 @@ TiDB 7.5.0 为长期支持版本 (Long-Term Support Release, LTS)。
   <tr>
     <td>可扩展性与性能</td>
     <td>支持并行运行多个 <code>ADD INDEX</code> 语句</td>
-    <td>在该功能中，原先为同一个表添加多个索引的任务可以变为并发运行。以前同时运行 2 个添加索引语句 X 和 Y 需要花费 X 的时间 + Y 的时间，现在在一个 SQL 语句中同时添加索引 X 和 Y，并发运行后，添加索引总耗时显著减少了。尤其是在宽表的场景，内部测试数据显示同时添加多个索引的最高性能可提升 94%。</td>
+    <td>通过该功能，为同一个表添加多个索引的任务可以变为并发运行。以前同时运行 2 个添加索引语句 X 和 Y 需要花费 X 的时间 + Y 的时间，现在在一个 SQL 语句中同时添加索引 X 和 Y，并发运行后，添加索引总耗时显著减少了。尤其是在宽表的场景，内部测试数据显示同时添加多个索引的性能最高可提升 94%。</td>
   </tr>
   <tr>
     <td rowspan="3">稳定性与高可用</td>
     <td>优化<a href="https://docs.pingcap.com/zh/tidb/v7.5/tidb-global-sort" target="_blank">全局排序</a>（实验特性，从 v7.4.0 开始引入）</td>
-    <td>TiDB v7.2.0 中引入了<a href="https://docs.pingcap.com/zh/tidb/v7.5/tidb-distributed-execution-framework" target="_blank">后端任务分布式并行执行框架</a>。在 v7.4.0 中，TiDB 以该框架为基础，引入全局排序，消除了数据 reorg 任务期间临时无序数据导致的不必要的 I/O、CPU 和内存峰值。全局排序利用外部对象存储（目前为 S3）来存储系统作业期间的中间文件，提高灵活性并降低成本。<code>ADD INDEX</code> 和 <code>IMPORT INTO</code> 等操作将更快速灵活、稳定可靠，且运行成本较低。</td>
+    <td>TiDB v7.2.0 中引入了<a href="https://docs.pingcap.com/zh/tidb/v7.5/tidb-distributed-execution-framework" target="_blank">后端任务分布式并行执行框架</a>。在 v7.4.0 中，TiDB 以该框架为基础，引入全局排序，消除了数据 reorg 任务期间临时无序数据导致的不必要的 I/O、CPU 和内存峰值。全局排序利用外部对象存储（目前为 Amazon S3）来存储系统作业期间的中间文件，提高灵活性并降低成本。<code>ADD INDEX</code> 和 <code>IMPORT INTO</code> 等操作将更快速灵活、稳定可靠，且运行成本较低。</td>
   </tr>
   <tr>
     <td>资源管控支持<a href="https://docs.pingcap.com/zh/tidb/v7.5/tidb-resource-control#管理后台任务" target="_blank">自动管理后台任务</a>（实验特性，从 v7.4.0 开始引入）</td>
@@ -40,7 +40,7 @@ TiDB 7.5.0 为长期支持版本 (Long-Term Support Release, LTS)。
   </tr>
   <tr>
     <td>资源管控支持<a href="https://docs.pingcap.com/zh/tidb/v7.5/tidb-resource-control#管理资源消耗超出预期的查询-runaway-queries">管理资源消耗超出预期的查询</a>（实验特性，从 v7.2.0 开始引入）</td>
-    <td><a href="https://docs.pingcap.com/zh/tidb/v7.5/tidb-resource-control" target="_blank">资源管控 (Resource Group)</a> 是一个通过资源组 (Resource Group) 对工作负载进行资源隔离的框架，但它并不对每个资源组内的查询产生影响。TiDB v7.2.0 引入了运行超出预期的查询 (Runaway Queries) 时的资源控制功能，你可以控制 TiDB 如何识别和处理每个资源组的查询。根据需要，长时间运行的查询可能会被终止或节流，你可以通过准确的 SQL 文本、SQL Digest 或 Plan Digest 来识别查询。在 TiDB v7.3.0，你可以主动监视已知的不良查询，类似于数据库级别的 SQL Blocklist。</td>
+    <td><a href="https://docs.pingcap.com/zh/tidb/v7.5/tidb-resource-control" target="_blank">资源管控</a>是一个通过资源组 (Resource Group) 对工作负载进行资源隔离的框架，但它并不对每个资源组内的查询产生影响。TiDB v7.2.0 引入了运行超出预期的查询 (Runaway Queries) 时的资源控制功能，你可以控制 TiDB 如何识别和处理每个资源组的查询。根据需要，长时间运行的查询可能会被终止或节流，你可以通过准确的 SQL 文本、SQL Digest 或 Plan Digest 来识别查询。在 TiDB v7.3.0，你可以主动监视已知的不良查询，类似于数据库级别的 SQL Blocklist。</td>
   </tr>
   <tr>
     <td>SQL</td>
