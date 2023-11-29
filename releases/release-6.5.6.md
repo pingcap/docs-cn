@@ -21,6 +21,8 @@ TiDB 版本：6.5.6
 
     - note [#issue](https://github.com/pingcap/tidb/issues/${issue-id}) @[贡献者 GitHub ID](https://github.com/${github-id})
     - note [#issue](https://github.com/pingcap/tidb/issues/${issue-id}) @[贡献者 GitHub ID](https://github.com/${github-id})
+    - 新增变量 `tidb_opt_enable_hash_join` 控制是否可以选择 Hash Join [#46695](https://github.com/pingcap/tidb/issues/46695) @[qw4990](https://github.com/qw4990)
+    - 
 
 + TiKV
 
