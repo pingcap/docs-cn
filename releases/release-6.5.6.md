@@ -47,8 +47,12 @@ TiDB 版本：6.5.6
 
     + Backup & Restore (BR)
 
-        - note [#issue](https://github.com/pingcap/tidb/issues/${issue-id}) @[贡献者 GitHub ID](https://github.com/${github-id})
-        - note [#issue](https://github.com/pingcap/tidb/issues/${issue-id}) @[贡献者 GitHub ID](https://github.com/${github-id})
+        - 快照备份恢复在遇到某些网络错误时会进行重试 [#48528](https://github.com/pingcap/tidb/issues/48528) @[Leavrth](https://github.com/Leavrth)
+        - 增加 pitr 对 delete range 场景的集成测试 [#47738](https://github.com/pingcap/tidb/issues/47738) @[Leavrth](https://github.com/Leavrth)
+        - 提供了 flashback cluster to tso 语法支持 [#48372](https://github.com/pingcap/tidb/issues/48372) @[BornChanger](https://github.com/BornChanger)
+        - 快照恢复增加对 region 打散超时失败或者被取消情况下的重试 [#47236](https://github.com/pingcap/tidb/issues/47236) @[Leavrth](https://github.com/Leavrth)
+        - 使用 merge-schedule-limit 配置项来暂停 pd merge [#7148](https://github.com/tikv/pd/issues/7148) @[BornChanger](https://github.com/3pointer)
+        
 
     + TiCDC
 
