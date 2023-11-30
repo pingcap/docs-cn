@@ -207,8 +207,14 @@ max-log-size = 64
 flush-interval = 2000
 # redo log 使用存储服务的 URI。默认值为空。
 storage = ""
-# 是否将 redo log 存储到文件中。默认值为 false。
+# 是否将 redo log 存储到本地文件中。默认值为 false。
 use-file-backend = false
+# 控制 redo 中编解码 worker 的数量，默认值为 16。
+encoding-worker-num = 16
+# 控制 redo 中上传文件 worker 的数量，默认值为 8。
+flush-worker-num = 8
+# redo log 文件的压缩行为，默认值为空，表示不进行压缩。可选值为 "lz4"。
+compression = ""
 
 [integrity]
 # 是否开启单行数据的 Checksum 校验功能，默认值为 "none"，即不开启。可选值为 "none" 和 "correctness"。
@@ -283,4 +289,18 @@ batching-max-messages=1000
 batching-max-publish-delay=10
 # Pulsar Producer 发送消息的超时时间，默认 30 秒。
 send-timeout=30
+
+[sink.cloud-storage-config]
+# 向下游存储服务保存数据变更记录的并发度，默认值为 16。
+worker-count = 16
+# 向下游存储服务保存数据变更记录的间隔，默认值为 2s。
+flush-interval = "2s"
+# 单个数据变更文件的字节数超过 `file-size` 时将其保存至存储服务中，默认值为 64MB。
+file-size = 67108864
+
+# 文件保留的时长，仅在 date-separator 配置为 day 时生效，默认值为 0，表示禁用文件清理。假设配置文件保留 1 天，TiCDC 的清理行为是：在 2023/12/02 00:00:00 时刻，TiCDC 会清理 2023/12/01 之前（注意：不包括 2023/12/01）的文件。
+file-expiration-days = 0
+# 定时清理任务的运行周期，与 crontab 配置兼容，格式为 `Second | Minute | Hour | Dom | Month | DowOptional`，默认值为 "0 0 2 * * *"，表示每天晚上两点执行清理任务
+file-cleanup-cron-spec = "0 0 2 * * *"
+flush-concurrency = 1
 ```
