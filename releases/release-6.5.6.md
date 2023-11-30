@@ -131,7 +131,14 @@ TiDB 版本：6.5.6
     - 修复使用 `AUTO_ID_CACHE=1` 时 goroutine 泄漏的问题 [#46324](https://github.com/pingcap/tidb/issues/46324) @[tiancaiamao](https://github.com/tiancaiamao)
     - 修复 TiDB 在关闭时可能 panic 的问题 [#32110](https://github.com/pingcap/tidb/issues/32110) @[july2993](https://github.com/july2993)
     - 修复 TiDB schema cache 中读取 schema diff commit 版本使用 mvcc 接口没有处理 lock 的问题 [#48281](https://github.com/pingcap/tidb/issues/48281) @[cfzjywxk](https://github.com/cfzjywxk)
-
+    - 修复表改名重复错误[#47141](https://github.com/pingcap/tidb/pull/47141)@[jiyfhust](https://github.com/jiyfhust)
+    - 修复 MDL 锁异常问题[#46920](https://github.com/pingcap/tidb/issues/46920),[#46751](https://github.com/pingcap/tidb/issues/46751)@[wjhuang2016 ](https://github.com/wjhuang2016 )
+    - 修复禁止在非 int 类型聚簇索引分裂 region [#47350](https://github.com/pingcap/tidb/issues/47350)@[tangenta](https://github.com/tangenta)
+    - 修复 load data replace 问题[#47995](https://github.com/pingcap/tidb/issues/47995)) @[lance6716](https://github.com/lance6716)
+    - 修复 pd leader 故障 1分钟导致 import into 任务失败 [#48307](https://github.com/pingcap/tidb/issues/48307) @[D3Hunter](https://github.com/D3Hunter)
+    - 修复创建日期型字段索引问题 [#47426]([https://github.com/pingcap/tidb/issues/47426]) @[tangenta](https://github.com/tangenta)
+    - 修复 tablesample 未排序问题 [#48253](https://github.com/pingcap/tidb/issues/48253) @[tangenta](https://github.com/tangenta)
+    - 修复当 DDL jobID 恢复为 0 导致 TiDB 节点 panic [#46296](https://github.com/pingcap/tidb/issues/46296) @[jiyfhust](https://github.com/jiyfhust)
 + TiKV
 
     - note [#issue](https://github.com/tikv/tikv/issues/${issue-id}) @[贡献者 GitHub ID](https://github.com/${github-id})
