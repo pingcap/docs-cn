@@ -213,7 +213,7 @@ use-file-backend = false
 encoding-worker-num = 16
 # 控制 redo 中上传文件 worker 的数量，默认值为 8。
 flush-worker-num = 8
-# redo log 文件的压缩行为，默认值为空，表示不进行压缩。可选值为 "lz4"。
+# redo log 文件的压缩行为，默认值为空，表示不进行压缩。可选值为 "" 和 "lz4"。
 compression = ""
 
 [integrity]
@@ -298,9 +298,10 @@ flush-interval = "2s"
 # 单个数据变更文件的字节数超过 `file-size` 时将其保存至存储服务中，默认值为 64MB。
 file-size = 67108864
 
-# 文件保留的时长，仅在 date-separator 配置为 day 时生效，默认值为 0，表示禁用文件清理。假设配置文件保留 1 天，TiCDC 的清理行为是：在 2023/12/02 00:00:00 时刻，TiCDC 会清理 2023/12/01 之前（注意：不包括 2023/12/01）的文件。
+# 文件保留的时长，仅在 date-separator 配置为 day 时生效，默认值为 0，表示禁用文件清理。假设 `file-expiration-days = 1`，TiCDC 的清理行为是：在 2023/12/02 00:00:00 时刻，TiCDC 会清理 2023/12/01 之前（注意：不包括 2023/12/01）的文件。
 file-expiration-days = 0
 # 定时清理任务的运行周期，与 crontab 配置兼容，格式为 `Second | Minute | Hour | Dom | Month | DowOptional`，默认值为 "0 0 2 * * *"，表示每天晚上两点执行清理任务
 file-cleanup-cron-spec = "0 0 2 * * *"
+# 上传单个文件的并发数，默认值为 1，表示禁用并发。
 flush-concurrency = 1
 ```
