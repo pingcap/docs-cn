@@ -263,6 +263,13 @@ TiCDC 对 Canal-JSON 数据格式的实现，包括 `Update` 类型事件和 `my
 | `Update` 类型事件 | `old` 字段默认包含所有列的数据。当 sink 参数 `only_output_updated_columns` 设置为 `true` 时，`old` 字段仅包含被修改的列数据 | `old` 字段仅包含被修改的列数据          |
 | `mysqlType` 字段  | 对于含有参数的类型，没有类型参数信息                                                           | 对于含有参数的类型，会包含完整的参数信息 |
 
+### 兼容官方实现
+
+自 v6.5.6 开始，TiCDC Canal-JSON 支持兼容官方输出的内容格式。在创建 changefeed 时，你可以在 `sink-uri` 中设置 `content-compatible=true` 以开启兼容模式。在该模式下，TiCDC 输出兼容官方实现的 Canal-JSON 格式数据。具体改动包括：
+
+* `mysqlType` 字段包含每个类型的具体参数。
+* `Update` 类型事件只输出被修改的列数据。
+
 ### `Update` 类型事件
 
 对于 `Update` 类型事件，Canal 官方实现中，`old` 字段仅包含被修改的列数据，而 TiCDC 的实现则包含所有列数据。
@@ -445,13 +452,6 @@ Canal 官方实现输出内容如下：
     "old": null,
 }
 ```
-
-### 兼容官方实现
-
-自 v6.5.6 开始，TiCDC Canal-JSON 实现支持兼容官方输出内容。你可以通过在创建 changefeed 时，在 sink-uri 中指定 `content-compatible` 为 true 来开启，TiCDC 输出兼容官方实现的 Canal-JSON 格式数据。具体改动有：
-
-* MySQLType 字段中，包含有每个类型的具体参数。
-* Update 事件，只输出被修改的列数据。
 
 ## TiCDC Canal-JSON 改动说明
 
