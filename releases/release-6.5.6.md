@@ -37,7 +37,7 @@ TiDB 版本：6.5.6
     - 当 Flashback 完成时，当遇到 `notLeader` 或 `regionNotFound` 时，`ctl` 减缓加载键范围。[#15712](https://github.com/tikv/tikv/issues/15712)@[HuSharp](https://github.com/HuSharp)
 
 + PD
-
+    - 为 DR Auto-Sync 添加 Status 和 Sync Progress 面板 [#6975](https://github.com/tikv/pd/issues/6975) @[disksing](https://github.com/disksing)
     - note [#issue](https://github.com/tikv/pd/issues/${issue-id}) @[贡献者 GitHub ID](https://github.com/${github-id})
     - note [#issue](https://github.com/tikv/pd/issues/${issue-id}) @[贡献者 GitHub ID](https://github.com/${github-id})
 
@@ -151,7 +151,14 @@ TiDB 版本：6.5.6
     - (dup): release-7.1.2.md > 错误修复> PD - 修复 Plugin 目录、文件内容可能存在安全隐患的问题 [#7094](https://github.com/tikv/pd/issues/7094) @[HuSharp](https://github.com/HuSharp)
     - (dup): release-7.4.0.md > 错误修复> PD - 修复修改隔离等级时未同步到默认放置规则中的问题 [#7121](https://github.com/tikv/pd/issues/7121) @[rleungx](https://github.com/rleungx)
     - (dup): release-7.1.2.md > 错误修复> PD - 修复 `evict-leader-scheduler` 丢失配置的问题 [#6897](https://github.com/tikv/pd/issues/6897) @[HuSharp](https://github.com/HuSharp)
-
+    - 修复空 region 统计口径可能导致 BR Restore Regions 不均衡的问题 [#7148](https://github.com/tikv/pd/issues/7148) @[Cabinfever](https://github.com/CabinfeverB)
+    - 修复采用自适应同步模式的集群（DR Auto-Sync）在 Placement Rule 配置比较复杂时，canSync 和 hasMajority 可能计算错误的问题 [#7201](https://github.com/tikv/pd/issues/7201) @[disksing](https://github.com/disksing)
+    - 修复 DR Auto-Sync 集群 available_stores 计算错误的问题 [#7221](https://github.com/tikv/pd/issues/7221) @[disksing](https://github.com/disksing)
+    - 修复 DR Auto-Sync 集群在备机房挂掉时主机房不能添加 TiKV 节点的问题 [#7218](https://github.com/tikv/pd/issues/7218) @[disksing](https://github.com/disksing)
+    - 修复在大集群中添加多个 TiKV 节点可能导致 TiKV 心跳上报变慢或卡住的问题 [#7248](https://github.com/tikv/pd/issues/7248) @[rleungx](https://github.com/rleungx)
+    - 修复 TiKV 节点不可用时有一定几率删除正常 Peers 的问题 [#7249](https://github.com/tikv/pd/issues/7249) @[lhy1024](https://github.com/lhy1024)
+    - 修复 DR Auto-Sync Ledaer 切换时间过长的问题 [#6988](https://github.com/tikv/pd/issues/6988) @[HuSharp](https://github.com/HuSharp)
+    - 升级 Gin 版本从 v1.8.1 到 v1.9.1 以解决部分安全问题 [#7438](https://github.com/tikv/pd/issues/7438) @[niubell](https://github.com/niubell)
 + TiFlash
 
     - note [#issue](https://github.com/pingcap/tiflash/issues/${issue-id}) @[贡献者 GitHub ID](https://github.com/${github-id})
