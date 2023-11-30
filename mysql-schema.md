@@ -22,6 +22,15 @@ These system tables contain grant information about user accounts and their priv
 - `global_priv`: the authentication information based on certificates
 - `role_edges`: the relationship between roles
 
+## Cluster status system tables
+
+* The `tidb` table contains some global information about TiDB:
+
+    * `bootstrapped`: whether the TiDB cluster has been initialized. Note that this value is read-only and cannot be modified.
+    * `tidb_server_version`: the version information of TiDB when it is initialized. Note that this value is read-only and cannot be modified.
+    * `system_tz`: the system time zone of TiDB.
+    * `new_collation_enabled`: whether TiDB has enabled the [new framework for collations](/character-set-and-collation.md#new-framework-for-collations). Note that this value is read-only and cannot be modified.
+
 ## Server-side help system tables
 
 Currently, the `help_topic` is NULL.
@@ -88,7 +97,6 @@ Currently, the `help_topic` is NULL.
 > The `tidb`, `expr_pushdown_blacklist`, `opt_rule_blacklist`, `table_cache_meta`, `tidb_import_jobs`, and `tidb_timers` system tables are only applicable to TiDB Self-Hosted and not available on [TiDB Cloud](https://docs.pingcap.com/tidbcloud/).
 
 - `GLOBAL_VARIABLES`: global system variable table
-- `tidb`: to record the version information when TiDB executes `bootstrap`
 - `expr_pushdown_blacklist`: the blocklist for expression pushdown
 - `opt_rule_blacklist`: the blocklist for logical optimization rules
 - `table_cache_meta`: the metadata of cached tables

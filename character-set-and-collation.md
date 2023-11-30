@@ -496,9 +496,13 @@ Since TiDB v4.0, a complete framework for collations is introduced.
 
 <CustomContent platform="tidb">
 
-This new framework supports semantically parsing collations and introduces the `new_collations_enabled_on_first_bootstrap` configuration item to decide whether to enable the new framework when a cluster is first initialized. To enable the new framework, set `new_collations_enabled_on_first_bootstrap` to `true`. For details, see [`new_collations_enabled_on_first_bootstrap`](/tidb-configuration-file.md#new_collations_enabled_on_first_bootstrap). If you initialize the cluster after the configuration item is enabled, you can check whether the new collation is enabled through the `new_collation_enabled` variable in the `mysql`.`tidb` table:
+This new framework supports semantically parsing collations and introduces the `new_collations_enabled_on_first_bootstrap` configuration item to decide whether to enable the new framework when a cluster is first initialized. To enable the new framework, set `new_collations_enabled_on_first_bootstrap` to `true`. For details, see [`new_collations_enabled_on_first_bootstrap`](/tidb-configuration-file.md#new_collations_enabled_on_first_bootstrap).
 
-{{< copyable "sql" >}}
+For a TiDB cluster that is already initialized, you can check whether the new collation is enabled through the `new_collation_enabled` variable in the `mysql.tidb` table:
+
+> **Note:**
+>
+> If the query result of the `mysql.tidb` table is different from the value of `new_collations_enabled_on_first_bootstrap`, the result of the `mysql.tidb` table is the actual value.
 
 ```sql
 SELECT VARIABLE_VALUE FROM mysql.tidb WHERE VARIABLE_NAME='new_collation_enabled';
