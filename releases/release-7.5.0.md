@@ -36,7 +36,7 @@ TiDB 7.5.0 为长期支持版本 (Long-Term Support Release, LTS)。
   </tr>
   <tr>
     <td>资源管控支持<a href="https://docs.pingcap.com/zh/tidb/v7.5/tidb-resource-control#管理后台任务" target="_blank">自动管理后台任务</a>（实验特性，从 v7.4.0 开始引入）</td>
-    <td>从 v7.1.0 开始，<a href="https://docs.pingcap.com/zh/tidb/v7.5/tidb-resource-control#use-resource-control-to-achieve-resource-isolation" target="_blank">资源管控</a>成为正式功能，该特性有助于缓解不同工作负载间的资源与存储访问干扰。TiDB v7.4.0 将此资源控制应用于后台任务。资源管控可以识别和管理后台任务，例如自动收集统计信息、备份和恢复、TiDB Lightning 批量数据导入以及在线 DDL。未来，所有后台任务都将纳入资源管控。</td>
+    <td>从 v7.1.0 开始，<a href="https://docs.pingcap.com/zh/tidb/v7.5/tidb-resource-control" target="_blank">资源管控</a>成为正式功能，该特性有助于缓解不同工作负载间的资源与存储访问干扰。TiDB v7.4.0 将此资源控制应用于后台任务的优先级。资源管控可以识别和管理后台任务执行的优先级，例如自动收集统计信息、备份和恢复、TiDB Lightning 批量数据导入以及在线 DDL。未来，所有后台任务都将纳入资源管控。</td>
   </tr>
   <tr>
     <td>资源管控支持<a href="https://docs.pingcap.com/zh/tidb/v7.5/tidb-resource-control#管理资源消耗超出预期的查询-runaway-queries">管理资源消耗超出预期的查询</a>（实验特性，从 v7.2.0 开始引入）</td>
@@ -48,7 +48,7 @@ TiDB 7.5.0 为长期支持版本 (Long-Term Support Release, LTS)。
     <td>MySQL 8.0 的默认字符集为 utf8mb4，其默认排序规则是 <code>utf8mb4_0900_ai_ci</code>。TiDB v7.4.0 增强了与 MySQL 8.0 的兼容性。现在你可以更轻松地将在 MySQL 8.0 中使用默认排序规则创建的数据库迁移或复制到 TiDB。</td>
   </tr>
   <tr>
-    <td rowspan="3">数据库管理与可观测性</td>
+    <td rowspan="4">数据库管理与可观测性</td>
     <td><a href="https://docs.pingcap.com/zh/tidb/v7.5/sql-statement-import-into"><code>IMPORT INTO</code></a> 语句集成 TiDB Lightning 物理导入模式的能力 (GA)</td>
     <td>在 v7.2.0 之前，如需基于文件系统进行数据导入，你需要安装 <a href="https://docs.pingcap.com/zh/tidb/v7.5/tidb-lightning-overview">TiDB Lightning</a> 并使用其物理导入模式。目前，该功能已集成到 <code>IMPORT INTO</code> 语句中，你可以使用此语句快速导入数据，而无需安装任何额外的工具。该语句还支持<a href="https://docs.pingcap.com/zh/tidb/v7.5/tidb-distributed-execution-framework" target="_blank">分布式执行框架</a>，可分布式执行导入任务，提升了大规模数据导入时的效率。</td>
   </tr>
@@ -59,6 +59,10 @@ TiDB 7.5.0 为长期支持版本 (Long-Term Support Release, LTS)。
   <tr>
     <td>DDL 任务支持<a href="https://docs.pingcap.com/zh/tidb/v7.5/ddl-introduction#ddl-相关的命令介绍">暂停和恢复操作</a> (GA)</td>
     <td>添加索引可能会消耗大量资源并影响在线流量。即使在资源组中进行了限制，或对标记的节点进行了隔离，你仍然可能需要在紧急情况下暂停这些任务。从 v7.2.0 开始，TiDB 原生支持同时暂停任意数量的后台任务，释放所需的资源，无需取消或重启任务。</td>
+  </tr>
+  <tr>
+    <td>TiDB Dashboard 性能分析支持 TiKV 堆内存分析<a href="https://docs.pingcap.com/zh/tidb/v7.5/dashboard-profiling" target="_blank"></a></td>
+    <td>在之前版本中调查 TiKV OOM 或内存使用高的问题时，往往需要在实例环境下手动运行 <code>jeprof</code> 生成 Heap Profile。从 v7.5.0 开始，TiKV 支持远程处理 Heap Profile，你可以通过 TiDB Dashboard 直接获取 Heap Profile 的火焰图和调用图。该功能提供了与 Go 堆内存分析同等的简单易用体验。</td>
   </tr>
 </tbody>
 </table>
