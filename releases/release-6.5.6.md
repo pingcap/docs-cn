@@ -59,7 +59,10 @@ TiDB 版本：6.5.6
 
     + TiCDC
 
+       - 增加 redo 模块的调优配置，用户可以根据不同的机器规格，设置不同的并发参数。[#10048](https://github.com/pingcap/tiflow/issues/10048)
         - 增加同步到对象存储时，用户可以设置自动清理历史数据的功能。[#10109](https://github.com/pingcap/tiflow/issues/10109)
+        - 增加控制参数，可以设置 redo 文件的压缩算法。[#10176](https://github.com/pingcap/tiflow/issues/10176)
+
         - 增加控制参数，可以设置与标准的 canal-json 协议完全兼容的模式。[#10106](https://github.com/pingcap/tiflow/issues/10106)
 
         - note [#issue](https://github.com/pingcap/tiflow/issues/${issue-id}) @[贡献者 GitHub ID](https://github.com/${github-id})
