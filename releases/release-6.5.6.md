@@ -33,6 +33,8 @@ TiDB 版本：6.5.6
     - (dup): release-7.4.0.md > 改进提升> TiKV - 改进 Resolver 的内存使用，防止 OOM [#15458](https://github.com/tikv/tikv/issues/15458) @[overvenus](https://github.com/overvenus)
     - (dup): release-7.1.2.md > 改进提升> TiKV - 优化数据整理检查机制，当触发 Region Split 时，如果没有可以分裂的 key，触发一次数据整理，以消除过多的 MVCC 版本 [#15282](https://github.com/tikv/tikv/issues/15282) @[SpadeA-Tang](https://github.com/SpadeA-Tang)
     - (dup): release-7.4.0.md > 改进提升> TiKV - 消除 Router 对象中的 LRUCache，降低内存占用，防止 OOM [#15430](https://github.com/tikv/tikv/issues/15430) @[Connor1996](https://github.com/Connor1996)
+     - 将 `apply_router` 和 `raft_router` 的指标拆分为 alive 和 leak 分开监控。[#15357](https://github.com/tikv/tikv/issues/15357)@[tonyxuqqi](https://github.com/tonyxuqqi)
+    - 当 Flashback 完成时，当遇到 `notLeader` 或 `regionNotFound` 时，`ctl` 减缓加载键范围。[#15712](https://github.com/tikv/tikv/issues/15712)@[HuSharp](https://github.com/HuSharp)
 
 + PD
 
@@ -128,7 +130,19 @@ TiDB 版本：6.5.6
     - (dup): release-7.1.2.md > 错误修复> TiKV - 修复在移动 Peer 时可能导致 Follower Read 性能变差的问题 [#15468](https://github.com/tikv/tikv/issues/15468) @[YuJuncen](https://github.com/YuJuncen)
     - (dup): release-7.4.0.md > 错误修复> TiKV - 修复 raftstore-applys 不断增长的数据错误 [#15371](https://github.com/tikv/tikv/issues/15371) @[Connor1996](https://github.com/Connor1996)
     - (dup): release-7.1.2.md > 错误修复> TiKV - 修复有线上负载时，TiDB Lightning 的 Checksum Coprocessor 请求超时的问题 [#15565](https://github.com/tikv/tikv/issues/15565) @[lance6716](https://github.com/lance6716)
-
+    - 升级 `lz4-sys` 到版本 1.9.4 以修复安全问题 [#15621](https://github.com/tikv/tikv/issues/15621) @[SpadeA-Tang](https://github.com/SpadeA-Tang)
+    - 升级 `tokio` 到版本 6.5 以修复安全问题 [#15621](https://github.com/tikv/tikv/issues/15621) @[LykxSassinator](https://github.com/LykxSassinator)
+    - 移除 `flatbuffer`，因为其存在安全问题 [#15621](https://github.com/tikv/tikv/issues/15621) @[tonyxuqqi](https://github.com/tonyxuqqi)
+    - resolved-ts: 在存储分网络隔离时加快推进速度 [#15679](https://github.com/tikv/tikv/issues/15679) @[hicqu](https://github.com/hicqu)
+    - 修复当 TiKV 存在很多未 apply 的 Raft 日志时重启 TiKV 出现的内存溢出问题。[#15770](https://github.com/tikv/tikv/issues/15770) @[overvenus](https://github.com/overvenus)
+    - 修复 Region 合并后，历史 peer 残留并阻塞 resolved ts 的问题 [#15919](https://github.com/tikv/tikv/issues/15919) @[overvenus](https://github.com/overvenus)
+    - 修复云环境中 Grafana中scheduler命令变量错误的问题 [#15832](https://github.com/tikv/tikv/issues/15832) @[Connor1996](https://github.com/Connor1996)
+    - 修复 titan `blob-run-mode` 无法在线更新的问题 [#15978](https://github.com/tikv/tikv/issues/15978) @[tonyxuqqi](https://github.com/tonyxuqqi)
+    - 修复 Regon 元信息不一致导致的 TiKV panic 问题。[#13311](https://github.com/tikv/tikv/issues/13311)@[cfzjywxk](https://github.com/cfzjywxk)
+    - 修复 online recovery 在 Leader 强制退出时的 panic 问题 [#15629](https://github.com/tikv/tikv/issues/15629)@[Connor1996](https://github.com/Connor1996)
+    - 修复在进行扩容时可能导致 dr auto sync 的 joint state 超时问题 [#15817](https://github.com/tikv/tikv/issues/15817) @[Connor1996](https://github.com/Connor1996)
+    - 修复 TiKV coprocessor在移除 Raft peer 时可能返回陈旧数据的问题 [#16069](https://github.com/tikv/tikv/issues/16069) @[overvenus](https://github.com/overvenus)
+    - 修复 resolved ts 可能被阻塞 2 小时的问题。[#39130](https://github.com/pingcap/tidb/issues/39130) @[overvenus](https://github.com/overvenus)
 + PD
 
     - note [#issue](https://github.com/tikv/pd/issues/${issue-id}) @[贡献者 GitHub ID](https://github.com/${github-id})
