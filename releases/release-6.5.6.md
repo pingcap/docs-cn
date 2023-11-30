@@ -59,6 +59,9 @@ TiDB 版本：6.5.6
 
     + TiCDC
 
+        - 增加同步到对象存储时，用户可以设置自动清理历史数据的功能。[#10109](https://github.com/pingcap/tiflow/issues/10109)
+        - 增加控制参数，可以设置与标准的 canal-json 协议完全兼容的模式。[#10106](https://github.com/pingcap/tiflow/issues/10106)
+
         - note [#issue](https://github.com/pingcap/tiflow/issues/${issue-id}) @[贡献者 GitHub ID](https://github.com/${github-id})
         - note [#issue](https://github.com/pingcap/tiflow/issues/${issue-id}) @[贡献者 GitHub ID](https://github.com/${github-id})
         - (dup): release-7.4.0.md > 改进提升> Tools> TiCDC - 优化同步 `ADD INDEX` DDL 的执行逻辑，从而不阻塞后续的 DML 语句 [#9644](https://github.com/pingcap/tiflow/issues/9644) @[sdojjy](https://github.com/sdojjy)
@@ -179,7 +182,20 @@ TiDB 版本：6.5.6
 
     + TiCDC
 
-        - note [#issue](https://github.com/pingcap/tiflow/issues/${issue-id}) @[贡献者 GitHub ID](https://github.com/${github-id})
+        - 修复上游在执行有损 DDL 场景下，CDC server 可能发生 panic 的问题。 [#9739](https://github.com/pingcap/tiflow/issues/9739)
+        - 修复在开启 Redo log 功能， 执行 resume 命令场景下同步任务出现报错的问题。 [#9769](https://github.com/pingcap/tiflow/issues/9769)
+        - 修复 tikv 节点 crash 时，同步延迟上升的问题 。 [#9741](https://github.com/pingcap/tiflow/issues/9741)
+        - 修复 cdc server 在某些特殊操作系统下设置 gcTuner 不合理的问题 。 [#9762](https://github.com/pingcap/tiflow/issues/9762)
+        - 修复 tikv 节点 crash 时，同步延迟上升的问题 。 [#9741](https://github.com/pingcap/tiflow/issues/9741)
+        - 修复同步到 TiDB/mysql 某些场景下，SQL 语句 where 没有采用 PK 作为条件的问题。 [#9988](https://github.com/pingcap/tiflow/issues/9988)
+        - 修复某些特殊场景下同步任务在 CDC 节点分配不均衡的问题 。 [#9839](https://github.com/pingcap/tiflow/issues/9839)
+        - 修复 Redo log 在 NFS 出现问题可能导致 CDC server 卡住的问题 。 [#9986](https://github.com/pingcap/tiflow/issues/9986)
+        - 优化 CDC 在做增量扫对上游 tikv 的影响问题。 [#11390](https://github.com/tikv/tikv/issues/11390)
+        - 修复 Redo log 开启的场景下，DDL 同步时间间隔过长的问题 。 [#9960](https://github.com/pingcap/tiflow/issues/9960)
+        - 修复开启 BDR 时，drop/create 同一张表 DML 事件不能正确同步的问题 。 [#10079](https://github.com/pingcap/tiflow/issues/10079)
+        - 修复 Redo log 在 NFS 出现问题可能导致 CDC server 卡住的问题 。 [#9986](https://github.com/pingcap/tiflow/issues/9986)
+        -  修复同步到对象存储时，NFS 文件过多时同步延迟上升的问题 。 [#10041](https://github.com/pingcap/tiflow/issues/10041)
+        - 增加同步到对象存储时，某些特殊场景下导致 server Panic 的问题。[#10137](https://github.com/pingcap/tiflow/issues/10137)
         - note [#issue](https://github.com/pingcap/tiflow/issues/${issue-id}) @[贡献者 GitHub ID](https://github.com/${github-id})
         - (dup): release-7.4.0.md > 错误修复> Tools> TiCDC - 修复 PD 做扩缩容场景下 TiCDC 访问无效旧地址的问题 [#9584](https://github.com/pingcap/tiflow/issues/9584) @[fubinzh](https://github.com/fubinzh) @[asddongmen](https://github.com/asddongmen)
         - (dup): release-7.1.2.md > 错误修复> Tools> TiCDC - 修复在某些特殊的操作系统下，获取错误内存信息可能导致 OOM 的问题 [#9762](https://github.com/pingcap/tiflow/issues/9762) @[sdojjy](https://github.com/sdojjy)
