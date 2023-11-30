@@ -487,7 +487,7 @@ Canal 官方实现输出内容如下：
 
 ### 兼容官方实现
 
-自 v6.5.6 开始，TiCDC Canal-JSON 实现支持兼容官方输出内容。你可以通过在创建 changefeed 时，在 sink-uri 中指定 `content-compatible` 为 true 来开启。TiCDC 输出兼容官方实现的 Canal-JSON 格式数据。具体改动有：
+自 v6.5.6 开始，TiCDC Canal-JSON 实现支持兼容官方输出内容。你可以通过在创建 changefeed 时，在 sink-uri 中指定 `content-compatible` 为 true 来开启，TiCDC 输出兼容官方实现的 Canal-JSON 格式数据。具体改动有：
 
 * MySQLType 字段中，包含有每个类型的具体参数。
 * Update 事件，只输出被修改的列数据。
