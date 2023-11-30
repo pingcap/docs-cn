@@ -130,6 +130,8 @@ TiDB 版本：6.5.6
     - 修复在 prepare 语句中使用 QB_NAME hint 时可能执行异常的问题 [#46817](https://github.com/pingcap/tidb/issues/46817) @[jackysp](https://github.com/jackysp)
     - 修复使用 `AUTO_ID_CACHE=1` 时 goroutine 泄漏的问题 [#46324](https://github.com/pingcap/tidb/issues/46324) @[tiancaiamao](https://github.com/tiancaiamao)
     - 修复 TiDB 在关闭时可能 panic 的问题 [#32110](https://github.com/pingcap/tidb/issues/32110) @[july2993](https://github.com/july2993)
+    - 修复 TiDB schema cache 中读取 schema diff commit 版本使用 mvcc 接口没有处理 lock 的问题 [#48281](https://github.com/pingcap/tidb/issues/48281) @[cfzjywxk](https://github.com/cfzjywxk)
+
 + TiKV
 
     - note [#issue](https://github.com/tikv/tikv/issues/${issue-id}) @[贡献者 GitHub ID](https://github.com/${github-id})
