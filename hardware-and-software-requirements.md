@@ -39,6 +39,10 @@ As an open-source distributed SQL database with high performance, TiDB can be de
     <td><ul><li>x86_64</li><li>ARM 64</li></ul></td>
   </tr>
   <tr>
+    <td>Rocky Linux 9.1 or later</td>
+    <td><ul><li>x86_64</li><li>ARM 64</li></ul></td>
+  </tr>
+  <tr>
     <td>Kylin Euler V10 SP1/SP2</td>
     <td><ul><li>x86_64</li><li>ARM 64</li></ul></td>
   </tr>
@@ -77,10 +81,6 @@ As an open-source distributed SQL database with high performance, TiDB can be de
   <tr>
     <td>openSUSE Leap later than v15.3 (not including Tumbleweed)</td>
     <td>x86_64</td>
-  </tr>
-  <tr>
-    <td>Rocky Linux 9.1 or later</td>
-    <td><ul><li>x86_64</li><li>ARM 64</li></ul></td>
   </tr>
   <tr>
     <td>SUSE Linux Enterprise Server 15</td>
