@@ -16,31 +16,45 @@ TiDB 作为一款开源一栈式实时 HTAP 数据库，可以很好地部署和
 
 ## 操作系统及平台要求
 
-|  操作系统   |   支持的 CPU 架构   |
-|   :---   |   :---   |
-| Red Hat Enterprise Linux 8.4 及以上的 8.x 版本  |  <ul><li>x86_64</li><li>ARM 64</li></ul>  |
-| <ul><li>Red Hat Enterprise Linux 7.3 及以上的 7.x 版本</li><li>CentOS 7.3 及以上的 7.x 版本</li></ul>  |  <ul><li>x86_64</li><li>ARM 64</li></ul>   |
-|  Amazon Linux 2         |  <ul><li>x86_64</li><li>ARM 64</li></ul>   |
-| 麒麟欧拉版 V10 SP1/SP2   |   <ul><li>x86_64</li><li>ARM 64</li></ul>   |
-| 统信操作系统 (UOS) V20                 |   <ul><li>x86_64</li><li>ARM 64</li></ul>   |
-| openEuler 22.03 LTS SP1 |   <ul><li>x86_64</li><li>ARM 64</li></ul>   |
-| macOS 12 (Monterey) 及以上的版本 |  <ul><li>x86_64</li><li>ARM 64</li></ul>  |
-|  Oracle Enterprise Linux 7.3 及以上的 7.x 版本  |  x86_64           |
-|   Ubuntu LTS 18.04 及以上的版本  |  x86_64           |
-| CentOS 8 Stream | <ul><li>x86_64</li><li>ARM 64</li></ul> |
-|  Debian 9 (Stretch) 及以上的版本  |  x86_64           |
-|  Fedora 35 及以上的版本   |  x86_64           |
-|  openSUSE Leap 15.3 以上的版本（不包含 Tumbleweed） |  x86_64           |
-|  Rocky Linux 9.1 及以上的版本 |  <ul><li>x86_64</li><li>ARM 64</li></ul> |
-|  SUSE Linux Enterprise Server 15  |  x86_64                        |
+在 v7.5 LTS 版本中，针对不同操作系统和 CPU 架构的组合，TiDB 提供不同级别质量标准的支持。
 
-> **注意：**
->
-> - TiDB 只支持 Red Hat 兼容内核 (RHCK) 的 Oracle Enterprise Linux，不支持 Oracle Enterprise Linux 提供的 Unbreakable Enterprise Kernel。
-> - 根据 [CentOS Linux EOL](https://www.centos.org/centos-linux-eol/)，CentOS Linux 8 的上游支持已于 2021 年 12 月 31 日终止，但 CentOS 将继续提供对 CentOS Stream 8 的支持。
-> - TiDB 将不再支持 Ubuntu 16.04。强烈建议升级到 Ubuntu 18.04 或更高版本。
-> - 对于以上表格中所列操作系统的 32 位版本，TiDB 在这些 32 位操作系统以及对应的 CPU 架构上**不保障**可编译、可构建以及可部署，或 TiDB 不主动适配这些 32 位的操作系统。
-> - 以上未提及的操作系统版本**也许可以**运行 TiDB，但尚未得到 TiDB 官方支持。
++ 在以下操作系统以及对应的 CPU 架构组合上，TiDB 可**满足企业级生产质量的要求**，产品特性经过全面且系统化的验证：
+
+    |  操作系统   |   支持的 CPU 架构   |
+    |   :---   |   :---   |
+    | Red Hat Enterprise Linux 8.4 及以上的 8.x 版本  |  <ul><li>x86_64</li><li>ARM 64</li></ul>  |
+    | <ul><li>Red Hat Enterprise Linux 7.3 及以上的 7.x 版本</li><li>CentOS 7.3 及以上的 7.x 版本</li></ul>  |  <ul><li>x86_64</li><li>ARM 64</li></ul>   |
+    |  Amazon Linux 2         |  <ul><li>x86_64</li><li>ARM 64</li></ul>   |
+    | Rocky Linux 9.1 及以上的版本 |  <ul><li>x86_64</li><li>ARM 64</li></ul> |
+    | 麒麟欧拉版 V10 SP1/SP2   |   <ul><li>x86_64</li><li>ARM 64</li></ul>   |
+    | 统信操作系统 (UOS) V20                 |   <ul><li>x86_64</li><li>ARM 64</li></ul>   |
+    | openEuler 22.03 LTS SP1 |   <ul><li>x86_64</li><li>ARM 64</li></ul>   |
+
+    > **注意：**
+    >
+    > 根据 [CentOS Linux EOL](https://www.centos.org/centos-linux-eol/)，CentOS Linux 8 的上游支持已于 2021 年 12 月 31 日终止，但 CentOS 将继续提供对 CentOS Stream 8 的支持。
+
++ 在以下操作系统以及对应的 CPU 架构组合上，你可以编译、构建和部署 TiDB，可使用 OLTP 和 OLAP 以及数据工具的基本功能。但是 TiDB **不保障企业级生产质量要求**：
+
+    |  操作系统   |   支持的 CPU 架构   |
+    |   :---   |   :---   |
+    | macOS 12 (Monterey) 及以上的版本 |  <ul><li>x86_64</li><li>ARM 64</li></ul>  |
+    |  Oracle Enterprise Linux 7.3 及以上的 7.x 版本  |  x86_64           |
+    |   Ubuntu LTS 18.04 及以上的版本  |  x86_64           |
+    | CentOS 8 Stream | <ul><li>x86_64</li><li>ARM 64</li></ul> |
+    |  Debian 9 (Stretch) 及以上的版本  |  x86_64           |
+    |  Fedora 35 及以上的版本   |  x86_64           |
+    |  openSUSE Leap 15.3 以上的版本（不包含 Tumbleweed） |  x86_64           |
+    |  SUSE Linux Enterprise Server 15  |  x86_64                        |
+
+    > **注意：**
+    >
+    > - TiDB 只支持 Red Hat 兼容内核 (RHCK) 的 Oracle Enterprise Linux，不支持 Oracle Enterprise Linux 提供的 Unbreakable Enterprise Kernel。
+    > - TiDB 将不再支持 Ubuntu 16.04。强烈建议升级到 Ubuntu 18.04 或更高版本。
+
++ 对于以上两个表格中所列操作系统的 32 位版本，TiDB 在这些 32 位操作系统以及对应的 CPU 架构上**不保障**可编译、可构建以及可部署，或 TiDB 不主动适配这些 32 位的操作系统。
+
++ 以上未提及的操作系统版本**也许可以**运行 TiDB，但尚未得到 TiDB 官方支持。
 
 ### 编译和运行 TiDB 所依赖的库
 
