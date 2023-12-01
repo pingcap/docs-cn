@@ -173,7 +173,6 @@ TiDB 版本：6.5.6
         - 修复上游在执行有损 DDL 场景下，CDC server 可能发生 panic 的问题 [#9739](https://github.com/pingcap/tiflow/issues/9739) @[hicqu](https://github.com/hicqu)
         - 修复在开启 Redo log 功能， 执行 resume 命令场景下同步任务出现报错的问题 [#9769](https://github.com/pingcap/tiflow/issues/9769) @[hicqu](https://github.com/hicqu)
         - 修复 tikv 节点 crash 时，同步延迟上升的问题 [#9741](https://github.com/pingcap/tiflow/issues/9741)
-        - 修复 cdc server 在某些特殊操作系统下设置 gcTuner 不合理的问题 [#9762](https://github.com/pingcap/tiflow/issues/9762) @[sdojjy](https://github.com/sdojjy)
         - 修复同步到 TiDB/mysql 某些场景下，SQL 语句 where 没有采用 PK 作为条件的问题 [#9988](https://github.com/pingcap/tiflow/issues/9988)
         - 修复某些特殊场景下同步任务在 CDC 节点分配不均衡的问题 [#9839](https://github.com/pingcap/tiflow/issues/9839) @[3AceShowHand](https://github.com/3AceShowHand)
         - 修复 Redo log 在 NFS 出现问题可能导致 CDC server 卡住的问题 [#9986](https://github.com/pingcap/tiflow/issues/9986)
