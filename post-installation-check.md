@@ -63,7 +63,7 @@ The following information indicates successful login:
 ```sql
 Welcome to the MySQL monitor.  Commands end with ; or \g.
 Your MySQL connection id is 3
-Server version: 8.0.11-TiDB-v7.4.0 TiDB Server (Apache License 2.0) Community Edition, MySQL 8.0 compatible
+Server version: 8.0.11-TiDB-v7.5.0 TiDB Server (Apache License 2.0) Community Edition, MySQL 8.0 compatible
 Copyright (c) 2000, 2023, Oracle and/or its affiliates. All rights reserved.
 Oracle is a registered trademark of Oracle Corporation and/or its
 affiliates. Other names may be trademarks of their respective
