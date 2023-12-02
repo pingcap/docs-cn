@@ -61,7 +61,7 @@ jobs:
           else
             echo "No changes detected, skipped"
           fi
-          git push
+          git push --set-upstream origin i18n-ja-release-7.5
 
   dispatch:
     runs-on: ubuntu-latest
