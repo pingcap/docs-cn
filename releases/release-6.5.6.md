@@ -127,7 +127,7 @@ TiDB 版本：6.5.6
 
 + TiFlash **tw@hfxsd --2 条**
 
-    - 修复 Grafana 的 Read snapshot 面板上无法正确显示当前运行的最长查询时长的问题 [#7713](https://github.com/pingcap/tiflash/issues/7713) @[JaySon-Huang](https://github.com/JaySon-Huang)
+    - (dup) 修复 Grafana 的 Read Snapshots 面板上 `max_snapshot_lifetime` 监控指标显示有误的问题 [#7713](https://github.com/pingcap/tiflash/issues/7713) @[JaySon-Huang](https://github.com/JaySon-Huang)
     - 修复执行 `ALTER TABLE ... EXCHANGE PARTITION ...` 语句后 panic 的问题 [#8372](https://github.com/pingcap/tiflash/issues/8372) @[JaySon-Huang](https://github.com/JaySon-Huang)
     - (dup): release-7.1.2.md > 错误修复> TiFlash - 修复 MemoryTracker 提供的内存使用数据不准确的问题 [#8128](https://github.com/pingcap/tiflash/issues/8128) @[JinheLin](https://github.com/JinheLin)
 
@@ -136,26 +136,24 @@ TiDB 版本：6.5.6
     + Backup & Restore (BR) **tw@hfxsd --5 条**
 
         - (dup): release-7.5.0.md > 错误修复> Tools> Backup & Restore (BR) - 修复大宽表场景下，日志备份在某些场景中可能卡住的问题 [#15714](https://github.com/tikv/tikv/issues/15714) @[YuJuncen](https://github.com/YuJuncen)
-        - 修复频繁 flush 导致 log backup 卡死的问题 [#15602](https://github.com/tikv/tikv/issues/15602) @[3pointer](https://github.com/3pointer)
-        - 修复在 aws 云上, 连接 ec2metadata 连接被重置后, 重试导致备份恢复性能下降的问题 [#46750](https://github.com/pingcap/tidb/issues/47650) @[Leavrth](https://github.com/Leavrth)
+        - 修复频繁 Flush 导致 Log Backup 卡死的问题 [#15602](https://github.com/tikv/tikv/issues/15602) @[3pointer](https://github.com/3pointer)
+        - 修复在 EC2 metadata 连接被重置后, 重试导致备份恢复性能下降的问题 [#46750](https://github.com/pingcap/tidb/issues/47650) @[Leavrth](https://github.com/Leavrth)
         - (dup): release-7.1.2.md > 错误修复> Tools> Backup & Restore (BR) - 修复 1 分钟之内多次执行 PITR 可能导致数据丢失的问题 [#15483](https://github.com/tikv/tikv/issues/15483) @[YuJuncen](https://github.com/YuJuncen)
-        - 让 BR SQL 命令使用和 CLP 同样的默认参数 [#48000](https://github.com/pingcap/tidb/issues/48000) @[YuJuncen](https://github.com/YuJuncen)
-        - 修复 pd owner 发生转移情况下, log backup 可能 panic 的问题 [#47533](https://github.com/pingcap/tidb/issues/47533) @[YuJuncen](https://github.com/YuJuncen)
-        - 修复一个是用本地存储文件目录命名的问题 [#48452](https://github.com/pingcap/tidb/issues/48452) @[3AceShowHand](https://github.com/3AceShowHand)
+        - 修复由于 BR SQL 命令和 CLP 的默认参数不同可能导致的 OOM 问题 [#48000](https://github.com/pingcap/tidb/issues/48000) @[YuJuncen](https://github.com/YuJuncen)
+        - 修复 PD Owner 转移时，Log Backup 可能 panic 的问题 [#47533](https://github.com/pingcap/tidb/issues/47533) @[YuJuncen](https://github.com/YuJuncen)
+        - 修复生成外部存储文件 URI 错误的问题 [#48452](https://github.com/pingcap/tidb/issues/48452) @[3AceShowHand](https://github.com/3AceShowHand)
 
     + TiCDC **tw@hfxsd --12 条**
 
-        - 修复上游在执行有损 DDL 场景下，CDC server 可能发生 panic 的问题 [#9739](https://github.com/pingcap/tiflow/issues/9739) @[hicqu](https://github.com/hicqu)
-        - 修复在开启 Redo log 功能， 执行 resume 命令场景下同步任务出现报错的问题 [#9769](https://github.com/pingcap/tiflow/issues/9769) @[hicqu](https://github.com/hicqu)
-        - 修复 tikv 节点 crash 时，同步延迟上升的问题 [#9741](https://github.com/pingcap/tiflow/issues/9741)
-        - 修复同步到 TiDB/mysql 某些场景下，SQL 语句 where 没有采用 PK 作为条件的问题 [#9988](https://github.com/pingcap/tiflow/issues/9988)
-        - 修复某些特殊场景下同步任务在 CDC 节点分配不均衡的问题 [#9839](https://github.com/pingcap/tiflow/issues/9839) @[3AceShowHand](https://github.com/3AceShowHand)
-        - 修复 Redo log 在 NFS 出现问题可能导致 CDC server 卡住的问题 [#9986](https://github.com/pingcap/tiflow/issues/9986)
-        - 优化 CDC 在做增量扫对上游 tikv 的影响问题 [#11390](https://github.com/tikv/tikv/issues/11390)
-        - 修复 Redo log 开启的场景下，DDL 同步时间间隔过长的问题 [#9960](https://github.com/pingcap/tiflow/issues/9960)
-        - 修复开启 BDR 时，drop/create 同一张表 DML 事件不能正确同步的问题 [#10079](https://github.com/pingcap/tiflow/issues/10079)
-        - 修复同步到对象存储时，NFS 文件过多时同步延迟上升的问题 [#10041](https://github.com/pingcap/tiflow/issues/10041) @[CharlesCheung96](https://github.com/CharlesCheung96)
-        - 增加同步到对象存储时，某些特殊场景下导致 server Panic 的问题 [#10137](https://github.com/pingcap/tiflow/issues/10137) @[sdojjy](https://github.com/sdojjy)
+        - 修复上游在执行有损 DDL 场景下，TiCDC Server 可能发生 panic 的问题 [#9739](https://github.com/pingcap/tiflow/issues/9739) @[hicqu](https://github.com/hicqu)
+        - 修复在开启 Redo Log 功能后， 执行 `RESUME` 时同步任务报错的问题 [#9769](https://github.com/pingcap/tiflow/issues/9769) @[hicqu](https://github.com/hicqu)
+        - 修复 TiKV 节点 Crash 时，同步延迟变长的问题 [#9741](https://github.com/pingcap/tiflow/issues/9741)
+        - 修复同步数据到 TiDB 或 MySQL 时，`WHERE` 语句没有采用主键作为条件的问题 [#9988](https://github.com/pingcap/tiflow/issues/9988)
+        - 修复同步任务在 TiCDC 节点分配不均衡的问题 [#9839](https://github.com/pingcap/tiflow/issues/9839) @[3AceShowHand](https://github.com/3AceShowHand)
+        - 修复 Redo Log 开启时，DDL 同步时间间隔过长的问题 [#9960](https://github.com/pingcap/tiflow/issues/9960) @[CharlesCheung96](https://github.com/CharlesCheung96)
+        - 修复开启 BDR 时，`DROP` 一张表后再重新 `CREATE` 该表，Changefeed 无法同步 DML 事件的问题 [#10079](https://github.com/pingcap/tiflow/issues/10079) @[asddongmen](https://github.com/asddongmen)
+        - 修复同步数据到对象存储时，NFS 文件过多导致同步延迟变长的问题 [#10041](https://github.com/pingcap/tiflow/issues/10041) @[CharlesCheung96](https://github.com/CharlesCheung96)
+        - 修复同步数据到对象存储时，可能会出现 TiCDC Server panic 的问题 [#10137](https://github.com/pingcap/tiflow/issues/10137) @[sdojjy](https://github.com/sdojjy)
         - (dup): release-7.4.0.md > 错误修复> Tools> TiCDC - 修复 PD 做扩缩容场景下 TiCDC 访问无效旧地址的问题 [#9584](https://github.com/pingcap/tiflow/issues/9584) @[fubinzh](https://github.com/fubinzh) @[asddongmen](https://github.com/asddongmen)
         - (dup): release-7.1.2.md > 错误修复> Tools> TiCDC - 修复在某些特殊的操作系统下，获取错误内存信息可能导致 OOM 的问题 [#9762](https://github.com/pingcap/tiflow/issues/9762) @[sdojjy](https://github.com/sdojjy)
 
