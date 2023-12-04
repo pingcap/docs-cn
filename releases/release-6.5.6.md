@@ -101,7 +101,7 @@ TiDB 版本：6.5.6
     - 升级 `lz4-sys` 版本到 1.9.4 以修复安全问题 [#15621](https://github.com/tikv/tikv/issues/15621) @[SpadeA-Tang](https://github.com/SpadeA-Tang)
     - 升级 `tokio` 版本到 6.5 以修复安全问题 [#15621](https://github.com/tikv/tikv/issues/15621) @[LykxSassinator](https://github.com/LykxSassinator)
     - 移除存在安全问题的 `flatbuffer` [#15621](https://github.com/tikv/tikv/issues/15621) @[tonyxuqqi](https://github.com/tonyxuqqi)
-    - 在 TiKV store 分区时，加快 resolved-ts 的进度 [#15679](https://github.com/tikv/tikv/issues/15679) @[hicqu](https://github.com/hicqu)
+    - 修复在 TiKV store 分区时，resolved-ts 延时变长的问题 [#15679](https://github.com/tikv/tikv/issues/15679) @[hicqu](https://github.com/hicqu)
     - 修复重启 TiKV 时，由于存在大量未 apply 的 Raft 日志导致的内存溢出问题 [#15770](https://github.com/tikv/tikv/issues/15770) @[overvenus](https://github.com/overvenus)
     - 修复 Region 合并后，历史 peer 残留并阻塞 resolved-ts 的问题 [#15919](https://github.com/tikv/tikv/issues/15919) @[overvenus](https://github.com/overvenus)
     - 修复云环境中 Grafana 中 scheduler 命令变量错误的问题 [#15832](https://github.com/tikv/tikv/issues/15832) @[Connor1996](https://github.com/Connor1996)
@@ -111,7 +111,7 @@ TiDB 版本：6.5.6
     - 修复扩容时可能导致 DR Auto-Sync 的 joint state 超时问题 [#15817](https://github.com/tikv/tikv/issues/15817) @[Connor1996](https://github.com/Connor1996)
     - 修复 TiKV coprocessor 在移除 Raft peer 时可能返回陈旧数据的问题 [#16069](https://github.com/tikv/tikv/issues/16069) @[overvenus](https://github.com/overvenus)
     - 修复 resolved-ts 可能被阻塞 2 小时的问题 [#39130](https://github.com/pingcap/tidb/issues/39130) @[overvenus](https://github.com/overvenus)
-    - 修复在 Flashback 时遇到 `notLeader` 或 `regionNotFound` 导致 Flashback 卡住的问题 [#15712](https://github.com/tikv/tikv/issues/15712) @[HuSharp](https://github.com/HuSharp)
+    - 修复在 Flashback 时遇到 `notLeader` 或 `regionNotFound` 时卡住的问题 [#15712](https://github.com/tikv/tikv/issues/15712) @[HuSharp](https://github.com/HuSharp)
 
 + PD **tw@Oreoxmt --4 条**
 
