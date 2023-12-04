@@ -30,7 +30,7 @@ TiDB 版本：6.5.6
     - (dup): release-7.4.0.md > 改进提升> TiKV - 改进 Resolver 的内存使用，防止 OOM [#15458](https://github.com/tikv/tikv/issues/15458) @[overvenus](https://github.com/overvenus)
     - (dup): release-7.1.2.md > 改进提升> TiKV - 优化数据整理检查机制，当触发 Region Split 时，如果没有可以分裂的 key，触发一次数据整理，以消除过多的 MVCC 版本 [#15282](https://github.com/tikv/tikv/issues/15282) @[SpadeA-Tang](https://github.com/SpadeA-Tang)
     - (dup): release-7.4.0.md > 改进提升> TiKV - 消除 Router 对象中的 LRUCache，降低内存占用，防止 OOM [#15430](https://github.com/tikv/tikv/issues/15430) @[Connor1996](https://github.com/Connor1996)
-    - 将 `apply_router` 和 `raft_router` 的指标拆分为 alive 和 leak 分开监控。[#15357](https://github.com/tikv/tikv/issues/15357)@[tonyxuqqi](https://github.com/tonyxuqqi)
+    - 为 `apply_router` 和 `raft_router` 指标增加 alive 和 leak 监控维度 [#15357](https://github.com/tikv/tikv/issues/15357) @[tonyxuqqi](https://github.com/tonyxuqqi)
 
 + PD **tw@qiancai --1 条**
 
@@ -101,32 +101,32 @@ TiDB 版本：6.5.6
     - (dup): release-7.1.2.md > 错误修复> TiKV - 修复有线上负载时，TiDB Lightning 的 Checksum Coprocessor 请求超时的问题 [#15565](https://github.com/tikv/tikv/issues/15565) @[lance6716](https://github.com/lance6716)
     - 升级 `lz4-sys` 版本到 1.9.4 以修复安全问题 [#15621](https://github.com/tikv/tikv/issues/15621) @[SpadeA-Tang](https://github.com/SpadeA-Tang)
     - 升级 `tokio` 版本到 6.5 以修复安全问题 [#15621](https://github.com/tikv/tikv/issues/15621) @[LykxSassinator](https://github.com/LykxSassinator)
-    - 移除 `flatbuffer`，因为其存在安全问题 [#15621](https://github.com/tikv/tikv/issues/15621) @[tonyxuqqi](https://github.com/tonyxuqqi)
-    - resolved-ts: 在存储分网络隔离时加快推进速度 [#15679](https://github.com/tikv/tikv/issues/15679) @[hicqu](https://github.com/hicqu)
-    - 修复当 TiKV 存在很多未 apply 的 Raft 日志时重启 TiKV 出现的内存溢出问题。[#15770](https://github.com/tikv/tikv/issues/15770) @[overvenus](https://github.com/overvenus)
-    - 修复 Region 合并后，历史 peer 残留并阻塞 resolved ts 的问题 [#15919](https://github.com/tikv/tikv/issues/15919) @[overvenus](https://github.com/overvenus)
-    - 修复云环境中 Grafana中scheduler命令变量错误的问题 [#15832](https://github.com/tikv/tikv/issues/15832) @[Connor1996](https://github.com/Connor1996)
-    - 修复 titan `blob-run-mode` 无法在线更新的问题 [#15978](https://github.com/tikv/tikv/issues/15978) @[tonyxuqqi](https://github.com/tonyxuqqi)
-    - 修复 Regon 元信息不一致导致的 TiKV panic 问题。[#13311](https://github.com/tikv/tikv/issues/13311)@[cfzjywxk](https://github.com/cfzjywxk)
-    - 修复 online recovery 在 Leader 强制退出时的 panic 问题 [#15629](https://github.com/tikv/tikv/issues/15629)@[Connor1996](https://github.com/Connor1996)
-    - 修复在进行扩容时可能导致 dr auto sync 的 joint state 超时问题 [#15817](https://github.com/tikv/tikv/issues/15817) @[Connor1996](https://github.com/Connor1996)
+    - 移除存在安全问题的 `flatbuffer` [#15621](https://github.com/tikv/tikv/issues/15621) @[tonyxuqqi](https://github.com/tonyxuqqi)
+    - 在 TiKV store 分区时，加快 resolved-ts 的进度 [#15679](https://github.com/tikv/tikv/issues/15679) @[hicqu](https://github.com/hicqu)
+    - 修复重启 TiKV 时，由于存在大量未 apply 的 Raft 日志导致的内存溢出问题 [#15770](https://github.com/tikv/tikv/issues/15770) @[overvenus](https://github.com/overvenus)
+    - 修复 Region 合并后，历史 peer 残留并阻塞 resolved-ts 的问题 [#15919](https://github.com/tikv/tikv/issues/15919) @[overvenus](https://github.com/overvenus)
+    - 修复云环境中 Grafana 中 scheduler 命令变量错误的问题 [#15832](https://github.com/tikv/tikv/issues/15832) @[Connor1996](https://github.com/Connor1996)
+    - 修复 Titan `blob-run-mode` 无法在线更新的问题 [#15978](https://github.com/tikv/tikv/issues/15978) @[tonyxuqqi](https://github.com/tonyxuqqi)
+    - 修复 Region 元信息不一致导致的 TiKV panic 问题 [#13311](https://github.com/tikv/tikv/issues/13311) @[cfzjywxk](https://github.com/cfzjywxk)
+    - 修复 Online Unsafe Recovery 在 leader 强制退出时的 panic 问题 [#15629](https://github.com/tikv/tikv/issues/15629) @[Connor1996](https://github.com/Connor1996)
+    - 修复扩容时可能导致 DR Auto-Sync 的 joint state 超时问题 [#15817](https://github.com/tikv/tikv/issues/15817) @[Connor1996](https://github.com/Connor1996)
     - 修复 TiKV coprocessor 在移除 Raft peer 时可能返回陈旧数据的问题 [#16069](https://github.com/tikv/tikv/issues/16069) @[overvenus](https://github.com/overvenus)
-    - 修复 resolved ts 可能被阻塞 2 小时的问题。[#39130](https://github.com/pingcap/tidb/issues/39130) @[overvenus](https://github.com/overvenus)
-    - 修复在 Flashback 时遇到 `notLeader` 或 `regionNotFound` 导致 Flashback 卡住的问题。[#15712](https://github.com/tikv/tikv/issues/15712)@[HuSharp](https://github.com/HuSharp)
+    - 修复 resolved-ts 可能被阻塞 2 小时的问题 [#39130](https://github.com/pingcap/tidb/issues/39130) @[overvenus](https://github.com/overvenus)
+    - 修复在 Flashback 时遇到 `notLeader` 或 `regionNotFound` 导致 Flashback 卡住的问题 [#15712](https://github.com/tikv/tikv/issues/15712) @[HuSharp](https://github.com/HuSharp)
 
 + PD **tw@Oreoxmt --4 条**
 
     - (dup): release-7.1.2.md > 错误修复> PD - 修复 Plugin 目录、文件内容可能存在安全隐患的问题 [#7094](https://github.com/tikv/pd/issues/7094) @[HuSharp](https://github.com/HuSharp)
     - (dup): release-7.4.0.md > 错误修复> PD - 修复修改隔离等级时未同步到默认放置规则中的问题 [#7121](https://github.com/tikv/pd/issues/7121) @[rleungx](https://github.com/rleungx)
     - (dup): release-7.1.2.md > 错误修复> PD - 修复 `evict-leader-scheduler` 丢失配置的问题 [#6897](https://github.com/tikv/pd/issues/6897) @[HuSharp](https://github.com/HuSharp)
-    - 修复空 region 统计口径可能导致 BR Restore Regions 不均衡的问题 [#7148](https://github.com/tikv/pd/issues/7148) @[Cabinfever](https://github.com/CabinfeverB)
+    - 修复空 Region 的统计方法可能导致 BR 恢复过程中 Region 不均衡的问题 [#7148](https://github.com/tikv/pd/issues/7148) @[Cabinfever](https://github.com/CabinfeverB)
     - (dup): release-7.5.0.md > 错误修复> PD - 修复采用自适应同步部署模式 (DR Auto-Sync) 的集群在 Placement Rule 的配置较复杂时，`canSync` 和 `hasMajority` 可能计算错误的问题 [#7201](https://github.com/tikv/pd/issues/7201) @[disksing](https://github.com/disksing)
     - (dup): release-7.5.0.md > 错误修复> PD - 修复采用自适应同步部署模式 (DR Auto-Sync) 的集群 `available_stores` 计算错误的问题 [#7221](https://github.com/tikv/pd/issues/7221) @[disksing](https://github.com/disksing)
-    - 修复 DR Auto-Sync 集群在备机房挂掉时主机房不能添加 TiKV 节点的问题 [#7218](https://github.com/tikv/pd/issues/7218) @[disksing](https://github.com/disksing)
+    - 修复采用自适应同步部署模式 (DR Auto-Sync) 的集群在从 AZ 挂掉时主 AZ 不能添加 TiKV 节点的问题 [#7218](https://github.com/tikv/pd/issues/7218) @[disksing](https://github.com/disksing)
     - (dup): release-7.5.0.md > 错误修复> PD - 修复在大集群中添加多个 TiKV 节点可能导致 TiKV 心跳上报变慢或卡住的问题 [#7248](https://github.com/tikv/pd/issues/7248) @[rleungx](https://github.com/rleungx)
     - (dup): release-7.5.0.md > 错误修复> PD - 修复当 TiKV 节点不可用时 PD 可能删除正常 Peers 的问题 [#7249](https://github.com/tikv/pd/issues/7249) @[lhy1024](https://github.com/lhy1024)
-    - 修复 DR Auto-Sync Ledaer 切换时间过长的问题 [#6988](https://github.com/tikv/pd/issues/6988) @[HuSharp](https://github.com/HuSharp)
-    - 升级 Gin 版本从 v1.8.1 到 v1.9.1 以解决部分安全问题 [#7438](https://github.com/tikv/pd/issues/7438) @[niubell](https://github.com/niubell)
+    - 修复自适应同步部署模式 (DR Auto-Sync) 下 leader 切换时间过长的问题 [#6988](https://github.com/tikv/pd/issues/6988) @[HuSharp](https://github.com/HuSharp)
+    - 升级 Gin 版本从 v1.8.1 到 v1.9.1 以修复部分安全问题 [#7438](https://github.com/tikv/pd/issues/7438) @[niubell](https://github.com/niubell)
 
 + TiFlash **tw@hfxsd --2 条**
 
