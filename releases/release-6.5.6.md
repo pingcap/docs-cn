@@ -145,7 +145,7 @@ TiDB 版本：6.5.6
 
     + TiCDC **tw@hfxsd --12 条**
 
-        - 修复上游在执行有损 DDL 场景下，TiCDC Server 可能发生 panic 的问题 [#9739](https://github.com/pingcap/tiflow/issues/9739) @[hicqu](https://github.com/hicqu)
+        - 修复上游在执行有损 DDL 时，TiCDC Server 可能 panic 的问题 [#9739](https://github.com/pingcap/tiflow/issues/9739) @[hicqu](https://github.com/hicqu)
         - 修复在开启 Redo Log 功能后， 执行 `RESUME` 时同步任务报错的问题 [#9769](https://github.com/pingcap/tiflow/issues/9769) @[hicqu](https://github.com/hicqu)
         - 修复 TiKV 节点 Crash 时，同步延迟变长的问题 [#9741](https://github.com/pingcap/tiflow/issues/9741)
         - 修复同步数据到 TiDB 或 MySQL 时，`WHERE` 语句没有采用主键作为条件的问题 [#9988](https://github.com/pingcap/tiflow/issues/9988)
