@@ -92,7 +92,7 @@ npm install @types/node ts-node typescript --save-dev
     >
     > 如果你的程序在 Windows Subsystem for Linux (WSL) 中运行，请切换为对应的 Linux 发行版。
 
-4. 如果你还没有设置密码，点击 **Create password** 按钮生成一个随机的密码。
+4. 如果你还没有设置密码，点击 **Generate Password** 按钮生成一个随机的密码。
 
 5. 运行以下命令，将 `.env.example` 复制并重命名为 `.env`：
 
