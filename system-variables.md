@@ -1385,7 +1385,7 @@ mysql> SELECT job_info FROM mysql.analyze_jobs ORDER BY end_time DESC LIMIT 1;
 
 > **警告：**
 >
-> 目前，PITR 恢复会额外处理日志备份时间段内通过索引加速功能创建的索引，以达到兼容效果。详细内容请参考[索引加速功能为什么与 PITR 功能不兼容](/faq/backup-and-restore-faq.md#索引加速功能为什么与-pitr-功能不兼容)。
+> 目前，PITR 恢复会额外处理日志备份时间段内通过索引加速功能创建的索引，以达到兼容效果。详细内容请参考[索引加速功能为什么与 PITR 功能不兼容？(已在 v7.1 修复)](/faq/backup-and-restore-faq.md#索引加速功能为什么与-pitr-功能不兼容已在-v71-修复)。
 
 > **注意：**
 >
