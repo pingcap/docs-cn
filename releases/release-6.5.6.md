@@ -11,17 +11,15 @@ TiDB 版本：6.5.6
 
 试用链接：[快速体验](https://docs.pingcap.com/zh/tidb/v6.5/quick-start-with-tidb) | [生产部署](https://docs.pingcap.com/zh/tidb/v6.5/production-deployment-using-tiup) | [下载离线包](https://cn.pingcap.com/product-community/?version=v6.5.6#version-list)
 
-## 兼容性变更  **tw@qiancai --2 条**
+## 兼容性变更  **tw@qiancai --3 条**
 
+- 在安全增强模式 (SEM) 下禁止设置 [`require_secure_transport`](/system-variables.md#require_secure_transport-从-v610-版本开始引入) 为 `ON`，避免用户无法连接的问题 [#47665](https://github.com/pingcap/tidb/issues/47665) @[tiancaiamao](https://github.com/tiancaiamao)
+- (dup): release-7.1.2.md > 改进提升> TiKV - 引入系统变量 [`tidb_opt_enable_hash_join`](https://docs.pingcap.com/zh/tidb/v6.5/system-variables#tidb_opt_enable_hash_join-从-v656-版本开始引入) 控制是否选择表的哈希连接 [#46695](https://github.com/pingcap/tidb/issues/46695) @[coderplay](https://github.com/coderplay)
 - 经进一步的测试后，TiCDC Changefeed 配置项 [`case-sensitive`](/ticdc/ticdc-changefeed-config.md) 默认值由 `true` 改为 `false`，即默认情况下 TiCDC 配置文件中涉及的表名、库名大小写不敏感 [#10047](https://github.com/pingcap/tiflow/issues/10047) @[sdojjy](https://github.com/sdojjy)
 - TiCDC Changefeed 新增以下配置项：
-
-    -  [`encoding-worker-num`](/ticdc/ticdc-changefeed-config.md) 和 [`flush-worker-num`](/ticdc/ticdc-changefeed-config.md)：你可以根据不同的机器规格，设置 redo 模块不同的并发参数 [#10048](https://github.com/pingcap/tiflow/issues/10048) @[CharlesCheung96](https://github.com/CharlesCheung96)
+    - [`encoding-worker-num`](/ticdc/ticdc-changefeed-config.md) 和 [`flush-worker-num`](/ticdc/ticdc-changefeed-config.md)：你可以根据不同的机器规格，设置 redo 模块不同的并发参数 [#10048](https://github.com/pingcap/tiflow/issues/10048) @[CharlesCheung96](https://github.com/CharlesCheung96)
     - [`compression`](/ticdc/ticdc-changefeed-config.md)：你可以设置 redo log 文件的压缩行为 [#10176](https://github.com/pingcap/tiflow/issues/10176) [#10176](https://github.com/pingcap/tiflow/issues/10176) @[sdojjy](https://github.com/sdojjy)
     - [`sink.cloud-storage-config`](/ticdc/ticdc-changefeed-config.md)：你可以设置同步数据到对象存储时自动清理历史数据的功能 [#10109](https://github.com/pingcap/tiflow/issues/10109) @[CharlesCheung96](https://github.com/CharlesCheung96)
-    
-- 在 SEM 模式下禁止设置 `require_secure_transport` 为 `ON` [#47665](https://github.com/pingcap/tidb/issues/47665) @[tiancaiamao](https://github.com/tiancaiamao)
-- (dup): release-7.1.2.md > 改进提升> TiKV - 引入系统变量 [`tidb_opt_enable_hash_join`](https://docs.pingcap.com/zh/tidb/v6.5/system-variables#tidb_opt_enable_hash_join-从-v656-版本开始引入) 控制是否选择表的哈希连接 [#46695](https://github.com/pingcap/tidb/issues/46695) @[coderplay](https://github.com/coderplay)
 
 ## 改进提升
 
@@ -34,7 +32,7 @@ TiDB 版本：6.5.6
 
 + PD **tw@qiancai --1 条**
 
-    - 为 DR Auto-Sync 添加 Status 和 Sync Progress 面板 [#6975](https://github.com/tikv/pd/issues/6975) @[disksing](https://github.com/disksing)
+    - 在 Grafana 面板上为 DR Auto-Sync 添加 Status、Sync Progress 等监控指标 [#6975](https://github.com/tikv/pd/issues/6975) @[disksing](https://github.com/disksing)
 
 + Tools
 
@@ -46,7 +44,7 @@ TiDB 版本：6.5.6
         - 当遇到 Region 打散超时失败或被取消的情况时，快照恢复支持自动重试 Region 打散  [#47236](https://github.com/pingcap/tidb/issues/47236) @[Leavrth](https://github.com/Leavrth)
         - BR 通过设置 `merge-schedule-limit` 配置项为 0 来暂停 Region 合并 [#7148](https://github.com/tikv/pd/issues/7148) @[3pointer](https://github.com/3pointer)
 
-    + TiCDC **tw@qiancai  --5 条**
+    + TiCDC **tw@qiancai  --2 条**
 
         - 支持通过在 `sink-uri` 中设置 `content-compatible=true` 使 TiCDC Canal-JSON [兼容 Canal 官方输出的内容格式](/ticdc/ticdc-canal-json.md#兼容-canal-官方实现) [#10106](https://github.com/pingcap/tiflow/issues/10106) @[3AceShowHand](https://github.com/3AceShowHand)
         - (dup): release-7.4.0.md > 改进提升> Tools> TiCDC - 优化同步 `ADD INDEX` DDL 的执行逻辑，从而不阻塞后续的 DML 语句 [#9644](https://github.com/pingcap/tiflow/issues/9644) @[sdojjy](https://github.com/sdojjy)
