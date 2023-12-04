@@ -645,6 +645,7 @@
     - [Compatibility](/tiflash/tiflash-compatibility.md)
     - [Pipeline Execution Model](/tiflash/tiflash-pipeline-model.md)
   - [System Variables](/system-variables.md)
+  - [Server Status Variables](/status-variables.md)
   - Configuration File Parameters
     - [tidb-server](/tidb-configuration-file.md)
     - [tikv-server](/tikv-configuration-file.md)

@@ -6,56 +6,69 @@ aliases: ['/docs/dev/sql-statements/sql-statement-show-status/','/docs/dev/refer
 
 # SHOW [GLOBAL|SESSION] STATUS
 
-This statement is included for compatibility with MySQL. It has no effect on TiDB, which uses Prometheus and Grafana for centralized metrics collection instead of `SHOW STATUS`.
+This statement is included for compatibility with MySQL. TiDB uses Prometheus and Grafana for centralized metrics collection instead of `SHOW STATUS` for most metrics.
+
+A full description of the variables can be found here: [status variables](/status-variables.md)
 
 ## Synopsis
 
-**ShowStmt:**
+```ebnf+diagram
+ShowStatusStmt ::=
+    'SHOW' Scope? 'STATUS' ShowLikeOrWhere?
 
-![ShowStmt](/media/sqlgram/ShowStmt.png)
+Scope ::=
+    ( 'GLOBAL' | 'SESSION' )
 
-**ShowTargetFilterable:**
-
-![ShowTargetFilterable](/media/sqlgram/ShowTargetFilterable.png)
-
-**GlobalScope:**
-
-![GlobalScope](/media/sqlgram/GlobalScope.png)
+ShowLikeOrWhere ::=
+    "LIKE" SimpleExpr
+|   "WHERE" Expression
+```
 
 ## Examples
 
 ```sql
-mysql> show status;
-+--------------------+--------------------------------------+
-| Variable_name      | Value                                |
-+--------------------+--------------------------------------+
-| Ssl_cipher_list    |                                      |
-| server_id          | 93e2e07d-6bb4-4a1b-90b7-e035fae154fe |
-| ddl_schema_version | 141                                  |
-| Ssl_verify_mode    | 0                                    |
-| Ssl_version        |                                      |
-| Ssl_cipher         |                                      |
-+--------------------+--------------------------------------+
-6 rows in set (0.01 sec)
+mysql> SHOW SESSION STATUS;
++-------------------------------+--------------------------------------+
+| Variable_name                 | Value                                |
++-------------------------------+--------------------------------------+
+| Compression                   | OFF                                  |
+| Compression_algorithm         |                                      |
+| Compression_level             | 0                                    |
+| Ssl_cipher                    |                                      |
+| Ssl_cipher_list               |                                      |
+| Ssl_server_not_after          |                                      |
+| Ssl_server_not_before         |                                      |
+| Ssl_verify_mode               | 0                                    |
+| Ssl_version                   |                                      |
+| Uptime                        | 1409                                 |
+| ddl_schema_version            | 116                                  |
+| last_plan_binding_update_time | 0000-00-00 00:00:00                  |
+| server_id                     | 61160e73-ab80-40ff-8f33-27d55d475fd1 |
++-------------------------------+--------------------------------------+
+13 rows in set (0.00 sec)
 
-mysql> show global status;
-+--------------------+--------------------------------------+
-| Variable_name      | Value                                |
-+--------------------+--------------------------------------+
-| Ssl_cipher         |                                      |
-| Ssl_cipher_list    |                                      |
-| Ssl_verify_mode    | 0                                    |
-| Ssl_version        |                                      |
-| server_id          | 93e2e07d-6bb4-4a1b-90b7-e035fae154fe |
-| ddl_schema_version | 141                                  |
-+--------------------+--------------------------------------+
-6 rows in set (0.00 sec)
+sql> SHOW GLOBAL STATUS;
++-----------------------+--------------------------------------+
+| Variable_name         | Value                                |
++-----------------------+--------------------------------------+
+| Ssl_cipher            |                                      |
+| Ssl_cipher_list       |                                      |
+| Ssl_server_not_after  |                                      |
+| Ssl_server_not_before |                                      |
+| Ssl_verify_mode       | 0                                    |
+| Ssl_version           |                                      |
+| Uptime                | 1413                                 |
+| ddl_schema_version    | 116                                  |
+| server_id             | 61160e73-ab80-40ff-8f33-27d55d475fd1 |
++-----------------------+--------------------------------------+
+9 rows in set (0.00 sec)
 ```
 
 ## MySQL compatibility
 
-* This statement is included only for compatibility with MySQL.
+* This statement is compatible with MySQL.
 
 ## See also
 
 * [FLUSH STATUS](/sql-statements/sql-statement-flush-status.md)
+* [Server Status Variables](/status-variables.md)

@@ -50,7 +50,7 @@ Starting from v7.4.0, you can temporarily modify the value of some `SESSION` var
 
 For more information about the `SET_VAR` hint, see [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value).
 
-## Variable Reference
+## Variable reference
 
 ### allow_auto_random_explicit_insert <span class="version-mark">New in v4.0.3</span>
 

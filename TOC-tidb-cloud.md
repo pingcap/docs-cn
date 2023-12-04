@@ -576,6 +576,7 @@
     - [Metadata Lock](/metadata-lock.md)
     - [Use UUIDs](/best-practices/uuid.md)
   - [System Variables](/system-variables.md)
+  - [Server Status Variables](/status-variables.md)
   - Storage Engines
     - TiKV
         - [TiKV Overview](/tikv-overview.md)

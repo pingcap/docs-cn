@@ -74,8 +74,9 @@ mysql> show status;
 
 ## MySQL compatibility
 
-* This statement is included only for compatibility with MySQL.
+* This statement is compatible with MySQL.
 
 ## See also
 
 * [SHOW \[GLOBAL|SESSION\] STATUS](/sql-statements/sql-statement-show-status.md)
+* [Server Status Variables](/status-variables.md)
