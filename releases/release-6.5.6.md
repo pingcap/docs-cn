@@ -168,10 +168,10 @@ TiDB 版本：6.5.6
 
     + TiDB Lightning **tw@qiancai --4 条**
 
-        - 认为 “no leader" 错误为可重试任务 [#45673](https://github.com/pingcap/tidb/issues/45673) @[lance6716](https://github.com/lance6716)
-        - http 请求重试使用本次的请求内容 [#47930](https://github.com/pingcap/tidb/issues/47930) @[lance6716](https://github.com/lance6716)
-        - 增加 write rpc 超时机制防止 lightning 永久阻塞[#46321](https://github.com/pingcap/tidb/issues/46321) @[lance6716](https://github.com/lance6716)
-        - 物理导入模式下，去除不必要的 get_regions 调用 [#45507](https://github.com/pingcap/tidb/issues/45507) @[mittalrishabh](https://github.com/mittalrishabh)
+        - 修复遇到 `write to tikv with no leader returned` 错误时数据导入失败的问题 [#45673](https://github.com/pingcap/tidb/issues/45673) @[lance6716](https://github.com/lance6716)
+        - 修复 HTTP 重试请求未使用本次的请求内容导致导入失败的问题 [#47930](https://github.com/pingcap/tidb/issues/47930) @[lance6716](https://github.com/lance6716)
+        - 修复 TiDB Lightning 在 `writeToTiKV` 时卡住的问题 [#46321](https://github.com/pingcap/tidb/issues/46321) @[lance6716](https://github.com/lance6716)
+        - 移除物理导入模式下不必要的 `get_regions` 调用 [#45507](https://github.com/pingcap/tidb/issues/45507) @[mittalrishabh](https://github.com/mittalrishabh)
 
     + TiDB Binlog
 
