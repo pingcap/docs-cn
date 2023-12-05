@@ -29,12 +29,12 @@ title: 使用 TiUP 升级 TiDB
 ## 1. 升级兼容性说明
 
 - TiDB 目前暂不支持版本降级或升级后回退。
-- 使用 TiDB Ansible 管理的 4.0 版本集群，需要先按照 [4.0 版本文档的说明](https://docs.pingcap.com/zh/tidb/v4.0/upgrade-tidb-using-tiup)将集群导入到 TiUP (`tiup cluster`) 管理后，再按本文档说明升级到 6.5.1 版本。
-- 若要将 3.0 之前的版本升级至 6.5.1 版本：
+- 使用 TiDB Ansible 管理的 4.0 版本集群，需要先按照 [4.0 版本文档的说明](https://docs.pingcap.com/zh/tidb/v4.0/upgrade-tidb-using-tiup)将集群导入到 TiUP (`tiup cluster`) 管理后，再按本文档说明升级到 6.5.6 版本。
+- 若要将 3.0 之前的版本升级至 6.5.6 版本：
     1. 首先[通过 TiDB Ansible 升级到 3.0 版本](https://docs.pingcap.com/zh/tidb/v3.0/upgrade-tidb-using-ansible)。
     2. 然后按照 [4.0 版本文档的说明](https://docs.pingcap.com/zh/tidb/v4.0/upgrade-tidb-using-tiup)，使用 TiUP (`tiup cluster`) 将 TiDB Ansible 配置导入。
     3. 将集群升级至 4.0 版本。
-    4. 按本文档说明将集群升级到 6.5.1 版本。
+    4. 按本文档说明将集群升级到 6.5.6 版本。
 - 支持 TiDB Binlog，TiCDC，TiFlash 等组件版本的升级。
 - 将 v6.3.0 之前的 TiFlash 升级至 v6.3.0 及之后的版本时，需要特别注意：在 Linux AMD64 架构的硬件平台部署 TiFlash 时，CPU 必须支持 AVX2 指令集。而在 Linux ARM64 架构的硬件平台部署 TiFlash 时，CPU 必须支持 ARMv8 架构。具体请参考 [6.3.0 版本 Release Notes](/releases/release-6.3.0.md#其他) 中的描述。
 - 具体不同版本的兼容性说明，请查看各个版本的 [Release Note](/releases/release-notes.md)。请根据各个版本的 Release Note 的兼容性更改调整集群的配置。
@@ -133,7 +133,7 @@ tiup update cluster
 > 以下情况可跳过此步骤：
 >
 > - 原集群没有修改过配置参数，或通过 tiup cluster 修改过参数但不需要调整。
-> - 升级后对未修改过的配置项希望使用 `6.5.1` 默认参数。
+> - 升级后对未修改过的配置项希望使用 `6.5.6` 默认参数。
 
 1. 进入拓扑文件的 `vi` 编辑模式：
 
@@ -149,7 +149,7 @@ tiup update cluster
 
 > **注意：**
 >
-> 升级到 6.5.1 版本前，请确认已在 4.0 修改的参数在 6.5.1 版本中是兼容的，可参考 [TiKV 配置文件描述](/tikv-configuration-file.md)。
+> 升级到 6.5.6 版本前，请确认已在 4.0 修改的参数在 6.5.6 版本中是兼容的，可参考 [TiKV 配置文件描述](/tikv-configuration-file.md)。
 
 ### 2.4 检查当前集群的健康状况
 
