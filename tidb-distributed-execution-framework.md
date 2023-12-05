@@ -9,11 +9,7 @@ TiDB 采用计算存储分离架构，具有出色的扩展性和弹性的扩缩
 
 本文档介绍了 TiDB 后端任务分布式框架的使用场景与限制、使用方法和实现原理。
 
-> **注意：**
->
-> 本框架不支持 SQL 查询的分布式执行。
-
-## 使用场景与限制
+## 使用场景
 
 在数据库中，除了核心的事务型负载任务 (TP) 和分析型查询任务 (AP)，也存在着其他重要任务，如 DDL 语句、IMPORT INTO、TTL、Analyze 和 Backup/Restore 等，即**后端任务**。这些任务需要处理数据库对象（表）中的大量数据，通常具有如下特点：
 
@@ -27,7 +23,7 @@ TiDB 采用计算存储分离架构，具有出色的扩展性和弹性的扩缩
 - 支持后端任务分布式执行，可以在整个 TiDB 集群可用的计算资源范围内进行灵活的调度，从而更好地利用 TiDB 集群内的计算资源。
 - 提供统一的资源使用和管理能力，从整体和单个后端任务两个维度提供资源管理的能力。
 
-目前，后端任务分布式框架支持分布式执行 `ADD INDEX` 和 `IMPORT INTO`。
+目前，后端任务分布式框架支持分布式执行 `ADD INDEX` 和 `IMPORT INTO` 这两类后端任务。
 
 - `ADD INDEX`，即 DDL 创建索引的场景。例如以下 SQL 语句：
 
@@ -38,9 +34,12 @@ TiDB 采用计算存储分离架构，具有出色的扩展性和弹性的扩缩
 
 - `IMPORT INTO` 用于将 `CSV`、`SQL`、`PARQUET` 等格式的数据导入到一张空表中。详情请参考 [`IMPORT INTO`](/sql-statements/sql-statement-import-into.md)。
 
+## 使用限制
+- 分布式框架一次只能调度 1 个 `ADD INDEX` 任务，如果第一个 `ADD INDEX` 任务还未完成就提交了第二个 `ADD INDEX` 任务，则第二个 `ADD INDEX` 任务会通过事务的方式来执行。
+
 ## 启用前提
 
-使用分布式框架前，你需要启动 [Fast Online DDL](/system-variables.md#tidb_ddl_enable_fast_reorg-从-v630-版本开始引入) 模式。
+如需使用分布式框架执行 ‘ADD INDEX’，你需要先启动 [Fast Online DDL](/system-variables.md#tidb_ddl_enable_fast_reorg-从-v630-版本开始引入) 模式。
 
 1. 调整 Fast Online DDL 相关的系统变量：
 
@@ -53,7 +52,7 @@ TiDB 采用计算存储分离架构，具有出色的扩展性和弹性的扩缩
 
 > **注意：**
 >
-> 在升级到 v6.5.0 及以上版本时，建议你检查 TiDB 的 `temp-dir` 路径是否正确挂载了 SSD 磁盘，并确保运行 TiDB 的操作系统用户对该目录有读写权限，否则在运行时可能产生不可预知的问题。该参数是 TiDB 的配置参数，设置后需要重启 TiDB 才能生效。因此，在升级前提前进行设置，可以避免再次重启。
+> 建议你检查 TiDB 的 `temp-dir` 目录至少需要有 100 GiB 的可用空间。
 
 ## 启用步骤
 
@@ -65,7 +64,7 @@ TiDB 采用计算存储分离架构，具有出色的扩展性和弹性的扩缩
 
     在运行后端任务时，框架支持的语句（如 [`ADD INDEX`](/sql-statements/sql-statement-add-index.md) 和 [`IMPORT INTO`](/sql-statements/sql-statement-import-into.md)）会采用分布式方式执行。默认集群内部所有节点均会执行后端任务。
 
-2. 根据实际需求，调整可能影响 DDL 任务分布式执行的系统变量：
+2. 根据实际需求，调整可能影响 DDL 任务分布式执行的系统变量，一般情况均使用默认值即可：
 
     * [`tidb_ddl_reorg_worker_cnt`](/system-variables.md#tidb_ddl_reorg_worker_cnt)：使用默认值 `4` 即可，建议最大不超过 `16`。
     * [`tidb_ddl_reorg_priority`](/system-variables.md#tidb_ddl_reorg_priority)
@@ -78,10 +77,6 @@ TiDB 采用计算存储分离架构，具有出色的扩展性和弹性的扩缩
     >
     > - 在分布式任务执行过程中，如果某些 TiDB 节点下线，分布式任务将随机分配子任务到其他可用的 TiDB 节点上，此时无法通过 `tidb_service_scope` 来动态控制子任务的分配。 
     > - 在分布式任务执行过程中，修改 `tidb_service_scope` 的配置不会对当前任务生效，会从下次任务开始生效。
-
-> **建议：**
->
-> 对于分布式执行 `ADD INDEX` 语句，只需要设置 `tidb_ddl_reorg_worker_cnt`。
 
 ## 实现原理
 
