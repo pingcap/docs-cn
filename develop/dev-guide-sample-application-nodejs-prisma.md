@@ -88,7 +88,7 @@ npm install prisma typescript ts-node @types/node --save-dev
     cp .env.example .env
     ```
 
-6. 编辑 `.env` 文件，按照如下格式设置环境变量 `DATABASE_URL`，将占位符 `{}` 替换为从连接对话框中复制的参数值：
+6. 编辑 `.env` 文件，按照如下格式设置环境变量 `DATABASE_URL`，将占位符 `{}` 替换为从连接对话框中复制的连接字符串：
 
     ```dotenv
     DATABASE_URL={connection_string}
