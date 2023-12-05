@@ -554,7 +554,7 @@ success!
 
 ### Flashback
 
-TiDB v6.4.0 引入了 [`FLASHBACK CLUSTER TO TIMESTAMP`](/sql-statements/sql-statement-flashback-to-timestamp.md) 语法，其功能是将集群的数据恢复到特定的时间点。为了方便脱离 TiDB 使用，tikv-ctl 自 v6.5.3 开始提供了 `flashback` 命令。该命令支持在 TiKV 层面进行 Flashback 操作。
+TiDB v6.4.0 引入了 [`FLASHBACK CLUSTER`](/sql-statements/sql-statement-flashback-cluster.md) 语法，其功能是将集群的数据恢复到特定的时间点。为了方便脱离 TiDB 使用，tikv-ctl 自 v6.5.3 开始提供了 `flashback` 命令。该命令支持在 TiKV 层面进行 Flashback 操作。
 
 > **注意：**
 >
