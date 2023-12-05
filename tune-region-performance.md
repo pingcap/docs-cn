@@ -19,7 +19,7 @@ TiKV 自动将底层数据进行[分片](/best-practices/tidb-best-practices.md#
 
 > **注意：**
 >
-> 推荐的Region 大小的值的范围为 [48MiB, 258MiB]，常用大小为 96 MiB、128 MiB、256 MiB。不推荐将 Region 大小设置超过 1 GiB，强烈建议不超过 10 GiB。过大的 Region 可能带来以下影响：
+> Region 大小的推荐值的范围为 [48MiB, 258MiB]，常用大小为 96 MiB、128 MiB、256 MiB。不推荐将 Region 大小设置超过 1 GiB，强烈建议不超过 10 GiB。过大的 Region 可能带来以下影响：
 >
 > + 可能发生性能抖动。
 > + 查询性能回退，尤其是大范围数据查询的性能会有回退。
