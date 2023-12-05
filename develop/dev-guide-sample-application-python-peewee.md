@@ -65,6 +65,7 @@ Peewee 是一个支持多种数据库的 ORM 库。它是对数据库的高层�
 3. 确认对话框中的配置和你的运行环境一致。
 
     - **Endpoint Type** 为 `Public`。
+    - **Branch** 选择 `main`。
     - **Connect With** 选择 `General`。
     - **Operating System** 为你的运行环境。
 
