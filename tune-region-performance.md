@@ -17,11 +17,11 @@ TiKV 自动将底层数据进行[分片](/best-practices/tidb-best-practices.md#
 
 ## 使用 `region-split-size` 调整 Region 大小
 
-> **警告：**
+> **注意：**
 >
-> 自定义 Region 大小是在 TiDB v6.1.0 引入的实验特性，不建议在生产环境中配置。使用此特性的风险包括：
+> 使用此特性的风险包括：
 >
-> + 更容易发生性能抖动。
+> + 可能发生性能抖动。
 > + 查询性能回退，尤其是大范围数据查询的性能会有回退。
 > + 调度变慢。
 
@@ -33,4 +33,4 @@ Region 的大小可以通过 [`coprocessor.region-split-size`](/tikv-configurati
 >
 > 当前该功能为实验特性，不建议在生产环境中使用。
 
-Region 调大以后，为了增加查询并发，应当设置 [`coprocessor.enable-region-bucket`](/tikv-configuration-file.md#enable-region-bucket-从-v610-版本开始引入) 为 `true`。这个配置会将每个 Region 划分为更小的区间 bucket，并且以这个更小的区间作为并发查询单位，以提高扫描数据的并发度。bucket 的大小通过 [`coprocessor.region-bucket-size`](/tikv-configuration-file.md#region-bucket-size-从-v610-版本开始引入) 来控制。
+Region 调大以后，若为了进一步提高查询的并发度，则应当同步设置 [`coprocessor.enable-region-bucket`](/tikv-configuration-file.md#enable-region-bucket-从-v610-版本开始引入) 为 `true`。这个配置会将每个 Region 划分为更小的区间 bucket，并且以这个更小的区间作为并发查询单位，以提高扫描数据的并发度。bucket 的大小通过 [`coprocessor.region-bucket-size`](/tikv-configuration-file.md#region-bucket-size-从-v610-版本开始引入) 来控制。
