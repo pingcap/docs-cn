@@ -86,11 +86,11 @@ TiDB 版本：6.5.6
     - 修复使用 `AUTO_ID_CACHE=1` 时 goroutine 泄漏的问题 [#46324](https://github.com/pingcap/tidb/issues/46324) @[tiancaiamao](https://github.com/tiancaiamao)
     - 修复 TiDB 在关闭时可能 panic 的问题 [#32110](https://github.com/pingcap/tidb/issues/32110) @[july2993](https://github.com/july2993)
     - 修复 TiDB schema cache 中读取 schema diff commit 版本时，未处理 MVCC 接口中的 lock 的问题 [#48281](https://github.com/pingcap/tidb/issues/48281) @[cfzjywxk](https://github.com/cfzjywxk)
-    - 修复表改名导致 `information_schema.columns` 中出现重复行的问题 [#47064](https://github.com/pingcap/tidb/issues/47064)@[jiyfhust](https://github.com/jiyfhust)
+    - 修复表改名导致 `information_schema.columns` 中出现重复行的问题 [#47064](https://github.com/pingcap/tidb/issues/47064) @[jiyfhust](https://github.com/jiyfhust)
     - 修复 `LOAD DATA REPLACE INTO` 语句的问题 [#47995](https://github.com/pingcap/tidb/issues/47995) @[lance6716](https://github.com/lance6716)
     - 修复 PD leader 故障 1 分钟导致 `IMPORT INTO` 任务失败的问题 [#48307](https://github.com/pingcap/tidb/issues/48307) @[D3Hunter](https://github.com/D3Hunter)
     - 修复创建日期型字段索引导致 `ADMIN CHECK` 失败的问题 [#47426](https://github.com/pingcap/tidb/issues/47426) @[tangenta](https://github.com/tangenta)
-    - 修复 tablesample 返回的行数据未排序的问题 [#48253](https://github.com/pingcap/tidb/issues/48253) @[tangenta](https://github.com/tangenta)
+    - 修复 `TABLESAMPLE` 返回的行数据未排序的问题 [#48253](https://github.com/pingcap/tidb/issues/48253) @[tangenta](https://github.com/tangenta)
     - 修复当 DDL jobID 恢复为 0 时 TiDB 节点 panic 的问题 [#46296](https://github.com/pingcap/tidb/issues/46296) @[jiyfhust](https://github.com/jiyfhust)
 
 + TiKV **tw@Oreoxmt --14 条**
