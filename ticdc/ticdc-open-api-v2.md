@@ -286,7 +286,8 @@ curl -X GET http://127.0.0.1:8300/api/v2/health
 | `max_log_size`   | `UINT64` 类型，redo log 的最大值。（非必选）        |
 | `storage`        | `STRING` 类型，存储的目标地址。（非必选）              |
 | `use_file_backend`        | `BOOL` 类型，是否将 redo log 存储到本地文件中。（非必选）              |
-| `encoding_worker_num`        | `INT` 类型，redo 中编解码 worker 的数量。（非必选）              |`flush_worker_num`        | `INT` 类型，redo 中上传文件 worker 的数量。（非必选）              |
+| `encoding_worker_num`        | `INT` 类型，redo 模块中编解码 worker 的数量。（非必选）              
+|`flush_worker_num`        | `INT` 类型，redo 模块中上传文件 worker 的数量。（非必选）              |
 
 `filter` 参数说明如下：
 
@@ -331,7 +332,8 @@ curl -X GET http://127.0.0.1:8300/api/v2/health
 | `schema_registry`       | `STRING` 类型，schema registry 地址。（非必选）                                                                                 |
 | `terminator`            | `STRING` 类型，换行符，用来分隔两个数据变更事件。默认值为空，表示使用 `"\r\n"` 作为换行符。（非必选）                                                         |
 | `transaction_atomicity` | `STRING` 类型，事务一致性等级。（非必选）                                                                                            |
-| `only_output_updated_columns`             | `BOOLEAN` 类型，对于 MQ 类型的 Sink 中的 `canal-json` 和 `open-protocol`，表示是否只向下游同步有内容更新的列。默认值为 `false`。（非必选）                        || `cloud_storage_config`             | storage sink 配置。（非必选） |
+| `only_output_updated_columns`             | `BOOLEAN` 类型，对于 MQ 类型的 Sink 中的 `canal-json` 和 `open-protocol`，表示是否只向下游同步有内容更新的列。默认值为 `false`。（非必选）                        |
+| `cloud_storage_config`             | storage sink 配置，用于设置同步数据到对象存储时自动清理历史数据的功能。（非必选） |
 
 `sink.column_selectors` 是一个数组，元素参数说明如下：
 
@@ -366,6 +368,7 @@ curl -X GET http://127.0.0.1:8300/api/v2/health
 | `topic`     | `STRING` 类型，事件分发的目标 topic。        |
 
 `sink.cloud_storage_config` 参数说明如下：
+
 | 参数名         | 说明                                |
 |:------------|:----------------------------------|
 | `worker_count`   | `INT` 类型，向下游存储服务保存数据变更记录的并发度。 |

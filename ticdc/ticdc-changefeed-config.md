@@ -209,11 +209,11 @@ flush-interval = 2000
 storage = ""
 # 是否将 redo log 存储到本地文件中。默认值为 false。
 use-file-backend = false
-# 控制 redo 中编解码 worker 的数量，默认值为 16。
+# 控制 redo 模块中编解码 worker 的数量，默认值为 16。
 encoding-worker-num = 16
-# 控制 redo 中上传文件 worker 的数量，默认值为 8。
+# 控制 redo 模块中上传文件 worker 的数量，默认值为 8。
 flush-worker-num = 8
-# redo log 文件的压缩行为，默认值为空，表示不进行压缩。可选值为 "" 和 "lz4"。
+# redo log 文件的压缩行为，可选值为 "" 和 "lz4"。默认值为 ""，表示不进行压缩。
 compression = ""
 
 [integrity]
@@ -293,14 +293,14 @@ send-timeout=30
 [sink.cloud-storage-config]
 # 向下游存储服务保存数据变更记录的并发度，默认值为 16。
 worker-count = 16
-# 向下游存储服务保存数据变更记录的间隔，默认值为 2s。
+# 向下游存储服务保存数据变更记录的间隔，默认值为 "2s"。
 flush-interval = "2s"
-# 单个数据变更文件的字节数超过 `file-size` 时将其保存至存储服务中，默认值为 64MB。
+# 单个数据变更文件的字节数超过 `file-size` 时将其保存至存储服务中，默认值为 67108864，即 64MB。
 file-size = 67108864
 
 # 文件保留的时长，仅在 date-separator 配置为 day 时生效，默认值为 0，表示禁用文件清理。假设 `file-expiration-days = 1`，TiCDC 的清理行为是：在 2023/12/02 00:00:00 时刻，TiCDC 会清理 2023/12/01 之前（注意：不包括 2023/12/01）的文件。
 file-expiration-days = 0
-# 定时清理任务的运行周期，与 crontab 配置兼容，格式为 `Second | Minute | Hour | Dom | Month | DowOptional`，默认值为 "0 0 2 * * *"，表示每天晚上两点执行清理任务
+# 定时清理任务的运行周期，与 crontab 配置兼容，格式为 `Second | Minute | Hour | Dom | Month | DowOptional`，默认值为 "0 0 2 * * *"，表示每天凌晨两点执行清理任务
 file-cleanup-cron-spec = "0 0 2 * * *"
 # 上传单个文件的并发数，默认值为 1，表示禁用并发。
 flush-concurrency = 1
