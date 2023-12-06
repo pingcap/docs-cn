@@ -10,7 +10,7 @@ aliases: ['/zh/tidb/dev/tidb-crud-sql']
 
 ## 在开始之前
 
-请确保你已经连接到 TiDB 集群，若未连接，请参考[使用 TiDB Cloud (DevTier) 构建 TiDB 集群](/develop/dev-guide-build-cluster-in-cloud.md#第-1-步创建免费集群)来创建一个免费集群。
+请确保你已经连接到 TiDB 集群，若未连接，请参考[使用 TiDB Serverless 构建 TiDB 集群](/develop/dev-guide-build-cluster-in-cloud.md#第-1-步创建-tidb-serverless-集群)来创建一个 TiDB Serverless 集群。
 
 ## 基本 SQL 操作
 
@@ -39,15 +39,11 @@ SQL 语言通常按照功能划分成以下的 4 个部分：
 
 使用 `INSERT` 语句向表内插入表记录。例如：
 
-{{< copyable "sql" >}}
-
 ```sql
 INSERT INTO person VALUES(1,'tom','20170912');
 ```
 
 使用 `INSERT` 语句向表内插入包含部分字段数据的表记录。例如：
-
-{{< copyable "sql" >}}
 
 ```sql
 INSERT INTO person(id,name) VALUES('2','bob');
@@ -55,15 +51,11 @@ INSERT INTO person(id,name) VALUES('2','bob');
 
 使用 `UPDATE` 语句向表内修改表记录的部分字段数据。例如：
 
-{{< copyable "sql" >}}
-
 ```sql
 UPDATE person SET birthday='20180808' WHERE id=2;
 ```
 
 使用 `DELETE` 语句向表内删除部分表记录。例如：
-
-{{< copyable "sql" >}}
 
 ```sql
 DELETE FROM person WHERE id=2;
@@ -79,15 +71,11 @@ DELETE FROM person WHERE id=2;
 
 使用 `SELECT` 语句检索单表内数据。例如：
 
-{{< copyable "sql" >}}
-
 ```sql
 SELECT * FROM person;
 ```
 
 在 `SELECT` 后面加上要查询的列名。例如：
-
-{{< copyable "sql" >}}
 
 ```sql
 SELECT name FROM person;
@@ -105,8 +93,6 @@ SELECT name FROM person;
 ```
 
 使用 `WHERE` 子句，对所有记录进行是否符合条件的筛选后再返回。例如：
-
-{{< copyable "sql" >}}
 
 ```sql
 SELECT * FROM person WHERE id < 5;

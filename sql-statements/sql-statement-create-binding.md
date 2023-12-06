@@ -10,13 +10,14 @@ aliases: ['/docs-cn/dev/sql-statements/sql-statement-create-binding/']
 
 `BINDING` 语句可以在 `GLOBAL` 或者 `SESSION` 作用域内创建执行计划绑定。在不指定作用域时，默认的作用域为 `SESSION`。
 
-被绑定的 SQL 语句会被参数化后存储到系统表中。在处理 SQL 查询时，只要参数化后的 SQL 语句和系统表中某个被绑定的 SQL 语句一致，并且系统变量 `tidb_use_plan_baselines` 的值为 `ON`（其默认值为 `ON`），即可使用相应的优化器 Hint。如果存在多个可匹配的执行计划，优化器会从中选择代价最小的一个进行绑定。
+被绑定的 SQL 语句会被参数化后存储到系统表中。在处理 SQL 查询时，只要参数化后的 SQL 语句和系统表中某个被绑定的 SQL 语句一致，并且系统变量 `tidb_use_plan_baselines` 的值为 `ON`（其默认值为 `ON`），即可使用相应的优化器 Hint。如果存在多个可匹配的执行计划，优化器会从中选择代价最小的一个进行绑定。更多信息，请参考[创建绑定](/sql-plan-management.md#创建绑定)。
 
 ## 语法图
 
 ```ebnf+diagram
 CreateBindingStmt ::=
-    'CREATE' GlobalScope 'BINDING' 'FOR' BindableStmt 'USING' BindableStmt
+    'CREATE' GlobalScope 'BINDING' ( 'FOR' BindableStmt 'USING' BindableStmt
+|   'FROM' 'HISTORY' 'USING' 'PLAN' 'DIGEST' PlanDigest )
 
 GlobalScope ::=
     ( 'GLOBAL' | 'SESSION' )?
@@ -29,15 +30,19 @@ BindableStmt ::=
 
 ## 示例
 
+你可以根据 SQL 或历史执行计划创建绑定。
+
+下面的示例演示如何根据 SQL 创建绑定。
+
 {{< copyable "sql" >}}
 
 ```sql
 CREATE TABLE t1 (
-    ->  id INT NOT NULL PRIMARY KEY auto_increment,
-    ->  b INT NOT NULL,
-    ->  pad VARBINARY(255),
-    ->  INDEX(b)
-    -> );
+    id INT NOT NULL PRIMARY KEY auto_increment,
+    b INT NOT NULL,
+    pad VARBINARY(255),
+    INDEX(b)
+   );
 Query OK, 0 rows affected (0.07 sec)
 
 INSERT INTO t1 SELECT NULL, FLOOR(RAND()*1000), RANDOM_BYTES(255) FROM dual;
@@ -90,9 +95,9 @@ EXPLAIN ANALYZE SELECT * FROM t1 WHERE b = 123;
 3 rows in set (0.02 sec)
 
 CREATE SESSION BINDING FOR
-    ->  SELECT * FROM t1 WHERE b = 123
-    -> USING
-    ->  SELECT * FROM t1 IGNORE INDEX (b) WHERE b = 123;
+    SELECT * FROM t1 WHERE b = 123
+   USING
+    SELECT * FROM t1 IGNORE INDEX (b) WHERE b = 123;
 Query OK, 0 rows affected (0.00 sec)
 
 EXPLAIN ANALYZE  SELECT * FROM t1 WHERE b = 123;
@@ -129,6 +134,39 @@ EXPLAIN ANALYZE  SELECT * FROM t1 WHERE b = 123;
 | └─TableRowIDScan_9(Probe)     | 583.00  | 297     | cop[tikv] | table:t1             | time:0s, loops:4                                                        | keep order:false                  | N/A            | N/A  |
 +-------------------------------+---------+---------+-----------+----------------------+-------------------------------------------------------------------------+-----------------------------------+----------------+------+
 3 rows in set (0.01 sec)
+```
+
+下面的示例演示如何根据历史执行计划创建绑定。
+
+```sql
+mysql> CREATE TABLE t(id INT PRIMARY KEY , a INT, KEY(a));
+Query OK, 0 rows affected (0.06 sec)
+
+mysql> SELECT /*+ IGNORE_INDEX(t, a) */ * FROM t WHERE a = 1;
+Empty set (0.01 sec)
+
+mysql> SELECT plan_digest FROM INFORMATION_SCHEMA.STATEMENTS_SUMMARY WHERE QUERY_SAMPLE_TEXT = 'SELECT /*+ IGNORE_INDEX(t, a) */ * FROM t WHERE a = 1';
++------------------------------------------------------------------+
+| plan_digest                                                      |
++------------------------------------------------------------------+
+| 4e3159169cc63c14b139a4e7d72eae1759875c9a9581f94bb2079aae961189cb |
++------------------------------------------------------------------+
+1 row in set (0.01 sec)
+
+mysql> CREATE BINDING FROM HISTORY USING PLAN DIGEST '4e3159169cc63c14b139a4e7d72eae1759875c9a9581f94bb2079aae961189cb';
+Query OK, 0 rows affected (0.02 sec)
+
+mysql> SELECT * FROM t WHERE a = 1;
+Empty set (0.01 sec)
+
+mysql> SELECT @@LAST_PLAN_FROM_BINDING;
++--------------------------+
+| @@LAST_PLAN_FROM_BINDING |
++--------------------------+
+|                        1 |
++--------------------------+
+1 row in set (0.01 sec)
+
 ```
 
 ## MySQL 兼容性

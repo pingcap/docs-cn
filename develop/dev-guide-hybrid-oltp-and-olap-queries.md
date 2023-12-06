@@ -14,27 +14,23 @@ HTAP 是 Hybrid Transactional / Analytical Processing 的缩写。传统意义�
 
 ## 数据准备
 
-在开始之前，你可以[通过 `tiup demo` 命令导入](/develop/dev-guide-bookshop-schema-design.md#通过-tiup-demo-命令行)更加大量的示例数据，例如：
-
-{{< copyable "shell-regular" >}}
+在开始之前，你可以[通过 `tiup demo` 命令导入](/develop/dev-guide-bookshop-schema-design.md#方法一通过-tiup-demo-命令行)更加大量的示例数据，例如：
 
 ```shell
 tiup demo bookshop prepare --users=200000 --books=500000 --authors=100000 --ratings=1000000 --orders=1000000 --host 127.0.0.1 --port 4000 --drop-tables
 ```
 
-或[使用 TiDB Cloud 的 Import 功能导入](/develop/dev-guide-bookshop-schema-design.md#通过-tidb-cloud-import-功能)预先准备好的示例数据。
+或[使用 TiDB Cloud 的 Import 功能导入](/develop/dev-guide-bookshop-schema-design.md#方法二通过-tidb-cloud-import-功能)预先准备好的示例数据。
 
 ## 窗口函数
 
 在使用数据库时，除了希望它能够存储想要记录的数据，能够实现诸如下单买书、给书籍评分等业务功能外，可能还需要对已有的数据进行分析，以便根据数据作出进一步的运营和决策。
 
-在[单表读取](/develop/dev-guide-get-data-from-single-table.md)章节当中，已经介绍了如何使用聚合查询来分析数据的整体情况，在更为复杂的使用场景下，可能希望多个聚合查询的结果汇总在一个查询当中。例如：想要对某一本书的订单量的历史趋势有所了解，需要在每个月都对所有订单数据进行一次聚合求 `sum`，然后将 `sum` 结果汇总在一起才能够得到历史的趋势变化数据。
+在[单表读取](/develop/dev-guide-get-data-from-single-table.md)章节当中，已经介绍了如何使用聚合查询来分析数据的整体情况，在更为复杂的使用场景下，你可能希望多个聚合查询的结果汇总在一个查询当中。例如：你想要对某一本书的订单量的历史趋势有所了解，就需要在每个月都对所有订单数据进行一次聚合求 `sum`，然后将 `sum` 结果汇总在一起才能够得到历史的趋势变化数据。
 
 为了方便用户进行此类分析，TiDB 从 3.0 版本开始便支持了窗口函数功能，窗口函数为每一行数据提供了跨行数据访问的能力，不同于常规的聚合查询，窗口函数在对数据行进行聚合时不会导致结果集被合并成单行数据。
 
 与聚合函数类似，窗口函数在使用时也需要搭配一套固定的语法：
-
-{{< copyable "sql" >}}
 
 ```sql
 SELECT
@@ -46,8 +42,6 @@ FROM
 ### `ORDER BY` 子句
 
 例如：可以利用聚合窗口函数 `sum()` 函数的累加效果来实现对某一本书的订单量的历史趋势的分析:
-
-{{< copyable "sql" >}}
 
 ```sql
 WITH orders_group_by_month AS (
@@ -93,8 +87,6 @@ ORDER BY month ASC;
 把需求变得更复杂一点，假设想要分析不同类型书的历史订单增长趋势，并且希望将这些数据通过同一个多系列折线图进行呈现。
 
 可以利用 `PARTITION BY` 子句根据书的类型进行分组，对不同类型的书籍分别统计它们的订单历史订单累计量。
-
-{{< copyable "sql" >}}
 
 ```sql
 WITH orders_group_by_month AS (
@@ -157,16 +149,12 @@ SELECT * FROM acc;
 
 TiDB 默认使用的存储引擎 TiKV 是行存的，你可以通过阅读[开启 HTAP 能力](/develop/dev-guide-create-table.md#使用-htap-能力)章节，在进行后续步骤前，先通过如下 SQL 对 `books` 与 `orders` 表添加 TiFlash 列存副本：
 
-{{< copyable "sql" >}}
-
 ```sql
 ALTER TABLE books SET TIFLASH REPLICA 1;
 ALTER TABLE orders SET TIFLASH REPLICA 1;
 ```
 
 通过执行下面的 SQL 语句可以查看到 TiDB 创建列存副本的进度：
-
-{{< copyable "sql" >}}
 
 ```sql
 SELECT * FROM information_schema.tiflash_replica WHERE TABLE_SCHEMA = 'bookshop' and TABLE_NAME = 'books';
@@ -192,7 +180,7 @@ SELECT * FROM information_schema.tiflash_replica WHERE TABLE_SCHEMA = 'bookshop'
 
 副本添加完成之后，你可以通过使用 `EXPLAIN` 语句查看上面窗口函数[示例 SQL](#partition-by-子句) 的执行计划。你会发现执行计划当中已经出现了 `cop[tiflash]` 字样，说明 TiFlash 引擎已经开始发挥作用了。
 
-查询结果：
+再次执行[示例 SQL](#partition-by-子句)，查询结果如下：
 
 ```
 +------------------------------+---------+------+
@@ -228,10 +216,8 @@ SELECT * FROM information_schema.tiflash_replica WHERE TABLE_SCHEMA = 'bookshop'
 
 > **注意：**
 >
-> 1. 如果你的表使用了别名，你应该将 Hints 当中的 table_name 替代为 alias_name, 否则 Hints 会失效。
+> 1. 如果你的表使用了别名，你应该将 Hints 当中的 table_name 替代为 alias_name，否则 Hints 会失效。
 > 2. 另外，对[公共表表达式](/develop/dev-guide-use-common-table-expression.md)设置 read_from_storage Hint 是不起作用的。
-
-{{< copyable "sql" >}}
 
 ```sql
 WITH orders_group_by_month AS (
@@ -255,13 +241,13 @@ WITH orders_group_by_month AS (
 SELECT * FROM acc;
 ```
 
-如果你通过 `EXPLAIN` 语句查看上面 SQL 的执行计划，你会发现 task 列中会同时出现 `cop[tiflash]` 和 `cop[tikv]` ，这意味着 TiDB 在处理这个查询的时候会同时调度行存查询引擎和列存查询引擎来完成查询任务。需要指出的是，因为 tiflash 和 tikv 存储引擎通常属于不同的计算节点，所以两种查询类型互相之间不受影响。
+如果你通过 `EXPLAIN` 语句查看上面 SQL 的执行计划，你会发现 task 列中会同时出现 `cop[tiflash]` 和 `cop[tikv]`，这意味着 TiDB 在处理这个查询的时候会同时调度行存查询引擎和列存查询引擎来完成查询任务。需要指出的是，因为 tiflash 和 tikv 存储引擎通常属于不同的计算节点，所以两种查询类型互相之间不受影响。
 
-你可以通过阅读[使用 TiDB 读取 TiFlash](/tiflash/use-tiflash.md#使用-tidb-读取-tiflash) 小节进一步了解 TiDB 如何选择使用 TiFlash 作为查询引擎。
+你可以通过阅读[使用 TiDB 读取 TiFlash](/tiflash/use-tidb-to-read-tiflash.md) 小节进一步了解 TiDB 如何选择使用 TiFlash 作为查询引擎。
 
 ## 扩展阅读
 
 - [HTAP 快速上手指南](/quick-start-with-htap.md)
 - [HTAP 深入探索指南](/explore-htap.md)
 - [窗口函数](/functions-and-operators/window-functions.md)
-- [使用 TiFlash](/tiflash/use-tiflash.md)
+- [使用 TiFlash](/tiflash/tiflash-overview.md#使用-tiflash)

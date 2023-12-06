@@ -92,9 +92,9 @@ ROLLBACK;
 
 ```sql
 mysql> CREATE TABLE t1 (
-    ->  id INT NOT NULL PRIMARY KEY auto_increment,
-    ->  pad1 VARCHAR(100)
-    -> );
+          id INT NOT NULL PRIMARY KEY auto_increment,
+          pad1 VARCHAR(100)
+         );
 Query OK, 0 rows affected (0.09 sec)
 
 mysql> SELECT @@autocommit;
@@ -132,9 +132,9 @@ COMMIT;
 
 ```sql
 mysql> CREATE TABLE t2 (
-    ->  id INT NOT NULL PRIMARY KEY auto_increment,
-    ->  pad1 VARCHAR(100)
-    -> );
+          id INT NOT NULL PRIMARY KEY auto_increment,
+          pad1 VARCHAR(100)
+         );
 Query OK, 0 rows affected (0.10 sec)
 
 mysql> SELECT @@autocommit;
@@ -221,7 +221,7 @@ mysql> INSERT INTO t1 VALUES (2);
 Query OK, 1 row affected (0.00 sec)
 
 mysql> COMMIT; -- MySQL 提交成功；TiDB 返回错误，事务回滚。
-ERROR 1062 (23000): Duplicate entry '1' for key 'PRIMARY'
+ERROR 1062 (23000): Duplicate entry '1' for key 't1.PRIMARY'
 mysql> SELECT * FROM t1; -- MySQL 返回 1 2；TiDB 返回 1。
 +----+
 | id |
@@ -231,7 +231,7 @@ mysql> SELECT * FROM t1; -- MySQL 返回 1 2；TiDB 返回 1。
 1 row in set (0.01 sec)
 ```
 
-惰性检查优化通过批处理约束检查并减少网络通信来提升性能。可以通过设置 [`tidb_constraint_check_in_place = TRUE`](/system-variables.md#tidb_constraint_check_in_place) 禁用该行为。
+惰性检查优化通过批处理约束检查并减少网络通信来提升性能。可以通过设置 [`tidb_constraint_check_in_place = ON`](/system-variables.md#tidb_constraint_check_in_place) 禁用该行为。
 
 > **注意：**
 >
@@ -268,7 +268,7 @@ Query OK, 1 row affected (0.02 sec)
 mysql> INSERT INTO tset VALUES (2);  -- tset 拼写错误，使该语句执行出错。
 ERROR 1146 (42S02): Table 'test.tset' doesn't exist
 mysql> INSERT INTO test VALUES (1),(2);  -- 违反 PRIMARY KEY 约束，语句不生效。
-ERROR 1062 (23000): Duplicate entry '1' for key 'PRIMARY'
+ERROR 1062 (23000): Duplicate entry '1' for key 'test.PRIMARY'
 mysql> INSERT INTO test VALUES (3);
 Query OK, 1 row affected (0.00 sec)
 

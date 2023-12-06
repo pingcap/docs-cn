@@ -8,190 +8,25 @@ aliases: ['/docs-cn/dev/functions-and-operators/expressions-pushed-down/','/docs
 
 当 TiDB 从 TiKV 中读取数据的时候，TiDB 会尽量下推一些表达式运算到 TiKV 中，从而减少数据传输量以及 TiDB 单一节点的计算压力。本文将介绍 TiDB 已支持下推的表达式，以及如何禁止下推特定表达式。
 
+TiFlash 也支持[本页](/tiflash/tiflash-supported-pushdown-calculations.md)列出的函数和算子下推。
+
 ## 已支持下推的表达式列表
 
 | 表达式分类 | 具体操作 |
 | :-------------- | :------------------------------------- |
-| [逻辑运算](/functions-and-operators/operators.md#逻辑操作符) | AND (&&), OR (&#124;&#124;), NOT (!) |
-| [比较运算](/functions-and-operators/operators.md#比较方法和操作符) | <, <=, =, != (`<>`), >, >=, [`<=>`](https://dev.mysql.com/doc/refman/5.7/en/comparison-operators.html#operator_equal-to), [`IN()`](https://dev.mysql.com/doc/refman/5.7/en/comparison-operators.html#function_in), IS NULL, LIKE, IS TRUE, IS FALSE, [`COALESCE()`](https://dev.mysql.com/doc/refman/5.7/en/comparison-operators.html#function_coalesce) |
-| [数值运算](/functions-and-operators/numeric-functions-and-operators.md) | +, -, *, /, [`ABS()`](https://dev.mysql.com/doc/refman/5.7/en/mathematical-functions.html#function_abs), [`CEIL()`](https://dev.mysql.com/doc/refman/5.7/en/mathematical-functions.html#function_ceil), [`CEILING()`](https://dev.mysql.com/doc/refman/5.7/en/mathematical-functions.html#function_ceiling), [`FLOOR()`](https://dev.mysql.com/doc/refman/5.7/en/mathematical-functions.html#function_floor), [`MOD()`](https://dev.mysql.com/doc/refman/5.7/en/mathematical-functions.html#function_mod) |
-| [控制流运算](/functions-and-operators/control-flow-functions.md) | [`CASE`](https://dev.mysql.com/doc/refman/5.7/en/flow-control-functions.html#operator_case), [`IF()`](https://dev.mysql.com/doc/refman/5.7/en/flow-control-functions.html#function_if), [`IFNULL()`](https://dev.mysql.com/doc/refman/5.7/en/flow-control-functions.html#function_ifnull) |
-| [JSON 运算](/functions-and-operators/json-functions.md) | [JSON_TYPE(json_val)][json_type],<br/> [JSON_EXTRACT(json_doc, path[, path] ...)][json_extract],<br/> [JSON_OBJECT(key, val[, key, val] ...)][json_object],<br/> [JSON_ARRAY([val[, val] ...])][json_array],<br/> [JSON_MERGE(json_doc, json_doc[, json_doc] ...)][json_merge],<br/> [JSON_SET(json_doc, path, val[, path, val] ...)][json_set],<br/> [JSON_INSERT(json_doc, path, val[, path, val] ...)][json_insert],<br/> [JSON_REPLACE(json_doc, path, val[, path, val] ...)][json_replace],<br/> [JSON_REMOVE(json_doc, path[, path] ...)][json_remove] |
-| [日期运算](/functions-and-operators/date-and-time-functions.md) | [`DATE_FORMAT()`](https://dev.mysql.com/doc/refman/5.7/en/date-and-time-functions.html#function_date-format), [`SYSDATE()`](https://dev.mysql.com/doc/refman/5.7/en/date-and-time-functions.html#function_sysdate)  |
-| [字符串函数](/functions-and-operators/string-functions.md) | [`RIGHT()`](https://dev.mysql.com/doc/refman/5.7/en/string-functions.html#function_right) |
+| [逻辑运算](/functions-and-operators/operators.md#逻辑操作符) | AND (&&), OR (&#124;&#124;), NOT (!), XOR |
+| [位运算](/functions-and-operators/operators.md#操作符) | [&](https://dev.mysql.com/doc/refman/8.0/en/bit-functions.html#operator_bitwise-and), [~](https://dev.mysql.com/doc/refman/8.0/en/bit-functions.html#operator_bitwise-invert), [\|](https://dev.mysql.com/doc/refman/8.0/en/bit-functions.html#operator_bitwise-or), [`^`](https://dev.mysql.com/doc/refman/8.0/en/bit-functions.html#operator_bitwise-xor), [`<<`](https://dev.mysql.com/doc/refman/8.0/en/bit-functions.html#operator_left-shift), [`>>`](https://dev.mysql.com/doc/refman/8.0/en/bit-functions.html#operator_right-shift) |
+| [比较运算](/functions-and-operators/operators.md#比较方法和操作符) | [`<`](https://dev.mysql.com/doc/refman/8.0/en/comparison-operators.html#operator_less-than), [`<=`](https://dev.mysql.com/doc/refman/8.0/en/comparison-operators.html#operator_less-than-or-equal), [`=`](https://dev.mysql.com/doc/refman/8.0/en/comparison-operators.html#operator_equal), [`!= (<>)`](https://dev.mysql.com/doc/refman/8.0/en/comparison-operators.html#operator_not-equal), [`>`](https://dev.mysql.com/doc/refman/8.0/en/comparison-operators.html#operator_greater-than), [`>=`](https://dev.mysql.com/doc/refman/8.0/en/comparison-operators.html#operator_greater-than-or-equal), [`<=>`](https://dev.mysql.com/doc/refman/8.0/en/comparison-operators.html#operator_equal-to), [BETWEEN ... AND ...](https://dev.mysql.com/doc/refman/8.0/en/comparison-operators.html#operator_between), [COALESCE()](https://dev.mysql.com/doc/refman/8.0/en/comparison-operators.html#function_coalesce), [IN()](https://dev.mysql.com/doc/refman/8.0/en/comparison-operators.html#operator_in), [INTERVAL()](https://dev.mysql.com/doc/refman/8.0/en/comparison-operators.html#function_interval), [IS NOT NULL](https://dev.mysql.com/doc/refman/8.0/en/comparison-operators.html#operator_is-not-null), [IS NOT](https://dev.mysql.com/doc/refman/8.0/en/comparison-operators.html#operator_is-not), [IS NULL](https://dev.mysql.com/doc/refman/8.0/en/comparison-operators.html#operator_is-null), [IS](https://dev.mysql.com/doc/refman/8.0/en/comparison-operators.html#operator_is), [ISNULL()](https://dev.mysql.com/doc/refman/8.0/en/comparison-operators.html#function_isnull), [LIKE](https://dev.mysql.com/doc/refman/8.0/en/string-comparison-functions.html#operator_like), [NOT BETWEEN ... AND ...](https://dev.mysql.com/doc/refman/8.0/en/comparison-operators.html#operator_not-between), [NOT IN()](https://dev.mysql.com/doc/refman/8.0/en/comparison-operators.html#operator_not-in), [NOT LIKE](https://dev.mysql.com/doc/refman/8.0/en/string-comparison-functions.html#operator_not-like), [STRCMP()](https://dev.mysql.com/doc/refman/8.0/en/string-comparison-functions.html#function_strcmp) |
+| [数值运算](/functions-and-operators/numeric-functions-and-operators.md) | [+](https://dev.mysql.com/doc/refman/8.0/en/arithmetic-functions.html#operator_plus), [-](https://dev.mysql.com/doc/refman/8.0/en/arithmetic-functions.html#operator_minus), [*](https://dev.mysql.com/doc/refman/8.0/en/arithmetic-functions.html#operator_times), [/](https://dev.mysql.com/doc/refman/8.0/en/arithmetic-functions.html#operator_divide), [DIV](https://dev.mysql.com/doc/refman/8.0/en/arithmetic-functions.html#operator_div), [% (MOD)](https://dev.mysql.com/doc/refman/8.0/en/arithmetic-functions.html#operator_mod), [-](https://dev.mysql.com/doc/refman/8.0/en/arithmetic-functions.html#operator_unary-minus), [ABS()](https://dev.mysql.com/doc/refman/8.0/en/mathematical-functions.html#function_abs), [ACOS()](https://dev.mysql.com/doc/refman/8.0/en/mathematical-functions.html#function_acos), [ASIN()](https://dev.mysql.com/doc/refman/8.0/en/mathematical-functions.html#function_asin), [ATAN()](https://dev.mysql.com/doc/refman/8.0/en/mathematical-functions.html#function_atan), [ATAN2(), ATAN()](https://dev.mysql.com/doc/refman/8.0/en/mathematical-functions.html#function_atan2), [CEIL()](https://dev.mysql.com/doc/refman/8.0/en/mathematical-functions.html#function_ceil), [CEILING()](https://dev.mysql.com/doc/refman/8.0/en/mathematical-functions.html#function_ceiling), [CONV()](https://dev.mysql.com/doc/refman/8.0/en/mathematical-functions.html#function_conv), [COS()](https://dev.mysql.com/doc/refman/8.0/en/mathematical-functions.html#function_cos), [COT()](https://dev.mysql.com/doc/refman/8.0/en/mathematical-functions.html#function_cot), [CRC32()](https://dev.mysql.com/doc/refman/8.0/en/mathematical-functions.html#function_crc32), [DEGREES()](https://dev.mysql.com/doc/refman/8.0/en/mathematical-functions.html#function_degrees), [EXP()](https://dev.mysql.com/doc/refman/8.0/en/mathematical-functions.html#function_exp), [FLOOR()](https://dev.mysql.com/doc/refman/8.0/en/mathematical-functions.html#function_floor), [LN()](https://dev.mysql.com/doc/refman/8.0/en/mathematical-functions.html#function_ln), [LOG()](https://dev.mysql.com/doc/refman/8.0/en/mathematical-functions.html#function_log), [LOG10()](https://dev.mysql.com/doc/refman/8.0/en/mathematical-functions.html#function_log10), [LOG2()](https://dev.mysql.com/doc/refman/8.0/en/mathematical-functions.html#function_log2), [MOD()](https://dev.mysql.com/doc/refman/8.0/en/mathematical-functions.html#function_mod), [PI()](https://dev.mysql.com/doc/refman/8.0/en/mathematical-functions.html#function_pi), [POW()](https://dev.mysql.com/doc/refman/8.0/en/mathematical-functions.html#function_pow), [POWER()](https://dev.mysql.com/doc/refman/8.0/en/mathematical-functions.html#function_power), [RADIANS()](https://dev.mysql.com/doc/refman/8.0/en/mathematical-functions.html#function_radians), [RAND()](https://dev.mysql.com/doc/refman/8.0/en/mathematical-functions.html#function_rand), [ROUND()](https://dev.mysql.com/doc/refman/8.0/en/mathematical-functions.html#function_round), [SIGN()](https://dev.mysql.com/doc/refman/8.0/en/mathematical-functions.html#function_sign), [SIN()](https://dev.mysql.com/doc/refman/8.0/en/mathematical-functions.html#function_sin), [SQRT()](https://dev.mysql.com/doc/refman/8.0/en/mathematical-functions.html#function_sqrt) |
+| [控制流运算](/functions-and-operators/control-flow-functions.md) | [CASE](https://dev.mysql.com/doc/refman/8.0/en/flow-control-functions.html#operator_case), [IF()](https://dev.mysql.com/doc/refman/8.0/en/flow-control-functions.html#function_if), [IFNULL()](https://dev.mysql.com/doc/refman/8.0/en/flow-control-functions.html#function_ifnull) |
+| [JSON 运算](/functions-and-operators/json-functions.md) | [JSON_ARRAY([val[, val] ...])](https://dev.mysql.com/doc/refman/8.0/en/json-creation-functions.html#function_json-array),<br/> [JSON_CONTAINS(target, candidate[, path])](https://dev.mysql.com/doc/refman/8.0/en/json-search-functions.html#function_json-contains),<br/> [JSON_EXTRACT(json_doc, path[, path] ...)](https://dev.mysql.com/doc/refman/8.0/en/json-search-functions.html#function_json-extract),<br/> [JSON_INSERT(json_doc, path, val[, path, val] ...)](https://dev.mysql.com/doc/refman/8.0/en/json-modification-functions.html#function_json-insert),<br/> [JSON_LENGTH(json_doc[, path])](https://dev.mysql.com/doc/refman/8.0/en/json-attribute-functions.html#function_json-length),<br/> [JSON_MERGE(json_doc, json_doc[, json_doc] ...)](https://dev.mysql.com/doc/refman/8.0/en/json-modification-functions.html#function_json-merge),<br/> [JSON_OBJECT([key, val[, key, val] ...])](https://dev.mysql.com/doc/refman/8.0/en/json-creation-functions.html#function_json-object),<br/> [JSON_REMOVE(json_doc, path[, path] ...)](https://dev.mysql.com/doc/refman/8.0/en/json-modification-functions.html#function_json-remove),<br/> [JSON_REPLACE(json_doc, path, val[, path, val] ...)](https://dev.mysql.com/doc/refman/8.0/en/json-modification-functions.html#function_json-replace),<br/> [JSON_SET(json_doc, path, val[, path, val] ...)](https://dev.mysql.com/doc/refman/8.0/en/json-modification-functions.html#function_json-set),<br/> [JSON_TYPE(json_val)](https://dev.mysql.com/doc/refman/8.0/en/json-attribute-functions.html#function_json-type),<br/> [JSON_UNQUOTE(json_val)](https://dev.mysql.com/doc/refman/8.0/en/json-modification-functions.html#function_json-unquote),<br/> [JSON_VALID(val)](https://dev.mysql.com/doc/refman/8.0/en/json-attribute-functions.html#function_json-valid),<br/> [value MEMBER OF(json_array)](https://dev.mysql.com/doc/refman/8.0/en/json-search-functions.html#operator_member-of) |
+| [日期运算](/functions-and-operators/date-and-time-functions.md) | [DATE()](https://dev.mysql.com/doc/refman/8.0/en/date-and-time-functions.html#function_date), [DATE_FORMAT()](https://dev.mysql.com/doc/refman/8.0/en/date-and-time-functions.html#function_date-format), [DATEDIFF()](https://dev.mysql.com/doc/refman/8.0/en/date-and-time-functions.html#function_datediff), [DAYOFMONTH()](https://dev.mysql.com/doc/refman/8.0/en/date-and-time-functions.html#function_dayofmonth), [DAYOFWEEK()](https://dev.mysql.com/doc/refman/8.0/en/date-and-time-functions.html#function_dayofweek), [DAYOFYEAR()](https://dev.mysql.com/doc/refman/8.0/en/date-and-time-functions.html#function_dayofyear), [FROM_DAYS()](https://dev.mysql.com/doc/refman/8.0/en/date-and-time-functions.html#function_from-days), [HOUR()](https://dev.mysql.com/doc/refman/8.0/en/date-and-time-functions.html#function_hour), [MAKEDATE()](https://dev.mysql.com/doc/refman/8.0/en/date-and-time-functions.html#function_makedate), [MAKETIME()](https://dev.mysql.com/doc/refman/8.0/en/date-and-time-functions.html#function_maketime), [MICROSECOND()](https://dev.mysql.com/doc/refman/8.0/en/date-and-time-functions.html#function_microsecond), [MINUTE()](https://dev.mysql.com/doc/refman/8.0/en/date-and-time-functions.html#function_minute), [MONTH()](https://dev.mysql.com/doc/refman/8.0/en/date-and-time-functions.html#function_month), [MONTHNAME()](https://dev.mysql.com/doc/refman/8.0/en/date-and-time-functions.html#function_monthname), [PERIOD_ADD()](https://dev.mysql.com/doc/refman/8.0/en/date-and-time-functions.html#function_period-add), [PERIOD_DIFF()](https://dev.mysql.com/doc/refman/8.0/en/date-and-time-functions.html#function_period-diff), [SEC_TO_TIME()](https://dev.mysql.com/doc/refman/8.0/en/date-and-time-functions.html#function_sec-to-time), [SECOND()](https://dev.mysql.com/doc/refman/8.0/en/date-and-time-functions.html#function_second), [SYSDATE()](https://dev.mysql.com/doc/refman/8.0/en/date-and-time-functions.html#function_sysdate), [TIME_TO_SEC()](https://dev.mysql.com/doc/refman/8.0/en/date-and-time-functions.html#function_time-to-sec), [TIMEDIFF()](https://dev.mysql.com/doc/refman/8.0/en/date-and-time-functions.html#function_timediff), [WEEK()](https://dev.mysql.com/doc/refman/8.0/en/date-and-time-functions.html#function_week), [WEEKOFYEAR()](https://dev.mysql.com/doc/refman/8.0/en/date-and-time-functions.html#function_weekofyear), [YEAR()](https://dev.mysql.com/doc/refman/8.0/en/date-and-time-functions.html#function_year) |
+| [字符串函数](/functions-and-operators/string-functions.md) | [ASCII()](https://dev.mysql.com/doc/refman/8.0/en/string-functions.html#function_ascii), [BIT_LENGTH()](https://dev.mysql.com/doc/refman/8.0/en/string-functions.html#function_bit-length), [CHAR()](https://dev.mysql.com/doc/refman/8.0/en/string-functions.html#function_char), [CHAR_LENGTH()](https://dev.mysql.com/doc/refman/8.0/en/string-functions.html#function_char-length), [CONCAT()](https://dev.mysql.com/doc/refman/8.0/en/string-functions.html#function_concat), [CONCAT_WS()](https://dev.mysql.com/doc/refman/8.0/en/string-functions.html#function_concat-ws), [ELT()](https://dev.mysql.com/doc/refman/8.0/en/string-functions.html#function_elt), [FIELD()](https://dev.mysql.com/doc/refman/8.0/en/string-functions.html#function_field), [HEX()](https://dev.mysql.com/doc/refman/8.0/en/string-functions.html#function_hex), [LENGTH()](https://dev.mysql.com/doc/refman/8.0/en/string-functions.html#function_length), [LIKE](https://dev.mysql.com/doc/refman/8.0/en/string-comparison-functions.html#operator_like), [LTRIM()](https://dev.mysql.com/doc/refman/8.0/en/string-functions.html#function_ltrim), [MID()](https://dev.mysql.com/doc/refman/8.0/en/string-functions.html#function_mid), [NOT LIKE](https://dev.mysql.com/doc/refman/8.0/en/string-comparison-functions.html#operator_not-like), [NOT REGEXP](https://dev.mysql.com/doc/refman/8.0/en/regexp.html#operator_not-regexp), [REGEXP](https://dev.mysql.com/doc/refman/8.0/en/regexp.html#operator_regexp), [REPLACE()](https://dev.mysql.com/doc/refman/8.0/en/string-functions.html#function_replace), [REVERSE()](https://dev.mysql.com/doc/refman/8.0/en/string-functions.html#function_reverse), [RIGHT()](https://dev.mysql.com/doc/refman/8.0/en/string-functions.html#function_right), [RTRIM()](https://dev.mysql.com/doc/refman/8.0/en/string-functions.html#function_rtrim), [SPACE()](https://dev.mysql.com/doc/refman/8.0/en/string-functions.html#function_space), [STRCMP()](https://dev.mysql.com/doc/refman/8.0/en/string-comparison-functions.html#function_strcmp), [SUBSTR()](https://dev.mysql.com/doc/refman/8.0/en/string-functions.html#function_substr), [SUBSTRING()](https://dev.mysql.com/doc/refman/8.0/en/string-functions.html#function_substring) |
+| [聚合函数](/functions-and-operators/aggregate-group-by-functions.md#group-by-聚合函数) | [COUNT()](https://dev.mysql.com/doc/refman/8.0/en/aggregate-functions.html#function_count), [COUNT(DISTINCT)](https://dev.mysql.com/doc/refman/8.0/en/aggregate-functions.html#function_count-distinct), [SUM()](https://dev.mysql.com/doc/refman/8.0/en/aggregate-functions.html#function_sum), [AVG()](https://dev.mysql.com/doc/refman/8.0/en/aggregate-functions.html#function_avg), [MAX()](https://dev.mysql.com/doc/refman/8.0/en/aggregate-functions.html#function_max), [MIN()](https://dev.mysql.com/doc/refman/8.0/en/aggregate-functions.html#function_min), [VARIANCE()](https://dev.mysql.com/doc/refman/8.0/en/aggregate-functions.html#function_variance), [VAR_POP()](https://dev.mysql.com/doc/refman/8.0/en/aggregate-functions.html#function_var-pop), [STD()](https://dev.mysql.com/doc/refman/8.0/en/aggregate-functions.html#function_std), [STDDEV()](https://dev.mysql.com/doc/refman/8.0/en/aggregate-functions.html#function_stddev), [STDDEV_POP](https://dev.mysql.com/doc/refman/8.0/en/aggregate-functions.html#function_stddev-pop), [VAR_SAMP()](https://dev.mysql.com/doc/refman/8.0/en/aggregate-functions.html#function_var-samp), [STDDEV_SAMP()](https://dev.mysql.com/doc/refman/8.0/en/aggregate-functions.html#function_stddev-samp), [JSON_ARRAYAGG(key)](https://dev.mysql.com/doc/refman/8.0/en/aggregate-functions.html#function_json-arrayagg), [JSON_OBJECTAGG(key, value)](https://dev.mysql.com/doc/refman/8.0/en/aggregate-functions.html#function_json-objectagg) |
+| [加密和压缩函数](/functions-and-operators/encryption-and-compression-functions.md#加密和压缩函数) | [MD5()](https://dev.mysql.com/doc/refman/8.0/en/encryption-functions.html#function_md5), [SHA1(), SHA()](https://dev.mysql.com/doc/refman/8.0/en/encryption-functions.html#function_sha1), [UNCOMPRESSED_LENGTH()](https://dev.mysql.com/doc/refman/8.0/en/encryption-functions.html#function_uncompressed-length) |
+| [Cast 函数](/functions-and-operators/cast-functions-and-operators.md#cast-函数和操作符) | [CAST()](https://dev.mysql.com/doc/refman/8.0/en/cast-functions.html#function_cast), [CONVERT()](https://dev.mysql.com/doc/refman/8.0/en/cast-functions.html#function_convert) |
+| [其他函数](/functions-and-operators/miscellaneous-functions.md#支持的函数) | [UUID()](https://dev.mysql.com/doc/refman/8.0/en/miscellaneous-functions.html#function_uuid) |
 
 ## 禁止特定表达式下推
 
-当[已支持下推的表达式列表](#已支持下推的表达式列表)中的函数和运算符，或特定的数据类型（**仅限** [`ENUM` 类型](/data-type-string.md#enum-类型) 和 [`BIT` 类型](/data-type-numeric.md#bit-类型)）的计算过程因下推而出现异常时，你可以使用黑名单功能禁止其下推，从而快速恢复 TiDB 业务。具体而言，你可以将函数名、运算符名，或数据列类型加入黑名单 `mysql.expr_pushdown_blacklist` 中，以禁止特定表达式下推。具体方法，请参阅[加入黑名单](#加入黑名单)。
-
-`mysql.expr_pushdown_blacklist` 的 schema 如下：
-
-```sql
-tidb> desc mysql.expr_pushdown_blacklist;
-+------------+--------------+------+------+-------------------+-------+
-| Field      | Type         | Null | Key  | Default           | Extra |
-+------------+--------------+------+------+-------------------+-------+
-| name       | char(100)    | NO   |      | NULL              |       |
-| store_type | char(100)    | NO   |      | tikv,tiflash,tidb |       |
-| reason     | varchar(200) | YES  |      | NULL              |       |
-+------------+--------------+------+------+-------------------+-------+
-3 rows in set (0.00 sec)
-```
-
-以上结果字段解释如下：
-
-+ `name`：禁止下推的函数名、运算符名或数据类型。
-+ `store_type`：用于指定希望禁止该函数、运算符或数据类型下推到哪些组件进行计算。组件可选 `tidb`、`tikv` 和 `tiflash`。`store_type` 不区分大小写，如果需要禁止向多个存储引擎下推，各个存储之间需用逗号隔开。
-    - `store_type` 为 `tidb` 时表示在读取 TiDB 内存表时，是否允许该函数在其他 TiDB Server 上执行。
-    - `store_type` 为 `tikv` 时表示是否允许该函数在 TiKV Server 的 Coprocessor 模块中执行。
-    - `store_type` 为 `tiflash` 时表示是否允许该函数在 TiFlash Server 的 Coprocessor 模块中执行。
-+ `reason`：用于记录该函数被加入黑名单的原因。
-
-> **注意：**
->
-> `tidb` 是一种特殊的 store_type，其含义是 TiDB 内存表，比如：`PERFORMANCE_SCHEMA.events_statements_summary_by_digest`，属于系统表的一种，非特殊情况不用考虑这种存储引擎。
-
-### 加入黑名单
-
-执行以下步骤，可将一个或多[函数名、运算符名](#已支持下推的表达式列表)或数据类型（**仅限** [`ENUM` 类型](/data-type-string.md#enum-类型) 和 [`BIT` 类型](/data-type-numeric.md#bit-类型)）加入黑名单：
-
-1. 向 `mysql.expr_pushdown_blacklist` 插入以下内容：
-
-    - 希望禁止下推的函数名、运算符名或数据类型
-    - 希望禁止下推的存储引擎
-
-2. 执行 `admin reload expr_pushdown_blacklist;`。
-
-### 移出黑名单
-
-执行以下步骤，可将一个或多个函数名、运算符名或数据类型移出黑名单：
-
-1. 从 `mysql.expr_pushdown_blacklist` 表中删除对应的函数名、运算符名或数据类型。
-2. 执行 `admin reload expr_pushdown_blacklist;`。
-
-### 黑名单使用示例
-
-以下示例首先将函数 `DATE_FORMAT()`、运算符 `>` 及 数据类型 `BIT` 加入黑名单，然后再将运算符 `>` 从黑名单中移出。
-
-黑名单是否生效可以从 `explain` 结果中进行观察（参见[如何理解 `explain` 结果](/explain-overview.md)）。
-
-```sql
-tidb> create table t(a int);
-Query OK, 0 rows affected (0.06 sec)
-
-tidb> explain select * from t where a < 2 and a > 2;
-+-------------------------+----------+-----------+---------------+------------------------------------+
-| id                      | estRows  | task      | access object | operator info                      |
-+-------------------------+----------+-----------+---------------+------------------------------------+
-| TableReader_7           | 0.00     | root      |               | data:Selection_6                   |
-| └─Selection_6           | 0.00     | cop[tikv] |               | gt(ssb_1.t.a, 2), lt(ssb_1.t.a, 2) |
-|   └─TableFullScan_5     | 10000.00 | cop[tikv] | table:t       | keep order:false, stats:pseudo     |
-+-------------------------+----------+-----------+---------------+------------------------------------+
-3 rows in set (0.00 sec)
-
-tidb> insert into mysql.expr_pushdown_blacklist values('date_format()', 'tikv',''), ('>','tikv',''), ('bit','tikv','');
-Query OK, 2 rows affected (0.01 sec)
-Records: 2  Duplicates: 0  Warnings: 0
-
-tidb> admin reload expr_pushdown_blacklist;
-Query OK, 0 rows affected (0.00 sec)
-
-tidb> explain select * from t where a < 2 and a > 2;
-+-------------------------+----------+-----------+---------------+------------------------------------+
-| id                      | estRows  | task      | access object | operator info                      |
-+-------------------------+----------+-----------+---------------+------------------------------------+
-| Selection_7             | 10000.00 | root      |               | gt(ssb_1.t.a, 2), lt(ssb_1.t.a, 2) |
-| └─TableReader_6         | 10000.00 | root      |               | data:TableFullScan_5               |
-|   └─TableFullScan_5     | 10000.00 | cop[tikv] | table:t       | keep order:false, stats:pseudo     |
-+-------------------------+----------+-----------+---------------+------------------------------------+
-3 rows in set (0.00 sec)
-
-tidb> delete from mysql.expr_pushdown_blacklist where name = '>';
-Query OK, 1 row affected (0.01 sec)
-
-tidb> admin reload expr_pushdown_blacklist;
-Query OK, 0 rows affected (0.00 sec)
-
-tidb> explain select * from t where a < 2 and a > 2;
-+---------------------------+----------+-----------+---------------+--------------------------------+
-| id                        | estRows  | task      | access object | operator info                  |
-+---------------------------+----------+-----------+---------------+--------------------------------+
-| Selection_8               | 0.00     | root      |               | lt(ssb_1.t.a, 2)               |
-| └─TableReader_7           | 0.00     | root      |               | data:Selection_6               |
-|   └─Selection_6           | 0.00     | cop[tikv] |               | gt(ssb_1.t.a, 2)               |
-|     └─TableFullScan_5     | 10000.00 | cop[tikv] | table:t       | keep order:false, stats:pseudo |
-+---------------------------+----------+-----------+---------------+--------------------------------+
-4 rows in set (0.00 sec)
-```
-
-> **注意：**
->
-> - `admin reload expr_pushdown_blacklist` 只对执行该 SQL 语句的 TiDB server 生效。若需要集群中所有 TiDB server 生效，需要在每台 TiDB server 上执行该 SQL 语句。
-> - 表达式黑名单功能在 v3.0.0 及以上版本中支持。
-> - 在 v3.0.3 及以下版本中，不支持将某些运算符的原始名称文本（如 ">"、"+" 和 "is null"）加入黑名单中，部分运算符在黑名单中需使用别名。已支持下推的表达式中，别名与原始名不同的运算符见下表（区分大小写）。
-
-| 运算符原始名称 | 运算符别名 |
-| :-------- | :---------- |
-| < | lt |
-| > | gt |
-| <= | le |
-| >= | ge |
-| = | eq |
-| != | ne |
-| `<>` | ne |
-| `<=>` | nulleq |
-| &#124; | bitor |
-| && | bitand|
-| &#124;&#124; | or |
-| ! | not |
-| in | in |
-| + | plus|
-| - | minus |
-| * | mul |
-| / | div |
-| DIV | intdiv|
-| IS NULL | isnull |
-| IS TRUE | istrue |
-| IS FALSE | isfalse |
-
-[json_extract]: https://dev.mysql.com/doc/refman/5.7/en/json-search-functions.html#function_json-extract
-
-[json_short_extract]: https://dev.mysql.com/doc/refman/5.7/en/json-search-functions.html#operator_json-column-path
-
-[json_short_extract_unquote]: https://dev.mysql.com/doc/refman/5.7/en/json-search-functions.html#operator_json-inline-path
-
-[json_unquote]: https://dev.mysql.com/doc/refman/5.7/en/json-modification-functions.html#function_json-unquote
-
-[json_type]: https://dev.mysql.com/doc/refman/5.7/en/json-attribute-functions.html#function_json-type
-
-[json_set]: https://dev.mysql.com/doc/refman/5.7/en/json-modification-functions.html#function_json-set
-
-[json_insert]: https://dev.mysql.com/doc/refman/5.7/en/json-modification-functions.html#function_json-insert
-
-[json_replace]: https://dev.mysql.com/doc/refman/5.7/en/json-modification-functions.html#function_json-replace
-
-[json_remove]: https://dev.mysql.com/doc/refman/5.7/en/json-modification-functions.html#function_json-remove
-
-[json_merge]: https://dev.mysql.com/doc/refman/5.7/en/json-modification-functions.html#function_json-merge
-
-[json_merge_preserve]: https://dev.mysql.com/doc/refman/5.7/en/json-modification-functions.html#function_json-merge-preserve
-
-[json_object]: https://dev.mysql.com/doc/refman/5.7/en/json-creation-functions.html#function_json-object
-
-[json_array]: https://dev.mysql.com/doc/refman/5.7/en/json-creation-functions.html#function_json-array
-
-[json_keys]: https://dev.mysql.com/doc/refman/5.7/en/json-search-functions.html#function_json-keys
-
-[json_length]: https://dev.mysql.com/doc/refman/5.7/en/json-attribute-functions.html#function_json-length
-
-[json_valid]: https://dev.mysql.com/doc/refman/5.7/en/json-attribute-functions.html#function_json-valid
-
-[json_quote]: https://dev.mysql.com/doc/refman/5.7/en/json-creation-functions.html#function_json-quote
-
-[json_contains]: https://dev.mysql.com/doc/refman/5.7/en/json-search-functions.html#function_json-contains
-
-[json_contains_path]: https://dev.mysql.com/doc/refman/5.7/en/json-search-functions.html#function_json-contains-path
-
-[json_arrayagg]:https://dev.mysql.com/doc/refman/5.7/en/aggregate-functions.html#function_json-arrayagg
-
-[json_depth]: https://dev.mysql.com/doc/refman/5.7/en/json-attribute-functions.html#function_json-depth
+当[已支持下推的表达式列表](#已支持下推的表达式列表)中的函数和运算符，或特定的数据类型（**仅限** [`ENUM` 类型](/data-type-string.md#enum-类型)和 [`BIT` 类型](/data-type-numeric.md#bit-类型)）的计算过程因下推而出现异常时，你可以使用黑名单功能禁止其下推，从而快速恢复 TiDB 业务。具体而言，你可以将函数名、运算符名，或数据列类型加入黑名单 `mysql.expr_pushdown_blacklist` 中，以禁止特定表达式下推。具体方法，请参阅[表达式下推黑名单](/blocklist-control-plan.md#禁止特定表达式下推)。

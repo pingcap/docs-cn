@@ -11,6 +11,10 @@ PD 配置文件比命令行参数支持更多的选项。你可以在 [conf/conf
 
 本文档只阐述未包含在命令行参数中的参数，命令行参数参见 [PD 配置参数](/command-line-flags-for-pd-configuration.md)。
 
+> **Tip:**
+>
+> 如果你需要调整配置项的值，请参考[修改配置参数](/maintain-tidb-using-tiup.md#修改配置参数)进行操作。
+
 ### `name`
 
 + PD 节点名称。
@@ -92,6 +96,80 @@ PD 配置文件比命令行参数支持更多的选项。你可以在 [conf/conf
 + 强制让该 PD 以一个新集群启动，且修改 raft 成员数为 1。
 + 默认值：false
 
+### `tso-update-physical-interval`
+
++ TSO 物理时钟更新周期。
++ 在默认的一个 TSO 物理时钟更新周期内 (50ms)，PD 最多提供 262144 个 TSO。如果需要更多的 TSO，可以将这个参数调小。最小值为 `1ms`。
++ 缩短这个参数会增加 PD 的 CPU 消耗。根据测试，相比 `50ms` 更新周期，更新周期为 `1ms` 时，PD 的 CPU 占用率 ([CPU usage](https://man7.org/linux/man-pages/man1/top.1.html)) 将增加约 10%。
++ 默认值：50ms
++ 最小值：1ms
+
+## pd-server
+
+pd-server 相关配置项。
+
+### `server-memory-limit` <span class="version-mark">从 v6.6.0 版本开始引入</span>
+
+> **警告：**
+>
+> 在当前版本中，该配置项为实验特性，不建议在生产环境中使用。
+
++ PD 实例的内存限制比例。`0` 值表示不设内存限制。
++ 默认值：`0`
++ 最小值：`0`
++ 最大值：`0.99`
+
+### `server-memory-limit-gc-trigger` <span class="version-mark">从 v6.6.0 版本开始引入</span>
+
+> **警告：**
+>
+> 在当前版本中，该配置项为实验特性，不建议在生产环境中使用。
+
++ PD 尝试触发 GC 的阈值比例。当 PD 的内存使用达到 `server-memory-limit` 值 * `server-memory-limit-gc-trigger` 值时，则会主动触发一次 Golang GC。在一分钟之内只会主动触发一次 GC。
++ 默认值：`0.7`
++ 最小值：`0.5`
++ 最大值：`0.99`
+
+### `enable-gogc-tuner` <span class="version-mark">从 v6.6.0 版本开始引入</span>
+
+> **警告：**
+>
+> 在当前版本中，该配置项为实验特性，不建议在生产环境中使用。
+
++ 是否开启 GOGC Tuner。
++ 默认值：`false`
+
+### `gc-tuner-threshold` <span class="version-mark">从 v6.6.0 版本开始引入</span>
+
+> **警告：**
+>
+> 在当前版本中，该配置项为实验特性，不建议在生产环境中使用。
+
++ GOGC Tuner 自动调节的最大内存阈值比例，即 `server-memory-limit` 值 * `server-memory-limit-gc-trigger` 值，超过阈值后 GOGC Tuner 会停止工作。
++ 默认值：`0.6`
++ 最小值：`0`
++ 最大值：`0.9`
+
+### `flow-round-by-digit` <span class="version-mark">从 v5.1 版本开始引入</span>
+
++ 默认值：3
++ PD 会对流量信息的末尾数字进行四舍五入处理，减少 Region 流量信息变化引起的统计信息更新。该配置项用于指定对 Region 流量信息的末尾进行四舍五入的位数。例如流量 `100512` 会归约到 `101000`。默认值为 `3`。该配置替换了 `trace-region-flow`。
+
+> **注意：**
+>
+> 如果是从 v4.0 升级至当前版本，升级后的 `flow-round-by-digit` 行为和升级前的 `trace-region-flow` 行为默认保持一致：如果升级前 `trace-region-flow` 为 false，则升级后 `flow-round-by-digit` 为 127；如果升级前 `trace-region-flow` 为 true，则升级后 `flow-round-by-digit` 为 3。
+
+### `min-resolved-ts-persistence-interval` <span class="version-mark">从 v6.0.0 版本开始引入</span>
+
++ 设置 PD leader 对集群中 Resolved TS 最小值进行持久化的间隔时间。如果该值设置为 `0`，表示禁用该功能。
++ 默认值：在 v6.3.0 之前版本中为 `"0s"`，在 v6.3.0 及之后的版本中为 `"1s"`，即最小正值。
++ 最小值：`"0s"`
++ 单位：秒
+
+> **注意：**
+>
+> 对于从 v6.0.0~v6.2.0 升级上来的集群，`min-resolved-ts-persistence-interval` 的默认值在升级后将不会发生变化，即仍然为 `"0s"`。若要开启该功能，需要手动修改该配置项的值。
+
 ## security
 
 安全相关配置项。
@@ -152,11 +230,13 @@ PD 配置文件比命令行参数支持更多的选项。你可以在 [conf/conf
 ### `max-days`
 
 + 日志保留的最长天数。
++ 如果未设置本参数或把本参数设置为默认值 `0`，PD 不清理日志文件。
 + 默认：0
 
 ### `max-backups`
 
 + 日志文件保留的最大个数。
++ 如果未设置本参数或把本参数设置为默认值 `0`，PD 会保留所有的日志文件。
 + 默认：0
 
 ## metric
@@ -176,6 +256,7 @@ PD 配置文件比命令行参数支持更多的选项。你可以在 [conf/conf
 
 + 控制 Region Merge 的 size 上限，当 Region Size 大于指定值时 PD 不会将其与相邻的 Region 合并。
 + 默认：20
++ 单位：MiB
 
 ### `max-merge-region-keys`
 
@@ -267,7 +348,7 @@ PD 配置文件比命令行参数支持更多的选项。你可以在 [conf/conf
 + 设置是否开启跨表 merge。
 + 默认值：true
 
-### `region-score-formula-version` <span class="version-mark">从 v5.0 版本开始引入</span> 
+### `region-score-formula-version` <span class="version-mark">从 v5.0 版本开始引入</span>
 
 + 设置 Region 算分公式版本。
 + 默认值：v2
@@ -282,12 +363,17 @@ PD 配置文件比命令行参数支持更多的选项。你可以在 [conf/conf
 + 是否使用 Joint Consensus 进行副本调度。关闭该特性时，PD 将采用一次调度一个副本的方式进行调度。
 + 默认值：true
 
+### `enable-diagnostic` <span class="version-mark">从 v6.3.0 版本开始引入</span>
+
++ 是否开启诊断功能。开启特性时，PD 将会记录调度中的一些状态来帮助诊断。开启时会略微影响调度速度，在 Store 数量较多时会消耗较大内存。
++ 默认值：从 v7.1.0 起，默认值从 `false` 变更为 `true`。如果从 v7.1.0 之前版本的集群升级至 v7.1.0 及之后的版本，该默认值不发生变化。
+
 ### `hot-regions-write-interval` <span class="version-mark">从 v5.4.0 版本开始引入</span>
 
 * 设置 PD 存储 Hot Region 信息时间间隔。
 * 默认值：10m
 
-> 注意：
+> **注意：**
 >
 > Hot Region 的信息一般 3 分钟更新一次。如果设置时间间隔小于 3 分钟，中间部分的更新可能没有意义。
 
@@ -325,18 +411,20 @@ PD 配置文件比命令行参数支持更多的选项。你可以在 [conf/conf
 ### `enable-placement-rules`
 
 + 打开 `placement-rules`
-+ 默认值：false
-+ 参考[Placement Rules 使用文档](/configure-placement-rules.md)
-+ 4.0 实验性特性
++ 默认值：true
++ 参考 [Placement Rules 使用文档](/configure-placement-rules.md)
 
-### `flow-round-by-digit` <span class="version-mark">从 v5.1 版本开始引入</span>
+### `store-limit-version` <span class="version-mark">从 v7.1.0 版本开始引入</span>
 
-+ 默认值：3
-+ PD 会对流量信息的末尾数字进行四舍五入处理，减少 Region 流量信息变化引起的统计信息更新。该配置项用于指定对 Region 流量信息的末尾进行四舍五入的位数。例如流量 `100512` 会归约到 `101000`。默认值为 `3`。该配置替换了 `trace-region-flow`。
-
-> **注意：**
+> **警告：**
 >
-> 如果是从 v4.0 升级至当前版本，升级后的 `flow-round-by-digit` 行为和升级前的 `trace-region-flow` 行为默认保持一致：如果升级前 `trace-region-flow` 为 false，则升级后 `flow-round-by-digit` 为 127；如果升级前 `trace-region-flow` 为 true，则升级后 `flow-round-by-digit` 为 3。
+> 在当前版本中，将该配置项设置为 `"v2"` 为实验特性，不建议在生产环境中使用。
+
++ 设置 `store limit` 工作模式
++ 默认值：v1
++ 可选值：
+    + v1：在 v1 模式下，你可以手动修改 `store limit` 以限制单个 TiKV 调度速度。
+    + v2：（实验特性）在 v2 模式下，你无需关注 `store limit` 值，PD 将根据 TiKV Snapshot 执行情况动态调整 TiKV 调度速度。详情请参考 [Store Limit v2 原理](/configure-store-limit.md#store-limit-v2-原理)。
 
 ## label-property
 
@@ -380,5 +468,51 @@ PD 中内置的 [TiDB Dashboard](/dashboard/dashboard-intro.md) 相关配置项�
 ### `enable-telemetry`
 
 + 是否启用 TiDB Dashboard 遥测功能。
-+ 默认值：true
++ 默认值：false
 + 参阅[遥测](/telemetry.md)了解该功能详情。
+
+## `replication-mode`
+
+Region 同步模式相关的配置项。更多详情，请参阅[启用自适应同步模式](/two-data-centers-in-one-city-deployment.md#启用自适应同步模式)。
+
+## Controllor
+
+PD 中内置的 [Resource Control](/tidb-resource-control.md) 相关的配置项。
+
+### `degraded-mode-wait-duration`
+
++ 触发降级模式需要等待的时间。降级模式是指在 Local Token Bucket (LTB) 和 Global Token Bucket (GTB) 失联的情况下，LTB 将回退到默认的资源组配置，不再有 GTB 授权 token，从而保证在网络隔离或者异常情况下，服务不受影响。
++ 默认值: 0s
++ 默认为不开启降级模式
+
+### `request-unit`
+
+下面是 [Request Unit (RU)](/tidb-resource-control.md#什么是-request-unit-ru) 相关的配置项。
+
+#### `read-base-cost`
+
++ 每次读请求转换成 RU 的基准系数
++ 默认值: 0.25
+
+#### `write-base-cost`
+
++ 每次写请求转换成 RU 的基准系数
++ 默认值: 1
+
+#### `read-cost-per-byte`
+
++ 读流量转换成 RU 的基准系数
++ 默认值: 1/(64 * 1024)
++ 1 RU = 64 KiB 读取字节
+
+#### `write-cost-per-byte`
+
++ 写流量转换成 RU 的基准系数
++ 默认值: 1/1024
++ 1 RU = 1 KiB 写入字节
+
+#### `read-cpu-ms-cost`
+
++ CPU 转换成 RU 的基准系数
++ 默认值: 1/3
++ 1 RU = 3 毫秒 CPU 时间

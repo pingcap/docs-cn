@@ -20,12 +20,10 @@ aliases: ['/zh/tidb/dev/join-tables']
 
 ![Inner Join](/media/develop/inner-join.png)
 
-<SimpleTab>
-<div label="SQL" href="inner-join-sql">
+<SimpleTab groupId="language">
+<div label="SQL" value="sql">
 
 在下面的 SQL 语句当中，通过关键字 `JOIN` 声明要将左表 `authors` 和右表 `book_authors` 的数据行以内连接的方式进行连接，连接条件为 `a.id = ba.author_id`，那么连接的结果集当中将只会包含满足连接条件的行。假设有一个作家没有编写过任何书籍，那么他在 `authors` 表当中的记录将无法满足连接条件，因此也不会出现在结果集当中。
-
-{{< copyable "sql" >}}
 
 ```sql
 SELECT ANY_VALUE(a.id) AS author_id, ANY_VALUE(a.name) AS author_name, COUNT(ba.book_id) AS books
@@ -57,9 +55,9 @@ LIMIT 10;
 ```
 
 </div>
-<div label="Java" href="inner-join-java">
+<div label="Java" value="java">
 
-{{< copyable "" >}}
+在 Java 中内连接的示例如下：
 
 ```java
 public List<Author> getTop10AuthorsOrderByBooks() throws SQLException {
@@ -99,12 +97,10 @@ public List<Author> getTop10AuthorsOrderByBooks() throws SQLException {
 
 例如，在 Bookshop 应用的首页，希望展示一个带有平均评分的最新书籍列表。在这种情况下，最新的书籍可能是还没有经过任何人评分的，如果使用内连接就会导致这些无人评分的书籍信息被过滤掉，而这并不是期望的结果。
 
-<SimpleTab>
-<div label="SQL" href="left-join-sql">
+<SimpleTab groupId="language">
+<div label="SQL" value="sql">
 
 在下面的 SQL 语句当中，通过 `LEFT JOIN` 关键字声明左表 `books` 将以左外连接的方式与右表 `ratings` 进行连接，从而确保 `books` 表当中的所有记录都能得到返回。
-
-{{< copyable "sql" >}}
 
 ```sql
 SELECT b.id AS book_id, ANY_VALUE(b.title) AS book_title, AVG(r.score) AS average_score
@@ -137,8 +133,6 @@ LIMIT 10;
 
 看起来最新出版的书籍已经有了很多评分，为了验证上面所说的，通过 SQL 语句把 **The Documentary of lion** 这本书的所有评分给删掉：
 
-{{< copyable "sql" >}}
-
 ```sql
 DELETE FROM ratings WHERE book_id = 3438991610;
 ```
@@ -166,9 +160,9 @@ DELETE FROM ratings WHERE book_id = 3438991610;
 如果改成使用的是内连接 `JOIN` 结果会怎样？这就交给你来尝试了。
 
 </div>
-<div label="Java" href="left-join-java">
+<div label="Java" value="java">
 
-{{< copyable "" >}}
+在 Java 中左外连接的示例如下：
 
 ```java
 public List<Book> getLatestBooksWithAverageScore() throws SQLException {
@@ -206,7 +200,7 @@ public List<Book> getLatestBooksWithAverageScore() throws SQLException {
 
 ### 交叉连接 CROSS JOIN
 
-当连接条件恒成立时，两表之间的内连接称为[交叉连接](https://zh.wikipedia.org/wiki/%E8%BF%9E%E6%8E%A5#%E4%BA%A4%E5%8F%89%E8%BF%9E%E6%8E%A5)（又被称为“笛卡尔连接”）。交叉连接会把左表的每一条记录和右表的所有记录相连接，如果左表的记录数为 m, 右表的记录数为 n，则结果集中会产生 m \* n 条记录。
+当连接条件恒成立时，两表之间的内连接称为[交叉连接](https://zh.wikipedia.org/wiki/%E8%BF%9E%E6%8E%A5#%E4%BA%A4%E5%8F%89%E8%BF%9E%E6%8E%A5)（又被称为“笛卡尔连接”）。交叉连接会把左表的每一条记录和右表的所有记录相连接，如果左表的记录数为 m，右表的记录数为 n，则结果集中会产生 m \* n 条记录。
 
 ### 左半连接 LEFT SEMI JOIN
 
@@ -227,8 +221,6 @@ TiDB 支持下列三种常规的表连接算法，优化器会根据所连接表
 如果发现 TiDB 的优化器没有按照最佳的 Join 算法去执行。你也可以通过 [Optimizer Hints](/optimizer-hints.md) 强制 TiDB 使用更好的 Join 算法去执行。
 
 例如，假设上文当中的左连接查询的示例 SQL 使用 Hash Join 算法执行更快，而优化器并没有选择这种算法，你可以在 `SELECT` 关键字后面加上 Hint `/*+ HASH_JOIN(b, r) */`（注意：如果表名添加了别名，Hint 当中也应该使用表别名）。
-
-{{< copyable "sql" >}}
 
 ```sql
 EXPLAIN SELECT /*+ HASH_JOIN(b, r) */ b.id AS book_id, ANY_VALUE(b.title) AS book_title, AVG(r.score) AS average_score
@@ -251,8 +243,6 @@ Join 算法相关的 Hints：
 在实际的业务场景中，多个表的 Join 语句是很常见的，而 Join 的执行效率和各个表参与 Join 的顺序有关。TiDB 使用 Join Reorder 算法来确定多个表进行 Join 的顺序。
 
 当优化器选择的 Join 顺序并不够好时，你可以使用 `STRAIGHT_JOIN` 语法让 TiDB 强制按照 FROM 子句中所使用的表的顺序做联合查询。
-
-{{< copyable "sql" >}}
 
 ```sql
 EXPLAIN SELECT *

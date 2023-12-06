@@ -21,7 +21,7 @@ TiKV 使用了 RocksDB 的 `Column Families` (CF) 特性。
 
     - `default` CF 主要存储的是 Raft log，与其对应的参数位于 `[raftdb.defaultcf]` 项中。
 
-所有的 CF 默认共同使用一个 block cache 实例。通过在 `[storage.block-cache]` 下设置 `capacity` 参数，你可以配置该 block cache 的大小。block cache 越大，能够缓存的热点数据越多，读取数据越容易，同时占用的系统内存也越多。如果要为每个 CF 使用单独的 block cache 实例，需要在 `[storage.block-cache]` 下设置 `shared=false`，并为每个 CF 配置单独的 block cache 大小。例如，可以在 `[rocksdb.writecf]` 下设置 `block-cache-size` 参数来配置 `write` CF 的大小。
+所有的 CF 默认共同使用一个 block cache 实例。通过在 `[storage.block-cache]` 下设置 `capacity` 参数，你可以配置该 block cache 的大小。block cache 越大，能够缓存的热点数据越多，读取数据越容易，同时占用的系统内存也越多。
 
 > **注意：**
 >
@@ -72,6 +72,7 @@ log-level = "info"
 ## 在大多数情况下，可以通过 LRU 算法在各 CF 间自动平衡缓存用量。
 ##
 ## `storage.block-cache` 会话中的其余配置仅在开启 `shared block cache` 时起作用。
+## 从 v6.6.0 开始，该选项永远开启且无法关闭。
 # shared = true
 ## `shared block cache` 的大小。正常情况下应设置为系统全部内存的 30%-50%。
 ## 如果未设置该参数，则由以下字段或其默认值的总和决定。
@@ -136,9 +137,6 @@ max-manifest-file-size = "20MB"
 # RocksDB WAL 日志的最大总大小，通常情况下使用默认值就可以了。
 # max-total-wal-size = "4GB"
 
-# 可以通过该参数打开或者关闭 RocksDB 的统计信息。
-# enable-statistics = true
-
 # 开启 RocksDB compaction 过程中的预读功能，如果使用的是机械磁盘，建议该值至少为2MB。
 # compaction-readahead-size = "2MB"
 
@@ -147,7 +145,7 @@ max-manifest-file-size = "20MB"
 # 中的最小单元（类似其他数据库的 page 概念）。
 block-size = "64KB"
 
-# RocksDB 每一层数据的压缩方式，可选的值为：no,snappy,zlib,bzip2,lz4,lz4hc,zstd。
+# RocksDB 每一层数据的压缩方式，可选的值为：no,snappy,zlib,bzip2,lz4,lz4hc,zstd。注意 Snappy 压缩文件必须遵循[官方 Snappy 格式](https://github.com/google/snappy)。不支持其他非官方压缩格式。
 # no:no:lz4:lz4:lz4:zstd:zstd 表示 level0 和 level1 不压缩，level2 到 level4 采用 lz4 压缩算法,
 # level5 和 level6 采用 zstd 压缩算法,。
 # no 表示没有压缩，lz4 是速度和压缩比较为中庸的压缩算法，zlib 的压缩比很高，对存储空间比较友
@@ -217,9 +215,6 @@ target-file-size-base = "32MB"
 [raftdb]
 # RaftDB 能够打开的最大文件句柄数。
 # max-open-files = 40960
-
-# 可以通过该参数打开或者关闭 RaftDB 的统计信息。
-# enable-statistics = true
 
 # 开启 RaftDB compaction 过程中的预读功能，如果使用的是机械磁盘，建议该值至少为2MB。
 # compaction-readahead-size = "2MB"

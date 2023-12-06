@@ -9,11 +9,11 @@ aliases: ['/docs-cn/dev/user-account-management/','/docs-cn/dev/reference/securi
 
 要快速了解 TiDB 如何进行认证与赋权并创建与管理用户账户，建议先观看下面的培训视频（时长 22 分钟）。注意本视频只作为学习参考，如需了解具体的用户账户管理方法，请参考本文档的内容。
 
-<video src="https://tidb-docs.s3.us-east-2.amazonaws.com/compressed+-+Lesson+11.mp4" width="600px" height="450px" controls="controls" poster="https://tidb-docs.s3.us-east-2.amazonaws.com/thumbnail+-+lesson+11.png"></video>
+<video src="https://download.pingcap.com/docs-cn%2FLesson11_security.mp4" width="600px" height="450px" controls="controls" poster="https://download.pingcap.com/docs-cn/poster_lesson11.png"></video>
 
 ## 用户名和密码
 
-TiDB 将用户账户存储在 `mysql.user` 系统表里面。每个账户由用户名和 host 作为标识。每个账户可以设置一个密码。
+TiDB 将用户账户存储在 `mysql.user` 系统表里面。每个账户由用户名和 host 作为标识。每个账户可以设置一个密码。每个用户名最长为 32 个字符。
 
 通过 MySQL 客户端连接到 TiDB 服务器，通过指定的账户和密码登录：
 
@@ -36,9 +36,9 @@ mysql -P 4000 -u xxx -p
 添加用户有两种方式：
 
 * 通过标准的用户管理的 SQL 语句创建用户以及授予权限，比如 `CREATE USER` 和 `GRANT`。
-* 直接通过 `INSERT`、`UPDATE` 和 `DELETE` 操作授权表。
+* 直接通过 `INSERT`、`UPDATE` 和 `DELETE` 操作授权表。不推荐使用这种方式添加用户，因为容易导致修改不完整。
 
-推荐使用第一种方式。第二种方式修改容易导致一些不完整的修改，因此不推荐。还有另一种可选方式是使用第三方工具的图形化界面工具。
+除以上两种方法外，你还可以使用第三方图形化界面工具来添加用户。
 
 {{< copyable "sql" >}}
 
@@ -197,24 +197,47 @@ TiDB 将密码存在 `mysql.user` 系统数据库里面。只有拥有 `CREATE U
 
 ## 忘记 `root` 密码
 
-1. 修改配置文件，在 `security` 部分添加 `skip-grant-table`：
+1. 修改 TiDB 配置文件：
 
-    {{< copyable "" >}}
+    1. 登录其中一台 tidb-server 实例所在的机器。
+    2. 进入 TiDB 节点的部署目录下的 `conf` 目录，找到 `tidb.toml` 配置文件。
+    3. 在配置文件的 `security` 部分添加配置项 `skip-grant-table`。如无 `security` 部分，则将以下两行内容添加至 tidb.toml 配置文件尾部：
 
-    ```
-    [security]
-    skip-grant-table = true
-    ```
+        ```
+        [security]
+        skip-grant-table = true
+        ```
 
-2. 使用修改之后的配置启动 TiDB，然后使用 `root` 登录后修改密码：
+2. 终止该 tidb-server 的进程：
 
-    {{< copyable "shell-regular" >}}
+    1. 查看 tidb-server 的进程：
 
-    ```bash
-    mysql -h 127.0.0.1 -P 4000 -u root
-    ```
+        ```bash
+        ps aux | grep tidb-server
+        ```
 
-设置 `skip-grant-table` 之后，启动 TiDB 进程会增加操作系统用户检查，只有操作系统的 `root` 用户才能启动 TiDB 进程。
+    2. 找到 tidb-server 对应的进程 ID (PID) 并使用 `kill` 命令停掉该进程：
+
+        ```bash
+        kill -9 <pid>
+        ```    
+
+3. 使用修改之后的配置启动 TiDB：
+
+    > **注意：**
+    >
+    > 设置 `skip-grant-table` 之后，启动 TiDB 进程会增加操作系统用户检查，只有操作系统的 `root` 用户才能启动 TiDB 进程。
+
+    1. 进入 TiDB 节点部署目录下的 `scripts` 目录。
+    2. 切换到操作系统 `root` 账号。
+    3. 在前台执行目录中的 `run_tidb.sh` 脚本。
+    4. 在新的终端窗口中使用 `root` 登录后修改密码：
+
+        ```bash
+        mysql -h 127.0.0.1 -P 4000 -u root
+        ```
+
+4. 停止运行 `run_tidb.sh` 脚本，并去掉第 1 步中在 TiDB 配置文件中添加的内容，等待 tidb-server 自启动。
 
 ## `FLUSH PRIVILEGES`
 

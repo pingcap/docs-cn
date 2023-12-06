@@ -58,7 +58,7 @@ xxx 在以下场景中使用/有优势：
 
 ## 使用方法/操作步骤
 
-TiDB 提供 x 种 xxx 的使用方法，分别是 xxx 方法 和 xxx 方法。
+TiDB 提供 x 种 xxx 的使用方法，分别是 xxx 方法和 xxx 方法。
 
 在 xxx 情况下，为了 xxx, 推荐使用 xxx 方法。
 
@@ -105,4 +105,4 @@ TiDB 提供 x 种 xxx 的使用方法，分别是 xxx 方法 和 xxx 方法。
 
 - [TiDB HTAP 形态架构](/tiflash/tiflash-overview.md#整体架构)
 - [深入探索 HTAP](/explore-htap.md)
-- [使用 TiFlash](/tiflash/use-tiflash.md)
+- [使用 TiFlash](/tiflash/tiflash-overview.md#使用-tiflash)

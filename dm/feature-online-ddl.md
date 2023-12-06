@@ -7,11 +7,11 @@ aliases: ['/docs-cn/tidb-data-migration/dev/feature-online-ddl-scheme/','/zh/tid
 
 在生产业务中执行 DDL 时，产生的锁表操作会一定程度阻塞数据库的读取或者写入。为了把对读写的影响降到最低，用户往往会选择 online DDL 工具执行 DDL。常见的 Online DDL 工具有 [gh-ost](https://github.com/github/gh-ost) 和 [pt-osc](https://www.percona.com/doc/percona-toolkit/3.0/pt-online-schema-change.html)。
 
-在使用 DM 完成 MySQL 到 TiDB 的数据迁移时，可以开启`online-ddl`配置，实现 DM 工具与 gh-ost 或 pt-osc 的协同。关于如何开启 `online-ddl`配置及开启该配置后的工作流程，请参考 [上游使用 pt-osc/gh-ost 工具的持续同步场景](/migrate-with-pt-ghost.md)。本文仅介绍 DM 与 online DDL 工具协作的细节。
+在使用 DM 完成 MySQL 到 TiDB 的数据迁移时，可以开启`online-ddl`配置，实现 DM 工具与 gh-ost 或 pt-osc 的协同。关于如何开启 `online-ddl`配置及开启该配置后的工作流程，请参考[上游使用 pt-osc/gh-ost 工具的持续同步场景](/migrate-with-pt-ghost.md)。本文仅介绍 DM 与 online DDL 工具协作的细节。
 
 ## DM 与 online DDL 工具协作细节
 
-DM 与 online DDL工具 [gh-ost](https://github.com/github/gh-ost) 和 [pt-osc](https://www.percona.com/doc/percona-toolkit/3.0/pt-online-schema-change.html) 在实现 online-schema-change 过程中的协作细节如下。
+DM 与 online DDL 工具 [gh-ost](https://github.com/github/gh-ost) 和 [pt-osc](https://www.percona.com/doc/percona-toolkit/3.0/pt-online-schema-change.html) 在实现 online-schema-change 过程中的协作细节如下。
 
 ### online-schema-change: gh-ost
 
@@ -175,20 +175,20 @@ pt-osc 主要涉及的 SQL 以及 DM 的处理：
 
     DM 执行以下两个操作:
 
-      - 把 rename 语句拆分成两个 SQL。
+    - 把 rename 语句拆分成两个 SQL。
 
-         ```sql
-         rename test.test4 to test._test4_old;
-         rename test._test4_new to test.test4;
-         ```
+        ```sql
+        rename test.test4 to test._test4_old;
+        rename test._test4_new to test.test4;
+        ```
 
-      - 不执行 `rename to _test4_old`。当要执行 `rename ghost_table to origin table` 的时候，并不执行 rename，而是把步骤 2 记录在内存中的 DDL 读取出来，然后把 ghost_table、ghost_schema 替换为 origin_table 以及对应的 schema，再执行替换后的 DDL。
+    - 不执行 `rename to _test4_old`。当要执行 `rename ghost_table to origin table` 的时候，并不执行 rename，而是把步骤 2 记录在内存中的 DDL 读取出来，然后把 ghost_table、ghost_schema 替换为 origin_table 以及对应的 schema，再执行替换后的 DDL。
 
-          ```sql
-          ALTER TABLE `test`.`_test4_new` add column c3 int;
-          --替换为
-          ALTER TABLE `test`.`test4` add column c3 int;
-          ```
+        ```sql
+        ALTER TABLE `test`.`_test4_new` add column c3 int;
+        --替换为
+        ALTER TABLE `test`.`test4` add column c3 int;
+        ```
 
 6. 删除 `_old` 表以及 online DDL 的 3 个 Trigger：
 
@@ -203,7 +203,7 @@ pt-osc 主要涉及的 SQL 以及 DM 的处理：
 
 > **注意：**
 >
-> 具体 pt-osc 的 SQL 会根据工具执行时所带的参数而变化。本文只列出主要的 SQL ，具体可以参考 [pt-osc 官方文档](https://www.percona.com/doc/percona-toolkit/2.2/pt-online-schema-change.html)。
+> 具体 pt-osc 的 SQL 会根据工具执行时所带的参数而变化。本文只列出主要的 SQL，具体可以参考 [pt-osc 官方文档](https://www.percona.com/doc/percona-toolkit/2.2/pt-online-schema-change.html)。
 
 ## 其他 Online Schema Change 工具
 

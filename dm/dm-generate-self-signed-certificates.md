@@ -1,11 +1,11 @@
 ---
-title: 生成自签名证书
+title: TiDB Data Migration 生成自签名证书
 summary: 了解如何生成自签名证书。
 ---
 
-# 生成自签名证书
+# TiDB Data Migration 生成自签名证书
 
-本文档提供使用 `openssl` 生成自签名证书的一个示例，用户也可以根据自己的需求生成符合要求的证书和密钥。
+本文档提供使用 `openssl` 为 TiDB Data Migration (DM) 生成自签名证书的一个示例，你也可以根据自己的需求生成符合要求的证书和密钥。
 
 假设实例集群拓扑如下：
 

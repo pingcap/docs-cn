@@ -58,7 +58,7 @@ TiDB 版本：5.1
 
 ### 其他
 
-- 升级前，请检查 TiDB 配置项 [`feedback-probability`](/tidb-configuration-file.md#feedback-probability) 的值。如果不为 0，升级后会触发 "panic in the recoverable goroutine" 报错，但不影响升级。
+- 升级前，请检查 TiDB 配置项 [`feedback-probability`](https://docs.pingcap.com/zh/tidb/v5.1/tidb-configuration-file#feedback-probability) 的值。如果不为 0，升级后会触发 "panic in the recoverable goroutine" 报错，但不影响升级。
 - 为了提升 TiDB 性能，TiDB 的 Go 编译器版本从 go1.13.7 升级到了 go1.16.4。如果你是 TiDB 的开发者，为了能保证顺利编译，请对应升级你的 Go 编译器版本。
 - 请避免在对使用 TiDB Binlog 的集群进行滚动升级的过程中新创建聚簇索引表。
 - 请避免在 TiDB 滚动升级时执行 `alter table ... modify column` 或 `alter table ... change column`。
@@ -184,6 +184,7 @@ TiDB 在遥测中新增收集集群请求的运行状态，包括执行情况、
 
     - 支持 `VITESS_HASH()` 函数 [#23915](https://github.com/pingcap/tidb/pull/23915)
     - 支持枚举类型下推到 TiKV ，提升 WHERE 子句中使用枚举类型时的性能 [#23619](https://github.com/pingcap/tidb/issues/23619)
+    - 支持 `RENAME USER` 语法 [#23648](https://github.com/pingcap/tidb/issues/23648)
     - 优化 Window Function 计算过程，解决了使用 ROW_NUMBER() 对数据分页时 TiDB OOM 的问题 [#23807](https://github.com/pingcap/tidb/issues/23807)
     - 优化 UNION ALL 的计算过程，解决了使用 UNION ALL 连接大量 SELECT 语句时 TiDB OOM 的问题 [#21441](https://github.com/pingcap/tidb/issues/21441)
     - 优化分区表动态裁剪模式，提升其性能和稳定性 [#24150](https://github.com/pingcap/tidb/issues/24150)

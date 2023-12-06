@@ -13,6 +13,17 @@
 | 文档仓库 branch | 对应 TiDB 文档版本 |
 |:---------|:----------|
 | [`master`](https://github.com/pingcap/docs-cn/tree/master) | dev 最新开发版 |
+| [`release-7.5`](https://github.com/pingcap/docs-cn/tree/release-7.5) | 7.5 长期支持版 (LTS) |
+| [`release-7.4`](https://github.com/pingcap/docs-cn/tree/release-7.4) | 7.4 开发里程碑版 (DMR) |
+| [`release-7.3`](https://github.com/pingcap/docs-cn/tree/release-7.3) | 7.3 开发里程碑版 (DMR) |
+| [`release-7.2`](https://github.com/pingcap/docs-cn/tree/release-7.2) | 7.2 开发里程碑版 (DMR) |
+| [`release-7.1`](https://github.com/pingcap/docs-cn/tree/release-7.1) | 7.1 长期支持版 (LTS) |
+| [`release-7.0`](https://github.com/pingcap/docs-cn/tree/release-7.0) | 7.0 开发里程碑版 (DMR) |
+| [`release-6.6`](https://github.com/pingcap/docs-cn/tree/release-6.6) | 6.6 开发里程碑版 (DMR) |
+| [`release-6.5`](https://github.com/pingcap/docs-cn/tree/release-6.5) | 6.5 长期支持版 (LTS) |
+| [`release-6.4`](https://github.com/pingcap/docs-cn/tree/release-6.4) | 6.4 开发里程碑版 (DMR) |
+| [`release-6.3`](https://github.com/pingcap/docs-cn/tree/release-6.3) | 6.3 开发里程碑版 (DMR) |
+| [`release-6.2`](https://github.com/pingcap/docs-cn/tree/release-6.2) | 6.2 开发里程碑版 (DMR) |
 | [`release-6.1`](https://github.com/pingcap/docs-cn/tree/release-6.1) | 6.1 长期支持版 (LTS) |
 | [`release-6.0`](https://github.com/pingcap/docs-cn/tree/release-6.0) | 6.0 开发里程碑版 (DMR) |
 | [`release-5.4`](https://github.com/pingcap/docs-cn/tree/release-5.4) | 5.4 稳定版 |
@@ -34,3 +45,7 @@
 ## 贡献者数量增长图
 
 [![Contributor over time](https://contributor-graph-api.apiseven.com/contributors-svg?chart=contributorOverTime&repo=pingcap/docs-cn)](https://www.apiseven.com/en/contributor-graph?chart=contributorOverTime&repo=pingcap/docs-cn)
+
+## License
+
+自 TiDB v7.0 起，所有文档的许可证均为 [CC BY-SA 3.0](https://creativecommons.org/licenses/by-sa/3.0/)。

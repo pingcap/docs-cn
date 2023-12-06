@@ -14,6 +14,7 @@ Information Schema 提供了一种查看系统元数据的 ANSI 标准方法。�
 | 表名                                                                                                                       | 描述                                                                              |
 | -------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------- |
 | [`CHARACTER_SETS`](/information-schema/information-schema-character-sets.md)                                               | 提供 TiDB 支持的字符集列表。                                                      |
+| [`CHECK_CONSTRAINTS`](/information-schema/information-schema-check-constraints.md)                                               | 提供关于表上 [`CHECK` 约束](/constraints.md#check-约束)的信息。                                                      |
 | [`COLLATIONS`](/information-schema/information-schema-collations.md)                                                       | 提供 TiDB 支持的排序规则列表。                                                    |
 | [`COLLATION_CHARACTER_SET_APPLICABILITY`](/information-schema/information-schema-collation-character-set-applicability.md) | 说明哪些排序规则适用于哪些字符集。                                                |
 | [`COLUMNS`](/information-schema/information-schema-columns.md)                                                             | 提供所有表中列的列表。                                                            |
@@ -43,7 +44,9 @@ Information Schema 提供了一种查看系统元数据的 ANSI 标准方法。�
 | [`TABLE_CONSTRAINTS`](/information-schema/information-schema-table-constraints.md)                                         | 提供有关主键、唯一索引和外键的信息。                                              |
 | `TABLE_PRIVILEGES`                                                                                                         | TiDB 未实现，返回零行。                                                           |
 | `TRIGGERS`                                                                                                                 | TiDB 未实现，返回零行。                                                           |
+| [`USER_ATTRIBUTES`](/information-schema/information-schema-user-attributes.md)                                             | 汇总用户的注释和属性信息。                                                        |
 | [`USER_PRIVILEGES`](/information-schema/information-schema-user-privileges.md)                                             | 汇总与当前用户相关的权限。                                                        |
+| [`VARIABLES_INFO`](/information-schema/information-schema-variables-info.md)                                               | 提供 TiDB 系统变量的信息。                                               |
 | [`VIEWS`](/information-schema/information-schema-views.md)                                                                 | 提供当前用户可见的视图列表。类似于 `SHOW FULL TABLES WHERE table_type = 'VIEW'`。 |
 
 ## TiDB 中的扩展表
@@ -60,6 +63,8 @@ Information Schema 提供了一种查看系统元数据的 ANSI 标准方法。�
 | [`CLUSTER_INFO`](/information-schema/information-schema-cluster-info.md)                | 提供当前集群拓扑的详细信息。                                   |
 | [`CLUSTER_LOAD`](/information-schema/information-schema-cluster-load.md)                | 提供集群中 TiDB 服务器的当前负载信息。                         |
 | [`CLUSTER_LOG`](/information-schema/information-schema-cluster-log.md)                  | 提供整个 TiDB 集群的日志。                                     |
+| `CLUSTER_MEMORY_USAGE`                                                                  | 提供 `MEMORY_USAGE` 表的集群级别的视图。                         |
+| `CLUSTER_MEMORY_USAGE_OPS_HISTORY`                                                      | 提供 `MEMORY_USAGE_OPS_HISTORY` 表的集群级别的视图。            |
 | `CLUSTER_PROCESSLIST`                                                                   | 提供 `PROCESSLIST` 表的集群级别的视图。                        |
 | `CLUSTER_SLOW_QUERY`                                                                    | 提供 `SLOW_QUERY` 表的集群级别的视图。                         |
 | `CLUSTER_STATEMENTS_SUMMARY`                                                            | 提供 `STATEMENTS_SUMMARY` 表的集群级别的视图。                 |
@@ -72,6 +77,8 @@ Information Schema 提供了一种查看系统元数据的 ANSI 标准方法。�
 | [`INSPECTION_RESULT`](/information-schema/information-schema-inspection-result.md)      | 触发内部诊断检查。                                             |
 | [`INSPECTION_RULES`](/information-schema/information-schema-inspection-rules.md)        | 进行的内部诊断检查的列表。                                     |
 | [`INSPECTION_SUMMARY`](/information-schema/information-schema-inspection-summary.md)    | 重要监视指标的摘要报告。                                       |
+| [`MEMORY_USAGE`](/information-schema/information-schema-memory-usage.md)                | 提供当前 TiDB 实例的内存使用情况。                                       |
+| [`MEMORY_USAGE_OPS_HISTORY`](/information-schema/information-schema-memory-usage-ops-history.md)    | 提供当前 TiDB 实例内存相关的历史操作和执行依据。                                       |
 | [`METRICS_SUMMARY`](/information-schema/information-schema-metrics-summary.md)          | 从 Prometheus 获取的指标的摘要。                               |
 | `METRICS_SUMMARY_BY_LABEL`                                                              | 参见 `METRICS_SUMMARY` 表。                                    |
 | [`METRICS_TABLES`](/information-schema/information-schema-metrics-tables.md)            | 为 `METRICS_SCHEMA` 中的表提供 PromQL 定义。                   |

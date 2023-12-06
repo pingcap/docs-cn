@@ -24,7 +24,7 @@ tiup mirror sign <manifest-file> [flags]
 
 ## 选项
 
-### -k, --key (string, 默认 ${TIUP_HOME}/keys/private.json)
+### -k, --key (string，默认 ${TIUP_HOME}/keys/private.json)
 
 指定用于签名的私钥位置。
 

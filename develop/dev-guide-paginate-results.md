@@ -12,8 +12,6 @@ aliases: ['/zh/tidb/dev/paginate-results']
 
 在 TiDB 当中，可以利用 `LIMIT` 语句来实现分页功能，常规的分页语句写法如下所示：
 
-{{< copyable "sql" >}}
-
 ```sql
 SELECT * FROM table_a t ORDER BY gmt_modified DESC LIMIT offset, row_count;
 ```
@@ -22,12 +20,10 @@ SELECT * FROM table_a t ORDER BY gmt_modified DESC LIMIT offset, row_count;
 
 除非明确要求不要使用任何排序来随机展示数据，使用分页查询语句时都应该通过 `ORDER BY` 语句指定查询结果的排序方式。
 
-<SimpleTab>
-<div label="SQL" href="page-sql">
+<SimpleTab groupId="language">
+<div label="SQL" value="sql">
 
 例如，在 [Bookshop](/develop/dev-guide-bookshop-schema-design.md) 应用当中，希望将最新书籍列表以分页的形式返回给用户。通过 `LIMIT 0, 10` 语句，便可以得到列表第 1 页的书籍信息，每页中最多有 10 条记录。获取第 2 页信息，则改成可以改成 `LIMIT 10, 10`，如此类推。
-
-{{< copyable "sql" >}}
 
 ```sql
 SELECT *
@@ -37,11 +33,9 @@ LIMIT 0, 10;
 ```
 
 </div>
-<div label="Java" href="page-java">
+<div label="Java" value="java">
 
-在应用程序开发当中，后端程序从前端接收到的参数页码 `page_number` 和每页的数据条数 `page_size`，而不是起始记录数 `offset`，因此在进行数据库查询前需要对其进行一些转换。
-
-{{< copyable "" >}}
+在使用 Java 开发应用程序时，后端程序从前端接收到的参数页码 `page_number` 和每页的数据条数 `page_size`，而不是起始记录数 `offset`，因此在进行数据库查询前需要对其进行一些转换。
 
 ```java
 public List<Book> getLatestBooksPage(Long pageNumber, Long pageSize) throws SQLException {
@@ -81,12 +75,12 @@ public List<Book> getLatestBooksPage(Long pageNumber, Long pageSize) throws SQLE
 
 下面将介绍一种更为高效的分页批处理方案：
 
-<SimpleTab>
-<div label="SQL" href="offset-sql">
+<SimpleTab groupId="language">
+<div label="SQL" value="sql">
+
+使用 SQL 实现分页批处理，可以按照如下步骤进行：
 
 首先将数据按照主键排序，然后调用窗口函数 `row_number()` 为每一行数据生成行号，接着调用聚合函数按照设置好的页面大小对行号进行分组，最终计算出每页的最小值和最大值。
-
-{{< copyable "sql" >}}
 
 ```sql
 SELECT
@@ -123,8 +117,6 @@ ORDER BY page_num;
 
 例如，假如想要删除第 1 页上的所有书籍的基本信息，可以将上表第 1 页所对应的 `start_key` 和 `end_key` 填入 SQL 语句当中。
 
-{{< copyable "sql" >}}
-
 ```sql
 DELETE FROM books
 WHERE
@@ -133,11 +125,9 @@ ORDER BY id;
 ```
 
 </div>
-<div label="Java" href="offset-java">
+<div label="Java" value="java">
 
 在 Java 语言当中，可以定义一个 `PageMeta` 类来存储分页元信息。
-
-{{< copyable "" >}}
 
 ```java
 public class PageMeta<K> {
@@ -152,8 +142,6 @@ public class PageMeta<K> {
 ```
 
 定义一个 `getPageMetaList()` 方法获取到分页元信息列表，然后定义一个可以根据页面元信息批量删除数据的方法 `deleteBooksByPageMeta()`。
-
-{{< copyable "" >}}
 
 ```java
 public class BookDAO {
@@ -199,8 +187,6 @@ public class BookDAO {
 
 如果想要删除第 1 页的数据，可以这样写：
 
-{{< copyable "" >}}
-
 ```java
 List<PageMeta<Long>> pageMetaList = bookDAO.getPageMetaList();
 if (pageMetaList.size() > 0) {
@@ -209,8 +195,6 @@ if (pageMetaList.size() > 0) {
 ```
 
 如果希望通过分页分批地删除所有书籍数据，可以这样写：
-
-{{< copyable "" >}}
 
 ```java
 List<PageMeta<Long>> pageMetaList = bookDAO.getPageMetaList();
@@ -239,8 +223,6 @@ pageMetaList.forEach((pageMeta) -> {
 > 你可以通过 `SHOW CREATE TABLE users;` 语句查看表主键是否使用了[聚簇索引](/clustered-indexes.md)。
 
 例如：
-
-{{< copyable "sql" >}}
 
 ```sql
 SELECT
@@ -286,8 +268,6 @@ ORDER BY page_num;
 
 先可以通过下面的 SQL 语句来在制造元信息表。因为组成 key 的 `book_id` 列和 `user_id` 列都是 `bigint` 类型，转换为字符串是并不是等宽的，因此需要根据 `bigint` 类型的最大位数 19，使用 `LPAD` 函数在长度不够时用 `0` 补齐。
 
-{{< copyable "sql" >}}
-
 ```sql
 SELECT
     floor((t1.row_num - 1) / 10000) + 1 AS page_num,
@@ -303,6 +283,10 @@ FROM (
 GROUP BY page_num
 ORDER BY page_num;
 ```
+
+> **注意：**
+>
+> 该 SQL 会以全表扫描 (TableFullScan) 方式执行，当数据量较大时，查询速度会变慢，此时可以[使用 TiFlash](/tiflash/tiflash-overview.md#使用-tiflash) 进行加速。
 
 查询结果如下：
 
@@ -324,12 +308,15 @@ ORDER BY page_num;
 
 假如想要删除第 1 页上的所有评分记录，可以将上表第 1 页所对应的 `start_key` 和 `end_key` 填入 SQL 语句当中。
 
-{{< copyable "sql" >}}
-
 ```sql
 SELECT * FROM ratings
 WHERE
-    (book_id, user_id) >= (268996, 92104804)
-    AND (book_id, user_id) <= (140982742, 374645100)
+    (book_id > 268996 AND book_id < 140982742)
+    OR (
+        book_id = 268996 AND user_id >= 92104804
+    )
+    OR (
+        book_id = 140982742 AND user_id <= 374645100
+    )
 ORDER BY book_id, user_id;
 ```

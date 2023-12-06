@@ -22,6 +22,6 @@ zone=dc-1
 
 [Stale Read](/stale-read.md) 为用户提供了一种读取历史数据的一种机制。使用 Stale Read 功能，你能从指定时间点或时间范围内读取对应的历史数据，从而避免数据同步带来延迟。在部分跨数据中心部署的场景中使用 Stale Read 功能，通过牺牲一定的实时性，TiDB 可就近访问对应数据所在当前中心的副本，避免跨数据中心的网络延迟，降低整体查询的访问延迟。
 
-当 TiDB 收到 Stale Read 查询时，假如对应的 TiDB 配置了 `zone` 标签，就会将请求发送到对应数据副本所在 TiKV 拥有相同的 `zone` 标签的节点上。
+当 TiDB 收到 Stale Read 查询时，假如对应的 TiDB 配置了 `zone` 标签，而且 [`tidb_replica_read`](/system-variables.md#tidb_replica_read-从-v40-版本开始引入) 为 `closest-replicas`，就会将请求发送到对应数据副本所在 TiKV 拥有相同的 `zone` 标签的节点上。
 
 如何使用 Stale Read 查询，参考[使用 AS OF TIMESTAMP 语法读取历史数据](/as-of-timestamp.md)。

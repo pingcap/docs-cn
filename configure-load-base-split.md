@@ -23,15 +23,21 @@ Load Base Split 是 TiKV 在 4.0 版本引入的特性，旨在解决 Region 访
 
 ## 实现原理
 
-Load Base Split 会基于统计信息自动拆分 Region。通过统计去识别出那些读流量在 10s 内持续超过阈值的 Region，并在合适的位置将这些 Region 拆分。在选择拆分的位置时，会尽可能平衡拆分后两个 Region 的访问量，并尽量避免跨 Region 的访问。
+Load Base Split 会基于统计信息自动拆分 Region。通过统计信息识别出读流量或 CPU 使用率在 10s 内持续超过阈值的 Region，并在合适的位置将这些 Region 拆分。在选择拆分的位置时，会尽可能平衡拆分后两个 Region 的访问量，并尽量避免跨 Region 的访问。
 
-Load Base Split 后的 Region 不会被迅速 Merge。一方面，PD 的 `MergeChecker` 会跳过 hot Region ，另一方面 PD 也会针对心跳信息中的 `QPS`去进行判断，避免 Merge 两个 `QPS` 很高的 Region。
+Load Base Split 后的 Region 不会被迅速 Merge。一方面，PD 的 `MergeChecker` 会跳过 hot Region，另一方面 PD 也会针对心跳信息中的 `QPS`去进行判断，避免 Merge 两个 `QPS` 很高的 Region。
 
 ## 使用方法
 
-目前的 Load Base Split 的控制参数为 `split.qps-threshold`（QPS 阈值）和 `split.byte-threshold`（流量阈值）。如果连续 10s 内，某个 Region 每秒的各类读请求之和都超过 QPS 阈值或流量阈值，那么就对此 Region 进行拆分。
+目前的 Load Base Split 的控制参数如下：
 
-目前默认开启 Load Base Split，但配置相对保守，`split.qps-threshold` 默认为 `3000`，`split.byte-threshold` 默认为 30MB/s。如果想要关闭这个功能，将这两个阈值全部都调到足够高即可。
+- [`split.qps-threshold`](/tikv-configuration-file.md#qps-threshold)：表明一个 Region 被识别为热点的 QPS 阈值。当 [`region-split-size`](/tikv-configuration-file.md#region-split-size) 小于 4 GB 时，默认为每秒 `3000` QPS。当 `region-split-size` 大于或等于 4 GB 时，默认值为每秒 `7000` QPS。
+- [`split.byte-threshold`](/tikv-configuration-file.md#byte-threshold-从-v50-版本开始引入)：自 v5.0 引入，表明一个 Region 被识别为热点的流量阈值，单位为 Byte。当 `region-split-size` 小于 4 GB 时，默认值为每秒 `30 MiB` 流量。当 `region-split-size` 大于或等于 4 GB 时，默认值为每秒 `100 MiB` 流量。
+- [`split.region-cpu-overload-threshold-ratio`](/tikv-configuration-file.md#region-cpu-overload-threshold-ratio-从-v620-版本开始引入)：自 v6.2.0 引入，表明一个 Region 被识别为热点的 CPU 使用率（占读线程池 CPU 时间的百分比）阈值。当 `region-split-size` 小于 4 GB 时，默认值为 `0.25`。当 `region-split-size` 大于或等于 4 GB 时，默认值为 `0.75`。
+
+如果连续 10s 内，某个 Region 每秒的各类读请求之和超过了 `split.qps-threshold`、流量超过了 `split.byte-threshold`，或 CPU 使用率在 Unified Read Pool 内的占比超过了 `split.region-cpu-overload-threshold-ratio`，那么就会尝试对此 Region 进行拆分。
+
+目前默认开启 Load Base Split，但配置相对保守。如果想要关闭这个功能，将 QPS 和 Byte 阈值全部调到足够高并将 CPU 占比阈值调为 0 即可。
 
 目前有两种办法修改配置：
 
@@ -40,7 +46,12 @@ Load Base Split 后的 Region 不会被迅速 Merge。一方面，PD 的 `MergeC
     {{< copyable "sql" >}}
 
     ```sql
-    set config tikv split.qps-threshold=3000
+    # 设置 QPS 阈值为 1500
+    SET config tikv split.qps-threshold=1500;
+    # 设置 Byte 阈值为 15 MiB (15 * 1024 * 1024)
+    SET config tikv split.byte-threshold=15728640;
+    # 设置 CPU 使用率阈值为 50%
+    SET config tikv split.region-cpu-overload-threshold-ratio=0.5;
     ```
 
 - 通过 TiKV 修改，例如：
@@ -48,7 +59,9 @@ Load Base Split 后的 Region 不会被迅速 Merge。一方面，PD 的 `MergeC
     {{< copyable "shell-regular" >}}
 
     ```shell
-    curl -X POST "http://ip:status_port/config" -H "accept: application/json" -d '{"split.qps-threshold":"3000"}'
+    curl -X POST "http://ip:status_port/config" -H "accept: application/json" -d '{"split.qps-threshold":"1500"}'
+    curl -X POST "http://ip:status_port/config" -H "accept: application/json" -d '{"split.byte-threshold":"15728640"}'
+    curl -X POST "http://ip:status_port/config" -H "accept: application/json" -d '{"split.region-cpu-overload-threshold-ratio":"0.5"}'
     ```
 
 同理，目前也有两种办法查看配置：

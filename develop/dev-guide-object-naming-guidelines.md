@@ -17,7 +17,7 @@ aliases: ['/zh/tidb/dev/object-naming-guidelines']
 
 ## 数据库命名规范
 
-建议按照业务、产品线或者其它指标进行区分，一般不要超过 20 个字符。如：临时库 (tmp_crm)、测试库 (test_crm) 。
+建议按照业务、产品线或者其它指标进行区分，一般不要超过 20 个字符。如：临时库 (tmp_crm)、测试库 (test_crm)。
 
 ## 表命名规范
 

@@ -8,7 +8,7 @@ aliases: ['/zh/tidb/dev/get-data-from-single-table']
 
 # 单表查询
 
-在这个章节当中，将开始介绍如何使用 SQL来对数据库中的数据进行查询。
+在这个章节当中，将开始介绍如何使用 SQL 来对数据库中的数据进行查询。
 
 ## 开始之前
 
@@ -24,12 +24,10 @@ aliases: ['/zh/tidb/dev/get-data-from-single-table']
 
 在 Bookshop 应用程序的数据库当中，`authors` 表存放了作家们的基础信息，可以通过 `SELECT ... FROM ...` 语句将数据从数据库当中调取出去。
 
-<SimpleTab>
-<div label="SQL" href="simple-sql">
+<SimpleTab groupId="language">
+<div label="SQL" value="sql">
 
 在 MySQL Client 等客户端输入并执行如下 SQL 语句：
-
-{{< copyable "sql" >}}
 
 ```sql
 SELECT id, name FROM authors;
@@ -57,7 +55,7 @@ SELECT id, name FROM authors;
 ```
 
 </div>
-<div label="Java" href="simple-java">
+<div label="Java" value="java">
 
 在 Java 语言当中，可以通过声明一个 `Author` 类来定义如何存放作者的基础信息，根据数据的[类型](/data-type-overview.md)和[取值范围](/data-type-numeric.md)从 Java 语言当中选择合适的数据类型来存放对应的数据，例如：
 
@@ -66,8 +64,6 @@ SELECT id, name FROM authors;
 - 使用 `Short` 类型变量存放 `tinyint` 类型的数据。
 - 使用 `String` 类型变量存放 `varchar` 类型的数据。
 - ...
-
-{{< copyable "" >}}
 
 ```java
 public class Author {
@@ -83,12 +79,10 @@ public class Author {
 }
 ```
 
-{{< copyable "" >}}
-
 ```java
 public class AuthorDAO {
 
-    // Omit initialization of instance variables...
+    // Omit initialization of instance variables.
 
     public List<Author> getAuthors() throws SQLException {
         List<Author> authors = new ArrayList<>();
@@ -98,7 +92,7 @@ public class AuthorDAO {
             ResultSet rs = stmt.executeQuery("SELECT id, name FROM authors");
             while (rs.next()) {
                 Author author = new Author();
-                author.setId( rs.getLong("id"));
+                author.setId(rs.getLong("id"));
                 author.setName(rs.getString("name"));
                 authors.add(author);
             }
@@ -121,27 +115,23 @@ public class AuthorDAO {
 
 例如，想要查找众多作家当中找出在 1998 年出生的作家：
 
-<SimpleTab>
-<div label="SQL" href="filter-sql">
+<SimpleTab groupId="language">
+<div label="SQL" value="sql">
 
-可以在 `WHERE` 子句来添加筛选的条件：
-
-{{< copyable "sql" >}}
+在 SQL 中，可以使用 `WHERE` 子句添加筛选的条件：
 
 ```sql
 SELECT * FROM authors WHERE birth_year = 1998;
 ```
 
 </div>
-<div label="Java" href="filter-java">
+<div label="Java" value="java">
 
 对于 Java 程序而言，可以通过同一个 SQL 来处理带有动态参数的数据查询请求。
 
-将参数拼接到 SQL 语句当中也许是一种方法，但是这可能不是一个好的主意，因为这会给应用程序带来潜在的 [SQL 注入](https://zh.wikipedia.org/wiki/SQL%E6%B3%A8%E5%85%A5) 风险。
+将参数拼接到 SQL 语句当中也许是一种方法，但是这可能不是一个好的主意，因为这会给应用程序带来潜在的 [SQL 注入](https://zh.wikipedia.org/wiki/SQL%E6%B3%A8%E5%85%A5)风险。
 
 在处理这类查询时，应该使用 [PreparedStatement](/develop/dev-guide-prepared-statement.md) 来替代普通的 Statement。
-
-{{< copyable "" >}}
 
 ```java
 public List<Author> getAuthorsByBirthYear(Short birthYear) throws SQLException {
@@ -154,7 +144,7 @@ public List<Author> getAuthorsByBirthYear(Short birthYear) throws SQLException {
         ResultSet rs = stmt.executeQuery();
         while (rs.next()) {
             Author author = new Author();
-            author.setId( rs.getLong("id"));
+            author.setId(rs.getLong("id"));
             author.setName(rs.getString("name"));
             authors.add(author);
         }
@@ -170,15 +160,46 @@ public List<Author> getAuthorsByBirthYear(Short birthYear) throws SQLException {
 
 使用 `ORDER BY` 语句可以让查询结果按照期望的方式进行排序。
 
-例如，可以通过下面的 SQL 语句令 `authors` 表的数据根据 `birth_year` 列进行降序（`DESC`）排序，从而得到最年轻的作家列表。
+例如，可以通过下面的 SQL 语句对 `authors` 表的数据按照 `birth_year` 列进行降序 (`DESC`) 排序，从而得到最年轻的作家列表。
 
-{{< copyable "sql" >}}
+<SimpleTab groupId="language">
+<div label="SQL" value="sql">
 
 ```sql
 SELECT id, name, birth_year
 FROM authors
 ORDER BY birth_year DESC;
 ```
+
+</div>
+
+<div label="Java" value="java">
+
+```java
+public List<Author> getAuthorsSortByBirthYear() throws SQLException {
+    List<Author> authors = new ArrayList<>();
+    try (Connection conn = ds.getConnection()) {
+        Statement stmt = conn.createStatement();
+        ResultSet rs = stmt.executeQuery("""
+            SELECT id, name, birth_year
+            FROM authors
+            ORDER BY birth_year DESC;
+            """);
+
+        while (rs.next()) {
+            Author author = new Author();
+            author.setId(rs.getLong("id"));
+            author.setName(rs.getString("name"));
+            author.setBirthYear(rs.getShort("birth_year"));
+            authors.add(author);
+        }
+    }
+    return authors;
+}
+```
+
+</div>
+</SimpleTab>
 
 查询结果如下：
 
@@ -204,7 +225,8 @@ ORDER BY birth_year DESC;
 
 如果希望 TiDB 只返回部分结果，可以使用 `LIMIT` 语句限制查询结果返回的记录数。
 
-{{< copyable "sql" >}}
+<SimpleTab groupId="language">
+<div label="SQL" value="sql">
 
 ```sql
 SELECT id, name, birth_year
@@ -212,6 +234,37 @@ FROM authors
 ORDER BY birth_year DESC
 LIMIT 10;
 ```
+
+</div>
+
+<div label="Java" value="java">
+
+```java
+public List<Author> getAuthorsWithLimit(Integer limit) throws SQLException {
+    List<Author> authors = new ArrayList<>();
+    try (Connection conn = ds.getConnection()) {
+        PreparedStatement stmt = conn.prepareStatement("""
+            SELECT id, name, birth_year
+            FROM authors
+            ORDER BY birth_year DESC
+            LIMIT ?;
+            """);
+        stmt.setInt(1, limit);
+        ResultSet rs = stmt.executeQuery();
+        while (rs.next()) {
+            Author author = new Author();
+            author.setId(rs.getLong("id"));
+            author.setName(rs.getString("name"));
+            author.setBirthYear(rs.getShort("birth_year"));
+            authors.add(author);
+        }
+    }
+    return authors;
+}
+```
+
+</div>
+</SimpleTab>
 
 查询结果如下：
 
@@ -233,7 +286,7 @@ LIMIT 10;
 10 rows in set (0.11 sec)
 ```
 
-通过观察查询结果你会发现，在使用 `LIMIT` 语句之后，查询的时间明显缩短，这是 TiDB 对 LIMIT 子句进行优化后的结果，你可以通过[TopN 和 Limit 下推](/topn-limit-push-down.md)章节了解更多细节。
+通过观察查询结果你会发现，在使用 `LIMIT` 语句之后，查询的时间明显缩短，这是 TiDB 对 `LIMIT` 子句进行优化后的结果，你可以通过 [TopN 和 Limit 下推](/topn-limit-push-down.md)章节了解更多细节。
 
 ## 聚合查询
 
@@ -241,7 +294,8 @@ LIMIT 10;
 
 比如说，你希望知道哪些年出生的作家比较多，你可以将作家基本信息按照 `birth_year` 列进行分组，然后分别统计在当年出生的作家数量：
 
-{{< copyable "sql" >}}
+<SimpleTab groupId="language">
+<div label="SQL" value="sql">
 
 ```sql
 SELECT birth_year, COUNT(DISTINCT id) AS author_count
@@ -249,6 +303,45 @@ FROM authors
 GROUP BY birth_year
 ORDER BY author_count DESC;
 ```
+
+</div>
+
+<div label="Java" value="java">
+
+```java
+public class AuthorCount {
+    private Short birthYear;
+    private Integer authorCount;
+
+    public AuthorCount() {}
+
+     // Skip the getters and setters.
+}
+
+public List<AuthorCount> getAuthorCountsByBirthYear() throws SQLException {
+    List<AuthorCount> authorCounts = new ArrayList<>();
+    try (Connection conn = ds.getConnection()) {
+        Statement stmt = conn.createStatement();
+        ResultSet rs = stmt.executeQuery("""
+            SELECT birth_year, COUNT(DISTINCT id) AS author_count
+            FROM authors
+            GROUP BY birth_year
+            ORDER BY author_count DESC;
+            """);
+
+        while (rs.next()) {
+            AuthorCount authorCount = new AuthorCount();
+            authorCount.setBirthYear(rs.getShort("birth_year"));
+            authorCount.setAuthorCount(rs.getInt("author_count"));
+            authorCounts.add(authorCount);
+        }
+    }
+    return authorCount;
+}
+```
+
+</div>
+</SimpleTab>
 
 查询结果如下：
 
@@ -271,4 +364,4 @@ ORDER BY author_count DESC;
 71 rows in set (0.00 sec)
 ```
 
-除了 `COUNT` 函数外，TiDB 还支持了许多实用的聚合函数，你可以通过浏览[GROUP BY 聚合函数](/functions-and-operators/aggregate-group-by-functions.md)章节进行进一步了解。
+除了 `COUNT` 函数外，TiDB 还支持了其他聚合函数。详情请参考 [GROUP BY 聚合函数](/functions-and-operators/aggregate-group-by-functions.md)。

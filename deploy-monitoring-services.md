@@ -28,7 +28,7 @@ aliases: ['/docs-cn/dev/deploy-monitoring-services/','/docs-cn/dev/monitor-a-tid
 
 ```bash
 wget https://download.pingcap.org/prometheus-2.27.1.linux-amd64.tar.gz
-wget https://download.pingcap.org/node_exporter-0.17.0.linux-amd64.tar.gz
+wget https://download.pingcap.org/node_exporter-v1.3.1-linux-amd64.tar.gz
 wget https://download.pingcap.org/grafana-7.5.11.linux-amd64.tar.gz
 ```
 
@@ -38,7 +38,7 @@ wget https://download.pingcap.org/grafana-7.5.11.linux-amd64.tar.gz
 
 ```bash
 tar -xzf prometheus-2.27.1.linux-amd64.tar.gz
-tar -xzf node_exporter-0.17.0.linux-amd64.tar.gz
+tar -xzf node_exporter-v1.3.1-linux-amd64.tar.gz
 tar -xzf grafana-7.5.11.linux-amd64.tar.gz
 ```
 
@@ -47,7 +47,7 @@ tar -xzf grafana-7.5.11.linux-amd64.tar.gz
 {{< copyable "shell-regular" >}}
 
 ```bash
-cd node_exporter-0.17.0.linux-amd64
+cd node_exporter-v1.3.1-linux-amd64
 ```
 
 启动 node_exporter 服务：
@@ -231,7 +231,7 @@ url = https://grafana.net
 
 2. 在侧边栏菜单中，依次点击 **Dashboards** > **Import** 打开 **Import Dashboard** 窗口。
 
-3. 点击 **Upload .json File** 上传对应的 JSON 文件（从 [pingcap/tidb](https://github.com/pingcap/tidb/tree/master/metrics/grafana)、[tikv/tikv](https://github.com/tikv/tikv/tree/master/metrics/grafana) 和 [tikv/pd](https://github.com/tikv/pd/tree/master/metrics/grafana) 下载 TiDB Grafana 配置文件）。
+3. 点击 **Upload .json File** 上传对应的 JSON 文件（从 [pingcap/tidb](https://github.com/pingcap/tidb/tree/master/pkg/metrics/grafana)、[tikv/tikv](https://github.com/tikv/tikv/tree/master/metrics/grafana) 和 [tikv/pd](https://github.com/tikv/pd/tree/master/metrics/grafana) 下载 TiDB Grafana 配置文件）。
 
     > **注意：**
     >

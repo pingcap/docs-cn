@@ -167,15 +167,29 @@ SELECT * FROM users;
 
 > **注意：**
 >
-> 往缓存表写入数据时，有可能出现秒级别的写入延迟。延迟的时长由全局环境变量 [`tidb_table_cache_lease`](/system-variables.md#tidb_table_cache_lease从-v600-版本开始引入) 控制。你可根据实际业务能否承受此限制带来的延迟，决定是否适合使用缓存表功能。例如，对于完全只读的场景，可以将 `tidb_table_cache_lease` 调大：
->
-> {{< copyable "sql" >}}
+> 往缓存表写入数据时，有可能出现秒级别的写入延迟。延迟的时长由全局环境变量 [`tidb_table_cache_lease`](/system-variables.md#tidb_table_cache_lease-从-v600-版本开始引入) 控制。你可根据实际业务能否承受此限制带来的延迟，决定是否适合使用缓存表功能。例如，对于完全只读的场景，可以将 `tidb_table_cache_lease` 调大：
 >
 > ```sql
 > set @@global.tidb_table_cache_lease = 10;
 > ```
 >
 > 缓存表的写入延时高是受到实现的限制。存在多个 TiDB 实例时，一个 TiDB 实例并不知道其它的 TiDB 实例是否缓存了数据，如果该实例直接修改了表数据，而其它 TiDB 实例依然读取旧的缓存数据，就会读到错误的结果。为了保证数据正确性，缓存表的实现使用了一套基于 lease 的复杂机制：读操作在缓存数据同时，还会对于缓存设置一个有效期，也就是 lease。在 lease 过期之前，无法对数据执行修改操作。因为修改操作必须等待 lease 过期，所以会出现写入延迟。
+
+缓存表相关的元信息存储在 `mysql.table_cache_meta` 表中。这张表记录了所有缓存表的 ID、当前的锁状态 `lock_type`，以及锁租约 `lease` 相关的信息。这张表仅供 TiDB 内部使用，不建议用户修改该表，否则可能导致不可预期的错误。
+
+```sql
+SHOW CREATE TABLE mysql.table_cache_meta\G
+*************************** 1. row ***************************
+       Table: table_cache_meta
+Create Table: CREATE TABLE `table_cache_meta` (
+  `tid` bigint(11) NOT NULL DEFAULT '0',
+  `lock_type` enum('NONE','READ','INTEND','WRITE') NOT NULL DEFAULT 'NONE',
+  `lease` bigint(20) NOT NULL DEFAULT '0',
+  `oldReadLease` bigint(20) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`tid`) /*T![clustered_index] CLUSTERED */
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin
+1 row in set (0.00 sec)
+```
 
 ### 将缓存表恢复为普通表
 

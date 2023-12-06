@@ -47,7 +47,7 @@ sudo yum install -y mariadb-server
 {{< copyable "shell-regular" >}}
 
 ```bash
-curl -LO https://download.pingcap.org/tidb-community-server-v6.1.0-linux-amd64.tar.gz | tar xzf - &&
+curl -LO https://download.pingcap.org/tidb-community-server-v7.5.0-linux-amd64.tar.gz | tar xzf - &&
 cd tidb-latest-linux-amd64
 ```
 
@@ -215,7 +215,7 @@ TiKV Min Version: 2.1.0-alpha.1-ff3dd160846b7d1aed9079c389fc188f7f5ea13e
 Check Table Before Drop: false
 ```
 
-连接后TiDB 集群已开始运行，`pump` 读取集群中的 binlog 数据，并在其数据目录中将 binlog 数据存储为 relay log。下一步是启动一个可供 `drainer` 写入的 MariaDB Server。
+连接后 TiDB 集群已开始运行，`pump` 读取集群中的 binlog 数据，并在其数据目录中将 binlog 数据存储为 relay log。下一步是启动一个可供 `drainer` 写入的 MariaDB Server。
 
 1. 启动 `drainer`：
 

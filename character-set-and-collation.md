@@ -23,18 +23,31 @@ SELECT 'A' = 'a';
 ```
 
 ```sql
-mysql> SELECT 'A' = 'a';
+SELECT 'A' = 'a';
+```
+
+```sql
 +-----------+
 | 'A' = 'a' |
 +-----------+
 |         0 |
 +-----------+
 1 row in set (0.00 sec)
+```
 
-mysql> SET NAMES utf8mb4 COLLATE utf8mb4_general_ci;
+```sql
+SET NAMES utf8mb4 COLLATE utf8mb4_general_ci;
+```
+
+```sql
 Query OK, 0 rows affected (0.00 sec)
+```
 
-mysql> SELECT 'A' = 'a';
+```sql
+SELECT 'A' = 'a';
+```
+
+```sql
 +-----------+
 | 'A' = 'a' |
 +-----------+
@@ -72,27 +85,39 @@ SHOW CHARACTER SET;
 TiDB 支持以下排序规则：
 
 ```sql
-mysql> show collation;
-+-------------+---------+------+---------+----------+---------+
-| Collation   | Charset | Id   | Default | Compiled | Sortlen |
-+-------------+---------+------+---------+----------+---------+
-| utf8mb4_bin | utf8mb4 |   46 | Yes     | Yes      |       1 |
-| latin1_bin  | latin1  |   47 | Yes     | Yes      |       1 |
-| binary      | binary  |   63 | Yes     | Yes      |       1 |
-| ascii_bin   | ascii   |   65 | Yes     | Yes      |       1 |
-| utf8_bin    | utf8    |   83 | Yes     | Yes      |       1 |
-| gbk_bin     | gbk     |   87 | Yes     | Yes      |       1 |
-+-------------+---------+------+---------+----------+---------+
-6 rows in set (0.00 sec)
+SHOW COLLATION;
+```
+
+```sql
++--------------------+---------+------+---------+----------+---------+
+| Collation          | Charset | Id   | Default | Compiled | Sortlen |
++--------------------+---------+------+---------+----------+---------+
+| ascii_bin          | ascii   |   65 | Yes     | Yes      |       1 |
+| binary             | binary  |   63 | Yes     | Yes      |       1 |
+| gbk_bin            | gbk     |   87 |         | Yes      |       1 |
+| gbk_chinese_ci     | gbk     |   28 | Yes     | Yes      |       1 |
+| latin1_bin         | latin1  |   47 | Yes     | Yes      |       1 |
+| utf8_bin           | utf8    |   83 | Yes     | Yes      |       1 |
+| utf8_general_ci    | utf8    |   33 |         | Yes      |       1 |
+| utf8_unicode_ci    | utf8    |  192 |         | Yes      |       1 |
+| utf8mb4_0900_ai_ci | utf8mb4 |  255 |         | Yes      |       1 |
+| utf8mb4_0900_bin   | utf8mb4 |  309 |         | Yes      |       1 |
+| utf8mb4_bin        | utf8mb4 |   46 | Yes     | Yes      |       1 |
+| utf8mb4_general_ci | utf8mb4 |   45 |         | Yes      |       1 |
+| utf8mb4_unicode_ci | utf8mb4 |  224 |         | Yes      |       1 |
++--------------------+---------+------+---------+----------+---------+
+13 rows in set (0.00 sec)
 ```
 
 > **警告：**
 >
 > TiDB 会错误地将 `latin1` 视为 `utf8` 的子集。当用户存储不同于 `latin1` 和 `utf8` 编码的字符时，可能会导致意外情况出现。因此强烈建议使用 `utf8mb4` 字符集。详情参阅 [TiDB #18955](https://github.com/pingcap/tidb/issues/18955)。
+>
+> 如果查询条件中包含对字符串前缀的 `LIKE` 过滤， 比如 `LIKE 'prefix%'`，并且该列被设置为非二进制排序规则（即排序规则的后缀不是以 `_bin` 结尾），那么 TiDB 优化器暂时无法把这个过滤条件转化为范围扫描 (Range Scan)，而是用全量扫描代替。因此这类 SQL 有可能造成超出预期的资源消耗。
 
 > **注意：**
 >
-> TiDB 中的默认排序规则（后缀为 `_bin` 的二进制排序规则）与 [MySQL 中的默认排序规则](https://dev.mysql.com/doc/refman/8.0/en/charset-charsets.html)不同，后者通常是一般排序规则，后缀为 `_general_ci`。当用户指定了显式字符集，但依赖于待选的隐式默认排序规则时，这个差异可能导致兼容性问题。
+> TiDB 中的默认排序规则（后缀为 `_bin` 的二进制排序规则）与 [MySQL 中的默认排序规则](https://dev.mysql.com/doc/refman/8.0/en/charset-charsets.html)不同，后者通常是一般排序规则，后缀为 `_general_ci` 或 `_ai_ci`。当用户指定了显式字符集，但依赖于待选的隐式默认排序规则时，这个差异可能导致兼容性问题。
 
 利用以下的语句可以查看字符集对应的排序规则（以下是[新的排序规则框架](#新框架下的排序规则支持)）下的结果：
 
@@ -106,11 +131,13 @@ SHOW COLLATION WHERE Charset = 'utf8mb4';
 +--------------------+---------+------+---------+----------+---------+
 | Collation          | Charset | Id   | Default | Compiled | Sortlen |
 +--------------------+---------+------+---------+----------+---------+
+| utf8mb4_0900_ai_ci | utf8mb4 |  255 |         | Yes      |       1 |
+| utf8mb4_0900_bin   | utf8mb4 |  309 |         | Yes      |       1 |
 | utf8mb4_bin        | utf8mb4 |   46 | Yes     | Yes      |       1 |
 | utf8mb4_general_ci | utf8mb4 |   45 |         | Yes      |       1 |
 | utf8mb4_unicode_ci | utf8mb4 |  224 |         | Yes      |       1 |
 +--------------------+---------+------+---------+----------+---------+
-3 rows in set (0.00 sec)
+5 rows in set (0.00 sec)
 ```
 
 TiDB 对 GBK 字符集的支持详情见 [GBK](/character-set-gbk.md)。
@@ -119,30 +146,59 @@ TiDB 对 GBK 字符集的支持详情见 [GBK](/character-set-gbk.md)。
 
 MySQL 限制字符集 `utf8` 为最多 3 个字节。这足以存储在基本多语言平面 (BMP) 中的字符，但不足以存储表情符号 (emoji) 等字符。因此，建议改用字符集`utf8mb4`。
 
-默认情况下，TiDB 同样限制字符集 `utf8` 为最多 3 个字节，以确保 TiDB 中创建的数据可以在 MySQL 中顺利恢复。你可以禁用此功能，方法是在 TiDB 配置文件中将 `check-mb4-value-in-utf8` 的值更改为 `FALSE`。
+默认情况下，TiDB 同样限制字符集 `utf8` 为最多 3 个字节，以确保 TiDB 中创建的数据可以在 MySQL 中顺利恢复。你可以禁用此功能，方法是将系统变量 [`tidb_check_mb4_value_in_utf8`](/system-variables.md#tidb_check_mb4_value_in_utf8) 的值更改为 `OFF`。
 
 以下示例演示了在表中插入 4 字节的表情符号字符（emoji 字符）时的默认行为。`utf8` 字符集下 `INSERT` 语句不能执行，`utf8mb4` 字符集下可以执行 `INSERT` 语句：
 
 ```sql
-mysql> CREATE TABLE utf8_test (
-    ->  c char(1) NOT NULL
-    -> ) CHARACTER SET utf8;
-Query OK, 0 rows affected (0.09 sec)
+CREATE TABLE utf8_test (
+     c char(1) NOT NULL
+    ) CHARACTER SET utf8;
+```
 
-mysql> CREATE TABLE utf8m4_test (
-    ->  c char(1) NOT NULL
-    -> ) CHARACTER SET utf8mb4;
+```sql
 Query OK, 0 rows affected (0.09 sec)
+```
 
-mysql> INSERT INTO utf8_test VALUES ('😉');
+```sql
+CREATE TABLE utf8m4_test (
+     c char(1) NOT NULL
+    ) CHARACTER SET utf8mb4;
+```
+
+```sql
+Query OK, 0 rows affected (0.09 sec)
+```
+
+```sql
+INSERT INTO utf8_test VALUES ('😉');
+```
+
+```sql
 ERROR 1366 (HY000): incorrect utf8 value f09f9889(😉) for column c
-mysql> INSERT INTO utf8m4_test VALUES ('😉');
+```
+
+```sql
+INSERT INTO utf8m4_test VALUES ('😉');
+```
+
+```sql
 Query OK, 1 row affected (0.02 sec)
+```
 
-mysql> SELECT char_length(c), length(c), c FROM utf8_test;
+```sql
+SELECT char_length(c), length(c), c FROM utf8_test;
+```
+
+```sql
 Empty set (0.01 sec)
+```
 
-mysql> SELECT char_length(c), length(c), c FROM utf8m4_test;
+```sql
+SELECT char_length(c), length(c), c FROM utf8m4_test;
+```
+
+```sql
 +----------------+-----------+------+
 | char_length(c) | length(c) | c    |
 +----------------+-----------+------+
@@ -280,7 +336,7 @@ CREATE TABLE t1(a int) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
 Query OK, 0 rows affected (0.08 sec)
 ```
 
-如果表的字符集和排序规则没有设置，那么数据库的字符集和排序规则就作为其默认值。
+如果表的字符集和排序规则没有设置，那么数据库的字符集和排序规则就作为其默认值。在仅指定字符集为 `utf8mb4`，但未设置排序规则时，排序规则为变量 [`default_collation_for_utf8mb4`](/system-variables.md#default_collation_for_utf8mb4-从-v740-版本开始引入) 指定的值。
 
 ### 列的字符集和排序规则
 
@@ -296,7 +352,7 @@ col_name {ENUM | SET} (val_list)
     [COLLATE collation_name]
 ```
 
-如果列的字符集和排序规则没有设置，那么表的字符集和排序规则就作为其默认值。
+如果列的字符集和排序规则没有设置，那么表的字符集和排序规则就作为其默认值。在仅指定字符集为 `utf8mb4`，但未设置排序规则时，排序规则为变量 [`default_collation_for_utf8mb4`](/system-variables.md#default_collation_for_utf8mb4-从-v740-版本开始引入) 指定的值。
 
 ### 字符串的字符集和排序规则
 
@@ -398,18 +454,49 @@ SELECT _utf8mb4'string' COLLATE utf8mb4_general_ci;
 
 ```sql
 CREATE TABLE t(a varchar(20) charset utf8mb4 collate utf8mb4_general_ci PRIMARY KEY);
-Query OK, 0 rows affected
-INSERT INTO t VALUES ('A');
-Query OK, 1 row affected
-INSERT INTO t VALUES ('a');
-Query OK, 1 row affected # TiDB 会执行成功，而在 MySQL 中，则由于 utf8mb4_general_ci 大小写不敏感，报错 Duplicate entry 'a'。
-INSERT INTO t VALUES ('a ');
-Query OK, 1 row affected # TiDB 会执行成功，而在 MySQL 中，则由于补齐空格比较，报错 Duplicate entry 'a '。
 ```
+
+```sql
+Query OK, 0 rows affected
+```
+
+```sql
+INSERT INTO t VALUES ('A');
+```
+
+```sql
+Query OK, 1 row affected
+```
+
+```sql
+INSERT INTO t VALUES ('a');
+```
+
+```sql
+Query OK, 1 row affected
+```
+
+以上语句，在 TiDB 会执行成功，而在 MySQL 中，由于 `utf8mb4_general_ci` 大小写不敏感，报错 `Duplicate entry 'a'`。
+
+```sql
+INSERT INTO t VALUES ('a ');
+```
+
+```sql
+Query OK, 1 row affected
+```
+
+以上语句，在 TiDB 会执行成功，而在 MySQL 中，由于补齐空格比较，报错 `Duplicate entry 'a '`。
 
 ### 新框架下的排序规则支持
 
-TiDB 4.0 新增了完整的排序规则支持框架，从语义上支持了排序规则，并新增了配置开关 `new_collations_enabled_on_first_bootstrap`，在集群初次初始化时决定是否启用新排序规则框架。如需启用新排序规则框架，可将 `new_collations_enabled_on_first_bootstrap` 的值设为 `true`，详情参见 [`new_collations_enabled_on_first_bootstrap`](/tidb-configuration-file.md#new_collations_enabled_on_first_bootstrap)。要在该配置开关打开之后初始化集群，可以通过 `mysql`.`tidb` 表中的 `new_collation_enabled` 变量确认是否启用了新排序规则框架：
+TiDB 4.0 新增了完整的排序规则支持框架，从语义上支持了排序规则，并新增了配置开关 `new_collations_enabled_on_first_bootstrap`，在集群初次初始化时决定是否启用新排序规则框架。如需启用新排序规则框架，可将 `new_collations_enabled_on_first_bootstrap` 的值设为 `true`，详情参见 [`new_collations_enabled_on_first_bootstrap`](/tidb-configuration-file.md#new_collations_enabled_on_first_bootstrap)。
+
+对于一个已经初始化完成的 TiDB 集群，可以通过 `mysql.tidb` 表中的 `new_collation_enabled` 变量确认是否启用了新排序规则框架。
+
+> **注意：**
+>
+> 当 `mysql.tidb` 表查询结果和 `new_collations_enabled_on_first_bootstrap` 的值不同时，以 `mysql.tidb` 表的结果为准。
 
 {{< copyable "sql" >}}
 
@@ -426,22 +513,47 @@ SELECT VARIABLE_VALUE FROM mysql.tidb WHERE VARIABLE_NAME='new_collation_enabled
 1 row in set (0.00 sec)
 ```
 
-在新的排序规则框架下，TiDB 能够支持 `utf8_general_ci`、`utf8mb4_general_ci`、`utf8_unicode_ci`、`utf8mb4_unicode_ci`、`gbk_chinese_ci` 和 `gbk_bin` 这几种排序规则，与 MySQL 兼容。
+在新的排序规则框架下，TiDB 能够支持 `utf8_general_ci`、`utf8mb4_general_ci`、`utf8_unicode_ci`、`utf8mb4_unicode_ci`、`utf8mb4_0900_bin`、`utf8mb4_0900_ai_ci`、`gbk_chinese_ci` 和 `gbk_bin` 这几种排序规则，与 MySQL 兼容。
 
-使用 `utf8_general_ci`、`utf8mb4_general_ci`、`utf8_unicode_ci` 、 `utf8mb4_unicode_ci` 和 `gbk_chinese_ci` 中任一种时，字符串之间的比较是大小写不敏感 (case-insensitive) 和口音不敏感 (accent-insensitive) 的。同时，TiDB 还修正了排序规则的 `PADDING` 行为：
+使用 `utf8_general_ci`、`utf8mb4_general_ci`、`utf8_unicode_ci`、`utf8mb4_unicode_ci`、`utf8mb4_0900_ai_ci` 和 `gbk_chinese_ci` 中任一种时，字符串之间的比较是大小写不敏感 (case-insensitive) 和口音不敏感 (accent-insensitive) 的。同时，TiDB 还修正了排序规则的 `PADDING` 行为：
 
 {{< copyable "sql" >}}
 
 ```sql
 CREATE TABLE t(a varchar(20) charset utf8mb4 collate utf8mb4_general_ci PRIMARY KEY);
-Query OK, 0 rows affected (0.00 sec)
-INSERT INTO t VALUES ('A');
-Query OK, 1 row affected (0.00 sec)
-INSERT INTO t VALUES ('a');
-ERROR 1062 (23000): Duplicate entry 'a' for key 'PRIMARY' # TiDB 兼容了 MySQL 的 case insensitive collation。
-INSERT INTO t VALUES ('a ');
-ERROR 1062 (23000): Duplicate entry 'a ' for key 'PRIMARY' # TiDB 修正了 `PADDING` 行为，与 MySQL 兼容。
 ```
+
+```sql
+Query OK, 0 rows affected (0.00 sec)
+```
+
+```sql
+INSERT INTO t VALUES ('A');
+```
+
+```sql
+Query OK, 1 row affected (0.00 sec)
+```
+
+```sql
+INSERT INTO t VALUES ('a');
+```
+
+```sql
+ERROR 1062 (23000): Duplicate entry 'a' for key 't.PRIMARY'
+```
+
+TiDB 兼容了 MySQL 的 case insensitive collation。
+
+```sql
+INSERT INTO t VALUES ('a ');
+```
+
+```sql
+ERROR 1062 (23000): Duplicate entry 'a ' for key 't.PRIMARY'
+```
+
+TiDB 修正了 `PADDING` 行为，与 MySQL 兼容。
 
 > **注意：**
 >
@@ -487,4 +599,4 @@ SELECT 'a' = _utf8mb4 'A' collate utf8mb4_general_ci;
 1 row in set (0.00 sec)
 ```
 
-更多细节，参考 [Connection Character Sets and Collations](https://dev.mysql.com/doc/refman/5.7/en/charset-connection.html)。
+更多细节，参考 [Connection Character Sets and Collations](https://dev.mysql.com/doc/refman/8.0/en/charset-connection.html)。

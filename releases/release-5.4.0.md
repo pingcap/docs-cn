@@ -122,12 +122,12 @@ TiDB 版本：5.4.0
 
     - 支持将更多函数下推至 MPP 引擎
         - 字符串函数：`LPAD()`、`RPAD()`、`STRCMP()`
-        - 日期时间函数：`ADDDATE()`、`DATE_ADD()`、`DATE_SUB()`、`SUBDATE()`、`QUARTER()`
+        - 日期时间函数：`ADDDATE(string, real)`、`DATE_ADD(string, real)`、`DATE_SUB(string, real)`、`SUBDATE(string, real)`、`QUARTER()`
     - 引入可扩缩容弹性线程池，提升资源利用率（实验特性）
     - 提升从 TiKV 同步数据时，由行存格式到列存格式的数据转换效率，整体的数据同步性能提升 50%
     - 调整一些配置项的默认值，提升 TiFlash 的性能和稳定性。HTAP 混合负载下，单表简单查询的性能最高提升 20%
 
-    用户文档：[TiFlash 支持的计算下推](/tiflash/use-tiflash.md#tiflash-支持的计算下推)，[TiFlash 配置文件](/tiflash/tiflash-configuration.md#配置文件-tiflashtoml)
+    用户文档：[TiFlash 支持的计算下推](/tiflash/tiflash-supported-pushdown-calculations.md)，[TiFlash 配置文件](/tiflash/tiflash-configuration.md#配置文件-tiflashtoml)
 
 - **通过 session 变量实现有界限过期数据读取**
 
@@ -214,7 +214,7 @@ TiDB 版本：5.4.0
 
     Backup & Restore (BR) 支持 Azure Blob Storage 作为备份的远端目标存储。在 Azure Cloud 环境部署 TiDB 的用户，可以支持使用该功能将集群数据备份到 Azure Blob Storage 服务中。
 
-    [用户文档](/br/backup-storage-azblob.md)
+    [用户文档](/br/backup-and-restore-storages.md)
 
 ### 数据迁移
 
@@ -236,7 +236,7 @@ TiDB 版本：5.4.0
 
     [用户文档](/tidb-lightning/tidb-lightning-error-resolution.md)
 
-- **在 TiDB Data Migration (DM) 中 优化 relay log 的使用方式**
+- **在 TiDB Data Migration (DM) 中优化 relay log 的使用方式**
 
     - 恢复 `source` 配置中 `enable-relay` 开关。
     - 增加通过 `start-relay` 和 `stop-relay` 命令动态开启和关闭 relay log 的功能。

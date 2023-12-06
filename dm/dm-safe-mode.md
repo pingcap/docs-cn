@@ -7,7 +7,7 @@ summary: 介绍 DM safe mode 作用和原理
 
 安全模式 (safe mode) 是 DM 在进行增量同步时候的一种运行模式，在安全模式中，DM 增量同步组件在同步 binlog event 时，将把所有 `INSERT` 和 `UPDATE` 操作强制进行改写后再在下游执行。
 
-安全模式的目的是在增量同步过程中，同一条 binlog event 能够在下游被重复同步且保证幂等性，从而确保增量同步能够“安全”进行。 
+安全模式的目的是在增量同步过程中，同一条 binlog event 能够在下游被重复同步且保证幂等性，从而确保增量同步能够“安全”进行。
 
 DM 从 checkpoint 恢复数据同步任务后，可能重复执行某些 binlog 事件而导致下述问题：
 
@@ -24,24 +24,24 @@ DM 从 checkpoint 恢复数据同步任务后，可能重复执行某些 binlog 
 * `INSERT` 语句会被改写成 `REPLACE` 语句。
 * `UPDATE` 语句会被分析，得到该语句涉及的行的主键或唯一索引的值，然后改写成 `DELETE` + `REPLACE` 语句 ：先根据主键或唯一索引的定位删除对应的行，然后使用 `REPLACE` 语句插入一条最新值的行记录。
 
-`REPLACE` 操作是 MySQL 特有的数据插入语法。使用 `REPLACE` 语法插入数据时，如果新插入的数据和现有数据存在主键或唯一约束冲突，MySQL 会删除所有冲突的记录，然后再执行插入记录操作，相当于“强制插入”的操作。具体请参考 [MySQL 官方文档的 `REPLACE` 语句相关介绍](https://dev.mysql.com/doc/refman/8.0/en/replace.html) 。
+`REPLACE` 操作是 MySQL 特有的数据插入语法。使用 `REPLACE` 语法插入数据时，如果新插入的数据和现有数据存在主键或唯一约束冲突，MySQL 会删除所有冲突的记录，然后再执行插入记录操作，相当于“强制插入”的操作。具体请参考 [MySQL 官方文档的 `REPLACE` 语句相关介绍](https://dev.mysql.com/doc/refman/8.0/en/replace.html)。
 
 比如，假设一张表 `dummydb.dummytbl` 的主键是 `id`，在这张表中重复执行下面的 SQL 语句：
 
-```
+```sql
 INSERT INTO dummydb.dummytbl (id, int_value, str_value) VALUES (123, 999, 'abc');
-UPDATE dummydb.dummytbl SET int_value = 888999 WHERE int_value = 999；   # 假设没有其他 int_value = 999的数据
-UPDATE dummydb.dummytbl SET id = 999 WHERE id = 888；    # 更新主键操作
+UPDATE dummydb.dummytbl SET int_value = 888999 WHERE int_value = 999;   # 假设没有其他 int_value = 999的数据
+UPDATE dummydb.dummytbl SET id = 999 WHERE id = 888;    # 更新主键操作
 ```
 
 启用安全模式后，上述 SQL 语句再次在下游执行时，会被改写为下面的 SQL 语句：
 
-```
+```sql
 REPLACE INTO dummydb.dummytbl (id, int_value, str_value) VALUES (123, 999, 'abc');
 DELETE FROM dummydb.dummytbl WHERE id = 123;
-REPLACE INTO dummydb.dummytbl (id, int_value, str_value) VALUES (123, 888999, 'abc')；
+REPLACE INTO dummydb.dummytbl (id, int_value, str_value) VALUES (123, 888999, 'abc');
 DELETE FROM dummydb.dummytbl WHERE id = 888;
-REPLACE INTO dummydb.dummytbl (id, int_value, str_value) VALUES (999, 888888, 'abc888');    
+REPLACE INTO dummydb.dummytbl (id, int_value, str_value) VALUES (999, 888888, 'abc888');
 ```
 
 上述语句中，`UPDATE` 被改写为 `DELETE` + `REPLACE`，而不是 `DELETE` + `INSERT`。如果这里使用 `INSERT`，那么 `id = 999` 的记录在已经存在的情况下重复插入时，数据库会报错主键冲突。因此这里使用了 `REPLACE`，新的记录会替换之前已经插入的记录。
@@ -65,7 +65,7 @@ REPLACE INTO dummydb.dummytbl (id, int_value, str_value) VALUES (999, 888888, 'a
     
     第二种情况下，DM 并不知道哪些 checkpoint 之后的 binlog 已经被执行过。为了保险起见，只要没有在 checkpoint 找到 `safemode_exit_point` 信息，DM 就会在前 2 个 checkpoint 间隔中都开启安全模式，确保这段时间里的 binlog 被重复执行不会引发问题。默认的 checkpoint 间隔是 30 秒，也就是说，一个正常的增量同步任务开始时，前 2 * 30 = 60 秒会自动强制开启安全模式。
     
-    你可以配置 syncer 的配置项 `checkpoint-flush-interval` 来调整 checkpoint 的间隔，从而影响增量同步任务开始时安全模式的持续时间。一般情况下不建议调整，如有需要，应优先使用[手动开启](#手动开启)。
+如果你需要调整增量同步任务开始时安全模式的持续时间，可以设置 `syncers` 的配置项 [`safe-mode-duration`](/dm/task-configuration-file-full.md)。
 
 ### 手动开启
 

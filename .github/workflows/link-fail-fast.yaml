@@ -1,0 +1,31 @@
+name: Links (Fail Fast)
+
+on:
+  pull_request:
+
+jobs:
+  linkChecker:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 2
+
+      - name: 'Get a list of changed markdown files to process'
+        id: changed-files
+        run: |
+          CHANGED_FILES=$(git diff-tree --name-only --diff-filter 'AM' -r HEAD^1 HEAD -- "*.md" | sed -z "s/\n$//;s/\n/' '/g")
+          echo "all_changed_files=${CHANGED_FILES}" >> $GITHUB_OUTPUT
+
+      - name: Download Exclude Path
+        run: |
+          curl https://raw.githubusercontent.com/pingcap/docs/master/.lycheeignore -O
+
+      - name: Link Checker
+        if: ${{ steps.changed-files.outputs.all_changed_files }}
+        uses: lycheeverse/lychee-action@v1.6.1
+        with:
+          fail: true
+          args: -E --exclude-mail -i -n -t 45 -- '${{ steps.changed-files.outputs.all_changed_files }}'
+        env:
+          GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}

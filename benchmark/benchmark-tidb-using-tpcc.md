@@ -37,6 +37,8 @@ tiup install bench
 
 关于 TiUP Bench 组件的详细用法可参考 [TiUP Bench](/tiup/tiup-bench.md)。
 
+假设已部署 TiDB 集群，其中 TiDB 节点部署在 172.16.5.140、 172.16.5.141 实例上，端口都为 4000，可按如下步骤进行 TPC-C 测试。
+
 ## 导入数据
 
 **导入数据通常是整个 TPC-C 测试中最耗时，也是最容易出问题的阶段。**
@@ -46,7 +48,7 @@ tiup install bench
 {{< copyable "shell-regular" >}}
 
 ```shell
-tiup bench tpcc -H 172.16.5.140 -P 4000 -D tpcc --warehouses 1000 prepare
+tiup bench tpcc -H 172.16.5.140,172.16.5.141 -P 4000 -D tpcc --warehouses 1000 --threads 20 prepare
 ```
 
 基于不同的机器配置，这个过程可能会持续几个小时。如果是小型集群，可以使用较小的 WAREHOUSE 值进行测试。
@@ -60,7 +62,7 @@ tiup bench tpcc -H 172.16.5.140 -P 4000 -D tpcc --warehouses 1000 prepare
 {{< copyable "shell-regular" >}}
 
 ```shell
-tiup bench tpcc -H 172.16.5.140 -P 4000 -D tpcc --warehouses 1000 run
+tiup bench tpcc -H 172.16.5.140,172.16.5.141 -P 4000 -D tpcc --warehouses 1000 --threads 100 --time 10m run
 ```
 
 运行过程中控制台上会持续打印测试结果：

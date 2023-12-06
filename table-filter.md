@@ -16,33 +16,26 @@ TiDB 数据迁移工具默认情况下作用于所有数据库，但实际使用
 
 在命令行中使用多个 `-f` 或 `--filter` 参数，即可在 TiDB 数据迁移工具中应用表库过滤规则。每个过滤规则均采用 `db.table` 形式，支持通配符（详情见[下一节](#使用通配符)）。以下为各个工具中的使用示例：
 
-* [BR](/br/backup-and-restore-overview.md)：
-
-    {{< copyable "shell-regular" >}}
+* [BR](/br/br-snapshot-manual.md#使用表库过滤功能备份多张表的数据)：
 
     ```shell
     ./br backup full -f 'foo*.*' -f 'bar*.*' -s 'local:///tmp/backup'
-    #                ^~~~~~~~~~~~~~~~~~~~~~~
+    ```
+
+    ```shell
     ./br restore full -f 'foo*.*' -f 'bar*.*' -s 'local:///tmp/backup'
-    #                 ^~~~~~~~~~~~~~~~~~~~~~~
     ```
 
 * [Dumpling](/dumpling-overview.md)：
 
-    {{< copyable "shell-regular" >}}
-
     ```shell
     ./dumpling -f 'foo*.*' -f 'bar*.*' -P 3306 -o /tmp/data/
-    #          ^~~~~~~~~~~~~~~~~~~~~~~
     ```
 
 * [TiDB Lightning](/tidb-lightning/tidb-lightning-overview.md)：
 
-    {{< copyable "shell-regular" >}}
-
     ```shell
     ./tidb-lightning -f 'foo*.*' -f 'bar*.*' -d /tmp/data/ --backend tidb
-    #                ^~~~~~~~~~~~~~~~~~~~~~~
     ```
 
 ### TOML 配置文件

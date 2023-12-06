@@ -6,14 +6,14 @@ aliases: ['/docs-cn/dev/reference/system-databases/metrics-tables/','/zh/tidb/de
 
 # METRICS_TABLES
 
-`METRICS_TABLES` 表为 [metrics_schema](/metrics-schema.md) 数据库中的每个视图提供 PromQL（Prometheus 查询语言）定义。
-
-{{< copyable "sql" >}}
+`METRICS_TABLES` 表为 [`METRICS_SCHEMA`](/metrics-schema.md) 数据库中的每个视图提供 PromQL（Prometheus 查询语言）定义。
 
 ```sql
-USE information_schema;
-DESC metrics_tables;
+USE INFORMATION_SCHEMA;
+DESC METRICS_TABLES;
 ```
+
+输出结果如下：
 
 ```sql
 +------------+--------------+------+------+---------+-------+
@@ -27,19 +27,19 @@ DESC metrics_tables;
 +------------+--------------+------+------+---------+-------+
 ```
 
-表 `metrics_tables` 的字段解释：
+表 `METRICS_TABLES` 的字段解释：
 
-* `TABLE_NAME`：对应于 `metrics_schema` 中的表名。
-* `PROMQL`：监控表的主要原理是将 SQL 映射成 `PromQL`，并将 Prometheus 结果转换成 SQL 查询结果。这个字段是 `PromQL` 的表达式模板，查询监控表数据时使用查询条件改写模板中的变量，生成最终的查询表达式。
-* `LABELS`：监控定义的 label，每一个 label 对应监控表中的一列。SQL 中如果包含对应列的过滤，对应的 `PromQL` 也会改变。
+* `TABLE_NAME`：对应于 `METRICS_SCHEMA` 中的表名。
+* `PROMQL`：监控表的主要原理是将 SQL 映射成 PromQL，并将 Prometheus 结果转换成 SQL 查询结果。这个字段是 PromQL 的表达式模板，查询监控表数据时使用查询条件改写模板中的变量，生成最终的查询表达式。
+* `LABELS`：监控定义的 label，每一个 label 对应监控表中的一列。SQL 中如果包含对应列的过滤，对应的 PromQL 也会改变。
 * `QUANTILE`：百分位。对于直方图类型的监控数据，指定一个默认百分位。如果值为 `0`，表示该监控表对应的监控不是直方图。
 * `COMMENT`：对这个监控表的注释。
 
-{{< copyable "sql" >}}
-
 ```sql
-SELECT * FROM metrics_tables LIMIT 5\G
+SELECT * FROM METRICS_TABLES LIMIT 5\G
 ```
+
+输出结果如下：
 
 ```sql
 *************************** 1. row ***************************
@@ -47,7 +47,7 @@ TABLE_NAME: abnormal_stores
     PROMQL: sum(pd_cluster_status{ type=~"store_disconnected_count|store_unhealth_count|store_low_space_count|store_down_count|store_offline_count|store_tombstone_count"})
     LABELS: instance,type
   QUANTILE: 0
-   COMMENT: 
+   COMMENT:
 *************************** 2. row ***************************
 TABLE_NAME: etcd_disk_wal_fsync_rate
     PROMQL: delta(etcd_disk_wal_fsync_duration_seconds_count{$LABEL_CONDITIONS}[$RANGE_DURATION])

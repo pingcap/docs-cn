@@ -13,17 +13,15 @@ aliases: ['/docs-cn/dev/quick-start-with-tidb/','/docs-cn/dev/how-to/get-started
 
 > **注意：**
 >
-> - TiDB、TiUP 及 TiDB Dashboard 默认会收集使用情况信息，并将这些信息分享给 PingCAP 用于改善产品。若要了解所收集的信息详情及如何禁用该行为，请参见[遥测](/telemetry.md)。
+> 本指南中的 TiDB 部署方式仅适用于快速上手体验，不适用于生产环境。
 >
-> - 本指南中的 TiDB 部署方式仅适用于快速上手体验，不适用于生产环境。
->
->     - 如需在生产环境部署 TiDB，请参考[在生产环境中部署 TiDB 指南](/production-deployment-using-tiup.md)。
->     - 如需在 Kubernetes 上部署 TiDB，请参考[快速上手 TiDB Operator](https://docs.pingcap.com/zh/tidb-in-kubernetes/stable/get-started)。
->     - 如需在云上管理 TiDB，请参考 [TiDB Cloud 快速上手指南](https://docs.pingcap.com/tidbcloud/tidb-cloud-quickstart)。
+> - 如需在生产环境部署 TiDB，请参考[在生产环境中部署 TiDB 指南](/production-deployment-using-tiup.md)。
+> - 如需在 Kubernetes 上部署 TiDB，请参考[快速上手 TiDB Operator](https://docs.pingcap.com/zh/tidb-in-kubernetes/stable/get-started)。
+> - 如需在云上管理 TiDB，请参考 [TiDB Cloud 快速上手指南](https://docs.pingcap.com/tidbcloud/tidb-cloud-quickstart)。
 
 要快速了解 TiUP 的基本功能、使用 TiUP 快速搭建 TiDB 集群的方法与连接 TiDB 集群并执行 SQL 的方法，建议先观看下面的培训视频（时长 15 分钟）。注意本视频只作为学习参考，如需了解 [TiUP](/tiup/tiup-overview.md) 的具体使用方法和 [TiDB 快速上手具体操作步骤](#部署本地测试集群)，请以文档内容为准。
 
-<video src="https://tidb-docs.s3.us-east-2.amazonaws.com/compressed+-+Lesson+7.mp4" width="600px" height="450px" controls="controls" poster="https://tidb-docs.s3.us-east-2.amazonaws.com/thumbnail+-+lesson+7.png"></video>
+<video src="https://download.pingcap.com/docs-cn%2FLesson07_quick_start.mp4" width="100%" height="100%" controls="controls" poster="https://download.pingcap.com/docs-cn/poster_lesson7.png"></video>
 
 ## 部署本地测试集群
 
@@ -83,10 +81,10 @@ TiDB 是一个分布式系统。最基础的 TiDB 测试集群通常由 2 个 Ti
         {{< copyable "shell-regular" >}}
 
         ```shell
-        tiup playground v6.1.0 --db 2 --pd 3 --kv 3
+        tiup playground v7.5.0 --db 2 --pd 3 --kv 3
         ```
 
-        上述命令会在本地下载并启动某个版本的集群（例如 v6.1.0）。最新版本可以通过执行 `tiup list tidb` 来查看。运行结果将显示集群的访问方式：
+        上述命令会在本地下载并启动某个版本的集群（例如 v7.5.0）。最新版本可以通过执行 `tiup list tidb` 来查看。运行结果将显示集群的访问方式：
 
         ```log
         CLUSTER START SUCCESSFULLY, Enjoy it ^-^
@@ -128,7 +126,7 @@ TiDB 是一个分布式系统。最基础的 TiDB 测试集群通常由 2 个 Ti
 
 7. 通过 <http://127.0.0.1:3000> 访问 TiDB 的 Grafana 界面，默认用户名和密码都为 `admin`。
 
-8. （可选）[将数据加载到 TiFlash](/tiflash/use-tiflash.md) 进行分析。
+8. （可选）[将数据加载到 TiFlash](/tiflash/tiflash-overview.md#使用-tiflash) 进行分析。
 
 9. 测试完成之后，可以通过执行以下步骤来清理集群：
 
@@ -200,10 +198,10 @@ TiDB 是一个分布式系统。最基础的 TiDB 测试集群通常由 2 个 Ti
         {{< copyable "shell-regular" >}}
 
         ```shell
-        tiup playground v6.1.0 --db 2 --pd 3 --kv 3
+        tiup playground v7.5.0 --db 2 --pd 3 --kv 3
         ```
 
-        上述命令会在本地下载并启动某个版本的集群（例如 v6.1.0）。最新版本可以通过执行 `tiup list tidb` 来查看。运行结果将显示集群的访问方式：
+        上述命令会在本地下载并启动某个版本的集群（例如 v7.5.0）。最新版本可以通过执行 `tiup list tidb` 来查看。运行结果将显示集群的访问方式：
 
         ```log
         CLUSTER START SUCCESSFULLY, Enjoy it ^-^
@@ -243,7 +241,7 @@ TiDB 是一个分布式系统。最基础的 TiDB 测试集群通常由 2 个 Ti
 
 7. 通过 <http://127.0.0.1:3000> 访问 TiDB 的 Grafana 界面，默认用户名和密码都为 `admin`。
 
-8. （可选）[将数据加载到 TiFlash](/tiflash/use-tiflash.md) 进行分析。
+8. （可选）[将数据加载到 TiFlash](/tiflash/tiflash-overview.md#使用-tiflash) 进行分析。
 
 9. 测试完成之后，可以通过执行以下步骤来清理集群：
 
@@ -272,12 +270,12 @@ TiDB 是一个分布式系统。最基础的 TiDB 测试集群通常由 2 个 Ti
 
 ### 准备环境
 
-准备一台部署主机，确保其软件满足需求：
+开始部署 TiDB 集群前，准备一台部署主机，确保其软件满足需求：
 
 - 推荐安装 CentOS 7.3 及以上版本
 - 运行环境可以支持互联网访问，用于下载 TiDB 及相关软件安装包
 
-最小规模的 TiDB 集群拓扑：
+最小规模的 TiDB 集群拓扑包含以下实例：
 
 > **注意：**
 >
@@ -291,11 +289,11 @@ TiDB 是一个分布式系统。最基础的 TiDB 测试集群通常由 2 个 Ti
 | TiFlash | 1 | 10.0.1.1 | 默认端口 <br/> 全局目录配置 |
 | Monitor | 1 | 10.0.1.1 | 默认端口 <br/> 全局目录配置 |
 
-部署主机软件和环境要求：
+部署主机软件和环境要求如下：
 
 - 部署需要使用部署主机的 root 用户及密码
 - 部署主机[关闭防火墙](/check-before-deployment.md#检测及关闭目标部署机器的防火墙)或者开放 TiDB 集群的节点间所需端口
-- 目前 TiUP 支持在 x86_64（AMD64 和 ARM）架构上部署 TiDB 集群
+- 目前 TiUP Cluster 支持在 x86_64（AMD64）和 ARM 架构上部署 TiDB 集群
     - 在 AMD64 架构下，建议使用 CentOS 7.3 及以上版本 Linux 操作系统
     - 在 ARM 架构下，建议使用 CentOS 7.6 1810 版本 Linux 操作系统
 
@@ -380,7 +378,7 @@ TiDB 是一个分布式系统。最基础的 TiDB 测试集群通常由 2 个 Ti
 
     server_configs:
      tidb:
-       log.slow-threshold: 300
+       instance.tidb_slow_log_threshold: 300
      tikv:
        readpool.storage.use-unified-pool: false
        readpool.coprocessor.use-unified-pool: true
@@ -430,11 +428,11 @@ TiDB 是一个分布式系统。最基础的 TiDB 测试集群通常由 2 个 Ti
     {{< copyable "shell-regular" >}}
 
     ```shell
-    tiup cluster deploy <cluster-name> <tidb-version> ./topo.yaml --user root -p
+    tiup cluster deploy <cluster-name> <version> ./topo.yaml --user root -p
     ```
 
     - 参数 `<cluster-name>` 表示设置集群名称
-    - 参数 `<tidb-version>` 表示设置集群版本，可以通过 `tiup list tidb` 命令来查看当前支持部署的 TiDB 版本
+    - 参数 `<version>` 表示设置集群版本，例如 `v7.5.0`。可以通过 `tiup list tidb` 命令来查看当前支持部署的 TiDB 版本
     - 参数 `-p` 表示在连接目标机器时使用密码登录
 
         > **注意：**
@@ -494,14 +492,17 @@ TiDB 是一个分布式系统。最基础的 TiDB 测试集群通常由 2 个 Ti
 
 ## 探索更多
 
-- 如果你刚刚部署好一套 TiDB 本地测试集群：
-    - 学习 [TiDB SQL 操作](/basic-sql-operations.md)
-    - [迁移数据到 TiDB](/migration-overview.md)
+如果你刚刚部署好一套 TiDB 本地测试集群，你可以继续：
 
-- 如果你准备好在生产环境部署 TiDB 了：
-    - 在线部署：[使用 TiUP 部署 TiDB 集群](/production-deployment-using-tiup.md)
-    - [使用 TiDB Operator 在云上部署 TiDB](https://docs.pingcap.com/zh/tidb-in-kubernetes/stable)
+- 学习 [TiDB SQL 操作](/basic-sql-operations.md)
+- [迁移数据到 TiDB](/migration-overview.md)
 
-- 如果你想使用 TiFlash 作为数据分析的解决方案，可参阅以下文档：
-    - [使用 TiFlash](/tiflash/use-tiflash.md)
-    - [TiFlash 简介](/tiflash/tiflash-overview.md)
+如果你准备好在生产环境部署 TiDB，你可以继续：
+
+- [使用 TiUP 部署 TiDB 集群](/production-deployment-using-tiup.md)
+- [使用 TiDB Operator 在 Kubernetes 上部署 TiDB](https://docs.pingcap.com/zh/tidb-in-kubernetes/stable)
+
+如果你想使用 TiFlash 作为数据分析的解决方案，可参阅以下文档：
+
+- [使用 TiFlash](/tiflash/tiflash-overview.md#使用-tiflash)
+- [TiFlash 简介](/tiflash/tiflash-overview.md)
