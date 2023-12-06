@@ -350,7 +350,7 @@ curl -X GET http://127.0.0.1:8300/api/v2/health
 | `include_commit_ts`      | `BOOLEAN` 类型，是否在 CSV 行中包含 commit-ts。默认值为 `false`。 |
 | `null`                   | `STRING` 类型，如果这一列是 null，那这一列该如何表示。默认是用 `\N` 来表示。 |
 | `quote`                  | `STRING` 类型，用于包裹字段的引号字符。空值代表不使用引号字符。默认值为 `"`。   |
-| `binary_encoding_method` | `STRING` 类型，二进制类型数据的编码方式，可选 'base64' 或 'hex'。默认值为 'base64'。   |
+| `binary_encoding_method` | `STRING` 类型，二进制类型数据的编码方式，可选 `"base64"` 或 `"hex"`。默认值为 `"base64"`。   |
 
 `sink.dispatchers`：对于 MQ 类的 Sink，可以通过该参数配置 event 分发器，支持以下分发器：`default`、`ts`、`rowid`、`table` 。分发规则如下：
 
@@ -375,7 +375,7 @@ curl -X GET http://127.0.0.1:8300/api/v2/health
 | `flush_interval`   | `STRING` 类型，向下游存储服务保存数据变更记录的间隔。 |
 | `file_size`   | `INT` 类型，单个数据变更文件的字节数超过 `file-size` 时将其保存至存储服务中。 |
 | `file_expiration_days`   | `INT` 类型，文件保留的时长。|
-| `file_cleanup_cron_spec`   | `STRING` 类型，定时清理任务的运行周期，与 crontab 配置兼容，格式为 `Second | Minute | Hour | Dom | Month | DowOptional`。|
+| `file_cleanup_cron_spec`   | `STRING` 类型，定时清理任务的运行周期，与 crontab 配置兼容，格式为 `<Second> <Minute> <Hour> <Day of the month> <Month> <Day of the week (Optional)>`。|
 | `flush_concurrency`   | `INT` 类型，上传单个文件的并发数。|
 
 
