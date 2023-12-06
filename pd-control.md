@@ -776,7 +776,7 @@ member delete name pd2
 Success!
 ```
 
-使用 id 下线节点：
+使用 ID 下线节点：
 
 {{< copyable "" >}}
 
@@ -906,7 +906,7 @@ region
 }
 ```
 
-显示 Region id 为 2 的信息：
+显示 Region ID 为 2 的信息：
 
 {{< copyable "" >}}
 
@@ -1500,7 +1500,7 @@ store
 }
 ```
 
-获取 id 为 1 的 store：
+获取 ID 为 1 的 store：
 
 ```bash
 store 1
@@ -1512,7 +1512,7 @@ store 1
 
 #### 下线 store
 
-下线 id 为 1 的 store：
+下线 ID 为 1 的 store：
 
 ```bash
 store delete 1
@@ -1520,7 +1520,7 @@ store delete 1
 
 执行 `store cancel-delete` 命令，你可以撤销已使用 `store delete` 下线并处于 `Offline` 状态的 store。撤销后，该 store 会从 `Offline` 状态变为 `Up` 状态。注意，`store cancel-delete` 命令无法使 `Tombstone` 状态的 store 变回 `Up` 状态。
 
-撤销通过 `store delete` 下线 id 为 1 的 store：
+撤销通过 `store delete` 下线 ID 为 1 的 store：
 
 ```bash
 store cancel-delete 1
@@ -1540,25 +1540,25 @@ store remove-tombstone
 
 `store label` 命令用于管理 store label。
 
-- 为 id 为 1 的 store 设置键为 `"zone"`、值为 `"cn"` 的 label：
+- 为 ID 为 1 的 store 设置键为 `"zone"`、值为 `"cn"` 的 label：
 
     ```bash
     store label 1 zone=cn
     ```
 
-- 更新 id 为 1 的 store 的 label：
+- 更新 ID 为 1 的 store 的 label：
 
     ```bash
     store label 1 zone=us
     ```
 
-- 通过 `--rewrite` 选项重写 id 为 1 的 store 的所有 label，之前的 label 会被覆盖：
+- 通过 `--rewrite` 选项重写 ID 为 1 的 store 的所有 label，之前的 label 会被覆盖：
 
     ```bash
     store label 1 region=us-est-1 disk=ssd --rewrite
     ```
 
-- 删除 id 为 1 的 store 的键为 `"disk"` 的 label ：
+- 删除 ID 为 1 的 store 的键为 `"disk"` 的 label ：
 
     ```bash
     store label 1 disk --delete
@@ -1566,12 +1566,12 @@ store remove-tombstone
 
 > **注意：**
 >
-> - store 的 label 更新方法使用的是合并策略。如果修改了 TiKV 配置文件中的 store label，进程重启之后，PD 会将自身存储的 store label 与其进行合并更新，并持久化合并后的结果。
+> - store 的 label 更新方法使用的是合并策略。TiKV 进程重启之后，其配置文件中的 store label 将会与 PD 自身存储的 store label 进行合并更新，并持久化合并后的结果。合并过程中如果 PD 侧的 store label 与 TiKV 配置文件有重复项，对应的重复项将会被 TiKV 的 store label 配置覆盖。例如通过 `store label 1 zone=cn` 将 store 1 的 `"zone"` 设置为 `"cn"` 后，如果 TiKV 自身配置了 `zone = "us"` 的 store label，在 TiKV 进程重启后，对应的 `"zone"` 将会被更新为 `"us"`。
 > - 如果希望使用 TiUP 统一管理 store label，你可以在集群重启前，使用 PD Control 的 `store label <id> --force` 命令将 PD 存储的 store label 清空。
 
 #### 设置 store weight
 
-将 id 为 1 的 store 的 leader weight 设为 5，Region weight 设为 10：
+将 ID 为 1 的 store 的 leader weight 设为 5，Region weight 设为 10：
 
 ```bash
 store weight 1 5 10
