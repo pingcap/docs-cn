@@ -26,10 +26,7 @@ SELECT @ts;
 
 注意由于 TSO 时间戳是按事务分配的，所以需要从包含 `BEGIN; ...; ROLLBACK` 的事务中获取时间戳。
 
-从上例中得到的 TSO 时间戳是一个十进制数。你可以使用以下 SQL 函数来解析时间戳：
-
-- [`TIDB_PARSE_TSO()`](/functions-and-operators/tidb-functions.md#tidb_parse_tso)
-- [`TIDB_PARSE_TSO_LOGICAL()`](/functions-and-operators/tidb-functions.md)
+从上例中得到的 TSO 时间戳是一个十进制数。你可以使用 SQL 函数 [`TIDB_PARSE_TSO()`](/functions-and-operators/tidb-functions.md#tidb_parse_tso) 来解析它：
 
 ```sql
 SELECT TIDB_PARSE_TSO(443852055297916932);
@@ -38,16 +35,6 @@ SELECT TIDB_PARSE_TSO(443852055297916932);
 +------------------------------------+
 | 2023-08-27 20:33:41.687000         |
 +------------------------------------+
-1 row in set (0.00 sec)
-```
-
-```sql
-SELECT TIDB_PARSE_TSO_LOGICAL(443852055297916932);
-+--------------------------------------------+
-| TIDB_PARSE_TSO_LOGICAL(443852055297916932) |
-+--------------------------------------------+
-|                                          4 |
-+--------------------------------------------+
 1 row in set (0.00 sec)
 ```
 
