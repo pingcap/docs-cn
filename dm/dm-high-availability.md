@@ -15,7 +15,7 @@ summary: 了解 DM 高可用机制的内部机制，以及对迁移任务的影�
 
 - **gRPC 和 HTTP 接口。**DM master 对外提供 gRPC 以及 HTTP 接口，供其他组件调用，如 dmctl、WebUI、DM worker。DM master 的 Follower 节点在收到 gRPC 和 HTTP 请求后，会 redirect 给 DM master 的 Leader 节点进行处理。
 
-- **etcd。**DM master 内部嵌入 etcd 来组成集群，DM master 的 gRPC 和 HTTP 接口 attach 到 etcd 中，同时 etcd 也作为 DM master、DM worker、Source、Task 等配置或者状态的存储介质。
+- **etcd。**DM master 内部嵌入 etcd 来组成集群，同时 etcd 也作为 DM master、DM worker、Source、Task 等配置或者状态的存储介质。
 
 - **Election。**Election 周期性地调用 etcd 的 campaign 接口进行选举。
 
@@ -23,7 +23,7 @@ summary: 了解 DM 高可用机制的内部机制，以及对迁移任务的影�
     - 若该节点为 Follower，则不启动其他组件。
     - 若该节点从 Leader 切换回 Follower，则会关闭其他组件。
 
-- **Scheduler。**负责注册及监听 DM worker 状态，安排分配 Source 以及 Task，可参考 DM worker 任务分配的相关文档进一步了解。
+- **Scheduler。**负责注册及监听 DM worker 状态，安排分配 Source 以及 Task。
 
 - **Pessimist 和 Optimist。**DM master 实现对 DDL 进行悲观协调以及乐观协调的模块。
 
