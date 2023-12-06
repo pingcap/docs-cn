@@ -378,7 +378,6 @@ curl -X GET http://127.0.0.1:8300/api/v2/health
 | `file_cleanup_cron_spec`   | `STRING` 类型，定时清理任务的运行周期，与 crontab 配置兼容，格式为 `<Second> <Minute> <Hour> <Day of the month> <Month> <Day of the week (Optional)>`。|
 | `flush_concurrency`   | `INT` 类型，上传单个文件的并发数。|
 
-
 ### 使用样例
 
 以下请求会创建一个 ID 为 `test5`，sink_uri 为 `blackhole://` 的同步任务。
