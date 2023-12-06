@@ -33,13 +33,13 @@ summary: 介绍了外部存储服务 Amazon S3、GCS、和 Azure Blob Storage �
 以下是用于 TiDB Lightning 和 BR 的 Amazon S3 URI 示例，需要指定文件夹路径 `testfolder`：
 
 ```shell
-s3://external/testfolder?access-key=${access-key}&secret-access-key=${secret-access-key}"
+s3://external/testfolder?access-key=${access-key}&secret-access-key=${secret-access-key}
 ```
 
 以下是用于 [`IMPORT INTO`](/sql-statements/sql-statement-import-into.md) 的 Amazon S3 URI 示例，需要指定具体的文件名 `test.csv`：
 
 ```shell
-s3://external/test.csv?access-key=${access-key}&secret-access-key=${secret-access-key}"
+s3://external/test.csv?access-key=${access-key}&secret-access-key=${secret-access-key}
 ```
 
 ## GCS URI 格式
