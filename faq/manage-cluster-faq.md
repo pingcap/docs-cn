@@ -121,6 +121,10 @@ PD 的大部分 API 需要在初始化 TiKV 集群以后才能使用，如果在
 
 PD 启动参数中的 `--initial-cluster` 包含了某个不属于该集群的成员。遇到这个错误时请检查各个成员的所属集群，剔除错误的成员后即可正常启动。
 
+### PD 开启静态加密报错：`[PD:encryption:ErrEncryptionNewMasterKey]fail to get encryption key from file /root/path/file%!(EXTRA string=open /root/path/file: permission denied)`
+
+静态加密不支持将密钥文件存放在 `root` 目录或其子目录下，即使增加读取权限也会报相同的错误。遇到这个报错时，可以将密钥文件存放在非 `root` 目录的路径下。
+
 ### PD 能容忍的时间同步误差是多少？
 
 理论上，时间同步误差越小越好。PD 可容忍任意时长的误差，但是，时间同步误差越大意味着 PD 分配的时间戳与真实的物理时间相差越大，这个差距会影响读历史版本等功能。
@@ -257,10 +261,6 @@ GROUP BY db_name , table_name;
 ### TiKV 集群副本建议配置数量是多少，是不是最小高可用配置（3个）最好？
 
 如果是测试环境 3 副本足够；在生产环境中，不可让集群副本数低于 3，需根据架构特点、业务系统及恢复能力的需求，适当增加副本数。值得注意的是，副本升高，性能会有下降，但是安全性更高。
-
-### PD 开启静态加密报错 `[PD:encryption:ErrEncryptionNewMasterKey]fail to get encryption key from file /root/path/file%!(EXTRA string=open /root/path/file: permission denied)` 如何解决？
-
-静态加密不支持将密钥文件的路径存放在 root 目录及 root 子目录下，即使修改增加读取权限也会报相同错误信息，可将文件放置在非 root 开头路径下解决该问题。
 
 ### TiKV 启动报错：cluster ID mismatch
 
