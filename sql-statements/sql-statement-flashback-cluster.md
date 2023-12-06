@@ -78,7 +78,7 @@ mysql> SELECT * FROM t;
 Empty set (0.00 sec)
 ```
 
-闪回到指定 TSO 来精确恢复误删除的数据：
+闪回到指定的 TSO 来精确恢复误删除的数据：
 
 ```sql
 mysql> INSERT INTO t VALUES (1);
