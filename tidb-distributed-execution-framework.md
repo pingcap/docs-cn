@@ -7,7 +7,7 @@ summary: 了解 TiDB 后端任务分布式框架的使用场景与限制、使�
 
 TiDB 采用计算存储分离架构，具有出色的扩展性和弹性的扩缩容能力。从 v7.1.0 开始，TiDB 引入了一个后端任务分布式执行框架，以进一步发挥分布式架构的资源优势。该框架的目标是实现对所有后端任务的统一调度与分布式执行，并为接入的后端任务提供统一的资源管理能力，从整体和单个后端任务两个维度提供资源管理的能力，更好地满足用户对于资源使用的预期。
 
-本文档介绍了 TiDB 分布式框架的使用场景与限制、使用方法和实现原理。
+本文档介绍了 TiDB 后端任务分布式框架的使用场景与限制、使用方法和实现原理。
 
 ## 使用场景
 
@@ -35,11 +35,12 @@ TiDB 采用计算存储分离架构，具有出色的扩展性和弹性的扩缩
 - `IMPORT INTO` 用于将 `CSV`、`SQL`、`PARQUET` 等格式的数据导入到一张空表中。详情请参考 [`IMPORT INTO`](/sql-statements/sql-statement-import-into.md)。
 
 ## 使用限制
-- 分布式框架一次只能调度 1 个 `ADD INDEX` 任务，如果第一个 `ADD INDEX` 任务还未完成就提交了第二个 `ADD INDEX` 任务，则第二个 `ADD INDEX` 任务会通过事务的方式来执行。
+
+分布式框架一次只能调度 1 个 `ADD INDEX` 任务。如果第一个 `ADD INDEX` 任务还未完成就提交了第二个 `ADD INDEX` 任务，则第二个 `ADD INDEX` 任务会通过事务的方式来执行。
 
 ## 启用前提
 
-如需使用分布式框架执行 ‘ADD INDEX’，你需要先启动 [Fast Online DDL](/system-variables.md#tidb_ddl_enable_fast_reorg-从-v630-版本开始引入) 模式。
+如需使用分布式框架执行 `ADD INDEX` 任务，需要先开启 [Fast Online DDL](/system-variables.md#tidb_ddl_enable_fast_reorg-从-v630-版本开始引入) 模式。
 
 1. 调整 Fast Online DDL 相关的系统变量：
 
@@ -52,7 +53,7 @@ TiDB 采用计算存储分离架构，具有出色的扩展性和弹性的扩缩
 
 > **注意：**
 >
-> 建议你检查 TiDB 的 `temp-dir` 目录至少需要有 100 GiB 的可用空间。
+> 建议 TiDB 的 `temp-dir` 目录至少有 100 GiB 的可用空间。
 
 ## 启用步骤
 
@@ -64,7 +65,7 @@ TiDB 采用计算存储分离架构，具有出色的扩展性和弹性的扩缩
 
     在运行后端任务时，框架支持的语句（如 [`ADD INDEX`](/sql-statements/sql-statement-add-index.md) 和 [`IMPORT INTO`](/sql-statements/sql-statement-import-into.md)）会采用分布式方式执行。默认集群内部所有节点均会执行后端任务。
 
-2. 根据实际需求，调整可能影响 DDL 任务分布式执行的系统变量，一般情况均使用默认值即可：
+2. 一般情况下，对于下列影响 DDL 任务分布式执行的系统变量，使用默认值即可。
 
     * [`tidb_ddl_reorg_worker_cnt`](/system-variables.md#tidb_ddl_reorg_worker_cnt)：使用默认值 `4` 即可，建议最大不超过 `16`。
     * [`tidb_ddl_reorg_priority`](/system-variables.md#tidb_ddl_reorg_priority)
