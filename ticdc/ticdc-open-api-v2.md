@@ -286,7 +286,7 @@ curl -X GET http://127.0.0.1:8300/api/v2/health
 | `max_log_size`   | `UINT64` 类型，redo log 的最大值。（非必选）        |
 | `storage`        | `STRING` 类型，存储的目标地址。（非必选）              |
 | `use_file_backend`        | `BOOL` 类型，是否将 redo log 存储到本地文件中。（非必选）              |
-| `encoding_worker_num`        | `INT` 类型，redo 模块中编解码 worker 的数量。（非必选）              
+| `encoding_worker_num`        | `INT` 类型，redo 模块中编解码 worker 的数量。（非必选）|
 |`flush_worker_num`        | `INT` 类型，redo 模块中上传文件 worker 的数量。（非必选）              |
 
 `filter` 参数说明如下：
