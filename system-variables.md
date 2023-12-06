@@ -4717,6 +4717,15 @@ SHOW WARNINGS;
     - For uncommitted read-only transactions with modified data, the commit of these transactions is rejected.
 - After the read-only mode is enabled, all users (including the users with the `SUPER` privilege) cannot execute the SQL statements that might write data unless the user is explicitly granted the `RESTRICTED_REPLICA_WRITER_ADMIN` privilege.
 
+### tidb_request_source_type <span class="version-mark">New in v7.4.0</span>
+
+- Scope: SESSION
+- Applies to hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value): No
+- Type: String
+- Default value: `""`
+- Possible values: `"ddl"`, `"stats"`, `"br"`, `"lightning"`, `"background"`
+- This variable is used to explicitly specify the task type for the current session, which is identified and controlled by [Resource Control](/tidb-resource-control.md). For example: `SET @@tidb_request_source_type = "background"`.
+
 ### tidb_retry_limit
 
 - Scope: SESSION | GLOBAL
