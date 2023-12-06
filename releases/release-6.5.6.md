@@ -128,7 +128,7 @@ TiDB 版本：6.5.6
 
 + TiFlash
 
-    - (dup) 修复 Grafana 的 Read Snapshots 面板上 `max_snapshot_lifetime` 监控指标显示有误的问题 [#7713](https://github.com/pingcap/tiflash/issues/7713) @[JaySon-Huang](https://github.com/JaySon-Huang)
+    - 修复 Grafana 的 Read Snapshots 面板上 `max_snapshot_lifetime` 监控指标显示有误的问题 [#7713](https://github.com/pingcap/tiflash/issues/7713) @[JaySon-Huang](https://github.com/JaySon-Huang)
     - 修复执行 `ALTER TABLE ... EXCHANGE PARTITION ...` 语句后 panic 的问题 [#8372](https://github.com/pingcap/tiflash/issues/8372) @[JaySon-Huang](https://github.com/JaySon-Huang)
     - 修复 MemoryTracker 提供的内存使用数据不准确的问题 [#8128](https://github.com/pingcap/tiflash/issues/8128) @[JinheLin](https://github.com/JinheLin)
 
