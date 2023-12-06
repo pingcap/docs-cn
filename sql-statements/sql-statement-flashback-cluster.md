@@ -113,7 +113,7 @@ mysql> DELETE FROM t;
 Query OK, 1 rows affected (0.00 sec)
 
 
-mysql> FLASHBACK CLUSTER TO TSO '446113975683252225';
+mysql> FLASHBACK CLUSTER TO TSO 446113975683252225;
 Query OK, 0 rows affected (0.20 sec)
 
 mysql> SELECT * FROM t;
