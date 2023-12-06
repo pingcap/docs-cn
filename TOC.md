@@ -468,34 +468,34 @@
       - [导出和导入集群的数据源和任务配置](/dm/dm-export-import-config.md)
       - [处理告警](/dm/dm-handle-alerts.md)
       - [日常巡检](/dm/dm-daily-check.md)
-     - 参考手册
-        - 架构组件
-          - [DM-worker 说明](/dm/dm-worker-intro.md)
-          - [安全模式](/dm/dm-safe-mode.md)
-          - [Relay Log](/dm/relay-log.md)
-        - 运行机制
-          - [DML 同步机制](/dm/dm-dml-replication-logic.md)
-          - [高可用机制](/dm/dm-high-availability.md)
-          - [DDL 特殊处理说明](/dm/dm-ddl-compatible.md)
-        - 命令行
-          - [DM-master & DM-worker](/dm/dm-command-line-flags.md)
-        - 配置文件
-          - [概述](/dm/dm-config-overview.md)
-          - [数据源配置](/dm/dm-source-configuration-file.md)
-          - [迁移任务配置](/dm/task-configuration-file-full.md)
-          - [DM-master 配置](/dm/dm-master-configuration-file.md)
-          - [DM-worker 配置](/dm/dm-worker-configuration-file.md)
-          - [Table Selector](/dm/table-selector.md)
-        - [OpenAPI](/dm/dm-open-api.md)
-        - [兼容性目录](/dm/dm-compatibility-catalog.md)
-        - 安全
-          - [为 DM 的连接开启加密传输](/dm/dm-enable-tls.md)
-          - [生成自签名证书](/dm/dm-generate-self-signed-certificates.md)
-        - 监控告警
-          - [监控指标](/dm/monitor-a-dm-cluster.md)
-          - [告警信息](/dm/dm-alert-rules.md)
-        - [错误码](/dm/dm-error-handling.md#常见故障处理方法)
-        - [术语表](/dm/dm-glossary.md)
+    - 参考手册
+      - 架构组件
+        - [DM-worker 说明](/dm/dm-worker-intro.md)
+        - [安全模式](/dm/dm-safe-mode.md)
+        - [Relay Log](/dm/relay-log.md)
+      - 运行机制
+        - [DML 同步机制](/dm/dm-dml-replication-logic.md)
+        - [高可用机制](/dm/dm-high-availability.md)
+        - [DDL 特殊处理说明](/dm/dm-ddl-compatible.md)
+      - 命令行
+        - [DM-master & DM-worker](/dm/dm-command-line-flags.md)
+      - 配置文件
+        - [概述](/dm/dm-config-overview.md)
+        - [数据源配置](/dm/dm-source-configuration-file.md)
+        - [迁移任务配置](/dm/task-configuration-file-full.md)
+        - [DM-master 配置](/dm/dm-master-configuration-file.md)
+        - [DM-worker 配置](/dm/dm-worker-configuration-file.md)
+        - [Table Selector](/dm/table-selector.md)
+      - [OpenAPI](/dm/dm-open-api.md)
+      - [兼容性目录](/dm/dm-compatibility-catalog.md)
+      - 安全
+        - [为 DM 的连接开启加密传输](/dm/dm-enable-tls.md)
+        - [生成自签名证书](/dm/dm-generate-self-signed-certificates.md)
+      - 监控告警
+        - [监控指标](/dm/monitor-a-dm-cluster.md)
+        - [告警信息](/dm/dm-alert-rules.md)
+      - [错误码](/dm/dm-error-handling.md#常见故障处理方法)
+      - [术语表](/dm/dm-glossary.md)
       - 使用示例
         - [使用 DM 迁移数据](/dm/migrate-data-using-dm.md)
         - [快速创建迁移任务](/dm/quick-start-create-task.md)
