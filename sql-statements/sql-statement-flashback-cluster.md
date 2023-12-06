@@ -12,7 +12,7 @@ TiDB v6.5.6 开始引入了 `FLASHBACK CLUSTER TO TSO` 的语法，支持使用�
 
 > **注意：**
 >
-> `FLASHBACK CLUSTER TO { TIMESTAMP | TSO }` 是用最新的时间戳写入特定时间点的旧数据，但不会删除当前数据，所以在使用前请确保集群有足够的存储空间来同时容纳旧数据和当前数据。
+> `FLASHBACK CLUSTER TO [TIMESTAMP|TSO]` 是用最新的时间戳写入特定时间点的旧数据，但不会删除当前数据，所以在使用前请确保集群有足够的存储空间来同时容纳旧数据和当前数据。
 
 ## 语法
 
