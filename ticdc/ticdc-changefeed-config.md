@@ -300,7 +300,7 @@ file-size = 67108864
 
 # 文件保留的时长，仅在 date-separator 配置为 day 时生效，默认值为 0，表示禁用文件清理。假设 `file-expiration-days = 1` 且 `file-cleanup-cron-spec = "0 0 0 * * *"`，TiCDC 将在每天 00:00:00 时刻清理已保存超过 24 小时的文件。例如，2023/12/02 00:00:00 将清理 2023/12/01 之前（注意：不包括 2023/12/01）的文件。
 file-expiration-days = 0
-# 定时清理任务的运行周期，与 crontab 配置兼容，格式为 `Second | Minute | Hour | Dom | Month | DowOptional`，默认值为 "0 0 2 * * *"，表示每天凌晨两点执行清理任务
+# 定时清理任务的运行周期，与 crontab 配置兼容，格式为 `<Second> <Minute> <Hour> <Day of the month> <Month> <Day of the week (Optional)>`，默认值为 "0 0 2 * * *"，表示每天凌晨两点执行清理任务
 file-cleanup-cron-spec = "0 0 2 * * *"
 # 上传单个文件的并发数，默认值为 1，表示禁用并发。
 flush-concurrency = 1
