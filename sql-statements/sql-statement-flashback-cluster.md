@@ -1,18 +1,18 @@
 ---
 title: FLASHBACK CLUSTER
 summary: TiDB 数据库中 FLASHBACK CLUSTER 的使用概况。
-aliases: ['/docs-cn/dev/sql-statements/sql-statement-flashback-to-timestamp/', '/docs-cn/dev/sql-statements/sql-statement-flashback-cluster/']
+aliases: ['/zh/tidb/v6.5/sql-statement-flashback-to-timestamp']
 ---
 
 # FLASHBACK CLUSTER
 
-TiDB v6.4.0 引入了 `FLASHBACK CLUSTER TO TIMESTAMP` 语法，其功能是将集群的数据恢复到过去指定的时间点；如果你想要指定一个精确的时间点，可在 `FLASHBACK CLUSTER TO TIMESTAMP` 中使用日期时间和时间函数，日期时间的格式为："2016-10-08 16:45:26.999"，最小时间精度范围为毫秒，通常可只写到秒，例如 "2016-10-08 16:45:26"。
+TiDB v6.4.0 引入了 `FLASHBACK CLUSTER TO TIMESTAMP` 语法，其功能是将集群的数据恢复到过去指定的时间点。指定时间点时，你可以使用日期时间和时间函数，日期时间的格式为："2016-10-08 16:45:26.999"，最小时间精度范围为毫秒，通常可只写到秒，例如 "2016-10-08 16:45:26"。
 
-TiDB v6.5.6 开始引入了 `FLASHBACK CLUSTER TO TSO` 的语法，支持更加精确的指定恢复时间戳 [TSO](https://docs.pingcap.com/tidb/stable/tso)，实现更加灵活的数据恢复。
+TiDB v6.5.6 开始引入了 `FLASHBACK CLUSTER TO TSO` 的语法，支持使用时间戳 [TSO](/tso.md) 更加精确地指定恢复时间点，实现更加灵活的数据恢复。
 
 > **注意：**
 >
-> `FLASHBACK CLUSTER TO { TIMESTAMP | TSO }` 是用最新的时间戳写入特定时间点的旧数据，但不会删除当前数据，所以在使用前请确保集群有足够的存储空间来同时容纳旧数据和当前数据。
+> `FLASHBACK CLUSTER TO [TIMESTAMP|TSO]` 是用最新的时间戳写入特定时间点的旧数据，但不会删除当前数据，所以在使用前请确保集群有足够的存储空间来同时容纳旧数据和当前数据。
 
 ## 语法
 
@@ -25,8 +25,8 @@ FLASHBACK CLUSTER TO TSO 445494839813079041;
 
 ```ebnf+diagram
 FlashbackToTimestampStmt ::=
-	"FLASHBACK" "CLUSTER" "TO" "TIMESTAMP" stringLit
-|	"FLASHBACK" "CLUSTER" "TO" "TSO" LengthNum
+	'FLASHBACK' 'CLUSTER' 'TO' 'TIMESTAMP' stringLit
+|	'FLASHBACK' 'CLUSTER' 'TO' 'TSO' LengthNum
 ```
 
 ## 注意事项
@@ -44,7 +44,7 @@ FlashbackToTimestampStmt ::=
 
 ## 示例
 
-闪回到指定 Timestamp 恢复新写入的数据：
+闪回到指定的 TIMESTAMP 来恢复新写入的数据：
 
 ```sql
 mysql> CREATE TABLE t(a INT);
@@ -97,7 +97,7 @@ mysql> SELECT * FROM t;
 mysql> begin;
 Query OK, 0 rows affected (0.00 sec)
 
-mysql> select @@tidb_current_ts;
+mysql> select @@tidb_current_ts;  --  获取当前 TSO
 +--------------------+
 | @@tidb_current_ts  |
 +--------------------+
@@ -113,7 +113,7 @@ mysql> DELETE FROM t;
 Query OK, 1 rows affected (0.00 sec)
 
 
-mysql> FLASHBACK CLUSTER TO TSO '446113975683252225';
+mysql> FLASHBACK CLUSTER TO TSO 446113975683252225;
 Query OK, 0 rows affected (0.20 sec)
 
 mysql> SELECT * FROM t;
