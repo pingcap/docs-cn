@@ -44,7 +44,7 @@ FlashbackToTimestampStmt ::=
 
 ## 示例
 
-闪回到指定 Timestamp 恢复新写入的数据：
+闪回到指定的 TIMESTAMP 来恢复新写入的数据：
 
 ```sql
 mysql> CREATE TABLE t(a INT);
