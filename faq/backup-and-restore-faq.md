@@ -12,7 +12,7 @@ aliases: ['/zh/tidb/stable/pitr-troubleshoot/','/zh/tidb/stable/pitr-known-issue
 
 ## 当误删除或误更新数据后，如何原地快速恢复？
 
-从 TiDB v6.4.0 引入了完整的 Flashback 功能，可以支持原地快速恢复 GC 时间内的数据到指定时间点。在误操作场景下，推荐使用 Flashback 来恢复数据，具体可以参考 [Flashback 集群](/sql-statements/sql-statement-flashback-to-timestamp.md) 和 [Flashback 数据库](/sql-statements/sql-statement-flashback-database.md)语法。
+从 TiDB v6.4.0 引入了完整的 Flashback 功能，可以支持原地快速恢复 GC 时间内的数据到指定时间点。在误操作场景下，推荐使用 Flashback 来恢复数据，具体可以参考 [Flashback 集群](/sql-statements/sql-statement-flashback-cluster.md) 和 [Flashback 数据库](/sql-statements/sql-statement-flashback-database.md)语法。
 
 ## 在 TiDB v5.4.0 及后续版本中，当在有负载的集群进行备份时，备份速度为什么会变得很慢？
 
@@ -31,7 +31,7 @@ TiKV 支持[动态配置](/tikv-control.md#动态修改-tikv-的配置)自动调
 
 ## PITR 问题
 
-### [PITR 功能](/br/br-pitr-guide.md)和 [flashback 集群](/sql-statements/sql-statement-flashback-to-timestamp.md)有什么区别?
+### [PITR 功能](/br/br-pitr-guide.md)和 [flashback 集群](/sql-statements/sql-statement-flashback-cluster.md)有什么区别?
 
 从使用场景角度来看，PITR 通常用于在集群完全停止服务或数据损坏且无法使用其他方案恢复时，将集群的数据恢复到指定的时间点。使用 PITR 时，你需要通过一个新的集群来完成数据恢复。而 flashback 集群则通常用于发生误操作或其他因素导致的数据错误时，将集群的数据恢复到数据错误发生前的最近时间点。
 
