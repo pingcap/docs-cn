@@ -208,9 +208,18 @@ flush-interval = 2000
 # The storage URI of the redo log.
 # The default value is empty.
 storage = ""
-# Specifies whether to store the redo log in a file.
+# Specifies whether to store the redo log in a local file.
 # The default value is false.
 use-file-backend = false
+# The number of encoding and decoding workers in the redo module.
+# The default value is 16.
+encoding-worker-num = 16
+# The number of flushing workers in the redo module.
+# The default value is 8.
+flush-worker-num = 8
+# The behavior to compress redo log files.
+# Available options are "" and "lz4". The default value is "", which means no compression.
+compression = ""
 
 [integrity]
 # Whether to enable the checksum validation for single-row data. The default value is "none", which means to disable the feature. Value options are "none" and "correctness".
@@ -275,4 +284,24 @@ batching-max-messages=1000
 batching-max-publish-delay=10
 # The timeout for a Pulsar producer to send a message. The value is 30 seconds by default.
 send-timeout=30
+
+[sink.cloud-storage-config]
+# The concurrency for saving data changes to the downstream cloud storage. 
+# The default value is 16.
+worker-count = 16
+# The interval for saving data changes to the downstream cloud storage.
+# The default value is "2s".
+flush-interval = "2s"
+# A data change file is saved to the cloud storage when the number of bytes in this file exceeds `file-size`.
+# The default value is 67108864 (this is, 64 MiB).
+file-size = 67108864
+# The duration to retain files, which takes effect only when `date-separator` is configured as `day`. Assume that `file-expiration-days = 1` and `file-cleanup-cron-spec = "0 0 0 * * *"`, then TiCDC performs daily cleanup at 00:00:00 for files saved beyond 24 hours. For example, at 00:00:00 on 2023/12/02, TiCDC cleans up files generated before 2023/12/01, while files generated on 2023/12/01 remain unaffected.
+# The default value is 0, which means file cleanup is disabled. 
+file-expiration-days = 0
+# The running cycle of the scheduled cleanup task, compatible with the crontab configuration, with a format of `<Second> <Minute> <Hour> <Day of the month> <Month> <Day of the week (Optional)>`
+# The default value is "0 0 2 * * *", which means that the cleanup task is executed every day at 2 AM.
+file-cleanup-cron-spec = "0 0 2 * * *"
+# The concurrency for uploading a single file.
+# The default value is 1, which means concurrency is disabled.
+flush-concurrency = 1
 ```
