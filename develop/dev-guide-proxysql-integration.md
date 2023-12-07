@@ -221,10 +221,6 @@ systemctl start docker
 
     </SimpleTab>
 
-    When prompted, enter the endpoint of your cluster for `Serverless Tier Host`, and then enter the username and the password of your cluster.
-
-    The following is an example output. You will see that three configuration files are generated under the current `tidb-cloud-connect` folder.
-
     当出现提示时，为 `Serverless Tier Host` 输入你的集群的 `Endpoint`，然后输入你集群的 `Port` 与 `User`。
 
     下面是一个输出示例。你会看到，在当前的 `tidb-cloud-connect` 文件夹下生成了三个配置文件。
