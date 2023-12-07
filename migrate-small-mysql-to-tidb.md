@@ -19,7 +19,7 @@ aliases: ['/zh/tidb/dev/usage-scenario-incremental-migration/']
 
 ## 第 1 步：创建数据源
 
-首先，新建 `source1.yaml` 文件, 写入以下内容：
+首先，新建 `source1.yaml` 文件，写入以下内容：
 
 {{< copyable "" >}}
 
@@ -54,7 +54,7 @@ tiup dmctl --master-addr ${advertise-addr} operate-source create source1.yaml
 
 ## 第 2 步：创建迁移任务
 
-新建 `task1.yaml` 文件, 写入以下内容：
+新建 `task1.yaml` 文件，写入以下内容：
 
 {{< copyable "" >}}
 
@@ -118,7 +118,7 @@ tiup dmctl --master-addr ${advertise-addr} start-task task.yaml
 |`--master-addr`|`dmctl` 要连接的集群的任意 DM-master 节点的 `{advertise-addr}`，例如： 172.16.10.71:8261|
 |`start-task`|参数用于启动数据迁移任务|
 
-如果任务启动失败，可根据返回结果的提示进行配置变更后执行 start-task task.yaml 命令重新启动任务。遇到问题请参考[故障及处理方法](/dm/dm-error-handling.md) 以及[常见问题](/dm/dm-faq.md)。
+如果任务启动失败，可根据返回结果的提示进行配置变更后执行 start-task task.yaml 命令重新启动任务。遇到问题请参考[故障及处理方法](/dm/dm-error-handling.md)以及[常见问题](/dm/dm-faq.md)。
 
 ## 第 4 步：查看任务状态
 

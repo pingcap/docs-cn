@@ -8,14 +8,18 @@ summary: 介绍备份与恢复 TiDB 集群快照的命令行。
 本文按备份恢复的场景介绍快照备份和恢复的命令行，包括：
 
 - [备份集群快照](#备份集群快照)
-- [备份单个数据库的数据](#备份单个数据库的数据)
-- [备份单张表的数据](#备份单张表的数据)
-- [使用表库过滤功能备份多张表的数据](#使用表库过滤功能备份多张表的数据)
+- [备份 TiDB 集群指定库表的数据](#备份-tidb-集群指定库表的数据)
+    - [备份单个数据库的数据](#备份单个数据库的数据)
+    - [备份单张表的数据](#备份单张表的数据)
+    - [使用表库过滤功能备份多张表的数据](#使用表库过滤功能备份多张表的数据)
+- [备份统计信息](#备份统计信息)
 - [备份数据加密](#备份数据加密)
 - [恢复快照备份数据](#恢复快照备份数据)
-- [恢复单个数据库的数据](#恢复单个数据库的数据)
-- [恢复单张表的数据](#恢复单张表的数据)
-- [使用表库功能过滤恢复数据](#使用表库功能过滤恢复数据)
+- [恢复备份数据中指定库表的数据](#恢复备份数据中指定库表的数据)
+    - [恢复单个数据库的数据](#恢复单个数据库的数据)
+    - [恢复单张表的数据](#恢复单张表的数据)
+    - [使用表库功能过滤恢复数据](#使用表库功能过滤恢复数据)
+    - [恢复系统表中存储的执行计划绑定信息](#恢复系统表中存储的执行计划绑定信息)
 - [恢复加密的快照备份数据](#恢复加密的快照备份数据)
 
 如果你想了解如何进行快照备份与恢复，可以参考以下教程：
@@ -41,6 +45,10 @@ br backup full \
 - `--backupts`：快照对应的物理时间点。如果该快照的数据已经被 GC，那么 `br backup` 命令会报错退出；如果没有指定该参数，br 命令行工具会选取备份开始的时间点所对应的快照。
 - `--ratelimit`：**每个 TiKV** 执行备份任务的速度上限（单位 MiB/s）。
 - `--log-file`：备份日志写入的目标文件。
+
+> **注意：**
+>
+> BR 工具已支持自适应 GC，会自动将 `backupTS`（默认是最新的 PD timestamp）注册到 PD 的 `safePoint`，保证 TiDB 的 GC Safe Point 在备份期间不会向前移动，即可避免手动设置 GC。
 
 备份期间终端会显示进度条，效果如下。当进度条达到 100% 时，表示备份完成。
 
@@ -102,6 +110,29 @@ br backup full \
     --log-file backupfull.log
 ```
 
+## 备份统计信息
+
+从 TiDB v7.5.0 开始，br 命令行工具引入参数 `--ignore-stats`。当指定该参数值为 `false` 时，br 命令行工具支持备份和恢复数据库的列、索引、和表级别的统计信息，因此从备份中恢复的 TiDB 数据库不再需要手动运行统计信息收集任务，也无需等待自动收集任务的完成，从而简化了数据库维护工作，并提升了查询性能。
+
+当未指定该参数值为 `false` 时，br 命令行工具默认 `--ignore-stats=true`，即在备份数据时不备份统计信息。
+
+下面是备份集群快照数据并备份表统计信息的示例，需要设置 `--ignore-stats=false`：
+
+```shell
+br backup full \
+--storage local:///br_data/ --pd "${PD_IP}:2379" --log-file restore.log \
+--ignore-stats=false
+```
+
+完成上述配置后，在恢复数据时，如果备份中包含了统计信息，br 命令行工具在恢复数据时会自动恢复备份的统计信息：
+
+```shell
+br restore full \
+--storage local:///br_data/ --pd "${PD_IP}:2379" --log-file restore.log 
+```
+
+备份恢复功能在备份时，将统计信息通过 JSON 格式存储在 `backupmeta` 文件中。在恢复时，将 JSON 格式的统计信息导入到集群中。详情请参考 [LOAD STATS](/sql-statements/sql-statement-load-stats.md)。
+
 ## 备份数据加密
 
 > **警告：**
@@ -138,6 +169,7 @@ br backup full\
 ```shell
 br restore full \
     --pd "${PD_IP}:2379" \
+    --with-sys-table \
     --storage "s3://${backup_collection_addr}/snapshot-${date}?access-key=${access-key}&secret-access-key=${secret-access-key}" \
     --ratelimit 128 \
     --log-file restorefull.log
@@ -145,8 +177,9 @@ br restore full \
 
 以上命令中，
 
-- `--ratelimit`：**每个 TiKV** 执行恢复任务的速度上限（单位 MiB/s）
-- `--log-file`：备份日志写入的目标文件
+- `--with-sys-table`：恢复集群数据的同时恢复**部分系统表**的数据，包括恢复账号权限数据、 SQL Binding 信息和统计信息数据(详细参考[备份统计信息](/br/br-snapshot-manual.md#备份统计信息))，但暂不支持恢复统计信息表 (`mysql.stat_*`) 和系统参数 (`mysql.tidb`, `mysql.global_variables`) 等信息，更多信息详见[恢复 `mysql` 数据库下的表](/br/br-snapshot-guide.md#恢复-mysql-数据库下的表)。
+- `--ratelimit`：**每个 TiKV** 执行恢复任务的速度上限（单位 MiB/s）。
+- `--log-file`：备份日志写入的目标文件。
 
 恢复期间终端会显示进度条，效果如下。当进度条达到 100% 时，表示恢复完成。在完成恢复后，br 工具为了确保数据安全性，还会校验恢复数据。
 
@@ -209,6 +242,38 @@ br restore full \
     --filter 'db*.tbl*' \
     --storage "s3://${backup_collection_addr}/snapshot-${date}?access-key=${access-key}&secret-access-key=${secret-access-key}" \
     --log-file restorefull.log
+```
+
+### 恢复系统表中存储的执行计划绑定信息
+
+如果你需要恢复原集群的执行计划绑定信息，执行 `br restore full` 命令，设置 `--with-sys-table` 并通过 `--filter` 或 `-f` 指定需要恢复的系统表。
+
+下面是恢复 `mysql.bind_info` 表的示例：
+
+```shell
+br restore full \
+    --pd "${PD_IP}:2379" \
+    --filter 'mysql.bind_info' \
+    --with-sys-table \
+    --storage "s3://${backup_collection_addr}/snapshot-${date}?access-key=${access-key}&secret-access-key=${secret-access-key}" \
+    --log-file restore_system_table.log
+```
+
+恢复完成后，可以通过 [`SHOW GLOBAL BINDINGS`](/sql-statements/sql-statement-show-bindings.md) 检查执行计划绑定信息的恢复情况：
+
+```sql
+SHOW GLOBAL BINDINGS;
+```
+
+当前执行计划绑定信息在备份恢复后的动态加载仍在优化中（相关的 issue 为 [#46527](https://github.com/pingcap/tidb/issues/46527) 和 [#46528](https://github.com/pingcap/tidb/issues/46528)），你需要手动刷新执行计划绑定信息。
+
+```sql
+-- 确保 mysql.bind_info 表中 builtin_pseudo_sql_for_bind_lock 的记录仅 1 行，如果多于 1 行，需要手动删除
+SELECT count(*) FROM mysql.bind_info WHERE original_sql = 'builtin_pseudo_sql_for_bind_lock';
+DELETE FROM bind_info WHERE original_sql = 'builtin_pseudo_sql_for_bind_lock' LIMIT 1;
+
+-- 强制重新加载绑定信息
+ADMIN RELOAD BINDINGS;
 ```
 
 ## 恢复加密的快照备份数据

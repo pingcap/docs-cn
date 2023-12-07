@@ -15,7 +15,7 @@ PD Control 是 PD 的命令行工具，用于获取集群状态信息和调整�
 
 ### 使用 TiUP
 
-可直接通过 `tiup ctl:<cluster-version> pd -u http://<pd_ip>:<pd_port> [-i]` 使用。
+可直接通过 `tiup ctl:v<CLUSTER_VERSION> pd -u http://<pd_ip>:<pd_port> [-i]` 使用。
 
 ### 下载安装包
 
@@ -23,16 +23,16 @@ PD Control 是 PD 的命令行工具，用于获取集群状态信息和调整�
 
 | 安装包                                                                    | 操作系统 | 架构  | SHA256 校验和                                                    |
 | :------------------------------------------------------------------------ | :------- | :---- | :--------------------------------------------------------------- |
-| `https://download.pingcap.org/tidb-community-server-{version}-linux-amd64.tar.gz` (pd-ctl) | Linux    | amd64 | `https://download.pingcap.org/tidb-community-server-{version}-linux-amd64.sha256` |
-| `https://download.pingcap.org/tidb-community-server-{version}-linux-arm64.tar.gz` (pd-ctl) | Linux | arm64 | `https://download.pingcap.org/tidb-community-server-{version}-linux-arm64.sha256` |
+| `https://download.pingcap.org/tidb-community-server-{version}-linux-amd64.tar.gz` (pd-ctl) | Linux    | amd64 | `https://download.pingcap.org/tidb-community-server-{version}-linux-amd64.tar.gz.sha256` |
+| `https://download.pingcap.org/tidb-community-server-{version}-linux-arm64.tar.gz` (pd-ctl) | Linux | arm64 | `https://download.pingcap.org/tidb-community-server-{version}-linux-arm64.tar.gz.sha256` |
 
 > **注意：**
 >
-> 下载链接中的 `{version}` 为 TiDB 的版本号。例如，amd64 架构的 `v6.4.0` 版本的下载链接为 `https://download.pingcap.org/tidb-community-server-v6.4.0-linux-amd64.tar.gz`。
+> 下载链接中的 `{version}` 为 TiDB 的版本号。例如，amd64 架构的 `v7.5.0` 版本的下载链接为 `https://download.pingcap.org/tidb-community-server-v7.5.0-linux-amd64.tar.gz`。
 
 ### 源码编译
 
-1. [Go](https://golang.org/) Version 1.13 以上
+1. [Go](https://golang.org/) 1.21 或以上版本
 2. 在 PD 项目根目录使用 `make` 或者 `make pd-ctl` 命令进行编译，生成 bin/pd-ctl
 
 ## 简单例子
@@ -42,7 +42,7 @@ PD Control 是 PD 的命令行工具，用于获取集群状态信息和调整�
 {{< copyable "shell-regular" >}}
 
 ```bash
-tiup ctl:<cluster-version> pd store -u http://127.0.0.1:2379
+tiup ctl:v<CLUSTER_VERSION> pd store -u http://127.0.0.1:2379
 ```
 
 交互模式：
@@ -50,7 +50,7 @@ tiup ctl:<cluster-version> pd store -u http://127.0.0.1:2379
 {{< copyable "shell-regular" >}}
 
 ```bash
-tiup ctl:<cluster-version> pd -i -u http://127.0.0.1:2379
+tiup ctl:v<CLUSTER_VERSION> pd -i -u http://127.0.0.1:2379
 ```
 
 使用环境变量：
@@ -59,7 +59,7 @@ tiup ctl:<cluster-version> pd -i -u http://127.0.0.1:2379
 
 ```bash
 export PD_ADDR=http://127.0.0.1:2379 &&
-tiup ctl:<cluster-version> pd
+tiup ctl:v<CLUSTER_VERSION> pd
 ```
 
 使用 TLS 加密：
@@ -67,7 +67,7 @@ tiup ctl:<cluster-version> pd
 {{< copyable "shell-regular" >}}
 
 ```bash
-tiup ctl:<cluster-version> pd -u https://127.0.0.1:2379 --cacert="path/to/ca" --cert="path/to/cert" --key="path/to/key"
+tiup ctl:v<CLUSTER_VERSION> pd -u https://127.0.0.1:2379 --cacert="path/to/ca" --cert="path/to/cert" --key="path/to/key"
 ```
 
 ## 命令行参数 (flags)
@@ -451,7 +451,13 @@ config show cluster-version
 
 - `enable-placement-rules` 用于开启 placement rules，在 v5.0 及以上的版本默认开启。
 
-- `store-limit-mode` 用于控制 store 限速机制的模式。主要有两种模式：`auto` 和 `manual`。`auto` 模式下会根据 load 自动进行平衡调整（实验性功能）。
+- `store-limit-mode` 用于控制 store 限速机制的模式。主要有两种模式：`auto` 和 `manual`。`auto` 模式下会根据 load 自动进行平衡调整（弃用）。
+
+- `store-limit-version` 用于设置 `store limit` 限制模式，目前提供两种方式：`v1` 和 `v2`。默认值为 `v1`。在 `v1` 模式下，你可以手动修改 `store limit` 以限制单个 TiKV 调度速度。`v2` 模式为实验特性，在 `v2` 模式下，你无需关注 `store limit` 值，PD 将根据 TiKV Snapshot 执行情况动态调整 TiKV 调度速度。详情请参考 [Store Limit v2 原理](/configure-store-limit.md#store-limit-v2-原理)。
+
+    ```bash
+    config set store-limit-version v2       // 使用 Store Limit v2
+    ```
 
 - PD 会对流量信息的末尾数字进行四舍五入处理，减少 Region 流量信息变化引起的统计信息更新。该配置项用于指定对 Region 流量信息的末尾进行四舍五入的位数。例如流量 `100512` 会归约到 `101000`。默认值为 `3`。该配置替换了 `trace-region-flow`。
 
@@ -941,7 +947,7 @@ region keys --format=raw a z -1
 {{< copyable "" >}}
 
 ```bash
-region keys --format=raw a "" 20 
+region keys --format=raw a "" 20
 ```
 
 ```
@@ -1065,9 +1071,11 @@ region topsize
 }
 ```
 
-### `region check [miss-peer | extra-peer | down-peer | pending-peer | offline-peer | empty-region | hist-size | hist-keys]`
+### `region check [miss-peer | extra-peer | down-peer | pending-peer | offline-peer | empty-region | hist-size | hist-keys] [--jq="<query string>"]`
 
-用于查询处于异常状态的 Region，各类型的意义如下
+用于查询处于异常状态的 Region，使用 jq 格式化输出请参考 [jq 格式化 JSON 输出示例](#jq-格式化-json-输出示例)。
+
+各类型的意义如下：
 
 - miss-peer：缺副本的 Region
 - extra-peer：多副本的 Region
@@ -1257,6 +1265,23 @@ scheduler config balance-hot-region-scheduler  // 显示 balance-hot-region 调�
     scheduler config balance-hot-region-scheduler set enable-for-tiflash true
     ```
 
+### `service-gc-safepoint`
+
+用于查询当前的 GC safepoint 与 service GC safepoint，输出结果示例如下：
+
+```bash
+{
+  "service_gc_safe_points": [
+    {
+      "service_id": "gc_worker",
+      "expired_at": 9223372036854775807,
+      "safe_point": 439923410637160448
+    }
+  ],
+  "gc_safe_point": 0
+}
+```
+
 ### `store [delete | cancel-delete | label | weight | remove-tombstone | limit ] <store_id> [--jq="<query string>"]`
 
 使用 jq 格式化输出请参考 [jq 格式化 json 输出示例](#jq-格式化-json-输出示例)。
@@ -1294,7 +1319,7 @@ store 1
 store delete 1
 ```
 
-执行 `store cancel-delete` 命令，你可以撤销已使用 `store delete` 下线并处于 `Offline` 状态的 store。撤销后，该 store 会从 `Offline` 状态变为 `Up` 状态。注意， `store cancel-delete` 命令无法使 `Tombstone` 状态的 store 变回 `Up` 状态。
+执行 `store cancel-delete` 命令，你可以撤销已使用 `store delete` 下线并处于 `Offline` 状态的 store。撤销后，该 store 会从 `Offline` 状态变为 `Up` 状态。注意，`store cancel-delete` 命令无法使 `Tombstone` 状态的 store 变回 `Up` 状态。
 
 撤销通过 `store delete` 下线 id 为 1 的 store：
 
@@ -1371,8 +1396,7 @@ store weight 1 5 10
 
 > **注意：**
 >
-> * `store limit` 命令原有的 `region-add` 和 `region-remove` 子命令已废弃，请使用 `add-peer` 和 `remove-peer` 来替代。
-> * 使用 `pd-ctl` 可以查看 TiKV 节点的状态信息，即 `Up`，`Disconnect`，`Offline`，`Down`，或 `Tombstone`。如需查看各个状态之间的关系，请参考 [TiKV Store 状态之间的关系](/tidb-scheduling.md#信息收集)。
+> 使用 `pd-ctl` 可以查看 TiKV 节点的状态信息，即 `Up`，`Disconnect`，`Offline`，`Down`，或 `Tombstone`。如需查看各个状态之间的关系，请参考 [TiKV Store 状态之间的关系](/tidb-scheduling.md#信息收集)。
 
 ### `log [fatal | error | warn | info | debug]`
 

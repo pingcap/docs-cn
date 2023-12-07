@@ -9,16 +9,18 @@ TiDB Binlog 是一个用于收集 TiDB 的 binlog，并提供准实时备份和�
 
 TiDB Binlog 支持以下功能场景：
 
-- **数据同步**：同步 TiDB 集群数据到其他数据库
-- **实时备份和恢复**：备份 TiDB 集群数据，同时可以用于 TiDB 集群故障时恢复
+- **数据同步**：同步 TiDB 集群数据到其他数据库。
+- **实时备份和恢复**：备份 TiDB 集群数据，同时可以用于 TiDB 集群故障时恢复。
 
 > **注意：**
 >
-> TiDB Binlog 与 TiDB v5.0 版本开始引入的一些特性不兼容，无法一起使用，详情参照[注意事项](#注意事项)。建议使用 [TiCDC](/ticdc/ticdc-overview.md) 替代 TiDB Binlog。
+> - TiDB Binlog 与 TiDB v5.0 开始引入的一些特性不兼容，无法一起使用，详情参照[注意事项](#注意事项)。
+> - 从 TiDB v7.5.0 开始，TiDB Binlog 组件的数据同步功能不再提供技术支持，强烈建议使用 [TiCDC](/ticdc/ticdc-overview.md) 作为数据同步的替代方案。
+> - 尽管 TiDB v7.5.0 仍支持 TiDB Binlog 组件的实时备份和恢复，但该组件在未来版本中将被完全废弃，推荐使用 [PITR](/br/br-pitr-guide.md) 作为数据恢复的替代方案。
 
 要快速了解 Binlog 的基本原理和使用方法，建议先观看下面的培训视频（时长 32 分钟）。注意本视频只为学习参考，具体操作步骤和最新功能，请以文档内容为准。
 
-<video src="https://download.pingcap.com/docs-cn%2FLesson21_binlog.mp4" width="100%" height="100%" controls="controls" poster="https://tidb-docs.s3.us-east-2.amazonaws.com/thumbnail+-+lesson+21.png"></video>
+<video src="https://download.pingcap.com/docs-cn%2FLesson21_binlog.mp4" width="100%" height="100%" controls="controls" poster="https://download.pingcap.com/docs-cn/poster_lesson21.png"></video>
 
 ## TiDB Binlog 整体架构
 
@@ -63,10 +65,6 @@ TiDB Binlog 集群主要分为 Pump 和 Drainer 两个组件，以及 binlogctl 
     - [TiDB 聚簇索引特性](/clustered-indexes.md#限制)：开启 TiDB Binlog 后 TiDB 不允许创建非单个整数列作为主键的聚簇索引；已创建的聚簇索引表的数据插入、删除和更新动作不会通过 TiDB Binlog 同步到下游。如需同步聚簇索引表，请升级至 v5.1 版本或使用 [TiCDC](/ticdc/ticdc-overview.md)；
     - TiDB 系统变量 [tidb_enable_async_commit](/system-variables.md#tidb_enable_async_commit-从-v50-版本开始引入)：启用 TiDB Binlog 后，开启该选项无法获得性能提升。要获得性能提升，建议使用 [TiCDC](/ticdc/ticdc-overview.md) 替代 TiDB Binlog。
     - TiDB 系统变量 [tidb_enable_1pc](/system-variables.md#tidb_enable_1pc-从-v50-版本开始引入)：启用 TiDB Binlog 后，开启该选项无法获得性能提升。要获得性能提升，建议使用 [TiCDC](/ticdc/ticdc-overview.md) 替代 TiDB Binlog。
-
-* TiDB Binlog 与 TiDB v4.0.7 版本开始引入的以下特性不兼容，无法一起使用：
-
-    - TiDB 系统变量 [tidb_enable_amend_pessimistic_txn](/system-variables.md#tidb_enable_amend_pessimistic_txn-从-v407-版本开始引入)：两个功能存在兼容性问题，一起使用会造成 TiDB Binlog 复制数据不一致的正确性问题。
 
 * Drainer 支持将 Binlog 同步到 MySQL、TiDB、Kafka 或者本地文件。如果需要将 Binlog 同步到其他 Drainer 不支持的类型的系统中，可以设置 Drainer 将 Binlog 同步到 Kafka，然后根据 binlog consumer protocol 进行定制处理，参考 [Binlog Consumer Client 用户文档](/tidb-binlog/binlog-consumer-client.md)。
 

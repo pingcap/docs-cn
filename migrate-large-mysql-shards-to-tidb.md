@@ -9,13 +9,13 @@ summary: 使用 Dumpling 和 TiDB Lightning 合并导入分表数据到 TiDB，�
 
 如果分库分表合并迁移在 1 TiB 以内，请参考[从小数据量分库分表 MySQL 合并迁移数据到 TiDB](/migrate-small-mysql-shards-to-tidb.md)，支持全量和增量且更为简单。
 
-在本文的示例中，假设有两个数据库 my_db1 和 my_db2 ，使用 Dumpling 分别从 my_db1 中导出 table1 和 table2 两个表，从 my_db2 中导出 table3 和 table4 两个表，然后再用 TiDB Lightning 把导出的 4 个表合并导入到下游 TiDB 中的同一个库 my_db 的同一个表格 table5 中。
+在本文的示例中，假设有两个数据库 my_db1 和 my_db2，使用 Dumpling 分别从 my_db1 中导出 table1 和 table2 两个表，从 my_db2 中导出 table3 和 table4 两个表，然后再用 TiDB Lightning 把导出的 4 个表合并导入到下游 TiDB 中的同一个库 my_db 的同一个表格 table5 中。
 
 本文将以三个步骤演示导入流程：
 
 1. 使用 Dumpling 导出全量数据备份。在本文档示例中，分别从两个源数据库中各导出两个表：
-    - 从 实例 1 MySQL 的 my_db1 导出 table1、table2
-    - 从 实例 2 MySQL 的 my_db2 导出 table3、table4
+    - 从实例 1 MySQL 的 my_db1 导出 table1、table2
+    - 从实例 2 MySQL 的 my_db2 导出 table3、table4
 2. 启动 TiDB Lightning 执行导入 TiDB 中的 mydb.table5
 3. 使用 DM 进行增量数据迁移（可选）
 
@@ -77,7 +77,7 @@ tiup dumpling -h ${ip} -P 3306 -u root -t 16 -r 200000 -F 256MB -B my_db1 -f 'my
 | `-P` 或 `--port`       | MySQL 数据库的端口 |
 | `-h` 或 `--host`       | MySQL 数据库的 IP 地址 |
 | `-t` 或 `--thread`     | 导出的线程数。增加线程数会增加 Dumpling 并发度提高导出速度，但也会加大数据库内存消耗，因此不宜设置过大，一般不超过 64|
-| `-o` 或 `--output`     | 存储导出文件的目录，支持本地文件路径或[外部存储 URL 格式](/br/external-storage.md) |
+| `-o` 或 `--output`     | 存储导出文件的目录，支持本地文件路径或[外部存储服务的 URI 格式](/external-storage-uri.md) |
 | `-r` 或 `--row`        | 用于指定单个文件的最大行数，指定该参数后 Dumpling 会开启表内并发加速导出，同时减少内存使用 |
 | `-F`                   | 指定单个文件的最大大小，单位为 MiB。强烈建议使用`-F`参数以避免单表过大导致备份过程中断 |
 | `-B` 或 `--database`   | 导出指定数据库 |
@@ -148,7 +148,7 @@ CREATE TABLE `table5` (
 
     [tikv-importer]
     # "local"：默认使用该模式，适用于 TB 级以上大数据量，但导入期间下游 TiDB 无法对外提供服务。
-    # "tidb"：TB 级以下数据量也可以采用`tidb`后端模式，下游 TiDB 可正常提供服务。 关于后端模式更多信息请参阅：https://docs.pingcap.com/tidb/stable/tidb-lightning-backends
+    # "tidb"：TB 级以下数据量也可以采用`tidb`后端模式，下游 TiDB 可正常提供服务。关于后端模式更多信息请参阅：https://docs.pingcap.com/tidb/stable/tidb-lightning-backends
     backend = "local"
     # 设置排序的键值对的临时存放地址，目标路径必须是一个空目录，目录空间须大于待导入数据集的大小。建议设为与 `data-source-dir` 不同的磁盘目录，独占 IO 会获得更好的导入性能
     sorted-kv-dir = "${sorted-kv-dir}"
@@ -211,7 +211,7 @@ CREATE TABLE `table5` (
 
 ### 添加数据源
 
-新建 `source1.yaml` 文件, 写入以下内容：
+新建 `source1.yaml` 文件，写入以下内容：
 
 {{< copyable "" >}}
 
@@ -272,7 +272,7 @@ target-database:              # 下游数据库实例配置。
 ##  使用黑白名单配置需要同步的表
 block-allow-list:             # 数据源数据库实例匹配的表的 block-allow-list 过滤规则集，如果 DM 版本早于 v2.0.0-beta.2 则使用 black-white-list。
   bw-rule-1:                  # 黑白名单配置项 ID。
-    do-dbs: ["my_db1"]        # 迁移哪些库。这里将实例1的 my_db1 和 实例2的 my_db2 分别配置为两条 rule。以示例如何避免实例1的 my_db2 被同步。
+    do-dbs: ["my_db1"]        # 迁移哪些库。这里将实例 1 的 my_db1 和实例 2 的 my_db2 分别配置为两条 rule，以示例如何避免实例 1 的 my_db2 被同步。
   bw-rule-2:
     do-dbs: ["my_db2"]
 
@@ -341,7 +341,7 @@ tiup dmctl --master-addr ${advertise-addr} start-task task.yaml
 | `--master-addr` | dmctl 要连接的集群的任意 DM-master 节点的 `{advertise-addr}`，例如：172.16.10.71:8261 |
 | `start-task`| 命令用于创建数据迁移任务 |
 
-如果任务启动失败，可根据返回结果的提示进行配置变更后执行 start-task task.yaml 命令重新启动任务。遇到问题请参考 [故障及处理方法](/dm/dm-error-handling.md) 以及 [常见问题](/dm/dm-faq.md)。
+如果任务启动失败，可根据返回结果的提示进行配置变更后执行 start-task task.yaml 命令重新启动任务。遇到问题请参考[故障及处理方法](/dm/dm-error-handling.md)以及[常见问题](/dm/dm-faq.md)。
 
 ### 查看任务状态
 
@@ -361,7 +361,7 @@ tiup dmctl --master-addr ${advertise-addr} query-status ${task-name}
 
 - 通过 Grafana 查看
 
-    如果使用 TiUP 部署 DM 集群时，正确部署了 Prometheus、Alertmanager 与 Grafana，则使用部署时填写的 IP 及 端口进入 Grafana，选择 DM 的 dashboard 查看 DM 相关监控项。
+    如果使用 TiUP 部署 DM 集群时，正确部署了 Prometheus、Alertmanager 与 Grafana，则使用部署时填写的 IP 及端口进入 Grafana，选择 DM 的 dashboard 查看 DM 相关监控项。
 
 - 通过日志查看
 

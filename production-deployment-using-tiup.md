@@ -10,10 +10,6 @@ aliases: ['/docs-cn/dev/production-offline-deployment-using-tiup/', '/zh/tidb/de
 
 目前 TiUP 可以支持部署 TiDB、TiFlash、TiDB Binlog、TiCDC 以及监控系统。本文将介绍不同集群拓扑的具体部署步骤。
 
-> **注意：**
->
-> TiDB、TiUP 及 TiDB Dashboard 默认会收集使用情况信息，并将这些信息分享给 PingCAP 用于改善产品。若要了解所收集的信息详情及如何禁用该行为，请参见[遥测](/telemetry.md)。
-
 ## 第 1 步：软硬件环境需求及前置检查
 
 [软硬件环境需求](/hardware-and-software-requirements.md)
@@ -44,7 +40,7 @@ aliases: ['/docs-cn/dev/production-offline-deployment-using-tiup/', '/zh/tidb/de
 
         ```shell
         source .bash_profile
-         ```
+        ```
 
     2. 确认 TiUP 工具是否安装：
 
@@ -142,12 +138,12 @@ aliases: ['/docs-cn/dev/production-offline-deployment-using-tiup/', '/zh/tidb/de
 
     如果从官网下载的离线镜像不满足你的具体需求，或者希望对已有的离线镜像内容进行调整，例如增加某个组件的新版本等，可以采取以下步骤进行操作：
 
-    1. 在制作离线镜像时，可通过参数指定具体的组件和版本等信息，获得不完整的离线镜像。例如，要制作一个只包括 v1.11.0 版本 TiUP 和 TiUP Cluster 的离线镜像，可执行如下命令：
+    1. 在制作离线镜像时，可通过参数指定具体的组件和版本等信息，获得不完整的离线镜像。例如，要制作一个只包括 v1.12.3 版本 TiUP 和 TiUP Cluster 的离线镜像，可执行如下命令：
 
         {{< copyable "shell-regular" >}}
 
         ```bash
-        tiup mirror clone tiup-custom-mirror-v1.11.0 --tiup v1.11.0 --cluster v1.11.0
+        tiup mirror clone tiup-custom-mirror-v1.12.3 --tiup v1.12.3 --cluster v1.12.3
         ```
 
         如果只需要某一特定平台的组件，也可以通过 `--os` 和 `--arch` 参数来指定。
@@ -179,10 +175,10 @@ aliases: ['/docs-cn/dev/production-offline-deployment-using-tiup/', '/zh/tidb/de
         {{< copyable "shell-regular" >}}
 
         ```bash
-        tiup mirror merge tiup-custom-mirror-v1.11.0
+        tiup mirror merge tiup-custom-mirror-v1.12.3
         ```
 
-    5. 上述步骤完成后，通过 `tiup list` 命令检查执行结果。在本文例子中，使用 `tiup list tiup` 和 `tiup list cluster` 均应能看到对应组件的 `v1.11.0` 版本出现在结果中。
+    5. 上述步骤完成后，通过 `tiup list` 命令检查执行结果。在本文例子中，使用 `tiup list tiup` 和 `tiup list cluster` 均应能看到对应组件的 `v1.12.3` 版本出现在结果中。
 
 #### 部署离线环境 TiUP 组件
 
@@ -228,7 +224,7 @@ tiup cluster template > topology.yaml
 
 针对两种常用的部署场景，也可以通过以下命令生成建议的拓扑模板：
 
-- 混合部署场景：单台机器部署多个实例，详情参见[混合部署拓扑架构](/hybrid-deployment-topology.md) 。
+- 混合部署场景：单台机器部署多个实例，详情参见[混合部署拓扑架构](/hybrid-deployment-topology.md)。
 
     {{< copyable "shell-regular" >}}
 
@@ -279,13 +275,13 @@ alertmanager_servers:
 
 | 场景 | 配置任务 | 配置文件模板 | 拓扑说明 |
 | :-- | :-- | :-- | :-- |
-| OLTP 业务 | [部署最小拓扑架构](/minimal-deployment-topology.md) | [简单最小配置模板](https://github.com/pingcap/docs-cn/blob/master/config-templates/simple-mini.yaml)<br/>[详细最小配置模板](https://github.com/pingcap/docs-cn/blob/master/config-templates/complex-mini.yaml) | 最小集群拓扑，包括 tidb-server、tikv-server、pd-server。 |
-| HTAP 业务 | [部署 TiFlash 拓扑架构](/tiflash-deployment-topology.md) | [简单 TiFlash 配置模版](https://github.com/pingcap/docs-cn/blob/master/config-templates/simple-tiflash.yaml)<br/>[详细 TiFlash 配置模版](https://github.com/pingcap/docs-cn/blob/master/config-templates/complex-tiflash.yaml) | 在最小拓扑的基础上部署 TiFlash。TiFlash 是列式存储引擎，已经逐步成为集群拓扑的标配。|
-| 使用 [TiCDC](/ticdc/ticdc-overview.md) 进行增量同步 | [部署 TiCDC 拓扑架构](/ticdc-deployment-topology.md) | [简单 TiCDC 配置模板](https://github.com/pingcap/docs-cn/blob/master/config-templates/simple-cdc.yaml)<br/>[详细 TiCDC 配置模板](https://github.com/pingcap/docs-cn/blob/master/config-templates/complex-cdc.yaml) | 在最小拓扑的基础上部署 TiCDC。TiCDC 支持多种下游 (TiDB/MySQL/MQ)。 |
-| 使用 [TiDB Binlog](/tidb-binlog/tidb-binlog-overview.md) 进行增量同步 | [部署 TiDB Binlog 拓扑架构](/tidb-binlog-deployment-topology.md) | [简单 TiDB Binlog 配置模板（下游为 MySQL）](https://github.com/pingcap/docs-cn/blob/master/config-templates/simple-tidb-binlog.yaml)<br/>[简单 TiDB Binlog 配置模板（下游为 file）](https://github.com/pingcap/docs-cn/blob/master/config-templates/simple-file-binlog.yaml)<br/>[详细 TiDB Binlog 配置模板](https://github.com/pingcap/docs-cn/blob/master/config-templates/complex-tidb-binlog.yaml) | 在最小拓扑的基础上部署 TiDB Binlog。 |
-| 使用 Spark 的 OLAP 业务 | [部署 TiSpark 拓扑架构](/tispark-deployment-topology.md) | [简单 TiSpark 配置模板](https://github.com/pingcap/docs-cn/blob/master/config-templates/simple-tispark.yaml)<br/>[详细 TiSpark 配置模板](https://github.com/pingcap/docs-cn/blob/master/config-templates/complex-tispark.yaml) | 在最小拓扑的基础上部署 TiSpark 组件。TiSpark 是 PingCAP 为解决用户复杂 OLAP 需求而推出的产品。TiUP cluster 组件对 TiSpark 的支持目前为实验特性。 |
-| 单台机器，多个实例 | [混合部署拓扑架构](/hybrid-deployment-topology.md) | [简单混部配置模板](https://github.com/pingcap/docs-cn/blob/master/config-templates/simple-multi-instance.yaml)<br/>[详细混部配置模板](https://github.com/pingcap/docs-cn/blob/master/config-templates/complex-multi-instance.yaml) | 也适用于单机多实例需要额外增加目录、端口、资源配比、label 等配置的场景。 |
-| 跨机房部署 TiDB 集群 | [跨机房部署拓扑架构](/geo-distributed-deployment-topology.md) | [跨机房配置模板](https://github.com/pingcap/docs-cn/blob/master/config-templates/geo-redundancy-deployment.yaml) | 以典型的两地三中心架构为例，介绍跨机房部署架构，以及需要注意的关键设置。 |
+| OLTP 业务 | [部署最小拓扑架构](/minimal-deployment-topology.md) | [简单最小配置模板](/minimal-deployment-topology.md#拓扑模版)<br/>[详细最小配置模板](/minimal-deployment-topology.md#拓扑模版) | 最小集群拓扑，包括 tidb-server、tikv-server、pd-server。 |
+| HTAP 业务 | [部署 TiFlash 拓扑架构](/tiflash-deployment-topology.md) | [简单 TiFlash 配置模版](/tiflash-deployment-topology.md#拓扑模版)<br/>[详细 TiFlash 配置模版](/tiflash-deployment-topology.md#拓扑模版) | 在最小拓扑的基础上部署 TiFlash。TiFlash 是列式存储引擎，已经逐步成为集群拓扑的标配。|
+| 使用 [TiCDC](/ticdc/ticdc-overview.md) 进行增量同步 | [部署 TiCDC 拓扑架构](/ticdc-deployment-topology.md) | [简单 TiCDC 配置模板](/ticdc-deployment-topology.md#拓扑模版)<br/>[详细 TiCDC 配置模板](/ticdc-deployment-topology.md#拓扑模版) | 在最小拓扑的基础上部署 TiCDC。TiCDC 支持多种下游：TiDB、MySQL、Kafka、MQ、Confluent 和存储服务。 |
+| 使用 [TiDB Binlog](/tidb-binlog/tidb-binlog-overview.md) 进行增量同步 | [部署 TiDB Binlog 拓扑架构](/tidb-binlog-deployment-topology.md) | [简单 TiDB Binlog 配置模板（下游为 MySQL）](/tidb-binlog-deployment-topology.md#拓扑模版)<br/>[简单 TiDB Binlog 配置模板（下游为 file）](/tidb-binlog-deployment-topology.md#拓扑模版)<br/>[详细 TiDB Binlog 配置模板](/tidb-binlog-deployment-topology.md#拓扑模版) | 在最小拓扑的基础上部署 TiDB Binlog。 |
+| 使用 Spark 的 OLAP 业务 | [部署 TiSpark 拓扑架构](/tispark-deployment-topology.md) | [简单 TiSpark 配置模板](/tispark-deployment-topology.md#拓扑模版)<br/>[详细 TiSpark 配置模板](/tispark-deployment-topology.md#拓扑模版) | 在最小拓扑的基础上部署 TiSpark 组件。TiSpark 是 PingCAP 为解决用户复杂 OLAP 需求而推出的产品。TiUP cluster 组件对 TiSpark 的支持目前为实验特性。 |
+| 单台机器，多个实例 | [混合部署拓扑架构](/hybrid-deployment-topology.md) | [简单混部配置模板](/hybrid-deployment-topology.md#拓扑模版)<br/>[详细混部配置模板](/hybrid-deployment-topology.md#拓扑模版) | 也适用于单机多实例需要额外增加目录、端口、资源配比、label 等配置的场景。 |
+| 跨机房部署 TiDB 集群 | [跨机房部署拓扑架构](/geo-distributed-deployment-topology.md) | [跨机房配置模板](/geo-distributed-deployment-topology.md#拓扑模版) | 以典型的两地三中心架构为例，介绍跨机房部署架构，以及需要注意的关键设置。 |
 
 > **注意：**
 >
@@ -299,7 +295,7 @@ alertmanager_servers:
 
 更多参数说明，请参考：
 
-- [TiDB `config.toml.example`](https://github.com/pingcap/tidb/blob/master/config/config.toml.example)
+- [TiDB `config.toml.example`](https://github.com/pingcap/tidb/blob/master/pkg/config/config.toml.example)
 - [TiKV `config.toml.example`](https://github.com/tikv/tikv/blob/master/etc/config-template.toml)
 - [PD `config.toml.example`](https://github.com/pingcap/pd/blob/master/conf/config.toml)
 - [TiFlash `config.toml.example`](https://github.com/pingcap/tiflash/blob/master/etc/config-template.toml)
@@ -345,13 +341,13 @@ alertmanager_servers:
     {{< copyable "shell-regular" >}}
 
     ```shell
-    tiup cluster deploy tidb-test v6.4.0 ./topology.yaml --user root [-p] [-i /home/root/.ssh/gcp_rsa]
+    tiup cluster deploy tidb-test v7.5.0 ./topology.yaml --user root [-p] [-i /home/root/.ssh/gcp_rsa]
     ```
 
 以上部署示例中：
 
 - `tidb-test` 为部署的集群名称。
-- `v6.4.0` 为部署的集群版本，可以通过执行 `tiup list tidb` 来查看 TiUP 支持的最新可用版本。
+- `v7.5.0` 为部署的集群版本，可以通过执行 `tiup list tidb` 来查看 TiUP 支持的最新可用版本。
 - 初始化配置文件为 `topology.yaml`。
 - `--user root` 表示通过 root 用户登录到目标主机完成集群部署，该用户需要有 ssh 到目标机器的权限，并且在目标机器有 sudo 权限。也可以用其他有 ssh 和 sudo 权限的用户完成部署。
 - [-i] 及 [-p] 为可选项，如果已经配置免密登录目标机，则不需填写。否则选择其一即可，[-i] 为可登录到目标机的 root 用户（或 --user 指定的其他用户）的私钥，也可使用 [-p] 交互式输入该用户的密码。

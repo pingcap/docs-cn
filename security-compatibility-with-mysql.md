@@ -5,7 +5,7 @@ aliases: ['/docs-cn/dev/security-compatibility-with-mysql/','/docs-cn/dev/refere
 
 # 与 MySQL 安全特性差异
 
-TiDB 支持与 MySQL 5.7 类似的安全特性，同时 TiDB 还支持 MySQL 8.0 的部分安全特性。 TiDB 的安全特性在实现上 与 MySQL 存在差异。
+TiDB 支持与 MySQL 5.7 类似的安全特性，同时 TiDB 还支持 MySQL 8.0 的部分安全特性。TiDB 的安全特性在实现上与 MySQL 存在差异。
 
 ## 不支持的安全功能特性
 
@@ -104,7 +104,7 @@ TiDB 的密码重用策略功能与 MySQL 一致，在实现密码重用策略�
 - 差异点：
 
     + MySQL：执行 `DROP USER user01` 时，在 `mysql.user` 和 `mysql.password_history` 系统表中匹配 `user01`，若在两个系统表或其中一个系统表中匹配成功，则 `DROP USER` 操作可以正常执行，不会报错。
-    + TiDB：执行 `DROP USER user01` 时，只在 `mysql.user` 系统表中匹配 `user01` ，若没有匹配成功，则 `DROP USER` 操作执行失败，返回报错。此时如果需要成功执行 `DROP USER user01` 操作，删除 `mysql.password_history` 中 `user01` 的记录，请使用 `DROP USER IF EXISTS user01`。
+    + TiDB：执行 `DROP USER user01` 时，只在 `mysql.user` 系统表中匹配 `user01`，若没有匹配成功，则 `DROP USER` 操作执行失败，返回报错。此时如果需要成功执行 `DROP USER user01` 操作，删除 `mysql.password_history` 中 `user01` 的记录，请使用 `DROP USER IF EXISTS user01`。
 
 ## 可用的身份验证插件
 
@@ -122,8 +122,10 @@ TiDB 目前支持的身份验证方式可在以下的表格中查找到。服务
 | `auth_socket`            | 是（5.3.0 版本起） |
 | `tidb_sm3_password`      | 是（6.3.0 版本起） |
 | `tidb_auth_token`        | 是（6.4.0 版本起） |
+| `authentication_ldap_sasl`   | 是（7.1.0 版本起） |
+| `authentication_ldap_simple` | 是（7.1.0 版本起） |
 | TLS 证书       | 是              |
-| LDAP                     | 否               |
+| LDAP                     | 是（7.1.0 版本起） |
 | PAM                      | 否               |
 | ed25519 (MariaDB)        | 否               |
 | GSSAPI (MariaDB)         | 否               |

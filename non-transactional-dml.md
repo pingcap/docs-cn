@@ -184,7 +184,9 @@ show processlist;
 
 ### 终止一个非事务 DML 语句
 
-通过 `KILL TIDB` 终止一个非事务语句时，TiDB 会取消当前正在执行的 batch 之后的所有 batch。执行结果信息需要从日志里获得。
+通过 `KILL TIDB <processlist_id>` 终止一个非事务语句时，TiDB 会取消当前正在执行的 batch 之后的所有 batch。执行结果信息需要从日志里获得。
+
+关于 `KILL TiDB` 的更多信息，参见 [`KILL`](/sql-statements/sql-statement-kill.md)。
 
 ### 查询非事务 DML 语句中划分 batch 的语句
 
@@ -335,7 +337,7 @@ batch-dml 是一种在 DML 语句执行期间将一个事务拆成多个事务�
 
 ### 执行时出现报错 `Failed to restore the delete statement, probably because of unsupported type of the shard column`
 
-划分列的类型暂时不支持 `ENUM`、`BIT`、`SET`、`JSON` 类型，请尝试重新指定一个划分列。推荐使用整数或字符串类型的列。如果划分列不是这些类型，请联系 PingCAP 技术支持。
+划分列的类型暂时不支持 `ENUM`、`BIT`、`SET`、`JSON` 类型，请尝试重新指定一个划分列。推荐使用整数或字符串类型的列。如果划分列不是这些类型，请从 PingCAP 官方或 TiDB 社区[获取支持](/support.md)。
 
 ### 非事务 `DELETE` 出现和普通的 `DELETE` 不等价的“异常”行为
 

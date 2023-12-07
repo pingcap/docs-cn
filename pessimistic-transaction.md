@@ -151,7 +151,7 @@ TiDB 悲观锁复用了乐观锁的两阶段提交逻辑，重点在 DML 执行�
 
 ![TiDB 中的悲观事务](/media/pessimistic-transaction-in-tidb.png)
 
-相关细节本节不再赘述，详情可阅读 [TiDB 悲观锁实现原理](https://asktug.com/t/topic/33550)。
+相关细节本节不再赘述，详情可阅读 [TiDB 悲观锁实现原理](https://tidb.net/blog/7730ed79)。
 
 ## Pipelined 加锁流程
 

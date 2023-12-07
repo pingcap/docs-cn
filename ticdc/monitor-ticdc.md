@@ -1,17 +1,17 @@
 ---
-title: TiCDC 重要监控指标详解
-summary: 了解 TiCDC 重要的监控指标。
+title: TiCDC 详细监控指标
+summary: 了解 TiCDC 详细的监控指标。
 aliases: ['/zh/tidb/dev/ticdc-grafana-dashboard']
 ---
 
-# TiCDC 重要监控指标详解
+# TiCDC 详细监控指标
 
 使用 TiUP 部署 TiDB 集群时，一键部署的监控系统面板包含 TiCDC 面板。本文档对 TiCDC 监控面板上的各项指标进行详细说明。在日常运维中，运维人员可通过观察 TiCDC 面板上的指标了解 TiCDC 当前的状态。
 
 本文档的对指标的介绍基于以下同步任务，即使用默认配置同步数据到 MySQL。
 
 ```shell
-cdc cli changefeed create --pd=http://10.0.10.25:2379 --sink-uri="mysql://root:123456@127.0.0.1:3306/" --changefeed-id="simple-replication-task"
+cdc cli changefeed create --server=http://10.0.10.25:8300 --sink-uri="mysql://root:123456@127.0.0.1:3306/" --changefeed-id="simple-replication-task"
 ```
 
 下图显示了 TiCDC Dashboard 各监控面板：

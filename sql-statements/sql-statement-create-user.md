@@ -12,7 +12,7 @@ aliases: ['/docs-cn/dev/sql-statements/sql-statement-create-user/','/docs-cn/dev
 
 ```ebnf+diagram
 CreateUserStmt ::=
-    'CREATE' 'USER' IfNotExists UserSpecList RequireClauseOpt ConnectionOptions PasswordOption LockOption AttributeOption
+    'CREATE' 'USER' IfNotExists UserSpecList RequireClauseOpt ConnectionOptions PasswordOption LockOption AttributeOption ResourceGroupNameOption
 
 IfNotExists ::=
     ('IF' 'NOT' 'EXISTS')?
@@ -30,11 +30,13 @@ StringName ::=
     stringLit
 |   Identifier
 
-PasswordOption ::= ( 'PASSWORD' 'EXPIRE' ( 'DEFAULT' | 'NEVER' | 'INTERVAL' 'N' 'DAY' )? | 'PASSWORD' 'HISTORY' ( 'DEFAULT' | 'N' ) ｜ 'PASSWORD' 'REUSE' 'INTERVAL' ( 'DEFAULT' | 'N' 'DAY' ) | 'FAILED_LOGIN_ATTEMPTS' 'N' | 'PASSWORD_LOCK_TIME' ( 'N' | 'UNBOUNDED' ) )?
+PasswordOption ::= ( 'PASSWORD' 'EXPIRE' ( 'DEFAULT' | 'NEVER' | 'INTERVAL' N 'DAY' )? | 'PASSWORD' 'HISTORY' ( 'DEFAULT' | N ) | 'PASSWORD' 'REUSE' 'INTERVAL' ( 'DEFAULT' | N 'DAY' ) | 'FAILED_LOGIN_ATTEMPTS' N | 'PASSWORD_LOCK_TIME' ( N | 'UNBOUNDED' ) )*
 
 LockOption ::= ( 'ACCOUNT' 'LOCK' | 'ACCOUNT' 'UNLOCK' )?
 
 AttributeOption ::= ( 'COMMENT' CommentString | 'ATTRIBUTE' AttributeString )?
+
+ResourceGroupNameOption::= ( 'RESOURCE' 'GROUP' Identifier)?
 ```
 
 ## 示例
@@ -151,11 +153,26 @@ CREATE USER 'newuser9'@'%' PASSWORD EXPIRE;
 Query OK, 1 row affected (0.02 sec)
 ```
 
+创建一个使用资源组 `rg1` 的用户：
+
+```sql
+CREATE USER 'newuser7'@'%' RESOURCE GROUP rg1;
+SELECT USER, HOST, USER_ATTRIBUTES FROM MYSQL.USER WHERE USER='newuser7';
+```
+
+```sql
++-----------+------+---------------------------------------------------+
+| USER      | HOST | USER_ATTRIBUTES                                   |
++-----------+------+---------------------------------------------------+
+| newuser7  | %    | {"resource_group": "rg1"} |
++-----------+------+---------------------------------------------------+
+1 rows in set (0.00 sec)
+```
+
 ## MySQL 兼容性
 
 * TiDB 不支持 `WITH MAX_QUERIES_PER_HOUR`、`WITH MAX_UPDATES_PER_HOUR`、`WITH MAX_USER_CONNECTIONS` 等 `CREATE` 选项。
 * TiDB 不支持 `DEFAULT ROLE` 选项。
-* TiDB 不支持 `PASSWORD EXPIRE`、`PASSWORD HISTORY` 等有关密码限制的 `CREATE` 选项。
 * 对于 TiDB 尚不支持的 `CREATE` 选项。这些选项可被解析，但会被忽略。
 
 ## 另请参阅

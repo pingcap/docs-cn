@@ -13,11 +13,12 @@ summary: 介绍在测试中发现的 TiDB 与第三方工具的兼容性问题�
 > - 触发器
 > - 事件
 > - 自定义函数
-> - 外键约束
 > - 空间类型的函数、数据类型和索引
 > - `XA` 语法
 >
 > 这些不支持的功能不兼容将被视为预期行为，不再重复叙述。关于更多 TiDB 与 MySQL 的兼容性对比，你可以查看[与 MySQL 兼容性对比](/mysql-compatibility.md)。
+
+本文列举的兼容性问题是在一些 [TiDB 支持的第三方工具](/develop/dev-guide-third-party-support.md)中发现的。
 
 ## 通用
 
@@ -87,7 +88,7 @@ MySQL Connector/J 的排序规则保存在客户端内，通过获取的服务�
 
 **描述**
 
-TiDB 中 无法使用 `NO_BACKSLASH_ESCAPES` 参数从而不进行 `\` 字符的转义。已提 [issue](https://github.com/pingcap/tidb/issues/35302)。
+TiDB 中无法使用 `NO_BACKSLASH_ESCAPES` 参数从而不进行 `\` 字符的转义。已提 [issue](https://github.com/pingcap/tidb/issues/35302)。
 
 **规避方法**
 
@@ -110,7 +111,7 @@ TiDB 在通讯协议中未设置 `SERVER_QUERY_NO_GOOD_INDEX_USED` 与 `SERVER_Q
 
 **描述**
 
-TiDB 不支持 [enablePacketDebug](https://dev.mysql.com/doc/connector-j/8.0/en/connector-j-connp-props-debugging-profiling.html) 参数，这是一个 MySQL Connector/J 用于调试的参数，将保留数据包的 Buffer。这将导致连接的**意外关闭**，**请勿**打开。
+TiDB 不支持 [enablePacketDebug](https://dev.mysql.com/doc/connector-j/en/connector-j-connp-props-debugging-profiling.html) 参数，这是一个 MySQL Connector/J 用于调试的参数，将保留数据包的 Buffer。这将导致连接的**意外关闭**，**请勿**打开。
 
 **规避方法**
 
@@ -159,17 +160,19 @@ TiDB 对其进行了两个维度的修复：
 
 ## 与 Sequelize 的兼容性
 
-本小节描述的兼容性信息基于 [Sequelize v6.21.4](https://www.npmjs.com/package/sequelize/v/6.21.4) 测试。
+本小节描述的兼容性信息基于 [Sequelize v6.32.1](https://www.npmjs.com/package/sequelize/v/6.32.1) 测试。
 
 根据测试结果，TiDB 支持绝大部分 Sequelize 功能（[使用 `MySQL` 作为方言](https://sequelize.org/docs/v6/other-topics/dialect-specific-things/#mysql)），不支持的功能有：
 
-- 不支持与外键约束相关的功能（包括多对多关联）。
 - [不支持 `GEOMETRY`](https://github.com/pingcap/tidb/issues/6347) 相关。
 - 不支持修改整数主键。
 - 不支持 `PROCEDURE` 相关。
 - 不支持 `READ-UNCOMMITTED` 和 `SERIALIZABLE` [隔离级别](/system-variables.md#transaction_isolation)。
 - 默认不允许修改列的 `AUTO_INCREMENT` 属性。
 - 不支持 `FULLTEXT`、`HASH` 和 `SPATIAL` 索引。
+- 不支持 `sequelize.queryInterface.showIndex(Model.tableName);`。
+- 不支持 `sequelize.options.databaseVersion`。
+- 不支持使用 [`queryInterface.addColumn`](https://sequelize.org/api/v6/class/src/dialects/abstract/query-interface.js~queryinterface#instance-method-addColumn) 添加外键引用。
 
 ### 不支持修改整数主键
 

@@ -59,7 +59,7 @@ SHOW COLLATION WHERE CHARSET = 'gbk';
 ### 非法字符兼容性
 
 * 在系统变量 [`character_set_client`](/system-variables.md#character_set_client) 和 [`character_set_connection`](/system-variables.md#character_set_connection) 不同时设置为 `gbk` 的情况下，TiDB 处理非法字符的方式与 MySQL 一致。
-* 在 `character_set_client` 和 `character_set_connection` 同时为 `gbk` 的情况下， TiDB 处理非法字符的方式与 MySQL 有所区别。
+* 在 `character_set_client` 和 `character_set_connection` 同时为 `gbk` 的情况下，TiDB 处理非法字符的方式与 MySQL 有所区别。
 
     - MySQL 处理非法 GBK 字符集时，对读和写操作的处理方式不同。
     - TiDB 处理非法 GBK 字符集时，对读和写操作的处理方式相同。TiDB 在严格模式下读写非法 GBK 字符都会报错，在非严格模式下，读写非法 GBK 字符都会用 `?` 替换。
@@ -77,7 +77,7 @@ SHOW COLLATION WHERE CHARSET = 'gbk';
 
 * 目前 TiDB 不支持通过 `ALTER TABLE` 语句将其它字符集类型改成 `gbk` 或者从 `gbk` 转成其它字符集类型。
 
-* TiDB 不支持使用 `_gbk`， 比如：
+* TiDB 不支持使用 `_gbk`，比如：
 
   ```sql
   CREATE TABLE t(a CHAR(10) CHARSET BINARY);
@@ -87,6 +87,8 @@ SHOW COLLATION WHERE CHARSET = 'gbk';
   ```
 
 * 对于 `ENUM` 和 `SET` 类型中的二进制字符，TiDB 目前都会将其作为 `utf8mb4` 字符集处理。
+
+* 如果查询条件中包含对字符串前缀的 `LIKE` 过滤，比如 `LIKE 'prefix%'`，并且该列被设置为 GBK 的排序规则（`gbk_bin` 或 `gbk_chinese_ci`），那么 TiDB 优化器暂时无法把这个过滤条件转化为范围扫描 (Range Scan)，而是用全量扫描代替。因此这类 SQL 有可能造成超出预期的资源消耗。
 
 ## 组件兼容性
 

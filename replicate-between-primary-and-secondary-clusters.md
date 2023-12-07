@@ -105,8 +105,8 @@ summary: 了解如何配置一个 TiDB 集群以及该集群的 TiDB 或 MySQL �
 
 > **注意：**
 >
+> - `BACKUP` 和 `RESTORE` 语句目前为实验特性，不建议在生产环境中使用。该功能可能会在未事先通知的情况下发生变化或删除。如果发现 bug，请在 GitHub 上提 [issue](https://github.com/pingcap/tidb/issues) 反馈。
 > - 在生产集群中，关闭 GC 机制和备份操作会一定程度上降低集群的读性能，建议在业务低峰期进行备份，并设置合适的 `RATE_LIMIT` 限制备份操作对线上业务的影响。
->
 > - 上下游集群版本不一致时，应检查 BR 工具的[兼容性](/br/backup-and-restore-overview.md#使用建议)。本文假设上下游集群版本相同。
 
 1. 关闭 GC。
@@ -235,12 +235,12 @@ summary: 了解如何配置一个 TiDB 集群以及该集群的 TiDB 或 MySQL �
     在上游集群中，执行以下命令创建从上游到下游集群的同步链路：
 
     ```shell
-    tiup cdc cli changefeed create --pd=http://172.16.6.122:2379 --sink-uri="mysql://root:@172.16.6.125:4000" --changefeed-id="primary-to-secondary" --start-ts="431434047157698561"
+    tiup cdc cli changefeed create --server=http://172.16.6.122:8300 --sink-uri="mysql://root:@172.16.6.125:4000" --changefeed-id="primary-to-secondary" --start-ts="431434047157698561"
     ```
 
     以上命令中：
 
-    - `--pd`：实际的上游集群的地址
+    - `--server`：TiCDC 集群任意一节点的地址
     - `--sink-uri`：同步任务下游的地址
     - `--start-ts`：TiCDC 同步的起点，需要设置为实际的备份时间点（也就是[第 2 步：迁移全量数据](#第-2-步迁移全量数据)提到的 BackupTS）
 
@@ -314,5 +314,5 @@ tiup cdc redo apply --storage "s3://redo?access-key=minio&secret-access-key=mini
 
     ```shell
     # 创建 changefeed
-    tiup cdc cli changefeed create --pd=http://172.16.6.122:2379 --sink-uri="mysql://root:@172.16.6.125:4000" --changefeed-id="primary-to-secondary"
+    tiup cdc cli changefeed create --server=http://172.16.6.122:8300 --sink-uri="mysql://root:@172.16.6.125:4000" --changefeed-id="primary-to-secondary"
     ```

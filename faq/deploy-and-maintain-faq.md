@@ -36,7 +36,7 @@ TiDB 支持部署和运行在 Intel x86-64 架构的 64 位通用硬件服务器
 
 ## 安装部署 FAQ
 
-如果用于生产环境，推荐使用 TiUP [使用 TiUP 部署](/production-deployment-using-tiup.md) TiDB 集群。
+如果用于生产环境，推荐[使用 TiUP 部署](/production-deployment-using-tiup.md) TiDB 集群。
 
 ### 为什么修改了 TiKV/PD 的 toml 配置文件，却没有生效？
 
@@ -64,7 +64,7 @@ TiDB 支持部署和运行在 Intel x86-64 架构的 64 位通用硬件服务器
 | tidb_version | TiDB 版本 |
 | deployment_method | 部署方式，默认为 binary，可选 docker |
 | process_supervision | 进程监管方式，默认为 systemd，可选 supervise |
-| timezone | 修改部署目标机器时区，默认为 Asia/Shanghai, 可调整，与set_timezone 变量结合使用 |
+| timezone | 修改部署目标机器时区，默认为 Asia/Shanghai，可调整，与 set_timezone 变量结合使用 |
 | set_timezone | 默认为 True，即修改部署目标机器时区，关闭可修改为 False |
 | enable_elk | 目前不支持，请忽略 |
 | enable_firewalld | 开启防火墙，默认不开启 |
@@ -72,13 +72,13 @@ TiDB 支持部署和运行在 Intel x86-64 架构的 64 位通用硬件服务器
 | machine_benchmark | 检测部署目标机器磁盘 IOPS，默认为 True，请勿关闭 |
 | set_hostname | 根据 IP 修改部署目标机器主机名，默认为 False |
 | enable_binlog | 是否部署 pump 并开启 binlog，默认为 False，依赖 Kafka 集群，参见 zookeeper_addrs 变量 |
-| zookeeper_addrs | binlog Kafka 集群的 zookeeper 地址 |
+| zookeeper_addrs | binlog Kafka 集群的 ZooKeeper 地址 |
 | enable_slow_query_log | TiDB 慢查询日志记录到单独文件({{ deploy_dir }}/log/tidb_slow_query.log)，默认为 False，记录到 tidb 日志 |
 | deploy_without_tidb | KV 模式，不部署 TiDB 服务，仅部署 PD、TiKV 及监控服务，请将 inventory.ini 文件中 tidb_servers 主机组 IP 设置为空。 |
 
 ### 如何单独记录 TiDB 中的慢查询日志，如何定位慢查询 SQL？
 
-1. TiDB 中，对慢查询的定义在 TiDB 的配置文件中。`slow-threshold: 300`，这个参数是配置慢查询记录阈值的，单位是 ms。
+1. TiDB 中，对慢查询的定义在 TiDB 的配置文件中。`tidb_slow_log_threshold: 300`，这个参数是配置慢查询记录阈值的，单位是 ms。
 
 2. 如果出现了慢查询，可以从 Grafana 监控定位到出现慢查询的 tidb-server 以及时间点，然后在对应节点查找日志中记录的 SQL 信息。
 
@@ -114,6 +114,6 @@ Direct 模式就是把写入请求直接封装成 I/O 指令发到磁盘，这�
 
 ## TiDB 支持在公有云上部署吗？
 
-TiDB 支持在 [Google GKE](https://docs.pingcap.com/zh/tidb-in-kubernetes/v1.1/deploy-on-gcp-gke)、[AWS EKS](https://docs.pingcap.com/zh/tidb-in-kubernetes/v1.1/deploy-on-aws-eks) 和[阿里云 ACK](https://docs.pingcap.com/zh/tidb-in-kubernetes/v1.1/deploy-on-alibaba-cloud) 上部署使用。
+TiDB 支持在 [Google Cloud GKE](https://docs.pingcap.com/zh/tidb-in-kubernetes/v1.1/deploy-on-gcp-gke)、[AWS EKS](https://docs.pingcap.com/zh/tidb-in-kubernetes/v1.1/deploy-on-aws-eks) 和[阿里云 ACK](https://docs.pingcap.com/zh/tidb-in-kubernetes/v1.1/deploy-on-alibaba-cloud) 上部署使用。
 
 此外，TiDB 云上部署也已在京东云、UCloud 上线。

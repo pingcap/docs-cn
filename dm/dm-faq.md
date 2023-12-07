@@ -49,7 +49,7 @@ DM 会尝试将包含多个 DDL 变更操作的单条语句拆分成只包含一
     - 修改任务配置文件以指定新的任务名，然后使用 `start-task {task-config-file}` 重启迁移任务。
     - 使用 `start-task --remove-meta {task-config-file}` 重启数据迁移任务。
 
-## 设置了 `online-ddl-scheme: "gh-ost"`， gh-ost 表相关的 DDL 报错该如何处理？
+## 设置了 `online-ddl: true`，gh-ost 表相关的 DDL 报错该如何处理？
 
 ```
 [unit=Sync] ["error information"="{\"msg\":\"[code=36046:class=sync-unit:scope=internal:level=high] online ddls on ghost table `xxx`.`_xxxx_gho`\\ngithub.com/pingcap/dm/pkg/terror.(*Error).Generate ......
@@ -63,13 +63,13 @@ DM 在最后 `rename ghost_table to origin table` 的步骤会把内存的 DDL �
 
 可以通过以下方式绕过这个问题：
 
-1. 取消 task 的 `online-ddl-schema` 的配置。
+1. 取消 task 的 `online-ddl-schema` 或 `online-ddl` 的配置。
 
 2. 把 `_{table_name}_gho`、`_{table_name}_ghc`、`_{table_name}_del` 配置到 `block-allow-list.ignore-tables` 中。
 
 3. 手工在下游的 TiDB 执行上游的 DDL。
 
-4. 待 Pos 复制到 gh-ost 整体流程后的位置，再重新启用 `online-ddl-schema` 以及注释掉 `block-allow-list.ignore-tables`。
+4. 待 Pos 复制到 gh-ost 整体流程后的位置，再重新启用 `online-ddl-schema` 或 `online-ddl` 以及注释掉 `block-allow-list.ignore-tables`。
 
 ## 如何为已有迁移任务增加需要迁移的表？
 
@@ -126,7 +126,7 @@ DM 在最后 `rename ghost_table to origin table` 的步骤会把内存的 DDL �
 
 在 DM 2.0 之后，为 checkpoint 等元信息表引入了更多的字段。如果通过 `start-task` 直接使用 1.0 集群的任务配置文件从增量复制阶段继续运行，则会出现 `Error 1054: Unknown column 'binlog_gtid' in 'field list'` 错误。
 
-对于此错误，可 [手动将 DM 1.0 的数据迁移任务导入到 2.0+ 集群](/dm/manually-upgrade-dm-1.0-to-2.0.md)。
+对于此错误，可[手动将 DM 1.0 的数据迁移任务导入到 2.0+ 集群](/dm/manually-upgrade-dm-1.0-to-2.0.md)。
 
 ## TiUP 无法部署 DM 的某个版本（如 v2.0.0-hotfix）
 

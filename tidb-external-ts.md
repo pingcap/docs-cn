@@ -7,15 +7,6 @@ summary: 了解如何通过系统变量 `tidb_external_ts` 读取历史数据。
 
 为了支持读取历史版本数据，TiDB 从 v6.4.0 起引入了一个新的系统变量 [`tidb_external_ts`](/system-variables.md#tidb_external_ts-从-v640-版本开始引入)。本文档介绍如何通过该系统变量读取历史数据，其中包括具体的操作流程。
 
-> **警告：**
->
-> 目前 Stale Read 特性无法和 TiFlash 一起使用。如果你在查询时将 [`tidb_enable_external_ts_read`](/system-variables.md#tidb_enable_external_ts_read-从-v640-版本开始引入) 设置为 `ON`，并且 TiDB 可能从 TiFlash 副本读取数据，你可能会遇到 `ERROR 1105 (HY000): stale requests require tikv backend` 报错信息。
->
-> 要解决该问题，你需要为使用 Stale Read 特性的查询禁用 TiFlash 副本。要禁用 TiFlash 副本，你可以使用以下任一方法：
->
-> - 通过设置 `tidb_isolation_read_engines` 变量来禁用 TiFlash 副本 `SET SESSION tidb_isolation_read_engines='tidb,tikv'`。
-> - 使用 [`READ_FROM_STORAGE`](/optimizer-hints.md#read_from_storagetiflasht1_name--tl_name--tikvt2_name--tl_name-) hint 强制 TiDB 从 TiKV 读取数据。
-
 ## 场景介绍
 
 通过配置让 TiDB 能够读取某一固定时间点的历史数据对于 TiCDC 等数据同步工具非常有用。在数据同步工具完成了某一时间点前的数据同步之后，可以通过设置下游 TiDB 的 `tidb_external_ts` 系统变量，使得下游 TiDB 的请求能够读取到该时间点前的数据。这将避免在同步过程中，下游 TiDB 读取到尚未完全同步而不一致的数据。

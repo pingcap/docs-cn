@@ -8,11 +8,16 @@ aliases: ['/zh/tidb/dev/pitr-usage/']
 
 全量备份包含集群某个时间点的全量数据，但是不包含其他时间点的更新数据，而 TiDB 日志备份能够将业务写入 TiDB 的数据记录及时备份到指定存储中。如果你需要灵活的选择恢复的时间点，即实现 Point-in-time recovery (PITR)，可以开启[日志备份](#开启日志备份)，并[定期执行快照（全量）备份](#定期执行全量备份)。
 
-使用 br 命令行工具备份与恢复数据前，请先[安装 br 命令行工具](/br/br-use-overview.md#部署和使用-br) 。
+使用 br 命令行工具备份与恢复数据前，请先[安装 br 命令行工具](/br/br-use-overview.md#部署和使用-br)。
 
 ## 对集群进行备份
 
 ### 开启日志备份
+
+> **注意：**
+>
+> - 以下场景采用 Amazon S3 Access key 和 Secret key 授权方式来进行模拟。如果使用 IAM Role 授权，需要设置 `--send-credentials-to-tikv` 为 `false`。
+> - 如果使用不同存储或者其他授权方式，请参考[备份存储](/br/backup-and-restore-storages.md)来进行参数调整。
 
 执行 `br log start` 命令启动日志备份任务，一个集群只能启动一个日志备份任务。
 
@@ -102,19 +107,25 @@ Restore KV Files <--------------------------------------------------------------
 
 ### 能力指标
 
-- PITR 恢复速度，平均到单台 TiKV 节点：全量恢复为 280 GB/h ，日志恢复为 30 GB/h
+- PITR 恢复速度，平均到单台 TiKV 节点：全量恢复为 280 GB/h，日志恢复为 30 GB/h
 - 使用 `br log truncate` 清理过期的日志备份数据速度为 600 GB/h
 
 > **注意：**
 >
 > 以上功能指标是根据下述两个场景测试得出的结论，如有出入，建议以实际测试结果为准：
 >
-> - 全量恢复速度 = 全量恢复集群数据量 /（时间 * TiKV 数量）
+> - 全量恢复速度 = 全量恢复数据量 /（时间 * TiKV 数量）
 > - 日志恢复速度 = 日志恢复总量 /（时间 * TiKV 数量）
+>
+> 其中全量恢复数据量，是指单个副本中所有 KV 的逻辑大小，并不代表实际恢复的数据量。BR 恢复数据时会根据集群设置的副本数来恢复全部副本，当副本数越多时，实际恢复的数据量也就越多。
+> 所有测试集群默认设置 3 副本。
+> 如果想提升整体恢复的性能，可以通过根据实际情况调整 TiKV 配置文件中的 [`import.num-threads`](/tikv-configuration-file.md#import) 配置项以及 BR 命令的 [`concurrency`](/br/use-br-command-line-tool.md#常用选项) 参数。
 
 测试场景 1（[TiDB Cloud](https://tidbcloud.com) 上部署）
 
 - TiKV 节点（8 core，16 GB 内存）数量：21
+- TiKV 配置项 `import.num-threads`：8
+- BR 命令参数 `concurrency`：128
 - Region 数量：183,000
 - 集群新增日志数据：10 GB/h
 - 写入 (INSERT/UPDATE/DELETE) QPS：10,000
@@ -122,6 +133,8 @@ Restore KV Files <--------------------------------------------------------------
 测试场景 2（本地部署）
 
 - TiKV 节点（8 core，64 GB 内存）数量：6
+- TiKV 配置项 `import.num-threads`：8
+- BR 命令参数 `concurrency`：128
 - Region 数量：50,000
 - 集群新增日志数据：10 GB/h
 - 写入 (INSERT/UPDATE/DELETE) QPS：10,000

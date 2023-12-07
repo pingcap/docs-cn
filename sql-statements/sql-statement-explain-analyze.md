@@ -204,7 +204,7 @@ inner:{total:4.429220003s, concurrency:5, task:17, construct:96.207725ms, fetch:
 `HashJoin` 算子有一个 inner worker，一个 outer worker 和 N 个 join worker，其具体执行逻辑如下：
 
 1. inner worker 读取 inner table rows 并构造 hash table。
-2. outer worker 读取 outer table rows, 然后包装成 task 发送给 join worker。
+2. outer worker 读取 outer table rows，然后包装成 task 发送给 join worker。
 3. 等待第 1 步的 hash table 构造完成。
 4. join worker 用 task 里面的 outer table rows 和 hash table 做 join，然后把 join 结果发送给 result channel。
 5. `HashJoin` 的主线程从 result channel 中接收 join 结果。
@@ -281,6 +281,63 @@ commit_txn: {prewrite:48.564544ms, wait_prewrite_binlog:47.821579, get_commit_ts
 - `commit`：事务 2PC 提交阶段中，`commit` 阶段的耗时。
 - `write_keys`：事务中写入 `key` 的数量。
 - `write_byte`：事务中写入 `key-value` 的总字节数量，单位是 byte。
+
+### RU (Request Unit) 消耗
+
+[Request Unit (RU)](/tidb-resource-control.md#什么是-request-unit-ru) 是资源管控对系统资源统一抽象的计量单位。执行计划顶层算子的 `execution info` 会显示 SQL 整体的 RU 消耗。
+
+```
+RU:273.842670
+```
+
+> **注意：**
+>
+> 该值仅表示本次执行的实际 RU 消耗。由于受缓存的影响（比如[下推计算结果缓存](/coprocessor-cache.md)），同一个 SQL 在每次执行时消耗的 RU 可能会不同。
+
+RU 计数可以通过 `EXPLAIN ANALYZE` 中的其他值计算得出，特别是 `execution info` 列。例如：
+
+```
+ 'executeInfo':
+     time:2.55ms,
+     loops:2,
+     RU:0.329460,
+     Get:{
+         num_rpc:1,
+         total_time:2.13ms
+     },
+     total_process_time: 231.5µs,
+     total_wait_time: 732.9µs,
+     tikv_wall_time: 995.8µs,
+     scan_detail: {
+        total_process_keys: 1,
+        total_process_keys_size: 150,
+        total_keys: 1,
+        get_snapshot_time: 691.7µs,
+        rocksdb: {
+            block: {
+                cache_hit_count: 2,
+                read_count: 1,
+                read_byte: 8.19 KB,
+                read_time: 10.3µs
+            }
+        }
+    },
+```
+
+关于基础成本信息，请参考 [`tikv/pd` 源码](https://github.com/tikv/pd/blob/aeb259335644d65a97285d7e62b38e7e43c6ddca/client/resource_group/controller/config.go#L58C19-L67)。相关计算是通过 [`model.go`](https://github.com/tikv/pd/blob/54219d649fb4c8834cd94362a63988f3c074d33e/client/resource_group/controller/model.go#L107) 完成的。
+
+如果你使用的是 TiDB v7.1，计算方法是 `pd/pd-client/model.go` 中的 `BeforeKVRequest() + AfterKVRequest()`，即总和：
+
+```
+before key/value request is processed:
+      consumption.RRU += float64(kc.ReadBaseCost) -> kv.ReadBaseCost * rpc_nums
+
+after key/value request is processed:
+      consumption.RRU += float64(kc.ReadBytesCost) * readBytes -> kc.ReadBytesCost * total_process_keys_size
+      consumption.RRU += float64(kc.CPUMsCost) * kvCPUMs -> kc.CPUMsCost * total_process_time
+```
+
+对于 writes 和 batch gets，计算方法相似，只是基础成本不同。
 
 ### 其它常见执行信息
 

@@ -82,8 +82,8 @@ SELECT * FROM information_schema.tiflash_replica WHERE TABLE_SCHEMA = 'tpcc';
 
 查询结果中：
 
-* AVAILABLE 字段表示该表的 TiFlash 副本是否可用。1 代表可用，0 代表不可用。副本状态为可用之后就不再改变，如果通过 DDL 命令修改副本数则会重新计算同步进度。
-* PROGRESS 字段代表同步进度，在 0.0~1.0 之间，1.0 代表至少 1 个副本已经完成同步。
+* `AVAILABLE` 字段表示该表的 TiFlash 副本是否可用。1 代表可用，0 代表不可用。副本状态变为可用之后就不再改变。
+* `PROGRESS` 字段代表同步进度，进度值在 0 到 1 之间，1 代表 TiFlash 副本已经完成同步。
 
 ## 搜集统计信息
 
@@ -111,7 +111,7 @@ analyze table supplier;
 {{< copyable "shell-regular" >}}
 
 ```shell
-go-tpc ch --host 172.16.5.140 -P4000 --warehouses 1000 run -D tpcc -T 50 -t 1 --time 1h
+tiup bench ch --host 172.16.5.140 -P4000 --warehouses 1000 run -D tpcc -T 50 -t 1 --time 1h
 ```
 
 命令运行过程中，控制台上会持续打印测试结果。例如：

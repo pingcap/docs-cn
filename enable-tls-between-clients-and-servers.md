@@ -15,7 +15,7 @@ TiDB 服务端支持启用基于 TLS（传输层安全）协议的加密连接�
 - 完整性：流量明文无法被篡改；
 - 身份验证（可选）：客户端和服务端能验证双方身份，避免中间人攻击。
 
-要为 TiDB 客户端与服务端间的通信开启 TLS 加密传输，首先需要在 TiDB 服务端通过配置开启 TLS 加密连接的支持，然后通过配置客户端应用程序使用 TLS 加密连接。一般情况下，如果服务端正确配置了 TLS加密连接支持，客户端库都会自动启用 TLS 加密传输。
+要为 TiDB 客户端与服务端间的通信开启 TLS 加密传输，首先需要在 TiDB 服务端通过配置开启 TLS 加密连接的支持，然后通过配置客户端应用程序使用 TLS 加密连接。一般情况下，如果服务端正确配置了 TLS 加密连接支持，客户端库都会自动启用 TLS 加密传输。
 
 另外，与 MySQL 相同，TiDB 也支持在同一 TCP 端口上开启 TLS 连接或非 TLS 连接。对于开启了 TLS 连接支持的 TiDB 服务端，客户端既可以选择通过加密连接安全地连接到该 TiDB 服务端，也可以选择使用普通的非加密连接。如需使用加密连接，你可以通过以下方式进行配置：
 
@@ -40,7 +40,7 @@ TiDB 服务端支持启用基于 TLS（传输层安全）协议的加密连接�
 - [`ssl-ca`](/tidb-configuration-file.md#ssl-ca)：可选，指定受信任的 CA 证书文件路径
 - [`tls-version`](/tidb-configuration-file.md#tls-version)：可选，指定最低 TLS 版本，例如 `TLSv1.2`
 
-`auto tls` 支持安全连接，但不提供客户端证书验证。有关证书验证和控制证书生成方式的说明，请参考下面配置 `ssl-cert`，`ssl-key` 和 `ssl-ca` 变量的建议：
+`auto-tls` 支持安全连接，但不提供客户端证书验证。有关证书验证和控制证书生成方式的说明，请参考下面配置 `ssl-cert`，`ssl-key` 和 `ssl-ca` 变量的建议：
 
 - 在启动 TiDB 时，至少需要在配置文件中同时指定 `ssl-cert` 和 `ssl-key` 参数，才能在 TiDB 服务端开启安全连接。还可以指定 `ssl-ca` 参数进行客户端身份验证（请参见[配置启用身份验证](#配置启用身份验证)章节）。
 - 参数指定的文件都为 PEM 格式。另外目前 TiDB 尚不支持加载有密码保护的私钥，因此必须提供一个没有密码的私钥文件。若提供的证书或私钥无效，则 TiDB 服务端将照常启动，但并不支持客户端加密连接到 TiDB 服务端。
@@ -65,7 +65,7 @@ MySQL 5.7 及以上版本自带的客户端默认尝试使用安全连接，若�
 - `--ssl-mode=VERIFY_CA`：根据 `--ssl-ca` 签发的 CA 验证来自服务器的证书。
 - `--ssl-mode=VERIFY_IDENTITY`：与 `VERIFY_CA` 相同，但也验证所连接的主机名是否与证书匹配。
 
-详细信息请参阅 MySQL 文档中关于[客户端配置安全连接](https://dev.mysql.com/doc/refman/5.7/en/using-encrypted-connections.html#using-encrypted-connections-client-side-configuration)的部分。
+详细信息请参阅 MySQL 文档中关于[客户端配置安全连接](https://dev.mysql.com/doc/refman/8.0/en/using-encrypted-connections.html#using-encrypted-connections-client-side-configuration)的部分。
 
 ## 配置启用身份验证
 
