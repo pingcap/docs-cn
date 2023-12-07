@@ -173,7 +173,7 @@ bundle add mysql2 dotenv
 如果连接成功，你的终端将会输出所连接集群的版本信息：
 
 ```
-🔌 Connected to TiDB cluster! (TiDB version: 8.0.11-TiDB-v7.4.0)
+🔌 Connected to TiDB cluster! (TiDB version: 8.0.11-TiDB-v7.5.0)
 ⏳ Loading sample game data...
 ✅ Loaded sample game data.
 
@@ -270,7 +270,7 @@ player.destroy
 
 - 从 [ActiveRecord 文档](https://guides.rubyonrails.org/active_record_basics.html)中了解更多关于 ActiveRecord ORM 的用法。
 - 你可以继续阅读开发者文档的其它章节来获取更多 TiDB 应用开发的最佳实践。例如：[插入数据](/develop/dev-guide-insert-data.md)，[更新数据](/develop/dev-guide-update-data.md)，[删除数据](/develop/dev-guide-delete-data.md)，[单表读取](/develop/dev-guide-get-data-from-single-table.md)，[事务](/develop/dev-guide-transaction-overview.md)，[SQL 性能优化](/develop/dev-guide-optimize-sql-overview.md)等。
-- 如果你更倾向于参与课程进行学习，我们也提供专业的 [TiDB 开发者课程](https://cn.pingcap.com/courses-catalog/back-end-developer/?utm_source=docs-cn-dev-guide)支持，并在考试后提供相应的[资格认证](https://learn.pingcap.com/learner/certification-center)。
+- 如果你更倾向于参与课程进行学习，我们也提供专业的 [TiDB 开发者课程](https://cn.pingcap.com/courses-catalog/category/back-end-developer/?utm_source=docs-cn-dev-guide)支持，并在考试后提供相应的[资格认证](https://learn.pingcap.com/learner/certification-center)。
 
 ## 需要帮助？
 

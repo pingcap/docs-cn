@@ -15,6 +15,7 @@ title: 通过 TiUP 部署 TiDB 集群的拓扑文件配置
 - [global](/tiup/tiup-cluster-topology-reference.md#global)：集群全局配置，其中一些是集群的默认值，可以在实例里面单独配置
 - [monitored](/tiup/tiup-cluster-topology-reference.md#monitored)：监控服务配置，即 blackbox exporter 和 node exporter，每台机器上都会部署一个 node exporter 和一个 blackbox exporter
 - [server_configs](/tiup/tiup-cluster-topology-reference.md#server_configs)：组件全局配置，可单独针对每个组件配置，若在实例中存在同名配置项，那么以实例中配置的为准
+- [component_versions](/tiup/tiup-cluster-topology-reference.md#component_versions)：组件版本号，当某个组件需要使用与集群不一致的版本时使用此配置。tiup-cluster v1.14.0 引入该配置
 - [pd_servers](/tiup/tiup-cluster-topology-reference.md#pd_servers)：PD 实例的配置，用来指定 PD 组件部署到哪些机器上
 - [tidb_servers](/tiup/tiup-cluster-topology-reference.md#tidb_servers)：TiDB 实例的配置，用来指定 TiDB 组件部署到哪些机器上
 - [tikv_servers](/tiup/tiup-cluster-topology-reference.md#tikv_servers)：TiKV 实例的配置，用来指定 TiKV 组件部署到哪些机器上
@@ -36,6 +37,7 @@ title: 通过 TiUP 部署 TiDB 集群的拓扑文件配置
 - `group`：自动创建用户时指定用户所属的用户组，默认和 `<user>` 字段值相同，若指定的组不存在，则自动创建
 - `ssh_port`：指定连接目标机器进行操作的时候使用的 SSH 端口，默认值：22
 - `enable_tls`：是否对集群启用 TLS。启用之后，组件之间、客户端与组件之间都必须使用生成的 TLS 证书进行连接，默认值：false
+- `listen_host`：默认使用的监听 IP。如果为空，每个实例会根据其 `host` 字段是否包含 `:` 来自动设置为 `::` 或 `0.0.0.0`。tiup-cluster v1.14.0 引入该配置
 - `deploy_dir`：每个组件的部署目录，默认值："deploy"。其应用规则如下：
     - 如果在实例级别配置了绝对路径的 `deploy_dir`，那么实际部署目录为该实例设定的 `deploy_dir`
     - 对于每个实例，如果用户未配置 `deploy_dir`，其默认值为相对路径 `<component-name>-<component-port>`
@@ -117,6 +119,43 @@ server_configs:
 ```
 
 上述配置指定了 TiDB 和 TiKV 的全局配置。
+
+### `component_versions`
+
+> **注意：**
+>
+> 对于 TiDB、TiKV、PD、TiCDC 等共用版本号的组件，尚未有完整的测试保证它们在跨版本混合部署的场景下能正常工作。请仅在测试场景或在[获取支持](/support.md)的情况下使用此配置。
+
+`component_versions` 用于指定某个组件的版本号。
+
+- 如果没有配置 `component_versions`，各个组件默认使用与 TiDB 集群相同的版本号（如 PD、TiKV），或使用组件的最新版本号（如 Alertmanager）。
+- 如果配置了该字段，对应的组件将会固定使用对应的版本，并且在后续的扩容和升级集群操作中都使用该版本。
+
+请仅在需要使用某个固定组件的版本号时配置该参数。
+
+`component_versions` 区块主要包含以下字段：
+
+- `tikv`：TiKV 组件的版本
+- `tiflash`：TiFlash 组件的版本
+- `pd`：PD 组件的版本
+- `tidb_dashboard`：独立部署的 TiDB Dashboard 组件的版本
+- `pump`：Pump 组件的版本
+- `drainer`：Drainer 组件的版本
+- `cdc`：CDC 组件的版本
+- `kvcdc`：TiKV-CDC 组件的版本
+- `tiproxy`：TiProxy 组件的版本
+- `prometheus`：Prometheus 组件的版本
+- `grafana`：Grafana 组件的版本
+- `alertmanager`：Alertmanager 组件的版本
+
+`component_versions` 配置示例：
+
+```yaml
+component_versions:
+  kvcdc: "v1.1.1"
+```
+
+上述配置指定了 TiKV-CDC 的版本号为 v1.1.1。
 
 ### `pd_servers`
 
