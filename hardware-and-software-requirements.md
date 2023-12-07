@@ -22,6 +22,7 @@ TiDB 作为一款开源一栈式实时 HTAP 数据库，可以很好地部署和
 | Red Hat Enterprise Linux 8.4 及以上的 8.x 版本  |  <ul><li>x86_64</li><li>ARM 64</li></ul>  |
 | <ul><li>Red Hat Enterprise Linux 7.3 及以上的 7.x 版本</li><li>CentOS 7.3 及以上的 7.x 版本</li></ul>  |  <ul><li>x86_64</li><li>ARM 64</li></ul>   |
 |  Amazon Linux 2         |  <ul><li>x86_64</li><li>ARM 64</li></ul>   |
+|  Rocky Linux 9.1 及以上的版本 |  <ul><li>x86_64</li><li>ARM 64</li></ul> |
 | 麒麟欧拉版 V10 SP1/SP2   |   <ul><li>x86_64</li><li>ARM 64</li></ul>   |
 | 统信操作系统 (UOS) V20                 |   <ul><li>x86_64</li><li>ARM 64</li></ul>   |
 | openEuler 22.03 LTS SP1 |   <ul><li>x86_64</li><li>ARM 64</li></ul>   |
@@ -32,7 +33,6 @@ TiDB 作为一款开源一栈式实时 HTAP 数据库，可以很好地部署和
 |  Debian 9 (Stretch) 及以上的版本  |  x86_64           |
 |  Fedora 35 及以上的版本   |  x86_64           |
 |  openSUSE Leap 15.3 以上的版本（不包含 Tumbleweed） |  x86_64           |
-|  Rocky Linux 9.1 及以上的版本 |  <ul><li>x86_64</li><li>ARM 64</li></ul> |
 |  SUSE Linux Enterprise Server 15  |  x86_64                        |
 
 > **注意：**
