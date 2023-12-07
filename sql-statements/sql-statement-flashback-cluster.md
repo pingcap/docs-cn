@@ -94,10 +94,10 @@ mysql> SELECT * FROM t;
 1 row in set (0.01 sec)
 
 
-mysql> begin;
+mysql> BEGIN;
 Query OK, 0 rows affected (0.00 sec)
 
-mysql> select @@tidb_current_ts;  --  获取当前 TSO
+mysql> SELECT @@tidb_current_ts;  --  获取当前 TSO
 +--------------------+
 | @@tidb_current_ts  |
 +--------------------+
@@ -105,7 +105,7 @@ mysql> select @@tidb_current_ts;  --  获取当前 TSO
 +--------------------+
 1 row in set (0.00 sec)
 
-mysql> rollback;
+mysql> ROLLBACK;
 Query OK, 0 rows affected (0.00 sec)
 
 
