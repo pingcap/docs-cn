@@ -552,6 +552,57 @@ success!
 > - `-p` 选项指定 PD 的 endpoint，不使用 `http` 前缀，用于查询指定的 `region_id` 是否有效。
 > - 对于指定 Region 的 peers 所在的每个 store，均须执行该命令。
 
+<<<<<<< HEAD
+=======
+### Flashback
+
+TiDB v6.4.0 引入了 [`FLASHBACK CLUSTER`](/sql-statements/sql-statement-flashback-cluster.md) 语法，其功能是将集群的数据恢复到特定的时间点。为了方便脱离 TiDB 使用，tikv-ctl 自 v6.5.3 开始提供了 `flashback` 命令。该命令支持在 TiKV 层面进行 Flashback 操作。
+
+> **注意：**
+>
+> - `flashback` 命令使用最新的时间戳写入特定时间点的旧数据，但不会删除当前数据，所以在使用前请确保集群有足够的存储空间来同时容纳旧数据和当前数据。
+> - `flashback` 命令只支持本地模式。
+
+#### 前置条件
+
+在执行 `flashback` 命令前，需要先通过 `./pd-ctl config set halt-scheduling true` 命令[停止 PD 调度](/pd-control.md#config-show--set-option-value--placement-rules)。
+
+#### 使用方式
+
+```shell
+tikv-ctl --pd <pd_address:port> flashback -v <target_timestamp>
+```
+
+使用 `--pd` 选项指定 PD 的访问地址。使用 `-v` 选项指定 Flashback 目标的时间点。
+
+默认情况下，该命令会对整个集群进行 Flashback。如果需要对指定 Region 或 key 范围进行操作，可以使用以下选项：
+
+- 使用 `-r` 选项指定 Region，多个 Region 之间用 `,` 分隔。
+- 使用 `--start` 和 `--end` 指定某个 key 范围内的所有 Region（默认无范围限制，采用 Hex 格式）。
+
+命令运行成功后，会打印 `flashback all stores success!`。你也可以通过 [Raft admin > Peer in Flashback State](/grafana-tikv-dashboard.md#raft-admin) 监控项查看执行进度。
+
+#### 示例
+
+- 将整个集群的数据恢复到时间点 `430315739761082369`：
+
+    ```shell
+    tikv-ctl --pd 127.0.0.1:2379 flashback -v 430315739761082369
+    ```
+
+- 需要将 ID 为 `100` 和 `102` 的 Region 的数据恢复到时间点 `430315739761082369` 时，使用以下命令：
+
+    ```shell
+    tikv-ctl --pd 127.0.0.1:2379 flashback -v 430315739761082369 -r 100,102
+    ```
+
+- 需要将 key 范围的数据恢复到时间点 `430315739761082369` 时，使用以下命令：
+
+    ```shell
+    tikv-ctl --pd 127.0.0.1:2379 flashback -v 430315739761082369 --start 7480000000000000FF0800000000000000F8 --end 7480000000000000FF0C00000000000000F8
+    ```
+
+>>>>>>> 511ade1e10 (flashback: flashback cluster support tso (#15603))
 ### Ldb 命令
 
 `ldb` 命令行工具提供多种数据访问以及数据库管理命令。下方列出了一些示例用法。详细信息请在运行 `tikv-ctl ldb` 命令时查看帮助消息或查阅 RocksDB 文档。
