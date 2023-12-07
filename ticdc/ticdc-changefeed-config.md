@@ -166,8 +166,14 @@ max-log-size = 64
 flush-interval = 2000
 # redo log 使用存储服务的 URI。默认值为空。
 storage = ""
-# 是否将 redo log 存储到文件中。默认值为 false。
+# 是否将 redo log 存储到本地文件中。默认值为 false。
 use-file-backend = false
+# 控制 redo 模块中编解码 worker 的数量，默认值为 16。
+encoding-worker-num = 16
+# 控制 redo 模块中上传文件 worker 的数量，默认值为 8。
+flush-worker-num = 8
+# redo log 文件的压缩行为，可选值为 "" 和 "lz4"。默认值为 ""，表示不进行压缩。
+compression = ""
 
 # 以下参数仅在下游为 Kafka 时生效。从 v6.5.3 开始支持。
 [sink.kafka-config]
@@ -185,4 +191,18 @@ sasl-oauth-scopes = ["producer.kafka", "consumer.kafka"]
 sasl-oauth-grant-type = "client_credentials"
 # Kafka SASL OAUTHBEARER 认证机制中的 audience。默认值为空。在使用该认证机制时，该参数可选填。
 sasl-oauth-audience = "kafka"
+
+[sink.cloud-storage-config]
+# 向下游存储服务保存数据变更记录的并发度，默认值为 16。
+worker-count = 16
+# 向下游存储服务保存数据变更记录的间隔，默认值为 "2s"。
+flush-interval = "2s"
+# 单个数据变更文件的字节数超过 `file-size` 时将其保存至存储服务中，默认值为 67108864，即 64 MiB。
+file-size = 67108864
+# 文件保留的时长，仅在 date-separator 配置为 day 时生效，默认值为 0，表示禁用文件清理。假设 `file-expiration-days = 1` 且 `file-cleanup-cron-spec = "0 0 0 * * *"`，TiCDC 将在每天 00:00:00 时刻清理已保存超过 24 小时的文件。例如，2023/12/02 00:00:00 将清理 2023/12/01 之前（注意：不包括 2023/12/01）的文件。
+file-expiration-days = 0
+# 定时清理任务的运行周期，与 crontab 配置兼容，格式为 `<Second> <Minute> <Hour> <Day of the month> <Month> <Day of the week (Optional)>`，默认值为 "0 0 2 * * *"，表示每天凌晨两点执行清理任务
+file-cleanup-cron-spec = "0 0 2 * * *"
+# 上传单个文件的并发数，默认值为 1，表示禁用并发。
+flush-concurrency = 1
 ```

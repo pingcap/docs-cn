@@ -40,6 +40,8 @@ data-dir = ""
 gc-ttl = 86400 # 24 h
 tz = "System"
 cluster-id = "default"
+# 控制 GOGC Tuner 自动调节的最大内存阈值（单位为 byte）：设置较小的阈值会提高 GC 频率；设置较大的阈值会降低 GC 频率并使 TiCDC 进程占用更多的内存资源；超过阈值后 GOGC Tuner 会停止工作。默认值为 0，表示禁用 GOGC Tuner。
+gc-tuner-memory-threshold = 0
 
 [security]
   ca-path = ""
