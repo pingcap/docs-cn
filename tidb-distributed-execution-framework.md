@@ -36,7 +36,7 @@ TiDB 采用计算存储分离架构，具有出色的扩展性和弹性的扩缩
 
 ## 使用限制
 
-分布式框架一次只能调度 1 个 `ADD INDEX` 任务。如果第一个 `ADD INDEX` 任务还未完成就提交了第二个 `ADD INDEX` 任务，则第二个 `ADD INDEX` 任务会通过事务的方式来执行。
+分布式框架一次只能调度一个 `ADD INDEX` 任务的分布式执行。如果在当前的 `ADD INDEX` 分布式任务还未执行完成时就提交了一个新的 `ADD INDEX` 任务，则新提交的 `ADD INDEX` 任务会通过事务的方式来执行。
 
 ## 启用前提
 
@@ -65,7 +65,7 @@ TiDB 采用计算存储分离架构，具有出色的扩展性和弹性的扩缩
 
     在运行后端任务时，框架支持的语句（如 [`ADD INDEX`](/sql-statements/sql-statement-add-index.md) 和 [`IMPORT INTO`](/sql-statements/sql-statement-import-into.md)）会采用分布式方式执行。默认集群内部所有节点均会执行后端任务。
 
-2. 一般情况下，对于下列影响 DDL 任务分布式执行的系统变量，使用默认值即可。
+2. 一般情况下，对于下列影响 DDL 任务分布式执行的系统变量，使用其默认值即可。
 
     * [`tidb_ddl_reorg_worker_cnt`](/system-variables.md#tidb_ddl_reorg_worker_cnt)：使用默认值 `4` 即可，建议最大不超过 `16`。
     * [`tidb_ddl_reorg_priority`](/system-variables.md#tidb_ddl_reorg_priority)
