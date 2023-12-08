@@ -195,9 +195,9 @@ TiDB 版本：7.4.0
 
     表的哈希连接是 MySQL 8.0 引入的新特性，主要用于连接两个相对较大的表和结果集。但对于交易类负载，或者一部分在 MySQL 5.7 稳定运行的业务来说，选择表的哈希连接可能会对性能产生风险。MySQL 通过[优化器开关 `optimizer_switch`](https://dev.mysql.com/doc/refman/8.0/en/switchable-optimizations.html#optflag_block-nested-loop)能够在全局或者会话级控制哈希连接的选择。
 
-    从 v7.4.0 开始，TiDB 引入系统变量 [`tidb_opt_enable_hash_join`](/system-variables.md#tidb_opt_enable_hash_join-从-v740-版本开始引入) 对表的哈希连接进行控制。默认开启 (`ON`)。如果你非常确定执行计划中不需要选择表之间的哈希连接，则可以修改变量为 `OFF`，降低执行计划回退的可能性，提升系统稳定性。
+    从 v7.4.0 开始，TiDB 引入系统变量 [`tidb_opt_enable_hash_join`](/system-variables.md#tidb_opt_enable_hash_join-从-v656v712-和-v740-版本开始引入) 对表的哈希连接进行控制。默认开启 (`ON`)。如果你非常确定执行计划中不需要选择表之间的哈希连接，则可以修改变量为 `OFF`，降低执行计划回退的可能性，提升系统稳定性。
 
-    更多信息，请参考[用户文档](/system-variables.md#tidb_opt_enable_hash_join-从-v740-版本开始引入)。
+    更多信息，请参考[用户文档](/system-variables.md#tidb_opt_enable_hash_join-从-v656v712-和-v740-版本开始引入)。
 
 ### SQL 功能
 
@@ -294,7 +294,7 @@ TiDB 版本：7.4.0
 | [`tidb_enable_non_prepared_plan_cache`](/system-variables.md#tidb_enable_non_prepared_plan_cache) | 修改 | 经进一步的测试后，该变量默认值从 `ON` 修改为 `OFF`，即默认关闭非 Prepare 语句执行计划缓存。 |
 | [`default_collation_for_utf8mb4`](/system-variables.md#default_collation_for_utf8mb4-从-v740-版本开始引入) | 新增 | 该变量用于设置 utf8mb4 字符集的默认排序规则，默认值为 `utf8mb4_bin`。 |
 | [`tidb_cloud_storage_uri`](/system-variables.md#tidb_cloud_storage_uri-从-v740-版本开始引入) | 新增 | 该变量用于指定[全局排序](/tidb-global-sort.md)中使用的云存储的 URI。 |
-| [`tidb_opt_enable_hash_join`](/system-variables.md#tidb_opt_enable_hash_join-从-v740-版本开始引入) | 新增 | 控制优化器是否会选择表的哈希连接。默认打开 (`ON`)。设置为 `OFF` 时，除非没有计划可用，否则优化器会避免选择表的哈希连接。 |
+| [`tidb_opt_enable_hash_join`](/system-variables.md#tidb_opt_enable_hash_join-从-v656v712-和-v740-版本开始引入) | 新增 | 控制优化器是否会选择表的哈希连接。默认打开 (`ON`)。设置为 `OFF` 时，除非没有计划可用，否则优化器会避免选择表的哈希连接。 |
 | [`tidb_opt_objective`](/system-variables.md#tidb_opt_objective-从-v740-版本开始引入) | 新增 | 该变量用于设置优化器优化目标。`moderate` 维持旧版本的默认行为，优化器会利用更多信息尝试生成更优的计划；`determinate` 则倾向于保守，保持执行计划稳定。 |
 | [`tidb_request_source_type`](/system-variables.md#tidb_request_source_type-从-v740-版本开始引入) | 新增 | 该变量用于显式指定当前会话的任务类型，用于[资源管控](/tidb-resource-control.md)识别并控制。如 `SET @@tidb_request_source_type = "background"`。 |
 | [`tidb_schema_version_cache_limit`](/system-variables.md#tidb_schema_version_cache_limit-从-v740-版本开始引入) | 新增 | 该变量用于限制 TiDB 实例可以缓存多少个历史版本的表结构信息。默认值为 `16`，即默认缓存 16 个历史版本的表结构信息。|
