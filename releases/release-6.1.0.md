@@ -59,9 +59,15 @@ TiDB 版本：6.1.0
 
 ### 性能
 
-* 支持自定义 Region 大小（实验特性）
+* 支持自定义 Region 大小
 
-    设置更大的 Region 可以有效减少 Region 数量，降低 Region 管理成本，提升集群性能和稳定性。该特性引入 bucket 概念，即将每个 Region 划分为更小的区间 bucket。使用 bucket 作为并发查询单位能够优化 Region 调大时的查询性能，动态调整热点 Region 的大小来保证热点调度效率和负载均衡。该特性目前属于实验特性，不建议在生产环境使用。
+    设置更大的 Region 可以有效减少 Region 数量，降低 Region 管理成本，提升集群性能和稳定性。
+
+    [用户文档](/tune-region-performance.md)，[#11515](https://github.com/tikv/tikv/issues/11515)
+
+* 支持 Bucket 功能（实验特性）
+
+    该特性引入 bucket 概念，即将每个 Region 划分为更小的区间 bucket。使用 bucket 作为并发查询单位能够优化 Region 调大时的查询性能，动态调整热点 Region 的大小来保证热点调度效率和负载均衡。该特性目前属于实验特性，不建议在生产环境使用。
 
     [用户文档](/tune-region-performance.md)，[#11515](https://github.com/tikv/tikv/issues/11515)
 
