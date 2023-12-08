@@ -2227,6 +2227,16 @@ Query OK, 0 rows affected (0.09 sec)
     - `AUTO` 目前作用和 `ON` 一样。
     - `OFF` 表示关闭 `TABLE PARTITION` 特性，此时语法还是保持兼容，只是创建的表并不是真正的分区表，而是普通的表。
 
+### `tidb_enable_global_index`
+
+- 作用域：SESSION | GLOBAL
+- 是否持久化到集群：是
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：否
+- 默认值：`OFF`
+- 类型：枚举型
+- 可选值：`OFF`，`ON`
+- 这个变量用来设置是否支持对分区表创建 `Global index`。`Global index` 当前正处于开发阶段 **不推荐修改该变量值**
+
 ### `tidb_enable_telemetry` <span class="version-mark">从 v4.0.2 版本开始引入</span>
 
 - 作用域：GLOBAL
