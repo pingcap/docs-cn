@@ -7,71 +7,12 @@ summary: 介绍 TiFlash 新的执行模型 Pipeline Model。
 
 本文介绍 TiFlash 新的执行模型 Pipeline Model。
 
-从 v7.2.0 起，TiFlash 支持新的执行模型 Pipeline Model。你可以通过修改变量 [`tidb_enable_tiflash_pipeline_model`](/system-variables.md#tidb_enable_tiflash_pipeline_model-从-v720-版本开始引入) 来控制是否启用 TiFlash Pipeline Model。
+从 v7.2.0 起，TiFlash 支持新的执行模型 Pipeline Model。
+
+- v7.2.0 和 v7.3.0：TiFlash Pipeline Model 为实验特性，使用 [`tidb_enable_tiflash_pipeline_model`](https://docs.pingcap.com/zh/tidb/v7.2/system-variables#tidb_enable_tiflash_pipeline_model-从-v720-版本开始引入) 控制。
+- v7.4.0 及之后版本：Pipeline Model 成为正式功能。Pipeline Model 属于 TiFlash 内部特性，并且与 TiFlash 资源管控功能绑定，开启 TiFlash 资源管控功能时，Pipeline Model 模型将自动启用。关于 TiFlash 资源管控功能的使用方式，参考[使用资源管控 (Resource Control) 实现资源隔离](/tidb-resource-control.md#相关参数)。同时，从 v7.4.0 开始，变量 `tidb_enable_tiflash_pipeline_model` 被废弃。
 
 Pipeline Model 主要借鉴了 [Morsel-Driven Parallelism: A NUMA-Aware Query Evaluation Framework for the Many-Core Age](https://dl.acm.org/doi/10.1145/2588555.2610507) 这篇论文，提供了一个精细的任务调度模型，有别于传统的线程调度模型，减少了操作系统申请和调度线程的开销以及提供精细的调度机制。
-
-> **注意：**
->
-> - TiFlash Pipeline Model 目前为实验特性，不建议在生产环境中使用。
-> - TiFlash Pipeline Model 目前不支持以下功能。当下列功能开启时，即使 `tidb_enable_tiflash_pipeline_model` 设置为 `ON`，下推到 TiFlash 的查询仍会使用原有的执行模型 Stream Model 来执行。
->
->     - [Join 算子落盘](/system-variables.md#tidb_max_bytes_before_tiflash_external_join-从-v700-版本开始引入)
->     - [TiFlash 存算分离架构与 S3](/tiflash/tiflash-disaggregated-and-s3.md)
-
-## 启用和禁用 TiFlash Pipeline Model
-
-你可以使用系统变量 [`tidb_enable_tiflash_pipeline_model`](/system-variables.md#tidb_enable_tiflash_pipeline_model-从-v720-版本开始引入) 来开启或禁用 TiFlash Pipeline Model。该变量可以在 Session 级别和 Global 级别生效。默认情况下，`tidb_enable_tiflash_pipeline_model=OFF`，即关闭 TiFlash Pipeline Model。你可以通过以下语句来查看对应的变量信息：
-
-```sql
-SHOW VARIABLES LIKE 'tidb_enable_tiflash_pipeline_model';
-```
-
-```
-+------------------------------------+-------+
-| Variable_name                      | Value |
-+------------------------------------+-------+
-| tidb_enable_tiflash_pipeline_model | OFF   |
-+------------------------------------+-------+
-```
-
-```sql
-SHOW GLOBAL VARIABLES LIKE 'tidb_enable_tiflash_pipeline_model';
-```
-
-```
-+------------------------------------+-------+
-| Variable_name                      | Value |
-+------------------------------------+-------+
-| tidb_enable_tiflash_pipeline_model | OFF   |
-+------------------------------------+-------+
-```
-
-变量 `tidb_enable_tiflash_pipeline_model` 支持 session 级别和 global 级别的修改。
-
-- 如果需要在当前 session 中开启 TiFlash Pipeline Model，可以通过以下语句设置：
-
-    ```sql
-    SET SESSION tidb_enable_tiflash_pipeline_model=ON;
-    ```
-
-- 如果需要在 global 级别开启 TiFlash Pipeline Model，可以通过以下语句设置：
-
-    ```sql
-    SET GLOBAL tidb_enable_tiflash_pipeline_model=ON;
-    ```
-
-    设置 global 级别后，新建的会话中 session 和 global 级别的 `tidb_enable_tiflash_pipeline_model` 都将默认启用新值。
-
-如需关闭 TiFlash Pipeline Model，可以通过以下语句设置：
-
-```sql
-SET SESSION tidb_enable_tiflash_pipeline_model=OFF;
-```
-
-```sql
-SET GLOBAL tidb_enable_tiflash_pipeline_model=OFF;
-```
 
 ## 设计实现
 

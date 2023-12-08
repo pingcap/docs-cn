@@ -76,7 +76,7 @@ SELECT _utf8'some text';
 
 如果要在 `'` 包围的字符串中表示 `"`，或者在 `"` 包围的字符串中表示 `'`，可以不使用转义字符。
 
-更多细节见 [MySQL 官方文档](https://dev.mysql.com/doc/refman/5.7/en/string-literals.html)。
+更多细节见 [MySQL 官方文档](https://dev.mysql.com/doc/refman/8.0/en/string-literals.html)。
 
 ## Numeric Literals
 
@@ -88,7 +88,7 @@ integer 可以包括 `.` 作为小数点分隔，数字前可以有 `-` 或者 `
 
 科学记数法也是被允许的，表示为如下格式：`1.2E3, 1.2E-3, -1.2E3, -1.2E-3`。
 
-更多细节见 [MySQL 官方文档](https://dev.mysql.com/doc/refman/5.7/en/number-literals.html)。
+更多细节见 [MySQL 官方文档](https://dev.mysql.com/doc/refman/8.0/en/number-literals.html)。
 
 ## Date and Time Literals
 
@@ -127,7 +127,7 @@ DATETIME 或者 TIMESTAMP 值可以接一个小数部分，用来表示微秒（
 
 Time 类型的小数点也是 `.`，精度最多小数点后 6 位。
 
-更多细节见 [MySQL 官方文档](https://dev.mysql.com/doc/refman/5.7/en/date-and-time-literals.html)。
+更多细节见 [MySQL 官方文档](https://dev.mysql.com/doc/refman/8.0/en/date-and-time-literals.html)。
 
 ## Boolean Literals
 

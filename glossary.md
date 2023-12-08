@@ -132,7 +132,7 @@ Lock View 特性用于提供关于悲观锁的锁冲突和锁等待的更多信�
 
 ### MPP
 
-TiDB 在 v5.0 版本引入的计算架构，即在计算中引入跨节点的数据交换（data shuffle 过程），使得大型表连接类查询可以由不同 TiFlash 节点分担来共同完成，从而加速计算过程，提升查询性能。
+从 v5.0 起，TiDB 通过 TiFlash 节点引入了 Massively Parallel Processing (MPP) 架构。这使得大型表连接类查询可以由不同 TiFlash 节点共同分担完成。当 MPP 模式开启后，TiDB 将会根据代价决定是否应该交由 MPP 框架进行计算。MPP 模式下，表连接将通过对 JOIN Key 进行数据计算时重分布（Exchange 操作）的方式把计算压力分摊到各个 TiFlash 执行节点，从而达到加速计算的目的。更多信息请参见[使用 MPP 模式](/tiflash/use-tiflash-mpp-mode.md)。
 
 详情参见[使用 MPP 模式](/tiflash/use-tiflash-mpp-mode.md)。
 

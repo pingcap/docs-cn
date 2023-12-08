@@ -5,10 +5,6 @@ summary: 了解 TiFlash 存算分离架构与 S3 支持。
 
 # TiFlash 存算分离架构与 S3 支持
 
-> **警告：**
->
-> TiFlash 存算分离架构目前为实验特性，不建议在生产环境中使用。该功能可能会在未事先通知的情况下发生变化或删除。如果发现 bug，请在 GitHub 上提 [issue](https://github.com/pingcap/tiflash/issues) 反馈。
-
 TiFlash 默认使用存算一体的架构进行部署，即 TiFlash 节点既是存储节点，也是计算节点。从 TiDB v7.0.0 开始，TiFlash 支持存算分离架构，并将数据存储在 Amazon S3 或兼容 S3 API 的对象存储中（比如 MinIO）。
 
 ## 架构介绍
@@ -50,7 +46,7 @@ TiFlash 存算分离架构适用于高性价比的数据分析服务的场景。
 
     也可以使用兼容 S3 的其他对象存储，比如 [MinIO](https://min.io/)。
 
-    TiFlash 使用的 S3 API 接口列表包括：
+    TiFlash 将使用以下 S3 API 接口进行数据读写，需要确保部署 TiFlash 的节点有这些接口的权限：
 
     - PutObject
     - GetObject
@@ -60,26 +56,7 @@ TiFlash 存算分离架构适用于高性价比的数据分析服务的场景。
     - GetObjectTagging
     - PutBucketLifecycle
 
-2. 给准备好的 S3 bucket 添加一个用于清理已删除数据的[生命周期](https://docs.aws.amazon.com/zh_cn/AmazonS3/latest/userguide/object-lifecycle-mgmt.html)：
-
-    ```shell
-    "ID": "tiflash-clean",
-    "Expiration": {
-        "Days": 1
-    },
-    "Filter": {
-        "And": {
-            "Tags": [
-                {
-                    "Value": "tiflash_deleted", 
-                    "Key": "true"
-                }
-            ]
-        }
-    }
-    ```
-
-3. 确保 TiDB 集群中没有任何 TiFlash 节点。如果有，则需要将所有表的 TiFlash 副本数设置为 0，然后缩容掉所有 TiFlash 节点。比如：
+2. 确保 TiDB 集群中没有任何存算一体架构的 TiFlash 节点。如果有，则需要将所有表的 TiFlash 副本数设置为 0，然后缩容掉所有 TiFlash 节点。比如：
 
     ```sql
     SELECT * FROM INFORMATION_SCHEMA.TIFLASH_REPLICA; # 查询所有带有 TiFlash 副本的表
@@ -194,7 +171,7 @@ TiFlash 存算分离架构适用于高性价比的数据分析服务的场景。
 
 ## 使用限制
 
-- TiFlash 不支持在存算一体架构和存算分离架构之间原地切换。在切换架构前，需要将原有 TiFlash 节点全部删除。
+- TiFlash 不支持在存算一体架构和存算分离架构之间原地切换。在切换到存算分离架构前，需要将原有存算一体架构的 TiFlash 节点全部删除。
 - 从一种架构迁移到另外一种架构后，需要重新同步所有 TiFlash 的数据。
 - 同一个 TiDB 集群只允许存在相同架构的 TiFlash 节点，不允许两种架构同时存在。
 - 存算分离架构只支持使用 S3 API 的对象存储，存算一体架构只支持本地存储。

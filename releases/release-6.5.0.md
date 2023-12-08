@@ -13,7 +13,14 @@ TiDB 版本：6.5.0
 
 TiDB 6.5.0 为长期支持版本 (Long-Term Support Release, LTS)。
 
-相比于前一个 LTS（即 6.1.0 版本），6.5.0 版本包含 [6.2.0-DMR](/releases/release-6.2.0.md)、[6.3.0-DMR](/releases/release-6.3.0.md)、[6.4.0-DMR](/releases/release-6.4.0.md) 中已发布的新功能、提升改进和错误修复，并引入了以下关键特性：
+与 TiDB [6.4.0-DMR](/releases/release-6.4.0.md) 相比，TiDB 6.5.0 引入了以下关键特性：
+
+> **Tip:**
+>
+> 与前一个 LTS（即 6.1.0 版本）相比，TiDB 6.5.0 还引入了 [6.2.0-DMR](/releases/release-6.2.0.md)、[6.3.0-DMR](/releases/release-6.3.0.md)、[6.4.0-DMR](/releases/release-6.4.0.md) 中已发布的新功能、提升改进和错误修复。
+>
+> - 要了解 6.1.0 LTS 和 6.5.0 LTS 之间的完整变更，除了参阅当前页面的 release notes，还需参阅 [6.2.0-DMR release notes](/releases/release-6.2.0.md)、[6.3.0-DMR release notes](/releases/release-6.3.0.md)、[6.4.0-DMR release notes](/releases/release-6.4.0.md)。
+> - 要快速对比 6.1.0 LTS 和 6.5.0 LTS 的关键特性，可以查看 [TiDB 功能概览](/basic-features.md)中的 `v6.1` 和 `v6.5` 列。
 
 - [添加索引加速](/system-variables.md#tidb_ddl_enable_fast_reorg-从-v630-版本开始引入)特性 GA，添加索引的性能约提升为 v6.1.0 的 10 倍。
 - TiDB 全局内存控制特性 GA，通过 [`tidb_server_memory_limit`](/system-variables.md#tidb_server_memory_limit-从-v640-版本开始引入) 即可管理全局内存阈值。

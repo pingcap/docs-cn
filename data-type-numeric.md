@@ -13,7 +13,7 @@ TiDB 支持 MySQL 所有的数值类型，按照精度可以分为：
 
 ## 整数类型
 
-TiDB 支持 MySQL 所有的整数类型，包括 `INTEGER`/`INT`、`TINYINT`、`SMALLINT`、`MEDIUMINT` 以及 `BIGINT`，完整信息参考[这篇](https://dev.mysql.com/doc/refman/5.7/en/integer-types.html)文档。
+TiDB 支持 MySQL 所有的整数类型，包括 `INTEGER`/`INT`、`TINYINT`、`SMALLINT`、`MEDIUMINT` 以及 `BIGINT`，完整信息参考[这篇](https://dev.mysql.com/doc/refman/8.0/en/integer-types.html)文档。
 
 字段说明：
 
@@ -117,7 +117,7 @@ BIGINT[(M)] [UNSIGNED] [ZEROFILL]
 
 ## 浮点类型
 
-TiDB 支持 MySQL 所有的浮点类型，包括 `FLOAT`、`DOUBLE`，完整信息参考[这篇](https://dev.mysql.com/doc/refman/5.7/en/floating-point-types.html)文档。
+TiDB 支持 MySQL 所有的浮点类型，包括 `FLOAT`、`DOUBLE`，完整信息参考[这篇](https://dev.mysql.com/doc/refman/8.0/en/floating-point-types.html)文档。
 
 字段说明：
 
@@ -179,7 +179,7 @@ DOUBLE PRECISION [(M,D)] [UNSIGNED] [ZEROFILL], REAL[(M,D)] [UNSIGNED] [ZEROFILL
 
 ## 定点类型
 
-TiDB 支持 MySQL 所有的定点类型，包括 `DECIMAL`、`NUMERIC`，完整信息参考[这篇](https://dev.mysql.com/doc/refman/5.7/en/fixed-point-types.html)文档。
+TiDB 支持 MySQL 所有的定点类型，包括 `DECIMAL`、`NUMERIC`，完整信息参考[这篇](https://dev.mysql.com/doc/refman/8.0/en/fixed-point-types.html)文档。
 
 字段说明：
 
