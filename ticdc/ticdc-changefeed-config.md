@@ -220,6 +220,9 @@ flush-worker-num = 8
 # The behavior to compress redo log files.
 # Available options are "" and "lz4". The default value is "", which means no compression.
 compression = ""
+# The concurrency for uploading a single redo file.
+# The default value is 1, which means concurrency is disabled.
+flush-concurrency = 1
 
 [integrity]
 # Whether to enable the checksum validation for single-row data. The default value is "none", which means to disable the feature. Value options are "none" and "correctness".
