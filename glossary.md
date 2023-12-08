@@ -50,6 +50,10 @@ ACID 是指数据库管理系统在写入或更新资料的过程中，为保证
 
 缓存表 (Cached Table) 是指 TiDB 把整张表的数据加载到服务器的内存中，直接从内存中获取表数据，避免从 TiKV 获取表数据，从而提升读性能。详情参见[缓存表](/cached-tables.md)。
 
+### Cluster
+
+TiDB 数据库以及各组件的集合，部署在多节点服务器上，每个节点上运行实例，向客户端提供服务。
+
 ### Coalesce Partition
 
 Coalesce Partition 是一种减少 Hash 分区表或 Key 分区表中分区数量的方法。详情参见[管理 Hash 分区和 Key 分区](/partitioned-table.md#管理-hash-分区和-key-分区)。
@@ -60,17 +64,13 @@ Coalesce Partition 是一种减少 Hash 分区表或 Key 分区表中分区数�
 
 详情参见[公共表表达式 (CTE)](/develop/dev-guide-use-common-table-expression.md)。
 
-### Cluster
+### Continuous Profiling
 
-TiDB 数据库以及各组件的集合，部署在多节点服务器上，每个节点上运行实例，向客户端提供服务。
+持续性能分析 (Continuous Profiling) 是从 TiDB v5.3 起引入的一种从系统调用层面解读资源开销的方法。引入该方法后，TiDB 可提供数据库源码级性能观测，通过火焰图的形式帮助研发、运维人员定位性能问题的根因。详情参见 [TiDB Dashboard 实例性能分析 - 持续分析页面](/dashboard/continuous-profiling.md)。
 
 ### Coprocessor
 
 一种替 TiDB 分担计算的协处理机制。位于存储层（TiKV 或 TiFlash），以 Region 为单位协同处理从 TiDB 下推的计算。
-
-### Continuous Profiling
-
-持续性能分析 (Continuous Profiling) 是从 TiDB v5.3 起引入的一种从系统调用层面解读资源开销的方法。引入该方法后，TiDB 可提供数据库源码级性能观测，通过火焰图的形式帮助研发、运维人员定位性能问题的根因。详情参见 [TiDB Dashboard 实例性能分析 - 持续分析页面](/dashboard/continuous-profiling.md)。
 
 ## D
 
@@ -95,6 +95,8 @@ Dumpling 是一款数据导出工具，用于将存储在 TiDB 或 MySQL 中的�
 ### GC (Garbage Collection)
 
 垃圾回收（GC 或 Garbage collection）是 TiDB 中的内存资源管理机制。当不再需要动态内存里的旧数据时，便予以清理，让出内存。详情参见 [GC 机制](/garbage-collection-overview.md)。
+
+## H
 
 ### Hotspot
 
@@ -181,13 +183,13 @@ Operator Step 是 Operator 执行过程的一个步骤，一个 Operator 常常�
 
 [Partitioning](/partitioned-table.md)（分区）指通过 `RANGE`、`LIST`、`HASH` 和 `KEY` 等分区方法在物理上将一张表划分为较小的分区。这些较小的分区为分区表 (Partitioned Table)。
 
-### Pending/Down
-
-Pending 和 Down 是 Peer 可能出现的两种特殊状态。其中 Pending 表示 Follower 或 Learner 的 raft log 与 Leader 有较大差距，Pending 状态的 Follower 无法被选举成 Leader。Down 是指 Leader 长时间没有收到对应 Peer 的消息，通常意味着对应节点发生了宕机或者网络隔离。
-
 ### PD Control (pd-ctl)
 
 PD Control（或 pd-ctl）是 PD 的命令行工具，用于获取集群状态信息和调整集群。详情参见 [PD Control 使用说明](/pd-control.md)。
+
+### Pending/Down
+
+Pending 和 Down 是 Peer 可能出现的两种特殊状态。其中 Pending 表示 Follower 或 Learner 的 raft log 与 Leader 有较大差距，Pending 状态的 Follower 无法被选举成 Leader。Down 是指 Leader 长时间没有收到对应 Peer 的消息，通常意味着对应节点发生了宕机或者网络隔离。
 
 ### Placement Rules
 
@@ -235,18 +237,6 @@ TiKV 集群中的 Region 不是一开始就划分好的，而是随着数据写�
 
 ## S
 
-### Stale Read
-
-Stale Read 是一种读取历史数据版本的机制，读取 TiDB 中存储的历史数据版本。通过 Stale Read 功能，你能从指定时间点或时间范围内读取对应的历史数据，从而避免数据同步带来延迟。当使用 Stale Read 时，TiDB 默认会随机选择一个副本来读取数据，因此能利用所有副本。
-
-详情参见 [Stale Read](/stale-read.md)。
-
-### Security Enhanced Mode
-
-即安全增强模式，用于对 TiDB 管理员进行更细粒度的权限划分。安全增强模式受[安全增强式 Linux](https://zh.wikipedia.org/wiki/安全增强式Linux) 等系统设计的启发，削减拥有 MySQL `SUPER` 权限的用户能力，转而使用细粒度的 `RESTRICTED` 权限作为替代。
-
-详情参见[系统变量文档 - `tidb_enable_enhanced_security`](/system-variables.md#tidb_enable_enhanced_security)。
-
 ### Scheduler
 
 Scheduler（调度器）是 PD 中生成调度的组件。PD 中每个调度器是独立运行的，分别服务于不同的调度目的。常用的调度器及其调用目标有：
@@ -255,6 +245,18 @@ Scheduler（调度器）是 PD 中生成调度的组件。PD 中每个调度器�
 - `balance-region-scheduler`：保持不同节点的 Peer 均衡。
 - `hot-region-scheduler`：保持不同节点的读写热点 Region 均衡。
 - `evict-leader-{store-id}`：驱逐某个节点的所有 Leader。（常用于滚动升级）
+
+### Security Enhanced Mode
+
+即安全增强模式，用于对 TiDB 管理员进行更细粒度的权限划分。安全增强模式受[安全增强式 Linux](https://zh.wikipedia.org/wiki/安全增强式Linux) 等系统设计的启发，削减拥有 MySQL `SUPER` 权限的用户能力，转而使用细粒度的 `RESTRICTED` 权限作为替代。
+
+详情参见[系统变量文档 - `tidb_enable_enhanced_security`](/system-variables.md#tidb_enable_enhanced_security)。
+
+### Stale Read
+
+Stale Read 是一种读取历史数据版本的机制，读取 TiDB 中存储的历史数据版本。通过 Stale Read 功能，你能从指定时间点或时间范围内读取对应的历史数据，从而避免数据同步带来延迟。当使用 Stale Read 时，TiDB 默认会随机选择一个副本来读取数据，因此能利用所有副本。
+
+详情参见 [Stale Read](/stale-read.md)。
 
 ### Store
 
@@ -268,6 +270,10 @@ PD 中的 Store 指的是集群中的存储节点，也就是 tikv-server 实例
 
 详情参见[临时表](/temporary-tables.md)。
 
+### TiCDC
+
+[TiCDC](/ticdc/ticdc-overview.md) 是一款 TiDB 增量数据同步工具，通过拉取上游 TiKV 的数据变更日志，TiCDC 可以将数据解析为有序的行级变更数据输出到下游。更多关于 TiCDC 的概念和术语，参见 [TiCDC 术语表](/ticdc/ticdc-glossary.md)。
+
 ### TiDB Data Migration (DM)
 
 [TiDB Data Migration (DM)](/dm/dm-overview.md) 是一款便捷的数据迁移工具，支持从与 MySQL 协议兼容的数据库（MySQL、MariaDB、Aurora MySQL）到 TiDB 的全量数据迁移和增量数据同步。使用 DM 工具有利于简化数据迁移过程，降低数据迁移运维成本。
@@ -279,10 +285,6 @@ PD 中的 Store 指的是集群中的存储节点，也就是 tikv-server 实例
 [TiDB Lightning](/tidb-lightning/tidb-lightning-overview.md) 是一款数据导入工具，用于从静态文件导入 TB 级数据到 TiDB 集群，常用于 TiDB 集群的初始化数据导入。
 
 更多关于 TiDB Lightning 的概念和术语，参见 [TiDB Lightning 术语表](/tidb-lightning/tidb-lightning-glossary.md)。
-
-### TiCDC
-
-[TiCDC](/ticdc/ticdc-overview.md) 是一款 TiDB 增量数据同步工具，通过拉取上游 TiKV 的数据变更日志，TiCDC 可以将数据解析为有序的行级变更数据输出到下游。更多关于 TiCDC 的概念和术语，参见 [TiCDC 术语表](/ticdc/ticdc-glossary.md)。
 
 ### TiFlash
 
