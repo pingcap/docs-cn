@@ -2900,7 +2900,11 @@ mysql> desc select count(distinct a) from test.t;
 - 默认值：`ON`
 - 这个变量用来控制优化器是否开启交叉估算。
 
+<<<<<<< HEAD
 ### `tidb_opt_enable_hash_join` <span class="version-mark">从 v7.1.2 版本开始引入</span>
+=======
+### `tidb_opt_enable_hash_join` <span class="version-mark">从 v6.5.6、v7.1.2 和 v7.4.0 版本开始引入</span>
+>>>>>>> c6b1f50e52 (Update the introduced info for tidb_opt_enable_hash_join (#15628))
 
 - 作用域：SESSION | GLOBAL
 - 是否持久化到集群：是
