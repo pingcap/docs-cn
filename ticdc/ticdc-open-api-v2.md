@@ -290,6 +290,8 @@ curl -X GET http://127.0.0.1:8300/api/v2/health
 | `use_file_backend`        | `BOOL` 类型，是否将 redo log 存储到本地文件中。（非必选）              |
 | `encoding_worker_num`        | `INT` 类型，redo 模块中编解码 worker 的数量。（非必选）|
 |`flush_worker_num`        | `INT` 类型，redo 模块中上传文件 worker 的数量。（非必选）              |
+| `compression`         | `STRING` 类型，redo 文件的压缩行为，可选值为 `""` 和 `"lz4"`。默认值为 `""`，表示不进行压缩。（非必选）        |
+| `flush_concurrency`    | `INT` 类型，redo log 上传单个文件的并发数，默认值为 1，表示禁用并发。（非必选）                      |
 
 `filter` 参数说明如下：
 
