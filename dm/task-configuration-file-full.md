@@ -98,7 +98,7 @@ mydumpers:                           # dump 处理单元的运行配置参数
   global:                            # 配置名称
     threads: 4                       # dump 处理单元从上游数据库实例导出数据和 check-task 访问上游的线程数量，默认值为 4
     chunk-filesize: 64               # dump 处理单元生成的数据文件大小，默认值为 64，单位为 MB
-    extra-args: "--consistency none" # dump 处理单元的其他参数，对于 RDS 数据库且使用 `all` 或者 `full` 模式 `--consistency none` 为必要参数
+    extra-args: "--consistency none" # dump 处理单元的其他参数。对于从 RDS 数据库迁移且使用 `all` 或者 `full` 模式时，必须设置 `--consistency none`
 
 loaders:                             # load 处理单元的运行配置参数
   global:                            # 配置名称
