@@ -511,9 +511,9 @@ mysql> SELECT * FROM t1;
 - 是否持久化到集群：是
 - 默认值：`OFF`
 - 这个变量用于控制是否允许在一个 `ALTER TABLE` 语句中变更多个列或者索引。该变量值为 `ON` 时，仅支持以下多模式对象变更：
-    - 添加多列，例如 `ATLER TABLE t ADD COLUMN c1 INT, ADD COLUMN c2 INT;`。
-    - 删除多列，例如 `ATLER TABLE t DROP COLUMN c1, DROP COLUMN c2;`。
-    - 删除多个索引，例如 `ATLER TABLE t DROP INDEX i1, DROP INDEX i2;`。
+    - 添加多列，例如 `ALTER TABLE t ADD COLUMN c1 INT, ADD COLUMN c2 INT;`。
+    - 删除多列，例如 `ALTER TABLE t DROP COLUMN c1, DROP COLUMN c2;`。
+    - 删除多个索引，例如 `ALTER TABLE t DROP INDEX i1, DROP INDEX i2;`。
     - 删除被单列索引所覆盖的列，例如 `ALTER TABLE t DROP COLUMN c1`, 表结构中包含 `INDEX idx(c1)`。
 
 ### `tidb_enable_cascades_planner`
