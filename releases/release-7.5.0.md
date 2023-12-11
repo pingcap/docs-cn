@@ -79,9 +79,9 @@ TiDB 7.5.0 为长期支持版本 (Long-Term Support Release, LTS)。
 
 ### 性能
 
-* TiDB 分布式并行执行框架成为正式功能 (GA)，提升并行执行的 `ADD INDEX` 或 `IMPORT INTO` 任务的性能和稳定性 [#45719](https://github.com/pingcap/tidb/issues/45719) @[wjhuang2016](https://github.com/wjhuang2016)
+* TiDB 分布式执行框架成为正式功能 (GA)，提升并行执行的 `ADD INDEX` 或 `IMPORT INTO` 任务的性能和稳定性 [#45719](https://github.com/pingcap/tidb/issues/45719) @[wjhuang2016](https://github.com/wjhuang2016)
 
-    在 v6.6.0 中引入的 TiDB 分布式并行执行框架成为正式功能 (GA)。TiDB v7.1.0 之前的版本中，在同一时间只有一个 TiDB 节点能够执行 DDL 任务。从 v7.1.0 开始，在分布式并行执行框架下，多个 TiDB 节点可以并行执行同一项 DDL 任务。从 v7.2.0 开始，分布式并行执行框架支持多个 TiDB 节点并行执行同一个 `IMPORT INTO` 任务，从而更好地利用 TiDB 集群的资源，大幅提升 DDL 和 `IMPORT INTO` 任务的性能。此外，你还可以通过增加 TiDB 节点来线性提升 DDL 和 `IMPORT INTO` 任务的性能。
+    在 v6.6.0 中引入的 TiDB 分布式执行框架成为正式功能 (GA)。TiDB v7.1.0 之前的版本中，在同一时间只有一个 TiDB 节点能够执行 DDL 任务。从 v7.1.0 开始，在分布式并行执行框架下，多个 TiDB 节点可以并行执行同一项 DDL 任务。从 v7.2.0 开始，分布式并行执行框架支持多个 TiDB 节点并行执行同一个 `IMPORT INTO` 任务，从而更好地利用 TiDB 集群的资源，大幅提升 DDL 和 `IMPORT INTO` 任务的性能。此外，你还可以通过增加 TiDB 节点来线性提升 DDL 和 `IMPORT INTO` 任务的性能。
 
     如果要使用分布式并行执行框架，只需将 [`tidb_enable_dist_task`](/system-variables.md#tidb_enable_dist_task-从-v710-版本开始引入) 的值设置为 `ON`：
 
