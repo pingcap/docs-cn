@@ -23,7 +23,7 @@ To start a log backup, run `br log start`. A cluster can only run one log backup
 
 ```shell
 tiup br log start --task-name=pitr --pd "${PD_IP}:2379" \
---storage 's3://backup-101/logbackup?access-key=${access-key}&secret-access-key=${secret-access-key}"'
+--storage 's3://backup-101/logbackup?access-key=${access-key}&secret-access-key=${secret-access-key}'
 ```
 
 After the log backup task starts, it runs in the background of the TiDB cluster until you stop it manually. During this process, the TiDB change logs are regularly backed up to the specified storage in small batches. To query the status of the log backup task, run the following command:
@@ -52,7 +52,7 @@ The snapshot backup can be used as a method of full backup. You can run `br back
 
 ```shell
 tiup br backup full --pd "${PD_IP}:2379" \
---storage 's3://backup-101/snapshot-${date}?access-key=${access-key}&secret-access-key=${secret-access-key}"'
+--storage 's3://backup-101/snapshot-${date}?access-key=${access-key}&secret-access-key=${secret-access-key}'
 ```
 
 ## Run PITR
@@ -61,8 +61,8 @@ To restore the cluster to any point in time within the backup retention period, 
 
 ```shell
 br restore point --pd "${PD_IP}:2379" \
---storage='s3://backup-101/logbackup?access-key=${access-key}&secret-access-key=${secret-access-key}"' \
---full-backup-storage='s3://backup-101/snapshot-${date}?access-key=${access-key}&secret-access-key=${secret-access-key}"' \
+--storage='s3://backup-101/logbackup?access-key=${access-key}&secret-access-key=${secret-access-key}' \
+--full-backup-storage='s3://backup-101/snapshot-${date}?access-key=${access-key}&secret-access-key=${secret-access-key}' \
 --restored-ts '2022-05-15 18:00:00+0800'
 ```
 
@@ -94,7 +94,7 @@ The following steps describe how to clean up backup data that exceeds the backup
 3. Delete log backup data earlier than the snapshot backup `FULL_BACKUP_TS`:
 
     ```shell
-    tiup br log truncate --until=${FULL_BACKUP_TS} --storage='s3://backup-101/logbackup?access-key=${access-key}&secret-access-key=${secret-access-key}"'
+    tiup br log truncate --until=${FULL_BACKUP_TS} --storage='s3://backup-101/logbackup?access-key=${access-key}&secret-access-key=${secret-access-key}'
     ```
 
 4. Delete snapshot data earlier than the snapshot backup `FULL_BACKUP_TS`:
