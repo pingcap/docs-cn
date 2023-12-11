@@ -62,7 +62,7 @@ TiDB 采用计算存储分离架构，具有出色的扩展性和弹性的扩缩
     SET GLOBAL tidb_enable_dist_task = ON;
     ```
 
-    在运行后端任务时，框架支持的语句（如 [`ADD INDEX`](/sql-statements/sql-statement-add-index.md) 和 [`IMPORT INTO`](/sql-statements/sql-statement-import-into.md)）会采用分布式方式执行。默认集群内部所有节点均会执行后端任务。
+    在运行任务时，框架支持的语句（如 [`ADD INDEX`](/sql-statements/sql-statement-add-index.md) 和 [`IMPORT INTO`](/sql-statements/sql-statement-import-into.md)）会采用分布式方式执行。默认集群内部所有节点均会执行任务。
 
 2. 一般情况下，对于下列影响 DDL 任务分布式执行的系统变量，使用其默认值即可。
 
@@ -71,7 +71,7 @@ TiDB 采用计算存储分离架构，具有出色的扩展性和弹性的扩缩
     * [`tidb_ddl_error_count_limit`](/system-variables.md#tidb_ddl_error_count_limit)
     * [`tidb_ddl_reorg_batch_size`](/system-variables.md#tidb_ddl_reorg_batch_size)：使用默认值即可，建议最大不超过 `1024`。
 
-3. 从 v7.4.0 开始，你可以根据实际需求，调整执行后端任务的 TiDB 节点数量，在部署 TiDB 后为每一个 TiDB 节点设置 Instance 级别系统变量 [`tidb_service_scope`](/system-variables.md#tidb_service_scope-从-v740-版本开始引入)。`tidb_service_scope` 设置为 `background` 时，TiDB 节点可执行后端任务。`tidb_service_scope` 设置为默认值 "" 时，TiDB 节点不可执行后端任务。如果所有节点均未配置 `tidb_service_scope`，框架将调度所有节点执行后端任务。
+3. 从 v7.4.0 开始，你可以根据实际需求，调整执行任务的 TiDB 节点数量，在部署 TiDB 后为每一个 TiDB 节点设置 Instance 级别系统变量 [`tidb_service_scope`](/system-variables.md#tidb_service_scope-从-v740-版本开始引入)。`tidb_service_scope` 设置为 `background` 时，TiDB 节点可执行任务。`tidb_service_scope` 设置为默认值 "" 时，TiDB 节点不可执行任务。如果所有节点均未配置 `tidb_service_scope`，框架将调度所有节点执行任务。
 
     > **注意：**
     >
@@ -80,14 +80,14 @@ TiDB 采用计算存储分离架构，具有出色的扩展性和弹性的扩缩
 
 ## 实现原理
 
-TiDB 后端任务分布式执行框架的架构图如下：
+TiDB 分布式执行框架的架构图如下：
 
-![后端任务分布式执行框架的架构](/media/dist-task/dist-task-architect.jpg)
+![分布式执行框架的架构](/media/dist-task/dist-task-architect.jpg)
 
 根据上图，分布式执行框架中任务的执行主要由以下模块负责：
 
 - Dispatcher：负责生成每个任务的分布式执行计划，管理执行过程，转换任务状态以及收集和反馈运行时任务信息等。
-- Scheduler：以 TiDB 节点为单位来同步分布式任务的执行，提高后端任务执行效率。
+- Scheduler：以 TiDB 节点为单位来同步分布式任务的执行，提高执行效率。
 - Subtask Executor：是实际的分布式子任务执行者，并将子任务的执行情况返回给 Scheduler，由 Scheduler 统一更新子任务的执行状态。
 - 资源池：通过对上述各种模块中计算资源进行池化，提供量化资源的使用与管理的基础。
 
