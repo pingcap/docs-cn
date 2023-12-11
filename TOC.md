@@ -635,6 +635,7 @@
     - [存储](/tidb-storage.md)
     - [计算](/tidb-computing.md)
     - [调度](/tidb-scheduling.md)
+    - [负载均衡](/tiproxy/tiproxy-overview.md)
     - [TSO](/tso.md)
   - 存储引擎 TiKV
     - [TiKV 简介](/tikv-overview.md)
