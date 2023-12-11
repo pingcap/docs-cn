@@ -248,7 +248,7 @@ aliases: ['/docs-cn/dev/basic-features/','/docs-cn/dev/experimental-features-4.0
 | [Runaway Queries 自动管理](/tidb-resource-control.md#管理资源消耗超出预期的查询-runaway-queries) | E | N | N | N | N | N | N | N | N | N |
 | [后台任务资源管控](/tidb-resource-control.md#管理后台任务) | E | N | N | N | N | N | N | N | N | N |
 | [TiFlash 存算分离架构与 S3 支持](/tiflash/tiflash-disaggregated-and-s3.md) | Y | E | N | N | N | N | N | N | N | N |
-| [选择执行分布式框架任务的 TiDB 节点](/system-variables.md#tidb_service_scope-从-v740-版本开始引入) | Y | N | N | N | N | N | N | N | N | N |
+| [选择执行分布式执行框架任务的 TiDB 节点](/system-variables.md#tidb_service_scope-从-v740-版本开始引入) | Y | N | N | N | N | N | N | N | N | N |
 
 [^1]: TiDB 误将 latin1 处理为 utf8 的子集。见 [TiDB #18955](https://github.com/pingcap/tidb/issues/18955)。
 
