@@ -46,7 +46,7 @@ SELECT * FROM variables_info ORDER BY variable_name LIMIT 3;
 Fields in the `VARIABLES_INFO` table are described as follows:
 
 * `VARIABLE_NAME`: the name of the system variable.
-* `VARIABLE_SCOPE`: the scope of the system variable. `SESSION` means that the system variable is only valid in the current session. `INSTANCE` means that the system variable is valid in the TiDB instance. `GLOBAL` means that the system variable is valid in the TiDB cluster.
+* `VARIABLE_SCOPE`: the scope of the system variable. `SESSION` means that the system variable is only valid in the current session. `INSTANCE` means that the system variable is valid in the TiDB instance. `GLOBAL` means that the system variable is valid in the TiDB cluster. `NONE` means that the system variable is read only in the TiDB cluster.
 * `DEFAULT_VALUE`: the default value of the system variable.
 * `CURRENT_VALUE`: the current value of the system variable. If the scope includes `SESSION`, `CURRENT_VALUE` is the value in the current session.
 * `MIN_VALUE`: the minimum value allowed for the system variable. If the system variable is not numeric, `MIN_VALUE` is NULL.
