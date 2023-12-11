@@ -93,7 +93,7 @@ Restore KV Files <--------------------------------------------------------------
 3. 清理该快照备份 `FULL_BACKUP_TS` 之前的日志备份数据。
 
     ```shell
-    tiup br log truncate --until=${FULL_BACKUP_TS} --storage='s3://backup-101/logbackup?access-key=${access-key}&secret-access-key=${secret-access-key}"'
+    tiup br log truncate --until=${FULL_BACKUP_TS} --storage='s3://backup-101/logbackup?access-key=${access-key}&secret-access-key=${secret-access-key}'
     ```
 
 4. 清理该快照备份 `FULL_BACKUP_TS` 之前的快照备份数据。
