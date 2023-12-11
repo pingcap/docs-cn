@@ -658,7 +658,7 @@
     - [TiFlash 兼容性说明](/tiflash/tiflash-compatibility.md)
     - [TiFlash Pipeline Model 执行模型](/tiflash/tiflash-pipeline-model.md)
   - TiDB 分布式执行框架
-    - [TiDB 分布式执行框架](/tidb-distributed-execution-framework.md)
+    - [TiDB 分布式执行框架介绍](/tidb-distributed-execution-framework.md)
     - [TiDB 全局排序](/tidb-global-sort.md)
   - [系统变量](/system-variables.md)
   - 配置文件参数
