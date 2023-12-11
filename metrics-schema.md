@@ -116,9 +116,9 @@ select * from information_schema.metrics_tables where table_name='tidb_query_dur
 ```
 
 * `TABLE_NAME`：对应于 `metrics_schema` 中的表名，这里表名是 `tidb_query_duration`。
-* `PROMQL`：因为监控表的原理是将 SQL 映射成 `PromQL` 后向 Prometheus 请求数据，并将 Prometheus 返回的结果转换成 SQL 查询结果。该字段是 `PromQL` 的表达式模板，查询监控表数据时使用查询条件改写模板中的变量，生成最终的查询表达式。
+* `PROMQL`：监控表的原理是将 SQL 映射成 `PromQL` 后向 Prometheus 请求数据，并将 Prometheus 返回的结果转换成 SQL 查询结果。该字段是 `PromQL` 的表达式模板，查询监控表数据时使用查询条件改写模板中的变量，生成最终的查询表达式。
 * `LABELS`：监控项定义的 label，`tidb_query_duration` 有两个 label，分别是 `instance` 和 `sql_type`。
-* `QUANTILE`：百分位。直方图类型的监控数据会指定一个默认百分位。如果值为 `0`，表示该监控表对应的监控不是直方图。`tidb_query_duration` 默认查询 0.9 ，也就是 P90 的监控值。
+* `QUANTILE`：百分位。直方图类型的监控数据会指定一个默认百分位。如果值为 `0`，表示该监控表对应的监控不是直方图。`tidb_query_duration` 默认查询 0.9，也就是 P90 的监控值。
 * `COMMENT`：对这个监控表的解释。可以看出 `tidb_query_duration` 表是用来查询 TiDB query 执行的百分位时间，如 P999/P99/P90 的查询耗时，单位是秒。
 
 再来看 `tidb_query_duration` 的表结构：
@@ -144,7 +144,7 @@ show create table metrics_schema.tidb_query_duration;
 ```
 
 * `time`：监控项的时间。
-* `instance` 和 `sql_type`：是 `tidb_query_duration` 这个监控项的 label。`instance` 表示监控的地址，`sql_type` 表示执行 SQL 的类似。
+* `instance` 和 `sql_type`：`tidb_query_duration` 监控项的 label。`instance` 表示监控的地址，`sql_type` 表示执行 SQL 的类似。
 * `quantile`，百分位，直方图类型的监控都会有该列，表示查询的百分位时间，如 `quantile=0.9` 就是查询 P90 的时间。
 * `value`：监控项的值。
 
@@ -194,9 +194,9 @@ desc select * from metrics_schema.tidb_query_duration where value is not null an
 +------------------+----------+------+---------------------------+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
 ```
 
-可以发现执行计划中有一个 `PromQL`, 以及查询监控的 `start_time` 和 `end_time`，还有 `step` 值，在实际执行时，TiDB 会调用 Prometheus 的 `query_range` HTTP API 接口来查询监控数据。
+可以发现执行计划中有一个 `PromQL`，以及查询监控的 `start_time` 和 `end_time`，还有 `step` 值，在实际执行时，TiDB 会调用 Prometheus 的 `query_range` HTTP API 接口来查询监控数据。
 
-从以上结果可知，在 [`2020-03-25 23:40:00`, `2020-03-25 23:42:00`] 时间范围内，每个 label 只有三个时间的值，间隔时间是 1 分钟，即执行计划中的 `step` 值。该间隔时间由以下两个 session 变量决定：
+从以上结果可知，在 `[2020-03-25 23:40:00, 2020-03-25 23:42:00]` 时间范围内，每个 label 只有三个时间的值，间隔时间是 1 分钟，即执行计划中的 `step` 值。该间隔时间由以下两个 session 变量决定：
 
 * `tidb_metric_query_step`：查询的分辨率步长。从 Prometheus 的 `query_range` 接口查询数据时需要指定 `start_time`，`end_time` 和 `step`，其中 `step` 会使用该变量的值。
 * `tidb_metric_query_range_duration`：查询监控时，会将 `PROMQL` 中的 `$RANGE_DURATION` 替换成该变量的值，默认值是 60 秒。

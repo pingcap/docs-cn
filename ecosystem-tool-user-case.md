@@ -1,12 +1,12 @@
 ---
-title: TiDB 工具适用场景
-summary: 本文档介绍 TiDB 工具的常见适用场景与工具选择。
+title: TiDB 工具的使用场景
+summary: 本文档介绍 TiDB 工具的常见使用场景与工具选择。
 aliases: ['/docs-cn/dev/ecosystem-tool-user-case/']
 ---
 
-# TiDB 工具适用场景
+# TiDB 工具的使用场景
 
-本文档从数据迁移工具的适用场景出发，介绍部分常见场景下的迁移工具的选择。
+本文档从数据迁移工具的使用场景出发，介绍部分常见场景下的迁移工具的选择。
 
 ## 在物理机或虚拟机上部署运维 TiDB
 

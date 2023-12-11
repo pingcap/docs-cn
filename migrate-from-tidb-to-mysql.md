@@ -109,7 +109,9 @@ summary: 了解如何将数据从 TiDB 集群迁移至与 MySQL 兼容的数据�
 
 3. 恢复数据。
 
-    使用开源工具 MyLoader 导入数据到下游 MySQL。MyLoader 的安装和详细用例参见 [MyDumpler/MyLoader](https://github.com/mydumper/mydumper)。执行以下指令，将 Dumpling 导出的上游全量数据导入到下游 MySQL 实例：
+    使用开源工具 MyLoader 导入数据到下游 MySQL。MyLoader 的安装和详细用例参见 [MyDumpler/MyLoader](https://github.com/mydumper/mydumper)。注意需要使用 MyLoader v0.10 或更早版本，否则会导致 MyLoader 无法处理 Dumpling 导出的 metadata 文件。
+
+    执行以下指令，将 Dumpling 导出的上游全量数据导入到下游 MySQL 实例：
 
     ```shell
     myloader -h 127.0.0.1 -P 3306 -d ./dumpling_output/
@@ -160,12 +162,12 @@ summary: 了解如何将数据从 TiDB 集群迁移至与 MySQL 兼容的数据�
     在上游集群中，执行以下命令创建从上游到下游集群的同步链路：
 
     ```shell
-    tiup ctl:<cluster-version> cdc changefeed create --pd=http://127.0.0.1:2379 --sink-uri="mysql://root:@127.0.0.1:3306" --changefeed-id="upstream-to-downstream" --start-ts="434217889191428107"
+    tiup ctl:v<CLUSTER_VERSION> cdc changefeed create --server=http://127.0.0.1:8300 --sink-uri="mysql://root:@127.0.0.1:3306" --changefeed-id="upstream-to-downstream" --start-ts="434217889191428107"
     ```
 
     以上命令中：
 
-    - `--pd`：实际的上游集群的地址
+    - `--server`：TiCDC 集群任意一节点地址
     - `--sink-uri`：同步任务下游的地址
     - `--changefeed-id`：同步任务的 ID，格式需要符合正则表达式 `^[a-zA-Z0-9]+(\-[a-zA-Z0-9]+)*$`
     - `--start-ts`：TiCDC 同步的起点，需要设置为实际的备份时间点，也就是[第 2 步：迁移全量数据](/migrate-from-tidb-to-mysql.md#第-2-步迁移全量数据)中 “备份数据” 提到的 BackupTS

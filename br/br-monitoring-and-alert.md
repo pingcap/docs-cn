@@ -39,7 +39,8 @@ aliases: ['/zh/tidb/dev/pitr-monitoring-and-alert/']
 | **tikv_log_backup_fatal_errors**                      | Counter   | 日志备份期间，遇到的不可重试或不可忽略的错误。当该类错误出现的时候，日志备份任务会被暂停。 <br/>`type :: ErrorType`                                                                          |
 | **tikv_log_backup_heap_memory**                       | Gauge     | 日志备份期间，增量扫发现的、尚未被消费的事件占用的内存。                                                                                                                    |
 | **tikv_log_backup_on_event_duration_seconds**         | Histogram | 将 KV Event 保存到临时文件各个阶段的耗时。 <br/>`stage :: {"write_to_tempfile", "syscall_write"}`                                                               |
-| **tikv_log_backup_store_checkpoint_ts**               | Gauge     | Store 级别的 Checkpoint TS，已经弃用。其含义更加接近于 Store 当前注册的 GC Safepoint. <br/>`task :: string`                                                           |
+| **tikv_log_backup_store_checkpoint_ts**               | Gauge     | Store 级别的 Checkpoint TS，已经弃用。其含义更加接近于 Store 当前注册的 GC Safepoint。 <br/>`task :: string`                                                           |
+| **tidb_log_backup_last_checkpoint**                   | Gauge     | 全局 Checkpoint TS，表示日志备份功能中已经备份的时间点。 <br/>`task :: string`                                                                                    |
 | **tikv_log_backup_flush_duration_sec**                | Histogram | 将本地临时文件移动到外部存储的耗时。<br/>`stage :: {"generate_metadata", "save_files", "clear_temp_files"}`                                                       |
 | **tikv_log_backup_flush_file_size**                   | Histogram | 备份产生的文件的大小统计。                                                                                                                                   |
 | **tikv_log_backup_initial_scan_duration_sec**         | Histogram | 增量扫的整体耗时统计。                                                                                                                                     |
@@ -66,7 +67,7 @@ aliases: ['/zh/tidb/dev/pitr-monitoring-and-alert/']
 
 #### LogBackupRunningRPOMoreThan10m
 
-- 表达式：`max(time() - tikv_log_backup_store_checkpoint_ts / 262144000) by (task) / 60 > 10 and max(tikv_log_backup_store_checkpoint_ts) by (task) > 0 and max(tikv_log_backup_task_status) by (task) == 0`
+- 表达式：`max(time() - tidb_log_backup_last_checkpoint / 262144000) by (task) / 60 > 10 and max(tidb_log_backup_last_checkpoint) by (task) > 0 and max(tikv_log_backup_task_status) by (task) == 0`
 - 告警级别：warning
 - 说明：日志数据超过 10 分钟未持久化到存储中，该配置项主要用于提醒，大部分情况下，不会影响日志备份。
 
@@ -77,7 +78,7 @@ groups:
 - name: PiTR
   rules:
   - alert: LogBackupRunningRPOMoreThan10m
-    expr: max(time() - tikv_log_backup_store_checkpoint_ts / 262144000) by (task) / 60 > 10 and max(tikv_log_backup_store_checkpoint_ts) by (task) > 0 and max(tikv_log_backup_task_status) by (task) == 0
+    expr: max(time() - tidb_log_backup_last_checkpoint / 262144000) by (task) / 60 > 10 and max(tidb_log_backup_last_checkpoint) by (task) > 0 and max(tikv_log_backup_task_status) by (task) == 0
     labels:
       severity: warning
     annotations:
@@ -87,30 +88,30 @@ groups:
 
 #### LogBackupRunningRPOMoreThan30m
 
-- 表达式：`max(time() - tikv_log_backup_store_checkpoint_ts / 262144000) by (task) / 60 > 30 and max(tikv_log_backup_store_checkpoint_ts) by (task) > 0 and max(tikv_log_backup_task_status) by (task) == 0`
+- 表达式：`max(time() - tidb_log_backup_last_checkpoint / 262144000) by (task) / 60 > 30 and max(tidb_log_backup_last_checkpoint) by (task) > 0 and max(tikv_log_backup_task_status) by (task) == 0`
 - 告警级别：critical
 - 说明：日志数据超过 30 分钟未持久化到存储中，出现该告警表示极有可能出现异常，可以查看 TiKV 日志定位原因。
 
 #### LogBackupPausingMoreThan2h
 
-- 表达式：`max(time() - tikv_log_backup_store_checkpoint_ts / 262144000) by (task) / 3600 > 2 and max(tikv_log_backup_store_checkpoint_ts) by (task) > 0 and max(tikv_log_backup_task_status) by (task) == 1`
+- 表达式：`max(time() - tidb_log_backup_last_checkpoint / 262144000) by (task) / 3600 > 2 and max(tidb_log_backup_last_checkpoint) by (task) > 0 and max(tikv_log_backup_task_status) by (task) == 1`
 - 告警级别：warning
 - 说明：日志备份任务处于暂停状态超过 2 小时，该告警主要用于提醒，建议尽早执行 `br log resume` 恢复任务。
 
 #### LogBackupPausingMoreThan12h
 
-- 表达式：`max(time() - tikv_log_backup_store_checkpoint_ts / 262144000) by (task) / 3600 > 12 and max(tikv_log_backup_store_checkpoint_ts) by (task) > 0 and max(tikv_log_backup_task_status) by (task) == 1`
+- 表达式：`max(time() - tidb_log_backup_last_checkpoint / 262144000) by (task) / 3600 > 12 and max(tidb_log_backup_last_checkpoint) by (task) > 0 and max(tikv_log_backup_task_status) by (task) == 1`
 - 告警级别：critical
 - 说明：日志备份任务处于暂停状态超过 12 小时，应尽快执行 `br log resume` 恢复任务。任务处于暂停状态时间过长会有数据丢失的风险。
 
 #### LogBackupFailed
 
-- 表达式：`max(tikv_log_backup_task_status) by (task) == 2 and max(tikv_log_backup_store_checkpoint_ts) by (task) > 0`
+- 表达式：`max(tikv_log_backup_task_status) by (task) == 2 and max(tidb_log_backup_last_checkpoint) by (task) > 0`
 - 告警级别：critical
 - 说明：日志备份任务进入失败状态，需要执行 `br log status` 查看失败原因，如有必要还需进一步查看 TiKV 日志。
 
 #### LogBackupGCSafePointExceedsCheckpoint
 
-- 表达式：`min(tikv_log_backup_store_checkpoint_ts) by (instance) - max(tikv_gcworker_autogc_safe_point) by (instance) < 0`
+- 表达式：`min(tidb_log_backup_last_checkpoint) by (instance) - max(tikv_gcworker_autogc_safe_point) by (instance) < 0`
 - 告警级别：critical
 - 说明：部分数据在备份前被 GC，此时已有部分数据丢失，极有可能对业务产生影响。

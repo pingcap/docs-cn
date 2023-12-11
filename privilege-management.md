@@ -263,12 +263,25 @@ SHOW GRANTS FOR `rw_user`@`192.168.%`;
 
 * `BACKUP_ADMIN`
 * `RESTORE_ADMIN`
+* `SYSTEM_USER`
+* `SYSTEM_VARIABLES_ADMIN`
 * `ROLE_ADMIN`
 * `CONNECTION_ADMIN`
-* `SYSTEM_VARIABLES_ADMIN`
+* `PLACEMENT_ADMIN` 允许创建、删除和修改放置策略 (placement policy)。
+* `DASHBOARD_CLIENT` 允许登录 TiDB Dashboard。
+* `RESTRICTED_TABLES_ADMIN` 允许在 SEM 打开的情况下查看系统表。
+* `RESTRICTED_STATUS_ADMIN` 允许在 SEM 打开的情况下查看 [`SHOW [GLOBAL|SESSION] STATUS`](/sql-statements/sql-statement-show-status.md) 中的状态变量。
+* `RESTRICTED_VARIABLES_ADMIN` 允许在 SEM 打开的情况下查看所有系统变量。
+* `RESTRICTED_USER_ADMIN` 不允许在 SEM 打开的情况下使用 `SUPER` 用户撤销访问权限。
+* `RESTRICTED_CONNECTION_ADMIN` 允许 KILL 属于 `RESTRICTED_USER_ADMIN` 用户的连接。该权限对 `KILL` 和 `KILL TIDB` 语句生效。
 * `RESTRICTED_REPLICA_WRITER_ADMIN` 允许权限拥有者在 TiDB 集群开启了只读模式的情况下不受影响地执行写入或更新操作，详见 [`tidb_restricted_read_only` 配置项](/system-variables.md#tidb_restricted_read_only-从-v520-版本开始引入)。
 
 若要查看全部的动态权限，请执行 `SHOW PRIVILEGES` 语句。由于用户可使用插件来添加新的权限，因此可分配的权限列表可能因用户的 TiDB 安装情况而异。
+
+## `SUPER` 权限
+
+- 拥有 `SUPER` 权限的用户能完成几乎所有的操作，默认情况下只有 `root` 用户拥有该权限。请谨慎向其它用户授予 `SUPER` 权限。
+- `SUPER` 权限[在 MySQL 8.0 中被认为是过时的](https://dev.mysql.com/doc/refman/8.0/en/privileges-provided.html#dynamic-privileges-migration-from-super)，可以通过[动态权限](#动态权限)替代 `SUPER` 权限进行更细粒度的权限控制。
 
 ## TiDB 各操作需要的权限
 
@@ -329,6 +342,10 @@ SELECT * FROM INFORMATION_SCHEMA.USER_PRIVILEGES WHERE grantee = "'root'@'%'";
 
 需要拥有 `SUPER` 或者 `BACKUP_ADMIN` 权限。
 
+### CANCEL IMPORT JOB
+
+需要 `SUPER` 权限来取消属于其他用户的任务，否则只能取消当前用户创建的任务。
+
 ### CREATE DATABASE
 
 需要拥有全局 `CREATE` 权限。
@@ -361,6 +378,10 @@ SELECT * FROM INFORMATION_SCHEMA.USER_PRIVILEGES WHERE grantee = "'root'@'%'";
 
 需要对所操作的表拥有 `DROP` 权限。
 
+### IMPORT INTO
+
+需要对目标表拥有 `SELECT`、`UPDATE`、`INSERT`、`DELETE` 和 `ALTER` 权限。如果是导入存储在 TiDB 本地的文件，还需要有 `FILE` 权限。
+
 ### LOAD DATA
 
 `LOAD DATA` 需要对所操作的表拥有 `INSERT` 权限。执行 `REPLACE INTO` 语句还需要对所操作的表拥有 `DELETE` 权限。
@@ -377,6 +398,14 @@ SELECT * FROM INFORMATION_SCHEMA.USER_PRIVILEGES WHERE grantee = "'root'@'%'";
 
 需要对所操作的表拥有 `INSERT` 和 `SELECT` 权限。
 
+### LOCK STATS
+
+需要对所操作的表拥有 `INSERT` 和 `SELECT` 权限。
+
+### UNLOCK STATS
+
+需要对所操作的表拥有 `INSERT` 和 `SELECT` 权限。
+
 ### SHOW
 
 `SHOW CREATE TABLE` 需要任意一种权限。
@@ -386,6 +415,10 @@ SELECT * FROM INFORMATION_SCHEMA.USER_PRIVILEGES WHERE grantee = "'root'@'%'";
 `SHOW GRANTS` 需要拥有对 `mysql` 数据库的 `SELECT` 权限。如果是使用 `SHOW GRANTS` 查看当前用户权限，则不需要任何权限。
 
 `SHOW PROCESSLIST` 需要 `SUPER` 权限来显示属于其他用户的连接。
+
+`SHOW IMPORT JOB` 需要 `SUPER` 权限来显示属于其他用户的任务，否则只能看到当前用户创建的任务。
+
+`SHOW STATS_LOCKED` 需要拥有 `mysql.stats_table_locked` 表的 `SELECT` 权限。
 
 ### CREATE ROLE/USER
 
@@ -432,6 +465,22 @@ SELECT * FROM INFORMATION_SCHEMA.USER_PRIVILEGES WHERE grantee = "'root'@'%'";
 ### KILL
 
 使用 `KILL` 终止其他用户的会话需要拥有 `SUPER` 或者 `CONNECTION_ADMIN` 权限。
+
+### CREATE RESOURCE GROUP
+
+需要拥有 `SUPER` 或者 `RESOURCE_GROUP_ADMIN` 权限。
+
+### ALTER RESOURCE GROUP
+
+需要拥有 `SUPER` 或者 `RESOURCE_GROUP_ADMIN` 权限。
+
+### DROP RESOURCE GROUP
+
+需要拥有 `SUPER` 或者 `RESOURCE_GROUP_ADMIN` 权限。
+
+### CALIBRATE RESOURCE
+
+需要拥有 `SUPER` 或者 `RESOURCE_GROUP_ADMIN` 权限。
 
 ## 权限系统的实现
 

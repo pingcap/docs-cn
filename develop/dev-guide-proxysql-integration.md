@@ -20,7 +20,7 @@ summary: 介绍 TiDB 与 ProxySQL 集成的方法。
 
 <div label="TiDB Cloud" value="tidb-cloud">
 
-请参考[使用 TiDB Cloud (Serverless Tier) 构建 TiDB 集群](/develop/dev-guide-build-cluster-in-cloud.md)。
+请参考[使用 TiDB Serverless 构建 TiDB 集群](/develop/dev-guide-build-cluster-in-cloud.md)。
 
 </div>
 
@@ -30,7 +30,7 @@ summary: 介绍 TiDB 与 ProxySQL 集成的方法。
 
     ```shell
     git clone git@github.com:pingcap/tidb.git
-    cd tidb/tidb-server
+    cd tidb/cmd/tidb-server
     go build
     ```
 
@@ -241,7 +241,7 @@ mysql -u root -h 127.0.0.1 -P 6033 -e "SELECT VERSION()"
 +--------------------+
 | VERSION()          |
 +--------------------+
-| 5.7.25-TiDB-v6.1.0 |
+| 8.0.11-TiDB-v7.5.0 |
 +--------------------+
 ```
 

@@ -13,7 +13,7 @@ summary: 了解单个区域两个可用区自适应同步模式部署方式。
 
 TiDB 通常采用多 AZ 部署方案保证集群高可用和容灾能力。多 AZ 部署方案包括单区域多 AZ 部署模式、双区域多 AZ 部署模式等多种部署模式。本文介绍单区域双 AZ 部署方案，即在同一区域部署两个 AZ，成本更低，同样能满足高可用和容灾要求。该部署方案采用自适应同步模式，即 Data Replication Auto Synchronous，简称 DR Auto-Sync。
 
-单区域双 AZ 部署方案下，两个 AZ 通常位于同一个城市或两个相邻城市（例如北京和廊坊）， 相距 50 km 以内，AZ 间的网络连接延迟小于 1.5 ms，带宽大于 10 Gbps。
+单区域双 AZ 部署方案下，两个 AZ 通常位于同一个城市或两个相邻城市（例如北京和廊坊），相距 50 km 以内，AZ 间的网络连接延迟小于 1.5 ms，带宽大于 10 Gbps。
 
 ## 部署架构
 
@@ -21,7 +21,7 @@ TiDB 通常采用多 AZ 部署方案保证集群高可用和容灾能力。多 A
 
 下图为集群部署架构图，具体如下：
 
-- 集群采用推荐的 4 副本模式，其中 AZ1 中放 2 个 Voter，AZ2 中放 1 个 Voter 副本和 1 个 Learner 副本。TiKV 按机房的实际情况打上合适的 Label。
+- 集群采用推荐的 6 副本模式，其中 AZ1 中放 3 个 Voter，AZ2 中放 2 个 Follower 副本和 1 个 Learner 副本。TiKV 按机房的实际情况打上合适的 Label。
 - 副本间通过 Raft 协议保证数据的一致性和高可用，对用户完全透明。
 
 ![单区域双 AZ 集群架构图](/media/two-dc-replication-1.png)
@@ -69,10 +69,16 @@ tikv_servers:
       server.labels: { az: "east", rack: "east-2", host: "31" }
   - host: 10.63.10.32
     config:
-      server.labels: { az: "west", rack: "west-1", host: "32" }
+      server.labels: { az: "east", rack: "east-3", host: "32" }
   - host: 10.63.10.33
     config:
-      server.labels: { az: "west", rack: "west-2", host: "33" }
+      server.labels: { az: "west", rack: "west-1", host: "33" }
+  - host: 10.63.10.34
+    config:
+      server.labels: { az: "west", rack: "west-2", host: "34" }
+  - host: 10.63.10.35
+    config:
+      server.labels: { az: "west", rack: "west-3", host: "35" }
 monitoring_servers:
   - host: 10.63.10.60
 grafana_servers:
@@ -83,7 +89,7 @@ alertmanager_servers:
 
 ### Placement Rules 规划
 
-为了按照规划的集群拓扑进行部署，你需要使用 [Placement Rules](/configure-placement-rules.md) 来规划集群副本的放置位置。以 4 副本（2 个 Voter 副本在主 AZ，1 个 Voter 副本和 1 个 Learner 副本在从 AZ）的部署方式为例，可使用 Placement Rules 进行如下副本配置：
+为了按照规划的集群拓扑进行部署，你需要使用 [Placement Rules](/configure-placement-rules.md) 来规划集群副本的放置位置。以 6 副本（3 个 Voter 副本在主 AZ，2 个 Follower 副本和 1 个 Learner 副本在从 AZ）的部署方式为例，可使用 Placement Rules 进行如下副本配置：
 
 ```
 cat rule.json
@@ -99,7 +105,7 @@ cat rule.json
         "start_key": "",
         "end_key": "",
         "role": "voter",
-        "count": 2,
+        "count": 3,
         "label_constraints": [
           {
             "key": "az",
@@ -117,11 +123,11 @@ cat rule.json
       },
       {
         "group_id": "pd",
-        "id": "az-west",
+        "id": "az-west-1",
         "start_key": "",
         "end_key": "",
-        "role": "voter",
-        "count": 1,
+        "role": "follower",
+        "count": 2,
         "label_constraints": [
           {
             "key": "az",
@@ -139,7 +145,7 @@ cat rule.json
       },
       {
         "group_id": "pd",
-        "id": "az-west",
+        "id": "az-west-2",
         "start_key": "",
         "end_key": "",
         "role": "learner",
@@ -189,7 +195,7 @@ cat default.json
         "start_key": "",
         "end_key": "",
         "role": "voter",
-        "count": 3
+        "count": 5
       }
     ]
   }
@@ -211,8 +217,8 @@ cat default.json
     label-key = "az"
     primary = "east"
     dr = "west"
-    primary-replicas = 2
-    dr-replicas = 1
+    primary-replicas = 3
+    dr-replicas = 2
     wait-store-timeout = "1m"
     ```
 
@@ -225,8 +231,8 @@ cat default.json
     config set replication-mode dr-auto-sync label-key az
     config set replication-mode dr-auto-sync primary east
     config set replication-mode dr-auto-sync dr west
-    config set replication-mode dr-auto-sync primary-replicas 2
-    config set replication-mode dr-auto-sync dr-replicas 1
+    config set replication-mode dr-auto-sync primary-replicas 3
+    config set replication-mode dr-auto-sync dr-replicas 2
     ```
 
 配置项说明：
@@ -279,7 +285,7 @@ curl http://pd_ip:pd_port/pd/api/v1/replication_mode/status
 
 当处于同步复制状态的集群发生了灾难，可进行 `RPO = 0` 的数据恢复：
 
-- 如果主 AZ 发生故障，丢失了大多数 Voter 副本，但是从 AZ 有完整的数据，可在从 AZ 恢复数据。此时需要人工介入，通过专业工具恢复（恢复方式请联系 TiDB 团队）。
+- 如果主 AZ 发生故障，丢失了大多数 Voter 副本，但是从 AZ 有完整的数据，可在从 AZ 恢复数据。此时需要人工介入，通过专业工具恢复。如需获取支持，请联系 [PingCAP 服务与支持](https://cn.pingcap.com/support/)。
 
 - 如果从 AZ 发生故障，丢失了少数 Voter 副本，能自动切换成 async 异步复制模式。
 

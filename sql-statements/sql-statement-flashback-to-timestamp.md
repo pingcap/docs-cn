@@ -9,8 +9,13 @@ TiDB v6.4.0 引入了 `FLASHBACK CLUSTER TO TIMESTAMP` 语法，其功能是将�
 
 > **警告：**
 >
-> - 当前该功能为实验特性，不建议在生产环境中使用。
-> - 在执行 `FLASHBACK CLUSTER TO TIMESTAMP` 之前，需要暂停 PITR 和 TiCDC 等工具上运行的同步任务，待 `FLASHBACK` 执行完成后再启动，否则会造成同步失败等问题。
+> 在 TiDB v7.1.0 中使用该功能可能会出现 FLASHBACK 完成后部分 Region 仍处于 FLASHBACK 过程中的问题。请尽量避免在 v7.1.0 中使用该功能。详情可见 [#44292](https://github.com/pingcap/tidb/issues/44292)。
+>
+> 如果已经出现该问题，可以使用 [TiDB 快照备份与恢复](/br/br-snapshot-guide.md)功能进行数据恢复。
+
+> **注意：**
+>
+> `FLASHBACK CLUSTER TO TIMESTAMP` 是用最新的时间戳写入特定时间点的旧数据，但不会删除当前数据，所以在使用前请确保集群有足够的存储空间来同时容纳旧数据和当前数据。
 
 ## 语法
 
@@ -34,9 +39,12 @@ FlashbackToTimestampStmt ::=
     ```
 
 * 执行 `FLASHBACK CLUSTER` SQL 语句的用户需要有 `SUPER` 权限。
-* 在 `FLASHBACK` 指定的时间点到开始执行的时间段内不能存在相关表结构变更的 DDL 记录。若存在，TiDB 会拒绝该 DDL 操作。
-* 在执行 `FLASHBACK CLUSTER TO TIMESTAMP` 前，TiDB 会主动断开所有相关表上的连接，并禁止对这些表进行读写操作，直到 `FLASHBACK` 完成。
+* `FLASHBACK CLUSTER` 不支持回退修改 PD 相关信息的 DDL，如 `ALTER TABLE ATTRIBUTE`、`ALTER TABLE REPLICA`、`CREATE PLACEMENT POLICY` 等。
+* `FLASHBACK CLUSTER` 指定的时间点不能存在未执行完成的 DDL 记录。若存在，TiDB 会拒绝该 DDL 操作。
+* 在执行 `FLASHBACK CLUSTER TO TIMESTAMP` 前，TiDB 会主动断开所有相关表上的连接，并禁止对这些表进行读写操作，直到 `FLASHBACK CLUSTER` 完成。
 * `FLASHBACK CLUSTER TO TIMESTAMP` 命令不能取消，一旦开始执行 TiDB 会一直重试，直到成功。
+* 在 `FLASHBACK CLUSTER` 执行期间，若有数据备份需求，只支持使用 [BR 命令行工具进行快照备份](/br/br-snapshot-guide.md)，并需要指定早于 `FLASHBACK CLUSTER` 开始时间的 `BackupTS`。同时，在执行 `FLASHBACK CLUSTER` 期间，[开启日志备份](/br/br-pitr-guide.md)的操作会失败，请等待 `FLASHBACK CLUSTER` 结束后再尝试开启日志备份。
+* 若 `FLASHBACK CLUSTER` 导致了元信息（表结构、库结构）的回滚，则相关的修改**不会**被 TiCDC 同步。因此，用户需主动暂停任务，待 `FLASHBACK CLUSTER` 完成后将上下游的 schema 定义手动同步一致，然后重新创建 TiCDC changefeed。
 
 ## 示例
 
@@ -75,22 +83,22 @@ mysql> SELECT * FROM t;
 Empty set (0.00 sec)
 ```
 
-如果从 `FLASHBACK` 指定的时间点到开始执行的时间段内有改变表结构的 DDL 记录，那么将执行失败：
+如果 `FLASHBACK CLUSTER` 指定的时间点有未完成的 DDL 记录，那么 `FLASHBACK CLUSTER` 将执行失败：
 
 ```sql
-mysql> SELECT now();
-+---------------------+
-| now()               |
-+---------------------+
-| 2022-10-09 16:40:51 |
-+---------------------+
-1 row in set (0.01 sec)
+mysql> ALTER TABLE t ADD INDEX k(a);
+Query OK, 0 rows affected (0.56 sec)
 
-mysql> CREATE TABLE t(a int);
-Query OK, 0 rows affected (0.12 sec)
+mysql> ADMIN SHOW DDL JOBS 1;
++--------+---------+-----------------------+------------------------+--------------+-----------+----------+-----------+---------------------+---------------------+---------------------+--------+
+| JOB_ID | DB_NAME | TABLE_NAME            | JOB_TYPE               | SCHEMA_STATE | SCHEMA_ID | TABLE_ID | ROW_COUNT | CREATE_TIME         | START_TIME          | END_TIME            | STATE  |
++--------+---------+-----------------------+------------------------+--------------+-----------+----------+-----------+---------------------+---------------------+---------------------+--------+
+|     84 | test    | t                     | add index /* ingest */ | public       |         2 |       82 |         0 | 2023-01-29 14:33:11 | 2023-01-29 14:33:11 | 2023-01-29 14:33:12 | synced |
++--------+---------+-----------------------+------------------------+--------------+-----------+----------+-----------+---------------------+---------------------+---------------------+--------+
+1 rows in set (0.01 sec)
 
-mysql> FLASHBACK CLUSTER TO TIMESTAMP '2022-10-09 16:40:51';
-ERROR 1105 (HY000): Detected schema change due to another DDL job during [2022-10-09 16:40:51 +0800 CST, now), can't do flashback
+mysql> FLASHBACK CLUSTER TO TIMESTAMP '2023-01-29 14:33:12';
+ERROR 1105 (HY000): Detected another DDL job at 2023-01-29 14:33:12 +0800 CST, can't do flashback
 ```
 
 可以通过日志查看 `FLASHBACK` 执行进度，具体的日志如下所示：

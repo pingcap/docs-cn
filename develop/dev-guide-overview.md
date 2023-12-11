@@ -34,7 +34,7 @@ TiDB 会为你保证 `BEGIN` 开始到 `COMMIT` 或 `ROLLBACK` 结束间的所�
 
 TiDB 高度兼容 MySQL 协议，TiDB 支持[大多数 MySQL 的语法及特性](/mysql-compatibility.md)，因此大部分的 MySQL 的连接库都与 TiDB 兼容。如果你的应用程序框架或语言无 PingCAP 的官方适配，那么建议你使用 MySQL 的客户端库。同时，也有越来越多的三方数据库主动支持 TiDB 的差异特性。
 
-因为 TiDB 兼容 MySQL 协议，且兼容 MySQL 语法，因此大多数支持 MySQL 的 ORM 也兼容 TiDB 。
+因为 TiDB 兼容 MySQL 协议，且兼容 MySQL 语法，因此大多数支持 MySQL 的 ORM 也兼容 TiDB。
 
 ## 扩展阅读
 
@@ -46,4 +46,4 @@ TiDB 高度兼容 MySQL 协议，TiDB 支持[大多数 MySQL 的语法及特性]
 - [数据读取](/develop/dev-guide-get-data-from-single-table.md)
 - [事务](/develop/dev-guide-transaction-overview.md)
 - [优化 SQL 性能](/develop/dev-guide-optimize-sql-overview.md)
-- [示例程序](/develop/dev-guide-sample-application-spring-boot.md)
+- [示例程序](/develop/dev-guide-sample-application-java-spring-boot.md)

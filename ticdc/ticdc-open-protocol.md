@@ -90,7 +90,7 @@ Value:
     }
     ```
 
-    `Update` 事件，输出新增的行数据 ("u") 以及修改前的行数据 ("p")，仅当 Old Value 特性开启时，才会输出修改前的行数据。
+    `Update` 事件，输出新增的行数据 ("u") 以及修改前的行数据 ("p")。
 
     ```
     {
@@ -125,7 +125,7 @@ Value:
     }
     ```
 
-    `Delete` 事件，输出被删除的行数据。当 Old Value 特性开启时，`Delete` 事件中包含被删除的行数据中的所有列；当 Old Value 特性关闭时，`Delete` 事件中仅包含 [HandleKey](#列标志位) 列。
+    `Delete` 事件，输出被删除的行数据。
 
     ```
     {
@@ -383,4 +383,4 @@ DDL 的类型码用于标识 DDL Event 中的 DDL 语句的类型。
 > **注意：**
 >
 > + BinaryFlag 仅在列为 BLOB/TEXT（包括 TINYBLOB/TINYTEXT、BINARY/CHAR 等）类型时才有意义。当上游列为 BLOB 类型时，BinaryFlag 置 `1`；当上游列为 TEXT 类型时，BinaryFlag 置 `0`。
-> + 若要同步上游的一张表，TiCDC 会选择一个[有效索引](/ticdc/ticdc-overview.md#设计限制)作为 Handle Index。Handle Index 包含的列的 HandleKeyFlag 置 `1`。
+> + 若要同步上游的一张表，TiCDC 会选择一个[有效索引](/ticdc/ticdc-overview.md#最佳实践)作为 Handle Index。Handle Index 包含的列的 HandleKeyFlag 置 `1`。

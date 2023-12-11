@@ -1,61 +1,10 @@
 ---
 title: 备份与恢复 RawKV 数据
-summary: 了解如何使用 br 命令行工具备份和恢复 RawKV 数据。
+summary: 了解如何使用 tikv-br 命令行工具备份和恢复 RawKV 数据。
 ---
 
 # 备份与恢复 RawKV 数据
 
-> **警告：**
->
-> 从 TiDB v6.2.0 开始，RawKV 备份和恢复功能废弃。
+TiKV 可以独立于 TiDB，与 PD 构成 KV 数据库，此时的产品形态为 RawKV。TiKV-BR 工具支持对使用 RawKV 的产品进行备份和恢复。
 
-TiKV 有时可以独立于 TiDB，与 PD 构成 KV 数据库，此时的产品形态为 RawKV。Backup & Restore (BR) 支持对使用 RawKV 的产品进行备份和恢复，本文介绍如何备份和恢复 RawKV。
-
-## 备份 RawKV
-
-在某些使用场景下，TiKV 可能会独立于 TiDB 运行。考虑到这点，br 命令行工具提供跳过 TiDB 层直接备份 TiKV 数据的功能：
-
-```shell
-br backup raw --pd $PD_ADDR \
-    --storage "local://$BACKUP_DIR" \
-    --start 31 \
-    --ratelimit 128 \
-    --end 3130303030303030 \
-    --format hex \
-    --cf default
-```
-
-以上命令会将 default CF 上 `[0x31, 0x3130303030303030)` 之间的所有键备份到 `$BACKUP_DIR`。
-
-这里，`--start` 和 `--end` 的参数会先依照 `--format` 指定的方式解码，再被发送到 TiKV 上去，目前支持以下解码方式：
-
-- "raw"：不进行任何操作，将输入的字符串直接编码为二进制格式的键。
-- "hex"：将输入的字符串视作十六进制数字。这是默认的编码方式。
-- "escaped"：对输入的字符串进行转义（backslash-escaped）之后，再编码为二进制格式，格式类似于 `abc\xFF\x00\r\n`。
-
-> **注意：**
->
-> - 如果使用本地存储，在恢复前**必须**将所有备份的 SST 文件复制到各个 TiKV 节点上 ``--storage`` 指定的目录下。即使每个 TiKV 节点最后只需要读取部分 SST 文件，这些节点也需要有所有 SST 文件的完全访问权限。原因如下：
->
->     - 数据被复制到了多个 Peer 中。在读取 SST 文件时，这些文件必须要存在于所有 Peer 中。这与数据的备份不同，在备份时，只需从单个节点读取。
->     - 在数据恢复的时候，每个 Peer 分布的位置是随机的，事先并不知道哪个节点将读取哪个文件。
->
-> - 使用共享存储可以避免这些情况。例如，在本地路径上安装 NFS，或使用 S3。利用这些网络存储，各个节点都可以自动读取每个 SST 文件，此时上述注意事项不再适用。
->
-> - 同时，请注意同一时间对同一个集群只能运行一个恢复任务，否则可能会出现非预期的行为，详见[可以同时使用多个 br 工具进程对单个集群进行恢复吗](/faq/backup-and-restore-faq.md#可以同时启动多个恢复任务对单个集群进行恢复吗)。
-
-## 恢复 RawKV
-
-和[备份 RawKV](#备份-rawkv)相似，恢复 RawKV 的命令如下：
-
-```shell
-br restore raw --pd $PD_ADDR \
-    --storage "local://$BACKUP_DIR" \
-    --start 31 \
-    --end 3130303030303030 \
-    --ratelimit 128 \
-    --format hex \
-    --cf default
-```
-
-以上命令会将范围在 `[0x31, 0x3130303030303030)` 的已备份键恢复到 TiKV 集群中。这里键的编码方式和备份时相同。
+更多信息，请参考 [TiKV-BR 用户文档](https://tikv.org/docs/latest/concepts/explore-tikv-features/backup-restore-cn/)。

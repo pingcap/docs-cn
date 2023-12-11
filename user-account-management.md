@@ -9,7 +9,7 @@ aliases: ['/docs-cn/dev/user-account-management/','/docs-cn/dev/reference/securi
 
 要快速了解 TiDB 如何进行认证与赋权并创建与管理用户账户，建议先观看下面的培训视频（时长 22 分钟）。注意本视频只作为学习参考，如需了解具体的用户账户管理方法，请参考本文档的内容。
 
-<video src="https://download.pingcap.com/docs-cn%2FLesson11_security.mp4" width="600px" height="450px" controls="controls" poster="https://tidb-docs.s3.us-east-2.amazonaws.com/thumbnail+-+lesson+11.png"></video>
+<video src="https://download.pingcap.com/docs-cn%2FLesson11_security.mp4" width="600px" height="450px" controls="controls" poster="https://download.pingcap.com/docs-cn/poster_lesson11.png"></video>
 
 ## 用户名和密码
 
@@ -36,9 +36,9 @@ mysql -P 4000 -u xxx -p
 添加用户有两种方式：
 
 * 通过标准的用户管理的 SQL 语句创建用户以及授予权限，比如 `CREATE USER` 和 `GRANT`。
-* 直接通过 `INSERT`、`UPDATE` 和 `DELETE` 操作授权表。
+* 直接通过 `INSERT`、`UPDATE` 和 `DELETE` 操作授权表。不推荐使用这种方式添加用户，因为容易导致修改不完整。
 
-推荐使用第一种方式。第二种方式修改容易导致一些不完整的修改，因此不推荐。还有另一种可选方式是使用第三方工具的图形化界面工具。
+除以上两种方法外，你还可以使用第三方图形化界面工具来添加用户。
 
 {{< copyable "sql" >}}
 
@@ -237,7 +237,7 @@ TiDB 将密码存在 `mysql.user` 系统数据库里面。只有拥有 `CREATE U
         mysql -h 127.0.0.1 -P 4000 -u root
         ```
 
-4. 停止运行 `run_tidb.sh` 脚本，并去掉 第 1 步 中在 TiDB 配置文件中添加的内容，等待 tidb-server 自启动。
+4. 停止运行 `run_tidb.sh` 脚本，并去掉第 1 步中在 TiDB 配置文件中添加的内容，等待 tidb-server 自启动。
 
 ## `FLUSH PRIVILEGES`
 

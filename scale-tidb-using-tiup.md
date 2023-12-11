@@ -37,12 +37,10 @@ TiDB 集群可以在不中断线上服务的情况下进行扩容和缩容。
 >
 > - 从 TiUP v1.0.0 开始，扩容配置会继承原集群配置的 global 部分。
 
-在 scale-out.yaml 文件添加扩容拓扑配置：
-
-{{< copyable "shell-regular" >}}
+在 scale-out.yml 文件添加扩容拓扑配置：
 
 ```shell
-vi scale-out.yaml
+vi scale-out.yml
 ```
 
 {{< copyable "" >}}
@@ -53,8 +51,8 @@ tidb_servers:
     ssh_port: 22
     port: 4000
     status_port: 10080
-    deploy_dir: /data/deploy/install/deploy/tidb-4000
-    log_dir: /data/deploy/install/log/tidb-4000
+    deploy_dir: /tidb-deploy/tidb-4000
+    log_dir: /tidb-deploy/tidb-4000/log
 ```
 
 TiKV 配置文件参考：
@@ -67,9 +65,9 @@ tikv_servers:
     ssh_port: 22
     port: 20160
     status_port: 20180
-    deploy_dir: /data/deploy/install/deploy/tikv-20160
-    data_dir: /data/deploy/install/data/tikv-20160
-    log_dir: /data/deploy/install/log/tikv-20160
+    deploy_dir: /tidb-deploy/tikv-20160
+    data_dir: /tidb-data/tikv-20160
+    log_dir: /tidb-deploy/tikv-20160/log
 ```
 
 PD 配置文件参考：
@@ -83,12 +81,12 @@ pd_servers:
     name: pd-1
     client_port: 2379
     peer_port: 2380
-    deploy_dir: /data/deploy/install/deploy/pd-2379
-    data_dir: /data/deploy/install/data/pd-2379
-    log_dir: /data/deploy/install/log/pd-2379
+    deploy_dir: /tidb-deploy/pd-2379
+    data_dir: /tidb-data/pd-2379
+    log_dir: /tidb-deploy/pd-2379/log
 ```
 
-可以使用 `tiup cluster edit-config <cluster-name>` 查看当前集群的配置信息，因为其中的 `global` 和 `server_configs` 参数配置默认会被 `scale-out.yaml` 继承，因此也会在 `scale-out.yaml` 中生效。
+可以使用 `tiup cluster edit-config <cluster-name>` 查看当前集群的配置信息，因为其中的 `global` 和 `server_configs` 参数配置默认会被 `scale-out.yml` 继承，因此也会在 `scale-out.yml` 中生效。
 
 ### 2. 执行扩容命令
 
@@ -103,7 +101,7 @@ pd_servers:
   {{< copyable "shell-regular" >}}
 
   ```shell
-  tiup cluster check <cluster-name> scale-out.yaml --cluster --user root [-p] [-i /home/root/.ssh/gcp_rsa]
+  tiup cluster check <cluster-name> scale-out.yml --cluster --user root [-p] [-i /home/root/.ssh/gcp_rsa]
   ```
 
 （2）自动修复集群存在的潜在风险：
@@ -111,7 +109,7 @@ pd_servers:
   {{< copyable "shell-regular" >}}
 
   ```shell
-  tiup cluster check <cluster-name> scale-out.yaml --cluster --apply --user root [-p] [-i /home/root/.ssh/gcp_rsa]
+  tiup cluster check <cluster-name> scale-out.yml --cluster --apply --user root [-p] [-i /home/root/.ssh/gcp_rsa]
   ```
 
 （3）执行 scale-out 命令扩容 TiDB 集群：
@@ -119,12 +117,12 @@ pd_servers:
   {{< copyable "shell-regular" >}}
 
   ```shell
-  tiup cluster scale-out <cluster-name> scale-out.yaml [-p] [-i /home/root/.ssh/gcp_rsa]
+  tiup cluster scale-out <cluster-name> scale-out.yml [-p] [-i /home/root/.ssh/gcp_rsa]
   ```
 
 以上操作示例中：
 
-- 扩容配置文件为 `scale-out.yaml`。
+- 扩容配置文件为 `scale-out.yml`。
 - `--user root` 表示通过 root 用户登录到目标主机完成集群部署，该用户需要有 ssh 到目标机器的权限，并且在目标机器有 sudo 权限。也可以用其他有 ssh 和 sudo 权限的用户完成部署。
 - [-i] 及 [-p] 为可选项，如果已经配置免密登录目标机，则不需填写。否则选择其一即可，[-i] 为可登录到目标机的 root 用户（或 --user 指定的其他用户）的私钥，也可使用 [-p] 交互式输入该用户的密码。
 
@@ -159,11 +157,11 @@ tiup cluster display <cluster-name>
 > 在原有 TiDB 集群上新增 TiFlash 组件需要注意：
 >
 > 1. 首先确认当前 TiDB 的版本支持 TiFlash，否则需要先升级 TiDB 集群至 v5.0 以上版本。
-> 2. 执行 `tiup ctl:<cluster-version> pd -u http://<pd_ip>:<pd_port> config set enable-placement-rules true` 命令，以开启 PD 的 Placement Rules 功能。或通过 [pd-ctl](/pd-control.md) 执行对应的命令。
+> 2. 执行 `tiup ctl:v<CLUSTER_VERSION> pd -u http://<pd_ip>:<pd_port> config set enable-placement-rules true` 命令，以开启 PD 的 Placement Rules 功能。或通过 [pd-ctl](/pd-control.md) 执行对应的命令。
 
-### 1. 添加节点信息到 scale-out.yaml 文件
+### 1. 添加节点信息到 scale-out.yml 文件
 
-编写 scale-out.yaml 文件，添加该 TiFlash 节点信息（目前只支持 ip，不支持域名）：
+编写 scale-out.yml 文件，添加该 TiFlash 节点信息（目前只支持 ip，不支持域名）：
 
 {{< copyable "" >}}
 
@@ -177,7 +175,7 @@ tiflash_servers:
 {{< copyable "shell-regular" >}}
 
 ```shell
-tiup cluster scale-out <cluster-name> scale-out.yaml
+tiup cluster scale-out <cluster-name> scale-out.yml
 ```
 
 > **注意：**
@@ -208,9 +206,9 @@ tiup cluster display <cluster-name>
 
 如果要添加 TiCDC 节点，IP 地址为 10.0.1.3、10.0.1.4，可以按照如下步骤进行操作。
 
-### 1. 添加节点信息到 scale-out.yaml 文件
+### 1. 添加节点信息到 scale-out.yml 文件
 
-编写 scale-out.yaml 文件：
+编写 scale-out.yml 文件：
 
 {{< copyable "" >}}
 
@@ -218,10 +216,10 @@ tiup cluster display <cluster-name>
 cdc_servers:
   - host: 10.0.1.3
     gc-ttl: 86400
-    data_dir: /data/deploy/install/data/cdc-8300
+    data_dir: /tidb-data/cdc-8300
   - host: 10.0.1.4
     gc-ttl: 86400
-    data_dir: /data/deploy/install/data/cdc-8300
+    data_dir: /tidb-data/cdc-8300
 ```
 
 ### 2. 运行扩容命令
@@ -229,7 +227,7 @@ cdc_servers:
 {{< copyable "shell-regular" >}}
 
 ```shell
-tiup cluster scale-out <cluster-name> scale-out.yaml
+tiup cluster scale-out <cluster-name> scale-out.yml
 ```
 
 > **注意：**
@@ -278,11 +276,11 @@ tiup cluster display <cluster-name>
 ```
 
 ```
-Starting /root/.tiup/components/cluster/v1.11.0/cluster display <cluster-name>
+Starting /root/.tiup/components/cluster/v1.12.3/cluster display <cluster-name>
 
 TiDB Cluster: <cluster-name>
 
-TiDB Version: v6.4.0
+TiDB Version: v7.5.0
 
 ID       Role         Host    Ports                            Status  Data Dir        Deploy Dir
 
@@ -410,7 +408,7 @@ tiup cluster display <cluster-name>
         {{< copyable "shell-regular" >}}
 
         ```shell
-        tiup ctl:<cluster-version> pd -u http://<pd_ip>:<pd_port> store
+        tiup ctl:v<CLUSTER_VERSION> pd -u http://<pd_ip>:<pd_port> store
         ```
 
         > **注意：**
@@ -426,7 +424,7 @@ tiup cluster display <cluster-name>
         {{< copyable "shell-regular" >}}
 
         ```shell
-        tiup ctl:<cluster-version> pd -u http://<pd_ip>:<pd_port> store delete <store_id>
+        tiup ctl:v<CLUSTER_VERSION> pd -u http://<pd_ip>:<pd_port> store delete <store_id>
         ```
 
         > **注意：**

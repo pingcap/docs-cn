@@ -16,9 +16,9 @@ summary: 了解 TiCDC 软硬件环境要求以及如何安装部署和运维 TiC
 | Red Hat Enterprise Linux | 7.3 及以上   |
 | CentOS                   | 7.3 及以上   |
 
-| CPU | 内存 | 硬盘类型 | 网络 | TiCDC 集群实例数量（生产环境最低要求） |
-| --- | --- | --- | --- | --- |
-| 16 核+ | 64 GB+ | SSD | 万兆网卡（2 块最佳） | 2 |
+| CPU | 内存 | 硬盘               | 网络 | TiCDC 集群实例数量（生产环境最低要求） |
+| --- | --- |------------------| --- | --- |
+| 16 核+ | 64 GB+ | 500 GB+ SSD 类型硬盘 | 万兆网卡（2 块最佳） | 2 |
 
 更多信息参见 [TiDB 软件和硬件环境建议配置](/hardware-and-software-requirements.md)。
 
@@ -44,38 +44,38 @@ cdc_servers:
 
 > **注意：**
 >
-> 在安装之前，请确认TiUP 中控机与 TiCDC 目标主机的 [SSH 互信及 sudo 免密](/check-before-deployment.md#手动配置-ssh-互信及-sudo-免密码)已经完成配置。
+> 在安装之前，请确认 TiUP 中控机与 TiCDC 目标主机的 [SSH 互信及 sudo 免密](/check-before-deployment.md#手动配置-ssh-互信及-sudo-免密码)已经完成配置。
 
 ## 使用 TiUP 在原有 TiDB 集群上新增或扩容 TiCDC 组件
 
 扩容的方式与部署 TiCDC 集群的方式类似，推荐使用 TiUP 工具完成。
 
-1. 编写一个名为 `scale-out.yaml` 的配置文件，包含需要扩容的节点的配置信息。下面是一个示例：
+1. 编写一个名为 `scale-out.yml` 的配置文件，包含需要扩容的节点的配置信息。下面是一个示例：
 
     ```shell
     cdc_servers:
       - host: 10.1.1.1
         gc-ttl: 86400
-        data_dir: /data/deploy/install/data/cdc-8300
+        data_dir: /tidb-data/cdc-8300
       - host: 10.1.1.2
         gc-ttl: 86400
-        data_dir: /data/deploy/install/data/cdc-8300
-      - host: 10.0.1.4:8300
+        data_dir: /tidb-data/cdc-8300
+      - host: 10.0.1.4
         gc-ttl: 86400
-        data_dir: /data/deploy/install/data/cdc-8300
+        data_dir: /tidb-data/cdc-8300
     ```
 
 2. 在 TiUP 中控机上执行类似下面的命令进行扩容：
 
     ```shell
-    tiup cluster scale-out <cluster-name> scale-out.yaml
+    tiup cluster scale-out <cluster-name> scale-out.yml
     ```
 
 更多用例说明，请参考[扩容 TiCDC 节点](/scale-tidb-using-tiup.md#扩容-ticdc-节点)。
 
 ## 使用 TiUP 在原有 TiDB 集群上移除或缩容 TiCDC 组件
 
-推荐使用 TiUP 完成对 TiCDC 集群节点的所容。使用类似下面的命令完成缩容:
+推荐使用 TiUP 完成对 TiCDC 集群节点的缩容。使用类似下面的命令完成缩容:
 
 ```shell
 tiup cluster scale-in <cluster-name> --node 10.0.1.4:8300
@@ -90,12 +90,12 @@ TiUP 支持升级 TiDB 集群，包括 TiCDC 组件。执行升级指令时，Ti
 ```shell
 tiup update --self && \
 tiup update --all && \
-tiup cluster upgrade <cluster-name> <cluster-version> --transfer-timeout 600
+tiup cluster upgrade <cluster-name> <version> --transfer-timeout 600
 ```
 
 > **注意：**
 >
-> 命令中的 `<cluster-name>` 需要替换为集群名字，`<cluster-version>` 需要替换为目标版本号，例如 v6.4.0。
+> 命令中的 `<cluster-name>` 需要替换为集群名字，`<version>` 需要替换为目标版本号，例如 v7.5.0。
 
 ### 升级的注意事项
 
@@ -106,12 +106,12 @@ tiup cluster upgrade <cluster-name> <cluster-version> --transfer-timeout 600
 - TiCDC 自 v6.3.0 起支持滚动升级，使用 TiUP 升级 TiCDC 节点期间，能够保证同步延迟稳定，不发生剧烈波动。满足以下条件将自动启用滚动升级：
 
     - TiCDC 版本大于等于 v6.3.0。
-    - TiUP 版本大于等于 v1.11.0。
+    - TiUP 版本大于等于 v1.11.3。
     - 集群中至少有两个正在运行的 TiCDC 实例。
 
 ## 使用 TiUP 变更 TiCDC 集群配置
 
-本节介绍如何使用 TiUP 的 [`tiup cluster edit-config`](/tiup/tiup-component-cluster-edit-config.md) 命令来修改 TiCDC 的配置。在以下例子中，假设需要把 TiCDC 的 `gc-ttl` 从默认值 `86400` 修改为 `3600`，即 1 小时。
+本节介绍如何使用 TiUP 的 [`tiup cluster edit-config`](/tiup/tiup-component-cluster-edit-config.md) 命令来修改 TiCDC 的配置。在以下例子中，假设需要把 TiCDC 的 `gc-ttl` 从默认值 `86400` 修改为 `172800`，即 48 小时。
 
 1. 执行 `tiup cluster edit-config` 命令，注意将 `<cluster-name>` 替换成实际的集群名：
 
@@ -131,8 +131,10 @@ tiup cluster upgrade <cluster-name> <cluster-version> --transfer-timeout 600
       pump: {}
       drainer: {}
       cdc:
-        gc-ttl: 3600
+        gc-ttl: 172800
     ```
+
+    以上把 TiCDC 的 `gc-ttl` 的值设置为 48 小时。
 
 3. 执行 `tiup cluster reload -R cdc` 命令重新加载配置。
 
@@ -150,10 +152,10 @@ tiup cluster upgrade <cluster-name> <cluster-version> --transfer-timeout 600
 
 ## 使用 TiCDC 命令行工具来查看集群状态
 
-执行以下命令来查看 TiCDC 集群运行状态，注意需要将 `<version>` 替换为 TiCDC 集群版本：
+执行以下命令来查看 TiCDC 集群运行状态，注意需要将 `v<CLUSTER_VERSION>` 替换为 TiCDC 集群版本，例如 `v7.5.0`：
 
 ```shell
-tiup ctl:<version> cdc capture list --server=http://10.0.10.25:8300
+tiup ctl:v<CLUSTER_VERSION> cdc capture list --server=http://10.0.10.25:8300
 ```
 
 ```shell
@@ -161,12 +163,14 @@ tiup ctl:<version> cdc capture list --server=http://10.0.10.25:8300
   {
     "id": "806e3a1b-0e31-477f-9dd6-f3f2c570abdd",
     "is-owner": true,
-    "address": "127.0.0.1:8300"
+    "address": "127.0.0.1:8300",
+    "cluster-id": "default"
   },
   {
     "id": "ea2a4203-56fe-43a6-b442-7b295f458ebc",
     "is-owner": false,
-    "address": "127.0.0.1:8301"
+    "address": "127.0.0.1:8301",
+    "cluster-id": "default"
   }
 ]
 ```
@@ -174,3 +178,4 @@ tiup ctl:<version> cdc capture list --server=http://10.0.10.25:8300
 - `id`：表示服务进程的 ID。
 - `is-owner`：表示该服务进程是否为 owner 节点。
 - `address`：该服务进程对外提供接口的地址。
+- `cluster-id`：该 TiCDC 的集群 ID，默认值为 `default`。

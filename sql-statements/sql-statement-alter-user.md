@@ -12,7 +12,7 @@ aliases: ['/docs-cn/dev/sql-statements/sql-statement-alter-user/','/docs-cn/dev/
 
 ```ebnf+diagram
 AlterUserStmt ::=
-    'ALTER' 'USER' IfExists (UserSpecList RequireClauseOpt ConnectionOptions LockOption AttributeOption | 'USER' '(' ')' 'IDENTIFIED' 'BY' AuthString)
+    'ALTER' 'USER' IfExists (UserSpecList RequireClauseOpt ConnectionOptions PasswordOption LockOption AttributeOption | 'USER' '(' ')' 'IDENTIFIED' 'BY' AuthString) ResourceGroupNameOption
 
 UserSpecList ::=
     UserSpec ( ',' UserSpec )*
@@ -26,9 +26,13 @@ Username ::=
 AuthOption ::=
     ( 'IDENTIFIED' ( 'BY' ( AuthString | 'PASSWORD' HashString ) | 'WITH' StringName ( 'BY' AuthString | 'AS' HashString )? ) )?
 
+PasswordOption ::= ( 'PASSWORD' 'EXPIRE' ( 'DEFAULT' | 'NEVER' | 'INTERVAL' N 'DAY' )? | 'PASSWORD' 'HISTORY' ( 'DEFAULT' | N ) | 'PASSWORD' 'REUSE' 'INTERVAL' ( 'DEFAULT' | N 'DAY' ) | 'FAILED_LOGIN_ATTEMPTS' N | 'PASSWORD_LOCK_TIME' ( N | 'UNBOUNDED' ) )*
+
 LockOption ::= ( 'ACCOUNT' 'LOCK' | 'ACCOUNT' 'UNLOCK' )?
 
 AttributeOption ::= ( 'COMMENT' CommentString | 'ATTRIBUTE' AttributeString )?
+
+ResourceGroupNameOption::= ( 'RESOURCE' 'GROUP' Identifier)?
 ```
 
 ## 示例
@@ -58,7 +62,9 @@ SHOW CREATE USER 'newuser';
 1 row in set (0.00 sec)
 ```
 
-{{< copyable "sql" >}}
+### 修改用户基本信息
+
+修改用户 `newuser` 的密码：
 
 ```sql
 ALTER USER 'newuser' IDENTIFIED BY 'newnewpassword';
@@ -83,7 +89,7 @@ SHOW CREATE USER 'newuser';
 1 row in set (0.00 sec)
 ```
 
-{{< copyable "sql" >}}
+锁定用户 `newuser`：
 
 ```sql
 ALTER USER 'newuser' ACCOUNT LOCK;
@@ -141,9 +147,68 @@ SELECT * FROM information_schema.user_attributes;
 1 rows in set (0.00 sec)
 ```
 
-> **注意：**
->
-> 不要使用 `ACCOUNT UNLOCK` 解锁一个[角色 (Role)](/sql-statements/sql-statement-create-role.md)，否则通过被解锁的角色可以免密码登入 TiDB。
+通过 `ALTER USER ... PASSWORD EXPIRE NEVER` 修改用户 `newuser` 的自动密码过期策略为永不过期：
+
+```sql
+ALTER USER 'newuser' PASSWORD EXPIRE NEVER;
+```
+
+```
+Query OK, 0 rows affected (0.02 sec)
+```
+
+通过 `ALTER USER ... PASSWORD REUSE INTERVAL ... DAY` 修改用户 `newuser` 的密码重用策略为不允许重复使用最近 90 天内使用过的密码：
+
+```sql
+ALTER USER 'newuser' PASSWORD REUSE INTERVAL 90 DAY;
+```
+
+```
+Query OK, 0 rows affected (0.02 sec)
+```
+
+### 修改用户绑定的资源组
+
+通过 `ALTER USER ... RESOURCE GROUP` 修改用户 `newuser` 的资源组到 `rg1`：
+
+```sql
+ALTER USER 'newuser' RESOURCE GROUP rg1;
+```
+
+```
+Query OK, 0 rows affected (0.02 sec)
+```
+
+查看当前用户绑定的资源组：
+
+```sql
+SELECT USER, JSON_EXTRACT(User_attributes, "$.resource_group") FROM mysql.user WHERE user = "newuser";
+```
+
+```
++---------+---------------------------------------------------+
+| USER    | JSON_EXTRACT(User_attributes, "$.resource_group") |
++---------+---------------------------------------------------+
+| newuser | "rg1"                                             |
++---------+---------------------------------------------------+
+1 row in set (0.02 sec)
+```
+
+取消用户绑定的资源组，即将用户绑定到 `default` 资源组。
+
+```sql
+ALTER USER 'newuser' RESOURCE GROUP `default`;
+SELECT USER, JSON_EXTRACT(User_attributes, "$.resource_group") FROM mysql.user WHERE user = "newuser";
+```
+
+```
++---------+---------------------------------------------------+
+| USER    | JSON_EXTRACT(User_attributes, "$.resource_group") |
++---------+---------------------------------------------------+
+| newuser | "default"                                         |
++---------+---------------------------------------------------+
+1 row in set (0.02 sec)
+```
 
 ## 另请参阅
 

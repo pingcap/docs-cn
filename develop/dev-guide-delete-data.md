@@ -6,21 +6,19 @@ aliases: ['/zh/tidb/dev/delete-data']
 
 # 删除数据
 
-此页面将使用 [DELETE](/sql-statements/sql-statement-delete.md) SQL 语句，对 TiDB 中的数据进行删除。
+此页面将使用 [DELETE](/sql-statements/sql-statement-delete.md) SQL 语句，对 TiDB 中的数据进行删除。如果需要周期性地删除过期数据，可以考虑使用 TiDB 的 [TTL 功能](/time-to-live.md)。
 
 ## 在开始之前
 
 在阅读本页面之前，你需要准备以下事项：
 
-- [使用 TiDB Cloud (Serverless Tier) 构建 TiDB 集群](/develop/dev-guide-build-cluster-in-cloud.md)。
+- [使用 TiDB Serverless 构建 TiDB 集群](/develop/dev-guide-build-cluster-in-cloud.md)。
 - 阅读[数据库模式概览](/develop/dev-guide-schema-design-overview.md)，并[创建数据库](/develop/dev-guide-create-database.md)、[创建表](/develop/dev-guide-create-table.md)、[创建二级索引](/develop/dev-guide-create-secondary-indexes.md)。
 - 需先[插入数据](/develop/dev-guide-insert-data.md)才可删除。
 
 ## SQL 语法
 
 在 SQL 中，`DELETE` 语句一般为以下形式：
-
-{{< copyable "sql" >}}
 
 ```sql
 DELETE FROM {table} WHERE {filter}
@@ -40,14 +38,12 @@ DELETE FROM {table} WHERE {filter}
 - 始终在删除语句中指定 `WHERE` 子句。如果 `DELETE` 没有 `WHERE` 子句，TiDB 将删除这个表内的**_所有行_**。
 - 需要删除大量行(数万或更多)的时候，使用[批量删除](#批量删除)，这是因为 TiDB 单个事务大小限制为 [txn-total-size-limit](/tidb-configuration-file.md#txn-total-size-limit)（默认为 100MB）。
 - 如果你需要删除表内的所有数据，请勿使用 `DELETE` 语句，而应该使用 [TRUNCATE](/sql-statements/sql-statement-truncate.md) 语句。
-- 查看 [性能注意事项](#性能注意事项)。
+- 查看[性能注意事项](#性能注意事项)。
 - 在需要大批量删除数据的场景下，[非事务批量删除](#非事务批量删除)对性能的提升十分明显。但与之相对的，这将丢失删除的事务性，因此**无法**进行回滚，请务必正确进行操作选择。
 
 ## 例子
 
 假设在开发中发现在特定时间段内，发生了业务错误，需要删除这期间内的所有 [rating](/develop/dev-guide-bookshop-schema-design.md#ratings-表) 的数据，例如，`2022-04-15 00:00:00` 至 `2022-04-15 00:15:00` 的数据。此时，可使用 `SELECT` 语句查看需删除的数据条数：
-
-{{< copyable "sql" >}}
 
 ```sql
 SELECT COUNT(*) FROM `ratings` WHERE `rated_at` >= "2022-04-15 00:00:00" AND  `rated_at` <= "2022-04-15 00:15:00";
@@ -133,6 +129,35 @@ func main() {
 
 </div>
 
+<div label="Python" value="python">
+
+在 Python 中，删除数据的示例如下：
+
+```python
+import MySQLdb
+import datetime
+import time
+
+connection = MySQLdb.connect(
+    host="127.0.0.1",
+    port=4000,
+    user="root",
+    password="",
+    database="bookshop",
+    autocommit=True
+)
+
+with connection:
+    with connection.cursor() as cursor:
+        start_time = datetime.datetime(2022, 4, 15)
+        end_time = datetime.datetime(2022, 4, 15, 0, 15)
+        delete_sql = "DELETE FROM `bookshop`.`ratings` WHERE `rated_at` >= %s AND `rated_at` <= %s"
+        affect_rows = cursor.execute(delete_sql, (start_time, end_time))
+        print(f'delete {affect_rows} data')
+```
+
+</div>
+
 </SimpleTab>
 
 > **注意：**
@@ -175,8 +200,6 @@ TiDB 使用[统计信息](/statistics.md)来决定索引的选择，因此，在
 <div label="Java" value="java">
 
 在 Java 中，批量删除程序类似于以下内容：
-
-{{< copyable "" >}}
 
 ```java
 package com.pingcap.bulkDelete;
@@ -245,8 +268,6 @@ public class BatchDeleteExample
 
 在 Golang 中，批量删除程序类似于以下内容：
 
-{{< copyable "" >}}
-
 ```go
 package main
 
@@ -298,6 +319,40 @@ func deleteBatch(db *sql.DB, startTime, endTime time.Time) (int64, error) {
 
 </div>
 
+<div label="Python" value="python">
+
+在 Python 中，批量删除程序类似于以下内容：
+
+```python
+import MySQLdb
+import datetime
+import time
+
+connection = MySQLdb.connect(
+    host="127.0.0.1",
+    port=4000,
+    user="root",
+    password="",
+    database="bookshop",
+    autocommit=True
+)
+
+with connection:
+    with connection.cursor() as cursor:
+        start_time = datetime.datetime(2022, 4, 15)
+        end_time = datetime.datetime(2022, 4, 15, 0, 15)
+        affect_rows = -1
+        while affect_rows != 0:
+            delete_sql = "DELETE FROM `bookshop`.`ratings` WHERE `rated_at` >= %s AND  `rated_at` <= %s LIMIT 1000"
+            affect_rows = cursor.execute(delete_sql, (start_time, end_time))
+            print(f'delete {affect_rows} data')
+            time.sleep(1)
+```
+
+每次迭代中，`DELETE` 最多删除 1000 行时间段为 `2022-04-15 00:00:00` 至 `2022-04-15 00:15:00` 的数据。
+
+</div>
+
 </SimpleTab>
 
 ## 非事务批量删除
@@ -316,15 +371,13 @@ func deleteBatch(db *sql.DB, startTime, endTime time.Time) (int64, error) {
 
 非事务批量删除的 SQL 语法如下：
 
-{{< copyable "sql" >}}
-
 ```sql
-BATCH ON {dividing_column} LIMIT {batch_size} {delete_statement};
+BATCH ON {shard_column} LIMIT {batch_size} {delete_statement};
 ```
 
 |    参数    |      描述      |
 | :--------: | :------------: |
-| `{dividing_column}`  |      非事务批量删除的划分列      |
+| `{shard_column}`  |      非事务批量删除的划分列      |
 | `{batch_size}` | 非事务批量删除的每批大小 |
 | `{delete_statement}` | 删除语句 |
 

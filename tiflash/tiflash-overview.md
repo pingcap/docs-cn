@@ -17,6 +17,8 @@ TiFlash 提供列式存储，且拥有借助 ClickHouse 高效实现的协处理
 
 TiFlash 以低消耗不阻塞 TiKV 写入的方式，实时复制 TiKV 集群中的数据，并同时提供与 TiKV 一样的一致性读取，且可以保证读取到最新的数据。TiFlash 中的 Region 副本与 TiKV 中完全对应，且会跟随 TiKV 中的 Leader 副本同时进行分裂与合并。
 
+在 Linux AMD64 架构的硬件平台部署 TiFlash 时，CPU 必须支持 AVX2 指令集。确保命令 `cat /proc/cpuinfo | grep avx2` 有输出。而在 Linux ARM64 架构的硬件平台部署 TiFlash 时，CPU 必须支持 ARMv8 架构。确保命令 `cat /proc/cpuinfo | grep 'crc32' | grep 'asimd'` 有输出。通过使用向量扩展指令集，TiFlash 的向量化引擎能提供更好的性能。
+
 TiFlash 可以兼容 TiDB 与 TiSpark，用户可以选择使用不同的计算引擎。
 
 TiFlash 推荐使用和 TiKV 不同的节点以做到 Workload 隔离，但在无业务隔离的前提下，也可以选择与 TiKV 同节点部署。
@@ -66,8 +68,8 @@ TiFlash 部署完成后并不会自动同步数据，而需要手动指定需要
 
 ## 另请参阅
 
-- 全新部署一个包含 TiFlash 节点的集群，请参考 [使用 TiUP 部署 TiDB 集群](/production-deployment-using-tiup.md)
-- 已有集群新增一个 TiFlash 节点，请参考 [扩容 TiFlash 节点](/scale-tidb-using-tiup.md#扩容-tiflash-节点)
+- 全新部署一个包含 TiFlash 节点的集群，请参考[使用 TiUP 部署 TiDB 集群](/production-deployment-using-tiup.md)
+- 已有集群新增一个 TiFlash 节点，请参考[扩容 TiFlash 节点](/scale-tidb-using-tiup.md#扩容-tiflash-节点)
 - [TiFlash 常见运维操作](/tiflash/maintain-tiflash.md)
 - [TiFlash 性能调优](/tiflash/tune-tiflash-performance.md)
 - [TiFlash 配置参数介绍](/tiflash/tiflash-configuration.md)

@@ -24,12 +24,12 @@ summary: 了解如何使用批量建表功能。在恢复备份数据时，可�
 
 Backup & Restore (BR) 默认开启批量建表功能，在 v6.0.0 或以上版本中默认设置了 `--ddl-batch-size=128`（以 128 张表为一批，并发创建多批表），以加快恢复时的建表速度。因此，你不需要额外配置该参数。
 
-如果需要关闭此功能，你可以参考以下命令将 `--ddl-batch-size` 的值设置为 `0`：
+如果需要关闭此功能，你可以参考以下命令将 `--ddl-batch-size` 的值设置为 `1`：
 
 ```shell
 br restore full \
 --storage local:///br_data/ --pd "${PD_IP}:2379" --log-file restore.log \
---ddl-batch-size=0
+--ddl-batch-size=1
 ```
 
 关闭批量建表功能后，BR 会采用原来的[串行建表方案](#实现原理)。

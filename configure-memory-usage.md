@@ -40,25 +40,7 @@ SET tidb_mem_quota_query = 8 << 10;
 
 ## 如何配置 tidb-server 实例使用内存的阈值
 
-可以在配置文件中设置 tidb-server 实例的内存使用阈值。相关配置项为 [`server-memory-quota`](/tidb-configuration-file.md#server-memory-quota-从-v409-版本开始引入) 。
-
-例如，配置 tidb-server 实例的内存使用总量，将其设置成为 32 GB：
-
-{{< copyable "" >}}
-
-```toml
-[performance]
-server-memory-quota = 34359738368
-```
-
-在该配置下，当 tidb-server 实例内存使用到达 32 GB 时，正在执行的 SQL 语句会被随机强制终止，直至 tidb-server 实例内存使用下降到 32 GB 以下。被强制终止的 SQL 操作会向客户端返回 `Out Of Global Memory Limit!` 错误信息。
-
-> **警告：**
->
-> + `server-memory-quota` 目前为实验性特性，不建议在生产环境中使用。
-> + `server-memory-quota` 默认值为 0，表示无内存限制。
-
-自 v6.4.0 版本起，可以通过系统变量 [`tidb_server_memory_limit`](/system-variables.md#tidb_server_memory_limit-从-v640-版本开始引入) 设置 tidb-server 实例的内存使用阈值。
+自 v6.5.0 版本起，可以通过系统变量 [`tidb_server_memory_limit`](/system-variables.md#tidb_server_memory_limit-从-v640-版本开始引入) 设置 tidb-server 实例的内存使用阈值。
 
 例如，配置 tidb-server 实例的内存使用总量，将其设置成为 32 GB：
 
@@ -73,23 +55,21 @@ SET GLOBAL tidb_server_memory_limit = "32GB";
 当前 `tidb_server_memory_limit` 所设的内存限制**不终止**以下 SQL 操作：
 
 - DDL 操作
-- INSERT、UPDATE、DELETE 操作
 - 包含窗口函数和公共表表达式的 SQL 操作
 
 > **警告：**
 >
-> + tidb-server 全局内存控制功能目前为实验性特性，不建议在生产环境中使用。
 > + TiDB 在启动过程中不保证 [`tidb_server_memory_limit`](/system-variables.md#tidb_server_memory_limit-从-v640-版本开始引入) 限制生效。如果操作系统的空闲内存不足，TiDB 仍有可能出现 OOM。你需要确保 TiDB 实例有足够的可用内存。
 > + 在内存控制过程中，TiDB 的整体内存使用量可能会略微超过 `tidb_server_memory_limit` 的限制。
-> + 为了保证兼容性，当开启 `tidb_server_memory_limit` 功能后，系统会忽略 `server-memory-quota` 的值，使用 `tidb_server_memory_limit` 的全局内存控制机制来进行内存控制。在关闭 `tidb_server_memory_limit` 功能后，系统会使用配置项 `server-memory-quota` 的值以及旧的内存控制机制。
+> + `server-memory-quota` 配置项自 v6.5.0 起被废弃。为了保证兼容性，在升级到 v6.5.0 或更高版本的集群后，`tidb_server_memory_limit` 会继承配置项 `server-memory-quota` 的值。如果集群在升级至 v6.5.0 或更高版本前没有配置 `server-memory-quota`，`tidb_server_memory_limit` 会使用默认值，即 `80%`。
 
 在 tidb-server 实例内存用量到达总内存的一定比例时（比例由系统变量 [`tidb_server_memory_limit_gc_trigger`](/system-variables.md#tidb_server_memory_limit_gc_trigger-从-v640-版本开始引入) 控制）, tidb-server 会尝试主动触发一次 Golang GC 以缓解内存压力。为了避免实例内存在阈值上下范围不断波动导致频繁 GC 进而带来的性能问题，该 GC 方式 1 分钟最多只会触发 1 次。
 
-## 使用 INFORMATION_SCHEMA 系统表查看当前 tidb-server 的内存用量
-
-> **警告：**
+> **注意：**
 >
-> 目前以下系统表是在 v6.4.0 引入的实验特性，提供的内存使用信息仅供参考，不建议在生产环境中使用以下系统表获取内存使用信息供决策判断。
+> 在混合部署的情况下，`tidb_server_memory_limit` 为单个 tidb-server 实例的内存使用阈值，而不是整个物理机的总内存阈值。
+
+## 使用 INFORMATION_SCHEMA 系统表查看当前 tidb-server 的内存用量
 
 要查看当前实例或集群的内存使用情况，你可以查询系统表 [`INFORMATION_SCHEMA.(CLUSTER_)MEMORY_USAGE`](/information-schema/information-schema-memory-usage.md)。
 
@@ -140,12 +120,12 @@ SET GLOBAL tidb_server_memory_limit = "32GB";
 4. 检查 `tidb.log` 文件，其中会记录系统总内存、系统当前内存使用量、tidb-server 实例的内存使用量以及状态文件所在目录。
 
     ```
-    [2022/10/11 16:39:02.281 +08:00] [WARN] [memoryusagealarm.go:212] ["tidb-server has the risk of OOM because of memory usage exceeds alarm ratio. Running SQLs and heap profile will be recorded in record path"] ["is server-memory-quota set"=false] ["system memory total"=33682427904] ["system memory usage"=22120655360] ["tidb-server memory usage"=21468556992] [memory-usage-alarm-ratio=0.85] ["record path"=/tiup/deploy/tidb-4000/log/oom_record]
+    [2022/10/11 16:39:02.281 +08:00] [WARN] [memoryusagealarm.go:212] ["tidb-server has the risk of OOM because of memory usage exceeds alarm ratio. Running SQLs and heap profile will be recorded in record path"] ["is tidb_server_memory_limit set"=false] ["system memory total"=33682427904] ["system memory usage"=22120655360] ["tidb-server memory usage"=21468556992] [memory-usage-alarm-ratio=0.85] ["record path"=/tiup/deploy/tidb-4000/log/oom_record]
     ```
 
     以上 Log 字段的含义如下：
 
-    * `is server-memory-quota set`：表示配置项 [`server-memory-quota`](/tidb-configuration-file.md#server-memory-quota-从-v409-版本开始引入) 是否被设置
+    * `is tidb_server_memory_limit set`：表示系统变量 [`tidb_server_memory_limit`](/system-variables.md#tidb_server_memory_limit-从-v640-版本开始引入) 是否被设置
     * `system memory total`：表示当前系统的总内存
     * `system memory usage`：表示当前系统的内存使用量
     * `tidb-server memory usage`：表示 tidb-server 实例的内存使用量
@@ -233,3 +213,23 @@ TiDB 支持对执行算子的数据落盘功能。当 SQL 的内存使用超过 
     +---------------------------------+-------------+----------+-----------+---------------+---------------------------------------------------------------------------------------------------------------------------------------------------------------------+-----------------------------------------------------------------+-----------+----------+
     9 rows in set (1 min 37.428 sec)
     ```
+
+## 其它
+
+### 设置环境变量 `GOMEMLIMIT` 缓解 OOM 问题
+
+Golang 自 Go 1.19 版本开始引入 [`GOMEMLIMIT`](https://pkg.go.dev/runtime@go1.19#hdr-Environment_Variables) 环境变量，该变量用来设置触发 Go GC 的内存上限。
+
+对于 v6.1.3 <= TiDB < v6.5.0 的版本，你可以通过手动设置 Go `GOMEMLIMIT` 环境变量的方式来缓解一类 OOM 问题。该类 OOM 问题具有一个典型特征：观察 Grafana 监控，OOM 前的时刻，TiDB-Runtime > Memory Usage 面板中 **estimate-inuse** 立柱部分在整个立柱中仅仅占一半。如下图所示：
+
+![normal OOM case example](/media/configure-memory-usage-oom-example.png)
+
+为了验证 `GOMEMLIMIT` 在该类场景下的效果，以下通过一个对比实验进行说明：
+
+- 在 TiDB v6.1.2 下，模拟负载在持续运行几分钟后，TiDB server 会发生 OOM（系统内存约 48 GiB）：
+
+    ![v6.1.2 workload oom](/media/configure-memory-usage-612-oom.png)
+
+- 在 TiDB v6.1.3 下，设置 `GOMEMLIMIT` 为 40000 MiB，模拟负载长期稳定运行、TiDB server 未发生 OOM 且进程最高内存用量稳定在 40.8 GiB 左右：
+
+    ![v6.1.3 workload no oom with GOMEMLIMIT](/media/configure-memory-usage-613-no-oom.png)

@@ -156,6 +156,7 @@ show warnings;
 | raftstore.store-pool-size | 处理 Raft 的线程池中线程的数量，即 Raftstore 线程池的大小 |
 | raftstore.apply-max-batch-size | Raft 状态机由 BatchSystem 批量执行数据写入请求，该配置项指定每批可执行请求的最多 Raft 状态机个数。 |
 | raftstore.store-max-batch-size |  Raft 状态机由 BatchSystem 批量执行把日志落盘至磁盘的请求，该配置项指定每批可执行请求的最多 Raft 状态机个数。 |
+| raftstore.store-io-pool-size | 处理 Raft I/O 任务的线程池中线程的数量，即 StoreWriter 线程池的大小（不支持将该配置项由非零值调整为 0，或者从 0 调整为非零值）|
 | readpool.unified.max-thread-count | 统一处理读请求的线程池最多的线程数量，即 UnifyReadPool 线程池大小 |
 | readpool.unified.auto-adjust-pool-size | 是否开启自适应调整 UnifyReadPool 的大小 |
 | coprocessor.split-region-on-table | 开启按 table 分裂 Region 的开关 |
@@ -207,6 +208,9 @@ show warnings;
 | server.max-grpc-send-msg-len | gRPC 可发送的最大消息长度 |
 | server.raft-msg-max-batch-size | 单个 gRPC 消息可包含的最大 Raft 消息个数 |
 | server.simplify-metrics | 精简监控采样数据的开关 |
+| server.snap-io-max-bytes-per-sec | 处理 snapshot 时最大允许使用的磁盘带宽 |
+| server.concurrent-send-snap-limit | 同时发送 snapshot 的最大个数 |
+| server.concurrent-recv-snap-limit | 同时接受 snapshot 的最大个数 |
 | storage.block-cache.capacity | 共享 block cache 的大小（自 v4.0.3 起支持） |
 | storage.scheduler-worker-pool-size | Scheduler 线程池中线程的数量 |
 | backup.num-threads | backup 线程的数量（自 v4.0.3 起支持） |
@@ -325,9 +329,9 @@ select @@tidb_slow_log_threshold;
 
 | 配置项 | 对应变量 | 简介 |
 | --- | --- | --- |
-| log.enable-slow-log | tidb_enable_slow_log | 慢日志的开关 |
-| log.slow-threshold | tidb_slow_log_threshold | 慢日志阈值 |
-| log.expensive-threshold | tidb_expensive_query_time_threshold | expensive 查询阈值 |
+| instance.tidb_enable_slow_log | tidb_enable_slow_log | 慢日志的开关 |
+| instance.tidb_slow_log_threshold | tidb_slow_log_threshold | 慢日志阈值 |
+| instance.tidb_expensive_query_time_threshold  | tidb_expensive_query_time_threshold | expensive 查询阈值 |
 
 ### 在线修改 TiFlash 配置
 

@@ -108,7 +108,7 @@ RocksDB 线程池是进行 Compact 和 Flush 任务的线程池，默认大小�
 {{< copyable "shell-regular" >}}
 
 ```shell
-tiup ctl:<cluster-version> tikv --host=${ip:port} modify-tikv-config -n gc.max_write_bytes_per_sec -v ${limit}
+tiup ctl:v<CLUSTER_VERSION> tikv --host=${ip:port} modify-tikv-config -n gc.max_write_bytes_per_sec -v ${limit}
 ```
 
 > **注意：**
