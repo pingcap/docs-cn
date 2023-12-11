@@ -1,29 +1,29 @@
 ---
-title: TiDB 后端任务分布式框架
-summary: 了解 TiDB 后端任务分布式框架的使用场景与限制、使用方法和实现原理。
+title: TiDB 分布式执行框架
+summary: 了解 TiDB 分布式执行框架的使用场景、限制、使用方法和实现原理。
 ---
 
-# TiDB 后端任务分布式框架
+# TiDB 分布式执行框架
 
-TiDB 采用计算存储分离架构，具有出色的扩展性和弹性的扩缩容能力。从 v7.1.0 开始，TiDB 引入了一个后端任务分布式执行框架，以进一步发挥分布式架构的资源优势。该框架的目标是实现对所有后端任务的统一调度与分布式执行，并为接入的后端任务提供统一的资源管理能力，从整体和单个后端任务两个维度提供资源管理的能力，更好地满足用户对于资源使用的预期。
+TiDB 采用计算存储分离架构，具有出色的扩展性和弹性的扩缩容能力。从 v7.1.0 开始，TiDB 引入了一个分布式执行框架，以进一步发挥分布式架构的资源优势。该框架的目标是实现对基于该框架执行的任务进行统一调度与分布式执行，并提供整体和单个任务两个维度的资源管理的能力，更好地满足用户对于资源使用的预期。当前该框架支持调度 `ADD INDEX` 和 `IMPORT INTO` 这两类任务。
 
-本文档介绍了 TiDB 后端任务分布式框架的使用场景与限制、使用方法和实现原理。
+本文档介绍了 TiDB 分布式执行框架的使用场景、限制、使用方法和实现原理。
 
 ## 使用场景
 
-在数据库中，除了核心的事务型负载任务 (TP) 和分析型查询任务 (AP)，也存在着其他重要任务，如 DDL 语句、IMPORT INTO、TTL、Analyze 和 Backup/Restore 等，即**后端任务**。这些任务需要处理数据库对象（表）中的大量数据，通常具有如下特点：
+在数据库中，除了核心的事务型负载任务 (TP) 和分析型查询任务 (AP)，也存在着其他重要任务，如 DDL 语句、IMPORT INTO、TTL、Analyze 和 Backup/Restore 等。这些任务需要处理数据库对象（表）中的大量数据，通常具有如下特点：
 
 - 需要处理一个 schema 或者一个数据库对象（表）中的所有数据。
 - 可能需要周期执行，但频率较低。
 - 如果资源控制不当，容易对事务型任务和分析型任务造成影响，影响数据库的服务质量。
 
-启用 TiDB 后端任务分布式框架能够解决上述问题，并且具有以下三个优势：
+启用 TiDB 分布式执行框架能够解决上述问题，并且具有以下三个优势：
 
 - 提供高扩展性、高可用性和高性能的统一能力支持。
-- 支持后端任务分布式执行，可以在整个 TiDB 集群可用的计算资源范围内进行灵活的调度，从而更好地利用 TiDB 集群内的计算资源。
-- 提供统一的资源使用和管理能力，从整体和单个后端任务两个维度提供资源管理的能力。
+- 支持任务分布式执行，可以在整个 TiDB 集群可用的计算资源范围内进行灵活的调度，从而更好地利用 TiDB 集群内的计算资源。
+- 提供统一的资源使用和管理能力，从整体和单个任务两个维度提供资源管理的能力。
 
-目前，后端任务分布式框架支持分布式执行 `ADD INDEX` 和 `IMPORT INTO` 两类后端任务。
+目前，分布式执行框架支持分布式执行 `ADD INDEX` 和 `IMPORT INTO` 这两类任务。
 
 - `ADD INDEX`，即 DDL 创建索引的场景。例如以下 SQL 语句：
 
@@ -32,15 +32,15 @@ TiDB 采用计算存储分离架构，具有出色的扩展性和弹性的扩缩
     CREATE INDEX idx1 ON table t1(c1);
     ```
 
-- `IMPORT INTO` 用于将 `CSV`、`SQL`、`PARQUET` 等格式的数据导入到一张空表中。详情请参考 [`IMPORT INTO`](/sql-statements/sql-statement-import-into.md)。
+- `IMPORT INTO` 即通过该 SQL 语句将 `CSV`、`SQL`、`PARQUET` 等格式的数据导入到一张空表中。详情请参考 [`IMPORT INTO`](/sql-statements/sql-statement-import-into.md)。
 
 ## 使用限制
 
-分布式框架一次只能调度一个 `ADD INDEX` 任务的分布式执行。如果在当前的 `ADD INDEX` 分布式任务还未执行完成时就提交了一个新的 `ADD INDEX` 任务，则新提交的 `ADD INDEX` 任务会通过事务的方式来执行。
+分布式执行框架一次只能调度一个 `ADD INDEX` 任务进行分布式执行。如果在当前的 `ADD INDEX` 分布式任务还未执行完成时就提交了一个新的 `ADD INDEX` 任务，则新提交的 `ADD INDEX` 任务不会被该框架调度，而是直接通过事务的方式来执行。
 
 ## 启用前提
 
-如需使用分布式框架执行 `ADD INDEX` 任务，需要先开启 [Fast Online DDL](/system-variables.md#tidb_ddl_enable_fast_reorg-从-v630-版本开始引入) 模式。
+如需使用分布式执行框架执行 `ADD INDEX` 任务，需要先开启 [Fast Online DDL](/system-variables.md#tidb_ddl_enable_fast_reorg-从-v630-版本开始引入) 模式。
 
 1. 调整 Fast Online DDL 相关的系统变量：
 
@@ -57,7 +57,7 @@ TiDB 采用计算存储分离架构，具有出色的扩展性和弹性的扩缩
 
 ## 启用步骤
 
-1. 启用分布式框架，只需将 [`tidb_enable_dist_task`](/system-variables.md#tidb_enable_dist_task-从-v710-版本开始引入) 设置为 `ON`：
+1. 启用分布式执行框架，只需将 [`tidb_enable_dist_task`](/system-variables.md#tidb_enable_dist_task-从-v710-版本开始引入) 设置为 `ON`：
 
     ```sql
     SET GLOBAL tidb_enable_dist_task = ON;
@@ -81,11 +81,11 @@ TiDB 采用计算存储分离架构，具有出色的扩展性和弹性的扩缩
 
 ## 实现原理
 
-TiDB 后端任务分布式框架的架构图如下：
+TiDB 后端任务分布式执行框架的架构图如下：
 
-![后端任务分布式框架的架构](/media/dist-task/dist-task-architect.jpg)
+![后端任务分布式执行框架的架构](/media/dist-task/dist-task-architect.jpg)
 
-根据上图，分布式框架中任务的执行主要由以下模块负责：
+根据上图，分布式执行框架中任务的执行主要由以下模块负责：
 
 - Dispatcher：负责生成每个任务的分布式执行计划，管理执行过程，转换任务状态以及收集和反馈运行时任务信息等。
 - Scheduler：以 TiDB 节点为单位来同步分布式任务的执行，提高后端任务执行效率。
