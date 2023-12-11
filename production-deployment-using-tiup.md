@@ -318,7 +318,7 @@ alertmanager_servers:
 >
 > - 在命令行上使用了参数 --skip-create-user 明确指定跳过创建用户的步骤。
 >
-> 无论 topology.yaml 中约定的用户和组是否被自动创建，TiUP 都会自动生成一对 ssh key 并为每台机器的该用户设置免密登陆
+> 无论 topology.yaml 中约定的用户和组是否被自动创建，TiUP 都会自动生成一对 ssh key 并为每台机器的该用户设置免密登陆。在此后的操作中都会使用这个用户和 ssh key 去管理机器，用于初始化的用户和密码在部属完成后不再被使用。
 
 执行部署命令前，先使用 `check` 及 `check --apply` 命令检查和自动修复集群存在的潜在风险：
 
