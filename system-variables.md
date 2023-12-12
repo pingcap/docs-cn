@@ -880,10 +880,10 @@ mysql> SHOW GLOBAL VARIABLES LIKE 'max_prepared_stmt_count';
 - 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：否
 - 类型：布尔型
 - 默认值：`OFF`
-- 控制是否允许使用 Cop/BatchCop 协议来计算下推到 TiFlash 的计算。Cop/BatchCop 是最初由 TiFlash 支持的协议。与 MPP 协议相比，性能没有差异，但更推荐使用 MPP 协议，因为 Cop/BatchCop 有可能在未来被弃用。
-   
-    * 0 或 OFF，意味着优化器不会针对 tiflash 使用 Cop/BatchCop。
-    * 1 或 ON，意味着优化器会根据成本估算来决定是否使用 Cop/BatchCop 还是 MPP 协议。
+- 当 TiDB 给 TiFlash 下发计算任务时，有三种方法（或协议）：Cop、BatchCop 和 MPP。相比于 Cop/BatchCop，MPP 协议更加成熟，提供更好的任务/资源管理。因此，更推荐使用 MPP 协议。
+
+    * 0 或 OFF：意味着优化器仅生成使用 TiFlash MPP 协议的计划。
+    * 1 或 ON：意味着优化器根据成本估算确定是否使用 Cop、BatchCop 和 MPP 协议。
 
 ### `tidb_allow_batch_cop` <span class="version-mark">从 v4.0 版本开始引入</span>
 
