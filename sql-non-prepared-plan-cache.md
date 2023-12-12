@@ -112,7 +112,7 @@ TiDB 对参数化后形式相同的查询，只能缓存一个计划。例如，
 执行下面 `EXPLAIN FORMAT='plan_cache'` 语句，查看查询是否能够命中：
 
 ```sql
-EXPLAIN FORMAT='plan_cache' SELECT * FROM (SELECT a+1 FROM t1) t;
+EXPLAIN FORMAT='plan_cache' SELECT * FROM (SELECT a+1 FROM t) t;
 ```
 
 输出结果示例如下：
