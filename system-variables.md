@@ -1821,7 +1821,7 @@ mysql> SELECT job_info FROM mysql.analyze_jobs ORDER BY end_time DESC LIMIT 1;
 - 作用域：SESSION | GLOBAL
 - 是否持久化到集群：是
 - 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：否
-- 类型：枚举型
+- 类型：布尔型
 - 默认值：`OFF`
 - 可选值：`OFF`，`ON`
 - 这个变量用来设置是否支持对分区表创建 `Global index`。`Global index` 当前正处于开发阶段，**不推荐修改该变量值**。
