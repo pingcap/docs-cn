@@ -29,7 +29,7 @@ Based on whether to operate the data included in the target DDL object, DDL stat
 
     In TiDB, physical DDL statements are also referred to as "reorg DDL", which stands for reorganization. Currently, physical DDL statements only include `ADD INDEX` and lossy column type changes (such as changing from an `INT` type to a `CHAR` type). These statements take a long time to execute, and the execution time is affected by the amount of data in the table, the machine configuration, and the application workload.
 
-    Executing physical DDL statements can have an impact on the workload of the application for two reasons. On the one hand, it consumes CPU and I/O resources from TiKV to read data and write new data. On the other hand, the TiDB node where the DDL Owner is located needs to perform the corresponding computations, which consumes more CPU resources. Because TiDB does not support distributed execution of DDL statements, other TiDB nodes do not consume additional system resources during this process.
+    Executing physical DDL statements can have an impact on the workload of the application for two reasons. On the one hand, it consumes CPU and I/O resources from TiKV to read data and write new data. On the other hand, **the TiDB node serving as DDL Owners** or **those TiDB nodes scheduled by the TiDB Distributed eXecution Framework (DXF) to execute `ADD INDEX` tasks** consume CPU resources from TiDB to perform the corresponding computations.
 
     > **Note:**
     >
