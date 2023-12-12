@@ -719,6 +719,16 @@ Configuration items related to opentracing.reporter.
 - The threshold of the TiKV load. If the TiKV load exceeds this threshold, more `batch` packets are collected to relieve the pressure of TiKV. It is valid only when the value of `tikv-client.max-batch-size` is greater than `0`. It is recommended not to modify this value.
 - Default value: `200`
 
+### `copr-req-timeout` <span class="version-mark">New in v7.5.0</span>
+
+> **Warning:**
+>
+> This configuration might be deprecated in future versions. **DO NOT** change the value of this configuration.
+
++ The timeout of a single Coprocessor request.
++ Default value: `60`
++ Unit: second
+
 ## tikv-client.copr-cache <span class="version-mark">New in v4.0.0</span>
 
 This section introduces configuration items related to the Coprocessor Cache feature.
