@@ -332,7 +332,7 @@ TiDB 7.1.0 为长期支持版本 (Long-Term Support Release, LTS)。
 | [`authentication_ldap_simple_server_host`](/system-variables.md#authentication_ldap_simple_server_host-从-v710-版本开始引入) | 新增 | 在 LDAP simple 身份验证中，LDAP Server 的主机名或地址。 |
 | [`authentication_ldap_simple_server_port`](/system-variables.md#authentication_ldap_simple_server_port-从-v710-版本开始引入) | 新增 | 在 LDAP simple 身份验证中，LDAP Server 的 TCP/IP 端口号。 |
 | [`authentication_ldap_simple_tls`](/system-variables.md#authentication_ldap_simple_tls-从-v710-版本开始引入) | 新增 | 在 LDAP simple 身份验证中，是否使用 StartTLS 对连接加密。 |
-| [`tidb_enable_dist_task`](/system-variables.md#tidb_enable_dist_task-从-v710-版本开始引入) | 新增 | 控制是否开启分布式执行框架。开启分布式执行后，DDL、Import 等支持的后端任务将会由集群中多个 TiDB 节点共同完成。该变量由 `tidb_ddl_distribute_reorg` 改名而来。|
+| [`tidb_enable_dist_task`](/system-variables.md#tidb_enable_dist_task-从-v710-版本开始引入) | 新增 | 控制是否开启分布式执行框架。开启分布式执行后，DDL、Import 等支持的分布式执行框架任务将会由集群中多个 TiDB 节点共同完成。该变量由 `tidb_ddl_distribute_reorg` 改名而来。|
 | [`tidb_enable_non_prepared_plan_cache_for_dml`](/system-variables.md#tidb_enable_non_prepared_plan_cache_for_dml-从-v710-版本开始引入) | 新增 | 控制非 Prepare 语句执行计划缓存是否支持 DML 语句。 |
 | [`tidb_enable_row_level_checksum`](/system-variables.md#tidb_enable_row_level_checksum-从-v710-版本开始引入) | 新增 | 控制是否开启 TiCDC 单行数据正确性校验。|
 | [`tidb_opt_fix_control`](/system-variables.md#tidb_opt_fix_control-从-v710-版本开始引入) | 新增 | 通过设置该变量，你可以更细粒度地控制优化器的行为，并且避免集群升级后优化器行为变化导致的性能回退。 |

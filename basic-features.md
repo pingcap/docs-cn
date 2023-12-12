@@ -213,6 +213,7 @@ summary: 了解 TiDB 的功能概览。
 
 ## 管理，可视化和工具
 
+<<<<<<< HEAD
 | 管理，可视化和工具 | 7.3 | 7.2 | 7.1 | 6.5 | 6.1 | 5.4 | 5.3 | 5.2 | 5.1 | 5.0 | 4.0 |
 |---|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|
 | [TiDB Dashboard 图形化展示](/dashboard/dashboard-intro.md) | Y | Y | Y | Y | Y | Y | Y | Y | Y | Y | Y |
@@ -244,6 +245,41 @@ summary: 了解 TiDB 的功能概览。
 | [资源管控 (Resource Control)](/tidb-resource-control.md) | Y | Y | Y | N | N | N | N | N | N | N | N |
 | [Runaway Queries 自动管理](/tidb-resource-control.md#管理资源消耗超出预期的查询-runaway-queries) | E | E | N | N | N | N | N | N | N | N | N |
 | [TiFlash 存算分离架构与 S3 支持](/tiflash/tiflash-disaggregated-and-s3.md) | E | E | E | N | N | N | N | N | N | N | N |
+=======
+| 管理，可视化和工具 | 7.5 | 7.1 | 6.5 | 6.1 | 5.4 | 5.3 | 5.2 | 5.1 | 5.0 | 4.0 |
+|---|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|
+| [TiDB Dashboard 图形化展示](/dashboard/dashboard-intro.md) | Y | Y | Y | Y | Y | Y | Y | Y | Y | Y |
+| [TiDB Dashboard 持续性能分析功能](/dashboard/continuous-profiling.md) | Y | Y | Y | Y | E | E | N | N | N | N |
+| [TiDB Dashboard Top SQL 功能](/dashboard/top-sql.md) | Y | Y | Y | Y | E | N | N | N | N | N |
+| [TiDB Dashboard SQL 诊断功能](/information-schema/information-schema-sql-diagnostics.md) | Y | Y | Y | E | E | E | E | E | E | E |
+| [TiDB Dashboard 集群诊断功能](/dashboard/dashboard-diagnostics-access.md) | Y | Y | Y | E | E | E | E | E | E | E |
+| [Grafana 中的 TiKV-FastTune 面板](/grafana-tikv-dashboard.md#tikv-fasttune-面板) | E | E | E | E | E | E | E | E | E | E |
+| [Information schema](/information-schema/information-schema.md) | Y | Y | Y | Y | Y | Y | Y | Y | Y | Y |
+| [Metrics schema](/metrics-schema.md) | Y | Y | Y | Y | Y | Y | Y | Y | Y | Y |
+| [Statements summary tables](/statement-summary-tables.md) | Y | Y | Y | Y | Y | Y | Y | Y | Y | Y |
+| [Statements summary tables - 持久化 statements summary](/statement-summary-tables.md#持久化-statements-summary) | E | E | N | N | N | N | N | N | N | N |
+| [慢查询日志](/identify-slow-queries.md) | Y | Y | Y | Y | Y | Y | Y | Y | Y | Y |
+| [TiUP 部署](/tiup/tiup-overview.md) | Y | Y | Y | Y | Y | Y | Y | Y | Y | Y |
+| [Kubernetes operator](https://docs.pingcap.com/tidb-in-kubernetes/stable) | Y | Y | Y | Y | Y | Y | Y | Y | Y | Y |
+| [内置物理备份](/br/backup-and-restore-use-cases.md) | Y | Y | Y | Y | Y | Y | Y | Y | Y | Y |
+| [Global Kill](/sql-statements/sql-statement-kill.md) | Y | Y | Y | Y | E | E | E | E | E | E |
+| [Lock View](/information-schema/information-schema-data-lock-waits.md) | Y | Y | Y | Y | Y | Y | Y | E | E | E |
+| [`SHOW CONFIG`](/sql-statements/sql-statement-show-config.md) | Y | Y | Y | Y | Y | Y | Y | Y | Y | Y |
+| [`SET CONFIG`](/dynamic-config.md) | Y | Y | Y | Y | E | E | E | E | E | E |
+| [DM WebUI](/dm/dm-webui-guide.md) | E | E | E | E | N | N | N | N | N | N |
+| [前台限流](/tikv-configuration-file.md#前台限流) | Y | Y | Y | E | N | N | N | N | N | N |
+| [后台限流](/tikv-configuration-file.md#后台限流) | E | E | E | N | N | N | N | N | N | N |
+| [基于 EBS 的备份和恢复](https://docs.pingcap.com/zh/tidb-in-kubernetes/v1.4/volume-snapshot-backup-restore) | Y | Y | Y | N | N | N | N | N | N | N |
+| [PITR](/br/br-pitr-guide.md) | Y | Y | Y | N | N | N | N | N | N | N |
+| [全局内存控制](/configure-memory-usage.md#如何配置-tidb-server-实例使用内存的阈值) | Y | Y | Y | N | N | N | N | N | N | N |
+| [RawKV 跨集群复制](/tikv-configuration-file.md#api-version-从-v610-版本开始引入) | E| E | E | N | N | N | N | N | N | N |
+| [Green GC](/system-variables.md#tidb_gc_scan_lock_mode-从-v50-版本开始引入) | E | E | E | E | E | E | E | E | E | N |
+| [资源管控 (Resource Control)](/tidb-resource-control.md) | Y | Y | N | N | N | N | N | N | N | N |
+| [Runaway Queries 自动管理](/tidb-resource-control.md#管理资源消耗超出预期的查询-runaway-queries) | E | N | N | N | N | N | N | N | N | N |
+| [后台任务资源管控](/tidb-resource-control.md#管理后台任务) | E | N | N | N | N | N | N | N | N | N |
+| [TiFlash 存算分离架构与 S3 支持](/tiflash/tiflash-disaggregated-and-s3.md) | Y | E | N | N | N | N | N | N | N | N |
+| [选择执行分布式执行框架任务的 TiDB 节点](/system-variables.md#tidb_service_scope-从-v740-版本开始引入) | Y | N | N | N | N | N | N | N | N | N |
+>>>>>>> c8ea6161b0 (Update tidb-distributed-execution-framework.md (#15602))
 
 [^1]: TiDB 误将 latin1 处理为 utf8 的子集。见 [TiDB #18955](https://github.com/pingcap/tidb/issues/18955)。
 

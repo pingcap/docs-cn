@@ -154,7 +154,7 @@ TiDB 版本：7.2.0
 
     `IMPORT INTO` 集成了 TiDB Lightning [物理导入模式](/tidb-lightning/tidb-lightning-physical-import-mode.md)的能力。通过该语句，你可以将 CSV、SQL 和 PARQUET 等格式的数据快速导入到 TiDB 的一张空表中。这种导入方式无需单独部署和管理 TiDB Lightning，在降低了数据导入难度的同时，大幅提升了数据导入效率。
 
-    对于存储在 Amazon S3 或 GCS 的数据文件，在开启了[后端任务分布式框架](/tidb-distributed-execution-framework.md)后，`IMPORT INTO` 还支持将数据导入任务拆分成多个子任务，并将子任务调度到多个 TiDB 节点并行导入，进一步提升导入性能。
+    对于存储在 Amazon S3 或 GCS 的数据文件，在开启了 [TiDB 分布式执行框架](/tidb-distributed-execution-framework.md)后，`IMPORT INTO` 还支持将数据导入任务拆分成多个子任务，并将子任务调度到多个 TiDB 节点并行导入，进一步提升导入性能。
 
     更多信息，请参考[用户文档](/sql-statements/sql-statement-import-into.md)。
 

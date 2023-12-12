@@ -73,7 +73,7 @@ TiDB 版本：7.1.1
     - 修复集群升级前，如果有暂停的 DDL，会出现升级失败的问题 [#44225](https://github.com/pingcap/tidb/issues/44225) @[zimulala](https://github.com/zimulala)
     - 修复通过 BR 恢复 `AUTO_ID_CACHE=1` 的表时，会遇到 `duplicate entry` 报错的问题 [#44716](https://github.com/pingcap/tidb/issues/44716) @[tiancaiamao](https://github.com/tiancaiamao)
     - 修复 DDL owner 切换数次之后导致数据索引不一致的问题 [#44619](https://github.com/pingcap/tidb/issues/44619) @[tangenta](https://github.com/tangenta)
-    - 修复当取消处于 `none` 状态的 `ADD INDEX` DDL 任务时，因为后端任务队列没有清理此任务而导致的内存泄漏问题 [#44205](https://github.com/pingcap/tidb/issues/44205) @[tangenta](https://github.com/tangenta)
+    - 修复当取消处于 `none` 状态的 `ADD INDEX` DDL 任务时，因为分布式执行框架任务队列没有清理此任务而导致的内存泄漏问题 [#44205](https://github.com/pingcap/tidb/issues/44205) @[tangenta](https://github.com/tangenta)
     - 修复代理协议在处理某些错误数据时报错 `Header read timeout` 的问题 [#43205](https://github.com/pingcap/tidb/issues/43205) @[blacktear23](https://github.com/blacktear23)
     - 修复 PD 隔离可能会导致运行的 DDL 阻塞的问题 [#44267](https://github.com/pingcap/tidb/issues/44267) @[wjhuang2016](https://github.com/wjhuang2016)
     - 修复 `SELECT CAST(n AS CHAR)` 语句中的 `n` 为负数时，查询结果出错的问题 [#44786](https://github.com/pingcap/tidb/issues/44786) @[xhebox](https://github.com/xhebox)
