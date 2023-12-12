@@ -1816,7 +1816,7 @@ mysql> SELECT job_info FROM mysql.analyze_jobs ORDER BY end_time DESC LIMIT 1;
 - 默认值：`OFF`
 - 这个变量用于控制是否开启可感知到垃圾回收的内存追踪 (GC-Aware memory track)。
 
-### `tidb_enable_global_index`
+### `tidb_enable_global_index` <span class="version-mark">从 v7.6.0 版本开始引入</span>
 
 - 作用域：SESSION | GLOBAL
 - 是否持久化到集群：是
