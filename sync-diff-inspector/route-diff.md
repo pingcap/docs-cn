@@ -81,7 +81,7 @@ target-schema = "schema"     # 目标库名
 sync-diff-inspector 的行为如下：
 
 - 如果上游中不存在库 `schema`，sync-diff-inspector 不做任何处理。
-- 如果上游中存在库 `schema`，且存在一条规则将该库匹配到其他表，sync-diff-inspector 不做任何处理。
+- 如果上游中存在库 `schema`，且存在一条规则将该库匹配到其他库，sync-diff-inspector 不做任何处理。
 - 如果上游中存在库 `schema`，但不存在将该库匹配到其他表的规则，sync-diff-inspector 会在表路由中添加一条新的规则 `schema -> _no__exists__db_`。之后，sync-diff-inspector 会将库 `schema` 视为库 `_no__exists__db_`。
 
 如果规则中不存在 `target-schema.target-table`，sync-diff-inspector 会添加一条规则将 `target-schema.target-table` 匹配到 `target-schema.target-table`，使其大小写不敏感，因为表路由是大小写不敏感的。
