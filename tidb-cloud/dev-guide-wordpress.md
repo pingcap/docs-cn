@@ -57,7 +57,7 @@ Configure the WordPress database connection to TiDB Serverless.
 3. Ensure the configurations in the connection dialog match your operating environment.
 
     - **Endpoint Type** is set to `Public`.
-    - **Connect With** is set to `General`.
+    - **Connect With** is set to `WordPress`.
     - **Operating System** is set to `Debian/Ubuntu/Arch`.
 
 4. Click **Generate Password** to create a random password.
@@ -75,10 +75,10 @@ Configure the WordPress database connection to TiDB Serverless.
 6. Copy and paste the corresponding connection string into the `.env` file. The example result is as follows:
 
     ```dotenv
-    TIDB_HOST='{host}'  # e.g. gateway01.ap-northeast-1.prod.aws.tidbcloud.com
+    TIDB_HOST='{HOST}'  # e.g. gateway01.ap-northeast-1.prod.aws.tidbcloud.com
     TIDB_PORT='4000'
-    TIDB_USER='{user}'  # e.g. xxxxxx.root
-    TIDB_PASSWORD='{password}'
+    TIDB_USER='{USERNAME}'  # e.g. xxxxxx.root
+    TIDB_PASSWORD='{PASSWORD}'
     TIDB_DB_NAME='test'
     ```
 
