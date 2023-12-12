@@ -171,6 +171,7 @@ TiDB 7.5.0 为长期支持版本 (Long-Term Support Release, LTS)。
 
 | 配置文件 | 配置项 | 修改类型 | 描述 |
 | -------- | -------- | -------- | -------- |
+| TiDB | [`tikv-client.copr-req-timeout`](/tidb-configuration-file.md#copr-req-timeout-从-v750-版本开始引入) | 新增 | 设置单个 Coprocessor request 的超时时间。|
 | TiKV | [`raftstore.region-compact-min-redundant-rows`](/tikv-configuration-file.md#region-compact-min-redundant-rows-从-v710-版本开始引入) | 修改 | 触发 RocksDB compaction 需要的冗余的 MVCC 数据行数。从 v7.5.0 开始，该配置项对 `"raft-kv"` 存储引擎生效。|
 | TiKV | [`raftstore.region-compact-redundant-rows-percent`](/tikv-configuration-file.md#region-compact-redundant-rows-percent-从-v710-版本开始引入) | 修改 | 触发 RocksDB compaction 需要的冗余的 MVCC 数据行所占比例。从 v7.5.0 开始，该配置项对 `"raft-kv"` 存储引擎生效。 |
 | TiKV | [`raftstore.evict-cache-on-memory-ratio`](/tikv-configuration-file.md#evict-cache-on-memory-ratio-从-v750-版本开始引入) | 新增 | 当 TiKV 的内存使用超过系统可用内存的 90%，并且 Raft 缓存条目占用的内存超过已使用内存的 `evict-cache-on-memory-ratio` 比例时，TiKV 会逐出 Raft 缓存条目。 |
