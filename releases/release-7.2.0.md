@@ -154,7 +154,7 @@ Quick access: [Quick start](https://docs.pingcap.com/tidb/v7.2/quick-start-with-
 
     The `IMPORT INTO` statement integrates the [Physical Import Mode](/tidb-lightning/tidb-lightning-physical-import-mode.md) capability of TiDB Lightning. With this statement, you can quickly import data in formats such as CSV, SQL, and PARQUET into an empty table in TiDB. This import method eliminates the need for a separate deployment and management of TiDB Lightning, thereby reducing the complexity of data import and greatly improving import efficiency.
 
-    For data files stored in Amazon S3 or GCS, when the [Backend task distributed execution framework](/tidb-distributed-execution-framework.md) is enabled, `IMPORT INTO` also supports splitting a data import job into multiple sub-jobs and scheduling them to multiple TiDB nodes for parallel import, which further enhances import performance.
+    For data files stored in Amazon S3 or GCS, when the [TiDB Distributed eXecution Framework (DXF)](/tidb-distributed-execution-framework.md) is enabled, `IMPORT INTO` also supports splitting a data import job into multiple sub-jobs and scheduling them to multiple TiDB nodes for parallel import, which further enhances import performance.
 
     For more information, see [documentation](/sql-statements/sql-statement-import-into.md).
 

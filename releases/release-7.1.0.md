@@ -128,11 +128,11 @@ Compared with the previous LTS 6.5.0, 7.1.0 not only includes new features, impr
 
     For more information, see [documentation](/sql-non-prepared-plan-cache.md).
 
-* Support the DDL distributed parallel execution framework (experimental) [#41495](https://github.com/pingcap/tidb/issues/41495) @[benjamin2037](https://github.com/benjamin2037)
+* Support the TiDB Distributed eXecution Framework (DXF) (experimental) [#41495](https://github.com/pingcap/tidb/issues/41495) @[benjamin2037](https://github.com/benjamin2037)
 
-    Before TiDB v7.1.0, only one TiDB node can serve as the DDL owner and execute DDL tasks at the same time. Starting from TiDB v7.1.0, in the new distributed parallel execution framework, multiple TiDB nodes can execute the same DDL task in parallel, thus better utilizing the resources of the TiDB cluster and significantly improving the performance of DDL. In addition, you can linearly improve the performance of DDL by adding more TiDB nodes. Note that this feature is currently experimental and only supports `ADD INDEX` operations.
+    Before TiDB v7.1.0, only one TiDB node can serve as the DDL owner and execute DDL tasks at the same time. Starting from TiDB v7.1.0, in the new DXF, multiple TiDB nodes can execute the same DDL task in parallel, thus better utilizing the resources of the TiDB cluster and significantly improving the performance of DDL. In addition, you can linearly improve the performance of DDL by adding more TiDB nodes. Note that this feature is currently experimental and only supports `ADD INDEX` operations.
 
-    To use the distributed framework, set the value of [`tidb_enable_dist_task`](/system-variables.md#tidb_enable_dist_task-new-in-v710) to `ON`:
+    To use the DXF, set the value of [`tidb_enable_dist_task`](/system-variables.md#tidb_enable_dist_task-new-in-v710) to `ON`:
 
     ```sql
     SET GLOBAL tidb_enable_dist_task = ON;
@@ -332,7 +332,7 @@ Compared with the previous LTS 6.5.0, 7.1.0 not only includes new features, impr
 | [`authentication_ldap_simple_server_host`](/system-variables.md#authentication_ldap_simple_server_host-new-in-v710) | Newly added | Specifies the LDAP server host in LDAP simple authentication. |
 | [`authentication_ldap_simple_server_port`](/system-variables.md#authentication_ldap_simple_server_port-new-in-v710) | Newly added | Specifies the LDAP server TCP/IP port number in LDAP simple authentication. |
 | [`authentication_ldap_simple_tls`](/system-variables.md#authentication_ldap_simple_tls-new-in-v710) | Newly added | Specifies whether connections by the plugin to the LDAP server are protected with StartTLS in LDAP simple authentication. |
-| [`tidb_enable_dist_task`](/system-variables.md#tidb_enable_dist_task-new-in-v710) | Newly added | Controls whether to enable the distributed execution framework. After enabling distributed execution, DDL, import, and other supported backend tasks will be jointly completed by multiple TiDB nodes in the cluster. This variable was renamed from `tidb_ddl_distribute_reorg`. |
+| [`tidb_enable_dist_task`](/system-variables.md#tidb_enable_dist_task-new-in-v710) | Newly added | Controls whether to enable the Distributed eXecution Framework (DXF). After enabling the DXF, DDL, import, and other supported DXF tasks will be jointly completed by multiple TiDB nodes in the cluster. This variable was renamed from `tidb_ddl_distribute_reorg`. |
 | [`tidb_enable_non_prepared_plan_cache_for_dml`](/system-variables.md#tidb_enable_non_prepared_plan_cache_for_dml-new-in-v710) | Newly added | Controls whether to enable the [Non-prepared plan cache](/sql-non-prepared-plan-cache.md) feature for DML statements. |
 | [`tidb_enable_row_level_checksum`](/system-variables.md#tidb_enable_row_level_checksum-new-in-v710) | Newly added | Controls whether to enable the TiCDC data integrity validation for single-row data feature.|
 | [`tidb_opt_fix_control`](/system-variables.md#tidb_opt_fix_control-new-in-v710) | Newly added | This variable provides more fine-grained control over the optimizer and helps to prevent performance regression after upgrading caused by behavior changes in the optimizer. |

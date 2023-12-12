@@ -309,6 +309,9 @@
   - [TiDB Serverless Limitations](/tidb-cloud/serverless-limitations.md)
   - [Limited SQL Features on TiDB Cloud](/tidb-cloud/limited-sql-features.md)
   - [TiDB Limitations](/tidb-limitations.md)
+  - TiDB Distributed eXecution Framework (DXF)
+    - [Introduction](/tidb-distributed-execution-framework.md)
+    - [TiDB Global Sort](/tidb-global-sort.md)
   - Benchmarks
     - [TPC-C Performance Test Report](/tidb-cloud/v7.1.0-performance-benchmarking-with-tpcc.md)
     - [Sysbench Performance Test Report](/tidb-cloud/v7.1.0-performance-benchmarking-with-sysbench.md)
@@ -621,8 +624,6 @@
     - [update](/tidb-cloud/ticloud-update.md)
   - [Table Filter](/table-filter.md)
   - [Resource Control](/tidb-resource-control.md)
-  - [TiDB Backend Task Distributed Execution Framework](/tidb-distributed-execution-framework.md)
-  - [TiDB Global Sort](/tidb-global-sort.md)
   - [DDL Execution Principles and Best Practices](/ddl-introduction.md)
   - [Troubleshoot Inconsistency Between Data and Indexes](/troubleshoot-data-inconsistency-errors.md)
   - [Support](/tidb-cloud/tidb-cloud-support.md)

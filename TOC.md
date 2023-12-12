@@ -644,6 +644,9 @@
     - [Data Validation](/tiflash/tiflash-data-validation.md)
     - [Compatibility](/tiflash/tiflash-compatibility.md)
     - [Pipeline Execution Model](/tiflash/tiflash-pipeline-model.md)
+  - TiDB Distributed eXecution Framework (DXF)
+    - [Introduction](/tidb-distributed-execution-framework.md)
+    - [TiDB Global Sort](/tidb-global-sort.md)
   - [System Variables](/system-variables.md)
   - [Server Status Variables](/status-variables.md)
   - Configuration File Parameters
@@ -1000,9 +1003,6 @@
   - [Table Filter](/table-filter.md)
   - [Schedule Replicas by Topology Labels](/schedule-replicas-by-topology-labels.md)
   - [URI Formats of External Storage Services](/external-storage-uri.md)
-  - Internal Components
-    - [TiDB Backend Task Distributed Execution Framework](/tidb-distributed-execution-framework.md)
-    - [TiDB Global Sort](/tidb-global-sort.md)
 - FAQs
   - [FAQ Summary](/faq/faq-overview.md)
   - [TiDB FAQs](/faq/tidb-faq.md)

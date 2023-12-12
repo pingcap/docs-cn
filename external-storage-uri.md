@@ -41,7 +41,7 @@ s3://external/testfolder?access-key=${access-key}&secret-access-key=${secret-acc
 The following is an example of an Amazon S3 URI for [`IMPORT INTO`](/sql-statements/sql-statement-import-into.md). In this example, you need to specify a specific filename `test.csv`.
 
 ```shell
-s3://external/test.csv?access-key=${access-key}&secret-access-key=${secret-access-key}"
+s3://external/test.csv?access-key=${access-key}&secret-access-key=${secret-access-key}
 ```
 
 ## GCS URI format

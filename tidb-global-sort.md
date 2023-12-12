@@ -22,7 +22,7 @@ summary: Learn the use cases, limitations, usage, and implementation principles 
 
 ## Overview
 
-The TiDB Global Sort feature enhances the stability and efficiency of data import and DDL (Data Definition Language) operations. It serves as a general operator in the [distributed execution framework](/tidb-distributed-execution-framework.md), providing a global sort service on cloud.
+The TiDB Global Sort feature enhances the stability and efficiency of data import and DDL (Data Definition Language) operations. It serves as a general operator in the [TiDB Distributed eXecution Framework (DXF)](/tidb-distributed-execution-framework.md), providing a global sort service on cloud.
 
 The Global Sort feature currently only supports using Amazon S3 as cloud storage. In future releases, it will be extended to support multiple shared storage interfaces, such as POSIX, enabling seamless integration with different storage systems. This flexibility enables efficient and adaptable data sorting for various use cases.
 
@@ -30,7 +30,7 @@ The Global Sort feature currently only supports using Amazon S3 as cloud storage
 
 The Global Sort feature enhances the stability and efficiency of `IMPORT INTO` and `CREATE INDEX`. By globally sorting the data that are processed by the tasks, it improves the stability, controllability, and scalability of writing data to TiKV. This provides an enhanced user experience for data import and DDL tasks, as well as higher-quality services.
 
-The Global Sort feature executes tasks within the unified distributed parallel execution framework, ensuring efficient and parallel sorting of data on a global scale.
+The Global Sort feature executes tasks within the unified DXF, ensuring efficient and parallel sorting of data on a global scale.
 
 ## Limitations
 
@@ -40,7 +40,7 @@ Currently, the Global Sort feature is not used as a component of the query execu
 
 To enable Global Sort, follow these steps:
 
-1. Enable the distributed execution framework by setting the value of [`tidb_enable_dist_task`](/system-variables.md#tidb_enable_dist_task-new-in-v710) to `ON`:
+1. Enable the DXF by setting the value of [`tidb_enable_dist_task`](/system-variables.md#tidb_enable_dist_task-new-in-v710) to `ON`:
 
     ```sql
     SET GLOBAL tidb_enable_dist_task = ON;
