@@ -724,7 +724,7 @@ opentracing.reporter 相关的设置。
 > 该配置项可能会在未来版本中废弃，**不要修改该配置**。
 
 + 单个 Coprocessor Request 的超时时间
-+ 默认值：60s
++ 默认值：60
 + 单位：秒
 
 ## tikv-client.copr-cache <span class="version-mark">从 v4.0.0 版本开始引入</span>
