@@ -183,11 +183,11 @@ title: TiKV 监控指标详解
 ### Flow Control
 
 - Scheduler flow：每个 TiKV 实例的 scheduler 的实时流量
-- Scheduler discard ratio：每个 TiKV 实例的 scheduler 的请求拒绝比率，大于 0 表示触发流控且 TiKV 实例繁忙
-- Throttle duration：由于触发流控后，scheduler 执行请求的阻塞时间，如果存在统计值，则表明存在流控
+- Scheduler discard ratio：每个 TiKV 实例的 scheduler 的请求拒绝比率，当 Compaction pending bytes 超过阈值时，会根据超过阈值部分的值，按比例线性增加 discard ratio
+- Throttle duration：L0 文件过多并触发流控后，scheduler 执行请求的阻塞时间，如果存在统计值，则表明存在流控
 - Scheduler throttled CF：由于达到流控阈值，触发 RocksDB 限流的 CF
 - Flow controller actions：由于达到流控阈值，触发 RocksDB 限流的原因
-- Flush/L0 flow：每个 TiKV 实例的 RocksDB 的不同 CF 刷写 L0 的实时流量
+- Flush/L0 flow：每个 TiKV 实例的 RocksDB 的不同 CF 的 Flush 流量和 L0 compaction 的流量
 - Flow control factors：触发 RocksDB 限流相关的因素
 - Compaction pending bytes：每个 TiKV 实例的 RocksDB 的实时等待 compaction 的大小
 - Txn command throttled duration：由于限流，与事务相关的命令的阻塞时间，正常情况下，均为 0
