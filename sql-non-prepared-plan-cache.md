@@ -112,7 +112,7 @@ Note that if you do not add `FORMAT='plan_cache'`, the `EXPLAIN` statement will 
 To verify whether the query hits the cache, execute the following `EXPLAIN FORMAT='plan_cache'` statement:
 
 ```sql
-EXPLAIN FORMAT='plan_cache' SELECT * FROM (SELECT a+1 FROM t1) t;
+EXPLAIN FORMAT='plan_cache' SELECT * FROM (SELECT a+1 FROM t) t;
 ```
 
 The output is as follows:
