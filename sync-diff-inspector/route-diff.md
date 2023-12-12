@@ -67,7 +67,6 @@ target-table = "t_2"           # 目标表名
 如果规则中存在 `target-schema/target-table` 表名为 `schema.table`，sync-diff-inspector 的行为如下：
 
 - 如果存在一条规则将 `schema.table` 匹配到 `schema.table`，sync-diff-inspector 不做任何处理。
-
 - 如果不存在将 `schema.table` 匹配到 `schema.table` 的规则，sync-diff-inspector 会在表路由中添加一条新的规则 `schema.table -> _no__exists__db_._no__exists__table_`。之后，sync-diff-inspector 会将表 `schema.table` 视为表 `_no__exists__db_._no__exists__table_`。
 
 如果规则中只存在 `target-schema`，如下所示：
@@ -80,13 +79,11 @@ target-schema = "schema"     # 目标库名
 
 sync-diff-inspector 的行为如下：
 
-- 如果上游中不存在表 `schema`，sync-diff-inspector 不做任何处理。
+- 如果上游中不存在库 `schema`，sync-diff-inspector 不做任何处理。
+- 如果上游中存在库 `schema`，且存在一条规则将该库匹配到其他表，sync-diff-inspector 不做任何处理。
+- 如果上游中存在库 `schema`，但不存在将该库匹配到其他表的规则，sync-diff-inspector 会在表路由中添加一条新的规则 `schema -> _no__exists__db_`。之后，sync-diff-inspector 会将库 `schema` 视为库 `_no__exists__db_`。
 
-- 如果上游中存在表 `schema`，且存在一条规则将该表匹配到其他表，sync-diff-inspector 不做任何处理。
-
-- 如果上游中存在表 `schema`，但不存在将该表匹配到其他表的规则，sync-diff-inspector 会在表路由中添加一条新的规则 `schema -> _no__exists__db_`。之后，sync-diff-inspector 会将表 `schema` 视为表 `_no__exists__db_`。
-
-- 如果规则中不存在 `target-schema.target-table`，sync-diff-inspector 会添加一条规则将 `target-schema.target-table` 匹配到 `target-schema.target-table`，使其大小写不敏感，因为表路由是大小写不敏感的。
+如果规则中不存在 `target-schema.target-table`，sync-diff-inspector 会添加一条规则将 `target-schema.target-table` 匹配到 `target-schema.target-table`，使其大小写不敏感，因为表路由是大小写不敏感的。
 
 ### 示例
 
@@ -99,8 +96,6 @@ sync-diff-inspector 的行为如下：
 - `Inspector_mysql_1.tb_emp1`
 - `inspector_mysql_1.Tb_emp1`
 - `Inspector_mysql_1.Tb_emp1`
-
-In the configuration example, the upstream cluster has a rule `Source.rule1`, and the target table is `inspector_mysql_1.tb_emp1`.
 
 在配置示例中，上游集群有一条规则 `Source.rule1`，目标表为 `inspector_mysql_1.tb_emp1`。
 
