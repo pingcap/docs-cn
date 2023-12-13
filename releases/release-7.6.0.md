@@ -31,6 +31,26 @@ TiDB 版本：7.6.0
 
     更多信息，请参考[用户文档](链接)。
 
+* TiDB 提供支持落盘的并发 HashAgg 算法（实验特性） [#35637](https://github.com/pingcap/tidb/issues/35637) @[xzhangxian1008](https://github.com/xzhangxian1008) **tw@qiancai** <!--1365-->
+
+    在之前的版本中，TiDB 的 HashAgg 算子的并发算法不支持落盘，所有数据必须在内存中进行处理。这导致数据量较大、超过内存总量，需要使用 HashAgg 的落盘功能时，必须选择非并发算法，从而无法通过并发提升性能。在 7.6.0 版本中，TiDB 提供支持落盘的并发 HashAgg 算法。在任意并发条件下，HashAgg 算子都可以根据内存使用情况自动触发数据落盘，从而兼顾性能和处理数据量。目前，该功能作为实验特性，引入变量 `tidb_enable_concurrent_hashagg_spill` 控制是否启用支持落盘的并发 HashAgg 算法。当该变量设置为 `true` 时，HashAgg 将使用支持落盘的并发算法。该变量将在功能正式发布时废弃。
+
+    更多信息，请参考[用户文档](链接)。
+
+* 支持下推字符串函数 `LOWER` 到 TiKV [#48170](https://github.com/pingcap/tidb/issues/48170) @[gengliqi](https://github.com/gengliqi) **tw@qiancai** <!--1607-->
+
+    * `LOWER`
+
+    更多信息，请参考[用户文档](/functions-and-operators/expressions-pushed-down.md)。
+
+* 新增支持下推以下 JSON 函数到 TiFlash [#48350](https://github.com/pingcap/tidb/issues/48350) [#48986](https://github.com/pingcap/tidb/issues/48986) [#48994](https://github.com/pingcap/tidb/issues/48994) @[SeaRise](https://github.com/SeaRise) @[yibin87](https://github.com/yibin87) **tw@qiancai** <!--1608-->
+
+    * `JSON_UNQUOTE`
+    * `JSON_ARRAY`
+    * `JSON_DEPTH`
+
+    更多信息，请参考[用户文档](/tiflash/tiflash-supported-pushdown-calculations.md)。
+
 ### 稳定性
 
 * 功能标题 [#issue号](链接) @[贡献者 GitHub ID](链接) **tw@xxx** <!--1234-->
@@ -47,6 +67,16 @@ TiDB 版本：7.6.0
 
     更多信息，请参考[用户文档](链接)。
 
+* 支持代理组件 TiProxy [#issue号](链接) @[djshow832](https://github.com/djshow832) @[xhebox](https://github.com/xhebox) **tw@ran-huang** <!--1596-->
+
+    TiProxy 是 TiDB 的官方代理组件，放置在客户端和 TiDB server 之间，为 TiDB 提供负载均衡、连接保持功能，让 TiDB 集群的负载更加均衡，以及维护操作时不影响用户对数据库的连接访问。
+    * 所有客户端对 TiDB server 的连接都无法动态迁移至其他 TiDB server。当多个 TiDB server 的负载不均衡时，可能出现整体集群资源充足，但是个别 TiDB server 资源耗尽导致无法正常访问的情况。TiProxy 提供连接动态迁移功能，在客户端无感的前提下，将连接从一个 TiDB server 迁移至其他 TiDB server，从而实现 TiDB 集群的负载均衡。
+    * 在 TiDB 集群进行滚动重启、滚动升级、扩容、缩容等维护操作时，TiDB server 会发生变动，客户端对发生变动的 TiDB server 的连接将被中断。TiProxy 可以这些维护操作过程中，平滑的将连接迁移至其他 TiDB server，从而让客户端不受到任何影响。
+    
+    TiProxy 被集成至 TiUP、TiOperator、Dashboard 等 TiDB 的基本组件中，可以方便的进行配置、部署、运维。
+
+    更多信息，请参考[用户文档](链接)。
+    
 ### SQL 功能
 
 * 功能标题 [#issue号](链接) @[贡献者 GitHub ID](链接) **tw@xxx** <!--1234-->
@@ -137,7 +167,7 @@ TiDB 版本：7.6.0
 
 + TiDB
 
-    - note [#issue](链接) @[贡献者 GitHub ID](链接)
+    - 终止查询时及时通知 TiKV 以避免执行未开始的数据扫描任务 [#issue](链接) @[wshwsh12](https://github.com/wshwsh12) **tw@qiancai** <!--1634-->
     - note [#issue](链接) @[贡献者 GitHub ID](链接)
 
 + TiKV
