@@ -4532,6 +4532,20 @@ Query OK, 0 rows affected, 1 warning (0.00 sec)
 >
 > TiDB Dashboard 中的 Top SQL 页面目前只显示消耗负载最多的 5 类 SQL 查询，这与 `tidb_top_sql_max_time_series_count` 的配置无关。
 
+### `tidb_txn_entry_size_limit` <span class="version-mark">从 v7.6.0 版本开始引入</span>
+
+- 作用域: GLOBAL | SESSION
+- 是否持久化到集群：是
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：否
+- 类型：整数型
+- 默认值：`0`
+- 范围： `[0, 125829120]`
+- 这个变量用于动态修改 [`performance.txn-entry-size-limit`](/tidb-configuration-file.md#txn-entry-size-limit-从-v50-版本开始引入) 配置项，其含义与对应配置项相同。变量默认值为 0 ，表示默认使用配置项的值，当设置为非 0 值时，则优先使用该值作为 `txn-entry-size-limit` 的值。
+
+> **注意：**
+>
+> 修改 SESSION 作用域的变量时，只会影响当前用户会话，TiDB 内部会话并不受影响。这可能造成 TiDB 内部事务的 entry size 超过配置项的限制，从而导致事务失败。因此当需要在线调高限制时，我们建议优先修改 GLOBAL 作用域的变量。
+
 ### `tidb_store_limit` <span class="version-mark">从 v3.0.4 和 v4.0 版本开始引入</span>
 
 - 作用域：GLOBAL
