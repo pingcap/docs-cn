@@ -96,7 +96,7 @@ INSERT INTO detail_data(ts,customer_id,detail_fee) VALUES
 ('2023-1-7 12:2:3', 'cus004', 120.56),
 ('2023-1-8 12:2:3', 'cus005', 320.16);
 
--- 重复执行 13 次，增加数据量至 65536 行
+-- 重复执行以下 SQL 语句 13 次，一共插入 65536 行数据
 INSERT INTO detail_data select * from detail_data;
 ```
 
