@@ -103,16 +103,21 @@ INSERT INTO detail_data(ts,customer_id,detail_fee) VALUES
 ('2023-1-3 12:2:3', 'cus002', 2200.86),
 ('2023-1-4 12:2:3', 'cus003', 2020.86),
 ('2023-1-5 12:2:3', 'cus003', 1200.86),
-('2023-1-6 12:2:3', 'cus002', 20.86);
+('2023-1-6 12:2:3', 'cus002', 20.86),
+('2023-1-7 12:2:3', 'cus004', 120.56),
+('2023-1-8 12:2:3', 'cus005', 320.16);
+
+-- Execute the following SQL statement 13 times to insert a cumulative total of 65,536 rows into the table.
+INSERT INTO detail_data SELECT * FROM detail_data;
 ```
 
 Save daily analysis results:
 
 ```sql
-SET @@tidb_enable_tiflash_read_for_write_stmt=ON;
+SET @@sql_mode='NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO';
 
 INSERT INTO daily_data (rec_date, customer_id, daily_fee)
-SELECT DATE(ts), customer_id, sum(detail_fee) FROM detail_data WHERE DATE(ts) = CURRENT_DATE() GROUP BY DATE(ts), customer_id;
+SELECT DATE(ts), customer_id, sum(detail_fee) FROM detail_data WHERE DATE(ts) > DATE('2023-1-1 12:2:3') GROUP BY DATE(ts), customer_id;
 ```
 
 Analyze monthly data based on daily analysis data:
