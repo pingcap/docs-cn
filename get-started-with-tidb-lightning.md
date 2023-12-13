@@ -27,7 +27,7 @@ aliases: ['/docs-cn/dev/get-started-with-tidb-lightning/','/docs-cn/dev/how-to/g
     tiup install dumpling
     ```
 
-3. 从 MySQL 导出数据：
+3. 从 MySQL 导出数据，详细步骤可参考[使用 Dumpling 导出数据](/dumpling-overview.md#导出为-sql-文件)：
 
     ```sh
     tiup dumpling -h 127.0.0.1 -P 3306 -u root -t 16 -F 256MB -B test -f 'test.t[12]' -o /data/my_database/
@@ -57,6 +57,10 @@ tiup install tidb-lightning
 ```
 
 ## 第 4 步：启动 TiDB Lightning
+
+> **注意：**
+>
+> 本节的导入方法只适用于测试及功能体验，生产环境请参考[从大数据量 MySQL 迁移数据到 TiDB](/migrate-large-mysql-to-tidb.md#第-2-步导入全量数据到-tidb)。
 
 1. 创建配置文件 `tidb-lightning.toml`，并根据你的集群信息，填写如下配置：
 
