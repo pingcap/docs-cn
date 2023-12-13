@@ -124,7 +124,13 @@ TiDB 版本：7.1.3
     - (dup): release-6.5.6.md > 错误修复> TiKV - 修复 Titan `blob-run-mode` 无法在线更新的问题 [#15978](https://github.com/tikv/tikv/issues/15978) @[tonyxuqqi](https://github.com/tonyxuqqi)
     - (dup): release-6.5.4.md > 错误修复> TiKV - 修复 PD 和 TiKV 之间的网络中断可能导致 PITR 卡住的问题 [#15279](https://github.com/tikv/tikv/issues/15279) @[YuJuncen](https://github.com/YuJuncen)
     - (dup): release-6.5.6.md > 错误修复> TiKV - 修复 TiKV coprocessor 在移除 Raft peer 时可能返回陈旧数据的问题 [#16069](https://github.com/tikv/tikv/issues/16069) @[overvenus](https://github.com/overvenus)
-
+ -  Fix an issue that TiKV may panic after merge if it runs extremely slow. [#16111](https://github.com/tikv/tikv/issues/16111) @[overvenus](https://github.com/overvenus)
+ -  Fix an issue that resolved ts may be blocked for 2 hours. [#15520](https://github.com/tikv/tikv/issues/15520) @[overvenus](https://github.com/overvenus)
+ -  setting default value of raftstore.evict-cache-on-memory-ratio to 0.1 [#15800](https://github.com/tikv/tikv/issues/15800) @[tonyxuqqi](https://github.com/tonyxuqqi)
+ - Fixed a bug that may cause snapshot restore stuck when BR crashes. [#15684](https://github.com/tikv/tikv/issues/15684) @[YuJuncen](https://github.com/YuJuncen)
+ - Fix an OOM issue that is caused by stale read tracking large transactions. [#14864](https://github.com/tikv/tikv/issues/14864) @[overvenus](https://github.com/overvenus)
+ - Verify checksum right after SST files are generated to avoid corrupted SST being transferred to other TiKVs [#15986](https://github.com/tikv/tikv/issues/15986) @[Connor1996](https://github.com/Connor1996)
+ 
 + PD
 
     - note [#issue](https://github.com/tikv/pd/issues/${issue-id}) @[贡献者 GitHub ID](https://github.com/${github-id})
