@@ -16,7 +16,7 @@ SQL-92 标准定义了 4 种隔离级别：读未提交 (READ UNCOMMITTED)、读
 | REPEATABLE READ  | Not Possible | Not possible | Not possible | Possible     |
 | SERIALIZABLE     | Not Possible | Not possible | Not possible | Not possible |
 
-TiDB 实现了快照隔离 (Snapshot Isolation, SI) 级别的一致性。为与 MySQL 保持一致，又称其为“可重复读”。该隔离级别不同于 [ANSI 可重复读隔离级别](#与-ansi-可重复读隔离级别的区别)和 [MySQL 可重复读隔离级别](#与-mysql-可重复读隔离级别的区别)。
+TiDB 实现了快照隔离 (Snapshot Isolation, SI) 级别的一致性。为与 MySQL 保持一致，又称其为“可重复读” (REPEATABLE READ)。该隔离级别不同于 [ANSI 可重复读隔离级别](#与-ansi-可重复读隔离级别的区别)和 [MySQL 可重复读隔离级别](#与-mysql-可重复读隔离级别的区别)。
 
 > **注意：**
 >
@@ -74,7 +74,7 @@ MySQL 可重复读隔离级别在更新时并不检验当前版本是否可见�
     - 如果加锁过程中遇到因时间戳旧而导致写冲突，则重新获取最新的全局时间戳进行加锁。
     - 如果加锁过程中没有遇到写冲突或其他错误，则加锁成功。
 - 如果读取过程中遇到更新的数据版本，则尝试重新获取一个新的时间戳重试此语句。
- 
+
 在使用 `READ-COMMITTED` 隔离级别且单个事务中点写语句较多、点写冲突较少的场景，可通过开启此变量来避免获取全局时间戳带来的延迟和开销。
 
 ### 与 MySQL Read Committed 隔离级别的区别
