@@ -97,7 +97,7 @@ INSERT INTO detail_data(ts,customer_id,detail_fee) VALUES
 ('2023-1-8 12:2:3', 'cus005', 320.16);
 
 -- 重复执行以下 SQL 语句 13 次，一共插入 65536 行数据
-INSERT INTO detail_data select * from detail_data;
+INSERT INTO detail_data SELECT * FROM detail_data;
 ```
 
 每日分析数据保存：
