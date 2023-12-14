@@ -29,7 +29,7 @@ For more information, see [JSON Functions](/functions-and-operators/json-functio
 ## Restrictions
 
 - Currently, TiDB only supports pushing down limited `JSON` functions to TiFlash. For more information, see [Push-down expressions](/tiflash/tiflash-supported-pushdown-calculations.md#push-down-expressions).
-- TiDB Backup & Restore (BR) versions earlier than v6.3.0 do not support recovering data containing JSON columns. No version of BR supports recovering data containing JSON columns to TiDB clusters earlier than v6.3.0.
+- TiDB Backup & Restore (BR) changes how JSON column data is encoded in v6.3.0. Therefore, it is not recommended to use BR to restore data containing JSON columns to a TiDB cluster earlier than v6.3.0.
 - Do not use any replication tool to replicate data containing non-standard `JSON` data types, such as `DATE`, `DATETIME`, and `TIME`.
 
 ## MySQL compatibility
