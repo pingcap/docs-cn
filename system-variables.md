@@ -4539,7 +4539,8 @@ Query OK, 0 rows affected, 1 warning (0.00 sec)
 - 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：否
 - 类型：整数型
 - 默认值：`0`
-- 范围： `[0, 125829120]`
+- 范围：`[0, 125829120]`
+- 单位：字节
 - 这个变量用于动态修改 [`performance.txn-entry-size-limit`](/tidb-configuration-file.md#txn-entry-size-limit-从-v50-版本开始引入) 配置项，其含义与对应配置项相同。变量默认值为 0 ，表示默认使用配置项的值，当设置为非 0 值时，则优先使用该值作为 `txn-entry-size-limit` 的值。
 
 > **注意：**
