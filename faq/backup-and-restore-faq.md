@@ -297,6 +297,10 @@ br restore full -f 'mysql.usertable' -s $external_storage_url --with-sys-table
 - 系统变量表（`mysql.tidb`、`mysql.global_variables`）
 - [其他系统表](https://github.com/pingcap/tidb/blob/master/br/pkg/restore/systable_restore.go#L31)
 
+### 恢复的时候，报错 `cannot file rewrite rule`，该如何处理？
+
+遇到这种情况，请检查恢复集群中是否存在跟备份数据同名但表结构不一致的表。大多数情况是因为恢复集群的表缺失了索引导致。您可以尝试先删除该表，然后再次进行恢复操作。
+
 ## 备份恢复功能相关知识
 
 ### 备份数据有多大，备份会有副本吗？
