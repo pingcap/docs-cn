@@ -13,7 +13,7 @@ summary: Summarize this doc in 115 to 145 characters. Start with an SEO-friendly
 
 > **Warning** (Optional)
 >
-> This is an experimental feature and is not recommended for production environments.
+> This feature is experimental. It is not recommended that you use it in the production environment. The syntax and implementation might be changed or removed without prior notice. If you find a bug, you can report an [issue](https://github.com/pingcap/tidb/issues) on GitHub.
 
 This document describes the Usage scenarios, usage methods, and limitations of [feature name] and the FAQs when using this feature.
 
