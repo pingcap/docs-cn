@@ -1030,6 +1030,16 @@ raftstore 相关的配置项。
 + 默认值：0.1
 + 最小值：0
 
+### `periodic-full-compact-start-times` <span class="version-mark">从 v7.6.0 版本开始引入</span>
+
++ 设置启动周期性全量数据整理 (Compaction) 的时间。你可以在数组中指定多个时间计划。例如，`periodic-full-compact-start-times = ["03:00", "23:00"]` 表示 TiKV 基于 TiKV 节点的本地时区，在凌晨 3 点和晚上 11 点进行全量数据整理。
++ 默认值：`[]`，表示默认情况下禁用周期性全量数据整理。
+
+### `periodic-full-compact-start-max-cpu` <span class="version-mark">从 v7.6.0 版本开始引入</span>
+
++ 控制 TiKV 执行周期性全量数据整理时的 CPU 使用率阈值。
++ 默认值：`0.1`，表示全量数据整理进程的最大 CPU 使用率为 10%。
+
 ## coprocessor
 
 Coprocessor 相关的配置项。
