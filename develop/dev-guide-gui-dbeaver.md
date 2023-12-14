@@ -51,20 +51,21 @@ Connect to your TiDB cluster depending on the TiDB deployment option you've sele
 3. Ensure the configurations in the connection dialog match your operating environment.
 
     - **Endpoint Type** is set to `Public`
-    - **Connect With** is set to `JDBC`
+    - **Branch** is set to `main`
+    - **Connect With** is set to `DBeaver`
     - **Operating System** matches your environment.
 
-4. Click **Create password** to create a random password.
+4. Click **Generate Password** to create a random password.
 
     > **Tip:**
     >
-    > If you have created a password before, you can either use the original password or click **Reset password** to generate a new one.
+    > If you have created a password before, you can either use the original password or click **Reset Password** to generate a new one.
 
 5. Launch DBeaver and click **New Database Connection** in the upper-left corner. In the **Connect to a database** dialog, select **TiDB** from the list, and then click **Next**.
 
     ![Select TiDB as the database in DBeaver](/media/develop/dbeaver-select-database.jpg)
 
-6. Copy the JDBC string from the TiDB Cloud connection dialog. In DBeaver, select **URL** for **Connect by** and paste the JDBC string into the **URL** field. You don't need to replace the `<your_password>` placeholder in the string with your actual password, because DBeaver reads username and password from the **Authentication (Database Native)** section.
+6. Copy the connection string from the TiDB Cloud connection dialog. In DBeaver, select **URL** for **Connect by** and paste the connection string into the **URL** field.
 
 7. In the **Authentication (Database Native)** section, enter your **Username** and **Password**. An example is as follows:
 

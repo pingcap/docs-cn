@@ -56,14 +56,15 @@ Connect to your TiDB cluster depending on the TiDB deployment option you have se
 3. Ensure the configurations in the connection dialog match your operating environment.
 
     - **Endpoint Type** is set to `Public`.
-    - **Connect With** is set to `General`.
+    - **Branch** is set to `main`.
+    - **Connect With** is set to `MySQL Workbench`.
     - **Operating System** matches your environment.
 
-4. Click **Create password** to create a random password.
+4. Click **Generate Password** to create a random password.
 
     > **Tip:**
     >
-    > If you have created a password before, you can either use the original password or click **Reset password** to generate a new one.
+    > If you have created a password before, you can either use the original password or click **Reset Password** to generate a new one.
 
 5. Launch MySQL Workbench and click **+** near the **MySQL Connections** title.
 
@@ -72,9 +73,9 @@ Connect to your TiDB cluster depending on the TiDB deployment option you have se
 6. In the **Setup New Connection** dialog, configure the following connection parameters:
 
     - **Connection Name**: give this connection a meaningful name.
-    - **Hostname**: enter the `host` parameter from the TiDB Cloud connection dialog.
-    - **Port**: enter the `port` parameter from the TiDB Cloud connection dialog.
-    - **Username**: enter the `user` parameter from the TiDB Cloud connection dialog.
+    - **Hostname**: enter the `HOST` parameter from the TiDB Cloud connection dialog.
+    - **Port**: enter the `PORT` parameter from the TiDB Cloud connection dialog.
+    - **Username**: enter the `USERNAME` parameter from the TiDB Cloud connection dialog.
     - **Password**: click **Store in Keychain ...**, enter the password of the TiDB Serverless cluster, and then click **OK** to store the password.
 
         ![MySQL Workbench: store the password of TiDB Serverless in keychain](/media/develop/mysql-workbench-store-password-in-keychain.png)

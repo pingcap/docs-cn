@@ -86,10 +86,11 @@ Connect to your TiDB cluster depending on the TiDB deployment option you've sele
 3. Ensure the configurations in the connection dialog match your operating environment.
 
     - **Endpoint Type** is set to `Public`.
+    - **Branch** is set to `main`.
     - **Connect With** is set to `General`.
     - **Operating System** matches the operating system where you run the application.
 
-4. If you have not set a password yet, click **Create password** to generate a random password.
+4. If you have not set a password yet, click **Generate Password** to generate a random password.
 
 5. Run the following command to copy `.env.example` and rename it to `.env`:
 

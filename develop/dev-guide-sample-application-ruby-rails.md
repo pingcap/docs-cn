@@ -86,7 +86,7 @@ Connect to your TiDB cluster depending on the TiDB deployment option you've sele
 
 3. In the connection dialog, select `Rails` from the **Connect With** drop-down list and keep the default setting of the **Endpoint Type** as `Public`.
 
-4. If you have not set a password yet, click **Create password** to generate a random password.
+4. If you have not set a password yet, click **Generate Password** to generate a random password.
 
 5. Run the following command to copy `.env.example` and rename it to `.env`:
 

@@ -57,14 +57,15 @@ Connect to your TiDB cluster depending on the TiDB deployment option you have se
 3. Ensure the configurations in the connection dialog match your operating environment.
 
     - **Endpoint Type** is set to `Public`.
-    - **Connect With** is set to `General`.
+    - **Branch** is set to `main`.
+    - **Connect With** is set to `Navicat`.
     - **Operating System** matches your environment.
 
-4. Click **Create password** to create a random password.
+4. Click **Generate Password** to create a random password.
 
     > **Tip:**
     >
-    > If you have created a password before, you can either use the original password or click **Reset password** to generate a new one.
+    > If you have created a password before, you can either use the original password or click **Reset Password** to generate a new one.
 
 5. Launch Navicat for MySQL, click **Connection** in the upper-left corner, and select **MySQL** from the drop-down list.
 
@@ -73,14 +74,14 @@ Connect to your TiDB cluster depending on the TiDB deployment option you have se
 6. In the **New Connection (MySQL)** dialog, configure the following connection parameters:
 
     - **Connection Name**: give this connection a meaningful name.
-    - **Host**: enter the `host` parameter from the TiDB Cloud connection dialog.
-    - **Port**: enter the `port` parameter from the TiDB Cloud connection dialog.
-    - **User Name**: enter the `user` parameter from the TiDB Cloud connection dialog.
+    - **Host**: enter the `HOST` parameter from the TiDB Cloud connection dialog.
+    - **Port**: enter the `PORT` parameter from the TiDB Cloud connection dialog.
+    - **User Name**: enter the `USERNAME` parameter from the TiDB Cloud connection dialog.
     - **Password**: enter the password of the TiDB Serverless cluster.
 
     ![Navicat: configure connection general panel for TiDB Serverless](/media/develop/navicat-connection-config-serverless-general.png)
 
-7. Click the **SSL** tab and select **Use SSL**, **Use authentication**, and **Verify server certificate against CA** checkboxes. Then, select the `ssl_ca` file from the TiDB Cloud connection dialog into the **CA Certificate** field.
+7. Click the **SSL** tab and select **Use SSL**, **Use authentication**, and **Verify server certificate against CA** checkboxes. Then, select the `CA` file from the TiDB Cloud connection dialog into the **CA Certificate** field.
 
     ![Navicat: configure connection SSL panel for TiDB Serverless](/media/develop/navicat-connection-config-serverless-ssl.png)
 

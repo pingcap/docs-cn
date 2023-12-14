@@ -56,14 +56,15 @@ Connect to your TiDB cluster depending on the TiDB deployment option you've sele
 3. Ensure the configurations in the connection dialog match your operating environment.
 
     - **Endpoint Type** is set to `Public`
-    - **Connect With** is set to `JDBC`
+    - **Branch** is set to `main`
+    - **Connect With** is set to `DataGrip`
     - **Operating System** matches your environment.
 
-4. Click **Create password** to create a random password.
+4. Click **Generate Password** to create a random password.
 
     > **Tip:**
     >
-    > If you have created a password before, you can either use the original password or click **Reset password** to generate a new one.
+    > If you have created a password before, you can either use the original password or click **Reset Password** to generate a new one.
 
 5. Launch DataGrip and create a project to manage your connections.
 
@@ -73,7 +74,7 @@ Connect to your TiDB cluster depending on the TiDB deployment option you've sele
 
     ![Select a data source in DataGrip](/media/develop/datagrip-data-source-select.jpg)
 
-7. Copy the JDBC string from the TiDB Cloud connection dialog and replace `<your_password>` with your actual password. Then, paste it into the **URL** field, and the remaining parameters will be auto-populated. An example result is as follows:
+7. Copy the connection string from the TiDB Cloud connection dialog. Then, paste it into the **URL** field, and the remaining parameters will be auto-populated. An example result is as follows:
 
     ![Configure the URL field for TiDB Serverless](/media/develop/datagrip-url-paste.jpg)
 
