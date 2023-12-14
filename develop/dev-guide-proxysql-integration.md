@@ -1,6 +1,6 @@
 ---
 title: ProxySQL 集成指南
-summary: 了解如何将 TiDB Cloud 和 TiDB Self-Hosted 集群与 ProxySQL 集成。
+summary: 了解如何将本地部署的 TiDB 或 TiDB Cloud 集群与 ProxySQL 集成。
 ---
 
 # ProxySQL 集成指南
@@ -40,7 +40,7 @@ ProxySQL 的设计宗旨是快速、高效且易于使用。它完全兼容 MySQ
 本节介绍如何在开发环境中将 TiDB 与 ProxySQL 集成。在满足[前提条件](#前提条件)的情况下，你可以根据 TiDB 集群类型选择以下选项之一开始集成 ProxySQL：
 
 - 选项 1：[集成 TiDB Cloud 与 ProxySQL](#选项-1-集成-tidb-cloud-与-proxysql)
-- 选项 2：[集成 TiDB Self-Hosted 与 ProxySQL](#选项-2-集成-tidb-self-hosted-与-proxysql)
+- 选项 2：[集成本地部署的 TiDB 与 ProxySQL](#选项-2-集成本地部署的-tidb-与-proxysql)
 
 ### 前提条件
 
@@ -427,7 +427,7 @@ systemctl start docker
 
     </SimpleTab>
 
-### 选项 2: 集成 TiDB Self-Hosted 与 ProxySQL
+### 选项 2: 集成本地部署的 TiDB 与 ProxySQL
 
 在这个集成中，你将使用 [TiDB](https://hub.docker.com/r/pingcap/tidb) 和 [ProxySQL](https://hub.docker.com/r/proxysql/proxysql) 的 Docker 镜像设置环境。你也可以尝试[其他方式安装 TiDB](/quick-start-with-tidb.md)。
 
@@ -803,7 +803,7 @@ ProxySQL 可以安装在许多不同的平台上。下面以 CentOS 为例进行
 
 > **注意：**
 >
-> 下面使用 TiDB 和 ProxySQL 的容器镜像配置查询规则。如果你还没有拉取它们，请参考[集成 TiDB Self-Hosted 与 ProxySQL](#选项-2-集成-tidb-self-hosted-与-proxysql) 部分的详细步骤。
+> 下面使用 TiDB 和 ProxySQL 的容器镜像配置查询规则。如果你还没有拉取它们，请参考[集成本地部署的 TiDB 与 ProxySQL](#选项-2-集成本地部署的-tidb-与-proxysql) 部分的详细步骤。
 
 1. 克隆 TiDB 和 ProxySQL 的集成示例代码仓库 [`pingcap-inc/tidb-proxysql-integration`](https://github.com/pingcap-inc/tidb-proxysql-integration)。如果你已经在前面的步骤中克隆了它，请跳过这一步。
 
