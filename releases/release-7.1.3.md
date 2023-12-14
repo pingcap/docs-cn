@@ -141,6 +141,10 @@ TiDB 版本：7.1.3
     - (dup): release-7.5.0.md > 错误修复> PD - 修复 rule checker 未按照设定的 Placement Rule 添加 Learner 的问题 [#7185](https://github.com/tikv/pd/issues/7185) @[nolouch](https://github.com/nolouch)
     - (dup): release-7.5.0.md > 错误修复> PD - 修复当 TiKV 节点不可用时 PD 可能删除正常 Peers 的问题 [#7249](https://github.com/tikv/pd/issues/7249) @[lhy1024](https://github.com/lhy1024)
     - (dup): release-6.5.6.md > 错误修复> PD - 修复自适应同步部署模式 (DR Auto-Sync) 下 leader 切换时间过长的问题 [#6988](https://github.com/tikv/pd/issues/6988) @[HuSharp](https://github.com/HuSharp)
+    - 修复 resource_manager_resource_unit metric 为空的问题 [#45166](https://github.com/pingcap/tidb/issues/45166) @[CabinfeverB](https://github.com/CabinfeverB)
+    - 修复 Calibrate by Workload 页面记录筛选报错的问题 [#48162](https://github.com/pingcap/tidb/issues/48162) @[CabinfeverB](https://github.com/CabinfeverB)
+    - 修复 Resource Control 下删除 Resource Group 场景下可能存在破坏 DDL 原子性的问题 [#45050](https://github.com/pingcap/tidb/issues/45050) @[glorv](https://github.com/glorv)
+    - 修复 PD Leader 切换且新 Leader 与调用方之间存在网络隔离时，调用方不能正常更新 Leader 信息的问题 [#7416](https://github.com/tikv/pd/issues/7416) @[CabinfeverB](https://github.com/CabinfeverB)
 
 + TiFlash
 
@@ -180,8 +184,9 @@ TiDB 版本：7.1.3
     + TiDB Lightning
 
         - note [#issue](https://github.com/pingcap/tidb/issues/${issue-id}) @[贡献者 GitHub ID](https://github.com/${github-id})
-        - note [#issue](https://github.com/pingcap/tidb/issues/${issue-id}) @[贡献者 GitHub ID](https://github.com/${github-id})
-        - (dup): release-6.5.6.md > 错误修复> Tools> TiDB Lightning - 修复 TiDB Lightning 在 `writeToTiKV` 时卡住的问题 [#46321](https://github.com/pingcap/tidb/issues/46321) @[lance6716](https://github.com/lance6716)
+        - 添加了由于 PD leader change 导致 `GetTS` 失败的重试 [#45301](https://github.com/pingcap/tidb/issues/45301) @[lance6716](https://github.com/lance6716)
+        - 修复了由于 PD leader 被 KILL 或者 PD 请求处理慢导致导入失败的问题 [#46950](https://github.com/pingcap/tidb/issues/46950) ，[#48075](https://github.com/pingcap/tidb/issues/48075) @[D3Hunter](https://github.com/D3Hunter)
+        - (dup): release-6.5.6.md > 错误修复> Tools> TiDB Lightning - 修复 TiDB Lightning 在 `writeToTiKV` 时卡住的问题 [#46321](https://github.com/pingcap/tidb/issues/46321) [#48352](https://github.com/pingcap/tidb/issues/48352) @[lance6716](https://github.com/lance6716)
         - (dup): release-6.5.6.md > 错误修复> Tools> TiDB Lightning - 修复 HTTP 重试请求未使用本次的请求内容导致导入失败的问题 [#47930](https://github.com/pingcap/tidb/issues/47930) @[lance6716](https://github.com/lance6716)
         - (dup): release-6.5.6.md > 错误修复> Tools> TiDB Lightning - 移除物理导入模式下不必要的 `get_regions` 调用 [#45507](https://github.com/pingcap/tidb/issues/45507) @[mittalrishabh](https://github.com/mittalrishabh)
 
