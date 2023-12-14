@@ -74,7 +74,7 @@ target-table = "t_2"           # 目标表名
     ```toml
     [routes.rule1]
     schema-pattern = "schema_2"  # 匹配数据源的库名，支持通配符 "*" 和 "?"
-    target-schema = "schema"     # 目标库名
+    target-schema = "schema"     # 目标库名 
     ```
 
     - 如果上游中不存在库 `schema`，sync-diff-inspector 不做任何处理。
