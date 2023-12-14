@@ -479,6 +479,7 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
 + 默认值：6291456
 + 单位：Byte
 + 事务中单个 key-value 记录的大小限制。若超出该限制，TiDB 将会返回 `entry too large` 错误。该配置项的最大值不超过 `125829120`（表示 120MB）。
++ 从 v7.6.0 开始，你可以使用 [`tidb_txn_entry_size_limit`](/system-variables.md#tidb_txn_entry_size_limit-从-v760-版本开始引入) 系统变量动态修改该配置项的值。
 + 注意，TiKV 有类似的限制。若单个写入请求的数据量大小超出 [`raft-entry-max-size`](/tikv-configuration-file.md#raft-entry-max-size)，默认为 8MB，TiKV 会拒绝处理该请求。当表的一行记录较大时，需要同时修改这两个配置。
 + [`max_allowed_packet`](/system-variables.md#max_allowed_packet-从-v610-版本开始引入) (MySQL 协议的最大数据包大小) 的默认值为 `67108864`（64 MiB）。如果一行记录的大小超过 `max_allowed_packet`，该行记录会被截断。
 + [`txn-total-size-limit`](#txn-total-size-limit)（TiDB 单个事务大小限制）的默认值为 100 MiB。如果将 `txn-entry-size-limit` 的值设置为 100 MiB 以上，需要相应地调大 `txn-total-size-limit` 的值。
