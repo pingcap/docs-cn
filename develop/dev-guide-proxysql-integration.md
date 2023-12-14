@@ -17,17 +17,17 @@ summary: 了解如何将本地部署的 TiDB 或 TiDB Cloud 集群与 ProxySQL �
 
 [ProxySQL](https://proxysql.com/) 是一个高性能的开源 SQL 代理。它具有灵活的架构，可以通过多种方式部署，适合各类使用场景。例如，ProxySQL 可以通过缓存频繁访问的数据来提高性能。
 
-ProxySQL 的设计宗旨是快速、高效且易于使用。它完全兼容 MySQL，并支持高质量 SQL 代理的所有功能。此外，ProxySQL 提供许多独特功能，使其成为各种应用程序的理想选择。
+ProxySQL 的设计目标是快速、高效且易于使用。它完全兼容 MySQL，并支持高质量 SQL 代理的所有功能。此外，ProxySQL 还提供了许多独特功能，使其成为各种应用程序的理想选择。
 
 ## 为什么集成 ProxySQL？
 
-- ProxySQL 可以通过降低与 TiDB 交互的延迟来帮助提升应用程序性能。无论你构建什么，无论是使用 Lambda 等无服务器函数的可扩展应用程序（其工作负载不确定并且可能激增），还是构建执行加载大量数据查询的应用程序，都可以利用 ProxySQL 的强大功能（例如[连接池](https://proxysql.com/documentation/detailed-answers-on-faq/)和[缓存常用查询](https://proxysql.com/documentation/query-cache/)）。
+- ProxySQL 可以通过降低与 TiDB 交互的延迟来帮助提升应用程序性能。无论你构建什么，无论是使用 Lambda 等无服务器函数的可扩展应用程序（其工作负载不确定并且可能激增），还是构建执行大量数据查询的应用程序，都可以利用 ProxySQL 的强大功能（例如[连接池](https://proxysql.com/documentation/detailed-answers-on-faq/)和[缓存常用查询](https://proxysql.com/documentation/query-cache/)）。
 - ProxySQL 可以作为应用程序安全防护的附加层，使用[查询规则](#查询规则)防止 SQL 漏洞（例如 SQL 注入）。
-- 由于 [ProxySQL](https://github.com/sysown/proxysql) 和 [TiDB](https://github.com/pingcap/tidb) 都是开源项目，你可以获得零供应商锁定的好处。
+- 由于 [ProxySQL](https://github.com/sysown/proxysql) 和 [TiDB](https://github.com/pingcap/tidb) 都是开源项目，你可以享受到零供应商锁定的好处。
 
 ## 部署架构
 
-将 ProxySQL 与 TiDB 集成的最明显方式是在应用层和 TiDB 之间添加 ProxySQL 作为独立中介。但是，这种方式无法保证可扩展性和容错性，而且由于网络跳转而增加延迟。为避免这些问题，一种替代部署架构是将 ProxySQL 作为附属容器部署，如下所示：
+将 ProxySQL 与 TiDB 集成的最直接方式是在应用层和 TiDB 之间添加 ProxySQL 作为独立中介。但是，这种方式无法保证可扩展性和容错性，而且可能因为网络跳转而增加延迟。为避免这些问题，一种替代部署架构是将 ProxySQL 作为附属容器部署，如下图所示：
 
 ![proxysql-client-side-tidb-cloud](/media/develop/proxysql-client-side-tidb-cloud.png)
 
@@ -388,11 +388,11 @@ systemctl start docker
     SELECT VERSION();
     ```
 
-    如果输出了 TiDB 的版本信息，则表示你已经成功通过 ProxySQL 连接到 TiDB Serverless 集群。如需退出 MySQL 客户端，输入 `quit` 并按下 <kbd>enter</kbd> 键。
+    如果输出了 TiDB 的版本信息，则表示你已经成功通过 ProxySQL 连接到 TiDB Serverless 集群。如需退出 MySQL 客户端，输入 `quit` 并按下 <kbd>Enter</kbd> 键。
 
     > **注意：**
     >
-    > **用于调试：** 如果无法连接到集群，请检查 `tidb-cloud-connect.cnf`、`proxysql-prepare.sql` 和 `proxysql-connect.py` 文件，确保你提供的服务器信息可用且正确。
+    > **调试提示：** 如果无法连接到集群，请检查 `tidb-cloud-connect.cnf`、`proxysql-prepare.sql` 和 `proxysql-connect.py` 文件，确保你提供的服务器信息可用且正确。
 
 3. 要停止和删除容器，并返回上一个目录，运行以下命令：
 
@@ -587,7 +587,7 @@ systemctl start docker
     SELECT VERSION();
     ```
 
-    如果输出了 TiDB 的版本信息，则表示你已经成功通过 ProxySQL 连接到 TiDB Serverless 集群。
+    如果输出了 TiDB 的版本信息，则表示你已经成功通过 ProxySQL 连接到 TiDB 集群。
 
 7. 要停止和删除容器，并返回上一个目录，运行以下命令：
 
@@ -632,13 +632,13 @@ systemctl start docker
 
 ### 基于 CentOS 集成 TiDB Cloud 与 ProxySQL
 
-ProxySQL 可以安装在许多不同的平台上。下面以 CentOS 为例进行说明。
+你可以在不同的平台上安装 ProxySQL，下面以 CentOS 为例进行说明。
 
-关于 ProxySQL 支持的平台和相应的版本要求的完整列表，见 [ProxySQL 文档](https://proxysql.com/documentation/installing-proxysql/)。
+关于 ProxySQL 支持的平台和版本要求的完整列表，见 [ProxySQL 文档](https://proxysql.com/documentation/installing-proxysql/)。
 
 #### 步骤 1. 创建一个 TiDB Dedicated 集群
 
-具体步骤请参考 [Create a TiDB Cluster](https://docs.pingcap.com/tidbcloud/create-tidb-cluster)。
+具体步骤请参考[创建一个 TiDB Dedicated 集群](https://docs.pingcap.com/tidbcloud/create-tidb-cluster)。
 
 #### 步骤 2. 安装 ProxySQL
 
@@ -670,25 +670,25 @@ ProxySQL 可以安装在许多不同的平台上。下面以 CentOS 为例进行
 
 #### 步骤 3. 配置 ProxySQL
 
-为了使用 ProxySQL 作为 TiDB 的代理，你需要配置 ProxySQL。你可以[在 ProxySQL Admin Interface 中执行 SQL 语句](#选项-1-使用-admin-interface-配置-proxysql)（推荐）或使用[配置文件](#选项-2-使用配置文件配置-proxysql)。
+为了使用 ProxySQL 作为 TiDB 的代理，你需要配置 ProxySQL。你可以[在 ProxySQL Admin Interface 中执行 SQL 语句](#选项-1-使用-admin-interface-配置-proxysql)（推荐）或[使用配置文件](#选项-2-使用配置文件配置-proxysql)进行配置。
 
 > **注意：**
 >
 > 以下章节仅列出 ProxySQL 的必要配置项。
 > 
-> 关于配置的完整信息，可参考 [ProxySQL 文档](https://proxysql.com/documentation/proxysql-configuration/)。
+> 完整的配置信息，可参考 [ProxySQL 文档](https://proxysql.com/documentation/proxysql-configuration/)。
 
 ##### 选项 1: 使用 Admin Interface 配置 ProxySQL
 
-1. 你可以使用标准的 ProxySQL Admin Interface 更新 ProxySQL 的配置。可以通过任何 MySQL 命令行客户端访问（默认端口为 `6032`）。
+1. 使用标准的 ProxySQL Admin Interface 更新 ProxySQL 的配置。你可以通过任何 MySQL 命令行客户端访问（默认端口为 `6032`）。
 
     ```bash
     mysql -u admin -padmin -h 127.0.0.1 -P6032 --prompt 'ProxySQL Admin> '
     ```
 
-    上述步骤将给出一个 `'ProxySQL Admin'` 的提示。
+    执行以上命令后，系统将显示 `'ProxySQL Admin'` 提示。
 
-2. 你可于此处向 ProxySQL 添加一个或多个 TiDB 集群。例如，下面的语句将添加一个 TiDB Dedicated 集群。你需要用集群的 `Endpoint` 和 `Port` 替换 `<tidb cloud dedicated cluster host>` 和 `<tidb cloud dedicated cluster port>`（默认端口为 `4000`）。
+2. 你可以在当前 MySQL 命令行客户端中向 ProxySQL 添加一个或多个 TiDB 集群。例如，下面的语句将添加一个 TiDB Dedicated 集群。你需要用集群的 `Endpoint` 和 `Port` 替换 `<tidb cloud dedicated cluster host>` 和 `<tidb cloud dedicated cluster port>`（默认端口为 `4000`）。
 
     ```sql
     INSERT INTO mysql_servers(hostgroup_id, hostname, port) 
@@ -704,11 +704,11 @@ ProxySQL 可以安装在许多不同的平台上。下面以 CentOS 为例进行
 
     > **注意：**
     >
-    > - `hostgroup_id`：指定一个 **hostgroup** 的 ID。ProxySQL 使用 **hostgroup** 管理集群。如果需要将 SQL 流量均匀地分配给这些集群，你可以将需要负载均衡的几个 TiDB 集群配置到同一个 **hostgroup** 中。而与之相反的，为了区分这些集群，比如为了做读写分离，你可以将它们配置为不同的 **hostgroup** ID。
+    > - `hostgroup_id`：指定一个 **hostgroup** 的 ID。ProxySQL 使用 **hostgroup** 管理集群。如果需要将 SQL 流量均匀地分配给这些集群，你可以将需要负载均衡的几个 TiDB 集群配置到同一个 **hostgroup** 中。另一方面，为了区分不同的集群，例如为了实现读写分离，你可以将它们配置为不同的 **hostgroup** ID。
     > - `hostname`：TiDB 集群的 `Endpoint`。
     > - `port`：TiDB 集群的 `Port`。
 
-3. 为配置 ProxySQL 的登录用户，你需要确保用户在 TiDB 集群上有适当的权限。在下面的语句中，你需要把 `<tidb cloud dedicated cluster username>` 和 `<tidb cloud dedicated cluster password>` 替换为你集群的实际用户名和密码。
+3. 为配置 ProxySQL 的登录用户，你需要确保用户在 TiDB 集群上有适当的权限。在下面的语句中，你需要把 `<tidb cloud dedicated cluster username>` 和 `<tidb cloud dedicated cluster password>` 替换为集群的实际用户名和密码。
 
     ```sql
     INSERT INTO mysql_users(
@@ -729,7 +729,7 @@ ProxySQL 可以安装在许多不同的平台上。下面以 CentOS 为例进行
     >
     > - `username`：TiDB 用户名。
     > - `password`：TiDB 密码。
-    > - `active`：控制用户是否处于激活状态。`1` 表示该用户是**激活的**，可以用于登录，而 `0` 表示该用户是非激活的。
+    > - `active`：指定用户是否处于激活状态。`1` 表示该用户是**激活的**，可以用于登录，`0` 表示该用户是非激活的。
     > - `default_hostgroup`：用户使用的默认 `hostgroup`，除非特定的查询规则覆盖了 `hostgroup`，否则 SQL 将会默认路由到 `default_hostgroup`。
     > - `transaction_persistent`：值为 `1` 表示使用持久性事务。即当用户在一个连接中启动一个事务时，所有的查询语句都被路由到同一个 `hostgroup`，直到事务被提交或回滚。
 
@@ -737,7 +737,7 @@ ProxySQL 可以安装在许多不同的平台上。下面以 CentOS 为例进行
 
 这个选项只能作为配置 ProxySQL 的备用方案。更多信息，可参考[使用配置文件配置 ProxySQL](https://github.com/sysown/proxysql#configuring-proxysql-through-the-config-file)。
 
-1. 删除现有的 SQLite 数据库，这是 ProxySQL 内存储配置的地方。
+1. 删除现有的 SQLite 数据库，即 ProxySQL 存储配置的位置。
 
     ```bash
     rm /var/lib/proxysql/proxysql.db
@@ -745,9 +745,9 @@ ProxySQL 可以安装在许多不同的平台上。下面以 CentOS 为例进行
 
     > **警告：**
     >
-    > 如果你删除了 SQLite 数据库文件，使用 ProxySQL Admin Interface 所做的任何配置更改都会丢失。
+    > 删除 SQLite 数据库后，通过 ProxySQL Admin Interface 所做的任何配置更改都会丢失。
 
-2. 根据你的需要，修改配置文件 `/etc/proxysql.cnf`。例如：
+2. 根据你的需要修改配置文件 `/etc/proxysql.cnf`。例如：
 
     ```
     mysql_servers:
@@ -785,25 +785,25 @@ ProxySQL 可以安装在许多不同的平台上。下面以 CentOS 为例进行
     systemctl restart proxysql
     ```
 
-    重新启动后，ProxySQL 将再次自动创建 SQLite 数据库。
+    重新启动后，ProxySQL 将自动创建 SQLite 数据库。
 
 > **警告：**
 >
-> 在生产中不要用默认的管理员用户运行 ProxySQL。在启动 `proxysql` 服务之前，你可以通过改变 [`admin_credentials`](https://proxysql.com/documentation/global-variables/admin-variables/#admin-admin_credentials) 变量改变 `/etc/proxysql.cnf` 文件中的默认值。
+> 在生产环境中，不要使用默认的管理员用户运行 ProxySQL。在启动 `proxysql` 服务之前，你可以通过修改 [`admin_credentials`](https://proxysql.com/documentation/global-variables/admin-variables/#admin-admin_credentials) 变量更改 `/etc/proxysql.cnf` 文件中的默认值。
 
 ## 典型场景
 
-本节以查询规则为例，介绍集成 TiDB 与 ProxySQL 能带来的一些优点。
+本节以查询规则为例，介绍集成 TiDB 与 ProxySQL 能带来的一些优势。
 
 ### 查询规则
 
-数据库可能会因为高流量、错误的代码或恶意的垃圾邮件而过载，因此，审核 SQL 是必要的。有了 ProxySQL 的查询规则，你可以通过重路由、改写 SQL 甚至拒绝查询来快速而有效地应对这些问题。
+数据库可能会因为高流量、错误代码或恶意攻击而过载。因此，审核 SQL 是必要的。使用 ProxySQL 的查询规则，你可以有效地应对这些问题，例如通过重路由、改写 SQL 或者拒绝查询等方式。
 
 ![proxysql-client-side-rules](/media/develop/proxysql-client-side-rules.png)
 
 > **注意：**
 >
-> 下面使用 TiDB 和 ProxySQL 的容器镜像配置查询规则。如果你还没有拉取它们，请参考[集成本地部署的 TiDB 与 ProxySQL](#选项-2-集成本地部署的-tidb-与-proxysql) 部分的详细步骤。
+> 以下步骤使用 TiDB 和 ProxySQL 的容器镜像配置查询规则。如果你还没有拉取这些镜像，请参考[集成本地部署的 TiDB 与 ProxySQL](#选项-2-集成本地部署的-tidb-与-proxysql) 部分的详细步骤。
 
 1. 克隆 TiDB 和 ProxySQL 的集成示例代码仓库 [`pingcap-inc/tidb-proxysql-integration`](https://github.com/pingcap-inc/tidb-proxysql-integration)。如果你已经在前面的步骤中克隆了它，请跳过这一步。
 
@@ -897,10 +897,10 @@ ProxySQL 可以安装在许多不同的平台上。下面以 CentOS 为例进行
 
     如果运行成功，以下容器将被启动：
 
-    - 两个 Docker 容器的 TiDB 集群通过端口 `4001` 和 `4002` 暴露
-    - 一个 Docker 容器的 ProxySQL 通过端口 `6034` 暴露
+    - 两个 Docker 容器的 TiDB 集群，端口分别为 `4001` 和 `4002`
+    - 一个 Docker 容器的 ProxySQL，端口为 `6034`
 
-4. 在两个 TiDB 容器中，使用 `mysql` 创建一个具有相同格式的表，然后插入不同的数据 (`'tidb-server01-port-4001'`, `'tidb-server02-port-4002'`) 以区分这两个容器。
+4. 在两个 TiDB 容器中，使用 `mysql` 创建一个具有相同 schema 的表，然后插入不同的数据 (`'tidb-server01-port-4001'`, `'tidb-server02-port-4002'`) 以区分这两个容器。
 
     <SimpleTab groupId="os">
 
@@ -994,17 +994,17 @@ ProxySQL 可以安装在许多不同的平台上。下面以 CentOS 为例进行
     >
     > `proxysql-prepare.sql` 脚本完成以下操作：
     >
-    > - 在ProxySQL中添加TiDB集群，`hostgroup_id` 分别为 `0` 和 `1`。
+    > - 在 ProxySQL 中添加 TiDB 集群，`hostgroup_id` 分别为 `0` 和 `1`。
     > - 添加一个用户 `root`，密码为空，并设置 `default_hostgroup` 为 `0`。
     > - 添加规则 `^SELECT.*FOR UPDATE$`，`rule_id` 为 `1`，`destination_hostgroup` 为 `0`。这代表如果一个 SQL 语句与此规则相匹配，该请求将被转发到 `hostgroup` 为 `0` 的 TiDB 集群。
     > - 添加规则 `^SELECT`，`rule_id` 为 `2`，`destination_hostgroup` 为 `1`。这代表如果一个 SQL 语句与此规则相匹配，该请求将被转发到 `hostgroup` 为 `1` 的 TiDB 集群。
     >
     > 为了更好地理解此处的配置流程，强烈建议查看 `proxysql-prepare.sql` 文件。关于 ProxySQL 配置的更多信息，参考 [ProxySQL 文档](https://proxysql.com/documentation/proxysql-configuration/)。
 
-    下面是关于 ProxySQL 匹配 SQL 查询的规则的一些补充信息:
+    下面是关于 ProxySQL 匹配 SQL 查询的规则的一些补充信息：
 
     - ProxySQL 尝试按照 `rule_id` 的升序逐一匹配规则。
-    - `^` 符号匹配 SQL 语句的开头，`$` 匹配语句的结尾。
+    - 规则中的 `^` 符号用于匹配 SQL 语句的开头，`$` 符号用于匹配语句的结尾。
 
     关于 ProxySQL 正则表达式和模式匹配的更多信息，参考 ProxySQL 文档 [`mysql-query_processor_regex`](https://proxysql.com/documentation/global-variables/mysql-variables/#mysql-query_processor_regex)。
 
@@ -1092,7 +1092,7 @@ ProxySQL 可以安装在许多不同的平台上。下面以 CentOS 为例进行
         +--------------------------------+
         ```
 
-    3. 如需退出 MySQL 客户端，输入 `quit` 并按下 <kbd>enter</kbd> 键。
+    3. 如需退出 MySQL 客户端，输入 `quit` 并按下 <kbd>Enter</kbd> 键。
 
 7. 要停止和删除容器，并返回上一个目录，运行以下命令：
 
