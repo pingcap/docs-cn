@@ -19,13 +19,17 @@ TiDB 版本：7.1.3
 - (dup): release-6.5.6.md > 兼容性变更> TiCDC Changefeed 新增以下配置项： - [`compression`](/ticdc/ticdc-changefeed-config.md)：你可以设置 redo log 文件的压缩行为 [#10176](https://github.com/pingcap/tiflow/issues/10176) @[sdojjy](https://github.com/sdojjy)
 - (dup): release-6.5.6.md > 兼容性变更> TiCDC Changefeed 新增以下配置项： - [`encoding-worker-num`](/ticdc/ticdc-changefeed-config.md) 和 [`flush-worker-num`](/ticdc/ticdc-changefeed-config.md)：你可以根据不同的机器规格，设置 redo 模块不同的并发参数 [#10048](https://github.com/pingcap/tiflow/issues/10048) @[CharlesCheung96](https://github.com/CharlesCheung96)
 - (dup): release-6.5.6.md > 兼容性变更> TiCDC Changefeed 新增以下配置项： - [`sink.cloud-storage-config`](/ticdc/ticdc-changefeed-config.md)：你可以设置同步数据到对象存储时自动清理历史数据的功能 [#10109](https://github.com/pingcap/tiflow/issues/10109) @[CharlesCheung96](https://github.com/CharlesCheung96)
+- 将自动支持平滑升级功能修改成通过 `/upgrade/start` 和 `upgrade/finish` HTTP 接口支持此功能  @[zimulala](https://github.com/zimulala)
 
 ## 改进提升
 
 + TiDB
 
-    - note [#issue](https://github.com/pingcap/tidb/issues/${issue-id}) @[贡献者 GitHub ID](https://github.com/${github-id})
-    - note [#issue](https://github.com/pingcap/tidb/issues/${issue-id}) @[贡献者 GitHub ID](https://github.com/${github-id})
+    - 修复包含 CTE 的查询，在由于内存超限被 kill 时，查询非预期 hang 住的问题 [#49096](https://github.com/pingcap/tidb/issues/49096) @[AilinKid](https://github.com/AilinKid})
+    - 修复 tidb_server_memory_limit 导致在内存压力长期处于高位时，tidb CPU 利用率过高的问题 [#48741](https://github.com/pingcap/tidb/issues/48741) @[XuHuaiyu](https://github.com/XuHuaiyu)
+    - 修复 tidb_max_chunk_size 设置值调小时，包含 CTE 的查询报错 `runtime error: index out of range [32] with length 32` 的问题 [#48808](https://github.com/pingcap/tidb/issues/48808) @[guo-shaoge](https://github.com/guo-shaoge)
+    - 修复 enum 类型列作为 join 键时，查询结果出错的问题 [#48991](https://github.com/pingcap/tidb/issues/48991) @[winoros](https://github.com/winoros)
+    - 当 collation 被 enable 且过滤条件有 `like` 时，优化器可以产生 IndexRangeScan 从而提高执行效率 [#48181](https://github.com/pingcap/tidb/issues/48181) @[time-and-fate](https://github.com/time-and-fate)
 
 + TiKV
 
@@ -41,7 +45,7 @@ TiDB 版本：7.1.3
 
 + TiFlash
 
-    - note [#issue](https://github.com/pingcap/tiflash/issues/${issue-id}) @[贡献者 GitHub ID](https://github.com/${github-id})
+    - 修复查询非预期报错 `Block schema mismatch in FineGrainedShuffleWriter-V1` 的问题 [#8111](https://github.com/pingcap/tiflash/issues/8111}) @[SeaRise](https://github.com/SeaRise)
     - note [#issue](https://github.com/pingcap/tiflash/issues/${issue-id}) @[贡献者 GitHub ID](https://github.com/${github-id})
 
 + Tools
@@ -93,7 +97,18 @@ TiDB 版本：7.1.3
 + TiDB
 
     - note [#issue](https://github.com/pingcap/tidb/issues/${issue-id}) @[贡献者 GitHub ID](https://github.com/${github-id})
-    - note [#issue](https://github.com/pingcap/tidb/issues/${issue-id}) @[贡献者 GitHub ID](https://github.com/${github-id})
+    - 修复 Recursive CTE 中包含 Agg 或者 Window 导致的解析错误[#47711](https://github.com/pingcap/tidb/issues/47711) @[elsa0520](https://github.com/elsa0520)
+    - 修复列裁剪时可能 panic 的问题 [#47331](https://github.com/pingcap/tidb/issues/47331) @[hi-rustin](https://github.com/hi-rustin)
+    - 修复 UNION ALL 的子节点为 TableDual 时可能导致执行错误的问题 [#48755](https://github.com/pingcap/tidb/issues/48755) @[winoros](https://github.com/winoros)
+    - 修复开启 tidb_enable_ordered_result_mode 后可能 panic 的问题[#45044](https://github.com/pingcap/tidb/issues/45044) @[qw4990](https://github.com/qw4990)
+    - 修复某些情况下 count 聚合结果错误的问题 [#48643](https://github.com/pingcap/tidb/issues/48643) @[AilinKid](https://github.com/AilinKid)
+    - 修复产生 topN 统计信息时可能出现 panic 的问题 [#35948](https://github.com/pingcap/tidb/issues/35948) @[hi-rustin](https://github.com/hi-rustin)
+    - 修复可能错误地将 update 转换成 PointGet 的问题 [#47445](https://github.com/pingcap/tidb/issues/47445) @[hi-rustin](https://github.com/hi-rustin)
+    - 修复对 stats_history 表进行垃圾回收时可能导致 OOM 的问题[#48431](https://github.com/pingcap/tidb/issues/48431) @[hawkingrei](https://github.com/hawkingrei)
+    - 修复某些情况下相同的查询计划拥有不同的 digest 的问题 [#47634](https://github.com/pingcap/tidb/issues/47634) @[King-Dylan](https://github.com/King-Dylan)
+    - 修复内存大量使用时无法 kill GenJSONTableFromStats 的问题 [#47779](https://github.com/pingcap/tidb/issues/47779) @[hawkingrei](https://github.com/hawkingrei)
+    - 修复可能将过滤条件错误地下推到 CTE 的问题 [#47881](https://github.com/pingcap/tidb/issues/47881) @[winoros](https://github.com/winoros)
+    - 修复优化器针对 DataSource 过早终止优化过程的问题 [#46177](https://github.com/pingcap/tidb/issues/46177) @[qw4990](https://github.com/qw4990)
     - 修复 AUTO_ID_CACHE=1 时可能导致 Duplicate entry 的问题 [#46444](https://github.com/pingcap/tidb/issues/46444) @[tiancaiamao](https://github.com/tiancaiamao)
     - 修复 TiDB server 在使用企业插件审计日志时可能导致高资源使用的问题 [#49273](https://github.com/pingcap/tidb/issues/49273) @[lcwangchao](https://github.com/lcwangchao)
     - 修复 TiDB server 在优雅关闭（graceful shutdown）时可能 panic 的问题 [#36793](https://github.com/pingcap/tidb/issues/36793) @[bb7133](https://github.com/bb7133)
@@ -109,6 +124,10 @@ TiDB 版本：7.1.3
     - (dup): release-6.5.6.md > 错误修复> TiDB - 修复 PD leader 故障 1 分钟导致 `IMPORT INTO` 任务失败的问题 [#48307](https://github.com/pingcap/tidb/issues/48307) @[D3Hunter](https://github.com/D3Hunter)
     - (dup): release-7.5.0.md > 错误修复> TiDB - 修复 `client-go` 中 `batch-client` panic 的问题 [#47691](https://github.com/pingcap/tidb/issues/47691) @[crazycs520](https://github.com/crazycs520)
     - (dup): release-6.5.6.md > 错误修复> TiDB - 修复列裁剪在特定情况下会导致 panic 的问题 [#47331](https://github.com/pingcap/tidb/issues/47331) @[hi-rustin](https://github.com/hi-rustin)
+    - 修复使用 ErrLoadDataInvalidURI （使用无效的 S3 URL 的错误）的错误信息内容 [#48164](https://github.com/pingcap/tidb/issues/48164) @[lance6716](https://github.com/lance6716)
+    - 修复了当分区列类型为 datetime 时，执行 "alter table ... last partition " 会失败的问题 [#48814](https://github.com/pingcap/tidb/issues/48814) @[crazycs520](https://github.com/crazycs520)
+    - 修复了 "import into" 时，真实错误信息可能被其它错误覆盖的问题 [#47992](https://github.com/pingcap/tidb/issues/47992)，[#47781](https://github.com/pingcap/tidb/issues/47781) @[D3Hunter](https://github.com/D3Hunter)
+    - 修复无法检测到 TiDB 部署在 cgroup v2 容器的问题 [#48342](https://github.com/pingcap/tidb/issues/48342) @[D3Hunter](https://github.com/D3Hunter)
     - (dup): release-7.5.0.md > 错误修复> TiDB - 修复 TiDB 在通过 `systemd` 启动时无法读取 `cgroup` 资源限制的问题 [#47442](https://github.com/pingcap/tidb/issues/47442) @[hawkingrei](https://github.com/hawkingrei)
     - (dup): release-6.5.6.md > 错误修复> TiDB - 修复当包含聚合或者窗口函数的公共表达式被其他递归公共表达式引用时，可能抛出语法错误的问题 [#47603](https://github.com/pingcap/tidb/issues/47603) [#47711](https://github.com/pingcap/tidb/issues/47711)  @[elsa0520](https://github.com/elsa0520)
     - (dup): release-6.5.6.md > 错误修复> TiDB - 修复构造统计信息的 TopN 结构时可能发生的 panic 问题 [#35948](https://github.com/pingcap/tidb/issues/35948) @[hi-rustin](https://github.com/hi-rustin)
@@ -195,8 +214,7 @@ TiDB 版本：7.1.3
 
     + TiDB Data Migration (DM)
 
-        - note [#issue](https://github.com/pingcap/tiflow/issues/${issue-id}) @[贡献者 GitHub ID](https://github.com/${github-id})
-        - note [#issue](https://github.com/pingcap/tiflow/issues/${issue-id}) @[贡献者 GitHub ID](https://github.com/${github-id})
+        - 修复了上游 gtid set 长度过长时，DM 的性能问题 [#9676](https://github.com/pingcap/tiflow/issues/9676) @[GMHDBJD](https://github.com/GMHDBJD)
 
     + TiDB Lightning
 
