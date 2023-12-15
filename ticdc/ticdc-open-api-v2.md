@@ -1083,7 +1083,13 @@ curl -X GET http://127.0.0.1:8300/api/v2/changefeed/test1/synced
   "now_ts": "2023-11-30 15:26:31",
   "info": "The data syncing is not finished, please wait"
 }
+```
 
+示例2 展示的是并未完成同步任务时返回的查询结果，我们可以结合 `synced` 和 `info` 字段确认数据目前还未完成同步，需要继续等待。
+
+示例3
+
+```json
 {
   "synced":false,
   "sink_checkpoint_ts":"2023-12-13 11:45:13",
@@ -1092,14 +1098,17 @@ curl -X GET http://127.0.0.1:8300/api/v2/changefeed/test1/synced
   "now_ts":"2023-12-13 11:47:24",
   "info":"Please check whether pd is health and tikv region is all available. If pd is not health or tikv region is not available, the data syncing is finished.  Otherwise the data syncing is not finished, please wait"
 }
+```
 
+因为本接口支持在上游集群发生灾害的时候进行查询判断，因此在部分情况下，我们无法直接判定 TiCDC 目前数据同步是否完成，而需要用户根据 `info` 信息以及目前上游集群的状态进行判断。在这个示例中 `sink_checkpoint_ts` 和 `now_ts` 具有一些时间上的差距，但我们不知道上游集群的状态，所以不能判定是 TiCDC 还在追数据，所以 `checkpoint-ts` 落后, 还是 pd 或者 tikv 出现了故障导致了 `checkpoint-ts` 没有正常推进。因此我们需要用户根据集群状态来进行辅助判断。
+
+示例4
+
+```json
 {
   "error_msg": "[CDC:ErrPDEtcdAPIError]etcd api call error: context deadline exceeded",
   "error_code": "CDC:ErrPDEtcdAPIError"
 }
 ```
 
-该示例展示的是并未严格的完成同步任务时返回的查询结果，我们可以结合 `synced` 和 `info` 字段确认数据目前同步的状态。
-因为该接口支持在上游集群发生灾害的时候进行查询判断，所以在部分情况下，需要用户根据 `info` 信息进行辅助判断。
-
-另外当上游 PD 长时间故障后，API 查询会直接返回类似如上的错误，无法提供进一步的判断信息。
+当上游集群的 PD 长时间故障后，API 查询会直接返回类似如上的错误，无法提供进一步的判断信息。而因为 PD 故障本身会影响 TiCDC 的数据推进，因此用户可以认为 TiCDC 已经尽可能完成数据同步。
