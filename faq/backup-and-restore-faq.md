@@ -43,27 +43,11 @@ TiKV 支持[动态配置](/tikv-control.md#动态修改-tikv-的配置)自动调
 
 在创建日志备份任务的上游集群中，请尽量避免使用 TiDB Lightning 物理导入模式导入数据。可以选择使用 TiDB Lightning 逻辑导入模式导入数据。若确实需要使用物理导入模式，可在导入完成之后做一次快照备份操作，这样，PITR 就可以恢复到快照备份之后的时间点。
 
-### 索引加速功能为什么与 PITR 功能不兼容？
-
-Issue 链接：[#38045](https://github.com/pingcap/tidb/issues/38045)（v7.0.0 已修复）
-
-在 v7.0.0 之前版本中，通过[索引加速功能](/system-variables.md#tidb_ddl_enable_fast_reorg-从-v630-版本开始引入)创建的索引数据无法被 PITR 备份。
-
-因此，在 PITR 恢复完成后，BR 会将通过索引加速功能创建的索引数据删除，再重新创建。如果在日志备份期间通过索引加速功能创建的索引很多或索引数据很大，建议在创建索引后进行一次全量备份。
-
 ### 集群已经恢复了网络分区故障，为什么日志备份任务进度 checkpoint 仍然不推进？
 
 Issue 链接：[#13126](https://github.com/tikv/tikv/issues/13126)
 
 在集群出现网络分区故障后，备份任务难以继续备份日志，并且在超过一定的重试时间后，任务会被置为 `ERROR` 状态。此时备份任务已经停止，需要手动执行 `br log resume` 命令来恢复日志备份任务。
-
-### 执行 PITR 恢复时遇到 `execute over region id` 报错，该如何处理？
-
-Issue 链接：[#37207](https://github.com/pingcap/tidb/issues/37207)（v6.6.0 已修复）
-
-在 v6.6.0 之前版本中，执行 PITR 恢复时可能会遇到 `execute over region id` 报错。该场景发生在全量数据导入时开启了日志备份，并使用 PITR 恢复全量导入时间段的日志。经过测试发现，当存在长时间（24 小时）大量热点写入，且平均单台 TiKV 节点写入 OPS > 50k/s（可以通过 Grafana 中 **TiKV-Details** > **Backup Log** > **Handle Event Rate** 确认该数值），那么有几率会遇到这个情况。
-
-对于 v6.6.0 之前版本，建议在集群初始化后，进行一次有效快照备份，并且以此作为基础进行 PITR 恢复。
 
 ### 在使用 `br restore point` 命令恢复下游集群后，TiFlash 引擎数据没有恢复？
 
