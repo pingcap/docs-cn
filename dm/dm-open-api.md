@@ -802,6 +802,16 @@ curl -X 'POST' \
         "import_threads": 16,
         "data_dir": "./exported_data",
         "consistency": "auto"
+        "import_mode": "physical",
+        "sorting_dir": "./sort_dir",
+        "disk_quota": "80G",
+        "checksum": "required",
+        "analyze": "optional",
+        "range_concurrency": 0,
+        "compress-kv-pairs": "",
+        "pd_addr": "",
+        "on_duplicate_logical": "error",
+        "on_duplicate_physical": "manual"
       },
       "incr_migrate_conf": {
         "repl_threads": 16,
@@ -892,6 +902,16 @@ curl -X 'POST' \
       "import_threads": 16,
       "data_dir": "./exported_data",
       "consistency": "auto"
+      "import_mode": "physical",
+      "sorting_dir": "./sort_dir",
+      "disk_quota": "80G",
+      "checksum": "required",
+      "analyze": "optional",
+      "range_concurrency": 0,
+      "compress-kv-pairs": "",
+      "pd_addr": "",
+      "on_duplicate_logical": "error",
+      "on_duplicate_physical": "manual"
     },
     "incr_migrate_conf": {
       "repl_threads": 16,
@@ -998,7 +1018,17 @@ curl -X 'GET' \
       "export_threads": 4,
       "import_threads": 16,
       "data_dir": "./exported_data",
-      "consistency": "auto"
+      "consistency": "auto",
+      "import_mode": "physical",
+      "sorting_dir": "./sort_dir",
+      "disk_quota": "80G",
+      "checksum": "required",
+      "analyze": "optional",
+      "range_concurrency": 0,
+      "compress-kv-pairs": "",
+      "pd_addr": "",
+      "on_duplicate_logical": "error",
+      "on_duplicate_physical": "manual"
     },
     "incr_migrate_conf": {
       "repl_threads": 16,
@@ -1126,7 +1156,17 @@ curl -X 'PUT' \
         "export_threads": 4,
         "import_threads": 16,
         "data_dir": "./exported_data",
-        "consistency": "auto"
+        "consistency": "auto",
+        "import_mode": "physical",
+        "sorting_dir": "./sort_dir",
+        "disk_quota": "80G",
+        "checksum": "required",
+        "analyze": "optional",
+        "range_concurrency": 0,
+        "compress-kv-pairs": "",
+        "pd_addr": "",
+        "on_duplicate_logical": "error",
+        "on_duplicate_physical": "manual"
       },
       "incr_migrate_conf": {
         "repl_threads": 16,
@@ -1217,6 +1257,16 @@ curl -X 'PUT' \
       "import_threads": 16,
       "data_dir": "./exported_data",
       "consistency": "auto"
+      "import_mode": "physical",
+      "sorting_dir": "./sort_dir",
+      "disk_quota": "80G",
+      "checksum": "required",
+      "analyze": "optional",
+      "range_concurrency": 0,
+      "compress-kv-pairs": "",
+      "pd_addr": "",
+      "on_duplicate_logical": "error",
+      "on_duplicate_physical": "manual"
     },
     "incr_migrate_conf": {
       "repl_threads": 16,
@@ -1433,7 +1483,17 @@ curl -X 'GET' \
           "export_threads": 4,
           "import_threads": 16,
           "data_dir": "./exported_data",
-          "consistency": "auto"
+          "consistency": "auto",
+          "import_mode": "physical",
+          "sorting_dir": "./sort_dir",
+          "disk_quota": "80G",
+          "checksum": "required",
+          "analyze": "optional",
+          "range_concurrency": 0,
+          "compress-kv-pairs": "",
+          "pd_addr": "",
+          "on_duplicate_logical": "error",
+          "on_duplicate_physical": "manual"
         },
         "incr_migrate_conf": {
           "repl_threads": 16,
