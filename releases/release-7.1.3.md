@@ -94,6 +94,11 @@ TiDB 版本：7.1.3
 
     - note [#issue](https://github.com/pingcap/tidb/issues/${issue-id}) @[贡献者 GitHub ID](https://github.com/${github-id})
     - note [#issue](https://github.com/pingcap/tidb/issues/${issue-id}) @[贡献者 GitHub ID](https://github.com/${github-id})
+    - 修复 AUTO_ID_CACHE=1 时可能导致 Duplicate entry 的问题 [#46444](https://github.com/pingcap/tidb/issues/46444) @[tiancaiamao](https://github.com/tiancaiamao)
+    - 修复 TiDB server 在使用企业插件审计日志时可能导致高资源使用的问题 [#49273](https://github.com/pingcap/tidb/issues/49273) @[lcwangchao](https://github.com/lcwangchao)
+    - 修复 TiDB server 在优雅关闭（graceful shutdown）时可能 panic 的问题 [#36793](https://github.com/pingcap/tidb/issues/36793) @[bb7133](https://github.com/bb7133)
+    - 在启用安全增强模式 (SEM) 时，禁止更改 @@global.require_secure_transport 变量为 'on' [#47665](https://github.com/pingcap/tidb/issues/47665) @[tiancaiamao](https://github.com/tiancaiamao)
+    - 修复在有大量表时，AUTO_ID_CACHE=1 表可能造成 gRPC 客户端泄漏的问题 [#48869](https://github.com/pingcap/tidb/issues/48869) @[tiancaiamao](https://github.com/tiancaiamao)
     - (dup): release-6.5.6.md > 错误修复> TiDB - 修复 `UNION ALL` 第一个子节点是 DUAL Table 时，执行可能报错的问题 [#48755](https://github.com/pingcap/tidb/issues/48755) @[winoros](https://github.com/winoros)
     - (dup): release-6.5.6.md > 错误修复> TiDB - 修复当 DDL `jobID` 恢复为 0 时 TiDB 节点 panic 的问题 [#46296](https://github.com/pingcap/tidb/issues/46296) @[jiyfhust](https://github.com/jiyfhust)
     - (dup): release-6.5.6.md > 错误修复> TiDB - 修复 `TABLESAMPLE` 返回的行数据未排序的问题 [#48253](https://github.com/pingcap/tidb/issues/48253) @[tangenta](https://github.com/tangenta)
@@ -167,6 +172,18 @@ TiDB 版本：7.1.3
         - (dup): release-6.5.6.md > 错误修复> Tools> Backup & Restore (BR) - 修复在 EC2 metadata 连接被重置后，重试导致备份恢复性能下降的问题 [#46750](https://github.com/pingcap/tidb/issues/47650) @[Leavrth](https://github.com/Leavrth)
 
     + TiCDC
+
+        - 优化部分报警规则 [#9266](https://github.com/pingcap/tiflow/issues/9266)
+        - 修复了在同步 delete 语句时某些场景下 where 条件没有采用主键作为条件的问题 [#9812](https://github.com/pingcap/tiflow/issues/9812)
+        - 优化同步到 tidb 场景下 CDC 节点的内存消耗 [#9935](https://github.com/pingcap/tiflow/issues/9935)
+        - 优化 CDC 在增量同步时对 tikv 节点的影响 [#11390](https://github.com/pingcap/tiflow/issues/11390)
+        - 修复 Redo log 功能开启时，同步 DDL 语句间隔时间较长的问题 [#9960](https://github.com/pingcap/tiflow/issues/9960)
+        - 修复在 BDR 模式时，delete & create 同名的 table 后，DML 不能正确同步的问题  [#10079](https://github.com/pingcap/tiflow/issues/10079)
+        - 修复同步到对象存储时，某些特殊场景到值同步任务卡住的问题 [#10041](https://github.com/pingcap/tiflow/issues/10041)[#10044](https://github.com/pingcap/tiflow/issues/10044)
+        -  修复在开启 sync-point & redo log 时在某些特殊场景下 ，同步任务卡住的问题 [#10091](https://github.com/pingcap/tiflow/issues/10091)
+        - 通过增加并行的方式优化了 CDC 同步到对象存储的性能[#10098](https://github.com/pingcap/tiflow/issues/10098)
+        - 优化了 Redo log 的相关性能，如并行写 S3 和采用压缩的模式。[#10176](https://github.com/pingcap/tiflow/issues/10176)[#10226](https://github.com/pingcap/tiflow/issues/10226)
+        - 修复了在某些特殊场景下，CDC 关闭与 tikv 的断开链接处理方式。[#10239](https://github.com/pingcap/tiflow/issues/10239)
 
         - note [#issue](https://github.com/pingcap/tiflow/issues/${issue-id}) @[贡献者 GitHub ID](https://github.com/${github-id})
         - note [#issue](https://github.com/pingcap/tiflow/issues/${issue-id}) @[贡献者 GitHub ID](https://github.com/${github-id})
