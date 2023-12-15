@@ -147,6 +147,17 @@ TiDB 版本：7.6.0
 
     更多信息，请参考[用户文档](链接)。
 
+* 资源管控相关观测性增强 [#49318](https://github.com/pingcap/tidb/issues/49318) @[glorv](https://github.com/glorv) @[bufferflies](https://github.com/bufferflies) @[nolouch](https://github.com/nolouch)
+
+    随着更多客户利用资源组对业务应用进行隔离，资源管控提供了更丰富的基于资源组的数据，协助客户对资源组的负载，以及资源组设置进行观测。确保发生问题时能够快速发现并缩小诊断范围。其中包括：
+
+    * [慢日志](/identify-slow-queries.md) 增加资源组名称，RU消耗，以及对等待资源耗时。
+    * [Statement Summary Tables](/statement-summary-tables.md) 增加资源组名称，RU消耗，以及对等待资源耗时。
+    * 增加变量[`ru_by_last_statement`]()，用来立即获取前一条 SQL 的RU消耗。
+    * 增加基于资源组的数据库指标：QPS/TPS，执行时间(P999/P99/P95)，失败次数，连接数。
+
+    请参考[慢日志](/identify-slow-queries.md)，[Statement Summary Tables](/statement-summary-tables.md)，[资源管控 (Resource Control) 监控指标详解](/grafana-resource-control-dashboard.md)。
+
 ### 安全
 
 * 功能标题 [#issue号](链接) @[贡献者 GitHub ID](链接) **tw@xxx** <!--1234-->
