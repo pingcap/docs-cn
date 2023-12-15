@@ -1383,10 +1383,6 @@ mysql> SELECT job_info FROM mysql.analyze_jobs ORDER BY end_time DESC LIMIT 1;
 - TiDB v7.1.0 引入了快速加索引功能的检查点机制，即使 TiDB owner 因故障重启或者切换，也能够通过自动定期保存的检查点恢复部分进度。
 - 要验证已经完成的 `ADD INDEX` 操作是否使用了添加索引加速功能，可以执行 [`ADMIN SHOW DDL JOBS`](/sql-statements/sql-statement-admin-show-ddl.md#admin-show-ddl-jobs) 语句查看 `JOB_TYPE` 一列中是否含有 `ingest` 字样。
 
-> **警告：**
->
-> 目前，PITR 恢复会额外处理日志备份时间段内通过索引加速功能创建的索引，以达到兼容效果。详细内容请参考[索引加速功能为什么与 PITR 功能不兼容](/faq/backup-and-restore-faq.md#索引加速功能为什么与-pitr-功能不兼容)。
-
 > **注意：**
 >
 > * 要使用索引加速功能，你需要提供一个可写且具有足够空余空间的临时路径 [`temp-dir`](/tidb-configuration-file.md#temp-dir-从-v630-版本开始引入)。如果 `temp-dir` 无法使用，TiDB 会退回到非加速的索引创建方式。建议将 `temp-dir` 挂载在 SSD 磁盘上。
