@@ -13,7 +13,7 @@ TiDB 版本：7.1.3
 
 ## 兼容性变更
 
-<!-- **tw:@ran-huang** 1 -->
+<!-- **tw:@qiancai** 1 -->
 
 - (dup): release-6.5.6.md > 兼容性变更 - 在安全增强模式 (SEM) 下禁止设置 [`require_secure_transport`](https://docs.pingcap.com/zh/tidb/v6.5/system-variables#require_secure_transport-从-v610-版本开始引入) 为 `ON`，避免用户无法连接的问题 [#47665](https://github.com/pingcap/tidb/issues/47665) @[tiancaiamao](https://github.com/tiancaiamao)
 - (dup): release-6.5.6.md > 兼容性变更 - 经进一步的测试后，TiCDC Changefeed 配置项 [`case-sensitive`](/ticdc/ticdc-changefeed-config.md) 默认值由 `true` 改为 `false`，即默认情况下 TiCDC 配置文件中涉及的表名、库名大小写不敏感 [#10047](https://github.com/pingcap/tiflow/issues/10047) @[sdojjy](https://github.com/sdojjy)
@@ -24,7 +24,7 @@ TiDB 版本：7.1.3
 
 ## 改进提升
 
-+ TiDB <!-- **tw:@ran-huang** 2 -->
++ TiDB <!-- **tw:@oreoxmt** 2 -->
 
     - 当 collation 被 enable 且过滤条件有 `like` 时，优化器可以产生 IndexRangeScan 从而提高执行效率 [#48181](https://github.com/pingcap/tidb/issues/48181) @[time-and-fate](https://github.com/time-and-fate)
     - 在启用安全增强模式 (SEM) 时，禁止更改 @@global.require_secure_transport 变量为 'on' [#47665](https://github.com/pingcap/tidb/issues/47665) @[tiancaiamao](https://github.com/tiancaiamao)
@@ -168,7 +168,7 @@ TiDB 版本：7.1.3
 
 + Tools
 
-    + Backup & Restore (BR)  <!-- **tw:@ran-huang** 1 -->
+    + Backup & Restore (BR)  <!-- **tw:@hfxsd** 1 -->
 
         - (dup): release-6.5.6.md > 错误修复> Tools> Backup & Restore (BR) - 修复由于 BR SQL 命令和 CLI 的默认参数不同可能导致的 OOM 问题 [#48000](https://github.com/pingcap/tidb/issues/48000) @[YuJuncen](https://github.com/YuJuncen)
         - (dup): release-7.5.0.md > 错误修复> Tools> Backup & Restore (BR) - 修复大宽表场景下，日志备份在某些场景中可能卡住的问题 [#15714](https://github.com/tikv/tikv/issues/15714) @[YuJuncen](https://github.com/YuJuncen)
