@@ -57,6 +57,15 @@ TiDB 版本：7.6.0
 
     更多信息，请参考[用户文档](/sql-prepared-plan-cache.md)。 
 
+* 优化器增强对多值索引的支持 [#issue号](链接) @[Arenatlx](https://github.com/Arenatlx) @[time-and-fate](https://github.com/time-and-fate)
+
+    TiDB 自 v6.6.0 开始引入[多值索引](/sql-statements/sql-statement-create-index.md#多值索引)，提升对 JSON 数据类型的检索性能。在 v7.6.0，优化器增强了对多值索引的支持能力，在复杂使用场景中，能够正确识别和利用多值索引对查询进行优化。
+
+    * 多值索引上的统计信息会被收集，并应用于优化器估算，当一条 SQL 可能选择到数个多值索引时，能够识别开销更小的索引。
+    * 当出现用 OR 连接的多个 "member of" 条件时，优化器能够利用 `Index Merge` 操作做更高效的条件过滤。
+
+    更多信息，请参考[用户文档](/sql-statements/sql-statement-create-index.md#多值索引)。
+
 ### 稳定性
 
 * 功能标题 [#issue号](链接) @[贡献者 GitHub ID](链接) **tw@xxx** <!--1234-->
