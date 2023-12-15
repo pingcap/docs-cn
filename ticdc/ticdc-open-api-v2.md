@@ -1025,3 +1025,81 @@ curl -X POST -H "'Content-type':'application/json'" http://127.0.0.1:8300/api/v2
 ```
 
 如果请求成功，则返回 `200 OK`。如果请求失败，则返回错误信息和错误码。
+
+## 查询特定同步任务同步是否完成
+
+该接口是一个同步接口，请求成功后会返回指定的同步任务(changefeed)的同步完成情况，包括是否同步完成，以及一些更详细的信息。
+
+### 请求 URI
+
+`GET /api/v2/changefeed/{changefeed_id}/synced`
+
+### 参数说明
+
+#### 路径参数
+
+| 参数名             | 说明                          |
+|:----------------|:----------------------------|
+| `changefeed_id` | 需要查询的同步任务 (changefeed) 的 ID |
+
+### 使用样例
+
+以下请求会查询 ID 为 `test1` 的同步任务的同步完成状态。
+
+```shell
+curl -X GET http://127.0.0.1:8300/api/v2/changefeed/test1/synced
+```
+
+示例1
+
+```json
+{
+  "synced": true,
+  "sink_checkpoint_ts": "2023-11-30 15:14:11",
+  "puller_resolved_ts": "2023-11-30 15:14:09",
+  "last_synced_ts": "2023-11-30 15:08:35",
+  "now_ts": "2023-11-30 15:14:11",
+  "info": "Data syncing is finished"
+}
+```
+
+以上返回的信息的说明如下：
+
+- `synced`：该同步任务是否已经彻底同步完成了，true 则表示一定完成了同步任务，false 则表示并不一定完成了同步任务，具体需要结合 "info" 字段描述以及其他字段进行判断。
+- `sink_checkpoint_ts`: sink 模块的 checkpoint-ts 值，时间为 PD 时间。
+- `puller_resolved_ts`: puller 模块的 resolved-ts 值，时间为 PD 时间。
+- `last_synced_ts`: ticdc 处理的最新一条数据的 commit-ts 值，时间为 PD 时间。
+- `now_ts`: 当前的 PD 时间
+- `info`: 一些帮助判断的信息，主要在 synced 为 false 时候使用。
+
+示例2
+
+```json
+{
+  "synced": false,
+  "sink_checkpoint_ts": "2023-11-30 15:26:31",
+  "puller_resolved_ts": "2023-11-30 15:26:23",
+  "last_synced_ts": "2023-11-30 15:24:30",
+  "now_ts": "2023-11-30 15:26:31",
+  "info": "The data syncing is not finished, please wait"
+}
+
+{
+  "synced":false,
+  "sink_checkpoint_ts":"2023-12-13 11:45:13",
+  "puller_resolved_ts":"2023-12-13 11:45:13",
+  "last_synced_ts":"2023-12-13 11:45:07",
+  "now_ts":"2023-12-13 11:47:24",
+  "info":"Please check whether pd is health and tikv region is all available. If pd is not health or tikv region is not available, the data syncing is finished.  Otherwise the data syncing is not finished, please wait"
+}
+
+{
+  "error_msg": "[CDC:ErrPDEtcdAPIError]etcd api call error: context deadline exceeded",
+  "error_code": "CDC:ErrPDEtcdAPIError"
+}
+```
+
+该示例展示的是并未严格的完成同步任务时返回的查询结果，我们可以结合 `synced` 和 `info` 字段确认数据目前同步的状态。
+因为该接口支持在上游集群发生灾害的时候进行查询判断，所以在部分情况下，需要用户根据 `info` 信息进行辅助判断。
+
+另外当上游 PD 长时间故障后，API 查询会直接返回类似如上的错误，无法提供进一步的判断信息。
