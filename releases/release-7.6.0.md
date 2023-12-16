@@ -51,7 +51,7 @@ TiDB 版本：7.6.0
 
     更多信息，请参考[用户文档](/tiflash/tiflash-supported-pushdown-calculations.md)。
 
-* 包含分区表的执行计划可以被缓存 [#issue号](链接) @[mjonss](https://github.com/mjonss)
+* 包含分区表的执行计划可以被缓存 [#issue号](链接) @[mjonss](https://github.com/mjonss) **tw@qiancai** <!--1662-->
 
     执行计划缓存是提升交易系统性能的有效手段。 自 7.6.0 开始， TiDB 解除了分区表的执行计划无法进入执行计划缓存的限制， 包含分区表的 SQL 语句能够从执行计划缓存中受益。 这将进一步提升分区表在 TiDB 的应用场景， 客户可以更多的利用分区技术降低数据读取的数量，提升数据库性能。
 
@@ -63,7 +63,7 @@ TiDB 版本：7.6.0
 
     更多信息，请参考[用户文档](链接)。
 
-* 优化器增强对多值索引的支持 [#issue号](链接) @[Arenatlx](https://github.com/Arenatlx) @[time-and-fate](https://github.com/time-and-fate)
+* 优化器增强对多值索引的支持 [#issue号](链接) @[Arenatlx](https://github.com/Arenatlx) @[time-and-fate](https://github.com/time-and-fate) **tw@ran-huang** <!--1405/1584-->
 
     TiDB 自 v6.6.0 开始引入[多值索引](/sql-statements/sql-statement-create-index.md#多值索引)，提升对 JSON 数据类型的检索性能。在 v7.6.0，优化器增强了对多值索引的支持能力，在复杂使用场景中，能够正确识别和利用多值索引对查询进行优化。
 
@@ -80,7 +80,7 @@ TiDB 版本：7.6.0
 
     更多信息，请参考[用户文档](链接)。
 
-* 跨数据库绑定执行计划 [#issue号](链接) @[qw4990](https://github.com/qw4990)
+* 跨数据库绑定执行计划 [#issue号](链接) @[qw4990](https://github.com/qw4990) **tw@Oreoxmt** <!--1613-->
 
     我们看到越来越多的用户用 TiDB 支撑 SaaS 平台。 SaaS 平台的一种普遍的建模方式，是把平台上每个租户的数据存入不同的“数据库”，而且业务逻辑完全相同。 这样我们能看到上百个数据库拥有相同的数据表和索引定义，运行类似的 SQL 语句。 在这种场景下，当我们需要对一条 SQL 语句的执行计划进行绑定(SQL Binding)， 这条绑定通常也会对运行在其他数据库的 SQL 有帮助。
 
@@ -145,13 +145,14 @@ TiDB 版本：7.6.0
     ```
 
     更多信息，请参考[用户文档](/sql-plan-management.md)。
-* 引入 Bi-directional replication(BDR) [#issue号](链接) @[okJiang](https://github.com/okJiang) **tw@hfxsd** <!--1521-->
+
+* 引入 Bi-directional replication(BDR) [#issue号](链接) @[okJiang](https://github.com/okJiang) **tw@ran-huang** <!--1521-->
 
     在使用 TiCDC 对 2 个 TiDB 集群进行双向同步时，会导致 DDL 循环同步，同时一些高危 DDL 同步会触发数据不一致的问题。因此在 7.6 版本引入了 BDR Role，设置 BDR Role 之后的集群之间 DDL 不会被循环复制。且不同的 BDR Role 可以为不同的集群设置不同的 BDR Role ，不同的BDR Role 可执行的 DDL 范围不同，从而最大程度避免在双向同步的场景引起数据不一致的问题。
 
     更多信息，请参考[用户文档](链接)。
 
-* 全局排序功能成为正式功能（GA）该功能可提升 'Add Index',，’Import Into‘ 的性能和稳定性 [#issue号](链接) @[D3Hunter](https://github.com/D3Hunter) **tw@hfxsd** <!--1580-->
+* 全局排序功能成为正式功能（GA）该功能可提升 'Add Index',，’Import Into‘ 的性能和稳定性 [#issue号](链接) @[D3Hunter](https://github.com/D3Hunter) **tw@ran-huang** <!--1580-->
 
     在 v7.4.0 以前，使用[分布式并行执行框架](https://docs.pingcap.com/zh/tidb/v7.4/tidb-distributed-execution-framework)执行 ADD INDEX 或 IMPORT INTO 等任务时，由于 TiDB 本地存储空间有限，只能对部分数据进行局部排序后再导入到 TiKV，这导导入到 TiKV 的数据范围有较多的重叠，需要额外的资源进行处理，降低了 TiKV 的性能和稳定性。
 
@@ -167,7 +168,7 @@ TiDB 版本：7.6.0
 
     更多信息，请参考[用户文档](链接)。
 
-* 资源管控相关观测性增强 [#49318](https://github.com/pingcap/tidb/issues/49318) @[glorv](https://github.com/glorv) @[bufferflies](https://github.com/bufferflies) @[nolouch](https://github.com/nolouch)
+* 资源管控相关观测性增强 [#49318](https://github.com/pingcap/tidb/issues/49318) @[glorv](https://github.com/glorv) @[bufferflies](https://github.com/bufferflies) @[nolouch](https://github.com/nolouch) **tw@hfxsd** <!--1668-->
 
     随着更多客户利用资源组对业务应用进行隔离，资源管控提供了更丰富的基于资源组的数据，协助客户对资源组的负载，以及资源组设置进行观测。确保发生问题时能够快速发现并缩小诊断范围。其中包括：
 
