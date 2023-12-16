@@ -53,12 +53,16 @@ TiDB 版本：7.6.0
 
 * 包含分区表的执行计划可以被缓存 [#issue号](链接) @[mjonss](https://github.com/mjonss)
 
-    执行计划缓存是提升交易系统性能的有效手段。 自 7.6.0 开始， TiDB 解除了分区表的执行计划无法进入执行计划缓存的限制， 包含分区表的 SQL 语句能够从执行计划缓存中受益。 这将进一步提升分区表在 TiDB 的应用场景， 客户可以更多的利用分区技术降低数据读取的数量，提升数据库性能。 
+    执行计划缓存是提升交易系统性能的有效手段。 自 7.6.0 开始， TiDB 解除了分区表的执行计划无法进入执行计划缓存的限制， 包含分区表的 SQL 语句能够从执行计划缓存中受益。 这将进一步提升分区表在 TiDB 的应用场景， 客户可以更多的利用分区技术降低数据读取的数量，提升数据库性能。
 
-    更多信息，请参考[用户文档](/sql-prepared-plan-cache.md)。 
+    更多信息，请参考[用户文档](/sql-prepared-plan-cache.md)。
+
 * 批量建表的性能提升 10 倍 [#issue号](链接) @[gmhdbjd](https://github.com/gmhdbjd) **tw@hfxsd** <!--1408-->
-在之前的版本里，用户将上游数据库上万张表迁移到 TiDB 时， TiDB 需要消耗较长的时间来创建这些表，效率较低。在 7.6 版本引入新的 DDL 架构，可通过系统参数 tidb_ddl_v2 开启，新版本的 DDL 相比之前版本的 DDL 在批量建表的性能有 10 倍的提升，可大大减少用户建表的时间。
-更多信息，请参考[用户文档](链接)。
+
+    在之前的版本里，用户将上游数据库上万张表迁移到 TiDB 时， TiDB 需要消耗较长的时间来创建这些表，效率较低。在 7.6 版本引入新的 DDL 架构，可通过系统参数 tidb_ddl_v2 开启，新版本的 DDL 相比之前版本的 DDL 在批量建表的性能有 10 倍的提升，可大大减少用户建表的时间。
+
+    更多信息，请参考[用户文档](链接)。
+
 * 优化器增强对多值索引的支持 [#issue号](链接) @[Arenatlx](https://github.com/Arenatlx) @[time-and-fate](https://github.com/time-and-fate)
 
     TiDB 自 v6.6.0 开始引入[多值索引](/sql-statements/sql-statement-create-index.md#多值索引)，提升对 JSON 数据类型的检索性能。在 v7.6.0，优化器增强了对多值索引的支持能力，在复杂使用场景中，能够正确识别和利用多值索引对查询进行优化。
@@ -78,9 +82,9 @@ TiDB 版本：7.6.0
 
 * 跨数据库绑定执行计划 [#issue号](链接) @[qw4990](https://github.com/qw4990)
 
-    我们看到越来越多的用户用 TiDB 支撑 SaaS 平台。 SaaS 平台的一种普遍的建模方式，是把平台上每个租户的数据存入不同的“数据库”，而且业务逻辑完全相同。 这样我们能看到上百个数据库拥有相同的数据表和索引定义，运行类似的 SQL 语句。 在这种场景下，当我们需要对一条 SQL 语句的执行计划进行绑定(SQL Binding)， 这条绑定通常也会对运行在其他数据库的 SQL 有帮助。 
+    我们看到越来越多的用户用 TiDB 支撑 SaaS 平台。 SaaS 平台的一种普遍的建模方式，是把平台上每个租户的数据存入不同的“数据库”，而且业务逻辑完全相同。 这样我们能看到上百个数据库拥有相同的数据表和索引定义，运行类似的 SQL 语句。 在这种场景下，当我们需要对一条 SQL 语句的执行计划进行绑定(SQL Binding)， 这条绑定通常也会对运行在其他数据库的 SQL 有帮助。
 
-    针对这种应用场景，TiDB 引入了 "通用绑定" (Universal SQL Binding) 进行跨数据库绑定。 一个执行计划绑定能够匹配模式相同的 SQL，即使他们运行在不同数据库上。  比如，当我们创建了下面绑定， 只要 `t1` 和 `t2` 位于相同的数据库中， TiDB 都会尝试用此绑定的规则来生成执行计划， 而不需要为每个数据库上的 SQL 单独创建。 
+    针对这种应用场景，TiDB 引入了 "通用绑定" (Universal SQL Binding) 进行跨数据库绑定。 一个执行计划绑定能够匹配模式相同的 SQL，即使他们运行在不同数据库上。  比如，当我们创建了下面绑定， 只要 `t1` 和 `t2` 位于相同的数据库中， TiDB 都会尝试用此绑定的规则来生成执行计划， 而不需要为每个数据库上的 SQL 单独创建。
 
     ```sql
     CREATE GLOBAL UNIVERSAL BINDING for
@@ -91,7 +95,7 @@ TiDB 版本：7.6.0
 
     "通用绑定" 还能够有效缓解 Saas 场景中一个常见问题。 SaaS 客户的数据量可能因为其业务本身需要而剧烈变化， 这是通常是 SaaS 服务商无法预测的。 由于统计信息无法及时更新， 数据量由小及大的快速变化经常会引发 SQL 性能问题。 在这种情况下， SaaS 服务商可以用 "通用绑定" 固定大数据量租户已经验证过的执行计划，这样能够减少这类问题造成的影响。 针对 SaaS 平台的用户，这一功能的引入为客户带来了显著的便利和体验提升。
 
-    由于 "通用绑定" 会引入一个很小的系统开销（小于1%）， 默认将其关闭。 有需要的用户通过设置变量 [`tidb_opt_enable_universal_binding`]() 为 `YES` 开启。 
+    由于 "通用绑定" 会引入一个很小的系统开销（小于1%）， 默认将其关闭。 有需要的用户通过设置变量 [`tidb_opt_enable_universal_binding`]() 为 `YES` 开启。
 
     更多信息，请参考[用户文档](/sql-plan-management.md)。
 
@@ -106,13 +110,14 @@ TiDB 版本：7.6.0
 * 支持代理组件 TiProxy （实验特性） [#413](https://github.com/pingcap/tiproxy/issues/413) @[djshow832](https://github.com/djshow832) @[xhebox](https://github.com/xhebox) **tw@ran-huang** <!--1596-->
 
     TiProxy 是 TiDB 的官方代理组件，放置在客户端和 TiDB server 之间，为 TiDB 提供负载均衡、连接保持功能，让 TiDB 集群的负载更加均衡，以及维护操作时不影响用户对数据库的连接访问。
+
     * 在 TiDB 集群进行滚动重启、滚动升级、缩容等维护操作时，TiDB server 会发生变动，客户端对发生变动的 TiDB server 的连接将被中断。TiProxy 可以在这些维护操作过程中，平滑的将连接迁移至其他 TiDB server，从而让客户端不受到影响。
     * 所有客户端对 TiDB server 的连接都无法动态迁移至其他 TiDB server。当多个 TiDB server 的负载不均衡时，可能出现整体集群资源充足，但是个别 TiDB server 资源耗尽导致延迟大幅度增加的情况。TiProxy 提供连接动态迁移功能，在客户端无感的前提下，将连接从一个 TiDB server 迁移至其他 TiDB server，从而实现 TiDB 集群的负载均衡。
-    
+
     TiProxy 被集成至 TiUP、TiOperator、Dashboard 等 TiDB 的基本组件中，可以方便的进行配置、部署、运维。
 
     更多信息，请参考[用户文档](/tiproxy/tiproxy-overview.md)。
-    
+
 ### SQL 功能
 
 * 功能标题 [#issue号](链接) @[贡献者 GitHub ID](链接) **tw@xxx** <!--1234-->
@@ -141,13 +146,18 @@ TiDB 版本：7.6.0
 
     更多信息，请参考[用户文档](/sql-plan-management.md)。
 * 引入 Bi-directional replication(BDR) [#issue号](链接) @[okJiang](https://github.com/okJiang) **tw@hfxsd** <!--1521-->
-在使用 TiCDC 对 2 个 TiDB 集群进行双向同步时，会导致 DDL 循环同步，同时一些高危 DDL 同步会触发数据不一致的问题。因此在 7.6 版本引入了 BDR Role，设置 BDR Role 之后的集群之间 DDL 不会被循环复制。且不同的 BDR Role 可以为不同的集群设置不同的 BDR Role ，不同的BDR Role 可执行的 DDL 范围不同，从而最大程度避免在双向同步的场景引起数据不一致的问题。
-更多信息，请参考[用户文档](链接)。
+
+    在使用 TiCDC 对 2 个 TiDB 集群进行双向同步时，会导致 DDL 循环同步，同时一些高危 DDL 同步会触发数据不一致的问题。因此在 7.6 版本引入了 BDR Role，设置 BDR Role 之后的集群之间 DDL 不会被循环复制。且不同的 BDR Role 可以为不同的集群设置不同的 BDR Role ，不同的BDR Role 可执行的 DDL 范围不同，从而最大程度避免在双向同步的场景引起数据不一致的问题。
+
+    更多信息，请参考[用户文档](链接)。
 
 * 全局排序功能成为正式功能（GA）该功能可提升 'Add Index',，’Import Into‘ 的性能和稳定性 [#issue号](链接) @[D3Hunter](https://github.com/D3Hunter) **tw@hfxsd** <!--1580-->
-在 v7.4.0 以前，使用[分布式并行执行框架](https://docs.pingcap.com/zh/tidb/v7.4/tidb-distributed-execution-framework)执行 ADD INDEX 或 IMPORT INTO 等任务时，由于 TiDB 本地存储空间有限，只能对部分数据进行局部排序后再导入到 TiKV，这导导入到 TiKV 的数据范围有较多的重叠，需要额外的资源进行处理，降低了 TiKV 的性能和稳定性。
-随着 v7.4.0 引入全局排序特性，可以将数据暂时存储在外部存储（如 S3）中进行全局排序后再导入到 TiKV 中。这一改进降低了 TiKV 对资源的额外消耗，并显著提高了 ADD INDEX 和 IMPORT INTO 等操作的性能和稳定性。该功能在 7.6 版本成为正式功能（GA）。
-更多信息，请参考[用户文档](链接)。
+
+    在 v7.4.0 以前，使用[分布式并行执行框架](https://docs.pingcap.com/zh/tidb/v7.4/tidb-distributed-execution-framework)执行 ADD INDEX 或 IMPORT INTO 等任务时，由于 TiDB 本地存储空间有限，只能对部分数据进行局部排序后再导入到 TiKV，这导导入到 TiKV 的数据范围有较多的重叠，需要额外的资源进行处理，降低了 TiKV 的性能和稳定性。
+
+    随着 v7.4.0 引入全局排序特性，可以将数据暂时存储在外部存储（如 S3）中进行全局排序后再导入到 TiKV 中。这一改进降低了 TiKV 对资源的额外消耗，并显著提高了 ADD INDEX 和 IMPORT INTO 等操作的性能和稳定性。该功能在 7.6 版本成为正式功能（GA）。
+
+    更多信息，请参考[用户文档](链接)。
 
 ### 可观测性
 
@@ -183,9 +193,13 @@ TiDB 版本：7.6.0
     功能描述（需要包含这个功能是什么、在什么场景下对用户有什么价值、怎么用）
 
     更多信息，请参考[用户文档](链接)。
+
 * DataMigration（DM）迁移 MySQL8.0 的功能成为正式功能（GA） [#issue号](链接) @[lyzx2001](https://github.com/lyzx2001) **tw@hfxsd** <!--1617-->
-之前 DM 迁移 MySQL8.0 仅为实验特性，不可用于生产环境。本次对该功能的稳定性，兼容性做了增强，可在生产环境帮助用户平滑、快速地将数据从 MySQL 8.0 迁移到 TiDB。 
-更多信息，请参考[用户文档](链接)。
+
+    之前 DM 迁移 MySQL8.0 仅为实验特性，不可用于生产环境。本次对该功能的稳定性，兼容性做了增强，可在生产环境帮助用户平滑、快速地将数据从 MySQL 8.0 迁移到 TiDB。
+
+    更多信息，请参考[用户文档](链接)。
+
 ## 兼容性变更
 
 > **注意：**
