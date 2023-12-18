@@ -257,7 +257,7 @@ TiDB 版本：7.6.0
 
 ## 废弃功能
 
-* 废弃功能 1
+* 实验特性 [执行计划的自动演进绑定](https://docs.pingcap.com/zh/tidb/stable/sql-plan-management#%E8%87%AA%E5%8A%A8%E6%BC%94%E8%BF%9B%E7%BB%91%E5%AE%9A-baseline-evolution) 将在 v8.0.0 被废弃，等同的功能将会在后续版本被重新设计。 
 
 * 废弃功能 2
 
