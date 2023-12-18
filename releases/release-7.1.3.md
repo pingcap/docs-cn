@@ -63,9 +63,9 @@ TiDB 版本：7.1.3
 
         - (none)
 
-    + TiDB Lightning
+    + TiDB Lightning <!-- **tw:@hfxsd** 1 -->
 
-        - (none)
+        - 增加由于 PD Leader change 导致 `GetTS` 失败的重试机制 [#45301](https://github.com/pingcap/tidb/issues/45301) @[lance6716](https://github.com/lance6716)
 
     + Dumpling
 
@@ -121,12 +121,12 @@ TiDB 版本：7.1.3
 
 + TiKV <!-- **tw:@hfxsd** 6 -->
 
-    - Fix an issue that TiKV may panic after merge if it runs extremely slow. [#16111](https://github.com/tikv/tikv/issues/16111) @[overvenus](https://github.com/overvenus)
-    - Fix an issue that resolved ts may be blocked for 2 hours. [#15520](https://github.com/tikv/tikv/issues/15520) @[overvenus](https://github.com/overvenus)
-    - setting default value of raftstore.evict-cache-on-memory-ratio to 0.1 [#15800](https://github.com/tikv/tikv/issues/15800) @[tonyxuqqi](https://github.com/tonyxuqqi)
-    - Fixed a bug that may cause snapshot restore stuck when BR crashes. [#15684](https://github.com/tikv/tikv/issues/15684) @[YuJuncen](https://github.com/YuJuncen)
-    - Fix an OOM issue that is caused by stale read tracking large transactions. [#14864](https://github.com/tikv/tikv/issues/14864) @[overvenus](https://github.com/overvenus)
-    - Verify checksum right after SST files are generated to avoid corrupted SST being transferred to other TiKVs [#15986](https://github.com/tikv/tikv/issues/15986) @[Connor1996](https://github.com/Connor1996)
+    - 修复如果 TiKV 运行极慢，在 Region Merge 之后可能 panic 的问题 [#16111](https://github.com/tikv/tikv/issues/16111) @[overvenus](https://github.com/overvenus)
+    - 修复 Resolved TS 可能被阻塞两小时的问题 [#15520](https://github.com/tikv/tikv/issues/15520) @[overvenus](https://github.com/overvenus)
+    - 修复 TiKV 由于无法 append Raft log 导致报错 `ServerIsBusy` [#15800](https://github.com/tikv/tikv/issues/15800) @[tonyxuqqi](https://github.com/tonyxuqqi)
+    - 修复 BR 崩溃时快照备份卡住的问题 [#15684](https://github.com/tikv/tikv/issues/15684) @[YuJuncen](https://github.com/YuJuncen)
+    - 修复跟踪大型事务时，Stale Read 中的 Resolved TS 可能导致 TiKV OOM 的问题 [#14864](https://github.com/tikv/tikv/issues/14864) @[overvenus](https://github.com/overvenus)
+    - 修复集群阻塞 CRC 不匹配时，TiKV 可能 panic 的问题 [#15986](https://github.com/tikv/tikv/issues/15986) @[Connor1996](https://github.com/Connor1996)
     - (dup): release-6.5.6.md > 错误修复> TiKV - 修复 resolved-ts 可能被阻塞 2 小时的问题 [#39130](https://github.com/pingcap/tidb/issues/39130) @[overvenus](https://github.com/overvenus)
     - (dup): release-6.5.6.md > 错误修复> TiKV - 修复扩容时可能导致 DR Auto-Sync 的 joint state 超时问题 [#15817](https://github.com/tikv/tikv/issues/15817) @[Connor1996](https://github.com/Connor1996)
     - (dup): release-6.5.6.md > 错误修复> TiKV - 修复云环境中 Grafana 中 scheduler 命令变量错误的问题 [#15832](https://github.com/tikv/tikv/issues/15832) @[Connor1996](https://github.com/Connor1996)
@@ -140,9 +140,9 @@ TiDB 版本：7.1.3
 
 + PD <!-- **tw:@hfxsd** 4 -->
 
-    - 修复 resource_manager_resource_unit metric 为空的问题 [#45166](https://github.com/pingcap/tidb/issues/45166) @[CabinfeverB](https://github.com/CabinfeverB)
-    - 修复 Calibrate by Workload 页面记录筛选报错的问题 [#48162](https://github.com/pingcap/tidb/issues/48162) @[CabinfeverB](https://github.com/CabinfeverB)
-    - 修复 Resource Control 下删除 Resource Group 场景下可能存在破坏 DDL 原子性的问题 [#45050](https://github.com/pingcap/tidb/issues/45050) @[glorv](https://github.com/glorv)
+    - 修复执行 `CALIBRATE RESOURCE` 导致 TiDB Dashboard 上的 `resource_manager_resource_unit` metric 为空的问题 [#45166](https://github.com/pingcap/tidb/issues/45166) @[CabinfeverB](https://github.com/CabinfeverB)
+    - 修复 Calibrate by Workload 页面报错的问题 [#48162](https://github.com/pingcap/tidb/issues/48162) @[CabinfeverB](https://github.com/CabinfeverB)
+    - 修复删除 Resource Group 可能破坏 DDL 原子性的问题 [#45050](https://github.com/pingcap/tidb/issues/45050) @[glorv](https://github.com/glorv)
     - 修复 PD Leader 切换且新 Leader 与调用方之间存在网络隔离时，调用方不能正常更新 Leader 信息的问题 [#7416](https://github.com/tikv/pd/issues/7416) @[CabinfeverB](https://github.com/CabinfeverB)
     - (dup): release-7.5.0.md > 错误修复> PD - 修复在大集群中添加多个 TiKV 节点可能导致 TiKV 心跳上报变慢或卡住的问题 [#7248](https://github.com/tikv/pd/issues/7248) @[rleungx](https://github.com/rleungx)
     - (dup): release-7.5.0.md > 错误修复> PD - 修复 TiDB Dashboard 不能正常读取 PD `trace` 数据的问题 [#7253](https://github.com/tikv/pd/issues/7253) @[nolouch](https://github.com/nolouch)
@@ -167,7 +167,7 @@ TiDB 版本：7.1.3
         - (dup): release-7.5.0.md > 错误修复> Tools> Backup & Restore (BR) - 修复大宽表场景下，日志备份在某些场景中可能卡住的问题 [#15714](https://github.com/tikv/tikv/issues/15714) @[YuJuncen](https://github.com/YuJuncen)
         - (dup): release-6.5.6.md > 错误修复> Tools> Backup & Restore (BR) - 修复生成外部存储文件 URI 错误的问题 [#48452](https://github.com/pingcap/tidb/issues/48452) @[3AceShowHand](https://github.com/3AceShowHand)
         - (dup): release-6.5.6.md > 错误修复> Tools> Backup & Restore (BR) - 修复在 EC2 metadata 连接被重置后，重试导致备份恢复性能下降的问题 [#46750](https://github.com/pingcap/tidb/issues/47650) @[Leavrth](https://github.com/Leavrth)
-        - Fixed a bug that may cause log backup started but not work properly if there are connective issue to PD during initializing the task. [#16056](https://github.com/tikv/tikv/issues/16056) @[YuJuncen](https://github.com/YuJuncen)
+        - 修复在任务初始化阶段出现与 PD 的连接错误导致日志备份任务虽然启动但无法正常工作的问题 [#16056](https://github.com/tikv/tikv/issues/16056) @[YuJuncen](https://github.com/YuJuncen)
 
     + TiCDC  <!-- **tw:@ran-huang** 6 -->
 
@@ -185,12 +185,11 @@ TiDB 版本：7.1.3
 
     + TiDB Data Migration (DM) <!-- **tw:@hfxsd** 1 -->
 
-        - 修复了上游 gtid set 长度过长时，DM 的性能问题 [#9676](https://github.com/pingcap/tiflow/issues/9676) @[GMHDBJD](https://github.com/GMHDBJD)
+        - 修复 `CompareGTID` 采用不合适的算法导致 DM 性能下降的问题 [#9676](https://github.com/pingcap/tiflow/issues/9676) @[GMHDBJD](https://github.com/GMHDBJD)
 
     + TiDB Lightning <!-- **tw:@hfxsd** 2 -->
 
-        - 添加了由于 PD leader change 导致 `GetTS` 失败的重试 [#45301](https://github.com/pingcap/tidb/issues/45301) @[lance6716](https://github.com/lance6716)
-        - 修复了由于 PD leader 被 KILL 或者 PD 请求处理慢导致导入失败的问题 [#46950](https://github.com/pingcap/tidb/issues/46950) ，[#48075](https://github.com/pingcap/tidb/issues/48075) @[D3Hunter](https://github.com/D3Hunter)
+        - 修复由于 PD Leader 被 KILL 或 PD 请求处理慢导致数据导入失败的问题 [#46950](https://github.com/pingcap/tidb/issues/46950) [#48075](https://github.com/pingcap/tidb/issues/48075) @[D3Hunter](https://github.com/D3Hunter)
         - (dup): release-6.5.6.md > 错误修复> Tools> TiDB Lightning - 修复 TiDB Lightning 在 `writeToTiKV` 时卡住的问题 [#46321](https://github.com/pingcap/tidb/issues/46321) [#48352](https://github.com/pingcap/tidb/issues/48352) @[lance6716](https://github.com/lance6716)
         - (dup): release-6.5.6.md > 错误修复> Tools> TiDB Lightning - 修复 HTTP 重试请求未使用本次的请求内容导致导入失败的问题 [#47930](https://github.com/pingcap/tidb/issues/47930) @[lance6716](https://github.com/lance6716)
         - (dup): release-6.5.6.md > 错误修复> Tools> TiDB Lightning - 移除物理导入模式下不必要的 `get_regions` 调用 [#45507](https://github.com/pingcap/tidb/issues/45507) @[mittalrishabh](https://github.com/mittalrishabh)
