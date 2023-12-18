@@ -183,7 +183,7 @@ title: TiKV 监控指标详解
 ### Flow Control
 
 - Scheduler flow：每个 TiKV 实例的 scheduler 的实时流量
-- Scheduler discard ratio：每个 TiKV 实例的 scheduler 的请求拒绝比率。如果该比例不为 0，则表明存在流控。当 Compaction pending bytes 超过阈值时，TiKV 会根据超过阈值部分的值，按比例线性增加 Scheduler discard ratio。被拒绝的请求将自动由客户端重试
+- Scheduler discard ratio：每个 TiKV 实例的 scheduler 的请求拒绝比率。如果该比例大于 0，则表明存在流控。当 Compaction pending bytes 超过阈值时，TiKV 会根据超过阈值部分的值，按比例线性增加 Scheduler discard ratio。被拒绝的请求将自动由客户端重试
 - Throttle duration：L0 文件过多并触发流控后，scheduler 执行请求的阻塞时间。如果存在统计数据，则表明存在流控
 - Scheduler throttled CF：由于达到流控阈值，触发 RocksDB 限流的 CF
 - Flow controller actions：由于达到流控阈值，触发 RocksDB 限流的原因
