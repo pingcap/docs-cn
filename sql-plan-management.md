@@ -479,6 +479,87 @@ SHOW binding_cache status;
 1 row in set (0.00 sec)
 ```
 
+## 跨数据库绑定执行计划 (Universal Binding)
+
+使用通用绑定前请需要打开 `tidb_opt_enable_universal_binding` 开关。
+
+可以通过下面语法可以创建通用绑定，通用绑定可以匹配模式相同的 SQL，即使这些 SQL 运行在不同的数据库上：
+
+```sql
+CREATE [GLOBAL | SESSION] UNIVERSAL BINDING [FOR BindableStmt] USING BindableStmt;
+```
+
+例如：
+> ```sql
+> mysql> CREATE GLOBAL UNIVERSAL BINDING USING SELECT /*+ use_index(t, a) */ * FROM t;
+> Query OK, 0 rows affected (0.01 sec)
+> mysql> CREATE GLOBAL BINDING USING SELECT /*+ use_index(t, a) */ * FROM t;
+> Query OK, 0 rows affected (0.01 sec)
+> 
+> mysql> SHOW GLOBAL BINDINGS;
+> +----------------------------+---------------------------------------------------+------------+---------+-------------------------+-------------------------+---------+-----------------+--------+------+------------------------------------------------------------------+-------------+
+> | Original_sql               | Bind_sql                                          | Default_db | Status  | Create_time             | Update_time             | Charset | Collation       | Source | Type | Sql_digest                                                       | Plan_digest |
+> +----------------------------+---------------------------------------------------+------------+---------+-------------------------+-------------------------+---------+-----------------+--------+------+------------------------------------------------------------------+-------------+
+> | select * from `test` . `t` | SELECT /*+ use_index(`t` `a`)*/ * FROM `test`.`t` | test       | enabled | 2023-12-18 22:46:25.224 | 2023-12-18 22:46:25.224 | utf8    | utf8_general_ci | manual |      | 8b193b00413fdb910d39073e0d494c96ebf24d1e30b131ecdd553883d0e29b42 |             |
+> | select * from `t`          | SELECT /*+ use_index(`t` `a`)*/ * FROM `t`        |            | enabled | 2023-12-18 22:43:55.509 | 2023-12-18 22:43:55.509 | utf8    | utf8_general_ci | manual | u    | e5796985ccafe2f71126ed6c0ac939ffa015a8c0744a24b7aee6d587103fd2f7 |             |
+> +----------------------------+---------------------------------------------------+------------+---------+-------------------------+-------------------------+---------+-----------------+--------+------+------------------------------------------------------------------+-------------+
+> ```
+
+新增的字段 `Type` 如果是 `u` 则表示该条绑定为通用绑定（Universal Binding），如果为普通绑定则为空。和普通绑定比起来，通用绑定的 `Original_sql` 和 `Bind_sql` 中的数据库名均被抹除，这条通用绑定会对所有的 `select * from t` 查询生效，不管 `t` 是哪个数据库中的表。
+
+通用绑定和普通绑定可以同时存在，且匹配的优先级为：`session 级别的普通绑定` 高于 `session 级别的通用绑定` 高于 `global 级别的普通绑定` 高于 `global 级别的通用绑定`。
+
+除了创建方式不同，通用绑定的删除、状态设置和普通绑定一样。
+
+下面是一个完整的例子：
+
+> ```sql
+> mysql> CREATE DATABASE db1;
+> mysql> CREATE TABLE db1.t1 (a INT, KEY(a));
+> mysql> CREATE TABLE db1.t2 (a INT, KEY(a));
+> 
+> mysql> CREATE DATABASE db2;
+> mysql> CREATE TABLE db2.t1 (a INT, KEY(a));
+> mysql> CREATE TABLE db2.t2 (a INT, KEY(a));
+> 
+> mysql> SET tidb_opt_enable_universal_binding=1;
+> mysql> CREATE GLOBAL UNIVERSAL BINDING USING SELECT /*+ use_index(t1, a), use_index(t2, a) */ * FROM t1, t2;
+> 
+> mysql> SELECT * FROM db1.t1, db1.t2;
+> mysql> SELECT @@LAST_PLAN_FROM_BINDING;
+> +--------------------------+
+> | @@LAST_PLAN_FROM_BINDING |
+> +--------------------------+
+> |                        1 |
+> +--------------------------+
+> 
+> mysql> SELECT * FROM db2.t1, db2.t2;
+> mysql> SELECT @@LAST_PLAN_FROM_BINDING;
+> +--------------------------+
+> | @@LAST_PLAN_FROM_BINDING |
+> +--------------------------+
+> |                        1 |
+> +--------------------------+
+> 
+> mysql> SELECT * FROM db1.t1, db2.t2;
+> mysql> SELECT @@LAST_PLAN_FROM_BINDING;
+> +--------------------------+
+> | @@LAST_PLAN_FROM_BINDING |
+> +--------------------------+
+> |                        1 |
+> +--------------------------+
+>
+> mysql> SHOW GLOBAL BINDINGS;
+> +----------------------------------+------------------------------------------------------------------------------+------------+---------+-------------------------+-------------------------+---------+-----------------+--------+------+------------------------------------------------------------------+-------------+
+> | Original_sql                     | Bind_sql                                                                     | Default_db | Status  | Create_time             | Update_time             | Charset | Collation       | Source | Type | Sql_digest                                                       | Plan_digest |
+> +----------------------------------+------------------------------------------------------------------------------+------------+---------+-------------------------+-------------------------+---------+-----------------+--------+------+------------------------------------------------------------------+-------------+
+> | select * from ( `t1` ) join `t2` | SELECT /*+ use_index(`t1` `a`) use_index(`t2` `a`)*/ * FROM (`t1`) JOIN `t2` |            | enabled | 2023-12-18 23:01:27.242 | 2023-12-18 23:01:27.242 | utf8    | utf8_general_ci | manual | u    | ea8720583e80644b58877663eafb3579700e5f918a748be222c5b741a696daf4 |             |
+> +----------------------------------+------------------------------------------------------------------------------+------------+---------+-------------------------+-------------------------+---------+-----------------+--------+------+------------------------------------------------------------------+-------------+
+> mysql> DROP GLOBAL BINDING FOR SQL DIGEST 'ea8720583e80644b58877663eafb3579700e5f918a748be222c5b741a696daf4';
+> mysql> SHOW GLOBAL BINDINGS;
+> ```
+
+
 ## 自动捕获绑定 (Baseline Capturing)
 
 自动绑定会对符合捕获条件的查询进行捕获，为符合条件的查询生成相应的绑定。通常用于[升级时的计划回退防护](#升级时的计划回退防护)。
