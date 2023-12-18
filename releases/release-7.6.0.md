@@ -130,7 +130,7 @@ TiDB 版本：7.6.0
 
     在 TiDB v7.6.0 之前，使用 `LOAD DATA` 语句来批量导入数据时，提交方式经历了一些变化。在 TiDB v4.0.0 之前，每导入 20000 行数据就会进行一次提交；从 v4.0.0 到 v6.6.0 版本，默认在一个事务中提交所有行，但也支持通过设置 [`tidb_dml_batch_size`](/system-variables.md#tidb_dml_batch_size) 参数实现分批次提交；自 TiDB v7.0.0 起，仅支持导入后一次性提交数据，[`tidb_dml_batch_size`](/system-variables.md#tidb_dml_batch_size) 参数不再生效。与 MySQL 的 `LOAD DATA` 相比，TiDB v7.6.0 之前的 `LOAD DATA` 在不同版本的事务行为都存在差异，因此在使用该语句时，用户需要额外的调整。
     
-    从 TiDB v7.6.0 版本起，TiDB 的 `LOAD DATA` 的事务行为和其他普通 DML 一致。特别是和 MySQL 的事务行为一致， `LOAD DATA` 语句本身不再自动提交当前事务，也不会开启新事务，并且事务内的 `LOAD DATA` 语句可以被显示提交或者回滚。此外，`LOAD DATA` 语句还受 TiDB 事务模式设置（乐观/悲观）影响。这些改进使得用户在从 MySQL 到 TiDB 迁移时不再需要额外的适配工作，让数据导入体验更加一致和可控。
+    从 TiDB v7.6.0 版本起，TiDB 的 `LOAD DATA` 的事务行为和其他普通 DML 一致。特别是和 MySQL 的事务行为一致， 事务内的`LOAD DATA` 语句本身不再自动提交当前事务，也不会开启新事务，并且事务内的 `LOAD DATA` 语句可以被显式提交或者回滚。此外，`LOAD DATA` 语句还受 TiDB 事务模式设置（乐观/悲观）影响。这些改进使得用户在从 MySQL 到 TiDB 迁移时不再需要额外的适配工作，让数据导入体验更加一致和可控。
 
     更多信息，请参考[用户文档](/sql-statements/sql-statement-load-data.md)。
 ### 数据库管理
@@ -146,7 +146,9 @@ TiDB 版本：7.6.0
     我们经常碰到这样的情况，由于网络异常断开或者应用程序的小问题，有时 `commit / rollback` 语句无法正常传送到数据库，导致锁没有被释放，从而触发了事务锁等待问题和数据库的连接数的快速上涨。在测试环境，这种情况经常发生，线上环境偶尔也会出现，而且有的时候很难诊断。因此，TiDB v7.6.0 版本开始支持通过设置 [`tidb_idle_transaction_timeout`](/system-variables.md#tidb_idle_transaction_timeout-从-v760-版本开始引入) 参数，自动终止长时间运行的空闲事务，以防止这种情况的发生。该参数单位是秒，当一个事务空闲时间超过设定的阈值时，系统会自动强制结束该事务的数据库连接并回滚事务。
 
     更多信息，请参考[用户文档](/system-variables.md#tidb_idle_transaction_timeout-从-v760-版本开始引入)。
-* 简化执行计划绑定的语法 [#issue号](链接) @[qw4990](https://github.com/qw4990)
+    
+
+* 简化执行计划绑定的语法 [#issue号](链接) @[qw4990](https://github.com/qw4990) **tw@Oreoxmt** <!--1613-->
 
     TiDB 在新版本中简化的创建执行计划绑定的语法。 在命令中无需提供原 SQL 语句， TiDB 会根据带有 hint 的语句识别出原 SQL。 提升了创建执行计划绑定的便利性。 例如：
 
@@ -158,13 +160,13 @@ TiDB 版本：7.6.0
 
     更多信息，请参考[用户文档](/sql-plan-management.md)。
 
-* 引入 Bi-directional replication(BDR) [#issue号](链接) @[okJiang](https://github.com/okJiang) **tw@ran-huang** <!--1521-->
+* 引入 Bi-directional replication(BDR) [#issue号](链接) @[okJiang](https://github.com/okJiang) **tw@ran-huang** <!--1521/1525-->
 
     在使用 TiCDC 对 2 个 TiDB 集群进行双向同步时，会导致 DDL 循环同步，同时一些高危 DDL 同步会触发数据不一致的问题。因此在 7.6 版本引入了 BDR Role，设置 BDR Role 之后的集群之间 DDL 不会被循环复制。且不同的 BDR Role 可以为不同的集群设置不同的 BDR Role ，不同的BDR Role 可执行的 DDL 范围不同，从而最大程度避免在双向同步的场景引起数据不一致的问题。
 
     更多信息，请参考[用户文档](链接)。
 
-* 全局排序功能成为正式功能（GA）该功能可提升 'Add Index',，’Import Into‘ 的性能和稳定性 [#issue号](链接) @[D3Hunter](https://github.com/D3Hunter) **tw@ran-huang** <!--1580-->
+* 全局排序功能成为正式功能（GA）该功能可提升 'Add Index',，’Import Into‘ 的性能和稳定性 [#issue号](链接) @[D3Hunter](https://github.com/D3Hunter) **tw@ran-huang** <!--1580/1579-->
 
     在 v7.4.0 以前，使用[分布式并行执行框架](https://docs.pingcap.com/zh/tidb/v7.4/tidb-distributed-execution-framework)执行 ADD INDEX 或 IMPORT INTO 等任务时，由于 TiDB 本地存储空间有限，只能对部分数据进行局部排序后再导入到 TiKV，这导导入到 TiKV 的数据范围有较多的重叠，需要额外的资源进行处理，降低了 TiKV 的性能和稳定性。
 
