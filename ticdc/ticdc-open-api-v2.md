@@ -278,7 +278,6 @@ curl -X GET http://127.0.0.1:8300/api/v2/health
 | `sync_point_interval`     | `STRING` 类型，注意返回值为 `UINT64` 类型的纳秒级时间，`sync point` 功能开启时，对齐上下游 snapshot 的时间间隔。默认值为 `10m`，最小值为 `30s`。（非必选） |
 | `sync_point_retention`    | `STRING` 类型，注意返回值为 `UINT64` 类型的纳秒级时间，`sync point` 功能开启时，在下游表中保存的数据的时长，超过这个时间的数据会被清理。默认值为 `24h`。（非必选） |
 
-
 `consistent` 参数说明如下：
 
 | 参数名              | 说明                                     |
