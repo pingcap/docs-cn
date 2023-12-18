@@ -160,6 +160,12 @@ TiDB 版本：7.6.0
 
     更多信息，请参考[用户文档](/sql-plan-management.md)。
 
+* 支持动态调整单行记录大小限制 [#49237](https://github.com/pingcap/tidb/pull/49237) @[zyguan](https://github.com/zyguan) 
+
+    TiDB v7.6.0 之前，事务中单行记录的大小受 TiDB 的配置文件参数 [`txn-entry-size-limit`](/tidb-configuration-file.md#txn-entry-size-limit-从-v50-版本开始引入) 限制。如果超出该限制，TiDB 将返回 `entry too large` 错误。在这种情况下，用户需要修改 TiDB 配置文件并重启 TiDB 才能够生效。为了降低用户的管理成本，TiDB 从 v7.6.0 开始新增了系统变量 [`tidb_txn_entry_size_limit`](/system-variables.md#tidb_txn_entry_size_limit-从-v760-版本开始引入)，支持动态修改该配置项的值。该变量的默认值为 `0`，表示默认使用 [`txn-entry-size-limit`](/tidb-configuration-file.md#txn-entry-size-limit-从-v50-版本开始引入) 的值。但如果设置为非 `0` 值，就会优先使用该变量作为事务中的单行记录大小的限制。这一改进旨在使用户更灵活地调整系统配置，而无需重启 TiDB 生效。
+
+    更多信息，请参考[用户文档](/system-variables.md#tidb_txn_entry_size_limit-从-v760-版本开始引入) 。
+    
 * 引入 Bi-directional replication(BDR) [#issue号](链接) @[okJiang](https://github.com/okJiang) **tw@ran-huang** <!--1521/1525-->
 
     在使用 TiCDC 对 2 个 TiDB 集群进行双向同步时，会导致 DDL 循环同步，同时一些高危 DDL 同步会触发数据不一致的问题。因此在 7.6 版本引入了 BDR Role，设置 BDR Role 之后的集群之间 DDL 不会被循环复制。且不同的 BDR Role 可以为不同的集群设置不同的 BDR Role ，不同的BDR Role 可执行的 DDL 范围不同，从而最大程度避免在双向同步的场景引起数据不一致的问题。
