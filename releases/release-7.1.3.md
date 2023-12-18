@@ -27,7 +27,6 @@ TiDB 版本：7.1.3
 + TiDB <!-- **tw:@oreoxmt** 2 -->
 
     - 当启用排序规则并且查询条件中包含 `LIKE` 时，优化器可以产生 IndexRangeScan 以提高执行效率 [#48181](https://github.com/pingcap/tidb/issues/48181) @[time-and-fate](https://github.com/time-and-fate)
-    - 在启用安全增强模式 (SEM) 时，禁止更改 `require_secure_transport` 变量为 `ON` [#47665](https://github.com/pingcap/tidb/issues/47665) @[tiancaiamao](https://github.com/tiancaiamao)
 
 + TiKV
 
