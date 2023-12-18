@@ -268,11 +268,11 @@ curl -X GET http://127.0.0.1:8300/api/v2/health
 | `check_gc_safe_point`     | `BOOLEAN` 类型，是否检查同步任务的开始时间早于 GC 时间，默认值为 `true`。（非必选）                                                     |
 | `consistent`              | Redo log 配置。（非必选）                                                                                        |
 | `enable_old_value`        | `BOOLEAN` 类型，是否输出 old value 值（即变更前的值），默认值为 `true`。（非必选）                                                  |
-| `enable_sync_point`       | `BOOLEAN` 类型，是否开启 `sync point` 功能。（非必选）                                                               |
+| `enable_sync_point`       | `BOOLEAN` 类型，是否开启 `sync point` 功能。（非必选）                                                             |
 | `filter`                  | filter 配置。（非必选）                                                                                          |
 | `force_replicate`         | `BOOLEAN` 类型，该值默认为 `false`，当指定为 `true` 时，同步任务会尝试强制同步没有唯一索引的表。（非必选）                                       |
 | `ignore_ineligible_table` | `BOOLEAN` 类型，该值默认为 `false`，当指定为 `true` 时，同步任务会忽略无法进行同步的表。（非必选）                                           |
-| `memory_quota`            | `UINT64` 类型，同步任务的内存 quota。（非必选）                                                                      |
+| `memory_quota`            | `UINT64` 类型，同步任务的内存 quota。（非必选）                                                                     |
 | `mounter`                 | 同步任务 `mounter` 配置。（非必选）                                                                                  |
 | `sink`                    | 同步任务的`sink`配置。（非必选）                                                                                      |
 | `sync_point_interval`     | `STRING` 类型，注意返回值为 `UINT64` 类型的纳秒级时间，`sync point` 功能开启时，对齐上下游 snapshot 的时间间隔。默认值为 `10m`，最小值为 `30s`。（非必选） |
