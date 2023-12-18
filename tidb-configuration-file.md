@@ -718,6 +718,16 @@ opentracing.reporter 相关的设置。
 + TiKV 的负载阈值，如果超过此阈值，会收集更多的 batch 封包，来减轻 TiKV 的压力。仅在 `tikv-client.max-batch-size` 值大于 0 时有效，不推荐修改该值。
 + 默认值：200
 
+### `copr-req-timeout` <span class="version-mark">从 v7.5.0 版本开始引入</span>
+
+> **警告：**
+>
+> 该配置项可能会在未来版本中废弃，**不要修改该配置**。
+
++ 单个 Coprocessor Request 的超时时间
++ 默认值：60
++ 单位：秒
+
 ## tikv-client.copr-cache <span class="version-mark">从 v4.0.0 版本开始引入</span>
 
 本部分介绍 Coprocessor Cache 相关的配置项。

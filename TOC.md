@@ -657,6 +657,9 @@
     - [TiFlash 数据校验](/tiflash/tiflash-data-validation.md)
     - [TiFlash 兼容性说明](/tiflash/tiflash-compatibility.md)
     - [TiFlash Pipeline Model 执行模型](/tiflash/tiflash-pipeline-model.md)
+  - TiDB 分布式执行框架
+    - [TiDB 分布式执行框架介绍](/tidb-distributed-execution-framework.md)
+    - [TiDB 全局排序](/tidb-global-sort.md)
   - [系统变量](/system-variables.md)
   - 配置文件参数
     - [tidb-server](/tidb-configuration-file.md)
@@ -1014,9 +1017,6 @@
   - [错误码](/error-codes.md)
   - [通过拓扑 label 进行副本调度](/schedule-replicas-by-topology-labels.md)
   - [外部存储服务的 URI 格式](/external-storage-uri.md)
-  - 内部组件介绍
-    - [TiDB 后端任务分布式并行执行框架](/tidb-distributed-execution-framework.md)
-    - [TiDB 全局排序](/tidb-global-sort.md)
 - 常见问题解答 (FAQ)
   - [FAQ 汇总](/faq/faq-overview.md)
   - [产品 FAQ](/faq/tidb-faq.md)
