@@ -126,7 +126,7 @@ TiDB 版本：7.6.0
 
     更多信息，请参考[用户文档](链接)。
 
-* LOAD DATA 支持显示事务和回滚 [#49079](https://github.com/pingcap/tidb/pull/49079) @[ekexium](https://github.com/ekexium) 
+* LOAD DATA 支持显示事务和回滚 [#49079](https://github.com/pingcap/tidb/pull/49079) @[ekexium](https://github.com/ekexium) **tw@Oreoxmt** <!--1422-->
 
     在 TiDB v7.6.0 之前，使用 `LOAD DATA` 语句来批量导入数据时，提交方式经历了一些变化。在 TiDB v4.0.0 之前，每导入 20000 行数据就会进行一次提交；从 v4.0.0 到 v6.6.0 版本，默认在一个事务中提交所有行，但也支持通过设置 [`tidb_dml_batch_size`](/system-variables.md#tidb_dml_batch_size) 参数实现分批次提交；自 TiDB v7.0.0 起，仅支持导入后一次性提交数据，[`tidb_dml_batch_size`](/system-variables.md#tidb_dml_batch_size) 参数不再生效。与 MySQL 的 `LOAD DATA` 相比，TiDB v7.6.0 之前的 `LOAD DATA` 在不同版本的事务行为都存在差异，因此在使用该语句时，用户需要额外的调整。
     
@@ -141,7 +141,7 @@ TiDB 版本：7.6.0
 
     更多信息，请参考[用户文档](链接)。
 
-* 支持自动终止长时间未提交的空闲事务 [#48714](https://github.com/pingcap/tidb/pull/48714) @[crazycs520](https://github.com/crazycs520) 
+* 支持自动终止长时间未提交的空闲事务 [#48714](https://github.com/pingcap/tidb/pull/48714) @[crazycs520](https://github.com/crazycs520) **tw@Oreoxmt** <!--1598-->
 
     我们经常碰到这样的情况，由于网络异常断开或者应用程序的小问题，有时 `commit / rollback` 语句无法正常传送到数据库，导致锁没有被释放，从而触发了事务锁等待问题和数据库的连接数的快速上涨。在测试环境，这种情况经常发生，线上环境偶尔也会出现，而且有的时候很难诊断。因此，TiDB v7.6.0 版本开始支持通过设置 [`tidb_idle_transaction_timeout`](/system-variables.md#tidb_idle_transaction_timeout-从-v760-版本开始引入) 参数，自动终止长时间运行的空闲事务，以防止这种情况的发生。该参数单位是秒，当一个事务空闲时间超过设定的阈值时，系统会自动强制结束该事务的数据库连接并回滚事务。
 
