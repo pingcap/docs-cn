@@ -1036,10 +1036,10 @@ curl -X GET http://127.0.0.1:8300/api/v2/changefeed/test1/synced
 ```json
 {
   "synced": true,
-  "sink_checkpoint_ts": "2023-11-30 15:14:11",
-  "puller_resolved_ts": "2023-11-30 15:14:09",
-  "last_synced_ts": "2023-11-30 15:08:35",
-  "now_ts": "2023-11-30 15:14:11",
+  "sink_checkpoint_ts": "2023-11-30 15:14:11.015",
+  "puller_resolved_ts": "2023-11-30 15:14:12.215",
+  "last_synced_ts": "2023-11-30 15:08:35.510",
+  "now_ts": "2023-11-30 15:14:11.511",
   "info": "Data syncing is finished"
 }
 ```
@@ -1058,10 +1058,10 @@ curl -X GET http://127.0.0.1:8300/api/v2/changefeed/test1/synced
 ```json
 {
   "synced": false,
-  "sink_checkpoint_ts": "2023-11-30 15:26:31",
-  "puller_resolved_ts": "2023-11-30 15:26:23",
-  "last_synced_ts": "2023-11-30 15:24:30",
-  "now_ts": "2023-11-30 15:26:31",
+  "sink_checkpoint_ts": "2023-11-30 15:26:31.519",
+  "puller_resolved_ts": "2023-11-30 15:26:23.525",
+  "last_synced_ts": "2023-11-30 15:24:30.115",
+  "now_ts": "2023-11-30 15:26:31.511",
   "info": "The data syncing is not finished, please wait"
 }
 ```
@@ -1073,10 +1073,10 @@ curl -X GET http://127.0.0.1:8300/api/v2/changefeed/test1/synced
 ```json
 {
   "synced":false,
-  "sink_checkpoint_ts":"2023-12-13 11:45:13",
-  "puller_resolved_ts":"2023-12-13 11:45:13",
-  "last_synced_ts":"2023-12-13 11:45:07",
-  "now_ts":"2023-12-13 11:50:24",
+  "sink_checkpoint_ts":"2023-12-13 11:45:13.515",
+  "puller_resolved_ts":"2023-12-13 11:45:13.525",
+  "last_synced_ts":"2023-12-13 11:45:07.575",
+  "now_ts":"2023-12-13 11:50:24.875",
   "info":"Please check whether pd is healthy and tikv region is all available. If pd is not healthy or tikv region is not available, the data syncing is finished. Because in this case, the resolvedTs will not advance anymore, thus we only need to care whether last_synced_ts is more than 300 secs from the current time. Otherwise the data syncing is not finished, please wait"
 }
 ```
