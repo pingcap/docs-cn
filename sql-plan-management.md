@@ -27,15 +27,12 @@ aliases: ['/docs-cn/dev/sql-plan-management/','/docs-cn/dev/reference/performanc
 CREATE [GLOBAL | SESSION] BINDING [FOR BindableStmt] USING BindableStmt;
 ```
 
-如
+该语句可以在 GLOBAL 或者 SESSION 作用域内为 SQL 绑定执行计划。目前，如下 SQL 类型 (BindableStmt) 可创建执行计划绑定：`SELECT`、`DELETE`、`UPDATE` 和带有 `SELECT` 子查询的 `INSERT`/`REPLACE`。使用示例如下：
 
 ```sql
 CREATE GLOBAL BINDING USING SELECT * /*+ use_index(t1, a) */ FROM t1;
-
 CREATE GLOBAL BINDING FOR SELECT * FROM t1 USING SELECT * /*+ use_index(t1, a) */ FROM t1;
 ```
-
-该语句可以在 GLOBAL 或者 SESSION 作用域内为 SQL 绑定执行计划。目前，如下 SQL 类型 (BindableStmt) 可创建执行计划绑定：`SELECT`、`DELETE`、`UPDATE` 和带有 `SELECT` 子查询的 `INSERT`/`REPLACE`。
 
 > **注意：**
 >
@@ -396,6 +393,7 @@ SHOW [GLOBAL | SESSION] BINDINGS [ShowLikeOrWhere];
 | charset | 字符集 |
 | collation | 排序规则 |
 | source | 创建方式，包括 manual（根据 SQL 创建绑定生成）、history（根据历史执行计划创建绑定生成）、capture（由 TiDB 自动创建生成）和 evolve （由 TiDB 自动演进生成） |
+| type | 绑定类型，包括 `u`（[通用绑定](#跨数据库绑定执行计划-universal-binding)）和空（普通绑定），从 v7.6.0 开始引入|
 | sql_digest | 归一化后的 SQL 的 digest |
 | plan_digest | 执行计划的 digest |
 
@@ -481,84 +479,107 @@ SHOW binding_cache status;
 
 ## 跨数据库绑定执行计划 (Universal Binding)
 
-使用通用绑定前请需要打开 `tidb_opt_enable_universal_binding` 开关。
+跨数据库绑定执行计划，即通用绑定 (Universal Binding) 可以匹配模式相同的 SQL 语句，即使这些 SQL 运行在不同的数据库上。在使用通用绑定前，需要开启 [`tidb_opt_enable_universal_binding`](/system-variables.md#tidb_opt_enable_universal_binding-从-v760-版本开始引入) 系统变量。
 
-可以通过下面语法可以创建通用绑定，通用绑定可以匹配模式相同的 SQL，即使这些 SQL 运行在不同的数据库上：
+创建通用绑定的语法如下：
 
 ```sql
 CREATE [GLOBAL | SESSION] UNIVERSAL BINDING [FOR BindableStmt] USING BindableStmt;
 ```
 
 例如：
-> ```sql
-> mysql> CREATE GLOBAL UNIVERSAL BINDING USING SELECT /*+ use_index(t, a) */ * FROM t;
-> Query OK, 0 rows affected (0.01 sec)
-> mysql> CREATE GLOBAL BINDING USING SELECT /*+ use_index(t, a) */ * FROM t;
-> Query OK, 0 rows affected (0.01 sec)
-> 
-> mysql> SHOW GLOBAL BINDINGS;
-> +----------------------------+---------------------------------------------------+------------+---------+-------------------------+-------------------------+---------+-----------------+--------+------+------------------------------------------------------------------+-------------+
-> | Original_sql               | Bind_sql                                          | Default_db | Status  | Create_time             | Update_time             | Charset | Collation       | Source | Type | Sql_digest                                                       | Plan_digest |
-> +----------------------------+---------------------------------------------------+------------+---------+-------------------------+-------------------------+---------+-----------------+--------+------+------------------------------------------------------------------+-------------+
-> | select * from `test` . `t` | SELECT /*+ use_index(`t` `a`)*/ * FROM `test`.`t` | test       | enabled | 2023-12-18 22:46:25.224 | 2023-12-18 22:46:25.224 | utf8    | utf8_general_ci | manual |      | 8b193b00413fdb910d39073e0d494c96ebf24d1e30b131ecdd553883d0e29b42 |             |
-> | select * from `t`          | SELECT /*+ use_index(`t` `a`)*/ * FROM `t`        |            | enabled | 2023-12-18 22:43:55.509 | 2023-12-18 22:43:55.509 | utf8    | utf8_general_ci | manual | u    | e5796985ccafe2f71126ed6c0ac939ffa015a8c0744a24b7aee6d587103fd2f7 |             |
-> +----------------------------+---------------------------------------------------+------------+---------+-------------------------+-------------------------+---------+-----------------+--------+------+------------------------------------------------------------------+-------------+
-> ```
 
-新增的字段 `Type` 如果是 `u` 则表示该条绑定为通用绑定（Universal Binding），如果为普通绑定则为空。和普通绑定比起来，通用绑定的 `Original_sql` 和 `Bind_sql` 中的数据库名均被抹除，这条通用绑定会对所有的 `select * from t` 查询生效，不管 `t` 是哪个数据库中的表。
+```sql
+CREATE GLOBAL UNIVERSAL BINDING USING SELECT /*+ use_index(t, a) */ * FROM t;
+CREATE GLOBAL BINDING USING SELECT /*+ use_index(t, a) */ * FROM t;
+SHOW GLOBAL BINDINGS;
+```
 
-通用绑定和普通绑定可以同时存在，且匹配的优先级为：`session 级别的普通绑定` 高于 `session 级别的通用绑定` 高于 `global 级别的普通绑定` 高于 `global 级别的通用绑定`。
+输出结果示例如下：
 
-除了创建方式不同，通用绑定的删除、状态设置和普通绑定一样。
+```sql
++----------------------------+---------------------------------------------------+------------+---------+-------------------------+-------------------------+---------+-----------------+--------+------+------------------------------------------------------------------+-------------+
+| Original_sql               | Bind_sql                                          | Default_db | Status  | Create_time             | Update_time             | Charset | Collation       | Source | Type | Sql_digest                                                       | Plan_digest |
++----------------------------+---------------------------------------------------+------------+---------+-------------------------+-------------------------+---------+-----------------+--------+------+------------------------------------------------------------------+-------------+
+| select * from `test` . `t` | SELECT /*+ use_index(`t` `a`)*/ * FROM `test`.`t` | test       | enabled | 2023-12-18 22:46:25.224 | 2023-12-18 22:46:25.224 | utf8    | utf8_general_ci | manual |      | 8b193b00413fdb910d39073e0d494c96ebf24d1e30b131ecdd553883d0e29b42 |             |
+| select * from `t`          | SELECT /*+ use_index(`t` `a`)*/ * FROM `t`        |            | enabled | 2023-12-18 22:43:55.509 | 2023-12-18 22:43:55.509 | utf8    | utf8_general_ci | manual | u    | e5796985ccafe2f71126ed6c0ac939ffa015a8c0744a24b7aee6d587103fd2f7 |             |
++----------------------------+---------------------------------------------------+------------+---------+-------------------------+-------------------------+---------+-----------------+--------+------+------------------------------------------------------------------+-------------+
+```
 
-下面是一个完整的例子：
+在 `SHOW GLOBAL BINDINGS;` 的输出结果中，`Type` 字段为 `u` 表示该条绑定为通用绑定，如果为空，则为普通绑定。与普通绑定不同的是，通用绑定的 `Original_sql` 和 `Bind_sql` 中不包含数据库名。因此，这条通用绑定会对所有的 `select * from t` 查询生效，而不限于特定数据库。
 
-> ```sql
-> mysql> CREATE DATABASE db1;
-> mysql> CREATE TABLE db1.t1 (a INT, KEY(a));
-> mysql> CREATE TABLE db1.t2 (a INT, KEY(a));
-> 
-> mysql> CREATE DATABASE db2;
-> mysql> CREATE TABLE db2.t1 (a INT, KEY(a));
-> mysql> CREATE TABLE db2.t2 (a INT, KEY(a));
-> 
-> mysql> SET tidb_opt_enable_universal_binding=1;
-> mysql> CREATE GLOBAL UNIVERSAL BINDING USING SELECT /*+ use_index(t1, a), use_index(t2, a) */ * FROM t1, t2;
-> 
-> mysql> SELECT * FROM db1.t1, db1.t2;
-> mysql> SELECT @@LAST_PLAN_FROM_BINDING;
-> +--------------------------+
-> | @@LAST_PLAN_FROM_BINDING |
-> +--------------------------+
-> |                        1 |
-> +--------------------------+
-> 
-> mysql> SELECT * FROM db2.t1, db2.t2;
-> mysql> SELECT @@LAST_PLAN_FROM_BINDING;
-> +--------------------------+
-> | @@LAST_PLAN_FROM_BINDING |
-> +--------------------------+
-> |                        1 |
-> +--------------------------+
-> 
-> mysql> SELECT * FROM db1.t1, db2.t2;
-> mysql> SELECT @@LAST_PLAN_FROM_BINDING;
-> +--------------------------+
-> | @@LAST_PLAN_FROM_BINDING |
-> +--------------------------+
-> |                        1 |
-> +--------------------------+
->
-> mysql> SHOW GLOBAL BINDINGS;
-> +----------------------------------+------------------------------------------------------------------------------+------------+---------+-------------------------+-------------------------+---------+-----------------+--------+------+------------------------------------------------------------------+-------------+
-> | Original_sql                     | Bind_sql                                                                     | Default_db | Status  | Create_time             | Update_time             | Charset | Collation       | Source | Type | Sql_digest                                                       | Plan_digest |
-> +----------------------------------+------------------------------------------------------------------------------+------------+---------+-------------------------+-------------------------+---------+-----------------+--------+------+------------------------------------------------------------------+-------------+
-> | select * from ( `t1` ) join `t2` | SELECT /*+ use_index(`t1` `a`) use_index(`t2` `a`)*/ * FROM (`t1`) JOIN `t2` |            | enabled | 2023-12-18 23:01:27.242 | 2023-12-18 23:01:27.242 | utf8    | utf8_general_ci | manual | u    | ea8720583e80644b58877663eafb3579700e5f918a748be222c5b741a696daf4 |             |
-> +----------------------------------+------------------------------------------------------------------------------+------------+---------+-------------------------+-------------------------+---------+-----------------+--------+------+------------------------------------------------------------------+-------------+
-> mysql> DROP GLOBAL BINDING FOR SQL DIGEST 'ea8720583e80644b58877663eafb3579700e5f918a748be222c5b741a696daf4';
-> mysql> SHOW GLOBAL BINDINGS;
-> ```
+通用绑定与普通绑定可以同时存在，匹配的优先级从高到低依次为：SESSION 级别的普通绑定 > SESSION 级别的通用绑定 > GLOBAL 级别的普通绑定 > GLOBAL 级别的通用绑定。
 
+除了创建方式不同，通用绑定的删除和状态设置与普通绑定相同。下面是一个完整的使用示例。
+
+1. 创建数据库 `db1` 和 `db2`，并在每个数据库中创建两张表：
+  
+    ```sql
+    CREATE DATABASE db1;
+    CREATE TABLE db1.t1 (a INT, KEY(a));
+    CREATE TABLE db1.t2 (a INT, KEY(a));
+    CREATE DATABASE db2;
+    CREATE TABLE db2.t1 (a INT, KEY(a));
+    CREATE TABLE db2.t2 (a INT, KEY(a));
+    ```
+
+2. 开启通用绑定功能：
+
+    ```sql
+    SET tidb_opt_enable_universal_binding=1;
+    ```
+
+3. 创建通用绑定：
+
+    ```sql
+    CREATE GLOBAL UNIVERSAL BINDING USING SELECT /*+ use_index(t1, a), use_index(t2, a) */ * FROM t1, t2;
+    ```
+
+4. 执行查询并查看是否使用了绑定：
+
+    ```sql
+    SELECT * FROM db1.t1, db1.t2;
+    SELECT @@LAST_PLAN_FROM_BINDING;
+    +--------------------------+
+    | @@LAST_PLAN_FROM_BINDING |
+    +--------------------------+
+    |                        1 |
+    +--------------------------+
+    
+    SELECT * FROM db2.t1, db2.t2;
+    SELECT @@LAST_PLAN_FROM_BINDING;
+    +--------------------------+
+    | @@LAST_PLAN_FROM_BINDING |
+    +--------------------------+
+    |                        1 |
+    +--------------------------+
+    
+    SELECT * FROM db1.t1, db2.t2;
+    SELECT @@LAST_PLAN_FROM_BINDING;
+    +--------------------------+
+    | @@LAST_PLAN_FROM_BINDING |
+    +--------------------------+
+    |                        1 |
+    +--------------------------+
+    ```
+
+5. 查看绑定：
+
+    ```sql
+    SHOW GLOBAL BINDINGS;
+    +----------------------------------+------------------------------------------------------------------------------+------------+---------+-------------------------+-------------------------+---------+-----------------+--------+------+------------------------------------------------------------------+-------------+
+    | Original_sql                     | Bind_sql                                                                     | Default_db | Status  | Create_time             | Update_time             | Charset | Collation       | Source | Type | Sql_digest                                                       | Plan_digest |
+    +----------------------------------+------------------------------------------------------------------------------+------------+---------+-------------------------+-------------------------+---------+-----------------+--------+------+------------------------------------------------------------------+-------------+
+    | select * from ( `t1` ) join `t2` | SELECT /*+ use_index(`t1` `a`) use_index(`t2` `a`)*/ * FROM (`t1`) JOIN `t2` |            | enabled | 2023-12-18 23:01:27.242 | 2023-12-18 23:01:27.242 | utf8    | utf8_general_ci | manual | u    | ea8720583e80644b58877663eafb3579700e5f918a748be222c5b741a696daf4 |             |
+    +----------------------------------+------------------------------------------------------------------------------+------------+---------+-------------------------+-------------------------+---------+-----------------+--------+------+------------------------------------------------------------------+-------------+
+    ```
+
+6. 删除绑定：
+
+    ```sql
+    DROP GLOBAL BINDING FOR SQL DIGEST 'ea8720583e80644b58877663eafb3579700e5f918a748be222c5b741a696daf4';
+    SHOW GLOBAL BINDINGS;
+    ```
 
 ## 自动捕获绑定 (Baseline Capturing)
 
