@@ -31,6 +31,17 @@ TiDB 版本：7.6.0
 
     更多信息，请参考[用户文档](链接)。
 
+* BR 快照恢复速度提升 10 倍 [#33937](https://github.com/pingcap/tidb/issues/33937) @[3pointer](https://github.com/3pointer) **tw@Oreoxmt** <!--1647-->
+
+    随着 TiDB 集群规模的不断扩大，在故障时快速恢复集群以减少业务中断时间变得愈发关键。`br` v7.6.0 之前的版本中， `region` 打散算法一直是性能恢复的瓶颈。然而，在 `br` v7.6.0 中，我们对 `region` 打散算法进行了优化，迅速地将恢复任务拆分成大量小任务并批量散布到所有的 TiKV 节点。通过充分利用每个 TiKV 节点的所有资源，我们成功实现了并行快速恢复，将集群快照恢复速度提升了 10 倍。
+    
+    我们为用户提供了 `--granularity` 命令行参数，通过设置该参数可以启用新的并行恢复算法。例如：(命令行参数例子待研发提供)
+    ```sql
+    
+    ```
+
+    更多信息，请参考[用户文档](链接)。
+    
 * TiDB 提供支持落盘的并发 HashAgg 算法（实验特性） [#35637](https://github.com/pingcap/tidb/issues/35637) @[xzhangxian1008](https://github.com/xzhangxian1008) **tw@qiancai** <!--1365-->
 
     在之前的版本中，TiDB 的 HashAgg 算子的并发算法不支持落盘，所有数据必须在内存中进行处理。这导致数据量较大、超过内存总量，需要使用 HashAgg 的落盘功能时，必须选择非并发算法，从而无法通过并发提升性能。在 7.6.0 版本中，TiDB 提供支持落盘的并发 HashAgg 算法。在任意并发条件下，HashAgg 算子都可以根据内存使用情况自动触发数据落盘，从而兼顾性能和处理数据量。目前，该功能作为实验特性，引入变量 `tidb_enable_concurrent_hashagg_spill` 控制是否启用支持落盘的并发 HashAgg 算法。当该变量设置为 `true` 时，HashAgg 将使用支持落盘的并发算法。该变量将在功能正式发布时废弃。
