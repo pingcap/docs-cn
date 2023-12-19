@@ -38,6 +38,7 @@ TiDB 采用计算存储分离架构，具有出色的扩展性和弹性的扩缩
     ALTER TABLE t1 ADD INDEX idx1(c1);
     CREATE INDEX idx1 ON table t1(c1);
     ```
+
 ## 使用限制
 
 - 分布式执行框架一次只能调度一个 `ADD INDEX` 任务进行分布式执行。如果在当前的 `ADD INDEX` 分布式任务还未执行完成时就提交了一个新的 `ADD INDEX` 任务，则新提交的 `ADD INDEX` 任务不会被该框架调度，而是直接通过事务的方式来执行。
