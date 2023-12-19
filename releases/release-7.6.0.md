@@ -25,23 +25,18 @@ TiDB 版本：7.6.0
 
 ### 性能
 
-* 功能标题 [#issue号](链接) @[贡献者 GitHub ID](链接) **tw@xxx** <!--1234-->
-
-    功能描述（需要包含这个功能是什么、在什么场景下对用户有什么价值、怎么用）
-
-    更多信息，请参考[用户文档](链接)。
-
 * BR 快照恢复速度提升 10 倍 [#33937](https://github.com/pingcap/tidb/issues/33937) @[3pointer](https://github.com/3pointer) **tw@Oreoxmt** <!--1647-->
 
     随着 TiDB 集群规模的不断扩大，在故障时快速恢复集群以减少业务中断时间变得愈发关键。`br` v7.6.0 之前的版本中， `region` 打散算法一直是性能恢复的瓶颈。然而，在 `br` v7.6.0 中，我们对 `region` 打散算法进行了优化，迅速地将恢复任务拆分成大量小任务并批量散布到所有的 TiKV 节点。通过充分利用每个 TiKV 节点的所有资源，我们成功实现了并行快速恢复，将集群快照恢复速度提升了 10 倍。
-    
+
     我们为用户提供了 `--granularity` 命令行参数，通过设置该参数可以启用新的并行恢复算法。例如：(命令行参数例子待研发提供)
+
     ```sql
-    
+
     ```
 
     更多信息，请参考[用户文档](链接)。
-    
+
 * TiDB 提供支持落盘的并发 HashAgg 算法（实验特性） [#35637](https://github.com/pingcap/tidb/issues/35637) @[xzhangxian1008](https://github.com/xzhangxian1008) **tw@qiancai** <!--1365-->
 
     在之前的版本中，TiDB 的 HashAgg 算子的并发算法不支持落盘，所有数据必须在内存中进行处理。这导致数据量较大、超过内存总量，需要使用 HashAgg 的落盘功能时，必须选择非并发算法，从而无法通过并发提升性能。在 7.6.0 版本中，TiDB 提供支持落盘的并发 HashAgg 算法。在任意并发条件下，HashAgg 算子都可以根据内存使用情况自动触发数据落盘，从而兼顾性能和处理数据量。目前，该功能作为实验特性，引入变量 `tidb_enable_concurrent_hashagg_spill` 控制是否启用支持落盘的并发 HashAgg 算法。当该变量设置为 `true` 时，HashAgg 将使用支持落盘的并发算法。该变量将在功能正式发布时废弃。
@@ -85,12 +80,6 @@ TiDB 版本：7.6.0
 
 ### 稳定性
 
-* 功能标题 [#issue号](链接) @[贡献者 GitHub ID](链接) **tw@xxx** <!--1234-->
-
-    功能描述（需要包含这个功能是什么、在什么场景下对用户有什么价值、怎么用）
-
-    更多信息，请参考[用户文档](链接)。
-
 * 跨数据库绑定执行计划 [#issue号](链接) @[qw4990](https://github.com/qw4990) **tw@Oreoxmt** <!--1613-->
 
     我们看到越来越多的用户运行 TiDB 支撑其 SaaS 平台。SaaS 平台的一种普遍的建模方式，是把平台上每个租户的数据存入不同的“数据库”，而业务逻辑完全相同。这样我们能看到上百个数据库拥有相同的表和索引定义，运行类似的 SQL 语句。在这种场景下，当我们要对一条 SQL 语句的执行计划进行绑定(SQL Binding)，这条绑定通常对运行在其他数据库的 SQL 也有帮助。
@@ -112,12 +101,6 @@ TiDB 版本：7.6.0
 
 ### 高可用
 
-* 功能标题 [#issue号](链接) @[贡献者 GitHub ID](链接) **tw@xxx** <!--1234-->
-
-    功能描述（需要包含这个功能是什么、在什么场景下对用户有什么价值、怎么用）
-
-    更多信息，请参考[用户文档](链接)。
-
 * 支持代理组件 TiProxy （实验特性） [#413](https://github.com/pingcap/tiproxy/issues/413) @[djshow832](https://github.com/djshow832) @[xhebox](https://github.com/xhebox) **tw@ran-huang** <!--1596-->
 
     TiProxy 是 TiDB 的官方代理组件，放置在客户端和 TiDB server 之间，为 TiDB 提供负载均衡、连接保持功能，让 TiDB 集群的负载更加均衡，以及维护操作时不影响用户对数据库的连接访问。
@@ -131,33 +114,21 @@ TiDB 版本：7.6.0
 
 ### SQL 功能
 
-* 功能标题 [#issue号](链接) @[贡献者 GitHub ID](链接) **tw@xxx** <!--1234-->
-
-    功能描述（需要包含这个功能是什么、在什么场景下对用户有什么价值、怎么用）
-
-    更多信息，请参考[用户文档](链接)。
-
 * LOAD DATA 支持显示事务和回滚 [#49079](https://github.com/pingcap/tidb/pull/49079) @[ekexium](https://github.com/ekexium) **tw@Oreoxmt** <!--1422-->
 
     在 TiDB v7.6.0 之前，使用 `LOAD DATA` 语句来批量导入数据时，提交方式经历了一些变化。在 TiDB v4.0.0 之前，每导入 20000 行数据就会进行一次提交；从 v4.0.0 到 v6.6.0 版本，默认在一个事务中提交所有行，但也支持通过设置 [`tidb_dml_batch_size`](/system-variables.md#tidb_dml_batch_size) 参数实现分批次提交；自 TiDB v7.0.0 起，仅支持导入后一次性提交数据，[`tidb_dml_batch_size`](/system-variables.md#tidb_dml_batch_size) 参数不再生效。与 MySQL 的 `LOAD DATA` 相比，TiDB v7.6.0 之前的 `LOAD DATA` 在不同版本的事务行为都存在差异，因此在使用该语句时，用户需要额外的调整。
-    
+
     从 TiDB v7.6.0 版本起，TiDB 的 `LOAD DATA` 的事务行为和其他普通 DML 一致。特别是和 MySQL 的事务行为一致， 事务内的`LOAD DATA` 语句本身不再自动提交当前事务，也不会开启新事务，并且事务内的 `LOAD DATA` 语句可以被显式提交或者回滚。此外，`LOAD DATA` 语句还受 TiDB 事务模式设置（乐观/悲观）影响。这些改进使得用户在从 MySQL 到 TiDB 迁移时不再需要额外的适配工作，让数据导入体验更加一致和可控。
 
     更多信息，请参考[用户文档](/sql-statements/sql-statement-load-data.md)。
+
 ### 数据库管理
-
-* 功能标题 [#issue号](链接) @[贡献者 GitHub ID](链接) **tw@xxx** <!--1234-->
-
-    功能描述（需要包含这个功能是什么、在什么场景下对用户有什么价值、怎么用）
-
-    更多信息，请参考[用户文档](链接)。
 
 * 支持自动终止长时间未提交的空闲事务 [#48714](https://github.com/pingcap/tidb/pull/48714) @[crazycs520](https://github.com/crazycs520) **tw@Oreoxmt** <!--1598-->
 
     我们经常碰到这样的情况，由于网络异常断开或者应用程序的小问题，有时 `commit / rollback` 语句无法正常传送到数据库，导致锁没有被释放，从而触发了事务锁等待问题和数据库的连接数的快速上涨。在测试环境，这种情况经常发生，线上环境偶尔也会出现，而且有的时候很难诊断。因此，TiDB v7.6.0 版本开始支持通过设置 [`tidb_idle_transaction_timeout`](/system-variables.md#tidb_idle_transaction_timeout-从-v760-版本开始引入) 参数，自动终止长时间运行的空闲事务，以防止这种情况的发生。该参数单位是秒，当一个事务空闲时间超过设定的阈值时，系统会自动强制结束该事务的数据库连接并回滚事务。
 
     更多信息，请参考[用户文档](/system-variables.md#tidb_idle_transaction_timeout-从-v760-版本开始引入)。
-    
 
 * 简化执行计划绑定的语法 [#issue号](链接) @[qw4990](https://github.com/qw4990) **tw@Oreoxmt** <!--1613-->
 
@@ -176,7 +147,7 @@ TiDB 版本：7.6.0
     TiDB v7.6.0 之前，事务中单行记录的大小受 TiDB 的配置文件参数 [`txn-entry-size-limit`](/tidb-configuration-file.md#txn-entry-size-limit-从-v50-版本开始引入) 限制。如果超出该限制，TiDB 将返回 `entry too large` 错误。在这种情况下，用户需要修改 TiDB 配置文件并重启 TiDB 才能够生效。为了降低用户的管理成本，TiDB 从 v7.6.0 开始新增了系统变量 [`tidb_txn_entry_size_limit`](/system-variables.md#tidb_txn_entry_size_limit-从-v760-版本开始引入)，支持动态修改该配置项的值。该变量的默认值为 `0`，表示默认使用 [`txn-entry-size-limit`](/tidb-configuration-file.md#txn-entry-size-limit-从-v50-版本开始引入) 的值。但如果设置为非 `0` 值，就会优先使用该变量作为事务中的单行记录大小的限制。这一改进旨在使用户更灵活地调整系统配置，而无需重启 TiDB 生效。
 
     更多信息，请参考[用户文档](/system-variables.md#tidb_txn_entry_size_limit-从-v760-版本开始引入) 。
-    
+
 * 引入 Bi-directional replication(BDR) [#issue号](链接) @[okJiang](https://github.com/okJiang) **tw@ran-huang** <!--1521/1525-->
 
     在使用 TiCDC 对 2 个 TiDB 集群进行双向同步时，会导致 DDL 循环同步，同时一些高危 DDL 同步会触发数据不一致的问题。因此在 7.6 版本引入了 BDR Role，设置 BDR Role 之后的集群之间 DDL 不会被循环复制。且不同的 BDR Role 可以为不同的集群设置不同的 BDR Role ，不同的BDR Role 可执行的 DDL 范围不同，从而最大程度避免在双向同步的场景引起数据不一致的问题。
@@ -191,21 +162,15 @@ TiDB 版本：7.6.0
 
     更多信息，请参考[用户文档](链接)。
 
-* BR 默认恢复用户账号等系统表数据 [#48567](https://github.com/pingcap/tidb/issues/48567) @[BornChanger](https://github.com/BornChanger)
+* BR 默认恢复用户账号等系统表数据 [#48567](https://github.com/pingcap/tidb/issues/48567) @[BornChanger](https://github.com/BornChanger) **tw@Oreoxmt** <!--1570-->
 
     `br` 备份恢复工具从 v5.1.0 开始引入了对 **mysql schema** 下的系统表数据的默认自动备份，但默认情况下不会恢复系统表数据。随后，在 `br` v6.2.0 版本中，我们引入了新的恢复参数 `--with-sys-table`，使用户在恢复数据的同时选择性地恢复部分系统表相关数据，提供了更多的操作灵活性。
-    
+
     为了进一步简化用户的管理成本，同时为用户提供更直观的默认行为。从 `br` v7.6.0 开始，我们决定将恢复参数 `--with-sys-table` 的默认值设置为开启，并取消 `cloud_admin` 账号过滤。这意味着， `br` 默认支持在数据恢复时同时恢复部分系统表相关数据，特别是用户账号和表的统计信息数据。这一改进旨在使备份恢复操作更加直观且符合用户期望，减轻用户手动配置的负担，提升整体操作体验。
 
     更多信息，请参考[用户文档](/br/br-snapshot-guide.md)。
-    
+
 ### 可观测性
-
-* 功能标题 [#issue号](链接) @[贡献者 GitHub ID](链接) **tw@xxx** <!--1234-->
-
-    功能描述（需要包含这个功能是什么、在什么场景下对用户有什么价值、怎么用）
-
-    更多信息，请参考[用户文档](链接)。
 
 * 资源管控相关观测性增强 [#49318](https://github.com/pingcap/tidb/issues/49318) @[glorv](https://github.com/glorv) @[bufferflies](https://github.com/bufferflies) @[nolouch](https://github.com/nolouch) **tw@hfxsd** <!--1668-->
 
@@ -227,12 +192,6 @@ TiDB 版本：7.6.0
     更多信息，请参考[用户文档](链接)。
 
 ### 数据迁移
-
-* 功能标题 [#issue号](链接) @[贡献者 GitHub ID](链接) **tw@xxx** <!--1234-->
-
-    功能描述（需要包含这个功能是什么、在什么场景下对用户有什么价值、怎么用）
-
-    更多信息，请参考[用户文档](链接)。
 
 * DataMigration（DM）迁移 MySQL8.0 的功能成为正式功能（GA） [#issue号](链接) @[lyzx2001](https://github.com/lyzx2001) **tw@hfxsd** <!--1617-->
 
