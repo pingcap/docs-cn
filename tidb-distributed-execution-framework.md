@@ -40,7 +40,12 @@ TiDB 采用计算存储分离架构，具有出色的扩展性和弹性的扩缩
     CREATE INDEX idx1 ON table t1(c1);
     ```
 
-- `IMPORT INTO` 用于将 `CSV`、`SQL`、`PARQUET` 等格式的数据导入到一张空表中。详情请参考 [`IMPORT INTO`](/sql-statements/sql-statement-import-into.md)。
+- `IMPORT INTO` 即通过该 SQL 语句将 `CSV`、`SQL`、`PARQUET` 等格式的数据导入到一张空表中。详情请参考 [`IMPORT INTO`](/sql-statements/sql-statement-import-into.md)。
+
+## 使用限制
+
+- 分布式执行框架一次只能调度一个 `ADD INDEX` 任务进行分布式执行。如果在当前的 `ADD INDEX` 分布式任务还未执行完成时就提交了一个新的 `ADD INDEX` 任务，则新提交的 `ADD INDEX` 任务不会被该框架调度，而是直接通过事务的方式来执行。
+- 不支持通过分布式执行框架对数据类型为 `TIMESTAMP` 的列添加索引，否则会导致索引和数据不一致的问题。
 
 ## 启用前提
 
