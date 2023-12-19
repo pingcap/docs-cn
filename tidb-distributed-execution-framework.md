@@ -34,6 +34,7 @@ TiDB 采用计算存储分离架构，具有出色的扩展性和弹性的扩缩
 目前，后端任务分布式框架仅支持分布式执行 `ADD INDEX`，即 DDL 创建索引的场景。例如以下 SQL 语句：
 
 - `ADD INDEX`，即 DDL 创建索引的场景。例如以下 SQL 语句：
+
     ```sql
     ALTER TABLE t1 ADD INDEX idx1(c1);
     CREATE INDEX idx1 ON table t1(c1);
