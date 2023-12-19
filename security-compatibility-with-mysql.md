@@ -109,7 +109,8 @@ TiDB 的密码重用策略功能与 MySQL 一致，在实现密码重用策略�
 
 TiDB 支持多种身份验证方式。通过使用 [`CREATE USER`](/sql-statements/sql-statement-create-user.md) 语句和 [`ALTER USER`](/sql-statements/sql-statement-create-user.md) 语句，即可创建新用户或更改 TiDB 权限系统内的已有用户。TiDB 身份验证方式与 MySQL 兼容，其名称与 MySQL 保持一致。
 
-TiDB 目前支持的身份验证方式可在以下的表格中查找到。服务器和客户端建立连接时，如要指定服务器对外通告的默认验证方式，可通过 [`default_authentication_plugin`](/system-variables.md#default_authentication_plugin) 变量进行设置。`tidb_sm3_password` 为仅在 TiDB 支持的 SM3 身份验证方式，使用该方式登录的用户需要使用 [TiDB-JDBC](https://github.com/pingcap/mysql-connector-j/tree/release/8.0-sm3)。`tidb_auth_token` 为仅用于 TiDB Cloud 内部的基于 JSON Web Token (JWT) 的认证方式。
+TiDB 目前支持的身份验证方式可在以下的表格中查找到。服务器和客户端建立连接时，如要指定服务器对外通告的默认验证方式，可通过 [`default_authentication_plugin`](/system-variables.md#default_authentication_plugin) 变量进行设置。
+`tidb_sm3_password` 为仅在 TiDB 支持的 SM3 身份验证方式，使用该方式登录的用户需要使用 [TiDB-JDBC](https://github.com/pingcap/mysql-connector-j/tree/release/8.0-sm3)。
 
 针对 TLS 身份验证，TiDB 目前采用不同的配置方案。具体情况请参见[为 TiDB 客户端服务端间通信开启加密传输](/enable-tls-between-clients-and-servers.md)。
 
@@ -129,3 +130,7 @@ TiDB 目前支持的身份验证方式可在以下的表格中查找到。服务
 | ed25519 (MariaDB)        | 否               |
 | GSSAPI (MariaDB)         | 否               |
 | FIDO                     | 否               |
+
+### `tidb_auth_token`
+
+`tidb_auth_token` 是一种基于 [JSON Web Token (JWT)](https://en.wikipedia.org/wiki/JSON_Web_Token) 的无密码认证方式，用于 TiDB Cloud 内部。
