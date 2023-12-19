@@ -101,4 +101,4 @@ backend = "local"
 
     - BR 快照备份 TiDB Lightning 正在导入的表，会导致该表备份的数据不一致。
     - BR 执行基于 AWS EBS 卷快照的备份，会导致 TiDB Lightning 导入数据失败。
-    - PiTR 无法备份 TiDB Lightning 导入的数据。 
+    - Point-in-time recovery (PITR) 无法备份 TiDB Lightning 导入的数据。 
