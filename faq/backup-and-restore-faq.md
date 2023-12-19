@@ -329,10 +329,10 @@ BR v4.0.9 备份统计信息使 br 工具消耗过多内存，为保证备份过
 
 会，BR 会备份表的 [`SHARD_ROW_ID_BITS` 和 `PRE_SPLIT_REGIONS`](/sql-statements/sql-statement-split-region.md#pre_split_regions) 信息，并恢复成多个 Region。
 
-### 恢复到一半中断了，需要删除已有的数据再恢复吗？
+### 恢复到一半中断了，需要删除已恢复的数据重新再恢复吗？
 
-不需要，在 7.1 版本中，恢复支持从断点恢复，如果中途因为意外情况退出，那么直接再次启动恢复任务即可。
+不需要。从 v7.1.0 起，BR 支持从断点恢复。如果恢复中途因为意外情况退出，直接再次启动恢复任务即可。
 
 ### 恢复完成后，可以再针对某张表删除后重新恢复吗？
 
-可以使用 drop & truncate table 删除某张特定的表后再进行恢复，但这里需要注意，不能使用 delete from table 来清理数据，原因是后者只是通过更新的 MVCC 版本标记删除数据，直到 GC 才能将数据真正删除。
+删除某张特定的表后可以再重新进行恢复，但删除时需要使用 `DROP TABLE` 或 `TRUNCATE TABLE` 语句，不能使用 `DELETE FROM` 语句。因为 `DELETE FROM` 只是通过更新 MVCC 版本标记要删除的数据，这些数据直到 GC 后才会真正删除。
