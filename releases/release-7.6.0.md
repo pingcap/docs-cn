@@ -148,7 +148,7 @@ TiDB 版本：7.6.0
 
     更多信息，请参考[用户文档](/system-variables.md#tidb_txn_entry_size_limit-从-v760-版本开始引入) 。
 
-* 引入 Bi-directional replication(BDR) [#issue号](链接) @[okJiang](https://github.com/okJiang) **tw@ran-huang** <!--1521/1525-->
+* 引入 Bi-directional replication(BDR) [#issue号](链接) @[okJiang](https://github.com/okJiang) **tw@hfxsd** <!--1521/1525-->
 
     在使用 TiCDC 对 2 个 TiDB 集群进行双向同步时，会导致 DDL 循环同步，同时一些高危 DDL 同步会触发数据不一致的问题。因此在 7.6 版本引入了 BDR Role，设置 BDR Role 之后的集群之间 DDL 不会被循环复制。且不同的 BDR Role 可以为不同的集群设置不同的 BDR Role ，不同的BDR Role 可执行的 DDL 范围不同，从而最大程度避免在双向同步的场景引起数据不一致的问题。
 
