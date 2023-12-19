@@ -51,7 +51,7 @@ TiDB 版本：7.1.3
 
         - 优化 TiCDC 节点同步数据到 TiDB 时的内存消耗 [#9935](https://github.com/pingcap/tiflow/issues/9935) @[3AceShowHand](https://github.com/3AceShowHand)
         - 优化部分报警规则 [#9266](https://github.com/pingcap/tiflow/issues/9266) @[asddongmen](https://github.com/asddongmen)
-        - 优化了 Redo log 的相关性能，包括并行写入 S3 和采用压缩模式 [#10176](https://github.com/pingcap/tiflow/issues/10176) [#10226](https://github.com/pingcap/tiflow/issues/10226) @[sdojjy](https://github.com/sdojjy)
+        - 优化了 Redo log 的相关性能，包括并行写入 S3 和支持 lz4 压缩算法 [#10176](https://github.com/pingcap/tiflow/issues/10176) [#10226](https://github.com/pingcap/tiflow/issues/10226) @[sdojjy](https://github.com/sdojjy)
         - 通过增加并行，优化了 TiCDC 同步数据到对象存储的性能 [#10098](https://github.com/pingcap/tiflow/issues/10098) @[CharlesCheung96](https://github.com/CharlesCheung96)
         - (dup): release-6.5.6.md > 改进提升> Tools> TiCDC - 减少 TiCDC 在做增量扫描时对上游 TiKV 的影响 [#11390](https://github.com/tikv/tikv/issues/11390) @[hicqu](https://github.com/hicqu)
         - (dup): release-6.5.6.md > 改进提升> Tools> TiCDC - 支持通过在 `sink-uri` 中设置 `content-compatible=true` 使 TiCDC Canal-JSON [兼容 Canal 官方输出的内容格式](/ticdc/ticdc-canal-json.md#兼容-canal-官方实现) [#10106](https://github.com/pingcap/tiflow/issues/10106) @[3AceShowHand](https://github.com/3AceShowHand)
@@ -154,7 +154,7 @@ TiDB 版本：7.1.3
     - 修复当查询遇到内存限制后发生内存泄漏的问题 [#8447](https://github.com/pingcap/tiflash/issues/8447) @[JinheLin](https://github.com/JinheLin)
     - 修复在执行 `FLASHBACK DATABASE` 后 TiFlash 副本的数据仍会被 GC 回收的问题 [#8450](https://github.com/pingcap/tiflash/issues/8450) @[JaySon-Huang](https://github.com/JaySon-Huang)
     - 修复 Grafana 中部分面板的最大分位数耗时显示不正确的问题 [#8076](https://github.com/pingcap/tiflash/issues/8076) @[JaySon-Huang](https://github.com/JaySon-Huang)
-    - 修复查询非预期报错 `Block schema mismatch in FineGrainedShuffleWriter-V1` 的问题 [#8111](https://github.com/pingcap/tiflash/issues/8111}) @[SeaRise](https://github.com/SeaRise)
+    - 修复查询非预期报错 `Block schema mismatch in FineGrainedShuffleWriter-V1` 的问题 [#8111](https://github.com/pingcap/tiflash/issues/8111) @[SeaRise](https://github.com/SeaRise)
 
 + Tools
 
@@ -170,8 +170,7 @@ TiDB 版本：7.1.3
 
         - 修复某些场景下在同步 `DELETE` 语句时，`WHERE` 条件没有采用主键作为条件的问题 [#9812](https://github.com/pingcap/tiflow/issues/9812) @[asddongmen](https://github.com/asddongmen)
         - 修复在开启 redo log 功能后，同步 DDL 语句间隔时间较长的问题 [#9960](https://github.com/pingcap/tiflow/issues/9960) @[CharlesCheung96](https://github.com/CharlesCheung96)
-        - 修复在 BDR 模式下，`DELETE` 或 `CREATE` 同名的表后，DML 不能正确同步的问题 [#10079](https://github.com/pingcap/tiflow/issues/10079) @[asddongmen](https://github.com/asddongmen)
-        - 修复同步到对象存储时，某些特殊场景下同步任务卡住的问题 [#10041](https://github.com/pingcap/tiflow/issues/10041) [#10044](https://github.com/pingcap/tiflow/issues/10044) @[CharlesCheung96](https://github.com/CharlesCheung96)
+        - 修复同步数据到对象存储时，某些特殊场景下同步任务卡住的问题 [#10041](https://github.com/pingcap/tiflow/issues/10041) [#10044](https://github.com/pingcap/tiflow/issues/10044) @[CharlesCheung96](https://github.com/CharlesCheung96)
         - 修复在开启 sync-point 和 redo log 后，某些特殊场景下同步任务卡住的问题 [#10091](https://github.com/pingcap/tiflow/issues/10091) @[CharlesCheung96](https://github.com/CharlesCheung96)
         - 修复在某些特殊场景下，TiCDC 错误地关闭与 TiKV 的连接的问题 [#10239](https://github.com/pingcap/tiflow/issues/10239) @[hicqu](https://github.com/hicqu)
         - (dup): release-6.5.6.md > 错误修复> Tools> TiCDC - 修复开启双向复制时，`DROP` 一张表后再重新 `CREATE` 该表，Changefeed 无法同步 DML 事件的问题 [#10079](https://github.com/pingcap/tiflow/issues/10079) @[asddongmen](https://github.com/asddongmen)
