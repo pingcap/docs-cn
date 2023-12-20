@@ -60,6 +60,10 @@ Click any item in the list to display detailed execution information of the slow
 
 ### SQL
 
+> **Note:**
+>
+> The maximum length of the query recorded in the `Query` column is limited by the [`tidb_stmt_summary_max_sql_length`](/system-variables.md#tidb_stmt_summary_max_sql_length-new-in-v40) system variable.
+
 Click the **Expand** button to view the detailed information of an item. Click the **Copy** button to copy the detailed information to the clipboard.
 
 ### Execution plans

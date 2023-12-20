@@ -5250,7 +5250,18 @@ For details, see [Identify Slow Queries](/identify-slow-queries.md).
 - Type: Integer
 - Default value: `4096`
 - Range: `[0, 2147483647]`
-- This variable is used to control the length of the SQL string in [statement summary tables](/statement-summary-tables.md).
+
+<CustomContent platform="tidb">
+
+- This variable is used to control the length of the SQL string in [statement summary tables](/statement-summary-tables.md), the [`SLOW_QUERY`](/information-schema/information-schema-slow-query.md) table, and the [TiDB Dashboard](/dashboard/dashboard-intro.md).
+
+</CustomContent>
+
+<CustomContent platform="tidb-cloud">
+
+- This variable is used to control the length of the SQL string in [statement summary tables](/statement-summary-tables.md) and the [`SLOW_QUERY`](/information-schema/information-schema-slow-query.md) table.
+
+</CustomContent>
 
 ### tidb_stmt_summary_max_stmt_count <span class="version-mark">New in v4.0</span>
 
