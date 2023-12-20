@@ -40,21 +40,10 @@ TiDB 中文文档的日常更新特别活跃，相应地，[TiDB 英文文档](h
 
 最常见的贡献方式就是提 Pull Request 了，那么提交流程是怎样的，又需要遵守哪些规范呢？下面的视频教程可以帮你快速上手 GitHub 的 Pull Request 流程。
 
-**基本概念篇（4 分钟）**
-
-<video src="https://download.pingcap.com/docs-cn/GTV_0_zh_Basic_concepts.mp4" width="600px" height="450px" controls="controls" poster="https://download.pingcap.com/docs-cn/pr_00_basic_concepts.png"></video>
-
-**创建 PR（4 分钟）**
-
-<video src="https://download.pingcap.com/docs-cn/GTV_1_zh_How_to_Create_a_PR.mp4" width="600px" height="450px" controls="controls" poster="https://download.pingcap.com/docs-cn/pr_01_create_pr.png"></video>
-
-**PR 的后续跟进（5 分钟）**
-
-<video src="https://download.pingcap.com/docs-cn/GTV_2_zh_PR_Follow_up.mp4" width="600px" height="450px" controls="controls" poster="https://download.pingcap.com/docs-cn/pr_01_follow_up.png"></video>
-
-**批量修改建议和 CI 检查（4 分钟）**
-
-<video src="https://download.pingcap.com/docs-cn/GTV_3_zh_Batch_Suggestion_and_CI_Check.mp4" width="600px" height="450px" controls="controls" poster="https://download.pingcap.com/docs-cn/pr_01_suggestions.png"></video>
+- [Git 与 GitHub 基础概念](https://www.bilibili.com/video/BV1h5411E7pM/?p=1)
+- [如何创建一个 Pull Request (PR)](https://www.bilibili.com/video/BV1h5411E7pM?p=2)
+- [跟进 PR 的后续操作](https://www.bilibili.com/video/BV1h5411E7pM?p=3)
+- [批量接受 Review 建议和处理 CI 检查](https://www.bilibili.com/video/BV1h5411E7pM?p=4)
 
 你也可以查阅 [docs-cn 现有的 Pull Request](https://github.com/pingcap/docs-cn/pulls) 作为参考。关于提 Pull Request 的详细步骤，请查阅[参考资料](#参考资料)。
 
