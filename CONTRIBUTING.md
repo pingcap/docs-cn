@@ -57,7 +57,7 @@ TiDB 中文文档的日常更新特别活跃，相应地，[TiDB 英文文档](h
         - Fix typos in tidb-monitoring-api.md
         - benchmark: add the v5.3.0 benchmark document
     - [ ] 有简要描述，例如修改背景等，并添加对应的 issue 号（如果有）
-    - [ ] 选择正确的标签 (label)
+    - [ ] 选择正确的 label
     - [ ] cherry-pick 到适用且必要的分支版本
 - [ ] 如果新增文档、删除文档，需要同时更新 `TOC.md`，删除文档时需要在文件开头添加 `aliases` 确保旧链接能够正常跳转。
 - [ ] 预览文档，确保文档格式正确、清晰、可读，特别注意表格、图片、列表等特殊样式能够正常显示。
@@ -154,7 +154,7 @@ git push -u origin new-branch-name
 
 > **注意：**
 >
-> - 如果你的修改影响多个文档版本 (如 dev、v7.5、v7.4 等)，务必**在 PR 描述框中勾选相应的版本**，后续仓库管理员会为你的 PR 打上相应的 cherry-pick 标签。
+> - 如果你的修改影响多个文档版本 (如 dev、v7.5、v7.4 等)，务必**在 PR 描述框中勾选相应的版本**，后续仓库管理员会为你的 PR 打上相应的 cherry-pick label。
 
 </details>
 
@@ -177,17 +177,17 @@ git push -u origin new-branch-name
 
     打开你想认领的 PR，拉到底部留下这条 comment：`/assign`，即可将此 PR 的翻译任务分配给自己。
 
-3. 修改 PR 标签
+3. 修改 PR label
 
-    PR 认领成功后，继续在底部 comment 区域依次发送：`/remove-translation welcome` 及 `/translation doing`，即可将右侧 label 栏中的 `translation/welcome` 改为 `translation/doing`，之后你便可以开始翻译了。
+    PR 认领成功后，继续在底部 comment 区域依次发送：`/remove-translation welcome` 及 `/translation doing`，即可将右侧 Labels 栏中的 `translation/welcome` 改为 `translation/doing`，之后你便可以开始翻译了。
 
 4. 翻译 PR 并提交
 
     由于 TiDB 的中英文文档分别存放于 [pingcap/docs-cn](https://github.com/pingcap/docs-cn) 和 [pingcap/docs](https://github.com/pingcap/docs) 中，并且两个仓库的文件结构完全对应。如果你是首次认领翻译任务，需先 fork docs 仓库，并将 fork 的 docs 仓库克隆到本地，然后找到源 PR 中对应的改动文件再开始翻译。翻译完毕后，创建新 PR，将翻译好的文件提交至 docs 仓库。
 
-5. 填写 PR 描述并修改标签
+5. 填写 PR 描述并修改 label
 
-    新建 PR 成功后，先按照模板说明完整填写 PR 描述，接着在底部发送：`/translation from-docs-cn`，为 PR 添加 `translation/from-docs-cn` 标签，表明此 PR 是从中文翻译过来的。然后回到源 PR 依次发送：`/remove-translation doing` 及 `/translation done`，将源 PR 标签修改为 `translation/done`，表明翻译已完成。
+    新建 PR 成功后，先按照模板说明完整填写 PR 描述，接着在底部发送：`/translation from-docs-cn`，为 PR 添加 `translation/from-docs-cn` label，表明此 PR 是从中文翻译过来的。然后回到源 PR 依次发送：`/remove-translation doing` 及 `/translation done`，将源 PR label 修改为 `translation/done`，表明翻译已完成。
 
 6. 分配 Reviewer（推荐，非必需）
 
