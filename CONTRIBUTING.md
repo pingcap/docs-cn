@@ -270,4 +270,3 @@ TiDB 中文文档使用 Markdown 语言进行编写，为了保证文档质量�
 - [代码注释规范](https://github.com/pingcap/community/blob/master/contributors/code-comment-style.md)
 - [Figma 快速上手教程](/resources/figma-quick-start-guide.md)
 - [EBNF 语法图在线渲染](https://kennytm.github.io/website-docs/dist/)
-
