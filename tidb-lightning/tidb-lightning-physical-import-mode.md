@@ -96,3 +96,9 @@ backend = "local"
 - TiDB Lightning 与 TiCDC 一起使用时需要注意：
 
     - TiCDC 无法捕获物理导入模式插入的数据。
+
+- TiDB Lightning 与 BR 一起使用时需要注意：
+
+    - BR 快照备份 TiDB Lightning 正在导入的表，会导致该表备份的数据不一致。
+    - BR 执行基于 AWS EBS 卷快照的备份，会导致 TiDB Lightning 导入数据失败。
+    - Point-in-time recovery (PITR) 无法备份 TiDB Lightning 导入的数据。 
