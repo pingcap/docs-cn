@@ -38,14 +38,14 @@ TiDB 中文文档的日常更新特别活跃，相应地，[TiDB 英文文档](h
 
 ## 如何提 Pull Request？
 
-最常见的贡献方式就是提 Pull Request 了，那么提交流程是怎样的，又需要遵守哪些规范呢？下面的视频教程可以帮你快速上手 GitHub 的 Pull Request 流程。
+最常见的贡献方式就是提 Pull Request 了，那么提交流程是怎样的，又需要遵守哪些规范呢？下面的视频教程可以帮你快速上手 GitHub 的 Pull Request 流程：
 
 - [Git 与 GitHub 基础概念](https://www.bilibili.com/video/BV1h5411E7pM/?p=1)
 - [如何创建一个 Pull Request (PR)](https://www.bilibili.com/video/BV1h5411E7pM?p=2)
 - [跟进 PR 的后续操作](https://www.bilibili.com/video/BV1h5411E7pM?p=3)
 - [批量接受 Review 建议和处理 CI 检查](https://www.bilibili.com/video/BV1h5411E7pM?p=4)
 
-你也可以查阅 [docs-cn 现有的 Pull Request](https://github.com/pingcap/docs-cn/pulls) 作为参考。关于提 Pull Request 的详细步骤，请查阅[参考资料](#参考资料)。
+你也可以查阅 [docs-cn 仓库现有的 Pull Requests](https://github.com/pingcap/docs-cn/pulls) 作为参考。关于提 Pull Request 的详细步骤，请查阅[参考资料](#参考资料)。
 
 ## PR Checklist
 
