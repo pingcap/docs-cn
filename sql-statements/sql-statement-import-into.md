@@ -149,10 +149,6 @@ SET 表达式左侧只能引用 `ColumnNameOrUserVarList` 中没有的列名。�
 
 ## 全局排序
 
-> **警告：**
->
-> 全局排序为实验特性，不建议在生产环境中使用。
-
 `IMPORT INTO` 会将源数据文件的导入拆分到多个子任务中，各个子任务独立进行编码排序并导入。如果各个子任务编码后的 KV (TiDB 将数据编码为 KV 的方式，参考 [TiDB 数据库的计算](/tidb-computing.md)) range 重叠过多，导入时 TiKV 需要不断地进行 compaction，会降低导入的性能和稳定性。
 
 在以下情况中，可能存在较多的 KV range 重叠：
