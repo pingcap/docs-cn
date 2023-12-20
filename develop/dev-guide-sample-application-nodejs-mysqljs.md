@@ -98,7 +98,7 @@ npm install mysql dotenv --save
     TIDB_DATABASE=test
     TIDB_ENABLE_SSL=true
     ```
-   
+
     > **Note**
     >
     > 当你使用 Public Endpoint 连接 TiDB Serverless 集群时，**必须**启用 TLS 连接，请将 `TIDB_ENABLE_SSL` 修改为 `true`。
@@ -136,7 +136,7 @@ npm install mysql dotenv --save
     > **Note**
     >
     > 推荐在使用 Public Endpoint 连接 TiDB Dedicated 集群时，启用 TLS 连接。
-    > 
+    >
     > 为了启用 TLS (SSL) 连接，将 `TIDB_ENABLE_SSL` 修改为 `true`，并使用 `TIDB_CA_PATH` 指定从连接对话框中下载的 CA 证书的文件路径。
 
 6. 保存 `.env` 文件。
@@ -180,7 +180,7 @@ npm run start
 如果连接成功，你的终端将会输出所连接集群的版本信息：
 
 ```
-🔌 Connected to TiDB cluster! (TiDB version: 5.7.25-TiDB-v7.1.0)
+🔌 Connected to TiDB cluster! (TiDB version: 5.7.25-TiDB-v7.1.3)
 ⏳ Loading sample game data...
 ✅ Loaded sample game data.
 
@@ -228,7 +228,7 @@ conn.end();
 ```
 
 > **Note**
-> 
+>
 > 使用 Public Endpoint 连接 TiDB Serverless 时，**必须**启用 TLS 连接，请将 `TIDB_ENABLE_SSL` 修改为 `true`。但是你**不需要**通过 `TIDB_CA_PATH` 指定 SSL CA 证书，因为 Node.js 默认使用内置的 [Mozilla CA 证书](https://wiki.mozilla.org/CA/Included_Certificates)，该证书已被 TiDB Serverless 信任。
 
 ### 插入数据
@@ -305,7 +305,7 @@ conn.query('DELETE FROM players WHERE id = ?;', [1], (err, ok) => {
 - 为了避免 SQL 注入的风险，请在执行 SQL 语句前[传递到 SQL 中的值进行转义](https://github.com/mysqljs/mysql#escaping-query-values)。
 
    > **Note**
-   > 
+   >
    > `mysqljs/mysql` 包目前还不支持预处理语句，它只在客户端对值进行转义 (相关 issue: [mysqljs/mysql#274](https://github.com/mysqljs/mysql/issues/274))。
    >
    > 如果你希望使用预处理语句来避免 SQL 注入或提升批量插入/更新的效率，推荐使用 [mysql2](https://github.com/sidorares/node-mysql2) 包。
