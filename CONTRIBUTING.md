@@ -42,7 +42,7 @@ TiDB 中文文档的日常更新特别活跃，相应地，[TiDB 英文文档](h
 
 **基本概念篇（4 分钟）**
 
-<video src="https://download.pingcap.com/docs-cn%2FLesson10_config.mp4" width="600px" height="450px" controls="controls" poster="https://download.pingcap.com/docs-cn/pr_00_basic_concepts.png"></video>
+<video src="https://download.pingcap.com/docs-cn/GTV_0_zh_Basic_concepts.mp4" width="600px" height="450px" controls="controls" poster="https://download.pingcap.com/docs-cn/pr_00_basic_concepts.png"></video>
 
 **创建 PR（4 分钟）**
 
