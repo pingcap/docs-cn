@@ -657,6 +657,8 @@
     - [TiFlash 数据校验](/tiflash/tiflash-data-validation.md)
     - [TiFlash 兼容性说明](/tiflash/tiflash-compatibility.md)
     - [TiFlash Pipeline Model 执行模型](/tiflash/tiflash-pipeline-model.md)
+  - 代理 TiProxy
+    - [TiProxy 简介](/tiproxy/tiproxy-overview.md)
   - TiDB 分布式执行框架
     - [TiDB 分布式执行框架介绍](/tidb-distributed-execution-framework.md)
     - [TiDB 全局排序](/tidb-global-sort.md)
