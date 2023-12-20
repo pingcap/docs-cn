@@ -17,20 +17,20 @@
 
 你可从以下任一方面入手：
 
-- 更新过时内容
-- 补充缺失内容
-- 修正文档格式，如标点、空格、缩进、代码块等
-- 改正错别字
+- 提 [Pull Request](https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/proposing-changes-to-your-work-with-pull-requests/about-pull-requests) (PR) 更新过时内容
+- 提 PR 补充缺失内容
+- 提 PR 修正文档格式，如标点、空格、缩进、代码块等
+- 提 PR 改正错别字
 - 回复或解决 [issue](https://github.com/pingcap/docs-cn/issues?q=is%3Aopen+is%3Aissue) 并提 PR 更新相关文档
 - 其它改进
 
 ### 翻译中文文档
 
-TiDB 中文文档的日常更新特别活跃，相应地，[TiDB 英文文档](https://docs.pingcap.com/tidb/dev/)也需要频繁更新。这一过程会涉及很多的**中译英**，即将 pingcap/docs-cn 仓库里已 merge 但尚未进行翻译处理的 [Pull Request](https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/proposing-changes-to-your-work-with-pull-requests/about-pull-requests) (PR) 翻译为英文，并在 [pingcap/docs 仓库](https://github.com/pingcap/docs)中提交 Pull Request。
+TiDB 中文文档的日常更新特别活跃，相应地，[TiDB 英文文档](https://docs.pingcap.com/tidb/dev/)也需要频繁更新。这一过程会涉及很多的**中译英**，即将 pingcap/docs-cn 仓库里已 merge 但尚未进行翻译处理的 [PR](https://github.com/pingcap/docs-cn/pulls?q=is%3Apr+label%3Atranslation%2Fwelcome+is%3Aclosed) 翻译为英文，并在 [pingcap/docs 仓库](https://github.com/pingcap/docs)中提交 Pull Request。
 
 > **注意：**
 >
-> - 绝大多数情况下，中英版需要保持完全一致。但个别文档由于受众不同，可能会有差异。
+> - 绝大多数情况下，中英文档需要保持完全一致。但个别文档由于受众不同，可能会有差异。
 > - 通常，TiDB 文档先完成中文版后再完成英文版。但也偶有例外。
 > - [参考资料](#参考资料)一节中汇总了**中英术语表**和**风格指南**等参考文档，建议译前阅读。
 
@@ -60,7 +60,7 @@ TiDB 中文文档的日常更新特别活跃，相应地，[TiDB 英文文档](h
 
 ## PR Checklist
 
-在提交 PR 之前，请务必检查以下内容：
+在合入 (Merge) PR 之前，请务必检查以下内容：
 
 - [ ] 文档内容准确、清晰、简洁，遵循写作规范。参考 [PingCAP 中文技术文档风格 — 极简指南](#pingcap-中文技术文档风格--极简指南)。
 - [ ] PR 的各元素完整、准确，包括：
@@ -71,10 +71,7 @@ TiDB 中文文档的日常更新特别活跃，相应地，[TiDB 英文文档](h
     - [ ] 选择正确的标签 (label)
     - [ ] cherry-pick 到适用且必要的分支版本
 - [ ] 如果新增文档、删除文档，需要同时更新 `TOC.md`，删除文档时需要在文件开头添加 `aliases` 确保旧链接能够正常跳转。
-- [ ] PR 经过了至少两轮 review，包括 technical review 和 editorial review，确保技术准确、语言规范。
-- [ ] Comments 全部处理完，且 reviewers 已经 approved 该 PR。
 - [ ] 预览文档，确保文档格式正确、清晰、可读，特别注意表格、图片、列表等特殊样式能够正常显示。
-- [ ] 文档通过了 CI check。
 
 ## PingCAP 中文技术文档风格 — 极简指南
 
@@ -94,7 +91,7 @@ TiDB 文档的修改需要遵循一定的流程，具体如下。考虑到有些
 
 > **注意：**
 >
-> 目前（2023 年 3 月）TiDB 主要维护以下几个版本的文档：dev（最新开发版，对应文档仓库的 master 分支）、v6.6、v6.5、v6.4、v6.1、v6.0、v5.4、v5.3、v5.2、v5.1、v5.0。提 Pull Request 前请务必考虑修改会影响的文档版本，并据此修改所有相应的版本。选择版本时，请参考[参考资料](#参考资料)中的**如何选择文档适用的版本分支？**。
+> 目前（2023 年 12 月）TiDB 主要维护以下几个版本的文档：dev（最新开发版，对应文档仓库的 master 分支）、v7.5、v7.4、v7.3、v7.1、v6.5、v6.1、v6.0、v5.4、v5.3、v5.2、v5.1、v5.0。提 Pull Request 前请务必考虑修改会影响的文档版本，并据此修改所有相应的版本。选择版本时，请参考[参考资料](#参考资料)中的**如何选择文档适用的版本分支？**。
 
 **第 0 步：签署 Contributor License Agreement**
 
@@ -168,7 +165,7 @@ git push -u origin new-branch-name
 
 > **注意：**
 >
-> - 如果你的修改影响多个文档版本 (如 dev、v6.6、v6.5等)，务必**在 PR 描述框中勾选相应的版本**，后续仓库管理员会为你的 PR 打上相应的 cherry-pick 标签。
+> - 如果你的修改影响多个文档版本 (如 dev、v7.5、v7.4 等)，务必**在 PR 描述框中勾选相应的版本**，后续仓库管理员会为你的 PR 打上相应的 cherry-pick 标签。
 
 </details>
 
