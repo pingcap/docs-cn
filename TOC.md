@@ -9,7 +9,6 @@
   - [与 MySQL 的兼容性](/mysql-compatibility.md)
   - [使用限制](/tidb-limitations.md)
   - [荣誉列表](/credits.md)
-  - [贡献指南](/CONTRIBUTING.md)
   - [路线图](/tidb-roadmap.md)
 - 快速上手
   - [快速上手 TiDB](/quick-start-with-tidb.md)
