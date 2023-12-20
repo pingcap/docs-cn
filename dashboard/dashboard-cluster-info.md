@@ -12,11 +12,9 @@ aliases: ['/docs-cn/dev/dashboard/dashboard-cluster-info/']
 
 可以通过以下两种方法访问集群信息页面：
 
-- 登录后，左侧导航条点击**集群信息** (Cluster Info)：
+* 登录 TiDB Dashboard 后，在左侧导航栏中点击**集群信息** (Cluster Info)。
 
-  ![访问](/media/dashboard/dashboard-cluster-info-access-v650.png)
-
-- 在浏览器中访问 <http://127.0.0.1:2379/dashboard/#/cluster_info/instance>（将 `127.0.0.1:2379` 替换为实际 PD 实例地址和端口）。
+* 在浏览器中访问 <http://127.0.0.1:2379/dashboard/#/cluster_info/instance>（将 `127.0.0.1:2379` 替换为实际 PD 实例地址和端口）。
 
 ## 实例列表
 

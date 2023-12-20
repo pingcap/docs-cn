@@ -109,9 +109,22 @@ aliases: ['/docs-cn/dev/grafana-tidb-dashboard/','/docs-cn/dev/reference/key-mon
 
 ### KV Request
 
+下面的监控指标与发送给 TiKV 的请求相关。重试请求会被多次计数。
+
 - KV Request OPS：KV Request 根据 TiKV 显示执行次数
 - KV Request Duration 99 by store：根据 TiKV 显示 KV Request 执行时间
 - KV Request Duration 99 by type：根据类型显示 KV Request 的执行时间
+- Stale Read Hit/Miss Ops
+    - **hit**：每秒成功执行 Stale Read 的请求数量
+    - **miss**：每秒尝试执行 Stale Read 但失败的请求数量
+- Stale Read Req Ops
+    - **cross-zone**：每秒尝试在远程可用区执行 Stale Read 的请求数量
+    - **local**：每秒尝试在本地可用区执行 Stale Read 的请求数量
+- Stale Read Req Traffic
+    - **cross-zone-in**：尝试在远程可用区执行 Stale Read 的请求的响应的传入流量
+    - **cross-zone-out**：尝试在远程可用区执行 Stale Read 的请求的响应的传出流量
+    - **local-in**：尝试在本地可用区执行 Stale Read 的请求的响应的传入流量
+    - **local-out**：尝试在本地可用区执行 Stale Read 的请求的响应的传出流量
 
 ### PD Client
 
@@ -141,7 +154,7 @@ aliases: ['/docs-cn/dev/grafana-tidb-dashboard/','/docs-cn/dev/reference/key-mon
 - Owner Handle Syncer Duration：DDL Owner 在执行更新，获取以及检查 Schema Version 的耗时
 - Update Self Version Duration：Schema Version Syncer 更新版本信息耗时
 - DDL OPM：DDL 语句的每秒执行次数
-- DDL add index progress in percentage：添加索引的进度展示
+- DDL backfill progress in percentage：backfill DDL 任务的进度展示
 
 ### Statistics
 
@@ -153,7 +166,6 @@ aliases: ['/docs-cn/dev/grafana-tidb-dashboard/','/docs-cn/dev/reference/key-mon
 - Store Query Feedback QPS：存储合并查询的 Feedback 信息的每秒操作数量，该操作在 TiDB 内存中进行
 - Significant Feedback：重要的 Feedback 更新统计信息的数量
 - Update Stats OPS：利用 Feedback 更新统计信息的数量
-- Fast Analyze Status 100：快速收集统计信息的状态
 
 ### Owner
 

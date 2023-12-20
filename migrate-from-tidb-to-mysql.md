@@ -109,7 +109,9 @@ summary: 了解如何将数据从 TiDB 集群迁移至与 MySQL 兼容的数据�
 
 3. 恢复数据。
 
-    使用开源工具 MyLoader 导入数据到下游 MySQL。MyLoader 的安装和详细用例参见 [MyDumpler/MyLoader](https://github.com/mydumper/mydumper)。执行以下指令，将 Dumpling 导出的上游全量数据导入到下游 MySQL 实例：
+    使用开源工具 MyLoader 导入数据到下游 MySQL。MyLoader 的安装和详细用例参见 [MyDumpler/MyLoader](https://github.com/mydumper/mydumper)。注意需要使用 MyLoader v0.10 或更早版本，否则会导致 MyLoader 无法处理 Dumpling 导出的 metadata 文件。
+
+    执行以下指令，将 Dumpling 导出的上游全量数据导入到下游 MySQL 实例：
 
     ```shell
     myloader -h 127.0.0.1 -P 3306 -d ./dumpling_output/

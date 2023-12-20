@@ -5,18 +5,16 @@ summary: 介绍如何在同一个事务中保存 TiFlash 的查询结果。
 
 # TiFlash 查询结果物化
 
-> **警告：**
->
-> 该功能目前是实验性功能，请注意使用场景限制。该功能会在未事先通知的情况下发生变化或删除。语法和实现可能会在 GA 前发生变化。如果发现 bug，请在 GitHub 上提交 [issue](https://github.com/pingcap/tidb/issues) 反馈。
-
 本文介绍如何在同一个事务 (`INSERT INTO SELECT`) 中实现将 TiFlash 查询结果保存至某一指定的 TiDB 表中。
 
 从 v6.5.0 起，TiDB 支持将 TiFlash 查询结果保存到数据表中，即物化了 TiFlash 的查询结果。执行 `INSERT INTO SELECT` 语句时，如果 TiDB 将 `SELECT` 子查询下推到了 TiFlash，TiFlash 的查询结果可以保存到 `INSERT INTO` 指定的 TiDB 表中。v6.5.0 之前的 TiDB 版本不允许此类行为，即通过 TiFlash 执行的查询必须是只读的，你需要从应用程序层面接收 TiFlash 返回的结果，然后另行在其它事务或处理中保存结果。
 
 > **注意：**
 >
-> - 默认情况下 ([`tidb_allow_mpp = ON`](/system-variables.md#tidb_allow_mpp-从-v50-版本开始引入))，TiDB 优化器将依据查询代价智能选择下推查询到 TiKV 或 TiFlash。如需强制使用 TiFlash 查询，你可以设置系统变量 [`tidb_enforce_mpp`](/system-variables.md#tidb_enforce_mpp-从-v51-版本开始引入) 为 `ON`。
-> - 在实验特性阶段，该功能默认关闭。要开启此功能，请设置系统变量 [`tidb_enable_tiflash_read_for_write_stmt`](/system-variables.md#tidb_enable_tiflash_read_for_write_stmt-从-v630-版本开始引入) 为 `ON`。
+> 默认情况下 ([`tidb_allow_mpp = ON`](/system-variables.md#tidb_allow_mpp-从-v50-版本开始引入))，优化器将根据 [SQL 模式](/sql-mode.md) 及 TiFlash 副本的代价估算自行决定是否将查询下推到 TiFlash。
+>
+> - 如果当前会话的 [SQL 模式](/sql-mode.md)为非严格模式（即 `sql_mode` 值不包含 `STRICT_TRANS_TABLES` 和 `STRICT_ALL_TABLES`），优化器会根据 TiFlash 副本的代价估算自行决定是否将 `INSERT INTO SELECT` 中的 `SELECT` 子查询将下推到 TiFlash。在此模式下，如需忽略优化器代价估算强制使用 TiFlash 查询，你可以设置[`tidb_enforce_mpp`](/system-variables.md#tidb_enforce_mpp-从-v51-版本开始引入) 为 `ON`。
+> - 如果当前会话的 [SQL 模式](/sql-mode.md)为严格模式（即 `sql_mode` 值包含 `STRICT_TRANS_TABLES` 或 `STRICT_ALL_TABLES`），`INSERT INTO SELECT` 中的 `SELECT` 子查询将无法下推到 TiFlash。
 
 `INSERT INTO SELECT` 语法如下：
 
@@ -94,16 +92,21 @@ INSERT INTO detail_data(ts,customer_id,detail_fee) VALUES
 ('2023-1-3 12:2:3', 'cus002', 2200.86),
 ('2023-1-4 12:2:3', 'cus003', 2020.86),
 ('2023-1-5 12:2:3', 'cus003', 1200.86),
-('2023-1-6 12:2:3', 'cus002', 20.86);
+('2023-1-6 12:2:3', 'cus002', 20.86),
+('2023-1-7 12:2:3', 'cus004', 120.56),
+('2023-1-8 12:2:3', 'cus005', 320.16);
+
+-- 重复执行以下 SQL 语句 13 次，一共插入 65536 行数据
+INSERT INTO detail_data SELECT * FROM detail_data;
 ```
 
 每日分析数据保存：
 
 ```sql
-SET @@tidb_enable_tiflash_read_for_write_stmt=ON;
+SET @@sql_mode='NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO';
 
 INSERT INTO daily_data (rec_date, customer_id, daily_fee)
-SELECT DATE(ts), customer_id, sum(detail_fee) FROM detail_data WHERE DATE(ts) = CURRENT_DATE() GROUP BY DATE(ts), customer_id;
+SELECT DATE(ts), customer_id, sum(detail_fee) FROM detail_data WHERE DATE(ts) > DATE('2023-1-1 12:2:3') GROUP BY DATE(ts), customer_id;
 ```
 
 基于日分析数据的月数据分析：

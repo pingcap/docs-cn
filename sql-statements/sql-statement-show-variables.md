@@ -62,7 +62,6 @@ SHOW GLOBAL VARIABLES LIKE 'tidb%';
 | tidb_enable_cascades_planner        | 0                   |
 | tidb_enable_chunk_rpc               | 1                   |
 | tidb_enable_collect_execution_info  | 1                   |
-| tidb_enable_fast_analyze            | 0                   |
 | tidb_enable_index_merge             | 0                   |
 | tidb_enable_noop_functions          | 0                   |
 | tidb_enable_radix_join              | 0                   |
@@ -163,7 +162,7 @@ SHOW GLOBAL VARIABLES LIKE 'time_zone%';
 
 ## MySQL 兼容性
 
-`SHOW [GLOBAL|SESSION] VARIABLES` 语句与 MySQL 完全兼容。如发现任何兼容性差异，请在 GitHub 上提交 [issue](https://github.com/pingcap/tidb/issues/new/choose)。
+`SHOW [GLOBAL|SESSION] VARIABLES` 语句与 MySQL 完全兼容。如发现任何兼容性差异，请尝试 [TiDB 支持资源](/support.md)。
 
 ## 另请参阅
 

@@ -84,7 +84,7 @@ Clinic Server 是部署在云端的云服务，根据数据存储的位置不同
 
 | 诊断数据类型 | 输出文件 | PingCAP Clinic 采集参数 |
 | :------ | :------ |:-------- |
-| 获取 TiDB 系统变量（默认不采集，采集需要额外提供数据库帐号） | `mysql.tidb.csv` | `--include=db_vars`（默认不采集） |
+| 获取 TiDB 系统变量（默认不采集，采集需要额外提供数据库账号） | `mysql.tidb.csv` | `--include=db_vars`（默认不采集） |
 | | `global_variables.csv` | `--include=db_vars`（默认不采集）|
 
 ### 集群节点的系统信息

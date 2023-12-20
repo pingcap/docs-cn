@@ -19,7 +19,7 @@ summary: 了解如何使用 PLAN REPLAY 命令保存和恢复集群现场信息�
 {{< copyable "sql" >}}
 
 ```sql
-PLAN REPLAYER DUMP EXPLAIN [ANALYZE] sql-statement;
+PLAN REPLAYER DUMP EXPLAIN [ANALYZE] [WITH STATS AS OF TIMESTAMP expression] sql-statement;
 ```
 
 TiDB 根据 `sql-statement` 整理出以下集群现场信息：
@@ -31,6 +31,11 @@ TiDB 根据 `sql-statement` 整理出以下集群现场信息：
 - `sql-statement` 中所包含的表结构
 - `sql-statement` 中所包含表的统计信息
 - `EXPLAIN [ANALYZE] sql-statement` 的结果
+- 优化器进行查询优化的一些内部步骤的记录
+
+当[启用历史统计信息](/system-variables.md#tidb_enable_historical_stats)时，可以在 `PLAN REPLAYER` 语句中指定时间来获取对应时间的统计信息。该语法支持直接指定日期时间或指定时间戳。此时，TiDB 会查找指定时间之前的历史统计信息，并导出其中最新的一份。
+
+如果没有找到指定时间之前的历史统计信息，TiDB 会直接导出最新统计信息（和未指定时间时的行为一致），并且在导出的 `ZIP` 文件中的 `errors.txt` 中输出错误信息。
 
 > **注意：**
 >
@@ -43,16 +48,18 @@ TiDB 根据 `sql-statement` 整理出以下集群现场信息：
 ```sql
 use test;
 create table t(a int, b int);
-insert into t values(1,1), (2, 2), (3, 3); 
+insert into t values(1,1), (2, 2), (3, 3);
 analyze table t;
 
 plan replayer dump explain select * from t;
+plan replayer dump with stats as of timestamp '2023-07-17 12:00:00' explain select * from t;
+plan replayer dump with stats as of timestamp '442012134592479233' explain select * from t;
 ```
 
-`PLAN REPLAYER DUMP` 会将以上信息打包整理成 `ZIP` 文件，并返回文件标识作为执行结果。该文件为一次性文件，被下载后 TiDB 会将其删除。
+`PLAN REPLAYER DUMP` 会将以上信息打包整理成 `ZIP` 文件，并返回文件标识作为执行结果。
 
 > **注意：**
-> 
+>
 > `ZIP` 文件最多会在 TiDB 集群中保存一个小时，超时后 TiDB 会将其删除。
 
 ```sql
@@ -240,5 +247,17 @@ mysql> SELECT * FROM mysql.plan_replayer_status;
 下载 `PLAN REPLAYER CAPTURE` 的文件方法与 `PLAN REPLAYER` 相同，请参考 [`PLAN REPLAYER` 导出示例](#plan-replayer-导出示例)。
 
 > **注意：**
-> 
-> `PLAN REPLAYER CAPTURE` 的结果文件最多会在 TiDB 集群中保存一个小时，超时后 TiDB 会将其删除。
+>
+> `PLAN REPLAYER CAPTURE` 的结果文件最多会在 TiDB 集群中保存一周，超时后 TiDB 会将其删除。
+
+## 使用 `PLAN REPLAYER CONTINUOUS CAPTURE`
+
+开启 `PLAN REPLAYER CONTINUOUS CAPTURE` 功能后，TiDB 将以 SQL DIGEST 和 PLAN DIGEST 为维度异步地将业务 SQL 语句以 `PLAN REPLAYER` 的方式进行记录，对于相同 DIGEST 的 SQL 语句与执行计划，`PLAN REPLAYER CONTINUOUS CAPTURE` 不会重复记录。
+
+### 开启 `PLAN REPLAYER CONTINUOUS CAPTURE`
+
+`PLAN REPLAYER CONTINUOUS CAPTURE` 功能通过系统变量 [`tidb_enable_plan_replayer_continuous_capture`](/system-variables.md#tidb_enable_plan_replayer_continuous_capture-从-v700-版本开始引入) 控制。要开启 `PLAN REPLAYER CONTINUOUS CAPTURE`，将变量值设为 `ON`。
+
+### 查看 `PLAN REPLAYER CONTINUOUS CAPTURE` 抓取结果
+
+查看 `PLAN REPLAYER CONTINUOUS CAPTURE` 抓取结果的方法同[查看 `PLAN REPLAYER CAPTURE` 抓取结果](#查看-plan-replayer-capture-抓取结果)。

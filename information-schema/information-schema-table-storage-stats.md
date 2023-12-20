@@ -1,18 +1,18 @@
 ---
 title: TABLE_STORAGE_STATS
-summary: 了解 information_schema 表 `TABLE_STORAGE_STATS`。
+summary: 了解 INFORMATION_SCHEMA 表 `TABLE_STORAGE_STATS`。
 ---
 
 # TABLE_STORAGE_STATS
 
 `TABLE_STORAGE_STATS` 表提供有关由存储引擎 (TiKV) 存储的表大小的信息。
 
-{{< copyable "sql" >}}
-
 ```sql
-USE information_schema;
-DESC table_storage_stats;
+USE INFORMATION_SCHEMA;
+DESC TABLE_STORAGE_STATS;
 ```
+
+输出结果如下：
 
 ```sql
 +--------------------+-------------+------+------+---------+-------+
@@ -30,13 +30,13 @@ DESC table_storage_stats;
 8 rows in set (0.00 sec)
 ```
 
-{{< copyable "sql" >}}
-
 ```sql
 CREATE TABLE test.t1 (id INT);
 INSERT INTO test.t1 VALUES (1);
-SELECT * FROM table_storage_stats WHERE table_schema = 'test' AND table_name = 't1'\G
+SELECT * FROM TABLE_STORAGE_STATS WHERE table_schema = 'test' AND table_name = 't1'\G
 ```
+
+输出结果如下：
 
 ```sql
 *************************** 1. row ***************************
@@ -50,3 +50,14 @@ EMPTY_REGION_COUNT: 1
         TABLE_KEYS: 0
 1 row in set (0.00 sec)
 ```
+
+`TABLE_STORAGE_STATS` 表各列字段含义如下：
+
+* `TABLE_SCHEMA`：表所在 schema 名字
+* `TABLE_NAME`：表名
+* `TABLE_ID`：表 ID
+* `PEER_COUNT`：副本个数
+* `REGION_COUNT`：表所在的 Region 个数
+* `EMPTY_REGION_COUNT`：没有该表数据的 Region 个数
+* `TABLE_SIZE`：数据量大小，单位 MiB
+* `TABLE_KEYS`：表记录个数

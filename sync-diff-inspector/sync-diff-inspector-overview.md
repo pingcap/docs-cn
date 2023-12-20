@@ -13,7 +13,7 @@ aliases: ['/docs-cn/dev/sync-diff-inspector/sync-diff-inspector-overview/','/doc
 * 如果数据不一致，则生成用于修复数据的 SQL 语句
 * 支持[不同库名或表名的数据校验](/sync-diff-inspector/route-diff.md)
 * 支持[分库分表场景下的数据校验](/sync-diff-inspector/shard-diff.md)
-* 支持 [TiDB 主从集群的数据校验](/sync-diff-inspector/upstream-downstream-diff.md)
+* 支持 [TiDB 主从集群的数据校验](/ticdc/ticdc-upstream-downstream-check.md)
 * 支持[从 TiDB DM 拉取配置的数据校验](/sync-diff-inspector/dm-diff.md)
 
 你可通过以下方式下载 sync-diff-inspector：
@@ -24,7 +24,7 @@ aliases: ['/docs-cn/dev/sync-diff-inspector/sync-diff-inspector-overview/','/doc
     {{< copyable "shell-regular" >}}
 
     ```shell
-    docker pull pingcap/tidb-enterprise-tools:nightly
+    docker pull pingcap/tidb-tools:latest
     ```
 
 ## sync-diff-inspector 的使用限制

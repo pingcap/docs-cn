@@ -62,7 +62,9 @@ SHOW CREATE USER 'newuser';
 1 row in set (0.00 sec)
 ```
 
-{{< copyable "sql" >}}
+### 修改用户基本信息
+
+修改用户 `newuser` 的密码：
 
 ```sql
 ALTER USER 'newuser' IDENTIFIED BY 'newnewpassword';
@@ -87,7 +89,7 @@ SHOW CREATE USER 'newuser';
 1 row in set (0.00 sec)
 ```
 
-{{< copyable "sql" >}}
+锁定用户 `newuser`：
 
 ```sql
 ALTER USER 'newuser' ACCOUNT LOCK;
@@ -165,6 +167,8 @@ ALTER USER 'newuser' PASSWORD REUSE INTERVAL 90 DAY;
 Query OK, 0 rows affected (0.02 sec)
 ```
 
+### 修改用户绑定的资源组
+
 通过 `ALTER USER ... RESOURCE GROUP` 修改用户 `newuser` 的资源组到 `rg1`：
 
 ```sql
@@ -173,6 +177,37 @@ ALTER USER 'newuser' RESOURCE GROUP rg1;
 
 ```
 Query OK, 0 rows affected (0.02 sec)
+```
+
+查看当前用户绑定的资源组：
+
+```sql
+SELECT USER, JSON_EXTRACT(User_attributes, "$.resource_group") FROM mysql.user WHERE user = "newuser";
+```
+
+```
++---------+---------------------------------------------------+
+| USER    | JSON_EXTRACT(User_attributes, "$.resource_group") |
++---------+---------------------------------------------------+
+| newuser | "rg1"                                             |
++---------+---------------------------------------------------+
+1 row in set (0.02 sec)
+```
+
+取消用户绑定的资源组，即将用户绑定到 `default` 资源组。
+
+```sql
+ALTER USER 'newuser' RESOURCE GROUP `default`;
+SELECT USER, JSON_EXTRACT(User_attributes, "$.resource_group") FROM mysql.user WHERE user = "newuser";
+```
+
+```
++---------+---------------------------------------------------+
+| USER    | JSON_EXTRACT(User_attributes, "$.resource_group") |
++---------+---------------------------------------------------+
+| newuser | "default"                                         |
++---------+---------------------------------------------------+
+1 row in set (0.02 sec)
 ```
 
 ## 另请参阅

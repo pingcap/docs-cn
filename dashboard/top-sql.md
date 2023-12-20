@@ -35,7 +35,7 @@ Top SQL 不能用于解答与性能无关的问题，例如数据正确性或异
 
 你可以通过以下任一方式访问 Top SQL 页面：
 
-- 登录 TiDB Dashboard 后，在左侧导航栏中点击**Top SQL**
+- 登录 TiDB Dashboard 后，在左侧导航栏中点击**Top SQL**。
 
   ![Top SQL](/media/dashboard/top-sql-access.png)
 

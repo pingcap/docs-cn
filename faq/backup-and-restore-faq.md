@@ -37,35 +37,17 @@ TiKV 支持[动态配置](/tikv-control.md#动态修改-tikv-的配置)自动调
 
 在大多数情况下，因为 flashback 具有更短的 RPO（接近零）和 RTO，flashback 比 PITR 更适合由于人为错误导致的数据错误场景。但当集群完全不可用时，flashback 集群功能也无法运行，此时 PITR 是恢复集群的唯一方案。因此，相比于 flashback，虽然 PITR 的 RPO（最长 5 分钟）和 RTO 时间较长，但 PITR 是制定数据库灾难恢复策略时必须考虑的数据安全基础。
 
-### 上游数据库使用 TiDB Lightning Physical 方式导入数据时，为什么无法使用日志备份功能？
+### 上游数据库使用 TiDB Lightning 物理导入模式导入数据时，为什么无法使用日志备份功能？
 
-目前日志备份功能还没有完全适配 TiDB Lightning，导致 TiDB Lightning Physical 方式导入的数据无法备份到日志中。
+目前日志备份功能还没有完全适配 TiDB Lightning，导致 TiDB Lightning 物理导入模式导入的数据无法备份到日志中。
 
-在创建日志备份任务的上游集群中，请尽量避免使用 TiDB Lightning Physical 方式导入数据。可以选择使用 TiDB Lightning Logical 方式导入数据。若确实需要使用 Physical 导入方式，可在导入完成之后做一次快照备份操作，这样，PITR 就可以恢复到快照备份之后的时间点。
-
-### 索引加速功能为什么与 PITR 功能不兼容？
-
-Issue 链接：[#38045](https://github.com/pingcap/tidb/issues/38045)
-
-当前[索引加速功能](/system-variables.md#tidb_ddl_enable_fast_reorg-从-v630-版本开始引入)与 PITR 功能不兼容。在使用索引加速功能时，需要确保后台没有启动 PITR 备份任务，否则可能会出现非预期结果。非预期场景包括：
-
-- 如果先启动 PITR 备份任务，再添加索引，此时即使索引加速功能打开，也不会使用加速索引功能，但不影响索引兼容性。
-- 如果先启动添加索引加速任务，再创建 PITR 备份任务，此时 PITR 备份任务会报错，但不影响正在添加索引的任务。
-- 如果同时启动 PITR 备份任务和添加索引加速任务，可能会由于两个任务无法察觉到对方而导致 PITR 不能成功备份增加的索引数据。
+在创建日志备份任务的上游集群中，请尽量避免使用 TiDB Lightning 物理导入模式导入数据。可以选择使用 TiDB Lightning 逻辑导入模式导入数据。若确实需要使用物理导入模式，可在导入完成之后做一次快照备份操作，这样，PITR 就可以恢复到快照备份之后的时间点。
 
 ### 集群已经恢复了网络分区故障，为什么日志备份任务进度 checkpoint 仍然不推进？
 
 Issue 链接：[#13126](https://github.com/tikv/tikv/issues/13126)
 
 在集群出现网络分区故障后，备份任务难以继续备份日志，并且在超过一定的重试时间后，任务会被置为 `ERROR` 状态。此时备份任务已经停止，需要手动执行 `br log resume` 命令来恢复日志备份任务。
-
-### 执行 PITR 恢复时遇到 `execute over region id` 报错，该如何处理？
-
-Issue 链接：[#37207](https://github.com/pingcap/tidb/issues/37207)
-
-该场景发生在全量数据导入时开启了日志备份，并使用 PITR 恢复全量导入时间段的日志。经过测试发现，当存在长时间（24 小时）大量热点写入，且平均单台 TiKV 节点写入 OPS > 50k/s（可以通过 Grafana 中 **TiKV-Details** -> **Backup Log** -> **Handle Event Rate** 确认该数值），那么有几率会遇到这个情况。
-
-当前版本中建议在集群初始化后，进行一次有效快照备份，并且以此作为基础进行 PITR 恢复。
 
 ### 在使用 `br restore point` 命令恢复下游集群后，TiFlash 引擎数据没有恢复？
 
@@ -135,9 +117,9 @@ Error: failed to check gc safePoint, checkpoint ts 433177834291200000: GC safepo
 
 TiCDC 可以通过配置项中的 [`filter.rules`](https://github.com/pingcap/tiflow/blob/7c3c2336f98153326912f3cf6ea2fbb7bcc4a20c/cmd/changefeed.toml#L16) 项完成，Drainer 则可以通过 [`syncer.ignore-table`](/tidb-binlog/tidb-binlog-configuration-file.md#ignore-table) 完成。
 
-### 恢复时为什么会报 `new_collations_enabled_on_first_bootstrap` 不匹配？
+### 恢复时为什么会报 `new_collation_enabled` 不匹配？
 
-从 TiDB v6.0.0 版本开始，[`new_collations_enabled_on_first_bootstrap`](/tidb-configuration-file.md#new_collations_enabled_on_first_bootstrap) 配置项的默认值由 `false` 改为 `true`。BR 会备份上游集群的 `new_collations_enabled_on_first_bootstrap` 配置项。当上下游集群的此项配置相同时，BR 才会将上游集群的备份数据安全地恢复到下游集群中。若上下游的该配置不相同，BR 会拒绝恢复，并报此配置项不匹配的错误。
+从 TiDB v6.0.0 版本开始，[`new_collations_enabled_on_first_bootstrap`](/tidb-configuration-file.md#new_collations_enabled_on_first_bootstrap) 配置项的默认值由 `false` 改为 `true`。BR 会备份上游集群的 `mysql.tidb` 表中的 `new_collation_enabled` 配置项。当上下游集群的此项配置相同时，BR 才会将上游集群的备份数据安全地恢复到下游集群中。若上下游的该配置不相同，BR 会拒绝恢复，并报此配置项不匹配的错误。
 
 如果需要将旧版本的备份数据恢复到 TiDB v6.0.0 或更新版本的 TiDB 集群中，你需要检查上下游集群中的该配置项是否相同：
 
@@ -295,9 +277,13 @@ br restore full -f 'mysql.usertable' -s $external_storage_url --with-sys-table
 
 此外请注意，即使设置了 [table filter](/table-filter.md#表库过滤语法)，**BR 也不会恢复以下系统表**：
 
-- 统计信息表（`mysql.stat_*`）
+- 统计信息表（`mysql.stat_*`）(但可以恢复统计信息，详细参考[备份统计信息](/br/br-snapshot-manual.md#备份统计信息))
 - 系统变量表（`mysql.tidb`、`mysql.global_variables`）
 - [其他系统表](https://github.com/pingcap/tidb/blob/master/br/pkg/restore/systable_restore.go#L31)
+
+### 恢复的时候，报错 `cannot file rewrite rule`，该如何处理？
+
+遇到这种情况，请检查恢复集群中是否存在跟备份数据同名但表结构不一致的表。大多数情况是因为恢复集群的表缺失了索引导致。您可以尝试先删除该表，然后再次进行恢复操作。
 
 ## 备份恢复功能相关知识
 

@@ -12,6 +12,12 @@ TiKV 配置文件比命令行参数支持更多的选项。你可以在 [etc/con
 
 本文档只阐述未包含在命令行参数中的参数，命令行参数参见 [TiKV 配置参数](/command-line-flags-for-tikv-configuration.md)。
 
+> **Tip:**
+>
+> 如果你需要调整配置项的值，请参考[修改配置参数](/maintain-tidb-using-tiup.md#修改配置参数)进行操作。
+
+<!-- markdownlint-disable MD001 -->
+
 ## 全局配置
 
 ### `abort-on-panic`
@@ -220,7 +226,7 @@ TiKV 配置文件比命令行参数支持更多的选项。你可以在 [etc/con
 + 默认值：60s
 + 最小值：1s
 
-### `snap-max-write-bytes-per-sec`
+### `snap-io-max-bytes-per-sec`
 
 + 处理 snapshot 时最大允许使用的磁盘带宽。
 + 默认值：100MB
@@ -275,8 +281,12 @@ TiKV 配置文件比命令行参数支持更多的选项。你可以在 [etc/con
 ### `max-thread-count`
 
 + 统一处理读请求的线程池最多的线程数量，即 UnifyReadPool 线程池的大小。调整该线程池的大小时，请参考 [TiKV 线程池调优](/tune-tikv-thread-performance.md#tikv-线程池调优)。
-+ 可调整范围：`[min-thread-count, MAX(4, CPU)]`。其中，`MAX(4, CPU)` 表示：如果 CPU 核心数量小于 `4`，取 `4`；如果 CPU 核心数量大于 `4`，则取 CPU 核心数量。
-+ 默认值：MAX(4, CPU * 0.8)
++ 可调整范围：`[min-thread-count, MAX(4, CPU quota * 10)]`。其中，`MAX(4, CPU quota * 10)` 表示：如果 CPU 配额乘 10 小于 `4`，取 `4`；如果 CPU 配额乘 10 大于 `4`，即 CPU 配额大于 `0.4`，则取 CPU 配额乘 10。
++ 默认值：MAX(4, CPU quota * 0.8)
+
+> **注意：**
+>
+> 增加线程数量会导致上下文切换增多，可能会导致性能下降，因此不推荐修改此配置。
 
 ### `stack-size`
 
@@ -507,7 +517,11 @@ RocksDB 多个 CF 之间共享 block cache 的配置选项。
 ### `capacity`
 
 + 共享 block cache 的大小。
-+ 默认值：系统总内存大小的 45%
++ 默认值：
+
+    + 当 `storage.engine="raft-kv"` 时，默认值为系统总内存大小的 45%。
+    + 当 `storage.engine="partitioned-raft-kv"` 时，默认值为系统总内存大小的 30%。
+
 + 单位：KB|MB|GB
 
 ## storage.flow-control
@@ -563,7 +577,7 @@ I/O rate limiter 相关的配置项。
 
 ### `retry-interval`
 
-+ 初始化 PD 连接时的重试间隔。
++ 设置 PD 连接的重试间隔。
 + 默认值：`"300ms"`
 
 ### `retry-log-every`
@@ -751,8 +765,9 @@ raftstore 相关的配置项。
 ### `region-compact-check-step`
 
 + 每轮校验人工 compaction 时，一次性检查的 Region 个数。
-+ 默认值：100
-+ 最小值：0
++ 默认值：
+    + 当 `storage.engine="raft-kv"` 时，默认值为 100。
+    + 当 `storage.engine="partitioned-raft-kv"` 时，默认值为 5。
 
 ### `region-compact-min-tombstones`
 
@@ -766,6 +781,28 @@ raftstore 相关的配置项。
 + 默认值：30
 + 最小值：1
 + 最大值：100
+
+### `region-compact-min-redundant-rows` <span class="version-mark">从 v7.1.0 版本开始引入</span>
+
++ 触发 RocksDB compaction 需要的冗余的 MVCC 数据行数。
++ 默认值：`50000`
++ 最小值：`0`
+
+### `region-compact-redundant-rows-percent` <span class="version-mark">从 v7.1.0 版本开始引入</span>
+
++ 触发 RocksDB compaction 需要的冗余的 MVCC 数据行所占比例。
++ 默认值：`20`
++ 最小值：`1`
++ 最大值：`100`
+
+### `report-region-buckets-tick-interval` <span class="version-mark">从 v6.1.0 版本开始引入</span>
+
+> **警告：**
+>
+> `report-region-buckets-tick-interval` 是 TiDB 在 v6.1.0 中引入的实验特性，不建议在生产环境中使用。
+
++ 启用 `enable-region-bucket` 后，该配置项设置 TiKV 向 PD 上报 bucket 信息的间隔时间。
++ 默认值：10s
 
 ### `pd-heartbeat-tick-interval`
 
@@ -979,12 +1016,19 @@ raftstore 相关的配置项。
 + 默认值：1MB
 + 最小值：0
 
-### `report-min-resolved-ts-interval`
+### `report-min-resolved-ts-interval` <span class="version-mark">从 v6.0.0 版本开始引入</span>
 
-+ 设置 PD leader 收到 Resolved TS 的最小间隔时间。如果该值设置为 `0`，表示禁用该功能。
-+ 默认值：`"1s"`，即最小正值
++ 设置 PD leader 收到 Resolved TS 的间隔时间。如果该值设置为 `0`，表示禁用该功能。
++ 默认值：在 v6.3.0 之前版本中为 `"0s"`，在 v6.3.0 及之后的版本中为 `"1s"`，即最小正值。
 + 最小值：0
 + 单位：秒
+
+### `evict-cache-on-memory-ratio` <span class="version-mark">从 v7.5.0 版本开始引入</span> 
+
++ 当 TiKV 的内存使用超过系统可用内存的 90%，并且 Raft 缓存条目占用的内存超过已使用内存 * `evict-cache-on-memory-ratio` 时，TiKV 会逐出 Raft 缓存条目。
++ 设置为 `0` 表示禁用该功能。
++ 默认值：0.1
++ 最小值：0
 
 ## coprocessor
 
@@ -1051,20 +1095,11 @@ Coprocessor 相关的配置项。
 ### `region-bucket-size` <span class="version-mark">从 v6.1.0 版本开始引入</span>
 
 + 设置 `enable-region-bucket` 启用时 bucket 的预期大小。
-+ 默认值：96MiB
++ 默认值：从 v7.3.0 起，默认值从 `96MiB` 变更为 `50MiB`。
 
 > **警告：**
 >
 > `region-bucket-size` 是 TiDB 在 v6.1.0 中引入的实验特性，不建议在生产环境中使用。
-
-### `report-region-buckets-tick-interval` <span class="version-mark">从 v6.1.0 版本开始引入</span>
-
-> **警告：**
->
-> `report-region-buckets-tick-interval` 是 TiDB 在 v6.1.0 中引入的实验特性，不建议在生产环境中使用。
-
-+ 启用 `enable-region-bucket` 后，该配置项设置 TiKV 向 PD 上报 bucket 信息的间隔时间。
-+ 默认值：10s
 
 ## rocksdb
 
@@ -1144,12 +1179,17 @@ RocksDB 相关的配置项。
 ### `max-total-wal-size`
 
 + RocksDB WAL 总大小限制，即 `data-dir` 目录下 `*.log` 文件的大小总和。
-+ 默认值：`"4GB"`
++ 默认值：
+    + 当 `storage.engine="raft-kv"` 时，默认值为 `"4GB"`
+    + 当 `storage.engine="partitioned-raft-kv"` 时，默认值为 `1`
 
 ### `stats-dump-period`
 
 + 将统计信息输出到日志中的间隔时间。
-+ 默认值：10m
++ 默认值：
+
+    + 当 `storage.engine="raft-kv"` 时，默认值为 `"10m"`。
+    + 当 `storage.engine="partitioned-raft-kv"` 时，默认值为 `"0"`。
 
 ### `compaction-readahead-size`
 
@@ -1258,8 +1298,12 @@ RocksDB 相关的配置项。
 >
 > 该功能目前为实验特性，不建议在生产环境中使用。该功能可能会在未事先通知的情况下发生变化或删除。如果发现 bug，请在 GitHub 上提 [issue](https://github.com/pingcap/tidb/issues) 反馈。
 
-+ 设置单个 TiKV 中所有 RocksDB 实例使用的 memtable 的总内存上限，默认值为本机内存的 25%，推荐配置不低于 5 GiB 的内存。该配置只对分区 Raft KV (storage.engine="partitioned-raft-kv") 生效。
-+ 默认值：25%
++ 设置单个 TiKV 中所有 RocksDB 实例使用的 memtable 的总内存上限。`0` 表示不设限制。
++ 默认值：
+
+    + 当 `storage.engine="raft-kv"` 时，默认值为 `0`，即不限制。
+    + 当 `storage.engine="partitioned-raft-kv"` 时，默认值为本机内存的 20%。
+
 + 单位：KiB|MiB|GiB
 
 ## rocksdb.titan
@@ -1340,6 +1384,12 @@ rocksdb defaultcf、rocksdb writecf 和 rocksdb lockcf 相关的配置项。
 + `writecf` 默认值：`false`
 + `lockcf` 默认值：`false`
 
+### `optimize-filters-for-memory` <span class="version-mark">从 v7.2.0 版本开始引入</span>
+
++ 控制是否生成能够最小化内存碎片的 Bloom/Ribbon filter。
++ 只有当 [`format-version`](#format-version-从-v620-版本开始引入) >= 5 时，该配置项才生效。
++ 默认值：`false`
+
 ### `whole-key-filtering`
 
 + 开启将整个 key 放到 bloom filter 中的开关。
@@ -1357,6 +1407,12 @@ rocksdb defaultcf、rocksdb writecf 和 rocksdb lockcf 相关的配置项。
 
 + 开启每个 block 建立 bloom filter 的开关。
 + 默认值：false
+
+### `ribbon-filter-above-level` <span class="version-mark">从 v7.2.0 版本开始引入</span>
+
++ 控制是否对于大于等于该值的 level 使用 Ribbon filter，对于小于该值的 level，使用非 block-based bloom filter。当该配置开启时，[`block-based-bloom-filter`](#block-based-bloom-filter) 将被忽略。
++ 只有当 [`format-version`](#format-version-从-v620-版本开始引入) >= 5 时，该配置项才生效。
++ 默认值：`false`
 
 ### `read-amp-bytes-per-bit`
 
@@ -1383,7 +1439,9 @@ rocksdb defaultcf、rocksdb writecf 和 rocksdb lockcf 相关的配置项。
 + memtable 大小。
 + `defaultcf` 默认值：`"128MB"`
 + `writecf` 默认值：`"128MB"`
-+ `lockcf` 默认值：`"32MB"`
++ `lockcf` 默认值：
+    + 当 `storage.engine="raft-kv"` 时，默认值为 `"32MB"`
+    + 当 `storage.engine="partitioned-raft-kv"` 时，默认值为 `"4MB"`
 + 最小值：0
 + 单位：KB|MB|GB
 
@@ -1503,7 +1561,7 @@ rocksdb defaultcf、rocksdb writecf 和 rocksdb lockcf 相关的配置项。
 ### `compaction-guard-min-output-file-size`
 
 + 设置 compaction guard 启用时 SST 文件大小的最小值，防止 SST 文件过小。
-+ 默认值：8MB
++ 默认值：`"8MB"`
 + 单位：KB|MB|GB
 
 ### `compaction-guard-max-output-file-size`
@@ -1511,6 +1569,33 @@ rocksdb defaultcf、rocksdb writecf 和 rocksdb lockcf 相关的配置项。
 + 设置 compaction guard 启用时 SST 文件大小的最大值，防止 SST 文件过大。对于同一列族，此配置项的值会覆盖 `target-file-size-base`。
 + 默认值：128MB
 + 单位：KB|MB|GB
+
+### `format-version` <span class="version-mark">从 v6.2.0 版本开始引入</span>
+
++ 设置 SST 文件的格式版本。该配置项只影响新写入的表，对于已经存在的表，版本信息会从 footer 中读取。
++ 可选值：
+    - `0`：适用于所有 TiKV 版本。默认 checksum 类型为 CRC32。该版本不支持修改 checksum 类型。
+    - `1`：适用于所有 TiKV 版本。支持使用非默认的 checksum 类型，例如 xxHash。只有在 checksum 类型不是 CRC32 时，RocksDB 才会写入数据。（`0` 版本会自动升级）
+    - `2`：适用于所有 TiKV 版本。更改了压缩块的编码方式，使用 LZ4、BZip2 和 Zlib 压缩。
+    - `3`：适用于 TiKV v2.1 及以上版本。更改了索引块中 key 的编码方式。
+    - `4`：适用于 TiKV v3.0 及以上版本。更改了索引块中 value 的编码方式。
+    - `5`：适用于 TiKV v6.1 及以上版本。全量和分区 filter 采用一种具有不同模式的、更快、更准确的 Bloom filter 实现。
++ 默认值：
+
+    + 当 `storage.engine="raft-kv"` 时，默认值为 `2`。
+    + 当 `storage.engine="partitioned-raft-kv"` 时，默认值为 `5`。
+
+### `ttl` <span class="version-mark">从 v7.2.0 版本开始引入</span>
+
++ 设置 SST 文件被自动选中执行 compaction 的 TTL 时间。更新时间超过此值的 SST 文件将被选中并进行 compaction。在执行 compaction 时，这些 SST 文件通常以级联的方式进行压缩，以便被压缩到最底层或最底层的文件中。
++ 默认值：`"0s"`，表示默认不选择任何 SST 文件。
++ 单位：s(second)|h(hour)|d(day)
+
+### `periodic-compaction-seconds` <span class="version-mark">从 v7.2.0 版本开始引入</span>
+
++ 设置周期性 compaction 的时间。更新时间超过此值的 SST 文件将被选中进行 compaction，并被重新写入这些 SST 文件所在的层级。
++ 默认值：`"0s"`，表示默认不触发此 compaction。
++ 单位：s(second)|h(hour)|d(day)
 
 ## rocksdb.defaultcf.titan
 
@@ -1527,6 +1612,10 @@ rocksdb defaultcf titan 相关的配置项。
 
 + Blob 文件所使用的压缩算法，可选值：no、snappy、zlib、bz2、lz4、lz4hc、zstd。
 + 默认值：lz4
+
+> **注意：**
+>
+> Snappy 压缩文件必须遵循[官方 Snappy 格式](https://github.com/google/snappy)。不支持其他非官方压缩格式。
 
 ### `blob-cache-size`
 
@@ -1647,7 +1736,9 @@ raftdb 相关配置项。
 ### `max-total-wal-size`
 
 + RocksDB WAL 文件的最大总大小。
-+ 默认值：`"4GB"`
++ 默认值：
+    + 当 `storage.engine="raft-kv"` 时，默认值为 `"4GB"`
+    + 当 `storage.engine="partitioned-raft-kv"` 时，默认值为 `1`
 
 ### `compaction-readahead-size`
 
@@ -1802,7 +1893,9 @@ Raft Engine 相关的配置项。
 + 可选值：
     + `1`：v6.3.0 以前的默认日志文件格式。v6.1.0 及以后版本的 TiKV 可以读取该格式。
     + `2`：支持日志回收。v6.3.0 及以后版本的 TiKV 可以读取该格式。
-+ 默认值：`2`
++ 默认值：
+    + 当 `storage.engine="raft-kv"` 时，默认值为 `2`
+    + 当 `storage.engine="partitioned-raft-kv"` 时，默认值为 `5`
 
 ### `enable-log-recycle` <span class="version-mark">从 v6.3.0 版本开始引入</span>
 
@@ -1811,6 +1904,15 @@ Raft Engine 相关的配置项。
 > 仅在 [`format-version`](#format-version-从-v630-版本开始引入) 的值大于等于 2 时，该配置项才生效。
 
 + 控制 Raft Engine 是否回收过期的日志文件。该配置项启用时，Raft Engine 将保留逻辑上被清除的日志文件，用于日志回收，减少写负载的长尾延迟。
++ 默认值：`true`
+
+### `prefill-for-recycle` <span class="version-mark">从 v7.0.0 版本开始引入</span>
+
+> **注意：**
+>
+> 仅在 [`enable-log-recycle`](#enable-log-recycle-从-v630-版本开始引入) 的值为 `true` 时，该配置项才生效。
+
++ 控制 Raft Engine 是否自动生成空的日志文件用于日志回收。该配置项启用时，Raft Engine 将在初始化时自动填充一批空日志文件用于日志回收，保证日志回收在初始化后立即生效。
 + 默认值：`false`
 
 ## security
@@ -2058,7 +2160,7 @@ Raft Engine 相关的配置项。
 ### `advance-ts-interval`
 
 + 定期推进 Resolved TS 的时间间隔。
-+ 默认值：1s
++ 默认值：20s
 
 ### `scan-lock-pool-size`
 
@@ -2213,4 +2315,44 @@ Raft Engine 相关的配置项。
 
 + 是否支持对用户前台的读写请求按照对应的资源组配额做优先级调度。有关 TiDB 资源组和资源管控的信息，请参考 [TiDB 资源管控](/tidb-resource-control.md)
 + 在 TiDB 侧开启 [`tidb_enable_resource_control`](/system-variables.md#tidb_enable_resource_control-从-v660-版本开始引入) 全局变量的情况下，开启这个配置项才有意义。此配置参数开启后，TiKV 会使用优先级队列对排队的用户前台读写请求做调度，调度的优先级和请求所在资源组已经消费的资源量反相关，和对应资源组的配额正相关。
-+ 默认值：false（即关闭按照资源组配额调度）
++ 默认值：true（即开启按照资源组配额调度）
+
+## split
+
+[Load Base Split](/configure-load-base-split.md) 相关的配置项。
+
+### `byte-threshold` <span class="version-mark">从 v5.0 版本开始引入</span>
+
++ 控制某个 Region 被识别为热点 Region 的流量阈值。
++ 默认值：
+
+    + 当 [`region-split-size`](#region-split-size) 小于 4 GB 时，默认值为每秒 `30MiB` 流量。
+    + 当 [`region-split-size`](#region-split-size) 大于或等于 4 GB 时，默认值为每秒 `100MiB` 流量。
+
+### `qps-threshold`
+
++ 控制某个 Region 被识别为热点 Region 的 QPS 阈值。
++ 默认值：
+
+    + 当 [`region-split-size`](#region-split-size) 小于 4 GB 时，默认值为每秒 `3000` QPS。
+    + 当 [`region-split-size`](#region-split-size) 大于或等于 4 GB 时，默认值为每秒 `7000` QPS。
+
+### `region-cpu-overload-threshold-ratio` <span class="version-mark">从 v6.2.0 版本开始引入</span>
+
++ 控制某个 Region 被识别为热点 Region 的 CPU 使用率阈值。
++ 默认值：
+
+    + 当 [`region-split-size`](#region-split-size) 小于 4 GB 时，默认值为 `0.25`。
+    + 当 [`region-split-size`](#region-split-size) 大于或等于 4 GB 时，默认值为 `0.75`。
+
+## memory <span class="version-mark">从 v7.5.0 版本开始引入</span>
+
+### `enable-heap-profiling` <span class="version-mark">从 v7.5.0 版本开始引入</span>
+
++ 控制是否开启 TiKV 堆内存分析功能，以跟踪 TiKV 的内存使用情况。
++ 默认值：true
+
+### `profiling-sample-per-bytes` <span class="version-mark">从 v7.5.0 版本开始引入</span>
+
++ 设置 TiKV 堆内存分析每次采样的数据量，以 2 的指数次幂向上取整。
++ 默认值：512KB

@@ -7,6 +7,11 @@ summary: TiDB 数据库中外键约束的使用概况。
 
 从 v6.6.0 开始，TiDB 支持外键以及外键约束功能，外键允许跨表交叉引用相关数据，外键约束则可以保证相关数据的一致性。
 
+> **警告：**
+>
+> - 外键功能目前为实验特性，不建议在生产环境中使用。该功能可能会在未事先通知的情况下发生变化或删除。如果发现 bug，请在 GitHub 上提 [issue](https://github.com/pingcap/tidb/issues) 反馈。
+> - 外键功能通常用于强制执行[参照完整性](https://zh.wikipedia.org/wiki/%E5%8F%82%E7%85%A7%E5%AE%8C%E6%95%B4%E6%80%A7)约束检查。使用该功能可能会导致性能下降，在将其应用于性能敏感的场景前，建议先进行全面测试。
+
 外键是在子表中定义的，语法如下：
 
 ```ebnf+diagram
@@ -197,7 +202,7 @@ Create Table: CREATE TABLE `child` (
 
 - [`INFORMATION_SCHEMA.KEY_COLUMN_USAGE`](/information-schema/information-schema-key-column-usage.md)
 - [`INFORMATION_SCHEMA.TABLE_CONSTRAINTS`](/information-schema/information-schema-table-constraints.md)
-- [`INFORMATION_SCHEMA.TABLE_CONSTRAINTS`](/information-schema/information-schema-table-constraints.md)
+- [`INFORMATION_SCHEMA.REFERENTIAL_CONSTRAINTS`](/information-schema/information-schema-referential-constraints.md)
 
 下面提供了查询示例：
 
@@ -308,3 +313,31 @@ Create Table | CREATE TABLE `child` (
 ### 与 MySQL 的兼容性
 
 创建外键未指定名称时，TiDB 自动生成的外键名称和 MySQL 不一样。例如 TiDB 生成的外键名称为 `fk_1`、`fk_2`、`fk_3` 等，MySQL 生成的外键名称为 `table_name_ibfk_1`、 `table_name_ibfk_2`、`table_name_ibfk_3` 等。
+
+MySQL 和 TiDB 均能解析但会忽略以内联 `REFERENCES` 的方式定义的外键。只有当 `REFERENCES` 作为 `FOREIGN KEY` 定义的一部分时，才会进行检查和执行。下面的示例在定义外键约束时只使用了 `REFERENCES`：
+
+```sql
+CREATE TABLE parent (
+    id INT KEY
+);
+
+CREATE TABLE child (
+    id INT,
+    pid INT REFERENCES parent(id)
+);
+
+SHOW CREATE TABLE child;
+```
+
+输出结果显示 `child` 表不包含任何外键：
+
+```sql
++-------+-------------------------------------------------------------+
+| Table | Create Table                                                |
++-------+-------------------------------------------------------------+
+| child | CREATE TABLE `child` (                                      |
+|       |   `id` int(11) DEFAULT NULL,                                |
+|       |   `pid` int(11) DEFAULT NULL                                |
+|       | ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin |
++-------+-------------------------------------------------------------+
+```

@@ -61,6 +61,135 @@ target-schema = "test_2"       # 目标库名
 target-table = "t_2"           # 目标表名
 ```
 
-## 注意事项
+## Table Router 的初始化和示例
 
-如果上游数据库有 `test_2`.`t_2` 也会被下游数据库匹配到。
+### Table Router 的初始化
+
+- 如果规则中存在 `target-schema/target-table` 表名为 `schema.table`，sync-diff-inspector 的行为如下：
+
+    - 如果存在一条规则将 `schema.table` 匹配到 `schema.table`，sync-diff-inspector 不做任何处理。
+    - 如果不存在将 `schema.table` 匹配到 `schema.table` 的规则，sync-diff-inspector 会在表路由中添加一条新的规则 `schema.table -> _no__exists__db_._no__exists__table_`。之后，sync-diff-inspector 会将表 `schema.table` 视为表 `_no__exists__db_._no__exists__table_`。
+
+- 如果规则中只存在 `target-schema`，如下所示：
+
+    ```toml
+    [routes.rule1]
+    schema-pattern = "schema_2"  # 匹配数据源的库名，支持通配符 "*" 和 "?"
+    target-schema = "schema"     # 目标库名 
+    ```
+
+    - 如果上游中不存在库 `schema`，sync-diff-inspector 不做任何处理。
+    - 如果上游中存在库 `schema`，且存在一条规则将该库匹配到其他库，sync-diff-inspector 不做任何处理。
+    - 如果上游中存在库 `schema`，但不存在将该库匹配到其他库的规则，sync-diff-inspector 会在表路由中添加一条新的规则 `schema -> _no__exists__db_`。之后，sync-diff-inspector 会将库 `schema` 视为库 `_no__exists__db_`。
+
+- 如果规则中不存在 `target-schema.target-table`，sync-diff-inspector 会添加一条规则将 `target-schema.target-table` 匹配到 `target-schema.target-table`，使其大小写不敏感，因为表路由是大小写不敏感的。
+
+### 示例
+
+假设在上游集群中有下列七张表：
+
+- `inspector_mysql_0.tb_emp1`
+- `Inspector_mysql_0.tb_emp1`
+- `inspector_mysql_0.Tb_emp1`
+- `inspector_mysql_1.tb_emp1`
+- `Inspector_mysql_1.tb_emp1`
+- `inspector_mysql_1.Tb_emp1`
+- `Inspector_mysql_1.Tb_emp1`
+
+在配置示例中，上游集群有一条规则 `Source.rule1`，目标表为 `inspector_mysql_1.tb_emp1`。
+
+#### 示例 1
+
+如果配置如下：
+
+```toml
+[Source.rule1]
+schema-pattern = "inspector_mysql_0"
+table-pattern = "tb_emp1"
+target-schema = "inspector_mysql_1"
+target-table = "tb_emp1"
+```
+
+那么路由结果如下：
+
+- `inspector_mysql_0.tb_emp1` 将被路由到 `inspector_mysql_1.tb_emp1`
+- `Inspector_mysql_0.tb_emp1` 将被路由到 `inspector_mysql_1.tb_emp1`
+- `inspector_mysql_0.Tb_emp1` 将被路由到 `inspector_mysql_1.tb_emp1`
+- `inspector_mysql_1.tb_emp1` 将被路由到 `_no__exists__db_._no__exists__table_`
+- `Inspector_mysql_1.tb_emp1` 将被路由到 `_no__exists__db_._no__exists__table_`
+- `inspector_mysql_1.Tb_emp1` 将被路由到 `_no__exists__db_._no__exists__table_`
+- `Inspector_mysql_1.Tb_emp1` 将被路由到 `_no__exists__db_._no__exists__table_`
+
+#### 示例 2
+
+如果配置如下：
+
+```toml
+[Source.rule1]
+schema-pattern = "inspector_mysql_0"
+target-schema = "inspector_mysql_1"
+```
+
+那么路由结果如下：
+
+- `inspector_mysql_0.tb_emp1` 将被路由到 `inspector_mysql_1.tb_emp1`
+- `Inspector_mysql_0.tb_emp1` 将被路由到 `inspector_mysql_1.tb_emp1`
+- `inspector_mysql_0.Tb_emp1` 将被路由到 `inspector_mysql_1.Tb_emp1`
+- `inspector_mysql_1.tb_emp1` 将被路由到 `_no__exists__db_._no__exists__table_`
+- `Inspector_mysql_1.tb_emp1` 将被路由到 `_no__exists__db_._no__exists__table_`
+- `inspector_mysql_1.Tb_emp1` 将被路由到 `_no__exists__db_._no__exists__table_`
+- `Inspector_mysql_1.Tb_emp1` 将被路由到 `_no__exists__db_._no__exists__table_`
+
+#### 示例 3
+
+如果配置如下：
+
+```toml
+[Source.rule1]
+schema-pattern = "other_schema"
+target-schema = "other_schema"
+```
+
+那么路由结果如下：
+
+- `inspector_mysql_0.tb_emp1` 将被路由到 `inspector_mysql_0.tb_emp1`
+- `Inspector_mysql_0.tb_emp1` 将被路由到 `Inspector_mysql_0.tb_emp1`
+- `inspector_mysql_0.Tb_emp1` 将被路由到 `inspector_mysql_0.Tb_emp1`
+- `inspector_mysql_1.tb_emp1` 将被路由到 `inspector_mysql_1.tb_emp1`
+- `Inspector_mysql_1.tb_emp1` 将被路由到 `inspector_mysql_1.tb_emp1`
+- `inspector_mysql_1.Tb_emp1` 将被路由到 `inspector_mysql_1.tb_emp1`
+- `Inspector_mysql_1.Tb_emp1` 将被路由到 `inspector_mysql_1.tb_emp1`
+
+#### 示例 4
+
+如果配置如下：
+
+```toml
+[Source.rule1]
+schema-pattern = "inspector_mysql_?"
+table-pattern = "tb_emp1"
+target-schema = "inspector_mysql_1"
+target-table = "tb_emp1"
+```
+
+那么路由结果如下：
+
+- `inspector_mysql_0.tb_emp1` 将被路由到 `inspector_mysql_1.tb_emp1`
+- `Inspector_mysql_0.tb_emp1` 将被路由到 `inspector_mysql_1.tb_emp1`
+- `inspector_mysql_0.Tb_emp1` 将被路由到 `inspector_mysql_1.tb_emp1`
+- `inspector_mysql_1.tb_emp1` 将被路由到 `inspector_mysql_1.tb_emp1`
+- `Inspector_mysql_1.tb_emp1` 将被路由到 `inspector_mysql_1.tb_emp1`
+- `inspector_mysql_1.Tb_emp1` 将被路由到 `inspector_mysql_1.tb_emp1`
+- `Inspector_mysql_1.Tb_emp1` 将被路由到 `inspector_mysql_1.tb_emp1`
+
+#### 示例 5
+
+如果你不设置任何规则，那么路由结果如下：
+
+- `inspector_mysql_0.tb_emp1` 将被路由到 `inspector_mysql_0.tb_emp1`
+- `Inspector_mysql_0.tb_emp1` 将被路由到 `Inspector_mysql_0.tb_emp1`
+- `inspector_mysql_0.Tb_emp1` 将被路由到 `inspector_mysql_0.Tb_emp1`
+- `inspector_mysql_1.tb_emp1` 将被路由到 `inspector_mysql_1.tb_emp1`
+- `Inspector_mysql_1.tb_emp1` 将被路由到 `inspector_mysql_1.tb_emp1`
+- `inspector_mysql_1.Tb_emp1` 将被路由到 `inspector_mysql_1.tb_emp1`
+- `Inspector_mysql_1.Tb_emp1` 将被路由到 `inspector_mysql_1.tb_emp1`

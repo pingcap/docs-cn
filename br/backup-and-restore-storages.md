@@ -32,54 +32,13 @@ BACKUP DATABASE * TO 's3://bucket-name/prefix' SEND_CREDENTIALS_TO_TIKV = FALSE;
 
 ### 格式说明
 
-本部分介绍存储服务的 URI 格式：
+外部存储服务的 URI 格式如下：
 
 ```shell
 [scheme]://[host]/[path]?[parameters]
 ```
 
-<SimpleTab groupId="storage">
-<div label="Amazon S3" value="amazon">
-
-- `scheme`：`s3`
-- `host`：`bucket name`
-- `parameters`：
-
-    - `access-key`：访问密钥
-    - `secret-access-key`：秘密访问密钥
-    - `session-token`：会话令牌
-    - `use-accelerate-endpoint`：是否在 Amazon S3 上使用加速端点，默认为 `false`
-    - `endpoint`：Amazon S3 兼容服务自定义端点的 URL，例如 `<https://s3.example.com/>`
-    - `force-path-style`：使用路径类型 (path-style)，而不是虚拟托管类型 (virtual-hosted-style)，默认为 `true`
-    - `storage-class`：上传对象的存储类别，例如 `STANDARD`、`STANDARD_IA`
-    - `sse`：加密上传的服务端加密算法，可以设置为空、`AES256` 或 `aws:kms`
-    - `sse-kms-key-id`：如果 `sse` 设置为 `aws:kms`，则使用该参数指定 KMS ID
-    - `acl`：上传对象的标准 ACL (Canned ACL)，例如 `private`、`authenticated-read`
-
-</div>
-<div label="GCS" value="gcs">
-
-- `scheme`：`gcs` 或 `gs`
-- `host`：`bucket name`
-- `parameters`：
-
-    - `credentials-file`：迁移工具节点上凭证 JSON 文件的路径
-    - `storage-class`：上传对象的存储类别，例如 `STANDARD` 或 `COLDLINE`
-    - `predefined-acl`：上传对象的预定义 ACL，例如 `private` 或 `project-private`
-
-</div>
-<div label="Azure Blob Storage" value="azure">
-
-- `scheme`：`azure` 或 `azblob`
-- `host`：`container name`
-- `parameters`：
-
-    - `account-name`：存储账户名
-    - `account-key`：访问密钥
-    - `access-tier`：上传对象的存储类别，例如 `Hot`、`Cool`、`Archive`，默认为 `Hot`
-
-</div>
-</SimpleTab>
+关于 URI 格式的详细信息，请参考[外部存储服务的 URI 格式](/external-storage-uri.md)。
 
 ### URI 示例
 
@@ -149,7 +108,7 @@ BACKUP DATABASE * TO 's3://bucket-name/prefix' SEND_CREDENTIALS_TO_TIKV = FALSE;
 在备份之前，需要为 br 命令行工具访问 Amazon S3 中的备份目录设置相应的访问权限：
 
 - 备份时 TiKV 和 br 命令行工具需要的访问备份数据目录的最小权限：`s3:ListBucket`、`s3:PutObject` 和 `s3:AbortMultipartUpload`。
-- 恢复时 TiKV 和 br 命令行工具需要的访问备份数据目录的最小权限：`s3:ListBucket` 和 `s3:GetObject`。
+- 恢复时 TiKV 和 br 命令行工具需要的访问备份数据目录的最小权限：`s3:ListBucket`、`s3:GetObject` 和 `s3:PutObject`。br 命令行工具会将断点信息写到备份数据目录下的 `./checkpoints` 子目录。在恢复日志备份数据时，br 命令行工具会将备份恢复集群的表 ID 映射关系写到备份数据目录下的 `./pitr_id_maps` 子目录。
 
 如果你还没有创建备份数据保存目录，可以参考[创建存储桶](https://docs.aws.amazon.com/zh_cn/AmazonS3/latest/user-guide/create-bucket.html)在指定的区域中创建一个 S3 存储桶。如果需要使用文件夹，可以参考[使用文件夹在 Amazon S3 控制台中组织对象](https://docs.aws.amazon.com/zh_cn/AmazonS3/latest/user-guide/create-folder.html)在存储桶中创建一个文件夹。
 
@@ -185,11 +144,15 @@ BACKUP DATABASE * TO 's3://bucket-name/prefix' SEND_CREDENTIALS_TO_TIKV = FALSE;
 </div>
 <div label="Azure Blob Storage" value="azure">
 
-- 方式一：指定访问密钥
+- 方式一：指定共享访问签名
 
-    在 URI 配置 `account-name` 和 `account-key`，则使用该参数指定的密钥。除了在 URI 中指定密钥文件外，还支持 br 命令行工具读取 `$AZURE_STORAGE_KEY` 的方式。
+    在 URI 中配置 `account-name` 和 `sas-token`，则使用该参数指定的存储账户名和共享访问签名令牌。由于共享访问签名令牌中带有 `&` 的字符，需要将其编码为 `%26` 后再添加到 URI 中。你也可以直接对整个 `sas-token` 进行一次百分号编码。<!-- TODO: add an example -->
 
-- 方式二：使用 Azure AD 备份恢复
+- 方式二：指定访问密钥
+
+    在 URI 中配置 `account-name` 和 `account-key`，则使用该参数指定的存储账户名和密钥。除了在 URI 中指定密钥文件外，还支持 br 命令行工具读取 `$AZURE_STORAGE_KEY` 的方式。
+
+- 方式三：使用 Azure AD 备份恢复
 
     在 br 命令行工具运行环境配置环境变量 `$AZURE_CLIENT_ID`、`$AZURE_TENANT_ID` 和 `$AZURE_CLIENT_SECRET`。
 
@@ -244,6 +207,10 @@ BACKUP DATABASE * TO 's3://bucket-name/prefix' SEND_CREDENTIALS_TO_TIKV = FALSE;
 ### Amazon S3 存储服务端加密备份数据
 
 TiDB 备份恢复功能支持对备份到 Amazon S3 的数据进行 S3 服务端加密 (SSE)。S3 服务端加密也支持使用用户自行创建的 AWS KMS 密钥，详细信息请参考 [BR S3 服务端加密](/encryption-at-rest.md#br-s3-服务端加密)。
+
+### Azure Blob Storage 存储服务端加密备份数据
+
+TiDB 备份恢复功能支持对备份到 Azure Blob Storage 的数据设置 Azure 服务端加密范围 (Encryption Scope) 或提供加密密钥 (Encryption Key)，为同一存储账户的不同备份数据建立安全边界。详细信息请参考 [BR Azure Blob Storage 服务端加密](/encryption-at-rest.md#br-azure-blob-storage-服务端加密)。
 
 ## 存储服务其他功能支持
 

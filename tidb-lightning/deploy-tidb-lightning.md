@@ -8,8 +8,8 @@ aliases: ['/docs-cn/dev/tidb-lightning/deploy-tidb-lightning/','/docs-cn/dev/ref
 
 本文主要介绍 TiDB Lightning 进行数据导入的硬件需求，以及手动部署 TiDB Lightning 的方式。Lightning 不同的导入模式，其硬件要求有所不同，请先阅读：
 
-- [Physical Import Mode 必要条件及限制](/tidb-lightning/tidb-lightning-physical-import-mode.md#必要条件及限制)
-- [Logical Import Mode 必要条件及限制](/tidb-lightning/tidb-lightning-logical-import-mode.md#必要条件)
+- [物理导入模式必要条件及限制](/tidb-lightning/tidb-lightning-physical-import-mode.md#必要条件及限制)
+- [逻辑导入模式必要条件及限制](/tidb-lightning/tidb-lightning-logical-import-mode.md#必要条件)
 
 ## 使用 TiUP 联网部署（推荐）
 

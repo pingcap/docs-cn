@@ -108,22 +108,55 @@ aliases: ['/docs-cn/dev/check-before-deployment/']
 
 ## 检测及关闭系统 swap
 
-TiDB 运行需要有足够的内存。如果内存不足，不建议使用 swap 作为内存不足的缓冲，因为这会降低性能。建议永久关闭系统 swap。
+TiDB 运行需要有足够的内存。如果想保持性能稳定，则建议永久关闭系统 swap，但可能在内存偏小时触发 OOM 问题；如果想避免此类 OOM 问题，则可只将 swap 优先级调低，但不做永久关闭。
 
-要永久关闭 swap，可执行以如下命令:
+- 开启并使用 swap 可能会引入性能抖动问题，对于低延迟、稳定性要求高的数据库服务，建议永久关闭操作系统层 swap。要永久关闭 swap，可使用以下方法：
 
-{{< copyable "shell-regular" >}}
+    - 在操作系统初始化阶段，不单独划分 swap 分区盘。
+    - 如果在操作系统初始化阶段，已经单独划分了 swap 分区盘，并且启用了 swap，则使用以下命令进行关闭：
 
-```bash
-echo "vm.swappiness = 0">> /etc/sysctl.conf
-swapoff -a && swapon -a
-sysctl -p
-```
+        ```bash
+        echo "vm.swappiness = 0">> /etc/sysctl.conf
+        swapoff -a
+        sysctl -p
+        ```
 
-> **注意：**
->
-> - 一起执行 `swapoff -a` 和 `swapon -a` 命令是为了刷新 swap，将 swap 里的数据转储回内存，并清空 swap 里的数据。不可省略 swappiness 设置而只执行 `swapoff -a`；否则，重启后 swap 会再次自动打开，使得操作失效。
-> - 执行 `sysctl -p` 命令是为了在不重启的情况下使配置生效。
+- 如果主机内存偏小，关闭系统 swap 可能会更容易触发 OOM 问题，可参考以如下方法将 swap 优先级调低，但不做永久关闭：
+
+    ```bash
+    echo "vm.swappiness = 0">> /etc/sysctl.conf
+    sysctl -p
+    ```
+
+## 设置 TiDB 节点的临时空间（推荐）
+
+TiDB 的部分操作需要向服务器写入临时文件，因此需要确保运行 TiDB 的操作系统用户具有足够的权限对目标目录进行读写。如果 TiDB 实例不是以 `root` 权限启动，则需要检查目录权限并进行正确设置。
+
+- TiDB 临时工作区
+
+    哈希表构建、排序等内存消耗较大的操作可能会向磁盘写入临时数据，用来减少内存消耗，提升稳定性。写入的磁盘位置由配置项 [`tmp-storage-path`](/tidb-configuration-file.md#tmp-storage-path) 定义。在默认设置下，确保运行 TiDB 的用户对操作系统临时文件夹（通常为 `/tmp`）有读写权限。
+
+- Fast Online DDL 工作区
+
+    当变量 [`tidb_ddl_enable_fast_reorg`](/system-variables.md#tidb_ddl_enable_fast_reorg-从-v630-版本开始引入) 被设置为 `ON`（v6.5.0 及以上版本中默认值为 `ON`）时，会激活 Fast Online DDL，这时部分 DDL 要对临时文件进行读写。临时文件位置由配置 [`temp-dir`](/tidb-configuration-file.md#temp-dir-从-v630-版本开始引入) 定义，需要确保运行 TiDB 的用户对操作系统中该目录有读写权限。以默认目录 `/tmp/tidb` 为例：
+
+    > **注意：**
+    >
+    > 如果业务中可能存在针对大对象的 DDL 操作，推荐为 [`temp-dir`](/tidb-configuration-file.md#temp-dir-从-v630-版本开始引入) 配置独立文件系统及更大的临时空间。
+
+    ```shell
+    sudo mkdir /tmp/tidb
+    ```
+
+    如果目录 `/tmp/tidb` 已经存在，需确保有写入权限。
+
+    ```shell
+    sudo chmod -R 777 /tmp/tidb
+    ```
+
+    > **注意：**
+    >
+    > 如果目录不存在，TiDB 在启动时会自动创建该目录。如果目录创建失败，或者 TiDB 对该目录没有读写权限，[Fast Online DDL](/system-variables.md#tidb_ddl_enable_fast_reorg-从-v630-版本开始引入) 在运行时可能产生不可预知的问题。
 
 ## 检测及关闭目标部署机器的防火墙
 

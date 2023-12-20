@@ -91,7 +91,7 @@ DM-master、DM-worker 和 dmctl 都会在每次新建相互通讯的连接时重
 
 ### 为上游数据库连接开启加密传输
 
-1. 配置上游数据库，启用加密连接支持并设置 Server 证书，具体可参考 [Using encrypted connections](https://dev.mysql.com/doc/refman/5.7/en/using-encrypted-connections.html)
+1. 配置上游数据库，启用加密连接支持并设置 Server 证书，具体可参考 [Using encrypted connections](https://dev.mysql.com/doc/refman/8.0/en/using-encrypted-connections.html)
 
 2. 在 source 配置文件中设置 MySQL Client 证书：
 
