@@ -85,6 +85,5 @@ aliases: ['/docs-cn/dev/system-tables/system-table-overview/','/docs-cn/dev/refe
 * `GLOBAL_VARIABLES` 全局系统变量表
 * `expr_pushdown_blacklist` 表达式下推的黑名单
 * `opt_rule_blacklist` 逻辑优化规则的黑名单
-* `table_cache_meta` 缓存表的信息
 * `tidb_import_jobs` 记录 [`IMPORT INTO`](/sql-statements/sql-statement-import-into.md) 任务信息
 * `tidb_timers` 存储了内部定时器的相关元信息
