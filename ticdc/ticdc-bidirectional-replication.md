@@ -34,37 +34,60 @@ TiCDC 复制功能只会将指定时间点之后的增量变更复制到下游�
 
 这样，以上搭建好的集群即可对数据进行双向复制。
 
-## 执行 DDL
+## DDL 同步
 
-开启双向复制功能后，TiCDC 不会同步任何 DDL。用户需要自行在上下游集群中分别执行 DDL。
+从 v7.6.0 版本之后，TiDB 为了支持双向同步 DDL，引入了四种 BDR role（None、Primary、Secondary 和 Local_only）和两种 BDR 模式。
 
-需要注意的是，某些 DDL 会造成表结构变更或者数据更改时序问题，从而导致数据同步后出现不一致的情况。因此，在开启双向同步功能后，只有下表中的 DDL 可以在业务不停止数据写入的情况下执行。
+### BDR 严格模式
 
-| 事件                        | 是否会引起 changefeed 错误 | 说明    |
-| ---------------------------- | ------ |--------------------------|
-| create database              | 是     | 用户手动在上下游都执行了 DDL 之后，错误可以自动恢复|
-| drop database                | 是     | 需要手动重启 changefeed，指定 `--overwrite-checkpoint-ts` 为该条 DDL 的commitTs 来恢复         |
-| create table                 | 是   | 用户手动在上下游都执行了 DDL 之后，错误可以自动恢复       |
-| drop table                   | 是   | 需要手动重启 changefeed，指定 `--overwrite-checkpoint-ts` 为该条 ddl 的commitTs 来恢复        |
-| alter table comment          | 否   |    |
-| rename index                 | 否   |    |
-| alter table index visibility | 否   |    |
-| add partition                | 是   | 用户手动在上下游都执行了 DDL 之后，错误可以自动恢复    |
-| drop partition               | 否   |    |
-| create view                  | 否   |    |
-| drop view                    | 否   |    |
-| alter column default value   | 否  |    |
-| reorganize partition         | 是   | 用户手动在上下游都执行了 DDL 之后，错误可以自动恢复    |
-| alter table ttl              | 否   |    |
-| alter table remove ttl       | 否   |    |
-| add **not unique** index     | 否   |    |
-| drop **not unique** index    | 否   |    |
+把一个 TiDB 集群设置为 Primary，其他 TiDB 集群设置为 Secondary 就可以进入 BDR 严格模式。在这种模式下
+1. 用户可以在 primary TiDB 下执行无损 DDL，并通过 TiCDC 同步到 Secondary 集群。无损 DDL 如下：
+- create database
+- create table
+- add column(not null or default value)
+- add non-unique index
+- drop index
+- modify column(can modify default value and comment)
+- alter column default value
+- modify table comment
+- rename index
+- add table partition
+- drop primary key
+- alter table index visibility
+- alter table ttl
+- alter table remove ttl
+2. 其他有损 DDL 在 primary TiDB 上执行会被拦截。有损 DDL 如下：
+- drop database
+- drop table
+- add column 非（not null or default value）
+- drop column
+- add unique index
+- truncate table
+- modify column 非（can modify default value and comment）
+- rename table
+- drop partition
+- truncate partition
+- alter table character set
+- alter database character set
+- recover table
+- add primary key
+- rebase auto id
+- exchange partition
+- reorganize partition
+3. 无论是有损 DDL 还是无损 DDL 都无法在 Secondary TiDB 中执行。在 TiCDC zhi
 
-如果需要执行以上列表中不存在的 DDL，需要采取以下步骤：
+都可以执行的 DDL
+create view
+drop view
+
+### BDR 非严格模式
+
+如果需要执行有损 DDL，则需要把所有 TiDB 集群的 BDR role 设置为 local_only，进入 BDR 非严格模式，并且遵循以下步骤：
 
 1. 暂停所有集群中需要执行 DDL 的对应的表的写入操作。
 2. 等待所有集群中对应表的所有写入已经同步到其他集群后，手动在每一个 TiDB 集群上单独执行所有的 DDL。
 3. 等待 DDL 完成之后，重新恢复写入。
+4. 把所有集群切换成 BDR 严格模式。
 
 ## 停止双向复制
 
@@ -74,7 +97,9 @@ TiCDC 复制功能只会将指定时间点之后的增量变更复制到下游�
 
 ## 使用限制
 
-- DDL 的限制见[执行 DDL 小节](#执行-ddl)。
+- DDL 的限制见[DDL 同步 小节](#ddl-同步)。
+
+- 禁止在同步的表中使用 Auto increment/Auto random 键。
 
 - 双向复制的集群不具备检测写冲突的功能，写冲突将会导致未定义问题。你需要在业务层面保证不出现写冲突。
 
