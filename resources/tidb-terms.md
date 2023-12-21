@@ -1,6 +1,6 @@
 ---
 title: TiDB 术语表
-summary: 本文档介绍 TiDB 术语表
+summary: 本文档介绍 TiDB 中英文术语表。
 ---
 
 | English | 中文 | 备注 | 参考 |
