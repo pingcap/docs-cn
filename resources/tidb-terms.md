@@ -3,7 +3,7 @@ title: TiDB 术语表
 summary: 本文档介绍 TiDB 术语表
 ---
 
-| English | 中文 | Comment | Reference |
+| English | 中文 | 备注 | 参考 |
 |:---:|:---:|:---:|:---:|
 | 2-phase commit (2PC) | 2 阶段提交 |  |  |
 | abort | 退出 |  |  |
@@ -13,7 +13,7 @@ summary: 本文档介绍 TiDB 术语表
 | access | 访问 |  |  |
 | account | 账户 |  |  |
 | accuracy | 准确性 |  |  |
-| ACID properties of   transactions | 事务的 ACID 特性 |  | https://www.ibm.com/support/knowledgecenter/en/SSGMCP_5.3.0/com.ibm.cics.ts.productoverview.doc/concepts/acid.html |
+| ACID properties of transactions | 事务的 ACID 特性 |  | https://www.ibm.com/support/knowledgecenter/en/SSGMCP_5.3.0/com.ibm.cics.ts.productoverview.doc/concepts/acid.html |
 | aggregate expression | 聚合表达式 |  | https://www.ibm.com/support/knowledgecenter/en/SSGU8G_12.1.0/com.ibm.sqls.doc/ids_sqs_0189.htm |
 | aggregate function | 聚合函数 |  |  |
 | alert | 报警 |  |  |
@@ -35,7 +35,7 @@ summary: 本文档介绍 TiDB 术语表
 | backup | 备份 |  |  |
 | bastion | 堡垒机 |  |  |
 | binary literal | 二进制字面值 |  |  |
-| bit | 位 |  | in cryptography |
+| bit | 位 |  |  |
 | Bloom filter | 布隆过滤器 |  | https://en.wikipedia.org/wiki/Bloom_filter |
 | boolean operation | 布尔运算 |  |  |
 | bootstrap | 启动\引导程序 |  |  |
@@ -48,8 +48,8 @@ summary: 本文档介绍 TiDB 术语表
 | Cartesian product | 笛卡尓积 |  |  |
 | case-sensitive | 大小写敏感 |  |  |
 | CBO (cost based optimization) | 基于代价的优化 |  |  |
-| certificate signing request   (CSR) | 证书签名请求 |  |  |
-| Custom Resource Definition   (CRD) | 自定义资源类型 |  |  |
+| certificate signing request (CSR) | 证书签名请求 |  |  |
+| Custom Resource Definition (CRD) | 自定义资源类型 |  |  |
 | checksum | 校验和 |  |  |
 | circular dependency | 循环依赖 |  |  |
 | class | 类 |  |  |
@@ -109,7 +109,7 @@ summary: 本文档介绍 TiDB 术语表
 | database kernel | 数据库内核 | 内核是 kernel，不是 core |  |
 | datacenter | 数据中心 |  |  |
 | dataflow | 数据流 |  |  |
-| decompress | 解压缩 |  | The difference between "decompress" and   "uncompress": https://english.stackexchange.com/questions/56480/difference-between-uncompress-and-decompress |
+| decompress | 解压缩 |  | The difference between "decompress" and "uncompress": https://english.stackexchange.com/questions/56480/difference-between-uncompress-and-decompress |
 | delta import | 增量导入 |  |  |
 | denpendency/dependencies | 依赖包 |  |  |
 | dependency | 依赖关系 |  |  |
@@ -127,7 +127,7 @@ summary: 本文档介绍 TiDB 术语表
 | dynamic programming algorithm | 动态规划算法 |  | https://zh.wikipedia.org/wiki/%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92 |
 | effective range | 生效范围 |  |  |
 | earlier version | 以下版本 |  |  |
-| edit | 修改（如：ini 文件） |  |  |
+| edit | 修改（如：修改 ini 文件） |  |  |
 | effective range | 生效范围 |  |  |
 | elect | 选举 |  |  |
 | engine file | 引擎文件 |  |  |
@@ -153,8 +153,8 @@ summary: 本文档介绍 TiDB 术语表
 | file handle | 文件句柄 |  |  |
 | fill-factor | 填充因子 |  |  |
 | fine-grained | 细粒度 |  |  |
-| flag | (命令行)标记/参数 |  |  |
-| float |  |  |  |
+| flag | （命令行）标记/参数 |  |  |
+| float | float | |  |  |
 | Follower | Follower | A role in the Raft consensus algorithm |  |
 | force upgrade | 强制升级 |  |  |
 | foundation class | 基础类库 |  |  |
@@ -185,8 +185,8 @@ summary: 本文档介绍 TiDB 术语表
 | hash join | 哈希连接 |  |  |
 | hash partitioned table | hash 分区表 |  | https://docs.oracle.com/database/121/VLDBG/GUID-04E6C6EF-CE27-4DE9-B5B1-D23010E4A356.htm |
 | high availability | 高可用 |  |  |
-| high concurrency | 高并发 | noun phrase |  |
-| high concurrent | 高并发 | adj phrase |  |
+| high concurrency | 高并发 | 名词短语 (noun phrase) |  |
+| high concurrent | 高并发 | 形容词短语 (adj phrase) |  |
 | horizontal scalability | 水平扩展 |  |  |
 | host | 主机 |  |  |
 | hot data | 热点数据 |  |  |
@@ -200,7 +200,7 @@ summary: 本文档介绍 TiDB 术语表
 | implement | 实现 |  |  |
 | implementation | 实现 |  |  |
 | implicit transaction | 隐式事务 |  |  |
-| in batches | 批量 | verb phrase |  |
+| in batches | 批量 | 动词短语 (verb phrase) |  |
 | in full volume | 全量 |  |  |
 | in-memory database | 内存数据库 |  |  |
 | incremental backup | 增量备份 |  | https://www.cockroachlabs.com/docs/stable/restore.html |
@@ -295,8 +295,8 @@ summary: 本文档介绍 TiDB 术语表
 | OLTP: Online Transactional Processing | 在线事务处理 |  |  |
 | one-to-many relationship | 一对多关系 |  |  |
 | open addressing hashing | 开地址法 |  |  |
-| open source | 开源 | noun |  |
-| open-source | 开源 | adj, verb |  |
+| open source | 开源 | 名词 (noun) |  |
+| open-source | 开源 | 形容词 (adj)、动词 (verb) |  |
 | operating environment | 运行环境 |  |  |
 | operation and administer | 运维 |  | https://en.wikipedia.org/wiki/Operations,_administration_and_management |
 | operational data store (ODS) | 操作数据存储 |  |  |
@@ -331,7 +331,7 @@ summary: 本文档介绍 TiDB 术语表
 | port | 端口 |  |  |
 | precheck | 前置检查 | TiDB 文档里统一译成“前置检查”，不译成”预检查” |  |
 | prefix match | 前缀匹配 |  |  |
-| primitive | 原语 | Kubernetes 中的概念 | InfoQ：Kubernetes 的核心概念讲解 |
+| primitive | 原语 | Kubernetes 中的概念 | [InfoQ：Kubernetes 的核心概念讲解](https://www.infoq.cn/article/69dzo9zwe5y3ca*5quqk) |
 | private cloud | 私有云 |  |  |
 | private key | 私钥 |  |  |
 | privilege | 权限 |  |  |
@@ -340,8 +340,8 @@ summary: 本文档介绍 TiDB 术语表
 | public key | 公钥 |  |  |
 | pure virtual function | 纯虚函数 |  |  |
 | push | 推送 |  |  |
-| push down | 下推 | verb phrase |  |
-| pushdown | 下推的 | adj. |  |
+| push down | 下推 | 动词短语 (verb phrase) |  |
+| pushdown | 下推的 | 形容词 (adj.) |  |
 | query | 查询 |  |  |
 | query by returning to the table (not a fixed term) | 回表查询 |  |  https://odetocode.com/articles/237.aspx |   |  |
 | query tree | 查询树 |  |  |
@@ -368,13 +368,13 @@ summary: 本文档介绍 TiDB 术语表
 | repository | 仓库 |  |  |
 | request | 请求 |  |  |
 | restart | 重启 |  |  |
-| restore | 恢复 | noun, verb | https://docs.microsoft.com/en-us/sql/relational-databases/backup-restore/back-up-and-restore-of-sql-server-databases?view=sql-server-ver15 |
+| restore | 恢复 | 名词 (noun)、动词 (verb) | https://docs.microsoft.com/en-us/sql/relational-databases/backup-restore/back-up-and-restore-of-sql-server-databases?view=sql-server-ver15 |
 | retention period | 保留时间 |  | https://en.wikipedia.org/wiki/Retention_period |
 | return | 返回 |  |  |
 | return value | 返回值 |  |  |
 | reuse | 复用 |  |  |
 | reverse proxy | 反向代理 |  |  |
-| revoke | (权限)回收 |  |  |
+| revoke | （权限）回收 |  |  |
 | rewind | 回退 |  |  |
 | rolling update | 滚动升级 |  | https://kubernetes.io/docs/tutorials/kubernetes-basics/update-intro/ |
 | rotate | 轮转 |  |  |
@@ -414,7 +414,7 @@ summary: 本文档介绍 TiDB 术语表
 | source end | 源端 |  |  |
 | split | 切分 |  |  |
 | SPOF: single point of failure | 单点故障 |  |  |
-| SST (Static Sorted Table) | https://github.com/facebook/rocksdb/wiki/A-Tutorial-of-RocksDB-SST-formats |
+| SST (Static Sorted Table) | 静态排序表文件 (SST) |  | https://github.com/facebook/rocksdb/wiki/A-Tutorial-of-RocksDB-SST-formats  |
 | stack | 堆栈 |  |  |
 | startup parameter | 启动参数 |  |  |
 | stateful | 有状态的 |  |  |
@@ -479,7 +479,6 @@ summary: 本文档介绍 TiDB 术语表
 | variable | 变量 |  |  |
 | verification | 验证 |  |  |
 | verify | 验证 |  |  |
-| video transcoding |  |  |  |
 | VPA (Vertical Pod Autoscaling) | Pod 自动垂直扩容 | TiDB in Kubernetes |  |
 | wild card | 通配符 |  |  |
 | work queue(s) | 工作队列 |  |  |
