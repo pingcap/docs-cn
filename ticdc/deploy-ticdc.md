@@ -155,7 +155,7 @@ See [Enable TLS Between TiDB Components](/enable-tls-between-components.md).
 Run the following command to view the TiCDC cluster status. Note that you need to replace `v<CLUSTER_VERSION>` with the TiCDC cluster version, such as `v7.5.0`:
 
 ```shell
-tiup ctl:v<CLUSTER_VERSION> cdc capture list --server=http://10.0.10.25:8300
+tiup cdc:v<CLUSTER_VERSION> cli capture list --server=http://10.0.10.25:8300
 ```
 
 ```shell
