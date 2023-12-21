@@ -11,7 +11,7 @@ summary: 了解备份恢复相关的常见问题以及解决方法。
 
 ## 当误删除或误更新数据后，如何原地快速恢复？
 
-从 TiDB v6.4.0 引入了完整的 Flashback 功能，可以支持原地快速恢复 GC 时间内的数据到指定时间点。在误操作场景下，推荐使用 Flashback 来恢复数据，具体可以参考 [Flashback 集群](/sql-statements/sql-statement-flashback-to-timestamp.md) 和 [Flashback 数据库](/sql-statements/sql-statement-flashback-database.md)语法。
+从 TiDB v6.4.0 引入了完整的 Flashback 功能，可以支持原地快速恢复 GC 时间内的数据到指定时间点。在误操作场景下，推荐使用 Flashback 来恢复数据，具体可以参考 [Flashback 集群](/sql-statements/sql-statement-flashback-cluster.md) 和 [Flashback 数据库](/sql-statements/sql-statement-flashback-database.md)语法。
 
 ## 在 TiDB v5.4.0 及后续版本中，当在有负载的集群进行备份时，备份速度为什么会变得很慢？
 
@@ -30,7 +30,7 @@ TiKV 支持[动态配置](/tikv-control.md#动态修改-tikv-的配置)自动调
 
 ## PITR 问题
 
-### [PITR 功能](/br/br-pitr-guide.md)和 [flashback 集群](/sql-statements/sql-statement-flashback-to-timestamp.md)有什么区别?
+### [PITR 功能](/br/br-pitr-guide.md)和 [flashback 集群](/sql-statements/sql-statement-flashback-cluster.md)有什么区别?
 
 从使用场景角度来看，PITR 通常用于在集群完全停止服务或数据损坏且无法使用其他方案恢复时，将集群的数据恢复到指定的时间点。使用 PITR 时，你需要通过一个新的集群来完成数据恢复。而 flashback 集群则通常用于发生误操作或其他因素导致的数据错误时，将集群的数据恢复到数据错误发生前的最近时间点。
 
@@ -44,9 +44,9 @@ TiKV 支持[动态配置](/tikv-control.md#动态修改-tikv-的配置)自动调
 
 ### 索引加速功能为什么与 PITR 功能不兼容？
 
-Issue 链接：[#38045](https://github.com/pingcap/tidb/issues/38045)
+Issue 链接：[#38045](https://github.com/pingcap/tidb/issues/38045)（v7.0.0 已修复）
 
-当前通过[索引加速功能](/system-variables.md#tidb_ddl_enable_fast_reorg-从-v630-版本开始引入)创建的索引数据无法被 PITR 备份。
+在 v7.0.0 之前版本中，通过[索引加速功能](/system-variables.md#tidb_ddl_enable_fast_reorg-从-v630-版本开始引入)创建的索引数据无法被 PITR 备份。
 
 因此，在 PITR 恢复完成后，BR 会将通过索引加速功能创建的索引数据删除，再重新创建。如果在日志备份期间通过索引加速功能创建的索引很多或索引数据很大，建议在创建索引后进行一次全量备份。
 
@@ -58,11 +58,11 @@ Issue 链接：[#13126](https://github.com/tikv/tikv/issues/13126)
 
 ### 执行 PITR 恢复时遇到 `execute over region id` 报错，该如何处理？
 
-Issue 链接：[#37207](https://github.com/pingcap/tidb/issues/37207)
+Issue 链接：[#37207](https://github.com/pingcap/tidb/issues/37207)（v6.6.0 已修复）
 
-该场景发生在全量数据导入时开启了日志备份，并使用 PITR 恢复全量导入时间段的日志。经过测试发现，当存在长时间（24 小时）大量热点写入，且平均单台 TiKV 节点写入 OPS > 50k/s（可以通过 Grafana 中 **TiKV-Details** -> **Backup Log** -> **Handle Event Rate** 确认该数值），那么有几率会遇到这个情况。
+在 v6.6.0 之前版本中，执行 PITR 恢复时可能会遇到 `execute over region id` 报错。该场景发生在全量数据导入时开启了日志备份，并使用 PITR 恢复全量导入时间段的日志。经过测试发现，当存在长时间（24 小时）大量热点写入，且平均单台 TiKV 节点写入 OPS > 50k/s（可以通过 Grafana 中 **TiKV-Details** -> **Backup Log** -> **Handle Event Rate** 确认该数值），那么有几率会遇到这个情况。
 
-当前版本中建议在集群初始化后，进行一次有效快照备份，并且以此作为基础进行 PITR 恢复。
+对于 v6.6.0 之前版本，建议在集群初始化后，进行一次有效快照备份，并且以此作为基础进行 PITR 恢复。
 
 ### 在使用 `br restore point` 命令恢复下游集群后，TiFlash 引擎数据没有恢复？
 
@@ -295,6 +295,10 @@ br restore full -f 'mysql.usertable' -s $external_storage_url --with-sys-table
 - 统计信息表（`mysql.stat_*`）
 - 系统变量表（`mysql.tidb`、`mysql.global_variables`）
 - [其他系统表](https://github.com/pingcap/tidb/blob/master/br/pkg/restore/systable_restore.go#L31)
+
+### 恢复的时候，报错 `cannot file rewrite rule`，该如何处理？
+
+遇到这种情况，请检查恢复集群中是否存在跟备份数据同名但表结构不一致的表。大多数情况是因为恢复集群的表缺失了索引导致。您可以尝试先删除该表，然后再次进行恢复操作。
 
 ## 备份恢复功能相关知识
 

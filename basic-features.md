@@ -69,7 +69,7 @@ summary: 了解 TiDB 的功能概览。
 | `INSERT ON DUPLICATE KEY UPDATE` | Y | Y | Y | Y | Y | Y | Y | Y | Y |
 | `LOAD DATA INFILE` | Y | Y | Y | Y | Y | Y | Y | Y | Y |
 | `SELECT INTO OUTFILE` | Y | Y | Y | Y | Y | Y | Y | Y | Y |
-| `INNER JOIN`, LEFT\|RIGHT [OUTER] JOIN | Y | Y | Y | Y | Y | Y | Y | Y | Y |
+| `INNER JOIN`, <code>LEFT\|RIGHT [OUTER] JOIN</code> | Y | Y | Y | Y | Y | Y | Y | Y | Y |
 | `UNION`，`UNION ALL` | Y | Y | Y | Y | Y | Y | Y | Y | Y |
 | [`EXCEPT` 和 `INTERSECT` 运算符](/functions-and-operators/set-operators.md) | Y | Y | Y | Y | Y | Y | Y | Y | N |
 | `GROUP BY`，`ORDER BY` | Y | Y | Y | Y | Y | Y | Y | Y | Y |
@@ -122,7 +122,7 @@ summary: 了解 TiDB 的功能概览。
 | 并行 DDL | Y | Y | N | N | N | N | N | N | N |
 | [添加索引加速](/system-variables.md#tidb_ddl_enable_fast_reorg-从-v630-版本开始引入) | Y | Y | N | N | N | N | N | N | N |
 | [元数据锁](/metadata-lock.md) | Y | Y | N | N | N | N | N | N | N |
-| [`FLASHBACK CLUSTER TO TIMESTAMP`](/sql-statements/sql-statement-flashback-to-timestamp.md) | Y | Y | N | N | N | N | N | N | N |
+| [`FLASHBACK CLUSTER`](/sql-statements/sql-statement-flashback-cluster.md) | Y | Y | N | N | N | N | N | N | N |
 
 ## 事务
 
