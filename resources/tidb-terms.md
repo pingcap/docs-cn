@@ -345,7 +345,7 @@ summary: 本文档介绍 TiDB 中英文术语表。
 | push down | 下推 | 动词短语 (verb phrase) |  |
 | pushdown | 下推的 | 形容词 (adj.) |  |
 | query | 查询 |  |  |
-| query by returning to the table (not a fixed term) | 回表查询 |  |  <https://odetocode.com/articles/237.aspx> |   |  |
+| query by returning to the table (not a fixed term) | 回表查询 |  |  <https://odetocode.com/articles/237.aspx> |  
 | query tree | 查询树 |  |  |
 | Raft | Raft |  |  |
 | Raft consensus algorithm | Raft 一致性算法 |  |  |
