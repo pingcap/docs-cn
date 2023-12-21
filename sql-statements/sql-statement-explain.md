@@ -192,10 +192,12 @@ To specify the format of the `EXPLAIN` output, you can use the `FORMAT = xxx` sy
 | FORMAT | Description |
 | ------ | ------ |
 | Not specified  | If the format is not specified, `EXPLAIN` uses the default format `row`. |
-| `row`  | The `EXPLAIN` statement outputs results in a tabular format. See [Understand the Query Execution Plan](/explain-overview.md) for more information. |
-| `brief`  | The operator IDs in the output of the `EXPLAIN` statement are simplified, compared with those when `FORMAT` is left unspecified. |
-| `dot`    | The `EXPLAIN` statement outputs DOT execution plans, which can be used to generate PNG files through a `dot` program (in the `graphviz` package). |
-| `tidb_json` | The `EXPLAIN` statement outputs execution plans in JSON and stores the operator information in a JSON array. |
+| `brief`        | The operator IDs in the output of the `EXPLAIN` statement are simplified, compared with those when `FORMAT` is left unspecified. |
+| `dot`          | The `EXPLAIN` statement outputs DOT execution plans, which can be used to generate PNG files through a `dot` program (in the `graphviz` package). |
+| `row`          | The `EXPLAIN` statement outputs results in a tabular format. See [Understand the Query Execution Plan](/explain-overview.md) for more information. |
+| `tidb_json`    | The `EXPLAIN` statement outputs execution plans in JSON and stores the operator information in a JSON array. |
+| `verbose`      | The `EXPLAIN` statement outputs results in the `row` format, with an additional `estCost` column for the estimated cost of the query in the results. For more information about how to use this format, see [SQL Plan Management](/sql-plan-management.md). |
+| `plan_cache`   | The `EXPLAIN` statement outputs results in the `row` format, with the [Plan Cache](/sql-non-prepared-plan-cache.md#diagnostics) information as a warning. |
 
 <SimpleTab>
 
