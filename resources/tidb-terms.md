@@ -106,7 +106,7 @@ summary: 本文档介绍 PingCAP 术语表
 | data hub | 数据中台 |  |  |  |  |
 | data race | 数据竞争 |  |  |  |  |
 | database administrator (DBA) | 数据库管理员 |  |  |  |  |
-| database kernel | 数据库内核 | 内核是kernel，不是core |  |  |  |
+| database kernel | 数据库内核 | 内核是 kernel，不是 core |  |  |  |
 | datacenter | 数据中心 |  |  |  |  |
 | dataflow | 数据流 |  |  |  |  |
 | decompress | 解压缩 |  | The difference between "decompress" and   "uncompress":   https://english.stackexchange.com/questions/56480/difference-between-uncompress-and-decompress |  |  |
@@ -260,7 +260,7 @@ summary: 本文档介绍 PingCAP 术语表
 | logical plan | 逻辑计划 |  |  |  |  |
 | long transaction | 长事务 |  | https://www.ibm.com/developerworks/cn/data/library/techarticles/dm-1001haodh/index.html |  |  |
 | machine code | 机器码 |  |  |  |  |
-| massive data | 海量数据 | 不是big data（大数据） |  |  |  |
+| massive data | 海量数据 | 不是 big data（大数据） |  |  |  |
 | Massively Parallel Processing   (MPP) | 大规模并行处理 |  |  |  |  |
 | master | 主库 |  |  |  |  |
 | materialized view | 物化视图 |  |  |  |  |
@@ -343,7 +343,7 @@ summary: 本文档介绍 PingCAP 术语表
 | push down | 下推 | verb phrase |  |  |  |
 | pushdown | 下推的 | adj. |  |  |  |
 | query | 查询 |  |  |  |  |
-| query by returning to the   table (not a fixed term) | 回表查询 | ref: https://odetocode.com/articles/237.aspx |  |  |  |
+| query by returning to the   table (not a fixed term) | 回表查询 |  |  https://odetocode.com/articles/237.aspx |   |  |
 | query tree | 查询树 |  |  |  |  |
 | Raft | Raft |  |  |  |  |
 | Raft consensus algorithm | Raft 一致性算法 |  |  |  |  |
