@@ -21,9 +21,6 @@ TiDB 版本：7.1.3
 
 ## 改进提升
 
-+ TiKV
-
-
 + PD
 
     - 改进 resource control client 的配置获取方式，使其可以动态获取最新配置 [#7043](https://github.com/tikv/pd/issues/7043) @[nolouch](https://github.com/nolouch)
