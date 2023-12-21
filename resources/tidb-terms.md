@@ -233,7 +233,7 @@ summary: 本文档介绍 TiDB 术语表
 | Kubernetes (K8s) | <https://kubernetes.io/docs/concepts/overview/what-is-kubernetes/#what-does-kubernetes-mean-k8s> |
 | latch contention | 锁竞争 |  |  |
 | latency | 延时 |  |  |
-| later version | 以上版本 |  | <https://github.com/pingcap/docs/blob/master/sql/encrypted-connections.md> |
+| later version | 以上版本 |  |  |
 | Leader | Leader | A role in the Raft consensus algorithm |  |
 | leak | 泄漏 |  |  |
 | least recently used (LRU) | 近期最少使用法 |  |  |
