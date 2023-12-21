@@ -973,6 +973,26 @@
   - [版本发布时间线](/releases/release-timeline.md)
   - [TiDB 版本规则](/releases/versioning.md)
   - [TiDB 离线包](/binary-package.md)
+<<<<<<< HEAD
+=======
+  - v7.5
+    - [7.5.0](/releases/release-7.5.0.md)
+  - v7.4
+    - [7.4.0-DMR](/releases/release-7.4.0.md)
+  - v7.3
+    - [7.3.0-DMR](/releases/release-7.3.0.md)
+  - v7.2
+    - [7.2.0-DMR](/releases/release-7.2.0.md)
+  - v7.1
+    - [7.1.3](/releases/release-7.1.3.md)
+    - [7.1.2](/releases/release-7.1.2.md)
+    - [7.1.1](/releases/release-7.1.1.md)
+    - [7.1.0](/releases/release-7.1.0.md)
+  - v7.0
+    - [7.0.0-DMR](/releases/release-7.0.0.md)
+  - v6.6
+    - [6.6.0-DMR](/releases/release-6.6.0.md)
+>>>>>>> dd18836f4c (release: add v7.1.3 release notes (#15672))
   - v6.5
     - [6.5.7](/releases/release-6.5.7.md)
     - [6.5.6](/releases/release-6.5.6.md)
