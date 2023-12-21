@@ -82,9 +82,9 @@ aliases: ['/docs-cn/dev/system-tables/system-table-overview/','/docs-cn/dev/refe
 
 ## DDL 相关系统表
 
-* `tidb_ddl_history` 记录了 DDL 语句的历史记录。
-* `tidb_ddl_jobs` TiDB 内部存放的正在执行 DDL 的元数据，用于执行 DDL。
-* `tidb_ddl_reorg` TiDB 内部存放的正在执行的物理 DDL（例如加索引）的元数据，用于执行物理 DDL。
+* `tidb_ddl_history` 记录了 DDL 语句的历史记录
+* `tidb_ddl_jobs` TiDB 内部存放的正在执行 DDL 的元数据，用于执行 DDL
+* `tidb_ddl_reorg` TiDB 内部存放的正在执行的物理 DDL（例如加索引）的元数据，用于执行物理 DDL
 
 ## 分布式框架相关系统表
 
