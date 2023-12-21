@@ -114,11 +114,6 @@ hide_commit: true
 
 [PingCAP Clinic](https://docs.pingcap.com/zh/tidb/v7.3/clinic-introduction)
 
-<<<<<<< HEAD
-[TiUniManager](https://docs.pingcap.com/zh/tidb/v7.3/tiunimanager-overview)
-
-=======
->>>>>>> 2f2846902d (tiunimanager: delete tiunimanager from 6.5 and later (#15849))
 </LearningPath>
 
 <LearningPath label="参考" icon="cloud-dev">
