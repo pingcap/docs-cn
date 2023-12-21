@@ -85,8 +85,22 @@ Currently, the `help_topic` is NULL.
 
 ## System tables related to metadata locks
 
-* `tidb_mdl_view`：a view of metadata locks. You can use it to view information about the currently blocked DDL statements
-* `tidb_mdl_info`：used internally by TiDB to synchronize metadata locks across nodes
+* `tidb_mdl_view`: a view of metadata locks. You can use it to view information about the currently blocked DDL statements
+* `tidb_mdl_info`: used internally by TiDB to synchronize metadata locks across nodes
+
+## System tables related to DDL statements
+
+* `tidb_ddl_history`: the history records of DDL statements
+* `tidb_ddl_jobs`: the metadata of DDL statements that are currently being executed by TiDB
+* `tidb_ddl_reorg`: the metadata of physical DDL statements (such as adding indexes) that are currently being executed by TiDB
+
+## System tables related to TiDB Distributed eXecution Framework (DXF)
+
+* `dist_framework_meta`: the metadata of the Distributed eXecution Framework (DXF) task scheduler
+* `tidb_global_task`: the metadata of the current DXF task
+* `tidb_global_task_history`: the metadata of the historical DXF tasks, including both succeeded and failed tasks
+* `tidb_background_subtask`: the metadata of the current DXF subtask
+* `tidb_background_subtask_history`: the metadata of the historical DXF subtasks
 
 ## Miscellaneous system tables
 
