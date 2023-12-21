@@ -41,7 +41,7 @@ TiDB 版本：7.1.3
         - 优化了 redo log 的相关性能，包括并行写入 S3 和支持 lz4 压缩算法 [#10176](https://github.com/pingcap/tiflow/issues/10176) [#10226](https://github.com/pingcap/tiflow/issues/10226) @[sdojjy](https://github.com/sdojjy)
         - 通过增加并行，优化了 TiCDC 同步数据到对象存储的性能 [#10098](https://github.com/pingcap/tiflow/issues/10098) @[CharlesCheung96](https://github.com/CharlesCheung96)
         - 减少 TiCDC 在做增量扫描时对上游 TiKV 的影响 [#11390](https://github.com/tikv/tikv/issues/11390) @[hicqu](https://github.com/hicqu)
-        - 支持通过在 `sink-uri` 中设置 `content-compatible=true` 使 TiCDC Canal-JSON [兼容 Canal 官方输出的内容格式](/ticdc/ticdc-canal-json.md#兼容-canal-官方实现) [#10106](https://github.com/pingcap/tiflow/issues/10106) @[3AceShowHand](https://github.com/3AceShowHand)
+        - 支持通过在 `sink-uri` 中设置 `content-compatible=true` 使 TiCDC Canal-JSON [兼容 Canal 官方输出的内容格式](https://docs.pingcap.com/zh/tidb/v7.1/ticdc-canal-json#兼容-canal-官方实现) [#10106](https://github.com/pingcap/tiflow/issues/10106) @[3AceShowHand](https://github.com/3AceShowHand)
 
     + TiDB Lightning
 
