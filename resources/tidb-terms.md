@@ -5,7 +5,7 @@ summary: 本文档介绍 TiDB 术语表
 
 | English | 中文 | Comment | Reference |
 |:---:|:---:|:---:|:---:|
-| 2-phase commit (2PC) | 2阶段提交 |  |  |
+| 2-phase commit (2PC) | 2 阶段提交 |  |  |
 | abort | 退出 |  |  |
 | abstract | 抽象 |  |  |
 | abstract syntax tree (AST) | 抽象语法树 |  |  |
@@ -54,7 +54,7 @@ summary: 本文档介绍 TiDB 术语表
 | circular dependency | 循环依赖 |  |  |
 | class | 类 |  |  |
 | client | 客户端 |  |  |
-| client library | 客户端库 | added by Xiaozhen Liu |  |
+| client library | 客户端库 |   |  |
 | cluster | 集群 |  |  |
 | cluster functionality | 集群功能 |  |  |
 | clustered index | 聚簇索引 |  |  |
@@ -68,7 +68,7 @@ summary: 本文档介绍 TiDB 术语表
 | column-oriented DBMS | 列式存储数据库 |  |  |
 | columnar storage engine | 列式存储引擎 |  |  |
 | combinatorial test | 组合测试 |  |  |
-| combined table | 总表 | “分表”和“总表”的英文翻译由李琳咨询王相后提供 |  |
+| combined table | 总表 |   |  |
 | communicate | 通信 |  |  |
 | communication | 通信 |  |  |
 | comparison operation | 比较运算 |  |  |
@@ -109,7 +109,7 @@ summary: 本文档介绍 TiDB 术语表
 | database kernel | 数据库内核 | 内核是 kernel，不是 core |  |
 | datacenter | 数据中心 |  |  |
 | dataflow | 数据流 |  |  |
-| decompress | 解压缩 |  | The difference between "decompress" and   "uncompress":   https://english.stackexchange.com/questions/56480/difference-between-uncompress-and-decompress |
+| decompress | 解压缩 |  | The difference between "decompress" and   "uncompress": https://english.stackexchange.com/questions/56480/difference-between-uncompress-and-decompress |
 | delta import | 增量导入 |  |  |
 | denpendency/dependencies | 依赖包 |  |  |
 | dependency | 依赖关系 |  |  |
@@ -120,7 +120,7 @@ summary: 本文档介绍 TiDB 术语表
 | disaster recovery | 容灾 |  | https://en.wikipedia.org/wiki/Disaster_recovery |
 | disparate data source | 异构数据源 |  |  |
 | distributed database | 分布式数据库 |  |  |
-| DML (Data Manipulation   Language) | 数据操纵语言 |  |  |
+| DML (Data Manipulation Language) | 数据操纵语言 |  |  |
 | driving table | 驱动表 |  |  |
 | dummy data | 假数据 |  |  |
 | dynamic | 动态 |  |  |
@@ -172,11 +172,11 @@ summary: 本文档介绍 TiDB 术语表
 | Geo-distributed multi-active | 异地多活 |  | https://www.ibm.com/support/knowledgecenter/en/SSEPGG_10.1.0/com.ibm.db2.luw.admin.sd.doc/doc/c0058742.html |
 | global | 全局 |  |  |
 | global privileges | 全局权限 |  |  |
-| goroutine | 协程 | It also can be "coroutine". But it is   suggested using "goroutine" by the TiDB Tools team. |  |
+| goroutine | 协程 | It also can be "coroutine". But it is suggested using "goroutine". |  |
 | graceful | 优雅的 |  |  |
 | granularity | 粒度 |  |  |
 | grid computing | 网格计算 |  |  |
-| GTID (Global Transaction   Identifier) | 全局事务标识符 |  |  |
+| GTID (Global Transaction Identifier) | 全局事务标识符 |  |  |
 | HA policy | 高可用策略 |  |  |
 | handle | 句柄 |  |  |
 | hang | 假死 |  |  |
@@ -191,12 +191,12 @@ summary: 本文档介绍 TiDB 术语表
 | host | 主机 |  |  |
 | hot data | 热点数据 |  |  |
 | hotfix | 热修复 |  |  |
-| HPA (Horizontal Pod   Autoscaling) | 自动水平扩容 | TiDB in Kubernetes | https://cloud.google.com/blog/products/gcp/beyond-cpu-horizontal-pod-autoscaling-comes-to-google-kubernetes-engine |
-| HTAP (Hybrid Transactional and   Analytical Processing) | HTAP (Hybrid Transactional and Analytical Processing) | 一般写英文形式 |  |
+| HPA (Horizontal Pod Autoscaling) | 自动水平扩容 | TiDB in Kubernetes | https://cloud.google.com/blog/products/gcp/beyond-cpu-horizontal-pod-autoscaling-comes-to-google-kubernetes-engine |
+| HTAP (Hybrid Transactional and Analytical Processing) | HTAP (Hybrid Transactional and Analytical Processing) | 一般写英文形式 |  |
 | hybrid deployment | 混合部署 |  |  |
 | idempotent (idempotence) | 幂等 |  |  |
 | image | 镜像 |  | https://docs.docker.com/engine/reference/commandline/image/ |
-| image tag error | 镜像tag错误 |  |  |
+| image tag error | 镜像 tag 错误 |  |  |
 | implement | 实现 |  |  |
 | implementation | 实现 |  |  |
 | implicit transaction | 隐式事务 |  |  |
@@ -221,12 +221,12 @@ summary: 本文档介绍 TiDB 术语表
 | Internationalization (I18N) | 国际化 |  |  |
 | Internet Data Center (IDC) | 互联网数据中心 |  |  |
 | intrusive | 有侵入性的 |  |  |
-| IOPS (Input/Output Operations   Per Second) | IOPS | 每秒输入输出操作，一般写英文形式 |  |
+| IOPS (Input/Output Operations Per Second) | IOPS | 每秒输入输出操作，一般写英文形式 |  |
 | Isolated storage | 独立存储 |  |  |
 | isolation | 隔离 |  |  |
 | isolation level | 隔离级别 |  |  |
-| ISP (Internet Service   Provider) | 互联网服务提供商 |  | https://en.wikipedia.org/wiki/Internet_service_provider |
-| JDBC (Java DataBase   Connectivity) | Java 数据库连接 |  |  |
+| ISP (Internet Service Provider) | 互联网服务提供商 |  | https://en.wikipedia.org/wiki/Internet_service_provider |
+| JDBC (Java DataBase Connectivity) | Java 数据库连接 |  |  |
 | kernel version | 内核版本 |  |  |
 | key-value pair(s) / KV pair(s) | 键值对 |  |  |
 | keyword | 关键字 |  |  |
@@ -261,7 +261,7 @@ summary: 本文档介绍 TiDB 术语表
 | long transaction | 长事务 |  | https://www.ibm.com/developerworks/cn/data/library/techarticles/dm-1001haodh/index.html |
 | machine code | 机器码 |  |  |
 | massive data | 海量数据 | 不是 big data（大数据） |  |
-| Massively Parallel Processing   (MPP) | 大规模并行处理 |  |  |
+| Massively Parallel Processing (MPP) | 大规模并行处理 |  |  |
 | master | 主库 |  |  |
 | materialized view | 物化视图 |  |  |
 | memory | 内存 |  |  |
@@ -281,7 +281,7 @@ summary: 本文档介绍 TiDB 术语表
 | multi-tenancy | 多租户技术 |  |  |
 | mutation | 变异 |  | http://www.orafaq.com/wiki/Mutating_table       https://blog.csdn.net/zhpsam109/article/details/97335 |
 | mutex | 互斥锁 | Mutual exclusion | https://zh.wikipedia.org/wiki/%E4%BA%92%E6%96%A5%E9%94%81 |
-| MVCC: multi-version   concurrency control | 多版本并发控制 |  |  |
+| MVCC: multi-version concurrency control | 多版本并发控制 |  |  |
 | MySQL syntax | MySQL 语法 |  |  |
 | namespace | 命名空间 |  |  |
 | native code | 原生码 |  |  |
@@ -291,8 +291,8 @@ summary: 本文档介绍 TiDB 术语表
 | null | 空值 |  |  |
 | object abstraction | 对象抽象 |  |  |
 | offset | 偏移 |  |  |
-| OLAP: Online Analytical   Processing | 在线分析处理 |  |  |
-| OLTP: Online Transactional   Processing | 在线事务处理 |  |  |
+| OLAP: Online Analytical Processing | 在线分析处理 |  |  |
+| OLTP: Online Transactional Processing | 在线事务处理 |  |  |
 | one-to-many relationship | 一对多关系 |  |  |
 | open addressing hashing | 开地址法 |  |  |
 | open source | 开源 | noun |  |
@@ -306,7 +306,7 @@ summary: 本文档介绍 TiDB 术语表
 | optimistic locking | 乐观锁 |  |  |
 | optimistic transaction model | 乐观事务模型 |  |  |
 | optimizer | 优化器 |  |  |
-| ORM (Object Relational   Mapping) | 对象关系映射 |  |  |
+| ORM (Object Relational Mapping) | 对象关系映射 |  |  |
 | out of memory (OOM) | 内存溢出 |  | https://en.wikipedia.org/wiki/Out_of_memory |
 | outer join | 外连接 |  |  |
 | outer join simplification | 外连化简 |  |  |
@@ -316,12 +316,12 @@ summary: 本文档介绍 TiDB 术语表
 | parallel replication | 并行复制 |  |  |
 | parameter | 参数 |  |  |
 | parse | 解析 |  |  |
-| partitioned table/partition   table | 分区表 |  | https://docs.oracle.com/database/121/VLDBG/GUID-6D369646-16AF-487B-BF32-5F6569D27C8A.htm#VLDBG1046       https://en.wikipedia.org/wiki/Partition_table |
+| partitioned table/partition table | 分区表 |  | https://docs.oracle.com/database/121/VLDBG/GUID-6D369646-16AF-487B-BF32-5F6569D27C8A.htm#VLDBG1046       https://en.wikipedia.org/wiki/Partition_table |
 | performance | 性能 |  |  |
 | performance jitter | 性能抖动 |  |  |
 | performance overhead | 性能开销 |  |  |
 | performance tuning | 性能调优 |  |  |
-| persist (data) | 持久化存储（数据） | persist 与一般的   save（保存）不一样，持久化存储是将数据保存到硬盘中，使得在应用程序或机器重启后可以继续访问之前保存的数据。 | https://www.jianshu.com/p/6ce0864d2845 |
+| persist (data) | 持久化存储（数据） | persist 与一般的 save（保存）不一样，持久化存储是将数据保存到硬盘中，使得在应用程序或机器重启后可以继续访问之前保存的数据。 | https://www.jianshu.com/p/6ce0864d2845 |
 | persistent data | 持久化数据 |  |  |
 | pessimistic locking | 悲观锁 |  |  |
 | physical plan | 物理计划 |  |  |
@@ -329,7 +329,7 @@ summary: 本文档介绍 TiDB 术语表
 | point query | 点查询 |  |  |
 | populate | 填充 |  |  |
 | port | 端口 |  |  |
-| precheck | 前置检查 | TiDB 文档里统一译成这个，不译成预检查 |  |
+| precheck | 前置检查 | TiDB 文档里统一译成“前置检查”，不译成”预检查” |  |
 | prefix match | 前缀匹配 |  |  |
 | primitive | 原语 | Kubernetes 中的概念 | InfoQ：Kubernetes 的核心概念讲解 |
 | private cloud | 私有云 |  |  |
@@ -343,15 +343,15 @@ summary: 本文档介绍 TiDB 术语表
 | push down | 下推 | verb phrase |  |
 | pushdown | 下推的 | adj. |  |
 | query | 查询 |  |  |
-| query by returning to the   table (not a fixed term) | 回表查询 |  |  https://odetocode.com/articles/237.aspx |   |  |
+| query by returning to the table (not a fixed term) | 回表查询 |  |  https://odetocode.com/articles/237.aspx |   |  |
 | query tree | 查询树 |  |  |
 | Raft | Raft |  |  |
 | Raft consensus algorithm | Raft 一致性算法 |  |  |
-| RAID (Redundant Array of   Independent Disks) | 独立冗余磁盘阵列 |  |  |
+| RAID (Redundant Array of Independent Disks) | 独立冗余磁盘阵列 |  |  |
 | random delay | 随机延迟 |  |  |
 | range query | 范围查询 |  |  |
 | RBO (rule based optimization) | 基于规则的优化 |  |  |
-| RDBMS: Relational Database   Management System | 关系型数据库管理系统 |  |  |
+| RDBMS: Relational Database Management System | 关系型数据库管理系统 |  |  |
 | read | 读 |  |  |
 | reads and writes | 读写 |  |  |
 | real-time replication delay | 实时同步延迟 |  |  |
@@ -432,7 +432,7 @@ summary: 本文档介绍 TiDB 术语表
 | subquery | 子查询 |  |  |
 | super class | 超类 |  |  |
 | synchronizing/syncing | 同步 |  |  |
-| Syntactic sugar | 语法糖 | In computer science, syntactic sugar is syntax   within a programming language that is designed to make things easier to read   or to express. It makes the language "sweeter" for human use:   things can be expressed more clearly, more concisely, or in an alternative   style that some may prefer. |  |
+| Syntactic sugar | 语法糖 | In computer science, syntactic sugar is syntax within a programming language that is designed to make things easier to read or to express. It makes the language "sweeter" for human use: things can be expressed more clearly, more concisely, or in an alternative style that some may prefer. |  |
 | syntax | 语法 |  |  |
 | system variable | 系统变量 |  |  |
 | THP (Transparent Huge Pages) | 透明大页 | a Linux memory management system | https://docs.pingcap.com/zh/tidb/dev/tune-operating-system#%E5%86%85%E5%AD%98%E9%80%8F%E6%98%8E%E5%A4%A7%E9%A1%B5 |
@@ -454,7 +454,7 @@ summary: 本文档介绍 TiDB 术语表
 | timestamp | 时间戳 |  |  |
 | timestamp allocator | 时间戳分配器 |  |  |
 | Timestamp Oracle | TSO |  |  |
-| token bucket | 令牌桶 | an algorithm used in packet switched computer networks and   telecommunications networks | https://en.wikipedia.org/wiki/Token_bucket |
+| token bucket | 令牌桶 | an algorithm used in packet switched computer networks and telecommunications networks | https://en.wikipedia.org/wiki/Token_bucket |
 | tolerate | 容忍 |  |  |
 | topology | 拓扑结构 |  |  |
 | traffic flow control | 流控/流量控制 |  |  |
@@ -475,7 +475,7 @@ summary: 本文档介绍 TiDB 术语表
 | update | 修改（如：行） |  |  |
 | user identification | 用户标识 |  |  |
 | user privilege | 用户权限 |  |  |
-| UUID (Universally Unique   Identifier) | 通用唯一识别码 |  |  |
+| UUID (Universally Unique Identifier) | 通用唯一识别码 |  |  |
 | variable | 变量 |  |  |
 | verification | 验证 |  |  |
 | verify | 验证 |  |  |
