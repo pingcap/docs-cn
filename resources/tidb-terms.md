@@ -1,6 +1,6 @@
 ---
-title: PingCAP 术语表
-summary: 本文档介绍 PingCAP 术语表
+title: TiDB 术语表
+summary: 本文档介绍 TiDB 术语表
 ---
 
 | English | 中文 | Comment | Reference |
