@@ -88,7 +88,7 @@ summary: 了解 TiDB 系统表。
 ## 分布式执行框架相关系统表
 
 * `dist_framework_meta` 存放分布式执行框架任务调度的元信息
-* `tidb_global_task` 存放当前正在执行的分布式执行框架任务元信息
+* `tidb_global_task` 存放当前分布式框架正在执行的任务元信息
 * `tidb_global_task_history` 存放历史的分布式执行框架任务元信息
 * `tidb_background_subtask` 存放当前正在执行的分布式执行框架任务的子任务元信息
 * `tidb_background_subtask_history` 存放历史的分布式执行框架任务的子任务元信息
