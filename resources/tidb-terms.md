@@ -1,10 +1,10 @@
 ---
-title: TiDB 术语表
+title: TiDB 中英术语表
 summary: 本文档介绍 TiDB 中英文术语表。
 ---
 
 | English | 中文 | 备注 | 参考 |
-|:---:|:---:|:---:|:---:|
+|:---|:---|:---|:---|
 | 2-phase commit (2PC) | 2 阶段提交 |  |  |
 | abort | 退出 |  |  |
 | abstract | 抽象 |  |  |
