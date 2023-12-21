@@ -81,7 +81,7 @@ listen tidb-cluster                         # 配置 database 负载均衡。
 
 ## 测试方案
 
-该测试的目的是对比 point select、read only、write only、read write 四种负载下 TiProxy 与 HAProxy 的 TPS。每种负载分别使用不同的并发度测试 TiProxy 和 HAProxy，对比 TPS。
+该测试的目的是对比 point select、read only、write only、read write 四种负载下 TiProxy 与 HAProxy 的 QPS。每种负载分别使用不同的并发度测试 TiProxy 和 HAProxy，对比 QPS。
 
 执行的测试命令：
 
@@ -176,7 +176,7 @@ HAProxy 测试结果：
 
 ## 测试方案
 
-该测试的目的是对比不同结果集行数对性能的影响。该测试固定使用 100 并发数，分别使用行数为 10、100、1000、10000 的结果集，对比 TiProxy 和 HAProxy 的 TPS。
+该测试的目的是对比不同结果集行数对性能的影响。该测试固定使用 100 并发数，分别使用行数为 10、100、1000、10000 的结果集，对比 TiProxy 和 HAProxy 的 QPS。
 
 执行的测试命令：
 
