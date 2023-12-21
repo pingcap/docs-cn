@@ -17,6 +17,7 @@ _version_tag="$(date '+%Y%m%d')"
 
 pandoc -N --toc --smart --latex-engine=xelatex \
 --template=templates/template.tex \
+--include-in-header=templates/deeplist.tex \
 --columns=80 \
 --listings \
 -V title="TiDB Documentation" \
