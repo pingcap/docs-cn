@@ -85,7 +85,9 @@ listen tidb-cluster                         # 配置 database 负载均衡。
 
 执行的测试命令：
 
-```shell
+{{< copyable "shell-regular" >}}
+
+```bash
 sysbench $testname \
     --threads=$threads \
     --time=1200 \
@@ -178,7 +180,9 @@ HAProxy 测试结果：
 
 执行的测试命令：
 
-```shell
+{{< copyable "shell-regular" >}}
+
+```bash
 sysbench oltp_read_only \
     --threads=100 \
     --time=1200 \
@@ -226,7 +230,9 @@ HAProxy 测试结果：
 
 执行的测试命令：
 
-```shell
+{{< copyable "shell-regular" >}}
+
+```bash
 sysbench oltp_point_select \
     --threads=$threads \
     --time=1200 \

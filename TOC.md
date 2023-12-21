@@ -205,7 +205,6 @@
     - [TiDB 集群问题导图](/tidb-troubleshooting-map.md)
     - [TiDB 集群常见问题](/troubleshoot-tidb-cluster.md)
     - [TiFlash 常见问题](/tiflash/troubleshoot-tiflash.md)
-    - [TiProxy 常见问题](/tiproxy/troubleshoot-tiproxy.md)
   - 故障场景
     - 慢查询
       - [定位慢查询](/identify-slow-queries.md)
@@ -613,6 +612,10 @@
     - [不同库名或表名的数据校验](/sync-diff-inspector/route-diff.md)
     - [分库分表场景下的数据校验](/sync-diff-inspector/shard-diff.md)
     - [基于 DM 同步场景下的数据校验](/sync-diff-inspector/dm-diff.md)
+  - TiProxy
+    - [概述](/tiproxy/tiproxy-overview.md)
+    - [故障诊断](/tiproxy/troubleshoot-tiproxy.md)
+    - [性能测试报告](/tiproxy/tiproxy-performance-test.md)
   - TiUniManager
     - [概述](/tiunimanager/tiunimanager-overview.md)
     - [安装和运维](/tiunimanager/tiunimanager-install-and-maintain.md)
@@ -658,8 +661,6 @@
     - [TiFlash 数据校验](/tiflash/tiflash-data-validation.md)
     - [TiFlash 兼容性说明](/tiflash/tiflash-compatibility.md)
     - [TiFlash Pipeline Model 执行模型](/tiflash/tiflash-pipeline-model.md)
-  - 代理 TiProxy
-    - [TiProxy 简介](/tiproxy/tiproxy-overview.md)
   - TiDB 分布式执行框架
     - [TiDB 分布式执行框架介绍](/tidb-distributed-execution-framework.md)
     - [TiDB 全局排序](/tidb-global-sort.md)
