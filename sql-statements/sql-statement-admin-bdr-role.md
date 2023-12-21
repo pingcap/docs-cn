@@ -1,0 +1,57 @@
+---
+title: ADMIN [SET|SHOW] BDR ROLE
+summary: TiDB 数据库中 ADMIN [SET|SHOW] BDR ROLE 的使用概况。
+---
+
+# ADMIN [SET|SHOW] BDR ROLE
+
+- `ADMIN SET BDR ROLE` 可以设置该集群的 BDR role。现在 TiDB 集群可以设置 `NONE`、`PRIMARY`、`SECONDAR` 和 `LOCAL_ONLY` 四种 BDR role。关于 BDR role 的详细信息可参考 BDR role。
+- `ADMIN SHOW BDR ROLE` 可以显示该集群的 BDR role。
+
+## 语法图
+
+```ebnf+diagram
+AdminShowBDRRoleStmt ::=
+    'ADMIN' 'SHOW' 'BDR' 'ROLE'
+
+AdminSetBDRRoleStmt ::=
+    'ADMIN' 'SET' 'BDR' 'ROLE' ('NONE' | 'PRIMARY' | 'SECONDARY' | 'LOCAL_ONLY')
+```
+
+## 示例
+
+TiDB 集群的默认 BDR role 是 `NONE`。
+
+{{< copyable "sql" >}}
+
+```sql
+mysql> admin show bdr role;
++----------+
+| BDR_ROLE |
++----------+
+| none     |
++----------+
+1 row in set (0.01 sec)
+```
+
+把 BDR role 设置为 `PRIMARY`。
+
+{{< copyable "sql" >}}
+
+```sql
+mysql> admin set bdr role primary;
+Query OK, 0 rows affected (0.01 sec)
+
+mysql> admin show bdr role;
++----------+
+| BDR_ROLE |
++----------+
+| primary  |
++----------+
+1 row in set (0.00 sec)
+```
+
+## MySQL 兼容性
+
+`ADMIN [SET|SHOW] BDR ROLE` 语句是 TiDB 对 MySQL 语法的扩展。
+
