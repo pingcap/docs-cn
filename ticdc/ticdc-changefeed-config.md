@@ -43,7 +43,7 @@ This section introduces the configuration of a replication task.
 # memory-quota = 1073741824
 
 # Specifies whether the database names and tables in the configuration file are case-sensitive.
-# Starting from v7.5.0, the default value changes from true to false.
+# Starting from v6.5.6, v7.1.3, and v7.5.0, the default value changes from true to false.
 # This configuration item affects configurations related to filter and sink.
 case-sensitive = false
 
