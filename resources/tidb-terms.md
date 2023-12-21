@@ -368,7 +368,7 @@ summary: 本文档介绍 TiDB 术语表
 | repository | 仓库 |  |  |
 | request | 请求 |  |  |
 | restart | 重启 |  |  |
-| restore | 恢复 | 名词 (noun)、动词 (verb) | https://docs.microsoft.com/en-us/sql/relational-databases/backup-restore/back-up-and-restore-of-sql-server-databases?view=sql-server-ver15 |
+| restore | 恢复 | 可以作为名词 (noun) 或动词 (verb) 使用 | https://docs.microsoft.com/en-us/sql/relational-databases/backup-restore/back-up-and-restore-of-sql-server-databases?view=sql-server-ver15 |
 | retention period | 保留时间 |  | https://en.wikipedia.org/wiki/Retention_period |
 | return | 返回 |  |  |
 | return value | 返回值 |  |  |
