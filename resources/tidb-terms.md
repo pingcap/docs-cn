@@ -13,8 +13,8 @@ summary: 本文档介绍 TiDB 术语表
 | access | 访问 |  |  |
 | account | 账户 |  |  |
 | accuracy | 准确性 |  |  |
-| ACID properties of transactions | 事务的 ACID 特性 |  | https://www.ibm.com/support/knowledgecenter/en/SSGMCP_5.3.0/com.ibm.cics.ts.productoverview.doc/concepts/acid.html |
-| aggregate expression | 聚合表达式 |  | https://www.ibm.com/support/knowledgecenter/en/SSGU8G_12.1.0/com.ibm.sqls.doc/ids_sqs_0189.htm |
+| ACID properties of transactions | 事务的 ACID 特性 |  | <https://www.ibm.com/support/knowledgecenter/en/SSGMCP_5.3.0/com.ibm.cics.ts.productoverview.doc/concepts/acid.html> |
+| aggregate expression | 聚合表达式 |  | <https://www.ibm.com/support/knowledgecenter/en/SSGU8G_12.1.0/com.ibm.sqls.doc/ids_sqs_0189.htm> |
 | aggregate function | 聚合函数 |  |  |
 | alert | 报警 |  |  |
 | algorithm | 算法 |  |  |
@@ -31,12 +31,12 @@ summary: 本文档介绍 TiDB 术语表
 | auto-failover | 故障自恢复 |  |  |
 | auto-increment primary key | 自增主键 |  |  |
 | availability | 可用性 |  |  |
-| availability zone | 可用区 |  | https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/using-regions-availability-zones.html#concepts-regions-availability-zones |
+| availability zone | 可用区 |  | <https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/using-regions-availability-zones.html#concepts-regions-availability-zones> |
 | backup | 备份 |  |  |
 | bastion | 堡垒机 |  |  |
 | binary literal | 二进制字面值 |  |  |
 | bit | 位 |  |  |
-| Bloom filter | 布隆过滤器 |  | https://en.wikipedia.org/wiki/Bloom_filter |
+| Bloom filter | 布隆过滤器 |  | <https://en.wikipedia.org/wiki/Bloom_filter> |
 | boolean operation | 布尔运算 |  |  |
 | bootstrap | 启动\引导程序 |  |  |
 | breakpoint | 断点 |  |  |
@@ -60,9 +60,9 @@ summary: 本文档介绍 TiDB 术语表
 | clustered index | 聚簇索引 |  |  |
 | coarse-grained | 粗粒度的 |  |  |
 | code comment | 代码注释 |  |  |
-| code instrumentation | 代码插桩 |  | https://www.itprotoday.com/development-techniques-and-management/code-instrumentation-techniques-depth-coverage-tracing |
-| collation | 排序/排序规则 |  | https://github.com/pingcap/docs-cn/blob/master/op-guide/tune-tikv.md |
-| column family (CF) | 列族 |  | https://github.com/pingcap/docs-cn/blob/master/op-guide/tune-tikv.md |
+| code instrumentation | 代码插桩 |  | <https://www.itprotoday.com/development-techniques-and-management/code-instrumentation-techniques-depth-coverage-tracing> |
+| collation | 排序/排序规则 |  | <https://github.com/pingcap/docs-cn/blob/master/op-guide/tune-tikv.md> |
+| column family (CF) | 列族 |  | <https://github.com/pingcap/docs-cn/blob/master/op-guide/tune-tikv.md> |
 | column pruning | 列裁剪 |  |  |
 | column store | 列存 |  |  |
 | column-oriented DBMS | 列式存储数据库 |  |  |
@@ -86,11 +86,11 @@ summary: 本文档介绍 TiDB 术语表
 | constant folding | 常量折叠 |  |  |
 | constraint | 约束 |  |  |
 | container technology | 容器技术 |  |  |
-| Control Machine | 中控机 |  | https://docs.ansible.com/ansible/latest/installation_guide/intro_installation.html#control-machine-requirements |
+| Control Machine | 中控机 |  | <https://docs.ansible.com/ansible/latest/installation_guide/intro_installation.html#control-machine-requirements> |
 | converge | 收敛 |  |  |
 | Coprocessor | Coprocessor | 无需翻译；是否大写首字母看上下文 |  |
 | correctness | 正确性 |  |  |
-| correlated subquery | 关联子查询 |  | https://en.wikipedia.org/wiki/Correlated_subquery |
+| correlated subquery | 关联子查询 |  | <https://en.wikipedia.org/wiki/Correlated_subquery> |
 | corresponding operation | 对应操作 |  |  |
 | CPU-bound | CPU 密集型 |  |  |
 | cross-datacenter | 跨数据中心 |  |  |
@@ -109,7 +109,7 @@ summary: 本文档介绍 TiDB 术语表
 | database kernel | 数据库内核 | 内核是 kernel，不是 core |  |
 | datacenter | 数据中心 |  |  |
 | dataflow | 数据流 |  |  |
-| decompress | 解压缩 |  | The difference between "decompress" and "uncompress": https://english.stackexchange.com/questions/56480/difference-between-uncompress-and-decompress |
+| decompress | 解压缩 |  | The difference between "decompress" and "uncompress": <https://english.stackexchange.com/questions/56480/difference-between-uncompress-and-decompress> |
 | delta import | 增量导入 |  |  |
 | denpendency/dependencies | 依赖包 |  |  |
 | dependency | 依赖关系 |  |  |
@@ -117,14 +117,14 @@ summary: 本文档介绍 TiDB 术语表
 | deployment | 部署 |  |  |
 | destroy the cluster | 销毁集群 |  |  |
 | directory | 目录 |  |  |
-| disaster recovery | 容灾 |  | https://en.wikipedia.org/wiki/Disaster_recovery |
+| disaster recovery | 容灾 |  | <https://en.wikipedia.org/wiki/Disaster_recovery> |
 | disparate data source | 异构数据源 |  |  |
 | distributed database | 分布式数据库 |  |  |
 | DML (Data Manipulation Language) | 数据操纵语言 |  |  |
 | driving table | 驱动表 |  |  |
 | dummy data | 假数据 |  |  |
 | dynamic | 动态 |  |  |
-| dynamic programming algorithm | 动态规划算法 |  | https://zh.wikipedia.org/wiki/%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92 |
+| dynamic programming algorithm | 动态规划算法 |  | <https://zh.wikipedia.org/wiki/%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92> |
 | effective range | 生效范围 |  |  |
 | earlier version | 以下版本 |  |  |
 | edit | 修改（如：修改 ini 文件） |  |  |
@@ -133,7 +133,7 @@ summary: 本文档介绍 TiDB 术语表
 | engine file | 引擎文件 |  |  |
 | environment variable | 环境变量 |  |  |
 | equivalent/equal condition | 等值条件 |  |  |
-| escape character | 转义字符 |  | http://www.webopedia.com/TERM/E/escape_character.html |
+| escape character | 转义字符 |  | <http://www.webopedia.com/TERM/E/escape_character.html> |
 | exact match | 精确匹配 |  |  |
 | exception | 异常 |  |  |
 | execute | 执行 |  |  |
@@ -143,7 +143,7 @@ summary: 本文档介绍 TiDB 术语表
 | expression | 表达式 |  |  |
 | extendible hashing | 可扩充散列 |  |  |
 | external interface | 对外接口 |  |  |
-| eventual consistency | 最终一致性 |  | https://en.wikipedia.org/wiki/Eventual_consistency |
+| eventual consistency | 最终一致性 |  | <https://en.wikipedia.org/wiki/Eventual_consistency> |
 | fan trap | 扇形陷阱 |  |  |
 | fanout | 扇出 |  |  |
 | fault-tolerant design | 容错误设计 |  |  |
@@ -159,17 +159,17 @@ summary: 本文档介绍 TiDB 术语表
 | force upgrade | 强制升级 |  |  |
 | foundation class | 基础类库 |  |  |
 | framework | 框架 |  |  |
-| full backup | 全量备份 |  | https://www.cockroachlabs.com/docs/stable/restore.html |
+| full backup | 全量备份 |  | <https://www.cockroachlabs.com/docs/stable/restore.html> |
 | full compact / compaction | 全量压缩 |  |  |
 | full import | 全量导入 |  |  |
 | full match | 全匹配 |  |  |
 | full table scan | 全表扫描 |  |  |
 | function | 函数 |  |  |
 | function signature | 函数签名 |  |  |
-| functional abstraction | 功能抽象 |  | http://www.wendangku.net/doc/9bb5ba5db90d6c85ed3ac614-4.html |
+| functional abstraction | 功能抽象 |  | <http://www.wendangku.net/doc/9bb5ba5db90d6c85ed3ac614-4.html> |
 | fuzzy matching | 模糊匹配 |  |  |
-| Geo-distributed active-active | 异地双活 |  | https://redislabs.com/redis-enterprise-documentation/concepts-architecture/intercluster-replication/ |
-| Geo-distributed multi-active | 异地多活 |  | https://www.ibm.com/support/knowledgecenter/en/SSEPGG_10.1.0/com.ibm.db2.luw.admin.sd.doc/doc/c0058742.html |
+| Geo-distributed active-active | 异地双活 |  | <https://redislabs.com/redis-enterprise-documentation/concepts-architecture/intercluster-replication/> |
+| Geo-distributed multi-active | 异地多活 |  | <https://www.ibm.com/support/knowledgecenter/en/SSEPGG_10.1.0/com.ibm.db2.luw.admin.sd.doc/doc/c0058742.html> |
 | global | 全局 |  |  |
 | global privileges | 全局权限 |  |  |
 | goroutine | 协程 | It also can be "coroutine". But it is suggested using "goroutine". |  |
@@ -183,7 +183,7 @@ summary: 本文档介绍 TiDB 术语表
 | hard limit | 硬限制 |  |  |
 | hash function | 散列函数 |  |  |
 | hash join | 哈希连接 |  |  |
-| hash partitioned table | hash 分区表 |  | https://docs.oracle.com/database/121/VLDBG/GUID-04E6C6EF-CE27-4DE9-B5B1-D23010E4A356.htm |
+| hash partitioned table | hash 分区表 |  | <https://docs.oracle.com/database/121/VLDBG/GUID-04E6C6EF-CE27-4DE9-B5B1-D23010E4A356.htm> |
 | high availability | 高可用 |  |  |
 | high concurrency | 高并发 | 名词短语 (noun phrase) |  |
 | high concurrent | 高并发 | 形容词短语 (adj phrase) |  |
@@ -191,11 +191,11 @@ summary: 本文档介绍 TiDB 术语表
 | host | 主机 |  |  |
 | hot data | 热点数据 |  |  |
 | hotfix | 热修复 |  |  |
-| HPA (Horizontal Pod Autoscaling) | 自动水平扩容 | TiDB in Kubernetes | https://cloud.google.com/blog/products/gcp/beyond-cpu-horizontal-pod-autoscaling-comes-to-google-kubernetes-engine |
+| HPA (Horizontal Pod Autoscaling) | 自动水平扩容 | TiDB in Kubernetes | <https://cloud.google.com/blog/products/gcp/beyond-cpu-horizontal-pod-autoscaling-comes-to-google-kubernetes-engine> |
 | HTAP (Hybrid Transactional and Analytical Processing) | HTAP (Hybrid Transactional and Analytical Processing) | 一般写英文形式 |  |
 | hybrid deployment | 混合部署 |  |  |
 | idempotent (idempotence) | 幂等 |  |  |
-| image | 镜像 |  | https://docs.docker.com/engine/reference/commandline/image/ |
+| image | 镜像 |  | <https://docs.docker.com/engine/reference/commandline/image/> |
 | image tag error | 镜像 tag 错误 |  |  |
 | implement | 实现 |  |  |
 | implementation | 实现 |  |  |
@@ -203,7 +203,7 @@ summary: 本文档介绍 TiDB 术语表
 | in batches | 批量 | 动词短语 (verb phrase) |  |
 | in full volume | 全量 |  |  |
 | in-memory database | 内存数据库 |  |  |
-| incremental backup | 增量备份 |  | https://www.cockroachlabs.com/docs/stable/restore.html |
+| incremental backup | 增量备份 |  | <https://www.cockroachlabs.com/docs/stable/restore.html> |
 | incremental import | 增量导入 |  |  |
 | incremental synchronization | 增量同步 |  |  |
 | incrementally | 增量地 |  |  |
@@ -225,15 +225,15 @@ summary: 本文档介绍 TiDB 术语表
 | Isolated storage | 独立存储 |  |  |
 | isolation | 隔离 |  |  |
 | isolation level | 隔离级别 |  |  |
-| ISP (Internet Service Provider) | 互联网服务提供商 |  | https://en.wikipedia.org/wiki/Internet_service_provider |
+| ISP (Internet Service Provider) | 互联网服务提供商 |  | <https://en.wikipedia.org/wiki/Internet_service_provider> |
 | JDBC (Java DataBase Connectivity) | Java 数据库连接 |  |  |
 | kernel version | 内核版本 |  |  |
 | key-value pair(s) / KV pair(s) | 键值对 |  |  |
 | keyword | 关键字 |  |  |
-| Kubernetes (K8s) | https://kubernetes.io/docs/concepts/overview/what-is-kubernetes/#what-does-kubernetes-mean-k8s |
+| Kubernetes (K8s) | <https://kubernetes.io/docs/concepts/overview/what-is-kubernetes/#what-does-kubernetes-mean-k8s> |
 | latch contention | 锁竞争 |  |  |
 | latency | 延时 |  |  |
-| later version | 以上版本 |  | https://github.com/pingcap/docs/blob/master/sql/encrypted-connections.md |
+| later version | 以上版本 |  | <https://github.com/pingcap/docs/blob/master/sql/encrypted-connections.md> |
 | Leader | Leader | A role in the Raft consensus algorithm |  |
 | leak | 泄漏 |  |  |
 | least recently used (LRU) | 近期最少使用法 |  |  |
@@ -258,7 +258,7 @@ summary: 本文档介绍 TiDB 术语表
 | logic isolation | 逻辑隔离 |  |  |
 | logical operation | 逻辑运算 |  |  |
 | logical plan | 逻辑计划 |  |  |
-| long transaction | 长事务 |  | https://www.ibm.com/developerworks/cn/data/library/techarticles/dm-1001haodh/index.html |
+| long transaction | 长事务 |  | <https://www.ibm.com/developerworks/cn/data/library/techarticles/dm-1001haodh/index.html> |
 | machine code | 机器码 |  |  |
 | massive data | 海量数据 | 不是 big data（大数据） |  |
 | Massively Parallel Processing (MPP) | 大规模并行处理 |  |  |
@@ -279,8 +279,8 @@ summary: 本文档介绍 TiDB 术语表
 | mount/mounting | 挂载 |  |  |
 | multi nodes | 多节点 |  |  |
 | multi-tenancy | 多租户技术 |  |  |
-| mutation | 变异 |  | http://www.orafaq.com/wiki/Mutating_table       https://blog.csdn.net/zhpsam109/article/details/97335 |
-| mutex | 互斥锁 | Mutual exclusion | https://zh.wikipedia.org/wiki/%E4%BA%92%E6%96%A5%E9%94%81 |
+| mutation | 变异 |  | <http://www.orafaq.com/wiki/Mutating_table>、<https://blog.csdn.net/zhpsam109/article/details/97335> |
+| mutex | 互斥锁 | Mutual exclusion | <https://zh.wikipedia.org/wiki/%E4%BA%92%E6%96%A5%E9%94%81> |
 | MVCC: multi-version concurrency control | 多版本并发控制 |  |  |
 | MySQL syntax | MySQL 语法 |  |  |
 | namespace | 命名空间 |  |  |
@@ -298,7 +298,7 @@ summary: 本文档介绍 TiDB 术语表
 | open source | 开源 | 名词 (noun) |  |
 | open-source | 开源 | 形容词 (adj)、动词 (verb) |  |
 | operating environment | 运行环境 |  |  |
-| operation and administer | 运维 |  | https://en.wikipedia.org/wiki/Operations,_administration_and_management |
+| operation and administer | 运维 |  | <https://en.wikipedia.org/wiki/Operations,_administration_and_management> |
 | operational data store (ODS) | 操作数据存储 |  |  |
 | operational status | 运行状态 |  |  |
 | operator | 运算符/操作符/算子 |  |  |
@@ -307,7 +307,7 @@ summary: 本文档介绍 TiDB 术语表
 | optimistic transaction model | 乐观事务模型 |  |  |
 | optimizer | 优化器 |  |  |
 | ORM (Object Relational Mapping) | 对象关系映射 |  |  |
-| out of memory (OOM) | 内存溢出 |  | https://en.wikipedia.org/wiki/Out_of_memory |
+| out of memory (OOM) | 内存溢出 |  | <https://en.wikipedia.org/wiki/Out_of_memory> |
 | outer join | 外连接 |  |  |
 | outer join simplification | 外连化简 |  |  |
 | overhead | 开销 |  |  |
@@ -316,12 +316,12 @@ summary: 本文档介绍 TiDB 术语表
 | parallel replication | 并行复制 |  |  |
 | parameter | 参数 |  |  |
 | parse | 解析 |  |  |
-| partitioned table/partition table | 分区表 |  | https://docs.oracle.com/database/121/VLDBG/GUID-6D369646-16AF-487B-BF32-5F6569D27C8A.htm#VLDBG1046       https://en.wikipedia.org/wiki/Partition_table |
+| partitioned table/partition table | 分区表 |  | <https://docs.oracle.com/database/121/VLDBG/GUID-6D369646-16AF-487B-BF32-5F6569D27C8A.htm#VLDBG1046>、<https://en.wikipedia.org/wiki/Partition_table> |
 | performance | 性能 |  |  |
 | performance jitter | 性能抖动 |  |  |
 | performance overhead | 性能开销 |  |  |
 | performance tuning | 性能调优 |  |  |
-| persist (data) | 持久化存储（数据） | persist 与一般的 save（保存）不一样，持久化存储是将数据保存到硬盘中，使得在应用程序或机器重启后可以继续访问之前保存的数据。 | https://www.jianshu.com/p/6ce0864d2845 |
+| persist (data) | 持久化存储（数据） | persist 与一般的 save（保存）不一样，持久化存储是将数据保存到硬盘中，使得在应用程序或机器重启后可以继续访问之前保存的数据。 | <https://www.jianshu.com/p/6ce0864d2845> |
 | persistent data | 持久化数据 |  |  |
 | pessimistic locking | 悲观锁 |  |  |
 | physical plan | 物理计划 |  |  |
@@ -331,7 +331,7 @@ summary: 本文档介绍 TiDB 术语表
 | port | 端口 |  |  |
 | precheck | 前置检查 | TiDB 文档里统一译成“前置检查”，不译成”预检查” |  |
 | prefix match | 前缀匹配 |  |  |
-| primitive | 原语 | Kubernetes 中的概念 | [InfoQ：Kubernetes 的核心概念讲解](https://www.infoq.cn/article/69dzo9zwe5y3ca*5quqk) |
+| primitive | 原语 | Kubernetes 中的概念 | <https://www.infoq.cn/article/69dzo9zwe5y3ca*5quqk> |
 | private cloud | 私有云 |  |  |
 | private key | 私钥 |  |  |
 | privilege | 权限 |  |  |
@@ -343,7 +343,7 @@ summary: 本文档介绍 TiDB 术语表
 | push down | 下推 | 动词短语 (verb phrase) |  |
 | pushdown | 下推的 | 形容词 (adj.) |  |
 | query | 查询 |  |  |
-| query by returning to the table (not a fixed term) | 回表查询 |  |  https://odetocode.com/articles/237.aspx |   |  |
+| query by returning to the table (not a fixed term) | 回表查询 |  |  <https://odetocode.com/articles/237.aspx> |   |  |
 | query tree | 查询树 |  |  |
 | Raft | Raft |  |  |
 | Raft consensus algorithm | Raft 一致性算法 |  |  |
@@ -368,20 +368,20 @@ summary: 本文档介绍 TiDB 术语表
 | repository | 仓库 |  |  |
 | request | 请求 |  |  |
 | restart | 重启 |  |  |
-| restore | 恢复 | 可以作为名词 (noun) 或动词 (verb) 使用 | https://docs.microsoft.com/en-us/sql/relational-databases/backup-restore/back-up-and-restore-of-sql-server-databases?view=sql-server-ver15 |
-| retention period | 保留时间 |  | https://en.wikipedia.org/wiki/Retention_period |
+| restore | 恢复 | 可以作为名词 (noun) 或动词 (verb) 使用 | <https://docs.microsoft.com/en-us/sql/relational-databases/backup-restore/back-up-and-restore-of-sql-server-databases?view=sql-server-ver15> |
+| retention period | 保留时间 |  | <https://en.wikipedia.org/wiki/Retention_period> |
 | return | 返回 |  |  |
 | return value | 返回值 |  |  |
 | reuse | 复用 |  |  |
 | reverse proxy | 反向代理 |  |  |
 | revoke | （权限）回收 |  |  |
 | rewind | 回退 |  |  |
-| rolling update | 滚动升级 |  | https://kubernetes.io/docs/tutorials/kubernetes-basics/update-intro/ |
+| rolling update | 滚动升级 |  | <https://kubernetes.io/docs/tutorials/kubernetes-basics/update-intro/> |
 | rotate | 轮转 |  |  |
 | rough set | 粗糙集 |  |  |
-| routine | 例程 |  | https://blog.csdn.net/scyatcs/article/details/77452336 |
+| routine | 例程 |  | <https://blog.csdn.net/scyatcs/article/details/77452336> |
 | row store | 行存 |  |  |
-| RPC: remote procedure call | 远程过程调用 |  | https://en.wikipedia.org/wiki/Remote_procedure_call |
+| RPC: remote procedure call | 远程过程调用 |  | <https://en.wikipedia.org/wiki/Remote_procedure_call> |
 | runtime | 运行时 |  |  |
 | Scalar Function | 标量函数 |  |  |
 | scale | 扩展 |  |  |
@@ -395,26 +395,26 @@ summary: 本文档介绍 TiDB 术语表
 | seed | 数据填充 |  |  |
 | sequential flooding | 顺序泛洪 |  |  |
 | service | 服务 |  |  |
-| session | 会话 |  | https://blog.csdn.net/jimsonhappy/article/details/54707694 |
+| session | 会话 |  | <https://blog.csdn.net/jimsonhappy/article/details/54707694> |
 | shard key | 分片键 |  |  |
-| shard(s) | 分片（名词） | 比如“删除一个分片”，“SHARD_ROW_ID_BITS = 4 代表 16 个分片”等，此时用 shard(s)。 | http://www.mongoing.com/docs/tutorial/remove-shards-from-cluster.html |
-| sharded table | 分表 |  | https://docs.oracle.com/en/database/oracle/oracle-database/12.2/admin/sharding-schema-design.html#GUID-1B8DAEE1-A662-4516-9EA9-04FF711211C3 |
+| shard(s) | 分片（名词） | 比如“删除一个分片”，“SHARD_ROW_ID_BITS = 4 代表 16 个分片”等，此时用 shard(s)。 | <http://www.mongoing.com/docs/tutorial/remove-shards-from-cluster.html> |
+| sharded table | 分表 |  | <https://docs.oracle.com/en/database/oracle/oracle-database/12.2/admin/sharding-schema-design.html#GUID-1B8DAEE1-A662-4516-9EA9-04FF711211C3> |
 | sharding | 分片（动词或动名词） |  |  |
-| sign bit | 符号位 |  | https://en.wikipedia.org/wiki/Sign_bit |
+| sign bit | 符号位 |  | <https://en.wikipedia.org/wiki/Sign_bit> |
 | simulate | 模拟 |  |  |
 | single-instance | 单机 |  |  |
 | skip list | 跳跃表 |  |  |
 | slave | 从库 |  |  |
 | slow requery | 慢查询 |  |  |
 | snapshot | 快照 |  |  |
-| snapshot isolation (SI) | 快照隔离 |  | https://docs.microsoft.com/en-us/dotnet/framework/data/adonet/sql/snapshot-isolation-in-sql-server |
+| snapshot isolation (SI) | 快照隔离 |  | <https://docs.microsoft.com/en-us/dotnet/framework/data/adonet/sql/snapshot-isolation-in-sql-server> |
 | soft limit | 软限制 |  |  |
 | sort | 排序 |  |  |
 | sorted | 有序的 |  |  |
 | source end | 源端 |  |  |
 | split | 切分 |  |  |
 | SPOF: single point of failure | 单点故障 |  |  |
-| SST (Static Sorted Table) | 静态排序表文件 (SST) |  | https://github.com/facebook/rocksdb/wiki/A-Tutorial-of-RocksDB-SST-formats  |
+| SST (Static Sorted Table) | 静态排序表文件 (SST) |  | <https://github.com/facebook/rocksdb/wiki/A-Tutorial-of-RocksDB-SST-formats>  |
 | stack | 堆栈 |  |  |
 | startup parameter | 启动参数 |  |  |
 | stateful | 有状态的 |  |  |
@@ -423,7 +423,7 @@ summary: 本文档介绍 TiDB 术语表
 | stop | 下线 |  |  |
 | storage capacity | 存储能力 |  |  |
 | storage engine | 存储引擎 |  |  |
-| stored procedure | 存储过程 |  | https://en.wikipedia.org/wiki/Stored_procedure |
+| stored procedure | 存储过程 |  | <https://en.wikipedia.org/wiki/Stored_procedure> |
 | stream computing | 流计算 |  |  |
 | stress test | 压力测试 |  |  |
 | string | 字符串 |  |  |
@@ -435,9 +435,9 @@ summary: 本文档介绍 TiDB 术语表
 | Syntactic sugar | 语法糖 | In computer science, syntactic sugar is syntax within a programming language that is designed to make things easier to read or to express. It makes the language "sweeter" for human use: things can be expressed more clearly, more concisely, or in an alternative style that some may prefer. |  |
 | syntax | 语法 |  |  |
 | system variable | 系统变量 |  |  |
-| THP (Transparent Huge Pages) | 透明大页 | A Linux memory management system | https://docs.pingcap.com/zh/tidb/dev/tune-operating-system#%E5%86%85%E5%AD%98%E9%80%8F%E6%98%8E%E5%A4%A7%E9%A1%B5 |
+| THP (Transparent Huge Pages) | 透明大页 | A Linux memory management system | <https://docs.pingcap.com/zh/tidb/dev/tune-operating-system#%E5%86%85%E5%AD%98%E9%80%8F%E6%98%8E%E5%A4%A7%E9%A1%B5> |
 | table schema | 表结构 |  |  |
-| target machine | （部署）目标机器 |  | http://docs.ansible.com/ansible/latest/intro_inventory.html |
+| target machine | （部署）目标机器 |  | <http://docs.ansible.com/ansible/latest/intro_inventory.html> |
 | technology stack | 技术栈 |  |  |
 | test | 测试 |  |  |
 | the configuration file | 配置文件 |  |  |
@@ -454,7 +454,7 @@ summary: 本文档介绍 TiDB 术语表
 | timestamp | 时间戳 |  |  |
 | timestamp allocator | 时间戳分配器 |  |  |
 | Timestamp Oracle | TSO |  |  |
-| token bucket | 令牌桶 | An algorithm used in packet switched computer networks and telecommunications networks | https://en.wikipedia.org/wiki/Token_bucket |
+| token bucket | 令牌桶 | An algorithm used in packet switched computer networks and telecommunications networks | <https://en.wikipedia.org/wiki/Token_bucket> |
 | tolerate | 容忍 |  |  |
 | topology | 拓扑结构 |  |  |
 | traffic flow control | 流控/流量控制 |  |  |
@@ -462,13 +462,13 @@ summary: 本文档介绍 TiDB 术语表
 | traverse | 遍历 |  |  |
 | trie | 字典树 |  |  |
 | trie | 单词查找树 |  |  |
-| TSO (Timestamp Oracle) | TSO (Timestamp Oracle) |  | https://pingcap.com/blog/Time-in-Distributed-Systems/#why-we-choose-tso |
+| TSO (Timestamp Oracle) | TSO (Timestamp Oracle) |  | <https://pingcap.com/blog/Time-in-Distributed-Systems/#why-we-choose-tso> |
 | TTL (Time To Live) | 存活时间 |  |  |
 | tutorial | 教程 |  |  |
 | type | 类型 |  |  |
 | type infer | 类型推导 |  |  |
 | unbind | 解除（对服务，软件的）依赖，绑定，关联 |  |  |
-| underlying table | 底层表 |  | https://dev.mysql.com/doc/refman/8.0/en/view-updatability.html |
+| underlying table | 底层表 |  | <https://dev.mysql.com/doc/refman/8.0/en/view-updatability.html> |
 | unidirectional data flow | 单向数据流 |  |  |
 | union | 联合体 |  |  |
 | unsigned integer | 无符号整数 |  |  |
