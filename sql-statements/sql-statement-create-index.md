@@ -259,7 +259,7 @@ SELECT * FROM t ORDER BY lower(col1);
 {{< copyable "sql" >}}
 
 ```sql
-SELECT max(lower(col1)) FROM t；
+SELECT max(lower(col1)) FROM t;
 SELECT min(col1) FROM t GROUP BY lower(col1);
 ```
 
@@ -270,10 +270,6 @@ SELECT min(col1) FROM t GROUP BY lower(col1);
 表达式索引的语法和限制与 MySQL 相同，是通过将索引建立在隐藏的虚拟生成列 (generated virtual column) 上来实现的。因此所支持的表达式继承了虚拟生成列的所有[限制](/generated-columns.md#生成列的局限性)。
 
 ## 多值索引
-
-> **警告：**
->
-> 当前该功能为实验特性，不建议在生产环境中使用。
 
 多值索引是一种定义在数组列上的二级索引。在普通索引中，一条索引记录对应一条数据记录 (1:1)。而在多值索引中，存在多条索引记录对应一条数据记录 (N:1)。多值索引用于索引 JSON 数组。例如，一个定义在 `zipcode` 字段上的多值索引会对每一个 `zipcode` 中的记录产生一条索引记录。
 
@@ -375,13 +371,16 @@ Query OK, 1 row affected (0.00 sec)
 ### 特性与限制
 
 - 如果是空 JSON 数组，则不会有对应的索引记录。
-- `CAST(... AS ... ARRAY)` 中的目标类型不能是 `BINARY`、`JSON`、`YEAR`、`FLOAT`、`DOUBLE`、`DECIMAL`。其中源类型必须是 JSON。
+- `CAST(... AS ... ARRAY)` 中的目标类型不能是 `BINARY`、`JSON`、`YEAR`、`FLOAT`、`DECIMAL`。其中源类型必须是 JSON。
 - 无法使用多值索引进行排序。
 - 只允许在 JSON 数组上建立多值索引。
 - 多值索引不可以作为主键或外键。
 - 多值索引使用额外的存储空间为：平均每行数组元素个数 * 普通二级索引使用空间。
 - 相比于普通索引，DML 会对多值索引产生更多的索引记录的修改，因此多值索引会带来比普通索引更大的性能影响。
 - 由于多值索引是一种特殊的表达式索引，因此具有表达式索引的限制。
+- 使用备份恢复工具 (BR)、同步工具 (TiCDC)、导入工具 (TiDB Lightning) 无法将定义了多值索引的表备份、同步、导入到低于 v6.6.0 版本的 TiDB。
+- 由于多值索引的统计信息暂时还没有被收集，多值索引的选择率基于固定假设。当查询命中多个多值索引时，可能无法选取最优的索引。在这种情况下，建议用优化器提示 [`use_index_merge`](/optimizer-hints.md#use_index_merget1_name-idx1_name--idx2_name-) 来固定执行计划。具体使用方式请参考[使用多值索引](/choose-index.md#使用多值索引)。
+- 条件复杂的查询有可能无法选择到多值索引，多值索引支持的条件模式请参考[使用多值索引](/choose-index.md#使用多值索引)。
 
 ## 不可见索引
 

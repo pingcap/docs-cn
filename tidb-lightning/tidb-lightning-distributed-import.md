@@ -5,7 +5,7 @@ summary: 本文档介绍了 TiDB Lightning 并行导入的概念、使用场景�
 
 # TiDB Lightning 并行导入
 
-TiDB Lightning 的 [Physical Import Mode](/tidb-lightning/tidb-lightning-physical-import-mode.md) 从 v5.3.0 版本开始支持单表或多表数据的并行导入。通过支持同步启动多个实例，并行导入不同的单表或多表的不同数据，使 TiDB Lightning 具备水平扩展的能力，可大大降低导入大量数据所需的时间。
+TiDB Lightning 的[物理导入模式](/tidb-lightning/tidb-lightning-physical-import-mode.md) 从 v5.3.0 版本开始支持单表或多表数据的并行导入。通过支持同步启动多个实例，并行导入不同的单表或多表的不同数据，使 TiDB Lightning 具备水平扩展的能力，可大大降低导入大量数据所需的时间。
 
 在技术实现上，TiDB Lightning 通过在目标 TiDB 中记录各个实例以及每个导入表导入数据的元信息，协调不同实例的 Row ID 分配范围、全局 Checksum 的记录和 TiKV 及 PD 的配置变更与恢复。
 
@@ -18,13 +18,13 @@ TiDB Lightning 并行导入可以用于以下场景：
 >
 > - 并行导入只支持初始化 TiDB 的空表，不支持导入数据到已有业务写入的数据表，否则可能会导致数据不一致的情况。
 >
-> - 并行导入一般用于 Physical Import 模式，需要设置 `incremental-import = true`
+> - 并行导入一般用于物理导入模式，需要设置 `parallel-import = true`。
 >
-> - 并行导入一般用于 Physical Import 模式；虽然也能用于 Logical Import 模式，但是一般不会带来明显的性能提升。
+> - 并行导入一般用于物理导入模式；虽然也能用于逻辑导入模式，但是一般不会带来明显的性能提升。
 
 ## 使用说明
 
-使用 TiDB Lightning 并行导入需要设置 `incremental-import = true`。TiDB Lightning 在启动时，会在下游 TiDB 中注册元信息，并自动检测是否有其他实例向目标集群导入数据。如果有，则自动进入并行导入模式。
+使用 TiDB Lightning 并行导入需要设置 `parallel-import = true`。TiDB Lightning 在启动时，会在下游 TiDB 中注册元信息，并自动检测是否有其他实例向目标集群导入数据。如果有，则自动进入并行导入模式。
 
 但是在并行导入时，需要注意以下情况：
 
@@ -33,7 +33,7 @@ TiDB Lightning 并行导入可以用于以下场景：
 
 ### 解决主键或者唯一索引的冲突
 
-在使用 [Physical Import Mode](/tidb-lightning/tidb-lightning-physical-import-mode.md) 并行导入时，需要确保多个 TiDB Lightning 的数据源之间，以及它们和 TiDB 的目标表中的数据没有主键或者唯一索引的冲突，并且导入的目标表不能有其他应用进行数据写入。否则，TiDB Lightning 将无法保证导入结果的正确性，并且导入完成后相关的数据表将处于数据索引不一致的状态。
+在使用[物理导入模式](/tidb-lightning/tidb-lightning-physical-import-mode.md)并行导入时，需要确保多个 TiDB Lightning 的数据源之间，以及它们和 TiDB 的目标表中的数据没有主键或者唯一索引的冲突，并且导入的目标表不能有其他应用进行数据写入。否则，TiDB Lightning 将无法保证导入结果的正确性，并且导入完成后相关的数据表将处于数据索引不一致的状态。
 
 ### 导入性能优化
 
@@ -95,9 +95,9 @@ data-source-dir = "/path/to/source-dir"
 [tikv-importer]
 # 是否允许向已存在数据的表导入数据。默认值为 false。
 # 当使用并行导入模式时，由于多个 TiDB Lightning 实例同时导入一张表，因此此开关必须设置为 true。
-incremental-import = true
-# "local"：Physical Import Mode，默认使用。适用于 TB 级以上大数据量，但导入期间下游 TiDB 无法对外提供服务。
-# "tidb"：Logical Import Mode。TB 级以下数据量也可以采用，下游 TiDB 可正常提供服务。
+parallel-import = true
+# "local"：物理导入模式，默认使用。适用于 TB 级以上大数据量，但导入期间下游 TiDB 无法对外提供服务。
+# "tidb"：逻辑导入模式。TB 级以下数据量也可以采用，下游 TiDB 可正常提供服务。
 backend = "local"
 
 # 设置本地排序数据的路径
@@ -111,7 +111,7 @@ sorted-kv-dir = "/path/to/sorted-dir"
     -d 's3://my-bucket/sql-backup'
 ```
 
-更多参数设置，请参考[外部存储 URI 格式](/br/backup-and-restore-storages.md#uri-格式)。
+更多参数设置，请参考[外部存储服务的 URI 格式](/external-storage-uri.md)。
 
 ### 第 3 步：开启 TiDB Lightning 进行数据导入
 
@@ -143,7 +143,7 @@ nohup tiup tidb-lightning -config tidb-lightning.toml > nohup.out &
 
 ## 示例 2：使用 TiDB Lightning 并行导入单表数据
 
-TiDB Lightning 也支持并行导入单表的数据。例如，将存放在 Amazon S3 中的多个单表文件，分别由不同的 TiDB Lightning 实例并行导入到下游 TiDB 数据库中。该方法可以加快整体导入速度。TiDB Lightning 使用云端存储时的配置参数与 BR 大致相同，关于详细的参数配置，可以参考[外部存储 URI 格式](/br/backup-and-restore-storages.md#uri-格式)。
+TiDB Lightning 也支持并行导入单表的数据。例如，将存放在 Amazon S3 中的多个单表文件，分别由不同的 TiDB Lightning 实例并行导入到下游 TiDB 数据库中。该方法可以加快整体导入速度。关于详细的参数配置，可以参考[外部存储服务的 URI 格式](/external-storage-uri.md)。
 
 > **注意：**
 >
@@ -175,7 +175,7 @@ type = "sql"
 [tikv-importer]
 # 是否允许向已存在数据的表导入数据。默认值为 false。
 # 当使用并行导入模式时，由于多个 TiDB Lightning 实例同时导入一张表，因此此开关必须设置为 true。
-incremental-import = true
+parallel-import = true
 ```
 
 另外一个实例的配置修改为只导入 `05001 ~ 10000` 数据文件即可。
@@ -188,11 +188,19 @@ incremental-import = true
 
 在并行导入过程中，如果一个或多个 TiDB Lightning 节点异常终止，需要首先根据日志中的报错明确异常退出的原因，然后根据错误类型做不同处理：
 
-1. 如果是正常退出(如手动 Kill 等)，或内存溢出被操作系统终止等，可以在适当调整配置后直接重启 TiDB Lightning，无须任何其他操作。
+- 如果是正常退出，例如手动 Kill 或内存溢出被操作系统终止等，可以在适当调整配置后直接重启 TiDB Lightning，无须任何其他操作。
 
-2. 如果是不影响数据正确性的报错，如网络超时，可以在每一个失败的节点上使用 tidb-lightning-ctl 工具清除断点续传源数据中记录的错误，然后重启这些异常的节点，从断点位置继续导入，详见 [checkpoint-error-ignore](/tidb-lightning/tidb-lightning-checkpoints.md#--checkpoint-error-ignore)。
+- 如果是不影响数据正确性的报错，例如网络超时，请按以下步骤解决：
 
-3. 如果是影响数据正确性的报错，如 checksum mismatched，表示源文件中有非法的数据，则需要在每一个失败的节点上使用 tidb-lightning-ctl 工具，清除失败的表中已导入的数据及断点续传相关的源数据，详见 [checkpoint-error-destroy](/tidb-lightning/tidb-lightning-checkpoints.md#--checkpoint-error-destroy)。此命令会删除下游导入失败表中已导入的数据，因此，应在所有 TiDB Lightning 节点（包括任务正常结束的）重新配置和导入失败的表的数据，可以配置 filters 参数只导入报错失败的表。
+    1. 在每一个失败的节点上，执行 [checkpoint-error-ignore](/tidb-lightning/tidb-lightning-checkpoints.md#--checkpoint-error-ignore) 命令，值设置为 `all`，以清除断点续传源数据中记录的错误。
+
+    2. 重启这些异常的节点，从断点位置继续导入。
+
+- 如果在日志中看到影响数据正确性的报错，如 checksum mismatched，表示源文件中有非法的数据，请按以下步骤解决：
+
+    1. 在每一个 Lightning 节点（包括成功导入数据的节点）上执行 [checkpoint-error-destroy](/tidb-lightning/tidb-lightning-checkpoints.md#--checkpoint-error-destroy) 命令，以清除失败的表中已导入的数据，并将这些表的 checkpoint 状态重置为 "not yet started"。
+
+    2. 使用 [`filter`](/table-filter.md) 参数在所有 TiDB Lightning 节点（包括任务正常结束的节点）上重新配置和导入失败表的数据。重新配置任务时，不要将 checkpoint-error-destroy 命令放在每一个 Lightning 节点的启动脚本中，否则会删除多个并行导入任务使用的共享元数据，可能会导致数据导入过程出现问题。例如，如果启动了第二个 Lightning 导入任务，它将删除第一个数据导入任务写入的元数据，导致数据导入异常。
 
 ### 导入过程中报错 "Target table is calculating checksum. Please wait until the checksum is finished and try again"
 

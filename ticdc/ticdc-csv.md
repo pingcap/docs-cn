@@ -27,6 +27,7 @@ delimiter = ','
 quote = '"'
 null = '\N'
 include-commit-ts = true
+binary-encoding-method = 'base64'
 ```
 
 ## 数据保存的事务性约束
@@ -34,6 +35,10 @@ include-commit-ts = true
 - 单个 CSV 文件中后一行数据的 commit-ts 大于等于前一行数据的 commit-ts。
 - 单表的同一事务不会存储在不同的 CSV 文件中。
 - 相同事务涉及的不同表会存储在不同的 CSV 文件中。
+
+## 数据存储路径结构
+
+关于数据存储路径结构的更多信息，请参考[同步数据到存储服务](/ticdc/ticdc-sink-to-cloud-storage.md#存储路径组织结构)。
 
 ## 数据格式定义
 
@@ -79,7 +84,7 @@ CREATE TABLE `employee` (
 | `TIME`                                                            | String  | `"23:59:59"`                   | 格式：`HH:mm:ss`                 |
 | `YEAR`                                                            | Integer | `1970`                         | -                             |
 | `VARCHAR`/`JSON`/`TINYTEXT`/`MEDIUMTEXT`/`LONGTEXT`/`TEXT`/`CHAR` | String  | `"test"`                       | 以 UTF-8 编码输出                  |
-| `VARBINARY`/`TINYBLOB`/`MEDIUMBLOB`/`LONGBLOB`/`BLOB`/`BINARY`    | String  | `"6Zi/5pav"`                   | 以 Base64 编码输出                 |
+| `VARBINARY`/`TINYBLOB`/`MEDIUMBLOB`/`LONGBLOB`/`BLOB`/`BINARY`    | String  | `"6Zi/5pav"` 或 `"e998bfe696af"`         | 以 Base64 或 Hex 编码输出                 |
 | `BIT`                                                             | Integer | `81`                           | -                             |
 | `DECIMAL`                                                         | String  | `"129012.1230000"`             | -                             |
 | `ENUM`                                                            | String  | `"a"`                          | -                             |

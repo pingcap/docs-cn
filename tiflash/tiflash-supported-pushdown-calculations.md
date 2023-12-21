@@ -21,8 +21,8 @@ TiFlash 支持部分算子的下推，支持的算子如下：
 * HashJoin：该算子基于 [Hash Join](/explain-joins.md#hash-join) 算法对数据进行连接运算：
     * 只有在 [MPP 模式](/tiflash/use-tiflash-mpp-mode.md)下才能被下推
     * 支持的 Join 类型包括 Inner Join、Left Join、Semi Join、Anti Semi Join、Left Semi Join、Anti Left Semi Join
-    * 对于上述类型，既支持带等值条件的连接，也支持不带等值条件的连接（即 Cartesian Join）；在计算 Cartesian Join 时，只会使用 Broadcast 算法，而不会使用 Shuffle Hash Join 算法
-* [Window](/functions-and-operators/window-functions.md)：当前支持下推的窗口函数包括 `ROW_NUMBER()`、`RANK()`、`DENSE_RANK()`、`LEAD()` 和 `LAG()`
+    * 对于上述类型，既支持带等值条件的连接，也支持不带等值条件的连接（即 Cartesian Join 或者 Null-aware Semi Join）；在计算 Cartesian Join 或者 Null-aware Semi Join 时，只会使用 Broadcast 算法，而不会使用 Shuffle Hash Join 算法
+* [Window](/functions-and-operators/window-functions.md)：当前支持下推的窗口函数包括 `ROW_NUMBER()`、`RANK()`、`DENSE_RANK()`、`LEAD()`、`LAG()`、`FIRST_VALUE()` 和 `LAST_VALUE()`
 
 在 TiDB 中，算子之间会呈现树型组织结构。一个算子能下推到 TiFlash 的前提条件，是该算子的所有子算子都能下推到 TiFlash。因为大部分算子都包含有表达式计算，当且仅当一个算子所包含的所有表达式均支持下推到 TiFlash 时，该算子才有可能下推给 TiFlash。
 
@@ -31,7 +31,7 @@ TiFlash 支持部分算子的下推，支持的算子如下：
 | 表达式类型 | 运算 |
 | :-------------- | :------------------------------------- |
 | [数学函数](/functions-and-operators/numeric-functions-and-operators.md) | `+`, `-`, `/`, `*`, `%`, `>=`, `<=`, `=`, `!=`, `<`, `>`, `ROUND()`, `ABS()`, `FLOOR(int)`, `CEIL(int)`, `CEILING(int)`, `SQRT()`, `LOG()`, `LOG2()`, `LOG10()`, `LN()`, `EXP()`, `POW()`, `SIGN()`, `RADIANS()`, `DEGREES()`, `CONV()`, `CRC32()`, `GREATEST(int/real)`, `LEAST(int/real)` |
-| [逻辑函数](/functions-and-operators/control-flow-functions.md)和[算子](/functions-and-operators/operators.md) | `AND`, `OR`, `NOT`, `CASE WHEN`, `IF()`, `IFNULL()`, `ISNULL()`, `IN`, `LIKE`, `COALESCE`, `IS` |
+| [逻辑函数](/functions-and-operators/control-flow-functions.md)和[算子](/functions-and-operators/operators.md) | `AND`, `OR`, `NOT`, `CASE WHEN`, `IF()`, `IFNULL()`, `ISNULL()`, `IN`, `LIKE`, `ILIKE`, `COALESCE`, `IS` |
 | [位运算](/functions-and-operators/bit-functions-and-operators.md) | `&` (bitand), <code>\|</code> (bitor), `~` (bitneg), `^` (bitxor) |
 | [字符串函数](/functions-and-operators/string-functions.md) | `SUBSTR()`, `CHAR_LENGTH()`, `REPLACE()`, `CONCAT()`, `CONCAT_WS()`, `LEFT()`, `RIGHT()`, `ASCII()`, `LENGTH()`, `TRIM()`, `LTRIM()`, `RTRIM()`, `POSITION()`, `FORMAT()`, `LOWER()`, `UCASE()`, `UPPER()`, `SUBSTRING_INDEX()`, `LPAD()`, `RPAD()`, `STRCMP()` |
 | [正则函数和算子](/functions-and-operators/string-functions.md) | `REGEXP`, `REGEXP_LIKE()`, `REGEXP_INSTR()`, `REGEXP_SUBSTR()`, `REGEXP_REPLACE()` |

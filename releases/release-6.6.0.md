@@ -9,7 +9,11 @@ summary: 了解 TiDB 6.6.0 版本的新功能、兼容性变更、改进提升�
 
 TiDB 版本：6.6.0-[DMR](/releases/versioning.md#开发里程碑版本)
 
-试用链接：[快速体验](https://docs.pingcap.com/zh/tidb/v6.6/quick-start-with-tidb) | [下载离线包](https://cn.pingcap.com/product-community/)
+> **注意：**
+>
+> TiDB 6.6.0-DMR 的用户文档已[归档](https://docs-archive.pingcap.com/zh/tidb/v6.6)。如无特殊需求，建议使用 TiDB 数据库的[最新 LTS 版本](https://docs.pingcap.com/zh/tidb/stable)。
+
+试用链接：[快速体验](https://docs.pingcap.com/zh/tidb/v6.6/quick-start-with-tidb) | [下载离线包](https://cn.pingcap.com/product-community/?version=v6.6.0-DMR#version-list)
 
 在 6.6.0 版本中，你可以获得以下关键特性：
 
@@ -24,8 +28,8 @@ TiDB 版本：6.6.0-[DMR](/releases/versioning.md#开发里程碑版本)
 <tbody>
   <tr>
     <td rowspan="3">可扩展性与性能<br /></td>
-      <td>TiKV 支持<a href="https://docs.pingcap.com/zh/tidb/v6.6/partitioned-raft-kv" target="_blank">分区 Raft KV 存储引擎</a>（实验特性）</td>
-      <td>TiKV 引入下一代存储引擎分区 Raft KV，通过每个数据 Region 独享 RocksDB 实例，可将集群的存储能力从 TB 级扩展到 PB 级，并提供更稳定的写入延迟和更强大的扩容能力。</td>
+      <td>TiKV 支持 <a href="https://docs.pingcap.com/zh/tidb/v6.6/partitioned-raft-kv" target="_blank">Partitioned Raft KV 存储引擎</a>（实验特性）</td>
+      <td>TiKV 引入下一代存储引擎 Partitioned Raft KV，通过每个数据 Region 独享 RocksDB 实例，可将集群的存储能力从 TB 级扩展到 PB 级，并提供更稳定的写入延迟和更强大的扩容能力。</td>
   </tr>
   <tr>
       <td>TiKV 支持<a href="https://docs.pingcap.com/zh/tidb/v6.6/system-variables#tidb_store_batch_size" target="_blank">批量聚合数据请求</a></td>
@@ -46,7 +50,7 @@ TiDB 版本：6.6.0-[DMR](/releases/versioning.md#开发里程碑版本)
   </tr>
   <tr>
     <td rowspan="2">功能特性与兼容性<br /></td>
-    <td><a href="https://docs.pingcap.com/zh/tidb/v6.6/foreign-key" target="_blank">外键约束</a></td>
+    <td><a href="https://docs.pingcap.com/zh/tidb/v6.6/foreign-key" target="_blank">外键约束</a>（实验特性）</td>
     <td>支持 MySQL 兼容的外键约束，帮助保持数据一致性和提升数据质量。</td>
   </tr>
   <tr>
@@ -56,7 +60,7 @@ TiDB 版本：6.6.0-[DMR](/releases/versioning.md#开发里程碑版本)
   <tr>
     <td>数据库管理与可观测性<br /></td>
     <td><a href="https://docs.pingcap.com/zh/tidb/v6.6/dm-precheck/#physical-import-检查项" target="_blank">DM 集成物理导入模式</a>（实验特性）</td>
-    <td>TiDB Data Migration (DM) 集成 TiDB Lightning 的 Physical Import 模式，提升 DM 全量数据迁移时的性能，大数据量场景下的迁移时间最多可提升 10 倍。</td>
+    <td>TiDB Data Migration (DM) 集成 TiDB Lightning 的物理导入模式模式，提升 DM 全量数据迁移时的性能，大数据量场景下的迁移时间最多可提升 10 倍。</td>
   </tr>
 </tbody>
 </table>
@@ -65,9 +69,9 @@ TiDB 版本：6.6.0-[DMR](/releases/versioning.md#开发里程碑版本)
 
 ### 可扩展性
 
-* 支持下一代分区 Raft KV 存储引擎（实验特性）[#11515](https://github.com/tikv/tikv/issues/11515) [#12842](https://github.com/tikv/tikv/issues/12842) @[busyjay](https://github.com/busyjay) @[tonyxuqqi](https://github.com/tonyxuqqi) @[tabokie](https://github.com/tabokie) @[bufferflies](https://github.com/bufferflies) @[5kbpers](https://github.com/5kbpers) @[SpadeA-Tang](https://github.com/SpadeA-Tang) @[nolouch](https://github.com/nolouch)
+* 支持下一代 Partitioned Raft KV 存储引擎（实验特性）[#11515](https://github.com/tikv/tikv/issues/11515) [#12842](https://github.com/tikv/tikv/issues/12842) @[busyjay](https://github.com/busyjay) @[tonyxuqqi](https://github.com/tonyxuqqi) @[tabokie](https://github.com/tabokie) @[bufferflies](https://github.com/bufferflies) @[5kbpers](https://github.com/5kbpers) @[SpadeA-Tang](https://github.com/SpadeA-Tang) @[nolouch](https://github.com/nolouch)
 
-    TiDB v6.6.0 之前，TiKV 基于 Raft 的存储引擎使用一个单一的 RocksDB 实例存储该 TiKV 实例所有 Region 的数据。为了更平稳地支持更大的集群，从 TiDB v6.6.0 开始，引入了一个全新的 TiKV 存储引擎，该引擎使用多个 RocksDB 实例来存储 TiKV 的 Region 数据，每个 Region 的数据都独立存储在单独的 RocksDB 实例中。新引擎能够更好地控制 RocksDB 实例的文件数和层级，并实现 Region 间数据操作的物理隔离，避免互相影响，还支持平稳管理更多的数据。可以理解为 TiKV 通过分区管理多个 RocksDB 实例，这也是该特性分区 Raft KV 名字的由来。该功能的主要优势在于更好的写入性能，更快的扩缩容，相同硬件下可以支持更大的数据，也能支持更大的集群规模。
+    TiDB v6.6.0 之前，TiKV 基于 Raft 的存储引擎使用一个单一的 RocksDB 实例存储该 TiKV 实例所有 Region 的数据。为了更平稳地支持更大的集群，从 TiDB v6.6.0 开始，引入了一个全新的 TiKV 存储引擎，该引擎使用多个 RocksDB 实例来存储 TiKV 的 Region 数据，每个 Region 的数据都独立存储在单独的 RocksDB 实例中。新引擎能够更好地控制 RocksDB 实例的文件数和层级，并实现 Region 间数据操作的物理隔离，避免互相影响，还支持平稳管理更多的数据。可以理解为 TiKV 通过分区管理多个 RocksDB 实例，这也是该特性 Partitioned Raft KV 名字的由来。该功能的主要优势在于更好的写入性能，更快的扩缩容，相同硬件下可以支持更大的数据，也能支持更大的集群规模。
 
     该功能目前是实验特性，不推荐在生产环境中使用。
 
@@ -75,15 +79,15 @@ TiDB 版本：6.6.0-[DMR](/releases/versioning.md#开发里程碑版本)
 
 * 支持 DDL 分布式并行执行框架（实验特性）[#37125](https://github.com/pingcap/tidb/issues/37125) @[zimulala](https://github.com/zimulala)
 
-    在过去的版本中，整个 TiDB 集群中仅允许一个 TiDB 实例作为 DDL Owner 处理 Schema 变更任务。为了进一步提升 DDL 的并发性，TiDB v6.6.0 版本引入了 DDL 分布式并行执行框架，支持集群中所有的 TiDB 实例并发执行同一个任务的 `StateWriteReorganization` 阶段，加速 DDL 的执行。该功能由系统变量 [`tidb_ddl_distribute_reorg`](/system-variables.md#tidb_ddl_distribute_reorg-从-v660-版本开始引入) 控制是否开启，目前只支持 `Add Index` 操作。
+    在过去的版本中，整个 TiDB 集群中仅允许一个 TiDB 实例作为 DDL Owner 处理 Schema 变更任务。为了进一步提升 DDL 的并发性，TiDB v6.6.0 版本引入了 DDL 分布式并行执行框架，支持集群中所有的 TiDB 实例并发执行同一个任务的 `StateWriteReorganization` 阶段，加速 DDL 的执行。该功能由系统变量 [`tidb_ddl_distribute_reorg`](https://docs.pingcap.com/zh/tidb/v6.6/system-variables#tidb_ddl_distribute_reorg-从-v660-版本开始引入) 控制是否开启，目前只支持 `Add Index` 操作。
 
 ### 性能
 
 * 支持悲观锁队列的稳定唤醒模型 [#13298](https://github.com/tikv/tikv/issues/13298) @[MyonKeminta](https://github.com/MyonKeminta)
 
-    如果业务场景存在单点悲观锁冲突频繁的情况，原有的唤醒机制无法保证事务获取锁的时间，造成长尾延迟高，甚至获取锁超时。自 v6.6.0 起，你可以通过设置系统变量 [`tidb_pessimistic_txn_aggressive_locking`](/system-variables.md#tidb_pessimistic_txn_aggressive_locking-从-v660-版本开始引入) 为 `ON` 开启悲观锁的稳定唤醒模型。在该唤醒模型下，队列的唤醒顺序可被严格控制，避免无效唤醒造成的资源浪费。在锁冲突严重的场景中，能够减少长尾延时，降低 P99 响应时间。
+    如果业务场景存在单点悲观锁冲突频繁的情况，原有的唤醒机制无法保证事务获取锁的时间，造成长尾延迟高，甚至获取锁超时。自 v6.6.0 起，你可以通过设置系统变量 [`tidb_pessimistic_txn_aggressive_locking`](https://docs.pingcap.com/zh/tidb/v6.6/system-variables#tidb_pessimistic_txn_aggressive_locking-%E4%BB%8E-v660-%E7%89%88%E6%9C%AC%E5%BC%80%E5%A7%8B%E5%BC%95%E5%85%A5) 为 `ON` 开启悲观锁的稳定唤醒模型。在该唤醒模型下，队列的唤醒顺序可被严格控制，避免无效唤醒造成的资源浪费。在锁冲突严重的场景中，能够减少长尾延时，降低 P99 响应时间。
 
-    更多信息，请参考[用户文档](/system-variables.md#tidb_pessimistic_txn_aggressive_locking-从-v660-版本开始引入)。
+    更多信息，请参考[用户文档](https://docs.pingcap.com/zh/tidb/v6.6/system-variables#tidb_pessimistic_txn_aggressive_locking-%E4%BB%8E-v660-%E7%89%88%E6%9C%AC%E5%BC%80%E5%A7%8B%E5%BC%95%E5%85%A5)。
 
 * 批量聚合数据请求 [#39361](https://github.com/pingcap/tidb/issues/39361) @[cfzjywxk](https://github.com/cfzjywxk) @[you06](https://github.com/you06)
 
@@ -93,7 +97,7 @@ TiDB 版本：6.6.0-[DMR](/releases/versioning.md#开发里程碑版本)
 
 * 解除执行计划缓存对 `LIMIT` 子句的限制 [#40219](https://github.com/pingcap/tidb/issues/40219) @[fzzf678](https://github.com/fzzf678)
 
-    TiDB v6.6.0 移除了执行计划缓存的限制，带有变量的 `LIMIT` 子句可以进入执行计划缓存，如 `LIMIT ?` 或者 `LIMIT 10, ?`。这使得更多的 SQL 能够从计划缓存中获益，提升执行效率。
+    TiDB v6.6.0 移除了执行计划缓存的限制，带有变量的 `LIMIT` 子句可以进入执行计划缓存，如 `LIMIT ?` 或者 `LIMIT 10, ?`。这使得更多的 SQL 能够从计划缓存中获益，提升执行效率。目前出于安全考虑，仅支持缓存 `?` 参数值不大于 10000 的执行计划。
 
     更多信息，请参考[用户文档](/sql-prepared-plan-cache.md)。
 
@@ -147,7 +151,7 @@ TiDB 版本：6.6.0-[DMR](/releases/versioning.md#开发里程碑版本)
 
 * 支持 DDL 动态资源管控（实验特性）[#38025](https://github.com/pingcap/tidb/issues/38025) @[hawkingrei](https://github.com/hawkingrei)
 
-    TiDB v6.6.0 版本引入了 DDL 动态资源管控，通过自动控制 DDL 的 CPU 使用量，尽量降低 DDL 变更任务对线上业务的影响。该功能仅在开启 [DDL 分布式并行执行框架](/system-variables.md#tidb_ddl_distribute_reorg-从-v660-版本开始引入)后生效。
+    TiDB v6.6.0 版本引入了 DDL 动态资源管控，通过自动控制 DDL 的 CPU 使用量，尽量降低 DDL 变更任务对线上业务的影响。该功能仅在开启 [DDL 分布式并行执行框架](https://docs.pingcap.com/zh/tidb/v6.6/system-variables#tidb_ddl_distribute_reorg-从-v660-版本开始引入)后生效。
 
 ### 高可用
 
@@ -158,7 +162,7 @@ TiDB 版本：6.6.0-[DMR](/releases/versioning.md#开发里程碑版本)
     - 对于跨云区域部署的 TiDB 集群，当某个云区域产生故障时，指定数据库或表能在另一个云区域继续提供服务。
     - 对于单个云区域内部署的 TiDB 集群，当某个可用区产生故障时，指定数据库或表能在另一个可用区继续提供服务。
 
-  更多信息，请参考[用户文档](/placement-rules-in-sql.md#生存偏好)。
+  更多信息，请参考[用户文档](/placement-rules-in-sql.md#指定生存偏好)。
 
 * 支持通过 `FLASHBACK CLUSTER TO TIMESTAMP` 命令闪回 DDL 操作 [#14088](https://github.com/tikv/tikv/issues/14045) @[Defined2014](https://github.com/Defined2014) @[JmPotato](https://github.com/JmPotato)
 
@@ -168,15 +172,15 @@ TiDB 版本：6.6.0-[DMR](/releases/versioning.md#开发里程碑版本)
 
 ### SQL 功能
 
-* 支持兼容 MySQL 语法的外键约束 [#18209](https://github.com/pingcap/tidb/issues/18209) @[crazycs520](https://github.com/crazycs520)
+* 支持兼容 MySQL 语法的外键约束（实验特性）[#18209](https://github.com/pingcap/tidb/issues/18209) @[crazycs520](https://github.com/crazycs520)
 
     TiDB v6.6.0 引入了兼容 MySQL 语法的外键约束功能，支持在表内、表间关联数据并进行约束校验，并且支持级联操作。该特性有助于将 MySQL 上的应用迁移到 TiDB、保持数据一致性、提升数据质量并且方便数据建模。
 
     更多信息，请参考[用户文档](/foreign-key.md)。
 
-* 支持 MySQL 兼容的多值索引 (Multi-Valued Index)（实验特性）[#39592](https://github.com/pingcap/tidb/issues/39592) @[xiongjiwei](https://github.com/xiongjiwei) @[qw4990](https://github.com/qw4990)
+* 支持 MySQL 兼容的多值索引 (Multi-Valued Indexes)（实验特性）[#39592](https://github.com/pingcap/tidb/issues/39592) @[xiongjiwei](https://github.com/xiongjiwei) @[qw4990](https://github.com/qw4990)
 
-    TiDB 在 v6.6.0 引入了 MySQL 兼容的多值索引 (Multi-Valued Index)。过滤 JSON 列中某个数组的值是常见的操作，但普通索引对这类操作起不到加速作用。在数组上创建多值索引能够大幅提升过滤的性能。如果 JSON 列中的某个数组上存在多值索引，那么可以利用多值索引过滤带有 `MEMBER OF()`、`JSON_CONTAINS()`、`JSON_OVERLAPS()` 函数的检索条件，从而减少大量的 I/O 消耗，提升运行速度。
+    TiDB 在 v6.6.0 引入了 MySQL 兼容的多值索引 (Multi-Valued Indexes)。过滤 JSON 列中某个数组的值是常见的操作，但普通索引对这类操作起不到加速作用。在数组上创建多值索引能够大幅提升过滤的性能。如果 JSON 列中的某个数组上存在多值索引，那么可以利用多值索引过滤带有 `MEMBER OF()`、`JSON_CONTAINS()`、`JSON_OVERLAPS()` 函数的检索条件，从而减少大量的 I/O 消耗，提升运行速度。
 
     多值索引的引入，进一步增强了 TiDB 对 JSON 类型的支持，同时也提升了 TiDB 对 MySQL 8.0 的兼容性。
 
@@ -202,9 +206,9 @@ TiDB 版本：6.6.0-[DMR](/releases/versioning.md#开发里程碑版本)
 
     更多信息，请参考[用户文档](/tidb-configuration-file.md#initialize-sql-file-从-v660-版本开始引入)。
 
-- TiDB Data Migration (DM) 集成了 TiDB Lightning 的 Physical Import Mode（实验特性）@[lance6716](https://github.com/lance6716)
+- TiDB Data Migration (DM) 集成了 TiDB Lightning 的物理导入模式（实验特性）@[lance6716](https://github.com/lance6716)
 
-    在 v6.6.0 版本中，DM 的全量迁移能力集成了 TiDB Lightning 的 Physical Import Mode，使得 DM 全量数据迁移的性能最高可提升 10 倍，大大缩短了大数据量场景下的迁移时间。在 v6.6.0 以前，数据量较多的场景下，需要单独配置 TiDB Lightning 的 Physical Import Mode 任务来进行快速的全量数据迁移，再用 DM 来进行增量数据迁移，配置较为复杂。从 v6.6.0 起，在迁移大数据量的场景，无需再配置 TiDB Lightning 的任务，使用一个 DM 任务即可完成。
+    在 v6.6.0 版本中，DM 的全量迁移能力集成了 TiDB Lightning 的物理导入模式，使得 DM 全量数据迁移的性能最高可提升 10 倍，大大缩短了大数据量场景下的迁移时间。在 v6.6.0 以前，数据量较多的场景下，需要单独配置 TiDB Lightning 的物理导入模式任务来进行快速的全量数据迁移，再用 DM 来进行增量数据迁移，配置较为复杂。从 v6.6.0 起，在迁移大数据量的场景，无需再配置 TiDB Lightning 的任务，使用一个 DM 任务即可完成。
 
     更多信息，请参考[用户文档](/dm/dm-precheck.md#physical-import-检查项)。
 
@@ -214,7 +218,7 @@ TiDB 版本：6.6.0-[DMR](/releases/versioning.md#开发里程碑版本)
 
     更多信息，请参考[用户文档](/tidb-lightning/tidb-lightning-configuration.md#tidb-lightning-任务配置)。
 
-- TiDB Lightning 向 TiKV 传输键值对时支持启用压缩传输 [#41163](https://github.com/pingcap/tidb/issues/41163) @[gozssky](https://github.com/gozssky)
+- TiDB Lightning 向 TiKV 传输键值对时支持启用压缩传输 [#41163](https://github.com/pingcap/tidb/issues/41163) @[sleepymole](https://github.com/sleepymole)
 
     自 v6.6.0 起，TiDB Lightning 支持将本地编码排序后的键值对在网络传输时进行压缩再发送到 TiKV，从而减少网络传输的数据量，降低网络带宽开销。之前版本不支持该功能，在数据量较大的情况下，TiDB Lightning 对网络带宽要求相对较高，且会产生较高的流量费。
 
@@ -327,7 +331,7 @@ TiDB 版本：6.6.0-[DMR](/releases/versioning.md#开发里程碑版本)
 
 ### MySQL 兼容性
 
-* 支持兼容 MySQL 语法的外键约束 [#18209](https://github.com/pingcap/tidb/issues/18209) @[crazycs520](https://github.com/crazycs520)
+* 支持兼容 MySQL 语法的外键约束（实验特性）[#18209](https://github.com/pingcap/tidb/issues/18209) @[crazycs520](https://github.com/crazycs520)
 
     更多信息，请参考本文的 [SQL 部分](#sql-功能)以及[用户文档](/foreign-key.md)。
 
@@ -344,23 +348,23 @@ TiDB 版本：6.6.0-[DMR](/releases/versioning.md#开发里程碑版本)
 | `tidb_ttl_job_run_interval` | 删除 | 这个变量用于控制 TTL 后台清理任务的调度周期。自 v6.6.0 起删除该变量，因为自 v6.6.0 起 TiDB 为每张表提供了属性 `TTL_JOB_INTERVAL` 用于配置 TTL 运行的间隔，允许用户为每张表设置不同的运行间隔，比系统变量更加灵活。 |
 | [`foreign_key_checks`](/system-variables.md#foreign_key_checks) | 修改 | 用于控制是否开启外键约束检查。默认值由 `OFF` 修改为 `ON`，表示默认开启外键检查。|
 | [`tidb_enable_foreign_key`](/system-variables.md#tidb_enable_foreign_key-从-v630-版本开始引入) | 修改 | 用于控制是否开启外键功能。默认值由 `OFF` 修改为 `ON`，表示默认开启外键功能。|
-| `tidb_enable_general_plan_cache`  |  修改  |   这个变量用来控制是否开启 General Plan Cache。自 v6.6.0 起，该变量更名为 [`tidb_enable_non_prepared_plan_cache`](/system-variables.md#tidb_enable_non_prepared_plan_cache)。 |
+| `tidb_enable_general_plan_cache` |  修改  |   这个变量用来控制是否开启 General Plan Cache。自 v6.6.0 起，该变量更名为 [`tidb_enable_non_prepared_plan_cache`](/system-variables.md#tidb_enable_non_prepared_plan_cache)。 |
 | [`tidb_enable_historical_stats`](/system-variables.md#tidb_enable_historical_stats) | 修改 | 这个变量用来控制是否开启历史统计信息。默认值由 `OFF` 修改为 `ON`，表示默认开启历史统计信息。 |
-|  [`tidb_enable_telemetry`](/system-variables.md#tidb_enable_telemetry-从-v402-版本开始引入)  |  修改  |  默认值由 `ON` 修改为 `OFF`，表示默认关闭 TiDB 的遥测功能。 |
-|  `tidb_general_plan_cache_size`  |  修改   |   这个变量用来控制 General Plan Cache 最多能够缓存的计划数量。自 v6.6.0 起，该变量更名为 [`tidb_non_prepared_plan_cache_size`](/system-variables.md#tidb_non_prepared_plan_cache_size)。 |
+|  [`tidb_enable_telemetry`](/system-variables.md#tidb_enable_telemetry-从-v402-版本开始引入) |  修改  |  默认值由 `ON` 修改为 `OFF`，表示默认关闭 TiDB 的遥测功能。 |
+|  `tidb_general_plan_cache_size` |  修改   |   这个变量用来控制 General Plan Cache 最多能够缓存的计划数量。自 v6.6.0 起，该变量更名为 [`tidb_non_prepared_plan_cache_size`](/system-variables.md#tidb_non_prepared_plan_cache_size)。 |
 | [`tidb_replica_read`](/system-variables.md#tidb_replica_read-从-v40-版本开始引入) | 修改 | 新增选项 `learner`，指定 TiDB 从只读节点中读取数据的 learner 副本。 |
 | [`tidb_replica_read`](/system-variables.md#tidb_replica_read-从-v40-版本开始引入) | 修改 | 新增选项 `prefer-leader`，以提高 TiDB 集群整体的读可用性。该选项被启用时，TiDB 会优先选择 Leader 副本进行读取操作；当 Leader 副本的处理性能显著下降时，TiDB 会自动将读操作转发给 Follower 副本。|
 | [`tidb_store_batch_size`](/system-variables.md#tidb_store_batch_size) | 修改 | 该变量设置 `IndexLookUp` 算子回表时多个 Coprocessor Task 的 batch 大小。`0` 代表不使用 batch。自 v6.6.0 起，默认值由 `0` 调整为 `4`，即每批请求会有 4 个 Coprocessor Task 被 batch 到一个 task 中。 |
-| [`mpp_exchange_compression_mode`](/system-variables.md#mpp_exchange_compression_mode-从-v660-版本开始引入)  |  新增  |  该变量用于选择 MPP Exchange 算子的数据压缩模式，当 TiDB 选择版本号为 `1` 的 MPP 执行计划时生效。默认值为 `UNSPECIFIED`，表示 TiDB 自动选择 `FAST` 压缩模式。|
-| [`mpp_version`](/system-variables.md#mpp_version-从-v660-版本开始引入)  |  新增  |  该变量用于指定不同版本的 MPP 执行计划。指定后，TiDB 会选择指定版本的 MPP 执行计划。默认值为 `UNSPECIFIED`，表示 TiDB 自动选择最新版本 `1`。 |
-| [`tidb_ddl_distribute_reorg`](/system-variables.md#tidb_ddl_distribute_reorg-从-v660-版本开始引入) | 新增 | 这个变量用来控制是否开启分布式执行 DDL reorg 阶段，来提升此阶段的速度。默认值为 `OFF`，表示默认不开启分布式执行 DDL reorg 阶段。目前此开关只对 `ADD INDEX` 语句有效。|
+| [`mpp_exchange_compression_mode`](/system-variables.md#mpp_exchange_compression_mode-从-v660-版本开始引入) |  新增  |  该变量用于选择 MPP Exchange 算子的数据压缩模式，当 TiDB 选择版本号为 `1` 的 MPP 执行计划时生效。默认值为 `UNSPECIFIED`，表示 TiDB 自动选择 `FAST` 压缩模式。|
+| [`mpp_version`](/system-variables.md#mpp_version-从-v660-版本开始引入) |  新增  |  该变量用于指定不同版本的 MPP 执行计划。指定后，TiDB 会选择指定版本的 MPP 执行计划。默认值为 `UNSPECIFIED`，表示 TiDB 自动选择最新版本 `1`。 |
+| [`tidb_ddl_distribute_reorg`](https://docs.pingcap.com/zh/tidb/v6.6/system-variables#tidb_ddl_distribute_reorg-从-v660-版本开始引入) | 新增 | 这个变量用来控制是否开启分布式执行 DDL reorg 阶段，来提升此阶段的速度。默认值为 `OFF`，表示默认不开启分布式执行 DDL reorg 阶段。目前此开关只对 `ADD INDEX` 语句有效。|
 | [`tidb_enable_historical_stats_for_capture`](/system-variables.md#tidb_enable_historical_stats_for_capture) | 新增 | 这个变量用来控制 `PLAN REPLAYER CAPTURE` 抓取的内容是否默认带历史统计信息。默认值为 `OFF`，表示默认不带历史统计信息。 |
 | [`tidb_enable_plan_cache_for_param_limit`](/system-variables.md#tidb_enable_plan_cache_for_param_limit-从-v660-版本开始引入) | 新增 | 这个变量用来控制 Prepared Plan Cache 是否缓存 `Limit` 后带有 `COUNT` 的执行计划。默认值为 `ON`，表示默认缓存这样的执行计划。目前不支持缓存 `Limit` 后面的 `COUNT` 具体参数值大于 10000 的执行计划。 |
 | [`tidb_enable_plan_replayer_capture`](/system-variables.md#tidb_enable_plan_replayer_capture) | 新增 | 这个变量用来控制是否开启 [`PLAN REPLAYER CAPTURE`](/sql-plan-replayer.md#使用-plan-replayer-capture-抓取目标计划)。默认值 `OFF`，代表默认关闭 `PLAN REPLAYER CAPTURE`。 |
 | [`tidb_enable_resource_control`](/system-variables.md#tidb_enable_resource_control-从-v660-版本开始引入) | 新增  | 该变量是[资源管控特性](/tidb-resource-control.md)的开关。默认值为 `OFF`。该变量设置为 `ON` 后，集群支持应用按照资源组做资源隔离。 |
 | [`tidb_historical_stats_duration`](/system-variables.md#tidb_historical_stats_duration-从-v660-版本开始引入) | 新增 | 这个变量用来控制历史统计信息在存储中的保留时间，默认值为 7 天。 |
 | [`tidb_index_join_double_read_penalty_cost_rate`](/system-variables.md#tidb_index_join_double_read_penalty_cost_rate-从-v660-版本开始引入) | 新增 | 用于控制是否给 index join 增加一些惩罚性代价。默认值为 `0`，即不开启该功能。 |
-| [`tidb_pessimistic_txn_aggressive_locking`](/system-variables.md#tidb_pessimistic_txn_aggressive_locking-从-v660-版本开始引入) | 新增 | 是否对悲观锁启用加强的悲观锁唤醒模型。默认值为 `OFF`，表示默认不对悲观锁启用加强的悲观锁唤醒模型。 |
+| [`tidb_pessimistic_txn_aggressive_locking`](https://docs.pingcap.com/zh/tidb/v6.6/system-variables#tidb_pessimistic_txn_aggressive_locking-%E4%BB%8E-v660-%E7%89%88%E6%9C%AC%E5%BC%80%E5%A7%8B%E5%BC%95%E5%85%A5) | 新增 | 是否对悲观锁启用加强的悲观锁唤醒模型。默认值为 `OFF`，表示默认不对悲观锁启用加强的悲观锁唤醒模型。 |
 | [`tidb_stmt_summary_enable_persistent`](/system-variables.md#tidb_stmt_summary_enable_persistent-从-v660-版本开始引入) | 新增 | 只读变量。表示是否开启 [statement summary tables 持久化](/statement-summary-tables.md#持久化-statements-summary)。该变量的值与配置文件中 [`tidb_stmt_summary_enable_persistent`](/tidb-configuration-file.md#tidb_stmt_summary_enable_persistent-从-v660-版本开始引入) 的取值相同。 |
 | [`tidb_stmt_summary_filename`](/system-variables.md#tidb_stmt_summary_filename-从-v660-版本开始引入) | 新增 | 只读变量。表示当开启 [statement summary tables 持久化](/statement-summary-tables.md#持久化-statements-summary)后持久化数据所写入的文件。该变量的值与配置文件中 [`tidb_stmt_summary_filename`](/tidb-configuration-file.md#tidb_stmt_summary_filename-从-v660-版本开始引入) 的取值相同。 |
 | [`tidb_stmt_summary_file_max_backups`](/system-variables.md#tidb_stmt_summary_file_max_backups-从-v660-版本开始引入) | 新增 | 只读变量。表示当开启 [statement summary tables 持久化](/statement-summary-tables.md#持久化-statements-summary)后持久化数据文件的最大数量限制。该变量的值与配置文件中 [`tidb_stmt_summary_file_max_backups`](/tidb-configuration-file.md#tidb_stmt_summary_file_max_backups-从-v660-版本开始引入) 的取值相同。 |
@@ -381,7 +385,7 @@ TiDB 版本：6.6.0-[DMR](/releases/versioning.md#开发里程碑版本)
 | PD   |  [`enable-telemetry`](/pd-configuration-file.md#enable-telemetry)  |  修改  |   从 v6.6.0 起，该配置项的默认值由 `true` 改为 `false`，表示默认关闭 TiDB Dasboard 的遥测功能。  |
 | TiFlash |  [`profile.default.max_memory_usage_for_all_queries`](/tiflash/tiflash-configuration.md#配置文件-tiflashtoml)  |  修改  |  表示所有查询过程中，节点对中间数据的内存限制。自 v6.6.0 起默认值由 `0` 改为 `0.8`，表示节点占总内存的 80%。  |
 | TiCDC  | [`consistent.storage`](/ticdc/ticdc-sink-to-mysql.md#使用前提)  |  修改  | redo log 备份文件的地址，除了 NFS，支持的 `scheme` 新增了 GCS 和 Azure。  |
-| DM | [`import-mode`](/dm/task-configuration-file-full.md) | 修改 | 该配置项的可选值由 `"sql"` 和 `"loader"` 变更为 `"logical"` 和 `"physical"`。默认值为 `"logical"`，即使用 TiDB Lightning 的 Logical Import Mode 进行导入。 |
+| DM | [`import-mode`](/dm/task-configuration-file-full.md) | 修改 | 该配置项的可选值由 `"sql"` 和 `"loader"` 变更为 `"logical"` 和 `"physical"`。默认值为 `"logical"`，即使用 TiDB Lightning 的逻辑导入模式进行导入。 |
 | TiDB  | [`initialize-sql-file`](/tidb-configuration-file.md#initialize-sql-file-从-v660-版本开始引入)  | 新增 | 用于指定 TiDB 集群初次启动时执行的 SQL 脚本。默认值为空。  |
 | TiDB  | [`tidb_stmt_summary_enable_persistent`](/tidb-configuration-file.md#tidb_stmt_summary_enable_persistent-从-v660-版本开始引入)  |  新增  |  用于控制是否开启 statements summary 持久化。默认值为 `false`，即不开启该功能。  |
 | TiDB | [`tidb_stmt_summary_file_max_backups`](/tidb-configuration-file.md#tidb_stmt_summary_file_max_backups-从-v660-版本开始引入) | 新增 | 当开启了 statements summary 持久化时，该配置用于限制持久化数据文件最大数量，默认值为 `0`，表示不限制文件数量。 |
@@ -397,12 +401,12 @@ TiDB 版本：6.6.0-[DMR](/releases/versioning.md#开发里程碑版本)
 | PD  | [`pd-server.server-memory-limit`](/pd-configuration-file.md#server-memory-limit-从-v660-版本开始引入) | 新增 | PD 实例的内存限制比例。`0` 表示不设内存限制。 |
 | PD  |  [`pd-server.server-memory-limit-gc-trigger`](/pd-configuration-file.md#server-memory-limit-gc-trigger-从-v660-版本开始引入) | 新增 | PD 尝试触发 GC 的阈值比例。默认值为 `0.7`。 |
 | TiCDC | [`scheduler.region-per-span`](/ticdc/ticdc-changefeed-config.md#ticdc-changefeed-配置文件说明) | 新增 | 该配置项用于将表按 Region 个数划分成多个同步范围，这些范围可由多个 TiCDC 节点同步，默认值为 `50000`。 |
-| TiDB Lightning | [`compress-kv-pairs`](/tidb-lightning/tidb-lightning-configuration.md#tidb-lightning-任务配置) | 新增 | 该配置项控制 Physical Import Mode 向 TiKV 发送 KV 时是否启用压缩，默认值为空，表示不启用压缩。 |
-| DM | [`checksum-physical`](/dm/task-configuration-file-full.md) | 新增 | 该配置项控制 Physical Import 在导入完成一张表后，对每一个表执行 `ADMIN CHECKSUM TABLE <table>` 进行数据校验。默认值为 `"required"`，表示导入完成后进行数据校验，如果校验失败会暂停任务，需要你手动处理。|
+| TiDB Lightning | [`compress-kv-pairs`](/tidb-lightning/tidb-lightning-configuration.md#tidb-lightning-任务配置) | 新增 | 该配置项控制物理导入模式向 TiKV 发送 KV 时是否启用压缩，默认值为空，表示不启用压缩。 |
+| DM | [`checksum-physical`](/dm/task-configuration-file-full.md) | 新增 | 该配置项控制物理导入模式在导入完成一张表后，对每一个表执行 `ADMIN CHECKSUM TABLE <table>` 进行数据校验。默认值为 `"required"`，表示导入完成后进行数据校验，如果校验失败会暂停任务，需要你手动处理。|
 | DM | [`disk-quota-physical`](/dm/task-configuration-file-full.md) | 新增 | 该配置项设置了磁盘的空间限制，对应 TiDB Lightning 的 [`disk-quota` 配置](/tidb-lightning/tidb-lightning-physical-import-mode-usage.md#磁盘资源配额-从-v620-版本开始引入)。|
-| DM | [`on-duplicate-logical`](/dm/task-configuration-file-full.md) | 新增 | 该配置项控制 Logical Import 针对冲突数据的解决方式。默认值为 `"replace"`，表示用最新数据替代已有数据。 |
-| DM | [`on-duplicate-physical`](/dm/task-configuration-file-full.md) | 新增 | 该配置项控制 Physical Import 针对冲突数据的解决方式。默认值为 `"none"`，表示遇到冲突数据时不进行处理。该模式性能最佳，但下游数据库会出现数据索引不一致的问题。  |
-| DM | [`sorting-dir-physical`](/dm/task-configuration-file-full.md) | 新增 | 该配置项控制 Physical Import 用作本地排序的目录位置，该选项的默认值与 `dir` 配置项一致。 |
+| DM | [`on-duplicate-logical`](/dm/task-configuration-file-full.md) | 新增 | 该配置项控制物理导入模式针对冲突数据的解决方式。默认值为 `"replace"`，表示用最新数据替代已有数据。 |
+| DM | [`on-duplicate-physical`](/dm/task-configuration-file-full.md) | 新增 | 该配置项控制物理导入模式针对冲突数据的解决方式。默认值为 `"none"`，表示遇到冲突数据时不进行处理。该模式性能最佳，但下游数据库会出现数据索引不一致的问题。  |
+| DM | [`sorting-dir-physical`](/dm/task-configuration-file-full.md) | 新增 | 该配置项控制物理导入模式用作本地排序的目录位置，该选项的默认值与 `dir` 配置项一致。 |
 | sync-diff-inspector   | [`skip-non-existing-table`](/sync-diff-inspector/sync-diff-inspector-overview.md#配置文件说明)   |  新增 | 当下游数据库的表在上游不存在时，该配置项决定是否跳过对上下游数据库表数量不一致场景的校验。  |
 | TiSpark | [`spark.tispark.replica_read`](/tispark-overview.md#tispark-配置) | 新增 | 控制读取副本的类型，可选值为 `leader`、`follower`、`learner`。 |
 | TiSpark | [`spark.tispark.replica_read.label`](/tispark-overview.md#tispark-配置) | 新增 | 设置目标 TiKV 节点的标签。 |
@@ -476,11 +480,11 @@ TiDB 版本：6.6.0-[DMR](/releases/versioning.md#开发里程碑版本)
 
     + TiDB Lightning
 
-        - Physical Import Mode 支持 Keyspace [#40531](https://github.com/pingcap/tidb/issues/40531) @[iosmanthus](https://github.com/iosmanthus)
+        - 物理导入模式支持 Keyspace [#40531](https://github.com/pingcap/tidb/issues/40531) @[iosmanthus](https://github.com/iosmanthus)
         - 支持通过 `lightning.max-error` 设置最大冲突个数 [#40743](https://github.com/pingcap/tidb/issues/40743) @[dsdashun](https://github.com/dsdashun)
         - 支持导入带有 BOM header 的 CSV 数据文件 [#40744](https://github.com/pingcap/tidb/issues/40744) @[dsdashun](https://github.com/dsdashun)
         - 优化遇到 TiKV 限流错误时的处理逻辑，改为尝试其他空闲的 Region [#40205](https://github.com/pingcap/tidb/issues/40205) @[lance6716](https://github.com/lance6716)
-        - 导入时关闭对表外键的检查 [#40027](https://github.com/pingcap/tidb/issues/40027) @[gozssky](https://github.com/gozssky)
+        - 导入时关闭对表外键的检查 [#40027](https://github.com/pingcap/tidb/issues/40027) @[sleepymole](https://github.com/sleepymole)
 
     + Dumpling
 
@@ -555,6 +559,7 @@ TiDB 版本：6.6.0-[DMR](/releases/versioning.md#开发里程碑版本)
     - 修复查询 TiFlash 相关的系统表可能会卡住的问题 [#6745](https://github.com/pingcap/tiflash/pull/6745) @[lidezhu](https://github.com/lidezhu)
     - 修复半连接在计算笛卡尔积时，使用内存过量的问题 [#6730](https://github.com/pingcap/tiflash/issues/6730) @[gengliqi](https://github.com/gengliqi)
     - 修复对 DECIMAL 数据类型进行除法运算时结果不舍入的问题 [#6393](https://github.com/pingcap/tiflash/issues/6393) @[LittleFall](https://github.com/LittleFall)
+    - 修复了 TiFlash 查询中由于 `start_ts` 无法唯一标识一个 MPP query 导致 MPP query 可能会被误取消的问题 [#43426](https://github.com/pingcap/tidb/issues/43426) @[hehechen](https://github.com/hehechen)
 
 + Tools
 
@@ -592,7 +597,7 @@ TiDB 版本：6.6.0-[DMR](/releases/versioning.md#开发里程碑版本)
         - 修复在并行导入时，当除最后一个 TiDB Lightning 实例外的其他实例都遇到本地重复记录时，TiDB Lightning 可能会错误地跳过冲突处理的问题 [#40923](https://github.com/pingcap/tidb/issues/40923) @[lichunzhu](https://github.com/lichunzhu)
         - 修复 precheck 无法准确检测目标集群是否存在运行中的 TiCDC 的问题 [#41040](https://github.com/pingcap/tidb/issues/41040) @[lance6716](https://github.com/lance6716)
         - 修复 TiDB Lightning 在 split-region 阶段发生 panic 的问题 [#40934](https://github.com/pingcap/tidb/issues/40934) @[lance6716](https://github.com/lance6716)
-        - 修复冲突处理逻辑 (`duplicate-resolution`) 可能导致 checksum 不一致的问题 [#40657](https://github.com/pingcap/tidb/issues/40657) @[gozssky](https://github.com/gozssky)
+        - 修复冲突处理逻辑 (`duplicate-resolution`) 可能导致 checksum 不一致的问题 [#40657](https://github.com/pingcap/tidb/issues/40657) @[sleepymole](https://github.com/sleepymole)
         - 修复当数据文件中存在未闭合的 delimiter 时可能 OOM 的问题 [#40400](https://github.com/pingcap/tidb/issues/40400) @[buchuitoudegou](https://github.com/buchuitoudegou)
         - 修复报错中的文件 offset 超过文件大小的问题 [#40034](https://github.com/pingcap/tidb/issues/40034) @[buchuitoudegou](https://github.com/buchuitoudegou)
         - 修复新版 PD client 可能导致并行导入失败的问题 [#40493](https://github.com/pingcap/tidb/issues/40493) @[AmoebaProtozoa](https://github.com/AmoebaProtozoa)

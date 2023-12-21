@@ -43,7 +43,7 @@ hide_commit: true
 
 [使用 TiUP 部署 TiDB（推荐）](https://docs.pingcap.com/zh/tidb/dev/production-deployment-using-tiup)
 
-[在 Kubernetes 上部署 TiDB](https://docs.pingcap.com/zh/tidb/dev/tidb-in-kubernetes)
+[在 Kubernetes 上部署 TiDB](https://docs.pingcap.com/zh/tidb-in-kubernetes/stable)
 
 </LearningPath>
 
@@ -101,33 +101,33 @@ hide_commit: true
 
 [TiUP](https://docs.pingcap.com/zh/tidb/dev/tiup-overview)
 
-[Dumpling](https://docs.pingcap.com/zh/tidb/dev/dumpling-overview)
+[TiDB Operator](https://docs.pingcap.com/zh/tidb/dev/tidb-operator-overview)
+
+[TiDB Data Migration (DM)](https://docs.pingcap.com/zh/tidb/dev/dm-overview)
 
 [TiDB Lightning](https://docs.pingcap.com/zh/tidb/dev/tidb-lightning-overview)
 
-[Data Migration](https://docs.pingcap.com/zh/tidb/dev/dm-overview)
-
-[Backup & Restore (BR)](https://docs.pingcap.com/zh/tidb/dev/backup-and-restore-overview)
+[Dumpling](https://docs.pingcap.com/zh/tidb/dev/dumpling-overview)
 
 [TiCDC](https://docs.pingcap.com/zh/tidb/dev/ticdc-overview)
+
+[Backup & Restore (BR)](https://docs.pingcap.com/zh/tidb/dev/backup-and-restore-overview)
 
 [PingCAP Clinic](https://docs.pingcap.com/zh/tidb/dev/clinic-introduction)
 
 [TiUniManager](https://docs.pingcap.com/zh/tidb/dev/tiunimanager-overview)
 
-[TiDB Operator](https://docs.pingcap.com/zh/tidb/dev/tidb-operator-overview)
-
-[TiSpark](https://docs.pingcap.com/zh/tidb/dev/tispark-overview)
-
 </LearningPath>
 
 <LearningPath label="参考" icon="cloud-dev">
+
+[TiDB 路线图](https://docs.pingcap.com/zh/tidb/dev/tidb-roadmap)
 
 [TiDB 配置文件参数](https://docs.pingcap.com/zh/tidb/dev/tidb-configuration-file)
 
 [TiDB 命令行参数](https://docs.pingcap.com/zh/tidb/dev/command-line-flags-for-tidb-configuration)
 
-[TiDB Control](https://docs.pingcap.com/zh/tidb/dev/tidb-control)  
+[TiDB Control](https://docs.pingcap.com/zh/tidb/dev/tidb-control)
 
 [系统变量](https://docs.pingcap.com/zh/tidb/dev/system-variables)
 

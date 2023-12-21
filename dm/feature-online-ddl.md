@@ -175,20 +175,20 @@ pt-osc 主要涉及的 SQL 以及 DM 的处理：
 
     DM 执行以下两个操作:
 
-      - 把 rename 语句拆分成两个 SQL。
+    - 把 rename 语句拆分成两个 SQL。
 
-         ```sql
-         rename test.test4 to test._test4_old;
-         rename test._test4_new to test.test4;
-         ```
+        ```sql
+        rename test.test4 to test._test4_old;
+        rename test._test4_new to test.test4;
+        ```
 
-      - 不执行 `rename to _test4_old`。当要执行 `rename ghost_table to origin table` 的时候，并不执行 rename，而是把步骤 2 记录在内存中的 DDL 读取出来，然后把 ghost_table、ghost_schema 替换为 origin_table 以及对应的 schema，再执行替换后的 DDL。
+    - 不执行 `rename to _test4_old`。当要执行 `rename ghost_table to origin table` 的时候，并不执行 rename，而是把步骤 2 记录在内存中的 DDL 读取出来，然后把 ghost_table、ghost_schema 替换为 origin_table 以及对应的 schema，再执行替换后的 DDL。
 
-          ```sql
-          ALTER TABLE `test`.`_test4_new` add column c3 int;
-          --替换为
-          ALTER TABLE `test`.`test4` add column c3 int;
-          ```
+        ```sql
+        ALTER TABLE `test`.`_test4_new` add column c3 int;
+        --替换为
+        ALTER TABLE `test`.`test4` add column c3 int;
+        ```
 
 6. 删除 `_old` 表以及 online DDL 的 3 个 Trigger：
 

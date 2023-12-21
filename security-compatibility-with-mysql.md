@@ -122,8 +122,10 @@ TiDB 目前支持的身份验证方式可在以下的表格中查找到。服务
 | `auth_socket`            | 是（5.3.0 版本起） |
 | `tidb_sm3_password`      | 是（6.3.0 版本起） |
 | `tidb_auth_token`        | 是（6.4.0 版本起） |
+| `authentication_ldap_sasl`   | 是（7.1.0 版本起） |
+| `authentication_ldap_simple` | 是（7.1.0 版本起） |
 | TLS 证书       | 是              |
-| LDAP                     | 否               |
+| LDAP                     | 是（7.1.0 版本起） |
 | PAM                      | 否               |
 | ed25519 (MariaDB)        | 否               |
 | GSSAPI (MariaDB)         | 否               |

@@ -78,7 +78,7 @@ Global Flags:
 - `task-name`：指定日志备份任务名。该名称也用于查询备份状态、暂停、重启和恢复备份任务等操作。
 - `ca`、`cert`、`key`：指定使用 mTLS 加密方式与 TiKV 和 PD 进行通讯。
 - `--pd`：指定备份集群的 PD 访问地址。br 命令行工具需要访问 PD，发起日志备份任务。
-- `--storage`：指定备份存储地址。日志备份支持以 Amazon S3、Google Cloud Storage (GCS)、Azure Blob Storage 为备份存储，以上命令以 S3 为示例。详细参考[备份存储 URI 格式](/br/backup-and-restore-storages.md#uri-格式)。
+- `--storage`：指定备份存储地址。日志备份支持以 Amazon S3、Google Cloud Storage (GCS)、Azure Blob Storage 为备份存储，以上命令以 S3 为示例。关于 URI 格式的详细信息，请参考[外部存储服务的 URI 格式](/external-storage-uri.md)。
 
 使用示例：
 
@@ -284,7 +284,7 @@ Global Flags:
 
 - `--dry-run`：运行命令，但是不删除文件。
 - `--until`：早于该参数指定时间点的日志备份数据会被删除。建议使用快照备份的时间点作为该参数值。
-- `--storage`：指定备份存储地址。日志备份支持以 Amazon S3、Google Cloud Storage (GCS)、Azure Blob Storage 为备份存储。详细参考[备份存储 URI 格式](/br/backup-and-restore-storages.md#uri-格式)。
+- `--storage`：指定备份存储地址。日志备份支持以 Amazon S3、Google Cloud Storage (GCS)、Azure Blob Storage 为备份存储。关于 URI 格式的详细信息，请参考[外部存储服务的 URI 格式](/external-storage-uri.md)。
 
 使用示例：
 
@@ -325,7 +325,7 @@ Global Flags:
 
 该命令只需要访问备份存储，不需要访问备份集群。
 
-以上示例中，`--storage` 为常用参数，它用来指定备份存储地址。日志备份支持以 Amazon S3、Google Cloud Storage (GCS)、Azure Blob Storage 为备份存储。详细参考[备份存储 URI 格式](/br/backup-and-restore-storages.md#uri-格式)。
+以上示例中，`--storage` 为常用参数，它用来指定备份存储地址。日志备份支持以 Amazon S3、Google Cloud Storage (GCS)、Azure Blob Storage 为备份存储。关于 URI 格式的详细信息，请参考[外部存储服务的 URI 格式](/external-storage-uri.md)。
 
 使用示例：
 
@@ -369,12 +369,12 @@ Global Flags:
 
 以上示例只展示了常用的参数，这些参数作用如下：
 
-- `--full-backup-storage`：指定快照（全量）备份的存储地址。如果你要使用 PITR，需要指定该参数，并选择恢复时间点之前最近的快照备份；如果只恢复日志备份数据，则不需要指定该参数。快照备份支持以 Amazon S3、Google Cloud Storage (GCS)、Azure Blob Storage 为备份存储。详细参考[备份存储 URI 格式](/br/backup-and-restore-storages.md#uri-格式)。
+- `--full-backup-storage`：指定快照（全量）备份的存储地址。如果你要使用 PITR，需要指定该参数，并选择恢复时间点之前最近的快照备份；如果只恢复日志备份数据，则不需要指定该参数。快照备份支持以 Amazon S3、Google Cloud Storage (GCS)、Azure Blob Storage 为备份存储。关于 URI 格式的详细信息，请参考[外部存储服务的 URI 格式](/external-storage-uri.md)。
 - `--restored-ts`：指定恢复到的时间点。如果没有指定该参数，则恢复到日志备份数据最后的可恢复时间点（备份数据的 checkpoint）。
 - `--start-ts`：指定日志备份恢复的起始时间点。如果你只恢复日志备份数据，不恢复快照备份，需要指定这个参数。
 - `ca`、`cert`、`key`：指定使用 mTLS 加密方式与 TiKV 和 PD 进行通讯。
 - `--pd`：指定恢复集群的 PD 访问地址。
-- `--storage`：指定备份存储地址。日志备份支持以 Amazon S3、Google Cloud Storage (GCS)、Azure Blob Storage 为备份存储。详细参考[备份存储 URI 格式](/br/backup-and-restore-storages.md#uri-格式)。
+- `--storage`：指定备份存储地址。日志备份支持以 Amazon S3、Google Cloud Storage (GCS)、Azure Blob Storage 为备份存储。关于 URI 格式的详细信息，请参考[外部存储服务的 URI 格式](/external-storage-uri.md)。
 
 使用示例：
 

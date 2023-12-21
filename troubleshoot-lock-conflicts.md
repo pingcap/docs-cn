@@ -309,7 +309,7 @@ err="pessimistic lock retry limit reached"
 处理建议：
 
 * 如果上述报错出现的比较频繁，建议从业务的角度进行调整。
-* 如果业务中包含对同一行（同一个 key）的高并发上锁而频繁冲突，可以尝试启用系统变量 [`tidb_pessimistic_txn_aggressive_locking`](/system-variables.md#tidb_pessimistic_txn_aggressive_locking-从-v660-版本开始引入)。需要注意启用该选项可能对存在锁冲突的事务带来一定程度的吞吐下降（平均延迟上升）的代价。
+* 如果业务中包含对同一行（同一个 key）的高并发上锁而频繁冲突，可以尝试启用系统变量 [`tidb_pessimistic_txn_fair_locking`](/system-variables.md#tidb_pessimistic_txn_fair_locking-从-v700-版本开始引入)。需要注意启用该选项可能对存在锁冲突的事务带来一定程度的吞吐下降（平均延迟上升）的代价。对于新部署的集群，该选项默认启用 (`ON`) 。
 
 ### Lock wait timeout exceeded
 
@@ -329,7 +329,7 @@ ERROR 1205 (HY000): Lock wait timeout exceeded; try restarting transaction
 
 ### TTL manager has timed out
 
-除了有不能超出 GC 时间的限制外，悲观锁的 TTL 有上限，默认为 1 小时，所以执行时间超过 1 小时的悲观事务有可能提交失败。这个超时时间由 TiDB 参数 [performance.max-txn-ttl](https://github.com/pingcap/tidb/blob/master/config/config.toml.example) 指定。
+除了有不能超出 GC 时间的限制外，悲观锁的 TTL 有上限，默认为 1 小时，所以执行时间超过 1 小时的悲观事务有可能提交失败。这个超时时间由 TiDB 参数 [`performance.max-txn-ttl`](https://github.com/pingcap/tidb/blob/master/pkg/config/config.toml.example) 指定。
 
 可通过查看 TiDB 日志查看报错信息：
 

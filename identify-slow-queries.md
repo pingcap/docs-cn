@@ -63,7 +63,13 @@ Slow Query 基础信息：
 * `Txn_start_ts`：表示事务的开始时间戳，也是事务的唯一 ID，可以用这个值在 TiDB 日志中查找事务相关的其他日志。
 * `Is_internal`：表示是否为 TiDB 内部的 SQL 语句。`true` 表示 TiDB 系统内部执行的 SQL 语句，`false` 表示用户执行的 SQL 语句。
 * `Index_names`：表示这个语句执行用到的索引。
-* `Stats`：表示这个语句涉及表的统计信息健康状态，`pseudo` 状态表示统计信息状态不健康。
+* `Stats`：表示这个语句使用到的统计信息的健康状态、内部版本号、总行数、修改行数以及加载状态。`pseudo` 状态表示统计信息不健康。如果有尝试使用但没有完全加载的统计信息，会在之后输出其内部状态。例如，`t1:439478225786634241[105000;5000][col1:allEvicted][idx1:allEvicted]` 的含义如下：
+    - `t1`：本次查询优化过程中使用了 `t1` 表上的统计信息
+    - `439478225786634241`：其内部版本号
+    - `105000`：统计信息中维护的总行数
+    - `5000`：自上次收集统计信息以来记录的修改的行数
+    - `col1:allEvicted`：`col1` 列对应的统计信息没有完全加载
+    - `idx1:allEvicted`：`idx1` 索引对应的统计信息没有完全加载
 * `Succ`：表示语句是否执行成功。
 * `Backoff_time`：表示语句遇到需要重试的错误时在重试前等待的时间。常见的需要重试的错误有以下几种：遇到了 lock、Region 分裂、`tikv server is busy`。
 * `Plan`：表示语句的执行计划，用 `select tidb_decode_plan('xxx...')` SQL 语句可以解析出具体的执行计划。
@@ -94,6 +100,8 @@ Slow Query 基础信息：
 * `Write_keys`：表示该事务向 TiKV 的 Write CF 写入 Key 的数量。
 * `Write_size`：表示事务提交时写 key 或 value 的总大小。
 * `Prewrite_region`：表示事务两阶段提交中第一阶段（prewrite 阶段）涉及的 TiKV Region 数量。每个 Region 会触发一次远程过程调用。
+* `Wait_prewrite_binlog_time`：表示事务提交时用于写 binlog 的时间。
+* `Resolve_lock_time`：表示事务提交时遇到锁后，清理锁或者等待锁过期的时间。
 
 和内存使用相关的字段：
 
@@ -126,12 +134,31 @@ Slow Query 基础信息：
 * `Cop_wait_p90`：cop-task 的 P90 分位等待时间。
 * `Cop_wait_max`：cop-task 的最大等待时间。
 * `Cop_wait_addr`：等待时间最长的 cop-task 所在地址。
+* `Rocksdb_delete_skipped_count`：RocksDB 读数据过程中已删除 Key 的扫描数。
+* `Rocksdb_key_skipped_count`：RocksDB 扫数据时遇到的已删除 (tombstone) Key 数量。
+* `Rocksdb_block_cache_hit_count`：RocksDB 从 Block Cache 缓存中读数据的次数。
+* `Rocksdb_block_read_count`：RocksDB 从文件系统中读数据的次数。
+* `Rocksdb_block_read_byte`：RocksDB 从文件系统中读数据的数据量。
+* `Rocksdb_block_read_time`：RocksDB 从文件系统中读数据的时间。
 * `Cop_backoff_{backoff-type}_total_times`：因某种错误造成的 backoff 总次数。
 * `Cop_backoff_{backoff-type}_total_time`：因某种错误造成的 backoff 总时间。
 * `Cop_backoff_{backoff-type}_max_time`：因某种错误造成的最大 backoff 时间。
 * `Cop_backoff_{backoff-type}_max_addr`：因某种错误造成的最大 backoff 时间的 cop-task 地址。
 * `Cop_backoff_{backoff-type}_avg_time`：因某种错误造成的平均 backoff 时间。
 * `Cop_backoff_{backoff-type}_p90_time`：因某种错误造成的 P90 分位 backoff 时间。
+
+`backoff-type` 一般有以下几种：
+
+* `tikvRPC`：给 TiKV 发送 RPC 请求失败而产生的 backoff。
+* `tiflashRPC`：给 TiFlash 发送 RPC 请求失败而产生的 backoff。
+* `pdRPC`：给 PD 发送 RPC 请求失败而产生的 backoff。
+* `txnLock`：遇到锁冲突后产生的 backoff。
+* `regionMiss`：Region 发生分裂或者合并后，TiDB 的 Region 缓存信息过期导致请求失败而产生的 backoff。
+* `regionScheduling`：Region 还在调度中，尚未选出 Leader 导致无法处理请求而产生的 backoff。
+* `tikvServerBusy`：因为 TiKV 负载太高无法处理新请求而产生的 backoff。
+* `tiflashServerBusy`：因为 TiFlash 负载太高无法处理新请求而产生的 backoff。
+* `tikvDiskFull`：因为 TiKV 的磁盘满了而产生的 backoff。
+* `txnLockFast`：因为读数据时遇到了锁而产生的 backoff。
 
 ## 相关系统变量
 

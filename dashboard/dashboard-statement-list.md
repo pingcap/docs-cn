@@ -14,11 +14,9 @@ aliases: ['/docs-cn/dev/dashboard/dashboard-statement-list/']
 
 可以通过以下两种方法访问 SQL 语句分析页面：
 
-- 登录后，左侧导航条点击 "**SQL 语句分析**" (SQL Statements)。
+* 登录 TiDB Dashboard 后，在左侧导航栏中点击**SQL 语句分析** (SQL Statements)。
 
-  ![访问](/media/dashboard/dashboard-statement-access.png)
-
-- 在浏览器中访问 <http://127.0.0.1:2379/dashboard/#/statement>（将 `127.0.0.1:2379` 替换为实际 PD 实例地址和端口）。
+* 在浏览器中访问 <http://127.0.0.1:2379/dashboard/#/statement>（将 `127.0.0.1:2379` 替换为实际 PD 实例地址和端口）。
 
 SQL 语句分析页面所展示的所有数据都来自于 TiDB Statement 系统表，参见 [Statement Summary Tables](/statement-summary-tables.md) 文档了解该系统表的详细情况。
 

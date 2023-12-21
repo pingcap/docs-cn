@@ -69,7 +69,7 @@ TIUP_CLUSTER_DEBUG=enable tiup cluster list
 
 > **注意：**
 >
-> 自 TiSpark v3.3 起，默认关闭遥测功能，即 TiSpark 默认不收集使用情况信息，不将这些信息分享给 PingCAP 用于改善产品。
+> 从 TiSpark v3.0.3 开始，默认关闭遥测功能，即 TiSpark 默认不收集使用情况信息，不将这些信息分享给 PingCAP 用于改善产品。
 
 当 TiSpark 遥测功能开启时，Spark 在使用 TiSpark 时会发送会将使用情况信息分享给 PingCAP，包括（但不限于）：
 

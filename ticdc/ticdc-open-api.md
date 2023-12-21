@@ -1,9 +1,13 @@
 ---
-title: TiCDC OpenAPI
+title: TiCDC OpenAPI v1
 summary: 了解如何使用 OpenAPI 接口来管理集群状态和数据同步。
 ---
 
-# TiCDC OpenAPI
+# TiCDC OpenAPI v1
+
+> **注意：**
+>
+> TiCDC OpenAPI v1 将在未来版本中被删除。推荐使用 [TiCDC OpenAPI v2](/ticdc/ticdc-open-api-v2.md)。
 
 TiCDC 提供 OpenAPI 功能，你可以通过 OpenAPI 对 TiCDC 集群进行查询和运维操作。OpenAPI 的总体功能和 [`cdc cli` 工具](/ticdc/ticdc-manage-changefeed.md)类似。
 
@@ -146,7 +150,7 @@ curl -X GET http://127.0.0.1:8300/api/v1/health
 
 `dispatchers`：对于 MQ 类的 Sink，可以通过 dispatchers 配置 event 分发器，支持 default、ts、rowid、table 四种分发器，分发规则如下：
 
-- default：有多个唯一索引（包括主键）时按照 table 模式分发；只有一个唯一索引（或主键）按照 rowid 模式分发；如果开启了 old value 特性，按照 table 分发。
+- default：按照 table 分发。
 - ts：以行变更的 commitTs 做 Hash 计算并进行 event 分发。
 - rowid：以所选的 HandleKey 列名和列值做 Hash 计算并进行 event 分发。
 - table：以表的 schema 名和 table 名做 Hash 计算并进行 event 分发。

@@ -156,7 +156,7 @@ TiDB 版本：6.1.0
 
     支持通过 `enable-global-kill` 配置项（默认开启）设置全局 kill 开关。
 
-    在 TiDB v6.1.0 之前，当某个特定操作占用大量资源引发集群稳定性问题时，你需要先登陆到对应的 TiDB 节点，然后运行 `kill [TiDB] id` 命令终止对应的连接及操作。在 TiDB 节点多的情况下，这种方式使用不便，并且容易误操作。从 v6.1.0 起，当开启 `enable-global-kill` 配置项时，你可以在任意 TiDB 节点运行 kill 命令终止指定的连接及操作，而无需担心客户端和 TiDB 中间有代理时错误地终止其他查询或会话。目前 TiDB 暂时不支持用 Ctrl+C 终止查询或会话。
+    在 TiDB v6.1.0 之前，当某个特定操作占用大量资源引发集群稳定性问题时，你需要先登录到对应的 TiDB 节点，然后运行 `kill [TiDB] id` 命令终止对应的连接及操作。在 TiDB 节点多的情况下，这种方式使用不便，并且容易误操作。从 v6.1.0 起，当开启 `enable-global-kill` 配置项时，你可以在任意 TiDB 节点运行 kill 命令终止指定的连接及操作，而无需担心客户端和 TiDB 中间有代理时错误地终止其他查询或会话。目前 TiDB 暂时不支持用 Ctrl+C 终止查询或会话。
 
     [用户文档](/tidb-configuration-file.md#enable-global-kill-从-v610-版本开始引入)，[#8854](https://github.com/pingcap/tidb/issues/8854)
 

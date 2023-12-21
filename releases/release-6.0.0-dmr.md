@@ -113,7 +113,7 @@ v6.0.0 是 DMR 版本，版本名称为 6.0.0-DMR。
 
     TiDB 是原生计算存储分离架构，算子下推可以在存储层过滤无效数据，大大减少 TiDB 与 TiKV 的数据传输，提升查询效率。TiDB 在 v6.0.0 支持更多的表达式和 `BIT` 数据类型下推至 TiKV，以提升运算该类内容时的查询效率。
 
-    [用户文档](/functions-and-operators/expressions-pushed-down.md#加入黑名单)，[#30738](https://github.com/pingcap/tidb/issues/30738)
+    [用户文档](/functions-and-operators/expressions-pushed-down.md)，[#30738](https://github.com/pingcap/tidb/issues/30738)
 
 - 热点索引优化
 
@@ -264,7 +264,7 @@ v6.0.0 是 DMR 版本，版本名称为 6.0.0-DMR。
 
 - 企业级数据库管理平台 TiDB Enterprise Manager
 
-    TiDB Enterprise Manager 是一款以 TiDB 数据库为核心的企业级数据库管理平台，帮助用户在私有部署 (on-premises) 或公有云环境中管理 TiDB 集群。
+    TiDB Enterprise Manager 是一款以 TiDB 数据库为核心的企业级数据库管理平台，帮助用户在本地部署环境或公有云环境中管理 TiDB 集群。
 
     TiDB Enterprise Manager 不仅为 TiDB 集群提供全生命周期的可视化管理，也同时一站式提供 TiDB 数据库的参数管理、数据库版本升级、克隆集群、主备集群切换、数据导入导出、数据同步、数据备份恢复服务，能有效提高 TiDB 集群运维效率，降低企业运维成本。
 

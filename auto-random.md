@@ -12,6 +12,8 @@ aliases: ['/docs-cn/dev/auto-random/','/docs-cn/dev/reference/sql/attributes/aut
 
 关于如何在高并发写入场景下调优 TiDB，请参阅 [TiDB 高并发写入场景最佳实践](/best-practices/high-concurrency-best-practices.md)。
 
+在 [`CREATE TABLE`](/sql-statements/sql-statement-create-table.md) 语句中的 `AUTO_RANDOM_BASE` 参数，也可以用来指定 `AUTO_RANDOM` 自增部分的初始值，该参数可以被认为属于内部接口的一部分，对于用户而言请忽略。
+
 ## 基本概念
 
 `AUTO_RANDOM` 是应用在 `BIGINT` 类型列的属性，用于列值的自动分配。其自动分配的值满足**随机性**和**唯一性**。
@@ -103,6 +105,24 @@ TiDB 自动分配的 `AUTO_RANDOM(S, R)` 列值共有 64 位：
 `AUTO RANDOM` 列隐式分配的值会影响 `last_insert_id()`。可以使用 `SELECT last_insert_id()` 获取上一次 TiDB 隐式分配的 ID。
 
 要查看某张含有 `AUTO_RANDOM` 属性的表的分片位数量，除了 `SHOW CREATE TABLE` 以外，还可以在系统表 `INFORMATION_SCHEMA.TABLES` 中 `TIDB_ROW_ID_SHARDING_INFO` 一列中查到模式为 `PK_AUTO_RANDOM_BITS=x` 的值，其中 `x` 为分片位的数量。
+
+创建完一张含有 `AUTO_RANDOM` 属性的表后，可以使用 `SHOW WARNINGS` 查看当前表可支持的最大隐式分配的次数：
+
+```sql
+CREATE TABLE t (a BIGINT AUTO_RANDOM, b VARCHAR(255), PRIMARY KEY (a));
+SHOW WARNINGS;
+```
+
+输出结果如下：
+
+```sql
++-------+------+---------------------------------------------------------+
+| Level | Code | Message                                                 |
++-------+------+---------------------------------------------------------+
+| Note  | 1105 | Available implicit allocation times: 288230376151711743 |
++-------+------+---------------------------------------------------------+
+1 row in set (0.00 sec)
+```
 
 ## 使用限制
 

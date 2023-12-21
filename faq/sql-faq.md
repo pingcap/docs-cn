@@ -201,24 +201,23 @@ TiDB 中的 `SHOW PROCESSLIST` 与 MySQL 中的 `SHOW PROCESSLIST` 显示内容�
 
 TiDB 支持改变[全局](/system-variables.md#tidb_force_priority)或单个语句的优先级。优先级包括：
 
-- HIGH_PRIORITY：该语句为高优先级语句，TiDB 在执行阶段会优先处理这条语句
-- LOW_PRIORITY：该语句为低优先级语句，TiDB 在执行阶段会降低这条语句的优先级
+- `HIGH_PRIORITY`：该语句为高优先级语句，TiDB 在执行阶段会优先处理这条语句
+- `LOW_PRIORITY`：该语句为低优先级语句，TiDB 在执行阶段会降低这条语句的优先级
+- `DELAYED`：该语句为正常优先级语句，TiDB 不强制改变这条语句的优先级，与 `tidb_force_priority` 设置为 `NO_PRIORITY` 相同
 
 以上两种参数可以结合 TiDB 的 DML 语言进行使用，使用方法举例如下：
 
 1. 通过在数据库中写 SQL 的方式来调整优先级：
 
-    {{< copyable "sql" >}}
-
     ```sql
-    select HIGH_PRIORITY | LOW_PRIORITY count(*) from table_name;
-    insert HIGH_PRIORITY | LOW_PRIORITY into table_name insert_values;
-    delete HIGH_PRIORITY | LOW_PRIORITY from table_name;
-    update HIGH_PRIORITY | LOW_PRIORITY table_reference set assignment_list where where_condition;
-    replace HIGH_PRIORITY | LOW_PRIORITY into table_name;
+    SELECT HIGH_PRIORITY | LOW_PRIORITY | DELAYED COUNT(*) FROM table_name;
+    INSERT HIGH_PRIORITY | LOW_PRIORITY | DELAYED INTO table_name insert_values;
+    DELETE HIGH_PRIORITY | LOW_PRIORITY | DELAYED FROM table_name;
+    UPDATE HIGH_PRIORITY | LOW_PRIORITY | DELAYED table_reference SET assignment_list WHERE where_condition;
+    REPLACE HIGH_PRIORITY | LOW_PRIORITY | DELAYED INTO table_name;
     ```
 
-2. 全表扫会自动调整为低优先级，analyze 也是默认低优先级。
+2. 全表扫会自动调整为低优先级，[`ANALYZE`](/sql-statements/sql-statement-analyze-table.md) 也是默认低优先级。
 
 ## 在 TiDB 中 auto analyze 的触发策略是怎样的？
 
@@ -369,7 +368,7 @@ RUNNING_JOBS: ID:121, Type:add index, State:running, SchemaState:write reorganiz
 
 ### TiDB 是否支持基于 COST 的优化 (CBO)？如果支持，实现到什么程度？
 
-是的，TiDB 基于成本的优化器 (CBO) 对代价模型、统计信息进行持续优化。除此之外，TiDB 还支持 hash join、soft-merge join 等 join 算法。
+是的，TiDB 基于成本的优化器 (CBO) 对代价模型、统计信息进行持续优化。除此之外，TiDB 还支持 hash join、sort-merge join 等 join 算法。
 
 ### 如何确定某张表是否需要做 analyze ？
 

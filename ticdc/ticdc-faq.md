@@ -47,10 +47,7 @@ cdc cli changefeed list --server=http://127.0.0.1:8300
 ```
 
 * `checkpoint`：即为 TiCDC 已经将该时间点前的数据同步到了下游。
-* `state` 为该同步任务的状态：
-    * `normal`：正常同步。
-    * `stopped`：停止同步（手动暂停或出错）。
-    * `removed`：已删除任务。
+* `state` 为该同步任务的状态，状态的值和含义参考 [TiCDC 同步任务状态](/ticdc/ticdc-changefeed-overview.md#changefeed-状态流转)。
 
 > **注意：**
 >
@@ -101,7 +98,6 @@ TiCDC 为 service GC safepoint 设置的存活有效期为 24 小时，即 TiCDC
 在使用 `cdc cli changefeed create` 命令时如果不指定 `--config` 参数，TiCDC 会按照以下默认行为创建同步任务：
 
 * 同步所有的非系统表
-* 开启 old value 功能
 * 只同步包含[有效索引](/ticdc/ticdc-overview.md#最佳实践)的表
 
 ## TiCDC 是否支持输出 Canal 格式的变更数据？
@@ -172,8 +168,6 @@ Open protocol 的输出中 type = 6 即为 null，比如：
 
 ## 如何区分 TiCDC Open Protocol 中的 Row Changed Event 是 `INSERT` 事件还是 `UPDATE` 事件？
 
-如果没有开启 Old Value 功能，你无法区分 TiCDC Open Protocol 中的 Row Changed Event 是 `INSERT` 事件还是 `UPDATE` 事件。如果开启了 Old Value 功能，则可以通过事件中的字段判断事件类型：
-
 * 如果同时存在 `"p"` 和 `"u"` 字段为 `UPDATE` 事件
 * 如果只存在 `"u"` 字段则为 `INSERT` 事件
 * 如果只存在 `"d"` 字段则为 `DELETE` 事件
@@ -202,6 +196,19 @@ TiCDC 对大事务（大小超过 5 GB）提供部分支持，根据场景不同
 4. 建立一个新的 changefeed，从 `BackupTS` 开始同步任务。
 5. 删除旧的 changefeed。
 
+## TiCDC 是否会将有损 DDL 产生的数据变更同步到下游？
+
+有损 DDL 是指在 TiDB 中执行可能会导致数据改变的 DDL。一些常见的有损 DDL 操作包括：
+
+- 修改列的类型，例如：INT -> VARCHAR
+- 修改列的长度，例如：VARCHAR(20) -> VARCHAR(10)
+- 修改列的精度，例如：DECIMAL(10, 3) -> DECIMAL(10, 2)
+- 修改列的符号（有符号数/无符号数），例如：INT UNSIGNED -> INT SIGNED
+
+在 TiDB v7.1.0 之前，TiCDC 会将一条新旧数据相同的 DML 事件同步到下游。当下游是 MySQL 时，这些 DML 事件不会产生任何数据变更，只有下游接收并执行该 DDL 语句后，数据才会发生变更。但是当下游是 Kafka 或者云存储时，TiCDC 会写入一条无用的数据到下游。
+
+从 TiDB v7.1.0 开始，TiCDC 会过滤掉这些无用的 DML 事件，不再将它们同步到下游。
+
 ## 同步 DDL 到下游 MySQL 5.7 时为什么时间类型字段默认值不一致？
 
 比如上游 TiDB 的建表语句为 `create table test (id int primary key, ts timestamp)`，TiCDC 同步该语句到下游 MySQL 5.7，MySQL 使用默认配置，同步得到的表结构如下所示，timestamp 字段默认值会变成 `CURRENT_TIMESTAMP`：
@@ -222,7 +229,7 @@ mysql root@127.0.0.1:test> show create table test;
 
 产生表结构不一致的原因是 `explicit_defaults_for_timestamp` 的[默认值在 TiDB 和 MySQL 5.7 不同](/mysql-compatibility.md#默认设置)。从 TiCDC v5.0.1/v4.0.13 版本开始，同步到 MySQL 会自动设置 session 变量 `explicit_defaults_for_timestamp = ON`，保证同步时间类型时上下游行为一致。对于 v5.0.1/v4.0.13 以前的版本，同步时间类型时需要注意 `explicit_defaults_for_timestamp` 默认值不同带来的兼容性问题。
 
-## 使用 TiCDC 创建同步任务时将 `enable-old-value` 设置为 `true` 后，为什么上游的 `INSERT`/`UPDATE` 语句经 TiCDC 同步到下游后变为了 `REPLACE INTO`？
+## 使用 TiCDC 创建同步任务时将 `safe-mode` 设置为 `true` 后，为什么上游的 `INSERT`/`UPDATE` 语句经 TiCDC 同步到下游后变为了 `REPLACE INTO`？
 
 TiCDC 提供至少一次的数据同步保证，当下游有重复数据时，会引起写冲突。为了避免该问题，TiCDC 会将 `INSERT` 和 `UPDATE` 语句转成 `REPLACE INTO` 语句。该行为由 `safe-mode` 参数来控制。
 
@@ -258,11 +265,15 @@ TiCDC 需要磁盘是为了缓冲上游写入高峰时下游消费不及时堆�
 
 ## 在两个异地 TiDB 集群之间同步数据，如何部署 TiCDC？
 
-建议将 TiCDC 部署在下游 TiDB 集群。这是因为，如果上下游网络延迟较大，例如超过 100 ms 时，由于 MySQL 传输协议的原因，TiCDC 向下游执行 SQL 的延迟会急剧增加，导致系统的吞吐下降。部署在下游能够极大缓解该问题。
+对于 v6.5.2 之前的版本，建议将 TiCDC 部署在下游 TiDB 集群。这是因为，如果上下游网络延迟较大，例如超过 100 ms 时，由于 MySQL 传输协议的原因，TiCDC 向下游执行 SQL 的延迟会急剧增加，导致系统的吞吐下降。部署在下游能够极大缓解该问题。经过优化后，v6.5.2 及之后的版本建议将 TiCDC 部署在上游集群。
 
 ## 如何理解 DML 和 DDL 语句之间的执行顺序？
 
-按照 DML -> DDL -> DML 的顺序执行。在数据同步过程中，为了确保 DML 事件在下游执行时有对应正确的表结构，需要协调 DDL 和 DML 的执行顺序。目前 TiCDC 采用了简洁的方式处理该问题，会将 DDL ts 之前的 DML 都同步到下游之后，再同步 DDL。
+目前，TiCDC 采用了以下执行顺序：
+
+1. TiCDC 阻塞受 DDL 影响的表的同步进度，直到 DDL CommiTs 的时间点，以确保在 DDL CommiTs 之前执行的 DML 先成功同步到下游。
+2. TiCDC 继续同步 DDL。当存在多个 DDL 时，TiCDC 是以串行的方式进行同步的。
+3. 当 DDL 在下游执行完成之后，TiCDC 继续同步 DDL CommiTs 之后执行的 DML。
 
 ## 如何对比上下游数据的一致性？
 
@@ -270,8 +281,43 @@ TiCDC 需要磁盘是为了缓冲上游写入高峰时下游消费不及时堆�
 
 ## 单表数据同步只能在一个 TiCDC 节点上运行，TiCDC 是否考虑使用多个节点同步多表数据？
 
-目前正在开发中，未来 TiCDC 会支持按照 TiKV Region 粒度来同步数据变更日志，实现处理能力上的可扩展性。
+从 v7.1.0 起，TiCDC 支持 MQ sink 按照 TiKV Region 粒度来同步数据变更日志，实现处理能力上的可扩展性，使得 TiCDC 能够同步 Region 数量庞大的单表。如需开启，请在 [TiCDC 配置文件](/ticdc/ticdc-changefeed-config.md)中配置以下参数：
+
+```toml
+[scheduler]
+enable-table-across-nodes = true
+```
 
 ## 上游有运行时间比较长的未提交事务，TiCDC 同步是否会被卡住？
 
 TiDB 有事务超时的机制，当事务运行超过 [`max-txn-ttl`](/tidb-configuration-file.md#max-txn-ttl) 后，会被 TiDB 强制回滚。TiCDC 遇到未提交的事务，会等待其提交后再继续同步其数据，因此会出现同步延迟。
+
+## 为什么通过 TiDB Operator 部署的 TiCDC 集群无法使用 cdc cli 命令进行操作？
+
+因为通过 TiDB Operator 部署的 TiCDC 集群的默认端口号为 8301, 而 cdc cli 命令默认连接的 cdc 服务器的端口号是 8300。在使用 cdc cli 操作 TiCDC 集群时，你需要显式地指定 `--server` 参数，如下：
+
+```shell
+./cdc cli changefeed list --server "127.0.0.1:8301"
+[
+  {
+    "id": "4k-table",
+    "namespace": "default",
+    "summary": {
+      "state": "stopped",
+      "tso": 441832628003799353,
+      "checkpoint": "2023-05-30 22:41:57.910",
+      "error": null
+    }
+  },
+  {
+    "id": "big-table",
+    "namespace": "default",
+    "summary": {
+      "state": "normal",
+      "tso": 441872834546892882,
+      "checkpoint": "2023-06-01 17:18:13.700",
+      "error": null
+    }
+  }
+]
+```

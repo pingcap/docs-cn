@@ -21,9 +21,10 @@ cdc cli changefeed create \
 ```shell
 Create changefeed successfully!
 ID: simple-replication-task
-Info: {"sink-uri":"mysql://root:123456@127.0.0.1:3306/","opts":{},"create-time":"2020-03-12T22:04:08.103600025+08:00","start-ts":415241823337054209,"target-ts":0,"admin-job-type":0,"sort-engine":"unified","sort-dir":".","config":{"case-sensitive":true,"filter":{"rules":["*.*"],"ignore-txn-start-ts":null,"ddl-allow-list":null},"mounter":{"worker-num":16},"sink":{"dispatchers":null},"scheduler":{"type":"table-number","polling-time":-1}},"state":"normal","history":null,"error":null}
+Info: {"sink-uri":"mysql://root:123456@127.0.0.1:3306/","opts":{},"create-time":"2023-11-28T22:04:08.103600025+08:00","start-ts":415241823337054209,"target-ts":0,"admin-job-type":0,"sort-engine":"unified","sort-dir":".","config":{"case-sensitive":false,"filter":{"rules":["*.*"],"ignore-txn-start-ts":null,"ddl-allow-list":null},"mounter":{"worker-num":16},"sink":{"dispatchers":null},"scheduler":{"type":"table-number","polling-time":-1}},"state":"normal","history":null,"error":null}
 ```
 
+- `--server`：TiCDC 集群中任意一个 TiCDC 服务器的地址。
 - `--changefeed-id`：同步任务的 ID，格式需要符合正则表达式 `^[a-zA-Z0-9]+(\-[a-zA-Z0-9]+)*$`。如果不指定该 ID，TiCDC 会自动生成一个 UUID（version 4 格式）作为 ID。
 - `--sink-uri`：同步任务下游的地址，详见 [Sink URI 配置 `mysql`/`tidb`](#sink-uri-配置-mysqltidb)。
 - `--start-ts`：指定 changefeed 的开始 TSO。TiCDC 集群将从这个 TSO 开始拉取数据。默认为当前时间。
@@ -57,11 +58,12 @@ URI 中可配置的参数如下：
 | `127.0.0.1`    | 下游数据库的 IP。                                |
 | `3306`         | 下游数据的连接端口。                                 |
 | `worker-count` | 向下游执行 SQL 的并发度（可选，默认值为 `16`）。       |
+| `cache-prep-stmts` | 向下游执行 SQL 时是否使用 prepared statement 并且开启客户端的 prepared statement 缓存（可选，默认值为 `true`）。 |
 | `max-txn-row`  | 向下游执行 SQL 的 batch 大小（可选，默认值为 `256`）。 |
 | `ssl-ca`       | 连接下游 MySQL 实例所需的 CA 证书文件路径（可选）。 |
 | `ssl-cert`     | 连接下游 MySQL 实例所需的证书文件路径（可选）。 |
 | `ssl-key`      | 连接下游 MySQL 实例所需的证书密钥文件路径（可选）。 |
-| `time-zone`    | 连接下游 MySQL 实例时使用的时区名称，从 v4.0.8 开始生效。（可选。如果不指定该参数，使用 TiCDC 服务进程的时区；如果指定该参数但使用空值，则表示连接 MySQL 时不指定时区，使用下游默认时区）。 |
+| `time-zone`    | 连接下游 MySQL 实例时使用的时区名称，从 v4.0.8 开始生效。（可选。如果不指定该参数，使用 TiCDC 服务进程的时区；如果指定该参数但使用空值，例如：`time-zone=""`，则表示连接 MySQL 时不指定时区，使用下游默认时区）。 |
 | `transaction-atomicity`      | 指定事务的原子性级别（可选，默认值为 `none`）。当该值为 `table` 时 TiCDC 保证单表事务的原子性，当该值为 `none` 时 TiCDC 会拆分单表事务。 |
 
 若需要对 Sink URI 中的数据库密码使用 Base64 进行编码，可以参考如下命令：
@@ -78,7 +80,7 @@ MTIzNDU2
 
 > **注意：**
 >
-> 当 Sink URI 中包含特殊字符时，如 `! * ' ( ) ; : @ & = + $ , / ? % # [ ]`，需要对 URI 特殊字符进行转义处理。你可以使用 [URI Encoder](https://meyerweb.com/eric/tools/dencoder/) 工具对 URI 进行转义。
+> 当 Sink URI 中包含特殊字符时，如 `! * ' ( ) ; : @ & = + $ , / ? % # [ ]`，需要对 URI 特殊字符进行转义处理。你可以使用 [URI Encoder](https://www.urlencoder.org/) 工具对 URI 进行转义。
 
 ## 灾难场景的最终一致性复制
 
