@@ -13,7 +13,7 @@ tiup cluster upgrade <cluster-name> <version> [flags]
 ```
 
 - `<cluster-name>` 为要操作的集群名字，如果忘记集群名字可通过[集群列表](/tiup/tiup-component-cluster-list.md)查看。
-- `<version>` 为要升级到的目标版本，例如 `v7.1.2`。目前仅允许升级到比当前集群更高的版本，不允许升级到比当前集群更低的版本，即不允许降级。同时也不允许升级成 nightly 版本。
+- `<version>` 为要升级到的目标版本，例如 `v7.1.3`。目前仅允许升级到比当前集群更高的版本，不允许升级到比当前集群更低的版本，即不允许降级。同时也不允许升级成 nightly 版本。
 
 ## 选项
 
@@ -24,7 +24,7 @@ tiup cluster upgrade <cluster-name> <version> [flags]
 - 该选项默认关闭，默认值为 `false`。在命令中添加该选项，并传入 `true` 值或不传值，均可开启此功能。
 
 > **注意：**
-> 
+>
 > 对正在提供服务的集群强制升级可能导致集群服务不可用。对于未启动的集群，升级成功后会自动启动集群。
 
 ### --transfer-timeout（uint，默认 600）
