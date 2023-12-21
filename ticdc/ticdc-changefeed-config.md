@@ -42,7 +42,7 @@ Info: {"upstream_id":7178706266519722477,"namespace":"default","id":"simple-repl
 # memory-quota = 1073741824
 
 # 指定配置文件中涉及的库名、表名是否为大小写敏感
-# 该配置会同时影响 filter 和 sink 相关配置。自 v7.5.0 起，默认值由 true 改为 false
+# 该配置会同时影响 filter 和 sink 相关配置。自 v6.5.6、v7.1.3 和 v7.5.0 起，默认值由 true 改为 false
 case-sensitive = false
 
 # 是否开启 Syncpoint 功能，从 v6.3.0 开始支持，该功能默认关闭。
