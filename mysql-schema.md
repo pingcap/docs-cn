@@ -86,13 +86,13 @@ aliases: ['/docs-cn/dev/system-tables/system-table-overview/','/docs-cn/dev/refe
 * `tidb_ddl_jobs` TiDB 内部存放的正在执行 DDL 的元数据，用于执行 DDL
 * `tidb_ddl_reorg` TiDB 内部存放的正在执行的物理 DDL（例如加索引）的元数据，用于执行物理 DDL
 
-## 分布式框架相关系统表
+## 分布式执行框架相关系统表
 
-* `dist_framework_meta` 存放后台任务调度的元信息
-* `tidb_global_task` 存放当前正在执行的分布式任务元信息
-* `tidb_global_task_history` 存放历史的分布式任务元信息
-* `tidb_background_subtask` 存放当前正在执行的分布式任务的子任务元信息
-* `tidb_background_subtask_history` 存放历史的分布式任务的子任务元信息
+* `dist_framework_meta` 存放分布式执行框架任务调度的元信息
+* `tidb_global_task` 存放当前正在执行的分布式执行框架任务元信息
+* `tidb_global_task_history` 存放历史的分布式执行框架任务元信息
+* `tidb_background_subtask` 存放当前正在执行的分布式执行框架任务的子任务元信息
+* `tidb_background_subtask_history` 存放历史的分布式执行框架任务的子任务元信息
 
 ## 其它系统表
 
