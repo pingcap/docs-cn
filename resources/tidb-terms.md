@@ -40,7 +40,7 @@ summary: 本文档介绍 TiDB 中英文术语表。
 | bit | 位 |  |  |
 | Bloom filter | 布隆过滤器 |  | <https://en.wikipedia.org/wiki/Bloom_filter> |
 | boolean operation | 布尔运算 |  |  |
-| bootstrap | 启动\引导程序 |  |  |
+| bootstrap | 启动/引导程序 |  |  |
 | breakpoint | 断点 |  |  |
 | breakpoint resume | 断点续传 |  |  |
 | business continuity | 业务可持续性 |  |  |
@@ -283,7 +283,7 @@ summary: 本文档介绍 TiDB 中英文术语表。
 | multi-tenancy | 多租户技术 |  |  |
 | mutation | 变异 |  | <http://www.orafaq.com/wiki/Mutating_table>、<https://blog.csdn.net/zhpsam109/article/details/97335> |
 | mutex | 互斥锁 | Mutual exclusion | <https://zh.wikipedia.org/wiki/%E4%BA%92%E6%96%A5%E9%94%81> |
-| MVCC: multi-version concurrency control | 多版本并发控制 |  |  |
+| MVCC (Multi-Version Concurrency Control) | 多版本并发控制 |  |  |
 | MySQL syntax | MySQL 语法 |  |  |
 | namespace | 命名空间 |  |  |
 | native code | 原生码 |  |  |
@@ -293,8 +293,8 @@ summary: 本文档介绍 TiDB 中英文术语表。
 | null | 空值 |  |  |
 | object abstraction | 对象抽象 |  |  |
 | offset | 偏移 |  |  |
-| OLAP: Online Analytical Processing | 在线分析处理 |  |  |
-| OLTP: Online Transactional Processing | 在线事务处理 |  |  |
+| OLAP (Online Analytical Processing) | 在线分析处理 |  |  |
+| OLTP (Online Transactional Processing) | 在线事务处理 |  |  |
 | one-to-many relationship | 一对多关系 |  |  |
 | open addressing hashing | 开地址法 |  |  |
 | open source | 开源 | 名词 (noun) |  |
@@ -383,7 +383,7 @@ summary: 本文档介绍 TiDB 中英文术语表。
 | rough set | 粗糙集 |  |  |
 | routine | 例程 |  | <https://blog.csdn.net/scyatcs/article/details/77452336> |
 | row store | 行存 |  |  |
-| RPC: remote procedure call | 远程过程调用 |  | <https://en.wikipedia.org/wiki/Remote_procedure_call> |
+| Remote Procedure Call (RPC) | 远程过程调用 |  | <https://en.wikipedia.org/wiki/Remote_procedure_call> |
 | runtime | 运行时 |  |  |
 | Scalar Function | 标量函数 |  |  |
 | scale | 扩展 |  |  |
@@ -469,12 +469,12 @@ summary: 本文档介绍 TiDB 中英文术语表。
 | tutorial | 教程 |  |  |
 | type | 类型 |  |  |
 | type infer | 类型推导 |  |  |
-| unbind | 解除（对服务，软件的）依赖，绑定，关联 |  |  |
+| unbind | 解除（对服务、软件的）依赖，绑定，关联 |  |  |
 | underlying table | 底层表 |  | <https://dev.mysql.com/doc/refman/8.0/en/view-updatability.html> |
 | unidirectional data flow | 单向数据流 |  |  |
 | union | 联合体 |  |  |
 | unsigned integer | 无符号整数 |  |  |
-| update | 修改（如：行） |  |  |
+| update | 修改（如：修改行） |  |  |
 | user identification | 用户标识 |  |  |
 | user privilege | 用户权限 |  |  |
 | UUID (Universally Unique Identifier) | 通用唯一识别码 |  |  |
