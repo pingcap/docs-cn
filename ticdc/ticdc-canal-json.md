@@ -304,7 +304,7 @@ TiCDC 对 Canal-JSON 数据格式的实现，包括 `Update` 类型事件和 `my
 
 ### 兼容 Canal 官方实现
 
-自 v6.5.6 开始，TiCDC Canal-JSON 支持兼容 Canal 官方输出的内容格式。在创建 changefeed 时，你可以在 `sink-uri` 中设置 `content-compatible=true` 以开启兼容模式。在该模式下，TiCDC 输出兼容官方实现的 Canal-JSON 格式数据。具体改动包括：
+自 v6.5.6 和 v7.1.3 开始，TiCDC Canal-JSON 支持兼容 Canal 官方输出的内容格式。在创建 changefeed 时，你可以在 `sink-uri` 中设置 `content-compatible=true` 以开启兼容模式。在该模式下，TiCDC 输出兼容官方实现的 Canal-JSON 格式数据。具体改动包括：
 
 * `mysqlType` 字段包含每个类型的具体参数。
 * `Update` 类型事件只输出被修改的列数据。
