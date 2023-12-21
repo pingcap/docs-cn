@@ -3,6 +3,8 @@ title: TiDB 中英术语表
 summary: 本文档介绍 TiDB 中英文术语表。
 ---
 
+本文提供了 TiDB 中英文术语对照表。
+
 | English | 中文 | 备注 | 参考 |
 |:---|:---|:---|:---|
 | 2-phase commit (2PC) | 2 阶段提交 |  |  |
@@ -230,7 +232,7 @@ summary: 本文档介绍 TiDB 中英文术语表。
 | kernel version | 内核版本 |  |  |
 | key-value pair(s) / KV pair(s) | 键值对 |  |  |
 | keyword | 关键字 |  |  |
-| Kubernetes (K8s) | <https://kubernetes.io/docs/concepts/overview/what-is-kubernetes/#what-does-kubernetes-mean-k8s> |
+| Kubernetes (K8s) | Kubernetes (K8s) |  | <https://kubernetes.io/docs/concepts/overview/what-is-kubernetes/#what-does-kubernetes-mean-k8s> |
 | latch contention | 锁竞争 |  |  |
 | latency | 延时 |  |  |
 | later version | 以上版本 |  |  |
