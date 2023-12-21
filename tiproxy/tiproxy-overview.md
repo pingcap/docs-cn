@@ -1,6 +1,6 @@
 ---
 title: TiProxy 简介
-aliases: ['/docs-cn/dev/tiproxy/tiproxy-overview/']
+summary: 介绍 TiProxy 的主要功能、安装与使用方法。
 ---
 
 # TiProxy 简介
@@ -44,7 +44,7 @@ TiProxy 适用于以下场景：
 - 频繁扩缩容：应用的负载可能周期性地变化，为了节省成本，你可以将 TiDB 部署到云上，并根据负载自动地扩缩容 TiDB server。然而，缩容可能导致客户端断连，而扩容不能及时地实现负载均衡。通过迁移连接功能，TiProxy 能保持客户端连接并实现负载均衡。
 
 TiProxy 不适用于以下场景：
-- 对性能敏感：TiProxy 的性能低于 HAProxy 等负载均衡器，因此使用 TiProxy 会降低 QPS。请参阅 [TiProxy 性能测试](/tiproxy/tiproxy-performance-test.md)。
+- 对性能敏感：TiProxy 的性能低于 HAProxy 等负载均衡器，因此使用 TiProxy 会降低 QPS。请参阅 [TiProxy 性能测试报告](/tiproxy/tiproxy-performance-test.md)。
 - 对成本敏感：如果 TiDB 集群使用了硬件负载均衡、虚拟 IP 或 Kubernetes 自带的负载均衡器，此时增加 TiProxy 组件会增加成本。另外，如果在云上跨可用区部署 TiDB 集群，增加 TiProxy 组件也会增加跨可用区的流量费用。
 - TiDB server 的故障转移：只有当 TiDB server 在计划内的下线或重启操作时，TiProxy 才能保持连接。如果 TiDB server 意外下线，则连接仍然会断开。
 
@@ -79,7 +79,7 @@ server_configs:
 为了保证 TiProxy 的高可用，建议部署至少 2 台 TiProxy 实例。可以通过硬件负载均衡或配置虚拟 IP 的方式，使流量分发到各 TiProxy 实例上。
 
 选择 TiProxy 的机型和实例数时需要考虑以下因素：
-- 要考虑负载类型和最大 QPS，请参阅 [TiProxy 性能测试](/tiproxy/tiproxy-performance-test.md)。
+- 要考虑负载类型和最大 QPS，请参阅 [TiProxy 性能测试报告](/tiproxy/tiproxy-performance-test.md)。
 - 由于 TiProxy 的实例数比 TiDB server 少，TiProxy 的网络带宽相比 TiDB server 更可能成为瓶颈，因此还需要考虑网络带宽。例如，AWS 相同系列的 EC2 的基准网络带宽与 CPU 核数是不成正比的，请参阅[计算实例网络性能](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/compute-optimized-instances.html#compute-network-performance)。这种情况下，当网络带宽成为瓶颈时，把 TiProxy 实例拆分为更多更小规格的实例能提高 QPS。
 
 以下配置项需要配置：

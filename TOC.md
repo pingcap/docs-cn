@@ -205,6 +205,7 @@
     - [TiDB 集群问题导图](/tidb-troubleshooting-map.md)
     - [TiDB 集群常见问题](/troubleshoot-tidb-cluster.md)
     - [TiFlash 常见问题](/tiflash/troubleshoot-tiflash.md)
+    - [TiProxy 常见问题](/tiproxy/troubleshoot-tiproxy.md)
   - 故障场景
     - 慢查询
       - [定位慢查询](/identify-slow-queries.md)
