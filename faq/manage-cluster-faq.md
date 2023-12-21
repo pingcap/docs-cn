@@ -84,10 +84,6 @@ TiDB 目前社区非常活跃，同时，我们还在不断的优化和修改 BU
 - 通过 `select tidb_version()` 进行查看
 - 通过执行 `tidb-server -V` 进行查看
 
-### 有没有图形化部署 TiDB 的工具？
-
-有。你可以使用 [TiUniManager](/tiunimanager/tiunimanager-overview.md)，它是一款为分布式数据库 TiDB 打造的管控平台软件和数据库运维管理平台，为 TiDB 提供数据库集群管理功能、主机管理功能和平台管理功能，涵盖了数据库运维人员 (DBA) 在 TiDB 上进行的常用运维操作，帮助 DBA 对 TiDB 进行自动化、自助化和可视化管理。
-
 ### 如何扩容 TiDB 集群？
 
 可以在不影响线上服务的情况下，对 TiDB 集群进行扩容。

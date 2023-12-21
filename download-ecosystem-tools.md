@@ -4,7 +4,7 @@ title: TiDB 工具下载
 
 # TiDB 工具下载
 
-本文介绍如何下载 TiDB 工具包以及 [TiUniManager](/tiunimanager/tiunimanager-overview.md)。关于 TiDB 工具包的内容，请查看 [TiDB 离线包](/binary-package.md)。
+本文介绍如何下载 TiDB 工具包。关于 TiDB 工具包的内容，请查看 [TiDB 离线包](/binary-package.md)。
 
 ## TiDB 工具包下载
 
@@ -50,16 +50,3 @@ TiDB 工具包中包含了一些常用的 TiDB 工具，例如数据导出工具
 > **注意：**
 >
 > 以上离线包名称中，`{version}` 取决于离线包中工具的版本号，`{arch}` 取决于离线包对应的架构（amd64 或 arm64）。
-
-## TiUniManager 下载
-
-[TiUniManager](/tiunimanager/tiunimanager-overview.md) 是为 TiDB 打造的管控平台软件和数据库运维管理平台。使用下表中的链接下载 TiUniManager：
-
-| 安装包 | 操作系统 | 架构 | SHA256 校验和 |
-|:---|:---|:---|:---|
-| `https://download.pingcap.org/em-enterprise-server-{version}-linux-amd64.tar.gz` | Linux | amd64 | `https://download.pingcap.org/em-enterprise-server-{version}-linux-amd64.tar.gz.sha256` |
-
-> **注意：**
->
-> - 下载链接中的 `{version}` 为 TiUniManager 的版本号。例如，`v1.0.2` 版本的下载链接为 `https://download.pingcap.org/em-enterprise-server-v1.0.2-linux-amd64.tar.gz`。
-> - TiUniManager 从 v1.0.2 起开放源代码，因此下载链接中 `{version}` 支持的最低版本为 `v1.0.2`。你不能将 `{version}` 替换为 `v1.0.0` 或 `v1.0.1`。
