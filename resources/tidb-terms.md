@@ -435,7 +435,7 @@ summary: 本文档介绍 TiDB 术语表
 | Syntactic sugar | 语法糖 | In computer science, syntactic sugar is syntax within a programming language that is designed to make things easier to read or to express. It makes the language "sweeter" for human use: things can be expressed more clearly, more concisely, or in an alternative style that some may prefer. |  |
 | syntax | 语法 |  |  |
 | system variable | 系统变量 |  |  |
-| THP (Transparent Huge Pages) | 透明大页 | a Linux memory management system | https://docs.pingcap.com/zh/tidb/dev/tune-operating-system#%E5%86%85%E5%AD%98%E9%80%8F%E6%98%8E%E5%A4%A7%E9%A1%B5 |
+| THP (Transparent Huge Pages) | 透明大页 | A Linux memory management system | https://docs.pingcap.com/zh/tidb/dev/tune-operating-system#%E5%86%85%E5%AD%98%E9%80%8F%E6%98%8E%E5%A4%A7%E9%A1%B5 |
 | table schema | 表结构 |  |  |
 | target machine | （部署）目标机器 |  | http://docs.ansible.com/ansible/latest/intro_inventory.html |
 | technology stack | 技术栈 |  |  |
@@ -454,7 +454,7 @@ summary: 本文档介绍 TiDB 术语表
 | timestamp | 时间戳 |  |  |
 | timestamp allocator | 时间戳分配器 |  |  |
 | Timestamp Oracle | TSO |  |  |
-| token bucket | 令牌桶 | an algorithm used in packet switched computer networks and telecommunications networks | https://en.wikipedia.org/wiki/Token_bucket |
+| token bucket | 令牌桶 | An algorithm used in packet switched computer networks and telecommunications networks | https://en.wikipedia.org/wiki/Token_bucket |
 | tolerate | 容忍 |  |  |
 | topology | 拓扑结构 |  |  |
 | traffic flow control | 流控/流量控制 |  |  |
