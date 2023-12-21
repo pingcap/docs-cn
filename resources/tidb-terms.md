@@ -61,8 +61,8 @@ summary: 本文档介绍 TiDB 术语表
 | coarse-grained | 粗粒度的 |  |  |
 | code comment | 代码注释 |  |  |
 | code instrumentation | 代码插桩 |  | <https://www.itprotoday.com/development-techniques-and-management/code-instrumentation-techniques-depth-coverage-tracing> |
-| collation | 排序/排序规则 |  | <https://github.com/pingcap/docs-cn/blob/master/op-guide/tune-tikv.md> |
-| column family (CF) | 列族 |  | <https://github.com/pingcap/docs-cn/blob/master/op-guide/tune-tikv.md> |
+| collation | 排序/排序规则 |  | |
+| column family (CF) | 列族 |  |  |
 | column pruning | 列裁剪 |  |  |
 | column store | 列存 |  |  |
 | column-oriented DBMS | 列式存储数据库 |  |  |
@@ -168,7 +168,7 @@ summary: 本文档介绍 TiDB 术语表
 | function signature | 函数签名 |  |  |
 | functional abstraction | 功能抽象 |  | <http://www.wendangku.net/doc/9bb5ba5db90d6c85ed3ac614-4.html> |
 | fuzzy matching | 模糊匹配 |  |  |
-| Geo-distributed active-active | 异地双活 |  | <https://redislabs.com/redis-enterprise-documentation/concepts-architecture/intercluster-replication/> |
+| Geo-distributed active-active | 异地双活 |  |  |
 | Geo-distributed multi-active | 异地多活 |  | <https://www.ibm.com/support/knowledgecenter/en/SSEPGG_10.1.0/com.ibm.db2.luw.admin.sd.doc/doc/c0058742.html> |
 | global | 全局 |  |  |
 | global privileges | 全局权限 |  |  |
