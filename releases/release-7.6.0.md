@@ -123,6 +123,17 @@ TiDB 版本：7.6.0
     更多信息，请参考[用户文档](/sql-statements/sql-statement-load-data.md)。
 
 ### 数据库管理
+```suggestion
+* 闪回功能支持精确 TSO [#48372](https://github.com/pingcap/tidb/issues/48372) @[BornChanger](https://github.com/BornChanger/BornChanger) **tw@qiancai** <!--1615-->
+
+    TiDB v7.6.0 提供了更加强大和精确的闪回功能，不仅支持回溯到过去指定的时间点，还可以精确的指定 [TSO](tso.md) 时间戳，实现更加灵活的数据恢复。例如，此功能可和 TiCDC 联合使用，允许下游 TiDB 集群在暂停数据同步、开启预上线读写测试后，优雅快速地回溯到暂停的 TSO 时间戳并继续通过 TiCDC 同步数据，简化了预上线验证流程和数据管理。
+    
+    你可以通过 `SELECT ... FROM ... AS OF TIMESTAMP` 语句查询指定的 [TSO](https://docs.pingcap.com/tidb/stable/tso) 时间戳的数据，验证后通过 `FLASHBACK CLUSTER` 语句回到指定 [TSO](tso.md) 。
+
+    ```sql
+    SELECT * FROM users AS OF TIMESTAMP '445494839813079041';
+    FLASHBACK CLUSTER TO TIMESTAMP '445494839813079041';
+    ````
 
 * 支持自动终止长时间未提交的空闲事务 [#48714](https://github.com/pingcap/tidb/pull/48714) @[crazycs520](https://github.com/crazycs520) **tw@Oreoxmt** <!--1598-->
 
