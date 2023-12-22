@@ -393,7 +393,7 @@ SHOW [GLOBAL | SESSION] BINDINGS [ShowLikeOrWhere];
 | charset | 字符集 |
 | collation | 排序规则 |
 | source | 创建方式，包括 manual（根据 SQL 创建绑定生成）、history（根据历史执行计划创建绑定生成）、capture（由 TiDB 自动创建生成）和 evolve （由 TiDB 自动演进生成） |
-| type | 绑定类型，包括 `u`（[通用绑定](#跨数据库绑定执行计划-universal-binding)）和空（普通绑定），从 v7.6.0 开始引入|
+| type | 绑定类型，包括 `u`（[通用绑定](#跨数据库绑定执行计划-universal-binding)）和空（普通绑定），从 v7.6.0 开始引入 |
 | sql_digest | 归一化后的 SQL 的 digest |
 | plan_digest | 执行计划的 digest |
 

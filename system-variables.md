@@ -3378,11 +3378,12 @@ mysql> desc select count(distinct a) from test.t;
 
 ### `tidb_opt_enable_universal_binding` <span class="version-mark">从 v7.6.0 版本开始引入</span>
 
-- 作用域：
-- 是否持久化到集群：
-- 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：
+- 作用域：SESSION | GLOBAL
+- 是否持久化到集群：是
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：是
 - 类型：布尔型
-- 默认值：
+- 默认值：`OFF`
+- 该变量控制是否开启[跨数据库绑定执行计划](/sql-plan-management.md#跨数据库绑定执行计划-universal-binding)功能。
 
 ### `tidb_opt_fix_control` <span class="version-mark">从 v7.1.0 版本开始引入</span>
 
