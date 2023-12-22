@@ -59,11 +59,17 @@ In 6.1.0, the key new features or improvements are as follows:
 
 ### Performance
 
-* Support customized Region size (experimental)
+* Support customized Region size
 
-    Setting Regions to a larger size can effectively reduce the number of Regions, make Regions easier to manage, and improve the cluster performance and stability. This feature introduces the concept of bucket, which is a smaller range within a Region. Using buckets as the query unit can optimize concurrent query performance when Regions are set to a larger size. Using buckets as the query unit can also dynamically adjust the sizes of hot Regions to ensure the scheduling efficiency and load balance. This feature is currently experimental. It is not recommended to use it in production environments.
+    Starting from v6.1.0, you can configure [`coprocessor.region-split-size`](/tikv-configuration-file.md#region-split-size) to set Regions to a larger size. This can effectively reduce the number of Regions, make Regions easier to manage, and improve the cluster performance and stability.
 
-    [User document](/tune-region-performance.md), [#11515](https://github.com/tikv/tikv/issues/11515)
+    [User document](/tune-region-performance.md#use-region-split-size-to-adjust-region-size), [#11515](https://github.com/tikv/tikv/issues/11515)
+
+* Support using buckets to increase concurrency (experimental)
+
+    To help you further improve the query concurrency after setting Regions to a larger size, TiDB introduces the concept of bucket, which is a smaller range within a Region. Using buckets as the query unit can optimize concurrent query performance when Regions are set to a larger size. Using buckets as the query unit can also dynamically adjust the sizes of hotspot Regions to ensure the scheduling efficiency and load balance. This feature is currently experimental. It is not recommended to use it in production environments.
+
+    [User document](/tune-region-performance.md#use-bucket-to-increase-concurrency), [#11515](https://github.com/tikv/tikv/issues/11515)
 
 * Use Raft Engine as the default log storage engine
 
