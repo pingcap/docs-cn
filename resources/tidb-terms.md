@@ -1,6 +1,6 @@
 ---
 title: TiDB 中英术语表
-summary: 本文档介绍 TiDB 中英文术语表。
+summary: 本文档介绍 TiDB 中英文术语对照表。
 ---
 
 # TiDB 中英术语表
@@ -113,8 +113,7 @@ summary: 本文档介绍 TiDB 中英文术语表。
 | datacenter | 数据中心 |  |  |
 | dataflow | 数据流 |  |  |
 | decompress | 解压缩 |  | The difference between "decompress" and "uncompress": <https://english.stackexchange.com/questions/56480/difference-between-uncompress-and-decompress> |
-| delta import | 增量导入 |  |  |
-| denpendency/dependencies | 依赖包 |  |  |
+| dependency/dependencies | 依赖包 |  |  |
 | dependency | 依赖关系 |  |  |
 | deploy | 部署 |  |  |
 | deployment | 部署 |  |  |
@@ -146,10 +145,8 @@ summary: 本文档介绍 TiDB 中英文术语表。
 | extendible hashing | 可扩充散列 |  |  |
 | external interface | 对外接口 |  |  |
 | eventual consistency | 最终一致性 |  | <https://en.wikipedia.org/wiki/Eventual_consistency> |
-| fan trap | 扇形陷阱 |  |  |
-| fanout | 扇出 |  |  |
 | fault-tolerant design | 容错误设计 |  |  |
-| fetch data | 捞数据 |  |  |
+| fetch data | 获取数据 |  |  |
 | field | 字段 |  |  |
 | file descriptor | 文件描述符 |  |  |
 | file handle | 文件句柄 |  |  |
@@ -345,7 +342,7 @@ summary: 本文档介绍 TiDB 中英文术语表。
 | push down | 下推 | 动词短语 (verb phrase) |  |
 | pushdown | 下推的 | 形容词 (adj.) |  |
 | query | 查询 |  |  |
-| query by returning to the table (not a fixed term) | 回表查询 |  |  <https://odetocode.com/articles/237.aspx> |  
+| query by returning to the table (not a fixed term) | 回表查询 |  |  <https://odetocode.com/articles/237.aspx> |
 | query tree | 查询树 |  |  |
 | Raft | Raft |  |  |
 | Raft consensus algorithm | Raft 一致性算法 |  |  |
@@ -389,7 +386,7 @@ summary: 本文档介绍 TiDB 中英文术语表。
 | scale | 扩展 |  |  |
 | scale in | 缩容 |  |  |
 | scale out | 扩容 |  |  |
-| scalibility | 扩展性 |  |  |
+| scalability | 扩展性 |  |  |
 | scenario | 场景 |  |  |
 | schedule | 调度 |  |  |
 | scope | 作用域 |  |  |
@@ -404,11 +401,11 @@ summary: 本文档介绍 TiDB 中英文术语表。
 | sharding | 分片（动词或动名词） |  |  |
 | sign bit | 符号位 |  | <https://en.wikipedia.org/wiki/Sign_bit> |
 | simulate | 模拟 |  |  |
-| single-instance | 单机 |  | 
+| single-instance | 单机 |  |
 | single point of failure (SPOF) | 单点故障 |  |  ||
 | skip list | 跳跃表 |  |  |
 | slave | 从库 |  |  |
-| slow requery | 慢查询 |  |  |
+| slow query | 慢查询 |  |  |
 | snapshot | 快照 |  |  |
 | snapshot isolation (SI) | 快照隔离 |  | <https://docs.microsoft.com/en-us/dotnet/framework/data/adonet/sql/snapshot-isolation-in-sql-server> |
 | soft limit | 软限制 |  |  |
