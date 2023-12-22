@@ -292,7 +292,7 @@ summary: 本文档介绍 TiDB 中英文术语表。
 | non-unique index | 非唯一索引 |  |  |
 | null | 空值 |  |  |
 | object abstraction | 对象抽象 |  |  |
-| Object Relational Mapping ORM） | 对象关系映射 |  |  |
+| Object Relational Mapping (ORM) | 对象关系映射 |  |  |
 | offset | 偏移 |  |  |
 | Online Analytical Processing (OLAP) | 在线分析处理 |  |  |
 | Online Transactional Processing (OLTP) | 在线事务处理 |  |  |
