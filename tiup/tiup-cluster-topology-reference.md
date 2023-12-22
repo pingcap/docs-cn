@@ -8,6 +8,8 @@ title: 通过 TiUP 部署 TiDB 集群的拓扑文件配置
 
 同样，修改集群配置也是通过编辑拓扑文件来实现的，区别在于修改配置时仅允许修改部分字段。本文档介绍拓扑文件的各个区块以各区块中的各字段。
 
+使用 TiUP 部署 TiDB 集群时，TiUP 会同时自动部署 Prometheus、Grafana 和 Alertmanager 等监控组件，并且在集群扩容中自动为新增节点添加监控配置。如果需要自定义 Prometheus、Grafana 和 Alertmanager 等监控组件的配置，请参考[自定义监控组件的配置](/tiup/customized-montior-in-tiup-environment.md)。
+
 ## 文件结构
 
 一个通过 TiUP 部署的 TiDB 集群拓扑文件可能包含以下区块：
