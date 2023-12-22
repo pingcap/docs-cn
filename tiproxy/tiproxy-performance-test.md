@@ -44,7 +44,6 @@ summary: TiProxy 的性能测试报告、与 HAProxy 的性能对比。
 
 ```yaml
 proxy.conn-buffer-size: 131072
-security.require-backend-tls: false
 ```
 
 #### HAProxy 配置 - haproxy.cfg 文件

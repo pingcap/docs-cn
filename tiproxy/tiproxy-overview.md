@@ -11,7 +11,7 @@ TiProxy 是可选组件，你也可以使用第三方的代理组件，或者直
 
 TiProxy 示意图如下：
 
-![TiProxy 架构](/media/tiproxy/architecture.png)
+![TiProxy 架构](/media/tiproxy/tiproxy-architecture.png)
 
 ## 主要功能
 
@@ -23,7 +23,7 @@ TiProxy 在保持客户端连接不变的情况下，能将一台 TiDB server �
 
 如下图所示，原先客户端通过 TiProxy 连接到 TiDB 1 上，连接迁移之后，客户端实际连接到 TiDB 2 上。在 TiDB 1 即将下线或 TiDB 1 上的连接数比 TiDB 2 上的连接数超过设定阈值时，会触发连接迁移。连接迁移对客户端无感知。
 
-![TiProxy 连接迁移](/media/tiproxy/session-migration.png)
+![TiProxy 连接迁移](/media/tiproxy/tiproxy-session-migration.png)
 
 连接迁移通常发生在以下场景：
 - 当 TiDB server 进行缩容、滚动升级、滚动重启操作时，TiProxy 能把连接从即将下线的 TiDB server 迁移到其他 TiDB server 上，从而保持客户端连接不断开。
@@ -84,9 +84,7 @@ TiProxy 不适用于以下场景：
     - 要考虑负载类型和最大 QPS，请参阅 [TiProxy 性能测试报告](/tiproxy/tiproxy-performance-test.md)。
     - 由于 TiProxy 的实例数比 TiDB server 少，TiProxy 的网络带宽相比 TiDB server 更可能成为瓶颈，因此还需要考虑网络带宽。例如，AWS 相同系列的 EC2 的基准网络带宽与 CPU 核数是不成正比的，请参阅[计算实例网络性能](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/compute-optimized-instances.html#compute-network-performance)。这种情况下，当网络带宽成为瓶颈时，把 TiProxy 实例拆分为更多更小规格的实例能提高 QPS。
 
-    以下配置项需要配置：
-
-    - 为集群开启 TLS 连接，或者将 TiProxy 的 [`security.require-backend-tls`](/tiproxy/tiproxy-configuration.md#require-backend-tls) 设置为 `false`。建议开启 TLS 连接，避免 TiProxy 与 TiDB server 间传输的数据泄漏。
+    建议开启集群内的 TLS 连接，避免 TiProxy 与 TiDB server 间传输的数据泄漏。
 
     如需配置 TiProxy 配置项，请参阅 [TiProxy 配置](/tiproxy/tiproxy-configuration.md)。
 
