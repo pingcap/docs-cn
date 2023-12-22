@@ -477,7 +477,7 @@ summary: 本文档介绍 TiDB 中英文术语对照表。
 | variable | 变量 |  |
 | verification | 验证 |  |
 | verify | 验证 |  |
-| Vertical Pod Autoscaling (VPA) | Pod 自动垂直扩容 | TiDB in Kubernetes |
+| Vertical Pod Autoscaling (VPA) | Pod 自动垂直扩容 | TiDB on Kubernetes |
 | wild card | 通配符 |  |
 | work queue(s) | 工作队列 |  |
 | wrapper | 封装器 |  |
