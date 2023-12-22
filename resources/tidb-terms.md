@@ -404,7 +404,8 @@ summary: 本文档介绍 TiDB 中英文术语表。
 | sharding | 分片（动词或动名词） |  |  |
 | sign bit | 符号位 |  | <https://en.wikipedia.org/wiki/Sign_bit> |
 | simulate | 模拟 |  |  |
-| single-instance | 单机 |  |  |
+| single-instance | 单机 |  | 
+| single point of failure (SPOF) | 单点故障 |  |  ||
 | skip list | 跳跃表 |  |  |
 | slave | 从库 |  |  |
 | slow requery | 慢查询 |  |  |
@@ -415,7 +416,6 @@ summary: 本文档介绍 TiDB 中英文术语表。
 | sorted | 有序的 |  |  |
 | source end | 源端 |  |  |
 | split | 切分 |  |  |
-| SPOF: single point of failure | 单点故障 |  |  |
 | stack | 堆栈 |  |  |
 | startup parameter | 启动参数 |  |  |
 | stateful | 有状态的 |  |  |
