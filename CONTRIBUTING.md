@@ -252,7 +252,7 @@ TiDB 中文文档使用 Markdown 语言进行编写，为了保证文档质量�
 
 其他快速上手资源
 
-- [PingCAP 中英术语表](https://shimo.im/sheets/tTRyydP8Xkdv8yxq/MODOC)
+- [TiDB 中英术语表](/resources/tidb-terms.md)
 - [GitHub Docs](https://docs.github.com/en)
 - [Pull Request Commit Message 规范](https://github.com/pingcap/community/blob/master/contributors/commit-message-pr-style.md#how-to-write-a-good-commit-message)
 - [Pull Request 标题规范](https://github.com/pingcap/community/blob/master/contributors/commit-message-pr-style.md#pull-request-title-style)
