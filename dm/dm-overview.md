@@ -37,7 +37,7 @@ tiup install dm dmctl
 
 + 数据库版本要求
 
-    - MySQL 版本 5.5 ~ 5.7
+    - MySQL 版本 5.6，5.7
     - MySQL 版本 = 8.0 （实验特性）
     - MariaDB 版本 >= 10.1.2 （实验特性）
 
