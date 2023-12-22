@@ -11,14 +11,13 @@ summary: 本文档介绍 TiDB 中英文术语对照表。
 | abort | 退出 |  |
 | abstract | 抽象 |  |
 | abstract syntax tree (AST) | 抽象语法树 |  |
-| abstraction | 抽象语法树 |  |
 | access | 访问 |  |
 | account | 账户 |  |
 | accuracy | 准确性 |  |
 | ACID properties of transactions | 事务的 ACID 特性 |  |
 | aggregate expression | 聚合表达式 |  |
 | aggregate function | 聚合函数 |  |
-| alert | 报警 |  |
+| alert | 报警/告警 |  |
 | algorithm | 算法 |  |
 | anonymous | 匿名 |  |
 | appendix | 附录 |  |
@@ -29,7 +28,6 @@ summary: 本文档介绍 TiDB 中英文术语对照表。
 | assignment operation | 赋值运算 |  |
 | authorize | 授予权限 |  |
 | auto increment | 自增 |  |
-| auto-concurrent/auto-concurrency | 自动线程数并行 |  |
 | auto-failover | 故障自恢复 |  |
 | auto-increment primary key | 自增主键 |  |
 | availability | 可用性 |  |
@@ -63,7 +61,7 @@ summary: 本文档介绍 TiDB 中英文术语对照表。
 | coarse-grained | 粗粒度的 |  |
 | code comment | 代码注释 |  |
 | code instrumentation | 代码插桩 |  |
-| collation | 排序/排序规则 |  |
+| collation | 排序规则 |  |
 | column family (CF) | 列族 |  |
 | column pruning | 列裁剪 |  |
 | column store | 列存 |  |
@@ -128,7 +126,7 @@ summary: 本文档介绍 TiDB 中英文术语对照表。
 | dynamic programming algorithm | 动态规划算法 |  |
 | effective range | 生效范围 |  |
 | earlier version | 以下版本 |  |
-| edit | 修改（如：修改 ini 文件） |  |
+| edit | 修改/编辑（如：修改 ini 文件） |  |
 | effective range | 生效范围 |  |
 | elect | 选举 |  |
 | engine file | 引擎文件 |  |
@@ -145,7 +143,7 @@ summary: 本文档介绍 TiDB 中英文术语对照表。
 | extendible hashing | 可扩充散列 |  |
 | external interface | 对外接口 |  |
 | eventual consistency | 最终一致性 |  |
-| fault-tolerant design | 容错误设计 |  |
+| fault-tolerant design | 容错设计 |  |
 | fetch data | 获取数据 |  |
 | field | 字段 |  |
 | file descriptor | 文件描述符 |  |
@@ -186,7 +184,7 @@ summary: 本文档介绍 TiDB 中英文术语对照表。
 | high availability | 高可用 |  |
 | high concurrency | 高并发 | 名词短语 (noun phrase) |
 | high concurrent | 高并发 | 形容词短语 (adj phrase) |
-| Horizontal Pod Autoscaling (HPA) | 自动水平扩容 | TiDB in Kubernetes |
+| Horizontal Pod Autoscaling (HPA) | 自动水平扩容 | TiDB on Kubernetes |
 | horizontal scalability | 水平扩展 |  |
 | host | 主机 |  |
 | hot data | 热点数据 |  |
@@ -248,7 +246,7 @@ summary: 本文档介绍 TiDB 中英文术语对照表。
 | load | 加载 |  |
 | Local Persist Volume(s)/LPV(s) | 本地持久化卷 |  |
 | locality | 局部性 |  |
-| Localization (L10N) | 本地化 |  |
+| localization (L10N) | 本地化 |  |
 | lock | 锁 |  |
 | lock contention | 锁争用 |  |
 | log file | 日志文件 |  |
@@ -283,7 +281,6 @@ summary: 本文档介绍 TiDB 中英文术语对照表。
 | mutex | 互斥锁 | Mutual exclusion |
 | MySQL syntax | MySQL 语法 |  |
 | namespace | 命名空间 |  |
-| native code | 原生码 |  |
 | nest loop | 嵌套循环 |  |
 | node | 节点 |  |
 | non-unique index | 非唯一索引 |  |
@@ -294,7 +291,6 @@ summary: 本文档介绍 TiDB 中英文术语对照表。
 | Online Analytical Processing (OLAP) | 在线分析处理 |  |
 | Online Transactional Processing (OLTP) | 在线事务处理 |  |
 | one-to-many relationship | 一对多关系 |  |
-| open addressing hashing | 开地址法 |  |
 | open source | 开源 | 名词 (noun) |
 | open-source | 开源 | 可用作形容词 (adj) 或动词 (verb) |
 | operating environment | 运行环境 |  |
@@ -310,8 +306,6 @@ summary: 本文档介绍 TiDB 中英文术语对照表。
 | outer join | 外连接 |  |
 | outer join simplification | 外连化简 |  |
 | overhead | 开销 |  |
-| page fault | 页失效 |  |
-| paging | 分页 |  |
 | parallel replication | 并行复制 |  |
 | parameter | 参数 |  |
 | parse | 解析 |  |
