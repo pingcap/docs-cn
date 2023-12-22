@@ -82,9 +82,3 @@ gcs://external/test.csv?credentials-file=${credentials-file-path}
 ```shell
 azure://external/testfolder?account-name=${account-name}&account-key=${account-key}
 ```
-
-以下是用于 [`IMPORT INTO`](/sql-statements/sql-statement-import-into.md) 的 Azure Blob Storage URI 示例，需要指定具体的文件名 `test.csv`：
-
-```shell
-azure://external/test.csv?account-name=${account-name}&account-key=${account-key}
-```
