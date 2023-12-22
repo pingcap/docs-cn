@@ -65,7 +65,7 @@ TiDB 版本：6.1.0
 
     [用户文档](/tune-region-performance.md#使用-region-split-size-调整-region-大小)，[#11515](https://github.com/tikv/tikv/issues/11515)
 
-* 支持 Bucket 功能（实验特性）
+* 支持使用 bucket 增加并发（实验特性）
 
     当 Region 调大以后，为了进一步提高查询的并发度，TiDB 引入 bucket 概念，即将每个 Region 划分为更小的区间 bucket。使用 bucket 作为并发查询单位能够优化 Region 调大时的查询性能，动态调整热点 Region 的大小来保证热点调度效率和负载均衡。该特性目前属于实验特性，不建议在生产环境使用。
 
