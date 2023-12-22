@@ -61,7 +61,7 @@ TiDB 版本：6.1.0
 
 * 支持自定义 Region 大小
 
-    从 v6.1.0 起，你可以通过 [`coprocessor.region-split-size`](/tikv-configuration-file.md#region-split-size) 设置更大的 Region 可以有效减少 Region 数量，降低 Region 管理成本，提升集群性能和稳定性。
+    从 v6.1.0 起，你可以通过 [`coprocessor.region-split-size`](/tikv-configuration-file.md#region-split-size) 设置更大的 Region 从而有效减少 Region 数量，降低 Region 管理成本，提升集群性能和稳定性。
 
     [用户文档](/tune-region-performance.md#使用-region-split-size-调整-region-大小)，[#11515](https://github.com/tikv/tikv/issues/11515)
 
