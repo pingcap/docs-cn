@@ -49,8 +49,8 @@ summary: 本文档介绍 TiDB 中英文术语表。
 | canary test | 灰度测试 |  |  |
 | Cartesian product | 笛卡尓积 |  |  |
 | case-sensitive | 大小写敏感 |  |  |
-| CBO (cost based optimization) | 基于代价的优化 |  |  |
 | certificate signing request (CSR) | 证书签名请求 |  |  |
+| cost based optimization (CBO) | 基于代价的优化 |  |  |
 | Custom Resource Definition (CRD) | 自定义资源类型 |  |  |
 | checksum | 校验和 |  |  |
 | circular dependency | 循环依赖 |  |  |
@@ -106,6 +106,7 @@ summary: 本文档介绍 TiDB 中英文术语表。
 | data dissemination | 数据分发 |  |  |
 | data engine | 数据引擎 |  |  |
 | data hub | 数据中台 |  |  |
+| Data Manipulation Language (DML) | 数据操纵语言 |  |  |
 | data race | 数据竞争 |  |  |
 | database administrator (DBA) | 数据库管理员 |  |  |
 | database kernel | 数据库内核 | 内核是 kernel，不是 core |  |
@@ -122,7 +123,6 @@ summary: 本文档介绍 TiDB 中英文术语表。
 | disaster recovery | 容灾 |  | <https://en.wikipedia.org/wiki/Disaster_recovery> |
 | disparate data source | 异构数据源 |  |  |
 | distributed database | 分布式数据库 |  |  |
-| DML (Data Manipulation Language) | 数据操纵语言 |  |  |
 | driving table | 驱动表 |  |  |
 | dummy data | 假数据 |  |  |
 | dynamic | 动态 |  |  |
@@ -174,11 +174,11 @@ summary: 本文档介绍 TiDB 中英文术语表。
 | Geo-distributed multi-active | 异地多活 |  | <https://www.ibm.com/support/knowledgecenter/en/SSEPGG_10.1.0/com.ibm.db2.luw.admin.sd.doc/doc/c0058742.html> |
 | global | 全局 |  |  |
 | global privileges | 全局权限 |  |  |
+| Global Transaction Identifier (GTID) | 全局事务标识符 |  |  |
 | goroutine | 协程 | It also can be "coroutine". But it is suggested using "goroutine". |  |
 | graceful | 优雅的 |  |  |
 | granularity | 粒度 |  |  |
 | grid computing | 网格计算 |  |  |
-| GTID (Global Transaction Identifier) | 全局事务标识符 |  |  |
 | HA policy | 高可用策略 |  |  |
 | handle | 句柄 |  |  |
 | hang | 假死 |  |  |
@@ -189,13 +189,13 @@ summary: 本文档介绍 TiDB 中英文术语表。
 | high availability | 高可用 |  |  |
 | high concurrency | 高并发 | 名词短语 (noun phrase) |  |
 | high concurrent | 高并发 | 形容词短语 (adj phrase) |  |
+| Horizontal Pod Autoscaling (HPA) | 自动水平扩容 | TiDB in Kubernetes | <https://cloud.google.com/blog/products/gcp/beyond-cpu-horizontal-pod-autoscaling-comes-to-google-kubernetes-engine> |
 | horizontal scalability | 水平扩展 |  |  |
 | host | 主机 |  |  |
 | hot data | 热点数据 |  |  |
 | hotfix | 热修复 |  |  |
-| HPA (Horizontal Pod Autoscaling) | 自动水平扩容 | TiDB in Kubernetes | <https://cloud.google.com/blog/products/gcp/beyond-cpu-horizontal-pod-autoscaling-comes-to-google-kubernetes-engine> |
-| HTAP (Hybrid Transactional and Analytical Processing) | HTAP (Hybrid Transactional and Analytical Processing) | 一般写英文形式 |  |
 | hybrid deployment | 混合部署 |  |  |
+| Hybrid Transactional and Analytical Processing (HTAP) | HTAP (Hybrid Transactional and Analytical Processing) | 一般写英文形式 |  |
 | idempotent (idempotence) | 幂等 |  |  |
 | image | 镜像 |  | <https://docs.docker.com/engine/reference/commandline/image/> |
 | image tag error | 镜像 tag 错误 |  |  |
@@ -213,6 +213,7 @@ summary: 本文档介绍 TiDB 中英文术语表。
 | index join | 索引连接 |  |  |
 | infer | 推导 |  |  |
 | initialize | 初始化 |  |  |
+| Input/Output Operations Per Second (IOPS ) | IOPS | 每秒输入输出操作，一般写英文形式 |  |
 | instance | 实例 |  |  |
 | instantiate | 实例化 |  |  |
 | int | 整数型 |  |  |
@@ -222,13 +223,12 @@ summary: 本文档介绍 TiDB 中英文术语表。
 | internal mechanism | 内部机制 |  |  |
 | Internationalization (I18N) | 国际化 |  |  |
 | Internet Data Center (IDC) | 互联网数据中心 |  |  |
+| Internet Service Provider (ISP) | 互联网服务提供商 |  | <https://en.wikipedia.org/wiki/Internet_service_provider> |
 | intrusive | 有侵入性的 |  |  |
-| IOPS (Input/Output Operations Per Second) | IOPS | 每秒输入输出操作，一般写英文形式 |  |
 | Isolated storage | 独立存储 |  |  |
 | isolation | 隔离 |  |  |
 | isolation level | 隔离级别 |  |  |
-| ISP (Internet Service Provider) | 互联网服务提供商 |  | <https://en.wikipedia.org/wiki/Internet_service_provider> |
-| JDBC (Java DataBase Connectivity) | Java 数据库连接 |  |  |
+| Java DataBase Connectivity (JDBC) | Java 数据库连接 |  |  |
 | kernel version | 内核版本 |  |  |
 | key-value pair(s) / KV pair(s) | 键值对 |  |  |
 | keyword | 关键字 |  |  |
@@ -281,9 +281,9 @@ summary: 本文档介绍 TiDB 中英文术语表。
 | mount/mounting | 挂载 |  |  |
 | multi nodes | 多节点 |  |  |
 | multi-tenancy | 多租户技术 |  |  |
+| Multi-Version Concurrency Control (MVCC) | 多版本并发控制 |  |  |
 | mutation | 变异 |  | <http://www.orafaq.com/wiki/Mutating_table>、<https://blog.csdn.net/zhpsam109/article/details/97335> |
 | mutex | 互斥锁 | Mutual exclusion | <https://zh.wikipedia.org/wiki/%E4%BA%92%E6%96%A5%E9%94%81> |
-| MVCC (Multi-Version Concurrency Control) | 多版本并发控制 |  |  |
 | MySQL syntax | MySQL 语法 |  |  |
 | namespace | 命名空间 |  |  |
 | native code | 原生码 |  |  |
@@ -292,13 +292,14 @@ summary: 本文档介绍 TiDB 中英文术语表。
 | non-unique index | 非唯一索引 |  |  |
 | null | 空值 |  |  |
 | object abstraction | 对象抽象 |  |  |
+| Object Relational Mapping ORM） | 对象关系映射 |  |  |
 | offset | 偏移 |  |  |
-| OLAP (Online Analytical Processing) | 在线分析处理 |  |  |
-| OLTP (Online Transactional Processing) | 在线事务处理 |  |  |
+| Online Analytical Processing (OLAP) | 在线分析处理 |  |  |
+| Online Transactional Processing (OLTP) | 在线事务处理 |  |  |
 | one-to-many relationship | 一对多关系 |  |  |
 | open addressing hashing | 开地址法 |  |  |
 | open source | 开源 | 名词 (noun) |  |
-| open-source | 开源 | 形容词 (adj)、动词 (verb) |  |
+| open-source | 开源 | 可用作形容词 (adj) 或动词 (verb) |  |
 | operating environment | 运行环境 |  |  |
 | operation and administer | 运维 |  | <https://en.wikipedia.org/wiki/Operations,_administration_and_management> |
 | operational data store (ODS) | 操作数据存储 |  |  |
@@ -308,7 +309,6 @@ summary: 本文档介绍 TiDB 中英文术语表。
 | optimistic locking | 乐观锁 |  |  |
 | optimistic transaction model | 乐观事务模型 |  |  |
 | optimizer | 优化器 |  |  |
-| ORM (Object Relational Mapping) | 对象关系映射 |  |  |
 | out of memory (OOM) | 内存溢出 |  | <https://en.wikipedia.org/wiki/Out_of_memory> |
 | outer join | 外连接 |  |  |
 | outer join simplification | 外连化简 |  |  |
@@ -327,7 +327,6 @@ summary: 本文档介绍 TiDB 中英文术语表。
 | persistent data | 持久化数据 |  |  |
 | pessimistic locking | 悲观锁 |  |  |
 | physical plan | 物理计划 |  |  |
-| PoC (proof of concept) | 概念验证 |  |  |
 | point query | 点查询 |  |  |
 | populate | 填充 |  |  |
 | port | 端口 |  |  |
@@ -338,6 +337,7 @@ summary: 本文档介绍 TiDB 中英文术语表。
 | private key | 私钥 |  |  |
 | privilege | 权限 |  |  |
 | production environment | 生产环境 |  |  |
+| proof of concept (PoC) | 概念验证 |  |  |
 | public cloud | 公有云 |  |  |
 | public key | 公钥 |  |  |
 | pure virtual function | 纯虚函数 |  |  |
@@ -352,8 +352,6 @@ summary: 本文档介绍 TiDB 中英文术语表。
 | RAID (Redundant Array of Independent Disks) | 独立冗余磁盘阵列 |  |  |
 | random delay | 随机延迟 |  |  |
 | range query | 范围查询 |  |  |
-| RBO (rule based optimization) | 基于规则的优化 |  |  |
-| RDBMS: Relational Database Management System | 关系型数据库管理系统 |  |  |
 | read | 读 |  |  |
 | reads and writes | 读写 |  |  |
 | real-time replication delay | 实时同步延迟 |  |  |
@@ -362,7 +360,9 @@ summary: 本文档介绍 TiDB 中英文术语表。
 | refactor | 重构 |  |  |
 | Region | Region |  |  |
 | regular expression | 正则表达式 |  |  |
+| Relational Database Management System (RDBMS) | 关系型数据库管理系统 |  |  |
 | remote disaster recovery | 异地灾备 |  |  |
+| Remote Procedure Call (RPC) | 远程过程调用 |  | <https://en.wikipedia.org/wiki/Remote_procedure_call> |
 | renderer | 渲染器 |  |  |
 | repair data | 修复数据 |  |  |
 | replica | 副本 |  |  |
@@ -383,7 +383,7 @@ summary: 本文档介绍 TiDB 中英文术语表。
 | rough set | 粗糙集 |  |  |
 | routine | 例程 |  | <https://blog.csdn.net/scyatcs/article/details/77452336> |
 | row store | 行存 |  |  |
-| Remote Procedure Call (RPC) | 远程过程调用 |  | <https://en.wikipedia.org/wiki/Remote_procedure_call> |
+| rule based optimization (RBO) | 基于规则的优化 |  |  |
 | runtime | 运行时 |  |  |
 | Scalar Function | 标量函数 |  |  |
 | scale | 扩展 |  |  |
@@ -416,12 +416,12 @@ summary: 本文档介绍 TiDB 中英文术语表。
 | source end | 源端 |  |  |
 | split | 切分 |  |  |
 | SPOF: single point of failure | 单点故障 |  |  |
-| SST (Static Sorted Table) | 静态排序表文件 (SST) |  | <https://github.com/facebook/rocksdb/wiki/A-Tutorial-of-RocksDB-SST-formats>  |
 | stack | 堆栈 |  |  |
 | startup parameter | 启动参数 |  |  |
 | stateful | 有状态的 |  |  |
 | stateless | 无状态的 |  |  |
 | statement | 语句 |  |  |
+| Static Sorted Table (SST) | 静态排序表文件 (SST) |  | <https://github.com/facebook/rocksdb/wiki/A-Tutorial-of-RocksDB-SST-formats>  |
 | stop | 下线 |  |  |
 | storage capacity | 存储能力 |  |  |
 | storage engine | 存储引擎 |  |  |
@@ -437,12 +437,12 @@ summary: 本文档介绍 TiDB 中英文术语表。
 | Syntactic sugar | 语法糖 | In computer science, syntactic sugar is syntax within a programming language that is designed to make things easier to read or to express. It makes the language "sweeter" for human use: things can be expressed more clearly, more concisely, or in an alternative style that some may prefer. |  |
 | syntax | 语法 |  |  |
 | system variable | 系统变量 |  |  |
-| THP (Transparent Huge Pages) | 透明大页 | A Linux memory management system | <https://docs.pingcap.com/zh/tidb/dev/tune-operating-system#%E5%86%85%E5%AD%98%E9%80%8F%E6%98%8E%E5%A4%A7%E9%A1%B5> |
 | table schema | 表结构 |  |  |
 | target machine | （部署）目标机器 |  | <http://docs.ansible.com/ansible/latest/intro_inventory.html> |
 | technology stack | 技术栈 |  |  |
 | test | 测试 |  |  |
 | the configuration file | 配置文件 |  |  |
+| Transparent Huge Pages (THP) | 透明大页 | A Linux memory management system | <https://docs.pingcap.com/zh/tidb/dev/tune-operating-system#%E5%86%85%E5%AD%98%E9%80%8F%E6%98%8E%E5%A4%A7%E9%A1%B5> |
 | thread | 线程 |  |  |
 | thread pool | 线程池 |  |  |
 | throughput | 吞吐 |  |  |
@@ -452,10 +452,11 @@ summary: 本文档介绍 TiDB 中英文术语表。
 | time series database | 时序数据库 |  |  |
 | Time Series Database (TSDB) | 时序数据库 |  |  |
 | time synchronization error | 时间同步误差 |  |  |
+| Time To Live (TTL) | 存活时间 |  |  |
 | timeliness | 时效性 |  |  |
 | timestamp | 时间戳 |  |  |
 | timestamp allocator | 时间戳分配器 |  |  |
-| Timestamp Oracle | TSO |  |  |
+| Timestamp Oracle (TSO) | Timestamp Oracle (TSO) |  | <https://pingcap.com/blog/Time-in-Distributed-Systems/#why-we-choose-tso> |
 | token bucket | 令牌桶 | An algorithm used in packet switched computer networks and telecommunications networks | <https://en.wikipedia.org/wiki/Token_bucket> |
 | tolerate | 容忍 |  |  |
 | topology | 拓扑结构 |  |  |
@@ -464,8 +465,6 @@ summary: 本文档介绍 TiDB 中英文术语表。
 | traverse | 遍历 |  |  |
 | trie | 字典树 |  |  |
 | trie | 单词查找树 |  |  |
-| TSO (Timestamp Oracle) | TSO (Timestamp Oracle) |  | <https://pingcap.com/blog/Time-in-Distributed-Systems/#why-we-choose-tso> |
-| TTL (Time To Live) | 存活时间 |  |  |
 | tutorial | 教程 |  |  |
 | type | 类型 |  |  |
 | type infer | 类型推导 |  |  |
@@ -473,15 +472,15 @@ summary: 本文档介绍 TiDB 中英文术语表。
 | underlying table | 底层表 |  | <https://dev.mysql.com/doc/refman/8.0/en/view-updatability.html> |
 | unidirectional data flow | 单向数据流 |  |  |
 | union | 联合体 |  |  |
+| Universally Unique Identifier (UUID) | 通用唯一识别码 |  |  |
 | unsigned integer | 无符号整数 |  |  |
 | update | 修改（如：修改行） |  |  |
 | user identification | 用户标识 |  |  |
 | user privilege | 用户权限 |  |  |
-| UUID (Universally Unique Identifier) | 通用唯一识别码 |  |  |
 | variable | 变量 |  |  |
 | verification | 验证 |  |  |
 | verify | 验证 |  |  |
-| VPA (Vertical Pod Autoscaling) | Pod 自动垂直扩容 | TiDB in Kubernetes |  |
+| Vertical Pod Autoscaling (VPA) | Pod 自动垂直扩容 | TiDB in Kubernetes |  |
 | wild card | 通配符 |  |  |
 | work queue(s) | 工作队列 |  |  |
 | wrapper | 封装器 |  |  |
