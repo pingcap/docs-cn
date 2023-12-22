@@ -3,19 +3,20 @@ title: TiProxy 性能测试报告
 summary: TiProxy 的性能测试报告、与 HAProxy 的性能对比。
 ---
 
-# 测试概况
+# TiProxy 性能测试报告
 
 本次报告测试了 TiProxy 在 OLTP 场景下的 Sysbench 性能表现，并和 [HAProxy](https://www.haproxy.org/) 的性能做了对比。
 
 结果显示：
+
 - TiProxy 的 QPS 上限受负载类型的影响。在 Sysbench 的基本负载、同等 CPU 使用率的情况下，TiProxy 的 QPS 比 HAProxy 低约 20% 至 40%
 - TiProxy 能承载的 TiDB server 实例数量根据负载类型而变化。在 Sysbench 的基本负载下，一台 TiProxy 能承载 4 至 10 台同机型的 TiDB server 实例
 - TiProxy 的性能比 HAProxy 更受数据量的影响。在返回的数据量为 10000 行、同等 CPU 使用率的情况下，TiProxy 的 QPS 比 HAProxy 低约 30%
 - TiProxy 的性能随 vCPU 的数量接近线性增长，因此增加 vCPU 的数量可以有效提高 QPS 上限
 
-# 测试环境
+## 测试环境
 
-## 硬件配置
+### 硬件配置
 | 服务类型 | 实例机型 | CPU 架构 | 实例数 |
 | --- | --- | --- | --- |
 | TiProxy | 4C8G | AMD64 | 1 |
@@ -25,7 +26,7 @@ summary: TiProxy 的性能测试报告、与 HAProxy 的性能对比。
 | TiKV | 8C16G | AMD64 | 8 |
 | Sysbench | 8C16G | AMD64 | 1 |
 
-## 软件版本
+##3 软件版本
 | 服务类型 | 软件版本 |
 | --- | --- |
 | TiProxy | v0.2.0 |
@@ -35,9 +36,9 @@ summary: TiProxy 的性能测试报告、与 HAProxy 的性能对比。
 | TiKV | v7.5.0 |
 | Sysbench | 1.0.17 |
 
-## 参数配置
+### 参数配置
 
-### TiProxy 参数配置
+#### TiProxy 参数配置
 
 本次测试中，客户端与 TiProxy 之间、TiProxy 与 TiDB server 之间均未开启 TLS 连接。
 
@@ -46,7 +47,7 @@ proxy.conn-buffer-size: 131072
 security.require-backend-tls: false
 ```
 
-### HAProxy 配置 - haproxy.cfg 文件
+#### HAProxy 配置 - haproxy.cfg 文件
 
 {{< copyable "" >}}
 
@@ -77,9 +78,9 @@ listen tidb-cluster                         # 配置 database 负载均衡。
     server tidb-3 10.9.64.166:4000 check inter 2000 rise 2 fall 3
 ```
 
-# 基本负载测试
+## 基本负载测试
 
-## 测试方案
+### 测试方案
 
 该测试的目的是对比 point select、read only、write only、read write 四种负载下 TiProxy 与 HAProxy 的 QPS。每种负载分别使用不同的并发度测试 TiProxy 和 HAProxy，对比 QPS。
 
@@ -100,7 +101,7 @@ sysbench $testname \
     run --tables=32 --table-size=1000000
 ```
 
-## Point Select 测试结果
+### Point Select 测试结果
 
 TiProxy 测试结果：
 
@@ -118,7 +119,7 @@ HAProxy 测试结果：
 | 50 | 102934 | 0.49 | 0.61 | 320% | 2000% |
 | 100 | 157880 | 0.63 | 0.81 | 400% | 3000% |
 
-## Read Only 测试结果
+### Read Only 测试结果
 
 TiProxy 测试结果：
 
@@ -136,7 +137,7 @@ HAProxy 测试结果：
 | 100 | 118526 | 13.49 | 18.28 | 350% | 4000% |
 | 200 | 131102 | 24.39 | 34.33 | 390% | 4300% |
 
-## Write Only 测试结果
+### Write Only 测试结果
 
 TiProxy 测试结果：
 
@@ -154,7 +155,7 @@ HAProxy 测试结果：
 | 300 | 97942 | 18.36 | 31.94 | 280% | 4300% |
 | 500 | 105352 | 28.44 | 49.21 | 300% | 4500% |
 
-## Read Write 测试结果
+### Read Write 测试结果
 
 TiProxy 测试结果：
 
@@ -172,9 +173,9 @@ HAProxy 测试结果：
 | 100 | 94123 | 21.24 | 26.68 | 370% | 4100% |
 | 200 | 107423 | 37.21 | 45.79 | 400% | 4700% |
 
-# 结果集测试
+## 结果集测试
 
-## 测试方案
+### 测试方案
 
 该测试的目的是对比不同结果集行数对性能的影响。该测试固定使用 100 并发数，分别使用行数为 10、100、1000、10000 的结果集，对比 TiProxy 和 HAProxy 的 QPS。
 
@@ -202,7 +203,7 @@ sysbench oltp_read_only \
     run --tables=32 --table-size=1000000
 ```
 
-## 测试结果
+### 测试结果
 
 TiProxy 测试结果：
 
@@ -222,15 +223,13 @@ HAProxy 测试结果：
 | 1000 | 8944 | 11.18 | 14.73 | 240% | 1400% | 1100 | 1100 |
 | 10000 | 908 | 109.96 | 139.85 | 180% | 600% | 1130 | 1130 |
 
-# 扩展性测试
+## 扩展性测试
 
-## 测试方案
+### 测试方案
 
 该测试的目的是验证 TiProxy 的性能与规格成正比，以确保升级 TiProxy 的规格能提升其 QPS 上限。该测试分别使用不同 vCPU 数量的 TiProxy 实例和并发数，对比 QPS。
 
 执行的测试命令：
-
-{{< copyable "shell-regular" >}}
 
 ```bash
 sysbench oltp_point_select \
@@ -245,7 +244,7 @@ sysbench oltp_point_select \
     run --tables=32 --table-size=1000000
 ```
 
-## 测试结果
+### 测试结果
 
 | vCPU | Threads | QPS | Avg latency(ms) | P95 latency (ms) | TiProxy CPU usage | TiDB overall CPU Usage |
 | --- | --- | --- | --- | --- | --- | --- |
@@ -253,4 +252,3 @@ sysbench oltp_point_select \
 | 4 | 80 | 104890 | 0.76 | 1.16 | 390% | 2000% |
 | 6 | 120 | 155520 | 0.77 | 1.14 | 590% | 2900% |
 | 8 | 160 | 202134 | 0.79 | 1.18 | 800% | 3900% |
-
