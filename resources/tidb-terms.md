@@ -349,7 +349,6 @@ summary: 本文档介绍 TiDB 中英文术语表。
 | query tree | 查询树 |  |  |
 | Raft | Raft |  |  |
 | Raft consensus algorithm | Raft 一致性算法 |  |  |
-| RAID (Redundant Array of Independent Disks) | 独立冗余磁盘阵列 |  |  |
 | random delay | 随机延迟 |  |  |
 | range query | 范围查询 |  |  |
 | read | 读 |  |  |
@@ -357,6 +356,7 @@ summary: 本文档介绍 TiDB 中英文术语表。
 | real-time replication delay | 实时同步延迟 |  |  |
 | recursion | 递归 |  |  |
 | reduction operation | 归约操作 |  |  |
+| Redundant Array of Independent Disks (RAID) | 独立冗余磁盘阵列 |  |  |
 | refactor | 重构 |  |  |
 | Region | Region |  |  |
 | regular expression | 正则表达式 |  |  |
