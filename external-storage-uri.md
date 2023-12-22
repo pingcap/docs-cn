@@ -77,7 +77,7 @@ gcs://external/test.csv?credentials-file=${credentials-file-path}
     - `encryption-scope`：服务端的[加密范围 (Encryption Scope)](https://learn.microsoft.com/zh-cn/azure/storage/blobs/encryption-scope-manage?tabs=powershell#upload-a-blob-with-an-encryption-scope)
     - `encryption-key`：服务端使用的[加密密钥 (Encryption Key)](https://learn.microsoft.com/zh-cn/azure/storage/blobs/encryption-customer-provided-keys)，采用的加密算法为 AES256
 
-以下是用于 TiDB Lightning 和 BR 的 Azure Blob Storage URI 示例，需要指定文件夹路径 `testfolder`：
+以下是用于 BR 的 Azure Blob Storage URI 示例，需要指定文件夹路径 `testfolder`：
 
 ```shell
 azure://external/testfolder?account-name=${account-name}&account-key=${account-key}
