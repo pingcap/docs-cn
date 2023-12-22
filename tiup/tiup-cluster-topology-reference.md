@@ -20,6 +20,7 @@ title: 通过 TiUP 部署 TiDB 集群的拓扑文件配置
 - [tidb_servers](/tiup/tiup-cluster-topology-reference.md#tidb_servers)：TiDB 实例的配置，用来指定 TiDB 组件部署到哪些机器上
 - [tikv_servers](/tiup/tiup-cluster-topology-reference.md#tikv_servers)：TiKV 实例的配置，用来指定 TiKV 组件部署到哪些机器上
 - [tiflash_servers](/tiup/tiup-cluster-topology-reference.md#tiflash_servers)：TiFlash 实例的配置，用来指定 TiFlash 组件部署到哪些机器上
+- [tiproxy_servers](#tiproxy_servers)：TiProxy 实例的配置，用来指定 TiProxy 组件部署到哪些机器上
 - [pump_servers](/tiup/tiup-cluster-topology-reference.md#pump_servers)：Pump 实例的配置，用来指定 Pump 组件部署到哪些机器上
 - [drainer_servers](/tiup/tiup-cluster-topology-reference.md#drainer_servers)：Drainer 实例的配置，用来指定 Drainer 组件部署到哪些机器上
 - [cdc_servers](/tiup/tiup-cluster-topology-reference.md#cdc_servers)：CDC 实例的配置，用来指定 CDC 组件部署到哪些机器上
@@ -100,6 +101,7 @@ monitored:
 - `pd`：PD 服务的相关配置，支持的完整配置请参考 [PD 配置文件描述](/pd-configuration-file.md)
 - `tiflash`：TiFlash 服务的相关配置，支持的完整配置请参考 [TiFlash 配置参数](/tiflash/tiflash-configuration.md)
 - `tiflash_learner`：每个 TiFlash 中内置了一个特殊的 TiKV，该配置项用于配置这个特殊的 TiKV，一般不建议修改这个配置项下的内容
+- `tiproxy`：TiProxy 服务的相关配置，支持的完整配置请参考 [TiProxy 参数配置](/tiproxy/tiproxy-configuration.md)
 - `pump`：Pump 服务的相关配置，支持的完整配置请参考 [TiDB Binlog 配置说明](/tidb-binlog/tidb-binlog-configuration-file.md#pump)
 - `drainer`：Drainer 服务的相关配置，支持的完整配置请参考 [TiDB Binlog 配置说明](/tidb-binlog/tidb-binlog-configuration-file.md#drainer)
 - `cdc`：CDC 服务的相关配置，支持的完整配置请参考 [TiCDC 安装部署](/ticdc/deploy-ticdc.md)
@@ -324,6 +326,37 @@ tikv_servers:
 
 ```yaml
 tiflash_servers:
+  - host: 10.0.1.21
+  - host: 10.0.1.22
+```
+
+### `tiproxy_servers`
+
+`tiproxy_servers` 约定了将 TiProxy 服务部署到哪些机器上，同时可以指定每台机器上的服务配置。`tiproxy_servers` 是一个数组，每个数组元素包含以下字段：
+
+- `host`：指定部署到哪台机器，字段值填 IP 地址，不可省略
+- `ssh_port`：指定连接目标机器进行操作的时候使用的 SSH 端口，若不指定，则使用 `global` 区块中的 `ssh_port`。
+- `port`：TiProxy SQL 服务的监听端口，默认值：6000。
+- `deploy_dir`：指定部署目录，若不指定，或指定为相对目录，则按照 `global` 中配置的 `deploy_dir` 生成。
+- `data_dir`：指定数据目录，若不指定，或指定为相对目录，则按照 `global` 中配置的 `data_dir` 生成。
+- `numa_node`：为该实例分配 NUMA 策略，如果指定了该参数，需要确保目标机装了 [numactl](https://linux.die.net/man/8/numactl)，在指定该参数的情况下会通过 [numactl](https://linux.die.net/man/8/numactl) 分配 cpubind 和 membind 策略。该字段参数为 string 类型，字段值填 NUMA 节点的 ID，例如 "0,1"。
+- `config`：该字段配置规则和 `server_configs` 里的 `tiproxy` 配置规则相同，若配置了该字段，会将该字段内容和 `server_configs` 里的 `tiproxy` 内容合并（若字段重叠，以本字段内容为准），然后生成配置文件并下发到 `host` 指定的机器。
+-`os`：`host` 字段所指定的机器的操作系统，若不指定该字段，则默认为 `global` 中的 `os`。
+- `arch`：`host` 字段所指定的机器的架构，若不指定该字段，则默认为 `global` 中的 `arch`。
+
+在上述字段中，部分字段部署完成之后不能再修改。如下所示：
+
+- `host`
+- `port`
+- `deploy_dir`
+- `data_dir`
+- `arch`
+- `os`
+
+`tiproxy_servers` 配置示例：
+
+```yaml
+tiproxy_servers:
   - host: 10.0.1.21
   - host: 10.0.1.22
 ```
