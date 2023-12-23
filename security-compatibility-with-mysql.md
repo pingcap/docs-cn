@@ -195,7 +195,7 @@ Signature 对上面两部分数据进行签名。
 
 配置并使用 `tidb_auth_token` 作为 TiDB 用户的认证方式，有以下几个步骤：
 
-1. 在 TiDB 配置文件中设置 [`auth-token-jwks`](/tidb-configuration-file.md#auth-token-jwks-span-classversion-mark从-v640-版本开始引入span) 和 [`auth-token-refresh-interval`](/tidb-configuration-file.md#auth-token-refresh-interval-span-classversion-mark从-v640-版本开始引入span)
+1. 在 TiDB 配置文件中设置 [`auth-token-jwks`](/tidb-configuration-file.md#auth-token-jwks-从-v640-版本开始引入) 和 [`auth-token-refresh-interval`](/tidb-configuration-file.md#auth-token-refresh-interval-从-v640-版本开始引入)
 2. 定期更新保存 JWKS 至 `auth-token-jwks` 指定的路径
 3. 创建使用 `tidb_auth_token` 认证的用户，并根据需要通过 `REQUIRE TOKEN_ISSUER` 和 `ATTRIBUTE '{"email": "xxxx@pingcap.com"}` 指定 `iss` 与 `email` 信息
 4. 生成并签发用于认证的 token，通过 mysql 客户端的 `mysql_clear_text` 插件进行认证 
