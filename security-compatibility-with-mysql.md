@@ -154,7 +154,7 @@ Header 描述 JWT 的元数据，包含 3 个属性：
 
 Payload 是 JWT 的主体部分，保存用户的信息，每个字段就是一个 claim（声明）。TiDB 用户认证要求的几个声明如下：
 
-* `iss`（issuer）：如果[创建用户](/sql-statements/sql-statement-create-user.md)时未指定 `TOKEN_ISSUER` 或者设置为空串，则可以不包含该声明；否则应该与设置值相同
+* `iss`：如果[创建用户](/sql-statements/sql-statement-create-user.md)时未指定 `TOKEN_ISSUER` 或者设置为空串，则可以不包含该声明；否则应该与设置值相同
 * `sub`：TiDB 中要求该值与待认证的用户名相同
 * `iat`：发布时间戳。TiDB 中要求该值不得晚于认证时的时间，不得早于认证前 15 分钟
 * `exp`：到期时间戳。如果认证时已经到期，则认证失败
@@ -222,7 +222,7 @@ CREATE USER 'user@pingcap.com' IDENTIFIED WITH 'tidb_auth_token' REQUIRE TOKEN_I
 generate_jwt --kid "the-key-id-0" --sub "user@pingcap.com" --email "user@pingcap.com" --iss "issuer-abc"
 ```
 
-生成 token 如下：
+打印公钥和 token 形式如下：
 ```text
 -----BEGIN PUBLIC KEY-----
 MIIBCgKCAQEAq8G5n9XBidxmBMVJKLOBsmdOHrCqGf17y9+VUXingwDUZxRp2Xbu
