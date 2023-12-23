@@ -205,24 +205,29 @@ Signature 对上面两部分数据进行签名。
 1. 通过 `go install github.com/cbcwestwolf/generate_jwt` 安装 JWT 生成工具。该工具仅用于生成测试 `tidb_auth_token` 的 JWT。
 2. 获取示例 JWKS：`wget https://raw.githubusercontent.com/CbcWestwolf/generate_jwt/master/JWKS.json`
 3. 在 TiDB 的配置文件 `config.toml` 中配置上述 JWKS 文件的路径
-```toml
-[security]
-auth-token-jwks = <path-to-JWKS.json>
-```
+
+    ```toml
+    [security]
+    auth-token-jwks = <path-to-JWKS.json>
+    ```
+
 4. 启动 `tidb-server`
 5. 创建使用 `tidb_auth_token` 认证的用户 `user@pingcap.com`
-```SQL
-CREATE USER 'user@pingcap.com' IDENTIFIED WITH 'tidb_auth_token' REQUIRE TOKEN_ISSUER 'issuer-abc' ATTRIBUTE '{"email": "user@pingcap.com"}';
-```
+
+    ```SQL
+    CREATE USER 'user@pingcap.com' IDENTIFIED WITH 'tidb_auth_token' REQUIRE TOKEN_ISSUER 'issuer-abc' ATTRIBUTE '{"email": "user@pingcap.com"}';
+    ```
 
 ##### 验证登录
 
 使用 `generate_jwt` 工具生成一个 token：
+
 ```text
 generate_jwt --kid "the-key-id-0" --sub "user@pingcap.com" --email "user@pingcap.com" --iss "issuer-abc"
 ```
 
 打印公钥和 token 形式如下：
+
 ```text
 -----BEGIN PUBLIC KEY-----
 MIIBCgKCAQEAq8G5n9XBidxmBMVJKLOBsmdOHrCqGf17y9+VUXingwDUZxRp2Xbu
@@ -237,11 +242,13 @@ eyJhbGciOiJSUzI1NiIsImtpZCI6InRoZS1rZXktaWQtMCIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InV
 ```
 
 复制上面最后一行的 token 用于登录：
+
 ```Shell
 mycli -h 127.0.0.1 -P 4000 -u 'user@pingcap.com' -p '<the-token-generated>'
 ```
 
 注意这里使用的 mysql 客户端必须支持 `mysql_clear_password` 插件。[mycli](https://www.mycli.net/) 默认开启这一插件，如果使用 [mysql 命令行客户端](https://dev.mysql.com/doc/refman/8.0/en/mysql.html) 则需要 `--enable-cleartext-plugin` 选项来开启这个插件：
+
 ```Shell
 mysql -h 127.0.0.1 -P 4000 -u 'user@pingcap.com' -p '<the-token-generated>' --enable-cleartext-plugin
 ```
