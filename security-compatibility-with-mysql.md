@@ -107,7 +107,7 @@ TiDB 的密码重用策略功能与 MySQL 一致，在实现密码重用策略�
 
 ## 可用的身份验证插件
 
-TiDB 支持多种身份验证方式。通过使用 [`CREATE USER`](/sql-statements/sql-statement-create-user.md) 语句和 [`ALTER USER`](/sql-statements/sql-statement-create-user.md) 语句，即可创建新用户或更改 TiDB 权限系统内的已有用户。TiDB 身份验证方式与 MySQL 兼容，其名称与 MySQL 保持一致。
+TiDB 支持多种身份验证方式。通过使用 [`CREATE USER`](/sql-statements/sql-statement-create-user.md) 语句和 [`ALTER USER`](/sql-statements/sql-statement-alter-user.md) 语句，即可创建新用户或更改 TiDB 权限系统内的已有用户。TiDB 身份验证方式与 MySQL 兼容，其名称与 MySQL 保持一致。
 
 TiDB 目前支持的身份验证方式可在以下的表格中查找到。服务器和客户端建立连接时，如要指定服务器对外通告的默认验证方式，可通过 [`default_authentication_plugin`](/system-variables.md#default_authentication_plugin) 变量进行设置。`tidb_sm3_password` 为仅在 TiDB 支持的 SM3 身份验证方式，使用该方式登录的用户需要使用 [TiDB-JDBC](https://github.com/pingcap/mysql-connector-j/tree/release/8.0-sm3)。
 
@@ -154,14 +154,14 @@ Header 描述 JWT 的元数据，包含 3 个属性：
 
 Payload 是 JWT 的主体部分，保存用户的信息，每个字段就是一个 claim（声明）。TiDB 用户认证要求的几个声明如下：
 
-* `iss`（issuer）：**如果[创建用户](/sql-statement-create-user.md)时未指定 `TOKEN_ISSUER` 或者设置为空串，则可以不包含该声明；否则应该与设置值相同**
-* `sub`：**TiDB 中要求该值与待认证的用户名相同**
-* `iat`：发布时间戳。**TiDB 中要求该值不得晚于认证时的时间，不得早于认证前 15 分钟**
-* `exp`：到期时间戳。**如果认证时已经到期，则认证失败**
+* `iss`（issuer）：如果[创建用户](/sql-statements/sql-statement-create-user.md)时未指定 `TOKEN_ISSUER` 或者设置为空串，则可以不包含该声明；否则应该与设置值相同
+* `sub`：TiDB 中要求该值与待认证的用户名相同
+* `iat`：发布时间戳。TiDB 中要求该值不得晚于认证时的时间，不得早于认证前 15 分钟
+* `exp`：到期时间戳。如果认证时已经到期，则认证失败
 
 此外 TiDB 中还要求包含
 
-* `email`：邮件地址。**[创建用户](/sql-statement-create-user.md) 时可以通过 `ATTRIBUTE '{"email": "xxxx@pingcap.com"}` 指定 email 信息。如果创建用户时未指定 email 信息，则该声明应设置为空串；否则应该与设置值相同**
+* `email`：邮件地址。创建用户时可以通过 `ATTRIBUTE '{"email": "xxxx@pingcap.com"}` 指定 email 信息。如果创建用户时未指定 email 信息，则该声明应设置为空串；否则应该与设置值相同
 
 下面是几个合法的 payload 示例：
 
@@ -175,12 +175,13 @@ Payload 是 JWT 的主体部分，保存用户的信息，每个字段就是一�
 }
 ```
 
+Payload 中可以不包含 `iss` 声明： 
+
 ```json
 {
   "email": "",
   "exp": 1703305494,
   "iat": 1703304594,
-  // iss 声明可以不包含
   "sub": "user@pingcap.com"
 }
 ```
