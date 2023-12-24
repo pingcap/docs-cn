@@ -110,7 +110,6 @@ summary: 了解 TiDB 的功能概览。
 
 ## 数据定义语言 (DDL)
 
-<<<<<<< HEAD
 | 数据定义语言 (DDL) | 7.5 | 7.1 | 6.5 | 6.1 | 5.4 | 5.3 | 5.2 | 5.1 | 5.0 | 4.0 |
 |---|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|
 | `CREATE`，`DROP`，`ALTER`，`RENAME`，`TRUNCATE` |  Y  | Y | Y | Y | Y | Y | Y | Y | Y | Y |
@@ -127,27 +126,8 @@ summary: 了解 TiDB 的功能概览。
 | 并行 DDL |  Y  | Y | Y | N | N | N | N | N | N | N |
 | [添加索引加速](/system-variables.md#tidb_ddl_enable_fast_reorg-从-v630-版本开始引入) |  Y  | Y | Y | N | N | N | N | N | N | N |
 | [元数据锁](/metadata-lock.md) |  Y  | Y | Y | N | N | N | N | N | N | N |
-| [`FLASHBACK CLUSTER TO TIMESTAMP`](/sql-statements/sql-statement-flashback-to-timestamp.md) |  Y  | Y | Y | N | N | N | N | N | N | N |
+| [`FLASHBACK CLUSTER`](/sql-statements/sql-statement-flashback-cluster.md) |  Y  | Y | Y | N | N | N | N | N | N | N |
 | [暂停](/sql-statements/sql-statement-admin-pause-ddl.md)/[恢复](/sql-statements/sql-statement-admin-resume-ddl.md) DDL | Y | N | N | N | N | N | N | N | N | N |
-=======
-| 数据定义语言 (DDL)                                           |   6.5   |   6.1   |   5.4    |   5.3    |   5.2    |   5.1    |   5.0    |   4.0    |
-| ------------------------------------------------------------ | :------: | :------: | :------: | :------: | :------: | :------: | :------: | :------: |
-| `CREATE`，`DROP`，`ALTER`，`RENAME`，`TRUNCATE`              |    Y   |    Y    |    Y     |    Y     |    Y     |    Y     |    Y     |    Y     |
-| [生成列](/generated-columns.md)                              | E | E | E | E | E | E | E | E |
-| [视图](/views.md)                                            |    Y   |    Y    |    Y     |    Y     |    Y     |    Y     |    Y     |    Y     |
-| [序列](/sql-statements/sql-statement-create-sequence.md)     |    Y   |    Y    |    Y     |    Y     |    Y     |    Y     |    Y     |    Y     |
-| [`AUTO_INCREMENT` 列](/auto-increment.md)                    |    Y     |    Y    |    Y     |    Y     |    Y     |    Y     |    Y     |    Y     |
-| [`AUTO_RANDOM` 列](/auto-random.md)                          |    Y   |    Y    |    Y     |    Y     |    Y     |    Y     |    Y     |    Y     |
-| [TTL (Time to Live)](/time-to-live.md) |    E   |    N    |    N     |    N     |    N     |    N     |    N     |    N     |
-| [DDL 算法断言](/sql-statements/sql-statement-alter-table.md) |    Y   |    Y    |    Y     |    Y     |    Y     |    Y     |    Y     |    Y     |
-| 在单条语句中添加多列                                         |   Y  | E | E | E | E | E | E | E |
-| [更改列类型](/sql-statements/sql-statement-modify-column.md) |    Y   |    Y    |    Y     |    Y     |    Y     |    Y     |    N     |    N     |
-| [临时表](/temporary-tables.md)                               |    Y   |    Y    |    Y     |    Y     |    N     |    N     |    N     |    N     |
-| [并行 DDL](/system-variables.md#tidb_enable_concurrent_ddl-从-v620-版本开始引入)  |    Y   |    N    |    N     |    N     |    N     |    N     |    N     |    N     |
-| [添加索引加速](/system-variables.md#tidb_ddl_enable_fast_reorg-从-v630-版本开始引入)  | Y |    N    |    N     |    N     |    N     |    N     |    N     |    N     |
-| [元数据锁](/metadata-lock.md)                                  | Y |    N    |    N     |    N     |    N     |    N     |    N     |    N     |
-| [`FLASHBACK CLUSTER`](/sql-statements/sql-statement-flashback-cluster.md)  | Y |    N    |    N     |    N     |    N     |    N     |    N     |    N     |
->>>>>>> 511ade1e10 (flashback: flashback cluster support tso (#15603))
 
 ## 事务
 
