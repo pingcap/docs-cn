@@ -10,7 +10,7 @@ summary: TiDB 数据库中 ADMIN [SET|SHOW] BDR ROLE 的使用概况。
 
 > **警告：**
 >
-> 在当前版本中，双向复制的 DDL 同步为实验特性，不建议在生产环境中使用。
+> 双向复制的 DDL 同步目前为实验特性，不建议在生产环境中使用。该功能可能会在未事先通知的情况下发生变化或删除。如果发现 bug，请在 GitHub 上提 [issue](https://github.com/pingcap/tidb/issues) 反馈。
 
 ## 语法图
 
@@ -26,10 +26,11 @@ AdminSetBDRRoleStmt ::=
 
 TiDB 集群的默认 BDR role 是 `LOCAL_ONLY`。
 
-{{< copyable "sql" >}}
+```sql
+ADMIN SHOW BDR ROLE;
+```
 
 ```sql
-mysql> admin show bdr role;
 +------------+
 | BDR_ROLE   |
 +------------+
@@ -40,13 +41,16 @@ mysql> admin show bdr role;
 
 把 BDR role 设置为 `PRIMARY`。
 
-{{< copyable "sql" >}}
+```sql
+ADMIN SET BDR ROLE PRIMARY;
+```
 
 ```sql
-mysql> admin set bdr role primary;
 Query OK, 0 rows affected (0.01 sec)
+```
 
-mysql> admin show bdr role;
+```sql
+ADMIN SHOW BDR ROLE;
 +----------+
 | BDR_ROLE |
 +----------+
@@ -58,4 +62,3 @@ mysql> admin show bdr role;
 ## MySQL 兼容性
 
 `ADMIN [SET|SHOW] BDR ROLE` 语句是 TiDB 对 MySQL 语法的扩展。
-
