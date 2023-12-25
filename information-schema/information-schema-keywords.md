@@ -30,10 +30,10 @@ DESC keywords;
 - `RESERVED`：关键字是否为保留关键字
 
 
-下面的 SQL 语句查询 `ADD` 和 `USER` 关键字的信息：
+例如，你可以使用以下 SQL 语句查询 `ADD` 和 `USER` 关键字的信息：
 
 ```sql
-SELECT * FROM keywords WHERE WORD IN ('ADD','USER');
+SELECT * FROM INFORMATION_SCHEMA.KEYWORDS WHERE WORD IN ('ADD','USER');
 ```
 
 输出结果显示 `ADD` 是一个保留关键字，`USER` 是一个非保留关键字。
