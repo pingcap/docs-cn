@@ -491,7 +491,7 @@ CREATE [GLOBAL | SESSION] UNIVERSAL BINDING [FOR BindableStmt] USING BindableStm
 
 ```sql
 CREATE GLOBAL UNIVERSAL BINDING USING SELECT /*+ use_index(t, a) */ * FROM t; -- 创建 GLOBAL 作用域的通用绑定
-CREATE GLOBAL BINDING USING SELECT /*+ use_index(t, a) */ * FROM t;
+CREATE GLOBAL BINDING USING SELECT /*+ use_index(t, a) */ * FROM t; -- 创建 GLOBAL 作用域的普通绑定
 SHOW GLOBAL BINDINGS;
 ```
 
