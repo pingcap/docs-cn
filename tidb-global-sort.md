@@ -5,10 +5,6 @@ summary: 了解 TiDB 全局排序功能的使用场景、限制、使用方法�
 
 # TiDB 全局排序
 
-> **Warning:**
->
-> 该功能目前为实验特性，不建议在生产环境中使用。该功能可能会在未事先通知的情况下发生变化或删除。如果发现 bug，请在 GitHub 上提 [issue](https://github.com/pingcap/tidb/issues) 反馈。
-
 ## 功能概览
 
 TiDB 全局排序功能增强了数据导入和 DDL（数据定义语言）操作的稳定性和执行效率。全局排序作为[分布式执行框架](/tidb-distributed-execution-framework.md)中的通用算子，通过分布式执行框架，在云上提供全局排序服务。
