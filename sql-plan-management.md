@@ -479,7 +479,7 @@ SHOW binding_cache status;
 
 ## 跨数据库绑定执行计划 (Universal Binding)
 
-跨数据库绑定执行计划，即通用绑定 (Universal Binding) 可以匹配模式相同的 SQL 语句，即使这些 SQL 运行在不同的数据库上。在使用通用绑定前，需要开启 [`tidb_opt_enable_universal_binding`](/system-variables.md#tidb_opt_enable_universal_binding-从-v760-版本开始引入) 系统变量。
+跨数据库绑定执行计划，即通用绑定 (Universal Binding) 可以为模式相同的 SQL 语句绑定相同的执行计划，即使这些 SQL 运行在不同的数据库上。TiDB 从 v7.6.0 开始引入通用绑定。在使用通用绑定前，需要开启 [`tidb_opt_enable_universal_binding`](/system-variables.md#tidb_opt_enable_universal_binding-从-v760-版本开始引入) 系统变量。
 
 创建通用绑定的语法如下：
 
