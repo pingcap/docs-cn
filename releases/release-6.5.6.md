@@ -17,9 +17,10 @@ TiDB 版本：6.5.6
 - 引入系统变量 [`tidb_opt_enable_hash_join`](https://docs.pingcap.com/zh/tidb/v6.5/system-variables#tidb_opt_enable_hash_join-从-v656-版本开始引入) 控制是否选择表的哈希连接 [#46695](https://github.com/pingcap/tidb/issues/46695) @[coderplay](https://github.com/coderplay)
 - 经进一步的测试后，TiCDC Changefeed 配置项 [`case-sensitive`](/ticdc/ticdc-changefeed-config.md) 默认值由 `true` 改为 `false`，即默认情况下 TiCDC 配置文件中涉及的表名、库名大小写不敏感 [#10047](https://github.com/pingcap/tiflow/issues/10047) @[sdojjy](https://github.com/sdojjy)
 - TiCDC Changefeed 新增以下配置项：
-    - [`encoding-worker-num`](/ticdc/ticdc-changefeed-config.md) 和 [`flush-worker-num`](/ticdc/ticdc-changefeed-config.md)：你可以根据不同的机器规格，设置 redo 模块不同的并发参数 [#10048](https://github.com/pingcap/tiflow/issues/10048) @[CharlesCheung96](https://github.com/CharlesCheung96)
-    - [`compression`](/ticdc/ticdc-changefeed-config.md)：你可以设置 redo log 文件的压缩行为 [#10176](https://github.com/pingcap/tiflow/issues/10176) @[sdojjy](https://github.com/sdojjy)
-    - [`sink.cloud-storage-config`](/ticdc/ticdc-changefeed-config.md)：你可以设置同步数据到对象存储时自动清理历史数据的功能 [#10109](https://github.com/pingcap/tiflow/issues/10109) @[CharlesCheung96](https://github.com/CharlesCheung96)
+    - [`sql-mode`](https://docs.pingcap.com/zh/tidb/v6.5/ticdc-changefeed-config)：你可以设置 TiCDC 同步数据时解析 DDL 语句所使用的 [SQL 模式](https://docs.pingcap.com/zh/tidb/v6.5/ticdc-ddl#sql-模式) [#9876](https://github.com/pingcap/tiflow/issues/9876) @[asddongmen](https://github.com/asddongmen)
+    - [`encoding-worker-num`](https://docs.pingcap.com/zh/tidb/v6.5/ticdc-changefeed-config) 和 [`flush-worker-num`](https://docs.pingcap.com/zh/tidb/v6.5/ticdc-changefeed-config)：你可以根据不同的机器规格，设置 redo 模块不同的并发参数 [#10048](https://github.com/pingcap/tiflow/issues/10048) @[CharlesCheung96](https://github.com/CharlesCheung96)
+    - [`compression`](https://docs.pingcap.com/zh/tidb/v6.5/ticdc-changefeed-config)：你可以设置 redo log 文件的压缩行为 [#10176](https://github.com/pingcap/tiflow/issues/10176) @[sdojjy](https://github.com/sdojjy)
+    - [`sink.cloud-storage-config`](https://docs.pingcap.com/zh/tidb/v6.5/ticdc-changefeed-config)：你可以设置同步数据到对象存储时自动清理历史数据的功能 [#10109](https://github.com/pingcap/tiflow/issues/10109) @[CharlesCheung96](https://github.com/CharlesCheung96)
 
 ## 改进提升
 
