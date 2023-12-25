@@ -69,7 +69,7 @@ TiDB 版本：7.6.0
 
     更多信息，请参考[用户文档](链接)。
 
-* 优化器增强对多值索引的支持 [#issue号](链接) @[Arenatlx](https://github.com/Arenatlx) @[time-and-fate](https://github.com/time-and-fate) **tw@ran-huang** <!--1405/1584-->
+* 优化器增强对多值索引的支持 [#47759](https://github.com/pingcap/tidb/issues/47759) [#46539](https://github.com/pingcap/tidb/issues/46539) @[Arenatlx](https://github.com/Arenatlx) @[time-and-fate](https://github.com/time-and-fate) **tw@ran-huang** <!--1405/1584-->
 
     TiDB 自 v6.6.0 开始引入[多值索引](/sql-statements/sql-statement-create-index.md#多值索引)，提升对 JSON 数据类型的检索性能。在 v7.6.0，优化器增强了对多值索引的支持能力，在复杂使用场景中，能够正确识别和利用多值索引对查询进行优化。
 
@@ -159,9 +159,9 @@ TiDB 版本：7.6.0
 
     更多信息，请参考[用户文档](/system-variables.md#tidb_txn_entry_size_limit-从-v760-版本开始引入) 。
 
-* 引入 Bi-directional replication(BDR) [#issue号](链接) @[okJiang](https://github.com/okJiang) **tw@hfxsd** <!--1521/1525-->
+* 增强 Bi-directional replication(BDR) 对 DDL 的同步 [#48519](https://github.com/pingcap/tidb/issues/48519) @[okJiang](https://github.com/okJiang) **tw@hfxsd** <!--1521/1525-->
 
-    在使用 TiCDC 对 2 个 TiDB 集群进行双向同步时，会导致 DDL 循环同步，同时一些高危 DDL 同步会触发数据不一致的问题。因此在 7.6 版本引入了 BDR Role，设置 BDR Role 之后的集群之间 DDL 不会被循环复制。且不同的 BDR Role 可以为不同的集群设置不同的 BDR Role ，不同的BDR Role 可执行的 DDL 范围不同，从而最大程度避免在双向同步的场景引起数据不一致的问题。
+    在使用 TiCDC 对多个 TiDB 集群进行双向同步时，为了避免 DDL 循环同步，禁止了 DDL 的同步。7.6 版本引入 BDR Role 后，集群可以通过正确设置 BDR Role，使某些 DDL 正常同步。
 
     更多信息，请参考[用户文档](链接)。
 
@@ -173,7 +173,7 @@ TiDB 版本：7.6.0
 
     更多信息，请参考[用户文档](链接)。
 
-* BR 默认恢复用户账号等系统表数据 [#48567](https://github.com/pingcap/tidb/issues/48567) @[BornChanger](https://github.com/BornChanger) **tw@Oreoxmt** <!--1570-->
+* BR 默认恢复用户账号等系统表数据 [#48567](https://github.com/pingcap/tidb/issues/48567) @[BornChanger](https://github.com/BornChanger) **tw@Oreoxmt** <!--1570/1628-->
 
     `br` 备份恢复工具从 v5.1.0 开始引入了对 **mysql schema** 下的系统表数据的默认自动备份，但默认情况下不会恢复系统表数据。随后，在 `br` v6.2.0 版本中，我们引入了新的恢复参数 `--with-sys-table`，使用户在恢复数据的同时选择性地恢复部分系统表相关数据，提供了更多的操作灵活性。
 
