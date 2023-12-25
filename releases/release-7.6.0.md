@@ -43,7 +43,7 @@ TiDB 版本：7.6.0
 
     更多信息，请参考[用户文档](链接)。
 
-* 支持下推字符串函数 `LOWER` 到 TiKV [#48170](https://github.com/pingcap/tidb/issues/48170) @[gengliqi](https://github.com/gengliqi) **tw@qiancai** <!--1607-->
+* 支持下推字符串函数 `LOWER` 和 `UPPER` 到 TiKV [#48170](https://github.com/pingcap/tidb/issues/48170) @[gengliqi](https://github.com/gengliqi) **tw@qiancai** <!--1607-->
 
     * `LOWER`
 
