@@ -162,7 +162,7 @@ TiDB 版本：7.6.0
 
     更多信息，请参考[用户文档](链接)。
 
-* 全局排序功能成为正式功能（GA）该功能可提升 'Add Index',，’Import Into‘ 的性能和稳定性 [#issue号](链接) @[D3Hunter](https://github.com/D3Hunter) **tw@ran-huang** <!--1580/1579-->
+* 全局排序功能成为正式功能（GA)，提升 `Add Index` 和 `Import Into` 的性能和稳定性 [#issue号](链接) @[wjhuang2016](https://github.com/wjhuang2016) @[D3Hunter](https://github.com/D3Hunter) **tw@ran-huang** <!--1580/1579-->
 
     在 v7.4.0 以前，使用[分布式并行执行框架](https://docs.pingcap.com/zh/tidb/v7.4/tidb-distributed-execution-framework)执行 ADD INDEX 或 IMPORT INTO 等任务时，由于 TiDB 本地存储空间有限，只能对部分数据进行局部排序后再导入到 TiKV，这导导入到 TiKV 的数据范围有较多的重叠，需要额外的资源进行处理，降低了 TiKV 的性能和稳定性。
 
