@@ -86,6 +86,10 @@ TiCDC 复制功能只会将指定时间点之后的增量变更复制到下游�
 - `primary`：用户能执行可执行 DDL，但不能执行不可执行 DDL，可执行 DDL 会被 TiCDC 同步到下游。
 - `secondary`：用户不能执行这两种 DDL，但是会执行从 TiCDC 同步过来的 DDL。
 
+> **警告：**
+>
+> 在当前版本中，双向复制的 DDL 同步为实验特性，不建议在生产环境中使用。
+
 ### 可执行 DDL 的同步场景
 
 1. 选择一个 TiDB 集群为主集群，执行 `admin set bdr role priamry`。
@@ -116,7 +120,7 @@ TiCDC 复制功能只会将指定时间点之后的增量变更复制到下游�
 
 - BDR role 只能在两种场景中正常使用——1 个 `primary` 集群 + n 个 `secondary` 集群（可执行 DDL 的同步场景）和 n 个 `local_only` 集群（不可执行 DDL 的同步场景）。**请勿将 BDR role 设置为其他情况，例如，`primary+secondary+local_only`，TiDB 无法在错误设置 BDR role 的情况下保证正确性。**
 
-- 禁止在同步的表中使用 `Auto increment`/`Auto random` 键。
+- 禁止在同步的表中使用 `Auto increment`/`Auto random` 键，以免产生数据不一致的问题。
 
 - 双向复制的集群不具备检测写冲突的功能，写冲突将会导致未定义问题。你需要在业务层面保证不出现写冲突。
 
