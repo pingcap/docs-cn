@@ -833,8 +833,8 @@ curl -X GET http://127.0.0.1:8300/api/v2/changefeed/test1/synced
 - `sink_checkpoint_ts`：sink 模块的 checkpoint-ts 值，时间为 PD 时间。
 - `puller_resolved_ts`：puller 模块的 resolved-ts 值，时间为 PD 时间。
 - `last_synced_ts`：TiCDC 处理的最新一条数据的 commit-ts 值，时间为 PD 时间。
-- `now_ts`: 当前的 PD 时间
-- `info`: 一些帮助判断同步状态的信息，特别是在 `synced` 为 `false` 时可以为你提供参考。
+- `now_ts`：当前的 PD 时间
+- `info`：一些帮助判断同步状态的信息，特别是在 `synced` 为 `false` 时可以为你提供参考。
 
 **示例 2：**
 
