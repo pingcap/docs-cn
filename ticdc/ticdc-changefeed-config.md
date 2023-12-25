@@ -65,13 +65,6 @@ enable-old-value = true
 # 注意：该参数只有当下游为 TiDB 时，才会生效。
 # sync-point-retention = "1h"
 
-<<<<<<< HEAD
-=======
-# 从 v6.5.6、v7.1.3、v7.5.0 起引入，用于设置解析 DDL 时使用的 SQL 模式，多个模式之间用逗号分隔
-# 默认值和 TiDB 的默认 SQL 模式一致
-# sql-mode = "ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION"
-
->>>>>>> 1603314967 (changefeed: add the info about configuring SQL mode (#15889))
 [mounter]
 # mounter 解码 KV 数据的线程数，默认值为 16
 # worker-num = 16
