@@ -67,7 +67,7 @@ TiDB 版本：7.6.0
 
     更多信息，请参考[用户文档](/sql-prepared-plan-cache.md)。
 
-* 批量建表的性能提升 10 倍 [#issue号](链接) @[gmhdbjd](https://github.com/gmhdbjd) **tw@hfxsd** <!--1408-->
+建表的性能提升 10 倍 [#49752](https://github.com/pingcap/tidb/issues/49752) @[gmhdbjd](https://github.com/gmhdbjd) **tw@hfxsd** <!--1408-->
 
     在之前的版本里，用户将上游数据库上万张表迁移到 TiDB 时， TiDB 需要消耗较长的时间来创建这些表，效率较低。在 7.6 版本引入新的 DDL 架构，可通过系统参数 tidb_ddl_v2 开启，新版本的 DDL 相比之前版本的 DDL 在批量建表的性能有 10 倍的提升，可大大减少用户建表的时间。
 
@@ -84,7 +84,7 @@ TiDB 版本：7.6.0
 
 ### 稳定性
 
-* 跨数据库绑定执行计划 [#issue号](链接) @[qw4990](https://github.com/qw4990) **tw@Oreoxmt** <!--1613-->
+* 跨数据库绑定执行计划 [#48875](https://github.com/pingcap/tidb/issues/48875) @[qw4990](https://github.com/qw4990) **tw@Oreoxmt** <!--1613-->
 
     我们看到越来越多的用户运行 TiDB 支撑其 SaaS 平台。SaaS 平台的一种普遍的建模方式，是把平台上每个租户的数据存入不同的“数据库”，而业务逻辑完全相同。这样我们能看到上百个数据库拥有相同的表和索引定义，运行类似的 SQL 语句。在这种场景下，当我们要对一条 SQL 语句的执行计划进行绑定(SQL Binding)，这条绑定通常对运行在其他数据库的 SQL 也有帮助。
 
@@ -142,7 +142,7 @@ TiDB 版本：7.6.0
 
     更多信息，请参考[用户文档](/system-variables.md#tidb_idle_transaction_timeout-从-v760-版本开始引入)。
 
-* 简化执行计划绑定的语法 [#issue号](链接) @[qw4990](https://github.com/qw4990) **tw@Oreoxmt** <!--1613-->
+* 简化执行计划绑定的语法 [#48876](https://github.com/pingcap/tidb/issues/48876) @[qw4990](https://github.com/qw4990) **tw@Oreoxmt** <!--1613-->
 
     TiDB 在新版本中简化的创建执行计划绑定的语法。 在命令中无需提供原 SQL 语句， TiDB 会根据带有 hint 的语句识别出原 SQL。 提升了创建执行计划绑定的便利性。 例如：
 
