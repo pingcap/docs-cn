@@ -50,7 +50,7 @@ TiDB 中文文档的日常更新特别活跃，相应地，[TiDB 英文文档](h
 - [跟进 PR 的后续操作](https://www.bilibili.com/video/BV1h5411E7pM?p=3)
 - [批量接受 Review 建议和处理 CI 检查](https://www.bilibili.com/video/BV1h5411E7pM?p=4)
 
-你也可以查阅 [docs-cn 仓库现有的 Pull Requests](https://github.com/pingcap/docs-cn/pulls) 作为参考。关于提 Pull Request 的详细步骤，请查阅[参考资料](#参考资料)。
+你也可以查阅 [docs-cn 仓库现有的 Pull Requests](https://github.com/pingcap/docs-cn/pulls) 作为参考。关于提 Pull Request 的详细步骤，请查阅[提交 Pull Request 的详细流程](#提交-pull-request-的详细流程)。
 
 ## PR Checklist
 
