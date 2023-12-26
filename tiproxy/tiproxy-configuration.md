@@ -41,6 +41,7 @@ SQL 端口的配置。
 #### `addr`
 
 + 默认值：`0.0.0.0:6000`
++ 支持热加载：否
 + SQL 网关地址。格式为 `<ip>:<port>`。
 
 #### `graceful-wait-before-shutdown`
@@ -48,14 +49,14 @@ SQL 端口的配置。
 + 默认值：`0`
 + 支持热加载：是
 + 单位：秒
-+ 当 HTTP 状态不健康时，SQL 端口在 `graceful-wait-before-shutdown` 秒内接受新连接。之后 SQL 端口将拒绝新连接并关闭现有连接。如果客户端和 TiProxy 之间没有其他代理（例如 NLB），建议将这个配置的值设置为 `0`。
++ 在 TiProxy 关闭时，在 `graceful-wait-before-shutdown` 秒内，HTTP 状态返回不健康，但 SQL 端口仍接受新连接。`graceful-wait-before-shutdown` 秒之后 SQL 端口将拒绝新连接并关闭现有连接。如果客户端和 TiProxy 之间没有其他代理（例如 NLB），建议将这个配置的值设置为 `0`。
 
 #### `graceful-close-conn-timeout`
 
 + 默认值：`15`
 + 支持热加载：是
 + 单位：秒
-+ 在当前事务完成后，在 `graceful-close-conn-timeout` 秒内关闭连接，也叫“排空客户端”。建议将此超时时间设置为长于事务的生命周期。
++ 在 TiProxy 关闭前，最多等待 `graceful-close-conn-timeout` 秒，连接的当前事务完成后将关闭连接。超时之后 TiProxy 将强制关闭所有连接。`graceful-close-conn-timeout` 发生在 `graceful-wait-before-shutdown` 之后。建议将此超时时间设置为长于事务的生命周期。
 
 #### `max-connections`
 
@@ -65,27 +66,29 @@ SQL 端口的配置。
 
 #### `conn-buffer-size`
 
-+ 默认值：`0`
++ 默认值：`32768`
 + 支持热加载：是，但只对新连接有效
++ 单位：字节
 + 取值范围：`[1024, 16777216]`
-+ 此配置项用于设置连接缓冲区大小，单位为字节。例如，`1024` 表示 1K 缓冲区。最小值为 `1K`，最大值为 `16M`。这是内存空间和性能之间的平衡。默认情况下，当值为 `0` 时，TiProxy 会使用默认大小的缓冲区，较大的缓冲区可能会有更高的性能。
++ 每个连接的缓冲区大小，读和写分别使用一个缓冲区。它是内存空间和性能之间的平衡，较大的缓冲区可能会有更高的性能，但占用更多内存。当值为 `0` 时，TiProxy 会使用默认大小的缓冲区。
 
 #### `pd-addrs`
 
 + 默认值：`127.0.0.1:2379`
++ 支持热加载：否
 + TiProxy 连接的 PD 地址。TiProxy 通过从 PD 获取 TiDB 列表来发现 TiDB 实例。如果使用 TiUP 或 TiDB Operator 部署 TiProxy，则会自动设置此项。
 
 #### `proxy-protocol`
 
-+ 默认值：`""`
-+ 支持热加载：是
-+ 可选值：`v2`
-+ 在端口启用代理协议处理。可以指定 `v2` 来处理代理协议版本 2。不支持 `v1`。
++ 默认值：``
++ 支持热加载：是，但只对新连接有效
++ 可选值：``, `v2`
++ 在 SQL 端口启用 [PROXY 协议](https://www.haproxy.org/download/1.8/doc/proxy-protocol.txt)。开启 PROXY 协议后能让 TiProxy 透传客户端真实的 IP 地址给 TiDB。`v2` 代表使用 PROXY 协议 v2 版本，`` 代表不使用 PROXY 协议。在 TiProxy 启用 PROXY 协议后，需要同时在 TiDB 服务器上启用 [PROXY 协议](/tidb-configuration-file/#proxy-protocol)。
 
 #### `require-backend-tls`
 
 + 默认值：`true`
-+ 支持热加载：是
++ 支持热加载：是，但只对新连接有效
 + 要求 TiProxy 和 TiDB 服务器之间使用 TLS 连接。如果 TiDB 服务器不支持 TLS，则客户端在连接到 TiProxy 时会报错。
 
 ### api
@@ -95,12 +98,15 @@ HTTP 网关的配置。
 #### `addr`
 
 + 默认值：`0.0.0.0:3090`
++ 支持热加载：否
 + API 网关地址。格式为 `<ip>:<port>`。
 
 #### `proxy-protocol`
 
 + 默认值：``
-+ 在端口启用代理协议处理
++ 支持热加载：否
++ 可选值：``, `v2`
++ 在端口启用 [PROXY 协议](https://www.haproxy.org/download/1.8/doc/proxy-protocol.txt)。
 
 ### log
 
@@ -126,7 +132,8 @@ HTTP 网关的配置。
 
 + 默认值：`300`
 + 支持热加载：是
-+ 日志文件的最大大小（以 MB 为单位）。日志将被轮转。
++ 单位：MB
++ 日志文件的最大大小。超过该大小后，日志将被轮转。
 
 #### `max-days`
 
@@ -171,11 +178,11 @@ TLS 对象字段：
 
 - 必须设置 `ca` 或 `skip-ca` 来跳过验证服务器证书。
 - 可选：可以设置 `cert`/`key` 来通过服务器端客户端验证。
-- 无用字段：auto-certs。
+- 无用字段：`auto-certs`。
 
 对服务器 TLS 对象：
 
-- 必须设置 `cert`/`key` 或 `auto-certs` 来生成临时证书，主要用于测试。
+- 设置 `cert`/`key` 或 `auto-certs` 后支持 TLS 连接，否则不支持 TLS 连接。
 - 可选：如果 `ca` 不为空，则启用服务器端的客户端验证。客户端必须提供证书。如果 `skip-ca` 为 `true` 且 `ca` 不为空，则服务器仅在客户端提供证书时才验证客户端证书。
 
 #### `cluster-tls`

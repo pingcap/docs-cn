@@ -120,6 +120,7 @@ TiProxy 不适用于以下场景：
 
 - TiProxy 仅支持 TiDB v6.5.0 及以上版本。
 - TiProxy 的 TLS 连接与 TiDB 有不兼容的功能，请参阅[安全](#安全)。
+- TiDB Dashboard 和 Grafana 从 v7.6.0 开始支持 TiProxy。
 - TiUP 从 v1.14.1 开始支持 TiProxy，TiDB Operator 从 v1.5.2 开始支持 TiProxy。
 - 由于 TiProxy 的状态端口提供的接口与 TiDB server 不同，使用 [TiDB Lightning](/tidb-lightning/tidb-lightning-overview.md) 导入数据时，目标数据库应当填写 TiDB server 的地址，不能是 TiProxy 的地址。
 
