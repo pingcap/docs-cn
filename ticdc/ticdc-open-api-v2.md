@@ -833,7 +833,7 @@ curl -X GET http://127.0.0.1:8300/api/v2/changefeeds/test1
 curl -X GET http://127.0.0.1:8300/api/v2/changefeed/test1/synced
 ```
 
-**示例 1：**
+**示例 1：同步已完成**
 
 ```json
 {
@@ -852,10 +852,10 @@ curl -X GET http://127.0.0.1:8300/api/v2/changefeed/test1/synced
 - `sink_checkpoint_ts`：sink 模块的 checkpoint-ts 值，时间为 PD 时间。
 - `puller_resolved_ts`：puller 模块的 resolved-ts 值，时间为 PD 时间。
 - `last_synced_ts`：TiCDC 处理的最新一条数据的 commit-ts 值，时间为 PD 时间。
-- `now_ts`：当前的 PD 时间
+- `now_ts`：当前的 PD 时间。
 - `info`：一些帮助判断同步状态的信息，特别是在 `synced` 为 `false` 时可以为你提供参考。
 
-**示例 2：**
+**示例 2：同步未完成**
 
 ```json
 {
@@ -870,7 +870,7 @@ curl -X GET http://127.0.0.1:8300/api/v2/changefeed/test1/synced
 
 此示例展示了当未完成同步任务时该接口返回的查询结果。你可以结合 `synced` 和 `info` 字段判断出数据目前还未完成同步，需要继续等待。
 
-**示例 3：**
+**示例 3：同步状态需要结合上游集群状态判断**
 
 ```json
 {
@@ -885,9 +885,9 @@ curl -X GET http://127.0.0.1:8300/api/v2/changefeed/test1/synced
 
 本接口支持在上游集群发生灾害时对同步状态进行查询判断。在部分情况下，你可能无法直接判定 TiCDC 目前的数据同步任务是否完成。此时，你可以查询该接口，并结合返回结果中的 `info` 字段以及目前上游集群的状态进行判断。
 
-在此示例中，`sink_checkpoint_ts` 在时间上落后于 `now_ts`，这可能是因为 TiCDC 还在追数据导致的，也可能是由于 PD 或者 TiKV 出现了故障导致的。如果这是 TiCDC 还在追数据导致的，说明同步任务尚未完成。如果这是由于 PD 或者 TiKV 出现了故障导致的，说明同步任务已经完成。因此，你需要参考 `info` 中的信息对集群状态进行辅助判断。
+在此示例中，`sink_checkpoint_ts` 在时间上落后于 `now_ts`，这可能是因为 TiCDC 还在追数据，也可能是由于 PD 或者 TiKV 出现了故障。如果这是 TiCDC 还在追数据导致的，说明同步任务尚未完成。如果这是由于 PD 或者 TiKV 出现了故障导致的，说明同步任务已经完成。因此，你需要参考 `info` 中的信息对集群状态进行辅助判断。
 
-**示例 4：**
+**示例 4：查询报错**
 
 ```json
 {
@@ -896,7 +896,7 @@ curl -X GET http://127.0.0.1:8300/api/v2/changefeed/test1/synced
 }
 ```
 
-当上游集群的 PD 长时间故障后，查询该 API 接口会返回类似如上的错误，无法提供进一步的判断信息。因为 PD 故障本身会影响 TiCDC 的数据同步，当遇到该错误时，你可以认为 TiCDC 已经尽可能完成数据同步，但下游集群仍然可能存在因 PD 故障导致的数据丢失。
+在上游集群的 PD 长时间故障后，查询该 API 接口时会返回类似如上的错误，无法提供进一步的判断信息。因为 PD 故障会直接影响 TiCDC 的数据同步，当遇到这类错误时，你可以认为 TiCDC 已经尽可能完成数据同步，但下游集群仍然可能存在因 PD 故障导致的数据丢失。
 
 ## 暂停同步任务
 
