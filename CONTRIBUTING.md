@@ -9,7 +9,7 @@
 - 活动详情和奖励，请参考 [2024 TiDB 文档挑战赛来啦！提 PR、提 Issue 来赢取 Bose 耳机、TiDB 限量款机械键盘等超丰富周边吧](https://asktug.com/t/topic/1019364)。
 - 活动任务列表：<https://asktug.com/t/topic/1019364>
 
-你可以在提升 TiDB 文档质量、易用性、维护效率、翻译效率等方面做贡献，比如：
+除了以上活动相关任务，你也可以在提升 TiDB 文档质量、易用性、维护效率、翻译效率等方面做贡献，比如：
 
 - [改进中文文档](#改进中文文档)
 - [翻译中文文档](#翻译中文文档)
@@ -76,10 +76,7 @@ TiDB 中文文档的日常更新特别活跃，相应地，[TiDB 英文文档](h
 - [PingCAP 中文文档风格指南](/resources/pingcap-style-guide-zh.pdf)
 - [TiDB 中文用户文档模板](/resources/doc-templates)
 
-## 参考资料
-
-<details>
-<summary>提交 Pull Request 的详细流程</summary>
+## 提交 Pull Request 的详细流程
 
 TiDB 文档的修改需要遵循一定的流程，具体如下。考虑到有些小伙伴是纯语言背景，命令行的流程掌握起来可能需要花些时间，之后我们也会提供更适合小白上手的 GitHub Desktop 客户端版提交流程（在添加至这里之前，可暂时参考 [lilin90](https://github.com/lilin90) 撰写的[小白上手流程](https://zhuanlan.zhihu.com/p/64880410)）。
 
@@ -87,16 +84,16 @@ TiDB 文档的修改需要遵循一定的流程，具体如下。考虑到有些
 >
 > 目前（2023 年 12 月）TiDB 主要维护以下几个版本的文档：dev（最新开发版，对应文档仓库的 master 分支）、v7.5、v7.4、v7.3、v7.1、v6.5、v6.1、v6.0、v5.4、v5.3、v5.2、v5.1、v5.0。提 Pull Request 前请务必考虑修改会影响的文档版本，并据此修改所有相应的版本。选择版本时，请参考[参考资料](#参考资料)中的**如何选择文档适用的版本分支？**。
 
-**第 0 步：签署 Contributor License Agreement**
+### 第 0 步：签署 Contributor License Agreement
 
 首次在本仓库提 PR 时，请务必签署 [Contributor License Agreement](https://cla-assistant.io/pingcap/docs-cn) (CLA)，否则我们将无法合并你的 PR。成功签署 CLA 后，可继续进行后续操作。
 
-**第 1 步：Fork pingcap/docs-cn 仓库**
+### 第 1 步：Fork pingcap/docs-cn 仓库
 
 1. 打开 pingcap/docs-cn 项目[仓库](https://help.github.com/articles/github-glossary/#repository)：<https://github.com/pingcap/docs-cn>
 2. 点击右上角的 [**Fork**](https://help.github.com/articles/github-glossary/#fork) 按钮，等待 Fork 完成即可。
 
-**第 2 步：将 Fork 的仓库克隆至本地**
+### 第 2 步：将 Fork 的仓库克隆至本地
 
 ```
 cd $working_dir # 将 $working_dir 替换为你想放置 repo 的目录。例如，`cd ~/Documents/GitHub`
@@ -107,7 +104,7 @@ git remote add upstream git@github.com:pingcap/docs-cn.git # 添加上游仓库
 git remote -v
 ```
 
-**第 3 步：新建一个 Branch**
+### 第 3 步：新建一个 Branch
 
 1. 确保本地 master branch 与 upstream/master 保持最新。
 
@@ -124,11 +121,11 @@ git remote -v
     git checkout -b new-branch-name
     ```
 
-**第 4 步：编辑文档进行增删或修改**
+### 第 4 步：编辑文档进行增删或修改
 
 在建好的 `new-branch-name` branch 上进行编辑，可使用 Markdown 编辑器（如 Visual Studio Code）打开 docs-cn repo，对相应文档进行增、删，或修改，并保存你的修改。
 
-**第 5 步：提交你的修改**
+### 第 5 步：提交你的修改
 
 ```
 git status
@@ -138,7 +135,7 @@ git commit -m "commit-message: update the xx"
 
 参考[如何写 commit message](https://github.com/pingcap/community/blob/master/contributors/commit-message-pr-style.md#how-to-write-a-good-commit-message)。
 
-**第 6 步：保持新建 branch 与 upstream/master 一致**
+### 第 6 步：保持新建 branch 与 upstream/master 一致
 
 ```
 # 在新建 branch 上
@@ -146,13 +143,13 @@ git fetch upstream
 git rebase upstream/master
 ```
 
-**第 7 步：将你的修改推至远程**
+### 第 7 步：将你的修改推至远程
 
 ```
 git push -u origin new-branch-name
 ```
 
-**第 8 步：创建一个 Pull Request**
+### 第 8 步：创建一个 Pull Request
 
 1. 打开你 Fork 的仓库：`https://github.com/$user/docs-cn`（将其中的 `$user` 替换为你的 GitHub ID）
 2. 点击 `Compare & pull request` 按钮即可创建 PR。参考[如何写 PR title 和描述](https://github.com/pingcap/community/blob/master/contributors/commit-message-pr-style.md)。
@@ -161,7 +158,7 @@ git push -u origin new-branch-name
 >
 > - 如果你的修改影响多个文档版本 (如 dev、v7.5、v7.4 等)，务必**在 PR 描述框中勾选相应的版本**，后续仓库管理员会为你的 PR 打上相应的 cherry-pick label。
 
-</details>
+## 参考资料
 
 <details>
 <summary>如何认领中文翻译任务？</summary>
