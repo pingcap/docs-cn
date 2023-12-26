@@ -36,13 +36,13 @@ TiCDC 复制功能只会将指定时间点之后的增量变更复制到下游�
 
 ## DDL 类别
 
-从 v7.6.0 版本之后，为了在双向同步中尽可能地支持 DDL 同步，根据 DDL 对业务的影响，TiDB 把 [TiCDC 原本支持同步的 DDL](/ticdc/ticdc-ddl.md) 划分为了两种 DDL：可执行 DDL 和不可执行 DDL。
+从 v7.6.0 版本之后，为了在双向同步中尽可能地支持 DDL 同步，根据 DDL 对业务的影响，TiDB 把 [TiCDC 原本支持同步的 DDL](/ticdc/ticdc-ddl.md) 划分为了两种 DDL：可复制的 DDL 和不可复制的 DDL。
 
-### 可执行 DDL
+### 可复制的 DDL
 
-可执行 DDL 是指在双向同步中，可以直接执行并同步到其他 TiDB 集群的 DDL。
+可复制的 DDL 是指在双向同步中，可以直接执行并同步到其他 TiDB 集群的 DDL。
 
-可执行 DDL包括：
+可复制的 DDL包括：
 
 - `CREATE DATABASE`
 - `CREATE TABLE`
@@ -61,11 +61,11 @@ TiCDC 复制功能只会将指定时间点之后的增量变更复制到下游�
 - `CREATE VIEW`
 - `DROP VIEW`
 
-### 不可执行 DDL
+### 不可复制的 DDL
 
-不可执行 DDL 是指对业务影响较大、不能在双向同步中直接通过 TiCDC 同步到其他 TiDB 集群的 DDL。不可执行 DDL 必须通过特定的操作来执行。
+不可复制的 DDL 是指对业务影响较大、不能在双向同步中直接通过 TiCDC 同步到其他 TiDB 集群的 DDL。不可复制的 DDL 必须通过特定的操作来执行。
 
-不可执行 DDL 包括：
+不可复制的 DDL 包括：
 
 - `DROP DATABASE`
 - `DROP TABLE`
@@ -87,51 +87,51 @@ TiCDC 复制功能只会将指定时间点之后的增量变更复制到下游�
 
 ## DDL 同步
 
-为了能够解决上述可执行 DDL 和不可执行 DDL 两类 DDL 的同步问题，TiDB 引入了三种 BDR role：
+为了能够解决上述可复制的 DDL 和不可复制的 DDL 两类 DDL 的同步问题，TiDB 引入了三种 BDR role：
 
-- `LOCAL_ONLY`（默认）：用户能执行任意 DDL，但是在 TiCDC 开启 `bdr_mode=true` 之后，执行的 DDL 不会被 TiCDC 同步。
-- `PRIMARY`：用户能执行可执行 DDL，但不能执行不可执行 DDL，可执行 DDL 会被 TiCDC 同步到下游。
-- `SECONDARY`：用户不能执行可执行 DDL，也不能执行不可执行 DDL，但是会执行从 TiCDC 同步过来的 DDL。
+- `LOCAL_ONLY`（默认）：你可以执行任意 DDL，但是在 TiCDC 开启 `bdr_mode=true` 之后，执行的 DDL 不会被 TiCDC 同步。
+- `PRIMARY`：你可以执行可复制的 DDL，但不能执行不可复制的 DDL，可复制的 DDL 会被 TiCDC 同步到下游。
+- `SECONDARY`：你不能执行可复制的 DDL，也不能执行不可复制的 DDL，但是会执行从 TiCDC 同步过来的 DDL。
 
 > **警告：**
 >
 > 双向复制的 DDL 同步目前为实验特性，不建议在生产环境中使用。该功能可能会在未事先通知的情况下发生变化或删除。如果发现 bug，请在 GitHub 上提 [issue](https://github.com/pingcap/tidb/issues) 反馈。
 
-### 可执行 DDL 的同步场景
+### 可复制的 DDL 的同步场景
 
 1. 选择一个 TiDB 集群，执行 `ADMIN SET BDR ROLE PRIMARY` 将其设置为主集群。
 2. 在其他 TiDB 集群上，执行 `ADMIN SET BDR ROLE SECONDARY` 将其设置为从集群。
-3. 在主集群上执行**可执行 DDL**，执行成功的 DDL 会被 TiCDC 同步到从集群中。
+3. 在主集群上执行**可复制的 DDL**，执行成功的 DDL 会被 TiCDC 同步到从集群中。
 
 > **注意：**
 >
 > 为了防止误操作：
 >
-> - 如果有**不可执行 DDL** 在主集群中尝试执行，会[报错 8263](/error-codes.md)。
-> - 无论是**可执行 DDL** 还是**不可执行 DDL** 在从集群中尝试执行，都会[报错 8263](/error-codes.md)。
+> - 如果有**不可复制的 DDL** 在主集群中尝试执行，会[报错 8263](/error-codes.md)。
+> - 无论是**可复制的 DDL** 还是**不可复制的 DDL** 在从集群中尝试执行，都会[报错 8263](/error-codes.md)。
 
-### 不可执行 DDL 的同步场景
+### 不可复制的 DDL 的同步场景
 
 1. 将所有 TiDB 集群的 BDR role 设置为 `LOCAL_ONLY`（默认值），然后执行 `ADMIN SET BDR ROLE LOCAL_ONLY`。
 2. 暂停所有集群中需要执行 DDL 的对应的表的写入操作。
 3. 等待所有集群中对应表的所有写入已经同步到其他集群后，手动在每一个 TiDB 集群上单独执行所有的 DDL。
 4. 等待 DDL 完成之后，重新恢复写入。
-5. 按照[可执行 DDL 的同步场景](#可执行-DDL-的同步场景)的操作步骤，切换回可执行 DDL 的同步场景。
+5. 按照[可复制的 DDL 的同步场景](#可复制的-DDL-的同步场景)的操作步骤，切换回可复制的 DDL 的同步场景。
 
 ## 停止双向复制
 
 在业务数据停止写入之后，你可以在两个集群中都插入一行特殊的值，通过检查这两行特殊的值来确保数据达到了一致的状态。
 
-检查完毕之后，停止同步任务，并把 BDR role 切换回 `LOCAL_ONLY` （默认值）即可停止双向复制。
+检查完毕之后，停止同步任务，并把 BDR role 切换回 `LOCAL_ONLY`（默认值）即可停止双向复制。
 
 ## 使用限制
 
 - BDR role 只能在以下两种场景中正常使用：
 
-    - 1 个 `PRIMARY` 集群和 n 个 `SECONDARY` 集群（可执行 DDL 的同步场景）
-    - n 个 `LOCAL_ONLY` 集群（不可执行 DDL 的同步场景）
+    - 1 个 `PRIMARY` 集群和 n 个 `SECONDARY` 集群（可复制的 DDL 的同步场景）
+    - n 个 `LOCAL_ONLY` 集群（不可复制的 DDL 的同步场景）
 
-    **注意，请勿将 BDR role 设置为其他情况，例如，`PRIMARY+SECONDARY+LOCAL_ONLY`，TiDB 无法在错误设置 BDR role 的情况下保证正确性。**
+    **注意，请勿将 BDR role 设置为其他情况，例如，同时设置了 `PRIMARY`、`SECONDARY`、`LOCAL_ONLY`。如果错误地设置了 BDR role，TiDB 无法保证数据正确性。**
 
 - 禁止在同步的表中使用 `AUTO_INCREMENT` 或 `AUTO_RANDOM` 键，以免产生数据不一致的问题。
 
