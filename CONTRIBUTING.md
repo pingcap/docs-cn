@@ -4,10 +4,11 @@
 
 ## 我能为 TiDB 文档做什么贡献？
 
-🚀 为了给大家带来更好的文档使用体验，我们宣布，首届 TiDB 文档挑战赛 (TiDB Docs Dash) 将于 2024 年 1 月 9 日 - 12 日进行。同时，我们也希望将借此机会将 TiDB 社区成员聚集到一起，为大家带来一次有趣的协作体验。
+🚀 为了给大家带来更好的文档使用体验，首届 TiDB 文档挑战赛 (TiDB Docs Dash) 将于 2024 年 1 月 9 日 - 12 日进行。同时，我们也希望将借此机会将 TiDB 社区成员聚集到一起，为大家带来一次有趣的协作体验。
 
-- 活动详情和奖励，请参考 [2024 TiDB 文档挑战赛来啦！提 PR、提 Issue 来赢取 Bose 耳机、TiDB 限量款机械键盘等超丰富周边吧](https://asktug.com/t/topic/1019364)。
-- 活动任务列表：<https://asktug.com/t/topic/1019364>
+- 活动详情和奖励，请参考 [2024 TiDB 文档挑战赛来啦！提 PR、提 Issue 来赢取 Bose 耳机、TiDB 限量款机械键盘等超丰富周边吧](https://asktug.com/t/topic/1019364)
+- 活动参与说明：<https://github.com/pingcap/docs-cn/issues/15867>
+- 活动任务列表：<https://github.com/orgs/pingcap/projects/51>
 
 除了以上活动相关任务，你也可以在提升 TiDB 文档质量、易用性、维护效率、翻译效率等方面做贡献，比如：
 
