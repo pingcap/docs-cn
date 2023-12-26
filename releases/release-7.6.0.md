@@ -15,14 +15,6 @@ TiDB 版本：7.6.0
 
 ## 功能详情
 
-### 可扩展性
-
-* 功能标题 [#issue号](链接) @[贡献者 GitHub ID](链接) **tw@xxx** <!--1234-->
-
-    功能描述（需要包含这个功能是什么、在什么场景下对用户有什么价值、怎么用）
-
-    更多信息，请参考[用户文档](链接)。
-
 ### 性能
 
 * BR 快照恢复速度最大提升 10 倍 [#33937](https://github.com/pingcap/tidb/issues/33937) @[3pointer](https://github.com/3pointer) **tw@Oreoxmt** <!--1647-->
@@ -67,7 +59,7 @@ TiDB 版本：7.6.0
 
     更多信息，请参考[用户文档](/sql-prepared-plan-cache.md)。
 
-建表的性能提升 10 倍 [#49752](https://github.com/pingcap/tidb/issues/49752) @[gmhdbjd](https://github.com/gmhdbjd) **tw@hfxsd** <!--1408-->
+* 建表的性能提升 10 倍 [#49752](https://github.com/pingcap/tidb/issues/49752) @[gmhdbjd](https://github.com/gmhdbjd) **tw@hfxsd** <!--1408-->
 
     在之前的版本里，用户将上游数据库上万张表迁移到 TiDB 时， TiDB 需要消耗较长的时间来创建这些表，效率较低。在 7.6 版本引入新的 DDL 架构，可通过系统参数 tidb_ddl_v2 开启，新版本的 DDL 相比之前版本的 DDL 在批量建表的性能有 10 倍的提升，可大大减少用户建表的时间。
 
@@ -127,10 +119,10 @@ TiDB 版本：7.6.0
     更多信息，请参考[用户文档](/sql-statements/sql-statement-load-data.md)。
 
 ### 数据库管理
+
 * 闪回功能支持精确 TSO [#48372](https://github.com/pingcap/tidb/issues/48372) @[BornChanger](https://github.com/BornChanger/BornChanger) **tw@qiancai** <!--1615-->
 
     TiDB v7.6.0 提供了更加强大和精确的闪回功能，不仅支持回溯到过去指定的时间点，还可以通过 `FLASHBACK CLUSTER TO TSO` 精确地指定恢复的 [TSO](tso.md) 时间戳，实现更加灵活的数据恢复。例如，此功能可和 TiCDC 联合使用，允许下游 TiDB 集群在暂停数据同步、开启预上线读写测试后，优雅快速地回溯到暂停的 TSO 时间戳并继续通过 TiCDC 同步数据，简化了预上线验证流程和数据管理。
-    
 
     ```sql
     FLASHBACK CLUSTER TO TSO 445494839813079041;
@@ -195,14 +187,6 @@ TiDB 版本：7.6.0
 
     请参考[慢日志](/identify-slow-queries.md)，[Statement Summary Tables](/statement-summary-tables.md)，[资源管控 (Resource Control) 监控指标详解](/grafana-resource-control-dashboard.md)。
 
-### 安全
-
-* 功能标题 [#issue号](链接) @[贡献者 GitHub ID](链接) **tw@xxx** <!--1234-->
-
-    功能描述（需要包含这个功能是什么、在什么场景下对用户有什么价值、怎么用）
-
-    更多信息，请参考[用户文档](链接)。
-
 ### 数据迁移
 
 * DataMigration（DM）迁移 MySQL8.0 的功能成为正式功能（GA） [#issue号](链接) @[lyzx2001](https://github.com/lyzx2001) **tw@hfxsd** <!--1617-->
@@ -258,7 +242,7 @@ TiDB 版本：7.6.0
 
 ## 废弃功能
 
-* 实验特性 [执行计划的自动演进绑定](https://docs.pingcap.com/zh/tidb/stable/sql-plan-management#%E8%87%AA%E5%8A%A8%E6%BC%94%E8%BF%9B%E7%BB%91%E5%AE%9A-baseline-evolution) 将在 v8.0.0 被废弃，等同的功能将会在后续版本被重新设计。 
+* 实验特性 [执行计划的自动演进绑定](https://docs.pingcap.com/zh/tidb/stable/sql-plan-management#%E8%87%AA%E5%8A%A8%E6%BC%94%E8%BF%9B%E7%BB%91%E5%AE%9A-baseline-evolution) 将在 v8.0.0 被废弃，等同的功能将会在后续版本被重新设计。
 
 * 废弃功能 2
 
