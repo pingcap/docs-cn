@@ -91,7 +91,7 @@ TiCDC 复制功能只会将指定时间点之后的增量变更复制到下游�
 
 - `LOCAL_ONLY`（默认）：用户能执行任意 DDL，但是在 TiCDC 开启 `bdr_mode=true` 之后，执行的 DDL 不会被 TiCDC 同步。
 - `PRIMARY`：用户能执行可执行 DDL，但不能执行不可执行 DDL，可执行 DDL 会被 TiCDC 同步到下游。
-- `SECONDAR`：用户不能执行可执行 DDL，也不能执行不可执行 DDL，但是会执行从 TiCDC 同步过来的 DDL。
+- `SECONDARY`：用户不能执行可执行 DDL，也不能执行不可执行 DDL，但是会执行从 TiCDC 同步过来的 DDL。
 
 > **警告：**
 >
@@ -100,7 +100,7 @@ TiCDC 复制功能只会将指定时间点之后的增量变更复制到下游�
 ### 可执行 DDL 的同步场景
 
 1. 选择一个 TiDB 集群，执行 `ADMIN SET BDR ROLE PRIMARY` 将其设置为主集群。
-2. 在其他 TiDB 集群上，执行 `ADMIN SET BDR ROLE SECONDAR` 将其设置为从集群。
+2. 在其他 TiDB 集群上，执行 `ADMIN SET BDR ROLE SECONDARY` 将其设置为从集群。
 3. 在主集群上执行**可执行 DDL**，执行成功的 DDL 会被 TiCDC 同步到从集群中。
 
 > **注意：**
@@ -128,10 +128,10 @@ TiCDC 复制功能只会将指定时间点之后的增量变更复制到下游�
 
 - BDR role 只能在以下两种场景中正常使用：
 
-    - 1 个 `PRIMARY` 集群和 n 个 `SECONDAR` 集群（可执行 DDL 的同步场景）
+    - 1 个 `PRIMARY` 集群和 n 个 `SECONDARY` 集群（可执行 DDL 的同步场景）
     - n 个 `LOCAL_ONLY` 集群（不可执行 DDL 的同步场景）
 
-    **注意，请勿将 BDR role 设置为其他情况，例如，`PRIMARY+SECONDAR+LOCAL_ONLY`，TiDB 无法在错误设置 BDR role 的情况下保证正确性。**
+    **注意，请勿将 BDR role 设置为其他情况，例如，`PRIMARY+SECONDARY+LOCAL_ONLY`，TiDB 无法在错误设置 BDR role 的情况下保证正确性。**
 
 - 禁止在同步的表中使用 `AUTO_INCREMENT` 或 `AUTO_RANDOM` 键，以免产生数据不一致的问题。
 
