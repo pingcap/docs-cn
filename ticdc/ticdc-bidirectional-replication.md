@@ -42,7 +42,7 @@ TiCDC 复制功能只会将指定时间点之后的增量变更复制到下游�
 
 可复制的 DDL 是指在双向同步中，可以直接执行并同步到其他 TiDB 集群的 DDL。
 
-可复制的 DDL包括：
+可复制的 DDL 包括：
 
 - `CREATE DATABASE`
 - `CREATE TABLE`
