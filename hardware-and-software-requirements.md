@@ -59,11 +59,11 @@ As an open-source distributed SQL database with high performance, TiDB can be de
     <td><ul><li>x86_64</li><li>ARM 64</li></ul></td>
   </tr>
   <tr>
-    <td>Oracle Enterprise Linux 7.3 or a later 7.x version</td>
+    <td>Oracle Enterprise Linux 8 or a later</td>
     <td>x86_64</td>
   </tr>
   <tr>
-    <td>Ubuntu LTS 18.04 or later</td>
+    <td>Ubuntu LTS 20.04 or later</td>
     <td>x86_64</td>
   </tr>
   <tr>
@@ -71,15 +71,15 @@ As an open-source distributed SQL database with high performance, TiDB can be de
     <td><ul><li>x86_64</li><li>ARM 64</li></ul></td>
   </tr>
   <tr>
-    <td>Debian 9 (Stretch) or later</td>
+    <td>Debian 10 (Buster) or later</td>
     <td>x86_64</td>
   </tr>
   <tr>
-    <td>Fedora 35 or later</td>
+    <td>Fedora 38 or later</td>
     <td>x86_64</td>
   </tr>
   <tr>
-    <td>openSUSE Leap later than v15.3 (not including Tumbleweed)</td>
+    <td>openSUSE Leap later than v15.5 (not including Tumbleweed)</td>
     <td>x86_64</td>
   </tr>
   <tr>
@@ -266,4 +266,4 @@ As an open-source distributed SQL database, TiDB requires the following network 
 
 ## Web browser requirements
 
-TiDB relies on [Grafana](https://grafana.com/) to provide visualization of database metrics. A recent version of Internet Explorer, Chrome or Firefox with Javascript enabled is sufficient.
+TiDB relies on [Grafana](https://grafana.com/) to provide visualization of database metrics. A recent version of Microsoft Edge, Safari, Chrome or Firefox with Javascript enabled is sufficient.
