@@ -5,7 +5,7 @@ summary: TiDB 数据库中 ADMIN [SET|SHOW] BDR ROLE 的使用概况。
 
 # ADMIN [SET|SHOW] BDR ROLE
 
-- `ADMIN SET BDR ROLE` 可以设置该集群的 BDR role。现在 TiDB 集群可以设置 `PRIMARY`、`SECONDAR` 和 `LOCAL_ONLY`（默认）三种 BDR role。关于 BDR role 的详细信息可参考 [TiCDC 双向复制的 DDL 同步小节](../ticdc/ticdc-bidirectional-replication.md#ddl-同步)。
+- `ADMIN SET BDR ROLE` 可以设置该集群的 BDR role。现在 TiDB 集群可以设置 `PRIMARY`、`SECONDARY` 和 `LOCAL_ONLY`（默认）三种 BDR role。关于 BDR role 的详细信息可参考 [TiCDC 双向复制的 DDL 同步小节](../ticdc/ticdc-bidirectional-replication.md#ddl-同步)。
 - `ADMIN SHOW BDR ROLE` 可以显示该集群的 BDR role。
 
 > **警告：**
