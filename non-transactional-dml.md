@@ -336,7 +336,7 @@ batch on test.t2.id LIMIT 1 INSERT INTO t SELECT t2.id, t2.v, t3. FROM t2, t3 WH
 ```
 
 ```sql
-(1054, "Unknown column '3.id' in 'where clause'")
+(1054, "Unknown column 't3.id' in 'where clause'")
 ```
 当遇到此错误时，你可以通过 dry run query 打印出查询语句来确认。
 
