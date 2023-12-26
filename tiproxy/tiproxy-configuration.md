@@ -1,11 +1,10 @@
 ---
 title: TiProxy 配置文件
-summary: Learn how to configure TiProxy.
+summary: 了解与 TiProxy 部署和使用相关的配置参数。
 ---
 
 # TiProxy 配置文件
 
-This document introduces the configuration parameters related to the deployment and use of TiProxy. The following is an example configuration:
 本文档介绍了与 TiProxy 部署和使用相关的配置参数。以下是一个配置示例：
 
 ```toml
@@ -26,8 +25,6 @@ skip-ca = true
 [security.sql-tls]
 skip-ca = true
 ```
-
-# ignore-wrong-namespace = true
 
 ## 配置 `tiproxy.toml` 文件
 

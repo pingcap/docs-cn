@@ -40,5 +40,5 @@ summary: 介绍 TiProxy 的常见问题、原因及解决办法。
 
 1. 通过 Grafana 监控指标检查 TiProxy 上显示的延迟。如果 TiProxy 上显示的延迟不高，则是客户端负载高或客户端与 TiProxy 之间的网络延迟高。
 2. 通过 Grafana 监控指标检查 TiDB server 上显示的延迟。如果 TiDB server 上显示的延迟高，则通过 TiDB 的[延迟明显升高](/tidb-troubleshooting-map.md#2-延迟明显升高) 的步骤排查。
-3. 通过 Grafana 监控指标检查 [TiProxy 与 TiDB server 之间网络通信时间](/tiproxy/tiproxy-grafana.md#Backend)。
+3. 通过 Grafana 监控指标检查 [TiProxy 与 TiDB server 之间网络通信时间](/tiproxy/tiproxy-grafana.md#backend)。
 4. 检查 TiProxy 的 CPU 使用率。如果 CPU 使用率超过 90%，则需要扩容 TiProxy。

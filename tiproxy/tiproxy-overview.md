@@ -26,6 +26,7 @@ TiProxy 在保持客户端连接不变的情况下，能将一台 TiDB server �
 ![TiProxy 连接迁移](/media/tiproxy/tiproxy-session-migration.png)
 
 连接迁移通常发生在以下场景：
+
 - 当 TiDB server 进行缩容、滚动升级、滚动重启操作时，TiProxy 能把连接从即将下线的 TiDB server 迁移到其他 TiDB server 上，从而保持客户端连接不断开。
 - 当 TiDB server 进行扩容操作时，TiProxy 能将已有的部分连接迁移到新的 TiDB server 上，从而实现了实时的负载均衡，无需客户端重置连接池。
 
@@ -40,10 +41,12 @@ TiProxy 集成到了 [TiUP](https://github.com/pingcap/tiup)、[TiDB Operator](h
 ## 使用场景
 
 TiProxy 适用于以下场景：
+
 - 连接保持：当 TiDB 缩容、滚动升级、滚动重启操作时，客户端连接会断开，导致报错。如果客户端没有幂等的错误重试机制，则需要人工手动检查错误并修复，这大大增加了人力成本。TiProxy 能保持客户端连接，因此可以避免客户端报错。
 - 频繁扩缩容：应用的负载可能周期性地变化，为了节省成本，你可以将 TiDB 部署到云上，并根据负载自动地扩缩容 TiDB server。然而，缩容可能导致客户端断连，而扩容不能及时地实现负载均衡。通过迁移连接功能，TiProxy 能保持客户端连接并实现负载均衡。
 
 TiProxy 不适用于以下场景：
+
 - 对性能敏感：TiProxy 的性能低于 HAProxy 等负载均衡器，因此使用 TiProxy 会降低 QPS。请参阅 [TiProxy 性能测试报告](/tiproxy/tiproxy-performance-test.md)。
 - 对成本敏感：如果 TiDB 集群使用了硬件负载均衡、虚拟 IP 或 Kubernetes 自带的负载均衡器，此时增加 TiProxy 组件会增加成本。另外，如果在云上跨可用区部署 TiDB 集群，增加 TiProxy 组件也会增加跨可用区的流量费用。
 - TiDB server 的故障转移：只有当 TiDB server 在计划内的下线或重启操作时，TiProxy 才能保持连接。如果 TiDB server 意外下线，则连接仍然会断开。
@@ -116,8 +119,8 @@ TiProxy 不适用于以下场景：
 ## TiProxy 与其他组件的兼容性
 
 - TiProxy 仅支持 TiDB v6.5.0 及以上版本。
-- TiProxy 的 TLS 连接与 TiDB 有不兼容的功能，请参阅 [安全](#安全)。
-- TiUP 从 v1.14.1 开始支持 TiProxy，TiDB-Operator 从 v1.5.2 开始支持 TiProxy。
+- TiProxy 的 TLS 连接与 TiDB 有不兼容的功能，请参阅[安全](#安全)。
+- TiUP 从 v1.14.1 开始支持 TiProxy，TiDB Operator 从 v1.5.2 开始支持 TiProxy。
 - 由于 TiProxy 的状态端口提供的接口与 TiDB server 不同，使用 [TiDB Lightning](/tidb-lightning/tidb-lightning-overview.md) 导入数据时，目标数据库应当填写 TiDB server 的地址，不能是 TiProxy 的地址。
 
 ## 安全
@@ -153,7 +156,7 @@ TiProxy 的以下行为与 TiDB 不兼容：
 - 会话创建了[本地临时表](/temporary-tables.md#本地临时表)。
 - 会话持有了[用户级锁](/functions-and-operators/locking-functions.md)。
 - 会话持有了[表锁](/sql-statements/sql-statement-lock-tables-and-unlock-tables.md)。
-- 会话创建了 [预处理语句](/develop/dev-guide-prepared-statement.md)，且该预处理语句失效，例如创建预处理语句之后相关的表被删除。
+- 会话创建了[预处理语句](/develop/dev-guide-prepared-statement.md)，且该预处理语句失效，例如创建预处理语句之后相关的表被删除。
 - 会话创建了会话级的[执行计划绑定](/sql-plan-management.md#执行计划绑定-sql-binding)，且该执行计划绑定失效，例如创建执行计划绑定之后相关的表被删除。
 - 创建会话后，该会话使用的用户被删除或用户名被更改。
 

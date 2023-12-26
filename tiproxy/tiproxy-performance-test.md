@@ -17,6 +17,7 @@ summary: TiProxy 的性能测试报告、与 HAProxy 的性能对比。
 ## 测试环境
 
 ### 硬件配置
+
 | 服务类型 | 实例机型 | CPU 架构 | 实例数 |
 | --- | --- | --- | --- |
 | TiProxy | 4C8G | AMD64 | 1 |
@@ -26,7 +27,8 @@ summary: TiProxy 的性能测试报告、与 HAProxy 的性能对比。
 | TiKV | 8C16G | AMD64 | 8 |
 | Sysbench | 8C16G | AMD64 | 1 |
 
-##3 软件版本
+### 软件版本
+
 | 服务类型 | 软件版本 |
 | --- | --- |
 | TiProxy | v0.2.0 |
