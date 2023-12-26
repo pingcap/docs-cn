@@ -305,7 +305,7 @@ TiDB 版本：7.6.0
 
 + TiKV
 
-    - note [#issue](链接) @[贡献者 GitHub ID](链接)
+    - 修复损坏的 SST 文件可能会扩散到其他 TiKV 节点导致 panic 的问题 [#15986](https://github.com/tikv/tikv/issues/15986) @[Connor1996](https://github.com/Connor1996) **tw@Oreoxmt** <!--1631-->
     - note [#issue](链接) @[贡献者 GitHub ID](链接)
 
 + PD
