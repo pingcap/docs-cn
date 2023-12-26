@@ -39,7 +39,7 @@ ADMIN SHOW BDR ROLE;
 1 row in set (0.01 sec)
 ```
 
-把 BDR role 设置为 `PRIMARY`。
+执行以下命令可以将 BDR role 设置为 `PRIMARY`。
 
 ```sql
 ADMIN SET BDR ROLE PRIMARY;
