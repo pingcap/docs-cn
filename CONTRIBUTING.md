@@ -8,7 +8,6 @@
 
 - 活动详情和奖励，请参考 [2024 TiDB 文档挑战赛来啦！提 PR、提 Issue 来赢取 Bose 耳机、TiDB 限量款机械键盘等超丰富周边吧](https://asktug.com/t/topic/1019364)
 - 活动参与说明：<https://github.com/pingcap/docs-cn/issues/15867>
-https://github.com/pingcap/docs-cn/issues/15867
 - 活动任务列表：<https://asktug.com/t/topic/1019364>
 
 除了以上活动相关任务，你也可以在提升 TiDB 文档质量、易用性、维护效率、翻译效率等方面做贡献，比如：
