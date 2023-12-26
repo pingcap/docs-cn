@@ -10,7 +10,7 @@ TiDB 服务器采用不同 SQL 模式来操作，且不同客户端可以应用�
 TiDB 启动之后，你可以使用 `SET [ SESSION | GLOBAL ] sql_mode='modes'` 语句设置 SQL 模式。
 
 - 设置 `GLOBAL` 级别的 SQL 模式时用户需要有 `SUPER` 权限，并且只会影响到从设置 SQL 模式开始后续新建立的连接（注：老连接不受影响）。
-- 设置 `SESSION` 级别的 SQL 模式的变化只会影响当前的客户端。
+- `SESSION` 级别的 SQL 模式的变化只会影响当前的客户端。
 
 
 在该语句中，`modes` 是用逗号 (`,`) 间隔开的一系列不同的模式。使用 `SELECT @@sql_mode` 语句查询当前 SQL 模式，SQL 模式默认值：`ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION`。
