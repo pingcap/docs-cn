@@ -7,7 +7,6 @@ summary: TiDB 数据库中 IMPORT INTO 的使用概况。
 
 `IMPORT INTO` 语句使用 TiDB Lightning 的[物理导入模式](/tidb-lightning/tidb-lightning-physical-import-mode.md)，用于将 `CSV`、`SQL`、`PARQUET` 等格式的数据导入到 TiDB 的一张空表中。
 
-<<<<<<< HEAD
 > **警告：**
 >
 > 目前该语句为实验特性，不建议在生产环境中使用。
