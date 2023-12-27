@@ -59,9 +59,9 @@ TiDB 版本：7.6.0
 
     更多信息，请参考[用户文档](/sql-prepared-plan-cache.md)。
 
-* 建表的性能提升 10 倍 [#49752](https://github.com/pingcap/tidb/issues/49752) @[gmhdbjd](https://github.com/gmhdbjd) **tw@hfxsd** <!--1408-->
+* 建表性能提升 10 倍 [#49752](https://github.com/pingcap/tidb/issues/49752) @[gmhdbjd](https://github.com/gmhdbjd) **tw@hfxsd** <!--1408-->
 
-    在之前的版本里，用户将上游数据库上万张表迁移到 TiDB 时， TiDB 需要消耗较长的时间来创建这些表，效率较低。在 7.6 版本引入新的 DDL 架构，可通过系统参数 tidb_ddl_v2 开启，新版本的 DDL 相比之前版本的 DDL 在批量建表的性能有 10 倍的提升，可大大减少用户建表的时间。
+    在之前的版本里，将上游数据库上万张表迁移到 TiDB 时，TiDB 创建这些表耗时长，效率低。从 v7.6.0 开始，引入了新的 DDL 架构，可通过系统参数 `tidb_ddl_v2` 开启。相比之前的版本，新版本的 DDL 批量建表性能实现了高达 10 倍的提升，大幅减少了建表时间。
 
     更多信息，请参考[用户文档](链接)。
 
@@ -152,11 +152,11 @@ TiDB 版本：7.6.0
 
     更多信息，请参考[用户文档](/system-variables.md#tidb_txn_entry_size_limit-从-v760-版本开始引入) 。
 
-* 增强 Bi-directional replication(BDR) 对 DDL 的同步 [#48519](https://github.com/pingcap/tidb/issues/48519) @[okJiang](https://github.com/okJiang) **tw@hfxsd** <!--1521/1525-->
+* 增强 Bi-Directional Replication (BDR) 对 DDL 的同步 [#48519](https://github.com/pingcap/tidb/issues/48519) @[okJiang](https://github.com/okJiang) **tw@hfxsd** <!--1521/1525-->
 
-    在使用 TiCDC 对多个 TiDB 集群进行双向同步时，为了避免 DDL 循环同步，禁止了 DDL 的同步。7.6 版本引入 BDR Role 后，集群可以通过正确设置 BDR Role，使某些 DDL 正常同步。
+    在使用 TiCDC 对多个 TiDB 集群进行双向同步时，为了避免 DDL 循环同步，禁止了 DDL 的同步。从 v7.6.0 开始，引入了 BDR Role 的概念，你可以为集群设置 BDR Role，同步可复制的 DDL 和不可复制的 DDL。
 
-    更多信息，请参考[用户文档](链接)。
+    更多信息，请参考[用户文档](/ticdc/ticdc-bidirectional-replication.md#ddl-同步)。
 
 * 全局排序功能成为正式功能（GA)，提升 `Add Index` 和 `Import Into` 的性能和稳定性 [#45719](https://github.com/pingcap/tidb/issues/45719) @[wjhuang2016](https://github.com/wjhuang2016) @[D3Hunter](https://github.com/D3Hunter) **tw@ran-huang** <!--1580/1579-->
 
@@ -176,22 +176,22 @@ TiDB 版本：7.6.0
 
 ### 可观测性
 
-* 资源管控相关观测性增强 [#49318](https://github.com/pingcap/tidb/issues/49318) @[glorv](https://github.com/glorv) @[bufferflies](https://github.com/bufferflies) @[nolouch](https://github.com/nolouch) **tw@hfxsd** <!--1668-->
+* 增强资源管控相关的观测性 [#49318](https://github.com/pingcap/tidb/issues/49318) @[glorv](https://github.com/glorv) @[bufferflies](https://github.com/bufferflies) @[nolouch](https://github.com/nolouch) **tw@hfxsd** <!--1668-->
 
-    随着更多客户利用资源组对业务应用进行隔离，资源管控提供了更丰富的基于资源组的数据，协助客户对资源组的负载，以及资源组设置进行观测。确保发生问题时能够快速发现并缩小诊断范围。其中包括：
+    随着越来越多用户利用资源组对业务应用进行隔离，资源管控提供了更丰富的基于资源组的数据，协助你观测资源组负载、资源组设置，确保出现问题时能够快速发现并精准诊断。其中包括：
 
-    * [慢日志](/identify-slow-queries.md) 增加资源组名称，RU消耗，以及对等待资源耗时。
-    * [Statement Summary Tables](/statement-summary-tables.md) 增加资源组名称，RU消耗，以及对等待资源耗时。
-    * 增加变量[`ru_by_last_statement`]()，用来立即获取前一条 SQL 的RU消耗。
-    * 增加基于资源组的数据库指标：QPS/TPS，执行时间(P999/P99/P95)，失败次数，连接数。
+    * [慢日志](/identify-slow-queries.md) 增加资源组名称、RU消耗、以及等待资源耗时。
+    * [Statement Summary Tables](/statement-summary-tables.md) 增加资源组名称、RU消耗、以及对等待资源耗时。
+    * 增加变量 [`ru_by_last_statement`]()，用于立即获取前一条 SQL 的 RU 消耗。
+    * 增加基于资源组的数据库指标：QPS/TPS、执行时间(P999/P99/P95)、失败次数、连接数。
 
-    请参考[慢日志](/identify-slow-queries.md)，[Statement Summary Tables](/statement-summary-tables.md)，[资源管控 (Resource Control) 监控指标详解](/grafana-resource-control-dashboard.md)。
+    更多信息，请参考[慢日志](/identify-slow-queries.md)、[Statement Summary Tables](/statement-summary-tables.md)、[资源管控 (Resource Control) 监控指标详解](/grafana-resource-control-dashboard.md)。
 
 ### 数据迁移
 
-* DataMigration（DM）迁移 MySQL8.0 的功能成为正式功能（GA） [#issue号](链接) @[lyzx2001](https://github.com/lyzx2001) **tw@hfxsd** <!--1617-->
+* Data Migration (DM) 支持迁移 MySQL 8.0 的功能成为正式功能（GA）[#issue号](链接) @[lyzx2001](https://github.com/lyzx2001) **tw@hfxsd** <!--1617-->
 
-    之前 DM 迁移 MySQL8.0 仅为实验特性，不可用于生产环境。本次对该功能的稳定性，兼容性做了增强，可在生产环境帮助用户平滑、快速地将数据从 MySQL 8.0 迁移到 TiDB。
+    之前 DM 迁移 MySQL8.0 仅为实验特性，不可用于生产环境。TiDB v7.6.0 增强了该功能的稳定性、兼容性，可在生产环境帮助你平滑、快速地将数据从 MySQL 8.0 迁移到 TiDB。
 
     更多信息，请参考[用户文档](链接)。
 
