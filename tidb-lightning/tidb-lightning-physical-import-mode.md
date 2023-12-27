@@ -5,7 +5,7 @@ summary: 了解 TiDB Lightning 的物理导入模式。
 
 # 物理导入模式简介
 
-物理导入模式 (Physical Import Mode) 是 TiDB Lightning 支持的一种数据导入方式。物理导入模式不经过 SQL 接口，而是直接将数据以键值对的形式插入 TiKV 节点，是一种高效、快速的导入模式。使用物理导入模式时，单个 TiDB Lightning 实例可导入的数据量为 10 TiB，理论上导入的数据量可以随着 TiDB Lightning 实例数量的增加而增加，目前已经有多个用户验证基于[并行导入](/tidb-lightning/tidb-lightning-distributed-import.md)功能可以导入的数据量达 50 TiB。
+物理导入模式 (Physical Import Mode) 是 TiDB Lightning 支持的一种数据导入方式。物理导入模式不经过 SQL 接口，而是直接将数据以键值对的形式插入 TiKV 节点，是一种高效、快速的导入模式。使用物理导入模式时，单个 TiDB Lightning 实例可导入的数据量不超过 10 TiB，理论上导入的数据量可以随着 TiDB Lightning 实例数量的增加而增加，目前已经有多个用户验证基于[并行导入](/tidb-lightning/tidb-lightning-distributed-import.md)功能可以导入的数据量达 50 TiB。
 
 使用前请务必自行阅读[必要条件及限制](/tidb-lightning/tidb-lightning-physical-import-mode.md#必要条件及限制)。
 
@@ -81,7 +81,7 @@ backend = "local"
 
 - 在导入数据的过程中，请勿在目标表进行 DDL 和 DML 操作，否则会导致导入失败或数据不一致。导入期间也不建议进行读操作，因为读取的数据可能不一致。请在导入操作完成后再进行读写操作。
 
-- 单个 TiDB Lightning 进程导入单表不应超过 10 TB。使用并行导入时，TiDB Lightning 实例不应超过 10 个。
+- 单个 TiDB Lightning 进程导入单表不应超过 10 TiB。使用并行导入时，TiDB Lightning 实例不应超过 10 个。
 
 ### 与其他组件一同使用的注意事项
 
