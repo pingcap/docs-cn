@@ -7,19 +7,13 @@ summary: TiDB 数据库中 IMPORT INTO 的使用概况。
 
 `IMPORT INTO` 语句使用 TiDB Lightning 的[物理导入模式](/tidb-lightning/tidb-lightning-physical-import-mode.md)，用于将 `CSV`、`SQL`、`PARQUET` 等格式的数据导入到 TiDB 的一张空表中。
 
-<<<<<<< HEAD
 > **警告：**
 >
 > 目前该语句为实验特性，不建议在生产环境中使用。
 
-`IMPORT INTO` 支持导入存储在 Amazon S3、GCS、Azure Blob Storage 和 TiDB 本地的数据文件。
-
-- 对于存储在 S3、GCS 或 Azure Blob Storage 的数据文件，`IMPORT INTO` 支持通过[后端任务分布式框架](/tidb-distributed-execution-framework.md)运行。
-=======
 `IMPORT INTO` 支持导入存储在 Amazon S3、GCS 和 TiDB 本地的数据文件。
 
 - 对于存储在 S3 或 GCS 的数据文件，`IMPORT INTO` 支持通过 [TiDB 分布式执行框架](/tidb-distributed-execution-framework.md)运行。
->>>>>>> f6694d8cd6 (Removed unsupported Azure Blob storage via import into (#15881))
 
     - 当此框架功能开启时（即 [tidb_enable_dist_task](/system-variables.md#tidb_enable_dist_task-从-v710-版本开始引入) 为 `ON`），`IMPORT INTO` 会将一个数据导入任务拆分成多个子任务并分配到各个 TiDB 节点上运行，以提高导入效率。
     - 当此框架功能关闭时，`IMPORT INTO` 仅支持在当前用户连接的 TiDB 节点上运行。
