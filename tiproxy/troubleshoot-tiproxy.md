@@ -17,7 +17,7 @@ summary: 介绍 TiProxy 的常见问题、原因及解决办法。
 4. 如果客户端报错 `Verify TiDB capability failed, please upgrade TiDB`，请检查 TiDB server 版本是否为 v6.5.0 及以上版本。
 5. 如果客户端报错 `TiProxy fails to connect to TiDB, please make sure TiDB is available`，请检查 TiProxy 的节点是否能连接到 TiDB server。
 6. 如果客户端报错 `Require TLS enabled on TiDB when require-backend-tls=true`，请检查 TiDB 是否配正确配置了 TLS 证书。
-7. 如果客户端报错 `TiProxy fails to connect to TiDB, please make sure TiDB proxy-protocol is set correctly`，请检查是否 TiProxy 开启了 [PROXY 协议](/tiproxy/tiproxy-configuration.md#proxy-protocol) 而 TiDB server 没有开启[PROXY 协议](/tidb-configuration-file/#proxy-protocol)。
+7. 如果客户端报错 `TiProxy fails to connect to TiDB, please make sure TiDB proxy-protocol is set correctly`，请检查是否 TiProxy 开启了 [proxy.proxy-protocol](/tiproxy/tiproxy-configuration.md#proxy-protocol) 而 TiDB server 没有开启[proxy-protocol](/tidb-configuration-file/#proxy-protocol)。
 8. 检查 TiProxy 是否配置了 [`max-connections`](/tiproxy/tiproxy-configuration.md#max-connections) 且 TiProxy 上的连接数超过了最大连接数限制。
 9. 检查 TiProxy 日志，查看错误信息。
 
