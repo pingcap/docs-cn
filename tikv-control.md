@@ -641,9 +641,9 @@ it isn't easy to handle local data, start key:0101
 overlap region:
 RegionInfo { region: id: 4 end_key: 7480000000000000FF0500000000000000F8 region_epoch { conf_ver: 1 version: 2 } peers { id: 5 store_id: 1 }, leader: Some(id: 5 store_id: 1) }
 
-suggested operations:
-tikv-ctl ldb --db=data/tikv-21107/db unsafe_remove_sst_file "data/tikv-21107/db/000014.sst"
-tikv-ctl --db=data/tikv-21107/db tombstone -r 4 --pd <endpoint>
+refer operations:
+tikv-ctl ldb --db=/path/to/tikv/db unsafe_remove_sst_file 000014
+tikv-ctl --data-dir=/path/to/tikv tombstone -r 4 --pd <endpoint>
 --------------------------------------------------------
 corruption analysis has completed
 ```
