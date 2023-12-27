@@ -9,8 +9,8 @@ summary: TiProxy 的性能测试报告、与 HAProxy 的性能对比。
 
 结果显示：
 
-- TiProxy 的 QPS 上限受负载类型的影响。在 Sysbench 的基本负载、同等 CPU 使用率的情况下，TiProxy 的 QPS 比 HAProxy 低约 20% 至 40%
-- TiProxy 能承载的 TiDB server 实例数量根据负载类型而变化。在 Sysbench 的基本负载下，一台 TiProxy 能承载 4 至 10 台同机型的 TiDB server 实例
+- TiProxy 的 QPS 上限受工作负载类型的影响。在 Sysbench 的基本工作负载、同等 CPU 使用率的情况下，TiProxy 的 QPS 比 HAProxy 低约 20% 至 40%
+- TiProxy 能承载的 TiDB server 实例数量根据工作负载类型而变化。在 Sysbench 的基本工作负载下，一台 TiProxy 能承载 4 至 10 台同机型的 TiDB server 实例
 - TiProxy 的性能比 HAProxy 更受数据量的影响。在返回的数据量为 10000 行、同等 CPU 使用率的情况下，TiProxy 的 QPS 比 HAProxy 低约 30%
 - TiProxy 的性能随 vCPU 的数量接近线性增长，因此增加 vCPU 的数量可以有效提高 QPS 上限
 
@@ -79,11 +79,11 @@ listen tidb-cluster                         # 配置 database 负载均衡。
     server tidb-3 10.9.64.166:4000 check inter 2000 rise 2 fall 3
 ```
 
-## 基本负载测试
+## 基本工作负载测试
 
 ### 测试方案
 
-该测试的目的是对比 point select、read only、write only、read write 四种负载下 TiProxy 与 HAProxy 的 QPS。每种负载分别使用不同的并发度测试 TiProxy 和 HAProxy，对比 QPS。
+该测试的目的是对比 point select、read only、write only、read write 四种工作负载下 TiProxy 与 HAProxy 的 QPS。每种工作负载分别使用不同的并发度测试 TiProxy 和 HAProxy，对比 QPS。
 
 执行的测试命令：
 
