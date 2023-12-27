@@ -114,6 +114,12 @@ HTTP 网关的配置。
 
 + 默认值：`info`
 + 支持热加载：是
++ 可选值：`debug`, `info`, `warn`, `error`, `panic`
++ 指定日志的级别。当指定 `panic` 级别时，TiProxy 遇到错误时会 panic。
+
+#### `encoder`
+
++ 默认值：`tidb`
 + 可选值：
 
     + `tidb`：TiDB 使用的格式。有关详细信息，请参见 [统一日志格式](https://github.com/tikv/rfcs/blob/master/text/0018-unified-log-format.md)。
@@ -126,7 +132,7 @@ HTTP 网关的配置。
 
 + 默认值：``
 + 支持热加载：是
-+ 日志文件路径。非空值将启用日志记录到文件。
++ 日志文件路径。非空值将启用日志记录到文件。使用 TiUP 部署时会自动设置文件路径。
 
 #### `max-size`
 
@@ -168,7 +174,7 @@ TLS 对象字段：
 + `key`：指定私钥
 + `auto-certs`：主要用于测试。如果没有指定证书/密钥，则会生成证书。
 + `skip-ca`：在客户端对象上跳过使用 CA 验证证书，或在服务器对象上跳过服务器端验证。
-+ `min-tls-version`：设置最低 TLS 版本。
++ `min-tls-version`：设置最低 TLS 版本。可选值：`1.0`、`1.1`、`1.2` 和 `1.3`。默认为 `1.1`，代表支持 TLSv1.1 及以上版本。
 + `rsa-key-size`：启用 `auto-certs` 时设置 RSA 密钥大小。
 + `autocert-expire-duration`：设置自动生成证书的默认到期时间。
 
