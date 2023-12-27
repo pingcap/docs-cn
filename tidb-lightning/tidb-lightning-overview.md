@@ -19,7 +19,6 @@ TiDB Lightning can read data from the following sources:
 - Local
 - [Amazon S3](/external-storage-uri.md#amazon-s3-uri-format)
 - [Google Cloud Storage](/external-storage-uri.md#gcs-uri-format)
-- [Azure Blob Storage](/external-storage-uri.md#azure-blob-storage-uri-format)
 
 ## TiDB Lightning architecture
 
