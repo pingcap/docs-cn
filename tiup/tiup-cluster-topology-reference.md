@@ -516,6 +516,7 @@ tispark_workers:
 - `os`：`host` 字段所指定的机器的操作系统，若不指定该字段，则默认为 `global` 中的 `os`
 - `arch`：`host` 字段所指定的机器的架构，若不指定该字段，则默认为 `global` 中的 `arch`
 - `resource_control`：针对该服务的资源控制，如果配置了该字段，会将该字段和 `global` 中的 `resource_control` 内容合并（若字段重叠，以本字段内容为准），然后生成 systemd 配置文件并下发到 `host` 指定机器。`resource_control` 的配置规则同 `global` 中的 `resource_control`
+- `additional_args`：配置额外的 Prometheus Args 参数。该字段为一个数组，数组元素为 Prometheus 运行参数。例如：开启 Prometheus 热加载配置，配置 `--web.enable-lifecycle` 即可
 
 以上所有字段中，部分字段部署完成之后不能再修改。如下所示：
 
@@ -533,6 +534,8 @@ tispark_workers:
 monitoring_servers:
   - host: 10.0.1.11
     rule_dir: /local/rule/dir
+    additional_args:
+    - --web.enable-lifecycle
     remote_config:
       remote_write:
       - queue_config:
