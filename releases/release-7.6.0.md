@@ -154,7 +154,7 @@ TiDB 版本：7.6.0
 
 * 增强 Bi-Directional Replication (BDR) 对 DDL 的同步 [#48519](https://github.com/pingcap/tidb/issues/48519) @[okJiang](https://github.com/okJiang) **tw@hfxsd** <!--1521/1525-->
 
-    在使用 TiCDC 对多个 TiDB 集群进行双向同步时，为了避免 DDL 循环同步，禁止了 DDL 的同步。从 v7.6.0 开始，引入了 BDR Role 的概念，你可以为集群设置 BDR Role，同步可复制的 DDL 和不可复制的 DDL。
+    在之前的版本里，使用 TiCDC 对多个 TiDB 集群进行双向同步时，为了避免 DDL 循环同步，禁止了 DDL 的同步。从 v7.6.0 开始，引入了 BDR Role 的概念，你可以为集群设置 BDR Role，同步可复制的 DDL 和不可复制的 DDL。
 
     更多信息，请参考[用户文档](/ticdc/ticdc-bidirectional-replication.md#ddl-同步)。
 
