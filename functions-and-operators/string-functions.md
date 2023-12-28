@@ -35,13 +35,93 @@ TiDB 支持使用大部分 MySQL 5.7 中提供的[字符串函数](https://dev.m
 
 与 `CHAR_LENGTH()` 功能相同
 
-### [`CONCAT()`](https://dev.mysql.com/doc/refman/8.0/en/string-functions.html#function_concat)
+### [`CONCAT(str1,str2,...)`](https://dev.mysql.com/doc/refman/8.0/en/string-functions.html#function_concat)
 
-返回连接的字符串
+`CONCAT()` 函数用于连接参数生成字符串，该参数可以是字符串或数字。
+```sql
+SELECT CONCAT('TiDB', NULL, 'Server');
++--------------------------------+
+| CONCAT('TiDB', NULL, 'Server') |
++--------------------------------+
+|                           NULL |
++--------------------------------+
+```
 
-### [`CONCAT_WS()`](https://dev.mysql.com/doc/refman/8.0/en/string-functions.html#function_concat-ws)
+如果任一参数的值为`NULL`， 则`CONCAT()`返回`NULL`
+```sql
+SELECT CONCAT('TiDB', ' ', 'Server', '-', 1, true);
++---------------------------------------------+
+| CONCAT('TiDB', ' ', 'Server', '-', 1, true) |
++---------------------------------------------+
+|                              TiDB Server-11 |
++---------------------------------------------+
+```
 
-返回由分隔符连接的字符串
+此外，还可以通过字符串彼此相邻的方式连接他们，但是这种方式不支持数字类型。
+```sql
+SELECT 'Ti' 'DB' ' ' 'Server';
++-------------+
+|          Ti |
++-------------+
+| TiDB Server |
++-------------+
+```
+
+### [`CONCAT_WS(separator,str1,str2,...)`](https://dev.mysql.com/doc/refman/8.0/en/string-functions.html#function_concat-ws)
+
+`CONCAT_WS()`函数是一种带分隔符的 `CONCAT()`，返回由分隔符连接的字符串。
+第一个参数作为分隔符，添加在剩余的不为`NULL`的参数的中间。
+
+```sql
+SELECT CONCAT_WS(',', 'TiDB Server', 'TiKV', 'PD');
++---------------------------------------------+
+| CONCAT_WS(',', 'TiDB Server', 'TiKV', 'PD') |
++---------------------------------------------+
+|                         TiDB Server,TiKV,PD |
++---------------------------------------------+
+```
+
+- 如果分隔符为空，则`CONCAT_WS()`等效于 `CONCAT()`，返回剩余参数连接后的值；
+- 如果分隔符为 `NULL`，则`CONCAT_WS()`返回 `NULL`。
+```sql
+SELECT CONCAT_WS('', 'TiDB Server', 'TiKV', 'PD');
++--------------------------------------------+
+| CONCAT_WS('', 'TiDB Server', 'TiKV', 'PD') |
++--------------------------------------------+
+|                          TiDB ServerTiKVPD |
++--------------------------------------------+
+
+SELECT CONCAT_WS(NULL, 'TiDB Server', 'TiKV', 'PD');
++----------------------------------------------+
+| CONCAT_WS(NULL, 'TiDB Server', 'TiKV', 'PD') |
++----------------------------------------------+
+|                                         NULL |
++----------------------------------------------+
+```
+- 如果不为`NULL`的剩余参数只有一个，则`CONCAT_WS()`返回此参数
+- 如果用于连接的剩余参数中有`NULL`值，`CONCAT_WS()`会忽略值为`NULL`的参数；但如果值为空字符串，不会忽略
+```sql
+SELECT CONCAT_WS(',', 'TiDB Server', NULL, 'PD');
++-------------------------------------------+
+| CONCAT_WS(',', 'TiDB Server', NULL, 'PD') |
++-------------------------------------------+
+|                            TiDB Server,PD |
++-------------------------------------------+
+
+SELECT CONCAT_WS(',', 'TiDB Server', NULL);
++-------------------------------------+
+| CONCAT_WS(',', 'TiDB Server', NULL) |
++-------------------------------------+
+|                         TiDB Server |
++-------------------------------------+
+
+SELECT CONCAT_WS(',', 'TiDB Server', '', 'PD');
++-----------------------------------------+
+| CONCAT_WS(',', 'TiDB Server', '', 'PD') |
++-----------------------------------------+
+|                         TiDB Server,,PD |
++-----------------------------------------+
+```
 
 ### [`ELT()`](https://dev.mysql.com/doc/refman/8.0/en/string-functions.html#function_elt)
 
