@@ -180,10 +180,10 @@ TiDB 版本：7.6.0
 
     随着越来越多用户利用资源组对业务应用进行隔离，资源管控提供了更丰富的基于资源组的数据，协助你观测资源组负载、资源组设置，确保出现问题时能够快速发现并精准诊断。其中包括：
 
-    * [慢日志](/identify-slow-queries.md) 增加资源组名称、RU消耗、以及等待资源耗时。
-    * [Statement Summary Tables](/statement-summary-tables.md) 增加资源组名称、RU消耗、以及对等待资源耗时。
+    * [慢日志](/identify-slow-queries.md) 增加资源组名称、RU 消耗、以及等待资源耗时。
+    * [Statement Summary Tables](/statement-summary-tables.md) 增加资源组名称、RU 消耗、以及对等待资源耗时。
     * 增加变量 [`ru_by_last_statement`]()，用于立即获取前一条 SQL 的 RU 消耗。
-    * 增加基于资源组的数据库指标：QPS/TPS、执行时间(P999/P99/P95)、失败次数、连接数。
+    * 增加基于资源组的数据库指标：QPS/TPS、执行时间 (P999/P99/P95)、失败次数、连接数。
 
     更多信息，请参考[慢日志](/identify-slow-queries.md)、[Statement Summary Tables](/statement-summary-tables.md)、[资源管控 (Resource Control) 监控指标详解](/grafana-resource-control-dashboard.md)。
 
