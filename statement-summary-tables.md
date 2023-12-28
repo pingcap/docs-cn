@@ -348,7 +348,6 @@ SQL 的基础信息：
 - `AVG_AFFECTED_ROWS`：平均影响行数
 - `PREV_SAMPLE_TEXT`：当 SQL 是 `COMMIT` 时，该字段为 `COMMIT` 的前一条语句；否则该字段为空字符串。当 SQL 是 `COMMIT` 时，按 digest 和 `prev_sample_text` 一起分组，即不同 `prev_sample_text` 的 `COMMIT` 也会分到不同的行
 
-
 和资源管控相关的字段：
 
 - `MAX_QUEUED_RC_TIME`：执行 SQL 语句等待可用 RU 的最大时间
