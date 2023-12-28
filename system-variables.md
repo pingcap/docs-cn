@@ -2857,7 +2857,7 @@ Query OK, 0 rows affected, 1 warning (0.00 sec)
 - 可选值：`READ-COMMITTED`，`REPEATABLE-READ`
 - 这个变量用于设置事务隔离级别。TiDB 为了兼容 MySQL，支持可重复读 (`REPEATABLE-READ`)，但实际的隔离级别是快照隔离。详情见[事务隔离级别](/transaction-isolation-levels.md)。
 - TiDB 并不支持 `READ-UNCOMMITTED`，`SERIALIZABLE` 事务隔离级别，请勿将此变量设置为 `READ-UNCOMMITTED`，`SERIALIZABLE` 事务隔离级别。
-- 如需对 `READ-UNCOMMITTED`，`SERIALIZABLE` 事务隔离级别进行兼容处理，请设置 [`tidb_skip_isolation_level_check`](#tidbskipisolationlevelcheck) 为 `TRUE`。请注意，这个操作将跳过 `transaction_isolation` 变量的设置检查，即使设置了不支持的隔离级别(`READ-UNCOMMITTED`，`SERIALIZABLE`)，TiDB 也将不进行异常抛出。
+- 如需对 `READ-UNCOMMITTED`，`SERIALIZABLE` 事务隔离级别进行兼容处理，请设置 [`tidb_skip_isolation_level_check`](#tidbskipisolationlevelcheck) 为 `TRUE`。请注意，这个操作将跳过 `transaction_isolation` 变量的设置检查，即使设置了不支持的隔离级别 (`READ-UNCOMMITTED`，`SERIALIZABLE`)，TiDB 也将不进行异常抛出。
 
 ### `tx_isolation`
 
