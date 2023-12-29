@@ -17,11 +17,11 @@ TiDB 版本：7.6.0
 
 ### 性能
 
-* BR 快照恢复速度最大提升 10 倍 [#33937](https://github.com/pingcap/tidb/issues/33937) @[3pointer](https://github.com/3pointer) **tw@Oreoxmt** <!--1647-->
+* BR 快照恢复速度最高提升 10 倍 [#33937](https://github.com/pingcap/tidb/issues/33937) @[3pointer](https://github.com/3pointer) **tw@Oreoxmt** <!--1647-->
 
-    随着 TiDB 集群规模的不断扩大，在故障时快速恢复集群以减少业务中断时间变得愈发关键。`br` v7.6.0 之前的版本中， `region` 打散算法一直是性能恢复的瓶颈。然而，在 `br` v7.6.0 中，我们对 `region` 打散算法进行了优化，迅速地将恢复任务拆分成大量小任务并批量散布到所有的 TiKV 节点。通过充分利用每个 TiKV 节点的所有资源，我们成功实现了并行快速恢复，在大规模 `region` 场景下，将集群快照恢复速度提升了 10 倍。
+    随着 TiDB 集群规模的不断扩大，故障时快速恢复集群以减少业务中断时间显得尤为重要。在 v7.6.0 之前的版本中，Region 打散算法是性能恢复的主要瓶颈。在 v7.6.0 中，BR 优化了 Region 打散算法，可以迅速将恢复任务拆分为大量小任务，并批量分散到所有 TiKV 节点上。新的并行恢复算法充分利用每个 TiKV 节点的所有资源，从而实现了并行快速恢复。内部测试结果显示，在大规模 Region 场景下，集群快照恢复速度提升约 10 倍。
 
-    我们为用户提供了 `--granularity` 命令行参数，通过设置该参数可以启用新的并行恢复算法。例如：(命令行参数例子待研发提供)
+    要使用新的并行恢复算法，可以配置 `br` 命令行参数 `--granularity`。例如：(命令行参数例子待研发提供)
 
     ```sql
 
@@ -110,11 +110,11 @@ TiDB 版本：7.6.0
 
 ### SQL 功能
 
-* LOAD DATA 支持显示事务和回滚 [#49079](https://github.com/pingcap/tidb/pull/49079) @[ekexium](https://github.com/ekexium) **tw@Oreoxmt** <!--1422-->
+* `LOAD DATA` 支持显式事务和回滚 [#49079](https://github.com/pingcap/tidb/pull/49079) @[ekexium](https://github.com/ekexium) **tw@Oreoxmt** <!--1422-->
 
-    在 TiDB v7.6.0 之前，使用 `LOAD DATA` 语句来批量导入数据时，提交方式经历了一些变化。在 TiDB v4.0.0 之前，每导入 20000 行数据就会进行一次提交；从 v4.0.0 到 v6.6.0 版本，默认在一个事务中提交所有行，但也支持通过设置 [`tidb_dml_batch_size`](/system-variables.md#tidb_dml_batch_size) 参数实现分批次提交；自 TiDB v7.0.0 起，仅支持导入后一次性提交数据，[`tidb_dml_batch_size`](/system-variables.md#tidb_dml_batch_size) 参数不再生效。与 MySQL 的 `LOAD DATA` 相比，TiDB v7.6.0 之前的 `LOAD DATA` 在不同版本的事务行为都存在差异，因此在使用该语句时，用户需要额外的调整。
+    在 TiDB v7.6.0 之前，使用 `LOAD DATA` 语句批量导入数据时，其事务提交方式经历了多次变更。具体来说：在 v4.0.0 之前，每导入 20000 行数据就会进行一次提交。从 v4.0.0 到 v6.6.0，TiDB 默认在一个事务中提交所有行，但也支持通过设置 [`tidb_dml_batch_size`](/system-variables.md#tidb_dml_batch_size) 系统变量实现每固定的行数进行一次提交。自 v7.0.0 起，`tidb_dml_batch_size` 对 `LOAD DATA` 语句不再生效，TiDB 将在一个事务中提交所有行。与 MySQL 相比，TiDB v7.6.0 之前的 `LOAD DATA` 在不同版本中的事务行为都存在差异，导致用户使用该语句时需要额外调整。
 
-    从 TiDB v7.6.0 版本起，TiDB 的 `LOAD DATA` 的事务行为和其他普通 DML 一致。特别是和 MySQL 的事务行为一致， 事务内的`LOAD DATA` 语句本身不再自动提交当前事务，也不会开启新事务，并且事务内的 `LOAD DATA` 语句可以被显式提交或者回滚。此外，`LOAD DATA` 语句还受 TiDB 事务模式设置（乐观/悲观）影响。这些改进使得用户在从 MySQL 到 TiDB 迁移时不再需要额外的适配工作，让数据导入体验更加一致和可控。
+    从 v7.6.0 开始，`LOAD DATA` 在事务中与其它普通 DML 的处理方式一致，特别是和 MySQL 的事务行为一致。事务内的 `LOAD DATA` 语句本身不再自动提交当前事务，也不会开启新事务，并且事务内的 `LOAD DATA` 语句可以被显式提交或者回滚。此外，`LOAD DATA` 语句会受 TiDB 事务模式设置（乐观/悲观）影响。这些改进简化了用户从 MySQL 到 TiDB 的迁移过程，使得数据导入体验更加统一和可控。
 
     更多信息，请参考[用户文档](/sql-statements/sql-statement-load-data.md)。
 
@@ -130,13 +130,13 @@ TiDB 版本：7.6.0
 
 * 支持自动终止长时间未提交的空闲事务 [#48714](https://github.com/pingcap/tidb/pull/48714) @[crazycs520](https://github.com/crazycs520) **tw@Oreoxmt** <!--1598-->
 
-    我们经常碰到这样的情况，由于网络异常断开或者应用程序的小问题，有时 `commit / rollback` 语句无法正常传送到数据库，导致锁没有被释放，从而触发了事务锁等待问题和数据库的连接数的快速上涨。在测试环境，这种情况经常发生，线上环境偶尔也会出现，而且有的时候很难诊断。因此，TiDB v7.6.0 版本开始支持通过设置 [`tidb_idle_transaction_timeout`](/system-variables.md#tidb_idle_transaction_timeout-从-v760-版本开始引入) 参数，自动终止长时间运行的空闲事务，以防止这种情况的发生。该参数单位是秒，当一个事务空闲时间超过设定的阈值时，系统会自动强制结束该事务的数据库连接并回滚事务。
+    在网络异常断开或应用程序故障时，`COMMIT`/`ROLLBACK` 语句可能无法正常传送到数据库。这种情况可能导致数据库锁未能及时释放，进而引起事务锁等待以及数据库连接数快速增加。这类问题在测试环境中较常见，但在线上环境也会偶尔发生，并且有时难以迅速诊断。为有效防止此类问题的发生，TiDB v7.6.0 引入 [`tidb_idle_transaction_timeout`](/system-variables.md#tidb_idle_transaction_timeout-从-v760-版本开始引入) 系统变量，以自动终止长时间运行的空闲事务。当用户会话处于事务状态且空闲时间超过该变量设定的值时，TiDB 会自动强制结束该事务的数据库连接并回滚事务。
 
     更多信息，请参考[用户文档](/system-variables.md#tidb_idle_transaction_timeout-从-v760-版本开始引入)。
 
 * 简化执行计划绑定的语法 [#48876](https://github.com/pingcap/tidb/issues/48876) @[qw4990](https://github.com/qw4990) **tw@Oreoxmt** <!--1613-->
 
-    TiDB 在新版本中简化的创建执行计划绑定的语法。 在命令中无需提供原 SQL 语句， TiDB 会根据带有 hint 的语句识别出原 SQL。 提升了创建执行计划绑定的便利性。 例如：
+    TiDB v7.6.0 简化了创建执行计划绑定的语法。在创建执行计划绑定的命令中无需提供原 SQL 语句，TiDB 可以根据带 hint 的语句识别出对应的原 SQL。这一改进提高了创建执行计划绑定的便利性。例如：
 
     ```sql
     CREATE GLOBAL BINDING
@@ -146,12 +146,11 @@ TiDB 版本：7.6.0
 
     更多信息，请参考[用户文档](/sql-plan-management.md)。
 
-* 支持动态调整单行记录大小限制 [#49237](https://github.com/pingcap/tidb/pull/49237) @[zyguan](https://github.com/zyguan) **tw@Oreoxmt** <!--1452-->
+* 支持动态调整 TiDB 单行记录大小限制 [#49237](https://github.com/pingcap/tidb/pull/49237) @[zyguan](https://github.com/zyguan) **tw@Oreoxmt** <!--1452-->
 
-    TiDB v7.6.0 之前，事务中单行记录的大小受 TiDB 的配置文件参数 [`txn-entry-size-limit`](/tidb-configuration-file.md#txn-entry-size-limit-从-v50-版本开始引入) 限制。如果超出该限制，TiDB 将返回 `entry too large` 错误。在这种情况下，用户需要修改 TiDB 配置文件并重启 TiDB 才能够生效。为了降低用户的管理成本，TiDB 从 v7.6.0 开始新增了系统变量 [`tidb_txn_entry_size_limit`](/system-variables.md#tidb_txn_entry_size_limit-从-v760-版本开始引入)，支持动态修改该配置项的值。该变量的默认值为 `0`，表示默认使用 [`txn-entry-size-limit`](/tidb-configuration-file.md#txn-entry-size-limit-从-v50-版本开始引入) 的值。但如果设置为非 `0` 值，就会优先使用该变量作为事务中的单行记录大小的限制。这一改进旨在使用户更灵活地调整系统配置，而无需重启 TiDB 生效。
+    在 v7.6.0 之前，事务中单行记录的大小受 TiDB 配置项 [`txn-entry-size-limit`](/tidb-configuration-file.md#txn-entry-size-limit-从-v50-版本开始引入) 限制。如果记录大小超出此限制，TiDB 将返回 `entry too large` 错误。此时，用户需要修改 TiDB 配置文件并重启 TiDB 才能够生效。为降低用户的管理成本，TiDB v7.6.0 新增系统变量 [`tidb_txn_entry_size_limit`](/system-variables.md#tidb_txn_entry_size_limit-从-v760-版本开始引入)，支持动态修改 `txn-entry-size-limit` 配置项的值。该变量的默认值为 `0`，表示默认使用 `txn-entry-size-limit` 配置项的值。当设置为非 `0` 值时，TiDB 优先使用该变量的值作为事务中的单行记录大小的限制。这一改进旨在提高用户调整系统配置的灵活性，无需重启 TiDB 即可生效。
 
     更多信息，请参考[用户文档](/system-variables.md#tidb_txn_entry_size_limit-从-v760-版本开始引入) 。
-
 
 * 全局排序功能成为正式功能（GA)，提升 `Add Index` 和 `Import Into` 的性能和稳定性 [#45719](https://github.com/pingcap/tidb/issues/45719) @[wjhuang2016](https://github.com/wjhuang2016) @[D3Hunter](https://github.com/D3Hunter) **tw@ran-huang** <!--1580/1579-->
 
@@ -163,9 +162,9 @@ TiDB 版本：7.6.0
 
 * BR 默认恢复用户账号等系统表数据 [#48567](https://github.com/pingcap/tidb/issues/48567) @[BornChanger](https://github.com/BornChanger) **tw@Oreoxmt** <!--1570/1628-->
 
-    `br` 备份恢复工具从 v5.1.0 开始引入了对 **mysql schema** 下的系统表数据的默认自动备份，但默认情况下不会恢复系统表数据。随后，在 `br` v6.2.0 版本中，我们引入了新的恢复参数 `--with-sys-table`，使用户在恢复数据的同时选择性地恢复部分系统表相关数据，提供了更多的操作灵活性。
+    从 `br` v5.1.0 开始，快照备份时默认自动备份 **mysql schema** 下的系统表数据，但恢复数据时默认不恢复系统表数据。在 v6.2.0 中，`br` 增加恢复参数 `--with-sys-table` 支持恢复数据的同时恢复部分系统表相关数据，提供更多的操作灵活性。
 
-    为了进一步简化用户的管理成本，同时为用户提供更直观的默认行为。从 `br` v7.6.0 开始，我们决定将恢复参数 `--with-sys-table` 的默认值设置为开启，并取消 `cloud_admin` 账号过滤。这意味着， `br` 默认支持在数据恢复时同时恢复部分系统表相关数据，特别是用户账号和表的统计信息数据。这一改进旨在使备份恢复操作更加直观且符合用户期望，减轻用户手动配置的负担，提升整体操作体验。
+    为了进一步降低用户的管理成本，并提供更直观的默认行为。从 v7.6.0 开始，`br` 默认开启恢复参数 `--with-sys-table`，并支持恢复 `user` 为 `cloud_admin` 的用户数据。这意味着 `br` 默认支持恢复数据的同时恢复部分系统表相关数据，特别是用户账号和表的统计信息数据。这一改进旨在使备份恢复操作更加直观和符合用户预期，减轻手动配置的负担，从而提升整体的操作体验。
 
     更多信息，请参考[用户文档](/br/br-snapshot-guide.md)。
 
