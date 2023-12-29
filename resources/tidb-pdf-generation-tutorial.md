@@ -6,20 +6,21 @@ summary: 介绍如何在本地定制输出符合特定场景用户需求的 PDF�
 
 # 用户自助生成 TiDB 文档 PDF 教程
 
-## 关于本教程
-
 本教程为你提供了一种可以自助生成 TiDB PDF 文档的方法。通过该方法，你可以在本地对 TiDB 文档目录进行自由排序和删减，定制输出符合特定场景用户需求的 PDF。
 
 ## 环境准备
+
 只需要在第一次生成 PDF 时进行以下准备，以后再次生成 PDF 时可直接跳过这些工作。
 
 ### 准备 1: 安装并配置 Docker 环境
 
-> 大约耗时：40 分钟
+> 大约耗时：30 分钟
 
-1. 安装 Docker。
+1. 安装 [Docker](https://docs.docker.com/get-docker/)。
 2. 在 Mac Terminal 或者 Windows powershell 运行 `docker --version` 命令。
-如果看到 Docker 的版本信息，说明安装成功。
+
+    如果看到 Docker 的版本信息，说明安装成功。
+
 3. 配置 Docker 资源：
     1. 打开 Docker 应用程序，点击右上角的齿轮图标。
     2. 点击 **Resources**，然后将 **Memory** 设置为 `8.00 GB`。
@@ -31,14 +32,26 @@ summary: 介绍如何在本地定制输出符合特定场景用户需求的 PDF�
 
 ### 准备 2: 将 TiDB 文档仓库克隆到本地
 
-> 大约耗时：15 分钟
+> 大约耗时：10 分钟
 
 TiDB 中文文档仓库的地址为 <https://github.com/pingcap/docs-cn>，英文文档仓库的地址为 <https://github.com/pingcap/docs>。
 
-要将 TiDB 文档仓库克隆到本地，你可以使用以下方法之一：
+下面的步骤以中文文档为例：
 
-- 使用 GitHub Desktop 克隆 TiDB 文档仓库。具体操作，请参考 中的前四个步骤。
-- 使用 Git 命令行克隆 TiDB 文档仓库。具体操作，请参考 中的前两个步骤。
+1. 打开 TiDB 中文文档仓库地址：<https://github.com/pingcap/docs-cn>
+2. 点击右上角的 [**Fork**](https://help.github.com/articles/github-glossary/#fork) 按钮，等待 Fork 完成即可。
+3. 要将 TiDB 文档仓库克隆到本地，你可以使用以下方法之一：
+
+    - 使用 Git 命令行克隆 TiDB 文档仓库。
+
+    ```
+    cd $working_dir # 将 $working_dir 替换为你想放置 repo 的目录。例如，`cd ~/Documents/GitHub`
+    git clone git@github.com:$user/docs-cn.git # 将 `$user` 替换为你的 GitHub ID
+
+    cd $working_dir/docs-cn
+    git remote add upstream git@github.com:pingcap/docs-cn.git # 添加上游仓库
+    git remote -v
+    ```
 
 ## 操作步骤
 
@@ -50,7 +63,7 @@ TiDB 中文文档仓库的地址为 <https://github.com/pingcap/docs-cn>，英�
     2. 编辑 `TOC.md` 文件。例如，你可以删除所有不需要的文档章节标题和链接。
 3. 按照 `TOC.md` 文件将所有文档中的章节整合到一个 Markdown 文件中。
     1. 打开桌面的 Docker 应用程序。
-    2. 进入文档构建的 Docker 镜像：
+    2. 在 Mac Terminal 或者 Windows powershell 运行以下命令，进入文档构建的 Docker 镜像：
 
         ```bash
         docker run -it -v ${doc-path}:/opt/data andelf/doc-build:0.1.9
@@ -76,7 +89,7 @@ TiDB 中文文档仓库的地址为 <https://github.com/pingcap/docs-cn>，英�
         python3 scripts/merge_by_toc.py
         ```
 
-       期望输出：
+       **期望输出：**
 
        在 `toc.md` 所在的文件夹中，你将看到一个新生成的 `doc.md` 文件。
 
