@@ -15,7 +15,7 @@ summary: 了解 TiProxy 的命令行参数。
 
 + 指定 TiProxy 配置文件的路径。
 + 默认值：`""`
-+ 必须指定配置文件。有关详细配置项，请参见 [配置 TiProxy](/tiproxy/tiproxy-configuration.md)。
++ 必须指定配置文件。有关详细配置项，请参见[配置 TiProxy](/tiproxy/tiproxy-configuration.md)。
 
 ### `--log_encoder string`
 
@@ -35,7 +35,7 @@ summary: 了解 TiProxy 的命令行参数。
 
 ### `--log_encoder string`
 
-+ 指定 tiproxyctl 的日志格式。
++ 指定 `tiproxyctl` 的日志格式。
 + 默认值：`"tidb"`
 + 如果为空，则使用 TiDB 的日志格式。此外，还可以指定以下格式之一：
 
@@ -44,7 +44,7 @@ summary: 了解 TiProxy 的命令行参数。
 
 ### `--log_level string`
 
-+ 指定 tiproxyctl 的日志级别。
++ 指定 `tiproxyctl` 的日志级别。
 + 默认值：`"warn"`
 + 可以指定以下日志级别之一：`debug`、`info`、`warn`、`error`、`panic`。
 

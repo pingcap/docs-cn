@@ -41,9 +41,9 @@ TiProxy 有四个面板组。这些面板上的指标表示 TiProxy 的当前状
 
 ## Query-Summary
 
-- Duration：每个 TiProxy 实例的 SQL 语句执行的平均、p95、p99 时长。它包括 TiDB 服务器上 SQL 语句执行的时长，因此比 TiDB Grafana 面板上的时长高。
-- P99 Duration By Instance：每个 TiProxy 实例的 p99 语句执行时长。
-- P99 Duration By Backend：每个 TiDB 实例上执行的语句的 p99 语句执行时长。
+- Duration：每个 TiProxy 实例的 SQL 语句执行的平均、P95、P99 时长。它包括 TiDB 服务器上 SQL 语句执行的时长，因此比 TiDB Grafana 面板上的时长高。
+- P99 Duration By Instance：每个 TiProxy 实例的 P99 语句执行时长。
+- P99 Duration By Backend：每个 TiDB 实例上执行的语句的 P99 语句执行时长。
 - CPS by Instance：每个 TiProxy 实例的每秒命令数。
 - CPS by Backend：每个 TiDB 实例的每秒命令数。
 - CPS by CMD：按 SQL 命令类型分组的每秒命令数。
@@ -52,10 +52,10 @@ TiProxy 有四个面板组。这些面板上的指标表示 TiProxy 的当前状
 
 - Backend Connections：每个 TiDB 实例和每个 TiProxy 实例之间的连接数。例如，`10.24.31.1:6000 | 10.24.31.2:4000` 表示 TiProxy 实例 `10.24.31.1:6000` 和 TiDB 实例 `10.24.31.2:4000`。
 - Session Migration OPM：每分钟发生的会话迁移数，记录从 TiDB 实例迁移到另一个 TiDB 实例的会话。例如，`succeed: 10.24.31.2:4000 => 10.24.31.3:4000` 表示从 TiDB 实例 `10.24.31.2:4000` 成功迁移到 TiDB 实例 `10.24.31.3:4000` 的会话数。
-- Session Migration Duration：会话迁移的平均、p95、p99 时长。
+- Session Migration Duration：会话迁移的平均、P95、P99 时长。
 
 ## Backend
 
-- Get Backend Duration：TiProxy 连接到 TiDB 实例的平均、p95、p99 时长。
+- Get Backend Duration：TiProxy 连接到 TiDB 实例的平均、P95、P99 时长。
 - Ping Backend Duration：每个 TiProxy 实例和每个 TiProxy 实例之间的网络延迟。例如，`10.24.31.1:6000 | 10.24.31.2:4000` 表示 TiProxy 实例 `10.24.31.1:6000` 和 TiDB 实例 `10.24.31.2:4000` 之间的网络延迟。
 - Health Check Cycle：每个 TiProxy 实例和所有 TiDB 实例之间的健康检查周期。例如，`10.24.31.1:6000` 表示 TiProxy 实例 `10.24.31.1:6000` 在所有 TiDB 实例上执行的最新健康检查的持续时间。如果此持续时间大于 3 秒，则 TiProxy 可能无法及时刷新后端 TiDB 列表。

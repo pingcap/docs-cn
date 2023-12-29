@@ -106,7 +106,7 @@ HTTP 网关的配置。
 + 默认值：``
 + 支持热加载：否
 + 可选值：``, `v2`
-+ 在端口启用 [PROXY 协议](https://www.haproxy.org/download/1.8/doc/proxy-protocol.txt)。
++ 在端口启用 [PROXY 协议](https://www.haproxy.org/download/1.8/doc/proxy-protocol.txt)。`v2` 代表使用 PROXY 协议 v2 版本，`` 代表不使用 PROXY 协议。
 
 ### log
 
@@ -172,7 +172,7 @@ TLS 对象字段：
 + `ca`：指定 CA
 + `cert`：指定证书
 + `key`：指定私钥
-+ `auto-certs`：主要用于测试。如果没有指定证书/密钥，则会生成证书。
++ `auto-certs`：主要用于测试。如果没有指定证书或密钥，则会生成证书。
 + `skip-ca`：在客户端对象上跳过使用 CA 验证证书，或在服务器对象上跳过服务器端验证。
 + `min-tls-version`：设置最低 TLS 版本。可选值：`1.0`、`1.1`、`1.2` 和 `1.3`。默认为 `1.1`，代表支持 TLSv1.1 及以上版本。
 + `rsa-key-size`：启用 `auto-certs` 时设置 RSA 密钥大小。
@@ -183,12 +183,12 @@ TLS 对象字段：
 对客户端 TLS 对象：
 
 - 必须设置 `ca` 或 `skip-ca` 来跳过验证服务器证书。
-- 可选：可以设置 `cert`/`key` 来通过服务器端客户端验证。
+- 可选：可以设置 `cert` 或 `key` 来通过服务器端客户端验证。
 - 无用字段：`auto-certs`。
 
 对服务器 TLS 对象：
 
-- 设置 `cert`/`key` 或 `auto-certs` 后支持 TLS 连接，否则不支持 TLS 连接。
+- 设置 `cert`、`key` 或 `auto-certs` 后支持 TLS 连接，否则不支持 TLS 连接。
 - 可选：如果 `ca` 不为空，则启用服务器端的客户端验证。客户端必须提供证书。如果 `skip-ca` 为 `true` 且 `ca` 不为空，则服务器仅在客户端提供证书时才验证客户端证书。
 
 #### `cluster-tls`

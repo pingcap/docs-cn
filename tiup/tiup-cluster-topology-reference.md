@@ -570,23 +570,23 @@ tispark_workers:
 
 `monitoring_servers` 约定了将 Prometheus 服务部署到哪台机器上，同时可以指定这台机器上的服务配置，`monitoring_servers` 是一个数组，每个数组元素包含以下字段：
 
-- `host`：指定部署到哪台机器，字段值填 IP 地址，必填项
-- `ng_port`：指定 NgMonitoring 组件监听的端口，在 TiUP v1.7.0 引入，用于支持 TiDB Dashboard 中[持续性能分析](/dashboard/continuous-profiling.md)和 [Top SQL](/dashboard/top-sql.md) 功能。默认值：12020
-- `ssh_port`：指定连接目标机器进行操作的时候使用的 SSH 端口，若不指定，则使用 global 区块中的 `ssh_port`
-- `port`：指定 Prometheus 提供服务的端口，默认值：9090
-- `deploy_dir`：指定部署目录，若不指定，或指定为相对目录，则按照 `global` 中配置的 `deploy_dir` 生成
-- `data_dir`：指定数据目录，若不指定，或指定为相对目录，则按照 `global` 中配置的 `data_dir` 生成
-- `log_dir`：指定日志目录，若不指定，或指定为相对目录，则按照 `global` 中配置的 `log_dir` 生成
-- `numa_node`：为该实例分配 NUMA 策略，如果指定了该参数，需要确保目标机装了 [numactl](https://linux.die.net/man/8/numactl)，在指定该参数的情况下会通过 [numactl](https://linux.die.net/man/8/numactl) 分配 cpubind 和 membind 策略。该字段参数为 string 类型，字段值填 NUMA 节点的 ID，例如 "0,1"
-- `storage_retention`：Prometheus 监控数据保留时间，默认 "30d"
-- `rule_dir`：该字段指定一个本地目录，该目录中应当含有完整的 `*.rules.yml` 文件，这些文件会在集群配置初始化阶段被传输到目标机器上，作为 Prometheus 的规则
-- `remote_config`：用于支持将 Prometheus 数据写到远端，或从远端读取数据，该字段下有两个配置：
-    - `remote_write`：参考 Prometheus [`<remote_write>`](https://prometheus.io/docs/prometheus/latest/configuration/configuration/#remote_write) 文档
-    - `remote_read`：参考 Prometheus [`<remote_read>`](https://prometheus.io/docs/prometheus/latest/configuration/configuration/#remote_read) 文档
-- `external_alertmanagers`：若配置了 `external_alertmanagers`，Prometheus 会将配置行为报警通知到集群外的 Alertmanager。该字段为一个数组，数组的元素为每个外部的 Alertmanager，由 `host` 和 `web_port` 字段构成
-- `os`：`host` 字段所指定的机器的操作系统，若不指定该字段，则默认为 `global` 中的 `os`
-- `arch`：`host` 字段所指定的机器的架构，若不指定该字段，则默认为 `global` 中的 `arch`
-- `resource_control`：针对该服务的资源控制，如果配置了该字段，会将该字段和 `global` 中的 `resource_control` 内容合并（若字段重叠，以本字段内容为准），然后生成 systemd 配置文件并下发到 `host` 指定机器。`resource_control` 的配置规则同 `global` 中的 `resource_control`
+- `host`: 指定部署到哪台机器，字段值填 IP 地址，必填项
+- `ng_port`: 指定 NgMonitoring 组件监听的端口，在 TiUP v1.7.0 引入，用于支持 TiDB Dashboard 中[持续性能分析](/dashboard/continuous-profiling.md)和 [Top SQL](/dashboard/top-sql.md) 功能。默认值：12020
+- `ssh_port`: 指定连接目标机器进行操作的时候使用的 SSH 端口，若不指定，则使用 global 区块中的 `ssh_port`
+- `port`: 指定 Prometheus 提供服务的端口，默认值：9090
+- `deploy_dir`: 指定部署目录，若不指定，或指定为相对目录，则按照 `global` 中配置的 `deploy_dir` 生成
+- `data_dir`: 指定数据目录，若不指定，或指定为相对目录，则按照 `global` 中配置的 `data_dir` 生成
+- `log_dir`: 指定日志目录，若不指定，或指定为相对目录，则按照 `global` 中配置的 `log_dir` 生成
+- `numa_node`: 为该实例分配 NUMA 策略，如果指定了该参数，需要确保目标机装了 [numactl](https://linux.die.net/man/8/numactl)，在指定该参数的情况下会通过 [numactl](https://linux.die.net/man/8/numactl) 分配 cpubind 和 membind 策略。该字段参数为 string 类型，字段值填 NUMA 节点的 ID，例如 "0,1"
+- `storage_retention`: Prometheus 监控数据保留时间，默认 "30d"
+- `rule_dir`: 该字段指定一个本地目录，该目录中应当含有完整的 `*.rules.yml` 文件，这些文件会在集群配置初始化阶段被传输到目标机器上，作为 Prometheus 的规则
+- `remote_config`: 用于支持将 Prometheus 数据写到远端，或从远端读取数据，该字段下有两个配置：
+    - `remote_write`: 参考 Prometheus [`<remote_write>`](https://prometheus.io/docs/prometheus/latest/configuration/configuration/#remote_write) 文档
+    - `remote_read`: 参考 Prometheus [`<remote_read>`](https://prometheus.io/docs/prometheus/latest/configuration/configuration/#remote_read) 文档
+- `external_alertmanagers`: 若配置了 `external_alertmanagers`，Prometheus 会将配置行为报警通知到集群外的 Alertmanager。该字段为一个数组，数组的元素为每个外部的 Alertmanager，由 `host` 和 `web_port` 字段构成
+- `os`: `host` 字段所指定的机器的操作系统，若不指定该字段，则默认为 `global` 中的 `os`
+- `arch`: `host` 字段所指定的机器的架构，若不指定该字段，则默认为 `global` 中的 `arch`
+- `resource_control`: 针对该服务的资源控制，如果配置了该字段，会将该字段和 `global` 中的 `resource_control` 内容合并（若字段重叠，以本字段内容为准），然后生成 systemd 配置文件并下发到 `host` 指定机器。`resource_control` 的配置规则同 `global` 中的 `resource_control`
 
 以上所有字段中，部分字段部署完成之后不能再修改。如下所示：
 
@@ -625,16 +625,16 @@ monitoring_servers:
 
 `grafana_servers` 约定了将 Grafana 服务部署到哪台机器上，同时可以指定这台机器上的服务配置，`grafana_servers` 是一个数组，每个数组元素包含以下字段：
 
-- `host`：指定部署到哪台机器，字段值填 IP 地址，不可省略
-- `ssh_port`：指定连接目标机器进行操作的时候使用的 SSH 端口，若不指定，则使用 `global` 区块中的 `ssh_port`
-- `port`：指定 Grafana 提供服务的端口，默认值：3000
-- `deploy_dir`：指定部署目录，若不指定，或指定为相对目录，则按照 `global` 中配置的 `deploy_dir` 生成
-- `os`：`host` 字段所指定的机器的操作系统，若不指定该字段，则默认为 `global` 中的 `os`
-- `arch`：`host` 字段所指定的机器的架构，若不指定该字段，则默认为 `global` 中的 `arch`
-- `username`：Grafana 登录界面的用户名
-- `password`：Grafana 对应的密码
-- `dashboard_dir`：该字段指定一个本地目录，该目录中应当含有完整的 `dashboard(*.json)` 文件，这些文件会在集群配置初始化阶段被传输到目标机器上，作为 Grafana 的 dashboards
-- `resource_control`：针对该服务的资源控制，如果配置了该字段，会将该字段和 `global` 中的 `resource_control` 内容合并（若字段重叠，以本字段内容为准），然后生成 systemd 配置文件并下发到 `host` 指定机器。`resource_control` 的配置规则同 `global` 中的 `resource_control`
+- `host`: 指定部署到哪台机器，字段值填 IP 地址，不可省略
+- `ssh_port`: 指定连接目标机器进行操作的时候使用的 SSH 端口，若不指定，则使用 `global` 区块中的 `ssh_port`
+- `port`: 指定 Grafana 提供服务的端口，默认值：3000
+- `deploy_dir`: 指定部署目录，若不指定，或指定为相对目录，则按照 `global` 中配置的 `deploy_dir` 生成
+- `os`: `host` 字段所指定的机器的操作系统，若不指定该字段，则默认为 `global` 中的 `os`
+- `arch`: `host` 字段所指定的机器的架构，若不指定该字段，则默认为 `global` 中的 `arch`
+- `username`: Grafana 登录界面的用户名
+- `password`: Grafana 对应的密码
+- `dashboard_dir`: 该字段指定一个本地目录，该目录中应当含有完整的 `dashboard(*.json)` 文件，这些文件会在集群配置初始化阶段被传输到目标机器上，作为 Grafana 的 dashboards
+- `resource_control`: 针对该服务的资源控制，如果配置了该字段，会将该字段和 `global` 中的 `resource_control` 内容合并（若字段重叠，以本字段内容为准），然后生成 systemd 配置文件并下发到 `host` 指定机器。`resource_control` 的配置规则同 `global` 中的 `resource_control`
 
 > **注意：**
 >
@@ -663,18 +663,18 @@ grafana_servers:
 
 `alertmanager_servers` 约定了将 Alertmanager 服务部署到哪些机器上，同时可以指定这台机器上的服务配置，`alertmanager_servers` 是一个数组，每个数组元素包含以下字段：
 
-- `host`：指定部署到哪台机器，字段值填 IP 地址，不可省略
-- `ssh_port`：指定连接目标机器进行操作的时候使用的 SSH 端口，若不指定，则使用 `global` 区块中的 `ssh_port`
-- `web_port`：指定 Alertmanager 提供网页服务的端口，默认值：9093
-- `cluster_port`：指定 Alertmanger 和其他 Alertmanager 通讯的端口，默认值：9094
-- `deploy_dir`：指定部署目录，若不指定，或指定为相对目录，则按照 `global` 中配置的 `deploy_dir` 生成
-- `data_dir`：指定数据目录，若不指定，或指定为相对目录，则按照 `global` 中配置的 `data_dir` 生成
-- `log_dir`：指定日志目录，若不指定，或指定为相对目录，则按照 `global` 中配置的 `log_dir` 生成
-- `numa_node`：为该实例分配 NUMA 策略，如果指定了该参数，需要确保目标机装了 [numactl](https://linux.die.net/man/8/numactl)，在指定该参数的情况下会通过 [numactl](https://linux.die.net/man/8/numactl) 分配 cpubind 和 membind 策略。该字段参数为 string 类型，字段值填 NUMA 节点的 ID，例如 "0,1"
-- `config_file`：该字段指定一个本地文件，该文件会在集群配置初始化阶段被传输到目标机器上，作为 Alertmanager 的配置
-- `os`：`host` 字段所指定的机器的操作系统，若不指定该字段，则默认为 `global` 中的 `os`
-- `arch`：`host` 字段所指定的机器的架构，若不指定该字段，则默认为 `global` 中的 `arch`
-- `resource_control`：针对该服务的资源控制，如果配置了该字段，会将该字段和 `global` 中的 `resource_control` 内容合并（若字段重叠，以本字段内容为准），然后生成 systemd 配置文件并下发到 `host` 指定机器。`resource_control` 的配置规则同 `global` 中的 `resource_control`
+- `host`: 指定部署到哪台机器，字段值填 IP 地址，不可省略
+- `ssh_port`: 指定连接目标机器进行操作的时候使用的 SSH 端口，若不指定，则使用 `global` 区块中的 `ssh_port`
+- `web_port`: 指定 Alertmanager 提供网页服务的端口，默认值：9093
+- `cluster_port`: 指定 Alertmanger 和其他 Alertmanager 通讯的端口，默认值：9094
+- `deploy_dir`: 指定部署目录，若不指定，或指定为相对目录，则按照 `global` 中配置的 `deploy_dir` 生成
+- `data_dir`: 指定数据目录，若不指定，或指定为相对目录，则按照 `global` 中配置的 `data_dir` 生成
+- `log_dir`: 指定日志目录，若不指定，或指定为相对目录，则按照 `global` 中配置的 `log_dir` 生成
+- `numa_node`: 为该实例分配 NUMA 策略，如果指定了该参数，需要确保目标机装了 [numactl](https://linux.die.net/man/8/numactl)，在指定该参数的情况下会通过 [numactl](https://linux.die.net/man/8/numactl) 分配 cpubind 和 membind 策略。该字段参数为 string 类型，字段值填 NUMA 节点的 ID，例如 "0,1"
+- `config_file`: 该字段指定一个本地文件，该文件会在集群配置初始化阶段被传输到目标机器上，作为 Alertmanager 的配置
+- `os`: `host` 字段所指定的机器的操作系统，若不指定该字段，则默认为 `global` 中的 `os`
+- `arch`: `host` 字段所指定的机器的架构，若不指定该字段，则默认为 `global` 中的 `arch`
+- `resource_control`: 针对该服务的资源控制，如果配置了该字段，会将该字段和 `global` 中的 `resource_control` 内容合并（若字段重叠，以本字段内容为准），然后生成 systemd 配置文件并下发到 `host` 指定机器。`resource_control` 的配置规则同 `global` 中的 `resource_control`
 
 以上所有字段中，部分字段部署完成之后不能再修改。如下所示：
 
