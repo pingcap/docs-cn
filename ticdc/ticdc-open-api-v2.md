@@ -264,7 +264,7 @@ curl -X GET http://127.0.0.1:8300/api/v2/health
 | 参数名                       | 说明                                                                                                       |
 |:--------------------------|:---------------------------------------------------------------------------------------------------------|
 | `bdr_mode`                | `BOOLEAN` 类型，是否开启[双向同步复制](/ticdc/ticdc-bidirectional-replication.md)。默认值为 `false`。（非必选）                  |
-| `case_sensitive`          | `BOOLEAN` 类型，过滤表名时大小写是否敏感。自 v7.5.0 起，默认值由 `true` 改为 `false`。（非必选）                                                             |
+| `case_sensitive`          | `BOOLEAN` 类型，过滤表名时大小写是否敏感。自 v6.5.6、v7.1.3 和 v7.5.0 起，默认值由 `true` 改为 `false`。（非必选）                        |
 | `check_gc_safe_point`     | `BOOLEAN` 类型，是否检查同步任务的开始时间早于 GC 时间，默认值为 `true`。（非必选）                                                     |
 | `consistent`              | Redo log 配置。（非必选）                                                                                        |
 | `enable_sync_point`       | `BOOLEAN` 类型，是否开启 `sync point` 功能。（非必选）                                                                  |
