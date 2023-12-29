@@ -5,7 +5,7 @@ summary: 了解 TiCDC 双向复制的使用方法。
 
 # TiCDC 双向复制
 
-从 v6.5.0 版本开始，TiCDC 支持在两个 TiDB 集群之间进行双向复制。基于该功能，你可以使用 TiCDC 来构建 TiDB 集群的多写多活解决方案。
+从 v6.5.0 版本开始，TiCDC 支持在两个 TiDB 集群之间进行双向复制 (Bidirectional replication, BDR)。基于该功能，你可以使用 TiCDC 来构建 TiDB 集群的多写多活解决方案。
 
 本文档以在两个 TiDB 集群之间进行双向复制为例，介绍双向复制的使用方法。
 
