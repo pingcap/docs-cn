@@ -10,7 +10,7 @@ summary: 介绍如何在本地定制输出符合特定场景用户需求的 PDF�
 
 ## 环境准备
 
-只需要在第一次生成 PDF 时进行以下准备，以后再次生成 PDF 时可直接跳过这些工作。
+这些准备工作只需要在第一次生成 PDF 时进行，以后再次生成 PDF 时可直接跳过。
 
 ### 准备 1: 安装并配置 Docker 环境
 
@@ -36,22 +36,28 @@ summary: 介绍如何在本地定制输出符合特定场景用户需求的 PDF�
 
 TiDB 中文文档仓库的地址为 <https://github.com/pingcap/docs-cn>，英文文档仓库的地址为 <https://github.com/pingcap/docs>。
 
-下面的步骤以中文文档为例：
+下面的步骤以克隆 TiDB 中文文档为例：
 
 1. 打开 TiDB 中文文档仓库地址：<https://github.com/pingcap/docs-cn>
-2. 点击右上角的 [**Fork**](https://help.github.com/articles/github-glossary/#fork) 按钮，等待 Fork 完成即可。
-3. 要将 TiDB 文档仓库克隆到本地，你可以使用以下方法之一：
+2. 点击页面右上角的 [**Fork**](https://help.github.com/articles/github-glossary/#fork) 按钮，等待 Fork 完成即可。
+3. 通过以下任一方法将 TiDB 中文文档仓库克隆到本地。
 
-    - 使用 Git 命令行克隆 TiDB 文档仓库。
+    - 方法一：
 
-    ```
-    cd $working_dir # 将 $working_dir 替换为你想放置 repo 的目录。例如，`cd ~/Documents/GitHub`
-    git clone git@github.com:$user/docs-cn.git # 将 `$user` 替换为你的 GitHub ID
+        1. 安装并打开 [GitHub Desktop](https://desktop.github.com/)。
+        2. 在 GitHub Desktop 中，点击 **File** > **Clone Repository**。
+        3. 在 **GitHub.com** 选项卡中的 **Your Repositories 下**，选择你 Fork 出来的文档仓库，点击右下角的 Clone。
 
-    cd $working_dir/docs-cn
-    git remote add upstream git@github.com:pingcap/docs-cn.git # 添加上游仓库
-    git remote -v
-    ```
+    - 方法二：使用以下 Git 命令行：
+
+        ```
+        cd $working_dir # 将 $working_dir 替换为你想放置 repo 的目录。例如，`cd ~/Documents/GitHub`
+        git clone git@github.com:$user/docs-cn.git # 将 `$user` 替换为你的 GitHub ID
+
+        cd $working_dir/docs-cn
+        git remote add upstream git@github.com:pingcap/docs-cn.git # 添加上游仓库
+        git remote -v
+        ```
 
 ## 操作步骤
 
