@@ -123,4 +123,4 @@ select /*+ read_from_storage(tiflash[alias_a,alias_b]) */ ... from table_name_1 
 >
 > - TiDB 4.0.3 版本之前，在非只读 SQL 语句中（比如 `INSERT INTO ... SELECT`、`SELECT ... FOR UPDATE`、`UPDATE ...`、`DELETE ...`）读取 TiFlash，行为是未定义的。
 > - TiDB 4.0.3 到 6.2.0 之间的版本，TiDB 内部会对非只读 SQL 语句忽略 TiFlash 副本以保证数据写入、更新、删除的正确性。对应的，如果使用了[智能选择](#智能选择)的方式，TiDB 会自动选择非 TiFlash 副本；如果使用了 [Engine 隔离](#engine-隔离)的方式指定**仅**读取 TiFlash 副本，则查询会报错；而如果使用了[手工 Hint](#手工-hint) 的方式，则 Hint 会被忽略。
-> - 从 TiDB 6.3.0 起，如果 TiFlash 副本被允许使用，你可以通过变量 [tidb_enable_tiflash_read_for_write_stmt](/system-variables.md#tidb_enable_tiflash_read_for_write_stmt-从-v630-版本开始引入) 控制是否允许 TiDB 在处理非只读 SQL 语句时使用 TiFlash 副本。
+> - TiDB 6.3.0 到 6.5.x 之间的版本，如果 TiFlash 副本被允许使用，你可以通过变量 [tidb_enable_tiflash_read_for_write_stmt](/system-variables.md#tidb_enable_tiflash_read_for_write_stmt-从-v630-版本开始引入) 控制是否允许 TiDB 在处理非只读 SQL 语句时使用 TiFlash 副本。
