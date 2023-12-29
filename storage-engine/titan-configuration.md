@@ -39,7 +39,7 @@ Titan 对 RocksDB 兼容，也就是说，使用 RocksDB 存储引擎的现有 T
     enabled = true
     ```
 
-开启 Titan 以后，原有的数据并不会马上移入 Titan 引擎，而是随着前台写入和 RocksDB compaction 的进行，逐步进行 key-value 分离并写入 Titan。可以通过观察 **TiKV Details** - **Titan kv** - **blob file size** 监控面版确认数据保存在 Titan 中部分的大小。
+开启 Titan 以后，原有的数据并不会马上移入 Titan 引擎，而是随着前台写入和 RocksDB compaction 的进行，逐步进行 key-value 分离并写入 Titan。同样，全量、增量恢复或者Lightning导入的SST都是RocksDB格式，数据不会直接导入Titan。在Compaction过程中做数据搬迁到Titan。可以通过观察 **TiKV Details** - **Titan kv** - **blob file size** 监控面版确认数据保存在 Titan 中部分的大小。
 
 如果需要加速数据移入 Titan，可以通过 tikv-ctl 执行一次全量 compaction，具体参考[手动 compact](/tikv-control.md#手动-compact-整个-tikv-集群的数据)。
 
@@ -71,7 +71,7 @@ Titan 对 RocksDB 兼容，也就是说，使用 RocksDB 存储引擎的现有 T
     min-blob-size = "1KB"
     ```
 
-+ Titan 中 value 所使用的压缩算法。Titan 中压缩是以 value 为单元的。
++ Titan 中 value 所使用的压缩算法。默认情况下，Titan 中压缩是以 value 为单元的。因此Titan的压缩率低于RocksDB相比。以Json内容为例，Titan的store size可能比RocksDB高30%至50%。 用户可以通过设置zstd_dict_size（比如16KB）启用字典ZSTD以大幅提高压缩率（实际Store Size可以低于RocksDB），但字典ZSTD在有些负载下会有10%左右的性能损失。
 
     ```toml
     [rocksdb.defaultcf.titan]
@@ -118,7 +118,7 @@ Titan 对 RocksDB 兼容，也就是说，使用 RocksDB 存储引擎的现有 T
 - 当设置为 `read-only` 时，新写入的 value 不论大小均会写入 RocksDB。
 - 当设置为 `fallback` 时，新写入的 value 不论大小均会写入 RocksDB，并且当 RocksDB 进行 compaction 时，会自动把所碰到的存储在 Titan blob file 中的 value 移回 RocksDB。
 
-如果现有数据和未来数据均不再需要 Titan，可执行以下步骤完全关闭 Titan：
+如果现有数据和未来数据均不再需要 Titan，可执行以下步骤完全关闭 Titan。然而一般情况下只需要执行以下步骤1和步骤4即可，步骤2、3会影响用户SQL的性能。在Compaction过程中会将数据从Titan移回RocksDB。
 
 1. 更新需要关闭 Titan 的 TiKV 节点的配置。你可以通过以下两种方式之一更新 TiKV 配置：
 
@@ -131,13 +131,13 @@ Titan 对 RocksDB 兼容，也就是说，使用 RocksDB 存储引擎的现有 T
     discardable-ratio = 1.0
     ```
 
-2. 使用 `tikv-ctl` 执行全量数据整理 (Compaction)。这一步骤将消耗大量 I/O 和 CPU 资源。
+2. [可选] 使用 `tikv-ctl` 执行全量数据整理 (Compaction)。这一步骤将消耗大量 I/O 和 CPU 资源。
 
     ```bash
     tikv-ctl --pd <PD_ADDR> compact-cluster --bottommost force
     ```
 
-3. 数据整理结束后，通过 **TiKV-Details**/**Titan - kv** 监控面板确认 **Blob file count** 指标降为 0。
+3. [可选]数据整理结束后，通过 **TiKV-Details**/**Titan - kv** 监控面板确认 **Blob file count** 指标降为 0。
 
 4. 更新 TiKV 节点的配置，关闭 Titan。
 

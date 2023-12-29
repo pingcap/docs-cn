@@ -29,6 +29,8 @@ Titan 适合在以下场景中使用：
 - 没有范围查询或者对范围查询性能不敏感。Titan 存储数据的顺序性较差，所以相比 RocksDB 范围查询的性能较差，尤其是大范围查询。在测试中 Titan 范围查询性能相比 RocksDB 下降 40% 到数倍不等。
 - 磁盘剩余空间足够，推荐为相同数据量下 RocksDB 磁盘占用的两倍。Titan 降低写放大是通过牺牲空间放大达到的。另外由于 Titan 逐个压缩 value，压缩率比 RocksDB（逐个压缩 block）要差。这两个因素一起造成 Titan 占用磁盘空间比 RocksDB 要多，这是正常现象。根据实际情况和不同的配置，Titan 磁盘空间占用可能会比 RocksDB 多一倍。
 
+在TiDB 7.6之后, 对Titan性能做了进一步的优化，可以把Titan作为默认的存储引擎。由于TiKV在Value较小时会直接存在RocksDB中，因此即便是小Value也可以打开Titan。
+
 性能提升请参考 [Titan 的设计与实现](https://pingcap.com/blog-cn/titan-design-and-implementation/#%E5%9F%BA%E5%87%86%E6%B5%8B%E8%AF%95)。
 
 ## 架构与实现
@@ -117,3 +119,38 @@ Range Merge 是基于 Level Merge 的一个优化。考虑如下两种情况，�
 ![RangeMerge](/media/titan/titan-7.png)
 
 因此需要通过 Range Merge 操作维持 sorted run 在一定水平，即在 OnCompactionComplete 时统计该 range 的 sorted run 数量，若数量过多则将涉及的 BlobFile 标记为 ToMerge，在下一次的 Compaction 中进行重写。
+
+### 扩容缩容
+
+基于向后兼容的考虑，TiKV在扩缩容时的Snapshot仍然是RocksDB的格式。因此扩容后的节点由于一开始全部来自RocksDB，因此会显式RocksDB的特征，比如压缩率会高于老的TiKV节点、Store Size会较小、同时Compaction的写放大会相对较大。后续这些RocksDB格式的SST参与Compaction之后逐步转换为Titan格式。
+
+### min-blob-size的选择及其性能影响
+
+`min-blob-size` 是一个Value是否用Titan存储的依据。如果Value大于等于`min-blob-size`会用Titan存储，反之则用RocksDB原生的格式。当`min-blob-size`太小或太大都会导致性能下降。
+
+| 行宽(Bytes)      | pointget | pointget(titan)| scan100 | scan100(titan)| scan10000 | scan10000(titan)| update | update titan |
+| ---------------- | ---------| -------------- | --------| ------------- | --------- | --------------- | ------ | ------------ |
+| 256 | 156198 | 153487 | 15961 |6489 |269 |119 |30047 |35181 |
+|500 |161142 |160234 |16131 |9267 |223 |99.1 |24162 |33113 |
+|1K  | 159830 | 160190 | 11290 | 11129 | 115 | 98.2 | 18504 | 31969 |
+| 2K | 132507 |139460 | 5751 |5712 |58.2 |58.2 |10538 |28120 |
+| 4K | 106835 | 120328 | 2851 | 2836 | 29.1 | 29.1 | 5427 | 23453 |
+|512K |2331 | 2331 | 23.5 | 23.5 | NA| NA|62.3| 332|
+|1024K| 1165 | 1165 | 11.7 |11.7 | NA |NA |32.3 | 233 |
+
+Note: 
+scan100是指scan 100条记录，scan10000指scan 10000条记录。
+
+以上可见当行宽是2K时，Titan在所有指标上都超过了RocksDB。而当行宽是1KB时，Titan仅仅在scan10000上落后15%左右，但在update上大幅领先50%以上。因此`min-blob-size`默认值为1KB时比较合理的.
+
+### RocksDB和Titan之间的数据转换
+
+TiKV支持从RocksDB切换到Titan以及从Titan切换到RocksDB。配置切换之后数据通过compaction逐渐转换。如果不考虑对用户在线流量的影响，用户可以通过compact-cluster强制compact整个集群的方式来实现数据的完全切换。
+
+#### RocksDB转Titan
+
+由于RocksDB有Block cache，且转成Titan时的数据访问是连续的，因此Block Cache能有很好的命中率。在我们的测试中，一个670GB的TiKV节点数据转成Titan只需要1个小时。
+
+#### Titan转RocksDB
+
+由于Titan Blob文件中的Value是不连续的，而且Titan的Cache是Value级别，因此Blob Cache无法对compaction有很大的帮助。从Titan转到RocksDB速度会慢一个数量级。在我们的测试中，一个800GB的TiKV节点Titan数据转成RocksDB需要12个小时。
