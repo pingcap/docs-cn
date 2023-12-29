@@ -1,5 +1,6 @@
 ---
 title: TiDB Sysbench Performance Test Report -- v5.4.0 vs. v5.3.0
+summary: TiDB v5.4.0 shows improved performance of 2.59% to 4.85% in write-heavy workloads compared to v5.3.0. Results show performance improvements in point select, update non-index, update index, and read write scenarios.
 ---
 
 # TiDB Sysbench Performance Test Report -- v5.4.0 vs. v5.3.0

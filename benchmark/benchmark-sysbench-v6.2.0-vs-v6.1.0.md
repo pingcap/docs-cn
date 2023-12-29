@@ -1,5 +1,6 @@
 ---
 title: TiDB Sysbench Performance Test Report -- v6.2.0 vs. v6.1.0
+summary: TiDB v6.2.0 and v6.1.0 show similar performance in the Sysbench test. Point Select performance slightly drops by 3.58%. Update Non-index and Update Index performance are basically unchanged, reduced by 0.85% and 0.47% respectively. Read Write performance is reduced by 1.21%.
 ---
 
 # TiDB Sysbench Performance Test Report -- v6.2.0 vs. v6.1.0

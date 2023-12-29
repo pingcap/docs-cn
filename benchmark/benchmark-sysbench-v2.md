@@ -1,6 +1,7 @@
 ---
 title: TiDB Sysbench Performance Test Report -- v2.0.0 vs. v1.0.0
 aliases: ['/docs/dev/benchmark/benchmark-sysbench-v2/','/docs/dev/benchmark/sysbench-v2/']
+summary: TiDB 2.0 GA outperforms TiDB 1.0 GA in `Select` and `Insert` tests, with a 10% increase in `Select` query performance and a slight improvement in `Insert` query performance. However, the OLTP performance of both versions is almost the same.
 ---
 
 # TiDB Sysbench Performance Test Report -- v2.0.0 vs. v1.0.0

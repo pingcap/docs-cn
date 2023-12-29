@@ -1,5 +1,6 @@
 ---
 title: TiDB Sysbench Performance Test Report -- v6.0.0 vs. v5.4.0
+summary: TiDB v6.0.0 shows a 16.17% improvement in read-write workload performance compared to v5.4.0. Other workloads show similar performance between the two versions. Test results show performance comparisons for point select, update non-index, update index, and read-write workloads.
 ---
 
 # TiDB Sysbench Performance Test Report -- v6.0.0 vs. v5.4.0

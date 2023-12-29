@@ -1,6 +1,7 @@
 ---
 title: How to Run TPC-C Test on TiDB
 aliases: ['/docs/dev/benchmark/benchmark-tidb-using-tpcc/','/docs/dev/benchmark/how-to-run-tpcc/']
+summary: This document describes how to test TiDB using TPC-C, an online transaction processing benchmark. It specifies the initial state of the database, provides commands for loading data, running the test, and cleaning up test data. The test measures the maximum qualified throughput using tpmC (transactions per minute).
 ---
 
 # How to Run TPC-C Test on TiDB

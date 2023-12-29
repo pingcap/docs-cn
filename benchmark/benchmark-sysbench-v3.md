@@ -1,6 +1,7 @@
 ---
 title: TiDB Sysbench Performance Test Report -- v2.1 vs. v2.0
 aliases: ['/docs/dev/benchmark/benchmark-sysbench-v3/','/docs/dev/benchmark/sysbench-v3/']
+summary: TiDB 2.1 outperforms TiDB 2.0 in the `Point Select` test, with a 50% increase in query performance. However, the `Update Non-Index` and `Update Index` tests show similar performance between the two versions. The test was conducted in September 2018 in Beijing, China, using a specific test environment and configuration.
 ---
 
 # TiDB Sysbench Performance Test Report -- v2.1 vs. v2.0

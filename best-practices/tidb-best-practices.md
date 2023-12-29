@@ -1,6 +1,6 @@
 ---
 title: TiDB Best Practices
-summary: Learn the best practices of using TiDB.
+summary: This document summarizes best practices for using TiDB, covering SQL use and optimization tips for OLAP and OLTP scenarios, with a focus on TiDB-specific optimization options. It also recommends reading three blog posts introducing TiDB's technical principles before diving into the best practices.
 aliases: ['/docs/dev/tidb-best-practices/']
 ---
 

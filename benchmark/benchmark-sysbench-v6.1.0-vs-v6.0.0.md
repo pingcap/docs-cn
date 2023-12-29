@@ -1,5 +1,6 @@
 ---
 title: TiDB Sysbench Performance Test Report -- v6.1.0 vs. v6.0.0
+summary: TiDB v6.1.0 shows improved performance in write-heavy workloads compared to v6.0.0, with a 2.33% ~ 4.61% improvement. The test environment includes AWS EC2 instances and Sysbench 1.1.0-df89d34. Both versions use the same parameter configuration. Test plan involves deploying, importing data, and performing stress tests. Results show slight drop in Point Select performance, while Update Non-index, Update Index, and Read Write performance are improved by 2.90%, 4.61%, and 2.23% respectively.
 ---
 
 # TiDB Sysbench Performance Test Report -- v6.1.0 vs. v6.0.0
