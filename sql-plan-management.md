@@ -478,19 +478,19 @@ SHOW binding_cache status;
 
 ## 跨数据库绑定执行计划 (Cross-DB Binding)
 
-TiDB 支持使用通配符 '*' 来表示数据库，实现跨数据库绑定。TiDB 从 v7.6.0 引入跨数据库绑定，在使用跨数据库绑定前，需要开启 [`tidb_opt_enable_cross_db_binding`](/system-variables.md#tidb_opt_enable_cross_db_binding-从-v760-版本开始引入) 系统变量
+TiDB 支持使用通配符 '*' 来表示数据库，实现跨数据库绑定。TiDB 从 v7.6.0 引入跨数据库绑定，在使用跨数据库绑定前，需要开启 [`tidb_opt_enable_fuzzy_binding`](/system-variables.md#tidb_opt_enable_fuzzy_binding-从-v760-版本开始引入) 系统变量
 
 当用户将数据按照“数据库(scehma/db)”分开存储， 每个数据库拥有相同的对象定义，运行的业务逻辑也类似时，跨数据库执行计划绑定将会极大简化执行计划的固定工作。这样的建模一般有几个原因：
 
 * 用户在 TiDB 上运行 SaaS 或 PaaS 类服务， 每个租户的数据存储在独立的数据库中，方便数据维护管理。 
 * 用户在原单实例中做了分库操作，迁移到 TiDB 之后没有合库，而是沿用了原来的结构，把原先每个实例的数据按数据库分别存储。 
 
- "跨数据库绑定" 能够有效缓解这类场景中一个常见问题。SaaS 或 PaaS 客户的数据及负载并不均衡，客户基于自身业务发展需要，数据量可能会剧烈变化。在这个场景下，由于统计信息无法保持及时，数据量由小及大的快速变化经常会引发 SQL 性能问题。在这种情况下，SaaS 服务商可以选择用 "通用绑定" 固定”大客户”已经验证过的执行计划，所有客户的执行计划都会被固定，避免“小用户”业务快速增长带来的潜在性能问题。
+ "跨数据库绑定" 能够有效缓解这类场景中一个常见问题。SaaS 或 PaaS 客户的数据及负载并不均衡，客户基于自身业务发展需要，数据量可能会剧烈变化。在这个场景下，由于统计信息无法保持及时，数据量由小及大的快速变化经常会引发 SQL 性能问题。在这种情况下，SaaS 服务商可以选择用 "跨数据库绑定" 固定”大客户”已经验证过的执行计划，所有客户的执行计划都会被固定，避免“小用户”业务快速增长带来的潜在性能问题。
 
 使用跨数据库绑定，只需要将数据库名用 '*' 表示，例如：
 
 ```sql
-CREATE GLOBAL BINDING USING SELECT /*+ use_index(t, a) */ * FROM *.t; -- 创建 GLOBAL 作用域的通用绑定
+CREATE GLOBAL BINDING USING SELECT /*+ use_index(t, a) */ * FROM *.t; -- 创建 GLOBAL 作用域的跨数据库绑定
 CREATE GLOBAL BINDING USING SELECT /*+ use_index(t, a) */ * FROM t; -- 创建 GLOBAL 作用域的普通绑定
 SHOW GLOBAL BINDINGS;
 ```
@@ -511,7 +511,7 @@ SHOW GLOBAL BINDINGS;
 
 对于相同的查询，跨数据绑定与普通绑定可以同时存在，TiDB 匹配的优先级从高到低依次为：SESSION 级别的普通绑定 > SESSION 级别的跨数据库绑定 > GLOBAL 级别的普通绑定 > GLOBAL 级别的跨数据库绑定。
 
-除了创建方式不同，通用绑定的删除和状态变更语句与普通绑定相同。下面是一个详细的使用示例。
+除了创建方式不同，跨数据库绑定的删除和状态变更语句与普通绑定相同。下面是一个详细的使用示例。
 
 1. 创建数据库 `db1` 和 `db2`，并在每个数据库中创建两张表：
   
@@ -524,16 +524,16 @@ SHOW GLOBAL BINDINGS;
     CREATE TABLE db2.t2 (a INT, KEY(a));
     ```
 
-2. 开启通用绑定功能：
+2. 开启跨数据库绑定功能：
 
     ```sql
-    SET tidb_opt_enable_cross_db_binding=1;
+    SET tidb_opt_enable_fuzzy_binding=1;
     ```
 
-3. 创建通用绑定：
+3. 创建跨数据库绑定：
 
     ```sql
-    CREATE GLOBAL UNIVERSAL BINDING USING SELECT /*+ use_index(t1, a), use_index(t2, a) */ * FROM t1, t2;
+    CREATE GLOBAL BINDING USING SELECT /*+ use_index(t1, a), use_index(t2, a) */ * FROM *.t1, *.t2;
     ```
 
 4. 执行查询并查看是否使用了绑定：
