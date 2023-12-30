@@ -243,6 +243,7 @@ Query OK, 0 rows affected (0.04 sec)
 ```
 
 `UNION` case
+
 ```sql
 mysql> EXPLAIN SELECT /*+ use_index_merge(t3, idx) */ * FROM t3 WHERE ((a=1 AND (1 member of (j)))) OR ((a=2 AND (2 member of (j))));
 +---------------------------------+---------+-----------+---------------------------------------------------+--------------------------------------------------------------------------------------------------------------------------------------------------+
@@ -255,7 +256,9 @@ mysql> EXPLAIN SELECT /*+ use_index_merge(t3, idx) */ * FROM t3 WHERE ((a=1 AND 
 |   └─TableRowIDScan_8(Probe)     | 0.10    | cop[tikv] | table:t3                                          | keep order:false, stats:pseudo                                                                                                                   |
 +---------------------------------+---------+-----------+---------------------------------------------------+--------------------------------------------------------------------------------------------------------------------------------------------------+
 ```
+
 `INTERSECTION` case
+
 ```sql
 tidb> EXPLAIN SELECT /*+ use_index_merge(t3, idx, idx2) */ * FROM t3 WHERE ((a=1 AND (1 member of (j)))) AND ((b=1 AND (2 member of (k))));
 +-------------------------------+---------+-----------+----------------------------------------------------+-------------------------------------------------+
@@ -269,11 +272,10 @@ tidb> EXPLAIN SELECT /*+ use_index_merge(t3, idx, idx2) */ * FROM t3 WHERE ((a=1
 4 rows in set (0.01 sec)
 ```
 
-
-
 ### 部分支持多值索引的场景
 
 如果多个条件通过 `AND`/`OR` 进行组合，每个 `item` 条件对应多个不同的索引，则有以下情况：
+
 * 如果单个 item 的路径也是 index merge，则只要其和外部的 `AND`/`OR` 的逻辑一致，就可以和外部 index merge 融合。
 * 如果单个 item 的路径也是 index merge，且其 index partial path 只有一条，那么无论其自身 index merge 的逻辑是 `AND`/`OR`，都可以和外部 index merge 融合。
 
