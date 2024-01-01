@@ -200,6 +200,12 @@ TiDB 版本：7.6.0
 >
 > 以下为从 v7.5.0 升级至当前版本 (v7.6.0) 所需兼容性变更信息。如果从 v7.4.0 或之前版本升级到当前版本，可能也需要考虑和查看中间版本 Release Notes 中提到的兼容性变更信息。
 
+*  TiCDC 支持查询 changefeed 的下游同步状态  [#10289](https://github.com/pingcap/tiflow/issues/10289) @[hongyunyan](https://github.com/hongyunyan) **tw@qiancai** <!--1627-->
+
+    从 v7.6.0 起，TiCDC 引入了一个新的 API，用于查询指定同步任务 (changefeed) 的下游同步状态。通过此 API，你可以判断 TiCDC 是否已将所接收到的上游数据完全同步到下游。
+
+    更多信息，请参考[用户文档](/ticdc/ticdc-open-api-v2.md#查询特定同步任务是否完成)。
+
 ### 行为变更
 
 * 行为变更 1
