@@ -41,7 +41,7 @@ Download a new installation package from the [Prometheus download page](https://
 2. Recompress the `./prometheus-v{version}-linux-amd64` directory and name the new compressed package as `prometheus-v{new-version}.tar.gz`, where `{new-version}` can be specified according to your need.
 
     ```bash
-    cd prometheus-v{version}-linux-amd64.tar.gz
+    cd prometheus-v{version}-linux-amd64
     tar -zcvf ../prometheus-v{new-version}.tar.gz ./
     ```
 
@@ -81,7 +81,7 @@ In the following upgrade steps, you need to download the Grafana installation pa
 2. Recompress the `./grafana-v{version}-linux-amd64` directory and name the new compressed package as `grafana-v{new-version}.tar.gz`, where `{new-version}` can be specified according to your need.
 
     ```bash
-    cd grafana-v{version}-linux-amd64.tar.gz
+    cd grafana-v{version}-linux-amd64
     tar -zcvf ../grafana-v{new-version}.tar.gz ./
     ```
 
