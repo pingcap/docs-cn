@@ -6,7 +6,7 @@
 
 如果你发现或遇到了 TiDB 的文档问题，可随时[提 Issue](https://github.com/pingcap/docs-cn/issues/new/choose) 来反馈，或者直接[提交 Pull Request](/CONTRIBUTING.md#如何提-pull-request) 来进行修改。
 
-如果你想在本地定制输出符合特定场景需求的 PDF 格式的 TiDB 文档，例如对 TiDB 文档目录进行自由排序和删减，请参考 [自助生成 TiDB 文档 PDF 教程](/resources/tidb-pdf-generation-tutorial.md)。
+如果你想在本地定制输出符合特定场景需求的 PDF 格式的 TiDB 文档，例如对 TiDB 文档目录进行自由排序和删减，请参考[自助生成 TiDB 文档 PDF 教程](/resources/tidb-pdf-generation-tutorial.md)。
 
 ## TiDB 文档维护方式及版本说明
 
