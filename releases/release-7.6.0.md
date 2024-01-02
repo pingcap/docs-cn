@@ -89,12 +89,6 @@ TiDB 版本：7.6.0
 
     更多信息，请参考[用户文档](/tiflash/tiflash-supported-pushdown-calculations.md)。
 
-* 包含分区表的执行计划可以被缓存 [#issue号](链接) @[mjonss](https://github.com/mjonss) **tw@qiancai** <!--1622-->
-
-    执行计划缓存是提升交易系统性能的有效手段。 自 7.6.0 开始， TiDB 解除了分区表的执行计划无法进入执行计划缓存的限制， 包含分区表的 SQL 语句能够从执行计划缓存中受益。 这将进一步提升分区表在 TiDB 的应用场景， 客户可以更多的利用分区技术降低数据读取的数量，提升数据库性能。
-
-    更多信息，请参考[用户文档](/sql-prepared-plan-cache.md)。
-
 * 建表性能提升 10 倍 [#49752](https://github.com/pingcap/tidb/issues/49752) @[gmhdbjd](https://github.com/gmhdbjd) **tw@hfxsd** <!--1408-->
 
     在之前的版本里，将上游数据库上万张表迁移到 TiDB 时，TiDB 创建这些表耗时长，效率低。从 v7.6.0 开始，引入了新的 DDL 架构，可通过系统参数 `tidb_ddl_v2` 开启。相比之前的版本，新版本的 DDL 批量建表性能实现了高达 10 倍的提升，大幅减少了建表时间。
