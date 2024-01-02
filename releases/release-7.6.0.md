@@ -73,8 +73,8 @@ TiDB 版本：7.6.0
 
 * 支持下推以下字符串函数到 TiKV [#48170](https://github.com/pingcap/tidb/issues/48170) @[gengliqi](https://github.com/gengliqi) **tw@qiancai** <!--1607-->
 
-    * `LOWER`
-    * `UPPER`
+    * `LOWER()`
+    * `UPPER()`
 
     更多信息，请参考[用户文档](/functions-and-operators/expressions-pushed-down.md)。
 
