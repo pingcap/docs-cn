@@ -63,7 +63,7 @@ TiDB 版本：7.6.0
 
     更多信息，请参考[用户文档](链接)。
 
-* TiDB 提供支持落盘的并发 HashAgg 算法（实验特性） [#35637](https://github.com/pingcap/tidb/issues/35637) @[xzhangxian1008](https://github.com/xzhangxian1008) **tw@qiancai** <!--1365-->
+* TiDB 的并发 HashAgg 算法支持数据落盘（实验特性） [#35637](https://github.com/pingcap/tidb/issues/35637) @[xzhangxian1008](https://github.com/xzhangxian1008) **tw@qiancai** <!--1365-->
 
     在之前的 TiDB 版本中， HashAgg 算子的并发算法不支持数据落盘。当 SQL 语句的执行计划包含并发的 HashAgg 算子时，该 SQL 语句的所有数据都只能在内存中进行处理。这导致内存需要处理大量数据，当超过内存限制时，TiDB 只能选择非并发 HashAgg 算法，无法通过并发提升性能。
 
