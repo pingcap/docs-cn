@@ -32,8 +32,8 @@ TiDB 版本：7.6.0
     <td>A new 2-phase region scatter algorithm for preparing a snapshot restore to a cluster was introduced. In clusters with many TiKV nodes, this dramatically improves the cluster resource efficiency by more evenly distributing loading across the nodes, more effectively using per-node network bandwidth. In several real world cases, this causes a 1,000% acceleration of restore speeds.</td>
   </tr>
   <tr>
-    <td><a href="">Up to 10x acceleration of batch table creation</a>  {/* tw@hfxsd */}</td>
-    <td>With the introduction of a new DDL architecture in version 7.6, the performance of batch table creation in the new version's DDL has improved by up to 10x, significantly reducing the time required for users to create many tables. This is especially significant in SaaS scenarios, notorious for high numbers of tables (e.g. Tens to hundreds of thousands).</td>
+    <td><a href="">建表性能提升 10 倍</a>  {/* tw@hfxsd */}</td>
+    <td>在 v7.6.0 中引入了新的 DDL 架构，批量表创建的性能提高了 10 倍。这一重大改进大大缩短了创建大量表所需的时间。尤其是在 SaaS 场景中，大量表格（从数万到数十万不等）是一个常见的挑战，因此性能提升尤其显著。</td>
   </tr>
   <tr>
     <td rowspan="2">稳定性与高可用<br></td>
@@ -41,8 +41,8 @@ TiDB 版本：7.6.0
     <td>Full support for the TiProxy service, easily deployable via deployment tooling, to manage and maintain connections to TiDB so that they live through rolling restarts or upgrades or scaling events.</td>
   </tr>
   <tr>
-    <td><a href="">Data Migration (DM) officially supports MySQL 8.0</a>  {/* tw@hfxsd */}</td>
-    <td>In migrations scenarios from MySQL 8.0, where there are numerous tables to be migrated using DM (Data Migration), users would otherwise need to manually modify a large number of table creation statements. Starting from v7.6, you can configure alternative charsets and collations directly in via the DM tool. DM will handle these in the downstream such that the migration from MySQL 8.0 is much smoother.</td>
+    <td><a href="">Data Migration (DM) 正式支持迁移 MySQL 8.0 (GA)</a>  {/* tw@hfxsd */}</td>
+    <td>以前，使用 DM 从 MySQL 8.0 迁移大量表的情况下，需要对表创建语句进行大量手动修改。从 v7.6.0 开始，你可以直接在 DM 中配置替代字符集 (Charset) 和规则列表 (Collation)。DM 在下游无缝管理这些调整，确保从 MySQL 8.0 迁移过程更加顺利。</td>
   </tr>
 </tbody>
 </table>
