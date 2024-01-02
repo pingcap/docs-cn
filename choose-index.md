@@ -238,7 +238,7 @@ mysql> EXPLAIN SELECT /*+ use_index_merge(t2, idx) */ * FROM t2 WHERE a=1 AND JS
 对于由多个 `member of` 组成的 `OR`/`AND` 条件，且这些条件可以被作用在同一个或者多个多值索引上，由于 `member of` 的单路性质，也可以使用 IndexMerge `UNION` 或者 `INTERSECTION` 进行访问：
 
 ```sql
-mysql> CREATE TABLE t3 (a INT, j JSON, b INT, k JSON, INDEX idx(a, (CAST(j AS SIGNED ARRAY))), index idx2(b,(cast(k as SIGNED ARRAY))));
+mysql> CREATE TABLE t3 (a INT, j JSON, b INT, k JSON, INDEX idx(a, (CAST(j AS SIGNED ARRAY))), INDEX idx2(b,(CAST(k as SIGNED ARRAY))));
 Query OK, 0 rows affected (0.04 sec)
 ```
 
