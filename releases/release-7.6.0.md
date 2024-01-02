@@ -80,12 +80,12 @@ TiDB 版本：7.6.0
 
 * 新增支持下推以下 JSON 函数到 TiFlash [#48350](https://github.com/pingcap/tidb/issues/48350) [#48986](https://github.com/pingcap/tidb/issues/48986) [#48994](https://github.com/pingcap/tidb/issues/48994) [#49345](https://github.com/pingcap/tidb/issues/49345) [#49392](https://github.com/pingcap/tidb/issues/49392) @[SeaRise](https://github.com/SeaRise) @[yibin87](https://github.com/yibin87) **tw@qiancai** <!--1608-->
 
-    * `JSON_UNQUOTE`
-    * `JSON_ARRAY`
-    * `JSON_DEPTH`
-    * `JSON_VALID`
-    * `JSON_KEYS`
-    * `JSON_CONTAINS_PATH`
+    * `JSON_UNQUOTE()`
+    * `JSON_ARRAY()`
+    * `JSON_DEPTH()`
+    * `JSON_VALID()`
+    * `JSON_KEYS()`
+    * `JSON_CONTAINS_PATH()`
 
     更多信息，请参考[用户文档](/tiflash/tiflash-supported-pushdown-calculations.md)。
 
