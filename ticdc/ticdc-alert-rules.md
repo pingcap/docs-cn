@@ -26,7 +26,7 @@ For critical alerts, you need to pay close attention to abnormal monitoring metr
 
     See [TiCDC Handle Replication Interruption](/ticdc/troubleshoot-ticdc.md#how-do-i-handle-replication-interruptions).
 
-## `cdc_resolvedts_high_delay`
+### `cdc_resolvedts_high_delay`
 
 - Alert rule:
 
