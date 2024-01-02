@@ -13,6 +13,40 @@ TiDB 版本：7.6.0
 
 在 7.6.0 版本中，你可以获得以下关键特性：
 
+<table>
+<thead>
+  <tr>
+    <th>分类</th>
+    <th>功能/增强</th>
+    <th>描述</th>
+  </tr>
+</thead>
+<tbody>
+  <tr>
+    <td rowspan="3">可扩展性与性能<br></td>
+    <td><a href="https://docs.pingcap.com/tidb/v7.6/sql-plan-management#universal-binding">Universal SQL binding</a> {/* tw@Oreoxmt */}</td>
+    <td>In use cases with hundreds or thousands of same-schema databases -- such as SaaS data platforms storing a database per customer with equivalent business logic -- having up-to-date stats at all times is challenging. For this, SQL bindings can be used to lock in performance. However, doing so across so many tables is infeasible. Therefore, universal SQL bindings allow for broadcasting bindings across all schema-equivalent databases.</td>
+  </tr>
+  <tr>
+    <td><a href="https://docs.pingcap.com/tidb/v7.6/br-snapshot-guide#restore-cluster-snapshots">Up to 10x acceleration to snapshot restore</a> {/* tw@Oreoxmt */}</td>
+    <td>A new 2-phase region scatter algorithm for preparing a snapshot restore to a cluster was introduced. In clusters with many TiKV nodes, this dramatically improves the cluster resource efficiency by more evenly distributing loading across the nodes, more effectively using per-node network bandwidth. In several real world cases, this causes a 1,000% acceleration of restore speeds.</td>
+  </tr>
+  <tr>
+    <td><a href="">Up to 10x acceleration of batch table creation</a>  {/* tw@hfxsd */}</td>
+    <td>With the introduction of a new DDL architecture in version 7.6, the performance of batch table creation in the new version's DDL has improved by up to 10x, significantly reducing the time required for users to create many tables. This is especially significant in SaaS scenarios, notorious for high numbers of tables (e.g. Tens to hundreds of thousands).</td>
+  </tr>
+  <tr>
+    <td rowspan="2">稳定性与高可用<br></td>
+    <td><a href="https://docs.pingcap.com/tidb/v7.6/tiproxy/tiproxy-overview">TiProxy support</a>  {/* tw@ran-huang */}</td>
+    <td>Full support for the TiProxy service, easily deployable via deployment tooling, to manage and maintain connections to TiDB so that they live through rolling restarts or upgrades or scaling events.</td>
+  </tr>
+  <tr>
+    <td><a href="">Data Migration (DM) officially supports MySQL 8.0</a>  {/* tw@hfxsd */}</td>
+    <td>In migrations scenarios from MySQL 8.0, where there are numerous tables to be migrated using DM (Data Migration), users would otherwise need to manually modify a large number of table creation statements. Starting from v7.6, you can configure alternative charsets and collations directly in via the DM tool. DM will handle these in the downstream such that the migration from MySQL 8.0 is much smoother.</td>
+  </tr>
+</tbody>
+</table>
+
 ## 功能详情
 
 ### 性能
