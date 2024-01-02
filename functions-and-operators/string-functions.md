@@ -197,12 +197,25 @@ TiDB 支持使用大部分 MySQL 5.7 中提供的[字符串函数](https://dev.m
 
 ### [`SPACE()`](https://dev.mysql.com/doc/refman/8.0/en/string-functions.html#function_space)
 
-返回指定数量的空格，形式为字符串
++ 定义：返回指定数量的空格，形式为字符串
++ 语法：SPACE(number)
++ 参数：number 必须项。要返回的空格字符数
 
 ### [`STRCMP()`](https://dev.mysql.com/doc/refman/8.0/en/string-comparison-functions.html#function_strcmp)
 
-比较两个字符串
-
++ 定义：比较两个字符串
++ 语法：STRCMP(string1, string2)
++ 参数：string1，string2 必须项。要比较的两个字符串
++ 返回值：如果 string1 等于 string2，函数将返回 0；如果 string1 小于 string2， STRCMP() 函数将返回 -1；如果 string1 大于 string2， STRCMP() 函数将返回 1；当任意个参数为 NULL 时， STRCMP() 函数将返回 NULL。
+```SQL
+mysql> SELECT     STRCMP('hello', 'hello'),     STRCMP('hello1', 'hello'),     STRCMP('hello', 'hello1'),     STRCMP('hello', 'world'),     STRCMP(NULL, NULL);
++--------------------------+---------------------------+---------------------------+--------------------------+--------------------+
+| STRCMP('hello', 'hello') | STRCMP('hello1', 'hello') | STRCMP('hello', 'hello1') | STRCMP('hello', 'world') | STRCMP(NULL, NULL) |
++--------------------------+---------------------------+---------------------------+--------------------------+--------------------+
+|                        0 |                         1 |                        -1 |                       -1 |               NULL |
++--------------------------+---------------------------+---------------------------+--------------------------+--------------------+
+1 row in set (0.01 sec)
+```
 ### [`SUBSTR()`](https://dev.mysql.com/doc/refman/8.0/en/string-functions.html#function_substr)
 
 返回指定的子字符串
