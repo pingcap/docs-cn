@@ -38,7 +38,7 @@ TiDB 中文文档仓库的地址为 <https://github.com/pingcap/docs-cn>，英�
 下面的步骤以克隆 TiDB 中文文档为例：
 
 1. 打开 TiDB 中文文档仓库地址：<https://github.com/pingcap/docs-cn>
-2. 点击页面右上角的 [**Fork**](https://help.github.com/articles/github-glossary/#fork) 按钮，等待 Fork 完成即可。
+2. 点击页面右上角的 [**Fork**](https://github.com/pingcap/docs-cn/fork) 按钮，等待 Fork 完成即可。
 3. 通过以下任一方法将 TiDB 中文文档仓库克隆到本地。
 
     - 方法一：
