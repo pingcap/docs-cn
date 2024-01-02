@@ -1,29 +1,29 @@
 ---
-title: 用户自助生成 TiDB 文档 PDF 教程
-summary: 介绍如何在本地定制输出符合特定场景用户需求的 PDF。
+title: 自助生成 TiDB 文档 PDF 教程
+summary: 介绍如何在本地定制输出符合特定场景需求的 TiDB 文档 PDF。
 ---
 
-# 用户自助生成 TiDB 文档 PDF 教程
+# 自助生成 TiDB 文档 PDF 教程
 
-本教程为你提供了一种可以自助生成 TiDB PDF 文档的方法。通过该方法，你可以在本地对 TiDB 文档目录进行自由排序和删减，定制输出符合特定场景用户需求的 PDF。
+本教程提供了一种自助生成 PDF 格式的 TiDB 文档的方法。通过该方法，你可以在本地对 TiDB 文档目录进行自由排序和删减，定制输出符合特定场景需求的 PDF。
 
 ## 环境准备
 
-这些准备工作只需要在第一次生成 PDF 时进行，以后再次生成 PDF 时可直接跳过。
+以下准备工作只需要在第一次生成 PDF 时进行，以后再次生成 PDF 时可直接跳过。
 
-### 准备 1: 安装并配置 Docker 环境
+### 准备 1：安装并配置 Docker 环境
 
 > 大约耗时：30 分钟
 
 1. 安装 [Docker](https://docs.docker.com/get-docker/)。
-2. 在 Mac Terminal 或者 Windows powershell 运行 `docker --version` 命令。
+2. 在 macOS Terminal 或者 Windows PowerShell 运行 `docker --version` 命令。
 
     如果看到 Docker 的版本信息，说明安装成功。
 
 3. 配置 Docker 资源：
     1. 打开 Docker 应用程序，点击右上角的齿轮图标。
     2. 点击 **Resources**，然后将 **Memory** 设置为 `8.00 GB`。
-4. 在 Mac Terminal 或者 Windows powershell 运行以下命令拉取文档构建的 Docker 镜像：
+4. 在 macOS Terminal 或者 Windows PowerShell 运行以下命令拉取文档构建的 Docker 镜像：
 
     ```bash
     docker pull andelf/doc-build:0.1.9
