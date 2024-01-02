@@ -16,20 +16,23 @@ summary: 介绍如何在本地定制输出符合特定场景需求的 TiDB 文�
 > 大约耗时：30 分钟
 
 1. 安装 [Docker](https://docs.docker.com/get-docker/)。
+
 2. 在 macOS Terminal 或者 Windows PowerShell 运行 `docker --version` 命令。
 
     如果看到 Docker 的版本信息，说明安装成功。
 
-3. 配置 Docker 资源：
+3. 配置 Docker 资源。
+
     1. 打开 Docker 应用程序，点击右上角的齿轮图标。
     2. 点击 **Resources**，然后将 **Memory** 设置为 `8.00 GB`。
+
 4. 在 macOS Terminal 或者 Windows PowerShell 运行以下命令拉取文档构建的 Docker 镜像：
 
     ```bash
     docker pull andelf/doc-build:0.1.9
     ```
 
-### 准备 2: 将 TiDB 文档仓库克隆到本地
+### 准备 2：将 TiDB 文档仓库克隆到本地
 
 > 大约耗时：10 分钟
 
@@ -38,16 +41,18 @@ TiDB 中文文档仓库的地址为 <https://github.com/pingcap/docs-cn>，英�
 下面的步骤以克隆 TiDB 中文文档为例：
 
 1. 打开 TiDB 中文文档仓库地址：<https://github.com/pingcap/docs-cn>
+
 2. 点击页面右上角的 [**Fork**](https://github.com/pingcap/docs-cn/fork) 按钮，等待 Fork 完成即可。
+
 3. 通过以下任一方法将 TiDB 中文文档仓库克隆到本地。
 
-    - 方法一：
+    - 方法一：使用 GitHub Desktop 客户端。
 
         1. 安装并打开 [GitHub Desktop](https://desktop.github.com/)。
         2. 在 GitHub Desktop 中，点击 **File** > **Clone Repository**。
-        3. 在 **GitHub.com** 选项卡中的 **Your Repositories 下**，选择你 Fork 出来的文档仓库，点击右下角的 Clone。
+        3. 在 **GitHub.com** 选项卡中的 **Your Repositories** 下，选择你 Fork 出来的文档仓库，点击右下角的 **Clone**。
 
-    - 方法二：使用以下 Git 命令行：
+    - 方法二：使用以下 Git 命令行。
 
         ```
         cd $working_dir # 将 $working_dir 替换为你想放置 repo 的目录。例如，`cd ~/Documents/GitHub`
@@ -63,12 +68,16 @@ TiDB 中文文档仓库的地址为 <https://github.com/pingcap/docs-cn>，英�
 > 大约耗时：操作只需要 2 分钟，PDF 生成需要等待 0.5 到 1 个小时
 
 1. 确保你本地 TiDB 文档仓库中的文件为上游 GitHub 文档仓库中的最新版本。
+
 2. 按照你的文档需求，对 TiDB 文档目录进行自由排序和删减。
+
     1. 打开位于本地文档仓库根目录的 `TOC.md` 文件。
     2. 编辑 `TOC.md` 文件。例如，你可以删除所有不需要的文档章节标题和链接。
+
 3. 按照 `TOC.md` 文件将所有文档中的章节整合到一个 Markdown 文件中。
+
     1. 打开桌面的 Docker 应用程序。
-    2. 在 Mac Terminal 或者 Windows powershell 运行以下命令，进入文档构建的 Docker 镜像：
+    2. 在 macOS Terminal 或者 Windows PowerShell 运行以下命令，进入文档构建的 Docker 镜像：
 
         ```bash
         docker run -it -v ${doc-path}:/opt/data andelf/doc-build:0.1.9
@@ -82,13 +91,13 @@ TiDB 中文文档仓库的地址为 <https://github.com/pingcap/docs-cn>，英�
 
         执行后，如果提示 `WARNING: The requested image's platform (linux/amd64) does not match the detected host platform (linux/arm64/v8) and no specific platform was requested` 警告，可以忽略。
 
-    3. 进入 `opt/data`：
+    3. 进入 `opt/data` 目录。
 
         ```bash
         cd /opt/data
         ```
 
-    4. 将所有 Markdown 文档文件按照 `toc.md` 整合到一个 `doc.md` 文件中：
+    4. 将所有 Markdown 文档文件按照 `TOC.md` 整合到一个 `doc.md` 文件中。
 
         ```bash
         python3 scripts/merge_by_toc.py
@@ -96,7 +105,7 @@ TiDB 中文文档仓库的地址为 <https://github.com/pingcap/docs-cn>，英�
 
        **期望输出：**
 
-       在 `toc.md` 所在的文件夹中，你将看到一个新生成的 `doc.md` 文件。
+       在 `TOC.md` 所在的文件夹中，你将看到一个新生成的 `doc.md` 文件。
 
 4. 生成文档 PDF：
 
