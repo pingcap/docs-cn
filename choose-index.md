@@ -280,12 +280,12 @@ tidb> EXPLAIN SELECT /*+ use_index_merge(t3, idx, idx2) */ * FROM t3 WHERE ((a=1
 * 如果单个 item 的路径也是 index merge，且其 index partial path 只有一条，那么无论其自身 index merge 的逻辑是 `AND`/`OR`，都可以和外部 index merge 融合。
 
 ```sql
-mysql> create table t(j1 json, j2 json, a int, INDEX k1((CAST(j1->'$.path' AS SIGNED ARRAY))), INDEX k2((CAST(j2->'$.path' AS SIGNED ARRAY))), INDEX ka(a));
+mysql> CREATE TABLE t(j1 JSON, j2 JSON, a INT, INDEX k1((CAST(j1->'$.path' AS SIGNED ARRAY))), INDEX k2((CAST(j2->'$.path' AS SIGNED ARRAY))), INDEX ka(a));
 Query OK, 0 rows affected (0.02 sec)
 ```
 
 ```sql
-tidb> explain select /*+ use_index_merge(t, k1, k2, ka) */ * from t where (1 member of (j1->'$.path')) and (2 member of (j2->'$.path')) and (a = 3);
+tidb> EXPLAIN SELECT /*+ use_index_merge(t, k1, k2, ka) */ * FROM t WHERE (1 member of (j1->'$.path')) AND (2 member of (j2->'$.path')) AND (a = 3);
 +-------------------------------+---------+-----------+----------------------------------------------------------------------------+---------------------------------------------+
 | id                            | estRows | task      | access object                                                              | operator info                               |
 +-------------------------------+---------+-----------+----------------------------------------------------------------------------+---------------------------------------------+
