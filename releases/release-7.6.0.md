@@ -219,7 +219,7 @@ TiDB 版本：7.6.0
 
 ### 数据迁移
 
-* Data Migration (DM) 支持迁移 MySQL 8.0 的功能成为正式功能（GA）[#issue号](链接) @[lyzx2001](https://github.com/lyzx2001) **tw@hfxsd** <!--1617-->
+* Data Migration (DM) 支持迁移 MySQL 8.0 的功能成为正式功能（GA）[#49981](https://github.com/pingcap/tidb/issues/49981) @[lyzx2001](https://github.com/lyzx2001) **tw@hfxsd** <!--1617-->
 
     之前 DM 迁移 MySQL8.0 仅为实验特性，不能用于生产环境。TiDB v7.6.0 增强了该功能的稳定性、兼容性，可在生产环境帮助你平滑、快速地将数据从 MySQL 8.0 迁移到 TiDB。在 v7.6.0 中，该功能正式 GA。
 
