@@ -138,7 +138,7 @@ TiCDC 复制功能只会将指定时间点之后的增量变更复制到下游�
   - 在 A 中设置 `auto_increment_increment=3`，`auto_increment_offset=2000`
   - 在 B 中设置 `auto_increment_increment=3`，`auto_increment_offset=2001`
   - 在 C 中设置 `auto_increment_increment=3`，`auto_increment_offset=2002`
-  - 这样的话，A、B、C 隐式分配到的 `AUTO_INCREMENT_ID` 或 `AUTO_RANDOM_ID` 就不会互相冲突
+  - 这样的话，A、B、C 隐式分配到的 `AUTO_INCREMENT` ID 和 `AUTO_RANDOM` ID 就不会互相冲突
   - 如果需要增加 BDR 模式的集群，则要临时暂停相关业务的写入，重新在所有集群上设置合适的 `auto_increment_increment` 和 `auto_increment_offset` 后，再开启相关业务。
 
 - 双向复制的集群不具备检测写冲突的功能，写冲突将会导致未定义问题。你需要在业务层面保证不出现写冲突。
