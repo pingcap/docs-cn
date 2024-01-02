@@ -42,7 +42,7 @@ TiDB 版本：7.6.0
   </tr>
   <tr>
     <td><a href="">Data Migration (DM) 正式支持迁移 MySQL 8.0 (GA)</a>  {/* tw@hfxsd */}</td>
-    <td>以前，使用 DM 从 MySQL 8.0 迁移大量表的情况下，需要对表创建语句进行大量手动修改。从 v7.6.0 开始，你可以直接在 DM 中配置替代字符集 (Charset) 和规则列表 (Collation)。DM 在下游无缝管理这些调整，确保从 MySQL 8.0 迁移过程更加顺利。</td>
+    <td>以前，使用 DM 从 MySQL 8.0 迁移大量表的情况下，需要对表创建语句进行大量手动修改。从 v7.6.0 开始，你可以直接在 DM 中配置替代字符集 (Charset) 和规则列表 (Collation)。DM 在下游无缝管理这些调整，确保从 MySQL 8.0 迁移过程更加顺利。在 v7.6.0 中，该功能正式 GA。</td>
   </tr>
 </tbody>
 </table>
