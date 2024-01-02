@@ -120,7 +120,13 @@ TiCDC 复制功能只会将指定时间点之后的增量变更复制到下游�
 
 - BDR role 只能在两种场景中正常使用——1 个 `primary` 集群 + n 个 `secondary` 集群（可执行 DDL 的同步场景）和 n 个 `local_only` 集群（不可执行 DDL 的同步场景）。**请勿将 BDR role 设置为其他情况，例如，`primary+secondary+local_only`，TiDB 无法在错误设置 BDR role 的情况下保证正确性。**
 
-- 禁止在同步的表中使用 `Auto increment`/`Auto random` 键，以免产生数据不一致的问题。
+- 一般情况下，禁止在同步的表中使用 `Auto increment`/`Auto random` 键，以免产生数据冲突的问题。如果需要使用 `Auto increment`/`Auto random` 功能，可以通过在不同的集群设置 `auto_increment_increment` 和 `auto_increment_offset` 来使得不同的集群都分配到不同的 primary key。例如：
+  - 假设有三台 TiDB（A、B、C）处于双向同步中，那么我们可以：
+  - 在 A 中设置 `auto_increment_increment=3`，`auto_increment_offset=2000`
+  - 在 B 中设置 `auto_increment_increment=3`，`auto_increment_offset=2001`
+  - 在 C 中设置 `auto_increment_increment=3`，`auto_increment_offset=2002`
+  - 这样的话，A、B、C 隐式分配到的 auto increment id 就不会互相冲突
+  - 如果需要增加 BDR 模式的集群，则要临时暂停相关业务的写入，重新在所有集群上设置 `auto_increment_increment/auto_increment_offset`。
 
 - 双向复制的集群不具备检测写冲突的功能，写冲突将会导致未定义问题。你需要在业务层面保证不出现写冲突。
 
