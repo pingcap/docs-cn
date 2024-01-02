@@ -40,9 +40,9 @@ In TiDB Cloud Data Service, you can generate one or multiple endpoints automatic
         >
         > The **Table** drop-down list includes only user-defined tables with at least one column, excluding system tables and any tables without a column definition.
 
-    2. Select at least one HTTP operation (such as `GET Retrieve`, `POST Create`, and `PUT Update`) for the endpoint to be generated.
+    2. Select at least one HTTP operation (such as `GET (Retrieve)`, `POST (Create)`, and `PUT (Update)`) for the endpoint to be generated.
 
-        For each operation you selected, TiDB Cloud Data Service will generate a corresponding endpoint. If you have selected a batch operation (such as `POST Batch Create`), the generated endpoint lets you operate on multiple rows in a single request.
+        For each operation you selected, TiDB Cloud Data Service will generate a corresponding endpoint. If you have selected a batch operation (such as `POST (Batch Create)`), the generated endpoint lets you operate on multiple rows in a single request.
 
     3. (Optional) Configure a timeout and tag for the operations. All the generated endpoints will automatically inherit the configured properties, which can be modified later as needed.
     4. (Optional) The **Auto-Deploy Endpoint** option (disabled by default) controls whether to enable the direct deployment of the generated endpoints. When it is enabled, the draft review process is skipped, and the generated endpoints are deployed immediately without further manual review or approval.
@@ -53,10 +53,10 @@ In TiDB Cloud Data Service, you can generate one or multiple endpoints automatic
 
 5. Check the generated endpoint name, SQL statements, properties, and parameters of the new endpoint.
 
-    - Endpoint name: the generated endpoint name is the name of the selected table, and the request method (such as `GET`, `POST`, and `PUT`) is displayed before the name. For example, if the selected table name is `sample-table` and the selected operation is **POST Create**, the generated endpoint is displayed as `POST sample-table`.
+    - Endpoint name: the generated endpoint name is in the `/<name of the selected table>` format, and the request method (such as `GET`, `POST`, and `PUT`) is displayed before the endpoint name. For example, if the selected table name is `sample_table` and the selected operation is `POST (Create)`, the generated endpoint is displayed as `POST /sample_table`.
 
-        - If a batch operation is selected, TiDB Cloud Data Service appends `_batch` to the name of the generated endpoint. For example, if the selected table name is `sample-table` and the selected operation is **POST Batch Create**, the generated endpoint is displayed as `POST sample-table_batch`.
-        - If there has been already an endpoint with the same request method and endpoint name, TiDB Cloud Data Service appends `_copy` to the name of the generated endpoint. For example, `sample-table_copy`.
+        - If a batch operation is selected, TiDB Cloud Data Service appends `/bulk` to the name of the generated endpoint. For example, if the selected table name is `/sample_table` and the selected operation is `POST (Batch Create)`, the generated endpoint is displayed as `POST /sample_table/bulk`.
+        - If there has been already an endpoint with the same request method and endpoint name, TiDB Cloud Data Service appends `_dump_<random letters>` to the name of the generated endpoint. For example, `/sample_table_dump_EUKRfl`.
 
     - SQL statements: TiDB Cloud Data Service automatically writes SQL statements for the generated endpoints according to the table column specifications and the selected endpoint operations. You can click the endpoint name to view its SQL statements in the middle section of the page.
     - Endpoint properties: TiDB Cloud Data Service automatically configures the endpoint path, request method, timeout, and tag according to your selection. You can find the properties in the right pane of the page.
@@ -117,8 +117,12 @@ On the right pane of the endpoint details page, you can click the **Properties**
     > - The `page_size` must be less than or equal to the **Max Rows** property. Otherwise, an error is returned.
 
 - **Cache Response**: this property is available only when the request method is `GET`. When **Cache Response** is enabled, TiDB Cloud Data Service can cache the response returned by your `GET` requests within a specified time-to-live (TTL) period.
-- **Time-to-live (s)**: this property is available only when **Cache Response** is enabled. You can use it to specify the time-to-live (TTL) period in seconds for cached response. During the TTL period, if you make the same `GET` requests again, Data Service returns the cached response directly instead of fetching data from the target database again, which improves your query performance.
-- **Batch Operation**: this property is visible only when the request method is `POST`, `PUT`, or `DELETE`. When **Batch Operation** is enabled, you can operate on multiple rows in a single request. For example, you can insert multiple rows of data in a single `POST` request by adding an array of data objects in the `--data-raw` option of your curl command when calling the endpoint.
+- **Time-to-live(s)**: this property is available only when **Cache Response** is enabled. You can use it to specify the time-to-live (TTL) period in seconds for cached response. During the TTL period, if you make the same `GET` requests again, Data Service returns the cached response directly instead of fetching data from the target database again, which improves your query performance.
+- **Batch Operation**: this property is visible only when the request method is `POST` or `PUT`. When **Batch Operation** is enabled, you can operate on multiple rows in a single request. For example, you can insert multiple rows of data in a single `POST` request by putting an array of data objects to the `items` field of an object in the `--data-raw` option of your curl command when [calling the endpoint](#call-an-endpoint).
+
+    > **Note:**
+    >
+    > The endpoint with **Batch Operation** enabled supports both array and object formats for the request body: `[{dataObject1}, {dataObject2}]` and `{items: [{dataObject1}, {dataObject2}]}`. For better compatibility with other systems, it is recommended that you use the object format `{items: [{dataObject1}, {dataObject2}]}`.
 
 ### Write SQL statements
 
@@ -140,6 +144,8 @@ On the SQL editor of the endpoint details page, you can write and run the SQL st
 
     To define a parameter, you can insert it as a variable placeholder like `${ID}` in the SQL statement. For example, `SELECT * FROM table_name WHERE id = ${ID}`. Then, you can click the **Params** tab on the right pane to change the parameter definition and test values. For more information, see [Parameters](#configure-parameters).
 
+    When defining an array parameter, the parameter is automatically converted to multiple comma-separated values in the SQL statement. To make sure that the SQL statement is valid, you need to add parentheses (`()`) around the parameter in some SQL statements (such as `IN`). For example, if you define an array parameter `ID` with test value `1,2,3`, use `SELECT * FROM table_name WHERE id IN (${ID})` to query the data.
+
     > **Note:**
     >
     > - The parameter name is case-sensitive.
@@ -149,9 +155,31 @@ On the SQL editor of the endpoint details page, you can write and run the SQL st
 
     If you have inserted parameters in the SQL statements, make sure that you have set test values or default values for the parameters in the **Params** tab on the right pane. Otherwise, an error is returned.
 
-    To run a SQL statement, select the line of the SQL with your cursor and click **Run** > **Run at cursor**.
+    <SimpleTab>
+    <div label="macOS">
 
-    To run all SQL statements in the SQL editor, click **Run**. In this case, only the last SQL results are returned.
+    For macOS:
+
+    - If you have only one statement in the editor, to run it, press **⌘ + Enter** or click <svg width="1rem" height="1rem" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M6.70001 20.7756C6.01949 20.3926 6.00029 19.5259 6.00034 19.0422L6.00034 12.1205L6 5.33028C6 4.75247 6.00052 3.92317 6.38613 3.44138C6.83044 2.88625 7.62614 2.98501 7.95335 3.05489C8.05144 3.07584 8.14194 3.12086 8.22438 3.17798L19.2865 10.8426C19.2955 10.8489 19.304 10.8549 19.3126 10.8617C19.4069 10.9362 20 11.4314 20 12.1205C20 12.7913 19.438 13.2784 19.3212 13.3725C19.307 13.3839 19.2983 13.3902 19.2831 13.4002C18.8096 13.7133 8.57995 20.4771 8.10002 20.7756C7.60871 21.0812 7.22013 21.0683 6.70001 20.7756Z" fill="currentColor"></path></svg>**Run**.
+
+    - If you have multiple statements in the editor, to run one or several of them sequentially, place your cursor on your target statement or select the lines of the target statements with your cursor, and then press **⌘ + Enter** or click **Run**.
+
+    - To run all statements in the editor sequentially, press **⇧ + ⌘ + Enter**, or select the lines of all statements with your cursor and click **Run**.
+
+    </div>
+
+    <div label="Windows/Linux">
+
+    For Windows or Linux:
+
+    - If you have only one statement in the editor, to run it, press **Ctrl + Enter** or click <svg width="1rem" height="1rem" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M6.70001 20.7756C6.01949 20.3926 6.00029 19.5259 6.00034 19.0422L6.00034 12.1205L6 5.33028C6 4.75247 6.00052 3.92317 6.38613 3.44138C6.83044 2.88625 7.62614 2.98501 7.95335 3.05489C8.05144 3.07584 8.14194 3.12086 8.22438 3.17798L19.2865 10.8426C19.2955 10.8489 19.304 10.8549 19.3126 10.8617C19.4069 10.9362 20 11.4314 20 12.1205C20 12.7913 19.438 13.2784 19.3212 13.3725C19.307 13.3839 19.2983 13.3902 19.2831 13.4002C18.8096 13.7133 8.57995 20.4771 8.10002 20.7756C7.60871 21.0812 7.22013 21.0683 6.70001 20.7756Z" fill="currentColor"></path></svg>**Run**.
+
+    - If you have multiple statements in the editor, to run one or several of them sequentially, place your cursor on your target statement or select the lines of the target statements with your cursor, and then press **Ctrl + Enter** or click **Run**.
+
+    - To run all statements in the editor sequentially, press **Shift + Ctrl + Enter**, or select the lines of all statements with your cursor and click **Run**.
+
+    </div>
+    </SimpleTab>
 
     After running the statements, you can see the query results immediately in the **Result** tab at the bottom of the page.
 
@@ -163,9 +191,16 @@ In the **Definition** section, you can view and manage the following properties 
 
 - The parameter name: the name can only include letters, digits, and underscores (`_`) and must start with a letter or an underscore (`_`). **DO NOT** use `page` and `page_size` as parameter names, which are reserved for pagination of request results.
 - **Required**: specifies whether the parameter is required in the request. The default configuration is set to not required.
-- **Type**: specifies the data type of the parameter. Supported values are `STRING`, `NUMBER`, `INTEGER`, and `BOOLEAN`. When using a `STRING` type parameter, you do not need to add quotation marks (`'` or `"`). For example, `foo` is valid for the `STRING` type and is processed as `"foo"`, whereas `"foo"` is processed as `"\"foo\""`.
+- **Type**: specifies the data type of the parameter. Supported values are `STRING`, `NUMBER`, `INTEGER`, `BOOLEAN`, and `ARRAY`. When using a `STRING` type parameter, you do not need to add quotation marks (`'` or `"`). For example, `foo` is valid for the `STRING` type and is processed as `"foo"`, whereas `"foo"` is processed as `"\"foo\""`.
+- **Enum Value**: (optional) specifies the valid values for the parameter and is available only when the parameter type is `STRING`, `INTEGER`, or `NUMBER`.
+
+    - If you leave this field empty, the parameter can be any value of the specified type.
+    - To specify multiple valid values, you can separate them with a comma (`,`). For example, if you set the parameter type to `STRING` and specify this field as `foo, bar`, the parameter value can only be `foo` or `bar`.
+
+- **ItemType**: specifies the item type of an `ARRAY` type parameter.
 - **Default Value**: specifies the default value of the parameter.
 
+    - For `ARRAY` type, you need to separate multiple values with a comma (`,`).
     - Make sure that the value can be converted to the type of parameter. Otherwise, the endpoint returns an error.
     - If you do not set a test value for a parameter, the default value is used when testing the endpoint.
 
@@ -274,13 +309,17 @@ TiDB Cloud Data Service generates code examples to help you call an endpoint. To
 
     ```bash
     curl --digest --user '<Public Key>:<Private Key>' \
-      --request POST 'https://<region>.data.tidbcloud.com/api/v1beta/app/<App ID>/endpoint/<Endpoint Path>' \
-      --header 'content-type: application/json'\
-      --header 'endpoint-type: draft'
-      --data-raw '[{
-        "age": "${age}",
-        "career": "${career}"
-    }]'
+     --request POST 'https://<region>.data.tidbcloud.com/api/v1beta/app/<App ID>/endpoint/<Endpoint Path>' \
+     --header 'content-type: application/json'\
+     --header 'endpoint-type: draft'
+     --data-raw '{
+      "items": [
+        {
+          "age": "${age}",
+          "career": "${career}"
+        }
+      ]
+    }'
     ```
 
     </div>
@@ -293,12 +332,16 @@ TiDB Cloud Data Service generates code examples to help you call an endpoint. To
 
     ```bash
     curl --digest --user '<Public Key>:<Private Key>' \
-      --request POST 'https://<region>.data.tidbcloud.com/api/v1beta/app/<App ID>/endpoint/<Endpoint Path>'
-      --header 'content-type: application/json'\
-      --data-raw '[{
-        "age": "${age}",
-        "career": "${career}"
-    }]'
+     --request POST 'https://<region>.data.tidbcloud.com/api/v1beta/app/<App ID>/endpoint/<Endpoint Path>' \
+     --header 'content-type: application/json'\
+     --data-raw '{
+      "items": [
+        {
+          "age": "${age}",
+          "career": "${career}"
+        }
+      ]
+    }'
     ```
 
     </div>
@@ -315,10 +358,9 @@ TiDB Cloud Data Service generates code examples to help you call an endpoint. To
     - If the request method of your endpoint is `GET` and **Pagination** is enabled for the endpoint, you can paginate the results by updating the values of `page=<Page Number>` and `page_size=<Page Size>` with your desired values. For example, to get the second page with 10 items per page, use `page=2` and `page_size=10`.
     - If the request method of your endpoint is `POST` or `PUT`, fill in the `--data-raw` option according to the rows of data that you want to operate on.
 
-        - For endpoints with **Batch Operation** enabled, the `--data-raw` option accepts an array of data objects so you can operate on multiple rows of data using one endpoint.
+        - For endpoints with **Batch Operation** enabled, the `--data-raw` option accepts an object with an `items` field containing an array of data objects so you can operate on multiple rows of data using one endpoint.
         - For endpoints with **Batch Operation** not enabled, the `--data-raw` option only accepts one data object.
 
-    - If the request method of your endpoint is `DELETE` and **Batch Operation** is enabled for the endpoint, you can use comma (`,`) to separate multiple rows to be deleted in your curl command, such as `/endpoint/<Endpoint Path>?id=${id1},${id2},${id3}`.
     - If the endpoint contains parameters, specify the parameter values when calling the endpoint.
 
 ### Response

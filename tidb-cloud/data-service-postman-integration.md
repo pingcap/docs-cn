@@ -72,7 +72,7 @@ To run your Data App in Postman, take the following steps:
     - For an endpoint with parameters, you need to fill in the parameter values first, and then click **Send**.
 
         - For a `GET` or `DELETE` request, fill in the parameter values in the **Query Params** table.
-        - For a `POST` or `PUT` request, click the **Body** tab, and then fill in the parameter values as a JSON object. If **Batch Operation** is enabled for the endpoint in TiDB Cloud Data Service, fill in the parameter values as an array of JSON objects.
+        - For a `POST` or `PUT` request, click the **Body** tab, and then fill in the parameter values as a JSON object. If **Batch Operation** is enabled for the endpoint in TiDB Cloud Data Service, fill in the parameter values to the `items` field as an array of JSON objects.
 
 3. Check the response in the lower pane.
 

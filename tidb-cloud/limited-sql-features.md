@@ -51,7 +51,7 @@ TiDB Cloud works with almost all workloads that TiDB supports, but there are som
 | `LOAD DATA INFILE` | Only supports `LOAD DATA LOCAL INFILE` | Only supports `LOAD DATA LOCAL INFILE` |
 | `CHANGE DRAINER` | Not supported [^7] | Not supported [^7] |
 | `CHANGE PUMP` | Not supported [^7] | Not supported [^7] |
-| `FLASHBACK CLUSTER TO TIMESTAMP` | Supported | Not supported [^3] |
+| `FLASHBACK CLUSTER` | Supported | Not supported [^3] |
 | `LOAD STATS` | Supported | Not supported |
 | `SELECT ... INTO OUTFILE` | Not supported [^4] | Not supported [^4] |
 | `SET CONFIG` | Not supported [^4] | Not supported [^4] |

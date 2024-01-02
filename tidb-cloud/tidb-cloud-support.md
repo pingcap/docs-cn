@@ -64,11 +64,11 @@ To check or upgrade your support plan, perform the following steps:
 2. Choose your desired support plan.
 
     <SimpleTab>
-    <div label="Upgrade to Standard">
+    <div label="Upgrade to Standard or Enterprise">
 
-    To upgrade to **Standard**:
+    To upgrade to **Standard** or **Enterprise**:
 
-    1. Click **Select Plan** in the **Standard** pane. A **Finish and Start Using Support** page is displayed.
+    1. Click **Select Plan** in the **Standard** or **Enterprise** pane. A **Finish and Start Using Support** page is displayed.
     2. Check the billing information in the lower-left corner of the page.
     3. Add your payment information in the **Billing Profile** and **Credit Card** areas.
 
@@ -76,14 +76,14 @@ To check or upgrade your support plan, perform the following steps:
 
     4. Click **Confirm and Start Using Support** in the lower-right corner of the page.
 
-    After the payment is finished, you have upgraded your plan to **Standard**.
+    After the payment is finished, you have upgraded your plan to **Standard** or **Enterprise**.
 
     </div>
-    <div label="Upgrade to Enterprise or Premium">
+    <div label="Upgrade to Premium">
 
-    To upgrade your plan to **Enterprise** or **Premium**:
+    To upgrade your plan to **Premium**:
 
-    1. Click **Contact Sales** in the **Enterprise** or **Premium** pane. A **Contact Us** page is displayed.
+    1. Click **Contact Sales** in the **Premium** pane. A **Contact Us** page is displayed.
     2. Fill in and submit your contact information on the page. Then, the support team will contact you and help you with your subscription.
 
     </div>

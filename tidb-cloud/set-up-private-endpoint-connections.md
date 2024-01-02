@@ -88,7 +88,7 @@ Then create an AWS interface endpoint either using the AWS Management Console or
 
 To use the AWS Management Console to create a VPC interface endpoint, perform the following steps:
 
-1. Sign in to the [AWS Management Console](https://aws.amazon.com/console/) and open the Amazon VPC console at <https://console.aws.amazon.com/vpc/>.
+1. Sign in to the [AWS Management Console](https://aws.amazon.com/console/) and open the Amazon VPC console at [https://console.aws.amazon.com/vpc/](https://console.aws.amazon.com/vpc/).
 2. Click **Endpoints** in the navigation pane, and then click **Create Endpoint** in the upper-right corner.
 
     The **Create endpoint** page is displayed.

@@ -26,7 +26,7 @@ You can deploy Airbyte locally with only a few steps.
     docker-compose up
     ```
 
-Once you see an Airbyte banner, you can go to <http://localhost:8000> with the username (`airbyte`) and password (`password`) to visit the UI.
+Once you see an Airbyte banner, you can go to [http://localhost:8000](http://localhost:8000) with the username (`airbyte`) and password (`password`) to visit the UI.
 
 ```
 airbyte-server      |     ___    _      __          __

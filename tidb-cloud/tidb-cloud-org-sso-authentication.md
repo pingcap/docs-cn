@@ -19,8 +19,7 @@ In this document, you will learn how to migrate the authentication scheme of you
 
 > **Note:**
 >
-> - The Cloud Organization SSO feature is in beta and is only available upon request. To request this feature, click **?** in the lower-right corner of the [TiDB Cloud console](https://tidbcloud.com) and click **Request Support**. Then, fill in "Apply for Cloud Organization SSO" in the **Description** field and click **Send**.
-> - If your current TiDB login URL starts with `https://tidbcloud.com/enterprise/`, it means that Cloud Organization SSO is already enabled for your organization.
+> The Cloud Organization SSO feature is only available for paid organizations.
 
 ## Before you begin
 
@@ -43,13 +42,14 @@ The format of the custom URL is `https://tidbcloud.com/enterprise/signin/your-co
 
 TiDB Cloud provides the following authentication methods for Organization SSO.
 
+- Username and password
 - Google
 - GitHub
 - Microsoft
 - OIDC
 - SAML
 
-When you enable Cloud Organization SSO, the first three methods are enabled by default.
+When you enable Cloud Organization SSO, the first four methods are enabled by default. If you want to enforce the use of SSO for your organization, you can disable the username and password authentication method.
 
 All the enabled authentication methods will be displayed on your custom TiDB Cloud login page, so you need to decide which authentication methods to be enabled or disabled in advance.
 
@@ -94,9 +94,9 @@ To enable Cloud Organization SSO, take the following steps:
 
 Enabling an authentication method in TiDB Cloud allows members using that method to log in to TiDB Cloud using your custom URL.
 
-### Configure Google, GitHub, or Microsoft authentication methods
+### Configure username and password, Google, GitHub, or Microsoft authentication methods
 
-After enabling Cloud Organization Cloud, you can configure Google, GitHub, or Microsoft authentication methods as follows:
+After enabling Cloud Organization Cloud, you can configure username and password, Google, GitHub, or Microsoft authentication methods as follows:
 
 1. On the **Organization Settings** page, enable or disable the Google, GitHub, or Microsoft authentication methods according to your need.
 2. For an enabled authentication method, you can click <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 20H21M3.00003 20H4.67457C5.16376 20 5.40835 20 5.63852 19.9447C5.84259 19.8957 6.03768 19.8149 6.21663 19.7053C6.41846 19.5816 6.59141 19.4086 6.93732 19.0627L19.5001 6.49998C20.3285 5.67156 20.3285 4.32841 19.5001 3.49998C18.6716 2.67156 17.3285 2.67156 16.5001 3.49998L3.93729 16.0627C3.59139 16.4086 3.41843 16.5816 3.29475 16.7834C3.18509 16.9624 3.10428 17.1574 3.05529 17.3615C3.00003 17.5917 3.00003 17.8363 3.00003 18.3255V20Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg> to configure the method details.
@@ -157,6 +157,10 @@ In TiDB Cloud, the OIDC authentication method is disabled by default. After enab
 
 If you have an identity provider that uses the SAML identity protocol, you can enable the SAML authentication method for TiDB Cloud login.
 
+> **Note:**
+>
+> TiDB Cloud uses email addresses as unique identifiers for different users. Therefore, ensure that the `email` attribute for your organization members is configured in your identity provider.
+
 In TiDB Cloud, the SAML authentication method is disabled by default. After enabling Cloud Organization Cloud, you can enable and configure the SAML authentication method as follows:
 
 1. Get the following information from your identity provider for TiDB Cloud Organization SSO:
@@ -191,4 +195,56 @@ In TiDB Cloud, the SAML authentication method is disabled by default. After enab
         >
         > If you have configured email domains, before saving the settings, make sure that you add the email domain that you currently use for login, to avoid that you are locked out by TiDB Cloud.
 
+    - **SCIM Provisioning Accounts**
+
+        It is disabled by default. You can enable it if you want to centralize and automate provisioning, deprovisioning, and identity management for TiDB Cloud organization users and groups from your identity provider. For detailed configuration steps, see [Configure SCIM provisioning](#configure-scim-provisioning).
+
 4. Click **Save**.
+
+#### Configure SCIM provisioning
+
+[System for Cross-domain Identity Management (SCIM)](https://www.rfc-editor.org/rfc/rfc7644) is an open standard that automates the exchange of user identity information between identity domains and IT systems. By configuring SCIM provisioning, user groups from your identity provider can be automatically synchronized to TiDB Cloud, and you can centrally manage roles for these groups in TiDB Cloud.
+
+> **Note:**
+>
+> SCIM provisioning can be enabled only on the [SAML authentication method](#configure-the-saml-authentication-method).
+
+1. In TiDB Cloud, enable the **SCIM Provisioning Accounts** option of the [SAML authentication method](#configure-the-saml-authentication-method), and then record the following information for later use.
+
+    - SCIM connector base URL
+    - Unique identifier field for users
+    - Authentication Mode
+
+2. In your identity provider, configure SCIM provisioning for TiDB Cloud.
+
+    1. In your identity provider, add SCIM provisioning for your TiDB Cloud organization to your SAML app integration.
+
+        For example, if your identity provider is Okta, see [Add SCIM provisioning to app integrations](https://help.okta.com/en-us/content/topics/apps/apps_app_integration_wizard_scim.htm).
+
+    2. Assign your SAML app integration to the desired groups in your identity provider so members in the groups can access and use the app integration.
+
+        For example, if your identity provider is Okta, see [Assign an app integration to a group](https://help.okta.com/en-us/content/topics/provisioning/lcm/lcm-assign-app-groups.htm).
+
+   3. Push user groups from your identity provider to TiDB Cloud.
+
+        For example, if your identity provider is Okta, see [Manage group push](https://help.okta.com/en-us/content/topics/users-groups-profiles/usgp-group-push-main.htm).
+
+3. In TiDB Cloud, view groups pushed from your identity provider.
+
+    1. In the lower-left corner of the [TiDB Cloud console](https://tidbcloud.com), click <MDSvgIcon name="icon-top-organization" />, and then click **Organization Settings**.
+    2. On the **Organization Settings** page, click the **Groups** tab. The groups synchronized from your identity provider are displayed.
+    3. To view users in a group, click **View**.
+
+4. In TiDB Cloud, grant roles to the groups pushed from your identity provider.
+
+    > **Note:**
+    >
+    > Granting a role to a group means all members in the group gain that role. If a group includes members already in your TiDB Cloud organization, these members also gain the new role of the group.
+
+    1. To grant organization roles to the groups, click **By organization**, and then configure the roles in the **Organization Role** column. To learn about permissions of organization roles, see [Organization roles](/tidb-cloud/manage-user-access.md#organization-roles).
+    2. To grant project roles to the groups, click **By project**, and then configure the roles in the **Project Role** column. To learn about permissions of the project roles, see [Project roles](/tidb-cloud/manage-user-access.md#project-roles).
+
+5. If you change the members of the pushed groups in your identity provider, these changes are dynamically synchronized to the corresponding groups in TiDB Cloud.
+
+    - If new members are added to the groups in your identity provider, these members gain the roles of the corresponding groups.
+    - If some members are removed from the groups in your identity provider, these members are also removed from the corresponding groups in TiDB Cloud.

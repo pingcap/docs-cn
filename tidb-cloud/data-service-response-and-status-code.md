@@ -25,10 +25,10 @@ The response body contains the following fields:
     - `columns`: _array_. Schema information for the returned fields.
     - `rows`: _array_. The returned results in `key:value` format.
 
-        When **Batch Operation** is enabled for an endpoint and the last SQL statement of the endpoint is an `INSERT`, `UPDATE`, or `DELETE` operation, note the following:
+        When **Batch Operation** is enabled for an endpoint and the last SQL statement of the endpoint is an `INSERT` or `UPDATE` operation, note the following:
 
         - The returned results of the endpoint will also include the `"message"` and `"success"` fields for each row to indicate their response and status.
-        - If the primary key column of the target table is configured as `auto_increment`, the returned results of the endpoint will also include the `"auto_increment_id"` field for each row. The value of this field is the auto increment ID for an `INSERT` operation and is `null` for other operations such as `UPDATE` and `DELETE`.
+        - If the primary key column of the target table is configured as `auto_increment`, the returned results of the endpoint will also include the `"auto_increment_id"` field for each row. The value of this field is the auto increment ID for an `INSERT` operation and is `null` for other operations such as `UPDATE`.
 
     - `result`: _object_. The execution-related information of the SQL statement, including success/failure status, execution time, number of rows returned, and user configuration.
 

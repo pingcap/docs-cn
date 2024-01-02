@@ -34,7 +34,7 @@ When a cluster is paused, note the following:
     - Node Storage Cost
     - Data Backup Cost
 
-- TiDB Cloud stops [automatic backup](/tidb-cloud/backup-and-restore.md#automatic-backup) of the cluster.
+- TiDB Cloud stops [automatic backup](/tidb-cloud/backup-and-restore.md#turn-on-auto-backup) of the cluster.
 
 To pause a cluster, take the following steps:
 
@@ -61,7 +61,7 @@ After a paused cluster is resumed, note the following:
 
 - TiDB Cloud resumes collecting the monitoring information of the cluster, and you can read data from or write data to the cluster.
 - TiDB Cloud resumes charging both compute and storage costs.
-- TiDB Cloud resumes [automatic backup](/tidb-cloud/backup-and-restore.md#automatic-backup) of the cluster.
+- TiDB Cloud resumes [automatic backup](/tidb-cloud/backup-and-restore.md#turn-on-auto-backup) of the cluster.
 
 To resume a paused cluster, take the following steps:
 

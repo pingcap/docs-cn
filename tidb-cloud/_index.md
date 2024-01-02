@@ -73,6 +73,8 @@ hide_commit: true
 
 [From Apache Parquet Files](https://docs.pingcap.com/tidbcloud/import-csv-files)
 
+[With MySQL CLI](https://docs.pingcap.com/tidbcloud/import-with-mysql-cli)
+
 </LearningPath>
 
 <LearningPath label="Monitor" icon="cloud6">

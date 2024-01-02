@@ -315,7 +315,7 @@ To generate visual documents, take the following steps:
     dbt docs serve
     ```
 
-3. To access the document from your browser, go to <http://localhost:8080>.
+3. To access the document from your browser, go to [http://localhost:8080](http://localhost:8080).
 
 ## Description of profile fields
 

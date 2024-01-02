@@ -163,13 +163,6 @@ To get the cluster specification information, you can use the `tidbcloud_cluster
               "min" = 1
               "step" = 1
             }
-            "node_size" = "2C8G"
-          },
-          {
-            "node_quantity_range" = {
-              "min" = 1
-              "step" = 1
-            }
             "node_size" = "4C16G"
           },
           {
@@ -212,17 +205,6 @@ To get the cluster specification information, you can use the `tidbcloud_cluster
           },
         ])
         "tikv" = tolist([
-          {
-            "node_quantity_range" = {
-              "min" = 3
-              "step" = 3
-            }
-            "node_size" = "2C8G"
-            "storage_size_gib_range" = {
-              "max" = 500
-              "min" = 200
-            }
-          },
           {
             "node_quantity_range" = {
               "min" = 3

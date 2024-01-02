@@ -35,19 +35,19 @@ Configure the bucket access for TiDB Cloud and get the Role ARN as follows:
 
 2. In the AWS Management Console, create a managed policy for your Amazon S3 bucket.
 
-    1. Sign in to the AWS Management Console and open the Amazon S3 console at <https://console.aws.amazon.com/s3/>.
+    1. Sign in to the AWS Management Console and open the Amazon S3 console at [https://console.aws.amazon.com/s3/](https://console.aws.amazon.com/s3/).
     2. In the **Buckets** list, choose the name of your bucket with the source data, and then click **Copy ARN** to get your S3 bucket ARN (for example, `arn:aws:s3:::tidb-cloud-source-data`). Take a note of the bucket ARN for later use.
 
         ![Copy bucket ARN](/media/tidb-cloud/copy-bucket-arn.png)
 
-    3. Open the IAM console at <https://console.aws.amazon.com/iam/>, click **Policies** in the navigation pane on the left, and then click **Create Policy**.
+    3. Open the IAM console at [https://console.aws.amazon.com/iam/](https://console.aws.amazon.com/iam/), click **Policies** in the navigation pane on the left, and then click **Create Policy**.
 
         ![Create a policy](/media/tidb-cloud/aws-create-policy.png)
 
     4. On the **Create policy** page, click the **JSON** tab.
     5. Copy the following access policy template and paste it to the policy text field.
 
-        ```
+        ```json
         {
             "Version": "2012-10-17",
             "Statement": [
@@ -83,13 +83,28 @@ Configure the bucket access for TiDB Cloud and get the Role ARN as follows:
 
             For example, `"Resource": "arn:aws:s3:::tidb-cloud-source-data"`.
 
+        - If you have enabled AWS Key Management Service key (SSE-KMS) with customer-managed key encryption, make sure the following configuration is included in the policy. `"arn:aws:kms:ap-northeast-1:105880447796:key/c3046e91-fdfc-4f3a-acff-00597dd3801f"` is a sample KMS key of the bucket.
+
+            ```
+            {
+                "Sid": "AllowKMSkey",
+                "Effect": "Allow",
+                "Action": [
+                    "kms:Decrypt"
+                ],
+                "Resource": "arn:aws:kms:ap-northeast-1:105880447796:key/c3046e91-fdfc-4f3a-acff-00597dd3801f"
+            }
+            ```
+
+            If the objects in your bucket have been copied from another encrypted bucket, the KMS key value needs to include the keys of both buckets. For example, `"Resource": ["arn:aws:kms:ap-northeast-1:105880447796:key/c3046e91-fdfc-4f3a-acff-00597dd3801f","arn:aws:kms:ap-northeast-1:495580073302:key/0d7926a7-6ecc-4bf7-a9c1-a38f0faec0cd"]`.
+
     6. Click **Next: Tags**, add a tag of the policy (optional), and then click **Next:Review**.
 
     7. Set a policy name, and then click **Create policy**.
 
 3. In the AWS Management Console, create an access role for TiDB Cloud and get the role ARN.
 
-    1. In the IAM console at <https://console.aws.amazon.com/iam/>, click **Roles** in the navigation pane on the left, and then click **Create role**.
+    1. In the IAM console at [https://console.aws.amazon.com/iam/](https://console.aws.amazon.com/iam/), click **Roles** in the navigation pane on the left, and then click **Create role**.
 
         ![Create a role](/media/tidb-cloud/aws-create-role.png)
 

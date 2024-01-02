@@ -28,7 +28,8 @@ Before you start the migration, make sure you have read the following:
 
 ## Limitation
 
-AWS DMS does not support replicating `DROP TABLE`.
+- AWS DMS does not support replicating `DROP TABLE`.
+- AWS DMS supports basic schema migration, including the creation of tables and primary keys. However, AWS DMS does not automatically create secondary indexes, foreign keys, or user accounts in TiDB Cloud. You must manually create these objects in TiDB, including tables with secondary indexes, if needed. For more information, see [Migration planning for AWS Database Migration Service](https://docs.aws.amazon.com/dms/latest/userguide/CHAP_BestPractices.html#CHAP_SettingUp.MigrationPlanning).
 
 ## Step 1. Create an AWS DMS replication instance
 
@@ -100,7 +101,7 @@ AWS DMS does not support replicating `DROP TABLE`.
 
 3. Under **Step 1: Create traffic filter** in the dialog, click **Edit**, enter the public and private network IP addresses that you copied from the AWS DMS console, and then click **Update Filter**. It is recommended to add the public IP address and private IP address of the AWS DMS replication instance to the TiDB cluster traffic filter at the same time. Otherwise, AWS DMS might not be able to connect to the TiDB cluster in some scenarios.
 
-4. Click **Download TiDB cluster CA** to download the CA certificate. Under **Step 3: Connect with a SQL client** in the dialog, take a note of the `-u`, `-h`, and `-P` information in the connection string for later use.
+4. Click **Download CA cert** to download the CA certificate. Under **Step 3: Connect with a SQL client** in the dialog, take a note of the `-u`, `-h`, and `-P` information in the connection string for later use.
 
 5. Click the **VPC Peering** tab in the dialog, and then click **Add** under **Step 1: Set up VPC** to create a VPC Peering connection for the TiDB cluster and AWS DMS.
 

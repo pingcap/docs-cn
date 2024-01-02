@@ -66,6 +66,10 @@ For example, the target database and table of all the following files are `impor
 - `import_db.test_table_0_0_01.csv`
 - `import_db.test_table_0_0_01.csv.gz`
 
+> **Note:**
+>
+> The Snappy compressed file must be in the [official Snappy format](https://github.com/google/snappy). Other variants of Snappy compression are not supported.
+
 ### Parquet
 
 When you import Parquet files, name the data files as follows:
@@ -108,6 +112,10 @@ For example:
 - `import_db.test_table.01.sql.gz`
 
 If the SQL file is exported through TiDB Dumpling with the default configuration, it conforms to the naming convention by default.
+
+> **Note:**
+>
+> The Snappy compressed file must be in the [official Snappy format](https://github.com/google/snappy). Other variants of Snappy compression are not supported.
 
 ## File pattern
 

@@ -14,7 +14,7 @@ This document describes how to create a changefeed to stream data from TiDB Clou
 
 ## Restrictions
 
-- For each TiDB Cloud cluster, you can create up to 5 changefeeds.
+- For each TiDB Cloud cluster, you can create up to 100 changefeeds.
 - Because TiDB Cloud uses TiCDC to establish changefeeds, it has the same [restrictions as TiCDC](https://docs.pingcap.com/tidb/stable/ticdc-overview#unsupported-scenarios).
 - If the table to be replicated does not have a primary key or a non-null unique index, the absence of a unique constraint during replication could result in duplicated data being inserted downstream in some retry scenarios.
 
@@ -78,7 +78,7 @@ For **GCS**, before filling **GCS Endpoint**, you need to first grant the GCS bu
 
         ![Get bucket URI](/media/tidb-cloud/changefeed/sink-to-cloud-storage-gcs-uri01.png)
 
-    - To get a folder's gsutil URI, open the folder, click the copy button, and add `gs://` as a prefix. For example, if the bucket name is `test-sink-gcs` and the folder name is `changefeed-xxx`, the URI would be `gs://test-sink-gcs/changefeed-xxx`.
+    - To get a folder's gsutil URI, open the folder, click the copy button, and add `gs://` as a prefix. For example, if the bucket name is `test-sink-gcs` and the folder name is `changefeed-xxx`, the URI would be `gs://test-sink-gcs/changefeed-xxx/`.
 
         ![Get bucket URI](/media/tidb-cloud/changefeed/sink-to-cloud-storage-gcs-uri02.png)
 
@@ -98,17 +98,22 @@ Click **Next** to establish the connection from the TiDB Dedicated cluster to Am
 
     ![the table filter of changefeed](/media/tidb-cloud/changefeed/sink-to-s3-02-table-filter.jpg)
 
-    - **Filter Rules**: you can set filter rules in this column. By default, there is a rule `*.*`, which stands for replicating all tables. When you add a new rule, TiDB Cloud queries all the tables in TiDB and displays only the tables that match the rules in the box on the right.
+    - **Filter Rules**: you can set filter rules in this column. By default, there is a rule `*.*`, which stands for replicating all tables. When you add a new rule, TiDB Cloud queries all the tables in TiDB and displays only the tables that match the rules in the box on the right. You can add up to 100 filter rules.
     - **Tables with valid keys**: this column displays the tables that have valid keys, including primary keys or unique indexes.
     - **Tables without valid keys**: this column shows tables that lack primary keys or unique keys. These tables present a challenge during replication because the absence of a unique identifier can result in inconsistent data when handling duplicate events downstream. To ensure data consistency, it is recommended to add unique keys or primary keys to these tables before initiating the replication. Alternatively, you can employ filter rules to exclude these tables. For example, you can exclude the table `test.tbl1` by using the rule `"!test.tbl1"`.
 
-2. In the **Start Replication Position** area, select one of the following replication positions:
+2. Customize **Event Filter** to filter the events that you want to replicate.
+
+    - **Tables matching**: you can set which tables the event filter will be applied to in this column. The rule syntax is the same as that used for the preceding **Table Filter** area. You can add up to 10 event filter rules per changefeed.
+    - **Ignored events**: you can set which types of events the event filter will exclude from the changefeed.
+
+3. In the **Start Replication Position** area, select one of the following replication positions:
 
     - Start replication from now on
     - Start replication from a specific [TSO](https://docs.pingcap.com/tidb/stable/glossary#tso)
     - Start replication from a specific time
 
-3. In the **Data Format** area, select either the **CSV** or **Canal-JSON** format.
+4. In the **Data Format** area, select either the **CSV** or **Canal-JSON** format.
 
     <SimpleTab>
     <div label="Configure CSV format">
@@ -133,7 +138,7 @@ Click **Next** to establish the connection from the TiDB Dedicated cluster to Am
     </div>
     </SimpleTab>
 
-4. In the **Flush Parameters** area, you can configure two items:
+5. In the **Flush Parameters** area, you can configure two items:
 
     - **Flush Interval**: set to 60 seconds by default, adjustable within a range of 2 seconds to 10 minutes;
     - **File Size**: set to 64 MB by default, adjustable within a range of 1 MB to 512 MB.

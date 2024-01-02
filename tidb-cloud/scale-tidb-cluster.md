@@ -7,7 +7,7 @@ summary: Learn how to scale your TiDB Cloud cluster.
 
 > **Note:**
 >
-> - You cannot scale a [TiDB Serverless cluster](/tidb-cloud/select-cluster-tier.md#tidb-serverless).
+> - [TiDB Serverless](/tidb-cloud/select-cluster-tier.md#tidb-serverless) scales automatically based on your application's workload changes. However, you cannot manually scale a TiDB Serverless cluster.
 > - When a cluster is in the **MODIFYING** status, you cannot perform any new scaling operations on it.
 
 You can scale a TiDB cluster in the following dimensions:
@@ -20,10 +20,9 @@ For information about how to determine the size of your TiDB cluster, see [Deter
 
 > **Note:**
 >
-> If the vCPU and RAM size of TiDB or TiKV is set as **2 vCPU, 8 GiB (Beta)** or **4 vCPU, 16 GiB**, note the following restrictions. To bypass these restrictions, you can [increase the vCPU and RAM](#change-vcpu-and-ram) first.
+> If the vCPU and RAM size of TiDB or TiKV is set as **4 vCPU, 16 GiB**, note the following restrictions. To bypass these restrictions, you can [increase the vCPU and RAM](#change-vcpu-and-ram) first.
 >
 > - The node number of TiDB can only be set to 1 or 2, and the node number of TiKV is fixed to 3.
-> - 2 vCPU TiDB can only be used with 2 vCPU TiKV, and 2 vCPU TiKV can only be used with 2 vCPU TiDB.
 > - 4 vCPU TiDB can only be used with 4 vCPU TiKV, and 4 vCPU TiKV can only be used with 4 vCPU TiDB.
 > - TiFlash is unavailable.
 

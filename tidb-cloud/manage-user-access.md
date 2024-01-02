@@ -7,7 +7,7 @@ summary: Learn how to manage identity access in TiDB Cloud.
 
 This document describes how to manage access to organizations, projects, roles, and user profiles in TiDB Cloud.
 
-Before accessing TiDB Cloud, [create a TiDB cloud account](https://tidbcloud.com/free-trial). You can either sign up with email and password so that you can [manage your password using TiDB Cloud](/tidb-cloud/tidb-cloud-password-authentication.md), or choose your Google, GitHub, or Microsoft account for single sign-on (SSO) to TiDB Cloud.
+Before accessing TiDB Cloud, [create a TiDB Cloud account](https://tidbcloud.com/free-trial). You can either sign up with email and password so that you can [manage your password using TiDB Cloud](/tidb-cloud/tidb-cloud-password-authentication.md), or choose your Google, GitHub, or Microsoft account for single sign-on (SSO) to TiDB Cloud.
 
 ## Organizations and projects
 
@@ -84,7 +84,7 @@ At the organization level, TiDB Cloud defines four roles, in which `Organization
 
 > **Note:**
 >
-> The `Organization Console Audit Admin` role is only visible upon request. It is recommended that you use the `Organization Owner` role for [console audit logging](/tidb-cloud/tidb-cloud-console-auditing.md). If you need to use the `Organization Console Audit Admin` role, click **?** in the lower-right corner of the [TiDB Cloud console](https://tidbcloud.com) and click **Request Support**. Then, fill in "Apply for the Organization Console Audit Admin role" in the **Description** field and click **Send**.
+> The `Organization Console Audit Admin` role is used to manage audit logging in the TiDB Cloud console, instead of database audit logging. To manage database auditing, use the `Project Owner` role at the project level.
 
 ### Project roles
 

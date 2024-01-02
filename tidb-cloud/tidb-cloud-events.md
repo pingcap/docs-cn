@@ -9,10 +9,6 @@ TiDB Cloud logs the historical events at the cluster level. An *event* indicates
 
 This document describes how to view the events for TiDB Cloud clusters using the **Events** page and lists the supported event types.
 
-> **Note:**
->
-> Currently, the Events page is only available for [TiDB Dedicated](/tidb-cloud/select-cluster-tier.md#tidb-dedicated) clusters.
-
 ## View the Events page
 
 To view the events on the Events page, take the following steps:
@@ -46,6 +42,8 @@ TiDB Cloud logs the following types of cluster events:
 | ScaleChangefeed |   Scale the specification of a changefeed |  
 | FailedChangefeed |   Changefeed failures |  
 | ImportData |   Import data to a cluster |  
+| UpdateSpendingLimit |   Update spending limit of a TiDB Serverless cluster |  
+| ResourceLimitation |   Update resource limitation of a TiDB Serverless cluster |  
 
 For each event, the following information is logged:
 
@@ -55,10 +53,6 @@ For each event, the following information is logged:
 - Time
 - Triggered By
 
-> **Note:**
->
-> Cluster events started before 2023-03-22 are not visible on the Events page.
-
 ## Event retention policy
 
-For TiDB Dedicated clusters, the event data is kept for 7 days.
+Event data is kept for 7 days.

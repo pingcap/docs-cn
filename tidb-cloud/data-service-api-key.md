@@ -22,12 +22,36 @@ The TiDB Cloud Data API supports both [Basic Authentication](https://en.wikipedi
 
 ## Rate limiting
 
-Request quotas are rate-limited as follows:
+Request quotas are subject to rate limits as follows:
 
-- 100 requests per minute (rpm) per API key
-- 100 requests per day for each Chat2Query Data App
+- TiDB Cloud Data Service allows up to 100 requests per minute (rpm) per API key by default.
 
-If you exceed the rate limit, the API returns a `429` error. To increase your quota, you can [submit a request](https://support.pingcap.com/hc/en-us/requests/new?ticket_form_id=7800003722519) to our support team.
+    You can edit the rate limit of an API key when you [create](#create-an-api-key) or [edit](#edit-an-api-key) the key. The supported value range is from `1` to `1000`. If your requests per minute exceed the rate limit, the API returns a `429` error. To get a quota of more than 1000 rpm per API key, you can [submit a request](https://support.pingcap.com/hc/en-us/requests/new?ticket_form_id=7800003722519) to our support team.
+
+    Each API request returns the following headers about the limit.
+
+    - `X-Ratelimit-Limit-Minute`: The number of requests allowed per minute.
+    - `X-Ratelimit-Remaining-Minute`: The number of remaining requests in the current minute. When it reaches `0`, the API returns a `429` error and indicates that you exceed the rate limit.
+    - `X-Ratelimit-Reset`: The time in seconds at which the current rate limit resets.
+
+  If you exceed the rate limit, an error response returns like this:
+
+    ```bash
+    HTTP/2 429
+    date: Mon, 05 Sep 2023 02:50:52 GMT
+    content-type: application/json
+    content-length: 420
+    x-debug-trace-id: 202309040250529dcdf2055e7b2ae5e9
+    x-ratelimit-reset: 8
+    x-ratelimit-remaining-minute: 0
+    x-ratelimit-limit-minute: 10
+    x-kong-response-latency: 1
+    server: kong/2.8.1
+
+    {"type":"","data":{"columns":[],"rows":[],"result":{"latency":"","row_affect":0,"code":49900007,"row_count":0,"end_ms":0,"limit":0,"message":"API key rate limit exceeded. The limit can be increased up to 1000 requests per minute per API key in TiDB Cloud console. For an increase in quota beyond 1000 rpm, please contact us: https://support.pingcap.com/hc/en-us/requests/new?ticket_form_id=7800003722519","start_ms":0}}}
+    ```
+
+- TiDB Cloud Data Service allows up to 100 requests per day for each Chat2Query Data App.
 
 ## Manage API keys
 
@@ -40,12 +64,19 @@ To create an API key for a Data App, perform the following steps:
 1. Navigate to the [**Data Service**](https://tidbcloud.com/console/data-service) page of your project.
 2. In the left pane, click the name of your target Data App to view its details.
 3. In the **Authentication** area, click **Create API Key**.
-4. In the **Create API Key** dialog box, enter a description and select a role for your API key.
+4. In the **Create API Key** dialog box, do the following:
 
-    The role is used to control whether the API key can read or write data to the clusters linked to the Data App. You can select the `ReadOnly` or `ReadAndWrite` role:
+    1. (Optional) Enter a description for your API key.
+    2. Select a role for your API key.
 
-    - `ReadOnly`: only allows the API key to read data, such as `SELECT`, `SHOW`, `USE`, `DESC`, and `EXPLAIN` statements.
-    - `ReadAndWrite`: allows the API key to read and write data. You can use this API key to execute all SQL statements, such as DML and DDL statements.
+        The role is used to control whether the API key can read or write data to the clusters linked to the Data App. You can select the `ReadOnly` or `ReadAndWrite` role:
+
+        - `ReadOnly`: only allows the API key to read data, such as `SELECT`, `SHOW`, `USE`, `DESC`, and `EXPLAIN` statements.
+        - `ReadAndWrite`: allows the API key to read and write data. You can use this API key to execute all SQL statements, such as DML and DDL statements.
+
+    3. (Optional) Set a desired rate limit for your API key.
+
+       If your requests per minute exceed the rate limit, the API returns a `429` error. To get a quota of more than 1000 requests per minute (rpm) per API key, you can [submit a request](https://support.pingcap.com/hc/en-us/requests/new?ticket_form_id=7800003722519) to our support team.
 
 5. Click **Next**. The public key and private key are displayed.
 
@@ -55,12 +86,12 @@ To create an API key for a Data App, perform the following steps:
 
 ### Edit an API key
 
-To edit the description of an API key, perform the following steps:
+To edit the description or rate limit of an API key, perform the following steps:
 
 1. Navigate to the [**Data Service**](https://tidbcloud.com/console/data-service) page of your project.
 2. In the left pane, click the name of your target Data App to view its details.
 3. In the **API Key** area, locate the **Action** column, and then click **...** > **Edit** in the API key row that you want to change.
-4. Update the description or the role of the API key.
+4. Update the description, role, or rate limit of the API key.
 5. Click **Update**.
 
 ### Delete an API key

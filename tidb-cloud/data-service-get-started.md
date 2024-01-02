@@ -13,21 +13,53 @@ Data Service (beta) enables you to access TiDB Cloud data via an HTTPS request u
 >
 > For more information, see [Get started with Chat2Query API](/tidb-cloud/use-chat2query-api.md).
 
-This document introduces how to quickly get started with TiDB Cloud Data Service (beta) by creating a Data App, developing, testing, deploying, and calling an endpoint.
+This document introduces how to quickly get started with TiDB Cloud Data Service (beta) by creating a Data App, developing, testing, deploying, and calling an endpoint. A Data App is a collection of endpoints that you can use to access data for a specific application.
 
 ## Before you begin
 
 Before creating a Data App, make sure that you have created a [TiDB Serverless](/tidb-cloud/select-cluster-tier.md#tidb-serverless) cluster. If you do not have one, follow the steps in [Create a TiDB Serverless cluster](/tidb-cloud/create-tidb-cluster-serverless.md) to create one.
 
-## Step 1. Create a Data App
+## Get started with a sample Data App
 
-A Data App is a collection of endpoints that you can use to access data for a specific application. To create a Data App, perform the following steps:
+Creating a sample Data App is the best way to get started with Data Service. If your project does not have any Data App yet, you can follow the on-screen instructions on the **Data Service** page to create a sample Data App and use this App to explore Data Service features.
 
 1. In the [TiDB Cloud console](https://tidbcloud.com), click <MDSvgIcon name="icon-left-data-service" /> **Data Service** in the left navigation pane.
 
-2. On the **Data Service** page, click **Create Data App**.
+2. On the **Data Service** page, click **Create Sample Data App**. A dialog is displayed.
+
+3. In the dialog, update the App name if necessary, select clusters that you want the Data App to access, and then click **Create**.
+
+    The creation process takes a few seconds.
+
+    > **Note:**
+    >
+    > If there is no cluster in your current project, you can click **Create New Cluster** in the **Link Data Sources** drop-down list to create one first.
+
+4. After the sample Data App is automatically created, you can find the App name, a list of endpoints in the left pane, the SQL statements of an endpoint in the middle pane, and instructions about using the sample Data App on the right side.
+
+5. Follow the instructions on the right side to choose an endpoint and use the curl command to call the endpoint.
+
+## Get started with your own Data App
+
+To get started with Data Service, you can also create your own Data App, and then develop, test, deploy, and call endpoints according to the following steps.
+
+### Step 1. Create a Data App
+
+ To create a Data App, perform the following steps:
+
+1. In the [TiDB Cloud console](https://tidbcloud.com), click <MDSvgIcon name="icon-left-data-service" /> **Data Service** in the left navigation pane.
+
+2. On the [**Data Service**](https://tidbcloud.com/console/data-service) page of your project, click <MDSvgIcon name="icon-create-data-app" /> **Create DataApp** in the left pane.
+
+    > **Tip:**
+    >
+    > If this is the first Data App in your project, click **Create Data App** in the middle of the page.
 
 3. In the **Create Data App** dialog, enter a name, a description, and select clusters that you want the Data App to access.
+
+    > **Note:**
+    >
+    > By default, the Data App type is **Standard Data App**. If you want to create a **Chat2Query Data App**, refer to [Get Started with Chat2Query API](/tidb-cloud/use-chat2query-api.md) instead of this document.
 
 4. (Optional) To automatically deploy endpoints of the Data App to your preferred GitHub repository and branch, enable **Connect to GitHub**, and then do the following:
 
@@ -46,7 +78,7 @@ A Data App is a collection of endpoints that you can use to access data for a sp
 
     For your new Data App, **Auto Sync & Deployment** and **Review Draft** are enabled by default so you can easily synchronize Data App changes between TiDB Cloud console and GitHub and review changes before the deployment. For more information about the GitHub integration, see [Deploy your Data App changes with GitHub automatically](/tidb-cloud/data-service-manage-github-connection.md).
 
-## Step 2. Develop an endpoint
+### Step 2. Develop an endpoint
 
 An endpoint is a web API that you can customize to execute SQL statements.
 
@@ -54,7 +86,7 @@ After creating a Data App, a default `untitled endpoint` is created for you auto
 
 If you want to create a new endpoint, locate the newly created Data App and click **+** **Create Endpoint** to the right of the App name.
 
-### Configure properties
+#### Configure properties
 
 On the right pane, click the **Properties** tab and set properties for the endpoint, such as:
 
@@ -66,7 +98,7 @@ On the right pane, click the **Properties** tab and set properties for the endpo
 
 For more information about endpoint properties, see [Configure properties](/tidb-cloud/data-service-manage-endpoint.md#configure-properties).
 
-### Write SQL statements
+#### Write SQL statements
 
 You can customize SQL statements for the endpoint in the SQL editor, which is the middle pane on the **Data Service** page.
 
@@ -91,7 +123,7 @@ You can customize SQL statements for the endpoint in the SQL editor, which is th
     > - The parameter name is case-sensitive.
     > - The parameter cannot be used as a table name or column name.
 
-    - In the **Definition** section, you can specify whether the parameter is required when a client calls the endpoint, the data type (`STRING`, `NUMBER`, `INTEGER`, or `BOOLEAN`), and the default value of the parameter. When using a `STRING` type parameter, you do not need to add quotation marks (`'` or `"`). For example, `foo` is valid for the `STRING` type and is processed as `"foo"`, whereas `"foo"` is processed as `"\"foo\""`.
+    - In the **Definition** section, you can specify whether the parameter is required when a client calls the endpoint, the data type, and the default value of the parameter.
     - In the **Test Values** section, you can set the test value for a parameter. The test values are used when you run the SQL statements or test the endpoint. If you do not set the test values, the default values are used.
     - For more information, see [Configure parameters](/tidb-cloud/data-service-manage-endpoint.md#configure-parameters).
 
@@ -105,7 +137,7 @@ You can customize SQL statements for the endpoint in the SQL editor, which is th
 
     After running the statements, you can see the query results immediately in the **Result** tab at the bottom of the page.
 
-## Step 3. Test the endpoint (optional)
+### Step 3. Test the endpoint (optional)
 
 After configuring an endpoint, you can test the endpoint to verify whether it works as expected before deploying.
 
@@ -113,7 +145,7 @@ To test the endpoint, click **Test** in the upper-right corner or press **F5**.
 
 Then, you can see the response in the **HTTP Response** tab at the bottom of the page. For more information about the response, see [Response of an endpoint](/tidb-cloud/data-service-manage-endpoint.md#response).
 
-## Step 4. Deploy the endpoint
+### Step 4. Deploy the endpoint
 
 To deploy the endpoint, perform the following steps:
 
@@ -123,20 +155,25 @@ To deploy the endpoint, perform the following steps:
 
     On the right pane of the endpoint details page, you can click the **Deployments** tab to view the deployed history.
 
-## Step 5. Call the endpoint
+### Step 5. Call the endpoint
 
 You can call the endpoint by sending an HTTPS request. Before calling an endpoint, you need to first obtain an API key for the Data App.
 
-### 1. Create an API key
+#### 1. Create an API key
 
 1. In the left pane of the [**Data Service**](https://tidbcloud.com/console/data-service) page, click the name of your Data App to view its details.
 2. In the **Authentication** area, click **Create API Key**.
-3. In the **Create API Key** dialog box, enter a description and select a role for your API key.
+3. In the **Create API Key** dialog box, do the following:
 
-    The role is used to control whether the API key can read or write data to the clusters linked to the Data App. You can select the `ReadOnly` or `ReadAndWrite` role:
+    1. (Optional) Enter a description for your API key.
+    2. Select a role for your API key.
 
-    - `ReadOnly`: only allows the API key to read data, such as `SELECT`, `SHOW`, `USE`, `DESC`, and `EXPLAIN` statements.
-    - `ReadAndWrite`: allows the API key to read and write data. You can use this API key to execute all SQL statements, such as DML and DDL statements.
+        The role is used to control whether the API key can read or write data to the clusters linked to the Data App. You can select the `ReadOnly` or `ReadAndWrite` role:
+
+        - `ReadOnly`: only allows the API key to read data, such as `SELECT`, `SHOW`, `USE`, `DESC`, and `EXPLAIN` statements.
+        - `ReadAndWrite`: allows the API key to read and write data. You can use this API key to execute all SQL statements, such as DML and DDL statements.
+
+    3. (Optional) Set a desired rate limit for your API key.
 
 4. Click **Next**. The public key and private key are displayed.
 
@@ -144,7 +181,9 @@ You can call the endpoint by sending an HTTPS request. Before calling an endpoin
 
 5. Click **Done**.
 
-### 2. Get the code example
+For more information about API keys, see [API Keys in Data Service](/tidb-cloud/data-service-api-key.md).
+
+#### 2. Get the code example
 
 TiDB Cloud generates code examples to help you call an endpoint. To get the code example, perform the following steps:
 
@@ -186,7 +225,7 @@ TiDB Cloud generates code examples to help you call an endpoint. To get the code
     > - By requesting the regional domain `<region>.data.tidbcloud.com`, you can directly access the endpoint in the region where the TiDB cluster is located.
     > - Alternatively, you can also request the global domain `data.tidbcloud.com` without specifying a region. In this way, TiDB Cloud will internally redirect the request to the target region, but this might result in additional latency. If you choose this way, make sure to add the `--location-trusted` option to your curl command when calling an endpoint.
 
-### 3. Use the code example
+#### 3. Use the code example
 
 Paste the code example in your application and run it. Then, you can get the response of the endpoint.
 

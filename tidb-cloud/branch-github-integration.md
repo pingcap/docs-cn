@@ -148,11 +148,20 @@ Here are the main steps to create the workflow:
            echo "The user is ${{ steps.wait-for-branch.outputs.user }}"
            echo "The password is ${{ steps.wait-for-branch.outputs.password }}"
    ```
+   
+   - `token`: GitHub will automatically create a [GITHUB_TOKEN](https://docs.github.com/en/actions/security-guides/automatic-token-authentication) secret. You can use it directly.
+   - `public-key` and `private-key`: The TiDB Cloud [API key](https://docs.pingcap.com/tidbcloud/api/v1beta#section/Authentication/API-Key-Management).
 
 3. Modify your test code.
 
    Modify your test code to accept the connection information from GitHub Actions. For example, you can accept the connection information through the environment, as demonstrated in the [live demo](https://github.com/shiyuhang0/tidbcloud-branch-gorm-example).
 
 ## What's next
+
+Learn how to use the branching GitHub integration with the following examples:
+
+- [branching-gorm-example](https://github.com/tidbcloud/branching-gorm-example)
+- [branching-django-example](https://github.com/tidbcloud/branching-django-example)
+- [branching-rails-example](https://github.com/tidbcloud/branching-rails-example)
 
 You can also build your branching CI/CD workflow without the branching GitHub integration. For example, you can use [`setup-tidbcloud-cli`](https://github.com/tidbcloud/setup-tidbcloud-cli) and GitHub Actions to customize your CI/CD workflows.

@@ -13,35 +13,6 @@ This document provides [Sysbench](https://github.com/akopytov/sysbench) performa
 
 In this document, the transaction models `Read Only`, `Read Write`, and `Write Only` represent read workloads, mixed workloads, and write workloads. 
 
-## 2 vCPU performance
-
-Currently, the 2 vCPU support of TiDB and TiKV is still in beta.
-
-Test scales:
-
-- TiDB (2 vCPU, 8 GiB) \* 1; TiKV (2 vCPU, 8 GiB) \* 3
-- TiDB (2 vCPU, 8 GiB) \* 2; TiKV (2 vCPU, 8 GiB) \* 3
-
-Test results:
-
-**TiDB (2 vCPU, 8 GiB) \* 1; TiKV (2 vCPU, 8 GiB) \* 3**
-
-| Transaction model | Threads | QPS      | TPS    | Average latency (ms) | P95 latency (ms) |
-|-------------------|---------|----------|--------|----------------------|------------------|
-| Read Only         | 15      | 3,496.77 | 218.55 | 68.63                | 95.81            |
-| Read Write        | 5       | 1,545.90 | 77.29  | 64.68                | 94.10            |
-| Write Only        | 40      | 4,326.57 | 721.10 | 55.47                | 90.78            |
-
-**TiDB (2 vCPU, 8 GiB) \* 2; TiKV (2 vCPU, 8 GiB) \* 3**
-
-Test results:
-
-| Transaction model | Threads | QPS      | TPS      | Average latency (ms) | P95 latency (ms) |
-|-------------------|---------|----------|----------|----------------------|------------------|
-| Read Only         | 30      | 7,584.08 | 474.00   | 63.29                | 99.33            |
-| Read Write        | 10      | 2,680.58 | 134.03   | 74.61                | 104.84           |
-| Write Only        | 80      | 7,618.77 | 1,269.79 | 63.00                | 97.55            |
-
 ## 4 vCPU performance
 
 Test scales:

@@ -111,6 +111,20 @@ In Chat2Query, you can save your SQL queries in different SQL files and manage S
 - To rename a SQL file, move your cursor on the filename, click **...** next to the filename, and then select **Rename**.
 - To delete a SQL file, move your cursor on the filename, click **...** next to the filename, and then select **Delete**. Note that when there is only one SQL file on the **SQL Files** tab, you cannot delete it.
 
+## Access Chat2Query via API
+
+In addition to accessing Chat2Query via UI, you can also access Chat2Query via API. To do so, you need to create a Chat2Query Data App first.
+
+In Chat2Query, you can access or create a Chat2Query Data App as follows:
+
+1. Click **...** in the upper-right corner, and then click **Access Chat2Query via API**.
+2. In the displayed dialog, do one of the following:
+
+    - To create a new Chat2Query Data App, click **New Chat2Query Data App**.
+    - To access an existing Chat2Query Data App, click the name of target Data App.
+
+For more information, see [Get started with Chat2Query API](/tidb-cloud/use-chat2query-api.md).
+
 ## Generate an endpoint from a SQL file
 
 For TiDB clusters, TiDB Cloud provides a [Data Service (beta)](/tidb-cloud/data-service-overview.md) feature that enables you to access TiDB Cloud data via an HTTPS request using a custom API endpoint. In Chat2Query, you can generate an endpoint of Data Service (beta) from a SQL file by taking the following steps:
@@ -127,7 +141,6 @@ In Chat2Query, you can change the following settings:
 
 - The maximum number of rows in query results
 - Whether to show system database schemas on the **Schemas** tab
-- Whether to enable [Chat2Query API](/tidb-cloud/use-chat2query-api.md)
 
 To change the settings, take the following steps:
 

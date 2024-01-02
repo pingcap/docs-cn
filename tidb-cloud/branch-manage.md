@@ -46,12 +46,16 @@ To connect to a branch, perform the following steps:
 2. Click **Branches** in the left navigation pane.
 3. In the row of your target branch to be connected, click **...** in the **Action** column.
 4. Click **Connect** in the drop-down list. The dialog for the connection information is displayed.
-5. Click **Create password** or **Reset password** to create or reset the root password.
+5. Click **Generate Password** or **Reset Password** to create or reset the root password.
 6. Connect to the branch using the connection information.
 
-> **Note:**
->
-> Currently, branches do not support [private endpoints](/tidb-cloud/set-up-private-endpoint-connections-serverless.md).
+Alternatively, you can get the connection string from the cluster overview page:
+
+1. In the [TiDB Cloud console](https://tidbcloud.com/), navigate to the [**Clusters**](https://tidbcloud.com/console/clusters) page of your project, and then click the name of your target TiDB Serverless cluster to go to its overview page.
+2. Click **Connect** in the upper-right corner.
+3. Select the branch you want to connect to in the `Branch` drop-down list.
+4. Click **Generate Password** or **Reset Password** to create or reset the root password.
+5. Connect to the branch using the connection information.
 
 ## Delete a branch
 

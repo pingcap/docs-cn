@@ -38,7 +38,6 @@ We are constantly filling in the feature gaps between TiDB Serverless and TiDB D
 - [Built-in Alerting](/tidb-cloud/monitor-built-in-alerting.md) is currently unavailable.
 - [Key Visualizer](/tidb-cloud/tune-performance.md#key-visualizer) is currently unavailable.
 - [Index Insight](/tidb-cloud/tune-performance.md#index-insight-beta) is currently unavailable.
-- [Cluster Events](/tidb-cloud/tidb-cloud-events.md) is currently unavailable.
 
 ### Self-service upgrades
 

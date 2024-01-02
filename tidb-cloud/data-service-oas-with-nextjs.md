@@ -206,4 +206,4 @@ To preview your application in a local development server, run the following com
 yarn dev
 ```
 
-You can then open <http://localhost:3000> in your browser and see the data from the `test.repository` database displayed on the page.
+You can then open [http://localhost:3000](http://localhost:3000) in your browser and see the data from the `test.repository` database displayed on the page.

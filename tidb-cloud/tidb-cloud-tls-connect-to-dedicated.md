@@ -28,16 +28,17 @@ In the [TiDB Cloud console](https://tidbcloud.com/), you can get examples of dif
 
 3. On the **Standard Connection** tab of this dialog, follow the three steps to set up the TLS connection.
    - Step 1：Create traffic filter
-   - Step 2：Download TiDB cluster CA
+   - Step 2：Download CA cert
    - Step 3：Connect with an SQL client
 
 4. Under **Step 1: Create traffic filter** in the dialog, configure the IP addresses that are allowed to access your cluster. For more information, see [Configure an IP access list in standard connection](/tidb-cloud/configure-ip-access-list.md#configure-an-ip-access-list-in-standard-connection).
 
-5. Under **Step 2: Download TiDB cluster CA**, click **Download TiDB cluster CA** to download it locally for client TLS configuration. The TiDB cluster CA ensures that the TLS connection is secure and reliable.
+5. Under **Step 2: Download CA cert**, click **Download CA cert** to download it locally for client TLS configuration. The CA cert ensures that the TLS connection is secure and reliable.
 
     > **Note:**
     >
-    > After downloading your TiDB Dedicated cluster CA, you can store it in the default storage path of your operating system, or specify another storage path. You need to replace the CA path in the code example with your own cluster CA path in the subsequent steps.
+    > - You can store the downloaded CA cert in the default storage path of your operating system, or specify another storage path. You need to replace the CA cert path in the code example with your own CA cert path in the subsequent steps.  
+   > - TiDB Dedicated does not force clients to use TLS connections, and user-defined configuration of the [`require_secure_transport`](/system-variables.md#require_secure_transport-new-in-v610) variable is currently not supported on TiDB Dedicated.
 
 6. Under **Step 3: Connect with an SQL client** in the dialog, click the tab of your preferred connection method, and then refer to the connection string and sample code on the tab to connect to your cluster.
 
