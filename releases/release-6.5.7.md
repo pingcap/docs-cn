@@ -20,6 +20,8 @@ TiDB 版本：6.5.7
 
 + TiDB
 
+    - 修复包含 IndexHashJoin 算子的查询由于内存达到 tidb_mem_quota_query 内杀掉时 hang 住的问题 [#49033](https://github.com/pingcap/tidb/issues/49033) @[XuHuaiyu](https://github.com/XuHuaiyu)
+
     - note [#issue](https://github.com/pingcap/tidb/issues/${issue-id}) @[贡献者 GitHub ID](https://github.com/${github-id})
     - note [#issue](https://github.com/pingcap/tidb/issues/${issue-id}) @[贡献者 GitHub ID](https://github.com/${github-id})
     - (dup): release-7.4.0.md > 改进提升> TiDB - 优化 `ANALYZE` 分区表的内存使用和性能 [#47071](https://github.com/pingcap/tidb/issues/47071) [#47104](https://github.com/pingcap/tidb/issues/47104) [#46804](https://github.com/pingcap/tidb/issues/46804) @[hawkingrei](https://github.com/hawkingrei)
