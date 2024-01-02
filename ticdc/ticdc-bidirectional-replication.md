@@ -5,7 +5,7 @@ summary: 了解 TiCDC 双向复制的使用方法。
 
 # TiCDC 双向复制
 
-从 v6.5.0 版本开始，TiCDC 支持在两个 TiDB 集群之间进行双向复制。基于该功能，你可以使用 TiCDC 来构建 TiDB 集群的多写多活解决方案。
+从 v6.5.0 版本开始，TiCDC 支持在两个 TiDB 集群之间进行双向复制 (Bidirectional replication, BDR)。基于该功能，你可以使用 TiCDC 来构建 TiDB 集群的多写多活解决方案。
 
 本文档以在两个 TiDB 集群之间进行双向复制为例，介绍双向复制的使用方法。
 
@@ -36,97 +36,110 @@ TiCDC 复制功能只会将指定时间点之后的增量变更复制到下游�
 
 ## DDL 类别
 
-从 v7.6.0 版本之后，为了在双向同步中尽可能地支持 DDL 同步，根据 DDL 对业务的影响，TiDB 把 [TiCDC 原本支持同步的 DDL](ticdc-ddl.md) 划分为了两种 DDL：可执行 DDL 和不可执行 DDL。
+从 v7.6.0 开始，为了在双向同步中尽可能地支持 DDL 同步，根据 DDL 对业务的影响，TiDB 将 [TiCDC 原本支持同步的 DDL](/ticdc/ticdc-ddl.md) 划分为两种 DDL：可复制的 DDL 和不可复制的 DDL。
 
-### 可执行 DDL
+### 可复制的 DDL
 
-可执行 DDL 是在双向同步中，可以直接执行并同步到其他 TiDB 集群的 DDL。有以下 DDL：
-- create database
-- create table
-- add column：添加的列必须是 `not null` 或者带有 `default value` 的列
-- add non-unique index
-- drop index
-- modify column：仅能修改列的 `default value` 和 `comment`
-- alter column default value
-- modify table comment
-- rename index
-- add table partition
-- drop primary key
-- alter table index visibility
-- alter table ttl
-- alter table remove ttl
-- create view
-- drop view
+可复制的 DDL 是指在双向同步中，可以直接执行并同步到其他 TiDB 集群的 DDL。
 
-### 不可执行 DDL
+可复制的 DDL 包括：
 
-另外有些 DDL 对业务的影响较大，这类不可执行 DDL 不能在双向同步中直接通过 TiCDC 同步到其他 TiDB 集群，必须得通过特定的操作来执行。有以下 DDL：
-- drop database
-- drop table
-- add column：添加的列为 `null` 且不带有 `default value` 的列
-- drop column
-- add unique index
-- truncate table
-- modify column：修改列除 `default value` 和 `comment` 以外的属性
-- rename table
-- drop partition
-- truncate partition
-- alter table character set
-- alter database character set
-- recover table
-- add primary key
-- rebase auto id
-- exchange partition
-- reorganize partition
+- `CREATE DATABASE`
+- `CREATE TABLE`
+- `ADD COLUMN`：添加的列必须是 `not null` 或者带有 `default value` 的列
+- `ADD NON-UNIQUE INDEX`
+- `DROP INDEX`
+- `MODIFY COLUMN`：仅能修改列的 `default value` 和 `comment`
+- `ALTER COLUMN DEFAULT VALUE`
+- `MODIFY TABLE COMMENT`
+- `RENAME INDEX`
+- `ADD TABLE PARTITION`
+- `DROP PRIMARY KEY`
+- `ALTER TABLE INDEX VISIBILITY`
+- `ALTER TABLE TTL`
+- `ALTER TABLE REMOVE TTL`
+- `CREATE VIEW`
+- `DROP VIEW`
+
+### 不可复制的 DDL
+
+不可复制的 DDL 是指对业务影响较大、不能在双向同步中直接通过 TiCDC 同步到其他 TiDB 集群的 DDL。不可复制的 DDL 必须通过特定的操作来执行。
+
+不可复制的 DDL 包括：
+
+- `DROP DATABASE`
+- `DROP TABLE`
+- `ADD COLUMN`：添加的列为 `null` 且不带有 `default value` 的列
+- `DROP COLUMN`
+- `ADD UNIQUE INDEX`
+- `TRUNCATE TABLE`
+- `MODIFY COLUMN`：修改列除 `default value` 和 `comment` 以外的属性
+- `RENAME TABLE`
+- `DROP PARTITION`
+- `TRUNCATE PARTITION`
+- `ALTER TABLE CHARACTER SET`
+- `ALTER DATABASE CHARACTER SET`
+- `RECOVER TABLE`
+- `ADD PRIMARY KEY`
+- `REBASE AUTO ID`
+- `EXCHANGE PARTITION`
+- `REORGANIZE PARTITION`
 
 ## DDL 同步
 
-为了能够解决上述两类 DDL 的同步问题，TiDB 引入了三种 BDR role：
-- `local_only`（默认）：用户能执行任意 DDL，但是在 TiCDC 开启 `bdr_mode=true` 之后，执行的 DDL 不会被 TiCDC 同步。
-- `primary`：用户能执行可执行 DDL，但不能执行不可执行 DDL，可执行 DDL 会被 TiCDC 同步到下游。
-- `secondary`：用户不能执行这两种 DDL，但是会执行从 TiCDC 同步过来的 DDL。
+为了能够解决上述可复制的 DDL 和不可复制的 DDL 两类 DDL 的同步问题，TiDB 引入了三种 BDR role：
+
+- `LOCAL_ONLY`（默认）：你可以执行任意 DDL，但是在 TiCDC 开启 `bdr_mode=true` 之后，执行的 DDL 不会被 TiCDC 同步。
+- `PRIMARY`：你可以执行可复制的 DDL，但不能执行不可复制的 DDL，可复制的 DDL 会被 TiCDC 同步到下游。
+- `SECONDARY`：你不能执行可复制的 DDL，也不能执行不可复制的 DDL，但是会执行从 TiCDC 同步过来的 DDL。
 
 > **警告：**
 >
-> 在当前版本中，双向复制的 DDL 同步为实验特性，不建议在生产环境中使用。
+> 双向复制的 DDL 同步目前为实验特性，不建议在生产环境中使用。该功能可能会在未事先通知的情况下发生变化或删除。如果发现 bug，请在 GitHub 上提 [issue](https://github.com/pingcap/tidb/issues) 反馈。
 
-### 可执行 DDL 的同步场景
+### 可复制的 DDL 的同步场景
 
-1. 选择一个 TiDB 集群为主集群，执行 `admin set bdr role priamry`。
-2. 把其他 TiDB 集群设置为从集群，执行 `admin set bdr role secondary`。
-3. 在主集群上执行**可执行 DDL**，执行成功的 DDL 会被 TiCDC 同步到从集群中。
+1. 选择一个 TiDB 集群，执行 `ADMIN SET BDR ROLE PRIMARY` 将其设置为主集群。
+2. 在其他 TiDB 集群上，执行 `ADMIN SET BDR ROLE SECONDARY` 将其设置为从集群。
+3. 在主集群上执行**可复制的 DDL**，执行成功的 DDL 会被 TiCDC 同步到从集群中。
 
 > **注意：**
 >
-> 为了防止用户误操作：
-> - 如果有**不可执行 DDL** 在主集群中尝试执行，会[报错 8263](../error-codes.md)。
-> - 无论是**可执行 DDL** 还是**不可执行 DDL** 在从集群中尝试执行，都会[报错 8263](../error-codes.md)。
+> 为了防止误操作：
+>
+> - 如果在主集群中尝试执行**不可复制的 DDL**，会[报错 8263](/error-codes.md)。
+> - 无论在从集群中尝试执行**可复制的 DDL** 还是**不可复制的 DDL**，都会[报错 8263](/error-codes.md)。
 
-### 不可执行 DDL 的同步场景
+### 不可复制的 DDL 的同步场景
 
-1. 把所有 TiDB 集群的 BDR role 设置为 `local_only`（默认 role）。执行 `admin set bdr role local_only`。
+1. 将所有 TiDB 集群的 BDR role 设置为 `LOCAL_ONLY`（默认值），然后执行 `ADMIN SET BDR ROLE LOCAL_ONLY`。
 2. 暂停所有集群中需要执行 DDL 的对应的表的写入操作。
 3. 等待所有集群中对应表的所有写入已经同步到其他集群后，手动在每一个 TiDB 集群上单独执行所有的 DDL。
 4. 等待 DDL 完成之后，重新恢复写入。
-5. 按照[可执行 DDL 的同步场景](###可执行-DDL-的同步场景)的步骤切换回可执行 DDL 的同步场景。
+5. 按照[可复制的 DDL 的同步场景](#可复制的-ddl-的同步场景)的操作步骤，切换回可复制的 DDL 的同步场景。
 
 ## 停止双向复制
 
 在业务数据停止写入之后，你可以在两个集群中都插入一行特殊的值，通过检查这两行特殊的值来确保数据达到了一致的状态。
 
-检查完毕之后，停止同步任务，并把 BDR role 切换回 `local_only` （默认）即可停止双向复制。
+检查完毕之后，停止同步任务，并把 BDR role 切换回 `LOCAL_ONLY` 即可停止双向复制。
 
 ## 使用限制
 
-- BDR role 只能在两种场景中正常使用——1 个 `primary` 集群 + n 个 `secondary` 集群（可执行 DDL 的同步场景）和 n 个 `local_only` 集群（不可执行 DDL 的同步场景）。**请勿将 BDR role 设置为其他情况，例如，`primary+secondary+local_only`，TiDB 无法在错误设置 BDR role 的情况下保证正确性。**
+- BDR role 只能在以下两种场景中正常使用：
 
-- 一般情况下，禁止在同步的表中使用 `Auto increment`/`Auto random` 键，以免产生数据冲突的问题。如果需要使用 `Auto increment`/`Auto random` 功能，可以通过在不同的集群设置 `auto_increment_increment` 和 `auto_increment_offset` 来使得不同的集群都分配到不同的 primary key。例如：
+    - 1 个 `PRIMARY` 集群和 n 个 `SECONDARY` 集群（可复制的 DDL 的同步场景）
+    - n 个 `LOCAL_ONLY` 集群（不可复制的 DDL 的同步场景）
+
+    **注意，请勿将 BDR role 设置为其他情况，例如，同时设置了 `PRIMARY`、`SECONDARY`、`LOCAL_ONLY`。如果错误地设置了 BDR role，TiDB 无法保证数据正确性。**
+
+- 一般情况下，禁止在同步的表中使用 `AUTO_INCREMENT` 或 `AUTO_RANDOM` 键，以免产生数据冲突的问题。如果需要使用 `AUTO_INCREMENT` 或 `AUTO_RANDOM` 键，可以通过在不同的集群设置 `auto_increment_increment` 和 `auto_increment_offset` 来使得不同的集群都能够分配到不同的 primary key。例如：
   - 假设有三台 TiDB（A、B、C）处于双向同步中，那么我们可以：
   - 在 A 中设置 `auto_increment_increment=3`，`auto_increment_offset=2000`
   - 在 B 中设置 `auto_increment_increment=3`，`auto_increment_offset=2001`
   - 在 C 中设置 `auto_increment_increment=3`，`auto_increment_offset=2002`
-  - 这样的话，A、B、C 隐式分配到的 auto increment id 就不会互相冲突
-  - 如果需要增加 BDR 模式的集群，则要临时暂停相关业务的写入，重新在所有集群上设置 `auto_increment_increment/auto_increment_offset`。
+  - 这样的话，A、B、C 隐式分配到的 `AUTO_INCREMENT_ID` 或 `AUTO_RANDOM_ID` 就不会互相冲突
+  - 如果需要增加 BDR 模式的集群，则要临时暂停相关业务的写入，重新在所有集群上设置合适的 `auto_increment_increment` 和 `auto_increment_offset` 后，再开启相关业务。
 
 - 双向复制的集群不具备检测写冲突的功能，写冲突将会导致未定义问题。你需要在业务层面保证不出现写冲突。
 
