@@ -81,8 +81,6 @@ After you finish executing the SQL script, check the data in Oracle. The followi
 
 5. Click **Generate Password** to generate a password and copy the generated password.
 
-6. Select your preferred connection method and operating system, and then connect to your cluster using the displayed connection string.
-
 ## Step 5. Create an AWS DMS replication instance
 
 1. Go to the [Replication instances](https://console.aws.amazon.com/dms/v2/home#replicationInstances) page in the AWS DMS console, and switch to the corresponding region.
@@ -90,6 +88,10 @@ After you finish executing the SQL script, check the data in Oracle. The followi
 2. Create an AWS DMS replication instance with `dms.t3.large` in the VPC.
 
     ![Create AWS DMS Instance](/media/tidb-cloud/aws-dms-from-oracle-to-tidb-8.png)
+
+> **Note:**
+>
+> For detailed steps on creating an AWS DMS replication instance to work with TiDB Serverless, see [Connect AWS DMS to TiDB Cloud clusters](/tidb-cloud/tidb-cloud-connect-aws-dms.md).
 
 ## Step 6. Create DMS endpoints
 
@@ -104,6 +106,10 @@ After you finish executing the SQL script, check the data in Oracle. The followi
     The following screenshot shows the configurations of the target endpoint.
 
     ![Create AWS DMS Target endpoint](/media/tidb-cloud/aws-dms-from-oracle-to-tidb-10.png)
+
+> **Note:**
+>
+> For detailed steps on creating a TiDB Serverless DMS endpoint, see [Connect AWS DMS to TiDB Cloud clusters](/tidb-cloud/tidb-cloud-connect-aws-dms.md).
 
 ## Step 7. Migrate the schema
 
@@ -148,3 +154,4 @@ If you encounter any issues or failures during the migration, you can check the 
 ## See also
 
 - [Migrate from MySQL-Compatible Databases Using AWS DMS](/tidb-cloud/migrate-from-mysql-using-aws-dms.md)
+- [Connect AWS DMS to TiDB Cloud clusters](/tidb-cloud/tidb-cloud-connect-aws-dms.md)

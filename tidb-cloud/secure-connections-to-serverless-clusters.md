@@ -45,7 +45,7 @@ TiDB Serverless uses certificates from [Let's Encrypt](https://letsencrypt.org/)
 
 If the client uses the system's root CA stores by default, such as Java and Go, you can easily connect securely to TiDB Serverless clusters without specifying the path of CA roots. However, some drivers and ORMs do not use the system root CA stores. In those cases, you need to configure the CA root path of the drivers or ORMs to your system root CA stores. For example, when you use [mysqlclient](https://github.com/PyMySQL/mysqlclient) to connect a TiDB Serverless cluster in Python on macOS, you need to set `ca: /etc/ssl/cert.pem` in the `ssl` argument.
 
-If you are using a GUI client, such as DBeaver, which does not accept a certificate file with multiple certificates inside, you must download the [ISRG Root X1](https://letsencrypt.org/certs/isrgrootx1.pem.txt) certificate.
+If you are using a GUI client, such as DBeaver, which does not accept a certificate file with multiple certificates inside, you must download the [ISRG Root X1](https://letsencrypt.org/certs/isrgrootx1.pem) certificate.
 
 ### Root certificate default path
 
@@ -85,7 +85,7 @@ In different operating systems, the default storage paths of the root certificat
 
 Windows does not offer a specific path to the CA root. Instead, it uses the [registry](https://learn.microsoft.com/en-us/windows-hardware/drivers/install/local-machine-and-current-user-certificate-stores) to store certificates. For this reason, to specify the CA root path on Windows, take the following steps:
 
-1. Download the [ISRG Root X1 certificate](https://letsencrypt.org/certs/isrgrootx1.pem.txt) and then save it in a path you prefer, such as `<path_to_ca>`.
+1. Download the [ISRG Root X1 certificate](https://letsencrypt.org/certs/isrgrootx1.pem) and then save it in a path you prefer, such as `<path_to_ca>`.
 2. Use the path (`<path_to_ca>`) as your CA root path when you connect to a TiDB Serverless cluster.
 
 ## FAQs
