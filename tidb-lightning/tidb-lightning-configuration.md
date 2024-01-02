@@ -250,7 +250,7 @@ index-serial-scan-concurrency = 20
 checksum-table-concurrency = 2
 
 # 解析和执行 SQL 语句的默认 SQL 模式。
-sql-mode = "ONLY_FULL_GROUP_BY,NO_ENGINE_SUBSTITUTION"
+sql-mode = "ONLY_FULL_GROUP_BY,NO_AUTO_CREATE_USER"
 # `max-allowed-packet` 设置数据库连接允许的最大数据包大小，
 # 对应于系统参数中的 `max_allowed_packet`。 如果设置为 0，
 # 会使用下游数据库 global 级别的 `max_allowed_packet`。
