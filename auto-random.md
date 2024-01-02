@@ -123,6 +123,10 @@ SHOW WARNINGS;
 1 row in set (0.00 sec)
 ```
 
+## ID 隐式分配规律
+
+auto_random 列隐式分配的值和自增列类似，也遵循 session 变量 `@@auto_increment_increment` 和 `@@auto_increment_offset` 的控制，其中隐式分配的值 (ID) 将满足式子 `(ID - auto_increment_offset) % auto_increment_increment == 0`。
+
 ## 使用限制
 
 目前在 TiDB 中使用 `AUTO_RANDOM` 有以下限制：
