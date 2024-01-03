@@ -582,6 +582,7 @@ mysql> SHOW GLOBAL VARIABLES LIKE 'max_prepared_stmt_count';
 - 取值范围：`[1024, 1073741824]`
 - 该变量取值应为 1024 的整数倍。若取值无法被 1024 整除，则会提示 warning 并向下取整。例如设置为 1025 时，则 TiDB 中的实际取值为 1024。
 - 服务器端和客户端在一次传送数据包的过程中所允许最大的数据包大小，单位为字节。
+- 在 `SESSION` 作用域下，该变量为只读变量。
 - 该变量的行为与 MySQL 兼容。
 
 ### `mpp_exchange_compression_mode` <span class="version-mark">从 v6.6.0 版本开始引入</span>
