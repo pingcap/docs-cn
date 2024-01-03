@@ -39,7 +39,7 @@ TiDB 版本：6.5.7
 + TiFlash
 
     - note [#issue](https://github.com/pingcap/tiflash/issues/${issue-id}) @[贡献者 GitHub ID](https://github.com/${github-id})
-    - 减少磁盘性能抖动对写入吞吐的影响 [#8583](https://github.com/pingcap/tiflash/issues/8583) @[JaySon-Huang](https://github.com/JaySon-Huang)
+    - 减少磁盘性能抖动对读取延迟的影响 [#8583](https://github.com/pingcap/tiflash/issues/8583) @[JaySon-Huang](https://github.com/JaySon-Huang)
     - 日志等级默认调整为 "info" 减少日志打印的开销 [#8568](https://github.com/pingcap/tiflash/issues/8568) @[xzhangxian1008](https://github.com/xzhangxian1008)
 
 + Tools
@@ -52,8 +52,8 @@ TiDB 版本：6.5.7
 
     + TiCDC
 
-        - note [#issue](https://github.com/pingcap/tiflow/issues/${issue-id}) @[贡献者 GitHub ID](https://github.com/${github-id})
-        - note [#issue](https://github.com/pingcap/tiflow/issues/${issue-id}) @[贡献者 GitHub ID](https://github.com/${github-id})
+        - 支持用户自定义 memory quota 中 sink 和 redo 部分的占比[#10143](https://github.com/pingcap/tiflow/issues/10143) @[hicqu](https://github.com/hicqu)
+        - 支持下游为 kafka 时，topic 表达式中 schema 部分为可选项，并且支持硬编码的 topic [#9763](https://github.com/pingcap/tiflow/issues/9763) @[3AceShowHand](https://github.com/3AceShowHand)
 
     + TiDB Data Migration (DM)
 
@@ -132,8 +132,8 @@ TiDB 版本：6.5.7
 
     + TiCDC
 
-        - note [#issue](https://github.com/pingcap/tiflow/issues/${issue-id}) @[贡献者 GitHub ID](https://github.com/${github-id})
-        - note [#issue](https://github.com/pingcap/tiflow/issues/${issue-id}) @[贡献者 GitHub ID](https://github.com/${github-id})
+        - 修复数据同步到下游 mysql 时可能出现的 checkpoint-ts 卡住的问题 [#10334](https://github.com/pingcap/tiflow/issues/10334) @[zhangjinpeng1987](https://github.com/zhangjinpeng1987)
+        - 修复 kv client 初始化过程中可能的 data race 问题 [#10095](https://github.com/pingcap/tiflow/issues/10095) @[3AceShowHand](https://github.com/3AceShowHand)
 
     + TiDB Data Migration (DM)
 
