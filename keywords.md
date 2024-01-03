@@ -393,7 +393,6 @@ Query OK, 0 rows affected (0.08 sec)
 - LIST
 - LOAD (R)
 - LOCAL
-- LOCAL_ONLY
 - LOCALTIME (R)
 - LOCALTIMESTAMP (R)
 - LOCATION
@@ -732,6 +731,7 @@ Query OK, 0 rows affected (0.08 sec)
 - UNIQUE (R)
 - UNKNOWN
 - UNLOCK (R)
+- UNSET
 - UNSIGNED (R)
 - UNTIL (R)
 - UPDATE (R)

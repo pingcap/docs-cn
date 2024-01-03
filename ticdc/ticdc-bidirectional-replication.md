@@ -87,11 +87,12 @@ TiCDC 复制功能只会将指定时间点之后的增量变更复制到下游�
 
 ## DDL 同步
 
-为了能够解决上述可复制的 DDL 和不可复制的 DDL 两类 DDL 的同步问题，TiDB 引入了三种 BDR role：
+为了能够解决上述可复制的 DDL 和不可复制的 DDL 两类 DDL 的同步问题，TiDB 引入了两种 BDR role：
 
-- `LOCAL_ONLY`（默认）：你可以执行任意 DDL，但是在 TiCDC 开启 `bdr_mode=true` 之后，执行的 DDL 不会被 TiCDC 同步。
 - `PRIMARY`：你可以执行可复制的 DDL，但不能执行不可复制的 DDL，可复制的 DDL 会被 TiCDC 同步到下游。
 - `SECONDARY`：你不能执行可复制的 DDL，也不能执行不可复制的 DDL，但是会执行从 TiCDC 同步过来的 DDL。
+
+在不设置 BDR role 时：你可以执行任意 DDL，但是在 TiCDC 开启 `bdr_mode=true` 之后，执行的 DDL 不会被 TiCDC 同步。
 
 > **警告：**
 >
@@ -112,7 +113,7 @@ TiCDC 复制功能只会将指定时间点之后的增量变更复制到下游�
 
 ### 不可复制的 DDL 的同步场景
 
-1. 将所有 TiDB 集群的 BDR role 设置为 `LOCAL_ONLY`（默认值），然后执行 `ADMIN SET BDR ROLE LOCAL_ONLY`。
+1. 对所有 TiDB 集群执行 `ADMIN UNSET BDR ROLE`，撤销集群的 BDR role。
 2. 暂停所有集群中需要执行 DDL 的对应的表的写入操作。
 3. 等待所有集群中对应表的所有写入已经同步到其他集群后，手动在每一个 TiDB 集群上单独执行所有的 DDL。
 4. 等待 DDL 完成之后，重新恢复写入。
@@ -122,16 +123,16 @@ TiCDC 复制功能只会将指定时间点之后的增量变更复制到下游�
 
 在业务数据停止写入之后，你可以在两个集群中都插入一行特殊的值，通过检查这两行特殊的值来确保数据达到了一致的状态。
 
-检查完毕之后，停止同步任务，并把 BDR role 切换回 `LOCAL_ONLY` 即可停止双向复制。
+检查完毕之后，停止同步任务，并对所有集群执行 `ADMIN UNSET BDR ROLE`。
 
 ## 使用限制
 
 - BDR role 只能在以下两种场景中正常使用：
 
     - 1 个 `PRIMARY` 集群和 n 个 `SECONDARY` 集群（可复制的 DDL 的同步场景）
-    - n 个 `LOCAL_ONLY` 集群（不可复制的 DDL 的同步场景）
+    - n 个不设置 BDR role 的集群（不可复制的 DDL 的同步场景）
 
-    **注意，请勿将 BDR role 设置为其他情况，例如，同时设置了 `PRIMARY`、`SECONDARY`、`LOCAL_ONLY`。如果错误地设置了 BDR role，TiDB 无法保证数据正确性。**
+    **注意，请勿将 BDR role 设置为其他情况，例如，既存在集群设置了 `PRIMARY`、`SECONDARY`，又存在集群没有设置 BDR role。如果错误地设置了 BDR role，TiDB 无法保证数据正确性。**
 
 - 一般情况下，禁止在同步的表中使用 `AUTO_INCREMENT` 或 `AUTO_RANDOM` 键，以免产生数据冲突的问题。如果需要使用 `AUTO_INCREMENT` 或 `AUTO_RANDOM` 键，可以通过在不同的集群设置 `auto_increment_increment` 和 `auto_increment_offset` 来使得不同的集群都能够分配到不同的 primary key。例如：
   - 假设有三台 TiDB（A、B、C）处于双向同步中，那么我们可以：
