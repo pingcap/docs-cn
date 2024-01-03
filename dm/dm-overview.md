@@ -57,6 +57,10 @@ tiup install dm dmctl
 
     - DM 在 v5.4.0 之前不支持将 `charset=GBK` 的表迁移到 TiDB。
 
++ Binlog 兼容性限制
+
+    - DM 基本支持 MySQL 8.0 的新特性 binlog 事务压缩 (Transaction_payload_event)，分库分表、checkpoint 等功能兼容性还未完全支持。
+
 ## Contributing
 
 欢迎参与 DM 开源项目并万分感谢您的贡献，可以查看 [CONTRIBUTING.md](https://github.com/pingcap/tiflow/blob/master/dm/CONTRIBUTING.md) 了解更多信息。
