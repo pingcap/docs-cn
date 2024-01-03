@@ -83,7 +83,7 @@ SQL 端口的配置。
 + 默认值：``
 + 支持热加载：是，但只对新连接有效
 + 可选值：``, `v2`
-+ 在 SQL 端口启用 [PROXY 协议](https://www.haproxy.org/download/1.8/doc/proxy-protocol.txt)。开启 PROXY 协议后能让 TiProxy 透传客户端真实的 IP 地址给 TiDB。`v2` 代表使用 PROXY 协议 v2 版本，`` 代表不使用 PROXY 协议。在 TiProxy 启用 PROXY 协议后，需要同时在 TiDB 服务器上启用 [PROXY 协议](/tidb-configuration-file/#proxy-protocol)。
++ 在 SQL 端口启用 [PROXY 协议](https://www.haproxy.org/download/1.8/doc/proxy-protocol.txt)。开启 PROXY 协议后能让 TiProxy 透传客户端真实的 IP 地址给 TiDB。`v2` 代表使用 PROXY 协议 v2 版本，`` 代表不使用 PROXY 协议。在 TiProxy 启用 PROXY 协议后，需要同时在 TiDB 服务器上启用 [PROXY 协议](/tidb-configuration-file.md#proxy-protocol)。
 
 #### `require-backend-tls`
 
