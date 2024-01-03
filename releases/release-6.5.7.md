@@ -13,7 +13,7 @@ TiDB 版本：6.5.7
 
 ## 兼容性变更
 
-- (dup): release-7.1.2.md > 兼容性变更 - 在安全增强模式 (SEM) 下禁止设置 [`require_secure_transport`](https://docs.pingcap.com/zh/tidb/v7.1/system-variables#require_secure_transport-从-v610-版本开始引入) 为 `ON`，避免用户无法连接的问题 [#47665](https://github.com/pingcap/tidb/issues/47665) @[tiancaiamao](https://github.com/tiancaiamao)
+无
 
 ## 改进提升
 
@@ -79,7 +79,6 @@ TiDB 版本：6.5.7
 
     - (dup): release-6.6.0.md > 错误修复> TiDB - 修复了创建表之后 `stats_meta` 未创建的问题 [#38189](https://github.com/pingcap/tidb/issues/38189) @[xuyifangreeneyes](https://github.com/xuyifangreeneyes)
     - (dup): release-7.1.3.md > 错误修复> TiDB - 修复 TiDB server 在使用企业插件审计日志时可能占用大量资源的问题 [#49273](https://github.com/pingcap/tidb/issues/49273) @[lcwangchao](https://github.com/lcwangchao)
-    - (dup): release-7.5.0.md > 错误修复> TiDB - 修复 `client-go` 中 `batch-client` panic 的问题 [#47691](https://github.com/pingcap/tidb/issues/47691) @[crazycs520](https://github.com/crazycs520)
     - (dup): release-7.1.3.md > 错误修复> TiDB - 修复 `ErrLoadDataInvalidURI`（无效的 S3 URI 错误）报错中的信息内容 [#48164](https://github.com/pingcap/tidb/issues/48164) @[lance6716](https://github.com/lance6716)
     - (dup): release-7.1.3.md > 错误修复> TiDB - 修复 `tidb_server_memory_limit` 导致内存长期压力较高时，TiDB CPU 利用率过高的问题 [#48741](https://github.com/pingcap/tidb/issues/48741) @[XuHuaiyu](https://github.com/XuHuaiyu)
     - (dup): release-7.1.3.md > 错误修复> TiDB - 修复当内存使用超限时包含公共表表达式 (CTE) 的查询非预期卡住的问题 [#49096](https://github.com/pingcap/tidb/issues/49096) @[AilinKid](https://github.com/AilinKid})
