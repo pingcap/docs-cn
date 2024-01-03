@@ -51,6 +51,8 @@ TiProxy 不适用于以下场景：
 - 对成本敏感：如果 TiDB 集群使用了硬件负载均衡、虚拟 IP 或 Kubernetes 自带的负载均衡器，此时增加 TiProxy 组件会增加成本。另外，如果在云上跨可用区部署 TiDB 集群，增加 TiProxy 组件也会增加跨可用区的流量费用。
 - TiDB server 的故障转移：只有当 TiDB server 在计划内的下线或重启操作时，TiProxy 才能保持连接。如果 TiDB server 意外下线，则连接仍然会断开。
 
+当符合 TiProxy 的使用场景时，推荐使用 TiProxy。当对性能敏感时，推荐使用 HAProxy 或其他代理。
+
 ## 安装和使用
 
 本节介绍使用 TiUP 部署和变更 TiProxy 的步骤。使用 TiDB Operator 部署的方式请参阅 [TiDB Operator](https://docs.pingcap.com/zh/tidb-in-kubernetes/stable) 文档。
