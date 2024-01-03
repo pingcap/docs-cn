@@ -59,7 +59,7 @@ tiup install dm dmctl
 
 + Binlog 兼容性限制
 
-    - DM 基本支持 MySQL 8.0 的新特性 binlog 事务压缩 (Transaction_payload_event)，分库分表、checkpoint 等功能兼容性还未完全支持。
+    - DM 基本支持 MySQL 8.0 的新特性 binlog 事务压缩 (Transaction_payload_event)，分库分表、checkpoint 等场景兼容性还未完全支持。
 
 ## Contributing
 
