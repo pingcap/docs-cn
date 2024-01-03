@@ -350,11 +350,12 @@ SQL 的基础信息：
 
 和资源管控相关的字段：
 
-- `MAX_QUEUED_RC_TIME`：执行 SQL 语句等待可用 RU 的最大时间
 - `AVG_REQUEST_UNIT_WRITE`：执行 SQL 语句平均消耗的写 RU
 - `MAX_REQUEST_UNIT_WRITE`：执行 SQL 语句最大消耗的写 RU
 - `AVG_REQUEST_UNIT_READ`：执行 SQL 语句平均消耗的读 RU
 - `MAX_REQUEST_UNIT_READ`：执行 SQL 语句最大消耗的读 RU
+- `AVG_QUEUED_RC_TIME`：执行 SQL 语句等待可用 RU 的平均耗时
+- `MAX_QUEUED_RC_TIME`：执行 SQL 语句等待可用 RU 的最大耗时
 - `RESOURCE_GROUP`：执行 SQL 语句绑定的资源组
 
 ### `statements_summary_evicted` 字段介绍
