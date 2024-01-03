@@ -179,7 +179,7 @@ TiDB 版本：7.6.0
 
     在 v7.6.0 之前，事务中单行记录的大小受 TiDB 配置项 [`txn-entry-size-limit`](/tidb-configuration-file.md#txn-entry-size-limit-从-v50-版本开始引入) 限制。如果记录大小超出此限制，TiDB 将返回 `entry too large` 错误。此时，用户需要修改 TiDB 配置文件并重启 TiDB 才能够生效。为降低用户的管理成本，TiDB v7.6.0 新增系统变量 [`tidb_txn_entry_size_limit`](/system-variables.md#tidb_txn_entry_size_limit-从-v760-版本开始引入)，支持动态修改 `txn-entry-size-limit` 配置项的值。该变量的默认值为 `0`，表示默认使用 `txn-entry-size-limit` 配置项的值。当设置为非 `0` 值时，TiDB 优先使用该变量的值作为事务中的单行记录大小的限制。这一改进旨在提高用户调整系统配置的灵活性，无需重启 TiDB 即可生效。
 
-    更多信息，请参考[用户文档](/system-variables.md#tidb_txn_entry_size_limit-从-v760-版本开始引入) 。
+    更多信息，请参考[用户文档](/system-variables.md#tidb_txn_entry_size_limit-从-v760-版本开始引入)。
 
 * 全局排序功能成为正式功能 (GA)，提升 `ADD INDEX` 和 `IMPORT INTO` 的性能和稳定性 [#45719](https://github.com/pingcap/tidb/issues/45719) @[wjhuang2016](https://github.com/wjhuang2016) @[D3Hunter](https://github.com/D3Hunter) **tw@ran-huang** <!--1580/1579-->
 
