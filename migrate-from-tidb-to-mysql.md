@@ -162,7 +162,7 @@ summary: 了解如何将数据从 TiDB 集群迁移至与 MySQL 兼容的数据�
     在上游集群中，执行以下命令创建从上游到下游集群的同步链路：
 
     ```shell
-    tiup ctl:v<CLUSTER_VERSION> cdc changefeed create --server=http://127.0.0.1:8300 --sink-uri="mysql://root:@127.0.0.1:3306" --changefeed-id="upstream-to-downstream" --start-ts="434217889191428107"
+    tiup cdc:v<CLUSTER_VERSION> cli changefeed create --server=http://127.0.0.1:8300 --sink-uri="mysql://root:@127.0.0.1:3306" --changefeed-id="upstream-to-downstream" --start-ts="434217889191428107"
     ```
 
     以上命令中：
