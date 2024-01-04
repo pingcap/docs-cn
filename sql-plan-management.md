@@ -478,7 +478,7 @@ SHOW binding_cache status;
 
 ## 跨数据库绑定执行计划 (Cross-DB Binding)
 
-TiDB 支持使用通配符 `*` 表示数据库，实现跨数据库绑定。该功能自 v7.6.0 开始引入。要使用跨数据库绑定，首先需要开启 [`tidb_opt_enable_fuzzy_binding`](/system-variables.md#tidb_opt_enable_fuzzy_binding-从-v760-版本开始引入) 系统变量。
+在创建绑定的 SQL 语句中，TiDB 支持使用通配符 `*` 表示数据库，实现跨数据库绑定。该功能自 v7.6.0 开始引入。要使用跨数据库绑定，首先需要开启 [`tidb_opt_enable_fuzzy_binding`](/system-variables.md#tidb_opt_enable_fuzzy_binding-从-v760-版本开始引入) 系统变量。
 
 当数据按数据库 (schema/db) 分类存储，同时各数据库具有相同的对象定义并且运行相似的业务逻辑时，跨数据库执行计划绑定能显著简化执行计划的固定过程。以下是一些常见的使用场景：
 
