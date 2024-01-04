@@ -1,11 +1,11 @@
 ---
 title: Data Migration 高可用机制
-summary: 了解 DM 高可用机制的内部机制，以及对迁移任务的影响。
+summary: 了解 Data Migration (DM) 高可用的内部机制，以及对迁移任务的影响。
 ---
 
 # Data Migration 高可用机制
 
-为了保障迁移服务的连续性，DM 中的组件 DM master 和 DM worker 均实现了高可用机制，避免单点故障。本文将详述其高可用机制的内部机制，以及对迁移任务的影响。
+为了保障迁移服务的连续性，Data Migration (DM) 中的组件 DM master 和 DM worker 均实现了高可用机制，避免单点故障。本文将详述其高可用机制的内部机制，以及对迁移任务的影响。
 
 在详细了解 DM 高可用机制之前，请先了解 [DM 整体架构](/dm/dm-arch.md)以及各个关键组件的作用。
 
@@ -95,11 +95,10 @@ DM worker 负责的任务以上游源数据库（简称 source）为调度单位
 - worker2 绑定 source2，subtask 处于 sync 阶段；
 - worker3 空闲；
 
-当 worker1 发生故障下线后，DM master 扫描所有 worker，并采取以下行为：
+当 worker1 发生故障下线后，DM master 扫描所有 worker，并判断 worker2 上是否存在 source1 未完成的全量迁移；
 
-- 判断 worker2 上是否存在 source1 未完成的全量迁移；
-    - 若存在。解绑 source2 ，worker2 绑定 source1 ，worker3 绑定 source2；
-    - 若不存在。worker2 绑定 source2 无变化，worker3 绑定 source1。
+- 若存在。解绑 source2 ，worker2 绑定 source1，worker3 绑定 source2；
+- 若不存在。worker2 绑定 source2 无变化，worker3 绑定 source1。
 
 DM worker 重新上线也与上述流程基本一致，如果寻找到符合条件的 source，会进行换绑，并为 source 先前绑定的 DM worker 尝试重新绑定新的 source。
 
