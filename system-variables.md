@@ -2808,7 +2808,7 @@ v5.0 后，用户仍可以单独修改以上系统变量（会有废弃警告）
     - `start_ts`：事务开始的时间戳。
     - `for_update_ts`：先前执行的 DML 语句的 `for_update_ts` 信息。这是 TiDB 用于测试的内部术语。通常，你可以忽略此信息。
     - `error`：错误消息（如果有）。
-    - `last_ru_consumption`：执行语句的 [RU](/tidb-resource-control.md#什么是-request-unit-ru) 消耗。
+    - `ru_consumption`：执行语句的 [RU](/tidb-resource-control.md#什么是-request-unit-ru) 消耗。
 
 ### `tidb_last_txn_info` <span class="version-mark">从 v4.0.9 版本开始引入</span>
 
