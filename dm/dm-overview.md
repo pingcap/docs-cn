@@ -37,7 +37,7 @@ tiup install dm dmctl
 
 + 数据库版本要求
 
-    - MySQL 版本 5.5 ~ 8.0
+    - MySQL 版本 5.6 ~ 8.0
     - MariaDB 版本 >= 10.1.2 （实验特性）
 
     > **注意：**
@@ -58,7 +58,7 @@ tiup install dm dmctl
 
 + Binlog 兼容性限制
 
-    - DM 不支持 MySQL 8.0 的新特性 binlog 事务压缩 [Transaction_payload_event](https://dev.mysql.com/doc/dev/mysql-server/8.1.0/classbinary__log_1_1Transaction__payload__event.html)。
+    - DM 不支持 MySQL 8.0 的新特性 binlog 事务压缩 [Transaction_payload_event](https://dev.mysql.com/doc/dev/mysql-server/8.1.0/classbinary__log_1_1Transaction__payload__event.html)。使用 binlog 事务压缩有导致上下游数据不一致的风险。
 
 ## Contributing
 
