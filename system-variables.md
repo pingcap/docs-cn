@@ -1584,7 +1584,7 @@ mysql> SELECT job_info FROM mysql.analyze_jobs ORDER BY end_time DESC LIMIT 1;
 - Default value: `OFF`
 - This variable is used to control whether to enable the [TiDB Distributed eXecution Framework (DXF)](/tidb-distributed-execution-framework.md). After the framework is enabled, the DXF tasks such as DDL and import will be distributedly executed and completed by multiple TiDB nodes in the cluster.
 - Starting from TiDB v7.1.0, the DXF supports distributedly executing the [`ADD INDEX`](/sql-statements/sql-statement-add-index.md) statement for partitioned tables.
-- Starting from TiDB v7.2.0, the DXF supports distributedly executing the [`IMPORT INTO`](https://docs.pingcap.com/tidb/v7.2/sql-statement-import-into) statement for import jobs of TiDB Self-Hosted. For TiDB Cloud, the `IMPORT INTO` statement is not applicable.
+- Starting from TiDB v7.2.0, the DXF supports distributedly executing the [`IMPORT INTO`](/sql-statements/sql-statement-import-into.md) statement for import jobs.
 - This variable is renamed from `tidb_ddl_distribute_reorg`.
 
 ### tidb_cloud_storage_uri <span class="version-mark">New in v7.4.0</span>
@@ -1597,23 +1597,10 @@ mysql> SELECT job_info FROM mysql.analyze_jobs ORDER BY end_time DESC LIMIT 1;
 - Persists to cluster: Yes
 - Applies to hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value): No
 - Default value: `""`
-
-<CustomContent platform="tidb">
-
 - This variable is used to specify the Amazon S3 cloud storage URI to enable [Global Sort](/tidb-global-sort.md). After enabling the [TiDB Distributed eXecution Framework (DXF)](/tidb-distributed-execution-framework.md), you can use the Global Sort feature by configuring the URI and pointing it to an appropriate cloud storage path with the necessary permissions to access the storage. For more details, see [Amazon S3 URI format](/external-storage-uri.md#amazon-s3-uri-format).
 - The following statements can use the Global Sort feature.
     - The [`ADD INDEX`](/sql-statements/sql-statement-add-index.md) statement.
-    - The [`IMPORT INTO`](/sql-statements/sql-statement-import-into.md) statement for import jobs of TiDB Self-Hosted. For TiDB Cloud, the `IMPORT INTO` statement is not applicable.
-
-</CustomContent>
-<CustomContent platform="tidb-cloud">
-
-- This variable is used to specify the cloud storage URI to enable [Global Sort](/tidb-global-sort.md). After enabling the [TiDB Distributed eXecution Framework (DXF)](/tidb-distributed-execution-framework.md), you can use the Global Sort feature by configuring the URI and pointing it to an appropriate cloud storage path with the necessary permissions to access the storage. For more details, see [URI Formats of External Storage Services](https://docs.pingcap.com/tidb/stable/external-storage-uri).
-- The following statements can use the Global Sort feature.
-    - The [`ADD INDEX`](/sql-statements/sql-statement-add-index.md) statement.
-    - The [`IMPORT INTO`](https://docs.pingcap.com/tidb/v7.2/sql-statement-import-into) statement for import jobs of TiDB Self-Hosted. For TiDB Cloud, the `IMPORT INTO` statement is not applicable.
-
-</CustomContent>
+    - The [`IMPORT INTO`](/sql-statements/sql-statement-import-into.md) statement for import jobs.
 
 ### tidb_ddl_error_count_limit
 
@@ -4855,7 +4842,9 @@ SHOW WARNINGS;
 
 ### tidb_service_scope <span class="version-mark">New in v7.4.0</span>
 
-<CustomContent platform="tidb">
+> **Note:**
+>
+> This TiDB variable is not applicable to TiDB Cloud.
 
 - Scope: GLOBAL
 - Persists to cluster: No
@@ -4869,25 +4858,6 @@ SHOW WARNINGS;
 >
 > - If `tidb_service_scope` is not set for any TiDB node in a cluster, the DXF schedules all TiDB nodes to execute background tasks. If you are concerned about performance impact on current business, you can set `tidb_service_scope` to `background` for a few of the TiDB nodes. Only those nodes will execute background tasks.
 > - For newly scaled nodes, the DXF tasks are not executed by default to avoid consuming the resources of the scaled node. If you want this scaled node to execute background tasks, you need to manually set `tidb_service_scop` of this node to `background`.
-
-</CustomContent>
-
-<CustomContent platform="tidb-cloud">
-
-- Scope: GLOBAL
-- Persists to cluster: No
-- Applies to hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value): No
-- Type: String
-- Default value: ""
-- Optional Value: "", `background`
-- This variable is an instance-level system variable. You can use it to control the service scope of TiDB nodes under the [TiDB Distributed eXecution Framework (DXF)](/tidb-distributed-execution-framework.md). When you set `tidb_service_scope` of a TiDB node to `background`, the DXF schedules that TiDB node to execute background tasks, such as [`ADD INDEX`](/sql-statements/sql-statement-add-index.md).
-
-> **Note:**
->
-> - If `tidb_service_scope` is not set for any TiDB node in a cluster, the DXF schedules all TiDB nodes to execute background tasks. If you are concerned about performance impact on current business, you can set `tidb_service_scope` to `background` for a few of the TiDB nodes. Only those nodes will execute background tasks.
-> - For newly scaled nodes, the DXF tasks are not executed by default to avoid consuming the resources of the scaled node. If you want this scaled node to execute background tasks, you need to manually set `tidb_service_scop` of this node to `background`.
-
-</CustomContent>
 
 ### tidb_session_alias <span class="version-mark">New in v7.4.0</span>
 

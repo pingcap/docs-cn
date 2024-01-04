@@ -5,13 +5,9 @@ summary: Learn the use cases, limitations, usage, and implementation principles 
 
 # TiDB Distributed eXecution Framework (DXF)
 
-<CustomContent platform="tidb-cloud">
-
 > **Note:**
 >
-> Currently, this feature is only applicable to TiDB Dedicated clusters. You cannot use it on TiDB Serverless clusters.
-
-</CustomContent>
+> This feature is not available on [TiDB Serverless](https://docs.pingcap.com/tidbcloud/select-cluster-tier#tidb-serverless) clusters.
 
 TiDB adopts a computing-storage separation architecture with excellent scalability and elasticity. Starting from v7.1.0, TiDB introduces a Distributed eXecution Framework (DXF) to further leverage the resource advantages of the distributed architecture. The goal of the DXF is to implement unified scheduling and distributed execution of tasks, and to provide unified resource management capabilities for both overall and individual tasks, which better meets users' expectations for resource usage.
 
@@ -19,17 +15,7 @@ This document describes the use cases, limitations, usage, and implementation pr
 
 ## Use cases
 
-<CustomContent platform="tidb">
-
 In a database management system, in addition to the core transactional processing (TP) and analytical processing (AP) workloads, there are other important tasks, such as DDL operations, IMPORT INTO, TTL, Analyze, and Backup/Restore. These tasks need to process a large amount of data in database objects (tables), so they typically have the following characteristics:
-
-</CustomContent>
-
-<CustomContent platform="tidb-cloud">
-
-In a database management system, in addition to the core transactional processing (TP) and analytical processing (AP) workloads, there are other important tasks, such as DDL operations, TTL, Analyze, and Backup/Restore. These tasks need to process a large amount of data in database objects (tables), so they typically have the following characteristics:
-
-</CustomContent>
 
 - Need to process all data in a schema or a database object (table).
 - Might need to be executed periodically, but at a low frequency.
@@ -41,20 +27,7 @@ Enabling the DXF can solve the above problems and has the following three advant
 - The DXF supports distributed execution of tasks, which can flexibly schedule the available computing resources of the entire TiDB cluster, thereby better utilizing the computing resources in a TiDB cluster.
 - The DXF provides unified resource usage and management capabilities for both overall and individual tasks.
 
-<CustomContent platform="tidb-cloud">
-
-Currently, the DXF supports the distributed execution of the `ADD INDEX`. `ADD INDEX` is a DDL statement used to create indexes. For example:
-
-```sql
-ALTER TABLE t1 ADD INDEX idx1(c1);
-CREATE INDEX idx1 ON table t1(c1);
-```
-
-</CustomContent>
-
-<CustomContent platform="tidb">
-
-Currently, for TiDB Self-Hosted, the DXF supports the distributed execution of the `ADD INDEX` and `IMPORT INTO` statements.
+Currently, the DXF supports the distributed execution of the `ADD INDEX` and `IMPORT INTO` statements.
 
 - `ADD INDEX` is a DDL statement used to create indexes. For example:
 
@@ -63,9 +36,7 @@ Currently, for TiDB Self-Hosted, the DXF supports the distributed execution of t
     CREATE INDEX idx1 ON table t1(c1);
     ```
 
-- `IMPORT INTO` is used to import data in formats such as `CSV`, `SQL`, and `PARQUET` into an empty table. For more information, see [`IMPORT INTO`](https://docs.pingcap.com/tidb/v7.2/sql-statement-import-into).
-
-</CustomContent>
+- `IMPORT INTO` is used to import data in formats such as `CSV`, `SQL`, and `PARQUET` into an empty table. For more information, see [`IMPORT INTO`](/sql-statements/sql-statement-import-into.md).
 
 ## Limitation
 
@@ -110,17 +81,7 @@ Adjust the following system variables related to Fast Online DDL:
     SET GLOBAL tidb_enable_dist_task = ON;
     ```
 
-    <CustomContent platform="tidb">
-
     When the DXF tasks are running, the statements supported by the framework (such as [`ADD INDEX`](/sql-statements/sql-statement-add-index.md) and [`IMPORT INTO`](/sql-statements/sql-statement-import-into.md)) are executed in a distributed manner. All TiDB nodes run DXF tasks by default.
-
-    </CustomContent>
-
-    <CustomContent platform="tidb-cloud">
-
-    When the DXF tasks are running, the statements supported by the framework (such as [`ADD INDEX`](/sql-statements/sql-statement-add-index.md)) are executed in a distributed manner. All TiDB nodes run DXF tasks by default.
-
-    </CustomContent>
 
 2. In general, for the following system variables that might affect the distributed execution of DDL tasks, it is recommended that you use their default values:
 
@@ -129,7 +90,7 @@ Adjust the following system variables related to Fast Online DDL:
     * [`tidb_ddl_error_count_limit`](/system-variables.md#tidb_ddl_error_count_limit)
     * [`tidb_ddl_reorg_batch_size`](/system-variables.md#tidb_ddl_reorg_batch_size): use the default value. The recommended maximum value is `1024`.
 
-3. Starting from v7.4.0, you can adjust the number of TiDB nodes that perform the DXF tasks according to actual needs. After deploying a TiDB cluster, you can set the instance-level system variable [`tidb_service_scope`](/system-variables.md#tidb_service_scope-new-in-v740) for each TiDB node in the cluster. When `tidb_service_scope` of a TiDB node is set to `background`, the TiDB node can execute the DXF tasks. When `tidb_service_scope` of a TiDB node is set to the default value "", the TiDB node cannot execute the DXF tasks. If `tidb_service_scope` is not set for any TiDB node in a cluster, the DXF schedules all TiDB nodes to execute tasks by default.
+3. Starting from v7.4.0, for TiDB Self-Hosted, you can adjust the number of TiDB nodes that perform the DXF tasks according to actual needs. After deploying a TiDB cluster, you can set the instance-level system variable [`tidb_service_scope`](/system-variables.md#tidb_service_scope-new-in-v740) for each TiDB node in the cluster. When `tidb_service_scope` of a TiDB node is set to `background`, the TiDB node can execute the DXF tasks. When `tidb_service_scope` of a TiDB node is set to the default value "", the TiDB node cannot execute the DXF tasks. If `tidb_service_scope` is not set for any TiDB node in a cluster, the DXF schedules all TiDB nodes to execute tasks by default.
 
     > **Note:**
     >

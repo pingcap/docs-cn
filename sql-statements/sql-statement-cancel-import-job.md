@@ -7,11 +7,9 @@ summary: An overview of the usage of CANCEL IMPORT in TiDB.
 
 The `CANCEL IMPORT` statement is used to cancel a data import job created in TiDB.
 
-<!-- Support note for TiDB Cloud:
-
-This TiDB statement is not applicable to TiDB Cloud.
-
--->
+> **Note:**
+>
+> This feature is not available on [TiDB Serverless](https://docs.pingcap.com/tidbcloud/select-cluster-tier#tidb-serverless) clusters.
 
 ## Required privileges
 

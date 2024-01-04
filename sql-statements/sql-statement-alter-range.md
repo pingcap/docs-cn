@@ -7,6 +7,10 @@ summary: An overview of the usage of ALTER RANGE for TiDB.
 
 Currently, the `ALTER RANGE` statement can only be used to modify the range of a specific placement policy in TiDB.
 
+> **Note:**
+>
+> This feature is not available on [TiDB Serverless](https://docs.pingcap.com/tidbcloud/select-cluster-tier#tidb-serverless) clusters.
+
 ## Synopsis
 
 ```ebnf+diagram

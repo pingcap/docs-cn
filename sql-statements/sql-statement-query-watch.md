@@ -11,6 +11,10 @@ The `QUERY WATCH` statement is used to manually manage the watch list of runaway
 >
 > This feature is experimental. It is not recommended that you use it in the production environment. This feature might be changed or removed without prior notice. If you find a bug, you can report an [issue](https://github.com/pingcap/tidb/issues) on GitHub.
 
+> **Note:**
+>
+> This feature is not available on [TiDB Serverless](https://docs.pingcap.com/tidbcloud/select-cluster-tier#tidb-serverless) clusters.
+
 ## Synopsis
 
 ```ebnf+diagram

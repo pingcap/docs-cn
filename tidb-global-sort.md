@@ -12,13 +12,9 @@ summary: Learn the use cases, limitations, usage, and implementation principles 
 >
 > This feature is experimental. It is not recommended that you use it in the production environment. This feature might be changed or removed without prior notice. If you find a bug, you can report an [issue](https://github.com/pingcap/tidb/issues) on GitHub.
 
-<CustomContent platform="tidb-cloud">
-
 > **Note:**
 >
-> Currently, this feature is only applicable to TiDB Dedicated clusters. You cannot use it on TiDB Serverless clusters.
-
-</CustomContent>
+> This feature is not available on [TiDB Serverless](https://docs.pingcap.com/tidbcloud/select-cluster-tier#tidb-serverless) clusters.
 
 ## Overview
 
@@ -50,10 +46,6 @@ To enable Global Sort, follow these steps:
 
 2. Set [`tidb_cloud_storage_uri`](/system-variables.md#tidb_cloud_storage_uri-new-in-v740) to a correct cloud storage path. See [an example](/br/backup-and-restore-storages.md).
 
-> **Note:**
->
-> For [`IMPORT INTO`](/sql-statements/sql-statement-import-into.md), you can also specify the cloud storage path using the [`CLOUD_STORAGE_URI`](/sql-statements/sql-statement-import-into.md#withoptions) option. If both [`tidb_cloud_storage_uri`](/system-variables.md#tidb_cloud_storage_uri-new-in-v740) and `CLOUD_STORAGE_URI` are configured with a valid cloud storage path, the configuration of `CLOUD_STORAGE_URI` takes effect for [`IMPORT INTO`](/sql-statements/sql-statement-import-into.md).
-
 </CustomContent>
 <CustomContent platform="tidb-cloud">
 
@@ -64,6 +56,10 @@ To enable Global Sort, follow these steps:
     ```sql
     SET GLOBAL tidb_cloud_storage_uri = 's3://my-bucket/test-data?role-arn=arn:aws:iam::888888888888:role/my-role'
     ```
+
+> **Note:**
+>
+> For [`IMPORT INTO`](/sql-statements/sql-statement-import-into.md), you can also specify the cloud storage path using the [`CLOUD_STORAGE_URI`](/sql-statements/sql-statement-import-into.md#withoptions) option. If both [`tidb_cloud_storage_uri`](/system-variables.md#tidb_cloud_storage_uri-new-in-v740) and `CLOUD_STORAGE_URI` are configured with a valid cloud storage path, the configuration of `CLOUD_STORAGE_URI` takes effect for [`IMPORT INTO`](/sql-statements/sql-statement-import-into.md).
 
 ## Implementation principles
 
