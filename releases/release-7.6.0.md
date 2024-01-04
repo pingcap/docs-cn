@@ -33,7 +33,7 @@ TiDB 版本：7.6.0
   </tr>
   <tr>
     <td><a href="">建表性能提升 10 倍（实验特性）</a>  {/* tw@hfxsd */}</td>
-    <td>在 v7.6.0 中引入了新的 DDL 架构，批量表创建的性能提高了 10 倍。这一重大改进大大缩短了创建大量表所需的时间。尤其是在 SaaS 场景中，快速创建大量表格（从数万到数十万不等）是一个常见的挑战，使用该特性能显著提升 SaaS 场景的建表速度。</td>
+    <td>在 v7.6.0 中引入了新的 DDL 架构，批量建表的性能提高了 10 倍。这一重大改进极大地缩短了创建大量表所需的时间。特别是在 SaaS 场景中，快速创建大量表（从数万到数十万不等）是一个常见的挑战，使用该特性能显著提升 SaaS 场景的建表速度。</td>
   </tr>
   <tr>
     <td rowspan="2">稳定性与高可用<br></td>
@@ -42,7 +42,7 @@ TiDB 版本：7.6.0
   </tr>
   <tr>
     <td><a href="">Data Migration (DM) 正式支持迁移 MySQL 8.0 (GA)</a>  {/* tw@hfxsd */}</td>
-    <td>之前 DM 迁移 MySQL8.0 仅为实验特性，不能用于生产环境。TiDB v7.6.0 增强了该功能的稳定性、兼容性，可在生产环境帮助你平滑、快速地将数据从MySQL 8.0 迁移到 TiDB。在 v7.6.0 中，该功能正式 GA。</td>
+    <td>在 v7.6.0 之前，DM 迁移 MySQL 8.0 仅为实验特性，不能用于生产环境。TiDB v7.6.0 增强了该功能的稳定性、兼容性，可在生产环境帮助你平滑、快速地将数据从 MySQL 8.0 迁移到 TiDB。在 v7.6.0 中，该功能正式 GA。</td>
   </tr>
 </tbody>
 </table>
@@ -204,10 +204,10 @@ TiDB 版本：7.6.0
     随着越来越多用户利用资源组对业务应用进行隔离，资源管控提供了更丰富的基于资源组的数据，协助你观测资源组负载、资源组设置，确保出现问题时能够快速发现并精准诊断。其中包括：
 
     * [慢查询日志](/identify-slow-queries.md) 增加资源组名称、RU 消耗、以及等待资源耗时。
-    * [Statement Summary Tables](/statement-summary-tables.md) 增加资源组名称、RU 消耗、以及对等待资源耗时。
+    * [Statement Summary Tables](/statement-summary-tables.md) 增加资源组名称、RU 消耗、以及等待资源耗时。
     * 向变量 [`tidb_last_query_info`](/system-variables.md#tidb_last_query_info-从-v4014-版本开始引入) 中增加 SQL 的 [RU](/tidb-resource-control.md#什么是-request-unit-ru) 消耗，客户可以利用此变量获取会话中上一条语句的资源消耗。
     * 增加基于[资源组的数据库指标](/grafana-resource-control-dashboard.md)：QPS/TPS、执行时间 (P999/P99/P95)、失败次数、连接数。
-    * 增加系统表 [`request_unit_by_group`]() 记录资源组每天的历史资源消耗。
+    * 增加系统表 [`request_unit_by_group`](/mysql-schema.md#system-tables-related-to-resource-control) 记录资源组每天的历史资源消耗。
 
     更多信息，请参考[慢查询日志](/identify-slow-queries.md)、[Statement Summary Tables](/statement-summary-tables.md)、[资源管控 (Resource Control) 监控指标详解](/grafana-resource-control-dashboard.md)。
 
