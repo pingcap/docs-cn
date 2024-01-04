@@ -46,14 +46,13 @@ TiDB 版本：6.5.7
 
     + Backup & Restore (BR)
         <!-- tw@qiancai -->
-        - 提升了 SQL 恢复在大数据量表场景下的建表性能。 [#48301](https://github.com/pingcap/tidb/issues/48301) @[Leavrth](https://github.com/Leavrth)
-        - 解决了 EBS 快照备份与 Lightning 导入的兼容问题。[#46850](https://github.com/pingcap/tidb/issues/46850) @[YuJuncen](https://github.com/YuJuncen)
+        - 提升了 `RESTORE` 语句在大数据量表场景下的建表性能。 [#48301](https://github.com/pingcap/tidb/issues/48301) @[Leavrth](https://github.com/Leavrth)
+        - 解决了基于 EBS 的快照备份与 TiDB Lightning 导入的兼容性问题 [#46850](https://github.com/pingcap/tidb/issues/46850) @[YuJuncen](https://github.com/YuJuncen)
         - (dup): release-7.4.0.md > 改进提升> Tools> Backup & Restore (BR) - 缓解了 Region leadership 迁移导致 PITR 日志备份进度延迟变高的问题 [#13638](https://github.com/tikv/tikv/issues/13638) @[YuJuncen](https://github.com/YuJuncen)
 
     + TiCDC
         <!-- tw@qiancai -->
-        - 支持用户自定义 memory quota 中 sink 和 redo 部分的占比[#10143](https://github.com/pingcap/tiflow/issues/10143) @[hicqu](https://github.com/hicqu)
-        - 支持下游为 kafka 时，topic 表达式中 schema 部分为可选项，并且支持硬编码的 topic [#9763](https://github.com/pingcap/tiflow/issues/9763) @[3AceShowHand](https://github.com/3AceShowHand)
+        - 当下游为 Kafka 时，支持 topic 表达式中的 `schema` 为可选项，并且支持硬编码的 topic [#9763](https://github.com/pingcap/tiflow/issues/9763) @[3AceShowHand](https://github.com/3AceShowHand)
 
     + TiDB Data Migration (DM)
 
@@ -129,8 +128,8 @@ TiDB 版本：6.5.7
 
     + TiCDC <!-- tw@qiancai -->
 
-        - 修复数据同步到下游 mysql 时可能出现的 checkpoint-ts 卡住的问题 [#10334](https://github.com/pingcap/tiflow/issues/10334) @[zhangjinpeng1987](https://github.com/zhangjinpeng1987)
-        - 修复 kv client 初始化过程中可能的 data race 问题 [#10095](https://github.com/pingcap/tiflow/issues/10095) @[3AceShowHand](https://github.com/3AceShowHand)
+        - 修复数据同步到下游 MySQL 时可能出现 `checkpoint-ts` 卡住的问题 [#10334](https://github.com/pingcap/tiflow/issues/10334) @[zhangjinpeng1987](https://github.com/zhangjinpeng1987)
+        - 修复 `kv-client` 初始化过程中可能出现 data race 的问题 [#10095](https://github.com/pingcap/tiflow/issues/10095) @[3AceShowHand](https://github.com/3AceShowHand)
 
     + TiDB Data Migration (DM)
 
