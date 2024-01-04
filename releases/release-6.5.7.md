@@ -13,15 +13,18 @@ TiDB 版本：6.5.7
 
 ## 兼容性变更
 
-无
+<!-- tw@Oreoxmt -->
+
++ 新增系统变量 [`tidb_opt_fix_control`](/system-variables.md#tidb_opt_fix_control-从-v657-和-v710-版本开始引入)，用于更细粒度地控制优化器的行为，并且避免集群升级后优化器行为变化导致的性能回退 [#43169](https://github.com/pingcap/tidb/issues/43169) @[qw4990](https://github.com/qw4990)
++ 新增 TiDB 配置项 [`performance.force-init-stats`](/tidb-configuration-file.md#force-init-stats-从-v657-和-v710-版本开始引入)，用于控制 TiDB 启动时是否在统计信息初始化完成后再对外提供服务 [#43385](https://github.com/pingcap/tidb/issues/43385) @[xuyifangreeneyes](https://github.com/xuyifangreeneyes)
++ 为减少日志打印的开销，TiFlash 配置项 `logger.level` 默认值由 `"debug"` 改为 `"info"` [#8568](https://github.com/pingcap/tiflash/issues/8568) @[xzhangxian1008](https://github.com/xzhangxian1008)
 
 ## 改进提升
 
 + TiDB
     <!-- tw@Oreoxmt -->
     - (dup): release-7.4.0.md > 改进提升> TiDB - 优化 `ANALYZE` 分区表的内存使用和性能 [#47071](https://github.com/pingcap/tidb/issues/47071) [#47104](https://github.com/pingcap/tidb/issues/47104) [#46804](https://github.com/pingcap/tidb/issues/46804) @[hawkingrei](https://github.com/hawkingrei)
-    - Plan Cache 支持主键的 `IN (....)` 语法[#44830](https://github.com/pingcap/tidb/issues/44830) @[qw4990](https://github.com/qw4990)
-    - 提供 TiDB 等待统计信息加载完成才开始对外提供服务的开关 [#43385](https://github.com/pingcap/tidb/issues/43385) @[xuyifangreeneyes](https://github.com/xuyifangreeneyes)
+    - 以 Optimizer Fix Controls 方式支持让 Plan Cache 对在物理优化阶段形成的 `PointGet` 计划进行缓存 [#44830](https://github.com/pingcap/tidb/issues/44830) @[qw4990](https://github.com/qw4990)
     - 增强特定情况 OUTER JOIN 转 INNER JOIN 的能力 [#49616](https://github.com/pingcap/tidb/issues/49616) @[qw4990](https://github.com/qw4990)
 
 + TiKV
@@ -37,8 +40,7 @@ TiDB 版本：6.5.7
 + TiFlash
 
     <!-- tw@Oreoxmt -->
-    - 减少磁盘性能抖动对读取延迟的影响 [#8583](https://github.com/pingcap/tiflash/issues/8583) @[JaySon-Huang](https://github.com/JaySon-Huang)
-    - 日志等级默认调整为 "info" 减少日志打印的开销 [#8568](https://github.com/pingcap/tiflash/issues/8568) @[xzhangxian1008](https://github.com/xzhangxian1008)
+    - 降低磁盘性能抖动对读取延迟的影响 [#8583](https://github.com/pingcap/tiflash/issues/8583) @[JaySon-Huang](https://github.com/JaySon-Huang)
 
 + Tools
 
@@ -116,7 +118,7 @@ TiDB 版本：6.5.7
     - (dup): release-7.1.3.md > 错误修复> TiFlash - 修复在执行 `FLASHBACK DATABASE` 后 TiFlash 副本的数据仍会被 GC 回收的问题 [#8450](https://github.com/pingcap/tiflash/issues/8450) @[JaySon-Huang](https://github.com/JaySon-Huang)
     - (dup): release-7.1.3.md > 错误修复> TiFlash - 修复当查询遇到内存限制后发生内存泄漏的问题 [#8447](https://github.com/pingcap/tiflash/issues/8447) @[JinheLin](https://github.com/JinheLin)
     - 修复 Grafana 中部分面板的最大分位数耗时显示不正确的问题 [#8076](https://github.com/pingcap/tiflash/issues/8076) @[JaySon-Huang](https://github.com/JaySon-Huang)
-    - 修复慢查询导致内存使用显著上涨的问题 [#8564](https://github.com/pingcap/tiflash/issues/8564) @[JinheLin](https://github.com/JinheLin)
+    - 修复慢查询导致内存使用显著增加的问题 [#8564](https://github.com/pingcap/tiflash/issues/8564) @[JinheLin](https://github.com/JinheLin)
 
 + Tools
 
