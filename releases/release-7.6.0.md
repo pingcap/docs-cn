@@ -24,12 +24,12 @@ TiDB 版本：7.6.0
 <tbody>
   <tr>
     <td rowspan="3">可扩展性与性能<br></td>
-    <td><a href="https://docs.pingcap.com/tidb/v7.6/sql-plan-management#universal-binding">Universal SQL binding</a> {/* tw@Oreoxmt */}</td>
-    <td>In use cases with hundreds or thousands of same-schema databases -- such as SaaS data platforms storing a database per customer with equivalent business logic -- having up-to-date stats at all times is challenging. For this, SQL bindings can be used to lock in performance. However, doing so across so many tables is infeasible. Therefore, universal SQL bindings allow for broadcasting bindings across all schema-equivalent databases.</td>
+    <td><a href="https://docs.pingcap.com/zh/tidb/v7.6/sql-plan-management#跨数据库绑定执行计划-cross-db-binding">跨数据库绑定执行计划</a> {/* tw@Oreoxmt */}</td>
+    <td>在处理成百上千个 schema 相同的数据库时，使所有统计信息始终保持最新状态可能很困难，例如 SaaS 数据平台为每个用户维护独立数据库，这些数据库运行类似的逻辑。SQL 绑定可以提高这些情况下的性能，但是将绑定应用于如此多表上是不切实际的。TiDB v7.6.0 引入跨数据库绑定执行计划，支持在所有 schema 相同的数据库之间广播绑定计划。</td>
   </tr>
   <tr>
-    <td><a href="https://docs.pingcap.com/tidb/v7.6/br-snapshot-guide#restore-cluster-snapshots">Up to 10x acceleration to snapshot restore</a> {/* tw@Oreoxmt */}</td>
-    <td>A new 2-phase region scatter algorithm for preparing a snapshot restore to a cluster was introduced. In clusters with many TiKV nodes, this dramatically improves the cluster resource efficiency by more evenly distributing loading across the nodes, more effectively using per-node network bandwidth. In several real world cases, this causes a 1,000% acceleration of restore speeds.</td>
+    <td><a href="https://docs.pingcap.com/zh/tidb/v7.6/br-snapshot-guide#恢复快照备份数据">BR 快照恢复速度最高提升 10 倍（实验特性）</a> {/* tw@Oreoxmt */}</td>
+    <td>BR v7.6.0 实验性地引入了两阶段 Region 打散算法，用于准备集群的快照恢复。在 TiKV 节点较多的集群中，该算法显著提高了集群资源利用率，更均匀地分配了负载，同时更好地利用了每个节点的网络带宽。在几个实际案例中，该改进将恢复速度提高了约 10 倍。</td>
   </tr>
   <tr>
     <td><a href="">建表性能提升 10 倍（实验特性）</a>  {/* tw@hfxsd */}</td>
@@ -51,9 +51,9 @@ TiDB 版本：7.6.0
 
 ### 性能
 
-* BR 快照恢复速度最高提升 10 倍 [#33937](https://github.com/pingcap/tidb/issues/33937) @[3pointer](https://github.com/3pointer) **tw@Oreoxmt** <!--1647-->
+* BR 快照恢复速度最高提升 10 倍（实验特性）[#33937](https://github.com/pingcap/tidb/issues/33937) @[3pointer](https://github.com/3pointer) **tw@Oreoxmt** <!--1647-->
 
-    随着 TiDB 集群规模的不断扩大，故障时快速恢复集群以减少业务中断时间显得尤为重要。在 v7.6.0 之前的版本中，Region 打散算法是性能恢复的主要瓶颈。在 v7.6.0 中，BR 优化了 Region 打散算法，可以迅速将恢复任务拆分为大量小任务，并批量分散到所有 TiKV 节点上。新的并行恢复算法充分利用每个 TiKV 节点的所有资源，从而实现了并行快速恢复。内部测试结果显示，在大规模 Region 场景下，集群快照恢复速度提升约 10 倍。
+    随着 TiDB 集群规模的不断扩大，故障时快速恢复集群以减少业务中断时间显得尤为重要。在 v7.6.0 之前的版本中，Region 打散算法是性能恢复的主要瓶颈。在 v7.6.0 中，BR 优化了 Region 打散算法，可以迅速将恢复任务拆分为大量小任务，并批量分散到所有 TiKV 节点上。新的并行恢复算法充分利用每个 TiKV 节点的所有资源，从而实现了并行快速恢复。在几个实际案例中，在大规模 Region 场景下，集群快照恢复速度提升约 10 倍。
 
     新的并行恢复算法目前为实验特性，你可以配置 `br` 命令行参数 `--granularity` 使用新的并行恢复算法。例如：(命令行参数例子待研发提供)
 
