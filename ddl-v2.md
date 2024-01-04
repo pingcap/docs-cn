@@ -11,7 +11,7 @@ summary: 介绍 TiDB DDL V2 加速建表中的概念、原理、实现和影响�
 >
 > - TiDB DDL V2 目前为实验特性，不建议在生产环境中使用。该功能可能会在未事先通知的情况下发生变化或删除。如果发现 bug，请在 GitHub 上提 [issue](https://github.com/pingcap/tidb/issues) 反馈。
 
-### 与 TiDB 工具的兼容性
+## 与 TiDB 工具的兼容性
 
 - [TiCDC](/ticdc/ticdc-overview.md) 暂不支持 TiDB DDL V2 加速建表。
 
@@ -31,15 +31,15 @@ TiDB DDL V2 目前仅使用于 CREATE TABLE 语句，且该建表语句不带任
 
 要开启该功能，将 [`tidb_ddl_version`](/system-variables.md#tidb_ddl_verion-从-v760-版本开始引入) 的值设置为 `2`，以开启该功能：
 
-    ```sql
-    SET GLOBAL tidb_ddl_version = 2;
-    ```
+```sql
+SET GLOBAL tidb_ddl_version = 2;
+```
 
 要关闭该功能，将值设置为 `1`，以关闭该功能：
 
-    ```sql
-    SET GLOBAL tidb_ddl_version = 1;
-    ```
+```sql
+SET GLOBAL tidb_ddl_version = 1;
+```
 
 ## 实现原理
 
