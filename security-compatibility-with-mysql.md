@@ -250,7 +250,7 @@ mycli -h 127.0.0.1 -P 4000 -u 'user@pingcap.com' -p '<the-token-generated>'
 注意这里使用的 mysql 客户端必须支持 `mysql_clear_password` 插件。[mycli](https://www.mycli.net/) 默认开启这一插件，如果使用 [mysql 命令行客户端](https://dev.mysql.com/doc/refman/8.0/en/mysql.html) 则需要 `--enable-cleartext-plugin` 选项来开启这个插件：
 
 ```Shell
-mysql -h 127.0.0.1 -P 4000 -u 'user@pingcap.com' -p '<the-token-generated>' --enable-cleartext-plugin
+mysql -h 127.0.0.1 -P 4000 -u 'user@pingcap.com' -p'<the-token-generated>' --enable-cleartext-plugin
 ```
 
 如果在生成 token 的时候指定了错误的 `--sub`（比如 `--sub "wronguser@pingcap.com"`），则无法使用该 token 进行认证。
