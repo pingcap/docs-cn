@@ -1617,12 +1617,18 @@ rocksdb defaultcf titan 相关的配置项。
 >
 > Snappy 压缩文件必须遵循[官方 Snappy 格式](https://github.com/google/snappy)。不支持其他非官方压缩格式。
 
+### `zstd-dict-size`
+
++ 指定zstd字典大小，默认为 0KB 表示关闭zstd字典压缩，也就是说Titan中压缩的是单个value值，而RocksDB压缩以Block(默认 32KB )为单位。因此当关闭字典压缩时且value平均小于 32KB 时，Titan的压缩率低于RocksDB。以Json内容为例，Titan的store size可能比RocksDB高30%至50%。实际压缩率还取决于value内容是否适合压缩，以及不同value之间的相似性。用户可以通过设置zstd-dict-size（比如 16KB ）启用字典ZSTD以大幅提高压缩率（实际Store Size可以低于RocksDB），但zstd字典压缩在有些负载下会有10%左右的性能损失。
++ 默认值: 0
++ 单位：KB|MB|GB
+   
 ### `blob-cache-size`
 
 + Blob 文件的 cache 大小。
 + 默认值：0GB
 + 最小值：0
-+ 推荐值: 建议在数据库稳定运行后，根据监控把 RocksDB block cache (`storage.block-cache.capacity`) 设置为能刚好维持接近95%以上的Block Cache命中率，`blob-cache-size` 设置为 `内存大小 * 50% 再减去 block cache 的大小`。这是为了保证 block cache 足够缓存整个 RocksDB 的前提下，blob cache 尽量大。但Blob cache的值不应该设置过大，从而导致block cache命中率大幅下降。
++ 推荐值：建议在数据库稳定运行后，根据监控把 RocksDB block cache (`storage.block-cache.capacity`) 设置为能刚好维持接近 95% 以上的 Block Cache 命中率，`blob-cache-size` 设置为 `内存大小 * 50% 再减去 block cache 的大小`。这是为了保证 block cache 足够缓存整个 RocksDB 的前提下，blob cache 尽量大。但 Blob cache 的值不应该设置过大，否则会导致 block cache 命中率大幅下降。
 + 单位：KB|MB|GB
 
 ### `min-gc-batch-size`

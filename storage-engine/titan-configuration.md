@@ -39,13 +39,13 @@ Titan 对 RocksDB 兼容，也就是说，使用 RocksDB 存储引擎的现有 T
     enabled = true
     ```
 
-开启 Titan 以后，原有的数据并不会马上移入 Titan 引擎，而是随着前台写入和 RocksDB compaction 的进行，逐步进行 key-value 分离并写入 Titan。同样，全量、增量恢复或者TiDB Lightning导入的SST都是RocksDB格式，数据不会直接导入Titan。随着 Compaction 的进行，被处理过的SST中的大value会分离到 Titan 中。可以通过观察 **TiKV Details** - **Titan kv** - **blob file size** 监控面版确认数据保存在 Titan 中部分的大小。
+开启 Titan 以后，原有的数据并不会马上移入 Titan 引擎，而是随着前台写入和 RocksDB compaction 的进行，逐步进行 key-value 分离并写入 Titan。同样，全量、增量恢复或者 TiDB Lightning 导入的 SST 都是 RocksDB 格式，数据不会直接导入Titan。随着 Compaction 的进行，被处理过的 SST 中的大 value 会分离到 Titan 中。可以通过观察 **TiKV Details** - **Titan kv** - **blob file size** 监控面版确认数据保存在 Titan 中部分的大小。
 
-如果需要加速数据移入 Titan，可以通过 tikv-ctl 执行一次全量 compaction，具体参考[手动 compact](/tikv-control.md#手动-compact-整个-tikv-集群的数据)。由于RocksDB有Block cache，且转成Titan时的数据访问是连续的，因此Block Cache能有很好的命中率。在我们的测试中，一个670GB的TiKV节点数据通过tikv-ctl全量compaction转成Titan只需要1个小时。
+如果需要加速数据移入 Titan，可以通过 tikv-ctl 执行一次全量 compaction，请参考[手动 compact](/tikv-control.md#手动-compact-整个-tikv-集群的数据)。由于 RocksDB 有 Block Cache，且转成 Titan 时的数据访问是连续的，因此Block Cache 能有很好的命中率。在测试中，一个 670 GiB 的 TiKV 节点数据，通过 tikv-ctl 全量 compaction 转成 Titan，只需 1 小时。
 
 > **注意：**
 >
-> 在7.6以后，新建集群默认打开Titan，已有集群升级到7.6则会维持原有的配置。
+> 在7.6.0开始，新建集群默认打开Titan，已有集群升级到7.6.0则会维持原有的配置, 没有显式配置titan的，则仍然会使用RocksDB。
 
 > **警告：**
 >
@@ -68,19 +68,26 @@ Titan 对 RocksDB 兼容，也就是说，使用 RocksDB 存储引擎的现有 T
 
 + value 的大小阈值。
 
-    当写入的 value 小于这个值时，value 会保存在 RocksDB 中，反之则保存在 Titan 的 blob file 中。根据 value 大小的分布，增大这个值可以使更多 value 保存在 RocksDB，读取这些小 value 的性能会稍好一些；减少这个值可以使更多 value 保存在 Titan 中，进一步减少 RocksDB compaction。经过[测试](/storage-engine/titan-overview.md#min-blob-size的选择及其性能影响)，1KB是一个比较折中的值。如果发现系统磁盘占用过大可以进一步调高这个值。
+    当写入的 value 小于这个值时，value 会保存在 RocksDB 中，反之则保存在 Titan 的 blob file 中。根据 value 大小的分布，增大这个值可以使更多 value 保存在 RocksDB，读取这些小 value 的性能会稍好一些；减少这个值可以使更多 value 保存在 Titan 中，进一步减少 RocksDB compaction。经过[测试](/storage-engine/titan-overview.md#min-blob-size的选择及其性能影响)，1 KB是一个比较折中的值。如果发现系统磁盘占用过大可以进一步调高这个值。
 
     ```toml
     [rocksdb.defaultcf.titan]
     min-blob-size = "1KB"
     ```
 
-+ Titan 中 value 所使用的压缩算法。默认情况下，Titan 中压缩是以 value 为单元的。因此Titan的压缩率低于RocksDB相比。以Json内容为例，Titan的store size可能比RocksDB高30%至50%。 用户可以通过设置zstd_dict_size（比如16KB）启用字典ZSTD以大幅提高压缩率（实际Store Size可以低于RocksDB），但字典ZSTD在有些负载下会有10%左右的性能损失。
++ Titan 中 value 所使用的压缩算法。在7.6版本开始，默认采用zstd压缩算法。
 
     ```toml
     [rocksdb.defaultcf.titan]
-    blob-file-compression = "lz4"
+    blob-file-compression = "zstd"
     ```
+
++ 默认情况下, zstd-dict-size为 0KB , 表示Titan中压缩的是单个value值，而RocksDB压缩以Block(默认 32KB )为单位。因此当value平均小于 32KB 时，Titan的压缩率低于RocksDB。以Json内容为例，Titan的store size可能比RocksDB高30%至50%。实际压缩率还取决于value内容是否适合压缩，以及不同value之间的相似性。用户可以通过设置zstd-dict-size（比如 16KB ）启用zstd字典压缩以大幅提高压缩率（实际Store Size可以低于RocksDB），但zstd字典压缩在有些负载下会有10%左右的性能损失。
+  
+    ```toml
+    [rocksdb.defaultcf.titan]
+    zstd-dict-size = "16KB"
+    ``` 
 
 + Titan 中 value 的缓存大小。
 
@@ -122,7 +129,7 @@ Titan 对 RocksDB 兼容，也就是说，使用 RocksDB 存储引擎的现有 T
 - 当设置为 `read-only` 时，新写入的 value 不论大小均会写入 RocksDB。
 - 当设置为 `fallback` 时，新写入的 value 不论大小均会写入 RocksDB，并且当 RocksDB 进行 compaction 时，会自动把所碰到的存储在 Titan blob file 中的 value 移回 RocksDB。
 
-如果现有数据和未来数据均不再需要 Titan，可执行以下步骤完全关闭 Titan。然而一般情况下只需要执行以下步骤1和步骤3、4即可，步骤2会加快数据迁移速度，但影响用户SQL的性能。在Compaction过程中会将数据从Titan迁移到RocksDB。
+如果现有数据和未来数据均不再需要 Titan，可执行以下步骤完全关闭 Titan。然而一般情况下只需要执行以下步骤1和步骤3、4即可，步骤2会加快数据迁移速度，但会严重影响用户SQL的性能。事实上即便跳过步骤2，由于在Compaction过程中会将数据从Titan迁移到RocksDB，会占用额外的 IO 和 CPU 资源，因此仍然可以观察到一定的性能损失，在资源紧张的情况下吞吐可以下降 50% 以上。
 
 1. 更新需要关闭 Titan 的 TiKV 节点的配置。你可以通过以下两种方式之一更新 TiKV 配置：
 
