@@ -120,9 +120,9 @@ jdbc:mysql://127.0.0.1:4000/test?user=root&useConfigs=maxPerformance&useServerPr
 
 有关 Java 的完整示例，可参阅：
 
-- [TiDB 和 Java 的简单 CRUD 应用程序 - 使用 JDBC](/develop/dev-guide-sample-application-java.md#第-2-步获取代码)
-- [TiDB 和 Java 的简单 CRUD 应用程序 - 使用 Hibernate](/develop/dev-guide-sample-application-java.md#第-2-步获取代码)
-- [Build the TiDB Application using Spring Boot](/develop/dev-guide-sample-application-spring-boot.md)
+- [TiDB 和 JDBC 的简单 CRUD 应用程序](/develop/dev-guide-sample-application-java-jdbc.md)
+- [TiDB 和 Hibernate 的简单 CRUD 应用程序](/develop/dev-guide-sample-application-java-hibernate.md)
+- [使用 Spring Boot 构建 TiDB 应用程序](/develop/dev-guide-sample-application-java-spring-boot.md)
 
 </div>
 
@@ -198,8 +198,8 @@ func buildBulkInsertSQL(amount int) string {
 
 有关 Golang 的完整示例，可参阅：
 
-- [TiDB 和 Golang 的简单 CRUD 应用程序 - 使用 go-sql-driver/mysql](/develop/dev-guide-sample-application-golang.md#第-2-步获取代码)
-- [TiDB 和 Golang 的简单 CRUD 应用程序 - 使用 GORM](/develop/dev-guide-sample-application-golang.md#第-2-步获取代码)
+- [使用 Go-MySQL-Driver 连接到 TiDB](/develop/dev-guide-sample-application-golang-sql-driver.md)
+- [使用 GORM 连接到 TiDB](/develop/dev-guide-sample-application-golang-gorm.md)
 
 </div>
 
@@ -228,11 +228,12 @@ with get_connection(autocommit=True) as connection:
 
 有关 Python 的完整示例，可参阅：
 
-- [TiDB 和 Python 的简单 CRUD 应用程序 - 使用 PyMySQL](/develop/dev-guide-sample-application-python.md#第-2-步获取代码)
-- [TiDB 和 Python 的简单 CRUD 应用程序 - 使用 mysqlclient](/develop/dev-guide-sample-application-python.md#第-2-步获取代码)
-- [TiDB 和 Python 的简单 CRUD 应用程序 - 使用 mysql-connector-python](/develop/dev-guide-sample-application-python.md#第-2-步获取代码)
-- [TiDB 和 Python 的简单 CRUD 应用程序 - 使用 SQLAlchemy](/develop/dev-guide-sample-application-python.md#第-2-步获取代码)
-- [TiDB 和 Python 的简单 CRUD 应用程序 - 使用 peewee](/develop/dev-guide-sample-application-python.md#第-2-步获取代码)
+- [使用 PyMySQL 连接到 TiDB](/develop/dev-guide-sample-application-python-pymysql.md)
+- [使用 mysqlclient 连接到 TiDB](/develop/dev-guide-sample-application-python-mysqlclient.md)
+- [使用 MySQL Connector/Python 连接到 TiDB](/develop/dev-guide-sample-application-python-mysql-connector.md)
+- [使用 SQLAlchemy 连接到 TiDB](/develop/dev-guide-sample-application-python-sqlalchemy.md)
+- [使用 Django 连接到 TiDB](/develop/dev-guide-sample-application-python-django.md)
+- [使用 peewee 连接到 TiDB](/develop/dev-guide-sample-application-python-peewee.md)
 
 </div>
 

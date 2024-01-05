@@ -152,7 +152,7 @@ TiDB 版本：6.3.0-DMR
 
 * 解决基于 SQL 的数据放置规则功能和构建 TiFlash 副本功能的冲突 [#37171](https://github.com/pingcap/tidb/issues/37171) @[lcwangchao](https://github.com/lcwangchao)
 
-    TiDB 在 v6.0.0 版本提供基于 SQL 的数据放置规则功能，但是由于实现机制问题，该功能和构建 TiFlash 副本功能有冲突。v6.3.0 版本进行改进优化，[解决了这两个功能的冲突](/placement-rules-in-sql.md#使用限制)，使这两个功能更加方便易用。
+    TiDB 在 v6.0.0 版本提供[基于 SQL 的数据放置规则](/placement-rules-in-sql.md)功能，但是由于实现机制问题，该功能和构建 TiFlash 副本功能有冲突。v6.3.0 版本进行改进优化，解决了这两个功能的冲突，使这两个功能更加方便易用。
 
 ### MySQL 兼容性
 
@@ -196,7 +196,7 @@ TiDB 版本：6.3.0-DMR
 
 * TiCDC 支持维护上下游数据一致性快照 (Sync point) [#6977](https://github.com/pingcap/tiflow/issues/6977) @[asddongmen](https://github.com/asddongmen)
 
-    在灾备复制场景下，TiCDC 支持[周期性地维护一个下游数据快照](/sync-diff-inspector/upstream-downstream-diff.md#tidb-主从集群的数据校验)，使得该下游快照能与上游数据的快照保持一致。借助此能力，TiCDC 能更好地匹配读写分离应用场景，帮助用户降本增效。
+    在灾备复制场景下，TiCDC 支持[周期性地维护一个下游数据快照](/ticdc/ticdc-upstream-downstream-check.md)，使得该下游快照能与上游数据的快照保持一致。借助此能力，TiCDC 能更好地匹配读写分离应用场景，帮助用户降本增效。
 
 * TiCDC 支持平滑升级 [#4757](https://github.com/pingcap/tiflow/issues/4757) @[overvenus](https://github.com/overvenus) @[3AceShowHand](https://github.com/3AceShowHand)
 

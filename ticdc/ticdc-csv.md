@@ -7,12 +7,6 @@ summary: 了解 TiCDC CSV Protocol 的概念和使用方法。
 
 当使用云存储服务作为下游 sink 时，你可以使用 CSV 格式将 DML 事件发送到下游云存储服务。
 
-> **警告：**
->
-> 当开启 [Old Value 功能](/ticdc/ticdc-manage-changefeed.md#输出行变更的历史值-从-v405-版本开始引入)时 (`enable-old-value = true`)，CSV 协议数据格式无法输出更新事件的旧值。
->
-> 具体原因请参考 [TiCDC 在开启 Old Value 功能后更新事件格式有何变化？](/ticdc/ticdc-faq.md#ticdc-在开启-old-value-功能后更新事件格式有何变化)
-
 ## 使用 CSV
 
 使用 CSV 时的配置样例如下所示：
@@ -33,6 +27,7 @@ delimiter = ','
 quote = '"'
 null = '\N'
 include-commit-ts = true
+binary-encoding-method = 'base64'
 ```
 
 ## 数据保存的事务性约束
@@ -89,7 +84,7 @@ CREATE TABLE `employee` (
 | `TIME`                                                            | String  | `"23:59:59"`                   | 格式：`HH:mm:ss`                 |
 | `YEAR`                                                            | Integer | `1970`                         | -                             |
 | `VARCHAR`/`JSON`/`TINYTEXT`/`MEDIUMTEXT`/`LONGTEXT`/`TEXT`/`CHAR` | String  | `"test"`                       | 以 UTF-8 编码输出                  |
-| `VARBINARY`/`TINYBLOB`/`MEDIUMBLOB`/`LONGBLOB`/`BLOB`/`BINARY`    | String  | `"6Zi/5pav"`                   | 以 Base64 编码输出                 |
+| `VARBINARY`/`TINYBLOB`/`MEDIUMBLOB`/`LONGBLOB`/`BLOB`/`BINARY`    | String  | `"6Zi/5pav"` 或 `"e998bfe696af"`         | 以 Base64 或 Hex 编码输出                 |
 | `BIT`                                                             | Integer | `81`                           | -                             |
 | `DECIMAL`                                                         | String  | `"129012.1230000"`             | -                             |
 | `ENUM`                                                            | String  | `"a"`                          | -                             |

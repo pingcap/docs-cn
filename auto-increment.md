@@ -346,7 +346,7 @@ CREATE TABLE t(a int AUTO_INCREMENT key) AUTO_ID_CACHE 1;
 >
 > - 对于 TiDB v6.4.0 之前的版本，由于每次分配 ID 都需要通过一个 TiKV 事务完成 `AUTO_INCREMENT` 值的持久化修改，因此设置 `AUTO_ID_CACHE` 为 `1` 会出现性能下降。
 > - 对于 v6.4.0 及以上版本，由于引入了中心化的分配服务，`AUTO_INCREMENT` 值的修改只是在 TiDB 服务进程中的一个内存操作，相较于之前版本更快。
-> - 将 `AUTO_ID_CACHE` 设置为 `1` 表示 TiDB 使用默认的缓存大小 `30000`。
+> - 将 `AUTO_ID_CACHE` 设置为 `0` 表示 TiDB 使用默认的缓存大小 `30000`。
 
 使用 MySQL 兼容模式后，能保证 ID **唯一**、**单调递增**，行为几乎跟 MySQL 完全一致。即使跨 TiDB 实例访问，ID 也不会出现回退。只有当中心化服务的“主” TiDB 实例异常崩溃时，才有可能造成少量 ID 不连续。这是因为主备切换时，“备” 节点需要丢弃一部分之前的“主” 节点可能已经分配的 ID，以保证 ID 不出现重复。
 
@@ -357,7 +357,7 @@ CREATE TABLE t(a int AUTO_INCREMENT key) AUTO_ID_CACHE 1;
 - 对于 v6.6.0 及更早的 TiDB 版本，定义的列必须为主键或者索引前缀。
 - 只能定义在类型为整数、`FLOAT` 或 `DOUBLE` 的列上。
 - 不支持与列的默认值 `DEFAULT` 同时指定在同一列上。
-- 不支持使用 `ALTER TABLE` 来添加 `AUTO_INCREMENT` 属性。
+- 不支持使用 `ALTER TABLE` 来添加 `AUTO_INCREMENT` 属性，包括使用 `ALTER TABLE ... MODIFY/CHANGE COLUMN` 语法为已存在的列添加 `AUTO_INCREMENT` 属性，以及使用 `ALTER TABLE ... ADD COLUMN` 添加带有 `AUTO_INCREMENT` 属性的列。
 - 支持使用 `ALTER TABLE` 来移除 `AUTO_INCREMENT` 属性。但从 TiDB 2.1.18 和 3.0.4 版本开始，TiDB 通过 session 变量 `@@tidb_allow_remove_auto_inc` 控制是否允许通过 `ALTER TABLE MODIFY` 或 `ALTER TABLE CHANGE` 来移除列的 `AUTO_INCREMENT` 属性，默认是不允许移除。
 - `ALTER TABLE` 需要 `FORCE` 选项来将 `AUTO_INCREMENT` 设置为较小的值。
 - 将 `AUTO_INCREMENT` 设置为小于 `MAX(<auto_increment_column>)` 的值会导致重复键，因为预先存在的值不会被跳过。

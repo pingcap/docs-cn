@@ -410,4 +410,4 @@ storage = "s3://redo?access-key=minio&secret-access-key=miniostorage&endpoint=ht
 
 ## 常见问题处理
 
-以上任何步骤遇到问题，可以先通过 [TiDB FAQ](/faq/faq-overview.md) 查找问题的处理方法。如果问题仍不能解决，请在 TiDB 项目中提 [issue](https://github.com/pingcap/tidb/issues/new/choose)。
+以上任何步骤遇到问题，可以先通过 [TiDB FAQ](/faq/faq-overview.md) 查找问题的处理方法。如果问题仍不能解决，请尝试 [TiDB 支持资源](/support.md)。

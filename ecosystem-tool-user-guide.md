@@ -9,7 +9,7 @@ TiDB 提供了丰富的工具，可以帮助你进行部署运维、数据管理
 
 ## 部署运维工具
 
-TiDB 提供了 TiUP、TiDB Operator 和 TiUniManager 三种部署运维工具，满足你在不同系统环境下的部署运维需求。
+TiDB 提供了 TiUP 和 TiDB Operator 部署运维工具，满足你在不同系统环境下的部署运维需求。
 
 ### 在物理机或虚拟机上部署运维 TiDB
 
@@ -25,18 +25,6 @@ TiDB 提供了 TiUP、TiDB Operator 和 TiUniManager 三种部署运维工具，
 - [使用 TiUP 部署 TiDB 集群](/production-deployment-using-tiup.md)
 - [TiUP 组件管理](/tiup/tiup-component-management.md)
 - 适用 TiDB 版本：v4.0 及以上
-
-#### TiUniManager
-
-[TiUniManager](/tiunimanager/tiunimanager-overview.md) 是一款以 TiDB 数据库为核心的数据库管理平台，帮助用户在本地部署环境或公有云环境中管理 TiDB 集群。
-
-TiUniManager 不仅提供对 TiDB 集群的全生命周期的可视化管理，也同时一站式提供 TiDB 数据库参数管理、数据库版本升级、克隆集群、主备集群切换、数据导入导出、数据同步、数据备份恢复服务，能有效提高 TiDB 集群运维效率，降低企业运维成本。
-
-基本信息：
-
-- [TiUniManager 使用场景](/tiunimanager/tiunimanager-overview.md#使用场景)
-- [TiUniManager 安装和运维指南](/tiunimanager/tiunimanager-install-and-maintain.md)
-- [TiUniManager 与 TiUP 的关系](/tiunimanager/tiunimanager-faq.md#tiunimanager-与-tiup-的关系是什么)
 
 ### 在 Kubernetes 上部署运维 TiDB - TiDB Operator
 
@@ -88,7 +76,7 @@ TiUniManager 不仅提供对 TiDB 集群的全生命周期的可视化管理，�
 
 > **注意：**
 >
-> PingCAP 之前维护的 Mydumper 工具 fork 自 [Mydumper project](https://github.com/maxbube/mydumper)，针对 TiDB 的特性进行了优化。Mydumper 已经被 [Dumpling](/dumpling-overview.md) 工具取代，并使用 Go 语言编写，支持更多针对 TiDB 特性的优化。建议切换到 Dumpling。
+> PingCAP 之前维护的 Mydumper 工具 fork 自 [mydumper project](https://github.com/maxbube/mydumper)，针对 TiDB 的特性进行了优化。从 v7.5.0 开始，[Mydumper](https://docs.pingcap.com/tidb/v4.0/mydumper-overview) 废弃，其绝大部分功能已经被 [Dumpling](/dumpling-overview.md) 取代，强烈建议切换到 Dumpling。
 
 ### 全量导入 - TiDB Lightning
 

@@ -22,6 +22,15 @@ aliases: ['/docs-cn/dev/system-tables/system-table-overview/','/docs-cn/dev/refe
 * `global_priv` 基于证书的认证信息
 * `role_edges` 角色之间的关系信息
 
+## 集群状态系统表
+
+* `tidb` 用于记录 TiDB 的一些全局信息
+
+    * `bootstrapped` 用于记录 TiDB 集群是否已完成初始化，注意该值为只读，不可修改。
+    * `tidb_server_version` 用于记录 TiDB 在初始化时的版本信息，注意该值为只读，不可修改。
+    * `system_tz` 用于记录 TiDB 的系统时区
+    * `new_collation_enabled` 用于记录 TiDB 是否开启了[新排序规则框架](/character-set-and-collation.md#新框架下的排序规则支持)，注意该值为只读，不可修改。
+
 ## 服务端帮助信息系统表
 
 * `help_topic` 目前为空
@@ -63,13 +72,32 @@ aliases: ['/docs-cn/dev/system-tables/system-table-overview/','/docs-cn/dev/refe
 ## Runaway Queries 相关系统表
 
 * `tidb_runaway_queries` 过去 7 天内所有识别到的 Runaway Queries 的历史记录
-* `tidb_runaway_quarantined_watch` 最近活动的 Runaway Queries 的快速识别规则（包含当前有效规则，也可能还包含近期失效的规则）
+* `tidb_runaway_watch` Runaway Queries 的监控列表 (Watch List)
+* `tidb_runaway_watch_done` 被删除或者过期的 Runaway Queries 的监控列表
+
+## 元数据锁相关系统表
+
+* `tidb_mdl_view` 元数据锁的视图，可以用于查看当前阻塞的 DDL 的相关信息
+* `tidb_mdl_info` TiDB 内部用于同步各节点的元数据锁的相关信息
+
+## DDL 相关系统表
+
+* `tidb_ddl_history` 记录了 DDL 语句的历史记录
+* `tidb_ddl_jobs` TiDB 内部存放的正在执行的 DDL 的元数据，用于执行 DDL
+* `tidb_ddl_reorg` TiDB 内部存放的正在执行的物理 DDL（例如加索引）的元数据，用于执行物理 DDL
+
+## 分布式执行框架相关系统表
+
+* `dist_framework_meta` 存放分布式执行框架任务调度的元信息
+* `tidb_global_task` 存放当前分布式框架正在执行的任务元信息
+* `tidb_global_task_history` 存放分布式执行框架完成（成功或者失败）的任务元信息
+* `tidb_background_subtask` 存放当前正在执行的分布式执行框架任务的子任务元信息
+* `tidb_background_subtask_history` 存放历史的分布式执行框架任务的子任务元信息
 
 ## 其它系统表
 
 * `GLOBAL_VARIABLES` 全局系统变量表
-* `tidb` 用于 TiDB 在 bootstrap 的时候记录相关版本信息
 * `expr_pushdown_blacklist` 表达式下推的黑名单
 * `opt_rule_blacklist` 逻辑优化规则的黑名单
-* `table_cache_meta` 缓存表的信息
 * `tidb_import_jobs` 记录 [`IMPORT INTO`](/sql-statements/sql-statement-import-into.md) 任务信息
+* `tidb_timers` 存储了内部定时器的相关元信息

@@ -43,7 +43,7 @@ ANALYZE TABLE t1, t2;
 
 ## Index Join
 
-如果预计需要连接的行数较少（一般小于 1 万行），推荐使用 Index Join 算法。这个算法与 MySQL 主要使用的 Join 算法类似。在下表的示例中，`TableReader_28(Build)` 算子首先读取表 `t1`，然后根据在 `t1` 中匹配到的每行数据，依次探查表 `t2` 中的数据：
+如果预计需要连接的行数较少（一般小于 1 万行），推荐使用 Index Join 算法。这个算法与 MySQL 主要使用的 Join 算法类似。在下表的示例中，`TableReader_29(Build)` 算子首先读取表 `t1`，然后根据在 `t1` 中匹配到的每行数据，依次探查表 `t2` 中的数据：
 
 > **注意：**
 >
@@ -265,6 +265,10 @@ Hash Join 算法的性能受以下系统变量影响：
 
 * [`tidb_mem_quota_query`](/system-variables.md#tidb_mem_quota_query)（默认值：1GB）- 如果某条查询的内存消耗超出了配额，TiDB 会尝试将 Hash Join 的 Build 端移到磁盘上以节省内存。
 * [`tidb_hash_join_concurrency`](/system-variables.md#tidb_hash_join_concurrency)（默认值：`5`）- 可以并发执行的 Hash Join 任务数量。
+
+### 相关优化
+
+TiDB 提供了 Runtime Filter 功能，针对 Hash Join 进行性能优化，大幅提升 Hash Join 的执行速度。具体优化使用方式见 [Runtime Filter](/runtime-filter.md)。
 
 ## Merge Join
 

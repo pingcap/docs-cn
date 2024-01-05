@@ -29,7 +29,7 @@ summary: 了解 TiDB 的用户密码管理机制。
 密码复杂度策略支持以下功能：
 
 - 对采用明文方式设置用户密码的 SQL 语句（包括 `CREATE USER`、`ALTER USER`、`SET PASSWORD` ），系统会根据密码复杂度策略检查该密码，如果该密码不符合要求，则拒绝该密码。
-- 可以使用 SQL 函数 [`VALIDATE_PASSWORD_STRENGTH()`](https://dev.mysql.com/doc/refman/5.7/en/encryption-functions.html#function_validate-password-strength) 评估给定密码的强度。
+- 可以使用 SQL 函数 [`VALIDATE_PASSWORD_STRENGTH()`](https://dev.mysql.com/doc/refman/8.0/en/encryption-functions.html#function_validate-password-strength) 评估给定密码的强度。
 
 > **注意：**
 >

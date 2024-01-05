@@ -4,7 +4,9 @@
 
 这里存放的是 [PingCAP 官网 TiDB 中文文档](https://docs.pingcap.com/zh/tidb/stable)的源文件。[官网英文文档](https://docs.pingcap.com/tidb/stable)的源文件则存放于 [pingcap/docs](https://github.com/pingcap/docs)。
 
-如果你发现或遇到了 TiDB 的文档问题，可随时[提 Issue](https://github.com/pingcap/docs-cn/issues/new/choose) 来反馈，或者直接[提交 Pull Request](/CONTRIBUTING.md#pull-request-提交流程) 来进行修改。
+如果你发现或遇到了 TiDB 的文档问题，可随时[提 Issue](https://github.com/pingcap/docs-cn/issues/new/choose) 来反馈，或者直接[提交 Pull Request](/CONTRIBUTING.md#如何提-pull-request) 来进行修改。
+
+如果你想在本地定制输出符合特定场景需求的 PDF 格式的 TiDB 文档，例如对 TiDB 文档目录进行自由排序和删减，请参考[自助生成 TiDB 文档 PDF 教程](/resources/tidb-pdf-generation-tutorial.md)。
 
 ## TiDB 文档维护方式及版本说明
 
@@ -13,6 +15,9 @@
 | 文档仓库 branch | 对应 TiDB 文档版本 |
 |:---------|:----------|
 | [`master`](https://github.com/pingcap/docs-cn/tree/master) | dev 最新开发版 |
+| [`release-7.5`](https://github.com/pingcap/docs-cn/tree/release-7.5) | 7.5 长期支持版 (LTS) |
+| [`release-7.4`](https://github.com/pingcap/docs-cn/tree/release-7.4) | 7.4 开发里程碑版 (DMR) |
+| [`release-7.3`](https://github.com/pingcap/docs-cn/tree/release-7.3) | 7.3 开发里程碑版 (DMR) |
 | [`release-7.2`](https://github.com/pingcap/docs-cn/tree/release-7.2) | 7.2 开发里程碑版 (DMR) |
 | [`release-7.1`](https://github.com/pingcap/docs-cn/tree/release-7.1) | 7.1 长期支持版 (LTS) |
 | [`release-7.0`](https://github.com/pingcap/docs-cn/tree/release-7.0) | 7.0 开发里程碑版 (DMR) |

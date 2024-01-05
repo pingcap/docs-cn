@@ -29,7 +29,7 @@ TiDB 采用在线异步变更的方式执行 DDL 语句，从而实现 DDL 语�
 
     在 TiDB 中，物理 DDL 被称为 Reorg DDL（Reorg 即  Reorganization）。目前物理 DDL 只包含 `ADD INDEX` 以及有损列类型变更（例如从 `INT` 转成 `CHAR` 类型）这两种类型。物理 DDL 的特点是执行时间较长，且执行时间与表的数据量、机器配置以及业务负载有关。
 
-    执行物理 DDL 会影响业务负载，具体有两个方面。一方面需要从 TiKV 中读取数据并写入新数据，因此会消耗 TiKV 的 CPU 及 I/O 资源。另一方面，DDL Owner 所在的 TiDB 节点需要进行相应的计算，因此会消耗更多的 CPU 资源。由于目前 TiDB 还不支持分布式执行 DDL 语句，因此其他 TiDB 节点不会占用更多的系统资源。
+    执行物理 DDL 会影响业务负载，具体有两个方面。一方面需要从 TiKV 中读取数据并写入新数据，因此会消耗 TiKV 的 CPU 及 I/O 资源。另一方面，**DDL Owner 所在的 TiDB 节点**或者**被 TiDB 分布式执行框架调度而执行 `ADD INDEX` 任务的 TiDB 节点**需要进行相应的计算，因此会消耗 TiDB 的 CPU 资源。
 
     > **注意：**
     >
@@ -178,11 +178,11 @@ absent -> delete only -> write only -> write reorg -> public
 
     取消一个已经执行完成的 DDL 任务会在 `RESULT` 列看到 `DDL Job:90 not found` 的错误，表示该任务已从 DDL 等待队列中被移除。
 
-- `ADMIN PAUSE DDL JOBS job_id [, job_id]`：用于暂停正在执行的 DDL 任务。执行该命令后，执行 DDL 任务的 SQL 语句体现为正在执行，后台任务暂停执行。详情参阅 [`ADMIN PAUSE DDL JOBS`](/sql-statements/sql-statement-admin-pause-ddl.md)。（实验特性）
+- `ADMIN PAUSE DDL JOBS job_id [, job_id]`：用于暂停正在执行的 DDL 任务。执行该命令后，执行 DDL 任务的 SQL 语句体现为正在执行，后台任务暂停执行。详情参阅 [`ADMIN PAUSE DDL JOBS`](/sql-statements/sql-statement-admin-pause-ddl.md)。
 
     只有处于执行中或仍在等待中的 DDL 任务可以暂停，否则会在 `RESULT` 列看到 `Job 3 can't be paused now`。
 
-- `ADMIN RESUME DDL JOBS job_id [, job_id]`：用于恢复已被暂停的 DDL 任务。执行该命令后，执行 DDL 任务的 SQL 语句体现为正在执行，后台任务正常执行。详情参阅 [`ADMIN RESUME DDL JOBS`](/sql-statements/sql-statement-admin-resume-ddl.md)。（实验特性）
+- `ADMIN RESUME DDL JOBS job_id [, job_id]`：用于恢复已被暂停的 DDL 任务。执行该命令后，执行 DDL 任务的 SQL 语句体现为正在执行，后台任务正常执行。详情参阅 [`ADMIN RESUME DDL JOBS`](/sql-statements/sql-statement-admin-resume-ddl.md)。
 
     你只能对暂停状态的 DDL 任务进行恢复操作，否则会在 `RESULT` 列看到 `Job 3 can't be resumed`。
 
