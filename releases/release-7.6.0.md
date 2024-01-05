@@ -29,7 +29,7 @@ TiDB 版本：7.6.0
   </tr>
   <tr>
     <td><a href="https://docs.pingcap.com/zh/tidb/v7.6/br-snapshot-guide#恢复快照备份数据">BR 快照恢复速度最高提升 10 倍（实验特性）</a> {/* tw@Oreoxmt */}</td>
-    <td>BR v7.6.0 实验性地引入了两阶段 Region 打散算法，用于准备集群的快照恢复。在 TiKV 节点较多的集群中，该算法显著提高了集群资源利用率，更均匀地分配了负载，同时更好地利用了每个节点的网络带宽。在几个实际案例中，该改进将恢复速度提高了约 10 倍。</td>
+    <td>BR v7.6.0 实验性地引入了两阶段 Region 打散算法，用于准备集群的快照恢复。在 TiKV 节点较多的集群中，该算法显著提高了集群资源利用率，更均匀地分配了负载，同时更好地利用了每个节点的网络带宽。在实际案例中，该改进将恢复速度最高提升约 10 倍。</td>
   </tr>
   <tr>
     <td><a href="">建表性能提升 10 倍（实验特性）</a>  {/* tw@hfxsd */}</td>
@@ -58,7 +58,7 @@ TiDB 版本：7.6.0
     目前，新的并行恢复算法为实验特性，你可以配置 `br` 新增的命令行参数 `--granularity=coarse-grained` 使用新算法，同时通过设置 `--tikv-max-restore-concurrency` 控制每个 TiKV 节点恢复任务的并发度。例如：
 
     ```bash
-br restore full \
+    br restore full \
     --pd "${PDIP}:2379" \
     --storage "s3://${Bucket}/${Folder}" \
     --s3.region "${region}" \
@@ -68,7 +68,7 @@ br restore full \
     --log-file restorefull.log
     ```
 
-    更多信息，请参考[用户文档](链接)。
+    更多信息，请参考[用户文档](/br/br-snapshot-guide.md#恢复快照备份数据)。
 
 * TiDB 的并发 HashAgg 算法支持数据落盘（实验特性）[#35637](https://github.com/pingcap/tidb/issues/35637) @[xzhangxian1008](https://github.com/xzhangxian1008) **tw@qiancai** <!--1365-->
 
