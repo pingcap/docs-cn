@@ -1313,7 +1313,7 @@ Titan 相关的配置项。
 ### `enabled`
 
 + 开启 Titan 开关。
-+ 默认值：false
++ 默认值：7.5及更老的版本false。 在7.6或更高版本，新建集群默认是true，已有集群升级到7.6或更高版本则会维持原有的配置。
 
 ### `dirname`
 
@@ -1665,7 +1665,7 @@ rocksdb defaultcf titan 相关的配置项。
 + Titan 的运行模式选择。
 + 可选值：
     + "normal"：value size 超过 min-blob-size 的数据会写入到 blob 文件。
-    + "read_only"：不再写入新数据到 blob，原有 blob 内的数据仍然可以读取。
+    + "read-only"：不再写入新数据到 blob，原有 blob 内的数据仍然可以读取。
     + "fallback"：将 blob 内的数据写回 LSM。
 + 默认值："normal"
 

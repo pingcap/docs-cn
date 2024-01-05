@@ -39,9 +39,13 @@ Titan 对 RocksDB 兼容，也就是说，使用 RocksDB 存储引擎的现有 T
     enabled = true
     ```
 
-开启 Titan 以后，原有的数据并不会马上移入 Titan 引擎，而是随着前台写入和 RocksDB compaction 的进行，逐步进行 key-value 分离并写入 Titan。同样，全量、增量恢复或者Lightning导入的SST都是RocksDB格式，数据不会直接导入Titan。在Compaction过程中做数据搬迁到Titan。可以通过观察 **TiKV Details** - **Titan kv** - **blob file size** 监控面版确认数据保存在 Titan 中部分的大小。
+开启 Titan 以后，原有的数据并不会马上移入 Titan 引擎，而是随着前台写入和 RocksDB compaction 的进行，逐步进行 key-value 分离并写入 Titan。同样，全量、增量恢复或者TiDB Lightning导入的SST都是RocksDB格式，数据不会直接导入Titan。随着 Compaction 的进行，被处理过的SST中的大value会分离到 Titan 中。可以通过观察 **TiKV Details** - **Titan kv** - **blob file size** 监控面版确认数据保存在 Titan 中部分的大小。
 
-如果需要加速数据移入 Titan，可以通过 tikv-ctl 执行一次全量 compaction，具体参考[手动 compact](/tikv-control.md#手动-compact-整个-tikv-集群的数据)。
+如果需要加速数据移入 Titan，可以通过 tikv-ctl 执行一次全量 compaction，具体参考[手动 compact](/tikv-control.md#手动-compact-整个-tikv-集群的数据)。由于RocksDB有Block cache，且转成Titan时的数据访问是连续的，因此Block Cache能有很好的命中率。在我们的测试中，一个670GB的TiKV节点数据通过tikv-ctl全量compaction转成Titan只需要1个小时。
+
+> **注意：**
+>
+> 在7.6以后，新建集群默认打开Titan，已有集群升级到7.6则会维持原有的配置。
 
 > **警告：**
 >
@@ -64,7 +68,7 @@ Titan 对 RocksDB 兼容，也就是说，使用 RocksDB 存储引擎的现有 T
 
 + value 的大小阈值。
 
-    当写入的 value 小于这个值时，value 会保存在 RocksDB 中，反之则保存在 Titan 的 blob file 中。根据 value 大小的分布，增大这个值可以使更多 value 保存在 RocksDB，读取这些小 value 的性能会稍好一些；减少这个值可以使更多 value 保存在 Titan 中，进一步减少 RocksDB compaction。
+    当写入的 value 小于这个值时，value 会保存在 RocksDB 中，反之则保存在 Titan 的 blob file 中。根据 value 大小的分布，增大这个值可以使更多 value 保存在 RocksDB，读取这些小 value 的性能会稍好一些；减少这个值可以使更多 value 保存在 Titan 中，进一步减少 RocksDB compaction。经过[测试](/storage-engine/titan-overview.md#min-blob-size的选择及其性能影响)，1KB是一个比较折中的值。如果发现系统磁盘占用过大可以进一步调高这个值。
 
     ```toml
     [rocksdb.defaultcf.titan]
@@ -118,7 +122,7 @@ Titan 对 RocksDB 兼容，也就是说，使用 RocksDB 存储引擎的现有 T
 - 当设置为 `read-only` 时，新写入的 value 不论大小均会写入 RocksDB。
 - 当设置为 `fallback` 时，新写入的 value 不论大小均会写入 RocksDB，并且当 RocksDB 进行 compaction 时，会自动把所碰到的存储在 Titan blob file 中的 value 移回 RocksDB。
 
-如果现有数据和未来数据均不再需要 Titan，可执行以下步骤完全关闭 Titan。然而一般情况下只需要执行以下步骤1和步骤4即可，步骤2、3会影响用户SQL的性能。在Compaction过程中会将数据从Titan移回RocksDB。
+如果现有数据和未来数据均不再需要 Titan，可执行以下步骤完全关闭 Titan。然而一般情况下只需要执行以下步骤1和步骤3、4即可，步骤2会加快数据迁移速度，但影响用户SQL的性能。在Compaction过程中会将数据从Titan迁移到RocksDB。
 
 1. 更新需要关闭 Titan 的 TiKV 节点的配置。你可以通过以下两种方式之一更新 TiKV 配置：
 
@@ -137,7 +141,7 @@ Titan 对 RocksDB 兼容，也就是说，使用 RocksDB 存储引擎的现有 T
     tikv-ctl --pd <PD_ADDR> compact-cluster --bottommost force
     ```
 
-3. [可选]数据整理结束后，通过 **TiKV-Details**/**Titan - kv** 监控面板确认 **Blob file count** 指标降为 0。
+3. 等待数据整理结束，通过 **TiKV-Details**/**Titan - kv** 监控面板确认 **Blob file count** 指标降为 0。
 
 4. 更新 TiKV 节点的配置，关闭 Titan。
 
@@ -145,6 +149,10 @@ Titan 对 RocksDB 兼容，也就是说，使用 RocksDB 存储引擎的现有 T
     [rocksdb.titan]
     enabled = false
     ```
+
+### Titan转RocksDB速度
+
+由于Titan Blob文件中的Value是不连续的，而且Titan的Cache是Value级别，因此Blob Cache无法对compaction有很大的帮助。从Titan转到RocksDB速度相比RocksDB转Titan会慢一个数量级。在我们的测试中，一个800GB的TiKV节点Titan数据通过tikv-ctl做全量compaction转成RocksDB需要12个小时。
 
 ## Level Merge（实验功能）
 

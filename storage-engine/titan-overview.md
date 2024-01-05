@@ -141,16 +141,4 @@ Range Merge 是基于 Level Merge 的一个优化。考虑如下两种情况，�
 Note: 
 scan100是指scan 100条记录，scan10000指scan 10000条记录。
 
-以上可见当行宽是2K时，Titan在所有指标上都超过了RocksDB。而当行宽是1KB时，Titan仅仅在scan10000上落后15%左右，但在update上大幅领先50%以上。因此`min-blob-size`默认值为1KB时比较合理的.
-
-### RocksDB和Titan之间的数据转换
-
-TiKV支持从RocksDB切换到Titan以及从Titan切换到RocksDB。配置切换之后数据通过compaction逐渐转换。如果不考虑对用户在线流量的影响，用户可以通过compact-cluster强制compact整个集群的方式来实现数据的完全切换。
-
-#### RocksDB转Titan
-
-由于RocksDB有Block cache，且转成Titan时的数据访问是连续的，因此Block Cache能有很好的命中率。在我们的测试中，一个670GB的TiKV节点数据转成Titan只需要1个小时。
-
-#### Titan转RocksDB
-
-由于Titan Blob文件中的Value是不连续的，而且Titan的Cache是Value级别，因此Blob Cache无法对compaction有很大的帮助。从Titan转到RocksDB速度会慢一个数量级。在我们的测试中，一个800GB的TiKV节点Titan数据转成RocksDB需要12个小时。
+以上可见当行宽是2K时，Titan在所有指标上都超过了RocksDB。而当行宽是1KB时，Titan仅仅在scan10000上落后15%左右，但在update上大幅领先50%以上。因此`min-blob-size`默认值为1KB是比较合理的.
