@@ -120,9 +120,9 @@ Range Merge 是基于 Level Merge 的一个优化。考虑如下两种情况，�
 
 因此需要通过 Range Merge 操作维持 sorted run 在一定水平，即在 OnCompactionComplete 时统计该 range 的 sorted run 数量，若数量过多则将涉及的 BlobFile 标记为 ToMerge，在下一次的 Compaction 中进行重写。
 
-### 扩容缩容
+### 扩容与缩容
 
-基于向后兼容的考虑，TiKV在扩缩容时的Snapshot仍然是RocksDB的格式。因此扩容后的节点由于一开始全部来自RocksDB，因此会显式RocksDB的特征，比如压缩率会高于老的TiKV节点、Store Size会较小、同时Compaction的写放大会相对较大。后续这些RocksDB格式的SST参与Compaction之后逐步转换为Titan格式。
+基于向后兼容的考虑，TiKV 在扩缩容时的 Snapshot 仍然是 RocksDB 的格式。因此扩容后的节点由于一开始全部来自RocksDB，因此会显示 RocksDB 的特征，比如压缩率会高于老的 TiKV 节点、Store Size 会较小、同时 Compaction 的写放大会相对较大。后续这些 RocksDB 格式的 SST 参与 Compaction 之后逐步转换为 Titan 格式。
 
 ### min-blob-size的选择及其性能影响
 
