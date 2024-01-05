@@ -234,6 +234,12 @@ TiDB 版本：7.6.0
 
     更多信息，请参考[用户文档](/ticdc/ticdc-bidirectional-replication.md).
 
+* TiCDC 增加支持将 CSV 格式中的 delimiter 设置为 3 个字符 [#9969](https://github.com/pingcap/tiflow/issues/9969) @[zhangjinpeng1987](https://github.com/zhangjinpeng1987) **tw@hfxsd** <!--1653-->
+
+    从 v7.6.0 开始，你可以将 TiCDC 输出的 CSV 格式中的 delimiter 设置为 1 到 3 个字符。例如，你可以指定 TiCDC 使用 2 个字符的 delimiter （例如 `||` 或 `$^`）或 3 个字符的 delimiter（例如 `|@|`）分隔字段。
+    
+    更多信息，请参考[用户文档](/ticdc/ticdc-csv.md)。
+    
 ## 兼容性变更
 
 > **注意：**
