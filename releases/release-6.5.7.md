@@ -52,7 +52,7 @@ TiDB 版本：6.5.7
 
     + TiCDC
         <!-- tw@qiancai -->
-        - 当下游为 Kafka 时，支持 topic 表达式中的 `schema` 为可选项，并且支持硬编码的 topic [#9763](https://github.com/pingcap/tiflow/issues/9763) @[3AceShowHand](https://github.com/3AceShowHand)
+        - 当下游为 Kafka 时，topic 表达式中允许 `schema` 为可选项，并且支持直接指定 topic 名 [#9763](https://github.com/pingcap/tiflow/issues/9763) @[3AceShowHand](https://github.com/3AceShowHand)
 
     + TiDB Data Migration (DM)
 
