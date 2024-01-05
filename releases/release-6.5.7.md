@@ -15,8 +15,8 @@ TiDB 版本：6.5.7
 
 <!-- tw@Oreoxmt -->
 
-+ 新增系统变量 [`tidb_opt_fix_control`](/system-variables.md#tidb_opt_fix_control-从-v657-和-v710-版本开始引入)，用于更细粒度地控制优化器的行为，并且避免集群升级后优化器行为变化导致的性能回退 [#43169](https://github.com/pingcap/tidb/issues/43169) @[qw4990](https://github.com/qw4990)
-+ 新增 TiDB 配置项 [`performance.force-init-stats`](/tidb-configuration-file.md#force-init-stats-从-v657-和-v710-版本开始引入)，用于控制 TiDB 启动时是否在统计信息初始化完成后再对外提供服务 [#43385](https://github.com/pingcap/tidb/issues/43385) @[xuyifangreeneyes](https://github.com/xuyifangreeneyes)
++ 新增系统变量 [`tidb_opt_fix_control`](https://docs.pingcap.com/zh/tidb/v6.5/system-variables#tidb_opt_fix_control-从-v657-版本开始引入)，用于更细粒度地控制优化器的行为，并且避免集群升级后优化器行为变化导致的性能回退 [#43169](https://github.com/pingcap/tidb/issues/43169) @[qw4990](https://github.com/qw4990)
++ 新增 TiDB 配置项 [`performance.force-init-stats`](https://docs.pingcap.com/zh/tidb/v6.5/tidb-configuration-file#force-init-stats-从-v657-版本开始引入)，用于控制 TiDB 启动时是否在统计信息初始化完成后再对外提供服务 [#43385](https://github.com/pingcap/tidb/issues/43385) @[xuyifangreeneyes](https://github.com/xuyifangreeneyes)
 + 为减少日志打印的开销，TiFlash 配置项 `logger.level` 默认值由 `"debug"` 改为 `"info"` [#8568](https://github.com/pingcap/tiflash/issues/8568) @[xzhangxian1008](https://github.com/xzhangxian1008)
 
 ## 改进提升
@@ -24,8 +24,8 @@ TiDB 版本：6.5.7
 + TiDB
     <!-- tw@Oreoxmt -->
     - (dup): release-7.4.0.md > 改进提升> TiDB - 优化 `ANALYZE` 分区表的内存使用和性能 [#47071](https://github.com/pingcap/tidb/issues/47071) [#47104](https://github.com/pingcap/tidb/issues/47104) [#46804](https://github.com/pingcap/tidb/issues/46804) @[hawkingrei](https://github.com/hawkingrei)
-    - 以 Optimizer Fix Controls 方式支持让 Plan Cache 对在物理优化阶段形成的 `PointGet` 计划进行缓存 [#44830](https://github.com/pingcap/tidb/issues/44830) @[qw4990](https://github.com/qw4990)
-    - 增强特定情况 OUTER JOIN 转 INNER JOIN 的能力 [#49616](https://github.com/pingcap/tidb/issues/49616) @[qw4990](https://github.com/qw4990)
+    - 支持以 Optimizer Fix Controls 的方式让 Plan Cache 对在物理优化阶段形成的 `PointGet` 计划进行缓存 [#44830](https://github.com/pingcap/tidb/issues/44830) @[qw4990](https://github.com/qw4990)
+    - 增强特定情况下 OUTER JOIN 转 INNER JOIN 的能力 [#49616](https://github.com/pingcap/tidb/issues/49616) @[qw4990](https://github.com/qw4990)
 
 + TiKV
 
