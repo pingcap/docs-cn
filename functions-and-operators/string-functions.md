@@ -18,9 +18,90 @@ For comparisons between functions and syntax of Oracle and TiDB, see [Comparison
 
 ### [`ASCII()`](https://dev.mysql.com/doc/refman/8.0/en/string-functions.html#function_ascii)
 
-Return numeric value of left-most character.
+The `ASCII(str)` function is used to get the ASCII value of the leftmost character in the given argument. The argument can be either a string or a number.
+
+- If the argument is not empty, the function returns the ASCII value of the leftmost character.
+- If the argument is an empty string, the function returns `0`.
+- If the argument is `NULL`, the function returns `NULL`.
+
+> **Note:**
+>
+> `ASCII(str)` only works for characters represented using 8 bits of binary digits (one byte).
+
+Examples:
+
+```sql
+SELECT ASCII('A');
+
++------------+
+| ASCII('A') |
++------------+
+|         65 |
++------------+
+```
+
+```sql
+SELECT ASCII('TiDB');
+
++---------------+
+| ASCII('TiDB') |
++---------------+
+|            84 |
++---------------+
+```
+
+```sql
+SELECT ASCII(23);
+
++-----------+
+| ASCII(23) |
++-----------+
+|        50 |
++-----------+
+```
 
 ### [`BIN()`](https://dev.mysql.com/doc/refman/8.0/en/string-functions.html#function_bin)
+
+The `BIN()` function is used to convert the given argument into a string representation of its binary value. The argument can be either a string or a number.
+
+- If the argument is a positive number, the function returns a string representation of its binary value.
+- If the argument is a negative number, the function converts the absolute value of the argument to its binary representation, inverts each bit of the binary value (changing `0` to `1` and `1` to `0`), and then adds `1` to the inverted value.
+- If the argument is a string containing only digits, the function returns the result according to those digits. For example, the results for `"123"` and `123` are the same.
+- If the argument is a string and its first character is not a digit (such as `"q123"`), the function returns `0`.
+- If the argument is a string that consists of digits and non-digits, the function returns the result according to the consecutive digits at the beginning of the argument. For example, the results for `"123q123"` and `123` are the same.
+- If the argument is `NULL`, the function returns `NULL`.
+
+Examples:
+
+```sql
+SELECT BIN(123);
+
++----------+
+| BIN(123) |
++----------+
+| 1111011  |
++----------+
+```
+
+```sql
+SELECT BIN(-7);
+
++------------------------------------------------------------------+
+| BIN(-7)                                                          |
++------------------------------------------------------------------+
+| 1111111111111111111111111111111111111111111111111111111111111001 |
++------------------------------------------------------------------+
+```
+
+```sql
+SELECT BIN("123q123");
+
++----------------+
+| BIN("123q123") |
++----------------+
+| 1111011        |
++----------------+
+```
 
 Return a string containing binary representation of a number.
 
