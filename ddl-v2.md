@@ -45,13 +45,13 @@ SET GLOBAL tidb_ddl_version = 1;
 
 TiDB DDL V2 加速建表的详细的实现原理如下：
 
-1. 创建 `CREATE TABLE` job
+1. 创建 `CREATE TABLE` Job
 
     此步骤和 V1 版本实现无区别，通过解析 `CREATE TABLE` 语句生成相应的 DDL Job。
 
-2. 执行 `CREATE TABLE` job
+2. 执行 `CREATE TABLE` Job
 
-    与 V1 版本将 job 插入 `mysql.tidb_ddl_job` 表中不同，V2 版本由接收该 `CREATE TABLE` 语句的 TiDB 节点直接执行建表语句，将表结构持久化到 TiKV 中。同时，将 `CREATE TABLE` Job 标记为已完成，插入到 `mysql.tidb_ddl_history` 表中。
+    与 V1 版本将 Job 插入 `mysql.tidb_ddl_job` 表中不同，V2 版本由接收该 `CREATE TABLE` 语句的 TiDB 节点直接执行建表语句，将表结构持久化到 TiKV 中。同时，将 `CREATE TABLE` Job 标记为已完成，插入到 `mysql.tidb_ddl_history` 表中。
 
 3. 同步表信息
 
