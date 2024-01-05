@@ -46,7 +46,7 @@ TiDB 版本：6.5.7
 
     + Backup & Restore (BR)
         <!-- tw@qiancai -->
-        - 提升了 `RESTORE` 语句在大数据量表场景下的建表性能。 [#48301](https://github.com/pingcap/tidb/issues/48301) @[Leavrth](https://github.com/Leavrth)
+        - 提升了 `RESTORE` 语句在大数据量表场景下的建表性能 [#48301](https://github.com/pingcap/tidb/issues/48301) @[Leavrth](https://github.com/Leavrth)
         - 解决了基于 EBS 的快照备份与 TiDB Lightning 导入的兼容性问题 [#46850](https://github.com/pingcap/tidb/issues/46850) @[YuJuncen](https://github.com/YuJuncen)
         - (dup): release-7.4.0.md > 改进提升> Tools> Backup & Restore (BR) - 缓解了 Region leadership 迁移导致 PITR 日志备份进度延迟变高的问题 [#13638](https://github.com/tikv/tikv/issues/13638) @[YuJuncen](https://github.com/YuJuncen)
 
