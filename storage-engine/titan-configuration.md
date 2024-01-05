@@ -161,9 +161,9 @@ Titan 对 RocksDB 兼容，也就是说，使用 RocksDB 存储引擎的现有 T
     enabled = false
     ```
 
-### Titan转RocksDB速度
+### Titan 转 RocksDB 速度
 
-由于Titan Blob文件中的Value是不连续的，而且Titan的Cache是Value级别，因此Blob Cache无法对compaction有很大的帮助。从Titan转到RocksDB速度相比RocksDB转Titan会慢一个数量级。在我们的测试中，一个800GB的TiKV节点Titan数据通过tikv-ctl做全量compaction转成RocksDB需要12个小时。
+由于 Titan Blob 文件中的 Value 是不连续的，而且 Titan 的 Cache 是 Value 级别，因此 Blob Cache 无法帮助 compaction。从 Titan 转到 RocksDB 速度相比 RocksDB 转 Titan 会慢一个数量级。在测试中，一个 800 GiB 的 TiKV 节点Titan 数据通过 tikv-ctl 做全量 compaction 转成 RocksDB，需要 12 个小时。
 
 ## Level Merge（实验功能）
 
