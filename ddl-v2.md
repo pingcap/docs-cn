@@ -55,4 +55,8 @@ TiDB DDL V2 加速建表的详细的实现原理如下：
 
 3. 同步表信息
 
+<<<<<<< Updated upstream
     最多等待 lease/2 的时间间隔后，其他 TiDB 节点将会同步该新建的表结构。
+=======
+TiDB 通知其他节点同步该新建的表结构。
+>>>>>>> Stashed changes
