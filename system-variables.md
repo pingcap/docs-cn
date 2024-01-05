@@ -2300,10 +2300,10 @@ Query OK, 0 rows affected (0.09 sec)
 - 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：否
 - 类型：布尔型
 - 默认值：`OFF`
-- 这个变量用来开启 Active PD Follower 特性（目前只适用于 Region 信息的相关请求）。当该值为 `OFF` 时，TiDB 仅会从 PD leader 获取 Region 信息。开启该特性之后，TiDB 在获取 Region 信息 时会将请求均匀地发送到所有 PD 节点上，PD follower 也可以直接处理 Region 请求，从而降低 PD leader 的 CPU 压力。
+- 这个变量用来开启 Active PD Follower 特性（目前只适用于 Region 信息的相关请求）。当该值为 `OFF` 时，TiDB 仅会从 PD leader 获取 Region 信息。开启该特性之后，TiDB 在获取 Region 信息时会将请求均匀地发送到所有 PD 节点上，PD follower 也可以直接处理 Region 请求，从而降低 PD leader 的 CPU 压力。
 - 适合开启 Active PD Follower 的场景：
     * 集群 Region 数量较多，PD leader 本身由于处理心跳和调度的开销大，CPU 资源紧张。
-    * 集群中的 TiDB 实例数量较多， Region 信息请求的并发量较大，PD leader CPU 压力大。
+    * 集群中的 TiDB 实例数量较多，Region 信息请求的并发量较大，PD leader CPU 压力大。
     
 ### `tidb_enable_unsafe_substitute` <span class="version-mark">从 v6.3.0 版本开始引入</span>
 
