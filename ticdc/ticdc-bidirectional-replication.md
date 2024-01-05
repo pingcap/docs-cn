@@ -130,7 +130,7 @@ TiCDC 复制功能只会将指定时间点之后的增量变更复制到下游�
 - BDR role 只能在以下两种场景中正常使用：
 
     - 1 个 `PRIMARY` 集群和 n 个 `SECONDARY` 集群（可复制的 DDL 的同步场景）
-    - n 个不设置 BDR role 的集群（不可复制的 DDL 的同步场景）
+    - n 个不设置 BDR role 的集群（用于在每个集群手动执行不可复制的 DDL 的同步场景）
 
     **注意，请勿将 BDR role 设置为其他情况，例如，既存在集群设置了 `PRIMARY`、`SECONDARY`，又存在集群没有设置 BDR role。如果错误地设置了 BDR role，TiCDC 同步数据期间无法保证数据正确性和一致性。**
 
