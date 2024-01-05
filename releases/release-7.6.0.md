@@ -234,6 +234,12 @@ TiDB 版本：7.6.0
 
     更多信息，请参考[用户文档](/ticdc/ticdc-bidirectional-replication.md).
 
+* TiCDC 支持查询 changefeed 的下游同步状态 [#10289](https://github.com/pingcap/tiflow/issues/10289) @[hongyunyan](https://github.com/hongyunyan) **tw@qiancai** <!--1627-->
+
+    从 v7.6.0 起，TiCDC 引入了一个新的 API `GET /api/v2/changefeed/{changefeed_id}/synced`，用于查询指定同步任务 (changefeed) 的下游同步状态。通过此 API，你可以判断 TiCDC 是否已将所接收到的上游数据完全同步到下游。
+
+    更多信息，请参考[用户文档](/ticdc/ticdc-open-api-v2.md#查询特定同步任务是否完成)。
+
 * TiCDC 增加支持将 CSV 格式中的 delimiter 设置为 3 个字符 [#9969](https://github.com/pingcap/tiflow/issues/9969) @[zhangjinpeng1987](https://github.com/zhangjinpeng1987) **tw@hfxsd** <!--1653-->
 
     从 v7.6.0 开始，你可以将 TiCDC 输出的 CSV 格式中的 delimiter 设置为 1 到 3 个字符。例如，你可以指定 TiCDC 使用 2 个字符的 delimiter （例如 `||` 或 `$^`）或 3 个字符的 delimiter（例如 `|@|`）分隔字段。
@@ -245,12 +251,6 @@ TiDB 版本：7.6.0
 > **注意：**
 >
 > 以下为从 v7.5.0 升级至当前版本 (v7.6.0) 所需兼容性变更信息。如果从 v7.4.0 或之前版本升级到当前版本，可能也需要考虑和查看中间版本 Release Notes 中提到的兼容性变更信息。
-
-* TiCDC 支持查询 changefeed 的下游同步状态 [#10289](https://github.com/pingcap/tiflow/issues/10289) @[hongyunyan](https://github.com/hongyunyan) **tw@qiancai** <!--1627-->
-
-    从 v7.6.0 起，TiCDC 引入了一个新的 API `GET /api/v2/changefeed/{changefeed_id}/synced`，用于查询指定同步任务 (changefeed) 的下游同步状态。通过此 API，你可以判断 TiCDC 是否已将所接收到的上游数据完全同步到下游。
-
-    更多信息，请参考[用户文档](/ticdc/ticdc-open-api-v2.md#查询特定同步任务是否完成)。
 
 ### 行为变更
 
