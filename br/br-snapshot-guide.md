@@ -71,7 +71,7 @@ tiup br restore full --pd "${PD_IP}:2379" \
 --storage "s3://backup-101/snapshot-202209081330?access-key=${access-key}&secret-access-key=${secret-access-key}"
 ```
 
-在 v7.6 版本之后，BR 支持了粗粒度打散 Region 的方式来进行恢复，以避免在 Region 过多的场景中，打散 Region 成为瓶颈的问题，通过指定 --granularity="coarse-grained" 的方式即可开启。
+从 v7.6.0 开始，BR 支持粗粒度打散 Region 的方式来进行恢复，以避免在 Region 过多的场景中，打散 Region 成为瓶颈的问题，通过指定 `--granularity=coarse-grained` 的方式即可开启。
 
 在恢复快照备份数据过程中，终端会显示恢复进度条。在完成恢复后，会输出恢复耗时、速度、恢复数据大小等信息。
 
@@ -199,8 +199,19 @@ TiDB 备份功能对集群性能（事务延迟和 QPS）有一定的影响，�
 
 - TiDB 恢复的时候会尽可能打满 TiKV CPU、磁盘 IO、网络带宽等资源，所以推荐在空的集群上执行备份数据的恢复，避免对正在运行的业务产生影响。
 - 备份数据的恢复速度与集群配置、部署、运行的业务都有比较大的关系。在内部多场景仿真测试中，单 TiKV 存储节点上备份数据恢复速度能够达到 100 MiB/s。在不同用户场景下，快照恢复的性能和影响应以实际测试结论为准。
-- 在 TiDB v7.6 之后的版本中，通过指定 --concurrency 参数，可以控制单 TiKV 节点下载任务并发数，默认 128，适当调大该值可以让所有 TiKV 充分执行下载任务，直到打满下载带宽。
+- 从 v7.6.0 开始，BR 提供了一个实验性特性，允许通过指定命令行参数 `--granularity=coarse-grained` 启用粗细粒度结合的 Region 打散算法。此外，可以使用 `--tikv-max-restore-concurrency` 设置单 TiKV 节点的下载任务并发度，充分利用每个 TiKV 节点的所有资源实现并行快速恢复。在实际案例中，大规模 Region 场景下，集群快照恢复速度最高提升约 10 倍。使用示例如下：
 
+    ```bash
+    br restore full \
+    --pd "${PDIP}:2379" \
+    --storage "s3://${Bucket}/${Folder}" \
+    --s3.region "${region}" \
+    --granularity "coarse-grained" \
+    --tikv-max-restore-concurrency 128 \
+    --send-credentials-to-tikv=true \
+    --log-file restorefull.log
+    ```
+ 
 
 ## 探索更多
 
