@@ -91,9 +91,9 @@ TiDB 版本：7.6.0
 
 * 建表性能提升 10 倍（实验特性）[#49752](https://github.com/pingcap/tidb/issues/49752) @[gmhdbjd](https://github.com/gmhdbjd) **tw@hfxsd** <!--1408-->
 
-    在之前的版本里，将上游数据库上万张表迁移到 TiDB 时，TiDB 创建这些表耗时长，效率低。从 v7.6.0 开始，引入了新的 DDL 架构，可通过系统参数 `tidb_ddl_v2` 开启。相比之前的版本，新版本的 DDL 批量建表性能实现了高达 10 倍的提升，大幅减少了建表时间。
+    在之前的版本里，将上游数据库上万张表迁移到 TiDB 时，TiDB 创建这些表耗时长，效率低。从 v7.6.0 开始，引入了新的 DDL 架构，可通过系统参数 [`tidb_ddl_version`](/system-variables.md#tidb_ddl_version-从-v760-版本开始引入) 开启。相比之前的版本，新版本的 DDL 批量建表性能实现了高达 10 倍的提升，大幅减少了建表时间。
 
-    更多信息，请参考[用户文档](链接)。
+    更多信息，请参考[用户文档](/ddl-v2.md)。
 
 * 优化器增强对多值索引的支持 [#47759](https://github.com/pingcap/tidb/issues/47759) [#46539](https://github.com/pingcap/tidb/issues/46539) @[Arenatlx](https://github.com/Arenatlx) @[time-and-fate](https://github.com/time-and-fate) **tw@ran-huang** <!--1405/1584-->
 
@@ -256,10 +256,10 @@ TiDB 版本：7.6.0
 | 变量名  | 修改类型（包括新增/修改/删除）    | 描述 |
 |--------|------------------------------|------|
 | [`tidb_auto_analyze_partition_batch_size`](/system-variables.md#tidb_auto_analyze_partition_batch_size-从-v640-版本开始引入) | 修改 | 该变量默认值从 `1` 修改为 `128`，代表当 TiDB 自动 analyze 分区表（即自动更新分区表的统计信息）时，每次同时 analyze 分区的个数为 128。 |
+|  [`tidb_analyze_distsql_scan_concurrency`](/system-variables.md#tidb_analyze_distsql_scan_concurrency-从-v760-版本开始引入)       |    新增       |    用于设置执行 `ANALYZE` 时 `scan` 操作的并发度。   |
 | tidb_ddl_version |新增                              | 默认取值为 ’1‘ ，表示使用当前的 DDL 架构执行 DDL 任务。如果取值为 ’2‘  表示使用 v2 版本的 DDL 架构执行 DDL 任务，V2 版本对 DDL 功能做了提升，开启后，建表 DDL 的执行速度相比 v1 版本可以成倍提升 |
 | [`tidb_idle_transaction_timeout`](/system-variables.md#tidb_idle_transaction_timeout-从-v760-版本开始引入) | 新增 | 用来控制用户会话中事务的空闲超时。当用户会话处于事务状态且空闲时间超过该变量设定的值时，会话会被 Kill 掉。默认值 `0` 表示没有时间限制。 |
 | [`tidb_txn_entry_size_limit`](/system-variables.md#tidb_txn_entry_size_limit-从-v760-版本开始引入) | 新增 | 用于动态修改 TiDB 配置项 [`performance.txn-entry-size-limit`](/tidb-configuration-file.md#txn-entry-size-limit-从-v50-版本开始引入)，即限制 TiDB 单行数据的大小。默认值为 `0`，表示默认使用配置项的值。当设置为非 `0` 值时，优先使用该变量的值作为 `txn-entry-size-limit` 的值。 |
-|  [`tidb_analyze_distsql_scan_concurrency`](/system-variables.md#tidb_analyze_distsql_scan_concurrency-从-v760-版本开始引入)       |    新增       |    用于设置执行 `ANALYZE` 时 `scan` 操作的并发度。   |
 
 ### 配置文件参数
 
