@@ -68,7 +68,7 @@ Titan 对 RocksDB 兼容，也就是说，使用 RocksDB 存储引擎的现有 T
 
 + value 的大小阈值。
 
-    当写入的 value 小于这个值时，value 会保存在 RocksDB 中，反之则保存在 Titan 的 blob file 中。根据 value 大小的分布，增大这个值可以使更多 value 保存在 RocksDB，读取这些小 value 的性能会稍好一些；减少这个值可以使更多 value 保存在 Titan 中，进一步减少 RocksDB compaction。经过[测试](/storage-engine/titan-overview.md#min-blob-size的选择及其性能影响)，1 KB是一个比较折中的值。如果发现系统磁盘占用过大可以进一步调高这个值。
+    当写入的 value 小于这个值时，value 会保存在 RocksDB 中，反之则保存在 Titan 的 blob file 中。根据 value 大小的分布，增大这个值可以使更多 value 保存在 RocksDB，读取这些小 value 的性能会稍好一些；减少这个值可以使更多 value 保存在 Titan 中，进一步减少 RocksDB compaction。经过[测试](/storage-engine/titan-overview.md#min-blob-size-的选择及其性能影响)，1 KB是一个比较折中的值。如果发现系统磁盘占用过大可以进一步调高这个值。
 
     ```toml
     [rocksdb.defaultcf.titan]
