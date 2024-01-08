@@ -442,11 +442,11 @@ Runaway Query 是指执行时间或消耗资源超出预期的查询（仅指 `S
 
 #### 查询系统变量 `tidb_last_query_info`
 
-TiDB 提供系统变量 [`tidb_last_query_info`](/system-variables#tidb_last_query_info-从-v4014-版本开始引入) 记录上一条 DML 语句执行的信息，其中包含 SQL 执行消耗的 RU。
+TiDB 提供系统变量 [`tidb_last_query_info`](/system-variables.md#tidb_last_query_info-从-v4014-版本开始引入)，记录上一条 DML 语句执行的信息，其中包含 SQL 执行消耗的 RU。
 
 使用示例：
 
-1. 首先执行一条 Update 语句：
+1. 首先执行 `UPDATE`` 语句：
 
     ```sql
     UPDATE sbtest.sbtest1 SET k = k + 1 WHERE id = 1;
@@ -457,7 +457,7 @@ TiDB 提供系统变量 [`tidb_last_query_info`](/system-variables#tidb_last_que
     Rows matched: 1  Changed: 1  Warnings: 0
     ```
 
-2. 然后通过查询系统变量 `tidb_last_query_info` 查看上条执行的语句的相关信息：
+2. 然后通过查询系统变量 `tidb_last_query_info`，查看上条执行的语句的相关信息：
 
     ```sql
     SELECT @@tidb_last_query_info;
@@ -472,7 +472,7 @@ TiDB 提供系统变量 [`tidb_last_query_info`](/system-variables#tidb_last_que
     1 row in set (0.01 sec)
     ```
 
-    返回结果中的 `ru_consumption` 即为此 SQL 语句的 RU 消耗。
+    返回结果中的 `ru_consumption` 即为执行此 SQL 语句消耗的 RU。
 
 #### `EXPLAIN ANALYZE`
 
@@ -480,7 +480,7 @@ TiDB 提供系统变量 [`tidb_last_query_info`](/system-variables#tidb_last_que
 
 #### 慢查询及对应的系统表
 
-在开启资源管控时，TiDB 的[慢查询日志](/identify-slow-queries.md)以及对应系统表 [`INFORMATION_SCHEMA.SLOW_QUERY`](/information-schema/information-schema-slow-query.md) 中均包含对应 SQL 对应的资源组以及 RU 消耗等相关信息。
+在开启资源管控时，TiDB 的[慢查询日志](/identify-slow-queries.md)以及对应系统表 [`INFORMATION_SCHEMA.SLOW_QUERY`](/information-schema/information-schema-slow-query.md) 中均包含对应 SQL 所属的资源组以及 RU 消耗等相关信息。
 
 #### `statements_summary`
 
@@ -493,7 +493,7 @@ TiDB 的系统表 [`INFORMATION_SCHEMA.statements_summary`](/statement-summary-t
 示例：
 
 ```sql
-mysql> SELECT * FROM request_unit_by_group LIMIT 5;
+SELECT * FROM request_unit_by_group LIMIT 5;
 ```
 
 ```
