@@ -119,7 +119,7 @@ TiDB 版本：7.2.0
 
     轻量统计信息初始化自 v7.2.0 成为正式功能。轻量级的统计信息初始化可以大幅减少启动时必须加载的统计信息的数量，从而提升启动过程中统计信息的加载速度。该功能提升了 TiDB 在复杂运行环境下的稳定性，并降低了部分 TiDB 节点重启对整体服务的影响。
 
-    从 v7.2.0 起，新建的集群在启动阶段将默认加载轻量级统计信息，并在加载完成后再对外提供服务。对于从旧版本升级上来的集群，可通过修改 TiDB 配置项 [`lite-init-stats`](/tidb-configuration-file.md#lite-init-stats-从-v710-版本开始引入) 和 [`force-init-stats`](/tidb-configuration-file.md#force-init-stats-从-v710-版本开始引入) 为 `true` 开启此功能。
+    从 v7.2.0 起，新建的集群在启动阶段将默认加载轻量级统计信息，并在加载完成后再对外提供服务。对于从旧版本升级上来的集群，可通过修改 TiDB 配置项 [`lite-init-stats`](/tidb-configuration-file.md#lite-init-stats-从-v710-版本开始引入) 和 [`force-init-stats`](/tidb-configuration-file.md#force-init-stats-从-v657-和-v710-版本开始引入) 为 `true` 开启此功能。
 
     更多信息，请参考[用户文档](/statistics.md#统计信息的加载)。
 
@@ -188,7 +188,7 @@ TiDB 版本：7.2.0
 | 配置文件 | 配置项 | 修改类型 | 描述 |
 | -------- | -------- | -------- | -------- |
 | TiDB | [`lite-init-stats`](/tidb-configuration-file.md#lite-init-stats-从-v710-版本开始引入) | 修改 | 经进一步的测试后，默认值从 `false` 修改为 `true`，表示 TiDB 启动时默认采用轻量级的统计信息初始化，以提高启动时统计信息初始化的效率。 |
-| TiDB | [`force-init-stats`](/tidb-configuration-file.md#force-init-stats-从-v710-版本开始引入) | 修改 | 配合 `lite-init-stats`，默认值从 `false` 修改为 `true`，表示 TiDB 启动时会等到统计信息初始化完成后再对外提供服务。 |
+| TiDB | [`force-init-stats`](/tidb-configuration-file.md#force-init-stats-从-v657-和-v710-版本开始引入) | 修改 | 配合 `lite-init-stats`，默认值从 `false` 修改为 `true`，表示 TiDB 启动时会等到统计信息初始化完成后再对外提供服务。 |
 | TiKV | [<code>rocksdb.\[defaultcf\|writecf\|lockcf\].compaction-guard-min-output-file-size</code>](/tikv-configuration-file.md#compaction-guard-min-output-file-size) | 修改 | 为减小 RocksDB 中 compaction 任务的数据量，该变量默认值从 `"8MB"` 修改为 `"1MB"`。 |
 | TiKV | [<code>rocksdb.\[defaultcf\|writecf\|lockcf\].optimize-filters-for-memory</code>](/tikv-configuration-file.md#optimize-filters-for-memory-从-v720-版本开始引入) | 新增 | 控制是否生成能够最小化内存碎片的 Bloom/Ribbon filter。 |
 | TiKV | [<code>rocksdb.\[defaultcf\|writecf\|lockcf\].periodic-compaction-seconds</code>](/tikv-configuration-file.md#periodic-compaction-seconds-从-v720-版本开始引入) | 新增 | 控制周期性 compaction 的时间，修改时间超过此值的 SST 文件将被选中进行 compaction，并被重新写入这些 SST 文件所在的层级。 |
