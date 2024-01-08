@@ -711,6 +711,22 @@ mysql> SHOW GLOBAL VARIABLES LIKE 'max_prepared_stmt_count';
 - 范围：`[0, 4294967295]`
 - 该变量用于建立密码重用策略，使 TiDB 基于经过时间限制密码重复使用。该变量默认值为 0，表示禁用基于密码经过时间的密码重用策略。当设置该变量为一个正整数 N 时，表示不允许重复使用最近 N 天内使用过的密码。
 
+### `pd_enable_follower_handle_region` <span class="version-mark">从 v7.6.0 版本开始引入</span>
+
+> **警告：**
+>
+> Active PD Follower 目前为实验特性，不建议在生产环境中使用。该功能可能会在未事先通知的情况下发生变化或删除。如果发现 bug，请在 GitHub 上提 [issue](https://github.com/pingcap/tidb/issues) 反馈。
+
+- 作用域：GLOBAL
+- 是否持久化到集群：是
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：否
+- 类型：布尔型
+- 默认值：`OFF`
+- 这个变量用于控制是否开启 Active PD Follower 特性（目前只适用于 Region 信息的相关请求）。当该值为 `OFF` 时，TiDB 仅从 PD leader 获取 Region 信息。当该值为 `ON` 时，TiDB 在获取 Region 信息时会将请求均匀地发送到所有 PD 节点上，PD follower 也可以直接处理 Region 请求，从而减轻 PD leader 的 CPU 压力。
+- 适合开启 Active PD Follower 的场景：
+    * 集群 Region 数量较多，PD leader 由于处理心跳和调度任务的开销大，导致 CPU 资源紧张。
+    * 集群中 TiDB 实例数量较多，Region 信息请求并发量较大，PD leader CPU 压力大。
+
 ### `plugin_dir`
 
 - 作用域：GLOBAL
@@ -2284,7 +2300,7 @@ Query OK, 0 rows affected (0.09 sec)
 - 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：否
 - 类型：布尔型
 - 默认值：`OFF`
-- 这个变量用来开启 TSO Follower Proxy 特性。当该值为 `OFF` 时，TiDB 仅会从 PD leader 获取 TSO。开启该特性之后，TiDB 在获取 TSO 时会将请求均匀地发送到所有 PD 节点上，通过 PD follower 转发 TSO 请求，从而降低 PD leader 的 CPU 压力。
+- 这个变量用于控制是否开启 TSO Follower Proxy 特性。当该值为 `OFF` 时，TiDB 仅会从 PD leader 获取 TSO。当该值为 `ON` 时，TiDB 在获取 TSO 时会将请求均匀地发送到所有 PD 节点上，通过 PD follower 转发 TSO 请求，从而减轻 PD leader 的 CPU 压力。
 - 适合开启 TSO Follower Proxy 的场景：
     * PD leader 因高压力的 TSO 请求而达到 CPU 瓶颈，导致 TSO RPC 请求的延迟较高。
     * 集群中的 TiDB 实例数量较多，且调高 [`tidb_tso_client_batch_max_wait_time`](/system-variables.md#tidb_tso_client_batch_max_wait_time-从-v530-版本开始引入) 并不能缓解 TSO RPC 请求延迟高的问题。
@@ -2292,18 +2308,6 @@ Query OK, 0 rows affected (0.09 sec)
 > **注意：**
 >
 > 如果 PD leader 的 TSO RPC 延迟升高，但其现象并非由 CPU 使用率达到瓶颈而导致（可能存在网络等问题），此时，打开 TSO Follower Proxy 可能会导致 TiDB 的语句执行延迟上升，从而影响集群的 QPS 表现。
-
-### `pd_enable_follower_handle_region` <span class="version-mark">从 v7.6.0 版本开始引入</span>
-
-- 作用域：GLOBAL
-- 是否持久化到集群：是
-- 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：否
-- 类型：布尔型
-- 默认值：`OFF`
-- 这个变量用来开启 Active PD Follower 特性（目前只适用于 Region 信息的相关请求）。当该值为 `OFF` 时，TiDB 仅会从 PD leader 获取 Region 信息。开启该特性之后，TiDB 在获取 Region 信息时会将请求均匀地发送到所有 PD 节点上，PD follower 也可以直接处理 Region 请求，从而降低 PD leader 的 CPU 压力。
-- 适合开启 Active PD Follower 的场景：
-    * 集群 Region 数量较多，PD leader 本身由于处理心跳和调度的开销大，CPU 资源紧张。
-    * 集群中的 TiDB 实例数量较多，Region 信息请求的并发量较大，PD leader CPU 压力大。
     
 ### `tidb_enable_unsafe_substitute` <span class="version-mark">从 v6.3.0 版本开始引入</span>
 
