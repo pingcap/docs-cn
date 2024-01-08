@@ -327,7 +327,7 @@ batch-dml 是一种在 DML 语句执行期间将一个事务拆成多个事务�
 
 ## 常见问题
 
-### 执行多表 join 语句后，遇到 `Unknown column xxxx in 'where clause` 错误
+### 执行多表 join 语句后，遇到 `Unknown column xxx in 'where clause'` 错误
 
 这经常是拼接查询语句时，只查询划分列所在的表，但是 where 子句会直接拼接在这个查询语句中。如果 where 子句中的条件涉及到了其它表，就会出现这个错误。例如：
 
