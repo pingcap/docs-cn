@@ -25,7 +25,7 @@ TiDB 版本：7.6.0
   <tr>
     <td rowspan="3">可扩展性与性能<br></td>
     <td><a href="https://docs.pingcap.com/zh/tidb/v7.6/sql-plan-management#跨数据库绑定执行计划-cross-db-binding">跨数据库绑定执行计划</a> {/* tw@Oreoxmt */}</td>
-    <td>在处理成百上千个 schema 相同的数据库时，使所有统计信息始终保持最新状态可能很困难，例如 SaaS 数据平台为每个用户维护独立数据库，这些数据库运行类似的逻辑。SQL 绑定可以提高这些情况下的性能，但是将绑定应用于如此多表上是不切实际的。TiDB v7.6.0 引入跨数据库绑定执行计划，支持在所有 schema 相同的数据库之间广播绑定计划。</td>
+    <td>在处理上百个 schema 相同的数据库时，针对一个 schema 的 SQL binding 可能需要跨 schema 生效。例如 SaaS 或 PaaS 数据平台为每个用户维护独立数据库，这些数据库有相同的结构，运行类似的 SQL。对每个 schema 逐一做 SQL 绑定有时是不切实际的。TiDB v7.6.0 引入跨数据库绑定执行计划，支持在所有 schema 相同的数据库之间匹配绑定计划。</td>
   </tr>
   <tr>
     <td><a href="https://docs.pingcap.com/zh/tidb/v7.6/br-snapshot-guide#恢复快照备份数据">BR 快照恢复速度最高提升 10 倍（实验特性）</a> {/* tw@Oreoxmt */}</td>
