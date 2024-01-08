@@ -2479,7 +2479,6 @@ mysql> desc select count(distinct a) from test.t;
 
 - 作用域：SESSION | GLOBAL
 - 是否持久化到集群：是
-- 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：是
 - 类型：字符串
 - 默认值：`""`
 - 这个变量用来控制优化器的一些内部行为。
