@@ -434,9 +434,11 @@ Runaway Query 是指执行时间或消耗资源超出预期的查询（仅指 `S
 
 3. 将 TiFlash 参数 [`enable_resource_control`](/tiflash/tiflash-configuration.md#配置文件-tiflashtoml) 设为 `false`，关闭 TiFlash 资源管控。
 
-## RU 消耗可观测性
+## RU 消耗的可观测性
 
-### 查看 SQL 消耗的 RU 
+你可以查看 RU 消耗的相关信息。
+
+### 查看 SQL 消耗的 RU
 
 #### 查询系统变量 `tidb_last_query_info`
 
@@ -444,35 +446,33 @@ TiDB 提供系统变量 [`tidb_last_query_info`](/system-variables#tidb_last_que
 
 使用示例：
 
-首先执行一条 Update 语句：
+1. 首先执行一条 Update 语句：
 
-```sql
-UPDATE sbtest.sbtest1 SET k = k + 1 WHERE id = 1;
-```
+    ```sql
+    UPDATE sbtest.sbtest1 SET k = k + 1 WHERE id = 1;
+    ```
 
-```
-Query OK, 1 row affected (0.01 sec)
-Rows matched: 1  Changed: 1  Warnings: 0
-```
+    ```
+    Query OK, 1 row affected (0.01 sec)
+    Rows matched: 1  Changed: 1  Warnings: 0
+    ```
 
-然后通过查询系统变量 `tidb_last_query_info` 查看上条执行的语句的相关信息：
+2. 然后通过查询系统变量 `tidb_last_query_info` 查看上条执行的语句的相关信息：
 
-{{< copyable "sql" >}}
+    ```sql
+    SELECT @@tidb_last_query_info;
+    ```
 
-```sql
-SELECT @@tidb_last_query_info;
-```
+    ```
+    +------------------------------------------------------------------------------------------------------------------------+
+    | @@tidb_last_query_info                                                                                                 |
+    +------------------------------------------------------------------------------------------------------------------------+
+    | {"txn_scope":"global","start_ts":446809472210829315,"for_update_ts":446809472210829315,"ru_consumption":4.34885578125} |
+    +------------------------------------------------------------------------------------------------------------------------+
+    1 row in set (0.01 sec)
+    ```
 
-```
-+------------------------------------------------------------------------------------------------------------------------+
-| @@tidb_last_query_info                                                                                                 |
-+------------------------------------------------------------------------------------------------------------------------+
-| {"txn_scope":"global","start_ts":446809472210829315,"for_update_ts":446809472210829315,"ru_consumption":4.34885578125} |
-+------------------------------------------------------------------------------------------------------------------------+
-1 row in set (0.01 sec)
-```
-
-返回结果中的 `ru_consumption` 即为此 SQL 语句的 RU 消耗。
+    返回结果中的 `ru_consumption` 即为此 SQL 语句的 RU 消耗。
 
 #### `EXPLAIN ANALYZE`
 
@@ -480,23 +480,20 @@ SELECT @@tidb_last_query_info;
 
 #### 慢查询及对应的系统表
 
-在开启资源管控时，TiDB 的[慢查询日志](/identify-slow-queries#慢查询日志)以及对应系统表 [`INFORMATION_SCHEMA.SLOW_QUERY`](/information-schema-slow-query#slow_query) 中均包含对应 SQL 对应的资源组以及 RU 消耗等相关信息。
-
+在开启资源管控时，TiDB 的[慢查询日志](/identify-slow-queries.md)以及对应系统表 [`INFORMATION_SCHEMA.SLOW_QUERY`](/information-schema/information-schema-slow-query.md) 中均包含对应 SQL 对应的资源组以及 RU 消耗等相关信息。
 
 #### `statements_summary`
 
-TiDB 的系统表 [`INFORMATION_SCHEMA.statements_summary`](/statement-summary-tables#statements_summary) 中保存了 SQL 语句归一化聚合后的各种统计信息，可以用于查看分析各个 SQL 语句的执行性能。其中也包含资源管控相关的统计信息，包括资源组名、RU 消耗、等待可用 RU 的耗时等信息，具体请参考[`statements_summary` 字段介绍](/statement-summary-tables#statements_summary-字段介绍)。
+TiDB 的系统表 [`INFORMATION_SCHEMA.statements_summary`](/statement-summary-tables.md#statements_summary) 中保存了 SQL 语句归一化聚合后的各种统计信息，可以用于查看分析各个 SQL 语句的执行性能。其中也包含资源管控相关的统计信息，包括资源组名、RU 消耗、等待可用 RU 的耗时等信息。具体请参考[`statements_summary` 字段介绍](/statement-summary-tables.md#statements_summary-字段介绍)。
 
 ### 查看资源组的 RU 消耗
 
-从 v7.6.0 版本开始，TiDB 提供系统表 [`mysql.request_unit_by_group`](/mysql-schema#资源管控相关系统表) 存放各个资源组每日消耗的 RU 的历史记录。
+从 v7.6.0 版本开始，TiDB 提供系统表 [`mysql.request_unit_by_group`](/mysql-schema.md#资源管控相关系统表) 存放各个资源组每日消耗的 RU 的历史记录。
 
 示例：
 
-{{< copyable "sql" >}}
-
 ```sql
-mysql> select * from request_unit_by_group limit 5;
+mysql> SELECT * FROM request_unit_by_group LIMIT 5;
 ```
 
 ```
@@ -514,8 +511,7 @@ mysql> select * from request_unit_by_group limit 5;
 
 > **注意：**
 >
-> `mysql.request_unit_by_group` 的数据由 TiDB 的定时任务在每天结束后自动导入。如果某个资源组当天的 RU 消耗为 0，则不会产生一条记录。此表默认只存放最近 3 个月（最大 92 天）的数据，超过此期限的数据会自动被清理。
-
+> `mysql.request_unit_by_group` 的数据由 TiDB 的定时任务在每天结束后自动导入。如果某个资源组当天的 RU 消耗为 0，则不会产生一条记录。此表默认只存放最近 3 个月（最多 92 天）的数据。超过此期限的数据会自动被清理。
 
 ## 监控与图表
 
