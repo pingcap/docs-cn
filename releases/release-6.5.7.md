@@ -13,7 +13,6 @@ TiDB 版本：6.5.7
 
 ## 兼容性变更
 
-+ 新增系统变量 [`tidb_opt_fix_control`](https://docs.pingcap.com/zh/tidb/v6.5/system-variables#tidb_opt_fix_control-从-v657-版本开始引入)，用于更细粒度地控制优化器的行为，并且避免集群升级后优化器行为变化导致的性能回退 [#43169](https://github.com/pingcap/tidb/issues/43169) @[qw4990](https://github.com/qw4990)
 + 新增 TiDB 配置项 [`performance.force-init-stats`](https://docs.pingcap.com/zh/tidb/v6.5/tidb-configuration-file#force-init-stats-从-v657-版本开始引入)，用于控制 TiDB 启动时是否在统计信息初始化完成后再对外提供服务 [#43385](https://github.com/pingcap/tidb/issues/43385) @[xuyifangreeneyes](https://github.com/xuyifangreeneyes)
 + 为减少日志打印的开销，TiFlash 配置项 `logger.level` 默认值由 `"debug"` 改为 `"info"` [#8568](https://github.com/pingcap/tiflash/issues/8568) @[xzhangxian1008](https://github.com/xzhangxian1008)
 
