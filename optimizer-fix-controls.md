@@ -26,7 +26,7 @@ SET SESSION tidb_opt_fix_control = '44262:ON,44389:ON';
 
 ## Optimizer Fix Controls 参考
 
-### [`44262`](https://github.com/pingcap/tidb/issues/44262) <span class="version-mark">从 v7.2.0 版本开始引入</span>
+### [`44262`](https://github.com/pingcap/tidb/issues/44262) <span class="version-mark">从 v6.5.7 版本开始引入</span>
 
 - 默认值：`OFF`
 - 可选值：`ON`、`OFF`
