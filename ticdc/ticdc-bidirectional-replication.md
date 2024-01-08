@@ -5,7 +5,7 @@ summary: 了解 TiCDC 双向复制的使用方法。
 
 # TiCDC 双向复制
 
-从 v6.5.0 版本开始，TiCDC 支持在两个 TiDB 集群之间进行双向复制 (Bidirectional replication, BDR)。基于该功能，你可以使用 TiCDC 来构建 TiDB 集群的多写多活解决方案。
+TiCDC 支持在两个 TiDB 集群之间进行双向复制 (Bidirectional replication, BDR)。基于该功能，你可以使用 TiCDC 来构建 TiDB 集群的多写多活解决方案。
 
 本文档以在两个 TiDB 集群之间进行双向复制为例，介绍双向复制的使用方法。
 
@@ -46,7 +46,7 @@ TiCDC 复制功能只会将指定时间点之后的增量变更复制到下游�
 
 - `CREATE DATABASE`
 - `CREATE TABLE`
-- `ADD COLUMN`：添加的列必须是 `not null` 或者带有 `default value` 的列
+- `ADD COLUMN`：添加的列必须可以为 `null`或者是同时带有 `not null` 和 `default value` 的列
 - `ADD NON-UNIQUE INDEX`
 - `DROP INDEX`
 - `MODIFY COLUMN`：仅能修改列的 `default value` 和 `comment`
@@ -69,7 +69,7 @@ TiCDC 复制功能只会将指定时间点之后的增量变更复制到下游�
 
 - `DROP DATABASE`
 - `DROP TABLE`
-- `ADD COLUMN`：添加的列为 `null` 且不带有 `default value` 的列
+- `ADD COLUMN`：添加的列为 `not null` 且不带有 `default value` 的列
 - `DROP COLUMN`
 - `ADD UNIQUE INDEX`
 - `TRUNCATE TABLE`
