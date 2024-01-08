@@ -1,6 +1,6 @@
 ---
 title: Optimizer Fix Controls
-summary: 了解 Optimizer Fix Controls 以及如何使用 `tidb_opt_fix_control` 细粒度地控制 TiDB 优化器的行为
+summary: 了解 Optimizer Fix Controls 以及如何使用 `tidb_opt_fix_control` 细粒度地控制 TiDB 优化器的行为。
 ---
 
 # Optimizer Fix Controls
