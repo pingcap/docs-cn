@@ -25,7 +25,6 @@ Quick access: [Quick start](https://docs.pingcap.com/tidb/v6.5/quick-start-with-
     - Improve stability of PITR checkpoint lag during leader transfers [#13638](https://github.com/tikv/tikv/issues/13638) @[YuJuncen](https://github.com/YuJuncen)
     - Add logs and monitoring metrics related to `safe-ts` [#15082](https://github.com/tikv/tikv/issues/15082) @[ekexium](https://github.com/ekexium)
     - Provide more logs and monitoring metrics for `resolved-ts` [#15082](https://github.com/tikv/tikv/issues/15082) @[ekexium](https://github.com/ekexium)
-    - Optimize the compaction mechanism: when a Region is split, if there is no key to split, a compaction is triggered to eliminate excessive MVCC versions [#15282](https://github.com/tikv/tikv/issues/15282) @[SpadeA-Tang](https://github.com/SpadeA-Tang)
 
 + Tools
 
