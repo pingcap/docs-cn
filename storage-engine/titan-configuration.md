@@ -41,7 +41,7 @@ Titan 对 RocksDB 兼容，也就是说，使用 RocksDB 存储引擎的现有 T
 
 开启 Titan 以后，原有的数据并不会马上移入 Titan 引擎，而是随着前台写入和 RocksDB compaction 的进行，逐步进行 key-value 分离并写入 Titan。同样，全量、增量恢复或者 TiDB Lightning 导入的 SST 都是 RocksDB 格式，数据不会直接导入 Titan。随着 Compaction 的进行，被处理过的 SST 中的大 value 会分离到 Titan 中。可以通过观察 **TiKV Details** - **Titan kv** - **blob file size** 监控面版确认数据保存在 Titan 中部分的大小。
 
-如果需要加速数据移入 Titan，可以通过 tikv-ctl 执行一次全量 compaction，请参考[手动 compact](/tikv-control.md#手动-compact-整个-tikv-集群的数据)。由于 RocksDB 有 Block Cache，且转成 Titan 时的数据访问是连续的，因此Block Cache 能有很好的命中率。在测试中，一个 670 GiB 的 TiKV 节点数据，通过 tikv-ctl 全量 compaction 转成 Titan，只需 1 小时。
+如果需要加速数据移入 Titan，可以通过 tikv-ctl 执行一次全量 compaction，请参考[手动 compact](/tikv-control.md#手动-compact-整个-tikv-集群的数据)。由于 RocksDB 有 Block Cache，且转成 Titan 时的数据访问是连续的，因此 Block Cache 能有很好的命中率。在测试中，TiKV 节点上 670 GiB 的数据，通过 tikv-ctl 全量 compaction 转成 Titan，只需 1 小时。
 
 > **注意：**
 >
