@@ -82,7 +82,7 @@ Titan 对 RocksDB 兼容，也就是说，使用 RocksDB 存储引擎的现有 T
     blob-file-compression = "zstd"
     ```
 
-+ 默认情况下，`zstd-dict-size` 为 `0KB` , 表示 Titan 中压缩的是单个 value 值，而 RocksDB 压缩以 Block（默认值为 `32KB`）为单位。因此当 value 平均小于 32KB 时，Titan 的压缩率低于 RocksDB。以 JSON 内容为例，Titan 的 store size 可能比 RocksDB 高 30% 至 50%。实际压缩率还取决于 value 内容是否适合压缩，以及不同 value 之间的相似性。你可以通过设置 `zstd-dict-size`（比如 `16KB` ）启用 ZSTD 字典压缩以大幅提高压缩率（实际 Store Size 可以低于 RocksDB）。但  ZSTD 字典压缩在有些负载下会有 10% 左右的性能损失。
++ 默认情况下，`zstd-dict-size` 为 `0KB`，表示 Titan 中压缩的是单个 value 值，而 RocksDB 压缩以 Block（默认值为 `32KB`）为单位。因此当 value 平均小于 32KB 时，Titan 的压缩率低于 RocksDB。以 JSON 内容为例，Titan 的 store size 可能比 RocksDB 高 30% 至 50%。实际压缩率还取决于 value 内容是否适合压缩，以及不同 value 之间的相似性。你可以通过设置 `zstd-dict-size`（比如 `16KB` ）启用 zstd 字典压缩以大幅提高压缩率（实际 Store Size 可以低于 RocksDB）。但 zstd 字典压缩在有些负载下会有 10% 左右的性能损失。
   
     ```toml
     [rocksdb.defaultcf.titan]
@@ -129,7 +129,7 @@ Titan 对 RocksDB 兼容，也就是说，使用 RocksDB 存储引擎的现有 T
 - 当设置为 `read-only` 时，新写入的 value 不论大小均会写入 RocksDB。
 - 当设置为 `fallback` 时，新写入的 value 不论大小均会写入 RocksDB，并且当 RocksDB 进行 compaction 时，会自动把所碰到的存储在 Titan blob file 中的 value 移回 RocksDB。
 
-如果现有数据和未来数据均不再需要 Titan，可执行以下步骤完全关闭 Titan。然而一般情况下只需要执行以下步骤 1 和步骤 3、步骤 4 即可，步骤 2 会加快数据迁移速度，但会严重影响用户 SQL 的性能。事实上即便跳过步骤 2，由于在Compaction 过程中会将数据从 Titan 迁移到 RocksDB，会占用额外的 IO 和 CPU 资源，因此仍然可以观察到一定的性能损失，在资源紧张的情况下吞吐可以下降 50% 以上。
+如果现有数据和未来数据均不再需要 Titan，可执行以下步骤完全关闭 Titan。一般情况下，只需要执行以下步骤 1 和步骤 3、步骤 4 即可。步骤 2 虽然可以加快数据迁移速度，但会严重影响用户 SQL 的性能。事实上，即使跳过步骤 2，由于在 Compaction 过程中会将数据从 Titan 迁移到 RocksDB，会占用额外的 I/O 和 CPU 资源，因此仍然可以观察到一定的性能损失，在资源紧张的情况下吞吐可以下降 50% 以上。
 
 1. 更新需要关闭 Titan 的 TiKV 节点的配置。你可以通过以下两种方式之一更新 TiKV 配置：
 
@@ -163,7 +163,7 @@ Titan 对 RocksDB 兼容，也就是说，使用 RocksDB 存储引擎的现有 T
 
 ### Titan 转 RocksDB 速度
 
-由于 Titan Blob 文件中的 Value 是不连续的，而且 Titan 的 Cache 是 Value 级别，因此 Blob Cache 无法帮助 compaction。从 Titan 转到 RocksDB 速度相比 RocksDB 转 Titan 会慢一个数量级。在测试中，一个 800 GiB 的 TiKV 节点Titan 数据通过 tikv-ctl 做全量 compaction 转成 RocksDB，需要 12 个小时。
+由于 Titan Blob 文件中的 Value 是不连续的，而且 Titan 的 Cache 是 Value 级别，因此 Blob Cache 无法帮助 compaction。从 Titan 转到 RocksDB 速度相比 RocksDB 转 Titan 会慢一个数量级。在测试中，TiKV 节点上 800 GiB 的  Titan 数据，通过 tikv-ctl 做全量 compaction 转成 RocksDB，需要 12 个小时。
 
 ## Level Merge（实验功能）
 
