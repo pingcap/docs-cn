@@ -38,7 +38,7 @@ SET SESSION tidb_opt_fix_control = '44262:ON,44389:ON';
 - 可选值：`ON`、`OFF`
 - 对形如 `c = 10 and (a = 'xx' or (a = 'kk' and b = 1))` 的过滤条件，是否尝试为 `IndexRangeScan` 更加完整地构造扫描范围，即 `range`。
 
-### [`44830`](https://github.com/pingcap/tidb/issues/44830) <span class="version-mark">从 v7.3.0 版本开始引入</span>
+### [`44830`](https://github.com/pingcap/tidb/issues/44830) <span class="version-mark">从 v6.5.7 版本开始引入</span>
 
 - 默认值：`OFF`
 - 可选值：`ON`、`OFF`
