@@ -172,7 +172,7 @@ Compared with the previous LTS 6.5.0, 7.1.0 not only includes new features, impr
 
    TiDB v7.1.0 introduces lightweight statistics initialization as an experimental feature. Lightweight statistics initialization can significantly reduce the number of statistics that must be loaded during startup, thus improving the speed of loading statistics. This feature increases the stability of TiDB in complex runtime environments and reduces the impact on the overall service when TiDB nodes restart. You can set the parameter [`lite-init-stats`](/tidb-configuration-file.md#lite-init-stats-new-in-v710) to `true` to enable this feature.
 
-    During TiDB startup, SQL statements executed before the initial statistics are fully loaded might have suboptimal execution plans, thus causing performance issues. To avoid such issues, TiDB v7.1.0 introduces the configuration parameter [`force-init-stats`](/tidb-configuration-file.md#force-init-stats-new-in-v710). With this option, you can control whether TiDB provides services only after statistics initialization has been finished during startup. This parameter is disabled by default.
+    During TiDB startup, SQL statements executed before the initial statistics are fully loaded might have suboptimal execution plans, thus causing performance issues. To avoid such issues, TiDB v7.1.0 introduces the configuration parameter [`force-init-stats`](/tidb-configuration-file.md#force-init-stats-new-in-v657-and-v710). With this option, you can control whether TiDB provides services only after statistics initialization has been finished during startup. This parameter is disabled by default.
 
     For more information, see [documentation](/statistics.md#load-statistics).
 
@@ -345,7 +345,7 @@ Compared with the previous LTS 6.5.0, 7.1.0 not only includes new features, impr
 
 | Configuration file | Configuration parameter | Change type | Description |
 | -------- | -------- | -------- | -------- |
-| TiDB | [`performance.force-init-stats`](/tidb-configuration-file.md#force-init-stats-new-in-v710) | Newly added | Controls whether to wait for statistics initialization to finish before providing services during TiDB startup. |
+| TiDB | [`performance.force-init-stats`](/tidb-configuration-file.md#force-init-stats-new-in-v657-and-v710) | Newly added | Controls whether to wait for statistics initialization to finish before providing services during TiDB startup. |
 | TiDB | [`performance.lite-init-stats`](/tidb-configuration-file.md#lite-init-stats-new-in-v710) | Newly added | Controls whether to use lightweight statistics initialization during TiDB startup. |
 | TiDB | [`log.timeout`](/tidb-configuration-file.md#timeout-new-in-v710) | Newly added | Sets the timeout for log-writing operations in TiDB. In case of a disk failure that prevents logs from being written, this configuration item can trigger the TiDB process to panic instead of hang. The default value is `0`, which means no timeout is set. |
 | TiKV | [`region-compact-min-redundant-rows`](/tikv-configuration-file.md#region-compact-min-redundant-rows-new-in-v710) | Newly added | Sets the number of redundant MVCC rows required to trigger RocksDB compaction. The default value is `50000`. |

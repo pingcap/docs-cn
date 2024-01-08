@@ -587,7 +587,7 @@ Configuration items related to performance.
 + When the value of `lite-init-stats` is `true`, statistics initialization does not load any histogram, TopN, or Count-Min Sketch of indexes or columns into memory. When the value of `lite-init-stats` is `false`, statistics initialization loads histograms, TopN, and Count-Min Sketch of indexes and primary keys into memory but does not load any histogram, TopN, or Count-Min Sketch of non-primary key columns into memory. When the optimizer needs the histogram, TopN, and Count-Min Sketch of a specific index or column, the necessary statistics are loaded into memory synchronously or asynchronously (controlled by [`tidb_stats_load_sync_wait`](/system-variables.md#tidb_stats_load_sync_wait-new-in-v540)).
 + Setting `lite-init-stats` to `true` speeds up statistics initialization and reduces TiDB memory usage by avoiding unnecessary statistics loading. For details, see [Load statistics](/statistics.md#load-statistics).
 
-### `force-init-stats` <span class="version-mark">New in v7.1.0</span>
+### `force-init-stats` <span class="version-mark">New in v6.5.7 and v7.1.0</span>
 
 + Controls whether to wait for statistics initialization to finish before providing services during TiDB startup.
 + Default value: `false` for versions earlier than v7.2.0, `true` for v7.2.0 and later versions.
