@@ -14,7 +14,7 @@ summary: 了解 Optimizer Fix Controls 以及如何使用 `tidb_opt_fix_control`
 
 ## `tidb_opt_fix_control` 介绍
 
-从 TiDB v7.1.0 开始，提供了 [`tidb_opt_fix_control`](/system-variables.md#tidb_opt_fix_control-从-v710-版本开始引入) 系统变量来更细粒度地控制优化器的行为。
+从 TiDB v7.1.0 开始，提供了 [`tidb_opt_fix_control`](/system-variables.md#tidb_opt_fix_control-从-v657-和-v710-版本开始引入) 系统变量来更细粒度地控制优化器的行为。
 
 一个 Fix 是用于调整 TiDB 优化器中一处行为的控制项。它以一个数字编号表示，该数字编号对应一个 GitHub Issue，在 Issue 中会有对技术细节的描述。例如 Fix `44262` 对应 [Issue 44262](https://github.com/pingcap/tidb/issues/44262)。
 
