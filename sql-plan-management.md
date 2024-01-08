@@ -490,8 +490,8 @@ SHOW binding_cache status;
 使用跨数据库绑定，只需要在创建绑定的 SQL 语句中将数据库名用 `*` 表示，例如：
 
 ```sql
-CREATE GLOBAL BINDING USING SELECT /*+ use_index(t, a) */ * FROM *.t; -- 创建 GLOBAL 作用域的跨数据库绑定
 CREATE GLOBAL BINDING USING SELECT /*+ use_index(t, a) */ * FROM t; -- 创建 GLOBAL 作用域的普通绑定
+CREATE GLOBAL BINDING USING SELECT /*+ use_index(t, a) */ * FROM *.t; -- 创建 GLOBAL 作用域的跨数据库绑定
 SHOW GLOBAL BINDINGS;
 ```
 
