@@ -13,7 +13,6 @@ Quick access: [Quick start](https://docs.pingcap.com/tidb/v6.5/quick-start-with-
 
 ## Compatibility changes
 
-+ Introduce the system variable [`tidb_opt_fix_control`](https://docs.pingcap.com/tidb/v6.5/system-variables#tidb_opt_fix_control-new-in-v657) to provide a more fine-grained control over the optimizer and help to prevent performance regression after upgrading caused by behavior changes in the optimizer [#43169](https://github.com/pingcap/tidb/issues/43169) @[qw4990](https://github.com/qw4990)
 + Introduce the TiDB configuration item [`performance.force-init-stats`](https://docs.pingcap.com/tidb/v6.5/tidb-configuration-file#force-init-stats-new-in-v657) to control whether TiDB needs to wait for statistics initialization to finish before providing services during TiDB startup [#43385](https://github.com/pingcap/tidb/issues/43385) @[xuyifangreeneyes](https://github.com/xuyifangreeneyes)
 + To reduce the overhead of log printing, TiFlash changes the default value of `logger.level` from `"debug"` to `"info"` [#8568](https://github.com/pingcap/tiflash/issues/8568) @[xzhangxian1008](https://github.com/xzhangxian1008)
 
