@@ -122,9 +122,9 @@ Range Merge 是基于 Level Merge 的一个优化。考虑如下两种情况，�
 
 ### 扩容与缩容
 
-基于向后兼容的考虑，TiKV 在扩缩容时的 Snapshot 仍然是 RocksDB 的格式。因此扩容后的节点由于一开始全部来自RocksDB，因此会显示 RocksDB 的特征，比如压缩率会高于老的 TiKV 节点、Store Size 会较小、同时 Compaction 的写放大会相对较大。后续这些 RocksDB 格式的 SST 参与 Compaction 之后逐步转换为 Titan 格式。
+基于向后兼容的考虑，TiKV 在扩缩容时的 Snapshot 仍然是 RocksDB 的格式。因此扩容后的节点由于一开始全部来自 RocksDB，因此会显示 RocksDB 的特征，比如压缩率会高于老的 TiKV 节点、Store Size 会较小、同时 Compaction 的写放大会相对较大。后续这些 RocksDB 格式的 SST 参与 Compaction 之后逐步转换为 Titan 格式。
 
-### min-blob-size的选择及其性能影响
+### `min-blob-size` 的选择及其性能影响
 
 `min-blob-size` 是一个 Value 是否用 Titan 存储的依据。如果 Value 大于或等于 `min-blob-size`，会用 Titan 存储，反之则用 RocksDB 原生的格式。当 `min-blob-size` 太小或太大都会导致性能下降。
 
@@ -140,6 +140,6 @@ Range Merge 是基于 Level Merge 的一个优化。考虑如下两种情况，�
 
 > **注意：**
 >
-> scan100 是指 scan 100 条记录，scan10000 指 scan 10000 条记录。
+> `scan100` 是指 scan 100 条记录，`scan10000` 指 scan 10000 条记录。
 
-以上可见当行宽是 2KB 时，Titan在所有指标上都超过了RocksDB。而当行宽是 1KB 时，Titan仅仅在scan10000上落后15%左右，但在update上大幅领先50%以上。因此`min-blob-size`默认值为 1KB 是比较合理的.
+以上可见，当行宽是 2KB 时，Titan 在所有指标上都超过了 RocksDB。而当行宽是 1KB 时，Titan 仅仅在 `scan10000` 上落后 15% 左右，但在 `UPDATE` 上大幅领先 50% 以上。因此 `min-blob-size` 默认值为 1KB 是比较合理的。

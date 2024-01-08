@@ -45,7 +45,7 @@ Titan 对 RocksDB 兼容，也就是说，使用 RocksDB 存储引擎的现有 T
 
 > **注意：**
 >
-> 在7.6.0开始，新建集群默认打开Titan，已有集群升级到7.6.0则会维持原有的配置, 没有显式配置titan的，则仍然会使用RocksDB。
+> 在 v7.6.0 开始，新建集群默认打开 Titan。已有集群升级到 v7.6.0 则会维持原有的配置，如果没有显式配置 Titan，则仍然会使用 RocksDB。
 
 > **警告：**
 >
@@ -75,14 +75,14 @@ Titan 对 RocksDB 兼容，也就是说，使用 RocksDB 存储引擎的现有 T
     min-blob-size = "1KB"
     ```
 
-+ Titan 中 value 所使用的压缩算法。在7.6版本开始，默认采用zstd压缩算法。
++ Titan 中 value 所使用的压缩算法。从 v7.6.0 开始，默认采用 `zstd` 压缩算法。
 
     ```toml
     [rocksdb.defaultcf.titan]
     blob-file-compression = "zstd"
     ```
 
-+ 默认情况下, zstd-dict-size为 0KB , 表示Titan中压缩的是单个value值，而RocksDB压缩以Block(默认 32KB )为单位。因此当value平均小于 32KB 时，Titan的压缩率低于RocksDB。以Json内容为例，Titan的store size可能比RocksDB高30%至50%。实际压缩率还取决于value内容是否适合压缩，以及不同value之间的相似性。用户可以通过设置zstd-dict-size（比如 16KB ）启用zstd字典压缩以大幅提高压缩率（实际Store Size可以低于RocksDB），但zstd字典压缩在有些负载下会有10%左右的性能损失。
++ 默认情况下，`zstd-dict-size` 为 `0KB` , 表示 Titan 中压缩的是单个 value 值，而 RocksDB 压缩以 Block（默认值为 `32KB`）为单位。因此当 value 平均小于 32KB 时，Titan 的压缩率低于 RocksDB。以 JSON 内容为例，Titan 的 store size 可能比 RocksDB 高 30% 至 50%。实际压缩率还取决于 value 内容是否适合压缩，以及不同 value 之间的相似性。你可以通过设置 `zstd-dict-size`（比如 `16KB` ）启用 ZSTD 字典压缩以大幅提高压缩率（实际 Store Size 可以低于 RocksDB）。但  ZSTD 字典压缩在有些负载下会有 10% 左右的性能损失。
   
     ```toml
     [rocksdb.defaultcf.titan]
@@ -129,7 +129,7 @@ Titan 对 RocksDB 兼容，也就是说，使用 RocksDB 存储引擎的现有 T
 - 当设置为 `read-only` 时，新写入的 value 不论大小均会写入 RocksDB。
 - 当设置为 `fallback` 时，新写入的 value 不论大小均会写入 RocksDB，并且当 RocksDB 进行 compaction 时，会自动把所碰到的存储在 Titan blob file 中的 value 移回 RocksDB。
 
-如果现有数据和未来数据均不再需要 Titan，可执行以下步骤完全关闭 Titan。然而一般情况下只需要执行以下步骤1和步骤3、4即可，步骤2会加快数据迁移速度，但会严重影响用户SQL的性能。事实上即便跳过步骤2，由于在Compaction过程中会将数据从Titan迁移到RocksDB，会占用额外的 IO 和 CPU 资源，因此仍然可以观察到一定的性能损失，在资源紧张的情况下吞吐可以下降 50% 以上。
+如果现有数据和未来数据均不再需要 Titan，可执行以下步骤完全关闭 Titan。然而一般情况下只需要执行以下步骤 1 和步骤 3、步骤 4 即可，步骤 2 会加快数据迁移速度，但会严重影响用户 SQL 的性能。事实上即便跳过步骤 2，由于在Compaction 过程中会将数据从 Titan 迁移到 RocksDB，会占用额外的 IO 和 CPU 资源，因此仍然可以观察到一定的性能损失，在资源紧张的情况下吞吐可以下降 50% 以上。
 
 1. 更新需要关闭 Titan 的 TiKV 节点的配置。你可以通过以下两种方式之一更新 TiKV 配置：
 
@@ -144,7 +144,7 @@ Titan 对 RocksDB 兼容，也就是说，使用 RocksDB 存储引擎的现有 T
 
     > **注意：**
     >
-    > discardable-ratio在磁盘空间不足以同时保持titan和rocksdb数据时应该维持默认值。一般来说如果磁盘可用空间小于50%时推荐使用默认值。因为当discardable-ratio = 1.0时, Rocksdb数据一方面在不断增加，同时titan原有的blob文件回收需要该文件所有数据都迁移至RocksDB才会发生，这个过程会比较缓慢。discardable-ratio = 1.0带来的好处是减小compaction过程中Blob文件自身的GC，节省了带宽。
+    > `discardable-ratio` 在磁盘空间不足以同时保持 Titan 和 RocksDB 数据时应该维持默认值。一般来说，如果磁盘可用空间小于 50% 时，推荐使用默认值。因为当 `discardable-ratio = 1.0` 时，RocksDB 数据一方面在不断增加，同时 Titan 原有的 blob 文件回收需要该文件所有数据都迁移至 RocksDB 才会发生，这个过程会比较缓慢。`discardable-ratio = 1.0` 带来的好处是减小 compaction 过程中 Blob 文件自身的 GC，节省了带宽。
  
 2. [可选] 使用 `tikv-ctl` 执行全量数据整理 (Compaction)。这一步骤将消耗大量 I/O 和 CPU 资源。
 

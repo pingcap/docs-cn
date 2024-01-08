@@ -1619,7 +1619,7 @@ rocksdb defaultcf titan 相关的配置项。
 
 ### `zstd-dict-size`
 
-+ 指定zstd字典大小，默认为 0KB 表示关闭zstd字典压缩，也就是说Titan中压缩的是单个value值，而RocksDB压缩以Block(默认 32KB )为单位。因此当关闭字典压缩时且value平均小于 32KB 时，Titan的压缩率低于RocksDB。以Json内容为例，Titan的store size可能比RocksDB高30%至50%。实际压缩率还取决于value内容是否适合压缩，以及不同value之间的相似性。用户可以通过设置zstd-dict-size（比如 16KB ）启用字典ZSTD以大幅提高压缩率（实际Store Size可以低于RocksDB），但zstd字典压缩在有些负载下会有10%左右的性能损失。
++ 指定  ZSTD字典大小，默认为 `0KB`，表示关闭 ZSTD 字典压缩，也就是说 Titan 中压缩的是单个 value 值，而 RocksDB 压缩以 Block（默认值为 `32KB` ）为单位。因此当关闭字典压缩、且 value 平均小于 32KB 时，Titan 的压缩率低于 RocksDB。以 JSON 内容为例，Titan 的 store size 可能比 RocksDB 高 30% 至 50%。实际压缩率还取决于 value 内容是否适合压缩，以及不同 value 之间的相似性。你可以通过设置 `zstd-dict-size`（比如 `16KB` ）启用 ZSTD 字典以大幅提高压缩率（实际 Store Size 可以低于 RocksDB），但 ZSTD 字典压缩在有些负载下会有 10% 左右的性能损失。
 + 默认值: 0
 + 单位：KB|MB|GB
    
