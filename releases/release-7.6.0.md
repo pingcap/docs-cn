@@ -281,6 +281,7 @@ TiDB 版本：7.6.0
 ### 系统表
 
 - 新增系统表 [`INFORMATION_SCHEMA.KEYWORDS`](/information-schema/information-schema-keywords.md) 用来展示 TiDB 支持的所有关键字的信息。**tw@Oreoxmt**
+- 新增系统表 [`mysql.request_unit_by_group`](/mysql-schema.md#资源管控相关系统表) 用于存放各个资源组每日消耗的 RU 的历史记录。**tw@hfxsd**
 
 ### 其他
 
