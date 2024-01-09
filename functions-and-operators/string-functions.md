@@ -117,6 +117,7 @@ SELECT BIN("123q123");
 ### [`CONCAT(str1,str2,...)`](https://dev.mysql.com/doc/refman/8.0/en/string-functions.html#function_concat)
 
 `CONCAT()` 函数用于连接参数生成字符串，该参数可以是字符串或数字。
+
 ```sql
 SELECT CONCAT('TiDB', ' ', 'Server', '-', 1, TRUE);
 
@@ -128,6 +129,7 @@ SELECT CONCAT('TiDB', ' ', 'Server', '-', 1, TRUE);
 ```
 
 如果任一参数的值为`NULL`， 则`CONCAT()`返回`NULL`
+
 ```sql
 SELECT CONCAT('TiDB', NULL, 'Server');
 
@@ -139,6 +141,7 @@ SELECT CONCAT('TiDB', NULL, 'Server');
 ```
 
 此外，还可以通过字符串彼此相邻的方式连接他们，但是这种方式不支持数字类型。
+
 ```sql
 SELECT 'Ti' 'DB' ' ' 'Server';
 
@@ -166,6 +169,7 @@ SELECT CONCAT_WS(',', 'TiDB Server', 'TiKV', 'PD');
 
 - 如果分隔符为空，则`CONCAT_WS()`等效于 `CONCAT()`，返回剩余参数连接后的值；
 - 如果分隔符为 `NULL`，则`CONCAT_WS()`返回 `NULL`。
+
 ```sql
 SELECT CONCAT_WS('', 'TiDB Server', 'TiKV', 'PD');
 
@@ -175,6 +179,7 @@ SELECT CONCAT_WS('', 'TiDB Server', 'TiKV', 'PD');
 |                          TiDB ServerTiKVPD |
 +--------------------------------------------+
 ```
+
 ```sql
 SELECT CONCAT_WS(NULL, 'TiDB Server', 'TiKV', 'PD');
 
@@ -184,8 +189,10 @@ SELECT CONCAT_WS(NULL, 'TiDB Server', 'TiKV', 'PD');
 |                                         NULL |
 +----------------------------------------------+
 ```
+
 - 如果不为`NULL`的剩余参数只有一个，则`CONCAT_WS()`返回此参数
 - 如果用于连接的剩余参数中有`NULL`值，`CONCAT_WS()`会忽略值为`NULL`的参数；但如果值为空字符串，不会忽略
+
 ```sql
 SELECT CONCAT_WS(',', 'TiDB Server', NULL, 'PD');
 
@@ -195,6 +202,7 @@ SELECT CONCAT_WS(',', 'TiDB Server', NULL, 'PD');
 |                            TiDB Server,PD |
 +-------------------------------------------+
 ```
+
 ```sql
 SELECT CONCAT_WS(',', 'TiDB Server', NULL);
 
@@ -204,6 +212,7 @@ SELECT CONCAT_WS(',', 'TiDB Server', NULL);
 |                         TiDB Server |
 +-------------------------------------+
 ```
+
 ```sql
 SELECT CONCAT_WS(',', 'TiDB Server', '', 'PD');
 
