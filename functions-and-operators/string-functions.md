@@ -154,8 +154,7 @@ SELECT 'Ti' 'DB' ' ' 'Server';
 
 ### [`CONCAT_WS(separator,str1,str2,...)`](https://dev.mysql.com/doc/refman/8.0/en/string-functions.html#function_concat-ws)
 
-`CONCAT_WS()`函数是一种带分隔符的 `CONCAT()`，返回由分隔符连接的字符串。
-第一个参数作为分隔符，添加在剩余的不为`NULL`的参数的中间。
+`CONCAT_WS()`函数是一种带分隔符的 `CONCAT()`，返回由分隔符连接的字符串。 第一个参数作为分隔符，添加在剩余的不为`NULL`的参数的中间。
 
 ```sql
 SELECT CONCAT_WS(',', 'TiDB Server', 'TiKV', 'PD');
