@@ -480,7 +480,7 @@ TiDB 提供系统变量 [`tidb_last_query_info`](/system-variables.md#tidb_last_
 
 #### 慢查询及对应的系统表
 
-在开启资源管控时，TiDB 的[慢查询日志](/identify-slow-queries.md)以及对应系统表 [`INFORMATION_SCHEMA.SLOW_QUERY`](/information-schema/information-schema-slow-query.md) 中均包含对应 SQL 所属的资源组以及 RU 消耗等相关信息。
+在开启资源管控时，TiDB 的[慢查询日志](/identify-slow-queries.md)以及对应系统表 [`INFORMATION_SCHEMA.SLOW_QUERY`](/information-schema/information-schema-slow-query.md) 中均包含对应 SQL 所属的资源组、等待可用 RU 的耗时、以及真实 RU 消耗等相关信息。
 
 #### `statements_summary`
 
