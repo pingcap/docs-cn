@@ -270,9 +270,10 @@ TiDB 版本：7.6.0
 
 | 配置文件 | 配置项 | 修改类型 | 描述 |
 | -------- | -------- | -------- | -------- |
+| TiKV | [`blob-file-compression`](/tikv-configuration-file.md#blob-file-compression) | 修改 | Titan 中 value 所使用的压缩算法。从 v7.6.0 开始，默认采用 `zstd` 压缩算法。 |
 | TiKV | [`raftstore.periodic-full-compact-start-times`](/tikv-configuration-file.md#periodic-full-compact-start-times-从-v760-版本开始引入) | 新增 | 设置 TiKV 启动周期性全量数据整理 (Compaction) 的时间。默认值 `[]` 表示默认情况下禁用周期性全量数据整理。 |
 | TiKV | [`raftstore.periodic-full-compact-start-max-cpu`](/tikv-configuration-file.md#periodic-full-compact-start-max-cpu-从-v760-版本开始引入) | 新增 | 设置 TiKV 执行周期性全量数据整理时的 CPU 使用率阈值，默认值为 `0.1`。 |
-|          |          |          |          |
+| TiKV | [`zstd-dict-size`](/tikv-configuration-file.md#zstd-dict-size) | 新增 | 指定 zstd 字典大小，默认为 `0KB`，表示关闭 zstd 字典压缩。 |
 |          |          |          |          |
 |          |          |          |          |
 
