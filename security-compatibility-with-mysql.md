@@ -161,7 +161,7 @@ Payload 是 JWT 的主体部分，保存用户的信息，每个字段就是一�
 
 此外 TiDB 中还要求包含
 
-* `email`：邮件地址。创建用户时可以通过 `ATTRIBUTE '{"email": "xxxx@pingcap.com"}` 指定 email 信息。如果创建用户时未指定 email 信息，则该声明应设置为空串；否则应该与设置值相同
+* `email`：邮件地址。创建用户时可以通过 `ATTRIBUTE '{"email": "xxxx@pingcap.com"}'` 指定 email 信息。如果创建用户时未指定 email 信息，则该声明应设置为空串；否则应该与设置值相同
 
 下面是几个合法的 Payload 示例：
 
