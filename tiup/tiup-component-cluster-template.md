@@ -30,7 +30,7 @@ tiup cluster template [flags]
 
 ### --local
 
-- 输出简单本地集群的拓扑模版，该模版可以直接使用，global参数也可以按需调整。
+- 输出本地集群的简单拓扑模版，该模版可以直接使用，global 参数也可以按需调整。
 - 该模板会创建一个pd服务、一个tidb服务、一个tikv服务、一个monitoring服务、一个grafana服务。
 
 ### --multi-dc
