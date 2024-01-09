@@ -446,7 +446,7 @@ TiDB 提供系统变量 [`tidb_last_query_info`](/system-variables.md#tidb_last_
 
 使用示例：
 
-1. 首先执行 `UPDATE`` 语句：
+1. 首先执行 `UPDATE` 语句：
 
     ```sql
     UPDATE sbtest.sbtest1 SET k = k + 1 WHERE id = 1;
