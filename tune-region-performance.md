@@ -45,4 +45,4 @@ Region 调大以后，如需进一步提高查询的并发度，可以设置 [`c
 
 为确保服务的高可用性，PD leader 会将 Region 信息实时同步给 follower。PD follower 在内存中维护保存 Region 信息，从而具备处理 Region 信息请求的能力。你可以通过设置系统变量 [`pd_enable_follower_handle_region`](/system-variables.md#pd_enable_follower_handle_region-从-v760-版本开始引入) 开启 Active PD Follower 特性。启用该特性后，TiDB 在获取 Region 信息时会将请求均匀地发送到所有 PD 节点上，使 PD follower 也可以直接处理 Region 请求，从而降低减轻 PD leader 的 CPU 压力。
 
-PD 通过维护 Region 同步流的状态，并结合 TiKV client-go 的 fallback 机制，确保 TiDB 中的 Region 信息始终是最新的。若 PD leader 与 follower 之间网络不稳定或 follower 不可用， 导致 Region 同步流断开，PD follower 将拒绝处理 Region 请求。此时，TiDB 会自动向 PD leader 重试请求，并将该 follower 暂时标记为不可用状态。但是，在网络稳定时，由于 leader 和 follower 之间的同步可能存在延迟，从 follower 获取的部分 Region 信息可能是过时的。在这种情况下，如果 Region 对应的 KV Request 失败，TiDB 会重新向 PD leader 请求最新的 Region 信息，并再次向 TiKV 发送 KV Request。
+PD 通过维护 Region 同步流的状态，并结合 TiKV client-go 的 fallback 机制，确保 TiDB 中的 Region 信息始终是最新的。若 PD leader 与 follower 之间网络不稳定或 follower 不可用，导致 Region 同步流断开，PD follower 将拒绝处理 Region 请求。此时，TiDB 会自动向 PD leader 重试请求，并将该 follower 暂时标记为不可用状态。但是，在网络稳定时，由于 leader 和 follower 之间的同步可能存在延迟，从 follower 获取的部分 Region 信息可能是过时的。在这种情况下，如果 Region 对应的 KV Request 失败，TiDB 会重新向 PD leader 请求最新的 Region 信息，并再次向 TiKV 发送 KV Request。
