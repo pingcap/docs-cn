@@ -93,7 +93,8 @@ aliases: ['/docs-cn/dev/basic-features/','/docs-cn/dev/experimental-features-4.0
 |---|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|
 | [Prepare 语句执行计划缓存](/sql-prepared-plan-cache.md) |  Y  |  Y  | Y | Y | Y | Y | Y | E | E | E | E |
 | [非 Prepare 语句执行计划缓存](/sql-non-prepared-plan-cache.md) |  Y  |  Y  | E | N | N | N | N | N | N | N | N |
-| [执行计划管理 (SPM)](/sql-plan-management.md) |  Y  |  Y  | Y | Y | Y | Y | Y | Y | Y | Y | Y |
+| [执行计划绑定 (SQL Binding)](/sql-plan-management.md#执行计划绑定-sql-binding) |  Y  |  Y  | Y | Y | Y | Y | Y | Y | Y | Y | Y |
+| [跨数据库执行计划绑定 (Cross-DB Binding)](/sql-plan-management.md#跨数据库执行计划绑定-cross-db-binding) |  Y  |  N  | N | N | N | N | N | N | N | N | N |
 | [根据历史执行计划创建绑定](/sql-plan-management.md#根据历史执行计划创建绑定) |  Y  |  Y  | Y | E | N | N | N | N | N | N | N |
 | [下推计算结果缓存 (Coprocessor Cache)](/coprocessor-cache.md) |  Y  |  Y  | Y | Y | Y | Y | Y | Y | Y | Y | E |
 | [Stale Read](/stale-read.md) |  Y  |  Y  | Y | Y | Y | Y | Y | Y | Y | N | N |
