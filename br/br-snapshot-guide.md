@@ -211,7 +211,6 @@ TiDB 备份功能对集群性能（事务延迟和 QPS）有一定的影响，�
     --send-credentials-to-tikv=true \
     --log-file restorefull.log
     ```
- 
 
 ## 探索更多
 
