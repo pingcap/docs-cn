@@ -824,6 +824,7 @@ mysql> SHOW GLOBAL VARIABLES LIKE 'max_prepared_stmt_count';
 - 这个变量用于控制表是否必须有主键。启用该变量后，如果在没有主键的情况下创建或修改表，将返回错误。
 - 该功能基于 MySQL 8.0 的特性 [`sql_require_primary_key`](https://dev.mysql.com/doc/refman/8.0/en/server-system-variables.html#sysvar_sql_require_primary_key)。
 - 强烈推荐在使用 TiCDC 时启用该变量，因为同步数据变更至 MySQL sink 时要求表必须有主键。
+- 如果启用了该变量，且使用了 TiDB Data Migration (DM) 来迁移数据，建议在 [DM 任务配置文件](/dm/task-configuration-file-full.md#完整配置文件示例)里的 `session` 中添加该系统变量 `sql_require_primary_key` 并设置为 `OFF`，否则会导致 DM 任务创建失败。
 
 ### `sql_select_limit` <span class="version-mark">从 v4.0.2 版本开始引入</span>
 
