@@ -206,7 +206,7 @@ TiDB 版本：7.6.0
 
     * [慢查询日志](/identify-slow-queries.md) 增加资源组名称、RU 消耗、以及等待资源耗时。
     * [Statement Summary Tables](/statement-summary-tables.md) 增加资源组名称、RU 消耗、以及等待资源耗时。
-    * 向变量 [`tidb_last_query_info`](/system-variables.md#tidb_last_query_info-从-v4014-版本开始引入) 中增加 SQL 的 [RU](/tidb-resource-control.md#什么是-request-unit-ru) 消耗，客户可以利用此变量获取会话中上一条语句的资源消耗。
+    * 在变量 [`tidb_last_query_info`](/system-variables.md#tidb_last_query_info-从-v4014-版本开始引入) 中增加了 SQL 的 [RU](/tidb-resource-control.md#什么是-request-unit-ru) 消耗信息 `ru_consumption`，你可以利用此变量获取会话中上一条语句的资源消耗。
     * 增加基于[资源组的数据库指标](/grafana-resource-control-dashboard.md)：QPS/TPS、执行时间 (P999/P99/P95)、失败次数、连接数。
     * 增加系统表 [`request_unit_by_group`](/mysql-schema.md#system-tables-related-to-resource-control) 记录资源组每天的历史资源消耗。
 
