@@ -281,7 +281,7 @@ BATCH ON test.t2.id LIMIT 1 INSERT INTO t SELECT t2.id, t2.v, t3. FROM t2, t3 WH
 BATCH ON test.t2.id LIMIT 1 DRY RUN QUERY INSERT INTO t SELECT t2.id, t2.v, t3. FROM t2, t3 WHERE t2.id = t3.id
 ```
 
-要避免该错误，可以尝试将 `WHERE` 子句中涉及其它表的条件移动到 `JOIN` 的 `ON` 条件中，例如：
+要避免该错误，可以尝试将 `WHERE` 子句中涉及其它表的条件移动到 `JOIN` 的 `ON` 条件中。例如：
 
 ```sql
 BATCH ON test.t2.id LIMIT 1 INSERT INTO t SELECT t2.id, t2.v, t3. FROM t2 JOIN t3 ON t2.id=t3.id
