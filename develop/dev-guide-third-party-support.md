@@ -154,7 +154,7 @@ PingCAP 与开源社区合作，通过三方工具提供以下支持：
          <td>4.16.2</td>
          <td>Full</td>
          <td>N/A</td>
-         <td><a href="/tidb/dev/dev-guide-sample-application-nodejs-prisma">Connect to TiDB with Prisma</a></td>
+         <td><a href="/zh/tidb/dev/dev-guide-sample-application-nodejs-prisma">使用 Prisma 连接到 TiDB</a></td>
       </tr>
       <tr>
          <td><a href="https://typeorm.io/" target="_blank" referrerpolicy="no-referrer-when-downgrade">TypeORM</a></td>
@@ -169,7 +169,7 @@ PingCAP 与开源社区合作，通过三方工具提供以下支持：
          <td>v4.2</td>
          <td>Full</td>
          <td><a href="https://github.com/pingcap/django-tidb" target="_blank" referrerpolicy="no-referrer-when-downgrade">django-tidb</a></td>
-         <td><a href="/tidb/dev/dev-guide-sample-application-python-django">Connect to TiDB with Django</a></td>
+         <td><a href="/zh/tidb/dev/dev-guide-sample-application-python-django">使用 Django 连接到 TiDB</a></td>
       </tr>
       <tr>
          <td><a href="https://www.sqlalchemy.org/" target="_blank" referrerpolicy="no-referrer-when-downgrade">SQLAlchemy</a></td>
