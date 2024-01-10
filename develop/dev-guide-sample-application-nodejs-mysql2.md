@@ -90,12 +90,12 @@ npm install mysql2 dotenv --save
 6. 编辑 `.env` 文件，按照如下格式设置连接信息，将占位符 `{}` 替换为从连接对话框中复制的参数值：
 
     ```dotenv
-    TIDB_HOST={host}
-    TIDB_PORT=4000
-    TIDB_USER={user}
-    TIDB_PASSWORD={password}
-    TIDB_DATABASE=test
-    TIDB_ENABLE_SSL=true
+    TIDB_HOST='{host}'
+    TIDB_PORT='4000'
+    TIDB_USER='{user}'
+    TIDB_PASSWORD='{password}'
+    TIDB_DATABASE='test'
+    TIDB_ENABLE_SSL='true'
     ```
 
    > **Note**
@@ -123,13 +123,13 @@ npm install mysql2 dotenv --save
 5. 编辑 `.env` 文件，按照如下格式设置连接信息，将占位符 `{}` 替换为从连接对话框中复制的参数值：
 
     ```dotenv
-    TIDB_HOST={host}
-    TIDB_PORT=4000
-    TIDB_USER={user}
-    TIDB_PASSWORD={password}
-    TIDB_DATABASE=test
-    TIDB_ENABLE_SSL=true
-    TIDB_CA_PATH={downloaded_ssl_ca_path}
+    TIDB_HOST='{host}'
+    TIDB_PORT='4000'
+    TIDB_USER='{user}'
+    TIDB_PASSWORD='{password}'
+    TIDB_DATABASE='test'
+    TIDB_ENABLE_SSL='true'
+    TIDB_CA_PATH='{downloaded_ssl_ca_path}'
     ```
 
     > **Note**
@@ -153,11 +153,11 @@ npm install mysql2 dotenv --save
 2. 编辑 `.env` 文件，按照如下格式设置连接信息，将占位符 `{}` 替换为你的 TiDB 集群的连接参数值：
 
     ```dotenv
-    TIDB_HOST={host}
-    TIDB_PORT=4000
-    TIDB_USER=root
-    TIDB_PASSWORD={password}
-    TIDB_DATABASE=test
+    TIDB_HOST='{host}'
+    TIDB_PORT='4000'
+    TIDB_USER='root'
+    TIDB_PASSWORD='{password}'
+    TIDB_DATABASE='test'
     ```
 
 3. 保存 `.env` 文件。
@@ -275,8 +275,8 @@ console.log(rsh.affectedRows);
 
 ## 注意事项
 
-- 推荐使用[连接池](https://github.com/sidorares/node-mysql2#using-connection-pools)来管理数据库连接，以减少频繁建立和销毁连接所带来的性能开销。
-- 为了避免 SQL 注入的风险，推荐使用[预处理语句](https://github.com/sidorares/node-mysql2#using-prepared-statements)执行 SQL。
+- 推荐使用[连接池](https://sidorares.github.io/node-mysql2/docs#using-connection-pools)来管理数据库连接，以减少频繁建立和销毁连接所带来的性能开销。
+- 为了避免 SQL 注入的风险，推荐使用[预处理语句](https://sidorares.github.io/node-mysql2/docs#using-prepared-statements)执行 SQL。
 - 在不涉及大量复杂 SQL 语句的场景下，推荐使用 ORM 框架 (例如：[Sequelize](https://sequelize.org/)、[TypeORM](https://typeorm.io/) 或 [Prisma](https://www.prisma.io/)) 来提升你的开发效率。
 - 当你在数据表中使用到 `BIGINT` 和 `DECIMAL` 类型列时，需要开启 Driver 的 `supportBigNumbers: true` 选项。
 - 为了避免由于网络原因出现的 `read ECONNRESET` Socket 错误，可以在 Driver 上开启 `enableKeepAlive: true` 选项。（相关 Issue: [sidorares/node-mysql2#683](https://github.com/sidorares/node-mysql2/issues/683)）
