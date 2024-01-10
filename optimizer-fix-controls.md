@@ -26,21 +26,13 @@ SET SESSION tidb_opt_fix_control = '44262:ON,44389:ON';
 
 ## Optimizer Fix Controls 参考
 
-<<<<<<< HEAD
-### [`44262`](https://github.com/pingcap/tidb/issues/44262) <span class="version-mark">从 v7.1.1 版本开始引入</span>
-=======
-### [`44262`](https://github.com/pingcap/tidb/issues/44262) <span class="version-mark">从 v6.5.3 和 v7.2.0 版本开始引入</span>
->>>>>>> 8d4239d72e (fix: tidb_opt_fix_control is introduced in v6.5.3 (#16050))
+### [`44262`](https://github.com/pingcap/tidb/issues/44262) <span class="version-mark">从 v6.5.3 和 v7.1.1 版本开始引入</span>
 
 - 默认值：`OFF`
 - 可选值：`ON`、`OFF`
 - 是否允许在缺少 [GlobalStats](/statistics.md#动态裁剪模式下的分区表统计信息) 的情况下使用[动态裁剪模式](/partitioned-table.md#动态裁剪模式)访问分区表。
 
-<<<<<<< HEAD
-### [`44389`](https://github.com/pingcap/tidb/issues/44389) <span class="version-mark">从 v7.1.1 版本开始引入</span>
-=======
-### [`44389`](https://github.com/pingcap/tidb/issues/44389) <span class="version-mark">从 v6.5.3 和 v7.2.0 版本开始引入</span>
->>>>>>> 8d4239d72e (fix: tidb_opt_fix_control is introduced in v6.5.3 (#16050))
+### [`44389`](https://github.com/pingcap/tidb/issues/44389) <span class="version-mark">从 v6.5.3 和 v7.1.1 版本开始引入</span>
 
 - 默认值：`OFF`
 - 可选值：`ON`、`OFF`
@@ -53,17 +45,13 @@ SET SESSION tidb_opt_fix_control = '44262:ON,44389:ON';
 - 为了节省内存，对于参数超过指定个数的查询，Plan Cache 将不会缓存。
 - 这个开关用来调节该参数个数的阈值，`0` 表示无限制。
 
-<<<<<<< HEAD
-### [`44855`](https://github.com/pingcap/tidb/issues/44855) <span class="version-mark">从 v7.1.1 版本开始引入</span>
-=======
-### [`44830`](https://github.com/pingcap/tidb/issues/44830) <span class="version-mark">从 v6.5.7 和 v7.3.0 版本开始引入</span>
+### [`44830`](https://github.com/pingcap/tidb/issues/44830) <span class="version-mark">从 v6.5.7 版本开始引入</span>
 
 - 默认值：`OFF`
 - 可选值：`ON`、`OFF`
 - 此开关控制是否让 Plan Cache 对在物理优化阶段形成的 `PointGet` 计划进行缓存。
 
-### [`44855`](https://github.com/pingcap/tidb/issues/44855) <span class="version-mark">从 v6.5.4 和 v7.3.0 版本开始引入</span>
->>>>>>> 8d4239d72e (fix: tidb_opt_fix_control is introduced in v6.5.3 (#16050))
+### [`44855`](https://github.com/pingcap/tidb/issues/44855) <span class="version-mark">从 v6.5.4 和 v7.1.1 版本开始引入</span>
 
 - 默认值：`OFF`
 - 可选值：`ON`、`OFF`
