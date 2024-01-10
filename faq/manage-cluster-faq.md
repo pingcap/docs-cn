@@ -55,7 +55,7 @@ By default, TiDB/PD/TiKV outputs standard error in the logs. If a log file is sp
 
 ### Does TiDB support session timeout?
 
-TiDB currently supports two timeouts, [`wait_timeout`](/system-variables.md#wait_timeout) and [`interactive_timeout`](/system-variables.md#interactive_timeout).
+TiDB currently supports the following timeouts: [`wait_timeout`](/system-variables.md#wait_timeout), [`interactive_timeout`](/system-variables.md#interactive_timeout), and [`tidb_idle_transaction_timeout`](/system-variables.md#tidb_idle_transaction_timeout-new-in-v760).
 
 ### What is the TiDB version management strategy?
 

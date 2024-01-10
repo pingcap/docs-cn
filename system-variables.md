@@ -3098,9 +3098,21 @@ For a system upgraded to v5.0 from an earlier version, if you have not modified 
 - Scope: GLOBAL
 - Persists to cluster: Yes
 - Applies to hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value): No
-- Tyle: Duration
+- Type: Duration
 - Default value: `168h`, which means 7 days
 - This variable controls the duration that the historical statistics are retained in the storage.
+
+### tidb_idle_transaction_timeout <span class="version-mark">New in v7.6.0</span>
+
+- Scope: SESSION | GLOBAL
+- Persists to cluster: Yes
+- Applies to hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value): No
+- Type: Integer
+- Default value: `0`
+- Range: `[0, 31536000]`
+- Unit: Seconds
+- This variable controls the idle timeout for transactions in a user session. When a user session is in a transactional state and remains idle for a duration exceeding the value of this variable, TiDB will terminate the session. An idle user session means that there are no active requests and the session is waiting for new requests.
+- The default value `0` means unlimited.
 
 ### tidb_ignore_prepared_cache_close_stmt <span class="version-mark">New in v6.0.0</span>
 
