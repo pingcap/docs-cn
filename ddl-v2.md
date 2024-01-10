@@ -13,7 +13,7 @@ summary: 介绍 TiDB DDL V2 加速建表中的概念、原理、实现和影响�
 
 ## 与 TiDB 工具的兼容性
 
-- [TiCDC](/ticdc/ticdc-overview.md) 暂不支持 TiDB DDL V2 加速建表。
+- [TiCDC](/ticdc/ticdc-overview.md) 暂不支持同步通过 TiDB DDL V2 创建的表。
 
 ## 限制
 
