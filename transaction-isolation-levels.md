@@ -77,7 +77,7 @@ Starting from v6.0.0, TiDB supports using the [`tidb_rc_read_check_ts`](/system-
 - If TiDB does not encounter any data update during the read process, it returns the result to the client and the `SELECT` statement is successfully executed.
 - If TiDB encounters data update during the read process:
     - If TiDB has not yet sent the result to the client, TiDB tries to acquire a new timestamp and retry this statement.
-    - If TiDB has already sent partial data to the client, TiDB reports an error to the client. The amount of data sent to the client each time is controlled by `tidb_init_chunk_size` and `tidb_max_chunk_size`.
+    - If TiDB has already sent partial data to the client, TiDB reports an error to the client. The amount of data sent to the client each time is controlled by [`tidb_init_chunk_size`](/system-variables.md#tidb_init_chunk_size) and [`tidb_max_chunk_size`](/system-variables.md#tidb_max_chunk_size).
 
 In scenarios where the `READ-COMMITTED` isolation level is used, the `SELECT` statements are many, and read-write conflicts are rare, enabling this variable can avoid the latency and cost of getting the global timestamp.
 
