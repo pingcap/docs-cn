@@ -2918,7 +2918,24 @@ mysql> desc select count(distinct a) from test.t;
 - 这个变量用来控制是否启用 [TiFlash 延迟物化](/tiflash/tiflash-late-materialization.md)功能。注意在 TiFlash [Fast Scan 模式](/tiflash/use-fastscan.md)下，延迟物化功能暂不可用。
 - 当设置该变量为 `OFF` 关闭 TiFlash 延迟物化功能时，如果 `SELECT` 语句中包含过滤条件（`WHERE` 子句），TiFlash 会先扫描查询所需列的全部数据后再进行过滤。当设置该变量为 `ON` 开启 TiFlash 延迟物化功能时，TiFlash 会先扫描下推到 TableScan 算子的过滤条件相关的列数据，过滤得到符合条件的行后，再扫描这些行的其他列数据，继续后续计算，从而减少 IO 扫描和数据处理的计算量。
 
+<<<<<<< HEAD
 ### `tidb_opt_fix_control` <span class="version-mark">从 v6.5.7 和 v7.1.0 版本开始引入</span>
+=======
+### `tidb_opt_enable_mpp_shared_cte_execution` <span class="version-mark">从 v7.2.0 版本开始引入</span>
+
+> **警告：**
+>
+> 该变量控制的功能为实验特性，不建议在生产环境中使用。该功能可能会在未事先通知的情况下发生变化或删除。如果发现 bug，请在 GitHub 上提 [issue](https://github.com/pingcap/tidb/issues) 反馈。
+
+- 作用域：SESSION | GLOBAL
+- 是否持久化到集群：是
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：是
+- 类型：布尔型
+- 默认值：`OFF`
+- 该变量控制非递归的[公共表表达式 (CTE)](/sql-statements/sql-statement-with.md) 是否可以在 TiFlash MPP 执行。默认情况下，未开启该变量时，CTE 在 TiDB 执行，相较于开启该功能，执行性能有较大差距。
+
+### `tidb_opt_fix_control` <span class="version-mark">从 v6.5.3 和 v7.1.0 版本开始引入</span>
+>>>>>>> 8d4239d72e (fix: tidb_opt_fix_control is introduced in v6.5.3 (#16050))
 
 - 作用域：SESSION | GLOBAL
 - 是否持久化到集群：是
