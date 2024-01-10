@@ -148,7 +148,7 @@ PingCAP 与开源社区合作，通过三方工具提供以下支持：
          <td>v6.20.1</td>
          <td>Full</td>
          <td>N/A</td>
-         <td><a href="/tidb/dev/dev-guide-sample-application-nodejs-sequelize">Connect to TiDB with Sequelize</a></td>
+         <td>N/A</td>
       </tr>
       <tr>
          <td><a href="https://www.prisma.io/" target="_blank" referrerpolicy="no-referrer-when-downgrade">Prisma</a></td>
@@ -184,8 +184,8 @@ PingCAP 与开源社区合作，通过三方工具提供以下支持：
 
 ## GUI
 
-| GUI                                                       | Latest tested version | Support level | Tutorial                                                                      |
-|-----------------------------------------------------------|-----------------------|---------------|-------------------------------------------------------------------------------|
-| [JetBrains DataGrip](https://www.jetbrains.com/datagrip/) | 2023.2.1              | Full          | [使用 JetBrains DataGrip 连接到 TiDB](/develop/dev-guide-gui-datagrip.md) |
-| [DBeaver](https://dbeaver.io/)                            | 23.0.3                | Full          | [使用 DBeaver 连接到 TiDB](/develop/dev-guide-gui-dbeaver.md)             |
-| [Visual Studio Code](https://code.visualstudio.com/)                            | 1.72.0                | Full          | [使用 Visual Studio Code 连接到 TiDB](/develop/dev-guide-gui-vscode-sqltools.md)             |
+| GUI                                                       | 最新已测试版本 | 支持等级 | 教程 |
+|-----------------------------------------------------------|-----------------------|---------------|-----|
+| [JetBrains DataGrip](https://www.jetbrains.com/datagrip/) | 2023.2.1              | Full          | N/A |
+| [DBeaver](https://dbeaver.io/)                            | 23.0.3                | Full          | N/A |
+| [Visual Studio Code](https://code.visualstudio.com/)      | 1.72.0                | Full          | N/A |
