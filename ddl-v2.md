@@ -43,7 +43,7 @@ SET GLOBAL tidb_ddl_version = 1;
 
 ## 实现原理
 
-TiDB DDL V2 加速建表的详细的实现原理如下：
+TiDB DDL V2 加速建表的详细的实现步骤如下：
 
 1. 创建 `CREATE TABLE` Job。
 
