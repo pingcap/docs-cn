@@ -86,7 +86,7 @@ TiDB 对参数化后形式相同的查询，只能缓存一个计划。例如，
 - 不支持 `ORDER BY` 或者 `GROUP BY` 后直接带数字或者表达式的查询，如 `ORDER BY 1`、`GROUP BY a+1`。仅支持 `ORDER BY column_name` 和 `GROUP BY column_name`。
 - 不支持过滤条件中包含 `JSON`、`ENUM`、`SET` 或 `BIT` 类型的列的查询，例如 `SELECT * FROM t WHERE json_col = '{}'`。
 - 不支持过滤条件中出现 `NULL` 值的查询，例如 `SELECT * FROM t WHERE a is NULL`。
-- 默认不支持参数化后参数个数超过 200 个的查询，例如 `SELECT * FROM t WHERE a in (1, 2, 3, ... 201)`。从 v7.3.0 开始，你可以通过在 [`tidb_opt_fix_control`](/system-variables.md#tidb_opt_fix_control-从-v657-和-v710-版本开始引入) 系统变量中设置 [`44823`](/optimizer-fix-controls.md#44823-从-v730-版本开始引入) 这个 Fix 来调整该限制。
+- 默认不支持参数化后参数个数超过 200 个的查询，例如 `SELECT * FROM t WHERE a in (1, 2, 3, ... 201)`。从 v7.3.0 开始，你可以通过在 [`tidb_opt_fix_control`](/system-variables.md#tidb_opt_fix_control-从-v653-和-v710-版本开始引入) 系统变量中设置 [`44823`](/optimizer-fix-controls.md#44823-从-v730-版本开始引入) 这个 Fix 来调整该限制。
 - 不支持访问分区表、虚拟列、临时表、视图、或内存表的查询，例如 `SELECT * FROM INFORMATION_SCHEMA.COLUMNS`，其中 `COLUMNS` 为 TiDB 内存表。
 - 不支持带有 Hint 或有 Binding 的查询。
 - 默认不支持 DML 语句或包含 `FOR UPDATE` 的查询语句。若要启用支持，你可以执行 `SET tidb_enable_non_prepared_plan_cache_for_dml = ON`。
