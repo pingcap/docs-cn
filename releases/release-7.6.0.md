@@ -55,7 +55,7 @@ TiDB 版本：7.6.0
 
     随着 TiDB 集群规模的不断扩大，故障时快速恢复集群以减少业务中断时间显得尤为重要。在 v7.6.0 之前的版本中，Region 打散算法是性能恢复的主要瓶颈。在 v7.6.0 中，BR 优化了 Region 打散算法，可以迅速将恢复任务拆分为大量小任务，并批量分散到所有 TiKV 节点上。新的并行恢复算法充分利用每个 TiKV 节点的所有资源，实现了并行快速恢复。在实际案例中，大规模 Region 场景下，集群快照恢复速度最高提升约 10 倍。
 
-    目前，新的并行恢复算法为实验特性，你可以配置 `br` 新增的命令行参数 `--granularity=coarse-grained` 使用新算法，同时通过设置 `--tikv-max-restore-concurrency` 控制每个 TiKV 节点恢复任务的并发度。例如：
+    目前，新的并行恢复算法为实验特性，你可以配置 `br` 新增的命令行参数 `--granularity=coarse-grained` 使用新算法，同时通过设置 `--tikv-max-restore-concurrency` 控制每个 TiKV 节点下载任务的并发度。例如：
 
     ```bash
     br restore full \
