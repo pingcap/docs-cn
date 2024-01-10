@@ -28,6 +28,7 @@ Many `INFORMATION_SCHEMA` tables have a corresponding `SHOW` command. The benefi
 | `FILES`                                                                                 | Not implemented by TiDB. Returns zero rows. |
 | `GLOBAL_STATUS`                                                                         | Not implemented by TiDB. Returns zero rows. |
 | `GLOBAL_VARIABLES`                                                                      | Not implemented by TiDB. Returns zero rows. |
+| [`KEYWORDS`](/information-schema/information-schema-keywords.md)                        | Provides a full list of keywords.                |
 | [`KEY_COLUMN_USAGE`](/information-schema/information-schema-key-column-usage.md)        | Describes the key constraints of the columns, such as the primary key constraint. |
 | `OPTIMIZER_TRACE`                                                                       | Not implemented by TiDB. Returns zero rows. |
 | `PARAMETERS`                                                                            | Not implemented by TiDB. Returns zero rows. |

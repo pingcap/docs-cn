@@ -561,6 +561,7 @@
         - [`DDL_JOBS`](/information-schema/information-schema-ddl-jobs.md)
         - [`DEADLOCKS`](/information-schema/information-schema-deadlocks.md)
         - [`ENGINES`](/information-schema/information-schema-engines.md)
+        - [`KEYWORDS`](/information-schema/information-schema-keywords.md)
         - [`KEY_COLUMN_USAGE`](/information-schema/information-schema-key-column-usage.md)
         - [`MEMORY_USAGE`](/information-schema/information-schema-memory-usage.md)
         - [`MEMORY_USAGE_OPS_HISTORY`](/information-schema/information-schema-memory-usage-ops-history.md)
