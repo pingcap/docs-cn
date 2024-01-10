@@ -161,7 +161,7 @@ PingCAP 与开源社区合作，通过三方工具提供以下支持：
          <td>v0.3.17</td>
          <td>Full</td>
          <td>N/A</td>
-         <td><a href="/tidb/dev/dev-guide-sample-application-nodejs-typeorm">Connect to TiDB with TypeORM</a></td>
+         <td><a href="/zh/tidb/dev/dev-guide-sample-application-nodejs-typeorm">使用 TypeORM 连接到 TiDB</a></td>
       </tr>
       <tr>
          <td rowspan="2">Python</td>
