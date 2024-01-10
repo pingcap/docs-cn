@@ -473,9 +473,10 @@
         - [DM-worker 说明](/dm/dm-worker-intro.md)
         - [安全模式](/dm/dm-safe-mode.md)
         - [Relay Log](/dm/relay-log.md)
-        - [DDL 特殊处理说明](/dm/dm-ddl-compatible.md)
       - 运行机制
         - [DML 同步机制](/dm/dm-dml-replication-logic.md)
+        - [高可用机制](/dm/dm-high-availability.md)
+        - [DDL 特殊处理说明](/dm/dm-ddl-compatible.md)
       - 命令行
         - [DM-master & DM-worker](/dm/dm-command-line-flags.md)
       - 配置文件
@@ -925,6 +926,7 @@
         - [`INSPECTION_RESULT`](/information-schema/information-schema-inspection-result.md)
         - [`INSPECTION_RULES`](/information-schema/information-schema-inspection-rules.md)
         - [`INSPECTION_SUMMARY`](/information-schema/information-schema-inspection-summary.md)
+        - [`KEYWORDS`](/information-schema/information-schema-keywords.md)
         - [`KEY_COLUMN_USAGE`](/information-schema/information-schema-key-column-usage.md)
         - [`MEMORY_USAGE`](/information-schema/information-schema-memory-usage.md)
         - [`MEMORY_USAGE_OPS_HISTORY`](/information-schema/information-schema-memory-usage-ops-history.md)
@@ -1035,6 +1037,7 @@
   - v6.6
     - [6.6.0-DMR](/releases/release-6.6.0.md)
   - v6.5
+    - [6.5.7](/releases/release-6.5.7.md)
     - [6.5.6](/releases/release-6.5.6.md)
     - [6.5.5](/releases/release-6.5.5.md)
     - [6.5.4](/releases/release-6.5.4.md)
