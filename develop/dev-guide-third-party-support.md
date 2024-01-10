@@ -140,7 +140,7 @@ PingCAP 与开源社区合作，通过三方工具提供以下支持：
          <td>v7.0</td>
          <td>Full</td>
          <td>N/A</td>
-         <td><a href="/zh/tidb/dev/dev-guide-sample-application-ruby-rails">使用 Rails 框架和 ActiveRecord ORM 连接 TiDB</a></td>
+         <td><a href="/zh/tidb/dev/dev-guide-sample-application-ruby-rails">使用 Rails 框架和 ActiveRecord ORM 连接到 TiDB</a></td>
       </tr>
       <tr>
          <td rowspan="3">JavaScript / TypeScript</td>
