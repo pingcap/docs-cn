@@ -29,7 +29,6 @@ DESC keywords;
 - `WORD`：关键字
 - `RESERVED`：关键字是否为保留关键字
 
-
 例如，你可以使用以下 SQL 语句查询 `ADD` 和 `USER` 关键字的信息：
 
 ```sql
