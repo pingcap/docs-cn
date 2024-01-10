@@ -186,6 +186,6 @@ PingCAP 与开源社区合作，通过三方工具提供以下支持：
 
 | GUI                                                       | Latest tested version | Support level | Tutorial                                                                      |
 |-----------------------------------------------------------|-----------------------|---------------|-------------------------------------------------------------------------------|
-| [JetBrains DataGrip](https://www.jetbrains.com/datagrip/) | 2023.2.1              | Full          | [Connect to TiDB with JetBrains DataGrip](/develop/dev-guide-gui-datagrip.md) |
-| [DBeaver](https://dbeaver.io/)                            | 23.0.3                | Full          | [Connect to TiDB with DBeaver](/develop/dev-guide-gui-dbeaver.md)             |
-| [Visual Studio Code](https://code.visualstudio.com/)                            | 1.72.0                | Full          | [Connect to TiDB with Visual Studio Code](/develop/dev-guide-gui-vscode-sqltools.md)             |
+| [JetBrains DataGrip](https://www.jetbrains.com/datagrip/) | 2023.2.1              | Full          | [使用 JetBrains DataGrip 连接到 TiDB](/develop/dev-guide-gui-datagrip.md) |
+| [DBeaver](https://dbeaver.io/)                            | 23.0.3                | Full          | [使用 DBeaver 连接到 TiDB](/develop/dev-guide-gui-dbeaver.md)             |
+| [Visual Studio Code](https://code.visualstudio.com/)                            | 1.72.0                | Full          | [使用 Visual Studio Code 连接到 TiDB](/develop/dev-guide-gui-vscode-sqltools.md)             |
