@@ -145,6 +145,10 @@ Most of the APIs of PD are available only when the TiKV cluster is initialized. 
 
 This is because the `--initial-cluster` in the PD startup parameter contains a member that doesn't belong to this cluster. To solve this problem, check the corresponding cluster of each member, remove the wrong member, and then restart PD.
 
+### The `[PD:encryption:ErrEncryptionNewMasterKey]fail to get encryption key from file /root/path/file%!(EXTRA string=open /root/path/file: permission denied)` message is displayed when enabling encryption at rest for PD
+ 
+Encryption at rest does not support storing the key file in the `root` directory or its subdirectories. Even if you grant read permissions, the same error occurs. To resolve this issue, store the key file in a location outside the `root` directory.
+
 ### What's the maximum tolerance for time synchronization error of PD?
 
 PD can tolerate any synchronization error, but a larger error value means a larger gap between the timestamp allocated by the PD and the physical time, which will affect functions such as read of historical versions.
