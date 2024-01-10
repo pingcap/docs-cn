@@ -1495,7 +1495,7 @@ mysql> SELECT job_info FROM mysql.analyze_jobs ORDER BY end_time DESC LIMIT 1;
 - 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：否
 - 默认值：`1`
 - 取值范围：`1` 或 `2`
-- 这个变量用于控制是否开启 [TiDB DDL V2](/ddl-v2.md)。开启后，将使用新版本的实现执行 DDL 语句。将该变量的值设置为 `2` 可以开启该功能，设置为 `1` 可以关闭该功能。默认值为 `1`。
+- 这个变量用于控制是否开启 [TiDB DDL V2](/ddl-v2.md)。将该变量的值设置为 `2` 可以开启该功能，设置为 `1` 可以关闭该功能。默认值为 `1`。开启后，将使用 TiDB DDL V2 执行 DDL 语句。
 - 从 TiDB v7.6.0 开始，支持加速建表 [`CREATE TABLE`](/sql-statements/sql-statement-create-table.md)。
 
 ### `tidb_default_string_match_selectivity` <span class="version-mark">从 v6.2.0 版本开始引入</span>
