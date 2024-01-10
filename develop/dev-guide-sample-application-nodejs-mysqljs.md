@@ -91,12 +91,12 @@ npm install mysql dotenv --save
 6. 编辑 `.env` 文件，按照如下格式设置连接信息，将占位符 `{}` 替换为从连接对话框中复制的参数值：
 
     ```dotenv
-    TIDB_HOST={host}
-    TIDB_PORT=4000
-    TIDB_USER={user}
-    TIDB_PASSWORD={password}
-    TIDB_DATABASE=test
-    TIDB_ENABLE_SSL=true
+    TIDB_HOST='{host}'
+    TIDB_PORT='4000'
+    TIDB_USER='{user}'
+    TIDB_PASSWORD='{password}'
+    TIDB_DATABASE='test'
+    TIDB_ENABLE_SSL='true'
     ```
    
     > **Note**
@@ -124,13 +124,13 @@ npm install mysql dotenv --save
 5. 编辑 `.env` 文件，按照如下格式设置连接信息，将占位符 `{}` 替换为从连接对话框中复制的参数值：
 
     ```dotenv
-    TIDB_HOST={host}
-    TIDB_PORT=4000
-    TIDB_USER={user}
-    TIDB_PASSWORD={password}
-    TIDB_DATABASE=test
-    TIDB_ENABLE_SSL=true
-    TIDB_CA_PATH={downloaded_ssl_ca_path}
+    TIDB_HOST='{host}'
+    TIDB_PORT='4000'
+    TIDB_USER='{user}'
+    TIDB_PASSWORD='{password}'
+    TIDB_DATABASE='test'
+    TIDB_ENABLE_SSL='true'
+    TIDB_CA_PATH='{downloaded_ssl_ca_path}'
     ```
 
     > **Note**
@@ -154,11 +154,11 @@ npm install mysql dotenv --save
 2. 编辑 `.env` 文件，按照如下格式设置连接信息，将占位符 `{}` 替换为你的 TiDB 集群的连接参数值：
 
     ```dotenv
-    TIDB_HOST={host}
-    TIDB_PORT=4000
-    TIDB_USER=root
-    TIDB_PASSWORD={password}
-    TIDB_DATABASE=test
+    TIDB_HOST='{host}'
+    TIDB_PORT='4000'
+    TIDB_USER='root'
+    TIDB_PASSWORD='{password}'
+    TIDB_DATABASE='test'
     ```
 
 3. 保存 `.env` 文件。
@@ -199,15 +199,15 @@ npm run start
 下面的代码使用环境变量中定义的连接选项来建立与 TiDB 集群的连接。
 
 ```javascript
-// Step 1. Import the 'mysql' and 'dotenv' packages.
+// 步骤 1. 导入 'mysql' 和 'dotenv' 依赖包。
 import { createConnection } from "mysql";
 import dotenv from "dotenv";
 import * as fs from "fs";
 
-// Step 2. Load environment variables from .env file to process.env.
+// 步骤 2. 将连接参数从 .env 文件中读取到 process.env 中。
 dotenv.config();
 
-// Step 3. Create a connection with the TiDB cluster.
+// 步骤 3. 创建与 TiDB 集群的连接。
 const options = {
    host: process.env.TIDB_HOST || '127.0.0.1',
    port: process.env.TIDB_PORT || 4000,
@@ -221,9 +221,9 @@ const options = {
 }
 const conn = createConnection(options);
 
-// Step 4. Perform some SQL operations...
+// 步骤 4. 执行 SQL 语句。
 
-// Step 5. Close the connection.
+// 步骤 5. 关闭连接。
 conn.end();
 ```
 
