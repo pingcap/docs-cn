@@ -161,6 +161,38 @@ cd tidb-java-jdbc-quickstart
     make
     ```
 
+    若运行 `make` 时出现错误：
+
+    ```bash
+    . env.sh && make build run
+    /bin/sh: 1: .: env.sh: not found
+    make: *** [Makefile:18: all] Error 2
+    ```
+
+    检查当前 `shell` 是否用的 `bash`，然后替换Makefile中 `. env.sh` 为 `bash env.sh`。如果问题还是存在，更改Makefile文件中 `. env.sh` 为绝对路径，比如 `/root/TiDB/tidb-java-jdbc-quickstart/env.sh`。
+
+    修改 tidb-java-jdbc-quickstart/src/main/java/com/pingcap/JDBCExample.java文件中参数。
+
+    ```java
+    public MysqlDataSource getMysqlDataSource() throws SQLException {
+        MysqlDataSource mysqlDataSource = new MysqlDataSource();
+
+        mysqlDataSource.setServerName(${tidb_host});
+        mysqlDataSource.setPortNumber(${tidb_port});
+        mysqlDataSource.setUser(${tidb_user});
+        mysqlDataSource.setPassword(${tidb_password});
+        mysqlDataSource.setDatabaseName(${tidb_db_name});
+        if (${tidb_use_ssl}) {
+            mysqlDataSource.setSslMode(PropertyDefinitions.SslMode.VERIFY_IDENTITY.name());
+            mysqlDataSource.setEnabledTLSProtocols("TLSv1.2,TLSv1.3");
+        }
+
+        return mysqlDataSource;
+    }
+    ```
+
+    你需要将 `${tidb_host}`、`${tidb_port}`、`${tidb_user}`、`${tidb_password}`、`${tidb_db_name}` 等替换为你的 TiDB 集群的实际值。
+
 2. 查看 [`Expected-Output.txt`](https://github.com/tidb-samples/tidb-java-jdbc-quickstart/blob/main/Expected-Output.txt)，并与你的程序输出进行比较。结果近似即为连接成功。
 
 ## 示例代码片段
