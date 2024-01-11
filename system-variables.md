@@ -1417,7 +1417,7 @@ mysql> SELECT job_info FROM mysql.analyze_jobs ORDER BY end_time DESC LIMIT 1;
 
 > **注意：**
 > 
-> * 目前 global sort 会使用大量 TiDB 节点的计算与内存资源，对于在线增加索引这种同时有用户业务在运行的场景，建议用户扩展出新的 TiDB 节点并设置这些 TiDB 节点的 tidb_service_scope 为 "background", 这样分布式框架就会将任务调度到这些节点上，不影响在线业务。 
+> * 目前 global sort 会使用大量 TiDB 节点的计算与内存资源，对于在线增加索引这种同时有用户业务在运行的场景，建议用户扩展出新的 TiDB 节点并设置这些 TiDB 节点的 tidb_service_scope 为 "background", 这样分布式框架就会将任务调度到这些节点上，，减少由于执行后端任务造成的对于用户业务的影响。 
 
 - 作用域：GLOBAL
 - 是否持久化到集群：是
