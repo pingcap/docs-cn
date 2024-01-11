@@ -178,7 +178,6 @@ pip install -r requirements.txt
 from pymysql import Connection
 from pymysql.cursors import DictCursor
 
-
 def get_connection(autocommit: bool = True) -> Connection:
     config = Config()
     db_conf = {
@@ -207,7 +206,7 @@ def get_connection(autocommit: bool = True) -> Connection:
 with get_connection(autocommit=True) as conn:
     with conn.cursor() as cur:
         player = ("1", 1, 1)
-        cursor.execute("INSERT INTO players (id, coins, goods) VALUES (%s, %s, %s)", player)
+        cur.execute("INSERT INTO players (id, coins, goods) VALUES (%s, %s, %s)", player)
 ```
 
 更多信息参考[插入数据](/develop/dev-guide-insert-data.md)。
@@ -228,8 +227,8 @@ with get_connection(autocommit=True) as conn:
 ```python
 with get_connection(autocommit=True) as conn:
     with conn.cursor() as cur:
-        player_id, amount, price="1", 10, 500
-        cursor.execute(
+        player_id, amount, price = "1", 1, 50
+        cur.execute(
             "UPDATE players SET goods = goods + %s, coins = coins + %s WHERE id = %s",
             (-amount, price, player_id),
         )
@@ -243,7 +242,7 @@ with get_connection(autocommit=True) as conn:
 with get_connection(autocommit=True) as conn:
     with conn.cursor() as cur:
         player_id = "1"
-        cursor.execute("DELETE FROM players WHERE id = %s", (player_id,))
+        cur.execute("DELETE FROM players WHERE id = %s", player_id)
 ```
 
 更多信息参考[删除数据](/develop/dev-guide-delete-data.md)。
@@ -258,7 +257,7 @@ Python 驱动程序提供对数据库的底层访问，但要求开发者：
 - 手动管理数据库事务
 - 手动将数据行（在 pymysql 中表示为元组 (tuple) 或者字典 (dict)）映射为数据对象
 
-建议仅在需要编写复杂的 SQL 语句时使用驱动程序。其他情况下，建议使用 [ORM](https://zh.wikipedia.org/wiki/对象关系映射) 框架进行开发，例如 [SQLAlchemy](/develop/dev-guide-sample-application-python-sqlalchemy.md)、[Peewee](/develop/dev-guide-sample-application-python-peewee.md) 和 Django。ORM 可以帮助你：
+建议仅在需要编写复杂的 SQL 语句时使用驱动程序。其他情况下，建议使用 [ORM](https://zh.wikipedia.org/wiki/对象关系映射) 框架进行开发，例如 [SQLAlchemy](/develop/dev-guide-sample-application-python-sqlalchemy.md)、[Peewee](/develop/dev-guide-sample-application-python-peewee.md) 和 [Django](/develop/dev-guide-sample-application-python-django.md)。ORM 可以帮助你：
 
 - 减少管理连接和事务的[模板代码](https://en.wikipedia.org/wiki/Boilerplate_code)
 - 使用数据对象代替大量 SQL 语句来操作数据
