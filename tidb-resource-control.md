@@ -434,7 +434,7 @@ Runaway Query 是指执行时间或消耗资源超出预期的查询（仅指 `S
 
 3. 将 TiFlash 参数 [`enable_resource_control`](/tiflash/tiflash-configuration.md#配置文件-tiflashtoml) 设为 `false`，关闭 TiFlash 资源管控。
 
-## RU 消耗的可观测性
+## 查看 RU 消耗
 
 你可以查看 RU 消耗的相关信息。
 
@@ -453,7 +453,7 @@ TiDB 提供系统变量 [`tidb_last_query_info`](/system-variables.md#tidb_last_
 
 使用示例：
 
-1. 首先执行 `UPDATE` 语句：
+1. 执行 `UPDATE` 语句：
 
     ```sql
     UPDATE sbtest.sbtest1 SET k = k + 1 WHERE id = 1;
@@ -464,7 +464,7 @@ TiDB 提供系统变量 [`tidb_last_query_info`](/system-variables.md#tidb_last_
     Rows matched: 1  Changed: 1  Warnings: 0
     ```
 
-2. 然后通过查询系统变量 `tidb_last_query_info`，查看上条执行的语句的相关信息：
+2. 通过查询系统变量 `tidb_last_query_info`，查看上条执行的语句的相关信息：
 
     ```sql
     SELECT @@tidb_last_query_info;
