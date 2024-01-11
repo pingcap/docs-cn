@@ -199,7 +199,7 @@ spring:
 - `TIDB_USER`: `"root"`
 - `TIDB_PASSWORD`: `""`
 
-### 数据管理：
+### 数据管理
 
 Spring Data JPA 通过 `@Entity` 注册数据实体，并绑定数据库的表。
 
