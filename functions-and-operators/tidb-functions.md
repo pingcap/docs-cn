@@ -100,7 +100,7 @@ SELECT tidb_decode_key('7480000000000000FF3E5F720400000000FF0000000601633430FF33
 1 row in set (0.001 sec)
 ```
 
-The first Region of a table starts with a key that only has the `table_id` of the table. The last Region of the table ends with `table_id + 1`. Any Regions in between have longer keys that includes a `_tidb_rowid` or `handle`.
+表中的第一个Region以一个仅包含`table_id`的key开头。表中最后一个Region以`table_id + 1`结束。中间的Region有着更长的key，包含`_tidb_rowid`或者`handle`。
 
 ```sql
 SELECT
@@ -128,7 +128,7 @@ ORDER BY
 4 rows in set (0.031 sec)
 ```
 
-`TIDB_DECODE_KEY` returns valid JSON on success and retuns the argument value if it fails to decode.
+TIDB_DECODE_KEY 在成功解码时返回有效的JSON，在解码失败时返回传入的参数值。
 
 ### TIDB_DECODE_PLAN
 
@@ -281,8 +281,6 @@ select tidb_decode_sql_digests(@digests, 10);
 
     以下示例说明如何使用 `TIDB_SHARD` 函数计算 `12373743746` 的 SHARD 值。
 
-    {{< copyable "sql" >}}
-
     ```sql
     SELECT TIDB_SHARD(12373743746);
     ```
@@ -299,8 +297,6 @@ select tidb_decode_sql_digests(@digests, 10);
     ```
 
 - 使用 `TIDB_SHARD` 函数创建 SHARD INDEX
-
-    {{< copyable "sql" >}}
 
     ```sql
     CREATE TABLE test(id INT PRIMARY KEY CLUSTERED, a INT, b INT, UNIQUE KEY uk((tidb_shard(a)), a));
