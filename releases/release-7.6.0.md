@@ -53,6 +53,16 @@ TiDB 版本：7.6.0
 
 ## 功能详情
 
+### 可扩展性
+
+* 通过 Active PD Follower 提升 PD Region 信息查询服务的扩展能力（实验特性）[#7431](https://github.com/tikv/pd/issues/7431) @[CabinfeverB](https://github.com/CabinfeverB) **tw@Oreoxmt** <!--1667-->
+
+    当集群的 Region 数量较多时，PD leader 处理心跳和调度任务的开销也较大，可能导致 CPU 资源紧张。如果同时集群中的 TiDB 实例数量较多，查询 Region 信息请求并发量较大，PD leader CPU 压力将变得更大，可能会造成 PD 服务不可用。
+
+    为确保服务的高可用性，TiDB v7.6.0 引入 Active PD Follower 提升 PD Region 信息查询服务的扩展能力。可以通过设置系统变量 [`pd_enable_follower_handle_region`](/system-variables.md#pd_enable_follower_handle_region-从-v760-版本开始引入) 开启 Active PD Follower 特性。启用该特性后，TiDB 在获取 Region 信息时会将请求均匀地发送到所有 PD 节点上，使 PD follower 也可以直接处理 Region 请求，从而降低减轻 PD leader 的 CPU 压力。
+
+    更多信息，请参考[用户文档](/tune-region-performance.md#通过-active-pd-follower-提升-pd-region-信息查询服务的扩展能力)。
+
 ### 性能
 
 * BR 快照恢复速度最高提升 10 倍（实验特性）[#33937](https://github.com/pingcap/tidb/issues/33937) @[3pointer](https://github.com/3pointer) **tw@Oreoxmt** <!--1647-->
@@ -139,15 +149,6 @@ TiDB 版本：7.6.0
     TiProxy 已集成至 TiUP、TiDB Operator、TiDB Dashboard 等 TiDB 基本组件中，可以方便地进行配置、部署和运维。
 
     更多信息，请参考[用户文档](/tiproxy/tiproxy-overview.md)。
-### 可扩展性
-
-* 通过 Active PD Follower 提升 PD Region 信息查询服务的扩展能力（实验特性）[#7431](https://github.com/tikv/pd/issues/7431) @[CabinfeverB](https://github.com/CabinfeverB) **tw@Oreoxmt** <!--1667-->
-
-    当集群的 Region 数量较多时，PD leader 处理心跳和调度任务的开销也较大，可能导致 CPU 资源紧张。如果同时集群中的 TiDB 实例数量较多，查询 Region 信息请求并发量较大，PD leader CPU 压力将变得更大，可能会造成 PD 服务不可用。
-
-    为确保服务的高可用性，TiDB v7.6.0 引入 Active PD Follower 提升 PD Region 信息查询服务的扩展能力。可以通过设置系统变量 [`pd_enable_follower_handle_region`](/system-variables.md#pd_enable_follower_handle_region-从-v760-版本开始引入) 开启 Active PD Follower 特性。启用该特性后，TiDB 在获取 Region 信息时会将请求均匀地发送到所有 PD 节点上，使 PD follower 也可以直接处理 Region 请求，从而降低减轻 PD leader 的 CPU 压力。
-
-    更多信息，请参考[用户文档](/tune-region-performance.md#通过-active-pd-follower-提升-pd-region-信息查询服务的扩展能力)。
 
 ### SQL 功能
 
