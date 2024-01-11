@@ -473,12 +473,8 @@ I/O rate limiter 相关的配置项。
 ### `mode`
 
 + 确定哪些类型的 I/O 操作被计数并受 `max-bytes-per-sec` 阈值的限流。当前 TiKV 只支持 write-only 只写模式。
-<<<<<<< HEAD
 + 可选值：write-only
 + 默认值：write-only
-=======
-+ 可选值：`"read-only"`，`"write-only"`，`"all-io"`
-+ 默认值：`"write-only"`
 
 ## pd
 
@@ -510,7 +506,6 @@ I/O rate limiter 相关的配置项。
 + 初始化 PD 连接的最大重试次数。
 + 要禁用重试，请将该值设置为 `0`。要解除重试次数的限制，请将该值设置为 `-1`。
 + 默认值：`-1`
->>>>>>> 26e8d197d5 (move tikv configure item `pd.enable-forwarding` to correct place (#16102))
 
 ## raftstore
 
