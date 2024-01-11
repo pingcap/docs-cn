@@ -279,7 +279,9 @@ TiDB 版本：7.6.0
 | [`tidb_ddl_version`](/system-variables.md#tidb_ddl_version-从-v760-版本开始引入)  |  新增  | 用于控制是否开启 [TiDB DDL V2](/ddl-v2.md)。将该变量的值设置为 `2` 可以开启该功能，设置为 `1` 关闭该功能。默认值为 `1`。开启后，将使用新版本的实现执行 DDL 语句。TiDB DDL V2 对 DDL 功能做了提升，建表 DDL 的执行速度相比 V1 版本提升 10 倍。 |
 | [`tidb_enable_global_index`](/system-variables.md#tidb_enable_global_index-从-v760-版本开始引入)  |  新增  | 用于控制是否支持对分区表创建 `Global index`。默认值为 `OFF`。`Global index` 当前正处于开发阶段，**不推荐修改该变量值**。 |
 | [`tidb_idle_transaction_timeout`](/system-variables.md#tidb_idle_transaction_timeout-从-v760-版本开始引入) | 新增 | 用来控制用户会话中事务的空闲超时。当用户会话处于事务状态且空闲时间超过该变量设定的值时，会话会被 Kill 掉。默认值 `0` 表示没有时间限制。 |
+| [`tidb_opt_enable_fuzzy_binding`](/system-variables.md#tidb_opt_enable_fuzzy_binding-从-v760-版本开始引入) | 新增 | 用于控制是否开启跨数据库绑定执行计划功能，默认值 `OFF` 表示默认关闭。 |
 | [`tidb_txn_entry_size_limit`](/system-variables.md#tidb_txn_entry_size_limit-从-v760-版本开始引入) | 新增 | 用于动态修改 TiDB 配置项 [`performance.txn-entry-size-limit`](/tidb-configuration-file.md#txn-entry-size-limit-从-v50-版本开始引入)，即限制 TiDB 单行数据的大小。默认值为 `0`，表示默认使用配置项的值。当设置为非 `0` 值时，优先使用该变量的值作为 `txn-entry-size-limit` 的值。 |
+| [`pd_enable_follower_handle_region`](/system-variables.md#pd_enable_follower_handle_region-从-v760-版本开始引入) | 新增 | 用于控制是否开启 [Active PD Follower](/tune-region-performance.md#通过-active-pd-follower-提升-pd-region-信息查询服务的扩展能力)（实验特性）。当该值为 `OFF` 时，TiDB 仅从 PD leader 获取 Region 信息。当该值为 `ON` 时，TiDB 在获取 Region 信息时会将请求均匀地发送到所有 PD 节点上，因此 PD follower 也可以处理 Region 信息请求，从而减轻 PD leader 的 CPU 压力。 |
 
 ### 配置文件参数
 
@@ -290,6 +292,8 @@ TiDB 版本：7.6.0
 | TiKV | [`raftstore.periodic-full-compact-start-times`](/tikv-configuration-file.md#periodic-full-compact-start-times-从-v760-版本开始引入) | 新增 | 设置 TiKV 启动周期性全量数据整理 (Compaction) 的时间。默认值 `[]` 表示默认情况下禁用周期性全量数据整理。 |
 | TiKV | [`raftstore.periodic-full-compact-start-max-cpu`](/tikv-configuration-file.md#periodic-full-compact-start-max-cpu-从-v760-版本开始引入) | 新增 | 设置 TiKV 执行周期性全量数据整理时的 CPU 使用率阈值，默认值为 `0.1`。 |
 | TiKV | [`zstd-dict-size`](/tikv-configuration-file.md#zstd-dict-size) | 新增 | 指定 zstd 字典大小，默认值为 `0KB`，表示关闭 `zstd` 字典压缩。 |
+| BR | `--granularity` | 新增 | 通过设置 `--granularity=coarse-grained` 启用粗细粒度结合的 Region 打散算法（实验特性）进行恢复。 |
+| BR | `--tikv-max-restore-concurrency` | 新增 | 设置单 TiKV 节点的下载任务并发度。 |
 |          |          |          |          |
 |          |          |          |          |
 
