@@ -34,6 +34,10 @@ DM-worker 内部用于读取上游 Binlog 或本地 Relay log 并迁移到下游
 
 针对上游数据库实例表的黑白名单过滤功能，具体可参考 [Block & Allow Table Lists](/dm/dm-block-allow-table-lists.md)。该功能与 [MySQL Replication Filtering](https://dev.mysql.com/doc/refman/8.0/en/replication-rules.html) 及 [MariaDB Replication Filters](https://mariadb.com/kb/en/library/replication-filters/) 类似。
 
+### Bound
+
+DM worker 与 source 的绑定关系，即一个 DM worker 在同一时间仅能处理一个 source 的迁移任务。当 DM worker 开始接收某个 source 的 binlog 后，该 DM worker 将不能再处理其他 source 的迁移任务。
+
 ## C
 
 ### Checkpoint
@@ -115,6 +119,10 @@ DM-worker 内部用于从上游拉取 Binlog 并写入数据到 Relay log 的处
 ### Shard group
 
 指合库合表迁移过程中，需要合并迁移到下游同一张表的所有上游分表 (shard)，TiDB DM 内部具体实现时使用了两级抽象的 Shard group，具体可查看[悲观模式下分库分表合并迁移实现原理](/dm/feature-shard-merge-pessimistic.md#实现原理)。在当前文档中，有时也称作 Sharding group。
+
+### Source
+
+上游数据库源实例，例如一个 MySQL 实例。
 
 ### Subtask
 

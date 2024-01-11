@@ -172,7 +172,7 @@ TiDB 7.1.0 为长期支持版本 (Long-Term Support Release, LTS)。
 
     TiDB v7.1.0 引入了轻量级的统计信息初始化功能作为实验特性。轻量级的统计信息初始化可以大幅减少启动时必须加载的统计信息的数量，从而提升启动过程中统计信息的加载速度。该功能提升了 TiDB 在复杂运行环境下的稳定性，并降低了部分 TiDB 节点重启对整体服务的影响。你可以通过修改 TiDB 配置参数 [`lite-init-stats`](/tidb-configuration-file.md#lite-init-stats-从-v710-版本开始引入) 为 `true` 来开启该特性。
 
-    在 TiDB 启动阶段，如果在初始统计信息加载完成之前执行 SQL，可能会产生不合理的执行计划，进而造成性能问题。为了避免这种情况，TiDB v7.1.0 引入了配置项 [`force-init-stats`](/tidb-configuration-file.md#force-init-stats-从-v710-版本开始引入)。你可以控制 TiDB 是否在统计信息初始化完成后再对外提供服务。该配置项默认关闭。
+    在 TiDB 启动阶段，如果在初始统计信息加载完成之前执行 SQL，可能会产生不合理的执行计划，进而造成性能问题。为了避免这种情况，TiDB v7.1.0 引入了配置项 [`force-init-stats`](/tidb-configuration-file.md#force-init-stats-从-v657-和-v710-版本开始引入)。你可以控制 TiDB 是否在统计信息初始化完成后再对外提供服务。该配置项默认关闭。
 
     更多信息，请参考[用户文档](/statistics.md#统计信息的加载)。
 
@@ -335,7 +335,7 @@ TiDB 7.1.0 为长期支持版本 (Long-Term Support Release, LTS)。
 | [`tidb_enable_dist_task`](/system-variables.md#tidb_enable_dist_task-从-v710-版本开始引入) | 新增 | 控制是否开启分布式执行框架。开启分布式执行后，DDL、Import 等支持的分布式执行框架任务将会由集群中多个 TiDB 节点共同完成。该变量由 `tidb_ddl_distribute_reorg` 改名而来。|
 | [`tidb_enable_non_prepared_plan_cache_for_dml`](/system-variables.md#tidb_enable_non_prepared_plan_cache_for_dml-从-v710-版本开始引入) | 新增 | 控制非 Prepare 语句执行计划缓存是否支持 DML 语句。 |
 | [`tidb_enable_row_level_checksum`](/system-variables.md#tidb_enable_row_level_checksum-从-v710-版本开始引入) | 新增 | 控制是否开启 TiCDC 单行数据正确性校验。|
-| [`tidb_opt_fix_control`](/system-variables.md#tidb_opt_fix_control-从-v710-版本开始引入) | 新增 | 通过设置该变量，你可以更细粒度地控制优化器的行为，并且避免集群升级后优化器行为变化导致的性能回退。 |
+| [`tidb_opt_fix_control`](/system-variables.md#tidb_opt_fix_control-从-v653-和-v710-版本开始引入) | 新增 | 通过设置该变量，你可以更细粒度地控制优化器的行为，并且避免集群升级后优化器行为变化导致的性能回退。 |
 | [`tidb_plan_cache_invalidation_on_fresh_stats`](/system-variables.md#tidb_plan_cache_invalidation_on_fresh_stats-从-v710-版本开始引入) | 新增 | 控制当某张表上的统计信息更新后，与该表相关的 Plan Cache 是否自动失效。 |
 | [`tidb_plan_cache_max_plan_size`](/system-variables.md#tidb_plan_cache_max_plan_size-从-v710-版本开始引入) | 新增 | 控制可以缓存的 Prepare 或非 Prepare 语句执行计划的最大大小。 |
 | [`tidb_prefer_broadcast_join_by_exchange_data_size`](/system-variables.md#tidb_prefer_broadcast_join_by_exchange_data_size-从-v710-版本开始引入) | 新增 | 控制是否使用最小网络数据交换策略。使用该策略时，TiDB 会估算 Broadcast Hash Join 和 Shuffled Hash Join 两种算法所需进行网络交换的数据量，并选择网络交换数据量较小的算法。该功能开启后，[`tidb_broadcast_join_threshold_size`](/system-variables.md#tidb_broadcast_join_threshold_size-从-v50-版本开始引入) 和 [`tidb_broadcast_join_threshold_count`](/system-variables.md#tidb_broadcast_join_threshold_count-从-v50-版本开始引入) 将不再生效。 |
@@ -345,7 +345,7 @@ TiDB 7.1.0 为长期支持版本 (Long-Term Support Release, LTS)。
 
 | 配置文件 | 配置项 | 修改类型 | 描述 |
 | -------- | -------- | -------- | -------- |
-| TiDB | [`performance.force-init-stats`](/tidb-configuration-file.md#force-init-stats-从-v710-版本开始引入) | 新增 | 用于控制 TiDB 启动时是否在统计信息初始化完成后再对外提供服务。 |
+| TiDB | [`performance.force-init-stats`](/tidb-configuration-file.md#force-init-stats-从-v657-和-v710-版本开始引入) | 新增 | 用于控制 TiDB 启动时是否在统计信息初始化完成后再对外提供服务。 |
 | TiDB | [`performance.lite-init-stats`](/tidb-configuration-file.md#lite-init-stats-从-v710-版本开始引入) | 新增 | 用于控制 TiDB 启动时是否采用轻量级的统计信息初始化。 |
 | TiDB | [`log.timeout`](/tidb-configuration-file.md#timeout-从-v710-版本开始引入) | 新增 | 用于控制 TiDB 写日志操作的超时时间，当磁盘故障导致日志无法写入时，该配置可以让 TiDB 进程崩溃而不是卡死。默认值为 `0`，即不设定超时时间。 |
 | TiKV | [`region-compact-min-redundant-rows`](/tikv-configuration-file.md#region-compact-min-redundant-rows-从-v710-版本开始引入) | 新增 | 触发 RocksDB compaction 需要的冗余的 MVCC 数据行数。默认值为 `50000`。 |

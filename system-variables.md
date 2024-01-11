@@ -663,6 +663,7 @@ mysql> SHOW GLOBAL VARIABLES LIKE 'max_prepared_stmt_count';
 - 取值范围：`[1024, 1073741824]`
 - 该变量取值应为 1024 的整数倍。若取值无法被 1024 整除，则会提示 warning 并向下取整。例如设置为 1025 时，则 TiDB 中的实际取值为 1024。
 - 服务器端和客户端在一次传送数据包的过程中所允许最大的数据包大小，单位为字节。
+- 在 `SESSION` 作用域下，该变量为只读变量。
 - 该变量的行为与 MySQL 兼容。
 
 ### `mpp_exchange_compression_mode` <span class="version-mark">从 v6.6.0 版本开始引入</span>
@@ -824,6 +825,7 @@ mysql> SHOW GLOBAL VARIABLES LIKE 'max_prepared_stmt_count';
 - 这个变量用于控制表是否必须有主键。启用该变量后，如果在没有主键的情况下创建或修改表，将返回错误。
 - 该功能基于 MySQL 8.0 的特性 [`sql_require_primary_key`](https://dev.mysql.com/doc/refman/8.0/en/server-system-variables.html#sysvar_sql_require_primary_key)。
 - 强烈推荐在使用 TiCDC 时启用该变量，因为同步数据变更至 MySQL sink 时要求表必须有主键。
+- 如果启用了该变量，且使用了 TiDB Data Migration (DM) 来迁移数据，建议在 [DM 任务配置文件](/dm/task-configuration-file-full.md#完整配置文件示例)里的 `session` 中添加该系统变量 `sql_require_primary_key` 并设置为 `OFF`，否则会导致 DM 任务创建失败。
 
 ### `sql_select_limit` <span class="version-mark">从 v4.0.2 版本开始引入</span>
 
@@ -2674,6 +2676,18 @@ v5.0 后，用户仍可以单独修改以上系统变量（会有废弃警告）
 - 默认值：`168h`，即 7 天
 - 这个变量用来控制历史统计信息在存储中的保留时间。
 
+### `tidb_idle_transaction_timeout` <span class="version-mark">从 v7.6.0 版本开始引入</span>
+
+- 作用域：SESSION | GLOBAL
+- 是否持久化到集群：是
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：否
+- 类型：整数型
+- 默认值：`0`
+- 范围：`[0, 31536000]`
+- 单位：秒
+- 这个变量用来控制用户会话中事务的空闲超时。当用户会话处于事务状态且空闲时间超过该变量设定的值时，会话会被 Kill 掉。用户会话空闲是指没有正在执行的请求，处于等待请求的状态。
+- 默认值 `0` 表示没有时间限制。
+
 ### `tidb_ignore_prepared_cache_close_stmt` <span class="version-mark">从 v6.0.0 版本开始引入</span>
 
 - 作用域：SESSION | GLOBAL
@@ -2778,7 +2792,7 @@ v5.0 后，用户仍可以单独修改以上系统变量（会有废弃警告）
 - 默认值：`32`
 - 范围：`[1, 32]`
 - 单位：行
-- 这个变量用来设置执行过程中初始 chunk 的行数。默认值是 32，可设置的范围是 1～32。
+- 这个变量用来设置执行过程中初始 chunk 的行数。默认值是 32，可设置的范围是 1～32。chunk 行数直接影响单个查询所需的内存。可以按照查询中所有的列的总宽度和 chunk 行数来粗略估算单个 chunk 所需内存，并结合执行器的并发数来粗略估算单个查询所需内存总量。建议单个 chunk 内存总量不要超过 16 MiB。
 
 ### `tidb_isolation_read_engines` <span class="version-mark">从 v4.0 版本开始引入</span>
 
@@ -2942,7 +2956,7 @@ v5.0 后，用户仍可以单独修改以上系统变量（会有废弃警告）
 - 默认值：`1024`
 - 范围：`[32, 2147483647]`
 - 单位：行
-- 这个变量用来设置执行过程中一个 chunk 最大的行数，设置过大可能引起缓存局部性的问题。
+- 这个变量用来设置执行过程中一个 chunk 最大的行数，设置过大可能引起缓存局部性的问题，建议该变量不要超过 65536。chunk 行数直接影响单个查询所需的内存。可以按照查询中所有的列的总宽度和 chunk 行数来粗略估算单个 chunk 所需内存，并结合执行器的并发数来粗略估算单个查询所需内存总量。建议单个 chunk 内存总量不要超过 16 MiB。当查询涉及数据量较大、单个 chunk 无法处理所有数据时，TiDB 会进行多次处理，每次处理时将 chunk 行数翻倍，从 [`tidb_init_chunk_size`](#tidb_init_chunk_size) 开始，直到 chunk 行数达到最大值 `tidb_max_chunk_size`。
 
 ### `tidb_max_delta_schema_count`
 
@@ -3376,7 +3390,7 @@ mysql> desc select count(distinct a) from test.t;
 - 默认值：`OFF`
 - 该变量控制非递归的[公共表表达式 (CTE)](/sql-statements/sql-statement-with.md) 是否可以在 TiFlash MPP 执行。默认情况下，未开启该变量时，CTE 在 TiDB 执行，相较于开启该功能，执行性能有较大差距。
 
-### `tidb_opt_fix_control` <span class="version-mark">从 v7.1.0 版本开始引入</span>
+### `tidb_opt_fix_control` <span class="version-mark">从 v6.5.3 和 v7.1.0 版本开始引入</span>
 
 - 作用域：SESSION | GLOBAL
 - 是否持久化到集群：是
@@ -4740,6 +4754,21 @@ Query OK, 0 rows affected, 1 warning (0.00 sec)
 - 范围：`[1, 1073741824]`
 - 单位：字节
 - 这个变量用于控制 TiDB 向 TiKV 发送的事务提交请求的批量大小。如果业务负载的大部分事务都有大量的写操作，适当调大该变量可以提高批处理的效果。但需要注意的是，设置过大将会超过 TiKV 的 [`raft-entry-max-size`](/tikv-configuration-file.md#raft-entry-max-size) 限制，导致提交失败。
+
+### `tidb_txn_entry_size_limit` <span class="version-mark">从 v7.6.0 版本开始引入</span>
+
+- 作用域：GLOBAL | SESSION
+- 是否持久化到集群：是
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：否
+- 类型：整数型
+- 默认值：`0`
+- 范围：`[0, 125829120]`
+- 单位：字节
+- 这个变量用于动态修改 TiDB 配置项 [`performance.txn-entry-size-limit`](/tidb-configuration-file.md#txn-entry-size-limit-从-v50-版本开始引入)，其含义与对应配置项相同，即用于限制 TiDB 单行数据的大小。该变量默认值为 `0`，表示默认使用配置项的值。当设置为非 `0` 值时，优先使用该变量的值作为 `txn-entry-size-limit` 的值。
+
+> **注意：**
+>
+> 使用 SESSION 作用域修改该变量时仅影响当前用户会话，不会影响 TiDB 的内部会话。这可能导致 TiDB 内部事务的单行数据大小超过配置项的限制，从而导致事务失败。如需在线调高限制，建议优先使用 GLOBAL 作用域修改该变量。
 
 ### `tidb_txn_mode`
 
