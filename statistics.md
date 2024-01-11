@@ -392,7 +392,13 @@ TiDB 支持持久化的配置项包括：
 
 `ANALYZE` 配置持久化功能默认开启（系统变量 `tidb_analyze_version` 为默认值 `2`，`tidb_persist_analyze_options` 为默认值 `ON`），用于记录手动执行 `ANALYZE` 语句时指定的持久化配置项。记录后，当 TiDB 下一次自动更新统计信息或者你手动收集统计信息但未指定配置项时，TiDB 会按照记录的配置项收集统计信息。
 
-多次手动执行 `ANALYZE` 语句并指定持久化配置项时，TiDB 会使用最新一次 `ANALYZE` 指定的配置项覆盖上一次记录的持久化配置。
+要查询用于自动分析操作的特定表上持久化的配置，可以使用以下 SQL 语句：
+
+```sql
+SELECT sample_num, sample_rate, buckets, topn, column_choice, column_ids FROM mysql.analyze_options opt JOIN information_schema.tables tbl ON opt.table_id = tbl.tidb_table_id WHERE tbl.table_schema = '{db_name}' AND tbl.table_name = '{table_name}';
+```
+
+TiDB 将使用最新 `ANALYZE` 语句指定的配置覆盖先前记录的持久配置。例如，如果你运行 `ANALYZE TABLE t WITH 200 TOPN;` ，它将在 `ANALYZE` 语句中设置前 200 个值。随后，执行 `ANALYZE TABLE t WITH 0.1 SAMPLERATE;` 将为自动 `ANALYZE` 语句同时设置前 200 个值和 0.1 的采样率，类似于 `ANALYZE TABLE t WITH 200 TOPN, 0.1 SAMPLERATE;` 。
 
 #### 关闭 ANALYZE 配置持久化功能
 
