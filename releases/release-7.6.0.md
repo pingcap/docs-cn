@@ -23,7 +23,7 @@ TiDB 版本：7.6.0
 </thead>
 <tbody>
   <tr>
-    <td rowspan="3">可扩展性与性能<br></td>
+    <td rowspan="4">可扩展性与性能<br></td>
     <td><a href="https://docs.pingcap.com/zh/tidb/v7.6/sql-plan-management#跨数据库绑定执行计划-cross-db-binding">跨数据库绑定执行计划</a> {/* tw@Oreoxmt */}</td>
     <td>在处理上百个 schema 相同的数据库时，针对一个 schema 的 SQL binding 可能需要跨 schema 生效。例如 SaaS 或 PaaS 数据平台为每个用户维护独立数据库，这些数据库有相同的结构，运行类似的 SQL。对每个 schema 逐一做 SQL 绑定有时是不切实际的。TiDB v7.6.0 引入跨数据库绑定执行计划，支持在所有 schema 相同的数据库之间匹配绑定计划。</td>
   </tr>
@@ -34,6 +34,10 @@ TiDB 版本：7.6.0
   <tr>
     <td><a href="">建表性能提升 10 倍（实验特性）</a>  {/* tw@hfxsd */}</td>
     <td>在 v7.6.0 中引入了新的 DDL 架构，批量建表的性能提高了 10 倍。这一重大改进极大地缩短了创建大量表所需的时间。特别是在 SaaS 场景中，快速创建大量表（从数万到数十万不等）是一个常见的挑战，使用该特性能显著提升 SaaS 场景的建表速度。</td>
+  </tr>
+  <tr>
+    <td><a href="https://docs.pingcap.com/zh/tidb/v7.6/tune-region-performance#通过-active-pd-follower-提升-pd-region-路由信息查询的服务能力">通过 Active PD Follower 提升 PD Region 信息查询服务的扩展能力（实验特性）</a>  {/* tw@ Oreoxmt */}</td>
+    <td>TiDB v7.6.0 实验性地引入了 Active PD Follower 特性，允许 PD follower 提供 Region 信息查询服务。在 TiDB 节点数量较多和 Region 数量较多的集群中，该功能提升了 PD 集群处理 GetRegion、ScanRegions 请求的能力，减轻了 PD leader 的 CPU 压力。</td>
   </tr>
   <tr>
     <td rowspan="2">稳定性与高可用<br></td>
@@ -135,6 +139,15 @@ TiDB 版本：7.6.0
     TiProxy 已集成至 TiUP、TiDB Operator、TiDB Dashboard 等 TiDB 基本组件中，可以方便地进行配置、部署和运维。
 
     更多信息，请参考[用户文档](/tiproxy/tiproxy-overview.md)。
+### 可扩展性
+
+* 通过 Active PD Follower 提升 PD Region 信息查询服务的扩展能力（实验特性）[#7431](https://github.com/tikv/pd/issues/7431) @[CabinfeverB](https://github.com/CabinfeverB) **tw@Oreoxmt** <!--1667-->
+
+    当集群的 Region 数量较多时，PD leader 处理心跳和调度任务的开销也较大，可能导致 CPU 资源紧张。如果同时集群中的 TiDB 实例数量较多，查询 Region 信息请求并发量较大，PD leader CPU 压力将变得更大，可能会造成 PD 服务不可用。
+
+    为确保服务的高可用性，TiDB v7.6.0 引入 Active PD Follower 提升 PD Region 信息查询服务的扩展能力。可以通过设置系统变量 [`pd_enable_follower_handle_region`](/system-variables.md#pd_enable_follower_handle_region-从-v760-版本开始引入) 开启 Active PD Follower 特性。启用该特性后，TiDB 在获取 Region 信息时会将请求均匀地发送到所有 PD 节点上，使 PD follower 也可以直接处理 Region 请求，从而降低减轻 PD leader 的 CPU 压力。
+
+    更多信息，请参考[用户文档](/tune-region-performance.md#通过-active-pd-follower-提升-pd-region-信息查询服务的扩展能力)。
 
 ### SQL 功能
 
