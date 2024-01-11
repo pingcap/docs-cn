@@ -30,6 +30,13 @@ curl --proto '=https' --tlsv1.2 -sSf https://tiup-mirrors.pingcap.com/install.sh
 tiup --version
 ```
 
+```bash
+1.14.0 tiup
+Go Version: go1.21.4
+Git Ref: v1.14.0
+GitHash: c3e9fc518aea0da66a37f82ee5a516171de9c372
+```
+
 > **注意：**
 >
 > 对于 v1.11.3 及以上版本的 TiUP，默认不会收集使用情况信息分享给 PingCAP。若要了解所收集的信息详情及如何关闭分享行为，请参见[遥测](/telemetry.md)。
@@ -58,30 +65,7 @@ the latest stable version will be downloaded from the repository.
 Usage:
   tiup [flags] <command> [args...]
   tiup [flags] <component> [args...]
-
-Available Commands:
-  install     Install a specific version of a component
-  list        List the available TiDB components or versions
-  uninstall   Uninstall components or versions of a component
-  update      Update tiup components to the latest version
-  status      List the status of instantiated components
-  clean       Clean the data of instantiated components
-  mirror      Manage a repository mirror for TiUP components
-  help        Help about any command or component
-
-Components Manifest:
-  use "tiup list" to fetch the latest components manifest
-
-Flags:
-      --binary <component>[:version]   Print binary path of a specific version of a component <component>[:version]
-                                       and the latest version installed will be selected if no version specified
-      --binpath string                 Specify the binary path of component instance
-  -h, --help                           help for tiup
-  -T, --tag string                     Specify a tag for component instance
-  -v, --version                        version for tiup
-
-Component instances with the same "tag" will share a data directory ($TIUP_HOME/data/$tag):
-  $ tiup --tag mycluster playground
+  tiup [command]
 
 Examples:
   $ tiup playground                    # Quick start
@@ -94,6 +78,30 @@ Examples:
   $ tiup status                        # Display all running/terminated instances
   $ tiup clean <name>                  # Clean the data of running/terminated instance (Kill process if it's running)
   $ tiup clean --all                   # Clean the data of all running/terminated instances
+
+Available Commands:
+  install     Install a specific version of a component
+  list        List the available TiDB components or versions
+  uninstall   Uninstall components or versions of a component
+  update      Update tiup components to the latest version
+  status      List the status of instantiated components
+  clean       Clean the data of instantiated components
+  mirror      Manage a repository mirror for TiUP components
+  telemetry   Controls things about telemetry
+  env         Show the list of system environment variable that related to TiUP
+  history     Display the historical execution record of TiUP, displays 100 lines by default
+  link        Link component binary to $TIUP_HOME/bin/
+  unlink      Unlink component binary to $TIUP_HOME/bin/
+  help        Help about any command
+  completion  Generate the autocompletion script for the specified shell
+
+Flags:
+      --binary <component>[:version]   Print binary path of a specific version of a component <component>[:version]
+                                       and the latest version installed will be selected if no version specified
+      --binpath string                 Specify the binary path of component instance
+  -h, --help                           help for tiup
+  -T, --tag string                     [Deprecated] Specify a tag for component instance
+  -v, --version                        Print the version of tiup
 
 Use "tiup [command] --help" for more information about a command.
 ```
@@ -108,11 +116,17 @@ Use "tiup [command] --help" for more information about a command.
     - status：查看组件运行记录
     - clean：清除组件运行记录
     - mirror：从官方镜像克隆一个私有镜像
+    - telemetry：控制有关遥测的事情
+    - env：显示与 TiUP 相关的系统环境变量列表
+    - history：显示 TiUP 的历史执行记录，默认显示 100 行
+    - link：将组件二进制文件链接到 `$TIUP_HOME/bin/`
+    - unlink：取消组件二进制文件到 `$TIUP_HOME/bin/` 的链接
     - help：输出帮助信息
+    - completion：为指定的 shell 生成自动补全脚本
 - 可用的组件
-    - playground：在本机启动集群
-    - client：连接本机的集群
-    - cluster：部署用于生产环境的集群
+    - playground：在本机启动一个 TiDB 集群
+    - client：连接 playground 的客户端
+    - cluster：部署用于生产环境的 TiDB 集群
     - bench：对数据库进行压力测试
 
 > **注意：**
