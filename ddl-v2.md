@@ -21,11 +21,11 @@ summary: 介绍 TiDB DDL V2 加速建表中的概念、原理、实现和影响�
 
 ## 限制
 
-TiDB DDL V2 目前仅使用于 [`CREATE TABLE`](/sql-statements/sql-statement-create-table.md) 语句，且该建表语句不带任何外键约束。
+TiDB DDL V2 目前仅适用于 [`CREATE TABLE`](/sql-statements/sql-statement-create-table.md) 语句，且该建表语句不带任何外键约束。
 
 ## 使用方法
 
-可以通过设置系统变量 [`tidb_ddl_version`](/system-variables.md#tidb_ddl_version-从-v760-版本开始引入) 的值来开启或关闭 TiDB DDL V2 功能。
+你可以通过设置系统变量 [`tidb_ddl_version`](/system-variables.md#tidb_ddl_version-从-v760-版本开始引入) 的值来开启或关闭 TiDB DDL V2 功能。
 
 要开启该功能，将该变量的值设置为 `2`：
 
@@ -41,7 +41,7 @@ SET GLOBAL tidb_ddl_version = 1;
 
 ## 实现原理
 
-TiDB DDL V2 加速建表的详细的实现步骤如下：
+TiDB DDL V2 加速建表的实现步骤如下：
 
 1. 创建 `CREATE TABLE` Job。
 
