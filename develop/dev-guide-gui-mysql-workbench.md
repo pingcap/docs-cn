@@ -9,7 +9,7 @@ TiDB 是一个兼容 MySQL 的数据库。[MySQL Workbench](https://www.mysql.co
 
 > **警告**
 >
-> - 尽管由于 MySQL Workbench 兼容 MySQL，你可以使用 MySQL Workbench 连接到 TiDB，但 MySQL Workbench 并不完全支持 TiDB。 由于 MySQL Workbench 将 TiDB 视为 MySQL，因此在使用过程中可能会遇到一些问题。
+> - 尽管由于 MySQL Workbench 兼容 MySQL，你可以使用 MySQL Workbench 连接到 TiDB，但 MySQL Workbench 并不完全支持 TiDB。由于 MySQL Workbench 将 TiDB 视为 MySQL，因此在使用过程中可能会遇到一些问题。
 > - 推荐使用其他官方支持 TiDB 的 GUI 工具，例如 DataGrip，DBeaver 以及 VS Code SQLTools。TiDB 完全支持的 GUI 工具的完整列表，参考 [TiDB 支持的第三方工具](/develop/dev-guide-third-party-support.md#gui)。
 
 在本文档中，你可以学习如何使用 MySQL Workbench 连接到 TiDB 集群。
@@ -55,7 +55,7 @@ TiDB 是一个兼容 MySQL 的数据库。[MySQL Workbench](https://www.mysql.co
     >
     > 如果你之前已经生成过密码，可以直接使用原密码，或点击 **Reset Password** 重新生成密码。
 
-5. 启动 MySQL Workbench 并点击 **MySQL Connections** 标题附近的 **+**。
+5. 启动 MySQL Workbench，并点击 **MySQL Connections** 标题附近的 **+**。
 
     ![MySQL Workbench: add new connection](/media/develop/mysql-workbench-add-new-connection.png)
 
@@ -88,7 +88,7 @@ TiDB 是一个兼容 MySQL 的数据库。[MySQL Workbench](https://www.mysql.co
 
     有关如何获取连接字符串的更多详细信息，参考 [TiDB Dedicated 标准连接](https://docs.pingcap.com/tidbcloud/connect-via-standard-connection)。
 
-4. 启动 MySQL Workbench 并点击 **MySQL Connections** 标题附近的 **+**。
+4. 启动 MySQL Workbench，并点击 **MySQL Connections** 标题附近的 **+**。
 
     ![MySQL Workbench: add new connection](/media/develop/mysql-workbench-add-new-connection.png)
 
@@ -113,7 +113,7 @@ TiDB 是一个兼容 MySQL 的数据库。[MySQL Workbench](https://www.mysql.co
 </div>
 <div label="TiDB Self-Hosted">
 
-1. 启动 MySQL Workbench 并点击 **MySQL Connections** 标题附近的 **+**。
+1. 启动 MySQL Workbench，并点击 **MySQL Connections** 标题附近的 **+**。
 
     ![MySQL Workbench: add new connection](/media/develop/mysql-workbench-add-new-connection.png)
 
