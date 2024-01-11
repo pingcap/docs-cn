@@ -28,7 +28,7 @@ AdminUnsetBDRRoleStmt ::=
 
 ## 示例
 
-TiDB 集群默认没有 BDR role。
+TiDB 集群默认没有 BDR role。运行以下命令显示集群的 BDR 角色。
 
 ```sql
 ADMIN SHOW BDR ROLE;

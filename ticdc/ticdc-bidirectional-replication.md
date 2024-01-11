@@ -46,7 +46,7 @@ TiCDC 复制功能只会将指定时间点之后的增量变更复制到下游�
 
 - `CREATE DATABASE`
 - `CREATE TABLE`
-- `ADD COLUMN`：添加的列必须可以为 `null`或者是同时带有 `not null` 和 `default value` 的列
+- `ADD COLUMN`：添加的列必须可以为 `null`，或者是同时带有 `not null` 和 `default value`
 - `ADD NON-UNIQUE INDEX`
 - `DROP INDEX`
 - `MODIFY COLUMN`：仅能修改列的 `default value` 和 `comment`
@@ -69,7 +69,7 @@ TiCDC 复制功能只会将指定时间点之后的增量变更复制到下游�
 
 - `DROP DATABASE`
 - `DROP TABLE`
-- `ADD COLUMN`：添加的列为 `not null` 且不带有 `default value` 的列
+- `ADD COLUMN`：添加的列为 `not null` 且不带有 `default value`
 - `DROP COLUMN`
 - `ADD UNIQUE INDEX`
 - `TRUNCATE TABLE`
