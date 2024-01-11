@@ -104,12 +104,12 @@ rules = ['*.*', '!test.*']
 enable-table-across-nodes = false
 # enable-table-across-nodes 开启后，有两种分配模式
 # 1. 按 Region 的数量分配，即每个 CDC 节点处理 region 的个数基本相等。当某个表 Region 个数大于 `region-threshold` 值时，会将表分配到多个节点处理。`region-threshold` 默认值为 10000。
-# region-threshold = 10000 
+# region-threshold = 10000
 # 2. 按写入的流量分配，即每个 CDC 节点处理 region 总修改行数基本相当。只有当表中每分钟修改行数超过 `write-key-threshold` 值时，该表才会生效。
 # write-key-threshold = 30000
 # 注意：
 # `write-key-threshold` 参数默认值为 0，代表默认不会采用流量的分配模式。
-# 两种方式配置一种即可生效，当 `region-threshold` 和 `write-key-threshold` 同时配置时，TiCDC 将优先采用按流量分配的模式，即 `write-key-threshold`。      
+# 两种方式配置一种即可生效，当 `region-threshold` 和 `write-key-threshold` 同时配置时，TiCDC 将优先采用按流量分配的模式，即 `write-key-threshold`。
 
 
 [sink]
@@ -169,7 +169,7 @@ delete-only-output-handle-key-columns = false
 # 注意：该参数只有当下游为消息队列，并且使用 Open Protocol 或 Canal-JSON 时，才会生效。
 # only-output-updated-columns = false
 
-############ 以下是存储服务类型 sink 配置 ############ 
+############ 以下是存储服务类型 sink 配置 ############
 # 以下三个配置项仅在同步到存储服务的 sink 中使用，在 MQ 和 MySQL 类 sink 中无需设置。
 # 换行符，用来分隔两个数据变更事件。默认值为空，表示使用 "\r\n" 作为换行符。
 # terminator = ''
@@ -236,11 +236,11 @@ sasl-oauth-audience="kafka"
 # 以下配置仅在选用 avro 作为协议，并且使用 AWS Glue Schema Registry 时需要配置
 # 请参考 "同步数据到 Kafka" 这一文档中 "使用 AWS Glue Schema Registry" 这一节内容：https://docs.pingcap.com/zh/tidb/dev/ticdc-sink-to-kafka#ticdc-集成-aws-glue-schema-registry
 # [sink.kafka-config.glue-schema-registry-config]
-# region="us-west-1"  
+# region="us-west-1"
 # registry-name="ticdc-test"
 # access-key="xxxx"
 # secret-access-key="xxxx"
-# tokne="xxxx"
+# token="xxxx"
 
 # 以下参数仅在下游为 Pulsar 时生效。
 [sink.pulsar-config]
