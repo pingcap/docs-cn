@@ -342,7 +342,6 @@ See [Index Selection - Use multi-valued indexes](/choose-index.md#use-multi-valu
 - Compared with normal indexes, DML operations will modify more index records for multi-valued indexes, so multi-valued indexes will have a greater performance impact than normal indexes.
 - Because multi-valued indexes are a special type of expression index, multi-valued indexes have the same limitations as expression indexes.
 - If a table uses multi-valued indexes, you cannot back up, replicate, or import the table using BR, TiCDC, or TiDB Lightning to a TiDB cluster earlier than v6.6.0.
-- Due to the lack of collected statistics for multi-valued indexes, the selection rate of multi-valued indexes is currently based on fixed assumptions. When a query hits multiple multi-valued indexes, TiDB might not be able to select the optimal index. In such cases, it is recommended to use the [`use_index_merge`](/optimizer-hints.md#use_index_merget1_name-idx1_name--idx2_name-) optimizer hint to enforce a fixed execution plan.
 - For a query with complex conditions, TiDB might not be able to select multi-valued indexes. For information on the condition patterns supported by multi-valued indexes, refer to [Use multi-valued indexes](/choose-index.md#use-multi-valued-indexes).
 
 ## Invisible index
