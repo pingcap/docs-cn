@@ -316,11 +316,50 @@ SELECT BIN("123q123");
 
 ### [`UPPER()`](https://dev.mysql.com/doc/refman/8.0/en/string-functions.html#function_upper)
 
-参数转换为大写形式
+`UPPER()` 函数将字符串转换为大写字母，此函数等价于 `UCASE()` 函数。
+
+> **注意：**
+>
+> 当字符串为 `NULL` 时，则返回 `NULL`。
+
+示例：
+
+```sql
+-- 查询语句
+SELECT upper('bigdata') AS result_upper, upper('null') AS result_null;
+
+-- 返回结果
+ result_upper | result_null 
+--------------+-------------
+ BIGDATA      | NULL 
+```
 
 ### [`WEIGHT_STRING()`](https://dev.mysql.com/doc/refman/8.0/en/string-functions.html#function_weight-string)
 
-返回字符串的权重
+`WEIGHT_STRING()` 函数返回字符串的权重（二进制字符），主要用于多字符集场景下的排序和比较操作，如果参数为 `NULL`，则返回 `NULL`，语法示例如下：
+
+```sql
+WEIGHT_STRING(str [AS {CHAR|BINARY}(N)])
+```
+
+* `str`：字符串表达式，如果是非二进制字符串，例如 CHAR、 VARCHAR 或 TEXT 值，则返回值包含该字符串的排序规则权重；如果是二进制字符串，例如 BINARY、 VARBINARY 或 BLOB 值，则返回值与输入相同。
+* `AS {CHAR|BINARY}(N)`：可选参数，用于指定输出结果的类型和长度。CHAR 表示字符数据类型，而 BINARY 表示二进制数据类型，N 指定输出的长度，取值为大于等于 1 的整数。
+> **注意：**
+> 
+> 当 N 小于字符串长度时，字符串将被截断，当 N 超过字符串长度时，CHAR 类型将用空格来填充以到达指定长度，BINARY类型将以 `0x00` 来填充以到达指定长度。
+
+示例：
+```sql
+-- 查询语句
+SET NAMES 'utf8mb4';
+SELECT HEX(WEIGHT_STRING('ab' AS CHAR(3))) AS char_result, HEX(WEIGHT_STRING('ab' AS BINARY(3))) AS binary_result;
+
+-- 返回结果
+ char_result | binary_result 
+-------------+---------------
+ 6162        | 616200 
+```
+
 
 ## 不支持的函数
 
