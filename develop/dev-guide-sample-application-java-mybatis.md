@@ -77,7 +77,7 @@ cd tidb-java-mybatis-quickstart
 6. 复制并粘贴对应连接字符串至 `env.sh` 中。需更改部分示例结果如下：
 
     ```shell
-    export TIDB_HOST='{host}'  # e.g. gateway01.ap-northeast-1.prod.aws.tidbcloud.com
+    export TIDB_HOST='{host}'  # e.g. xxxxxx.aws.tidbcloud.com
     export TIDB_PORT='4000'
     export TIDB_USER='{user}'  # e.g. xxxxxx.root
     export TIDB_PASSWORD='{password}'
@@ -112,9 +112,9 @@ cd tidb-java-mybatis-quickstart
 5. 复制并粘贴对应的连接字符串至 `env.sh` 中。需更改部分示例结果如下：
 
     ```shell
-    export TIDB_HOST='{host}'  # e.g. tidb.xxxx.clusters.tidb-cloud.com
+    export TIDB_HOST='{host}'  # e.g. xxxxxx.aws.tidbcloud.com
     export TIDB_PORT='4000'
-    export TIDB_USER='{user}'  # e.g. root
+    export TIDB_USER='{user}'  # e.g. xxxxxx.root
     export TIDB_PASSWORD='{password}'
     export TIDB_DB_NAME='test'
     export USE_SSL='false'
@@ -137,9 +137,9 @@ cd tidb-java-mybatis-quickstart
 2. 复制并粘贴对应 TiDB 的连接字符串至 `env.sh` 中。需更改部分示例结果如下：
 
     ```shell
-    export TIDB_HOST='{host}'
+    export TIDB_HOST='{host}'  # e.g. xxxxxx.aws.tidbcloud.com
     export TIDB_PORT='4000'
-    export TIDB_USER='root'
+    export TIDB_USER='root'  # e.g. xxxxxx.root
     export TIDB_PASSWORD='{password}'
     export TIDB_DB_NAME='test'
     export USE_SSL='false'
@@ -193,19 +193,19 @@ cd tidb-java-mybatis-quickstart
             <!-- Database pool -->
             <dataSource type="POOLED">
                 <property name="driver" value="com.mysql.cj.jdbc.Driver"/>
-                <property name="url" value="${tidb_jdbc_url}"/>
-                <property name="username" value="${tidb_user}"/>
-                <property name="password" value="${tidb_password}"/>
+                <property name="url" value="${TIDB_JDBC_URL}"/>
+                <property name="username" value="${TIDB_USER}"/>
+                <property name="password" value="${TIDB_PASSWORD}"/>
             </dataSource>
         </environment>
     </environments>
     <mappers>
-        <mapper resource="${mapper_location}.xml"/>
+        <mapper resource="${MAPPER_LOCATION}.xml"/>
     </mappers>
 </configuration>
 ```
 
-请将 `${tidb_jdbc_url}`、`${tidb_user}`、`${tidb_password}` 等替换为你的 TiDB 集群的实际值。并替换 `${mapper_location}` 的值为你的 mapper XML 配置文件的位置。如果你有多个 mapper XML 配置文件，需要添加多个 `<mapper/>` 标签。随后编写以下函数：
+请将 `${TIDB_JDBC_URL}`、`${TIDB_USER}`、`${TIDB_PASSWORD}` 等替换为你的 TiDB 集群的实际值。并替换 `${MAPPER_LOCATION}` 的值为你的 mapper XML 配置文件的位置。如果你有多个 mapper XML 配置文件，需要添加多个 `<mapper/>` 标签。随后编写以下函数：
 
 ```java
 public SqlSessionFactory getSessionFactory() {
@@ -223,10 +223,16 @@ public SqlSessionFactory getSessionFactory() {
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.pingcap.model.PlayerMapper">
     <insert id="insert" parameterType="com.pingcap.model.Player">
-    insert into player (id, coins, goods)
-    values (#{id,jdbcType=VARCHAR}, #{coins,jdbcType=INTEGER}, #{goods,jdbcType=INTEGER})
+    INSERT INTO player (id, coins, goods)
+    VALUES (#{id, jdbcType=VARCHAR}, #{coins, jdbcType=INTEGER}, #{goods, jdbcType=INTEGER})
     </insert>
 </mapper>
+```
+
+```java
+public interface PlayerMapper {
+    int insert(Player row);
+}
 ```
 
 更多信息参考[插入数据](/develop/dev-guide-insert-data.md)。
@@ -248,11 +254,17 @@ public SqlSessionFactory getSessionFactory() {
     </resultMap>
 
     <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
-    select id, coins, goods
-    from player
-    where id = #{id,jdbcType=VARCHAR}
+    SELECT id, coins, goods
+    FROM player
+    WHERE id = #{id, jdbcType=VARCHAR}
     </select>
 </mapper>
+```
+
+```java
+public interface PlayerMapper {
+    Player selectByPrimaryKey(String id);
+}
 ```
 
 更多信息参考[查询数据](/develop/dev-guide-get-data-from-single-table.md)。
@@ -266,12 +278,18 @@ public SqlSessionFactory getSessionFactory() {
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.pingcap.model.PlayerMapper">
     <update id="updateByPrimaryKey" parameterType="com.pingcap.model.Player">
-    update player
-    set coins = #{coins,jdbcType=INTEGER},
-      goods = #{goods,jdbcType=INTEGER}
-    where id = #{id,jdbcType=VARCHAR}
+    UPDATE player
+    SET coins = #{coins, jdbcType=INTEGER},
+      goods = #{goods, jdbcType=INTEGER}
+    WHERE id = #{id, jdbcType=VARCHAR}
     </update>
 </mapper>
+```
+
+```java
+public interface PlayerMapper {
+    int updateByPrimaryKey(Player row);
+}
 ```
 
 更多信息参考[更新数据](/develop/dev-guide-update-data.md)。
@@ -285,10 +303,16 @@ public SqlSessionFactory getSessionFactory() {
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.pingcap.model.PlayerMapper">
     <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
-    delete from player
-    where id = #{id,jdbcType=VARCHAR}
+    DELETE FROM player
+    WHERE id = #{id, jdbcType=VARCHAR}
     </delete>
 </mapper>
+```
+
+```java
+public interface PlayerMapper {
+    int deleteByPrimaryKey(String id);
+}
 ```
 
 更多信息参考[删除数据](/develop/dev-guide-delete-data.md)。
