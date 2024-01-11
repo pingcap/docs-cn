@@ -322,13 +322,15 @@ SELECT BIN("123q123");
 >
 > 当字符串为 `NULL` 时，则返回 `NULL`。
 
-示例：
+查询示例
 
 ```sql
--- 查询语句
 SELECT upper('bigdata') AS result_upper, upper('null') AS result_null;
+```
 
--- 返回结果
+返回结果
+
+```sql
  result_upper | result_null 
 --------------+-------------
  BIGDATA      | NULL 
@@ -348,13 +350,16 @@ WEIGHT_STRING(str [AS {CHAR|BINARY}(N)])
 > 
 > 当 N 小于字符串长度时，字符串将被截断，当 N 超过字符串长度时，CHAR 类型将用空格来填充以到达指定长度，BINARY类型将以 `0x00` 来填充以到达指定长度。
 
-示例：
+查询示例
+
 ```sql
--- 查询语句
 SET NAMES 'utf8mb4';
 SELECT HEX(WEIGHT_STRING('ab' AS CHAR(3))) AS char_result, HEX(WEIGHT_STRING('ab' AS BINARY(3))) AS binary_result;
+```
 
--- 返回结果
+返回结果
+
+```sql
  char_result | binary_result 
 -------------+---------------
  6162        | 616200 
