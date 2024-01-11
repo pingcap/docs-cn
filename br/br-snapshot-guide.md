@@ -71,7 +71,7 @@ tiup br restore full --pd "${PD_IP}:2379" \
 --storage "s3://backup-101/snapshot-202209081330?access-key=${access-key}&secret-access-key=${secret-access-key}"
 ```
 
-为了解决大规模 Region 场景下，打散 Region 可能成为恢复过程中的瓶颈问题，BR 从 v7.6.0 开始支持以粗粒度打散 Region 的方式进行恢复（实验特性）。你可以通过指定 `--granularity=coarse-grained` 启用该方式。
+为了解决大规模 Region 场景下，打散 Region 可能成为恢复过程中的瓶颈问题，BR 从 v7.6.0 开始支持以粗粒度打散 Region 的方式进行恢复（实验特性）。你可以通过指定 `--granularity="coarse-grained"` 启用该方式。
 
 在恢复快照备份数据过程中，终端会显示恢复进度条。在完成恢复后，会输出恢复耗时、速度、恢复数据大小等信息。
 
