@@ -169,16 +169,16 @@ TiProxy 要求客户端使用的连接器支持[认证插件](https://dev.mysql.
 
 以下列举了部分支持的连接器：
 
-| 连接器                   | 支持的最低版本|
-|-------------------------|------------|
-| MySQL Connector/J       | 5.1.19     |
-| libmysqlclient          | 5.5.7      |
-| Go SQL Driver           | 1.4.0      |
-| MySQL Connector/Node.js | 1.0.2      |
-| mysqljs/mysql           | 2.15.0     |
-| node-mysql2             | 1.0.0-rc-6 |
-| mysqlnd                 | 5.4        |
-| MySQL Connector/Python  | 1.0.7      |
-| PyMySQL                 | 0.7        |
+| 编程语言       | 连接器                     | 支持的最低版本   |
+|------------|-------------------------|-----------|
+| Java       | MySQL Connector/J       | 5.1.19    |
+| C          | libmysqlclient          | 5.5.7     |
+| Go         | Go SQL Driver           | 1.4.0     |
+| JavaScript | MySQL Connector/Node.js | 1.0.2     |
+| JavaScript | mysqljs/mysql           | 2.15.0    |
+| JavaScript | node-mysql2             | 1.0.0-rc-6 |
+| PHP        | mysqlnd                 | 5.4       |
+| Python     | MySQL Connector/Python  | 1.0.7     |
+| Python     | PyMySQL                 | 0.7       |
 
 注意，某些连接器调用公共的库连接数据库，这些连接器没有在表中列出，请在上述列表中查询对应的库所需的版本。例如，MySQL/Ruby 使用 libmysqlclient 连接数据库，因此要求它使用的 libmysqlclient 为 5.5.7 及以上版本。
