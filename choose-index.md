@@ -235,12 +235,16 @@ mysql> EXPLAIN SELECT /*+ use_index_merge(t2, idx) */ * FROM t2 WHERE a=1 AND JS
 6 rows in set, 1 warning (0.00 sec)
 ```
 
-For `OR` conditions composed of multiple `member of` expressions that can access the same multi-valued index, IndexMerge can be used to access the multi-valued index:
+For `OR`/`AND` conditions composed of multiple `member of` expressions that can access the same multi-valued index or multiple multi-valued indexes, due to the single nature of `member of`, IndexMerge `UNION` or `INTERSECTION` can be used to access the multi-valued index:
 
 ```sql
-mysql> CREATE TABLE t3 (a INT, j JSON, INDEX idx(a, (CAST(j AS SIGNED ARRAY))));
+mysql> CREATE TABLE t3 (a INT, j JSON, b INT, k JSON, INDEX idx(a, (CAST(j AS SIGNED ARRAY))), INDEX idx2(b,(CAST(k as SIGNED ARRAY))));
 Query OK, 0 rows affected (0.04 sec)
+```
 
+Use `UNION`:
+
+```sql
 mysql> EXPLAIN SELECT /*+ use_index_merge(t3, idx) */ * FROM t3 WHERE ((a=1 AND (1 member of (j)))) OR ((a=2 AND (2 member of (j))));
 +---------------------------------+---------+-----------+---------------------------------------------------+--------------------------------------------------------------------------------------------------------------------------------------------------+
 | id                              | estRows | task      | access object                                     | operator info                                                                                                                                    |
@@ -253,25 +257,45 @@ mysql> EXPLAIN SELECT /*+ use_index_merge(t3, idx) */ * FROM t3 WHERE ((a=1 AND 
 +---------------------------------+---------+-----------+---------------------------------------------------+--------------------------------------------------------------------------------------------------------------------------------------------------+
 ```
 
-### Partially supported scenarios
-
-For `AND` conditions composed of multiple expressions that correspond to multiple different indexes, only one multi-valued index can be used to access:
+Use `INTERSECTION`:
 
 ```sql
-mysql> create table t(j1 json, j2 json, a int, INDEX k1((CAST(j1->'$.path' AS SIGNED ARRAY))), INDEX k2((CAST(j2->'$.path' AS SIGNED ARRAY))), INDEX ka(a));
-Query OK, 0 rows affected (0.02 sec)
+tidb> EXPLAIN SELECT /*+ use_index_merge(t3, idx, idx2) */ * FROM t3 WHERE ((a=1 AND (1 member of (j)))) AND ((b=1 AND (2 member of (k))));
++-------------------------------+---------+-----------+----------------------------------------------------+-------------------------------------------------+
+| id                            | estRows | task      | access object                                      | operator info                                   |
++-------------------------------+---------+-----------+----------------------------------------------------+-------------------------------------------------+
+| IndexMerge_8                  | 0.10    | root      |                                                    | type: intersection                              |
+| ├─IndexRangeScan_5(Build)     | 0.10    | cop[tikv] | table:t3, index:idx(a, cast(`j` as signed array))  | range:[1 1,1 1], keep order:false, stats:pseudo |
+| ├─IndexRangeScan_6(Build)     | 0.10    | cop[tikv] | table:t3, index:idx2(b, cast(`k` as signed array)) | range:[1 2,1 2], keep order:false, stats:pseudo |
+| └─TableRowIDScan_7(Probe)     | 0.10    | cop[tikv] | table:t3                                           | keep order:false, stats:pseudo                  |
++-------------------------------+---------+-----------+----------------------------------------------------+-------------------------------------------------+
+4 rows in set (0.01 sec)
+```
 
-mysql> explain select /*+ use_index_merge(t, k1, k2, ka) */ * from t where (1 member of (j1->'$.path')) and (2 member of (j2->'$.path')) and (a = 3);
-+---------------------------------+---------+-----------+----------------------------------------------------------------------------+------------------------------------------------------------------------------------------------------------------------------------------------+
-| id                              | estRows | task      | access object                                                              | operator info                                                                                                                                  |
-+---------------------------------+---------+-----------+----------------------------------------------------------------------------+------------------------------------------------------------------------------------------------------------------------------------------------+
-| Selection_5                     | 8.00    | root      |                                                                            | json_memberof(cast(1, json BINARY), json_extract(test.t.j1, "$.path")), json_memberof(cast(2, json BINARY), json_extract(test.t.j2, "$.path")) |
-| └─IndexMerge_9                  | 0.01    | root      |                                                                            | type: union                                                                                                                                    |
-|   ├─IndexRangeScan_6(Build)     | 10.00   | cop[tikv] | table:t, index:k1(cast(json_extract(`j1`, _utf8'$.path') as signed array)) | range:[1,1], keep order:false, stats:pseudo                                                                                                    |
-|   └─Selection_8(Probe)          | 0.01    | cop[tikv] |                                                                            | eq(test.t.a, 3)                                                                                                                                |
-|     └─TableRowIDScan_7          | 10.00   | cop[tikv] | table:t                                                                    | keep order:false, stats:pseudo                                                                                                                 |
-+---------------------------------+---------+-----------+----------------------------------------------------------------------------+------------------------------------------------------------------------------------------------------------------------------------------------+
-5 rows in set, 6 warnings (0.01 sec)
+### Partially supported scenarios
+
+For `AND`/`ON` conditions composed of multiple expressions where each `item` condition corresponds to multiple different indexes, the specific index to be used varies:
+
+* If the path of a single item is also index merge, as long as its logic is consistent with the logic of the external `AND`/`OR`, it can be merged with the external index merge.
+* If the path of a single item is also index merge, and it has only one index partial path, then it can be merged with the external index merge regardless of whether its own index merge logic is `AND`/`OR`.
+
+```sql
+mysql> CREATE TABLE t(j1 JSON, j2 JSON, a INT, INDEX k1((CAST(j1->'$.path' AS SIGNED ARRAY))), INDEX k2((CAST(j2->'$.path' AS SIGNED ARRAY))), INDEX ka(a));
+Query OK, 0 rows affected (0.02 sec)
+```
+
+```sql
+tidb> EXPLAIN SELECT /*+ use_index_merge(t, k1, k2, ka) */ * FROM t WHERE (1 member of (j1->'$.path')) AND (2 member of (j2->'$.path')) AND (a = 3);
++-------------------------------+---------+-----------+----------------------------------------------------------------------------+---------------------------------------------+
+| id                            | estRows | task      | access object                                                              | operator info                               |
++-------------------------------+---------+-----------+----------------------------------------------------------------------------+---------------------------------------------+
+| IndexMerge_9                  | 10.00   | root      |                                                                            | type: intersection                          |
+| ├─IndexRangeScan_5(Build)     | 10.00   | cop[tikv] | table:t, index:ka(a)                                                       | range:[3,3], keep order:false, stats:pseudo |
+| ├─IndexRangeScan_6(Build)     | 10.00   | cop[tikv] | table:t, index:k1(cast(json_extract(`j1`, _utf8'$.path') as signed array)) | range:[1,1], keep order:false, stats:pseudo |
+| ├─IndexRangeScan_7(Build)     | 10.00   | cop[tikv] | table:t, index:k2(cast(json_extract(`j2`, _utf8'$.path') as signed array)) | range:[2,2], keep order:false, stats:pseudo |
+| └─TableRowIDScan_8(Probe)     | 10.00   | cop[tikv] | table:t                                                                    | keep order:false, stats:pseudo              |
++-------------------------------+---------+-----------+----------------------------------------------------------------------------+---------------------------------------------+
+5 rows in set (0.00 sec)
 ```
 
 Currently, TiDB only supports using one index to access instead of generating the following plan that uses multiple indexes to access at the same time:
