@@ -33,7 +33,7 @@ summary: 了解 Oracle 与 TiDB 函数和语法差异对照。
 | 获取随机序列值 | `SYS_GUID()` | `UUID()` | TiDB 返回一个通用唯一识别码 (UUID)。|
 | 左/右外连接 | `SELECT * FROM a, b WHERE a.id = b.id(+);`<br/>`SELECT * FROM a, b WHERE a.id(+) = b.id;` | `SELECT * FROM a LEFT JOIN b ON a.id = b.id;`<br/>`SELECT * FROM a RIGHT JOIN b ON a.id = b.id;` | 关联查询时，TiDB 不支持使用 (+) 实现左/右关联，只能通过 `LEFT JOIN` 或 `RIGHT JOIN` 实现。|
 | `NVL()` | `NVL(key,val)` | `IFNULL(key,val)` | 如果该字段值为 `NULL`，则返回 val 值，否则返回该字段的值。 |
-| `NVL2()` | `NVL2(key, val1, val2)`  | `IF(key is NULL, val1, val2)` | 如果该字段值非 `NULL`，则返回 val1 值，否则返回 val2 值。|
+| `NVL2()` | `NVL2(key, val1, val2)`  | `IF(key is NOT NULL, val1, val2)` | 如果该字段值非 `NULL`，则返回 val1 值，否则返回 val2 值。|
 | `DECODE()` | <li>`DECODE(key,val1,val2,val3)`</li><li>`DECODE(value,if1,val1,if2,val2,...,ifn,valn,val)`</li> | <li>`IF(key=val1,val2,val3)`</li><li>`CASE WHEN value=if1 THEN val1 WHEN value=if2 THEN val2,...,WHEN value=ifn THEN valn ELSE val END`</li> | <li>如果该字段值等于 val1，则返回 val2，否则返回 val3。</li><li>当该字段值满足条件 1 (if1) 时，返回 val1，满足条件 2 (if2) 时，返回 val2，满足条件 3 (if3) 时，返回 val3。</li> |
 | 拼接字符串 `a` 和 `b` | <code>'a' \|\| 'b'</code>  | `CONCAT('a','b')` | |
 | 获取字符串长度 | `LENGTH(str)` | `CHAR_LENGTH(str)` | |
