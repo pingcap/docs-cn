@@ -6,7 +6,7 @@ aliases: ['/zh/tidb/v7.1/dev-guide-sample-application-spring-boot','/zh/tidb/sta
 
 # 使用 Spring Boot 连接到 TiDB
 
-TiDB 是一个兼容 MySQL 的数据库。[Spring](https://spring.io/) 是当前比较流行的开源 Java 容器框架，本文选择 [Spring Boot 3](https://spring.io/projects/spring-boot) 作为使用 Spring 的方式。
+TiDB 是一个兼容 MySQL 的数据库。[Spring](https://spring.io/) 是当前比较流行的开源 Java 容器框架，本文选择 [Spring Boot](https://spring.io/projects/spring-boot) 作为使用 Spring 的方式。
 
 本文档将展示如何使用 TiDB 和 [Spring Data JPA](https://spring.io/projects/spring-data-jpa) 及 [Hibernate](https://hibernate.org/orm/) 作为 JPA 提供者来完成以下任务：
 
@@ -211,7 +211,7 @@ public class PlayerBean {
 }
 ```
 
-通过继承 `JpaRepository<T, ID>` 接口，注册用于管理实体的Bean；`JpaRepository<T, ID>` 接口也提供了基础的增删改查函数。
+`PlayerRepository` 通过继承 `JpaRepository` 接口， 由 `JpaRepositoryFactoryBean` 为其自动注册对应的 Repository Bean。同时，`JpaRepository` 接口的默认实现类 `SimpleJpaRepository` 提供了增删改查函数的具体实现。
 
 ```java
 public interface PlayerRepository extends JpaRepository<PlayerBean, Long> {
