@@ -489,7 +489,7 @@ TiDB 提供系统变量 [`tidb_last_query_info`](/system-variables.md#tidb_last_
 
 在开启资源管控时，TiDB 的[慢查询日志](/identify-slow-queries.md)以及对应系统表 [`INFORMATION_SCHEMA.SLOW_QUERY`](/information-schema/information-schema-slow-query.md) 中均包含对应 SQL 所属的资源组、等待可用 RU 的耗时、以及真实 RU 消耗等相关信息。
 
-#### 通过 `statements_summary` 查询 SQL 执行时所消耗的 RU
+#### 通过 `statements_summary` 查询 RU 相关的统计信息
 
 TiDB 的系统表 [`INFORMATION_SCHEMA.statements_summary`](/statement-summary-tables.md#statements_summary) 中保存了 SQL 语句归一化聚合后的各种统计信息，可以用于查看分析各个 SQL 语句的执行性能。其中也包含资源管控相关的统计信息，包括资源组名、RU 消耗、等待可用 RU 的耗时等信息。具体请参考[`statements_summary` 字段介绍](/statement-summary-tables.md#statements_summary-字段介绍)。
 
