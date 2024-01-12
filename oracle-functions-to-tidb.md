@@ -33,7 +33,7 @@ The following table shows the comparisons between some Oracle and TiDB functions
 | Get a random sequence value | `SYS_GUID()` | `UUID()` | TiDB returns a Universal Unique Identifier (UUID). |
 | Left join or right join | `SELECT * FROM a, b WHERE a.id = b.id(+);`<br/>`SELECT * FROM a, b WHERE a.id(+) = b.id;` | `SELECT * FROM a LEFT JOIN b ON a.id = b.id;`<br/>`SELECT * FROM a RIGHT JOIN b ON a.id = b.id;` | In a correlated query, TiDB does not support using (+) to left join or right join. You can use `LEFT JOIN` or `RIGHT JOIN` instead. |
 | `NVL()` | `NVL(key,val)` | `IFNULL(key,val)` | If the value of the field is `NULL`, it returns `val`; otherwise, it returns the value of the field.  |
-| `NVL2()` | `NVL2(key, val1, val2)` | `IF(key is NULL, val1, val2)` | If the value of the field is not `NULL`, it returns `val1`; otherwise, it returns `val2`. |
+| `NVL2()` | `NVL2(key, val1, val2)` | `IF(key is NOT NULL, val1, val2)` | If the value of the field is not `NULL`, it returns `val1`; otherwise, it returns `val2`. |
 | `DECODE()` | <li>`DECODE(key,val1,val2,val3)`</li><li>`DECODE(value,if1,val1,if2,val2,...,ifn,valn,val)`</li> | <li>`IF(key=val1,val2,val3)`</li><li>`CASE WHEN value=if1 THEN val1 WHEN value=if2 THEN val2,...,WHEN value=ifn THEN valn ELSE val END`</li> | <li>If the value of the field is `val1`, then it returns `val2`; otherwise it returns `val3`. </li><li>When the value of the field satisfies condition 1 (`if1`), it returns `val1`. When it satisfies condition 2 (`if2`), it returns `val2`. When it satisfies condition 3 (`if3`), it returns `val3`.</li> |
 | Concatenate the string `a` and `b` | <code>'a' \|\| 'b'</code> | `CONCAT('a','b')` | |
 | Get the length of a string | `LENGTH(str)` | `CHAR_LENGTH(str)` | |
