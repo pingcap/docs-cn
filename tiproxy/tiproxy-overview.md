@@ -77,31 +77,35 @@ TiProxy 不适用于以下场景：
       tidb:
         security.session-token-signing-cert: "/var/sess/cert.pem"
         security.session-token-signing-key: "/var/sess/key.pem"
+        security.ssl-ca: "/var/ssl/ca.pem"
+        security.ssl-cert: "/var/ssl/cert.pem"
+        security.ssl-key: "/var/ssl/key.pem"
         graceful-wait-before-shutdown: 15
     ```
 
 3. 配置 TiProxy 实例。
 
-    为了保证 TiProxy 的高可用，建议部署至少 2 台 TiProxy 实例。可以通过硬件负载均衡或配置虚拟 IP 的方式，使流量分发到各 TiProxy 实例上。
+    为了保证 TiProxy 的高可用，建议部署至少 2 台 TiProxy 实例。可以通过硬件负载均衡使流量分发到各 TiProxy 实例上，或配置虚拟 IP 使流量路由到可用的 TiProxy 实例上。
 
     选择 TiProxy 的机型和实例数时需要考虑以下因素：
 
     - 要考虑负载类型和最大 QPS，请参阅 [TiProxy 性能测试报告](/tiproxy/tiproxy-performance-test.md)。
     - 由于 TiProxy 的实例数比 TiDB server 少，TiProxy 的网络带宽相比 TiDB server 更可能成为瓶颈，因此还需要考虑网络带宽。例如，AWS 相同系列的 EC2 的基准网络带宽与 CPU 核数是不成正比的，请参阅[计算实例网络性能](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/compute-optimized-instances.html#compute-network-performance)。这种情况下，当网络带宽成为瓶颈时，把 TiProxy 实例拆分为更多更小规格的实例能提高 QPS。
 
-    建议开启集群内的 TLS 连接，避免 TiProxy 与 TiDB server 间传输的数据泄漏。
+    建议在拓扑配置里指定 TiProxy 的版本号，这样通过 [`tiup cluster upgrade`](/tiup/tiup-component-cluster-upgrade.md) 升级 TiDB 集群时不会升级 TiProxy，否则升级 TiProxy 会导致客户端连接断开。
 
     如需配置 TiProxy 配置项，请参阅 [TiProxy 配置](/tiproxy/tiproxy-configuration.md)。
 
     配置示例：
 
     ```yaml
-    global:
-      enable_tls: true
+    component_versions:
+      tiproxy: "v0.2.0"
     server_configs:
       tiproxy:
-        proxy.addr: "0.0.0.0:6000"
-        api.addr: "0.0.0.0:3080"
+        security.server-tls.ca: "/var/ssl/ca.pem"
+        security.server-tls.cert: "/var/ssl/cert.pem"
+        security.server-tls.key: "/var/ssl/key.pem"
     ```
 
 4. 启动集群。
@@ -117,6 +121,22 @@ TiProxy 不适用于以下场景：
 为了保证连接保持功能的有效性，TiProxy 不应随意重启。因此，TiProxy 的大多数配置项支持在线变更。支持在线变更的配置列表请参阅 [TiProxy 配置](/tiproxy/tiproxy-configuration.md)。
 
 使用 TiUP 更改 TiProxy 配置时，如果要更改的配置项支持在线变更，应当带上 [`--skip-restart`](/tiup/tiup-component-cluster-reload.md#--skip-restart) 选项，避免重启 TiProxy。
+
+### 升级 TiProxy
+
+部署 TiProxy 时建议指定 TiProxy 的版本，使升级 TiDB 集群时不会升级 TiProxy。
+
+如果确实要升级 TiProxy 的版本，需加上 [`--tiproxy-version`](/tiup/tiup-component-cluster-upgrade.md) 指定 TiProxy 的版本：
+
+```shell
+tiup cluster upgrade <cluster-name> <version> --tiproxy-version <tiproxy-version>
+```
+
+### 重启 TiDB 集群
+
+使用 [`tiup cluster restart`](/tiup/tiup-component-cluster-restart.md) 重启 TiDB 集群时，TiDB server 不是滚动重启，会导致连接断开，请尽量避免使用。
+
+使用 [`tiup cluster upgrade`](/tiup/tiup-component-cluster-upgrade.md) 升级集群和 [`tiup cluster reload`](/tiup/tiup-component-cluster-reload.md) 更新配置时，TiDB server 是滚动重启的，因此连接不会断开。
 
 ## TiProxy 与其他组件的兼容性
 
