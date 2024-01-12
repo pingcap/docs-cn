@@ -810,6 +810,95 @@ curl -X GET http://127.0.0.1:8300/api/v2/changefeeds/test1
 
 The meanings of the JSON response body are the same as those in the [Create a replication task](#create-a-replication-task) section. See that section for details.
 
+## Query whether a specific replication task is completed
+
+This API is a synchronous interface. If the request is successful, it returns the synchronization status of the specified replication task (changefeed), including whether the task is completed and additional details.
+
+### Request URI
+
+`GET /api/v2/changefeed/{changefeed_id}/synced`
+
+### Parameter description
+
+#### Path parameter
+
+| Parameter name  | Description                 |
+|:----------------|:----------------------------|
+| `changefeed_id` | The ID of the replication task (changefeed) to be queried. |
+
+### Examples
+
+The following request queries the synchronization status of the replication task with the ID `test1`.
+
+```shell
+curl -X GET http://127.0.0.1:8300/api/v2/changefeed/test1/synced
+```
+
+**Example 1: The synchronization is completed**
+
+```json
+{
+  "synced": true,
+  "sink_checkpoint_ts": "2023-11-30 15:14:11.015",
+  "puller_resolved_ts": "2023-11-30 15:14:12.215",
+  "last_synced_ts": "2023-11-30 15:08:35.510",
+  "now_ts": "2023-11-30 15:14:11.511",
+  "info": "Data syncing is finished"
+}
+```
+
+The response includes the following fields:
+
+- `synced`: whether this replication task is completed. `true` means the task is completed, and `false` means potential incompleteness. If it is `false`, you need to check both the `info` field and other fields for the specific status.
+- `sink_checkpoint_ts`: the checkpoint-ts value of the sink module, in PD time.
+- `puller_resolved_ts`: the resolved-ts value of the puller module, in PD time.
+- `last_synced_ts`: the commit-ts value of the latest data processed by TiCDC, in PD time.
+- `now_ts`: current PD time.
+- `info`: supplementary information to assist in determining the synchronization status, especially when `synced` is `false`.
+
+**Example 2: The synchronization is not completed**
+
+```json
+{
+  "synced": false,
+  "sink_checkpoint_ts": "2023-11-30 15:26:31.519",
+  "puller_resolved_ts": "2023-11-30 15:26:23.525",
+  "last_synced_ts": "2023-11-30 15:24:30.115",
+  "now_ts": "2023-11-30 15:26:31.511",
+  "info": "The data syncing is not finished, please wait"
+}
+```
+
+This example shows the response of an ongoing replication task. By checking both `synced` and `info` fields, you can learn that the replication task is not completed yet and further waiting is expected.
+
+**Example 3: The synchronization status needs further check**
+
+```json
+{
+  "synced":false,
+  "sink_checkpoint_ts":"2023-12-13 11:45:13.515",
+  "puller_resolved_ts":"2023-12-13 11:45:13.525",
+  "last_synced_ts":"2023-12-13 11:45:07.575",
+  "now_ts":"2023-12-13 11:50:24.875",
+  "info":"Please check whether PD is online and TiKV Regions are all available. If PD is offline or some TiKV regions are not available, it means that the data syncing process is complete. To check whether TiKV regions are all available, you can view 'TiKV-Details' > 'Resolved-Ts' > 'Max Leader Resolved TS gap' on Grafana. If the gap is large, such as a few minutes, it means that some regions in TiKV are unavailable. Otherwise, if the gap is small and PD is online, it means the data syncing is incomplete, so please wait"
+}
+```
+
+This API enables you to query the synchronization status even when the upstream cluster encounters disasters. In certain situations, you might not be able to directly determine whether the current data replication task of TiCDC is completed or not. In such cases, you can request this API, and then check both the `info` field in the response and the current status of the upstream cluster to determine the specific status.
+
+In this example, `sink_checkpoint_ts` is behind `now_ts` in time, either because TiCDC is still catching up with data replication, or because the PD or TiKV has failed. If this is due to TiCDC still catching up with data replication, it means that the replication task is not completed yet. If this is due to a PD or TiKV failure, it means that the replication task is completed. Therefore, you need to check the `info` field to assist in determining the cluster status.
+
+**Example 4: Query error**
+
+```json
+{
+  "error_msg": "[CDC:ErrPDEtcdAPIError]etcd api call error: context deadline exceeded",
+  "error_code": "CDC:ErrPDEtcdAPIError"
+}
+```
+
+In cases where PD in the upstream cluster fails for a long period of time, querying this API might return an error similar to the preceding one, which provides no information for further check. Because PD failures directly affect TiCDC data replication, when getting such errors, you can assume that TiCDC has completed the data replication as much as possible, but data loss might still occur in the downstream cluster due to PD failures.
+
 ## Pause a replication task
 
 This API pauses a replication task. If the request is successful, `200 OK` is returned. The returned result only means that the server agrees to run the command but does not guarantee that the command will be run successfully.
