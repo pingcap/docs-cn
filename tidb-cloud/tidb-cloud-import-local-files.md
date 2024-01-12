@@ -116,7 +116,8 @@ n=$1
 file_path=$2
 file_extension="${file_path##*.}"
 file_name="${file_path%.*}"
-lines_per_file=$(( $(wc -l < $file_path) / $n ))
+total_lines=$(wc -l < $file_path)
+lines_per_file=$(( (total_lines + n - 1) / n ))
 split -d -a 1 -l $lines_per_file $file_path $file_name.
 for (( i=0; i<$n; i++ ))
 do
