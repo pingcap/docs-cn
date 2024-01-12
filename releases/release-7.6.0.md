@@ -336,7 +336,7 @@ TiDB 版本：7.6.0
     - 支持非 binary collation 的列使用 LIKE 条件构造索引范围扫描 [#48181](https://github.com/pingcap/tidb/issues/48181) [#49138](https://github.com/pingcap/tidb/issues/49138)  @[time-and-fate](https://github.com/time-and-fate)
     - 提供更简洁的 create binding 语法 [#48876](https://github.com/pingcap/tidb/issues/48876) @[qw4990](https://github.com/qw4990)
     - exchange partition 操作会触发统计信息的维护更新 [#47354](https://github.com/pingcap/tidb/issues/47354) @[hi-rustin](https://github.com/hi-rustin)
-
+- 在获取 schema 版本时，默认使用 kv timeout 特性进行读取，缓解 meta region leader 读取慢对于 schema 版本更新影响 [#48125](https://github.com/pingcap/tidb/pull/48125) @[cfzjywxk](https://github.com/cfzjywxk)
 + TiKV
 
     - note [#issue](链接) @[贡献者 GitHub ID](链接)
