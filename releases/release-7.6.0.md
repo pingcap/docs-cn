@@ -332,6 +332,7 @@ TiDB 版本：7.6.0
     - 允许多个快速加索引 DDL 任务排队，而非回退到普通加索引任务 [#47758](https://github.com/pingcap/tidb/issues/47758) @[tangenta](https://github.com/tangenta)
     - 增强对于 ALTER TABLE ... ROW_FORMAT 的兼容 [#48754](https://github.com/pingcap/tidb/issues/48754) @[hawkingrei](https://github.com/hawkingrei)
     - 调整 CANCEL IMPORT JOB 为同步命令 [#48736](https://github.com/pingcap/tidb/issues/48736) @[D3Hunter](https://github.com/D3Hunter)
+    - 优化了空表加索引的速度 [#49682](https://github.com/pingcap/tidb/issues/49682) @[zimulala](https://github.com/zimulala)
 
 + TiKV
 
@@ -429,6 +430,11 @@ TiDB 版本：7.6.0
     - 修复 CHECK 约束的 DDL 卡住的问题 [#47632](https://github.com/pingcap/tidb/issues/47632) @[jiyfhust](https://github.com/jiyfhust)
     - 修复 DDL 快速加索引由于内存不足失败的问题 [#47862](https://github.com/pingcap/tidb/issues/47862) @[GMHDBJD](https://github.com/GMHDBJD)
     - 修复在集群升级过程中加索引可能导致数据与索引不一致的问题 [#47862](https://github.com/pingcap/tidb/issues/47862) @[zimulala](https://github.com/zimulala)
+    - 修复 ADMIN CHECK 无法使用更新后的 `tidb_mem_quota_query` 变量的问题 [#49258](https://github.com/pingcap/tidb/issues/49258) @[tangenta](https://github.com/tangenta)
+    - 修复对外键的被引用列 ALTER TABLE 可能遇到的问题 [#49836](https://github.com/pingcap/tidb/issues/49836) [#47702](https://github.com/pingcap/tidb/issues/47702) @[yoshikipom](https://github.com/yoshikipom)
+    - 修复某些场景下表达式索引不会发现“除以 0”错误的问题 [#50053](https://github.com/pingcap/tidb/issues/50053) @[lcwangchao](https://github.com/lcwangchao)
+    - 缓解了表的数目过多时 TiDB 节点 OOM 的问题 [#50077](https://github.com/pingcap/tidb/issues/50077) @[zimulala](https://github.com/zimulala)
+    - 修复了集群滚动重启时 DDL 卡在运行中状态的问题 [#50073](https://github.com/pingcap/tidb/issues/50073) @[tangenta](https://github.com/tangenta)
  
 + TiKV
 
