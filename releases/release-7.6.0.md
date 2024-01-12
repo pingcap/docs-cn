@@ -485,7 +485,7 @@ TiDB 版本：7.6.0
     - note [#issue](链接) @[贡献者 GitHub ID](链接)
 - 修复 GC 进行扫描过期 lock 无法读取内存悲观锁的问题 [#15066](https://github.com/tikv/tikv/issues/15066) @[cfzjywxk](https://github.com/cfzjywxk)
 + PD
-
+- 修复 PD 内 Etcd 健康检查没有移除过期地址的问题 [#7226](https://github.com/tikv/pd/issues/7226) @[iosmanthus](https://github.com/iosmanthus)
     - note [#issue](链接) @[贡献者 GitHub ID](链接)
     - (dup): release-7.1.3.md > 错误修复> PD - 修复 PD Leader 切换且新 Leader 与调用方之间存在网络隔离时，调用方不能正常更新 Leader 信息的问题 [#7416](https://github.com/tikv/pd/issues/7416) @[CabinfeverB](https://github.com/CabinfeverB)
     - (dup): release-7.1.3.md > 错误修复> PD - 将 Gin Web Framework 的版本从 v1.8.1 升级到 v1.9.1 以修复部分安全问题 [#7438](https://github.com/tikv/pd/issues/7438) @[niubell](https://github.com/niubell)
