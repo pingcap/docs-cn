@@ -328,6 +328,10 @@ TiDB 版本：7.6.0
 
     - 当使用非二进制排序规则并且查询条件中包含 `LIKE` 时，优化器可以生成 IndexRangeScan 以提高执行效率 [#48181](https://github.com/pingcap/tidb/issues/48181) @[time-and-fate](https://github.com/time-and-fate)
     - (dup): release-6.5.7.md > 改进提升> TiDB - 增强特定情况下 `OUTER JOIN` 转 `INNER JOIN` 的能力 [#49616](https://github.com/pingcap/tidb/issues/49616) @[qw4990](https://github.com/qw4990)
+    - 增强了分布式框架任务在节点重启场景的均衡程度 [#47298](https://github.com/pingcap/tidb/issues/47298) @[ywqzzy](https://github.com/ywqzzy)
+    - 允许多个快速加索引 DDL 任务排队，而非回退到普通加索引任务 [#47758](https://github.com/pingcap/tidb/issues/47758) @[tangenta](https://github.com/tangenta)
+    - 增强对于 ALTER TABLE ... ROW_FORMAT 的兼容 [#48754](https://github.com/pingcap/tidb/issues/48754) @[hawkingrei](https://github.com/hawkingrei)
+    - 调整 CANCEL IMPORT JOB 为同步命令 [#48736](https://github.com/pingcap/tidb/issues/48736) @[D3Hunter](https://github.com/D3Hunter)
 
 + TiKV
 
@@ -420,7 +424,11 @@ TiDB 版本：7.6.0
     - 修复了将字节转换为时间编码失败的问题 [#47346](https://github.com/pingcap/tidb/issues/47346) @[wshwsh12](https://github.com/wshwsh12)
     - 修复了 deicmal 乘法运算时截断处理有误的错误结果问题 [#48332](https://github.com/pingcap/tidb/issues/48332) @[solotzg](https://github.com/solotzg)
     - 修复了关于一些时区转换的问题，包括巴西和埃及等 [#49586](https://github.com/pingcap/tidb/issues/49586) @[overvenus](https://github.com/overvenus)
-
+    - 修复 CHECK 约束 ENFORCED 选项与 MySQL 8.0 不一致的错误 [#47567](https://github.com/pingcap/tidb/issues/47567) [#47631](https://github.com/pingcap/tidb/issues/47631) @[jiyfhust](https://github.com/jiyfhust)
+    - 修复 CHECK 约束的 DDL 卡住的问题 [#47632](https://github.com/pingcap/tidb/issues/47632) @[jiyfhust](https://github.com/jiyfhust)
+    - 修复 CHECK 约束的 DDL 卡住的问题 [#47632](https://github.com/pingcap/tidb/issues/47632) @[jiyfhust](https://github.com/jiyfhust)
+    - 修复 DDL 快速加索引由于内存不足失败的问题 [#47862](https://github.com/pingcap/tidb/issues/47862) @[GMHDBJD](https://github.com/GMHDBJD)
+    - 修复在集群升级过程中加索引可能导致数据与索引不一致的问题 [#47862](https://github.com/pingcap/tidb/issues/47862) @[zimulala](https://github.com/zimulala)
  
 + TiKV
 
