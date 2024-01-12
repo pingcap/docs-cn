@@ -35,6 +35,7 @@ For TiDB Self-Hosted, `IMPORT INTO` supports importing data from files stored in
 - `IMPORT INTO` is not supported during TiDB cluster upgrades.
 - When the [Global Sort](/tidb-global-sort.md) feature is used for data import, the data size of a single row after encoding must not exceed 32 MiB.
 - Ensure that the data to be imported does not contain any records with primary key or non-null unique index conflicts. Otherwise, the conflicts can result in import task failures.
+- If an `IMPORT INTO` task scheduled by the Distributed eXecution Framework (DXF) is already running, it cannot be scheduled to a new TiDB node. If the TiDB node that executes the data import task is restarted, it will no longer execute the data import task, but transfers the task to another TiDB node to continue executing. However, if the imported data is from a local file, the task will not be transferred to another TiDB node to continue executing.
 - Known issue: the `IMPORT INTO` task might fail if the PD address in the TiDB node configuration file is inconsistent with the current PD topology of the cluster. This inconsistency can arise in situations such as that PD was scaled in previously, but the TiDB configuration file was not updated accordingly or the TiDB node was not restarted after the configuration file update.
 
 ## Prerequisites for import
@@ -94,6 +95,7 @@ In the left side of the `SET` expression, you can only reference a column name t
 It specifies the storage location of the data file, which can be an Amazon S3 or GCS URI path, or a TiDB local file path.
 
 - Amazon S3 or GCS URI path: for URI configuration details, see [URI Formats of External Storage Services](/external-storage-uri.md).
+
 - TiDB local file path: it must be an absolute path, and the file extension must be `.csv`, `.sql`, or `.parquet`. Make sure that the files corresponding to this path are stored on the TiDB node connected by the current user, and the user has the `FILE` privilege.
 
 > **Note:**
@@ -148,7 +150,8 @@ The supported options are described as follows:
 
 > **Note:**
 >
-> The Snappy compressed file must be in the [official Snappy format](https://github.com/google/snappy). Other variants of Snappy compression are not supported.
+> - The Snappy compressed file must be in the [official Snappy format](https://github.com/google/snappy). Other variants of Snappy compression are not supported.
+> - Because TiDB Lightning cannot concurrently decompress a single large compressed file, the size of the compressed file affects the import speed. It is recommended that a source file is no greater than 256 MiB after decompression.
 
 ## Global Sort
 
