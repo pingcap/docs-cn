@@ -96,6 +96,9 @@ tiflash_servers:
   - host: 172.16.5.142
   - host: 172.16.5.143
 
+tiproxy_servers:
+  - host: 172.16.5.144
+
 grafana_servers:
   - host: 172.16.5.134
 
@@ -138,6 +141,7 @@ Type        Host          Ports                            OS/Arch       Directo
 pd          172.16.5.134  2379/2380                        linux/x86_64  deploy/pd-2379,data/pd-2379
 pd          172.16.5.139  2379/2380                        linux/x86_64  deploy/pd-2379,data/pd-2379
 pd          172.16.5.140  2379/2380                        linux/x86_64  deploy/pd-2379,data/pd-2379
+tiproxy     172.16.5.144  6000/3080                        linux/x86_64  deploy/tiproxy-6000
 tikv        172.16.5.134  20160/20180                      linux/x86_64  deploy/tikv-20160,data/tikv-20160
 tikv        172.16.5.139  20160/20180                      linux/x86_64  deploy/tikv-20160,data/tikv-20160
 tikv        172.16.5.140  20160/20180                      linux/x86_64  deploy/tikv-20160,data/tikv-20160
@@ -222,6 +226,7 @@ ID                  Role        Host          Ports                            O
 172.16.5.134:20160  tikv        172.16.5.134  20160/20180                      linux/x86_64  Up      data/tikv-20160       deploy/tikv-20160
 172.16.5.139:20160  tikv        172.16.5.139  20160/20180                      linux/x86_64  Up      data/tikv-20160       deploy/tikv-20160
 172.16.5.140:20160  tikv        172.16.5.140  20160/20180                      linux/x86_64  Up      data/tikv-20160       deploy/tikv-20160
+172.16.5.144:6000   tiproxy     172.16.5.144  6000/3080                        linux/x86_64  Up      -                     deploy/tiproxy-6000
 ```
 
 The `Status` column uses `Up` or `Down` to indicate whether the service is running normally.
@@ -296,6 +301,7 @@ ID                  Role        Host          Ports                            O
 172.16.5.134:20160  tikv        172.16.5.134  20160/20180                      linux/x86_64  Up       data/tikv-20160       deploy/tikv-20160
 172.16.5.139:20160  tikv        172.16.5.139  20160/20180                      linux/x86_64  Up       data/tikv-20160       deploy/tikv-20160
 172.16.5.140:20160  tikv        172.16.5.140  20160/20180                      linux/x86_64  Offline  data/tikv-20160       deploy/tikv-20160
+172.16.5.144:6000   tiproxy     172.16.5.144  6000/3080                        linux/x86_64  Up       -                     deploy/tiproxy-6000
 ```
 
 After PD schedules the data on the node to other TiKV nodes, this node will be deleted automatically.

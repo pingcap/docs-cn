@@ -47,6 +47,7 @@ Grafana is an open source project for analyzing and visualizing metrics. TiDB us
 - {TiDB_Cluster_name}-TiKV-Summary: Monitoring overview related to the TiKV server.
 - {TiDB_Cluster_name}-TiKV-Trouble-Shooting: Monitoring metrics related to the TiKV error diagnostics.
 - {TiDB_Cluster_name}-TiCDC: Detailed monitoring metrics related to TiCDC.
+- {TiDB_Cluster_name}-TiProxy-Summary: Monitoring overview related to TiProxy.
 
 Each group has multiple panel labels of monitoring metrics, and each panel contains detailed information of multiple monitoring metrics. For example, the **Overview** monitoring group has five panel labels, and each labels corresponds to a monitoring panel. See the following UI:
 

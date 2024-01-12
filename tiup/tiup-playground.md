@@ -60,6 +60,12 @@ Flags:
       --tiflash.binpath string   Specify the TiFlash instance binary path (optional, for debugging)
       --tiflash.config string    Specify the TiFlash instance configuration file (optional, for debugging)
       --tiflash.timeout int      Specify TiFlash maximum wait time in seconds for starting. 0 means no limit
+      --tiproxy int              TiProxy instance number
+      --tiproxy.binpath string   TiProxy instance binary path
+      --tiproxy.config string    TiProxy instance configuration file
+      --tiproxy.host host        Playground TiProxy host. If not provided, TiProxy will still use host flag as its host
+      --tiproxy.port int         Playground TiProxy port. If not provided, TiProxy will use 6000 as its port
+      --tiproxy.timeout int      TiProxy max wait time in seconds for starting. 0 means no limit (default 60)
       -v, --version              Specify the version of playground
       --without-monitor          Disable the monitoring function of Prometheus and Grafana. If you do not add this flag, the monitoring function is enabled by default.
 ```

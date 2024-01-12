@@ -31,6 +31,7 @@ The `TiDB-community-server` package contains the following contents.
 | diag-{version}-linux-{arch}.tar.gz | New in v6.0.0 |
 | influxdb-{version}-linux-{arch}.tar.gz |  |
 | playground-{version}-linux-{arch}.tar.gz |  |
+| tiproxy-{version}-linux-{arch}.tar.gz | New in v7.6.0 |
 
 > **Note:**
 >
