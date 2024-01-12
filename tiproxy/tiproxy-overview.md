@@ -136,7 +136,7 @@ tiup cluster upgrade <cluster-name> <version> --tiproxy-version <tiproxy-version
 
 使用 [`tiup cluster restart`](/tiup/tiup-component-cluster-restart.md) 重启 TiDB 集群时，TiDB server 不是滚动重启，会导致连接断开，请尽量避免使用。
 
-使用 [`tiup cluster upgrade`](/tiup/tiup-component-cluster-upgrade.md) 升级集群和 [`tiup cluster reload`](/tiup/tiup-component-cluster-reload.md) 更新配置时，TiDB server 是滚动重启的，因此连接不会断开。
+使用 [`tiup cluster upgrade`](/tiup/tiup-component-cluster-upgrade.md) 升级集群和 [`tiup cluster reload`](/tiup/tiup-component-cluster-reload.md) 重新加载配置时，TiDB server 是滚动重启的，因此连接不会断开。
 
 ## TiProxy 与其他组件的兼容性
 
