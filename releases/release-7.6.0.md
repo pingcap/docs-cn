@@ -458,7 +458,13 @@ TiDB 版本：7.6.0
     - 修复使用 STREAM_AGG() 等会强制排序的优化器 hint 时且选中 Index Merge 时，强制添加的 sort 可能会丢失的问题 [#49605](https://github.com/pingcap/tidb/issues/49605) @[AilinKid](https://github.com/AilinKid)
     - 修复统计信息直方图的边界包含 NULL 时，可能无法解析成可读字符串的问题 [#49823](https://github.com/pingcap/tidb/issues/49823) @[AilinKid](https://github.com/AilinKid)
     - 修复包含 group_concant(order by) 语法时，可能执行出错的问题 [#49986](https://github.com/pingcap/tidb/issues/49986) @[AilinKid](https://github.com/AilinKid)
- 
+ - 修复了在没有使用严格的 `SQL_MODE` 时，溢出错误在 `UPDATE`, `DELETE`, `INSERT` 仍然返回错误而非 Warning 的问题 [#49137](https://github.com/pingcap/tidb/issues/49137) @[YangKeao](https://github.com/YangKeao)
+ - 修复了由 multi-valued index 和非 Binary 类型字符串组成的复合索引无法写入的问题 [#49680](https://github.com/pingcap/tidb/issues/49680) @[YangKeao](https://github.com/YangKeao)
+ - 修复了复合的 Union 语句中 `limit` 无效的问题 [#49874](https://github.com/pingcap/tidb/issues/49874) @[Defined2014](https://github.com/Defined2014)
+ - 修复了在使用分区表时 `BETWEEN ... AND ...` 条件查询出错误结果的问题 [#49842](https://github.com/pingcap/tidb/issues/49842) @[Defined2014](https://github.com/Defined2014)
+ - 修复了无法在 `REPLACE INTO` 语句中使用 `hints` 的问题 [#34325](https://github.com/pingcap/tidb/issues/34325) @[YangKeao](https://github.com/YangKeao)
+ - 修复了在使用 Hash 分区表时可能选中错误分区的问题 [#50044](https://github.com/pingcap/tidb/issues/50044) @[Defined2014](https://github.com/Defined2014)
+ - 修复了使用 Mariadb J Connector 并配置启用压缩时发生连接错误的问题 [#49845](https://github.com/pingcap/tidb/issues/49845) @[onlyacat](https://github.com/onlyacat)
 + TiKV
 
     - 修复损坏的 SST 文件可能会扩散到其他 TiKV 节点导致 panic 的问题 [#15986](https://github.com/tikv/tikv/issues/15986) @[Connor1996](https://github.com/Connor1996) **tw@Oreoxmt** <!--1631-->
