@@ -39,7 +39,7 @@ summary: 了解 TiProxy 的命令行参数。
 + 默认值：`"warn"`
 + 可以指定以下日志级别之一：`debug`、`info`、`warn`、`error`、`panic`。
 
-### `--curls `
+### `--curls`
 
 + 指定服务器地址。可以添加多个监听地址。
 + 类型：逗号分隔的 ip:port 列表
