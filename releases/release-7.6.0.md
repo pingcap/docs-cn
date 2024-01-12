@@ -298,7 +298,6 @@ TiDB 版本：7.6.0
 |          |          |          |          |
 
 <!-- 以下几项确认后，需挪到上面的配置文件参数变更表格里 -->
-- (dup): release-7.1.3.md > 兼容性变更 - 经进一步的测试后，TiCDC Changefeed 配置项 [`case-sensitive`](/ticdc/ticdc-changefeed-config.md) 默认值由 `true` 改为 `false`，即默认情况下 TiCDC 配置文件中涉及的表名、库名大小写不敏感 [#10047](https://github.com/pingcap/tiflow/issues/10047) @[sdojjy](https://github.com/sdojjy)
 - (dup): release-7.1.3.md > 兼容性变更> TiCDC Changefeed 新增以下配置项： - [`sink.cloud-storage-config`](/ticdc/ticdc-changefeed-config.md)：你可以设置同步数据到对象存储时自动清理历史数据的功能 [#10109](https://github.com/pingcap/tiflow/issues/10109) @[CharlesCheung96](https://github.com/CharlesCheung96)
 - (dup): release-7.1.3.md > 兼容性变更> TiCDC Changefeed 新增以下配置项： - [`compression`](/ticdc/ticdc-changefeed-config.md)：你可以设置 redo log 文件的压缩行为 [#10176](https://github.com/pingcap/tiflow/issues/10176) @[sdojjy](https://github.com/sdojjy)
 
