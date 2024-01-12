@@ -245,6 +245,7 @@ with Session() as session:
 ```python
 with Session() as session:
     player = session.query(Player).filter_by(name == "test").one()
+    query='player'
     more_players = session.query(Player).filter(Player.name.like("%"+query+"%"),Player.coins==10000).all()
 
     print(player)
