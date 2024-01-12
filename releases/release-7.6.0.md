@@ -370,7 +370,10 @@ TiDB 版本：7.6.0
         - note [#issue](链接) @[贡献者 GitHub ID](链接)
         - (dup): release-7.1.3.md > 改进提升> Tools> TiCDC - 通过增加并行，优化了 TiCDC 同步数据到对象存储的性能 [#10098](https://github.com/pingcap/tiflow/issues/10098) @[CharlesCheung96](https://github.com/CharlesCheung96)
         - (dup): release-7.1.3.md > 改进提升> Tools> TiCDC - 支持通过在 `sink-uri` 中设置 `content-compatible=true` 使 TiCDC Canal-JSON [兼容 Canal 官方输出的内容格式](/ticdc/ticdc-canal-json.md#兼容-canal-官方实现) [#10106](https://github.com/pingcap/tiflow/issues/10106) @[3AceShowHand](https://github.com/3AceShowHand)
-
+        - Storage sink 中增加对分段上传到Amazon S3 的支持[#10098](https://github.com/pingcap/tiflow/issues/10098) @[CharlesCheung96](https://github.com/CharlesCheung96)
+        - 支持 TiCDC 构建 fips-ready 的 binary[#9962](https://github.com/pingcap/tiflow/issues/9962)@[lidezhu](https://github.com/lidezhu)
+        - TiCDC 增加支持 mtls 的配置 `security.mtls`[#10015](https://github.com/pingcap/tiflow/issues/10015)@[zhangjinpeng87](https://github.com/zhangjinpeng87)
+        - TiCDC 支持检查上游数据是否完全同步到下游[#10289](https://github.com/pingcap/tiflow/issues/10289)@[hongyunyan](https://github.com/hongyunyan)
     + TiDB Data Migration (DM)
 
         - note [#issue](链接) @[贡献者 GitHub ID](链接)
