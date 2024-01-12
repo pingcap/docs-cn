@@ -332,6 +332,10 @@ TiDB 版本：7.6.0
     - 增强对于 ALTER TABLE ... ROW_FORMAT 的兼容 [#48754](https://github.com/pingcap/tidb/issues/48754) @[hawkingrei](https://github.com/hawkingrei)
     - 调整 CANCEL IMPORT JOB 为同步命令 [#48736](https://github.com/pingcap/tidb/issues/48736) @[D3Hunter](https://github.com/D3Hunter)
     - 优化了空表加索引的速度 [#49682](https://github.com/pingcap/tidb/issues/49682) @[zimulala](https://github.com/zimulala)
+    - 在关联子查询的列没有被上层算子引用时，关联子查询可以被直接消除 [#45822](https://github.com/pingcap/tidb/issues/45822) @[King-Dylan](https://github.com/King-Dylan)
+    - 支持非 binary collation 的列使用 LIKE 条件构造索引范围扫描 [#48181](https://github.com/pingcap/tidb/issues/48181) [#49138](https://github.com/pingcap/tidb/issues/49138)  @[time-and-fate](https://github.com/time-and-fate)
+    - 提供更简洁的 create binding 语法 [#48876](https://github.com/pingcap/tidb/issues/48876) @[qw4990](https://github.com/qw4990)
+    - exchange partition 操作会触发统计信息的维护更新 [#47354](https://github.com/pingcap/tidb/issues/47354) @[hi-rustin](https://github.com/hi-rustin)
 
 + TiKV
 
@@ -434,6 +438,23 @@ TiDB 版本：7.6.0
     - 修复某些场景下表达式索引不会发现“除以 0”错误的问题 [#50053](https://github.com/pingcap/tidb/issues/50053) @[lcwangchao](https://github.com/lcwangchao)
     - 缓解了表的数目过多时 TiDB 节点 OOM 的问题 [#50077](https://github.com/pingcap/tidb/issues/50077) @[zimulala](https://github.com/zimulala)
     - 修复了集群滚动重启时 DDL 卡在运行中状态的问题 [#50073](https://github.com/pingcap/tidb/issues/50073) @[tangenta](https://github.com/tangenta)
+    - 修复使用 PointGet BatchPointGet 访问分区表的全局索引时，结果可能出错的问题 [#47539](https://github.com/pingcap/tidb/issues/47539) @[L-maple](https://github.com/L-maple)
+    - 修复有虚拟列上索引时，可能无法选中 MPP 计划的问题 [#47766](https://github.com/pingcap/tidb/issues/47766) @[AilinKid](https://github.com/AilinKid)
+    - 修复 Limit 可能无法推入 OR 类型的 Index Merge 的问题 [#48588](https://github.com/pingcap/tidb/issues/48588) @[AilinKid](https://github.com/AilinKid)
+    - 修复 BR 导入后，mysql.bind_info 可能多出内置的 builtin 行的问题 [#46527](https://github.com/pingcap/tidb/issues/46527) @[qw4990](https://github.com/qw4990)
+    - 修复 drop partition 时，统计信息更新行为不合理的问题 [#48182](https://github.com/pingcap/tidb/issues/48182) @[hi-rustin](https://github.com/hi-rustin)
+    - 修复并发合并分区表全局统计信息可能结果出错的问题 [#48713](https://github.com/pingcap/tidb/issues/48713) @[hawkingrei](https://github.com/hawkingrei)
+    - 修复有 PADDING SPACE 的列在使用 LIKE 函数构造索引范围查询时，结果可能出错的问题 [#48181](https://github.com/pingcap/tidb/issues/48181) @[time-and-fate](https://github.com/time-and-fate)
+    - 修复生成列可能触发对内存结构并发读写的问题 [#44919](https://github.com/pingcap/tidb/issues/44919) @[tangenta](https://github.com/tangenta)
+    - 修复当指定不收集 TopN 时，统计信息仍然可能收集 1 个 TopN 的问题 [#49080](https://github.com/pingcap/tidb/issues/49080) @[hawkingrei](https://github.com/hawkingrei)
+    - 修复不合法的优化器 hint 可能会导致合法 hint 不生效的问题 [#49308](https://github.com/pingcap/tidb/issues/49308) @[hawkingrei](https://github.com/hawkingrei)
+    - 修复对 Hash 类型的分区表进行分区的增删重组以及 truncate 操作时，统计信息没有进行对应的维护操作的问题 [#48235](https://github.com/pingcap/tidb/issues/48235) [#48233](https://github.com/pingcap/tidb/issues/48233) [#48226](https://github.com/pingcap/tidb/issues/48226) [#48231](https://github.com/pingcap/tidb/issues/48231) @[hi-rustin](https://github.com/hi-rustin)
+    - 修复设置统计信息自动更新的时间窗口后，时间窗口外仍然可能触发统计信息的问题 [#49552](https://github.com/pingcap/tidb/issues/49552) @[hawkingrei](https://github.com/hawkingrei)
+    - 修复从分区表转为非分区表时，旧统计信息不会自动删除的问题 [#49547](https://github.com/pingcap/tidb/issues/49547) @[hi-rustin](https://github.com/hi-rustin)
+    - 修复当 truncate 非分区表时，旧统计信息不会自动删除的问题 [#49663](https://github.com/pingcap/tidb/issues/49663) @[hi-rustin](https://github.com/hi-rustin)
+    - 修复使用 STREAM_AGG() 等会强制排序的优化器 hint 时且选中 Index Merge 时，强制添加的 sort 可能会丢失的问题 [#49605](https://github.com/pingcap/tidb/issues/49605) @[AilinKid](https://github.com/AilinKid)
+    - 修复统计信息直方图的边界包含 NULL 时，可能无法解析成可读字符串的问题 [#49823](https://github.com/pingcap/tidb/issues/49823) @[AilinKid](https://github.com/AilinKid)
+    - 修复包含 group_concant(order by) 语法时，可能执行出错的问题 [#49986](https://github.com/pingcap/tidb/issues/49986) @[AilinKid](https://github.com/AilinKid)
  
 + TiKV
 
