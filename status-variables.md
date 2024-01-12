@@ -65,7 +65,7 @@ summary: 使用状态变量查看系统和会话状态
 
 - 作用域: SESSION | GLOBAL
 - 类型: 字符串
--  TLS 协议使用的版本。
+- TLS 协议使用的版本。
 
 ### Uptime
 
