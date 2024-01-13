@@ -332,7 +332,7 @@ TiDB 版本：7.6.0
 
 ## 废弃功能
 
-* 实验特性 [执行计划的自动演进绑定](https://docs.pingcap.com/zh/tidb/stable/sql-plan-management#%E8%87%AA%E5%8A%A8%E6%BC%94%E8%BF%9B%E7%BB%91%E5%AE%9A-baseline-evolution) 将在 v8.0.0 被废弃，等同的功能将会在后续版本被重新设计。
+* [执行计划的自动演进绑定](/sql-plan-management.md#自动演进绑定-baseline-evolution)（实验特性）将从 v8.0.0 开始废弃，等同的功能将会在后续版本中重新设计。
 * 系统变量 [`tidb_disable_txn_auto_retry`](/system-variables.md#tidb_disable_txn_auto_retry) 将从 TiDB v8.0.0 开始废弃，废弃后将不再支持乐观事务的自动重试。
 * 废弃功能 2
 
