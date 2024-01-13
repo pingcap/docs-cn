@@ -85,9 +85,9 @@ TiDB 版本：7.6.0
     更多信息，请参考[用户文档](/br/br-snapshot-guide.md#恢复快照备份数据)。
 
 * 默认开启 Titan 引擎 [#16245] (https://github.com/tikv/tikv/issues/16245) @[Connor1996](https://github.com/Connor1996) @[v01dstar](https://github.com/v01dstar) @[tonyxuqqi](https://github.com/tonyxuqqi)
-    
+
     为了更好的支持 TiDB 宽表写入场景，特别是在支持 JSON 之后，从 TiDB v7.6.0 开始版本开始，默认开启了 Titan 引擎，自动将超过 1KB 的大 Value 从 RocksDB 的 LST-Tree 中分离出来，单独存储在 Titan，以提升对大 Value 的处理性能。Titan 引擎与 TiKV 所使用的 RocksDB 特性百分之百兼容。这一变更，不仅降低了写入放大，在处理大 Value 的写入、更新和点查场景时表现的更加出色。同时，在 Range Scan 场景下，通过对 Titan 引擎的优化，默认配置下 Titan 引擎的性能测试结果和 RocksDB 基本持平。
-    
+
     该配置的变更对历史版本兼容，已有的 TiDB 集群在升级到 TiDB v7.6.0 或之后版本时，仍会默认保持关闭 Titan 引擎。用户可以根据实际的需求手动开启或者关闭 Titan 引擎。
 
     更多信息，请参考[用户文档](/storage-engine/titan-overview.md)。
@@ -125,11 +125,12 @@ TiDB 版本：7.6.0
 
     更多信息，请参考[用户文档](/sql-statements/sql-statement-create-index.md#多值索引)。
 
-    * TiDB支持定期错峰Compaction的能力（实验特性） [#12729](https://github.com/tikv/tikv/issues/12729) **tw@Oreoxmt** <!--1610-->
+* TiDB 支持定期错峰Compaction的能力（实验特性） [#12729](https://github.com/tikv/tikv/issues/12729) **tw@Oreoxmt** <!--1610-->
 
-      TiDB自7.6.0起支持定期做数据Compaction的能力，可以作为GC的增强，消除冗余版本。主要的使用场景是如果系统有明显的峰谷时段，可以在低谷时做数据compaction，从而提高高峰时业务流量的性能。
-       * 可以指定时间段以及触发时的tikv进程最大CPU利用率，默认是100%。 （也就是当TiKV CPU利用率大于等于一个CPU core时，不会触发该功能，避免业务流量受影响）。
-           
+    TiDB自7.6.0起支持定期做数据Compaction的能力，可以作为GC的增强，消除冗余版本。主要的使用场景是如果系统有明显的峰谷时段，可以在低谷时做数据compaction，从而提高高峰时业务流量的性能。
+
+    * 可以指定时间段以及触发时的tikv进程最大CPU利用率，默认是100%。 （也就是当TiKV CPU利用率大于等于一个CPU core时，不会触发该功能，避免业务流量受影响）。
+
      更多信息，请参考[TiKV配置文档](/tikv-configuration-file.md)。
 
 ### 稳定性
@@ -365,21 +366,16 @@ TiDB 版本：7.6.0
 + TiKV
 
     - 增加查询异步任务的API endpoint `/async_tasks`. [#15759](https://github.com/tikv/tikv/issues/15759) @[YuJuncen](https://github.com/YuJuncen)
-    -  给grpc监控增加优先级的标签，从而显示资源管理中的各个不同优先级的资源组的数据 @[bufferflies](https://github.com/bufferflies)
+    - 给grpc监控增加优先级的标签，从而显示资源管理中的各个不同优先级的资源组的数据 @[bufferflies](https://github.com/bufferflies)
     - 支持动态调整参数`readpool.unified.max-tasks-per-worker`的值；支持根据优先级单独核算正在运行的任务数 [#16026](https://github.com/tikv/tikv/issues/16026) @[glorv](https://github.com/glorv)
     - 支持动态可调的GC线程数，默认值是1。[#16101](https://github.com/tikv/tikv/issues/16101) @[tonyxuqqi](https://github.com/tonyxuqqi)
-    
-    - note [#issue](链接) @[贡献者 GitHub ID](链接)
 
 + PD
 
     - 提升 PD TSO 在磁盘抖动时的可用性 [#7377](https://github.com/tikv/pd/issues/7377) @[HuSharp](https://github.com/HuSharp)
-    - note [#issue](链接) @[贡献者 GitHub ID](链接)
-    - note [#issue](链接) @[贡献者 GitHub ID](链接)
 
 + TiFlash
 
-    - note [#issue](链接) @[贡献者 GitHub ID](链接)
     - (dup): release-6.5.7.md > 改进提升> TiFlash - 降低磁盘性能抖动对读取延迟的影响 [#8583](https://github.com/pingcap/tiflash/issues/8583) @[JaySon-Huang](https://github.com/JaySon-Huang)
     - 减少后台数据 GC 任务对读、写任务延迟的影响 [#8650](https://github.com/pingcap/tiflash/issues/8650) @[JaySon-Huang](https://github.com/JaySon-Huang)
     - 支持在存算分离架构下通过合并相同数据的读取操作，提升多并发下的数据扫描性能 [#6834](https://github.com/pingcap/tiflash/issues/6834) @[JinheLin](https://github.com/JinheLin)
@@ -390,13 +386,11 @@ TiDB 版本：7.6.0
 
     + Backup & Restore (BR)
 
-        - note [#issue](链接) @[贡献者 GitHub ID](链接)
         - (dup): release-7.1.3.md > 改进提升> Tools> Backup & Restore (BR) - 新增 PITR 对 delete range 场景的集成测试，提升 PITR 稳定性 [#47738](https://github.com/pingcap/tidb/issues/47738) @[Leavrth](https://github.com/Leavrth)
         - (dup): release-6.5.7.md > 改进提升> Tools> Backup & Restore (BR) - 提升了 `RESTORE` 语句在大数据量表场景下的建表性能 [#48301](https://github.com/pingcap/tidb/issues/48301) @[Leavrth](https://github.com/Leavrth)
 
     + TiCDC
 
-        - note [#issue](链接) @[贡献者 GitHub ID](链接)
         - (dup): release-7.1.3.md > 改进提升> Tools> TiCDC - 通过增加并行，优化了 TiCDC 同步数据到对象存储的性能 [#10098](https://github.com/pingcap/tiflow/issues/10098) @[CharlesCheung96](https://github.com/CharlesCheung96)
         - (dup): release-7.1.3.md > 改进提升> Tools> TiCDC - 支持通过在 `sink-uri` 中设置 `content-compatible=true` 使 TiCDC Canal-JSON [兼容 Canal 官方输出的内容格式](/ticdc/ticdc-canal-json.md#兼容-canal-官方实现) [#10106](https://github.com/pingcap/tiflow/issues/10106) @[3AceShowHand](https://github.com/3AceShowHand)
         - Storage sink 中增加对分段上传到Amazon S3 的支持[#10098](https://github.com/pingcap/tiflow/issues/10098) @[CharlesCheung96](https://github.com/CharlesCheung96)
@@ -423,7 +417,6 @@ TiDB 版本：7.6.0
 
 + TiDB
 
-    - note [#issue](链接) @[贡献者 GitHub ID](链接)
     - (dup): release-6.5.7.md > 错误修复> TiDB - 修复 TiDB panic 并报错 `invalid memory address or nil pointer dereference` 的问题 [#42739](https://github.com/pingcap/tidb/issues/42739) @[CbcWestwolf](https://github.com/CbcWestwolf)
     - (dup): release-7.1.3.md > 错误修复> TiDB - 修复当 DDL `jobID` 恢复为 0 时 TiDB 节点 panic 的问题 [#46296](https://github.com/pingcap/tidb/issues/46296) @[jiyfhust](https://github.com/jiyfhust)
     - (dup): release-6.5.7.md > 错误修复> TiDB - 修复某些情况下相同的查询计划拥有不同的 `PLAN_DIGEST` 的问题 [#47634](https://github.com/pingcap/tidb/issues/47634) @[King-Dylan](https://github.com/King-Dylan)
@@ -505,14 +498,14 @@ TiDB 版本：7.6.0
     - (dup): release-6.5.7.md > 错误修复> TiKV - 修复损坏的 SST 文件可能会扩散到其他 TiKV 节点的问题 [#15986](https://github.com/tikv/tikv/issues/15986) @[Connor1996](https://github.com/Connor1996)
     - (dup): release-7.1.3.md > 错误修复> TiKV - 修复如果 TiKV 运行极慢，在 Region Merge 之后可能 panic 的问题 [#16111](https://github.com/tikv/tikv/issues/16111) @[overvenus](https://github.com/overvenus)
     - 修复 GC 进行扫描过期 lock 无法读取内存悲观锁的问题 [#15066](https://github.com/tikv/tikv/issues/15066) @[cfzjywxk](https://github.com/cfzjywxk)
-  - 修复Titan监控中不正确的Blob文件大小，并修改部分参数的默认值------GC线程数默认改为1，压缩算法默认调整为ZSTD。 [#15971](https://github.com/tikv/tikv/issues/15971) @[Connor1996](https://github.com/Connor1996)
-  - 修复TiCDC在同步大表时可能导致TiKV OOM的问题。[#16035](https://github.com/tikv/tikv/issues/16035) @[overvenus](https://github.com/overvenus)
-  - 修复resolve ts可能被阻塞2个小时的问题。 [#11847](https://github.com/tikv/tikv/issues/11847) @[overvenus](https://github.com/overvenus)
-  - 修复日志备份任务内存泄露的问题。修复日志备份任务开始但可能不能真正工作的问题。 [#16070](https://github.com/tikv/tikv/issues/16070) @[YuJuncen](https://github.com/YuJuncen)
-  - 修复在处理decimal算术乘法截断的错误。 [#16268](https://github.com/tikv/tikv/issues/16268) @[solotzg](https://github.com/solotzg)
-  - 修复`cast_duration_as_time`可能返回错误结果的错误. [#16211](https://github.com/tikv/tikv/issues/16211) @[gengliqi](https://github.com/gengliqi)
-  - 修复巴西和埃及时区转换的错误。 [#16220](https://github.com/tikv/tikv/issues/16220) @[overvenus](https://github.com/overvenus)
-  - 修复gRPC threads可能在检查`is_shutdown`时出现的panic的错误。 [#16236](https://github.com/tikv/tikv/issues/16236) @[pingyu](https://github.com/pingyu)
+    - 修复Titan监控中不正确的Blob文件大小，并修改部分参数的默认值------GC线程数默认改为1，压缩算法默认调整为ZSTD。 [#15971](https://github.com/tikv/tikv/issues/15971) @[Connor1996](https://github.com/Connor1996)
+    - 修复TiCDC在同步大表时可能导致TiKV OOM的问题。[#16035](https://github.com/tikv/tikv/issues/16035) @[overvenus](https://github.com/overvenus)
+    - 修复resolve ts可能被阻塞2个小时的问题。 [#11847](https://github.com/tikv/tikv/issues/11847) @[overvenus](https://github.com/overvenus)
+    - 修复日志备份任务内存泄露的问题。修复日志备份任务开始但可能不能真正工作的问题。 [#16070](https://github.com/tikv/tikv/issues/16070) @[YuJuncen](https://github.com/YuJuncen)
+    - 修复在处理decimal算术乘法截断的错误。 [#16268](https://github.com/tikv/tikv/issues/16268) @[solotzg](https://github.com/solotzg)
+    - 修复`cast_duration_as_time`可能返回错误结果的错误. [#16211](https://github.com/tikv/tikv/issues/16211) @[gengliqi](https://github.com/gengliqi)
+    - 修复巴西和埃及时区转换的错误。 [#16220](https://github.com/tikv/tikv/issues/16220) @[overvenus](https://github.com/overvenus)
+    - 修复gRPC threads可能在检查`is_shutdown`时出现的panic的错误。 [#16236](https://github.com/tikv/tikv/issues/16236) @[pingyu](https://github.com/pingyu)
 
     + PD
 
@@ -523,7 +516,6 @@ TiDB 版本：7.6.0
 
 + TiFlash
 
-    - note [#issue](链接) @[贡献者 GitHub ID](链接)
     - (dup): release-6.5.7.md > 错误修复> TiFlash - 修复当查询遇到内存限制后发生内存泄漏的问题 [#8447](https://github.com/pingcap/tiflash/issues/8447) @[JinheLin](https://github.com/JinheLin)
     - (dup): release-6.5.7.md > 错误修复> TiFlash - 修复在执行 `FLASHBACK DATABASE` 后 TiFlash 副本的数据仍会被 GC 回收的问题 [#8450](https://github.com/pingcap/tiflash/issues/8450) @[JaySon-Huang](https://github.com/JaySon-Huang)
     - (dup): release-6.5.7.md > 错误修复> TiFlash - 修复慢查询导致内存使用显著增加的问题 [#8564](https://github.com/pingcap/tiflash/issues/8564) @[JinheLin](https://github.com/JinheLin)
@@ -543,13 +535,11 @@ TiDB 版本：7.6.0
 
     + Backup & Restore (BR)
 
-        - note [#issue](链接) @[贡献者 GitHub ID](链接)
         - (dup): release-7.1.3.md > 错误修复> Tools> Backup & Restore (BR) - 修复生成外部存储文件 URI 错误的问题 [#48452](https://github.com/pingcap/tidb/issues/48452) @[3AceShowHand](https://github.com/3AceShowHand)
         - (dup): release-6.5.7.md > 错误修复> Tools> Backup & Restore (BR) - 修复在任务初始化阶段出现与 PD 的连接错误导致日志备份任务虽然启动但无法正常工作的问题 [#16056](https://github.com/tikv/tikv/issues/16056) @[YuJuncen](https://github.com/YuJuncen)
 
     + TiCDC
 
-        - note [#issue](链接) @[贡献者 GitHub ID](链接)
         - (dup): release-7.1.3.md > 错误修复> Tools> TiCDC - 修复某些场景下在同步 `DELETE` 语句时，`WHERE` 条件没有采用主键作为条件的问题 [#9812](https://github.com/pingcap/tiflow/issues/9812) @[asddongmen](https://github.com/asddongmen)
         - (dup): release-7.1.3.md > 错误修复> Tools> TiCDC - 修复 redo log 开启时，DDL 同步时间间隔过长的问题 [#9960](https://github.com/pingcap/tiflow/issues/9960) @[CharlesCheung96](https://github.com/CharlesCheung96)
         - (dup): release-7.1.3.md > 错误修复> Tools> TiCDC - 修复同步数据到对象存储时，可能会出现 TiCDC Server panic 的问题 [#10137](https://github.com/pingcap/tiflow/issues/10137) @[sdojjy](https://github.com/sdojjy)
