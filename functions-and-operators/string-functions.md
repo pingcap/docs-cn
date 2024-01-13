@@ -37,8 +37,6 @@ SELECT ASCII('A'), ASCII('TiDB'), ASCII(23);
          65 |            84 |        50 
 ```
 
-
-
 ### [`BIN()`](https://dev.mysql.com/doc/refman/8.0/en/string-functions.html#function_bin)
 
 `BIN()` 函数用于将输入的参数转换为其二进制值的字符串表示形式。该参数可以为字符串或数字。
@@ -326,6 +324,7 @@ WEIGHT_STRING(str [AS {CHAR|BINARY}(N)])
 
 * `str`：字符串表达式，如果是非二进制字符串，例如 CHAR、 VARCHAR 或 TEXT 值，则返回值包含该字符串的排序规则权重；如果是二进制字符串，例如 BINARY、 VARBINARY 或 BLOB 值，则返回值与输入相同。
 * `AS {CHAR|BINARY}(N)`：可选参数，用于指定输出结果的类型和长度。CHAR 表示字符数据类型，而 BINARY 表示二进制数据类型，N 指定输出的长度，取值为大于等于 1 的整数。
+
 > **注意：**
 > 
 > 当 N 小于字符串长度时，字符串将被截断，当 N 超过字符串长度时，CHAR 类型将用空格来填充以到达指定长度，BINARY类型将以 `0x00` 来填充以到达指定长度。
@@ -344,7 +343,6 @@ SELECT HEX(WEIGHT_STRING('ab' AS CHAR(3))) AS char_result, HEX(WEIGHT_STRING('ab
 -------------+---------------
  6162        | 616200 
 ```
-
 
 ## 不支持的函数
 
