@@ -125,6 +125,13 @@ TiDB 版本：7.6.0
 
     更多信息，请参考[用户文档](/sql-statements/sql-statement-create-index.md#多值索引)。
 
+    * TiDB支持定期错峰Compaction的能力（实验特性） [#12729](https://github.com/tikv/tikv/issues/12729) **tw@Oreoxmt** <!--1610-->
+
+      TiDB自7.6.0起支持定期做数据Compaction的能力，可以作为GC的增强，消除冗余版本。主要的使用场景是如果系统有明显的峰谷时段，可以在低谷时做数据compaction，从而提高高峰时业务流量的性能。
+       * 可以指定时间段以及触发时的tikv进程最大CPU利用率，默认是100%。 （也就是当TiKV CPU利用率大于等于一个CPU core时，不会触发该功能，避免业务流量受影响）。
+           
+     更多信息，请参考[TiKV配置文档](/tikv-configuration-file.md)。
+
 ### 稳定性
 
 * 跨数据库绑定执行计划 [#48875](https://github.com/pingcap/tidb/issues/48875) @[qw4990](https://github.com/qw4990) **tw@Oreoxmt** <!--1613-->
@@ -357,7 +364,11 @@ TiDB 版本：7.6.0
 
 + TiKV
 
-    - note [#issue](链接) @[贡献者 GitHub ID](链接)
+    - 增加查询异步任务的API endpoint `/async_tasks`. [#15759](https://github.com/tikv/tikv/issues/15759) @[YuJuncen](https://github.com/YuJuncen)
+    -  给grpc监控增加优先级的标签，从而显示资源管理中的各个不同优先级的资源组的数据 @[bufferflies](https://github.com/bufferflies)
+    - 支持动态调整参数`readpool.unified.max-tasks-per-worker`的值；支持根据优先级单独核算正在运行的任务数 [#16026](https://github.com/tikv/tikv/issues/16026) @[glorv](https://github.com/glorv)
+    - 支持动态可调的GC线程数，默认值是1。[#16101](https://github.com/tikv/tikv/issues/16101) @[tonyxuqqi](https://github.com/tonyxuqqi)
+    
     - note [#issue](链接) @[贡献者 GitHub ID](链接)
 
 + PD
@@ -494,6 +505,14 @@ TiDB 版本：7.6.0
     - (dup): release-6.5.7.md > 错误修复> TiKV - 修复损坏的 SST 文件可能会扩散到其他 TiKV 节点的问题 [#15986](https://github.com/tikv/tikv/issues/15986) @[Connor1996](https://github.com/Connor1996)
     - (dup): release-7.1.3.md > 错误修复> TiKV - 修复如果 TiKV 运行极慢，在 Region Merge 之后可能 panic 的问题 [#16111](https://github.com/tikv/tikv/issues/16111) @[overvenus](https://github.com/overvenus)
     - 修复 GC 进行扫描过期 lock 无法读取内存悲观锁的问题 [#15066](https://github.com/tikv/tikv/issues/15066) @[cfzjywxk](https://github.com/cfzjywxk)
+  - 修复Titan监控中不正确的Blob文件大小，并修改部分参数的默认值------GC线程数默认改为1，压缩算法默认调整为ZSTD。 [#15971](https://github.com/tikv/tikv/issues/15971) @[Connor1996](https://github.com/Connor1996)
+  - 修复TiCDC在同步大表时可能导致TiKV OOM的问题。[#16035](https://github.com/tikv/tikv/issues/16035) @[overvenus](https://github.com/overvenus)
+  - 修复resolve ts可能被阻塞2个小时的问题。 [#11847](https://github.com/tikv/tikv/issues/11847) @[overvenus](https://github.com/overvenus)
+  - 修复日志备份任务内存泄露的问题。修复日志备份任务开始但可能不能真正工作的问题。 [#16070](https://github.com/tikv/tikv/issues/16070) @[YuJuncen](https://github.com/YuJuncen)
+  - 修复在处理decimal算术乘法截断的错误。 [#16268](https://github.com/tikv/tikv/issues/16268) @[solotzg](https://github.com/solotzg)
+  - 修复`cast_duration_as_time`可能返回错误结果的错误. [#16211](https://github.com/tikv/tikv/issues/16211) @[gengliqi](https://github.com/gengliqi)
+  - 修复巴西和埃及时区转换的错误。 [#16220](https://github.com/tikv/tikv/issues/16220) @[overvenus](https://github.com/overvenus)
+  - 修复gRPC threads可能在检查`is_shutdown`时出现的panic的错误。 [#16236](https://github.com/tikv/tikv/issues/16236) @[pingyu](https://github.com/pingyu)
 
     + PD
 
