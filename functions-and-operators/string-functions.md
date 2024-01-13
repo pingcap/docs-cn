@@ -350,8 +350,6 @@ SELECT UNHEX('54694442');
  TiDB 
 ```
 
-
-
 ### [`UPPER()`](https://dev.mysql.com/doc/refman/8.0/en/string-functions.html#function_upper)
 
 参数转换为大写形式
