@@ -350,7 +350,6 @@ TiDB 版本：7.6.0
     - 优化了空表加索引的速度 [#49682](https://github.com/pingcap/tidb/issues/49682) @[zimulala](https://github.com/zimulala)
     - 在关联子查询的列没有被上层算子引用时，关联子查询可以被直接消除 [#45822](https://github.com/pingcap/tidb/issues/45822) @[King-Dylan](https://github.com/King-Dylan)
     - 支持非 binary collation 的列使用 LIKE 条件构造索引范围扫描 [#48181](https://github.com/pingcap/tidb/issues/48181) [#49138](https://github.com/pingcap/tidb/issues/49138)  @[time-and-fate](https://github.com/time-and-fate)
-    - 提供更简洁的 create binding 语法 [#48876](https://github.com/pingcap/tidb/issues/48876) @[qw4990](https://github.com/qw4990)
     - exchange partition 操作会触发统计信息的维护更新 [#47354](https://github.com/pingcap/tidb/issues/47354) @[hi-rustin](https://github.com/hi-rustin)
     - 修复 `admin recover index` 在处理含 CommonHandle 的表时会 panic 的问题 [#47687](https://github.com/pingcap/tidb/issues/47687) @[Defined2014](https://github.com/Defined2014)
     - TiDB 支持构建满足 FIPS 要求的 binary [#47948](https://github.com/pingcap/tidb/issues/47948) @[tiancaiamao](https://github.com/tiancaiamao)
@@ -396,7 +395,6 @@ TiDB 版本：7.6.0
         - Storage sink 中增加对分段上传到Amazon S3 的支持[#10098](https://github.com/pingcap/tiflow/issues/10098) @[CharlesCheung96](https://github.com/CharlesCheung96)
         - 支持 TiCDC 构建 fips-ready 的 binary[#9962](https://github.com/pingcap/tiflow/issues/9962)@[lidezhu](https://github.com/lidezhu)
         - TiCDC 增加支持 mtls 的配置 `security.mtls`[#10015](https://github.com/pingcap/tiflow/issues/10015)@[zhangjinpeng87](https://github.com/zhangjinpeng87)
-        - TiCDC 支持检查上游数据是否完全同步到下游[#10289](https://github.com/pingcap/tiflow/issues/10289)@[hongyunyan](https://github.com/hongyunyan)
 
     + TiDB Data Migration (DM)
 
@@ -450,9 +448,7 @@ TiDB 版本：7.6.0
     - 修复了表达式 `inet_ntoa()` 中的兼容性问题 [#46598](https://github.com/pingcap/tidb/issues/46598) @[solotzg](https://github.com/solotzg)
     - 修复了将字节转换为时间编码失败的问题 [#47346](https://github.com/pingcap/tidb/issues/47346) @[wshwsh12](https://github.com/wshwsh12)
     - 修复了 deicmal 乘法运算时截断处理有误的错误结果问题 [#48332](https://github.com/pingcap/tidb/issues/48332) @[solotzg](https://github.com/solotzg)
-    - 修复了关于一些时区转换的问题，包括巴西和埃及等 [#49586](https://github.com/pingcap/tidb/issues/49586) @[overvenus](https://github.com/overvenus)
     - 修复 CHECK 约束 ENFORCED 选项与 MySQL 8.0 不一致的错误 [#47567](https://github.com/pingcap/tidb/issues/47567) [#47631](https://github.com/pingcap/tidb/issues/47631) @[jiyfhust](https://github.com/jiyfhust)
-    - 修复 CHECK 约束的 DDL 卡住的问题 [#47632](https://github.com/pingcap/tidb/issues/47632) @[jiyfhust](https://github.com/jiyfhust)
     - 修复 CHECK 约束的 DDL 卡住的问题 [#47632](https://github.com/pingcap/tidb/issues/47632) @[jiyfhust](https://github.com/jiyfhust)
     - 修复 DDL 快速加索引由于内存不足失败的问题 [#47862](https://github.com/pingcap/tidb/issues/47862) @[GMHDBJD](https://github.com/GMHDBJD)
     - 修复在集群升级过程中加索引可能导致数据与索引不一致的问题 [#47862](https://github.com/pingcap/tidb/issues/47862) @[zimulala](https://github.com/zimulala)
@@ -495,7 +491,6 @@ TiDB 版本：7.6.0
     - (dup): release-6.5.6.md > 错误修复> TiKV - 修复 resolved-ts 可能被阻塞 2 小时的问题 [#39130](https://github.com/pingcap/tidb/issues/39130) @[overvenus](https://github.com/overvenus)
     - (dup): release-7.1.3.md > 错误修复> TiKV - 修复 Resolved TS 可能被阻塞两小时的问题 [#15520](https://github.com/tikv/tikv/issues/15520) [#39130](https://github.com/pingcap/tidb/issues/39130) @[overvenus](https://github.com/overvenus)
     - (dup): release-6.5.6.md > 错误修复> TiKV - 修复在 Flashback 时遇到 `notLeader` 或 `regionNotFound` 时卡住的问题 [#15712](https://github.com/tikv/tikv/issues/15712) @[HuSharp](https://github.com/HuSharp)
-    - (dup): release-6.5.7.md > 错误修复> TiKV - 修复损坏的 SST 文件可能会扩散到其他 TiKV 节点的问题 [#15986](https://github.com/tikv/tikv/issues/15986) @[Connor1996](https://github.com/Connor1996)
     - (dup): release-7.1.3.md > 错误修复> TiKV - 修复如果 TiKV 运行极慢，在 Region Merge 之后可能 panic 的问题 [#16111](https://github.com/tikv/tikv/issues/16111) @[overvenus](https://github.com/overvenus)
     - 修复 GC 进行扫描过期 lock 无法读取内存悲观锁的问题 [#15066](https://github.com/tikv/tikv/issues/15066) @[cfzjywxk](https://github.com/cfzjywxk)
     - 修复Titan监控中不正确的Blob文件大小，并修改部分参数的默认值------GC线程数默认改为1，压缩算法默认调整为ZSTD。 [#15971](https://github.com/tikv/tikv/issues/15971) @[Connor1996](https://github.com/Connor1996)
