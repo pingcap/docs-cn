@@ -45,7 +45,7 @@ TiDB 兼容 MySQL 的协议，但存在部分与 MySQL 不兼容或有差异的�
 
 基于 SM3 的认证仅在 TiDB 的 TiDB-JDBC 中支持。
 
-如果你使用的是 **Maven**，请将以下内容添加到你的 `<dependencies></dependencies>`：
+如果你使用的是 Maven，请将以下内容添加到你的 `<dependencies></dependencies>`：
 
 ```xml
 <dependency>
@@ -75,7 +75,7 @@ TiDB 兼容 MySQL 的协议，但存在部分与 MySQL 不兼容或有差异的�
 </dependency>
 ```
 
-如果你使用的是 **Gradle**，请将以下内容添加到你的 `dependencies`：
+如果你使用的是 Gradle，请将以下内容添加到你的 `dependencies`：
 
 ```gradle
 implementation group: 'io.github.lastincisor', name: 'mysql-connector-java', version: '8.0.29-tidb-1.0.0'
@@ -100,7 +100,7 @@ implementation group: 'org.bouncycastle', name: 'bcpkix-jdk15on', version: '1.67
 
 你可以使用 [Gradle](https://gradle.org/install) 或 [Maven](https://maven.apache.org/install.html) 获取你的应用程序的所有依赖项，且会帮你下载依赖项的间接依赖，而无需你手动管理复杂的依赖关系。注意，只有 Hibernate `6.0.0.Beta2` 及以上版本才支持 TiDB 方言。
 
-如果你使用的是 **Maven**，请将以下内容添加到你的 `<dependencies></dependencies>`：
+如果你使用的是 Maven，请将以下内容添加到你的 `<dependencies></dependencies>`：
 
 ```xml
 <dependency>
@@ -116,7 +116,7 @@ implementation group: 'org.bouncycastle', name: 'bcpkix-jdk15on', version: '1.67
 </dependency>
 ```
 
-如果你使用的是 **Gradle**，请将以下内容添加到你的 `dependencies`：
+如果你使用的是 Gradle，请将以下内容添加到你的 `dependencies`：
 
 ```gradle
 implementation 'org.hibernate:hibernate-core:6.0.0.CR2'
@@ -136,7 +136,7 @@ implementation 'mysql:mysql-connector-java:5.1.49'
 
 你可以使用 [Gradle](https://gradle.org/install) 或 [Maven](https://maven.apache.org/install.html) 获取应用程序的所有依赖项包括间接依赖，无需手动管理复杂的依赖关系。
 
-如果你使用的是 **Maven**，请将以下内容添加到你的 `<dependencies></dependencies>`：
+如果你使用的是 Maven，请将以下内容添加到你的 `<dependencies></dependencies>`：
 
 ```xml
 <dependency>
@@ -152,7 +152,7 @@ implementation 'mysql:mysql-connector-java:5.1.49'
 </dependency>
 ```
 
-如果你使用的是 **Gradle**，请将以下内容添加到你的 `dependencies`：
+如果你使用的是 Gradle，请将以下内容添加到你的 `dependencies`：
 
 ```gradle
 implementation 'org.mybatis:mybatis:3.5.9'
@@ -179,7 +179,7 @@ implementation 'mysql:mysql-connector-java:5.1.49'
 >
 > tidb-loadbalance 需配合 mysql-connector-j 一起使用。
 
-如果你使用的是 **Maven**，请将以下内容添加到你的 `<dependencies></dependencies>`：
+如果你使用的是 Maven，请将以下内容添加到你的 `<dependencies></dependencies>`：
 
 ```xml
 <dependency>
@@ -194,7 +194,7 @@ implementation 'mysql:mysql-connector-java:5.1.49'
 </dependency>
 ```
 
-如果你使用的是 **Gradle**，请将以下内容添加到你的 `dependencies`：
+如果你使用的是 Gradle，请将以下内容添加到你的 `dependencies`：
 
 ```gradle
 implementation group: 'io.github.lastincisor', name: 'mysql-connector-java', version: '8.0.29-tidb-1.0.0'
