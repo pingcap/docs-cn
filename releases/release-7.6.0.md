@@ -365,7 +365,7 @@ TiDB 版本：7.6.0
 
 + PD
 
-    <!--tw@hfxsd 1 条-->
+    <!--tw@ran-huang 1 条-->
     - 提升 PD TSO 在磁盘抖动时的可用性 [#7377](https://github.com/tikv/pd/issues/7377) @[HuSharp](https://github.com/HuSharp)
 
 + TiFlash
@@ -395,12 +395,12 @@ TiDB 版本：7.6.0
 
     + TiDB Data Migration (DM)
 
-        <!--tw@hfxsd 1 条-->
+        <!--tw@ran-huang 1 条-->
         - 为 DM OpenAPI 增加了全量导入物理导入相关配置 [#10193](https://github.com/pingcap/tiflow/issues/10193) @[GMHDBJD](https://github.com/GMHDBJD)
 
     + TiDB Lightning
 
-        <!--tw@ran-huang 2 条-->
+        <!--tw@hfxsd 2 条-->
         - 支持配置多个 PD 地址增强稳定性 [#49515](https://github.com/pingcap/tidb/issues/49515) @[mittalrishabh](https://github.com/mittalrishabh)
         - 支持配置 lightning 内部 IO 操作大小提升性能 [#45037](https://github.com/pingcap/tidb/issues/45037) @[mittalrishabh](https://github.com/mittalrishabh)
 
@@ -489,7 +489,7 @@ TiDB 版本：7.6.0
     - 修复了在使用 Hash 分区表时可能选中错误分区的问题 [#50044](https://github.com/pingcap/tidb/issues/50044) @[Defined2014](https://github.com/Defined2014)
     - 修复了使用 Mariadb J Connector 并配置启用压缩时发生连接错误的问题 [#49845](https://github.com/pingcap/tidb/issues/49845) @[onlyacat](https://github.com/onlyacat)
 
- + TiKV
++ TiKV
 
     <!--tw@Oreoxmt 10 条-->
     - 修复损坏的 SST 文件可能会扩散到其他 TiKV 节点导致 panic 的问题 [#15986](https://github.com/tikv/tikv/issues/15986) @[Connor1996](https://github.com/Connor1996) **tw@Oreoxmt** <!--1631-->
