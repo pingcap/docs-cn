@@ -161,8 +161,8 @@ loaders:                             # load 处理单元的运行配置参数
     # range-concurrency: 16
     # 物理导入模式向 TiKV 发送 KV 数据时是否启用压缩。目前仅支持 Gzip 压缩算法，可填写 "gzip" 或 "gz"。默认不启用压缩。
     # compress-kv-pairs: ""
-    # PD server 的地址，填一个即可。该值为空时，默认使用 TiDB 查询到的 PD 地址信息。
-    # pd-addr: "192.168.0.1:2379"
+    # PD server 的地址。该值为空时，默认使用 TiDB 查询到的 PD 地址信息。从 v7.6.0 开始支持设置多个地址。
+    # pd-addr = "172.16.31.4:2379,56.78.90.12:3456"
 
 syncers:                             # sync 处理单元的运行配置参数
   global:                            # 配置名称
