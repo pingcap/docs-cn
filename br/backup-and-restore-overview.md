@@ -129,7 +129,6 @@ TiDB 支持将数据备份到 Amazon S3、Google Cloud Storage (GCS)、Azure Blo
 
 从 v7.0.0 开始，TiDB 逐步支持通过 SQL 语句来执行备份和恢复操作。因此，强烈建议在备份和恢复集群时使用与 TiDB 集群相同大版本的 BR 工具，并避免跨大版本进行数据备份和恢复操作。这有助于确保恢复操作的顺利执行和数据的一致性。特别是从 v7.6.0 起，BR 默认支持在恢复数据的同时恢复 `mysql` 库下的系统表，即恢复时默认配置为 `--with-sys-table=true`。在跨版本进行数据恢复时，如果遇到 `mysql` 库的系统表结构不同导致类似 `[BR:Restore:ErrRestoreIncompatibleSys]incompatible system table` 异常，你可以通过设置 `--with-sys-table=false` 跳过恢复系统表以规避该问题。
 
-
 TiDB v6.6.0 版本之前的 BR 版本兼容性矩阵：
 
 | 备份版本（纵向）\ 恢复版本（横向）  | 恢复到 TiDB v6.0 | 恢复到 TiDB v6.1| 恢复到 TiDB v6.2 | 恢复到 TiDB v6.3、v6.4 或 v6.5 | 恢复到 TiDB v6.6 |
