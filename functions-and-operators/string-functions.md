@@ -292,10 +292,10 @@ SELECT BIN("123q123");
 
 ### [`SUBSTRING_INDEX()`](https://dev.mysql.com/doc/refman/8.0/en/string-functions.html#function_substring-index)
 
-定义:返回字符串 str 中出现 count 次分隔符 delim 之前的子字符串。如果 count 为正数，则返回最终分隔符左侧的所有内容（从左侧算起）。如果 count 为负数，则返回最终分隔符右侧（从右侧计数）的所有内容。SUBSTRING_INDEX() 在搜索 delim 时执行区分大小写的匹配
-语法:SUBSTRING_INDEX(str, delim, count)
+定义: 返回字符串 str 中出现 count 次分隔符 delim 之前的子字符串。如果 count 为正数，则返回最终分隔符左侧的所有内容（从左侧算起）。如果 count 为负数，则返回最终分隔符右侧（从右侧计数）的所有内容。SUBSTRING_INDEX() 在搜索 delim 时执行区分大小写的匹配
+语法: SUBSTRING_INDEX(str, delim, count)
 参数: str,delim,count。必须项。字符串，分隔符，个数。
-返回值:子字符串
+返回值: 子字符串
 SELECT SUBSTRING_INDEX('www.tidb.com', '.', 2);
 +-----------------------------------------+
 | SUBSTRING_INDEX('www.tidb.com', '.', 2) |
@@ -311,9 +311,9 @@ SELECT SUBSTRING_INDEX('www.tidb.com', '.', -1);
 ### [`TO_BASE64()`](https://dev.mysql.com/doc/refman/8.0/en/string-functions.html#function_to-base64)
 
 定义: 将字符串参数转换为 base-64 编码形式，并将带有连接字符集和 collation 的字符串作为结果返回。如果参数不是字符串，则在转换之前将其转换为字符串。如果参数为 NULL，则结果为 NULL。Base-64编码的字符串可以使用 FROM_BASE64() 函数进行解码。
-语法:TO_BASE64(str)
+语法: TO_BASE64(str)
 参数: str,必须项。待编码的字符串。
-返回值:base-64编码
+返回值: base-64编码
 SELECT TO_BASE64('abc');
 +------------------+
 | TO_BASE64('abc') |
