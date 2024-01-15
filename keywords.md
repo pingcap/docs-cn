@@ -56,6 +56,8 @@ CREATE TABLE test.select (BEGIN int, END int);
 Query OK, 0 rows affected (0.08 sec)
 ```
 
+TiDB 从 v7.6.0 开始提供 [`INFORMATION_SCHEMA.KEYWORDS`](/information-schema/information-schema-keywords.md) 表，可以用于查询 TiDB 中所有的关键字。
+
 ## 关键字列表
 
 下表列出了 TiDB 中所有的关键字。其中保留字用 `(R)` 来标识。[窗口函数](/functions-and-operators/window-functions.md)的保留字用 `(R-Window)` 来标识。需要用反引号 `` ` `` 包裹的特殊非保留字用 `(S)` 来标识。

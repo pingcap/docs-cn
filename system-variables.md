@@ -256,7 +256,7 @@ SET GLOBAL tidb_distsql_scan_concurrency = 10;
 - 类型：整数型
 - 默认值：`1`
 - 范围：`[1, 65535]`
-- 控制 `AUTO_INCREMENT` 自增值字段的自增步长。该变量常与 `auto_increment_offset` 一起使用。
+- 控制 `AUTO_INCREMENT` 自增值字段的自增步长和 `AUTO_RANDOM` ID 的分配规则。该变量常与 [`auto_increment_offset`](#auto_increment_offset) 一起使用。
 
 ### `auto_increment_offset`
 
@@ -266,7 +266,7 @@ SET GLOBAL tidb_distsql_scan_concurrency = 10;
 - 类型：整数型
 - 默认值：`1`
 - 范围：`[1, 65535]`
-- 控制 `AUTO_INCREMENT` 自增值字段的初始值。该变量常与 `auto_increment_increment` 一起使用。示例如下：
+- 控制 `AUTO_INCREMENT` 自增值字段的初始值和 `AUTO_RANDOM` ID 的分配规则。该变量常与 [`auto_increment_increment`](#auto_increment_increment) 一起使用。示例如下：
 
 ```sql
 mysql> CREATE TABLE t1 (a int not null primary key auto_increment);
@@ -1417,9 +1417,9 @@ mysql> SELECT job_info FROM mysql.analyze_jobs ORDER BY end_time DESC LIMIT 1;
 
 ### `tidb_cloud_storage_uri` <span class="version-mark">从 v7.4.0 版本开始引入</span>
 
-> **警告：**
+> **注意：**
 >
-> 该变量目前为实验特性，不建议在生产环境中使用。该功能可能会在未事先通知的情况下发生变化或删除。如果发现 bug，请在 GitHub 上提 [issue](https://github.com/pingcap/tidb/issues) 反馈。
+> 目前全局排序会使用大量 TiDB 节点的计算与内存资源，对于在线增加索引等同时有用户业务在运行的场景，建议用户扩展出新的 TiDB 节点并设置这些 TiDB 节点的 `tidb_service_scope` 为 `"background"`，这样分布式框架就会将任务调度到这些节点上，减少执行后端任务对用户业务的影响。 
 
 - 作用域：GLOBAL
 - 是否持久化到集群：是
@@ -1448,7 +1448,7 @@ mysql> SELECT job_info FROM mysql.analyze_jobs ORDER BY end_time DESC LIMIT 1;
 - 类型：整数型
 - 默认值：`64`
 - 范围：`[1, 256]`
-- 这个变量用来控制 [`FLASHBACK CLUSTER TO TIMESTAMP`](/sql-statements/sql-statement-flashback-to-timestamp.md) 的并发数。
+- 这个变量用来控制 [`FLASHBACK CLUSTER`](/sql-statements/sql-statement-flashback-cluster.md) 的并发数。
 
 ### `tidb_ddl_reorg_batch_size`
 
@@ -2676,6 +2676,18 @@ v5.0 后，用户仍可以单独修改以上系统变量（会有废弃警告）
 - 默认值：`168h`，即 7 天
 - 这个变量用来控制历史统计信息在存储中的保留时间。
 
+### `tidb_idle_transaction_timeout` <span class="version-mark">从 v7.6.0 版本开始引入</span>
+
+- 作用域：SESSION | GLOBAL
+- 是否持久化到集群：是
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：否
+- 类型：整数型
+- 默认值：`0`
+- 范围：`[0, 31536000]`
+- 单位：秒
+- 这个变量用来控制用户会话中事务的空闲超时。当用户会话处于事务状态且空闲时间超过该变量设定的值时，会话会被 Kill 掉。用户会话空闲是指没有正在执行的请求，处于等待请求的状态。
+- 默认值 `0` 表示没有时间限制。
+
 ### `tidb_ignore_prepared_cache_close_stmt` <span class="version-mark">从 v6.0.0 版本开始引入</span>
 
 - 作用域：SESSION | GLOBAL
@@ -2780,7 +2792,7 @@ v5.0 后，用户仍可以单独修改以上系统变量（会有废弃警告）
 - 默认值：`32`
 - 范围：`[1, 32]`
 - 单位：行
-- 这个变量用来设置执行过程中初始 chunk 的行数。默认值是 32，可设置的范围是 1～32。
+- 这个变量用来设置执行过程中初始 chunk 的行数。默认值是 32，可设置的范围是 1～32。chunk 行数直接影响单个查询所需的内存。可以按照查询中所有的列的总宽度和 chunk 行数来粗略估算单个 chunk 所需内存，并结合执行器的并发数来粗略估算单个查询所需内存总量。建议单个 chunk 内存总量不要超过 16 MiB。
 
 ### `tidb_isolation_read_engines` <span class="version-mark">从 v4.0 版本开始引入</span>
 
@@ -2944,7 +2956,7 @@ v5.0 后，用户仍可以单独修改以上系统变量（会有废弃警告）
 - 默认值：`1024`
 - 范围：`[32, 2147483647]`
 - 单位：行
-- 这个变量用来设置执行过程中一个 chunk 最大的行数，设置过大可能引起缓存局部性的问题。
+- 这个变量用来设置执行过程中一个 chunk 最大的行数，设置过大可能引起缓存局部性的问题，建议该变量不要超过 65536。chunk 行数直接影响单个查询所需的内存。可以按照查询中所有的列的总宽度和 chunk 行数来粗略估算单个 chunk 所需内存，并结合执行器的并发数来粗略估算单个查询所需内存总量。建议单个 chunk 内存总量不要超过 16 MiB。当查询涉及数据量较大、单个 chunk 无法处理所有数据时，TiDB 会进行多次处理，每次处理时将 chunk 行数翻倍，从 [`tidb_init_chunk_size`](#tidb_init_chunk_size) 开始，直到 chunk 行数达到最大值 `tidb_max_chunk_size`。
 
 ### `tidb_max_delta_schema_count`
 
@@ -3387,7 +3399,7 @@ mysql> desc select count(distinct a) from test.t;
 - 默认值：`OFF`
 - 该变量控制是否开启[跨数据库绑定执行计划](/sql-plan-management.md#跨数据库绑定执行计划-cross-db-binding)功能。
 
-### `tidb_opt_fix_control` <span class="version-mark">从 v6.5.7 和 v7.1.0 版本开始引入</span>
+### `tidb_opt_fix_control` <span class="version-mark">从 v6.5.3 和 v7.1.0 版本开始引入</span>
 
 - 作用域：SESSION | GLOBAL
 - 是否持久化到集群：是
@@ -4751,6 +4763,21 @@ Query OK, 0 rows affected, 1 warning (0.00 sec)
 - 范围：`[1, 1073741824]`
 - 单位：字节
 - 这个变量用于控制 TiDB 向 TiKV 发送的事务提交请求的批量大小。如果业务负载的大部分事务都有大量的写操作，适当调大该变量可以提高批处理的效果。但需要注意的是，设置过大将会超过 TiKV 的 [`raft-entry-max-size`](/tikv-configuration-file.md#raft-entry-max-size) 限制，导致提交失败。
+
+### `tidb_txn_entry_size_limit` <span class="version-mark">从 v7.6.0 版本开始引入</span>
+
+- 作用域：GLOBAL | SESSION
+- 是否持久化到集群：是
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：否
+- 类型：整数型
+- 默认值：`0`
+- 范围：`[0, 125829120]`
+- 单位：字节
+- 这个变量用于动态修改 TiDB 配置项 [`performance.txn-entry-size-limit`](/tidb-configuration-file.md#txn-entry-size-limit-从-v50-版本开始引入)，其含义与对应配置项相同，即用于限制 TiDB 单行数据的大小。该变量默认值为 `0`，表示默认使用配置项的值。当设置为非 `0` 值时，优先使用该变量的值作为 `txn-entry-size-limit` 的值。
+
+> **注意：**
+>
+> 使用 SESSION 作用域修改该变量时仅影响当前用户会话，不会影响 TiDB 的内部会话。这可能导致 TiDB 内部事务的单行数据大小超过配置项的限制，从而导致事务失败。如需在线调高限制，建议优先使用 GLOBAL 作用域修改该变量。
 
 ### `tidb_txn_mode`
 
