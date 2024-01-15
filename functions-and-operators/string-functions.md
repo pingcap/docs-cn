@@ -314,13 +314,13 @@ SELECT BIN("123q123");
 >
 > 当字符串为 `NULL` 时，则返回 `NULL`。
 
-查询示例
+查询示例：
 
 ```sql
 SELECT upper('bigdata') AS result_upper, upper('null') AS result_null;
 ```
 
-返回结果
+返回结果：
 
 ```sql
  result_upper | result_null 
@@ -336,13 +336,13 @@ SELECT upper('bigdata') AS result_upper, upper('null') AS result_null;
 >
 > 传入的字符串必须是合法的十六进制数值，包含 `0~9`、`A~F`、`a~f`，如果为 `NULL` 或超出该范围，则返回 `NULL`。
 
-查询示例
+查询示例：
 
 ```sql
 SELECT UNHEX('54694442');
 ```
 
-返回结果
+返回结果：
 
 ```sql
  UNHEX('54694442') 
