@@ -472,7 +472,7 @@ TiDB 版本：7.6.0
     - 修复当指定不收集 TopN 的统计信息时，`ANALYZE TABLE` 仍然可能收集 Top1 的统计信息的问题 [#49080](https://github.com/pingcap/tidb/issues/49080) @[hawkingrei](https://github.com/hawkingrei)
     - 修复不合法的优化器 hint 可能会导致合法 hint 不生效的问题 [#49308](https://github.com/pingcap/tidb/issues/49308) @[hawkingrei](https://github.com/hawkingrei)
     - 修复对 Hash 类型的分区表进行分区的增删重组或 `TRUNCATE` 操作时，统计信息没有对应更新的问题 [#48235](https://github.com/pingcap/tidb/issues/48235) [#48233](https://github.com/pingcap/tidb/issues/48233) [#48226](https://github.com/pingcap/tidb/issues/48226) [#48231](https://github.com/pingcap/tidb/issues/48231) @[hi-rustin](https://github.com/hi-rustin)
-    - 修复设置统计信息自动更新的时间窗口后，时间窗口外仍然可能触发统计信息的问题 [#49552](https://github.com/pingcap/tidb/issues/49552) @[hawkingrei](https://github.com/hawkingrei)
+    - 修复设置统计信息自动更新的时间窗口后，时间窗口外仍然可能触发统计信息更新的问题 [#49552](https://github.com/pingcap/tidb/issues/49552) @[hawkingrei](https://github.com/hawkingrei)
     - 修复从分区表转为非分区表时，旧统计信息不会自动删除的问题 [#49547](https://github.com/pingcap/tidb/issues/49547) @[hi-rustin](https://github.com/hi-rustin)
     - 修复当使用 `TRUNCATE TABLE` 清空非分区表的数据时，旧统计信息不会自动删除的问题 [#49663](https://github.com/pingcap/tidb/issues/49663) @[hi-rustin](https://github.com/hi-rustin)
     - 修复当使用会强制排序的优化器 hint（例如 `STREAM_AGG()`）且选中索引合并 (Index Merge) 时，强制排序可能会失效的问题 [#49605](https://github.com/pingcap/tidb/issues/49605) @[AilinKid](https://github.com/AilinKid)
