@@ -125,13 +125,13 @@ TiDB 版本：7.6.0
 
     更多信息，请参考[用户文档](/sql-statements/sql-statement-create-index.md#多值索引)。
 
-* TiDB 支持定期错峰Compaction的能力（实验特性） [#12729](https://github.com/tikv/tikv/issues/12729) **tw@Oreoxmt** <!--1610-->
+* 支持周期性全量数据整理（实验特性）[#12729](https://github.com/tikv/tikv/issues/12729) **tw@Oreoxmt** <!--1610-->
 
-    TiDB自7.6.0起支持定期做数据Compaction的能力，可以作为GC的增强，消除冗余版本。主要的使用场景是如果系统有明显的峰谷时段，可以在低谷时做数据compaction，从而提高高峰时业务流量的性能。
+    从 v7.6.0 开始，TiDB 支持 TiKV 周期性全量数据整理。该功能可以作为垃圾回收 (GC) 的增强，用以消除冗余的数据版本。在业务活动呈现明显的高峰和低谷的场景中，利用该功能可在系统空闲时段进行数据整理，以提升高峰期间业务处理的性能。
 
-    * 可以指定时间段以及触发时的tikv进程最大CPU利用率，默认是100%。 （也就是当TiKV CPU利用率大于等于一个CPU core时，不会触发该功能，避免业务流量受影响）。
+    你可以通过配置 TiKV 配置项 [`periodic-full-compact-start-times`]((/tikv-configuration-file.md#periodic-full-compact-start-times-从-v760-版本开始引入)) 指定启动周期性全量数据整理的时间，并通过 [`periodic-full-compact-start-max-cpu`](/tikv-configuration-file.md#periodic-full-compact-start-max-cpu-从-v760-版本开始引入) 控制 TiKV 执行周期性全量数据整理时的 CPU 使用率阈值。`periodic-full-compact-start-max-cpu` 默认是 100%，即为了减少对业务流量的影响，只有当 TiKV 的 CPU 利用率低于一个 CPU core 时，才会触发周期性全量数据整理。
 
-     更多信息，请参考[TiKV配置文档](/tikv-configuration-file.md)。
+     更多信息，请参考[用户文档](/tikv-configuration-file.md#periodic-full-compact-start-times-从-v760-版本开始引入)。
 
 ### 稳定性
 
