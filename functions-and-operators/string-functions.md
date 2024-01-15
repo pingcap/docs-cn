@@ -323,9 +323,11 @@ SELECT upper('bigdata') AS result_upper, upper('null') AS result_null;
 返回结果：
 
 ```sql
- result_upper | result_null 
---------------+-------------
- BIGDATA      | NULL 
++--------------+-------------+
+| result_upper | result_null |
++--------------+-------------+
+| BIGDATA      | NULL        |
++--------------+-------------+
 ```
 
 ### [`UNHEX()`](https://dev.mysql.com/doc/refman/8.0/en/string-functions.html#function_unhex)
@@ -345,9 +347,11 @@ SELECT UNHEX('54694442');
 返回结果：
 
 ```sql
- UNHEX('54694442') 
--------------------
- TiDB 
++--------------------------------------+
+| UNHEX('54694442')                    |
++--------------------------------------+
+| 0x54694442                           |
++--------------------------------------+
 ```
 
 ### [`UPPER()`](https://dev.mysql.com/doc/refman/8.0/en/string-functions.html#function_upper)
