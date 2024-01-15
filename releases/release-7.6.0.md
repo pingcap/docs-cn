@@ -86,9 +86,9 @@ TiDB 版本：7.6.0
 
 * 默认开启 Titan 引擎 [#16245] (https://github.com/tikv/tikv/issues/16245) @[Connor1996](https://github.com/Connor1996) @[v01dstar](https://github.com/v01dstar) @[tonyxuqqi](https://github.com/tonyxuqqi)
 
-    为了更好的支持 TiDB 宽表写入场景，特别是在支持 JSON 之后，从 TiDB v7.6.0 开始版本开始，默认开启了 Titan 引擎，自动将超过 1KB 的大 Value 从 RocksDB 的 LST-Tree 中分离出来，单独存储在 Titan，以提升对大 Value 的处理性能。Titan 引擎与 TiKV 所使用的 RocksDB 特性百分之百兼容。这一变更，不仅降低了写入放大，在处理大 Value 的写入、更新和点查场景时表现的更加出色。同时，在 Range Scan 场景下，通过对 Titan 引擎的优化，默认配置下 Titan 引擎的性能测试结果和 RocksDB 基本持平。
+    为了更好的支持 TiDB 宽表写入场景，特别是在支持 JSON 之后，从 TiDB v7.6.0 开始，默认开启 Titan 引擎，自动将超过 1KB 的大 Value 从 RocksDB 的 LST-Tree 中分离出来，单独存储在 Titan，以提升对大 Value 的处理性能。Titan 引擎与 TiKV 所使用的 RocksDB 特性百分之百兼容。这一变更，不仅降低了写入放大，在处理大 Value 的写入、更新和点查场景时表现的更加出色。同时，在 Range Scan 场景下，通过对 Titan 引擎的优化，默认配置下 Titan 引擎的性能测试结果和 RocksDB 基本持平。
 
-    该配置的变更对历史版本兼容，已有的 TiDB 集群在升级到 TiDB v7.6.0 或之后版本时，仍会默认保持关闭 Titan 引擎。用户可以根据实际的需求手动开启或者关闭 Titan 引擎。
+    该配置的变更对历史版本兼容，已有的 TiDB 集群在升级到 TiDB v7.6.0 或之后版本时，仍会默认保持关闭 Titan 引擎。你可以根据实际的需求手动开启或者关闭 Titan 引擎。
 
     更多信息，请参考[用户文档](/storage-engine/titan-overview.md)。
 
