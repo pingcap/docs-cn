@@ -228,12 +228,6 @@ public SqlSessionFactory getSessionFactory() {
 </mapper>
 ```
 
-```java
-public interface PlayerMapper {
-    int insert(Player row);
-}
-```
-
 更多信息参考[插入数据](/develop/dev-guide-insert-data.md)。
 
 ### 查询数据
@@ -260,12 +254,6 @@ public interface PlayerMapper {
 </mapper>
 ```
 
-```java
-public interface PlayerMapper {
-    Player selectByPrimaryKey(String id);
-}
-```
-
 更多信息参考[查询数据](/develop/dev-guide-get-data-from-single-table.md)。
 
 ### 更新数据
@@ -285,12 +273,6 @@ public interface PlayerMapper {
 </mapper>
 ```
 
-```java
-public interface PlayerMapper {
-    int updateByPrimaryKey(Player row);
-}
-```
-
 更多信息参考[更新数据](/develop/dev-guide-update-data.md)。
 
 ### 删除数据
@@ -306,12 +288,6 @@ public interface PlayerMapper {
     WHERE id = #{id, jdbcType=VARCHAR}
     </delete>
 </mapper>
-```
-
-```java
-public interface PlayerMapper {
-    int deleteByPrimaryKey(String id);
-}
 ```
 
 更多信息参考[删除数据](/develop/dev-guide-delete-data.md)。
