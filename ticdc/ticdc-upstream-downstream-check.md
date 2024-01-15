@@ -15,9 +15,6 @@ Syncpoint 通过利用 TiDB 提供的 snapshot 特性，让 TiCDC 在同步过�
 >
 > 如果多个同步任务使用同一个下游 TiDB 集群且开启了 Syncpoint 功能，那么这些同步任务都会根据本身的同步进度来更新 `tidb_external_ts` 和 `ts-map`, 下游应用程序应避免使用 `tidb_enable_external_ts_read` 的方式读数据，因为此时由于多个同步互相干扰，无法获得一致性的结果，建议使用 `ts-map` 的方式。
 
-
-蒋建元
-
 启用 Syncpoint 功能后，你可以使用[一致性快照读](#一致性快照读)和[数据一致性校验](#数据一致性校验)。
 
 要开启 Syncpoint 功能，只需在创建同步任务时把 TiCDC 的配置项 `enable-sync-point` 设置为 `true`。开启 Syncpoint 功能后，TiCDC 会向下游 TiDB 集群写入如下信息：
