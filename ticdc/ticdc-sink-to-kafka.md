@@ -157,6 +157,28 @@ dispatchers = [
 
 For detailed integration guide, see [Quick Start Guide on Integrating TiDB with Confluent Platform](/ticdc/integrate-confluent-using-ticdc.md).
 
+### Integrate TiCDC with AWS Glue Schema Registry
+
+Starting from v7.4.0, TiCDC supports using the [AWS Glue Schema Registry](https://docs.aws.amazon.com/glue/latest/dg/schema-registry.html) as the Schema Registry when users choose the Avro protocol for data replication. The configuration example is as follows:
+
+```shell
+./cdc cli changefeed create --server=127.0.0.1:8300 --changefeed-id="kafka-glue-test" --sink-uri="kafka://127.0.0.1:9092/topic-name?&protocol=avro&replication-factor=3" --config changefeed_glue.toml
+```
+
+```toml
+[sink]
+[sink.kafka-config.glue-schema-registry-config]
+region="us-west-1"  
+registry-name="ticdc-test"
+access-key="xxxx"
+secret-access-key="xxxx"
+token="xxxx"
+```
+
+In the above configuration, `region` and `registry-name` are required fields, while `access-key`, `secret-access-key`, and `token` are optional fields. The best practice is to set the AWS credentials as environment variables or store them in the `~/.aws/credentials` file instead of setting them in the changefeed configuration file.
+
+For more information, refer to the [official AWS SDK for Go V2 documentation](https://aws.github.io/aws-sdk-go-v2/docs/configuring-sdk/#specifying-credentials).
+
 ## Customize the rules for Topic and Partition dispatchers of Kafka Sink
 
 ### Matcher rules
