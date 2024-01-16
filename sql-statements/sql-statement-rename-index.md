@@ -83,7 +83,7 @@ Create Table: CREATE TABLE `t1` (
 ## 另请参阅
 
 * [SHOW CREATE TABLE](/sql-statements/sql-statement-show-create-table.md)
-* [CREATE INDEXS](/sql-statements/sql-statement-create-indexes.md)
+* [CREATE INDEXES](/sql-statements/sql-statement-create-indexes.md)
 * [DROP INDEX](/sql-statements/sql-statement-drop-index.md)
 * [SHOW INDEX](/sql-statements/sql-statement-show-index.md)
 * [ALTER INDEX](/sql-statements/sql-statement-alter-index.md)
