@@ -44,7 +44,7 @@ Support level: **Full**
 
 The authentication based on SM3 is only supported in TiDB's TiDB-JDBC.
 
-If you use Maven, add the following content to the `<dependencies></dependencies>` section in the `pom.xml` file:
+If you are using Maven, add the following content to the `<dependencies></dependencies>` section in the `pom.xml` file:
 
 ```xml
 <dependency>
@@ -100,7 +100,7 @@ Support level: **Full**
 
 To avoid manually managing complex relationships between different dependencies of an application, you can use [Gradle](https://gradle.org/install) or [Maven](https://maven.apache.org/install.html) to get all dependencies of your application, including those indirect ones. Note that only Hibernate `6.0.0.Beta2` or above supports the TiDB dialect.
 
-If you are using **Maven**, add the following to your `<dependencies></dependencies>`:
+If you are using Maven, add the following to your `<dependencies></dependencies>`:
 
 ```xml
 <dependency>
@@ -116,7 +116,7 @@ If you are using **Maven**, add the following to your `<dependencies></dependenc
 </dependency>
 ```
 
-If you are using **Gradle**, add the following to your `dependencies`:
+If you are using Gradle, add the following to your `dependencies`:
 
 ```gradle
 implementation 'org.hibernate:hibernate-core:6.0.0.CR2'
@@ -183,7 +183,7 @@ Currently, tidb-loadbalance supports the following policies: roundrobin, random,
 >
 > tidb-loadbalance must be used with [mysql-connector-j](https://github.com/pingcap/mysql-connector-j).
 
-If you use Maven, add the following content to the element body of `<dependencies></dependencies>` in the `pom.xml` file:
+If you are using Maven, add the following content to the element body of `<dependencies></dependencies>` in the `pom.xml` file:
 
 ```xml
 <dependency>
@@ -198,7 +198,7 @@ If you use Maven, add the following content to the element body of `<dependencie
 </dependency>
 ```
 
-If you use Gradle, add the following content to `dependencies`:
+If you are using Gradle, add the following content to `dependencies`:
 
 ```gradle
 implementation group: 'io.github.lastincisor', name: 'mysql-connector-java', version: '8.0.29-tidb-1.0.0'
