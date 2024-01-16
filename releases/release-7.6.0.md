@@ -466,7 +466,7 @@ TiDB 版本：7.6.0
     - 修复 BR 导入后，`mysql.bind_info` 表中可能存在重复的内置 (builtin) 行的问题 [#46527](https://github.com/pingcap/tidb/issues/46527) @[qw4990](https://github.com/qw4990)
     - 修复删除分区后，分区表的统计信息更新行为不合理的问题 [#48182](https://github.com/pingcap/tidb/issues/48182) @[hi-rustin](https://github.com/hi-rustin)
     - 修复并发合并分区表的全局统计信息时可能遇到报错的问题 [#48713](https://github.com/pingcap/tidb/issues/48713) @[hawkingrei](https://github.com/hawkingrei)
-    - 修复在具有 PADDING SPACE 的列上使用 `LIKE` 运算符进行索引范围扫描时，查询结果可能出错的问题 [#4882](https://github.com/pingcap/tidb/issues/48821) @[time-and-fate](https://github.com/time-and-fate)
+    - 修复在具有 PADDING SPACE 的列上使用 `LIKE` 运算符进行索引范围扫描时，查询结果可能出错的问题 [#48821](https://github.com/pingcap/tidb/issues/48821) @[time-and-fate](https://github.com/time-and-fate)
     - 修复生成列可能触发对内存结构并发读写导致数据竞争的问题 [#44919](https://github.com/pingcap/tidb/issues/44919) @[tangenta](https://github.com/tangenta)
     - 修复当指定不收集 TopN 的统计信息时，`ANALYZE TABLE` 仍然可能收集 Top1 的统计信息的问题 [#49080](https://github.com/pingcap/tidb/issues/49080) @[hawkingrei](https://github.com/hawkingrei)
     - 修复不合法的优化器 hint 可能会导致合法 hint 不生效的问题 [#49308](https://github.com/pingcap/tidb/issues/49308) @[hawkingrei](https://github.com/hawkingrei)
