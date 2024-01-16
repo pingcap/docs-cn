@@ -163,12 +163,12 @@ mysql> SELECT FORMAT(12.36, 5);
 ```
 
 ```sql
-mysql> SELECT FORMAT(12.36, 0);
-+------------------+
-| FORMAT(12.36, 0) |
-+------------------+
-| 12               |
-+------------------+
+mysql> SELECT FORMAT(12345.6, 0);
++--------------------+
+| FORMAT(12345.6, 0) |
++--------------------+
+| 12,346             |
++--------------------+
 ```
 
 ### [`FROM_BASE64()`](https://dev.mysql.com/doc/refman/8.0/en/string-functions.html#function_from-base64)
