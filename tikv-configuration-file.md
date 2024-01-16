@@ -1601,12 +1601,20 @@ rocksdb defaultcf、rocksdb writecf 和 rocksdb lockcf 相关的配置项。
 
 rocksdb defaultcf titan 相关的配置项。
 
+> **注意：**
+>
+> titan只在defaultcf打开有意义，不支持在writecf打开。
+
 ### `min-blob-size`
 
-+ 最小存储在 Blob 文件中 value 大小，低于该值的 value 还是存在 LSM-Tree 中。
-+ 默认值：1KB
++ 最小存储在 Blob 文件中 value 大小，低于该值的 value 还是存在 LSM-Tree 中。注意，。
++ 默认值：32KB
 + 最小值：0
 + 单位：KB|MB|GB
+
+> **注意：**
+>
+> 当该值设置为小于默认值时，TiKV大范围扫描性能会有回退。但如果负载是重写和点查为主，则可以适当向下调整min-blob-size，最少可以调成1KB。
 
 ### `blob-file-compression`
 

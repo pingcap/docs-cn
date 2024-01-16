@@ -72,7 +72,7 @@ Titan 对 RocksDB 兼容，也就是说，使用 RocksDB 存储引擎的现有 T
 
     ```toml
     [rocksdb.defaultcf.titan]
-    min-blob-size = "1KB"
+    min-blob-size = "32KB"
     ```
 
 + Titan 中 value 所使用的压缩算法。从 v7.6.0 开始，默认采用 `zstd` 压缩算法。

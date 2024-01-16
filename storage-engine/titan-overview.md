@@ -141,5 +141,3 @@ Range Merge 是基于 Level Merge 的一个优化。考虑如下两种情况，�
 > **注意：**
 >
 > `scan100` 是指扫描 100 条记录，`scan10000` 指扫描 10000 条记录。
-
-以上可见，当行宽是 2KB 时，Titan 在所有指标上都超过了 RocksDB。而当行宽是 1KB 时，Titan 仅仅在 `scan10000` 上落后 15% 左右，但在 `UPDATE` 上大幅领先 50% 以上。因此 `min-blob-size` 默认值为 1KB 是比较合理的。你可以根据实际负载设置 `min-blob-size` 的值。
