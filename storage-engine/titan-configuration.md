@@ -68,7 +68,7 @@ Titan 对 RocksDB 兼容，也就是说，使用 RocksDB 存储引擎的现有 T
 
 + value 的大小阈值。
 
-    当写入的 value 小于这个值时，value 会保存在 RocksDB 中，反之则保存在 Titan 的 blob file 中。根据 value 大小的分布，增大这个值可以使更多 value 保存在 RocksDB，读取这些小 value 的性能会稍好一些；减少这个值可以使更多 value 保存在 Titan 中，进一步减少 RocksDB compaction。经过[测试](/storage-engine/titan-overview.md#min-blob-size-的选择及其性能影响)，1 KB是一个比较折中的值。如果发现系统磁盘占用过大可以进一步调高这个值。
+    当写入的 value 小于这个值时，value 会保存在 RocksDB 中，反之则保存在 Titan 的 blob file 中。根据 value 大小的分布，增大这个值可以使更多 value 保存在 RocksDB，读取这些小 value 的性能会稍好一些；减少这个值可以使更多 value 保存在 Titan 中，进一步减少 RocksDB compaction。经过[测试](/storage-engine/titan-overview.md#min-blob-size-的选择及其性能影响)，1 KB 是一个比较折中的值。如果发现系统磁盘占用过大，可以进一步调高这个值。
 
     ```toml
     [rocksdb.defaultcf.titan]
@@ -146,7 +146,7 @@ Titan 对 RocksDB 兼容，也就是说，使用 RocksDB 存储引擎的现有 T
     >
     > 在磁盘空间不足以同时保持 Titan 和 RocksDB 数据时，应该使用 [`discardable-ratio`](/tikv-configuration-file.md#discardable-ratio) 的默认值 `0.5`。一般来说，如果磁盘可用空间小于 50% 时，推荐使用默认值。因为当 `discardable-ratio = 1.0` 时，RocksDB 数据一方面在不断增加，同时 Titan 原有的 blob 文件回收需要该文件所有数据都迁移至 RocksDB 才会发生，这个过程会比较缓慢。如果磁盘空间足够大，设置 `discardable-ratio = 1.0` 可以减小 compaction 过程中 Blob 文件自身的 GC，从而节省带宽。
  
-2. [可选] 使用 `tikv-ctl` 执行全量数据整理 (Compaction)。这一步骤将消耗大量 I/O 和 CPU 资源。
+2. （可选）使用 `tikv-ctl` 执行全量数据整理 (Compaction)。这一步骤将消耗大量 I/O 和 CPU 资源。
 
     ```bash
     tikv-ctl --pd <PD_ADDR> compact-cluster --bottommost force
@@ -163,7 +163,7 @@ Titan 对 RocksDB 兼容，也就是说，使用 RocksDB 存储引擎的现有 T
 
 ### Titan 转 RocksDB 速度
 
-由于 Titan Blob 文件中的 Value 是不连续的，而且 Titan 的 Cache 是 Value 级别，因此 Blob Cache 无法帮助 compaction。从 Titan 转到 RocksDB 速度相比 RocksDB 转 Titan 会慢一个数量级。在测试中，TiKV 节点上 800 GiB 的  Titan 数据，通过 tikv-ctl 做全量 compaction 转成 RocksDB，需要 12 个小时。
+由于 Titan Blob 文件中的 Value 是不连续的，而且 Titan 的 Cache 是 Value 级别，因此 Blob Cache 无法帮助 compaction。从 Titan 转到 RocksDB 的速度相比 RocksDB 转 Titan 会慢一个数量级。在测试中，TiKV 节点上 800 GiB 的 Titan 数据，通过 tikv-ctl 做全量 compaction 转成 RocksDB，需要 12 个小时。
 
 ## Level Merge（实验功能）
 
