@@ -306,7 +306,7 @@ SELECT BIN(-7);
 >
 > 当字符串为 `NULL` 时，则返回 `NULL`。
 
-查询示例
+查询示例：
 
 ```sql
 SELECT upper('bigdata') AS result_upper, upper('null') AS result_null;
