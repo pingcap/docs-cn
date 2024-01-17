@@ -1607,14 +1607,14 @@ rocksdb defaultcf titan 相关的配置项。
 
 ### `min-blob-size`
 
-+ 最小存储在 Blob 文件中 value 大小，低于该值的 value 还是存在 LSM-Tree 中。注意，。
++ 最小存储在 Blob 文件中 value 大小，低于该值的 value 还是存在 LSM-Tree 中。
 + 默认值：32KB
 + 最小值：0
 + 单位：KB|MB|GB
 
 > **注意：**
 >
-> 当该值设置为小于默认值时，TiKV大范围扫描性能会有回退。但如果负载是重写和点查为主，则可以适当向下调整min-blob-size，最少可以调成1KB。
+> 当该值设置为小于默认值时，TiKV大范围扫描性能会有回退。但如果负载是重写和点查为主，则可以适当向下调整min-blob-size，最少可以调成1KB。因此，从TiDB7.6开始，新建集群默认值为`32KB`, 但对于已有集群升级到7.6版本，为保持行为上的连续性，当用户没有显式的设置`min-blob-size`时则维持使用旧版本的默认值`1KB`。
 
 ### `blob-file-compression`
 
