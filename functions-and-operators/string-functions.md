@@ -330,7 +330,7 @@ SELECT upper('bigdata') AS result_upper, upper('null') AS result_null;
 WEIGHT_STRING(str [AS {CHAR|BINARY}(N)])
 ```
 
-* `str`：字符串表达式，如果是非二进制字符串，例如 CHAR、 VARCHAR 或 TEXT 值，则返回值包含该字符串的排序规则权重；如果是二进制字符串，例如 BINARY、 VARBINARY 或 BLOB 值，则返回值与输入相同。
+* `str`：字符串表达式。如果是非二进制字符串，例如 CHAR、VARCHAR 或 TEXT 值，则返回值包含该字符串的排序规则权重；如果是二进制字符串，例如 BINARY、VARBINARY 或 BLOB 值，则返回值与输入相同。
 * `AS {CHAR|BINARY}(N)`：可选参数，用于指定输出结果的类型和长度。CHAR 表示字符数据类型，而 BINARY 表示二进制数据类型，N 指定输出的长度，取值为大于等于 1 的整数。
 
 > **注意：**
