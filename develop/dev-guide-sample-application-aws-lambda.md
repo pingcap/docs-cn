@@ -29,8 +29,6 @@ TiDB 是一个兼容 MySQL 的数据库，[AWS Lambda 函数](https://aws.amazon
 - [AWS CLI](https://docs.aws.amazon.com/cli/latest/userguide/getting-started-install.html)
 - [AWS SAM CLI](https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/install-sam-cli.html)
 
-<CustomContent platform="tidb">
-
 **如果你还没有 TiDB 集群，可以按照以下方式创建：**
 
 - （推荐方式）参考[创建 TiDB Serverless 集群](/develop/dev-guide-build-cluster-in-cloud.md#第-1-步创建-tidb-serverless-集群)，创建你自己的 TiDB Cloud 集群。
@@ -154,7 +152,7 @@ npm install
 
 ## 部署 AWS Lambda 函数
 
-您可以使用 [SAM CLI](#sam-cli-deployment-recommended) 或 [AWS Lambda 控制台](#web-console-deployment) 来部署 AWS Lambda 函数。
+您可以使用 [SAM CLI](#sam-cli-部署推荐) 或 [AWS Lambda 控制台](#web控制台部署) 来部署 AWS Lambda 函数。
 
 ### SAM CLI 部署（推荐）
 
@@ -345,7 +343,6 @@ console.log(rsh.affectedRows);
 - 在不涉及大量复杂 SQL 语句的场景下，推荐使用 ORM 框架 (例如：[Sequelize](https://sequelize.org/)、[TypeORM](https://typeorm.io/) 或 [Prisma](https://www.prisma.io/)) 来提升你的开发效率。
 - 为了为你的应用程序构建一个RESTful API，建议 [将 AWS Lambda 与 Amazon API Gateway 结合使用](https://docs.aws.amazon.com/zh_cn/lambda/latest/dg/services-apigateway.html)。
 - 要设计使用TiDB Serverless和AWS Lambda的高性能应用程序，请参考这篇[博客文章](https://aws.amazon.com/blogs/apn/designing-high-performance-applications-using-serverless-tidb-cloud-and-aws-lambda/)。
-
 
 ## 下一步
 
