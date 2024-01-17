@@ -28,7 +28,7 @@ TiDB 是一个兼容 MySQL 的数据库。[Sequelize](https://sequelize.org/) �
 **如果您没有 TiDB 集群，可以按照以下步骤创建一个：**
 
 - （推荐）请按照 [创建 TiDB Serverless 集群](/develop/dev-guide-build-cluster-in-cloud.md) 的指引，创建您自己的 TiDB Cloud 集群。
-- 按照 [部署本地测试 TiDB 集群](/quick-start-with-tidb.md#deploy-a-local-test-cluster) 或 [部署生产 TiDB 集群](/production-deployment-using-tiup.md) 的指引，创建一个本地集群。
+- 按照 [部署本地测试 TiDB 集群](/quick-start-with-tidb.md#部署本地测试集群) 或 [部署生产 TiDB 集群](/production-deployment-using-tiup.md) 的指引，创建一个本地集群。
 
 ## 运行示例应用程序并连接到 TiDB
 
