@@ -332,7 +332,7 @@ SELECT upper('bigdata') AS result_upper, upper('null') AS result_null;
 
 ### [`UNHEX()`](https://dev.mysql.com/doc/refman/8.0/en/string-functions.html#function_unhex)
 
-执行 `HEX()` 函数的逆运算，将参数中的每对字符视为十六进制数字，并将其转换为该数字表示的字符，返回值为二进制字符串。
+`UNHEX()` 函数执行 `HEX()` 函数的逆运算，将参数中的每对字符视为十六进制数字，并将其转换为该数字表示的字符，返回值为二进制字符串。
 
 > **注意：**
 >
