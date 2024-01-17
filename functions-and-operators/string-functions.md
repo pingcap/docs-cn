@@ -312,7 +312,7 @@ SELECT BIN(-7);
 SELECT upper('bigdata') AS result_upper, upper('null') AS result_null;
 ```
 
-返回结果
+返回结果：
 
 ```sql
 +--------------+-------------+
