@@ -344,7 +344,7 @@ SET NAMES 'utf8mb4';
 SELECT HEX(WEIGHT_STRING('ab' AS CHAR(3))) AS char_result, HEX(WEIGHT_STRING('ab' AS BINARY(3))) AS binary_result;
 ```
 
-返回结果
+返回结果：
 
 ```sql
 +-------------+---------------+
