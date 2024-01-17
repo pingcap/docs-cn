@@ -337,7 +337,7 @@ WEIGHT_STRING(str [AS {CHAR|BINARY}(N)])
 > 
 > 当 `N` 小于字符串长度时，字符串将被截断；当 `N` 超过字符串长度时，`CHAR` 类型将用空格来填充以达到指定长度，`BINARY` 类型将以 `0x00` 来填充以达到指定长度。
 
-查询示例
+查询示例：
 
 ```sql
 SET NAMES 'utf8mb4';
