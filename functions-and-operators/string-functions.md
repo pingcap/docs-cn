@@ -324,7 +324,7 @@ SELECT upper('bigdata') AS result_upper, upper('null') AS result_null;
 
 ### [`WEIGHT_STRING()`](https://dev.mysql.com/doc/refman/8.0/en/string-functions.html#function_weight-string)
 
-`WEIGHT_STRING()` 函数返回字符串的权重（二进制字符），主要用于多字符集场景下的排序和比较操作，如果参数为 `NULL`，则返回 `NULL`，语法示例如下：
+`WEIGHT_STRING()` 函数返回字符串的权重（二进制字符），主要用于多字符集场景下的排序和比较操作。如果参数为 `NULL`，则返回 `NULL`。语法示例如下：
 
 ```sql
 WEIGHT_STRING(str [AS {CHAR|BINARY}(N)])
