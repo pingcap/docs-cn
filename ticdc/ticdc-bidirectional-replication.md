@@ -138,7 +138,7 @@ TiCDC 复制功能只会将指定时间点之后的增量变更复制到下游�
 
     **注意，请勿将 BDR role 设置为其他情况，例如，既存在集群设置了 `PRIMARY`、`SECONDARY`，又存在集群没有设置 BDR role。如果错误地设置了 BDR role，TiCDC 同步数据期间无法保证数据正确性和一致性。**
 
-- 一般情况下，禁止在同步的表中使用 `AUTO_INCREMENT` 或 `AUTO_RANDOM` 键，以免产生数据冲突的问题。如果需要使用 `AUTO_INCREMENT` 或 `AUTO_RANDOM` 键，可以通过在不同的集群设置 `auto_increment_increment` 和 `auto_increment_offset` 来使得不同的集群都能够分配到不同的 primary key。假设有三个 TiDB 集群（A、B、C）处于双向同步中，那么你可以采取如下设置：
+- 一般情况下，禁止在同步的表中使用 `AUTO_INCREMENT` 或 `AUTO_RANDOM` 键，以免产生数据冲突的问题。如果需要使用 `AUTO_INCREMENT` 或 `AUTO_RANDOM` 键，可以通过在不同的集群设置 `auto_increment_increment` 和 `auto_increment_offset` 来使得不同的集群都能够分配到不同的主键。假设有三个 TiDB 集群（A、B、C）处于双向同步中，那么你可以采取如下设置：
 
     - 在 A 中设置 `auto_increment_increment=3`，`auto_increment_offset=2000`
     - 在 B 中设置 `auto_increment_increment=3`，`auto_increment_offset=2001`
