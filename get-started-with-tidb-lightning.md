@@ -79,8 +79,8 @@ The TiDB Lightning installation package is included in the TiDB Toolkit. To down
     password = "rootroot"
     # Table schema information is fetched from TiDB via this status-port.
     status-port = 10080
-    # The PD address of the cluster
-    pd-addr = "172.16.31.3:2379"
+    # The PD address of the cluster. Starting from v7.6.0, TiDB supports setting multiple PD addresses.
+    pd-addr = "172.16.31.3:2379,56.78.90.12:3456"
     ```
 
 4. After configuring the parameters properly, use a `nohup` command to start the `tidb-lightning` process. If you directly run the command in the command-line, the process might exit because of the SIGHUP signal received. Instead, it's preferable to run a bash script that contains the `nohup` command:

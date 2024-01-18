@@ -67,8 +67,8 @@ user = "root"
 password = ""
 # Required. Table schema information is fetched from TiDB via this status-port.
 status-port = 10080
-# Required. The address of any pd-server from the cluster.
-pd-addr = "172.16.31.4:2379"
+# Required. The address of any pd-server from the cluster. Starting from v7.6.0, TiDB supports setting multiple PD addresses.
+pd-addr = "172.16.31.4:2379,56.78.90.12:3456"
 # tidb-lightning imports the TiDB library, and generates some logs.
 # Set the log level of the TiDB library.
 log-level = "error"
