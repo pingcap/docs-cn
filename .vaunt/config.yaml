@@ -20,7 +20,7 @@ actions:
                     action: pull_request
                     condition:
                         "created_at >= 01-09-2024 08:00:00 & created_at <= 01-12-2024 07:59:00
-                        & merged = true & merged_at <= 2024-01-26 20:00:00
+                        & merged = true & merged_at <= 2024-02-01 20:00:00
                         & labels in {'2024-tidb-docs-dash','contribution'}"
                     value: 10
     - action:
@@ -70,7 +70,7 @@ actions:
                     action: pull_request
                     condition:
                         "created_at >= 01-09-2024 08:00:00 & created_at <= 01-12-2024 07:59:00
-                        & merged = true & merged_at <= 2024-01-26 20:00:00
+                        & merged = true & merged_at <= 2024-02-01 20:00:00
                         & labels in !['2024-tidb-docs-dash']
                         & labels in ['contribution']"
                     value: 5
@@ -109,8 +109,8 @@ actions:
                     action: pull_request
                     condition:
                         "created_at >= 01-09-2024 08:00:00 & created_at <= 01-12-2024 07:59:00
-                        & merged = true & merged_at <= 2024-01-26 20:00:00
-                        & labels in ['contribution','tidb-docs-dash-bonus']"
+                        & merged = true & merged_at <= 2024-02-01 20:00:00
+                        & labels in {'contribution','tidb-docs-dash-bonus'}"
                     value: 20
 achievements:
     - achievement:
