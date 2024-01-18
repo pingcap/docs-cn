@@ -308,11 +308,51 @@ SELECT BIN("123q123");
 
 ### [`UCASE()`](https://dev.mysql.com/doc/refman/8.0/en/string-functions.html#function_ucase)
 
-与 `UPPER()` 功能相同
+`UCASE()` 函数将字符串转换为大写字母，此函数等价于 `UPPER()` 函数。
+
+> **注意：**
+>
+> 当字符串为 `NULL` 时，则返回 `NULL`。
+
+查询示例：
+
+```sql
+SELECT upper('bigdata') AS result_upper, upper('null') AS result_null;
+```
+
+返回结果：
+
+```sql
++--------------+-------------+
+| result_upper | result_null |
++--------------+-------------+
+| BIGDATA      | NULL        |
++--------------+-------------+
+```
 
 ### [`UNHEX()`](https://dev.mysql.com/doc/refman/8.0/en/string-functions.html#function_unhex)
 
-返回一个数的十六进制表示，形式为字符串
+`UNHEX()` 函数执行 `HEX()` 函数的逆运算，将参数中的每对字符视为十六进制数字，并将其转换为该数字表示的字符，返回值为二进制字符串。
+
+> **注意：**
+>
+> 传入的字符串必须是合法的十六进制数值，包含 `0~9`、`A~F`、`a~f`，如果为 `NULL` 或超出该范围，则返回 `NULL`。
+
+查询示例：
+
+```sql
+SELECT UNHEX('54694442');
+```
+
+返回结果：
+
+```sql
++--------------------------------------+
+| UNHEX('54694442')                    |
++--------------------------------------+
+| 0x54694442                           |
++--------------------------------------+
+```
 
 ### [`UPPER()`](https://dev.mysql.com/doc/refman/8.0/en/string-functions.html#function_upper)
 
