@@ -938,6 +938,16 @@ MPP 是 TiFlash 引擎提供的分布式计算框架，允许节点之间的数�
 - 默认值：`OFF`
 - 这个变量用来控制是否允许通过 `ALTER TABLE MODIFY` 或 `ALTER TABLE CHANGE` 来移除某个列的 `AUTO_INCREMENT` 属性。默认 (`OFF`) 为不允许。
 
+### `tidb_analyze_distsql_scan_concurrency` <span class="version-mark">New in v7.6.0</span>
+
+- 作用域：GLOBAL
+- 是否持久化到集群：是
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：否
+- 类型：整数型
+- 默认值：`4`
+- 范围：`[1, 4294967295]`
+- 这个变量用来设置执行 `ANALYZE` 时 `scan` 操作的并发度。
+
 ### `tidb_analyze_partition_concurrency`
 
 > **警告：**
@@ -4587,7 +4597,7 @@ Query OK, 0 rows affected, 1 warning (0.00 sec)
 - 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：否
 - 类型：整数型
 - 默认值：`1`
-- 范围：`[1, 256]`
+- 范围：`[1, 4294967295]`，v7.5.0 及之前版本最大值为 `256`。
 - 这个变量用来设置 TiDB 执行内部 SQL 语句（例如统计信息自动更新）时 scan 操作的并发度。
 
 ### `tidb_table_cache_lease` <span class="version-mark">从 v6.0.0 版本开始引入</span>
