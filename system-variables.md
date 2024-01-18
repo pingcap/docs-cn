@@ -943,7 +943,7 @@ MPP 是 TiFlash 引擎提供的分布式计算框架，允许节点之间的数�
 - 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：否
 - 类型：整数型
 - 默认值：`4`
-- 范围：`[1, 256]`
+- 范围：`[1, 4294967295]`
 - 这个变量用来设置执行 `ANALYZE` 时 `scan` 操作的并发度。
 
 ### `tidb_analyze_partition_concurrency`
@@ -4583,7 +4583,7 @@ Query OK, 0 rows affected, 1 warning (0.00 sec)
 - 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：否
 - 类型：整数型
 - 默认值：`1`
-- 范围：`[1, 256]`
+- 范围：`[1, 4294967295]`, 7.6 最大值 256
 - 这个变量用来设置 TiDB 执行内部 SQL 语句（例如统计信息自动更新）时 scan 操作的并发度。
 
 ### `tidb_table_cache_lease` <span class="version-mark">从 v6.0.0 版本开始引入</span>
