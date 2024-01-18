@@ -90,9 +90,9 @@ TiCDC 复制功能只会将指定时间点之后的增量变更复制到下游�
 为了能够解决上述可复制的 DDL 和不可复制的 DDL 两类 DDL 的同步问题，TiDB 引入了两种 BDR role：
 
 - `PRIMARY`：你可以执行可复制的 DDL，但不能执行不可复制的 DDL，可复制的 DDL 会被 TiCDC 同步到下游。
-- `SECONDARY`：你不能执行可复制的 DDL，也不能执行不可复制的 DDL，但是会执行从 TiCDC 同步过来的 DDL。
+- `SECONDARY`：你不能执行可复制的 DDL，也不能执行不可复制的 DDL，但是可以执行从 TiCDC 同步过来的 DDL。
 
-在不设置 BDR role 时：你可以执行任意 DDL，但是在 TiCDC 开启 `bdr_mode=true` 之后，执行的 DDL 不会被 TiCDC 同步。
+在不设置 BDR role 时，你可以执行任意 DDL。但是在 TiCDC 开启 `bdr_mode=true` 之后，执行的 DDL 不会被 TiCDC 同步。
 
 > **警告：**
 >
@@ -136,7 +136,9 @@ TiCDC 复制功能只会将指定时间点之后的增量变更复制到下游�
     - 1 个 `PRIMARY` 集群和 n 个 `SECONDARY` 集群（可复制的 DDL 的同步场景）
     - n 个不设置 BDR role 的集群（用于在每个集群手动执行不可复制的 DDL 的同步场景）
 
-    **注意，请勿将 BDR role 设置为其他情况，例如，既存在集群设置了 `PRIMARY`、`SECONDARY`，又存在集群没有设置 BDR role。如果错误地设置了 BDR role，TiCDC 同步数据期间无法保证数据正确性和一致性。**
+    > **注意：**
+    >
+    > 请勿将 BDR role 设置为其他情况，例如，既存在设置了 `PRIMARY`、`SECONDARY` 的集群，又存在没有设置 BDR role 的集群。如果错误地设置了 BDR role，TiCDC 同步数据期间无法保证数据正确性和一致性。
 
 - 一般情况下，禁止在同步的表中使用 `AUTO_INCREMENT` 或 `AUTO_RANDOM` 键，以免产生数据冲突的问题。如果需要使用 `AUTO_INCREMENT` 或 `AUTO_RANDOM` 键，可以通过在不同的集群设置 `auto_increment_increment` 和 `auto_increment_offset` 来使得不同的集群都能够分配到不同的主键。假设有三个 TiDB 集群（A、B、C）处于双向同步中，那么你可以采取如下设置：
 
@@ -144,7 +146,7 @@ TiCDC 复制功能只会将指定时间点之后的增量变更复制到下游�
     - 在 B 中设置 `auto_increment_increment=3`，`auto_increment_offset=2001`
     - 在 C 中设置 `auto_increment_increment=3`，`auto_increment_offset=2002`
 
-  这样的话，A、B、C 隐式分配到的 `AUTO_INCREMENT` ID 和 `AUTO_RANDOM` ID 就不会互相冲突。如果需要增加 BDR 模式的集群，则要临时暂停相关业务的写入，重新在所有集群上设置合适的 `auto_increment_increment` 和 `auto_increment_offset` 后，再开启相关业务。
+  这样 A、B、C 隐式分配到的 `AUTO_INCREMENT` ID 和 `AUTO_RANDOM` ID 就不会互相冲突。如果需要增加 BDR 模式的集群，需要临时暂停相关业务的写入，重新在所有集群上设置合适的 `auto_increment_increment` 和 `auto_increment_offset`，然后再开启相关业务。
 
 - 双向复制的集群不具备检测写冲突的功能，写冲突将会导致未定义问题。你需要在业务层面保证不出现写冲突。
 
