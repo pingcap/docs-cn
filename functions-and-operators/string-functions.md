@@ -174,10 +174,10 @@ mysql> SELECT FORMAT(1234.56, 1, 'en_US');
 
 ### [`FROM_BASE64()`](https://dev.mysql.com/doc/refman/8.0/en/string-functions.html#function_from-base64)
 
-`FROM_BASE64(str)` 函数用于将使用 [`TO_BASE64()`](https://dev.mysql.com/doc/refman/8.0/en/string-functions.html#function_to-base64) 函数遵循的 [Base64](https://datatracker.ietf.org/doc/html/rfc4648) 编码规则进行编码的字符串解码，并将解码结果返回为十六进制字符串。
+`FROM_BASE64(str)` 函数接收一个遵循 [Base64](https://datatracker.ietf.org/doc/html/rfc4648) 编码规则进行编码的字符串，对其进行解码后将结果以十六进制字符串的形式进行返回。
 
 - 此函数接受一个单一参数：需要解码的 Base64 编码字符串。
-- 如果输入参数为NULL或不是有效的 Base64 编码字符串，`FROM_BASE64()` 函数将返回 `NULL`。
+- 如果输入参数为 `NULL` 或不是有效的 Base64 编码字符串，`FROM_BASE64()` 函数将返回 `NULL`。
 
 > **注意：**
 >
