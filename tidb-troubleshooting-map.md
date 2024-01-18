@@ -219,7 +219,7 @@ TiDB 支持完整的分布式事务，自 v3.0 版本起，提供乐观事务与
 
 ### 4.3 客户端报 `server is busy` 错误
 
-自 TiDB 5.2 版本起，TiKV 引入新的流控机制代替之前的 RocksDB write stall 流控机制。该机制默认配置开启，TiKV 会自动关闭 KvDB 的 write stall 机制，还会关闭 RaftDB 中除 memtable 以外的 write stall 机制。因此客户端在默认情况下不会再收到诸如 `server is busy` 的错误信息，如你收到相关报错，请优先由于检查确认你的流控配置，并建议默认开启流控机制。关于流控机制的调优配置，参见[流控配置说明](https://docs.pingcap.com/zh/tidb/stable/tikv-configuration-file#storageflow-control)。如下为保留原有的客户端 `server is busy` 排错指引。
+自 TiDB 5.2 版本起，TiKV 引入新的流控机制代替之前的 RocksDB write stall 流控机制。该机制默认配置开启，TiKV 会自动关闭 KvDB 的 write stall 机制，还会关闭 RaftDB 中除 memtable 以外的 write stall 机制。因此客户端在默认情况下不会再收到诸如 `server is busy` 的错误信息，如你收到相关报错，请优先由于检查确认你的流控配置，并建议默认开启流控机制。关于流控机制的调优配置，参见[流控配置说明](/tikv-configuration-file#storageflow-control)。如下为保留原有的客户端 `server is busy` 排错指引。
 
 通过查看监控：**Grafana** -> **TiKV** -> **errors** 确认具体 busy 原因。`server is busy` 是 TiKV 自身的流控机制，TiKV 通过这种方式告知 `tidb/ti-client` 当前 TiKV 的压力过大，稍后再尝试。
 
