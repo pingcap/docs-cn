@@ -1085,6 +1085,16 @@ MPP is a distributed computing framework provided by the TiFlash engine, which a
 - Default value: `OFF`
 - This variable is used to set whether the `AUTO_INCREMENT` property of a column is allowed to be removed by executing `ALTER TABLE MODIFY` or `ALTER TABLE CHANGE` statements. It is not allowed by default.
 
+### tidb_analyze_distsql_scan_concurrency <span class="version-mark">New in v7.6.0</span>
+
+- Scope: GLOBAL
+- Persists to cluster: Yes
+- Applies to hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value): No
+- Type: Integer
+- Default value: `4`
+- Range: `[1, 4294967295]`
+- This variable is used to set the concurrency of the `scan` operation when executing the `ANALYZE` operation.
+
 ### tidb_analyze_partition_concurrency
 
 > **Warning:**
@@ -5350,7 +5360,7 @@ For details, see [Identify Slow Queries](/identify-slow-queries.md).
 - Applies to hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value): No
 - Type: Integer
 - Default value: `1`
-- Range: `[1, 256]`
+- Range: `[1, 4294967295]`. The maximum value for v7.5.0 and earlier versions is `256`.
 - This variable is used to set the concurrency of scan operations performed when TiDB executes internal SQL statements (such as an automatic update of statistics).
 
 ### tidb_table_cache_lease <span class="version-mark">New in v6.0.0</span>
