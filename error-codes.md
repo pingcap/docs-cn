@@ -526,6 +526,10 @@ TiDB is compatible with the error codes in MySQL, and in most cases returns the 
 
     DDL is paused by `ADMIN PAUSE` and cannot be paused again.
 
+* Error Number: 8263
+
+    This DDL cannot be executed under a specific BDR role. Make sure that the cluster is in [bidirectional replication](/ticdc/ticdc-bidirectional-replication.md). If the cluster is not in bidirectional replication, you can use `ADMIN UNSET BDR ROLE;` to make DDL normal.
+
 * Error Number: 9001
 
     The complete error message: `ERROR 9001 (HY000): PD Server Timeout`
