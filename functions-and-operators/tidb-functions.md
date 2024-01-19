@@ -127,7 +127,7 @@ ORDER BY
 4 rows in set (0.031 sec)
 ```
 
-TIDB_DECODE_KEY 在成功解码时返回有效的JSON，在解码失败时返回传入的参数值。
+`TIDB_DECODE_KEY` 在解码成功时返回有效的 JSON，在解码失败时返回传入的参数值。
 
 ### TIDB_DECODE_PLAN
 
