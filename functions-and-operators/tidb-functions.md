@@ -99,7 +99,7 @@ SELECT tidb_decode_key('7480000000000000FF3E5F720400000000FF0000000601633430FF33
 1 row in set (0.001 sec)
 ```
 
-表中的第一个Region以一个仅包含`table_id`的key开头。表中最后一个Region以`table_id + 1`结束。中间的Region有着更长的key，包含`_tidb_rowid`或者`handle`。
+以下示例中，表中的第一个 Region 以一个仅包含 `table_id` 的 key 开头，表中的最后一个 Region 以 `table_id + 1` 结束。中间的 Region 有着更长的 key，包含 `_tidb_rowid` 或 `handle`。
 
 ```sql
 SELECT
