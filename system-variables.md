@@ -1540,6 +1540,10 @@ mysql> SELECT job_info FROM mysql.analyze_jobs ORDER BY end_time DESC LIMIT 1;
 
 ### `tidb_disable_txn_auto_retry`
 
+> **警告：**
+>
+> 该变量将从 TiDB v8.0.0 开始废弃，废弃后不再支持乐观事务的自动重试。作为替代，当事务冲突时，请在应用捕获错误并重试，或改用[悲观事务模式](/pessimistic-transaction.md)。
+
 - 作用域：SESSION | GLOBAL
 - 是否持久化到集群：是
 - 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：否
