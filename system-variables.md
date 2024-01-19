@@ -1692,6 +1692,20 @@ mysql> SELECT job_info FROM mysql.analyze_jobs ORDER BY end_time DESC LIMIT 1;
 - Unit: Threads
 - This variable is used to set the concurrency of the DDL operation in the `re-organize` phase.
 
+### `tidb_ddl_version` <span class="version-mark">New in v7.6.0</span>
+
+> **Warning:**
+>
+> This variable is currently an experimental feature and it is not recommended to use in a production environment. This feature might change or be removed without prior notice. If you find a bug, please give feedback by raising an [issue](https://github.com/pingcap/tidb/issues) on GitHub.
+
+- Scope: GLOBAL
+- Persists to cluster: Yes
+- Applies to hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value): No
+- Default value: `1`
+- Value range: `1` or `2`
+- This variable is used to control whether to enable [TiDB DDL V2](/ddl-v2.md). Setting it to `2` enables this feature, and setting it to `1` disables it. The default value is `1`. After you enable it, TiDB uses TiDB DDL V2 to execute DDL statements.
+- Starting from v7.6.0, TiDB only supports accelerating table creation by the [`CREATE TABLE`](/sql-statements/sql-statement-create-table.md) statement.
+
 ### tidb_default_string_match_selectivity <span class="version-mark">New in v6.2.0</span>
 
 - Scope: SESSION | GLOBAL
