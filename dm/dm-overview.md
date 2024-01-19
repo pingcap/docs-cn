@@ -41,8 +41,7 @@ Before using the DM tool, note the following restrictions:
 
 + Database version requirements
 
-    - MySQL version 5.5 ~ 5.7
-    - MySQL version 8.0 (experimental features)
+    - MySQL version 5.6 ~ 8.0
     - MariaDB version >= 10.1.2 (experimental features)
 
     > **Note:**
@@ -63,6 +62,10 @@ Before using the DM tool, note the following restrictions:
 + GBK character set compatibility
 
     - DM does not support migrating `charset=GBK` tables to TiDB clusters earlier than v5.4.0.
+
++ Binlog compatibility
+
+    - DM does not support the MySQL 8.0 new feature binlog [Transaction_payload_event](https://dev.mysql.com/doc/refman/8.0/en/binary-log-transaction-compression.html). Using binlog Transaction_payload_event might result in data inconsistency between upstream and downstream.
 
 ## Contributing
 
