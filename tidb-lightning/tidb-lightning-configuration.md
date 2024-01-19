@@ -308,8 +308,8 @@ user = "root"
 password = ""
 # 表结构信息从 TiDB 的“status-port”获取。
 status-port = 10080
-# pd-server 的地址，填一个即可。
-pd-addr = "172.16.31.4:2379"
+# pd-server 的地址，从 v7.6.0 开始支持设置多个地址。
+pd-addr = "172.16.31.4:2379,56.78.90.12:3456"
 # tidb-lightning 引用了 TiDB 库，并生成产生一些日志。
 # 设置 TiDB 库的日志等级。
 log-level = "error"
@@ -322,7 +322,7 @@ index-serial-scan-concurrency = 20
 checksum-table-concurrency = 2
 
 # 解析和执行 SQL 语句的默认 SQL 模式。
-sql-mode = "ONLY_FULL_GROUP_BY,NO_ENGINE_SUBSTITUTION"
+sql-mode = "ONLY_FULL_GROUP_BY,NO_AUTO_CREATE_USER"
 # `max-allowed-packet` 设置数据库连接允许的最大数据包大小，
 # 对应于系统参数中的 `max_allowed_packet`。 如果设置为 0，
 # 会使用下游数据库 global 级别的 `max_allowed_packet`。

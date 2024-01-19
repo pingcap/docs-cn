@@ -228,7 +228,7 @@ TTL 功能能够与 TiDB 的迁移、备份、恢复工具一同使用。
 | :-- | :---- |
 | [`FLASHBACK TABLE`](/sql-statements/sql-statement-flashback-table.md) |  `FLASHBACK TABLE` 语句会将每个表的 `TTL_ENABLE` 属性强制设置为 `OFF`。这样可以防止 TiDB 在 FLASHBACK 后立即删除过期的数据。此时你需要手动重新配置 `TTL_ENABLE` 属性来重新开启各个表的 TTL。 |
 | [`FLASHBACK DATABASE`](/sql-statements/sql-statement-flashback-database.md) | `FLASHBACK DATABASE` 语句会将每个表的 `TTL_ENABLE` 属性强制设置为 `OFF`。这样可以防止 TiDB 在 FLASHBACK 后立即删除过期的数据。此时你需要手动重新配置 `TTL_ENABLE` 属性来重新开启各个表的 TTL。 |
-| [`FLASHBACK CLUSTER TO TIMESTAMP`](/sql-statements/sql-statement-flashback-to-timestamp.md) | `FLASHBACK CLUSTER TO TIMESTAMP` 会将 [`TIDB_TTL_JOB_ENABLE`](/system-variables.md#tidb_ttl_job_enable-从-v650-版本开始引入) 系统变量设置为 `OFF`，同时表的 `TTL_ENABLE` 属性将保持原样。 |
+| [`FLASHBACK CLUSTER`](/sql-statements/sql-statement-flashback-cluster.md) | `FLASHBACK CLUSTER` 会将 [`TIDB_TTL_JOB_ENABLE`](/system-variables.md#tidb_ttl_job_enable-从-v650-版本开始引入) 系统变量设置为 `OFF`，同时表的 `TTL_ENABLE` 属性将保持原样。 |
 
 ## 使用限制
 

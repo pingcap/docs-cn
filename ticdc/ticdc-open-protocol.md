@@ -52,7 +52,7 @@ Value:
 
 + **Key:**
 
-    ```
+    ```json
     {
         "ts":<TS>,
         "scm":<Schema Name>,
@@ -71,7 +71,7 @@ Value:
 
     `Insert` 事件，输出新增的行数据。
 
-    ```
+    ```json
     {
         "u":{
             <Column Name>:{
@@ -92,7 +92,7 @@ Value:
 
     `Update` 事件，输出新增的行数据 ("u") 以及修改前的行数据 ("p")。
 
-    ```
+    ```json
     {
         "u":{
             <Column Name>:{
@@ -127,7 +127,7 @@ Value:
 
     `Delete` 事件，输出被删除的行数据。
 
-    ```
+    ```json
     {
         "d":{
             <Column Name>:{
@@ -158,7 +158,7 @@ Value:
 
 + **Key:**
 
-    ```
+    ```json
     {
         "ts":<TS>,
         "scm":<Schema Name>,
@@ -175,7 +175,7 @@ Value:
 
 + **Value:**
 
-    ```
+    ```json
     {
         "q":<DDL Query>,
         "t":<DDL Type>
@@ -191,7 +191,7 @@ Value:
 
 + **Key:**
 
-    ```
+    ```json
     {
         "ts":<TS>,
         "t":3

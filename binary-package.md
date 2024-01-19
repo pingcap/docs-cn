@@ -31,6 +31,7 @@ TiDB 提供了 amd64 和 arm64 两种架构的离线包。对于每种架构，T
 | diag-{version}-linux-{arch}.tar.gz | 从 v6.0.0 起新增 |
 | influxdb-{version}-linux-{arch}.tar.gz |  |
 | playground-{version}-linux-{arch}.tar.gz |  |
+| tiproxy-{version}-linux-{arch}.tar.gz | 从 v7.6.0 起新增 |
 
 > **注意：**
 >

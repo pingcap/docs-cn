@@ -594,7 +594,7 @@ tikv-ctl --config=./conf.toml encryption-meta dump-file --path=/path/to/tikv/dat
 /path/to/tikv/data/db/CURRENT: key_id: 9291156302549018620 iv: E3C2FDBF63FC03BFC28F265D7E78283F method: Aes128Ctr
 ```
 
-使用 `encryption-meta dump-key` 打印数据加密密钥。使用本命令的时候，除了在 TiKV 配置文件中指定 TiKV 的数据目录以外，还需要指定当前的主加密密钥。请参阅[静态加密](https://docs.pingcap.com/tidb/v4.0/encryption-at-rest)文档关于配置 TiKV 主加密密钥的说明。使用本命令时 `security.encryption.previous-master-key` 配置项不生效，即使配置文件中使用了该配置，本命令也不会触发更换主加密密钥。
+使用 `encryption-meta dump-key` 打印数据加密密钥。使用本命令的时候，除了在 TiKV 配置文件中指定 TiKV 的数据目录以外，还需要指定当前的主加密密钥。请参阅[静态加密](/encryption-at-rest.md)文档关于配置 TiKV 主加密密钥的说明。使用本命令时 `security.encryption.previous-master-key` 配置项不生效，即使配置文件中使用了该配置，本命令也不会触发更换主加密密钥。
 
 ```
 # conf.toml
@@ -655,9 +655,9 @@ sst meta:
 it isn't easy to handle local data, start key:0101
 overlap region:
 RegionInfo { region: id: 4 end_key: 7480000000000000FF0500000000000000F8 region_epoch { conf_ver: 1 version: 2 } peers { id: 5 store_id: 1 }, leader: Some(id: 5 store_id: 1) }
-suggested operations:
-tikv-ctl ldb --db=data/tikv-21107/db unsafe_remove_sst_file "data/tikv-21107/db/000014.sst"
-tikv-ctl --db=data/tikv-21107/db tombstone -r 4 --pd <endpoint>
+refer operations:
+tikv-ctl ldb --db=/path/to/tikv/db unsafe_remove_sst_file 000014
+tikv-ctl --data-dir=/path/to/tikv tombstone -r 4 --pd <endpoint>
 --------------------------------------------------------
 corruption analysis has completed
 ```
