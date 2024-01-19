@@ -99,10 +99,6 @@ Request Unit (RU) is a unified abstraction unit in TiDB for system resources, wh
 > - The preceding table lists only the resources involved in RU calculation for TiDB Self-Hosted clusters, excluding the network and storage consumption. For TiDB Serverless RUs, see [TiDB Serverless Pricing Details](https://www.pingcap.com/tidb-cloud-serverless-pricing-details/).
 > - Currently, TiFlash resource control only considers SQL CPU, which is the CPU time consumed by the execution of pipeline tasks for queries, and read request payload.
 
-## Estimate RU consumption of SQL statements
-
-You can use the [`EXPLAIN ANALYZE`](/sql-statements/sql-statement-explain-analyze.md#ru-request-unit-consumption) statement to get the amount of RUs consumed during SQL execution. Note that the amount of RUs is affected by the cache (for example, [coprocessor cache](/coprocessor-cache.md)). When the same SQL is executed multiple times, the amount of RUs consumed by each execution might be different. The RU value does not represent the exact value for each execution, but can be used as a reference for estimation.
-
 ## Parameters for resource control
 
 The resource control feature introduces the following system variables or parameters:
@@ -521,6 +517,102 @@ By default, the task types that are marked as background tasks are `""`, and the
 3. For TiDB Self-Hosted, you can use the `enable_resource_control` configuration item to control whether to enable TiFlash resource control. For TiDB Cloud, the value of the `enable_resource_control` parameter is `true` by default and does not support dynamic modification. If you need to disable it for TiDB Dedicated clusters, contact [TiDB Cloud Support](/tidb-cloud/tidb-cloud-support.md).
 
 </CustomContent>
+
+## View RU consumption
+
+You can view information about RU consumption.
+
+### View the RU consumption by SQL
+
+You can view the RU consumption of SQL statements in the following ways:
+
+- The system variable `tidb_last_query_info`
+- `EXPLAIN ANALYZE`
+- Slow queries and corresponding system table
+- `statements_summary`
+
+#### View the RUs consumed by the last SQL execution by querying the system variable `tidb_last_query_info`
+
+TiDB provides the system variable [`tidb_last_query_info`](/system-variables.md#tidb_last_query_info-new-in-v4014). This system variable records the information of the last DML statement executed, including the RUs consumed by the SQL execution.
+
+Example:
+
+1. Run the `UPDATE` statement:
+
+    ```sql
+    UPDATE sbtest.sbtest1 SET k = k + 1 WHERE id = 1;
+    ```
+
+    ```
+    Query OK, 1 row affected (0.01 sec)
+    Rows matched: 1  Changed: 1  Warnings: 0
+    ```
+
+2. Query the system variable `tidb_last_query_info` to view the information of the last executed statement:
+
+    ```sql
+    SELECT @@tidb_last_query_info;
+    ```
+
+    ```
+    +------------------------------------------------------------------------------------------------------------------------+
+    | @@tidb_last_query_info                                                                                                 |
+    +------------------------------------------------------------------------------------------------------------------------+
+    | {"txn_scope":"global","start_ts":446809472210829315,"for_update_ts":446809472210829315,"ru_consumption":4.34885578125} |
+    +------------------------------------------------------------------------------------------------------------------------+
+    1 row in set (0.01 sec)
+    ```
+
+    In the result, `ru_consumption` is the RUs consumed by the execution of this SQL statement.
+
+#### View RUs consumed during SQL execution by `EXPLAIN ANALYZE`
+
+You can use the [`EXPLAIN ANALYZE`](/sql-statements/sql-statement-explain-analyze.md#ru-request-unit-consumption) statement to get the amount of RUs consumed during SQL execution. Note that the amount of RUs is affected by the cache (for example, [coprocessor cache](/coprocessor-cache.md)). When the same SQL is executed multiple times, the amount of RUs consumed by each execution might be different. The RU value does not represent the exact value for each execution, but can be used as a reference for estimation.
+
+#### Slow queries and the corresponding system table
+
+<CustomContent platform="tidb">
+
+When you enable resource control, the [slow query log](/identify-slow-queries.md) of TiDB and the corresponding system table [`INFORMATION_SCHEMA.SLOW_QUERY`](/information-schema/information-schema-slow-query.md) contain the resource group, RU consumption of the corresponding SQL, and the time spent waiting for available RUs.
+
+</CustomContent>
+
+<CustomContent platform="tidb-cloud">
+
+When you enable resource control, the system table [`INFORMATION_SCHEMA.SLOW_QUERY`](/information-schema/information-schema-slow-query.md) contains the resource group, RU consumption of the corresponding SQL, and the time spent waiting for available RUs.
+
+</CustomContent>
+
+#### View RU statistics by `statements_summary`
+
+The system table [`INFORMATION_SCHEMA.statements_summary`](/statement-summary-tables.md#statements_summary) in TiDB stores the normalized and aggregated statistics of SQL statements. You can use the system table to view and analyze the execution performance of SQL statements. It also contains statistics about resource control, including the resource group name, RU consumption, and the time spent waiting for available RUs. For more details, see [`statements_summary` fields description](/statement-summary-tables.md#statements_summary-fields-description).
+
+### View the RU consumption of resource groups
+
+Starting from v7.6.0, TiDB provides the system table [`mysql.request_unit_by_group`](/mysql-schema.md#system-tables-related-to-resource-control) to store the historical records of the RU consumption of each resource group.
+
+Example:
+
+```sql
+SELECT * FROM request_unit_by_group LIMIT 5;
+```
+
+```
++----------------------------+----------------------------+----------------+----------+
+| start_time                 | end_time                   | resource_group | total_ru |
++----------------------------+----------------------------+----------------+----------+
+| 2024-01-01 00:00:00.000000 | 2024-01-02 00:00:00.000000 | default        |   334147 |
+| 2024-01-01 00:00:00.000000 | 2024-01-02 00:00:00.000000 | rg1            |     4172 |
+| 2024-01-01 00:00:00.000000 | 2024-01-02 00:00:00.000000 | rg2            |    34028 |
+| 2024-01-02 00:00:00.000000 | 2024-01-03 00:00:00.000000 | default        |   334088 |
+| 2024-01-02 00:00:00.000000 | 2024-01-03 00:00:00.000000 | rg1            |     3850 |
++----------------------------+----------------------------+----------------+----------+
+5 rows in set (0.01 sec)
+```
+
+> **Note:**
+>
+> The data of `mysql.request_unit_by_group` is automatically imported by a TiDB scheduled task at the end of each day. If the RU consumption of a resource group is 0 on a certain day, no record is generated. By default, this table stores data for the last three months (up to 92 days). Data that exceeds this period is automatically cleared.
 
 ## Monitoring metrics and charts
 
