@@ -1722,6 +1722,10 @@ mysql> SELECT job_info FROM mysql.analyze_jobs ORDER BY end_time DESC LIMIT 1;
 
 ### tidb_disable_txn_auto_retry
 
+> **Warning:**
+>
+> Starting from TiDB v8.0.0, this variable will be deprecated, and TiDB will no longer support automatic retries of optimistic transactions. As an alternative, when encountering transaction conflicts, you can capture the error and retry transactions in your application, or use the [Pessimistic transaction mode](/pessimistic-transaction.md) instead.
+
 - Scope: SESSION | GLOBAL
 - Persists to cluster: Yes
 - Applies to hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value): No
