@@ -50,7 +50,7 @@ This section introduces the formats of Row Changed Event, DDL Event, and Resolve
 
 + **Key:**
 
-    ```
+    ```json
     {
         "ts":<TS>,
         "scm":<Schema Name>,
@@ -69,7 +69,7 @@ This section introduces the formats of Row Changed Event, DDL Event, and Resolve
 
     `Insert` event. The newly added row data is output.
 
-    ```
+    ```json
     {
         "u":{
             <Column Name>:{
@@ -90,7 +90,7 @@ This section introduces the formats of Row Changed Event, DDL Event, and Resolve
 
     `Update` event. The newly added row data ("u") and the row data before the update ("p") are output.
 
-    ```
+    ```json
     {
         "u":{
             <Column Name>:{
@@ -125,7 +125,7 @@ This section introduces the formats of Row Changed Event, DDL Event, and Resolve
 
     `Delete` event. The deleted row data is output.
 
-    ```
+    ```json
     {
         "d":{
             <Column Name>:{
@@ -156,7 +156,7 @@ This section introduces the formats of Row Changed Event, DDL Event, and Resolve
 
 + **Key:**
 
-    ```
+    ```json
     {
         "ts":<TS>,
         "scm":<Schema Name>,
@@ -173,7 +173,7 @@ This section introduces the formats of Row Changed Event, DDL Event, and Resolve
 
 + **Value:**
 
-    ```
+    ```json
     {
         "q":<DDL Query>,
         "t":<DDL Type>
@@ -189,7 +189,7 @@ This section introduces the formats of Row Changed Event, DDL Event, and Resolve
 
 + **Key:**
 
-    ```
+    ```json
     {
         "ts":<TS>,
         "t":3
