@@ -160,6 +160,13 @@ Slow Query 基础信息：
 * `tikvDiskFull`：因为 TiKV 的磁盘满了而产生的 backoff。
 * `txnLockFast`：因为读数据时遇到了锁而产生的 backoff。
 
+和资源管控相关的字段：
+
+* `Resource_group`：语句执行所绑定的资源组。
+* `Request_unit_read`：执行语句消耗的总读 RU。
+* `Request_unit_write`：执行语句消耗的总写 RU。
+* `Time_queued_by_rc`：执行语句过程中等待可用资源的总耗时。
+
 ## 相关系统变量
 
 * [tidb_slow_log_threshold](/system-variables.md#tidb_slow_log_threshold)：设置慢日志的阈值，执行时间超过阈值的 SQL 语句将被记录到慢日志中。默认值是 300 ms。

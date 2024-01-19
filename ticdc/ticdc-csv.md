@@ -23,7 +23,7 @@ protocol = "csv"
 terminator = "\n"
 
 [sink.csv]
-delimiter = ','
+delimiter = ',' # v7.6.0 以前，delimiter 仅支持设置为单个字符。从 v7.6.0 开始，支持设置为 1 - 3 个字符，例如 `$^` 或者 `|@|`。
 quote = '"'
 null = '\N'
 include-commit-ts = true
