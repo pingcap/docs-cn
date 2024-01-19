@@ -7,7 +7,7 @@ summary: 介绍 TiDB DDL V2 加速建表中的概念、原理、实现和影响�
 
 从 v7.6.0 开始，TiDB DDL 新版本 V2 实现支持加速建表，可提升大批量建表的速度。
 
-在 TiDB 中，对元数据对象的更改采用的是在线异步变更算法。所有的 DDL Job 会提交到 `mysql.tidb_ddl_job` 表里，由 owner 节点拉取 DDL Job，执行完 online DDL 算法中的各个阶段后，将该 DDL Job 标记为已完成，移入 `mysql.tidb_ddl_history` 表中。因此 DDL 只能在 owner 节点执行，无法线性拓展。
+在 TiDB 中，对元数据对象的更改采用的是 online DDL 算法（即在线异步变更算法）。所有的 DDL Job 会提交到 `mysql.tidb_ddl_job` 表里，由 owner 节点拉取 DDL Job，执行完 online DDL 算法中的各个阶段后，将该 DDL Job 标记为已完成，移入 `mysql.tidb_ddl_history` 表中。因此 DDL 只能在 owner 节点执行，无法线性拓展。
 
 然而，对于某些 DDL 而言，并不需要严格按照 online DDL 算法执行。如 `CREATE TABLE` 语句，Job 只有 `none` 和 `public` 两个状态，因此可以简化 DDL 的运行流程，使得建表语句可以在非 owner 节点执行，从而实现加速建表。
 
