@@ -605,6 +605,7 @@ monitoring_servers:
 - `password`：Grafana 对应的密码
 - `dashboard_dir`：该字段指定一个本地目录，该目录中应当含有完整的 `dashboard(*.json)` 文件，这些文件会在集群配置初始化阶段被传输到目标机器上，作为 Grafana 的 dashboards
 - `resource_control`：针对该服务的资源控制，如果配置了该字段，会将该字段和 `global` 中的 `resource_control` 内容合并（若字段重叠，以本字段内容为准），然后生成 systemd 配置文件并下发到 `host` 指定机器。`resource_control` 的配置规则同 `global` 中的 `resource_control`
+- `config`：该字段用于添加 Grafana 自定义配置。在集群进行 deploy/scale-out/scale-in/reload 操作时，TiUP 会将 config 字段的内容会添加到 Grafana 的配置文件 grafana.ini 中
 
 > **注意：**
 >
@@ -645,6 +646,7 @@ grafana_servers:
 - `os`：`host` 字段所指定的机器的操作系统，若不指定该字段，则默认为 `global` 中的 `os`
 - `arch`：`host` 字段所指定的机器的架构，若不指定该字段，则默认为 `global` 中的 `arch`
 - `resource_control`：针对该服务的资源控制，如果配置了该字段，会将该字段和 `global` 中的 `resource_control` 内容合并（若字段重叠，以本字段内容为准），然后生成 systemd 配置文件并下发到 `host` 指定机器。`resource_control` 的配置规则同 `global` 中的 `resource_control`
+- `listen_host`：用于指定监听地址，使得 Alertmanager 可以通过代理访问。 推荐配置为 0.0.0.0。
 
 以上所有字段中，部分字段部署完成之后不能再修改。如下所示：
 
