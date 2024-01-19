@@ -102,6 +102,10 @@ Currently, the `help_topic` is NULL.
 * `tidb_background_subtask`: the metadata of the current DXF subtask
 * `tidb_background_subtask_history`: the metadata of the historical DXF subtasks
 
+## System tables related to Resource Control
+
+* `request_unit_by_group`: the history records of consumed resource units (RUs) of all resource groups
+
 ## Miscellaneous system tables
 
 <CustomContent platform="tidb">

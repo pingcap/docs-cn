@@ -33,6 +33,7 @@ The output is as follows:
 | User                          | varchar(64)         | YES  |      | NULL    |       |
 | Host                          | varchar(64)         | YES  |      | NULL    |       |
 | Conn_ID                       | bigint(20) unsigned | YES  |      | NULL    |       |
+| Session_alias                 | varchar(64)         | YES  |      | NULL    |       |
 | Exec_retry_count              | bigint(20) unsigned | YES  |      | NULL    |       |
 | Exec_retry_time               | double              | YES  |      | NULL    |       |
 | Query_time                    | double              | YES  |      | NULL    |       |
@@ -97,13 +98,17 @@ The output is as follows:
 | Plan_from_cache               | tinyint(1)          | YES  |      | NULL    |       |
 | Plan_from_binding             | tinyint(1)          | YES  |      | NULL    |       |
 | Has_more_results              | tinyint(1)          | YES  |      | NULL    |       |
+| Resource_group                | varchar(64)         | YES  |      | NULL    |       |
+| Request_unit_read             | double              | YES  |      | NULL    |       |
+| Request_unit_write            | double              | YES  |      | NULL    |       |
+| Time_queued_by_rc             | double              | YES  |      | NULL    |       |
 | Plan                          | longtext            | YES  |      | NULL    |       |
 | Plan_digest                   | varchar(128)        | YES  |      | NULL    |       |
 | Binary_plan                   | longtext            | YES  |      | NULL    |       |
 | Prev_stmt                     | longtext            | YES  |      | NULL    |       |
 | Query                         | longtext            | YES  |      | NULL    |       |
 +-------------------------------+---------------------+------+------+---------+-------+
-74 rows in set (0.001 sec)
+79 rows in set (0.00 sec)
 ```
 
 The maximum statement length of the `Query` column is limited by the [`tidb_stmt_summary_max_sql_length`](/system-variables.md#tidb_stmt_summary_max_sql_length-new-in-v40) system variable.
@@ -138,6 +143,7 @@ The output is as follows:
 | User                          | varchar(64)         | YES  |      | NULL    |       |
 | Host                          | varchar(64)         | YES  |      | NULL    |       |
 | Conn_ID                       | bigint(20) unsigned | YES  |      | NULL    |       |
+| Session_alias                 | varchar(64)         | YES  |      | NULL    |       |
 | Exec_retry_count              | bigint(20) unsigned | YES  |      | NULL    |       |
 | Exec_retry_time               | double              | YES  |      | NULL    |       |
 | Query_time                    | double              | YES  |      | NULL    |       |
@@ -202,13 +208,17 @@ The output is as follows:
 | Plan_from_cache               | tinyint(1)          | YES  |      | NULL    |       |
 | Plan_from_binding             | tinyint(1)          | YES  |      | NULL    |       |
 | Has_more_results              | tinyint(1)          | YES  |      | NULL    |       |
+| Resource_group                | varchar(64)         | YES  |      | NULL    |       |
+| Request_unit_read             | double              | YES  |      | NULL    |       |
+| Request_unit_write            | double              | YES  |      | NULL    |       |
+| Time_queued_by_rc             | double              | YES  |      | NULL    |       |
 | Plan                          | longtext            | YES  |      | NULL    |       |
 | Plan_digest                   | varchar(128)        | YES  |      | NULL    |       |
 | Binary_plan                   | longtext            | YES  |      | NULL    |       |
 | Prev_stmt                     | longtext            | YES  |      | NULL    |       |
 | Query                         | longtext            | YES  |      | NULL    |       |
 +-------------------------------+---------------------+------+------+---------+-------+
-75 rows in set (0.001 sec)
+80 rows in set (0.00 sec)
 ```
 
 When the cluster system table is queried, TiDB does not obtain data from all nodes, but pushes down the related calculation to other nodes. The execution plan is as follows:
