@@ -41,7 +41,7 @@ Each table in Hive can be exported to parquet files by annotating `STORED AS PAR
     DROP TABLE temp;
     ```
 
-3. The parquet files exported from Hive might not have the `.parquet` suffix and cannot be correctly identified by TiDB Lightning. Therefore, before importing the files, you need to rename the exported files and add the `.parquet` suffix.
+3. The parquet files exported from Hive might not have the `.parquet` suffix and cannot be correctly identified by TiDB Lightning. Therefore, before importing the files, you need to rename the exported files and add the `.parquet` suffix to change the full filename to a format that TiDB Lightning recognizes, for example, `${db_name}. ${table_name}.parquet`. For more information about file types and patterns, see [TiDB Lightning Data Sources](/tidb-lightning/tidb-lightning-data-source.md). You can also match data files by setting correct [customized expressions](/tidb-lightning/tidb-lightning-data-source.md#match-customized-files).
 
 4. Put all the parquet files in a unified directory, for example, `/data/my_datasource/` or `s3://my-bucket/sql-backup`. TiDB Lightning will recursively search for all `.parquet` files in this directory and its subdirectories.
 
