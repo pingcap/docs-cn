@@ -565,4 +565,23 @@ TiDB 版本：7.6.0
 
 感谢来自 TiDB 社区的贡献者们：
 
-- [贡献者 GitHub ID]()
+- [0o001](https://github.com/0o001)（首次贡献者）
+- [bagechengzi](https://github.com/bagechengzi)（首次贡献者）
+- [feran-morgan-pingcap](https://github.com/feran-morgan-pingcap)（首次贡献者）
+- [highpon](https://github.com/highpon)
+- [jiyfhust](https://github.com/jiyfhust)
+- [L-maple](https://github.com/L-maple)
+- [lkshminarayanan](https://github.com/lkshminarayanan)（首次贡献者）
+- [lyang24](https://github.com/lyang24)（首次贡献者）
+- [mittalrishabh](https://github.com/mittalrishabh)
+- [morgo](https://github.com/morgo)
+- [nkg-](https://github.com/nkg-)（首次贡献者）
+- [onlyacat](https://github.com/onlyacat)
+- [shawn0915](https://github.com/shawn0915)
+- [Smityz](https://github.com/Smityz)
+- [szpnygo](https://github.com/szpnygo)（首次贡献者）
+- [ub-3](https://github.com/ub-3)（首次贡献者）
+- [xiaoyawei](https://github.com/xiaoyawei)（首次贡献者）
+- [yorkhellen](https://github.com/yorkhellen)
+- [yoshikipom](https://github.com/yoshikipom)（首次贡献者）
+- [Zheaoli](https://github.com/Zheaoli)
