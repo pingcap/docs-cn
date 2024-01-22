@@ -8,6 +8,8 @@ title: 通过 TiUP 部署 TiDB 集群的拓扑文件配置
 
 同样，修改集群配置也是通过编辑拓扑文件来实现的，区别在于修改配置时仅允许修改部分字段。本文档介绍拓扑文件的各个区块以各区块中的各字段。
 
+使用 TiUP 部署 TiDB 集群时，TiUP 会同时自动部署 Prometheus、Grafana 和 Alertmanager 等监控组件，并且在集群扩容中自动为新增节点添加监控配置。如果需要自定义 Prometheus、Grafana 和 Alertmanager 等监控组件的配置，请参考[自定义监控组件的配置](/tiup/customized-montior-in-tiup-environment.md)。
+
 ## 文件结构
 
 一个通过 TiUP 部署的 TiDB 集群拓扑文件可能包含以下区块：
@@ -587,6 +589,7 @@ tispark_workers:
 - `os`：`host` 字段所指定的机器的操作系统，若不指定该字段，则默认为 `global` 中的 `os`
 - `arch`：`host` 字段所指定的机器的架构，若不指定该字段，则默认为 `global` 中的 `arch`
 - `resource_control`：针对该服务的资源控制，如果配置了该字段，会将该字段和 `global` 中的 `resource_control` 内容合并（若字段重叠，以本字段内容为准），然后生成 systemd 配置文件并下发到 `host` 指定机器。`resource_control` 的配置规则同 `global` 中的 `resource_control`
+- `additional_scrape_conf`：自定义 Prometheus scrape 配置。在集群进行 deploy/scale-out/scale-in/reload 操作时，TiUP 会将 `additional_scrape_conf` 字段的内容添加到 Prometheus 配置文件的对应参数中。更多信息，请参考[自定义监控组件的配置](/tiup/customized-montior-in-tiup-environment.md#自定义-prometheus-scrape-配置)
 
 以上所有字段中，部分字段部署完成之后不能再修改。如下所示：
 
@@ -635,6 +638,7 @@ monitoring_servers:
 - `password`：Grafana 对应的密码
 - `dashboard_dir`：该字段指定一个本地目录，该目录中应当含有完整的 `dashboard(*.json)` 文件，这些文件会在集群配置初始化阶段被传输到目标机器上，作为 Grafana 的 dashboards
 - `resource_control`：针对该服务的资源控制，如果配置了该字段，会将该字段和 `global` 中的 `resource_control` 内容合并（若字段重叠，以本字段内容为准），然后生成 systemd 配置文件并下发到 `host` 指定机器。`resource_control` 的配置规则同 `global` 中的 `resource_control`
+- `config`：该字段用于添加 Grafana 自定义配置。在集群进行 deploy/scale-out/scale-in/reload 等操作时，TiUP 会将 `config` 字段的内容添加到 Grafana 的配置文件 `grafana.ini` 中。更多信息，请参考[自定义 Grafana 其他配置](/tiup/customized-montior-in-tiup-environment.md#自定义-grafana-其他配置)
 
 > **注意：**
 >
@@ -675,6 +679,7 @@ grafana_servers:
 - `os`：`host` 字段所指定的机器的操作系统，若不指定该字段，则默认为 `global` 中的 `os`
 - `arch`：`host` 字段所指定的机器的架构，若不指定该字段，则默认为 `global` 中的 `arch`
 - `resource_control`：针对该服务的资源控制，如果配置了该字段，会将该字段和 `global` 中的 `resource_control` 内容合并（若字段重叠，以本字段内容为准），然后生成 systemd 配置文件并下发到 `host` 指定机器。`resource_control` 的配置规则同 `global` 中的 `resource_control`
+- `listen_host`：指定监听地址，从而可以通过代理访问 Alertmanager。推荐使用 `0.0.0.0`。更多信息，请参考[自定义 Alertmanager 配置](/tiup/customized-montior-in-tiup-environment.md#自定义-alertmanager-配置)
 
 以上所有字段中，部分字段部署完成之后不能再修改。如下所示：
 
