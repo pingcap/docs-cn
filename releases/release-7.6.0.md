@@ -186,7 +186,7 @@ TiDB 版本：7.6.0
     FLASHBACK CLUSTER TO TSO 445494839813079041;
     ````
 
- 更多信息，请参考[用户文档](/sql-statements/sql-statement-flashback-cluster.md)。
+    更多信息，请参考[用户文档](/sql-statements/sql-statement-flashback-cluster.md)。
  
 * 支持自动终止长时间未提交的空闲事务 [#48714](https://github.com/pingcap/tidb/pull/48714) @[crazycs520](https://github.com/crazycs520) **tw@Oreoxmt** <!--1598-->
 
@@ -283,6 +283,7 @@ TiDB 版本：7.6.0
 | 变量名  | 修改类型（包括新增/修改/删除）    | 描述 |
 |--------|------------------------------|------|
 | [`tidb_auto_analyze_partition_batch_size`](/system-variables.md#tidb_auto_analyze_partition_batch_size-从-v640-版本开始引入) | 修改 | 经进一步的测试后，该变量默认值从 `1` 修改为 `128`。 |
+| [`tidb_sysproc_scan_concurrency`](/system-variables.md#tidb_sysproc_scan_concurrency-从-v650-版本开始引入) | 修改 | 在大规模集群里，`scan` 操作的并发度可以调整的更高，以满足 `ANALYZE` 的需要，因此将该变量最大值由 `256` 修改为 `4294967295`。 |
 | [`tidb_analyze_distsql_scan_concurrency`](/system-variables.md#tidb_analyze_distsql_scan_concurrency-从-v760-版本开始引入)       |    新增       |    用于设置执行 `ANALYZE` 时 `scan` 操作的并发度。默认值为 `4`。   |
 | [`tidb_ddl_version`](/system-variables.md#tidb_ddl_version-从-v760-版本开始引入)  |  新增  | 用于控制是否开启 [TiDB DDL V2](/ddl-v2.md)。将该变量的值设置为 `2` 可以开启该功能，设置为 `1` 关闭该功能。默认值为 `1`。开启后，将使用新版本的实现执行 DDL 语句。TiDB DDL V2 对 DDL 功能做了提升，建表 DDL 的执行速度相比 V1 版本提升 10 倍。 |
 | [`tidb_enable_global_index`](/system-variables.md#tidb_enable_global_index-从-v760-版本开始引入)  |  新增  | 用于控制是否支持对分区表创建 `Global index`。默认值为 `OFF`。`Global index` 当前正处于开发阶段，**不推荐修改该变量值**。 |
@@ -428,7 +429,7 @@ TiDB 版本：7.6.0
     - (dup): release-6.5.7.md > 错误修复> TiDB - 修复在某些时区下夏令时显示有误的问题 [#49586](https://github.com/pingcap/tidb/issues/49586) @[overvenus](https://github.com/overvenus)
     - (dup): release-7.1.3.md > 错误修复> TiDB - 修复在有大量表时，`AUTO_ID_CACHE=1` 的表可能造成 gRPC 客户端泄漏的问题 [#48869](https://github.com/pingcap/tidb/issues/48869) @[tiancaiamao](https://github.com/tiancaiamao)
     - (dup): release-6.5.7.md > 错误修复> TiDB - 修复 TiDB server 在优雅关闭 (graceful shutdown) 时可能 panic 的问题 [#36793](https://github.com/pingcap/tidb/issues/36793) @[bb7133](https://github.com/bb7133)
-    <!--tw@hfxsd 以下 23 条-->
+    <!--tw@hfxsd 以下 21 条-->
     - 修复 `ADMIN RECOVER INDEX` 在处理包含 `CommonHandle` 的表时报错 `ERROR 1105` 的问题 [#47687](https://github.com/pingcap/tidb/issues/47687) @[Defined2014](https://github.com/Defined2014)
     - 修复执行 `ALTER TABLE t PARTITION BY` 时指定 Placement Rules 报错 `ERROR 8239` 的问题 [#48630](https://github.com/pingcap/tidb/issues/48630) @[mjonss](https://github.com/mjonss)
     - 修复 `INFORMATION_SCHEMA.CLUSTER_INFO` 中 `START_TIME` 列类型不合理的问题 [#45221](https://github.com/pingcap/tidb/issues/45221) @[dveeden](https://github.com/dveeden)
