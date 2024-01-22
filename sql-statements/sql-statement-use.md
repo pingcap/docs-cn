@@ -10,13 +10,13 @@ The `USE` statement selects a current database for the user session.
 
 ## Synopsis
 
-**UseStmt:**
+```ebnf+diagram
+UseStmt ::=
+    "USE" DBName
 
-![UseStmt](/media/sqlgram/UseStmt.png)
-
-**DBName:**
-
-![DBName](/media/sqlgram/DBName.png)
+DBName ::=
+    Identifier
+```
 
 ## Examples
 
