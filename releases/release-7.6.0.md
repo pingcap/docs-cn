@@ -97,7 +97,7 @@ TiDB 版本：7.6.0
     * `LOWER()`
     * `UPPER()`
 
-    更多信息，请参考[用户文档](/functions-and-operators/expressions-pushed-down.md)。
+  更多信息，请参考[用户文档](/functions-and-operators/expressions-pushed-down.md)。
 
 * 新增支持下推以下 JSON 函数到 TiFlash [#48350](https://github.com/pingcap/tidb/issues/48350) [#48986](https://github.com/pingcap/tidb/issues/48986) [#48994](https://github.com/pingcap/tidb/issues/48994) [#49345](https://github.com/pingcap/tidb/issues/49345) [#49392](https://github.com/pingcap/tidb/issues/49392) @[SeaRise](https://github.com/SeaRise) @[yibin87](https://github.com/yibin87) **tw@qiancai** <!--1608-->
 
@@ -108,7 +108,7 @@ TiDB 版本：7.6.0
     * `JSON_KEYS()`
     * `JSON_CONTAINS_PATH()`
 
-    更多信息，请参考[用户文档](/tiflash/tiflash-supported-pushdown-calculations.md)。
+  更多信息，请参考[用户文档](/tiflash/tiflash-supported-pushdown-calculations.md)。
 
 * 建表性能提升 10 倍（实验特性）[#49752](https://github.com/pingcap/tidb/issues/49752) @[gmhdbjd](https://github.com/gmhdbjd) **tw@hfxsd** <!--1408-->
 
@@ -123,7 +123,7 @@ TiDB 版本：7.6.0
     * 多值索引上的统计信息会被收集，并应用于优化器估算。当一条 SQL 可能选择到数个多值索引时，优化器可以识别开销更小的索引。
     * 当出现用 `OR` 连接的多个 `member of` 条件时，优化器能够为每个 DNF Item（`member of` 条件）匹配一个有效的 Index Partial Path 路径，并将多条路径以 Union 的方式综合起来组成 `Index Merge` 来做更高效的条件过滤和数据读取。
 
-    更多信息，请参考[用户文档](/sql-statements/sql-statement-create-index.md#多值索引)。
+  更多信息，请参考[用户文档](/sql-statements/sql-statement-create-index.md#多值索引)。
 
 * 支持周期性全量数据整理（实验特性）[#12729](https://github.com/tikv/tikv/issues/12729) **tw@Oreoxmt** <!--1610-->
 
@@ -232,7 +232,7 @@ TiDB 版本：7.6.0
     * 增加基于[资源组的数据库指标](/grafana-resource-control-dashboard.md)：QPS/TPS、执行时间 (P999/P99/P95)、失败次数、连接数。
     * 增加系统表 [`request_unit_by_group`](/mysql-schema.md#资源管控相关系统表) 记录资源组每天的历史资源消耗。
 
-    更多信息，请参考[慢查询日志](/identify-slow-queries.md)、[Statement Summary Tables](/statement-summary-tables.md)、[资源管控 (Resource Control) 监控指标详解](/grafana-resource-control-dashboard.md)。
+  更多信息，请参考[慢查询日志](/identify-slow-queries.md)、[Statement Summary Tables](/statement-summary-tables.md)、[资源管控 (Resource Control) 监控指标详解](/grafana-resource-control-dashboard.md)。
 
 ### 数据迁移
 
@@ -280,7 +280,7 @@ TiDB 版本：7.6.0
 
 ### 系统变量
 
-| 变量名  | 修改类型（包括新增/修改/删除）    | 描述 |
+| 变量名  | 修改类型    | 描述 |
 |--------|------------------------------|------|
 | [`tidb_auto_analyze_partition_batch_size`](/system-variables.md#tidb_auto_analyze_partition_batch_size-从-v640-版本开始引入) | 修改 | 经进一步的测试后，该变量默认值从 `1` 修改为 `128`。 |
 | [`tidb_sysproc_scan_concurrency`](/system-variables.md#tidb_sysproc_scan_concurrency-从-v650-版本开始引入) | 修改 | 在大规模集群里，`scan` 操作的并发度可以调整的更高，以满足 `ANALYZE` 的需要，因此将该变量最大值由 `256` 修改为 `4294967295`。 |
@@ -301,7 +301,6 @@ TiDB 版本：7.6.0
 | TiKV | [`rocksdb.titan.enabled`](/tikv-configuration-file.md#enabled) | 修改 | 开启 Titan 开关。v7.5.0 及更早的版本默认值为 `false`。从 v7.6.0 开始，新建集群默认值是 `true`，已有集群升级到 v7.6.0 或更高版本则会维持原有的配置。 |
 | TiDB Lightning | [`tidb.pd-addr`](/tidb-lightning/tidb-lightning-configuration.md#tidb-lightning-任务配置) | 修改 | 配置 PD Server 的地址，从 v7.6.0 开始支持设置多个地址。 |
 | TiDB Lightning | [`block-size`](/tidb-lightning/tidb-lightning-configuration.md#tidb-lightning-任务配置) | 新增 | 控制物理导入模式 (`backend='local'`) 中本地排序文件的 I/O 块大小。默认值为 `16KiB`。当 IOPS 成为瓶颈时，可以将该参数的值调大。 |
-
 | TiKV | [`raftstore.periodic-full-compact-start-times`](/tikv-configuration-file.md#periodic-full-compact-start-times-从-v760-版本开始引入) | 新增 | 设置 TiKV 启动周期性全量数据整理 (Compaction) 的时间。默认值 `[]` 表示默认情况下禁用周期性全量数据整理。 |
 | TiKV | [`raftstore.periodic-full-compact-start-max-cpu`](/tikv-configuration-file.md#periodic-full-compact-start-max-cpu-从-v760-版本开始引入) | 新增 | 设置 TiKV 执行周期性全量数据整理时的 CPU 使用率阈值，默认值为 `0.1`。 |
 | TiKV | [`zstd-dict-size`](/tikv-configuration-file.md#zstd-dict-size) | 新增 | 指定 zstd 字典大小，默认值为 `0KB`，表示关闭 `zstd` 字典压缩。 |
