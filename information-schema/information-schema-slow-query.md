@@ -212,9 +212,9 @@ DESC SELECT COUNT(*) FROM CLUSTER_SLOW_QUERY WHERE user = 'u1';
 | id                         | estRows  | task      | access object            | operator info                                        |
 +----------------------------+----------+-----------+--------------------------+------------------------------------------------------+
 | StreamAgg_7                | 1.00     | root      |                          | funcs:count(1)->Column#75                            |
-| └─TableReader_13       | 10.00    | root      |                          | data:Selection_12                                    |
-|   └─Selection_12       | 10.00    | cop[tidb] |                          | eq(INFORMATION_SCHEMA.cluster_slow_query.user, "u1") |
-|     └─TableFullScan_11 | 10000.00 | cop[tidb] | table:CLUSTER_SLOW_QUERY | keep order:false, stats:pseudo                       |
+| └─TableReader_13           | 10.00    | root      |                          | data:Selection_12                                    |
+|   └─Selection_12           | 10.00    | cop[tidb] |                          | eq(INFORMATION_SCHEMA.cluster_slow_query.user, "u1") |
+|     └─TableFullScan_11     | 10000.00 | cop[tidb] | table:CLUSTER_SLOW_QUERY | keep order:false, stats:pseudo                       |
 +----------------------------+----------+-----------+--------------------------+------------------------------------------------------+
 4 rows in set (0.00 sec)
 ```
