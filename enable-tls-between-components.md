@@ -1,7 +1,6 @@
 ---
 title: 为 TiDB 组件间通信开启加密传输
 summary: 了解如何为 TiDB 集群内各组件间开启加密传输。
-aliases: ['/docs-cn/dev/enable-tls-between-components/','/docs-cn/dev/how-to/secure/enable-tls-between-components/']
 ---
 
 # 为 TiDB 组件间通信开启加密传输

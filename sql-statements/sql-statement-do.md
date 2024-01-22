@@ -1,7 +1,6 @@
 ---
 title: DO | TiDB SQL Statement Reference
 summary: TiDB 数据库中 DO 的使用概况。
-aliases: ['/docs-cn/dev/sql-statements/sql-statement-do/','/docs-cn/dev/reference/sql/statements/do/']
 ---
 
 # DO

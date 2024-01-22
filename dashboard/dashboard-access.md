@@ -1,6 +1,5 @@
 ---
 title: 访问 TiDB Dashboard
-aliases: ['/docs-cn/dev/dashboard/dashboard-access/']
 ---
 
 # 访问 TiDB Dashboard
