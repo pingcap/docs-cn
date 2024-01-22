@@ -8,6 +8,8 @@ To deploy or scale TiDB using TiUP, you need to provide a topology file ([sample
 
 Similarly, to modify the cluster topology, you need to modify the topology file. The difference is that, after the cluster is deployed, you can only modify a part of the fields in the topology file. This document introduces each section of the topology file and each field in each section.
 
+When you deploy a TiDB cluster using TiUP, TiUP also deploys monitoring servers, such as Prometheus, Grafana, and Alertmanager. In the meantime, if you scale out this cluster, TiUP also adds the new nodes into monitoring scope. To customize the configurations of the preceding monitoring servers, you can follow the instructions in [Customize Configurations of Monitoring Servers](/tiup/customized-montior-in-tiup-environment.md).
+
 ## File structure
 
 A topology configuration file for TiDB deployment using TiUP might contain the following sections:
@@ -749,6 +751,8 @@ tispark_workers:
 
 - `resource_control`: Resource control for the service. If this field is configured, the field content is merged with the `resource_control` content in `global` (if the two fields overlap, the content of this field takes effect). Then, a systemd configuration file is generated and sent to the machine specified in `host`. The configuration rules of `resource_control` are the same as the `resource_control` content in `global`.
 
+- `additional_scrape_conf`: Customized Prometheus scrape configuration. When you deploy, scale out, scale in, or reload a TiDB cluster, TiUP adds the content of the `additional_scrape_conf` field to the corresponding parameters of the Prometheus configuration file. For more information, see [Customize Prometheus scrape configuration](/tiup/customized-montior-in-tiup-environment.md#customize-prometheus-scrape-configuration).
+
 For the above fields, you cannot modify these configured fields after the deployment:
 
 - `host`
@@ -806,6 +810,8 @@ monitoring_servers:
 
 - `resource_control`: Resource control for the service. If this field is configured, the field content is merged with the `resource_control` content in `global` (if the two fields overlap, the content of this field takes effect). Then, a systemd configuration file is generated and sent to the machine specified in `host`. The configuration rules of `resource_control` are the same as the `resource_control` content in `global`.
 
+- `config`: This field is used to add custom configurations to Grafana. When you deploy, scale out, scale in, or reload a TiDB cluster, TiUP adds the content of the `config` field to the Grafana configuration file `grafana.ini`. For more information, see [Customize other Grafana configurations](/tiup/customized-montior-in-tiup-environment.md#customize-other-grafana-configurations).
+
 > **Note:**
 >
 > If the `dashboard_dir` field of `grafana_servers` is configured, after executing the `tiup cluster rename` command to rename the cluster, you need to perform the following operations:
@@ -856,6 +862,8 @@ grafana_servers:
 - `arch`: The architecture of the machine specified in `host`. If this field is not specified, the default value is the `arch` value in `global`.
 
 - `resource_control`: Resource control for the service. If this field is configured, the field content is merged with the `resource_control` content in `global` (if the two fields overlap, the content of this field takes effect). Then, a systemd configuration file is generated and sent to the machine specified in `host`. The configuration rules of `resource_control` are the same as the `resource_control` content in `global`.
+
+- `listen_host`: Specifies the listening address so that Alertmanager can be accessed through a proxy. It is recommended to configure it as `0.0.0.0`. For more information, see [Customize Alertmanager configurations](/tiup/customized-montior-in-tiup-environment.md#customize-alertmanager-configurations).
 
 For the above fields, you cannot modify these configured fields after the deployment:
 

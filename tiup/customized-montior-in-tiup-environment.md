@@ -70,7 +70,7 @@ After the preceding configuration is done, when you deploy, scale out, scale in,
             action: drop
     ```
 
-After the preceding configuration is done, when you deploy, scale out, scale in, or reload a TiDB cluster, TiUP adds the `additional_scrape_conf` field to the corresponding parameters of the Prometheus configuration file.
+After the preceding configuration is done, when you deploy, scale out, scale in, or reload a TiDB cluster, TiUP adds the content of the `additional_scrape_conf` field to the corresponding parameters of the Prometheus configuration file.
 
 ## Customize Grafana configurations
 
@@ -116,7 +116,7 @@ After the preceding configuration is done, when you deploy, scale out, scale in,
         smtp.skip_verify: true
     ```
 
-After the preceding configuration is done, when you deploy, scale out, scale in, or reload a TiDB cluster, TiUP adds the `config` field to the Grafana configuration file `grafana.ini`.
+After the preceding configuration is done, when you deploy, scale out, scale in, or reload a TiDB cluster, TiUP adds the content of the `config` field to the Grafana configuration file `grafana.ini`.
 
 ## Customize Alertmanager configurations
 
@@ -135,4 +135,4 @@ alertmanager_servers:
     ssh_port: 22
 ```
 
-After the preceding configuration is done, when you deploy, scale out, scale in, or reload a TiDB cluster, TiUP adds the `listen_host` field to `--web.listen-address` in Alertmanager startup parameters.
+After the preceding configuration is done, when you deploy, scale out, scale in, or reload a TiDB cluster, TiUP adds the content of the `listen_host` field to `--web.listen-address` in Alertmanager startup parameters.
