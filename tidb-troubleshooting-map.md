@@ -59,7 +59,7 @@ aliases: ['/docs-cn/dev/tidb-troubleshooting-map/','/docs-cn/dev/how-to/troubles
 
 - 3.1.2 TiDB DDL job 卡住不动/执行很慢（通过 `admin show ddl jobs` 可以查看 DDL 进度）：
 
-    - 原因 1: TiDB 在 v6.3.0 中引入[元数据锁](/metadata-lock.md) 并在 v6.5.0 后默认打开。如果 DDL 涉及的表与当前未提交事务涉及的表存在交集，则会阻塞 DDL 操作，直到事务提交或者回滚。
+    - 原因 1: TiDB 在 v6.3.0 中引入[元数据锁](/metadata-lock.md)，并在 v6.5.0 及之后的版本默认打开。如果 DDL 涉及的表与当前未提交事务涉及的表存在交集，则会阻塞 DDL 操作，直到事务提交或者回滚。
 
     - 原因 2：与外部组件 (PD/TiKV) 的网络问题。
 
