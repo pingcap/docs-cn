@@ -1,6 +1,5 @@
 ---
 title: DM-worker 配置文件介绍
-aliases: ['/docs-cn/tidb-data-migration/dev/dm-worker-configuration-file/']
 ---
 
 # DM-worker 配置文件介绍

@@ -1,7 +1,6 @@
 ---
 title: SQL 或事务问题
 summary: 学习诊断在应用开发过程中可能产生的 SQL 或事务问题的方法。
-aliases: ['/zh/tidb/dev/troubleshoot-overview']
 ---
 
 # SQL 或事务问题

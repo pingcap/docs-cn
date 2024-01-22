@@ -1,7 +1,6 @@
 ---
 title: CREATE INDEX
 summary: CREATE INDEX 在 TiDB 中的使用概况
-aliases: ['/docs-cn/dev/sql-statements/sql-statement-create-index/','/docs-cn/dev/reference/sql/statements/create-index/']
 ---
 
 # CREATE INDEX

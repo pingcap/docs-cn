@@ -1,7 +1,6 @@
 ---
 title: TiDB 性能分析和优化方法
 summary: 本文介绍了基于数据库时间的系统优化方法，以及如何利用 TiDB Performance Overview 面板进行性能分析和优化。
-aliases: ['/zh/tidb/v6.0/performance-tuning-methods']
 ---
 
 # TiDB 性能分析和优化
