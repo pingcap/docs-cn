@@ -295,6 +295,7 @@ TiDB 版本：7.6.0
 
 | 配置文件 | 配置项 | 修改类型 | 描述 |
 | -------- | -------- | -------- | -------- |
+| TiDB | [`tls-version`](tidb-configuration-file.md#tls-version) | 修改 | 默认值为空，TiDB 默认支持的 TLS 版本从 `TLS1.1` 及更高提升为 `TLS1.2` 及更高。 |
 | TiKV | [`blob-file-compression`](/tikv-configuration-file.md#blob-file-compression) | 修改 | Titan 中 value 所使用的压缩算法。从 v7.6.0 开始，默认采用 `zstd` 压缩算法。 |
 | TiKV | [`rocksdb.titan.enabled`](/tikv-configuration-file.md#enabled) | 修改 | 开启 Titan 开关。v7.5.0 及更早的版本默认值为 `false`。从 v7.6.0 开始，新建集群默认值是 `true`，已有集群升级到 v7.6.0 或更高版本则会维持原有的配置。 |
 | TiDB Lightning | [`tidb.pd-addr`](/tidb-lightning/tidb-lightning-configuration.md#tidb-lightning-任务配置) | 修改 | 配置 PD Server 的地址，从 v7.6.0 开始支持设置多个地址。 |
@@ -307,7 +308,7 @@ TiDB 版本：7.6.0
 | BR | `--tikv-max-restore-concurrency` | 新增 | 设置单 TiKV 节点的下载任务并发度。 |
 | TiCDC | [`encoding-worker-num`](/ticdc/ticdc-changefeed-config.md) | 新增 | 控制 redo 模块中编解码 worker 的数量，默认值为 16。 |
 | TiCDC | [`flush-worker-num`](/ticdc/ticdc-changefeed-config.md) | 新增 | 控制 redo 模块中上传文件 worker 的数量，默认值为 8。 |
-| TiCDC | [`compression`](/ticdc/ticdc-changefeed-config.md) | 新增 | 设置 redo log 文件的压缩行为 。 |
+| TiCDC | [`compression`](/ticdc/ticdc-changefeed-config.md) | 新增 | 设置 redo log 文件的压缩行为。 |
 | TiCDC | [`sink.cloud-storage-config`](/ticdc/ticdc-changefeed-config.md) | 新增 | 设置同步数据到对象存储时自动清理历史数据的功能。 |
 
 ### 系统表
