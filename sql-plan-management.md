@@ -37,10 +37,15 @@ You can create a binding for a SQL statement according to a SQL statement or a h
 {{< copyable "sql" >}}
 
 ```sql
-CREATE [GLOBAL | SESSION] BINDING FOR BindableStmt USING BindableStmt
+CREATE [GLOBAL | SESSION] BINDING [FOR BindableStmt] USING BindableStmt;
 ```
 
-This statement binds SQL execution plans at the GLOBAL or SESSION level. Currently, supported bindable SQL statements (BindableStmt) in TiDB include `SELECT`, `DELETE`, `UPDATE`, and `INSERT` / `REPLACE` with `SELECT` subqueries.
+This statement binds SQL execution plans at the GLOBAL or SESSION level. Currently, supported bindable SQL statements (BindableStmt) in TiDB include `SELECT`, `DELETE`, `UPDATE`, and `INSERT` / `REPLACE` with `SELECT` subqueries. The following is an example:
+
+```sql
+CREATE GLOBAL BINDING USING SELECT * /*+ use_index(t1, a) */ FROM t1;
+CREATE GLOBAL BINDING FOR SELECT * FROM t1 USING SELECT * /*+ use_index(t1, a) */ FROM t1;
+```
 
 > **Note:**
 >
@@ -479,6 +484,121 @@ SHOW binding_cache status;
 1 row in set (0.00 sec)
 ```
 
+## Cross-database binding
+
+Starting from v7.6.0, you can create cross-database bindings in TiDB by using the wildcard `*` to represent a database name in the binding creation syntax. Before creating cross-database bindings, you need to first enable the [`tidb_opt_enable_fuzzy_binding`](/system-variables.md#tidb_opt_enable_fuzzy_binding-new-in-v760) system variable.
+
+You can use cross-database bindings to simplify the process of fixing execution plans in scenarios where data is categorized and stored across different databases, and each database maintains identical object definitions and executes similar application logic. The following are some common use cases:
+
+* When you run SaaS or PaaS services on TiDB, where the data of each tenant is stored in separate databases for easier data maintenance and management
+* When you performed database sharding in a single instance and retained the original database schema after migrating to TiDB, that is, the data in the original instance is categorized and stored by database
+
+In these scenarios, cross-database binding can effectively mitigate SQL performance issues caused by uneven distribution and rapid changes in user data and workload. SaaS providers can use cross-database bindings to fix execution plans validated by applications with large data volumes, thereby avoiding potential performance issues due to the rapid growth of applications with small data volumes.
+
+To create a cross-database binding, you only need to use `*` to represent the database name when creating a binding. For example:
+
+```sql
+CREATE GLOBAL BINDING USING SELECT /*+ use_index(t, a) */ * FROM t; -- Create a GLOBAL scope standard binding.
+CREATE GLOBAL BINDING USING SELECT /*+ use_index(t, a) */ * FROM *.t; -- Create a GLOBAL scope cross-database binding.
+SHOW GLOBAL BINDINGS;
+```
+
+The output is as follows:
+
+```sql
++----------------------------+---------------------------------------------------+------------+---------+-------------------------+-------------------------+---------+-----------------+--------+------------------------------------------------------------------+-------------+
+| Original_sql               | Bind_sql                                          | Default_db | Status  | Create_time             | Update_time             | Charset | Collation       | Source | Sql_digest                                                       | Plan_digest |
++----------------------------+---------------------------------------------------+------------+---------+-------------------------+-------------------------+---------+-----------------+--------+------------------------------------------------------------------+-------------+
+| select * from `test` . `t` | SELECT /*+ use_index(`t` `a`)*/ * FROM `test`.`t` | test       | enabled | 2023-12-29 14:19:01.332 | 2023-12-29 14:19:01.332 | utf8    | utf8_general_ci | manual | 8b193b00413fdb910d39073e0d494c96ebf24d1e30b131ecdd553883d0e29b42 |             |
+| select * from `*` . `t`    | SELECT /*+ use_index(`t` `a`)*/ * FROM `*`.`t`    |            | enabled | 2023-12-29 14:19:02.232 | 2023-12-29 14:19:02.232 | utf8    | utf8_general_ci | manual | 8b193b00413fdb910d39073e0d494c96ebf24d1e30b131ecdd553883d0e29b42 |             |
++----------------------------+---------------------------------------------------+------------+---------+-------------------------+-------------------------+---------+-----------------+--------+------------------------------------------------------------------+-------------+
+```
+
+In the `SHOW GLOBAL BINDINGS` output, the `Default_db` field value of a cross-database binding is empty, and the database name in the `Original_sql` and `Bind_sql` fields is represented as `*`. This binding applies to `select * from t` queries in all databases, not just in a specific database.
+
+For the same query, both cross-database and standard bindings can coexist. TiDB matches bindings in the following order: SESSION scope standard bindings > SESSION scope cross-database bindings > GLOBAL scope standard bindings > GLOBAL scope cross-database bindings.
+
+Apart from the creation syntax, cross-database bindings share the same deletion and status change syntax as standard bindings. The following is a detailed usage example.
+
+1. Create databases `db1` and `db2`, and create two tables in each database:
+
+    ```sql
+    CREATE DATABASE db1;
+    CREATE TABLE db1.t1 (a INT, KEY(a));
+    CREATE TABLE db1.t2 (a INT, KEY(a));
+    CREATE DATABASE db2;
+    CREATE TABLE db2.t1 (a INT, KEY(a));
+    CREATE TABLE db2.t2 (a INT, KEY(a));
+    ```
+
+2. Enable the cross-database binding feature:
+
+    ```sql
+    SET tidb_opt_enable_fuzzy_binding=1;
+    ```
+
+3. Create a cross-database binding:
+
+    ```sql
+    CREATE GLOBAL BINDING USING SELECT /*+ use_index(t1, a), use_index(t2, a) */ * FROM *.t1, *.t2;
+    ```
+
+4. Execute queries and verify whether the binding is used:
+
+    ```sql
+    SELECT * FROM db1.t1, db1.t2;
+    SELECT @@LAST_PLAN_FROM_BINDING;
+    +--------------------------+
+    | @@LAST_PLAN_FROM_BINDING |
+    +--------------------------+
+    |                        1 |
+    +--------------------------+
+    
+    SELECT * FROM db2.t1, db2.t2;
+    SELECT @@LAST_PLAN_FROM_BINDING;
+    +--------------------------+
+    | @@LAST_PLAN_FROM_BINDING |
+    +--------------------------+
+    |                        1 |
+    +--------------------------+
+    
+    SELECT * FROM db1.t1, db2.t2;
+    SELECT @@LAST_PLAN_FROM_BINDING;
+    +--------------------------+
+    | @@LAST_PLAN_FROM_BINDING |
+    +--------------------------+
+    |                        1 |
+    +--------------------------+
+
+    USE db1;
+    SELECT * FROM t1, db2.t2;
+    SELECT @@LAST_PLAN_FROM_BINDING;
+    +--------------------------+
+    | @@LAST_PLAN_FROM_BINDING |
+    +--------------------------+
+    |                        1 |
+    +--------------------------+
+    ```
+
+5. View the binding:
+
+    ```sql
+    SHOW GLOBAL BINDINGS;
+    +----------------------------------------------+------------------------------------------------------------------------------------------+------------+---------+-------------------------+-------------------------+---------+--------------------+--------+------------------------------------------------------------------+-------------+
+    | Original_sql                                 | Bind_sql                                                                                 | Default_db | Status  | Create_time             | Update_time             | Charset | Collation          | Source | Sql_digest                                                       | Plan_digest |
+    +----------------------------------------------+------------------------------------------------------------------------------------------+------------+---------+-------------------------+-------------------------+---------+--------------------+--------+------------------------------------------------------------------+-------------+
+    | select * from ( `*` . `t1` ) join `*` . `t2` | SELECT /*+ use_index(`t1` `a`) use_index(`t2` `a`)*/ * FROM (`*` . `t1`) JOIN `*` . `t2` |            | enabled | 2023-12-29 14:22:28.144 | 2023-12-29 14:22:28.144 | utf8    | utf8_general_ci    | manual | ea8720583e80644b58877663eafb3579700e5f918a748be222c5b741a696daf4 |             |
+    +----------------------------------------------+------------------------------------------------------------------------------------------+------------+---------+-------------------------+-------------------------+---------+--------------------+--------+------------------------------------------------------------------+-------------+
+    ```
+
+6. Delete the cross-database binding:
+
+    ```sql
+    DROP GLOBAL BINDING FOR SQL DIGEST 'ea8720583e80644b58877663eafb3579700e5f918a748be222c5b741a696daf4';
+    SHOW GLOBAL BINDINGS;
+    Empty set (0.00 sec)
+    ```
+
 ## Baseline capturing
 
 Used for [preventing regression of execution plans during an upgrade](#prevent-regression-of-execution-plans-during-an-upgrade), this feature captures queries that meet capturing conditions and creates bindings for these queries.
@@ -522,17 +642,17 @@ Insert filtering conditions into the system table `mysql.capture_plan_baselines_
 
 ```sql
 -- Filter by table name
- INSERT INTO mysql.capture_plan_baselines_blacklist(filter_type, filter_value) VALUES('table', 'test.t');
+INSERT INTO mysql.capture_plan_baselines_blacklist(filter_type, filter_value) VALUES('table', 'test.t');
 
 -- Filter by database name and table name through wildcards
- INSERT INTO mysql.capture_plan_baselines_blacklist(filter_type, filter_value) VALUES('table', 'test.table_*');
- INSERT INTO mysql.capture_plan_baselines_blacklist(filter_type, filter_value) VALUES('table', 'db_*.table_*');
+INSERT INTO mysql.capture_plan_baselines_blacklist(filter_type, filter_value) VALUES('table', 'test.table_*');
+INSERT INTO mysql.capture_plan_baselines_blacklist(filter_type, filter_value) VALUES('table', 'db_*.table_*');
 
 -- Filter by frequency
- INSERT INTO mysql.capture_plan_baselines_blacklist(filter_type, filter_value) VALUES('frequency', '2');
+INSERT INTO mysql.capture_plan_baselines_blacklist(filter_type, filter_value) VALUES('frequency', '2');
 
 -- Filter by user name
- INSERT INTO mysql.capture_plan_baselines_blacklist(filter_type, filter_value) VALUES('user', 'user1');
+INSERT INTO mysql.capture_plan_baselines_blacklist(filter_type, filter_value) VALUES('user', 'user1');
 ```
 
 | **Dimension name** | **Description**                                                     | Remarks                                                     |
@@ -642,7 +762,7 @@ In the table defined above, few rows meet the `a < 100` condition. But for some 
 {{< copyable "sql" >}}
 
 ```sql
-CREATE GLOBAL BINDING for SELECT * FROM t WHERE a < 100 AND b < 100 using SELECT * FROM t use index(a) WHERE a < 100 AND b < 100;
+CREATE GLOBAL BINDING for SELECT * FROM t WHERE a < 100 AND b < 100 USING SELECT * FROM t use index(a) WHERE a < 100 AND b < 100;
 ```
 
 When the query above is executed again, the optimizer selects index `a` (influenced by the binding created above) to reduce the query time.
