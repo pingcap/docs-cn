@@ -259,6 +259,14 @@ TiCDC 需要磁盘是为了缓冲上游写入高峰时下游消费不及时堆�
 
 目前 TiCDC 还没完全适配 TiDB Lightning 和 BR，请避免在使用 TiCDC 同步的表上使用 TiDB Lightning 和 BR。
 
+如果有某些表需要使用 TiDB Lightning 或者 BR 恢复数据，可以在这么做：
+
+1. 停止包括这些表的 TiCDC 同步任务。
+
+2. 使用 TiDB Lightning 或 BR 恢复数据。
+
+3. 恢复完成后，重新创建 TiCDC 同步任务，从恢复完成的时间点(TSO)开始同步。
+
 ## 为什么恢复暂停的 changefeed 后，changefeed 同步延迟越来越高，数分钟后才恢复正常？
 
 当 changefeed 启动时，为了补齐 changefeed 暂停期间产生的增量数据日志，TiCDC 需要扫描 TiKV 中数据的历史版本，待扫描完毕后，才能够继续推进复制过程，扫描过程可能长达数分钟到数十分钟。
