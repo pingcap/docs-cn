@@ -305,12 +305,10 @@ TiDB 版本：7.6.0
 | TiKV | [`zstd-dict-size`](/tikv-configuration-file.md#zstd-dict-size) | 新增 | 指定 zstd 字典大小，默认值为 `0KB`，表示关闭 `zstd` 字典压缩。 |
 | BR | `--granularity` | 新增 | 通过设置 `--granularity=coarse-grained` 启用粗细粒度结合的 Region 打散算法（实验特性）进行恢复。 |
 | BR | `--tikv-max-restore-concurrency` | 新增 | 设置单 TiKV 节点的下载任务并发度。 |
-|          |          |          |          |
-|          |          |          |          |
-
-<!-- 以下几项确认后，需挪到上面的配置文件参数变更表格里 -->
-- (dup): release-7.1.3.md > 兼容性变更> TiCDC Changefeed 新增以下配置项： - [`sink.cloud-storage-config`](/ticdc/ticdc-changefeed-config.md)：你可以设置同步数据到对象存储时自动清理历史数据的功能 [#10109](https://github.com/pingcap/tiflow/issues/10109) @[CharlesCheung96](https://github.com/CharlesCheung96)
-- (dup): release-7.1.3.md > 兼容性变更> TiCDC Changefeed 新增以下配置项： - [`compression`](/ticdc/ticdc-changefeed-config.md)：你可以设置 redo log 文件的压缩行为 [#10176](https://github.com/pingcap/tiflow/issues/10176) @[sdojjy](https://github.com/sdojjy)
+| TiCDC | [`encoding-worker-num`](/ticdc/ticdc-changefeed-config.md) | 新增 | 控制 redo 模块中编解码 worker 的数量，默认值为 16。 |
+| TiCDC | [`flush-worker-num`](/ticdc/ticdc-changefeed-config.md) | 新增 | 控制 redo 模块中上传文件 worker 的数量，默认值为 8。 |
+| TiCDC | [`compression`](/ticdc/ticdc-changefeed-config.md) | 新增 | 设置 redo log 文件的压缩行为 。 |
+| TiCDC | [`sink.cloud-storage-config`](/ticdc/ticdc-changefeed-config.md) | 新增 | 设置同步数据到对象存储时自动清理历史数据的功能。 |
 
 ### 系统表
 
