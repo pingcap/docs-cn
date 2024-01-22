@@ -13,9 +13,11 @@ Currently, the official documentation supports two languages:
 
 You can use Google Translate to view the documentation in different languages. For example:
 
-- `fr`: [documentation in French](https://translate.google.com/translate?hl=en&sl=en&tl=fr&u=https%3A%2F%2Fgithub.com%2Fpingcap%2Fdocs%2Fblob%2Fmaster%2FTOC.md)
-- `ja`: [documentation in Japanese](https://translate.google.com/translate?hl=en&sl=en&tl=ja&u=https%3A%2F%2Fgithub.com%2Fpingcap%2Fdocs%2Fblob%2Fmaster%2FTOC.md)
-- `ko`: [documentation in Korean](https://translate.google.com/translate?hl=en&sl=en&tl=ko&u=https%3A%2F%2Fgithub.com%2Fpingcap%2Fdocs%2Fblob%2Fmaster%2FTOC.md)
+- `fr`: [documentation in French](https://docs-pingcap-com.translate.goog/tidb/stable?_x_tr_sl=auto&_x_tr_tl=fr&_x_tr_hl=en&_x_tr_pto=wapp&_x_tr_hist=true)
+- `ja`: [documentation in Japanese](https://docs-pingcap-com.translate.goog/tidb/stable?_x_tr_sl=auto&_x_tr_tl=ja&_x_tr_hl=en&_x_tr_pto=wapp&_x_tr_hist=true)
+- `ko`: [documentation in Korean](https://docs-pingcap-com.translate.goog/tidb/stable?_x_tr_sl=auto&_x_tr_tl=ko&_x_tr_hl=en&_x_tr_pto=wapp&_x_tr_hist=true)
+- `de`: [documentation in German](https://docs-pingcap-com.translate.goog/tidb/stable?_x_tr_sl=auto&_x_tr_tl=de&_x_tr_hl=en&_x_tr_pto=wapp&_x_tr_hist=true)
+- `es`: [documentation in Spanish](https://docs-pingcap-com.translate.goog/tidb/stable?_x_tr_sl=auto&_x_tr_tl=es&_x_tr_hl=en&_x_tr_pto=wapp&_x_tr_hist=true)
 
 ## Documentation versions
 
