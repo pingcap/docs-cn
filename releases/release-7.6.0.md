@@ -212,14 +212,6 @@ TiDB 版本：7.6.0
 
     更多信息，请参考[用户文档](/system-variables.md#tidb_txn_entry_size_limit-从-v760-版本开始引入)。
 
-* 全局排序功能成为正式功能 (GA)，提升 `ADD INDEX` 和 `IMPORT INTO` 的性能和稳定性 [#45719](https://github.com/pingcap/tidb/issues/45719) @[wjhuang2016](https://github.com/wjhuang2016) @[D3Hunter](https://github.com/D3Hunter) **tw@ran-huang** <!--1580/1579-->
-
-    在 v7.4.0 以前，使用[分布式执行框架](/tidb-distributed-execution-framework.md)执行 `ADD INDEX` 或 `IMPORT INTO` 等任务时，由于 TiDB 本地存储空间有限，只能对部分数据进行局部排序后再导入到 TiKV。这些导入到 TiKV 的数据范围有较多的重叠，需要额外的资源进行处理，降低了 TiKV 的性能和稳定性。
-
-    随着 v7.4.0 引入全局排序特性，可以将数据暂时存储在外部存储（如 S3）中进行全局排序后再导入到 TiKV 中。这一改进降低了 TiKV 对资源的额外消耗，并显著提高了 `ADD INDEX` 和 `IMPORT INTO` 等操作的性能和稳定性。该功能在 v7.6.0 成为正式功能（GA）。
-
-    更多信息，请参考[用户文档](/tidb-global-sort.md)。
-
 * BR 默认恢复用户账号等系统表数据 [#48567](https://github.com/pingcap/tidb/issues/48567) @[BornChanger](https://github.com/BornChanger) **tw@Oreoxmt** <!--1570/1628-->
 
     从 `br` v5.1.0 开始，快照备份时默认自动备份 **mysql schema** 下的系统表数据，但恢复数据时默认不恢复系统表数据。在 v6.2.0 中，`br` 增加恢复参数 `--with-sys-table` 支持恢复数据的同时恢复部分系统表相关数据，提供更多的操作灵活性。
