@@ -116,7 +116,7 @@ Use "tiup [command] --help" for more information about a command.
     - status：查看组件运行记录
     - clean：清除组件运行记录
     - mirror：从官方镜像克隆一个私有镜像
-    - telemetry：控制有关遥测的事情
+    - telemetry：控制遥测功能
     - env：显示与 TiUP 相关的系统环境变量列表
     - history：显示 TiUP 的历史执行记录，默认显示 100 行
     - link：将组件二进制文件链接到 `$TIUP_HOME/bin/`
@@ -125,7 +125,7 @@ Use "tiup [command] --help" for more information about a command.
     - completion：为指定的 shell (bash / zsh / fish / powershell) 生成自动补全脚本
 - 可用的组件
     - playground：在本机启动一个 TiDB 集群
-    - client：连接 playground 的客户端
+    - client：连接 TiUP Playground 的客户端
     - cluster：部署用于生产环境的 TiDB 集群
     - bench：对数据库进行压力测试
 
