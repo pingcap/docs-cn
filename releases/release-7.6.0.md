@@ -23,7 +23,7 @@ TiDB 版本：7.6.0
 </thead>
 <tbody>
   <tr>
-    <td rowspan="4">可扩展性与性能<br></td>
+    <td rowspan="4">可扩展性与性能</td>
     <td><a href="https://docs.pingcap.com/zh/tidb/v7.6/sql-plan-management#跨数据库绑定执行计划-cross-db-binding">跨数据库绑定执行计划</a> {/* tw@Oreoxmt */}</td>
     <td>在处理上百个 schema 相同的数据库时，针对一个 schema 的 SQL binding 可能需要跨 schema 生效。例如 SaaS 或 PaaS 数据平台为每个用户维护独立数据库，这些数据库有相同的结构，运行类似的 SQL。对每个 schema 逐一做 SQL 绑定有时是不切实际的。TiDB v7.6.0 引入跨数据库绑定执行计划，支持在所有 schema 相同的数据库之间匹配绑定计划。</td>
   </tr>
@@ -40,7 +40,7 @@ TiDB 版本：7.6.0
     <td>TiDB v7.6.0 实验性地引入了 Active PD Follower 特性，允许 PD follower 提供 Region 信息查询服务。在 TiDB 节点数量较多和 Region 数量较多的集群中，该功能提升了 PD 集群处理 GetRegion、ScanRegions 请求的能力，减轻了 PD leader 的 CPU 压力。</td>
   </tr>
   <tr>
-    <td rowspan="2">稳定性与高可用<br></td>
+    <td rowspan="2">稳定性与高可用</td>
     <td><a href="https://docs.pingcap.com/tidb/v7.6/tiproxy/tiproxy-overview">支持 TiProxy（实验特性）</a>  {/* tw@ran-huang */}</td>
     <td>全面支持 TiProxy，可通过部署工具轻松部署。TiProxy 可以管理和维护客户端与 TiDB 的连接，在滚动重启、升级以及扩缩容过程中保持连接。</td>
   </tr>
