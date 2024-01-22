@@ -589,7 +589,7 @@ tispark_workers:
 - `os`：`host` 字段所指定的机器的操作系统，若不指定该字段，则默认为 `global` 中的 `os`
 - `arch`：`host` 字段所指定的机器的架构，若不指定该字段，则默认为 `global` 中的 `arch`
 - `resource_control`：针对该服务的资源控制，如果配置了该字段，会将该字段和 `global` 中的 `resource_control` 内容合并（若字段重叠，以本字段内容为准），然后生成 systemd 配置文件并下发到 `host` 指定机器。`resource_control` 的配置规则同 `global` 中的 `resource_control`
-- `additional_scrape_conf`：自定义 Prometheus scrape 配置。在集群进行 deploy/scale-out/scale-in/reload 操作时，TiUP 会将 additional_scrape_conf 字段的内容会添加到 Prometheus 配置文件的对应参数中。更多信息，请参考[自定义监控组件的配置](/tiup/customized-montior-in-tiup-environment.md#自定义-prometheus-scrape-配置)
+- `additional_scrape_conf`：自定义 Prometheus scrape 配置。在集群进行 deploy/scale-out/scale-in/reload 操作时，TiUP 会将 `additional_scrape_conf` 字段的内容添加到 Prometheus 配置文件的对应参数中。更多信息，请参考[自定义监控组件的配置](/tiup/customized-montior-in-tiup-environment.md#自定义-prometheus-scrape-配置)
 
 以上所有字段中，部分字段部署完成之后不能再修改。如下所示：
 
@@ -679,7 +679,7 @@ grafana_servers:
 - `os`：`host` 字段所指定的机器的操作系统，若不指定该字段，则默认为 `global` 中的 `os`
 - `arch`：`host` 字段所指定的机器的架构，若不指定该字段，则默认为 `global` 中的 `arch`
 - `resource_control`：针对该服务的资源控制，如果配置了该字段，会将该字段和 `global` 中的 `resource_control` 内容合并（若字段重叠，以本字段内容为准），然后生成 systemd 配置文件并下发到 `host` 指定机器。`resource_control` 的配置规则同 `global` 中的 `resource_control`
-- `listen_host`：用于指定监听地址，从而可以通过代理访问 Alertmanager。推荐使用 `0.0.0.0`。更多信息，请参考[自定义 Alertmanager 配置](/tiup/customized-montior-in-tiup-environment.md#自定义-alertmanager-配置)
+- `listen_host`：指定监听地址，从而可以通过代理访问 Alertmanager。推荐使用 `0.0.0.0`。更多信息，请参考[自定义 Alertmanager 配置](/tiup/customized-montior-in-tiup-environment.md#自定义-alertmanager-配置)
 
 以上所有字段中，部分字段部署完成之后不能再修改。如下所示：
 
