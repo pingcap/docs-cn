@@ -23,7 +23,7 @@ summary: 使用命令行配置 TiDB Lightning。
 | --backend [*backend*](/tidb-lightning/tidb-lightning-overview.md) | 选择导入的模式：`local` 为[物理导入模式](/tidb-lightning/tidb-lightning-physical-import-mode.md)，`tidb` 为[逻辑导入模式](/tidb-lightning/tidb-lightning-logical-import-mode.md) | `tikv-importer.backend` |
 | --log-file *file* | 日志文件路径（默认值为 `/tmp/lightning.log.{timestamp}`，设置为 '-' 表示日志输出到终端） | `lightning.log-file` |
 | --status-addr *ip:port* | TiDB Lightning 服务器的监听地址 | `lightning.status-port` |
-| --pd-urls *host:port* | PD endpoint 的地址 | `tidb.pd-addr` |
+| --pd-urls *host1:port1,host2:port2,...,hostn:portn* | PD endpoint 的地址。从 v7.6.0 开始支持设置多个地址。 | `tidb.pd-addr` |
 | --tidb-host *host* | TiDB Server 的 host | `tidb.host` |
 | --tidb-port *port* | TiDB Server 的端口（默认为 4000） | `tidb.port` |
 | --tidb-status *port* | TiDB Server 的状态端口的（默认为 10080） | `tidb.status-port` |

@@ -5,7 +5,7 @@ summary: 了解如何通过调整 Region 大小等方法对 Region 进行性能�
 
 # Region 性能调优
 
-本文介绍了如何通过调整 Region 大小等方法对 Region 进行性能调优以及如何在大 Region 下使用 bucket 进行并发查询优化。
+本文介绍了如何通过调整 Region 大小等方法对 Region 进行性能调优以及如何在大 Region 下使用 bucket 进行并发查询优化。同时，本文还介绍了通过开启 Active PD Follower 特性来提升 PD 为 TiDB 节点提供 Region 信息的服务能力。
 
 ## 概述
 
@@ -34,3 +34,18 @@ Region 的大小可以通过 [`coprocessor.region-split-size`](/tikv-configurati
 > 当前该功能为实验特性，不建议在生产环境中使用。
 
 Region 调大以后，如需进一步提高查询的并发度，可以设置 [`coprocessor.enable-region-bucket`](/tikv-configuration-file.md#enable-region-bucket-从-v610-版本开始引入) 为 `true`。这个配置会将每个 Region 划分为更小的区间 bucket，并且以这个更小的区间作为并发查询单位，以提高扫描数据的并发度。bucket 的大小通过 [`coprocessor.region-bucket-size`](/tikv-configuration-file.md#region-bucket-size-从-v610-版本开始引入) 来控制。
+
+## 通过 Active PD Follower 提升 PD Region 信息查询服务的扩展能力
+
+> **警告：**
+>
+> Active PD Follower 目前为实验特性，不建议在生产环境中使用。该功能可能会在未事先通知的情况下发生变化或删除。如果发现 bug，请在 GitHub 上提 [issue](https://github.com/pingcap/tidb/issues) 反馈。
+
+当集群的 Region 数量较多时，PD leader 处理心跳和调度任务的开销也较大，可能导致 CPU 资源紧张。如果同时集群中的 TiDB 实例数量较多，查询 Region 信息请求并发量较大，PD leader CPU 压力将变得更大，可能会造成 PD 服务不可用。
+
+为确保服务的高可用性，PD leader 会将 Region 信息实时同步给 PD follower。PD follower 在内存中维护保存 Region 信息，从而具备处理 Region 信息请求的能力。你可以通过设置系统变量 [`pd_enable_follower_handle_region`](/system-variables.md#pd_enable_follower_handle_region-从-v760-版本开始引入) 开启 Active PD Follower 特性。启用该特性后，TiDB 在获取 Region 信息时会将请求均匀地发送到所有 PD 节点上，使 PD follower 也可以直接处理 Region 请求，从而降低减轻 PD leader 的 CPU 压力。
+
+PD 通过维护 Region 同步流的状态，并结合 TiKV client-go 的 fallback 机制，确保 TiDB 中的 Region 信息始终是最新的。
+
+- 当 PD leader 与 follower 之间网络不稳定或 follower 不可用导致 Region 同步流断开时，PD follower 将拒绝处理 Region 请求。此时，TiDB 会自动向 PD leader 重试请求，并将该 follower 暂时标记为不可用状态。
+- 当网络稳定时，由于 PD leader 和 follower 之间的同步可能存在延迟，从 follower 获取的部分 Region 信息可能是过时的。在这种情况下，如果 Region 对应的 KV Request 失败，TiDB 会重新向 PD leader 请求最新的 Region 信息，并再次向 TiKV 发送 KV Request。
