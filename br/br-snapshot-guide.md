@@ -71,6 +71,8 @@ tiup br restore full --pd "${PD_IP}:2379" \
 --storage "s3://backup-101/snapshot-202209081330?access-key=${access-key}&secret-access-key=${secret-access-key}"
 ```
 
+To address the potential bottleneck issue during restoration in large-scale Region scenarios, starting from v7.6.0, BR supports a coarse-grained Region scatter algorithm (experimental). You can enable this algorithm by specifying `--granularity="coarse-grained"`.
+
 During restore, a progress bar is displayed in the terminal as shown below. When the progress bar advances to 100%, the restore task is completed and statistics such as total restore time, average restore speed, and total data size are displayed.
 
 ```shell
@@ -202,6 +204,18 @@ The impact of backup on cluster performance can be reduced by limiting the backu
 
 - During data restore, TiDB tries to fully utilize the TiKV CPU, disk IO, and network bandwidth resources. Therefore, it is recommended to restore the backup data on an empty cluster to avoid affecting the running applications.
 - The speed of restoring backup data is much related with the cluster configuration, deployment, and running applications. In internal tests, the restore speed of a single TiKV node can reach 100 MiB/s. The performance and impact of snapshot restore are varied in different user scenarios and should be tested in actual environments.
+- Starting from v7.6.0, to accelerate restore speed in large-scale Region scenarios, BR introduces an experimental feature that allows you to enable a coarse-grained Region scatter algorithm by specifying the command-line parameter `--granularity="coarse-grained"`. You can also control the concurrency of download tasks for each TiKV node by setting the `--tikv-max-restore-concurrency` parameter. This helps you fully utilize the resources of each TiKV node, thereby achieving a rapid parallel recovery. In several real-world cases, the snapshot restore speed of the cluster is improved by about 10 times in large-scale Region scenarios. The following is an example:
+
+    ```bash
+    br restore full \
+    --pd "${PDIP}:2379" \
+    --storage "s3://${Bucket}/${Folder}" \
+    --s3.region "${region}" \
+    --granularity "coarse-grained" \
+    --tikv-max-restore-concurrency 128 \
+    --send-credentials-to-tikv=true \
+    --log-file restorefull.log
+    ```
 
 ## See also
 
