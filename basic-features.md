@@ -142,6 +142,7 @@ aliases: ['/docs-cn/dev/basic-features/','/docs-cn/dev/experimental-features-4.0
 | [乐观事务](/optimistic-transaction.md) |  Y  |  Y  | Y | Y | Y | Y | Y | Y | Y | Y | Y |
 | [可重复读隔离（快照隔离）](/transaction-isolation-levels.md) |  Y  |  Y  | Y | Y | Y | Y | Y | Y | Y | Y | Y |
 | [读已提交隔离](/transaction-isolation-levels.md) |  Y  |  Y  | Y | Y | Y | Y | Y | Y | Y | Y | Y |
+| [自动终止长时间未提交的空闲事务](/system-variables.md#tidb_idle_transaction_timeout-从-v760-版本开始引入) | Y | N | N | N | N | N | N | N | N | N | N |
 
 ## 分区
 
