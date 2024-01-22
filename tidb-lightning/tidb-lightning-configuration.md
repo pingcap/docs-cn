@@ -202,6 +202,10 @@ addr = "172.16.31.10:8287"
 # 该参数自 v7.1.0 版本开始引入。
 # region-check-backoff-limit = 1800
 
+# 控制物理导入模式 (`backend='local'`) 中本地排序文件 I/O 锁大小。当 IOPS 成为瓶颈时，可以将该参数的值调大。
+# 该参数自 v7.6.0 版本开始引入。
+# block-size = "16KiB"
+
 [mydumper]
 # 设置文件读取的区块大小，确保该值比数据源的最长字符串长。
 read-block-size = "64KiB" # 默认值
