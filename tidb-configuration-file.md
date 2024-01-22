@@ -414,7 +414,7 @@ Configuration items related to security.
 ### `tls-version`
 
 - Set the minimum TLS version for MySQL Protocol connections.
-- Default value: "", which allows TLSv1.1 or higher.
+- Default value: "", which allows TLSv1.2 or higher. Before TiDB v7.6.0, the default value allows TLSv1.1 or higher.
 - Optional values: `"TLSv1.0"`, `"TLSv1.1"`, `"TLSv1.2"` and `"TLSv1.3"`
 
 ### `auth-token-jwks` <span class="version-mark">New in v6.4.0</span>

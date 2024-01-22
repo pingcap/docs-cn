@@ -132,7 +132,7 @@ The crypto policy for your operating system and the client library you are using
 ### Supported TLS versions
 
 - TLSv1.0 (disabled by default)
-- TLSv1.1
+- TLSv1.1 (disabled by default)
 - TLSv1.2
 - TLSv1.3
 
