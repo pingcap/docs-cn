@@ -121,7 +121,9 @@ tiup br restore full \
 
 ### Restore tables in the `mysql` schema
 
-Starting from BR v5.1.0, when you back up snapshots, BR backs up the **system tables** in the `mysql` schema and does not restore them by default. Starting from BR v6.2.0, BR restores **data in some system tables** if you configure `--with-sys-table`.
+- Starting from BR v5.1.0, when you back up snapshots, BR automatically backs up the **system tables** in the `mysql` schema, but does not restore these system tables by default. 
+- Starting from v6.2.0, BR lets you specify `--with-sys-table` to restore **data in some system tables**. 
+- Starting from v7.6.0, BR enables `--with-sys-table` by default, which means that BR restores **data in some system tables** by default.
 
 **BR can restore data in the following system tables:**
 
@@ -169,7 +171,7 @@ Starting from BR v5.1.0, when you back up snapshots, BR backs up the **system ta
 
 When you restore data related to system privilege, note the following:
 
-- BR does not restore user data with `user` as `cloud_admin` and `host` as `'%'`. This user is reserved for TiDB Cloud. Do not create a user or role named `cloud_admin` in your cluster, because the user privileges related to `cloud_admin` cannot be restored correctly.
+- Before v7.6.0, BR does not restore user data with `user` as `cloud_admin` and `host` as `'%'`. This user is reserved for TiDB Cloud. Starting from v7.6.0, BR supports restoring all user data (including `cloud_admin`) by default.
 - Before restoring data, BR checks whether the system tables in the target cluster are compatible with those in the backup data. "Compatible" means that all the following conditions are met:
 
     - The target cluster has the same system tables as the backup data.
