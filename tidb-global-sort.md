@@ -8,9 +8,9 @@ summary: Learn the use cases, limitations, usage, and implementation principles 
 
 # TiDB Global Sort
 
-> **Note:**
+> **Warning:**
 >
-> Currently, the global sort feature consumes a large amount of computing and memory resources from TiDB nodes. In scenarios where online index addition is performed while your applications are running, it is recommended for users to add new TiDB nodes and set the `tidb_service_scope` of these nodes to `"background"`. This way, the distributed framework schedule tasks to these nodes, reducing the impact of executing backend tasks on user business operations.
+> This feature is experimental. It is not recommended that you use it in the production environment. This feature might be changed or removed without prior notice. If you find a bug, you can report an [issue](https://github.com/pingcap/tidb/issues) on GitHub.
 
 > **Note:**
 >
