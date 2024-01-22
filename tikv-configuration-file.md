@@ -1623,7 +1623,7 @@ rocksdb defaultcf、rocksdb writecf 和 rocksdb lockcf 相关的配置项。
 
 > **警告**
 >
-> 仅支持在 rocksdb.defaultcf 启用 Titan，不支持在 rocksdb.writecf 启用 Titan。
+> 仅支持在 `rocksdb.defaultcf` 启用 Titan，不支持在 `rocksdb.writecf` 启用 Titan。
 
 rocksdb defaultcf titan 相关的配置项。
 
@@ -2068,6 +2068,11 @@ Raft Engine 相关的配置项。
 
 + 触发 GC 的垃圾比例阈值。
 + 默认值：`1.1`
+
+### `num-threads`
+
++ 当`enable-compaction-filter`为false时GC线程个数。 <span class="version-mark">从 v7.6 版本开始引入</span>
++ 默认值：1
 
 ## backup
 
