@@ -76,9 +76,6 @@ Titan 对 RocksDB 兼容，也就是说，使用 RocksDB 存储引擎的现有 T
     min-blob-size = "32KB"
     ```
 
-> **注意：**
->
-> 在 v7.6.0 开始，新建集群默认min-blob-size改成了`32KB`, 避免扫描性能产生回退。但对已有集群升级到 v7.6.0 则会维持原有的配置，即便没有显式配置min-blob-size，仍然会使用`1KB`的旧默认值。
 
 + Titan 中 value 所使用的压缩算法。从 v7.6.0 开始，默认采用 `zstd` 压缩算法。
 

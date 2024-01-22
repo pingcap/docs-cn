@@ -126,7 +126,7 @@ Range Merge 是基于 Level Merge 的一个优化。考虑如下两种情况，�
 
 ### `min-blob-size` 的选择及其性能影响
 
-`min-blob-size` 是决定一个 Value 是否用 Titan 存储的依据。如果 Value 大于或等于 `min-blob-size`，会用 Titan 存储，反之则用 RocksDB 原生的格式。当 `min-blob-size` 太小或太大时，都会导致性能下降。下表是不同负载下 `min-blob-size` 的性能测试结果。
+[`min-blob-size`](/tikv-configuration-file.md#min-blob-size) 是决定一个 Value 是否用 Titan 存储的依据。如果 Value 大于或等于 `min-blob-size`，会用 Titan 存储，反之则用 RocksDB 原生的格式。当 `min-blob-size` 太小或太大时，都会导致性能下降。下表是不同负载下 `min-blob-size` 的性能测试结果。
 
 | 行宽 (Bytes)      | `Point_Get` |  `Point_Get` (Titan)| scan100 | scan100 (Titan)| scan10000 | scan10000 (Titan)| `UPDATE` | `UPDATE` (Titan) |
 | ---------------- | ---------| -------------- | --------| ------------- | --------- | --------------- | ------ | ------------ |
