@@ -5,7 +5,7 @@ aliases: ['/docs-cn/dev/storage-engine/titan-configuration/','/docs-cn/dev/refer
 
 # Titan 配置
 
-本文档介绍如何通过 [Titan](/storage-engine/titan-overview.md) 配置项来开启、关闭 Titan、相关参数以及 Level Merge 功能。
+本文档介绍如何通过 [Titan](/storage-engine/titan-overview.md) 配置项来开启、关闭 Titan、数据迁移原理、相关参数以及 Level Merge 功能。
 
 ## 开启 Titan
 
@@ -16,6 +16,8 @@ aliases: ['/docs-cn/dev/storage-engine/titan-configuration/','/docs-cn/dev/refer
 > - 如果集群在升级到 TiDB v7.6.0 或更高版本之前已经启用了 Titan，则升级后将维持原有配置，保持启用 Titan，并保留升级前 [`min-blob-size`](/tikv-configuration-file.md#min-blob-size) 的配置。如果升级前没有显式配置该值，则升级后仍然保持老版本的默认值 `1KB`，以确保升级后集群配置的稳定性。
 
 Titan 对 RocksDB 兼容，也就是说，使用 RocksDB 存储引擎的现有 TiKV 实例可以直接开启 Titan。
+
+开启 Titan 的方法如下。
 
 + 方法一：如果使用 TiUP 部署的集群，开启的方法是执行 `tiup cluster edit-config ${cluster-name}` 命令，再编辑 TiKV 的配置文件。编辑 TiKV 配置文件示例如下：
 
@@ -32,9 +34,9 @@ Titan 对 RocksDB 兼容，也就是说，使用 RocksDB 存储引擎的现有 T
 
     具体命令，可参考[通过 TiUP 修改配置参数](/maintain-tidb-using-tiup.md#修改配置参数)。
 
-+ 方法二：直接编辑 TiKV 配置文件开启 Titan（生产环境不推荐）。
++ 方法二：直接编辑 TiKV 配置文件开启 Titan（不建议在生产环境中使用）。
 
-    ``` toml
+    ```toml
     [rocksdb.titan]
     enabled = true
     ```
@@ -104,21 +106,21 @@ Titan 对 RocksDB 兼容，也就是说，使用 RocksDB 存储引擎的现有 T
 下面是一个 Titan 配置文件的样例，更多的参数说明，请参考 [TiKV 配置文件描述](/tikv-configuration-file.md)。你可以使用 TiUP [修改配置参数](/maintain-tidb-using-tiup.md#修改配置参数)，也可以通过[在 Kubernetes 中配置 TiDB 集群](https://docs.pingcap.com/zh/tidb-in-kubernetes/stable/configure-a-tidb-cluster) 修改配置参数。
 
 ```toml
-    [rocksdb]
-    rate-bytes-per-sec = 0
+[rocksdb]
+rate-bytes-per-sec = 0
 
-    [rocksdb.titan]
-    enabled = true
-    max-background-gc = 1
+[rocksdb.titan]
+enabled = true
+max-background-gc = 1
 
-    [rocksdb.defaultcf.titan]
-    min-blob-size = "32KB"
-    blob-file-compression = "zstd"
-    zstd-dict-size = "16KB"
-    blob-cache-size = "0GB"
-    discardable-ratio = 0.5
-    blob-run-mode = "normal"
-    level-merge = false
+[rocksdb.defaultcf.titan]
+min-blob-size = "32KB"
+blob-file-compression = "zstd"
+zstd-dict-size = "16KB"
+blob-cache-size = "0GB"
+discardable-ratio = 0.5
+blob-run-mode = "normal"
+level-merge = false
 ```
 
 ## 关闭 Titan
@@ -136,16 +138,16 @@ Titan 对 RocksDB 兼容，也就是说，使用 RocksDB 存储引擎的现有 T
     - 执行 `tiup cluster edit-config`，编辑配置文件，再执行 `tiup cluster reload -R tikv`。
     - 手动修改 TiKV 配置文件，然后重启 TiKV。
 
-    ```toml
-    [rocksdb.defaultcf.titan]
-    blob-run-mode = "fallback"
-    discardable-ratio = 1.0
-    ```
+        ```toml
+        [rocksdb.defaultcf.titan]
+        blob-run-mode = "fallback"
+        discardable-ratio = 1.0
+        ```
 
     > **注意：**
     >
     > 在磁盘空间不足以同时保持 Titan 和 RocksDB 数据时，应该使用 [`discardable-ratio`](/tikv-configuration-file.md#discardable-ratio) 的默认值 `0.5`。一般来说，如果磁盘可用空间小于 50% 时，推荐使用默认值。因为当 `discardable-ratio = 1.0` 时，RocksDB 数据一方面在不断增加，同时 Titan 原有的 blob 文件回收需要该文件所有数据都迁移至 RocksDB 才会发生，这个过程会比较缓慢。如果磁盘空间足够大，设置 `discardable-ratio = 1.0` 可以减小 compaction 过程中 Blob 文件自身的 GC，从而节省带宽。
- 
+
 2. （可选）使用 `tikv-ctl` 执行全量数据整理 (Compaction)。这一步骤将消耗大量 I/O 和 CPU 资源。
 
     ```bash
