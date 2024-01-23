@@ -357,7 +357,6 @@ INSERT INTO t
 SELECT t2.id, t2.v, t3. FROM t2 JOIN t3 ON t2.id=t3.id
 ```
 
-```sql
 +----------------+---------------+
 | number of jobs | job status    |
 +----------------+---------------+
