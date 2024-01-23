@@ -112,7 +112,7 @@ TiDB 版本：7.6.0
 
 * 建表性能提升 10 倍（实验特性）[#49752](https://github.com/pingcap/tidb/issues/49752) @[gmhdbjd](https://github.com/gmhdbjd) **tw@hfxsd** <!--1408-->
 
-    在之前的版本里，将上游数据库上万张表迁移到 TiDB 时，TiDB 创建这些表耗时长，效率低。从 v7.6.0 开始，引入了新的 TiDB DDL V2 架构，你可以通过设置系统变量 [`tidb_ddl_version`](/system-variables.md#tidb_ddl_version-从-v760-版本开始引入) 开启。相比之前的版本，新版本的 DDL 批量建表性能实现了高达 10 倍的提升，大幅减少了建表时间。
+    在之前的版本里，将上游数据库上万张表迁移到 TiDB 时，TiDB 创建这些表耗时长，效率低。从 v7.6.0 开始，引入了新的 TiDB DDL V2 架构，你可以通过设置系统变量 [`tidb_ddl_version`](/system-variables.md#tidb_ddl_version-从-v760-版本开始引入) 开启。相比之前的版本，新版本的 DDL 批量建表性能提升了高达 10 倍，从而大幅减少了建表时间。
 
     更多信息，请参考[用户文档](/ddl-v2.md)。
 
@@ -245,7 +245,7 @@ TiDB 版本：7.6.0
 
     更多信息，请参考[用户文档](/ticdc/ticdc-open-api-v2.md#查询特定同步任务是否完成)。
 
-* TiCDC 增加支持将 CSV 格式中的 delimiter 设置为 3 个字符 [#9969](https://github.com/pingcap/tiflow/issues/9969) @[zhangjinpeng1987](https://github.com/zhangjinpeng1987) **tw@hfxsd** <!--1653-->
+* TiCDC 支持将 CSV 格式中的 delimiter 设置为 3 个字符 [#9969](https://github.com/pingcap/tiflow/issues/9969) @[zhangjinpeng1987](https://github.com/zhangjinpeng1987) **tw@hfxsd** <!--1653-->
 
     从 v7.6.0 开始，你可以将 TiCDC 输出的 CSV 格式中的 delimiter 设置为 1 到 3 个字符。例如，你可以指定 TiCDC 使用 2 个字符的 delimiter （例如 `||` 或 `$^`）或 3 个字符的 delimiter（例如 `|@|`）分隔字段。
 
@@ -288,11 +288,12 @@ TiDB 版本：7.6.0
 | 配置文件 | 配置项 | 修改类型 | 描述 |
 | -------- | -------- | -------- | -------- |
 | TiDB | [`tls-version`](/tidb-configuration-file.md#tls-version) | 修改 | 默认值为空，TiDB 默认支持的 TLS 版本从 `TLS1.1` 及更高提升为 `TLS1.2` 及更高。 |
-| TiKV | [`blob-file-compression`](/tikv-configuration-file.md#blob-file-compression) | 修改 | Titan 中 value 所使用的压缩算法。从 v7.6.0 开始，默认采用 `zstd` 压缩算法。 |
+| TiKV | [`blob-file-compression`](/tikv-configuration-file.md#blob-file-compression) | 修改 | 设置 Titan 中 value 所使用的压缩算法。从 v7.6.0 开始，默认采用 `zstd` 压缩算法。 |
 | TiKV | [`rocksdb.defaultcf.titan.min-blob-size`](/tikv-configuration-file.md#min-blob-size) | 修改 | 从 TiDB v7.6.0 开始，新建集群默认值为 `32KB`。对于已有集群升级到 v7.6.0 版本的情况，默认值为 `1KB` 保持不变。 |
 | TiKV | [`rocksdb.titan.enabled`](/tikv-configuration-file.md#enabled) | 修改 | 开启 Titan 开关。v7.5.0 及更早的版本默认值为 `false`。从 v7.6.0 开始，新建集群默认值是 `true`，已有集群升级到 v7.6.0 或更高版本则会维持原有的配置。 |
 | TiDB Lightning | [`tidb.pd-addr`](/tidb-lightning/tidb-lightning-configuration.md#tidb-lightning-任务配置) | 修改 | 配置 PD Server 的地址，从 v7.6.0 开始支持设置多个地址。 |
-| TiDB Lightning | [`block-size`](/tidb-lightning/tidb-lightning-configuration.md#tidb-lightning-任务配置) | 新增 | 控制物理导入模式 (`backend='local'`) 中本地文件排序的 I/O 块大小。默认值为 `16KiB`。当 IOPS 成为瓶颈时，可以调大该参数的值以缓解 Disk IOPS，从而提升性能。 |
+| TiDB Lightning | [`block-size`](/tidb-lightning/tidb-lightning-configuration.md#tidb-lightning-任务配置) | 新增 | 控制物理导入模式 (`backend='local'`) 中本地文件排序的 I/O 块大小。默认值为 `16KiB`。当 IOPS 成为瓶颈时，可以调大该参数的值以缓解磁盘 IOPS，从而提升性能。 |
+| TiKV | [`gc.num-threads`](/tikv-configuration-file.md#num-threads-从-v760-版本开始引入) | 新增 | 设置当 `enable-compaction-filter` 为 `false` 时 GC 的线程个数。默认值为 `1`。 |
 | TiKV | [`raftstore.periodic-full-compact-start-times`](/tikv-configuration-file.md#periodic-full-compact-start-times-从-v760-版本开始引入) | 新增 | 设置 TiKV 启动周期性全量数据整理 (Compaction) 的时间。默认值 `[]` 表示默认情况下禁用周期性全量数据整理。 |
 | TiKV | [`raftstore.periodic-full-compact-start-max-cpu`](/tikv-configuration-file.md#periodic-full-compact-start-max-cpu-从-v760-版本开始引入) | 新增 | 设置 TiKV 执行周期性全量数据整理时的 CPU 使用率阈值，默认值为 `0.1`。 |
 | TiKV | [`zstd-dict-size`](/tikv-configuration-file.md#zstd-dict-size) | 新增 | 指定 `zstd` 字典大小，默认值为 `0KB`，表示关闭 `zstd` 字典压缩。 |
@@ -311,8 +312,6 @@ TiDB 版本：7.6.0
     - `Request_unit_read`：执行语句消耗的总读 RU。
     - `Request_unit_write`：执行语句消耗的总写 RU。
     - `Time_queued_by_rc`：执行语句过程中等待可用资源的总耗时。
-
-### 其他
 
 ## 离线包变更
 
@@ -497,7 +496,7 @@ TiDB 版本：7.6.0
     - 修复 TiFlash 错误处理 enum 偏移量为 0 的问题 [#8311](https://github.com/pingcap/tiflash/issues/8311) @[solotzg](https://github.com/solotzg)
     - 修复表达式 `INET_NTOA()` 中的兼容性问题 [#8211](https://github.com/pingcap/tiflash/issues/8211) @[solotzg](https://github.com/solotzg)
     - 修复在 stream 读时扫描多个分区表可能导致潜在的 OOM 问题 [#8505](https://github.com/pingcap/tiflash/issues/8505) @[gengliqi](https://github.com/gengliqi)
-    - 修复成功执行的短查询打印过多的信息日志的问题 [#8592](https://github.com/pingcap/tiflash/issues/8592) @[windtalker](https://github.com/windtalker)
+    - 修复成功执行的短查询打印过多信息日志的问题 [#8592](https://github.com/pingcap/tiflash/issues/8592) @[windtalker](https://github.com/windtalker)
     - 修复 TiFlash 在停止时可能崩溃的问题 [#8550](https://github.com/pingcap/tiflash/issues/8550) @[guo-shaoge](https://github.com/guo-shaoge)
     - 修复 `GREATEST` 或 `LEAST` 函数在包含常量字符串参数时，可能发生的随机无效内存访问的问题 [#8604](https://github.com/pingcap/tiflash/issues/8604) @[windtalker](https://github.com/windtalker)
 
