@@ -122,7 +122,7 @@ Use "tiup [command] --help" for more information about a command.
     - link：将组件二进制文件链接到 `$TIUP_HOME/bin/`
     - unlink：取消组件二进制文件到 `$TIUP_HOME/bin/` 的链接
     - help：输出帮助信息
-    - completion：为指定的 shell (bash / zsh / fish / powershell) 生成自动补全脚本
+    - completion：为指定的 shell (bash、zsh、fish、powershell) 生成自动补全脚本
 - 可用的组件
     - playground：在本机启动一个 TiDB 集群
     - client：连接 TiUP Playground 的客户端
