@@ -5,9 +5,9 @@ summary: TiDB 数据库中 SHOW [GLOBAL|SESSION] STATUS 的使用概况。
 
 # SHOW [GLOBAL|SESSION] STATUS
 
-`SHOW [GLOBAL|SESSION] STATUS` 语句用于提供 MySQL 兼容性，TiDB 使用 Prometheus 和 Grafana 进行集中度量收集, 而不是使用 `SHOW STATUS` 进行各种度量收集。
+`SHOW [GLOBAL|SESSION] STATUS` 语句用于提供 MySQL 兼容性。对于大部分监控指标，TiDB 使用 Prometheus 和 Grafana 来集中收集，而不是使用 `SHOW STATUS`。
 
-详细介绍请参考 [服务器状态变量](/status-variables.md)
+详细介绍请参考[服务器状态变量](/status-variables.md)。
 
 ## 语法图
 
