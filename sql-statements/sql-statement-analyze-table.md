@@ -127,8 +127,9 @@ EXPLAIN SELECT * FROM t1 WHERE c1 = 3;
 
 ## MySQL 兼容性
 
-TiDB 与 MySQL 在以下方面存在区别：所收集的统计信息，以及查询执行过程中统计信息是如何被使用的。虽然 TiDB 中的 `ANALYZE` 语句在语法上与 MySQL 类似，但存在以下差异：
+虽然 TiDB 中的 `ANALYZE` 语句在语法上与 MySQL 类似，但存在以下差异：
 
++ 所收集的统计信息，以及查询执行过程中统计信息是如何被使用的与 MySQL 存在差异。
 + 执行 `ANALYZE TABLE` 时，TiDB 可能不包含最近提交的更改。若对行进行了批量更改，在执行 `ANALYZE TABLE` 之前，你可能需要先执行 `sleep(1)`，这样统计信息更新才能反映这些更改。参见 [#16570](https://github.com/pingcap/tidb/issues/16570)。
 + `ANALYZE TABLE` 在 TiDB 中的执行时间比在 MySQL 中的执行时间要长得多。
 
