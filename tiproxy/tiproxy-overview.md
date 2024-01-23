@@ -55,7 +55,7 @@ TiProxy 不适用于以下场景：
 
 ## 安装和使用
 
-本节介绍使用 TiUP 部署和变更 TiProxy 的步骤。使用 TiDB Operator 部署的方式请参阅 [TiDB Operator](https://docs.pingcap.com/zh/tidb-in-kubernetes/stable) 文档。
+本节介绍使用 TiUP 部署和变更 TiProxy 的步骤。使用 TiDB Operator 部署的方式请参阅 [TiDB Operator](https://docs.pingcap.com/zh/tidb-in-kubernetes/stable/deploy-tiproxy) 文档。
 
 ### 部署 TiProxy
 
@@ -126,7 +126,7 @@ TiProxy 不适用于以下场景：
 
 部署 TiProxy 时建议指定 TiProxy 的版本，使升级 TiDB 集群时不会升级 TiProxy。
 
-如果确实要升级 TiProxy 的版本，需加上 [`--tiproxy-version`](/tiup/tiup-component-cluster-upgrade.md) 指定 TiProxy 的版本：
+如果确实要升级 TiProxy 的版本，需加上 [`--tiproxy-version`](/tiup/tiup-component-cluster-upgrade.md#--tiproxy-version) 指定 TiProxy 的版本：
 
 ```shell
 tiup cluster upgrade <cluster-name> <version> --tiproxy-version <tiproxy-version>
