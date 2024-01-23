@@ -281,7 +281,7 @@ ALTER TABLE table_name LAST PARTITION LESS THAN (<expression>)
 - INTERVAL 分区特性仅涉及 `CREATE/ALTER TABLE` 语法。元数据保持不变，因此使用该新语法创建或变更的表仍然兼容 MySQL。
 - 为保持兼容 MySQL，`SHOW CREATE TABLE` 的输出格式保持不变。
 - 遵循 INTERVAL 的存量表可以使用新的 `ALTER` 语法。不需要使用 `INTERVAL` 语法重新创建这些表。
-- 对于 `RANGE COLUMNS`，仅支持整数 (INTEGER) 类型、日期 (DATE) 和日期时间 (DATETIME) 列类型。
+- 如需使用 `INTERVAL` 语法进行 `RANGE COLUMNS` 分区，只能指定一个列为分区键，且该列的类型为整数 (`INTEGER`) 、日期 (`DATE`) 或日期时间 (`DATETIME`) 。
 
 ### List 分区
 
