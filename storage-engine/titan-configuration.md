@@ -9,11 +9,11 @@ aliases: ['/docs-cn/dev/storage-engine/titan-configuration/','/docs-cn/dev/refer
 
 ## 开启 Titan
 
-> **注意**
+> **注意：**
 >
-> - 从 TiDB v7.6.0 开始，新集群将默认启用 Titan，并将阈值[`min-blob-size`](/tikv-configuration-file.md#min-blob-size)的默认值从之前版本的`1KB` 调整为`32KB`。
+> - 从 TiDB v7.6.0 开始，新集群将默认启用 Titan，并将阈值 [`min-blob-size`](/tikv-configuration-file.md#min-blob-size)的默认值由之前的 `1KB` 调整为 `32KB`。
 > - 如果集群在升级到 TiDB v7.6.0 或更高版本之前未启用 Titan，则升级后将保持原有配置，继续使用 RocksDB。
-> - 如果集群在升级到 TiDB v7.6.0 或更高版本之前已经启用了 Titan，则升级后将维持原有配置，保持启用 Titan，并保留升级前[`min-blob-size`](/tikv-configuration-file.md#min-blob-size)的配置。如果升级前没有显式配置该值，则升级后仍然保持了老版本默认值`1KB`，以确保升级后集群配置的稳定性。
+> - 如果集群在升级到 TiDB v7.6.0 或更高版本之前已经启用了 Titan，则升级后将维持原有配置，保持启用 Titan，并保留升级前 [`min-blob-size`](/tikv-configuration-file.md#min-blob-size) 的配置。如果升级前没有显式配置该值，则升级后仍然保持老版本的默认值 `1KB`，以确保升级后集群配置的稳定性。
 
 Titan 对 RocksDB 兼容，也就是说，使用 RocksDB 存储引擎的现有 TiKV 实例可以直接开启 Titan。
 
@@ -47,8 +47,6 @@ Titan 对 RocksDB 兼容，也就是说，使用 RocksDB 存储引擎的现有 T
 
 + 方法三：编辑 TiDB-Operator 的 `${cluster_name}/tidb-cluster.yaml` 配置文件，编辑示例如下：
 
-     {{< copyable "" >}}
- 
     ``` yaml
       tikv:
         ## Base image of the component
@@ -61,6 +59,7 @@ Titan 对 RocksDB 兼容，也就是说，使用 RocksDB 存储引擎的现有 T
             [rocksdb.titan]
               enabled = true
     ```
+
     应用配置时，触发在线滚动重启 TiDB 集群让配置生效：
 
     {{< copyable "" >}}
@@ -72,13 +71,13 @@ Titan 对 RocksDB 兼容，也就是说，使用 RocksDB 存储引擎的现有 T
 
 ## 数据迁移
 
-> **警告**
+> **警告：**
 >
-> 在不开启 Titan 功能的情况下，RocksDB 无法读取已经迁移到 Titan 的数据。如果在打开过 Titan 的 TiKV 实例上错误地关闭了 Titan（误设置 `rocksdb.titan.enabled = false`），启动 TiKV 会失败，TiKV log 中出现 `You have disabled titan when its data directory is not empty` 错误。如需要关闭 Titan，参考[关闭 Titan](#关闭-titan) 一节。
+> 在关闭 Titan 功能的情况下，RocksDB 无法读取已经迁移到 Titan 的数据。如果在打开过 Titan 的 TiKV 实例上错误地关闭了 Titan（误设置 `rocksdb.titan.enabled = false`），启动 TiKV 会失败，TiKV log 中出现 `You have disabled titan when its data directory is not empty` 的错误。如需要关闭 Titan，请参考[关闭 Titan](#关闭-titan) 。
 
-开启 Titan 以后，原有的数据并不会马上迁移到 Titan 引擎，而是随着前台写入和 RocksDB Compaction 的进行，**逐步进行 key-value 分离并写入 Titan**。同样的，无论是通过 [BR](/br/backup-and-restore-overview.md) 快照/日志恢复的数据，还是通过 [TiDB Lightning](/tidb-lightning/tidb-lightning-overview.md) 逻辑/物理导入的数据，都会首先写入 RocksDB。然后，随着 RocksDB Compaction 的进行，超过 [`min-blob-size`](/tikv-configuration-file.md#min-blob-size) 默认值 32KB 的大 value 会逐步分离到 Titan 中。用户可以通过观察 **TiKV Details** - **Titan kv** - **blob file size** 监控面版中文件的大小来确认存储在 Titan 中的数据大小。
+开启 Titan 以后，原有的数据并不会马上迁移到 Titan 引擎，而是随着前台写入和 RocksDB Compaction 的进行，**逐步进行 key-value 分离并写入 Titan**。同样的，无论是通过 [BR](/br/backup-and-restore-overview.md) 快照或日志恢复的数据，还是通过 [TiDB Lightning](/tidb-lightning/tidb-lightning-overview.md) 逻辑导入模式或物理导入模式导入的数据，都会首先写入 RocksDB。然后，随着 RocksDB Compaction 的进行，超过 [`min-blob-size`](/tikv-configuration-file.md#min-blob-size) 默认值 `32KB` 的大 value 会逐步分离到 Titan 中。你可以通过观察 **TiKV Details** - **Titan kv** - **blob file size** 监控面版中文件的大小来确认存储在 Titan 中的数据大小。
 
-为了更快地将数据转移到 Titan，建议使用 tikv-ctl 工具执行一次全量 Compaction，以提高迁移速度。具体的操作步骤可以查阅[手动 compact](/tikv-control.md#手动-compact-整个-tikv-集群的数据)。由于 RocksDB 具备 Block Cache，并且在将数据从 RocksDB 迁移到 Titan 时，数据访问是连续的，这使得在迁移过程中 Block Cache 能够更有效地提升迁移速度。在我们的测试中，仅需 1 小时，就能够通过 tikv-ctl 在单个 TiKV 节点上执行全量 Compaction，成功将 670 GiB 的数据迁移到 Titan。
+为了更快地将数据转移到 Titan，建议使用 tikv-ctl 工具执行一次全量 Compaction，以提高迁移速度。具体操作步骤请参考[手动 compact](/tikv-control.md#手动-compact-整个-tikv-集群的数据)。由于 RocksDB 具备 Block Cache，并且在将数据从 RocksDB 迁移到 Titan 时，数据访问是连续的，这使得在迁移过程中 Block Cache 能够更有效地提升迁移速度。在我们的测试中，仅需 1 小时，就能够通过 tikv-ctl 在单个 TiKV 节点上执行全量 Compaction，成功将 670 GiB 的数据迁移到 Titan。
 
 需要注意的是，由于 Titan Blob 文件中的 Value 并非连续的，而且 Titan 的缓存是基于 Value 级别的，因此 Blob Cache 无法在 Compaction 过程中提供帮助。相较于从 RocksDB 转向 Titan 的速度，从 Titan 转回 RocksDB 的速度则会慢一个数量级。在测试中，通过 tikv-ctl 将 TiKV 节点上的 800 GiB Titan 数据进行全量 Compaction 转为 RocksDB，需要花费 12 个小时。
 
@@ -90,13 +89,12 @@ Titan 对 RocksDB 兼容，也就是说，使用 RocksDB 存储引擎的现有 T
 
 要注意的是，[`blob-cache-size`](/tikv-configuration-file.md#blob-cache-size) 控制了Titan 中 value 的缓存大小。更大的缓存能提高 Titan 读性能，但过大的缓存会造成 OOM。建议在数据库稳定运行后，根据监控把 RocksDB block cache (storage.block-cache.capacity) 设置为 store size 减去 blob file size 的大小，blob-cache-size 设置为 内存大小 * 50% 再减去 block cache 的大小。这是为了保证 block cache 足够缓存整个 RocksDB 的前提下，blob cache 尽量大。
 
-[`discardable-ratio`](/tikv-configuration-file.md#discardable-ratio)和[`max-background-gc`](/tikv-configuration-file.md#max-background-gc)的设置对于 Titan 的读性能和垃圾回收过程都有重要影响。当一个 blob file 中无用数据（相应的 key 已经被更新或删除）比例超过[`discardable-ratio`](/tikv-configuration-file.md#discardable-ratio)设置的阈值时，将会触发 Titan GC。减少这个阈值可以减少空间放大，但是会造成 Titan 更频繁 GC；增加这个值可以减少 Titan GC，减少相应的 I/O 带宽和 CPU 消耗，但是会增加磁盘空间占用。当从 TiKV Details - Thread CPU - RocksDB CPU 监控中观察到 Titan GC 线程长期处于满负荷状态时，应该考虑调整 [`max-background-gc`](/tikv-configuration-file.md#max-background-gc) 增加 Titan GC 线程池大小。
+[`discardable-ratio`](/tikv-configuration-file.md#discardable-ratio) 和 [`max-background-gc`](/tikv-configuration-file.md#max-background-gc) 的设置对于 Titan 的读性能和垃圾回收过程都有重要影响。当一个 blob file 中无用数据（相应的 key 已经被更新或删除）比例超过 [`discardable-ratio`](/tikv-configuration-file.md#discardable-ratio) 设置的阈值时，将会触发 Titan GC。减少这个阈值可以减少空间放大，但是会造成 Titan 更频繁 GC；增加这个值可以减少 Titan GC，减少相应的 I/O 带宽和 CPU 消耗，但是会增加磁盘空间占用。当从 TiKV Details - Thread CPU - RocksDB CPU 监控中观察到 Titan GC 线程长期处于满负荷状态时，应该考虑调整  [`max-background-gc`](/tikv-configuration-file.md#max-background-gc) 增加 Titan GC 线程池大小。
 
-最后，通过调整[`rate-bytes-per-sec`](/tikv-configuration-file.md#rate-bytes-per-sec)，我们能够限制 RocksDB compaction 的 I/O 速率，从而在高流量时减少对前台读写性能的影响。 
+最后，通过调整 [`rate-bytes-per-sec`](/tikv-configuration-file.md#rate-bytes-per-sec)，可以限制 RocksDB compaction 的 I/O 速率，从而在高流量时减少对前台读写性能的影响。 
 
-下面是一个 Titan 配置文件的样例，更多的参数说明，请参考[TiKV 配置文件描述](/tikv-configuration-file.md)。我们可以使用 TiUP 来[修改配置参数](/maintain-tidb-using-tiup.md#修改配置参数)，也可以通过 [在 Kubernetes 中配置 TiDB 集群](https://docs.pingcap.com/zh/tidb-in-kubernetes/stable/configure-a-tidb-cluster) 来修改配置参数。
+下面是一个 Titan 配置文件的样例，更多的参数说明，请参考 [TiKV 配置文件描述](/tikv-configuration-file.md)。你可以使用 TiUP [修改配置参数](/maintain-tidb-using-tiup.md#修改配置参数)，也可以通过[在 Kubernetes 中配置 TiDB 集群](https://docs.pingcap.com/zh/tidb-in-kubernetes/stable/configure-a-tidb-cluster) 修改配置参数。
 
-    {{< copyable "" >}}
 
 ``` toml
     [rocksdb]

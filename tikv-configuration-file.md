@@ -1036,7 +1036,9 @@ raftstore 相关的配置项。
 >
 > 周期性全量数据整理目前为实验特性，不建议在生产环境中使用。该功能可能会在未事先通知的情况下发生变化或删除。如果发现 bug，请在 GitHub 上提 [issue](https://github.com/pingcap/tidb/issues) 反馈。
 
-+ 设置 TiKV 启动周期性全量数据整理 (Compaction) 的时间。你可以在数组中指定一个或多个时间计划。例如，`periodic-full-compact-start-times = ["03:00", "23:00"]` 表示 TiKV 基于 TiKV 节点的本地时区，在每天凌晨 3 点和晚上 11 点进行全量数据整理。`periodic-full-compact-start-times = ["03:00 +0000", "23:00 +0000"]` 表示 TiKV 在每天 UTC 时间的凌晨 3 点和晚上 11 点进行全量数据整理。
++ 设置 TiKV 启动周期性全量数据整理 (Compaction) 的时间。你可以在数组中指定一个或多个时间计划。例如：
+    + `periodic-full-compact-start-times = ["03:00", "23:00"]` 表示 TiKV 基于 TiKV 节点的本地时区，在每天凌晨 3 点和晚上 11 点进行全量数据整理。
+    + `periodic-full-compact-start-times = ["03:00 +0000", "23:00 +0000"]` 表示 TiKV 在每天 UTC 时间的凌晨 3 点和晚上 11 点进行全量数据整理。
 + 默认值：`[]`，表示默认情况下禁用周期性全量数据整理。
 
 ### `periodic-full-compact-start-max-cpu` <span class="version-mark">从 v7.6.0 版本开始引入</span>
@@ -1329,7 +1331,7 @@ Titan 相关的配置项。
 
 > **注意：**
 >
-> - 从 TiDB v7.6.0 开始，参数默认值从`false`变更为`true`，即新集群默认开启 Titan。
+> - 从 TiDB v7.6.0 开始，参数默认值从 `false` 变更为 `true`，即新集群默认开启 Titan。
 > - 如果集群在升级到 TiDB v7.6.0 或更高版本之前未启用 Titan，则升级后将保持原有配置，继续使用 RocksDB，不会启用 Titan。
 > - 如果集群在升级到 TiDB v7.6.0 或更高版本之前已经启用了 Titan，则升级后将维持原有配置，保持启用 Titan 引擎，并保留升级前[`min-blob-size`](/tikv-configuration-file.md#min-blob-size)的配置。如果升级前没有显式配置该值，则升级后仍然保持了老版本默认值`1KB`，以确保升级后集群配置的稳定性。
 
@@ -1630,9 +1632,9 @@ rocksdb defaultcf titan 相关的配置项。
 
 > **注意：**
 >
-> - 为了提高宽表和 JSON 数据写入和点查性能，TiDB 从 v7.6.0 版本起默认启用 Titan，并将写入 Titan 的阈值参数 `min-blob-size`的默认值从之前版本的 `1KB` 调整为 `32KB`，即当数据的 value 超过 `32KB` 时，将存储在 Titan 中，而其他数据则继续存储在 RocksDB 中。
-> - 为了保证配置的连续性，已有集群升级到 TiDB v7.6.0 版本或者更高版本后，如果升级前用户未显式设置`min-blob-size` ，则维持使用老版本默认值 `1KB`，以确保升级后集群配置的稳定性。
-> - 当参数被设置为小于 `32KB` 时，TiKV大范围扫描性能会受到一些影响。然而，如果负载主要是写入和点查为主，用户可以适当降低 `min-blob-size` 的设置来获取更好的写入和点查性能。
+> - 为了提高宽表和 JSON 数据写入和点查性能，TiDB 从 v7.6.0 版本起默认启用 Titan，并将写入 Titan 的阈值参数 `min-blob-size` 的默认值从之前版本的 `1KB` 调整为 `32KB`，即当数据的 value 超过 `32KB` 时，将存储在 Titan 中，而其他数据则继续存储在 RocksDB 中。
+> - 为了保证配置的连续性，已有集群升级到 TiDB v7.6.0 版本或者更高版本后，如果升级前用户未显式设置 `min-blob-size`，则维持使用老版本默认值 `1KB`，以确保升级后集群配置的稳定性。
+> - 当参数被设置为小于 `32KB` 时，TiKV 大范围扫描性能会受到一些影响。然而，如果负载主要是写入和点查为主，你可以适当调小 `min-blob-size` 的值以获取更好的写入和点查性能。
 
 + 最小存储在 Blob 文件中 value 大小，低于该值的 value 还是存在 LSM-Tree 中。
 + 默认值：32KB
@@ -2070,7 +2072,7 @@ Raft Engine 相关的配置项。
 
 ### `num-threads`
 
-+ 当`enable-compaction-filter`为false时GC线程个数。 <span class="version-mark">从 v7.6 版本开始引入</span>
++ 当 `enable-compaction-filter` 为 `false` 时 GC 线程个数。 <span class="version-mark">从 v7.6.0 版本开始引入</span>
 + 默认值：1
 
 ## backup
