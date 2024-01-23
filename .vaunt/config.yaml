@@ -1,0 +1,187 @@
+version: 0.0.1
+actions:
+    - action:
+          type: point
+          name: docs_dash_pr_submitted
+          triggers:
+              - trigger:
+                    actor: author
+                    action: pull_request
+                    condition:
+                        "created_at >= 01-09-2024 08:00:00 & created_at <= 01-12-2024 07:59:00
+                        & labels in {'2024-tidb-docs-dash','contribution'}"
+                    value: 4
+    - action:
+          type: point
+          name: docs_dash_pr_merged
+          triggers:
+              - trigger:
+                    actor: author
+                    action: pull_request
+                    condition:
+                        "created_at >= 01-09-2024 08:00:00 & created_at <= 01-12-2024 07:59:00
+                        & merged = true & merged_at <= 2024-02-01 20:00:00
+                        & labels in {'2024-tidb-docs-dash','contribution'}"
+                    value: 10
+    - action:
+          type: point
+          name: docs_dash_issue_contribution
+          triggers:
+              - trigger:
+                    actor: author
+                    action: issue_comment
+                    condition:
+                        "created_at >= 01-09-2024 08:00:00 & created_at <= 01-12-2024 07:59:00
+                        & labels in {'2024-tidb-docs-dash'}
+                        & emojis in ['THUMBS_UP']
+                        & reactors in ['rpaik', 'lilin90', 'qiancai', 'hfxsd', 'ran-huang', 'Oreoxmt','Yan-yyCL','dveeden']"
+                    value: 2
+    - action:
+          type: point
+          name: issue_contribution
+          triggers:
+              - trigger:
+                    actor: author
+                    action: issue_comment
+                    condition:
+                        "created_at >= 01-09-2024 08:00:00 & created_at <= 01-12-2024 07:59:00
+                        & emojis in ['THUMBS_UP']
+                        & reactors in ['rpaik', 'lilin90', 'qiancai', 'hfxsd', 'ran-huang', 'Oreoxmt','Yan-yyCL','dveeden']
+                        & labels in !['2024-tidb-docs-dash']"
+                    value: 1
+    - action:
+          type: point
+          name: pr_submitted
+          triggers:
+              - trigger:
+                    actor: author
+                    action: pull_request
+                    condition:
+                        "created_at >= 01-09-2024 08:00:00 & created_at <= 01-12-2024 07:59:00
+                        & labels in !['2024-tidb-docs-dash']
+                        & labels in ['contribution']"
+                    value: 2
+    - action:
+          type: point
+          name: pr_merged
+          triggers:
+              - trigger:
+                    actor: author
+                    action: pull_request
+                    condition:
+                        "created_at >= 01-09-2024 08:00:00 & created_at <= 01-12-2024 07:59:00
+                        & merged = true & merged_at <= 2024-02-01 20:00:00
+                        & labels in !['2024-tidb-docs-dash']
+                        & labels in ['contribution']"
+                    value: 5
+    - action:
+          type: point
+          name: issue_created
+          triggers:
+              - trigger:
+                    actor: author
+                    action: issue
+                    condition:
+                        "created_at >= 01-09-2024 08:00:00 & created_at <= 01-12-2024 07:59:00
+                        & labels in ['contribution']
+                        & emojis in ['THUMBS_UP']
+                        & reactors in ['rpaik', 'lilin90', 'qiancai', 'hfxsd', 'ran-huang', 'Oreoxmt','Yan-yyCL','dveeden']"
+                    value: 1
+    - action:
+          type: point
+          name: bonus_issue_comment
+          triggers:
+              - trigger:
+                    actor: author
+                    action: issue_comment
+                    condition:
+                        "created_at >= 01-09-2024 08:00:00 & created_at <= 01-12-2024 07:59:00
+                        & emojis in ['THUMBS_UP']
+                        & reactors in ['rpaik', 'lilin90', 'qiancai', 'hfxsd', 'ran-huang', 'Oreoxmt','Yan-yyCL','dveeden']
+                        & labels in ['tidb-docs-dash-bonus']"
+                    value: 5
+    - action:
+          type: point
+          name: bonus_pr
+          triggers:
+              - trigger:
+                    actor: author
+                    action: pull_request
+                    condition:
+                        "created_at >= 01-09-2024 08:00:00 & created_at <= 01-12-2024 07:59:00
+                        & merged = true & merged_at <= 2024-02-01 20:00:00
+                        & labels in {'contribution','tidb-docs-dash-bonus'}"
+                    value: 20
+achievements:
+    - achievement:
+          name: Docs Dash 1st Place
+          icon: https://raw.githubusercontent.com/pingcap/docs/master/.vaunt/1st_place.png
+          description: 1st place contributor award for Docs Dash!
+          type: once
+          metadata:
+              date: 01-27-2024
+          triggers:
+              - trigger:
+                    actor: author
+                    action: point
+                    condition: rank(1) & sum(docs_dash_pr_submitted, docs_dash_pr_merged, docs_dash_issue_contribution, pr_submitted, pr_merged, issue_contribution, issue_created, bonus_issue_comment, bonus_pr)
+    - achievement:
+          name: Docs Dash 2nd Place
+          icon: https://raw.githubusercontent.com/pingcap/docs/master/.vaunt/2nd_place.png
+          description: 2nd place contributor award for Docs Dash!
+          type: once
+          metadata:
+              date: 01-27-2024
+          triggers:
+              - trigger:
+                    actor: author
+                    action: point
+                    condition: rank(2) & sum(docs_dash_pr_submitted, docs_dash_pr_merged, docs_dash_issue_contribution, pr_submitted, pr_merged, issue_contribution, issue_created, bonus_issue_comment, bonus_pr)
+    - achievement:
+          name: Docs Dash 3rd Place
+          icon: https://raw.githubusercontent.com/pingcap/docs/master/.vaunt/3rd_place.png
+          description: 3rd place contributor award for Docs Dash!
+          type: once
+          metadata:
+              date: 01-27-2024
+          triggers:
+              - trigger:
+                    actor: author
+                    action: point
+                    condition: rank(3) & sum(docs_dash_pr_submitted, docs_dash_pr_merged, docs_dash_issue_contribution, pr_submitted, pr_merged, issue_contribution, issue_created, bonus_issue_comment, bonus_pr)
+    - achievement:
+          name: Docs Dash 4th Place
+          icon: https://raw.githubusercontent.com/pingcap/docs/master/.vaunt/4th_place.png
+          description: 4th place contributor award for Docs Dash!
+          type: once
+          metadata:
+              date: 01-27-2024
+          triggers:
+              - trigger:
+                    actor: author
+                    action: point
+                    condition: rank(4) & sum(docs_dash_pr_submitted, docs_dash_pr_merged, docs_dash_issue_contribution, pr_submitted, pr_merged, issue_contribution, issue_created, bonus_issue_comment, bonus_pr)
+    - achievement:
+          name: Docs Dash 5th Place
+          icon: https://raw.githubusercontent.com/pingcap/docs/master/.vaunt/5th_place.png
+          description: 5th place contributor award for Docs Dash!
+          type: once
+          metadata:
+              date: 01-27-2024
+          triggers:
+              - trigger:
+                    actor: author
+                    action: point
+                    condition: rank(5) & sum(docs_dash_pr_submitted, docs_dash_pr_merged, docs_dash_issue_contribution, pr_submitted, pr_merged, issue_contribution, issue_created, bonus_issue_comment, bonus_pr)
+    - achievement:
+          name: Contributor
+          icon: https://raw.githubusercontent.com/pingcap/docs/master/.vaunt/contributor.png
+          description: Contributor award for Docs Dash!
+          type: once
+          metadata:
+              date: 01-27-2024
+          triggers:
+              - trigger:
+                    actor: author
+                    action: point
+                    condition: sum(docs_dash_pr_submitted, docs_dash_pr_merged, docs_dash_issue_contribution, pr_submitted, pr_merged, issue_contribution, issue_created, bonus_issue_comment, bonus_pr) >= 1

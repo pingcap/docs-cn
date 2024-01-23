@@ -808,6 +808,95 @@ curl -X GET http://127.0.0.1:8300/api/v2/changefeeds/test1
 
 响应的 JSON 格式以及字段含义与[创建同步任务](#创建同步任务)中的响应参数相同，此处不再赘述。
 
+## 查询特定同步任务是否完成
+
+该接口是一个同步接口，请求成功后会返回指定同步任务 (changefeed) 的同步完成情况，包括是否同步完成，以及一些更详细的信息。
+
+### 请求 URI
+
+`GET /api/v2/changefeed/{changefeed_id}/synced`
+
+### 参数说明
+
+#### 路径参数
+
+| 参数名             | 说明                          |
+|:----------------|:----------------------------|
+| `changefeed_id` | 需要查询的同步任务 (changefeed) 的 ID |
+
+### 使用样例
+
+以下请求会查询 ID 为 `test1` 的同步任务的同步完成状态。
+
+```shell
+curl -X GET http://127.0.0.1:8300/api/v2/changefeed/test1/synced
+```
+
+**示例 1：同步已完成**
+
+```json
+{
+  "synced": true,
+  "sink_checkpoint_ts": "2023-11-30 15:14:11.015",
+  "puller_resolved_ts": "2023-11-30 15:14:12.215",
+  "last_synced_ts": "2023-11-30 15:08:35.510",
+  "now_ts": "2023-11-30 15:14:11.511",
+  "info": "Data syncing is finished"
+}
+```
+
+以上返回的信息的说明如下：
+
+- `synced`：该同步任务是否已完成。`true` 表示已完成；`false` 表示不一定完成，具体状态需要结合 `info` 字段以及其他字段进行判断。
+- `sink_checkpoint_ts`：sink 模块的 checkpoint-ts 值，时间为 PD 时间。
+- `puller_resolved_ts`：puller 模块的 resolved-ts 值，时间为 PD 时间。
+- `last_synced_ts`：TiCDC 处理的最新一条数据的 commit-ts 值，时间为 PD 时间。
+- `now_ts`：当前的 PD 时间。
+- `info`：一些帮助判断同步状态的信息，特别是在 `synced` 为 `false` 时可以为你提供参考。
+
+**示例 2：同步未完成**
+
+```json
+{
+  "synced": false,
+  "sink_checkpoint_ts": "2023-11-30 15:26:31.519",
+  "puller_resolved_ts": "2023-11-30 15:26:23.525",
+  "last_synced_ts": "2023-11-30 15:24:30.115",
+  "now_ts": "2023-11-30 15:26:31.511",
+  "info": "The data syncing is not finished, please wait"
+}
+```
+
+此示例展示了当未完成同步任务时该接口返回的查询结果。你可以结合 `synced` 和 `info` 字段判断出数据目前还未完成同步，需要继续等待。
+
+**示例 3：同步状态需要进一步判断**
+
+```json
+{
+  "synced":false,
+  "sink_checkpoint_ts":"2023-12-13 11:45:13.515",
+  "puller_resolved_ts":"2023-12-13 11:45:13.525",
+  "last_synced_ts":"2023-12-13 11:45:07.575",
+  "now_ts":"2023-12-13 11:50:24.875",
+  "info":"Please check whether PD is online and TiKV Regions are all available. If PD is offline or some TiKV regions are not available, it means that the data syncing process is complete. To check whether TiKV regions are all available, you can view 'TiKV-Details' > 'Resolved-Ts' > 'Max Leader Resolved TS gap' on Grafana. If the gap is large, such as a few minutes, it means that some regions in TiKV are unavailable. Otherwise, if the gap is small and PD is online, it means the data syncing is incomplete, so please wait"
+}
+```
+
+本接口支持在上游集群遇到灾害时对同步状态进行查询判断。在部分情况下，你可能无法直接判定 TiCDC 目前的数据同步任务是否完成。此时，你可以查询该接口，并结合返回结果中的 `info` 字段以及目前上游集群的状态进行判断。
+
+在此示例中，`sink_checkpoint_ts` 在时间上落后于 `now_ts`，这可能是因为 TiCDC 还在追数据，也可能是由于 PD 或者 TiKV 出现了故障。如果这是 TiCDC 还在追数据导致的，说明同步任务尚未完成。如果这是由于 PD 或者 TiKV 出现了故障导致的，说明同步任务已经完成。因此，你需要参考 `info` 中的信息对集群状态进行辅助判断。
+
+**示例 4：查询报错**
+
+```json
+{
+  "error_msg": "[CDC:ErrPDEtcdAPIError]etcd api call error: context deadline exceeded",
+  "error_code": "CDC:ErrPDEtcdAPIError"
+}
+```
+
+在上游集群的 PD 长时间故障后，查询该 API 接口时会返回类似如上的错误，无法提供进一步的判断信息。因为 PD 故障会直接影响 TiCDC 的数据同步，当遇到这类错误时，你可以认为 TiCDC 已经尽可能完成数据同步，但下游集群仍然可能存在因 PD 故障导致的数据丢失。
+
 ## 暂停同步任务
 
 该接口暂停一个同步任务，请求成功会返回 `200 OK`。该返回结果表示服务器收到了执行命令指示，并不代表命令被成功执行。

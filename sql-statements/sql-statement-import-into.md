@@ -22,7 +22,7 @@ summary: TiDB 数据库中 IMPORT INTO 的使用概况。
 - 只支持导入数据到数据库中已有的空表。
 - 不支持事务，也无法回滚。在显式事务 (`BEGIN`/`END`) 中执行会报错。
 - 在导入完成前会阻塞当前连接，如果需要异步执行，可以添加 `DETACHED` 选项。
-- 不支持和 [Backup & Restore](/br/backup-and-restore-overview.md)、[`FLASHBACK CLUSTER TO TIMESTAMP`](/sql-statements/sql-statement-flashback-to-timestamp.md)、[创建索引加速](/system-variables.md#tidb_ddl_enable_fast_reorg-从-v630-版本开始引入)、TiDB Lightning 导入、TiCDC 数据同步、[Point-in-time recovery (PITR)](/br/br-log-architecture.md) 等功能同时工作。
+- 不支持和 [Backup & Restore](/br/backup-and-restore-overview.md)、[`FLASHBACK CLUSTER`](/sql-statements/sql-statement-flashback-cluster.md)、[创建索引加速](/system-variables.md#tidb_ddl_enable_fast_reorg-从-v630-版本开始引入)、TiDB Lightning 导入、TiCDC 数据同步、[Point-in-time recovery (PITR)](/br/br-log-architecture.md) 等功能同时工作。
 - 每个集群上同时只能有一个 `IMPORT INTO` 任务在运行。`IMPORT INTO` 会 precheck 是否存在运行中的任务，但并非硬限制，如果多个客户端同时执行 `IMPORT INTO` 仍有可能启动多个任务，请避免该情况，否则可能导致数据不一致或者任务失败的问题。
 - 导入数据的过程中，请勿在目标表上执行 DDL 和 DML 操作，也不要在目标数据库上执行 [`FLASHBACK DATABASE`](/sql-statements/sql-statement-flashback-database.md)，否则会导致导入失败或数据不一致。导入期间也不建议进行读操作，因为读取的数据可能不一致。请在导入完成后再进行读写操作。
 - 导入期间会占用大量系统资源，建议 TiDB 节点使用 32 核以上的 CPU 和 64 GiB 以上内存以获得更好的性能。导入期间会将排序好的数据写入到 TiDB [临时目录](/tidb-configuration-file.md#temp-dir-从-v630-版本开始引入)下，建议优先考虑配置闪存等高性能存储介质。详情请参考[物理导入使用限制](/tidb-lightning/tidb-lightning-physical-import-mode.md#必要条件及限制)。
@@ -32,6 +32,7 @@ summary: TiDB 数据库中 IMPORT INTO 的使用概况。
 - 当使用[全局排序](/tidb-global-sort.md)导入数据时，单行数据的总长度不能超过 32 MiB。
 - 当使用全局排序导入数据时，如果 TiDB 集群在导入任务尚未完成时被删除了，Amazon S3 上可能会残留用于全局排序的临时数据。该场景需要手动删除这些数据，以免增加 S3 存储成本。
 - 所需导入的数据不能存在主键或非空唯一索引冲突的记录，否则会导致任务失败。
+- 对于基于分布式执行框架调度的 `IMPORT INTO` 任务，如该任务已运行，不支持被调度到新的 TiDB 节点上执行。当前在执行导入任务的 TiDB 节点如果重启，该 TiDB 节点不会再执行该导入任务，而是被转移到其他 TiDB 节点继续执行。如果是导入 TiDB 节点本地的数据，任务异常后不会被 failover 到其他 TiDB 节点。
 - 已知问题：在 TiDB 节点配置文件中的 PD 地址与当前集群 PD 拓扑不一致时（如曾经缩容过 PD，但没有对应更新 TiDB 配置文件或者更新该文件后未重启 TiDB 节点），执行 `IMPORT INTO` 会失败。
 
 ## 导入前准备
@@ -91,6 +92,7 @@ SET 表达式左侧只能引用 `ColumnNameOrUserVarList` 中没有的列名。�
 用于指定数据文件的存储位置，该位置可以是 S3 或 GCS URI 路径，也可以是 TiDB 本地文件路径。
 
 - S3 或 GCS URI 路径：配置详见[外部存储服务的 URI 格式](/external-storage-uri.md)。
+
 - TiDB 本地文件路径：必须为绝对路径，数据文件后缀必须为 `.csv`、`.sql` 或 `.parquet`。确保该路径对应的文件存储在当前用户连接的 TiDB 节点上，且当前连接的用户有 `FILE` 权限。
 
 > **注意：**
@@ -145,7 +147,8 @@ SET 表达式左侧只能引用 `ColumnNameOrUserVarList` 中没有的列名。�
 
 > **注意：**
 >
-> Snappy 压缩文件必须遵循[官方 Snappy 格式](https://github.com/google/snappy)。不支持其他非官方压缩格式。
+> - Snappy 压缩文件必须遵循[官方 Snappy 格式](https://github.com/google/snappy)。不支持其他非官方压缩格式。
+> - 由于无法对单个大压缩文件进行并发解压，因此压缩文件的大小会直接影响导入速度。建议解压后的文件大小不要超过 256 MiB。
 
 ## 全局排序
 

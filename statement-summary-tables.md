@@ -18,7 +18,7 @@ aliases: ['/docs-cn/dev/statement-summary-tables/','/docs-cn/dev/reference/perfo
 
 ## `statements_summary`
 
-`statements_summary` 是 `information_schema` 里的一张系统表，它把 SQL 按 SQL digest 和 plan digest 分组，统计每一组的 SQL 信息。
+`statements_summary` 是 `information_schema` 里的一张系统表，它把 SQL 按 所属资源组、SQL digest 和 plan digest 分组，统计每一组的 SQL 信息。
 
 此处的 SQL digest 与 slow log 里的 SQL digest 一样，是把 SQL 规一化后算出的唯一标识符。SQL 的规一化会忽略常量、空白符、大小写的差别。即语法一致的 SQL 语句，其 digest 也相同。
 
@@ -78,7 +78,8 @@ select * from employee where id in (...) and salary between ? and ?;
 
 > **注意：**
 >
-> 在 TiDB 中，statement summary tables 中字段的时间单位是纳秒 (ns)，而 MySQL 中的时间单位是皮秒 (ps)。
+> - 在 TiDB 中，statement summary tables 中字段的时间单位是纳秒 (ns)，而 MySQL 中的时间单位是皮秒 (ps)。
+> - 从 v7.6.0 版本开始，对于开启[资源管控](/tidb-resource-control.md) 的集群，`statements_summary` 会分资源组进行聚合，即在不同资源组执行的相同语句会被收集为不同的记录。
 
 ## `statements_summary_history`
 
@@ -347,6 +348,16 @@ SQL 的基础信息：
 - `BACKOFF_TYPES`：遇到需要重试的错误时的所有错误类型及每种类型重试的次数，格式为 `类型:次数`。如有多种错误则用 `,` 分隔，例如 `txnLock:2,pdRPC:1`
 - `AVG_AFFECTED_ROWS`：平均影响行数
 - `PREV_SAMPLE_TEXT`：当 SQL 是 `COMMIT` 时，该字段为 `COMMIT` 的前一条语句；否则该字段为空字符串。当 SQL 是 `COMMIT` 时，按 digest 和 `prev_sample_text` 一起分组，即不同 `prev_sample_text` 的 `COMMIT` 也会分到不同的行
+
+和资源管控相关的字段：
+
+- `AVG_REQUEST_UNIT_WRITE`：执行 SQL 语句平均消耗的写 RU
+- `MAX_REQUEST_UNIT_WRITE`：执行 SQL 语句最大消耗的写 RU
+- `AVG_REQUEST_UNIT_READ`：执行 SQL 语句平均消耗的读 RU
+- `MAX_REQUEST_UNIT_READ`：执行 SQL 语句最大消耗的读 RU
+- `AVG_QUEUED_RC_TIME`：执行 SQL 语句等待可用 RU 的平均耗时
+- `MAX_QUEUED_RC_TIME`：执行 SQL 语句等待可用 RU 的最大耗时
+- `RESOURCE_GROUP`：执行 SQL 语句绑定的资源组
 
 ### `statements_summary_evicted` 字段介绍
 
