@@ -20,8 +20,8 @@ Titan 对 RocksDB 兼容，也就是说，使用 RocksDB 存储引擎的现有 T
 + 方法一：如果使用 TiUP 部署的集群，开启的方法是执行 `tiup cluster edit-config ${cluster-name}` 命令，再编辑 TiKV 的配置文件。编辑 TiKV 配置文件示例如下：
 
     ```shell
-      tikv:
-        rocksdb.titan.enabled: true
+    tikv:
+      rocksdb.titan.enabled: true
     ```
 
     重新加载配置，同时也会在线滚动重启 TiKV：
