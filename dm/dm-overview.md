@@ -37,8 +37,7 @@ tiup install dm dmctl
 
 + 数据库版本要求
 
-    - MySQL 版本 5.5 ~ 5.7
-    - MySQL 版本 = 8.0 （实验特性）
+    - MySQL 版本 5.6 ~ 8.0
     - MariaDB 版本 >= 10.1.2 （实验特性）
 
     > **注意：**
@@ -56,6 +55,10 @@ tiup install dm dmctl
 + GBK 字符集兼容性限制
 
     - DM 在 v5.4.0 之前不支持将 `charset=GBK` 的表迁移到 TiDB。
+
++ Binlog 兼容性限制
+
+    - DM 不支持 MySQL 8.0 的新特性 binlog 事务压缩 [Transaction_payload_event](https://dev.mysql.com/doc/refman/8.0/en/binary-log-transaction-compression.html)。使用 binlog 事务压缩有导致上下游数据不一致的风险。
 
 ## Contributing
 

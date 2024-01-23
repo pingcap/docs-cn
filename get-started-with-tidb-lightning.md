@@ -91,8 +91,8 @@ tiup install tidb-lightning
     password = "rootroot"
     # 表架构信息在从 TiDB 的“状态端口”获取。
     status-port = 10080
-    # 集群 pd 的地址
-    pd-addr = "172.16.31.3:2379"
+    # 集群 pd 的地址。从 v7.6.0 开始支持设置多个地址。
+    pd-addr = "172.16.31.3:2379,56.78.90.12:3456"
     ```
 
 2. 运行 `tidb-lightning`。为避免直接在命令行使用 `nohup` 启动程序时因 `SIGHUP` 信号导致的程序退出，建议将 `nohup` 命令放入脚本中。示例如下：

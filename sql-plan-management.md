@@ -24,10 +24,15 @@ aliases: ['/docs-cn/dev/sql-plan-management/','/docs-cn/dev/reference/performanc
 {{< copyable "sql" >}}
 
 ```sql
-CREATE [GLOBAL | SESSION] BINDING FOR BindableStmt USING BindableStmt;
+CREATE [GLOBAL | SESSION] BINDING [FOR BindableStmt] USING BindableStmt;
 ```
 
-该语句可以在 GLOBAL 或者 SESSION 作用域内为 SQL 绑定执行计划。目前，如下 SQL 类型 (BindableStmt) 可创建执行计划绑定：`SELECT`、`DELETE`、`UPDATE` 和带有 `SELECT` 子查询的 `INSERT`/`REPLACE`。
+该语句可以在 GLOBAL 或者 SESSION 作用域内为 SQL 绑定执行计划。目前，可创建执行计划绑定的 SQL 语句类型 (BindableStmt) 包括：`SELECT`、`DELETE`、`UPDATE` 和带有 `SELECT` 子查询的 `INSERT`/`REPLACE`。使用示例如下：
+
+```sql
+CREATE GLOBAL BINDING USING SELECT * /*+ use_index(t1, a) */ FROM t1;
+CREATE GLOBAL BINDING FOR SELECT * FROM t1 USING SELECT * /*+ use_index(t1, a) */ FROM t1;
+```
 
 > **注意：**
 >
@@ -470,6 +475,121 @@ SHOW binding_cache status;
 +-------------------+-------------------+--------------+--------------+
 1 row in set (0.00 sec)
 ```
+
+## 跨数据库绑定执行计划 (Cross-DB Binding)
+
+在创建绑定的 SQL 语句中，TiDB 支持使用通配符 `*` 表示数据库，实现跨数据库绑定。该功能自 v7.6.0 开始引入。要使用跨数据库绑定，首先需要开启 [`tidb_opt_enable_fuzzy_binding`](/system-variables.md#tidb_opt_enable_fuzzy_binding-从-v760-版本开始引入) 系统变量。
+
+当数据按数据库 (schema/db) 分类存储，同时各数据库具有相同的对象定义并且运行相似的业务逻辑时，跨数据库执行计划绑定能显著简化执行计划的固定过程。以下是一些常见的使用场景：
+
+* 用户在 TiDB 上运行 SaaS 或 PaaS 类服务，每个租户的数据存储于独立的数据库中，以便数据维护和管理。 
+* 用户在单一实例中进行分库操作，并在迁移到 TiDB 后保留了原有的数据库结构，即将原实例中的数据按数据库分类存储。 
+
+在这些场景中，跨数据库绑定能有效缓解由于用户数据和负载的不均衡及其快速变化所引发的 SQL 性能问题。SaaS 服务商可以通过跨数据库绑定，固定大数据量用户业务已验证的执行计划，从而避免因小数据量用户业务快速增长引起的潜在性能问题。
+
+使用跨数据库绑定，只需要在创建绑定的 SQL 语句中将数据库名用 `*` 表示，例如：
+
+```sql
+CREATE GLOBAL BINDING USING SELECT /*+ use_index(t, a) */ * FROM t; -- 创建 GLOBAL 作用域的普通绑定
+CREATE GLOBAL BINDING USING SELECT /*+ use_index(t, a) */ * FROM *.t; -- 创建 GLOBAL 作用域的跨数据库绑定
+SHOW GLOBAL BINDINGS;
+```
+
+输出结果示例如下：
+
+```sql
++----------------------------+---------------------------------------------------+------------+---------+-------------------------+-------------------------+---------+-----------------+--------+------------------------------------------------------------------+-------------+
+| Original_sql               | Bind_sql                                          | Default_db | Status  | Create_time             | Update_time             | Charset | Collation       | Source | Sql_digest                                                       | Plan_digest |
++----------------------------+---------------------------------------------------+------------+---------+-------------------------+-------------------------+---------+-----------------+--------+------------------------------------------------------------------+-------------+
+| select * from `test` . `t` | SELECT /*+ use_index(`t` `a`)*/ * FROM `test`.`t` | test       | enabled | 2023-12-29 14:19:01.332 | 2023-12-29 14:19:01.332 | utf8    | utf8_general_ci | manual | 8b193b00413fdb910d39073e0d494c96ebf24d1e30b131ecdd553883d0e29b42 |             |
+| select * from `*` . `t`    | SELECT /*+ use_index(`t` `a`)*/ * FROM `*`.`t`    |            | enabled | 2023-12-29 14:19:02.232 | 2023-12-29 14:19:02.232 | utf8    | utf8_general_ci | manual | 8b193b00413fdb910d39073e0d494c96ebf24d1e30b131ecdd553883d0e29b42 |             |
++----------------------------+---------------------------------------------------+------------+---------+-------------------------+-------------------------+---------+-----------------+--------+------------------------------------------------------------------+-------------+
+```
+
+在 `SHOW GLOBAL BINDINGS` 的输出结果中，跨数据库绑定的 `Default_db` 为空，且 `Original_sql` 和 `Bind_sql` 字段中的数据库名通过 `*` 表示。这条绑定会对所有 `select * from t` 查询生效，而不限于特定数据库。
+
+对于相同的查询，跨数据绑定与普通绑定可以同时存在，TiDB 匹配的优先级从高到低依次为：SESSION 级别的普通绑定 > SESSION 级别的跨数据库绑定 > GLOBAL 级别的普通绑定 > GLOBAL 级别的跨数据库绑定。
+
+除了创建绑定的 SQL 语句不同，跨数据库绑定的删除和状态变更语句与普通绑定相同。下面是一个详细的使用示例。
+
+1. 创建数据库 `db1` 和 `db2`，并在每个数据库中创建两张表：
+  
+    ```sql
+    CREATE DATABASE db1;
+    CREATE TABLE db1.t1 (a INT, KEY(a));
+    CREATE TABLE db1.t2 (a INT, KEY(a));
+    CREATE DATABASE db2;
+    CREATE TABLE db2.t1 (a INT, KEY(a));
+    CREATE TABLE db2.t2 (a INT, KEY(a));
+    ```
+
+2. 开启跨数据库绑定功能：
+
+    ```sql
+    SET tidb_opt_enable_fuzzy_binding=1;
+    ```
+
+3. 创建跨数据库绑定：
+
+    ```sql
+    CREATE GLOBAL BINDING USING SELECT /*+ use_index(t1, a), use_index(t2, a) */ * FROM *.t1, *.t2;
+    ```
+
+4. 执行查询并查看是否使用了绑定：
+
+    ```sql
+    SELECT * FROM db1.t1, db1.t2;
+    SELECT @@LAST_PLAN_FROM_BINDING;
+    +--------------------------+
+    | @@LAST_PLAN_FROM_BINDING |
+    +--------------------------+
+    |                        1 |
+    +--------------------------+
+    
+    SELECT * FROM db2.t1, db2.t2;
+    SELECT @@LAST_PLAN_FROM_BINDING;
+    +--------------------------+
+    | @@LAST_PLAN_FROM_BINDING |
+    +--------------------------+
+    |                        1 |
+    +--------------------------+
+    
+    SELECT * FROM db1.t1, db2.t2;
+    SELECT @@LAST_PLAN_FROM_BINDING;
+    +--------------------------+
+    | @@LAST_PLAN_FROM_BINDING |
+    +--------------------------+
+    |                        1 |
+    +--------------------------+
+
+    USE db1;
+    SELECT * FROM t1, db2.t2;
+    SELECT @@LAST_PLAN_FROM_BINDING;
+    +--------------------------+
+    | @@LAST_PLAN_FROM_BINDING |
+    +--------------------------+
+    |                        1 |
+    +--------------------------+
+    ```
+
+5. 查看绑定：
+
+    ```sql
+    SHOW GLOBAL BINDINGS;
+    +----------------------------------------------+------------------------------------------------------------------------------------------+------------+---------+-------------------------+-------------------------+---------+--------------------+--------+------------------------------------------------------------------+-------------+
+    | Original_sql                                 | Bind_sql                                                                                 | Default_db | Status  | Create_time             | Update_time             | Charset | Collation          | Source | Sql_digest                                                       | Plan_digest |
+    +----------------------------------------------+------------------------------------------------------------------------------------------+------------+---------+-------------------------+-------------------------+---------+--------------------+--------+------------------------------------------------------------------+-------------+
+    | select * from ( `*` . `t1` ) join `*` . `t2` | SELECT /*+ use_index(`t1` `a`) use_index(`t2` `a`)*/ * FROM (`*` . `t1`) JOIN `*` . `t2` |            | enabled | 2023-12-29 14:22:28.144 | 2023-12-29 14:22:28.144 | utf8    | utf8_general_ci    | manual | ea8720583e80644b58877663eafb3579700e5f918a748be222c5b741a696daf4 |             |
+    +----------------------------------------------+------------------------------------------------------------------------------------------+------------+---------+-------------------------+-------------------------+---------+--------------------+--------+------------------------------------------------------------------+-------------+
+    ```
+
+6. 删除绑定：
+
+    ```sql
+    DROP GLOBAL BINDING FOR SQL DIGEST 'ea8720583e80644b58877663eafb3579700e5f918a748be222c5b741a696daf4';
+    SHOW GLOBAL BINDINGS;
+    Empty set (0.00 sec)
+    ```
 
 ## 自动捕获绑定 (Baseline Capturing)
 

@@ -94,6 +94,10 @@ aliases: ['/docs-cn/dev/system-tables/system-table-overview/','/docs-cn/dev/refe
 * `tidb_background_subtask` 存放当前正在执行的分布式执行框架任务的子任务元信息
 * `tidb_background_subtask_history` 存放历史的分布式执行框架任务的子任务元信息
 
+## 资源管控相关系统表
+
+* `request_unit_by_group` 存放资源组 RU 消耗统计的历史记录
+
 ## 其它系统表
 
 * `GLOBAL_VARIABLES` 全局系统变量表
