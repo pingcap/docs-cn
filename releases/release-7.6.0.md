@@ -84,7 +84,7 @@ TiDB 版本：7.6.0
 
     更多信息，请参考[用户文档](/br/br-snapshot-guide.md#恢复快照备份数据)。
 
-* 默认开启 Titan 引擎 [#16245] (https://github.com/tikv/tikv/issues/16245) @[Connor1996](https://github.com/Connor1996) @[v01dstar](https://github.com/v01dstar) @[tonyxuqqi](https://github.com/tonyxuqqi)
+* 默认开启 Titan 引擎 [#16245](https://github.com/tikv/tikv/issues/16245) @[Connor1996](https://github.com/Connor1996) @[v01dstar](https://github.com/v01dstar) @[tonyxuqqi](https://github.com/tonyxuqqi)
 
     为了更好地支持 TiDB 宽表写入场景，特别是在支持 JSON 之后，从 TiDB v7.6.0 开始，默认开启 Titan 引擎，自动将超过 32 KB 的大 Value 从 RocksDB 的 LSM Tree 中分离出来，单独存储在 Titan 中，以提升对大 Value 的处理性能。Titan 引擎与 TiKV 所使用的 RocksDB 特性完全兼容。这一变更不仅降低了写入放大效应，在处理大 Value 的写入、更新和点查场景时也表现得更加出色。同时，在 Range Scan 场景下，通过对 Titan 引擎的优化，默认配置下 Titan 引擎的性能测试结果和 RocksDB 基本持平。
 
@@ -296,11 +296,12 @@ TiDB 版本：7.6.0
 
 | 配置文件 | 配置项 | 修改类型 | 描述 |
 | -------- | -------- | -------- | -------- |
-| TiDB | [`tls-version`](tidb-configuration-file.md#tls-version) | 修改 | 默认值为空，TiDB 默认支持的 TLS 版本从 `TLS1.1` 及更高提升为 `TLS1.2` 及更高。 |
+| TiDB | [`tls-version`](/tidb-configuration-file.md#tls-version) | 修改 | 默认值为空，TiDB 默认支持的 TLS 版本从 `TLS1.1` 及更高提升为 `TLS1.2` 及更高。 |
 | TiKV | [`blob-file-compression`](/tikv-configuration-file.md#blob-file-compression) | 修改 | Titan 中 value 所使用的压缩算法。从 v7.6.0 开始，默认采用 `zstd` 压缩算法。 |
+| TiKV | [`rocksdb.defaultcf.titan.min-blob-size`](/tikv-configuration-file.md#min-blob-size) | 修改 | 从 TiDB v7.6.0 开始，新建集群默认值为 `32KB`。对于已有集群升级到 v7.6.0 版本的情况，默认值为 `1KB` 保持不变。 |
 | TiKV | [`rocksdb.titan.enabled`](/tikv-configuration-file.md#enabled) | 修改 | 开启 Titan 开关。v7.5.0 及更早的版本默认值为 `false`。从 v7.6.0 开始，新建集群默认值是 `true`，已有集群升级到 v7.6.0 或更高版本则会维持原有的配置。 |
 | TiDB Lightning | [`tidb.pd-addr`](/tidb-lightning/tidb-lightning-configuration.md#tidb-lightning-任务配置) | 修改 | 配置 PD Server 的地址，从 v7.6.0 开始支持设置多个地址。 |
-| TiDB Lightning | [`block-size`](/tidb-lightning/tidb-lightning-configuration.md#tidb-lightning-任务配置) | 新增 | 控制物理导入模式 (`backend='local'`) 中本地排序文件的 I/O 块大小。默认值为 `16KiB`。当 IOPS 成为瓶颈时，可以将该参数的值调大。 |
+| TiDB Lightning | [`block-size`](/tidb-lightning/tidb-lightning-configuration.md#tidb-lightning-任务配置) | 新增 | 控制物理导入模式 (`backend='local'`) 中本地文件排序的 I/O 块大小。默认值为 `16KiB`。当 IOPS 成为瓶颈时，可以调大该参数的值以缓解 Disk IOPS，从而提升性能。 |
 | TiKV | [`raftstore.periodic-full-compact-start-times`](/tikv-configuration-file.md#periodic-full-compact-start-times-从-v760-版本开始引入) | 新增 | 设置 TiKV 启动周期性全量数据整理 (Compaction) 的时间。默认值 `[]` 表示默认情况下禁用周期性全量数据整理。 |
 | TiKV | [`raftstore.periodic-full-compact-start-max-cpu`](/tikv-configuration-file.md#periodic-full-compact-start-max-cpu-从-v760-版本开始引入) | 新增 | 设置 TiKV 执行周期性全量数据整理时的 CPU 使用率阈值，默认值为 `0.1`。 |
 | TiKV | [`zstd-dict-size`](/tikv-configuration-file.md#zstd-dict-size) | 新增 | 指定 zstd 字典大小，默认值为 `0KB`，表示关闭 `zstd` 字典压缩。 |
@@ -324,7 +325,7 @@ TiDB 版本：7.6.0
 
 ## 离线包变更
 
-从 v7.6.0 开始，`TiDB-community-server` [二进制软件包](/binary-package.md)中新增代理组件 [TiProxy](tiproxy/tiproxy-overview.md) 的安装包 `tiproxy-{version}-linux-{arch}.tar.gz`。
+从 v7.6.0 开始，`TiDB-community-server` [二进制软件包](/binary-package.md)中新增代理组件 [TiProxy](/tiproxy/tiproxy-overview.md) 的安装包 `tiproxy-{version}-linux-{arch}.tar.gz`。
 
 ## 废弃功能
 
@@ -386,7 +387,7 @@ TiDB 版本：7.6.0
     + TiDB Lightning <!--tw@hfxsd 2 条-->
 
         - 支持配置多个 PD 地址以增强稳定性 [#49515](https://github.com/pingcap/tidb/issues/49515) @[mittalrishabh](https://github.com/mittalrishabh)
-        - 支持通过配置参数 `block-size` 来控制 TiDB Lightning 内部 I/O 操作大小，提升性能 [#45037](https://github.com/pingcap/tidb/issues/45037) @[mittalrishabh](https://github.com/mittalrishabh)
+        - 支持通过配置参数 `block-size` 来控制 TiDB Lightning 本地文件排序的 I/O 块大小，提升性能 [#45037](https://github.com/pingcap/tidb/issues/45037) @[mittalrishabh](https://github.com/mittalrishabh)
 
 ## 错误修复
 
