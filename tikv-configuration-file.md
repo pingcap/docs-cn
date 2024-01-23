@@ -107,13 +107,6 @@ TiKV 配置文件比命令行参数支持更多的选项。你可以在 [etc/con
     + 如果把此参数设置为非 `0` 的值，TiKV 最多会保留 `max-backups` 中指定的数量的旧日志文件。比如，如果该值设置为 `7`，TiKV 最多会保留 7 个旧的日志文件。
 + 默认值：0
 
-### `pd.enable-forwarding` <span class="version-mark">从 v5.0.0 版本开始引入</span>
-
-+ 控制 TiKV 中的 PD client 在疑似网络隔离的情况下是否通过 follower 将请求转发给 leader。
-+ 默认值：false
-+ 如果确认环境存在网络隔离的可能，开启这个参数可以减少服务不可用的窗口期。
-+ 如果无法准确判断隔离、网络中断、宕机等情况，这个机制存在误判情况从而导致可用性、性能降低。如果网络中从未发生过网络故障，不推荐开启此选项。
-
 ## server
 
 服务器相关的配置项。
@@ -133,7 +126,7 @@ TiKV 配置文件比命令行参数支持更多的选项。你可以在 [etc/con
 
 + 通过 HTTP 直接报告 TiKV 状态的地址。
 
-    > **警告：**
+    > **警告**
     >
     > 如果该值暴露在公网，TiKV 服务器的状态可能会泄露。
 
@@ -284,7 +277,7 @@ TiKV 配置文件比命令行参数支持更多的选项。你可以在 [etc/con
 + 可调整范围：`[min-thread-count, MAX(4, CPU quota * 10)]`。其中，`MAX(4, CPU quota * 10)` 表示：如果 CPU 配额乘 10 小于 `4`，取 `4`；如果 CPU 配额乘 10 大于 `4`，即 CPU 配额大于 `0.4`，则取 CPU 配额乘 10。
 + 默认值：MAX(4, CPU quota * 0.8)
 
-> **注意：**
+> **注意**
 >
 > 增加线程数量会导致上下文切换增多，可能会导致性能下降，因此不推荐修改此配置。
 
@@ -426,7 +419,7 @@ TiKV 配置文件比命令行参数支持更多的选项。你可以在 [etc/con
 
 ### `engine` <span class="version-mark">从 v6.6.0 版本开始引入</span>
 
-> **警告：**
+> **警告**
 >
 > 该功能目前为实验特性，不建议在生产环境中使用。该功能可能会在未事先通知的情况下发生变化或删除。如果发现 bug，请在 GitHub 上提 [issue](https://github.com/pingcap/tidb/issues) 反馈。
 
@@ -470,7 +463,7 @@ TiKV 配置文件比命令行参数支持更多的选项。你可以在 [etc/con
 
 ### `enable-ttl`
 
-> **警告：**
+> **警告**
 >
 > - 你**只能**在部署新的 TiKV 集群时将 `enable-ttl` 的值设置为 `true` 或 `false`，**不能**在已有的 TiKV 集群中修改该配置项的值。由于该配置项为 `true` 和 `false` 的 TiKV 集群所存储的数据格式不相同，如果你在已有的 TiKV 集群中修改该配置项的值，会造成不同格式的数据存储在同一个集群，导致重启对应的 TiKV 集群时 TiKV 报 "can't enable ttl on a non-ttl instance" 错误。
 > - 你**只能**在 TiKV 集群中使用 `enable-ttl`，**不能**在有 TiDB 节点的集群中使用该配置项（即在此类集群中把 `enable-ttl` 设置为 `true`），否则会导致数据损坏、TiDB 集群升级失败等严重后果。
@@ -505,7 +498,7 @@ TiKV 配置文件比命令行参数支持更多的选项。你可以在 [etc/con
         + 从 v6.2.0 版本开始，你可以通过 [RawKV CDC](https://tikv.org/docs/latest/concepts/explore-tikv-features/cdc/cdc-cn/) 组件实现 RawKV 的 Change Data Capture (CDC)。
 + 默认值：1
 
-> **警告：**
+> **警告**
 >
 > - 由于 API V1 和 API V2 底层存储格式不同，因此**仅当** TiKV 中只有 TiDB 数据时，可以平滑启用或关闭 API V2。其他情况下，需要新建集群，并使用 [TiKV Backup & Restore](https://tikv.org/docs/latest/concepts/explore-tikv-features/backup-restore-cn/) 工具进行数据迁移。
 > - 启用 API V2 后，**不能**将 TiKV 集群回退到 v6.1.0 之前的版本，否则可能导致数据损坏。
@@ -570,6 +563,13 @@ I/O rate limiter 相关的配置项。
 
 ## pd
 
+### `enable-forwarding` <span class="version-mark">从 v5.0.0 版本开始引入</span>
+
++ 控制 TiKV 中的 PD client 在疑似网络隔离的情况下是否通过 follower 将请求转发给 leader。
++ 默认值：false
++ 如果确认环境存在网络隔离的可能，开启这个参数可以减少服务不可用的窗口期。
++ 如果无法准确判断隔离、网络中断、宕机等情况，这个机制存在误判情况从而导致可用性、性能降低。如果网络中从未发生过网络故障，不推荐开启此选项。
+
 ### `endpoints`
 
 + PD 的地址。当指定多个地址时，需要用逗号 `,` 分隔。
@@ -614,7 +614,7 @@ raftstore 相关的配置项。
 
 ### `raft-base-tick-interval`
 
-> **注意：**
+> **注意**
 >
 > 该配置项不支持通过 SQL 语句查询，但支持在配置文件中进行配置。
 
@@ -624,7 +624,7 @@ raftstore 相关的配置项。
 
 ### `raft-heartbeat-ticks`
 
-> **注意：**
+> **注意**
 >
 > 该配置项不支持通过 SQL 语句查询，但支持在配置文件中进行配置。
 
@@ -634,7 +634,7 @@ raftstore 相关的配置项。
 
 ### `raft-election-timeout-ticks`
 
-> **注意：**
+> **注意**
 >
 > 该配置项不支持通过 SQL 语句查询，但支持在配置文件中进行配置。
 
@@ -644,7 +644,7 @@ raftstore 相关的配置项。
 
 ### `raft-min-election-timeout-ticks`
 
-> **注意：**
+> **注意**
 >
 > 该配置项不支持通过 SQL 语句查询，但支持在配置文件中进行配置。
 
@@ -654,7 +654,7 @@ raftstore 相关的配置项。
 
 ### `raft-max-election-timeout-ticks`
 
-> **注意：**
+> **注意**
 >
 > 该配置项不支持通过 SQL 语句查询，但支持在配置文件中进行配置。
 
@@ -664,7 +664,7 @@ raftstore 相关的配置项。
 
 ### `raft-max-size-per-msg`
 
-> **注意：**
+> **注意**
 >
 > 该配置项不支持通过 SQL 语句查询，但支持在配置文件中进行配置。
 
@@ -676,7 +676,7 @@ raftstore 相关的配置项。
 
 ### `raft-max-inflight-msgs`
 
-> **注意：**
+> **注意**
 >
 > 该配置项不支持通过 SQL 语句查询，但支持在配置文件中进行配置。
 
@@ -797,7 +797,7 @@ raftstore 相关的配置项。
 
 ### `report-region-buckets-tick-interval` <span class="version-mark">从 v6.1.0 版本开始引入</span>
 
-> **警告：**
+> **警告**
 >
 > `report-region-buckets-tick-interval` 是 TiDB 在 v6.1.0 中引入的实验特性，不建议在生产环境中使用。
 
@@ -905,7 +905,7 @@ raftstore 相关的配置项。
 
 ### `consistency-check-interval`
 
-> **警告：**
+> **警告**
 >
 > 开启一致性检查对集群性能有影响，并且和 TiDB GC 操作不兼容，不建议在生产环境中使用。
 
@@ -1030,6 +1030,20 @@ raftstore 相关的配置项。
 + 默认值：0.1
 + 最小值：0
 
+### `periodic-full-compact-start-times` <span class="version-mark">从 v7.6.0 版本开始引入</span>
+
+> **警告**
+>
+> 周期性全量数据整理目前为实验特性，不建议在生产环境中使用。该功能可能会在未事先通知的情况下发生变化或删除。如果发现 bug，请在 GitHub 上提 [issue](https://github.com/pingcap/tidb/issues) 反馈。
+
++ 设置 TiKV 启动周期性全量数据整理 (Compaction) 的时间。你可以在数组中指定一个或多个时间计划。例如，`periodic-full-compact-start-times = ["03:00", "23:00"]` 表示 TiKV 基于 TiKV 节点的本地时区，在每天凌晨 3 点和晚上 11 点进行全量数据整理。`periodic-full-compact-start-times = ["03:00 +0000", "23:00 +0000"]` 表示 TiKV 在每天 UTC 时间的凌晨 3 点和晚上 11 点进行全量数据整理。
++ 默认值：`[]`，表示默认情况下禁用周期性全量数据整理。
+
+### `periodic-full-compact-start-max-cpu` <span class="version-mark">从 v7.6.0 版本开始引入</span>
+
++ 控制 TiKV 执行周期性全量数据整理时的 CPU 使用率阈值。
++ 默认值：`0.1`，表示全量数据整理进程的最大 CPU 使用率为 10%。
+
 ## coprocessor
 
 Coprocessor 相关的配置项。
@@ -1086,7 +1100,7 @@ Coprocessor 相关的配置项。
 + 是否将 Region 划分为更小的区间 bucket，并且以 bucket 作为并发查询单位，以提高扫描数据的并发度。bucket 的详细设计可见 [Dynamic size Region](https://github.com/tikv/rfcs/blob/master/text/0082-dynamic-size-region.md)。
 + 默认值：false
 
-> **警告：**
+> **警告**
 >
 > - `enable-region-bucket` 是 TiDB 在 v6.1.0 中引入的实验特性，不建议在生产环境中使用。
 > - 这个参数仅在 `region-split-size` 调到两倍 `region-bucket-size` 及以上时才有意义，否则不会真正生成 bucket。
@@ -1097,7 +1111,7 @@ Coprocessor 相关的配置项。
 + 设置 `enable-region-bucket` 启用时 bucket 的预期大小。
 + 默认值：从 v7.3.0 起，默认值从 `96MiB` 变更为 `50MiB`。
 
-> **警告：**
+> **警告**
 >
 > `region-bucket-size` 是 TiDB 在 v6.1.0 中引入的实验特性，不建议在生产环境中使用。
 
@@ -1212,7 +1226,8 @@ RocksDB 相关的配置项。
 
 ### `rate-bytes-per-sec`
 
-+ RocksDB compaction rate limiter 的限制速率。
++ 未开启 Titan 时，限制 RocksDB Compaction 的 I/O 速率，以达到在流量高峰时，限制 RocksDB Compaction 减少其 I/O 带宽和 CPU 消耗对前台读写性能的影响。开启 Titan 时，限制 RocksDB Compaction 和 Titan GC 的 I/O 速率总和。当发现在流量高峰时 RocksDB Compaction 和 Titan GC 的 I/O 和/或 CPU 消耗过大，可以根据磁盘 I/O 带宽和实际写入流量适当配置这个选项。
+
 + 默认值：10GB
 + 最小值：0
 + 单位：B|KB|MB|GB
@@ -1282,7 +1297,7 @@ RocksDB 相关的配置项。
 
 ### `write-buffer-flush-oldest-first` <span class="version-mark">从 v6.6.0 版本开始引入</span>
 
-> **警告：**
+> **警告**
 >
 > 该功能目前为实验特性，不建议在生产环境中使用。该功能可能会在未事先通知的情况下发生变化或删除。如果发现 bug，请在 GitHub 上提 [issue](https://github.com/pingcap/tidb/issues) 反馈。
 
@@ -1294,7 +1309,7 @@ RocksDB 相关的配置项。
 
 ### `write-buffer-limit` <span class="version-mark">从 v6.6.0 版本开始引入</span>
 
-> **警告：**
+> **警告**
 >
 > 该功能目前为实验特性，不建议在生产环境中使用。该功能可能会在未事先通知的情况下发生变化或删除。如果发现 bug，请在 GitHub 上提 [issue](https://github.com/pingcap/tidb/issues) 反馈。
 
@@ -1312,8 +1327,15 @@ Titan 相关的配置项。
 
 ### `enabled`
 
+
+> **注意**
+>
+> - 从 TiDB v7.6.0 开始，参数默认值从`false`变更为`true`，即新集群默认开启 Titan。
+> - 如果集群在升级到 TiDB v7.6.0 或更高版本之前未启用 Titan，则升级后将保持原有配置，继续使用 RocksDB，不会启用 Titan。
+> - 如果集群在升级到 TiDB v7.6.0 或更高版本之前已经启用了 Titan，则升级后将维持原有配置，保持启用 Titan 引擎，并保留升级前[`min-blob-size`](tikv-configuration-file.md#min-blob-size)的配置。如果升级前没有显式配置该值，则升级后仍然保持了老版本默认值`1KB`，以确保升级后集群配置的稳定性。
+
 + 开启 Titan 开关。
-+ 默认值：v7.5.0 及更早的版本为 `false`。从 v7.6.0 开始，新建集群默认是 `true`，已有集群升级到 v7.6.0 或更高版本则会维持原有的配置。
++ `false`
 
 ### `dirname`
 
@@ -1327,7 +1349,7 @@ Titan 相关的配置项。
 
 ### `max-background-gc`
 
-+ Titan 后台 GC 的线程个数。
++ Titan 后台 GC 的线程个数，当从 **TiKV Details** - **Thread CPU** - **RocksDB CPU** 监控中观察到 Titan GC 线程长期处于满负荷状态时，应该考虑增加 Titan GC 线程池大小。
 + 默认值：4
 + 最小值：1
 
@@ -1346,7 +1368,7 @@ rocksdb defaultcf、rocksdb writecf 和 rocksdb lockcf 相关的配置项。
 
 ### `block-cache-size`
 
-> **警告：**
+> **警告**
 >
 > 从 v6.6.0 起，该配置项被废弃。
 
@@ -1599,31 +1621,34 @@ rocksdb defaultcf、rocksdb writecf 和 rocksdb lockcf 相关的配置项。
 
 ## rocksdb.defaultcf.titan
 
+> **警告**
+>
+> 仅支持在 `rocksdb.defaultcf` 启用 Titan，不支持在 `rocksdb.writecf` 启用 Titan。
+
 rocksdb defaultcf titan 相关的配置项。
 
-> **注意：**
->
-> Titan 只有在 `defaultcf` 打开才有意义，不支持在 `writecf` 打开。
-
 ### `min-blob-size`
+
+> **注意**
+>
+> - 为了提高宽表和 JSON 数据写入和点查性能，TiDB 从 v7.6.0 版本起默认启用 Titan，并将写入 Titan 的阈值参数 `min-blob-size`的默认值从之前版本的 `1KB` 调整为 `32KB`，即当数据的 value 超过 `32KB` 时，将存储在 Titan 中，而其他数据则继续存储在 RocksDB 中。
+> - 为了保证配置的连续性，已有集群升级到 TiDB v7.6.0 版本或者更高版本后，如果升级前用户未显式设置`min-blob-size` ，则维持使用老版本默认值 `1KB`，以确保升级后集群配置的稳定性。
+> - 当参数被设置为小于 `32KB` 时，TiKV大范围扫描性能会受到一些影响。然而，如果负载主要是写入和点查为主，用户可以适当降低 `min-blob-size` 的设置来获取更好的写入和点查性能。
 
 + 最小存储在 Blob 文件中 value 大小，低于该值的 value 还是存在 LSM-Tree 中。
 + 默认值：32KB
 + 最小值：0
 + 单位：KB|MB|GB
 
-> **注意：**
->
-> 当该值设置为小于默认值时，TiKV 大范围扫描性能会有回退。但如果负载是重写和点查为主，则可以适当调小该值，最小可以设置为 `1KB`。因此，从 TiDB v7.6.0 开始，新建集群默认值为 `32KB`，但对于已有集群升级到 v7.6.0 版本的情况，为保持行为上的连续性，如果你没有显式设置 `min-blob-size`，则保持旧版本的默认值 `1KB` 不变。
-
 ### `blob-file-compression`
+
+> **注意**
+>
+> - Snappy 压缩文件必须遵循[官方 Snappy 格式](https://github.com/google/snappy)。不支持其他非官方压缩格式。
+> - TiDB v7.5.0 及更早的版本，参数默认值为 `lz4`。TiDB v7.6.0 及更高版本，参数默认值调整为 `zstd`。
 
 + Blob 文件所使用的压缩算法，可选值：no、snappy、zlib、bz2、lz4、lz4hc、zstd。
 + 默认值：zstd
-
-> **注意：**
->
-> Snappy 压缩文件必须遵循[官方 Snappy 格式](https://github.com/google/snappy)。不支持其他非官方压缩格式。
 
 ### `zstd-dict-size`
 
@@ -1655,7 +1680,14 @@ rocksdb defaultcf titan 相关的配置项。
 
 ### `discardable-ratio`
 
-+ Blob 文件 GC 的触发比例，如果某 Blob 文件中的失效 value 的比例高于该值才可能被 GC 选中。
++ 当一个 blob file 中无用数据（相应的 key 已经被更新或删除）比例超过以下阈值时，将会触发 Titan GC。将此文件有用的数据重写到另一个文件。这个值可以估算 Titan 的写放大和空间放大的上界（假设关闭压缩）。公式是：
+
+    写放大上界 = 1 / discardable_ratio
+
+    空间放大上界 = 1 / (1 - discardable_ratio)
+
+    可以看到，减少这个阈值可以减少空间放大，但是会造成 Titan 更频繁 GC；增加这个值可以减少 Titan GC，减少相应的 I/O 带宽和 CPU 消耗，但是会增加磁盘空间占用。
+
 + 默认值：0.5
 + 最小值：0
 + 最大值：1
@@ -1831,7 +1863,7 @@ raftdb 相关配置项。
 
 Raft Engine 相关的配置项。
 
-> **注意：**
+> **注意**
 >
 > - 第一次开启 Raft Engine 时，TiKV 会将原有的 RocksDB 数据转移至 Raft Engine 中。因此，TiKV 的启动时间会比较长，你需要额外等待几十秒。
 > - 如果你要将 TiDB 集群降级至 v5.4.0 以前的版本（不含 v5.4.0），你需要在降级**之前**先关闭 Raft Engine（即把 `enable` 配置项设置为 `false`，并重启 TiKV 使配置生效），否则会导致集群降级后无法正常开启。
@@ -1896,7 +1928,7 @@ Raft Engine 相关的配置项。
 
 ### `format-version` <span class="version-mark">从 v6.3.0 版本开始引入</span>
 
-> **注意：**
+> **注意**
 >
 > `format-version` 的值设置为 `2` 后，如果你需要将 TiKV 集群降级至 v6.3.0 以前的版本，你需要在降级**之前**执行如下操作：
 >
@@ -1914,7 +1946,7 @@ Raft Engine 相关的配置项。
 
 ### `enable-log-recycle` <span class="version-mark">从 v6.3.0 版本开始引入</span>
 
-> **注意：**
+> **注意**
 >
 > 仅在 [`format-version`](#format-version-从-v630-版本开始引入) 的值大于等于 2 时，该配置项才生效。
 
@@ -1923,7 +1955,7 @@ Raft Engine 相关的配置项。
 
 ### `prefill-for-recycle` <span class="version-mark">从 v7.0.0 版本开始引入</span>
 
-> **注意：**
+> **注意**
 >
 > 仅在 [`enable-log-recycle`](#enable-log-recycle-从-v630-版本开始引入) 的值为 `true` 时，该配置项才生效。
 
@@ -2010,7 +2042,7 @@ Raft Engine 相关的配置项。
 + 可调整范围：[0.0, 0.5]
 + 默认值：`0.3`，表示系统 30% 的内存可用于 PITR 恢复；当为 `0.0` 时，表示通过下载日志文件到本地进行 PITR 恢复。
 
-> **注意：**
+> **注意**
 >
 > 在小于 v6.5.0 的版本中，PITR 仅支持将备份文件下载到本地进行恢复。
 
@@ -2071,7 +2103,7 @@ Raft Engine 相关的配置项。
 
 ### `s3-multi-part-size` <span class="version-mark">从 v5.3.2 版本开始引入</span>
 
-> **注意：**
+> **注意**
 >
 > 引入该配置项是为了解决备份期间遇到的 S3 限流导致备份失败的问题。该问题已通过[优化 BR 备份数据存储的目录结构](/br/br-snapshot-architecture.md#备份文件目录结构)得到解决。因此，该配置项自 v6.1.1 起开始废弃，不再推荐使用。
 
@@ -2254,7 +2286,7 @@ Raft Engine 相关的配置项。
 
 当 TiKV 部署的机型资源有限（如 4v CPU，16 G 内存）时，如果 TiKV 后台处理的计算或者读写请求量过大，以至于占用 TiKV 前台处理请求所需的 CPU 资源，最终影响 TiKV 性能的稳定性。此时，你可以使用后台限流相关的 quota 配置项以限制后台各类请求占用的 CPU 资源。触发该限制的请求会被强制等待一段时间以让出 CPU 资源。具体等待时间与新增请求量相关，最多不超过 [`max-delay-duration`](#max-delay-duration-从-v600-版本开始引入) 的值。
 
-> **警告：**
+> **警告**
 >
 > - 后台限流是 TiDB 在 v6.2.0 中引入的实验特性，不建议在生产环境中使用。
 > - 该功能仅适合在资源有限的环境中使用，以保证 TiKV 在该环境下可以长期稳定地运行。如果在资源丰富的机型环境中开启该功能，可能会导致读写请求量达到峰值时 TiKV 的性能下降的问题。
@@ -2267,7 +2299,7 @@ Raft Engine 相关的配置项。
 
 #### `background-write-bandwidth` <span class="version-mark">从 v6.2.0 版本开始引入</span>
 
-> **注意：**
+> **注意**
 >
 > 该配置项可以通过 `SHOW CONFIG` 查询到，但暂未生效。设置该配置项的值不生效。
 
@@ -2276,7 +2308,7 @@ Raft Engine 相关的配置项。
 
 #### `background-read-bandwidth` <span class="version-mark">从 v6.2.0 版本开始引入</span>
 
-> **注意：**
+> **注意**
 >
 > 该配置项可以通过 `SHOW CONFIG` 查询到，但暂未生效。设置该配置项的值不生效。
 
