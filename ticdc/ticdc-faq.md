@@ -259,9 +259,9 @@ TiCDC 需要磁盘是为了缓冲上游写入高峰时下游消费不及时堆�
 
 目前 TiCDC 还没完全适配 TiDB Lightning 和 BR，请避免在使用 TiCDC 同步的表上使用 TiDB Lightning 和 BR。
 
-如果有某些表需要使用 TiDB Lightning 或者 BR 恢复数据，可以在这么做：
+如果有某些表需要使用 TiDB Lightning 或者 BR 恢复数据之后用 TiCDC 同步增量数据，可以这么做：
 
-1. 停止包括这些表的 TiCDC 同步任务。
+1. 删除包括这些表的 TiCDC 同步任务。
 
 2. 使用 TiDB Lightning 或 BR 恢复数据。
 
