@@ -114,113 +114,186 @@ SELECT BIN("123q123");
 
 与 `CHAR_LENGTH()` 功能相同
 
-### [`CONCAT(str1,str2,...)`](https://dev.mysql.com/doc/refman/8.0/en/string-functions.html#function_concat)
+### [`CONCAT()`](https://dev.mysql.com/doc/refman/8.0/en/string-functions.html#function_concat)
 
-`CONCAT()` 函数用于连接参数生成字符串，该参数可以是字符串或数字。
+`CONCAT()` 函数用于将输入的参数连接成一个字符串。
+
+语法：
+
+```sql
+CONCAT(str1,str2,...)
+```
+
+`str1, str2, ...` 为要连接的参数。该参数可以是字符串或数字。
+
+查询示例：
 
 ```sql
 SELECT CONCAT('TiDB', ' ', 'Server', '-', 1, TRUE);
+```
 
+返回结果：
+
+```sql
 +---------------------------------------------+
 | CONCAT('TiDB', ' ', 'Server', '-', 1, TRUE) |
 +---------------------------------------------+
-|                              TiDB Server-11 |
+| TiDB Server-11                              |
 +---------------------------------------------+
 ```
 
-如果任一参数的值为`NULL`， 则`CONCAT()`返回`NULL`
+如果任一参数的值为 `NULL`， 则 `CONCAT()` 返回 `NULL`。
+
+查询示例：
 
 ```sql
 SELECT CONCAT('TiDB', NULL, 'Server');
+```
 
+返回结果：
+
+```sql
 +--------------------------------+
 | CONCAT('TiDB', NULL, 'Server') |
 +--------------------------------+
-|                           NULL |
+| NULL                           |
 +--------------------------------+
 ```
 
-此外，还可以通过字符串彼此相邻的方式连接他们，但是这种方式不支持数字类型。
+除了使用 `CONCAT()` 函数外，你也可以通过字符串彼此相邻的方式获取拼接字符串，但是该方式不支持数字类型。例如：
 
 ```sql
 SELECT 'Ti' 'DB' ' ' 'Server';
+```
 
+返回结果：
+
+```sql
 +-------------+
-|          Ti |
+| Ti          |
 +-------------+
 | TiDB Server |
 +-------------+
 ```
 
-### [`CONCAT_WS(separator,str1,str2,...)`](https://dev.mysql.com/doc/refman/8.0/en/string-functions.html#function_concat-ws)
+### [`CONCAT_WS()`](https://dev.mysql.com/doc/refman/8.0/en/string-functions.html#function_concat-ws)
 
-`CONCAT_WS()`函数是一种带分隔符的 `CONCAT()`，返回由分隔符连接的字符串。 第一个参数作为分隔符，添加在剩余的不为`NULL`的参数的中间。
+`CONCAT_WS()` 函数是一种带分隔符的 `CONCAT()`，返回由分隔符连接的字符串。
+
+语法：
+
+```sql
+CONCAT_WS(separator,str1,str2,...)
+```
+
+- `separator`：第一个参数为分隔符，用于连接其余的不为 `NULL` 的参数。
+- `str1, str2, ...`：要连接的参数。该参数可以为字符串或数字。
+
+查询示例：
 
 ```sql
 SELECT CONCAT_WS(',', 'TiDB Server', 'TiKV', 'PD');
+```
 
+返回结果：
+
+```sql
 +---------------------------------------------+
 | CONCAT_WS(',', 'TiDB Server', 'TiKV', 'PD') |
 +---------------------------------------------+
-|                         TiDB Server,TiKV,PD |
+| TiDB Server,TiKV,PD                         |
 +---------------------------------------------+
 ```
 
-- 如果分隔符为空，则`CONCAT_WS()`等效于 `CONCAT()`，返回剩余参数连接后的值；
-- 如果分隔符为 `NULL`，则`CONCAT_WS()`返回 `NULL`。
+- 如果分隔符为空，则 `CONCAT_WS()` 等效于 `CONCAT()`，返回其余参数连接后的字符串。
 
-```sql
-SELECT CONCAT_WS('', 'TiDB Server', 'TiKV', 'PD');
+    查询示例：
 
-+--------------------------------------------+
-| CONCAT_WS('', 'TiDB Server', 'TiKV', 'PD') |
-+--------------------------------------------+
-|                          TiDB ServerTiKVPD |
-+--------------------------------------------+
-```
+    ```sql
+    SELECT CONCAT_WS('', 'TiDB Server', 'TiKV', 'PD');
+    ```
 
-```sql
-SELECT CONCAT_WS(NULL, 'TiDB Server', 'TiKV', 'PD');
+    返回结果：
 
-+----------------------------------------------+
-| CONCAT_WS(NULL, 'TiDB Server', 'TiKV', 'PD') |
-+----------------------------------------------+
-|                                         NULL |
-+----------------------------------------------+
-```
+    ```sql
+    +--------------------------------------------+
+    | CONCAT_WS('', 'TiDB Server', 'TiKV', 'PD') |
+    +--------------------------------------------+
+    | TiDB ServerTiKVPD                          |
+    +--------------------------------------------+
+    ```
 
-- 如果不为`NULL`的剩余参数只有一个，则`CONCAT_WS()`返回此参数
-- 如果用于连接的剩余参数中有`NULL`值，`CONCAT_WS()`会忽略值为`NULL`的参数；但如果值为空字符串，不会忽略
+- 如果分隔符为 `NULL`，则 `CONCAT_WS()`返回 `NULL`。
 
-```sql
-SELECT CONCAT_WS(',', 'TiDB Server', NULL, 'PD');
+    查询示例：
 
-+-------------------------------------------+
-| CONCAT_WS(',', 'TiDB Server', NULL, 'PD') |
-+-------------------------------------------+
-|                            TiDB Server,PD |
-+-------------------------------------------+
-```
+    ```sql
+    SELECT CONCAT_WS(NULL, 'TiDB Server', 'TiKV', 'PD');
+    ```
 
-```sql
-SELECT CONCAT_WS(',', 'TiDB Server', NULL);
+    返回结果：
 
-+-------------------------------------+
-| CONCAT_WS(',', 'TiDB Server', NULL) |
-+-------------------------------------+
-|                         TiDB Server |
-+-------------------------------------+
-```
+    ```sql
+    +----------------------------------------------+
+    | CONCAT_WS(NULL, 'TiDB Server', 'TiKV', 'PD') |
+    +----------------------------------------------+
+    | NULL                                         |
+    +----------------------------------------------+
+    ```
 
-```sql
-SELECT CONCAT_WS(',', 'TiDB Server', '', 'PD');
+- 如果用于连接的参数中只有一个不为 `NULL`，则 `CONCAT_WS()` 返回此参数。
 
-+-----------------------------------------+
-| CONCAT_WS(',', 'TiDB Server', '', 'PD') |
-+-----------------------------------------+
-|                         TiDB Server,,PD |
-+-----------------------------------------+
-```
+    查询示例：
+
+    ```sql
+    SELECT CONCAT_WS(',', 'TiDB Server', NULL);
+    ```
+
+    返回结果：
+
+    ```sql
+    +-------------------------------------+
+    | CONCAT_WS(',', 'TiDB Server', NULL) |
+    +-------------------------------------+
+    | TiDB Server                         |
+    +-------------------------------------+
+    ```
+
+- 如果用于连接的参数中有 `NULL`，`CONCAT_WS()`会忽略 `NULL`。
+
+    查询示例：
+
+    ```sql
+    SELECT CONCAT_WS(',', 'TiDB Server', NULL, 'PD');
+    ```
+
+    返回结果：
+
+    ```sql
+    +-------------------------------------------+
+    | CONCAT_WS(',', 'TiDB Server', NULL, 'PD') |
+    +-------------------------------------------+
+    | TiDB Server,PD                            |
+    +-------------------------------------------+
+    ```
+
+- 如果用于连接的参数中有空字符串，`CONCAT_WS()` 不会忽略该字符串。
+
+    查询示例：
+
+    ```sql
+    SELECT CONCAT_WS(',', 'TiDB Server', '', 'PD');
+    ```
+
+    返回结果：
+
+    ```sql
+    +-----------------------------------------+
+    | CONCAT_WS(',', 'TiDB Server', '', 'PD') |
+    +-----------------------------------------+
+    | TiDB Server,,PD                         |
+    +-----------------------------------------+
+    ```
 
 ### [`ELT()`](https://dev.mysql.com/doc/refman/8.0/en/string-functions.html#function_elt)
 
