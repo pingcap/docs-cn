@@ -169,11 +169,7 @@ PingCAP 与开源社区合作，通过三方工具提供以下支持：
          <td>v4.2</td>
          <td>Full</td>
          <td><a href="https://github.com/pingcap/django-tidb" target="_blank" referrerpolicy="no-referrer-when-downgrade">django-tidb</a></td>
-<<<<<<< HEAD
-         <td><a href="/zh/tidb/v7.1/dev-guide-sample-application-django">使用 Django 连接到 TiDB</a></td>
-=======
-         <td><a href="/zh/tidb/dev/dev-guide-sample-application-python-django">使用 Django 连接到 TiDB</a></td>
->>>>>>> a2500d18a0 (develop: update the third party support table (#16074))
+         <td><a href="/zh/tidb/v7.1/dev-guide-sample-application-python-django">使用 Django 连接到 TiDB</a></td>
       </tr>
       <tr>
          <td><a href="https://www.sqlalchemy.org/" target="_blank" referrerpolicy="no-referrer-when-downgrade">SQLAlchemy</a></td>
@@ -187,14 +183,8 @@ PingCAP 与开源社区合作，通过三方工具提供以下支持：
 
 ## GUI
 
-<<<<<<< HEAD
-| GUI | 最新已测试版本 | 支持等级 | 教程 |
-| - | - | - | - |
-| [DBeaver](https://dbeaver.io/) | 23.0.1 | Full | N/A |
-=======
 | GUI                                                       | 最新已测试版本 | 支持等级 | 教程 |
 |-----------------------------------------------------------|-----------------------|---------------|-----|
 | [JetBrains DataGrip](https://www.jetbrains.com/datagrip/) | 2023.2.1              | Full          | N/A |
 | [DBeaver](https://dbeaver.io/)                            | 23.0.3                | Full          | N/A |
 | [Visual Studio Code](https://code.visualstudio.com/)      | 1.72.0                | Full          | N/A |
->>>>>>> a2500d18a0 (develop: update the third party support table (#16074))
