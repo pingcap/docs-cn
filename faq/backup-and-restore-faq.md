@@ -41,14 +41,6 @@ Currently, the log backup feature is not fully adapted to TiDB Lightning. Theref
 
 In upstream clusters where you create log backup tasks, avoid using the TiDB Lightning physical mode to import data. Instead, you can use TiDB Lightning logical mode. If you do need to use the physical mode, perform a snapshot backup after the import is complete, so that PITR can be restored to the time point after the snapshot backup.
 
-### Why is the acceleration of adding indexes feature incompatible with PITR?
-
-Issue: [#38045](https://github.com/pingcap/tidb/issues/38045)
-
-Currently, index data created through the [index acceleration](/system-variables.md#tidb_ddl_enable_fast_reorg-new-in-v630) feature cannot be backed up by PITR.
-
-Therefore, after PITR recovery is complete, BR will delete the index data created by index acceleration, and then recreate it. If many indexes are created by index acceleration or the index data is large during the log backup, it is recommended to perform a full backup after creating the indexes.
-
 ### The cluster has recovered from the network partition failure, but the checkpoint of the log backup task progress still does not resume. Why?
 
 Issue: [#13126](https://github.com/tikv/tikv/issues/13126)
@@ -56,16 +48,6 @@ Issue: [#13126](https://github.com/tikv/tikv/issues/13126)
 After a network partition failure in the cluster, the backup task cannot continue backing up logs. After a certain retry time, the task will be set to `ERROR` state. At this point, the backup task has stopped.
 
 To resolve this issue, you need to manually execute the `br log resume` command to resume the log backup task.
-
-### What should I do if the error `execute over region id` is returned when I perform PITR?
-
-Issue: [#37207](https://github.com/pingcap/tidb/issues/37207)
-
-This issue usually occurs when you enable log backup during a full data import and afterward perform a PITR to restore data at a time point during the data import.
-
-Specifically, there is a probability that this issue occurs if there are a large number of hotspot writes for a long time (such as 24 hours) and if the OPS of each TiKV node is larger than 50k/s (you can view the metrics in Grafana: **TiKV-Details** -> **Backup Log** -> **Handle Event Rate**).
-
-It is recommended that you perform a snapshot backup after the data import and perform PITR based on this snapshot backup.
 
 ## After restoring a downstream cluster using the `br restore point` command, data cannot be accessed from TiFlash. What should I do?
 
