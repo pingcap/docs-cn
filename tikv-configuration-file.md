@@ -1336,7 +1336,7 @@ Titan 相关的配置项。
 > - 如果集群在升级到 TiDB v7.6.0 或更高版本之前已经启用了 Titan，则升级后将维持原有配置，保持启用 Titan 引擎，并保留升级前 [`min-blob-size`](/tikv-configuration-file.md#min-blob-size) 的配置。如果升级前没有显式配置该值，则升级后仍然保持了老版本默认值 `1KB`，以确保升级后集群配置的稳定性。
 
 + 开启 Titan 开关。
-+ `false`
++ `true`
 
 ### `dirname`
 
