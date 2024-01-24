@@ -71,7 +71,7 @@ Titan 对 RocksDB 兼容，也就是说，使用 RocksDB 存储引擎的现有 T
 >
 > 在关闭 Titan 功能的情况下，RocksDB 无法读取已经迁移到 Titan 的数据。如果在打开过 Titan 的 TiKV 实例上错误地关闭了 Titan（误设置 `rocksdb.titan.enabled = false`），启动 TiKV 会失败，TiKV log 中出现 `You have disabled titan when its data directory is not empty` 的错误。如需要关闭 Titan，请参考[关闭 Titan](#关闭-titan) 。
 
-开启 Titan 以后，原有的数据并不会马上迁移到 Titan 引擎，而是随着前台写入和 RocksDB Compaction 的进行，**逐步进行 key-value 分离并写入 Titan**。同样的，无论是通过 [BR](/br/backup-and-restore-overview.md) 快照或日志恢复的数据或扩缩容过程中产生的数据搬迁，还是通过[TiDB Lightning](/tidb-lightning/tidb-lightning-overview.md) 物理导入模式导入的数据，都会首先写入 RocksDB。然后，随着 RocksDB Compaction 的进行，超过 [`min-blob-size`](/tikv-configuration-file.md#min-blob-size) 默认值 `32KB` 的大 value 会逐步分离到 Titan 中。你可以通过观察 **TiKV Details** - **Titan kv** - **blob file size** 监控面板中文件的大小来确认存储在 Titan 中的数据大小。
+开启 Titan 以后，原有的数据并不会马上迁移到 Titan 引擎，而是随着前台写入和 RocksDB Compaction 的进行，**逐步进行 key-value 分离并写入 Titan**。同样的，无论是通过 [BR](/br/backup-and-restore-overview.md) 快照或日志恢复的数据或扩缩容过程中产生的数据搬迁，还是通过 [TiDB Lightning](/tidb-lightning/tidb-lightning-overview.md) 物理导入模式导入的数据，都会首先写入 RocksDB。然后，随着 RocksDB Compaction 的进行，超过 [`min-blob-size`](/tikv-configuration-file.md#min-blob-size) 默认值 `32KB` 的大 value 会逐步分离到 Titan 中。你可以通过观察 **TiKV Details** > **Titan kv** > **blob file size** 监控面板中文件的大小来确认存储在 Titan 中的数据大小。
 
 为了更快地将数据转移到 Titan，建议使用 tikv-ctl 工具执行一次全量 Compaction，以提高迁移速度。具体操作步骤请参考[手动 compact](/tikv-control.md#手动-compact-整个-tikv-集群的数据)。由于 RocksDB 具备 Block Cache，并且在将数据从 RocksDB 迁移到 Titan 时，数据访问是连续的，这使得在迁移过程中 Block Cache 能够更有效地提升迁移速度。在我们的测试中，通过 tikv-ctl 在单个 TiKV 节点上执行全量 Compaction，仅需 1 小时就能将 670 GiB 的数据迁移到 Titan。
 
@@ -109,7 +109,7 @@ Titan 对 RocksDB 兼容，也就是说，使用 RocksDB 存储引擎的现有 T
 
 ### Titan 配置文件示例
 
-下面是一个 Titan 配置文件的样例，更多的参数说明，请参考 [TiKV 配置文件描述](/tikv-configuration-file.md)。你可以使用 TiUP [修改配置参数](/maintain-tidb-using-tiup.md#修改配置参数)，也可以通过[在 Kubernetes 中配置 TiDB 集群](https://docs.pingcap.com/zh/tidb-in-kubernetes/stable/configure-a-tidb-cluster) 修改配置参数。
+下面是一个 Titan 配置文件的样例，更多的参数说明，请参考 [TiKV 配置文件描述](/tikv-configuration-file.md)。你可以使用 TiUP [修改配置参数](/maintain-tidb-using-tiup.md#修改配置参数)，也可以通过[在 Kubernetes 中配置 TiDB 集群](https://docs.pingcap.com/zh/tidb-in-kubernetes/stable/configure-a-tidb-cluster)修改配置参数。
 
 ```toml
 [rocksdb]
