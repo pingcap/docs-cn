@@ -135,7 +135,9 @@ TiDB 版本：7.6.0
     ```sql
     CREATE GLOBAL BINDING FOR
     USING
-        SELECT /*+ merge_join(t1, t2) */ t1.id, t2.amount FROM *.t1, *.t2 WHERE t1.id = t2.id;
+        SELECT /*+ merge_join(t1, t2) */ t1.id, t2.amount
+        FROM *.t1, *.t2
+        WHERE t1.id = t2.id;
     ```
 
     此外，跨数据库绑定能有效缓解由于用户数据和负载的不均衡及其快速变化所引发的 SQL 性能问题。通过跨数据库绑定，SaaS 服务商可以固定由拥有大量数据的用户已验证的执行计划，从而固定所有用户的执行计划。对于 SaaS 服务商，该功能提供了显著的便利性和体验提升。
