@@ -13,9 +13,9 @@ This document describes the usage scenarios of cached tables, the examples, and 
 
 The cached table feature is suitable for tables with the following characteristics:
 
-- The data volume of the table is small.
-- The table is read-only or rarely updated.
-- The table is frequently accessed, and you expect a better read performance.
+- The data volume of the table is small, for example, less than 4 MiB.
+- The table is read-only or rarely updated, for example, with a write QPS (queries per second) of less than 10 times per minute.
+- The table is frequently accessed, and you expect a better read performance, for example, when encountering hotspots on small tables during direct reads from from TiKV.
 
 When the data volume of the table is small but the data is frequently accessed, the data is concentrated on a Region in TiKV and makes it a hotspot Region, which affects the performance. Therefore, the typical usage scenarios of cached tables are as follows:
 
