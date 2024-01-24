@@ -358,6 +358,7 @@ TiDB 版本：7.6.0
 
         - 新增 PITR 对 delete range 场景的集成测试，提升 PITR 稳定性 [#47738](https://github.com/pingcap/tidb/issues/47738) @[Leavrth](https://github.com/Leavrth)
         - 提升了 `RESTORE` 语句在大数据量表场景下的建表性能 [#48301](https://github.com/pingcap/tidb/issues/48301) @[Leavrth](https://github.com/Leavrth)
+        - 重构 BR 异常处理机制, 增加对未知错误的容忍度 [#47656](https://github.com/pingcap/tidb/issues/47656) @[3pointer](https://github.com/3pointer)
 
     + TiCDC
 
@@ -500,7 +501,6 @@ TiDB 版本：7.6.0
         - 修复生成外部存储文件 URI 错误的问题 [#48452](https://github.com/pingcap/tidb/issues/48452) @[3AceShowHand](https://github.com/3AceShowHand)
         - 修复在任务初始化阶段出现与 PD 的连接错误导致日志备份任务虽然启动但无法正常工作的问题 [#16056](https://github.com/tikv/tikv/issues/16056) @[YuJuncen](https://github.com/YuJuncen)
         - 修复日志备份任务可能出现内存泄露以及备份任务启动后无法正常运行的问题 [#16070](https://github.com/tikv/tikv/issues/16070) @[YuJuncen](https://github.com/YuJuncen)
-        - 重构 BR 异常处理机制, 增加对未知错误的容忍度 [#47656](https://github.com/pingcap/tidb/issues/47656) @[3pointer](https://github.com/3pointer)
         -  修复 PITR 恢复过程中插入系统表 `mysql.gc_delete_range` 出错的问题 [#49346](https://github.com/pingcap/tidb/issues/49346) @[Leavrth](https://github.com/Leavrth)
         -  修复从旧版本的备份恢复数据时报错 collation 不支持的问题 [#49466](https://github.com/pingcap/tidb/issues/49466) @[3pointer](https://github.com/3pointer)
         - 修复在部分场景下通过快照恢复用户表后权限更新不及时的问题 [#49394](https://github.com/pingcap/tidb/issues/49394) @[Leavrth](https://github.com/Leavrth)
