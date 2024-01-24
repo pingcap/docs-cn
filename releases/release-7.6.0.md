@@ -505,7 +505,6 @@ TiDB 版本：7.6.0
         - 修复 PITR 恢复过程中插入数据到系统表 `mysql.gc_delete_range` 出错的问题 [#49346](https://github.com/pingcap/tidb/issues/49346) @[Leavrth](https://github.com/Leavrth)
         - 修复从旧版本的备份恢复数据时报错 `Unsupported collation` 的问题 [#49466](https://github.com/pingcap/tidb/issues/49466) @[3pointer](https://github.com/3pointer)
         - 修复在部分场景下通过快照恢复用户表后权限更新不及时的问题 [#49394](https://github.com/pingcap/tidb/issues/49394) @[Leavrth](https://github.com/Leavrth)
-        
 
     + TiCDC
 
