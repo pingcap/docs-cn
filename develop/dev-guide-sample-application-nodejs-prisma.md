@@ -127,7 +127,7 @@ npm install prisma typescript ts-node @types/node --save-dev
 5. 编辑 `.env` 文件，按照如下格式设置环境变量 `DATABASE_URL`，将占位符 `{}` 替换为从连接对话框中复制的参数值：
 
     ```dotenv
-    DATABASE_URL='mysql://{host}:{password}@{host}:4000/test?sslaccept=strict&sslcert={downloaded_ssl_ca_path}'
+    DATABASE_URL='mysql://{user}:{password}@{host}:4000/test?sslaccept=strict&sslcert={downloaded_ssl_ca_path}'
     ```
 
    > **Note**
