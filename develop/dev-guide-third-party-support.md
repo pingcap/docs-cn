@@ -139,7 +139,7 @@ PingCAP 与开源社区合作，通过三方工具提供以下支持：
          <td>v7.0</td>
          <td>Full</td>
          <td>N/A</td>
-         <td><a href="/zh/tidb/dev/dev-guide-sample-application-ruby-rails">使用 Rails 框架和 ActiveRecord ORM 连接到 TiDB</a></td>
+         <td><a href="/zh/tidb/v6.5/dev-guide-sample-application-ruby-rails">使用 Rails 框架和 ActiveRecord ORM 连接到 TiDB</a></td>
       </tr>
       <tr>
          <td rowspan="3">JavaScript / TypeScript</td>
@@ -154,14 +154,14 @@ PingCAP 与开源社区合作，通过三方工具提供以下支持：
          <td>4.16.2</td>
          <td>Full</td>
          <td>N/A</td>
-         <td><a href="/zh/tidb/dev/dev-guide-sample-application-nodejs-prisma">使用 Prisma 连接到 TiDB</a></td>
+         <td><a href="/zh/tidb/v6.5/dev-guide-sample-application-nodejs-prisma">使用 Prisma 连接到 TiDB</a></td>
       </tr>
       <tr>
          <td><a href="https://typeorm.io/" target="_blank" referrerpolicy="no-referrer-when-downgrade">TypeORM</a></td>
          <td>v0.3.17</td>
          <td>Full</td>
          <td>N/A</td>
-         <td><a href="/zh/tidb/dev/dev-guide-sample-application-nodejs-typeorm">使用 TypeORM 连接到 TiDB</a></td>
+         <td><a href="/zh/tidb/v6.5/dev-guide-sample-application-nodejs-typeorm">使用 TypeORM 连接到 TiDB</a></td>
       </tr>
       <tr>
          <td rowspan="2">Python</td>
