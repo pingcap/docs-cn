@@ -57,6 +57,12 @@ Flags:
       --tiflash.binpath string   指定 TiFlash 的二进制文件位置（开发调试用，可忽略）
       --tiflash.config string    指定 TiFlash 的配置文件（开发调试用，可忽略）
       --tiflash.timeout int      指定 TiFlash 最长等待超时时间，单位为秒，若配置为 0，则永不超时。
+      --tiproxy int              设置集群中 TiProxy 节点的数量
+      --tiproxy.binpath string   指定 TiProxy 的二进制文件位置
+      --tiproxy.config string    指定 TiProxy 的配置文件
+      --tiproxy.host host        Playground 的 TiProxy host。如果没有提供，TiProxy 会使用 host 参数作为它的 host
+      --tiproxy.port int         Playground 的 TiProxy 端口。如果没有提供，TiProxy 会使用 6000 作为它的端口
+      --tiproxy.timeout int      TiProxy 最长等待超时时间，单位为秒，若配置为 0，则永不超时（默认为 60）。
   -v, --version                  显示 playground 的版本号
       --without-monitor          设置不使用 Prometheus 和 Grafana 的监控功能。若不添加此参数，则默认开启监控功能。
 

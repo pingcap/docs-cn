@@ -72,14 +72,15 @@ npm install prisma typescript ts-node @types/node --save-dev
 3. 确认对话框中的选项配置和你的运行环境一致。
 
     - **Endpoint Type** 为 `Public`。
-    - **Connect With** 选择 `General`。
+    - **Branch** 选择 `main`。
+    - **Connect With** 选择 `Prisma`。
     - **Operating System** 为运行示例代码所在的操作系统。
 
     > **Note**
     >
     > 如果你的程序在 Windows Subsystem for Linux (WSL) 中运行，请切换为对应的 Linux 发行版。
 
-4. 如果你还没有设置密码，点击 **Create password** 按钮生成一个随机的密码。
+4. 如果你还没有设置密码，点击 **Generate Password** 按钮生成一个随机的密码。
 
 5. 运行以下命令，将 `.env.example` 复制并重命名为 `.env`：
 
@@ -87,10 +88,10 @@ npm install prisma typescript ts-node @types/node --save-dev
     cp .env.example .env
     ```
 
-6. 编辑 `.env` 文件，按照如下格式设置环境变量 `DATABASE_URL`，将占位符 `{}` 替换为从连接对话框中复制的参数值：
+6. 编辑 `.env` 文件，按照如下格式设置环境变量 `DATABASE_URL`，将占位符 `{}` 替换为从连接对话框中复制的连接字符串：
 
     ```dotenv
-    DATABASE_URL=mysql://{user}:{password}@{host}:4000/test?sslaccept=strict
+    DATABASE_URL={connection_string}
     ```
 
     > **Note**
