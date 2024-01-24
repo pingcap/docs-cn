@@ -32,7 +32,7 @@ TiDB 版本：7.6.0
     <td>BR v7.6.0 实验性地引入了粗粒度打散 Region 算法，用于准备集群的快照恢复。在 TiKV 节点较多的集群中，该算法显著提高了集群资源利用率，更均匀地分配了负载，同时更好地利用了每个节点的网络带宽。在实际案例中，该改进将恢复速度最高提升约 10 倍。</td>
   </tr>
   <tr>
-    <td><a href="">建表性能提升 10 倍（实验特性）</a></td>
+    <td><a href="https://docs.pingcap.com/zh/tidb/v7.6/ddl-v2">建表性能提升 10 倍（实验特性）</a></td>
     <td>在 v7.6.0 中引入了新的 DDL 架构，批量建表的性能提高了 10 倍。这一重大改进极大地缩短了创建大量表所需的时间。特别是在 SaaS 场景中，快速创建大量表（从数万到数十万不等）是一个常见的挑战，使用该特性能显著提升 SaaS 场景的建表速度。</td>
   </tr>
   <tr>
@@ -45,7 +45,7 @@ TiDB 版本：7.6.0
     <td>全面支持 TiProxy，可通过部署工具轻松部署。TiProxy 可以管理和维护客户端与 TiDB 的连接，在滚动重启、升级以及扩缩容过程中保持连接。</td>
   </tr>
   <tr>
-    <td><a href="">Data Migration (DM) 正式支持迁移 MySQL 8.0 (GA)</a></td>
+    <td><a href="https://docs.pingcap.com/zh/tidb/v7.6/dm-compatibility-catalog">Data Migration (DM) 正式支持迁移 MySQL 8.0 (GA)</a></td>
     <td>在 v7.6.0 之前，DM 迁移 MySQL 8.0 仅为实验特性，不能用于生产环境。TiDB v7.6.0 增强了该功能的稳定性、兼容性，可在生产环境帮助你平滑、快速地将数据从 MySQL 8.0 迁移到 TiDB。在 v7.6.0 中，该功能正式 GA。</td>
   </tr>
 </tbody>
