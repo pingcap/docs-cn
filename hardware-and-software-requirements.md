@@ -26,12 +26,12 @@ TiDB 作为一款开源一栈式实时 HTAP 数据库，可以很好地部署和
 | 统信操作系统 (UOS) V20                 |   <ul><li>x86_64</li><li>ARM 64</li></ul>   |
 | openEuler 22.03 LTS SP1 |   <ul><li>x86_64</li><li>ARM 64</li></ul>   |
 | macOS 12 (Monterey) 及以上的版本 |  <ul><li>x86_64</li><li>ARM 64</li></ul>  |
-|  Oracle Enterprise Linux 7.3 及以上的 7.x 版本  |  x86_64           |
-|   Ubuntu LTS 18.04 及以上的版本  |  x86_64           |
+|  Oracle Enterprise Linux 8 及以上的版本  |  x86_64           |
+|   Ubuntu LTS 20.04 及以上的版本  |  x86_64           |
 | CentOS 8 Stream | <ul><li>x86_64</li><li>ARM 64</li></ul> |
-|  Debian 9 (Stretch) 及以上的版本  |  x86_64           |
-|  Fedora 35 及以上的版本   |  x86_64           |
-|  openSUSE Leap 15.3 以上的版本（不包含 Tumbleweed） |  x86_64           |
+|  Debian 10 (Buster) 及以上的版本  |  x86_64           |
+|  Fedora 38 及以上的版本   |  x86_64           |
+|  openSUSE Leap 15.5 以上的版本（不包含 Tumbleweed） |  x86_64           |
 |  SUSE Linux Enterprise Server 15  |  x86_64                        |
 
 > **注意：**
@@ -174,4 +174,4 @@ TiDB 作为开源一栈式实时 HTAP 数据库，其正常运行需要网络环
 
 ## 客户端 Web 浏览器要求
 
-TiDB 提供了基于 [Grafana](https://grafana.com/) 的技术平台，对数据库集群的各项指标进行可视化展现。采用支持 Javascript 的微软 IE、Google Chrome、Mozilla Firefox 的较新版本即可访问监控入口。
+TiDB 提供了基于 [Grafana](https://grafana.com/) 的技术平台，对数据库集群的各项指标进行可视化展现。采用支持 Javascript 的微软 Edge、Apple Safari、Google Chrome、Mozilla Firefox 的较新版本即可访问监控入口。
