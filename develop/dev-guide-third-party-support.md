@@ -139,30 +139,37 @@ PingCAP 与开源社区合作，通过三方工具提供以下支持：
          <td>v7.0</td>
          <td>Full</td>
          <td>N/A</td>
-         <td>N/A</td>
+         <td><a href="/zh/tidb/v7.1/dev-guide-sample-application-ruby-rails">使用 Rails 框架和 ActiveRecord ORM 连接到 TiDB</a></td>
       </tr>
       <tr>
-         <td rowspan="2">JavaScript / TypeScript</td>
-         <td><a href="https://www.npmjs.com/package/sequelize" target="_blank" referrerpolicy="no-referrer-when-downgrade">sequelize</a></td>
+         <td rowspan="3">JavaScript / TypeScript</td>
+         <td><a href="https://sequelize.org/" target="_blank" referrerpolicy="no-referrer-when-downgrade">Sequelize</a></td>
          <td>v6.20.1</td>
          <td>Full</td>
          <td>N/A</td>
          <td>N/A</td>
       </tr>
       <tr>
-         <td><a href="https://www.prisma.io/" target="_blank" referrerpolicy="no-referrer-when-downgrade">Prisma Client</a></td>
+         <td><a href="https://www.prisma.io/" target="_blank" referrerpolicy="no-referrer-when-downgrade">Prisma</a></td>
          <td>4.16.2</td>
          <td>Full</td>
          <td>N/A</td>
+         <td><a href="/zh/tidb/v7.1/dev-guide-sample-application-nodejs-prisma">使用 Prisma 连接到 TiDB</a></td>
+      </tr>
+      <tr>
+         <td><a href="https://typeorm.io/" target="_blank" referrerpolicy="no-referrer-when-downgrade">TypeORM</a></td>
+         <td>v0.3.17</td>
+         <td>Full</td>
          <td>N/A</td>
+         <td><a href="/zh/tidb/v7.1/dev-guide-sample-application-nodejs-typeorm">使用 TypeORM 连接到 TiDB</a></td>
       </tr>
       <tr>
          <td rowspan="2">Python</td>
          <td><a href="https://pypi.org/project/Django/" target="_blank" referrerpolicy="no-referrer-when-downgrade">Django</a></td>
-         <td>v4.1</td>
+         <td>v4.2</td>
          <td>Full</td>
          <td><a href="https://github.com/pingcap/django-tidb" target="_blank" referrerpolicy="no-referrer-when-downgrade">django-tidb</a></td>
-         <td><a href="/zh/tidb/v7.1/dev-guide-sample-application-django">使用 Django 连接到 TiDB</a></td>
+         <td><a href="/zh/tidb/v7.1/dev-guide-sample-application-python-django">使用 Django 连接到 TiDB</a></td>
       </tr>
       <tr>
          <td><a href="https://www.sqlalchemy.org/" target="_blank" referrerpolicy="no-referrer-when-downgrade">SQLAlchemy</a></td>
@@ -176,6 +183,8 @@ PingCAP 与开源社区合作，通过三方工具提供以下支持：
 
 ## GUI
 
-| GUI | 最新已测试版本 | 支持等级 | 教程 |
-| - | - | - | - |
-| [DBeaver](https://dbeaver.io/) | 23.0.1 | Full | N/A |
+| GUI                                                       | 最新已测试版本 | 支持等级 | 教程 |
+|-----------------------------------------------------------|-----------------------|---------------|-----|
+| [JetBrains DataGrip](https://www.jetbrains.com/datagrip/) | 2023.2.1              | Full          | N/A |
+| [DBeaver](https://dbeaver.io/)                            | 23.0.3                | Full          | N/A |
+| [Visual Studio Code](https://code.visualstudio.com/)      | 1.72.0                | Full          | N/A |
