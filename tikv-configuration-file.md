@@ -1711,7 +1711,7 @@ rocksdb defaultcf titan 相关的配置项。
 
 + Titan 的运行模式选择。
 + 可选值：
-    + "normal"：value size 超过 min-blob-size 的数据会写入到 blob 文件。
+    + "normal"：value size 超过 [`min-blob-size`](#min-blob-size) 的数据会写入到 blob 文件。
     + "read-only"：不再写入新数据到 blob，原有 blob 内的数据仍然可以读取。
     + "fallback"：将 blob 内的数据写回 LSM。
 + 默认值："normal"
