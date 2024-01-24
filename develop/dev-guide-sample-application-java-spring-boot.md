@@ -256,7 +256,6 @@ For more information, refer to [Delete data](/develop/dev-guide-delete-data.md).
 
 ## Next steps
 
-- Learn more usage of Hibernate from [the documentation of Hibernate](https://hibernate.org/orm/documentation).
 - Learn more usage about the third-party libraries and frameworks used in this document, refer to their official documentation:
 
     - [The documentation of Spring Framework](https://spring.io/projects/spring-framework)
