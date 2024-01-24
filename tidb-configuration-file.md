@@ -410,7 +410,7 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
 ### `tls-version`
 
 + 设置用于连接 MySQL 协议的最低 TLS 版本。
-+ 默认值：""，支持 TLSv1.1 及以上版本。
++ 默认值：""，支持 TLSv1.2 及以上版本。在 v7.6.0 之前，TiDB 默认支持 TLSv1.1 及以上版本。
 + 可选值：`"TLSv1.0"`、`"TLSv1.1"`、`"TLSv1.2"` 和 `"TLSv1.3"`
 
 ### `auth-token-jwks` <span class="version-mark">从 v6.4.0 版本开始引入</span>
@@ -439,19 +439,15 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
 
 ### `session-token-signing-cert` <span class="version-mark">从 v6.4.0 版本开始引入</span>
 
-> **警告：**
->
-> 该配置与一个未发布的特性相关。**请勿设置该配置**。
-
++ 证书文件路径，用于 [TiProxy](/tiproxy/tiproxy-overview.md) 的会话迁移。
 + 默认值：""
++ 空值将导致 TiProxy 会话迁移失败。要启用会话迁移，所有的 TiDB 节点必须设置相同的证书和密钥。因此你应该在每个 TiDB 节点上存储相同的证书和密钥。
 
 ### `session-token-signing-key` <span class="version-mark">从 v6.4.0 版本开始引入</span>
 
-> **警告：**
->
-> 该配置与一个未发布的特性相关。**请勿设置该配置**。
-
++ 密钥文件路径，用于 [TiProxy](/tiproxy/tiproxy-overview.md) 的会话迁移。
 + 默认值：""
++ 参阅 [`session-token-signing-cert`](#session-token-signing-cert-从-v640-版本开始引入) 的描述。
 
 ## performance
 
