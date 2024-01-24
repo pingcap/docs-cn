@@ -65,7 +65,7 @@ TiDB 版本：7.6.0
 
 ### 性能
 
-* BR 快照恢复速度最高提升 10 倍（实验特性）[#33937](https://github.com/pingcap/tidb/issues/33937) @[3pointer](https://github.com/3pointer)
+* BR 快照恢复速度最高提升 10 倍（实验特性）[#33937](https://github.com/pingcap/tidb/issues/33937) [#49886](https://github.com/pingcap/tidb/issues/49886) @[3pointer](https://github.com/3pointer)
 
     随着 TiDB 集群规模的不断扩大，故障时快速恢复集群以减少业务中断时间显得尤为重要。在 v7.6.0 之前的版本中，Region 打散算法是性能恢复的主要瓶颈。在 v7.6.0 中，BR 优化了 Region 打散算法，可以迅速将恢复任务拆分为大量小任务，并批量分散到所有 TiKV 节点上。新的并行恢复算法充分利用每个 TiKV 节点的所有资源，实现了并行快速恢复。在实际案例中，大规模 Region 场景下，集群快照恢复速度最高提升约 10 倍。
 
@@ -205,7 +205,7 @@ TiDB 版本：7.6.0
 
     更多信息，请参考[用户文档](/system-variables.md#tidb_txn_entry_size_limit-从-v760-版本开始引入)。
 
-* BR 默认恢复用户账号等系统表数据 [#48567](https://github.com/pingcap/tidb/issues/48567) @[BornChanger](https://github.com/BornChanger)
+* BR 默认恢复用户账号等系统表数据 [#48567](https://github.com/pingcap/tidb/issues/48567) @[BornChanger](https://github.com/BornChanger) [#49627](https://github.com/pingcap/tidb/issues/49627) @[Leavrth](https://github.com/Leavrth) 
 
     从 `br` v5.1.0 开始，快照备份时默认自动备份 **mysql schema** 下的系统表数据，但恢复数据时默认不恢复系统表数据。在 v6.2.0 中，`br` 增加恢复参数 `--with-sys-table` 支持恢复数据的同时恢复部分系统表相关数据，提供更多的操作灵活性。
 
@@ -464,7 +464,6 @@ TiDB 版本：7.6.0
     - 修复 Titan 监控中 blob 文件大小不正确的问题 [#15971](https://github.com/tikv/tikv/issues/15971) @[Connor1996](https://github.com/Connor1996)
     - 修复 TiCDC 同步大表可能导致 TiKV OOM 的问题 [#16035](https://github.com/tikv/tikv/issues/16035) @[overvenus](https://github.com/overvenus)
     - 修复 resolve ts 可能被阻塞 2 小时的问题 [#11847](https://github.com/tikv/tikv/issues/11847) @[overvenus](https://github.com/overvenus)
-    - 修复日志备份任务可能出现内存泄露以及备份任务启动后无法正常运行的问题 [#16070](https://github.com/tikv/tikv/issues/16070) @[YuJuncen](https://github.com/YuJuncen)
     - 修复 TiDB 和 TiKV 处理 `DECIMAL` 算术乘法截断时结果不一致的问题 [#16268](https://github.com/tikv/tikv/issues/16268) @[solotzg](https://github.com/solotzg)
     - 修复 `cast_duration_as_time` 可能返回错误结果的问题 [#16211](https://github.com/tikv/tikv/issues/16211) @[gengliqi](https://github.com/gengliqi)
     - 修复巴西和埃及时区转换错误的问题 [#16220](https://github.com/tikv/tikv/issues/16220) @[overvenus](https://github.com/overvenus)
@@ -500,6 +499,12 @@ TiDB 版本：7.6.0
 
         - 修复生成外部存储文件 URI 错误的问题 [#48452](https://github.com/pingcap/tidb/issues/48452) @[3AceShowHand](https://github.com/3AceShowHand)
         - 修复在任务初始化阶段出现与 PD 的连接错误导致日志备份任务虽然启动但无法正常工作的问题 [#16056](https://github.com/tikv/tikv/issues/16056) @[YuJuncen](https://github.com/YuJuncen)
+        - 修复日志备份任务可能出现内存泄露以及备份任务启动后无法正常运行的问题 [#16070](https://github.com/tikv/tikv/issues/16070) @[YuJuncen](https://github.com/YuJuncen)
+        - 重构 BR 异常处理机制, 增加对未知错误的容忍度 [#47656](https://github.com/pingcap/tidb/issues/47656) @[3pointer](https://github.com/3pointer)
+        -  修复 PITR 恢复过程中插入系统表 `mysql.gc_delete_range` 出错的问题 [#49346](https://github.com/pingcap/tidb/issues/49346) @[Leavrth](https://github.com/Leavrth)
+        -  修复从旧版本的备份恢复数据时报错 collation 不支持的问题 [#49466](https://github.com/pingcap/tidb/issues/49466) @[3pointer](https://github.com/3pointer)
+        - 修复在部分场景下通过快照恢复用户表后权限更新不及时的问题 [#49394](https://github.com/pingcap/tidb/issues/49394) @[Leavrth](https://github.com/Leavrth)
+        
 
     + TiCDC
 
