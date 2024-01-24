@@ -70,9 +70,9 @@ tiup br restore full --pd "${PD_IP}:2379" \
 --storage "s3://backup-101/snapshot-202209081330?access-key=${access-key}&secret-access-key=${secret-access-key}"
 ```
 
-> **注意：**
+> **警告：**
 >
-> - 在 TiDB v7.6.0 版本中，通过设置 `--granularity="coarse-grained"` 参数启用粗粒度打散 Region 的方式加速恢复是实验性功能，建议在低于 1,000 张表的集群中使用此功能来加速数据恢复。请注意，该功能还未支持断点恢复。
+> 在 v7.6.0 中，通过设置 `--granularity="coarse-grained"` 参数启用粗粒度打散 Region 算法加速恢复为实验特性，建议在表数量不超过 1,000 的集群中使用此功能加速数据恢复。请注意，该功能暂不支持断点恢复。
 
 为了更进一步加速大集群的恢复速度，BR 从 v7.6.0 开始支持通过设置 `--granularity="coarse-grained"` 参数启用粗粒度打散 Region 的方式（实验特性）来进行更快的并行恢复。通过优化 Region 打散算法，BR 可以将恢复任务快速拆分为多个小任务，并批量分散到所有 TiKV 节点上充分利用每个 TiKV 节点的资源，实现了更快的并行恢复速度。
 
