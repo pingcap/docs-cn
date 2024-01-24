@@ -68,7 +68,7 @@ Connect to your TiDB cluster depending on the TiDB deployment option you have se
 
 5. Launch MySQL Workbench and click **+** near the **MySQL Connections** title.
 
-    ![MySQL Workbench: add new connection](/media/develop/navicat-add-new-connection.png)
+    ![MySQL Workbench: add new connection](/media/develop/mysql-workbench-add-new-connection.png)
 
 6. In the **Setup New Connection** dialog, configure the following connection parameters:
 
@@ -101,7 +101,7 @@ Connect to your TiDB cluster depending on the TiDB deployment option you have se
 
 4. Launch MySQL Workbench and click **+** near the **MySQL Connections** title.
 
-    ![MySQL Workbench: add new connection](/media/develop/navicat-add-new-connection.png)
+    ![MySQL Workbench: add new connection](/media/develop/mysql-workbench-add-new-connection.png)
 
 5. In the **Setup New Connection** dialog, configure the following connection parameters:
 
@@ -126,7 +126,7 @@ Connect to your TiDB cluster depending on the TiDB deployment option you have se
 
 1. Launch MySQL Workbench and click **+** near the **MySQL Connections** title.
 
-    ![MySQL Workbench: add new connection](/media/develop/navicat-add-new-connection.png)
+    ![MySQL Workbench: add new connection](/media/develop/mysql-workbench-add-new-connection.png)
 
 2. In the **Setup New Connection** dialog, configure the following connection parameters:
 
