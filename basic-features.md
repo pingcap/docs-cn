@@ -217,6 +217,7 @@ aliases: ['/docs-cn/dev/basic-features/','/docs-cn/dev/experimental-features-4.0
 | [TiCDC 支持在两个 TiDB 集群之间进行双向复制](/ticdc/ticdc-bidirectional-replication.md) | Y | Y | Y | Y | N | N | N | N | N | N | N |
 | [TiCDC OpenAPI v2](/ticdc/ticdc-open-api-v2.md) | Y | Y | Y | N | N | N | N | N | N | N | N |
 | [DM](/dm/dm-overview.md) 支持迁移 MySQL 8.0  | Y | E | E | E | E | N | N | N | N | N | N |
+
 ## 管理，可视化和工具
 
 | 管理，可视化和工具 | 7.6 | 7.5 | 7.1 | 6.5 | 6.1 | 5.4 | 5.3 | 5.2 | 5.1 | 5.0 | 4.0 |
