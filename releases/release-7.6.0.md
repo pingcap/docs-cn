@@ -37,11 +37,11 @@ TiDB 版本：7.6.0
   </tr>
   <tr>
     <td><a href="https://docs.pingcap.com/zh/tidb/v7.6/tune-region-performance#通过-active-pd-follower-提升-pd-region-信息查询服务的扩展能力">通过 Active PD Follower 提升 PD Region 信息查询服务的扩展能力（实验特性）</a></td>
-    <td>TiDB v7.6.0 实验性地引入了 Active PD Follower 特性，允许 PD follower 提供 Region 信息查询服务。在 TiDB 节点数量较多和 Region 数量较多的集群中，该功能提升了 PD 集群处理 GetRegion、ScanRegions 请求的能力，减轻了 PD leader 的 CPU 压力。</td>
+    <td>TiDB v7.6.0 实验性地引入了 Active PD Follower 特性，允许 PD follower 提供 Region 信息查询服务。在 TiDB 节点数量较多和 Region 数量较多的集群中，该功能提升了 PD 集群处理 <code>GetRegion</code>、<code>ScanRegions</code> 请求的能力，减轻了 PD leader 的 CPU 压力。</td>
   </tr>
   <tr>
     <td rowspan="2">稳定性与高可用</td>
-    <td><a href="https://docs.pingcap.com/tidb/v7.6/tiproxy/tiproxy-overview">支持 TiProxy（实验特性）</a></td>
+    <td><a href="https://docs.pingcap.com/zh/tidb/v7.6/tiproxy-overview">支持 TiProxy（实验特性）</a></td>
     <td>全面支持 TiProxy，可通过部署工具轻松部署。TiProxy 可以管理和维护客户端与 TiDB 的连接，在滚动重启、升级以及扩缩容过程中保持连接。</td>
   </tr>
   <tr>
