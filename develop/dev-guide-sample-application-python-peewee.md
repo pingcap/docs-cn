@@ -235,8 +235,8 @@ Player.create(name="test", coins=100, goods=100)
 
 # 插入多个对象
 data = [
-	{"name": "test1", "coins": 100, "goods": 100},
-	{"name": "test2", "coins": 100, "goods": 100},
+    {"name": "test1", "coins": 100, "goods": 100},
+    {"name": "test2", "coins": 100, "goods": 100},
 ]
 Player.insert_many(data).execute()
 ```
