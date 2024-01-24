@@ -265,9 +265,7 @@ TiDB 版本：7.6.0
 
 ### MySQL 兼容性
 
-* 在 TiDB v7.6.0 版本之前，`LOAD DATA` 操作在一个事务中提交所有行，或者以批量方式提交事务，和 MySQL 的行为略有不同。从 TiDB v7.6.0 版本开始，`LOAD DATA` 的事务行为与 MySQL 的事务行为一致，包括事务内的 `LOAD DATA` 语句本身不再自动提交当前事务，也不会开启新事务，并且事务内的 `LOAD DATA` 语句可以被显式提交或者回滚。此外，`LOAD DATA` 语句会受 TiDB 事务模式设置（乐观/悲观）影响。
-
-* 兼容性 2
+* 在 TiDB v7.6.0 版本之前，`LOAD DATA` 操作在一个事务中提交所有行，或者以批量方式提交事务，和 MySQL 的行为略有不同。从 TiDB v7.6.0 版本开始，`LOAD DATA` 的事务行为与 MySQL 的事务行为一致，包括事务内的 `LOAD DATA` 语句本身不再自动提交当前事务，也不会开启新事务，并且事务内的 `LOAD DATA` 语句可以被显式提交或者回滚。此外，`LOAD DATA` 语句会受 TiDB 事务模式设置（乐观/悲观）影响。[#49079](https://github.com/pingcap/tidb/pull/49079) @[ekexium](https://github.com/ekexium)
 
 ### 系统变量
 
