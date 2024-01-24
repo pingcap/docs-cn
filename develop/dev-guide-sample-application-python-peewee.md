@@ -48,11 +48,7 @@ pip install -r requirements.txt
 
 #### 为什么安装 PyMySQL？
 
-<<<<<<< HEAD
-Peewee 是一个支持多种数据库的 ORM 库。它是对数据库的高层抽象，可以帮助开发者以更面向对象的方式编写 SQL 语句。但 peewee 并不提供数据库驱动，因此需要单独安装用于连接 TiDB 的驱动。本示例项目使用 PyMySQL 作为数据库驱动。PyMySQL 是一个与 TiDB 兼容的纯 Python 实现的 MySQL 客户端库，并可以在所有平台上安装。更多信息，参考 [peewee 官方文档](https://docs.peewee-orm.com/en/latest/peewee/database.html?highlight=mysql#using-mysql)。
-=======
 peewee 是一个支持多种数据库的 ORM 库。它是对数据库的高层抽象，可以帮助开发者以更面向对象的方式编写 SQL 语句。但 peewee 并不提供数据库驱动，因此需要单独安装用于连接 TiDB 的驱动。本示例项目使用 [PyMySQL](/develop/dev-guide-sample-application-python-pymysql.md) 作为数据库驱动。PyMySQL 是一个与 TiDB 兼容的纯 Python 实现的 MySQL 客户端库，并可以在所有平台上安装。更多信息，参考 [peewee 官方文档](https://docs.peewee-orm.com/en/latest/peewee/database.html?highlight=mysql#using-mysql)。
->>>>>>> ad6c4bcd9f (develop: update dev-guide-sample-application-python-peewee (#16170))
 
 ### 第 3 步：配置连接信息
 
