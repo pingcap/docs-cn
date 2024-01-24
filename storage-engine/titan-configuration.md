@@ -83,7 +83,7 @@ Titan 对 RocksDB 兼容，也就是说，使用 RocksDB 存储引擎的现有 T
 
 ### `min-blob-size`
 
-你可以通过设置 [`min-blob-size`](/tikv-configuration-file.md#min-blob-size) 来调整 value 的大小阈值，决定哪些数据保存在 RocksDB 中，哪些数据保存在 Titan 的 blob file 中。经过[测试](/storage-engine/titan-overview.md#min-blob-size-的选择及其性能影响)，`32KB` 是个折中的值。
+你可以通过设置 [`min-blob-size`](/tikv-configuration-file.md#min-blob-size) 来调整 value 的大小阈值，决定哪些数据保存在 RocksDB 中，哪些数据保存在 Titan 的 blob file 中。经过[测试](/storage-engine/titan-overview.md#min-blob-size-的选择及其性能影响)，`32KB` 是个折中的值。如果你想进一步提升写性能，并能接受扫描性能的下降，你可以将该值调整为 `1KB`。
 
 ### `blob-file-compression` 和 `zstd-dict-size`
 
@@ -91,13 +91,19 @@ Titan 对 RocksDB 兼容，也就是说，使用 RocksDB 存储引擎的现有 T
 
 ### `blob-cache-size`
 
-要注意的是，[`blob-cache-size`](/tikv-configuration-file.md#blob-cache-size) 控制 Titan 中 value 的缓存大小。更大的缓存能提高 Titan 读性能，但过大的缓存会造成 OOM。建议在数据库稳定运行后，根据监控把 RocksDB block cache (`storage.block-cache.capacity`) 设置为 store size 减去 blob file size 的大小，`blob-cache-size` 设置为内存大小 * 50% 减去 block cache 的大小。这是为了保证 block cache 足够缓存整个 RocksDB 的前提下，blob cache 尽量大。
+可以使用 [`blob-cache-size`](/tikv-configuration-file.md#blob-cache-size) 控制 Titan 中 value 的缓存大小。更大的缓存能提高 Titan 读性能，但过大的缓存会造成 OOM。
+
+建议在数据库稳定运行后，根据监控把 RocksDB block cache (`storage.block-cache.capacity`) 设置为 store size 减去 blob file size 的大小，`blob-cache-size` 设置为内存大小 * 50% 减去 block cache 的大小。这是为了保证 block cache 足够缓存整个 RocksDB 的前提下，blob cache 尽量大。
 
 ### `discardable-ratio` 和 `max-background-gc`
 
-[`discardable-ratio`](/tikv-configuration-file.md#discardable-ratio) 和 [`max-background-gc`](/tikv-configuration-file.md#max-background-gc) 的设置对于 Titan 的读性能和垃圾回收过程都有重要影响。当一个 blob file 中无用数据（相应的 key 已经被更新或删除）比例超过 [`discardable-ratio`](/tikv-configuration-file.md#discardable-ratio) 设置的阈值时，将会触发 Titan GC。减少这个阈值可以减少空间放大，但是会造成 Titan 更频繁 GC；增加这个值可以减少 Titan GC，减少相应的 I/O 带宽和 CPU 消耗，但是会增加磁盘空间占用。
+[`discardable-ratio`](/tikv-configuration-file.md#discardable-ratio) 和 [`max-background-gc`](/tikv-configuration-file.md#max-background-gc) 的设置对于 Titan 的读性能和垃圾回收过程都有重要影响。
 
-当从 TiKV Details - Thread CPU - RocksDB CPU 监控中观察到 Titan GC 线程长期处于满负荷状态时，应该考虑调整  [`max-background-gc`](/tikv-configuration-file.md#max-background-gc) 增加 Titan GC 线程池大小。
+当一个 blob file 中无用数据（相应的 key 已经被更新或删除）比例超过 [`discardable-ratio`](/tikv-configuration-file.md#discardable-ratio) 设置的阈值时，将会触发 Titan GC。减少这个阈值可以减少空间放大，但是会造成 Titan 更频繁 GC；增加这个值可以减少 Titan GC，减少相应的 I/O 带宽和 CPU 消耗，但是会增加磁盘空间占用。
+
+若果你通过**TiKV Details** - **Thread CPU** - **RocksDB CPU** 监控中观察到 Titan GC 线程长期处于满负荷状态时，应该考虑调整 [`max-background-gc`](/tikv-configuration-file.md#max-background-gc) 增加 Titan GC 线程池大小。
+
+### `rate-bytes-per-sec`
 
 通过调整 [`rate-bytes-per-sec`](/tikv-configuration-file.md#rate-bytes-per-sec)，你可以限制 RocksDB compaction 的 I/O 速率，从而在高流量时减少对前台读写性能的影响。
 
