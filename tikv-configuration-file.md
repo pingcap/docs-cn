@@ -1622,7 +1622,7 @@ rocksdb defaultcf、rocksdb writecf 和 rocksdb lockcf 相关的配置项。
 
 ## rocksdb.defaultcf.titan
 
-> **警告：**
+> **注意：**
 >
 > 仅支持在 `rocksdb.defaultcf` 启用 Titan，不支持在 `rocksdb.writecf` 启用 Titan。
 
