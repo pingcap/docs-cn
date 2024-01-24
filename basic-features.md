@@ -130,6 +130,7 @@ aliases: ['/docs-cn/dev/basic-features/','/docs-cn/dev/experimental-features-4.0
 | [元数据锁](/metadata-lock.md) |  Y  |  Y  | Y | Y | N | N | N | N | N | N | N |
 | [`FLASHBACK CLUSTER`](/sql-statements/sql-statement-flashback-cluster.md) |  Y  |  Y  | Y | Y | N | N | N | N | N | N | N |
 | [暂停](/sql-statements/sql-statement-admin-pause-ddl.md)/[恢复](/sql-statements/sql-statement-admin-resume-ddl.md) DDL | Y | Y | N | N | N | N | N | N | N | N | N |
+| [TiDB DDL V2 架构](/ddl-v2.md) | E | N | N | N | N | N | N | N | N | N | N |
 
 ## 事务
 
@@ -215,7 +216,7 @@ aliases: ['/docs-cn/dev/basic-features/','/docs-cn/dev/experimental-features-4.0
 | [TiCDC 支持保存数据到存储服务 (Amazon S3/GCS/Azure Blob Storage/NFS)](/ticdc/ticdc-sink-to-cloud-storage.md) | Y | Y | Y | E | N | N | N | N | N | N | N |
 | [TiCDC 支持在两个 TiDB 集群之间进行双向复制](/ticdc/ticdc-bidirectional-replication.md) | Y | Y | Y | Y | N | N | N | N | N | N | N |
 | [TiCDC OpenAPI v2](/ticdc/ticdc-open-api-v2.md) | Y | Y | Y | N | N | N | N | N | N | N | N |
-
+| [DM](/dm/dm-overview.md) 支持迁移 MySQL 8.0  | Y | E | E | E | E | N | N | N | N | N | N |
 ## 管理，可视化和工具
 
 | 管理，可视化和工具 | 7.6 | 7.5 | 7.1 | 6.5 | 6.1 | 5.4 | 5.3 | 5.2 | 5.1 | 5.0 | 4.0 |
