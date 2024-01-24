@@ -11,7 +11,7 @@ aliases: ['/docs-cn/dev/storage-engine/titan-configuration/','/docs-cn/dev/refer
 
 > **注意：**
 >
-> - 从 TiDB v7.6.0 开始，新集群将默认启用 Titan，并将阈值 [`min-blob-size`](/tikv-configuration-file.md#min-blob-size) 的默认值由之前的 `1KB` 调整为 `32KB`。
+> - 从 TiDB v7.6.0 开始，新集群将默认启用 Titan，以更好地支持 TiDB 宽表写入场景和 JSON。阈值 [`min-blob-size`](/tikv-configuration-file.md#min-blob-size) 的默认值也由之前的 `1KB` 调整为 `32KB`。
 > - 如果集群在升级到 TiDB v7.6.0 或更高版本之前未启用 Titan，则升级后将保持原有配置，继续使用 RocksDB。
 > - 如果集群在升级到 TiDB v7.6.0 或更高版本之前已经启用了 Titan，则升级后将维持原有配置，保持启用 Titan，并保留升级前 [`min-blob-size`](/tikv-configuration-file.md#min-blob-size) 的配置。如果升级前没有显式配置该值，则升级后仍然保持老版本的默认值 `1KB`，以确保升级后集群配置的稳定性。
 
