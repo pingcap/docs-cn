@@ -313,6 +313,7 @@ TiDB 版本：7.6.0
 
 ## 废弃功能
 
+* TiDB v7.6.0 废弃了对 TLSv1.0 和 TLSv1.1 协议的支持，并将从 TiDB v8.0.0 开始移除对这两个协议的支持。请升级 TLS 至 TLSv1.2 或 TLSv1.3。
 * [执行计划的自动演进绑定](/sql-plan-management.md#自动演进绑定-baseline-evolution)（实验特性）将从 TiDB v8.0.0 开始废弃，等同的功能将会在后续版本中重新设计。
 * 系统变量 [`tidb_disable_txn_auto_retry`](/system-variables.md#tidb_disable_txn_auto_retry) 将从 TiDB v8.0.0 开始废弃，废弃后将不再支持乐观事务的自动重试。
 
