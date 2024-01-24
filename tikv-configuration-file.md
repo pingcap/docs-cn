@@ -1229,7 +1229,6 @@ RocksDB 相关的配置项。
 ### `rate-bytes-per-sec`
 
 + 未开启 Titan 时，限制 RocksDB Compaction 的 I/O 速率，以达到在流量高峰时，限制 RocksDB Compaction 减少其 I/O 带宽和 CPU 消耗对前台读写性能的影响。开启 Titan 时，限制 RocksDB Compaction 和 Titan GC 的 I/O 速率总和。当发现在流量高峰时 RocksDB Compaction 和 Titan GC 的 I/O 和/或 CPU 消耗过大，可以根据磁盘 I/O 带宽和实际写入流量适当配置这个选项。
-
 + 默认值：10GB
 + 最小值：0
 + 单位：B|KB|MB|GB
@@ -1350,7 +1349,7 @@ Titan 相关的配置项。
 
 ### `max-background-gc`
 
-+ Titan 后台 GC 的线程个数，当从 **TiKV Details** - **Thread CPU** - **RocksDB CPU** 监控中观察到 Titan GC 线程长期处于满负荷状态时，应该考虑增加 Titan GC 线程池大小。
++ Titan 后台 GC 的线程个数，当从 **TiKV Details** > **Thread CPU** > **RocksDB CPU** 监控中观察到 Titan GC 线程长期处于满负荷状态时，应该考虑增加 Titan GC 线程池大小。
 + 默认值：4
 + 最小值：1
 
@@ -1653,8 +1652,8 @@ rocksdb defaultcf titan 相关的配置项。
 
 ### `zstd-dict-size`
 
-+ 指定 zstd 字典大小，默认为 `0KB`，表示关闭 zstd 字典压缩，也就是说 Titan 中压缩的是单个 value 值，而 RocksDB 压缩以 Block（默认值为 `32KB`）为单位。因此当关闭字典压缩、且 value 平均小于 `32KB` 时，Titan 的压缩率低于 RocksDB。以 JSON 内容为例，Titan 的 Store Size 可能比 RocksDB 高 30% 至 50%。实际压缩率还取决于 value 内容是否适合压缩，以及不同 value 之间的相似性。你可以通过设置 `zstd-dict-size`（比如 `16KB`）启用 zstd 字典以大幅提高压缩率（实际 Store Size 可以低于 RocksDB），但 zstd 字典压缩在有些负载下会有 10% 左右的性能损失。
-+ 默认值: `"0KB"`
++ 指定 zstd 字典大小，默认为 `"0KB"`，表示关闭 zstd 字典压缩，也就是说 Titan 中压缩的是单个 value 值，而 RocksDB 压缩以 Block（默认值为 `32KB`）为单位。因此当关闭字典压缩、且 value 平均小于 `32KB` 时，Titan 的压缩率低于 RocksDB。以 JSON 内容为例，Titan 的 Store Size 可能比 RocksDB 高 30% 至 50%。实际压缩率还取决于 value 内容是否适合压缩，以及不同 value 之间的相似性。你可以通过设置 `zstd-dict-size`（比如 `16KB`）启用 zstd 字典以大幅提高压缩率（实际 Store Size 可以低于 RocksDB），但 zstd 字典压缩在有些负载下会有 10% 左右的性能损失。
++ 默认值：`"0KB"`
 + 单位：KB|MB|GB
    
 ### `blob-cache-size`
