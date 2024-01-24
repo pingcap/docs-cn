@@ -111,6 +111,7 @@ Quick access: [Quick start](https://docs.pingcap.com/tidb/v7.1/quick-start-with-
     + Backup & Restore (BR)
 
         - Fix the issue that `checksum mismatch` is falsely reported in some cases [#44472](https://github.com/pingcap/tidb/issues/44472) @[Leavrth](https://github.com/Leavrth)
+        - Fix the issue that the frequency of `resolve lock` is too high when there is no PITR backup task in the TiDB cluster [#40759](https://github.com/pingcap/tidb/issues/40759) @[joccau](https://github.com/joccau)
 
     + TiCDC
 
