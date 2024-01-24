@@ -109,9 +109,9 @@ Connect to your TiDB cluster depending on the TiDB deployment option you have se
 6. In the **New Connection (MySQL)** dialog, configure the following connection parameters:
 
     - **Connection Name**: give this connection a meaningful name.
-    - **Host**: enter the `host` parameter from the TiDB Cloud connection dialog.
-    - **Port**: enter the `port` parameter from the TiDB Cloud connection dialog.
-    - **User Name**: enter the `user` parameter from the TiDB Cloud connection dialog.
+    - **Host**: enter the `HOST` parameter from the TiDB Cloud connection dialog.
+    - **Port**: enter the `PORT` parameter from the TiDB Cloud connection dialog.
+    - **User Name**: enter the `USERNAME` parameter from the TiDB Cloud connection dialog.
     - **Password**: enter the password of the TiDB Dedicated cluster.
 
     ![Navicat: configure connection general panel for TiDB Dedicated](/media/develop/navicat-connection-config-dedicated-general.png)
