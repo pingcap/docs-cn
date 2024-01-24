@@ -1683,9 +1683,9 @@ rocksdb defaultcf titan 相关的配置项。
 
 + 当一个 blob file 中无用数据（相应的 key 已经被更新或删除）比例超过以下阈值时，将会触发 Titan GC。将此文件有用的数据重写到另一个文件。这个值可以估算 Titan 的写放大和空间放大的上界（假设关闭压缩）。公式是：
 
-    写放大上界 = 1 / discardable_ratio
+    写放大上界 = 1 / discardable-ratio
 
-    空间放大上界 = 1 / (1 - discardable_ratio)
+    空间放大上界 = 1 / (1 - discardable-ratio)
 
     可以看到，减少这个阈值可以减少空间放大，但是会造成 Titan 更频繁 GC；增加这个值可以减少 Titan GC，减少相应的 I/O 带宽和 CPU 消耗，但是会增加磁盘空间占用。
 
