@@ -70,7 +70,11 @@ tiup br restore full --pd "${PD_IP}:2379" \
 --storage "s3://backup-101/snapshot-202209081330?access-key=${access-key}&secret-access-key=${secret-access-key}"
 ```
 
-为了解决大规模 Region 场景下，打散 Region 可能成为恢复过程中的瓶颈问题，BR 从 v7.6.0 开始支持以粗粒度打散 Region 的方式进行恢复（实验特性）。你可以通过指定 `--granularity="coarse-grained"` 启用该方式。
+> **警告：**
+>
+> 通过设置 `--granularity="coarse-grained"` 参数启用粗粒度打散 Region 算法加速恢复为实验特性，建议在表数量不超过 1,000 的集群中使用此功能加速数据恢复。请注意，该功能暂不支持断点恢复。
+
+为进一步提升大集群的恢复速度，BR 从 v7.6.0 开始支持通过设置 `--granularity="coarse-grained"` 参数启用粗粒度打散 Region 算法（实验特性）进行更快的并行恢复。启用后，BR 可以迅速将恢复任务拆分为大量小任务，并批量分散到所有 TiKV 节点上，从而充分利用每个 TiKV 节点的所有资源，实现并行快速恢复。
 
 在恢复快照备份数据过程中，终端会显示恢复进度条。在完成恢复后，会输出恢复耗时、速度、恢复数据大小等信息。
 
