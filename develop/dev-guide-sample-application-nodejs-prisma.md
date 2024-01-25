@@ -91,7 +91,7 @@ npm install prisma typescript ts-node @types/node --save-dev
 6. 编辑 `.env` 文件，按照如下格式设置环境变量 `DATABASE_URL`，将占位符 `{}` 替换为从连接对话框中复制的连接字符串：
 
     ```dotenv
-    DATABASE_URL={connection_string}
+    DATABASE_URL='{connection_string}'
     ```
 
     > **Note**
@@ -127,7 +127,7 @@ npm install prisma typescript ts-node @types/node --save-dev
 5. 编辑 `.env` 文件，按照如下格式设置环境变量 `DATABASE_URL`，将占位符 `{}` 替换为从连接对话框中复制的参数值：
 
     ```dotenv
-    DATABASE_URL=mysql://{host}:{password}@{host}:4000/test?sslaccept=strict&sslcert={downloaded_ssl_ca_path}
+    DATABASE_URL='mysql://{user}:{password}@{host}:4000/test?sslaccept=strict&sslcert={downloaded_ssl_ca_path}'
     ```
 
    > **Note**
@@ -159,7 +159,7 @@ npm install prisma typescript ts-node @types/node --save-dev
 2. 编辑 `.env` 文件，按照如下格式设置连接信息，将占位符 `{}` 替换为你的 TiDB 集群的连接参数值：
 
     ```dotenv
-    DATABASE_URL=mysql://{user}:{password}@{host}:4000/test
+    DATABASE_URL='mysql://{user}:{password}@{host}:4000/test'
     ```
 
    如果你在本地运行 TiDB 集群，默认的 Host 是 `127.0.0.1`, 默认用户名为 `root`, 密码为空。
