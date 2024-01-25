@@ -81,7 +81,7 @@ By properly configuring Titan parameters, you can effectively improve database p
 
 ### `min-blob-size`
 
-You can use [`min-blob-size`](/tikv-configuration-file.md#min-blob-size) to set the threshold for the value size to determine which data is stored in RocksDB and which in Titan's blob files. According to the test, `32KB` is a appropriate threshold that has better write throughput without scan throughput regression compared with RocksDB. If you want further improve write performance and accept scan performance regression, you can change the value to `1KB`.
+You can use [`min-blob-size`](/tikv-configuration-file.md#min-blob-size) to set the threshold for the value size to determine which data is stored in RocksDB and which in Titan's blob files. According to the test, `32KB` is an appropriate threshold. It ensures that Titan's performance does not regress compared with RocksDB. However, in many scenarios, this value is not optimal. It is recommended that you refer to [Impact of `min-blob-size` on performance](/storage-engine/titan-overview.md#impact-of-min-blob-size-on-performance) to choose an appropriate value. If you want to further improve write performance and can tolerate scan performance regression, you can set it to the minimum value `1KB`.
 
 ### `blob-file-compression` and `zstd-dict-size`
 
