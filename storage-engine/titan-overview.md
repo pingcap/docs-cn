@@ -123,7 +123,7 @@ Range Merge 是基于 Level Merge 的一个优化。考虑如下两种情况，�
 
 基于向后兼容的考虑，TiKV 在扩缩容时的 Snapshot 仍然是 RocksDB 的格式。因此扩容后的节点由于一开始全部来自 RocksDB，因此会显示 RocksDB 的特征，比如压缩率会高于老的 TiKV 节点、Store Size 会较小、同时 Compaction 的写放大会相对较大。后续这些 RocksDB 格式的 SST 参与 Compaction 之后逐步转换为 Titan 格式。
 
-### `min-blob-size` 对性能影响
+### `min-blob-size` 对性能的影响
 
 [`min-blob-size`](/tikv-configuration-file.md#min-blob-size) 是决定一个 Value 是否用 Titan 存储的依据。如果 Value 大于或等于 `min-blob-size`，会用 Titan 存储，反之则用 RocksDB 的原生格式存储。`min-blob-size` 太小或太大都会导致性能下降。
 
