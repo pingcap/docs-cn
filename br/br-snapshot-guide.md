@@ -208,7 +208,7 @@ The impact of backup on cluster performance can be reduced by limiting the backu
 
 - During data restore, TiDB tries to fully utilize the TiKV CPU, disk IO, and network bandwidth resources. Therefore, it is recommended to restore the backup data on an empty cluster to avoid affecting the running applications.
 - The speed of restoring backup data is much related with the cluster configuration, deployment, and running applications. In internal tests, the restore speed of a single TiKV node can reach 100 MiB/s. The performance and impact of snapshot restore are varied in different user scenarios and should be tested in actual environments.
-- Starting from v7.6.0, to accelerate restore speed in large-scale Region scenarios, BR introduces an experimental feature that allows you to enable a coarse-grained Region scatter algorithm by specifying the command-line parameter `--granularity="coarse-grained"`. You can also control the concurrency of download tasks for each TiKV node by setting the `--tikv-max-restore-concurrency` parameter. This helps you fully utilize the resources of each TiKV node, thereby achieving a rapid parallel recovery. In several real-world cases, the snapshot restore speed of the cluster is improved by about 10 times in large-scale Region scenarios. The following is an example:
+- Starting from v7.6.0, to accelerate restore speed in large-scale Region scenarios, BR introduces an experimental feature that allows you to enable a coarse-grained Region scatter algorithm by specifying the command-line parameter `--granularity="coarse-grained"`. This algorithm ensures that each TiKV node receives stable and evenly distributed download tasks, thus fully utilizing the resources of each TiKV node and achieving a rapid parallel recovery. In several real-world cases, the snapshot restore speed of the cluster is improved by about 10 times in large-scale Region scenarios. The following is an example:
 
     ```bash
     br restore full \
@@ -216,7 +216,6 @@ The impact of backup on cluster performance can be reduced by limiting the backu
     --storage "s3://${Bucket}/${Folder}" \
     --s3.region "${region}" \
     --granularity "coarse-grained" \
-    --tikv-max-restore-concurrency 128 \
     --send-credentials-to-tikv=true \
     --log-file restorefull.log
     ```
