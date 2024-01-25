@@ -1036,7 +1036,9 @@ raftstore 相关的配置项。
 >
 > 周期性全量数据整理目前为实验特性，不建议在生产环境中使用。该功能可能会在未事先通知的情况下发生变化或删除。如果发现 bug，请在 GitHub 上提 [issue](https://github.com/pingcap/tidb/issues) 反馈。
 
-+ 设置 TiKV 启动周期性全量数据整理 (Compaction) 的时间。你可以在数组中指定一个或多个时间计划。例如，`periodic-full-compact-start-times = ["03:00", "23:00"]` 表示 TiKV 基于 TiKV 节点的本地时区，在每天凌晨 3 点和晚上 11 点进行全量数据整理。`periodic-full-compact-start-times = ["03:00 +0000", "23:00 +0000"]` 表示 TiKV 在每天 UTC 时间的凌晨 3 点和晚上 11 点进行全量数据整理。
++ 设置 TiKV 启动周期性全量数据整理 (Compaction) 的时间。你可以在数组中指定一个或多个时间计划。例如：
+    + `periodic-full-compact-start-times = ["03:00", "23:00"]` 表示 TiKV 基于 TiKV 节点的本地时区，在每天凌晨 3 点和晚上 11 点进行全量数据整理。
+    + `periodic-full-compact-start-times = ["03:00 +0000", "23:00 +0000"]` 表示 TiKV 在每天 UTC 时间的凌晨 3 点和晚上 11 点进行全量数据整理。
 + 默认值：`[]`，表示默认情况下禁用周期性全量数据整理。
 
 ### `periodic-full-compact-start-max-cpu` <span class="version-mark">从 v7.6.0 版本开始引入</span>
@@ -1226,7 +1228,7 @@ RocksDB 相关的配置项。
 
 ### `rate-bytes-per-sec`
 
-+ RocksDB compaction rate limiter 的限制速率。
++ 未开启 Titan 时，限制 RocksDB Compaction 的 I/O 速率，以达到在流量高峰时，限制 RocksDB Compaction 减少其 I/O 带宽和 CPU 消耗对前台读写性能的影响。开启 Titan 时，限制 RocksDB Compaction 和 Titan GC 的 I/O 速率总和。当发现在流量高峰时 RocksDB Compaction 和 Titan GC 的 I/O 和/或 CPU 消耗过大，可以根据磁盘 I/O 带宽和实际写入流量适当配置这个选项。
 + 默认值：10GB
 + 最小值：0
 + 单位：B|KB|MB|GB
@@ -1326,8 +1328,14 @@ Titan 相关的配置项。
 
 ### `enabled`
 
+> **注意：**
+>
+> - 从 TiDB v7.6.0 开始，参数默认值从 `false` 变更为 `true`，即新集群默认开启 Titan，以更好地支持 TiDB 宽表写入场景和 JSON。
+> - 如果集群在升级到 TiDB v7.6.0 或更高版本之前未启用 Titan，则升级后将保持原有配置，继续使用 RocksDB，不会启用 Titan。
+> - 如果集群在升级到 TiDB v7.6.0 或更高版本之前已经启用了 Titan，则升级后将维持原有配置，保持启用 Titan 引擎，并保留升级前 [`min-blob-size`](/tikv-configuration-file.md#min-blob-size) 的配置。如果升级前没有显式配置该值，则升级后仍然保持了老版本默认值 `1KB`，以确保升级后集群配置的稳定性。
+
 + 开启 Titan 开关。
-+ 默认值：false
++ 默认值：`true`
 
 ### `dirname`
 
@@ -1341,7 +1349,7 @@ Titan 相关的配置项。
 
 ### `max-background-gc`
 
-+ Titan 后台 GC 的线程个数。
++ Titan 后台 GC 的线程个数，当从 **TiKV Details** > **Thread CPU** > **RocksDB CPU** 监控中观察到 Titan GC 线程长期处于满负荷状态时，应该考虑增加 Titan GC 线程池大小。
 + 默认值：4
 + 最小值：1
 
@@ -1613,29 +1621,47 @@ rocksdb defaultcf、rocksdb writecf 和 rocksdb lockcf 相关的配置项。
 
 ## rocksdb.defaultcf.titan
 
+> **注意：**
+>
+> 仅支持在 `rocksdb.defaultcf` 启用 Titan，不支持在 `rocksdb.writecf` 启用 Titan。
+
 rocksdb defaultcf titan 相关的配置项。
 
 ### `min-blob-size`
 
+> **注意：**
+>
+> - 为了提高宽表和 JSON 数据写入和点查性能，TiDB 从 v7.6.0 版本起默认启用 Titan，并将写入 Titan 的阈值参数 `min-blob-size` 的默认值从之前版本的 `1KB` 调整为 `32KB`，即当数据的 value 超过 `32KB` 时，将存储在 Titan 中，而其他数据则继续存储在 RocksDB 中。
+> - 为了保证配置的连续性，已有集群升级到 TiDB v7.6.0 版本或者更高版本后，如果升级前用户未显式设置 `min-blob-size`，则维持使用老版本默认值 `1KB`，以确保升级后集群配置的稳定性。
+> - 当参数被设置为小于 `32KB` 时，TiKV 大范围扫描性能会受到一些影响。然而，如果负载主要是写入和点查为主，你可以适当调小 `min-blob-size` 的值以获取更好的写入和点查性能。
+
 + 最小存储在 Blob 文件中 value 大小，低于该值的 value 还是存在 LSM-Tree 中。
-+ 默认值：1KB
++ 默认值：32KB
 + 最小值：0
 + 单位：KB|MB|GB
 
 ### `blob-file-compression`
 
-+ Blob 文件所使用的压缩算法，可选值：no、snappy、zlib、bz2、lz4、lz4hc、zstd。
-+ 默认值：lz4
-
 > **注意：**
 >
-> Snappy 压缩文件必须遵循[官方 Snappy 格式](https://github.com/google/snappy)。不支持其他非官方压缩格式。
+> - Snappy 压缩文件必须遵循[官方 Snappy 格式](https://github.com/google/snappy)。不支持其他非官方压缩格式。
+> - TiDB v7.5.0 及更早的版本，参数默认值为 `lz4`。TiDB v7.6.0 及更高版本，参数默认值调整为 `zstd`。
 
++ Blob 文件所使用的压缩算法，可选值：no、snappy、zlib、bz2、lz4、lz4hc、zstd。
++ 默认值：zstd
+
+### `zstd-dict-size`
+
++ 指定 zstd 字典大小，默认为 `"0KB"`，表示关闭 zstd 字典压缩，也就是说 Titan 中压缩的是单个 value 值，而 RocksDB 压缩以 Block（默认值为 `32KB`）为单位。因此当关闭字典压缩、且 value 平均小于 `32KB` 时，Titan 的压缩率低于 RocksDB。以 JSON 内容为例，Titan 的 Store Size 可能比 RocksDB 高 30% 至 50%。实际压缩率还取决于 value 内容是否适合压缩，以及不同 value 之间的相似性。你可以通过设置 `zstd-dict-size`（比如 `16KB`）启用 zstd 字典以大幅提高压缩率（实际 Store Size 可以低于 RocksDB），但 zstd 字典压缩在有些负载下会有 10% 左右的性能损失。
++ 默认值：`"0KB"`
++ 单位：KB|MB|GB
+   
 ### `blob-cache-size`
 
 + Blob 文件的 cache 大小。
 + 默认值：0GB
 + 最小值：0
++ 推荐值：建议在数据库稳定运行后，根据监控把 RocksDB block cache (`storage.block-cache.capacity`) 设置为能刚好维持接近 95% 以上的 Block Cache 命中率，`blob-cache-size` 设置为 `内存大小 * 50% 再减去 block cache 的大小`。这是为了保证 block cache 足够缓存整个 RocksDB 的前提下，blob cache 尽量大。但 Blob cache 的值不应该设置过大，否则会导致 block cache 命中率大幅下降。
 + 单位：KB|MB|GB
 
 ### `min-gc-batch-size`
@@ -1654,7 +1680,14 @@ rocksdb defaultcf titan 相关的配置项。
 
 ### `discardable-ratio`
 
-+ Blob 文件 GC 的触发比例，如果某 Blob 文件中的失效 value 的比例高于该值才可能被 GC 选中。
++ 当一个 blob file 中无用数据（相应的 key 已经被更新或删除）比例超过以下阈值时，将会触发 Titan GC。将此文件有用的数据重写到另一个文件。这个值可以估算 Titan 的写放大和空间放大的上界（假设关闭压缩）。公式是：
+
+    写放大上界 = 1 / `discardable-ratio`
+
+    空间放大上界 = 1 / (1 - `discardable-ratio`)
+
+    可以看到，减少这个阈值可以减少空间放大，但是会造成 Titan 更频繁 GC；增加这个值可以减少 Titan GC，减少相应的 I/O 带宽和 CPU 消耗，但是会增加磁盘空间占用。
+
 + 默认值：0.5
 + 最小值：0
 + 最大值：1
@@ -1677,8 +1710,8 @@ rocksdb defaultcf titan 相关的配置项。
 
 + Titan 的运行模式选择。
 + 可选值：
-    + "normal"：value size 超过 min-blob-size 的数据会写入到 blob 文件。
-    + "read_only"：不再写入新数据到 blob，原有 blob 内的数据仍然可以读取。
+    + "normal"：value size 超过 [`min-blob-size`](#min-blob-size) 的数据会写入到 blob 文件。
+    + "read-only"：不再写入新数据到 blob，原有 blob 内的数据仍然可以读取。
     + "fallback"：将 blob 内的数据写回 LSM。
 + 默认值："normal"
 
@@ -2035,6 +2068,11 @@ Raft Engine 相关的配置项。
 
 + 触发 GC 的垃圾比例阈值。
 + 默认值：`1.1`
+
+### `num-threads` <span class="version-mark">从 v7.6.0 版本开始引入</span>
+
++ 当 `enable-compaction-filter` 为 `false` 时 GC 线程个数。
++ 默认值：1
 
 ## backup
 
