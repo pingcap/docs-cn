@@ -2285,9 +2285,11 @@ Query OK, 0 rows affected, 1 warning (0.00 sec)
 
 - 作用域：SESSION | GLOBAL
 - 是否持久化到集群：是
+- 类型：整数型
 - 默认值：`-1`
 - 范围：`[-1, 256]`
-- TiFlash 中 request 执行的最大并发度。默认值为 -1，表示该系统变量无效。0 表示由 TiFlash 系统自动设置该值。
+- 单位：线程
+- TiFlash 中 request 执行的最大并发度。默认值为 `-1`，表示该系统变量无效，此时最大并发度取决于 TiFlash 配置项 `profiles.default.max_threads` 的设置。`0` 表示由 TiFlash 系统自动设置该值。
 
 ### `tidb_mpp_store_fail_ttl`
 
