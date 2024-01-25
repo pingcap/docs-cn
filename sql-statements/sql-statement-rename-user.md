@@ -5,7 +5,7 @@ summary: An overview of the usage of RENAME USER for the TiDB database.
 
 # RENAME USER
 
-`RANAME USER` is used to rename an existing user.
+`RENAME USER` is used to rename an existing user.
 
 ## Synopsis
 
