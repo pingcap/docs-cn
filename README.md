@@ -43,7 +43,7 @@
 
 [<img src="media/contribution-map.png" alt="contribution-map" width="180"></img>](https://github.com/pingcap/docs-cn/blob/master/credits.md)
 
-你提交的第一个 [Pull Request](https://help.github.com/en/github/getting-started-with-github/github-glossary#pull-request)(PR) 合并以后，即可成为 TiDB 文档的 Contributor。查看 [TiDB 中文文档贡献指南](/CONTRIBUTING.md)，开始你的贡献吧！
+你提交的第一个 [Pull Request](https://help.github.com/en/github/getting-started-with-github/github-glossary#pull-request) (PR) 合并以后，即可成为 TiDB 文档的 Contributor。查看 [TiDB 中文文档贡献指南](/CONTRIBUTING.md)，开始你的贡献吧！
 
 ## 贡献者数量增长图
 
