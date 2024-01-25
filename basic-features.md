@@ -94,7 +94,7 @@ aliases: ['/docs-cn/dev/basic-features/','/docs-cn/dev/experimental-features-4.0
 | [Prepare 语句执行计划缓存](/sql-prepared-plan-cache.md) |  Y  |  Y  | Y | Y | Y | Y | Y | E | E | E | E |
 | [非 Prepare 语句执行计划缓存](/sql-non-prepared-plan-cache.md) |  Y  |  Y  | E | N | N | N | N | N | N | N | N |
 | [执行计划绑定 (SQL Binding)](/sql-plan-management.md#执行计划绑定-sql-binding) |  Y  |  Y  | Y | Y | Y | Y | Y | Y | Y | Y | Y |
-| [跨数据库执行计划绑定 (Cross-DB Binding)](/sql-plan-management.md#跨数据库执行计划绑定-cross-db-binding) |  Y  |  N  | N | N | N | N | N | N | N | N | N |
+| [跨数据库执行计划绑定 (Cross-DB Binding)](/sql-plan-management.md#跨数据库绑定执行计划-cross-db-binding) |  Y  |  N  | N | N | N | N | N | N | N | N | N |
 | [根据历史执行计划创建绑定](/sql-plan-management.md#根据历史执行计划创建绑定) |  Y  |  Y  | Y | E | N | N | N | N | N | N | N |
 | [下推计算结果缓存 (Coprocessor Cache)](/coprocessor-cache.md) |  Y  |  Y  | Y | Y | Y | Y | Y | Y | Y | Y | E |
 | [Stale Read](/stale-read.md) |  Y  |  Y  | Y | Y | Y | Y | Y | Y | Y | N | N |
@@ -254,7 +254,7 @@ aliases: ['/docs-cn/dev/basic-features/','/docs-cn/dev/experimental-features-4.0
 | [TiFlash 存算分离架构与 S3 支持](/tiflash/tiflash-disaggregated-and-s3.md) | Y | Y | E | N | N | N | N | N | N | N | N |
 | [选择执行分布式执行框架任务的 TiDB 节点](/system-variables.md#tidb_service_scope-从-v740-版本开始引入) | Y | Y | N | N | N | N | N | N | N | N | N |
 | 通过系统变量 [`tidb_enable_tso_follower_proxy`](/system-variables.md#tidb_enable_tso_follower_proxy-从-v530-版本开始引入) 控制 PD Follower Proxy 功能 | Y | Y | Y | Y | Y | Y | Y | N | N | N | N |
-| 通过系统变量 [`pd_enable_follower_handle_region`](/system-variables.md#pd_enable_follower_handle_region-从-v760-版本开始引入) 控制 [Active PD Follower](/tune-region-performance.md#通过-active-pd-follower-提升-pd-region-路由信息查询的服务能力) 功能 | E | N | N | N | N | N | N | N | N | N | N |
+| 通过系统变量 [`pd_enable_follower_handle_region`](/system-variables.md#pd_enable_follower_handle_region-从-v760-版本开始引入) 控制 [Active PD Follower](/tune-region-performance.md#通过-active-pd-follower-提升-pd-region-信息查询服务的扩展能力) 功能 | E | N | N | N | N | N | N | N | N | N | N |
 
 [^1]: TiDB 误将 latin1 处理为 utf8 的子集。见 [TiDB #18955](https://github.com/pingcap/tidb/issues/18955)。
 
