@@ -16,7 +16,7 @@ aliases: ['/docs/tidb-data-migration/dev/overview/','/docs/tidb-data-migration/d
 
 ## Basic features
 
-- **Compatibility with MySQL.** DM is compatible with MySQL 5.7 protocols and most of the features and syntax of MySQL 5.7.
+- **Compatibility with MySQL.** DM is compatible with the MySQL protocol and most of the features and syntax of MySQL 5.7 and MySQL 8.0.
 - **Replicating DML and DDL events.** It supports parsing and replicating DML and DDL events in MySQL binlog.
 - **Migrating and merging MySQL shards.** DM supports migrating and merging multiple MySQL database instances upstream to one TiDB database downstream. It supports customizing replication rules for different migration scenarios. It can automatically detect and handle DDL changes of upstream MySQL shards, which greatly reduces the operational cost.
 - **Various types of filters.** You can predefine event types, regular expressions, and SQL expressions to filter out MySQL binlog events during the data migration process.

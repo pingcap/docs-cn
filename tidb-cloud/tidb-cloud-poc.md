@@ -52,7 +52,7 @@ TiDB Cloud is suitable for various use cases that require high availability and 
 - Horizontally scaling out or scaling in
 - Financial-grade high availability
 - Real-time HTAP
-- Compatible with the MySQL 5.7 protocol and MySQL ecosystem
+- Compatible with the MySQL protocol and MySQL ecosystem
 
 You might also be interested in using [TiFlash](https://docs.pingcap.com/tidb/stable/tiflash-overview), a columnar storage engine that helps speed up analytical processing. During the PoC, you can use the TiFlash feature at any time.
 
@@ -89,7 +89,7 @@ Next, you can load your database schemas to the TiDB cluster, including tables a
 
 Because the amount of PoC credits is limited, to maximize the value of credits, it is recommended that you create a [TiDB Serverless cluster](/tidb-cloud/select-cluster-tier.md#tidb-serverless) for compatibility tests and preliminary analysis on TiDB Cloud.
 
-TiDB Cloud is highly compatible with MySQL 5.7. You can directly import your data into TiDB if it is MySQL-compatible or can be adapted to be compatible with MySQL.
+TiDB Cloud is highly compatible with MySQL 8.0. You can directly import your data into TiDB if it is MySQL-compatible or can be adapted to be compatible with MySQL.
 
 For more information about compatibilities, see the following documents:
 

@@ -9,7 +9,7 @@ aliases: ['/docs/dev/architecture/','/tidb/dev/architecture']
 Compared with the traditional standalone databases, TiDB has the following advantages:
 
 * Has a distributed architecture with flexible and elastic scalability.
-* Fully compatible with the MySQL 5.7 protocol, common features and syntax of MySQL. To migrate your applications to TiDB, you do not need to change a single line of code in many cases.
+* Fully compatible with the MySQL protocol, common features and syntax of MySQL. To migrate your applications to TiDB, you do not need to change a single line of code in many cases.
 * Supports high availability with automatic failover when a minority of replicas fail; transparent to applications.
 * Supports ACID transactions, suitable for scenarios requiring strong consistency such as bank transfer.
 
