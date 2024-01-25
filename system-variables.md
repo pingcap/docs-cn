@@ -1664,19 +1664,6 @@ v5.0 后，用户仍可以单独修改以上系统变量（会有废弃警告）
 - 范围：`[100, 16384]`
 - 这个变量用来设置缓存 schema 版本信息（对应版本修改的相关 table IDs）的个数限制，可设置的范围 100 - 16384。此变量在 2.1.18 及之后版本支持。
 
-<<<<<<< HEAD
-=======
-### `tidb_max_paging_size` <span class="version-mark">从 v6.3.0 版本开始引入</span>
-
-- 作用域：SESSION | GLOBAL
-- 是否持久化到集群：是
-- 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：是
-- 类型：整数型
-- 默认值：`50000`
-- 范围：`[1, 9223372036854775807]`
-- 单位：行
-- 这个变量用来设置 coprocessor 协议中 paging size 的最大的行数。请合理设置该值，设置过小，TiDB 与 TiKV 的 RPC 交互会更频繁；设置过大，导数据和全表扫等特定场景会占用更多内存。该变量的默认值对于 OLTP 场景较友好，如果业务只使用了 TiKV 作为存储引擎，当执行偏 OLAP 的负载时，可以考虑将变量值调大，有可能获得更好的性能。
-
 ### `tidb_max_tiflash_threads` <span class="version-mark">从 v6.1.0 版本开始引入</span>
 
 - 作用域：SESSION | GLOBAL
@@ -1687,8 +1674,6 @@ v5.0 后，用户仍可以单独修改以上系统变量（会有废弃警告）
 - 范围：`[-1, 256]`
 - 单位：线程
 - TiFlash 中 request 执行的最大并发度。默认值为 `-1`，表示该系统变量无效，此时最大并发度取决于 TiFlash 配置项 `profiles.default.max_threads` 的设置。`0` 表示由 TiFlash 系统自动设置该值。
-
->>>>>>> 54f55b8ce3 (Explain tidb_max_tiflash_threads default value -1 means (#16149))
 ### `tidb_mem_oom_action` <span class="version-mark">从 v6.1.0 版本开始引入</span>
 
 - 作用域：GLOBAL
