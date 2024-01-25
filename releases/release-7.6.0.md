@@ -25,11 +25,11 @@ TiDB 版本：7.6.0
   <tr>
     <td rowspan="4">可扩展性与性能</td>
     <td><a href="https://docs.pingcap.com/zh/tidb/v7.6/sql-plan-management#跨数据库绑定执行计划-cross-db-binding">跨数据库绑定执行计划</a></td>
-    <td>在处理上百个 schema 相同的数据库时，针对一个 schema 的 SQL binding 可能需要跨 schema 生效。例如 SaaS 或 PaaS 数据平台为每个用户维护独立数据库，这些数据库有相同的结构，运行类似的 SQL。对每个 schema 逐一做 SQL 绑定有时是不切实际的。TiDB v7.6.0 引入跨数据库绑定执行计划，支持在所有 schema 相同的数据库之间匹配绑定计划。</td>
+    <td>在处理上百个 schema 相同的数据库时，针对其中一个数据库的 SQL binding 通常也适用于其它的数据库。例如，在 SaaS 或 PaaS 数据平台中，每个用户通常各自维护单独的数据库，这些数据库具有相同的 schema 并运行着类似的 SQL。在这种情况下，逐一为每个数据库做 SQL 绑定是不切实际的。TiDB v7.6.0 引入跨数据库绑定执行计划，支持在所有 schema 相同的数据库之间匹配绑定计划。</td>
   </tr>
   <tr>
     <td><a href="https://docs.pingcap.com/zh/tidb/v7.6/br-snapshot-guide#恢复快照备份数据">BR 快照恢复速度最高提升 10 倍（实验特性）</a></td>
-    <td>BR v7.6.0 实验性地引入了粗粒度打散 Region 算法，用于准备集群的快照恢复。在 TiKV 节点较多的集群中，该算法显著提高了集群资源利用率，更均匀地分配了负载，同时更好地利用了每个节点的网络带宽。在实际案例中，该改进将恢复速度最高提升约 10 倍。</td>
+    <td>BR v7.6.0 实验性地引入了粗粒度打散 Region 算法，用于提升集群的快照恢复速度。在 TiKV 节点较多的集群中，该算法可显著提高集群资源利用率，更均匀地分配负载，同时更好地利用每个节点的网络带宽。在一些实际案例中，该特性可将恢复速度最高提升约 10 倍。</td>
   </tr>
   <tr>
     <td><a href="https://docs.pingcap.com/zh/tidb/v7.6/ddl-v2">建表性能提升 10 倍（实验特性）</a></td>
@@ -37,7 +37,7 @@ TiDB 版本：7.6.0
   </tr>
   <tr>
     <td><a href="https://docs.pingcap.com/zh/tidb/v7.6/tune-region-performance#通过-active-pd-follower-提升-pd-region-信息查询服务的扩展能力">通过 Active PD Follower 提升 PD Region 信息查询服务的扩展能力（实验特性）</a></td>
-    <td>TiDB v7.6.0 实验性地引入了 Active PD Follower 特性，允许 PD follower 提供 Region 信息查询服务。在 TiDB 节点数量较多和 Region 数量较多的集群中，该功能提升了 PD 集群处理 <code>GetRegion</code>、<code>ScanRegions</code> 请求的能力，减轻了 PD leader 的 CPU 压力。</td>
+    <td>TiDB v7.6.0 实验性地引入了 Active PD Follower 特性，允许 PD follower 提供 Region 信息查询服务。在 TiDB 节点数量较多和 Region 数量较多的集群中，该特性可以提升 PD 集群处理 <code>GetRegion</code>、<code>ScanRegions</code> 请求的能力，减轻 PD leader 的 CPU 压力。</td>
   </tr>
   <tr>
     <td rowspan="2">稳定性与高可用</td>
