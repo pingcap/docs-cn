@@ -5,7 +5,7 @@ summary: 了解如何使用 peewee 连接到 TiDB。本文提供了使用 peewee
 
 # 使用 peewee 连接到 TiDB
 
-TiDB 是一个兼容 MySQL 的数据库。[peewee](https://docs.peewee-orm.com/) 为当前流行的开源 Python ORM (Object Relational Mapper) 之一。
+TiDB 是一个兼容 MySQL 的数据库。[peewee](https://github.com/coleifer/peewee) 为当前流行的开源 Python ORM (Object Relational Mapper) 之一。
 
 本文档将展示如何使用 TiDB 和 peewee 来完成以下任务：
 
@@ -48,7 +48,7 @@ pip install -r requirements.txt
 
 #### 为什么安装 PyMySQL？
 
-peewee 是一个支持多种数据库的 ORM 库。它是对数据库的高层抽象，可以帮助开发者以更面向对象的方式编写 SQL 语句。但 peewee 并不提供数据库驱动，因此需要单独安装用于连接 TiDB 的驱动。本示例项目使用 PyMySQL 作为数据库驱动。PyMySQL 是一个与 TiDB 兼容的纯 Python 实现的 MySQL 客户端库，并可以在所有平台上安装。更多信息，参考 [peewee 官方文档](https://docs.peewee-orm.com/en/latest/peewee/database.html?highlight=mysql#using-mysql)。
+peewee 是一个支持多种数据库的 ORM 库。它是对数据库的高层抽象，可以帮助开发者以更面向对象的方式编写 SQL 语句。但 peewee 并不提供数据库驱动，因此需要单独安装用于连接 TiDB 的驱动。本示例项目使用 [PyMySQL](/develop/dev-guide-sample-application-python-pymysql.md) 作为数据库驱动。PyMySQL 是一个与 TiDB 兼容的纯 Python 实现的 MySQL 客户端库，并可以在所有平台上安装。更多信息，参考 [peewee 官方文档](https://docs.peewee-orm.com/en/latest/peewee/database.html?highlight=mysql#using-mysql)。
 
 ### 第 3 步：配置连接信息
 
@@ -88,7 +88,7 @@ peewee 是一个支持多种数据库的 ORM 库。它是对数据库的高层�
 6. 复制并粘贴对应连接字符串至 `.env` 中。示例结果如下：
 
     ```dotenv
-    TIDB_HOST='{host}'  # e.g. gateway01.ap-northeast-1.prod.aws.tidbcloud.com
+    TIDB_HOST='{host}'  # e.g. xxxxxx.aws.tidbcloud.com
     TIDB_PORT='4000'
     TIDB_USER='{user}'  # e.g. xxxxxx.root
     TIDB_PASSWORD='{password}'
@@ -121,9 +121,9 @@ peewee 是一个支持多种数据库的 ORM 库。它是对数据库的高层�
 5. 复制并粘贴对应的连接字符串至 `.env` 中。示例结果如下：
 
     ```dotenv
-    TIDB_HOST='{host}'  # e.g. tidb.xxxx.clusters.tidb-cloud.com
+    TIDB_HOST='{host}'  # e.g. xxxxxx.aws.tidbcloud.com
     TIDB_PORT='4000'
-    TIDB_USER='{user}'  # e.g. root
+    TIDB_USER='{user}'  # e.g. xxxxxx.root
     TIDB_PASSWORD='{password}'
     TIDB_DB_NAME='test'
     CA_PATH='{your-downloaded-ca-path}'
@@ -183,20 +183,19 @@ peewee 是一个支持多种数据库的 ORM 库。它是对数据库的高层�
 from peewee import MySQLDatabase
 
 def get_db_engine():
-    config = Config()
     connect_params = {}
-    if ${ca_path}:
+    if '${ca_path}':
         connect_params = {
             "ssl_verify_cert": True,
             "ssl_verify_identity": True,
-            "ssl_ca": ${ca_path},
+            "ssl_ca": '${ca_path}',
         }
     return MySQLDatabase(
-        ${tidb_db_name},
-        host=${tidb_host},
-        port=${tidb_port},
-        user=${tidb_user},
-        password=${tidb_password},
+        '${tidb_db_name}',
+        host='${tidb_host}',
+        port='${tidb_port}',
+        user='${tidb_user}',
+        password='${tidb_password}',
         **connect_params,
     )
 ```
@@ -221,6 +220,9 @@ class Player(BaseModel):
 
     class Meta:
         table_name = "players"
+
+    def __str__(self):
+        return f"Player(name={self.name}, coins={self.coins}, goods={self.goods})"
 ```
 
 更多信息参考 [peewee 模型与字段](https://docs.peewee-orm.com/en/latest/peewee/models.html)。
@@ -232,12 +234,11 @@ class Player(BaseModel):
 Player.create(name="test", coins=100, goods=100)
 
 # 插入多个对象
-Player.insert_many(
-    [
+data = [
         {"name": "test1", "coins": 100, "goods": 100},
         {"name": "test2", "coins": 100, "goods": 100},
-    ]
-).execute()
+]
+Player.insert_many(data).execute()
 ```
 
 更多信息参考[插入数据](/develop/dev-guide-insert-data.md)。

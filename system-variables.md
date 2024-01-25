@@ -954,7 +954,7 @@ MPP 是 TiFlash 引擎提供的分布式计算框架，允许节点之间的数�
 - 默认值：`OFF`
 - 这个变量用来控制是否允许通过 `ALTER TABLE MODIFY` 或 `ALTER TABLE CHANGE` 来移除某个列的 `AUTO_INCREMENT` 属性。默认 (`OFF`) 为不允许。
 
-### `tidb_analyze_distsql_scan_concurrency` <span class="version-mark">New in v7.6.0</span>
+### `tidb_analyze_distsql_scan_concurrency` <span class="version-mark">从 v7.6.0 版本开始引入</span>
 
 - 作用域：GLOBAL
 - 是否持久化到集群：是
@@ -4539,7 +4539,7 @@ Query OK, 0 rows affected, 1 warning (0.00 sec)
 - 类型：整数型
 - 默认值：`4096`
 - 范围：`[0, 2147483647]`
-- 这个变量控制 [statement summary tables](/statement-summary-tables.md) 显示的 SQL 字符串长度。
+- 这个变量用来控制 [Statement Summary Tables](/statement-summary-tables.md)、[`SLOW_QUERY`](/information-schema/information-schema-slow-query.md) 表和 [TiDB Dashboard](/dashboard/dashboard-intro.md) 中显示的 SQL 字符串长度。
 
 ### `tidb_stmt_summary_max_stmt_count` <span class="version-mark">从 v4.0 版本开始引入</span>
 
@@ -5138,7 +5138,7 @@ Query OK, 0 rows affected, 1 warning (0.00 sec)
 - 作用域：NONE
 - 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：否
 - 默认值：`8.0.11-TiDB-(tidb version)`
-- 这个变量的值是 MySQL 的版本和 TiDB 的版本，例如 '8.0.11-TiDB-v7.5.0'。
+- 这个变量的值是 MySQL 的版本和 TiDB 的版本，例如 '8.0.11-TiDB-v7.6.0'。
 
 ### `version_comment`
 

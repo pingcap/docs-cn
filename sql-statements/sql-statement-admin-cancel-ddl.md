@@ -33,7 +33,7 @@ ADMIN CANCEL DDL JOBS job_id [, job_id] ...;
 
 > **注意：**
 >
-> + 只有该操作可以取消 DDL 作业，其他所有的操作和环境变更（例如机器重启、集群重启）都不会取消 DDL 作业。
+> + 在 v6.2.0 之前，只有该操作可以取消 DDL 作业，其他所有的操作和环境变更（例如机器重启、集群重启）都不会取消 DDL 作业。从 v6.2.0 开始，使用 [`KILL`](/sql-statements/sql-statement-kill.md) 语句终止作业的方式也可以取消正在执行中的 DDL 作业。
 > + 该操作可以同时取消多个 DDL 作业，可以通过 [`ADMIN SHOW DDL JOBS`](/sql-statements/sql-statement-admin-show-ddl.md) 语句来获取 DDL 作业的 `job_id`。
 > + 如果希望取消的作业已经执行完毕，取消操作将失败。
 
