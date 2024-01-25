@@ -116,7 +116,7 @@ TiDB 版本：7.6.0
 
     更多信息，请参考[用户文档](/ddl-v2.md)。
 
-* 支持周期性全量数据整理（实验特性）[#12729](https://github.com/tikv/tikv/issues/12729)
+* 支持周期性全量数据整理（实验特性）[#12729](https://github.com/tikv/tikv/issues/12729) [afeinberg](https://github.com/afeinberg)
 
     从 v7.6.0 开始，TiDB 支持 TiKV 周期性全量数据整理。该功能可以作为垃圾回收 (GC) 的增强，用以消除冗余的数据版本。在业务活动呈现明显的高峰和低谷的场景中，利用该功能可在系统空闲时段进行数据整理，以提升高峰期间业务处理的性能。
 
