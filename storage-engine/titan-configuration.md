@@ -82,7 +82,7 @@ Titan 对 RocksDB 兼容，也就是说，使用 RocksDB 存储引擎的现有 T
 
 ### `min-blob-size`
 
-你可以通过设置 [`min-blob-size`](/tikv-configuration-file.md#min-blob-size) 来调整 value 的大小阈值，决定哪些数据保存在 RocksDB 中，哪些数据保存在 Titan 的 blob file 中。`32KB` 是个折中的值，它能确保 Titan 的性能相对 RocksDB 没有回退。但在很多场景中，该值并不是最佳值。建议参考 [`min-blob-size` 对性能的影响`](/storage-engine/titan-overview.md#min-blob-size-对性能的影响) 来选择合适的值。如果你想进一步提升写性能，并能接受扫描性能的下降，你可以将该值最低调整为 `1KB`。
+你可以通过设置 [`min-blob-size`](/tikv-configuration-file.md#min-blob-size) 来调整 value 的大小阈值，决定哪些数据保存在 RocksDB 中，哪些数据保存在 Titan 的 blob file 中。`32KB` 是个折中的值，它能确保 Titan 的性能相对 RocksDB 没有回退。但在很多场景中，该值并不是最佳值。建议参考 [`min-blob-size` 对性能的影响`](/storage-engine/titan-overview.md#min-blob-size-对性能的影响)来选择合适的值。如果你想进一步提升写性能，并能接受扫描性能的下降，你可以将该值最低调整为 `1KB`。
 
 ### `blob-file-compression` 和 `zstd-dict-size`
 
