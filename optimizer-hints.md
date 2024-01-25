@@ -105,10 +105,12 @@ SELECT /*+ NO_MERGE_JOIN(t1, t2) */ * FROM t1, t2 WHERE t1.id = t2.id;
 {{< copyable "sql" >}}
 
 ```sql
-SELECT /*+ INL_JOIN(t1, t2) */ * FROM t1, t2 WHERE t1.id = t2.id;
+SELECT /*+ INL_JOIN(t1, t2) */ * FROM t1, t2, t3 WHERE t1.id = t2.id AND t2.id = t3.id;
 ```
 
-`INL_JOIN()` 中的参数是建立查询计划时内表的候选表，比如 `INL_JOIN(t1)` 只会考虑使用 t1 作为内表构建查询计划。表如果指定了别名，就只能使用表的别名作为 `INL_JOIN()` 的参数；如果没有指定别名，则用表的本名作为其参数。比如在 `SELECT /*+ INL_JOIN(t1) */ * FROM t t1, t t2 WHERE t1.a = t2.b;` 中，`INL_JOIN()` 的参数只能使用 t 的别名 t1 或 t2，不能用 t。
+在上面的 SQL 中，`INL_JOIN(t1, t2)` 会提示优化器对 `t1` 和 `t2` 使用 Index Nested Loop Join 算法。注意它并不是指 `t1` 和 `t2` 之间使用 Index Nested Loop Join 算法，而是 `t1` 和 `t2` 分别与其他表 (`t3`) 之间使用 Index Nested Loop Join 算法。
+
+`INL_JOIN()` 中的参数是建立查询计划时内表的候选表，比如 `INL_JOIN(t1)` 只会考虑使用 `t1` 作为内表构建查询计划。表如果指定了别名，就只能使用表的别名作为 `INL_JOIN()` 的参数；如果没有指定别名，则用表的本名作为其参数。比如在 `SELECT /*+ INL_JOIN(t1) */ * FROM t t1, t t2 WHERE t1.a = t2.b;` 中，`INL_JOIN()` 的参数只能使用 `t` 的别名 `t1` 或 `t2`，不能用 `t`。
 
 > **注意：**
 >
@@ -539,7 +541,6 @@ SELECT /*+ LEADING(t1, t2) */ * FROM t1, t2, t3 WHERE t1.id = t2.id and t2.id = 
 + 优化器无法按照 `LEADING` hint 指定的顺序进行表连接
 + 已经存在 `straight_join()` hint
 + 查询语句中包含 outer join 且同时指定了包含笛卡尔积的情况
-+ 和选择 join 算法的 hint（即 `MERGE_JOIN`、`INL_JOIN`、`INL_HASH_JOIN`、`HASH_JOIN`）同时使用且相互冲突时
 
 当出现了上述失效的情况，会输出 warning 警告。
 
