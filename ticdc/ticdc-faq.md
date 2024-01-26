@@ -62,7 +62,7 @@ cdc cli changefeed list --server=http://127.0.0.1:8300
 启动 TiCDC server 时可以通过 `gc-ttl` 指定 GC safepoint 的 TTL，也可以[通过 TiUP 修改](/ticdc/deploy-ticdc.md#使用-tiup-变更-ticdc-集群配置) TiCDC 的 `gc-ttl`，默认值为 24 小时。在 TiCDC 中这个值有如下两重含义：
 
 - 当 TiCDC 服务全部停止后，由 TiCDC 在 PD 所设置的 GC safepoint 保存的最长时间。
-- TiCDC 中某个同步任务中断或者被手动停止时所能停滞的最长时间，若同步任务停滞时间超过 `gc-ttl` 所设置的值，那么该同步任务就会进入 `failed` 状态，无法被恢复，并且不会继续影响 GC safepoint 的推进。
+- 当是因为 TiCDC 的 GC safepoint 阻塞了 TiKV GC 数据时，`gc-ttl` 表示 TiCDC 中某个同步任务所能停滞的最长时间，若同步任务停滞时间超过 `gc-ttl` 所设置的值，那么该同步任务就会进入 `failed` 状态并设置 `ErrGCTTLExceeded` 错误，无法被恢复，并且不会继续影响 GC safepoint 的推进。
 
 以上第二种行为是在 TiCDC v4.0.13 版本及之后版本中新增的。目的是为了防止 TiCDC 中某个同步任务停滞时间过长，导致上游 TiKV 集群的 GC safepoint 长时间不推进，保留的旧数据版本过多，进而影响上游集群性能。
 
@@ -76,7 +76,13 @@ TiCDC 服务启动后，如果有任务开始同步，TiCDC owner 会根据所�
 
 如果该同步任务停滞的时间超过了 `gc-ttl` 指定的时长，那么该同步任务就会进入 `failed` 状态，并且无法被恢复，PD 对应的 service GC safepoint 就会继续推进。
 
-TiCDC 为 service GC safepoint 设置的存活有效期为 24 小时，即 TiCDC 服务中断 24 小时内恢复能保证数据不因 GC 而丢失。
+TiCDC 为 service GC safepoint 设置的默认存活有效期为 24 小时，即 TiCDC 服务中断 24 小时内恢复能保证数据不因 GC 而丢失。
+
+## Failed 同步任务失败后如何恢复？
+
+1. 通过 `cdc cli changefeed query` 查询同步任务的错误信息，尽快修复错误。
+2. 调大 `gc-ttl` 的值，给修复错误留出时间，确保错误修复后不会因为同步延迟超过 `gc-ttl` 而导致同步任务进入 `failed` 状态。
+3. 调大 TiDB 的 `tikv_gc_life_time` 的值以达到阻止 GC 保留数据的目的，确保 TiKV 的 GC safepoint 不会推进到 TiCDC 的 GC safepoint 之后。
 
 ## 如何理解 TiCDC 时区和上下游数据库系统时区之间的关系？
 
