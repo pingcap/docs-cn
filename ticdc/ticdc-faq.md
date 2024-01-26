@@ -62,7 +62,7 @@ cdc cli changefeed list --server=http://127.0.0.1:8300
 启动 TiCDC server 时可以通过 `gc-ttl` 指定 GC safepoint 的 TTL，也可以[通过 TiUP 修改](/ticdc/deploy-ticdc.md#使用-tiup-变更-ticdc-集群配置) TiCDC 的 `gc-ttl`，默认值为 24 小时。在 TiCDC 中这个值有如下两重含义：
 
 - 当 TiCDC 服务全部停止后，由 TiCDC 在 PD 所设置的 GC safepoint 保存的最长时间。
-- 当是因为 TiCDC 的 GC safepoint 阻塞了 TiKV GC 数据时，`gc-ttl` 表示 TiCDC 中某个同步任务所能停滞的最长时间，若同步任务停滞时间超过 `gc-ttl` 所设置的值，那么该同步任务就会进入 `failed` 状态并设置 `ErrGCTTLExceeded` 错误，无法被恢复，并且不会继续影响 GC safepoint 的推进。
+- 当是因为 TiCDC 的 GC safepoint 阻塞了 TiKV GC 数据时，`gc-ttl` 表示 TiCDC 同步任务的最大同步延迟，若同步任务延迟超过 `gc-ttl` 所设置的值，那么该同步任务就会进入 `failed` 状态并设置 `ErrGCTTLExceeded` 错误，无法被恢复，并且不会继续影响 GC safepoint 的推进。
 
 以上第二种行为是在 TiCDC v4.0.13 版本及之后版本中新增的。目的是为了防止 TiCDC 中某个同步任务停滞时间过长，导致上游 TiKV 集群的 GC safepoint 长时间不推进，保留的旧数据版本过多，进而影响上游集群性能。
 
