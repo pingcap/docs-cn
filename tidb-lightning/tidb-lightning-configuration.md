@@ -203,6 +203,10 @@ addr = "172.16.31.10:8287"
 # 该参数自 v7.1.0 版本开始引入。
 # region-check-backoff-limit = 1800
 
+# 物理导入模式下，用于控制本地文件排序的 I/O 区块大小。当 IOPS 成为瓶颈时，你可以调大该参数的值以缓解磁盘 IOPS，从而提升数据导入性能。
+# 该参数自 v7.6.0 版本开始引入。默认值为 "16KiB"。取值必须大于或等于 `1B`。注意，如果仅指定数字（如 `16`），则单位为 Byte 而不是 KiB。
+# block-size = "16KiB"
+
 [mydumper]
 # 设置文件读取的区块大小，确保该值比数据源的最长字符串长。
 read-block-size = "64KiB" # 默认值
@@ -308,8 +312,8 @@ user = "root"
 password = ""
 # 表结构信息从 TiDB 的“status-port”获取。
 status-port = 10080
-# pd-server 的地址，填一个即可。
-pd-addr = "172.16.31.4:2379"
+# pd-server 的地址，从 v7.6.0 开始支持设置多个地址。
+pd-addr = "172.16.31.4:2379,56.78.90.12:3456"
 # tidb-lightning 引用了 TiDB 库，并生成产生一些日志。
 # 设置 TiDB 库的日志等级。
 log-level = "error"

@@ -33,9 +33,9 @@ summary: TiProxy 的性能测试报告、与 HAProxy 的性能对比。
 | --- | --- |
 | TiProxy | v0.2.0 |
 | HAProxy | 2.9.0 |
-| PD | v7.5.0 |
-| TiDB | v7.5.0 |
-| TiKV | v7.5.0 |
+| PD | v7.6.0 |
+| TiDB | v7.6.0 |
+| TiKV | v7.6.0 |
 | Sysbench | 1.0.17 |
 
 ### 参数配置
