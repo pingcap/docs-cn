@@ -292,40 +292,97 @@ SELECT BIN("123q123");
 
 ### [`SUBSTRING_INDEX()`](https://dev.mysql.com/doc/refman/8.0/en/string-functions.html#function_substring-index)
 
-定义: 返回字符串 str 中出现 count 次分隔符 delim 之前的子字符串。如果 count 为正数，则返回最终分隔符左侧的所有内容（从左侧算起）。如果 count 为负数，则返回最终分隔符右侧（从右侧计数）的所有内容。SUBSTRING_INDEX() 在搜索 delim 时执行区分大小写的匹配
-语法: SUBSTRING_INDEX(str, delim, count)
-参数: str,delim,count。必须项。字符串，分隔符，个数。
-返回值: 子字符串
-SELECT SUBSTRING_INDEX('www.tidb.com', '.', 2);
+`SUBSTRING_INDEX()` 函数用于按照指定的分隔符和次数从字符串中提取子字符串。该函数在处理以特定分隔符分隔的数据时特别有用，例如解析 CSV 数据或处理日志文件。
+
+语法：
+
+```sql
+SUBSTRING_INDEX(str, delim, count)
+```
+
+- `str`：要处理的字符串。
+- `delim`：指定字符串中的分隔符，大小写敏感。
+- `count`：指定分隔符出现的次数。
+    - 如果 `count` 为正数，该函数返回返回从字符串左边开始的第 `count` 个分隔符之前的子字符串。
+    - 如果 `count` 为负数，该函数返回从字符串右边开始的第 `count` 个分隔符之后的子字符串。
+    - 如果 `count` 为 `0`，该函数返回一个空字符串。
+
+查询示例 1：
+
+```sql
+SELECT SUBSTRING_INDEX('www.tidbcloud.com', '.', 2);
+```
+
+返回结果 2：
+
+```sql
 +-----------------------------------------+
-| SUBSTRING_INDEX('www.tidb.com', '.', 2) |
+| SUBSTRING_INDEX('www.tidbcloud.com', '.', 2) |
 +-----------------------------------------+
-| www.tidb                                |
+| www.tidbcloud                                |
 +-----------------------------------------+
-SELECT SUBSTRING_INDEX('www.tidb.com', '.', -1);
+```
+
+查询示例 2：
+
+```sql
+SELECT SUBSTRING_INDEX('www.tidbcloud.com', '.', -1);
+```
+
+返回结果 2：
+
+```sql
 +------------------------------------------+
-| SUBSTRING_INDEX('www.tidb.com', '.', -1) |
+| SUBSTRING_INDEX('www.tidbcloud.com', '.', -1) |
 +------------------------------------------+
 | com                                      |
 +------------------------------------------+
+```
+
 ### [`TO_BASE64()`](https://dev.mysql.com/doc/refman/8.0/en/string-functions.html#function_to-base64)
 
-定义: 将字符串参数转换为 base-64 编码形式，并将带有连接字符集和 collation 的字符串作为结果返回。如果参数不是字符串，则在转换之前将其转换为字符串。如果参数为 NULL，则结果为 NULL。Base-64编码的字符串可以使用 FROM_BASE64() 函数进行解码。
-语法: TO_BASE64(str)
-参数: str,必须项。待编码的字符串。
-返回值: base-64编码
+`TO_BASE64()` 函数用于将输入的参数转换为 base-64 编码形式的字符串，并按照当前会话的字符集和排序规则返回结果。base-64 编码的字符串可以使用  [`FROM_BASE64()`](#frombase64httpsdevmysqlcomdocrefman80enstring-functionshtmlfunctionfrom-base64) 函数进行解码。
+
+语法：
+
+```sql
+TO_BASE64(str)
+```
+
+- 如果输入参数不是字符串，该函数会将其转换为字符串后再进行 base-64 编码。
+- 如果输入参数为 `NULL`，该函数返回 `NULL`。
+
+查询示例 1：
+
+```sql
 SELECT TO_BASE64('abc');
+```
+
+返回结果 1：
+
+```sql
 +------------------+
 | TO_BASE64('abc') |
 +------------------+
 | YWJj             |
 +------------------+
+```
+
+查询示例 2：
+
+```sql
 SELECT TO_BASE64(6);
+```
+
+返回结果 2：
+
+```sql
 +--------------+
 | TO_BASE64(6) |
 +--------------+
 | Ng==         |
 +--------------+
+```
 
 ### [`TRANSLATE()`](https://docs.oracle.com/en/database/oracle/oracle-database/21/sqlrf/TRANSLATE.html#GUID-80F85ACB-092C-4CC7-91F6-B3A585E3A690)
 
