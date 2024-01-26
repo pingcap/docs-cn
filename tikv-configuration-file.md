@@ -2093,8 +2093,8 @@ Raft Engine 相关的配置项。
 
 ### `initial-scan-rate-limit` <span class="version-mark">从 v6.2.0 版本开始引入</span>
 
-+ 日志备份任务在扫描增量数据时的吞吐限流参数，表示每秒最多从硬盘读出的数据量。
-+ 默认值：60 MiB
++ 日志备份任务在扫描增量数据时的吞吐限流参数，表示每秒最多从硬盘读出的数据量。注意，如果仅指定数字（如 `60`），则单位为 Byte 而不是 KiB。
++ 默认值：60MiB
 
 ### `max-flush-interval` <span class="version-mark">从 v6.2.0 版本开始引入</span>
 
