@@ -123,25 +123,25 @@ SELECT BIN(-7);
 
 ### [`FORMAT()`](https://dev.mysql.com/doc/refman/8.0/en/string-functions.html#function_format)
 
-`FORMAT(X,D[,locale])` 函数用于将数字X四舍五入格式化为类似于“#,###,###.##”的格式，保留D位小数，并将结果作为字符串返回。
+`FORMAT(X,D[,locale])` 函数用于将数字 X 四舍五入格式化为类似于 “#,###,###.##” 的格式，保留 D 位小数，并将结果作为字符串返回。
 
-**参数：**
+#### 参数
 
 1. **`X`：数字或数字字符串：** 要格式化的数字。可以是直接的数字值、数字字符串、或科学记数法格式的数字。
 2. **`D`：小数位数：** 指定返回值的小数位数。
 3. **`[locale]`：区域设置（可选参数）：** 可选的第三个参数允许指定一个区域设置，用于结果数字的小数点、千位分隔符和分隔符之间的分组。合法的区域设置值与 `lc_time_names` 系统变量的合法值相同。如果未指定或者区域设置为 `NULL`，则默认使用 `'en_US'` 区域设置。
 
-**行为细节：**
+#### 行为细节
 
 - 如果输入的第一个参数为字符串，且该字符串中只包含数字时，该函数将按照该数字返回结果。例如，`FORMAT('12.36', 1)` 与 `FORMAT(12.36, 1)` 的返回结果相同。
 - 如果输入的第一个参数为科学计数法（`E/e`）表示的数字时，该函数将按照该数字返回结果。例如，`FORMAT('1E2', 3)`），函数返回 `100.000`。
-- 如果输入的第一个参数为非数字开头的字符串时，该函数除了返回零值外，还返回一个警告`(Code 1292)`。例如，`FORMAT('q12.36', 5)`），函数返回 `0.00000`，但还会包含一个警告`Warning (Code 1292): Truncated incorrect DOUBLE value: 'q12.36'`。
-- 如果输入的第一个参数为数字和非数字混合的字符串时，该函数将基于该参数中开头连续的数字部分返回结果，还返回一个警告`(Code 1292)`。例如，`FORMAT('12.36q56.78', 1)` 与 `FORMAT('12.36', 1)` 的返回的数字结果相同，但还会包含一个警告`Warning (Code 1292): Truncated incorrect DOUBLE value: '12.36q56.78'`。
+- 如果输入的第一个参数为非数字开头的字符串时，该函数除了返回零值外，还返回一个警告 `(Code 1292)`。例如，`FORMAT('q12.36', 5)` 函数返回 `0.00000`，还会包含一个警告 `Warning (Code 1292): Truncated incorrect DOUBLE value: 'q12.36'`。
+- 如果输入的第一个参数为数字和非数字混合的字符串时，该函数将基于该参数中开头连续的数字部分返回结果，还返回一个警告 `(Code 1292)`。例如，`FORMAT('12.36q56.78', 1)` 与 `FORMAT('12.36', 1)` 的返回的数字结果相同，但 `FORMAT('12.36q56.78', 1)` 还会包含一个警告 `Warning (Code 1292): Truncated incorrect DOUBLE value: '12.36q56.78'`。
 - 如果输入的第二个参数为零，函数将四舍五入小数部分并返回整数。
 - 如果输入的第二个参数为负数，函数将四舍五入小数部分并返回整数。
 - 如果输入的任意参数为 `NULL`，函数将返回 `NULL`。
 
-**示例：**
+#### 示例
 
 格式化数字 12.36 到不同的小数位数：
 
@@ -174,18 +174,18 @@ mysql> SELECT FORMAT(1234.56, 1, 'en_US');
 
 ### [`FROM_BASE64()`](https://dev.mysql.com/doc/refman/8.0/en/string-functions.html#function_from-base64)
 
-`FROM_BASE64(str)` 函数接收一个遵循 [Base64](https://datatracker.ietf.org/doc/html/rfc4648) 编码规则进行编码的字符串，对其进行解码后将结果以十六进制字符串的形式进行返回。
+`FROM_BASE64(str)` 函数接收一个遵循 [Base64](https://datatracker.ietf.org/doc/html/rfc4648) 编码规则进行编码的字符串，对其解码后，将结果以十六进制字符串的形式返回。
 
-- 此函数接受一个单一参数：需要解码的 Base64 编码字符串。
-- 如果输入参数为 `NULL` 或不是有效的 Base64 编码字符串，`FROM_BASE64()` 函数将返回 `NULL`。
+- 此函数接受一个单一参数，即需要解码的 Base64 编码字符串。
+- 如果输入参数为 `NULL` 或无效的 Base64 编码字符串，`FROM_BASE64()` 函数将返回 `NULL`。
 
 > **注意：**
 >
 > `FROM_BASE64()` 函数仅处理合法有效的 Base64 编码字符串。
 
-**示例：**
+#### 示例
 
-解码 Base64 编码的字符串 `'SGVsbG8gVGlEQg=='`（该字符串是`'Hello TiDB'`经过 Base64 编码的结果）
+以下示例解码 Base64 编码的字符串 `'SGVsbG8gVGlEQg=='`，该字符串是 `'Hello TiDB'` 经过 [`TO_BASE64()`](https://dev.mysql.com/doc/refman/8.0/en/string-functions.html#function_to-base64) function.) 编码的结果。
 
 ```sql
 mysql> SELECT TO_BASE64('Hello TiDB');
@@ -212,7 +212,7 @@ mysql> SELECT CONVERT(FROM_BASE64('SGVsbG8gVGlEQg==') USING utf8mb4);
 +--------------------------------------------------------+
 ```
 
-解码 Base64 编码的数字 `MTIzNDU2`（该字符串是`123456`经过 Base64 编码的结果）
+以下示例解码 Base64 编码的数字 `MTIzNDU2`，该字符串是 `123456` 经过 [`TO_BASE64()`](https://dev.mysql.com/doc/refman/8.0/en/string-functions.html#function_to-base64) 编码的结果。
 
 ```sql
 mysql> SELECT FROM_BASE64('MTIzNDU2');
