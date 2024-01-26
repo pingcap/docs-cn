@@ -43,7 +43,7 @@ tiup cluster upgrade <cluster-name> <version> [flags]
 
 ### --ignore-version-check
 
-- 在升级前，TiUP 会检查目标版本是否大于当前版本。如果想要跳过该项检查，可以使用该选项。
+- 在升级前，TiUP 会检查目标版本是否大于等于当前版本。如果想要跳过该项检查，可以使用该选项。
 - 数据类型：`BOOLEAN`
 - 该选项默认关闭，默认值为 `false`。在命令中添加该选项，并传入 `true` 值或不传值，均可开启此功能。
 
