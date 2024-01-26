@@ -6,6 +6,8 @@ This repository stores all the source files of [TiDB Docs at the PingCAP website
 
 If you find documentation issues, feel free to [create an Issue](https://github.com/pingcap/docs/issues/new/choose) to let us know or directly [create a Pull Request](/CONTRIBUTING.md#how-to-contribute) to help fix or update it.
 
+If you want to locally customize and output TiDB documentation in PDF format to meet the needs of specific scenarios, such as freely sorting or deleting certain contents in TiDB documentation, please refer to [TiDB Documentation PDF Generation Tutorial](/resources/tidb-pdf-generation-tutorial.md).
+
 Currently, the official documentation supports two languages:
 
 - `en`: [documentation in English](https://docs.pingcap.com/tidb/stable)
