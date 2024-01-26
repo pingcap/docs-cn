@@ -16,20 +16,20 @@ summary: 使用状态变量查看系统和会话状态
 ### Compression
 
 - 作用域：SESSION
-- 类型：字符串
+- 类型：布尔值
 - MySQL 是否使用压缩协议。
 
 ### Compression_algorithm
 
 - 作用域：SESSION
 - 类型：字符串
-- MySQL 压缩协议使用的算法。
+- MySQL 协议使用的压缩算法。
 
 ### Compression_level
 
 - 作用域：SESSION
 - 类型：整数型
-- MySQL 压缩协议使用的等级。
+- MySQL 协议使用的压缩等级。
 
 ### Ssl_cipher
 
@@ -46,7 +46,7 @@ summary: 使用状态变量查看系统和会话状态
 ### Ssl_server_not_after
 
 - 作用域：SESSION | GLOBAL
-- 类型：时间
+- 类型：日期
 - 服务器用于 TLS 连接的 X.509 证书的过期时间。
 
 ### Ssl_server_not_before
@@ -83,10 +83,10 @@ summary: 使用状态变量查看系统和会话状态
 
 - 作用域：SESSION
 - 类型：时间戳
-- 上次计划更新的日期时间。
+- 最后一次计划绑定更新的日期时间。
 
 ### server_id
 
 - 作用域：SESSION | GLOBAL
 - 类型：字符串
-- 服务器的通用唯一识别码（UUID）。
+- 服务器的通用唯一识别码 (UUID)。
