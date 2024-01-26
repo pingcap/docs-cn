@@ -144,10 +144,12 @@ The `INL_JOIN(t1_name [, tl_name ...])` hint tells the optimizer to use the inde
 {{< copyable "sql" >}}
 
 ```sql
-select /*+ INL_JOIN(t1, t2) */ * from t1, t2 where t1.id = t2.id;
+SELECT /*+ INL_JOIN(t1, t2) */ * FROM t1, t2, t3 WHERE t1.id = t2.id AND t2.id = t3.id;
 ```
 
-The parameter(s) given in `INL_JOIN()` is the candidate table for the inner table when you create the query plan. For example, `INL_JOIN(t1)` means that TiDB only considers using `t1` as the inner table to create a query plan. If the candidate table has an alias, you must use the alias as the parameter in `INL_JOIN()`; if it does not has an alias, use the table's original name as the parameter. For example, in the `select /*+ INL_JOIN(t1) */ * from t t1, t t2 where t1.a = t2.b;` query, you must use the `t` table's alias `t1` or `t2` rather than `t` as `INL_JOIN()`'s parameter.
+In the preceding SQL statement, the `INL_JOIN(t1, t2)` hint tells the optimizer to use the index nested loop join algorithm for `t1` and `t2`. Note that this does not mean that the index nested loop join algorithm is used between `t1` and `t2`. Instead, the hint indicates that `t1` and `t2` each use the index nested loop join algorithm with another table (`t3`).
+
+The parameter(s) given in `INL_JOIN()` is the candidate table for the inner table when you create the query plan. For example, `INL_JOIN(t1)` means that TiDB only considers using `t1` as the inner table to create a query plan. If the candidate table has an alias, you must use the alias as the parameter in `INL_JOIN()`; if it does not have an alias, use the table's original name as the parameter. For example, in the `select /*+ INL_JOIN(t1) */ * from t t1, t t2 where t1.a = t2.b;` query, you must use the `t` table's alias `t1` or `t2` rather than `t` as `INL_JOIN()`'s parameter.
 
 > **Note:**
 >
@@ -571,9 +573,8 @@ The `LEADING` hint does not take effect in the following situations:
 + The optimizer cannot perform join operations according to the order as specified by the `LEADING` hint.
 + The `straight_join()` hint already exists.
 + The query contains an outer join together with the Cartesian product.
-+ Any of the `MERGE_JOIN`, `INL_JOIN`, `INL_HASH_JOIN`, and `HASH_JOIN` hints is used at the same time.
 
-In the above situations, a warning is generated.
+In the preceding situations, a warning is generated.
 
 ```sql
 -- Multiple `LEADING` hints are specified.
@@ -968,7 +969,7 @@ SHOW WARNINGS;
 
 ### `INL_JOIN` hint does not take effect because of join order
 
-The [`INL_JOIN(t1, t2)`](#inl_joint1_name--tl_name-) or `TIDB_INLJ(t1, t2)` hint semantically instructs `t1` and `t2` to act as inner tables in an `IndexJoin` operator to join with other tables, rather than directly joining them using an `IndexJoin`operator. For example:
+The [`INL_JOIN(t1, t2)`](#inl_joint1_name--tl_name-) or `TIDB_INLJ(t1, t2)` hint semantically instructs `t1` and `t2` to act as inner tables in an `IndexJoin` operator to join with other tables, rather than directly joining them using an `IndexJoin` operator. For example:
 
 ```sql
 EXPLAIN SELECT /*+ inl_join(t1, t3) */ * FROM t1, t2, t3 WHERE t1.id = t2.id AND t2.id = t3.id AND t1.id = t3.id;
