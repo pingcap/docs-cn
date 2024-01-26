@@ -133,15 +133,15 @@ TiDB 目前支持的身份验证方式可在以下的表格中查找到。服务
 
 ### `tidb_auth_token`
 
-`tidb_auth_token` 是一种基于 [JSON Web Token (JWT)](https://datatracker.ietf.org/doc/html/rfc7519) 的无密码认证方式，用于 TiDB Cloud 内部的用户认证，用户通过配置也可以在自托管环境使用。不同于 `mysql_native_passsword`、`caching_sha2_password` 等使用密码的认证方式，创建 `tidb_auth_token` 用户时无需设置并保存自定义的密码；使用 `tidb_auth_token` 进行登录时使用签发的 token 进行登录，可以简化用户的认证过程并提升安全性。
+`tidb_auth_token` 是一种基于 [JSON Web Token (JWT)](https://datatracker.ietf.org/doc/html/rfc7519) 的无密码认证方式，用于 TiDB Cloud 内部的用户认证，用户通过配置也可以在自托管环境使用。不同于 `mysql_native_passsword`、`caching_sha2_password` 等使用密码的认证方式，`tidb_auth_token` 认证方式在创建用户时无需设置并保存自定义密码，在用户登录时只需使用一个签发的 token，从而简化用户的认证过程并提升安全性。
 
-JWT 由 Header、Payload 和 Signature 三部分组成，每部分使用 base64 编码之后拼接成一个字符串，中间用点号（`.`）分开。
+JWT 由 Header、Payload 和 Signature 三部分组成。这三部分分别通过 base64 编码后，使用点号（`.`）拼接成一个字符串，以便在客户端和服务器之间传输。
 
 Header 描述 JWT 的元数据，包含 3 个属性：
 
-* `alg`：表示签名使用的算法，默认为 `RS256`
-* `typ`：表示 token 的类型，统一为 `JWT`
-* `kid`：表示用于生成 token 签名的 key id
+* `alg`：表示签名使用的算法，默认为 `RS256`。
+* `typ`：表示 token 的类型，为 `JWT`。
+* `kid`：表示用于生成 token 签名的 key ID。
 
 下面是一个 Header 示例：
 
@@ -153,18 +153,15 @@ Header 描述 JWT 的元数据，包含 3 个属性：
 }
 ```
 
-Payload 是 JWT 的主体部分，保存用户的信息，每个字段就是一个 claim（声明）。TiDB 用户认证要求的几个声明如下：
+Payload 是 JWT 的主体部分，用于保存用户的信息。Payload 中的每个字段称为一个 claim（声明）。TiDB 用户认证要求提供的声明如下：
 
-* `iss`：如果[创建用户](/sql-statements/sql-statement-create-user.md)时未指定 `TOKEN_ISSUER` 或者设置为空串，则可以不包含该声明；否则应该与设置值相同
-* `sub`：TiDB 中要求该值与待认证的用户名相同
-* `iat`：发布时间戳。TiDB 中要求该值不得晚于认证时的时间，不得早于认证前 15 分钟
-* `exp`：到期时间戳。如果认证时已经到期，则认证失败
+* `iss`：如果[创建用户](/sql-statements/sql-statement-create-user.md)时未指定 `TOKEN_ISSUER` 或者将其设置为了空字符串，则可以不包含该声明；否则 `iss` 应该与 `TOKEN_ISSUER` 设置值相同。
+* `sub`：TiDB 中要求该值与待认证的用户名相同。
+* `iat`：发布 token 的时间戳。TiDB 中要求该值不得晚于认证时的时间，也不得早于认证前 15 分钟。
+* `exp`：token 到期的时间戳。如果 token 在认证时已经过期，则认证失败。
+* `email`：邮件地址。创建用户时可以通过 `ATTRIBUTE '{"email": "xxxx@pingcap.com"}'` 指定 email 信息。如果创建用户时未指定 email 信息，则该声明应设置为空字符串；否则该声明应该与创建用户时的设置值相同。
 
-此外 TiDB 中还要求包含
-
-* `email`：邮件地址。创建用户时可以通过 `ATTRIBUTE '{"email": "xxxx@pingcap.com"}'` 指定 email 信息。如果创建用户时未指定 email 信息，则该声明应设置为空串；否则应该与设置值相同
-
-下面是几个合法的 Payload 示例：
+Payload 示例：
 
 ```json
 {
@@ -176,44 +173,38 @@ Payload 是 JWT 的主体部分，保存用户的信息，每个字段就是一�
 }
 ```
 
-Payload 中可以不包含 `iss` 声明： 
-
-```json
-{
-  "email": "",
-  "exp": 1703305494,
-  "iat": 1703304594,
-  "sub": "user@pingcap.com"
-}
-```
-
-Signature 对上面两部分数据进行签名。
+Signature 用于对 Header 和 Payload 这两部分数据进行签名。
 
 > **警告：**
 >
-> 1. Header 与 Payload 使用 base64 进行编码的过程是可逆的，请勿在 Payload 中携带敏感数据
-> 2. `tidb_auth_token` 认证方式要求客户端支持 [`mysql_clear_password`](https://dev.mysql.com/doc/refman/8.0/en/cleartext-pluggable-authentication.html) 插件，并将 token 以明文的方式发送至 TiDB，因此请[为 TiDB 开启加密传输](/enable-tls-between-clients-and-servers.md) 后再使用 `tidb_auth_token` 进行认证
+> - Header 与 Payload 使用 base64 进行编码的过程是可逆的，请勿在 Payload 中携带敏感数据。
+> - `tidb_auth_token` 认证方式要求客户端支持 [`mysql_clear_password`](https://dev.mysql.com/doc/refman/8.0/en/cleartext-pluggable-authentication.html) 插件，并将 token 以明文的方式发送至 TiDB，因此请[为 TiDB 开启加密传输](/enable-tls-between-clients-and-servers.md) 后再使用 `tidb_auth_token` 进行认证。
 
 配置并使用 `tidb_auth_token` 作为 TiDB 用户的认证方式，有以下几个步骤：
 
-1. 在 TiDB 配置文件中设置 [`auth-token-jwks`](/tidb-configuration-file.md#auth-token-jwks-从-v640-版本开始引入) 和 [`auth-token-refresh-interval`](/tidb-configuration-file.md#auth-token-refresh-interval-从-v640-版本开始引入)
-2. 定期更新保存 JWKS 至 `auth-token-jwks` 指定的路径
-3. 创建使用 `tidb_auth_token` 认证的用户，并根据需要通过 `REQUIRE TOKEN_ISSUER` 和 `ATTRIBUTE '{"email": "xxxx@pingcap.com"}` 指定 `iss` 与 `email` 信息
-4. 生成并签发用于认证的 token，通过 mysql 客户端的 `mysql_clear_text` 插件进行认证 
+1. 在 TiDB 配置文件中设置 [`auth-token-jwks`](/tidb-configuration-file.md#auth-token-jwks-从-v640-版本开始引入) 和 [`auth-token-refresh-interval`](/tidb-configuration-file.md#auth-token-refresh-interval-从-v640-版本开始引入)。
+2. 定期更新保存 JWKS 至 `auth-token-jwks` 指定的路径。
+3. 创建使用 `tidb_auth_token` 认证的用户，并根据需要通过 `REQUIRE TOKEN_ISSUER` 和 `ATTRIBUTE '{"email": "xxxx@pingcap.com"}` 指定 `iss` 与 `email` 信息。
+4. 生成并签发用于认证的 token，通过 mysql 客户端的 `mysql_clear_text` 插件进行认证。
 
 #### 示例
 
 1. 通过 `go install github.com/cbcwestwolf/generate_jwt` 安装 JWT 生成工具。该工具仅用于生成测试 `tidb_auth_token` 的 JWT。
-2. 获取示例 JWKS：`wget https://raw.githubusercontent.com/CbcWestwolf/generate_jwt/master/JWKS.json`
-3. 在 TiDB 的配置文件 `config.toml` 中配置上述 JWKS 文件的路径
+2. 获取示例 JWKS：
+
+    ```bash
+    wget https://raw.githubusercontent.com/CbcWestwolf/generate_jwt/master/JWKS.json
+    ```
+
+3. 在 TiDB 的配置文件 `config.toml` 中配置上述 JWKS 文件的路径：
 
     ```toml
     [security]
     auth-token-jwks = "JWKS.json"
     ```
 
-4. 启动 `tidb-server`
-5. 创建使用 `tidb_auth_token` 认证的用户 `user@pingcap.com`
+4. 启动 `tidb-server`。
+5. 创建使用 `tidb_auth_token` 认证的用户 `user@pingcap.com`：
 
     ```SQL
     CREATE USER 'user@pingcap.com' IDENTIFIED WITH 'tidb_auth_token' REQUIRE TOKEN_ISSUER 'issuer-abc' ATTRIBUTE '{"email": "user@pingcap.com"}';
