@@ -25,6 +25,7 @@ Information Schema 提供了一种查看系统元数据的 ANSI 标准方法。�
 | `FILES`                                                                                                                    | TiDB 未实现，返回零行。                                                           |
 | `GLOBAL_STATUS`                                                                                                            | TiDB 未实现，返回零行。                                                           |
 | `GLOBAL_VARIABLES`                                                                                                         | TiDB 未实现，返回零行。                                                           |
+| [`KEYWORDS`](/information-schema/information-schema-keywords.md) | 提供关键字列表。 |
 | [`KEY_COLUMN_USAGE`](/information-schema/information-schema-key-column-usage.md)                                           | 描述列的键约束，例如主键约束。                                                    |
 | `OPTIMIZER_TRACE`                                                                                                          | TiDB 未实现，返回零行。                                                           |
 | `PARAMETERS`                                                                                                               | TiDB 未实现，返回零行。                                                           |

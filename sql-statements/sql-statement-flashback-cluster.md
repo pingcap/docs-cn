@@ -1,11 +1,14 @@
 ---
-title: FLASHBACK CLUSTER TO TIMESTAMP
-summary: TiDB 数据库中 FLASHBACK CLUSTER TO TIMESTAMP 的使用概况。
+title: FLASHBACK CLUSTER
+summary: TiDB 数据库中 FLASHBACK CLUSTER 的使用概况。
+aliases: ['/zh/tidb/dev/sql-statement-flashback-to-timestamp']
 ---
 
-# FLASHBACK CLUSTER TO TIMESTAMP
+# FLASHBACK CLUSTER
 
-TiDB v6.4.0 引入了 `FLASHBACK CLUSTER TO TIMESTAMP` 语法，其功能是将集群的数据恢复到特定的时间点。
+TiDB v6.4.0 引入了 `FLASHBACK CLUSTER TO TIMESTAMP` 语法，其功能是将集群的数据恢复到过去指定的时间点。指定时间点时，你可以使用日期时间和时间函数，日期时间的格式为：'2016-10-08 16:45:26.999'，最小时间精度范围为毫秒，通常可只写到秒，例如 '2016-10-08 16:45:26'。
+
+TiDB v6.5.6、v7.1.3、v7.6.0 开始引入了 `FLASHBACK CLUSTER TO TSO` 的语法，支持使用时间戳 [TSO](/tso.md) 更加精确地指定恢复时间点，实现更加灵活的数据恢复。
 
 > **警告：**
 >
@@ -15,19 +18,21 @@ TiDB v6.4.0 引入了 `FLASHBACK CLUSTER TO TIMESTAMP` 语法，其功能是将�
 
 > **注意：**
 >
-> `FLASHBACK CLUSTER TO TIMESTAMP` 是用最新的时间戳写入特定时间点的旧数据，但不会删除当前数据，所以在使用前请确保集群有足够的存储空间来同时容纳旧数据和当前数据。
+> `FLASHBACK CLUSTER TO [TIMESTAMP|TSO]` 是用最新的时间戳写入特定时间点的旧数据，但不会删除当前数据，所以在使用前请确保集群有足够的存储空间来同时容纳旧数据和当前数据。
 
 ## 语法
 
 ```sql
 FLASHBACK CLUSTER TO TIMESTAMP '2022-09-21 16:02:50';
+FLASHBACK CLUSTER TO TSO 445494839813079041;
 ```
 
 ### 语法图
 
 ```ebnf+diagram
-FlashbackToTimestampStmt ::=
-    "FLASHBACK" "CLUSTER" "TO" "TIMESTAMP" stringLit
+FlashbackToTimestampStmt
+         ::= 'FLASHBACK' 'CLUSTER' 'TO' 'TIMESTAMP' stringLit
+           | 'FLASHBACK' 'CLUSTER' 'TO' 'TSO' LengthNum
 ```
 
 ## 注意事项
@@ -41,14 +46,14 @@ FlashbackToTimestampStmt ::=
 * 执行 `FLASHBACK CLUSTER` SQL 语句的用户需要有 `SUPER` 权限。
 * `FLASHBACK CLUSTER` 不支持回退修改 PD 相关信息的 DDL，如 `ALTER TABLE ATTRIBUTE`、`ALTER TABLE REPLICA`、`CREATE PLACEMENT POLICY` 等。
 * `FLASHBACK CLUSTER` 指定的时间点不能存在未执行完成的 DDL 记录。若存在，TiDB 会拒绝该 DDL 操作。
-* 在执行 `FLASHBACK CLUSTER TO TIMESTAMP` 前，TiDB 会主动断开所有相关表上的连接，并禁止对这些表进行读写操作，直到 `FLASHBACK CLUSTER` 完成。
-* `FLASHBACK CLUSTER TO TIMESTAMP` 命令不能取消，一旦开始执行 TiDB 会一直重试，直到成功。
+* 在执行 `FLASHBACK CLUSTER` 前，TiDB 会主动断开所有相关表上的连接，并禁止对这些表进行读写操作，直到 `FLASHBACK CLUSTER` 完成。
+* `FLASHBACK CLUSTER` 命令不能取消，一旦开始执行 TiDB 会一直重试，直到成功。
 * 在 `FLASHBACK CLUSTER` 执行期间，若有数据备份需求，只支持使用 [BR 命令行工具进行快照备份](/br/br-snapshot-guide.md)，并需要指定早于 `FLASHBACK CLUSTER` 开始时间的 `BackupTS`。同时，在执行 `FLASHBACK CLUSTER` 期间，[开启日志备份](/br/br-pitr-guide.md)的操作会失败，请等待 `FLASHBACK CLUSTER` 结束后再尝试开启日志备份。
 * 若 `FLASHBACK CLUSTER` 导致了元信息（表结构、库结构）的回滚，则相关的修改**不会**被 TiCDC 同步。因此，用户需主动暂停任务，待 `FLASHBACK CLUSTER` 完成后将上下游的 schema 定义手动同步一致，然后重新创建 TiCDC changefeed。
 
 ## 示例
 
-恢复新插入的数据：
+闪回到指定的 TIMESTAMP 来恢复新写入的数据：
 
 ```sql
 mysql> CREATE TABLE t(a INT);
@@ -81,6 +86,52 @@ Query OK, 0 rows affected (0.20 sec)
 
 mysql> SELECT * FROM t;
 Empty set (0.00 sec)
+```
+
+闪回到指定的 TSO 来精确恢复误删除的数据：
+
+```sql
+mysql> INSERT INTO t VALUES (1);
+Query OK, 1 row affected (0.02 sec)
+
+mysql> SELECT * FROM t;
++------+
+| a    |
++------+
+|    1 |
++------+
+1 row in set (0.01 sec)
+
+
+mysql> BEGIN;
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> SELECT @@tidb_current_ts;  --  获取当前 TSO
++--------------------+
+| @@tidb_current_ts  |
++--------------------+
+| 446113975683252225 |
++--------------------+
+1 row in set (0.00 sec)
+
+mysql> ROLLBACK;
+Query OK, 0 rows affected (0.00 sec)
+
+
+mysql> DELETE FROM t;
+Query OK, 1 rows affected (0.00 sec)
+
+
+mysql> FLASHBACK CLUSTER TO TSO 446113975683252225;
+Query OK, 0 rows affected (0.20 sec)
+
+mysql> SELECT * FROM t;
++------+
+| a    |
++------+
+|    1 |
++------+
+1 row in set (0.01 sec)
 ```
 
 如果 `FLASHBACK CLUSTER` 指定的时间点有未完成的 DDL 记录，那么 `FLASHBACK CLUSTER` 将执行失败：

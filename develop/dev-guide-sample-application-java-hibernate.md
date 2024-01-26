@@ -54,6 +54,7 @@ cd tidb-java-hibernate-quickstart
 3. 确认对话框中的配置和你的运行环境一致。
 
     - **Endpoint Type** 为 `Public`。
+    - **Branch** 选择 `main`。
     - **Connect With** 选择 `General`。
     - **Operating System** 为你的运行环境。
 
@@ -61,11 +62,11 @@ cd tidb-java-hibernate-quickstart
     >
     > 如果你在 Windows Subsystem for Linux (WSL) 中运行，请切换为对应的 Linux 发行版。
 
-4. 如果你还没有设置密码，点击 **Create password** 生成一个随机密码。
+4. 如果你还没有设置密码，点击 **Generate Password** 生成一个随机密码。
 
     > **Tip:**
     >
-    > 如果你之前已经生成过密码，可以直接使用原密码，或点击 **Reset password** 重新生成密码。
+    > 如果你之前已经生成过密码，可以直接使用原密码，或点击 **Reset Password** 重新生成密码。
 
 5. 运行以下命令，将 `env.sh.example` 复制并重命名为 `env.sh`：
 

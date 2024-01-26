@@ -77,10 +77,11 @@ bundle add mysql2 dotenv
 3. 确保连接对话框中的配置与你的操作环境匹配。
 
    - **Endpoint Type** 设置为 `Public`。
+   - **Branch** 选择 `main`。
    - **Connect With** 设置为 `General`。
    - **Operating System** 与你运行应用程序的操作系统相匹配。
 
-4. 如果你还没有设置密码，点击 **Create password** 生成一个随机密码。
+4. 如果你还没有设置密码，点击 **Generate Password** 生成一个随机密码。
 
 5. 运行以下命令复制 `.env.example` 并将其重命名为 `.env`：
 
@@ -179,7 +180,7 @@ ruby app.rb
 如果连接成功，你的终端将会输出所连接集群的版本信息：
 
 ```
-🔌 Connected to TiDB cluster! (TiDB version: 8.0.11-TiDB-v7.5.0)
+🔌 Connected to TiDB cluster! (TiDB version: 8.0.11-TiDB-v7.6.0)
 ⏳ Loading sample game data...
 ✅ Loaded sample game data.
 
