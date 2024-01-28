@@ -111,7 +111,8 @@ PD 同样将根据系统的 `max-replicas` 及 `location-labels` 生成默认的
 
 > **注意：**
 >
-> 开启 Placement Rules 后，原先的 `max-replicas` 及 `location-labels` 配置项将不再生效。如果需要调整副本策略，应当使用 Placement Rules 相关接口。
+> 开启 Placement Rules 后，且有多条 rule 的情况下，原先的 `max-replicas` 及 `location-labels` 配置项将不再生效。如果需要调整副本策略，应当使用 Placement Rules 相关接口。
+> 如果开启 Placement Rules 但只有一条 rule，当尝试改变 `max-replicas` 及 `location-labels` 时，系统会自动更新默认的 rule。
 
 ### 关闭 Placement Rules 特性
 
