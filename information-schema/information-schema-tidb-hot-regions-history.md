@@ -57,7 +57,7 @@ DESC tidb_hot_regions_history;
 * KEY_RATE：该 Region 内读写的 Key 数量。
 * QUERY_RATE：该 Region 内读写的 Query 数量。
 
-对于读热点，上述热点数据字段的统计周期为一个 Region 的心跳周期，由 TiKV 的配置 [`pd-heartbeat-tick-interval`](/tikv-configuration-file.md#pd-heartbeat-tick-interval) 决定；对于写热点，则为一个 Store 的心跳周期，由 TiKV 的配置 [`pd-store-heartbeat-tick-interval`](/tikv-configuration-file.md#pd-store-heartbeat-tick-interval) 决定。
+对于读热点，`FLOW_BYTES`、`KEY_RATE` 和 `QUERY_RATE` 字段的统计周期均为一个 Region 心跳周期，由 TiKV 的配置 [`pd-heartbeat-tick-interval`](/tikv-configuration-file.md#pd-heartbeat-tick-interval) 控制；对于写热点，除了 `QUERY_RATE` 字段的统计周期仍为一个 Region 心跳周期，`FLOW_BYTES` 和 `KEY_RATE` 字段均为一个 Store 心跳周期，由 TiKV 的配置 [`pd-store-heartbeat-tick-interval`](/tikv-configuration-file.md#pd-store-heartbeat-tick-interval) 控制。
 
 > **注意：**
 >
