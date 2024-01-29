@@ -11,8 +11,8 @@ summary: 介绍如何将数据从 MariaDB 文件迁移数据到 TiDB。
 
 选择合适的迁移策略：
 
-- 第一种策略是 [导出和恢复](#使用-dumpling-导出数据后使用-tidb-lightning-导入)。该策略适用于所有版本的 MariaDB。该策略的缺点是需要更多的停机时间。
-- 第二种策略是使用 DM [迁移数据](#使用-dm-迁移数据) 从 MariaDB 到 TiDB。DM 不支持所有版本的 MariaDB。支持的版本请参考 [DM 兼容性目录](/dm/dm-compatibility-catalog.md#tidb-data-migration-兼容性目录) 。
+- 第一种策略是[导出和恢复](#使用-dumpling-导出数据后使用-tidb-lightning-导入)。该策略适用于所有版本的 MariaDB。该策略的缺点是需要更多的停机时间。
+- 第二种策略是使用 DM [迁移数据](#使用-dm-迁移数据)从 MariaDB 到 TiDB。DM 不支持所有版本的 MariaDB。支持的版本请参考 [DM 兼容性目录](/dm/dm-compatibility-catalog.md#tidb-data-migration-兼容性目录)。
 
 除了以上两种策略，还有其他策略适用于特定的场景。例如：
 
@@ -25,7 +25,7 @@ summary: 介绍如何将数据从 MariaDB 文件迁移数据到 TiDB。
 
 - 对于第一种策略：
     - 安装 [Dumpling](/dumpling-overview.md) 和 [TiDB Lightning](/tidb-lightning/tidb-lightning-overview.md)。
-    - 确保你在 MariaDB 服务器上拥有[所需的权限](/dumpling-overview.md#required-privileges)，以便 Dumpling 导出数据。
+    - 确保你在 MariaDB 服务器上拥有[所需的权限](/dumpling-overview.md#需要的权限)，以便 Dumpling 导出数据。
 - 对于第二种策略，设置 [DM](/dm/dm-overview.md)。
 
 ## 检查兼容性
@@ -60,8 +60,6 @@ GROUP BY
 ```
 
 ### 系统版本表
-
-TiDB does not support [system-versioned tables](https://mariadb.com/kb/en/system-versioned-tables/). However, TiDB does support [`AS OF TIMESTAMP`](/as-of-timestamp.md) which might replace some of the use cases of system-versioned tables.
 
 TiDB 不支持[系统版本表 (System-Versioned Table)](https://mariadb.com/kb/en/system-versioned-tables/)。但是 TiDB 支持 [`AS OF TIMESTAMP`](/as-of-timestamp.md)，可以在某些场景下取代系统班报表。
 
@@ -256,86 +254,86 @@ ORDER BY
 
 ## 使用 Dumpling 导出数据后使用 TiDB Lightning 导入
 
-This method assumes that you take your application offline, migrate the data, and then re-configure your application to use the migrated data.
+该迁移策略假定你将应用程序下线，迁移数据，然后重新配置应用程序以使用迁移后的数据。
 
-It is strongly recommended to first do this on a test or development instance of your application before doing it in production. This is both to check for possible compatibility issues as to get insight into how much time the migration will take.
+强烈建议你在生产环境操作之前，先在测试或开发环境中进行测试。这样既可以检查可能的兼容性问题，也可以了解迁移所需时长。
 
-1. Stop your application. Take your application offline. This ensures there are no modifications made to the data in MariaDB during or after the migration.
+1. 停止应用程序。将应用程序下线。这样可以确保在迁移过程中或迁移之后，MariaDB 中的数据不会被修改。
 
-2. Dump the data. For this the first step is to dump data in MariaDB with the [`tiup dumpling`](/dumpling-overview.md#use-dumpling-to-export-data) command.
+2. 导出数据。首先使用 [`tiup dumpling`](/dumpling-overview.md#使用-dumpling-导出数据) 命令从 MariaDB 导出数据。
 
     ```shell
     tiup dumpling --port 3306 --host 127.0.0.1 --user root --password secret -F 256MB  -o /data/backup
     ```
 
-3. Restore the data. For this step we will use the `tiup tidb-lightning` command. See [Get Started with TiDB Lightning](/get-started-with-tidb-lightning.md) for how to configure TiDB Lightning and how to run it.
+3. 使用 `tiup tidb-lightning` 命令恢复数据。请参考 [Get Started with TiDB Lightning](/get-started-with-tidb-lightning.md) 了解如何配置及运行 TiDB Lightning。
 
-4. Migrate user accounts and permissions. See [Export users and grants](#export-users-and-grants) for how to migrate your users and permissions.
+4. 迁移用户账号和权限。请参考[导出用户和授权](#导出用户和授权)了解如何迁移用户账号和权限。
 
-5. Reconfigure your application. You need to change the application configuration so that it can connect to the TiDB server.
+5. 重新配置应用程序。你需要修改应用程序的配置，使其可以连接到 TiDB 服务器。
 
-6. Clean up. Once you have verified that the migration is successful you can make a final backup of the data in MariaDB and stop the server. This also means you can remove tools such as TiUP, Dumpling, and TiDB Lightning.
+6. 清理环境。一旦确认迁移成功，你可以在 MariaDB 中做最后一次备份，然后停止 MariaDB 服务器。你可以删除 TiUP、Dumpling 和 TiDB Lightning 等工具。
 
 ## 使用 DM 迁移数据
 
-This method assumes you would set up replication, stop your application and wait for the replication to catch up, and then re-configure your application to use TiDB.
+该策略假定你将应用程序下线，等待复制数据，然后重新配置应用程序以使用 TiDB。
 
-It is strongly recommended to first test your application before doing this migration in production.
+强烈建议你在生产环境操作之前，先在测试或开发环境中进行测试。这样既可以检查可能的兼容性问题，也可以了解迁移所需时长。
 
-To use DM, you need to deploy a set of DM services either with a [TiUP cluster](/dm/deploy-a-dm-cluster-using-tiup.md) or with [TiDB Operator](/tidb-operator-overview.md). After that, use `dmctl` to configure the DM services.
+要使用 DM，你需要使用 [TiUP 集群](/dm/deploy-a-dm-cluster-using-tiup.md)或 [TiDB Operator](/tidb-operator-overview.md) 部署一组 DM 服务。之后，使用 `dmctl` 配置 DM 服务。
 
-### Step 1. Prepare
+### 第 1 步：准备工作
 
-Make sure that binlogs are enabled on MariaDB and that the `binlog_format` is set to `ROW`. It is also recommended to set `binlog_annotate_row_events=OFF` and `log_bin_compress=OFF`.
+确保 MariaDB 上启用了 binlog，并且 `binlog_format` 设置为 `ROW`。建议设置 `binlog_annotate_row_events=OFF` 和 `log_bin_compress=OFF`。
 
-You also need an account with the `SUPER` permission or with the `BINLOG MONITOR` and `REPLICATION MASTER ADMIN` permissions. This account also needs read permission for the schemas you are going to migrate.
+你还需要一个拥有 `SUPER` 权限或 `BINLOG MONITOR` 和 `REPLICATION MASTER ADMIN` 权限的账号。该账号还需要对你要迁移的数据库有读权限。
 
-If you are not using an account with the `SUPER` permission, then you might have to add the following to the DM configuration, because TiDB does not yet know how to check for MariaDB specific permissions.
+如果你不使用拥有 `SUPER` 权限的账号，那么你可能需要在 DM 配置中添加以下内容，因为 TiDB 不知道如何检查 MariaDB 特有的权限。
 
 ```yaml
 ignore-checking-items: ["replication_privilege"]
 ```
 
-Before you use DM to migrate data from upstream to downstream, a precheck helps detect errors in the upstream database configurations and ensures that the migration goes smoothly. For more information, see [Migration Task Precheck](/dm/dm-precheck.md)
+使用 DM 迁移数据前，可以使用预检查上游数据库配置是否正确，以确保迁移顺利进行。更多信息，请参考 [TiDB Data Migration 任务前置检查](/dm/dm-precheck.md)。
 
-### Step 2. Replicate data
+### 第 2 步：迁移数据
 
-Note that it is not required to first copy the initial data as you would do with MariaDB to MariaDB replication, DM will do this for you.
+参考 [TiDB Data Migration 快速上手指南](/dm/quick-start-with-dm.md)了解如何从 MariaDB 迁移数据到 TiDB。
 
-Follow the [Quick Start Guide for TiDB Data Migration](/dm/quick-start-with-dm.md) to replicate your data from MariaDB to TiDB.
+注意，DM 不需要你先复制初始数据，就像从 MariaDB 到 MariaDB 迁移数据时所做的那样，因为 DM 会为你完成这些操作。
 
-### Step 3. Migrate user accounts and permissions
+### 第 3 步：迁移用户账号和权限
 
-See [Export users and grants](#export-users-and-grants) for how to migrate your users and permissions.
+参考[导出用户和授权](#导出用户和授权)了解如何迁移用户账号和权限。
 
-### Step 4. Test your data
+### 第 4 步：测试数据
 
-Once your data is replicated, you can run read-only queries on it to validate it. For more information, see [Test your application](#test-your-application).
+一旦数据开始迁移，你可以在其上运行只读查询来验证数据。更多信息，请参考[测试应用程序](#测试应用程序)。
 
-### Step 5. Switch over
+### 第 5 步：切换系统
 
-To switch over to TiDB, you need to do the following:
+要将系统切换到 TiDB，你需要执行以下操作：
 
-1. Stop your application.
-2. Monitor the replication delay, which should go to 0 seconds.
-3. Change the configuration of your application so that it connects to TiDB and start it again.
+1. 停止应用程序。
+2. 监控复制延迟，它应该变为 0 秒。
+3. 修改应用程序的配置，使其连接到 TiDB，然后重新启动应用程序。
 
-To check for replication delay, run [`query-status <taskname>`](/dm/dm-query-status.md#detailed-query-result) via `dmctl` and check for `"synced: true"` in the `subTaskStatus`.
+要检查复制延迟，使用 `dmctl` 运行 [`query-status <taskname>`](/dm/dm-query-status.md#详情查询结果)，并检查 `subTaskStatus` 中的 `"synced: true"`。
 
-### Step 6. Clean up
+### 第 6 步：清理环境
 
-Once you have verified that the migration is successful, you can make a final backup of the data in MariaDB and stop the server. It also means you can stop and remove the DM cluster.
+一旦确认迁移成功，你可以在 MariaDB 中做最后一次备份，然后停止 MariaDB 服务器。这也意味着你可以停止并删除 DM 集群。
 
-## Export users and grants
+## 导出用户和授权
 
-You can use [`pt-show-grants`](https://docs.percona.com/percona-toolkit/pt-show-grants.html). It is part of the Percona Toolkit to export users and grants from MariaDB and load these into TiDB.
+你可以使用 [`pt-show-grants`](https://docs.percona.com/percona-toolkit/pt-show-grants.html) 导出用户和授权。它是 Percona Toolkit 的一部分，用于从 MariaDB 导出用户和授权，并将其加载到 TiDB 中。
 
-## Test your application
+## 测试应用程序
 
-While it is possible to use generic tools such as `sysbench` for testing, it is highly recommended to test some specific features of your application. For example, run a copy of your application against a TiDB cluster with a temporary copy of your data.
+虽然可以使用 `sysbench` 等通用工具进行测试，但是强烈建议你测试应用程序的某些特定功能。例如，使用临时数据副本，运行应用程序的副本，连接到 TiDB 集群。
 
-Such a test makes sure your application compatibility and performance with TiDB is verified. You need to monitor the log files of your application and TiDB to see if there are any warnings that might need to be addressed. Make sure that the database driver that your application is using (for example MySQL Connector/J for Java based applications) is tested. You might want to use an application such as JMeter to put some load on your application if needed.
+这些测试可以确保应用程序与 TiDB 的兼容性和性能。你需要监控应用程序和 TiDB 的日志，以查看是否有任何需要解决的警告。确保测试应用程序使用的数据库驱动程序，例如 Java 应用程序的 MySQL Connector/J。如有必要，你可能需要使用 JMeter 等应用程序对应用程序进行负载测试。
 
-## Validate data
+## 验证数据
 
-You can use [sync-diff-inspector](/sync-diff-inspector/sync-diff-inspector-overview.md) to validate if the data in MariaDB and TiDB are identical.
+你可以使用 [sync-diff-inspector](/sync-diff-inspector/sync-diff-inspector-overview.md) 验证 MariaDB 和 TiDB 中的数据是否相同。
