@@ -5,7 +5,7 @@ summary: Learn how to configure Titan.
 
 # Titan Configuration
 
-This document introduces how to enable and disable [Titan](/storage-engine/titan-overview.md) using the corresponding configuration items, data convertion mechanism, the relevant parameters, and the Level Merge feature.
+This document introduces how to enable and disable [Titan](/storage-engine/titan-overview.md) using the corresponding configuration items, data conversion mechanism, the relevant parameters, and the Level Merge feature.
 
 ## Enable Titan
 
@@ -63,7 +63,7 @@ Titan is compatible with RocksDB, so you can directly enable Titan on the existi
 
     For more information, refer to [Configuring a TiDB Cluster in Kubernetes](https://docs.pingcap.com/tidb-in-kubernetes/stable/configure-a-tidb-cluster).
 
-## Data Convertion
+## Data conversion
 
 > **Warning:**
 >
@@ -71,9 +71,9 @@ Titan is compatible with RocksDB, so you can directly enable Titan on the existi
 
 After Titan is enabled, the existing data stored in RocksDB is not immediately moved to the Titan engine. As new data is written to the TiKV and RocksDB performs compaction, **the values are progressively separated from keys and written to Titan**. Similarly, the data restored through BR snapshot/log, the data converted during scaling, or the data imported by TiDB Lightning Physical Import Mode, is not written directly into Titan. As compaction proceeds, the large values exceeding the default value (`32KB`) of [`min-blob-size`](/tikv-configuration-file.md#min-blob-size) in the processed SST files are separated into Titan. You can monitor the size of files stored in Titan by observing the **TiKV Details > Titan kv > blob file size** panel to estimate the data size.
 
-If you want to speed up the writing process, you can use tikv-ctl to compact data of the whole TiKV cluster manually. For details, see [manual compaction](/tikv-control.md#compact-data-of-the-whole-tikv-cluster-manually). The data access is continuous during the convertion from RocksDB to Titan, therefore the block cache of RocksDB significantly accelerates the data convertion process. In the test, by using tikv-ctl, a volume of 670 GiB TiKV data can be converted to Titan in one hour.
+If you want to speed up the writing process, you can use tikv-ctl to compact data of the whole TiKV cluster manually. For details, see [manual compaction](/tikv-control.md#compact-data-of-the-whole-tikv-cluster-manually). The data access is continuous during the conversion from RocksDB to Titan, therefore the block cache of RocksDB significantly accelerates the data conversion process. In the test, by using tikv-ctl, a volume of 670 GiB TiKV data can be converted to Titan in one hour.
 
-Note that the values in Titan Blob files are not continuous, and Titan's cache is at the value level, so the Blob Cache does not help during compaction. The convertion speed from Titan to RocksDB is an order of magnitude slower than that from RocksDB to Titan. In the test, it takes 12 hours to convert a volume of 800 GiB Titan data on a TiKV node to RocksDB by tikv-ctl in a full compaction.
+Note that the values in Titan Blob files are not continuous, and Titan's cache is at the value level, so the Blob Cache does not help during compaction. The conversion speed from Titan to RocksDB is an order of magnitude slower than that from RocksDB to Titan. In the test, it takes 12 hours to convert a volume of 800 GiB Titan data on a TiKV node to RocksDB by tikv-ctl in a full compaction.
 
 ## Parameters
 
