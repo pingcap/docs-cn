@@ -17,7 +17,7 @@ summary: 介绍如何将数据从 MariaDB 文件迁移数据到 TiDB。
 除了以上两种策略，还有其他策略适用于特定的场景，例如：
 
 - 使用 Object Relational Mapping (ORM) 工具重新部署和迁移数据。
-- 修改应用程序，使其在迁移过程中同时读写 MariaDB 和 TiDB。
+- 修改应用程序，使其在迁移过程中同时写 MariaDB 和 TiDB。
 
 本文档仅介绍前两种策略。
 
