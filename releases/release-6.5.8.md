@@ -87,7 +87,9 @@ TiDB 版本：6.5.8
     - (dup): release-7.6.0.md > 错误修复> TiDB - 修复直方图的边界包含 `NULL` 时，直方图统计信息可能无法解析成可读字符串的问题 [#49823](https://github.com/pingcap/tidb/issues/49823) @[AilinKid](https://github.com/AilinKid)
     - (dup): release-7.6.0.md > 错误修复> TiDB - 修复无法在 `REPLACE INTO` 语句中使用 hint 的问题 [#34325](https://github.com/pingcap/tidb/issues/34325) @[YangKeao](https://github.com/YangKeao)
     - (dup): release-7.6.0.md > 错误修复> TiDB - 修复由于 `STREAM_AGG()` 错误处理 CI 导致查询结果有误的问题 [#49902](https://github.com/pingcap/tidb/issues/49902) @[wshwsh12](https://github.com/wshwsh12)
-    - (dup): release-7.6.0.md > 错误修复> TiDB - 缓解当要处理的表的数量过多时，TiDB 节点 OOM 的问题 [#50077](https://github.com/pingcap/tidb/issues/50077) @[zimulala](https://github.com/zimulala)
+    - 缓解表数量或表的分区数量巨大时，TiDB 节点 OOM 的问题 [#50077](https://github.com/pingcap/tidb/issues/50077) @[zimulala](https://github.com/zimulala)
+    - 修复了 DDL owner 网络隔离后分布式框架下 add index 数据不一致的问题 [#49773]([https://github.com/pingcap/tidb/issues/49773] @[tangenta](https://github.com/tangenta)
+    - 修复含有 Apply 的查询报错 fatal error: concurrent map writes 导致 tidb 崩溃的问题 [#50347](https://github.com/pingcap/tidb/issues/50347) @[SeaRise](https://github.com/SeaRise)
 
 + TiKV
 
