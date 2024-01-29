@@ -109,9 +109,9 @@ Use "tiup [command] --help" for more information about a command.
 输出的帮助信息较长，你可以只关注两部分：
 
 - 可用的命令
-    - install：用于安装组件
-    - list：查看可用组件列表
-    - uninstall：卸载组件
+    - install：用于安装特定版本的组件
+    - list：查看可用组件列表或组件可用版本列表
+    - uninstall：卸载组件或组件版本
     - update：更新组件版本
     - status：查看组件运行记录
     - clean：清除组件运行记录
