@@ -45,4 +45,4 @@ DESC tidb_hot_regions;
 * REGION_COUNT：所在实例的热点 Region 数量。
 * FLOW_BYTES：该 Region 内读写的字节数量。
 
-对于读热点，`FLOW_BYTES` 字段的统计周期为一个 Region 心跳周期，由 TiKV 的配置 [`pd-heartbeat-tick-interval`](/tikv-configuration-file.md#pd-heartbeat-tick-interval) 控制；对于写热点，`FLOW_BYTES` 字段则为一个 Store 心跳周期，由 TiKV 的配置 [`pd-store-heartbeat-tick-interval`](/tikv-configuration-file.md#pd-store-heartbeat-tick-interval) 控制。
+对于读热点，`FLOW_BYTES` 字段的统计周期为一个 Store 心跳周期，由 TiKV 的配置 [`pd-store-heartbeat-tick-interval`](/tikv-configuration-file.md#pd-store-heartbeat-tick-interval) 控制；对于写热点，`FLOW_BYTES` 字段则为一个 Region 心跳周期，由 TiKV 的配置 [`pd-heartbeat-tick-interval`](/tikv-configuration-file.md#pd-heartbeat-tick-interval) 控制。
