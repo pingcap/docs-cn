@@ -341,7 +341,7 @@ SELECT SUBSTRING_INDEX('www.tidbcloud.com', '.', -1);
 
 ### [`TO_BASE64()`](https://dev.mysql.com/doc/refman/8.0/en/string-functions.html#function_to-base64)
 
-`TO_BASE64()` 函数用于将输入的参数转换为 base-64 编码形式的字符串，并按照当前会话的字符集和排序规则返回结果。base-64 编码的字符串可以使用  [`FROM_BASE64()`](#frombase64httpsdevmysqlcomdocrefman80enstring-functionshtmlfunctionfrom-base64) 函数进行解码。
+`TO_BASE64()` 函数用于将输入的参数转换为 base-64 编码形式的字符串，并按照当前会话的字符集和排序规则返回结果。base-64 编码的字符串可以使用  [`FROM_BASE64()`](#from_base64) 函数进行解码。
 
 语法：
 
