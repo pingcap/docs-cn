@@ -33,7 +33,7 @@ summary: TiDB 数据库中 IMPORT INTO 的使用概况。
 - 当使用全局排序导入数据时，如果 TiDB 集群在导入任务尚未完成时被删除了，Amazon S3 上可能会残留用于全局排序的临时数据。该场景需要手动删除这些数据，以免增加 S3 存储成本。
 - 所需导入的数据不能存在主键或非空唯一索引冲突的记录，否则会导致任务失败。
 - 对于基于分布式执行框架调度的 `IMPORT INTO` 任务，如该任务已运行，不支持被调度到新的 TiDB 节点上执行。当前在执行导入任务的 TiDB 节点如果重启，该 TiDB 节点不会再执行该导入任务，而是被转移到其他 TiDB 节点继续执行。如果是导入 TiDB 节点本地的数据，任务异常后不会被 failover 到其他 TiDB 节点。
-- 如果使用了系统变量 [`tidb_service_scope`](/system-variables.md#tidb_service_scope-从-v740-版本开始引入) 来限制 `IMPORT INTO` 任务只在特定的 TiDB 节点上运行，强烈建议在包含两个或更多 TiDB 节点的环境中选择两个或更多的 TiDB 节点将该参数设置为 `background`。若仅在单个 TiDB 节点上设置此参数，当该节点发生重启或故障时，任务会被重新调度到其他未将该参数设置为 `background` 的 TiDB 节点，因此会对这些 TiDB 节点的业务产生影响。
+- 如果使用了系统变量 [`tidb_service_scope`](/system-variables.md#tidb_service_scope-从-v740-版本开始引入) 来限制 `IMPORT INTO` 任务只在特定的 TiDB 节点上运行，强烈建议在包含多个 TiDB 节点的环境中，选择两个或更多的 TiDB 节点将该参数设置为 `background`。若仅在单个 TiDB 节点上设置此参数，当该节点发生重启或故障时，任务会被重新调度到其他未将该参数设置为 `background` 的 TiDB 节点，因此会对这些 TiDB 节点的业务产生影响。
 - 已知问题：在 TiDB 节点配置文件中的 PD 地址与当前集群 PD 拓扑不一致时（如曾经缩容过 PD，但没有对应更新 TiDB 配置文件或者更新该文件后未重启 TiDB 节点），执行 `IMPORT INTO` 会失败。
 
 ## 导入前准备
