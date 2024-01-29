@@ -94,7 +94,7 @@ Adjust the following system variables related to Fast Online DDL:
 
     > **Note:**
     >
-    > - During the execution of a distributed task, if some TiDB nodes are offline, the distributed task randomly assigns subtasks to available TiDB nodes instead of dynamically assigning subtasks according to `tidb_service_scope`.
+    > - In a cluster with several TiDB nodes, it is strongly recommended to set `tidb_service_scope` to `background` on two or more TiDB nodes. If `tidb_service_scope` is set on a single TiDB node only, when the node is restarted or fails, the task will be rescheduled to other TiDB nodes that lack the `background` setting, which will affect these TiDB nodes.
     > - During the execution of a distributed task, changes to the `tidb_service_scope` configuration will not take effect for the current task, but will take effect from the next task.
 
 ## Implementation principles
