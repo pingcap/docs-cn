@@ -11,10 +11,10 @@ summary: 介绍如何将数据从 MariaDB 文件迁移数据到 TiDB。
 
 选择合适的迁移策略：
 
-- 第一种策略是[导出和恢复](#使用-dumpling-导出数据后使用-tidb-lightning-导入)。该策略适用于所有版本的 MariaDB。该策略的缺点是需要更多的停机时间。
-- 第二种策略是使用 DM [迁移数据](#使用-dm-迁移数据)从 MariaDB 到 TiDB。DM 不支持所有版本的 MariaDB。支持的版本请参考 [DM 兼容性目录](/dm/dm-compatibility-catalog.md#tidb-data-migration-兼容性目录)。
+- 第一种策略是[使用 Dumpling 导出数据然后使用 TiDB Lightning 恢复](#使用-dumpling-导出数据后使用-tidb-lightning-导入)。该策略适用于所有版本的 MariaDB。该策略的缺点是需要更多的停机时间。
+- 第二种策略是[使用 DM 迁移数据](#使用-dm-迁移数据)从 MariaDB 到 TiDB。注意 DM 不支持所有版本的 MariaDB。支持的版本请参考 [DM 兼容性目录](/dm/dm-compatibility-catalog.md#tidb-data-migration-兼容性目录)。
 
-除了以上两种策略，还有其他策略适用于特定的场景。例如：
+除了以上两种策略，还有其他策略适用于特定的场景，例如：
 
 - 使用 Object Relational Mapping (ORM) 工具重新部署和迁移数据。
 - 修改应用程序，使其在迁移过程中同时读写 MariaDB 和 TiDB。
@@ -32,7 +32,7 @@ summary: 介绍如何将数据从 MariaDB 文件迁移数据到 TiDB。
 
 TiDB 和 [MySQL 兼容](/mysql-compatibility.md)，而 MySQL 和 MariaDB 也有很多通用的特性。在迁移数据前需要注意，可能某些 MariaDB 特有的特性和 TiDB 并不兼容。
 
-除了检查本小节介绍的事项之外，建议你参考 [MariaDB Compatibility & Differences](https://mariadb.com/kb/en/compatibility-differences/)检查相关配置。
+除了检查本小节介绍的事项之外，建议你参考 [MariaDB Compatibility & Differences](https://mariadb.com/kb/en/compatibility-differences/) 检查相关配置。
 
 ### 认证
 
@@ -50,7 +50,7 @@ GROUP BY
   plugin;
 ```
 
-```
+```sql
 +-----------------------+----------+
 | plugin                | COUNT(*) |
 +-----------------------+----------+
@@ -61,7 +61,7 @@ GROUP BY
 
 ### 系统版本表
 
-TiDB 不支持[系统版本表 (System-Versioned Table)](https://mariadb.com/kb/en/system-versioned-tables/)。但是 TiDB 支持 [`AS OF TIMESTAMP`](/as-of-timestamp.md)，可以在某些场景下取代系统班报表。
+TiDB 不支持[系统版本表 (System-Versioned Table)](https://mariadb.com/kb/en/system-versioned-tables/)。但是 TiDB 支持 [`AS OF TIMESTAMP`](/as-of-timestamp.md)，可以在某些场景下取代系统版本表。
 
 你可以执行下列语句检查受影响的表格：
 
@@ -75,7 +75,7 @@ WHERE
   TABLE_TYPE='SYSTEM VERSIONED';
 ```
 
-```
+```sql
 +--------------+------------+
 | TABLE_SCHEMA | TABLE_NAME |
 +--------------+------------+
@@ -86,7 +86,7 @@ WHERE
 
 要删除 `SYSTEM VERSIONING`，执行 `ALTER TABLE` 语句：
 
-```
+```sql
 MariaDB [test]> ALTER TABLE t DROP SYSTEM VERSIONING;
 Query OK, 0 rows affected (0.071 sec)
 Records: 0  Duplicates: 0  Warnings: 0
@@ -94,7 +94,7 @@ Records: 0  Duplicates: 0  Warnings: 0
 
 ### 序列
 
-MariaDB 和 TiDB 都支持 [`CREATE SEQUENCE`](/sql-statements/sql-statement-create-sequence.md)，但是 DM 暂不支持。建议在迁移期间不要创建、修改或删除序列，尤其在迁移后不要进行相关测试。
+MariaDB 和 TiDB 均支持 [`CREATE SEQUENCE`](/sql-statements/sql-statement-create-sequence.md)，但是 DM 暂不支持。建议在迁移期间不要创建、修改或删除序列，尤其在迁移后不要进行相关测试。
 
 执行下列语句检查你是否在使用序列：
 
@@ -108,7 +108,7 @@ WHERE
   TABLE_TYPE='SEQUENCE';
 ```
 
-```
+```sql
 +--------------+------------+
 | TABLE_SCHEMA | TABLE_NAME |
 +--------------+------------+
@@ -133,7 +133,7 @@ GROUP BY
   ENGINE;
 ```
 
-```
+```sql
 +--------------------+----------+
 | ENGINE             | COUNT(*) |
 +--------------------+----------+
@@ -170,7 +170,7 @@ WHERE
   DATA_TYPE IN('INET4','INET6','UUID');
 ```
 
-```
+```sql
 +--------------+------------+-------------+-----------+
 | TABLE_SCHEMA | TABLE_NAME | COLUMN_NAME | DATA_TYPE |
 +--------------+------------+-------------+-----------+
@@ -192,7 +192,7 @@ TiDB 不支持 MariaDB 中常用的 `latin1_swedish_ci` 排序规则。
 SHOW COLLATION;
 ```
 
-```
+```sql
 +--------------------+---------+-----+---------+----------+---------+
 | Collation          | Charset | Id  | Default | Compiled | Sortlen |
 +--------------------+---------+-----+---------+----------+---------+
@@ -228,7 +228,7 @@ ORDER BY
   COLLATION_NAME;
 ```
 
-```
+```sql
 +--------------------+--------------------+----------+
 | TABLE_SCHEMA       | COLLATION_NAME     | COUNT(*) |
 +--------------------+--------------------+----------+
@@ -256,7 +256,11 @@ ORDER BY
 
 该迁移策略假定你将应用程序下线，迁移数据，然后重新配置应用程序以使用迁移后的数据。
 
-强烈建议你在生产环境操作之前，先在测试或开发环境中进行测试。这样既可以检查可能的兼容性问题，也可以了解迁移所需时长。
+> **注意：**
+>
+> 强烈建议你在生产环境操作之前，先在测试或开发环境中进行测试。这样既可以检查可能的兼容性问题，也可以了解迁移所需时长。
+
+将数据从 MariaDB 迁移到 TiDB 的操作步骤如下：
 
 1. 停止应用程序。将应用程序下线。这样可以确保在迁移过程中或迁移之后，MariaDB 中的数据不会被修改。
 
@@ -266,7 +270,7 @@ ORDER BY
     tiup dumpling --port 3306 --host 127.0.0.1 --user root --password secret -F 256MB  -o /data/backup
     ```
 
-3. 使用 `tiup tidb-lightning` 命令恢复数据。请参考 [Get Started with TiDB Lightning](/get-started-with-tidb-lightning.md) 了解如何配置及运行 TiDB Lightning。
+3. 使用 `tiup tidb-lightning` 命令恢复数据。请参考[TiDB Lightning 快速上手](/get-started-with-tidb-lightning.md)了解如何配置及运行 TiDB Lightning。
 
 4. 迁移用户账号和权限。请参考[导出用户和授权](#导出用户和授权)了解如何迁移用户账号和权限。
 
@@ -278,9 +282,11 @@ ORDER BY
 
 该策略假定你将应用程序下线，等待复制数据，然后重新配置应用程序以使用 TiDB。
 
-强烈建议你在生产环境操作之前，先在测试或开发环境中进行测试。这样既可以检查可能的兼容性问题，也可以了解迁移所需时长。
-
 要使用 DM，你需要使用 [TiUP 集群](/dm/deploy-a-dm-cluster-using-tiup.md)或 [TiDB Operator](/tidb-operator-overview.md) 部署一组 DM 服务。之后，使用 `dmctl` 配置 DM 服务。
+
+> **注意：**
+>
+> 强烈建议你在生产环境操作之前，先在测试或开发环境中进行测试。这样既可以检查可能的兼容性问题，也可以了解迁移所需时长。
 
 ### 第 1 步：准备工作
 
@@ -300,7 +306,7 @@ ignore-checking-items: ["replication_privilege"]
 
 参考 [TiDB Data Migration 快速上手指南](/dm/quick-start-with-dm.md)了解如何从 MariaDB 迁移数据到 TiDB。
 
-注意，DM 不需要你先复制初始数据，就像从 MariaDB 到 MariaDB 迁移数据时所做的那样，因为 DM 会为你完成这些操作。
+注意，与从 MariaDB 到 MariaDB 迁移数据时不同，你不需要先复制初始数据，因为 DM 会完成相关操作。
 
 ### 第 3 步：迁移用户账号和权限
 
