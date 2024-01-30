@@ -100,7 +100,7 @@ show status;
 
 ## MySQL 兼容性
 
-* `FLUSH STATUS` 语句与 MySQL 兼容性。
+* `FLUSH STATUS` 语句与 MySQL 兼容。
 
 ## 另请参阅
 
