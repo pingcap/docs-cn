@@ -153,17 +153,10 @@ delta_index_cache_size = 0
     # log-level = "info" 
 
 [logger]
-<<<<<<< HEAD
     ## log 级别（支持 "trace"、"debug"、"info"、"warn"、"error"），默认是 "debug"
     level = "debug"
-    log = TiFlash log 路径
-    errorlog = TiFlash error log 路径
-=======
-    ## log 级别（支持 "trace"、"debug"、"info"、"warn"、"error"），默认是 "info"
-    level = "info"
     log = "/tidb-deploy/tiflash-9000/log/tiflash.log"
     errorlog = "/tidb-deploy/tiflash-9000/log/tiflash_error.log"
->>>>>>> ec8d5fdd31 (tiflash: Clean deprecated configs; align style of flash.proxy (#16111))
     ## 单个日志文件的大小，默认是 "100M"
     size = "100M"
     ## 最多保留日志文件个数，默认是 10
