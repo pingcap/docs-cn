@@ -14,7 +14,7 @@ TiDB 版本：6.5.8
 ## 兼容性变更
 
 <--tw @Oreoxmt (1)-->
-- 新增 TiKV 配置项 [`gc.num-threads`](/tikv-configuration-file.md#num-threads-span-classversion-mark从-v760-版本开始引入span)，用于设置当 `enable-compaction-filter` 为 `false` 时 GC 的线程个数 [#16101](https://github.com/tikv/tikv/issues/16101) @[tonyxuqqi](https://github.com/tonyxuqqi)
+- 新增 TiKV 配置项 [`gc.num-threads`](https://docs.pingcap.com/zh/tidb/dev/tikv-configuration-file#num-threads-从-v658-版本开始引入)，用于设置当 `enable-compaction-filter` 为 `false` 时 GC 的线程个数 [#16101](https://github.com/tikv/tikv/issues/16101) @[tonyxuqqi](https://github.com/tonyxuqqi)
 
 ## 改进提升
 
