@@ -214,6 +214,7 @@ public class PlayerBean {
 `PlayerRepository` 通过继承 `JpaRepository` 接口， 由 `JpaRepositoryFactoryBean` 为其自动注册对应的 Repository Bean。同时，`JpaRepository` 接口的默认实现类 `SimpleJpaRepository` 提供了增删改查函数的具体实现。
 
 ```java
+@Repository
 public interface PlayerRepository extends JpaRepository<PlayerBean, Long> {
 }
 ```
