@@ -86,6 +86,17 @@ TiDB 版本：6.5.8
     - 修复在分布式框架下，DDL Owner 网络隔离后执行 `ADD INDEX` 操作导致数据不一致的问题 [#49773](https://github.com/pingcap/tidb/issues/49773) @[tangenta](https://github.com/tangenta)
     - 修复包含 Apply 操作的查询在报错 `fatal error: concurrent map writes` 后导致 TiDB 崩溃的问题 [#50347](https://github.com/pingcap/tidb/issues/50347) @[SeaRise](https://github.com/SeaRise)
     - 修复通过 `COM_STMT_EXECUTE` 方式执行的 COMMIT/ROLLBACK 操作无法结束已超时事务的问题 [#49151](https://github.com/pingcap/tidb/issues/49151) @[zyguan](https://github.com/zyguan)
+    <--tw @hfxsd (3)-->
+    - 使用 PREPARE 方式执行 SELECT INTO OUTFILE 语句是应该报错而不是执行成功 [#49166](https://github.com/pingcap/tidb/issues/49166) @[qw4990](https://github.com/qw4990)
+    - 修复特别简单的 UNIQUE 索引点查 + ORDER BY 可能执行报错的问题 [#49920](https://github.com/pingcap/tidb/issues/49920) @[jackysp](https://github.com/jackysp)
+    - 修复 multi-statement 模式下，使用索引点查的 DELETE/UPDATE 语句可能会报错的问题 [#50012](https://github.com/pingcap/tidb/issues/50012) @[tangenta](https://github.com/tangenta)
+    <--tw @ran-huang (3)-->
+    - 修复短时间发送大量 DDL 语句时，CREATE TABLE 语句可能不会同步建立该表对心的统计信息元信息的问题 [#36004](https://github.com/pingcap/tidb/issues/36004) @[xuyifangreeneyes](https://github.com/xuyifangreeneyes)
+    - 修复 LEADING hint 在 UNION ALL 语句中无法生效的问题 [#50067](https://github.com/pingcap/tidb/issues/50067) @[hawkingrei](https://github.com/hawkingrei)
+    - 修复使用旧接口导致表元信息可能不一致的问题 [#49751](https://github.com/pingcap/tidb/issues/49751) @[hawkingrei](https://github.com/hawkingrei)
+    <--tw @qiancai (2)-->
+    - 修复常见 hint 在 UNION ALL 语句中无法正确生效的问题 [#50068](https://github.com/pingcap/tidb/issues/50068) @[hawkingrei](https://github.com/hawkingrei)
+    - 修复 6.5.7 为修复 [#49487](https://github.com/pingcap/tidb/issues/49487) 导致执行过程中遇到 ENUM/SET 类型的非法值时会直接报错的问题 [#49440](https://github.com/pingcap/tidb/issues/49440) @[winoros](https://github.com/winoros)
 
 + TiKV
 
