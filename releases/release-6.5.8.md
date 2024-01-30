@@ -45,7 +45,7 @@ TiDB 版本：6.5.8
 
     + TiCDC
         <--tw @qiancai (1)-->
-        - TiCDC 支持查询 changefeed 的下游同步状态，以确认是否已经将变更完全同步到下游了 [#10289](https://github.com/pingcap/tiflow/issues/10289) @[hongyunyan](https://github.com/hongyunyan)
+        - 支持[查询 changefeed 的下游同步状态](https://docs.pingcap.com/zh/tidb/v6.5/ticdc-open-api-v2#查询特定同步任务是否完成)，以确认 TiCDC 是否已将所接收到的上游变更完全同步到下游 [#10289](https://github.com/pingcap/tiflow/issues/10289) @[hongyunyan](https://github.com/hongyunyan)
 
     + TiDB Data Migration (DM)
 
@@ -110,10 +110,10 @@ TiDB 版本：6.5.8
 
     + TiCDC
         <--tw @qiancai (4)-->
-        - 修复 changefeed 在 ignore-event 中设置了过滤 add table partition 事件后没有正确同步相关分区的其他 DML 变更事件的问题 [#10524](https://github.com/pingcap/tiflow/issues/10524) @[CharlesCheung96](https://github.com/CharlesCheung96) 
-        - 修复在上游表执行了 truncate partition 后 changefeed 报错的问题  [#10522](https://github.com/pingcap/tiflow/issues/10522) @[sdojjy](https://github.com/sdojjy)
-        - 修复 changefeed 在极端情况下 resolved ts 不推进的问题 [#10157](https://github.com/pingcap/tiflow/issues/10157) @[sdojjy](https://github.com/sdojjy)
-        - 修复 changefeed 在被并发创建时返回 ErrChangeFeedAlreadyExists 错误的问题 [#10430](https://github.com/pingcap/tiflow/issues/10430) @[CharlesCheung96](https://github.com/CharlesCheung96)
+        - 修复在 `ignore-event` 中设置了过滤掉 `add table partition` 事件后，TiCDC 未将相关分区的其它类型 DML 变更事件同步到下游的问题 [#10524](https://github.com/pingcap/tiflow/issues/10524) @[CharlesCheung96](https://github.com/CharlesCheung96) 
+        - 修复上游表执行了 `TRUNCATE PARTITION` 后 changefeed 报错的问题 [#10522](https://github.com/pingcap/tiflow/issues/10522) @[sdojjy](https://github.com/sdojjy)
+        - 修复在极端情况下 changefeed  的 `resolved ts` 不推进的问题 [#10157](https://github.com/pingcap/tiflow/issues/10157) @[sdojjy](https://github.com/sdojjy)
+        - 修复并发创建多个 changefeed 时 TiCDC 返回 `ErrChangeFeedAlreadyExists` 错误的问题 [#10430](https://github.com/pingcap/tiflow/issues/10430) @[CharlesCheung96](https://github.com/CharlesCheung96)
 
     + TiDB Data Migration (DM)
 
