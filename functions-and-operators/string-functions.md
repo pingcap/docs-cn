@@ -121,13 +121,186 @@ Return number of characters in argument.
 
 Synonym for `CHAR_LENGTH()`.
 
-### [`CONCAT()`](https://dev.mysql.com/doc/refman/8.0/en/string-functions.html#function_concat)
+## [`CONCAT()`](https://dev.mysql.com/doc/refman/8.0/en/string-functions.html#function_concat)
 
-Return concatenated string.
+The `CONCAT()` function concatenates one or more arguments into a single string.
+
+Syntax:
+
+```sql
+CONCAT(str1,str2,...)
+```
+
+`str1, str2, ...` is a list of arguments to be concatenated. Each argument can be a string or a number.
+
+Example:
+
+```sql
+SELECT CONCAT('TiDB', ' ', 'Server', '-', 1, TRUE);
+```
+
+Output:
+
+```sql
++---------------------------------------------+
+| CONCAT('TiDB', ' ', 'Server', '-', 1, TRUE) |
++---------------------------------------------+
+| TiDB Server-11                              |
++---------------------------------------------+
+```
+
+If any of the arguments is `NULL`, `CONCAT()` returns `NULL`.
+
+Example:
+
+```sql
+SELECT CONCAT('TiDB', NULL, 'Server');
+```
+
+Output:
+
+```sql
++--------------------------------+
+| CONCAT('TiDB', NULL, 'Server') |
++--------------------------------+
+| NULL                           |
++--------------------------------+
+```
+
+In addition to the `CONCAT()` function, you can concatenate strings by placing them adjacent to each other as in the following example. Note that this method does not support numeric types.
+
+```sql
+SELECT 'Ti' 'DB' ' ' 'Server';
+```
+
+Output:
+
+```sql
++-------------+
+| Ti          |
++-------------+
+| TiDB Server |
++-------------+
+```
 
 ### [`CONCAT_WS()`](https://dev.mysql.com/doc/refman/8.0/en/string-functions.html#function_concat-ws)
 
-Return concatenate with separator.
+The `CONCAT_WS()` function is a form of [`CONCAT()`](#concat) with a separator, which returns a string concatenated by the specified separator.
+
+Syntax:
+
+```sql
+CONCAT_WS(separator,str1,str2,...)
+```
+
+- `separator`: the first argument is the separator, which concatenates the remaining arguments that are not `NULL`.
+- `str1, str2, ...`: a list of arguments to be concatenated. Each argument can be a string or a number.
+
+Example:
+
+```sql
+SELECT CONCAT_WS(',', 'TiDB Server', 'TiKV', 'PD');
+```
+
+Output:
+
+```sql
++---------------------------------------------+
+| CONCAT_WS(',', 'TiDB Server', 'TiKV', 'PD') |
++---------------------------------------------+
+| TiDB Server,TiKV,PD                         |
++---------------------------------------------+
+```
+
+- If the separator is an empty string, `CONCAT_WS()` is equivalent to `CONCAT()` and returns the concatenated string of the remaining arguments.
+
+    Example:
+
+    ```sql
+    SELECT CONCAT_WS('', 'TiDB Server', 'TiKV', 'PD');
+    ```
+
+    Output:
+
+    ```sql
+    +--------------------------------------------+
+    | CONCAT_WS('', 'TiDB Server', 'TiKV', 'PD') |
+    +--------------------------------------------+
+    | TiDB ServerTiKVPD                          |
+    +--------------------------------------------+
+    ```
+
+- If the separator is `NULL`, `CONCAT_WS()` returns `NULL`.
+
+    Example:
+
+    ```sql
+    SELECT CONCAT_WS(NULL, 'TiDB Server', 'TiKV', 'PD');
+    ```
+
+    Output:
+
+    ```sql
+    +----------------------------------------------+
+    | CONCAT_WS(NULL, 'TiDB Server', 'TiKV', 'PD') |
+    +----------------------------------------------+
+    | NULL                                         |
+    +----------------------------------------------+
+    ```
+
+- If only one of the arguments to be concatenated is not `NULL`, `CONCAT_WS()` returns that argument.
+
+    Example:
+
+    ```sql
+    SELECT CONCAT_WS(',', 'TiDB Server', NULL);
+    ```
+
+    Output:
+
+    ```sql
+    +-------------------------------------+
+    | CONCAT_WS(',', 'TiDB Server', NULL) |
+    +-------------------------------------+
+    | TiDB Server                         |
+    +-------------------------------------+
+    ```
+
+- If there are `NULL` arguments to be concatenated, `CONCAT_WS()` skips these `NULL` arguments.
+
+    Example:
+
+    ```sql
+    SELECT CONCAT_WS(',', 'TiDB Server', NULL, 'PD');
+    ```
+
+    Output:
+
+    ```sql
+    +-------------------------------------------+
+    | CONCAT_WS(',', 'TiDB Server', NULL, 'PD') |
+    +-------------------------------------------+
+    | TiDB Server,PD                            |
+    +-------------------------------------------+
+    ```
+
+- If there are empty strings to be concatenated, `CONCAT_WS()` does not skip empty strings.
+
+    Example:
+
+    ```sql
+    SELECT CONCAT_WS(',', 'TiDB Server', '', 'PD');
+    ```
+
+    Output:
+
+    ```sql
+    +-----------------------------------------+
+    | CONCAT_WS(',', 'TiDB Server', '', 'PD') |
+    +-----------------------------------------+
+    | TiDB Server,,PD                         |
+    +-----------------------------------------+
+    ```
 
 ### [`ELT()`](https://dev.mysql.com/doc/refman/8.0/en/string-functions.html#function_elt)
 
