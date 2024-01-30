@@ -24,8 +24,6 @@ ShowLikeOrWhere ::=
 
 ## 示例
 
-{{< copyable "sql" >}}
-
 ```sql
 SHOW SESSION STATUS;
 ```
