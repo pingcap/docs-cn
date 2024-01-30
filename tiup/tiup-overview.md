@@ -28,6 +28,13 @@ After installation, you can check the version of TiUP:
 tiup --version
 ```
 
+```bash
+1.14.0 tiup
+Go Version: go1.21.4
+Git Ref: v1.14.0
+GitHash: c3e9fc518aea0da66a37f82ee5a516171de9c372
+```
+
 > **Note:**
 >
 > For TiUP versions starting from v1.11.3, the telemetry is disabled by default in newly deployed TiUP, and usage information is not collected and shared with PingCAP. For details about what is shared and how to disable the sharing, see [Telemetry](/telemetry.md).
@@ -56,30 +63,7 @@ the latest stable version will be downloaded from the repository.
 Usage:
   tiup [flags] <command> [args...]
   tiup [flags] <component> [args...]
-
-Available Commands:
-  install     Install a specific version of a component
-  list        List the available TiDB components or versions
-  uninstall   Uninstall components or versions of a component
-  update      Update tiup components to the latest version
-  status      List the status of instantiated components
-  clean       Clean the data of instantiated components
-  mirror      Manage a repository mirror for TiUP components
-  help        Help about any command or component
-
-Components Manifest:
-  use "tiup list" to fetch the latest components manifest
-
-Flags:
-      --binary <component>[:version]   Print binary path of a specific version of a component <component>[:version]
-                                       and the latest version installed will be selected if no version specified
-      --binpath string                 Specify the binary path of component instance
-  -h, --help                           help for tiup
-  -T, --tag string                     Specify a tag for component instance
-  -v, --version                        version for tiup
-
-Component instances with the same "tag" will share a data directory ($TIUP_HOME/data/$tag):
-  $ tiup --tag mycluster playground
+  tiup [command]
 
 Examples:
   $ tiup playground                    # Quick start
@@ -93,23 +77,53 @@ Examples:
   $ tiup clean <name>                  # Clean the data of running/terminated instance (Kill process if it's running)
   $ tiup clean --all                   # Clean the data of all running/terminated instances
 
+Available Commands:
+  install     Install a specific version of a component
+  list        List the available TiDB components or versions
+  uninstall   Uninstall components or versions of a component
+  update      Update tiup components to the latest version
+  status      List the status of instantiated components
+  clean       Clean the data of instantiated components
+  mirror      Manage a repository mirror for TiUP components
+  telemetry   Controls things about telemetry
+  env         Show the list of system environment variable that related to TiUP
+  history     Display the historical execution record of TiUP, displays 100 lines by default
+  link        Link component binary to $TIUP_HOME/bin/
+  unlink      Unlink component binary to $TIUP_HOME/bin/
+  help        Help about any command
+  completion  Generate the autocompletion script for the specified shell
+
+Flags:
+      --binary <component>[:version]   Print binary path of a specific version of a component <component>[:version]
+                                       and the latest version installed will be selected if no version specified
+      --binpath string                 Specify the binary path of component instance
+  -h, --help                           help for tiup
+  -T, --tag string                     [Deprecated] Specify a tag for component instance
+  -v, --version                        Print the version of tiup
+
 Use "tiup [command] --help" for more information about a command.
 ```
 
 The output is long but you can focus on only two parts:
 
 - Available commands
-    - install: used to install components
-    - list: used to view the list of available components
-    - uninstall: used to uninstall components
+    - install: used to install a specific version of a component
+    - list: used to view the list of available TiDB components or available versions of a component
+    - uninstall: used to uninstall components or versions of a component
     - update: used to update the component version
     - status: used to view the running history of components
     - clean: used to clear the running log of components
     - mirror: used to clone a private mirror from the official mirror
+    - telemetry: used to control the telemetry feature
+    - env: used to show the list of system environment variables that related to TiUP
+    - history: used to display the historical execution record of TiUP (100 lines by default)
+    - link: used to link component binary to $TIUP_HOME/bin/
+    - unlink: used to unlink component binary to $TIUP_HOME/bin/
     - help: used to print out help information
+    - completion: used to generate the command line autocompletion script for the specified shell (including bash, zsh, fish, and powershell)
 - Available components
     - playground: used to start a TiDB cluster locally
-    - client: used to connect to a TiDB cluster in a local machine
+    - client: client used to connect to TiUP Playground
     - cluster: used to deploy a TiDB cluster for production environments
     - bench: used to stress test the database
 
