@@ -238,7 +238,7 @@ with Session() as session:
     session.commit()
 ```
 
-更多信息参考[插入数据](/develop/dev-guide-insert-data.md)。
+更多信息参考[插入数据](/develop/dev-guide-insert-data.md)以及 [SQLAlchemy Query](https://docs.sqlalchemy.org/en/20/orm/queryguide/index.html)。
 
 ### 查询数据
 
@@ -248,7 +248,7 @@ with Session() as session:
     print(player)
 ```
 
-更多信息参考[查询数据](/develop/dev-guide-get-data-from-single-table.md)。
+更多信息参考[查询数据](/develop/dev-guide-get-data-from-single-table.md)以及 [SQLAlchemy Query](https://docs.sqlalchemy.org/en/20/orm/queryguide/index.html)。
 
 ### 更新数据
 
@@ -259,7 +259,7 @@ with Session() as session:
     session.commit()
 ```
 
-更多信息参考[更新数据](/develop/dev-guide-update-data.md)。
+更多信息参考[更新数据](/develop/dev-guide-update-data.md)以及 [SQLAlchemy Query](https://docs.sqlalchemy.org/en/20/orm/queryguide/index.html)。
 
 ### 删除数据
 
@@ -270,7 +270,7 @@ with Session() as session:
     session.commit()
 ```
 
-更多信息参考[删除数据](/develop/dev-guide-delete-data.md)。
+更多信息参考[删除数据](/develop/dev-guide-delete-data.md)以及 [SQLAlchemy Query](https://docs.sqlalchemy.org/en/20/orm/queryguide/index.html)。
 
 ## 下一步
 
