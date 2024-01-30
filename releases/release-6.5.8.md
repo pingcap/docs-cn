@@ -13,6 +13,7 @@ TiDB 版本：6.5.8
 
 ## 兼容性变更
 
+<--tw @Oreoxmt (1)-->
 - 新增 TiKV 配置项 [`gc.num-threads`](/tikv-configuration-file.md#num-threads-span-classversion-mark从-v760-版本开始引入span)，用于设置当 enable-compaction-filter 为 false 时 GC 的线程个数 [#16101](https://github.com/tikv/tikv/issues/16101) @[tonyxuqqi](https://github.com/tonyxuqqi)
 
 ## 改进提升
@@ -43,7 +44,7 @@ TiDB 版本：6.5.8
         - note [#issue](https://github.com/pingcap/tidb/issues/${issue-id}) @[贡献者 GitHub ID](https://github.com/${github-id})
 
     + TiCDC
-
+        <--tw @qiancai (1)-->
         - TiCDC 支持查询 changefeed 的下游同步状态，以确认是否已经将变更完全同步到下游了 [#10289](https://github.com/pingcap/tiflow/issues/10289) @[hongyunyan](https://github.com/hongyunyan)
 
     + TiDB Data Migration (DM)
@@ -52,7 +53,7 @@ TiDB 版本：6.5.8
         - note [#issue](https://github.com/pingcap/tiflow/issues/${issue-id}) @[贡献者 GitHub ID](https://github.com/${github-id})
 
     + TiDB Lightning
-
+        <--tw @hfxsd (1)-->
         - 优化 Alter table 的性能 [#50105](https://github.com/pingcap/tidb/issues/50105) @[D3Hunter](https://github.com/D3Hunter)
 
     + Dumpling
@@ -73,7 +74,7 @@ TiDB 版本：6.5.8
 ## 错误修复
 
 + TiDB
-
+    <--tw @Oreoxmt (4)-->
     - (dup): release-7.6.0.md > 错误修复> TiDB - 修复当查询使用了会强制排序的优化器 hint（例如 `STREAM_AGG()`）且其执行计划包含 `IndexMerge` 时，强制排序可能会失效的问题 [#49605](https://github.com/pingcap/tidb/issues/49605) @[AilinKid](https://github.com/AilinKid)
     - (dup): release-7.6.0.md > 错误修复> TiDB - 修复直方图的边界包含 `NULL` 时，直方图统计信息可能无法解析成可读字符串的问题 [#49823](https://github.com/pingcap/tidb/issues/49823) @[AilinKid](https://github.com/AilinKid)
     - (dup): release-7.6.0.md > 错误修复> TiDB - 修复无法在 `REPLACE INTO` 语句中使用 hint 的问题 [#34325](https://github.com/pingcap/tidb/issues/34325) @[YangKeao](https://github.com/YangKeao)
@@ -90,11 +91,11 @@ TiDB 版本：6.5.8
     - (dup): release-7.6.0.md > 错误修复> TiKV - 修复 TiDB 和 TiKV 处理 `DECIMAL` 算术乘法截断时结果不一致的问题 [#16268](https://github.com/tikv/tikv/issues/16268) @[solotzg](https://github.com/solotzg)
 
 + PD
-
+    <--tw @hfxsd (1)-->
     - 修复 pd-ctl 查询没有 Leader 的 Region 时可能导致 PD Panic 的问题 [#7630](https://github.com/tikv/pd/issues/7630) @[rleungx](https://github.com/rleungx)
 
 + TiFlash
-
+    <--tw @hfxsd (2)-->
     - (dup): release-7.6.0.md > 错误修复> TiFlash - 修复 lowerUTF8/upperUTF8 不允许大小写字符占据不同字节数的错误 [#8484](https://github.com/pingcap/tiflash/issues/8484) @[gengliqi](https://github.com/gengliqi)
     - 修复在执行 `ALTER TABLE ... MODIFY COLUMN ... NOT NULL` 将可为空的列转为不可为空之后，导致 tiflash panic 的问题 [#8419](https://github.com/pingcap/tiflash/issues/8419) @[JaySon-Huang](https://github.com/JaySon-Huang)
     - 修复杀查询导致 TiFlash 上大量任务被同时取消时，由于并发数据冲突导致 TiFlash 崩溃的问题 [#7432](https://github.com/pingcap/tiflash/issues/7432) @[SeaRise](https://github.com/SeaRise)
@@ -102,13 +103,13 @@ TiDB 版本：6.5.8
 + Tools
 
     + Backup & Restore (BR)
-
+        <--tw @ran-huang (2)-->
         - (dup): release-7.6.0.md > 错误修复> Tools> Backup & Restore (BR) - 修复从旧版本的备份恢复数据时报错 `Unsupported collation` 的问题 [#49466](https://github.com/pingcap/tidb/issues/49466) @[3pointer](https://github.com/3pointer)
         - 修复了从 S3 读文件内容时出错但无法重试的问题 [#49942](https://github.com/pingcap/tidb/issues/49942) @[Leavrth](https://github.com/Leavrth)
         - 修复了在同一节点上更改 TiKV IP 地址导致日志备份卡住的问题 [#50445](https://github.com/pingcap/tidb/issues/50445) @[3pointer](https://github.com/3pointer)
 
     + TiCDC
-
+        <--tw @qiancai (4)-->
         - 修复 changefeed 在 ignore-event 中设置了过滤 add table partition 事件后没有正确同步相关分区的其他 DML 变更事件的问题 [#10524](https://github.com/pingcap/tiflow/issues/10524) @[CharlesCheung96](https://github.com/CharlesCheung96) 
         - 修复在上游表执行了 truncate partition 后 changefeed 报错的问题  [#10522](https://github.com/pingcap/tiflow/issues/10522) @[sdojjy](https://github.com/sdojjy)
         - 修复 changefeed 在极端情况下 resolved ts 不推进的问题 [#10157](https://github.com/pingcap/tiflow/issues/10157) @[sdojjy](https://github.com/sdojjy)
@@ -120,7 +121,7 @@ TiDB 版本：6.5.8
         - note [#issue](https://github.com/pingcap/tiflow/issues/${issue-id}) @[贡献者 GitHub ID](https://github.com/${github-id})
 
     + TiDB Lightning
-
+        <--tw @ran-huang (2)-->
         - 修复 EBS BR 运行时 Lightning 可能导入失败的问题 [#49517](https://github.com/pingcap/tidb/issues/49517) @[mittalrishabh](https://github.com/mittalrishabh)
         - 修复以 MultiIngest 模式导入数据到 TiKV 时，数据可能丢失的问题 [#50198](https://github.com/pingcap/tidb/issues/50198) @[D3Hunter](https://github.com/D3Hunter)
 
