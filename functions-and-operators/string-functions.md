@@ -273,11 +273,120 @@ Synonym for `LOWER()`.
 
 ### [`LEFT()`](https://dev.mysql.com/doc/refman/8.0/en/string-functions.html#function_left)
 
-Return the leftmost number of characters as specified.
+The `LEFT()` function returns a specified number of characters from the left side of a string.
+
+Syntax:
+
+```sql
+LEFT(`str`, `len`)
+```
+
+- `str`: the original string to extract characters. If `str` contains a multibyte character, the function counts it as a single code point. 
+- `len`: the length of characters to be returned. 
+    - If `len` is equal to or less than 0, the function returns an empty string.
+    - If `len` is equal to or greater than the length of `str`, the function returns the original `str`. 
+- If any argument is `NULL`, the function returns `NULL`.
+
+Examples:
+
+```sql
+SELECT LEFT('ABCED', 3);
++------------------+
+| LEFT('ABCED', 3) |
++------------------+
+| ABC              |
++------------------+
+
+SELECT LEFT('ABCED', 6);
++------------------+
+| LEFT('ABCED', 6) |
++------------------+
+| ABCED            |
++------------------+
+```
+
+```sql
+SELECT LEFT('ABCED', 0);
++------------------+
+| LEFT('ABCED', 0) |
++------------------+
+|                  |
++------------------+
+
+SELECT LEFT('ABCED', -1);
++-------------------+
+| LEFT('ABCED', -1) |
++-------------------+
+|                   |
++-------------------+
+```
+
+```sql
+SELECT LEFT('🍣ABC', 3);
++--------------------+
+| LEFT('🍣ABC', 3)     |
++--------------------+
+| 🍣AB                 |
++--------------------+
+```
+
+```sql
+SELECT LEFT('ABC', NULL);
++-------------------+
+| LEFT('ABC', NULL) |
++-------------------+
+| NULL              |
++-------------------+
+
+SELECT LEFT(NULL, 3);
++------------------------------+
+| LEFT(NULL, 3)                |
++------------------------------+
+| NULL                         |
++------------------------------+
+```
 
 ### [`LENGTH()`](https://dev.mysql.com/doc/refman/8.0/en/string-functions.html#function_length)
 
-Return the length of a string in bytes.
+The `LENGTH()` function returns the length of a string in bytes.
+
+`LENGTH()` counts a multibyte character as multiple bytes while `CHAR_LENGTH()` counts a multibyte character as a single code point.
+
+If the argument is `NULL`, the function returns `NULL`.
+
+Examples:
+
+```sql
+SELECT LENGTH('ABC');
++---------------+
+| LENGTH('ABC') |
++---------------+
+|             3 |
++---------------+
+
+SELECT LENGTH('🍣ABC');
++-------------------+
+| LENGTH('🍣ABC')     |
++-------------------+
+|                 7 |
++-------------------+
+
+SELECT CHAR_LENGTH('🍣ABC');
++------------------------+
+| CHAR_LENGTH('🍣ABC')     |
++------------------------+
+|                      4 |
++------------------------+
+```
+
+```sql
+SELECT LENGTH(NULL);
++--------------+
+| LENGTH(NULL) |
++--------------+
+|         NULL |
++--------------+
+```
 
 ### [`LIKE`](https://dev.mysql.com/doc/refman/8.0/en/string-comparison-functions.html#operator_like)
 
