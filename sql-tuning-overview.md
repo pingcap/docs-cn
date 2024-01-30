@@ -1,5 +1,6 @@
 ---
 title: SQL Tuning Overview
+summary: SQL is a declarative language, meaning it describes the final result, not the steps to execute. TiDB optimizes execution and can execute parts of the query in any order. It's similar to GPS navigation, using statistics and live traffic data. Concepts include understanding query execution plans, SQL optimization, and controlling execution plans for better performance.
 ---
 
 # SQL Tuning Overview

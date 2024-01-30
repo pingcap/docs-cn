@@ -1,5 +1,6 @@
 ---
 title: SQL Physical Optimization
+summary: Physical optimization is a cost-based process that creates a physical execution plan for the logical execution plan. The optimizer selects the best physical implementation for each operator based on data statistics, time complexity, and resource consumption. This includes index selection, statistics collection, using the right index, distinct keyword optimization, and cost model for optimal execution plan selection.
 ---
 
 # SQL Physical Optimization

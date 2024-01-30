@@ -1,5 +1,6 @@
 ---
 title: SQL Logical Optimization
+summary: SQL Logical Optimization chapter explains key logic rewrites in TiDB query plan generation. For example, `IN` sub-query `t.a in (select t1.a from t1 where t1.b=t.b)` does not exist due to TiDB rewrites. Key rewrites include Subquery Related Optimizations, Column Pruning, Decorrelation of Correlated Subquery, Eliminate Max/Min, Predicates Push Down, Partition Pruning, TopN and Limit Operator Push Down, and Join Reorder.
 ---
 
 # SQL Logical Optimization
