@@ -165,8 +165,8 @@ delta_index_cache_size = 0
 [logger]
     ## log 级别（支持 "trace"、"debug"、"info"、"warn"、"error"），默认是 "info"
     level = "info"
-    log = TiFlash log 路径
-    errorlog = TiFlash error log 路径
+    log = "/tidb-deploy/tiflash-9000/log/tiflash.log"
+    errorlog = "/tidb-deploy/tiflash-9000/log/tiflash_error.log"
     ## 单个日志文件的大小，默认是 "100M"
     size = "100M"
     ## 最多保留日志文件个数，默认是 10
