@@ -107,11 +107,104 @@ Return a string containing binary representation of a number.
 
 ### [`BIT_LENGTH()`](https://dev.mysql.com/doc/refman/8.0/en/string-functions.html#function_bit-length)
 
-Return length of argument in bits.
+The `BIT_LENGTH()` function is used to return the length of a given argument in bits.
+
+Examples:
+
+```sql
+SELECT BIT_LENGTH("TiDB");
+
++--------------------+
+| BIT_LENGTH("TiDB") |
++--------------------+
+|                 32 |
++--------------------+
+```
+
+8 bits per character x 4 characters = 32 bits
+
+```sql
+SELECT BIT_LENGTH("PingCAP 123");
+
++---------------------------+
+| BIT_LENGTH("PingCAP 123") |
++---------------------------+
+|                        88 |
++---------------------------+
+```
+
+8 bits per character (space is counted because it is a non-alphanumeric character) x 11 characters = 88 bits
+
+```sql
+SELECT CustomerName, BIT_LENGTH(CustomerName) AS BitLengthOfName FROM Customers;
+
++--------------------+-----------------+
+| CustomerName       | BitLengthOfName |
++--------------------+-----------------+
+| Albert Einstein    |             120 |
+| Robert Oppenheimer |             144 |
++--------------------+-----------------+
+```
+
+> **Note:**
+>
+> The preceding example operates under the assumption that there is a database with a table named `Customers` and a column inside the table named `CustomerName`.
 
 ### [`CHAR()`](https://dev.mysql.com/doc/refman/8.0/en/string-functions.html#function_char)
 
-Return the character for each integer passed.
+The `CHAR()` function is used to get the corresponding character of a specific ASCII value. It performs the opposite operation of `ASCII()`, which returns the ASCII value of a specific character.
+
+Examples:
+
+```sql
+SELECT CHAR(65);
+
++------------+
+|  CHAR(65)  |
++------------+
+|          A |
++------------+
+```
+
+```sql
+SELECT CHAR(84);
+
++------------+
+|  CHAR(84)  |
++------------+
+|          T |
++------------+
+```
+
+The `CHAR()` function can also be used to get the corresponding character of ASCII values that extend beyond the standard ASCII range (`0` - `127`).
+
+```sql
+/*For extended ASCII: */
+
+SELECT CHAR(128);
+
++------------+
+|  CHAR(128) |
++------------+
+|       0x80 |
++------------+
+```
+
+The `CHAR()` function can also get the corresponding character value of a unicode value.
+
+```sql
+/* For Unicode: */
+
+--skip-binary-as-hex
+
+SELECT CHAR(50089);
+
++--------------+
+|  CHAR(50089) |
++--------------+
+|            é |
++--------------+
+```
 
 ### [`CHAR_LENGTH()`](https://dev.mysql.com/doc/refman/8.0/en/string-functions.html#function_char-length)
 
