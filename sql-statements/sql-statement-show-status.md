@@ -73,7 +73,7 @@ SHOW GLOBAL STATUS;
 
 ## MySQL 兼容性
 
-`SHOW [GLOBAL|SESSION] STATUS` 语句与 MySQL 兼容性。
+`SHOW [GLOBAL|SESSION] STATUS` 语句与 MySQL 兼容。
 
 ## 另请参阅
 
