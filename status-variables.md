@@ -7,7 +7,7 @@ summary: 使用状态变量查看系统和会话状态
 
 服务器状态变量提供有关服务器全局状态和 TiDB 中当前会话状态的信息。大多数变量与 MySQL 兼容。
 
-你可以使用 [SHOW GLOBAL STATUS](/sql-statements/sql-statement-show-status.md) 命令检索全局状态，使用 [SHOW SESSION STATUS](/sql-statements/sql-statement-show-status.md) 命令检索当前会话状态。  
+你可以使用 [SHOW GLOBAL STATUS](/sql-statements/sql-statement-show-status.md) 命令查看全局状态，使用 [SHOW SESSION STATUS](/sql-statements/sql-statement-show-status.md) 命令查看当前会话状态。  
 
 此外，[FLUSH STATUS](/sql-statements/sql-statement-flush-status.md) 命令与 MySQL 兼容。
 
