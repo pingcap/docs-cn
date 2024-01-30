@@ -1,5 +1,6 @@
 ---
 title: tiup cluster template
+summary: The tiup cluster template command is used to prepare a topology file for cluster deployment. It has options to output default, detailed, local, or multi-dc topology templates. The output can be redirected to the topology file for deployment.
 ---
 
 # tiup cluster template

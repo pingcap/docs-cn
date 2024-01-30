@@ -1,5 +1,6 @@
 ---
 title: tiup dm display
+summary: tiup dm display command efficiently checks the operational status of each component in a DM cluster. It requires the cluster name and can also specify node IDs and roles. The output includes cluster name, version, SSH client type, and a table with fields like ID, Role, Host, Ports, OS/Arch, Status, Data Dir, and Deploy Dir.
 ---
 
 # tiup dm display

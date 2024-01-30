@@ -1,5 +1,6 @@
 ---
 title: tiup dm stop
+summary: The `tiup dm stop` command is used to stop services in a specified cluster. You can specify nodes and roles to be stopped using the `-N, --node` and `-R, --role` options. The output is the log of stopping the service.
 ---
 
 # tiup dm stop

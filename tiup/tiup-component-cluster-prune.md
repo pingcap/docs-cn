@@ -1,5 +1,6 @@
 ---
 title: tiup cluster prune
+summary: When scaling in the cluster, TiUP does not immediately stop services or delete data for some components. You must wait for data scheduling to complete and then manually execute the 'tiup cluster prune' command to clean up. The syntax is 'tiup cluster prune <cluster-name> [flags]'. The option '-h, --help' prints help information and the output is the log of the cleanup process.
 ---
 
 # tiup cluster prune

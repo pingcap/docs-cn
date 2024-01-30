@@ -1,5 +1,6 @@
 ---
 title: tiup env
+summary: TiUP provides flexible and customized interfaces using environment variables. The `tiup env` command queries user-defined environment variables and their values. Use `tiup env [name1...N]` to view specified variables, or all by default. No options. Output is a list of "{key}"="{value}" if not specified, or the "{value}" list in order if specified. Empty value means TiUP uses default.
 ---
 
 # tiup env

@@ -1,5 +1,6 @@
 ---
 title: tiup list
+summary: The `tiup list` command is used to get the list of available components of a mirror. It has options like `--all`, `--installed`, and `--verbose` to display all components, installed components, and component versions respectively. The output includes component information and version information based on the specified component.
 ---
 
 # tiup list

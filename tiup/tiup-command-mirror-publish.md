@@ -1,5 +1,6 @@
 ---
 title: tiup mirror publish
+summary: The `tiup mirror publish` command is used to publish new components or versions. Only component owners with access can publish.
 ---
 
 # tiup mirror publish

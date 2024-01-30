@@ -1,5 +1,6 @@
 ---
 title: tiup cluster stop
+summary: The "tiup cluster stop" command is used to stop all or some services of a specified cluster. If the core services are stopped, the cluster cannot provide services anymore. The command syntax is "tiup cluster stop <cluster-name> [flags]". Options include -N/--node to specify nodes to be stopped, -R/--role to specify roles of nodes to be stopped, and -h/--help to print help information. The output is the log of stopping the service.
 ---
 
 # tiup cluster stop

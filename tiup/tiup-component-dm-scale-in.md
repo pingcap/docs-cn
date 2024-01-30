@@ -1,5 +1,6 @@
 ---
 title: tiup dm scale-in
+summary: The tiup dm scale-in command is used to scale in the cluster by taking the service offline and removing the specified node from the cluster. The syntax is "tiup dm scale-in <cluster-name> [flags]". Options include -N, --force, and -h for specifying nodes, forcing removal of down nodes, and printing help information. The output is the log of scaling in.
 ---
 
 # tiup dm scale-in

@@ -1,5 +1,6 @@
 ---
 title: tiup dm replay
+summary: The `tiup dm replay` command allows you to retry failed cluster operations and skip successfully performed steps. Use the `audit-id` of the command to be retried, which can be found using the `tiup dm audit` command. This helps save time when re-performing operations in a large cluster.
 ---
 
 # tiup dm replay

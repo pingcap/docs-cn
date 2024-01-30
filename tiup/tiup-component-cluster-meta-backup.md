@@ -1,5 +1,6 @@
 ---
 title: tiup cluster meta backup
+summary: The TiUP meta file is crucial for cluster operation and maintenance. Use `tiup cluster meta backup` to regularly back up the file. Use `tiup dm list` to check the cluster name. Specify the target directory with `--file` option. Use `-h, --help` for help information. The output includes execution logs of tiup-cluster.
 ---
 
 # tiup cluster meta backup

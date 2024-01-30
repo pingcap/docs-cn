@@ -1,5 +1,6 @@
 ---
 title: tiup mirror clone
+summary: The `tiup mirror clone` command is used to clone an existing mirror or its components to create a new mirror with a different signature key. The syntax is `tiup mirror clone <target-dir> [global version] [flags]`. Options include cloning the whole mirror, specifying platform and operating system, and matching component versions by prefix.
 ---
 
 # tiup mirror clone

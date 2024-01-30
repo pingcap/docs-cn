@@ -1,5 +1,6 @@
 ---
 title: tiup dm start
+summary: The tiup dm start command is used to start services of a specified cluster. The syntax is "tiup dm start <cluster-name> [flags]". Options include -N/--node to specify nodes, -R/--role to specify roles, and -h/--help to print help information. The output is the log of starting the service.
 ---
 
 # tiup dm start

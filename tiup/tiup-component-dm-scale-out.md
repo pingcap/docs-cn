@@ -1,5 +1,6 @@
 ---
 title: tiup dm scale-out
+summary: The `tiup dm scale-out` command is used to scale out the cluster by establishing an SSH connection to the new node, creating necessary directories, deploying, and starting the service.
 ---
 
 # tiup dm scale-out

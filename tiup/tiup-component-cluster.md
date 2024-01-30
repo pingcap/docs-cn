@@ -1,5 +1,6 @@
 ---
 title: TiUP Cluster
+summary: TiUP Cluster is a cluster management component of TiUP written in Golang. It is used for daily operations and maintenance, including deploying, starting, shutting down, destroying, elastic scaling, upgrading TiDB clusters, and managing TiDB cluster parameters. The syntax for using TiUP Cluster is "tiup cluster [command] [flags]". Supported commands include import, template, check, deploy, list, display, start, stop, restart, scale-in, scale-out, upgrade, prune, edit-config, reload, patch, rename, clean, destroy, audit, replay, enable, disable, meta backup, meta restore, and help.
 ---
 
 # TiUP Cluster

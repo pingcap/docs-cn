@@ -1,5 +1,6 @@
 ---
 title: tiup help
+summary: The TiUP command-line interface provides a wealth of help information, which can be accessed using the `help` command or the `--help` option. By using the `tiup help [command]` syntax, users can specify which command's help information they want to view. If no command is specified, the help information for TiUP is displayed. There are no options for this command, and the output will be the help information for the specified command or for TiUP.
 ---
 
 # tiup help

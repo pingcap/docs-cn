@@ -1,5 +1,6 @@
 ---
 title: tiup install
+summary: The tiup install command is used to download and decompress component packages from the mirror repository for later use. If the component does not exist in the repository, it tries to download it and then runs it automatically. The syntax is "tiup install <component1>[:version] [component2...N] [flags]". There are no options, and the output includes download information or error messages if the component or version does not exist.
 ---
 
 # tiup install

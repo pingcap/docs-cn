@@ -1,5 +1,6 @@
 ---
 title: Topology Configuration File for DM Cluster Deployment Using TiUP
+summary: To deploy or scale a TiDB Data Migration (DM) cluster using TiUP, a topology file is required to describe the cluster's global configuration, server configurations, master servers, worker servers, monitoring servers, Grafana servers, and Alertmanager servers. Each section contains specific fields for configuration. The topology file structure includes global, server_configs, master_servers, worker_servers, monitoring_servers, grafana_servers, and alertmanager_servers. Each section has its own set of configurable fields for deployment and configuration.
 ---
 
 # Topology Configuration File for DM Cluster Deployment Using TiUP

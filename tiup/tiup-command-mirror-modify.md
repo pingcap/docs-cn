@@ -1,5 +1,6 @@
 ---
 title: tiup mirror modify
+summary: The tiup mirror modify command is used to modify published components. Only valid component owners can modify their published components. The syntax is "tiup mirror modify <component>[version] [flags]". Options include -k, --yank, --hide, and --standalone. If the command is executed successfully, there is no output. If the component owner is not authorized to modify the target component, TiUP reports an error.
 ---
 
 # tiup mirror modify

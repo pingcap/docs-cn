@@ -1,5 +1,6 @@
 ---
 title: tiup dm prune
+summary: When scaling in the cluster, a small amount of metadata in etcd may not be cleaned up, but it usually doesn't cause any problems. If needed, you can manually execute the "tiup dm prune" command to clean up the metadata. The command syntax is "tiup dm prune <cluster-name> [flags]". The option "-h, --help" prints help information and the output is the log of the cleanup process.
 ---
 
 # tiup dm prune

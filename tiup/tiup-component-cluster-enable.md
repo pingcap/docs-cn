@@ -1,5 +1,6 @@
 ---
 title: tiup cluster enable
+summary: The `tiup cluster enable` command is used to automatically enable cluster services after a machine restart. It executes `systemctl enable <service>` at the specified node. Options include specifying nodes or roles for auto-enabling, and the `-h, --help` option prints help information. The output is the execution log of the tiup-cluster.
 ---
 
 # tiup cluster enable

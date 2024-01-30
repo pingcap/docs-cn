@@ -1,5 +1,6 @@
 ---
 title: TiUP DM
+summary: TiUP DM is used to manage DM clusters, including deploying, starting, stopping, destroying, scaling, upgrading, and managing configuration parameters. It supports options like SSH, timeout, confirmation skipping, version printing, and help information. Supported commands include import, template, deploy, list, display, start, stop, restart, scale-in, scale-out, upgrade, prune, edit-config, reload, patch, destroy, audit, replay, enable, disable, and help.
 ---
 
 # TiUP DM

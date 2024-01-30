@@ -1,5 +1,6 @@
 ---
 title: tiup mirror
+summary: TiUP mirror is a crucial concept in TiUP, supporting local and remote mirroring. The 'tiup mirror' command manages mirrors, creating, distributing components, and managing keys. The syntax is 'tiup mirror <command> [flags]'. Supported sub-commands include genkey, sign, init, set, grant, publish, modify, rotate, clone, and merge.
 ---
 
 # tiup mirror

@@ -1,5 +1,6 @@
 ---
 title: tiup completion
+summary: TiUP provides the `tiup completion` command to generate a configuration file for automatic command-line completion, supporting `bash` and `zsh` commands. To complete `bash` commands, install `bash-completion` and use the `tiup completion <shell>` syntax to set the shell type. For `bash`, write the command into a file and source it in `.bash_profile`. For `zsh`, use the `tiup completion zsh` command.
 ---
 
 # tiup completion

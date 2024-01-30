@@ -1,5 +1,6 @@
 ---
 title: tiup mirror set
+summary: The `tiup mirror set` command switches the current mirror between local file system and remote network address. The official mirror address is `https://tiup-mirrors.pingcap.com`. Use `tiup mirror set <mirror-addr>` to set the mirror address. Use `-r, --root` option to specify the root certificate for network mirrors to prevent man-in-the-middle attacks. No output is generated.
 ---
 
 # tiup mirror set

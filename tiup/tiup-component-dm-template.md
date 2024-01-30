@@ -1,5 +1,6 @@
 ---
 title: tiup dm template
+summary: TiUP DM template command is used to output the built-in topology file template for cluster deployment. The default template includes 3 DM-master instances, 3 DM-worker instances, 1 Prometheus instance, 1 Grafana instance, and 1 Alertmanager instance. The --full option outputs a detailed topology template with configurable parameters. The output can be redirected to the topology file for deployment.
 ---
 
 # tiup dm template

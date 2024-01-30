@@ -1,5 +1,6 @@
 ---
 title: tiup cluster deploy
+summary: The tiup cluster deploy command is used to deploy a new cluster with specified options such as cluster name, version, and topology file. Additional options include user, identity file, password, ignore config check, skip labels, skip create user, and help. The output is the deployment log.
 ---
 
 # tiup cluster deploy

@@ -1,5 +1,6 @@
 ---
 title: tiup cluster meta restore
+summary: To restore the TiUP meta file, use the `tiup cluster meta restore` command with cluster name and backup file path. The restore operation overwrites the current meta file, so it should only be done when the file is lost. The `-h` or `--help` option prints help information. The output includes the execution logs of tiup-cluster.
 ---
 
 # tiup cluster meta restore

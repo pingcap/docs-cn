@@ -1,5 +1,6 @@
 ---
 title: tiup dm upgrade
+summary: The `tiup dm upgrade` command upgrades a specified cluster to a specific version. It requires the cluster name and target version as parameters. The `--offline` option allows for offline upgrades, and the `-h, --help` option prints help information. The output is a log of the service upgrade process.
 ---
 
 # tiup dm upgrade

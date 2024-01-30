@@ -1,5 +1,6 @@
 ---
 title: tiup mirror rotate
+summary: TiUP mirror rotate is used to update the root.json file in a TiUP mirror. It contains public keys, expiration date, and is signed by administrators. The command automates the update process and requires all administrators to sign the file. Before using the command, ensure all TiUP clients are upgraded to v1.5.0 or later.
 ---
 
 # tiup mirror rotate

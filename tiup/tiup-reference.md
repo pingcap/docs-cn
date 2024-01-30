@@ -1,5 +1,6 @@
 ---
 title: TiUP Reference
+summary: TiUP is the package manager for the TiDB ecosystem, managing components like TiDB, PD, and TiKV. It supports commands like install, list, uninstall, update, status, clean, mirror, telemetry, completion, env, and help. It also manages the cluster and TiDB Data Migration (DM) cluster.
 ---
 
 # TiUP Reference

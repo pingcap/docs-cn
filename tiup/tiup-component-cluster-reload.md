@@ -1,5 +1,6 @@
 ---
 title: tiup cluster reload
+summary: The `tiup cluster reload` command is used to apply modified cluster configurations and restart services. It can be forced with `--force`, set a transfer timeout with `--transfer-timeout`, ignore config checks with `--ignore-config-check`, specify nodes with `-N, --node`, roles with `-R, --role`, and skip restart with `--skip-restart`. The output is the execution log of the tiup-cluster.
 ---
 
 # tiup cluster reload

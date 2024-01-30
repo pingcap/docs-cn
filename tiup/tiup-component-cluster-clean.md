@@ -1,5 +1,6 @@
 ---
 title: tiup cluster clean
+summary: The `tiup cluster clean` command is used to reset a cluster in a test environment by stopping the cluster and deleting all data. It has options to clean data, logs, or both, and can ignore specific nodes or roles. Use with caution in a production environment.
 ---
 
 # tiup cluster clean

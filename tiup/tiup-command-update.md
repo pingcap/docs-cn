@@ -1,5 +1,6 @@
 ---
 title: tiup update
+summary: The tiup update command is used to update installed components or TiUP itself. You can specify the component and version to update, use options like --all, --force, --nightly, or --self, and receive outputs for successful updates or unsupported versions.
 ---
 
 # tiup update

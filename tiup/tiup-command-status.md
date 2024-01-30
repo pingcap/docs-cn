@@ -1,5 +1,6 @@
 ---
 title: tiup status
+summary: The "tiup status" command is used to view the operation information of the components after running them using the "tiup <component>" command. It shows the name, component, PID, status, created time, directory, binary, and arguments of the operating components. The component status can be Up, Down, Tombstone, Pending Offline, or Unknown. The status is derived from the PD scheduling information.
 ---
 
 # tiup status

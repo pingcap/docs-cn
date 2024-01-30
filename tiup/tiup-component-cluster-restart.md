@@ -1,5 +1,6 @@
 ---
 title: tiup cluster restart
+summary: The `tiup cluster restart` command is used to restart services in a specified cluster. During the restart, the services are unavailable. You can specify nodes or roles to be restarted using the `-N, --node` and `-R, --role` options. The output is the log of the service restart process.
 ---
 
 # tiup cluster restart

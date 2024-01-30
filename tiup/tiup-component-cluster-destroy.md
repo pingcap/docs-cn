@@ -1,5 +1,6 @@
 ---
 title: tiup cluster destroy
+summary: The tiup cluster destroy command stops the cluster and deletes log, deployment, and data directories for each service. It also deletes parent directories created by tiup-cluster. Options include --force to ignore errors, --retain-node-data to specify nodes to retain data, --retain-role-data to specify roles to retain data, and -h or --help to print help information. The output is the execution log of the tiup-cluster.
 ---
 
 # tiup cluster destroy

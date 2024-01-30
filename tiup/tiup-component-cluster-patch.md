@@ -1,5 +1,6 @@
 ---
 title: tiup cluster patch
+summary: The `tiup cluster patch` command allows for dynamic replacement of binaries in a running cluster. It uploads the binary package, stops the target service, replaces the binary, and starts the service. Preparation involves packing the binary package and using options like `--overwrite`, `--transfer-timeout`, `-N, --node`, `-R, --role`, and `--offline`. The output is the execution log of the tiup-cluster.
 ---
 
 # tiup cluster patch

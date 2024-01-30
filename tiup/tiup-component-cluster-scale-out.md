@@ -1,5 +1,6 @@
 ---
 title: tiup cluster scale-out
+summary: The tiup cluster scale-out command is used to add new nodes to the cluster. It establishes an SSH connection to the new node, creates necessary directories, and updates the configuration. Options include -u for user, -i for identity file, -p for password, --no-labels to skip label check, --skip-create-user to skip user check, and -h for help. The output is the log of scaling out.
 ---
 
 # tiup cluster scale-out

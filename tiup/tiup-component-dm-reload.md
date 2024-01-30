@@ -1,5 +1,6 @@
 ---
 title: tiup dm reload
+summary: The `tiup dm reload` command is used to apply modified cluster configurations and restart the service. It can specify nodes and roles to be restarted, or skip the restart process. The command also provides an option to print help information and outputs the execution log of tiup-dm.
 ---
 
 # tiup dm reload

@@ -1,5 +1,6 @@
 ---
 title: tiup uninstall
+summary: The tiup uninstall command is used to uninstall installed components. It has options to uninstall all versions of a component and to uninstall TiUP itself. If the command exits without error, it outputs "Uninstalled component successfully!" If no version or --all is specified, it reports an error to use "tiup uninstall tidbx --all" to remove all versions.
 ---
 
 # tiup uninstall

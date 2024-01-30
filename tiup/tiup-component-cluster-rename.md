@@ -1,5 +1,6 @@
 ---
 title: tiup cluster rename
+summary: The `tiup cluster rename` command is used to change the cluster name after it has been deployed. Additional steps are required if the `dashboard_dir` field of `grafana_servers` is configured for the TiUP cluster. The syntax for the command is `tiup cluster rename <old-cluster-name> <new-cluster-name>`. The `-h, --help` option prints help information. The output is the execution log of the tiup-cluster.
 ---
 
 # tiup cluster rename

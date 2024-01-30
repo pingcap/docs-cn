@@ -1,5 +1,6 @@
 ---
 title: tiup cluster audit
+summary: The tiup cluster audit command is used to view commands executed on all clusters in the history and the execution log of each command. If [audit-id] is specified, the corresponding execution log is output. If not specified, a table with fields ID, Time, and Command is output in reverse chronological order. The -h, --help option prints help information and is disabled by default.
 ---
 
 # tiup cluster audit

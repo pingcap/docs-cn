@@ -1,5 +1,6 @@
 ---
 title: tiup mirror merge
+summary: The `tiup mirror merge` command merges one or more mirrors to the current mirror. Conditions for execution include existing owner IDs and corresponding private keys.
 ---
 
 # tiup mirror merge

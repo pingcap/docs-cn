@@ -1,5 +1,6 @@
 ---
 title: Topology Configuration File for TiDB Deployment Using TiUP
+summary: TiUP uses a topology file to deploy or modify the cluster topology for TiDB. It also deploys monitoring servers like Prometheus, Grafana, and Alertmanager. The topology file contains sections for global configuration, monitoring services, component versions, and more. Each section specifies the machines to which the corresponding services are deployed and their configurations.
 ---
 
 # Topology Configuration File for TiDB Deployment Using TiUP

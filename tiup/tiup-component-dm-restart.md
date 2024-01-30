@@ -1,5 +1,6 @@
 ---
 title: tiup dm restart
+summary: The `tiup dm restart` command is used to restart services in a specified cluster. During the restart, the services are unavailable. The syntax is `tiup dm restart <cluster-name> [flags]`. Options include -N for specifying nodes to restart, -R for specifying roles of nodes to restart, and -h for help information. The output is the log of the service restart process.
 ---
 
 # tiup dm restart

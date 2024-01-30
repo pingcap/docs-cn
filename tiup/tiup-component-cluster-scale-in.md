@@ -1,5 +1,6 @@
 ---
 title: tiup cluster scale-in
+summary: The `tiup cluster scale-in` command is used to scale in the cluster by taking specified nodes offline, removing them from the cluster, and deleting remaining files. Components like TiKV, TiFlash, and TiDB Binlog are handled asynchronously and require additional steps to check and clean up. The command also includes options for node specification, forceful removal, transfer timeout, and help information.
 ---
 
 # tiup cluster scale-in

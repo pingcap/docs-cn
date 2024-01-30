@@ -1,5 +1,6 @@
 ---
 title: tiup dm disable
+summary: The `tiup dm disable` command is used to disable the auto-enabling of cluster service after restarting the machine. It can be used with options like `-N, --node` to specify nodes and `-R, --role` to specify roles for disabling auto-enabling. The output is the execution log of the tiup-dm command.
 ---
 
 # tiup dm disable

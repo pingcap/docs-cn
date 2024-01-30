@@ -1,5 +1,6 @@
 ---
 title: tiup mirror sign
+summary: The `tiup mirror sign` command is used to sign metadata files in TiUP mirror. It supports network addresses and local file paths. Options include specifying the private key location and setting the access timeout for network signing. Successful execution results in no output, while errors are reported for duplicate signing or invalid manifest files.
 ---
 
 # tiup mirror sign

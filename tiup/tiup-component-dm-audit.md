@@ -1,5 +1,6 @@
 ---
 title: tiup dm audit
+summary: The `tiup dm audit` command is used to view historical commands executed on all clusters and the execution log of each command. If `[audit-id]` is not filled, the table of operation records is output in reverse chronological order, showing the `audit-id`, execution time, and command. If `[audit-id]` is filled, the execution log of the specified `audit-id` is checked. The `-h, --help` option prints help information. If `[audit-id]` is specified, the corresponding execution log is output. If not specified, a table with the fields ID, Time, and Command is output.
 ---
 
 # tiup dm audit

@@ -1,5 +1,6 @@
 ---
 title: tiup dm destroy
+summary: The `tiup dm destroy` command stops the cluster, deletes log, deployment, and data directories for each service, and also deletes parent directories created by `tiup-dm`. The syntax is `tiup dm destroy <cluster-name> [flags]`. The option `-h, --help` prints help information. The output is the execution log of tiup-dm.
 ---
 
 # tiup dm destroy

@@ -1,5 +1,6 @@
 ---
 title: tiup cluster edit-config
+summary: The `tiup cluster edit-config` command allows you to modify the cluster configuration after deployment. You can use an editor to modify the topology file, specified in the `$EDITOR` environment variable. Note that you cannot add or delete machines when modifying the configuration. After executing the command, the configuration is modified only on the control machine, and you need to execute `tiup cluster reload` to reload the configuration.
 ---
 
 # tiup cluster edit-config
