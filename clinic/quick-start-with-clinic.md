@@ -1,6 +1,6 @@
 ---
 title: Quick Start Guide for PingCAP Clinic
-summary: Learn how to use PingCAP Clinic to collect, upload, and view cluster diagnosis data quickly.
+summary: PingCAP Clinic is a service for collecting and viewing cluster diagnosis data quickly. It consists of Diag client and Clinic Server. Users can collect diagnostic data with Diag, upload it to Clinic Server, and view the results of Health Report. Before using it, users need to install Diag, log in to Clinic Server, create an organization, get an access token, and set the token and region in Diag. After collecting and uploading data, users can get the data access link and view the Health Report.
 ---
 
 # Quick Start Guide for PingCAP Clinic

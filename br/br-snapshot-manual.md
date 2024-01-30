@@ -1,6 +1,6 @@
 ---
 title: TiDB Snapshot Backup and Restore Command Manual
-summary: Learn about the commands of TiDB snapshot backup and restore.
+summary: TiDB Snapshot Backup and Restore Command Manual describes commands for backing up and restoring cluster snapshots, databases, and tables. It also covers encrypting backup data and restoring encrypted snapshots. The BR tool supports self-adapting to GC and introduces the --ignore-stats parameter for backing up and restoring statistics. It also supports encrypting backup data and restoring partial data of specified databases or tables.
 ---
 
 # TiDB Snapshot Backup and Restore Command Manual

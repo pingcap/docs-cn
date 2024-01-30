@@ -1,6 +1,6 @@
 ---
 title: TiDB Incremental Backup and Restore Guide
-summary: Learns about how to perform incremental backup and restore in TiDB.
+summary: Incremental data is the differentiated data between starting and end snapshots, along with DDLs. It reduces backup volume and requires setting `tidb_gc_life_time` for incremental backup. Use `br backup` with `--lastbackupts` for incremental backup and ensure all previous data is restored before restoring incremental data.
 ---
 
 # TiDB Incremental Backup and Restore Guide

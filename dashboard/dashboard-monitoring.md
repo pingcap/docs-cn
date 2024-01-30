@@ -1,6 +1,6 @@
 ---
 title: TiDB Dashboard Monitoring Page
-summary: Learn how to view the Performance Overview dashboard on TiDB Dashboard and understand key metrics displayed on the Performance Overview dashboard.
+summary: The TiDB Dashboard Monitoring Page allows users to analyze performance efficiently and identify database bottlenecks. Key metrics include database time, SQL execution time, QPS, connection count, TiDB and TiKV CPU, duration, connection idle duration, parse, compile, and execute duration, TiDB KV request duration, TiKV gRPC duration, PD TSO wait/RPC duration, storage async write duration, store duration, apply duration, append log duration, commit log duration, and apply log duration.
 ---
 
 # TiDB Dashboard Monitoring Page

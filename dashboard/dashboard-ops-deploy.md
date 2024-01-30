@@ -1,6 +1,6 @@
 ---
 title: Deploy TiDB Dashboard
-summary: Learn how to deploy TiDB Dashboard.
+summary: TiDB Dashboard is built into PD for v4.0 or higher. No additional deployment is needed. It can also be deployed independently on Kubernetes. When multiple PD instances are deployed, only one serves the Dashboard. Use `tiup cluster display` to check the serving instance. You can disable and re-enable the Dashboard using `tiup ctl`.
 aliases: ['/docs/dev/dashboard/dashboard-ops-deploy/']
 ---
 

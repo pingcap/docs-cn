@@ -1,6 +1,6 @@
 ---
 title: TiDB Dashboard Instance Profiling - Continuous Profiling
-summary: Learn how to collect performance data from TiDB, TiKV and PD continuously to reduce MTTR.
+summary: TiDB Dashboard Continuous Profiling allows experts to collect and analyze performance data continuously from each instance, helping to pinpoint and resolve sophisticated performance problems. It stores more data than Manual Profiling, enabling analysis of both current and historical issues. The feature can be accessed through the dashboard or a browser, and can be enabled and disabled as needed. Performance impact is minimal, making it suitable for production environments.
 ---
 
 # TiDB Dashboard Instance Profiling - Continuous Profiling

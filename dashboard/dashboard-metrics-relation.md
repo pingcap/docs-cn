@@ -1,6 +1,6 @@
 ---
 title: TiDB Dashboard Metrics Relation Graph
-summary: Learn TiDB Dashboard metrics relation graph.
+summary: TiDB Dashboard introduces a feature called metrics relation graph, which helps users understand the duration of each internal process in a TiDB cluster. After logging in, users can access the graph and see the proportion of each monitoring metric's duration to the total query duration. Each box area represents a monitoring metric and provides information such as the total duration and proportion to the total query duration. The graph also illustrates the parent-child relations between nodes, helping users understand the relations of each monitoring metric.
 ---
 
 # TiDB Dashboard Metrics Relation Graph

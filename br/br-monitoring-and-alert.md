@@ -1,6 +1,6 @@
 ---
 title: Monitoring and Alert for Backup and Restore
-summary: Learn the monitoring and alert of the backup and restore feature.
+summary: This document describes monitoring and alert for backup and restore, including log backup monitoring, configuration, Grafana configuration, monitoring metrics, and log backup alerts. It covers the recommended alert items and their configurations for PITR.
 ---
 
 # Monitoring and Alert for Backup and Restore

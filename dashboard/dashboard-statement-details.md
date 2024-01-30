@@ -1,6 +1,6 @@
 ---
 title: Statement Execution Details of TiDB Dashboard
-summary: View the execution details of a single SQL statement in TiDB Dashboard.
+summary: TiDB Dashboard provides detailed information on SQL statement execution, including SQL template overview, execution plan list, and plan binding feature. Starting from v6.6.0, fast plan binding allows quick binding and dropping of execution plans. However, it has limitations and requires SUPER privilege. The execution detail of plans includes SQL sample, complete execution plan information, and basic execution details. Visual representations of execution plans are available in table, text, and graph formats. Additional tabs provide information on execution time, Coprocessor read, transaction, and slow queries.
 aliases: ['/docs/dev/dashboard/dashboard-statement-details/']
 ---
 

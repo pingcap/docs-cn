@@ -1,6 +1,6 @@
 ---
 title: TiDB Snapshot Backup and Restore Architecture
-summary: Learn about the architecture of TiDB snapshot backup and restore.
+summary: TiDB Snapshot Backup and Restore Architecture introduces the process using a Backup & Restore (BR) tool. The architecture includes backup and restore processes, types of backup files, naming format, storage format, and structure of backup files. The backup process involves scheduling, data backup, and metadata backup. The restore process includes scheduling, schema restore, Region allocation, data restore, and reporting. The types of backup files include SST, backupmeta, and backup.lock files. The naming format and storage format of SST files are explained in detail. For more information, refer to the TiDB snapshot backup and restore guide.
 ---
 
 # TiDB Snapshot Backup and Restore Architecture

@@ -1,6 +1,6 @@
 ---
 title: TiDB Dashboard Log Search Page
-summary: Learn how to search logs of all nodes using the log search page of TiDB Dashboard.
+summary: TiDB Dashboard log search page allows users to search logs, preview results, and download logs. Users can access the page after logging in, and specify time range, log level, keywords, and components for the search. The search result page displays parameter options, search progress, and search results. Users can download selected logs, cancel running tasks, and retry failed tasks. The search history list shows details of past searches and allows users to delete unnecessary history.
 aliases: ['/docs/dev/dashboard/dashboard-log-search/']
 ---
 

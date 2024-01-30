@@ -1,6 +1,6 @@
 ---
 title: TiDB Dashboard FAQs
-summary: Learn about the frequently asked questions (FAQs) and answers about TiDB Dashboard.
+summary: This document summarizes FAQs about TiDB Dashboard. It covers access-related, UI-related, and deployment issues, providing solutions for each problem. If further assistance is needed, support can be obtained from PingCAP or the community.
 aliases: ['/docs/dev/dashboard/dashboard-faq/']
 ---
 

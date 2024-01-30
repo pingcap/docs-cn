@@ -1,6 +1,6 @@
 ---
 title: TiDB Dashboard Cluster Information Page
-summary: View the running status of TiDB, TiKV, PD, TiFlash components in the entire cluster and the running status of the host on which these components are located.
+summary: The TiDB Dashboard Cluster Information Page allows users to view the running status of TiDB, TiKV, PD, and TiFlash components in the entire cluster, as well as the running status of the host on which these components are located. Users can access the page by logging in to TiDB Dashboard and clicking on Cluster Info in the left navigation menu, or by visiting a specific URL in their browser. The page provides instance, host, and disk lists, showing detailed information about each component and its running status.
 aliases: ['/docs/dev/dashboard/dashboard-cluster-info/']
 ---
 

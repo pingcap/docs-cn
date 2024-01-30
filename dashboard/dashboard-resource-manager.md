@@ -1,6 +1,6 @@
 ---
 title: TiDB Dashboard Resource Manager Page
-summary: Introduce how to use the Resource Manager page in TiDB Dashboard to view the information about resource control, so you can estimate cluster capacity before resource planning and allocate resources more effectively.
+summary: TiDB Dashboard Resource Manager Page helps cluster administrators implement resource isolation by creating resource groups and setting quotas. It provides methods to estimate cluster capacity and monitor resource consumption. Access the page through TiDB Dashboard or a browser. The page includes sections for configuration, capacity estimation, and metrics. Capacity estimation methods include hardware deployment and actual workload. Monitoring metrics include total RU consumed, RU consumed by resource groups, TiDB CPU quota and usage, TiKV CPU quota and usage, and TiKV IO MBps.
 ---
 
 # TiDB Dashboard Resource Manager Page

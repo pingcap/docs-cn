@@ -1,5 +1,6 @@
 ---
 title: Gitpod
+summary: Gitpod provides a complete, automated, and pre-configured cloud-native development environment. You can develop, run, and test code directly in the browser without any local configurations.
 ---
 
 <!-- markdownlint-disable MD029 -->

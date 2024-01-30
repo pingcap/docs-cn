@@ -1,5 +1,6 @@
 ---
 title: Data Migration Architecture
+summary: "Data Migration (DM) architecture consists of three components: DM-master, DM-worker, and dmctl. DM-master manages data migration tasks, DM-worker executes specific tasks, and dmctl is a command line tool for cluster control. High availability is achieved through multiple DM-master nodes and automatic task scheduling. Full export and import tasks do not support high availability due to limitations in MySQL and DM-worker."
 ---
 
 # Data Migration Architecture

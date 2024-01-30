@@ -1,6 +1,6 @@
 ---
 title: Backup Auto-Tune
-summary: Learn about the auto-tune feature of TiDB backup and restore, which automatically limits the resources used by backups to reduce the impact on the cluster in case of high cluster resource usage.
+summary: TiDB v5.4.0 introduces the auto-tune feature for backup tasks, which is enabled by default. It limits the resources used by backup tasks to reduce their impact on the cluster. You can enable or disable the feature dynamically without restarting the cluster. However, auto-tune may not completely remove the impact of backup on the cluster due to limitations. Adjusting the number of threads used by backup tasks can help mitigate the impact in certain scenarios.
 ---
 
 # Backup Auto-Tune <span class="version-mark">New in v5.4.0</span>

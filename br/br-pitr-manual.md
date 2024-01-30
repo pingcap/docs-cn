@@ -1,6 +1,6 @@
 ---
 title: TiDB Log Backup and PITR Command Manual
-summary: Learn about the commands of TiDB log backup and point-in-time recovery.
+summary: TiDB Log Backup and PITR Command Manual describes commands for log backup and point-in-time recovery. Use `br log` command to start, pause, resume, stop, truncate, and query log backup tasks. Specify parameters like `start-ts`, `task-name`, `--storage`, and `--pd` for log backup. Use `br log metadata` to view backup metadata and `br restore point` for PITR. Be cautious when pausing and resuming backup tasks.
 aliases: ['/tidb/dev/br-log-command-line/']
 ---
 

@@ -1,6 +1,6 @@
 ---
 title: Batch Create Table
-summary: Learn how to use the Batch Create Table feature. When restoring data, BR can create tables in batches to speed up the restore process.
+summary: TiDB v6.0.0 introduces the Batch Create Table feature to speed up the table creation process during data restoration. It is enabled by default and creates tables in batches, significantly reducing the time for restoring data with a large number of tables. The feature test shows that the average speed of restoring one TiKV instance is as high as 181.65 MB/s.
 ---
 
 # Batch Create Table

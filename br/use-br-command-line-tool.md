@@ -1,6 +1,6 @@
 ---
 title: br Command-line Manual
-summary: Learn about the description, options, and usage of the br command-line tool.
+summary: The `br` command-line tool is used for snapshot backup, log backup, and point-in-time recovery (PITR) in TiDB clusters. It consists of sub-commands, options, and parameters, with common options like `--pd` for PD service address and `-s` for storage path. Sub-commands include `br backup`, `br log`, and `br restore`, each with specific functionalities. Backup commands include `full`, `db`, and `table` options, while log backup and restore commands have various tasks for managing backup operations.
 ---
 
 # br Command-line Manual

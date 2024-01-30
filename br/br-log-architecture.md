@@ -1,6 +1,6 @@
 ---
 title: TiDB Log Backup and PITR Architecture
-summary: Learn about the architecture of TiDB log backup and point-in-time recovery.
+summary: TiDB log backup and PITR architecture is introduced using a Backup & Restore (BR) tool as an example. The architecture includes log backup process design, system components, and key concepts. The PITR process involves restoring full backup data and log backup data. Log backup generates files such as log data, metadata, and global checkpoint.
 ---
 
 # TiDB Log Backup and PITR Architecture

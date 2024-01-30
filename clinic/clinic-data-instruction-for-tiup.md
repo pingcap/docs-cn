@@ -1,6 +1,6 @@
 ---
 title: PingCAP Clinic Diagnostic Data
-summary: Learn what diagnostic data can be collected by PingCAP Clinic Diagnostic Service from the TiDB and DM clusters deployed using TiUP.
+summary: PingCAP Clinic Diagnostic Service collects diagnostic data from TiDB and DM clusters using TiUP. Data types include cluster information, diagnostic data for TiDB, TiKV, PD, TiFlash, TiCDC, Prometheus monitoring, system variables, and node system information. Data is stored in Clinic Server for international and Chinese mainland users. The collected data is only used for troubleshooting cluster problems.
 ---
 
 # PingCAP Clinic Diagnostic Data

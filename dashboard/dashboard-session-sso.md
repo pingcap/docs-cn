@@ -1,6 +1,6 @@
 ---
 title: Configure SSO for TiDB Dashboard
-summary: Learn how to enable SSO to sign into TiDB Dashboard.
+summary: TiDB Dashboard supports OIDC-based SSO for sign-in authentication. To enable SSO, fill OIDC Client ID and Discovery URL, authorize impersonation, and save the configuration. To disable SSO, deselect the option and update the configuration. If the SQL user password changes, re-enter it to enable SSO again. After configuration, sign in via SSO by clicking "Sign in via Company Account" and completing the sign-in process. Examples of using Okta, Auth0, and Casdoor for SSO configuration are provided.
 ---
 
 # Configure SSO for TiDB Dashboard

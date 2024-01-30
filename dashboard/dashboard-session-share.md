@@ -1,6 +1,6 @@
 ---
 title: Share TiDB Dashboard Sessions
-summary: Learn how to share the current TiDB Dashboard session to other users.
+summary: TiDB Dashboard allows users to share their current session with others, eliminating the need for a user password. The inviter can generate an authorization code with specific sharing settings and provide it to the invitee. The invitee can then use the authorization code to sign in without a password.
 ---
 
 # Share TiDB Dashboard Sessions

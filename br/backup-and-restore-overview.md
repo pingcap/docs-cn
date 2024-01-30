@@ -1,6 +1,6 @@
 ---
 title: TiDB Backup & Restore Overview
-summary: Learn about the definition and features of TiDB Backup & Restore.
+summary: TiDB Backup & Restore (BR) ensures high availability of clusters and data safety. It supports disaster recovery with a short RPO, handles misoperations, and provides history data auditing. It is recommended to perform backup operations during off-peak hours and store backup data to compatible storage systems. BR supports full backup and log backup, as well as restoring data to any point in time. It is important to use BR of the same major version as the TiDB cluster for backup and restoration.
 aliases: ['/docs/dev/br/backup-and-restore-tool/','/docs/dev/reference/tools/br/br/','/docs/dev/how-to/maintain/backup-and-restore/br/','/tidb/dev/backup-and-restore-tool/','/tidb/dev/point-in-time-recovery/']
 ---
 

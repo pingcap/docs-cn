@@ -1,6 +1,6 @@
 ---
 title: Overview of TiDB Backup & Restore Architecture
-summary: Learn about the architecture design of TiDB backup and restore features.
+summary: TiDB supports backup and restore for cluster data using Backup & Restore (BR) and TiDB Operator. Tasks can be created to back up data from TiKV nodes and restore data to TiKV nodes. The architecture includes full data backup and restore, data change log backup, and point-in-time recovery (PITR). For details, refer to specific documents for each feature.
 ---
 
 # Overview of TiDB Backup & Restore Architecture

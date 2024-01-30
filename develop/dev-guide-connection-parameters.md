@@ -1,5 +1,6 @@
 ---
 title: Connection Pools and Connection Parameters
+summary: This document explains how to configure connection pools and parameters for TiDB. It covers connection pool size, probe configuration, and formulas for optimal throughput. It also discusses JDBC API usage and MySQL Connector/J parameter configurations for performance optimization.
 ---
 
 # Connection Pools and Connection Parameters
