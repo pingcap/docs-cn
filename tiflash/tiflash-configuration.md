@@ -115,8 +115,8 @@ delta_index_cache_size = 0
     # auto_tune_sec = 5
 
 [flash]
-    tidb_status_addr = tidb status 端口地址 # 多个地址以逗号分割
-    service_addr =  TiFlash raft 服务 和 coprocessor 服务监听地址
+    ## TiFlash coprocessor 服务监听地址
+    service_addr = "0.0.0.0:3930"
 
 # 多个 TiFlash 节点会选一个 master 来负责往 PD 增删 placement rule，通过 flash.flash_cluster 中的参数控制。
 [flash.flash_cluster]
@@ -127,27 +127,38 @@ delta_index_cache_size = 0
     log = pd buddy log 路径
 
 [flash.proxy]
-    addr = proxy 监听地址，不填则默认是 127.0.0.1:20170
-    advertise-addr = 外部访问 addr 的地址，不填则默认是 "addr"
-    data-dir = proxy 数据存储路径
-    config = proxy 配置文件路径
-    log-file = proxy log 路径
-    log-level = proxy log 级别，默认是 "info"
-    status-addr = 拉取 proxy metrics｜status 信息的监听地址，不填则默认是 127.0.0.1:20292
-    advertise-status-addr = 外部访问 status-addr 的地址，不填则默认是 "status-addr"
+    ## proxy 监听地址，不填则默认是 127.0.0.1:20170
+    addr = "127.0.0.1:20170"
+    ## 外部访问 addr 的地址，不填则默认使用 "addr" 的值
+    ## 当集群部署在多个节点时，需要保证 `advertise-addr` 的地址可以从其他节点连接
+    advertise-addr = ""
+    ## 拉取 proxy metrics 或 status 信息的监听地址，不填则默认是 127.0.0.1:20292
+    status-addr = "127.0.0.1:20292"
+    ## 外部访问 status-addr 的地址，不填则默认使用 "status-addr" 的值
+    ## 当集群部署在多个节点时，需要保证 `advertise-addr` 的地址可以从其他节点连接
+    advertise-status-addr = ""
+    ## proxy 数据存储路径
+    data-dir = "/tidb-data/tiflash-9000/flash"
+    ## proxy 配置文件路径
+    config = "/tidb-deploy/tiflash-9000/conf/tiflash-learner.toml"
+    ## proxy log 路径
+    log-file = "/tidb-deploy/tiflash-9000/log/tiflash_tikv.log"
+    ## proxy 的 log 级别 (支持 "trace"、"debug"、"info"、"warn"、"error"). 默认是 "info"
+    # log-level = "info" 
 
 [logger]
     ## log 级别（支持 "trace"、"debug"、"info"、"warn"、"error"），从 v6.5.7 起，默认值从 "debug" 变更为 "info"
     level = "info"
-    log = TiFlash log 路径
-    errorlog = TiFlash error log 路径
+    log = "/tidb-deploy/tiflash-9000/log/tiflash.log"
+    errorlog = "/tidb-deploy/tiflash-9000/log/tiflash_error.log"
     ## 单个日志文件的大小，默认是 "100M"
     size = "100M"
     ## 最多保留日志文件个数，默认是 10
     count = 10
 
 [raft]
-    pd_addr = pd 服务地址 # 多个地址以逗号隔开
+    ## PD 服务地址. 多个地址以逗号隔开
+    pd_addr = "10.0.1.11:2379,10.0.1.12:2379,10.0.1.13:2379"
 
 [status]
     ## Prometheus 拉取 metrics 信息的端口，默认是 8234
