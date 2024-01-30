@@ -208,11 +208,38 @@ SELECT CHAR(50089);
 
 ### [`CHAR_LENGTH()`](https://dev.mysql.com/doc/refman/8.0/en/string-functions.html#function_char-length)
 
-Return number of characters in argument.
+The `CHAR_LENGTH()` function is used to get the total number of characters in a given argument as an integer.
+
+Examples:
+
+```sql
+SELECT CHAR_LENGTH("TiDB") AS LengthOfString;
+
++----------------+
+| LengthOfString |
++----------------+
+|              4 |
++----------------+
+```
+
+```sql
+SELECT CustomerName, CHAR_LENGTH(CustomerName) AS LenghtOfName FROM Customers;
+
++--------------------+--------------+
+| CustomerName       | LenghtOfName |
++--------------------+--------------+
+| Albert Einstein    |           15 |
+| Robert Oppenheimer |           18 |
++--------------------+--------------+
+```
+
+> **Note:**
+>
+> The preceding example operates under the assumption that there is a database with a table named `Customers` and a column inside the table named `CustomerName`.
 
 ### [`CHARACTER_LENGTH()`](https://dev.mysql.com/doc/refman/8.0/en/string-functions.html#function_character-length)
 
-Synonym for `CHAR_LENGTH()`.
+The `CHARACTER_LENGTH()` function is the same as the `CHAR_LENGTH()` function. Both functions can be used synonymously because they generate the same output.
 
 ## [`CONCAT()`](https://dev.mysql.com/doc/refman/8.0/en/string-functions.html#function_concat)
 
