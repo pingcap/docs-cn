@@ -49,8 +49,6 @@ SHOW SESSION STATUS;
 13 rows in set (0.00 sec)
 ```
 
-{{< copyable "sql" >}}
-
 ```sql
 SHOW GLOBAL STATUS;
 ```
