@@ -155,11 +155,113 @@ Decode to a base-64 string and return result.
 
 ### [`HEX()`](https://dev.mysql.com/doc/refman/8.0/en/string-functions.html#function_hex)
 
-Return a hexadecimal representation of a decimal or string value.
+The `HEX()` function is used to convert the given argument into a string representation of its hexadecimal value. The argument can be either a string or a number.
+
+- If the argument is a string, `HEX(str)` returns a hexadecimal string representation of `str`. The function converts each byte of each character in `str` into two hexadecimal digits. For example, the character `a` in a UTF-8 or ASCII character set is represented as a binary value of `00111101`, or `61` in hexadecimal notation.
+- If the argument is a number, `HEX(n)` returns a hexadecimal string representation of `n`. The function treats the argument `n` as a `BIGINT` number, equivalent to using `CONV(n, 10, 16)`.
+- If the argument is `NULL`, the function returns `NULL`.
+
+Examples:
+
+```sql
+SELECT X'616263', HEX('abc'), UNHEX(HEX('abc')), 0x616263;
++-----------+------------+-------------------+----------+
+| X'616263' | HEX('abc') | UNHEX(HEX('abc')) | 0x616263 |
++-----------+------------+-------------------+----------+
+| abc       | 616263     | abc               | abc      |
++-----------+------------+-------------------+----------+
+```
+
+```sql
+SELECT X'F09F8DA3', HEX('🍣'), UNHEX(HEX('🍣')), 0xF09F8DA3;
++-------------+-------------+--------------------+------------+
+| X'F09F8DA3' | HEX('🍣')     | UNHEX(HEX('🍣'))     | 0xF09F8DA3 |
++-------------+-------------+--------------------+------------+
+| 🍣            | F09F8DA3    | 🍣                   | 🍣           |
++-------------+-------------+--------------------+------------+
+```
+
+```sql
+SELECT HEX(255), CONV(HEX(255), 16, 10);
++----------+------------------------+
+| HEX(255) | CONV(HEX(255), 16, 10) |
++----------+------------------------+
+| FF       | 255                    |
++----------+------------------------+
+```
+
+```sql
+SELECT HEX(NULL);
++-----------+
+| HEX(NULL) |
++-----------+
+| NULL      |
++-----------+
+```
 
 ### [`INSERT()`](https://dev.mysql.com/doc/refman/8.0/en/string-functions.html#function_insert)
 
-Insert a substring at the specified position up to the specified number of characters.
+The `INSERT(str, pos, len, newstr)` function is used to replace a substring in `str` (that starts at position `pos` and is `len` characters long) with the string `newstr`. This function is multibyte safe.
+
+- If `pos` exceeds the length of `str`, the function returns the original string `str` without modification.
+- If `len` exceeds the remaining length of `str` from position `pos`, the function replaces the rest of the string from position `pos`.
+- If any argument is `NULL`, the function returns `NULL`.
+
+Examples:
+
+```sql
+SELECT INSERT('He likes tennis', 4, 5, 'plays');
++------------------------------------------+
+| INSERT('He likes tennis', 4, 5, 'plays') |
++------------------------------------------+
+| He plays tennis                          |
++------------------------------------------+
+```
+
+```sql
+SELECT INSERT('He likes tennis', -1, 5, 'plays');
++-------------------------------------------+
+| INSERT('He likes tennis', -1, 5, 'plays') |
++-------------------------------------------+
+| He likes tennis                           |
++-------------------------------------------+
+```
+
+```sql
+SELECT INSERT('He likes tennis', 4, 100, 'plays');
++--------------------------------------------+
+| INSERT('He likes tennis', 4, 100, 'plays') |
++--------------------------------------------+
+| He plays                                   |
++--------------------------------------------+
+```
+
+```sql
+SELECT INSERT('He likes tenis', 10, 100, '🍣');
++-------------------------------------------+
+| INSERT('He likes tenis', 10, 100, '🍣')     |
++-------------------------------------------+
+| He likes 🍣                                 |
++-------------------------------------------+
+```
+
+```sql
+SELECT INSERT('あああああああ', 2, 3, 'いいい');
++----------------------------------------------------+
+| INSERT('あああああああ', 2, 3, 'いいい')           |
++----------------------------------------------------+
+| あいいいあああ                                     |
++----------------------------------------------------+
+```
+
+```sql
+SELECT INSERT('あああああああ', 2, 3, 'xx');
++---------------------------------------------+
+| INSERT('あああああああ', 2, 3, 'xx')        |
++---------------------------------------------+
+| あxxあああ                                  |
++---------------------------------------------+
+```
 
 ### [`INSTR()`](https://dev.mysql.com/doc/refman/8.0/en/string-functions.html#function_instr)
 
