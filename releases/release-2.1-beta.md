@@ -1,6 +1,7 @@
 ---
 title: TiDB 2.1 Beta Release Notes
 aliases: ['/docs/dev/releases/release-2.1-beta/','/docs/dev/releases/21beta/']
+summary: TiDB 2.1 Beta release includes improvements in stability, SQL optimizer, statistics, and execution engine. It supports more MySQL syntax, decreases memory usage, and optimizes DDL and DML statements. PD enables Raft PreVote, optimizes scheduler issues, and adds metrics. TiKV upgrades Rust, adds metrics, and improves performance. Compatibility notes include not supporting rollback to v2.0.x and enabling raft learner by default in the new version.
 ---
 
 # TiDB 2.1 Beta Release Notes

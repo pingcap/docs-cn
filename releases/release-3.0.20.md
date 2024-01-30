@@ -1,5 +1,6 @@
 ---
 title: TiDB 3.0.20 Release Notes
+summary: TiDB 3.0.20 was released on December 25, 2020. The release includes compatibility changes, improvements, and bug fixes for TiDB, TiKV, and PD. Some notable bug fixes include addressing issues with incorrect cache of transaction status, inaccurate statistics, and stack overflow.
 ---
 
 # TiDB 3.0.20 Release Notes

@@ -1,5 +1,6 @@
 ---
 title: TiDB 5.1.1 Release Notes
+summary: TiDB 5.1.1 was released on July 30, 2021. The release includes compatibility changes, feature enhancements, improvements, bug fixes, and updates to TiDB Dashboard, TiFlash, TiKV, and various tools. Notable changes include default value changes for variables, support for OIDC SSO in TiDB Dashboard, and bug fixes for data loss and panic issues.
 ---
 
 # TiDB 5.1.1 Release Notes

@@ -1,6 +1,7 @@
 ---
 title: TiDB 2.0.7 Release Notes
 aliases: ['/docs/dev/releases/release-2.0.7/','/docs/dev/releases/207/']
+summary: TiDB 2.0.7 was released on September 7, 2018, with improvements in system compatibility and stability. New features include the addition of the `PROCESSLIST` table in `information_schema`. Bug fixes address issues with index usage, join output, and query conditions. TiKV now opens the `dynamic-level-bytes` parameter by default to reduce space amplification, and updates approximate size and keys count after region merging.
 ---
 
 # TiDB 2.0.7 Release Notes

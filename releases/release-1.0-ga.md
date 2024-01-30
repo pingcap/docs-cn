@@ -1,6 +1,7 @@
 ---
 title: TiDB 1.0 release notes
 aliases: ['/docs/dev/releases/release-1.0-ga/','/docs/dev/releases/ga/']
+summary: TiDB 1.0 is released with a focus on MySQL compatibility, SQL optimization, stability, and performance. It includes enhancements to the SQL query optimizer, internal data format optimization, and support for various operators. PD now supports read flow based balancing and setting store weight. TiKV has improved coprocessor support and performance, and added a Debug API. Special thanks to enterprises, open source software, and individual contributors for their support.
 ---
 
 # TiDB 1.0 Release Notes

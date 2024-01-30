@@ -1,5 +1,6 @@
 ---
 title: TiDB 3.0.18 Release Notes
+summary: TiDB 3.0.18 was released on August 21, 2020. The release includes improvements to TiDB Binlog and bug fixes for TiDB and TiKV. Bug fixes for TiDB include issues with handling decimal, set, and enum types, as well as problems with duplicate keys and cached execution plans. TiKV's bug fix involves changing the GC failure log level. TiDB Lightning also received fixes for issues with the log file argument, syntax errors, and unexpected calls.
 ---
 
 # TiDB 3.0.18 Release Notes

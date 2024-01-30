@@ -1,5 +1,6 @@
 ---
 title: What's New in TiDB 5.0
+summary: TiDB 5.0 introduces MPP architecture, clustered index, async commit, and stability improvements. It also enhances compatibility changes, configuration parameters, and new features. Additionally, it optimizes performance, high availability, disaster recovery, data migration, diagnostics, deployment, and maintenance. Telemetry is added for cluster usage metrics.
 ---
 
 # What's New in TiDB 5.0

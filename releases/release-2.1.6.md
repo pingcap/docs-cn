@@ -1,6 +1,7 @@
 ---
 title: TiDB 2.1.6 Release Notes
 aliases: ['/docs/dev/releases/release-2.1.6/','/docs/dev/releases/2.1.6/']
+summary: TiDB 2.1.6 and TiDB Ansible 2.1.6 were released on March 15, 2019. The release includes improvements in stability, SQL optimizer, statistics, and execution engine. Fixes and enhancements were made in SQL optimizer/executor, server, DDL, TiKV, and Tools. Notable changes include support for log_bin variable, sanity check for transactions, and fixing import failure due to non-alphanumeric characters in schema names.
 ---
 
 # TiDB 2.1.6 Release Notes

@@ -1,6 +1,7 @@
 ---
 title: TiDB 3.1.0 GA Release Notes
 aliases: ['/docs/dev/releases/release-3.1.0-ga/','/docs/dev/releases/3.1.0-ga/']
+summary: TiDB 3.1.0 GA was released on April 16, 2020. It includes compatibility changes, new features, bug fixes, and improvements for TiDB, TiFlash, TiKV, and tools like Backup & Restore and TiDB Binlog. Notable changes include support for displaying Coprocessor tasks, optimizing hot Region scheduling, and fixing various panic and data loss issues. The release also includes improvements to TiDB Ansible for better monitoring and configuration parameters.
 ---
 
 # TiDB 3.1.0 GA Release Notes

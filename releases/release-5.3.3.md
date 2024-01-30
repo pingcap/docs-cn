@@ -1,5 +1,6 @@
 ---
 title: TiDB 5.3.3 Release Note
+summary: TiDB 5.3.3 was released on September 14, 2022. The bug fix in TiKV addresses continuous SQL execution errors in the cluster after PD leader switch or PD restart. The issue was caused by a TiKV bug that has been fixed in v5.3.3. Affected versions include v5.3.2 and v5.4.2. Upgrading to v5.3.3 or restarting TiKV nodes can resolve the issue. For more details, refer to issue #12934 on GitHub.
 ---
 
 # TiDB 5.3.3 Release Note

@@ -1,6 +1,7 @@
 ---
 title: TiDB 2.1.16 Release Notes
 aliases: ['/docs/dev/releases/release-2.1.16/','/docs/dev/releases/2.1.16/']
+summary: TiDB 2.1.16 was released on August 15, 2019. It includes various fixes and improvements to the SQL optimizer, SQL execution engine, server, DDL, TiKV, TiDB Binlog, TiDB Lightning, and TiDB Ansible. Some notable changes include support for subqueries within SHOW statements, fixing issues with DATE_ADD function, and adding configuration items in Drainer for TiDB Binlog.
 ---
 
 # TiDB 2.1.16 Release Notes

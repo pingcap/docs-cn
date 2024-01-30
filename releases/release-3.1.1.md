@@ -1,6 +1,7 @@
 ---
 title: TiDB 3.1.1 Release Notes
 aliases: ['/docs/dev/releases/release-3.1.1/','/docs/dev/releases/3.1.1/']
+summary: TiDB 3.1.1 was released on April 30, 2020. New features include table option for `auto_rand_base` and `Feature ID` comment. Bug fixes include isolation read setting, partition selection syntax, and wrong results from nested queries. TiFlash also received bug fixes and improvements in data reading and storage path modification. Backup & Restore (BR) fixed issues related to table restoration and data insertion.
 ---
 
 # TiDB 3.1.1 Release Notes

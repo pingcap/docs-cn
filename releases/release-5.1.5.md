@@ -1,5 +1,6 @@
 ---
 title: TiDB 5.1.5 Release Notes
+summary: TiDB 5.1.5 was released on December 28, 2022. The release includes compatibility changes and numerous bug fixes for TiDB, TiKV, PD, TiFlash, and various tools. Bug fixes address issues such as panics, wrong results, and incorrect behaviors. Fixes also include issues related to data loss, memory usage, and incorrect metrics.
 ---
 
 # TiDB 5.1.5 Release Notes

@@ -1,6 +1,7 @@
 ---
 title: TiDB 1.0.6 Release Notes
 aliases: ['/docs/dev/releases/release-1.0.6/','/docs/dev/releases/106/']
+summary: TiDB 1.0.6 was released on January 08, 2018. Updates include support for Alter Table Auto_Increment syntax, fixing bugs in Cost Based computation and Null Json issue, and support for extension syntax to shard implicit row ID. Other updates include fixing potential DDL issue, considering timezone setting in certain functions, and support for SEPARATOR syntax in GROUP_CONCAT function. PD fixed store selection problem of hot-region scheduler. To upgrade from 1.0.5 to 1.0.6, follow the rolling upgrade order of PD, TiKV, TiDB.
 ---
 
 # TiDB 1.0.6 Release Notes

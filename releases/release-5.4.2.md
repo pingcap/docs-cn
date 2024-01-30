@@ -1,5 +1,6 @@
 ---
 title: TiDB 5.4.2 Release Notes
+summary: TiDB 5.4.2 was released on July 8, 2022. It is not recommended to use this version due to a known bug, which has been fixed in v5.4.3. The release includes improvements to TiDB, TiKV, PD, and various tools, along with bug fixes for each component. These bug fixes address issues related to stability, performance, and error handling.
 ---
 
 # TiDB 5.4.2 Release Notes

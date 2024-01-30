@@ -1,6 +1,7 @@
 ---
 title: TiDB RC2 Release Notes
 aliases: ['/docs/dev/releases/release-rc.2/','/docs/dev/releases/rc2/']
+summary: TiDB RC2, released on March 1, 2017, focuses on MySQL compatibility, SQL query optimization, system stability, and performance. It introduces a new permission management mechanism, allowing users to control data access similar to MySQL privilege management. Key improvements include query optimizer enhancements, basic privilege management support, MySQL built-in functions, and performance optimizations. PD now supports location aware replica scheduling and fast scheduling based on region count, while TiKV introduces Async Apply for improved write performance and various optimizations for read and insert performance. Bug fixes and memory leak solutions are also included.
 ---
 
 # TiDB RC2 Release Notes

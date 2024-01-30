@@ -1,5 +1,6 @@
 ---
 title: TiDB 5.0.2 Release Notes
+summary: TiDB 5.0.2 was released on June 10, 2021. The new version includes compatibility changes, new features, improvements, bug fixes, and updates to various tools such as TiKV, TiFlash, PD, TiCDC, Backup & Restore (BR), and TiDB Lightning. Some notable changes include the deprecation of `--sort-dir` in TiCDC, enabling the Hibernate Region feature in TiKV, and various bug fixes in TiDB, TiKV, PD, TiFlash, and tools like TiCDC, BR, and TiDB Lightning.
 ---
 
 # TiDB 5.0.2 Release Notes

@@ -1,5 +1,6 @@
 ---
 title: TiDB 4.0.16 Release Notes
+summary: TiDB 4.0.16 was released on December 17, 2021. The release includes compatibility changes for TiKV and Tools, improvements for TiDB, TiKV, and Tools, bug fixes for TiDB, TiKV, PD, TiFlash, TiDB Binlog, and TiCDC. The bug fixes address various issues such as query panics, wrong results, panics, and memory leaks. The release also includes fixes for TiCDC replication interruption, OOM in container environments, and memory leak issues.
 ---
 
 # TiDB 4.0.16 Release Notes

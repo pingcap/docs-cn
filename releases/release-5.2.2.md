@@ -1,5 +1,6 @@
 ---
 title: TiDB 5.2.2 Release Notes
+summary: TiDB 5.2.2 was released on October 29, 2021. The release includes various improvements and bug fixes for TiDB, TiKV, PD, TiCDC, TiFlash, and TiDB Binlog. Improvements include showing affected SQL statements in debug logs, support for showing backup and restore data size, and more. Bug fixes address issues such as plan-cache detection, wrong partition pruning, and various other issues related to query functions, client connections, and data replication.
 ---
 
 # TiDB 5.2.2 Release Notes

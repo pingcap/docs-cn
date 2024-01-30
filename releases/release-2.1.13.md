@@ -1,6 +1,7 @@
 ---
 title: TiDB 2.1.13 Release Notes
 aliases: ['/docs/dev/releases/release-2.1.13/','/docs/dev/releases/2.1.13/']
+summary: TiDB 2.1.13 was released on June 21, 2019. It includes features to scatter row IDs, optimize DDL metadata lifetime, fix OOM issue, update statistics, support Region presplit, improve MySQL compatibility, and fix estimation issues. TiKV fixes incomplete snapshots and adds a feature to check the validity of the block-size configuration. TiDB Binlog fixes wrong offset and adds advertise-addr configuration in Drainer.
 ---
 
 # TiDB 2.1.13 Release Notes

@@ -1,5 +1,6 @@
 ---
 title: TiDB 4.0.8 Release Notes
+summary: TiDB 4.0.8 was released on October 30, 2020. New features include support for the new aggregate function `APPROX_PERCENTILE` and pushing down `CAST` functions in TiFlash. Improvements were made to TiDB, TiKV, PD, and TiFlash. Bug fixes were also implemented for TiDB, TiKV, PD, TiFlash, Backup and Restore (BR), TiCDC, and TiDB Lightning.
 ---
 
 # TiDB 4.0.8 Release Notes

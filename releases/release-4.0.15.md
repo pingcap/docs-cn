@@ -1,5 +1,6 @@
 ---
 title: TiDB 4.0.15 Release Notes
+summary: TiDB 4.0.15 Release Notes: Compatibility changes include bug fixes that might cause upgrade incompatibilities. Feature enhancements for TiKV support changing configurations dynamically. Improvements for TiDB, TiKV, PD, and Tools. Bug fixes for TiDB, TiKV, PD, TiFlash, Backup & Restore, and TiCDC.
 ---
 
 # TiDB 4.0.15 Release Notes

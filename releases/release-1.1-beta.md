@@ -1,6 +1,7 @@
 ---
 title: TiDB 1.1 Beta Release Notes
 aliases: ['/docs/dev/releases/release-1.1-beta/','/docs/dev/releases/11beta/']
+summary: TiDB 1.1 Beta, released on February 24, 2018, brings significant improvements in MySQL compatibility, SQL optimization, stability, and performance. Key updates include more monitoring metrics, enhanced MySQL syntax compatibility, improved query optimization, and stability fixes. PD introduces new debug interfaces, priority settings, and performance optimizations. TiKV adds support for resolving locks in batches, GC concurrency, and more recovery operations in `tikv-ctl`. Overall, TiDB 1.1 Beta shows great improvement in test results and stability.
 ---
 
 # TiDB 1.1 Beta Release Notes

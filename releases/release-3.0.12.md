@@ -1,6 +1,7 @@
 ---
 title: TiDB 3.0.12 Release Notes
 aliases: ['/docs/dev/releases/release-3.0.12/','/docs/dev/releases/3.0.12/']
+summary: TiDB 3.0.12 was released on March 16, 2020. It includes compatibility changes, new features, bug fixes, and improvements for TiDB, TiKV, PD, and TiDB Ansible. Some known issues are fixed in new versions, so it is recommended to use the latest 3.0.x version. New features include dynamic loading of replaced certificate files, flow limiting for DDL requests, and support for exiting the TiDB server when binlog write fails. Bug fixes address issues with locking, error message display, decimal point accuracy, and data index inconsistency. Additionally, improvements have been made to TiKV's flow control mechanism and PD's Region information processing.
 ---
 
 # TiDB 3.0.12 Release Notes

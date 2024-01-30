@@ -1,6 +1,7 @@
 ---
 title: TiDB 1.0.2 Release Notes
 aliases: ['/docs/dev/releases/release-1.0.2/','/docs/dev/releases/102/']
+summary: TiDB 1.0.2 was released on November 13, 2017. Updates include optimized cost estimation for index point query, support for Alter Table Add Column syntax, and improved query optimization. Placement Driver (PD) scheduling stability was enhanced, and TiKV now supports table splitting and limits key length to 4 KB. Other improvements include more accurate read traffic statistics and bug fixes for LIKE behavior and do_div_mod bug.
 ---
 
 # TiDB 1.0.2 Release Notes

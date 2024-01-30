@@ -1,6 +1,7 @@
 ---
 title: TiDB 4.0 RC.1 Release Notes
 aliases: ['/docs/dev/releases/release-4.0.0-rc.1/','/docs/dev/releases/4.0.0-rc.1/']
+summary: TiDB 4.0 RC.1 was released on April 28, 2020. The release includes compatibility changes, important bug fixes, new features, and bug fixes for TiKV, TiDB, TiFlash, TiCDC, Backup & Restore (BR), and Placement Driver (PD). The bug fixes address issues such as data inconsistency, deadlock, and replication failure. New features include support for sending Coprocessor requests to TiFlash in batches and enabling the load-based split region operation. Additionally, TiFlash now supports pushing down the fromUnixTime and dateFormat functions.
 ---
 
 # TiDB 4.0 RC.1 Release Notes

@@ -1,6 +1,7 @@
 ---
 title: TiDB 2.1.12 Release Notes
 aliases: ['/docs/dev/releases/release-2.1.12/','/docs/dev/releases/2.1.12/']
+summary: TiDB 2.1.12 was released on June 13, 2019. It includes various bug fixes and improvements, such as fixing issues with data type mismatches, charset altering, and GRANT operations. The release also improves compatibility with MySQL and addresses issues with functions, data conversion, and error reporting. Additionally, PD and TiKV have also been updated to fix issues related to leader election and data availability during leader transfer and power failure.
 ---
 
 # TiDB 2.1.12 Release Notes

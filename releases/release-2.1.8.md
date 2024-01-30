@@ -1,6 +1,7 @@
 ---
 title: TiDB 2.1.8 Release Notes
 aliases: ['/docs/dev/releases/release-2.1.8/','/docs/dev/releases/2.1.8/']
+summary: TiDB 2.1.8 was released on April 12, 2019. It includes various bug fixes and improvements for TiDB, PD, TiKV, Tools, and TiDB Ansible. Some notable fixes include compatibility issues with MySQL, inaccurate statistics estimation, and performance improvements. The release also adds new configuration items and features for TiDB Binlog Pump and Drainer. Additionally, TiDB Ansible now has version limits for the operating system and rolling updates.
 ---
 
 # TiDB 2.1.8 Release Notes

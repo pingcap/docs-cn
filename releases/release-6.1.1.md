@@ -1,5 +1,6 @@
 ---
 title: TiDB 6.1.1 Release Notes
+summary: TiDB 6.1.1 was released on September 1, 2022. Changes include case-insensitive `SHOW DATABASES LIKE` statement, default value change for `tidb_enable_outer_join_reorder`, and improvements in optimizer and metrics response compression. Bug fixes address issues such as hanging `INL_HASH_JOIN`, panicking during `UPDATE` statement execution, and incorrect query results. Other changes include multi-level support for different quality standards and additions to the `TiDB-community-toolkit` binary package.
 ---
 
 # TiDB 6.1.1 Release Notes

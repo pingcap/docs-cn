@@ -1,6 +1,7 @@
 ---
 title: TiDB RC4 Release Notes
 aliases: ['/docs/dev/releases/release-rc.4/','/docs/dev/releases/rc4/']
+summary: TiDB RC4 is released with a focus on MySQL compatibility, SQL optimization, stability, and performance. Highlights include improved write performance, better query cost estimating, and support for TiSpark to access data in TiKV. Detailed updates include refactoring of the SQL query optimizer, support for JSON type and operations, and optimization of the scheduler in Placement Driver. TiKV now supports RC isolation level, Document Store, and more pushdown functions in Coprocessor. TiSpark beta release includes prediction pushdown, aggregation pushdown, and range pruning, capable of running a full set of TPC-H queries.
 ---
 
 # TiDB RC4 Release Notes

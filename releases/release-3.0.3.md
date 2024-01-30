@@ -1,6 +1,7 @@
 ---
 title: TiDB 3.0.3 Release Notes
 aliases: ['/docs/dev/releases/release-3.0.3/','/docs/dev/releases/3.0.3/']
+summary: TiDB 3.0.3 was released on August 29, 2019. It includes various fixes and updates for SQL optimizer, SQL execution engine, server, DDL, monitor, TiKV, PD, TiDB Binlog, TiDB Lightning, and TiDB Ansible. Notable fixes include issues with incorrect results, type errors, panic occurrences, and permission check errors. The release also optimizes PD operations, removes unsupported Grafana Collector components, and updates TiKV alerting rules. Additionally, TiDB Ansible now supports Spark V2.4.3 and TiSpark V2.1.4.
 ---
 
 # TiDB 3.0.3 Release Notes

@@ -1,6 +1,7 @@
 ---
 title: TiDB 2.0.2 Release Notes
 aliases: ['/docs/dev/releases/release-2.0.2/','/docs/dev/releases/202/']
+summary: TiDB 2.0.2 was released on May 21, 2018, with improvements in system stability. The release includes fixes for Decimal division expression, support for `USE INDEX` syntax in `Delete` statement, and timeout mechanism for writing Binlog in TiDB. PD now filters disconnected nodes in balance leader scheduler, modifies transfer leader operator timeout, and fixes scheduling issues. TiKV fixes Raft log printing, supports configuring gRPC parameters, leader election timeout range, and resolves snapshot intermediate file deletion issue.
 ---
 
 # TiDB 2.0.2 Release Notes
