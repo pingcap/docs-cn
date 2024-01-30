@@ -74,6 +74,9 @@ TiDB 版本：6.5.8
 ## 错误修复
 
 + TiDB
+
+    - 修复在某些情况下，对 Range Partition 的查询由于错误的分区裁剪导致结果集不正确的问题 [#50082](https://github.com/pingcap/tidb/issues/49823) @[Defined2014](https://github.com/Defined2014)
+    - 修复使用 AUTO_ID_CACHE=1 的自增列时，由于并发冲突导致自增 ID 分配报错的问题 [#50519](https://github.com/pingcap/tidb/issues/50519) @[tiancaiamao](https://github.com/tiancaiamao)
     <--tw @Oreoxmt (4)-->
     - (dup): release-7.6.0.md > 错误修复> TiDB - 修复当查询使用了会强制排序的优化器 hint（例如 `STREAM_AGG()`）且其执行计划包含 `IndexMerge` 时，强制排序可能会失效的问题 [#49605](https://github.com/pingcap/tidb/issues/49605) @[AilinKid](https://github.com/AilinKid)
     - (dup): release-7.6.0.md > 错误修复> TiDB - 修复直方图的边界包含 `NULL` 时，直方图统计信息可能无法解析成可读字符串的问题 [#49823](https://github.com/pingcap/tidb/issues/49823) @[AilinKid](https://github.com/AilinKid)
