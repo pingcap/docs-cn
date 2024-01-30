@@ -14,7 +14,7 @@ TiDB 版本：6.5.8
 ## 兼容性变更
 
 <--tw @Oreoxmt (1)-->
-- 新增 TiKV 配置项 [`gc.num-threads`](/tikv-configuration-file.md#num-threads-span-classversion-mark从-v760-版本开始引入span)，用于设置当 enable-compaction-filter 为 false 时 GC 的线程个数 [#16101](https://github.com/tikv/tikv/issues/16101) @[tonyxuqqi](https://github.com/tonyxuqqi)
+- 新增 TiKV 配置项 [`gc.num-threads`](/tikv-configuration-file.md#num-threads-span-classversion-mark从-v760-版本开始引入span)，用于设置当 `enable-compaction-filter` 为 `false` 时 GC 的线程个数 [#16101](https://github.com/tikv/tikv/issues/16101) @[tonyxuqqi](https://github.com/tonyxuqqi)
 
 ## 改进提升
 
@@ -75,17 +75,17 @@ TiDB 版本：6.5.8
 
 + TiDB
 
-    - 修复在某些情况下，对 Range Partition 的查询由于错误的分区裁剪导致结果集不正确的问题 [#50082](https://github.com/pingcap/tidb/issues/49823) @[Defined2014](https://github.com/Defined2014)
-    - 修复使用 AUTO_ID_CACHE=1 的自增列时，由于并发冲突导致自增 ID 分配报错的问题 [#50519](https://github.com/pingcap/tidb/issues/50519) @[tiancaiamao](https://github.com/tiancaiamao)
-    <--tw @Oreoxmt (4)-->
+    <--tw @Oreoxmt (6)-->
     - (dup): release-7.6.0.md > 错误修复> TiDB - 修复当查询使用了会强制排序的优化器 hint（例如 `STREAM_AGG()`）且其执行计划包含 `IndexMerge` 时，强制排序可能会失效的问题 [#49605](https://github.com/pingcap/tidb/issues/49605) @[AilinKid](https://github.com/AilinKid)
     - (dup): release-7.6.0.md > 错误修复> TiDB - 修复直方图的边界包含 `NULL` 时，直方图统计信息可能无法解析成可读字符串的问题 [#49823](https://github.com/pingcap/tidb/issues/49823) @[AilinKid](https://github.com/AilinKid)
     - (dup): release-7.6.0.md > 错误修复> TiDB - 修复无法在 `REPLACE INTO` 语句中使用 hint 的问题 [#34325](https://github.com/pingcap/tidb/issues/34325) @[YangKeao](https://github.com/YangKeao)
     - (dup): release-7.6.0.md > 错误修复> TiDB - 修复由于 `STREAM_AGG()` 错误处理 CI 导致查询结果有误的问题 [#49902](https://github.com/pingcap/tidb/issues/49902) @[wshwsh12](https://github.com/wshwsh12)
-    - 缓解表数量或表的分区数量巨大时，TiDB 节点 OOM 的问题 [#50077](https://github.com/pingcap/tidb/issues/50077) @[zimulala](https://github.com/zimulala)
-    - 修复了 DDL owner 网络隔离后分布式框架下 add index 数据不一致的问题 [#49773]([https://github.com/pingcap/tidb/issues/49773]) @[tangenta](https://github.com/tangenta)
-    - 修复含有 Apply 的查询报错 fatal error: concurrent map writes 导致 tidb 崩溃的问题 [#50347](https://github.com/pingcap/tidb/issues/50347) @[SeaRise](https://github.com/SeaRise)
-    - 修复以 COM_STMT_EXECUTE 方式执行的 commit/rollback 无法结束掉已超时事务的问题 [#49151](https://github.com/pingcap/tidb/issues/49151) @[zyguan](https://github.com/zyguan)
+    - 修复某些情况下，由于错误的分区裁剪导致查询 Range Partition 的结果不正确的问题 [#50082](https://github.com/pingcap/tidb/issues/49823) @[Defined2014](https://github.com/Defined2014)
+    - 修复使用 `AUTO_ID_CACHE=1` 的自增列时，由于并发冲突导致自增 ID 分配报错的问题 [#50519](https://github.com/pingcap/tidb/issues/50519) @[tiancaiamao](https://github.com/tiancaiamao)
+    - 缓解当要处理的表的数量或表的分区数量过多时，TiDB 节点 OOM 的问题 [#50077](https://github.com/pingcap/tidb/issues/50077) @[zimulala](https://github.com/zimulala)
+    - 修复在分布式框架下，DDL Owner 网络隔离后执行 `ADD INDEX` 操作导致数据不一致的问题 [#49773](https://github.com/pingcap/tidb/issues/49773) @[tangenta](https://github.com/tangenta)
+    - 修复包含 Apply 操作的查询在报错 `fatal error: concurrent map writes` 后导致 TiDB 崩溃的问题 [#50347](https://github.com/pingcap/tidb/issues/50347) @[SeaRise](https://github.com/SeaRise)
+    - 修复通过 `COM_STMT_EXECUTE` 方式执行的 COMMIT/ROLLBACK 操作无法结束已超时事务的问题 [#49151](https://github.com/pingcap/tidb/issues/49151) @[zyguan](https://github.com/zyguan)
 
 + TiKV
 
