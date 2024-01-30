@@ -147,10 +147,12 @@ delta_index_cache_size = 0
     ## proxy 监听地址，不填则默认是 127.0.0.1:20170
     addr = "127.0.0.1:20170"
     ## 外部访问 addr 的地址，不填则默认使用 "addr" 的值
+    ## 当集群部署在多个节点时，需要保证 `advertise-addr` 的地址可以从其他节点连接
     advertise-addr = ""
     ## 拉取 proxy metrics｜status 信息的监听地址，不填则默认是 127.0.0.1:20292
     status-addr = "127.0.0.1:20292"
     ## 外部访问 status-addr 的地址，不填则默认使用 "status-addr" 的值
+    ## 当集群部署在多个节点时，需要保证 `advertise-addr` 的地址可以从其他节点连接
     advertise-status-addr = ""
     ## proxy 数据存储路径
     data-dir = "/tidb-data/tiflash-9000/flash"
