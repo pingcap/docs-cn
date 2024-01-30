@@ -208,7 +208,7 @@ summary: 本文档介绍 TiDB 中英文术语对照表。
 | index join | 索引连接 |  |
 | infer | 推导 |  |
 | initialize | 初始化 |  |
-| Input/Output Operations Per Second (IOPS ) | IOPS | 每秒输入输出操作，一般写英文形式 |
+| Input/Output Operations Per Second (IOPS) | IOPS | 每秒输入输出操作，一般写英文形式 |
 | instance | 实例 |  |
 | instantiate | 实例化 |  |
 | int | 整数型 |  |

@@ -332,7 +332,9 @@ batch-dml 是一种在 DML 语句执行期间将一个事务拆成多个事务�
 当拼接查询语句时，如果 `WHERE` 子句中的条件涉及到了[划分列](#参数说明)所在表以外的其它表，就会出现该错误。例如，以下 SQL 语句中，划分列为 `t2.id`，划分列所在的表为 `t2`，但 `WHERE` 子句中的条件涉及到了 `t2` 和 `t3`。
 
 ```sql
-BATCH ON test.t2.id LIMIT 1 INSERT INTO t SELECT t2.id, t2.v, t3. FROM t2, t3 WHERE t2.id = t3.id
+BATCH ON test.t2.id LIMIT 1 
+INSERT INTO t 
+SELECT t2.id, t2.v, t3. FROM t2, t3 WHERE t2.id = t3.id
 ```
 
 ```sql
@@ -342,16 +344,20 @@ BATCH ON test.t2.id LIMIT 1 INSERT INTO t SELECT t2.id, t2.v, t3. FROM t2, t3 WH
 当遇到此错误时，你可以通过 `DRY RUN QUERY` 打印出查询语句来确认。例如：
 
 ```sql
-BATCH ON test.t2.id LIMIT 1 DRY RUN QUERY INSERT INTO t SELECT t2.id, t2.v, t3. FROM t2, t3 WHERE t2.id = t3.id
+BATCH ON test.t2.id LIMIT 1 
+DRY RUN QUERY INSERT INTO t 
+SELECT t2.id, t2.v, t3. FROM t2, t3 WHERE t2.id = t3.id
 ```
 
 要避免该错误，可以尝试将 `WHERE` 子句中涉及其它表的条件移动到 `JOIN` 的 `ON` 条件中。例如：
 
 ```sql
-BATCH ON test.t2.id LIMIT 1 INSERT INTO t SELECT t2.id, t2.v, t3. FROM t2 JOIN t3 ON t2.id=t3.id
+BATCH ON test.t2.id LIMIT 1 
+INSERT INTO t 
+SELECT t2.id, t2.v, t3. FROM t2 JOIN t3 ON t2.id=t3.id
 ```
 
-```sql
+```
 +----------------+---------------+
 | number of jobs | job status    |
 +----------------+---------------+

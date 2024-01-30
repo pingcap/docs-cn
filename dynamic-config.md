@@ -159,6 +159,7 @@ show warnings;
 | raftstore.store-io-pool-size | 处理 Raft I/O 任务的线程池中线程的数量，即 StoreWriter 线程池的大小（不支持将该配置项由非零值调整为 0，或者从 0 调整为非零值）|
 | raftstore.periodic-full-compact-start-max-cpu | 控制 TiKV 执行周期性全量数据整理时的 CPU 使用率阈值 |
 | readpool.unified.max-thread-count | 统一处理读请求的线程池最多的线程数量，即 UnifyReadPool 线程池大小 |
+| readpool.unified.max-tasks-per-worker | 统一处理读请求的线程池中单个线程允许积压的最大任务数量，超出后会返回 Server Is Busy。 |
 | readpool.unified.auto-adjust-pool-size | 是否开启自适应调整 UnifyReadPool 的大小 |
 | coprocessor.split-region-on-table | 开启按 table 分裂 Region 的开关 |
 | coprocessor.batch-split-limit | 批量分裂 Region 的阈值 |
