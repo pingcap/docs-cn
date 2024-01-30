@@ -88,6 +88,7 @@ TiDB 版本：6.5.8
     - 缓解表数量或表的分区数量巨大时，TiDB 节点 OOM 的问题 [#50077](https://github.com/pingcap/tidb/issues/50077) @[zimulala](https://github.com/zimulala)
     - 修复了 DDL owner 网络隔离后分布式框架下 add index 数据不一致的问题 [#49773]([https://github.com/pingcap/tidb/issues/49773] @[tangenta](https://github.com/tangenta)
     - 修复含有 Apply 的查询报错 fatal error: concurrent map writes 导致 tidb 崩溃的问题 [#50347](https://github.com/pingcap/tidb/issues/50347) @[SeaRise](https://github.com/SeaRise)
+    - 修复以 COM_STMT_EXECUTE 方式执行的 commit/rollback 无法结束掉已超时事务的问题 [#49151](https://github.com/pingcap/tidb/issues/49151) @[zyguan](https://github.com/zyguan)
 
 + TiKV
 
@@ -97,7 +98,8 @@ TiDB 版本：6.5.8
     - (dup): release-7.6.0.md > 错误修复> TiKV - 修复巴西和埃及时区转换错误的问题 [#16220](https://github.com/tikv/tikv/issues/16220) @[overvenus](https://github.com/overvenus)
     - (dup): release-7.6.0.md > 错误修复> TiKV - 修复 TiDB 和 TiKV 处理 `DECIMAL` 算术乘法截断时结果不一致的问题 [#16268](https://github.com/tikv/tikv/issues/16268) @[solotzg](https://github.com/solotzg)
 
-+ PD
+
+    - 修复 pd-ctl 查询没有 Leader 的 Region 时可能导致 PD Panic 的问题 [#7630](https://github.com/tikv/pd/issues/7630) @[rleungx](https://github.com/rleungx)
 
     - note [#issue](https://github.com/tikv/pd/issues/${issue-id}) @[贡献者 GitHub ID](https://github.com/${github-id})
     - note [#issue](https://github.com/tikv/pd/issues/${issue-id}) @[贡献者 GitHub ID](https://github.com/${github-id})
