@@ -46,6 +46,7 @@
       - [Rails](/develop/dev-guide-sample-application-ruby-rails.md)
   - 连接到 TiDB
     - GUI 数据库工具
+      - [MySQL Workbench](/develop/dev-guide-gui-mysql-workbench.md)
       - [Navicat](/develop/dev-guide-gui-navicat.md)
     - [选择驱动或 ORM 框架](/develop/dev-guide-choose-driver-or-orm.md)
     - [连接到 TiDB](/develop/dev-guide-connect-to-tidb.md)
