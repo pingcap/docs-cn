@@ -132,8 +132,8 @@ tikv_servers:
        host: host1
      readpool.storage.use-unified-pool: true
      readpool.storage.low-concurrency: 10
-     raftstore.raft-min-election-timeout-ticks: 1000
-     raftstore.raft-max-election-timeout-ticks: 1020
+     raftstore.raft-min-election-timeout-ticks: 50
+     raftstore.raft-max-election-timeout-ticks: 60
 monitoring_servers:
  - host: 10.0.1.16
 grafana_servers:
@@ -176,9 +176,13 @@ grafana_servers:
 - 防止异地 TiKV 节点发起不必要的 Raft 选举，需要将异地 TiKV 节点发起选举时经过最少的 tick 个数和最多经过的 tick 个数都调大，这两个参数默认设置均为 `0`。
 
     ```yaml
-    raftstore.raft-min-election-timeout-ticks: 1000
-    raftstore.raft-max-election-timeout-ticks: 1020
+    raftstore.raft-min-election-timeout-ticks: 50
+    raftstore.raft-max-election-timeout-ticks: 60
     ```
+
+> 注意:
+>
+> 配置较大的 `raftstore.raft-min-election-timeout-ticks` 和 `raftstore.raft-max-election-timeout-ticks` 可以大幅降低此 TiKV 上面的 peer 成为 leader 的概率，但在发生灾难的场景，如果部分其他 TiKV 节点挂掉，而其他存活的 TiKV 的 raft 日志落后的话，此时只能由此 TiKV 上面的 region 成为 leader, 而当 leader 挂掉之后，此 TiKV 上面的 region 需要至少 `raftstore.raft-min-election-timeout-ticks` 才能发起选举，因此最好避免将此配置值设置的过大，以免在这种场景下影响集群的可用性。
 
 #### PD 参数
 
