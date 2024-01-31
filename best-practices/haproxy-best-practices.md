@@ -34,14 +34,14 @@ HAProxy 由 Linux 内核的核心贡献者 Willy Tarreau 于 2000 年编写，�
 
 ### 硬件要求
 
-根据官方文档，对 HAProxy 的服务器硬件配置有以下建议，也可以根据负载均衡环境进行推算，在此基础上提高服务器配置。
+根据[官方文档](https://www.haproxy.com/documentation/haproxy-enterprise/getting-started/installation/linux/)，HAProxy 的服务器硬件的最低配置如下。在 sysbench oltp_read_write 工作负载下，该配置的最高 QPS 约为 50K。你可以根据负载均衡环境进行推算，在此基础上提高服务器配置。
 
 |硬件资源|最低配置|
-|:---|:---|
+|:---|:--|
 |CPU|2 核，3.5 GHz|
-|内存|16 GB|
+|内存|4 GB|
 |存储容量|50 GB（SATA 盘）|
-|网卡|万兆网卡|
+|网卡| 万兆网卡       |
 
 ### 依赖软件
 
