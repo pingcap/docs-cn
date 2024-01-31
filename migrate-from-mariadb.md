@@ -11,13 +11,13 @@ summary: 介绍如何将数据从 MariaDB 文件迁移数据到 TiDB。
 
 选择合适的迁移策略：
 
-- 第一种策略是[使用 Dumpling 导出数据然后使用 TiDB Lightning 恢复](#使用-dumpling-导出数据后使用-tidb-lightning-导入)。该策略适用于所有版本的 MariaDB。该策略的缺点是需要更多的停机时间。
+- 第一种策略是[使用 Dumpling 导出数据然后使用 TiDB Lightning 恢复](#使用-dumpling-导出数据后使用-tidb-lightning-导入)。该策略适用于所有版本的 MariaDB，但缺点是需要更长的停机时间。
 - 第二种策略是[使用 DM 迁移数据](#使用-dm-迁移数据)从 MariaDB 到 TiDB。注意 DM 不支持所有版本的 MariaDB。支持的版本请参考 [DM 兼容性目录](/dm/dm-compatibility-catalog.md#tidb-data-migration-兼容性目录)。
 
 除了以上两种策略，还有其他策略适用于特定的场景，例如：
 
 - 使用 Object Relational Mapping (ORM) 工具重新部署和迁移数据。
-- 修改应用程序，使其在迁移过程中同时写 MariaDB 和 TiDB。
+- 修改应用程序，使其在迁移过程中同时写入 MariaDB 和 TiDB。
 
 本文档仅介绍前两种策略。
 
@@ -63,7 +63,7 @@ GROUP BY
 
 TiDB 不支持[系统版本表 (System-Versioned Table)](https://mariadb.com/kb/en/system-versioned-tables/)。但是 TiDB 支持 [`AS OF TIMESTAMP`](/as-of-timestamp.md)，可以在某些场景下取代系统版本表。
 
-你可以执行下列语句检查受影响的表格：
+你可以执行下列语句检查受影响的表：
 
 ```sql
 SELECT
@@ -94,7 +94,7 @@ Records: 0  Duplicates: 0  Warnings: 0
 
 ### 序列
 
-MariaDB 和 TiDB 均支持 [`CREATE SEQUENCE`](/sql-statements/sql-statement-create-sequence.md)，但是 DM 暂不支持。建议在迁移期间不要创建、修改或删除序列，尤其在迁移后不要进行相关测试。
+MariaDB 和 TiDB 均支持 [`CREATE SEQUENCE`](/sql-statements/sql-statement-create-sequence.md)，但是 DM 暂不支持。建议在迁移期间不要创建、修改或删除序列，尤其在迁移后要进行相关测试。
 
 执行下列语句检查你是否在使用序列：
 
@@ -119,7 +119,7 @@ WHERE
 
 ### 存储引擎
 
-MariaDB 为本地数据提供了存储引擎，例如 `InnoDB`、`MyISAM` 和 `Aria`。虽然 TiDB 不直接支持这些数据格式，但是你仍可以迁移这些数据。但是，也有一些存储引擎将数据放在服务器之外，例如 `CONNECT` 存储引擎和 `Spider`。虽然你可以将这些表格迁移到 TiDB，但是 TiDB 没有将数据存储在 TiDB 集群之外的功能。
+MariaDB 为本地数据提供了存储引擎，例如 `InnoDB`、`MyISAM` 和 `Aria`。虽然 TiDB 不直接支持这些数据格式，但是你仍可以迁移这些数据。但是，也有一些存储引擎将数据放在服务器之外，例如 `CONNECT` 存储引擎和 `Spider`。虽然你可以将这些表迁移到 TiDB，但是 TiDB 无法将数据存储在 TiDB 集群外部。
 
 执行下列语句检查你正在使用的存储引擎：
 
