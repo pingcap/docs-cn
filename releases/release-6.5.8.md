@@ -54,7 +54,7 @@ TiDB 版本：6.5.8
 
     + TiDB Lightning
         <--tw @hfxsd (1)-->
-        - 优化导入大量表时的性能 [#50105](https://github.com/pingcap/tidb/issues/50105) @[D3Hunter](https://github.com/D3Hunter)
+        - 优化导入大量数据量较小的表时的性能 [#50105](https://github.com/pingcap/tidb/issues/50105) @[D3Hunter](https://github.com/D3Hunter)
 
     + Dumpling
 
