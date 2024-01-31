@@ -2,7 +2,7 @@
 
 [GitHub 个人主页](https://docs.github.com/zh/account-and-profile/setting-up-and-managing-your-github-profile/customizing-your-profile/about-your-profile)不仅仅是你的 GitHub 仓库的集合，更是你在编程领域中的专业身份标志。
 
-本指南介绍如何在你的 GitHub 个人主页上添加 TiDB 文档挑战赛 (TiDB Docs Dash) 活动徽章的详细步骤。
+本指南介绍如何在你的 GitHub 个人主页上添加 [2024 TiDB 文档挑战赛](https://asktug.com/t/topic/1019364) (TiDB Docs Dash) 活动徽章。
 
 ## 第 1 步：创建一个仓库，存放个人主页 README
 
@@ -28,9 +28,9 @@
     </p>
     ```
 
- 此时，刷新你的 GitHub 个人主页，即可看到 TiDB Docs Dash 徽章。关于如何管理个人主页 README 的更多信息，请参阅 [GitHub 文档](https://docs.github.com/en/account-and-profile/setting-up-and-managing-your-github-profile/customizing-your-profile/managing-your-profile-readme)。
+ 此时，刷新你的 GitHub 个人主页，即可看到 TiDB Docs Dash 活动徽章。关于如何管理个人主页 README 的更多信息，请参阅 [GitHub 文档](https://docs.github.com/en/account-and-profile/setting-up-and-managing-your-github-profile/customizing-your-profile/managing-your-profile-readme)。
 
-## （可选）通过 Vaunt 添加其他展示
+## （可选）通过 Vaunt 添加更多展示
 
 本次 TiDB 文档挑战赛的徽章是通过 [Vaunt](https://vaunt.dev/) 授予的，Vaunt 是一个开发者关系平台，旨在赋能和发展开发者社区。
 
