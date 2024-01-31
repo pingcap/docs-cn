@@ -6,7 +6,7 @@
 
 ## 第 1 步：创建一个仓库，存放个人主页 README
 
-如果你已经配置了 GitHub 个人主页 README，请跳过以下步骤，直接进入[第二步：编辑你的个人资料 README](#step-2-edit-your-profile-readme)。
+如果你已经配置了 GitHub 个人主页 README，请跳过以下步骤，直接进入[第二步：编辑你的个人资料 README](#第-2-步编辑个人主页-readme)。
 
 1. 在 GitHub 任一页面的右上角，点击 **+**，然后点击 **New repository**。
 
@@ -32,9 +32,9 @@
 
 ## （可选）通过 Vaunt 添加其他展示
 
-本次 TiDB 文档挑战赛的徽章是通过 [Vaunt](https://vaunt.dev/) 授予的。Vaunt 是一个开发者关系平台，旨在赋能和发展开发者社区。
+本次 TiDB 文档挑战赛的徽章是通过 [Vaunt](https://vaunt.dev/) 授予的，Vaunt 是一个开发者关系平台，旨在赋能和发展开发者社区。
 
-通过 Vaunt 提供的以下功能，你还可以在你的个人主页 README 中展示你在其他开源项目中的贡献：
+通过 Vaunt 提供的以下功能，你还可以在你的个人主页 README 中展示你在其他开源项目中做出的贡献：
 
 - 集成你的 developer card 到个人主页 README
 
@@ -59,11 +59,11 @@
 
 - 集成你的社区贡献看板到个人主页 README
 
-    社区贡献看板可以通过视图综合展示你在 GitHub 的贡献统计数据。
+    社区贡献看板可以通过视图的形式综合展示你在 GitHub 各个仓库的贡献统计数据。
 
     [![VauntCommunity](https://api.vaunt.dev/v1/github/entities/pingcap/badges/community)](https://community.vaunt.dev/board/pingcap)
 
-    - 查看[你的社区看板](https://community.vaunt.dev/).
+    - 查看[你的社区看板](https://community.vaunt.dev/)。
     - 如需集成你的社区看板，请将以下代码添加到你的 README 文件中，并将 `{{github_username}}` 替换为你的用户名：
 
     ```Markdown
