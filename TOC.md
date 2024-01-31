@@ -131,6 +131,7 @@
     - [从大数据量 MySQL 迁移数据到 TiDB](/migrate-large-mysql-to-tidb.md)
     - [从小数据量分库分表 MySQL 合并迁移数据到 TiDB](/migrate-small-mysql-shards-to-tidb.md)
     - [从大数据量分库分表 MySQL 合并迁移数据到 TiDB](/migrate-large-mysql-shards-to-tidb.md)
+    - [从 MariaDB 迁移数据到 TiDB](/migrate-from-mariadb.md)
     - [从 CSV 文件迁移数据到 TiDB](/migrate-from-csv-files-to-tidb.md)
     - [从 SQL 文件迁移数据到 TiDB](/migrate-from-sql-files-to-tidb.md)
     - [从 Parquet 文件迁移数据到 TiDB](/migrate-from-parquet-files-to-tidb.md)
