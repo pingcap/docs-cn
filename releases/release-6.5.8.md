@@ -95,8 +95,8 @@ TiDB 版本：6.5.8
     - 修复 LEADING hint 在 UNION ALL 语句中无法生效的问题 [#50067](https://github.com/pingcap/tidb/issues/50067) @[hawkingrei](https://github.com/hawkingrei)
     - 修复使用旧接口导致表元信息可能不一致的问题 [#49751](https://github.com/pingcap/tidb/issues/49751) @[hawkingrei](https://github.com/hawkingrei)
     <--tw @qiancai (2)-->
-    - 修复常见 hint 在 UNION ALL 语句中无法正确生效的问题 [#50068](https://github.com/pingcap/tidb/issues/50068) @[hawkingrei](https://github.com/hawkingrei)
-    - 修复 6.5.7 为修复 [#49487](https://github.com/pingcap/tidb/issues/49487) 导致执行过程中遇到 ENUM/SET 类型的非法值时会直接报错的问题 [#49440](https://github.com/pingcap/tidb/issues/49440) @[winoros](https://github.com/winoros)
+    - 修复常见 hint 在 `UNION ALL` 语句中未生效的问题 [#50068](https://github.com/pingcap/tidb/issues/50068) @[hawkingrei](https://github.com/hawkingrei)
+    - 修复 6.5.7 为修复 [#49487](https://github.com/pingcap/tidb/issues/49487) 导致执行过程中遇到 `ENUM/SET` 类型的非法值时会直接报错的问题 [#49440](https://github.com/pingcap/tidb/issues/49440) @[winoros](https://github.com/winoros)
 
 + TiKV
 
