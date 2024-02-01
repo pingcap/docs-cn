@@ -77,15 +77,25 @@ SELECT * FROM test.t1;SELECT * FROM test.t2;
 
 全量数据采集的输出结果包含以下集群现场信息：
 
-| 序号 | 采集内容 | 调用的 Diag collector | 输出文件 |
-| :--- | :--- | :--- | :--- |
-| 1 | TiDB 配置信息 | `config` | `tidb.toml` |
-| 2 | TiDB Session 系统变量 | `plan_replayer` | `plan_replayer.zip/variables.toml` |
-| 3 | TiDB 执行计划绑定信息 (SQL Binding) | `sql_bind` | `sql_bind/global_bind.csv` |
-| 4 | `sql-statement` 中所包含的表结构 | `plan_replayer` | `plan_replayer.zip/schema/<db.table>.schema.txt` |
-| 5 | `sql-statement` 中所包含表的统计信息 | `plan_replayer` | `plan_replayer.zip/stats/<db.table>.json` |
-| 6 | `EXPLAIN sql-statement` 的结果 | `explain` | `explain/sql0` |
-| 7 | 默认采集的集群信息<ul><li>集群基础信息</li><li>Diag 本次采集记录</li></ul> | default | `cluster.json`，`meta.yaml`，`$collectid_diag_audit.log` |
++------+--------------------------+----------------------+-----------------------------------+
+| 序号  | 采集内容                  | 调用的 Diag collector | 输出文件                           |
++======+==========================+======================+===================================+
+| 1    | TiDB 配置信息             | `config`             | `tidb.toml`                       |
++------+--------------------------+----------------------+-----------------------------------+
+| 2    | TiDB Session 系统变量      | `plan_replayer`      | `plan_replayer.zip/variables.toml`|
++------+--------------------------+----------------------+-----------------------------------+
+| 3    | TiDB 执行计划绑定信息 (SQL Binding) | `sql_bind`   | `sql_bind/global_bind.csv`        |
++------+--------------------------+----------------------+-----------------------------------+
+| 4    | `sql-statement` 中所包含的表结构 | `plan_replayer` | `plan_replayer.zip/schema/<db.table>.schema.txt` |
++------+--------------------------+----------------------+-----------------------------------+
+| 5    | `sql-statement` 中所包含表的统计信息 | `plan_replayer` | `plan_replayer.zip/stats/<db.table>.json` |
++------+--------------------------+----------------------+-----------------------------------+
+| 6    | `EXPLAIN sql-statement` 的结果 | `explain`       | `explain/sql0`                    |
++------+--------------------------+----------------------+-----------------------------------+
+| 7    | 默认采集的集群信息    | default    | `cluster.json`，`meta.yaml`，`$collectid_diag_audit.log` |
+|      | - 集群基础信息       |            |                                                   |
+|      | - Diag 本次采集记录  |            |                                                   |
++------+--------------------------+----------------------+-----------------------------------+
 
 ### 自定义数据采集
 

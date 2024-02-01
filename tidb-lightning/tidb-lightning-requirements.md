@@ -11,71 +11,27 @@ summary: 了解 TiDB Lightning 运行时对目标数据库的必需条件。
 
 TiDB Lightning 导入数据时，根据导入方式和启用特性等，需要下游数据库用户具备不同的权限，可参考下表：
 
-<table>
-   <tr>
-      <td></td>
-      <td>特性</td>
-      <td>作用域</td>
-      <td>所需权限</td>
-      <td>备注</td>
-   </tr>
-   <tr>
-      <td rowspan="2">必需</td>
-      <td rowspan="2">基本功能</td>
-      <td>目标 table</td>
-      <td>CREATE,SELECT,INSERT,UPDATE,DELETE,DROP,ALTER</td>
-      <td>DROP 仅 tidb-lightning-ctl 在执行 checkpoint-destroy-all 时需要</td>
-   </tr>
-   <tr>
-      <td>目标 database</td>
-      <td>CREATE</td>
-      <td></td>
-   </tr>
-   <tr>
-      <td rowspan="4">必需</td>
-      <td>Logical Import Mode</td>
-      <td>information_schema.columns</td>
-      <td>SELECT</td>
-      <td></td>
-   </tr>
-   <tr>
-      <td  rowspan="3">Physical Import Mode</td>
-      <td>mysql.tidb</td>
-      <td>SELECT</td>
-      <td></td>
-   </tr>
-   <tr>
-      <td>-</td>
-      <td>SUPER</td>
-      <td></td>
-   </tr>
-   <tr>
-      <td>-</td>
-      <td>RESTRICTED_VARIABLES_ADMIN,RESTRICTED_TABLES_ADMIN</td>
-      <td>当目标 TiDB 开启 SEM</td>
-   </tr>
-   <tr>
-      <td>推荐</td>
-      <td>冲突检测，max-error</td>
-      <td>lightning.task-info-schema-name 配置的 schema</td>
-      <td>SELECT,INSERT,UPDATE,DELETE,CREATE,DROP</td>
-      <td>如不需要，该值必须设为""</td>
-   </tr>
-   <tr>
-      <td>可选</td>
-      <td>并行导入</td>
-      <td>lightning.meta-schema-name 配置的 schema</td>
-      <td>SELECT,INSERT,UPDATE,DELETE,CREATE,DROP</td>
-      <td>如不需要，该值必须设为""</td>
-   </tr>
-   <tr>
-      <td>可选</td>
-      <td>checkpoint.driver = "mysql"</td>
-      <td>checkpoint.schema 设置</td>
-      <td>SELECT,INSERT,UPDATE,DELETE,CREATE,DROP</td>
-      <td>使用数据库而非文件形式存放 checkpoint 信息时需要</td>
-   </tr>
-</table>
++------+---------------+-------------------+-------------------------+-----------------------+
+|      | 特性           | 作用域             | 所需权限                 | 备注                   |
++======+===============+===================+=========================+=======================+
+| 必需  | 基本功能       | 目标 table        | CREATE,SELECT,INSERT,UPDATE,DELETE,DROP,ALTER | DROP 仅 tidb-lightning-ctl 在执行 checkpoint-destroy-all 时需要 |
+|      |               +-------------------+-------------------------+-----------------------+
+|      |               | 目标 database      | CREATE                  |                       |
++------+---------------+-------------------+-------------------------+-----------------------+
+| 必需  | Logical Import Mode | information_schema.columns | SELECT   |                       |
+|      +---------------+-------------------+-------------------------+-----------------------+
+|      | Physical Import Mode | mysql.tidb        | SELECT           |                       |
+|      |                      +-------------------+------------------+-----------------------+
+|      |                      | -                 | SUPER            |                       |
+|      |                      +-------------------+------------------+-----------------------+
+|      |                      | -                 | RESTRICTED_VARIABLES_ADMIN,RESTRICTED_TABLES_ADMIN | 当目标 TiDB 开启 SEM |
++------+---------------+-------------------+-------------------------+-----------------------+
+| 推荐  | 冲突检测，max-error | lightning.task-info-schema-name 配置的 schema | SELECT,INSERT,UPDATE,DELETE,CREATE,DROP | 如不需要，该值必须设为 "" |
++------+---------------+-------------------+-------------------------+-----------------------+
+| 可选  | 并行导入       | lightning.meta-schema-name 配置的 schema | SELECT,INSERT,UPDATE,DELETE,CREATE,DROP | 如不需要，该值必须设为 "" |
++------+---------------+-------------------+-------------------------+-----------------------+
+| 可选  | checkpoint.driver = "mysql" | checkpoint.schema 设置 | SELECT,INSERT,UPDATE,DELETE,CREATE,DROP | 使用数据库而非文件形式存放 checkpoint 信息时需要 |
++------+---------------+-------------------+-------------------------+-----------------------+
 
 ## 目标数据库所需空间
 
