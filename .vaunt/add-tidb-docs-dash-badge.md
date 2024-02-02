@@ -50,7 +50,6 @@
 
     如需集成你的 developer card，请将以下代码添加到你的 README 文件中，并将 `{{github_username}}` 替换为你的用户名。
 
-
     ```HTML
     <p>
         <a href="https://vaunt.dev">
