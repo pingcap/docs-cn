@@ -346,7 +346,7 @@ SET GLOBAL tidb_gc_life_time = '10m';
 | --filetype| 导出文件类型（csv/sql） | "sql" |
 | -o 或 --output | 导出本地文件路径或[外部存储 URL 格式](/br/backup-and-restore-storages.md#url-格式) | "./export-${time}" |
 | -S 或 --sql | 根据指定的 sql 导出数据，该选项不支持并发导出 |
-| --consistency | flush: dump 前用 FTWRL <br/> snapshot: 通过 TSO 来指定 dump 某个快照时间点的 TiDB 数据 <br/> lock: 对需要 dump 的所有表执行 `lock tables read` 命令 <br/> none: 不加锁 dump，无法保证一致性 <br/> auto: 对 MySQL 使用 --consistency flush；对 TiDB 使用 --consistency snapshot | "auto" |
+| --consistency | `flush`：dump 前用 FTWRL；`snapshot`：通过 TSO 来指定 dump 某个快照时间点的 TiDB 数据；`lock`：对需要 dump 的所有表执行 `lock tables read` 命令；`none`：不加锁 dump，无法保证一致性；`auto`：对 MySQL 使用 --consistency flush；对 TiDB 使用 --consistency snapshot | "auto" |
 | --snapshot | snapshot tso，只在 consistency=snapshot 下生效 |
 | --where | 对备份的数据表通过 where 条件指定范围 |
 | -p 或 --password | 连接的数据库主机的密码 |
@@ -360,7 +360,7 @@ SET GLOBAL tidb_gc_life_time = '10m';
 | --csv-separator | csv 文件中各值的分隔符，如果数据中可能有逗号，建议源文件导出时分隔符使用非常见组合字符| ','|
 | --csv-null-value | csv 文件空值的表示 | "\\N" |
 | --escape-backslash | 使用反斜杠 (`\`) 来转义导出文件中的特殊字符 | true |
-| --output-filename-template | 以 [golang template](https://golang.org/pkg/text/template/#hdr-Arguments) 格式表示的数据文件名格式 <br/> 支持 `{{.DB}}`、`{{.Table}}`、`{{.Index}}` 三个参数 <br/> 分别表示数据文件的库名、表名、分块 ID | '{{.DB}}.{{.Table}}.{{.Index}}' |
+| --output-filename-template | 以 [golang template](https://golang.org/pkg/text/template/#hdr-Arguments) 格式表示的数据文件名格式；支持 `{{.DB}}`、`{{.Table}}`、`{{.Index}}` 三个参数，分别表示数据文件的库名、表名、分块 ID | '{{.DB}}.{{.Table}}.{{.Index}}' |
 | --status-addr | Dumpling 的服务地址，包含了 Prometheus 拉取 metrics 信息及 pprof 调试的地址 | ":8281" |
 | --tidb-mem-quota-query | 单条 dumpling 命令导出 SQL 语句的内存限制，单位为 byte。对于 v4.0.10 或以上版本，若不设置该参数，默认使用 TiDB 中的 `mem-quota-query` 配置项值作为内存限制值。对于 v4.0.10 以下版本，该参数值默认为 32 GB | 34359738368 |
 | --params | 为需导出的数据库连接指定 session 变量，可接受的格式: "character_set_client=latin1,character_set_connection=latin1" |

@@ -34,18 +34,39 @@ TiDB 工具包中包含了一些常用的 TiDB 工具，例如数据导出工具
 
 在 TiDB 工具包中，你可以依据要使用的工具，选择安装对应的离线包。
 
-| 工具  | 离线包名称  |
-|:------|:----------|
-| [TiUP](/tiup/tiup-overview.md)  | `tiup-linux-{arch}.tar.gz` <br/>`tiup-{tiup-version}-linux-{arch}.tar.gz` <br/>`dm-{tiup-version}-linux-{arch}.tar.gz` <br/> `server-{version}-linux-{arch}.tar.gz` |
-| [Dumpling](/dumpling-overview.md)  | `dumpling-{version}-linux-{arch}.tar.gz`  |
-| [TiDB Lightning](/tidb-lightning/tidb-lightning-overview.md)  | `tidb-lightning-ctl` <br/>`tidb-lightning-{version}-linux-{arch}.tar.gz`  |
-| [TiDB DM (Data Migration)](/dm/dm-overview.md)  | `dm-worker-{version}-linux-{arch}.tar.gz` <br/>`dm-master-{version}-linux-{arch}.tar.gz` <br/>`dmctl-{version}-linux-{arch}.tar.gz`  |
-| [TiCDC](/ticdc/ticdc-overview.md)  | `cdc-{version}-linux-{arch}.tar.gz`  |
-| [TiDB Binlog](/tidb-binlog/tidb-binlog-overview.md)  | `pump-{version}-linux-{arch}.tar.gz` <br/>`drainer-{version}-linux-{arch}.tar.gz` <br/>`binlogctl` <br/>`reparo`  |
-| [Backup & Restore (BR)](/br/backup-and-restore-overview.md)  | `br-{version}-linux-{arch}.tar.gz`  |
-| [sync-diff-inspector](/sync-diff-inspector/sync-diff-inspector-overview.md)  | `sync_diff_inspector`  |
-| [TiSpark](/tispark-overview.md)  | `tispark-{tispark-version}-any-any.tar.gz` <br/>`spark-{spark-version}-any-any.tar.gz`  |
-| [PD Recover](/pd-recover.md)  | `pd-recover-{version}-linux-{arch}.tar.gz` |
++---------------------+---------------------------------------------------------------+
+| 工具                 | 离线包名称                                                      |
++=====================+===============================================================+
+| [TiUP](/tiup/tiup-overview.md) | `tiup-linux-{arch}.tar.gz`                         |
+|                     | `tiup-{tiup-version}-linux-{arch}.tar.gz`                     |
+|                     | `dm-{tiup-version}-linux-{arch}.tar.gz`                       |
+|                     | `server-{version}-linux-{arch}.tar.gz`                       |
++---------------------+---------------------------------------------------------------+
+| [Dumpling](/dumpling-overview.md) | `dumpling-{version}-linux-{arch}.tar.gz`         |
++---------------------+---------------------------------------------------------------+
+| [TiDB Lightning](/tidb-lightning/tidb-lightning-overview.md) | `tidb-lightning-ctl`  |
+|                    | `tidb-lightning-{version}-linux-{arch}.tar.gz`                  |
++---------------------+---------------------------------------------------------------+
+| [TiDB DM (Data Migration)](/dm/dm-overview.md) | `dm-worker-{version}-linux-{arch}.tar.gz` |
+|                     | `dm-master-{version}-linux-{arch}.tar.gz`                      |
+|                     | `dmctl-{version}-linux-{arch}.tar.gz`                          |
++---------------------+---------------------------------------------------------------+
+| [TiCDC](/ticdc/ticdc-overview.md) | `cdc-{version}-linux-{arch}.tar.gz`             |
++---------------------+---------------------------------------------------------------+
+| [TiDB Binlog](/tidb-binlog/tidb-binlog-overview.md) | `pump-{version}-linux-{arch}.tar.gz` |
+|                     | `drainer-{version}-linux-{arch}.tar.gz`                        |
+|                     | `binlogctl`                                                     |
+|                     | `reparo`                                                        |
++---------------------+---------------------------------------------------------------+
+| [Backup & Restore (BR)](/br/backup-and-restore-overview.md) | `br-{version}-linux-{arch}.tar.gz`  |
++---------------------+---------------------------------------------------------------+
+| [sync-diff-inspector](/sync-diff-inspector/sync-diff-inspector-overview.md) | `sync_diff_inspector`  |
++---------------------+---------------------------------------------------------------+
+| [TiSpark](/tispark-overview.md) | `tispark-{tispark-version}-any-any.tar.gz`        |
+|                     | `spark-{spark-version}-any-any.tar.gz`                        |
++---------------------+---------------------------------------------------------------+
+| [PD Recover](/pd-recover.md) | `pd-recover-{version}-linux-{arch}.tar.gz`           |
++---------------------+---------------------------------------------------------------+
 
 > **注意：**
 >

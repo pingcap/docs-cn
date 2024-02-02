@@ -36,7 +36,7 @@ Modes 是用逗号 (',') 间隔开的一系列不同的模式。使用 `SELECT @
 | NO_ZERO_IN_DATE | 在严格模式，不接受月或日部分为0的日期。如果使用IGNORE选项，我们为类似的日期插入'0000-00-00'。在非严格模式，可以接受该日期，但会生成警告（支持）
 | NO_ZERO_DATE | 在严格模式，不要将 '0000-00-00'做为合法日期。你仍然可以用IGNORE选项插入零日期。在非严格模式，可以接受该日期，但会生成警告（支持）|
 | ALLOW_INVALID_DATES | 不检查全部日期的合法性，仅检查月份值在 1 到 12 及日期值在 1 到 31 之间，仅适用于 DATE 和 DATATIME 列，TIMESTAMP 列需要全部检查其合法性（支持）|
-| ERROR_FOR_DIVISION_BY_ZERO | 若启用该模式，在 INSERT 或 UPDATE 过程中，被除数为 0 值时，系统产生错误 <br/> 若未启用该模式，被除数为 0 值时，系统产生警告，并用 NULL 代替（支持） |
+| ERROR_FOR_DIVISION_BY_ZERO | 若启用该模式，在 INSERT 或 UPDATE 过程中，被除数为 0 值时，系统产生错误；若未启用该模式，被除数为 0 值时，系统产生警告，并用 NULL 代替（支持） |
 | NO_AUTO_CREATE_USER | 防止 GRANT 自动创建新用户，但指定密码除外（支持）|
 | HIGH_NOT_PRECEDENCE | NOT 操作符的优先级是表达式。例如：NOT a BETWEEN b AND c 被解释为 NOT (a BETWEEN b AND c)。在部份旧版本 MySQL 中，表达式被解释为 (NOT a) BETWEEN b AND c（支持） |
 | NO_ENGINE_SUBSTITUTION | 如果需要的存储引擎被禁用或未编译，可以防止自动替换存储引擎（仅语法支持）|
