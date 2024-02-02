@@ -20,7 +20,7 @@
 ## 第 2 步：编辑个人主页 README
 
 1. 在你的 `<github_username>` 仓库的 GitHub 页面上，点击右侧边栏上方的 **Edit README**。
-2. 在 README 文件中添加以下代码，并将 `{{github_username}}` 替换为你的用户名，然后提交更改。
+2. 在 README 文件中添加以下代码，并将 `{{github_username}}` 替换为你的 GitHub 用户名，然后提交更改。
 
     ```HTML
     <p>
@@ -28,7 +28,9 @@
     </p>
     ```
 
- 此时，刷新你的 GitHub 个人主页，即可看到 TiDB Docs Dash 活动徽章。关于如何管理个人主页 README 的更多信息，请参阅 [GitHub 文档](https://docs.github.com/en/account-and-profile/setting-up-and-managing-your-github-profile/customizing-your-profile/managing-your-profile-readme)。
+ 此时，刷新你的 GitHub 个人主页，即可看到 TiDB Docs Dash 活动徽章。
+ 
+ 关于如何管理个人主页 README 的更多信息，请参阅 [GitHub 文档](https://docs.github.com/zh/account-and-profile/setting-up-and-managing-your-github-profile/customizing-your-profile/managing-your-profile-readme)。
 
 ## （可选）通过 Vaunt 添加更多展示
 
@@ -64,7 +66,7 @@
     [![VauntCommunity](https://api.vaunt.dev/v1/github/entities/pingcap/badges/community)](https://community.vaunt.dev/board/pingcap)
 
     - 查看[你的社区看板](https://community.vaunt.dev/)。
-    - 如需集成你的社区看板，请将以下代码添加到你的 README 文件中，并将 `{{github_username}}` 替换为你的用户名：
+    - 如需集成你的社区看板，请将以下代码添加到你的 README 文件中，并将 `{{github_username}}` 替换为你的 GitHub 用户名：
 
     ```Markdown
     [![VauntCommunity](https://api.vaunt.dev/v1/github/entities/{{github_username}}/badges/community)](https://community.vaunt.dev/board/{{github_username}})
