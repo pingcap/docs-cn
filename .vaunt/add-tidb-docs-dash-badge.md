@@ -61,7 +61,7 @@
 
 - 集成你的社区贡献看板到个人主页 README
 
-    社区贡献看板可以通过视图的形式综合展示你在 GitHub 各个仓库的贡献统计数据。
+    社区贡献看板通过视图的形式，可以综合展示你在 GitHub 各个仓库的贡献统计数据。
 
     [![VauntCommunity](https://api.vaunt.dev/v1/github/entities/pingcap/badges/community)](https://community.vaunt.dev/board/pingcap)
 
