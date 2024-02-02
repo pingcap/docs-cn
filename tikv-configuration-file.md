@@ -1919,6 +1919,11 @@ Raft Engine 相关的配置项。
 + 触发 GC 的垃圾比例阈值。
 + 默认值：`1.1`
 
+### `num-threads` <span class="version-mark">从 v6.5.8 版本开始引入</span>
+
++ 当 `enable-compaction-filter` 为 `false` 时 GC 线程个数。
++ 默认值：1
+
 ## backup
 
 用于 BR 备份相关的配置项。
