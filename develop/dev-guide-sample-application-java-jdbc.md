@@ -169,20 +169,8 @@ cd tidb-java-jdbc-quickstart
     make: *** [Makefile:18: all] Error 2
     ```
 
-    检查当前 `shell` 是否用的 `bash`，然后替换Makefile中 `. env.sh` 为 `bash env.sh`。如果问题还是存在，更改Makefile文件中 `. env.sh` 为绝对路径，比如 `/root/TiDB/tidb-java-jdbc-quickstart/env.sh`。
-
-    修改 tidb-java-jdbc-quickstart/src/main/java/com/pingcap/JDBCExample.java文件中参数。
-
-    ```java
-    String tidbHost = System.getenv().getOrDefault("TIDB_HOST", "${tidb_host}");
-    int tidbPort = Integer.parseInt(System.getenv().getOrDefault("TIDB_PORT", "${tidb_port}"));
-    String tidbUser = System.getenv().getOrDefault("TIDB_USER", "${tidb_user}");
-    String tidbPassword = System.getenv().getOrDefault("TIDB_PASSWORD", "${tidb_password}");
-    String tidbDatabase = System.getenv().getOrDefault("TIDB_DATABASE", "${tidb_db_name}");
-    boolean useSSL = Boolean.parseBoolean(System.getenv().getOrDefault("USE_SSL", "true"));
-    ```
-
-    你需要将 `${tidb_host}`、`${tidb_port}`、`${tidb_user}`、`${tidb_password}`、`${tidb_db_name}` 等替换为你的 TiDB 集群的实际值。
+    检查当前 `shell` 是否用的 `bash`，然后替换Makefile中 `. env.sh` 为 `bash env.sh`。
+    然后把 `env.sh` 文件中的 `#!/bin/sh` 改为 `#!/bin/bash`。
 
     再运行 `make` 命令即可。
 
