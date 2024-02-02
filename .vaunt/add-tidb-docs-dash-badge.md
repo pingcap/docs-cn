@@ -36,7 +36,7 @@
 
 本次 TiDB 文档挑战赛的徽章是通过 [Vaunt](https://vaunt.dev/) 授予的，Vaunt 是一个开发者关系平台，旨在赋能和发展开发者社区。
 
-通过 Vaunt 提供的以下功能，你还可以在你的个人资料 README 中展示你在其他开源项目中做出的贡献：
+通过 Vaunt 提供的以下功能，你还可以在你的个人资料 README 中展示你在其它开源项目中做出的贡献：
 
 - 集成你的 developer card 到个人资料 README
 
