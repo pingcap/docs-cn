@@ -6,7 +6,7 @@
 
 ## 第 1 步：创建一个仓库，存放个人资料 README
 
-如果你已经配置了 GitHub 个人资料 README，请跳过以下步骤，直接进入[第 2 步：编辑个人资料 README](#第-2-步编辑个人资料页-readme)。
+如果你已经配置了 GitHub 个人资料 README，请跳过以下步骤，直接进入[第 2 步：编辑个人资料 README](#第-2-步编辑个人资料-readme)。
 
 1. 在 GitHub 任一页面的右上角，点击 **+**，然后点击 **New repository**。
 
