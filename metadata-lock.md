@@ -49,7 +49,7 @@ summary: 介绍 TiDB 中元数据锁的概念、原理、实现和影响。
     | `INSERT INTO t VALUES(1);` |           |
     | `BEGIN;`                   |           |
     |                            | `ALTER TABLE t ADD COLUMN b INT;` |
-    | `SELECT * FROM t;`<br/>（采用 `t` 表当前的元数据版本，返回 `(a=1，b=NULL)`，同时给表 `t` 加锁）|           |
+    | `SELECT * FROM t;`（采用 `t` 表当前的元数据版本，返回 `(a=1，b=NULL)`，同时给表 `t` 加锁）|           |
     |                            | `ALTER TABLE t ADD COLUMN c INT;`（被 Session 1 阻塞）|
 
     在可重复读隔离级别下，如果从事务开始到确定一个表的元数据过程中，执行了加索引或者变更列类型等需要更改数据的 DDL，则有以下表现：

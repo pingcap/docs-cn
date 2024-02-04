@@ -10,116 +10,69 @@ DM 同步过程中，根据 DDL 语句以及所处场景的不同，将采用不
 
 以下语句 DM 并未支持，因此解析之后直接跳过。
 
-<table>
-    <tr>
-        <th>描述</th>
-        <th>SQL</th>
-    </tr>
-    <tr>
-        <td>transaction</td>
-        <td><code>^SAVEPOINT</code></td>
-    </tr>
-    <tr>
-        <td>skip all flush sqls</td>
-        <td><code>^FLUSH</code></td>
-    </tr>
-    <tr>
-        <td rowspan="3">table maintenance</td>
-        <td><code>^OPTIMIZE\\s+TABLE</code></td>
-    </tr>
-    <tr>
-        <td><code>^ANALYZE\\s+TABLE</code></td>
-    </tr>
-    <tr>
-        <td><code>^REPAIR\\s+TABLE</code></td>
-    </tr>
-    <tr>
-        <td>temporary table</td>
-        <td><code>^DROP\\s+(\\/\\*\\!40005\\s+)?TEMPORARY\\s+(\\*\\/\\s+)?TABLE</code></td>
-    </tr>
-    <tr>
-        <td rowspan="2">trigger</td>
-        <td><code>^CREATE\\s+(DEFINER\\s?=.+?)?TRIGGER</code></td>
-    </tr>
-    <tr>
-        <td><code>^DROP\\s+TRIGGER</code></td>
-    </tr>
-    <tr>
-        <td rowspan="3">procedure</td>
-        <td><code>^DROP\\s+PROCEDURE</code></td>
-    </tr>
-    <tr>
-        <td><code>^CREATE\\s+(DEFINER\\s?=.+?)?PROCEDURE</code></td>
-    </tr>
-    <tr>
-        <td><code>^ALTER\\s+PROCEDURE</code></td>
-    </tr>
-    <tr>
-        <td rowspan="3">view</td>
-        <td><code>^CREATE\\s*(OR REPLACE)?\\s+(ALGORITHM\\s?=.+?)?(DEFINER\\s?=.+?)?\\s+(SQL SECURITY DEFINER)?VIEW</code></td>
-    </tr>
-    <tr>
-        <td><code>^DROP\\s+VIEW</code></td>
-    </tr>
-    <tr>
-        <td><code>^ALTER\\s+(ALGORITHM\\s?=.+?)?(DEFINER\\s?=.+?)?(SQL SECURITY DEFINER)?VIEW</code></td>
-    </tr>
-    <tr>
-        <td rowspan="4">function</td>
-        <td><code>^CREATE\\s+(AGGREGATE)?\\s*?FUNCTION</code></td>
-    </tr>
-    <tr>
-        <td><code>^CREATE\\s+(DEFINER\\s?=.+?)?FUNCTION</code></td>
-    </tr>
-    <tr>
-        <td><code>^ALTER\\s+FUNCTION</code></td>
-    </tr>
-    <tr>
-        <td><code>^DROP\\s+FUNCTION</code></td>
-    </tr>
-    <tr>
-        <td rowspan="3">tableSpace</td>
-        <td><code>^CREATE\\s+TABLESPACE</code></td>
-    </tr>
-    <tr>
-        <td><code>^ALTER\\s+TABLESPACE</code></td>
-    </tr>
-    <tr>
-        <td><code>^DROP\\s+TABLESPACE</code></td>
-    </tr>
-    <tr>
-        <td rowspan="3">event</td>
-        <td><code>^CREATE\\s+(DEFINER\\s?=.+?)?EVENT</code></td>
-    </tr>
-    <tr>
-        <td><code>^ALTER\\s+(DEFINER\\s?=.+?)?EVENT</code></td>
-    </tr>
-    <tr>
-        <td><code>^DROP\\s+EVENT</code></td>
-    </tr>
-    <tr>
-        <td rowspan="7">account management</td>
-        <td><code>^GRANT</code></td>
-    </tr>
-    <tr>
-        <td><code>^REVOKE</code></td>
-    </tr>
-    <tr>
-        <td><code>^CREATE\\s+USER</code></td>
-    </tr>
-    <tr>
-        <td><code>^ALTER\\s+USER</code></td>
-    </tr>
-    <tr>
-        <td><code>^RENAME\\s+USER</code></td>
-    </tr>
-    <tr>
-        <td><code>^DROP\\s+USER</code></td>
-    </tr>
-    <tr>
-        <td><code>^DROP\\s+USER</code></td>
-    </tr>
-</table>
++------------------+----------------------------------------------------------+
+| 描述              | SQL                                                      |
++==================+==========================================================+
+| transaction      | `^SAVEPOINT`                                             |
++------------------+----------------------------------------------------------+
+| skip all flush   | `^FLUSH`                                                 |
++------------------+----------------------------------------------------------+
+| table maintenance| `^OPTIMIZE\\s+TABLE`                                     |
+|                  +----------------------------------------------------------+
+|                  | `^ANALYZE\\s+TABLE`                                      |
+|                  +----------------------------------------------------------+
+|                  | `^REPAIR\\s+TABLE`                                       |
++------------------+----------------------------------------------------------+
+| temporary table  | `^DROP\\s+(\\/\\*\\!40005\\s+)?TEMPORARY\\s+(\\*\\/\\s+)?TABLE` |
++------------------+----------------------------------------------------------+
+| trigger          | `^CREATE\\s+(DEFINER\\s?=.+?)?TRIGGER`                   |
+|                  +----------------------------------------------------------+
+|                  | `^DROP\\s+TRIGGER`                                       |
++------------------+----------------------------------------------------------+
+| procedure        | `^DROP\\s+PROCEDURE`                                     |
+|                  +----------------------------------------------------------+
+|                  | `^CREATE\\s+(DEFINER\\s?=.+?)?PROCEDURE`                 |
+|                  +----------------------------------------------------------+
+|                  | `^ALTER\\s+PROCEDURE`                                    |
++------------------+----------------------------------------------------------+
+| view             | `^CREATE\\s*(OR REPLACE)?\\s+(ALGORITHM\\s?=.+?)?(DEFINER\\s?=.+?)?\\s+(SQL SECURITY DEFINER)?VIEW` |
+|                  +----------------------------------------------------------+
+|                  | `^DROP\\s+VIEW`                                          |
+|                  +----------------------------------------------------------+
+|                  | `^ALTER\\s+(ALGORITHM\\s?=.+?)?(DEFINER\\s?=.+?)?(SQL SECURITY DEFINER)?VIEW` |
++------------------+----------------------------------------------------------+
+| function         | `^CREATE\\s+(AGGREGATE)?\\s*?FUNCTION`                   |
+|                  +----------------------------------------------------------+
+|                  | `^CREATE\\s+(DEFINER\\s?=.+?)?FUNCTION`                  |
+|                  +----------------------------------------------------------+
+|                  | `^ALTER\\s+FUNCTION`                                     |
+|                  +----------------------------------------------------------+
+|                  | `^DROP\\s+FUNCTION`                                      |
++------------------+----------------------------------------------------------+
+| tableSpace       | `^CREATE\\s+TABLESPACE`                                  |
+|                  +----------------------------------------------------------+
+|                  | `^ALTER\\s+TABLESPACE`                                   |
+|                  +----------------------------------------------------------+
+|                  | `^DROP\\s+TABLESPACE`                                    |
++------------------+----------------------------------------------------------+
+| event            | `^CREATE\\s+(DEFINER\\s?=.+?)?EVENT`                     |
+|                  +----------------------------------------------------------+
+|                  | `^ALTER\\s+(DEFINER\\s?=.+?)?EVENT`                      |
+|                  +----------------------------------------------------------+
+|                  | `^DROP\\s+EVENT`                                         |
++------------------+----------------------------------------------------------+
+| account management| `^GRANT`                                                 |
+|                  +----------------------------------------------------------+
+|                  | `^REVOKE`                                                |
+|                  +----------------------------------------------------------+
+|                  | `^CREATE\\s+USER`                                        |
+|                  +----------------------------------------------------------+
+|                  | `^ALTER\\s+USER`                                         |
+|                  +----------------------------------------------------------+
+|                  | `^RENAME\\s+USER`                                        |
+|                  +----------------------------------------------------------+
+|                  | `^DROP\\s+USER`                                          |
++------------------+----------------------------------------------------------+
 
 ## 改写的 DDL 语句
 

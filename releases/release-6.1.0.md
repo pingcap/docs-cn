@@ -240,7 +240,7 @@ TiDB 版本：6.1.0
 | [`tidb_enable_prepared_plan_cache`](/system-variables.md#tidb_enable_prepared_plan_cache-从-v610-版本开始引入) | 新增 | 由 TiDB 配置项 `prepared-plan-cache.enabled` 转化而来。 |
 | [`tidb_gc_max_wait_time`](/system-variables.md#tidb_gc_max_wait_time-从-v610-版本开始引入) | 新增 | 用于指定活跃事务阻碍 GC safe point 推进的最大时间。 |
 | [`tidb_max_auto_analyze_time`](/system-variables.md#tidb_max_auto_analyze_time-从-v610-版本开始引入) | 新增 | 用于指定自动 ANALYZE 的最大执行时间。 |
-| [`tidb_max_tiflash_threads`](/system-variables.md#tidb_max_tiflash_threads-从-v610-版本开始引入) | 新增 | 由 TiFlash 配置项 `max_threads`<br/> 转化而来，表示 TiFlash 中 request 执行的最大并发度。 |
+| [`tidb_max_tiflash_threads`](/system-variables.md#tidb_max_tiflash_threads-从-v610-版本开始引入) | 新增 | 由 TiFlash 配置项 `max_threads` 转化而来，表示 TiFlash 中 request 执行的最大并发度。 |
 | [`tidb_mem_oom_action`](/system-variables.md#tidb_mem_oom_action-从-v610-版本开始引入) | 新增 | 由 TiDB 配置项 `oom-action` 转化而来。 |
 | [`tidb_mem_quota_analyze`](/system-variables.md#tidb_mem_quota_analyze-从-v610-版本开始引入) | 新增 | 控制 TiDB 更新统计信息时总的内存占用，包括用户执行的 [`ANALYZE TABLE`](/sql-statements/sql-statement-analyze-table.md) 和 TiDB 后台自动执行的统计信息更新任务。 |
 | [`tidb_nontransactional_ignore_error`](/system-variables.md#tidb_nontransactional_ignore_error-从-v610-版本开始引入) | 新增 | 设置是否在非事务语句中立刻返回错误。 |
@@ -276,8 +276,8 @@ TiDB 版本：6.1.0
 | TiKV | [`storage.api-version`](/tikv-configuration-file.md#api-version-从-v610-版本开始引入) | 新增 | TiKV 作为 Raw Key Value 存储数据时使用的存储格式与接口版本。 |
 | PD | [`schedule.max-store-preparing-time`](/pd-configuration-file.md#max-store-preparing-time-从-v610-版本开始引入) | 新增 | 控制 store 上线阶段的最长等待时间。 |
 | TiCDC | [`enable-tls`](/ticdc/ticdc-sink-to-kafka.md#sink-uri-配置-kafka) | 新增 | 控制是否使用 TLS 连接 Kafka。 |
-| TiCDC | `sasl-gssapi-user`<br/>`sasl-gssapi-password`<br/>`sasl-gssapi-auth-type`<br/>`sasl-gssapi-service-name`<br/>`sasl-gssapi-realm`<br/>`sasl-gssapi-key-tab-path`<br/>`sasl-gssapi-kerberos-config-path` | 新增 | 支持 Kafka SASL/GSSAPI 认证所需要的参数。详情见 [Sink URI 配置 `kafka`](/ticdc/ticdc-sink-to-kafka.md#sink-uri-配置-kafka)。 |
-| TiCDC | [`avro-decimal-handling-mode`](/ticdc/ticdc-sink-to-kafka.md#sink-uri-配置-kafka)<br/>[`avro-bigint-unsigned-handling-mode`](/ticdc/ticdc-sink-to-kafka.md#sink-uri-配置-kafka) | 新增 | 控制 Avro 格式的输出细节。 |
+| TiCDC | `sasl-gssapi-user`, `sasl-gssapi-password`, `sasl-gssapi-auth-type`, `sasl-gssapi-service-name`, `sasl-gssapi-realm`, `sasl-gssapi-key-tab-path`, `sasl-gssapi-kerberos-config-path` | 新增 | 支持 Kafka SASL/GSSAPI 认证所需要的参数。详情见 [Sink URI 配置 `kafka`](/ticdc/ticdc-sink-to-kafka.md#sink-uri-配置-kafka)。 |
+| TiCDC | [`avro-decimal-handling-mode`](/ticdc/ticdc-sink-to-kafka.md#sink-uri-配置-kafka), [`avro-bigint-unsigned-handling-mode`](/ticdc/ticdc-sink-to-kafka.md#sink-uri-配置-kafka) | 新增 | 控制 Avro 格式的输出细节。 |
 | TiCDC | [`dispatchers.topic`](/ticdc/ticdc-changefeed-config.md) | 新增 | 控制 TiCDC 将增量数据分发到不同 Kafka Topic 的策略 |
 | TiCDC | [`dispatchers.partition`](/ticdc/ticdc-changefeed-config.md) | 新增 | `dispatchers.partition` 是原 `dispatchers.dispatcher` 配置项的别名，用于控制增量数据的 Kafka Partition 分发策略。 |
 | TiCDC | [`schema-registry`](/ticdc/ticdc-sink-to-kafka.md#ticdc-集成-kafka-connect-confluent-platform) | 新增 | 用于指定存储 Avro Schema 的 Schema Registry Endpoint。 |
