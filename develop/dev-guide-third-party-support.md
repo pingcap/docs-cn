@@ -44,7 +44,7 @@ PingCAP 与开源社区合作，通过三方工具提供以下支持：
          <td>v1.6.0</td>
          <td>Full</td>
          <td>N/A</td>
-         <td><a href="/zh/tidb/v6.1/dev-guide-sample-application-golang">TiDB 和 Golang 的简单 CRUD 应用程序</a></td>
+         <td><a href="https://docs.pingcap.com/zh/tidb/v6.1/dev-guide-sample-application-golang">TiDB 和 Golang 的简单 CRUD 应用程序</a></td>
       </tr>
       <tr>
          <td>Java</td>
@@ -53,11 +53,11 @@ PingCAP 与开源社区合作，通过三方工具提供以下支持：
          <td>Full</td>
          <td>
             <ul>
-               <li><a href="/zh/tidb/v6.1/dev-guide-choose-driver-or-orm#java-drivers" data-href="/zh/tidb/v6.1/dev-guide-choose-driver-or-orm#java-drivers">pingcap/mysql-connector-j</a></li>
-               <li><a href="/zh/tidb/v6.1/dev-guide-choose-driver-or-orm#tidb-loadbalance" data-href="/zh/tidb/v6.1/dev-guide-choose-driver-or-orm#tidb-loadbalance">pingcap/tidb-loadbalance</a></li>
+               <li><a href="https://docs.pingcap.com/zh/tidb/v6.1/dev-guide-choose-driver-or-orm#java-drivers" data-href="https://docs.pingcap.com/zh/tidb/v6.1/dev-guide-choose-driver-or-orm#java-drivers">pingcap/mysql-connector-j</a></li>
+               <li><a href="https://docs.pingcap.com/zh/tidb/v6.1/dev-guide-choose-driver-or-orm#tidb-loadbalance" data-href="https://docs.pingcap.com/zh/tidb/v6.1/dev-guide-choose-driver-or-orm#tidb-loadbalance">pingcap/tidb-loadbalance</a></li>
             </ul>
          </td>
-         <td><a href="/zh/tidb/v6.1/dev-guide-sample-application-java">TiDB 和 Java 的简单 CRUD 应用程序</a></td>
+         <td><a href="https://docs.pingcap.com/zh/tidb/v6.1/dev-guide-sample-application-java">TiDB 和 Java 的简单 CRUD 应用程序</a></td>
       </tr>
    </tbody>
 </table>
@@ -82,7 +82,7 @@ PingCAP 与开源社区合作，通过三方工具提供以下支持：
          <td>v1.23.5</td>
          <td>Full</td>
          <td>N/A</td>
-         <td><a href="/zh/tidb/v6.1/dev-guide-sample-application-golang">TiDB 和 Golang 的简单 CRUD 应用程序</a></td>
+         <td><a href="https://docs.pingcap.com/zh/tidb/v6.1/dev-guide-sample-application-golang">TiDB 和 Golang 的简单 CRUD 应用程序</a></td>
       </tr>
       <tr>
          <td><a href="https://github.com/beego/beego" target="_blank" referrerpolicy="no-referrer-when-downgrade">beego</a></td>
@@ -111,21 +111,21 @@ PingCAP 与开源社区合作，通过三方工具提供以下支持：
          <td>6.1.0.Final</td>
          <td>Full</td>
          <td>N/A</td>
-         <td><a href="/zh/tidb/v6.1/dev-guide-sample-application-java">TiDB 和 Java 的简单 CRUD 应用程序</a></td>
+         <td><a href="https://docs.pingcap.com/zh/tidb/v6.1/dev-guide-sample-application-java">TiDB 和 Java 的简单 CRUD 应用程序</a></td>
       </tr>
       <tr>
          <td><a href="https://mybatis.org/mybatis-3/" target="_blank" referrerpolicy="no-referrer-when-downgrade">MyBatis</a></td>
          <td>v3.5.10</td>
          <td>Full</td>
          <td>N/A</td>
-         <td><a href="/zh/tidb/v6.1/dev-guide-sample-application-java">TiDB 和 Java 的简单 CRUD 应用程序</a></td>
+         <td><a href="https://docs.pingcap.com/zh/tidb/v6.1/dev-guide-sample-application-java">TiDB 和 Java 的简单 CRUD 应用程序</a></td>
       </tr>
       <tr>
          <td><a href="https://spring.io/projects/spring-data-jpa/" target="_blank" referrerpolicy="no-referrer-when-downgrade">Spring Data JPA</a></td>
          <td>2.7.2</td>
          <td>Full</td>
          <td>N/A</td>
-         <td><a href="/zh/tidb/v6.1/dev-guide-sample-application-spring-boot">使用 Spring Boot 构建 TiDB 应用程序</a></td>
+         <td><a href="https://docs.pingcap.com/zh/tidb/v6.1/dev-guide-sample-application-spring-boot">使用 Spring Boot 构建 TiDB 应用程序</a></td>
       </tr>
       <tr>
          <td><a href="https://github.com/jOOQ/jOOQ" target="_blank" referrerpolicy="no-referrer-when-downgrade">jOOQ</a></td>
@@ -163,14 +163,14 @@ PingCAP 与开源社区合作，通过三方工具提供以下支持：
          <td>v4.1</td>
          <td>Full</td>
          <td><a href="https://github.com/pingcap/django-tidb" target="_blank" referrerpolicy="no-referrer-when-downgrade">django-tidb</a></td>
-         <td><a href="/zh/tidb/v6.1/dev-guide-sample-application-django">TiDB 和 Django 的简单 CRUD 应用程序</a></td>
+         <td><a href="https://docs.pingcap.com/zh/tidb/v6.1/dev-guide-sample-application-django">TiDB 和 Django 的简单 CRUD 应用程序</a></td>
       </tr>
       <tr>
          <td><a href="https://www.sqlalchemy.org/" target="_blank" referrerpolicy="no-referrer-when-downgrade">SQLAlchemy</a></td>
          <td>v1.4.37</td>
          <td>Full</td>
          <td>N/A</td>
-         <td><a href="/zh/tidb/v6.1/dev-guide-sample-application-python">TiDB 和 Python 的简单 CRUD 应用程序</a></td>
+         <td><a href="https://docs.pingcap.com/zh/tidb/v6.1/dev-guide-sample-application-python">TiDB 和 Python 的简单 CRUD 应用程序</a></td>
       </tr>
    </tbody>
 </table>
