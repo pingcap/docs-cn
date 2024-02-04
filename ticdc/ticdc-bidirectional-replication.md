@@ -100,7 +100,21 @@ TiCDC 复制功能只会将指定时间点之后的增量变更复制到下游�
 
 ### 可复制的 DDL 的同步场景
 
-1. 选择一个 TiDB 集群，执行 `ADMIN SET BDR ROLE PRIMARY` 将其设置为主集群。
+1. 选择一个 TiDB 集群，执行 `ADMIN SET BDR ROLE PRIMARY` 将其设置为主集群。如下所示：
+
+    ```sql
+    ADMIN SET BDR ROLE PRIMARY;
+    Query OK, 0 rows affected
+    Time: 0.003s
+
+    ADMIN SHOW BDR ROLE;
+    +----------+
+    | BDR_ROLE |
+    +----------+
+    | primary  |
+    +----------+
+    ```
+
 2. 在其他 TiDB 集群上，执行 `ADMIN SET BDR ROLE SECONDARY` 将其设置为从集群。
 3. 在主集群上执行**可复制的 DDL**，执行成功的 DDL 会被 TiCDC 同步到从集群中。
 
