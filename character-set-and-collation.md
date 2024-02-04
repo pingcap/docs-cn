@@ -57,8 +57,6 @@ SELECT 'A' = 'a';
 1 row in set (0.00 sec)
 ```
 
-TiDB defaults to using a binary collation. This differs from MySQL, which uses a case-insensitive collation by default.
-
 ## Character sets and collations supported by TiDB
 
 Currently, TiDB supports the following character sets:
@@ -117,6 +115,11 @@ SHOW COLLATION;
 > **Note:**
 >
 > The default collations in TiDB (binary collations, with the suffix `_bin`) are different than [the default collations in MySQL](https://dev.mysql.com/doc/refman/8.0/en/charset-charsets.html) (typically general collations, with the suffix `_general_ci` or `_ai_ci`). This can cause incompatible behavior when specifying an explicit character set but relying on the implicit default collation to be chosen.
+>
+> However, the default collations in TiDB are also affected by the [connection collation](https://dev.mysql.com/doc/refman/8.0/en/charset-connection.html#charset-connection-system-variables) settings of your clients. For example, the MySQL 8.x client defaults to `utf8mb4_0900_ai_ci` as the connection collation for the `utf8mb4` character set.
+>
+> - Before TiDB v7.4.0, if your client uses `utf8mb4_0900_ai_ci` as the [connection collation](https://dev.mysql.com/doc/refman/8.0/en/charset-connection.html#charset-connection-system-variables), TiDB falls back to using the TiDB server default collation `utf8mb4_bin` because TiDB does not support the `utf8mb4_0900_ai_ci` collation.
+> - Starting from v7.4.0, if your client uses `utf8mb4_0900_ai_ci` as the [connection collation](https://dev.mysql.com/doc/refman/8.0/en/charset-connection.html#charset-connection-system-variables), TiDB follows the client's configuration to use `utf8mb4_0900_ai_ci` as the default collation.
 
 You can use the following statement to view the collations (under the [new framework for collations](#new-framework-for-collations)) that corresponds to the character set.
 
