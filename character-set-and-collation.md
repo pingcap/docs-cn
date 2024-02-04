@@ -115,7 +115,7 @@ SHOW COLLATION;
 > TiDB 中的默认排序规则（后缀为 `_bin` 的二进制排序规则）与 [MySQL 中的默认排序规则](https://dev.mysql.com/doc/refman/8.0/en/charset-charsets.html)不同，后者通常是一般排序规则，后缀为 `_general_ci` 或 `_ai_ci`。当用户指定了显式字符集，但依赖于待选的隐式默认排序规则时，这个差异可能导致兼容性问题。
 > 在 TiDB 中，默认的排序规则也受到客户端的[连接排序规则](https://dev.mysql.com/doc/refman/8.0/en/charset-connection.html#charset-connection-system-variables)设置的影响。例如，MySQL 8.x 客户端默认使用 `utf8mb4_0900_ai_ci` 作为 `utf8mb4` 字符集的连接排序规则。
 > - 在 TiDB v7.4.0 之前，如果客户端使用 `utf8mb4_0900_ai_ci` 作为[连接排序规则](https://dev.mysql.com/doc/refman/8.0/en/charset-connection.html#charset-connection-system-variables)，因为 TiDB 不支持 `utf8mb4_0900_ai_ci` 排序规则，TiDB 将回退到使用 TiDB 服务器默认的排序规则 `utf8mb4_bin`。
-> - 从 v7.4 开始，如果客户端使用 `utf8mb4_0900_ai_ci` 作为[连接排序规则](https://dev.mysql.com/doc/refman/8.0/en/charset-connection.html#charset-connection-system-variables)，TiDB 将遵循客户端的配置，使用 `utf8mb4_0900_ai_ci` 作为默认排序规则。
+> - 从 v7.4.0 开始，如果客户端使用 `utf8mb4_0900_ai_ci` 作为[连接排序规则](https://dev.mysql.com/doc/refman/8.0/en/charset-connection.html#charset-connection-system-variables)，TiDB 将遵循客户端的配置，使用 `utf8mb4_0900_ai_ci` 作为默认排序规则。
 
 利用以下的语句可以查看字符集对应的排序规则（以下是[新的排序规则框架](#新框架下的排序规则支持)）下的结果：
 
