@@ -135,6 +135,8 @@ TiDB 目前支持的身份验证方式可在以下的表格中查找到。服务
 
 `tidb_auth_token` 是一种基于 [JSON Web Token (JWT)](https://datatracker.ietf.org/doc/html/rfc7519) 的无密码认证方式。在 v6.4.0 中， `tidb_auth_token` 仅用于 TiDB Cloud 内部的用户认证，从 v6.5.0 起，你也可以将 `tidb_auth_token` 配置为 TiDB 自托管环境中用户的认证方式。不同于 `mysql_native_passsword`、`caching_sha2_password` 等使用密码的认证方式，`tidb_auth_token` 认证方式在创建用户时无需设置并保存自定义密码，在用户登录时只需使用一个签发的 token，从而简化用户的认证过程并提升安全性。
 
+#### JWT
+
 JWT 由 Header、Payload 和 Signature 三部分组成。这三部分分别通过 base64 编码后，使用点号（`.`）拼接成一个字符串，以便在客户端和服务器之间传输。
 
 Header 描述 JWT 的元数据，包含 3 个属性：
@@ -180,71 +182,69 @@ Signature 用于对 Header 和 Payload 这两部分数据进行签名。
 > - Header 与 Payload 使用 base64 进行编码的过程是可逆的，请勿在 Payload 中携带敏感数据。
 > - `tidb_auth_token` 认证方式要求客户端支持 [`mysql_clear_password`](https://dev.mysql.com/doc/refman/8.0/en/cleartext-pluggable-authentication.html) 插件，并将 token 以明文的方式发送至 TiDB，因此请[为 TiDB 开启加密传输](/enable-tls-between-clients-and-servers.md) 后再使用 `tidb_auth_token` 进行认证。
 
+#### 使用方法
+
 配置并使用 `tidb_auth_token` 作为 TiDB 用户的认证方式，有以下几个步骤：
 
 1. 在 TiDB 配置文件中设置 [`auth-token-jwks`](/tidb-configuration-file.md#auth-token-jwks-从-v640-版本开始引入) 和 [`auth-token-refresh-interval`](/tidb-configuration-file.md#auth-token-refresh-interval-从-v640-版本开始引入)。
-2. 定期更新保存 JWKS 至 `auth-token-jwks` 指定的路径。
-3. 创建使用 `tidb_auth_token` 认证的用户，并根据需要通过 `REQUIRE TOKEN_ISSUER` 和 `ATTRIBUTE '{"email": "xxxx@pingcap.com"}` 指定 `iss` 与 `email` 信息。
-4. 生成并签发用于认证的 token，通过 mysql 客户端的 `mysql_clear_text` 插件进行认证。
 
-#### 示例
-
-1. 通过 `go install github.com/cbcwestwolf/generate_jwt` 安装 JWT 生成工具。该工具仅用于生成测试 `tidb_auth_token` 的 JWT。
-2. 获取示例 JWKS：
+    例如，可以通过下列命令获取示例 JWKS:
 
     ```bash
     wget https://raw.githubusercontent.com/CbcWestwolf/generate_jwt/master/JWKS.json
     ```
 
-3. 在 TiDB 的配置文件 `config.toml` 中配置上述 JWKS 文件的路径：
+    然后在 TiDB 的配置文件 `config.toml` 中配置上述 JWKS 文件的路径：
 
     ```toml
     [security]
     auth-token-jwks = "JWKS.json"
     ```
 
-4. 启动 `tidb-server`。
-5. 创建使用 `tidb_auth_token` 认证的用户 `user@pingcap.com`：
+2. 启动 `tidb-server`，并定期更新保存 JWKS 至 `auth-token-jwks` 指定的路径。
+3. 创建使用 `tidb_auth_token` 认证的用户，并根据需要通过 `REQUIRE TOKEN_ISSUER` 和 `ATTRIBUTE '{"email": "xxxx@pingcap.com"}` 指定 `iss` 与 `email` 信息。
 
-    ```SQL
+    例如，创建一个使用 `tidb_auth_token` 认证的用户 `user@pingcap.com`：
+
+    ```sql
     CREATE USER 'user@pingcap.com' IDENTIFIED WITH 'tidb_auth_token' REQUIRE TOKEN_ISSUER 'issuer-abc' ATTRIBUTE '{"email": "user@pingcap.com"}';
     ```
 
-##### 验证登录
+4. 生成并签发用于认证的 token，通过 mysql 客户端的 `mysql_clear_text` 插件进行认证。
 
-使用 `generate_jwt` 工具生成一个 token：
+    通过 `go install github.com/cbcwestwolf/generate_jwt` 安装 JWT 生成工具。该工具仅用于生成测试 `tidb_auth_token` 的 JWT。例如：
 
-```text
-generate_jwt --kid "the-key-id-0" --sub "user@pingcap.com" --email "user@pingcap.com" --iss "issuer-abc"
-```
+    ```text
+    generate_jwt --kid "the-key-id-0" --sub "user@pingcap.com" --email "user@pingcap.com" --iss "issuer-abc"
+    ```
 
-打印公钥和 token 形式如下：
+    打印公钥和 token 形式如下：
 
-```text
------BEGIN PUBLIC KEY-----
-MIIBCgKCAQEAq8G5n9XBidxmBMVJKLOBsmdOHrCqGf17y9+VUXingwDUZxRp2Xbu
-LZLbJtLgcln1lC0L9BsogrWf7+pDhAzWovO6Ai4Aybu00tJ2u0g4j1aLiDdsy0gy
-vSb5FBoL08jFIH7t/JzMt4JpF487AjzvITwZZcnsrB9a9sdn2E5B/aZmpDGi2+Is
-f5osnlw0zvveTwiMo9ba416VIzjntAVEvqMFHK7vyHqXbfqUPAyhjLO+iee99Tg5
-AlGfjo1s6FjeML4xX7sAMGEy8FVBWNfpRU7ryTWoSn2adzyA/FVmtBvJNQBCMrrA
-hXDTMJ5FNi8zHhvzyBKHU0kBTS1UNUbP9wIDAQAB
------END PUBLIC KEY-----
+    ```text
+    -----BEGIN PUBLIC KEY-----
+    MIIBCgKCAQEAq8G5n9XBidxmBMVJKLOBsmdOHrCqGf17y9+VUXingwDUZxRp2Xbu
+    LZLbJtLgcln1lC0L9BsogrWf7+pDhAzWovO6Ai4Aybu00tJ2u0g4j1aLiDdsy0gy
+    vSb5FBoL08jFIH7t/JzMt4JpF487AjzvITwZZcnsrB9a9sdn2E5B/aZmpDGi2+Is
+    f5osnlw0zvveTwiMo9ba416VIzjntAVEvqMFHK7vyHqXbfqUPAyhjLO+iee99Tg5
+    AlGfjo1s6FjeML4xX7sAMGEy8FVBWNfpRU7ryTWoSn2adzyA/FVmtBvJNQBCMrrA
+    hXDTMJ5FNi8zHhvzyBKHU0kBTS1UNUbP9wIDAQAB
+    -----END PUBLIC KEY-----
 
-eyJhbGciOiJSUzI1NiIsImtpZCI6InRoZS1rZXktaWQtMCIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InVzZXJAcGluZ2NhcC5jb20iLCJleHAiOjE3MDMzMDU0OTQsImlhdCI6MTcwMzMwNDU5NCwiaXNzIjoiaXNzdWVyLWFiYyIsInN1YiI6InVzZXJAcGluZ2NhcC5jb20ifQ.T4QPh2hTB5on5xCuvtWiZiDTuuKvckggNHtNaovm1F4RvwUv15GyOqj9yMstE-wSoV5eLEcPC2HgE6eN1C6yH_f4CU-A6n3dm9F1w-oLbjts7aYCl8OHycVYnq609fNnb8JLsQAmd1Zn9C0JW899-WSOQtvjLqVSPe9prH-cWaBVDQXzUJKxwywQzk9v-Z1Njt9H3Rn9vvwwJEEPI16VnaNK38I7YG-1LN4fAG9jZ6Zwvz7vb_s4TW7xccFf3dIhWTEwOQ5jDPCeYkwraRXU8NC6DPF_duSrYJc7d7Nu9Z2cr-E4i1Rt_IiRTuIIzzKlcQGg7jd9AGEfGe_SowsA-w
-```
+    eyJhbGciOiJSUzI1NiIsImtpZCI6InRoZS1rZXktaWQtMCIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InVzZXJAcGluZ2NhcC5jb20iLCJleHAiOjE3MDMzMDU0OTQsImlhdCI6MTcwMzMwNDU5NCwiaXNzIjoiaXNzdWVyLWFiYyIsInN1YiI6InVzZXJAcGluZ2NhcC5jb20ifQ.T4QPh2hTB5on5xCuvtWiZiDTuuKvckggNHtNaovm1F4RvwUv15GyOqj9yMstE-wSoV5eLEcPC2HgE6eN1C6yH_f4CU-A6n3dm9F1w-oLbjts7aYCl8OHycVYnq609fNnb8JLsQAmd1Zn9C0JW899-WSOQtvjLqVSPe9prH-cWaBVDQXzUJKxwywQzk9v-Z1Njt9H3Rn9vvwwJEEPI16VnaNK38I7YG-1LN4fAG9jZ6Zwvz7vb_s4TW7xccFf3dIhWTEwOQ5jDPCeYkwraRXU8NC6DPF_duSrYJc7d7Nu9Z2cr-E4i1Rt_IiRTuIIzzKlcQGg7jd9AGEfGe_SowsA-w
+    ```
 
-复制上面最后一行的 token 用于登录：
+    复制上面最后一行的 token 用于登录：
 
-```Shell
-mycli -h 127.0.0.1 -P 4000 -u 'user@pingcap.com' -p '<the-token-generated>'
-```
+    ```Shell
+    mycli -h 127.0.0.1 -P 4000 -u 'user@pingcap.com' -p '<the-token-generated>'
+    ```
 
-注意这里使用的 mysql 客户端必须支持 `mysql_clear_password` 插件。[mycli](https://www.mycli.net/) 默认开启这一插件，如果使用 [mysql 命令行客户端](https://dev.mysql.com/doc/refman/8.0/en/mysql.html) 则需要 `--enable-cleartext-plugin` 选项来开启这个插件：
+    注意这里使用的 mysql 客户端必须支持 `mysql_clear_password` 插件。[mycli](https://www.mycli.net/) 默认开启这一插件，如果使用 [mysql 命令行客户端](https://dev.mysql.com/doc/refman/8.0/en/mysql.html) 则需要 `--enable-cleartext-plugin` 选项来开启这个插件：
 
-```Shell
-mysql -h 127.0.0.1 -P 4000 -u 'user@pingcap.com' -p'<the-token-generated>' --enable-cleartext-plugin
-```
+    ```Shell
+    mysql -h 127.0.0.1 -P 4000 -u 'user@pingcap.com' -p'<the-token-generated>' --enable-cleartext-plugin
+    ```
 
-如果在生成 token 的时候指定了错误的 `--sub`（比如 `--sub "wronguser@pingcap.com"`），则无法使用该 token 进行认证。
+    如果在生成 token 的时候指定了错误的 `--sub`（比如 `--sub "wronguser@pingcap.com"`），则无法使用该 token 进行认证。
 
 可以使用 [jwt.io](https://jwt.io/) 提供的 debugger 对 token 进行编解码。
