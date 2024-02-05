@@ -156,6 +156,15 @@ curl -X GET http://127.0.0.1:8300/api/v2/health
     "enable_old_value": true,
     "enable_sync_point": true,
     "filter": {
+      "do_dbs": [
+        "string"
+      ],
+      "do_tables": [
+        {
+          "database_name": "string",
+          "table_name": "string"
+        }
+      ],
       "event_filters": [
         {
           "ignore_delete_value_expr": "string",
@@ -171,6 +180,15 @@ curl -X GET http://127.0.0.1:8300/api/v2/health
           "matcher": [
             "string"
           ]
+        }
+      ],
+      "ignore_dbs": [
+        "string"
+      ],
+      "ignore_tables": [
+        {
+          "database_name": "string",
+          "table_name": "string"
         }
       ],
       "ignore_txn_start_ts": [
@@ -277,6 +295,10 @@ curl -X GET http://127.0.0.1:8300/api/v2/health
 
 | 参数名                   | 说明                                                                                    |
 |:----------------------|:--------------------------------------------------------------------------------------|
+| `do_dbs`              | `STRING ARRAY` 类型，需要同步的数据库。（非必选）                                                      |
+| `do_tables`           | 需要同步的表。（非必选）                                                                          |
+| `ignore_dbs`          | `STRING ARRAY` 类型，不同步的数据库。（非必选）                                                       |
+| `ignore_tables`       |  不同步的表。（非必选）                                                                          |
 | `event_filters`       | event 过滤配置。（非必选）                                                                       |
 | `ignore_txn_start_ts` | `UINT64 ARRAY` 类型，指定之后会忽略指定 `start_ts` 的事务，如 `[1, 2]`。（非必选）                             |
 | `rules`               | `STRING ARRAY` 类型，表库过滤的规则，如 `['foo*.*', 'bar*.*']`。详情请参考[表库过滤](/table-filter.md)。（非必选） |
@@ -388,6 +410,15 @@ curl -X POST -H "'Content-type':'application/json'" http://127.0.0.1:8300/api/v2
     "enable_old_value": true,
     "enable_sync_point": true,
     "filter": {
+      "do_dbs": [
+        "string"
+      ],
+      "do_tables": [
+        {
+          "database_name": "string",
+          "table_name": "string"
+        }
+      ],
       "event_filters": [
         {
           "ignore_delete_value_expr": "string",
@@ -403,6 +434,15 @@ curl -X POST -H "'Content-type':'application/json'" http://127.0.0.1:8300/api/v2
           "matcher": [
             "string"
           ]
+        }
+      ],
+      "ignore_dbs": [
+        "string"
+      ],
+      "ignore_tables": [
+        {
+          "database_name": "string",
+          "table_name": "string"
         }
       ],
       "ignore_txn_start_ts": [
@@ -574,6 +614,15 @@ curl -X DELETE http://127.0.0.1:8300/api/v2/changefeeds/test1
     "enable_old_value": true,
     "enable_sync_point": true,
     "filter": {
+      "do_dbs": [
+        "string"
+      ],
+      "do_tables": [
+        {
+          "database_name": "string",
+          "table_name": "string"
+        }
+      ],
       "event_filters": [
         {
           "ignore_delete_value_expr": "string",
@@ -589,6 +638,15 @@ curl -X DELETE http://127.0.0.1:8300/api/v2/changefeeds/test1
           "matcher": [
             "string"
           ]
+        }
+      ],
+      "ignore_dbs": [
+        "string"
+      ],
+      "ignore_tables": [
+        {
+          "database_name": "string",
+          "table_name": "string"
         }
       ],
       "ignore_txn_start_ts": [
