@@ -289,7 +289,7 @@ The following are hard restrictions on non-transactional DML statements. If thes
 - The shard column must be indexed. The index can be a single-column index, or the first column of a joint index.
 - Must be used in the [`autocommit`](/system-variables.md#autocommit) mode.
 - Cannot be used when batch-dml is enabled.
-- Cannot be used when [`tidb_snapshot`](/read-historical-data.md#operation flow) is set.
+- Cannot be used when [`tidb_snapshot`](/read-historical-data.md) is set.
 - Cannot be used with the `prepare` statement.
 - `ENUM`, `BIT`, `SET`, `JSON` types are not supported as the shard columns.
 - Not supported for [temporary tables](/temporary-tables.md).
