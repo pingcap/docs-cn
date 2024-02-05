@@ -256,140 +256,64 @@ on-duplicate = "replace" # 或者 “error”、“ignore”
 
 当需要将数据导入到 TiDB 集群时，TiDB Lightning TiDB-backend 可以完全取代 [Loader](https://docs.pingcap.com/zh/tidb/v4.0/loader-overview)。下表说明了如何将 Loader 的配置迁移到 [TiDB Lightning 配置](/tidb-lightning/tidb-lightning-configuration.md)中：
 
-<table>
-<thead><tr><th>Loader</th><th>TiDB Lightning</th></tr></thead>
-<tbody>
-<tr><td>
-
-```toml
-# 日志级别
-log-level = "info"
-# 日志的输出目录
-log-file = "loader.log"
-# Prometheus
-status-addr = ":8272"
-# 线程数
-pool-size = 16
-```
-
-</td><td>
-
-```toml
-[lightning]
-# 日志级别
-level = "info"
-# 日志的输出目录。如果未指定该位置目录，默认为执行命令的所在目录。
-file = "tidb-lightning.log"
-# Prometheus
-pprof-port = 8289
-# 并发度 (最好使用默认设置)
-#region-concurrency = 16
-```
-
-</td></tr>
-<tr><td>
-
-```toml
-# 断点数据库名
-checkpoint-schema = "tidb_loader"
-```
-
-</td><td>
-
-```toml
-[checkpoint]
-# 断点存储
-enable = true
-schema = "tidb_lightning_checkpoint"
-# 断点默认存储在本地的文件系统，这样更高效。但你也可以
-# 选择将断点存储在目标数据库中，设置如下：
-# driver = "mysql"
-```
-
-</td></tr>
-<tr><td>
-
-```toml
-```
-
-</td><td>
-
-```toml
-[tikv-importer]
-# 使用 TiDB-backend
-backend = "tidb"
-```
-
-</td></tr>
-<tr><td>
-
-```toml
-# 数据源目录
-dir = "/data/export/"
-```
-
-</td><td>
-
-```toml
-[mydumper]
-# 数据源目录
-data-source-dir = "/data/export"
-```
-
-</td></tr>
-
-<tr><td>
-
-```toml
-[db]
-# TiDB 连接参数
-host = "127.0.0.1"
-port = 4000
-user = "root"
-password = ""
-#sql-mode = ""
-```
-
-</td><td>
-
-```toml
-[tidb]
-# TiDB 连接参数
-host = "127.0.0.1"
-port = 4000
-# 在 TiDB-backend 模式下，该参数为可选参数
-# status-port = 10080
-user = "root"
-password = ""
-#sql-mode = ""
-```
-
-</td></tr>
-<tr><td>
-
-```toml
-# [[route-rules]]
-# Table routes
-# schema-pattern = "shard_db_*"
-# table-pattern = "shard_table_*"
-# target-schema = "shard_db"
-# target-table = "shard_table"
-```
-
-</td><td>
-
-```toml
-# [[routes]]
-# Table routes
-# schema-pattern = "shard_db_*"
-# table-pattern = "shard_table_*"
-# target-schema = "shard_db"
-# target-table = "shard_table"
-```
-
-</td></tr>
-</tbody>
-</table>
++-----------------------------------+--------------------------------------------------------------------+
+| Loader                            | TiDB Lightning                                                     |
++===================================+====================================================================+
+| ``` toml                          | ``` toml                                                           |
+| # 日志级别                        | [lightning]                                                        |
+| log-level = "info"                | # 日志级别                                                         |
+| # 日志的输出目录                  | level = "info"                                                     |
+| log-file = "loader.log"           | # 日志的输出目录。如果未指定该位置目录，默认为执行命令的所在目录。 |
+| # Prometheus                      | file = "tidb-lightning.log"                                        |
+| status-addr = ":8272"             | # Prometheus                                                       |
+| # 线程数                          | pprof-port = 8289                                                  |
+| pool-size = 16                    | # 并发度 (最好使用默认设置)                                        |
+| ```                               | #region-concurrency = 16                                           |
+|                                   | ```                                                                |
++-----------------------------------+--------------------------------------------------------------------+
+| ``` toml                          | ``` toml                                                           |
+| # 断点数据库名                    | [checkpoint]                                                       |
+| checkpoint-schema = "tidb_loader" | # 断点存储                                                         |
+| ```                               | enable = true                                                      |
+|                                   | schema = "tidb_lightning_checkpoint"                               |
+|                                   | # 断点默认存储在本地的文件系统，这样更高效。但你也可以             |
+|                                   | # 选择将断点存储在目标数据库中，设置如下：                         |
+|                                   | # driver = "mysql"                                                 |
+|                                   | ```                                                                |
++-----------------------------------+--------------------------------------------------------------------+
+| ``` toml                          | ``` toml                                                           |
+| ```                               | [tikv-importer]                                                    |
+|                                   | # 使用 TiDB-backend                                                |
+|                                   | backend = "tidb"                                                   |
+|                                   | ```                                                                |
++-----------------------------------+--------------------------------------------------------------------+
+| ``` toml                          | ``` toml                                                           |
+| # 数据源目录                      | [mydumper]                                                         |
+| dir = "/data/export/"             | # 数据源目录                                                       |
+| ```                               | data-source-dir = "/data/export"                                   |
+|                                   | ```                                                                |
++-----------------------------------+--------------------------------------------------------------------+
+| ``` toml                          | ``` toml                                                           |
+| [db]                              | [tidb]                                                             |
+| # TiDB 连接参数                   | # TiDB 连接参数                                                    |
+| host = "127.0.0.1"                | host = "127.0.0.1"                                                 |
+| port = 4000                       | port = 4000                                                        |
+| user = "root"                     | # 在 TiDB-backend 模式下，该参数为可选参数                         |
+| password = ""                     | # status-port = 10080                                              |
+| #sql-mode = ""                    | user = "root"                                                      |
+| ```                               | password = ""                                                      |
+|                                   | #sql-mode = ""                                                     |
+|                                   | ```                                                                |
++-----------------------------------+--------------------------------------------------------------------+
+| ``` toml                          | ``` toml                                                           |
+| # [[route-rules]]                 | # [[routes]]                                                       |
+| # Table routes                    | # Table routes                                                     |
+| # schema-pattern = "shard_db_*"   | # schema-pattern = "shard_db_*"                                    |
+| # table-pattern = "shard_table_*" | # table-pattern = "shard_table_*"                                  |
+| # target-schema = "shard_db"      | # target-schema = "shard_db"                                       |
+| # target-table = "shard_table"    | # target-table = "shard_table"                                     |
+| ```                               | ```                                                                |
++-----------------------------------+--------------------------------------------------------------------+
 
 ## TiDB Lightning Importer-backend
 
