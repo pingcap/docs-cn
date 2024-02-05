@@ -977,6 +977,7 @@
       - PERFORMANCE_SCHEMA
         - [概述](/performance-schema/performance-schema.md)
         - [`SESSION_CONNECT_ATTRS`](/performance-schema/performance-schema-session-connect-attrs.md)
+      - [`sys`](/sys-schema.md)
     - [元数据锁](/metadata-lock.md)
     - [TiDB DDL V2](/ddl-v2.md)
   - UI
