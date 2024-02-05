@@ -214,7 +214,7 @@ Starting from tiup-cluster v1.14.0, you can specify certain components to a spec
 > For components that share a version number, such as TiDB, TiKV, PD, and TiCDC, there are no complete tests to ensure that they work properly in a mixed-version deployment scenario. Ensure that you use this section only in test environments, or with the help of [technical support](/support.md).
 
 ```shell
-tiup cluster upgrade -h | grep "version string"
+tiup cluster upgrade -h | grep "version"
       --alertmanager-version string        Fix the version of alertmanager and no longer follows the cluster version.
       --blackbox-exporter-version string   Fix the version of blackbox-exporter and no longer follows the cluster version.
       --cdc-version string                 Fix the version of cdc and no longer follows the cluster version.
