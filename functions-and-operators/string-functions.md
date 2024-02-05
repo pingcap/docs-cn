@@ -84,11 +84,104 @@ SELECT BIN(-7);
 
 ### [`BIT_LENGTH()`](https://dev.mysql.com/doc/refman/8.0/en/string-functions.html#function_bit-length)
 
-返回字符串的位长度
+`BIT_LENGTH()` 函数用于返回输入参数的长度（以比特为单位）。
+
+示例：
+
+```sql
+SELECT BIT_LENGTH("TiDB");
+
++--------------------+
+| BIT_LENGTH("TiDB") |
++--------------------+
+|                 32 |
++--------------------+
+```
+
+每个字符 8 位 x 4 个字符 = 32 位
+
+```sql
+SELECT BIT_LENGTH("PingCAP 123");
+
++---------------------------+
+| BIT_LENGTH("PingCAP 123") |
++---------------------------+
+|                        88 |
++---------------------------+
+```
+
+每个字符 8 位（空格也会被计算在内，虽然它是非字母字符） x 11 个字符 = 88 位
+
+```sql
+SELECT CustomerName, BIT_LENGTH(CustomerName) AS BitLengthOfName FROM Customers;
+
++--------------------+-----------------+
+| CustomerName       | BitLengthOfName |
++--------------------+-----------------+
+| Albert Einstein    |             120 |
+| Robert Oppenheimer |             144 |
++--------------------+-----------------+
+```
+
+> **注意：**
+>
+> 上面这个示例假设数据库中存在一个名为 `Customers` 的表，表中有一个名为 `CustomerName` 的列。
 
 ### [`CHAR()`](https://dev.mysql.com/doc/refman/8.0/en/string-functions.html#function_char)
 
-返回由整数的代码值所给出的字符组成的字符串
+`CHAR()` 函数用于获取指定 ASCII 值的对应字符。该函数执行的操作与 `ASCII()` 相反，`ASCII()` 用于返回指定字符的 ASCII 值。
+
+示例：
+
+```sql
+SELECT CHAR(65);
+
++------------+
+|  CHAR(65)  |
++------------+
+|          A |
++------------+
+```
+
+```sql
+SELECT CHAR(84);
+
++------------+
+|  CHAR(84)  |
++------------+
+|          T |
++------------+
+```
+
+`CHAR()` 函数还可用于获取超出标准 ASCII 范围（`0` - `127`）的 ASCII 值的对应字符。
+
+```sql
+/*For extended ASCII: */
+
+SELECT CHAR(128);
+
++------------+
+|  CHAR(128) |
++------------+
+|       0x80 |
++------------+
+```
+
+`CHAR()` 函数还可用于获取 Unicode 值的对应字符。
+
+```sql
+/* For Unicode: */
+
+--skip-binary-as-hex
+
+SELECT CHAR(50089);
+
++--------------+
+|  CHAR(50089) |
++--------------+
+|            é |
++--------------+
+```
 
 ### [`CHAR_LENGTH()`](https://dev.mysql.com/doc/refman/8.0/en/string-functions.html#function_char-length)
 
