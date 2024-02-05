@@ -21,7 +21,6 @@ cdc cli changefeed create --server=http://127.0.0.1:8300 --changefeed-id="kafka-
 
 同时在 Debezium 输出格式中我们包含当前行的 Schema 信息，以便于下游消费者能够更好的理解当前行的数据结构。对于不需要输出 Schema 信息的场景，我们也可以通过在 changefeed 的配置文件或者 `sink-uri` 中将 `debezium-disable-schema` 参数设置为 true 来关闭 Schema 信息的输出。
 
-
 另外，Debezium 原有格式其中并不包含 TiDB 专有的 CommitTS 事务唯一标识等重要字段。为了保证数据的完整性，TiCDC 在 Debezium 格式中增加了 CommitTs 和 ClusterID 两个字段，用于标识 TiDB 数据变更的相关信息。
 
 ## Message 格式定义
@@ -114,6 +113,7 @@ TiCDC 会把一个 DML Event 编码成如下格式:
     }
 }
 ```
+
 以上 JSON 数据的重点字段解释如下：
 
 | 字段      | 类型   | 说明                                                                      |
@@ -127,8 +127,8 @@ TiCDC 会把一个 DML Event 编码成如下格式:
 | payload.source.table     | String   |  记录的是对应事件发生的数据表的名称                    |
 | schema.fields     | JSON   |  记录了 payload 中各个字段的类型信息，包括对应行数据变更前后 schema 的信息等      |
 
-
 ### 数据类型映射
+
 消息中的数据格式映射基本遵循 https://debezium.io/documentation/reference/2.4/connectors/mysql.html#mysql-data-types 的数据类型映射规则，但是 TiCDC 会对部分数据类型进行特殊处理，具体如下：
 
 1. 目前 TiDB 不支持空间数据类型，包括 GEOMETRY, LINESTRING, POLYGON, MULTIPOINT, MULTILINESTRING, MULTIPOLYGON, GEOMETRYCOLLECTION。
@@ -138,6 +138,3 @@ TiCDC 会把一个 DML Event 编码成如下格式:
 3. 对于 Enum 和 Set 类型，会使用他们的 String 值来表示。
 
 4. 对于 Decimal 数据类型，会使用 float64 类型来表示，包括 DECIMAL, NUMERIC。
-
-
-
