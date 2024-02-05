@@ -410,7 +410,7 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
 ### `tls-version`
 
 + 设置用于连接 MySQL 协议的最低 TLS 版本。
-+ 默认值：""，支持 TLSv1.1 及以上版本。
++ 默认值：""，支持 TLSv1.2 及以上版本。在 v7.6.0 之前，TiDB 默认支持 TLSv1.1 及以上版本。
 + 可选值：`"TLSv1.0"`、`"TLSv1.1"`、`"TLSv1.2"` 和 `"TLSv1.3"`
 
 ### `auth-token-jwks` <span class="version-mark">从 v6.4.0 版本开始引入</span>
