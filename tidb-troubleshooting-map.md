@@ -219,19 +219,15 @@ TiDB 支持完整的分布式事务，自 v3.0 版本起，提供乐观事务与
 
 ### 4.3 客户端报 `server is busy` 错误
 
-首先，write stall 是一个 RocksDB 原生内建的性能降级机制。当 RocksDB 发生 write stall 时，整个系统的性能会出现剧烈下降。此前，TiDB 是通过直接给客户端返回 `ServerIsBusy` 错误来阻挡所有的写请求，带来剧烈的 QPS 性能下降。自 TiDB 5.2 版本起，TiKV 引入了新的流控机制，通过前置在调度层实现动态延迟写请求来达到抑制写入的目标，以期取代之前当遇到 write stall 时就给客户端返回 `server is busy` 来抑制写入的问题。该流控机制默认配置开启，TiKV 会自动关闭 KvDB 和 RaftDB (memtable 除外) 的 write stall 机制。但是，当 pending 的量超过一定阈值时，流控机制仍然会失效，开始拒绝部分或所有的写入请求，并返回客户端 `server is busy` 报错。相关阈值可参见[流控配置说明](/tikv-configuration-file#storageflow-control)。如下为保留原有的客户端 `server is busy` 排错指引。
-
 通过查看监控：**Grafana** -> **TiKV** -> **errors** 确认具体 busy 原因。`server is busy` 是 TiKV 自身的流控机制，TiKV 通过这种方式告知 `tidb/ti-client` 当前 TiKV 的压力过大，稍后再尝试。
 
-- 4.3.1 TiKV RocksDB 出现 `write stall`。一个 TiKV 包含两个 RocksDB 实例，一个用于存储 Raft 日志，位于 `data/raft`。另一个用于存储真正的数据，位于 `data/db`。通过 `grep "Stalling" RocksDB` 日志查看 stall 的具体原因，RocksDB 日志是 LOG 开头的文件，LOG 为当前日志。
+- 4.3.1 TiKV RocksDB 出现 `write stall`。一个 TiKV 包含两个 RocksDB 实例，一个用于存储 Raft 日志，位于 `data/raft`。另一个用于存储真正的数据，位于 `data/db`。通过 `grep "Stalling" RocksDB` 日志查看 stall 的具体原因，RocksDB 日志是 LOG 开头的文件，LOG 为当前日志。`write stall` 是一个 RocksDB 原生内建的性能降级机制。当 RocksDB 发生 `write stall` 时，整个系统的性能会出现剧烈下降。此前，TiDB 是通过直接给客户端返回 `ServerIsBusy` 错误来阻挡所有的写请求，但这容易带来剧烈的 QPS 性能下降。自 5.2 版本起，TiKV 引入了新的流控机制，通过前置在调度层实现动态延迟写请求来达到抑制写入的目标，以期取代之前当遇到 `write stall` 时就给客户端返回 `server is busy` 来抑制写入的问题。新的流控机制默认配置开启，TiKV 会自动关闭 `KvDB` 和 `RaftDB` (memtable 除外) 的 `write stall` 机制。但是，当 pending 的量超过一定阈值时，流控机制仍然会失效，开始拒绝部分或所有的写入请求，并返回客户端 `server is busy` 报错，表现如下。更具体的说明和阈值可参考[流控配置说明](/tikv-configuration-file#storageflow-control)
 
-    - `level0 sst` 太多导致 stall，可以添加参数 `[rocksdb] max-sub-compactions = 2`（或者 `3`），加快 level0 sst 往下 compact 的速度。该参数的意思是将从 level0 到 level1 的 compaction 任务最多切成 `max-sub-compactions` 个子任务交给多线程并发执行，见案例 [case-815](https://github.com/pingcap/tidb-map/blob/master/maps/diagnose-case-study/case815.md)。
+    - `pending compaction bytes` 太多导致触发新流控机制开始工作， 可以通过调大 `soft-pending-compaction-bytes-limit` 和 `hard-pending-compaction-bytes-limit` 参数来缓解：
 
-    - `pending compaction bytes` 太多导致 stall，磁盘 I/O 能力在业务高峰跟不上写入，可以通过调大对应 Column Family (CF) 的 `soft-pending-compaction-bytes-limit` 和 `hard-pending-compaction-bytes-limit` 参数来缓解：
+        - 如果 `pending compaction bytes` 达到该阈值，流控就会开始拒绝一部分的写请求（通过给客户端返回`ServerIsBusy`）。默认值 192GB，`[storage.flow-control] soft-pending-compaction-bytes-limit = "384GB"`。
 
-        - 如果 `pending compaction bytes` 达到该阈值，RocksDB 会放慢写入速度。默认值 64GB，`[rocksdb.defaultcf] soft-pending-compaction-bytes-limit = "128GB"`。
-
-        - 如果 `pending compaction bytes` 达到该阈值，RocksDB 会 stop 写入，通常不太可能触发该情况，因为在达到 `soft-pending-compaction-bytes-limit` 的阈值之后会放慢写入速度。默认值 256GB，`hard-pending-compaction-bytes-limit = "512GB"`<!--见案例 [case-275](https://github.com/pingcap/tidb-map/blob/master/maps/diagnose-case-study/case275.md) -->。
+        - 如果 `pending compaction bytes` 达到该阈值，流控就会开始拒绝所有的写请求（通过给客户端返回`ServerIsBusy`），通常不太可能触发该情况，因为在达到 `soft-pending-compaction-bytes-limit` 的阈值之后流控机制就会介入而放慢写入速度。默认值 1024GB，`hard-pending-compaction-bytes-limit = "2048GB"`<!--见案例 [case-275](https://github.com/pingcap/tidb-map/blob/master/maps/diagnose-case-study/case275.md) -->。
 
         - 如果磁盘 IO 能力持续跟不上写入，建议扩容。如果磁盘的吞吐达到了上限（例如 SATA SSD 的吞吐相对 NVME SSD 会低很多）导致 write stall，但是 CPU 资源又比较充足，可以尝试采用压缩率更高的压缩算法来缓解磁盘的压力，用 CPU 资源换磁盘资源。
 
