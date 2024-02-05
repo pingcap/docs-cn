@@ -18,7 +18,7 @@ title: 生成列
 
 生成列的主要的作用之一：从 JSON 数据类型中解出数据，并为该数据建立索引。
 
-MySQL 5.7 及 TiDB 都不能直接为 JSON 类型的列添加索引，即不支持在如下表结构中的 `address_info` 上建立索引：
+MySQL 8.0 及 TiDB 都不能直接为 JSON 类型的列添加索引，即不支持在如下表结构中的 `address_info` 上建立索引：
 
 {{< copyable "sql" >}}
 
