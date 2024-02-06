@@ -50,7 +50,7 @@ TiDB 是一个兼容 MySQL 的数据库。[MySQL Workbench](https://www.mysql.co
 
 4. 点击 **Generate Password** 生成一个随机密码。
 
-    > **小贴士**
+    > **建议：**
     >
     > 如果你之前已经生成过密码，可以直接使用原密码，或点击 **Reset Password** 重新生成密码。
 
