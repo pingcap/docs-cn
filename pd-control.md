@@ -1459,7 +1459,7 @@ unsafe remove-failed-stores show
 
 ### `resource-manager [command]`
 
-#### 查看 resource control 的 controller 配置
+#### 查看资源管控 ( Resource Control) 的 controller 配置
 
 ```bash
 resource-manager config controller show
