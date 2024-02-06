@@ -493,6 +493,8 @@ mysql> SELECT FROM_BASE64('MTIzNDU2');
 
 在指定位置插入一个子字符串，最多不超过指定字符数
 
+### [`INSTR()`](https://dev.mysql.com/doc/refman/8.0/en/string-functions.html#function_instr)
+
 `INSTR(str, substr)` 函数用于获取子字符串 `substr` 在字符串 `str` 中第一次出现的位置。`substr` 和 `str` 均可以为字符串或数字。该函数与 [`LOCATE(substr, str)`](#locate) 函数的两参数版本功能相同，但参数顺序相反。
 
 > **注意:**
