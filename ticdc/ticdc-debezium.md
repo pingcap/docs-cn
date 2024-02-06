@@ -129,12 +129,10 @@ TiCDC 会把一个 DML Event 编码成如下格式:
 
 ### 数据类型映射
 
-消息中的数据格式映射基本遵循 https://debezium.io/documentation/reference/2.4/connectors/mysql.html#mysql-data-types 的数据类型映射规则，但是 TiCDC 会对部分数据类型进行特殊处理，具体如下：
+消息中的数据格式映射基本遵循 https://debezium.io/documentation/reference/2.4/connectors/mysql.html#mysql-data-types 的数据类型映射规则，大体与 Debezium Connector 原生的 Message 保持一致。但是对于部分数据类型，TiCDC Debezium 的处理方式与 Debezium Connector Message 存在一定差异，具体如下：
 
 1. 目前 TiDB 不支持空间数据类型，包括 GEOMETRY, LINESTRING, POLYGON, MULTIPOINT, MULTILINESTRING, MULTIPOLYGON, GEOMETRYCOLLECTION。
 
-2. 对于 Binary 和 Blob 相关类型， TiCDC 会将其按照 Base64 编码后以 String 类型表示，包括 BINARY, VARBINARY, TINYBLOB, BLOB, MEDIUMBLOB, LONGBLOB。
+2. 对于 String-likes 的数据类型，包括 Varchar, String, VarString, TinyBlob, MediumBlob, BLOB, LongBlob 等, 当该列具有 BINARY 标志是，TiCDC 会将其按照 Base64 编码后以 String 类型表示。如果没有则直接编码为 String 类型。 而原生的 Debezium Connector 会根据 binary.handling.mode 以不同的编码方式进行编码。
 
-3. 对于 Enum 和 Set 类型，会使用他们的 String 值来表示。
-
-4. 对于 Decimal 数据类型，会使用 float64 类型来表示，包括 DECIMAL, NUMERIC。
+3. 对于 Decimal 数据类型，TiCDC 均会使用 float64 类型来表示，包括 DECIMAL, NUMERIC。对于原生的 Debezium Connector，根据数据类型的不同精度会采用 float32 或者 float 64 的方式进行编码。
