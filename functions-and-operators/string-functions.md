@@ -446,7 +446,7 @@ Arguments:
 
 - `X`: the number to be formatted. It can be a direct numeric value, a numeric string, or a number in scientific notation.
 - `D`: the number of decimal places for the returned value. The function rounds the number `X` to `D` decimal places. If `D` is greater than the actual number of decimal places in `X`, the result is padded with zeros to the corresponding length.
- `[locale]`: specifies a locale setting to be used for grouping between decimal points, thousands separators, and separators for resultant numbers. A valid locale value is the same as the valid value of the [`lc_time_names`](https://dev.mysql.com/doc/refman/8.3/en/server-system-variables.html#sysvar_lc_time_names) system variable. If not specified or the region setting is `NULL`, the `'en_US'` region setting is used by default. This argument is optional.
+- `[locale]`: specifies a locale setting to be used for grouping between decimal points, thousands separators, and separators for resultant numbers. A valid locale value is the same as the valid value of the [`lc_time_names`](https://dev.mysql.com/doc/refman/8.3/en/server-system-variables.html#sysvar_lc_time_names) system variable. If not specified or the region setting is `NULL`, the `'en_US'` region setting is used by default. This argument is optional.
 
 Behaviors:
 
@@ -647,11 +647,71 @@ SELECT INSERT('あああああああ', 2, 3, 'xx');
 
 ### [`INSTR()`](https://dev.mysql.com/doc/refman/8.0/en/string-functions.html#function_instr)
 
-Return the index of the first occurrence of substring.
+The `INSTR(str, substr)` function is used to get the position of the first occurrence of `substr` in `str`. Each argument can be either a string or a number. This function is the same as the two-argument version of [`LOCATE(substr, str)`](#locate), but with the order of the arguments reversed.
+
+> **Note:**
+>
+> The case sensitivity of `INSTR(str, substr)` is determined by the [collations](/character-set-and-collation.md) used in TiDB. Binary collations (with the suffix `_bin`) are case-sensitive, while general collations (with the suffix `_general_ci` or `_ai_ci`, and) are case-insensitive.
+
+- If either argument is a number, the function treats the number as a string.
+- If `substr` is not in `str`, the function returns `0`. Otherwise, it returns the position of the first occurrence of `substr` in `str`.
+- If either argument is `NULL`, the function returns `NULL`.
+
+Examples:
+
+```sql
+SELECT INSTR("pingcap.com", "tidb");
+
++------------------------------+
+| INSTR("pingcap.com", "tidb") |
++------------------------------+
+|                            0 |
++------------------------------+
+```
+
+```sql
+SELECT INSTR("pingcap.com/tidb", "tidb");
+
++-----------------------------------+
+| INSTR("pingcap.com/tidb", "tidb") |
++-----------------------------------+
+|                                13 |
++-----------------------------------+
+```
+
+```sql
+SELECT INSTR("pingcap.com/tidb" COLLATE utf8mb4_bin, "TiDB");
+
++-------------------------------------------------------+
+| INSTR("pingcap.com/tidb" COLLATE utf8mb4_bin, "TiDB") |
++-------------------------------------------------------+
+|                                                     0 |
++-------------------------------------------------------+
+```
+
+```sql
+SELECT INSTR("pingcap.com/tidb" COLLATE utf8mb4_general_ci, "TiDB");
+
++--------------------------------------------------------------+
+| INSTR("pingcap.com/tidb" COLLATE utf8mb4_general_ci, "TiDB") |
++--------------------------------------------------------------+
+|                                                           13 |
++--------------------------------------------------------------+
+```
+
+```sql
+SELECT INSTR(0123, "12");
+
++-------------------+
+| INSTR(0123, "12") |
++-------------------+
+|                 1 |
++-------------------+
+```
 
 ### [`LCASE()`](https://dev.mysql.com/doc/refman/8.0/en/string-functions.html#function_lcase)
 
-Synonym for `LOWER()`.
+The `LCASE(str)` function is a synonym for [`LOWER(str)`](#lower), which returns the lowercase of the given argument. 
 
 ### [`LEFT()`](https://dev.mysql.com/doc/refman/8.0/en/string-functions.html#function_left)
 
@@ -1088,7 +1148,33 @@ SELECT LOCATE(_binary'B', 'aBcde');
 
 ### [`LOWER()`](https://dev.mysql.com/doc/refman/8.0/en/string-functions.html#function_lower)
 
-Return the argument in lowercase.
+The `LOWER(str)` function is used to convert all characters in the given argument `str` to lowercase. The argument can be either a string or a number.
+
+- If the argument is a string, the function returns the string in lowercase.
+- If the argument is a number, the function returns the number without leading zeros.
+- If the argument is `NULL`, the function returns `NULL`.
+
+Examples:
+
+```sql
+SELECT LOWER("TiDB");
+
++---------------+
+| LOWER("TiDB") |
++---------------+
+| tidb          |
++---------------+
+```
+
+```sql
+SELECT LOWER(-012);
+
++-------------+
+| LOWER(-012) |
++-------------+
+| -12         |
++-------------+
+```
 
 ### [`LPAD()`](https://dev.mysql.com/doc/refman/8.0/en/string-functions.html#function_lpad)
 
