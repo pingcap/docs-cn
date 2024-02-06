@@ -261,7 +261,7 @@ TiCDC 需要磁盘是为了缓冲上游写入高峰时下游消费不及时堆�
 
 如果有某些使用 TiCDC 同步的表需要使用 TiDB Lightning 或者 BR 恢复数据，可以这么做：
 
-1. 删除包括这些表的 TiCDC 同步任务。
+1. 删除涉及这些表的 TiCDC 同步任务。
 
 2. 使用 TiDB Lightning 或 BR 在 TiCDC 的上游集群和下游集群分别恢复数据。
 
