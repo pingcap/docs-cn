@@ -110,7 +110,7 @@ SELECT BIT_LENGTH("PingCAP 123");
 +---------------------------+
 ```
 
-每个字符 8 位（空格也会被计算在内，虽然它是非字母字符） x 11 个字符 = 88 位
+每个字符 8 位（空格也会被计算在内，因为它是非字母数字字符） x 11 个字符 = 88 位
 
 ```sql
 SELECT CustomerName, BIT_LENGTH(CustomerName) AS BitLengthOfName FROM Customers;
