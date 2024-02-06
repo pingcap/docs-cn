@@ -493,13 +493,65 @@ mysql> SELECT FROM_BASE64('MTIzNDU2');
 
 在指定位置插入一个子字符串，最多不超过指定字符数
 
-### [`INSTR()`](https://dev.mysql.com/doc/refman/8.0/en/string-functions.html#function_instr)
+`INSTR(str, substr)` 函数用于获取子字符串 `substr` 在字符串 `str` 中第一次出现的位置。`substr` 和 `str` 均可以为字符串或数字。该函数与 [`LOCATE(substr, str)`](#locate) 函数的两参数版本功能相同，但参数顺序相反。
 
-返回第一次出现的子字符串的索引
+> **注意:**
+>
+> `INSTR(str, substr)` 函数是否区分大小取决于 TiDB 所使用的[排序规则](/character-set-and-collation.md)。二进制排序规则（以 `_bin` 为后缀）区分大小写，而通用排序规则（以 `_general_ci` 或 `_ai_ci` 为后缀）不区分大小写。
+
+- 如果任一输入参数为数字，该函数将数字视为字符串处理。
+- 如果 `substr` 不在 `str` 中，函数返回 `0`。否则，返回 `substr` 在 `str` 中第一次出现的位置。
+- 如果任一参数为 `NULL`，该函数返回 `NULL`。
+
+示例:
+
+```sql
+SELECT INSTR("pingcap.com", "tidb");
++------------------------------+
+| INSTR("pingcap.com", "tidb") |
++------------------------------+
+|                            0 |
++------------------------------+
+```
+
+```sql
+SELECT INSTR("pingcap.com/tidb", "tidb");
++-----------------------------------+
+| INSTR("pingcap.com/tidb", "tidb") |
++-----------------------------------+
+|                                13 |
++-----------------------------------+
+```
+
+```sql
+SELECT INSTR("pingcap.com/tidb" COLLATE utf8mb4_bin, "TiDB");
++-------------------------------------------------------+
+| INSTR("pingcap.com/tidb" COLLATE utf8mb4_bin, "TiDB") |
++-------------------------------------------------------+
+|                                                     0 |
++-------------------------------------------------------+
+```
+
+```sql
+SELECT INSTR("pingcap.com/tidb" COLLATE utf8mb4_general_ci, "TiDB");
++--------------------------------------------------------------+
+| INSTR("pingcap.com/tidb" COLLATE utf8mb4_general_ci, "TiDB") |
++--------------------------------------------------------------+
+|                                                           13 |
++--------------------------------------------------------------+
+```
+
+```sql
+SELECT INSTR(0123, "12");
++-------------------+
+| INSTR(0123, "12") |
++-------------------+
+|                 1 |
++-------------------+
 
 ### [`LCASE()`](https://dev.mysql.com/doc/refman/8.0/en/string-functions.html#function_lcase)
 
-与 `LOWER()` 功能相同
+`LCASE(str)`函数与 [`LOWER(str)`](#lower) 函数功能相同，都是返回输入参数的小写形式。
 
 ### [`LEFT()`](https://dev.mysql.com/doc/refman/8.0/en/string-functions.html#function_left)
 
@@ -519,7 +571,33 @@ mysql> SELECT FROM_BASE64('MTIzNDU2');
 
 ### [`LOWER()`](https://dev.mysql.com/doc/refman/8.0/en/string-functions.html#function_lower)
 
-返回全小写的参数
+`LOWER(str)` 函数用于将输入的参数 `str` 中的所有字符转换为小写。该参数可以为字符串或数字。
+
+- 如果输入参数为字符串，该函数返回字符串的小写形式。
+- 如果输入参数为数字，该函数将会去掉该数字中的前导零。
+- 如果输入参数为 `NULL`，该函数返回 `NULL`。
+
+示例：
+
+```sql
+SELECT LOWER("TiDB");
+
++---------------+
+| LOWER("TiDB") |
++---------------+
+| tidb          |
++---------------+
+```
+
+```sql
+SELECT LOWER(-012);
+
++-------------+
+| LOWER(-012) |
++-------------+
+| -12         |
++-------------+
+```
 
 ### [`LPAD()`](https://dev.mysql.com/doc/refman/8.0/en/string-functions.html#function_lpad)
 
