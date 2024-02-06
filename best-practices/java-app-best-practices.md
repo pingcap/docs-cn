@@ -200,12 +200,12 @@ Java 的连接池实现很多 ([HikariCP](https://github.com/brettwooldridge/Hik
 
 ### 探活配置
 
-连接池维护到 TiDB 的长连接，TiDB 在：
+连接池维护客户端到 TiDB 的长连接的方式如下：
 
-- v5.4 版本前，默认不会主动关闭客户端连接（除非报错）；
-- v5.4 及以上版本，默认会在连接空闲 `28800` 秒，即 8 小时后，关闭客户端连接。你可以使用 TiDB 与 MySQL 兼容的 `wait_timeout` 变量控制此超时时间配置，详见 [JDBC 查询超时](/develop/dev-guide-timeouts-in-tidb.md#jdbc-查询超时)文档。
+- v5.4 版本前，TiDB 默认不会主动关闭客户端连接，除非出现报错情况。
+- 从 v5.4 起，TiDB 默认会在连接空闲超过 `28800` 秒（即 8 小时）后，自动关闭客户端连接。你可以使用 TiDB 与 MySQL 兼容的 `wait_timeout` 变量控制此超时时间，详见 [JDBC 查询超时](/develop/dev-guide-timeouts-in-tidb.md#jdbc-查询超时)文档。
 
-且一般客户端到 TiDB 之间还会有 [LVS](https://en.wikipedia.org/wiki/Linux_Virtual_Server) 或 [HAProxy](https://en.wikipedia.org/wiki/HAProxy) 之类的网络代理，它们通常会在连接空闲一定时间（由代理的 idle 配置决定）后主动清理连接。除了注意代理的 idle 配置外，连接池还需要进行保活或探测连接。
+此外，客户端到 TiDB 之间通常还会有 [LVS](https://en.wikipedia.org/wiki/Linux_Virtual_Server) 或 [HAProxy](https://en.wikipedia.org/wiki/HAProxy) 之类的网络代理。这些代理通常会在连接空闲超过特定时间（由代理的 idle 配置决定）后主动清理连接。除了关注代理的 idle 配置外，连接池还需要进行保活或探测连接。
 
 如果常在 Java 应用中看到以下错误：
 
