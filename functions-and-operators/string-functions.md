@@ -185,11 +185,38 @@ SELECT CHAR(50089);
 
 ### [`CHAR_LENGTH()`](https://dev.mysql.com/doc/refman/8.0/en/string-functions.html#function_char-length)
 
-返回字符串的字符长度
+`CHAR_LENGTH()` 函数用于获取输入参数中字符的总数。
+
+示例：
+
+```sql
+SELECT CHAR_LENGTH("TiDB") AS LengthOfString;
+
++----------------+
+| LengthOfString |
++----------------+
+|              4 |
++----------------+
+```
+
+```sql
+SELECT CustomerName, CHAR_LENGTH(CustomerName) AS LenghtOfName FROM Customers;
+
++--------------------+--------------+
+| CustomerName       | LenghtOfName |
++--------------------+--------------+
+| Albert Einstein    |           15 |
+| Robert Oppenheimer |           18 |
++--------------------+--------------+
+```
+
+> **注意：**
+>
+> 上面这个示例假设数据库中存在一个名为 `Customers` 的表，表中有一个名为 `CustomerName` 的列。
 
 ### [`CHARACTER_LENGTH()`](https://dev.mysql.com/doc/refman/8.0/en/string-functions.html#function_character-length)
 
-与 `CHAR_LENGTH()` 功能相同
+`CHARACTER_LENGTH()` 函数与 `CHAR_LENGTH()` 函数功能相同，返回结果相同，可以互换使用。
 
 ### [`CONCAT()`](https://dev.mysql.com/doc/refman/8.0/en/string-functions.html#function_concat)
 
