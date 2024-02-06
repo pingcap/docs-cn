@@ -123,7 +123,7 @@ SELECT CustomerName, CHAR_LENGTH(CustomerName) AS LenghtOfName FROM Customers;
 
 ### [`CHARACTER_LENGTH()`](https://dev.mysql.com/doc/refman/8.0/en/string-functions.html#function_character-length)
 
-`CHARACTER_LENGTH()` 函数与 `CHAR_LENGTH()` 函数作用相同，返回结果相同，可以互换使用。
+`CHARACTER_LENGTH()` 函数与 `CHAR_LENGTH()` 函数功能相同，返回结果相同，可以互换使用。
 
 ### [`CONCAT()`](https://dev.mysql.com/doc/refman/8.0/en/string-functions.html#function_concat)
 
