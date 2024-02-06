@@ -84,7 +84,7 @@ SELECT BIN(-7);
 
 ### [`BIT_LENGTH()`](https://dev.mysql.com/doc/refman/8.0/en/string-functions.html#function_bit-length)
 
-`BIT_LENGTH()` 函数用于返回输入参数的长度（以比特为单位）。
+`BIT_LENGTH()` 函数用于返回输入参数的长度，单位为 bit。
 
 示例：
 
