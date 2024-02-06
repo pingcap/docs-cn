@@ -5,9 +5,9 @@ summary: 了解 TiCDC Debezium Protocol 的概念和使用方法。
 
 # TiCDC Debezium Protocol
 
-[Debezium](https://debezium.io/) 一种数据库变更数据捕获的工具，它会将捕获的数据库变更的每一条记录转化为一个被称为"事件"的消息，并将这些事件发送到 Kafka 中。 为了便利在数据链路中已经使用 Debezium 的用户，TiCDC 提供了 Debezium 信息格式的协议，用于将 TiDB 的变更以 Debezium 的格式直接传输到 Kafka，来简化用户下游消费的数据链路。
+[Debezium](https://debezium.io/) 一种数据库变更数据捕获的工具，它会将捕获的数据库变更的每一条记录转化为一个被称为"事件"的消息，并将这些事件发送到 Kafka 中。 为了便利在数据链路中已经使用 Debezium 的用户，TiCDC 支持将 TiDB 的变更以 Debezium 的格式直接传输到 Kafka，来简化用户下游消费的数据链路。
 
-## 使用 Debezium
+## 使用 Debezium 消息格式
 
 当使用 Kafka 作为下游 Sink 的时候，你可以在 `sink-uri` 中指定使用 Debezium，TiCDC 将以 Event 为基本单位封装构造 Debezium Message，向下游发送 TiDB 的数据变更事件。
 
@@ -118,10 +118,10 @@ TiCDC 会把一个 DML Event 编码成如下格式:
 
 | 字段      | 类型   | 说明                                                                      |
 |:----------|:-------|:-------------------------------------------------------------------------|
-| payload.op        | String | "c"表示这是一个创建语句，"u"表示这是一个更新语句，"d”表示这是一个删除语句          |
+| payload.op        | String | "c"表示这是一个 insert ，"u"表示这是一个 update，"d”表示这是一个 delete          |
 | payload.ts_ms     | Number | 记录的是 TiCDC 生成这条信息的时间戳（ms 级别）                                |
 | payload.before    | JSON   | 记录的是这条事件语句变更前该语句的值的情况，对于 "c" 事件，before 字段为 null     |
-| payload.after     | JSON   | 记录的是这条事件语句变更后该语句的值的情况，对于 "d" 事件，before 字段为 null     |
+| payload.after     | JSON   | 记录的是这条事件语句变更后该语句的值的情况，对于 "d" 事件，after 字段为 null     |
 | payload.source.commit_ts     | Number   | 记录的是 TiCDC 生成这条信息的 CommitTs 标识                    |
 | payload.source.db     | String   | 记录的是对应事件发生的数据库的名称                    |
 | payload.source.table     | String   |  记录的是对应事件发生的数据表的名称                    |
