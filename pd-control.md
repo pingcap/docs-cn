@@ -1486,7 +1486,7 @@ resource-manager config controller show
 - `ltb-max-wait-duration`：Local Token Bucket (LTB) 的最大等待时间。如果 RU 不够，判断超过要先等待该指定时间，然后提前给应用报错 [`ERROR 8252 (HY000) : Exceeded resource group quota limitation`](/error-codes.md)。 增大该值可以减少某些突发并发增加、大事务和大查询的情况下容易报 8252 的问题。
 - `enable-controller-trace-log`：controller 诊断日志开关。
 
-#### 修改 resource control 的 controller 配置
+#### 修改 Resource Control 的 controller 配置
 
 修改 `ltb-max-wait-duration`：
 
