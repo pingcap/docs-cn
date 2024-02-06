@@ -257,8 +257,7 @@ TiCDC 需要磁盘是为了缓冲上游写入高峰时下游消费不及时堆�
 
 ## 为什么在上游使用了 TiDB Lightning 和 BR 恢复了数据之后，TiCDC 同步会出现卡顿甚至卡住？
 
-目前 TiCDC 还没完全适配 TiDB Lightning 和 BR，请避免在使用 TiCDC 同步的表上使用 TiDB Lightning 和 BR。
-否则，可能会出现未知的错误，例如 TiCDC 同步卡住、同步延迟大幅增加，或者丢失同步数据等现象。
+目前 TiCDC 尚没完全适配 TiDB Lightning 和 BR，请避免在使用 TiCDC 同步的表上使用 TiDB Lightning 和 BR。否则，可能会出现未知的错误，例如 TiCDC 同步卡住、同步延迟大幅增加、或者同步数据丢失。
 
 如果有某些表需要使用 TiDB Lightning 或者 BR 恢复数据，可以这么做：
 
