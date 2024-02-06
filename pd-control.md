@@ -1470,7 +1470,7 @@ resource-manager config controller show
 {
     "degraded-mode-wait-duration": "0s",
     "ltb-max-wait-duration": "30s",
-    "request-unit": {   # RU 的配置，不要做修改
+    "request-unit": {          # RU 的配置，请勿修改
         "read-base-cost": 0.125,
         "read-per-batch-base-cost": 0.5,
         "read-cost-per-byte": 0.0000152587890625,
