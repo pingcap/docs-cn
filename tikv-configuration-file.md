@@ -1151,8 +1151,8 @@ RocksDB 相关的配置项。
 
 ### `wal-dir`
 
-+ WAL 存储目录，默认：“tmp/tikv/store”。
-+ 默认值：/tmp/tikv/store
++ WAL 存储目录，若未指定，WAL 将存储在数据目录。
++ 默认值：`""`
 
 ### `wal-ttl-seconds`
 
