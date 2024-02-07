@@ -10,7 +10,7 @@ TiDB 是一个兼容 MySQL 的数据库，[mysql2](https://github.com/sidorares/
 本文档将展示如何在 Next.js 中使用 TiDB 和 mysql2 来完成以下任务：
 
 - 配置你的环境。
-- 使用 node-mysql2 驱动连接到 TiDB 集群。
+- 使用 mysql2 驱动连接到 TiDB 集群。
 - 构建并运行你的应用程序。你也可以参考[示例代码片段](#示例代码片段)，完成基本的 CRUD 操作。
 
 > **Note**
@@ -144,27 +144,27 @@ npm install
 
 ### 第 4 步：运行代码并查看结果
 
-1. 运行以下命令，执行示例代码：
+1. 运行示例应用程序：
 
-   ```bash
-   npm run dev
-   ```
+    ```bash
+    npm run dev
+    ```
 
-2. 打开浏览器并访问 `http://localhost:3000`（请查看你的终端以获取实际的端口号，默认为`3000`）。
+2. 打开浏览器，在地址栏输入 `http://localhost:3000`，访问示例应用程序。请查看你的终端以获取实际的端口号，默认为 `3000`。
 
 3. 点击 **RUN SQL** 执行示例代码。
 
 4. 在终端中检查输出。如果输出类似于以下内容，则连接成功：
 
-   ```json
-   {
-     "results": [
-       {
-         "Hello World": "Hello World"
-       }
-     ]
-   }
-   ```
+    ```json
+    {
+      "results": [
+        {
+          "Hello World": "Hello World"
+        }
+      ]
+    }
+    ```
 
 ## 示例代码片段
 
@@ -263,7 +263,7 @@ console.log(rsh.affectedRows);
 ## 下一步
 
 - 关于使用 ORM 框架和 Next.js 构建复杂应用程序的更多细节，可以参考 [tidb-prisma-vercel-demo](https://github.com/pingcap/tidb-prisma-vercel-demo)。
-- 关于 node-mysql2 的更多使用方法，可以参考 [node-mysql2 的 GitHub 仓库](https://github.com/sidorares/node-mysql2)。
+- 关于 mysql2 的更多使用方法，可以参考 [mysql2 的官方文档](https://sidorares.github.io/node-mysql2/zh-CN/docs)。
 - 你可以继续阅读开发者文档的其它章节来获取更多 TiDB 应用开发的最佳实践。例如：[插入数据](/develop/dev-guide-insert-data.md)，[更新数据](/develop/dev-guide-update-data.md)，[删除数据](/develop/dev-guide-delete-data.md)，[单表读取](/develop/dev-guide-get-data-from-single-table.md)，[事务](/develop/dev-guide-transaction-overview.md)，[SQL 性能优化](/develop/dev-guide-optimize-sql-overview.md)等。
 - 如果你更倾向于参与课程进行学习，我们也提供专业的 [TiDB 开发者课程](https://cn.pingcap.com/courses-catalog/category/back-end-developer/?utm_source=docs-cn-dev-guide)支持，并在考试后提供相应的[资格认证](https://learn.pingcap.com/learner/certification-center)。
 
