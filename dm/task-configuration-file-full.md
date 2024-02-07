@@ -1,6 +1,7 @@
 ---
 title: DM 任务完整配置文件介绍
 aliases: ['/docs-cn/tidb-data-migration/dev/task-configuration-file-full/','/docs-cn/tidb-data-migration/dev/dm-portal/','/zh/tidb/dev/task-configuration-file']
+summary: DM任务完整配置文件介绍，包含全局配置和实例配置两部分。全局配置包括任务基本信息配置和功能配置集，如路由规则、过滤规则、block-allow-list等。实例配置定义具体的数据迁移子任务，包括各功能配置集的配置名称。配置顺序为先编辑全局配置，再根据全局配置编辑实例配置。
 ---
 
 # DM 任务完整配置文件介绍

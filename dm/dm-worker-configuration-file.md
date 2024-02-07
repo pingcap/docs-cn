@@ -1,6 +1,7 @@
 ---
 title: DM-worker 配置文件介绍
 aliases: ['/docs-cn/tidb-data-migration/dev/dm-worker-configuration-file/']
+summary: 本文介绍了DM-worker的配置文件，包括配置文件示例与配置项说明。配置文件示例包括了worker的名称、日志配置、worker的地址等内容。配置项说明包括了全局配置中的各个配置项的说明，如name、log-level、log-file等。其中还介绍了一些新增的配置项，如relay-keepalive-ttl和relay-dir。SSL相关的配置项也有详细说明，包括ssl-ca、ssl-cert、ssl-key和cert-allowed-cn。
 ---
 
 # DM-worker 配置文件介绍
