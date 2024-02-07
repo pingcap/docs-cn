@@ -170,7 +170,7 @@ npm start
 ```
 
 <details>
-<summary>预期输出结果（部分）：/summary>
+<summary>预期输出结果（部分）：</summary>
 
 ```shell
 INFO (app/10117): Getting sequelize instance...
