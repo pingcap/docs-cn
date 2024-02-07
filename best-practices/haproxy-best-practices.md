@@ -1,6 +1,7 @@
 ---
 title: HAProxy 在 TiDB 中的最佳实践
 aliases: ['/docs-cn/dev/best-practices/haproxy-best-practices/','/docs-cn/dev/reference/best-practices/haproxy/']
+summary: HAProxy 是一款用于提供高可用性、负载均衡和代理服务的开源软件，适用于基于 TCP 和 HTTP 协议的应用程序。在 TiDB 中，HAProxy 可以实现负载均衡，通过连接提供的浮动 IP 对数据进行操作。部署 HAProxy 需要准备硬件和依赖软件，并配置相关的参数。启动和停止 HAProxy 可以使用相应的命令。
 ---
 
 # HAProxy 在 TiDB 中的最佳实践
