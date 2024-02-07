@@ -17,7 +17,8 @@ If this option is not specified, the output default template contains the follow
 
 - 3 PD instances
 - 3 TiKV instances
-- 1 TiDB instance
+- 3 TiDB instances
+- 2 TiFlash instances
 - 1 Prometheus instance
 - 1 Grafana instance
 - 1 Alertmanager instance
@@ -32,7 +33,7 @@ If this option is not specified, the output default template contains the follow
 ### --local
 
 - Outputs a simple topology template for the local cluster, which can be used directly, and the `global` parameter can be adjusted as needed.
-- This template creates a PD service, a TiDB service, a TiKV service, a monitoring service, and a Grafana service.
+- This template creates a PD service, a TiDB service, a TiKV service, a Prometheus service, and a Grafana service.
 
 ### --multi-dc
 
