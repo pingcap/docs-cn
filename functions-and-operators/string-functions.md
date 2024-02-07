@@ -577,6 +577,7 @@ SELECT INSTR(0123, "12");
 +-------------------+
 |                 1 |
 +-------------------+
+```
 
 ### [`LCASE()`](https://dev.mysql.com/doc/refman/8.0/en/string-functions.html#function_lcase)
 
