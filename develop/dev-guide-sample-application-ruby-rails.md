@@ -97,7 +97,7 @@ Connect to your TiDB cluster depending on the TiDB deployment option you've sele
 6. Edit the `.env` file, set up the `DATABASE_URL` environment variable as follows, and copy the connection string from the connection dialog as the variable value.
 
     ```dotenv
-    DATABASE_URL=mysql2://<user>:<password>@<host>:<port>/<database_name>?ssl_mode=verify_identity
+    DATABASE_URL=mysql2://{user}:{password}@{host}:{port}/{database_name}?ssl_mode=verify_identity
     ```
 
    > **Note**
@@ -126,7 +126,7 @@ Connect to your TiDB cluster depending on the TiDB deployment option you've sele
 5. Edit the `.env` file, set up the `DATABASE_URL` environment variable as follows, copy the connection string from the connection dialog as the variable value, and set the `sslca` query parameter to the file path of the CA certificate downloaded from the connection dialog:
 
     ```dotenv
-    DATABASE_URL=mysql2://<user>:<password>@<host>:<port>/<database>?ssl_mode=verify_identity&sslca=/path/to/ca.pem
+    DATABASE_URL=mysql2://{user}:{password}@{host}:{port}/{database}?ssl_mode=verify_identity&sslca=/path/to/ca.pem
     ```
 
    > **Note**
@@ -146,10 +146,10 @@ Connect to your TiDB cluster depending on the TiDB deployment option you've sele
     cp .env.example .env
     ```
 
-2. Edit the `.env` file, set up the `DATABASE_URL` environment variable as follows, and replace the `<user>`, `<password>`, `<host>`, `<port>`, and `<database>` with your own TiDB connection information:
+2. Edit the `.env` file, set up the `DATABASE_URL` environment variable as follows, and replace the `{user}`, `{password}`, `{host}`, `{port}`, and `{database}` with your own TiDB connection information:
 
     ```dotenv
-    DATABASE_URL=mysql2://<user>:<password>@<host>:<port>/<database>
+    DATABASE_URL=mysql2://{user}:{password}@{host}:{port}/{database}
     ```
 
    If you are running TiDB locally, the default host address is `127.0.0.1`, and the password is empty.
