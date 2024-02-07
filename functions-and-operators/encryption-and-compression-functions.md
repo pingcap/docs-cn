@@ -1,6 +1,7 @@
 ---
 title: 加密和压缩函数
 aliases: ['/docs-cn/dev/functions-and-operators/encryption-and-compression-functions/','/docs-cn/dev/reference/sql/functions-and-operators/encryption-and-compression-functions/']
+summary: TiDB支持大部分MySQL 5.7中提供的加密和压缩函数。支持的函数包括MD5、PASSWORD、RANDOM_BYTES、SHA1、SHA2、AES_DECRYPT、AES_ENCRYPT、COMPRESS、UNCOMPRESS、UNCOMPRESSED_LENGTH和VALIDATE_PASSWORD_STRENGTH。相关系统变量包括block_encryption_mode。不支持的函数包括DES_DECRYPT、DES_ENCRYPT、OLD_PASSWORD和ENCRYPT，以及MySQL企业版中支持的函数。
 ---
 
 # 加密和压缩函数

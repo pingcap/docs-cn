@@ -1,6 +1,7 @@
 ---
 title: Cast 函数和操作符
 aliases: ['/docs-cn/dev/functions-and-operators/cast-functions-and-operators/','/docs-cn/dev/reference/sql/functions-and-operators/cast-functions-and-operators/']
+summary: Cast函数和操作符用于将某种数据类型的值转换为另一种数据类型。TiDB支持使用MySQL 5.7中提供的所有Cast函数和操作符。其中包括BINARY函数用于将一个字符串转换成一个二进制字符串，CAST()函数用于将一个值转换成一个确定类型，以及CONVERT()函数用于将一个值转换成一个确定类型。需要注意的是，TiDB和MySQL在对于SELECT CAST(MeN AS CHAR)的结果显示上存在不一致，特别是对于科学计数法表示的双精度浮点数。MySQL在一定范围内显示完整数值，而TiDB始终显示完整数值。
 ---
 
 # Cast 函数和操作符

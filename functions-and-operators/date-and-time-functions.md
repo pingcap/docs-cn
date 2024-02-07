@@ -1,6 +1,7 @@
 ---
 title: 日期和时间函数
 aliases: ['/docs-cn/dev/functions-and-operators/date-and-time-functions/','/docs-cn/dev/reference/sql/functions-and-operators/date-and-time-functions/']
+summary: TiDB支持MySQL 5.7中的所有日期和时间函数。然而，TiDB可能无法完全匹配MySQL的行为，建议使用正确格式的日期。TiDB支持str_to_date()函数，但无法解析所有日期和时间值。此外，TiDB不支持特定的日期和时间格式化选项。相关系统变量default_week_format会影响WEEK()函数。
 ---
 
 # 日期和时间函数

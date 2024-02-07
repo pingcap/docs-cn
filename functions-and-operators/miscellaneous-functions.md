@@ -1,6 +1,7 @@
 ---
 title: 其他函数
 aliases: ['/docs-cn/dev/functions-and-operators/miscellaneous-functions/','/docs-cn/dev/reference/sql/functions-and-operators/miscellaneous-functions/']
+summary: TiDB支持大部分MySQL 5.7中提供的其他函数。支持的函数包括ANY_VALUE(), BIN_TO_UUID(), DEFAULT(), INET_ATON(), INET_NTOA(), INET6_ATON(), INET6_NTOA(), IS_IPV4(), IS_IPV4_COMPAT(), IS_IPV4_MAPPED(), IS_IPV6(), NAME_CONST(), SLEEP(), UUID(), UUID_TO_BIN(), VALUES()。不支持的函数包括UUID_SHORT()和MASTER_WAIT_POS()。
 ---
 
 # 其他函数
