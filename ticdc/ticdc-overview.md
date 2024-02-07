@@ -94,7 +94,6 @@ TiCDC 从 4.0.8 版本开始，可通过修改任务配置来同步**没有有�
 
 - 暂不支持单独使用 RawKV 的 TiKV 集群。
 - 暂不支持在 TiDB 中[创建 SEQUENCE 的 DDL 操作](/sql-statements/sql-statement-create-sequence.md)和 [SEQUENCE 函数](/sql-statements/sql-statement-create-sequence.md#sequence-函数)。在上游 TiDB 使用 SEQUENCE 时，TiCDC 将会忽略掉上游执行的 SEQUENCE DDL 操作/函数，但是使用 SEQUENCE 函数的 DML 操作可以正确地同步。
-<<<<<<< HEAD
 - 对上游存在较大事务的场景提供部分支持，详见 [TiCDC 是否支持同步大事务？有什么风险吗？](/ticdc/ticdc-faq.md#ticdc-支持同步大事务吗有什么风险吗)
 
 > **注意：**
@@ -161,6 +160,11 @@ TiCDC 从 v5.3.0 开始支持[全局临时表](/temporary-tables.md#全局临时
 
 - 使用 TiCDC 过程中经常遇到的问题，请参考 [TiCDC 常见问题](/ticdc/ticdc-faq.md)。
 - 使用 TiCDC 过程中遇到的故障及解决，请参考 [TiCDC 故障处理](/ticdc/troubleshoot-ticdc.md)。
-=======
+
+## 暂不支持的场景
+
+目前 TiCDC 暂不支持的场景如下：
+
+- 暂不支持单独使用 RawKV 的 TiKV 集群。
+- 暂不支持在 TiDB 中[创建 SEQUENCE 的 DDL 操作](/sql-statements/sql-statement-create-sequence.md)和 [SEQUENCE 函数](/sql-statements/sql-statement-create-sequence.md#sequence-函数)。在上游 TiDB 使用 SEQUENCE 时，TiCDC 将会忽略掉上游执行的 SEQUENCE DDL 操作/函数，但是使用 SEQUENCE 函数的 DML 操作可以正确地同步。
 - 暂不支持在同步的过程中对 TiCDC 正在同步的表和库进行 [BR 数据恢复](/br/backup-and-restore-overview.md) 和 [TiDB Lightning](/tidb-lightning/tidb-lightning-overview.md) 导入。详情请参考[为什么在上游使用了 TiDB Lightning 和 BR 恢复了数据之后，TiCDC 同步会出现卡顿甚至卡住](/ticdc/ticdc-faq.md#为什么在上游使用了-tidb-lightning-和-br-恢复了数据之后ticdc-同步会出现卡顿甚至卡住)。
->>>>>>> 74650125d2 (ticdc: Add a description of the compatibility between BR and Lightning (#16233))
