@@ -5,12 +5,12 @@ summary: 本文介绍如何在 AWS Lambda 函数中使用 TiDB 和 mysql2 构建
 
 # 在 AWS Lambda 函数中使用 mysql2 连接到 TiDB
 
-TiDB 是一个兼容 MySQL 的数据库。[AWS Lambda 函数](https://aws.amazon.com/lambda/) 是一个计算服务，[node-mysql2](https://github.com/sidorares/node-mysql2) 是一个与 [mysqljs/mysql](https://github.com/mysqljs/mysql) 兼容的面向 Node.js 的 MySQL 驱动。
+TiDB 是一个兼容 MySQL 的数据库。[AWS Lambda 函数](https://aws.amazon.com/lambda/)是一个计算服务，[mysql2](https://github.com/sidorares/node-mysql2) 是当前流行的开源 Node.js Driver 之一。
 
 本文档将展示如何在 AWS Lambda 函数中使用 TiDB 和 mysql2 来完成以下任务：
 
 - 配置你的环境。
-- 使用 node-mysql2 驱动连接到 TiDB 集群。
+- 使用 mysql2 驱动连接到 TiDB 集群。
 - 构建并运行你的应用程序。你也可以参考[示例代码片段](#示例代码片段)，完成基本的 CRUD 操作。
 - 部署你的 AWS Lambda 函数。
 
@@ -230,7 +230,7 @@ npm install
 
 2. 访问 [AWS Lambda 控制台](https://console.aws.amazon.com/lambda/home#/functions)。
 
-3. 按照[使用 Node.js 构建 Lambda 函数](https://docs.aws.amazon.com/zh_cn/lambda/latest/dg/lambda-nodejs.html)中的步骤创建一个Node.js Lambda 函数。
+3. 按照[使用 Node.js 构建 Lambda 函数](https://docs.aws.amazon.com/zh_cn/lambda/latest/dg/lambda-nodejs.html)中的步骤创建一个 Node.js Lambda 函数。
 
 4. 按照 [Lambda 部署程序包](https://docs.aws.amazon.com/zh_cn/lambda/latest/dg/gettingstarted-package.html#gettingstarted-package-zip)中的步骤，上传 `dist/index.zip` 文件。
 
@@ -340,12 +340,12 @@ console.log(rsh.affectedRows);
 - 为了避免 SQL 注入的风险，推荐使用[预处理语句](https://github.com/sidorares/node-mysql2#using-prepared-statements)执行 SQL。
 - 在不涉及大量复杂 SQL 语句的场景下，推荐使用 ORM 框架（例如：[Sequelize](https://sequelize.org/)、[TypeORM](https://typeorm.io/) 或 [Prisma](https://www.prisma.io/)）来提升你的开发效率。
 - 如需为你的应用程序构建一个 RESTful API，建议[将 AWS Lambda 与 Amazon API Gateway 结合使用](https://docs.aws.amazon.com/zh_cn/lambda/latest/dg/services-apigateway.html)。
-- 关于使用 TiDB Serverless 和 AWS Lambda 设计高性能应用程序的更多信息，可以参考这篇[博客文章](https://aws.amazon.com/blogs/apn/designing-high-performance-applications-using-serverless-tidb-cloud-and-aws-lambda/)。
+- 关于使用 TiDB Serverless 和 AWS Lambda 设计高性能应用程序的更多信息，可以参考[这篇博客](https://aws.amazon.com/blogs/apn/designing-high-performance-applications-using-serverless-tidb-cloud-and-aws-lambda/)。
 
 ## 下一步
 
 - 关于在 AWS Lambda 函数中使用 TiDB 的更多细节，可以参考 [`TiDB-Lambda-integration/aws-lambda-bookstore` 示例程序](https://github.com/pingcap/TiDB-Lambda-integration/blob/main/aws-lambda-bookstore/README.md)。你也可以使用 AWS API Gateway 为你的应用程序构建 RESTful API。
-- 关于 node-mysql2 的更多使用方法，可以参考 [node-mysql2 的 GitHub 仓库](https://github.com/sidorares/node-mysql2)。
+- 关于 mysql2 的更多使用方法，可以参考 [mysql2 的官方文档](https://sidorares.github.io/node-mysql2/zh-CN/docs)。
 - 关于 AWS Lambda 的更多使用方法，可以参考 [AWS Lambda 开发者指南](https://docs.aws.amazon.com/zh_cn/lambda/latest/dg/welcome.html)。
 - 你可以继续阅读开发者文档的其它章节来获取更多 TiDB 应用开发的最佳实践。例如：[插入数据](/develop/dev-guide-insert-data.md)，[更新数据](/develop/dev-guide-update-data.md)，[删除数据](/develop/dev-guide-delete-data.md)，[单表读取](/develop/dev-guide-get-data-from-single-table.md)，[事务](/develop/dev-guide-transaction-overview.md)，[SQL 性能优化](/develop/dev-guide-optimize-sql-overview.md)等。
 - 如果你更倾向于参与课程进行学习，我们也提供专业的 [TiDB 开发者课程](https://cn.pingcap.com/courses-catalog/category/back-end-developer/?utm_source=docs-cn-dev-guide)支持，并在考试后提供相应的[资格认证](https://learn.pingcap.com/learner/certification-center)。
