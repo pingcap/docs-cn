@@ -418,7 +418,7 @@ mysql> SELECT FROM_BASE64('MTIzNDU2');
 LEFT(`str`, `len`)
 ```
 
-- `str`：要提取字符的原始字符串。如果 `str` 包含一个多字节字符，该函数将其视为一个代码点。
+- `str`：要提取字符的原始字符串。如果 `str` 包含一个多字节字符，该函数将其视为一个字符。
 - `len`：要返回的字符长度。
     - 如果 `len` 小于或等于 0，该函数返回空字符串。
     - 如果 `len` 大于或等于 `str` 的长度，该函数将返回原始的 `str`。
@@ -485,7 +485,7 @@ SELECT LEFT(NULL, 3);
 
 ### [`LENGTH()`](https://dev.mysql.com/doc/refman/8.0/en/string-functions.html#function_length)
 
-`LENGTH()` 函数用于返回字符串的字节长度。`LENGTH()` 将单个多字节字符视为多个字节，而 `CHAR_LENGTH()`将单个多字节字符视为单个代码点。
+`LENGTH()` 函数用于返回字符串的字节长度。`LENGTH()` 将单个多字节字符视为多个字节，而 `CHAR_LENGTH()`将单个多字节字符视为单个字符。
 
 如果输入参数为 `NULL`，该函数将返回 `NULL`。
 
