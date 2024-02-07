@@ -173,7 +173,7 @@ npm install
         TIDB_PASSWORD: {password}
     ```
 
-4. 参考[使用短期凭证进行身份验证](https://docs.aws.amazon.com/zh_cn/cli/latest/userguide/cli-authentication-short-term.html)文档，设置 AWS 环境变量:
+4. 参考[使用短期凭证进行身份验证](https://docs.aws.amazon.com/zh_cn/cli/latest/userguide/cli-authentication-short-term.html)文档，设置 AWS 环境变量：
 
     ```bash
     export AWS_ACCESS_KEY_ID={your_access_key_id}
@@ -238,7 +238,7 @@ npm install
 
     1. 在 Lambda 控制台的[**函数**](https://console.aws.amazon.com/lambda/home#/functions)页面中，选择**配置** > **环境变量**。
     2. 点击**编辑**。
-    3. 为添加数据库访问凭证，按照以下步骤进行操作：
+    3. 按照以下步骤添加数据库访问凭证：
 
         - 选择**添加环境变量**，然后在**键**中输入 `TIDB_HOST`，在**值**中输入主机名。
         - 选择**添加环境变量**，然后在**键**中输入 `TIDB_PORT`，在**值**中输入端口号（默认 `4000`）。
