@@ -88,15 +88,15 @@ bundle add mysql2 dotenv
     cp .env.example .env
     ```
 
-6. 编辑 `.env` 文件，按照以下方式设置环境变量，并将占位符 `<>`替换为连接对话框中相应的连接参数：
+6. 编辑 `.env` 文件，按照以下方式设置环境变量，并将占位符 `{}`替换为连接对话框中相应的连接参数：
 
     ```dotenv
-   DATABASE_HOST={host}
-   DATABASE_PORT=4000
-   DATABASE_USER={user}
-   DATABASE_PASSWORD={password}
-   DATABASE_NAME=test
-   DATABASE_ENABLE_SSL=true
+    DATABASE_HOST={host}
+    DATABASE_PORT=4000
+    DATABASE_USER={user}
+    DATABASE_PASSWORD={password}
+    DATABASE_NAME=test
+    DATABASE_ENABLE_SSL=true
     ```
 
    > **注意：**
@@ -122,7 +122,7 @@ bundle add mysql2 dotenv
     cp .env.example .env
     ```
 
-5. 编辑 `.env` 文件，按照以下方式设置环境变量，并将占位符 `<>`替换为连接对话框中相应的连接参数：
+5. 编辑 `.env` 文件，按照以下方式设置环境变量，并将占位符 `{}`替换为连接对话框中相应的连接参数：
 
     ```dotenv
     DATABASE_HOST={host}
@@ -151,7 +151,7 @@ bundle add mysql2 dotenv
     cp .env.example .env
     ```
 
-2. 编辑 `.env` 文件，按照以下方式设置环境变量，并将占位符 `<>`替换为你的 TiDB 集群的连接参数：
+2. 编辑 `.env` 文件，按照以下方式设置环境变量，并将占位符 `{}`替换为你的 TiDB 集群的连接参数：
 
     ```dotenv
     DATABASE_HOST={host}
