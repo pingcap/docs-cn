@@ -530,11 +530,118 @@ mysql> SELECT FROM_BASE64('MTIzNDU2');
 
 ### [`LEFT()`](https://dev.mysql.com/doc/refman/8.0/en/string-functions.html#function_left)
 
-返回最左侧指定长度的字符
+`LEFT()` 函数用于返回字符串左侧指定数量的字符。
+
+语法：
+
+```sql
+LEFT(`str`, `len`)
+```
+
+- `str`：要提取字符的原始字符串。如果 `str` 包含一个多字节字符，该函数将其视为一个字符。
+- `len`：要返回的字符长度。
+    - 如果 `len` 小于或等于 0，该函数返回空字符串。
+    - 如果 `len` 大于或等于 `str` 的长度，该函数将返回原始的 `str`。
+- 如果任何参数为 `NULL`，该函数返回 `NULL`。
+
+示例：
+
+```sql
+SELECT LEFT('ABCED', 3);
++------------------+
+| LEFT('ABCED', 3) |
++------------------+
+| ABC              |
++------------------+
+
+SELECT LEFT('ABCED', 6);
++------------------+
+| LEFT('ABCED', 6) |
++------------------+
+| ABCED            |
++------------------+
+```
+
+```sql
+SELECT LEFT('ABCED', 0);
++------------------+
+| LEFT('ABCED', 0) |
++------------------+
+|                  |
++------------------+
+
+SELECT LEFT('ABCED', -1);
++-------------------+
+| LEFT('ABCED', -1) |
++-------------------+
+|                   |
++-------------------+
+```
+
+```sql
+SELECT LEFT('🍣ABC', 3);
++--------------------+
+| LEFT('🍣ABC', 3)     |
++--------------------+
+| 🍣AB                 |
++--------------------+
+```
+
+```sql
+SELECT LEFT('ABC', NULL);
++-------------------+
+| LEFT('ABC', NULL) |
++-------------------+
+| NULL              |
++-------------------+
+
+SELECT LEFT(NULL, 3);
++------------------------------+
+| LEFT(NULL, 3)                |
++------------------------------+
+| NULL                         |
++------------------------------+
+```
 
 ### [`LENGTH()`](https://dev.mysql.com/doc/refman/8.0/en/string-functions.html#function_length)
 
-返回字符串长度，单位为字节
+`LENGTH()` 函数用于返回字符串的字节长度。`LENGTH()` 将单个多字节字符视为多个字节，而 `CHAR_LENGTH()` 将单个多字节字符视为单个字符。
+
+如果输入参数为 `NULL`，该函数将返回 `NULL`。
+
+示例：
+
+```sql
+SELECT LENGTH('ABC');
++---------------+
+| LENGTH('ABC') |
++---------------+
+|             3 |
++---------------+
+
+SELECT LENGTH('🍣ABC');
++-------------------+
+| LENGTH('🍣ABC')     |
++-------------------+
+|                 7 |
++-------------------+
+
+SELECT CHAR_LENGTH('🍣ABC');
++------------------------+
+| CHAR_LENGTH('🍣ABC')     |
++------------------------+
+|                      4 |
++------------------------+
+```
+
+```sql
+SELECT LENGTH(NULL);
++--------------+
+| LENGTH(NULL) |
++--------------+
+|         NULL |
++--------------+
+```
 
 ### [`LIKE`](https://dev.mysql.com/doc/refman/8.0/en/string-comparison-functions.html#operator_like)
 
