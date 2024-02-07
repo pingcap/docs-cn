@@ -497,7 +497,7 @@ mysql> SELECT FROM_BASE64('MTIzNDU2');
 
 `INSTR(str, substr)` 函数用于获取子字符串 `substr` 在字符串 `str` 中第一次出现的位置。`substr` 和 `str` 均可以为字符串或数字。该函数与 [`LOCATE(substr, str)`](#locate) 函数的两参数版本功能相同，但参数顺序相反。
 
-> **注意:**
+> **注意：**
 >
 > `INSTR(str, substr)` 函数是否区分大小取决于 TiDB 所使用的[排序规则](/character-set-and-collation.md)。二进制排序规则（以 `_bin` 为后缀）区分大小写，而通用排序规则（以 `_general_ci` 或 `_ai_ci` 为后缀）不区分大小写。
 
@@ -505,7 +505,7 @@ mysql> SELECT FROM_BASE64('MTIzNDU2');
 - 如果 `substr` 不在 `str` 中，函数返回 `0`。否则，返回 `substr` 在 `str` 中第一次出现的位置。
 - 如果任一参数为 `NULL`，该函数返回 `NULL`。
 
-示例:
+示例：
 
 ```sql
 SELECT INSTR("pingcap.com", "tidb");
