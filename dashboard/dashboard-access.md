@@ -1,6 +1,7 @@
 ---
 title: 访问 TiDB Dashboard
 aliases: ['/docs-cn/dev/dashboard/dashboard-access/']
+summary: "您可以通过浏览器访问 TiDB Dashboard。如果集群中部署有多个 PD 实例，可以简单地将地址中的 `127.0.0.1:2379` 替换为任意一个 PD 实例的地址和端口进行访问。TiDB Dashboard 支持 Chrome >= 77，Firefox >= 68，Edge >= 17 等浏览器。访问时将显示用户登录界面，可使用 TiDB 的 root 用户登录，也可以使用自定义的 SQL 用户和密码登录。登录后将保持自动登录状态，可切换界面显示语言，并在用户页面登出当前用户。"
 ---
 
 # 访问 TiDB Dashboard
@@ -33,7 +34,7 @@ TiDB Dashboard 可在常见的、更新及时的桌面浏览器中使用，具�
 
 ## 登录
 
-访问 TiDB Dashboard 将会显示用户登录界面。 
+访问 TiDB Dashboard 将会显示用户登录界面。
 
 - 可使用 TiDB 的 root 用户登录。
 - 如果创建了[自定义 SQL 用户](/dashboard/dashboard-user.md)，也可以使用自定义的 SQL 用户和密码登录。
