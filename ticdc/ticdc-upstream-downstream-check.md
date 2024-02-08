@@ -35,7 +35,7 @@ sync-point-retention = "1h"
 
 > **注意：**
 >
-> 使用一致性快照读之前，请先[启用 TiCDC 的 Syncpoint 功能](#启用-syncpoint)。如果多个同步任务使用同一个下游 TiDB 集群且开启了 Syncpoint 功能，那么这些同步任务都会根据本身的同步进度来更新 `tidb_external_ts` 和 `ts-map`, 下游应用程序应避免使用 `tidb_enable_external_ts_read` 的方式读数据，因为此时由于多个同步互相干扰，无法获得一致性的结果。此时，你需要使用读取 `ts-map` 表中记录的方式设置同步任务级别的一致性快照读。
+> 使用一致性快照读之前，请先[启用 TiCDC 的 Syncpoint 功能](#启用-syncpoint)。如果多个同步任务使用同一个下游 TiDB 集群且都开启了 Syncpoint 功能，那么这些同步任务都将根据各自的同步进度来更新 `tidb_external_ts` 和 `ts-map`。此时，你需要使用读取 `ts-map` 表中记录的方式来设置同步任务级别的一致性快照读，同时应避免下游应用程序使用 `tidb_enable_external_ts_read` 的方式读数据，因为多个同步任务之间可能存在互相干扰导致无法获得一致性的结果。
 
 当你需要从备用集群查询数据的时候，在业务应用中设置 `SET GLOBAL|SESSION tidb_enable_external_ts_read = ON;` 就可以在备用集群上获得事务状态完成的数据。
 
