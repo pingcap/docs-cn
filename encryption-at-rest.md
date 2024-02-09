@@ -119,7 +119,7 @@ type = "file"
 path = "/path/to/key/file"
 ```
 
-Here `path` is the path to the key file. The file must contain a 256 bits (or 16 bytes) key encoded as hex string, end with a newline (`\n`) and contain nothing else. Example of the file content:
+Here `path` is the path to the key file. The file must contain a 256 bits (or 32 bytes) key encoded as hex string, end with a newline (`\n`) and contain nothing else. Example of the file content:
 
 ```
 3b5896b5be691006e0f71c3040a29495ddcad20b14aff61806940ebd780d3c62
