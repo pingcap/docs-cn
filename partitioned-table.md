@@ -652,11 +652,11 @@ PARTITION BY KEY(fname, store_id)
 PARTITIONS 4;
 ```
 
-目前，TiDB 不支持分区字段列表 `PARTITION BY KEY` 为空的 Key 分区表。下面的语句将创建一个非分区表，并向客户端返回 `Unsupported partition type KEY, treat as normal table` 警告。
+TiDB 也和 MySQL 一样支持分区字段列表 `PARTITION BY KEY` 为空的 Key 分区表，下面的语句将创建一个以主键 `id` 为分区键的分区表：
 
 ```sql
 CREATE TABLE employees (
-    id INT NOT NULL,
+    id INT NOT NULL PRIMARY KEY,
     fname VARCHAR(30),
     lname VARCHAR(30),
     hired DATE NOT NULL DEFAULT '1970-01-01',
@@ -668,6 +668,20 @@ CREATE TABLE employees (
 PARTITION BY KEY()
 PARTITIONS 4;
 ```
+
+如果没有主键但有唯一键，则使用唯一键作为分区键：
+
+```
+CREATE TABLE k1 (
+    id INT NOT NULL,
+    name VARCHAR(20),
+    UNIQUE KEY (id)
+)
+PARTITION BY KEY()
+PARTITIONS 2;
+```
+
+但是，如果唯一键列未定义为 NOT NULL，则前面的语句将失败。
 
 ### TiDB 对 Linear Hash 分区的处理
 
