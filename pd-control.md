@@ -1488,10 +1488,10 @@ resource-manager config controller show
 
 #### 修改 Resource Control 的 controller 配置
 
-修改 `ltb-max-wait-duration`：
+修改 `ltb-max-wait-duration` 如下：
 
 ```bash
- pd-ctl resource-manager config controller set ltb-max-wait-duration 30m
+pd-ctl resource-manager config controller set ltb-max-wait-duration 30m
 ```
 
 ## jq 格式化 JSON 输出示例
