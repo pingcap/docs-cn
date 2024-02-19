@@ -1096,6 +1096,42 @@ region check miss-peer
 }
 ```
 
+### `resource-manager [command]`
+
+#### 查看资源管控 (Resource Control) 的 controller 配置
+
+```bash
+resource-manager config controller show
+```
+
+```bash
+{
+    "degraded-mode-wait-duration": "0s",
+    "ltb-max-wait-duration": "30s", 
+    "request-unit": {          # RU 的配置，请勿修改
+        "read-base-cost": 0.125,
+        "read-per-batch-base-cost": 0.5,
+        "read-cost-per-byte": 0.0000152587890625,
+        "write-base-cost": 1,
+        "write-per-batch-base-cost": 1,
+        "write-cost-per-byte": 0.0009765625,
+        "read-cpu-ms-cost": 0.3333333333333333
+    },
+    "enable-controller-trace-log": "false"
+}
+```
+
+- `ltb-max-wait-duration`：本地令牌桶 (Local Token Bucket, LTB) 的最大等待时间。默认值为 `30s`，取值范围为 `[0, 24h]`。如果 SQL 请求预估消耗的 [Request Unit (RU)](/tidb-resource-control.md#什么是-request-unit-ru) 超过了当前 LTB 积累的 RU，则需要等待一定时间。如果预估等待时间超过了此最大等待时间，则会提前向应用返回错误 [`ERROR 8252 (HY000) : Exceeded resource group quota limitation`](/error-codes.md)。增大该值可以减少某些突发并发增加、大事务和大查询的情况下容易报错 `ERROR 8252` 的问题。
+- `enable-controller-trace-log`：controller 诊断日志开关。
+
+#### 修改 Resource Control 的 controller 配置
+
+修改 `ltb-max-wait-duration` 的方法如下：
+
+```bash
+pd-ctl resource-manager config controller set ltb-max-wait-duration 30m
+```
+
 ### `scheduler [show | add | remove | pause | resume | config | describe]`
 
 用于显示和控制调度策略。
@@ -1455,42 +1491,6 @@ unsafe remove-failed-stores show
   "Stores that have reports to PD: 1, 2, 3, ...",
   "Stores that have not reported to PD: 11, 12",
 ]
-```
-
-### `resource-manager [command]`
-
-#### 查看资源管控 (Resource Control) 的 controller 配置
-
-```bash
-resource-manager config controller show
-```
-
-```bash
-{
-    "degraded-mode-wait-duration": "0s",
-    "ltb-max-wait-duration": "30s",  
-    "request-unit": {          # RU 的配置，请勿修改
-        "read-base-cost": 0.125,
-        "read-per-batch-base-cost": 0.5,
-        "read-cost-per-byte": 0.0000152587890625,
-        "write-base-cost": 1,
-        "write-per-batch-base-cost": 1,
-        "write-cost-per-byte": 0.0009765625,
-        "read-cpu-ms-cost": 0.3333333333333333
-    },
-    "enable-controller-trace-log": "false"
-}
-```
-
-- `ltb-max-wait-duration`：本地令牌桶 (Local Token Bucket, LTB) 的最大等待时间。默认值为 `30s`，取值范围为 `[0, 24h]`。如果 SQL 请求预估消耗的 [Request Unit (RU)](/tidb-resource-control.md#什么是-request-unit-ru) 超过了当前 LTB 积累的 RU，则需要等待一定时间。如果预估等待时间超过了此最大等待时间，则会提前向应用返回错误 [`ERROR 8252 (HY000) : Exceeded resource group quota limitation`](/error-codes.md)。增大该值可以减少某些突发并发增加、大事务和大查询的情况下容易报错 `ERROR 8252` 的问题。
-- `enable-controller-trace-log`：controller 诊断日志开关。
-
-#### 修改 Resource Control 的 controller 配置
-
-修改 `ltb-max-wait-duration` 的方法如下：
-
-```bash
-pd-ctl resource-manager config controller set ltb-max-wait-duration 30m
 ```
 
 ## jq 格式化 JSON 输出示例
