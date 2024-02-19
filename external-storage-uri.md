@@ -36,7 +36,7 @@ summary: 介绍了外部存储服务 Amazon S3、GCS、和 Azure Blob Storage �
 s3://external/testfolder?access-key=${access-key}&secret-access-key=${secret-access-key}
 ```
 
-以下是用于 TiCDC 的 `sink-uri` 中的 Amazon S3 URI 示例：
+以下是用于 TiCDC `sink-uri` 的 Amazon S3 URI 示例：
 
 ```shell
 tiup cdc:v7.5.0 cli changefeed create \
