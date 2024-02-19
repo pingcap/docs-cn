@@ -1468,7 +1468,7 @@ resource-manager config controller show
 ```bash
 {
     "degraded-mode-wait-duration": "0s",
-    "ltb-max-wait-duration": "30s",
+    "ltb-max-wait-duration": "30s",  #  默认值 30s，取值范围 [0, 24h]。
     "request-unit": {          # RU 的配置，请勿修改
         "read-base-cost": 0.125,
         "read-per-batch-base-cost": 0.5,
