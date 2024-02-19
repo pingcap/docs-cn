@@ -40,11 +40,17 @@
       - [node-mysql2](/develop/dev-guide-sample-application-nodejs-mysql2.md)
       - [mysql.js](/develop/dev-guide-sample-application-nodejs-mysqljs.md)
       - [Prisma](/develop/dev-guide-sample-application-nodejs-prisma.md)
+      - [Sequelize](/develop/dev-guide-sample-application-nodejs-sequelize.md)
       - [TypeORM](/develop/dev-guide-sample-application-nodejs-typeorm.md)
+      - [Next.js](/develop/dev-guide-sample-application-nextjs.md)
+      - [AWS Lambda](/develop/dev-guide-sample-application-aws-lambda.md)
     - Ruby
       - [mysql2](/develop/dev-guide-sample-application-ruby-mysql2.md)
       - [Rails](/develop/dev-guide-sample-application-ruby-rails.md)
   - 连接到 TiDB
+    - GUI 数据库工具
+      - [MySQL Workbench](/develop/dev-guide-gui-mysql-workbench.md)
+      - [Navicat](/develop/dev-guide-gui-navicat.md)
     - [选择驱动或 ORM 框架](/develop/dev-guide-choose-driver-or-orm.md)
     - [连接到 TiDB](/develop/dev-guide-connect-to-tidb.md)
     - [连接池与连接参数](/develop/dev-guide-connection-parameters.md)
@@ -129,6 +135,7 @@
     - [从大数据量 MySQL 迁移数据到 TiDB](/migrate-large-mysql-to-tidb.md)
     - [从小数据量分库分表 MySQL 合并迁移数据到 TiDB](/migrate-small-mysql-shards-to-tidb.md)
     - [从大数据量分库分表 MySQL 合并迁移数据到 TiDB](/migrate-large-mysql-shards-to-tidb.md)
+    - [从 MariaDB 迁移数据到 TiDB](/migrate-from-mariadb.md)
     - [从 CSV 文件迁移数据到 TiDB](/migrate-from-csv-files-to-tidb.md)
     - [从 SQL 文件迁移数据到 TiDB](/migrate-from-sql-files-to-tidb.md)
     - [从 Parquet 文件迁移数据到 TiDB](/migrate-from-parquet-files-to-tidb.md)
@@ -653,6 +660,7 @@
     - [TiDB 分布式执行框架介绍](/tidb-distributed-execution-framework.md)
     - [TiDB 全局排序](/tidb-global-sort.md)
   - [系统变量](/system-variables.md)
+  - [服务器状态变量](/status-variables.md)
   - 配置文件参数
     - [tidb-server](/tidb-configuration-file.md)
     - [tikv-server](/tikv-configuration-file.md)
@@ -1047,6 +1055,7 @@
   - v6.6
     - [6.6.0-DMR](/releases/release-6.6.0.md)
   - v6.5
+    - [6.5.8](/releases/release-6.5.8.md)
     - [6.5.7](/releases/release-6.5.7.md)
     - [6.5.6](/releases/release-6.5.6.md)
     - [6.5.5](/releases/release-6.5.5.md)

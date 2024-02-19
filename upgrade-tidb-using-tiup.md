@@ -204,7 +204,7 @@ tiup cluster upgrade <cluster-name> v7.6.0
 > 对于 TiDB、TiKV、PD、TiCDC 等共用版本号的组件，尚未有完整的测试保证它们在跨版本混合部署的场景下能正常工作。请仅在测试场景或在[获取支持](/support.md)的情况下使用此配置。
 
 ```shell
-tiup cluster upgrade -h | grep "version string"
+tiup cluster upgrade -h | grep "version"
       --alertmanager-version string        Fix the version of alertmanager and no longer follows the cluster version.
       --blackbox-exporter-version string   Fix the version of blackbox-exporter and no longer follows the cluster version.
       --cdc-version string                 Fix the version of cdc and no longer follows the cluster version.
