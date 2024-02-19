@@ -1468,7 +1468,7 @@ resource-manager config controller show
 ```bash
 {
     "degraded-mode-wait-duration": "0s",
-    "ltb-max-wait-duration": "30s",  #  默认值 30s，取值范围 [0, 24h]。
+    "ltb-max-wait-duration": "30s",  
     "request-unit": {          # RU 的配置，请勿修改
         "read-base-cost": 0.125,
         "read-per-batch-base-cost": 0.5,
@@ -1482,7 +1482,7 @@ resource-manager config controller show
 }
 ```
 
-- `ltb-max-wait-duration`：Local Token Bucket (LTB) 的最大等待时间。要请求的 SQL 请求如果预估消耗的 RU 超过了当前 LTB 积累的 RU，则需要等待一定时间。如果该预估等待时间超过了此最大等待时间，则会提前给应用报错 [`ERROR 8252 (HY000) : Exceeded resource group quota limitation`](/error-codes.md)。增大该值可以减少某些突发并发增加、大事务和大查询的情况下容易报 8252 的问题。
+- `ltb-max-wait-duration`：Local Token Bucket (LTB) 的最大等待时间。默认值 `30s`，取值范围 [0, 24h]。如果 SQL 请求预估消耗的 RU 超过了当前 LTB 积累的 RU，则需要等待一定时间。如果该预估等待时间超过了此最大等待时间，则会提前给应用报错 [`ERROR 8252 (HY000) : Exceeded resource group quota limitation`](/error-codes.md)。增大该值可以减少某些突发并发增加、大事务和大查询的情况下容易报 8252 的问题。
 - `enable-controller-trace-log`：controller 诊断日志开关。
 
 #### 修改 Resource Control 的 controller 配置
