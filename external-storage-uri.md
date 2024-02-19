@@ -38,6 +38,16 @@ The following is an example of an Amazon S3 URI for TiDB Lightning and BR. In th
 s3://external/testfolder?access-key=${access-key}&secret-access-key=${secret-access-key}
 ```
 
+The following is an example of an Amazon S3 URI for TiCDC `sink-uri`.
+
+```shell
+tiup cdc:v7.5.0 cli changefeed create \
+    --server=http://172.16.201.18:8300 \
+    --sink-uri="s3://cdc?endpoint=http://10.240.0.38:9000&access-key=${access-key}&secret-access-key=${secret-access-key}" \
+    --changefeed-id="cdcTest" \
+    --config=cdc_csv.toml
+```
+
 The following is an example of an Amazon S3 URI for [`IMPORT INTO`](/sql-statements/sql-statement-import-into.md). In this example, you need to specify a specific filename `test.csv`.
 
 ```shell
