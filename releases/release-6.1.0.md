@@ -276,7 +276,7 @@ TiDB 版本：6.1.0
 | TiKV | [`storage.api-version`](/tikv-configuration-file.md#api-version-从-v610-版本开始引入) | 新增 | TiKV 作为 Raw Key Value 存储数据时使用的存储格式与接口版本。 |
 | PD | [`schedule.max-store-preparing-time`](/pd-configuration-file.md#max-store-preparing-time-从-v610-版本开始引入) | 新增 | 控制 store 上线阶段的最长等待时间。 |
 | TiCDC | [`enable-tls`](/ticdc/ticdc-sink-to-kafka.md#sink-uri-配置-kafka) | 新增 | 控制是否使用 TLS 连接 Kafka。 |
-| TiCDC | `sasl-gssapi-user`<br>`sasl-gssapi-password`<br/>`sasl-gssapi-auth-type`<br/>`sasl-gssapi-service-name`<br/>`sasl-gssapi-realm`<br/>`sasl-gssapi-key-tab-path`<br/>`sasl-gssapi-kerberos-config-path` | 新增 | 支持 Kafka SASL/GSSAPI 认证所需要的参数。详情见 [Sink URI 配置 `kafka`](/ticdc/ticdc-sink-to-kafka.md#sink-uri-配置-kafka)。 |
+| TiCDC | `sasl-gssapi-user`<br/>`sasl-gssapi-password`<br/>`sasl-gssapi-auth-type`<br/>`sasl-gssapi-service-name`<br/>`sasl-gssapi-realm`<br/>`sasl-gssapi-key-tab-path`<br/>`sasl-gssapi-kerberos-config-path` | 新增 | 支持 Kafka SASL/GSSAPI 认证所需要的参数。详情见 [Sink URI 配置 `kafka`](/ticdc/ticdc-sink-to-kafka.md#sink-uri-配置-kafka)。 |
 | TiCDC | [`avro-decimal-handling-mode`](/ticdc/ticdc-sink-to-kafka.md#sink-uri-配置-kafka)<br/>[`avro-bigint-unsigned-handling-mode`](/ticdc/ticdc-sink-to-kafka.md#sink-uri-配置-kafka) | 新增 | 控制 Avro 格式的输出细节。 |
 | TiCDC | [`dispatchers.topic`](/ticdc/ticdc-changefeed-config.md) | 新增 | 控制 TiCDC 将增量数据分发到不同 Kafka Topic 的策略 |
 | TiCDC | [`dispatchers.partition`](/ticdc/ticdc-changefeed-config.md) | 新增 | `dispatchers.partition` 是原 `dispatchers.dispatcher` 配置项的别名，用于控制增量数据的 Kafka Partition 分发策略。 |
