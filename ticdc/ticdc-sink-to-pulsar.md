@@ -141,7 +141,7 @@ send-timeout=30
 
 ### TLS 加密传输
 
-TiCDC 从 7.5.1 开始支持 Pulsar 的 TLS 加密传输，配置样例如下所示：
+TiCDC 从 v7.5.1 和 v8.0.0 开始支持 Pulsar 的 TLS 加密传输，配置样例如下所示：
 
 Sink URI：
 
