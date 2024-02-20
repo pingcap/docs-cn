@@ -1286,11 +1286,97 @@ Return the substring as specified.
 
 ### [`SUBSTRING_INDEX()`](https://dev.mysql.com/doc/refman/8.0/en/string-functions.html#function_substring-index)
 
-Return a substring from a string before the specified number of occurrences of the delimiter.
+The `SUBSTRING_INDEX()` function is used to extract a substring from a string based on a specified delimiter and count. This function is particularly useful when dealing with data separated by a specific delimiter, such as parsing CSV data or processing log files.
+
+Syntax:
+
+```sql
+SUBSTRING_INDEX(str, delim, count)
+```
+
+- `str`: specifies the string to be processed.
+- `delim`: specifies the delimiter in the string, which is case-sensitive.
+- `count`: specifies the number of occurrences of the delimiter.
+    - If `count` is a positive number, the function returns the substring before the `count` occurrences (counting from the left of the string) of the delimiter.
+    - If `count` is a negative number, the function returns the substring after the `count` occurrences (counting from the right of the string) of the delimiter.
+    - If `count` is `0`, the function returns an empty string.
+
+Example 1:
+
+```sql
+SELECT SUBSTRING_INDEX('www.tidbcloud.com', '.', 2);
+```
+
+Result 1:
+
+```sql
++-----------------------------------------+
+| SUBSTRING_INDEX('www.tidbcloud.com', '.', 2) |
++-----------------------------------------+
+| www.tidbcloud                                |
++-----------------------------------------+
+```
+
+Example 2:
+
+```sql
+SELECT SUBSTRING_INDEX('www.tidbcloud.com', '.', -1);
+```
+
+Result 2:
+
+```sql
++------------------------------------------+
+| SUBSTRING_INDEX('www.tidbcloud.com', '.', -1) |
++------------------------------------------+
+| com                                      |
++------------------------------------------+
+```
 
 ### [`TO_BASE64()`](https://dev.mysql.com/doc/refman/8.0/en/string-functions.html#function_to-base64)
 
-Return the argument converted to a base-64 string.
+The `TO_BASE64()` function is used to convert the given argument to a string in the base-64 encoded form and return the result according to the character set and collation of the current connection. A base-64 encoded string can be decoded using the [`FROM_BASE64()`](#from_base64) function.
+
+Syntax:
+
+```sql
+TO_BASE64(str)
+```
+
+- If the argument is not a string, the function converts it to a string before base-64 encoding.
+- If the argument is `NULL`, the function returns `NULL`.
+
+Example 1:
+
+```sql
+SELECT TO_BASE64('abc');
+```
+
+Result 1:
+
+```sql
++------------------+
+| TO_BASE64('abc') |
++------------------+
+| YWJj             |
++------------------+
+```
+
+Example 2:
+
+```sql
+SELECT TO_BASE64(6);
+```
+
+Result 2:
+
+```sql
++--------------+
+| TO_BASE64(6) |
++--------------+
+| Ng==         |
++--------------+
+```
 
 ### [`TRANSLATE()`](https://docs.oracle.com/en/database/oracle/oracle-database/21/sqlrf/TRANSLATE.html#GUID-80F85ACB-092C-4CC7-91F6-B3A585E3A690)
 
