@@ -2505,6 +2505,11 @@ v5.0 后，用户仍可以单独修改以上系统变量（会有废弃警告）
 - 这个变量用于改变 TiDB server 上执行的语句的默认优先级。例如，你可以通过设置该变量来确保正在执行 OLAP 查询的用户优先级低于正在执行 OLTP 查询的用户。
 - 默认值 `NO_PRIORITY` 表示不强制改变执行语句的优先级。
 
+>
+> **Note:**
+>
+> 在开启 [使用资源管控 (Resource Control) 实现资源隔离](/tidb-resource-control.md) 功能时，使用 `tidb_force_priority` 配置的优先级功能将被资源组的优先级调度功能取代，不再发挥作用，此时可以将不同优先级的语句放在不同的资源组中执行，通过为这些资源组分配不同的配额和优先级，可以达到更好的资源管控效果。
+
 ### `tidb_gc_concurrency` <span class="version-mark">从 v5.0 版本开始引入</span>
 
 - 作用域：GLOBAL

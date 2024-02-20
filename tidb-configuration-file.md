@@ -547,6 +547,11 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
 + 可选值：默认值 NO_PRIORITY 表示不强制改变执行语句的优先级，其它优先级从低到高可设置为 LOW_PRIORITY、DELAYED 或 HIGH_PRIORITY。
 + 自 v6.1.0 起，已改用配置项 [`instance.tidb_force_priority`](/tidb-configuration-file.md#tidb_force_priority) 或系统变量 [`tidb_force_priority`](/system-variables.md#tidb_force_priority) 来将所有语句优先级设为 force-priority 的值。`force-priority` 仍可使用，但如果同时设置了 `force-priority` 与 `instance.tidb_force_priority`，TiDB 将采用 `instance.tidb_force_priority` 的值。
 
+>
+> **Note:**
+>
+> 在开启 [使用资源管控 (Resource Control) 实现资源隔离](/tidb-resource-control.md) 功能时，使用 `tidb_force_priority` 配置的优先级功能将被资源组的优先级调度功能取代，不再发挥作用，此时可以将不同优先级的语句放在不同的资源组中执行，通过为这些资源组分配不同的配额和优先级，可以达到更好的资源管控效果。
+
 ### `distinct-agg-push-down`
 
 + 设置优化器是否执行将带有 `Distinct` 的聚合函数（比如 `select count(distinct a) from t`）下推到 Coprocessor 的优化操作。
@@ -880,6 +885,11 @@ TiDB 服务状态相关配置。
 + 默认值：NO_PRIORITY
 + 默认值 NO_PRIORITY 表示不强制改变执行语句的优先级，其它优先级从低到高可设置为 LOW_PRIORITY、DELAYED 或 HIGH_PRIORITY。
 + 在 v6.1.0 之前，该功能通过配置项 `force-priority` 进行设置。
+
+>
+> **Note:**
+>
+> 在开启 [使用资源管控 (Resource Control) 实现资源隔离](/tidb-resource-control.md) 功能时，使用 `tidb_force_priority` 配置的优先级功能将被资源组的优先级调度功能取代，不再发挥作用，此时可以将不同优先级的语句放在不同的资源组中执行，通过为这些资源组分配不同的配额和优先级，可以达到更好的资源管控效果。
 
 ### `max_connections`
 
