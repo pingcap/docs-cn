@@ -36,7 +36,7 @@ sync-point-retention = "1h"
 
 > **Note:**
 >
-> Before you perform consistent snapshot read, make sure that you have [enabled the Syncpoint feature](#enable-syncpoint).
+> Before you perform consistent snapshot read, make sure that you have [enabled the Syncpoint feature](#enable-syncpoint). If multiple replication tasks use the same downstream TiDB cluster and have Syncpoint enabled, each of these tasks updates `tidb_external_ts` and `ts-map` based on their respective replication progress. In this case, you need to set up consistent snapshot read at the replication task level by reading records from the `ts-map` table. Meanwhile, you need to avoid downstream applications reading data using `tidb_enable_external_ts_read`, because multiple replication tasks might interfere with each other and result in inconsistent results.
 
 When you need to query the data from the backup cluster, you can set `SET GLOBAL|SESSION tidb_enable_external_ts_read = ON;` for the application to obtain transactionally consistent data on the backup cluster.
 
