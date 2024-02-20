@@ -438,19 +438,15 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
 
 ### `session-token-signing-cert` <span class="version-mark">从 v6.4.0 版本开始引入</span>
 
-> **警告：**
->
-> 该配置与一个未发布的特性相关。**请勿设置该配置**。
-
++ 证书文件路径，用于 [TiProxy](https://docs.pingcap.com/zh/tidb/v7.6/tiproxy-overview) 的会话迁移。
 + 默认值：""
++ 空值将导致 TiProxy 会话迁移失败。要启用会话迁移，所有的 TiDB 节点必须设置相同的证书和密钥。因此你应该在每个 TiDB 节点上存储相同的证书和密钥。
 
 ### `session-token-signing-key` <span class="version-mark">从 v6.4.0 版本开始引入</span>
 
-> **警告：**
->
-> 该配置与一个未发布的特性相关。**请勿设置该配置**。
-
++ 密钥文件路径，用于 [TiProxy](https://docs.pingcap.com/zh/tidb/v7.6/tiproxy-overview) 的会话迁移。
 + 默认值：""
++ 参阅 [`session-token-signing-cert`](#session-token-signing-cert-从-v640-版本开始引入) 的描述。
 
 ## performance
 
@@ -585,7 +581,7 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
 + 当 `lite-init-stats` 为 `true` 时，统计信息初始化时列和索引的直方图、TopN、Count-Min Sketch 均不会加载到内存中。当 `lite-init-stats` 为 `false` 时，统计信息初始化时索引和主键的直方图、TopN、Count-Min Sketch 会被加载到内存中，非主键列的直方图、TopN、Count-Min Sketch 不会加载到内存中。当优化器需要某一索引或者列的直方图、TopN、Count-Min Sketch 时，这些统计信息会被同步或异步加载到内存中（由 [`tidb_stats_load_sync_wait`](/system-variables.md#tidb_stats_load_sync_wait-从-v540-版本开始引入) 控制）。
 + 将 `lite-init-stats` 设置为 true，可以加速统计信息初始化，避免加载不必要的统计信息，从而降低 TiDB 的内存使用。详情请参考[统计信息的加载](/statistics.md#统计信息的加载)。
 
-### `force-init-stats` <span class="version-mark">从 v7.1.0 版本开始引入</span>
+### `force-init-stats` <span class="version-mark">从 v6.5.7 和 v7.1.0 版本开始引入</span>
 
 + 用于控制 TiDB 启动时是否在统计信息初始化完成后再对外提供服务。
 + 默认值：在 v7.2.0 之前版本中为 `false`，在 v7.2.0 及之后的版本中为 `true`。

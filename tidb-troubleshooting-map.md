@@ -58,11 +58,13 @@ summary: 了解如何处理 TiDB 集群常见问题。
 
 - 3.1.2 TiDB DDL job 卡住不动/执行很慢（通过 `admin show ddl jobs` 可以查看 DDL 进度）：
 
-    - 原因 1：与外部组件 (PD/TiKV) 的网络问题。
+    - 原因 1：TiDB 在 v6.3.0 中引入[元数据锁](/metadata-lock.md)，并在 v6.5.0 及之后的版本默认打开。如果 DDL 涉及的表与当前未提交事务涉及的表存在交集，则会阻塞 DDL 操作，直到事务提交或者回滚。
 
-    - 原因 2：早期版本（v3.0.8 之前）TiDB 内部自身负载很重（高并发下可能产生了很多协程）。
+    - 原因 2：与外部组件 (PD/TiKV) 的网络问题。
 
-    - 原因 3：早期版本（v2.1.15 & v3.0.0-rc1 之前）PD 实例删除 TiDB key 无效的问题，会导致每次 DDL 变更都需要等 2 个 lease（很慢）。
+    - 原因 3：早期版本（v3.0.8 之前）TiDB 内部自身负载很重（高并发下可能产生了很多协程）。
+
+    - 原因 4：早期版本（v2.1.15 & v3.0.0-rc1 之前）PD 实例删除 TiDB key 无效的问题，会导致每次 DDL 变更都需要等 2 个 lease（很慢）。
 
     - 其他未知原因，请[上报 bug](https://github.com/pingcap/tidb/issues/new?labels=type%2Fbug&template=bug-report.md)。
 
