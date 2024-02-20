@@ -65,6 +65,10 @@ aliases: ['/docs-cn/dev/optimistic-transaction/','/docs-cn/dev/reference/transac
 
 ## 事务的重试
 
+> **注意：**
+>
+> 从 v8.0.0 开始，`tidb_disable_txn_auto_retry` 被废弃，推荐使用 [悲观事务模式](/pessimistic-transaction.md)。如使用乐观事务模式发生冲突时，请在应用里捕获错误并重试。
+
 使用乐观事务模型时，在高冲突率的场景中，事务容易发生写写冲突而导致提交失败。MySQL 使用悲观事务模型，在执行写入类型的 SQL 语句的过程中进行加锁并且在 Repeatable Read 隔离级别下使用了当前读的机制，能够读取到最新的数据，所以提交时一般不会出现异常。为了降低应用改造难度，TiDB 提供了数据库内部自动重试机制。
 
 ### 重试机制
