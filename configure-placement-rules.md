@@ -82,7 +82,7 @@ Placement Rules 特性在 TiDB v5.0 及以上的版本中默认开启。如需�
 enable-placement-rules = true
 ```
 
-这样，PD 在初始化成功后会开启这个特性，并根据 `max-replicas`、`location-labels` 及 `isolation-level` 配置生成对应的规则：
+这样，PD 在初始化成功后会开启这个特性，并根据 [`max-replicas`](/pd-configuration-file.md#max-replicas)、[`location-labels`](/pd-configuration-file.md#location-labels) 及 [`isolation-level`](/pd-configuration-file.md#isolation-level) 配置生成对应的规则：
 
 {{< copyable "" >}}
 
