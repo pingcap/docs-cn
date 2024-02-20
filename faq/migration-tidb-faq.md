@@ -78,6 +78,7 @@ Restart the TiDB service, add the `-skip-grant-table=true` parameter in the conf
 
 You can use the following methods to export the data in TiDB:
 
+- Export data using Dumpling. For more information, see [Dumpling documentation](/dumpling-overview.md).
 - Export data using mysqldump and the `WHERE` clause.
 - Use the MySQL client to export the results of `select` to a file.
 
