@@ -112,7 +112,7 @@ PD 同样将根据系统的 `max-replicas`、`location-labels` 及 `isolation-le
 > **注意：**
 >
 > - 开启 Placement Rules 且存在多条 rule 的情况下，原先的 `max-replicas`、`location-labels` 及 `isolation-level` 配置项将不再生效。如果需要调整副本策略，应当使用 Placement Rules 相关接口。
-> - 开启 Placement Rules 且只存在一条默认的 rule 的情况下，当改变 `max-replicas`、`location-labels` 及 `isolation-level` 配置项时，系统会自动更新这条默认的 rule。
+> - 开启 Placement Rules 且只存在一条默认的 rule 的情况下，当改变 `max-replicas`、`location-labels` 或 `isolation-level` 配置项时，系统会自动更新这条默认的 rule。
 
 ### 关闭 Placement Rules 特性
 
