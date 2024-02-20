@@ -78,7 +78,7 @@ The Placement Rules feature is enabled by default in v5.0 and later versions of 
 enable-placement-rules = true
 ```
 
-In this way, PD enables this feature after the cluster is successfully bootstrapped and generates corresponding rules according to the `max-replicas` and `location-labels` configurations:
+In this way, PD enables this feature after the cluster is successfully bootstrapped and generates corresponding rules according to the [`max-replicas`](/pd-configuration-file.md#max-replicas), [`location-labels`](/pd-configuration-file.md#location-labels), and [`isolation-level`](/pd-configuration-file.md#isolation-level) configurations:
 
 {{< copyable "" >}}
 
@@ -103,11 +103,12 @@ For a bootstrapped cluster, you can also enable Placement Rules dynamically thro
 pd-ctl config placement-rules enable
 ```
 
-PD also generates default rules based on the `max-replicas` and `location-labels` configurations.
+PD also generates default rules based on the `max-replicas`, `location-labels`, and `isolation-level` configurations.
 
 > **Note:**
 >
-> After enabling Placement Rules, the previously configured `max-replicas` and `location-labels` no longer take effect. To adjust the replica policy, use the interface related to Placement Rules.
+> - When Placement Rules are enabled and multiple rules exist, the previously configured `max-replicas`, `location-labels`, and `isolation-level` no longer take effect. To adjust the replica policy, use the interface related to Placement Rules.
+> - When Placement Rules are enabled and only one default rule exists, TiDB will automatically update this default rule when `max-replicas`, `location-labels`, or `isolation-level` configurations are changed.
 
 ### Disable Placement Rules
 
@@ -121,7 +122,7 @@ pd-ctl config placement-rules disable
 
 > **Note:**
 >
-> After disabling Placement Rules, PD uses the original `max-replicas` and `location-labels` configurations. The modification of rules (when Placement Rules is enabled) will not update these two configurations in real time. In addition, all the rules that have been configured remain in PD and will be used the next time you enable Placement Rules.
+> After disabling Placement Rules, PD uses the original `max-replicas`, `location-labels`, and `isolation-level` configurations. The modification of rules (when Placement Rules is enabled) will not update these three configurations in real time. In addition, all the rules that have been configured remain in PD and will be used the next time you enable Placement Rules.
 
 ### Set rules using pd-ctl
 
