@@ -493,33 +493,6 @@ TiDB 提供系统变量 [`tidb_last_query_info`](/system-variables.md#tidb_last_
 
 TiDB 的系统表 [`INFORMATION_SCHEMA.statements_summary`](/statement-summary-tables.md#statements_summary) 中保存了 SQL 语句归一化聚合后的各种统计信息，可以用于查看分析各个 SQL 语句的执行性能。其中也包含资源管控相关的统计信息，包括资源组名、RU 消耗、等待可用 RU 的耗时等信息。具体请参考[`statements_summary` 字段介绍](/statement-summary-tables.md#statements_summary-字段介绍)。
 
-### 查看资源组的 RU 消耗
-
-从 v7.6.0 版本开始，TiDB 提供系统表 [`mysql.request_unit_by_group`](/mysql-schema.md#资源管控相关系统表) 存放各个资源组每日消耗的 RU 的历史记录。
-
-示例：
-
-```sql
-SELECT * FROM request_unit_by_group LIMIT 5;
-```
-
-```
-+----------------------------+----------------------------+----------------+----------+
-| start_time                 | end_time                   | resource_group | total_ru |
-+----------------------------+----------------------------+----------------+----------+
-| 2024-01-01 00:00:00.000000 | 2024-01-02 00:00:00.000000 | default        |   334147 |
-| 2024-01-01 00:00:00.000000 | 2024-01-02 00:00:00.000000 | rg1            |     4172 |
-| 2024-01-01 00:00:00.000000 | 2024-01-02 00:00:00.000000 | rg2            |    34028 |
-| 2024-01-02 00:00:00.000000 | 2024-01-03 00:00:00.000000 | default        |   334088 |
-| 2024-01-02 00:00:00.000000 | 2024-01-03 00:00:00.000000 | rg1            |     3850 |
-+----------------------------+----------------------------+----------------+----------+
-5 rows in set (0.01 sec)
-```
-
-> **注意：**
->
-> `mysql.request_unit_by_group` 的数据由 TiDB 的定时任务在每天结束后自动导入。如果某个资源组当天的 RU 消耗为 0，则不会产生一条记录。此表默认只存放最近 3 个月（最多 92 天）的数据。超过此期限的数据会自动被清理。
-
 ## 监控与图表
 
 TiDB 会定时采集资源管控的运行时信息，并在 Grafana 的 **Resource Control Dashboard** 中提供了相关指标的可视化图表，详见 [Resource Control 监控指标详解](/grafana-resource-control-dashboard.md)。
