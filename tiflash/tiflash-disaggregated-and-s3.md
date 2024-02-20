@@ -64,9 +64,9 @@ TiFlash disaggregated storage and compute architecture is suitable for cost-effe
     ```
 
     ```shell
-    tiup cluster scale-in mycuster -R tiflash # Remove all TiFlash nodes
-    tiup cluster display mycluster            # Wait for all TiFlash nodes to enter the Tombstone state
-    tiup cluster prune mycluster              # Remove all TiFlash nodes in the Tombstone state
+    tiup cluster scale-in mycuster -N 'node0,node1...' # Remove all TiFlash nodes
+    tiup cluster display mycluster                     # Wait for all TiFlash nodes to enter the Tombstone state
+    tiup cluster prune mycluster                       # Remove all TiFlash nodes in the Tombstone state
     ```
 
 ## Usage
