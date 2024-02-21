@@ -208,7 +208,7 @@ TiDB 支持改变[全局](/system-variables.md#tidb_force_priority)或单个语�
 >
 > **Note:**
 >
-> 在开启 [使用资源管控 (Resource Control) 实现资源隔离](/tidb-resource-control.md) 功能时，使用 `tidb_force_priority` 配置的优先级功能将被资源组的优先级调度功能取代，不再发挥作用，此时可以将不同优先级的语句放在不同的资源组中执行，通过为这些资源组分配不同的配额和优先级，可以达到更好的资源管控效果。
+> TiDB 从 v6.6.0 版本开始支持 [使用资源管控 (Resource Control) 实现资源隔离](https://github.com/tidb-resource-control.md) 功能，通过将不同优先级的语句放在不同的资源组中执行，并为这些资源组分配不同的配额和优先级，可以达到更好的资源管控效果。在开启资源管控功能后，语句的调度主要受资源组的控制，PRIORITY 将不再生效。建议在支持资源管控的版本优先使用资源管控功能。
 
 以上两种参数可以结合 TiDB 的 DML 语言进行使用，使用方法举例如下：
 
