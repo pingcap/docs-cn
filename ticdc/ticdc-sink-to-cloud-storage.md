@@ -347,4 +347,4 @@ schema 文件中对 Enum/Set 类型的定义如下：
 
 ## 行为变更说明
 
-从 v6.5.3, v7.1.1, v7.2.0-DMR 开始。如果 Update 事件的主键或者非空唯一键的列值发生改变，该条事件将会被拆分为 Delete 和 Insert 两条事件。这样做的目的是因为 CSV 协议在输出 Update 的事件内容时，不输出旧值，通过该方法可以解决该问题。[config(ticdc): enable-old-value always false if using avro or csv as the encoding protocol](https://github.com/pingcap/tiflow/pull/9079)
+从 v6.5.3、v7.1.1 和 v7.2.0 开始，如果 Update 事件的主键或者非空唯一索引的列值发生改变，TiCDC 会将该条事件拆分为 Delete 和 Insert 两条事件。这是为了解决 CSV 协议在输出 Update 事件内容时不包含旧值的问题。详情见 GitHub issue [#9086](https://github.com/pingcap/tiflow/issues/9086)。
