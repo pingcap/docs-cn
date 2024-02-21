@@ -615,7 +615,7 @@ ADMIN SHOW SLOW TOP all 5;
 | details | 执行语句的详细信息 |
 | succ | SQL 语句执行是否成功，1：成功，0：失败 |
 | conn_id | session 连接 ID |
-| transaction_ts | 事务提交的 commit ts |
+| transaction_ts | 事务的 start ts |
 | user | 执行该语句的用户名 |
 | db | 执行该 SQL 涉及到 database |
 | table_ids | 执行该 SQL 涉及到表的 ID |
