@@ -227,7 +227,7 @@ TiDB 支持完整的分布式事务，自 v3.0 版本起，提供乐观事务与
 
         - 如果 `pending compaction bytes` 达到该阈值，流控就会开始拒绝一部分的写请求（通过给客户端返回`ServerIsBusy`）。默认值 192GB，`[storage.flow-control] soft-pending-compaction-bytes-limit = "384GB"`。
 
-        - 如果 `pending compaction bytes` 达到该阈值，流控就会开始拒绝所有的写请求（通过给客户端返回`ServerIsBusy`），通常不太可能触发该情况，因为在达到 `soft-pending-compaction-bytes-limit` 的阈值之后流控机制就会介入而放慢写入速度。默认值 1024GB，`[storage.flow-control] hard-pending-compaction-bytes-limit = "2048GB"`<!--见案例 [case-275](https://github.com/pingcap/tidb-map/blob/master/maps/diagnose-case-study/case275.md) -->。
+        - 如果 `pending compaction bytes` 达到 `hard-pending-compaction-bytes-limit` 参数的值（默认为 1024GB），流控就会开始拒绝所有的写请求（通过给客户端返回 `ServerIsBusy`）。通常不太可能触发该情况，因为在达到 `soft-pending-compaction-bytes-limit` 的阈值之后，流控机制就会介入而放慢写入速度。如果触发，可以调大该参数的值，例如，`[storage.flow-control] hard-pending-compaction-bytes-limit = "2048GB"`<!--见案例 [case-275](https://github.com/pingcap/tidb-map/blob/master/maps/diagnose-case-study/case275.md) -->。
 
         - 如果磁盘 IO 能力持续跟不上写入，建议扩容。如果磁盘的吞吐达到了上限（例如 SATA SSD 的吞吐相对 NVME SSD 会低很多）导致 write stall，但是 CPU 资源又比较充足，可以尝试采用压缩率更高的压缩算法来缓解磁盘的压力，用 CPU 资源换磁盘资源。
 
