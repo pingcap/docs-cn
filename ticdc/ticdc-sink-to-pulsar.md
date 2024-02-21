@@ -100,7 +100,7 @@ basic-user-name="root"
 basic-password="password"
 # Pulsar 启用 mTLS 认证时，客户端的证书路径。
 auth-tls-certificate-path="/data/pulsar/certificate"
-# Pulsar 使用 mTLS 认证时，客户端的私钥路径。
+# Pulsar 启用 mTLS 认证时，客户端的私钥路径。
 auth-tls-private-key-path="/data/pulsar/certificate.key"
 # Pulsar TLS 可信证书文件路径，在启用 mTLS 认证或者 TLS 加密时，需要指定该参数。
 tls-trust-certs-file-path="/data/pulsar/tls-trust-certs-file"
