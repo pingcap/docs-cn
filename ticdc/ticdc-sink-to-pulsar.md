@@ -216,7 +216,7 @@ tls-key-file-path="/data/pulsar/tls-key-file"
     auth-tls-certificate-path="/data/pulsar/certificate"
     # Pulsar mTLS 认证私钥路径
     auth-tls-private-key-path="/data/pulsar/certificate.key"
-    # Pulsar mTLS 加密可信证书文件路径
+    # Pulsar mTLS 可信证书文件路径
     tls-trust-certs-file-path="/data/pulsar/tls-trust-certs-file"
     ```
 
