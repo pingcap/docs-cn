@@ -141,7 +141,7 @@ send-timeout=30
 
 ### TLS 加密传输
 
-对于 v7.5.1 或更高的 v7.5 补丁版本，TiCDC 支持 Pulsar 的 TLS 加密传输，配置样例如下所示：
+对于 v7.5.1 和更高的 v7.5 补丁版本，TiCDC 支持 Pulsar 的 TLS 加密传输，配置样例如下所示：
 
 Sink URI：
 
@@ -222,7 +222,7 @@ tls-key-file-path="/data/pulsar/tls-key-file"
 
 - OAuth2 认证
 
-    对于 v7.5.1 或更高的 v7.5 补丁版本，TiCDC 支持 Pulsar 的 OAuth2 认证，配置样例如下所示：
+    对于 v7.5.1 和更高的 v7.5 补丁版本，TiCDC 支持 Pulsar 的 OAuth2 认证，配置样例如下所示：
 
     Sink URI：
 
