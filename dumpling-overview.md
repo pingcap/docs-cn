@@ -345,7 +345,7 @@ When Dumpling is exporting a large single table from TiDB, Out of Memory (OOM) m
 
 ### Manually set the TiDB GC time
 
-When exporting data from TiDB (more than 1 TB), if the TiDB version is later than or equal to v4.0.0 and Dumpling can access the PD address of the TiDB cluster, Dumpling automatically extends the GC time without affecting the original cluster.
+When exporting data from TiDB (less than 1 TB), if the TiDB version is later than or equal to v4.0.0 and Dumpling can access the PD address of the TiDB cluster, Dumpling automatically extends the GC time without affecting the original cluster.
 
 However, in either of the following scenarios, Dumpling cannot automatically adjust the GC time:
 
