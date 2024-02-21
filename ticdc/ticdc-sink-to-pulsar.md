@@ -102,7 +102,7 @@ basic-password="password"
 auth-tls-certificate-path="/data/pulsar/certificate"
 # Pulsar 启用 mTLS 认证时，客户端的私钥路径。
 auth-tls-private-key-path="/data/pulsar/certificate.key"
-# Pulsar TLS 可信证书文件路径，在启用 mTLS 认证或者 TLS 加密时，需要指定该参数。
+# Pulsar TLS 可信证书文件路径，在 Pulsar 启用 mTLS 认证或者 TLS 加密传输时，需要指定该参数。
 tls-trust-certs-file-path="/data/pulsar/tls-trust-certs-file"
 # Pulsar 启用 TLS 加密时，加密私钥路径。
 tls-key-file-path="/data/pulsar/tls-key-file"
