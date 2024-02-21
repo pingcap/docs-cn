@@ -467,4 +467,4 @@ Kafka 消费者会收到一条含有大消息在外部存储服务中的地址�
 
 ## 行为变更说明
 
-从 v6.5.3, v7.1.1, v7.2.0-DMR 开始。如果 Update 事件的主键或者非空唯一键的列值发生改变，该条事件将会被拆分为 Delete 和 Insert 两条事件。这样做的目的是为了避免因为下游消费者组对多个 Kafka Topic Partitions 消费进度不同，导致的数据不一致问题。[config(ticdc): enable-old-value always false if using avro or csv as the encoding protocol](https://github.com/pingcap/tiflow/pull/9079)
+从 v6.5.3、v7.1.1 和 v7.2.0 开始，TiCDC 在处理 Update 事件时，如果事件的主键或者非空唯一索引的列值发生改变，则会将该条事件拆分为 Delete 和 Insert 两条事件。这是为了避免当下游消费者组处理多个 Kafka Topic partition 时，由于消费进度不同导致数据不一致的问题。详情见 GitHub issue [#9086](https://github.com/pingcap/tiflow/issues/9086)。
