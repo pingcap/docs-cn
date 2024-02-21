@@ -614,7 +614,7 @@ The following table shows output details:
 | details | The details of the SQL execution |
 | succ | Whether the SQL statement is executed successfully. `1` means success and `0` means failure. |
 | conn_id | The connection ID for the session |
-| transaction_ts | The `commit ts` for a transaction commit |
+| transaction_ts | The `start ts` of the transaction |
 | user | The user name for the execution of the statement |
 | db | The database involved when the statement is executed |
 | table_ids | The ID of the table involved when the SQL statement is executed |
