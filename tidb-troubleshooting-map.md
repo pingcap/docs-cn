@@ -225,7 +225,7 @@ TiDB 支持完整的分布式事务，自 v3.0 版本起，提供乐观事务与
 
     - `pending compaction bytes` 太多导致触发新流控机制开始工作， 可以通过调大 `soft-pending-compaction-bytes-limit` 和 `hard-pending-compaction-bytes-limit` 参数来缓解：
 
-        - 如果 `pending compaction bytes` 达到该阈值，流控就会开始拒绝一部分的写请求（通过给客户端返回`ServerIsBusy`）。默认值 192GB，`[storage.flow-control] soft-pending-compaction-bytes-limit = "384GB"`。
+        - 如果 `pending compaction bytes` 达到 `soft-pending-compaction-bytes-limit` 参数的值（默认为 `192GB`），流控就会开始拒绝一部分的写请求（通过给客户端返回 `ServerIsBusy`）。此时，可以调大该参数的值，例如，`[storage.flow-control] soft-pending-compaction-bytes-limit = "384GB"`。
 
         - 如果 `pending compaction bytes` 达到 `hard-pending-compaction-bytes-limit` 参数的值（默认为 1024GB），流控就会开始拒绝所有的写请求（通过给客户端返回 `ServerIsBusy`）。通常不太可能触发该情况，因为在达到 `soft-pending-compaction-bytes-limit` 的阈值之后，流控机制就会介入而放慢写入速度。如果触发，可以调大该参数的值，例如，`[storage.flow-control] hard-pending-compaction-bytes-limit = "2048GB"`<!--见案例 [case-275](https://github.com/pingcap/tidb-map/blob/master/maps/diagnose-case-study/case275.md) -->。
 
