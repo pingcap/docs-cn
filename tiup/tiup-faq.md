@@ -23,7 +23,7 @@ TiUP does not support third-party components for the time being, but the TiUP Te
 
 ## What is the difference between the TiUP playground and TiUP cluster components?
 
-The TiUP playground component is mainly used to build a stand-alone development environment on Linux or macOS operating systems. It helps you get started quickly and run a specified version of the TiUP cluster easily. The TiUP cluster component is mainly used to deploy and maintain a production environment cluster, which is usually a large-scale cluster.
+The TiUP playground component is mainly used to build a stand-alone development environment on Linux or macOS operating systems. It helps you get started quickly and run a specified version of the TiUP cluster easily. The TiUP cluster component is mainly used to deploy and maintain a production environment cluster, which is usually a large-scale cluster. TiDB clusters deployed by TiUP Playground might lack some features and operational capabilities, and it is not recommended for complete functional and stability testing.
 
 ## How do I write the topology file for the TiUP cluster component?
 

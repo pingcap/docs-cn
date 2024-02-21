@@ -15,7 +15,7 @@ In addition, you can try out TiDB features on [TiDB Playground](https://play.tid
 
 > **Note:**
 >
-> The deployment method provided in this guide is **ONLY FOR** quick start, **NOT FOR** production.
+> The deployment method provided in this guide is **ONLY FOR** quick start, **NOT FOR** production or comprehensive functionality and stability testing.
 >
 > - To deploy a self-hosted production cluster, see the [production installation guide](/production-deployment-using-tiup.md).
 > - To deploy TiDB on Kubernetes, see [Get Started with TiDB on Kubernetes](https://docs.pingcap.com/tidb-in-kubernetes/stable/get-started).
