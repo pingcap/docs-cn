@@ -344,3 +344,7 @@ schema 文件中对 Enum/Set 类型的定义如下：
     "ColumnType":"{ENUM/SET}",
 }
 ```
+
+### 行为变更说明
+
+从 v6.5.3, v7.1.1 开始。如果 Update 事件的主键或者非空唯一键的列值发生改变，该条事件将会被拆分为 Delete 和 Insert 两条事件。这样做的目的是因为 CSV 协议在输出 Update 的事件内容时，不输出旧值，通过该方法可以解决该问题。[config(ticdc): enable-old-value always false if using avro or csv as the encoding protocol](https://github.com/pingcap/tiflow/pull/9079)
