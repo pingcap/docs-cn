@@ -221,7 +221,7 @@ TiDB 支持完整的分布式事务，自 v3.0 版本起，提供乐观事务与
 
 通过查看监控：**Grafana** -> **TiKV** -> **errors** 确认具体 busy 原因。`server is busy` 是 TiKV 自身的流控机制，TiKV 通过这种方式告知 `tidb/ti-client` 当前 TiKV 的压力过大，稍后再尝试。
 
-- 4.3.1 TiKV RocksDB 出现 `write stall`。一个 TiKV 包含两个 RocksDB 实例，一个用于存储 Raft 日志，位于 `data/raft`。另一个用于存储真正的数据，位于 `data/db`。通过 `grep "Stalling" RocksDB` 日志查看 stall 的具体原因，RocksDB 日志是 LOG 开头的文件，LOG 为当前日志。`write stall` 是一个 RocksDB 原生内建的性能降级机制。当 RocksDB 发生 `write stall` 时，整个系统的性能会出现剧烈下降。此前，TiDB 是通过直接给客户端返回 `ServerIsBusy` 错误来阻挡所有的写请求，但这容易带来剧烈的 QPS 性能下降。自 5.2 版本起，TiKV 引入了新的流控机制，通过前置在调度层实现动态延迟写请求来达到抑制写入的目标，以期取代之前当遇到 `write stall` 时就给客户端返回 `server is busy` 来抑制写入的问题。新的流控机制默认配置开启，TiKV 会自动关闭 `KvDB` 和 `RaftDB` (memtable 除外) 的 `write stall` 机制。但是，当 pending 的量超过一定阈值时，流控机制仍然会生效，开始拒绝部分或所有的写入请求，并返回客户端 `server is busy` 报错，表现如下。更具体的说明和阈值可参考[流控配置说明](/tikv-configuration-file#storageflow-control)
+- 4.3.1 TiKV RocksDB 出现 `write stall`。一个 TiKV 包含两个 RocksDB 实例，一个用于存储 Raft 日志，位于 `data/raft`。另一个用于存储真正的数据，位于 `data/db`。通过 `grep "Stalling" RocksDB` 日志查看 stall 的具体原因，RocksDB 日志是 LOG 开头的文件，LOG 为当前日志。`write stall` 是一个 RocksDB 原生内建的性能降级机制。当 RocksDB 发生 `write stall` 时，系统的整体性能会急剧下降。在 v5.2.0 之前，TiDB 通过直接给客户端返回 `ServerIsBusy` 错误来阻挡所有的写请求，但这容易导致 QPS 性能急剧下降。自 v5.2.0 起，TiKV 引入了新的流控机制，通过前置在调度层实现动态延迟写请求来抑制写入，以替代之前遇到 `write stall` 时就给客户端返回 `server is busy` 来抑制写入的机制。新的流控机制默认配置开启，TiKV 会自动关闭 `KvDB` 和 `RaftDB` (memtable 除外) 的 `write stall` 机制。但是，当 pending 的请求量超过一定阈值时，流控机制仍然会生效，开始拒绝部分或所有的写入请求，并返回客户端 `server is busy` 报错，表现如下。详细的说明和阈值可参考[流控配置说明](/tikv-configuration-file#storageflow-control)
 
     - `pending compaction bytes` 太多导致触发新流控机制开始工作， 可以通过调大 `soft-pending-compaction-bytes-limit` 和 `hard-pending-compaction-bytes-limit` 参数来缓解：
 
