@@ -225,7 +225,7 @@ TiDB 支持改变[全局](/system-variables.md#tidb_force_priority)或单个语�
 
 ## 在 TiDB 中 auto analyze 的触发策略是怎样的？
 
-触发策略：如果一张新表达到 1000 条记录，并且在 1 分钟内没有写入，会自动触发。
+触发策略：如果一张新表达到 1000 条记录，会自动触发。
 
 当表的（修改数/当前总行数）比例大于 `tidb_auto_analyze_ratio` 的时候，会自动触发 `analyze` 语句。`tidb_auto_analyze_ratio` 的默认值为 0.5，即默认开启触发 auto analyze。为了保险起见，在开启 auto analyze 的时候，`tidb_auto_analyze_ratio` 的最小值为 0.3。但是该变量值不能大于等于 `pseudo-estimate-ratio`（默认值为 0.8），否则会有一段时间使用 pseudo 统计信息，建议设置值为 0.5。
 
