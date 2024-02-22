@@ -110,7 +110,7 @@ TiDB 的密码重用策略功能与 MySQL 一致，在实现密码重用策略�
 
 TiDB 支持多种身份验证方式。通过使用 [`CREATE USER`](/sql-statements/sql-statement-create-user.md) 语句和 [`ALTER USER`](/sql-statements/sql-statement-alter-user.md) 语句，即可创建新用户或更改 TiDB 权限系统内的已有用户。TiDB 身份验证方式与 MySQL 兼容，其名称与 MySQL 保持一致。
 
-TiDB 目前支持的身份验证方式可在以下的表格中查找到。服务器和客户端建立连接时，如要指定服务器对外通告的默认验证方式，可通过 [`default_authentication_plugin`](/system-variables.md#default_authentication_plugin) 变量进行设置。`tidb_sm3_password` 为仅在 TiDB 支持的 SM3 身份验证方式，使用该方式登录的用户需要使用 [TiDB-JDBC](https://github.com/pingcap/mysql-connector-j/tree/release/8.0-sm3)。`tidb_auth_token` 为用于 TiDB Cloud 内部的基于 JSON Web Token (JWT) 的认证方式，用户通过配置也可以在自托管环境使用。
+TiDB 目前支持的身份验证方式可在以下的表格中查找到。服务器和客户端建立连接时，如要指定服务器对外通告的默认验证方式，可通过 [`default_authentication_plugin`](/system-variables.md#default_authentication_plugin) 变量进行设置。`tidb_sm3_password` 为仅在 TiDB 支持的 SM3 身份验证方式，使用该方式登录的用户需要使用 [TiDB-JDBC](https://github.com/pingcap/mysql-connector-j/tree/release/8.0-sm3)。`tidb_auth_token` 用于 TiDB Cloud 内部的基于 JSON Web Token (JWT) 的认证，用户通过配置也可以用于自托管环境。
 
 针对 TLS 身份验证，TiDB 目前采用不同的配置方案。具体情况请参见[为 TiDB 客户端服务端间通信开启加密传输](/enable-tls-between-clients-and-servers.md)。
 
@@ -133,7 +133,7 @@ TiDB 目前支持的身份验证方式可在以下的表格中查找到。服务
 
 ### `tidb_auth_token`
 
-`tidb_auth_token` 是一种基于 [JSON Web Token (JWT)](https://datatracker.ietf.org/doc/html/rfc7519) 的无密码认证方式。在 v6.4.0 中， `tidb_auth_token` 仅用于 TiDB Cloud 内部的用户认证，从 v6.5.0 起，你也可以将 `tidb_auth_token` 配置为 TiDB 自托管环境中用户的认证方式。不同于 `mysql_native_passsword`、`caching_sha2_password` 等使用密码的认证方式，`tidb_auth_token` 认证方式在创建用户时无需设置并保存自定义密码，在用户登录时只需使用一个签发的 token，从而简化用户的认证过程并提升安全性。
+`tidb_auth_token` 是一种基于 [JSON Web Token (JWT)](https://datatracker.ietf.org/doc/html/rfc7519) 的无密码认证方式。在 v6.4.0 中，`tidb_auth_token` 仅用于 TiDB Cloud 内部的用户认证，从 v6.5.0 起，你也可以将 `tidb_auth_token` 配置为 TiDB 自托管环境中用户的认证方式。不同于 `mysql_native_passsword`、`caching_sha2_password` 等使用密码的认证方式，`tidb_auth_token` 认证方式在创建用户时无需设置并保存自定义密码，在用户登录时只需使用一个签发的 token，从而简化用户的认证过程并提升安全性。
 
 #### JWT
 
@@ -202,6 +202,7 @@ Signature 用于对 Header 和 Payload 这两部分数据进行签名。
     ```
 
 2. 启动 `tidb-server`，并定期更新保存 JWKS 至 `auth-token-jwks` 指定的路径。
+
 3. 创建使用 `tidb_auth_token` 认证的用户，并根据需要通过 `REQUIRE TOKEN_ISSUER` 和 `ATTRIBUTE '{"email": "xxxx@pingcap.com"}` 指定 `iss` 与 `email` 信息。
 
     例如，创建一个使用 `tidb_auth_token` 认证的用户 `user@pingcap.com`：
