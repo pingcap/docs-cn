@@ -63,7 +63,7 @@ AZ1 的 rac1 机架中，一台服务器部署了 TiDB 和 PD 服务，另外两
 
 以下为一个 `tiup topology.yaml` 文件示例：
 
-```
+```yaml
 # # Global variables are applied to all deployments and used as the default value of
 # # the deployments if a specific deployment value is missing.
 global:
@@ -76,7 +76,7 @@ server_configs:
   tikv:
     server.grpc-compression-type: gzip
   pd:
-    replication.location-labels:  ["dc","zone","rack","host"]
+    replication.location-labels:  ["az","replication zone","rack","host"]
 
 pd_servers:
   - host: 10.63.10.10
@@ -134,7 +134,7 @@ alertmanager_servers:
 
 PD 设置中添加 TiKV label 的等级配置。
 
-```
+```yaml
 server_configs:
   pd:
     replication.location-labels:  ["az","replication zone","rack","host"]
@@ -142,7 +142,7 @@ server_configs:
 
 tikv_servers 设置基于 TiKV 真实物理部署位置的 Label 信息，方便 PD 进行全局管理和调度。
 
-```
+```yaml
 tikv_servers:
   - host: 10.63.10.30
     config:
@@ -167,13 +167,13 @@ tikv_servers:
 
 - 启用 TiKV gRPC 消息压缩。由于需要在网络中传输集群数据，可开启 gRPC 消息压缩，降低网络流量。
 
-    ```
+    ```yaml
     server.grpc-compression-type: gzip
     ```
 
 - 优化跨区域 AZ3 的 TiKV 节点网络，修改 TiKV 的如下参数，拉长跨区域副本参与选举的时间，避免跨区域 TiKV 中的副本参与 Raft 选举。
 
-    ```
+    ```yaml
     raftstore.raft-min-election-timeout-ticks: 1000
     raftstore.raft-max-election-timeout-ticks: 1200
     ```
@@ -187,7 +187,7 @@ tikv_servers:
 - 禁止向跨区域 AZ 调度 Raft Leader，当 Raft Leader 在跨区域 AZ 时，会造成不必要的本区域 AZ 与远程 AZ 间的网络消耗，同时，网络带宽和延迟也会对 TiDB 的集群性能产生影响。
 
     ```
-    config set label-property reject-leader dc 3
+    config set label-property reject-leader az 3
     ```
 
     > **注意：**
