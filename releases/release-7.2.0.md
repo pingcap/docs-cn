@@ -173,6 +173,7 @@ TiDB 版本：7.2.0
 ### 行为变更
 
 * TiCDC
+
     - 主键或者非空索引键发生改变的 Update 事件，拆分为 Delete 和 Insert 两条事件。[含有单条 Update 变更的事物拆分](/ticdc/ticdc-behavior-change.md#含有单条-update-变更的事物拆分)
 
 ### 系统变量
