@@ -511,7 +511,3 @@ Kafka 消费者会收到一条含有大消息在外部存储服务中的地址�
 ```
 
 `key` 和 `value` 分别存有编码后的大消息，该消息原本应该发送到 Kafka 消息中的对应字段。消费者可以通过解析这两部分的数据，还原大消息的内容。
-
-## 行为变更说明
-
-从 v6.5.3、v7.1.1 和 v7.2.0 开始，TiCDC 在处理 Update 事件时，如果事件的主键或者非空唯一索引的列值发生改变，则会将该条事件拆分为 Delete 和 Insert 两条事件。这是为了避免当下游消费者组处理多个 Kafka Topic partition 时，由于消费进度不同导致数据不一致的问题。详情见 GitHub issue [#9086](https://github.com/pingcap/tiflow/issues/9086)。
