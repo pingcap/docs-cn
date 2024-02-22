@@ -184,11 +184,11 @@ Signature 用于对 Header 和 Payload 这两部分数据进行签名。
 
 #### 使用方法
 
-配置并使用 `tidb_auth_token` 作为 TiDB 用户的认证方式，有以下几个步骤：
+配置并使用 `tidb_auth_token` 作为 TiDB 自托管环境中用户的认证方式，有以下几个步骤：
 
 1. 在 TiDB 配置文件中设置 [`auth-token-jwks`](/tidb-configuration-file.md#auth-token-jwks-从-v640-版本开始引入) 和 [`auth-token-refresh-interval`](/tidb-configuration-file.md#auth-token-refresh-interval-从-v640-版本开始引入)。
 
-    例如，可以通过下列命令获取示例 JWKS:
+    例如，可以通过下列命令获取示例 JWKS：
 
     ```bash
     wget https://raw.githubusercontent.com/CbcWestwolf/generate_jwt/master/JWKS.json
