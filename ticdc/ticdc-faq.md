@@ -82,7 +82,7 @@ TiCDC 为 service GC safepoint 设置的默认存活有效期为 24 小时，即
 
 1. 通过 `cdc cli changefeed query` 查询同步任务的错误信息，尽快修复错误。
 2. 调大 `gc-ttl` 的值，给修复错误留出时间，确保错误修复后不会因为同步延迟超过 `gc-ttl` 而导致同步任务进入 `failed` 状态。 
-3. 在评估系统影响后，调大 TiDB 的 `tikv_gc_life_time` 的值以达到阻止 GC 保留数据的目的，确保错误修复后不会因为 GC 清理数据而导致同步任务进入 `failed` 状态。
+3. 在评估系统影响后，调大 TiDB 的 `tidb_gc_life_time` 的值以达到阻止 GC 保留数据的目的，确保错误修复后不会因为 GC 清理数据而导致同步任务进入 `failed` 状态。
 
 ## 如何理解 TiCDC 时区和上下游数据库系统时区之间的关系？
 
