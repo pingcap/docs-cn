@@ -180,7 +180,7 @@ tikv_servers:
 
 > 注意:
 >
-> 配置较大的 `raftstore.raft-min-election-timeout-ticks` 和 `raftstore.raft-max-election-timeout-ticks` 可以大幅降低此 TiKV 上面的 peer 成为 leader 的概率，但在发生灾难的场景，如果部分其他 TiKV 节点挂掉，而其他存活的 TiKV 的 raft 日志落后的话，此时只能由此 TiKV 上面的 region 成为 leader, 而当 leader 挂掉之后，此 TiKV 上面的 region 需要至少 `raftstore.raft-min-election-timeout-ticks` 才能发起选举，因此最好避免将此配置值设置的过大，以免在这种场景下影响集群的可用性。
+> 通过 `raftstore.raft-min-election-timeout-ticks` 和 `raftstore.raft-max-election-timeout-ticks` 为 TiKV 节点配置较大的 election timeout tick 可以大幅降低该节点上的 Region 成为 leader 的概率。但在发生灾难的场景中，如果部分 TiKV 节点宕机，而其它存活的 TiKV 节点 Raft 日志落后，此时只有这个配置了较大的 tick 的 TiKV 节点上的 Region 能成为 leader。由于此 TiKV 节点上的 Region 需要至少等待 `raftstore.raft-min-election-timeout-ticks` 设置的时间后才能发起选举，因此尽量避免将此配置值设置的过大，以免在这种场景下影响集群的可用性。
 
 - 调度设置。在集群启动后，通过 `tiup ctl:v<CLUSTER_VERSION> pd` 工具进行调度策略修改。修改 TiKV Raft 副本数按照安装时规划好的副本数进行设置，在本例中为 5 副本。
 
