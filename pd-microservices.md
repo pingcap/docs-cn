@@ -27,7 +27,7 @@ PD 微服务可以通过将重要模块，如 TSO 分配，调度等模块，与
 1. TSO 微服务目前不支持动态启停，开启或关闭需要重启 PD 集群。
 2. 只有 TiDB 通过服务发现直接连接 TSO 微服务，其他的组件是通过请求转发的方式，将请求通过 PD 转发到 TSO 微服务获取时间戳。
 3. 当前微服务与 dr-auto sync 特性不兼容。
-4. 若需使用 online unsafe recovery，需要暂停 Scheduling 微服务，避免因调度产生非预期行为。
+4. 与 TiDB 系统变量 `tidb_enable_tso_follower_proxy` 不兼容。
 
 ## 相关参数
 
@@ -40,7 +40,7 @@ pd-server services <mode>
 `mode` 支持三种选项，具体如下：
 
 - `api`：若开启微服务，PD 自身将默认以 api mode 启动。启动后不再提供原本 TSO 分配的功能，需要在集群中同时部署 TSO 微服务。另外，原本的调度功能则根据是否部署 scheduling 微服务动态提供。
-- `tso`：若 mode 为 tso，即开启 TSO 微服务，提供时间戳分配的功能，需要 PD 以 api mode 启动。
+- `tso`：若 mode 为 tso，即开启 TSO 微服务，提供时间戳分配的功能，需要 PD 以 api mode 启动。T
 - `scheduling`：若 mode 为 scheduling，即开启 Scheduling 微服务，提供调度功能，需要 PD 以 api mode 启动。开启后，PD 自身将不在提供调度功能。
 
 > **注意：**
