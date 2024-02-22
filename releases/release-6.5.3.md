@@ -11,6 +11,13 @@ TiDB 版本：6.5.3
 
 试用链接：[快速体验](https://docs.pingcap.com/zh/tidb/v6.5/quick-start-with-tidb) | [生产部署](https://docs.pingcap.com/zh/tidb/v6.5/production-deployment-using-tiup) | [下载离线包](https://cn.pingcap.com/product-community/?version=v6.5.3#version-list)
 
+## 兼容性变更
+
+### 行为变更
+
+* TiCDC
+    - 主键或者非空索引键发生改变的 Update 事件，拆分为 Delete 和 Insert 两条事件。[含有单条 Update 变更的事物拆分](/ticdc/ticdc-behavior-change.md#含有单条-update-变更的事物拆分)
+
 ## 改进提升
 
 + TiDB
