@@ -1,9 +1,9 @@
 ---
-title: TiDB v7.5.1 Release Notes
-summary: 了解 TiDB v7.5.1 版本的兼容性变更、改进提升，以及错误修复。
+title: TiDB 7.5.1 Release Notes
+summary: 了解 TiDB 7.5.1 版本的兼容性变更、改进提升，以及错误修复。
 ---
 
-# TiDB v7.5.1 Release Notes
+# TiDB 7.5.1 Release Notes
 
 发版日期：2024 年 x 月 x 日
 
