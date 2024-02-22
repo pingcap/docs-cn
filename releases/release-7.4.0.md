@@ -286,6 +286,10 @@ TiDB 版本：7.4.0
 
 - 新增表 [`information_schema.CHECK_CONSTRAINTS`](/information-schema/information-schema-check-constraints.md)，提高与 MySQL 8.0 的兼容性。
 
+* TiCDC
+
+    - 对于一个含有多条变更的事物，如果 Update 事件的主键或者非空唯一索引的列值发生改变，TiCDC 会将该其拆分为 Delete 和 Insert 两条事件，并且将所有事件排序，保证 Delete 事件在 Insert 事件之前。[含有多条 Update 变更的事物拆分](/ticdc/ticdc-behavior-change.md#含有多条-update-变更的事物拆分)
+
 ### 系统变量
 
 | 变量名 | 修改类型 | 描述 |
