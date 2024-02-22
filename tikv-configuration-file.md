@@ -1175,8 +1175,8 @@ RocksDB 相关的配置项。
 
 ### `wal-dir`
 
-+ WAL 存储目录，默认：“tmp/tikv/store”。
-+ 默认值：/tmp/tikv/store
++ WAL 存储目录，若未指定，WAL 将存储在数据目录。
++ 默认值：`""`
 
 ### `wal-ttl-seconds`
 
@@ -2069,7 +2069,7 @@ Raft Engine 相关的配置项。
 + 触发 GC 的垃圾比例阈值。
 + 默认值：`1.1`
 
-### `num-threads` <span class="version-mark">从 v7.6.0 版本开始引入</span>
+### `num-threads` <span class="version-mark">从 v6.5.8 和 v7.6.0 版本开始引入</span>
 
 + 当 `enable-compaction-filter` 为 `false` 时 GC 线程个数。
 + 默认值：1

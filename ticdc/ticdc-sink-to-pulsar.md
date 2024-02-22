@@ -98,12 +98,16 @@ token-from-file="/data/pulsar/token-file.txt"
 basic-user-name="root"
 # Pulsar 使用 basic 账号密码验证身份，此处为密码。
 basic-password="password"
-# Pulsar TLS 加密认证证书路径。
+# Pulsar 启用 mTLS 认证时，客户端的证书路径。
 auth-tls-certificate-path="/data/pulsar/certificate"
-# Pulsar TLS 加密认证私钥路径。
+# Pulsar 启用 mTLS 认证时，客户端的私钥路径。
 auth-tls-private-key-path="/data/pulsar/certificate.key"
-# Pulsar TLS 加密可信证书文件路径。
+# Pulsar TLS 可信证书文件路径，在 Pulsar 启用 mTLS 认证或者 TLS 加密传输时，需要指定该参数。
 tls-trust-certs-file-path="/data/pulsar/tls-trust-certs-file"
+# Pulsar 启用 TLS 加密传输时，客户端的加密私钥路径。
+tls-key-file-path="/data/pulsar/tls-key-file"
+# Pulsar 启用 TLS 加密传输时，客户端的加密证书文件路径。
+tls-certificate-file="/data/pulsar/tls-certificate-file"
 # Pulsar oauth2 issuer-url 更多详细配置请看 Pulsar 官方介绍：https://pulsar.apache.org/docs/2.10.x/client-libraries-go/#tls-encryption-and-authentication
 oauth2.oauth2-issuer-url="https://xxxx.auth0.com"
 # Pulsar oauth2 audience
@@ -134,6 +138,32 @@ send-timeout=30
 
 * 你需要在创建 Changefeed 的时候设置 `protocol` 参数。目前同步数据到 Pulsar 仅支持使用 `canal-json` 协议。
 * `pulsar-producer-cache-size` 参数表示 Pulsar 客户端中缓存 Producer 的数量，因为 Pulsar 的每个 Producer 只能对应一个 topic，TiCDC 采用 LRU 方式缓存 Producer，默认限制为 10240 个。如果你需要同步的 topic 数量大于默认值，则需要调大该数量。
+
+### TLS 加密传输
+
+TiCDC 从 v7.5.1 和 v8.0.0 开始支持 Pulsar 的 TLS 加密传输，配置样例如下所示：
+
+Sink URI：
+
+```shell
+--sink-uri="pulsar+ssl://127.0.0.1:6651/persistent://public/default/yktest?protocol=canal-json"
+```
+
+config 参数：
+
+```toml
+[sink.pulsar-config]
+tls-trust-certs-file-path="/data/pulsar/tls-trust-certs-file"
+```
+
+如果你的 Pulsar 服务端设置了 `tlsRequireTrustedClientCertOnConnect=true` 参数，那么你需要同时在 changefeed 的配置文件中设置 `tls-key-file-path` 和 `tls-certificate-file` 参数。如下所示：
+
+```toml
+[sink.pulsar-config]
+tls-trust-certs-file-path="/data/pulsar/tls-trust-certs-file"
+tls-certificate-file="/data/pulsar/tls-certificate-file"
+tls-key-file-path="/data/pulsar/tls-key-file"
+```
 
 ### TiCDC 使用 Pulsar 的认证与授权
 
@@ -170,32 +200,34 @@ send-timeout=30
     token-from-file="/data/pulsar/token-file.txt"
     ```
 
-- TLS 加密认证
+- mTLS 认证
 
     Sink URI：
 
     ```shell
-    --sink-uri="pulsar+ssl://127.0.0.1:6650/persistent://public/default/yktest?protocol=canal-json"
+    --sink-uri="pulsar+ssl://127.0.0.1:6651/persistent://public/default/yktest?protocol=canal-json"
     ```
 
     config 参数：
 
     ```toml
     [sink.pulsar-config]
-    # Pulsar TLS 加密认证证书路径
+    # Pulsar mTLS 认证证书路径
     auth-tls-certificate-path="/data/pulsar/certificate"
-    # Pulsar TLS 加密认证私钥路径
+    # Pulsar mTLS 认证私钥路径
     auth-tls-private-key-path="/data/pulsar/certificate.key"
-    # Pulsar TLS 加密可信证书文件路径
+    # Pulsar mTLS 可信证书文件路径
     tls-trust-certs-file-path="/data/pulsar/tls-trust-certs-file"
     ```
 
 - OAuth2 认证
 
+    TiCDC 从 v7.5.1 和 v8.0.0 开始支持 Pulsar 的 OAuth2 认证，配置样例如下所示：
+
     Sink URI：
 
     ```shell
-    --sink-uri="pulsar+ssl://127.0.0.1:6650/persistent://public/default/yktest?protocol=canal-json"
+    --sink-uri="pulsar://127.0.0.1:6650/persistent://public/default/yktest?protocol=canal-json"
     ```
 
     config 参数：
