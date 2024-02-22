@@ -34,7 +34,7 @@ update t set a = 2 where a = 1;
 
 该变更主要为了解决如下问题：
 
-* 使用 MySQL Sink 直接写入这两条事件到下游，下会出现主键冲突的问题，导致 changefeed 报错。
+* 使用 MySQL Sink 直接写入这两条事件到下游，会出现主键冲突的问题，导致 changefeed 报错。
 
 考虑如下 SQL：
 
