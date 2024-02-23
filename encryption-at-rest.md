@@ -65,9 +65,31 @@ TiKV 当前支持的加密算法包括 AES128-CTR、AES192-CTR、AES256-CTR 和 
 
 无论用户配置了哪种数据加密方法，数据密钥都使用 AES256-GCM 算法进行加密，以方便对主密钥进行验证。所以当使用文件而不是 KMS 方式指定主密钥时，主密钥必须为 256 位（32 字节）。
 
-### 创建密钥
+### 配置加密
 
-如需在 AWS 上创建一个密钥，请执行以下步骤：
+要启用加密，你可以在 TiKV 和 PD 的配置文件中添加加密部分：
+
+```
+[security.encryption]
+data-encryption-method = "aes128-ctr"
+data-key-rotation-period = "168h" # 7 days
+```
+
+`data-encryption-method` 的可选值为 `"aes128-ctr"`、`"aes192-ctr"`、`"aes256-ctr"`、`"sm4-ctr"` (仅 v6.3.0 及之后版本) 和 `"plaintext"`。默认值为 `"plaintext"`，即默认不开启加密功能。`data-key-rotation-period` 指定 TiKV 轮换密钥的频率。可以为新 TiKV 集群或现有 TiKV 集群开启加密，但只有启用后写入的数据才保证被加密。要禁用加密，请在配置文件中删除 `data-encryption-method`，或将该参数值为 `"plaintext"`，然后重启 TiKV。若要替换加密算法，则将 `data-encryption-method` 替换成已支持的加密算法，然后重启 TiKV。替换加密算法后，旧加密算法生成的加密文件会随着新数据的写入逐渐被重写成新加密算法所生成的加密文件。
+
+如果启用了加密（即 `data-encryption-method` 的值不是 `"plaintext"`），则必须指定主密钥。TiKV 支持 KMS 和文件两种方式指定密钥。
+
+#### 配置 KMS 密钥
+
+TiKV 支持 AWS、Azure 和 GCP 3 个平台的 KMS 加密，根据服务部署的平台，使用不同的方式配置 KMS 加密。
+
+<SimpleTab>
+
+<div label="AWS KMS">
+
+##### 创建密钥
+
+在 AWS 上创建一个密钥，请执行以下步骤：
 
 1. 进入 AWS 控制台的 [AWS KMS](https://console.aws.amazon.com/kms)。
 2. 确保在控制台的右上角选择正确的区域。
@@ -83,19 +105,9 @@ aws --region us-west-2 kms create-alias --alias-name "alias/tidb-tde" --target-k
 
 需要在第二条命令中输入的 `--target-key-id` 是第一条命令的结果。
 
-### 配置加密
+##### 配置密钥
 
-要启用加密，你可以在 TiKV 和 PD 的配置文件中添加加密部分：
-
-```
-[security.encryption]
-data-encryption-method = "aes128-ctr"
-data-key-rotation-period = "168h" # 7 days
-```
-
-`data-encryption-method` 的可选值为 `"aes128-ctr"`、`"aes192-ctr"`、`"aes256-ctr"`、`"sm4-ctr"` (仅 v6.3.0 及之后版本) 和 `"plaintext"`。默认值为 `"plaintext"`，即默认不开启加密功能。`data-key-rotation-period` 指定 TiKV 轮换密钥的频率。可以为新 TiKV 集群或现有 TiKV 集群开启加密，但只有启用后写入的数据才保证被加密。要禁用加密，请在配置文件中删除 `data-encryption-method`，或将该参数值为 `"plaintext"`，然后重启 TiKV。若要替换加密算法，则将 `data-encryption-method` 替换成已支持的加密算法，然后重启 TiKV。替换加密算法后，旧加密算法生成的加密文件会随着新数据的写入逐渐被重写成新加密算法所生成的加密文件。
-
-如果启用了加密（即 `data-encryption-method` 的值不是 `"plaintext"`），则必须指定主密钥。要使用 AWS KMS 方式指定为主密钥，请在 `[security.encryption]` 部分之后添加 `[security.encryption.master-key]` 部分：
+使用 AWS KMS 方式指定为主密钥，请在 `[security.encryption]` 部分之后添加 `[security.encryption.master-key]` 部分：
 
 ```
 [security.encryption.master-key]
@@ -108,6 +120,58 @@ endpoint = "https://kms.us-west-2.amazonaws.com"
 `key-id` 指定 KMS CMK 的密钥 ID。`region` 为 KMS CMK 的 AWS 区域名。`endpoint` 通常无需指定，除非你在使用非 AWS 提供的 AWS KMS 兼容服务或需要使用 [KMS VPC endpoint](https://docs.aws.amazon.com/kms/latest/developerguide/kms-vpc-endpoint.html)。
 
 你也可以使用 AWS [多区域键](https://docs.aws.amazon.com/zh_cn/kms/latest/developerguide/multi-region-keys-overview.html)。为此，你需要在一个特定的区域设置一个主键，并在需要的区域中添加副本密钥。
+
+</div>
+
+
+<div label="GCP KMS">
+
+##### 创建密钥
+
+在 GCP 平台上创建一个密钥，请执行以下步骤：
+
+1. 进入 GCP 控制台的 [密钥管理](https://console.cloud.google.com/security/kms/keyrings)。
+2. 点击**创建密钥环**，创建密钥环，注意密钥环所在的位置需要覆盖 TiDB 集群部署的区域。
+3. 选择上一步创建的密钥环，在密钥环详情页面点击**创建密钥**，注意密钥的**保护级别**选择**软件**或 **HSM**，**密钥材料**选择**生成的密钥**，**用途**选择 **Symmetric encrypt/decrypt**。
+
+你也可以使用 gcloud CLI 执行该操作：
+
+```shell
+gcloud kms keyrings create "key-ring-name" --location "global"
+gcloud kms keys create "key-name" --keyring "key-ring-name" --location "global" --purpose "encryption" --rotation-period "30d" 
+```
+
+请将上述命令中的 "key-ring-name"、"key-name"、"global"、"30d" 等字段替换为实际密钥对应的名称和配置。
+
+##### 配置密钥
+
+使用 GCP KMS 方式指定为主密钥，请在 `[security.encryption]` 部分之后添加 `[security.encryption.master-key]` 部分：
+
+```
+[security.encryption.master-key]
+type = "kms"
+key-id = key-id = "projects/project-name/locations/global/keyRings/key-ring-name/cryptoKeys/key-name"
+vendor = "gcp"
+
+[security.encryption.master-key.gcp]
+credential-file-path = "/path/to/credential.json"
+```
+
+`key-id` 指定 KMS CMK 的密钥 ID, `credential-file-path` 指向验证凭据配置文件的路径，目前支持 Serivce Account 和 Authentition User 两种凭据。如果 TiKV 的运行环境已配置 [应用默认凭据](https://cloud.google.com/docs/authentication/application-default-credentials?hl=zh-cn)，则无须此配置项。
+
+
+</div>
+
+<div label="GCP KMS">
+
+TBD..
+
+</div>
+
+
+</SimpleTab>
+
+#### 配置文件密钥
 
 若要使用文件方式指定主密钥，主密钥配置应如下所示：
 
@@ -129,7 +193,7 @@ path = "/path/to/key/file"
 
 TiKV 当前不支持在线轮换主密钥，因此你需要重启 TiKV 进行主密钥轮换。建议对运行中的、提供在线查询的 TiKV 集群进行滚动重启。
 
-轮换 KMS CMK 的配置示例如下：
+轮换 AWS KMS CMK 的配置示例如下：
 
 ```
 [security.encryption.master-key]
