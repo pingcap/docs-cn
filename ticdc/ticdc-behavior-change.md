@@ -35,18 +35,18 @@ update t set a = 2 where a = 1;
 
 该变更主要为了解决当使用 MySQL Sink 直接将这两条事件写入下游时，可能会出现主键冲突的问题，从而导致 changefeed 报错。
 
-考虑如下 SQL：
+以如下 SQL 为例：
 
 ```sql
-create table t (a int primary key, b int);
-insert into t values (1, 1);
-insert into t values (2, 2);
+CREATE TABLE t (a INT PRIMARY KEY, b INT);
+INSERT INTO t VALUES (1, 1);
+INSERT INTO t VALUES (2, 2);
 
-begin;
-update t set a = 1 where a = 3;
-update t set a = 2 where a = 1;
-update t set a = 3 where a = 2;
-commit;
+BEGIN;
+UPDATE t SET a = 1 WHERE a = 3;
+UPDATE t SET a = 2 WHERE a = 1;
+UPDATE t SET a = 3 WHERE a = 2;
+COMMIT;
 ```
 
 上述例子中给出的交换两行数据的主键的事物，执行了 3 条 SQL 语句，但是 TiCDC 只会收到 2 条 Update 变更事件，即将主键 1 变更为 2，将主键 2 变更为 1，这会导致 changefeed 报错。因此，TiCDC 会将这两条事件拆分为 4 条事件，即删除记录 (1, 1), (2, 2), 写入记录 (2, 1), (1, 2)。
