@@ -9,7 +9,7 @@ summary: 介绍 TiCDC changefeed 的行为变更，说明变更原因以及影�
 
 ### 含有单条 Update 变更的事务拆分
 
-从 v6.5.3、v7.1.1 和 v7.2.0 开始，使用非 MySQL Sink 时。对于只含有一条 Update 变更的事物，如果 Update 事件的主键或者非空唯一索引的列值发生改变，TiCDC 会将该条事件拆分为 Delete 和 Insert 两条事件。详情见 GitHub issue [#9086](https://github.com/pingcap/tiflow/issues/9086)。
+从 v6.5.3、v7.1.1 和 v7.2.0 开始，使用非 MySQL Sink 时，对于仅包含一条 Update 变更的事务，如果 Update 事件的主键或者非空唯一索引的列值发生改变，TiCDC 会将该条事件拆分为 Delete 和 Insert 两条事件。详情见 GitHub issue [#9086](https://github.com/pingcap/tiflow/issues/9086)。
 
 该变更主要为了解决如下问题：
 
