@@ -58,6 +58,7 @@ TiDB 版本：v7.5.1
     - note [#issue](https://github.com/pingcap/tiflash/issues/${issue-id}) @[贡献者 GitHub ID](https://github.com/${github-id})
     - (dup): release-6.5.7.md > 改进提升> TiFlash - 降低磁盘性能抖动对读取延迟的影响 [#8583](https://github.com/pingcap/tiflash/issues/8583) @[JaySon-Huang](https://github.com/JaySon-Huang)
     - (dup): release-6.5.8.md > 改进提升> TiFlash - 减少后台数据 GC 任务对读、写任务延迟的影响 [#8650](https://github.com/pingcap/tiflash/issues/8650) @[JaySon-Huang](https://github.com/JaySon-Huang)
+    - 改进 RU 计算，使得 RU 值更稳定 [#8391](https://github.com/pingcap/tiflash/issues/8391) @[guo-shaoge(https://github.com/guo-shaoge)
 
 + Tools
 
@@ -192,7 +193,10 @@ TiDB 版本：v7.5.1
 + TiFlash
 
     - note [#issue](https://github.com/pingcap/tiflash/issues/${issue-id}) @[贡献者 GitHub ID](https://github.com/${github-id})
-    - note [#issue](https://github.com/pingcap/tiflash/issues/${issue-id}) @[贡献者 GitHub ID](https://github.com/${github-id})
+    - 修复在发生副本迁移时因 TiFlash 与 PD 之间网络链接不稳定可能导致 TiFlash panic 的问题 [#8323](https://github.com/pingcap/tiflash/issues/8323) @[JaySon-Huang](https://github.com/JaySon-Huang)
+    - 修复去除 TiFlash 副本后重新添加，可能导致 TiFlash 数据损坏的问题 [#8695](https://github.com/pingcap/tiflash/issues/8695) @[JaySon-Huang](https://github.com/JaySon-Huang)
+    - 修复在插入数据后马上进行 `DROP TABLE` 以及 `FLASHBACK TABLE` 或 `RECOVER TABLE` 操作后，部分 TiFlash 副本数据无法恢复的潜在问题 [#8395](https://github.com/pingcap/tiflash/issues/8395) @[JaySon-Huang](https://github.com/JaySon-Huang)
+    - 修复 Grafana 中部分面板的最大分位数耗时显示不正确的问题 [#8076](https://github.com/pingcap/tiflash/issues/8076) @[JaySon-Huang](https://github.com/JaySon-Huang)
     - (dup): release-7.6.0.md > 错误修复> TiFlash - 修复 TiFlash 错误处理 `ENUM` 偏移量为 0 的问题 [#8311](https://github.com/pingcap/tiflash/issues/8311) @[solotzg](https://github.com/solotzg)
     - (dup): release-7.6.0.md > 错误修复> TiFlash - 修复成功执行的短查询打印过多信息日志的问题 [#8592](https://github.com/pingcap/tiflash/issues/8592) @[windtalker](https://github.com/windtalker)
     - (dup): release-6.5.7.md > 错误修复> TiFlash - 修复慢查询导致内存使用显著增加的问题 [#8564](https://github.com/pingcap/tiflash/issues/8564) @[JinheLin](https://github.com/JinheLin)
