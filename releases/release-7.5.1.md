@@ -110,6 +110,7 @@ TiDB 版本：v7.5.1
     - note [#issue](https://github.com/pingcap/tidb/issues/${issue-id}) @[贡献者 GitHub ID](https://github.com/${github-id})
     - 修复设置全局变量 `tidb_service_scope` 后配置失效的问题 [#49245](https://github.com/pingcap/tidb/issues/49245) @[ywqzzy](https://github.com/ywqzzy)
     - 修复开启压缩时，通讯协议无法处理大于等于 16M 的报文 [#47157](https://github.com/pingcap/tidb/issues/47157) @[dveeden](https://github.com/dveeden)
+    - 修复开启压缩时，通讯协议无法处理大于等于 16M 的报文 [#47161](https://github.com/pingcap/tidb/issues/47161) @[dveeden](https://github.com/dveeden)
     - (dup): release-6.5.7.md > 错误修复> TiDB - 修复 `tidb_server_memory_limit` 导致内存长期压力较高时，TiDB CPU 利用率过高的问题 [#48741](https://github.com/pingcap/tidb/issues/48741) @[XuHuaiyu](https://github.com/XuHuaiyu)
     - (dup): release-6.5.7.md > 错误修复> TiDB - 修复有依赖关系的两个 DDL 任务的完成时间顺序不正确的问题 [#49498](https://github.com/pingcap/tidb/issues/49498) @[tangenta](https://github.com/tangenta)
     - (dup): release-7.6.0.md > 错误修复> TiDB - 修复不合法的优化器 hint 可能会导致合法 hint 不生效的问题 [#49308](https://github.com/pingcap/tidb/issues/49308) @[hawkingrei](https://github.com/hawkingrei)
