@@ -164,6 +164,12 @@ TiDB 版本：v7.5.1
     - (dup): release-7.6.0.md > 错误修复> TiDB - 修复更新 `tidb_mem_quota_query` 系统变量后执行 `ADMIN CHECK` 报错 `ERROR 8175` 的问题 [#49258](https://github.com/pingcap/tidb/issues/49258) @[tangenta](https://github.com/tangenta)
     - (dup): release-6.5.7.md > 错误修复> TiDB - 修复构造统计信息时因为 Golang 隐式转换算法导致统计信息误差过大的问题 [#49801](https://github.com/pingcap/tidb/issues/49801) @[qw4990](https://github.com/qw4990)
     - (dup): release-6.5.7.md > 错误修复> TiDB - 修复当 `tidb_max_chunk_size` 值较小时，包含 CTE 的查询出现 `runtime error: index out of range [32] with length 32` 错误的问题 [#48808](https://github.com/pingcap/tidb/issues/48808) @[guo-shaoge](https://github.com/guo-shaoge)
+    - 修复 `approx_percentile` 函数可能导致 TiDB panic 的问题 [#40463](https://github.com/pingcap/tidb/issues/40463) @[xzhangxian1008](https://github.com/xzhangxian1008)
+    - 修复 TiDB 在字符串函数参数为 `null` 常量时可能会隐式插入 `from_binary` 函数导致无法下推给 TiFlash 的问题 [#49526](https://github.com/pingcap/tidb/issues/49526) @[YangKeao](https://github.com/YangKeao)
+    - 修复 goroutine 在 hash join spill 失败时可能会泄露的问题 [#50841](https://github.com/pingcap/tidb/issues/50841) @[wshwsh12](https://github.com/wshwsh12)
+    - 修复 bit 类型在参与一些函数计算时可能会因为 decode 失败导致 query 出错的问题 [#49566](https://github.com/pingcap/tidb/issues/49566), [#50850](https://github.com/pingcap/tidb/issues/50850), [#50855](https://github.com/pingcap/tidb/issues/50855) @[jiyfhust](https://github.com/jiyfhust)
+    - 修复 CTE query 内存超限时可能会导致 goroutine 泄露的问题 [#50337](https://github.com/pingcap/tidb/issues/50337) @[guo-shaoge](https://github.com/guo-shaoge)
+    - 修复在 TiFlash 延迟物化在有关联列时结果可能出错的问题 [#49241](https://github.com/pingcap/tidb/issues/49241), [#51204](https://github.com/pingcap/tidb/issues/51204) @[Lloyd-Pottiger](https://github.com/Lloyd-Pottiger)
 
 + TiKV
 
