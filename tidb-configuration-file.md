@@ -783,6 +783,12 @@ TiDB 服务状态相关配置。
 + 输出与 database 相关的 QPS metrics 到 Prometheus 的开关。
 + 默认值：false
 
+### `record-db-label`
+
+- 控制是否向 Prometheus 传输与数据库相关的 QPS 指标。
+- 支持的指标类型比 `record-db-qps` 更多，比如 duration 和 statements。
+- 默认值：`false`
+
 ## pessimistic-txn
 
 悲观事务使用方法请参考 [TiDB 悲观事务模式](/pessimistic-transaction.md)。
