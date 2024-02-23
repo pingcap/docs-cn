@@ -16,14 +16,12 @@ summary: 介绍 TiCDC changefeed 的行为变更，说明变更原因以及影�
 * 在使用 CSV 和 AVRO 协议时，仅输出新值而不输出旧值。因此，当主键或者非空唯一索引的列值发生改变时，消费者只能接收到变化后的新值，无法得到旧值，导致无法处理变更前的值（例如删除旧值）。
 * 在使用 Index value dispatcher 将数据按照 Key 分发到不同的 Kafka partition 时，下游的消费者组内多个消费者进程独立消费 Kafka Topic partition，由于消费进度不同，可能导致数据不一致的问题。
 
-考虑如下 SQL：
+以如下 SQL 为例：
 
 ```sql
-create table t (a int primary key, b int);
-
-insert into t values (1, 1);
-
-update t set a = 2 where a = 1;
+CREATE TABLE t (a INT PRIMARY KEY, b INT);
+INSERT INTO t VALUES (1, 1);
+UPDATE t SET a = 2 WHERE a = 1;
 ```
 
 上述例子中，主键 a = 1 被修改为 a = 2。如果不做拆分：
