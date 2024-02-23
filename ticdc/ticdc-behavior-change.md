@@ -29,7 +29,7 @@ update t set a = 2 where a = 1;
 *  使用 CSV 和 AVRO 协议时，只能看到新值 a = 2，无法知道旧值 a = 1。下游消费者可能只插入了新值 2，而没有删除旧值 1。
 * 使用 Index value dispatcher 时，插入记录 (1, 1) 的事件可能被发送到 Partition 0，而变更事件 (2, 1) 可能被发送到 Partition 1，如果 Partition 1 的消费进度快于 Partition 0，则可能因为在下游数据系统中找不到相应数据而出错。因此，TiCDC 会将该条事件拆分为 Delete 和 Insert 两条事件，其中，删除记录 (1, 1) 被发送到 Partition 0，写入记录 (2, 1) 被发送到 Partition 1，无论消费者进度如何，都能被消费成功。
 
-## 含有多条 Update 变更的事物拆分
+### 含有多条 Update 变更的事务拆分
 
 从 v6.5.4、v7.1.2 和 v7.4.0 开始。对于一个含有多条变更的事物，如果 Update 事件的主键或者非空唯一索引的列值发生改变，TiCDC 会将该其拆分为 Delete 和 Insert 两条事件，并且将所有事件排序，保证 Delete 事件在 Insert 事件之前。详情见 GitHub issue[#9430](https://github.com/pingcap/tiflow/pull/9437)
 
