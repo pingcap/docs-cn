@@ -1,6 +1,6 @@
 ---
-title: 行为变更说明
-summary: 记录 TiCDC changefeed 行为变更，说明变更原因，以及影响范围。
+title: TiCDC 行为变更说明
+summary: 介绍 TiCDC changefeed 的行为变更，说明变更原因以及影响范围。
 ---
 
 # Update 事件拆分为 Delete 和 Insert 事件
