@@ -26,8 +26,8 @@ UPDATE t SET a = 2 WHERE a = 1;
 
 在上述示例中，主键 `a` 的值从 `1` 修改为 `2`。如果不将该 Update 事件进行拆分：
 
-*  使用 CSV 和 AVRO 协议时，只能看到新值 a = 2，无法知道旧值 a = 1。下游消费者可能只插入了新值 2，而没有删除旧值 1。
-* 使用 Index value dispatcher 时，插入记录 (1, 1) 的事件可能被发送到 Partition 0，而变更事件 (2, 1) 可能被发送到 Partition 1，如果 Partition 1 的消费进度快于 Partition 0，则可能因为在下游数据系统中找不到相应数据而出错。因此，TiCDC 会将该条事件拆分为 Delete 和 Insert 两条事件，其中，删除记录 (1, 1) 被发送到 Partition 0，写入记录 (2, 1) 被发送到 Partition 1，无论消费者进度如何，都能被消费成功。
+* 在使用 CSV 和 AVRO 协议时，消费者仅能看到新值 `a = 2`，而无法得到旧值 `a = 1`。这可能导致下游消费者只插入了新值 `2`，而没有删除旧值 `1`。
+* 在使用 Index value dispatcher 时，插入记录 `(1, 1)` 的事件可能被发送到 Partition 0，而变更事件 `(2, 1)` 可能被发送到 Partition 1。如果 Partition 1 的消费进度快于 Partition 0，则可能由于下游数据系统中找不到相应数据而导致出错。因此，TiCDC 会将该条 Update 事件拆分为 Delete 和 Insert 两条事件，其中，删除记录 `(1, 1)` 被发送到 Partition 0，写入记录 `(2, 1)` 被发送到 Partition 1，以确保无论消费者的进度如何，事件都能被消费成功。
 
 ### 含有多条 Update 变更的事务拆分
 
