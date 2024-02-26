@@ -26,7 +26,7 @@ TiDB 版本：v7.5.1
 
 + TiDB
     <!-- tw:@hfxsd (1) -->
-    - 在 DDL Schema Reload 中使用 `tikv_client_read_timeout`，以降低 Meta Region Leader 读不可用对于集群影响 [#48124](https://github.com/pingcap/tidb/issues/48124) @[cfzjywxk](https://github.com/cfzjywxk)
+    - 在 DDL schema 重载过程中使用 `tikv_client_read_timeout`，以降低 Meta Region Leader 读不可用对集群的影响 [#48124](https://github.com/pingcap/tidb/issues/48124) @[cfzjywxk](https://github.com/cfzjywxk)
     - (dup): release-7.6.0.md > # 可观测性 * 增强资源管控相关的观测性 [#49318](https://github.com/pingcap/tidb/issues/49318) @[glorv](https://github.com/glorv) @[bufferflies](https://github.com/bufferflies) @[nolouch](https://github.com/nolouch)
 
         随着越来越多用户利用资源组对业务应用进行隔离，资源管控提供了更丰富的基于资源组的数据，协助你观测资源组负载、资源组设置，确保出现问题时能够快速发现并精准诊断。其中包括：
@@ -56,7 +56,7 @@ TiDB 版本：v7.5.1
 
 + TiFlash
     <!-- tw:@hfxsd (1) -->
-    - 改进 [RU (Request Unit)](/tidb-resource-control.md#什么是-request-unit-ru) 计算方法，使 RU 值更稳定 [#8391](https://github.com/pingcap/tiflash/issues/8391) @[guo-shaoge(https://github.com/guo-shaoge)
+    - 改进 [RU (Request Unit)](/tidb-resource-control.md#什么是-request-unit-ru) 计算方法，以提高 RU 值的稳定性 [#8391](https://github.com/pingcap/tiflash/issues/8391) @[guo-shaoge](https://github.com/guo-shaoge)
     - (dup): release-6.5.7.md > 改进提升> TiFlash - 降低磁盘性能抖动对读取延迟的影响 [#8583](https://github.com/pingcap/tiflash/issues/8583) @[JaySon-Huang](https://github.com/JaySon-Huang)
     - (dup): release-6.5.8.md > 改进提升> TiFlash - 减少后台数据 GC 任务对读、写任务延迟的影响 [#8650](https://github.com/pingcap/tiflash/issues/8650) @[JaySon-Huang](https://github.com/JaySon-Huang)
 
@@ -198,7 +198,7 @@ TiDB 版本：v7.5.1
 + PD
     <!-- tw:@hfxsd (5) -->
     - 修复批量查询 Resource Group 可能会导致 PD Panic 的问题 [#7206](https://github.com/tikv/pd/issues/7206) @[nolouch](https://github.com/nolouch)
-    - 修复 PD 在 systemd 下无法读取 Resource Limitation 的问题 [#7628](https://github.com/tikv/pd/issues/7628) @[bufferflies](https://github.com/bufferflies)
+    - 修复 PD 在通过 `systemd` 启动时无法读取资源限制的问题 [#7628](https://github.com/tikv/pd/issues/7628) @[bufferflies](https://github.com/bufferflies)
     - 修复 PD 磁盘时延持续抖动可能导致 PD 无法选出新 Leader 的问题 [#7251](https://github.com/tikv/pd/issues/7251) @[HuSharp](https://github.com/HuSharp)
     - 修复 PD 存在网络分区时可能导致调度延迟触发的问题 [#7016](https://github.com/tikv/pd/issues/7016) @[HuSharp](https://github.com/HuSharp)
     - 修复 PD 监控项 `learner-peer-count` 在发生 Leader 切换后未同步旧监控值的问题 [#7728](https://github.com/tikv/pd/issues/7728) @[CabinfeverB](https://github.com/CabinfeverB)
@@ -231,9 +231,9 @@ TiDB 版本：v7.5.1
 
     + Backup & Restore (BR)
         <!-- tw:@hfxsd (4) -->
-        - 修复由于某个 TiKV 节点没有 Leader 导致数据恢复变慢的问题 [#50566](https://github.com/pingcap/tidb/issues/50566) @[Leavrth](https://github.com/Leavrth)
+        - 修复由于某个 TiKV 节点缺少 Leader 导致数据恢复变慢的问题 [#50566](https://github.com/pingcap/tidb/issues/50566) @[Leavrth](https://github.com/Leavrth)
         - 修复全量恢复指定 `--filter` 选项后，仍然要求目标集群为空的问题 [#51009](https://github.com/pingcap/tidb/issues/51009) @[3pointer](https://github.com/3pointer)
-        - 修复数据恢复失败后，使用断点重启报错 "the target cluster is not fresh" 的问题 [#50232](https://github.com/pingcap/tidb/issues/50232) @[Leavrth](https://github.com/Leavrth)
+        - 修复数据恢复失败后，使用断点重启报错 `the target cluster is not fresh` 的问题 [#50232](https://github.com/pingcap/tidb/issues/50232) @[Leavrth](https://github.com/Leavrth)
         - 修复停止日志备份任务导致 TiDB crash 的问题 [#50839](https://github.com/pingcap/tidb/issues/50839) @[YuJuncen](https://github.com/YuJuncen)
         - (dup): release-6.5.8.md > 错误修复> Tools> Backup & Restore (BR) - 修复从旧版本的备份恢复数据时报错 `Unsupported collation` 的问题 [#49466](https://github.com/pingcap/tidb/issues/49466) @[3pointer](https://github.com/3pointer)
         - (dup): release-6.5.7.md > 错误修复> Tools> Backup & Restore (BR) - 修复在任务初始化阶段出现与 PD 的连接错误导致日志备份任务虽然启动但无法正常工作的问题 [#16056](https://github.com/tikv/tikv/issues/16056) @[YuJuncen](https://github.com/YuJuncen)
