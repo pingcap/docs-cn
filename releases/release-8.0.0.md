@@ -30,7 +30,7 @@ TiDB 版本：8.0.0
     功能描述（需要包含这个功能是什么、在什么场景下对用户有什么价值、怎么用）
 
     更多信息，请参考[用户文档](链接)。
-* BR 快照恢复速度最高提升 10 倍 GA [#issue号](链接) @[3pointer](https://github.com/3pointer) 
+* BR 快照恢复速度最高提升 10 倍 GA [#50701](https://github.com/pingcap/tidb/issues/50701) @[3pointer](https://github.com/3pointer) @[Leavrth](https://github.com/Leavrth)
 
     TiDB v8.0.0 版本起，通过对 Region 打散算法进行性能优化和改进，在确保数据充分打散的前提下，快照恢复提速的改进功能正式 GA，并默认启用。这一改进不仅充分利用了每个 TiKV 节点资源并行恢复，还确保了每个 TiKV 节点的数据恢复速度达到机器资源容许的最大值。在实际案例中，单 TiKV 节点的数据恢复速度稳定在 1.2 GB/s，并且能够在 1 小时内完成对 100 TB 数据的恢复。
     
