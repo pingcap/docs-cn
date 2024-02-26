@@ -23,6 +23,12 @@ TiDB 版本：8.0.0
 
     更多信息，请参考[用户文档](链接)。
 
+* 增强 Titan 引擎  [#issue号](链接) @[Connor1996](https://github.com/Connor1996) **tw@xxx** <!--1234-->
+
+    TiDB v8.0.0 版本引入了 Titan 一系列的性能优化和功能增强，主要包括优化 GC 算法、默认开启字典压缩等功能。其中，我们调整了 [`min-blob-size`](/tikv-configuration-file.md#min-blob-size) 的默认阈值，从 `32KB` 调整为 `?KB` ，进一步扩大 Titan 引擎的适用场景。此外，我们还允许用户动态修改 [`min-blob-size`](/tikv-configuration-file.md#min-blob-size) 阈值配置，以提升用户使用 Titan 引擎时的性能和灵活性。这些改进和功能增强将为用户提供更加稳定和高效的数据库服务。
+
+    更多信息，请参考[用户文档](/storage-engine/titan-overview.md)。
+    
 ### 性能
 
 * 功能标题 [#issue号](链接) @[贡献者 GitHub ID](链接) **tw@xxx** <!--1234-->
