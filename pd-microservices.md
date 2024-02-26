@@ -37,7 +37,7 @@ PD 微服务可以通过将重要模块，如 TSO 分配，调度等模块，与
 
 > **注意：**
 >
-> 由于 scheduling 微服务是支持动态切换，即如果 scheduling 微服务进程关闭后，PD 会继续提供调度的服务。若 scheduling 微服务和 PD 使用不同的 binary 版本，为防止调度逻辑出现变化。可以通过设置 `pd-ctl config set enable-scheduling-fallback false` 禁止 scheduling 微服务进程关闭后 PD 提供调度服务。该参数默认为 true。
+> 由于 scheduling 微服务支持动态切换，即如果 scheduling 微服务进程关闭后，PD 会继续提供调度的服务。所以如果 scheduling 微服务和 PD 使用不同的 binary 版本，为防止调度逻辑出现变化。可以通过设置 `pd-ctl config set enable-scheduling-fallback false` 禁止 scheduling 微服务进程关闭后 PD 提供调度服务。该参数默认为 true。
 
 ## 工具兼容性
 
