@@ -214,7 +214,7 @@ DROP PLACEMENT POLICY myplacementpolicy;
 | CONSTRAINTS 格式 | 描述 |
 |----------------------------|-----------------------------------------------------------------------------------------------------------|
 | 列表格式  | 如果指定的约束适用于所有副本，可以使用键值对列表格式。键以 `+` 或 `-` 开头。例如：<br/> <ul><li>`[+region=us-east-1]` 表示放置数据在 `region` 标签为 `us-east-1` 的节点上。</li><li>`[+region=us-east-1,-type=fault]` 表示放置数据在 `region` 标签为 `us-east-1` 且 `type` 标签不为 `fault` 的节点上。</li></ul><br/>  |
-| 字典格式 | 如果需要为不同的约束指定不同数量的副本，可以使用字典格式。例如：<br/> <ul><li>`FOLLOWER_CONSTRAINTS="{+region=us-east-1: 1,+region=us-east-2: 1,+region=us-west-1: 1}";` 表示 1 个 follower 位于 `us-east-1`，1 个 follower 位于 `us-east-2`，1 个 follower 位于 `us-west-1`。</li><li>`FOLLOWER_CONSTRAINTS='{"+region=us-east-1,+type=scale-node": 1,"+region=us-west-1": 1}';` 表示 1 个 follower 位于 `us-east-1` 区域中有标签 `type` 为 `scale-node` 的节点上，1 个 follower 位于 `us-west-1`。</li></ul>字典格式支持以 `+` 或 `-` 开头的键，并支持配置特殊的 `#reject-leader` 属性。例如，`FOLLOWER_CONSTRAINTS='{"+region=us-east-1":1, "+region=us-east-2": 2, "+region=us-west-1,#reject-leader": 1}'` 表示当进行容灾时，`us-west-1` 上尽可能驱逐当选的 leader。|
+| 字典格式 | 如果需要为不同的约束指定不同数量的副本，可以使用字典格式。例如：<br/> <ul><li>`FOLLOWER_CONSTRAINTS="{+region=us-east-1: 1,+region=us-east-2: 1,+region=us-west-1: 1}";` 表示 1 个 follower 位于 `us-east-1`，1 个 follower 位于 `us-east-2`，1 个 follower 位于 `us-west-1`。</li><li>`FOLLOWER_CONSTRAINTS='{"+region=us-east-1,+type=scale-node": 1,"+region=us-west-1": 1}';` 表示 1 个 follower 位于 `us-east-1` 区域中有标签 `type` 为 `scale-node` 的节点上，1 个 follower 位于 `us-west-1`。</li></ul>字典格式支持以 `+` 或 `-` 开头的键，并支持配置特殊的 `#evict-leader` 属性。例如，`FOLLOWER_CONSTRAINTS='{"+region=us-east-1":1, "+region=us-east-2": 2, "+region=us-west-1,#evict-leader": 1}'` 表示当进行容灾时，`us-west-1` 上尽可能驱逐当选的 leader。|
 
 > **注意：**
 >
@@ -384,10 +384,10 @@ CREATE PLACEMENT POLICY deploy221_primary_east1 LEADER_CONSTRAINTS="[+region=us-
 
 该放置策略创建好并绑定到所需的数据后，这些数据的 Raft Leader 副本将会放置在 `LEADER_CONSTRAINTS` 选项指定的 `us-east-1` 区域中，其他副本将会放置在`FOLLOWER_CONSTRAINTS` 选项指定的区域。需要注意的是，如果集群发生故障，比如 Leader 所在区域 `us-east-1` 的节点宕机，这时候即使其他区域设置的都是 `FOLLOWER_CONSTRAINTS`, 也会从中选举出一个新的 Leader，也就是说保证服务可用的优先级是最高的。
 
-在 `us-east-1` 区域故障发生时，如果希望新的 Leader 不要放置在 `us-west-1`，可以配置特殊的 `reject-leader` 属性，驱逐上面新的 Leader:
+在 `us-east-1` 区域故障发生时，如果希望新的 Leader 不要放置在 `us-west-1`，可以配置特殊的 `evict-leader` 属性，驱逐上面新的 Leader:
 
 ```sql
-CREATE PLACEMENT POLICY deploy221_primary_east1 LEADER_CONSTRAINTS="[+region=us-east-1]" FOLLOWER_CONSTRAINTS='{"+region=us-east-1": 1, "+region=us-east-2": 2, "+region=us-west-1,#reject-leader": 1}';
+CREATE PLACEMENT POLICY deploy221_primary_east1 LEADER_CONSTRAINTS="[+region=us-east-1]" FOLLOWER_CONSTRAINTS='{"+region=us-east-1": 1, "+region=us-east-2": 2, "+region=us-west-1,#evict-leader": 1}';
 ```
 
 #### 使用 PRIMARY_REGION 指定
