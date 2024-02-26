@@ -260,8 +260,3 @@ summary: 了解 TiDB 的功能概览。
 [^5]: 从 [TiDB v7.0.0](/releases/release-7.0.0.md) 开始新增的参数 `FIELDS DEFINED NULL BY` 以及新增支持从 S3 和 GCS 导入数据，均为实验特性。
 
 [^6]: 对于 TiDB v4.0，事务 `LOAD DATA` 不保证原子性。
-<<<<<<< HEAD
-=======
-
-[^7]: 从 v7.5.0 开始，不再提供 [TiDB Binlog](/tidb-binlog/tidb-binlog-overview.md) 数据同步功能的技术支持，强烈建议使用 [TiCDC](/ticdc/ticdc-overview.md) 实现高效稳定的数据同步。尽管 TiDB Binlog 在 v7.5.0 仍支持 Point-in-Time Recovery (PITR) 场景，但是该组件在未来 LTS 版本中将被完全废弃，推荐使用 [PITR](/br/br-pitr-guide.md) 替代。
->>>>>>> 7b4a2d59e7 (tidb: remove experimental warnings for stats lock (#16351))
