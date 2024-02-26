@@ -125,9 +125,9 @@ TiDB 版本：v7.5.1
     - 修复 TiDB 错误地消除 `group by` 中的常量值导致查询结果出错的问题 [#38756](https://github.com/pingcap/tidb/issues/38756) @[hi-rustin](https://github.com/hi-rustin)
     - 修复表的 `ANALYZE` 任务统计的 `processed_rows` 可能超过表的总行数的问题 [#50632](https://github.com/pingcap/tidb/issues/50632) @[hawkingrei](https://github.com/hawkingrei)
     <!-- tw:@Oreoxmt (5) -->
-    - 修复开启 `tidb_enable_prepared_plan_cache` 之后再关闭，使用 `EXECUTE` 命令执行 `PREPARE STMT` 时可能 panic 的问题 [#49344](https://github.com/pingcap/tidb/issues/49344) @[qw4990](https://github.com/qw4990)
-    - 修复使用 NATURAL JOIN 时可能报错 `Column xxx in from clause is ambiguous` 的问题 [#32044](https://github.com/pingcap/tidb/issues/32044) @[AilinKid](https://github.com/AilinKid)
-    - 修复当 JSON 数组为空数组时，使用 Multi-Valued Index 访问可能返回错误结果的问题 [#50125](https://github.com/pingcap/tidb/issues/50125) @[YangKeao](https://github.com/YangKeao)
+    - 修复如果开启 `tidb_enable_prepared_plan_cache` 变量之后再关闭此变量，使用 `EXECUTE` 语句执行 `PREPARE STMT` 时可能 panic 的问题 [#49344](https://github.com/pingcap/tidb/issues/49344) @[qw4990](https://github.com/qw4990)
+    - 修复查询使用 `NATURAL JOIN` 时可能报错 `Column xxx in from clause is ambiguous` 的问题 [#32044](https://github.com/pingcap/tidb/issues/32044) @[AilinKid](https://github.com/AilinKid)
+    - 修复当 JSON 数组为空数组时，使用多值索引访问可能返回错误结果的问题 [#50125](https://github.com/pingcap/tidb/issues/50125) @[YangKeao](https://github.com/YangKeao)
     - 修复使用聚合函数分组计算时可能报错 `Can't find column xxx` 的问题 [#50926](https://github.com/pingcap/tidb/issues/50926) @[qw4990](https://github.com/qw4990)
     - 修复使用 `SET_VAR` 控制字符串类型的变量可能会失效的问题 [#50507](https://github.com/pingcap/tidb/issues/50507) @[qw4990](https://github.com/qw4990)
     - (dup): release-6.5.7.md > 错误修复> TiDB - 修复 `tidb_server_memory_limit` 导致内存长期压力较高时，TiDB CPU 利用率过高的问题 [#48741](https://github.com/pingcap/tidb/issues/48741) @[XuHuaiyu](https://github.com/XuHuaiyu)
