@@ -143,7 +143,7 @@ TiDB 版本：8.0.0
 ## 离线包变更
 
 ## 废弃功能
-
+* 从 TiDB v8.0.0 开始，[`tidb_disable_txn_auto_retry`](/system-variables.md#tidb_disable_txn_auto_retry)  变量被废弃。废弃后，TiDB 不再支持乐观事务的自动重试。作为替代，当使用乐观事务模式发生冲突时，请在应用里捕获错误并重试，或改用[悲观事务模式](/pessimistic-transaction.md)。
 * 废弃功能 1
 
 * 废弃功能 2
