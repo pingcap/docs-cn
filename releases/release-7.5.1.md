@@ -125,11 +125,11 @@ TiDB 版本：v7.5.1
     - 修复 TiDB 错误的消除 Group-by 中的常量值导致结果出错的问题  [#38756](https://github.com/pingcap/tidb/issues/38756) @[hi-rustin](https://github.com/hi-rustin)
     - 修复 analyze 统计 processed_rows 时可能超过表本身大小的问题 [#50632](https://github.com/pingcap/tidb/issues/50632) @[hawkingrei](https://github.com/hawkingrei)
     <!-- tw:@Oreoxmt (5) -->
-    - 修复开启 tidb_enable_prepared_plan_cache 之后再关闭，使用 EXECUTE 命令执行以后的 PREPARE STMT 时可能 panic 的问题 [#49344](https://github.com/pingcap/tidb/issues/49344) @[qw4990](https://github.com/qw4990)
-    - 修复使用 NATURAL JOIN 时可能报错 "Column xxx in from clause is ambiguous" 的问题 [#32044](https://github.com/pingcap/tidb/issues/32044) @[AilinKid](https://github.com/AilinKid)
-    - 修复当 JSON 数组为空数组时，使用 Multi Value Index 访问可能得到错误结果的问题 [#50125](https://github.com/pingcap/tidb/issues/50125) @[YangKeao](https://github.com/YangKeao)
-    - 修复使用聚合函数分组计算时，可能报错 "Can't find column xxx" 的问题 [#50926](https://github.com/pingcap/tidb/issues/50926) @[qw4990](https://github.com/qw4990)
-    - 修复使用 SET_VAR 控制字符串类型的变量会失效的问题 [#50507](https://github.com/pingcap/tidb/issues/50507) @[qw4990](https://github.com/qw4990)
+    - 修复开启 `tidb_enable_prepared_plan_cache` 之后再关闭，使用 `EXECUTE` 命令执行 `PREPARE STMT` 时可能 panic 的问题 [#49344](https://github.com/pingcap/tidb/issues/49344) @[qw4990](https://github.com/qw4990)
+    - 修复使用 NATURAL JOIN 时可能报错 `Column xxx in from clause is ambiguous` 的问题 [#32044](https://github.com/pingcap/tidb/issues/32044) @[AilinKid](https://github.com/AilinKid)
+    - 修复当 JSON 数组为空数组时，使用 Multi-Valued Index 访问可能返回错误结果的问题 [#50125](https://github.com/pingcap/tidb/issues/50125) @[YangKeao](https://github.com/YangKeao)
+    - 修复使用聚合函数分组计算时可能报错 `Can't find column xxx` 的问题 [#50926](https://github.com/pingcap/tidb/issues/50926) @[qw4990](https://github.com/qw4990)
+    - 修复使用 `SET_VAR` 控制字符串类型的变量可能会失效的问题 [#50507](https://github.com/pingcap/tidb/issues/50507) @[qw4990](https://github.com/qw4990)
     - (dup): release-6.5.7.md > 错误修复> TiDB - 修复 `tidb_server_memory_limit` 导致内存长期压力较高时，TiDB CPU 利用率过高的问题 [#48741](https://github.com/pingcap/tidb/issues/48741) @[XuHuaiyu](https://github.com/XuHuaiyu)
     - (dup): release-6.5.7.md > 错误修复> TiDB - 修复有依赖关系的两个 DDL 任务的完成时间顺序不正确的问题 [#49498](https://github.com/pingcap/tidb/issues/49498) @[tangenta](https://github.com/tangenta)
     - (dup): release-7.6.0.md > 错误修复> TiDB - 修复不合法的优化器 hint 可能会导致合法 hint 不生效的问题 [#49308](https://github.com/pingcap/tidb/issues/49308) @[hawkingrei](https://github.com/hawkingrei)
@@ -209,11 +209,11 @@ TiDB 版本：v7.5.1
 
 + TiFlash
     <!-- tw:@Oreoxmt (5) -->
-    - 修复在发生副本迁移时因 TiFlash 与 PD 之间网络链接不稳定可能导致 TiFlash panic 的问题 [#8323](https://github.com/pingcap/tiflash/issues/8323) @[JaySon-Huang](https://github.com/JaySon-Huang)
-    - 修复去除 TiFlash 副本后重新添加，可能导致 TiFlash 数据损坏的问题 [#8695](https://github.com/pingcap/tiflash/issues/8695) @[JaySon-Huang](https://github.com/JaySon-Huang)
-    - 修复在插入数据后马上进行 `DROP TABLE` 以及 `FLASHBACK TABLE` 或 `RECOVER TABLE` 操作后，部分 TiFlash 副本数据无法恢复的潜在问题 [#8395](https://github.com/pingcap/tiflash/issues/8395) @[JaySon-Huang](https://github.com/JaySon-Huang)
-    - 修复 Grafana 中部分面板的最大分位数耗时显示不正确的问题 [#8076](https://github.com/pingcap/tiflash/issues/8076) @[JaySon-Huang](https://github.com/JaySon-Huang)
-    - 修复 TiFlash 发生 remote 读时可能会 crash 的问题 [#8685](https://github.com/pingcap/tiflash/issues/8685) @[guo-shaoge](https://github.com/guo-shaoge)
+    - 修复副本迁移时，因 TiFlash 与 PD 之间网络连接不稳定可能引发的 TiFlash panic 的问题 [#8323](https://github.com/pingcap/tiflash/issues/8323) @[JaySon-Huang](https://github.com/JaySon-Huang)
+    - 修复移除 TiFlash 副本后重新添加可能导致 TiFlash 数据损坏的问题 [#8695](https://github.com/pingcap/tiflash/issues/8695) @[JaySon-Huang](https://github.com/JaySon-Huang)
+    - 修复在插入数据后立即执行 `DROP TABLE` 以及 `FLASHBACK TABLE` 或 `RECOVER TABLE` 操作后，部分 TiFlash 副本数据无法恢复的潜在问题 [#8395](https://github.com/pingcap/tiflash/issues/8395) @[JaySon-Huang](https://github.com/JaySon-Huang)
+    - 修复 Grafana 中部分面板显示的最大分位数耗时数据不正确的问题 [#8076](https://github.com/pingcap/tiflash/issues/8076) @[JaySon-Huang](https://github.com/JaySon-Huang)
+    - 修复 TiFlash 发生远程读时可能会 crash 的问题 [#8685](https://github.com/pingcap/tiflash/issues/8685) @[guo-shaoge](https://github.com/guo-shaoge)
     - (dup): release-7.6.0.md > 错误修复> TiFlash - 修复 TiFlash 错误处理 `ENUM` 偏移量为 0 的问题 [#8311](https://github.com/pingcap/tiflash/issues/8311) @[solotzg](https://github.com/solotzg)
     - (dup): release-7.6.0.md > 错误修复> TiFlash - 修复成功执行的短查询打印过多信息日志的问题 [#8592](https://github.com/pingcap/tiflash/issues/8592) @[windtalker](https://github.com/windtalker)
     - (dup): release-6.5.7.md > 错误修复> TiFlash - 修复慢查询导致内存使用显著增加的问题 [#8564](https://github.com/pingcap/tiflash/issues/8564) @[JinheLin](https://github.com/JinheLin)
@@ -243,10 +243,10 @@ TiDB 版本：v7.5.1
 
     + TiCDC
         <!-- tw:@Oreoxmt (4) -->
-        - 修复了开启了 sync-point 情况下 sink 模块遇到错误后不能正确重启的问题 [#10091](https://github.com/pingcap/tiflow/issues/10091) @[hicqu](https://github.com/hicqu)
-        - 修复了使用 storage sink 情况下在存储服务生成的文件的序号可能会回退的问题 [#10352](https://github.com/pingcap/tiflow/issues/10352) @[CharlesCheung96](https://github.com/CharlesCheung96)
-        - 修复了 sync-point 表可能被错误的同步的问题 [#10576](https://github.com/pingcap/tiflow/issues/10576) @[asddongmen](https://github.com/asddongmen)
-        - 修复了当使用 Apache Pulsar 作为下游时不能正常启用 OAuth2.0、TLS 和 mTLS 的问题 [#10602](https://github.com/pingcap/tiflow/issues/10602) @[asddongmen](https://github.com/asddongmen)
+        - 修复开启 sync-point 时，sink 模块遇到错误后无法正确重启的问题 [#10091](https://github.com/pingcap/tiflow/issues/10091) @[hicqu](https://github.com/hicqu)
+        - 修复使用 storage sink 时，在存储服务生成的文件序号可能出现回退的问题 [#10352](https://github.com/pingcap/tiflow/issues/10352) @[CharlesCheung96](https://github.com/CharlesCheung96)
+        - 修复 sync-point 表可能被错误同步的问题 [#10576](https://github.com/pingcap/tiflow/issues/10576) @[asddongmen](https://github.com/asddongmen)
+        - 修复当使用 Apache Pulsar 作为下游时，无法正常启用 OAuth2.0、TLS 和 mTLS 的问题 [#10602](https://github.com/pingcap/tiflow/issues/10602) @[asddongmen](https://github.com/asddongmen)
         - (dup): release-6.5.8.md > 错误修复> Tools> TiCDC - 修复并发创建多个 changefeed 时 TiCDC 返回 `ErrChangeFeedAlreadyExists` 错误的问题 [#10430](https://github.com/pingcap/tiflow/issues/10430) @[CharlesCheung96](https://github.com/CharlesCheung96)
         - (dup): release-6.5.8.md > 错误修复> Tools> TiCDC - 修复在极端情况下 changefeed 的 `resolved ts` 不推进的问题 [#10157](https://github.com/pingcap/tiflow/issues/10157) @[sdojjy](https://github.com/sdojjy)
         - (dup): release-7.1.3.md > 错误修复> Tools> TiCDC - 修复在某些特殊场景下，TiCDC 错误地关闭与 TiKV 的连接的问题 [#10239](https://github.com/pingcap/tiflow/issues/10239) @[hicqu](https://github.com/hicqu)
