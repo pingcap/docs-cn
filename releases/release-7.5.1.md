@@ -26,7 +26,7 @@ TiDB 版本：v7.5.1
 
 + TiDB
     <!-- tw:@hfxsd (1) -->
-    - 在 DDL Schema Reload 中使用 `tikv_client_read_timeout` 特性，以降低 Meta Region Leader 读不可用对于集群影响 [#48124](https://github.com/pingcap/tidb/issues/48124) @[cfzjywxk](https://github.com/cfzjywxk)
+    - 在 DDL Schema Reload 中使用 `tikv_client_read_timeout`，以降低 Meta Region Leader 读不可用对于集群影响 [#48124](https://github.com/pingcap/tidb/issues/48124) @[cfzjywxk](https://github.com/cfzjywxk)
     - (dup): release-7.6.0.md > # 可观测性 * 增强资源管控相关的观测性 [#49318](https://github.com/pingcap/tidb/issues/49318) @[glorv](https://github.com/glorv) @[bufferflies](https://github.com/bufferflies) @[nolouch](https://github.com/nolouch)
 
         随着越来越多用户利用资源组对业务应用进行隔离，资源管控提供了更丰富的基于资源组的数据，协助你观测资源组负载、资源组设置，确保出现问题时能够快速发现并精准诊断。其中包括：
