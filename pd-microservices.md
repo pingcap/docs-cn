@@ -29,32 +29,15 @@ PD 微服务可以通过将重要模块，如 TSO 分配，调度等模块，与
 3. 当前微服务与 dr-auto sync 特性不兼容。
 4. 与 TiDB 系统变量 `tidb_enable_tso_follower_proxy` 不兼容。
 
-## 相关参数
-
-微服务模式引入了如下命令行子命令：
-
-```
-pd-server services <mode>
-```
-
-`mode` 支持三种选项，具体如下：
-
-- `api`：若开启微服务，PD 自身将默认以 api mode 启动。启动后不再提供原本 TSO 分配的功能，需要在集群中同时部署 TSO 微服务。另外，原本的调度功能则根据是否部署 scheduling 微服务动态提供。
-- `tso`：若 mode 为 tso，即开启 TSO 微服务，提供时间戳分配的功能，需要 PD 以 api mode 启动。T
-- `scheduling`：若 mode 为 scheduling，即开启 Scheduling 微服务，提供调度功能，需要 PD 以 api mode 启动。开启后，PD 自身将不在提供调度功能。
-
-> **注意：**
->
-> 无论是开启 TSO 还是 Scheduling 微服务，PD 都必须以 api mode 启动。
-> api mode 和 tso mode 相互依赖，需要集群中同时启用或停用。
-
-上述各种模式通常无需手动设置，由部署工具自动完成。
-
-此外，由于调度微服务是通过服务发现动态开启的，所以如果调度微服务发生宕机后，默认 PD 会继续提供调度的服务。但考虑到允许调度微服务和 PD 使用不同的版本，不同版本的调度逻辑可能会发生变化。所以也提供了开关，在这种情况下，禁止 PD 提供调度服务，防止调度逻辑出现跳变。可以通过设置 `pd-ctl config set enable-scheduling-fallback false` 进行关闭。该参数默认为 true。
-
 ## 使用方法
 
 目前仅支持通过 tidb-operator 进行部署。
+
+若开启微服务，PD 启动后不再提供原本 TSO 分配的功能，需要在集群中部署 TSO 微服务。另外，如果集群中部署了 scheduling 微服务，则由 scheduling 微服务提供调度功能，否则，由 PD 提供调度功能。
+
+> **注意：**
+>
+> 由于 scheduling 微服务是支持动态切换，即如果 scheduling 微服务进程关闭后，PD 会继续提供调度的服务。若 scheduling 微服务和 PD 使用不同的 binary 版本，为防止调度逻辑出现变化。可以通过设置 `pd-ctl config set enable-scheduling-fallback false` 禁止 scheduling 微服务进程关闭后 PD 提供调度服务。该参数默认为 true。
 
 ## 工具兼容性
 
@@ -65,6 +48,10 @@ pd-server services <mode>
 1. 是不是所有的集群都适合通过微服务的模式部署？
 
    不是。微服务主要解决的是 PD 出现瓶颈后导致服务质量下降的问题。如果瓶颈本身不在 PD，则无需开启，微服务本身会增加组件数量，提高运维成本。
+
+2. 什么情况算是达到了 PD 的瓶颈?
+
+   集群自身状态正常的前提下，PD 监控面板中 `TiDB - PD server TSO handle time` 一项出现明显延迟上涨或者 `Heartbeat - TiKV side heartbeat statistics` 一项出现大量 pending
 
 ## 另请参阅
 
