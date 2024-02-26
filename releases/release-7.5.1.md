@@ -20,7 +20,7 @@ TiDB 版本：v7.5.1
 - TiCDC Changefeed 新增以下配置项：
     - [`compression`](/ticdc/ticdc-changefeed-config.md)：你可以设置 redo log 文件的压缩行为 [#10176](https://github.com/pingcap/tiflow/issues/10176) @[sdojjy](https://github.com/sdojjy)
     - [`sink.cloud-storage-config`](/ticdc/ticdc-changefeed-config.md)：你可以设置同步数据到对象存储时自动清理历史数据的功能 [#10109](https://github.com/pingcap/tiflow/issues/10109) @[CharlesCheung96](https://github.com/CharlesCheung96)
-    - [`consistent.flush-concurrency`](/ticdc/ticdc-changefeed-config.md)：支持设置 redo log 上传单个文件的并发数 [#10226](https://github.com/pingcap/tiflow/issues/10226) @[sdojjy](https://github.com/sdojjy)
+    - [`consistent.flush-concurrency`](/ticdc/ticdc-changefeed-config.md)：你可以设置 redo log 上传单个文件的并发数 [#10226](https://github.com/pingcap/tiflow/issues/10226) @[sdojjy](https://github.com/sdojjy)
 
 ## 改进提升
 
