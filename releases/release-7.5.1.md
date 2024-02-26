@@ -166,10 +166,23 @@ TiDB 版本：v7.5.1
     - (dup): release-7.6.0.md > 错误修复> TiDB - 修复更新 `tidb_mem_quota_query` 系统变量后执行 `ADMIN CHECK` 报错 `ERROR 8175` 的问题 [#49258](https://github.com/pingcap/tidb/issues/49258) @[tangenta](https://github.com/tangenta)
     - (dup): release-6.5.7.md > 错误修复> TiDB - 修复构造统计信息时因为 Golang 隐式转换算法导致统计信息误差过大的问题 [#49801](https://github.com/pingcap/tidb/issues/49801) @[qw4990](https://github.com/qw4990)
     - (dup): release-6.5.7.md > 错误修复> TiDB - 修复当 `tidb_max_chunk_size` 值较小时，包含 CTE 的查询出现 `runtime error: index out of range [32] with length 32` 错误的问题 [#48808](https://github.com/pingcap/tidb/issues/48808) @[guo-shaoge](https://github.com/guo-shaoge)
+    - 修复 TiDB 记录历史统计信息时，后台工作线程可能 panic 的问题 [#49076](https://github.com/pingcap/tidb/issues/49076) @[hawkingrei](https://github.com/hawkingrei)
+    - 修复 TiDB 合并分区表全局统计信息的直方图时可能遇到错误失败的问题 [#49023](https://github.com/pingcap/tidb/issues/49023) @[hawkingrei](https://github.com/hawkingrei)
+    - 修复 TiDB 记录历史统计信息时，stats_meta 表的历史信息可能没有被记录的问题 [#49334](https://github.com/pingcap/tidb/issues/49334) @[hi-rustin](https://github.com/hi-rustin)
+    - 修复 Multi Value Index 被错误的选为 Index Join 的被驱动的表的问题 [#50382](https://github.com/pingcap/tidb/issues/50382) @[AilinKid](https://github.com/AilinKid)
+    - 修复 Multi Value Index 无法使用 hint USE_INDEX_MERGE 选中的问题 [#50553](https://github.com/pingcap/tidb/issues/50553) @[AilinKid](https://github.com/AilinKid)
+    - 修复用户访问系统表 `information_schema.analyze_status` 可能报错失败的问题 [#48835](https://github.com/pingcap/tidb/issues/48835) @[hi-rustin](https://github.com/hi-rustin)
+    - 修复 TiDB 错误的消除 Group-by 中的常量值导致结果出错的问题  [#38756](https://github.com/pingcap/tidb/issues/38756) @[hi-rustin](https://github.com/hi-rustin)
+    - 修复 analyze 统计 processed_rows 时可能超过表本身大小的问题 [#50632](https://github.com/pingcap/tidb/issues/50632) @[hawkingrei](https://github.com/hawkingrei)
+    - 修复开启 tidb_enable_prepared_plan_cache 之后再关闭，使用 EXECUTE 命令执行以后的 PREPARE STMT 时可能 panic 的问题 [#49344](https://github.com/pingcap/tidb/issues/49344) @[qw4990](https://github.com/qw4990)
+    - 修复使用 NATURAL JOIN 时可能报错 "Column xxx in from clause is ambiguous" 的问题 [#32044](https://github.com/pingcap/tidb/issues/32044) @[AilinKid](https://github.com/AilinKid)
+    - 修复当 JSON 数组为空数组时，使用 Multi Value Index 访问可能得到错误结果的问题 [#50125](https://github.com/pingcap/tidb/issues/50125) @[YangKeao](https://github.com/YangKeao)
+    - 修复使用聚合函数分组计算时，可能报错 "Can't find column xxx" 的问题 [#50926](https://github.com/pingcap/tidb/issues/50926) @[qw4990](https://github.com/qw4990)
+    - 修复使用 SET_VAR 控制字符串类型的变量会失效的问题 [#50507](https://github.com/pingcap/tidb/issues/50507) @[qw4990](https://github.com/qw4990)
 
 + TiKV
     <!-- tw:@hfxsd (1) -->
-    - 修复开启 checksum 可能导致 TiKV panic 的问题 [#16371](https://github.com/tikv/tikv/issues/16371) @[cfzjywxk](github.com/cfzjywxk)
+    - 修复开启 checksum 可能导致 TiKV panic 的问题 [#16371](https://github.com/tikv/tikv/issues/16371) @[cfzjywxk](https://github.com/cfzjywxk)
     - (dup): release-6.5.8.md > 错误修复> TiKV - 修复 gRPC threads 在检查 `is_shutdown` 时可能出现 panic 的问题 [#16236](https://github.com/tikv/tikv/issues/16236) @[pingyu](https://github.com/pingyu)
     - (dup): release-6.5.8.md > 错误修复> TiKV - 修复巴西和埃及时区转换错误的问题 [#16220](https://github.com/tikv/tikv/issues/16220) @[overvenus](https://github.com/overvenus)
     - (dup): release-7.1.3.md > 错误修复> TiKV - 修复 Titan `blob-run-mode` 无法在线更新的问题 [#15978](https://github.com/tikv/tikv/issues/15978) @[tonyxuqqi](https://github.com/tonyxuqqi)
@@ -182,7 +195,12 @@ TiDB 版本：v7.5.1
     - (dup): release-7.6.0.md > 错误修复> TiKV - 修复 Resolved TS 可能被阻塞两小时的问题 [#11847](https://github.com/tikv/tikv/issues/11847) [#15520](https://github.com/tikv/tikv/issues/15520) [#39130](https://github.com/pingcap/tidb/issues/39130) @[overvenus](https://github.com/overvenus)
     - (dup): release-7.6.0.md > 错误修复> TiKV - 修复 `cast_duration_as_time` 可能返回错误结果的问题 [#16211](https://github.com/tikv/tikv/issues/16211) @[gengliqi](https://github.com/gengliqi)
 
-+ PD
+
+    - 修复批量查询 Resource Group 可能会导致 PD Panic 的问题 [#7206](https://github.com/tikv/pd/issues/7206) @[nolouch](https://github.com/nolouch)
+    - 修复 PD 在 Systemd 下不能读取 Resource Limitation 的问题 [#7628](https://github.com/tikv/pd/issues/7628) @[bufferflies](https://github.com/bufferflies)
+    - 修复 PD 磁盘时延持续抖动可能导致 PD 选不出新的 Leader 的问题 [#7251](https://github.com/tikv/pd/issues/7251) @[HuSharp](https://github.com/HuSharp)
+    - 修复 PD 存在网络分区时可能导致调度不能立刻触发的问题 [#7016](https://github.com/tikv/pd/issues/7016) @[HuSharp](https://github.com/HuSharp)
+    - 修复 PD 监控项 learner-peer-count 在发生 Leader 切换后未同步旧监控值的问题 [#7728](https://github.com/tikv/pd/issues/7728) @[CabinfeverB](https://github.com/CabinfeverB)
 
     - note [#issue](https://github.com/tikv/pd/issues/${issue-id}) @[贡献者 GitHub ID](https://github.com/${github-id})
     - note [#issue](https://github.com/tikv/pd/issues/${issue-id}) @[贡献者 GitHub ID](https://github.com/${github-id})
