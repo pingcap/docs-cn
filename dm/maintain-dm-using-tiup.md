@@ -195,6 +195,10 @@ tiup dm scale-in prod-cluster -N 172.16.5.140:8262
 
 可使用 `tiup dm upgrade` 命令来升级集群。例如，以下示例将集群升级到 `${version}`，执行命令前，将 `${version}` 替换为实际需要的版本：
 
+> **注意：**
+>
+> 自 v8.0.0 版本开始，DM 移除了内置的加密 key，并支持自定义加密 key，如果升级前有 source/task 使用了加密密码，需参考[这里](/dm/dm-customized-secret-key.md)的升级步骤进行额外操作。
+
 {{< copyable "shell-regular" >}}
 
 ```bash
