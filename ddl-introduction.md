@@ -70,9 +70,36 @@ DDL 变更即两个状态之间的切换（变更前 -> 变更后）。在线变
 
 以 `ADD INDEX` 为例，整个变更状态流程如下：
 
+<SimpleTab>
+<div label="Online DDL 异步变更流程（TiDB v6.3.0 前）">
+
+在 TiDB v6.3.0 之前我们只支持以下方式的 DDL 执行方式。
 ```
 absent -> delete only -> write only -> write reorg -> public
 ```
+</div>
+<div label="Online DDL Fast DDL 模式（TiDB v6.3.0 后）">
+
+从 TiDB v6.5.0 之后我们提供 Fast DDL 执行方式。
+```
+absent -> delete only -> write only -> write reorg -> public
+                                            ｜
+                                       -----------
+                                      ｜          ｜
+                     (backfill fullcopy index)  (merge incremental part of index) 
+```
+
+原生 Online DDL 方案中处理最慢的地方是扫描全表创建索引数据的阶段，而创建索引数据的最大性能瓶颈点是按照事务批量回填索引的方式，因此我们考虑从全量数据的索引创建模式、数据传输、并行导入三方面进行改造。参考：[天下武功唯快不破：TiDB 在线 DDL 性能提升 10 倍](https://mp.weixin.qq.com/s/tyBAPm1p27FqgnZgvndPsA)
+原生方案的问题：
+1. 索引记录在事务两阶段提交的时间开销：因为每个索引事务提交的数据 batch-size 通常在 256 或者更小，当索引记录比较多的时候，索引以事务方式提交回 TiKV 的总事务提交时间是非常可观的。
+2. 索引事务和用户事务提交冲突时回滚和重试的开销：原生方案在索引记录回填阶段采用事务方式提交数据，当该方式提交的索引记录与用户业务提交的索引记录存在冲突更新时，将触发用户事务或者索引回填事务回滚和重试，从而影响性能。
+
+Fast DDL 优化项：
+1. 引入批量模式：我们将原生方式中事务批量写入模式改进为文件批量导入的模式，如上图下半部分所示：首先仍是扫描全表数据，之后根据扫描的数据构造索引 KV 对并存入 TiDB 的本地存储，在 TiDB 对于 KV 进行排序后，最终以 Ingest 方式将索引记录写入 TiKV。新方案消除了两阶段事务的提交时间开销以及索引回填事务与用户事务提交冲突回滚的开销。
+2. 提升数据传输效率：针对索引创建阶段的数据传输，我们做了极致的优化：原生方案中我们需要将每一行表记录返回到 TiDB，选出其中的索引需要的列，构造成为索引的 KV；新方案中，在 TiKV 层返回数据回 TiDB 之前我们先将索引需要的列取出，只返回创建索引真正需要的列，极大的降低了数据传输的总量，从而减少了整体创建索引的总时间。
+3. 并行导入：最后，我们通过并行导入的方式将索引记录以 Ingest 方式导入到 TiKV，并行导入提升了数据写回 TiKV 的效率，但同时也给 TiKV 在线处理负载带来了一定压力。我们正在研发系列流控手段，让并行导入能够既充分利用 TiKV 的空闲带宽，同时不给 TiKV 正常处理负载带来过大压力。
+</div>
+</SimpleTab>
 
 对于用户来说，新建的索引在 `public` 状态前都不可用。
 
@@ -129,6 +156,20 @@ absent -> delete only -> write only -> write reorg -> public
 并发 DDL 框架的实现进一步加强了 TiDB 中 DDL 语句的执行能力，并更符合商用数据库的使用习惯。
 
 </div>
+<div label="Fast DDL（TiDB v6.3 及以上）">
+
+从 TiDB v6.3 版本开始，我们开始对于 DDL 语句执行进行优化，通过提供给 DDL 语句提供快速执行路径来提升用户在使用 TiDB 在线 DDL 服务的体验，同时也通过提升 10 倍在线增加索引速度的优化，使得 TiDB 大数据量用户真的可以在业务运行过程中能够真的享受到 TiDB Fast Online DDL 带来的对于业务的收益。
+
+从 v6.5 我们将 Fast DDL 模式默认打开，为了让更多用户可以体验到我们对的服务，和 Fast DDL 相关的参数如下：
+
+System Variables
+- [`tidb_ddl_enable_fast_reorg=on`](/system-variables.md#tidb_ddl_enable_fast_reorg-span-classversion-mark-v630-span): 这个参数用来控制 Fast 模式起停；
+- ['tidb_ddl_disk_quota`](/system-variables.md#tidb_ddl_disk_quota-span-classversion-mark-v630-span): 这个参数设置 Fast DDL 本地磁盘的大小。([100 GiB, 1 PiB])；
+
+Config parameters
+TiDB 配置参数：
+- [`temp-dir`](/command-line-flags-for-tidb-configuration.md#--temp-dir): 用来指定 TiDB Fast DDL 本地存储路径。
+</div>
 </SimpleTab>
 
 ## 最佳实践
@@ -143,12 +184,13 @@ absent -> delete only -> write only -> write reorg -> public
 
     推荐值：
 
+    - 在 Fast DDL mode 下面，如需让 `ADD INDEX` 尽量不影响其他业务，可以将 `tidb_ddl_reorg_worker_cnt` 和 `tidb_ddl_reorg_batch_size` 适当调小，例如将两个变量值分别调为 `4` 和 `256`。
     - 在无其他负载情况下，如需让 `ADD INDEX` 尽快完成，可以将 `tidb_ddl_reorg_worker_cnt` 和 `tidb_ddl_reorg_batch_size` 的值适当调大，例如将两个变量值分别调为 `20` 和 `2048`。
     - 在有其他负载情况下，如需让 `ADD INDEX` 尽量不影响其他业务，可以将 `tidb_ddl_reorg_worker_cnt` 和 `tidb_ddl_reorg_batch_size` 适当调小，例如将两个变量值分别调为 `4` 和 `256`。
-
 > **建议：**
 >
 > - 以上两个变量均可以在 DDL 任务执行过程中动态调整，并且在下一个事务批次中生效。
+> - 在 Fast DDL 模式下面建议 `tidb_ddl_reorg_worker_cnt` 和 `tidb_ddl_reorg_batch_size` 值不超过 `16` 和 `1024`。
 > - 根据 DDL 操作的类型，并结合业务负载压力，选择合适的时间点执行，例如建议在业务负载比较低的情况运行 `ADD INDEX` 操作。
 > - 由于添加索引的时间跨度较长，发送相关的指令后，TiDB 会在后台执行任务，TiDB server 宕机不会影响继续执行。
 

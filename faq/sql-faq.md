@@ -20,6 +20,11 @@ TiDB 在对大表执行 DDL 操作时，一般不会有什么问题。TiDB 支�
 
 对于添加索引等 DDL 操作，TiDB 需要进行回填 (backfill) 操作，这个过程需要较长的时间（取决于表的大小）和额外的资源消耗。对在线业务的影响可调节。TiDB 可以通过多线程进行 backfill，资源消耗可通过以下系统变量进行设置：
 
+Fast DDL
+-[`tidb_ddl_enable_fast_reorg`](/system-variables.md#tidb_ddl_enable_fast_reorg-span-classversion-mark-v630-span)
+-[`tidb_ddl_dist_quota`](/system-variables.md#tidb_ddl_disk_quota-span-classversion-mark-v630-span)
+
+shared parameters：
 - [`tidb_ddl_reorg_worker_cnt`](/system-variables.md#tidb_ddl_reorg_worker_cnt)
 - [`tidb_ddl_reorg_priority`](/system-variables.md#tidb_ddl_reorg_priority)
 - [`tidb_ddl_error_count_limit`](/system-variables.md#tidb_ddl_error_count_limit)
