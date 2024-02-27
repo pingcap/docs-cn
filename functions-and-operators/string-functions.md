@@ -47,7 +47,7 @@ SELECT ASCII('A'), ASCII('TiDB'), ASCII(23);
 - 如果输入参数为负数，该函数会将该参数的绝对值转换为其二进制值，然后对二进制值的每位取反（`0` 变为 `1`，`1` 变为 `0`），最后加上 `1`。
 - 如果输入参数为字符串，且该字符串中只包含数字，该函数将按照该数字返回结果。例如，`"123"` 与 `123` 的返回结果相同。
 - 如果输入参数为字符串，且该字符串第一个字符不是数字（如 `"q123"`），该函数返回 `0`。
-- 如果输入参数为字符串，且该字符串由数字和非数字组成，该函数将按照该参数中最前面连续的数字返回结果。例如，`"123q123"` 与 `123` 的返回结果相同。
+- 如果输入参数为字符串，且该字符串由数字和非数字组成，该函数将按照该参数中最前面连续的数字返回结果。例如，`'123q123'` 与 `123` 的返回结果相同，但 `BIN('123q123')` 会产生一个 `Truncated incorrect INTEGER value: '123q123'` 的警告。
 - 如果输入参数为 `NULL`，该函数返回 `NULL`。
 
 查询示例 1：
@@ -952,12 +952,12 @@ SELECT TO_BASE64(6);
 
 > **注意：**
 >
-> 当字符串为 `NULL` 时，则返回 `NULL`。
+> 当字符串为 null 时，则返回 `NULL`。
 
 查询示例：
 
 ```sql
-SELECT upper('bigdata') AS result_upper, upper('null') AS result_null;
+SELECT UCASE('bigdata') AS result_upper, UCASE(null) AS result_null;
 ```
 
 返回结果：
@@ -1000,12 +1000,12 @@ SELECT UNHEX('54694442');
 
 > **注意：**
 >
-> 当字符串为 `NULL` 时，则返回 `NULL`。
+> 当字符串为 null 时，则返回 `NULL`。
 
 查询示例：
 
 ```sql
-SELECT upper('bigdata') AS result_upper, upper('null') AS result_null;
+SELECT UPPER('bigdata') AS result_upper, UPPER(null) AS result_null;
 ```
 
 返回结果：
