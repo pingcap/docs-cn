@@ -23,7 +23,7 @@ TiDB 版本：8.0.0
 
     更多信息，请参考[用户文档](链接)。
 
-* 增强 Titan 引擎  [#issue号](链接) @[Connor1996](https://github.com/Connor1996) **tw@xxx** <!--1234-->
+* 增强 Titan 引擎  [#issue号](链接) @[Connor1996](https://github.com/Connor1996) **tw@qiancai** <!--1708-->
 
     TiDB v8.0.0 版本引入了 Titan 一系列的性能优化和功能增强，主要包括优化 GC 算法、默认开启字典压缩等功能。其中，我们调整了 [`min-blob-size`](/tikv-configuration-file.md#min-blob-size) 的默认阈值，从 `32KB` 调整为 `?KB` ，进一步扩大 Titan 引擎的适用场景。此外，我们还允许用户动态修改 [`min-blob-size`](/tikv-configuration-file.md#min-blob-size) 阈值配置，以提升用户使用 Titan 引擎时的性能和灵活性。这些改进和功能增强将为用户提供更加稳定和高效的数据库服务。
 
@@ -36,7 +36,7 @@ TiDB 版本：8.0.0
     功能描述（需要包含这个功能是什么、在什么场景下对用户有什么价值、怎么用）
 
     更多信息，请参考[用户文档](链接)。
-* BR 快照恢复速度最高提升 10 倍 GA [#50701](https://github.com/pingcap/tidb/issues/50701) @[3pointer](https://github.com/3pointer) @[Leavrth](https://github.com/Leavrth)
+* BR 快照恢复速度最高提升 10 倍 GA [#50701](https://github.com/pingcap/tidb/issues/50701) @[3pointer](https://github.com/3pointer) @[Leavrth](https://github.com/Leavrth) **tw@qiancai** <!--1681-->
 
     TiDB v8.0.0 版本起，快照恢复提速的改进正式 GA，并默认启用。通过采用粗粒度打散 Region 算法、批量创建库表、降低 SST 文件下载和 Ingest 操作的相互影响以及加速表统计信息恢复等改进措施，在保持数据充分打散的前提下，快照恢复的速度最高提升 10 倍。这一改进充分利用了每个 TiKV 节点的资源并行恢复，使得每个 TiKV 节点的数据恢复能够充分利用硬件的磁盘和网络带宽。根据实际案例的测试结果，单个 TiKV 节点的数据恢复速度稳定在 1.2 GB/s，能够在 1 小时内完成对 100 TB 数据的恢复。
     
@@ -76,13 +76,13 @@ TiDB 版本：8.0.0
 
     更多信息，请参考[用户文档](链接)。
 
-* PITR 支持 Amazon S3 对象锁定 [#51184](https://github.com/pingcap/tidb/issues/51184) @[RidRisR](https://github.com/RidRisR) **tw@xxx** <!--1234-->
+* PITR 支持 Amazon S3 对象锁定 [#51184](https://github.com/pingcap/tidb/issues/51184) @[RidRisR](https://github.com/RidRisR) **tw@lilin90** <!--1604-->
 
     Amazon S3 对象锁定功能支持通过客户定义的留存期，有效防止备份数据在指定时间内被意外或故意删除，提升了数据的安全性和完整性。BR 从 v6.3.0 版本开始为快照备份引入了对 Amazon S3 对象锁定功能的支持，为全量备份增加了额外的安全性保障。从 v8.0.0 版本开始，PITR 也引入了对 Amazon S3 对象锁定功能的支持，无论是全量还是日志数据备份，都可以通过对象锁定功能提供更可靠的数据保护，进一步加强了数据备份和恢复的安全性，并满足监管方面的需求。
     
     更多信息，请参考[用户文档](链接)。
     
-    * PITR 支持备份恢复 Lightning 物理模式导入的数据 （实验性功能） [#issue号](链接) @[BornChanger](https://github.com/BornChanger) **tw@xxx** <!--1234-->
+    * PITR 支持备份恢复 Lightning 物理模式导入的数据 （实验性功能） [#issue号](链接) @[BornChanger](https://github.com/BornChanger) **tw@qiancai** <!--1086-->
 
     TiDB v8.0.0 版本之前，由于 Lightning 的物理导入模式会“重写历史”，导致 PITR 无法感知到被”重写的历史” ，因此无法对数据进行备份。用户需要在完成数据导入后执行一次全量备份。从 TiDB v8.0.0 版本起，PITR 通过对解析时间戳（ResolvedTs）和 `Ingest SST` 操作进行兼容性设计，使得通过 Lightning 的物理模式导入的数据可以被 PITR 正确的识别、备份和恢复。这项改进为客户提供了更加完善的数据保护和恢复方案。
 
@@ -149,7 +149,9 @@ TiDB 版本：8.0.0
 ## 离线包变更
 
 ## 废弃功能
-* 从 TiDB v8.0.0 开始，[`tidb_disable_txn_auto_retry`](/system-variables.md#tidb_disable_txn_auto_retry)  变量被废弃。废弃后，TiDB 不再支持乐观事务的自动重试。作为替代，当使用乐观事务模式发生冲突时，请在应用里捕获错误并重试，或改用[悲观事务模式](/pessimistic-transaction.md)。
+
+* 从 TiDB v8.0.0 开始，[`tidb_disable_txn_auto_retry`](/system-variables.md#tidb_disable_txn_auto_retry)  变量被废弃。废弃后，TiDB 不再支持乐观事务的自动重试。作为替代，当使用乐观事务模式发生冲突时，请在应用里捕获错误并重试，或改用[悲观事务模式](/pessimistic-transaction.md)。**tw@lilin90** <!--1671-->
+
 * 废弃功能 1
 
 * 废弃功能 2
