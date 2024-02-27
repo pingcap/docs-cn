@@ -64,7 +64,7 @@ TiFlash 存算分离架构适用于高性价比的数据分析服务的场景。
     ```
 
     ```shell
-    tiup cluster scale-in mycuster -N 'node0,node1...' # 缩容掉所有 TiFlash 节点
+    tiup cluster scale-in mycluster -N 'node0,node1...' # 缩容掉所有 TiFlash 节点
     tiup cluster display mycluster                     # 等待所有 TiFlash 节点进入 Tombstone 状态
     tiup cluster prune mycluster                       # 移除所有处于 Tombstone 状态的 TiFlash 节点
     ```
