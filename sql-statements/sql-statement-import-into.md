@@ -5,7 +5,7 @@ summary: TiDB 数据库中 IMPORT INTO 的使用概况。
 
 # IMPORT INTO
 
-`IMPORT INTO` 语句使用 TiDB Lightning 的[物理导入模式](/tidb-lightning/tidb-lightning-physical-import-mode.md)，用于将 `CSV`、`SQL`、`PARQUET` 等格式的数据导入到 TiDB 的一张空表中。
+`IMPORT INTO` 语句使用 TiDB Lightning 的[物理导入模式](/tidb-lightning/tidb-lightning-physical-import-mode.md)，用于将 `CSV`、`SQL`、`PARQUET` 等格式的数据文件（`IMPORT FROM FILE`）或者将 SELECT 语句的查询结果（`IMPORT FROM SELECT`）导入到 TiDB 的一张空表中。
 
 `IMPORT INTO` 支持导入存储在 Amazon S3、GCS 和 TiDB 本地的数据文件。
 
@@ -16,24 +16,36 @@ summary: TiDB 数据库中 IMPORT INTO 的使用概况。
 
 - 对于存储在 TiDB 本地的数据文件，`IMPORT INTO` 仅支持在当前用户连接的 TiDB 节点上运行，因此数据文件需要存放在当前用户连接的 TiDB 节点上。如果是通过 PROXY 或者 Load Balancer 访问 TiDB，则无法导入存储在 TiDB 本地的数据文件。
 
+`IMPORT FROM SELECT` 支持导入任意 SELECT 语句，也支持导入使用 [`AS OF TIMESTAMP`](/as-of-timestamp.md) 查询的历史数据。
+
 ## 使用限制
 
-- 目前该语句支持导入 10 TiB 以内的数据。
 - 只支持导入数据到数据库中已有的空表。
 - 不支持事务，也无法回滚。在显式事务 (`BEGIN`/`END`) 中执行会报错。
-- 在导入完成前会阻塞当前连接，如果需要异步执行，可以添加 `DETACHED` 选项。
 - 不支持和 [Backup & Restore](/br/backup-and-restore-overview.md)、[`FLASHBACK CLUSTER`](/sql-statements/sql-statement-flashback-cluster.md)、[创建索引加速](/system-variables.md#tidb_ddl_enable_fast_reorg-从-v630-版本开始引入)、TiDB Lightning 导入、TiCDC 数据同步、[Point-in-time recovery (PITR)](/br/br-log-architecture.md) 等功能同时工作。
-- 每个集群上同时只能有一个 `IMPORT INTO` 任务在运行。`IMPORT INTO` 会 precheck 是否存在运行中的任务，但并非硬限制，如果多个客户端同时执行 `IMPORT INTO` 仍有可能启动多个任务，请避免该情况，否则可能导致数据不一致或者任务失败的问题。
 - 导入数据的过程中，请勿在目标表上执行 DDL 和 DML 操作，也不要在目标数据库上执行 [`FLASHBACK DATABASE`](/sql-statements/sql-statement-flashback-database.md)，否则会导致导入失败或数据不一致。导入期间也不建议进行读操作，因为读取的数据可能不一致。请在导入完成后再进行读写操作。
 - 导入期间会占用大量系统资源，建议 TiDB 节点使用 32 核以上的 CPU 和 64 GiB 以上内存以获得更好的性能。导入期间会将排序好的数据写入到 TiDB [临时目录](/tidb-configuration-file.md#temp-dir-从-v630-版本开始引入)下，建议优先考虑配置闪存等高性能存储介质。详情请参考[物理导入使用限制](/tidb-lightning/tidb-lightning-physical-import-mode.md#必要条件及限制)。
 - TiDB [临时目录](/tidb-configuration-file.md#temp-dir-从-v630-版本开始引入)至少需要有 90 GiB 的可用空间。建议预留大于等于所需导入数据的存储空间，以保证最佳导入性能。
-- 一个导入任务只支持导入数据到一张目标表中。如需导入数据到多张目标表，需要在一张目标表导入完成后，再新建一个任务导入下一张目标表。
+- 一个导入任务只支持导入数据到一张目标表中。
 - TiDB 集群升级期间不支持使用该语句。
+- 所需导入的数据不能存在主键或非空唯一索引冲突的记录，否则会导致任务失败。
+- 已知问题：在 TiDB 节点配置文件中的 PD 地址与当前集群 PD 拓扑不一致时（如曾经缩容过 PD，但没有对应更新 TiDB 配置文件或者更新该文件后未重启 TiDB 节点），执行 `IMPORT INTO` 会失败。
+
+### `IMPORT FROM FILE` 使用限制
+
+- 目前该语句支持导入 10 TiB 以内的数据。
+- 在导入完成前会阻塞当前连接，如果需要异步执行，可以添加 `DETACHED` 选项。
+- 每个集群上最多同时有 16 个 `IMPORT INTO` 任务在运行，当没有足够资源或者达到任务数量上限时任务会排队。
 - 当使用[全局排序](/tidb-global-sort.md)导入数据时，单行数据的总长度不能超过 32 MiB。
 - 当使用全局排序导入数据时，如果 TiDB 集群在导入任务尚未完成时被删除了，Amazon S3 上可能会残留用于全局排序的临时数据。该场景需要手动删除这些数据，以免增加 S3 存储成本。
-- 所需导入的数据不能存在主键或非空唯一索引冲突的记录，否则会导致任务失败。
-- 对于基于分布式执行框架调度的 `IMPORT INTO` 任务，如该任务已运行，不支持被调度到新的 TiDB 节点上执行。当前在执行导入任务的 TiDB 节点如果重启，该 TiDB 节点不会再执行该导入任务，而是被转移到其他 TiDB 节点继续执行。如果是导入 TiDB 节点本地的数据，任务异常后不会被 failover 到其他 TiDB 节点。
-- 已知问题：在 TiDB 节点配置文件中的 PD 地址与当前集群 PD 拓扑不一致时（如曾经缩容过 PD，但没有对应更新 TiDB 配置文件或者更新该文件后未重启 TiDB 节点），执行 `IMPORT INTO` 会失败。
+- 未开启分布式执行框架时创建的 `IMPORT INTO` 任务，或者是导入 TiDB 节点本地的数据任务，会绑定到提交任务的节点上运行，后续即使开启了分布式执行框架，这些任务也不会被调度到其他 TiDB 节点上执行。开启分布式执行框架后创建的任务，并且不是导入本地节点数据，则会自动调度或者 failover 到其他 TiDB 节点。
+
+### `IMPORT FROM SELECT` 使用限制
+
+- `IMPORT FROM SELECT` 语句为前台任务，只会在当前连接的节点执行，在导入完成前会阻塞当前连接，不支持使用 `SHOW IMPORT JOB(s)` `CANCEL IMPORT JOB <job-id>` 等后台任务管理语句
+- 可以启动多个 `IMPORT FROM SELECT` 语句。
+- TiDB [临时目录](/tidb-configuration-file.md#temp-dir-从-v630-版本开始引入) 需要有足够的空间存储整个 SELECT 语句查询结果（暂不支持使用 `DISK_QUOTA`）。
+- 不支持使用 [`tidb_snapshot`](/read-historical-data.md) 导入历史数据。
 
 ## 导入前准备
 
@@ -41,7 +53,8 @@ summary: TiDB 数据库中 IMPORT INTO 的使用概况。
 
 - 要导入的目标表在 TiDB 中已经创建，并且是空表。
 - 当前集群有足够的剩余空间能容纳要导入的数据。
-- 当前连接的 TiDB 节点的[临时目录](/tidb-configuration-file.md#temp-dir-从-v630-版本开始引入)至少有 90 GiB 的磁盘空间。如果开启了 [`tidb_enable_dist_task`](/system-variables.md#tidb_enable_dist_task-从-v710-版本开始引入)，需要确保集群中所有 TiDB 节点的临时目录都有足够的磁盘空间。
+- 当前连接的 TiDB 节点的[临时目录](/tidb-configuration-file.md#temp-dir-从-v630-版本开始引入)至少有 90 GiB 的磁盘空间。
+- 如果是从文件导入，且开启了 [`tidb_enable_dist_task`](/system-variables.md#tidb_enable_dist_task-从-v710-版本开始引入)，需要确保集群中所有 TiDB 节点的临时目录都有足够的磁盘空间。
 
 ## 需要的权限
 
@@ -52,9 +65,14 @@ summary: TiDB 数据库中 IMPORT INTO 的使用概况。
 ```ebnf+diagram
 ImportIntoStmt ::=
     'IMPORT' 'INTO' TableName ColumnNameOrUserVarList? SetClause? FROM fileLocation Format? WithOptions?
+    |
+    'IMPORT' 'INTO' TableName ColumnNameList? FROM SelectStatement WithOptions?
 
 ColumnNameOrUserVarList ::=
     '(' ColumnNameOrUserVar (',' ColumnNameOrUserVar)* ')'
+
+ColumnNameList ::=
+    '(' ColumnName (',' ColumnName)* ')'
 
 SetClause ::=
     'SET' SetItem (',' SetItem)*
@@ -117,7 +135,7 @@ SET 表达式左侧只能引用 `ColumnNameOrUserVarList` 中没有的列名。�
 
 目前支持的选项包括：
 
-| 选项名 | 支持的数据格式 | 描述 |
+| 选项名 | 支持的数据源以及格式 | 描述 |
 |:---|:---|:---|
 | `CHARACTER_SET='<string>'` | CSV | 指定数据文件的字符集，默认为 `utf8mb4`。目前支持的字符集包括 `binary`、`utf8`、`utf8mb4`、`gb18030`、`gbk`、`latin1` 和 `ascii`。 |
 | `FIELDS_TERMINATED_BY='<string>'` | CSV | 指定字段分隔符，默认为 `,`。 |
@@ -127,13 +145,14 @@ SET 表达式左侧只能引用 `ColumnNameOrUserVarList` 中没有的列名。�
 | `LINES_TERMINATED_BY='<string>'` | CSV | 指定行分隔符，默认 `IMPORT INTO` 会自动识别分隔符为 `\n`、`\r` 或 `\r\n`，如果行分隔符为以上三种，无须显式指定该选项。 |
 | `SKIP_ROWS=<number>` | CSV | 指定需要跳过的行数，默认为 `0`。可通过该参数跳过 CSV 中的 header，如果是通过通配符来指定所需导入的源文件，该参数会对 fileLocation 中通配符匹配的所有源文件生效。 |
 | `SPLIT_FILE` | CSV | 将单个 CSV 文件拆分为多个 256 MiB 左右的小文件块进行并行处理，以提高导入效率。该参数仅对**非**压缩的 CSV 文件生效，且该参数和 TiDB Lightning 的 [`strict-format`](/tidb-lightning/tidb-lightning-data-source.md#启用严格格式) 有相同的使用限制。 |
-| `DISK_QUOTA='<string>'` | 所有格式 | 指定数据排序期间可使用的磁盘空间阈值。默认值为 TiDB [临时目录](/tidb-configuration-file.md#temp-dir-从-v630-版本开始引入)所在磁盘空间的 80%。如果无法获取磁盘总大小，默认值为 50 GiB。当显式指定 DISK_QUOTA 时，该值同样不能超过 TiDB [临时目录](/tidb-configuration-file.md#temp-dir-从-v630-版本开始引入)所在磁盘空间的 80%。 |
-| `DISABLE_TIKV_IMPORT_MODE` | 所有格式 | 指定是否禁止导入期间将 TiKV 切换到导入模式。默认不禁止。如果当前集群存在正在运行的读写业务，为避免导入过程对这部分业务造成影响，可开启该参数。 |
-| `THREAD=<number>` | 所有格式 | 指定导入的并发度。默认值为 TiDB 节点的 CPU 核数的 50%，最小值为 1。可以显示指定该参数来控制对资源的占用，但最大值不能超过 CPU 核数。如需导入数据到一个空集群，建议可以适当调大该值，以提升导入性能。如果目标集群已经用于生产环境，请根据业务要求按需调整该参数值。 |
-| `MAX_WRITE_SPEED='<string>'` | 所有格式 | 控制写入到单个 TiKV 的速度，默认无速度限制。例如设置为 `1MiB`，则限制写入速度为 1 MiB/s。|
-| `CHECKSUM_TABLE='<string>'` | 所有格式 | 配置是否在导入完成后对目标表是否执行 CHECKSUM 检查来验证导入的完整性。可选的配置项为 `"required"`（默认）、`"optional"` 和 `"off"`。`"required"` 表示在导入完成后执行 CHECKSUM 检查，如果 CHECKSUM 检查失败，则会报错退出。`"optional"` 表示在导入完成后执行 CHECKSUM 检查，如果报错，会输出一条警告日志并忽略报错。`"off"` 表示导入结束后不执行 CHECKSUM 检查。 |
-| `DETACHED` | 所有格式 | 该参数用于控制 `IMPORT INTO` 是否异步执行。开启该参数后，执行 `IMPORT INTO` 会立即返回该导入任务的 `Job_ID` 等信息，且该任务会在后台异步执行。 |
-| `CLOUD_STORAGE_URI` | 所有格式 | 指定编码后的 KV 数据[全局排序](/tidb-global-sort.md)的目标存储地址。未指定该参数时，`IMPORT INTO` 会根据系统变量 [`tidb_cloud_storage_uri`](/system-variables.md#tidb_cloud_storage_uri-从-v740-版本开始引入) 的值来确定是否使用全局排序，如果该系统变量指定了目标存储地址，就使用指定的地址进行全局排序。当指定该参数时，如果参数值不为空，`IMPORT INTO` 会使用该参数值作为目标存储地址；如果参数值为空，则表示强制使用本地排序。目前目标存储地址仅支持 Amazon S3，具体 Amazon S3 URI 格式配置，请参见 [Amazon S3 URI 格式](/external-storage-uri.md#amazon-s3-uri-格式)。注意当使用该功能时，所有 TiDB 节点都需要有目标 Amazon S3 bucket 的读写权限。 |
+| `DISK_QUOTA='<string>'` | 所有文件格式 | 指定数据排序期间可使用的磁盘空间阈值。默认值为 TiDB [临时目录](/tidb-configuration-file.md#temp-dir-从-v630-版本开始引入)所在磁盘空间的 80%。如果无法获取磁盘总大小，默认值为 50 GiB。当显式指定 DISK_QUOTA 时，该值同样不能超过 TiDB [临时目录](/tidb-configuration-file.md#temp-dir-从-v630-版本开始引入)所在磁盘空间的 80%。 |
+| `DISABLE_TIKV_IMPORT_MODE` | 所有文件格式 | 指定是否禁止导入期间将 TiKV 切换到导入模式。默认不禁止。如果当前集群存在正在运行的读写业务，为避免导入过程对这部分业务造成影响，可开启该参数。 |
+| `THREAD=<number>` | 所有文件格式、SELECT | 指定导入的并发度。`IMPORT FROM FILE` 时，默认值为 TiDB 节点的 CPU 核数的 50%，最小值为 1，最大值为 CPU 核数；`IMPORT FROM SELECT` 时，默认值为 2，最小值为 1，最大值为 CPU 核数的 2 倍。如需导入数据到一个空集群，建议可以适当调大该值，以提升导入性能。如果目标集群已经用于生产环境，请根据业务要求按需调整该参数值。 |
+| `MAX_WRITE_SPEED='<string>'` | 所有文件格式 | 控制写入到单个 TiKV 的速度，默认无速度限制。例如设置为 `1MiB`，则限制写入速度为 1 MiB/s。|
+| `CHECKSUM_TABLE='<string>'` | 所有文件格式 | 配置是否在导入完成后对目标表是否执行 CHECKSUM 检查来验证导入的完整性。可选的配置项为 `"required"`（默认）、`"optional"` 和 `"off"`。`"required"` 表示在导入完成后执行 CHECKSUM 检查，如果 CHECKSUM 检查失败，则会报错退出。`"optional"` 表示在导入完成后执行 CHECKSUM 检查，如果报错，会输出一条警告日志并忽略报错。`"off"` 表示导入结束后不执行 CHECKSUM 检查。 |
+| `DETACHED` | 所有文件格式 | 该参数用于控制 `IMPORT INTO` 是否异步执行。开启该参数后，执行 `IMPORT INTO` 会立即返回该导入任务的 `Job_ID` 等信息，且该任务会在后台异步执行。 |
+| `CLOUD_STORAGE_URI` | 所有文件格式 | 指定编码后的 KV 数据[全局排序](/tidb-global-sort.md)的目标存储地址。未指定该参数时，`IMPORT INTO` 会根据系统变量 [`tidb_cloud_storage_uri`](/system-variables.md#tidb_cloud_storage_uri-从-v740-版本开始引入) 的值来确定是否使用全局排序，如果该系统变量指定了目标存储地址，就使用指定的地址进行全局排序。当指定该参数时，如果参数值不为空，`IMPORT INTO` 会使用该参数值作为目标存储地址；如果参数值为空，则表示强制使用本地排序。目前目标存储地址仅支持 Amazon S3，具体 Amazon S3 URI 格式配置，请参见 [Amazon S3 URI 格式](/external-storage-uri.md#amazon-s3-uri-格式)。注意当使用该功能时，所有 TiDB 节点都需要有目标 Amazon S3 bucket 的读写权限。 |
+| `DISABLE_PRECHECK` | 所有文件格式、SELECT | 设置该参数后会关闭非 critical 的 precheck 项，如检查是否存在 CDC/PiTR 任务等。 |
 
 ## 压缩文件
 
@@ -178,7 +197,7 @@ SET GLOBAL tidb_server_memory_limit='88%';
 > - 如果源数据文件 KV range 重叠较少，开启全局排序后可能会降低导入性能，因为全局排序需要等所有子任务的数据本地排序后，再进行额外的全局排序操作，之后才进行导入。
 > - 使用全局排序的导入任务完成后，存放在云存储里用于全局排序的文件会在后台线程中异步清理。
 
-## 输出内容
+## `IMPORT FROM FILE` 输出内容
 
 当 `IMPORT INTO` 导入完成，或者开启了 `DETACHED` 模式时，`IMPORT INTO` 会返回当前任务的信息。以下为一些示例，字段的含义描述请参考 [`SHOW IMPORT JOB(s)`](/sql-statements/sql-statement-show-import-job.md)。
 
@@ -292,6 +311,19 @@ IMPORT INTO t FROM '/path/to/file.sql' FORMAT 'sql';
 
 ```sql
 IMPORT INTO t FROM 's3://bucket/path/to/file.parquet?access-key=XXX&secret-access-key=XXX' FORMAT 'parquet' WITH MAX_WRITE_SPEED='10MiB';
+```
+
+### `IMPORT FROM SELECT`
+
+导入 `union` 结果到目标表 `t`，并发度为 `8`，并且关闭 precheck。
+```
+IMPORT INTO t FROM select * from src union select * from src2 WITH thread = 8, disable_precheck;
+```
+
+导入历史数据到目标表 `t`。
+
+```
+IMPORT INTO t FROM select * from src AS OF TIMESTAMP '2024-02-27 11:38:00';
 ```
 
 ## MySQL 兼容性
