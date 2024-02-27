@@ -35,15 +35,14 @@ summary: TiDB 数据库中 IMPORT INTO 的使用概况。
 
 - 目前该语句支持导入 10 TiB 以内的数据。
 - 在导入完成前会阻塞当前连接，如果需要异步执行，可以添加 `DETACHED` 选项。
-- 每个集群上最多同时有 16 个 `IMPORT INTO` 任务在运行，当没有足够资源或者达到任务数量上限时任务会排队。
+- 每个集群上最多同时有 16 个 `IMPORT INTO` 任务（参考 [TiDB 分布式执行框架使用限制](/tidb-distributed-execution-framework.md#使用限制) ）在运行，当没有足够资源或者达到任务数量上限时任务会排队。
 - 当使用[全局排序](/tidb-global-sort.md)导入数据时，单行数据的总长度不能超过 32 MiB。
 - 当使用全局排序导入数据时，如果 TiDB 集群在导入任务尚未完成时被删除了，Amazon S3 上可能会残留用于全局排序的临时数据。该场景需要手动删除这些数据，以免增加 S3 存储成本。
 - 未开启分布式执行框架时创建的 `IMPORT INTO` 任务，或者是导入 TiDB 节点本地的数据任务，会绑定到提交任务的节点上运行，后续即使开启了分布式执行框架，这些任务也不会被调度到其他 TiDB 节点上执行。开启分布式执行框架后创建的任务，并且不是导入本地节点数据，则会自动调度或者 failover 到其他 TiDB 节点。
 
 ### `IMPORT FROM SELECT` 使用限制
 
-- `IMPORT FROM SELECT` 语句为前台任务，只会在当前连接的节点执行，在导入完成前会阻塞当前连接，不支持使用 `SHOW IMPORT JOB(s)` `CANCEL IMPORT JOB <job-id>` 等后台任务管理语句
-- 可以启动多个 `IMPORT FROM SELECT` 语句。
+- `IMPORT FROM SELECT` 语句为前台任务，只会在当前连接的节点执行，在导入完成前会阻塞当前连接，不支持使用 `SHOW IMPORT JOB(s)` `CANCEL IMPORT JOB <job-id>` 等后台任务管理语句。
 - TiDB [临时目录](/tidb-configuration-file.md#temp-dir-从-v630-版本开始引入) 需要有足够的空间存储整个 SELECT 语句查询结果（暂不支持使用 `DISK_QUOTA`）。
 - 不支持使用 [`tidb_snapshot`](/read-historical-data.md) 导入历史数据。
 
@@ -53,8 +52,7 @@ summary: TiDB 数据库中 IMPORT INTO 的使用概况。
 
 - 要导入的目标表在 TiDB 中已经创建，并且是空表。
 - 当前集群有足够的剩余空间能容纳要导入的数据。
-- 当前连接的 TiDB 节点的[临时目录](/tidb-configuration-file.md#temp-dir-从-v630-版本开始引入)至少有 90 GiB 的磁盘空间。
-- 如果是从文件导入，且开启了 [`tidb_enable_dist_task`](/system-variables.md#tidb_enable_dist_task-从-v710-版本开始引入)，需要确保集群中所有 TiDB 节点的临时目录都有足够的磁盘空间。
+- 当前连接的 TiDB 节点的[临时目录](/tidb-configuration-file.md#temp-dir-从-v630-版本开始引入)至少有 90 GiB 的磁盘空间。开启了 [`tidb_enable_dist_task`](/system-variables.md#tidb_enable_dist_task-从-v710-版本开始引入)，如果是从文件导入，且不是导入 TiDB 节点本地的数据，需要确保集群中所有 TiDB 节点的临时目录都有足够的磁盘空间。
 
 ## 需要的权限
 
