@@ -700,7 +700,7 @@ SELECT LENGTH(NULL);
 
 ### [`LIKE`](https://dev.mysql.com/doc/refman/8.0/en/string-comparison-functions.html#operator_like)
 
-`LIKE` 用于进行简单字符串匹配。表达式 `expr LIKE pat [ESCAPE 'escape_char']` 返回 `1`（(`TRUE`) 或 `0`(`FALSE`)。如果 `expr` 或 `pat` 中任一个为 `NULL`，结果为 `NULL`。
+`LIKE` 用于进行简单字符串匹配。表达式 `expr LIKE pat [ESCAPE 'escape_char']` 返回 `1` (`TRUE`) 或 `0` (`FALSE`)。如果 `expr` 或 `pat` 中任一个为 `NULL`，结果为 `NULL`。
 
 你可以在 `LIKE` 中使用以下两个通配符：
 
@@ -839,8 +839,8 @@ SELECT '🍣🍺Sushi🍣🍺' COLLATE utf8mb4_unicode_ci LIKE '%SUSHI%' AS resu
 
 `LOCATE(substr, str[, pos])` 函数用于返回子字符串 `substr` 在字符串 `str` 中第一次出现的位置。`pos` 参数是可选的，用于指定查找的起始位置。
 
-- 如果子字符串 `substr` 不在字符串 `str` 中，函数返回 `0`。
-- 如果任一参数为 `NULL`，函数返回 `NULL`。
+- 如果子字符串 `substr` 不在字符串 `str` 中，该函数返回 `0`。
+- 如果任一参数为 `NULL`，该函数返回 `NULL`。
 - 该函数是多字节安全的，并且只有当至少一个参数是二进制字符串时，才执行区分大小写的查找。
 
 以下示例使用 `utf8mb4_bin` 排序规则：
