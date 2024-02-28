@@ -28,10 +28,11 @@ PD 微服务通常用于解决 PD 出现性能瓶颈的问题，提高 PD 服务
 
 ## 使用限制
 
-1. TSO 微服务目前不支持动态启停，开启或关闭需要重启 PD 集群。
-2. 只有 TiDB 通过服务发现直接连接 TSO 微服务，其他的组件是通过请求转发的方式，将请求通过 PD 转发到 TSO 微服务获取时间戳。
-3. 当前微服务与 [同步部署模式 (DR Auto-Sync) ](/two-data-centers-in-one-city-deployment.md#简介) 特性不兼容。
-4. 与 TiDB 系统变量 `tidb_enable_tso_follower_proxy` 不兼容。
+- TSO 微服务目前不支持动态启停，开启或关闭需要重启 PD 集群。
+- 只有 TiDB 通过服务发现直接连接 TSO 微服务，其他的组件是通过请求转发的方式，将请求通过 PD 转发到 TSO 微服务获取时间戳。
+- 当前微服务与 [同步部署模式 (DR Auto-Sync) ](/two-data-centers-in-one-city-deployment.md#简介) 特性不兼容。
+- 与 TiDB 系统变量 `tidb_enable_tso_follower_proxy` 不兼容。
+- 由于静默 region 的关系，Scheduling 微服务在进行主备切换时，为避免冗余调度，集群或存在至多五分钟没有调度的现象。
 
 ## 使用方法
 
@@ -41,7 +42,7 @@ PD 微服务通常用于解决 PD 出现性能瓶颈的问题，提高 PD 服务
 
 > **注意：**
 >
-> Scheduling 微服务支持动态切换，即如果 Scheduling 微服务进程关闭后，PD 默认会继续提供调度的服务。如果 Scheduling 微服务和 PD 使用不同的 binary 版本，为防止调度逻辑出现变化，可以通过设置 `pd-ctl config set enable-scheduling-fallback false` 禁止 Scheduling 微服务进程关闭后 PD 提供调度服务。该参数默认为 `true`。
+> Scheduling 微服务支持动态切换，即如果 Scheduling 微服务进程关闭后，PD 默认会继续提供调度的服务。如果 Scheduling 微服务和 PD 使用不同的 binary 版本，为防止调度逻辑出现变化，可以通过设置 `pd-ctl config set enable-scheduling-fallback false` 禁止 Scheduling 微服务进程关闭后 PD 提供调度服务, 但是可能在 Scheduling 微服务进程重新启动前，集群将无法提供调度服务。该参数默认为 `true`。
 
 ## 工具兼容性
 
@@ -50,7 +51,8 @@ PD 微服务通常用于解决 PD 出现性能瓶颈的问题，提高 PD 服务
 ## 常见问题
 
 - 如何判断 PD 是否达到了性能瓶颈?
-   在集群自身状态正常的前提下，可以查看 Grafana PD 面板中的监控指标。如果 `TiDB - PD server TSO handle time` 指标出现明显延迟上涨或 `Heartbeat - TiKV side heartbeat statistics` 指标出现大量 pending，说明 PD 达到了性能瓶颈。
+
+  在集群自身状态正常的前提下，可以查看 Grafana PD 面板中的监控指标。如果 `TiDB - PD server TSO handle time` 指标出现明显延迟上涨或 `Heartbeat - TiKV side heartbeat statistics` 指标出现大量 pending，说明 PD 达到了性能瓶颈。
 
 ## 另请参阅
 
