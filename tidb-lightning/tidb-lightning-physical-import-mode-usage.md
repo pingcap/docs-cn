@@ -30,13 +30,15 @@ check-requirements = true
 data-source-dir = "/data/my_database"
 
 [conflict]
-# 从 v7.3.0 开始引入的新版冲突数据处理策略。默认值为 "none"。
-# - "none"：不进行冲突数据检测和处理。如果源文件存在主键或唯一键冲突的记录，后续步骤会报错
+# 从 v7.3.0 开始引入的新版冲突数据处理策略。默认值为 ""。
+# - ""：不进行冲突数据检测和处理。如果源文件存在主键或唯一键冲突的记录，后续步骤会报错
 # - "error"：检测到导入的数据存在主键或唯一键冲突的数据时，终止导入并报错
-# - "replace"：遇到主键或唯一键冲突的数据时，保留新的数据，覆盖旧的数据
-strategy = "none"
+# - "replace"：遇到主键或唯一键冲突的数据时，保留最新的数据，覆盖旧的数据。最新数据的定义取决于 Lightning 内部机制。
+#              冲突数据将被记录到目标 TiDB 中的 `lightning_task_info.conflict_error_v2` 和 `conflict_records` 表中。
+#              你可以根据业务需求选择正确的记录重新手动写入到目标表中。注意，该方法要求目标 TiKV 的版本为 v5.2.0 或更新版本。
+strategy = ""
 # 控制是否开启前置检查。取值为 true 时，表示开启前置+后置冲突检测；取值为 false 时，表示仅开启后置冲突检测。默认值为 false。
-precheck-conflict-before-import = false
+# precheck-conflict-before-import = false
 # threshold = 9223372036854775807
 # max-record-rows = 100
 
@@ -102,7 +104,7 @@ Lightning 的完整配置文件可参考[完整配置及命令行参数](/tidb-l
 |:---|:---|:---|
 | `"replace"` | 保留后处理的数据，覆盖先处理的数据 | `REPLACE INTO ...` |
 | `"error"` | 终止导入并报错 | `INSERT INTO ...` |
-| `"none"` | 不进行冲突检查和处理，但如果存在有主键和唯一键冲突的数据，会在后续步骤报错  | 无 |
+| `""` | 不进行冲突检查和处理，但如果存在有主键和唯一键冲突的数据，会在后续步骤报错  | 无 |
 
 > **注意：**
 >

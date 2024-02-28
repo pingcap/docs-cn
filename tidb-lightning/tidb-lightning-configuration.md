@@ -117,11 +117,13 @@ driver = "file"
 # 从 v7.3.0 开始引入的新版冲突数据处理策略。默认值为 ""。
 # - ""：不进行冲突数据检测和处理。如果源文件存在主键或唯一键冲突的记录，后续步骤会报错
 # - "error"：检测到导入的数据存在主键或唯一键冲突的数据时，终止导入并报错
-# - "replace"：遇到主键或唯一键冲突的数据时，保留新的数据，覆盖旧的数据
-# - "ignore"：遇到主键或唯一键冲突的数据时，保留旧的数据，忽略新的数据
-# 目前不能与 tikv-importer.duplicate-resolution（旧版冲突检测处理策略）同时使用
+# - "replace"：遇到主键或唯一键冲突的数据时，保留最新的数据，覆盖旧的数据。最新数据的定义取决于 Lightning 内部机制。
+#              冲突数据将被记录到目标 TiDB 中的 `lightning_task_info.conflict_error_v2` 表和 `conflict_records` 表中。
+#              你可以根据业务需求选择正确的记录重新手动写入到目标表中。注意，该方法要求目标 TiKV 的版本为 v5.2.0 或更新版本。
 strategy = ""
-# 控制 strategy 为 "replace" 或 "ignore" 时，能处理的冲突数据上限。仅在 strategy 为 "replace" 或 "ignore" 时可配置。默认为 9223372036854775807，表示几乎可以容忍所有错误。
+# 控制是否开启前置检查。取值为 true 时，表示开启前置+后置冲突检测；取值为 false 时，表示仅开启后置冲突检测。默认值为 false。
+# precheck-conflict-before-import = false
+# 控制 strategy 为 "replace" 时，能处理的冲突数据上限。仅在 strategy 为 "replace" 时可配置。默认为 9223372036854775807，表示几乎可以容忍所有错误。
 # threshold = 9223372036854775807
 # 控制冲突数据记录表 (conflict_records) 中记录冲突数据的条数上限。默认为 100。如果 strategy 为 "ignore"，则会记录被忽略写入的冲突记录。如果 strategy 为 "replace"，则会记录被覆盖的冲突记录。但在逻辑导入模式下，replace 策略无法记录冲突记录。
 # max-record-rows = 100
@@ -138,15 +140,6 @@ strategy = ""
 # 当后端是 “importer” 时，tikv-importer 的监听地址（需改为实际地址）。
 addr = "172.16.31.10:8287"
 
-# 物理导入模式设置是否检测和解决重复的记录（唯一键冲突）。
-# 目前支持两种解决方法：
-#  - none: 不检测重复记录。该模式是两种模式中性能最佳的，但是如果数据源存在重复记录，会导致 TiDB 中出现数据不一致的情况。
-#  - remove：如果写入的数据 A 和 B 存在 Primary Key 或 Unique Key 冲突，
-#            则会将 A 和 B 这两条冲突数据从目标表移除，同时记录到目标 TiDB 中的 `lightning_task_info.conflict_error_v1` 表中。
-#            你可以根据业务需求选择正确的记录重新手动写入到目标表中。注意，该方法要求目标 TiKV 的版本为 v5.2.0 或更新版本。
-#            如果版本过低，则会启用 'none' 模式。
-# 默认值为 'none'。
-# duplicate-resolution = 'none'
 # 物理导入模式下，向 TiKV 发送数据时一次请求中最大 KV 数量。
 # 自 v7.2.0 开始，该参数废弃，设置后不再生效。如果希望调整一次请求中向 TiKV 发送的数据量，请使用 `send-kv-size` 参数。
 # send-kv-pairs = 32768
