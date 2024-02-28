@@ -100,7 +100,7 @@ TiProxy 不适用于以下场景：
 
     ```yaml
     component_versions:
-      tiproxy: "v0.2.0"
+      tiproxy: "v1.0.0"
     server_configs:
       tiproxy:
         security.server-tls.ca: "/var/ssl/ca.pem"
