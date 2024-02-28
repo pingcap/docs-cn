@@ -89,7 +89,7 @@ TiUP 会在 v1.14.0 版本自适应支持此功能，即无需特殊操作，直
 
     * 导入数据。
 
-    * 已知缺陷，做平滑升级前，如果用户开启了 [TiDB 分布式执行框架](/tidb-distributed-execution-framework.md)，且平滑升级时正通过 TiDB 分布式执行框架在执行 add index job 或者 import into job，可能会导致数据和索引不一致。可以通过以下几个步骤避免触发此问题：
+    * 做平滑升级前，如果用户开启了 [TiDB 分布式执行框架](/tidb-distributed-execution-framework.md)，且平滑升级时正在执行 `ADD INDEX` 或者 `IMPORT INTO` 任务，可能会导致一些问题。可以通过以下步骤避免触发此问题：
       1. 将[TiDB 分布式执行框架](/tidb-distributed-execution-framework.md) 参数设置为 ”OFF“（此功能默认关闭）。
       2. 升级开始前等待正在运行中的分布式 `ADD INDEX` 和 `IMPORT INTO` 操作完成，或者 Cancel 掉这些任务，等升级完成后再重新提交。
       3. 上述 2 个步骤完成后，再执行平滑升级。
