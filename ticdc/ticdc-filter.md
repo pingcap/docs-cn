@@ -78,10 +78,10 @@ ignore-update-new-value-expr = "gender = 'male' and age > 18" # 过滤掉新值 
 | drop view     | DDL  | |匹配 drop view event     |
 
 - `ignore-sql`：要过滤的 DDL 语句的正则表达式。该参数接受一个字符串数组，数组中可以配置多条正则表达式。该配置仅对 DDL 事件生效。
-- `ignore-delete-value-expr`：配置一个 SQL 表达式，对带有指定值的 DELETE 类型的 DML 事件生效, 表达式需要遵循默认的 SQL Mode。
-- `ignore-insert-value-expr`：配置一个 SQL 表达式，对带有指定值的 INSERT 类型的 DML 事件生效, 表达式需要遵循默认的 SQL Mode。
-- `ignore-update-old-value-expr`：配置一个 SQL 表达式，对带有指定旧值的 UPDATE 类型的 DML 事件生效, 表达式需要遵循默认的 SQL Mode。
-- `ignore-update-new-value-expr`：配置一个 SQL 表达式，对带有指定新值的 UPDATE 类型的 DML 事件生效, 表达式需要遵循默认的 SQL Mode。
+- `ignore-delete-value-expr`：配置一个遵循默认 SQL Mode 的 SQL 表达式，对带有指定值的 DELETE 类型的 DML 事件生效。
+- `ignore-insert-value-expr`：配置一个遵循默认 SQL Mode 的 SQL 表达式，对带有指定值的 INSERT 类型的 DML 事件生效。
+- `ignore-update-old-value-expr`：配置一个遵循默认 SQL Mode 的 SQL 表达式，对带有指定旧值的 UPDATE 类型的 DML 事件生效。
+- `ignore-update-new-value-expr`：配置一个遵循默认 SQL Mode 的 SQL 表达式，对带有指定新值的 UPDATE 类型的 DML 事件生效。
 
 > **注意：**
 >
