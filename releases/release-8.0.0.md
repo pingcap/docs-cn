@@ -127,6 +127,14 @@ TiDB 版本：8.0.0
     TiDB v8.0.0 版本之前，由于 Lightning 的物理导入模式会“重写历史”，导致 PITR 无法感知到被”重写的历史” ，因此无法对数据进行备份。用户需要在完成数据导入后执行一次全量备份。从 TiDB v8.0.0 版本起，PITR 通过对解析时间戳（ResolvedTs）和 `Ingest SST` 操作进行兼容性设计，使得通过 Lightning 的物理模式导入的数据可以被 PITR 正确的识别、备份和恢复。这项改进为客户提供了更加完善的数据保护和恢复方案。
 
     更多信息，请参考[用户文档](链接)。
+
+* "不可见索引 (invisible index)"能够在会话级设置可见 [#issue号](链接) @[hawkingrei](https://github.com/hawkingrei) **tw@aolin** <!--1401-->
+
+    "[不可见索引](/sql-statements/sql-statement-create-index.md#不可见索引)" 是不能够被优化器选择的索引。通常用在删除索引之前，如果不确定删除索引的操作是否会造成性能回退，可以暂时将该索引修改为不可见，万一需要恢复索引可立即修改回可见状态。
+    
+    在 v8.0.0 中，如果将新引入的会话级变量 [`tidb_opt_use_invisible_indexes`](/system-variables.md#) 设置为 `ON`，那么在该会话中执行的查询可以选择到"不可见索引"。利用这个能力，在添加新索引时，如果不确定索引的作用，则可以先将索引创建为不可见索引，通过修改会话变量后，在这个会话中对相关的查询语句进行测试，而不影响其他会话的行为。这个扩展改进能够提升性能调优的安全性，增强生产数据库的稳定性。
+
+    更多信息，请参考[用户文档](/sql-statements/sql-statement-create-index.md#不可见索引)。
     
 ### 可观测性
 
@@ -174,7 +182,7 @@ TiDB 版本：8.0.0
 
 | 变量名  | 修改类型（包括新增/修改/删除）    | 描述 |
 |--------|------------------------------|------|
-|        |                              |      |
+| [`tidb_opt_use_invisible_indexes`](/system-variables.md#) | 新增 | 控制会话中是否能够选择[不可见索引](/sql-statements/sql-statement-create-index.md#不可见索引)。当修改变量为`ON`时，针对该会话执行的查询，优化能够使用[不可见索引](/sql-statements/sql-statement-create-index.md#不可见索引)进行优化。|
 |        |                              |      |
 |        |                              |      |
 
