@@ -68,7 +68,7 @@ TiProxy 不适用于以下场景：
     使用 TiProxy 时，还需要给 TiDB 实例做如下配置：
 
     - 对于 TiUP v1.15.0 以下的版本，将 TiDB 实例的 [`security.session-token-signing-cert`](/tidb-configuration-file.md#session-token-signing-cert-从-v640-版本开始引入) 和 [`security.session-token-signing-key`](/tidb-configuration-file.md#session-token-signing-key-从-v640-版本开始引入) 配置为上述证书的路径，否则连接不能迁移。
-    - 配置 TiDB 实例的 [`graceful-wait-before-shutdown`](/tidb-configuration-file.md#graceful-wait-before-shutdown-从-v50-版本开始引入)，它的值要大于应用程序最长的事务的持续时间，否则 TiDB server 下线时客户端可能断连。事务的持续时间可参考 [TiDB 监控面板的事务指标](/grafana-tidb-dashboard#transaction) 。请参阅[使用限制](#使用限制)。
+    - 配置 TiDB 实例的 [`graceful-wait-before-shutdown`](/tidb-configuration-file.md#graceful-wait-before-shutdown-从-v50-版本开始引入)，它的值要大于应用程序最长的事务的持续时间，否则 TiDB server 下线时客户端可能断连。事务的持续时间可参考 [TiDB 监控面板的事务指标](/grafana-tidb-dashboard.md#transaction) 。请参阅[使用限制](#使用限制)。
 
     配置示例：
 
