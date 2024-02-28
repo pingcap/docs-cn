@@ -98,6 +98,16 @@ TiDB 版本：8.0.0
 
     更多信息，请参考[用户文档](链接)。
 
+* 新增支持处理大量数据的 DML 类型 [#16291](https://github.com/tikv/tikv/issues/16291) @[ekexium](https://github.com/ekexium) **tw@qiancai** <!--1694-->
+
+    在之前的 TiDB 版本中，所有的事务数据在提交之前，都保存在内存中。当处理大量数据时，事务所需的内存成为瓶颈，限制了 TiDB 可以处理的事务大小。TiDB 曾经发布了非事务 DML 功能，通过拆分 SQL 的方式尝试解决事务大小限制，但是功能存在较多限制，在实际使用时并不友好。
+    
+    在 v8.0.0 中，TiDB 新增支持处理大量数据的 DML 类型。这种 DML 类型在执行时，通过及时将数据写入 TiKV 的方式，避免将所有事务数据保存在内存中，从而实现对超过内存上限的大量数据的处理。该 DML 类型保证事务的完整性，并且使用和标准 DML 完全一致的语法。任何 TiDB 的合法 DML，都可以使用这种 DML 类型，以处理大数据量 DML 操作。
+    
+    支持处理大量数据的 DML 类型依赖于 [Pipelined DML](/ new doc path)，只支持在自动提交事务中使用，并且引入变量 `tidb_dml_type` 控制是否使用该 DML 类型。目前，该功能作为实验特性发布。
+
+    更多信息，请参考[用户文档](/... tidb_dml_type 变量)。
+
 ### 数据库管理
 
 * 功能标题 [#issue号](链接) @[贡献者 GitHub ID](链接) **tw@xxx** <!--1234-->
@@ -200,6 +210,9 @@ TiDB 版本：8.0.0
 
     - note [#issue](链接) @[贡献者 GitHub ID](链接)
     - note [#issue](链接) @[贡献者 GitHub ID](链接)
+    - 强化 TSO 校验检测，提升使用不当时集群 TSO 的鲁棒性 [#16545](https://github.com/tikv/tikv/issues/16545) @[cfzjywxk](https://github.com/cfzjywxk) **tw@qiancai** <!--1624-->
+    - 优化清理悲观锁逻辑，提升未提交事务处理性能 [#16158](https://github.com/tikv/tikv/issues/16158) @[cfzjywxk](https://github.com/cfzjywxk) **tw@qiancai** <!--1661-->
+    - 增加 TiKV 统一健康控制，降低单个 TiKV 节点异常对集群读性能的影响 [#16297](https://github.com/tikv/tikv/issues/16297) [#1104](https://github.com/tikv/client-go/issues/1104) [#1167](https://github.com/tikv/client-go/issues/1167) @[MyonKeminta](https://github.com/MyonKeminta) @[zyguan](https://github.com/zyguan) @[crazycs520](https://github.com/crazycs520) **tw@qiancai** <!--1707-->
 
 + PD
 
