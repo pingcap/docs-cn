@@ -8,8 +8,8 @@ summary: 介绍 TiProxy 的主要功能、安装与使用方法。
 > **警告：**
 >
 > TiProxy 目前为实验特性，不建议在生产环境中使用。该功能可能会在未事先通知的情况下发生变化或删除。如果发现 bug，请在 GitHub 上提 [issue](https://github.com/pingcap/tiproxy/issues) 反馈。
-TiProxy 是 PingCAP 的官方代理组件，它放置在客户端和 TiDB server 之间，为 TiDB 提供负载均衡、连接保持、服务发现等功能。
 
+TiProxy 是 PingCAP 的官方代理组件，它放置在客户端和 TiDB server 之间，为 TiDB 提供负载均衡、连接保持、服务发现等功能。
 
 TiProxy 是可选组件，你也可以使用第三方的代理组件，或者直接连接到 TiDB server。
 
