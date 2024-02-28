@@ -514,8 +514,6 @@ mysql> SELECT FROM_BASE64('MTIzNDU2');
 
 ### [`HEX()`](https://dev.mysql.com/doc/refman/8.0/en/string-functions.html#function_hex)
 
-返回一个十进制数或字符串值的 16 进制表示
-
 `HEX()` 函数用于将输入的参数转换为其十六进制值的字符串表示形式。该参数可以为字符串或数字。
 
 - 如果输入参数为字符串，`HEX(str)` 返回 `str` 的十六进制字符串表示。该函数将 `str` 中每个字符的每个字节转换为两个十六进制数字。例如，在 UTF-8 或 ASCII 字符集中，字符 `a` 的二进制表示为 `00111101`，十六进制表示为 `61`。
