@@ -7,7 +7,7 @@ summary: 了解 TiCDC cli 和 api 的鉴权方式。
 
 > **注意：**
 >
-> TiCDC 只支持在开启集群 tls 加密时进行客户端鉴权。
+> TiCDC 只支持在开启 tls 加密时进行客户端鉴权。
 
 ## 通过 mtls 进行客户端鉴权
 
