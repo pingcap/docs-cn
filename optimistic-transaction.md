@@ -79,7 +79,7 @@ aliases: ['/docs-cn/dev/optimistic-transaction/','/docs-cn/dev/reference/transac
 # 设置是否禁用自动重试，默认为 “on”，即不重试。
 tidb_disable_txn_auto_retry = OFF
 # 控制重试次数，默认为 “10”。只有自动重试启用时该参数才会生效。
-# 当 “tidb_retry_limit= 0” 时，也会禁用自动重试。
+# 当 “tidb_retry_limit = 0” 时，也会禁用自动重试。
 tidb_retry_limit = 10
 ```
 
