@@ -215,6 +215,8 @@ encoding-worker-num = 16
 flush-worker-num = 8
 # redo log 文件的压缩行为，可选值为 "" 和 "lz4"。默认值为 ""，表示不进行压缩。
 compression = ""
+# redo log 上传单个文件的并发数，默认值为 1，表示禁用并发。
+flush-concurrency = 1
 
 [integrity]
 # 是否开启单行数据的 Checksum 校验功能，默认值为 "none"，即不开启。可选值为 "none" 和 "correctness"。
