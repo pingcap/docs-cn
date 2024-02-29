@@ -1975,7 +1975,7 @@ mysql> explain select /*+ TIDB_INLJ(t1, t2) */ t1.* from t1, t2 where t2.code = 
 
 从示例二结果可知，开启 `dynamic` 模式后，带 IndexJoin 的计划在执行查询时被选上。
 
-目前，静态裁剪模式不支持执行计划缓存，无论是 Prepare 语句还是非 Prepare 语句。
+目前，静态裁剪模式不支持执行计划缓存，包括 Prepare 语句和非 Prepare 语句。
 
 #### 为动态裁剪模式更新所有分区表的统计信息
 
