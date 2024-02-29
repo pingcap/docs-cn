@@ -89,7 +89,7 @@ TiUP 会在 v1.14.0 版本自适应支持此功能，即无需特殊操作，直
 
     * 导入数据。
 
-    * 如果在平滑升级前，[TiDB 分布式执行框架](/tidb-distributed-execution-framework.md)已启用，并且在升级时有正在执行的 `ADD INDEX` 或者 `IMPORT INTO` 任务，为避免可能发生的问题，请按以下步骤操作：
+    * 执行分布式 `ADD INDEX` 或 `IMPORT INTO` 任务。如果在平滑升级前，[TiDB 分布式执行框架](/tidb-distributed-execution-framework.md)已启用，并且在升级时有正在执行的 `ADD INDEX` 或者 `IMPORT INTO` 任务，为避免可能发生的问题，请按以下步骤操作：
       1. 关闭 TiDB 分布式执行框架，即将 [`tidb_enable_dist_task`](/system-variables.md#tidb_enable_dist_task-从-v710-版本开始引入) 设置为 `OFF`（默认值）。
       2. 在升级开始前，确保所有分布式 `ADD INDEX` 和 `IMPORT INTO` 任务已完成，或者取消这些任务并等待升级完成后重新开始。
       3. 完成上述两步后，开始进行平滑升级。
