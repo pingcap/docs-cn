@@ -77,7 +77,11 @@ TiUP 会在 v1.14.0 版本自适应支持此功能，即无需特殊操作，直
 
 ### 用户操作限制
 
-* 在升级前，如果集群中存在正在处理的 canceling DDL job，即有正在被处理的 DDL job 被用户取消了，由于处于 canceling 状态的 job 无法被 `pause`，TiDB 会尝试重试。如果重试失败，会报错并退出升级。
+* 在升级前有如下两种限制：
+
+* 如果集群中存在正在处理的 canceling DDL job，即有正在被处理的 DDL job 被用户取消了，由于处于 canceling 状态的 job 无法被 `pause`，TiDB 会尝试重试。如果重试失败，会报错并退出升级。
+
+* 如果 [TiDB 分布式执行框架](/tidb-distributed-execution-framework.md)已启用，请关闭 TiDB 分布式执行框架（即将 [`tidb_enable_dist_task`](/system-variables.md#tidb_enable_dist_task-从-v710-版本开始引入) 设置为默认值 `OFF`），并确保所有分布式 `ADD INDEX` 和 `IMPORT INTO` 任务已完成，或者取消这些任务并等待升级完成后重新开始。否则，升级期间的 `ADD INDEX` 操作，可能导致数据索引不一致。
 
 * 在使用 TiUP 进行升级的场景下，由于 TiUP 升级存在超时时间，如果在升级之前集群中有大量 DDL（超过 300 条）正在处理队列中等待执行，则此次升级可能会失败。
 
@@ -88,11 +92,6 @@ TiUP 会在 v1.14.0 版本自适应支持此功能，即无需特殊操作，直
     * 执行手动取消 DDL job 操作：`ADMIN CANCEL DDL JOBS job_id [, job_id] ...;`。
 
     * 导入数据。
-
-    * 执行分布式 `ADD INDEX` 或 `IMPORT INTO` 任务。如果在平滑升级前，[TiDB 分布式执行框架](/tidb-distributed-execution-framework.md)已启用，并且在升级时有正在执行的 `ADD INDEX` 或者 `IMPORT INTO` 任务，为避免可能发生的问题，请按以下步骤操作：
-      1. 关闭 TiDB 分布式执行框架，即将 [`tidb_enable_dist_task`](/system-variables.md#tidb_enable_dist_task-从-v710-版本开始引入) 设置为 `OFF`（默认值）。
-      2. 在升级开始前，确保所有分布式 `ADD INDEX` 和 `IMPORT INTO` 任务已完成，或者取消这些任务并等待升级完成后重新开始。
-      3. 完成上述两步后，开始进行平滑升级。
 
 ### 工具使用限制
 
