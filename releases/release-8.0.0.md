@@ -136,7 +136,7 @@ TiDB 版本：8.0.0
 
     更多信息，请参考[用户文档](链接)。
 
-* "不可见索引 (invisible index)"能够在会话级设置可见 [#issue号](链接) @[hawkingrei](https://github.com/hawkingrei) **tw@aolin** <!--1401-->
+* "不可见索引 (invisible index)"能够在会话级设置可见 [#issue号](链接) @[hawkingrei](https://github.com/hawkingrei) **tw@Oreoxmt** <!--1401-->
 
     "[不可见索引](/sql-statements/sql-statement-create-index.md#不可见索引)" 是不能够被优化器选择的索引。通常用在删除索引之前，如果不确定删除索引的操作是否会造成性能回退，可以暂时将该索引修改为不可见，万一需要恢复索引可立即修改回可见状态。
     
@@ -220,6 +220,8 @@ TiDB 版本：8.0.0
     - note [#issue](链接) @[贡献者 GitHub ID](链接)
     - 优化 Sort 算子的数据落盘性能 [#47733](https://github.com/pingcap/tidb/issues/47733) @[xzhangxian1008](https://github.com/xzhangxian1008) **tw@qiancai** <!--1609-->
     - 优化数据落盘功能的退出机制，提升数据落盘时取消查询的性能 [#50511](https://github.com/pingcap/tidb/issues/50511) @[wshwsh12](https://github.com/wshwsh12) **tw@qiancai** <!--1635-->
+    - 用多个等值条件做表连接时，支持利用匹配到部分条件的索引做 Index Join [#47233](https://github.com/pingcap/tidb/issues/47233) @[winoros](https://github.com/winoros) **tw@Oreoxmt** <!--1601-->
+    - Index Join 允许被连接的一侧为聚合数据集 [#37068](https://github.com/pingcap/tidb/issues/37068) @[elsa0520](https://github.com/elsa0520) **tw@Oreoxmt** <!--1510-->
 
 
 + TiKV
