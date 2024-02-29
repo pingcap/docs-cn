@@ -23,6 +23,7 @@ DESC slow_query;
 | User                          | varchar(64)         | YES  |      | NULL    |       |
 | Host                          | varchar(64)         | YES  |      | NULL    |       |
 | Conn_ID                       | bigint(20) unsigned | YES  |      | NULL    |       |
+| Session_alias                 | varchar(64)         | YES  |      | NULL    |       |
 | Exec_retry_count              | bigint(20) unsigned | YES  |      | NULL    |       |
 | Exec_retry_time               | double              | YES  |      | NULL    |       |
 | Query_time                    | double              | YES  |      | NULL    |       |
@@ -87,13 +88,17 @@ DESC slow_query;
 | Plan_from_cache               | tinyint(1)          | YES  |      | NULL    |       |
 | Plan_from_binding             | tinyint(1)          | YES  |      | NULL    |       |
 | Has_more_results              | tinyint(1)          | YES  |      | NULL    |       |
+| Resource_group                | varchar(64)         | YES  |      | NULL    |       |
+| Request_unit_read             | double              | YES  |      | NULL    |       |
+| Request_unit_write            | double              | YES  |      | NULL    |       |
+| Time_queued_by_rc             | double              | YES  |      | NULL    |       |
 | Plan                          | longtext            | YES  |      | NULL    |       |
 | Plan_digest                   | varchar(128)        | YES  |      | NULL    |       |
 | Binary_plan                   | longtext            | YES  |      | NULL    |       |
 | Prev_stmt                     | longtext            | YES  |      | NULL    |       |
 | Query                         | longtext            | YES  |      | NULL    |       |
 +-------------------------------+---------------------+------+------+---------+-------+
-74 rows in set (0.001 sec)
+79 rows in set (0.00 sec)
 ```
 
 ## CLUSTER_SLOW_QUERY table
@@ -116,6 +121,7 @@ DESC CLUSTER_SLOW_QUERY;
 | User                          | varchar(64)         | YES  |      | NULL    |       |
 | Host                          | varchar(64)         | YES  |      | NULL    |       |
 | Conn_ID                       | bigint(20) unsigned | YES  |      | NULL    |       |
+| Session_alias                 | varchar(64)         | YES  |      | NULL    |       |
 | Exec_retry_count              | bigint(20) unsigned | YES  |      | NULL    |       |
 | Exec_retry_time               | double              | YES  |      | NULL    |       |
 | Query_time                    | double              | YES  |      | NULL    |       |
@@ -180,13 +186,17 @@ DESC CLUSTER_SLOW_QUERY;
 | Plan_from_cache               | tinyint(1)          | YES  |      | NULL    |       |
 | Plan_from_binding             | tinyint(1)          | YES  |      | NULL    |       |
 | Has_more_results              | tinyint(1)          | YES  |      | NULL    |       |
+| Resource_group                | varchar(64)         | YES  |      | NULL    |       |
+| Request_unit_read             | double              | YES  |      | NULL    |       |
+| Request_unit_write            | double              | YES  |      | NULL    |       |
+| Time_queued_by_rc             | double              | YES  |      | NULL    |       |
 | Plan                          | longtext            | YES  |      | NULL    |       |
 | Plan_digest                   | varchar(128)        | YES  |      | NULL    |       |
 | Binary_plan                   | longtext            | YES  |      | NULL    |       |
 | Prev_stmt                     | longtext            | YES  |      | NULL    |       |
 | Query                         | longtext            | YES  |      | NULL    |       |
 +-------------------------------+---------------------+------+------+---------+-------+
-75 rows in set (0.001 sec)
+80 rows in set (0.00 sec)
 ```
 
 查询集群系统表时，TiDB 也会将相关计算下推给其他节点执行，而不是把所有节点的数据都取回来，可以查看执行计划，如下：
