@@ -11,7 +11,7 @@ summary: TiProxy 的性能测试报告、与 HAProxy 的性能对比。
 
 - TiProxy 的 QPS 上限受工作负载类型的影响。在 Sysbench 的基本工作负载、同等 CPU 使用率的情况下，TiProxy 的 QPS 比 HAProxy 低约 25%
 - TiProxy 能承载的 TiDB server 实例数量根据工作负载类型而变化。在 Sysbench 的基本工作负载下，一台 TiProxy 能承载 5 至 12 台同机型的 TiDB server 实例
-- 查询结果集的行数非常影响 TiProxy 的 QPS，且影响程度与 HAProxy 相同
+- 查询结果集的行数对 TiProxy 的 QPS 有显著影响，且影响程度与 HAProxy 相同
 - TiProxy 的性能随 vCPU 的数量接近线性增长，因此增加 vCPU 的数量可以有效提高 QPS 上限
 - 长连接的数量、短连接的创建频率对 TiProxy 的 QPS 影响很小
 
@@ -253,9 +253,9 @@ sysbench oltp_point_select \
 
 ### 测试方案
 
-该测试的目的是验证客户端使用长连接时，大量的空闲连接对 QPS 的影响很小。该测试分别创建 5000、10000、15000 个空闲的长连接，再执行 sysbench。
+该测试的目的是验证客户端使用长连接时，大量空闲连接对 QPS 的影响很小。该测试分别创建 5000、10000、15000 个空闲的长连接，然后执行 `sysbench`。
 
-测试中 TiProxy 的 `conn-buffer-size` 使用默认值：
+测试中 TiProxy 的 `conn-buffer-size` 配置保持默认值：
 
 ```yaml
 proxy.conn-buffer-size: 32768
