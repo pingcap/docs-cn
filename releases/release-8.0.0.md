@@ -67,9 +67,14 @@ TiDB 版本：8.0.0
 
     更多信息，请参考[用户文档](/statistics.md#自动更新)。
 
-* 支持缓存含有分区表的执行计划 [#49161](https://github.com/pingcap/tidb/pull/49161) @[mjonss](https://github.com/mjonss) **tw@hfxsd** <!--1622-->
+* 解除执行计划缓存的部分限制 [#49161](https://github.com/pingcap/tidb/pull/49161) @[mjonss](https://github.com/mjonss) @[qw4990](https://github.com/qw4990) **tw@hfxsd** <!--1622/1585-->
 
-    TiDB 支持[执行计划缓存](/sql-prepared-plan-cache.md)，它能够有效减低交易类业务系统的处理时延，是提升性能的重要手段。在 v8.0.0 中，TiDB 移除了含有分区表的执行计划无法被缓存的限制，扩展了执行计划缓存的使用场景。如果系统中含有分区表，这个增强能够提升整体性能。
+    TiDB 支持[执行计划缓存](/sql-prepared-plan-cache.md)，它能够有效减低交易类业务系统的处理时延，是提升性能的重要手段。在 v8.0.0 中，TiDB 解除了执行计划缓存的几个限制：
+    
+    * 含有[分区表](/partitioned-table.md)的执行计划能够被缓存
+    * 含有[生成列](/generated-columns.md)的执行计划能够被缓存
+    
+    当执行计划中含有分区表、生成列、或者依赖生成列的对象(比如[多值索引](/choose-index.md))时，执行计划仍旧可以被缓存。这些增强扩展了执行计划缓存的使用场景，提升了复杂场景下数据库的整体性能。
 
     更多信息，请参考[用户文档](/sql-prepared-plan-cache.md)。
 
