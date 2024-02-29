@@ -45,6 +45,7 @@ target-database:                # 下游数据库实例配置
     sql_mode: "ANSI_QUOTES,NO_ZERO_IN_DATE,NO_ZERO_DATE" # 从 DM v2.0.0 起，如果配置文件中没有出现该项，DM 会自动从下游 TiDB 中获得适合用于 "sql_mode" 的值。手动配置该项具有更高优先级
     tidb_skip_utf8_check: 1                              # 从 DM v2.0.0 起，如果配置文件中没有出现该项，DM 会自动从下游 TiDB 中获得适合用于 "tidb_skip_utf8_check" 的值。手动配置该项具有更高优先级
     tidb_constraint_check_in_place: 0
+    sql_require_primary_key: OFF   # 在 session 级别控制表是否必须有主键。DM 任务创建期间，会在 TiDB 创建几个元数据表，其中有些表是无主键表。如果开启该参数，这些无主键的元数据表就无法被创建出来，导致 DM 任务创建失败。因此，需要将该参数设置为 `OFF`。
   security:                       # 下游 TiDB TLS 相关配置
     ssl-ca: "/path/to/ca.pem"
     ssl-cert: "/path/to/cert.pem"

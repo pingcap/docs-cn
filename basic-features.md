@@ -70,7 +70,7 @@ summary: 了解 TiDB 的功能概览。
 | `INSERT ON DUPLICATE KEY UPDATE` |  Y  | Y | Y | Y | Y | Y | Y | Y | Y | Y |
 | `LOAD DATA INFILE` |  Y  | Y | Y | Y | Y | Y | Y | Y | Y | Y |
 | `SELECT INTO OUTFILE` |  Y  | Y | Y | Y | Y | Y | Y | Y | Y | Y |
-| `INNER JOIN`, LEFT\|RIGHT [OUTER] JOIN |  Y  | Y | Y | Y | Y | Y | Y | Y | Y | Y |
+| `INNER JOIN`, <code>LEFT\|RIGHT [OUTER] JOIN</code> |  Y  | Y | Y | Y | Y | Y | Y | Y | Y | Y |
 | `UNION`，`UNION ALL` |  Y  | Y | Y | Y | Y | Y | Y | Y | Y | Y |
 | [`EXCEPT` 和 `INTERSECT` 运算符](/functions-and-operators/set-operators.md) |  Y  | Y | Y | Y | Y | Y | Y | Y | Y | N |
 | `GROUP BY`，`ORDER BY` |  Y  | Y | Y | Y | Y | Y | Y | Y | Y | Y |
@@ -174,7 +174,7 @@ summary: 了解 TiDB 的功能概览。
 | [收集部分列的统计信息](/statistics.md#收集部分列的统计信息) |  E   | E | E | E | E | N | N | N | N | N |
 | [限制统计信息的内存使用量](/statistics.md#统计信息收集的内存限制) |  E   | E | E | E | N | N | N | N | N | N |
 | [随机采样约 10000 行数据来快速构建统计信息](/system-variables.md#tidb_enable_fast_analyze) | 已废弃 | E | E | E | E | E | E | E | E | E |
-| [锁定统计信息](/statistics.md#锁定统计信息) |  E   | E | E | N | N | N | N | N | N | N |
+| [锁定统计信息](/statistics.md#锁定统计信息) |  Y   | E | E | N | N | N | N | N | N | N |
 | [轻量级统计信息初始化](/statistics.md#统计信息的加载) |  Y   | E | N | N | N | N | N | N | N | N |
 | [显示统计信息收集的进度](/sql-statements/sql-statement-show-analyze-status.md) |  Y   | N | N | N | N | N | N | N | N | N |
 
@@ -247,7 +247,7 @@ summary: 了解 TiDB 的功能概览。
 | [Runaway Queries 自动管理](/tidb-resource-control.md#管理资源消耗超出预期的查询-runaway-queries) | E | N | N | N | N | N | N | N | N | N |
 | [后台任务资源管控](/tidb-resource-control.md#管理后台任务) | E | N | N | N | N | N | N | N | N | N |
 | [TiFlash 存算分离架构与 S3 支持](/tiflash/tiflash-disaggregated-and-s3.md) | Y | E | N | N | N | N | N | N | N | N |
-| [选择执行分布式框架任务的 TiDB 节点](/system-variables.md#tidb_service_scope-从-v740-版本开始引入) | Y | N | N | N | N | N | N | N | N | N |
+| [选择执行分布式执行框架任务的 TiDB 节点](/system-variables.md#tidb_service_scope-从-v740-版本开始引入) | Y | N | N | N | N | N | N | N | N | N |
 
 [^1]: TiDB 误将 latin1 处理为 utf8 的子集。见 [TiDB #18955](https://github.com/pingcap/tidb/issues/18955)。
 

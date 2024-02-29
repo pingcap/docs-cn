@@ -22,7 +22,6 @@ TiDB Lightning 支持从以下位置读取：
 - 本地
 - [Amazon S3](/external-storage-uri.md#amazon-s3-uri-格式)
 - [Google GCS](/external-storage-uri.md#gcs-uri-格式)
-- [Azure Blob Storage](/external-storage-uri.md#azure-blob-storage-uri-格式)
 
 ## TiDB Lightning 整体架构
 

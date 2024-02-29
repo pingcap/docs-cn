@@ -62,7 +62,7 @@ case-sensitive = false
 # 注意：该参数只有当下游为 TiDB 时，才会生效。
 # sync-point-retention = "1h"
 
-# 设置解析 DDL 时使用的 SQL 模式，多个模式之间用逗号分隔
+# 从 v6.5.6、v7.1.3、v7.5.0 起引入，用于设置解析 DDL 时使用的 SQL 模式，多个模式之间用逗号分隔
 # 默认值和 TiDB 的默认 SQL 模式一致
 # sql-mode = "ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION"
 
@@ -104,12 +104,12 @@ rules = ['*.*', '!test.*']
 enable-table-across-nodes = false
 # enable-table-across-nodes 开启后，有两种分配模式
 # 1. 按 Region 的数量分配，即每个 CDC 节点处理 region 的个数基本相等。当某个表 Region 个数大于 `region-threshold` 值时，会将表分配到多个节点处理。`region-threshold` 默认值为 10000。
-# region-threshold = 10000 
+# region-threshold = 10000
 # 2. 按写入的流量分配，即每个 CDC 节点处理 region 总修改行数基本相当。只有当表中每分钟修改行数超过 `write-key-threshold` 值时，该表才会生效。
 # write-key-threshold = 30000
 # 注意：
 # `write-key-threshold` 参数默认值为 0，代表默认不会采用流量的分配模式。
-# 两种方式配置一种即可生效，当 `region-threshold` 和 `write-key-threshold` 同时配置时，TiCDC 将优先采用按流量分配的模式，即 `write-key-threshold`。      
+# 两种方式配置一种即可生效，当 `region-threshold` 和 `write-key-threshold` 同时配置时，TiCDC 将优先采用按流量分配的模式，即 `write-key-threshold`。
 
 
 [sink]
@@ -169,7 +169,7 @@ delete-only-output-handle-key-columns = false
 # 注意：该参数只有当下游为消息队列，并且使用 Open Protocol 或 Canal-JSON 时，才会生效。
 # only-output-updated-columns = false
 
-############ 以下是存储服务类型 sink 配置 ############ 
+############ 以下是存储服务类型 sink 配置 ############
 # 以下三个配置项仅在同步到存储服务的 sink 中使用，在 MQ 和 MySQL 类 sink 中无需设置。
 # 换行符，用来分隔两个数据变更事件。默认值为空，表示使用 "\r\n" 作为换行符。
 # terminator = ''
@@ -207,8 +207,14 @@ max-log-size = 64
 flush-interval = 2000
 # redo log 使用存储服务的 URI。默认值为空。
 storage = ""
-# 是否将 redo log 存储到文件中。默认值为 false。
+# 是否将 redo log 存储到本地文件中。默认值为 false。
 use-file-backend = false
+# 控制 redo 模块中编解码 worker 的数量，默认值为 16。
+encoding-worker-num = 16
+# 控制 redo 模块中上传文件 worker 的数量，默认值为 8。
+flush-worker-num = 8
+# redo log 文件的压缩行为，可选值为 "" 和 "lz4"。默认值为 ""，表示不进行压缩。
+compression = ""
 # redo log 上传单个文件的并发数，默认值为 1，表示禁用并发。
 flush-concurrency = 1
 
@@ -238,11 +244,11 @@ sasl-oauth-audience="kafka"
 # 以下配置仅在选用 avro 作为协议，并且使用 AWS Glue Schema Registry 时需要配置
 # 请参考 "同步数据到 Kafka" 这一文档中 "使用 AWS Glue Schema Registry" 这一节内容：https://docs.pingcap.com/zh/tidb/dev/ticdc-sink-to-kafka#ticdc-集成-aws-glue-schema-registry
 # [sink.kafka-config.glue-schema-registry-config]
-# region="us-west-1"  
+# region="us-west-1"
 # registry-name="ticdc-test"
 # access-key="xxxx"
 # secret-access-key="xxxx"
-# tokne="xxxx"
+# token="xxxx"
 
 # 以下参数仅在下游为 Pulsar 时生效。
 [sink.pulsar-config]
@@ -285,4 +291,18 @@ batching-max-messages=1000
 batching-max-publish-delay=10
 # Pulsar Producer 发送消息的超时时间，默认 30 秒。
 send-timeout=30
+
+[sink.cloud-storage-config]
+# 向下游存储服务保存数据变更记录的并发度，默认值为 16。
+worker-count = 16
+# 向下游存储服务保存数据变更记录的间隔，默认值为 "2s"。
+flush-interval = "2s"
+# 单个数据变更文件的字节数超过 `file-size` 时将其保存至存储服务中，默认值为 67108864，即 64 MiB。
+file-size = 67108864
+# 文件保留的时长，仅在 date-separator 配置为 day 时生效，默认值为 0，表示禁用文件清理。假设 `file-expiration-days = 1` 且 `file-cleanup-cron-spec = "0 0 0 * * *"`，TiCDC 将在每天 00:00:00 时刻清理已保存超过 24 小时的文件。例如，2023/12/02 00:00:00 将清理 2023/12/01 之前（注意：不包括 2023/12/01）的文件。
+file-expiration-days = 0
+# 定时清理任务的运行周期，与 crontab 配置兼容，格式为 `<Second> <Minute> <Hour> <Day of the month> <Month> <Day of the week (Optional)>`，默认值为 "0 0 2 * * *"，表示每天凌晨两点执行清理任务
+file-cleanup-cron-spec = "0 0 2 * * *"
+# 上传单个文件的并发数，默认值为 1，表示禁用并发。
+flush-concurrency = 1
 ```

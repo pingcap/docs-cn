@@ -204,6 +204,10 @@ TiDB 支持改变[全局](/system-variables.md#tidb_force_priority)或单个语�
 - `LOW_PRIORITY`：该语句为低优先级语句，TiDB 在执行阶段会降低这条语句的优先级
 - `DELAYED`：该语句为正常优先级语句，TiDB 不强制改变这条语句的优先级，与 `tidb_force_priority` 设置为 `NO_PRIORITY` 相同
 
+> **注意：**
+>
+> TiDB 从 v6.6.0 版本开始支持[使用资源管控 (Resource Control) 实现资源隔离](/tidb-resource-control.md)功能。该功能可以将不同优先级的语句放在不同的资源组中执行，并为这些资源组分配不同的配额和优先级，可以达到更好的资源管控效果。在开启资源管控功能后，语句的调度主要受资源组的控制，`PRIORITY` 将不再生效。建议在支持资源管控的版本优先使用资源管控功能。
+
 以上两种参数可以结合 TiDB 的 DML 语言进行使用，使用方法举例如下：
 
 1. 通过在数据库中写 SQL 的方式来调整优先级：
@@ -218,13 +222,11 @@ TiDB 支持改变[全局](/system-variables.md#tidb_force_priority)或单个语�
 
 2. 全表扫会自动调整为低优先级，[`ANALYZE`](/sql-statements/sql-statement-analyze-table.md) 也是默认低优先级。
 
-## 在 TiDB 中 auto analyze 的触发策略是怎样的？
+## 在 TiDB 中 `auto analyze` 的触发策略是怎样的？
 
-触发策略：如果一张新表达到 1000 条记录，并且在 1 分钟内没有写入，会自动触发。
+当一张新表达到 1000 条记录，且表的（修改数/当前总行数）比例大于 `tidb_auto_analyze_ratio` 的时候，会自动触发 [`ANALYZE`](/sql-statements/sql-statement-analyze-table.md) 语句。`tidb_auto_analyze_ratio` 的默认值为 `0.5`，即默认开启触发 `auto analyze`。为了保险起见，在开启 `auto analyze` 的时候，`tidb_auto_analyze_ratio` 的最小值为 `0.3`。但是该变量值不能大于等于 `pseudo-estimate-ratio`（默认值为 `0.8`），否则会有一段时间使用 pseudo 统计信息，建议设置值为 `0.5`。
 
-当表的（修改数/当前总行数）比例大于 `tidb_auto_analyze_ratio` 的时候，会自动触发 `analyze` 语句。`tidb_auto_analyze_ratio` 的默认值为 0.5，即默认开启触发 auto analyze。为了保险起见，在开启 auto analyze 的时候，`tidb_auto_analyze_ratio` 的最小值为 0.3。但是该变量值不能大于等于 `pseudo-estimate-ratio`（默认值为 0.8），否则会有一段时间使用 pseudo 统计信息，建议设置值为 0.5。
-
-你可以用系统变量 [`tidb_enable_auto_analyze`](/system-variables.md#tidb_enable_auto_analyze-从-v610-版本开始引入) 关闭 auto analyze。
+你可以用系统变量 [`tidb_enable_auto_analyze`](/system-variables.md#tidb_enable_auto_analyze-从-v610-版本开始引入) 关闭 `auto analyze`。
 
 ## 可以使用 Optimizer Hints 控制优化器行为吗？
 

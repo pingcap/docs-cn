@@ -46,7 +46,7 @@ SELECT * FROM variables_info ORDER BY variable_name LIMIT 3;
 `VARIABLES_INFO` 表中列的含义如下：
 
 * `VARIABLE_NAME`：系统变量名称。
-* `VARIABLE_SCOPE`：系统变量的作用域。`SESSION` 表示当前 session 可见；`INSTANCE` 表示当前 TiDB 实例可见；`GLOBAL` 表示集群内可见。
+* `VARIABLE_SCOPE`：系统变量的作用域。`SESSION` 表示当前 session 可见；`INSTANCE` 表示当前 TiDB 实例可见；`GLOBAL` 表示集群内可见；`NONE` 表示全局只读。
 * `DEFAULT_VALUE`：系统变量的默认值。
 * `CURRENT_VALUE`：系统变量的当前值。如果应用范围中包含 `SESSION`，则显示当前 session 的值。
 * `MIN_VALUE`：数值类型的系统变量允许的最小值。如果变量值为非数值类型，则为 NULL。

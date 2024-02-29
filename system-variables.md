@@ -255,7 +255,7 @@ SET GLOBAL tidb_distsql_scan_concurrency = 10;
 - 类型：整数型
 - 默认值：`1`
 - 范围：`[1, 65535]`
-- 控制 `AUTO_INCREMENT` 自增值字段的自增步长。该变量常与 `auto_increment_offset` 一起使用。
+- 控制 `AUTO_INCREMENT` 自增值字段的自增步长和 `AUTO_RANDOM` ID 的分配规则。该变量常与 [`auto_increment_offset`](#auto_increment_offset) 一起使用。
 
 ### `auto_increment_offset`
 
@@ -265,7 +265,7 @@ SET GLOBAL tidb_distsql_scan_concurrency = 10;
 - 类型：整数型
 - 默认值：`1`
 - 范围：`[1, 65535]`
-- 控制 `AUTO_INCREMENT` 自增值字段的初始值。该变量常与 `auto_increment_increment` 一起使用。示例如下：
+- 控制 `AUTO_INCREMENT` 自增值字段的初始值和 `AUTO_RANDOM` ID 的分配规则。该变量常与 [`auto_increment_increment`](#auto_increment_increment) 一起使用。示例如下：
 
 ```sql
 mysql> CREATE TABLE t1 (a int not null primary key auto_increment);
@@ -662,6 +662,7 @@ mysql> SHOW GLOBAL VARIABLES LIKE 'max_prepared_stmt_count';
 - 取值范围：`[1024, 1073741824]`
 - 该变量取值应为 1024 的整数倍。若取值无法被 1024 整除，则会提示 warning 并向下取整。例如设置为 1025 时，则 TiDB 中的实际取值为 1024。
 - 服务器端和客户端在一次传送数据包的过程中所允许最大的数据包大小，单位为字节。
+- 在 `SESSION` 作用域下，该变量为只读变量。
 - 该变量的行为与 MySQL 兼容。
 
 ### `mpp_exchange_compression_mode` <span class="version-mark">从 v6.6.0 版本开始引入</span>
@@ -823,6 +824,7 @@ mysql> SHOW GLOBAL VARIABLES LIKE 'max_prepared_stmt_count';
 - 这个变量用于控制表是否必须有主键。启用该变量后，如果在没有主键的情况下创建或修改表，将返回错误。
 - 该功能基于 MySQL 8.0 的特性 [`sql_require_primary_key`](https://dev.mysql.com/doc/refman/8.0/en/server-system-variables.html#sysvar_sql_require_primary_key)。
 - 强烈推荐在使用 TiCDC 时启用该变量，因为同步数据变更至 MySQL sink 时要求表必须有主键。
+- 如果启用了该变量，且使用了 TiDB Data Migration (DM) 来迁移数据，建议在 [DM 任务配置文件](/dm/task-configuration-file-full.md#完整配置文件示例)里的 `session` 中添加该系统变量 `sql_require_primary_key` 并设置为 `OFF`，否则会导致 DM 任务创建失败。
 
 ### `sql_select_limit` <span class="version-mark">从 v4.0.2 版本开始引入</span>
 
@@ -872,6 +874,18 @@ mysql> SHOW GLOBAL VARIABLES LIKE 'max_prepared_stmt_count';
 - 取值范围：`[0, 9223372036854775807]`
 - 单位：字节
 - 这个变量用于控制当 [`replica-read`](#tidb_replica_read-从-v40-版本开始引入) 设置为 `closest-adaptive` 时，优先将读请求发送至 TiDB server 所在区域副本的阈值。当读请求预估的返回结果的大小超过此阈值时，TiDB 会将读请求优先发送至同一可用区的副本，否则会发送至 leader 副本。
+
+### `tidb_allow_tiflash_cop` <span class="version-mark">从 v7.3.0 版本开始引入</span>
+
+- 作用域：SESSION | GLOBAL
+- 是否持久化到集群：是
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：否
+- 类型：布尔型
+- 默认值：`OFF`
+- 当 TiDB 给 TiFlash 下推计算任务时，有三种方法（或协议）可供选择：Cop、BatchCop 和 MPP。相比于 Cop 和 BatchCop，MPP 协议更加成熟，提供更好的任务和资源管理。因此，更推荐使用 MPP 协议。
+
+    * `0` 或 `OFF`：优化器仅生成使用 TiFlash MPP 协议的计划。
+    * `1` 或 `ON`：优化器根据成本估算从 Cop、BatchCop 和 MPP 协议中选择一个用于生成执行计划。
 
 ### `tidb_allow_batch_cop` <span class="version-mark">从 v4.0 版本开始引入</span>
 
@@ -1383,10 +1397,6 @@ mysql> SELECT job_info FROM mysql.analyze_jobs ORDER BY end_time DESC LIMIT 1;
 - TiDB v7.1.0 引入了快速加索引功能的检查点机制，即使 TiDB owner 因故障重启或者切换，也能够通过自动定期保存的检查点恢复部分进度。
 - 要验证已经完成的 `ADD INDEX` 操作是否使用了添加索引加速功能，可以执行 [`ADMIN SHOW DDL JOBS`](/sql-statements/sql-statement-admin-show-ddl.md#admin-show-ddl-jobs) 语句查看 `JOB_TYPE` 一列中是否含有 `ingest` 字样。
 
-> **警告：**
->
-> 目前，PITR 恢复会额外处理日志备份时间段内通过索引加速功能创建的索引，以达到兼容效果。详细内容请参考[索引加速功能为什么与 PITR 功能不兼容](/faq/backup-and-restore-faq.md#索引加速功能为什么与-pitr-功能不兼容)。
-
 > **注意：**
 >
 > * 要使用索引加速功能，你需要提供一个可写且具有足够空余空间的临时路径 [`temp-dir`](/tidb-configuration-file.md#temp-dir-从-v630-版本开始引入)。如果 `temp-dir` 无法使用，TiDB 会退回到非加速的索引创建方式。建议将 `temp-dir` 挂载在 SSD 磁盘上。
@@ -1399,7 +1409,7 @@ mysql> SELECT job_info FROM mysql.analyze_jobs ORDER BY end_time DESC LIMIT 1;
 - 是否持久化到集群：是
 - 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：否
 - 默认值：`OFF`
-- 这个变量用于控制是否开启 [TiDB 后端任务分布式框架](/tidb-distributed-execution-framework.md)。开启分布式框架后，DDL 和 Import 等后端任务将会由集群中多个 TiDB 节点共同完成。
+- 这个变量用于控制是否开启 [TiDB 分布式执行框架](/tidb-distributed-execution-framework.md)。开启分布式执行框架后，DDL 和 Import 等将会由集群中多个 TiDB 节点共同完成。
 - 从 TiDB v7.1.0 开始，支持分布式执行分区表的 [`ADD INDEX`](/sql-statements/sql-statement-add-index.md)。
 - 从 TiDB v7.2.0 开始，支持分布式导入任务 [`IMPORT INTO`](/sql-statements/sql-statement-import-into.md)。
 - 该变量由 `tidb_ddl_distribute_reorg` 改名而来。
@@ -1414,7 +1424,7 @@ mysql> SELECT job_info FROM mysql.analyze_jobs ORDER BY end_time DESC LIMIT 1;
 - 是否持久化到集群：是
 - 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：否
 - 默认值：`""`
-- 该变量用来指定[全局排序](/tidb-global-sort.md)中使用的 Amazon S3 云存储的 URI。在开启 [TiDB 后端任务分布式框架](/tidb-distributed-execution-framework.md)后，你可以配置 URI 指向具有访问存储所需权限的云存储路径，以此来实现全局排序的功能。更多详情，参考 [Amazon S3 的 URI 格式](/external-storage-uri.md#amazon-s3-uri-格式)。
+- 该变量用来指定[全局排序](/tidb-global-sort.md)中使用的 Amazon S3 云存储的 URI。在开启 [TiDB 分布式执行框架](/tidb-distributed-execution-framework.md)后，你可以配置 URI 指向具有访问存储所需权限的云存储路径，以此来实现全局排序的功能。更多详情，参考 [Amazon S3 的 URI 格式](/external-storage-uri.md#amazon-s3-uri-格式)。
 - 以下语句支持全局排序功能：
     - [`ADD INDEX`](/sql-statements/sql-statement-add-index.md) 语句。
     - 用于将数据导入本地部署的 TiDB 的 [`IMPORT INTO`](/sql-statements/sql-statement-import-into.md) 语句。对于 TiDB Cloud，`IMPORT INTO` 语句不适用全局排序。
@@ -2440,6 +2450,10 @@ v5.0 后，用户仍可以单独修改以上系统变量（会有废弃警告）
 - 这个变量用于改变 TiDB server 上执行的语句的默认优先级。例如，你可以通过设置该变量来确保正在执行 OLAP 查询的用户优先级低于正在执行 OLTP 查询的用户。
 - 默认值 `NO_PRIORITY` 表示不强制改变执行语句的优先级。
 
+> **注意：**
+>
+> TiDB 从 v6.6.0 版本开始支持[使用资源管控 (Resource Control) 实现资源隔离](/tidb-resource-control.md)功能。该功能可以将不同优先级的语句放在不同的资源组中执行，并为这些资源组分配不同的配额和优先级，可以达到更好的资源管控效果。在开启资源管控功能后，语句的调度主要受资源组的控制，`PRIORITY` 将不再生效。建议在支持资源管控的版本优先使用资源管控功能。
+
 ### `tidb_gc_concurrency` <span class="version-mark">从 v5.0 版本开始引入</span>
 
 - 作用域：GLOBAL
@@ -2769,7 +2783,7 @@ v5.0 后，用户仍可以单独修改以上系统变量（会有废弃警告）
 - 默认值：`32`
 - 范围：`[1, 32]`
 - 单位：行
-- 这个变量用来设置执行过程中初始 chunk 的行数。默认值是 32，可设置的范围是 1～32。
+- 这个变量用来设置执行过程中初始 chunk 的行数。默认值是 32，可设置的范围是 1～32。chunk 行数直接影响单个查询所需的内存。可以按照查询中所有的列的总宽度和 chunk 行数来粗略估算单个 chunk 所需内存，并结合执行器的并发数来粗略估算单个查询所需内存总量。建议单个 chunk 内存总量不要超过 16 MiB。
 
 ### `tidb_isolation_read_engines` <span class="version-mark">从 v4.0 版本开始引入</span>
 
@@ -2798,6 +2812,7 @@ v5.0 后，用户仍可以单独修改以上系统变量（会有废弃警告）
     - `start_ts`：事务开始的时间戳。
     - `for_update_ts`：先前执行的 DML 语句的 `for_update_ts` 信息。这是 TiDB 用于测试的内部术语。通常，你可以忽略此信息。
     - `error`：错误消息（如果有）。
+    - `ru_consumption`：执行语句的 [RU](/tidb-resource-control.md#什么是-request-unit-ru) 消耗。
 
 ### `tidb_last_txn_info` <span class="version-mark">从 v4.0.9 版本开始引入</span>
 
@@ -2933,7 +2948,7 @@ v5.0 后，用户仍可以单独修改以上系统变量（会有废弃警告）
 - 默认值：`1024`
 - 范围：`[32, 2147483647]`
 - 单位：行
-- 这个变量用来设置执行过程中一个 chunk 最大的行数，设置过大可能引起缓存局部性的问题。
+- 这个变量用来设置执行过程中一个 chunk 最大的行数，设置过大可能引起缓存局部性的问题，建议该变量不要超过 65536。chunk 行数直接影响单个查询所需的内存。可以按照查询中所有的列的总宽度和 chunk 行数来粗略估算单个 chunk 所需内存，并结合执行器的并发数来粗略估算单个查询所需内存总量。建议单个 chunk 内存总量不要超过 16 MiB。当查询涉及数据量较大、单个 chunk 无法处理所有数据时，TiDB 会进行多次处理，每次处理时将 chunk 行数翻倍，从 [`tidb_init_chunk_size`](#tidb_init_chunk_size) 开始，直到 chunk 行数达到最大值 `tidb_max_chunk_size`。
 
 ### `tidb_max_delta_schema_count`
 
@@ -2965,7 +2980,7 @@ v5.0 后，用户仍可以单独修改以上系统变量（会有废弃警告）
 - 默认值：`-1`
 - 范围：`[-1, 256]`
 - 单位：线程
-- TiFlash 中 request 执行的最大并发度。默认值为 `-1`，表示该系统变量无效。`0` 表示由 TiFlash 系统自动设置该值。
+- TiFlash 中 request 执行的最大并发度。默认值为 `-1`，表示该系统变量无效，此时最大并发度取决于 TiFlash 配置项 `profiles.default.max_threads` 的设置。`0` 表示由 TiFlash 系统自动设置该值。
 
 ### `tidb_mem_oom_action` <span class="version-mark">从 v6.1.0 版本开始引入</span>
 
@@ -3325,7 +3340,7 @@ mysql> desc select count(distinct a) from test.t;
 - 默认值：`ON`
 - 这个变量用来控制优化器是否开启交叉估算。
 
-### `tidb_opt_enable_hash_join` <span class="version-mark">从 v7.4.0 版本开始引入</span>
+### `tidb_opt_enable_hash_join` <span class="version-mark">从 v6.5.6、v7.1.2 和 v7.4.0 版本开始引入</span>
 
 - 作用域：SESSION | GLOBAL
 - 是否持久化到集群：是
@@ -3367,7 +3382,7 @@ mysql> desc select count(distinct a) from test.t;
 - 默认值：`OFF`
 - 该变量控制非递归的[公共表表达式 (CTE)](/sql-statements/sql-statement-with.md) 是否可以在 TiFlash MPP 执行。默认情况下，未开启该变量时，CTE 在 TiDB 执行，相较于开启该功能，执行性能有较大差距。
 
-### `tidb_opt_fix_control` <span class="version-mark">从 v7.1.0 版本开始引入</span>
+### `tidb_opt_fix_control` <span class="version-mark">从 v6.5.3 和 v7.1.0 版本开始引入</span>
 
 - 作用域：SESSION | GLOBAL
 - 是否持久化到集群：是
@@ -4199,12 +4214,13 @@ EXPLAIN FORMAT='brief' SELECT COUNT(1) FROM t WHERE a = 1 AND b IS NOT NULL;
 - 类型：字符串
 - 默认值：""
 - 可选值："" 或 `background`
-- 该变量是一个实例级别的变量，用于控制 [TiDB 后端任务分布式框架](/tidb-distributed-execution-framework.md) 下各 TiDB 节点的服务范围。当设置 TiDB 节点的 `tidb_service_scope` 为 `background` 时，后端任务分布式框架将调度该节点执行后端任务（如 [`ADD INDEX`](/sql-statements/sql-statement-add-index.md) 和 [`IMPORT INTO`](/sql-statements/sql-statement-import-into.md)）。
+- 该变量是一个实例级别的变量，用于控制 [TiDB 分布式执行框架](/tidb-distributed-execution-framework.md) 下各 TiDB 节点的服务范围。当设置 TiDB 节点的 `tidb_service_scope` 为 `background` 时，分布式执行框架将调度该节点执行任务（如 [`ADD INDEX`](/sql-statements/sql-statement-add-index.md) 和 [`IMPORT INTO`](/sql-statements/sql-statement-import-into.md)）。
 
 > **注意：**
 >
-> - 如果集群内所有节点均未配置 `tidb_service_scope`，所有节点均会执行分布式框架的任务。如果你担心对存量业务有性能影响，可以对其中几个 TiDB 节点设置为 `background`，只有这些节点才会执行分布式框架的任务。
-> - 对于新扩容的节点，如果有运行中的分布式框架的任务还未调度到各个 TiDB 节点，则这个扩容的节点也会执行分布式框架的任务。如果您希望避免占用扩容节点的资源，你需要手动设置所有或者部分存量 TiDB 节点的 `tidb_service_scope` 为 `background`，保证配置为 `background` 的节点执行分布式框架的任务。
+> - 如果集群内所有节点均未配置 `tidb_service_scope`，所有节点均会执行分布式执行框架的任务。如果你担心对存量业务有性能影响，可以对其中几个 TiDB 节点设置为 `background`，只有这些节点才会执行分布式执行框架的任务。
+> - 在包含多个 TiDB 节点的集群中，强烈建议选择两个或更多的 TiDB 节点将该变量设置为 `background`。若仅在单个 TiDB 节点上设置此变量，当该节点发生重启或故障时，任务会被重新调度到其它未将该变量设置为 `background` 的 TiDB 节点，因此会对这些 TiDB 节点的业务产生影响。
+> - 对于新扩容的节点，如果有运行中的分布式执行框架的任务还未调度到各个 TiDB 节点，则这个扩容的节点也会执行分布式执行框架的任务。如果希望避免占用扩容节点的资源，你需要手动设置所有或者部分存量 TiDB 节点的 `tidb_service_scope` 为 `background`，保证配置为 `background` 的节点执行分布式执行框架的任务。
 
 ### `tidb_session_alias` <span class="version-mark">从 v7.4.0 版本开始引入</span>
 
@@ -4452,7 +4468,7 @@ Query OK, 0 rows affected, 1 warning (0.00 sec)
 - 类型：整数型
 - 默认值：`4096`
 - 范围：`[0, 2147483647]`
-- 这个变量控制 [statement summary tables](/statement-summary-tables.md) 显示的 SQL 字符串长度。
+- 这个变量用来控制 [Statement Summary Tables](/statement-summary-tables.md)、[`SLOW_QUERY`](/information-schema/information-schema-slow-query.md) 表和 [TiDB Dashboard](/dashboard/dashboard-intro.md) 中显示的 SQL 字符串长度。
 
 ### `tidb_stmt_summary_max_stmt_count` <span class="version-mark">从 v4.0 版本开始引入</span>
 
@@ -5043,7 +5059,7 @@ Query OK, 0 rows affected, 1 warning (0.00 sec)
 - 作用域：NONE
 - 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：否
 - 默认值：(string)
-- 这个变量的值是 TiDB 版本号的其他信息，例如 'TiDB Server (Apache License 2.0) Community Edition, MySQL 5.7 compatible'。
+- 这个变量的值是 TiDB 版本号的其他信息，例如 'TiDB Server (Apache License 2.0) Community Edition, MySQL 8.0 compatible'。
 
 ### `version_compile_os`
 

@@ -172,6 +172,7 @@ v7.3.0 引入了以下主要功能。[功能详情](#功能详情)中列出的�
 | 变量名 | 修改类型 | 描述 |
 |---|----|------|
 | [`tidb_opt_enable_mpp_shared_cte_execution`](/system-variables.md#tidb_opt_enable_mpp_shared_cte_execution-从-v720-版本开始引入) | 修改 | 该变量从 v7.3.0 开始生效，用于控制非递归的公共表表达式 (CTE) 是否可以在 TiFlash MPP 执行。 |
+| [`tidb_allow_tiflash_cop`](/system-variables.md#tidb_allow_tiflash_cop-从-v730-版本开始引入) | 新增 | 用于在 TiDB 给 TiFlash 下推计算任务时选择生成执行计划的协议。 |
 | [`tidb_lock_unchanged_keys`](/system-variables.md#tidb_lock_unchanged_keys-从-v711-和-v730-版本开始引入) | 新增 | 用于控制部分场景下，对于事务中涉及但并未修改值的 key 是否进行上锁。 |
 | [`tidb_opt_enable_non_eval_scalar_subquery`](/system-variables.md#tidb_opt_enable_non_eval_scalar_subquery-从-v730-版本开始引入) | 新增 | 这个变量用于控制 `EXPLAIN` 语句是否禁止提前执行可以在优化阶段展开的常量子查询。 |
 | [`tidb_skip_missing_partition_stats`](/system-variables.md#tidb_skip_missing_partition_stats-从-v730-版本开始引入) | 新增 | 这个变量用于控制当分区统计信息缺失时生成 GlobalStats 的行为。 |

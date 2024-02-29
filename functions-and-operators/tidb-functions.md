@@ -32,8 +32,6 @@ summary: 学习使用 TiDB 特有的函数。
 
 以下示例中，表 `t1` 有一个隐藏的 `rowid`，该 `rowid` 由 TiDB 生成。语句中使用了 `TIDB_DECODE_KEY` 函数。结果显示，隐藏的 `rowid` 被解码后并输出，这是典型的非聚簇主键结果。
 
-{{< copyable "sql" >}}
-
 ```sql
 SELECT START_KEY, TIDB_DECODE_KEY(START_KEY) FROM information_schema.tikv_region_status WHERE table_name='t1' AND REGION_ID=2\G
 ```
@@ -47,10 +45,8 @@ TIDB_DECODE_KEY(START_KEY): {"_tidb_rowid":1958897,"table_id":"59"}
 
 以下示例中，表 `t2` 有一个复合聚簇主键。由 JSON 输出可知，输出结果的 `handle` 项中包含了主键部分两列的信息，即两列的名称和对应的值。
 
-{{< copyable "sql" >}}
-
 ```sql
-show create table t2\G
+SHOW CREATE TABLE t2\G
 ```
 
 ```sql
@@ -65,10 +61,8 @@ Create Table: CREATE TABLE `t2` (
 1 row in set (0.001 sec)
 ```
 
-{{< copyable "sql" >}}
-
 ```sql
-select * from information_schema.tikv_region_status where table_name='t2' limit 1\G
+SELECT * FROM information_schema.tikv_region_status WHERE table_name='t2' LIMIT 1\G
 ```
 
 ```sql
@@ -93,10 +87,8 @@ REPLICATIONSTATUS_STATEID: NULL
 1 row in set (0.005 sec)
 ```
 
-{{< copyable "sql" >}}
-
 ```sql
-select tidb_decode_key('7480000000000000FF3E5F720400000000FF0000000601633430FF3338646232FF2D64FF3531632D3131FF65FF622D386337352DFFFF3830653635303138FFFF61396265000000FF00FB000000000000F9');
+SELECT tidb_decode_key('7480000000000000FF3E5F720400000000FF0000000601633430FF3338646232FF2D64FF3531632D3131FF65FF622D386337352DFFFF3830653635303138FFFF61396265000000FF00FB000000000000F9');
 ```
 
 ```sql
@@ -107,6 +99,36 @@ select tidb_decode_key('7480000000000000FF3E5F720400000000FF0000000601633430FF33
 +---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
 1 row in set (0.001 sec)
 ```
+
+以下示例中，表中的第一个 Region 以一个仅包含 `table_id` 的 key 开头，表中的最后一个 Region 以 `table_id + 1` 结束。中间的 Region 有着更长的 key，包含 `_tidb_rowid` 或 `handle`。
+
+```sql
+SELECT
+  TABLE_NAME,
+  TIDB_DECODE_KEY(START_KEY),
+  TIDB_DECODE_KEY(END_KEY)
+FROM
+  information_schema.TIKV_REGION_STATUS
+WHERE
+  TABLE_NAME='stock'
+  AND IS_INDEX=0
+ORDER BY
+  START_KEY;
+```
+
+```sql
++------------+-----------------------------------------------------------+-----------------------------------------------------------+
+| TABLE_NAME | TIDB_DECODE_KEY(START_KEY)                                | TIDB_DECODE_KEY(END_KEY)                                  |
++------------+-----------------------------------------------------------+-----------------------------------------------------------+
+| stock      | {"table_id":143}                                          | {"handle":{"s_i_id":"32485","s_w_id":"3"},"table_id":143} |
+| stock      | {"handle":{"s_i_id":"32485","s_w_id":"3"},"table_id":143} | {"handle":{"s_i_id":"64964","s_w_id":"5"},"table_id":143} |
+| stock      | {"handle":{"s_i_id":"64964","s_w_id":"5"},"table_id":143} | {"handle":{"s_i_id":"97451","s_w_id":"7"},"table_id":143} |
+| stock      | {"handle":{"s_i_id":"97451","s_w_id":"7"},"table_id":143} | {"table_id":145}                                          |
++------------+-----------------------------------------------------------+-----------------------------------------------------------+
+4 rows in set (0.031 sec)
+```
+
+`TIDB_DECODE_KEY` 在解码成功时返回有效的 JSON，在解码失败时返回传入的参数值。
 
 ### TIDB_DECODE_PLAN
 
@@ -259,8 +281,6 @@ select tidb_decode_sql_digests(@digests, 10);
 
     以下示例说明如何使用 `TIDB_SHARD` 函数计算 `12373743746` 的 SHARD 值。
 
-    {{< copyable "sql" >}}
-
     ```sql
     SELECT TIDB_SHARD(12373743746);
     ```
@@ -277,8 +297,6 @@ select tidb_decode_sql_digests(@digests, 10);
     ```
 
 - 使用 `TIDB_SHARD` 函数创建 SHARD INDEX
-
-    {{< copyable "sql" >}}
 
     ```sql
     CREATE TABLE test(id INT PRIMARY KEY CLUSTERED, a INT, b INT, UNIQUE KEY uk((tidb_shard(a)), a));

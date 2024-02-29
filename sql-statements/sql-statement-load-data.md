@@ -116,9 +116,10 @@ TiDB 中的 `LOAD DATA` 语句语法上兼容 MySQL（除字符集选项被解�
 
 > **注意：**
 >
-> - 在 TiDB v4.0.0 之前的版本中，`LOAD DATA` 语句每 20000 行进行一次提交。
-> - 从 TiDB v4.0.0 开始一直到 TiDB v6.6.0 的版本，TiDB 默认在一个事务中提交所有行。
-> - 从 TiDB v4.0.0 及以前版本升级后，可能出现 `ERROR 8004 (HY000) at line 1: Transaction is too large, size: 100000058` 错误。要解决该问题，建议调大 `tidb.toml` 文件中的 [`txn-total-size-limit`](/tidb-configuration-file.md#txn-total-size-limit) 值。如果无法增加此限制，还可以将 [`tidb_dml_batch_size`](/system-variables.md#tidb_dml_batch_size) 的值设置为 `20000` 来恢复升级前的行为。注意自 v7.0.0 起，`tidb_dml_batch_size` 对 `LOAD DATA` 语句不再生效。
+> - 在 TiDB v4.0.0 之前的版本中，`LOAD DATA` 语句每 20000 行进行一次提交。该行数不支持更改。
+> - 从 TiDB v4.0.0 开始一直到 TiDB v6.6.0 的版本，TiDB 默认在一个事务中提交所有行。如需 `LOAD DATA` 语句按照每固定的行数进行一次提交，可以设置 [`tidb_dml_batch_size`](/system-variables.md#tidb_dml_batch_size) 为所需的行数。
+> - 从 TiDB v7.0.0 起，`tidb_dml_batch_size` 对 `LOAD DATA` 语句不再生效，TiDB 将在一个事务中提交所有行。
+> - 从 TiDB v4.0.0 及以前版本升级后，可能出现 `ERROR 8004 (HY000) at line 1: Transaction is too large, size: 100000058` 错误。要解决该问题，建议调大 `tidb.toml` 文件中的 [`txn-total-size-limit`](/tidb-configuration-file.md#txn-total-size-limit) 值。
 > - 无论以多少行为一个事务提交，`LOAD DATA` 都不会被显式事务中的 [`ROLLBACK`](/sql-statements/sql-statement-rollback.md) 语句回滚。
 > - `LOAD DATA` 语句始终以乐观事务模式执行，不受 TiDB 事务模式设置的影响。
 

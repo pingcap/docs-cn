@@ -13,10 +13,16 @@ TiDB 版本：7.1.2
 
 ## 兼容性变更
 
+- 在安全增强模式 (SEM) 下禁止设置 [`require_secure_transport`](https://docs.pingcap.com/zh/tidb/v7.1/system-variables#require_secure_transport-从-v610-版本开始引入) 为 `ON`，避免用户无法连接的问题 [#47665](https://github.com/pingcap/tidb/issues/47665) @[tiancaiamao](https://github.com/tiancaiamao)
+- 默认关闭[平滑升级](/smooth-upgrade-tidb.md)功能，需要通过发送 `/upgrade/start` 和 `upgrade/finish` HTTP 请求开启此功能 [#47172](https://github.com/pingcap/tidb/issues/47172) @[zimulala](https://github.com/zimulala)
 - 引入系统变量 [`tidb_opt_enable_hash_join`](https://docs.pingcap.com/zh/tidb/v7.1/system-variables#tidb_opt_enable_hash_join-从-v712-版本开始引入) 控制是否选择表的哈希连接 [#46695](https://github.com/pingcap/tidb/issues/46695) @[coderplay](https://github.com/coderplay)
 - 默认关闭 RocksDB 的周期性 compaction，使 TiKV RocksDB 的默认行为和 v6.5.0 之前的版本保持一致，避免在升级之后集中产生大量 compaction 影响系统的性能。同时，TiKV 新增 [`rocksdb.[defaultcf|writecf|lockcf].periodic-compaction-seconds`](https://docs.pingcap.com/zh/tidb/v7.1/tikv-configuration-file#periodic-compaction-seconds-从-v712-版本开始引入) 和 [`rocksdb.[defaultcf|writecf|lockcf].ttl`](https://docs.pingcap.com/zh/tidb/v7.1/tikv-configuration-file#ttl-从-v712-版本开始引入) 配置项，支持手动配置 RocksDB 的周期性 compaction [#15355](https://github.com/tikv/tikv/issues/15355) @[LykxSassinator](https://github.com/LykxSassinator)
 - 新增 TiCDC 配置项 [`sink.csv.binary-encoding-method`](/ticdc/ticdc-changefeed-config.md#ticdc-changefeed-配置文件说明)，控制 CSV 协议中二进制类型数据的编码方式，默认值为 `'base64'` [#9373](https://github.com/pingcap/tiflow/issues/9373) @[CharlesCheung96](https://github.com/CharlesCheung96)
 - 新增 TiCDC 配置项 [`large-message-handle-option`](/ticdc/ticdc-sink-to-kafka.md#处理超过-kafka-topic-限制的消息)。默认为空，即消息大小超过 Kafka Topic 的限制后，同步任务失败。设置为 "handle-key-only" 时，如果消息超过大小，只发送 handle key 以减少消息的大小；如果依旧超过大小，则同步任务失败 [#9680](https://github.com/pingcap/tiflow/issues/9680) @[3AceShowHand](https://github.com/3AceShowHand)
+
+### 行为变更
+
+- 对于包含多条变更的事务，如果 Update 事件的主键或者非空唯一索引的列值发生改变，TiCDC 会将该其拆分为 Delete 和 Insert 两条事件，并确保将所有事件有序，以保证 Delete 事件在 Insert 事件之前。更多信息，请参考[用户文档](/ticdc/ticdc-behavior-change.md#含有多条-update-变更的事务拆分)。
 
 ## 改进提升
 
@@ -24,7 +30,6 @@ TiDB 版本：7.1.2
 
     - 新增部分优化器提示，包括 [`NO_MERGE_JOIN()`](/optimizer-hints.md#no_merge_joint1_name--tl_name-)、[`NO_INDEX_JOIN()`](/optimizer-hints.md#no_index_joint1_name--tl_name-)、[`NO_INDEX_MERGE_JOIN()`](/optimizer-hints.md#no_index_merge_joint1_name--tl_name-)、[`NO_HASH_JOIN()`](/optimizer-hints.md#no_hash_joint1_name--tl_name-)、[`NO_INDEX_HASH_JOIN()`](/optimizer-hints.md#no_index_hash_joint1_name--tl_name-) [#45520](https://github.com/pingcap/tidb/issues/45520) @[qw4990](https://github.com/qw4990)
     - 添加 coprocessor 相关的 request source 信息 [#46514](https://github.com/pingcap/tidb/issues/46514) @[you06](https://github.com/you06)
-    - 新增 `/upgrade/start` 和 `upgrade/finish` API，用于标记集群 TiDB 节点开始升级状态和结束升级状态 [#47172](https://github.com/pingcap/tidb/issues/47172) @[zimulala](https://github.com/zimulala)
 
 + TiKV
 

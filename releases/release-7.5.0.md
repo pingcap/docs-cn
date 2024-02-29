@@ -9,7 +9,7 @@ summary: 了解 TiDB 7.5.0 版本的新功能、兼容性变更、改进提升�
 
 TiDB 版本：7.5.0
 
-试用链接：[快速体验](https://docs.pingcap.com/zh/tidb/v7.5/quick-start-with-tidb) | [生产部署](https://docs.pingcap.com/zh/tidb/v7.5/production-deployment-using-tiup) | [下载离线包](https://cn.pingcap.com/product-community/)
+试用链接：[快速体验](https://docs.pingcap.com/zh/tidb/v7.5/quick-start-with-tidb) | [生产部署](https://docs.pingcap.com/zh/tidb/v7.5/production-deployment-using-tiup) | [下载离线包](https://cn.pingcap.com/product-community/?version=v7.5.0#version-list)
 
 TiDB 7.5.0 为长期支持版本 (Long-Term Support Release, LTS)。
 
@@ -32,7 +32,7 @@ TiDB 7.5.0 为长期支持版本 (Long-Term Support Release, LTS)。
   <tr>
     <td rowspan="3">稳定性与高可用</td>
     <td>优化<a href="https://docs.pingcap.com/zh/tidb/v7.5/tidb-global-sort" target="_blank">全局排序</a>（实验特性，从 v7.4.0 开始引入）</td>
-    <td>TiDB v7.2.0 中引入了<a href="https://docs.pingcap.com/zh/tidb/v7.5/tidb-distributed-execution-framework" target="_blank">后端任务分布式并行执行框架</a>。在 v7.4.0 中，TiDB 以该框架为基础，引入全局排序，消除了数据 reorg 任务期间临时无序数据导致的不必要的 I/O、CPU 和内存峰值。全局排序利用外部对象存储（目前为 Amazon S3）来存储系统作业期间的中间文件，提高灵活性并降低成本。<code>ADD INDEX</code> 和 <code>IMPORT INTO</code> 等操作将更快速灵活、稳定可靠，且运行成本较低。</td>
+    <td>TiDB v7.1.0 中引入了<a href="https://docs.pingcap.com/zh/tidb/v7.5/tidb-distributed-execution-framework" target="_blank">分布式执行框架</a>。在 v7.4.0 中，TiDB 以该框架为基础，引入全局排序，消除了数据 reorg 任务期间临时无序数据导致的不必要的 I/O、CPU 和内存峰值。全局排序利用外部对象存储（目前为 Amazon S3）来存储系统作业期间的中间文件，提高灵活性并降低成本。<code>ADD INDEX</code> 和 <code>IMPORT INTO</code> 等操作将更快速灵活、稳定可靠，且运行成本较低。</td>
   </tr>
   <tr>
     <td>资源管控支持<a href="https://docs.pingcap.com/zh/tidb/v7.5/tidb-resource-control#管理后台任务" target="_blank">自动管理后台任务</a>（实验特性，从 v7.4.0 开始引入）</td>
@@ -73,15 +73,15 @@ TiDB 7.5.0 为长期支持版本 (Long-Term Support Release, LTS)。
 
 * 支持设置 TiDB 节点的服务范围，用于选择适用的 TiDB 节点分布式执行 `ADD INDEX` 或 `IMPORT INTO` 任务 (GA) [#46258](https://github.com/pingcap/tidb/issues/46258) @[ywqzzy](https://github.com/ywqzzy)
 
-    在资源密集型集群中，并行执行 `ADD INDEX` 或 `IMPORT INTO` 任务可能占用大量 TiDB 节点的资源，从而导致集群性能下降。为了避免对已有业务造成性能影响，v7.4.0 以实验特性引入了变量 [`tidb_service_scope`](/system-variables.md#tidb_service_scope-从-v740-版本开始引入)，用于控制 [TiDB 后端任务分布式框架](/tidb-distributed-execution-framework.md)下各 TiDB 节点的服务范围。你可以从现有 TiDB 节点中选择几个节点，或者对新增 TiDB 节点设置服务范围，所有分布式执行的 `ADD INDEX` 和 `IMPORT INTO` 的任务只会运行在这些节点。在 v7.5.0 中，该功能正式 GA。
+    在资源密集型集群中，并行执行 `ADD INDEX` 或 `IMPORT INTO` 任务可能占用大量 TiDB 节点的资源，从而导致集群性能下降。为了避免对已有业务造成性能影响，v7.4.0 以实验特性引入了变量 [`tidb_service_scope`](/system-variables.md#tidb_service_scope-从-v740-版本开始引入)，用于控制 [TiDB 分布式执行框架](/tidb-distributed-execution-framework.md)下各 TiDB 节点的服务范围。你可以从现有 TiDB 节点中选择几个节点，或者对新增 TiDB 节点设置服务范围，所有分布式执行的 `ADD INDEX` 和 `IMPORT INTO` 的任务只会运行在这些节点。在 v7.5.0 中，该功能正式 GA。
 
     更多信息，请参考[用户文档](/system-variables.md#tidb_service_scope-从-v740-版本开始引入)。
 
 ### 性能
 
-* TiDB 后端任务分布式并行执行框架成为正式功能 (GA)，提升并行执行的 `ADD INDEX` 或 `IMPORT INTO` 任务的性能和稳定性 [#45719](https://github.com/pingcap/tidb/issues/45719) @[wjhuang2016](https://github.com/wjhuang2016)
+* TiDB 分布式执行框架成为正式功能 (GA)，提升并行执行的 `ADD INDEX` 或 `IMPORT INTO` 任务的性能和稳定性 [#45719](https://github.com/pingcap/tidb/issues/45719) @[wjhuang2016](https://github.com/wjhuang2016)
 
-    在 v6.6.0 中引入的 TiDB 后端任务分布式并行执行框架成为正式功能 (GA)。TiDB v7.1.0 之前的版本中，在同一时间只有一个 TiDB 节点能够执行 DDL 任务。从 v7.1.0 开始，在分布式并行执行框架下，多个 TiDB 节点可以并行执行同一项 DDL 任务。从 v7.2.0 开始，分布式并行执行框架支持多个 TiDB 节点并行执行同一个 `IMPORT INTO` 任务，从而更好地利用 TiDB 集群的资源，大幅提升 DDL 和 `IMPORT INTO` 任务的性能。此外，你还可以通过增加 TiDB 节点来线性提升 DDL 和 `IMPORT INTO` 任务的性能。
+    在 v7.1.0 中引入的 TiDB 分布式执行框架成为正式功能 (GA)。TiDB v7.1.0 之前的版本中，在同一时间只有一个 TiDB 节点能够执行 DDL 任务。从 v7.1.0 开始，在分布式并行执行框架下，多个 TiDB 节点可以并行执行同一项 DDL 任务。从 v7.2.0 开始，分布式并行执行框架支持多个 TiDB 节点并行执行同一个 `IMPORT INTO` 任务，从而更好地利用 TiDB 集群的资源，大幅提升 DDL 和 `IMPORT INTO` 任务的性能。此外，你还可以通过增加 TiDB 节点来线性提升 DDL 和 `IMPORT INTO` 任务的性能。
 
     如果要使用分布式并行执行框架，只需将 [`tidb_enable_dist_task`](/system-variables.md#tidb_enable_dist_task-从-v710-版本开始引入) 的值设置为 `ON`：
 
@@ -171,6 +171,7 @@ TiDB 7.5.0 为长期支持版本 (Long-Term Support Release, LTS)。
 
 | 配置文件 | 配置项 | 修改类型 | 描述 |
 | -------- | -------- | -------- | -------- |
+| TiDB | [`tikv-client.copr-req-timeout`](/tidb-configuration-file.md#copr-req-timeout-从-v750-版本开始引入) | 新增 | 设置单个 Coprocessor request 的超时时间。|
 | TiKV | [`raftstore.region-compact-min-redundant-rows`](/tikv-configuration-file.md#region-compact-min-redundant-rows-从-v710-版本开始引入) | 修改 | 触发 RocksDB compaction 需要的冗余的 MVCC 数据行数。从 v7.5.0 开始，该配置项对 `"raft-kv"` 存储引擎生效。|
 | TiKV | [`raftstore.region-compact-redundant-rows-percent`](/tikv-configuration-file.md#region-compact-redundant-rows-percent-从-v710-版本开始引入) | 修改 | 触发 RocksDB compaction 需要的冗余的 MVCC 数据行所占比例。从 v7.5.0 开始，该配置项对 `"raft-kv"` 存储引擎生效。 |
 | TiKV | [`raftstore.evict-cache-on-memory-ratio`](/tikv-configuration-file.md#evict-cache-on-memory-ratio-从-v750-版本开始引入) | 新增 | 当 TiKV 的内存使用超过系统可用内存的 90%，并且 Raft 缓存条目占用的内存超过已使用内存的 `evict-cache-on-memory-ratio` 比例时，TiKV 会逐出 Raft 缓存条目。 |

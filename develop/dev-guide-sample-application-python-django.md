@@ -52,7 +52,7 @@ pip install -r requirements.txt
 
 `django-tidb` 是一个为 Django 提供的 TiDB 适配器，它解决了 TiDB 与 Django 之间的兼容性问题。
 
-安装 `django-tidb` 时，请选择与你的 Django 版本匹配的版本。例如，如果你使用的是 `django==4.2.*`，则应安装 `django-tidb==4.2.*`，其中 minor 版本号不需要完全相同。建议使用最新的 minor 版本。
+安装 `django-tidb` 时，请选择与你的 Django 版本匹配的版本。例如，如果你使用的是 `django==4.2.*`，则应安装 `django-tidb>=4.2.0,<4.3.0`，其中 minor 版本号不需要完全相同。建议使用最新的 minor 版本。
 
 更多信息，请参考 [django-tidb 仓库](https://github.com/pingcap/django-tidb)。
 
@@ -71,6 +71,7 @@ pip install -r requirements.txt
 3. 确认对话框中的配置和你的运行环境一致。
 
     - **Endpoint Type** 为 `Public`。
+    - **Branch** 选择 `main`。
     - **Connect With** 选择 `General`。
     - **Operating System** 为你的运行环境。
 
@@ -78,11 +79,11 @@ pip install -r requirements.txt
     >
     > 如果你在 Windows Subsystem for Linux (WSL) 中运行，请切换为对应的 Linux 发行版。
 
-4. 如果你还没有设置密码，点击 **Create password** 生成一个随机密码。
+4. 如果你还没有设置密码，点击 **Generate Password** 生成一个随机密码。
 
     > **Tip:**
     >
-    > 如果你之前已经生成过密码，可以直接使用原密码，或点击 **Reset password** 重新生成密码。
+    > 如果你之前已经生成过密码，可以直接使用原密码，或点击 **Reset Password** 重新生成密码。
 
 5. 运行以下命令，将 `.env.example` 复制并重命名为 `.env`：
 
@@ -93,7 +94,7 @@ pip install -r requirements.txt
 6. 复制并粘贴对应连接字符串至 `.env` 中。示例结果如下：
 
     ```dotenv
-    TIDB_HOST='{host}'  # e.g. gateway01.ap-northeast-1.prod.aws.tidbcloud.com
+    TIDB_HOST='{host}'  # e.g. xxxxxx.aws.tidbcloud.com
     TIDB_PORT='4000'
     TIDB_USER='{user}'  # e.g. xxxxxx.root
     TIDB_PASSWORD='{password}'
@@ -126,9 +127,9 @@ pip install -r requirements.txt
 5. 复制并粘贴对应的连接字符串至 `.env` 中。示例结果如下：
 
     ```dotenv
-    TIDB_HOST='{host}'  # e.g. tidb.xxxx.clusters.tidb-cloud.com
+    TIDB_HOST='{host}'  # e.g. xxxxxx.aws.tidbcloud.com
     TIDB_PORT='4000'
-    TIDB_USER='{user}'  # e.g. root
+    TIDB_USER='{user}'  # e.g. xxxxxx.root
     TIDB_PASSWORD='{password}'
     TIDB_DB_NAME='test'
     CA_PATH='{your-downloaded-ca-path}'
@@ -174,6 +175,31 @@ pip install -r requirements.txt
 python manage.py migrate
 ```
 
+```shell
+Operations to perform:
+  Apply all migrations: admin, auth, contenttypes, sample_project, sessions
+Running migrations:
+  Applying contenttypes.0001_initial... OK
+  Applying auth.0001_initial... OK
+  Applying admin.0001_initial... OK
+  Applying admin.0002_logentry_remove_auto_add... OK
+  Applying admin.0003_logentry_add_action_flag_choices... OK
+  Applying contenttypes.0002_remove_content_type_name... OK
+  Applying auth.0002_alter_permission_name_max_length... OK
+  Applying auth.0003_alter_user_email_max_length... OK
+  Applying auth.0004_alter_user_username_opts... OK
+  Applying auth.0005_alter_user_last_login_null... OK
+  Applying auth.0006_require_contenttypes_0002... OK
+  Applying auth.0007_alter_validators_add_error_messages... OK
+  Applying auth.0008_alter_user_username_max_length... OK
+  Applying auth.0009_alter_user_last_name_max_length... OK
+  Applying auth.0010_alter_group_name_max_length... OK
+  Applying auth.0011_update_proxy_permissions... OK
+  Applying auth.0012_alter_user_first_name_max_length... OK
+  Applying sample_project.0001_initial... OK
+  Applying sessions.0001_initial... OK
+```
+
 ### 第 5 步：运行示例应用程序
 
 1. 在开发模式下运行示例应用程序：
@@ -211,18 +237,18 @@ python manage.py migrate
 DATABASES = {
     "default": {
         "ENGINE": "django_tidb",
-        "HOST": ${tidb_host},
-        "PORT": ${tidb_port},
-        "USER": ${tidb_user},
-        "PASSWORD": ${tidb_password},
-        "NAME": ${tidb_db_name},
+        "HOST": '${tidb_host}',
+        "PORT": '${tidb_port}',
+        "USER": '${tidb_user}',
+        "PASSWORD": '${tidb_password}',
+        "NAME": '${tidb_db_name}',
         "OPTIONS": {
             "charset": "utf8mb4",
         },
     }
 }
 
-TIDB_CA_PATH = ${ca_path}
+TIDB_CA_PATH = '${ca_path}'
 if TIDB_CA_PATH:
     DATABASES["default"]["OPTIONS"]["ssl_mode"] = "VERIFY_IDENTITY"
     DATABASES["default"]["OPTIONS"]["ssl"] = {

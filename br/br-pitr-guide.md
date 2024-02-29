@@ -22,7 +22,7 @@ summary: 了解 TiDB 的日志备份与 PITR 功能使用。
 
 ```shell
 tiup br log start --task-name=pitr --pd "${PD_IP}:2379" \
---storage 's3://backup-101/logbackup?access-key=${access-key}&secret-access-key=${secret-access-key}"'
+--storage 's3://backup-101/logbackup?access-key=${access-key}&secret-access-key=${secret-access-key}'
 ```
 
 日志备份任务启动后，会在 TiDB 集群后台持续地运行，直到你手动将其暂停。在这过程中，TiDB 变更数据将以小批量的形式定期备份到指定存储中。如果你需要查询日志备份任务当前状态，执行如下命令：
@@ -51,7 +51,7 @@ checkpoint[global]: 2022-05-13 11:31:47.2 +0800; gap=4m53s
 
 ```shell
 tiup br backup full --pd "${PD_IP}:2379" \
---storage 's3://backup-101/snapshot-${date}?access-key=${access-key}&secret-access-key=${secret-access-key}"'
+--storage 's3://backup-101/snapshot-${date}?access-key=${access-key}&secret-access-key=${secret-access-key}'
 ```
 
 ## 进行 PITR
@@ -60,8 +60,8 @@ tiup br backup full --pd "${PD_IP}:2379" \
 
 ```shell
 br restore point --pd "${PD_IP}:2379" \
---storage='s3://backup-101/logbackup?access-key=${access-key}&secret-access-key=${secret-access-key}"' \
---full-backup-storage='s3://backup-101/snapshot-${date}?access-key=${access-key}&secret-access-key=${secret-access-key}"' \
+--storage='s3://backup-101/logbackup?access-key=${access-key}&secret-access-key=${secret-access-key}' \
+--full-backup-storage='s3://backup-101/snapshot-${date}?access-key=${access-key}&secret-access-key=${secret-access-key}' \
 --restored-ts '2022-05-15 18:00:00+0800'
 ```
 
@@ -93,7 +93,7 @@ Restore KV Files <--------------------------------------------------------------
 3. 清理该快照备份 `FULL_BACKUP_TS` 之前的日志备份数据。
 
     ```shell
-    tiup br log truncate --until=${FULL_BACKUP_TS} --storage='s3://backup-101/logbackup?access-key=${access-key}&secret-access-key=${secret-access-key}"'
+    tiup br log truncate --until=${FULL_BACKUP_TS} --storage='s3://backup-101/logbackup?access-key=${access-key}&secret-access-key=${secret-access-key}'
     ```
 
 4. 清理该快照备份 `FULL_BACKUP_TS` 之前的快照备份数据。
@@ -102,9 +102,7 @@ Restore KV Files <--------------------------------------------------------------
     rm -rf s3://backup-101/snapshot-${date}
     ```
 
-## PITR 的性能与影响
-
-### 能力指标
+## PITR 的性能指标
 
 - PITR 恢复速度，平均到单台 TiKV 节点：全量恢复为 280 GB/h，日志恢复为 30 GB/h
 - 使用 `br log truncate` 清理过期的日志备份数据速度为 600 GB/h
@@ -120,7 +118,7 @@ Restore KV Files <--------------------------------------------------------------
 > 所有测试集群默认设置 3 副本。
 > 如果想提升整体恢复的性能，可以通过根据实际情况调整 TiKV 配置文件中的 [`import.num-threads`](/tikv-configuration-file.md#import) 配置项以及 BR 命令的 [`concurrency`](/br/use-br-command-line-tool.md#常用选项) 参数。
 
-测试场景 1（[TiDB Cloud](https://tidbcloud.com) 上部署）
+测试场景 1（[TiDB Cloud](https://tidbcloud.com) 上部署）如下：
 
 - TiKV 节点（8 core，16 GB 内存）数量：21
 - TiKV 配置项 `import.num-threads`：8
@@ -129,7 +127,7 @@ Restore KV Files <--------------------------------------------------------------
 - 集群新增日志数据：10 GB/h
 - 写入 (INSERT/UPDATE/DELETE) QPS：10,000
 
-测试场景 2（本地部署）
+测试场景 2（本地部署）如下：
 
 - TiKV 节点（8 core，64 GB 内存）数量：6
 - TiKV 配置项 `import.num-threads`：8

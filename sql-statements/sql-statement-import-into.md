@@ -7,9 +7,9 @@ summary: TiDB 数据库中 IMPORT INTO 的使用概况。
 
 `IMPORT INTO` 语句使用 TiDB Lightning 的[物理导入模式](/tidb-lightning/tidb-lightning-physical-import-mode.md)，用于将 `CSV`、`SQL`、`PARQUET` 等格式的数据导入到 TiDB 的一张空表中。
 
-`IMPORT INTO` 支持导入存储在 Amazon S3、GCS、Azure Blob Storage 和 TiDB 本地的数据文件。
+`IMPORT INTO` 支持导入存储在 Amazon S3、GCS 和 TiDB 本地的数据文件。
 
-- 对于存储在 S3、GCS 或 Azure Blob Storage 的数据文件，`IMPORT INTO` 支持通过[后端任务分布式框架](/tidb-distributed-execution-framework.md)运行。
+- 对于存储在 S3 或 GCS 的数据文件，`IMPORT INTO` 支持通过 [TiDB 分布式执行框架](/tidb-distributed-execution-framework.md)运行。
 
     - 当此框架功能开启时（即 [tidb_enable_dist_task](/system-variables.md#tidb_enable_dist_task-从-v710-版本开始引入) 为 `ON`），`IMPORT INTO` 会将一个数据导入任务拆分成多个子任务并分配到各个 TiDB 节点上运行，以提高导入效率。
     - 当此框架功能关闭时，`IMPORT INTO` 仅支持在当前用户连接的 TiDB 节点上运行。
@@ -32,6 +32,7 @@ summary: TiDB 数据库中 IMPORT INTO 的使用概况。
 - 当使用[全局排序](/tidb-global-sort.md)导入数据时，单行数据的总长度不能超过 32 MiB。
 - 当使用全局排序导入数据时，如果 TiDB 集群在导入任务尚未完成时被删除了，Amazon S3 上可能会残留用于全局排序的临时数据。该场景需要手动删除这些数据，以免增加 S3 存储成本。
 - 所需导入的数据不能存在主键或非空唯一索引冲突的记录，否则会导致任务失败。
+- 对于基于分布式执行框架调度的 `IMPORT INTO` 任务，如该任务已运行，不支持被调度到新的 TiDB 节点上执行。当前在执行导入任务的 TiDB 节点如果重启，该 TiDB 节点不会再执行该导入任务，而是被转移到其他 TiDB 节点继续执行。如果是导入 TiDB 节点本地的数据，任务异常后不会被 failover 到其他 TiDB 节点。
 - 已知问题：在 TiDB 节点配置文件中的 PD 地址与当前集群 PD 拓扑不一致时（如曾经缩容过 PD，但没有对应更新 TiDB 配置文件或者更新该文件后未重启 TiDB 节点），执行 `IMPORT INTO` 会失败。
 
 ## 导入前准备
@@ -88,9 +89,10 @@ SET 表达式左侧只能引用 `ColumnNameOrUserVarList` 中没有的列名。�
 
 ### fileLocation
 
-用于指定数据文件的存储位置，该位置可以是 S3、GCS 或 Azure Blob Storage URI 路径，也可以是 TiDB 本地文件路径。
+用于指定数据文件的存储位置，该位置可以是 S3 或 GCS URI 路径，也可以是 TiDB 本地文件路径。
 
-- S3、GCS 或 Azure Blob Storage URI 路径：配置详见[外部存储服务的 URI 格式](/external-storage-uri.md)。
+- S3 或 GCS URI 路径：配置详见[外部存储服务的 URI 格式](/external-storage-uri.md)。
+
 - TiDB 本地文件路径：必须为绝对路径，数据文件后缀必须为 `.csv`、`.sql` 或 `.parquet`。确保该路径对应的文件存储在当前用户连接的 TiDB 节点上，且当前连接的用户有 `FILE` 权限。
 
 > **注意：**
@@ -145,7 +147,8 @@ SET 表达式左侧只能引用 `ColumnNameOrUserVarList` 中没有的列名。�
 
 > **注意：**
 >
-> Snappy 压缩文件必须遵循[官方 Snappy 格式](https://github.com/google/snappy)。不支持其他非官方压缩格式。
+> - Snappy 压缩文件必须遵循[官方 Snappy 格式](https://github.com/google/snappy)。不支持其他非官方压缩格式。
+> - 由于无法对单个大压缩文件进行并发解压，因此压缩文件的大小会直接影响导入速度。建议解压后的文件大小不要超过 256 MiB。
 
 ## 全局排序
 
@@ -161,7 +164,7 @@ SET 表达式左侧只能引用 `ColumnNameOrUserVarList` 中没有的列名。�
     - 说明：`IMPORT INTO` 会按数据文件遍历顺序来划分子任务，一般遍历文件按文件名字典序来排列。
 - 如果目标表索引较多，或索引列值在数据文件中较分散，那么各个子任务编码后产生的索引 KV 也会存在重叠。
 
-当开启[后端任务分布式框架](/tidb-distributed-execution-framework.md) 时，可通过 `IMPORT INTO` 的 `CLOUD_STORAGE_URI` 参数，或者使用系统变量 [`tidb_cloud_storage_uri`](/system-variables.md#tidb_cloud_storage_uri-从-v740-版本开始引入) 指定编码后的 KV 数据的目标存储地址来开启[全局排序](/tidb-global-sort.md)。注意目前仅支持使用 S3 作为全局排序存储地址。开启全局排序后，`IMPORT INTO` 会将编码后的 KV 数据写入云存储，并在云存储进行全局排序，之后再将全局排序后的索引数据和表数据并行导入到 TiKV，从而避免因 KV 重叠导致的问题，以提升导入的稳定性。
+当开启 [TiDB 分布式执行框架](/tidb-distributed-execution-framework.md) 时，可通过 `IMPORT INTO` 的 `CLOUD_STORAGE_URI` 参数，或者使用系统变量 [`tidb_cloud_storage_uri`](/system-variables.md#tidb_cloud_storage_uri-从-v740-版本开始引入) 指定编码后的 KV 数据的目标存储地址来开启[全局排序](/tidb-global-sort.md)。注意目前仅支持使用 S3 作为全局排序存储地址。开启全局排序后，`IMPORT INTO` 会将编码后的 KV 数据写入云存储，并在云存储进行全局排序，之后再将全局排序后的索引数据和表数据并行导入到 TiKV，从而避免因 KV 重叠导致的问题，以提升导入的稳定性。
 
 全局排序对内存资源的使用较高，在数据导入开始前，建议先设置 [`tidb_server_memory_limit_gc_trigger`](/system-variables.md#tidb_server_memory_limit_gc_trigger-从-v640-版本开始引入) 和 [`tidb_server_memory_limit`](/system-variables.md#tidb_server_memory_limit-从-v640-版本开始引入) 两个变量，避免频繁触发 golang GC 从而影响导入效率：
 
@@ -245,7 +248,7 @@ IMPORT INTO t(id, name, @1) FROM '/path/to/file.csv' WITH skip_rows=1;
 IMPORT INTO t FROM '/path/to/file-*.csv'
 ```
 
-### 从 S3、GCS 或 Azure Blob Storage 导入数据
+### 从 S3 或 GCS 导入数据
 
 - 从 S3 导入数据
 
@@ -259,13 +262,7 @@ IMPORT INTO t FROM '/path/to/file-*.csv'
     IMPORT INTO t FROM 'gs://import/test.csv?credentials-file=${credentials-file-path}';
     ```
 
-- 从 Azure Blob Storage 导入数据
-
-    ```sql
-    IMPORT INTO t FROM 'azure://import/test.csv?credentials-file=${credentials-file-path}';
-    ```
-
-关于 Amazon S3、GCS 和 Azure Blob Storage 的 URI 路径配置，详见[外部存储服务的 URI 格式](/external-storage-uri.md)。
+关于 Amazon S3 或 GCS 的 URI 路径配置，详见[外部存储服务的 URI 格式](/external-storage-uri.md)。
 
 ### 通过 SetClause 语句计算列值
 

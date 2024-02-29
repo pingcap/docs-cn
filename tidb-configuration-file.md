@@ -438,19 +438,15 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
 
 ### `session-token-signing-cert` <span class="version-mark">从 v6.4.0 版本开始引入</span>
 
-> **警告：**
->
-> 该配置与一个未发布的特性相关。**请勿设置该配置**。
-
++ 证书文件路径，用于 [TiProxy](https://docs.pingcap.com/zh/tidb/v7.6/tiproxy-overview) 的会话迁移。
 + 默认值：""
++ 空值将导致 TiProxy 会话迁移失败。要启用会话迁移，所有的 TiDB 节点必须设置相同的证书和密钥。因此你应该在每个 TiDB 节点上存储相同的证书和密钥。
 
 ### `session-token-signing-key` <span class="version-mark">从 v6.4.0 版本开始引入</span>
 
-> **警告：**
->
-> 该配置与一个未发布的特性相关。**请勿设置该配置**。
-
++ 密钥文件路径，用于 [TiProxy](https://docs.pingcap.com/zh/tidb/v7.6/tiproxy-overview) 的会话迁移。
 + 默认值：""
++ 参阅 [`session-token-signing-cert`](#session-token-signing-cert-从-v640-版本开始引入) 的描述。
 
 ## performance
 
@@ -549,6 +545,10 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
 + 可选值：默认值 NO_PRIORITY 表示不强制改变执行语句的优先级，其它优先级从低到高可设置为 LOW_PRIORITY、DELAYED 或 HIGH_PRIORITY。
 + 自 v6.1.0 起，已改用配置项 [`instance.tidb_force_priority`](/tidb-configuration-file.md#tidb_force_priority) 或系统变量 [`tidb_force_priority`](/system-variables.md#tidb_force_priority) 来将所有语句优先级设为 force-priority 的值。`force-priority` 仍可使用，但如果同时设置了 `force-priority` 与 `instance.tidb_force_priority`，TiDB 将采用 `instance.tidb_force_priority` 的值。
 
+> **注意：**
+>
+> TiDB 从 v6.6.0 版本开始支持[使用资源管控 (Resource Control) 实现资源隔离](/tidb-resource-control.md)功能。该功能可以将不同优先级的语句放在不同的资源组中执行，并为这些资源组分配不同的配额和优先级，可以达到更好的资源管控效果。在开启资源管控功能后，语句的调度主要受资源组的控制，`PRIORITY` 将不再生效。建议在支持资源管控的版本优先使用资源管控功能。
+
 ### `distinct-agg-push-down`
 
 + 设置优化器是否执行将带有 `Distinct` 的聚合函数（比如 `select count(distinct a) from t`）下推到 Coprocessor 的优化操作。
@@ -585,7 +585,7 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
 + 当 `lite-init-stats` 为 `true` 时，统计信息初始化时列和索引的直方图、TopN、Count-Min Sketch 均不会加载到内存中。当 `lite-init-stats` 为 `false` 时，统计信息初始化时索引和主键的直方图、TopN、Count-Min Sketch 会被加载到内存中，非主键列的直方图、TopN、Count-Min Sketch 不会加载到内存中。当优化器需要某一索引或者列的直方图、TopN、Count-Min Sketch 时，这些统计信息会被同步或异步加载到内存中（由 [`tidb_stats_load_sync_wait`](/system-variables.md#tidb_stats_load_sync_wait-从-v540-版本开始引入) 控制）。
 + 将 `lite-init-stats` 设置为 true，可以加速统计信息初始化，避免加载不必要的统计信息，从而降低 TiDB 的内存使用。详情请参考[统计信息的加载](/statistics.md#统计信息的加载)。
 
-### `force-init-stats` <span class="version-mark">从 v7.1.0 版本开始引入</span>
+### `force-init-stats` <span class="version-mark">从 v6.5.7 和 v7.1.0 版本开始引入</span>
 
 + 用于控制 TiDB 启动时是否在统计信息初始化完成后再对外提供服务。
 + 默认值：在 v7.2.0 之前版本中为 `false`，在 v7.2.0 及之后的版本中为 `true`。
@@ -717,6 +717,16 @@ opentracing.reporter 相关的设置。
 + TiKV 的负载阈值，如果超过此阈值，会收集更多的 batch 封包，来减轻 TiKV 的压力。仅在 `tikv-client.max-batch-size` 值大于 0 时有效，不推荐修改该值。
 + 默认值：200
 
+### `copr-req-timeout` <span class="version-mark">从 v7.5.0 版本开始引入</span>
+
+> **警告：**
+>
+> 该配置项可能会在未来版本中废弃，**不要修改该配置**。
+
++ 单个 Coprocessor Request 的超时时间
++ 默认值：60
++ 单位：秒
+
 ## tikv-client.copr-cache <span class="version-mark">从 v4.0.0 版本开始引入</span>
 
 本部分介绍 Coprocessor Cache 相关的配置项。
@@ -772,6 +782,12 @@ TiDB 服务状态相关配置。
 
 + 输出与 database 相关的 QPS metrics 到 Prometheus 的开关。
 + 默认值：false
+
+### `record-db-label`
+
+- 控制是否向 Prometheus 传输与数据库相关的 QPS 指标。
+- 支持的指标类型比 `record-db-qps` 更多，比如 duration 和 statements。
+- 默认值：`false`
 
 ## pessimistic-txn
 
@@ -872,6 +888,10 @@ TiDB 服务状态相关配置。
 + 默认值：NO_PRIORITY
 + 默认值 NO_PRIORITY 表示不强制改变执行语句的优先级，其它优先级从低到高可设置为 LOW_PRIORITY、DELAYED 或 HIGH_PRIORITY。
 + 在 v6.1.0 之前，该功能通过配置项 `force-priority` 进行设置。
+
+> **注意：**
+>
+> TiDB 从 v6.6.0 版本开始支持[使用资源管控 (Resource Control) 实现资源隔离](/tidb-resource-control.md)功能。该功能可以将不同优先级的语句放在不同的资源组中执行，并为这些资源组分配不同的配额和优先级，可以达到更好的资源管控效果。在开启资源管控功能后，语句的调度主要受资源组的控制，`PRIORITY` 将不再生效。建议在支持资源管控的版本优先使用资源管控功能。
 
 ### `max_connections`
 
