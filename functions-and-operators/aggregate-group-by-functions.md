@@ -192,4 +192,4 @@ TiDB 目前不支持的聚合函数如下所示，相关进展参阅 [TiDB #7623
 
 ## 相关系统变量
 
-`group_concat_max_len` 变量设置 `GROUP_CONCAT()` 函数中的最大项目数。
+`group_concat_max_len` 变量设置 `GROUP_CONCAT()` 函数缓冲区的最大长度。
