@@ -17,12 +17,6 @@ TiDB 版本：8.0.0
 
 ### 可扩展性
 
-* 功能标题 [#issue号](链接) @[贡献者 GitHub ID](链接) **tw@xxx** <!--1234-->
-
-    功能描述（需要包含这个功能是什么、在什么场景下对用户有什么价值、怎么用）
-
-    更多信息，请参考[用户文档](链接)。
-
 * 增强 Titan 引擎  [#issue号](链接) @[Connor1996](https://github.com/Connor1996) **tw@qiancai** <!--1708-->
 
     TiDB v8.0.0 版本引入了 Titan 一系列的性能优化和功能增强，主要包括优化 GC 算法、默认开启字典压缩等功能。其中，我们调整了 [`min-blob-size`](/tikv-configuration-file.md#min-blob-size) 的默认阈值，从 `32KB` 调整为 `?KB` ，进一步扩大 Titan 引擎的适用场景。此外，我们还允许用户动态修改 [`min-blob-size`](/tikv-configuration-file.md#min-blob-size) 阈值配置，以提升用户使用 Titan 引擎时的性能和灵活性。这些改进和功能增强将为用户提供更加稳定和高效的数据库服务。
@@ -31,11 +25,7 @@ TiDB 版本：8.0.0
     
 ### 性能
 
-* 功能标题 [#issue号](链接) @[贡献者 GitHub ID](链接) **tw@xxx** <!--1234-->
 
-    功能描述（需要包含这个功能是什么、在什么场景下对用户有什么价值、怎么用）
-
-    更多信息，请参考[用户文档](链接)。
 * BR 快照恢复速度最高提升 10 倍 GA [#50701](https://github.com/pingcap/tidb/issues/50701) @[3pointer](https://github.com/3pointer) @[Leavrth](https://github.com/Leavrth) **tw@qiancai** <!--1681-->
 
     TiDB v8.0.0 版本起，快照恢复提速的改进正式 GA，并默认启用。通过采用粗粒度打散 Region 算法、批量创建库表、降低 SST 文件下载和 Ingest 操作的相互影响以及加速表统计信息恢复等改进措施，在保持数据充分打散的前提下，快照恢复的速度最高提升 10 倍。这一改进充分利用了每个 TiKV 节点的资源并行恢复，使得每个 TiKV 节点的数据恢复能够充分利用硬件的磁盘和网络带宽。根据实际案例的测试结果，单个 TiKV 节点的数据恢复速度稳定在 1.2 GB/s，能够在 1 小时内完成对 100 TB 数据的恢复。
@@ -44,7 +34,7 @@ TiDB 版本：8.0.0
  
     更多信息，请参考[用户文档](/br/br-snapshot-guide.md#恢复快照备份数据)。
     
-* 新增支持下推以下 函数到 TiFlash [#48350](https://github.com/pingcap/tidb/issues/48350) [#xxx](https://github.com/pingcap/tidb/issues/xxx) @[xxx](https://github.com/xxx) **tw@qiancai** <!--1662--><!--1664-->
+* 新增支持下推以下 函数到 TiFlash [#48350](https://github.com/pingcap/tidb/issues/48350) [#xxx](https://github.com/pingcap/tidb/issues/xxx) @[xxx](https://github.com/xxx) **tw@Oreoxmt** <!--1662--><!--1664-->
 
     * `POWER()`
     * `CAST(DECIMAL AS DOUBLE)`
@@ -97,13 +87,7 @@ TiDB 版本：8.0.0
 
 ### 高可用
 
-* 功能标题 [#issue号](链接) @[贡献者 GitHub ID](链接) **tw@xxx** <!--1234-->
-
-    功能描述（需要包含这个功能是什么、在什么场景下对用户有什么价值、怎么用）
-
-    更多信息，请参考[用户文档](链接)。
-
-* 支持代理组件 TiProxy [#413](https://github.com/pingcap/tiproxy/issues/413) @[djshow832](https://github.com/djshow832) @[xhebox](https://github.com/xhebox)
+* 支持代理组件 TiProxy [#413](https://github.com/pingcap/tiproxy/issues/413) @[djshow832](https://github.com/djshow832) @[xhebox](https://github.com/xhebox) **tw@Oreoxmt** <!--1698-->
 
     TiProxy 是 TiDB 的官方代理组件，位于客户端和 TiDB server 之间，为 TiDB 提供负载均衡、连接保持功能，让 TiDB 集群的负载更加均衡，并在维护操作期间不影响用户对数据库的连接访问。
     
@@ -120,12 +104,6 @@ TiDB 版本：8.0.0
 
 ### SQL 功能
 
-* 功能标题 [#issue号](链接) @[贡献者 GitHub ID](链接) **tw@xxx** <!--1234-->
-
-    功能描述（需要包含这个功能是什么、在什么场景下对用户有什么价值、怎么用）
-
-    更多信息，请参考[用户文档](链接)。
-
 * 新增支持处理大量数据的 DML 类型 [#16291](https://github.com/tikv/tikv/issues/16291) @[ekexium](https://github.com/ekexium) **tw@qiancai** <!--1694-->
 
     在之前的 TiDB 版本中，所有的事务数据在提交之前，都保存在内存中。当处理大量数据时，事务所需的内存成为瓶颈，限制了 TiDB 可以处理的事务大小。TiDB 曾经发布了非事务 DML 功能，通过拆分 SQL 的方式尝试解决事务大小限制，但是功能存在较多限制，在实际使用时并不友好。
@@ -137,12 +115,6 @@ TiDB 版本：8.0.0
     更多信息，请参考[用户文档](/... tidb_dml_type 变量)。
 
 ### 数据库管理
-
-* 功能标题 [#issue号](链接) @[贡献者 GitHub ID](链接) **tw@xxx** <!--1234-->
-
-    功能描述（需要包含这个功能是什么、在什么场景下对用户有什么价值、怎么用）
-
-    更多信息，请参考[用户文档](链接)。
 
 * PITR 支持 Amazon S3 对象锁定 [#51184](https://github.com/pingcap/tidb/issues/51184) @[RidRisR](https://github.com/RidRisR) **tw@lilin90** <!--1604-->
 
@@ -165,12 +137,6 @@ TiDB 版本：8.0.0
     更多信息，请参考[用户文档](/sql-statements/sql-statement-create-index.md#不可见索引)。
     
 ### 可观测性
-
-* 功能标题 [#issue号](链接) @[贡献者 GitHub ID](链接) **tw@xxx** <!--1234-->
-
-    功能描述（需要包含这个功能是什么、在什么场景下对用户有什么价值、怎么用）
-
-    更多信息，请参考[用户文档](链接)。
 
 * 引入对索引使用情况的观测 [#issue号](链接) @[YangKeao](https://github.com/hawkingrei) **tw@Oreoxmt** <!--1400-->
 
