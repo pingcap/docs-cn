@@ -1594,6 +1594,26 @@ mysql> SELECT job_info FROM mysql.analyze_jobs ORDER BY end_time DESC LIMIT 1;
 >
 > 自 v7.0.0 起，`tidb_dml_batch_size` 对 [`LOAD DATA` 语句](/sql-statements/sql-statement-load-data.md)不再生效。
 
+### `tidb_dml_type` <span class="version-mark">从 v8.0 版本开始引入</span>
+
+- 作用域：SESSION
+- 是否持久化到集群：否
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：是
+- 类型：字符串
+- 默认值：`"standard"`
+- 可选值：`"standard"`、`"bulk"`
+- 该变量用来设置 DML 语句的执行方式。
+    - `"standard"` 表示使用标准的 DML 执行方式，TiDB 事务在提交前缓存在内存中。这种模式能高效处理高并发、可能冲突的事务。除非有明确的需求，应当使用这种方式。
+    - `"bulk"` 表示使用批量 DML 执行方式，这种方式适用于写入大批量数据导致 TiDB 内存使用过多时使用。
+        - 在 TiDB 事务执行过程中，数据不全部缓存在 TiDB 内存中，而是持续写入 TiKV，以此降低内存占用。
+        - 这种方式不能高效处理写入冲突场景，仅适用于无冲突的大批量数据的写入场景。
+        - BULK 方式只对 auto-commit 的语句生效。
+        - 这种方式由 Pipelined-DML 特性实现。
+
+> **注意：**
+>
+> `tidb_dml_type` 的 BULK 方式是实验性特性，以此方式执行超大事务时对 TiCDC、TiFlash、TiKV resolved-ts 模块的内存使用和执行效率都有影响，有 OOM 风险。不建议在启用这些组件和功能时使用。
+
 ### `tidb_enable_1pc` <span class="version-mark">从 v5.0 版本开始引入</span>
 
 - 作用域：SESSION | GLOBAL
