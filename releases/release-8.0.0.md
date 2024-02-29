@@ -172,6 +172,24 @@ TiDB 版本：8.0.0
 
     更多信息，请参考[用户文档](链接)。
 
+* 引入对索引使用情况的观测 [#issue号](链接) @[YangKeao](https://github.com/hawkingrei) **tw@Oreoxmt** <!--1400-->
+
+    正确的索引设计是提升数据库性能的重要前提。TiDB 在 v8.0.0 新加入了内存表 [`information_schema.tidb_index_usage`](/information-schema/information-schema-tidb-index-usage.md)，记录每个 TiDB 节点上索引的使用情况，其中包括：
+    * 扫描该索引的语句的累计执行次数
+    * 累计在该索引中扫描的行数
+    * 扫描索引时的选择率分布
+    * 索引上次被选择的时间
+    
+    这些信息能够协助用户识别出没有被优化器选到的索引，以及过滤性很差的索引。另外，本次更新还加入了 MySQL 兼容的视图 [`sys.schema_unused_indexes`](/sys-schema.md)，视图根据所有 TiDB 节点上的索引运行情况，列出节点启动后，所有没有被选择过的索引。
+    
+    需要注意的几点：
+     * 如果用户从 v8.0.0 之前的版本升级上来，`sys` 中的内容不会被自动创建，需要根据[文档]((/sys-schema.md))手动创建。
+    * [`information_schema.tidb_index_usage`](/information-schema/information-schema-tidb-index-usage.md) 只在内存中维护，重启 TiDB 节点后该节点的信息会丢失。
+    * [`information_schema.tidb_index_usage`](/information-schema/information-schema-tidb-index-usage.md) 默认会被维护。可以通过修改配置项 [`instance.tidb_enable_collect_execution_info`](/tidb-configuration-file.md#tidb_enable_collect_execution_info) 或者变量[`tidb_enable_collect_execution_info`](/system-variables.md#tidb_enable_collect_execution_info) 将其关闭。
+   
+
+    更多信息，请参考[用户文档](/information-schema/information-schema-tidb-index-usage.md)。
+
 ### 安全
 
 * 功能标题 [#issue号](链接) @[贡献者 GitHub ID](链接) **tw@xxx** <!--1234-->
