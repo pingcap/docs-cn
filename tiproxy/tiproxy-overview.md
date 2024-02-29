@@ -206,3 +206,4 @@ TiProxy 要求客户端使用的连接器支持[认证插件](https://dev.mysql.
 ## 资源
 
 - [TiProxy 版本发布历史](https://github.com/pingcap/tiproxy/releases)
+- [TiProxy Issues](https://github.com/pingcap/tiproxy/issues)：TiProxy GitHub Issues 列表
