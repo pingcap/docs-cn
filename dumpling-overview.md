@@ -376,7 +376,7 @@ SET GLOBAL tidb_gc_life_time = '10m';
 | --csv-separator | CSV 文件中各值的分隔符，如果数据中可能有逗号，建议源文件导出时分隔符使用非常见组合字符| ','|
 | --csv-null-value | CSV 文件空值的表示 | "\\N" |
 | --csv-line-terminator | CSV 文件中表示行尾的换行符。将数据导出为 CSV 文件时，可以通过该选项传入所需的换行符。该选项支持 "\\r\\n" 和 "\\n"，默认值为 "\\r\\n"，和历史版本保持一致。由于 bash 中不同的引号会应用不同的转义规则，如需指定 LF 为换行符，可使用类似 `--csv-line-terminator $'\n'` 的语法。| "\\r\\n" |
-| --csv-output-dialect | 表示可以将源数据导出成数据库所需的格式存储到 CSV，取值可为 `"snowflake"`、`"redshift"`、`"bigquery"`。如果设置为 `"snowflake"` 或 `"redshift"`，会把 Binary 数据类型转换成十六进制，但会丢失十六进制数的前缀 `0x`，例如 `0x61` 将被表示成 `61`。如果设置为 `"bigquery"`，会使用 base64 对 Binary 数据类型进行编码。| '"' |
+| --csv-output-dialect | 表示可以将源数据导出成数据库所需的格式存储到 CSV，取值可为 `"snowflake"`、`"redshift"`、`"bigquery"`。如果设置为 `"snowflake"` 或 `"redshift"`，会把 Binary 数据类型转换成十六进制，但会丢失十六进制数的前缀 `0x`，例如 `0x61` 将被表示成 `61`。如果设置为 `"bigquery"`，会使用 base64 对 Binary 数据类型进行编码。默认值为空，会按 UTF-8 进行编码并导出数据，在某些情况下，Binary 字符串会出现乱码。| '"' |
 | --escape-backslash | 使用反斜杠 (`\`) 来转义导出文件中的特殊字符 | true |
 | --output-filename-template | 以 [golang template](https://golang.org/pkg/text/template/#hdr-Arguments) 格式表示的数据文件名格式 <br/> 支持 `{{.DB}}`、`{{.Table}}`、`{{.Index}}` 三个参数 <br/> 分别表示数据文件的库名、表名、分块 ID | '{{.DB}}.{{.Table}}.{{.Index}}' |
 | --status-addr | Dumpling 的服务地址，包含了 Prometheus 拉取 metrics 信息及 pprof 调试的地址 | ":8281" |
