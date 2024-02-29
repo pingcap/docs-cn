@@ -765,6 +765,7 @@ mysql> SHOW GLOBAL VARIABLES LIKE 'max_prepared_stmt_count';
 - 该变量控制是否所有 TiDB 的连接都在本地 socket 上进行通信，或使用 TLS。详情见[为 TiDB 客户端服务端间通信开启加密传输](/enable-tls-between-clients-and-servers.md)。
 - 该变量设置为 `ON` 时，必须使用开启 TLS 的会话连接到 TiDB，防止在 TLS 配置不正确时出现锁定的情况。
 - 在 v6.1.0 之前这个开关通过 TiDB 配置文件 (`security.require-secure-transport`) 进行配置，升级到 v6.1.0 时会自动继承原有设置。
+- 对于 v7.5.1 或更高的 v7.5 补丁版本，当启用了安全增强模式 (SEM) 时，禁止将 `security.require-secure-transport` 设置为 `ON`。
 
 ### `skip_name_resolve` <span class="version-mark">从 v5.2.0 版本开始引入</span>
 
@@ -1447,7 +1448,7 @@ mysql> SELECT job_info FROM mysql.analyze_jobs ORDER BY end_time DESC LIMIT 1;
 - 类型：整数型
 - 默认值：`64`
 - 范围：`[1, 256]`
-- 这个变量用来控制 [`FLASHBACK CLUSTER TO TIMESTAMP`](/sql-statements/sql-statement-flashback-to-timestamp.md) 的并发数。
+- 这个变量用来控制 [`FLASHBACK CLUSTER`](/sql-statements/sql-statement-flashback-cluster.md) 的并发数。
 
 ### `tidb_ddl_reorg_batch_size`
 
@@ -2812,6 +2813,7 @@ v5.0 后，用户仍可以单独修改以上系统变量（会有废弃警告）
     - `start_ts`：事务开始的时间戳。
     - `for_update_ts`：先前执行的 DML 语句的 `for_update_ts` 信息。这是 TiDB 用于测试的内部术语。通常，你可以忽略此信息。
     - `error`：错误消息（如果有）。
+    - `ru_consumption`：执行语句的 [RU](/tidb-resource-control.md#什么是-request-unit-ru) 消耗。
 
 ### `tidb_last_txn_info` <span class="version-mark">从 v4.0.9 版本开始引入</span>
 

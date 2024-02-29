@@ -126,7 +126,7 @@ summary: 了解 TiDB 的功能概览。
 | 并行 DDL |  Y  | Y | Y | N | N | N | N | N | N | N |
 | [添加索引加速](/system-variables.md#tidb_ddl_enable_fast_reorg-从-v630-版本开始引入) |  Y  | Y | Y | N | N | N | N | N | N | N |
 | [元数据锁](/metadata-lock.md) |  Y  | Y | Y | N | N | N | N | N | N | N |
-| [`FLASHBACK CLUSTER TO TIMESTAMP`](/sql-statements/sql-statement-flashback-to-timestamp.md) |  Y  | Y | Y | N | N | N | N | N | N | N |
+| [`FLASHBACK CLUSTER`](/sql-statements/sql-statement-flashback-cluster.md) |  Y  | Y | Y | N | N | N | N | N | N | N |
 | [暂停](/sql-statements/sql-statement-admin-pause-ddl.md)/[恢复](/sql-statements/sql-statement-admin-resume-ddl.md) DDL | Y | N | N | N | N | N | N | N | N | N |
 
 ## 事务
@@ -174,7 +174,7 @@ summary: 了解 TiDB 的功能概览。
 | [收集部分列的统计信息](/statistics.md#收集部分列的统计信息) |  E   | E | E | E | E | N | N | N | N | N |
 | [限制统计信息的内存使用量](/statistics.md#统计信息收集的内存限制) |  E   | E | E | E | N | N | N | N | N | N |
 | [随机采样约 10000 行数据来快速构建统计信息](/system-variables.md#tidb_enable_fast_analyze) | 已废弃 | E | E | E | E | E | E | E | E | E |
-| [锁定统计信息](/statistics.md#锁定统计信息) |  E   | E | E | N | N | N | N | N | N | N |
+| [锁定统计信息](/statistics.md#锁定统计信息) |  Y   | E | E | N | N | N | N | N | N | N |
 | [轻量级统计信息初始化](/statistics.md#统计信息的加载) |  Y   | E | N | N | N | N | N | N | N | N |
 | [显示统计信息收集的进度](/sql-statements/sql-statement-show-analyze-status.md) |  Y   | N | N | N | N | N | N | N | N | N |
 

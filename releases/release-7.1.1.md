@@ -15,6 +15,10 @@ TiDB 版本：7.1.1
 
 - TiDB 新增 `tidb_lock_unchanged_keys` 变量用于控制是否对于没有修改的 key 加锁 [#44714](https://github.com/pingcap/tidb/issues/44714) @[ekexium](https://github.com/ekexium)
 
+### 行为变更
+
+- TiCDC 在处理 Update 事件时，如果事件的主键或者非空唯一索引的列值发生改变，则会将该条事件拆分为 Delete 和 Insert 两条事件。更多信息，请参考[用户文档](/ticdc/ticdc-behavior-change.md#含有单条-update-变更的事务拆分)。
+
 ## 改进提升
 
 + TiDB

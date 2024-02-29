@@ -564,6 +564,7 @@
       - [双向复制](/ticdc/ticdc-bidirectional-replication.md)
       - [单行数据正确性校验](/ticdc/ticdc-integrity-check.md)
       - [主从集群一致性读和数据校验](/ticdc/ticdc-upstream-downstream-check.md)
+      - [TiCDC 行为变更说明](/ticdc/ticdc-behavior-change.md)
     - 监控告警
       - [基本监控指标](/ticdc/ticdc-summary-monitor.md)
       - [详细监控指标](/ticdc/monitor-ticdc.md)
@@ -766,7 +767,7 @@
       - [`EXECUTE`](/sql-statements/sql-statement-execute.md)
       - [`EXPLAIN ANALYZE`](/sql-statements/sql-statement-explain-analyze.md)
       - [`EXPLAIN`](/sql-statements/sql-statement-explain.md)
-      - [`FLASHBACK CLUSTER TO TIMESTAMP`](/sql-statements/sql-statement-flashback-to-timestamp.md)
+      - [`FLASHBACK CLUSTER`](/sql-statements/sql-statement-flashback-cluster.md)
       - [`FLASHBACK DATABASE`](/sql-statements/sql-statement-flashback-database.md)
       - [`FLASHBACK TABLE`](/sql-statements/sql-statement-flashback-table.md)
       - [`FLUSH PRIVILEGES`](/sql-statements/sql-statement-flush-privileges.md)
@@ -1024,6 +1025,7 @@
   - [TiDB 版本规则](/releases/versioning.md)
   - [TiDB 离线包](/binary-package.md)
   - v7.5
+    - [7.5.1](/releases/release-7.5.1.md)
     - [7.5.0](/releases/release-7.5.0.md)
   - v7.4
     - [7.4.0-DMR](/releases/release-7.4.0.md)
