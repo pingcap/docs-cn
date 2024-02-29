@@ -135,6 +135,14 @@ TiDB 版本：8.0.0
     在 v8.0.0 中，如果将新引入的会话级变量 [`tidb_opt_use_invisible_indexes`](/system-variables.md#) 设置为 `ON`，那么在该会话中执行的查询可以选择到"不可见索引"。利用这个能力，在添加新索引时，如果不确定索引的作用，则可以先将索引创建为不可见索引，通过修改会话变量后，在这个会话中对相关的查询语句进行测试，而不影响其他会话的行为。这个扩展改进能够提升性能调优的安全性，增强生产数据库的稳定性。
 
     更多信息，请参考[用户文档](/sql-statements/sql-statement-create-index.md#不可见索引)。
+
+* 支持将 `General Query Log` 写入独立文件 [#issue号](链接) @[Defined2014](https://github.com/Defined2014) **tw@hfxsd** <!--1632-->
+
+   `General Query Log` 是 MySQL 兼容的功能，开启后会记录数据库执行的全部 SQL 语句，为问题诊断提供依据。TiDB 也支持此功能，通过设置变量 [`tidb_general_log`](/system-variables.md#tidb_general_log) 开启，但是在过去的版本中，`General Query Log` 的内容只能和其他信息一起写入实例日志，对需要长期保存的用户并不友好。
+
+   在新版本中，通过把配置项 [`log.general-log-file`]() 设置为有效的文件名，TiDB 可以把 `General Query Log` 写入指定的文件。和实例日志一样，"General Query Log" 也同样遵循日志的轮询和保存策略。
+   
+   另外，为了减少历史日志文件所占用的磁盘空间，TiDB 在 v8.0.0 支持了原生的日志压缩选项。将配置项 [`log.file.compression`] 设置为 `gzip`，轮询出的历史日志将自动以[`gzip`](https://www.gzip.org/)格式压缩。
     
 ### 可观测性
 
@@ -202,7 +210,8 @@ TiDB 版本：8.0.0
 
 | 配置文件 | 配置项 | 修改类型 | 描述 |
 | -------- | -------- | -------- | -------- |
-|          |          |          |          |
+| TiDB  |  [`log.general-log-file`]() | 新增 | 指定 `General Query Log` 的保存文件。默认为空，`General Query Log` 将会写入实例文件。 |
+| TiDB  |  [`log.file.compression`]() | 新增 | 指定轮询日志的压缩格式。默认为空，即不压缩轮询日志。 |
 
 ### 其他
 
