@@ -16,6 +16,7 @@ TiDB 版本：8.0.0
 ## 功能详情
 
 ### 可扩展性
+
 从 v8.0.0 开始，PD 支持微服务部署模式 [#5836](https://github.com/tikv/pd/issues/5836) @[binshi-bing](https://github.com/binshi-bing) **tw@qiancai** <!--1553/1558-->
 
 该模式可将 PD 的时间戳分配和集群调度功能拆分为独立的服务，单独部署，从而实现 PD 的性能扩展，在超大规模集群下解决 PD 性能瓶颈问题。我们通常建议当 PD 出现明显的性能瓶颈且无法升配的情况下，考虑使用该模式。
@@ -25,6 +26,7 @@ TiDB 版本：8.0.0
 每种微服务都以独立进程的方式部署，当相应服务设置的副本数量大于 1 时，提供主备的容灾模式。 
 
 ## 使用场景
+
 PD 微服务通常用于解决 PD 出现性能瓶颈的问题，提高 PD 服务质量。利用该特性，你可以避免以下问题： 
 
 - PD 集群压力过大而导致 TSO 分配的长尾或者抖动现象 
@@ -43,6 +45,7 @@ PD 微服务通常用于解决 PD 出现性能瓶颈的问题，提高 PD 服务
 - 当前微服务与 [同步部署模式 (DR Auto-Sync) ](/two-data-centers-in-one-city-deployment.md#简介) 特性不兼容。 
 - 与 TiDB 系统变量 tidb_enable_tso_follower_proxy 不兼容。 
 - 由于静默 region 的关系，Scheduling 微服务在进行主备切换时，为避免冗余调度，集群或存在至多五分钟没有调度的现象。
+
 * 增强 Titan 引擎  [#issue号](链接) @[Connor1996](https://github.com/Connor1996) **tw@qiancai** <!--1708-->
 
     TiDB v8.0.0 版本引入了 Titan 一系列的性能优化和功能增强，主要包括优化 GC 算法、默认开启字典压缩等功能。其中，我们调整了 [`min-blob-size`](/tikv-configuration-file.md#min-blob-size) 的默认阈值，从 `32KB` 调整为 `?KB` ，进一步扩大 Titan 引擎的适用场景。此外，我们还允许用户动态修改 [`min-blob-size`](/tikv-configuration-file.md#min-blob-size) 阈值配置，以提升用户使用 Titan 引擎时的性能和灵活性。这些改进和功能增强将为用户提供更加稳定和高效的数据库服务。
