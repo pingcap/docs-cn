@@ -196,10 +196,8 @@ TiDB 版本：7.1.4
 
     + TiDB Data Migration (DM)
 
-        - note [#issue](https://github.com/pingcap/tiflow/issues/${issue-id}) @[贡献者 GitHub ID](https://github.com/${github-id})
-        - note [#issue](https://github.com/pingcap/tiflow/issues/${issue-id}) @[贡献者 GitHub ID](https://github.com/${github-id})
-        - (dup): release-7.5.1.md > 错误修复> Tools> TiDB Data Migration (DM) - 修复 DM 遇到 `event type truncate not valid` 错误导致升级失败的问题 [#10282](https://github.com/pingcap/tiflow/issues/10282) @[GMHDBJD](https://github.com/GMHDBJD)
-        - (dup): release-7.5.1.md > 错误修复> Tools> TiDB Data Migration (DM) - 修复下游表结构包含 `shard_row_id_bits` 时同步任务报错的问题 [#10308](https://github.com/pingcap/tiflow/issues/10308) @[GMHDBJD](https://github.com/GMHDBJD)
+        - 修复任务配置中错误的 binlog 事件类型导致升级失败的问题 [#10282](https://github.com/pingcap/tiflow/issues/10282) @[GMHDBJD](https://github.com/GMHDBJD)
+        - 修复带有 shard_row_id_bits 的表会导致 schema tracker 无法初始化的问题 [#10308](https://github.com/pingcap/tiflow/issues/10308) @[GMHDBJD](https://github.com/GMHDBJD)
 
     + TiDB Lightning
 
