@@ -199,8 +199,8 @@ TiDB 版本：7.1.4
 
     + TiDB Lightning
 
-        - note [#issue](https://github.com/pingcap/tidb/issues/${issue-id}) @[贡献者 GitHub ID](https://github.com/${github-id})
-        - note [#issue](https://github.com/pingcap/tidb/issues/${issue-id}) @[贡献者 GitHub ID](https://github.com/${github-id})
+        - 修复扫描数据文件时遇到不合法符号链接文件导致报错的问题 [#49423](https://github.com/pingcap/tidb/issues/49423) @[lance6716](https://github.com/lance6716)
+        - 修复当 SQL-MODE 中不包含 NO_ZERO_IN_DATE 无法正确解析包含 0 的日期的问题 [#50757](https://github.com/pingcap/tidb/issues/50757) @[GMHDBJD](https://github.com/GMHDBJD)
 
     + Dumpling
 
