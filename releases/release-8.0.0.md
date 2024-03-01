@@ -84,7 +84,11 @@ TiDB 版本：8.0.0
     功能描述（需要包含这个功能是什么、在什么场景下对用户有什么价值、怎么用）
 
     更多信息，请参考[用户文档](链接)。
+* 支持根据 LRU 算法缓存所需的 schema 信息来减少对 TiDB 接的内存消耗（实验特性）[#issue号](链接) @[gmhdbjd](https://github.com/gmhdbjd) **tw@hfxsd** <!--1691-->
 
+    在 v8.0.0 之前，每个 TiDB 节点都会 cache 所有表的 schema 信息，一旦表的数量较多，如达到几十万的场景，光缓存这些表的 schema 信息就会占用较多的内存。从 v8.0.0 版本开始，引入了参数 tidb_schema_cache_size ，用户设置缓存 schema 可以使用的内存上限，避免占用过多的内存，而且开启该功能后，将使用 LRU 算法来缓存所需的表，有效减小所需换成的 schema 信息。
+
+    更多信息，请参考[用户文档](链接)。
 ### 高可用
 
 * 支持代理组件 TiProxy [#413](https://github.com/pingcap/tiproxy/issues/413) @[djshow832](https://github.com/djshow832) @[xhebox](https://github.com/xhebox) **tw@Oreoxmt** <!--1698-->
@@ -113,7 +117,11 @@ TiDB 版本：8.0.0
     支持处理大量数据的 DML 类型依赖于 [Pipelined DML](/ new doc path)，只支持在自动提交事务中使用，并且引入变量 `tidb_dml_type` 控制是否使用该 DML 类型。目前，该功能作为实验特性发布。
 
     更多信息，请参考[用户文档](/... tidb_dml_type 变量)。
+* TiDB 建表时，支持更多的表达式来设置列的默认值 [#issue号](链接) @[zimulala](https://github.com/zimulala) **tw@qiancai** <!--1690-->
 
+    之前的版本建表时，列默认值只能为固定的字符串，数字，以及日期，而从 v8.0.0 版本开始，支持将部分表达式作为列的默认值，如将列的默认值设置为 UUID() ，从而来满足用户多样化的业务需求。
+
+    更多信息，请参考[用户文档](链接)。
 ### 数据库管理
 
 * PITR 支持 Amazon S3 对象锁定 [#51184](https://github.com/pingcap/tidb/issues/51184) @[RidRisR](https://github.com/RidRisR) **tw@lilin90** <!--1604-->
@@ -173,7 +181,30 @@ TiDB 版本：8.0.0
     更多信息，请参考[用户文档](链接)。
 
 ### 数据迁移
+* DM 支持使用用户提供的密钥对源和目标数据库的密码进行加密和解密 [#9492](https://github.com/pingcap/tiflow/issues/9492) @[D3Hunter](https://github.com/D3Hunter) **tw@qiancai** <!--1497-->
 
+    之前 DM 使用的是自带的一个固定秘钥，安全性较低。而从 8.0 版本开始，用户可以传入自定义的密钥文件，对上下游的数据库的密码进行加密和解密操作，也可以按需替换秘钥，提升了安全性。
+
+    更多信息，请参考[用户文档](链接)。
+
+* Import into 功能增强，支持 Import into... from select 语法 [#49883](https://github.com/pingcap/tidb/issues/49883) @[D3Hunter](https://github.com/D3Hunter) **tw@qiancai** <!--1680-->
+
+    在一些大数据量的场景使用 insert into ... select，数据导入的性能较慢，而从 8.0 版本开始，支持用户使用 Import into... from select 来导入查询结果到目标表中，且导入的性能最高可达  insert into ... select 的 8 倍，大大缩短了把查询结果导入目标表的所需时间。此外，该功能还支持导入使用 [`AS OF TIMESTAMP`](/as-of-timestamp.md) 查询的历史数据。
+
+    更多信息，请参考[用户文档](链接)。        
+    
+* Lightning 冲突策略简化，同时支持 Replace 的方式处理冲突的数据 [#issue 号](链接) @[lyzx2001](https://github.com/lyzx2001) **tw@qiancai** <!--1684-->
+
+    原先 Lightning 逻辑导入模式时有一套冲突处理策略，物理导入模式时也有一套冲突策略，同时物理导入模式还有一套前置冲突策略，导致用户配置复杂。从 8.0 开始，将这 3 种冲突策略合并成了一套，简化了用户的配置操作。同时在物理导入模式下，还首次引入了通过 replace 的方式处理导入过程中冲突的数据。
+
+    更多信息，请参考[用户文档](链接)。    
+    
+  * 全局功能称为正式功能（GA），可提升 import into 任务的导入性能和稳定性，支持 40 TiB 的数据导入 [#i45719](https://github.com/pingcap/tidb/issues/45719) @[lance6716](https://github.com/lance6716) **tw@qiancai** <!--1684-->
+
+    原先 import into 任务调度到多个 TiDB 节点进行数据导入时，使用节点本地的磁盘对当前节点负责导入的数据进行本地局部排序，无法将所有节点要导入的数据进行全局排序，因此节点间的数据存在重叠时，在导入 TiKV 过程中， TiKV 需要执行较多的 compaction 操作，导致 TiKV 的稳定性和性能下降。而引入全局排序后，可将所有需要导入的数据进行全局排序后再导入 TiKV，数据全局有序，TiKV 也就无需执行 compaction 操作，稳定性以及写入性能都会有较大的提升。同时最高支持 40 TiB 的数据导入。
+
+    更多信息，请参考[用户文档](链接)。    
+    
 * 功能标题 [#issue号](链接) @[贡献者 GitHub ID](链接) **tw@xxx** <!--1234-->
 
     功能描述（需要包含这个功能是什么、在什么场景下对用户有什么价值、怎么用）
