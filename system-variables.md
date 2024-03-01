@@ -1446,7 +1446,7 @@ mysql> SELECT job_info FROM mysql.analyze_jobs ORDER BY end_time DESC LIMIT 1;
 
 > **注意：**
 >
-> 目前全局排序会使用大量 TiDB 节点的计算与内存资源，对于在线增加索引等同时有用户业务在运行的场景，建议用户扩展出新的 TiDB 节点并设置这些 TiDB 节点的 `tidb_service_scope` 为 `"background"`，这样分布式框架就会将任务调度到这些节点上，减少执行后端任务对用户业务的影响。
+> 目前全局排序会使用大量 TiDB 节点的计算与内存资源，对于在线增加索引等同时有用户业务在运行的场景，建议为集群添加新的 TiDB 节点并设置这些 TiDB 节点的 [`tidb_service_scope`](/system-variables.md#tidb_service_scope-从-v740-版本开始引入) 为 `"background"`，这样分布式框架就会将任务调度到这些节点上，减少执行后端任务对用户业务的影响。
 
 - 作用域：GLOBAL
 - 是否持久化到集群：是
