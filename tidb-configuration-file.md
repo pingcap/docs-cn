@@ -357,7 +357,7 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
 + 默认值：0
 + 默认全部保存；如果设置为 7，会最多保留 7 个老的日志文件。
 
-#### `compress` <span class="version-mark"> 从 v8.0.0 版本开始引入</span>
+#### `compress` <span class="version-mark">从 v8.0.0 版本开始引入</span>
 
 + 指定日志的压缩方式。
 + 默认值：""
