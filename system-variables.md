@@ -195,8 +195,12 @@ mysql> SELECT * FROM t1;
 - 作用域：GLOBAL
 - 是否持久化到集群：是
 - 默认值：`mysql_native_password`
+<<<<<<< HEAD
 - 可选值：`mysql_native_password`，`caching_sha2_password`，`tidb_sm3_password`，`tidb_auth_token`
 - `tidb_auth_token` 认证方式仅用于 TiDB Cloud 内部实现，**不要设置为该值**。
+=======
+- 可选值：`mysql_native_password`，`caching_sha2_password`，`tidb_sm3_password`，`tidb_auth_token`，`authentication_ldap_sasl` 或 `authentication_ldap_simple`。
+>>>>>>> df5bade3d3 (Add description for `tidb_auth_token` authentication (#15818))
 - 服务器和客户端建立连接时，这个变量用于设置服务器对外通告的默认身份验证方式。如要了解该变量的其他可选值，参见[可用的身份验证插件](/security-compatibility-with-mysql.md#可用的身份验证插件)。
 - 若要在用户登录时使用 `tidb_sm3_password` 插件，需要使用 [TiDB-JDBC](https://github.com/pingcap/mysql-connector-j/tree/release/8.0-sm3) 进行连接。
 
