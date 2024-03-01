@@ -81,13 +81,13 @@ data-key-rotation-period = "168h" # 7 days
 
 #### 配置 KMS 密钥
 
-TiKV 支持 AWS、Azure 和 GCP 3 个平台的 KMS 加密，根据服务部署的平台，使用不同的方式配置 KMS 加密。
+TiKV 支持 AWS、GCP 和 Azure 3 个平台的 KMS 加密，根据服务部署的平台，使用不同的方式配置 KMS 加密。
 
 <SimpleTab>
 
 <div label="AWS KMS">
 
-##### 创建密钥
+创建密钥
 
 在 AWS 上创建一个密钥，请执行以下步骤：
 
@@ -105,7 +105,7 @@ aws --region us-west-2 kms create-alias --alias-name "alias/tidb-tde" --target-k
 
 需要在第二条命令中输入的 `--target-key-id` 是第一条命令的结果。
 
-##### 配置密钥
+配置密钥
 
 使用 AWS KMS 方式指定为主密钥，请在 `[security.encryption]` 部分之后添加 `[security.encryption.master-key]` 部分：
 
@@ -120,13 +120,11 @@ endpoint = "https://kms.us-west-2.amazonaws.com"
 `key-id` 指定 KMS CMK 的密钥 ID。`region` 为 KMS CMK 的 AWS 区域名。`endpoint` 通常无需指定，除非你在使用非 AWS 提供的 AWS KMS 兼容服务或需要使用 [KMS VPC endpoint](https://docs.aws.amazon.com/kms/latest/developerguide/kms-vpc-endpoint.html)。
 
 你也可以使用 AWS [多区域键](https://docs.aws.amazon.com/zh_cn/kms/latest/developerguide/multi-region-keys-overview.html)。为此，你需要在一个特定的区域设置一个主键，并在需要的区域中添加副本密钥。
-
 </div>
-
 
 <div label="GCP KMS">
 
-##### 创建密钥
+创建密钥
 
 在 GCP 平台上创建一个密钥，请执行以下步骤：
 
@@ -143,7 +141,7 @@ gcloud kms keys create "key-name" --keyring "key-ring-name" --location "global" 
 
 请将上述命令中的 "key-ring-name"、"key-name"、"global"、"30d" 等字段替换为实际密钥对应的名称和配置。
 
-##### 配置密钥
+配置密钥
 
 使用 GCP KMS 方式指定为主密钥，请在 `[security.encryption]` 部分之后添加 `[security.encryption.master-key]` 部分：
 
@@ -158,16 +156,41 @@ credential-file-path = "/path/to/credential.json"
 ```
 
 `key-id` 指定 KMS CMK 的密钥 ID, `credential-file-path` 指向验证凭据配置文件的路径，目前支持 Serivce Account 和 Authentition User 两种凭据。如果 TiKV 的运行环境已配置 [应用默认凭据](https://cloud.google.com/docs/authentication/application-default-credentials?hl=zh-cn)，则无须此配置项。
-
-
 </div>
 
-<div label="GCP KMS">
+<div label="Azure KMS">
 
-TBD..
+创建密钥
 
+在 Azure 平台创建密钥，请参考文档 [使用 Azure 门户在 Azure Key Vault 中设置和检索密钥](https://learn.microsoft.com/zh-cn/azure/key-vault/keys/quick-create-portal)。
+
+配置密钥
+
+要使用 Azure KMS 方式指定为主密钥，请在 `[security.encryption]` 部分之后添加 `[security.encryption.master-key]` 部分：
+
+```
+[security.encryption.master-key]
+type = 'kms'
+key-id = 'your-kms-key-id'
+region = 'region-name'
+endpoint = 'endpoint'
+vendor = 'azure'
+
+[security.encryption.master-key.azure]
+tenant-id = 'tenant_id'
+client-id = 'client_id'
+keyvault-url = 'keyvault_url'
+hsm-name = 'hsm_name'
+hsm-url = 'hsm_url'
+# 如下 4 个参数为可选字段，用于设置 client 认证的凭证，请根据实际的使用场景进行设置
+client_certificate = ""
+client_certificate_path = ""
+client_certificate_password = ""
+client_secret = ""
+```
+
+请将上述配置中除 "vendor" 之外的其他字段设置为实际需要使用的密钥对应的配置。
 </div>
-
 
 </SimpleTab>
 
