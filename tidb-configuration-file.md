@@ -315,6 +315,12 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
 + 默认值：10000
 + 当查询的行数（包括中间结果，基于统计信息）大于这个值，该操作会被认为是 `expensive` 查询，并输出一个前缀带有 `[EXPENSIVE_QUERY]` 的日志。
 
+### `general-log-file` <span class="version-mark"> 从 v8.0.0 版本开始引入</span>
+
++ general log 的文件名。
++ 默认值：""。
++ 设置后，general log 会输出到指定的文件。如设置值为空，则 general log 会输出到 TiDB-Server 一般日志指定的文件。
+
 ### `timeout` <span class="version-mark">从 v7.1.0 版本开始引入</span>
 
 + 用于设置 TiDB 写日志操作的超时时间。当磁盘故障导致日志无法写入时，该配置可以让 TiDB 进程崩溃而不是卡死。
@@ -350,6 +356,12 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
 + 保留的日志的最大数量。
 + 默认值：0
 + 默认全部保存；如果设置为 7，会最多保留 7 个老的日志文件。
+
+#### `compress` <span class="version-mark"> 从 v8.0.0 版本开始引入</span>
+
++ 指定 rotation 日志的压缩方式
++ 默认值：""
++ 默认不开启压缩；现支持的压缩格式仅为 "gzip"；开启压缩后会影响所有的日志文件，如 `slow-log-file`，`general-log-file` 等。
 
 ## security
 
