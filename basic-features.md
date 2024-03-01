@@ -172,7 +172,7 @@ aliases: ['/zh/tidb/v6.5/experimental-features','/zh/tidb/stable/experimental-fe
 | [证书鉴权](/certificate-authentication.md)                   |  Y   |  Y   |  Y   |  Y   |  Y   |  Y   |  Y   |  Y   |
 | [`caching_sha2_password` 认证](/system-variables.md#default_authentication_plugin) |  Y   |  Y   |  Y   |  Y   |  Y   |  N   |  N   |  N   |
 | [`tidb_sm3_password` 认证](/system-variables.md#default_authentication_plugin) |  Y   |  N   |  N   |  N   |  N   |  N   |  N   |  N   |
-| [`tidb_auth_token` 认证](/system-variables.md#default_authentication_plugin) |  Y   |  N   |  N   |  N   |  N   |  N   |  N   |  N   |
+| [`tidb_auth_token` 认证](/security-compatibility-with-mysql.md#tidb_auth_token) |  Y   |  N   |  N   |  N   |  N   |  N   |  N   |  N   |
 | [密码管理](/password-management.md)                          |  Y   |  N   |  N   |  N   |  N   |  N   |  N   |  N   |
 | [与 MySQL 兼容的 `GRANT` 权限管理](/privilege-management.md) |  Y   |  Y   |  Y   |  Y   |  Y   |  Y   |  Y   |  Y   |
 | [动态权限](/privilege-management.md#动态权限)                |  Y   |  Y   |  Y   |  Y   |  Y   |  Y   |  N   |  N   |
