@@ -42,7 +42,7 @@ summary: TiDB 数据库中 IMPORT INTO 的使用概况。
 
 ### `IMPORT FROM SELECT` 使用限制
 
-- `IMPORT FROM SELECT` 语句为前台任务，只会在当前连接的节点执行，在导入完成前会阻塞当前连接，不支持使用 `SHOW IMPORT JOB(s)` `CANCEL IMPORT JOB <job-id>` 等后台任务管理语句。
+- `IMPORT FROM SELECT` 只会在当前连接的 TiDB 节点执行，在导入完成前会阻塞当前连接，不支持使用 `SHOW IMPORT JOB(s)` `CANCEL IMPORT JOB <job-id>` 等任务管理语句。且仅支持配置 THREAD 和 DISABLE_PRECHECK 这 2 个参数;
 - TiDB [临时目录](/tidb-configuration-file.md#temp-dir-从-v630-版本开始引入) 需要有足够的空间存储整个 SELECT 语句查询结果（暂不支持使用 `DISK_QUOTA`）。
 - 不支持使用 [`tidb_snapshot`](/read-historical-data.md) 导入历史数据。
 
