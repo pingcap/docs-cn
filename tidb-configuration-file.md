@@ -319,7 +319,7 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
 
 + [general log](/system-variables.md#tidb_general_log) 的文件名。
 + 默认值：""
-+ 设置后，general log 会输出到指定的文件。如设置值为空，则 general log 会输出到 TiDB Server 一般日志指定的文件。
++ 设置后，general log 会输出到指定的文件。如设置值为空，则 general log 会输出到 TiDB Server 中 general log 指定的文件。
 
 ### `timeout` <span class="version-mark">从 v7.1.0 版本开始引入</span>
 
