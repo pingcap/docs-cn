@@ -17,7 +17,7 @@ TiDB 版本：8.0.0
 
 ### 可扩展性
 
-从 v8.0.0 开始，PD 支持微服务部署模式 [#5836](https://github.com/tikv/pd/issues/5836) @[binshi-bing](https://github.com/binshi-bing) **tw@qiancai** <!--1553/1558-->
+从 v8.0.0 开始，PD 支持微服务部署模式 [#57636](https://github.com/tikv/pd/issues/5766) @[binshi-bing](https://github.com/binshi-bing) **tw@qiancai** <!--1553/1558-->
 
 该模式可将 PD 的时间戳分配和集群调度功能拆分为独立的服务，单独部署，从而实现 PD 的性能扩展，在超大规模集群下解决 PD 性能瓶颈问题。我们通常建议当 PD 出现明显的性能瓶颈且无法升配的情况下，考虑使用该模式。
 当前支持以下两种服务独立部署
