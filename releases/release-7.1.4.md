@@ -67,8 +67,6 @@ TiDB 版本：7.1.4
 
     + TiDB Data Migration (DM)
 
-        - note [#issue](https://github.com/pingcap/tiflow/issues/${issue-id}) @[贡献者 GitHub ID](https://github.com/${github-id})
-        - note [#issue](https://github.com/pingcap/tiflow/issues/${issue-id}) @[贡献者 GitHub ID](https://github.com/${github-id})
 
     + TiDB Lightning
 
