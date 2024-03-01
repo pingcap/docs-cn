@@ -63,10 +63,10 @@ PD 微服务通常用于解决 PD 出现性能瓶颈的问题，提高 PD 服务
  
     更多信息，请参考[用户文档](/br/br-snapshot-guide.md#恢复快照备份数据)。
     
-* 新增支持下推以下 函数到 TiFlash [#48350](https://github.com/pingcap/tidb/issues/48350) [#xxx](https://github.com/pingcap/tidb/issues/xxx) @[xxx](https://github.com/xxx) **tw@Oreoxmt** <!--1662--><!--1664-->
+* 新增支持下推以下 函数到 TiFlash [#50975](https://github.com/pingcap/tidb/issues/50975) [#50485](https://github.com/pingcap/tidb/issues/50485) @[yibin87](https://github.com/yibin87) @[windtalker](https://github.com/windtalker) **tw@Oreoxmt** <!--1662--><!--1664-->
 
-    * `POWER()`
     * `CAST(DECIMAL AS DOUBLE)`
+    * `POWER()`
 
     更多信息，请参考[用户文档](/tiflash/tiflash-supported-pushdown-calculations.md)。
 
