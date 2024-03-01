@@ -8,7 +8,7 @@ aliases: ['/zh/tidb/dev/sql-statement-flashback-to-timestamp']
 
 TiDB v6.4.0 引入了 `FLASHBACK CLUSTER TO TIMESTAMP` 语法，其功能是将集群的数据恢复到过去指定的时间点。指定时间点时，你可以使用日期时间和时间函数，日期时间的格式为：'2016-10-08 16:45:26.999'，最小时间精度范围为毫秒，通常可只写到秒，例如 '2016-10-08 16:45:26'。
 
-TiDB v6.5.6、v7.1.3、v7.6.0 开始引入了 `FLASHBACK CLUSTER TO TSO` 的语法，支持使用时间戳 [TSO](/tso.md) 更加精确地指定恢复时间点，实现更加灵活的数据恢复。
+TiDB v6.5.6、v7.1.3、v7.5.1、v7.6.0 开始引入了 `FLASHBACK CLUSTER TO TSO` 的语法，支持使用时间戳 [TSO](/tso.md) 更加精确地指定恢复时间点，实现更加灵活的数据恢复。
 
 > **警告：**
 >
