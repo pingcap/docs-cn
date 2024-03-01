@@ -93,8 +93,8 @@ ignore-update-new-value-expr = "gender = 'male' and age > 18" # 过滤掉新值 
 | drop primary key | DDL  | |匹配 drop primary key event    |
 | rename index | DDL  | |匹配 rename index event    |
 | alter index visibility | DDL  | |匹配 alter index visibility event    |
-| add ttl info | DDL  | |匹配 add ttl info event    |
-| alter ttl remove ttl info | DDL  | |匹配 alter table remove ttl info event    |
+| alter ttl info | DDL  | |匹配 alter ttl info event    |
+| alter ttl remove| DDL  | |匹配 alter table remove ttl info event    |
 | multi schema change | DDL  | |匹配在同一条 DDL 语句内对一个表的多个属性进行更改的 DDL event  |
 
 注意: 由于 TiDB 的 DDL 语句是支持同时变更单个表的多个属性操作的，例如 `ALTER TABLE t MODIFY COLUMN a INT, ADD COLUMN b INT, DROP COLUMN c;` 这种这种操作会被定义为 MultiSchemaChange，你如果想过滤掉这种类型的 DDL，需要配置 "multi schema change" 。
