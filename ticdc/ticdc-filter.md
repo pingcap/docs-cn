@@ -76,8 +76,30 @@ ignore-update-new-value-expr = "gender = 'male' and age > 18" # 过滤掉新值 
 | truncate table partition    | DDL  | |匹配 truncate table partition event     |
 | create view     | DDL  | |匹配 create view event     |
 | drop view     | DDL  | |匹配 drop view event     |
+| modify schema charset and collate | DDL  | |匹配 modify schema charset and collate event     |
+| recover table   | DDL  | |匹配 recover table event    |
+| modify table comment | DDL  | |匹配 modify table comment event    |
+| modify table charset and collate | DDL  | |匹配 modify table charset and collate event    |
+| exchange table partition | DDL  | |匹配 exchange table partition event    |
+| reorganize table partition | DDL  | |匹配 reorganize table partition event    |
+| alter table partitioning | DDL  | |匹配 alter table partitioning event    |
+| remove table partitioning | DDL  | |匹配 remove table partitioning event    |
+| add column | DDL  | |匹配 add column event    |
+| drop column | DDL  | |匹配 drop column event    |
+| modify column | DDL  | |匹配 modify column event    |
+| set default value | DDL  | |匹配 set default value event    |
+| rebase auto_increment ID | DDL  | |匹配 rebase auto_increment ID event    |
+| add primary key | DDL  | |匹配 add primary key event    |
+| drop primary key | DDL  | |匹配 drop primary key event    |
+| rename index | DDL  | |匹配 rename index event    |
+| alter index visibility | DDL  | |匹配 alter index visibility event    |
+| add ttl info | DDL  | |匹配 add ttl info event    |
+| alter ttl remove ttl info | DDL  | |匹配 alter table remove ttl info event    |
+| multi schema change | DDL  | |匹配在同一条 DDL 语句内对一个表的多个属性进行更改的 DDL event  |
 
-- `ignore-sql`：要过滤的 DDL 语句的正则表达式。该参数接受一个字符串数组，数组中可以配置多条正则表达式。该配置仅对 DDL 事件生效。
+注意: 由于 TiDB 的 DDL 语句是支持同时变更单个表的多个属性操作的，例如 `ALTER TABLE t MODIFY COLUMN a INT, ADD COLUMN b INT, DROP COLUMN c;` 这种这种操作会被定义为 MultiSchemaChange，你如果想过滤掉这种类型的 DDL，需要配置 "multi schema change" 。
+
+- `ignore-sql`：要过滤的 DDL 语句的正则表达式。该参数接受一个字符串数组，数组中可以配置多条正则表达式。注意：该配置仅对 DDL 事件生效。
 - `ignore-delete-value-expr`：配置一个遵循默认 SQL Mode 的 SQL 表达式，对带有指定值的 DELETE 类型的 DML 事件生效。
 - `ignore-insert-value-expr`：配置一个遵循默认 SQL Mode 的 SQL 表达式，对带有指定值的 INSERT 类型的 DML 事件生效。
 - `ignore-update-old-value-expr`：配置一个遵循默认 SQL Mode 的 SQL 表达式，对带有指定旧值的 UPDATE 类型的 DML 事件生效。
