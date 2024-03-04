@@ -214,4 +214,4 @@ TiDB 备份恢复功能支持对备份到 Azure Blob Storage 的数据设置 Azu
 
 ## 存储服务其他功能支持
 
-TiDB 备份恢复功能从 v6.3.0 支持 AWS S3 Object Lock 功能。你可以在 AWS 中开启 [S3 Object Lock](https://docs.aws.amazon.com/AmazonS3/latest/userguide/object-lock.html) 功能来防止备份数据写入后被修改或者删除。
+Amazon [S3 对象锁定](https://docs.aws.amazon.com/AmazonS3/latest/userguide/object-lock.html) 功能可以帮助用户设置数据留存期，防止备份数据在一段时间内被意外或故意删除，增强了数据的安全性和完整性。自 v6.3.0 版本开始，BR 的快照备份恢复功能支持了 Amazon S3 的对象锁定功能，为数据提供了额外的安全保障。从 v8.0.0 版本起，PITR 日志备份也引入了对 Amazon S3 对象锁定功能的支持，无论是全量备份还是日志数据备份，都可以通过对象锁定功能提供更可靠的数据保护，进一步加强了数据备份和恢复的安全性。BR/PITR 将自动检测 Amazon S3 对象锁定功能的开启或关闭状态，用户无需进行任何额外的变更。
