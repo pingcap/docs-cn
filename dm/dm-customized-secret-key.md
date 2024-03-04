@@ -24,7 +24,12 @@ summary: 介绍 DM（Data Migration）在 v8.0.0 中引入的自定义加密和�
 
 如需更新用于加密和解密的密钥，请按照以下顺序进行：
 
-- 更新期间请不要创建 source/task。
-- 更改 [`secret-key-path`](/dm/dm-master-configuration-file.md) 中的秘钥。注意，所有 dm-master 配置的秘钥需要一致。
+1. 更新 [DM-master 配置文件](dm/dm-master-configuration-file.md) 中的 [`secret-key-path`] 。
+
+> **注意：**
+>
+>  - 请确保所有 DM-master 节点更新为相同的密钥配置。
+>  - 在密钥更新期间，请不要创建新的[数据源配置文件](/dm/dm-source-configuration-file.md)和[迁移任务配置文件](/dm/task-configuration-file-full.md)。
+
 2. 滚动重启 DM-master。
 3. 使用 `tiup dmctl encrypt`(dmctl 版本需 >= v8.0.0) 加密的密码用于创建[数据源配置文件](/dm/dm-source-configuration-file.md)和[迁移任务配置文件](/dm/task-configuration-file-full.md)。
