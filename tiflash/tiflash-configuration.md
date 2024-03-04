@@ -151,7 +151,7 @@ delta_index_cache_size = 0
     advertise-status-addr = 外部访问 status-addr 的地址，不填则默认是 "status-addr"
 
 [logger]
-    ## log 级别（支持 "trace"、"debug"、"info"、"warn"、"error"），默认是 "info"
+    ## log 级别（支持 "trace"、"debug"、"info"、"warn"、"error"），从 v7.1.4 起，默认值从 "debug" 变更为 "info"
     level = "info"
     log = TiFlash log 路径
     errorlog = TiFlash error log 路径
