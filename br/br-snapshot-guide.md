@@ -62,6 +62,11 @@ tiup br validate decode --field="end-version" \
 
 ## 恢复快照备份数据
 
+> **注意：**
+> - 在 BR v7.5.0 及之前版本中，每个 TiKV 节点的快照恢复速度约为 100 MiB/s
+> - 从 BR v7.6.0 开始，为了解决大规模 Region 场景下可能出现的恢复瓶颈问题，BR 支持以粗细粒度结合的方式打散 Region 进行恢复（实验特性）。可以通过指定命令行参数 `--granularity="coarse-grained"` 来启用此功能。
+> - 从 BR v8.0.0 版本开始，粗细粒度结合的方式打散 Region 进行数据恢复功能正式 GA，并默认启用。通过改进算法、批量创建库表、降低操作之间的相互影响等措施，快照恢复的速度最高提升约 10 倍，单个 TiKV 节点的数据恢复速度稳定在 1.2GiB/s ，能够在 1 小时内完成对 100TiB 数据的恢复。
+ 
 如果你需要恢复备份的快照数据，则可以使用 `br restore full`。该命令的详细使用帮助可以通过执行 `br restore full --help` 查看。
 
 将[上文备份的快照数据](#对集群进行快照备份)恢复到目标集群：
@@ -70,8 +75,6 @@ tiup br validate decode --field="end-version" \
 tiup br restore full --pd "${PD_IP}:2379" \
 --storage "s3://backup-101/snapshot-202209081330?access-key=${access-key}&secret-access-key=${secret-access-key}"
 ```
-
-为了解决大规模 Region 场景下，打散 Region 可能成为恢复过程中的瓶颈问题，BR 从 v7.6.0 开始支持以粗粒度打散 Region 的方式进行恢复（实验特性）。你可以通过指定 `--granularity="coarse-grained"` 启用该方式。
 
 在恢复快照备份数据过程中，终端会显示恢复进度条。在完成恢复后，会输出恢复耗时、速度、恢复数据大小等信息。
 
