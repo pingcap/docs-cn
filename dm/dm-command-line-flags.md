@@ -76,6 +76,12 @@ aliases: ['/docs-cn/tidb-data-migration/dev/command-line-flags/']
 - 默认值为 `"http://127.0.0.1:8291"`
 - 必选参数
 
+### `--secret-key-path`
+
+- 自定义加解密秘钥路径
+- 默认值为 `""`
+- 可选参数
+
 ## DM-worker
 
 ### `--advertise-addr`

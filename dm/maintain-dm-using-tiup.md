@@ -185,7 +185,7 @@ tiup dm scale-in prod-cluster -N 172.16.5.140:8262
 >
 > 升级前，可使用 `config export` 命令导出集群的配置文件，升级后如需降级回退到旧版本，可重建旧集群后，使用 `config import` 导入之前的配置。
 >
-> 对于 v2.0.5 之前版本的集群，可使用 v2.0.5 及之后版本的 dmctl 导出和导入集群配置。
+> 对于 v2.0.5 之前版本的集群，可使用 >= v2.0.5 且 < v8.0.0 的 dmctl 导出和导入集群配置。
 >
 > 对于 v2.0.2 之后的版本，导入集群配置时暂不支持自动恢复 relay worker 相关配置，可手动执行 `start-relay` 命令[开启 relay log](/dm/relay-log.md#开启关闭-relay-log)。
 
