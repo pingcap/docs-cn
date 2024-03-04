@@ -88,7 +88,6 @@ ignore-update-new-value-expr = "gender = 'male' and age > 18" # 过滤掉新值 
 | drop column | DDL  | |匹配 drop column event    |
 | modify column | DDL  | |匹配 modify column event    |
 | set default value | DDL  | |匹配 set default value event    |
-| rebase auto_increment ID | DDL  | |匹配 rebase auto_increment ID event    |
 | add primary key | DDL  | |匹配 add primary key event    |
 | drop primary key | DDL  | |匹配 drop primary key event    |
 | rename index | DDL  | |匹配 rename index event    |
