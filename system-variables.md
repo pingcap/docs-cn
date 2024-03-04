@@ -1610,9 +1610,9 @@ mysql> SELECT job_info FROM mysql.analyze_jobs ORDER BY end_time DESC LIMIT 1;
         - BULK 方式只对 auto-commit 的语句生效。
         - 这种方式由 Pipelined-DML 特性实现。
 
-> **注意：**
+> 警告：
 >
-> `tidb_dml_type` 的 BULK 方式是实验性特性，以此方式执行超大事务时对 TiCDC、TiFlash、TiKV resolved-ts 模块的内存使用和执行效率都有影响，有 OOM 风险。不建议在启用这些组件和功能时使用。
+> `tidb_dml_type` 的 BULK 方式是实验性特性，不建议在生产环境中使用。以此方式执行超大事务时对 TiCDC、TiFlash、TiKV resolved-ts 模块的内存使用和执行效率都有影响，有 OOM 风险。不建议在启用这些组件和功能时使用。
 
 ### `tidb_enable_1pc` <span class="version-mark">从 v5.0 版本开始引入</span>
 
