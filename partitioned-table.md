@@ -681,7 +681,7 @@ PARTITION BY KEY()
 PARTITIONS 2;
 ```
 
-但是，如果唯一键列未定义为 NOT NULL，则前面的语句将失败。
+但是，如果唯一键列未定义为 NOT NULL，则上述语句将失败。
 
 ### TiDB 对 Linear Hash 分区的处理
 
