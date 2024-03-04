@@ -1,6 +1,6 @@
 ---
 title: DM 自定义加解密 key
-summary: DM 自定义加解密 key
+summary: 介绍 DM（Data Migration）在 v8.0.0 中引入的自定义加密和解密密钥功能，以及如何在使用 DM 进行数据迁移时配置和使用该功能。
 ---
 
 # DM 自定义加解密 key
