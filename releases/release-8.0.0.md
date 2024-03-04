@@ -268,6 +268,7 @@ PD 微服务通常用于解决 PD 出现性能瓶颈的问题，提高 PD 服务
 | 变量名  | 修改类型（包括新增/修改/删除）    | 描述 |
 |--------|------------------------------|------|
 | [`tidb_opt_use_invisible_indexes`](/system-variables.md#) | 新增 | 控制会话中是否能够选择[不可见索引](/sql-statements/sql-statement-create-index.md#不可见索引)。当修改变量为`ON`时，针对该会话执行的查询，优化能够使用[不可见索引](/sql-statements/sql-statement-create-index.md#不可见索引)进行优化。|
+| [tidb_redact_log](/system-variables.md#) | 修改 | 控制在记录 TiDB 日志和慢日志时如何处理 SAL 文本中的用户信息，可选值为OFF、ON、marker，以支持记录信息明文、信息屏蔽、信息标记。当变量值为marker时，日志中的用户信息将被标记处理，可以在随后的查看中进行日志信息是否脱敏的处理 |
 |        |                              |      |
 |        |                              |      |
 
@@ -278,6 +279,7 @@ PD 微服务通常用于解决 PD 出现性能瓶颈的问题，提高 PD 服务
 | TiDB  |  [`log.general-log-file`]() | 新增 | 指定 `General Query Log` 的保存文件。默认为空，`General Query Log` 将会写入实例文件。 |
 | TiDB  |  [`log.file.compression`]() | 新增 | 指定轮询日志的压缩格式。默认为空，即不压缩轮询日志。 |
 | TiDB Lightning  |  `duplicate-resolution`  | 废弃 | 用于在物理导入模式下设置是否检测和解决唯一键冲突的记录。从 v8.0.0 开始使用新参数 [`conflict.strategy`](/tidb-lightning/tidb-lightning-configuration.md#tidb-lightning-任务配置) 替代。 |
+| TiKV | [`security.encryption.master-key.vendor`] | 新增 | 指定住密钥的服务商类型，支持可选值为 `gcp`、`azure` |
 
 ## 离线包变更
 
