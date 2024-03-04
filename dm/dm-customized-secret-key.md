@@ -5,7 +5,7 @@ summary: 介绍 DM（Data Migration）在 v8.0.0 中引入的自定义加密和�
 
 # DM 自定义加解密 key
 
-在 DM v8.0.0 之前，DM 内部使用了[固定的 AES-256 key](https://github.com/pingcap/tiflow/blob/1252979421fc83ffa2a1548d981e505f7fc0b909/dm/pkg/encrypt/encrypt.go#L27) 来加解密 source 和 task 配置中的密码，但固定秘钥会产生安全风险，特别是在安全要求较高的环境下，自 v8.0.0 版本开始，DM 移除了固定秘钥，并支持设置自定义秘钥。
+在 v8.0.0 之前，DM 使用了一个[固定的 AES-256 密钥](https://github.com/pingcap/tiflow/blob/1252979421fc83ffa2a1548d981e505f7fc0b909/dm/pkg/encrypt/encrypt.go#L27) 来加密和解密数据源和迁移任务配置中的密码，但固定秘钥可能产生安全风险，特别是在对安全性要求较高的环境中。为了提高安全性，从 v8.0.0 开始，DM 移除了固定密钥，并支持设置自定义密钥。
 
 ## 使用方式
 
