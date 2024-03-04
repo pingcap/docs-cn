@@ -175,11 +175,11 @@ PD 微服务通常用于解决 PD 出现性能瓶颈的问题，提高 PD 服务
 
    `General Query Log` 是 MySQL 兼容的功能，开启后会记录数据库执行的全部 SQL 语句，为问题诊断提供依据。TiDB 也支持此功能，通过设置变量 [`tidb_general_log`](/system-variables.md#tidb_general_log) 开启，但是在过去的版本中，`General Query Log` 的内容只能和其他信息一起写入实例日志，对需要长期保存的用户并不友好。
 
-   在新版本中，通过把配置项 [`log.general-log-file`]() 设置为有效的文件名，TiDB 可以把 `General Query Log` 写入指定的文件。和实例日志一样，"General Query Log" 也同样遵循日志的轮询和保存策略。
+   在新版本中，通过把配置项 [`log.general-log-file`](/tidb-configuration-file.md#general-log-file) 设置为有效的文件名，TiDB 可以把 general log 写入指定的文件。和实例日志一样，general log 也同样遵循日志的轮询和保存策略。
    
-   另外，为了减少历史日志文件所占用的磁盘空间，TiDB 在 v8.0.0 支持了原生的日志压缩选项。将配置项 [`log.file.compression`] 设置为 `gzip`，轮询出的历史日志将自动以[`gzip`](https://www.gzip.org/)格式压缩。
+   另外，为了减少历史日志文件所占用的磁盘空间，TiDB 在 v8.0.0 支持了原生的日志压缩选项。将配置项 [`log.file.compression`](/tidb-configuration-file.md#compression) 设置为 `gzip`，轮询出的历史日志将自动以 [`gzip`](https://www.gzip.org/) 格式压缩。
 
-        更多信息，请参考[用户文档](链接))。
+   更多信息，请参考[用户文档](/tidb-configuration-file.md#general-log-file)。
         
 ### 可观测性
 
@@ -253,7 +253,7 @@ PD 微服务通常用于解决 PD 出现性能瓶颈的问题，提高 PD 服务
 
 ### 行为变更
 
-* 在开启 `tidb_ddl_enable_fast_reorg` 实现索引加速功能时，对编码后的索引键值对数据 ingest 到 TiKV 时用的是一个固定并发值 (`16`)，无法根据下游 TiKV 的承载能力动态调整。从 v8.0.0 开始，支持使用 [`tidb_ddl_reorg_worker_cnt`](/system-variables.md#tidb_ddl_reorg_worker_cnt-从-v800-版本开始引入) 调整并发。该参数默认值为 `4`，相比之前的默认值 `16`，在 ingest 索引键值对时性能会比之前的版本有所降低。你可以根据集群的负载按需调整该参数。
+* 在开启 `tidb_ddl_enable_fast_reorg` 实现索引加速功能时，对编码后的索引键值对数据 ingest 到 TiKV 时用的是一个固定并发值 (`16`)，无法根据下游 TiKV 的承载能力动态调整。从 v8.0.0 开始，支持使用 [`tidb_ddl_reorg_worker_cnt`](/system-variables.md#tidb_ddl_reorg_worker_cnt-从-v800-版本开始引入) 调整并发。该参数默认值为 `4`，相比之前的默认值 `16`，在 ingest 索引键值对时性能会比之前的版本有所降低。你可以根据集群的负载按需调整该参数。**tw@hfxsd** <!--无 FD-->
 
 * 行为变更 2
 
@@ -278,7 +278,6 @@ PD 微服务通常用于解决 PD 出现性能瓶颈的问题，提高 PD 服务
 | TiDB  |  [`log.general-log-file`]() | 新增 | 指定 `General Query Log` 的保存文件。默认为空，`General Query Log` 将会写入实例文件。 |
 | TiDB  |  [`log.file.compression`]() | 新增 | 指定轮询日志的压缩格式。默认为空，即不压缩轮询日志。 |
 | TiDB Lightning  |  `duplicate-resolution`  | 废弃 | 用于在物理导入模式下设置是否检测和解决唯一键冲突的记录。从 v8.0.0 开始使用新参数 [`conflict.strategy`](/tidb-lightning/tidb-lightning-configuration.md#tidb-lightning-任务配置) 替代。 |
-### 其他
 
 ## 离线包变更
 
