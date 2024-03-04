@@ -148,7 +148,7 @@ gcloud kms keys create "key-name" --keyring "key-ring-name" --location "global" 
 ```
 [security.encryption.master-key]
 type = "kms"
-key-id = key-id = "projects/project-name/locations/global/keyRings/key-ring-name/cryptoKeys/key-name"
+key-id = "projects/project-name/locations/global/keyRings/key-ring-name/cryptoKeys/key-name"
 vendor = "gcp"
 
 [security.encryption.master-key.gcp]
