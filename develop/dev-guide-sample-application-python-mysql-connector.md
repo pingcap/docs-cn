@@ -85,7 +85,7 @@ pip install -r requirements.txt
 6. 复制并粘贴对应连接字符串至 `.env` 中。示例结果如下：
 
     ```dotenv
-    TIDB_HOST='{host}'  # e.g. gateway01.ap-northeast-1.prod.aws.tidbcloud.com
+    TIDB_HOST='{host}'  # e.g. xxxxxx.aws.tidbcloud.com
     TIDB_PORT='4000'
     TIDB_USER='{user}'  # e.g. xxxxxx.root
     TIDB_PASSWORD='{password}'
@@ -118,9 +118,9 @@ pip install -r requirements.txt
 5. 复制并粘贴对应的连接字符串至 `.env` 中。示例结果如下：
 
     ```dotenv
-    TIDB_HOST='{host}'  # e.g. tidb.xxxx.clusters.tidb-cloud.com
+    TIDB_HOST='{host}'  # e.g. xxxxxx.aws.tidbcloud.com
     TIDB_PORT='4000'
-    TIDB_USER='{user}'  # e.g. root
+    TIDB_USER='{user}'  # e.g. xxxxxx.root
     TIDB_PASSWORD='{password}'
     TIDB_DB_NAME='test'
     CA_PATH='{your-downloaded-ca-path}'
@@ -178,21 +178,20 @@ pip install -r requirements.txt
 
 ```python
 def get_connection(autocommit: bool = True) -> MySQLConnection:
-    config = Config()
     db_conf = {
-        "host": ${tidb_host},
-        "port": ${tidb_port},
-        "user": ${tidb_user},
-        "password": ${tidb_password},
-        "database": ${tidb_db_name},
+        "host": '${tidb_host}',
+        "port": '${tidb_port}',
+        "user": '${tidb_user}',
+        "password": '${tidb_password}',
+        "database": '${tidb_db_name}',
         "autocommit": autocommit,
         "use_pure": True,
     }
 
-    if ${ca_path}:
+    if '${ca_path}':
         db_conf["ssl_verify_cert"] = True
         db_conf["ssl_verify_identity"] = True
-        db_conf["ssl_ca"] = ${ca_path}
+        db_conf["ssl_ca"] = '${ca_path}'
     return mysql.connector.connect(**db_conf)
 ```
 
@@ -203,7 +202,7 @@ def get_connection(autocommit: bool = True) -> MySQLConnection:
 ```python
 with get_connection(autocommit=True) as conn:
     with conn.cursor() as cur:
-        player = ("1", 1, 1)
+        player = ("test", 1, 1)
         cursor.execute("INSERT INTO players (id, coins, goods) VALUES (%s, %s, %s)", player)
 ```
 
@@ -225,8 +224,8 @@ with get_connection(autocommit=True) as conn:
 ```python
 with get_connection(autocommit=True) as conn:
     with conn.cursor() as cur:
-        player_id, amount, price="1", 10, 500
-        cursor.execute(
+        player_id, amount, price="test", 10, 500
+        cur.execute(
             "UPDATE players SET goods = goods + %s, coins = coins + %s WHERE id = %s",
             (-amount, price, player_id),
         )
@@ -239,8 +238,8 @@ with get_connection(autocommit=True) as conn:
 ```python
 with get_connection(autocommit=True) as conn:
     with conn.cursor() as cur:
-        player_id = "1"
-        cursor.execute("DELETE FROM players WHERE id = %s", (player_id,))
+        player_id = "test"
+        cur.execute("DELETE FROM players WHERE id = %s", (player_id,))
 ```
 
 更多信息参考[删除数据](/develop/dev-guide-delete-data.md)。
@@ -253,9 +252,9 @@ Python 驱动程序提供对数据库的底层访问，但要求开发者：
 
 - 手动建立和释放数据库连接
 - 手动管理数据库事务
-- 手动将数据行（在 `mysql-connector-python` 中表示为元组 (tuple) 或者字典 (dict)）映射为数据对象
+- 手动将数据行（在 `mysql-connector-python` 中表示为元组 (Tuple) 或者字典 (Dictionary)）映射为数据对象
 
-建议仅在需要编写复杂的 SQL 语句时使用驱动程序。其他情况下，建议使用 [ORM](https://zh.wikipedia.org/wiki/对象关系映射) 框架进行开发，例如 [SQLAlchemy](/develop/dev-guide-sample-application-python-sqlalchemy.md)、[Peewee](/develop/dev-guide-sample-application-python-peewee.md) 和 Django。ORM 可以帮助你：
+建议仅在需要编写复杂的 SQL 语句时使用驱动程序。其他情况下，建议使用 [ORM](https://zh.wikipedia.org/wiki/对象关系映射) 框架进行开发，例如 [SQLAlchemy](/develop/dev-guide-sample-application-python-sqlalchemy.md)、[Peewee](/develop/dev-guide-sample-application-python-peewee.md) 和 [Django](/develop/dev-guide-sample-application-python-django.md)。ORM 可以帮助你：
 
 - 减少管理连接和事务的[模板代码](https://en.wikipedia.org/wiki/Boilerplate_code)
 - 使用数据对象代替大量 SQL 语句来操作数据

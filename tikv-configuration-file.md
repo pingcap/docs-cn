@@ -106,13 +106,6 @@ TiKV 配置文件比命令行参数支持更多的选项。你可以在 [etc/con
     + 如果把此参数设置为非 `0` 的值，TiKV 最多会保留 `max-backups` 中指定的数量的旧日志文件。比如，如果该值设置为 `7`，TiKV 最多会保留 7 个旧的日志文件。
 + 默认值：0
 
-### `pd.enable-forwarding` <span class="version-mark">从 v5.0.0 版本开始引入</span>
-
-+ 控制 TiKV 中的 PD client 在疑似网络隔离的情况下是否通过 follower 将请求转发给 leader。
-+ 默认值：false
-+ 如果确认环境存在网络隔离的可能，开启这个参数可以减少服务不可用的窗口期。
-+ 如果无法准确判断隔离、网络中断、宕机等情况，这个机制存在误判情况从而导致可用性、性能降低。如果网络中从未发生过网络故障，不推荐开启此选项。
-
 ## server
 
 服务器相关的配置项。
@@ -564,6 +557,13 @@ I/O rate limiter 相关的配置项。
 + 默认值：`"write-only"`
 
 ## pd
+
+### `enable-forwarding` <span class="version-mark">从 v5.0.0 版本开始引入</span>
+
++ 控制 TiKV 中的 PD client 在疑似网络隔离的情况下是否通过 follower 将请求转发给 leader。
++ 默认值：false
++ 如果确认环境存在网络隔离的可能，开启这个参数可以减少服务不可用的窗口期。
++ 如果无法准确判断隔离、网络中断、宕机等情况，这个机制存在误判情况从而导致可用性、性能降低。如果网络中从未发生过网络故障，不推荐开启此选项。
 
 ### `endpoints`
 
@@ -1147,8 +1147,8 @@ RocksDB 相关的配置项。
 
 ### `wal-dir`
 
-+ WAL 存储目录，默认：“tmp/tikv/store”。
-+ 默认值：/tmp/tikv/store
++ WAL 存储目录，若未指定，WAL 将存储在数据目录。
++ 默认值：`""`
 
 ### `wal-ttl-seconds`
 
@@ -1980,6 +1980,11 @@ Raft Engine 相关的配置项。
 + 触发 GC 的垃圾比例阈值。
 + 默认值：`1.1`
 
+### `num-threads` <span class="version-mark">从 v6.5.8 版本开始引入</span>
+
++ 当 `enable-compaction-filter` 为 `false` 时 GC 线程个数。
++ 默认值：1
+
 ## backup
 
 用于 BR 备份相关的配置项。
@@ -2052,8 +2057,8 @@ Raft Engine 相关的配置项。
 
 ### `initial-scan-rate-limit` <span class="version-mark">从 v6.2.0 版本开始引入</span>
 
-+ 日志备份任务在扫描增量数据时的吞吐限流参数。
-+ 默认值：60，即默认限流 60 MB/s
++ 日志备份任务在扫描增量数据时的吞吐限流参数，表示每秒最多从硬盘读出的数据量。注意，如果仅指定数字（如 `60`），则单位为 Byte 而不是 KiB。
++ 默认值：60MiB
 
 ### `max-flush-interval` <span class="version-mark">从 v6.2.0 版本开始引入</span>
 
