@@ -18,7 +18,7 @@ summary: 介绍 DM（Data Migration）在 v8.0.0 中引入的自定义加密和�
 - 如果[数据源配置](/dm/dm-source-configuration-file.md)和[迁移任务配置](/dm/task-configuration-file-full.md)里使用的都是明文密码，则升级不需要做额外处理。
 - 如果 [数据源配置](/dm/dm-source-configuration-file.md)和[迁移任务配置](/dm/task-configuration-file-full.md)里使用了加密密码，或者后续希望使用加密密码，则需进行以下操作：
     1. 修改 [DM-master 配置文件](dm/dm-master-configuration-file.md)，增加 [`secret-key-path`](/dm/dm-master-configuration-file.md)。如果升级前使用了 [固定的 AES-256 密钥](https://github.com/pingcap/tiflow/blob/1252979421fc83ffa2a1548d981e505f7fc0b909/dm/pkg/encrypt/encrypt.go#L27) 进行加密，可拷贝该秘钥到秘钥文件中。请确保所有 DM-master 节点使用相同的密钥配置。
-    - 先滚动升级 dm-master，然后滚动升级 dm-worker，具体参考[滚动升级](/dm/maintain-dm-using-tiup.md#滚动升级)。
+    2. 先滚动升级 DM-master，然后滚动升级 DM-worker，具体参考[滚动升级](/dm/maintain-dm-using-tiup.md#滚动升级)。
 
 ## 更新加密 key
 
