@@ -227,7 +227,7 @@ PD 微服务通常用于解决 PD 出现性能瓶颈的问题，提高 PD 服务
 
     更多信息，请参考[用户文档](链接)。    
     
-  * 全局功能称为正式功能（GA），可提升 import into 任务的导入性能和稳定性，支持 40 TiB 的数据导入 [#i45719](https://github.com/pingcap/tidb/issues/45719) @[lance6716](https://github.com/lance6716) **tw@qiancai** <!--1684-->
+  * 全局排序功能成为正式功能 (GA)，可提升 `IMPORT INTO` 任务的导入性能和稳定性，支持 40 TiB 的数据导入 [#45719](https://github.com/pingcap/tidb/issues/45719) @[lance6716](https://github.com/lance6716) **tw@qiancai** <!--1580-->
 
     原先 import into 任务调度到多个 TiDB 节点进行数据导入时，使用节点本地的磁盘对当前节点负责导入的数据进行本地局部排序，无法将所有节点要导入的数据进行全局排序，因此节点间的数据存在重叠时，在导入 TiKV 过程中， TiKV 需要执行较多的 compaction 操作，导致 TiKV 的稳定性和性能下降。而引入全局排序后，可将所有需要导入的数据进行全局排序后再导入 TiKV，数据全局有序，TiKV 也就无需执行 compaction 操作，稳定性以及写入性能都会有较大的提升。同时最高支持 40 TiB 的数据导入。
 
