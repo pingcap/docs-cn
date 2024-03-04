@@ -88,12 +88,12 @@ PD 微服务通常用于解决 PD 出现性能瓶颈的问题，提高 PD 服务
 
 * 解除执行计划缓存的部分限制 [#49161](https://github.com/pingcap/tidb/pull/49161) @[mjonss](https://github.com/mjonss) @[qw4990](https://github.com/qw4990) **tw@hfxsd** <!--1622/1585-->
 
-    TiDB 支持[执行计划缓存](/sql-prepared-plan-cache.md)，它能够有效减低交易类业务系统的处理时延，是提升性能的重要手段。在 v8.0.0 中，TiDB 解除了执行计划缓存的几个限制：
-    
-    * 含有[分区表](/partitioned-table.md)的执行计划能够被缓存
-    * 含有[生成列](/generated-columns.md)的执行计划能够被缓存
-    
-    当执行计划中含有分区表、生成列、或者依赖生成列的对象(比如[多值索引](/choose-index.md))时，执行计划仍旧可以被缓存。这些增强扩展了执行计划缓存的使用场景，提升了复杂场景下数据库的整体性能。
+    TiDB 支持[执行计划缓存](/sql-prepared-plan-cache.md)，能够有效降低交易类业务系统的处理时延，是提升性能的重要手段。在 v8.0.0 中，TiDB 解除了执行计划缓存的几个限制，含有以下内容的执行计划均能够被缓存：
+
+    - [分区表](/partitioned-table.md)
+    - [生成列](/generated-columns.md)，包含依赖生成列的对象（比如[多值索引](/choose-index.md)）
+
+  该增强扩展了执行计划缓存的使用场景，提升了复杂场景下数据库的整体性能。
 
     更多信息，请参考[用户文档](/sql-prepared-plan-cache.md)。
 
@@ -104,7 +104,7 @@ PD 微服务通常用于解决 PD 出现性能瓶颈的问题，提高 PD 服务
     * 多值索引上的统计信息会被收集，并应用于优化器估算。当一条 SQL 可能选择到数个多值索引时，优化器可以识别开销更小的索引。
     * 当出现用 `OR` 连接的多个 `member of` 条件时，优化器能够为每个 DNF Item（`member of` 条件）匹配一个有效的 Index Partial Path 路径，并将多条路径以 Union 的方式综合起来组成 `Index Merge` 来做更高效的条件过滤和数据读取。
 
-    更多信息，请参考[用户文档](/sql-statements/sql-statement-create-index.md#多值索引)。
+  更多信息，请参考[用户文档](/sql-statements/sql-statement-create-index.md#多值索引)。
 
 ### 稳定性
 
@@ -133,7 +133,7 @@ PD 微服务通常用于解决 PD 出现性能瓶颈的问题，提高 PD 服务
 
 ### SQL 功能
 
-* 新增支持处理大量数据的 DML 类型 [#16291](https://github.com/tikv/tikv/issues/16291) @[ekexium](https://github.com/ekexium) **tw@qiancai** <!--1694-->
+* 新增支持处理大量数据的 DML 类型 [#16291](https://github.com/tikv/tikv/issues/16291) @[ekexium](https://github.com/ekexium) **tw@Oreoxmt** <!--1694-->
 
     在之前的 TiDB 版本中，所有的事务数据在提交之前，都保存在内存中。当处理大量数据时，事务所需的内存成为瓶颈，限制了 TiDB 可以处理的事务大小。TiDB 曾经发布了非事务 DML 功能，通过拆分 SQL 的方式尝试解决事务大小限制，但是功能存在较多限制，在实际使用时并不友好。
     
@@ -143,11 +143,12 @@ PD 微服务通常用于解决 PD 出现性能瓶颈的问题，提高 PD 服务
 
     更多信息，请参考[用户文档](/... tidb_dml_type 变量)。
 
-* TiDB 建表时，支持更多的表达式来设置列的默认值 [#issue号](链接) @[zimulala](https://github.com/zimulala) **tw@qiancai** <!--1690-->
+* TiDB 建表时，支持更多的表达式来设置列的默认值 （实验特性）[#50936](https://github.com/pingcap/tidb/issues/50936) @[zimulala](https://github.com/zimulala) **tw@qiancai** <!--1690-->
 
     之前的版本建表时，列默认值只能为固定的字符串，数字，以及日期，而从 v8.0.0 版本开始，支持将部分表达式作为列的默认值，如将列的默认值设置为 UUID() ，从而来满足用户多样化的业务需求。
 
     更多信息，请参考[用户文档](链接)。
+
 ### 数据库管理
 
 * PITR 支持 Amazon S3 对象锁定 [#51184](https://github.com/pingcap/tidb/issues/51184) @[RidRisR](https://github.com/RidRisR) **tw@lilin90** <!--1604-->
@@ -156,7 +157,7 @@ PD 微服务通常用于解决 PD 出现性能瓶颈的问题，提高 PD 服务
     
     更多信息，请参考[用户文档](链接)。
     
-    * PITR 支持备份恢复 Lightning 物理模式导入的数据 （实验性功能） [#issue号](链接) @[BornChanger](https://github.com/BornChanger) **tw@qiancai** <!--1086-->
+    * PITR 支持备份恢复由 TiDB Lightning 物理模式导入的数据（实验特性）[#issue号](链接) @[BornChanger](https://github.com/BornChanger) **tw@qiancai** <!--1086-->
 
     TiDB v8.0.0 版本之前，由于 Lightning 的物理导入模式会“重写历史”，导致 PITR 无法感知到被”重写的历史” ，因此无法对数据进行备份。用户需要在完成数据导入后执行一次全量备份。从 TiDB v8.0.0 版本起，PITR 通过对解析时间戳（ResolvedTs）和 `Ingest SST` 操作进行兼容性设计，使得通过 Lightning 的物理模式导入的数据可以被 PITR 正确的识别、备份和恢复。这项改进为客户提供了更加完善的数据保护和恢复方案。
 
@@ -170,7 +171,7 @@ PD 微服务通常用于解决 PD 出现性能瓶颈的问题，提高 PD 服务
 
     更多信息，请参考[用户文档](/sql-statements/sql-statement-create-index.md#不可见索引)。
 
-* 支持将 `General Query Log` 写入独立文件 [#issue号](链接) @[Defined2014](https://github.com/Defined2014) **tw@hfxsd** <!--1632-->
+* 支持将 `General Query Log` 写入独立文件 [#51248](https://github.com/pingcap/tidb/issues/51248) @[Defined2014](https://github.com/Defined2014) **tw@hfxsd** <!--1632-->
 
    `General Query Log` 是 MySQL 兼容的功能，开启后会记录数据库执行的全部 SQL 语句，为问题诊断提供依据。TiDB 也支持此功能，通过设置变量 [`tidb_general_log`](/system-variables.md#tidb_general_log) 开启，但是在过去的版本中，`General Query Log` 的内容只能和其他信息一起写入实例日志，对需要长期保存的用户并不友好。
 
@@ -182,7 +183,7 @@ PD 微服务通常用于解决 PD 出现性能瓶颈的问题，提高 PD 服务
         
 ### 可观测性
 
-* 引入对索引使用情况的观测 [#issue号](链接) @[YangKeao](https://github.com/hawkingrei) **tw@Oreoxmt** <!--1400-->
+* 引入对索引使用情况的观测 [#49830](https://github.com/pingcap/tidb/issues/49830) @[YangKeao](https://github.com/YangKeao) **tw@Oreoxmt** <!--1400-->
 
     正确的索引设计是提升数据库性能的重要前提。TiDB 在 v8.0.0 新加入了内存表 [`information_schema.tidb_index_usage`](/information-schema/information-schema-tidb-index-usage.md)，记录每个 TiDB 节点上索引的使用情况，其中包括：
     * 扫描该索引的语句的累计执行次数
@@ -196,7 +197,6 @@ PD 微服务通常用于解决 PD 出现性能瓶颈的问题，提高 PD 服务
      * 如果用户从 v8.0.0 之前的版本升级上来，`sys` 中的内容不会被自动创建，需要根据[文档]((/sys-schema.md))手动创建。
     * [`information_schema.tidb_index_usage`](/information-schema/information-schema-tidb-index-usage.md) 只在内存中维护，重启 TiDB 节点后该节点的信息会丢失。
     * [`information_schema.tidb_index_usage`](/information-schema/information-schema-tidb-index-usage.md) 默认会被维护。可以通过修改配置项 [`instance.tidb_enable_collect_execution_info`](/tidb-configuration-file.md#tidb_enable_collect_execution_info) 或者变量[`tidb_enable_collect_execution_info`](/system-variables.md#tidb_enable_collect_execution_info) 将其关闭。
-   
 
     更多信息，请参考[用户文档](/information-schema/information-schema-tidb-index-usage.md)。
 
@@ -215,13 +215,13 @@ PD 微服务通常用于解决 PD 出现性能瓶颈的问题，提高 PD 服务
 
     更多信息，请参考[用户文档](链接)。
 
-* Import into 功能增强，支持 Import into... from select 语法 [#49883](https://github.com/pingcap/tidb/issues/49883) @[D3Hunter](https://github.com/D3Hunter) **tw@qiancai** <!--1680-->
+* Import into 功能增强，支持 Import into... from select 语法（实验特性） [#49883](https://github.com/pingcap/tidb/issues/49883) @[D3Hunter](https://github.com/D3Hunter) **tw@qiancai** <!--1680-->
 
     在一些大数据量的场景使用 insert into ... select，数据导入的性能较慢，而从 8.0 版本开始，支持用户使用 Import into... from select 来导入查询结果到目标表中，且导入的性能最高可达  insert into ... select 的 8 倍，大大缩短了把查询结果导入目标表的所需时间。此外，该功能还支持导入使用 [`AS OF TIMESTAMP`](/as-of-timestamp.md) 查询的历史数据。
 
     更多信息，请参考[用户文档](链接)。        
     
-* Lightning 冲突策略简化，同时支持 Replace 的方式处理冲突的数据 [#issue 号](链接) @[lyzx2001](https://github.com/lyzx2001) **tw@qiancai** <!--1684-->
+* TiDB Lightning 冲突策略简化，同时支持 Replace 的方式处理冲突的数据（实验特性） [#51036](https://github.com/pingcap/tidb/issues/51036) @[lyzx2001](https://github.com/lyzx2001) **tw@qiancai** <!--1684-->
 
     原先 Lightning 逻辑导入模式时有一套冲突处理策略，物理导入模式时也有一套冲突策略，同时物理导入模式还有一套前置冲突策略，导致用户配置复杂。从 8.0 开始，将这 3 种冲突策略合并成了一套，简化了用户的配置操作。同时在物理导入模式下，还首次引入了通过 replace 的方式处理导入过程中冲突的数据。
 
@@ -247,7 +247,7 @@ PD 微服务通常用于解决 PD 出现性能瓶颈的问题，提高 PD 服务
 
 ### 行为变更
 
-* 行为变更 1
+* 在开启 `tidb_ddl_enable_fast_reorg` 实现索引加速功能时，对编码后的索引键值对数据 ingest 到 TiKV 时用的是一个固定并发值 (`16`)，无法根据下游 TiKV 的承载能力动态调整。从 v8.0.0 开始，支持使用 [`tidb_ddl_reorg_worker_cnt`](/system-variables.md#tidb_ddl_reorg_worker_cnt-从-v800-版本开始引入) 调整并发。该参数默认值为 `4`，相比之前的默认值 `16`，在 ingest 索引键值对时性能会比之前的版本有所降低。你可以根据集群的负载按需调整该参数。
 
 * 行为变更 2
 
@@ -271,7 +271,7 @@ PD 微服务通常用于解决 PD 出现性能瓶颈的问题，提高 PD 服务
 | -------- | -------- | -------- | -------- |
 | TiDB  |  [`log.general-log-file`]() | 新增 | 指定 `General Query Log` 的保存文件。默认为空，`General Query Log` 将会写入实例文件。 |
 | TiDB  |  [`log.file.compression`]() | 新增 | 指定轮询日志的压缩格式。默认为空，即不压缩轮询日志。 |
-
+| TiDB Lightning  |  `duplicate-resolution`  | 废弃 | 用于在物理导入模式下设置是否检测和解决唯一键冲突的记录。从 v8.0.0 开始使用新参数 [`conflict.strategy`](/tidb-lightning/tidb-lightning-configuration.md#tidb-lightning-任务配置) 替代。 |
 ### 其他
 
 ## 离线包变更
@@ -294,7 +294,7 @@ PD 微服务通常用于解决 PD 出现性能瓶颈的问题，提高 PD 服务
     - 优化数据落盘功能的退出机制，提升数据落盘时取消查询的性能 [#50511](https://github.com/pingcap/tidb/issues/50511) @[wshwsh12](https://github.com/wshwsh12) **tw@qiancai** <!--1635-->
     - 用多个等值条件做表连接时，支持利用匹配到部分条件的索引做 Index Join [#47233](https://github.com/pingcap/tidb/issues/47233) @[winoros](https://github.com/winoros) **tw@Oreoxmt** <!--1601-->
     - Index Join 允许被连接的一侧为聚合数据集 [#37068](https://github.com/pingcap/tidb/issues/37068) @[elsa0520](https://github.com/elsa0520) **tw@Oreoxmt** <!--1510-->
-
+    - Import into SQL 功能增强，原先只有在一个导入任务运行完成后才能提交第二个任务，现在可以同时提交 16 个 import into 的任务，大大提升导入的性能，同时方便用户批量导入数据到所需的目标表，提升数据导入效率。 [#49008](https://github.com/pingcap/tidb/issues/49008) @[D3Hunter](https://github.com/D3Hunter) **tw@qiancai** <!--1680-->
 
 + TiKV
 
@@ -328,7 +328,7 @@ PD 微服务通常用于解决 PD 出现性能瓶颈的问题，提高 PD 服务
 
     + TiDB Data Migration (DM)
 
-        - note [#issue](链接) @[贡献者 GitHub ID](链接)
+        - `MariaDB` 主从复制的场景，即 `MariaDB_主实例` -> `MariaDB_从实例` -> `DM` -> `TiDB` 的迁移场景，当 `gtid_strict_mode = off`，且 `Mariadb_从实例`的 GTID 不严格递增时（比如有业务数据在写 `MariaDB_从实例` ），此时 DM 任务会报错 `less than global checkpoint position`。从 v8.0.0 开始，TiDB 兼容该场景，数据可以正常迁移到下游。 [#issue](链接) @[okJiang](https://github.com/okJiang) **tw@hfxsd** <!--1683-->
         - note [#issue](链接) @[贡献者 GitHub ID](链接)
 
     + TiDB Lightning
