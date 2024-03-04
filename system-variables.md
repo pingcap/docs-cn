@@ -1608,7 +1608,7 @@ mysql> SELECT job_info FROM mysql.analyze_jobs ORDER BY end_time DESC LIMIT 1;
         - 在 TiDB 事务执行过程中，数据不全部缓存在 TiDB 内存中，而是持续写入 TiKV，以此降低内存占用。
         - 这种方式不能高效处理写入冲突场景，仅适用于无冲突的大批量数据的写入场景。
         - BULK 方式只对 auto-commit 的语句生效，且 [`pessimistic-auto-commit`配置项](/tidb-configuration-file.md#pessimistic-auto-commit) 必须为 `false`。
-        - 这种方式由 Pipelined-DML 特性实现。
+        - 这种方式由 [Pipelined-DML](https://github.com/pingcap/tidb/issues/50215) 特性实现。
 
 > 警告：
 >
