@@ -127,6 +127,7 @@ TiDB 版本：7.1.4
         - 修复存在网络问题时加索引会导致索引数据不一致的问题 [#49773](https://github.com/pingcap/tidb/issues/49773) @[tangenta](https://github.com/tangenta)
         - 修复 ddl job 执行顺序，避免 TICDC 收到乱序的 ddl [#49498](https://github.com/pingcap/tidb/issues/49498) @[tangenta](https://github.com/tangenta)
         - 修复部分 partition 或者约束的表达式会导致 DDL 卡住的问题 [#50972](https://github.com/pingcap/tidb/issues/50972) @[lcwangchao](https://github.com/lcwangchao)
+- 修复默认值被删除的列获取默认值报错的问题 [#51309](https://github.com/pingcap/tidb/issues/51309) @[crazycs520](https://github.com/crazycs520)
 
 + TiKV
 
