@@ -202,9 +202,15 @@ PD 微服务通常用于解决 PD 出现性能瓶颈的问题，提高 PD 服务
 
 ### 安全
 
-* 功能标题 [#issue号](链接) @[贡献者 GitHub ID](链接) **tw@xxx** <!--1234-->
+* TiKV 静态加密支持 GCP KMS [#8906](https://github.com/tikv/tikv/issues/8906) @[glorv](https://github.com/glorv) **tw@xxx** <!--1234-->
 
-    功能描述（需要包含这个功能是什么、在什么场景下对用户有什么价值、怎么用）
+    TiKV 基于静态加密功能对存储的数据进行加密，确保数据的安全性。静态加密的安全核心点在于密钥管理，此次在静态加密的密钥管理类型中引入了对 GCP KMS 的支持。TiKV 静态加密支持 GCP KMS 可以帮助用户构建基于 GCP KMS 的静态加密能力，可以保证用户数据的安全性。要是用此功能请完成 TiKV 配置文件的 `[security.encryption.master-key]` 部分的内容，即正确实现 TiKV 与 GCP KMS的关联。
+
+    更多信息，请参考[用户文档](https://github.com/pingcap/docs-cn/pull/16737)。
+
+* TiDB 日志脱敏增强 [#51306](https://github.com/pingcap/tidb/issues/51306) @[xhebox](https://github.com/xhebox) **tw@xxx** <!--1234-->
+
+    TiDB 日志脱敏增强是基于对日志文件中 SQL 文本信息的数据进行标记，以便支持用户在查看时进行敏感数据的安全展示。用户可以更灵活自主地在展示环节控制是否对日志信息进行脱敏，以支持 TiDB 日志在不同场景下的安全使用，提升了客户使用日志脱敏能力的安全性和灵活性。要使用此功能请通过修改系统变量 `tidb_redact_log` 的值设置为 `marker`，此时 TiDB 的运行日志将对 SQL 文本进行标记，查看时将基于标记进行数据的安全展示，从而实现日志信息的保护。
 
     更多信息，请参考[用户文档](链接)。
 
