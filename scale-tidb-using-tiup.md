@@ -127,7 +127,29 @@ pd_servers:
 
 预期日志结尾输出 ```Scaled cluster `<cluster-name>` out successfully``` 信息，表示扩容操作成功。
 
-### 3. 检查集群状态
+### 3. 刷新集群配置
+
+> **注意：**
+>
+> 该操作仅在 PD 扩容时需要被执行。
+
+（1）更新集群配置：
+
+  {{< copyable "shell-regular" >}}
+
+  ```shell
+  tiup cluster reload <cluster-name> --skip-restart
+  ```
+
+（2）更新 Prometheus 配置并重启：
+
+  {{< copyable "shell-regular" >}}
+
+  ```shell
+  tiup cluster reload <cluster-name> -R prometheus
+  ```
+
+### 4. 检查集群状态
 
 {{< copyable "shell-regular" >}}
 
@@ -326,7 +348,29 @@ tiup cluster scale-in <cluster-name> --node 10.0.1.5:20160
 
 预期输出 Scaled cluster `<cluster-name>` in successfully 信息，表示缩容操作成功。
 
-### 3. 检查集群状态
+### 3. 刷新集群配置
+
+> **注意：**
+>
+> 该操作仅在 PD 缩容时需要被执行。
+
+（1）更新集群配置：
+
+  {{< copyable "shell-regular" >}}
+
+  ```shell
+  tiup cluster reload <cluster-name> --skip-restart
+  ```
+
+（2）更新 Prometheus 配置并重启：
+
+  {{< copyable "shell-regular" >}}
+
+  ```shell
+  tiup cluster reload <cluster-name> -R prometheus
+  ```
+
+### 4. 检查集群状态
 
 下线需要一定时间，下线节点的状态变为 Tombstone 就说明下线成功。
 
