@@ -361,7 +361,8 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
 
 + 指定日志的压缩方式。
 + 默认值：""
-+ 默认不开启压缩。现支持的压缩格式仅为 `"gzip"`。开启压缩后会影响所有的日志文件，如 `slow-log-file`、`general-log-file` 等。
++ 可选值：""、"gzip"
++ 默认值为 "" 即不压缩。修改为 "gzip" 可以使用 gzip 算法压缩数据。开启压缩后会影响所有的日志文件，包括 [`slow-query-file`](#slow-query-file)、[`general-log-file`](#general-log-file) 等。
 
 ## security
 
