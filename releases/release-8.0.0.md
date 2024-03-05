@@ -157,7 +157,7 @@ PD 微服务通常用于解决 PD 出现性能瓶颈的问题，提高 PD 服务
     
     更多信息，请参考[用户文档](链接)。
     
-    * PITR 支持备份恢复由 TiDB Lightning 物理模式导入的数据（实验特性）[#issue号](链接) @[BornChanger](https://github.com/BornChanger) **tw@qiancai** <!--1086-->
+* PITR 支持备份恢复由 TiDB Lightning 物理模式导入的数据（实验特性）[#issue号](链接) @[BornChanger](https://github.com/BornChanger) **tw@qiancai** <!--1086-->
 
     TiDB v8.0.0 版本之前，由于 Lightning 的物理导入模式会“重写历史”，导致 PITR 无法感知到被”重写的历史” ，因此无法对数据进行备份。用户需要在完成数据导入后执行一次全量备份。从 TiDB v8.0.0 版本起，PITR 通过对解析时间戳（ResolvedTs）和 `Ingest SST` 操作进行兼容性设计，使得通过 Lightning 的物理模式导入的数据可以被 PITR 正确的识别、备份和恢复。这项改进为客户提供了更加完善的数据保护和恢复方案。
 
@@ -171,9 +171,9 @@ PD 微服务通常用于解决 PD 出现性能瓶颈的问题，提高 PD 服务
 
     更多信息，请参考[用户文档](/sql-statements/sql-statement-create-index.md#不可见索引)。
 
-* 支持将 `General Query Log` 写入独立文件 [#51248](https://github.com/pingcap/tidb/issues/51248) @[Defined2014](https://github.com/Defined2014) **tw@hfxsd** <!--1632-->
+* 支持将 general log 写入独立文件 [#51248](https://github.com/pingcap/tidb/issues/51248) @[Defined2014](https://github.com/Defined2014) **tw@hfxsd** <!--1632-->
 
-   `General Query Log` 是 MySQL 兼容的功能，开启后会记录数据库执行的全部 SQL 语句，为问题诊断提供依据。TiDB 也支持此功能，通过设置变量 [`tidb_general_log`](/system-variables.md#tidb_general_log) 开启，但是在过去的版本中，`General Query Log` 的内容只能和其他信息一起写入实例日志，对需要长期保存的用户并不友好。
+   general log 是 MySQL 兼容的功能，开启后会记录数据库执行的全部 SQL 语句，为问题诊断提供依据。TiDB 也支持此功能，你通过设置变量 [`tidb_general_log`](/system-variables.md#tidb_general_log) 开启该功能。但是在过去的版本中，general log 的内容只能和其他信息一起写入实例日志，对需要长期保存的用户并不友好。
 
    在新版本中，通过把配置项 [`log.general-log-file`](/tidb-configuration-file.md#general-log-file) 设置为有效的文件名，TiDB 可以把 general log 写入指定的文件。和实例日志一样，general log 也同样遵循日志的轮询和保存策略。
    
@@ -202,19 +202,20 @@ PD 微服务通常用于解决 PD 出现性能瓶颈的问题，提高 PD 服务
 
 ### 安全
 
-* TiKV 静态加密支持 GCP KMS [#8906](https://github.com/tikv/tikv/issues/8906) @[glorv](https://github.com/glorv) **tw@xxx** <!--1234-->
+* TiKV 静态加密支持 GCP KMS [#8906](https://github.com/tikv/tikv/issues/8906) @[glorv](https://github.com/glorv) **tw@qiancai** <!--1612-->
 
     TiKV 基于静态加密功能对存储的数据进行加密，确保数据的安全性。静态加密的安全核心点在于密钥管理，此次在静态加密的密钥管理类型中引入了对 GCP KMS 的支持。TiKV 静态加密支持 GCP KMS 可以帮助用户构建基于 GCP KMS 的静态加密能力，可以保证用户数据的安全性。要是用此功能请完成 TiKV 配置文件的 `[security.encryption.master-key]` 部分的内容，即正确实现 TiKV 与 GCP KMS的关联。
 
     更多信息，请参考[用户文档](https://github.com/pingcap/docs-cn/pull/16737)。
 
-* TiDB 日志脱敏增强 [#51306](https://github.com/pingcap/tidb/issues/51306) @[xhebox](https://github.com/xhebox) **tw@xxx** <!--1234-->
+* TiDB 日志脱敏增强 [#51306](https://github.com/pingcap/tidb/issues/51306) @[xhebox](https://github.com/xhebox) **tw@qiancai** <!--1229-->
 
     TiDB 日志脱敏增强是基于对日志文件中 SQL 文本信息的数据进行标记，以便支持用户在查看时进行敏感数据的安全展示。用户可以更灵活自主地在展示环节控制是否对日志信息进行脱敏，以支持 TiDB 日志在不同场景下的安全使用，提升了客户使用日志脱敏能力的安全性和灵活性。要使用此功能请通过修改系统变量 `tidb_redact_log` 的值设置为 `marker`，此时 TiDB 的运行日志将对 SQL 文本进行标记，查看时将基于标记进行数据的安全展示，从而实现日志信息的保护。
 
     更多信息，请参考[用户文档](链接)。
 
 ### 数据迁移
+
 * DM 支持使用用户提供的密钥对源和目标数据库的密码进行加密和解密 [#9492](https://github.com/pingcap/tiflow/issues/9492) @[D3Hunter](https://github.com/D3Hunter) **tw@qiancai** <!--1497-->
 
     之前 DM 使用的是自带的一个固定秘钥，安全性较低。而从 8.0 版本开始，用户可以传入自定义的密钥文件，对上下游的数据库的密码进行加密和解密操作，也可以按需替换秘钥，提升了安全性。
@@ -229,7 +230,7 @@ PD 微服务通常用于解决 PD 出现性能瓶颈的问题，提高 PD 服务
     
 * TiDB Lightning 冲突策略简化，同时支持 Replace 的方式处理冲突的数据（实验特性） [#51036](https://github.com/pingcap/tidb/issues/51036) @[lyzx2001](https://github.com/lyzx2001) **tw@qiancai** <!--1684-->
 
-    原先 Lightning 逻辑导入模式时有一套冲突处理策略，物理导入模式时也有一套冲突策略，同时物理导入模式还有一套前置冲突策略，导致用户配置复杂。从 8.0 开始，将这 3 种冲突策略合并成了一套，简化了用户的配置操作。同时在物理导入模式下，还首次引入了通过 replace 的方式处理导入过程中冲突的数据。
+    原先 TiDB Lightning 逻辑导入模式时有一套冲突处理策略，物理导入模式时也有一套冲突策略，同时物理导入模式还有一套前置冲突策略，导致配置复杂。从 v8.0.0 开始，将这三种冲突策略合并成了一套，简化了配置操作。同时在物理导入模式下，还首次引入了通过 `replace` 的方式处理导入过程中冲突的数据，遇到主键或唯一键冲突的数据时，保留最新的数据、覆盖旧的数据。最新数据的定义取决于 TiDB Lightning 内部机制。
 
     更多信息，请参考[用户文档](链接)。    
     
@@ -296,8 +297,6 @@ PD 微服务通常用于解决 PD 出现性能瓶颈的问题，提高 PD 服务
 
 + TiDB
 
-    - note [#issue](链接) @[贡献者 GitHub ID](链接)
-    - note [#issue](链接) @[贡献者 GitHub ID](链接)
     - 优化 Sort 算子的数据落盘性能 [#47733](https://github.com/pingcap/tidb/issues/47733) @[xzhangxian1008](https://github.com/xzhangxian1008) **tw@qiancai** <!--1609-->
     - 优化数据落盘功能的退出机制，提升数据落盘时取消查询的性能 [#50511](https://github.com/pingcap/tidb/issues/50511) @[wshwsh12](https://github.com/wshwsh12) **tw@qiancai** <!--1635-->
     - 用多个等值条件做表连接时，支持利用匹配到部分条件的索引做 Index Join [#47233](https://github.com/pingcap/tidb/issues/47233) @[winoros](https://github.com/winoros) **tw@Oreoxmt** <!--1601-->
