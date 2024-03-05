@@ -77,19 +77,22 @@ data-key-rotation-period = "168h" # 7 days
 
 `data-encryption-method` 的可选值为 `"aes128-ctr"`、`"aes192-ctr"`、`"aes256-ctr"`、`"sm4-ctr"` (仅 v6.3.0 及之后版本) 和 `"plaintext"`。默认值为 `"plaintext"`，即默认不开启加密功能。`data-key-rotation-period` 指定 TiKV 轮换密钥的频率。可以为新 TiKV 集群或现有 TiKV 集群开启加密，但只有启用后写入的数据才保证被加密。要禁用加密，请在配置文件中删除 `data-encryption-method`，或将该参数值为 `"plaintext"`，然后重启 TiKV。若要替换加密算法，则将 `data-encryption-method` 替换成已支持的加密算法，然后重启 TiKV。替换加密算法后，旧加密算法生成的加密文件会随着新数据的写入逐渐被重写成新加密算法所生成的加密文件。
 
-如果启用了加密（即 `data-encryption-method` 的值不是 `"plaintext"`），则必须指定主密钥。TiKV 支持 KMS 和文件两种方式指定密钥。
+如果启用了加密（即 `data-encryption-method` 的值不是 `"plaintext"`），则必须指定主密钥。你可以通过以下方式之一来指定主密钥。
 
-#### 配置 KMS 密钥
+- [通过 KMS 指定主密钥](#通过-KMS-指定主密钥)
+- [通过文件指定主密钥](#通过文件指定主密钥)
 
-TiKV 支持 AWS、GCP 和 Azure 3 个平台的 KMS 加密，根据服务部署的平台，使用不同的方式配置 KMS 加密。
+#### 通过 KMS 指定主密钥
+
+TiKV 支持 AWS、Google Cloud 和 Azure 这三个平台的 KMS 加密。你可以根据服务部署的平台，你可以选择其中之一配置 KMS 加密。
 
 <SimpleTab>
 
 <div label="AWS KMS">
 
-创建密钥
+**第 1 步：创建主密钥**
 
-在 AWS 上创建一个密钥，请执行以下步骤：
+在 AWS 上创建一个密钥，请进行以下操作：
 
 1. 进入 AWS 控制台的 [AWS KMS](https://console.aws.amazon.com/kms)。
 2. 确保在控制台的右上角选择正确的区域。
@@ -105,9 +108,9 @@ aws --region us-west-2 kms create-alias --alias-name "alias/tidb-tde" --target-k
 
 需要在第二条命令中输入的 `--target-key-id` 是第一条命令的结果。
 
-配置密钥
+**第 2 步：配置主密钥**
 
-使用 AWS KMS 方式指定为主密钥，请在 `[security.encryption]` 部分之后添加 `[security.encryption.master-key]` 部分：
+使用 AWS KMS 方式指定主密钥，请在 TiKV 的配置文件中 `[security.encryption]` 部分之后添加 `[security.encryption.master-key]` 配置：
 
 ```
 [security.encryption.master-key]
@@ -122,15 +125,20 @@ endpoint = "https://kms.us-west-2.amazonaws.com"
 你也可以使用 AWS [多区域键](https://docs.aws.amazon.com/zh_cn/kms/latest/developerguide/multi-region-keys-overview.html)。为此，你需要在一个特定的区域设置一个主键，并在需要的区域中添加副本密钥。
 </div>
 
-<div label="GCP KMS">
+<div label="Google Cloud KMS">
 
-创建密钥
+**第 1 步：创建主密钥**
 
-在 GCP 平台上创建一个密钥，请执行以下步骤：
+要在 Google Cloud 平台上创建一个密钥，请执行以下步骤：
 
-1. 进入 GCP 控制台的 [密钥管理](https://console.cloud.google.com/security/kms/keyrings)。
-2. 点击**创建密钥环**，创建密钥环，注意密钥环所在的位置需要覆盖 TiDB 集群部署的区域。
-3. 选择上一步创建的密钥环，在密钥环详情页面点击**创建密钥**，注意密钥的**保护级别**选择**软件**或 **HSM**，**密钥材料**选择**生成的密钥**，**用途**选择 **Symmetric encrypt/decrypt**。
+1. 进入 Google Cloud 控制台的 [密钥管理](https://console.cloud.google.com/security/kms/keyrings)。
+2. 点击**创建密钥环**。输入密钥环的名称，选择密钥环的位置，然后点击**创建**。注意密钥环的位置需要覆盖 TiDB 集群部署的区域。
+3. 选择上一步创建的密钥环，在密钥环详情页面点击**创建密钥**。
+4. 输入密钥的名称，设置密钥的信息如下，然后点击**创建**。
+
+    - **保护级别**：**软件**或 **HSM**
+    - **密钥材料**：**生成的密钥**
+    - **用途**：**Symmetric encrypt/decrypt**
 
 你也可以使用 gcloud CLI 执行该操作：
 
@@ -139,11 +147,11 @@ gcloud kms keyrings create "key-ring-name" --location "global"
 gcloud kms keys create "key-name" --keyring "key-ring-name" --location "global" --purpose "encryption" --rotation-period "30d" 
 ```
 
-请将上述命令中的 "key-ring-name"、"key-name"、"global"、"30d" 等字段替换为实际密钥对应的名称和配置。
+请将上述命令中的 "key-ring-name"、"key-name"、"global"、"30d" 等字段的值替换为实际密钥对应的名称和配置。
 
-配置密钥
+**第 2 步：配置主密钥**
 
-使用 GCP KMS 方式指定为主密钥，请在 `[security.encryption]` 部分之后添加 `[security.encryption.master-key]` 部分：
+要使用 Google Cloud KMS 方式指定主密钥，请在 `[security.encryption]` 部分之后添加 `[security.encryption.master-key]` 配置：
 
 ```
 [security.encryption.master-key]
@@ -155,18 +163,18 @@ vendor = "gcp"
 credential-file-path = "/path/to/credential.json"
 ```
 
-`key-id` 指定 KMS CMK 的密钥 ID, `credential-file-path` 指向验证凭据配置文件的路径，目前支持 Serivce Account 和 Authentition User 两种凭据。如果 TiKV 的运行环境已配置 [应用默认凭据](https://cloud.google.com/docs/authentication/application-default-credentials?hl=zh-cn)，则无须此配置项。
+`key-id` 指定 KMS CMK 的密钥 ID, `credential-file-path` 指向验证凭据配置文件的路径，目前支持 Service Account 和 Authentication User 两种凭据。如果 TiKV 的运行环境已配置 [应用默认凭据](https://cloud.google.com/docs/authentication/application-default-credentials?hl=zh-cn)，则无须此配置项。
 </div>
 
 <div label="Azure KMS">
 
-创建密钥
+**第 1 步：创建主密钥**
 
 在 Azure 平台创建密钥，请参考文档 [使用 Azure 门户在 Azure Key Vault 中设置和检索密钥](https://learn.microsoft.com/zh-cn/azure/key-vault/keys/quick-create-portal)。
 
-配置密钥
+**第 2 步：配置主密钥**
 
-要使用 Azure KMS 方式指定为主密钥，请在 `[security.encryption]` 部分之后添加 `[security.encryption.master-key]` 部分：
+要使用 Azure KMS 方式指定主密钥，请在 TiKV 的配置文件中 `[security.encryption]` 部分之后添加 `[security.encryption.master-key]` 配置：
 
 ```
 [security.encryption.master-key]
@@ -189,12 +197,12 @@ client_certificate_password = ""
 client_secret = ""
 ```
 
-请将上述配置中除 "vendor" 之外的其他字段设置为实际需要使用的密钥对应的配置。
+请将上述配置中除 `vendor` 之外的其他字段值修改为密钥实际的对应配置。
 </div>
 
 </SimpleTab>
 
-#### 配置文件密钥
+#### 通过文件指定主密钥
 
 若要使用文件方式指定主密钥，主密钥配置应如下所示：
 
