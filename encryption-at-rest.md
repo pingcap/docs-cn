@@ -57,7 +57,7 @@ TiKV 当前支持的加密算法包括 AES128-CTR、AES192-CTR、AES256-CTR 和 
 * 主密钥 (master key)：主密钥由用户提供，用于加密 TiKV 生成的数据密钥。用户在 TiKV 外部进行主密钥的管理。
 * 数据密钥 (data key)：数据密钥由 TiKV 生成，是实际用于加密的密钥。
 
-多个 TiKV 实例可共用一个主密钥。在生产环境中，推荐通过 AWS KMS 提供主密钥。首先通过 AWS KMS 创建用户主密钥 (CMK)，然后在配置文件中将 CMK 密钥的 ID 提供给 TiKV。TiKV 进程在运行时可以通过 [IAM 角色](https://aws.amazon.com/iam/)访问 KMS CMK。如果 TiKV 无法访问 KMS CMK，TiKV 就无法启动或重新启动。详情参阅 AWS 文档中的 [KMS](https://docs.aws.amazon.com/zh_cn/kms/index.html) and [IAM](https://docs.aws.amazon.com/zh_cn/IAM/latest/UserGuide/introduction.html)。
+多个 TiKV 实例可共用一个主密钥。在生产环境中，推荐通过 KMS 提供主密钥。目前 TiKV 支持 [AWS](https://docs.aws.amazon.com/zh_cn/kms/index.html)、[Google Cloud](https://cloud.google.com/security/products/security-key-management?hl=zh-CN) 和 [Azure](https://learn.microsoft.com/en-us/azure/key-vault/) 等平台的 KMS 加密。要开启 KMS 加密，首先通过 KMS 创建用户主密钥 (CMK)，然后在配置文件中将 CMK 密钥的 ID 提供给 TiKV。如果 TiKV 无法访问 KMS CMK，TiKV 就无法启动或重新启动。
 
 用户也可以通过文件形式提供主密钥。该文件须包含一个用十六进制字符串编码的 256 位（32 字节）密钥，并以换行符结尾（即 `\n`），且不包含其他任何内容。将密钥存储在磁盘上会泄漏密钥，因此密钥文件仅适合存储在 RAM 内存的 `tempfs` 中。
 
