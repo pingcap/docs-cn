@@ -5,7 +5,9 @@ summary: 了解 TiDB `sys` 系统数据库。
 
 # `sys` Schema
 
-TiDB 从 v8.0.0 开始提供 `sys` Schema。你可以通过查看 `sys` 系统数据库中的表或视图理解 TiDB 的系统表、[`INFORMATION_SCHEMA` 表](/information-schema/information-schema.md)和 [`PERFORMANCE SCHEMA` 表](/performance-schema/performance-schema.md)内的数据。
+TiDB 从 v8.0.0 开始提供 `sys` Schema。你可以通过查看 `sys` 系统数据库中的表或视图理解 TiDB 的系统表、[`INFORMATION_SCHEMA`](/information-schema/information-schema.md) 表和 [`PERFORMANCE SCHEMA`](/performance-schema/performance-schema.md) 表内的数据。
+
+## 手动创建 `sys` Schema 和视图
 
 对于从 v8.0.0 之前版本升级的集群，`sys` Schema 和其中的视图不会自动创建。你可以通过以下 SQL 语句手动创建：
 

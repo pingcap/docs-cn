@@ -1,6 +1,6 @@
 ---
 title: TIDB_INDEX_USAGE
-summary: 了解 information_schema 表 `TIDB_INDEX_USAGE`。
+summary: 了解 INFORMATION_SCHEMA 表 `TIDB_INDEX_USAGE`。
 ---
 
 # TIDB_INDEX_USAGE
@@ -55,7 +55,7 @@ DESC TIDB_INDEX_USAGE;
 
 `TIDB_INDEX_USAGE` 表仅提供单个 TiDB 节点中所有索引的访问统计信息。如果要查看整个集群上所有 TiDB 节点中索引的访问统计信息，需要查询 `CLUSTER_TIDB_INDEX_USAGE` 表。
 
-与 `TIDB_INDEX_USAGE` 表的查询结果相比，`CLUSTER_TIDB_INDEX_USAGE` 表的查询结果额外包含了 INSTANCE 字段。INSTANCE 字段展示了集群中各节点的 IP 地址和端口，用于区分不同节点上的统计信息。
+与 `TIDB_INDEX_USAGE` 表的查询结果相比，`CLUSTER_TIDB_INDEX_USAGE` 表的查询结果额外包含了 `INSTANCE` 字段。`INSTANCE` 字段展示了集群中各节点的 IP 地址和端口，用于区分不同节点上的统计信息。
 
 ```sql
 USE INFORMATION_SCHEMA;
