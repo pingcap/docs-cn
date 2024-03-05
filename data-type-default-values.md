@@ -24,3 +24,37 @@ aliases: ['/docs-cn/dev/data-type-default-values/','/docs-cn/dev/reference/sql/d
 * 对于数值类型，它们的默认值是 0。当有 `AUTO_INCREMENT` 参数时，默认值会按照增量情况赋予正确的值。
 * 对于除了时间戳外的日期时间类型，默认值会是该类型的“零值”。时间戳类型的默认值会是当前的时间。
 * 对于除枚举以外的字符串类型，默认值会是空字符串。对于枚举类型，默认值是枚举中的第一个值。
+
+## 表达式默认值
+
+> **警告：**
+>
+> 此功能目前为实验特性。
+
+在 `DEFAULT` 子句中指定的默认值可以是表达式。此功能从 MySQL 8.0.13 开始引入的，具体可参考 [data-type-defaults-explicit](https://dev.mysql.com/doc/refman/8.0/en/data-type-defaults.html#data-type-defaults-explicit)。
+
+`BLOB`、`TEXT` 以及 `JSON` 数据类型写成表达式时，才能为其分配默认值：
+
+```sql
+CREATE TABLE t2 (b BLOB DEFAULT (rand()));
+```
+
+TiDB 目前开始支持一些表达式，具体如下：
+
+* RAND, UUID, UUID_TO_BIN
+
+* UPPER(SUBSTRING_INDEX(user(),'@',1))
+
+* REPLACE(UPPER(uuid()), '-', '')
+
+* DATE_FORMAT 相关表达式，具体格式如下：
+  * DATE_FORMAT(NOW(),'%Y-%m')
+  * DATE_FORMAT(NOW(),'%Y-%m-%d')
+  * DATE_FORMAT(NOW(),'%Y-%m-%d %H.%i.%s')
+  * DATE_FORMAT(NOW(),'%Y-%m-%d %H:%i:%s')
+
+* STR_TO_DATE('1980-01-01','%Y-%m-%d')
+
+> **注意：**
+>
+> 目前不支持 `modify/change column` 语句
