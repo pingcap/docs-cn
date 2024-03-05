@@ -21,7 +21,7 @@ TiDB 版本：7.1.4
 + TiDB <!--tw@Oreoxmt 1 条 -->
 
     - (dup): release-7.5.1.md > 改进提升> TiDB - 增强特定情况下 `OUTER JOIN` 转 `INNER JOIN` 的能力 [#49616](https://github.com/pingcap/tidb/issues/49616) @[qw4990](https://github.com/qw4990)
-    - force_init_stats 设置 true 后，同时 block http server 的启动 None [#50854](https://github.com/pingcap/tidb/issues/50854) @[hawkingrei](https://github.com/hawkingrei)
+    - 当设置 `force-init-stats` 为 `true` 时，即 TiDB 启动时等待统计信息初始化完成后再对外提供服务，此时 TiDB 会同时禁止 HTTP 服务器的启动 [#50854](https://github.com/pingcap/tidb/issues/50854) @[hawkingrei](https://github.com/hawkingrei)
 
 + PD
 
@@ -34,7 +34,7 @@ TiDB 版本：7.1.4
 
 + Tools
 
-    + Backup & Restore (BR) <!--tw@Oreoxmt 1 条 -->
+    + Backup & Restore (BR) <!--tw@Oreoxmt 2 条 -->
 
         - (dup): release-7.5.1.md > 改进提升> Tools> Backup & Restore (BR) - 支持在数据恢复过程中批量创建数据库 [#50767](https://github.com/pingcap/tidb/issues/50767) @[Leavrth](https://github.com/Leavrth)
         - (dup): release-7.5.1.md > 改进提升> Tools> Backup & Restore (BR) - 提升了 `RESTORE` 语句在大数据量表场景下的建表性能 [#48301](https://github.com/pingcap/tidb/issues/48301) @[Leavrth](https://github.com/Leavrth)
@@ -42,7 +42,8 @@ TiDB 版本：7.1.4
         - (dup): release-6.5.7.md > 改进提升> Tools> Backup & Restore (BR) - 解决了基于 EBS 的快照备份与 TiDB Lightning 导入的兼容性问题 [#46850](https://github.com/pingcap/tidb/issues/46850) @[YuJuncen](https://github.com/YuJuncen)
         - (dup): release-7.5.1.md > 改进提升> Tools> Backup & Restore (BR) - 支持在数据恢复过程中批量 ingest SST 文件 [#16267](https://github.com/tikv/tikv/issues/16267) @[3pointer](https://github.com/3pointer)
         - (dup): release-7.5.1.md > 改进提升> Tools> Backup & Restore (BR) - 在日志备份过程中，增加了在日志和监控指标中打印影响 global checkpoint 推进的最慢的 Region 的信息 [#51046](https://github.com/pingcap/tidb/issues/51046) @[YuJuncen](https://github.com/YuJuncen)
-        - 去除使用 GCS 作为外部存储一个过时的兼容性检查 [#50533](https://github.com/pingcap/tidb/issues/50533) @[lance6716](https://github.com/lance6716)
+        - 移除使用 Google Cloud Storage (GCS) 作为外部存储时一个过时的兼容性检查 [#50533](https://github.com/pingcap/tidb/issues/50533) @[lance6716](https://github.com/lance6716)
+        - 通过加锁机制避免同时执行多个清理日志备份数据任务 (`br log truncate`) [#49414](https://github.com/pingcap/tidb/issues/49414) @[YuJuncen](https://github.com/YuJuncen)
 
     + TiCDC
 
@@ -52,7 +53,7 @@ TiDB 版本：7.1.4
 
     + TiDB Lightning <!--tw@Oreoxmt 1 条 -->
 
-        - 去除 alter table 时的加锁以提升在多表导入时的性能 [#50105](https://github.com/pingcap/tidb/issues/50105) @[D3Hunter](https://github.com/D3Hunter)
+        - 取消执行 `ALTER TABLE` 时的加锁操作，以提升多表导入场景下的性能 [#50105](https://github.com/pingcap/tidb/issues/50105) @[D3Hunter](https://github.com/D3Hunter)
 
 ## 错误修复
 
@@ -91,13 +92,13 @@ TiDB 版本：7.1.4
     - (dup): release-7.5.1.md > 错误修复> TiDB - 修复不合法的优化器 hint 可能会导致合法 hint 不生效的问题 [#49308](https://github.com/pingcap/tidb/issues/49308) @[hawkingrei](https://github.com/hawkingrei)
     - (dup): release-7.5.1.md > 错误修复> TiDB - 修复在某些时区下夏令时显示有误的问题 [#49586](https://github.com/pingcap/tidb/issues/49586) @[overvenus](https://github.com/overvenus)
     - (dup): release-7.5.1.md > 错误修复> TiDB - 修复使用 `PREPARE` 方式执行 `SELECT INTO OUTFILE` 语句时，应报错却返回执行成功的问题 [#49166](https://github.com/pingcap/tidb/issues/49166) @[qw4990](https://github.com/qw4990) <!--tw@Oreoxmt 以下 7 条 -->
-    - 修复通过 “/upgrade/start” 方式滚动升级时，由于与 PD 交互出现问题从而可能遇到 panic 的问题 [#50152](https://github.com/pingcap/tidb/issues/50152) @[zimulala](https://github.com/zimulala)
-    - 修复空表加索引的优化未生效的问题 [#49682](https://github.com/pingcap/tidb/issues/49682) @[zimulala](https://github.com/zimulala)
-    - 修复创建大量表或分区时 TiDB OOM 的问题 [#50077](https://github.com/pingcap/tidb/issues/50077) @[zimulala](https://github.com/zimulala)
-    - 修复存在网络问题时加索引会导致索引数据不一致的问题 [#49773](https://github.com/pingcap/tidb/issues/49773) @[tangenta](https://github.com/tangenta)
-    - 修复 ddl job 执行顺序，避免 TICDC 收到乱序的 ddl [#49498](https://github.com/pingcap/tidb/issues/49498) @[tangenta](https://github.com/tangenta)
-    - 修复对 bit 类型的列调用 `reverse` 函数的一处问题 [#50850](https://github.com/pingcap/tidb/issues/50850) @[jiyfhust]
-    - 修复变量 @@tidb_server_memory_limit 变更之后，＠＠tidb_gogc_tuner_threshold 未相应调整的问题 [#48180](https://github.com/pingcap/tidb/issues/48180) @[hawkingrei] <!--tw@qiancai 以下 7 条 -->
+    - 修复通过 `tiup cluster upgrade/start` 方式进行滚动升级时，由于与 PD 交互出现问题从而可能导致 panic 的问题 [#50152](https://github.com/pingcap/tidb/issues/50152) @[zimulala](https://github.com/zimulala)
+    - 修复对空表添加索引时优化未生效的问题 [#49682](https://github.com/pingcap/tidb/issues/49682) @[zimulala](https://github.com/zimulala)
+    - 修复创建大量表或分区时 TiDB 可能 OOM 的问题 [#50077](https://github.com/pingcap/tidb/issues/50077) @[zimulala](https://github.com/zimulala)
+    - 修复在网络环境不稳定时，执行添加索引操作可能会导致索引数据不一致的问题 [#49773](https://github.com/pingcap/tidb/issues/49773) @[tangenta](https://github.com/tangenta)
+    - 修复 DDL 作业的执行顺序，以防止 TiCDC 接收到乱序的 DDL [#49498](https://github.com/pingcap/tidb/issues/49498) @[tangenta](https://github.com/tangenta)
+    - 修复对 `BIT` 类型列使用 `REVERSE()` 函数时遇到的问题 [#50850](https://github.com/pingcap/tidb/issues/50850) @[jiyfhust]
+    - 修复修改变量 `tidb_server_memory_limit` 后，`tidb_gogc_tuner_threshold` 未进行相应调整的问题 [#48180](https://github.com/pingcap/tidb/issues/48180) @[hawkingrei] <!--tw@qiancai 以下 7 条 -->
     - 修复分区表进行 range 分区裁剪处理 unsigned 类型的列时的一处 bug，该 bug 会生成错误的 TableDual 的查询计划导致查询结果错误 [#50082](https://github.com/pingcap/tidb/issues/50082) @[Defined2014]
     - 修复部分 partition 或者约束的表达式会导致 DDL 卡住的问题 [#50972](https://github.com/pingcap/tidb/issues/50972) @[lcwangchao](https://github.com/lcwangchao)
     - 修复默认值被删除的列获取默认值报错的问题 [#51309](https://github.com/pingcap/tidb/issues/51309) @[crazycs520](https://github.com/crazycs520)
@@ -152,14 +153,13 @@ TiDB 版本：7.1.4
 
 + Tools
 
-    + Backup & Restore (BR) <!--tw@Oreoxmt 1 条 -->
+    + Backup & Restore (BR)
 
         - (dup): release-7.5.1.md > 错误修复> Tools> Backup & Restore (BR) - 修复停止日志备份任务导致 TiDB crash 的问题 [#50839](https://github.com/pingcap/tidb/issues/50839) @[YuJuncen](https://github.com/YuJuncen)
         - (dup): release-7.5.1.md > 错误修复> Tools> Backup & Restore (BR) - 修复由于某个 TiKV 节点缺少 Leader 导致数据恢复变慢的问题 [#50566](https://github.com/pingcap/tidb/issues/50566) @[Leavrth](https://github.com/Leavrth)
         - (dup): release-7.5.1.md > 错误修复> Tools> Backup & Restore (BR) - 修复在同一节点上更改 TiKV IP 地址导致日志备份卡住的问题 [#50445](https://github.com/pingcap/tidb/issues/50445) @[3pointer](https://github.com/3pointer)
         - (dup): release-7.5.1.md > 错误修复> Tools> Backup & Restore (BR) - 修复从 S3 读文件内容时出错后无法重试的问题 [#49942](https://github.com/pingcap/tidb/issues/49942) @[Leavrth](https://github.com/Leavrth)
         - (dup): release-7.5.1.md > 错误修复> Tools> Backup & Restore (BR) - 修复从旧版本的备份恢复数据时报错 `Unsupported collation` 的问题 [#49466](https://github.com/pingcap/tidb/issues/49466) @[3pointer](https://github.com/3pointer)
-        - 通过加锁避免同时运行多个 log backup truncate 任务 [#49414](https://github.com/pingcap/tidb/issues/49414) @[YuJuncen](https://github.com/YuJuncen)
 
     + TiCDC <!--tw@hfxsd 2 条 -->
 
@@ -179,5 +179,5 @@ TiDB 版本：7.1.4
 
     + TiDB Lightning <!--tw@Oreoxmt 2 条 -->
 
-        - 修复扫描数据文件时遇到不合法符号链接文件导致报错的问题 [#49423](https://github.com/pingcap/tidb/issues/49423) @[lance6716](https://github.com/lance6716)
-        - 修复当 SQL-MODE 中不包含 NO_ZERO_IN_DATE 无法正确解析包含 0 的日期的问题 [#50757](https://github.com/pingcap/tidb/issues/50757) @[GMHDBJD](https://github.com/GMHDBJD)
+        - 修复在扫描数据文件时，遇到不合法符号链接文件而报错的问题 [#49423](https://github.com/pingcap/tidb/issues/49423) @[lance6716](https://github.com/lance6716)
+        - 修复当 `sql_mode` 中不包含 `NO_ZERO_IN_DATE` 时，TiDB Lightning 无法正确解析包含 `0` 的日期值的问题 [#50757](https://github.com/pingcap/tidb/issues/50757) @[GMHDBJD](https://github.com/GMHDBJD)
