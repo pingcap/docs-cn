@@ -78,7 +78,7 @@ aliases: ['/docs-cn/tidb-data-migration/dev/command-line-flags/']
 
 ### `--secret-key-path`
 
-- 自定义加解密秘钥路径
+- 自定义加解密密钥路径
 - 默认值为 `""`
 - 可选参数
 
