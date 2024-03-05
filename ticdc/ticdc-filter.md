@@ -78,6 +78,7 @@ ignore-update-new-value-expr = "gender = 'male' and age > 18" # 过滤掉新值 
 | drop view     | DDL  | |匹配 drop view event     |
 | modify schema charset and collate | DDL  | |匹配 modify schema charset and collate event     |
 | recover table   | DDL  | |匹配 recover table event    |
+| rebase auto id    | DDL  | |匹配 rebase auto id event    |
 | modify table comment | DDL  | |匹配 modify table comment event    |
 | modify table charset and collate | DDL  | |匹配 modify table charset and collate event    |
 | exchange table partition | DDL  | |匹配 exchange table partition event    |
