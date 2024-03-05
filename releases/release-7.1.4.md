@@ -109,10 +109,10 @@ TiDB 版本：7.1.4
 
 + TiKV <!--tw@qiancai 6 条 -->
 
-    - raftstore: 修复休眠region在异常情况下不能及时唤醒的缺陷。[#16368](https://github.com/tikv/tikv/issues/16368) @[LykxSassinator](https://github.com/LykxSassinator)
+    - 修复休眠的 Region 在异常情况下未被及时唤醒的问题 [#16368](https://github.com/tikv/tikv/issues/16368) @[LykxSassinator](https://github.com/LykxSassinator)
     - 在执行下线节点操作前，检查该region所有副本的上一次心跳时间，防止下线一个副本后整个region不可用. [#16465](https://github.com/tikv/tikv/issues/16465) @[tonyxuqqi](https://github.com/tonyxuqqi)
     - 修复Titan打开时RocksDB中Table property相关的缺陷。 [#16319](https://github.com/tikv/tikv/issues/16319) @[hicqu](https://github.com/hicqu)
-    - 修复当TiFlash打开时tikv-ctl compact-cluster无法工作的缺陷。[#16189](https://github.com/tikv/tikv/issues/16189) @[frew](https://github.com/frew)
+    - 修复当集群中存在 TiFlash 节点时，执行 `tikv-ctl compact-cluster` 失败的问题 [#16189](https://github.com/tikv/tikv/issues/16189) @[frew](https://github.com/frew)
     - RocksDB: 记录SST损坏的具体原因。[#16308](https://github.com/tikv/tikv/issues/16308) @[overvenus](https://github.com/overvenus)
     - (dup): release-7.5.1.md > 错误修复> TiKV - 修复 gRPC threads 在检查 `is_shutdown` 时可能出现 panic 的问题 [#16236](https://github.com/tikv/tikv/issues/16236) @[pingyu](https://github.com/pingyu)
     - (dup): release-7.5.1.md > 错误修复> TiKV - 修复 TiDB 和 TiKV 处理 `DECIMAL` 算术乘法截断时结果不一致的问题 [#16268](https://github.com/tikv/tikv/issues/16268) @[solotzg](https://github.com/solotzg)
