@@ -108,9 +108,9 @@ PD 微服务通常用于解决 PD 出现性能瓶颈的问题，提高 PD 服务
 
 ### 稳定性
 
-* 支持根据 LRU 算法缓存所需的 schema 信息来减少对 TiDB 接的内存消耗（实验特性）[#issue号](链接) @[gmhdbjd](https://github.com/gmhdbjd) **tw@hfxsd** <!--1691-->
+* 支持根据 LRU 算法缓存所需的 schema 信息来减少对 TiDB server 的内存消耗（实验特性）[#50959](https://github.com/pingcap/tidb/issues/50959) @[gmhdbjd](https://github.com/gmhdbjd) **tw@hfxsd** <!--1691-->
 
-    在 v8.0.0 之前，每个 TiDB 节点都会 cache 所有表的 schema 信息，一旦表的数量较多，如达到几十万的场景，光缓存这些表的 schema 信息就会占用较多的内存。从 v8.0.0 版本开始，引入了参数 `tidb_schema_cache_size`，用户设置缓存 schema 可以使用的内存上限，避免占用过多的内存，而且开启该功能后，将使用 LRU 算法来缓存所需的表，有效减小所需换成的 schema 信息。
+    在 v8.0.0 之前，每个 TiDB 节点都会缓存所有表的 schema 信息，一旦表的数量较多，如达到几十万的场景，仅缓存这些表的 schema 信息就会占用大量内存。从 v8.0.0 开始，引入了参数 [`tidb_schema_cache_size`](/system-variables.md#tidb_schema_cache_size-从-v800-版本开始引入)，你可以设置缓存 schema 信息可以使用的内存上限，避免占用过多的内存。开启该功能后，将使用 LRU 算法来缓存所需的表，有效减小 schema 信息占用的内存。
 
     更多信息，请参考[用户文档](/system-variables.md#tidb_schema_cache_size-从-v800-版本开始引入)。
     
@@ -133,15 +133,15 @@ PD 微服务通常用于解决 PD 出现性能瓶颈的问题，提高 PD 服务
 
 ### SQL 功能
 
-* 新增支持处理大量数据的 DML 类型 [#16291](https://github.com/tikv/tikv/issues/16291) @[ekexium](https://github.com/ekexium) **tw@Oreoxmt** <!--1694-->
+* 新增支持处理大量数据的 DML 类型（实验特性）[#50215](https://github.com/pingcap/tidb/issues/50215) @[ekexium](https://github.com/ekexium) **tw@Oreoxmt** <!--1694-->
 
     在之前的 TiDB 版本中，所有的事务数据在提交之前，都保存在内存中。当处理大量数据时，事务所需的内存成为瓶颈，限制了 TiDB 可以处理的事务大小。TiDB 曾经发布了非事务 DML 功能，通过拆分 SQL 的方式尝试解决事务大小限制，但是功能存在较多限制，在实际使用时并不友好。
     
     在 v8.0.0 中，TiDB 新增支持处理大量数据的 DML 类型。这种 DML 类型在执行时，通过及时将数据写入 TiKV 的方式，避免将所有事务数据保存在内存中，从而实现对超过内存上限的大量数据的处理。该 DML 类型保证事务的完整性，并且使用和标准 DML 完全一致的语法。任何 TiDB 的合法 DML，都可以使用这种 DML 类型，以处理大数据量 DML 操作。
     
-    支持处理大量数据的 DML 类型依赖于 [Pipelined DML](/ new doc path)，只支持在自动提交事务中使用，并且引入变量 `tidb_dml_type` 控制是否使用该 DML 类型。目前，该功能作为实验特性发布。
+    支持处理大量数据的 DML 类型依赖于 [Pipelined DML](https://github.com/pingcap/tidb/blob/master/docs/design/2024-01-09-pipelined-DML.md)，只支持在自动提交事务中使用，并且引入变量 `tidb_dml_type` 控制是否使用该 DML 类型。目前，该功能作为实验特性发布。
 
-    更多信息，请参考[用户文档](/... tidb_dml_type 变量)。
+    更多信息，请参考[用户文档](/system-variables.md#tidb_dml_type-从-v80-版本开始引入)。
 
 * TiDB 建表时，支持更多的表达式来设置列的默认值 （实验特性）[#50936](https://github.com/pingcap/tidb/issues/50936) @[zimulala](https://github.com/zimulala) **tw@qiancai** <!--1690-->
 
@@ -253,13 +253,13 @@ PD 微服务通常用于解决 PD 出现性能瓶颈的问题，提高 PD 服务
 
 ### 行为变更
 
-* 在开启 `tidb_ddl_enable_fast_reorg` 实现索引加速功能时，对编码后的索引键值对数据 ingest 到 TiKV 时用的是一个固定并发值 (`16`)，无法根据下游 TiKV 的承载能力动态调整。从 v8.0.0 开始，支持使用 [`tidb_ddl_reorg_worker_cnt`](/system-variables.md#tidb_ddl_reorg_worker_cnt-从-v800-版本开始引入) 调整并发。该参数默认值为 `4`，相比之前的默认值 `16`，在 ingest 索引键值对时性能会比之前的版本有所降低。你可以根据集群的负载按需调整该参数。**tw@hfxsd** <!--无 FD-->
+* 在开启 `tidb_ddl_enable_fast_reorg` 实现索引加速功能时，编码后的索引键值 ingest 数据到 TiKV 时使用的是固定并发值 (`16`)，无法根据下游 TiKV 的承载能力动态调整。从 v8.0.0 开始，支持使用 [`tidb_ddl_reorg_worker_cnt`](/system-variables.md#tidb_ddl_reorg_worker_cnt-从-v800-版本开始引入) 调整并发。该参数默认值为 `4`，相比之前的默认值 `16`，在 ingest 索引键值对时性能会比之前的版本有所降低。你可以根据集群的负载按需调整该参数。**tw@hfxsd** <!--无 FD-->
 
 * 行为变更 2
 
 ### MySQL 兼容性
 
-* 兼容性 1
+* `KEY` 分区类型支持分区字段列表为空的语句，具体行为和 MySQL 保持一致。**tw@hfxsd** <!--无 FD-->
 
 * 兼容性 2
 
@@ -269,7 +269,7 @@ PD 微服务通常用于解决 PD 出现性能瓶颈的问题，提高 PD 服务
 |--------|------------------------------|------|
 | [`tidb_opt_use_invisible_indexes`](/system-variables.md#) | 新增 | 控制会话中是否能够选择[不可见索引](/sql-statements/sql-statement-create-index.md#不可见索引)。当修改变量为`ON`时，针对该会话执行的查询，优化能够使用[不可见索引](/sql-statements/sql-statement-create-index.md#不可见索引)进行优化。|
 | [tidb_redact_log](/system-variables.md#) | 修改 | 控制在记录 TiDB 日志和慢日志时如何处理 SAL 文本中的用户信息，可选值为OFF、ON、marker，以支持记录信息明文、信息屏蔽、信息标记。当变量值为marker时，日志中的用户信息将被标记处理，可以在随后的查看中进行日志信息是否脱敏的处理 |
-|        |                              |      |
+|  [`tidb_schema_cache_size`](/system-variables.md#tidb_schema_cache_size-从-v800-版本开始引入)      |   新增                           |  设置缓存 schema 信息可以使用的内存上限，避免占用过多的内存。开启该功能后，将使用 LRU 算法来缓存所需的表，有效减小 schema 信息占用的内存。    |
 |        |                              |      |
 
 ### 配置文件参数
@@ -280,7 +280,8 @@ PD 微服务通常用于解决 PD 出现性能瓶颈的问题，提高 PD 服务
 | TiDB  |  [`log.file.compression`]() | 新增 | 指定轮询日志的压缩格式。默认为空，即不压缩轮询日志。 |
 | TiDB Lightning  |  `duplicate-resolution`  | 废弃 | 用于在物理导入模式下设置是否检测和解决唯一键冲突的记录。从 v8.0.0 开始使用新参数 [`conflict.strategy`](/tidb-lightning/tidb-lightning-configuration.md#tidb-lightning-任务配置) 替代。 |
 | TiKV | [`security.encryption.master-key.vendor`] | 新增 | 指定住密钥的服务商类型，支持可选值为 `gcp`、`azure` |
-
+| TiDB Lightning  |  `logical-import-batch-size`  | 新增| 用于在逻辑导入模式下设置一个 batch 里提交的数据大小，取值为字符串类型，默认值为 "96KiB"，单位可以为 KB,KiB,MB,MiB 等存储单位 |
+| TiDB Lightning  |  `logical-import-batch-rows` | 新增| 用于在逻辑导入模式下设置一个 batch 里提交的数据行数，默认值为 `65536`。 |
 ## 离线包变更
 
 ## 废弃功能
