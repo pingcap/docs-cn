@@ -64,23 +64,14 @@ TiDB 版本：7.1.4
         - (dup): release-7.5.1.md > 改进提升> Tools> TiCDC - 支持[查询 changefeed 的下游同步状态](https://docs.pingcap.com/zh/tidb/v7.1/ticdc-open-api-v2#查询特定同步任务是否完成)，以确认 TiCDC 是否已将所接收到的上游变更完全同步到下游 [#10289](https://github.com/pingcap/tiflow/issues/10289) @[hongyunyan](https://github.com/hongyunyan)
         - (dup): release-7.5.1.md > 改进提升> Tools> TiCDC - 支持在 TiDB Dashboard 中搜索 TiCDC 日志 [#10263](https://github.com/pingcap/tiflow/issues/10263) @[CharlesCheung96](https://github.com/CharlesCheung96)
 
-    + TiDB Data Migration (DM)
-
-
     + TiDB Lightning
 
         - 去除 alter table 时的加锁以提升在多表导入时的性能 [#50105](https://github.com/pingcap/tidb/issues/50105) @[D3Hunter](https://github.com/D3Hunter)
-
-    + Dumpling
-
 
     + TiUP
 
         - note [#issue](https://github.com/pingcap/tiup/issues/${issue-id}) @[贡献者 GitHub ID](https://github.com/${github-id})
         - note [#issue](https://github.com/pingcap/tiup/issues/${issue-id}) @[贡献者 GitHub ID](https://github.com/${github-id})
-
-    + TiDB Binlog
-
 
 ## 错误修复
 
@@ -212,13 +203,7 @@ TiDB 版本：7.1.4
         - 修复扫描数据文件时遇到不合法符号链接文件导致报错的问题 [#49423](https://github.com/pingcap/tidb/issues/49423) @[lance6716](https://github.com/lance6716)
         - 修复当 SQL-MODE 中不包含 NO_ZERO_IN_DATE 无法正确解析包含 0 的日期的问题 [#50757](https://github.com/pingcap/tidb/issues/50757) @[GMHDBJD](https://github.com/GMHDBJD)
 
-    + Dumpling
-
-
     + TiUP
 
         - note [#issue](https://github.com/pingcap/tiup/issues/${issue-id}) @[贡献者 GitHub ID](https://github.com/${github-id})
         - note [#issue](https://github.com/pingcap/tiup/issues/${issue-id}) @[贡献者 GitHub ID](https://github.com/${github-id})
-
-    + TiDB Binlog
-
