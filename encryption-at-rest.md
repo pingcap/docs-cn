@@ -79,7 +79,7 @@ data-key-rotation-period = "168h" # 7 days
 
 如果启用了加密（即 `data-encryption-method` 的值不是 `"plaintext"`），则必须指定主密钥。你可以通过以下方式之一来指定主密钥。
 
-- [通过 KMS 指定主密钥](#通过-KMS-指定主密钥)
+- [通过 KMS 指定主密钥](#通过-kms-指定主密钥)
 - [通过文件指定主密钥](#通过文件指定主密钥)
 
 #### 通过 KMS 指定主密钥
