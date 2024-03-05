@@ -42,12 +42,12 @@ TiDB 版本：8.0.0
  
     更多信息，请参考[用户文档](/br/br-snapshot-guide.md#恢复快照备份数据)。
     
-* 新增支持下推以下 函数到 TiFlash [#50975](https://github.com/pingcap/tidb/issues/50975) [#50485](https://github.com/pingcap/tidb/issues/50485) @[yibin87](https://github.com/yibin87) @[windtalker](https://github.com/windtalker) **tw@Oreoxmt** <!--1662--><!--1664-->
+* 新增支持下推以下函数到 TiFlash [#50975](https://github.com/pingcap/tidb/issues/50975) [#50485](https://github.com/pingcap/tidb/issues/50485) @[yibin87](https://github.com/yibin87) @[windtalker](https://github.com/windtalker) **tw@Oreoxmt** <!--1662--><!--1664-->
 
     * `CAST(DECIMAL AS DOUBLE)`
     * `POWER()`
 
-    更多信息，请参考[用户文档](/tiflash/tiflash-supported-pushdown-calculations.md)。
+  更多信息，请参考[用户文档](/tiflash/tiflash-supported-pushdown-calculations.md)。
 
 * TiDB 的并发 HashAgg 算法支持数据落盘（实验特性）[#35637](https://github.com/pingcap/tidb/issues/35637) @[xzhangxian1008](https://github.com/xzhangxian1008) **tw@qiancai** <!--1365-->
 
