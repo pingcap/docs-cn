@@ -9,7 +9,7 @@ summary: 了解 TiCDC Debezium Protocol 的概念和使用方法。
 
 ## 使用 Debezium 消息格式
 
-当使用 Kafka 作为下游 Sink 的时候，你可以在 `sink-uri` 中指定使用 Debezium，TiCDC 将以 Event 为基本单位封装构造 Debezium Message，向下游发送 TiDB 的数据变更事件。
+当使用 Kafka 作为下游 Sink 的时候，你可以在 `sink-uri` 的 protocol 字段中指定使用 Debezium，TiCDC 将以 Event 为基本单位封装构造 Debezium Message，向下游发送 TiDB 的数据变更事件。
 
 TiCDC Debezium Protocol 以 Event 为基本单位向下游复制数据变更事件。目前，Debezium 协议只支持 Row Changed Event，会直接忽略 DDL Event 和 WATERMARK Event。Row Changed Event 代表一行的数据变化，在行发生变更时该 Event 被发出，包含该行在变更前后的相关信息。
 
