@@ -21,7 +21,7 @@ TiDB 版本：7.1.4
 + TiDB <!--tw@Oreoxmt 1 条 -->
 
     - (dup): release-7.5.1.md > 改进提升> TiDB - 增强特定情况下 `OUTER JOIN` 转 `INNER JOIN` 的能力 [#49616](https://github.com/pingcap/tidb/issues/49616) @[qw4990](https://github.com/qw4990)
-    - 当设置 `force-init-stats` 为 `true` 时，即 TiDB 启动时等待统计信息初始化完成后再对外提供服务，此时 TiDB 会同时禁止 HTTP 服务器的启动 [#50854](https://github.com/pingcap/tidb/issues/50854) @[hawkingrei](https://github.com/hawkingrei)
+    - 当设置 `force-init-stats` 为 `true` 时，即 TiDB 启动时等待统计信息初始化完成后再对外提供服务，这一设置不再影响 HTTP server 提供服务，用户仍可查看监控 [#50854](https://github.com/pingcap/tidb/issues/50854) @[hawkingrei](https://github.com/hawkingrei)
 
 + TiKV <!--tw@qiancai 1 条 -->
 
@@ -43,7 +43,6 @@ TiDB 版本：7.1.4
         - (dup): release-7.5.1.md > 改进提升> Tools> Backup & Restore (BR) - 支持在数据恢复过程中批量创建数据库 [#50767](https://github.com/pingcap/tidb/issues/50767) @[Leavrth](https://github.com/Leavrth)
         - (dup): release-7.5.1.md > 改进提升> Tools> Backup & Restore (BR) - 提升了 `RESTORE` 语句在大数据量表场景下的建表性能 [#48301](https://github.com/pingcap/tidb/issues/48301) @[Leavrth](https://github.com/Leavrth)
         - (dup): release-7.5.1.md > 改进提升> Tools> Backup & Restore (BR) - 使用更优的算法，提升数据恢复过程中 SST 文件合并的速度 [#50613](https://github.com/pingcap/tidb/issues/50613) @[Leavrth](https://github.com/Leavrth)
-        - (dup): release-6.5.7.md > 改进提升> Tools> Backup & Restore (BR) - 解决了基于 EBS 的快照备份与 TiDB Lightning 导入的兼容性问题 [#46850](https://github.com/pingcap/tidb/issues/46850) @[YuJuncen](https://github.com/YuJuncen)
         - (dup): release-7.5.1.md > 改进提升> Tools> Backup & Restore (BR) - 支持在数据恢复过程中批量 ingest SST 文件 [#16267](https://github.com/tikv/tikv/issues/16267) @[3pointer](https://github.com/3pointer)
         - (dup): release-7.5.1.md > 改进提升> Tools> Backup & Restore (BR) - 在日志备份过程中，增加了在日志和监控指标中打印影响 global checkpoint 推进的最慢的 Region 的信息 [#51046](https://github.com/pingcap/tidb/issues/51046) @[YuJuncen](https://github.com/YuJuncen)
         - 移除使用 Google Cloud Storage (GCS) 作为外部存储时一个过时的兼容性检查 [#50533](https://github.com/pingcap/tidb/issues/50533) @[lance6716](https://github.com/lance6716)
@@ -96,12 +95,12 @@ TiDB 版本：7.1.4
     - (dup): release-7.5.1.md > 错误修复> TiDB - 修复不合法的优化器 hint 可能会导致合法 hint 不生效的问题 [#49308](https://github.com/pingcap/tidb/issues/49308) @[hawkingrei](https://github.com/hawkingrei)
     - (dup): release-7.5.1.md > 错误修复> TiDB - 修复在某些时区下夏令时显示有误的问题 [#49586](https://github.com/pingcap/tidb/issues/49586) @[overvenus](https://github.com/overvenus)
     - (dup): release-7.5.1.md > 错误修复> TiDB - 修复使用 `PREPARE` 方式执行 `SELECT INTO OUTFILE` 语句时，应报错却返回执行成功的问题 [#49166](https://github.com/pingcap/tidb/issues/49166) @[qw4990](https://github.com/qw4990) <!--tw@Oreoxmt 以下 7 条 -->
-    - 修复通过 `tiup cluster upgrade/start` 方式进行滚动升级时，由于与 PD 交互出现问题从而可能导致 panic 的问题 [#50152](https://github.com/pingcap/tidb/issues/50152) @[zimulala](https://github.com/zimulala)
+    - 修复通过 `tiup cluster upgrade/start` 方式进行滚动升级时，与 PD 交互出现问题可能导致 TiDB panic 的问题 [#50152](https://github.com/pingcap/tidb/issues/50152) @[zimulala](https://github.com/zimulala)
     - 修复对空表添加索引时优化未生效的问题 [#49682](https://github.com/pingcap/tidb/issues/49682) @[zimulala](https://github.com/zimulala)
     - 修复创建大量表或分区时 TiDB 可能 OOM 的问题 [#50077](https://github.com/pingcap/tidb/issues/50077) @[zimulala](https://github.com/zimulala)
     - 修复在网络环境不稳定时，执行添加索引操作可能会导致索引数据不一致的问题 [#49773](https://github.com/pingcap/tidb/issues/49773) @[tangenta](https://github.com/tangenta)
     - 修复 DDL 作业的执行顺序，以防止 TiCDC 接收到乱序的 DDL [#49498](https://github.com/pingcap/tidb/issues/49498) @[tangenta](https://github.com/tangenta)
-    - 修复对 `BIT` 类型列使用 `REVERSE()` 函数时遇到的问题 [#50850](https://github.com/pingcap/tidb/issues/50850) @[jiyfhust]
+    - 修复对 `BIT` 类型列使用 `REVERSE()` 函数时遇到的问题 [#50850](https://github.com/pingcap/tidb/issues/50850) @[jiyfhust](https://github.com/jiyfhust)
     - 修复修改变量 `tidb_server_memory_limit` 后，`tidb_gogc_tuner_threshold` 未进行相应调整的问题 [#48180](https://github.com/pingcap/tidb/issues/48180) @[hawkingrei] <!--tw@qiancai 以下 7 条 -->
     - (dup): release-6.5.8.md > 错误修复> TiDB - 修复某些情况下，由于错误的分区裁剪导致查询 Range Partition 的结果不正确的问题 [#50082](https://github.com/pingcap/tidb/issues/50082) @[Defined2014](https://github.com/Defined2014)
     - 修复当 `CREATE TABLE` 语句中包含特定分区或约束的表达式时，表名变更等的 DDL 操作会卡住的问题 [#50972](https://github.com/pingcap/tidb/issues/50972) @[lcwangchao](https://github.com/lcwangchao)
