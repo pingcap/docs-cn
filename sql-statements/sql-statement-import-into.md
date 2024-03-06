@@ -43,7 +43,9 @@ summary: TiDB 数据库中 IMPORT INTO 的使用概况。
 
 ### `IMPORT INTO ... FROM SELECT` 使用限制
 
-- `IMPORT INTO ... FROM SELECT` 只会在当前连接的 TiDB 节点执行，在导入完成前会阻塞当前连接，不支持使用 `SHOW IMPORT JOB(s)` `CANCEL IMPORT JOB <job-id>` 等任务管理语句。且仅支持配置 THREAD 和 DISABLE_PRECHECK 这 2 个参数;
+- `IMPORT INTO ... FROM SELECT` 仅能在当前用户连接的 TiDB 节点执行，在导入完成前会阻塞当前连接。
+- `IMPORT INTO ... FROM SELECT` 仅支持配置 `THREAD` 和 `DISABLE_PRECHECK` 这两个[导入选项](#withoptions)。
+- `IMPORT INTO ... FROM SELECT` 不支持使用 `SHOW IMPORT JOB(s)` 和 `CANCEL IMPORT JOB <job-id>` 等任务管理语句。
 - TiDB [临时目录](/tidb-configuration-file.md#temp-dir-从-v630-版本开始引入) 需要有足够的空间来存储整个 `SELECT` 语句查询结果（暂不支持设置[磁盘配额](/tidb-lightning-physical-import-mode-usage.md#磁盘资源配额-从-v620-版本开始引入)）。
 - 不支持使用 [`tidb_snapshot`](/read-historical-data.md) 导入历史数据。
 
