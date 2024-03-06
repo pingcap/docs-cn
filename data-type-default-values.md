@@ -31,7 +31,7 @@ aliases: ['/docs-cn/dev/data-type-default-values/','/docs-cn/dev/reference/sql/d
 >
 > 该特性为实验特性，不建议在生产环境中使用。该功能可能会在未事先通知的情况下发生变化或删除。如果发现 bug，请在 GitHub 上提 [issue](https://github.com/pingcap/tidb/issues) 反馈。
 
-在 `DEFAULT` 子句中指定的默认值可以是表达式。此功能从 MySQL 8.0.13 开始引入的，具体可参考 [data-type-defaults-explicit](https://dev.mysql.com/doc/refman/8.0/en/data-type-defaults.html#data-type-defaults-explicit)。
+MySQL 从 8.0.13 开始支持在 `DEFAULT` 子句中指定表达式为默认值。具体可参考 [Explicit Default Handling as of MySQL 8.0.13](https://dev.mysql.com/doc/refman/8.0/en/data-type-defaults.html#data-type-defaults-explicit)。TiDB 参考了该功能，在 `DEFAULT` 子句中支持指定部分表达式作为字段的默认值。
 
 `BLOB`、`TEXT` 以及 `JSON` 数据类型写成表达式时，才能为其分配默认值：
 
