@@ -316,7 +316,7 @@ IMPORT INTO t FROM 's3://bucket/path/to/file.parquet?access-key=XXX&secret-acces
 
 导入 `union` 结果到目标表 `t`，并发度为 `8`，并且关闭 precheck。
 ```
-IMPORT INTO t FROM select * from src union select * from src2 WITH thread = 8, disable_precheck;
+IMPORT INTO t FROM SELECT * FROM src UNION SELECT * FROM src2 WITH THREAD = 8, DISABLE_PRECHECK;
 ```
 
 导入指定时间点的历史数据到目标表 `t`。
