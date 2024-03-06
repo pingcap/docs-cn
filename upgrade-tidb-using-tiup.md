@@ -24,7 +24,10 @@ title: 使用 TiUP 升级 TiDB
 > - 如果原集群是 3.0 或 3.1 或更早的版本，不支持直接升级到 v7.1.0 及后续修订版本。你需要先从早期版本升级到 4.0 后，再从 4.0 升级到 v7.1.0 及后续修订版本。
 > - 如果原集群是 6.2 之前的版本，升级到 6.2 及以上版本时，部分场景会遇到升级卡住的情况，你可以参考[如何解决升级卡住的问题](#42-升级到-v620-及以上版本时如何解决升级卡住的问题)。
 > - 配置参数 [`server-version`](/tidb-configuration-file.md#server-version) 的值会被 TiDB 节点用于验证当前 TiDB 的版本。因此在进行 TiDB 集群升级前，请将 `server-version` 的值设置为空或者当前 TiDB 真实的版本值，避免出现非预期行为。
-> - 如果原集群为 v7.1.0 及更高版本，配置项 [`performance.force-init-stats`](/tidb-configuration-file.md#force-init-stats-从-v657-和-v710-版本开始引入) 设置为 `ON` 会延长 TiDB 的启动时间，这可能会造成启动超时，升级失败。建议为 TiUP 设置更长的等待时间
+> - 配置项 [`performance.force-init-stats`](/tidb-configuration-file.md#force-init-stats-从-v657-和-v710-版本开始引入) 设置为 `ON` 会延长 TiDB 的启动时间，这可能会造成启动超时，升级失败。建议为 TiUP 设置更长的等待时间。
+>   * 可能影响的场景
+>      * 原集群版本低于 v6.5.6, v7.1.0 ( 没有配置项 `performance.force-init-stats` )，目标版本为 v7.2.0 及更高。
+>      * 原集群版本高于 v6.5.7, v7.1.0 ，且 配置项 `performance.force-init-stats` 设置为 `ON`。 
 >   * 查看配置项 `force-init-stats` 的值。
 >     ```
 >     SHOW CONFIG WHERE type = 'tidb' AND name = 'performance.force-init-stats';
