@@ -164,7 +164,7 @@ TiDB 版本：6.6.0-[DMR](/releases/versioning.md#开发里程碑版本)
 
   更多信息，请参考[用户文档](/placement-rules-in-sql.md#生存偏好)。
 
-* 支持通过 `FLASHBACK CLUSTER TO TIMESTAMP` 命令闪回 DDL 操作 [#14088](https://github.com/tikv/tikv/issues/14045) @[Defined2014](https://github.com/Defined2014) @[JmPotato](https://github.com/JmPotato)
+* 支持通过 `FLASHBACK CLUSTER TO TIMESTAMP` 命令闪回 DDL 操作 [#14045](https://github.com/tikv/tikv/issues/14045) @[Defined2014](https://github.com/Defined2014) @[JmPotato](https://github.com/JmPotato)
 
     [`FLASHBACK CLUSTER TO TIMESTAMP`](/sql-statements/sql-statement-flashback-cluster.md) 语句支持在 Garbage Collection (GC) life time 内快速回退整个集群到指定的时间点。在 TiDB v6.6.0 版本中，该功能新支持撤销 DDL 操作，适用于快速撤消集群的 DML 或 DDL 误操作、支持分钟级别的快速回退集群、支持在时间线上多次回退以确定特定数据更改发生的时间。
 
@@ -312,7 +312,7 @@ TiDB 版本：6.6.0-[DMR](/releases/versioning.md#开发里程碑版本)
 
     更多信息，请参考[用户文档](/enable-tls-between-components.md)。
 
-* TiDB Lightning 支持通过 AWS IAM 角色的密钥以及会话令牌来访问 S3 数据 [#4075](https://github.com/pingcap/tidb/issues/40750) @[okJiang](https://github.com/okJiang)
+* TiDB Lightning 支持通过 AWS IAM 角色的密钥以及会话令牌来访问 S3 数据 [#40750](https://github.com/pingcap/tidb/issues/40750) @[okJiang](https://github.com/okJiang)
 
     在 v6.6.0 之前，TiDB Lightning 仅支持通过 AWS IAM **用户密钥**访问 S3 的数据，无法使用临时会话令牌。自 v6.6.0 起，TiDB Lightning 支持通过 AWS IAM **角色密钥 + 会话令牌**的方式来访问 S3 数据，以提高安全性。
 
