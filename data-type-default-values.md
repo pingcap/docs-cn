@@ -33,21 +33,21 @@ aliases: ['/docs-cn/dev/data-type-default-values/','/docs-cn/dev/reference/sql/d
 
 MySQL 从 8.0.13 开始支持在 `DEFAULT` 子句中指定表达式为默认值。具体可参考 [Explicit Default Handling as of MySQL 8.0.13](https://dev.mysql.com/doc/refman/8.0/en/data-type-defaults.html#data-type-defaults-explicit)。TiDB 参考了该功能，在 `DEFAULT` 子句中支持指定部分表达式作为字段的默认值。
 
-从 TiDB v8.0.0 开始，`BLOB`、`TEXT` 以及 `JSON` 数据类型支持为其分配默认值，但是默认值仅支持通过表达式来设置。
+从 TiDB v8.0.0 开始， [`BLOB`、`TEXT`](/data-type-string.md) 以及 [`JSON`](/data-type-json.md) 数据类型支持为其分配默认值，但是默认值仅支持通过表达式来设置。
 
 ```sql
-CREATE TABLE t2 (b BLOB DEFAULT (rand()));
+CREATE TABLE t2 (b BLOB DEFAULT (RAND()));
 ```
 
 TiDB 目前开始支持一些表达式，具体如下：
 
-* `RAND`、`UUID`、`UUID_TO_BIN`
+* [`RAND()`](/functions-and-operators/numeric-functions-and-operators.md)、[`UUID()`](/functions-and-operators/miscellaneous-functions.md)、[`UUID_TO_BIN()`](/functions-and-operators/miscellaneous-functions.md)
 
 从 v8.0.0 版本开始，`DEFAULT` 子句中支持用以下表达式来设置默认值。
 
-* `UPPER(SUBSTRING_INDEX(user(), '@', 1))`
+* `UPPER(SUBSTRING_INDEX(USER(), '@', 1))`
 
-* `REPLACE(UPPER(uuid()), '-', '')`
+* `REPLACE(UPPER(UUID()), '-', '')`
 
 * `DATE_FORMAT` 相关表达式，具体格式如下：
 
