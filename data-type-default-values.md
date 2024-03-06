@@ -29,7 +29,7 @@ aliases: ['/docs-cn/dev/data-type-default-values/','/docs-cn/dev/reference/sql/d
 
 > **警告：**
 >
-> 此功能目前为实验特性。
+> 该特性为实验特性，不建议在生产环境中使用。该功能可能会在未事先通知的情况下发生变化或删除。如果发现 bug，请在 GitHub 上提 [issue](https://github.com/pingcap/tidb/issues) 反馈。
 
 在 `DEFAULT` 子句中指定的默认值可以是表达式。此功能从 MySQL 8.0.13 开始引入的，具体可参考 [data-type-defaults-explicit](https://dev.mysql.com/doc/refman/8.0/en/data-type-defaults.html#data-type-defaults-explicit)。
 
