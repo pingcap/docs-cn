@@ -431,5 +431,5 @@ TiDB 版本：6.1.0
         - 修复前置检查中没有检查本地磁盘空间以及集群是否可用的问题 [#34213](https://github.com/pingcap/tidb/issues/34213)
         - 修复 schema 路由错误的问题 [#33381](https://github.com/pingcap/tidb/issues/33381)
         - 修复 TiDB Lightning panic 时 PD 配置未正确恢复的问题 [#31733](https://github.com/pingcap/tidb/issues/31733)
-        - 修复由 `auto_increment` 列的数据越界导致 local 模式导入失败的问题 [#29737](https://github.com/pingcap/tidb/issues/27937)
+        - 修复由 `auto_increment` 列的数据越界导致 local 模式导入失败的问题 [#27937](https://github.com/pingcap/tidb/issues/27937)
         - 修复 `auto_random`、`auto_increment` 列为空时 local 模式导入失败的问题 [#34208](https://github.com/pingcap/tidb/issues/34208)

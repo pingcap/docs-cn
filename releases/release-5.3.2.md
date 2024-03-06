@@ -158,6 +158,6 @@ TiDB 版本：5.3.2
 
     + TiDB Lightning
 
-        - 修复由 `auto_increment` 列的数据越界导致 local 模式导入失败的问题 [#29737](https://github.com/pingcap/tidb/issues/27937)
+        - 修复由 `auto_increment` 列的数据越界导致 local 模式导入失败的问题 [#27937](https://github.com/pingcap/tidb/issues/27937)
         - 修复前置检查中没有检查本地磁盘空间以及集群是否可用的问题 [#34213](https://github.com/pingcap/tidb/issues/34213)
         - 修复了 checksum 报错 “GC life time is shorter than transaction duration” [#32733](https://github.com/pingcap/tidb/issues/32733)
