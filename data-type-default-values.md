@@ -45,7 +45,7 @@ TiDB 目前开始支持一些表达式，具体如下：
 
 从 v8.0.0 版本开始，`DEFAULT` 子句中支持用以下表达式来设置默认值。
 
-* `UPPER(SUBSTRING_INDEX(user(),'@',1))`
+* `UPPER(SUBSTRING_INDEX(user(), '@', 1))`
 
 * `REPLACE(UPPER(uuid()), '-', '')`
 
