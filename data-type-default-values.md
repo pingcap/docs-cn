@@ -43,17 +43,18 @@ TiDB 目前开始支持一些表达式，具体如下：
 
 * RAND, UUID, UUID_TO_BIN
 
-* UPPER(SUBSTRING_INDEX(user(),'@',1))
+* `UPPER(SUBSTRING_INDEX(user(),'@',1))`
 
-* REPLACE(UPPER(uuid()), '-', '')
+* `REPLACE(UPPER(uuid()), '-', '')`
 
-* DATE_FORMAT 相关表达式，具体格式如下：
-  * DATE_FORMAT(NOW(),'%Y-%m')
-  * DATE_FORMAT(NOW(),'%Y-%m-%d')
-  * DATE_FORMAT(NOW(),'%Y-%m-%d %H.%i.%s')
-  * DATE_FORMAT(NOW(),'%Y-%m-%d %H:%i:%s')
+* `DATE_FORMAT` 相关表达式，具体格式如下：
 
-* STR_TO_DATE('1980-01-01','%Y-%m-%d')
+  * `DATE_FORMAT(NOW(),'%Y-%m')`
+  * `DATE_FORMAT(NOW(),'%Y-%m-%d')`
+  * `DATE_FORMAT(NOW(),'%Y-%m-%d %H.%i.%s')`
+  * `DATE_FORMAT(NOW(),'%Y-%m-%d %H:%i:%s')`
+
+* `STR_TO_DATE('1980-01-01','%Y-%m-%d')`
 
 > **注意：**
 >
