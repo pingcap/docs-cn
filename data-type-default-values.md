@@ -60,4 +60,4 @@ TiDB 目前开始支持一些表达式，具体如下：
 
 > **注意：**
 >
-> 目前不支持 `CHANGE COLUMN` 和 `MODIFY COLUMN` 语句。
+> 目前 `CHANGE COLUMN` 和 `MODIFY COLUMN` 语句不支持使用表达式来设置默认值。
