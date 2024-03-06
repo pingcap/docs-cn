@@ -151,7 +151,7 @@ SET 表达式左侧只能引用 `ColumnNameOrUserVarList` 中没有的列名。�
 | `CHECKSUM_TABLE='<string>'` | 所有文件格式 | 配置是否在导入完成后对目标表是否执行 CHECKSUM 检查来验证导入的完整性。可选的配置项为 `"required"`（默认）、`"optional"` 和 `"off"`。`"required"` 表示在导入完成后执行 CHECKSUM 检查，如果 CHECKSUM 检查失败，则会报错退出。`"optional"` 表示在导入完成后执行 CHECKSUM 检查，如果报错，会输出一条警告日志并忽略报错。`"off"` 表示导入结束后不执行 CHECKSUM 检查。 |
 | `DETACHED` | 所有文件格式 | 该参数用于控制 `IMPORT INTO` 是否异步执行。开启该参数后，执行 `IMPORT INTO` 会立即返回该导入任务的 `Job_ID` 等信息，且该任务会在后台异步执行。 |
 | `CLOUD_STORAGE_URI` | 所有文件格式 | 指定编码后的 KV 数据[全局排序](/tidb-global-sort.md)的目标存储地址。未指定该参数时，`IMPORT INTO` 会根据系统变量 [`tidb_cloud_storage_uri`](/system-variables.md#tidb_cloud_storage_uri-从-v740-版本开始引入) 的值来确定是否使用全局排序，如果该系统变量指定了目标存储地址，就使用指定的地址进行全局排序。当指定该参数时，如果参数值不为空，`IMPORT INTO` 会使用该参数值作为目标存储地址；如果参数值为空，则表示强制使用本地排序。目前目标存储地址仅支持 Amazon S3，具体 Amazon S3 URI 格式配置，请参见 [Amazon S3 URI 格式](/external-storage-uri.md#amazon-s3-uri-格式)。注意当使用该功能时，所有 TiDB 节点都需要有目标 Amazon S3 bucket 的读写权限。 |
-| `DISABLE_PRECHECK` | 所有文件格式、SELECT | 设置该参数后会关闭非 critical 的 precheck 项，如检查是否存在 CDC/PiTR 任务等。 |
+| `DISABLE_PRECHECK` | 所有文件格式、`SELECT` 语句的查询结果 | 设置该选项后会关闭非 critical 的前置检查项，如检查是否存在 CDC 或 PITR 等任务。 |
 
 ## 压缩文件
 
