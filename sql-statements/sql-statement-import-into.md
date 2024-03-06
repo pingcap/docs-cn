@@ -319,7 +319,7 @@ IMPORT INTO t FROM 's3://bucket/path/to/file.parquet?access-key=XXX&secret-acces
 IMPORT INTO t FROM select * from src union select * from src2 WITH thread = 8, disable_precheck;
 ```
 
-导入历史数据到目标表 `t`。
+导入指定时间点的历史数据到目标表 `t`。
 
 ```
 IMPORT INTO t FROM select * from src AS OF TIMESTAMP '2024-02-27 11:38:00';
