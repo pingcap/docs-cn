@@ -113,7 +113,7 @@ TiDB 版本：7.1.4
     - 通过在执行下线节点操作前检查该 Region 所有副本的上一次心跳时间，修复下线一个副本导致整个 Region 不可用的问题 [#16465](https://github.com/tikv/tikv/issues/16465) @[tonyxuqqi](https://github.com/tonyxuqqi)
     - 修复开启 Titan 时 RocksDB 中存储的表属性可能不准确的问题 [#16319](https://github.com/tikv/tikv/issues/16319) @[hicqu](https://github.com/hicqu)
     - 修复当集群中存在 TiFlash 节点时，执行 `tikv-ctl compact-cluster` 失败的问题 [#16189](https://github.com/tikv/tikv/issues/16189) @[frew](https://github.com/frew)
-    - RocksDB: 记录SST损坏的具体原因。[#16308](https://github.com/tikv/tikv/issues/16308) @[overvenus](https://github.com/overvenus)
+    - 当 TiKV 检测到存在损坏的 SST 文件时，记录损坏的具体原因 [#16308](https://github.com/tikv/tikv/issues/16308) @[overvenus](https://github.com/overvenus)
     - (dup): release-7.5.1.md > 错误修复> TiKV - 修复 gRPC threads 在检查 `is_shutdown` 时可能出现 panic 的问题 [#16236](https://github.com/tikv/tikv/issues/16236) @[pingyu](https://github.com/pingyu)
     - (dup): release-7.5.1.md > 错误修复> TiKV - 修复 TiDB 和 TiKV 处理 `DECIMAL` 算术乘法截断时结果不一致的问题 [#16268](https://github.com/tikv/tikv/issues/16268) @[solotzg](https://github.com/solotzg)
     - (dup): release-7.5.1.md > 错误修复> TiKV - 修复 `cast_duration_as_time` 可能返回错误结果的问题 [#16211](https://github.com/tikv/tikv/issues/16211) @[gengliqi](https://github.com/gengliqi)
