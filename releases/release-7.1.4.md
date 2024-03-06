@@ -125,13 +125,13 @@ TiDB 版本：7.1.4
 
 + PD <!--tw@hfxsd 7 条 -->
 
-    - 修复 Resource Group 客户端中未删除完全的 slot 导致分配 token 低于给定值的问题 [#7346](https://github.com/tikv/pd/issues/7346) @[guo-shaoge](https://github.com/guo-shaoge)
-    - 修复 TSO 部分日志没有打印 error 原因的问题 [#7496](https://github.com/tikv/pd/issues/7496) @[CabinfeverB](https://github.com/CabinfeverB)
-    - 修复 Default Resource Group 在 burstable 时累计不必要 tokens 的问题 [#7206](https://github.com/tikv/pd/issues/7206) @[CabinfeverB](https://github.com/CabinfeverB)
-    - 修复调用 evict-leader 接口时没有输出结果的问题 [#7672](https://github.com/tikv/pd/issues/7672) @[CabinfeverB](https://github.com/CabinfeverB)
-    - 修复 watch etcd 没有正确关闭导致内存泄露的问题 [#7807](https://github.com/tikv/pd/issues/7807) @[rleungx](https://github.com/rleungx)
-    - 修复 MergeLabels 时存在 datarace 的问题 [#7535](https://github.com/tikv/pd/issues/7535) @[lhy1024](https://github.com/lhy1024)
-    - 修复 Dashboard 中在开启 tls 时 tikv profile 获取失败的问题 [#7561](https://github.com/tikv/pd/issues/7561) @[Connor1996](https://github.com/Connor1996)
+    - 修复资源组 (Resource Group) 客户端中未完全删除的 slot 导致分配 token 低于给定值的问题 [#7346](https://github.com/tikv/pd/issues/7346) @[guo-shaoge](https://github.com/guo-shaoge)
+    - 修复 TSO 部分日志没有打印报错原因的问题 [#7496](https://github.com/tikv/pd/issues/7496) @[CabinfeverB](https://github.com/CabinfeverB)
+    - 修复默认资源组在启用 `BURSTABLE` 时累计不必要的 token 的问题 [#7206](https://github.com/tikv/pd/issues/7206) @[CabinfeverB](https://github.com/CabinfeverB)
+    - 修复调用 `evict-leader-scheduler` 接口时没有输出结果的问题 [#7672](https://github.com/tikv/pd/issues/7672) @[CabinfeverB](https://github.com/CabinfeverB)
+    - 修复 `watch etcd` 没有正确关闭导致内存泄露的问题 [#7807](https://github.com/tikv/pd/issues/7807) @[rleungx](https://github.com/rleungx)
+    - 修复调用 `MergeLabels` 函数时存在数据竞争的问题 [#7535](https://github.com/tikv/pd/issues/7535) @[lhy1024](https://github.com/lhy1024)
+    - 修复 Dashboard 在开启 TLS 时获取 TiKV profile 失败的问题 [#7561](https://github.com/tikv/pd/issues/7561) @[Connor1996](https://github.com/Connor1996)
     - (dup): release-7.5.1.md > 错误修复> PD - 修复在不满足副本数量需求时，删除 orphan peer 的问题 [#7584](https://github.com/tikv/pd/issues/7584) @[bufferflies](https://github.com/bufferflies)
     - (dup): release-7.5.0.md > 错误修复> PD - 修复采用自适应同步部署模式 (DR Auto-Sync) 的集群 `available_stores` 计算错误的问题 [#7221](https://github.com/tikv/pd/issues/7221) @[disksing](https://github.com/disksing)
     - (dup): release-7.5.0.md > 错误修复> PD - 修复采用自适应同步部署模式 (DR Auto-Sync) 的集群在 Placement Rule 的配置较复杂时，`canSync` 和 `hasMajority` 可能计算错误的问题 [#7201](https://github.com/tikv/pd/issues/7201) @[disksing](https://github.com/disksing)
