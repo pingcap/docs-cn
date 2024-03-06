@@ -95,32 +95,32 @@ TiDB 版本：8.0.0
     
 ### 高可用
 
-* 支持代理组件 TiProxy [#413](https://github.com/pingcap/tiproxy/issues/413) @[djshow832](https://github.com/djshow832) @[xhebox](https://github.com/xhebox) **tw@Oreoxmt** <!--1698-->
+* 代理组件 TiProxy 成为正式功能 (GA) [#413](https://github.com/pingcap/tiproxy/issues/413) @[djshow832](https://github.com/djshow832) @[xhebox](https://github.com/xhebox) **tw@Oreoxmt** <!--1698-->
 
-    TiProxy 是 TiDB 的官方代理组件，位于客户端和 TiDB server 之间，为 TiDB 提供负载均衡、连接保持功能，让 TiDB 集群的负载更加均衡，并在维护操作期间不影响用户对数据库的连接访问。
+    TiDB v7.6.0 引入了代理组件 TiProxy 作为实验特性。TiProxy 是 TiDB 的官方代理组件，位于客户端和 TiDB server 之间，为 TiDB 提供负载均衡、连接保持功能，让 TiDB 集群的负载更加均衡，并在维护操作期间不影响用户对数据库的连接访问。
     
-    在 v7.6.0 版本中，TiProxy 以实验特性发布。在 v8.0.0 版本中，TiProxy 完善了签名证书自动生成、监控等功能，并正式发布。
+    在 v8.0.0 中，TiProxy 成为正式功能，完善了签名证书自动生成、监控等功能。
     
-    TiProxy 主要应用于以下场景：
+    TiProxy 的应用场景如下：
 
     * 在 TiDB 集群进行滚动重启、滚动升级、缩容等维护操作时，TiDB server 会发生变动，导致客户端与发生变化的 TiDB server 的连接中断。通过使用 TiProxy，可以在这些维护操作过程中平滑地将连接迁移至其他 TiDB server，从而让客户端不受影响。
     * 所有客户端对 TiDB server 的连接都无法动态迁移至其他 TiDB server。当多个 TiDB server 的负载不均衡时，可能出现整体集群资源充足，但某些 TiDB server 资源耗尽导致延迟大幅度增加的情况。为解决此问题，TiProxy 提供连接动态迁移功能，在客户端无感的前提下，将连接从一个 TiDB server 迁移至其他 TiDB server，从而实现 TiDB 集群的负载均衡。
 
-    TiProxy 已集成至 TiUP、TiDB Operator、TiDB Dashboard 等 TiDB 基本组件中，可以方便地进行配置、部署和运维。
+  TiProxy 已集成至 TiUP、TiDB Operator、TiDB Dashboard 等 TiDB 基本组件中，可以方便地进行配置、部署和运维。
 
     更多信息，请参考[用户文档](/tiproxy/tiproxy-overview.md)。
 
 ### SQL 功能
 
-* 新增支持处理大量数据的 DML 类型（实验特性）[#50215](https://github.com/pingcap/tidb/issues/50215) @[ekexium](https://github.com/ekexium) **tw@Oreoxmt** <!--1694-->
+* 支持处理大量数据的 DML 类型（实验特性）[#50215](https://github.com/pingcap/tidb/issues/50215) @[ekexium](https://github.com/ekexium) **tw@Oreoxmt** <!--1694-->
 
-    在之前的 TiDB 版本中，所有的事务数据在提交之前，都保存在内存中。当处理大量数据时，事务所需的内存成为瓶颈，限制了 TiDB 可以处理的事务大小。TiDB 曾经发布了非事务 DML 功能，通过拆分 SQL 的方式尝试解决事务大小限制，但是功能存在较多限制，在实际使用时并不友好。
-    
-    在 v8.0.0 中，TiDB 新增支持处理大量数据的 DML 类型。这种 DML 类型在执行时，通过及时将数据写入 TiKV 的方式，避免将所有事务数据保存在内存中，从而实现对超过内存上限的大量数据的处理。该 DML 类型保证事务的完整性，并且使用和标准 DML 完全一致的语法。任何 TiDB 的合法 DML，都可以使用这种 DML 类型，以处理大数据量 DML 操作。
-    
-    支持处理大量数据的 DML 类型依赖于 [Pipelined DML](https://github.com/pingcap/tidb/blob/master/docs/design/2024-01-09-pipelined-DML.md)，只支持在自动提交事务中使用，并且引入变量 `tidb_dml_type` 控制是否使用该 DML 类型。目前，该功能作为实验特性发布。
+    在 TiDB v8.0.0 之前，所有事务数据在提交之前均存储在内存中。当处理大量数据时，事务所需的内存成为限制 TiDB 处理事务大小的瓶颈。虽然 TiDB 非事务 DML 功能通过拆分 SQL 语句的方式尝试解决事务大小限制，但该功能存在多种限制，在实际应用中的体验并不理想。
 
-    更多信息，请参考[用户文档](/system-variables.md#tidb_dml_type-从-v80-版本开始引入)。
+    从 v8.0.0 开始，TiDB 支持处理大量数据的 DML 类型。该 DML 类型在执行过程中将数据及时写入 TiKV，避免将所有事务数据持续存储在内存中，从而支持处理超过内存限制的大量数据。这种 DML 类型在保证事务完整性的同时，采用与标准 DML 相同的语法。所有合法的 TiDB DML 语句均可使用这种新的 DML 类型来执行大数据量的 DML 操作。
+
+    支持处理大量数据的 DML 类型依赖于 [Pipelined DML](https://github.com/pingcap/tidb/blob/master/docs/design/2024-01-09-pipelined-DML.md) 特性，仅支持在自动提交的事务中使用。你可以通过 [`tidb_dml_type`](/system-variables.md#tidb_dml_type-从-v800-版本开始引入) 系统变量控制是否启用该 DML 类型。
+
+    更多信息，请参考[用户文档](/system-variables.md#tidb_dml_type-从-v800-版本开始引入)。
 
 * TiDB 建表时，支持更多的表达式来设置列的默认值 （实验特性）[#50936](https://github.com/pingcap/tidb/issues/50936) @[zimulala](https://github.com/zimulala) **tw@qiancai** <!--1690-->
 
@@ -142,11 +142,11 @@ TiDB 版本：8.0.0
 
     更多信息，请参考[用户文档](链接)。
 
-* "不可见索引 (invisible index)"能够在会话级设置可见 [#issue号](链接) @[hawkingrei](https://github.com/hawkingrei) **tw@Oreoxmt** <!--1401-->
+* 支持在会话级将不可见索引 (Invisible Indexes) 调整为可见 [#issue号](链接) @[hawkingrei](https://github.com/hawkingrei) **tw@Oreoxmt** <!--1401-->
 
-    "[不可见索引](/sql-statements/sql-statement-create-index.md#不可见索引)" 是不能够被优化器选择的索引。通常用在删除索引之前，如果不确定删除索引的操作是否会造成性能回退，可以暂时将该索引修改为不可见，万一需要恢复索引可立即修改回可见状态。
+    在优化器选择索引以优化查询执行时，默认情况下不会选择[不可见索引](/sql-statements/sql-statement-create-index.md#不可见索引)。这一机制通常用于在评估是否删除某个索引之前。如果担心删除索引可能导致性能下降，可以先将索引设置为不可见，以便在必要时快速将其恢复为可见。
     
-    在 v8.0.0 中，如果将新引入的会话级变量 [`tidb_opt_use_invisible_indexes`](/system-variables.md#) 设置为 `ON`，那么在该会话中执行的查询可以选择到"不可见索引"。利用这个能力，在添加新索引时，如果不确定索引的作用，则可以先将索引创建为不可见索引，通过修改会话变量后，在这个会话中对相关的查询语句进行测试，而不影响其他会话的行为。这个扩展改进能够提升性能调优的安全性，增强生产数据库的稳定性。
+    从 v8.0.0 开始，你可以将会话级系统变量 [`tidb_opt_use_invisible_indexes`](/system-variables.md#) 设置为 `ON`，让当前会话识别并使用不可见索引。利用这个功能，在添加新索引并希望测试其效果时，可以先将索引创建为不可见索引，然后通过修改该系统变量在当前会话中进行测试新索引的性能，而不影响其他会话。这一改进提高了进行性能调优的安全性，并有助于增强生产数据库的稳定性。
 
     更多信息，请参考[用户文档](/sql-statements/sql-statement-create-index.md#不可见索引)。
 
@@ -162,20 +162,18 @@ TiDB 版本：8.0.0
         
 ### 可观测性
 
-* 引入对索引使用情况的观测 [#49830](https://github.com/pingcap/tidb/issues/49830) @[YangKeao](https://github.com/YangKeao) **tw@Oreoxmt** <!--1400-->
+* 支持观测索引使用情况 [#49830](https://github.com/pingcap/tidb/issues/49830) @[YangKeao](https://github.com/YangKeao) **tw@Oreoxmt** <!--1400-->
 
-    正确的索引设计是提升数据库性能的重要前提。TiDB 在 v8.0.0 新加入了内存表 [`information_schema.tidb_index_usage`](/information-schema/information-schema-tidb-index-usage.md)，记录每个 TiDB 节点上索引的使用情况，其中包括：
+    正确的索引设计是提升数据库性能的重要前提。TiDB v8.0.0 新增内存表 [`INFORMATION_SCHEMA.TIDB_INDEX_USAGE`](/information-schema/information-schema-tidb-index-usage.md)，用于记录当前 TiDB 节点中所有索引的访问统计信息，包括：
+
     * 扫描该索引的语句的累计执行次数
-    * 累计在该索引中扫描的行数
+    * 访问该索引时扫描的总行数
     * 扫描索引时的选择率分布
-    * 索引上次被选择的时间
-    
-    这些信息能够协助用户识别出没有被优化器选到的索引，以及过滤性很差的索引。另外，本次更新还加入了 MySQL 兼容的视图 [`sys.schema_unused_indexes`](/sys-schema.md)，视图根据所有 TiDB 节点上的索引运行情况，列出节点启动后，所有没有被选择过的索引。
-    
-    需要注意的几点：
-     * 如果用户从 v8.0.0 之前的版本升级上来，`sys` 中的内容不会被自动创建，需要根据[文档]((/sys-schema.md))手动创建。
-    * [`information_schema.tidb_index_usage`](/information-schema/information-schema-tidb-index-usage.md) 只在内存中维护，重启 TiDB 节点后该节点的信息会丢失。
-    * [`information_schema.tidb_index_usage`](/information-schema/information-schema-tidb-index-usage.md) 默认会被维护。可以通过修改配置项 [`instance.tidb_enable_collect_execution_info`](/tidb-configuration-file.md#tidb_enable_collect_execution_info) 或者变量[`tidb_enable_collect_execution_info`](/system-variables.md#tidb_enable_collect_execution_info) 将其关闭。
+    * 最近一次访问该索引的时间
+
+  通过这些信息，你可以识别未被优化器使用的索引以及过滤效果不佳的索引，从而优化索引设计，提升数据库性能。
+
+    此外，TiDB v8.0.0 新增与 MySQL 兼容的视图 [`sys.schema_unused_index`](/sys-schema.md)，用于记录自 TiDB 上次启动以来未被使用的索引信息。对于从 v8.0.0 之前版本升级的集群，`sys` 中的内容不会自动创建。你可以参考 [`sys`](/sys-schema.md)手动创建。
 
     更多信息，请参考[用户文档](/information-schema/information-schema-tidb-index-usage.md)。
 
