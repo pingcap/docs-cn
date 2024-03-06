@@ -100,10 +100,9 @@ TiDB 版本：7.1.4
     - 修复创建大量表或分区时 TiDB 可能 OOM 的问题 [#50077](https://github.com/pingcap/tidb/issues/50077) @[zimulala](https://github.com/zimulala)
     - 修复在网络环境不稳定时，执行添加索引操作可能会导致索引数据不一致的问题 [#49773](https://github.com/pingcap/tidb/issues/49773) @[tangenta](https://github.com/tangenta)
     - 修复 DDL 作业的执行顺序，以防止 TiCDC 接收到乱序的 DDL [#49498](https://github.com/pingcap/tidb/issues/49498) @[tangenta](https://github.com/tangenta)
-    - 修复对 `BIT` 类型列使用 `REVERSE()` 函数时遇到的问题 [#50850](https://github.com/pingcap/tidb/issues/50850) @[jiyfhust](https://github.com/jiyfhust)
     - 修复修改变量 `tidb_server_memory_limit` 后，`tidb_gogc_tuner_threshold` 未进行相应调整的问题 [#48180](https://github.com/pingcap/tidb/issues/48180) @[hawkingrei] <!--tw@qiancai 以下 7 条 -->
     - (dup): release-6.5.8.md > 错误修复> TiDB - 修复某些情况下，由于错误的分区裁剪导致查询 Range Partition 的结果不正确的问题 [#50082](https://github.com/pingcap/tidb/issues/50082) @[Defined2014](https://github.com/Defined2014)
-    - 修复当 `CREATE TABLE` 语句中包含特定分区或约束的表达式时，表名变更等的 DDL 操作会卡住的问题 [#50972](https://github.com/pingcap/tidb/issues/50972) @[lcwangchao](https://github.com/lcwangchao)
+    - 修复当 `CREATE TABLE` 语句中包含特定分区或约束的表达式时，表名变更等 DDL 操作会卡住的问题 [#50972](https://github.com/pingcap/tidb/issues/50972) @[lcwangchao](https://github.com/lcwangchao)
     - 修复当列的默认值被删除时，获取该列的默认值会报错的问题 [#50043](https://github.com/pingcap/tidb/issues/50043) [#51324](https://github.com/pingcap/tidb/issues/51324) @[crazycs520](https://github.com/crazycs520)
     - 修复 Grafana 监控指标 `tidb_statistics_auto_analyze_total` 没有显示为整数的问题 [#51051](https://github.com/pingcap/tidb/issues/51051) @[hawkingrei](https://github.com/hawkingrei)
     - 修复 `auto analyze` 在处理分区表时，`tidb_merge_partition_stats_concurrency` 变量未生效的问题 [#47594](https://github.com/pingcap/tidb/issues/47594) @[hawkingrei](https://github.com/hawkingrei)
