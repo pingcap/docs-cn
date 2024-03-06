@@ -5,7 +5,10 @@ summary: TiDB 数据库中 IMPORT INTO 的使用概况。
 
 # IMPORT INTO
 
-`IMPORT INTO` 语句使用 TiDB Lightning 的[物理导入模式](/tidb-lightning/tidb-lightning-physical-import-mode.md)，用于将 `CSV`、`SQL`、`PARQUET` 等格式的数据文件（`IMPORT INTO ... FROM FILE`）或者将 SELECT 语句的查询结果（`IMPORT INTO ... FROM SELECT`）导入到 TiDB 的一张空表中。
+`IMPORT INTO` 语句使用 TiDB Lightning 的[物理导入模式](/tidb-lightning/tidb-lightning-physical-import-mode.md) 导入数据，提供以下两种用法：
+
+- `IMPORT INTO ... FROM FILE` 用于将 `CSV`、`SQL`、`PARQUET` 等格式的数据文件导入到 TiDB 的一张空表中。
+- `IMPORT INTO ... FROM SELECT` 用于将 `SELECT` 语句的查询结果导入到 TiDB 的一张空表中，也支持导入使用 [`AS OF TIMESTAMP`](/as-of-timestamp.md) 查询的历史数据。
 
 `IMPORT INTO` 支持导入存储在 Amazon S3、GCS 和 TiDB 本地的数据文件。
 
