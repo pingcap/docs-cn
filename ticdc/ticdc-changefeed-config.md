@@ -66,6 +66,10 @@ case-sensitive = false
 # 默认值和 TiDB 的默认 SQL 模式一致
 # sql-mode = "ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION"
 
+# 默认值为 false，表示不处于 BDR 模式。
+# 详情请参考：https://docs.pingcap.com/zh/tidb/stable/ticdc-bidirectional-replication#ticdc-双向复制
+# bdr-mode = false
+
 [mounter]
 # mounter 解码 KV 数据的线程数，默认值为 16
 # worker-num = 16
