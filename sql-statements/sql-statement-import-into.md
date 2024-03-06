@@ -198,7 +198,7 @@ SET GLOBAL tidb_server_memory_limit='88%';
 
 ## `IMPORT INTO ... FROM FILE` 输出内容
 
-当 `IMPORT INTO` 导入完成，或者开启了 `DETACHED` 模式时，`IMPORT INTO` 会返回当前任务的信息。以下为一些示例，字段的含义描述请参考 [`SHOW IMPORT JOB(s)`](/sql-statements/sql-statement-show-import-job.md)。
+当 `IMPORT INTO ... FROM FILE` 导入完成，或者开启了 `DETACHED` 模式时，`IMPORT INTO` 会返回当前任务的信息。以下为一些示例，字段的含义描述请参考 [`SHOW IMPORT JOB(s)`](/sql-statements/sql-statement-show-import-job.md)。
 
 当 `IMPORT INTO` 导入完成时输出：
 
