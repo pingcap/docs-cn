@@ -314,7 +314,7 @@ IMPORT INTO t FROM 's3://bucket/path/to/file.parquet?access-key=XXX&secret-acces
 
 ### `IMPORT INTO ... FROM SELECT`
 
-导入 `union` 结果到目标表 `t`，并发度为 `8`，并且关闭 precheck。
+导入 `UNION ` 结果到目标表 `t`，指定导入的并发度为 `8`，并且关闭非 critical 的 precheck 项。
 ```
 IMPORT INTO t FROM SELECT * FROM src UNION SELECT * FROM src2 WITH THREAD = 8, DISABLE_PRECHECK;
 ```
