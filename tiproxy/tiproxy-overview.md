@@ -59,7 +59,7 @@ TiProxy 不适用于以下场景：
 
 ### 部署 TiProxy
 
-1. 对于 TiUP v1.15.0 以下的版本，需要手动生成自签名证书。
+1. 对于 TiUP v1.15.0 之前的版本，需要手动生成自签名证书。
 
     为 TiDB 实例生成自签名证书，并把该证书放置到所有 TiDB 实例上，确保所有 TiDB 实例上有完全相同的证书。生成步骤请参阅[生成自签名证书](/generate-self-signed-certificates.md)。
 
@@ -67,7 +67,7 @@ TiProxy 不适用于以下场景：
 
     使用 TiProxy 时，还需要给 TiDB 实例做如下配置：
 
-    - 对于 TiUP v1.15.0 以下的版本，将 TiDB 实例的 [`security.session-token-signing-cert`](/tidb-configuration-file.md#session-token-signing-cert-从-v640-版本开始引入) 和 [`security.session-token-signing-key`](/tidb-configuration-file.md#session-token-signing-key-从-v640-版本开始引入) 配置为上述证书的路径，否则连接不能迁移。
+    - 对于 TiUP v1.15.0 之前的版本，将 TiDB 实例的 [`security.session-token-signing-cert`](/tidb-configuration-file.md#session-token-signing-cert-从-v640-版本开始引入) 和 [`security.session-token-signing-key`](/tidb-configuration-file.md#session-token-signing-key-从-v640-版本开始引入) 配置为上述证书的路径，否则连接不能迁移。
     - 配置 TiDB 实例的 [`graceful-wait-before-shutdown`](/tidb-configuration-file.md#graceful-wait-before-shutdown-从-v50-版本开始引入)，它的值要大于应用程序最长的事务的持续时间，否则 TiDB server 下线时客户端可能断连。你可以通过 [TiDB 监控面板的 Transaction 指标](/grafana-tidb-dashboard.md#transaction)查看事务的持续时间。更多信息，请参阅[使用限制](#使用限制)。
 
     配置示例：
