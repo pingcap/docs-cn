@@ -2938,8 +2938,18 @@ v5.0 后，用户仍可以单独修改以上系统变量（会有废弃警告）
 - 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：否
 - 类型：布尔型
 - 默认值：`OFF`
-- 这个变量用来设置是否启用低精度 TSO 特性。开启该功能之后，新事务会使用一个每 2s 更新一次的 TS 来读取数据。
+- 这个变量用来设置是否启用低精度 TSO 特性。开启该功能之后，默认每 2s 更新一次的 TS 来读取数据。从 v8.0.0 版本开始，可通过 [`tidb_low_resolution_tso_update_interval`](/tidb_low_resolution_tso_update_interval-从-v800-版本开始引入) 配置更新频率。
 - 主要场景是在可以容忍读到旧数据的情况下，降低小的只读事务获取 TSO 的开销。
+
+### `tidb_low_resolution_tso_update_interval` <span class="version-mark">从 v8.0.0 版本开始引入</span>
+
+- 作用域：GLOBAL
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：否
+- 类型：整数型
+- 默认值：`2000`
+- 范围：`[10, 60000]`
+- 这个变量用来设置 TiDB 缓存 Timestamp 的更新频率，单位为毫秒。
+- 主要场景是在可以容忍读到旧数据的情况下，配置读请求快照的新鲜程度。
 
 ### `tidb_nontransactional_ignore_error` <span class="version-mark">从 v6.1.0 版本开始引入</span>
 
