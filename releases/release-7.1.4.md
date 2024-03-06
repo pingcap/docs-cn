@@ -103,7 +103,7 @@ TiDB 版本：7.1.4
     - 修复 DDL 作业的执行顺序，以防止 TiCDC 接收到乱序的 DDL [#49498](https://github.com/pingcap/tidb/issues/49498) @[tangenta](https://github.com/tangenta)
     - 修复对 `BIT` 类型列使用 `REVERSE()` 函数时遇到的问题 [#50850](https://github.com/pingcap/tidb/issues/50850) @[jiyfhust]
     - 修复修改变量 `tidb_server_memory_limit` 后，`tidb_gogc_tuner_threshold` 未进行相应调整的问题 [#48180](https://github.com/pingcap/tidb/issues/48180) @[hawkingrei] <!--tw@qiancai 以下 7 条 -->
-    - 修复分区表进行 range 分区裁剪处理 unsigned 类型的列时的一处 bug，该 bug 会生成错误的 TableDual 的查询计划导致查询结果错误 [#50082](https://github.com/pingcap/tidb/issues/50082) @[Defined2014]
+    - (dup): release-6.5.8.md > 错误修复> TiDB - 修复某些情况下，由于错误的分区裁剪导致查询 Range Partition 的结果不正确的问题 [#50082](https://github.com/pingcap/tidb/issues/50082) @[Defined2014](https://github.com/Defined2014)
     - 修复当 `CREATE TABLE` 语句中包含特定分区或约束的表达式时，表名变更等的 DDL 操作会卡住的问题 [#50972](https://github.com/pingcap/tidb/issues/50972) @[lcwangchao](https://github.com/lcwangchao)
     - 修复当列的默认值被删除时，获取该列的默认值会报错的问题 [#50043](https://github.com/pingcap/tidb/issues/50043) [#51324](https://github.com/pingcap/tidb/issues/51324) @[crazycs520](https://github.com/crazycs520)
     - 修复 grafana 监控指标 tidb_statistics_auto_analyze_total 不为整数的问题。[#51051](https://github.com/pingcap/tidb/issues/51051) @[hawkingrei](https://github.com/hawkingrei)
