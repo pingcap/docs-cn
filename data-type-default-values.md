@@ -7,7 +7,7 @@ aliases: ['/docs-cn/dev/data-type-default-values/','/docs-cn/dev/reference/sql/d
 
 在一个数据类型描述中的 `DEFAULT value` 段描述了一个列的默认值。这个默认值必须是常量，不可以是一个函数或者是表达式。但是对于时间类型，可以例外的使用 `NOW`、`CURRENT_TIMESTAMP`、`LOCALTIME`、`LOCALTIMESTAMP` 等函数作为 `DATETIME` 或者 `TIMESTAMP` 的默认值。
 
-`BLOB`、`TEXT` 以及 `JSON` 不可以设置默认值。
+`BLOB`、`TEXT` 以及 `JSON` 也可以设置默认值。
 
 如果一个列的定义中没有 `DEFAULT` 的设置。TiDB 按照如下的规则决定：
 
