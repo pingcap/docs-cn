@@ -322,7 +322,7 @@ IMPORT INTO t FROM select * from src union select * from src2 WITH thread = 8, d
 导入指定时间点的历史数据到目标表 `t`。
 
 ```
-IMPORT INTO t FROM select * from src AS OF TIMESTAMP '2024-02-27 11:38:00';
+IMPORT INTO t FROM SELECT * FROM src AS OF TIMESTAMP '2024-02-27 11:38:00';
 ```
 
 ## MySQL 兼容性
