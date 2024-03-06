@@ -106,7 +106,7 @@ TiDB 版本：7.1.4
     - (dup): release-6.5.8.md > 错误修复> TiDB - 修复某些情况下，由于错误的分区裁剪导致查询 Range Partition 的结果不正确的问题 [#50082](https://github.com/pingcap/tidb/issues/50082) @[Defined2014](https://github.com/Defined2014)
     - 修复当 `CREATE TABLE` 语句中包含特定分区或约束的表达式时，表名变更等的 DDL 操作会卡住的问题 [#50972](https://github.com/pingcap/tidb/issues/50972) @[lcwangchao](https://github.com/lcwangchao)
     - 修复当列的默认值被删除时，获取该列的默认值会报错的问题 [#50043](https://github.com/pingcap/tidb/issues/50043) [#51324](https://github.com/pingcap/tidb/issues/51324) @[crazycs520](https://github.com/crazycs520)
-    - 修复 grafana 监控指标 tidb_statistics_auto_analyze_total 不为整数的问题。[#51051](https://github.com/pingcap/tidb/issues/51051) @[hawkingrei](https://github.com/hawkingrei)
+    - 修复 Grafana 监控指标 `tidb_statistics_auto_analyze_total` 没有显示为整数的问题 [#51051](https://github.com/pingcap/tidb/issues/51051) @[hawkingrei](https://github.com/hawkingrei)
     - 修复 auto analyze 在处理分区表时，并发不可用的问题。[#47594](https://github.com/pingcap/tidb/issues/47594) @[hawkingrei](https://github.com/hawkingrei)
     - 修复 join 中可能出现的 index out of range 问题。 [#42588](https://github.com/pingcap/tidb/issues/42588) @[AilinKid](https://github.com/AilinKid)
     - 修复在 TiFlash 延迟物化在处理关联列时结果可能出错的问题 [#49241](https://github.com/pingcap/tidb/issues/49241) [#51204](https://github.com/pingcap/tidb/issues/51204) @[Lloyd-Pottiger](https://github.com/Lloyd-Pottiger)
