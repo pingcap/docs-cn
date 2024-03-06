@@ -23,6 +23,10 @@ TiDB 版本：7.1.4
     - (dup): release-7.5.1.md > 改进提升> TiDB - 增强特定情况下 `OUTER JOIN` 转 `INNER JOIN` 的能力 [#49616](https://github.com/pingcap/tidb/issues/49616) @[qw4990](https://github.com/qw4990)
     - 当设置 `force-init-stats` 为 `true` 时，即 TiDB 启动时等待统计信息初始化完成后再对外提供服务，此时 TiDB 会同时禁止 HTTP 服务器的启动 [#50854](https://github.com/pingcap/tidb/issues/50854) @[hawkingrei](https://github.com/hawkingrei)
 
++ TiKV <!--tw@qiancai 1 条 -->
+
+    - 当 TiKV 检测到存在损坏的 SST 文件时，记录损坏的具体原因 [#16308](https://github.com/tikv/tikv/issues/16308) @[overvenus](https://github.com/overvenus)
+
 + PD
 
     - (dup): release-7.4.0.md > 改进提升> PD - 优化无法连接到备份集群时 PD 自动更新集群状态的速度 [#6883](https://github.com/tikv/pd/issues/6883) @[disksing](https://github.com/disksing)
@@ -109,16 +113,15 @@ TiDB 版本：7.1.4
 
 + TiKV <!--tw@qiancai 6 条 -->
 
-    - raftstore: 修复休眠region在异常情况下不能及时唤醒的缺陷。[#16368](https://github.com/tikv/tikv/issues/16368) @[LykxSassinator](https://github.com/LykxSassinator)
-    - 在执行下线节点操作前，检查该region所有副本的上一次心跳时间，防止下线一个副本后整个region不可用. [#16465](https://github.com/tikv/tikv/issues/16465) @[tonyxuqqi](https://github.com/tonyxuqqi)
-    - 修复Titan打开时RocksDB中Table property相关的缺陷。 [#16319](https://github.com/tikv/tikv/issues/16319) @[hicqu](https://github.com/hicqu)
-    - 修复当TiFlash打开时tikv-ctl compact-cluster无法工作的缺陷。[#16189](https://github.com/tikv/tikv/issues/16189) @[frew](https://github.com/frew)
-    - RocksDB: 记录SST损坏的具体原因。[#16308](https://github.com/tikv/tikv/issues/16308) @[overvenus](https://github.com/overvenus)
+    - 修复休眠的 Region 在异常情况下未被及时唤醒的问题 [#16368](https://github.com/tikv/tikv/issues/16368) @[LykxSassinator](https://github.com/LykxSassinator)
+    - 通过在执行下线节点操作前检查该 Region 所有副本的上一次心跳时间，修复下线一个副本导致整个 Region 不可用的问题 [#16465](https://github.com/tikv/tikv/issues/16465) @[tonyxuqqi](https://github.com/tonyxuqqi)
+    - 修复开启 Titan 时 RocksDB 中存储的表属性可能不准确的问题 [#16319](https://github.com/tikv/tikv/issues/16319) @[hicqu](https://github.com/hicqu)
+    - 修复当集群中存在 TiFlash 节点时，执行 `tikv-ctl compact-cluster` 失败的问题 [#16189](https://github.com/tikv/tikv/issues/16189) @[frew](https://github.com/frew)
     - (dup): release-7.5.1.md > 错误修复> TiKV - 修复 gRPC threads 在检查 `is_shutdown` 时可能出现 panic 的问题 [#16236](https://github.com/tikv/tikv/issues/16236) @[pingyu](https://github.com/pingyu)
     - (dup): release-7.5.1.md > 错误修复> TiKV - 修复 TiDB 和 TiKV 处理 `DECIMAL` 算术乘法截断时结果不一致的问题 [#16268](https://github.com/tikv/tikv/issues/16268) @[solotzg](https://github.com/solotzg)
     - (dup): release-7.5.1.md > 错误修复> TiKV - 修复 `cast_duration_as_time` 可能返回错误结果的问题 [#16211](https://github.com/tikv/tikv/issues/16211) @[gengliqi](https://github.com/gengliqi)
     - (dup): release-7.5.1.md > 错误修复> TiKV - 修复巴西和埃及时区转换错误的问题 [#16220](https://github.com/tikv/tikv/issues/16220) @[overvenus](https://github.com/overvenus)
-    - 修复 JSON 整形数值在大于 int64 最大值但是小于 uint64 最大值时会被解析成 float64 导致结果和 TiDB 不一致的问题 [#16537](https://github.com/tikv/tikv/pull/16537) @[YangKeao](https://github.com/YangKeao)
+    - 修复 JSON 整形数值在大于 `INT64` 最大值但小于 `UINT64` 最大值时会被 TiKV 解析成 `FLOAT64` 导致结果和 TiDB 不一致的问题 [#16512](https://github.com/tikv/tikv/issues/16512) @[YangKeao](https://github.com/YangKeao)
 
 + PD <!--tw@hfxsd 7 条 -->
 
@@ -148,8 +151,8 @@ TiDB 版本：7.1.4
     - (dup): release-7.5.1.md > 错误修复> TiFlash - 修复慢查询导致内存使用显著增加的问题 [#8564](https://github.com/pingcap/tiflash/issues/8564) @[JinheLin](https://github.com/JinheLin)
     - (dup): release-7.5.1.md > 错误修复> TiFlash - 修复在执行 `ALTER TABLE ... MODIFY COLUMN ... NOT NULL` 时，将原本可为空的列修改为不可为空之后，导致 TiFlash panic 的问题 [#8419](https://github.com/pingcap/tiflash/issues/8419) @[JaySon-Huang](https://github.com/JaySon-Huang)
     - (dup): release-6.5.8.md > 错误修复> TiFlash - 修复终止查询后 TiFlash 上大量任务被同时取消，由于并发数据冲突导致 TiFlash 崩溃的问题 [#7432](https://github.com/pingcap/tiflash/issues/7432) @[SeaRise](https://github.com/SeaRise)
-    - 修复 TiFlash 在有大量远程读时，由于并发数据冲突导致 TiFlash 崩溃的问题 [#8685](https://github.com/pingcap/tiflash/issues/8685) @[zanmato1984](https://github.com/zanmato1984)
-    - 修复 anti semi join 在有其他不等值连接条件时，结果可能会出错的问题 [#8791](https://github.com/pingcap/tiflash/issues/8791) @[windtalker](https://github.com/windtalker)
+    - 修复 TiFlash 在有大量远程读操作时，由于并发数据冲突导致 TiFlash 崩溃的问题 [#8685](https://github.com/pingcap/tiflash/issues/8685) @[zanmato1984](https://github.com/zanmato1984)
+    - 修复 Anti Semi Join 在有其他不等值连接条件时，结果可能会出错的问题 [#8791](https://github.com/pingcap/tiflash/issues/8791) @[windtalker](https://github.com/windtalker)
 
 + Tools
 
@@ -169,13 +172,13 @@ TiDB 版本：7.1.4
         - (dup): release-7.5.1.md > 错误修复> Tools> TiCDC - 修复在 `ignore-event` 中设置了过滤掉 `add table partition` 事件后，TiCDC 未将相关分区的其它类型 DML 变更事件同步到下游的问题 [#10524](https://github.com/pingcap/tiflow/issues/10524) @[CharlesCheung96](https://github.com/CharlesCheung96)
         - (dup): release-7.5.1.md > 错误修复> Tools> TiCDC - 修复使用 storage sink 时，在存储服务生成的文件序号可能出现回退的问题 [#10352](https://github.com/pingcap/tiflow/issues/10352) @[CharlesCheung96](https://github.com/CharlesCheung96)
         - (dup): release-7.5.1.md > 错误修复> Tools> TiCDC - 修复并发创建多个 changefeed 时 TiCDC 返回 `ErrChangeFeedAlreadyExists` 错误的问题 [#10430](https://github.com/pingcap/tiflow/issues/10430) @[CharlesCheung96](https://github.com/CharlesCheung96)
-        - 修复在 resume changefeed 的时候由于没有检查 changefeed 的 checkpoint-ts 是否小于 TiDB 的 gc safepoint 从而没有及时把 "snapshot lost cased by GC" 错误提示出来 [#10463](https://github.com/pingcap/tiflow/issues/10463) @[sdojjy](https://github.com/sdojjy)
-        - 修复 TiCDC 在开启单行数据正确性校验 (Data Integrity Validation for Single-Row Data) 后由于没有正确考虑时区的问题导致 timestamp 类型 checksum 验证失败的问题 [#10573](https://github.com/pingcap/tiflow/issues/10573) @[3AceShowHand](https://github.com/3AceShowHand)
+        - 修复恢复 changefeed 时 changefeed 的 `checkpoint-ts` 小于 TiDB 的 `gc safepoint`，没有及时报错 `snapshot lost cased by GC` 的问题 [#10463](https://github.com/pingcap/tiflow/issues/10463) @[sdojjy](https://github.com/sdojjy)
+        - 修复 TiCDC 在开启单行数据正确性校验 (Data Integrity Validation for Single-Row Data) 后由于时区不匹配导致 timestamp 类型 checksum 验证失败的问题 [#10573](https://github.com/pingcap/tiflow/issues/10573) @[3AceShowHand](https://github.com/3AceShowHand)
 
     + TiDB Data Migration (DM) <!--tw@hfxsd 2 条 -->
 
         - 修复任务配置中错误的 binlog 事件类型导致升级失败的问题 [#10282](https://github.com/pingcap/tiflow/issues/10282) @[GMHDBJD](https://github.com/GMHDBJD)
-        - 修复带有 shard_row_id_bits 的表会导致 schema tracker 无法初始化的问题 [#10308](https://github.com/pingcap/tiflow/issues/10308) @[GMHDBJD](https://github.com/GMHDBJD)
+        - 修复带有 `shard_row_id_bits` 的表会导致 schema tracker 无法初始化的问题 [#10308](https://github.com/pingcap/tiflow/issues/10308) @[GMHDBJD](https://github.com/GMHDBJD)
 
     + TiDB Lightning <!--tw@Oreoxmt 2 条 -->
 
