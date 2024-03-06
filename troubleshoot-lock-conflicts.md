@@ -87,13 +87,14 @@ select `key`, count(*) as `count` from information_schema.data_lock_waits group 
 {{< copyable "sql" >}}
 
 ```sql
-select trx.* from information_schema.data_lock_waits as l left join information_schema.tidb_trx as trx on l.trx_id = trx.id where l.key = "7480000000000000415F728000000000000001"\G
+select trx.* from information_schema.data_lock_waits as l left join information_schema.cluster_tidb_trx as trx on l.trx_id = trx.id where l.key = "7480000000000000415F728000000000000001"\G
 ```
 
 示例输出：
 
 ```sql
 *************************** 1. row ***************************
+               INSTANCE: 127.0.0.1:10080
                      ID: 426831815660273668
              START_TIME: 2021-08-06 07:16:00.081000
      CURRENT_SQL_DIGEST: 06da614b93e62713bd282d4685fc5b88d688337f36e88fe55871726ce0eb80d7
@@ -107,6 +108,7 @@ CURRENT_SQL_DIGEST_TEXT: update `t` set `v` = `v` + ? where `id` = ? ;
                      DB: test
         ALL_SQL_DIGESTS: ["0fdc781f19da1c6078c9de7eadef8a307889c001e05f107847bee4cfc8f3cdf3","06da614b93e62713bd282d4685fc5b88d688337f36e88fe55871726ce0eb80d7"]
 *************************** 2. row ***************************
+               INSTANCE: 127.0.0.1:10080
                      ID: 426831818019569665
              START_TIME: 2021-08-06 07:16:09.081000
      CURRENT_SQL_DIGEST: 06da614b93e62713bd282d4685fc5b88d688337f36e88fe55871726ce0eb80d7

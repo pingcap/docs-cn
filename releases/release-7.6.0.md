@@ -284,7 +284,7 @@ TiDB 版本：7.6.0
 | TiKV | [`blob-file-compression`](/tikv-configuration-file.md#blob-file-compression) | 修改 | 设置 Titan 中 value 所使用的压缩算法。从 v7.6.0 开始，默认采用 `zstd` 压缩算法。 |
 | TiKV | [`rocksdb.defaultcf.titan.min-blob-size`](/tikv-configuration-file.md#min-blob-size) | 修改 | 从 TiDB v7.6.0 开始，新建集群默认值为 `32KB`。对于已有集群升级到 v7.6.0 版本的情况，默认值为 `1KB` 保持不变。 |
 | TiKV | [`rocksdb.titan.enabled`](/tikv-configuration-file.md#enabled) | 修改 | 开启 Titan 开关。v7.5.0 及更早的版本默认值为 `false`。从 v7.6.0 开始，新建集群默认值是 `true`，已有集群升级到 v7.6.0 或更高版本则会维持原有的配置。 |
-| TiKV | [`gc.num-threads`](/tikv-configuration-file.md#num-threads-从-v658-和-v760-版本开始引入) | 新增 | 设置当 `enable-compaction-filter` 为 `false` 时 GC 的线程个数。默认值为 `1`。 |
+| TiKV | [`gc.num-threads`](/tikv-configuration-file.md#num-threads-从-v658v751-和-v760-版本开始引入) | 新增 | 设置当 `enable-compaction-filter` 为 `false` 时 GC 的线程个数。默认值为 `1`。 |
 | TiKV | [`raftstore.periodic-full-compact-start-times`](/tikv-configuration-file.md#periodic-full-compact-start-times-从-v760-版本开始引入) | 新增 | 设置 TiKV 启动周期性全量数据整理 (Compaction) 的时间。默认值 `[]` 表示默认情况下禁用周期性全量数据整理。 |
 | TiKV | [`raftstore.periodic-full-compact-start-max-cpu`](/tikv-configuration-file.md#periodic-full-compact-start-max-cpu-从-v760-版本开始引入) | 新增 | 设置 TiKV 执行周期性全量数据整理时的 CPU 使用率阈值，默认值为 `0.1`。 |
 | TiKV | [`zstd-dict-size`](/tikv-configuration-file.md#zstd-dict-size) | 新增 | 指定 `zstd` 字典大小，默认值为 `0KB`，表示关闭 `zstd` 字典压缩。 |
@@ -293,8 +293,6 @@ TiDB 版本：7.6.0
 | TiDB Lightning | [`block-size`](/tidb-lightning/tidb-lightning-configuration.md#tidb-lightning-任务配置) | 新增 | 控制物理导入模式 (`backend='local'`) 中本地文件排序的 I/O 区块大小。默认值为 `16KiB`。当 IOPS 成为瓶颈时，可以调大该参数的值以缓解磁盘 IOPS，从而提升数据导入性能。 |
 | BR | [`--granularity`](/br/br-snapshot-guide.md#快照恢复的性能与影响) | 新增 | 通过设置 `--granularity="coarse-grained"` 启用粗粒度的 Region 打散算法（实验特性）进行恢复，加快大规模 Region 场景下的 Region 恢复速度。 |
 | TiCDC | [`compression`](/ticdc/ticdc-changefeed-config.md) | 新增 | 设置 redo log 文件的压缩行为。 |
-| TiCDC | [`encoding-worker-num`](/ticdc/ticdc-changefeed-config.md) | 新增 | 控制 redo 模块中编解码 worker 的数量，默认值为 `16`。 |
-| TiCDC | [`flush-worker-num`](/ticdc/ticdc-changefeed-config.md) | 新增 | 控制 redo 模块中上传文件 worker 的数量，默认值为 `8`。 |
 | TiCDC | [`sink.cloud-storage-config`](/ticdc/ticdc-changefeed-config.md) | 新增 | 设置同步数据到对象存储时自动清理历史数据的功能。 |
 
 ### 系统表
