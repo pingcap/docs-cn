@@ -19,8 +19,6 @@ summary: TiDB 数据库中 IMPORT INTO 的使用概况。
 
 - 对于存储在 TiDB 本地的数据文件，`IMPORT INTO` 仅支持在当前用户连接的 TiDB 节点上运行，因此数据文件需要存放在当前用户连接的 TiDB 节点上。如果是通过 PROXY 或者 Load Balancer 访问 TiDB，则无法导入存储在 TiDB 本地的数据文件。
 
-`IMPORT INTO ... FROM SELECT` 支持导入任意 SELECT 语句，也支持导入使用 [`AS OF TIMESTAMP`](/as-of-timestamp.md) 查询的历史数据。
-
 ## 使用限制
 
 - 只支持导入数据到数据库中已有的空表。
