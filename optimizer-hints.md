@@ -59,6 +59,37 @@ SELECT /*+ HASH_JOIN(@sel_1 t1@sel_1, t3) */ * FROM (SELECT t1.a, t1.b FROM t t1
 >
 > Hint 声明的位置必须在指定生效的查询块之中或之前，不能是在之后的查询块中，否则无法生效。
 
+## Hint 中的表名
+
+在使用诸如 [MERGE_JOIN](#MERGE_JOIN(t1_name-[,-tl_name-...])) 的 Hint 时，需要在 Hint 中提供表名。为了确保语法解析时对表名的处理逻辑与 MySQL 的处理逻辑相同，在使用 Hint 中使用表名时，需要注意，如果表有别名，必须使用它的别名才可以生效。如果这个表不在当前通过 `USE DATABASE` 命令所指定的数据库中，那么需要使用 `table_name.alias` 的方式指定这个表。参考以下示例。
+
+
+```sql
+USE test;
+DROP TABLE IF EXISTS test_hint;
+CREATE TABLE test_hint(a int);
+SELECT /*+ HASH_JOIN(t1) */ * FROM test_hint t1, test_hint t2;
+SELECT /*+ HASH_JOIN(test.t1) */ * FROM test_hint t1, test_hint t2;
+SELECT /*+ HASH_JOIN(test_hint) */ * FROM test_hint t1, test_hint t2;  /* hint 不生效，因为未使用别名 */
+DROP DATABASE IF EXISTS test_hint_db;
+CREATE DATABASE test_hint_db;
+CREATE TABLE test_hint_db.test_hint(a int);
+SELECT /*+ HASH_JOIN(t1) */ * FROM test_hint_db.test_hint t1, test_hint t2;  /* hint 不生效，因为当前默认数据库不是 test_hint_db */
+SELECT /*+ HASH_JOIN(test_hint_db.t1) */ * FROM test_hint_db.test_hint t1, test_hint t2;
+SELECT /*+ HASH_JOIN(test_hint_db.test_hint) */ * FROM test_hint_db.test_hint t1, test_hint t2;  /* hint 不生效，因为未使用别名 */
+```
+
+上述例子中，只有下面几个 SQL 是可以被使用 Hint 的，其他 Hint 都会提示找不到 Hint 所指定的表名。
+
+```sql
+USE test;
+DROP TABLE IF EXISTS test_hint;
+CREATE TABLE test_hint(a int);
+SELECT /*+ HASH_JOIN(t1) */ * FROM test_hint t1, test_hint t2;
+SELECT /*+ HASH_JOIN(test.t1) */ * FROM test_hint t1, test_hint t2;
+SELECT /*+ HASH_JOIN(test_hint_db.t1) */ * FROM test_hint_db.test_hint t1, test_hint t2;
+```
+
 ### QB_NAME
 
 当查询语句是包含多层嵌套子查询的复杂语句时，识别某个查询块的序号和名字很可能会出错，Hint `QB_NAME` 可以方便我们使用查询块。`QB_NAME` 是 Query Block Name 的缩写，用于为某个查询块指定新的名字，同时查询块原本默认的名字依然有效。例如：
