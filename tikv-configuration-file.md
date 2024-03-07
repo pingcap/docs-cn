@@ -989,7 +989,7 @@ raftstore 相关的配置项。
 ### `store-io-pool-size` <span class="version-mark">从 v5.3.0 版本开始引入</span>
 
 + 表示处理 Raft I/O 任务的线程池中线程的数量，即 StoreWriter 线程池的大小。调整该线程池的大小时，请参考 [TiKV 线程池调优](/tune-tikv-thread-performance.md#tikv-线程池调优)。
-+ 默认值：0
++ 默认值：1
 + 最小值：0
 
 ### `future-poll-size`
