@@ -5,7 +5,7 @@ summary: TiDB 数据库中 IMPORT INTO 的使用概况。
 
 # IMPORT INTO
 
-`IMPORT INTO` 语句使用 TiDB Lightning 的[物理导入模式](/tidb-lightning/tidb-lightning-physical-import-mode.md) 导入数据，提供以下两种用法：
+`IMPORT INTO` 语句使用 TiDB Lightning 的[物理导入模式](/tidb-lightning/tidb-lightning-physical-import-mode.md)导入数据，提供以下两种用法：
 
 - `IMPORT INTO ... FROM FILE` 用于将 `CSV`、`SQL`、`PARQUET` 等格式的数据文件导入到 TiDB 的一张空表中。
 - `IMPORT INTO ... FROM SELECT` 用于将 `SELECT` 语句的查询结果导入到 TiDB 的一张空表中，也支持导入使用 [`AS OF TIMESTAMP`](/as-of-timestamp.md) 查询的历史数据。
@@ -46,7 +46,7 @@ summary: TiDB 数据库中 IMPORT INTO 的使用概况。
 - `IMPORT INTO ... FROM SELECT` 仅能在当前用户连接的 TiDB 节点执行，在导入完成前会阻塞当前连接。
 - `IMPORT INTO ... FROM SELECT` 仅支持配置 `THREAD` 和 `DISABLE_PRECHECK` 这两个[导入选项](#withoptions)。
 - `IMPORT INTO ... FROM SELECT` 不支持使用 `SHOW IMPORT JOB(s)` 和 `CANCEL IMPORT JOB <job-id>` 等任务管理语句。
-- TiDB [临时目录](/tidb-configuration-file.md#temp-dir-从-v630-版本开始引入) 需要有足够的空间来存储整个 `SELECT` 语句查询结果（暂不支持设置[磁盘配额](/tidb-lightning-physical-import-mode-usage.md#磁盘资源配额-从-v620-版本开始引入)）。
+- TiDB [临时目录](/tidb-configuration-file.md#temp-dir-从-v630-版本开始引入)需要有足够的空间来存储整个 `SELECT` 语句查询结果（暂不支持设置 `DISK_QUOTA` 选项）。
 - 不支持使用 [`tidb_snapshot`](/read-historical-data.md) 导入历史数据。
 
 ## 导入前准备
@@ -148,7 +148,7 @@ SET 表达式左侧只能引用 `ColumnNameOrUserVarList` 中没有的列名。�
 | `SPLIT_FILE` | CSV | 将单个 CSV 文件拆分为多个 256 MiB 左右的小文件块进行并行处理，以提高导入效率。该参数仅对**非**压缩的 CSV 文件生效，且该参数和 TiDB Lightning 的 [`strict-format`](/tidb-lightning/tidb-lightning-data-source.md#启用严格格式) 有相同的使用限制。 |
 | `DISK_QUOTA='<string>'` | 所有文件格式 | 指定数据排序期间可使用的磁盘空间阈值。默认值为 TiDB [临时目录](/tidb-configuration-file.md#temp-dir-从-v630-版本开始引入)所在磁盘空间的 80%。如果无法获取磁盘总大小，默认值为 50 GiB。当显式指定 DISK_QUOTA 时，该值同样不能超过 TiDB [临时目录](/tidb-configuration-file.md#temp-dir-从-v630-版本开始引入)所在磁盘空间的 80%。 |
 | `DISABLE_TIKV_IMPORT_MODE` | 所有文件格式 | 指定是否禁止导入期间将 TiKV 切换到导入模式。默认不禁止。如果当前集群存在正在运行的读写业务，为避免导入过程对这部分业务造成影响，可开启该参数。 |
-| `THREAD=<number>` | 所有文件格式、`SELECT` 语句的查询结果 | 指定导入的并发度。对于 `IMPORT INTO ... FROM FILE`，`THREAD` 默认值为 TiDB 节点的 CPU 核数的 50%，最小值为 1，最大值为 CPU 核数；对于 `IMPORT INTO ... FROM SELECT`，`THREAD` 默认值为 2，最小值为 1，最大值为 CPU 核数的 2 倍。如需导入数据到一个空集群，建议可以适当调大该值，以提升导入性能。如果目标集群已经用于生产环境，请根据业务要求按需调整该参数值。 |
+| `THREAD=<number>` | 所有文件格式、`SELECT` 语句的查询结果 | 指定导入的并发度。对于 `IMPORT INTO ... FROM FILE`，`THREAD` 默认值为 TiDB 节点的 CPU 核数的 50%，最小值为 `1`，最大值为 CPU 核数；对于 `IMPORT INTO ... FROM SELECT`，`THREAD` 默认值为 `2`，最小值为 `1`，最大值为 CPU 核数的 2 倍。如需导入数据到一个空集群，建议可以适当调大该值，以提升导入性能。如果目标集群已经用于生产环境，请根据业务要求按需调整该参数值。 |
 | `MAX_WRITE_SPEED='<string>'` | 所有文件格式 | 控制写入到单个 TiKV 的速度，默认无速度限制。例如设置为 `1MiB`，则限制写入速度为 1 MiB/s。|
 | `CHECKSUM_TABLE='<string>'` | 所有文件格式 | 配置是否在导入完成后对目标表是否执行 CHECKSUM 检查来验证导入的完整性。可选的配置项为 `"required"`（默认）、`"optional"` 和 `"off"`。`"required"` 表示在导入完成后执行 CHECKSUM 检查，如果 CHECKSUM 检查失败，则会报错退出。`"optional"` 表示在导入完成后执行 CHECKSUM 检查，如果报错，会输出一条警告日志并忽略报错。`"off"` 表示导入结束后不执行 CHECKSUM 检查。 |
 | `DETACHED` | 所有文件格式 | 该参数用于控制 `IMPORT INTO` 是否异步执行。开启该参数后，执行 `IMPORT INTO` 会立即返回该导入任务的 `Job_ID` 等信息，且该任务会在后台异步执行。 |
@@ -316,12 +316,12 @@ IMPORT INTO t FROM 's3://bucket/path/to/file.parquet?access-key=XXX&secret-acces
 
 ### `IMPORT INTO ... FROM SELECT`
 
-导入 `UNION ` 结果到目标表 `t`，指定导入的并发度为 `8`，并且关闭非 critical 的 precheck 项。
+导入 `UNION ` 结果到目标表 `t`，指定导入的并发度为 `8`，并且关闭非 critical 的 precheck 项：
 ```
 IMPORT INTO t FROM SELECT * FROM src UNION SELECT * FROM src2 WITH THREAD = 8, DISABLE_PRECHECK;
 ```
 
-导入指定时间点的历史数据到目标表 `t`。
+导入指定时间点的历史数据到目标表 `t`：
 
 ```
 IMPORT INTO t FROM SELECT * FROM src AS OF TIMESTAMP '2024-02-27 11:38:00';
