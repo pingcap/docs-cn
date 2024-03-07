@@ -25,23 +25,23 @@ aliases: ['/docs-cn/dev/upgrade-tidb-using-tiup/','/docs-cn/dev/how-to/upgrade/u
 > - 如果原集群是 3.0 或 3.1 或更早的版本，不支持直接升级到 v7.6.0 及后续修订版本。你需要先从早期版本升级到 4.0 后，再从 4.0 升级到 v7.6.0 及后续修订版本。
 > - 如果原集群是 6.2 之前的版本，升级到 6.2 及以上版本时，部分场景会遇到升级卡住的情况，你可以参考[如何解决升级卡住的问题](#42-升级到-v620-及以上版本时如何解决升级卡住的问题)。
 > - 配置参数 [`server-version`](/tidb-configuration-file.md#server-version) 的值会被 TiDB 节点用于验证当前 TiDB 的版本。因此在进行 TiDB 集群升级前，请将 `server-version` 的值设置为空或者当前 TiDB 真实的版本值，避免出现非预期行为。
-> - 配置项 [`performance.force-init-stats`](/tidb-configuration-file.md#force-init-stats-从-v657-和-v710-版本开始引入) 设置为 `ON` 会延长 TiDB 的启动时间，这可能会造成启动超时，升级失败。建议为 TiUP 设置更长的等待时间。
->   * 可能影响的场景
+> - 配置项 [`performance.force-init-stats`](/tidb-configuration-file.md#force-init-stats-从-v657-和-v710-版本开始引入) 设置为 `ON` 会延长 TiDB 的启动时间，这可能会造成启动超时，升级失败。为避免这种情况，建议为 TiUP 设置更长的等待时间。
+>    - 可能受影响的场景：
 >      * 原集群版本低于 v6.5.6, v7.1.0 ( 没有配置项 `performance.force-init-stats` )，目标版本为 v7.2.0 及更高。
 >      * 原集群版本高于 v6.5.7, v7.1.0 ，且配置项 `performance.force-init-stats` 被设置为 `ON`。 
->   * 查看配置项 `performance.force-init-stats` 的值。
+>   * 查看配置项 `performance.force-init-stats` 的值：
 >     ```
 >     SHOW CONFIG WHERE type = 'tidb' AND name = 'performance.force-init-stats';
 >     ```
->   * 通过增加命令行选项 [`--wait-timeout`](/tiup/tiup-component-cluster#wait-timeoutuint默认-120) 延长超时等待。如下将等待时间设置成 20 分钟
+>   * 通过增加命令行选项 [`--wait-timeout`](/tiup/tiup-component-cluster.md#--wait-timeoutuint默认-120) 延长 TiUP 超时等待。如下命令可将超时等待设置成 1200 秒（即 20 分钟）。
 >     ```shell
 >     tiup update cluster --wait-timeout 1200 [other options]
 >     ```
->     通常情况下，20分钟超时能满足绝大部分场景的等待。如果想要做更准确的预估，可以在 TiDB 日志中搜索 `init stats info time` 关键字，获取上次启动的加载时间作为参考。 例如：
+>     通常情况下，20 分钟超时等待能满足绝大部分场景的需求。如果需要更准确的预估，可以在 TiDB 日志中搜索 `init stats info time` 关键字，获取上次启动的加载时间作为参考。 例如：
 >     ```
 >     [domain.go:2271] ["init stats info time"] [lite=true] ["take time"=2.151333ms]
 >      ```
->    * 如果想要加快 TiDB 滚动升级的时间，并且在升级过程中能够承受初始统计信息缺失带来的潜在性能影响。可以在升级前[用 TiUP 修改目标实例的配置](/maintain-tidb-using-tiup.md#修改配置参数)，将 `performance.force-init-stats` 设置为 `OFF`。 升级完成后可酌情改回。
+>    * 如果想要缩短 TiDB 滚动升级的时间，并且在升级过程中能够承受初始统计信息缺失带来的潜在性能影响。可以在升级前[用 TiUP 修改目标实例的配置](/maintain-tidb-using-tiup.md#修改配置参数)，将 `performance.force-init-stats` 设置为 `OFF`。 升级完成后可酌情改回。
 
 
 ## 1. 升级兼容性说明
