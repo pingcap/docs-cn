@@ -1594,7 +1594,11 @@ mysql> SELECT job_info FROM mysql.analyze_jobs ORDER BY end_time DESC LIMIT 1;
 >
 > 自 v7.0.0 起，`tidb_dml_batch_size` 对 [`LOAD DATA` 语句](/sql-statements/sql-statement-load-data.md)不再生效。
 
-### `tidb_dml_type` <span class="version-mark">从 v8.0 版本开始引入</span>
+### `tidb_dml_type` <span class="version-mark">从 v8.0.0 版本开始引入</span>
+
+> **警告：**
+>
+> 批量 DML 执行方式 (`tidb_dml_type = "bulk"`) 目前为实验特性，不建议在生产环境中使用。该功能可能会在未事先通知的情况下发生变化或删除。如果发现 bug，请在 GitHub 上提 [issue](https://github.com/pingcap/tidb/issues) 反馈。使用批量 DML 执行方式执行超大事务时，可能会影响 TiCDC、TiFlash 和 TiKV 的 resolved-ts 模块的内存使用和执行效率，可能引发 OOM 问题。因此，不建议在启用这些组件和功能时使用。
 
 - 作用域：SESSION
 - 是否持久化到集群：否
@@ -1603,17 +1607,13 @@ mysql> SELECT job_info FROM mysql.analyze_jobs ORDER BY end_time DESC LIMIT 1;
 - 默认值：`"standard"`
 - 可选值：`"standard"`、`"bulk"`
 - 该变量用来设置 DML 语句的执行方式。
-    - `"standard"` 表示使用标准的 DML 执行方式，TiDB 事务在提交前缓存在内存中。这种模式能高效处理高并发、可能冲突的事务。除非有明确的需求，应当使用这种方式。
-    - `"bulk"` 表示使用批量 DML 执行方式，这种方式适用于写入大批量数据导致 TiDB 内存使用过多时使用。
-        - 在 TiDB 事务执行过程中，数据不全部缓存在 TiDB 内存中，而是持续写入 TiKV，以此降低内存占用。
-        - 只有 INSERT，UPDATE 和 DELETE 语句受 `bulk` 方式的影响。
-        - 这种方式不能高效处理写入冲突场景，仅适用于无冲突的大批量数据的写入场景。
-        - BULK 方式只对 auto-commit 的语句生效，且 [`pessimistic-auto-commit`配置项](/tidb-configuration-file.md#pessimistic-auto-commit) 必须为 `false`。
-        - 这种方式由 [Pipelined-DML](https://github.com/pingcap/tidb/issues/50215) 特性实现。
-
-> 警告：
->
-> `tidb_dml_type` 的 BULK 方式是实验性特性，不建议在生产环境中使用。以此方式执行超大事务时对 TiCDC、TiFlash、TiKV resolved-ts 模块的内存使用和执行效率都有影响，有 OOM 风险。不建议在启用这些组件和功能时使用。
+    - `"standard"` 表示使用标准的 DML 执行方式，TiDB 事务在提交前缓存在内存中。适用于处理高并发且可能存在冲突的事务场景，为默认推荐使用的执行方式。
+    - （实验特性）`"bulk"` 表示使用批量 DML 执行方式，适合于处理因大量数据写入导致 TiDB 内存使用过多的情况。
+        - 在 TiDB 事务执行过程中，数据不是完全缓存在 TiDB 内存中，而是持续写入 TiKV，以减少内存的占用。
+        - 只有 `INSERT`、`UPDATE` 和 `DELETE` 语句受 `bulk` 方式的影响。
+        - 这种方式不能高效处理写入冲突的场景，仅适用于大批量无冲突数据写入的场景。
+        - `bulk` 方式只对自动提交 (auto-commit) 的语句生效，且需要将 [`pessimistic-auto-commit`](/tidb-configuration-file.md#pessimistic-auto-commit)配置项设置为 `false`。
+        - 这种方式由 Pipelined DML 特性实现，详细设计和 GitHub issue 可见 [Pipelined DML](https://github.com/pingcap/tidb/blob/master/docs/design/2024-01-09-pipelined-DML.md) 和 [#50215](https://github.com/pingcap/tidb/issues/50215)。
 
 ### `tidb_enable_1pc` <span class="version-mark">从 v5.0 版本开始引入</span>
 
