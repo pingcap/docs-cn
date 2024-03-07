@@ -1606,6 +1606,7 @@ mysql> SELECT job_info FROM mysql.analyze_jobs ORDER BY end_time DESC LIMIT 1;
     - `"standard"` 表示使用标准的 DML 执行方式，TiDB 事务在提交前缓存在内存中。这种模式能高效处理高并发、可能冲突的事务。除非有明确的需求，应当使用这种方式。
     - `"bulk"` 表示使用批量 DML 执行方式，这种方式适用于写入大批量数据导致 TiDB 内存使用过多时使用。
         - 在 TiDB 事务执行过程中，数据不全部缓存在 TiDB 内存中，而是持续写入 TiKV，以此降低内存占用。
+        - 只有 INSERT，UPDATE 和 DELETE 语句受 `bulk` 方式的影响。
         - 这种方式不能高效处理写入冲突场景，仅适用于无冲突的大批量数据的写入场景。
         - BULK 方式只对 auto-commit 的语句生效，且 [`pessimistic-auto-commit`配置项](/tidb-configuration-file.md#pessimistic-auto-commit) 必须为 `false`。
         - 这种方式由 [Pipelined-DML](https://github.com/pingcap/tidb/issues/50215) 特性实现。
