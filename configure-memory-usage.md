@@ -136,7 +136,7 @@ SET GLOBAL tidb_server_memory_limit = "32GB";
 
 ## 如何降低 tidb-server 写入事务的内存使用
 
-TiDB 采用的事务模型要求，所有待提交的事务写入操作需先在内存中进行缓存。在写入大的事务时，内存使用可能会增加并成为瓶颈。为了在满足各项限制条件的前提下减少或避免大事务使用大量内存，你可以通过调整 [`tidb_dml_type`](/system-variables.md#tidb_dml_type-从-v800-版本开始引入) 为 `"bulk"` 或使用[非事务 DML 语句](/non-transactional-dml.md)的方式来实现。
+TiDB 采用的事务模型要求，所有待提交的事务写入操作需先在内存中进行缓存。在写入大的事务时，内存使用可能会增加并成为瓶颈。为了减少或避免大事务使用大量内存，你可以在满足各项限制条件的前提下通过调整 [`tidb_dml_type`](/system-variables.md#tidb_dml_type-从-v800-版本开始引入) 为 `"bulk"` 或使用[非事务 DML 语句](/non-transactional-dml.md)的方式来实现。
 
 ## tidb-server 其它内存控制策略
 
