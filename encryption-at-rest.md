@@ -110,7 +110,7 @@ aws --region us-west-2 kms create-alias --alias-name "alias/tidb-tde" --target-k
 
 **第 2 步：配置主密钥**
 
-使用 AWS KMS 方式指定主密钥，请在 TiKV 的配置文件中 `[security.encryption]` 部分之后添加 `[security.encryption.master-key]` 配置：
+要使用 AWS KMS 方式指定主密钥，请在 TiKV 的配置文件中 `[security.encryption]` 部分之后添加 `[security.encryption.master-key]` 配置：
 
 ```
 [security.encryption.master-key]
@@ -129,7 +129,7 @@ endpoint = "https://kms.us-west-2.amazonaws.com"
 
 **第 1 步：创建主密钥**
 
-要在 Google Cloud 平台上创建一个密钥，请执行以下步骤：
+要在 Google Cloud 平台上创建一个密钥，请进行以下操作：
 
 1. 进入 Google Cloud 控制台的 [密钥管理](https://console.cloud.google.com/security/kms/keyrings)。
 2. 点击**创建密钥环**。输入密钥环的名称，选择密钥环的位置，然后点击**创建**。注意密钥环的位置需要覆盖 TiDB 集群部署的区域。
@@ -147,7 +147,7 @@ gcloud kms keyrings create "key-ring-name" --location "global"
 gcloud kms keys create "key-name" --keyring "key-ring-name" --location "global" --purpose "encryption" --rotation-period "30d" 
 ```
 
-请将上述命令中的 "key-ring-name"、"key-name"、"global"、"30d" 等字段的值替换为实际密钥对应的名称和配置。
+请将上述命令中的 `"key-ring-name"`、`"key-name"`、`"global"`、`"30d"` 等字段的值替换为实际密钥对应的名称和配置。
 
 **第 2 步：配置主密钥**
 
@@ -163,14 +163,14 @@ vendor = "gcp"
 credential-file-path = "/path/to/credential.json"
 ```
 
-`key-id` 指定 KMS CMK 的密钥 ID, `credential-file-path` 指向验证凭据配置文件的路径，目前支持 Service Account 和 Authentication User 两种凭据。如果 TiKV 的运行环境已配置 [应用默认凭据](https://cloud.google.com/docs/authentication/application-default-credentials?hl=zh-cn)，则无须此配置项。
+`key-id` 指定 KMS CMK 的密钥 ID。`credential-file-path` 指向验证凭据配置文件的路径，目前支持 Service Account 和 Authentication User 这两种凭据。如果 TiKV 的运行环境已配置[应用默认凭据](https://cloud.google.com/docs/authentication/application-default-credentials?hl=zh-cn)，则无须此配置 `credential-file-path`。
 </div>
 
 <div label="Azure KMS">
 
 **第 1 步：创建主密钥**
 
-在 Azure 平台创建密钥，请参考文档 [使用 Azure 门户在 Azure Key Vault 中设置和检索密钥](https://learn.microsoft.com/zh-cn/azure/key-vault/keys/quick-create-portal)。
+在 Azure 平台创建密钥，请参考文档[使用 Azure 门户在 Azure Key Vault 中设置和检索密钥](https://learn.microsoft.com/zh-cn/azure/key-vault/keys/quick-create-portal)。
 
 **第 2 步：配置主密钥**
 
