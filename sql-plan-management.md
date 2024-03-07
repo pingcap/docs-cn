@@ -476,6 +476,57 @@ SHOW binding_cache status;
 1 row in set (0.00 sec)
 ```
 
+## 利用 `Statement Summary` 表获取需要绑定的查询
+
+[`Statement Summary`](/statement-summary-tables.md) 的表中存放了近期的 SQL 相关的执行信息，如延迟、执行次数、对应计划等，通过编写特定的查询访问这些表，可以快速找到需要绑定的查询。
+
+基本思路是通过查询 `Statement Summary` 表得到符合条件查询的 `plan_digest`，再使用[根据历史执行计划创建绑定](/sql-plan-management.md#根据历史执行计划创建绑定)快速创建绑定，下面是一些最佳实践的例子。
+
+### 实例 1：绑定最近两周有计划不稳定的高频查询
+
+```sql
+WITH stmts AS (                                                -- to get all information
+  SELECT * FROM INFORMATION_SCHEMA.CLUSTER_STATEMENTS_SUMMARY
+  UNION ALL
+  SELECT * FROM INFORMATION_SCHEMA.CLUSTER_STATEMENTS_SUMMARY_HISTORY 
+)
+
+SELECT `digest`, any_value(digest_text) as query, SUM(exec_count) as exec_count, 
+  (SELECT concat('create global binding from history using plan digest "', plan_digest, '"') as create_stmt FROM stmts p
+   WHERE p.`digest` = `digest`
+   ORDER BY avg_latency LIMIT 1) as create_binding_stmt        -- this query's fastest plan
+FROM stmts
+WHERE summary_begin_time > DATE_SUB(NOW(), interval 14 day)    -- executed in the past 2 weeks
+  AND schema_name NOT IN ('INFORMATION_SCHEMA', 'mysql')       -- not a internal query
+  AND plan_in_binding = 0                                      -- no binding yet
+GROUP BY `digest` 
+  HAVING COUNT(DISTINCT(plan_digest)) > 1                      -- this query is unstable, has more than 1 plan
+         AND SUM(exec_count) > 100                             -- high-frequency, has been executed more than 100 times
+ORDER BY SUM(exec_count) DESC;
+```
+
+通过一些过滤条件得到满足条件的查询，然后直接运行 `create_binding_stmt` 列对应的语句即可创建相应的绑定。
+
+### 实例 2：绑定执行次数前 100 且没有被绑定的查询
+
+```sql
+WITH stmts AS (                                                -- to get all information
+  SELECT * FROM INFORMATION_SCHEMA.CLUSTER_STATEMENTS_SUMMARY
+  UNION ALL
+  SELECT * FROM INFORMATION_SCHEMA.CLUSTER_STATEMENTS_SUMMARY_HISTORY 
+)
+
+SELECT `digest`, any_value(digest_text) as query, SUM(exec_count) as exec_count, 
+  (SELECT concat('create global binding from history using plan digest "', plan_digest, '"') as create_stmt FROM stmts p
+   WHERE p.`digest` = `digest`
+   ORDER BY avg_latency LIMIT 1) as create_binding_stmt        -- this query's fastest plan
+FROM stmts
+WHERE schema_name NOT IN ('INFORMATION_SCHEMA', 'mysql')       -- not a internal query
+  AND plan_in_binding = 0                                      -- no binding yet
+GROUP BY `digest` 
+ORDER BY SUM(exec_count) DESC LIMIT 100;                       -- Top100 high-frequency
+```
+
 ## 跨数据库绑定执行计划 (Cross-DB Binding)
 
 在创建绑定的 SQL 语句中，TiDB 支持使用通配符 `*` 表示数据库，实现跨数据库绑定。该功能自 v7.6.0 开始引入。要使用跨数据库绑定，首先需要开启 [`tidb_opt_enable_fuzzy_binding`](/system-variables.md#tidb_opt_enable_fuzzy_binding-从-v760-版本开始引入) 系统变量。
