@@ -97,7 +97,9 @@ ignore-update-new-value-expr = "gender = 'male' and age > 18" # 过滤掉新值 
 | alter ttl remove| DDL  | |匹配 alter table remove ttl info event    |
 | multi schema change | DDL  | |匹配在同一条 DDL 语句内对一个表的多个属性进行更改的 DDL event  |
 
-注意: 由于 TiDB 的 DDL 语句是支持同时变更单个表的多个属性操作的，例如 `ALTER TABLE t MODIFY COLUMN a INT, ADD COLUMN b INT, DROP COLUMN c;` 这种这种操作会被定义为 MultiSchemaChange，你如果想过滤掉这种类型的 DDL，需要配置 "multi schema change" 。
+> **注意：**
+>
+> TiDB 的 DDL 语句支持同时变更单个表的多个属性，例如 `ALTER TABLE t MODIFY COLUMN a INT, ADD COLUMN b INT, DROP COLUMN c;` 这种操作会被定义为 MultiSchemaChange。如果想过滤掉这种类型的 DDL，需要配置 "multi schema change"。
 
 - `ignore-sql`：要过滤的 DDL 语句的正则表达式。该参数接受一个字符串数组，数组中可以配置多条正则表达式。注意：该配置仅对 DDL 事件生效。
 - `ignore-delete-value-expr`：配置一个遵循默认 SQL Mode 的 SQL 表达式，对带有指定值的 DELETE 类型的 DML 事件生效。
