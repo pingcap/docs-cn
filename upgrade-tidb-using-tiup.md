@@ -53,6 +53,7 @@ title: 使用 TiUP 升级 TiDB
 - TiDB v7.1.1 release notes 中的[兼容性变更](/releases/release-7.1.1.md#兼容性变更)
 - TiDB v7.1.2 release notes 中的[兼容性变更](/releases/release-7.1.2.md#兼容性变更)
 - TiDB v7.1.3 release notes 中的[兼容性变更](/releases/release-7.1.3.md#兼容性变更)
+- TiDB v7.1.4 release notes 中的[兼容性变更](/releases/release-7.1.4.md#兼容性变更)
 
 ### 2.2 升级 TiUP 或更新 TiUP 离线镜像
 
