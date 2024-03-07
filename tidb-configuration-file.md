@@ -829,7 +829,7 @@ TiDB 服务状态相关配置。
 
 ### `tidb_enable_collect_execution_info`
 
-+ 用于控制是否同时将各个执行算子的执行信息记录入 slow query log 中。
++ 用于控制是否同时将各个执行算子的执行信息记录入 slow query log 中，以及是否维护[访问索引有关的统计信息](/information-schema/information-schema-tidb-index-usage.md)。
 + 默认值：true
 + 在 v6.1.0 之前，该功能通过配置项 `enable-collect-execution-info` 进行设置。
 

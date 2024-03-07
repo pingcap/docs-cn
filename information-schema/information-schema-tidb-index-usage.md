@@ -5,7 +5,7 @@ summary: 了解 INFORMATION_SCHEMA 表 `TIDB_INDEX_USAGE`。
 
 # TIDB_INDEX_USAGE
 
-TiDB 从 v8.0.0 开始提供 `TIDB_INDEX_USAGE` 表，你可以使用该表查看当前 TiDB 节点中所有索引的访问统计信息。在 SQL 语句执行时，将默认维护访问索引有关的统计信息，可以通过修改配置项 [`instance.tidb_enable_collect_execution_info`](/tidb-configuration-file.md#tidb_enable_collect_execution_info) 或者变量[`tidb_enable_collect_execution_info`](/system-variables.md#tidb_enable_collect_execution_info) 将其关闭。
+TiDB 从 v8.0.0 开始提供 `TIDB_INDEX_USAGE` 表，你可以使用该表查看当前 TiDB 节点中所有索引的访问统计信息。在 SQL 语句执行时，TiDB 默认维护访问索引有关的统计信息，可以通过修改配置项 [`instance.tidb_enable_collect_execution_info`](/tidb-configuration-file.md#tidb_enable_collect_execution_info) 或者系统变量[`tidb_enable_collect_execution_info`](/system-variables.md#tidb_enable_collect_execution_info) 将其关闭。
 
 ```sql
 USE INFORMATION_SCHEMA;
