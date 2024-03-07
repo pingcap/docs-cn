@@ -163,7 +163,7 @@ vendor = "gcp"
 credential-file-path = "/path/to/credential.json"
 ```
 
-`key-id` 指定 KMS CMK 的密钥 ID。`credential-file-path` 指向验证凭据配置文件的路径，目前支持 Service Account 和 Authentication User 这两种凭据。如果 TiKV 的运行环境已配置[应用默认凭据](https://cloud.google.com/docs/authentication/application-default-credentials?hl=zh-cn)，则无须此配置 `credential-file-path`。
+`key-id` 指定 KMS CMK 的密钥 ID。`credential-file-path` 指向验证凭据配置文件的路径，目前支持 Service Account 和 Authentication User 这两种凭据。如果 TiKV 的运行环境已配置[应用默认凭据](https://cloud.google.com/docs/authentication/application-default-credentials?hl=zh-cn)，则无需配置 `credential-file-path`。
 </div>
 
 <div label="Azure KMS">
