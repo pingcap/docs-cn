@@ -354,11 +354,11 @@ curl -X GET http://127.0.0.1:8300/api/v2/health
 | `quote`                  | `STRING` 类型，用于包裹字段的引号字符。空值代表不使用引号字符。默认值为 `"`。   |
 | `binary_encoding_method` | `STRING` 类型，二进制类型数据的编码方式，可选 `"base64"` 或 `"hex"`。默认值为 `"base64"`。   |
 
-`sink.dispatchers`：对于 MQ 类的 Sink，可以通过该参数配置 event 分发器，支持以下分发器：`default`、`ts`、`rowid`、`table` 。分发规则如下：
+`sink.dispatchers`：对于 MQ 类的 Sink，可以通过该参数配置 event 分发器，支持以下分发器：`default`、`ts`、`index-value`、`table` 。分发规则如下：
 
 - `default`：按照 table 分发。
 - `ts`：以行变更的 commitTs 做 Hash 计算并进行 event 分发。
-- `rowid`：以所选的 HandleKey 列名和列值做 Hash 计算并进行 event 分发。
+- `index-value`：以所选的 HandleKey 列名和列值做 Hash 计算并进行 event 分发。
 - `table`：以表的 schema 名和 table 名做 Hash 计算并进行 event 分发。
 
 `sink.dispatchers` 是一个数组，元素参数说明如下：
