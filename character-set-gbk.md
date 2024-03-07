@@ -66,10 +66,21 @@ SHOW COLLATION WHERE CHARSET = 'gbk';
 
 例如，当 `SET NAMES gbk` 时，如果分别在 MySQL 和 TiDB 上通过 `CREATE TABLE gbk_table(a VARCHAR(32) CHARACTER SET gbk)` 语句建表，然后按照下表中的 SQL 语句进行操作，就能看到具体的区别。
 
-| 数据库    |    如果设置的 SQL 模式包含 `STRICT_ALL_TABLES` 或 `STRICT_TRANS_TABLES`                                               | 如果设置的 SQL 模式不包含 `STRICT_ALL_TABLES` 和  `STRICT_TRANS_TABLES`                                                                     |
-|-------|-------------------------------------------------------------------------------------------------------------------|------------------------------------------------------------------------------------------------------------------------------------|
-| MySQL | `SELECT HEX('一a');` <br /> `e4b88061`<br /><br />`INSERT INTO gbk_table values('一a');`<br /> `Incorrect Error`       | `SELECT HEX('一a');` <br /> `e4b88061`<br /><br />`INSERT INTO gbk_table VALUES('一a');`<br />`SELECT HEX(a) FROM gbk_table;`<br /> `e4b8` |
-| TiDB  | `SELECT HEX('一a');` <br /> `Incorrect Error`<br /><br />`INSERT INTO gbk_table VALUES('一a');`<br /> `Incorrect Error` | `SELECT HEX('一a');` <br /> `e4b83f`<br /><br />`INSERT INTO gbk_table VALUES('一a');`<br />`SELECT HEX(a) FROM gbk_table;`<br /> `e4b83f`  |
++-----------------------+----------------------------------------------------------------------+------------------------------------------------------------------------+
+| 数据库                | 如果设置的 SQL 模式包含 `STRICT_ALL_TABLES` 或 `STRICT_TRANS_TABLES` | 如果设置的 SQL 模式不包含 `STRICT_ALL_TABLES` 和 `STRICT_TRANS_TABLES` |
++=======================+======================================================================+========================================================================+
+| MySQL                 | `SELECT HEX('一a');`                                                 | `SELECT HEX('一a');`                                                   |
+|                       | `e4b88061`                                                           | `e4b88061`                                                             |
+|                       | `INSERT INTO gbk_table values('一a');`                               | `INSERT INTO gbk_table VALUES('一a');`                                 |
+|                       | `Incorrect Error`                                                    | `SELECT HEX(a) FROM gbk_table;`                                        |
+|                       |                                                                      | `e4b8`                                                                 |
++-----------------------+----------------------------------------------------------------------+------------------------------------------------------------------------+
+| TiDB                  | `SELECT HEX('一a');`                                                 | `SELECT HEX('一a');`                                                   |
+|                       | `Incorrect Error`                                                    | `e4b83f`                                                               |
+|                       | `INSERT INTO gbk_table VALUES('一a');`                               | `INSERT INTO gbk_table VALUES('一a');`                                 |
+|                       | `Incorrect Error`                                                    | `SELECT HEX(a) FROM gbk_table;`                                        |
+|                       |                                                                      | `e4b83f`                                                               |
++-----------------------+----------------------------------------------------------------------+------------------------------------------------------------------------+
 
 说明：该表中 `SELECT HEX('一a');` 在 `utf8mb4` 字节集下的结果为 `e4b88061`。
 
