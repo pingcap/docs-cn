@@ -57,7 +57,7 @@ TiKV 当前支持的加密算法包括 AES128-CTR、AES192-CTR、AES256-CTR 和 
 * 主密钥 (master key)：主密钥由用户提供，用于加密 TiKV 生成的数据密钥。用户在 TiKV 外部进行主密钥的管理。
 * 数据密钥 (data key)：数据密钥由 TiKV 生成，是实际用于加密的密钥。
 
-多个 TiKV 实例可共用一个主密钥。在生产环境中，推荐通过 KMS 提供主密钥。目前 TiKV 支持 [AWS](https://docs.aws.amazon.com/zh_cn/kms/index.html)、[Google Cloud](https://cloud.google.com/security/products/security-key-management?hl=zh-CN) 和 [Azure](https://learn.microsoft.com/en-us/azure/key-vault/) 等平台的 KMS 加密。要开启 KMS 加密，首先通过 KMS 创建用户主密钥 (CMK)，然后在配置文件中将 CMK 密钥的 ID 提供给 TiKV。如果 TiKV 无法访问 KMS CMK，TiKV 就无法启动或重新启动。
+多个 TiKV 实例可共用一个主密钥。在生产环境中，推荐通过 KMS 提供主密钥。目前 TiKV 支持 [AWS](https://docs.aws.amazon.com/zh_cn/kms/index.html)、[Google Cloud](https://cloud.google.com/security/products/security-key-management?hl=zh-CN) 和 [Azure](https://learn.microsoft.com/en-us/azure/key-vault/) 平台的 KMS 加密。要开启 KMS 加密，首先通过 KMS 创建用户主密钥 (CMK)，然后在配置文件中将 CMK 密钥的 ID 提供给 TiKV。如果 TiKV 无法访问 KMS CMK，TiKV 就无法启动或重新启动。
 
 用户也可以通过文件形式提供主密钥。该文件须包含一个用十六进制字符串编码的 256 位（32 字节）密钥，并以换行符结尾（即 `\n`），且不包含其他任何内容。将密钥存储在磁盘上会泄漏密钥，因此密钥文件仅适合存储在 RAM 内存的 `tempfs` 中。
 
@@ -75,7 +75,13 @@ data-encryption-method = "aes128-ctr"
 data-key-rotation-period = "168h" # 7 days
 ```
 
-`data-encryption-method` 的可选值为 `"aes128-ctr"`、`"aes192-ctr"`、`"aes256-ctr"`、`"sm4-ctr"` (仅 v6.3.0 及之后版本) 和 `"plaintext"`。默认值为 `"plaintext"`，即默认不开启加密功能。`data-key-rotation-period` 指定 TiKV 轮换密钥的频率。可以为新 TiKV 集群或现有 TiKV 集群开启加密，但只有启用后写入的数据才保证被加密。要禁用加密，请在配置文件中删除 `data-encryption-method`，或将该参数值为 `"plaintext"`，然后重启 TiKV。若要替换加密算法，则将 `data-encryption-method` 替换成已支持的加密算法，然后重启 TiKV。替换加密算法后，旧加密算法生成的加密文件会随着新数据的写入逐渐被重写成新加密算法所生成的加密文件。
+- `data-encryption-method` 用于指定加密算法，可选值为 `"aes128-ctr"`、`"aes192-ctr"`、`"aes256-ctr"`、`"sm4-ctr"` (仅 v6.3.0 及之后版本)、`"plaintext"`。默认值为 `"plaintext"`，即默认不开启加密功能。
+
+    - 对于新 TiKV 集群或现有 TiKV 集群，只有启用加密功能后写入的数据才保证被加密。
+    - 开启加密功能后，如需禁用加密，请在配置文件中删除 `data-encryption-method`，或将该参数值设置为 `"plaintext"`，然后重启 TiKV。
+    - 若要替换加密算法，请将 `data-encryption-method` 替换成已支持的加密算法，然后重启 TiKV。替换加密算法后，旧加密算法生成的加密文件会随着新数据的写入逐渐被重写成新加密算法所生成的加密文件。
+
+- `data-key-rotation-period` 用于指定 TiKV 轮换密钥的频率。
 
 如果启用了加密（即 `data-encryption-method` 的值不是 `"plaintext"`），则必须指定主密钥。你可以通过以下方式之一来指定主密钥。
 
