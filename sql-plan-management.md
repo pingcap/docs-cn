@@ -510,7 +510,7 @@ ORDER BY SUM(exec_count) DESC;
 ### 示例 2：绑定执行次数前 100 且没有被绑定的查询
 
 ```sql
-WITH stmts AS (                                                -- to get all information
+WITH stmts AS (                                                -- Gets all information
   SELECT * FROM INFORMATION_SCHEMA.CLUSTER_STATEMENTS_SUMMARY
   UNION ALL
   SELECT * FROM INFORMATION_SCHEMA.CLUSTER_STATEMENTS_SUMMARY_HISTORY 
@@ -519,12 +519,12 @@ WITH stmts AS (                                                -- to get all inf
 SELECT `digest`, any_value(digest_text) as query, SUM(exec_count) as exec_count, 
   (SELECT concat('create global binding from history using plan digest "', plan_digest, '"') as create_stmt FROM stmts p
    WHERE p.`digest` = `digest`
-   ORDER BY avg_latency LIMIT 1) as create_binding_stmt        -- this query's fastest plan
+   ORDER BY avg_latency LIMIT 1) as create_binding_stmt        -- This queries the fastest plan
 FROM stmts
-WHERE schema_name NOT IN ('INFORMATION_SCHEMA', 'mysql')       -- not a internal query
-  AND plan_in_binding = 0                                      -- no binding yet
+WHERE schema_name NOT IN ('INFORMATION_SCHEMA', 'mysql')       -- Not an internal query
+  AND plan_in_binding = 0                                      -- No binding yet
 GROUP BY `digest` 
-ORDER BY SUM(exec_count) DESC LIMIT 100;                       -- Top100 high-frequency
+ORDER BY SUM(exec_count) DESC LIMIT 100;                       -- Top 100 high-frequency
 ```
 
 ## 跨数据库绑定执行计划 (Cross-DB Binding)
