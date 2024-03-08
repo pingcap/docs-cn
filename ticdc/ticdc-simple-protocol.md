@@ -74,7 +74,7 @@ DDL：
 
 ## Message 格式
 
-在 Simple Protocol 中，每一个 Message 都只会包含一个事件。当前 Simple Protocol 支持把消息编码为 JSON 格式和 Avro 格式。为了方便理解，以下的文档中我们将以 JSON 格式为例进行说明。对于 Avro 格式的消息，其字段和含义与 JSON 格式的消息一致，只是编码格式不同，更多的信息请参考附录中的 Avro Schema 定义。
+在 Simple Protocol 中，每一个 Message 都只会包含一个事件。当前 Simple Protocol 支持把消息编码为 JSON 格式和 Avro 格式。为了方便理解，以下的文档中我们将以 JSON 格式为例进行说明。对于 Avro 格式的消息，其字段和含义与 JSON 格式的消息一致，只是编码格式不同，更多的信息请参考参考中的 Avro Schema 定义。
 
 ### DDL
 
@@ -236,8 +236,8 @@ TiCDC 会把一个 DDL Event 编码成如下的 JSON 格式：
 | sql       | string | DDL 语句。                                                                 
 | commitTs  | number    | 该 DDL 在上游执行结束的 commitTs。                                           |
 | buildTs   | number    | 该消息在 TiCDC 内部被编码成功时的 UNIX 时间戳。                                |
-| tableSchema | object | 表的当前 schema 信息，具体定义请查看本页文档的附录部分                        | 
-| preTableSchema | object | DDL 执行前的表的 schema 信息，具体定义请查看本页文档的附录部分          |
+| tableSchema | object | 表的当前 schema 信息，具体定义请查看本页文档的参考部分                        | 
+| preTableSchema | object | DDL 执行前的表的 schema 信息，具体定义请查看本页文档的参考部分          |
 
 除了 CREATE 类型的 DDL 事件外，其他 DDL 事件都会包含 preTableSchema 字段，用于记录 DDL 执行前的表的 schema 信息。
 
@@ -473,7 +473,7 @@ TiCDC 会把一个 BOOTSTRAP Event 编码成如下的 JSON 格式：
 | type      | string | BOOTSTRAP 事件类型。                                                       |
 | commitTs  | number    | BOOTSTRAP 的 commitTs 为 0，因为它是 TiCDC 内部生成的，其 commitTs 没有意义 |
 | buildTs   | number    | 该消息在 TiCDC 内部被编码成功时的 UNIX 时间戳。                            |
-| tableSchema | object | 表的 schema 信息，具体定义请查看本页文档的附录部分                        |
+| tableSchema | object | 表的 schema 信息，具体定义请查看本页文档的参考部分                        |
 
 ## Message 生成和发送规则
 
@@ -489,7 +489,7 @@ TiCDC 会把一个 BOOTSTRAP Event 编码成如下的 JSON 格式：
 
 ### WATERMARK
 
-- 生成时机：WATERMARK 事件会周期性地被发送，用于标记一个表的同步进度，目前的周期为 1 秒钟。
+- 生成时机：WATERMARK 事件会周期性地被发送，用于标记一个 changefeed 的同步进度，目前的周期为 1 秒钟。
 - 发送目的地：WATERMARK 事件将会被发送到对应 Topic 的所有的 Partition。
 
 ### BOOTSTRAP
@@ -525,7 +525,7 @@ TiCDC 会把一个 BOOTSTRAP Event 编码成如下的 JSON 格式：
 
 ![TiCDC Simple Protocol consumer scene 2](/media/ticdc/ticdc-simple-consumer-2.png)
 
-## 附录
+## 参考
 
 ### TableSchema 定义
 
@@ -668,7 +668,9 @@ Index 是一个 JSON 对象，包含了索引的 schema 信息，包括索引名
 
 ### mysqlType 参考表格
 
-以下表格描述了 TiCDC Simple Protocol 中所有的 mysqlType 字段的取值范围及其在 TiDB 和 Avro(JAVA) 中的对应类型。
+以下表格描述了 TiCDC Simple Protocol 中所有的 mysqlType 字段的取值范围及其在 TiDB(Golang) 和 Avro(JAVA) 中的类型。
+当你需要对 DML 消息进行解析时，取决于你所使用的协议和语言，可以根据该表格和 DML 消息中的 mysqlType 字段来正确地解析数据。
+其中 TiDB Type (Golang) 代表了对应 mysqlType 在 TiDB 和 TiCDC (Golang) 中处理时的类型，Avro Type (Java) 代表了对应 mysqlType 在编码为 Avro 格式消息时的类型。
 
 | MySQL Type | Value Range | TiDB Type (Golang) | Avro Type (Java) |
 | --- | --- | --- | --- |
@@ -703,8 +705,8 @@ Index 是一个 JSON 对象，包含了索引的 schema 信息，包括索引名
 | timestamp | / | string | string |
 | time | / | string | string |
 | year | / | int64 | long |
-| enum | / | string | string |
-| set | / | uint64 | string |
+| enum | / | uint64 | long |
+| set | / | uint64 | long |
 | bit | / | uint64 | long |
 | json | / | string | string |
 | bool | / | int64 | long |
