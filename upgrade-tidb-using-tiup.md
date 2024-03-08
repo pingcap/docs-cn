@@ -41,7 +41,7 @@ aliases: ['/docs-cn/dev/upgrade-tidb-using-tiup/','/docs-cn/dev/how-to/upgrade/u
 >         tiup update cluster --wait-timeout 1200 [other options]
 >         ```
 >
->         通常情况下，20 分钟超时等待能满足绝大部分场景的需求。如果需要更准确的预估，可以在 TiDB 日志中搜索 `init stats info time` 关键字，获取上次启动的统计信息加载时间作为参考。 例如：
+>         通常情况下，20 分钟超时等待能满足绝大部分场景的需求。如果需要更准确的预估，可以在 TiDB 日志中搜索 `init stats info time` 关键字，获取上次启动的统计信息加载时间作为参考。例如：
 >
 >         ```
 >         [domain.go:2271] ["init stats info time"] [lite=true] ["take time"=2.151333ms]
