@@ -515,7 +515,8 @@ TiCDC 会把一个 BOOTSTRAP Event 编码成如下的 JSON 格式：
 
 ### 场景一：消费者从头开始消费
 
-在此场景下，消费者从头开始消费，因此消费者能够接收到该表的所有的 DDL 和 BOOTSTRAP 消息。此时，消费者可以通过一个 DML 消息中的 table 名和 schemaVersion 字段来获取对应的 tableSchema 信息。具体的步骤如下图所示：
+在此场景下，消费者从头开始消费，因此消费者能够接收到该表的所有 DDL 和 BOOTSTRAP 消息。此时，消费者可以通过一个 DML 消息中的 table 名和 schemaVersion 字段来获取对应的 tableSchema 信息。具体步骤如下图所示：
+
 ![TiCDC Simple Protocol consumer scene 1](/media/ticdc/ticdc-simple-consumer-1.png)
 
 ### 场景二：消费者从中间开始消费
