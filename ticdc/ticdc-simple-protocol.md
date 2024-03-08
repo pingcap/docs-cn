@@ -36,8 +36,8 @@ send-bootstrap-in-msg-count = 10000
 # 注意：如果要关闭 bootstrap 消息的发送，则将 send-bootstrap-interval-in-sec 和 send-bootstrap-in-msg-count 均设置为 0。
 
 # send-bootstrap-to-all-partition 用来控制是否发送 bootstrap 消息到所有的 partition。
-# 默认值为 true， 即发送 bootstrap 消息到对应表 topic 的所有的 partition。
-# 如果设置为 false， 则只发送 bootstrap 消息到对应表 topic 的第一个 partition。
+# 默认值为 true，即发送 bootstrap 消息到对应表 topic 的所有的 partition。
+# 如果设置为 false，则只发送 bootstrap 消息到对应表 topic 的第一个 partition。
 send-bootstrap-to-all-partition = true 
 
 [sink.kafka-config.codec-config]
