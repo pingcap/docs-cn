@@ -496,7 +496,7 @@ SELECT `digest`, any_value(digest_text) as query, SUM(exec_count) as exec_count,
    WHERE p.`digest` = `digest`
    ORDER BY avg_latency LIMIT 1) as create_binding_stmt        -- This queries the fastest plan
 FROM stmts
-WHERE summary_begin_time > DATE_SUB(NOW(), interval 14 day)    -- executed in the past 2 weeks
+WHERE summary_begin_time > DATE_SUB(NOW(), interval 14 day)    -- Executed in the past 2 weeks
   AND schema_name NOT IN ('INFORMATION_SCHEMA', 'mysql')       -- Not an internal query
   AND plan_in_binding = 0                                      -- No binding yet
 GROUP BY `digest` 
