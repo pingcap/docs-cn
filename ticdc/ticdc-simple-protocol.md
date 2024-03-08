@@ -25,8 +25,8 @@ changefeed 配置：
 [sink]
 protocol = "simple"
 
-# 以下为 Simple Protocol 参数, 用来控制 bootstrap 消息的发送行为。
-# send-bootstrap-interval-in-sec 用来控制发送 bootstrap 消息的时间间隔， 单位为秒。
+# 以下为 Simple Protocol 参数，用来控制 bootstrap 消息的发送行为。
+# send-bootstrap-interval-in-sec 用来控制发送 bootstrap 消息的时间间隔，单位为秒。
 # 默认值为 120 秒，即每张表每隔 120 秒发送一次 bootstrap 消息。
 send-bootstrap-interval-in-sec = 150  
 
