@@ -201,7 +201,7 @@ enable-partition-separator = true
 # binary-encoding-method = 'base64'
 
 # 从 v8.0.0 开始，TiCDC 新增了 Simple Protocol 消息编码协议，以下为该协议的配置参数。
-# 对于该协议详情，请参考 <https://docs.pingcap.com/zh/tidb/stable/ticdc-simple-protocol>。
+# 关于该协议的详情，请参考 <https://docs.pingcap.com/zh/tidb/stable/ticdc-simple-protocol>。
 # 以下为 Simple Protocol 参数, 用来控制 bootstrap 消息的发送行为。
 # send-bootstrap-interval-in-sec 用来控制发送 bootstrap 消息的时间间隔， 单位为秒。
 # 默认值为 120 秒，即每张表每隔 120 秒发送一次 bootstrap 消息。
