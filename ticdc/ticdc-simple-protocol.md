@@ -521,7 +521,8 @@ TiCDC 会把一个 BOOTSTRAP Event 编码成如下的 JSON 格式：
 
 ### 场景二：消费者从中间开始消费
 
-在一个新的消费者加入到消费者组时，它可能会从中间开始消费，因此它可能会错过之前的 DDL 和 BOOTSTRAP 消息。在这种情况下，消费者可能会先接收到一些 DML 消息，但是此时它还没有该表的 schema 信息。因此，它需要先等待一段时间，直到它接收到该表 DDL 或者 BOOTSTRAP 消息，从而获取到该表的 schema 信息。由于 BOOTSTRAP 消息会周期性地被发送，消费者总是能够在一段时间内获取到该表的 schema 信息。具体的步骤如下图所示：
+在一个新的消费者加入到消费者组时，它可能会从中间开始消费，因此它可能会错过之前的 DDL 和 BOOTSTRAP 消息。在这种情况下，消费者可能会先接收到一些 DML 消息，但是此时它还没有该表的 schema 信息。因此，它需要先等待一段时间，直到它接收到该表 DDL 或 BOOTSTRAP 消息，从而获取到该表的 schema 信息。由于 BOOTSTRAP 消息会周期性地被发送，消费者总是能够在一段时间内获取到该表的 schema 信息。具体步骤如下图所示：
+
 ![TiCDC Simple Protocol consumer scene 2](/media/ticdc/ticdc-simple-consumer-2.png)
 
 ## 附录
