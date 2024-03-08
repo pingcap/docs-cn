@@ -28,7 +28,7 @@ protocol = "simple"
 # 以下为 Simple Protocol 参数, 用来控制 bootstrap 消息的发送行为。
 # send-bootstrap-interval-in-sec 用来控制发送 bootstrap 消息的时间间隔， 单位为秒。
 # 默认值为 120 秒，即每张表每隔 120 秒发送一次 bootstrap 消息。
-send-bootstrap-interval-in-sec = 150  
+send-bootstrap-interval-in-sec = 120  
 
 # send-bootstrap-in-msg-count 用来控制发送 bootstrap 的消息间隔，单位为消息数。
 # 默认值为 10000，即每张表每发送 10000 条行变更就发送一次 bootstrap 消息。
