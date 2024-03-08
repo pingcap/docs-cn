@@ -2949,7 +2949,7 @@ v5.0 后，用户仍可以单独修改以上系统变量（会有废弃警告）
 - 默认值：`2000`
 - 范围：`[10, 60000]`
 - 这个变量用来设置低精度 TSO 特性中使用的缓存 Timestamp 的更新频率，单位为毫秒。
-- 该变量只在低精度 TSO 特性 [`tidb_low_resolution_tso`](/tidb_low_resolution_tso) 启用时有效。
+- 该变量只在低精度 TSO 特性 [`tidb_low_resolution_tso`](#tidb_low_resolution_tso) 启用时有效。
 
 ### `tidb_nontransactional_ignore_error` <span class="version-mark">从 v6.1.0 版本开始引入</span>
 
