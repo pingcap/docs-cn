@@ -711,4 +711,4 @@ Index 是一个 JSON 对象，包含了索引的 schema 信息，包括索引名
 
 ### Avro Schema 定义
 
-Simple Protocol 支持输出 Avro 格式的消息，Avro Schema 格式请参考 ![Simple Protocol Avro Schema](https://github.com/pingcap/tiflow/blob/master/pkg/sink/codec/simple/message.json)。
+Simple Protocol 支持输出 Avro 格式的消息，Avro Schema 格式请参考 [Simple Protocol Avro Schema](https://github.com/pingcap/tiflow/blob/master/pkg/sink/codec/simple/message.json)。
