@@ -25,23 +25,29 @@ title: 使用 TiUP 升级 TiDB
 > - 如果原集群是 6.2 之前的版本，升级到 6.2 及以上版本时，部分场景会遇到升级卡住的情况，你可以参考[如何解决升级卡住的问题](#42-升级到-v620-及以上版本时如何解决升级卡住的问题)。
 > - 配置参数 [`server-version`](/tidb-configuration-file.md#server-version) 的值会被 TiDB 节点用于验证当前 TiDB 的版本。因此在进行 TiDB 集群升级前，请将 `server-version` 的值设置为空或者当前 TiDB 真实的版本值，避免出现非预期行为。
 > - 配置项 [`performance.force-init-stats`](/tidb-configuration-file.md#force-init-stats-从-v657-和-v710-版本开始引入) 设置为 `ON` 会延长 TiDB 的启动时间，这可能会造成启动超时，升级失败。为避免这种情况，建议为 TiUP 设置更长的等待超时。
->    - 可能受影响的场景：
->      * 原集群版本低于 v6.5.7, v7.1.0 ( 尚未支持 `performance.force-init-stats` )，目标版本为 v7.2.0 及更高。
->      * 原集群版本高于或等于 v6.5.7, v7.1.0 ，且配置项 `performance.force-init-stats` 被设置为 `ON`。 
->   * 查看配置项 `performance.force-init-stats` 的值：
->     ```
->     SHOW CONFIG WHERE type = 'tidb' AND name = 'performance.force-init-stats';
->     ```
->   * 通过增加命令行选项 [`--wait-timeout`](/tiup/tiup-component-cluster.md#--wait-timeoutuint默认-120) 延长 TiUP 超时等待。如下命令可将超时等待设置成 1200 秒（即 20 分钟）。
->     ```shell
->     tiup update cluster --wait-timeout 1200 [other options]
->     ```
->     通常情况下，20 分钟超时等待能满足绝大部分场景的需求。如果需要更准确的预估，可以在 TiDB 日志中搜索 `init stats info time` 关键字，获取上次启动的加载时间作为参考。 例如：
->     ```
->     [domain.go:2271] ["init stats info time"] [lite=true] ["take time"=2.151333ms]
->      ```
->    * 如果原数据库是 v7.1.0 或更低，升级到 v7.2.0 以上版本时，由于 [`performance.lite-init-stats`](/tidb-configuration-file.md#lite-init-stats-从-v710-版本开始引入) 的引入，加载时间会大幅减少。这个情况下，用上述方法做的时间预估会偏长。
->    * 如果想要缩短 TiDB 滚动升级的时间，并且在升级过程中能够承受初始统计信息缺失带来的潜在性能影响。可以在升级前[用 TiUP 修改目标实例的配置](/maintain-tidb-using-tiup.md#修改配置参数)，将 `performance.force-init-stats` 设置为 `OFF`。 升级完成后可酌情改回。
+>     - 可能受影响的场景：
+>         - 原集群版本低于 v6.5.7、v7.1.0 ( 尚未支持 `performance.force-init-stats` )，目标版本为 v7.2.0 及更高。
+>         - 原集群版本高于或等于 v6.5.7、v7.1.0 ，且配置项 `performance.force-init-stats` 被设置为 `ON`。 
+>     - 查看配置项 `performance.force-init-stats` 的值：
+>
+>         ```
+>         SHOW CONFIG WHERE type = 'tidb' AND name = 'performance.force-init-stats';
+>         ```
+>
+>     - 通过增加命令行选项 [`--wait-timeout`](/tiup/tiup-component-cluster.md#--wait-timeoutuint默认-120) 可以延长 TiUP 超时等待。如下命令可将超时等待设置为 1200 秒（即 20 分钟）。
+>
+>         ```shell
+>         tiup update cluster --wait-timeout 1200 [other options]
+>         ```
+>
+>         通常情况下，20 分钟超时等待能满足绝大部分场景的需求。如果需要更准确的预估，可以在 TiDB 日志中搜索 `init stats info time` 关键字，获取上次启动的统计信息加载时间作为参考。 例如：
+>
+>         ```
+>         [domain.go:2271] ["init stats info time"] [lite=true] ["take time"=2.151333ms]
+>         ```
+>
+>          如果原集群是 v7.1.0 或更早的版本，升级到 v7.2.0 以上版本时，由于 [`performance.lite-init-stats`](/tidb-configuration-file.md#lite-init-stats-从-v710-版本开始引入) 的引入，统计信息加载时间会大幅减少。这个情况下，升级前的 `init stats info time` 会比升级后加载所需的时间偏长。
+>     - 如果想要缩短 TiDB 滚动升级的时间，并且在升级过程中能够承受初始统计信息缺失带来的潜在性能影响，可以在升级前[用 TiUP 修改目标实例的配置](/maintain-tidb-using-tiup.md#修改配置参数)，将 `performance.force-init-stats` 设置为 `OFF`。 升级完成后可酌情改回。
 
 
 ## 1. 升级兼容性说明
