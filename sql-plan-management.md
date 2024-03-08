@@ -480,7 +480,7 @@ SHOW binding_cache status;
 
 [`Statement Summary`](/statement-summary-tables.md) 的表中存放了近期的 SQL 相关的执行信息，如延迟、执行次数、对应计划等，通过编写特定的查询访问这些表，可以快速找到需要绑定的查询。
 
-基本思路是通过查询 `Statement Summary` 表得到符合条件查询的 `plan_digest`，再使用[根据历史执行计划创建绑定](/sql-plan-management.md#根据历史执行计划创建绑定)快速创建绑定，下面是一些最佳实践的例子。
+你可以通过查询 `Statement Summary` 表得到符合条件查询的 `plan_digest`，再使用[根据历史执行计划创建绑定](/sql-plan-management.md#根据历史执行计划创建绑定)快速创建绑定。下面是一些最佳实践的示例。
 
 ### 实例 1：绑定最近两周有计划不稳定的高频查询
 
