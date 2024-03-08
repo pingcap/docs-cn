@@ -494,7 +494,7 @@ WITH stmts AS (                                                -- Gets all infor
 SELECT `digest`, any_value(digest_text) as query, SUM(exec_count) as exec_count, 
   (SELECT concat('create global binding from history using plan digest "', plan_digest, '"') as create_stmt FROM stmts p
    WHERE p.`digest` = `digest`
-   ORDER BY avg_latency LIMIT 1) as create_binding_stmt        -- this query's fastest plan
+   ORDER BY avg_latency LIMIT 1) as create_binding_stmt        -- This queries the fastest plan
 FROM stmts
 WHERE summary_begin_time > DATE_SUB(NOW(), interval 14 day)    -- executed in the past 2 weeks
   AND schema_name NOT IN ('INFORMATION_SCHEMA', 'mysql')       -- not a internal query
