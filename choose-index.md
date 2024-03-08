@@ -404,3 +404,69 @@ mysql> EXPLAIN SELECT /*+ use_index_merge(t3, idx) */ * FROM t3 WHERE ((1 member
 +-------------------------+----------+-----------+---------------+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
 3 rows in set, 2 warnings (0.00 sec)
 ```
+
+### 多值索引与 Plan Cache
+
+如果使用多值索引的查询包含 `json_contains` 或 `json_overlaps` 且他们会直接影响索引选择，则计划无法被缓存。如果不存在此问题，则可以缓存。
+
+```sql
+mysql> CREATE TABLE t5 (j1 JSON, j2 JSON, INDEX idx1((CAST(j1 AS SIGNED ARRAY))));
+Query OK, 0 rows affected (0.04 sec)
+
+mysql> PREPARE st FROM 'SELECT /*+ use_index(t5, idx1) */ * FROM t5 WHERE (? member of (j1))';
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> SET @a=1;
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> EXECUTE st USING @a;
+Empty set (0.01 sec)
+
+mysql> EXECUTE st USING @a;
+Empty set (0.00 sec)
+
+mysql> SELECT @@last_plan_from_cache;
++------------------------+
+| @@last_plan_from_cache |
++------------------------+
+|                      1 |
++------------------------+
+1 row in set (0.00 sec)
+
+mysql> PREPARE st2 FROM 'SELECT /*+ use_index(t5, idx1) */ * FROM t5 WHERE JSON_CONTAINS(j1, ?)';
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> SET @a='[1,2]';
+Query OK, 0 rows affected (0.01 sec)
+
+mysql> EXECUTE st2 USING @a;
+Empty set, 1 warning (0.00 sec)
+
+mysql> SHOW WARNINGS;  -- cannot hit plan cache since the JSON_CONTAINS predicate might affect index selection
++---------+------+-------------------------------------------------------------------------------------------------------+
+| Level   | Code | Message                                                                                               |
++---------+------+-------------------------------------------------------------------------------------------------------+
+| Warning | 1105 | skip prepared plan-cache: json_contains function with immutable parameters can affect index selection |
++---------+------+-------------------------------------------------------------------------------------------------------+
+1 row in set (0.01 sec)
+
+mysql> PREPARE st FROM 'SELECT /*+ use_index(t5, idx1) */ * FROM t5 WHERE (? member of (j1)) AND JSON_CONTAINS(j2, ?)';
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> SET @a=1, @b='[1,2]';
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> EXECUTE st USING @a, @b;
+Empty set (0.00 sec)
+
+mysql> EXECUTE st USING @a, @b;
+Empty set (0.00 sec)
+
+mysql> SELECT @@LAST_PLAN_FROM_CACHE; -- can hit plan cache if the JSON_CONTAINS doesn't impact index selection
++------------------------+
+| @@LAST_PLAN_FROM_CACHE |
++------------------------+
+|                      1 |
++------------------------+
+1 row in set (0.00 sec)
+```
