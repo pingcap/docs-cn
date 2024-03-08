@@ -485,7 +485,7 @@ SHOW binding_cache status;
 ### 示例 1：绑定最近两周有计划不稳定的高频查询
 
 ```sql
-WITH stmts AS (                                                -- to get all information
+WITH stmts AS (                                                -- Gets all information
   SELECT * FROM INFORMATION_SCHEMA.CLUSTER_STATEMENTS_SUMMARY
   UNION ALL
   SELECT * FROM INFORMATION_SCHEMA.CLUSTER_STATEMENTS_SUMMARY_HISTORY 
