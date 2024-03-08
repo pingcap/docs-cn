@@ -50,22 +50,22 @@ encoding-format = "json"
 
 TiCDC Simple Protocol 有如下 Message 类型：
 
-DML:
+DML：
 
-- INSERT: 插入事件。
-- UPDATE: 更新事件。
-- DELETE: 删除事件。
+- `INSERT`：插入事件。
+- `UPDATE`：更新事件。
+- `DELETE`：删除事件。
 
-DDL:
+DDL：
 
-- CREATE: 创建表。
-- RENAME: 重命名表。
-- CINDEX: 创建索引。
-- DINDEX: 删除索引。
-- ERASE: 删除表。
-- TRUNCATE: 清空表。
-- ALTER: 修改表结构, 包括增加列、删除列、修改列类型和其他 TiCDC 支持的 Alter Table 语句。
-- QUERY: 其他 DDL 语句。
+- `CREATE`：创建表。
+- `RENAME`：重命名表。
+- `CINDEX`：创建索引。
+- `DINDEX`： 删除索引。
+- `ERASE`：删除表。
+- `TRUNCATE`：清空表。
+- `ALTER`：修改表结构, 包括增加列、删除列、修改列类型和其他 TiCDC 支持的 `ALTER TABLE` 语句。
+- `QUERY`：其他 DDL 语句。
 
 其他：
 
