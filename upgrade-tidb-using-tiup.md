@@ -27,8 +27,8 @@ aliases: ['/docs-cn/dev/upgrade-tidb-using-tiup/','/docs-cn/dev/how-to/upgrade/u
 > - 配置参数 [`server-version`](/tidb-configuration-file.md#server-version) 的值会被 TiDB 节点用于验证当前 TiDB 的版本。因此在进行 TiDB 集群升级前，请将 `server-version` 的值设置为空或者当前 TiDB 真实的版本值，避免出现非预期行为。
 > - 配置项 [`performance.force-init-stats`](/tidb-configuration-file.md#force-init-stats-从-v657-和-v710-版本开始引入) 设置为 `ON` 会延长 TiDB 的启动时间，这可能会造成启动超时，升级失败。为避免这种情况，建议为 TiUP 设置更长的等待时间。
 >    - 可能受影响的场景：
->      * 原集群版本低于 v6.5.6, v7.1.0 ( 没有配置项 `performance.force-init-stats` )，目标版本为 v7.2.0 及更高。
->      * 原集群版本高于 v6.5.7, v7.1.0 ，且配置项 `performance.force-init-stats` 被设置为 `ON`。 
+>      * 原集群版本低于 v6.5.7, v7.1.0 ( 没有配置项 `performance.force-init-stats` )，目标版本为 v7.2.0 及更高。
+>      * 原集群版本高于或等于 v6.5.7, v7.1.0 ，且配置项 `performance.force-init-stats` 被设置为 `ON`。 
 >   * 查看配置项 `performance.force-init-stats` 的值：
 >     ```
 >     SHOW CONFIG WHERE type = 'tidb' AND name = 'performance.force-init-stats';
@@ -41,6 +41,7 @@ aliases: ['/docs-cn/dev/upgrade-tidb-using-tiup/','/docs-cn/dev/how-to/upgrade/u
 >     ```
 >     [domain.go:2271] ["init stats info time"] [lite=true] ["take time"=2.151333ms]
 >      ```
+>    * 如果原数据库是 v7.1.0 或更低，升级到 v7.2.0 以上版本时，由于 [`performance.lite-init-stats`](/tidb-configuration-file.md#lite-init-stats-从-v710-版本开始引入) 的引入，加载时间会大幅减少。这个情况下，用上述方法做的时间预估会偏长。
 >    * 如果想要缩短 TiDB 滚动升级的时间，并且在升级过程中能够承受初始统计信息缺失带来的潜在性能影响。可以在升级前[用 TiUP 修改目标实例的配置](/maintain-tidb-using-tiup.md#修改配置参数)，将 `performance.force-init-stats` 设置为 `OFF`。 升级完成后可酌情改回。
 
 
