@@ -482,7 +482,7 @@ SHOW binding_cache status;
 
 你可以通过查询 `Statement Summary` 表得到符合条件查询的 `plan_digest`，再使用[根据历史执行计划创建绑定](/sql-plan-management.md#根据历史执行计划创建绑定)快速创建绑定。下面是一些最佳实践的示例。
 
-### 实例 1：绑定最近两周有计划不稳定的高频查询
+### 示例 1：绑定最近两周有计划不稳定的高频查询
 
 ```sql
 WITH stmts AS (                                                -- to get all information
