@@ -5,7 +5,7 @@ summary: 本文介绍了 TiCDC Simple Protocol 的使用方法和数据格式实
 
 # TiCDC Simple Protocol
 
-TiCDC Simple Protocol 是一种行级别的数据变更通知协议，为监控、缓存、全文索引、分析引擎、异构数据库的主从复制等提供数据源。通过本文，你可以了解 TiCDC Simple Protocol 的使用方法和数据格式实现。
+TiCDC Simple Protocol 是一种行级别的数据变更通知协议，为监控、缓存、全文索引、分析引擎、异构数据库的主从复制等提供数据源。本文将介绍 TiCDC Simple Protocol 的使用方法和数据格式实现。
 
 ## 使用方式
 
@@ -25,19 +25,19 @@ changefeed 配置：
 [sink]
 protocol = "simple"
 
-# 以下为 Simple Protocol 参数, 用来控制 bootstrap 消息的发送行为。
-# send-bootstrap-interval-in-sec 用来控制发送 bootstrap 消息的时间间隔， 单位为秒。
+# 以下为 Simple Protocol 参数，用来控制 bootstrap 消息的发送行为。
+# send-bootstrap-interval-in-sec 用来控制发送 bootstrap 消息的时间间隔，单位为秒。
 # 默认值为 120 秒，即每张表每隔 120 秒发送一次 bootstrap 消息。
 send-bootstrap-interval-in-sec = 120  
 
 # send-bootstrap-in-msg-count 用来控制发送 bootstrap 的消息间隔，单位为消息数。
 # 默认值为 10000，即每张表每发送 10000 条行变更就发送一次 bootstrap 消息。
 send-bootstrap-in-msg-count = 10000
-# 注意：如果你想要关闭 bootstrap 消息的发送，可以将 send-bootstrap-interval-in-sec 和 send-bootstrap-in-msg-count 设置为 0。
+# 注意：如果要关闭 bootstrap 消息的发送，则将 send-bootstrap-interval-in-sec 和 send-bootstrap-in-msg-count 均设置为 0。
 
 # send-bootstrap-to-all-partition 用来控制是否发送 bootstrap 消息到所有的 partition。
-# 默认值为 true， 即发送 bootstrap 消息到对应表 topic 的所有的 partition。
-# 如果设置为 false， 则只发送 bootstrap 消息到对应表 topic 的第一个 partition。
+# 默认值为 true，即发送 bootstrap 消息到对应表 topic 的所有的 partition。
+# 如果设置为 false，则只发送 bootstrap 消息到对应表 topic 的第一个 partition。
 send-bootstrap-to-all-partition = true 
 
 [sink.kafka-config.codec-config]
@@ -50,22 +50,22 @@ encoding-format = "json"
 
 TiCDC Simple Protocol 有如下 Message 类型：
 
-DML:
+DML：
 
-- INSERT: 插入事件。
-- UPDATE: 更新事件。
-- DELETE: 删除事件。
+- `INSERT`：插入事件。
+- `UPDATE`：更新事件。
+- `DELETE`：删除事件。
 
-DDL:
+DDL：
 
-- CREATE: 创建表。
-- RENAME: 重命名表。
-- CINDEX: 创建索引。
-- DINDEX: 删除索引。
-- ERASE: 删除表。
-- TRUNCATE: 清空表。
-- ALTER: 修改表结构, 包括增加列、删除列、修改列类型和其他 TiCDC 支持的 Alter Table 语句。
-- QUERY: 其他 DDL 语句。
+- `CREATE`：创建表。
+- `RENAME`：重命名表。
+- `CINDEX`：创建索引。
+- `DINDEX`： 删除索引。
+- `ERASE`：删除表。
+- `TRUNCATE`：清空表。
+- `ALTER`：修改表结构, 包括增加列、删除列、修改列类型和其他 TiCDC 支持的 `ALTER TABLE` 语句。
+- `QUERY`：其他 DDL 语句。
 
 其他：
 
@@ -515,12 +515,14 @@ TiCDC 会把一个 BOOTSTRAP Event 编码成如下的 JSON 格式：
 
 ### 场景一：消费者从头开始消费
 
-在此场景下，消费者从头开始消费，因此消费者能够接收到该表的所有的 DDL 和 BOOTSTRAP 消息。此时，消费者可以通过一个 DML 消息中的 table 名和 schemaVersion 字段来获取对应的 tableSchema 信息。具体的步骤如下图所示：
+在此场景下，消费者从头开始消费，因此消费者能够接收到该表的所有 DDL 和 BOOTSTRAP 消息。此时，消费者可以通过一个 DML 消息中的 table 名和 schemaVersion 字段来获取对应的 tableSchema 信息。具体步骤如下图所示：
+
 ![TiCDC Simple Protocol consumer scene 1](/media/ticdc/ticdc-simple-consumer-1.png)
 
 ### 场景二：消费者从中间开始消费
 
-在一个新的消费者加入到消费者组时，它可能会从中间开始消费，因此它可能会错过之前的 DDL 和 BOOTSTRAP 消息。在这种情况下，消费者可能会先接收到一些 DML 消息，但是此时它还没有该表的 schema 信息。因此，它需要先等待一段时间，直到它接收到该表 DDL 或者 BOOTSTRAP 消息，从而获取到该表的 schema 信息。由于 BOOTSTRAP 消息会周期性地被发送，消费者总是能够在一段时间内获取到该表的 schema 信息。具体的步骤如下图所示：
+在一个新的消费者加入到消费者组时，它可能会从中间开始消费，因此它可能会错过之前的 DDL 和 BOOTSTRAP 消息。在这种情况下，消费者可能会先接收到一些 DML 消息，但是此时它还没有该表的 schema 信息。因此，它需要先等待一段时间，直到它接收到该表 DDL 或 BOOTSTRAP 消息，从而获取到该表的 schema 信息。由于 BOOTSTRAP 消息会周期性地被发送，消费者总是能够在一段时间内获取到该表的 schema 信息。具体步骤如下图所示：
+
 ![TiCDC Simple Protocol consumer scene 2](/media/ticdc/ticdc-simple-consumer-2.png)
 
 ## 附录
@@ -709,4 +711,4 @@ Index 是一个 JSON 对象，包含了索引的 schema 信息，包括索引名
 
 ### Avro Schema 定义
 
-Simple Protocol 支持输出 Avro 格式的消息，Avro Schema 格式请参考 ![Simple Protocol Avro Schema](https://github.com/pingcap/tiflow/blob/master/pkg/sink/codec/simple/message.json)。
+Simple Protocol 支持输出 Avro 格式的消息，Avro Schema 格式请参考 [Simple Protocol Avro Schema](https://github.com/pingcap/tiflow/blob/master/pkg/sink/codec/simple/message.json)。

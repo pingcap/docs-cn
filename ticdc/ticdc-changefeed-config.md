@@ -200,21 +200,21 @@ enable-partition-separator = true
 # 二进制类型数据的编码方式，可选 'base64' 或 'hex'。默认值为 'base64'。
 # binary-encoding-method = 'base64'
 
-# TiCDC 从 8.0 开始新增了 Simple Protocol 消息编码协议，以下为该协议的配置参数。
-# 对于该协议详情，请参考 <https://docs.pingcap.com/zh/tidb/stable/ticdc-simple-protocol>。
-# 以下为 Simple Protocol 参数, 用来控制 bootstrap 消息的发送行为。
-# send-bootstrap-interval-in-sec 用来控制发送 bootstrap 消息的时间间隔， 单位为秒。
+# 从 v8.0.0 开始，TiCDC 新增了 Simple Protocol 消息编码协议，以下为该协议的配置参数。
+# 关于该协议的详情，请参考 <https://docs.pingcap.com/zh/tidb/stable/ticdc-simple-protocol>。
+# 以下为 Simple Protocol 参数，用来控制 bootstrap 消息的发送行为。
+# send-bootstrap-interval-in-sec 用来控制发送 bootstrap 消息的时间间隔，单位为秒。
 # 默认值为 120 秒，即每张表每隔 120 秒发送一次 bootstrap 消息。
 # send-bootstrap-interval-in-sec = 120  
 
 # send-bootstrap-in-msg-count 用来控制发送 bootstrap 的消息间隔，单位为消息数。
 # 默认值为 10000，即每张表每发送 10000 条行变更就发送一次 bootstrap 消息。
 # send-bootstrap-in-msg-count = 10000
-# 注意：如果你想要关闭 bootstrap 消息的发送，可以将 send-bootstrap-interval-in-sec 和 send-bootstrap-in-msg-count 设置为 0。
+# 注意：如果要关闭 bootstrap 消息的发送，则将 send-bootstrap-interval-in-sec 和 send-bootstrap-in-msg-count 均设置为 0。
 
 # send-bootstrap-to-all-partition 用来控制是否发送 bootstrap 消息到所有的 partition。
-# 默认值为 true， 即发送 bootstrap 消息到对应表 topic 的所有的 partition。
-# 如果设置为 false， 则只发送 bootstrap 消息到对应表 topic 的第一个 partition。
+# 默认值为 true，即发送 bootstrap 消息到对应表 topic 的所有的 partition。
+# 如果设置为 false，则只发送 bootstrap 消息到对应表 topic 的第一个 partition。
 # send-bootstrap-to-all-partition = true 
 
 [sink.kafka-config.codec-config]
