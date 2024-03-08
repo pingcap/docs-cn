@@ -507,7 +507,7 @@ ORDER BY SUM(exec_count) DESC;
 
 通过一些过滤条件得到满足条件的查询，然后直接运行 `create_binding_stmt` 列对应的语句即可创建相应的绑定。
 
-### 实例 2：绑定执行次数前 100 且没有被绑定的查询
+### 示例 2：绑定执行次数前 100 且没有被绑定的查询
 
 ```sql
 WITH stmts AS (                                                -- to get all information
