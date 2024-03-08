@@ -210,7 +210,7 @@ enable-partition-separator = true
 # send-bootstrap-in-msg-count 用来控制发送 bootstrap 的消息间隔，单位为消息数。
 # 默认值为 10000，即每张表每发送 10000 条行变更就发送一次 bootstrap 消息。
 # send-bootstrap-in-msg-count = 10000
-# 注意：如果你想要关闭 bootstrap 消息的发送，可以将 send-bootstrap-interval-in-sec 和 send-bootstrap-in-msg-count 设置为 0。
+# 注意：如果要关闭 bootstrap 消息的发送，则将 send-bootstrap-interval-in-sec 和 send-bootstrap-in-msg-count 均设置为 0。
 
 # send-bootstrap-to-all-partition 用来控制是否发送 bootstrap 消息到所有的 partition。
 # 默认值为 true， 即发送 bootstrap 消息到对应表 topic 的所有的 partition。
