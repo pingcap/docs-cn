@@ -15,8 +15,8 @@ summary: 介绍了如何解决导入数据过程中的类型转换和冲突错�
 
 - `lightning.max-error`：类型错误的容忍阈值
 - `conflict.strategy`、`conflict.threshold`、`conflict.max-record-rows`：数据冲突错误的相关配置
-- `lightning.task-info-schema-name`：冲突数据存储的库名
 - `tikv-importer.duplicate-resolution`：物理导入模式下的冲突处理配置（从 v8.0.0 开始已被废弃）
+- `lightning.task-info-schema-name`：冲突数据存储的库名
 
 相关配置项详情请参考 [TiDB Lightning 任务配置](/tidb-lightning/tidb-lightning-configuration.md#tidb-lightning-任务配置)。
 
