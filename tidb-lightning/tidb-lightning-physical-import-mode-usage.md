@@ -66,8 +66,8 @@ user = "root"
 password = ""
 # 必须配置。表结构信息从 TiDB 的“status-port”获取。
 status-port = 10080
-# 必须配置。pd-server 的地址，填一个即可。
-pd-addr = "172.16.31.4:2379"
+# 必须配置。pd-server 的地址。从 v7.6.0 开始支持设置多个地址。
+pd-addr = "172.16.31.4:2379,56.78.90.12:3456"
 # tidb-lightning 引用了 TiDB 库，并生成产生一些日志。
 # 设置 TiDB 库的日志等级。
 log-level = "error"

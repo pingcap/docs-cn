@@ -9,7 +9,7 @@ aliases: ['/docs-cn/dev/error-codes/','/docs-cn/dev/reference/error-codes/']
 
 ## 错误码
 
-TiDB 兼容 MySQL 的错误码，在大多数情况下，返回和 MySQL 一样的错误码。关于 MySQL 的错误码列表，详见 [MySQL 5.7 Error Message Reference](https://dev.mysql.com/doc/mysql-errors/5.7/en/)。另外还有一些 TiDB 特有的错误码：
+TiDB 兼容 MySQL 的错误码，在大多数情况下，返回和 MySQL 一样的错误码。关于 MySQL 的错误码列表，详见 [MySQL 8.0 Error Message Reference](https://dev.mysql.com/doc/mysql-errors/8.0/en/)。另外还有一些 TiDB 特有的错误码：
 
 > **注意：**
 >
@@ -444,6 +444,10 @@ TiDB 兼容 MySQL 的错误码，在大多数情况下，返回和 MySQL 一样�
 * Error Number: 8262
 
     DDL 已经被 `ADMIN PAUSE` 暂停，无法再次执行。
+
+* Error Number: 8263
+
+    该 DDL 无法在特定的 BDR role 下执行。请确定该集群是否处于[双向复制](/ticdc/ticdc-bidirectional-replication.md) 中。如果集群没有在双向复制中，可以通过 `ADMIN UNSET BDR ROLE;` 使 DDL 恢复正常使用。
 
 * Error Number: 9001
 

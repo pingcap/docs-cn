@@ -235,12 +235,16 @@ mysql> EXPLAIN SELECT /*+ use_index_merge(t2, idx) */ * FROM t2 WHERE a=1 AND JS
 6 rows in set, 1 warning (0.00 sec)
 ```
 
-对于由多个 `member of` 组成的 `OR` 条件，且这些条件可以被作用在同一个多值索引上，也可以使用 IndexMerge 进行访问：
+对于由多个 `member of` 组成的 `OR`/`AND` 条件，且这些条件可以被作用在同一个或者多个多值索引上，由于 `member of` 的单路性质，也可以使用 IndexMerge `UNION` 或者 `INTERSECTION` 进行访问：
 
 ```sql
-mysql> CREATE TABLE t3 (a INT, j JSON, INDEX idx(a, (CAST(j AS SIGNED ARRAY))));
+mysql> CREATE TABLE t3 (a INT, j JSON, b INT, k JSON, INDEX idx(a, (CAST(j AS SIGNED ARRAY))), INDEX idx2(b,(CAST(k as SIGNED ARRAY))));
 Query OK, 0 rows affected (0.04 sec)
+```
 
+使用 `UNION` 进行访问：
+
+```sql
 mysql> EXPLAIN SELECT /*+ use_index_merge(t3, idx) */ * FROM t3 WHERE ((a=1 AND (1 member of (j)))) OR ((a=2 AND (2 member of (j))));
 +---------------------------------+---------+-----------+---------------------------------------------------+--------------------------------------------------------------------------------------------------------------------------------------------------+
 | id                              | estRows | task      | access object                                     | operator info                                                                                                                                    |
@@ -253,25 +257,45 @@ mysql> EXPLAIN SELECT /*+ use_index_merge(t3, idx) */ * FROM t3 WHERE ((a=1 AND 
 +---------------------------------+---------+-----------+---------------------------------------------------+--------------------------------------------------------------------------------------------------------------------------------------------------+
 ```
 
-### 部分支持多值索引的场景
-
-如果多个条件通过 `AND` 进行组合，且这些条件对应多个不同的索引，则最多只能使用一个索引来进行访问，如：
+使用 `INTERSECTION` 进行访问：
 
 ```sql
-mysql> create table t(j1 json, j2 json, a int, INDEX k1((CAST(j1->'$.path' AS SIGNED ARRAY))), INDEX k2((CAST(j2->'$.path' AS SIGNED ARRAY))), INDEX ka(a));
-Query OK, 0 rows affected (0.02 sec)
+tidb> EXPLAIN SELECT /*+ use_index_merge(t3, idx, idx2) */ * FROM t3 WHERE ((a=1 AND (1 member of (j)))) AND ((b=1 AND (2 member of (k))));
++-------------------------------+---------+-----------+----------------------------------------------------+-------------------------------------------------+
+| id                            | estRows | task      | access object                                      | operator info                                   |
++-------------------------------+---------+-----------+----------------------------------------------------+-------------------------------------------------+
+| IndexMerge_8                  | 0.10    | root      |                                                    | type: intersection                              |
+| ├─IndexRangeScan_5(Build)     | 0.10    | cop[tikv] | table:t3, index:idx(a, cast(`j` as signed array))  | range:[1 1,1 1], keep order:false, stats:pseudo |
+| ├─IndexRangeScan_6(Build)     | 0.10    | cop[tikv] | table:t3, index:idx2(b, cast(`k` as signed array)) | range:[1 2,1 2], keep order:false, stats:pseudo |
+| └─TableRowIDScan_7(Probe)     | 0.10    | cop[tikv] | table:t3                                           | keep order:false, stats:pseudo                  |
++-------------------------------+---------+-----------+----------------------------------------------------+-------------------------------------------------+
+4 rows in set (0.01 sec)
+```
 
-mysql> explain select /*+ use_index_merge(t, k1, k2, ka) */ * from t where (1 member of (j1->'$.path')) and (2 member of (j2->'$.path')) and (a = 3);
-+---------------------------------+---------+-----------+----------------------------------------------------------------------------+------------------------------------------------------------------------------------------------------------------------------------------------+
-| id                              | estRows | task      | access object                                                              | operator info                                                                                                                                  |
-+---------------------------------+---------+-----------+----------------------------------------------------------------------------+------------------------------------------------------------------------------------------------------------------------------------------------+
-| Selection_5                     | 8.00    | root      |                                                                            | json_memberof(cast(1, json BINARY), json_extract(test.t.j1, "$.path")), json_memberof(cast(2, json BINARY), json_extract(test.t.j2, "$.path")) |
-| └─IndexMerge_9                  | 0.01    | root      |                                                                            | type: union                                                                                                                                    |
-|   ├─IndexRangeScan_6(Build)     | 10.00   | cop[tikv] | table:t, index:k1(cast(json_extract(`j1`, _utf8'$.path') as signed array)) | range:[1,1], keep order:false, stats:pseudo                                                                                                    |
-|   └─Selection_8(Probe)          | 0.01    | cop[tikv] |                                                                            | eq(test.t.a, 3)                                                                                                                                |
-|     └─TableRowIDScan_7          | 10.00   | cop[tikv] | table:t                                                                    | keep order:false, stats:pseudo                                                                                                                 |
-+---------------------------------+---------+-----------+----------------------------------------------------------------------------+------------------------------------------------------------------------------------------------------------------------------------------------+
-5 rows in set, 6 warnings (0.01 sec)
+### 部分支持多值索引的场景
+
+如果多个条件通过 `AND`/`OR` 进行组合，每个 `item` 条件对应多个不同的索引，则有以下情况：
+
+* 如果单个 item 的路径也是 index merge，则只要其和外部的 `AND`/`OR` 的逻辑一致，就可以和外部 index merge 融合。
+* 如果单个 item 的路径也是 index merge，且其 index partial path 只有一条，那么无论其自身 index merge 的逻辑是 `AND`/`OR`，都可以和外部 index merge 融合。
+
+```sql
+mysql> CREATE TABLE t(j1 JSON, j2 JSON, a INT, INDEX k1((CAST(j1->'$.path' AS SIGNED ARRAY))), INDEX k2((CAST(j2->'$.path' AS SIGNED ARRAY))), INDEX ka(a));
+Query OK, 0 rows affected (0.02 sec)
+```
+
+```sql
+tidb> EXPLAIN SELECT /*+ use_index_merge(t, k1, k2, ka) */ * FROM t WHERE (1 member of (j1->'$.path')) AND (2 member of (j2->'$.path')) AND (a = 3);
++-------------------------------+---------+-----------+----------------------------------------------------------------------------+---------------------------------------------+
+| id                            | estRows | task      | access object                                                              | operator info                               |
++-------------------------------+---------+-----------+----------------------------------------------------------------------------+---------------------------------------------+
+| IndexMerge_9                  | 10.00   | root      |                                                                            | type: intersection                          |
+| ├─IndexRangeScan_5(Build)     | 10.00   | cop[tikv] | table:t, index:ka(a)                                                       | range:[3,3], keep order:false, stats:pseudo |
+| ├─IndexRangeScan_6(Build)     | 10.00   | cop[tikv] | table:t, index:k1(cast(json_extract(`j1`, _utf8'$.path') as signed array)) | range:[1,1], keep order:false, stats:pseudo |
+| ├─IndexRangeScan_7(Build)     | 10.00   | cop[tikv] | table:t, index:k2(cast(json_extract(`j2`, _utf8'$.path') as signed array)) | range:[2,2], keep order:false, stats:pseudo |
+| └─TableRowIDScan_8(Probe)     | 10.00   | cop[tikv] | table:t                                                                    | keep order:false, stats:pseudo              |
++-------------------------------+---------+-----------+----------------------------------------------------------------------------+---------------------------------------------+
+5 rows in set (0.00 sec)
 ```
 
 目前只能使用 1 个索引进行访问，而无法产生如下面这样同时使用多个索引的计划：

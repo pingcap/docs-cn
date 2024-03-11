@@ -14,7 +14,7 @@ aliases: ['/docs-cn/tidb-data-migration/dev/overview/','/docs-cn/tools/dm/overvi
 
 ## 产品特性
 
-- **与 TiDB 同样保持 MySQL 兼容性。**高度兼容 MySQL 5.7 协议、MySQL 5.7 常用的功能及语法。
+- **与 TiDB 同样保持 MySQL 兼容性。**高度兼容 MySQL 协议、MySQL 5.7 和 MySQL 8.0 的常用功能及语法。
 - **支持 DML & DDL 事件同步。**支持解析和同步 binlog 中的 DML 和 DDL 事件。
 - **支持合库合表同步模式。**可以方便的将上游各个分片 MySQL 实例的各个分表数据，合并同步到下游 TiDB 的一张表。支持自定义编写同步规则以方便各种可能的同步需求，且具备自动识别和处理上游分片 MySQL 的 DDL 变更，大幅简化运维成本。
 - **内置多种过滤器以灵活适应不同场景。**支持以预定义事件类型、正则表达式、SQL 表达式等多种方式在数据同步过程中对 MySQL binlog 事件进行过滤。
@@ -37,8 +37,7 @@ tiup install dm dmctl
 
 + 数据库版本要求
 
-    - MySQL 版本 5.5 ~ 5.7
-    - MySQL 版本 = 8.0 （实验特性）
+    - MySQL 版本 5.6 ~ 8.0
     - MariaDB 版本 >= 10.1.2 （实验特性）
 
     > **注意：**
@@ -56,6 +55,10 @@ tiup install dm dmctl
 + GBK 字符集兼容性限制
 
     - DM 在 v5.4.0 之前不支持将 `charset=GBK` 的表迁移到 TiDB。
+
++ Binlog 兼容性限制
+
+    - DM 不支持 MySQL 8.0 的新特性 binlog 事务压缩 [Transaction_payload_event](https://dev.mysql.com/doc/refman/8.0/en/binary-log-transaction-compression.html)。使用 binlog 事务压缩有导致上下游数据不一致的风险。
 
 ## Contributing
 

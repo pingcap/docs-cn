@@ -67,6 +67,7 @@ SQLAlchemy 是一个支持多种数据库的 ORM 库。它是对数据库的高�
 3. 确认对话框中的配置和你的运行环境一致。
 
     - **Endpoint Type** 为 `Public`。
+    - **Branch** 选择 `main`。
     - **Connect With** 选择 `General`。
     - **Operating System** 为你的运行环境。
 
@@ -74,11 +75,11 @@ SQLAlchemy 是一个支持多种数据库的 ORM 库。它是对数据库的高�
     >
     > 如果你在 Windows Subsystem for Linux (WSL) 中运行，请切换为对应的 Linux 发行版。
 
-4. 如果你还没有设置密码，点击 **Create password** 生成一个随机密码。
+4. 如果你还没有设置密码，点击 **Generate Password** 生成一个随机密码。
 
     > **Tip:**
     >
-    > 如果你之前已经生成过密码，可以直接使用原密码，或点击 **Reset password** 重新生成密码。
+    > 如果你之前已经生成过密码，可以直接使用原密码，或点击 **Reset Password** 重新生成密码。
 
 5. 运行以下命令，将 `.env.example` 复制并重命名为 `.env`：
 
@@ -238,7 +239,7 @@ with Session() as session:
     session.commit()
 ```
 
-更多信息参考[插入数据](/develop/dev-guide-insert-data.md)。
+更多信息参考[插入数据](/develop/dev-guide-insert-data.md)以及 [SQLAlchemy Query](https://docs.sqlalchemy.org/en/20/orm/queryguide/index.html)。
 
 ### 查询数据
 
@@ -248,7 +249,7 @@ with Session() as session:
     print(player)
 ```
 
-更多信息参考[查询数据](/develop/dev-guide-get-data-from-single-table.md)。
+更多信息参考[查询数据](/develop/dev-guide-get-data-from-single-table.md)以及 [SQLAlchemy Query](https://docs.sqlalchemy.org/en/20/orm/queryguide/index.html)。
 
 ### 更新数据
 
@@ -259,7 +260,7 @@ with Session() as session:
     session.commit()
 ```
 
-更多信息参考[更新数据](/develop/dev-guide-update-data.md)。
+更多信息参考[更新数据](/develop/dev-guide-update-data.md)以及 [SQLAlchemy Query](https://docs.sqlalchemy.org/en/20/orm/queryguide/index.html)。
 
 ### 删除数据
 
@@ -270,7 +271,7 @@ with Session() as session:
     session.commit()
 ```
 
-更多信息参考[删除数据](/develop/dev-guide-delete-data.md)。
+更多信息参考[删除数据](/develop/dev-guide-delete-data.md)以及 [SQLAlchemy Query](https://docs.sqlalchemy.org/en/20/orm/queryguide/index.html)。
 
 ## 下一步
 
