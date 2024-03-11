@@ -433,23 +433,6 @@ mysql> SELECT @@last_plan_from_cache;
 +------------------------+
 1 row in set (0.00 sec)
 
-mysql> PREPARE st2 FROM 'SELECT /*+ use_index(t5, idx1) */ * FROM t5 WHERE JSON_CONTAINS(j1, ?)';
-Query OK, 0 rows affected (0.00 sec)
-
-mysql> SET @a='[1,2]';
-Query OK, 0 rows affected (0.01 sec)
-
-mysql> EXECUTE st2 USING @a;
-Empty set, 1 warning (0.00 sec)
-
-mysql> SHOW WARNINGS;  -- cannot hit plan cache since the JSON_CONTAINS predicate might affect index selection
-+---------+------+-------------------------------------------------------------------------------------------------------+
-| Level   | Code | Message                                                                                               |
-+---------+------+-------------------------------------------------------------------------------------------------------+
-| Warning | 1105 | skip prepared plan-cache: json_contains function with immutable parameters can affect index selection |
-+---------+------+-------------------------------------------------------------------------------------------------------+
-1 row in set (0.01 sec)
-
 mysql> PREPARE st FROM 'SELECT /*+ use_index(t5, idx1) */ * FROM t5 WHERE (? member of (j1)) AND JSON_CONTAINS(j2, ?)';
 Query OK, 0 rows affected (0.00 sec)
 
@@ -469,4 +452,25 @@ mysql> SELECT @@LAST_PLAN_FROM_CACHE; -- can hit plan cache if the JSON_CONTAINS
 |                      1 |
 +------------------------+
 1 row in set (0.00 sec)
+```
+
+下面是无法缓存的例子：
+
+```sql
+mysql> PREPARE st2 FROM 'SELECT /*+ use_index(t5, idx1) */ * FROM t5 WHERE JSON_CONTAINS(j1, ?)';
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> SET @a='[1,2]';
+Query OK, 0 rows affected (0.01 sec)
+
+mysql> EXECUTE st2 USING @a;
+Empty set, 1 warning (0.00 sec)
+
+mysql> SHOW WARNINGS;  -- cannot hit plan cache since the JSON_CONTAINS predicate might affect index selection
++---------+------+-------------------------------------------------------------------------------------------------------+
+| Level   | Code | Message                                                                                               |
++---------+------+-------------------------------------------------------------------------------------------------------+
+| Warning | 1105 | skip prepared plan-cache: json_contains function with immutable parameters can affect index selection |
++---------+------+-------------------------------------------------------------------------------------------------------+
+1 row in set (0.01 sec)
 ```
