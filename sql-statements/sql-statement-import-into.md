@@ -12,12 +12,12 @@ summary: TiDB 数据库中 IMPORT INTO 的使用概况。
 
 `IMPORT INTO ... FROM FILE` 支持导入存储在 Amazon S3、GCS 和 TiDB 本地的数据文件。
 
-- 对于存储在 S3 或 GCS 的数据文件，`IMPORT INTO` 支持通过 [TiDB 分布式执行框架](/tidb-distributed-execution-framework.md)运行。
+- 对于存储在 S3 或 GCS 的数据文件，`IMPORT INTO ... FROM FILE` 支持通过 [TiDB 分布式执行框架](/tidb-distributed-execution-framework.md)运行。
 
     - 当此框架功能开启时（即 [tidb_enable_dist_task](/system-variables.md#tidb_enable_dist_task-从-v710-版本开始引入) 为 `ON`），`IMPORT INTO` 会将一个数据导入任务拆分成多个子任务并分配到各个 TiDB 节点上运行，以提高导入效率。
-    - 当此框架功能关闭时，`IMPORT INTO` 仅支持在当前用户连接的 TiDB 节点上运行。
+    - 当此框架功能关闭时，`IMPORT INTO ... FROM FILE` 仅支持在当前用户连接的 TiDB 节点上运行。
 
-- 对于存储在 TiDB 本地的数据文件，`IMPORT INTO` 仅支持在当前用户连接的 TiDB 节点上运行，因此数据文件需要存放在当前用户连接的 TiDB 节点上。如果是通过 PROXY 或者 Load Balancer 访问 TiDB，则无法导入存储在 TiDB 本地的数据文件。
+- 对于存储在 TiDB 本地的数据文件，`IMPORT INTO ... FROM FILE` 仅支持在当前用户连接的 TiDB 节点上运行，因此数据文件需要存放在当前用户连接的 TiDB 节点上。如果是通过 PROXY 或者 Load Balancer 访问 TiDB，则无法导入存储在 TiDB 本地的数据文件。
 
 ## 使用限制
 
@@ -132,7 +132,7 @@ SET 表达式左侧只能引用 `ColumnNameOrUserVarList` 中没有的列名。�
 
 ### WithOptions
 
-你可以通过 WithOptions 来指定导入选项，控制数据导入过程。例如，如需使导入任务在后台异步执行，你可以通过在 `IMPORT INTO` 语句中添加 `WITH DETACHED` 选项来开启导入任务的 `DETACHED` 模式。
+你可以通过 WithOptions 来指定导入选项，控制数据导入过程。例如，如需使导入数据文件的任务在后台异步执行，你可以通过在 `IMPORT INTO` 语句中添加 `WITH DETACHED` 选项来开启导入任务的 `DETACHED` 模式。
 
 目前支持的选项包括：
 
@@ -157,7 +157,7 @@ SET 表达式左侧只能引用 `ColumnNameOrUserVarList` 中没有的列名。�
 
 ## 压缩文件
 
-`IMPORT INTO` 支持导入压缩的 `CSV` 和 `SQL` 文件，会自动根据数据文件后缀来确定该文件是否为压缩文件以及压缩格式：
+`IMPORT INTO ... FROM FILE` 支持导入压缩的 `CSV` 和 `SQL` 文件，会自动根据数据文件后缀来确定该文件是否为压缩文件以及压缩格式：
 
 | 后缀名 | 压缩格式 |
 |:---|:---|
@@ -176,7 +176,7 @@ SET 表达式左侧只能引用 `ColumnNameOrUserVarList` 中没有的列名。�
 >
 > 全局排序为实验特性，不建议在生产环境中使用。
 
-`IMPORT INTO` 会将源数据文件的导入拆分到多个子任务中，各个子任务独立进行编码排序并导入。如果各个子任务编码后的 KV (TiDB 将数据编码为 KV 的方式，参考 [TiDB 数据库的计算](/tidb-computing.md)) range 重叠过多，导入时 TiKV 需要不断地进行 compaction，会降低导入的性能和稳定性。
+`IMPORT INTO ... FROM FILE` 会将源数据文件的导入拆分到多个子任务中，各个子任务独立进行编码排序并导入。如果各个子任务编码后的 KV (TiDB 将数据编码为 KV 的方式，参考 [TiDB 数据库的计算](/tidb-computing.md)) range 重叠过多，导入时 TiKV 需要不断地进行 compaction，会降低导入的性能和稳定性。
 
 在以下情况中，可能存在较多的 KV range 重叠：
 
@@ -200,9 +200,9 @@ SET GLOBAL tidb_server_memory_limit='88%';
 
 ## `IMPORT INTO ... FROM FILE` 输出内容
 
-当 `IMPORT INTO ... FROM FILE` 导入完成，或者开启了 `DETACHED` 模式时，`IMPORT INTO` 会返回当前任务的信息。以下为一些示例，字段的含义描述请参考 [`SHOW IMPORT JOB(s)`](/sql-statements/sql-statement-show-import-job.md)。
+当 `IMPORT INTO ... FROM FILE` 导入完成，或者开启了 `DETACHED` 模式时，TiDB 会返回当前任务的信息。以下为一些示例，字段的含义描述请参考 [`SHOW IMPORT JOB(s)`](/sql-statements/sql-statement-show-import-job.md)。
 
-当 `IMPORT INTO` 导入完成时输出：
+当 `IMPORT INTO ... FROM FILE` 导入完成时输出：
 
 ```sql
 IMPORT INTO t FROM '/path/to/small.csv';
@@ -213,7 +213,7 @@ IMPORT INTO t FROM '/path/to/small.csv';
 +--------+--------------------+--------------+----------+-------+----------+------------------+---------------+----------------+----------------------------+----------------------------+----------------------------+------------+
 ```
 
-开启了 `DETACHED` 模式时，执行 `IMPORT INTO` 语句会立即返回输出。从输出中，你可以看到该任务状态 `Status` 为 `pending`，表示等待执行。
+开启了 `DETACHED` 模式时，执行 `IMPORT INTO ... FROM FILE` 语句会立即返回输出。从输出中，你可以看到该任务状态 `Status` 为 `pending`，表示等待执行。
 
 ```sql
 IMPORT INTO t FROM '/path/to/small.csv' WITH DETACHED;
@@ -230,7 +230,7 @@ IMPORT INTO t FROM '/path/to/small.csv' WITH DETACHED;
 
 任务启动后，可通过 [`CANCEL IMPORT JOB <job-id>`](/sql-statements/sql-statement-cancel-import-job.md) 来取消对应任务。
 
-## 使用示例
+## `IMPORT INTO ... FROM FILE` 使用示例
 
 ### 导入带有 header 的 CSV 文件
 
@@ -314,13 +314,17 @@ IMPORT INTO t FROM '/path/to/file.sql' FORMAT 'sql';
 IMPORT INTO t FROM 's3://bucket/path/to/file.parquet?access-key=XXX&secret-access-key=XXX' FORMAT 'parquet' WITH MAX_WRITE_SPEED='10MiB';
 ```
 
-### `IMPORT INTO ... FROM SELECT`
+## `IMPORT INTO ... FROM SELECT` 使用示例
 
-导入 `UNION ` 结果到目标表 `t`，指定导入的并发度为 `8`，并且关闭非 critical 的 precheck 项：
+### 导入 SELECT 语句的查询结果
+
+导入 `UNION` 结果到目标表 `t`，指定导入的并发度为 `8`，并且关闭非 critical 的 precheck 项：
 
 ```
 IMPORT INTO t FROM SELECT * FROM src UNION SELECT * FROM src2 WITH THREAD = 8, DISABLE_PRECHECK;
 ```
+
+### 导入指定时间点的历史数据
 
 导入指定时间点的历史数据到目标表 `t`：
 
