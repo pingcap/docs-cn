@@ -59,7 +59,7 @@ TiDB 版本：8.0.0
 
 * 自动统计信息收集引入优先级队列 [#50132](https://github.com/pingcap/tidb/issues/50132) @[hi-rustin](https://github.com/hi-rustin) **tw@hfxsd** <!--1640-->
 
-    维持优化器统计信息的时效性是稳定数据库性能的关键，绝大多数用户依赖 TiDB 提供的[自动统计信息收集](/statistics.md#自动更新) 来保持统计信息的更新。自动统计信息收集轮询所有对象的统计信息状态，并把健康度不足的对象加入队列，逐个收集并更新。在过去的版本中，收集顺序是随机设置的，这可能造成更有收集价值的对象需要长时间等待才被更新，引发潜在的数据库性能回退。
+    维持优化器统计信息的时效性是稳定数据库性能的关键，绝大多数用户依赖 TiDB 提供的[自动统计信息收集](/statistics.md#自动更新)来保持统计信息的更新。自动统计信息收集轮询所有对象的统计信息状态，并把健康度不足的对象加入队列，逐个收集并更新。在过去的版本中，收集顺序是随机设置的，这可能造成更有收集价值的对象需要长时间等待才被更新，引发潜在的数据库性能回退。
 
     从 v8.0.0 开始，自动统计信息收集会结合多种条件为对象动态设置优先级，确保更有收集价值的对象优先被处理，比如新创建的索引、发生分区变更的分区表等，健康度更低的对象也会倾向于排在队列前端。该增强提升了收集顺序的合理性，能减少一部分统计信息过旧引发的性能问题，因此提升了数据库稳定性。
 
@@ -85,11 +85,11 @@ TiDB 版本：8.0.0
 
   更多信息，请参考[用户文档](/sql-statements/sql-statement-create-index.md#多值索引)。
 
-* 低精度 TSO 功能支持设定更新间隔 [#51081](https://github.com/pingcap/tidb/issues/51081) @[Tema](https://github.com/Tema) **tw@hfxsd** <!--1725-->
+* 支持设置低精度 TSO 的更新间隔 [#51081](https://github.com/pingcap/tidb/issues/51081) @[Tema](https://github.com/Tema) **tw@hfxsd** <!--1725-->
 
-    TiDB 的 [低精度 TSO 功能](/system-variables.md#tidb_low_resolution_tso) 使用定期更新的 TSO 作为事务时间戳，在可以容忍读到旧数据的情况下，通过牺牲一定的实时性, 降低小的只读事务获取 TSO 的开销，提升高并发读的能力。
+    TiDB 的[低精度 TSO 功能](/system-variables.md#tidb_low_resolution_tso)使用定期更新的 TSO 作为事务时间戳，在可以容忍读到旧数据的情况下，通过牺牲一定的实时性，降低小的只读事务获取 TSO 的开销，提升高并发读的能力。
 
-    在 v8.0.0 之前，低精度 TSO 功能的 TSO 更新周期固定，无法根据实际业务需要进行调整。在 v8.0.0 版本中，TiDB 引入变量 `tidb_low_resolution_tso_update_interval` 控制低精度 TSO 功能更新 TSO 的周期。该功能在低精度 TSO 功能启用时有效。
+    在 v8.0.0 之前，低精度 TSO 功能的 TSO 更新周期固定，无法根据实际业务需要进行调整。在 v8.0.0 版本中，TiDB 引入变量 `tidb_low_resolution_tso_update_interval` 来控制低精度 TSO 功能更新 TSO 的周期。该功能仅在低精度 TSO 功能启用时有效。
     
     更多信息，请参考[用户文档](/system-variables.md#tidb_low_resolution_tso_update_interval-从-v800-版本开始引入)。
 
@@ -97,7 +97,9 @@ TiDB 版本：8.0.0
 
 * 支持根据 LRU 算法缓存所需的 schema 信息来减少对 TiDB server 的内存消耗（实验特性）[#50959](https://github.com/pingcap/tidb/issues/50959) @[gmhdbjd](https://github.com/gmhdbjd) **tw@hfxsd** <!--1691-->
 
-    在 v8.0.0 之前，每个 TiDB 节点都会缓存所有表的 schema 信息，一旦表的数量较多，如达到几十万的场景，仅缓存这些表的 schema 信息就会占用大量内存。从 v8.0.0 开始，引入了参数 [`tidb_schema_cache_size`](/system-variables.md#tidb_schema_cache_size-从-v800-版本开始引入)，你可以设置缓存 schema 信息可以使用的内存上限，避免占用过多的内存。开启该功能后，将使用 LRU 算法来缓存所需的表，有效减小 schema 信息占用的内存。
+    在 v8.0.0 之前，每个 TiDB 节点都会缓存所有表的 schema 信息，一旦表的数量较多，如达到几十万的场景，仅缓存这些表的 schema 信息就会占用大量内存。
+    
+    从 v8.0.0 开始，引入了参数 [`tidb_schema_cache_size`](/system-variables.md#tidb_schema_cache_size-从-v800-版本开始引入)，你可以设置缓存 schema 信息可以使用的内存上限，避免占用过多的内存。开启该功能后，将使用 Least Recently Used (LRU) 算法来缓存所需的表，有效减小 schema 信息占用的内存。
 
     更多信息，请参考[用户文档](/system-variables.md#tidb_schema_cache_size-从-v800-版本开始引入)。
     
@@ -130,11 +132,11 @@ TiDB 版本：8.0.0
 
     更多信息，请参考[用户文档](/system-variables.md#tidb_dml_type-从-v800-版本开始引入)。
 
-* TiDB 建表时，支持更多的表达式来设置列的默认值 （实验特性）[#50936](https://github.com/pingcap/tidb/issues/50936) @[zimulala](https://github.com/zimulala) **tw@qiancai** <!--1690-->
+* TiDB 建表时，支持更多的表达式来设置列的默认值（实验特性）[#50936](https://github.com/pingcap/tidb/issues/50936) @[zimulala](https://github.com/zimulala) **tw@hfxsd** <!--1690-->
 
-    之前的版本建表时，列默认值只能为固定的字符串，数字，以及日期，而从 v8.0.0 版本开始，支持将部分表达式作为列的默认值，如将列的默认值设置为 UUID() ，从而来满足用户多样化的业务需求。
+    在 v8.0.0 之前，在建表时，列默认值只能为固定的字符串、数字、以及日期。从 v8.0.0 开始，支持使用部分表达式作为列的默认值，如将列的默认值设置为 `UUID()`，从而满足多样化的业务需求。
 
-    更多信息，请参考[用户文档](链接)。
+    更多信息，请参考[用户文档](/data-type-default-values.md#表达式默认值)。
 
 ### 数据库管理
 
@@ -160,13 +162,13 @@ TiDB 版本：8.0.0
 
 * 支持将 general log 写入独立文件 [#51248](https://github.com/pingcap/tidb/issues/51248) @[Defined2014](https://github.com/Defined2014) **tw@hfxsd** <!--1632-->
 
-   general log 是 MySQL 兼容的功能，开启后会记录数据库执行的全部 SQL 语句，为问题诊断提供依据。TiDB 也支持此功能，你通过设置变量 [`tidb_general_log`](/system-variables.md#tidb_general_log) 开启该功能。但是在过去的版本中，general log 的内容只能和其他信息一起写入实例日志，对需要长期保存的用户并不友好。
+    general log 是 MySQL 兼容的功能，开启后会记录数据库执行的全部 SQL 语句，为问题诊断提供依据。TiDB 也支持此功能，你可以通过设置变量 [`tidb_general_log`](/system-variables.md#tidb_general_log) 开启该功能。但是在过去的版本中，general log 的内容只能和其他信息一起写入实例日志，对需要长期保存的用户不够友好。
 
-   在新版本中，通过把配置项 [`log.general-log-file`](/tidb-configuration-file.md#general-log-file) 设置为有效的文件名，TiDB 可以把 general log 写入指定的文件。和实例日志一样，general log 也同样遵循日志的轮询和保存策略。
+    从 v8.0.0 开始，你可以通过配置项 [`log.general-log-file`](/tidb-configuration-file.md#general-log-file) 设置文件名，TiDB 可以把 general log 写入该文件。和实例日志一样，general log 也遵循日志的轮询和保存策略。
    
-   另外，为了减少历史日志文件所占用的磁盘空间，TiDB 在 v8.0.0 支持了原生的日志压缩选项。将配置项 [`log.file.compression`](/tidb-configuration-file.md#compression) 设置为 `gzip`，轮询出的历史日志将自动以 [`gzip`](https://www.gzip.org/) 格式压缩。
+    另外，为了减少历史日志文件所占用的磁盘空间，TiDB 在 v8.0.0 支持了原生的日志压缩选项。你可以将配置项 [`log.file.compression`](/tidb-configuration-file.md#compression) 设置为 `gzip`，轮询出的历史日志将自动以 [`gzip`](https://www.gzip.org/) 格式压缩。
 
-   更多信息，请参考[用户文档](/tidb-configuration-file.md#general-log-file)。
+    更多信息，请参考[用户文档](/tidb-configuration-file.md#general-log-file)。
         
 ### 可观测性
 
@@ -200,6 +202,12 @@ TiDB 版本：8.0.0
     更多信息，请参考[用户文档](链接)。
 
 ### 数据迁移
+
+* TiCDC 支持通过双向复制模式 (Bi-Directional Replication, BDR) 同步 DDL 语句 (GA) [#10301](https://github.com/pingcap/tiflow/issues/10301) [#48519](https://github.com/pingcap/tidb/issues/48519) @[okJiang](https://github.com/okJiang) @[asddongmen](https://github.com/asddongmen) **tw@hfxsd** <!--1689/1682-->
+
+    TiDB v7.6.0 引入了通过双向复制模式同步 DDL 语句的功能。以前，TiCDC 不支持复制 DDL 语句，因此要使用 TiCDC 双向复制必须将 DDL 语句分别应用到两个 TiDB 集群。有了该特性，TiCDC 可以为一个集群分配 `PRIMARY` BDR role，并将该集群的 DDL 语句复制到下游集群。该功能在 v8.0.0 成为正式功能。
+
+    更多信息，请参考[用户文档](/ticdc/ticdc-bidirectional-replication.md)。
 
 * DM 支持使用用户提供的密钥对源和目标数据库的密码进行加密和解密 [#9492](https://github.com/pingcap/tiflow/issues/9492) @[D3Hunter](https://github.com/D3Hunter) **tw@qiancai** <!--1497-->
 
@@ -254,9 +262,9 @@ TiDB 版本：8.0.0
 | 变量名  | 修改类型（包括新增/修改/删除）    | 描述 |
 |--------|------------------------------|------|
 | [`tidb_opt_use_invisible_indexes`](/system-variables.md#) | 新增 | 控制会话中是否能够选择[不可见索引](/sql-statements/sql-statement-create-index.md#不可见索引)。当修改变量为`ON`时，针对该会话执行的查询，优化能够使用[不可见索引](/sql-statements/sql-statement-create-index.md#不可见索引)进行优化。|
-| [tidb_redact_log](/system-variables.md#) | 修改 | 控制在记录 TiDB 日志和慢日志时如何处理 SAL 文本中的用户信息，可选值为OFF、ON、marker，以支持记录信息明文、信息屏蔽、信息标记。当变量值为marker时，日志中的用户信息将被标记处理，可以在随后的查看中进行日志信息是否脱敏的处理 |
+| [tidb_redact_log](/system-variables.md#) | 修改 | 控制在记录 TiDB 日志和慢日志时如何处理 SAL 文本中的用户信息，可选值为 `OFF`、`ON`、`MARKER`，以分别支持记录信息明文、信息屏蔽、信息标记。当变量值为 `MARKER` 时，日志中的用户信息将被标记处理，可以在之后决定是否对日志信息进行脱敏。 |
 |  [`tidb_schema_cache_size`](/system-variables.md#tidb_schema_cache_size-从-v800-版本开始引入)      |   新增                           |  设置缓存 schema 信息可以使用的内存上限，避免占用过多的内存。开启该功能后，将使用 LRU 算法来缓存所需的表，有效减小 schema 信息占用的内存。    |
-|        |                              |      |
+| [`tidb_low_resolution_tso_update_interval`](/system-variables.md#tidb_low_resolution_tso_update_interval-从-v800-版本开始引入) | 新增 | 设置更新 TiDB [缓存 timestamp](system-variables#tidb_low_resolution_tso) 的间隔。 |
 
 ### 配置文件参数
 
@@ -290,8 +298,6 @@ TiDB 版本：8.0.0
 
 + TiKV
 
-    - note [#issue](链接) @[贡献者 GitHub ID](链接)
-    - note [#issue](链接) @[贡献者 GitHub ID](链接)
     - 强化 TSO 校验检测，提升使用不当时集群 TSO 的鲁棒性 [#16545](https://github.com/tikv/tikv/issues/16545) @[cfzjywxk](https://github.com/cfzjywxk) **tw@qiancai** <!--1624-->
     - 优化清理悲观锁逻辑，提升未提交事务处理性能 [#16158](https://github.com/tikv/tikv/issues/16158) @[cfzjywxk](https://github.com/cfzjywxk) **tw@qiancai** <!--1661-->
     - 增加 TiKV 统一健康控制，降低单个 TiKV 节点异常对集群访问性能的影响 [#16297](https://github.com/tikv/tikv/issues/16297) [#1104](https://github.com/tikv/client-go/issues/1104) [#1167](https://github.com/tikv/client-go/issues/1167) @[MyonKeminta](https://github.com/MyonKeminta) @[zyguan](https://github.com/zyguan) @[crazycs520](https://github.com/crazycs520) **tw@qiancai** <!--1707-->
@@ -321,7 +327,6 @@ TiDB 版本：8.0.0
     + TiDB Data Migration (DM)
 
         - `MariaDB` 主从复制的场景，即 `MariaDB_主实例` -> `MariaDB_从实例` -> `DM` -> `TiDB` 的迁移场景，当 `gtid_strict_mode = off`，且 `Mariadb_从实例`的 GTID 不严格递增时（比如有业务数据在写 `MariaDB_从实例` ），此时 DM 任务会报错 `less than global checkpoint position`。从 v8.0.0 开始，TiDB 兼容该场景，数据可以正常迁移到下游。 [#issue](链接) @[okJiang](https://github.com/okJiang) **tw@hfxsd** <!--1683-->
-        - note [#issue](链接) @[贡献者 GitHub ID](链接)
 
     + TiDB Lightning
 
