@@ -482,7 +482,7 @@ SHOW binding_cache status;
 
 你可以通过查询 `Statement Summary` 表得到符合条件查询的 `plan_digest`，再使用[根据历史执行计划创建绑定](/sql-plan-management.md#根据历史执行计划创建绑定)快速创建绑定。
 
-下面是一个实例，此实例会查找过去 2 周执行次数超过 100 次，执行计划不稳定且未被绑定的 Select 语句，将他们绑定到对应的查询延迟最低的计划上：
+下面是一个实例，此实例会查找过去 2 周执行次数超过 10 次，执行计划不稳定且未被绑定的 Select 语句，按照执行次数排序，将执行次数前 100 的查询绑定到对应的查询延迟最低的计划上：
 
 ```sql
 WITH stmts AS (                                                -- Gets all information
@@ -498,7 +498,7 @@ best_plans AS (
                        WHERE t2.`digest` = t1.`digest`)
 )
 
-SELECT stmts.`digest`, any_value(digest_text) as query, 
+SELECT any_value(digest_text) as query, 
        SUM(exec_count) as exec_count, binding_stmt
 FROM stmts, best_plans
 WHERE stmts.`digest` = best_plans.`digest`
@@ -506,9 +506,9 @@ WHERE stmts.`digest` = best_plans.`digest`
   AND stmt_type = 'Select'                                     -- Only consider select statements
   AND schema_name NOT IN ('INFORMATION_SCHEMA', 'mysql')       -- Not an internal query
   AND plan_in_binding = 0                                      -- No binding yet
-GROUP BY `digest`
+GROUP BY stmts.`digest`
   HAVING COUNT(DISTINCT(stmts.plan_digest)) > 1                -- This query is unstable. It has more than 1 plan.
-         AND SUM(exec_count) > 100                             -- High-frequency, and has been executed more than 100 times.
+         AND SUM(exec_count) > 10                              -- High-frequency, and has been executed more than 10 times.
 ORDER BY SUM(exec_count) DESC LIMIT 100;                       -- Top 100 high-grequency queries.
 ```
 
