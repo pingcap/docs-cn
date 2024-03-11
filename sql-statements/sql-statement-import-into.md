@@ -10,15 +10,6 @@ summary: TiDB 数据库中 IMPORT INTO 的使用概况。
 - `IMPORT INTO ... FROM FILE` 用于将 `CSV`、`SQL`、`PARQUET` 等格式的数据文件导入到 TiDB 的一张空表中。
 - `IMPORT INTO ... FROM SELECT` 用于将 `SELECT` 语句的查询结果导入到 TiDB 的一张空表中，也支持导入使用 [`AS OF TIMESTAMP`](/as-of-timestamp.md) 查询的历史数据。
 
-`IMPORT INTO ... FROM FILE` 支持导入存储在 Amazon S3、GCS 和 TiDB 本地的数据文件。
-
-- 对于存储在 S3 或 GCS 的数据文件，`IMPORT INTO ... FROM FILE` 支持通过 [TiDB 分布式执行框架](/tidb-distributed-execution-framework.md)运行。
-
-    - 当此框架功能开启时（即 [tidb_enable_dist_task](/system-variables.md#tidb_enable_dist_task-从-v710-版本开始引入) 为 `ON`），`IMPORT INTO` 会将一个数据导入任务拆分成多个子任务并分配到各个 TiDB 节点上运行，以提高导入效率。
-    - 当此框架功能关闭时，`IMPORT INTO ... FROM FILE` 仅支持在当前用户连接的 TiDB 节点上运行。
-
-- 对于存储在 TiDB 本地的数据文件，`IMPORT INTO ... FROM FILE` 仅支持在当前用户连接的 TiDB 节点上运行，因此数据文件需要存放在当前用户连接的 TiDB 节点上。如果是通过 PROXY 或者 Load Balancer 访问 TiDB，则无法导入存储在 TiDB 本地的数据文件。
-
 ## 使用限制
 
 - 只支持导入数据到数据库中已有的空表。
@@ -156,6 +147,15 @@ SET 表达式左侧只能引用 `ColumnNameOrUserVarList` 中没有的列名。�
 | `DISABLE_PRECHECK` | 所有文件格式、`SELECT` 语句的查询结果 | 设置该选项后会关闭非 critical 的前置检查项，如检查是否存在 CDC 或 PITR 等任务。 |
 
 ## `IMPORT INTO ... FROM FILE` 使用说明
+
+`IMPORT INTO ... FROM FILE` 支持导入存储在 Amazon S3、GCS 和 TiDB 本地的数据文件。
+
+- 对于存储在 S3 或 GCS 的数据文件，`IMPORT INTO ... FROM FILE` 支持通过 [TiDB 分布式执行框架](/tidb-distributed-execution-framework.md)运行。
+
+    - 当此框架功能开启时（即 [tidb_enable_dist_task](/system-variables.md#tidb_enable_dist_task-从-v710-版本开始引入) 为 `ON`），`IMPORT INTO` 会将一个数据导入任务拆分成多个子任务并分配到各个 TiDB 节点上运行，以提高导入效率。
+    - 当此框架功能关闭时，`IMPORT INTO ... FROM FILE` 仅支持在当前用户连接的 TiDB 节点上运行。
+
+- 对于存储在 TiDB 本地的数据文件，`IMPORT INTO ... FROM FILE` 仅支持在当前用户连接的 TiDB 节点上运行，因此数据文件需要存放在当前用户连接的 TiDB 节点上。如果是通过 PROXY 或者 Load Balancer 访问 TiDB，则无法导入存储在 TiDB 本地的数据文件。
 
 ### 压缩文件
 
@@ -317,6 +317,8 @@ IMPORT INTO t FROM 's3://bucket/path/to/file.parquet?access-key=XXX&secret-acces
 ```
 
 ## `IMPORT INTO ... FROM SELECT` 使用说明
+
+`IMPORT INTO ... FROM SELECT` 支持将 `SELECT` 语句的查询结果导入到 TiDB 的一张空表中，也支持导入使用 [`AS OF TIMESTAMP`](/as-of-timestamp.md) 查询的历史数据。
 
 ### 导入 SELECT 语句的查询结果
 
