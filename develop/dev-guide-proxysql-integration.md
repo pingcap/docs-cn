@@ -5,9 +5,9 @@ summary: 了解如何将本地部署的 TiDB 或 TiDB Cloud 集群与 ProxySQL �
 
 # ProxySQL 集成指南
 
-本文档提供 ProxySQL 的概述介绍、描述如何在[开发环境](#开发环境)和[生产环境](#生产环境)中将 ProxySQL 与 TiDB 集成，并通过[查询规则的场景](#典型场景)展示集成的主要优势。
+本文简要介绍 ProxySQL，描述如何在[开发环境](#开发环境)和[生产环境](#生产环境)中将 ProxySQL 与 TiDB 集成，并通过[查询规则的场景](#典型场景)展示集成的主要优势。
 
-关于 TiDB 和 ProxySQL 的更多信息，可以参考下面的文档：
+关于 TiDB 和 ProxySQL 的更多信息，请参考以下文档：
 
 - [TiDB Cloud](https://docs.pingcap.com/tidbcloud)
 - [TiDB 开发者指南](/develop/dev-guide-overview.md)
@@ -21,7 +21,7 @@ ProxySQL 的设计目标是快速、高效且易于使用。它完全兼容 MySQ
 
 ## 为什么集成 ProxySQL？
 
-- ProxySQL 可以通过降低与 TiDB 交互的延迟来帮助提升应用程序性能。无论你构建什么，无论是使用 Lambda 等无服务器函数的可扩展应用程序（其工作负载不确定并且可能激增），还是构建执行大量数据查询的应用程序，都可以利用 ProxySQL 的强大功能（例如[连接池](https://proxysql.com/documentation/detailed-answers-on-faq/)和[缓存常用查询](https://proxysql.com/documentation/query-cache/)）。
+- ProxySQL 可以通过降低与 TiDB 交互的延迟来提升应用程序性能。无论你构建什么，无论是使用 Lambda 等无服务器函数的可扩展应用程序（其工作负载不确定并且可能激增），还是构建执行大量数据查询的应用程序，都可以利用 ProxySQL 的强大功能（例如[连接池](https://proxysql.com/documentation/detailed-answers-on-faq/)和[缓存常用查询](https://proxysql.com/documentation/query-cache/)）。
 - ProxySQL 可以作为应用程序安全防护的附加层，使用[查询规则](#查询规则)防止 SQL 漏洞（例如 SQL 注入）。
 - 由于 [ProxySQL](https://github.com/sysown/proxysql) 和 [TiDB](https://github.com/pingcap/tidb) 都是开源项目，你可以享受到零供应商锁定的好处。
 
@@ -33,7 +33,7 @@ ProxySQL 的设计目标是快速、高效且易于使用。它完全兼容 MySQ
 
 > **注意：**
 >
-> 上图仅供参考。你必须根据实际的部署架构进行调整。
+> 上图仅供参考，你需要根据实际的部署架构进行调整。
 
 ## 开发环境
 
@@ -431,7 +431,7 @@ systemctl start docker
 
 在这个集成中，你将使用 [TiDB](https://hub.docker.com/r/pingcap/tidb) 和 [ProxySQL](https://hub.docker.com/r/proxysql/proxysql) 的 Docker 镜像设置环境。你也可以尝试[其他方式安装 TiDB](/quick-start-with-tidb.md)。
 
-下面的步骤将在端口 `6033` 和 `4000` 上分别设置 ProxySQL 和 TiDB，请确保这些端口是可用的。
+下面的步骤将在端口 `6033` 和 `4000` 上分别设置 ProxySQL 和 TiDB，请确保这些端口可用。
 
 1. 启动 Docker。如果 Docker 已经启动，请跳过此步骤：
 
