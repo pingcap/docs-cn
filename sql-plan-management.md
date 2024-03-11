@@ -499,7 +499,8 @@ best_plans AS (
 )
 
 SELECT any_value(digest_text) as query, 
-       SUM(exec_count) as exec_count, binding_stmt
+       SUM(exec_count) as exec_count, 
+       plan_hint, binding_stmt
 FROM stmts, best_plans
 WHERE stmts.`digest` = best_plans.`digest`
   AND summary_begin_time > DATE_SUB(NOW(), interval 14 day)    -- Executed in the past 2 weeks
@@ -513,6 +514,15 @@ ORDER BY SUM(exec_count) DESC LIMIT 100;                       -- Top 100 high-g
 ```
 
 通过一些过滤条件得到满足条件的查询，然后直接运行 `binding_stmt` 列对应的语句即可创建相应的绑定。
+
+```
++---------------------------------------------+------------+-----------------------------------------------------------------------------+-------------------------------------------------------------------------------------------------------------------------+
+| query                                       | exec_count | plan_hint                                                                   | binding_stmt                                                                                                            |
++---------------------------------------------+------------+-----------------------------------------------------------------------------+-------------------------------------------------------------------------------------------------------------------------+
+| select * from `t` where `a` = ? and `b` = ? |        401 | use_index(@`sel_1` `test`.`t` `a`), no_order_index(@`sel_1` `test`.`t` `a`) | create global binding from history using plan digest "0d6e97fb1191bbd08dddefa7bd007ec0c422b1416b152662768f43e64a9958a6" |
+| select * from `t` where `b` = ? and `c` = ? |        104 | use_index(@`sel_1` `test`.`t` `b`), no_order_index(@`sel_1` `test`.`t` `b`) | create global binding from history using plan digest "80c2aa0aa7e6d3205755823aa8c6165092c8521fb74c06a9204b8d35fc037dd9" |
++---------------------------------------------+------------+-----------------------------------------------------------------------------+-------------------------------------------------------------------------------------------------------------------------+
+```
 
 ## 跨数据库绑定执行计划 (Cross-DB Binding)
 
