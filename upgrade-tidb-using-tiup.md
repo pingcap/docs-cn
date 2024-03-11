@@ -7,10 +7,10 @@ aliases: ['/docs-cn/dev/upgrade-tidb-using-tiup/','/docs-cn/dev/how-to/upgrade/u
 
 本文档适用于以下升级路径：
 
-- 使用 TiUP 从 TiDB 4.0 版本升级至 TiDB 7.5。
-- 使用 TiUP 从 TiDB 5.0-5.4 版本升级至 TiDB 7.5。
-- 使用 TiUP 从 TiDB 6.0-6.6 版本升级至 TiDB 7.5。
-- 使用 TiUP 从 TiDB 7.0-7.4 版本升级至 TiDB 7.5。
+- 使用 TiUP 从 TiDB 4.0 版本升级至 TiDB 7.6。
+- 使用 TiUP 从 TiDB 5.0-5.4 版本升级至 TiDB 7.6。
+- 使用 TiUP 从 TiDB 6.0-6.6 版本升级至 TiDB 7.6。
+- 使用 TiUP 从 TiDB 7.0-7.5 版本升级至 TiDB 7.6。
 
 > **警告：**
 >
