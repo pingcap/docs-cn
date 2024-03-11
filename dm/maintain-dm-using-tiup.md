@@ -197,7 +197,7 @@ tiup dm scale-in prod-cluster -N 172.16.5.140:8262
 
 > **注意：**
 >
-> 从 v8.0.0 开始，DM 移除了固定的加解密 key，并支持设置自定义加解密 key。如果升级前[数据源配置](/dm/dm-source-configuration-file.md)和[迁移任务配置](/dm/task-configuration-file-full.md)里使用了加密密码，需参考[这里](/dm/dm-customized-secret-key.md)的升级步骤进行额外操作。
+> 从 v8.0.0 开始，DM 移除了固定的加解密 key，并支持设置自定义加解密 key。如果升级前[数据源配置](/dm/dm-source-configuration-file.md)和[迁移任务配置](/dm/task-configuration-file-full.md)里使用了加密密码，需参考[DM 自定义加解密 key](/dm/dm-customized-secret-key.md) 里的升级步骤进行额外操作。
 
 {{< copyable "shell-regular" >}}
 
