@@ -22,7 +22,7 @@ aliases: ['/docs-cn/dev/encryption-at-rest/']
 
 TiKV 支持静态加密，即在 [CTR](https://zh.wikipedia.org/wiki/分组密码工作模式) 模式下使用 [AES](https://zh.wikipedia.org/wiki/高级加密标准) 或 [SM4](https://zh.wikipedia.org/wiki/SM4) 对数据文件进行透明加密。要启用静态加密，用户需提供一个加密密钥，即主密钥。TiKV 自动轮换 (rotate) 用于加密实际数据文件的密钥，主密钥则可以由用户手动轮换。请注意，静态加密仅加密静态数据（即磁盘上的数据），而不加密网络传输中的数据。建议 TLS 与静态加密一起使用。
 
-可以选择将 AWS KMS (Key Management Service) 用于云上部署或本地部署，也可以指定将密钥以明文形式存储在文件中。
+可以选择将 KMS (Key Management Service) 用于云上部署或本地部署，也可以指定将密钥以明文形式存储在文件中。
 
 TiKV 当前不从核心转储 (core dumps) 中排除加密密钥和用户数据。建议在使用静态加密时禁用 TiKV 进程的核心转储，该功能目前无法由 TiKV 独立处理。
 
