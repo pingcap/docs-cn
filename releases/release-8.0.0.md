@@ -261,7 +261,7 @@ By separating PD modules into separately-deployable services, their blast radii 
 
 * TiCDC 支持通过双向复制模式 (Bi-Directional Replication, BDR) 同步 DDL 语句 (GA) [#10301](https://github.com/pingcap/tiflow/issues/10301) [#48519](https://github.com/pingcap/tidb/issues/48519) @[okJiang](https://github.com/okJiang) @[asddongmen](https://github.com/asddongmen) **tw@hfxsd** <!--1689/1682-->
 
-    TiDB v7.6.0 引入了通过双向复制模式同步 DDL 语句的功能。以前，TiCDC 不支持复制 DDL 语句，因此要使用 TiCDC 双向复制必须将 DDL 语句分别应用到两个 TiDB 集群。有了该特性，TiCDC 可以为一个集群分配 `PRIMARY` BDR role，并将该集群的 DDL 语句复制到下游集群。该功能在 v8.0.0 成为正式功能。
+    TiDB v7.6.0 引入了通过双向复制模式同步 DDL 语句的功能作为实验特性。以前，TiCDC 不支持复制 DDL 语句，因此要使用 TiCDC 双向复制必须将 DDL 语句分别应用到两个 TiDB 集群。有了该特性，TiCDC 可以为一个集群分配 `PRIMARY` BDR role，并将该集群的 DDL 语句复制到下游集群。该功能在 v8.0.0 成为正式功能。
 
     更多信息，请参考[用户文档](/ticdc/ticdc-bidirectional-replication.md)。
 
@@ -382,7 +382,7 @@ By separating PD modules into separately-deployable services, their blast radii 
 
     + TiDB Data Migration (DM)
 
-        - `MariaDB` 主从复制的场景，即 `MariaDB_主实例` -> `MariaDB_从实例` -> `DM` -> `TiDB` 的迁移场景，当 `gtid_strict_mode = off`，且 `Mariadb_从实例`的 GTID 不严格递增时（比如有业务数据在写 `MariaDB_从实例` ），此时 DM 任务会报错 `less than global checkpoint position`。从 v8.0.0 开始，TiDB 兼容该场景，数据可以正常迁移到下游。 [#issue](链接) @[okJiang](https://github.com/okJiang) **tw@hfxsd** <!--1683-->
+        - 在MariaDB 主从复制的场景中，即 `MariaDB_主实例` -> `MariaDB_从实例` -> `DM` -> `TiDB` 的迁移场景，当 `gtid_strict_mode = off`、且 `MariaDB_从实例`的 GTID 不严格递增时（比如有业务数据在写 `MariaDB_从实例` ），此时 DM 任务会报错 `less than global checkpoint position`。从 v8.0.0 开始，TiDB 兼容该场景，数据可以正常迁移到下游。[#10741](https://github.com/pingcap/tiflow/issues/10741) @[okJiang](https://github.com/okJiang) **tw@hfxsd** <!--1683-->
 
     + TiDB Lightning
 
