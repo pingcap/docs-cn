@@ -153,8 +153,8 @@ delta_index_cache_size = 0
     # log-level = "info" 
 
 [logger]
-    ## log 级别（支持 "trace"、"debug"、"info"、"warn"、"error"），默认是 "debug"
-    level = "debug"
+    ## log 级别（支持 "trace"、"debug"、"info"、"warn"、"error"），从 v7.1.4 起，默认值从 "debug" 变更为 "info"
+    level = "info"
     log = "/tidb-deploy/tiflash-9000/log/tiflash.log"
     errorlog = "/tidb-deploy/tiflash-9000/log/tiflash_error.log"
     ## 单个日志文件的大小，默认是 "100M"
