@@ -85,6 +85,14 @@ TiDB 版本：8.0.0
 
   更多信息，请参考[用户文档](/sql-statements/sql-statement-create-index.md#多值索引)。
 
+* 低精度 TSO 功能支持设定更新间隔 [#51081](https://github.com/pingcap/tidb/issues/51081) @[Tema](https://github.com/Tema) **tw@hfxsd** <!--1725-->
+
+    TiDB 的 [低精度 TSO 功能](/system-variables.md#tidb_low_resolution_tso) 使用定期更新的 TSO 作为事务时间戳，在可以容忍读到旧数据的情况下，通过牺牲一定的实时性, 降低小的只读事务获取 TSO 的开销，提升高并发读的能力。
+
+    在 v8.0.0 之前，低精度 TSO 功能的 TSO 更新周期固定，无法根据实际业务需要进行调整。在 v8.0.0 版本中，TiDB 引入变量 `tidb_low_resolution_tso_update_interval` 控制低精度 TSO 功能更新 TSO 的周期。该功能在低精度 TSO 功能启用时有效。
+    
+    更多信息，请参考[用户文档](/system-variables.md#tidb_low_resolution_tso_update_interval-从-v800-版本开始引入)。
+
 ### 稳定性
 
 * 支持根据 LRU 算法缓存所需的 schema 信息来减少对 TiDB server 的内存消耗（实验特性）[#50959](https://github.com/pingcap/tidb/issues/50959) @[gmhdbjd](https://github.com/gmhdbjd) **tw@hfxsd** <!--1691-->
@@ -106,7 +114,7 @@ TiDB 版本：8.0.0
     * 在 TiDB 集群进行滚动重启、滚动升级、缩容等维护操作时，TiDB server 会发生变动，导致客户端与发生变化的 TiDB server 的连接中断。通过使用 TiProxy，可以在这些维护操作过程中平滑地将连接迁移至其他 TiDB server，从而让客户端不受影响。
     * 所有客户端对 TiDB server 的连接都无法动态迁移至其他 TiDB server。当多个 TiDB server 的负载不均衡时，可能出现整体集群资源充足，但某些 TiDB server 资源耗尽导致延迟大幅度增加的情况。为解决此问题，TiProxy 提供连接动态迁移功能，在客户端无感的前提下，将连接从一个 TiDB server 迁移至其他 TiDB server，从而实现 TiDB 集群的负载均衡。
 
-  TiProxy 已集成至 TiUP、TiDB Operator、TiDB Dashboard 等 TiDB 基本组件中，可以方便地进行配置、部署和运维。
+    TiProxy 已集成至 TiUP、TiDB Operator、TiDB Dashboard 等 TiDB 基本组件中，可以方便地进行配置、部署和运维。
 
     更多信息，请参考[用户文档](/tiproxy/tiproxy-overview.md)。
 
