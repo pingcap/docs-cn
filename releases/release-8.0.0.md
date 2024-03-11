@@ -13,6 +13,62 @@ TiDB 版本：8.0.0
 
 在 8.0.0 版本中，你可以获得以下关键特性：
 
+<table>
+<thead>
+  <tr>
+    <th>Category</th>
+    <th>Feature/Enhancement</th>
+    <th>Description</th>
+  </tr>
+</thead>
+<tbody>
+  <tr>
+    <td rowspan="4">Scalability and Performance</td>
+    <td>Disaggregation of PD to improve scale (experimental) **tw@qiancai** <!--1553, 1558--></td>
+    <td>PD (Placement Driver) has a lot of critical modules for the running of TiDB. Each module's resource consumption can increase as certain workloads scale, meaning they can each interfere with other functions in PD, ultimately impacting quality of service of the cluster.
+By separating PD modules into separately-deployable services, their blast radii are massively mitigated as the cluster scales. Much larger clusters with much larger workloads are possible with this architecture.</td>
+  </tr>
+  <tr>
+    <td><a href="https://docs.pingcap.com/zh/tidb/v8.0/system-variables#tidb_dml_type-从-v800-版本开始引入">用于处理更大事务的批量 DML 执行方式（实验特性）</a>**tw@Oreoxmt** <!--1694--></td>
+    <td>大批量的 DML 任务，例如大规模的清理任务、连接或聚合，可能会消耗大量内存，并且在非常大的规模上受到限制。批量 DML (<code>tidb_dml_type = "bulk"</code>) 是一种新的 DML 类型，用于更高效地处理大批量 DML 任务，同时提供事务保证并减轻 OOM 问题。该功能与用于数据加载的导入、加载和恢复操作不同。</td>
+  </tr>
+  <tr>
+    <td>Acceleration of cluster snapshot restore speed **tw@qiancai** <!--1681--></td>
+    <td>An optimization to involve all TiKV nodes in the preparation step for cluster restores was introduced to leverage scale such that restore speeds for a cluster are much faster for larger sets of data on larger clusters. Real world tests exhibit restore acceleration of ~300% in slower cases.</td>
+  </tr>
+  <tr>
+    <td><a href="https://docs.pingcap.com/tidb/v8.0/system-variables#tidb_schema_cache_size-new-in-v800">Enhanced stability of a massive number of tables </a>**tw@hfxsd** <!--16408--></td>
+    <td>SaaS companies using TiDB as the system of record for their multi-tenant applications often need to store a substantial number of tables. In previous versions, handling table counts in the order of a million or more was feasible, but it had the potential to degrade the overall user experience. TiDB v8.0.0 improves the situation with the following enhancements:
+  <ul>
+    <li>- Introduce a new information schema caching system, incorporating a lazy-loading Least Recently Used (LRU) cache for table metadata and more efficiently managing schema version changes.</li>
+    <li>- Implement a priority queue for `auto analyze`, making the process less rigid and enhancing stability across a wider array of tables.</li>
+  </ul>
+    </td>
+  </tr>
+  <tr>
+    <td rowspan="1">DB Operations and Observability</td>
+    <td>支持观测索引使用情况 **tw@Oreoxmt** <!--1400--></td>
+    <td>TiDB v8.0.0 引入 <a href="https://docs.pingcap.com/zh/tidb/v8.0/information-schema-tidb-index-usage"><code>INFORMATION_SCHEMA.TIDB_INDEX_USAGE</code></a> 表和 <a href="https://docs.pingcap.com/zh/tidb/v8.0/sys-schema.md"><code>sys.schema_unused_index</code></a> 视图，以提供索引的使用统计信息。该功能有助于用户评估所有索引的重要性并优化索引设计。</td>
+
+    </td>
+  </tr>
+  <tr>
+    <td rowspan="3">Data Migration</td>
+    <td><a href="https://docs.pingcap.com/tidb/v8.0/ticdc-bidirectional-replication">TiCDC supports replicating DDL statements in bi-directional replication (BDR) mode (GA) </a>**tw@hfxsd** <!--1682/1689--></td>
+    <td>With this feature, TiCDC allows for a cluster to be assigned the `PRIMARY` BDR role, and enables the replication of DDL statements from that cluster to the downstream cluster.</td>
+    </td>
+  </tr>
+  <tr>
+    <td>TiCDC adds support for the Simple protocol **tw@lilin90** <!--1646--></td>
+    <td>TiCDC introduces support for a new protocol, the Simple protocol. This protocol includes support for in-band schema tracking capabilities.</td>
+  </tr>
+  <tr>
+    <td>TiCDC adds support for the Debezium format protocol **tw@lilin90** <!--1652--></td>
+    <td>TiCDC can now publish replication events to a Kafka sink using a protocol that generates Debezium style messages.</td>
+  </tr>
+</tbody>
+</table>
+
 ## 功能详情
 
 ### 可扩展性
