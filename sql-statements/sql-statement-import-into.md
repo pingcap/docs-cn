@@ -36,10 +36,10 @@ summary: TiDB 数据库中 IMPORT INTO 的使用概况。
 
 - 目前该语句支持导入 10 TiB 以内的数据。
 - 在导入完成前会阻塞当前连接，如果需要异步执行，可以添加 `DETACHED` 选项。
-- 每个集群上最多同时有 16 个 `IMPORT INTO` 任务（参考 [TiDB 分布式执行框架使用限制](/tidb-distributed-execution-framework.md#使用限制) ）在运行，当集群没有足够资源或者达到任务数量上限时，新提交的导入任务会排队等待执行。
+- 每个集群上最多同时有 16 个 `IMPORT INTO` 任务（参考 [TiDB 分布式执行框架使用限制](/tidb-distributed-execution-framework.md#使用限制)）在运行，当集群没有足够资源或者达到任务数量上限时，新提交的导入任务会排队等待执行。
 - 当使用[全局排序](/tidb-global-sort.md)导入数据时，单行数据的总长度不能超过 32 MiB。
 - 当使用全局排序导入数据时，如果 TiDB 集群在导入任务尚未完成时被删除了，Amazon S3 上可能会残留用于全局排序的临时数据。该场景需要手动删除这些数据，以免增加 S3 存储成本。
-- 未开启[TiDB 分布式执行框架](/tidb-distributed-execution-framework.md)时创建的所有 `IMPORT INTO` 任务会直接在提交任务的节点上运行，后续即使开启了分布式执行框架，这些任务也不会被调度到其它 TiDB 节点上执行。开启分布式执行框架后，新创建的 `IMPORT INTO` 任务如果导入的是 S3 或 GCS 中的数据 ，则会自动调度或者 failover 到其它 TiDB 节点执行。
+- 未开启 [TiDB 分布式执行框架](/tidb-distributed-execution-framework.md)时创建的所有 `IMPORT INTO` 任务会直接在提交任务的节点上运行，后续即使开启了分布式执行框架，这些任务也不会被调度到其它 TiDB 节点上执行。开启分布式执行框架后，新创建的 `IMPORT INTO` 任务如果导入的是 S3 或 GCS 中的数据 ，则会自动调度或者 failover 到其它 TiDB 节点执行。
 
 ### `IMPORT INTO ... FROM SELECT` 使用限制
 
@@ -146,7 +146,7 @@ SET 表达式左侧只能引用 `ColumnNameOrUserVarList` 中没有的列名。�
 | `LINES_TERMINATED_BY='<string>'` | CSV | 指定行分隔符，默认 `IMPORT INTO` 会自动识别分隔符为 `\n`、`\r` 或 `\r\n`，如果行分隔符为以上三种，无须显式指定该选项。 |
 | `SKIP_ROWS=<number>` | CSV | 指定需要跳过的行数，默认为 `0`。可通过该参数跳过 CSV 中的 header，如果是通过通配符来指定所需导入的源文件，该参数会对 fileLocation 中通配符匹配的所有源文件生效。 |
 | `SPLIT_FILE` | CSV | 将单个 CSV 文件拆分为多个 256 MiB 左右的小文件块进行并行处理，以提高导入效率。该参数仅对**非**压缩的 CSV 文件生效，且该参数和 TiDB Lightning 的 [`strict-format`](/tidb-lightning/tidb-lightning-data-source.md#启用严格格式) 有相同的使用限制。 |
-| `DISK_QUOTA='<string>'` | 所有文件格式 | 指定数据排序期间可使用的磁盘空间阈值。默认值为 TiDB [临时目录](/tidb-configuration-file.md#temp-dir-从-v630-版本开始引入)所在磁盘空间的 80%。如果无法获取磁盘总大小，默认值为 50 GiB。当显式指定 DISK_QUOTA 时，该值同样不能超过 TiDB [临时目录](/tidb-configuration-file.md#temp-dir-从-v630-版本开始引入)所在磁盘空间的 80%。 |
+| `DISK_QUOTA='<string>'` | 所有文件格式 | 指定数据排序期间可使用的磁盘空间阈值。默认值为 TiDB [临时目录](/tidb-configuration-file.md#temp-dir-从-v630-版本开始引入)所在磁盘空间的 80%。如果无法获取磁盘总大小，默认值为 50 GiB。当显式指定 `DISK_QUOTA` 时，该值同样不能超过 TiDB [临时目录](/tidb-configuration-file.md#temp-dir-从-v630-版本开始引入)所在磁盘空间的 80%。 |
 | `DISABLE_TIKV_IMPORT_MODE` | 所有文件格式 | 指定是否禁止导入期间将 TiKV 切换到导入模式。默认不禁止。如果当前集群存在正在运行的读写业务，为避免导入过程对这部分业务造成影响，可开启该参数。 |
 | `THREAD=<number>` | 所有文件格式、`SELECT` 语句的查询结果 | 指定导入的并发度。对于 `IMPORT INTO ... FROM FILE`，`THREAD` 默认值为 TiDB 节点的 CPU 核数的 50%，最小值为 `1`，最大值为 CPU 核数；对于 `IMPORT INTO ... FROM SELECT`，`THREAD` 默认值为 `2`，最小值为 `1`，最大值为 CPU 核数的 2 倍。如需导入数据到一个空集群，建议可以适当调大该值，以提升导入性能。如果目标集群已经用于生产环境，请根据业务要求按需调整该参数值。 |
 | `MAX_WRITE_SPEED='<string>'` | 所有文件格式 | 控制写入到单个 TiKV 的速度，默认无速度限制。例如设置为 `1MiB`，则限制写入速度为 1 MiB/s。|
@@ -317,6 +317,7 @@ IMPORT INTO t FROM 's3://bucket/path/to/file.parquet?access-key=XXX&secret-acces
 ### `IMPORT INTO ... FROM SELECT`
 
 导入 `UNION ` 结果到目标表 `t`，指定导入的并发度为 `8`，并且关闭非 critical 的 precheck 项：
+
 ```
 IMPORT INTO t FROM SELECT * FROM src UNION SELECT * FROM src2 WITH THREAD = 8, DISABLE_PRECHECK;
 ```
