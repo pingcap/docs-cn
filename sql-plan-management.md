@@ -480,52 +480,39 @@ SHOW binding_cache status;
 
 [`Statement Summary`](/statement-summary-tables.md) 的表中存放了近期的 SQL 相关的执行信息，如延迟、执行次数、对应计划等，通过编写特定的查询访问这些表，可以快速找到需要绑定的查询。
 
-你可以通过查询 `Statement Summary` 表得到符合条件查询的 `plan_digest`，再使用[根据历史执行计划创建绑定](/sql-plan-management.md#根据历史执行计划创建绑定)快速创建绑定。下面是一些最佳实践的示例。
+你可以通过查询 `Statement Summary` 表得到符合条件查询的 `plan_digest`，再使用[根据历史执行计划创建绑定](/sql-plan-management.md#根据历史执行计划创建绑定)快速创建绑定。
 
-### 示例 1：绑定最近两周有计划不稳定的高频查询
+下面是一个实例，此实例会查找过去 2 周执行次数超过 100 次，执行计划不稳定且未被绑定的 Select 语句，将他们绑定到对应的查询延迟最低的计划上：
 
 ```sql
 WITH stmts AS (                                                -- Gets all information
   SELECT * FROM INFORMATION_SCHEMA.CLUSTER_STATEMENTS_SUMMARY
   UNION ALL
   SELECT * FROM INFORMATION_SCHEMA.CLUSTER_STATEMENTS_SUMMARY_HISTORY 
+),
+best_plans AS (
+  SELECT plan_digest, `digest`, avg_latency, 
+  CONCAT('create global binding from history using plan digest "', plan_digest, '"') as binding_stmt 
+  FROM stmts t1
+  WHERE avg_latency = (SELECT min(avg_latency) FROM stmts t2   -- The plan with the loweset query latency
+                       WHERE t2.`digest` = t1.`digest`)
 )
 
-SELECT `digest`, any_value(digest_text) as query, SUM(exec_count) as exec_count, 
-  (SELECT concat('create global binding from history using plan digest "', plan_digest, '"') as create_stmt FROM stmts p
-   WHERE p.`digest` = `digest`
-   ORDER BY avg_latency LIMIT 1) as create_binding_stmt        -- This queries the fastest plan
-FROM stmts
-WHERE summary_begin_time > DATE_SUB(NOW(), interval 14 day)    -- Executed in the past 2 weeks
+SELECT stmts.`digest`, any_value(digest_text) as query, 
+       SUM(exec_count) as exec_count, binding_stmt
+FROM stmts, best_plans
+WHERE stmts.`digest` = best_plans.`digest`
+  AND summary_begin_time > DATE_SUB(NOW(), interval 14 day)    -- Executed in the past 2 weeks
+  AND stmt_type = 'Select'                                     -- Only consider select statements
   AND schema_name NOT IN ('INFORMATION_SCHEMA', 'mysql')       -- Not an internal query
   AND plan_in_binding = 0                                      -- No binding yet
-GROUP BY `digest` 
-  HAVING COUNT(DISTINCT(plan_digest)) > 1                      -- This query is unstable. It has more than 1 plan.
+GROUP BY `digest`
+  HAVING COUNT(DISTINCT(stmts.plan_digest)) > 1                -- This query is unstable. It has more than 1 plan.
          AND SUM(exec_count) > 100                             -- High-frequency, and has been executed more than 100 times.
-ORDER BY SUM(exec_count) DESC;
+ORDER BY SUM(exec_count) DESC LIMIT 100;                       -- Top 100 high-grequency queries.
 ```
 
-通过一些过滤条件得到满足条件的查询，然后直接运行 `create_binding_stmt` 列对应的语句即可创建相应的绑定。
-
-### 示例 2：绑定执行次数前 100 且没有被绑定的查询
-
-```sql
-WITH stmts AS (                                                -- Gets all information
-  SELECT * FROM INFORMATION_SCHEMA.CLUSTER_STATEMENTS_SUMMARY
-  UNION ALL
-  SELECT * FROM INFORMATION_SCHEMA.CLUSTER_STATEMENTS_SUMMARY_HISTORY 
-)
-
-SELECT `digest`, any_value(digest_text) as query, SUM(exec_count) as exec_count, 
-  (SELECT concat('create global binding from history using plan digest "', plan_digest, '"') as create_stmt FROM stmts p
-   WHERE p.`digest` = `digest`
-   ORDER BY avg_latency LIMIT 1) as create_binding_stmt        -- This queries the fastest plan
-FROM stmts
-WHERE schema_name NOT IN ('INFORMATION_SCHEMA', 'mysql')       -- Not an internal query
-  AND plan_in_binding = 0                                      -- No binding yet
-GROUP BY `digest` 
-ORDER BY SUM(exec_count) DESC LIMIT 100;                       -- Top 100 high-frequency
-```
+通过一些过滤条件得到满足条件的查询，然后直接运行 `binding_stmt` 列对应的语句即可创建相应的绑定。
 
 ## 跨数据库绑定执行计划 (Cross-DB Binding)
 
