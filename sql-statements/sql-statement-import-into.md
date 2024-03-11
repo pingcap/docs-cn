@@ -155,7 +155,9 @@ SET 表达式左侧只能引用 `ColumnNameOrUserVarList` 中没有的列名。�
 | `CLOUD_STORAGE_URI` | 所有文件格式 | 指定编码后的 KV 数据[全局排序](/tidb-global-sort.md)的目标存储地址。未指定该参数时，`IMPORT INTO` 会根据系统变量 [`tidb_cloud_storage_uri`](/system-variables.md#tidb_cloud_storage_uri-从-v740-版本开始引入) 的值来确定是否使用全局排序，如果该系统变量指定了目标存储地址，就使用指定的地址进行全局排序。当指定该参数时，如果参数值不为空，`IMPORT INTO` 会使用该参数值作为目标存储地址；如果参数值为空，则表示强制使用本地排序。目前目标存储地址仅支持 Amazon S3，具体 Amazon S3 URI 格式配置，请参见 [Amazon S3 URI 格式](/external-storage-uri.md#amazon-s3-uri-格式)。注意当使用该功能时，所有 TiDB 节点都需要有目标 Amazon S3 bucket 的读写权限。 |
 | `DISABLE_PRECHECK` | 所有文件格式、`SELECT` 语句的查询结果 | 设置该选项后会关闭非 critical 的前置检查项，如检查是否存在 CDC 或 PITR 等任务。 |
 
-## 压缩文件
+## `IMPORT INTO ... FROM FILE` 使用说明
+
+### 压缩文件
 
 `IMPORT INTO ... FROM FILE` 支持导入压缩的 `CSV` 和 `SQL` 文件，会自动根据数据文件后缀来确定该文件是否为压缩文件以及压缩格式：
 
@@ -170,7 +172,7 @@ SET 表达式左侧只能引用 `ColumnNameOrUserVarList` 中没有的列名。�
 > - Snappy 压缩文件必须遵循[官方 Snappy 格式](https://github.com/google/snappy)。不支持其他非官方压缩格式。
 > - 由于无法对单个大压缩文件进行并发解压，因此压缩文件的大小会直接影响导入速度。建议解压后的文件大小不要超过 256 MiB。
 
-## 全局排序
+### 全局排序
 
 > **警告：**
 >
@@ -198,7 +200,7 @@ SET GLOBAL tidb_server_memory_limit='88%';
 > - 如果源数据文件 KV range 重叠较少，开启全局排序后可能会降低导入性能，因为全局排序需要等所有子任务的数据本地排序后，再进行额外的全局排序操作，之后才进行导入。
 > - 使用全局排序的导入任务完成后，存放在云存储里用于全局排序的文件会在后台线程中异步清理。
 
-## `IMPORT INTO ... FROM FILE` 输出内容
+### 输出内容
 
 当 `IMPORT INTO ... FROM FILE` 导入完成，或者开启了 `DETACHED` 模式时，TiDB 会返回当前任务的信息。以下为一些示例，字段的含义描述请参考 [`SHOW IMPORT JOB(s)`](/sql-statements/sql-statement-show-import-job.md)。
 
@@ -224,27 +226,27 @@ IMPORT INTO t FROM '/path/to/small.csv' WITH DETACHED;
 +--------+--------------------+--------------+----------+-------+---------+------------------+---------------+----------------+----------------------------+------------+----------+------------+
 ```
 
-## 查看和控制导入任务
+### 查看和控制导入任务
 
 对于开启了 `DETACHED` 模式的任务，可通过 [`SHOW IMPORT`](/sql-statements/sql-statement-show-import-job.md) 来查看当前任务的执行进度。
 
 任务启动后，可通过 [`CANCEL IMPORT JOB <job-id>`](/sql-statements/sql-statement-cancel-import-job.md) 来取消对应任务。
 
-## `IMPORT INTO ... FROM FILE` 使用示例
+### 使用示例
 
-### 导入带有 header 的 CSV 文件
+#### 导入带有 header 的 CSV 文件
 
 ```sql
 IMPORT INTO t FROM '/path/to/file.csv' WITH skip_rows=1;
 ```
 
-### 以 `DETACHED` 模式异步导入
+#### 以 `DETACHED` 模式异步导入
 
 ```sql
 IMPORT INTO t FROM '/path/to/file.csv' WITH DETACHED;
 ```
 
-### 忽略数据文件中的特定字段
+#### 忽略数据文件中的特定字段
 
 假设数据文件为以下 CSV 文件：
 
@@ -260,7 +262,7 @@ id,name,age
 IMPORT INTO t(id, name, @1) FROM '/path/to/file.csv' WITH skip_rows=1;
 ```
 
-### 使用通配符 `*` 导入多个数据文件
+#### 使用通配符 `*` 导入多个数据文件
 
 假设在 `/path/to/` 目录下有 `file-01.csv`、`file-02.csv` 和 `file-03.csv` 三个文件，如需通过 `IMPORT INTO` 将这三个文件导入到目标表 `t` 中，可使用如下 SQL 语句：
 
@@ -268,7 +270,7 @@ IMPORT INTO t(id, name, @1) FROM '/path/to/file.csv' WITH skip_rows=1;
 IMPORT INTO t FROM '/path/to/file-*.csv'
 ```
 
-### 从 S3 或 GCS 导入数据
+#### 从 S3 或 GCS 导入数据
 
 - 从 S3 导入数据
 
@@ -284,7 +286,7 @@ IMPORT INTO t FROM '/path/to/file-*.csv'
 
 关于 Amazon S3 或 GCS 的 URI 路径配置，详见[外部存储服务的 URI 格式](/external-storage-uri.md)。
 
-### 通过 SetClause 语句计算列值
+#### 通过 SetClause 语句计算列值
 
 假设数据文件为以下 CSV 文件：
 
@@ -300,13 +302,13 @@ id,name,val
 IMPORT INTO t(id, name, @1) SET val=@1*100 FROM '/path/to/file.csv' WITH skip_rows=1;
 ```
 
-### 导入 SQL 格式的数据文件
+#### 导入 SQL 格式的数据文件
 
 ```sql
 IMPORT INTO t FROM '/path/to/file.sql' FORMAT 'sql';
 ```
 
-### 限制写入 TiKV 的速度
+#### 限制写入 TiKV 的速度
 
 限制写入单个 TiKV 的速度为 10 MiB/s：
 
@@ -314,7 +316,7 @@ IMPORT INTO t FROM '/path/to/file.sql' FORMAT 'sql';
 IMPORT INTO t FROM 's3://bucket/path/to/file.parquet?access-key=XXX&secret-access-key=XXX' FORMAT 'parquet' WITH MAX_WRITE_SPEED='10MiB';
 ```
 
-## `IMPORT INTO ... FROM SELECT` 使用示例
+## `IMPORT INTO ... FROM SELECT` 使用说明
 
 ### 导入 SELECT 语句的查询结果
 
