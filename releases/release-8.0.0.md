@@ -382,7 +382,7 @@ By separating PD modules into separately-deployable services, their blast radii 
 
     + TiDB Data Migration (DM)
 
-        - 在MariaDB 主从复制的场景中，即 `MariaDB_主实例` -> `MariaDB_从实例` -> `DM` -> `TiDB` 的迁移场景，当 `gtid_strict_mode = off`、且 `MariaDB_从实例`的 GTID 不严格递增时（比如有业务数据在写 `MariaDB_从实例` ），此时 DM 任务会报错 `less than global checkpoint position`。从 v8.0.0 开始，TiDB 兼容该场景，数据可以正常迁移到下游。[#10741](https://github.com/pingcap/tiflow/issues/10741) @[okJiang](https://github.com/okJiang) **tw@hfxsd** <!--1683-->
+        - 在 MariaDB 主从复制的场景中，即 `MariaDB_主实例` -> `MariaDB_从实例` -> `DM` -> `TiDB` 的迁移场景，当 `gtid_strict_mode = off`、且 `MariaDB_从实例`的 GTID 不严格递增时（比如有业务数据在写 `MariaDB_从实例` ），此时 DM 任务会报错 `less than global checkpoint position`。从 v8.0.0 开始，TiDB 兼容该场景，数据可以正常迁移到下游。[#10741](https://github.com/pingcap/tiflow/issues/10741) @[okJiang](https://github.com/okJiang) **tw@hfxsd** <!--1683-->
 
     + TiDB Lightning
 
