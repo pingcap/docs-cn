@@ -120,10 +120,11 @@ driver = "file"
 # - "replace"：遇到主键或唯一键冲突的数据时，保留最新的数据，覆盖旧的数据。
 #              冲突数据将被记录到目标 TiDB 集群中的 `lightning_task_info.conflict_error_v2` 表和 `conflict_records` 表中。
 #              你可以根据业务需求选择正确的记录重新手动写入到目标表中。注意，该方法要求目标 TiKV 的版本为 v5.2.0 或更新版本。
+# - "ignore"：遇到主键或唯一键冲突的数据时，保留旧的数据，忽略新的数据。仅当导入模式为逻辑导入模式 (`tikv-importer.backend = "tidb"`) 时可以使用选项。
 strategy = ""
-# 控制是否开启前置检查。默认值为 false，表示仅开启后置冲突检测。取值为 true 时，表示同时开启前置冲突检测和后置冲突检测。
+# 控制是否开启前置检查。默认值为 false，表示仅开启后置冲突检测。取值为 true 时，表示同时开启前置冲突检测和后置冲突检测。仅当导入模式为物理导入模式 (`tikv-importer.backend = "local"`) 时可以使用该配置项。
 # precheck-conflict-before-import = false
-# 控制 strategy 为 "replace" 时，能处理的冲突错误数的上限。仅在 strategy 为 "replace" 时可配置。默认为 9223372036854775807，表示几乎可以容忍所有错误。
+# 控制 strategy 为 "replace" 时，能处理的冲突错误数的上限。仅在 strategy 为 "replace" 或 "ignore" 时可配置。默认为 9223372036854775807，表示几乎可以容忍所有错误。
 # threshold = 9223372036854775807
 # 控制冲突数据记录表 (conflict_records) 中记录冲突数据的条数上限。默认为 100。如果 strategy 为 "ignore"，则会记录被忽略写入的冲突记录。如果 strategy 为 "replace"，则会记录被覆盖的冲突记录。但在逻辑导入模式下，replace 策略无法记录冲突记录。
 # max-record-rows = 100
