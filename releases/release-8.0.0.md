@@ -40,8 +40,8 @@ By separating PD modules into separately-deployable services, their blast radii 
     <td>增强了有大量表时缓存 schema 信息的稳定性**tw@hfxsd** <!--1691--></td>
     <td>对于使用 TiDB 作为多租户应用程序记录系统的 SaaS 公司，经常需要存储大量的表。在以前的版本中，虽然支持处理百万或更大数量级的表，但有可能降低用户体验。TiDB v8.0.0 通过以下增强功能改善了这一状况：
   <ul>
-    <li>- 引入新的 <a href="https://docs.pingcap.com/tidb/v8.0/system-variables#tidb_schema_cache_size-new-in-v800">schema 缓存系统</a>，为表元数据提供了懒加载的 LRU (Least Recently Used) 缓存，并更有效地管理 schema 版本变更。</li>
-    <li>- 在 `auto analyze` 中支持配置<a href="https://docs.pingcap.com/tidb/v8.0/system-variables#tidb_enable_auto_analyze_priority_queue-从-v800-版本开始引入">优先队列</a>，使流程更加流畅，并在大量表的情况下提高稳定性。</li>
+    <li>- 引入新的 <a href="https://docs.pingcap.com/zh/tidb/v8.0/system-variables#tidb_schema_cache_size-new-in-v800">schema 缓存系统</a>，为表元数据提供了懒加载的 LRU (Least Recently Used) 缓存，并更有效地管理 schema 版本变更。</li>
+    <li>- 在 `auto analyze` 中支持配置<a href="https://docs.pingcap.com/zh/tidb/v8.0/system-variables#tidb_enable_auto_analyze_priority_queue-从-v800-版本开始引入">优先队列</a>，使流程更加流畅，并在大量表的情况下提高稳定性。</li>
   </ul>
     </td>
   </tr>
@@ -54,7 +54,7 @@ By separating PD modules into separately-deployable services, their blast radii 
   </tr>
   <tr>
     <td rowspan="3">数据迁移</td>
-    <td><a href="https://docs.pingcap.com/tidb/v8.0/ticdc-bidirectional-replication">TiCDC 支持在双向复制 (Bidirectional replication, BDR) 模式下同步 DDL 语句 (GA) </a>**tw@hfxsd** <!--1682/1689--></td>
+    <td><a href="https://docs.pingcap.com/zh/tidb/v8.0/ticdc-bidirectional-replication">TiCDC 支持在双向复制 (Bidirectional replication, BDR) 模式下同步 DDL 语句 (GA) </a>**tw@hfxsd** <!--1682/1689--></td>
     <td>TiCDC 支持将集群指定为 `PRIMARY` BDR role，并且可以将 DDL 语句从该集群同步到下游集群。</td>
     </td>
   </tr>
