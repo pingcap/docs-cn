@@ -203,4 +203,4 @@ TiDB 提供了基于 [Grafana](https://grafana.com/) 的技术平台，对数据
 
 > **注意：**
 >
-> - TiFlash 计算节点可以使用 TiUP 等部署工具快速扩缩容，扩缩容范围是 [0, inf+]
+> TiFlash 计算节点可以使用 TiUP 等部署工具快速扩缩容，扩缩容范围是 `[0, +inf]`。
