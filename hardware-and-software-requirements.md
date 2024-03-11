@@ -176,9 +176,9 @@ TiDB 作为开源一栈式实时 HTAP 数据库，其正常运行需要网络环
 
 TiDB 提供了基于 [Grafana](https://grafana.com/) 的技术平台，对数据库集群的各项指标进行可视化展现。采用支持 Javascript 的微软 Edge、Apple Safari、Google Chrome、Mozilla Firefox 的较新版本即可访问监控入口。
 
-## 存算分离 TiFlash 软硬件要求
+## TiFlash 存算分离架构的软硬件要求
 
-以上所有描述都是针对存算一体 TiFlash， 从 v7.0.0 开始，TiFlash 开始支持[存算分离](/tiflash/tiflash-disaggregated-and-s3.md)架构, 该架构下 TiFlash 分为存储节点和计算节点两个角色。对应的软硬件要求如下:
+上面的 TiFlash 软硬件要求是针对存算一体架构的。从 v7.0.0 开始，TiFlash 支持[存算分离架构](/tiflash/tiflash-disaggregated-and-s3.md)，该架构下 TiFlash 分为存储节点和计算节点两个角色，对应的软硬件要求如下：
 
 1. 软件: 操作系统以及平台要求与存算一体架构一致。
 2. 网络端口: 网络端口要求与存算一体一致。
