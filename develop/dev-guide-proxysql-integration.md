@@ -675,7 +675,7 @@ systemctl start docker
 > **注意：**
 >
 > 以下章节仅列出 ProxySQL 的必要配置项。
-> 
+>
 > 完整的配置信息，可参考 [ProxySQL 文档](https://proxysql.com/documentation/proxysql-configuration/)。
 
 ##### 选项 1: 使用 Admin Interface 配置 ProxySQL
@@ -691,11 +691,11 @@ systemctl start docker
 2. 你可以在当前 MySQL 命令行客户端中向 ProxySQL 添加一个或多个 TiDB 集群。例如，下面的语句将添加一个 TiDB Dedicated 集群。你需要用集群的 `Endpoint` 和 `Port` 替换 `<tidb cloud dedicated cluster host>` 和 `<tidb cloud dedicated cluster port>`（默认端口为 `4000`）。
 
     ```sql
-    INSERT INTO mysql_servers(hostgroup_id, hostname, port) 
-    VALUES 
+    INSERT INTO mysql_servers(hostgroup_id, hostname, port)
+    VALUES
       (
         0,
-        '<tidb cloud dedicated cluster host>', 
+        '<tidb cloud dedicated cluster host>',
         <tidb cloud dedicated cluster port>
       );
     LOAD mysql servers TO runtime;
@@ -712,13 +712,13 @@ systemctl start docker
 
     ```sql
     INSERT INTO mysql_users(
-      username, password, active, default_hostgroup, 
+      username, password, active, default_hostgroup,
       transaction_persistent
-    ) 
-    VALUES 
+    )
+    VALUES
       (
-        '<tidb cloud dedicated cluster username>', 
-        '<tidb cloud dedicated cluster password>', 
+        '<tidb cloud dedicated cluster username>',
+        '<tidb cloud dedicated cluster password>',
         1, 0, 1
       );
     LOAD mysql users TO runtime;
