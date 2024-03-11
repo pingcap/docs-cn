@@ -16,14 +16,14 @@ TiDB 版本：8.0.0
 <table>
 <thead>
   <tr>
-    <th>Category</th>
-    <th>Feature/Enhancement</th>
-    <th>Description</th>
+    <th>分类</th>
+    <th>功能/增强</th>
+    <th>描述</th>
   </tr>
 </thead>
 <tbody>
   <tr>
-    <td rowspan="4">Scalability and Performance</td>
+    <td rowspan="4">可扩展性与性能</td>
     <td>Disaggregation of PD to improve scale (experimental) **tw@qiancai** <!--1553, 1558--></td>
     <td>PD (Placement Driver) has a lot of critical modules for the running of TiDB. Each module's resource consumption can increase as certain workloads scale, meaning they can each interfere with other functions in PD, ultimately impacting quality of service of the cluster.
 By separating PD modules into separately-deployable services, their blast radii are massively mitigated as the cluster scales. Much larger clusters with much larger workloads are possible with this architecture.</td>
@@ -37,25 +37,25 @@ By separating PD modules into separately-deployable services, their blast radii 
     <td>An optimization to involve all TiKV nodes in the preparation step for cluster restores was introduced to leverage scale such that restore speeds for a cluster are much faster for larger sets of data on larger clusters. Real world tests exhibit restore acceleration of ~300% in slower cases.</td>
   </tr>
   <tr>
-    <td><a href="https://docs.pingcap.com/tidb/v8.0/system-variables#tidb_schema_cache_size-new-in-v800">Enhanced stability of a massive number of tables </a>**tw@hfxsd** <!--16408--></td>
-    <td>SaaS companies using TiDB as the system of record for their multi-tenant applications often need to store a substantial number of tables. In previous versions, handling table counts in the order of a million or more was feasible, but it had the potential to degrade the overall user experience. TiDB v8.0.0 improves the situation with the following enhancements:
+    <td>增强了有大量表时缓存 schema 信息的稳定性**tw@hfxsd** <!--1691--></td>
+    <td>对于使用 TiDB 作为多租户应用程序记录系统的 SaaS 公司，经常需要存储大量的表。在以前的版本中，虽然支持处理百万或更大数量级的表，但有可能降低用户体验。TiDB v8.0.0 通过以下增强功能改善了这一状况：
   <ul>
-    <li>- Introduce a new information schema caching system, incorporating a lazy-loading Least Recently Used (LRU) cache for table metadata and more efficiently managing schema version changes.</li>
-    <li>- Implement a priority queue for `auto analyze`, making the process less rigid and enhancing stability across a wider array of tables.</li>
+    <li>- 引入新的 <a href="https://docs.pingcap.com/tidb/v8.0/system-variables#tidb_schema_cache_size-new-in-v800">schema 缓存系统</a>，为表元数据提供了懒加载的 LRU (Least Recently Used) 缓存，并更有效地管理 schema 版本变更。</li>
+    <li>- 在 `auto analyze` 中支持配置<a href="https://docs.pingcap.com/tidb/v8.0/system-variables#tidb_enable_auto_analyze_priority_queue-从-v800-版本开始引入">优先队列</a>，使流程更加流畅，并在大量表的情况下提高稳定性。</li>
   </ul>
     </td>
   </tr>
   <tr>
-    <td rowspan="1">DB Operations and Observability</td>
+    <td rowspan="1">数据库管理与可观测性</td>
     <td>支持观测索引使用情况 **tw@Oreoxmt** <!--1400--></td>
     <td>TiDB v8.0.0 引入 <a href="https://docs.pingcap.com/zh/tidb/v8.0/information-schema-tidb-index-usage"><code>INFORMATION_SCHEMA.TIDB_INDEX_USAGE</code></a> 表和 <a href="https://docs.pingcap.com/zh/tidb/v8.0/sys-schema.md"><code>sys.schema_unused_index</code></a> 视图，以提供索引的使用统计信息。该功能有助于用户评估所有索引的重要性并优化索引设计。</td>
 
     </td>
   </tr>
   <tr>
-    <td rowspan="3">Data Migration</td>
-    <td><a href="https://docs.pingcap.com/tidb/v8.0/ticdc-bidirectional-replication">TiCDC supports replicating DDL statements in bi-directional replication (BDR) mode (GA) </a>**tw@hfxsd** <!--1682/1689--></td>
-    <td>With this feature, TiCDC allows for a cluster to be assigned the `PRIMARY` BDR role, and enables the replication of DDL statements from that cluster to the downstream cluster.</td>
+    <td rowspan="3">数据迁移</td>
+    <td><a href="https://docs.pingcap.com/tidb/v8.0/ticdc-bidirectional-replication">TiCDC 支持在双向复制 (Bidirectional replication, BDR) 模式下同步 DDL 语句 (GA) </a>**tw@hfxsd** <!--1682/1689--></td>
+    <td>TiCDC 支持将集群指定为 `PRIMARY` BDR role，并且可以将 DDL 语句从该集群同步到下游集群。</td>
     </td>
   </tr>
   <tr>
