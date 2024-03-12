@@ -100,7 +100,7 @@ rules = ['test.t*']
 | `RENAME TABLE test.t1 TO ignore.t1, test.t2 TO test.t22;` | 报错 | 新的库名 ignore 不符合 filter 规则 |
 | `RENAME TABLE test.t1 TO test.t4, test.t3 TO test.t1, test.t4 TO test.t3;` | 报错 | 在一条 DDL 中交换 test.t1 和 test.t3 两个表的名字，TiCDC 无法正确处理。请参考错误提示提示信息处理。 |
 
-### 需要注意的 DDL 操作
+### DDL 语句注意事项
 
 当在上游执行跨数据库的 DDL 语句（如 `CREATE TABLE db1.t1 LIKE t2`）时，建议在 DDL 语句中显式地指定所有的库名（如 `CREATE TABLE db1.t1 LIKE  db2.t2`）。否则，由于缺少库名信息，TiCDC 可能无法正确地执行该条 DDL 到下游。
 
