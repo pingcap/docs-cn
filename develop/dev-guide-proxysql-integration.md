@@ -539,7 +539,6 @@ systemctl start docker
 
     </div>
 
-
     <div label="Windows (Git Bash)" value="Windows">
 
     ```bash
