@@ -461,6 +461,16 @@ mysql> SELECT * FROM t1;
 - 该变量是一个只读变量，用来显示 TiDB 是否会直接断开密码已过期用户的连接。当其值为 `ON`，表示 TiDB 会断开密码已过期用户的连接。当其值为 `OFF`，表示 TiDB 会将密码已过期用户的连接置于“沙盒模式”，允许该用户建立连接并执行密码重置操作。
 - 如果需要改变 TiDB 对密码已过期用户连接的处理方式，请在 TiDB 配置文件中的 `[security]` 部分修改 [`disconnect-on-expired-password`](/tidb-configuration-file.md#disconnect-on-expired-password-从-v650-版本开始引入) 选项。
 
+### `div_precision_increment` <span class="version-mark">从 v8.0.0 版本开始引入</span>
+
+- 作用域：SESSION | GLOBAL
+- 是否持久化到集群：是
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：是
+- 类型：整数型
+- 默认值：`4`
+- 范围：`[0, 30]`
+- 这个变量用于控制要增加使用运算符执行的除法运算结果的小数位数。
+
 ### `error_count`
 
 - 作用域：SESSION
