@@ -305,23 +305,19 @@ By separating PD modules into separately-deployable services, their blast radii 
 
 * 在开启 `tidb_ddl_enable_fast_reorg` 实现索引加速功能时，编码后的索引键值 ingest 数据到 TiKV 时使用的是固定并发值 (`16`)，无法根据下游 TiKV 的承载能力动态调整。从 v8.0.0 开始，支持使用 [`tidb_ddl_reorg_worker_cnt`](/system-variables.md#tidb_ddl_reorg_worker_cnt-从-v800-版本开始引入) 调整并发。该参数默认值为 `4`，相比之前的默认值 `16`，在 ingest 索引键值对时性能会比之前的版本有所降低。你可以根据集群的负载按需调整该参数。**tw@hfxsd** <!--无 FD-->
 
-* 行为变更 2
-
 ### MySQL 兼容性
 
 * `KEY` 分区类型支持分区字段列表为空的语句，具体行为和 MySQL 保持一致。**tw@hfxsd** <!--无 FD-->
-
-* 兼容性 2
 
 ### 系统变量
 
 | 变量名  | 修改类型（包括新增/修改/删除）    | 描述 |
 |--------|------------------------------|------|
-| [`initial-scan-rate-limit``](/system-variables.md#initial-scan-rate-limit-从-v620-版本开始引入) | 修改 | 增加了最小值`1MiB` 的限制。 |
-| [`tidb_redact_log`](/system-variables.md#tidb_redact_log) | 修改 | 控制在记录 TiDB 日志和慢日志时如何处理 SAL 文本中的用户信息，可选值为 `OFF`、`ON`、`MARKER`，以分别支持记录信息明文、信息屏蔽、信息标记。当变量值为 `MARKER` 时，日志中的用户信息将被标记处理，可以在之后决定是否对日志信息进行脱敏。 |
-| [`tidb_low_resolution_tso_update_interval`](/system-variables.md#tidb_low_resolution_tso_update_interval-从-v800-版本开始引入) | 新增 | 设置更新 TiDB [缓存 timestamp](system-variables#tidb_low_resolution_tso) 的间隔。 |
-| [`tidb_opt_use_invisible_indexes`](/system-variables.md#) | 新增 | 控制会话中是否能够选择[不可见索引](/sql-statements/sql-statement-create-index.md#不可见索引)。当修改变量为`ON`时，针对该会话执行的查询，优化能够使用[不可见索引](/sql-statements/sql-statement-create-index.md#不可见索引)进行优化。|
-|  [`tidb_schema_cache_size`](/system-variables.md#tidb_schema_cache_size-从-v800-版本开始引入)      |   新增                           |  设置缓存 schema 信息可以使用的内存上限，避免占用过多的内存。开启该功能后，将使用 LRU 算法来缓存所需的表，有效减小 schema 信息占用的内存。    |
+| [`initial-scan-rate-limit``](/system-variables.md#initial-scan-rate-limit-new-in-v620) | Modified | Add a limit of `1MiB` as the minimum value. |
+| [`tidb_redact_log`](/system-variables.md#tidb_redact_log) | Modified | 控制在记录 TiDB 日志和慢日志时如何处理 SAL 文本中的用户信息，可选值为 `OFF`、`ON`、`MARKER`，以分别支持记录信息明文、信息屏蔽、信息标记。当变量值为 `MARKER` 时，日志中的用户信息将被标记处理，可以在之后决定是否对日志信息进行脱敏。 |
+| [`tidb_low_resolution_tso_update_interval`](/system-variables.md#tidb_low_resolution_tso_update_interval-从-v800-版本开始引入) | Newly added | 设置更新 TiDB [缓存 timestamp](system-variables#tidb_low_resolution_tso) 的间隔。 |
+| [`tidb_opt_use_invisible_indexes`](/system-variables.md#) | Newly added | 控制会话中是否能够选择[不可见索引](/sql-statements/sql-statement-create-index.md#不可见索引)。当修改变量为`ON`时，针对该会话执行的查询，优化能够使用[不可见索引](/sql-statements/sql-statement-create-index.md#不可见索引)进行优化。|
+|  [`tidb_schema_cache_size`](/system-variables.md#tidb_schema_cache_size-从-v800-版本开始引入)      |   Newly added                           |  设置缓存 schema 信息可以使用的内存上限，避免占用过多的内存。开启该功能后，将使用 LRU 算法来缓存所需的表，有效减小 schema 信息占用的内存。    |
 
 ### 配置文件参数
 
@@ -333,15 +329,13 @@ By separating PD modules into separately-deployable services, their blast radii 
 | TiKV | [`security.encryption.master-key.vendor`] | 新增 | 指定住密钥的服务商类型，支持可选值为 `gcp`、`azure` |
 | TiDB Lightning  |  `logical-import-batch-size`  | 新增| 用于在逻辑导入模式下设置一个 batch 里提交的数据大小，取值为字符串类型，默认值为 "96KiB"，单位可以为 KB,KiB,MB,MiB 等存储单位 |
 | TiDB Lightning  |  `logical-import-batch-rows` | 新增| 用于在逻辑导入模式下设置一个 batch 里提交的数据行数，默认值为 `65536`。 |
+
 ## 离线包变更
 
 ## 废弃功能
 
 * 从 v8.0.0 开始，[`tidb_disable_txn_auto_retry`](/system-variables.md#tidb_disable_txn_auto_retry) 变量被废弃。废弃后，TiDB 不再支持乐观事务的自动重试。作为替代，当使用乐观事务模式发生冲突时，请在应用里捕获错误并重试，或改用[悲观事务模式](/pessimistic-transaction.md)。**tw@lilin90** <!--1671-->
 * 从 v8.0.0 开始，TiDB 不再支持 TLSv1.0 和 TLSv1.1 协议。请升级 TLS 至 TLSv1.2 或 TLSv1.3。
-* 废弃功能 1
-
-* 废弃功能 2
 
 ## 改进提升
 
