@@ -325,10 +325,10 @@ By separating PD modules into separately-deployable services, their blast radii 
 | -------- | -------- | -------- | -------- |
 | TiDB  |  [`log.general-log-file`]() | 新增 | 指定 `General Query Log` 的保存文件。默认为空，`General Query Log` 将会写入实例文件。 |
 | TiDB  |  [`log.file.compression`]() | 新增 | 指定轮询日志的压缩格式。默认为空，即不压缩轮询日志。 |
-| TiDB Lightning  |  `duplicate-resolution`  | 废弃 | 用于在物理导入模式下设置是否检测和解决唯一键冲突的记录。从 v8.0.0 开始使用新参数 [`conflict.strategy`](/tidb-lightning/tidb-lightning-configuration.md#tidb-lightning-任务配置) 替代。 |
 | TiKV | [`security.encryption.master-key.vendor`] | 新增 | 指定住密钥的服务商类型，支持可选值为 `gcp`、`azure` |
-| TiDB Lightning  |  `logical-import-batch-size`  | 新增| 用于在逻辑导入模式下设置一个 batch 里提交的数据大小，取值为字符串类型，默认值为 "96KiB"，单位可以为 KB,KiB,MB,MiB 等存储单位 |
-| TiDB Lightning  |  `logical-import-batch-rows` | 新增| 用于在逻辑导入模式下设置一个 batch 里提交的数据行数，默认值为 `65536`。 |
+| TiDB Lightning  |  `duplicate-resolution`  | 废弃 | 用于在物理导入模式下设置是否检测和解决唯一键冲突的记录。从 v8.0.0 开始使用新参数 [`conflict.strategy`](/tidb-lightning/tidb-lightning-configuration.md#tidb-lightning-任务配置) 替代。 |
+| TiDB Lightning  |  `logical-import-batch-size`  | 新增 | 用于在逻辑导入模式下设置一个 batch 里提交的数据大小，取值为字符串类型，默认值为 `"96KiB"`，单位可以为 KB、KiB、MB、MiB 等存储单位。 |
+| TiDB Lightning  |  `logical-import-batch-rows` | 新增 | 用于在逻辑导入模式下设置一个 batch 里提交的数据行数，默认值为 `65536`。 |
 
 ## 离线包变更
 
