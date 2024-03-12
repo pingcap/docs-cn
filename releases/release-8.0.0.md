@@ -37,11 +37,11 @@ By separating PD modules into separately-deployable services, their blast radii 
     <td>An optimization to involve all TiKV nodes in the preparation step for cluster restores was introduced to leverage scale such that restore speeds for a cluster are much faster for larger sets of data on larger clusters. Real world tests exhibit restore acceleration of ~300% in slower cases.</td>
   </tr>
   <tr>
-    <td>增强了有大量表时缓存 schema 信息的稳定性**tw@hfxsd** <!--1691--></td>
-    <td>对于使用 TiDB 作为多租户应用程序记录系统的 SaaS 公司，经常需要存储大量的表。在以前的版本中，虽然支持处理百万或更大数量级的表，但有可能降低用户体验。TiDB v8.0.0 通过以下增强功能改善了这一状况：
+    <td>增强在有大量表时缓存 schema 信息的稳定性**tw@hfxsd** <!--1691--></td>
+    <td>对于使用 TiDB 作为多租户应用程序记录系统的 SaaS 公司，经常需要存储大量的表。在以前的版本中，尽管支持处理百万级或更大数量的表，但可能会影响用户体验。TiDB v8.0.0 通过以下增强功能改善了这一问题：
   <ul>
-    <li>- 引入新的 <a href="https://docs.pingcap.com/zh/tidb/v8.0/system-variables#tidb_schema_cache_size-new-in-v800">schema 缓存系统</a>，为表元数据提供了懒加载的 LRU (Least Recently Used) 缓存，并更有效地管理 schema 版本变更。</li>
-    <li>- 在 <code>auto analyze</code> 中支持配置<a href="https://docs.pingcap.com/zh/tidb/v8.0/system-variables#tidb_enable_auto_analyze_priority_queue-从-v800-版本开始引入">优先队列</a>，使流程更加流畅，并在大量表的情况下提高稳定性。</li>
+    <li>引入新的 <a href="https://docs.pingcap.com/zh/tidb/v8.0/system-variables#tidb_schema_cache_size-new-in-v800">schema 缓存系统</a>，为表元数据提供了懒加载的 LRU (Least Recently Used) 缓存，并更有效地管理 schema 版本变更。</li>
+    <li>支持在 <code>auto analyze</code> 中配置<a href="https://docs.pingcap.com/zh/tidb/v8.0/system-variables#tidb_enable_auto_analyze_priority_queue-从-v800-版本开始引入">优先队列</a>，使流程更加流畅，并在大量表的情况下提高稳定性。</li>
   </ul>
     </td>
   </tr>
@@ -49,8 +49,6 @@ By separating PD modules into separately-deployable services, their blast radii 
     <td rowspan="1">数据库管理与可观测性</td>
     <td>支持观测索引使用情况 **tw@Oreoxmt** <!--1400--></td>
     <td>TiDB v8.0.0 引入 <a href="https://docs.pingcap.com/zh/tidb/v8.0/information-schema-tidb-index-usage"><code>INFORMATION_SCHEMA.TIDB_INDEX_USAGE</code></a> 表和 <a href="https://docs.pingcap.com/zh/tidb/v8.0/sys-schema.md"><code>sys.schema_unused_index</code></a> 视图，以提供索引的使用统计信息。该功能有助于用户评估所有索引的重要性并优化索引设计。</td>
-
-    </td>
   </tr>
   <tr>
     <td rowspan="3">数据迁移</td>
@@ -115,9 +113,9 @@ By separating PD modules into separately-deployable services, their blast radii 
 
 * 自动统计信息收集引入优先级队列 [#50132](https://github.com/pingcap/tidb/issues/50132) @[hi-rustin](https://github.com/hi-rustin) **tw@hfxsd** <!--1640-->
 
-    维持优化器统计信息的时效性是稳定数据库性能的关键，绝大多数用户依赖 TiDB 提供的[自动统计信息收集](/statistics.md#自动更新)来保持统计信息的更新。自动统计信息收集轮询所有对象的统计信息状态，并把健康度不足的对象加入队列，逐个收集并更新。在过去的版本中，收集顺序是随机设置的，这可能造成更有收集价值的对象需要长时间等待才被更新，引发潜在的数据库性能回退。
+    维持优化器统计信息的时效性是稳定数据库性能的关键，绝大多数用户依赖 TiDB 提供的[自动统计信息收集](/statistics.md#自动更新)来保持统计信息的更新。自动统计信息收集轮询所有对象的统计信息状态，并把健康度不足的对象加入队列，逐个收集并更新。在之前的版本中，这些对象的收集顺序是随机的，可能导致更需要更新的对象等待时间过长，从而引发潜在的数据库性能回退。
 
-    从 v8.0.0 开始，自动统计信息收集会结合多种条件为对象动态设置优先级，确保更有收集价值的对象优先被处理，比如新创建的索引、发生分区变更的分区表等，健康度更低的对象也会倾向于排在队列前端。该增强提升了收集顺序的合理性，能减少一部分统计信息过旧引发的性能问题，因此提升了数据库稳定性。
+    从 v8.0.0 开始，自动统计信息收集引入了优先级队列，根据多种条件动态地为对象分配优先级，确保更有收集价值的对象优先被处理，比如新创建的索引、发生分区变更的分区表等。健康度较低的对象也会优先考虑安排在队列前端。这一改进优化了收集顺序的合理性，能减少一部分统计信息过旧引发的性能问题，进而提升了数据库稳定性。
 
     更多信息，请参考[用户文档](/statistics.md#自动更新)。
 
@@ -134,28 +132,28 @@ By separating PD modules into separately-deployable services, their blast radii 
 
 * 优化器增强对多值索引的支持 [#47759](https://github.com/pingcap/tidb/issues/47759) [#46539](https://github.com/pingcap/tidb/issues/46539) @[Arenatlx](https://github.com/Arenatlx) @[time-and-fate](https://github.com/time-and-fate) **tw@hfxsd** <!--1405/1584-->
 
-    TiDB 自 v6.6.0 开始引入[多值索引](/sql-statements/sql-statement-create-index.md#多值索引)，提升对 JSON 数据类型的检索性能。在 v8.0.0 中，优化器增强了对多值索引的支持能力，在复杂使用场景下，能够正确识别和利用多值索引来优化查询。
+    TiDB 自 v6.6.0 开始引入[多值索引](/sql-statements/sql-statement-create-index.md#多值索引)，提升对 JSON 数据类型的检索性能。在 v8.0.0 中，优化器增强了对多值索引的支持能力，使其在复杂场景下能够正确识别和利用多值索引来优化查询。
 
-    * 多值索引上的统计信息会被收集，并应用于优化器估算。当一条 SQL 可能选择到数个多值索引时，优化器可以识别开销更小的索引。
-    * 当出现用 `OR` 连接的多个 `member of` 条件时，优化器能够为每个 DNF Item（`member of` 条件）匹配一个有效的 Index Partial Path 路径，并将多条路径以 Union 的方式综合起来组成 `Index Merge` 来做更高效的条件过滤和数据读取。
+    * 优化器能够收集多值索引的统计信息，并利用这些信息来估算查询。当一条 SQL 可能选择到数个多值索引时，优化器可以识别开销更小的索引。
+    * 在查询条件中使用 `OR` 连接多个 `member of` 条件时，优化器能够为每个 DNF Item（`member of` 条件）匹配一个有效的 Index Partial Path 路径，并通过 Union 操作将这些路径集合起来，形成一个 `Index Merge`，以实现更高效的条件过滤和数据读取。
 
   更多信息，请参考[用户文档](/sql-statements/sql-statement-create-index.md#多值索引)。
 
 * 支持设置低精度 TSO 的更新间隔 [#51081](https://github.com/pingcap/tidb/issues/51081) @[Tema](https://github.com/Tema) **tw@hfxsd** <!--1725-->
 
-    TiDB 的[低精度 TSO 功能](/system-variables.md#tidb_low_resolution_tso)使用定期更新的 TSO 作为事务时间戳，在可以容忍读到旧数据的情况下，通过牺牲一定的实时性，降低小的只读事务获取 TSO 的开销，提升高并发读的能力。
+    TiDB 的[低精度 TSO 功能](/system-variables.md#tidb_low_resolution_tso)使用定期更新的 TSO 作为事务时间戳。在可以容忍读到旧数据的情况下，该功能通过牺牲一定的实时性，降低小的只读事务获取 TSO 的开销，从而提升高并发读的能力。
 
-    在 v8.0.0 之前，低精度 TSO 功能的 TSO 更新周期固定，无法根据实际业务需要进行调整。在 v8.0.0 版本中，TiDB 引入变量 `tidb_low_resolution_tso_update_interval` 来控制低精度 TSO 功能更新 TSO 的周期。该功能仅在低精度 TSO 功能启用时有效。
+    在 v8.0.0 之前，低精度 TSO 功能的 TSO 更新周期固定，无法根据实际业务需要进行调整。在 v8.0.0 中，TiDB 引入变量 `tidb_low_resolution_tso_update_interval` 来控制低精度 TSO 功能更新 TSO 的周期。该功能仅在低精度 TSO 功能启用时有效。
     
     更多信息，请参考[用户文档](/system-variables.md#tidb_low_resolution_tso_update_interval-从-v800-版本开始引入)。
 
 ### 稳定性
 
-* 支持根据 LRU 算法缓存所需的 schema 信息来减少对 TiDB server 的内存消耗（实验特性）[#50959](https://github.com/pingcap/tidb/issues/50959) @[gmhdbjd](https://github.com/gmhdbjd) **tw@hfxsd** <!--1691-->
+* 支持根据 LRU 算法缓存所需的 schema 信息，以减少 TiDB server 的内存消耗（实验特性）[#50959](https://github.com/pingcap/tidb/issues/50959) @[gmhdbjd](https://github.com/gmhdbjd) **tw@hfxsd** <!--1691-->
 
-    在 v8.0.0 之前，每个 TiDB 节点都会缓存所有表的 schema 信息，一旦表的数量较多，如达到几十万的场景，仅缓存这些表的 schema 信息就会占用大量内存。
+    在 v8.0.0 之前，每个 TiDB 节点都会缓存所有表的 schema 信息。在表数量较多的情况下，例如高达几十万张表，仅缓存这些表的 schema 信息就会占用大量内存。
     
-    从 v8.0.0 开始，引入了参数 [`tidb_schema_cache_size`](/system-variables.md#tidb_schema_cache_size-从-v800-版本开始引入)，你可以设置缓存 schema 信息可以使用的内存上限，避免占用过多的内存。开启该功能后，将使用 Least Recently Used (LRU) 算法来缓存所需的表，有效减小 schema 信息占用的内存。
+    从 v8.0.0 开始，TiDB 引入 [`tidb_schema_cache_size`](/system-variables.md#tidb_schema_cache_size-从-v800-版本开始引入) 系统变量，允许设置缓存 schema 信息所能使用的内存上限，从而避免占用过多的内存。开启该功能后，TiDB 将使用 Least Recently Used (LRU) 算法缓存所需的表，有效降低 schema 信息占用的内存。
 
     更多信息，请参考[用户文档](/system-variables.md#tidb_schema_cache_size-从-v800-版本开始引入)。
     
@@ -188,9 +186,9 @@ By separating PD modules into separately-deployable services, their blast radii 
 
     更多信息，请参考[用户文档](/system-variables.md#tidb_dml_type-从-v800-版本开始引入)。
 
-* TiDB 建表时，支持更多的表达式来设置列的默认值（实验特性）[#50936](https://github.com/pingcap/tidb/issues/50936) @[zimulala](https://github.com/zimulala) **tw@hfxsd** <!--1690-->
+* 支持在 TiDB 建表时使用更多的表达式设置列的默认值（实验特性）[#50936](https://github.com/pingcap/tidb/issues/50936) @[zimulala](https://github.com/zimulala) **tw@hfxsd** <!--1690-->
 
-    在 v8.0.0 之前，在建表时，列默认值只能为固定的字符串、数字、以及日期。从 v8.0.0 开始，支持使用部分表达式作为列的默认值，如将列的默认值设置为 `UUID()`，从而满足多样化的业务需求。
+    在 v8.0.0 之前，建表时指定列的默认值仅限于固定的字符串、数字和日期。从 v8.0.0 开始，TiDB 支持使用部分表达式作为列的默认值，例如将列的默认值设置为 `UUID()`，从而满足多样化的业务需求。
 
     更多信息，请参考[用户文档](/data-type-default-values.md#表达式默认值)。
 
@@ -218,11 +216,11 @@ By separating PD modules into separately-deployable services, their blast radii 
 
 * 支持将 general log 写入独立文件 [#51248](https://github.com/pingcap/tidb/issues/51248) @[Defined2014](https://github.com/Defined2014) **tw@hfxsd** <!--1632-->
 
-    general log 是 MySQL 兼容的功能，开启后会记录数据库执行的全部 SQL 语句，为问题诊断提供依据。TiDB 也支持此功能，你可以通过设置变量 [`tidb_general_log`](/system-variables.md#tidb_general_log) 开启该功能。但是在过去的版本中，general log 的内容只能和其他信息一起写入实例日志，对需要长期保存的用户不够友好。
+    general log 是与 MySQL 兼容的功能，开启后能够记录数据库执行的所有 SQL 语句，为问题诊断提供依据。TiDB 也支持此功能，你可以通过设置变量 [`tidb_general_log`](/system-variables.md#tidb_general_log) 开启该功能。在之前的版本中，general log 的内容只能和其他信息一起写入实例日志中，这对于需要长期保存日志的用户来说并不方便。
 
-    从 v8.0.0 开始，你可以通过配置项 [`log.general-log-file`](/tidb-configuration-file.md#general-log-file) 设置文件名，TiDB 可以把 general log 写入该文件。和实例日志一样，general log 也遵循日志的轮询和保存策略。
+    从 v8.0.0 开始，你可以通过配置项 [`log.general-log-file`](/tidb-configuration-file.md#general-log-file) 指定一个文件名，将 general log 单独写入该文件。和实例日志一样，general log 也遵循日志的轮询和保存策略。
    
-    另外，为了减少历史日志文件所占用的磁盘空间，TiDB 在 v8.0.0 支持了原生的日志压缩选项。你可以将配置项 [`log.file.compression`](/tidb-configuration-file.md#compression) 设置为 `gzip`，轮询出的历史日志将自动以 [`gzip`](https://www.gzip.org/) 格式压缩。
+    另外，为了减少历史日志文件所占用的磁盘空间，TiDB 在 v8.0.0 支持了原生的日志压缩选项。你可以将配置项 [`log.file.compression`](/tidb-configuration-file.md#compression) 设置为 `gzip`，使得轮询出的历史日志自动以 [`gzip`](https://www.gzip.org/) 格式压缩。
 
     更多信息，请参考[用户文档](/tidb-configuration-file.md#general-log-file)。
         
@@ -303,7 +301,7 @@ By separating PD modules into separately-deployable services, their blast radii 
 
 ### 行为变更
 
-* 在开启 `tidb_ddl_enable_fast_reorg` 实现索引加速功能时，编码后的索引键值 ingest 数据到 TiKV 时使用的是固定并发值 (`16`)，无法根据下游 TiKV 的承载能力动态调整。从 v8.0.0 开始，支持使用 [`tidb_ddl_reorg_worker_cnt`](/system-variables.md#tidb_ddl_reorg_worker_cnt-从-v800-版本开始引入) 调整并发。该参数默认值为 `4`，相比之前的默认值 `16`，在 ingest 索引键值对时性能会比之前的版本有所降低。你可以根据集群的负载按需调整该参数。**tw@hfxsd** <!--无 FD-->
+* 在之前版本中，启用添加索引加速功能 (`tidb_ddl_enable_fast_reorg = ON`) 后，编码后的索引键值 ingest 到 TiKV 的过程使用了并发数 (`16`)，并未根据下游 TiKV 的处理能力进行动态调整。从 v8.0.0 开始，支持使用 [`tidb_ddl_reorg_worker_cnt`](/system-variables.md#tidb_ddl_reorg_worker_cnt-从-v800-版本开始引入) 并发数，该变量默认值为 `4`，相比之前的默认值 `16`，在 ingest 索引键值对时性能可能会有所下降。你可以根据集群的负载按需调整该参数。**tw@hfxsd** <!--无 FD-->
 
 ### MySQL 兼容性
 
@@ -385,7 +383,7 @@ By separating PD modules into separately-deployable services, their blast radii 
 
     + TiDB Data Migration (DM)
 
-        - 在 MariaDB 主从复制的场景中，即 `MariaDB_主实例` -> `MariaDB_从实例` -> `DM` -> `TiDB` 的迁移场景，当 `gtid_strict_mode = off`、且 `MariaDB_从实例`的 GTID 不严格递增时（比如有业务数据在写 `MariaDB_从实例` ），此时 DM 任务会报错 `less than global checkpoint position`。从 v8.0.0 开始，TiDB 兼容该场景，数据可以正常迁移到下游。[#10741](https://github.com/pingcap/tiflow/issues/10741) @[okJiang](https://github.com/okJiang) **tw@hfxsd** <!--1683-->
+        - 在 MariaDB 主从复制的场景中，即 MariaDB 主实例 -> MariaDB 从实例 -> DM -> TiDB 的迁移场景，当 `gtid_strict_mode = off` 且 MariaDB 从实例的 GTID 不严格递增时（例如，有业务数据写入 MariaDB 从实例），此时 DM 任务会报错 `less than global checkpoint position`。从 v8.0.0 开始，TiDB 兼容该场景，数据可以正常迁移到下游。[#10741](https://github.com/pingcap/tiflow/issues/10741) @[okJiang](https://github.com/okJiang) **tw@hfxsd** <!--1683-->
 
     + TiDB Lightning
 
