@@ -189,3 +189,32 @@ TiDB 作为开源一栈式实时 HTAP 数据库，其正常运行需要网络环
 ## 客户端 Web 浏览器要求
 
 TiDB 提供了基于 [Grafana](https://grafana.com/) 的技术平台，对数据库集群的各项指标进行可视化展现。采用支持 Javascript 的微软 IE、Google Chrome、Mozilla Firefox 的较新版本即可访问监控入口。
+
+## TiFlash 存算分离架构的软硬件要求
+
+上面的 TiFlash 软硬件要求是针对存算一体架构的。从 v7.0.0 开始，TiFlash 支持[存算分离架构](/tiflash/tiflash-disaggregated-and-s3.md)，该架构下 TiFlash 分为 Write Node 和 Compute Node 两个角色，对应的软硬件要求如下：
+
+- 软件：与存算一体架构一致，详见[操作系统及平台要求](#操作系统及平台要求)。
+- 网络端口：与存算一体架构一致，详见[网络要求](#网络要求)。
+- 磁盘空间：
+    - TiFlash Write Node：推荐 200 GB+，用作增加 TiFlash 副本、Region 副本迁移时向 Amazon S3 上传数据前的本地缓冲区。此外，还需要一个与 Amazon S3 兼容的对象存储。
+    - TiFlash Compute Node：推荐 100 GB+，主要用于缓存从 Write Node 读取的数据以提升性能。Compute Node 的缓存可能会被完全使用，这是正常现象。
+- CPU 以及内存等要求参考下文。
+
+### 开发及测试环境
+
+| 组件 | CPU | 内存 | 本地存储 | 网络 | 实例数量（最低要求） |
+| --- | --- | --- | --- | --- | --- |
+| TiFlash Write Node | 16 核+ | 32 GB+ | SSD, 200 GB+ | 千兆网卡 | 1 |
+| TiFlash Compute Node | 16 核+ | 32 GB+ | SSD, 100 GB+ | 千兆网卡 | 0（参见下文“注意”说明） |
+
+### 生产环境
+
+| 组件 | CPU | 内存 | 硬盘类型 | 网络 | 实例数量（最低要求） |
+| --- | --- | --- | --- | --- | --- |
+| TiFlash Write Node | 32 核+ | 64 GB+ | SSD, 200 GB+ | 万兆网卡（2 块最佳） | 2 |
+| TiFlash Compute Node | 32 核+ | 64 GB+ | SSD, 100 GB+  | 万兆网卡（2 块最佳） | 0（参见下文“注意”说明） |
+
+> **注意：**
+>
+> TiFlash Compute Node 可以使用 TiUP 等部署工具快速扩缩容，扩缩容范围是 `[0, +inf]`。
