@@ -102,7 +102,7 @@ rules = ['test.t*']
 
 ### DDL 语句注意事项
 
-当在上游执行跨数据库的 DDL 语句（如 `CREATE TABLE db1.t1 LIKE t2`）时，建议在 DDL 语句中显式地指定所有的库名（如 `CREATE TABLE db1.t1 LIKE  db2.t2`）。否则，由于缺少库名信息，TiCDC 可能无法正确地执行该条 DDL 到下游。
+当在上游执行跨数据库的 DDL 语句（如 `CREATE TABLE db1.t1 LIKE t2`）时，建议在 DDL 语句中显式地指定所有的库名（如 `CREATE TABLE db1.t1 LIKE db2.t2`）。否则，由于缺少库名信息，跨数据库的 DDL 语句可能无法正确地在下游执行。
 
 ### SQL 模式
 
