@@ -194,6 +194,12 @@ By separating PD modules into separately-deployable services, their blast radii 
 
     更多信息，请参考[用户文档](/data-type-default-values.md#表达式默认值)。
 
+* 支持变量 `div_precision_increment` [#51501](https://github.com/pingcap/tidb/issues/51501) @[yibin87](https://github.com/yibin87) **tw@hfxsd** <!--1566-->
+
+    MySQL 8.0 版本增加了变量 `div_precision_increment` 用于设定除法 `/` 运算结果的小数位数。在 v8.0.0 之前，TiDB 不支持这个变量，实际进行除法运算时按照 4 位小数进行计算。从 v8.0.0 开始，TiDB 支持该变量，可以根据需要指定除法运算结果的小数位数。
+
+    更多信息，请参考[用户文档](/system-variables.md#div_precision_increment-从-v800-版本开始引入)。
+
 ### 数据库管理
 
 * PITR 支持 Amazon S3 对象锁定 [#51184](https://github.com/pingcap/tidb/issues/51184) @[RidRisR](https://github.com/RidRisR) **tw@lilin90** <!--1604-->
