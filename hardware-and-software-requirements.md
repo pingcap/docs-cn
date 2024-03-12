@@ -178,7 +178,7 @@ TiDB 提供了基于 [Grafana](https://grafana.com/) 的技术平台，对数据
 
 ## TiFlash 存算分离架构的软硬件要求
 
-上面的 TiFlash 软硬件要求是针对存算一体架构的。从 v7.0.0 开始，TiFlash 支持[存算分离架构](/tiflash/tiflash-disaggregated-and-s3.md)，该架构下 TiFlash 分为存储节点和计算节点两个角色，对应的软硬件要求如下：
+上面的 TiFlash 软硬件要求是针对存算一体架构的。从 v7.0.0 开始，TiFlash 支持[存算分离架构](/tiflash/tiflash-disaggregated-and-s3.md)，该架构下 TiFlash 分为 Write Node 和 Compute Node 两个角色，对应的软硬件要求如下：
 
 - 软件：与存算一体架构一致，详见[操作系统及平台要求](#操作系统及平台要求)。
 - 网络端口：与存算一体架构一致，详见[网络要求](#网络要求)。
