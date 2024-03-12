@@ -202,12 +202,6 @@ By separating PD modules into separately-deployable services, their blast radii 
     
     更多信息，请参考[用户文档](/br/backup-and-restore-storages.md#存储服务其他功能支持)。
     
-* PITR 支持备份恢复由 TiDB Lightning 物理模式导入的数据（实验特性）[#issue号](链接) @[BornChanger](https://github.com/BornChanger) **tw@qiancai** <!--1086-->
-
-    TiDB v8.0.0 版本之前，由于 Lightning 的物理导入模式会“重写历史”，导致 PITR 无法感知到被”重写的历史” ，因此无法对数据进行备份。用户需要在完成数据导入后执行一次全量备份。从 TiDB v8.0.0 版本起，PITR 通过对解析时间戳（ResolvedTs）和 `Ingest SST` 操作进行兼容性设计，使得通过 Lightning 的物理模式导入的数据可以被 PITR 正确的识别、备份和恢复。这项改进为客户提供了更加完善的数据保护和恢复方案。
-
-    更多信息，请参考[用户文档](链接)。
-
 * 支持在会话级将不可见索引 (Invisible Indexes) 调整为可见 [#issue号](链接) @[hawkingrei](https://github.com/hawkingrei) **tw@Oreoxmt** <!--1401-->
 
     在优化器选择索引以优化查询执行时，默认情况下不会选择[不可见索引](/sql-statements/sql-statement-create-index.md#不可见索引)。这一机制通常用于在评估是否删除某个索引之前。如果担心删除索引可能导致性能下降，可以先将索引设置为不可见，以便在必要时快速将其恢复为可见。
