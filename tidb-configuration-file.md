@@ -411,24 +411,16 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
 
 + 设置用于连接 MySQL 协议的最低 TLS 版本。
 + 默认值：""，支持 TLSv1.2 及以上版本。在 v7.6.0 之前，TiDB 默认支持 TLSv1.1 及以上版本。
-+ 可选值：`"TLSv1.0"`、`"TLSv1.1"`、`"TLSv1.2"` 和 `"TLSv1.3"`
++ 可选值：`"TLSv1.2"` 和 `"TLSv1.3"`。在 v8.0.0 之前，TiDB 也支持 `"TLSv1.0"` 和 `"TLSv1.1"`。
 
 ### `auth-token-jwks` <span class="version-mark">从 v6.4.0 版本开始引入</span>
 
-> **警告：**
->
-> `tidb_auth_token` 认证方式仅用于 TiDB Cloud 内部实现，**不要修改该配置**。
-
-+ 设置 `tidb_auth_token` 认证方式的 JSON Web Key Sets (JWKS) 的本地文件路径。
++ 设置 [`tidb_auth_token`](/security-compatibility-with-mysql.md#tidb_auth_token) 认证方式的 JSON Web Key Sets (JWKS) 的本地文件路径。
 + 默认值：""
 
 ### `auth-token-refresh-interval` <span class="version-mark">从 v6.4.0 版本开始引入</span>
 
-> **警告：**
->
-> `tidb_auth_token` 认证方式仅用于 TiDB Cloud 内部实现，**不要修改该配置**。
-
-+ 设置 `tidb_auth_token` 认证方式的 JWKS 刷新时间间隔。
++ 设置 [`tidb_auth_token`](/security-compatibility-with-mysql.md#tidb_auth_token) 认证方式的 JWKS 刷新时间间隔。
 + 默认值：1h
 
 ### `disconnect-on-expired-password` <span class="version-mark">从 v6.5.0 版本开始引入</span>

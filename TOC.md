@@ -104,7 +104,7 @@
   - 第三方工具支持
     - [TiDB 支持的第三方工具](/develop/dev-guide-third-party-support.md)
     - [已知的第三方工具兼容问题](/develop/dev-guide-third-party-tools-compatibility.md)
-    - [TiDB 与 ProxySQL 集成](/develop/dev-guide-proxysql-integration.md)
+    - [ProxySQL 集成指南](/develop/dev-guide-proxysql-integration.md)
 - 部署标准集群
   - [软硬件环境需求](/hardware-and-software-requirements.md)
   - [环境与系统配置检查](/check-before-deployment.md)
@@ -565,6 +565,7 @@
       - [双向复制](/ticdc/ticdc-bidirectional-replication.md)
       - [单行数据正确性校验](/ticdc/ticdc-integrity-check.md)
       - [主从集群一致性读和数据校验](/ticdc/ticdc-upstream-downstream-check.md)
+      - [TiCDC 行为变更说明](/ticdc/ticdc-behavior-change.md)
     - 监控告警
       - [基本监控指标](/ticdc/ticdc-summary-monitor.md)
       - [详细监控指标](/ticdc/monitor-ticdc.md)
@@ -1038,6 +1039,7 @@
   - v7.6
     - [7.6.0-DMR](/releases/release-7.6.0.md)
   - v7.5
+    - [7.5.1](/releases/release-7.5.1.md)
     - [7.5.0](/releases/release-7.5.0.md)
   - v7.4
     - [7.4.0-DMR](/releases/release-7.4.0.md)
@@ -1046,6 +1048,7 @@
   - v7.2
     - [7.2.0-DMR](/releases/release-7.2.0.md)
   - v7.1
+    - [7.1.4](/releases/release-7.1.4.md)
     - [7.1.3](/releases/release-7.1.3.md)
     - [7.1.2](/releases/release-7.1.2.md)
     - [7.1.1](/releases/release-7.1.1.md)
