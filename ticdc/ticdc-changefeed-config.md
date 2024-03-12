@@ -72,7 +72,7 @@ case-sensitive = false
 # bdr-mode = false
 
 # changefeed 发生内部错误和异常时自动重试的时间间隔，默认值为 30 分钟。
-# 若 changefeed 发生内部错误和异常，且持续时间超过该参数设置的时间间隔，changefeed 会进入 failed 状态。
+# 若 changefeed 发生内部错误和异常，且持续时间超过该参数设置的时间，changefeed 会进入 failed 状态。
 # 当 changefeed 处于 failed 状态时，需要手动重启 changefeed 才能恢复。
 # 配置格式为 h m s，例如 "1h30m30s"
 changefeed-error-stuck-duration = "30m"
