@@ -130,7 +130,7 @@ cdc cli changefeed remove --server=http://127.0.0.1:8300 --changefeed-id simple-
 cdc cli changefeed create --server=http://127.0.0.1:8300 --sink-uri="mysql://root:123456@127.0.0.1:3306/" --changefeed-id="simple-replication-task" --sort-engine="unified" --start-ts 415241823337054210
 ```
 
-## 使用 TiCDC 同步消息到 Kafka 时报错 `kafka: client has run out of available brokers to talk to: EOF` ，该如何处理？
+## 使用 TiCDC 同步消息到 Kafka 时报错 `kafka: client has run out of available brokers to talk to: EOF`，该如何处理？
 
 该问题一般是由于 TiCDC 与 Kafka 集群连接失败导致。你可以通过检查 Kafka 的日志以及网络状况来排查。其中一个原因可能是在创建同步任务时没有指定正确的 `kafka-version` 参数，使得 TiCDC 内部的 Kafka client 在访问 Kafka server 时使用了错误的 Kafka API 版本。你可以通过配置 [`--sink-uri`](/ticdc/ticdc-sink-to-kafka.md#sink-uri-配置-kafka) 指定正确的 `kafka-version` 参数来修复。例如：
 
