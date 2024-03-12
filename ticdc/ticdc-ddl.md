@@ -102,7 +102,7 @@ rules = ['test.t*']
 
 ### 需要注意的 DDL 操作
 
-1. 当你在上游跨库执行形如 `create table db1.t1 like t2` 的 DDL 时，TiCDC 会尝试将该 DDL 同步到下游，但是由于 TiDB 传输给 DDL 信息中并不会给出 `t2` 所在的库名，因此 TiCDC 可能无法正确地执行该条 DDL 到下游。因此，建议在执行跨库的 DDL 时，显式的指定所有的库名，如 `create table db1.t1 like db2.t2` 。
+当在上游执行跨数据库的 DDL 语句（如 `CREATE TABLE db1.t1 LIKE t2`）时，建议在 DDL 语句中显式地指定所有的库名（如 `CREATE TABLE db1.t1 LIKE  db2.t2`）。否则，由于缺少库名信息，TiCDC 可能无法正确地执行该条 DDL 到下游。
 
 ### SQL 模式
 
