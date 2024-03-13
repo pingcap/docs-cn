@@ -439,7 +439,7 @@
       - [过滤 binlog 事件](/dm/dm-binlog-event-filter.md)
       - [通过 SQL 表达式过滤 DML](/dm/feature-expression-filter.md)
       - [Online DDL 工具支持](/dm/dm-online-ddl-tool-support.md)
-      - [自定义加解密 key](dm/dm-customized-secret-key.md)
+      - [自定义加解密 key](/dm/dm-customized-secret-key.md)
       - 迁移任务操作
         - [任务前置检查](/dm/dm-precheck.md)
         - [创建任务](/dm/dm-create-task.md)
