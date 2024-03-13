@@ -1617,6 +1617,7 @@ mysql> SELECT job_info FROM mysql.analyze_jobs ORDER BY end_time DESC LIMIT 1;
         - `"bulk"` 方式不可以在[缓存表](/cached-tables.md)上使用。
         - `"bulk"` 方式不可以在开启外键约束检查时 (`foreign_key_checks = ON`) 对包含外键的表使用。
         - 这种方式由 Pipelined DML 特性实现，详细设计和 GitHub issue 可见 [Pipelined DML](https://github.com/pingcap/tidb/blob/master/docs/design/2024-01-09-pipelined-DML.md) 和 [#50215](https://github.com/pingcap/tidb/issues/50215)。
+        - 以 `"bulk"` 方式执行超大事务时，事务耗时可能较长。对于这种模式的事务，事务的锁的最大 TTL 为 `max-txn-ttl` 和 24 小时之间的较大者。另外需要注意，当事务持续时间超过 [`tidb_gc_max_wait_time`](#tidb_gc_max_wait_time-从-v610-版本开始引入) 后，GC 可能强制回滚事务导致事务失败。
 
 ### `tidb_enable_1pc` <span class="version-mark">从 v5.0 版本开始引入</span>
 
