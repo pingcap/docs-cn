@@ -317,9 +317,9 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
 
 ### `general-log-file` <span class="version-mark">从 v8.0.0 版本开始引入</span>
 
-+ [general log](/system-variables.md#tidb_general_log) 的文件名。
++ 设置 [general log](/system-variables.md#tidb_general_log) 的文件名。
 + 默认值：""
-+ 如果设置了文件名，general log 会输出到指定的文件。如没有设置文件名，general log 会写入 TiDB 实例的日志，文件通过 [`filename`](#filename) 指定。
++ 如果设置了文件名，general log 会输出到指定的文件。如没有设置文件名，general log 会写入 TiDB 实例的日志文件中，该文件名通过 [`filename`](#filename) 指定。
 
 ### `timeout` <span class="version-mark">从 v7.1.0 版本开始引入</span>
 
