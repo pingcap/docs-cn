@@ -37,7 +37,7 @@ data-source-dir = "/data/my_database"
 #              冲突数据将被记录到目标 TiDB 集群中的 `lightning_task_info.conflict_error_v2` 和 `conflict_records` 表中。
 #              你可以根据业务需求选择正确的记录重新手动写入到目标表中。注意，该方法要求目标 TiKV 的版本为 v5.2.0 或更新版本。
 strategy = ""
-# 控制是否开启前置检查。默认值为 false，表示仅开启后置冲突检测。取值为 true 时，表示同时开启前置冲突检测和后置冲突检测。
+# 控制是否开启前置冲突检测。默认值为 false，表示仅开启后置冲突检测。取值为 true 时，表示同时开启前置冲突检测和后置冲突检测。
 # precheck-conflict-before-import = false
 # threshold = 9223372036854775807
 # max-record-rows = 100
