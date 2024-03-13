@@ -205,7 +205,7 @@ enable-partition-separator = true
 # 以下为 Simple Protocol 参数，用来控制 bootstrap 消息的发送行为。
 # send-bootstrap-interval-in-sec 用来控制发送 bootstrap 消息的时间间隔，单位为秒。
 # 默认值为 120 秒，即每张表每隔 120 秒发送一次 bootstrap 消息。
-# send-bootstrap-interval-in-sec = 120  
+# send-bootstrap-interval-in-sec = 120
 
 # send-bootstrap-in-msg-count 用来控制发送 bootstrap 的消息间隔，单位为消息数。
 # 默认值为 10000，即每张表每发送 10000 条行变更就发送一次 bootstrap 消息。
@@ -215,7 +215,7 @@ enable-partition-separator = true
 # send-bootstrap-to-all-partition 用来控制是否发送 bootstrap 消息到所有的 partition。
 # 默认值为 true，即发送 bootstrap 消息到对应表 topic 的所有的 partition。
 # 如果设置为 false，则只发送 bootstrap 消息到对应表 topic 的第一个 partition。
-# send-bootstrap-to-all-partition = true 
+# send-bootstrap-to-all-partition = true
 
 [sink.kafka-config.codec-config]
 # encoding-format 用来控制 simple protocol 的消息的编码格式，目前支持 "json" 和 "avro" 两种格式。
