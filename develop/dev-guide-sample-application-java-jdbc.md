@@ -77,7 +77,7 @@ cd tidb-java-jdbc-quickstart
 6. 复制并粘贴对应连接字符串至 `env.sh` 中。需更改部分示例结果如下：
 
     ```shell
-    export TIDB_HOST='{host}'  # e.g. gateway01.ap-northeast-1.prod.aws.tidbcloud.com
+    export TIDB_HOST='{host}'  # e.g. xxxxxx.aws.tidbcloud.com
     export TIDB_PORT='4000'
     export TIDB_USER='{user}'  # e.g. xxxxxx.root
     export TIDB_PASSWORD='{password}'
@@ -112,9 +112,9 @@ cd tidb-java-jdbc-quickstart
 5. 复制并粘贴对应的连接字符串至 `env.sh` 中。需更改部分示例结果如下：
 
     ```shell
-    export TIDB_HOST='{host}'  # e.g. tidb.xxxx.clusters.tidb-cloud.com
+    export TIDB_HOST='{host}'  # e.g. xxxxxx.aws.tidbcloud.com
     export TIDB_PORT='4000'
-    export TIDB_USER='{user}'  # e.g. root
+    export TIDB_USER='{user}'  # e.g. xxxxxx.root
     export TIDB_PASSWORD='{password}'
     export TIDB_DB_NAME='test'
     export USE_SSL='false'
@@ -137,9 +137,9 @@ cd tidb-java-jdbc-quickstart
 2. 复制并粘贴对应 TiDB 的连接字符串至 `env.sh` 中。需更改部分示例结果如下：
 
     ```shell
-    export TIDB_HOST='{host}'
+    export TIDB_HOST='{host}'  # e.g. 127.0.0.1
     export TIDB_PORT='4000'
-    export TIDB_USER='root'
+    export TIDB_USER='root'    # e.g. xxxxxx
     export TIDB_PASSWORD='{password}'
     export TIDB_DB_NAME='test'
     export USE_SSL='false'
@@ -160,6 +160,19 @@ cd tidb-java-jdbc-quickstart
     ```shell
     make
     ```
+
+    若运行 `make` 时出现错误：
+
+    ```bash
+    . env.sh && make build run
+    /bin/sh: 1: .: env.sh: not found
+    make: *** [Makefile:18: all] Error 2
+    ```
+
+    检查当前 `shell` 是否用的 `bash`，然后替换Makefile中 `. env.sh` 为 `bash env.sh`。
+    然后把 `env.sh` 文件中的 `#!/bin/sh` 改为 `#!/bin/bash`。
+
+    再运行 `make` 命令即可。
 
 2. 查看 [`Expected-Output.txt`](https://github.com/tidb-samples/tidb-java-jdbc-quickstart/blob/main/Expected-Output.txt)，并与你的程序输出进行比较。结果近似即为连接成功。
 
