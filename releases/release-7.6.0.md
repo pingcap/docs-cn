@@ -111,9 +111,9 @@ TiDB 版本：7.6.0
 
 * 建表性能提升 10 倍（实验特性）[#49752](https://github.com/pingcap/tidb/issues/49752) @[gmhdbjd](https://github.com/gmhdbjd)
 
-    在之前的版本里，将上游数据库上万张表迁移到 TiDB 时，TiDB 创建这些表耗时长，效率低。从 v7.6.0 开始，引入了新的 TiDB DDL V2 架构，你可以通过设置系统变量 [`tidb_ddl_version`](/system-variables.md#tidb_ddl_version-从-v760-版本开始引入) 开启。相比之前的版本，新版本的 DDL 批量建表性能提升了高达 10 倍，从而大幅减少了建表时间。
+    在之前的版本里，将上游数据库上万张表迁移到 TiDB 时，TiDB 创建这些表耗时长，效率低。从 v7.6.0 开始，引入了新的 TiDB DDL V2 架构，你可以通过设置系统变量 [`tidb_ddl_version`](https://docs.pingcap.com/zh/tidb/v7.6/system-variables#tidb_ddl_version-从-v760-版本开始引入) 开启。相比之前的版本，新版本的 DDL 批量建表性能提升了高达 10 倍，从而大幅减少了建表时间。
 
-    更多信息，请参考[用户文档](/ddl-v2.md)。
+    更多信息，请参考[用户文档](https://docs.pingcap.com/zh/tidb/v7.6/ddl-v2)。
 
 * 支持周期性全量数据整理（实验特性）[#12729](https://github.com/tikv/tikv/issues/12729) [afeinberg](https://github.com/afeinberg)
 
