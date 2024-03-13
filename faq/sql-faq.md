@@ -169,8 +169,6 @@ TiDB 支持改变 [per-session](/system-variables.md#tidb_force_priority)、[全
 
 `tidb_auto_analyze_ratio` 的默认值为 `0.5`，即默认开启触发 `auto analyze`。注意该变量值不建议大于等于 [`pseudo-estimate-ratio`](/tidb-configuration-file.md#pseudo-estimate-ratio)（默认值为 `0.8`），否则优化器可能会使用 pseudo 统计信息。TiDB 从 v5.3.0 开始引入 [`tidb_enable_pseudo_for_outdated_stats`](/system-variables.md#tidb_enable_pseudo_for_outdated_stats-从-v530-版本开始引入) 变量，当设置为 `OFF` 时，即使统计信息过期也不会使用 pseudo 统计信息。
 
-当表的（修改数/当前总行数）大于 `tidb_auto_analyze_ratio` 的时候，会自动触发 `analyze` 语句。`tidb_auto_analyze_ratio` 的默认值为 0.5，即默认开启此功能。为了保险起见，在开启此功能的时候，保证了其最小值为 0.3。但是不能大于等于 `pseudo-estimate-ratio`（默认值为 0.8），否则会有一段时间使用 pseudo 统计信息，建议设置值为 0.5。
-
 ## 可以使用 Hints 控制优化器行为吗？
 
 在 TiDB 中，你可以用多种方法控制查询优化器的默认行为，包括使用 [Optimizer Hints](/optimizer-hints.md) 和 [SQL 执行计划管理 (SPM)](/sql-plan-management.md)。基本用法同 MySQL 中的一致，还包含若干 TiDB 特有的用法，示例如下：`select column_name from table_name use index（index_name）where where_condition;`
