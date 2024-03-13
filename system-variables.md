@@ -1119,9 +1119,9 @@ MPP 是 TiFlash 引擎提供的分布式计算框架，允许节点之间的数�
 
 - 作用域：SESSION | GLOBAL
 - 是否持久化到集群：是
-- 默认值：在 v6.1.0 中为 `ON`，即默认开启。在 v6.1.0 之后的版本中为 `OFF`，即默认关闭。
+- 默认值：在 v6.1.0 中为 `ON`，即默认开启；在从 v6.1.1 起的 6.1 补丁版本中为 `OFF`，即默认关闭。
 - 自 v6.1.0 起，TiDB 的 [Join Reorder 算法](/join-reorder.md) 开始支持 Outer Join。该变量用于控制这个支持行为。默认关闭，即不启用 Outer Join 的 Join Reorder。
-- 对于从 v6.1.0 之前版本升级到 v6.1.0 及之后的版本，该变量的默认值为 `OFF`。对于从 v6.1.0 版本升级到之后的版本，该变量默认值为 `ON`。
+- 对于从较低版本升级到 v6.1.0 的 TiDB，升级后该变量的默认值为 `ON`。对于从较低版本升级到 v6.1.1 或之后的 6.1 补丁版本的 TiDB，升级后该变量的默认值为 `OFF`。
 
 ### `tidb_enable_inl_join_inner_multi_pattern` <span class="version-mark">从 v6.1.6 版本开始引入</span>
 
