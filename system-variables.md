@@ -3850,6 +3850,14 @@ SHOW WARNINGS;
 - 默认值：`24.0`
 - 表示 TiFlash 计算的并发数。该变量是[代价模型](/cost-model.md)内部使用的变量，**不建议**修改该变量的值。
 
+## `tidb_opt_use_invisible_indexes`
+
+- 作用域：SESSION
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：是
+- 类型：布尔型
+- 默认值：`OFF`
+- 这个变量用来设置是否允许优化器使用隐藏索引。隐藏索引是指用户创建的索引，但是该索引并不会被优化器使用。开启该选项后，优化器会尝试使用隐藏索引。
+
 ### `tidb_opt_write_row_id`
 
 - 作用域：SESSION
