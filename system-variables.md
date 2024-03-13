@@ -1614,6 +1614,7 @@ mysql> SELECT job_info FROM mysql.analyze_jobs ORDER BY end_time DESC LIMIT 1;
         - `"bulk"` 方式仅适用于大批量无冲突数据写入的场景，不能高效处理写入冲突的场景。
         - `"bulk"` 方式只对自动提交 (auto-commit) 的语句生效。当设置为`"bulk"`时，[`pessimistic-auto-commit`](/tidb-configuration-file.md#pessimistic-auto-commit) 配置项效果等于设置为 `false` 时。
         - `"bulk"` 方式不可以在[临时表](/temporary-tables.md)上使用。
+        - `"bulk"` 方式不可以在[缓存表](/cached-tables.md)上使用。
         - `"bulk"` 方式不可以在`foreign_key_checks=ON` 时对包含外键的表使用。
         - 这种方式由 Pipelined DML 特性实现，详细设计和 GitHub issue 可见 [Pipelined DML](https://github.com/pingcap/tidb/blob/master/docs/design/2024-01-09-pipelined-DML.md) 和 [#50215](https://github.com/pingcap/tidb/issues/50215)。
 
