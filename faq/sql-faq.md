@@ -165,15 +165,9 @@ TiDB 支持改变 [per-session](/system-variables.md#tidb_force_priority)、[全
 
 ## 在 TiDB 中 auto analyze 的触发策略是怎样的？
 
-<<<<<<< HEAD
-触发策略：新表达到 1000 条，并且在 1 分钟内没有写入，会自动触发。
-=======
 当一张表或分区表的单个分区达到 1000 条记录，且表或分区的（修改数/当前总行数）比例大于 [`tidb_auto_analyze_ratio`](/system-variables.md#tidb_auto_analyze_ratio) 的时候，会自动触发 [`ANALYZE`](/sql-statements/sql-statement-analyze-table.md) 语句。
 
 `tidb_auto_analyze_ratio` 的默认值为 `0.5`，即默认开启触发 `auto analyze`。注意该变量值不建议大于等于 [`pseudo-estimate-ratio`](/tidb-configuration-file.md#pseudo-estimate-ratio)（默认值为 `0.8`），否则优化器可能会使用 pseudo 统计信息。TiDB 从 v5.3.0 开始引入 [`tidb_enable_pseudo_for_outdated_stats`](/system-variables.md#tidb_enable_pseudo_for_outdated_stats-从-v530-版本开始引入) 变量，当设置为 `OFF` 时，即使统计信息过期也不会使用 pseudo 统计信息。
->>>>>>> 27f408c42c (faq: update an outdated sentence (#16814))
-
-当表的（修改数/当前总行数）大于 `tidb_auto_analyze_ratio` 的时候，会自动触发 `analyze` 语句。`tidb_auto_analyze_ratio` 的默认值为 0.5，即默认开启此功能。为了保险起见，在开启此功能的时候，保证了其最小值为 0.3。但是不能大于等于 `pseudo-estimate-ratio`（默认值为 0.8），否则会有一段时间使用 pseudo 统计信息，建议设置值为 0.5。
 
 ## 可以使用 Hints 控制优化器行为吗？
 
