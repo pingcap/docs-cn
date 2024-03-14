@@ -508,7 +508,7 @@ WHERE stmts.`digest` = best_plans.`digest`
 GROUP BY stmts.`digest`
   HAVING COUNT(DISTINCT(stmts.plan_digest)) > 1                -- This query is unstable. It has more than 1 plan.
          AND SUM(exec_count) > 10                              -- High-frequency, and has been executed more than 10 times.
-ORDER BY SUM(exec_count) DESC LIMIT 100;                       -- Top 100 high-grequency queries.
+ORDER BY SUM(exec_count) DESC LIMIT 100;                       -- Top 100 high-frequency queries.
 ```
 
 通过一些过滤条件得到满足条件的查询，然后直接运行 `binding_stmt` 列对应的语句即可创建相应的绑定。
