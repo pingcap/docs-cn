@@ -407,7 +407,7 @@ mysql> EXPLAIN SELECT /*+ use_index_merge(t3, idx) */ * FROM t3 WHERE ((1 member
 
 ### 多值索引与执行计划缓存
 
-通过 `member of` 条件选择到多值索引的执行计划可以被缓存。如果执行计划是通过 `json_contains` 或 `json_overlaps` 函数选择到多值索引，则该计划暂时无法被缓存。
+通过 `member of` 条件选择的多值索引的执行计划可以被缓存。如果执行计划是通过 `json_contains` 或 `json_overlaps` 函数选择的多值索引，则该计划暂时无法被缓存。
 
 下面是可以缓存的例子：
 
