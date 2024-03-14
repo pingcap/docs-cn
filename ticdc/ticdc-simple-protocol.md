@@ -69,7 +69,7 @@ DDL：
 
 其他：
 
-- WATERMARK: 包含一个 64 位的 timestamp，用于标记一个表的同步进度，所有小于 watermark 的事件都已经发送给下游。
+- WATERMARK: 与上游 TiDB 集群的 TSO 含义相同，包含一个 64 位的 timestamp，用于标记一个表的同步进度，所有小于 watermark 的事件都已经发送给下游。
 - BOOTSTRAP: 包含了一张表的 schema 信息，用于给下游构建表的结构。
 
 ## Message 格式
@@ -277,7 +277,7 @@ TiCDC 会把一个 INSERT Event 编码成如下的 JSON 格式：
 | type          | string | DML 事件类型，包括 INSERT、UPDATE 和 DELETE。                              |
 | commitTs      | number    | 该 DML 在上游执行结束的 commitTs。                                         |
 | buildTs       | number    | 该消息在 TiCDC 内部被编码成功时的 UNIX 时间戳。                            |
-| schemaVersion | number    | 该表的 schema 版本号。                                                     |
+| schemaVersion | number    | 编码该 DML 消息时所使用表的 schema 版本号。                                                |
 | data          | object | 插入的数据，字段名为列名，字段值为列值。                                   |
 
 INSERT 类型的事件只包含 data 字段，不包含 old 字段。
@@ -322,7 +322,7 @@ TiCDC 会把一个 UPDATE Event 编码成如下的 JSON 格式：
 | type          | string | DML 事件类型，包括 INSERT、UPDATE 和 DELETE。                              |
 | commitTs      | number    | 该 DML 在上游执行结束的 commitTs。                                         |
 | buildTs       | number    | 该消息在 TiCDC 内部被编码成功时的 UNIX 时间戳。                            |
-| schemaVersion | number    | 该表的 schema 版本号。                                                     |
+| schemaVersion | number    | 编码该 DML 消息时所使用表的 schema 版本号。                                                     |
 | data          | object | 更新后的数据，字段名为列名，字段值为列值。                                 |
 | old           | object | 更新前的数据，字段名为列名，字段值为列值。                                 |
     
@@ -364,7 +364,7 @@ DELETE 类型的事件只包含 old 字段，不包含 data 字段。
 | type          | string | DML 事件类型，包括 INSERT、UPDATE 和 DELETE。                              |
 | commitTs      | number    | 该 DML 在上游执行结束的 commitTs。                                         |
 | buildTs       | number    | 该消息在 TiCDC 内部被编码成功时的 UNIX 时间戳。                            |
-| schemaVersion | number    | 该表的 schema 版本号。                                                     |
+| schemaVersion | number    | 编码该 DML 消息时所使用表的 schema 版本号。                                                     |
 | old           | object | 删除的数据，字段名为列名，字段值为列值。                                   |
 
 ### WATERMARK
