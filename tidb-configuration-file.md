@@ -819,7 +819,6 @@ TiDB 服务状态相关配置。
 + 对于存在冲突的场景，开启本开关可以将自动提交事务纳入全局等锁管理中，从而避免死锁，改善冲突造成死锁带来的时延尖刺。
 + 对于不存在冲突的场景，如果有大量自动提交事务（例如自动提交事务数量占业务数量的比例超过一半甚至更多，需要根据实际情况分析）且单个事务操作数据量较大的情况下，开启该配置项会造成性能回退。例如，自动提交的 `INSERT INTO SELECT` 语句。
 + 当 SESSION 级系统变量 [`tidb_dml_type`](/system-variables.md#tidb_dml_type-从-v800-版本开始引入) 设置为 `"bulk"` 时，在该 SESSION 中，该配置项的效果等同于设置为 `false`。
-
 + 默认值：false
 
 ### constraint-check-in-place-pessimistic <span class="version-mark">从 v6.4.0 版本开始引入</span>
