@@ -350,6 +350,7 @@ By separating PD modules into separately-deployable services, their blast radii 
 
 * 从 v8.0.0 开始，[`tidb_disable_txn_auto_retry`](/system-variables.md#tidb_disable_txn_auto_retry) 变量被废弃。废弃后，TiDB 不再支持乐观事务的自动重试。作为替代，当使用乐观事务模式发生冲突时，请在应用里捕获错误并重试，或改用[悲观事务模式](/pessimistic-transaction.md)。**tw@lilin90** <!--1671-->
 * 从 v8.0.0 开始，TiDB 不再支持 TLSv1.0 和 TLSv1.1 协议。请升级 TLS 至 TLSv1.2 或 TLSv1.3。
+* [执行计划绑定的自动演进](/sql-plan-management.md#自动演进绑定-baseline-evolution) 计划在后续版本被重新设计，相关的变量和行为会发生变化。
 
 ## 改进提升
 
