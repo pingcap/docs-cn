@@ -94,10 +94,6 @@ TiCDC 复制功能只会将指定时间点之后的增量变更复制到下游�
 
 在不设置 BDR role 时，你可以执行任意 DDL。但是在 TiCDC 开启 `bdr_mode=true` 之后，执行的 DDL 不会被 TiCDC 同步。
 
-> **警告：**
->
-> 双向复制的 DDL 同步目前为实验特性，不建议在生产环境中使用。该功能可能会在未事先通知的情况下发生变化或删除。如果发现 bug，请在 GitHub 上提 [issue](https://github.com/pingcap/tidb/issues) 反馈。
-
 ### 可复制的 DDL 的同步场景
 
 1. 选择一个 TiDB 集群，执行 `ADMIN SET BDR ROLE PRIMARY` 将其设置为主集群。如下所示：
