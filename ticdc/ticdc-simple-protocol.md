@@ -61,10 +61,10 @@ DDL：
 - `CREATE`：创建表。
 - `RENAME`：重命名表。
 - `CINDEX`：创建索引。
-- `DINDEX`： 删除索引。
+- `DINDEX`：删除索引。
 - `ERASE`：删除表。
 - `TRUNCATE`：清空表。
-- `ALTER`：修改表结构, 包括增加列、删除列、修改列类型和其他 TiCDC 支持的 `ALTER TABLE` 语句。
+- `ALTER`：修改表结构，包括增加列、删除列、修改列类型和其他 TiCDC 支持的 `ALTER TABLE` 语句。
 - `QUERY`：其他 DDL 语句。
 
 其他：
