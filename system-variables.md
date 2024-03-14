@@ -2935,7 +2935,6 @@ v5.0 后，用户仍可以单独修改以上系统变量（会有废弃警告）
 ### `tidb_low_resolution_tso`
 
 - 作用域：SESSION
-- 是否持久化到集群：否
 - 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：否
 - 类型：布尔型
 - 默认值：`OFF`
