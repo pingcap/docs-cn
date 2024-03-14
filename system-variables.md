@@ -2915,7 +2915,7 @@ v5.0 后，用户仍可以单独修改以上系统变量（会有废弃警告）
 - 作用域：GLOBAL
 - 是否持久化到集群：是
 - 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：否
-- 默认值：`"200"`
+- 默认值：`200`
 - 范围：`(0, 2147483647]`
 - 单位：秒
 - 这个变量用来控制 load binding 的超时时间。当 load binding 的执行时间超过该值时，会停止加载。
