@@ -107,6 +107,9 @@ Titan 对 RocksDB 兼容，也就是说，使用 RocksDB 存储引擎的现有 T
 
 通过调整 [`rate-bytes-per-sec`](/tikv-configuration-file.md#rate-bytes-per-sec)，你可以限制 RocksDB compaction 的 I/O 速率，从而在高流量时减少对前台读写性能的影响。
 
+### `shared-blob-cache` v8.0引入
+启用Blob文件和Block文件的共享缓存，默认值为True。Block文件具有更高的优先级。该配置在优先满足Block Cache之后将剩余的缓存用于Blob文件。
+
 ### Titan 配置文件示例
 
 下面是一个 Titan 配置文件的样例，更多的参数说明，请参考 [TiKV 配置文件描述](/tikv-configuration-file.md)。你可以使用 TiUP [修改配置参数](/maintain-tidb-using-tiup.md#修改配置参数)，也可以通过[在 Kubernetes 中配置 TiDB 集群](https://docs.pingcap.com/zh/tidb-in-kubernetes/stable/configure-a-tidb-cluster)修改配置参数。
