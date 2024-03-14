@@ -206,6 +206,9 @@ show warnings;
 | {db-name}.{cf-name}.soft-pending-compaction-bytes-limit | pending compaction bytes 的软限制 |
 | {db-name}.{cf-name}.hard-pending-compaction-bytes-limit | pending compaction bytes 的硬限制 |
 | {db-name}.{cf-name}.titan.blob-run-mode | 处理 blob 文件的模式 |
+| {db-name}.{cf-name}.titan.min-blob-size | 数据存Titan的阈值 |
+| {db-name}.{cf-name}.titan.blob-file-compression | Titan数据文件的压缩算法 |
+| {db-name}.{cf-name}.titan.discardable-ratio | Titan数据文件GC的垃圾数据比例阈值 |
 | server.grpc-memory-pool-quota | gRPC 可使用的内存大小限制 |
 | server.max-grpc-send-msg-len | gRPC 可发送的最大消息长度 |
 | server.raft-msg-max-batch-size | 单个 gRPC 消息可包含的最大 Raft 消息个数 |

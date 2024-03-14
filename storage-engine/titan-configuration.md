@@ -150,9 +150,9 @@ level-merge = false
         discardable-ratio = 1.0
         ```
 
-    > **注意：**
+    > **警告：**
     >
-    > 在磁盘空间不足以同时保持 Titan 和 RocksDB 数据时，应该使用 [`discardable-ratio`](/tikv-configuration-file.md#discardable-ratio) 的默认值 `0.5`。一般来说，如果磁盘可用空间小于 50% 时，推荐使用默认值。因为当 `discardable-ratio = 1.0` 时，RocksDB 数据一方面在不断增加，同时 Titan 原有的 blob 文件回收需要该文件所有数据都迁移至 RocksDB 才会发生，这个过程会比较缓慢。如果磁盘空间足够大，设置 `discardable-ratio = 1.0` 可以减小 compaction 过程中 Blob 文件自身的 GC，从而节省带宽。
+    > 在磁盘空间不足以同时保持 Titan 和 RocksDB 数据时，应该使用 [`discardable-ratio`](/tikv-configuration-file.md#discardable-ratio) 的默认值 `0.5`。一般来说，如果磁盘可用空间小于 50% 时，推荐使用默认值。因为当 `discardable-ratio = 1.0` 时，RocksDB 数据一方面在不断增加，同时 Titan 原有的 blob 文件回收需要该文件所有数据都迁移至 RocksDB 才会发生，这个过程会比较缓慢。如果磁盘空间足够大，设置 `discardable-ratio = 1.0` 可以减小 compaction 过程中 Blob 文件自身的 GC，从而节省带宽。如果磁盘空间不足时强行手动做tikv-ctl compact cluster，可能会导致整个集群无可用空间从而无法写入。
 
 2. （可选）使用 `tikv-ctl` 执行全量数据整理 (Compaction)。这一步骤将消耗大量 I/O 和 CPU 资源。
 
