@@ -3850,7 +3850,7 @@ SHOW WARNINGS;
 - 默认值：`24.0`
 - 表示 TiFlash 计算的并发数。该变量是[代价模型](/cost-model.md)内部使用的变量，**不建议**修改该变量的值。
 
-## `tidb_opt_use_invisible_indexes`
+## `tidb_opt_use_invisible_indexes` <span class="version-mark">从 v8.0.0 版本开始引入</span>
 
 - 作用域：SESSION
 - 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：是
