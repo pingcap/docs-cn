@@ -405,7 +405,7 @@ mysql> EXPLAIN SELECT /*+ use_index_merge(t3, idx) */ * FROM t3 WHERE ((1 member
 3 rows in set, 2 warnings (0.00 sec)
 ```
 
-### 多值索引与 Plan Cache
+### 多值索引与执行计划缓存
 
 通过 `member of` 条件选择到多值索引的执行计划可以被缓存。如果执行计划是通过 `json_contains` 或 `json_overlaps` 函数选择到多值索引，则该计划暂时无法被缓存。
 
