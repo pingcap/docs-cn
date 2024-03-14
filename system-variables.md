@@ -3856,7 +3856,7 @@ SHOW WARNINGS;
 - 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：是
 - 类型：布尔型
 - 默认值：`OFF`
-- 这个变量用来设置是否允许优化器使用隐藏索引。隐藏索引是指用户创建的索引，但是该索引并不会被优化器使用。开启该选项后，优化器会尝试使用隐藏索引。
+- 这个变量用来设置是否允许优化器选择[不可见索引 (Invisible Index)](/sql-statements/sql-statement-create-index.md#不可见索引)。默认情况下，不可见索引由 DML 语句维护，不会被查询优化器使用。当修改变量为 `ON` 时，对该会话中的查询，优化器可以选择不可见索引进行查询优化。
 
 ### `tidb_opt_write_row_id`
 
