@@ -50,7 +50,7 @@ TiDB 加速建表的实现步骤如下：
 
 2. 执行 `CREATE TABLE` Job。
 
-    与之前版本将 Job 插入 `mysql.tidb_ddl_job` 表中不同，新实现由接收该 `CREATE TABLE` 语句的 TiDB 节点直接执行建表语句，将表结构持久化到 TiKV 中。同时，将 `CREATE TABLE` Job 标记为已完成，插入到 `mysql.tidb_ddl_history` 表中。
+    由接收该 `CREATE TABLE` 语句的 TiDB 节点直接执行建表语句，将表结构持久化到 TiKV 中。同时，将 `CREATE TABLE` Job 标记为已完成，插入到 `mysql.tidb_ddl_history` 表中。
 
 3. 同步表信息。
 
