@@ -476,7 +476,7 @@ SHOW binding_cache status;
 1 row in set (0.00 sec)
 ```
 
-## 利用 `Statement Summary` 表获取需要绑定的查询
+## 利用 Statement Summary 表获取需要绑定的查询
 
 [`Statement Summary`](/statement-summary-tables.md) 的表中存放了近期的 SQL 相关的执行信息，如延迟、执行次数、对应计划等。你可以通过查询 `Statement Summary` 表得到符合条件查询的 `plan_digest`，然后[根据历史执行计划创建绑定](/sql-plan-management.md#根据历史执行计划创建绑定)。
 
