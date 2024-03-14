@@ -391,6 +391,8 @@ CREATE TABLE t1 (c1 INT, c2 INT, UNIQUE(c2));
 CREATE UNIQUE INDEX c1 ON t1 (c1) INVISIBLE;
 ```
 
+另外，通过改变系统参数 [`tidb_opt_use_invisible_indexes`](/system-variables.md#tidb_opt_use_invisible_indexes) 参数，强制优化器使用不可见索引。
+
 具体可以参考 [`ALTER INDEX`](/sql-statements/sql-statement-alter-index.md)。
 
 ## 相关系统变量
