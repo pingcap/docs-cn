@@ -1612,12 +1612,11 @@ mysql> SELECT job_info FROM mysql.analyze_jobs ORDER BY end_time DESC LIMIT 1;
         - 在 TiDB 事务执行过程中，数据不是完全缓存在 TiDB 内存中，而是持续写入 TiKV，以减少内存的占用。
         - 只有 `INSERT`、`UPDATE`、`REPLACE` 和 `DELETE` 语句受 `"bulk"` 方式的影响。
         - `"bulk"` 方式仅适用于大批量无冲突数据写入的场景，不能高效处理写入冲突的场景。
-        - `"bulk"` 方式只对自动提交 (auto-commit) 的语句生效。当设置为`"bulk"`时，[`pessimistic-auto-commit`](/tidb-configuration-file.md#pessimistic-auto-commit) 配置项效果等于设置为 `false` 时。
-        - `"bulk"` 方式不可以在[临时表](/temporary-tables.md)上使用。
-        - `"bulk"` 方式不可以在[缓存表](/cached-tables.md)上使用。
+        - `"bulk"` 方式只对自动提交 (auto-commit) 的语句生效。当设置为 `"bulk"` 时，[`pessimistic-auto-commit`](/tidb-configuration-file.md#pessimistic-auto-commit) 配置项的效果等同于设置为 `false`。
+        - `"bulk"` 方式不可以在[临时表](/temporary-tables.md)、[缓存表](/cached-tables.md)上使用。
         - `"bulk"` 方式不可以在开启外键约束检查时 (`foreign_key_checks = ON`) 对包含外键的表使用。
-        - 这种方式由 Pipelined DML 特性实现，详细设计和 GitHub issue 可见 [Pipelined DML](https://github.com/pingcap/tidb/blob/master/docs/design/2024-01-09-pipelined-DML.md) 和 [#50215](https://github.com/pingcap/tidb/issues/50215)。
-        - 以 `"bulk"` 方式执行超大事务时，事务耗时可能较长。对于这种模式的事务，事务的锁的最大 TTL 为 `max-txn-ttl` 和 24 小时之间的较大者。另外需要注意，当事务持续时间超过 [`tidb_gc_max_wait_time`](#tidb_gc_max_wait_time-从-v610-版本开始引入) 后，GC 可能强制回滚事务导致事务失败。
+        - 以 `"bulk"` 方式执行超大事务时，事务耗时可能较长。对于这种模式的事务，其事务锁的最大 TTL 为 [`max-txn-ttl`](/tidb-configuration-file.md#max-txn-ttl) 与 24 小时中的较大值。此外，当事务执行时间超过 [`tidb_gc_max_wait_time`](#tidb_gc_max_wait_time-从-v610-版本开始引入) 设定值后，GC 可能会强制回滚事务，导致事务失败。
+        - `"bulk"` 方式由 Pipelined DML 特性实现，详细设计和 GitHub issue 可见 [Pipelined DML](https://github.com/pingcap/tidb/blob/master/docs/design/2024-01-09-pipelined-DML.md) 和 [#50215](https://github.com/pingcap/tidb/issues/50215)。
 
 ### `tidb_enable_1pc` <span class="version-mark">从 v5.0 版本开始引入</span>
 
