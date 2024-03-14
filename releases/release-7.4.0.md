@@ -185,9 +185,9 @@ TiDB 版本：7.4.0
 
     更多信息，请参考[用户文档](/tidb-resource-control.md#管理后台任务)。
 
-* 增强锁定统计信息的能力 [#46351](https://github.com/pingcap/tidb/issues/46351) @[hi-rustin](https://github.com/hi-rustin)
+* 锁定统计信息成为正式功能 (GA) [#46351](https://github.com/pingcap/tidb/issues/46351) @[hi-rustin](https://github.com/hi-rustin)
 
-    在 v7.4.0 中，TiDB 增强了[锁定统计信息](/statistics.md#锁定统计信息)的能力。现在，锁定和解锁统计信息需要与收集统计信息 (`ANALYZE TABLE`) 相同的权限，以确保操作的安全性。此外，还新增了对特定分区的统计信息进行锁定和解锁操作的支持，提高了功能灵活性。当用户对数据库中的查询和执行计划有把握，并且不希望发生变化时，可以使用锁定统计信息来提升统计信息的稳定性。
+    在 v7.4.0 中，TiDB [锁定统计信息](/statistics.md#锁定统计信息)成为正式功能 (GA)。现在，锁定和解锁统计信息需要与收集统计信息 (`ANALYZE TABLE`) 相同的权限，以确保操作的安全性。此外，还新增了对特定分区的统计信息进行锁定和解锁操作的支持，提高了功能灵活性。当用户对数据库中的查询和执行计划有把握，并且不希望发生变化时，可以使用锁定统计信息来提升统计信息的稳定性。
 
     更多信息，请参考[用户文档](/statistics.md#锁定统计信息)。
 
@@ -448,7 +448,7 @@ TiDB 版本：7.4.0
         - 修复备份失败时 BR 误报 `resolve lock timeout` 掩盖了实际错误的问题 [#43236](https://github.com/pingcap/tidb/issues/43236) @[YuJuncen](https://github.com/YuJuncen)
         - 修复 PITR 恢复隐式主键可能冲突的问题 [#46520](https://github.com/pingcap/tidb/issues/46520) @[3pointer](https://github.com/3pointer)
         - 修复 PITR 恢复数据元信息 (meta-kv) 出错的问题 [#46578](https://github.com/pingcap/tidb/issues/46578) @[Leavrth](https://github.com/Leavrth)
-        - 修复 BR 集成测试用例出错的问题 [#45561](https://github.com/pingcap/tidb/issues/46561) @[purelind](https://github.com/purelind)
+        - 修复 BR 集成测试用例出错的问题 [#46561](https://github.com/pingcap/tidb/issues/46561) @[purelind](https://github.com/purelind)
 
     + TiCDC
 
