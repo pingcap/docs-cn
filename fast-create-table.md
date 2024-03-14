@@ -46,7 +46,7 @@ TiDB 加速建表的实现步骤如下：
 
 1. 创建 `CREATE TABLE` Job。
 
-    此步骤和 V1 版本实现相同，通过解析 `CREATE TABLE` 语句生成相应的 DDL Job。
+    通过解析 `CREATE TABLE` 语句生成相应的 DDL Job。
 
 2. 执行 `CREATE TABLE` Job。
 
