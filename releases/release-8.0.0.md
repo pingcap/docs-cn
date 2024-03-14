@@ -71,17 +71,22 @@ By separating PD modules into separately-deployable services, their blast radii 
 
 ### 可扩展性
 
-从 v8.0.0 开始，PD 支持微服务部署模式 [#5766](https://github.com/tikv/pd/issues/5766) @[binshi-bing](https://github.com/binshi-bing) **tw@qiancai** <!--1553/1558-->
+- PD 支持微服务模式 [#5766](https://github.com/tikv/pd/issues/5766) @[binshi-bing](https://github.com/binshi-bing) **tw@qiancai** <!--1553/1558-->
 
-该模式可将 PD 的时间戳分配和集群调度功能拆分为独立的服务，单独部署，从而实现 PD 的性能扩展，在超大规模集群下解决 PD 性能瓶颈问题。我们通常建议当 PD 出现明显的性能瓶颈且无法升配的情况下，考虑使用该模式。
-当前支持以下两种服务独立部署
-- TSO 微服务：为整个集群提供单调递增的时间戳分配。 
-- Scheduling 微服务：为整个集群提供调度功能，包括但不限于负载均衡、热点处理、副本修复、副本放置等。 
-每种微服务都以独立进程的方式部署，当相应服务设置的副本数量大于 1 时，提供主备的容灾模式。 
+    从 v8.0.0 开始，PD 支持微服务模式。该模式可将 PD 的时间戳分配和集群调度功能拆分为以下微服务单独部署，从而实现 PD 的性能扩展，解决大规模集群下 PD 性能瓶颈问题。
 
-* 增强 Titan 引擎  [#issue号](链接) @[Connor1996](https://github.com/Connor1996) **tw@qiancai** <!--1708-->
+    - TSO 微服务：为整个集群提供单调递增的时间戳分配。
+    - Scheduling 微服务：为整个集群提供调度功能，包括但不限于负载均衡、热点处理、副本修复、副本放置等。
 
-    TiDB v8.0.0 版本引入了 Titan 一系列的性能优化和功能增强，主要包括优化 GC 算法、默认开启字典压缩等功能。其中，我们调整了 [`min-blob-size`](/tikv-configuration-file.md#min-blob-size) 的默认阈值，从 `32KB` 调整为 `?KB` ，进一步扩大 Titan 引擎的适用场景。此外，我们还允许用户动态修改 [`min-blob-size`](/tikv-configuration-file.md#min-blob-size) 阈值配置，以提升用户使用 Titan 引擎时的性能和灵活性。这些改进和功能增强将为用户提供更加稳定和高效的数据库服务。
+    每个微服务都以独立进程的方式部署。当设置某个微服务的副本数大于 1 时，该微服务会自动实现主备的容灾模式，以确保服务的高可用性和可靠性。
+
+    目前 PD 微服务仅支持通过 TiDB Operator 进行部署。当 PD 出现明显的性能瓶颈且无法升配的情况下，建议考虑使用该模式。
+
+    更多信息，请参考[用户文档](https://docs.pingcap.com/zh/tidb-in-kubernetes/dev/configure-a-tidb-cluster#部署-pd-微服务)。
+
+* 增强 Titan 引擎 [#16245](https://github.com/tikv/tikv/issues/16245) @[Connor1996](https://github.com/Connor1996) **tw@qiancai** <!--1708-->
+
+    TiDB v8.0.0 版本针对 Titan 的易用性进行了增强，主要包括共享 blob cache 与 block cache，不需要再单独配置 blob cache。[`min-blob-size`](/tikv-configuration-file.md#min-blob-size)  等配置支持动态修改，以提升用户使用 Titan 引擎时的性能和灵活性。这些改进和功能增强将为用户提供更加稳定和高效的数据库服务。
 
     更多信息，请参考[用户文档](/storage-engine/titan-overview.md)。
     
@@ -263,17 +268,19 @@ By separating PD modules into separately-deployable services, their blast radii 
 
     更多信息，请参考[用户文档](/ticdc/ticdc-bidirectional-replication.md)。
 
-* DM 支持使用用户提供的密钥对源和目标数据库的密码进行加密和解密 [#9492](https://github.com/pingcap/tiflow/issues/9492) @[D3Hunter](https://github.com/D3Hunter) **tw@qiancai** <!--1497-->
+* DM 支持使用用户提供的密钥对源数据库和目标数据库的密码进行加密和解密 [#9492](https://github.com/pingcap/tiflow/issues/9492) @[D3Hunter](https://github.com/D3Hunter) **tw@qiancai** <!--1497-->
 
-    之前 DM 使用的是自带的一个固定秘钥，安全性较低。而从 8.0 版本开始，用户可以传入自定义的密钥文件，对上下游的数据库的密码进行加密和解密操作，也可以按需替换秘钥，提升了安全性。
+    在之前的版本中，DM 使用了一个内置的一个固定秘钥，安全性相对较低。从 v8.0.0 开始，你可以上传并指定一个密钥文件，用于对上下游的数据库的密码进行加密和解密操作。此外，你还可以按需替换秘钥文件，以提升数据的安全性。
 
-    更多信息，请参考[用户文档](链接)。
+    更多信息，请参考[用户文档](dm/dm-customized-secret-key.md)。
 
-* Import into 功能增强，支持 Import into... from select 语法（实验特性） [#49883](https://github.com/pingcap/tidb/issues/49883) @[D3Hunter](https://github.com/D3Hunter) **tw@qiancai** <!--1680-->
+* 支持 `IMPORT INTO ... FROM SELECT` 语法，增强 `IMPORT INTO` 功能（实验特性） [#49883](https://github.com/pingcap/tidb/issues/49883) @[D3Hunter](https://github.com/D3Hunter) **tw@qiancai** <!--1680-->
 
-    在一些大数据量的场景使用 insert into ... select，数据导入的性能较慢，而从 8.0 版本开始，支持用户使用 Import into... from select 来导入查询结果到目标表中，且导入的性能最高可达  insert into ... select 的 8 倍，大大缩短了把查询结果导入目标表的所需时间。此外，该功能还支持导入使用 [`AS OF TIMESTAMP`](/as-of-timestamp.md) 查询的历史数据。
+    在之前的 TiDB 版本中，将查询结果导入目标表只能通过 `INSERT INTO ... SELECT` 语句，但该语句在一些大数据量的场景中的导入效率较低。从 v8.0.0 开始，TiDB 新增支持通过 `IMPORT INTO ... FROM SELECT` 将 `SELECT` 的查询结果导入到一张空的 TiDB 目标表中，其性能最高可达 `INSERT INTO ... SELECT` 的 8 倍，可以大幅缩短导入所需的时间。
+    
+    此外，你还可以通过 `IMPORT INTO ... FROM SELECT` 导入使用 [`AS OF TIMESTAMP`](/as-of-timestamp.md) 查询的历史数据。
 
-    更多信息，请参考[用户文档](链接)。        
+    更多信息，请参考[用户文档](sql-statements/sql-statement-import-into.md)。        
     
 * TiDB Lightning 冲突策略简化，同时支持 Replace 的方式处理冲突的数据（实验特性） [#51036](https://github.com/pingcap/tidb/issues/51036) @[lyzx2001](https://github.com/lyzx2001) **tw@qiancai** <!--1684-->
 
@@ -281,11 +288,13 @@ By separating PD modules into separately-deployable services, their blast radii 
 
     更多信息，请参考[用户文档](链接)。    
     
-  * 全局排序功能成为正式功能 (GA)，可提升 `IMPORT INTO` 任务的导入性能和稳定性，支持 40 TiB 的数据导入 [#45719](https://github.com/pingcap/tidb/issues/45719) @[lance6716](https://github.com/lance6716) **tw@qiancai** <!--1580-->
+  * 全局排序成为正式功能 (GA)，可显著提升 `IMPORT INTO` 任务的导入性能和稳定性，支持 40 TiB 的数据导入 [#45719](https://github.com/pingcap/tidb/issues/45719) @[lance6716](https://github.com/lance6716) **tw@qiancai** <!--1580-->
 
-    原先 import into 任务调度到多个 TiDB 节点进行数据导入时，使用节点本地的磁盘对当前节点负责导入的数据进行本地局部排序，无法将所有节点要导入的数据进行全局排序，因此节点间的数据存在重叠时，在导入 TiKV 过程中， TiKV 需要执行较多的 compaction 操作，导致 TiKV 的稳定性和性能下降。而引入全局排序后，可将所有需要导入的数据进行全局排序后再导入 TiKV，数据全局有序，TiKV 也就无需执行 compaction 操作，稳定性以及写入性能都会有较大的提升。同时最高支持 40 TiB 的数据导入。
+    在 v7.4.0 以前，当使用[分布式执行框架](/tidb-distributed-execution-framework.md) 执行 `IMPORT INTO` 任务时，由于本地存储空间有限，TiDB 只能对部分数据进行局部排序后再导入到 TiKV。这导致了导入到 TiKV 的数据存在较多的重叠，需要 TiKV 在导入过程中执行额外的 compaction 操作，影响了 TiKV 的性能和稳定性。
 
-    更多信息，请参考[用户文档](链接)。    
+    随着 v7.4.0 引入全局排序实验特性，TiDB 支持将需要导入的数据暂时存储在外部存储（如 Amazon S3）中进行全局排序后再导入到 TiKV 中，使 TiKV 无需在导入过程中执行 compaction 操作。全局排序在 v8.0.0 成为正式功能 (GA)，可以降低 TiKV 对资源的额外消耗，显著提升 `IMPORT INTO` 的性能和稳定性。
+
+    更多信息，请参考[用户文档](/tidb-global-sort.md)。    
     
 * 功能标题 [#issue号](链接) @[贡献者 GitHub ID](链接) **tw@xxx** <!--1234-->
 
@@ -316,7 +325,7 @@ By separating PD modules into separately-deployable services, their blast radii 
 | [`tidb_redact_log`](/system-variables.md#tidb_redact_log) | 修改 | 控制在记录 TiDB 日志和慢日志时如何处理 SAL 文本中的用户信息，可选值为 `OFF`、`ON`、`MARKER`，以分别支持记录信息明文、信息屏蔽、信息标记。当变量值为 `MARKER` 时，日志中的用户信息将被标记处理，可以在之后决定是否对日志信息进行脱敏。 |
 | [`tidb_dml_type`](/system-variables.md#tidb_dml_type-从-v800-版本开始引入) | 新增 | 设置 DML 语句的执行方式，可选值为 `"standard"` 和 `"bulk"`。 |
 | [`tidb_low_resolution_tso_update_interval`](/system-variables.md#tidb_low_resolution_tso_update_interval-从-v800-版本开始引入) | 新增 | 设置更新 TiDB [缓存 timestamp](/system-variables.md#tidb_low_resolution_tso) 的间隔。 |
-| [`tidb_enable_concurrent_hashagg_spill`]((/system-variables.md#tidb_enable_concurrent_hashagg_spill-从-v800-版本开始引入)) | 新增 | 控制 TiDB 是否支持并发 HashAgg 进行落盘。当该变量设置为 `ON` 时，并发 HashAgg 将支持落盘。该变量将在功能正式发布时废弃。 |
+| [`tidb_enable_concurrent_hashagg_spill`](/system-variables.md#tidb_enable_concurrent_hashagg_spill-从-v800-版本开始引入) | 新增 | 控制 TiDB 是否支持并发 HashAgg 进行落盘。当该变量设置为 `ON` 时，并发 HashAgg 将支持落盘。该变量将在功能正式发布时废弃。 |
 | [`tidb_opt_use_invisible_indexes`](/system-variables.md#tidb_opt_use_invisible_indexes-从-v800-版本开始引入) | 新增 | 控制会话中是否允许优化器选择[不可见索引](/sql-statements/sql-statement-create-index.md#不可见索引)。当修改变量为 `ON` 时，对该会话中的查询，优化器可以选择不可见索引进行查询优化。|
 |  [`tidb_schema_cache_size`](/system-variables.md#tidb_schema_cache_size-从-v800-版本开始引入)      |   新增                           |  设置缓存 schema 信息可以使用的内存上限，避免占用过多的内存。开启该功能后，将使用 LRU 算法来缓存所需的表，有效减小 schema 信息占用的内存。    |
 
