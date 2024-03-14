@@ -69,8 +69,8 @@ DDL：
 
 其他：
 
-- WATERMARK: 与上游 TiDB 集群的 TSO 含义相同，包含一个 64 位的 timestamp，用于标记一个表的同步进度，所有小于 watermark 的事件都已经发送给下游。
-- BOOTSTRAP: 包含了一张表的 schema 信息，用于给下游构建表的结构。
+- `WATERMARK`：与上游 TiDB 集群的 TSO 含义相同，包含一个 64 位的 timestamp，用于标记一个表的同步进度，所有小于 watermark 的事件都已经发送给下游。
+- `BOOTSTRAP`：包含了一张表的 schema 信息，用于给下游构建表的结构。
 
 ## Message 格式
 
