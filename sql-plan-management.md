@@ -492,7 +492,7 @@ best_plans AS (
   SELECT plan_digest, `digest`, avg_latency, 
   CONCAT('create global binding from history using plan digest "', plan_digest, '"') as binding_stmt 
   FROM stmts t1
-  WHERE avg_latency = (SELECT min(avg_latency) FROM stmts t2   -- The plan with the loweset query latency
+  WHERE avg_latency = (SELECT min(avg_latency) FROM stmts t2   -- The plan with the lowest query latency
                        WHERE t2.`digest` = t1.`digest`)
 )
 
