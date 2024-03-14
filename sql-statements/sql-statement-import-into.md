@@ -28,6 +28,7 @@ summary: TiDB 数据库中 IMPORT INTO 的使用概况。
 - 目前该语句支持导入 10 TiB 以内的数据。
 - 在导入完成前会阻塞当前连接，如果需要异步执行，可以添加 `DETACHED` 选项。
 - 每个集群上最多同时有 16 个 `IMPORT INTO` 任务（参考 [TiDB 分布式执行框架使用限制](/tidb-distributed-execution-framework.md#使用限制)）在运行，当集群没有足够资源或者达到任务数量上限时，新提交的导入任务会排队等待执行。
+- 当使用[全局排序](/tidb-global-sort.md)导入数据时，`THREAD` 参数至少需要 16。
 - 当使用[全局排序](/tidb-global-sort.md)导入数据时，单行数据的总长度不能超过 32 MiB。
 - 当使用全局排序导入数据时，如果 TiDB 集群在导入任务尚未完成时被删除了，Amazon S3 上可能会残留用于全局排序的临时数据。该场景需要手动删除这些数据，以免增加 S3 存储成本。
 - 未开启 [TiDB 分布式执行框架](/tidb-distributed-execution-framework.md)时创建的所有 `IMPORT INTO` 任务会直接在提交任务的节点上运行，后续即使开启了分布式执行框架，这些任务也不会被调度到其它 TiDB 节点上执行。开启分布式执行框架后，新创建的 `IMPORT INTO` 任务如果导入的是 S3 或 GCS 中的数据 ，则会自动调度或者 failover 到其它 TiDB 节点执行。
@@ -191,8 +192,8 @@ SET 表达式左侧只能引用 `ColumnNameOrUserVarList` 中没有的列名。�
 全局排序对内存资源的使用较高，在数据导入开始前，建议先设置 [`tidb_server_memory_limit_gc_trigger`](/system-variables.md#tidb_server_memory_limit_gc_trigger-从-v640-版本开始引入) 和 [`tidb_server_memory_limit`](/system-variables.md#tidb_server_memory_limit-从-v640-版本开始引入) 两个变量，避免频繁触发 golang GC 从而影响导入效率：
 
 ```sql
-SET GLOBAL tidb_server_memory_limit_gc_trigger=0.99;
-SET GLOBAL tidb_server_memory_limit='88%';
+SET GLOBAL tidb_server_memory_limit_gc_trigger=1;
+SET GLOBAL tidb_server_memory_limit='75%';
 ```
 
 > **注意：**
