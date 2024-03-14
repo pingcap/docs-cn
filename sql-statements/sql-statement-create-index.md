@@ -384,7 +384,7 @@ Query OK, 1 row affected (0.00 sec)
 
 ## 不可见索引
 
-不可见索引 (Invisible Indexes) 不会被查询优化器使用：
+默认情况下，不可见索引 (Invisible Indexes) 不会被查询优化器使用：
 
 ```sql
 CREATE TABLE t1 (c1 INT, c2 INT, UNIQUE(c2));
