@@ -9,7 +9,7 @@ TiCDC Simple Protocol 是一种行级别的数据变更通知协议，为监控�
 
 ## 使用方式
 
-当使用 Kafka 作为下游时，你可以在 changefeed 配置中指定 protocol 为 Simple，TiCDC 每个行变更或者 DDL 事件编码为一个 Message，向下游发送数据变更事件。
+当使用 Kafka 作为下游时，你可以在 changefeed 配置中指定 `protocol` 为 `"simple"`，TiCDC 每个行变更或者 DDL 事件编码为一个 Message，向下游发送数据变更事件。
 
 使用 Simple 时的配置样例如下所示：
 
