@@ -110,13 +110,14 @@ SET 表达式左侧只能引用 `ColumnNameOrUserVarList` 中没有的列名。�
 >
 > 如果目标集群开启了 [SEM](/system-variables.md#tidb_enable_enhanced_security)，则 fileLocation 不能指定为本地文件路径。
 
-使用 fileLocation 可以指定单个文件，也可使用通配符 `*` 来匹配需要导入的多个文件。注意通配符只能用在文件名部分，不会匹配目录，也不会递归处理子目录下相关的文件。下面以数据存储在 S3 为例：
+使用 fileLocation 可以指定单个文件，也可使用通配符 `*` 和 `[]` 来匹配需要导入的多个文件。注意通配符只能用在文件名部分，不会匹配目录，也不会递归处理子目录下相关的文件。下面以数据存储在 S3 为例：
 
 - 导入单个文件：`s3://<bucket-name>/path/to/data/foo.csv`
 - 导入指定路径下的所有文件：`s3://<bucket-name>/path/to/data/*`
 - 导入指定路径下的所有以 `.csv` 结尾的文件：`s3://<bucket-name>/path/to/data/*.csv`
 - 导入指定路径下所有以 `foo` 为前缀的文件：`s3://<bucket-name>/path/to/data/foo*`
 - 导入指定路径下以 `foo` 为前缀、以 `.csv` 结尾的文件：`s3://<bucket-name>/path/to/data/foo*.csv`
+- 导入指定路径下的 `1.csv` 和 `2.csv`: ``s3://<bucket-name>/path/to/data/[12].csv`
 
 ### Format
 
@@ -263,12 +264,18 @@ id,name,age
 IMPORT INTO t(id, name, @1) FROM '/path/to/file.csv' WITH skip_rows=1;
 ```
 
-#### 使用通配符 `*` 导入多个数据文件
+#### 使用通配符导入多个数据文件
 
 假设在 `/path/to/` 目录下有 `file-01.csv`、`file-02.csv` 和 `file-03.csv` 三个文件，如需通过 `IMPORT INTO` 将这三个文件导入到目标表 `t` 中，可使用如下 SQL 语句：
 
 ```sql
 IMPORT INTO t FROM '/path/to/file-*.csv'
+```
+
+如果只需要导入 `file-01.csv` 和 `file-03.csv` 导入到目标表，可以使用如下语句：
+
+```sql
+IMPORT INTO t FROM '/path/to/file-0[13].csv'
 ```
 
 #### 从 S3 或 GCS 导入数据
