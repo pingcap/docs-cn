@@ -1,11 +1,12 @@
 ---
 title: TiDB 加速建表
 summary: 介绍 TiDB 加速建表中的概念、原理、实现和影响。
+aliases: ['/zh/tidb/dev/ddl-v2/']
 ---
 
 # TiDB 加速建表
 
-从 v9.0.0 开始，TiDB 实现支持加速建表，可提升大批量建表的速度。
+从 v8.0.0 开始，TiDB 实现支持加速建表，可提升大批量建表的速度。
 
 在 TiDB 中，对元数据对象的更改采用的是 online DDL 算法（即在线异步变更算法）。所有的 DDL Job 会提交到 `mysql.tidb_ddl_job` 表里，由 owner 节点拉取 DDL Job，执行完 online DDL 算法中的各个阶段后，将该 DDL Job 标记为已完成，移入 `mysql.tidb_ddl_history` 表中。因此 DDL 只能在 owner 节点执行，无法线性拓展。
 
@@ -45,11 +46,11 @@ TiDB 加速建表的实现步骤如下：
 
 1. 创建 `CREATE TABLE` Job。
 
-    此步骤和 V1 版本实现相同，通过解析 `CREATE TABLE` 语句生成相应的 DDL Job。
+    通过解析 `CREATE TABLE` 语句生成相应的 DDL Job。
 
 2. 执行 `CREATE TABLE` Job。
 
-    与之前版本将 Job 插入 `mysql.tidb_ddl_job` 表中不同，新实现由接收该 `CREATE TABLE` 语句的 TiDB 节点直接执行建表语句，将表结构持久化到 TiKV 中。同时，将 `CREATE TABLE` Job 标记为已完成，插入到 `mysql.tidb_ddl_history` 表中。
+    由接收该 `CREATE TABLE` 语句的 TiDB 节点直接执行建表语句，将表结构持久化到 TiKV 中。同时，将 `CREATE TABLE` Job 标记为已完成，插入到 `mysql.tidb_ddl_history` 表中。
 
 3. 同步表信息。
 

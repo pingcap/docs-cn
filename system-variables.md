@@ -1523,7 +1523,7 @@ mysql> SELECT job_info FROM mysql.analyze_jobs ORDER BY end_time DESC LIMIT 1;
 - 取值范围：`ON` 或 `OFF`
 - 这个变量用于控制是否开启 [TiDB 加速建表](/fast-create-table.md)。将该变量的值设置为 `ON` 可以开启该功能，设置为 `OFF` 可以关闭该功能。默认值为 `OFF`。
 - 从 TiDB v8.0.0 开始，支持加速建表 [`CREATE TABLE`](/sql-statements/sql-statement-create-table.md)。
-
+- 该变量在 v7.6.0 中名称为 [`tidb_ddl_version`](https://docs.pingcap.com/zh/tidb/v7.6/system-variables#tidb_ddl_version-%E4%BB%8E-v760-%E7%89%88%E6%9C%AC%E5%BC%80%E5%A7%8B%E5%BC%95%E5%85%A5)。
 ### `tidb_default_string_match_selectivity` <span class="version-mark">从 v6.2.0 版本开始引入</span>
 
 - 作用域：SESSION | GLOBAL
