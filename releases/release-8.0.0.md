@@ -246,11 +246,13 @@ TiDB 版本：8.0.0
 
 ### 安全
 
-* TiKV 静态加密支持 GCP KMS [#8906](https://github.com/tikv/tikv/issues/8906) @[glorv](https://github.com/glorv) **tw@qiancai** <!--1612-->
+* TiKV 静态加密支持 Google [Key Management Service (Cloud KMS)](https://cloud.google.com/docs/security/key-management-deep-dive?hl=zh-cn) [#8906](https://github.com/tikv/tikv/issues/8906) @[glorv](https://github.com/glorv) **tw@qiancai** <!--1612-->
 
-    TiKV 基于静态加密功能对存储的数据进行加密，确保数据的安全性。静态加密的安全核心点在于密钥管理，此次在静态加密的密钥管理类型中引入了对 GCP KMS 的支持。TiKV 静态加密支持 GCP KMS 可以帮助用户构建基于 GCP KMS 的静态加密能力，可以保证用户数据的安全性。要是用此功能请完成 TiKV 配置文件的 `[security.encryption.master-key]` 部分的内容，即正确实现 TiKV 与 GCP KMS的关联。
+    TiKV 通过静态加密功能对存储的数据进行加密，以确保数据的安全性。静态加密的安全核心点在于密钥管理。从 v8.0.0 起，你可以通过 Google Cloud KMS 管理 TiKV 的主密钥，构建基于 Cloud KMS 的静态加密能力，从而提高用户数据的安全性。
+    
+    要启用基于 Google Cloud KMS 的静态加密，你需要在 Google Cloud 上创建一个密钥，然后在 TiKV 配置文件中添加 `[security.encryption.master-key]` 部分的配置。
 
-    更多信息，请参考[用户文档](https://github.com/pingcap/docs-cn/pull/16737)。
+    更多信息，请参考[用户文档](/encryption-at-rest.md#tikv-静态加密)。
 
 * TiDB 日志脱敏增强 [#51306](https://github.com/pingcap/tidb/issues/51306) @[xhebox](https://github.com/xhebox) **tw@hfxsd** <!--1229-->
 
