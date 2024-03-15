@@ -1666,8 +1666,8 @@ rocksdb defaultcf titan 相关的配置项。
 
 ### `shared-blob-cache` TiDB v8.0引入
 
-+ Blob文件和RocksDB Block文件共享Cache
-+ 默认值: True。启用Blob文件和RocksDB Block文件的共享缓存，Block文件具有更高的优先级。该配置在优先满足Block Cache之后将剩余的缓存用于Blob文件。
++ 是否启用 Titan Blob 文件和 RocksDB Block 文件的共享缓存
++ 默认值：`true`。当开启共享缓存时，Block 文件具有更高的优先级，TiKV 将优先满足 Block 文件的缓存需求，然后将剩余的缓存用于 Blob 文件。
 
 ### `min-gc-batch-size`
 
