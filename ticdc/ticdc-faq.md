@@ -105,16 +105,17 @@ TiCDC 为 service GC safepoint 设置的存活有效期为 24 小时，即 TiCDC
 
 ## TiCDC 是否支持输出 Canal 格式的变更数据？
 
-支持。要开启 Canal 格式输出，只需在 `--sink-uri` 中指定 protocol 为 `canal` 即可，例如：
+支持。要开启 Canal 格式输出，只需在 `--sink-uri` 中指定 protocol 为 `canal-json` 即可，例如：
 
 ```shell
-cdc cli changefeed create --server=http://127.0.0.1:8300 --sink-uri="kafka://127.0.0.1:9092/cdc-test?kafka-version=2.4.0&protocol=canal" --config changefeed.toml
+cdc cli changefeed create --server=http://127.0.0.1:8300 --sink-uri="kafka://127.0.0.1:9092/cdc-test?kafka-version=2.4.0&protocol=canal-json" --config changefeed.toml
 ```
 
 > **注意：**
 >
 > * 该功能在 TiCDC 4.0.2 版本引入。
-> * 目前 TiCDC 仅支持将 Canal 格式的变更数据输出到 MQ 类的 Sink（例如 Kafka）。
+> * 目前 TiCDC 仅支持将 Canal-JSON 格式的变更数据输出到 MQ 类的 Sink（例如 Kafka）。
+> * Canal-JSON 和 Canal 的区别在于，Canal 使用 protobuf 进行编码，而 Canal-JSON 使用 JSON 。
 
 更多信息请参考 [TiCDC Changefeed 配置参数](/ticdc/ticdc-changefeed-config.md)。
 
