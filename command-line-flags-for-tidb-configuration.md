@@ -86,8 +86,8 @@ aliases: ['/docs-cn/dev/command-line-flags-for-tidb-configuration/','/docs-cn/de
 ## `--log-general`
 
 + [General Log](/system-variables.md#tidb_general_log) 文件名
-+ 默认: ""
-+ 如果未设置该参数，general log 会默认输出到 `--log-file` 指定的文件中。
++ 默认：""
++ 如果未设置该参数，general log 会默认输出到 [`--log-file`](#--log-file) 指定的文件中。
 
 ## `--log-slow-query`
 
