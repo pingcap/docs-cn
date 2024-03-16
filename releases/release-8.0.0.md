@@ -81,13 +81,14 @@ TiDB 版本：8.0.0
 
     目前 PD 微服务仅支持通过 TiDB Operator 进行部署。当 PD 出现明显的性能瓶颈且无法升配的情况下，建议考虑使用该模式。
 
-    更多信息，请参考[用户文档](https://docs.pingcap.com/zh/tidb-in-kubernetes/dev/configure-a-tidb-cluster#部署-pd-微服务)。
+    更多信息，请参考[用户文档](https://docs.pingcap.com/zh/tidb-in-kubernetes/dev/pd-microservices)。
 
-* 增强 Titan 引擎 [#16245](https://github.com/tikv/tikv/issues/16245) @[Connor1996](https://github.com/Connor1996) **tw@qiancai** <!--1708-->
+* 增强 Titan 引擎的易用性 [#16245](https://github.com/tikv/tikv/issues/16245) @[Connor1996](https://github.com/Connor1996) **tw@qiancai** <!--1708-->
 
-    TiDB v8.0.0 版本针对 Titan 的易用性进行了增强，主要包括共享 blob cache 与 block cache，不需要再单独配置 blob cache。[`min-blob-size`](/tikv-configuration-file.md#min-blob-size)  等配置支持动态修改，以提升用户使用 Titan 引擎时的性能和灵活性。这些改进和功能增强将为用户提供更加稳定和高效的数据库服务。
+    - 默认启用 Titan Blob 文件和 RocksDB Block 文件的共享缓存（[`shared-blob-cache`](/tikv-configuration-file.md#shared-blob-cache-tidb-从-v800-版本开始引入) 默认为 `true`），无需再单独配置 [`blob-cache-size`](/tikv-configuration-file.md#blob-cache-size)。
+    - 支持动态修改 [`min-blob-size`](/tikv-configuration-file.md#min-blob-size)、[`blob-file-compression`](/tikv-configuration-file.md#blob-file-compression)、[`discardable-ratio`](/tikv-configuration-file.md#min-blob-size)，以提升用户使用 Titan 引擎时的性能和灵活性。
 
-    更多信息，请参考[用户文档](/storage-engine/titan-overview.md)。
+    更多信息，请参考[用户文档](/storage-engine/titan-configuration.md)。
     
 ### 性能
 
