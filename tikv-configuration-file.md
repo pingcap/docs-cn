@@ -1211,13 +1211,8 @@ RocksDB 相关的配置项。
 
 ### `rate-bytes-per-sec`
 
-<<<<<<< HEAD
 + RocksDB compaction rate limiter 的限制速率。
-+ 默认值：10GB
-=======
-+ 未开启 Titan 时，限制 RocksDB Compaction 的 I/O 速率，以达到在流量高峰时，限制 RocksDB Compaction 减少其 I/O 带宽和 CPU 消耗对前台读写性能的影响。开启 Titan 时，限制 RocksDB Compaction 和 Titan GC 的 I/O 速率总和。当发现在流量高峰时 RocksDB Compaction 和 Titan GC 的 I/O 和/或 CPU 消耗过大，可以根据磁盘 I/O 带宽和实际写入流量适当配置这个选项。
 + 默认值：10GiB
->>>>>>> fc50dd0907 (*: update storage unit in system variables and config file (#16844))
 + 最小值：0
 + 单位：B|KiB|MiB|GiB
 
@@ -1316,15 +1311,6 @@ Titan 相关的配置项。
 
 ### `enabled`
 
-<<<<<<< HEAD
-=======
-> **注意：**
->
-> - 从 TiDB v7.6.0 开始，参数默认值从 `false` 变更为 `true`，即新集群默认开启 Titan，以更好地支持 TiDB 宽表写入场景和 JSON。
-> - 如果集群在升级到 TiDB v7.6.0 或更高版本之前未启用 Titan，则升级后将保持原有配置，继续使用 RocksDB，不会启用 Titan。
-> - 如果集群在升级到 TiDB v7.6.0 或更高版本之前已经启用了 Titan，则升级后将维持原有配置，保持启用 Titan 引擎，并保留升级前 [`min-blob-size`](/tikv-configuration-file.md#min-blob-size) 的配置。如果升级前没有显式配置该值，则升级后仍然保持了老版本默认值 `1KiB`，以确保升级后集群配置的稳定性。
-
->>>>>>> fc50dd0907 (*: update storage unit in system variables and config file (#16844))
 + 开启 Titan 开关。
 + 默认值：false
 
@@ -1616,19 +1602,8 @@ rocksdb defaultcf titan 相关的配置项。
 
 ### `min-blob-size`
 
-<<<<<<< HEAD
 + 最小存储在 Blob 文件中 value 大小，低于该值的 value 还是存在 LSM-Tree 中。
-+ 默认值：1KB
-=======
-> **注意：**
->
-> - 为了提高宽表和 JSON 数据写入和点查性能，TiDB 从 v7.6.0 版本起默认启用 Titan，并将写入 Titan 的阈值参数 `min-blob-size` 的默认值从之前版本的 `1KiB` 调整为 `32KiB`，即当数据的 value 超过 `32KiB` 时，将存储在 Titan 中，而其他数据则继续存储在 RocksDB 中。
-> - 为了保证配置的连续性，已有集群升级到 TiDB v7.6.0 版本或者更高版本后，如果升级前用户未显式设置 `min-blob-size`，则维持使用老版本默认值 `1KiB`，以确保升级后集群配置的稳定性。
-> - 当参数被设置为小于 `32KiB` 时，TiKV 大范围扫描性能会受到一些影响。然而，如果负载主要是写入和点查为主，你可以适当调小 `min-blob-size` 的值以获取更好的写入和点查性能。
-
-+ 最小存储在 Blob 文件中 value 大小，低于该值的 value 还是存在 LSM-Tree 中。
-+ 默认值：32KiB
->>>>>>> fc50dd0907 (*: update storage unit in system variables and config file (#16844))
++ 默认值：1KiB
 + 最小值：0
 + 单位：KiB|MiB|GiB
 
@@ -1641,29 +1616,12 @@ rocksdb defaultcf titan 相关的配置项。
 >
 > Snappy 压缩文件必须遵循[官方 Snappy 格式](https://github.com/google/snappy)。不支持其他非官方压缩格式。
 
-<<<<<<< HEAD
-=======
-+ Blob 文件所使用的压缩算法，可选值：no、snappy、zlib、bz2、lz4、lz4hc、zstd。
-+ 默认值：zstd
-
-### `zstd-dict-size`
-
-+ 指定 zstd 字典大小，默认为 `"0KiB"`，表示关闭 zstd 字典压缩，也就是说 Titan 中压缩的是单个 value 值，而 RocksDB 压缩以 Block（默认值为 `32KiB`）为单位。因此当关闭字典压缩、且 value 平均小于 `32KiB` 时，Titan 的压缩率低于 RocksDB。以 JSON 内容为例，Titan 的 Store Size 可能比 RocksDB 高 30% 至 50%。实际压缩率还取决于 value 内容是否适合压缩，以及不同 value 之间的相似性。你可以通过设置 `zstd-dict-size`（比如 `16KiB`）启用 zstd 字典以大幅提高压缩率（实际 Store Size 可以低于 RocksDB），但 zstd 字典压缩在有些负载下会有 10% 左右的性能损失。
-+ 默认值：`"0KiB"`
-+ 单位：KiB|MiB|GiB
-   
->>>>>>> fc50dd0907 (*: update storage unit in system variables and config file (#16844))
 ### `blob-cache-size`
 
 + Blob 文件的 cache 大小。
 + 默认值：0GiB
 + 最小值：0
-<<<<<<< HEAD
-+ 单位：KB|MB|GB
-=======
-+ 推荐值：建议在数据库稳定运行后，根据监控把 RocksDB block cache (`storage.block-cache.capacity`) 设置为能刚好维持接近 95% 以上的 Block Cache 命中率，`blob-cache-size` 设置为 `内存大小 * 50% 再减去 block cache 的大小`。这是为了保证 block cache 足够缓存整个 RocksDB 的前提下，blob cache 尽量大。但 Blob cache 的值不应该设置过大，否则会导致 block cache 命中率大幅下降。
 + 单位：KiB|MiB|GiB
->>>>>>> fc50dd0907 (*: update storage unit in system variables and config file (#16844))
 
 ### `min-gc-batch-size`
 
