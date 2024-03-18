@@ -56,12 +56,12 @@ TiDB 版本：8.0.0
     </td>
   </tr>
   <tr>
-    <td>TiCDC adds support for the Simple protocol **tw@lilin90** <!--1646--></td>
-    <td>TiCDC introduces support for a new protocol, the Simple protocol. This protocol includes support for in-band schema tracking capabilities.</td>
+    <td>TiCDC 支持 <a href="https://docs.pingcap.com/zh/tidb/v8.0/ticdc-simple-protocol">Simple 协议</a> **tw@lilin90** <!--1646--></td>
+    <td>TiCDC 引入了对新的 Simple 协议的支持，该协议支持带内模式跟踪功能。</td>
   </tr>
   <tr>
-    <td>TiCDC adds support for the Debezium format protocol **tw@lilin90** <!--1652--></td>
-    <td>TiCDC can now publish replication events to a Kafka sink using a protocol that generates Debezium style messages.</td>
+    <td>TiCDC 支持 <a href="https://docs.pingcap.com/zh/tidb/v8.0/ticdc-debezium">Debezium 协议</a> **tw@lilin90** <!--1652--></td>
+    <td>TiCDC 现在可以使用生成 Debezium 格式消息的协议向 Kafka sink 发布复制事件。</td>
   </tr>
 </tbody>
 </table>
@@ -262,7 +262,17 @@ TiDB 版本：8.0.0
     更多信息，请参考[用户文档](链接)。
 
 ### 数据迁移
+* TiCDC 支持 Simple 协议 [#9898](https://github.com/pingcap/tiflow/issues/9898) @[3AceShowHand](https://github.com/3AceShowHand) **tw@lilin90** <!--1646-->
 
+    TiCDC 引入了对新的 Simple 协议的支持，该协议支持带内模式跟踪 (in-band schema tracking)。
+
+    更多信息，请参考[用户文档](/ticdc/ticdc-simple-protocol.md)。
+
+* TiCDC 支持 Debezium 协议 [#1799](https://github.com/pingcap/tiflow/issues/1799) @[breezewish](https://github.com/breezewish) **tw@lilin90** <!--1652-->
+
+    TiCDC 现在可以使用一种生成 Debezium 格式的事件消息的协议，将复制事件发布到 Kafka sink。这有助于简化那些当前使用 Debezium 从 MySQL 拉取数据进行下游处理的用户从 MySQL 迁移到 TiDB 的过程。
+
+    更多信息，请参考[用户文档](/ticdc/ticdc-debezium.md)。
 * TiCDC 支持通过双向复制模式 (Bi-Directional Replication, BDR) 同步 DDL 语句 (GA) [#10301](https://github.com/pingcap/tiflow/issues/10301) [#48519](https://github.com/pingcap/tidb/issues/48519) @[okJiang](https://github.com/okJiang) @[asddongmen](https://github.com/asddongmen) **tw@hfxsd** <!--1689/1682-->
 
     TiDB v7.6.0 引入了通过双向复制模式同步 DDL 语句的功能作为实验特性。以前，TiCDC 不支持复制 DDL 语句，因此要使用 TiCDC 双向复制必须将 DDL 语句分别应用到两个 TiDB 集群。有了该特性，TiCDC 可以为一个集群分配 `PRIMARY` BDR role，并将该集群的 DDL 语句复制到下游集群。该功能在 v8.0.0 成为正式功能。
@@ -374,10 +384,10 @@ TiDB 版本：8.0.0
 + TiDB
 
     - 提升 Sort 算子的数据落盘性能 [#47733](https://github.com/pingcap/tidb/issues/47733) @[xzhangxian1008](https://github.com/xzhangxian1008) **tw@Oreoxmt** <!--1609-->
-    - 优化数据落盘功能的退出机制，提升数据落盘时取消查询的性能 [#50511](https://github.com/pingcap/tidb/issues/50511) @[wshwsh12](https://github.com/wshwsh12) **tw@qiancai** <!--1635-->
+    - 优化数据落盘功能的退出机制，支持在数据落盘过程中取消查询 [#50511](https://github.com/pingcap/tidb/issues/50511) @[wshwsh12](https://github.com/wshwsh12) **tw@qiancai** <!--1635-->
     - 用多个等值条件做表连接时，支持利用匹配到部分条件的索引做 Index Join [#47233](https://github.com/pingcap/tidb/issues/47233) @[winoros](https://github.com/winoros) **tw@Oreoxmt** <!--1601-->
     - Index Join 允许被连接的一侧为聚合数据集 [#37068](https://github.com/pingcap/tidb/issues/37068) @[elsa0520](https://github.com/elsa0520) **tw@Oreoxmt** <!--1510-->
-    - Import into SQL 功能增强，原先只有在一个导入任务运行完成后才能提交第二个任务，现在可以同时提交 16 个 import into 的任务，大大提升导入的性能，同时方便用户批量导入数据到所需的目标表，提升数据导入效率。 [#49008](https://github.com/pingcap/tidb/issues/49008) @[D3Hunter](https://github.com/D3Hunter) **tw@qiancai** <!--1680-->
+    - 支持同时提交 16 个 `IMPORT INTO ... FROM FILE` 任务，方便批量导入数据到目标表，极大地提升了数据文件导入的效率和性能 [#49008](https://github.com/pingcap/tidb/issues/49008) @[D3Hunter](https://github.com/D3Hunter) **tw@qiancai** <!--1680-->
 
 + TiKV
 
