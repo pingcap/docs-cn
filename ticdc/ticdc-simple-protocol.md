@@ -609,7 +609,7 @@ TableSchema 是一个 JSON 对象，包含了表的 schema 信息，包括表名
 | `columns`   | Array  | 列信息，包括列名、数据类型、是否可为空、默认值等。                         |
 | `indexes`   | Array  | 索引信息，包括索引名、是否唯一、是否主键、索引列等。                       |
 
-你可以通过表名和表的 schema 版本号 来唯一标识一张表的 schema 信息。
+你可以通过表名和表的 schema 版本号来唯一标识一张表的 schema 信息。
 
 > **注意：**
 >
@@ -670,7 +670,7 @@ Index 是一个 JSON 对象，包含了索引的 schema 信息，包括索引名
 
 ### mysqlType 参考表格
 
-以下表格描述了 TiCDC Simple Protocol 中所有的 `mysqlType` 字段的取值范围及其在 TiDB(Golang) 和 Avro(JAVA) 中的类型。当你需要对 DML 消息进行解析时，取决于你所使用的协议和语言，可以根据该表格和 DML 消息中的 mysqlType 字段来正确地解析数据。
+以下表格描述了 TiCDC Simple Protocol 中所有的 `mysqlType` 字段的取值范围及其在 TiDB (Golang) 和 Avro (JAVA) 中的类型。当你需要对 DML 消息进行解析时，取决于你所使用的协议和语言，可以根据该表格和 DML 消息中的 mysqlType 字段来正确地解析数据。
 
 其中，TiDB Type (Golang) 代表了对应 `mysqlType` 在 TiDB 和 TiCDC (Golang) 中处理时的类型，Avro Type (Java) 代表了对应 `mysqlType` 在编码为 Avro 格式消息时的类型。
 
