@@ -69,7 +69,7 @@ Request Unit (RU) 是 TiDB 对 CPU、IO 等系统资源的统一抽象的计量�
             <td>1 KiB write request payload 消耗 1 RU</td>
         </tr>
         <tr>
-            <td>SQL CPU</td>
+            <td>CPU</td>
             <td> 3 ms 消耗 1 RU</td>
         </tr>
     </tbody>
