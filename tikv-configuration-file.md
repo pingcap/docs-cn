@@ -1262,7 +1262,7 @@ RocksDB 相关的配置项。
 
 ### `wal-bytes-per-sync`
 
-+ WAL Sync 限速速率，默认：512KiB。
++ WAL Sync 限速速率。
 + 默认值：512KiB
 + 最小值：0
 + 单位：B|KiB|MiB|GiB
@@ -1517,7 +1517,7 @@ rocksdb defaultcf、rocksdb writecf 和 rocksdb lockcf 相关的配置项。
 
 ### `max-compaction-bytes`
 
-+ 一次 compaction 最大写入字节数，默认 2GiB。
++ 一次 compaction 最大写入字节数。
 + 默认值：2GiB
 + 最小值：0
 + 单位：KiB|MiB|GiB
