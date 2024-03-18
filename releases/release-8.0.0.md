@@ -210,7 +210,7 @@ TiDB 版本：8.0.0
     
     更多信息，请参考[用户文档](/br/backup-and-restore-storages.md#存储服务其他功能支持)。
     
-* 支持在会话级将不可见索引 (Invisible Indexes) 调整为可见 [#issue号](链接) @[hawkingrei](https://github.com/hawkingrei) **tw@Oreoxmt** <!--1401-->
+* 支持在会话级将不可见索引 (Invisible Indexes) 调整为可见 [#50653](https://github.com/pingcap/tidb/issues/50653) @[hawkingrei](https://github.com/hawkingrei) **tw@Oreoxmt** <!--1401-->
 
     在优化器选择索引以优化查询执行时，默认情况下不会选择[不可见索引](/sql-statements/sql-statement-create-index.md#不可见索引)。这一机制通常用于在评估是否删除某个索引之前。如果担心删除索引可能导致性能下降，可以先将索引设置为不可见，以便在必要时快速将其恢复为可见。
     
