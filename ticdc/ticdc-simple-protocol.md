@@ -485,33 +485,34 @@ TiCDC 会把一个 BOOTSTRAP Event 编码成如下的 JSON 格式：
 ### DML
 
 - 生成时机：DML 事件会按照事务的 commitTs 顺序被发送。
-- 发送目的地：DML 事件将会按照用户配置的 Dispatch 规则发送到对应 Topic 对应 Partition。
+- 发送目的地：DML 事件将会按照用户配置的 Dispatch 规则发送到对应 Topic 的对应 Partition。
 
 ### WATERMARK
 
 - 生成时机：WATERMARK 事件会周期性地被发送，用于标记一个 changefeed 的同步进度，目前的周期为 1 秒钟。
-- 发送目的地：WATERMARK 事件将会被发送到对应 Topic 的所有的 Partition。
+- 发送目的地：WATERMARK 事件将会被发送到对应 Topic 的所有 Partition。
 
 ### BOOTSTRAP
 
 - 生成时机：
     - 创建一个新的 changefeed 后，在一张表的第一条 DML 事件发送之前，TiCDC 会发送 BOOTSTRAP 事件给下游，用于给下游构建表的结构。
     - 此外，BOOTSTRAP 事件会周期性地被发送，以供下游新加入的 consumer 构建表的结构。目前默认每 120 秒或者每间隔 10000 个消息发送一次，可以通过 sink 配置项 `send-bootstrap-interval-in-sec` 和 `send-bootstrap-in-msg-count` 来调整发送周期。
-    - 如果一张表在 30 分钟内没有收到任何新的 DML 消息，那么该表将被认为是不活跃的。我们将停止为该表发送 BOOTSTRAP 事件，直到该表收到新的 DML 事件。
-- 发送目的地：BOOTSTRAP 事件默认发送到对应 Topic 的所有的 Partition，可以通过 sink 配置项 `send-bootstrap-to-all-partition` 来调整发送策略。
+    - 如果一张表在 30 分钟内没有收到任何新的 DML 消息，那么该表将被认为是不活跃的。TiCDC 将停止为该表发送 BOOTSTRAP 事件，直到该表收到新的 DML 事件。
+- 发送目的地：BOOTSTRAP 事件默认发送到对应 Topic 的所有 Partition，可以通过 sink 配置项 `send-bootstrap-to-all-partition` 来调整发送策略。
 
 ## Message 消费方法
 
 由于 Simple Protocol 在发送 DML 消息时没有包含表的 schema 信息，因此在消费 DML 消息时，下游需要先接收到 DDL 或者 BOOTSTRAP 消息，并且把表的 schema 信息缓存起来。在接收到 DML 消息时，通过 DML 消息中的 table 名和 schemaVersion 字段来获取对应的 tableSchema 信息，从而正确地消费 DML 消息。
 
-下面将会介绍如何正确地根据 DDL 或者 BOOTSTRAP 消息来消费 DML 消息。
-根据上述文档的描述，我们已知如下信息
+下面介绍如何正确地根据 DDL 或者 BOOTSTRAP 消息来消费 DML 消息。
+
+根据上文描述，已知如下信息：
 
 - 每个 DML 消息都会包含一个 schemaVersion 字段，用于标记该 DML 消息对应的表的 schema 版本号。
 - 每个 DDL 消息都会包含一个 tableSchema 和 preTableSchema 字段，用于标记该 DDL 发生前后的表的 schema 信息。
 - 每个 BOOTSTRAP 消息都会包含一个 tableSchema 字段，用于标记该 BOOTSTRAP 对应的表的 schema 信息。
 
-接下来，我们将介绍两种场景下的消费方法。
+接下来介绍两种场景下的消费方法。
 
 ### 场景一：消费者从头开始消费
 
