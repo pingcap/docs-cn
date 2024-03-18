@@ -480,7 +480,7 @@ SHOW binding_cache status;
 
 [Statement Summary](/statement-summary-tables.md) 的表中存放了近期的 SQL 相关的执行信息，如延迟、执行次数、对应计划等。你可以通过查询 Statement Summary 表得到符合条件查询的 `plan_digest`，然后[根据历史执行计划创建绑定](/sql-plan-management.md#根据历史执行计划创建绑定)。
 
-以下示例查找过去 2 周执行次数超过 10 次、执行计划不稳定且未被绑定的 SELECT 语句，按照执行次数排序，将执行次数前 100 的查询绑定到对应的查询延迟最低的计划上。
+以下示例查找过去两周执行次数超过 10 次、执行计划不稳定且未被绑定的 `SELECT` 语句，并按照执行次数排序，将执行次数前 100 的查询绑定到对应的查询延迟最低的计划上。
 
 ```sql
 WITH stmts AS (                                                -- Gets all information
