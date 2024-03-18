@@ -74,7 +74,7 @@ DDL：
 
 ## Message 格式
 
-在 Simple Protocol 中，每一个 Message 都只会包含一个事件。当前 Simple Protocol 支持把消息编码为 JSON 格式和 Avro 格式。为了方便理解，以下的文档中我们将以 JSON 格式为例进行说明。对于 Avro 格式的消息，其字段和含义与 JSON 格式的消息一致，只是编码格式不同，更多的信息请参考参考中的 Avro Schema 定义。
+在 Simple Protocol 中，每一个 Message 都只会包含一个事件。当前 Simple Protocol 支持把消息编码为 JSON 格式和 Avro 格式。本文将以 JSON 格式为例进行说明。对于 Avro 格式的消息，其字段和含义与 JSON 格式的消息一致，只是编码格式不同，详见 [Avro Schema 定义](#avro-schema-定义)。
 
 ### DDL
 
@@ -233,11 +233,11 @@ TiCDC 会把一个 DDL Event 编码成如下的 JSON 格式：
 | --------- | ------ | ------------------------------------------------------------------------- |
 | version   | number    | 协议版本号，目前为 1。                                                     |
 | type      | string | DDL 事件类型，包括 CREATE、RENAME、CINDEX、DINDEX、ERASE、TRUNCATE、ALTER 和 QUERY。 |
-| sql       | string | DDL 语句。                                                                 
+| sql       | string | DDL 语句。                                                            |
 | commitTs  | number    | 该 DDL 在上游执行结束的 commitTs。                                           |
 | buildTs   | number    | 该消息在 TiCDC 内部被编码成功时的 UNIX 时间戳。                                |
-| tableSchema | object | 表的当前 schema 信息，具体定义请查看本页文档的参考部分                        | 
-| preTableSchema | object | DDL 执行前的表的 schema 信息，具体定义请查看本页文档的参考部分          |
+| tableSchema | object | 表的当前 schema 信息，详见 [TableSchema 定义](#tableschema-定义)。                     | 
+| preTableSchema | object | DDL 执行前的表的 schema 信息。     |
 
 除了 CREATE 类型的 DDL 事件外，其他 DDL 事件都会包含 preTableSchema 字段，用于记录 DDL 执行前的表的 schema 信息。
 
