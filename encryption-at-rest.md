@@ -129,8 +129,8 @@ endpoint = "https://kms.us-west-2.amazonaws.com"
 `key-id` 指定 KMS CMK 的密钥 ID。`region` 为 KMS CMK 的 AWS 区域名。`endpoint` 通常无需指定，除非你在使用非 AWS 提供的 AWS KMS 兼容服务或需要使用 [KMS VPC endpoint](https://docs.aws.amazon.com/kms/latest/developerguide/kms-vpc-endpoint.html)。
 
 你也可以使用 AWS [多区域键](https://docs.aws.amazon.com/zh_cn/kms/latest/developerguide/multi-region-keys-overview.html)。为此，你需要在一个特定的区域设置一个主键，并在需要的区域中添加副本密钥。
-</div>
 
+</div>
 <div label="Google Cloud KMS">
 
 **第 1 步：创建主密钥**
@@ -171,8 +171,8 @@ credential-file-path = "/path/to/credential.json"
 
 - `key-id` 指定 KMS CMK 的密钥 ID。
 - `credential-file-path` 指向验证凭据配置文件的路径，目前支持 Service Account 和 Authentication User 这两种凭据。如果 TiKV 的运行环境已配置[应用默认凭据](https://cloud.google.com/docs/authentication/application-default-credentials?hl=zh-cn)，则无需配置 `credential-file-path`。
-</div>
 
+</div>
 <div label="Azure KMS">
 
 **第 1 步：创建主密钥**
@@ -205,8 +205,8 @@ client_secret = ""
 ```
 
 请将上述配置中除 `vendor` 之外的其他字段值修改为密钥实际的对应配置。
-</div>
 
+</div>
 </SimpleTab>
 
 #### 通过文件指定主密钥
