@@ -1468,7 +1468,7 @@ mysql> SELECT job_info FROM mysql.analyze_jobs ORDER BY end_time DESC LIMIT 1;
 - 类型：整数型
 - 默认值：`0`
 - 范围：`[0, 9223372036854775807]`
-- 这个变量用来控制 TiDB schema 信息缓存的大小。该变量默认值为 `0`，表示不打开缓存限制功能。开启该功能后，TiDB 将使用 Least Recently Used (LRU) 算法缓存所需的表，有效降低 schema 信息占用的内存。
+- 这个变量用来控制 TiDB schema 信息缓存的大小。默认值为 `0`，表示不打开缓存限制功能。开启该功能后，TiDB 将使用 Least Recently Used (LRU) 算法缓存所需的表，有效降低 schema 信息占用的内存。
 
 ### `tidb_ddl_error_count_limit`
 
