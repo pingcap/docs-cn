@@ -2919,7 +2919,7 @@ v5.0 后，用户仍可以单独修改以上系统变量（会有废弃警告）
 - 默认值：`200`
 - 范围：`(0, 2147483647]`
 - 单位：毫秒
-- 这个变量用来控制 load binding 的超时时间。当 load binding 的执行时间超过该值时，会停止加载。
+- 这个变量用来控制加载 binding 的超时时间。当加载 binding 的执行时间超过该值时，会停止加载。
 
 ### `tidb_lock_unchanged_keys` <span class="version-mark">从 v7.1.1 和 v7.3.0 版本开始引入</span>
 
