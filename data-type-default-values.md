@@ -41,7 +41,9 @@ CREATE TABLE t2 (b BLOB DEFAULT (RAND()));
 
 TiDB 目前开始支持一些表达式，具体如下：
 
-* [`RAND()`](/functions-and-operators/numeric-functions-and-operators.md)、[`UUID()`](/functions-and-operators/miscellaneous-functions.md)、[`UUID_TO_BIN()`](/functions-and-operators/miscellaneous-functions.md)
+* [`RAND()`](/functions-and-operators/numeric-functions-and-operators.md)
+* [`UUID()`](/functions-and-operators/miscellaneous-functions.md)
+* [`UUID_TO_BIN()`](/functions-and-operators/miscellaneous-functions.md)
 
 从 v8.0.0 开始，在 `DEFAULT` 子句中可以使用以下表达式来设置默认值。
 
