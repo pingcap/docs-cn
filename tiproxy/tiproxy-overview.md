@@ -11,7 +11,7 @@ TiProxy 是可选组件，你也可以使用第三方的代理组件，或者直
 
 TiProxy 示意图如下：
 
-![TiProxy 架构](/media/tiproxy/tiproxy-architecture.png)
+<img src="/media/tiproxy/tiproxy-architecture.png" alt="TiProxy 架构" width="500"></img>
 
 ## 主要功能
 
@@ -23,7 +23,7 @@ TiProxy 在保持客户端连接不变的情况下，能将一台 TiDB server �
 
 如下图所示，原先客户端通过 TiProxy 连接到 TiDB 1 上，连接迁移之后，客户端实际连接到 TiDB 2 上。在 TiDB 1 即将下线或 TiDB 1 上的连接数比 TiDB 2 上的连接数超过设定阈值时，会触发连接迁移。连接迁移对客户端无感知。
 
-![TiProxy 连接迁移](/media/tiproxy/tiproxy-session-migration.png)
+<img src="/media/tiproxy/tiproxy-session-migration.png" alt="TiProxy 连接迁移" width="400"></img>
 
 连接迁移通常发生在以下场景：
 
@@ -59,7 +59,7 @@ TiProxy 不适用于以下场景：
 
 ### 部署 TiProxy
 
-1. 生成自签名证书。
+1. 对于 TiUP v1.15.0 之前的版本，需要手动生成自签名证书。
 
     为 TiDB 实例生成自签名证书，并把该证书放置到所有 TiDB 实例上，确保所有 TiDB 实例上有完全相同的证书。生成步骤请参阅[生成自签名证书](/generate-self-signed-certificates.md)。
 
@@ -67,8 +67,8 @@ TiProxy 不适用于以下场景：
 
     使用 TiProxy 时，还需要给 TiDB 实例做如下配置：
 
-    - 将 TiDB 实例的 [`security.session-token-signing-cert`](/tidb-configuration-file.md#session-token-signing-cert-从-v640-版本开始引入) 和 [`security.session-token-signing-key`](/tidb-configuration-file.md#session-token-signing-key-从-v640-版本开始引入) 配置为上述证书的路径，否则连接不能迁移。
-    - 配置 TiDB 实例的 [`graceful-wait-before-shutdown`](/tidb-configuration-file.md#graceful-wait-before-shutdown-从-v50-版本开始引入)，它的值要大于应用程序最长的事务的持续时间，否则 TiDB server 下线时客户端可能断连。请参阅[使用限制](#使用限制)。
+    - 对于 TiUP v1.15.0 之前的版本，将 TiDB 实例的 [`security.session-token-signing-cert`](/tidb-configuration-file.md#session-token-signing-cert-从-v640-版本开始引入) 和 [`security.session-token-signing-key`](/tidb-configuration-file.md#session-token-signing-key-从-v640-版本开始引入) 配置为上述证书的路径，否则连接不能迁移。
+    - 配置 TiDB 实例的 [`graceful-wait-before-shutdown`](/tidb-configuration-file.md#graceful-wait-before-shutdown-从-v50-版本开始引入)，它的值要大于应用程序最长的事务的持续时间，否则 TiDB server 下线时客户端可能断连。你可以通过 [TiDB 监控面板的 Transaction 指标](/grafana-tidb-dashboard.md#transaction)查看事务的持续时间。更多信息，请参阅[使用限制](#使用限制)。
 
     配置示例：
 
@@ -100,7 +100,7 @@ TiProxy 不适用于以下场景：
 
     ```yaml
     component_versions:
-      tiproxy: "v0.2.0"
+      tiproxy: "v1.0.0"
     server_configs:
       tiproxy:
         security.server-tls.ca: "/var/ssl/ca.pem"
@@ -202,3 +202,8 @@ TiProxy 要求客户端使用的连接器支持[认证插件](https://dev.mysql.
 | Python     | PyMySQL                 | 0.7       |
 
 注意，某些连接器调用公共的库连接数据库，这些连接器没有在表中列出，请在上述列表中查询对应的库所需的版本。例如，MySQL/Ruby 使用 libmysqlclient 连接数据库，因此要求它使用的 libmysqlclient 为 5.5.7 及以上版本。
+
+## 资源
+
+- [TiProxy 版本发布历史](https://github.com/pingcap/tiproxy/releases)
+- [TiProxy Issues](https://github.com/pingcap/tiproxy/issues)：TiProxy GitHub Issues 列表
