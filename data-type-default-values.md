@@ -39,7 +39,7 @@ TiDB 参考了该功能，支持在 `DEFAULT` 子句中指定部分表达式作�
 CREATE TABLE t2 (b BLOB DEFAULT (RAND()));
 ```
 
-TiDB 目前开始支持一些表达式，具体如下：
+TiDB 支持以下表达式：
 
 * [`RAND()`](/functions-and-operators/numeric-functions-and-operators.md)
 * [`UUID()`](/functions-and-operators/miscellaneous-functions.md)
