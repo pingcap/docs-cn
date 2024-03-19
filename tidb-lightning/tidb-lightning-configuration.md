@@ -125,9 +125,9 @@ driver = "file"
 strategy = ""
 # 控制是否开启前置冲突检测，即导入数据到 TiDB 前，先检查所需导入的数据是否存在冲突。冲突记录比例大于或等于 1% 的场景建议开启前置冲突检查，可以提升冲突检测的性能，反之建议关闭。该参数默认值为 false，表示仅开启后置冲突检测。取值为 true 时，表示同时开启前置冲突检测和后置冲突检测。仅当导入模式为物理导入模式时可以使用该参数。该参数为实验特性。
 # precheck-conflict-before-import = false
-# 控制 strategy 为 "replace" 或 "ignore" 时，能处理的冲突错误数的上限。仅在 strategy 为 "replace" 或 "ignore" 时可配置。默认为 9223372036854775807，表示几乎可以容忍所有错误。物理导入模式下仅当开启 `precheck-conflict-before-import` 时该配置项有效。
+# 控制 strategy 为 "replace" 或 "ignore" 时，能处理的冲突错误数的上限。仅在 strategy 为 "replace" 或 "ignore" 时可配置。默认为 9223372036854775807，表示几乎可以容忍所有错误。
 # threshold = 9223372036854775807
-# 控制冲突数据记录表 (`conflict_records`) 中记录的冲突数据的条数上限，默认为 100。在物理导入模式下，如果 `precheck-conflict-before-import` 为 true，当 strategy 为 "ignore" 时会记录被忽略写入的冲突记录，当 strategy 为 "replace" 时则会记录被覆盖的冲突记录；如果 `precheck-conflict-before-import` 为 false，则不会记录任何数据。在逻辑导入模式下，会记录冲突记录，但当 strategy 为 "replace" 时，无法记录被覆盖的冲突记录。
+# 控制冲突数据记录表 (`conflict_records`) 中记录的冲突数据的条数上限，默认为 100。在物理导入模式下，当 strategy 为 "ignore" 时会记录被忽略写入的冲突记录，当 strategy 为 "replace" 时则会记录被覆盖的冲突记录。在逻辑导入模式下，会记录冲突记录，但当 strategy 为 "replace" 时，无法记录被覆盖的冲突记录。
 # max-record-rows = 100
 
 [tikv-importer]
