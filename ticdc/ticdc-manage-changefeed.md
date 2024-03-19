@@ -82,7 +82,7 @@ cdc cli changefeed query --server=http://10.0.10.25:8300 --changefeed-id=simple-
 ```shell
 {
   "info": {
-    "sink-uri": "mysql://127.0.0.1:3306/?max-txn-row=20\u0026worker-number=4",
+    "sink-uri": "mysql://127.0.0.1:3306/?max-txn-row=20\u0026worker-count=4",
     "opts": {},
     "create-time": "2020-08-27T10:33:41.687983832+08:00",
     "start-ts": 419036036249681921,
@@ -196,7 +196,7 @@ TiCDC 支持非动态修改同步任务配置，修改 changefeed 配置需要�
 
 ```shell
 cdc cli changefeed pause -c test-cf --server=http://10.0.10.25:8300
-cdc cli changefeed update -c test-cf --server=http://10.0.10.25:8300 --sink-uri="mysql://127.0.0.1:3306/?max-txn-row=20&worker-number=8" --config=changefeed.toml
+cdc cli changefeed update -c test-cf --server=http://10.0.10.25:8300 --sink-uri="mysql://127.0.0.1:3306/?max-txn-row=20&worker-count=8" --config=changefeed.toml
 cdc cli changefeed resume -c test-cf --server=http://10.0.10.25:8300
 ```
 
