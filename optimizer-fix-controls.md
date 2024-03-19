@@ -26,6 +26,12 @@ SET SESSION tidb_opt_fix_control = '44262:ON,44389:ON';
 
 ## Optimizer Fix Controls 参考
 
+### [`33031`](https://github.com/pingcap/tidb/issues/33031) <span class="version-mark">从 v8.0.0 版本开始引入</span>
+
+- 默认值：`OFF`
+- 可选值：`ON`、`OFF`
+- 此变量控制是否允许对分区表进行计划缓存。如果设置为 `ON`，则 [Prepared 语句执行计划缓存](/sql-prepared-plan-cache.md)和[非 Prepared 语句执行计划缓存](/sql-non-prepared-plan-cache.md)都不会对[分区表](/partitioned-table.md)启用。
+
 ### [`44262`](https://github.com/pingcap/tidb/issues/44262) <span class="version-mark">从 v6.5.3 和 v7.2.0 版本开始引入</span>
 
 - 默认值：`OFF`
