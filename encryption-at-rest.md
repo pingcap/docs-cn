@@ -52,7 +52,7 @@ TiKV，TiDB 和 PD 信息日志中可能包含用于调试的用户数据。信�
 
 ## TiKV 静态加密
 
-TiKV 当前支持的加密算法包括 AES128-CTR、AES192-CTR、AES256-CTR 和 SM4-CTR (仅 v6.3.0 及之后版本)。TiKV 使用信封加密 (envelop encryption)，所以启用加密后，TiKV 使用以下两种类型的密钥：
+TiKV 当前支持的加密算法包括 AES128-CTR、AES192-CTR、AES256-CTR 和 SM4-CTR（仅 v6.3.0 及之后版本）。TiKV 使用信封加密 (envelop encryption)，所以启用加密后，TiKV 使用以下两种类型的密钥：
 
 * 主密钥 (master key)：主密钥由用户提供，用于加密 TiKV 生成的数据密钥。用户在 TiKV 外部进行主密钥的管理。
 * 数据密钥 (data key)：数据密钥由 TiKV 生成，是实际用于加密的密钥。
@@ -150,7 +150,7 @@ endpoint = "https://kms.us-west-2.amazonaws.com"
 
 ```shell
 gcloud kms keyrings create "key-ring-name" --location "global"
-gcloud kms keys create "key-name" --keyring "key-ring-name" --location "global" --purpose "encryption" --rotation-period "30d" 
+gcloud kms keys create "key-name" --keyring "key-ring-name" --location "global" --purpose "encryption" --rotation-period "30d"
 ```
 
 请将上述命令中的 `"key-ring-name"`、`"key-name"`、`"global"`、`"30d"` 字段的值替换为实际密钥对应的名称和配置。
