@@ -86,7 +86,7 @@ TiDB 版本：8.0.0
 * 增强 Titan 引擎的易用性 [#16245](https://github.com/tikv/tikv/issues/16245) @[Connor1996](https://github.com/Connor1996) **tw@qiancai** <!--1708-->
 
     - 默认启用 Titan Blob 文件和 RocksDB Block 文件的共享缓存（[`shared-blob-cache`](/tikv-configuration-file.md#shared-blob-cache-tidb-从-v800-版本开始引入) 默认为 `true`），无需再单独配置 [`blob-cache-size`](/tikv-configuration-file.md#blob-cache-size)。
-    - 支持动态修改 [`min-blob-size`](/tikv-configuration-file.md#min-blob-size)、[`blob-file-compression`](/tikv-configuration-file.md#blob-file-compression)、[`discardable-ratio`](/tikv-configuration-file.md#min-blob-size)，以提升用户使用 Titan 引擎时的性能和灵活性。
+    - 支持动态修改 [`min-blob-size`](/tikv-configuration-file.md#min-blob-size)、[`blob-file-compression`](/tikv-configuration-file.md#blob-file-compression)、[`discardable-ratio`](/tikv-configuration-file.md#min-blob-size)，以提升使用 Titan 引擎时的性能和灵活性。
 
     更多信息，请参考[用户文档](/storage-engine/titan-configuration.md)。
     
@@ -119,7 +119,7 @@ TiDB 版本：8.0.0
 
     维持优化器统计信息的时效性是稳定数据库性能的关键，绝大多数用户依赖 TiDB 提供的[自动统计信息收集](/statistics.md#自动更新)来保持统计信息的更新。自动统计信息收集轮询所有对象的统计信息状态，并把健康度不足的对象加入队列，逐个收集并更新。在之前的版本中，这些对象的收集顺序是随机的，可能导致更需要更新的对象等待时间过长，从而引发潜在的数据库性能回退。
 
-    从 v8.0.0 开始，自动统计信息收集引入了优先级队列，根据多种条件动态地为对象分配优先级，确保更有收集价值的对象优先被处理，比如新创建的索引、发生分区变更的分区表等。健康度较低的对象也会优先考虑安排在队列前端。这一改进优化了收集顺序的合理性，能减少一部分统计信息过旧引发的性能问题，进而提升了数据库稳定性。
+    从 v8.0.0 开始，自动统计信息收集引入了优先级队列，根据多种条件动态地为对象分配优先级，确保更有收集价值的对象优先被处理，比如新创建的索引、发生分区变更的分区表等。同时，TiDB 也会优先处理那些健康度较低的表，将它们安排在队列的前端。这一改进优化了收集顺序的合理性，能减少一部分统计信息过旧引发的性能问题，进而提升了数据库稳定性。
 
     更多信息，请参考[用户文档](/system-variables.md#tidb_enable_auto_analyze_priority_queue-从-v800-版本开始引入)。
 
@@ -128,7 +128,7 @@ TiDB 版本：8.0.0
     TiDB 支持[执行计划缓存](/sql-prepared-plan-cache.md)，能够有效降低交易类业务系统的处理时延，是提升性能的重要手段。在 v8.0.0 中，TiDB 解除了执行计划缓存的几个限制，含有以下内容的执行计划均能够被缓存：
 
     - [分区表](/partitioned-table.md)
-    - [生成列](/generated-columns.md)，包含依赖生成列的对象（比如[多值索引](/choose-index.md)）
+    - [生成列](/generated-columns.md)，包含依赖生成列的对象（比如[多值索引](/choose-index.md#多值索引与执行计划缓存)）
 
   该增强扩展了执行计划缓存的使用场景，提升了复杂场景下数据库的整体性能。
 
@@ -222,11 +222,11 @@ TiDB 版本：8.0.0
 
     general log 是与 MySQL 兼容的功能，开启后能够记录数据库执行的所有 SQL 语句，为问题诊断提供依据。TiDB 也支持此功能，你可以通过设置变量 [`tidb_general_log`](/system-variables.md#tidb_general_log) 开启该功能。在之前的版本中，general log 的内容只能和其他信息一起写入实例日志中，这对于需要长期保存日志的用户来说并不方便。
 
-    从 v8.0.0 开始，你可以通过配置项 [`log.general-log-file`](/tidb-configuration-file.md#general-log-file) 指定一个文件名，将 general log 单独写入该文件。和实例日志一样，general log 也遵循日志的轮询和保存策略。
+    从 v8.0.0 开始，你可以通过配置项 [`log.general-log-file`](/tidb-configuration-file.md#general-log-file-从-v800-版本开始引入) 指定一个文件名，将 general log 单独写入该文件。和实例日志一样，general log 也遵循日志的轮询和保存策略。
    
-    另外，为了减少历史日志文件所占用的磁盘空间，TiDB 在 v8.0.0 支持了原生的日志压缩选项。你可以将配置项 [`log.file.compression`](/tidb-configuration-file.md#compression) 设置为 `gzip`，使得轮询出的历史日志自动以 [`gzip`](https://www.gzip.org/) 格式压缩。
+    另外，为了减少历史日志文件所占用的磁盘空间，TiDB 在 v8.0.0 支持了原生的日志压缩选项。你可以将配置项 [`log.file.compression`](/tidb-configuration-file.md#compression-从-v800-版本开始引入) 设置为 `gzip`，使得轮询出的历史日志自动以 [`gzip`](https://www.gzip.org/) 格式压缩。
 
-    更多信息，请参考[用户文档](/tidb-configuration-file.md#general-log-file)。
+    更多信息，请参考[用户文档](/tidb-configuration-file.md#general-log-file-从-v800-版本开始引入)。
         
 ### 可观测性
 
@@ -293,11 +293,13 @@ TiDB 版本：8.0.0
 
     更多信息，请参考[用户文档](sql-statements/sql-statement-import-into.md)。        
     
-* TiDB Lightning 冲突策略简化，同时支持 Replace 的方式处理冲突的数据（实验特性） [#51036](https://github.com/pingcap/tidb/issues/51036) @[lyzx2001](https://github.com/lyzx2001) **tw@qiancai** <!--1684-->
+* TiDB Lightning 简化冲突处理策略，同时支持以 "replace" 方式处理冲突数据（实验特性） [#51036](https://github.com/pingcap/tidb/issues/51036) @[lyzx2001](https://github.com/lyzx2001) **tw@qiancai** <!--1684-->
 
-    原先 TiDB Lightning 逻辑导入模式时有一套冲突处理策略，物理导入模式时有两套冲突策略，不易理解和配置。从 v8.0.0 开始，将这三种冲突策略合并成了一套，简化了配置操作。同时在物理导入模式下，还首次引入了通过 `replace` 的方式处理导入过程中冲突的数据，遇到主键或唯一键冲突的数据时，保留最新的数据、覆盖旧的数据。
+    在之前的版本中，TiDB Lightning 逻辑导入模式有一套[数据冲突处理策略](/tidb-lightning/tidb-lightning-logical-import-mode-usage.md)，物理导入模式时有[两套数据冲突处理策略](/tidb-lightning/tidb-lightning-physical-import-mode-usage.md#冲突数据检测)，不易理解和配置。
+    
+    从 v8.0.0 开始，TiDB Lightning 废弃了物理导入模式下的[旧版冲突检测](/tidb-lightning/tidb-lightning-physical-import-mode-usage.md#旧版冲突检测从-v800-开始已被废弃)策略，支持通过 [`conflict.strategy`](tidb-lightning/tidb-lightning-configuration.md) 参数统一控制逻辑导入和物理导入模式的冲突检测策略，并简化了该参数的配置。此外，在物理导入模式下，当导入遇到主键或唯一键冲突的数据时，`replace` 策略支持保留最新的数据、覆盖旧的数据。
 
-    更多信息，请参考[用户文档](链接)。    
+    更多信息，请参考[用户文档](tidb-lightning/tidb-lightning-configuration.md)。    
     
 * 全局排序成为正式功能 (GA)，可显著提升 `IMPORT INTO` 任务的导入性能和稳定性，支持 40 TiB 的数据导入 [#45719](https://github.com/pingcap/tidb/issues/45719) @[lance6716](https://github.com/lance6716) **tw@qiancai** <!--1580-->
 
@@ -333,15 +335,14 @@ TiDB 版本：8.0.0
 |--------|------------------------------|------|
 | [`tidb_disable_txn_auto_retry`](/system-variables.md#tidb_disable_txn_auto_retry)  | 废弃 | 从 v8.0.0 开始，该系统变量被废弃，TiDB 不再支持乐观事务的自动重试。推荐使用[悲观事务模式](/pessimistic-transaction.md)。如果使用乐观事务模式发生冲突，请在应用里捕获错误并重试。 |
 | `tidb_ddl_version` | 更名 | 用于控制是否开启 TiDB DDL V2。为了使变量名称更直观，从 v8.0.0 起，该参数更名为 [`tidb_enable_fast_create_table`](/system-variables.md#tidb_enable_fast_create_table-从-v800-版本开始引入) 。 |
-| [`initial-scan-rate-limit`](/system-variables.md#initial-scan-rate-limit-从-v620-版本开始引入) | 修改 | 增加了最小值 `1MiB` 的限制。 |
 | [`tidb_enable_collect_execution_info`](/system-variables.md#tidb_enable_collect_execution_info) | 修改 | 增加控制是否维护[访问索引有关的统计信息](/information-schema/information-schema-tidb-index-usage.md)，默认值为 `ON`。 |
 | [`tidb_redact_log`](/system-variables.md#tidb_redact_log) | 修改 | 控制在记录 TiDB 日志和慢日志时如何处理 SAL 文本中的用户信息，可选值为 `OFF`、`ON`，以分别支持明文日志信息、屏蔽日志信息。为了提供更丰富的处理日志中用户信息的方式，v8.0.0 中增加了 `MARKER` 选项，支持标记日志信息。当变量值为 `MARKER` 时，日志中的用户信息将被标记处理，可以在之后决定是否对日志信息进行脱敏。 |
-| [`div_precision_increment`](/system-variables.md#div_precision_increment-从-v800-版本开始引入) | 新增 | 用于指定除法 `/` 运算结果的小数位数。 |
+| [`div_precision_increment`](/system-variables.md#div_precision_increment-从-v800-版本开始引入) | 新增 | 用于指定使用运算符 `/` 执行除法操作时，结果增加的小数位数。该功能与 MySQL 保持一致。 |
 | [`tidb_dml_type`](/system-variables.md#tidb_dml_type-从-v800-版本开始引入) | 新增 | 设置 DML 语句的执行方式，可选值为 `"standard"` 和 `"bulk"`。 |
 | [`tidb_enable_auto_analyze_priority_queue`](/system-variables.md#tidb_enable_auto_analyze_priority_queue-从-v800-版本开始引入) | 新增 | 控制是否启用优先队列来调度自动收集统计信息的任务。开启该变量后，TiDB 会优先收集那些最需要收集统计信息的表的统计信息。 |
 | [`tidb_enable_concurrent_hashagg_spill`](/system-variables.md#tidb_enable_concurrent_hashagg_spill-从-v800-版本开始引入) | 新增 | 控制 TiDB 是否支持并发 HashAgg 进行落盘。当该变量设置为 `ON` 时，并发 HashAgg 将支持落盘。该变量将在功能正式发布时废弃。 |
 | [`tidb_enable_fast_create_table`](/system-variables.md#tidb_enable_fast_create_table-从-v800-版本开始引入) | 新增 | 用于控制是否开启 [TiDB 加速建表](/fast-create-table.md)。将该变量的值设置为 `ON` 可以开启该功能，设置为 `OFF` 关闭该功能。默认值为 `OFF`。开启后，将使用 TiDB 加速建表执行 DDL 语句。 |
-| [`tidb_load_binding_timeout`](/system-variables.md#tidb_load_binding_timeout-从-v800-版本开始引入) | 新增 | 控制 load binding 的超时时间。当 load binding 的执行时间超过该值时，会停止加载。 |
+| [`tidb_load_binding_timeout`](/system-variables.md#tidb_load_binding_timeout-从-v800-版本开始引入) | 新增 | 控制加载 binding 的超时时间。当加载 binding 的执行时间超过该值时，会停止加载。 |
 | [`tidb_low_resolution_tso_update_interval`](/system-variables.md#tidb_low_resolution_tso_update_interval-从-v800-版本开始引入) | 新增 | 设置更新 TiDB [缓存 timestamp](/system-variables.md#tidb_low_resolution_tso) 的更新时间间隔。 |
 | [`tidb_opt_use_invisible_indexes`](/system-variables.md#tidb_opt_use_invisible_indexes-从-v800-版本开始引入) | 新增 | 控制会话中是否允许优化器选择[不可见索引](/sql-statements/sql-statement-create-index.md#不可见索引)。当修改变量为 `ON` 时，对该会话中的查询，优化器可以选择不可见索引进行查询优化。|
 | [`tidb_schema_cache_size`](/system-variables.md#tidb_schema_cache_size-从-v800-版本开始引入)  |  新增 |  设置缓存 schema 信息可以使用的内存上限，避免占用过多的内存。开启该功能后，将使用 LRU 算法来缓存所需的表，有效减小 schema 信息占用的内存。    |
@@ -355,6 +356,7 @@ TiDB 版本：8.0.0
 | TiDB | [`log.file.compression`](/tidb-configuration-file.md#compression-从-v800-版本开始引入) | 新增 | 指定轮询日志的压缩格式。默认为空，即不压缩轮询日志。 |
 | TiDB | [`log.general-log-file`](/tidb-configuration-file.md#general-log-file-从-v800-版本开始引入) | 新增 | 指定 general log 的保存文件。默认为空，general log 将会写入实例文件。 |
 | TiDB | [`tikv-client.enable-replica-selector-v2`](/tidb-configuration-file.md#enable-replica-selector-v2-从-v800-版本开始引入) | 新增 | 控制是否使用 replica selector v2 版本，默认值为 `true`。 |
+| TiKV | [`log-backup.initial-scan-rate-limit`](/system-variables.md#initial-scan-rate-limit-从-v620-版本开始引入) | 修改 | 增加了最小值为 `1MiB` 的限制。 |
 | TiKV | [`raftstore.store-io-pool-size`](/tikv-configuration-file.md#store-io-pool-size-从-v530-版本开始引入) | 修改 | 为了提升 TiKV 性能，该参数默认值从 `0` 修改为 `1`，表示 StoreWriter 线程池的大小默认为 `1`。|
 | TiKV | [`security.encryption.master-key.vendor`] | 新增 | 指定住密钥的服务商类型，支持可选值为 `gcp`、`azure` |
 | TiDB Lightning  | [`tikv-importer.duplicate-resolution`](/tidb-lightning/tidb-lightning-physical-import-mode-usage.md#旧版冲突检测从-v800-开始已被废弃)  | 废弃 | 用于在物理导入模式下设置是否检测和解决唯一键冲突的记录。从 v8.0.0 开始使用新参数 [`conflict.strategy`](/tidb-lightning/tidb-lightning-configuration.md#tidb-lightning-任务配置) 替代。 |
