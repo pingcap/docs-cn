@@ -652,7 +652,7 @@ PARTITION BY KEY(fname, store_id)
 PARTITIONS 4;
 ```
 
-TiDB 也和 MySQL 一样支持分区字段列表 `PARTITION BY KEY` 为空的 Key 分区表，下面的语句将创建一个以主键 `id` 为分区键的分区表：
+和 MySQL 一样，TiDB 支持分区字段列表 `PARTITION BY KEY` 为空的 Key 分区表。下面的语句将创建一个以主键 `id` 为分区键的分区表：
 
 ```sql
 CREATE TABLE employees (
@@ -669,9 +669,9 @@ PARTITION BY KEY()
 PARTITIONS 4;
 ```
 
-如果没有主键但有唯一键，则使用唯一键作为分区键：
+如果表中不存在主键但有唯一键时，使用唯一键作为分区键：
 
-```
+```sql
 CREATE TABLE k1 (
     id INT NOT NULL,
     name VARCHAR(20),
@@ -681,7 +681,7 @@ PARTITION BY KEY()
 PARTITIONS 2;
 ```
 
-但是，如果唯一键列未定义为 `NOT NULL`，则上述语句将失败。
+但是，如果唯一键列未被定义为 `NOT NULL`，上述语句将失败。
 
 ### TiDB 对 Linear Hash 分区的处理
 
