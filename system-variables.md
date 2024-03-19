@@ -415,7 +415,6 @@ mysql> SELECT * FROM t1;
 - 类型：枚举型
 - 默认值：`mysql_native_password`
 - 可选值：`mysql_native_password`，`caching_sha2_password`，`tidb_sm3_password`，`tidb_auth_token`，`authentication_ldap_sasl` 或 `authentication_ldap_simple`。
-- `tidb_auth_token` 认证方式仅用于 TiDB Cloud 内部实现，**不要设置为该值**。
 - 服务器和客户端建立连接时，这个变量用于设置服务器对外通告的默认身份验证方式。如要了解该变量的其他可选值，参见[可用的身份验证插件](/security-compatibility-with-mysql.md#可用的身份验证插件)。
 - 若要在用户登录时使用 `tidb_sm3_password` 插件，需要使用 [TiDB-JDBC](https://github.com/pingcap/mysql-connector-j/tree/release/8.0-sm3) 进行连接。
 
@@ -462,6 +461,16 @@ mysql> SELECT * FROM t1;
 - 该变量是一个只读变量，用来显示 TiDB 是否会直接断开密码已过期用户的连接。当其值为 `ON`，表示 TiDB 会断开密码已过期用户的连接。当其值为 `OFF`，表示 TiDB 会将密码已过期用户的连接置于“沙盒模式”，允许该用户建立连接并执行密码重置操作。
 - 如果需要改变 TiDB 对密码已过期用户连接的处理方式，请在 TiDB 配置文件中的 `[security]` 部分修改 [`disconnect-on-expired-password`](/tidb-configuration-file.md#disconnect-on-expired-password-从-v650-版本开始引入) 选项。
 
+### `div_precision_increment` <span class="version-mark">从 v8.0.0 版本开始引入</span>
+
+- 作用域：SESSION | GLOBAL
+- 是否持久化到集群：是
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：是
+- 类型：整数型
+- 默认值：`4`
+- 范围：`[0, 30]`
+- 这个变量用于控制使用运算符 `/` 执行除法操作时，结果增加的小数位数。该功能与 MySQL 保持一致。
+
 ### `error_count`
 
 - 作用域：SESSION
@@ -487,7 +496,7 @@ mysql> SELECT * FROM t1;
 - 类型：整数型
 - 默认值：`1024`
 - 取值范围：`[4, 18446744073709551615]`
-- 表示 `GROUP_CONCAT()` 函数中，项目的最大缓冲区大小。
+- 表示 `GROUP_CONCAT()` 函数缓冲区的最大长度。
 
 ### `have_openssl`
 
@@ -782,6 +791,7 @@ mysql> SHOW GLOBAL VARIABLES LIKE 'max_prepared_stmt_count';
 - 该变量控制是否所有 TiDB 的连接都在本地 socket 上进行通信，或使用 TLS。详情见[为 TiDB 客户端服务端间通信开启加密传输](/enable-tls-between-clients-and-servers.md)。
 - 该变量设置为 `ON` 时，必须使用开启 TLS 的会话连接到 TiDB，防止在 TLS 配置不正确时出现锁定的情况。
 - 在 v6.1.0 之前这个开关通过 TiDB 配置文件 (`security.require-secure-transport`) 进行配置，升级到 v6.1.0 时会自动继承原有设置。
+- 从 v6.5.6、v7.1.2、v7.5.1 和 v8.0.0 起，当启用了安全增强模式 (SEM) 时，禁止将 `security.require-secure-transport` 设置为 `ON`。
 
 ### `skip_name_resolve` <span class="version-mark">从 v5.2.0 版本开始引入</span>
 
@@ -1542,7 +1552,7 @@ mysql> SELECT job_info FROM mysql.analyze_jobs ORDER BY end_time DESC LIMIT 1;
 
 > **警告：**
 >
-> 该变量将从 TiDB v8.0.0 开始废弃，废弃后不再支持乐观事务的自动重试。作为替代，当事务冲突时，请在应用捕获错误并重试，或改用[悲观事务模式](/pessimistic-transaction.md)。
+> 从 v8.0.0 开始，该变量被废弃。废弃后，TiDB 不再支持乐观事务的自动重试。作为替代，当使用乐观事务模式发生冲突时，请在应用里捕获错误并重试，或改用[悲观事务模式](/pessimistic-transaction.md)。
 
 - 作用域：SESSION | GLOBAL
 - 是否持久化到集群：是
@@ -1647,6 +1657,15 @@ mysql> SELECT job_info FROM mysql.analyze_jobs ORDER BY end_time DESC LIMIT 1;
 - 该变量控制 TiDB 是否以后台操作自动更新表的统计信息。
 - 在 v6.1.0 之前这个开关通过 TiDB 配置文件 (`performance.run-auto-analyze`) 进行配置，升级到 v6.1.0 时会自动继承原有设置。
 
+### `tidb_enable_auto_analyze_priority_queue` <span class="version-mark">从 v8.0.0 版本开始引入</span>
+
+- 作用域：GLOBAL
+- 是否持久化到集群：是
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：否
+- 类型：布尔型
+- 默认值：`ON`
+- 该变量控制是否启用优先队列来调度自动收集统计信息的任务。开启该变量后，TiDB 会优先收集那些更有收集价值的表，例如新创建的索引、发生分区变更的分区表等。同时，TiDB 也会优先处理那些健康度较低的表，将它们安排在队列的前端。
+
 ### `tidb_enable_auto_increment_in_generated`
 
 - 作用域：SESSION | GLOBAL
@@ -1719,7 +1738,7 @@ mysql> SELECT job_info FROM mysql.analyze_jobs ORDER BY end_time DESC LIMIT 1;
 - 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：否
 - 类型：布尔型
 - 默认值：`ON`
-- 这个变量用于控制是否同时将各个执行算子的执行信息记录入 slow query log 中。
+- 这个变量用于控制是否同时将各个执行算子的执行信息记录入 slow query log 中，以及是否维护[访问索引有关的统计信息](/information-schema/information-schema-tidb-index-usage.md)。
 
 ### `tidb_enable_column_tracking` <span class="version-mark">从 v5.4.0 版本开始引入</span>
 
@@ -2505,6 +2524,10 @@ v5.0 后，用户仍可以单独修改以上系统变量（会有废弃警告）
 - 这个变量用于改变 TiDB server 上执行的语句的默认优先级。例如，你可以通过设置该变量来确保正在执行 OLAP 查询的用户优先级低于正在执行 OLTP 查询的用户。
 - 默认值 `NO_PRIORITY` 表示不强制改变执行语句的优先级。
 
+> **注意：**
+>
+> TiDB 从 v6.6.0 版本开始支持[使用资源管控 (Resource Control) 实现资源隔离](/tidb-resource-control.md)功能。该功能可以将不同优先级的语句放在不同的资源组中执行，并为这些资源组分配不同的配额和优先级，可以达到更好的资源管控效果。在开启资源管控功能后，语句的调度主要受资源组的控制，`PRIORITY` 将不再生效。建议在支持资源管控的版本优先使用资源管控功能。
+
 ### `tidb_gc_concurrency` <span class="version-mark">从 v5.0 版本开始引入</span>
 
 - 作用域：GLOBAL
@@ -2906,6 +2929,17 @@ v5.0 后，用户仍可以单独修改以上系统变量（会有废弃警告）
 - 类型：字符串
 - 这个变量用来设置基于负载的 replica read 的触发阈值。当 leader 节点的预估排队时间超过阈值时，TiDB 会优先从 follower 节点读取数据。格式为时间，例如 `"100ms"` 或 `"1s"`。详情见 [TiDB 热点问题处理](/troubleshoot-hot-spot-issues.md#打散读热点)。
 
+### `tidb_load_binding_timeout` <span class="version-mark">从 v8.0.0 版本开始引入</span>
+
+- 作用域：GLOBAL
+- 是否持久化到集群：是
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：否
+- 类型：整数型
+- 默认值：`200`
+- 范围：`(0, 2147483647]`
+- 单位：毫秒
+- 这个变量用来控制加载 binding 的超时时间。当加载 binding 的执行时间超过该值时，会停止加载。
+
 ### `tidb_lock_unchanged_keys` <span class="version-mark">从 v7.1.1 和 v7.3.0 版本开始引入</span>
 
 - 作用域：SESSION | GLOBAL
@@ -2934,8 +2968,19 @@ v5.0 后，用户仍可以单独修改以上系统变量（会有废弃警告）
 - 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：否
 - 类型：布尔型
 - 默认值：`OFF`
-- 这个变量用来设置是否启用低精度 TSO 特性。开启该功能之后，新事务会使用一个每 2s 更新一次的 TS 来读取数据。
+- 这个变量用来设置是否启用低精度 TSO 特性。开启该功能之后，TiDB 使用缓存 Timestamp 来读取数据。缓存 Timestamp 默认每 2 秒更新一次。从 v8.0.0 开始，你可以通过 [`tidb_low_resolution_tso_update_interval`](#tidb_low_resolution_tso_update_interval-从-v800-版本开始引入) 配置缓存 Timestamp 的更新时间间隔。
 - 主要场景是在可以容忍读到旧数据的情况下，降低小的只读事务获取 TSO 的开销。
+
+### `tidb_low_resolution_tso_update_interval` <span class="version-mark">从 v8.0.0 版本开始引入</span>
+
+- 作用域：GLOBAL
+- 是否持久化到集群：是
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：否
+- 类型：整数型
+- 默认值：`2000`
+- 范围：`[10, 60000]`
+- 这个变量用来设置低精度 TSO 特性中使用的缓存 Timestamp 的更新时间间隔，单位为毫秒。
+- 该变量只在低精度 TSO 特性 [`tidb_low_resolution_tso`](#tidb_low_resolution_tso) 启用时有效。
 
 ### `tidb_nontransactional_ignore_error` <span class="version-mark">从 v6.1.0 版本开始引入</span>
 
@@ -3850,6 +3895,14 @@ SHOW WARNINGS;
 - 默认值：`24.0`
 - 表示 TiFlash 计算的并发数。该变量是[代价模型](/cost-model.md)内部使用的变量，**不建议**修改该变量的值。
 
+## `tidb_opt_use_invisible_indexes` <span class="version-mark">从 v8.0.0 版本开始引入</span>
+
+- 作用域：SESSION
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：是
+- 类型：布尔型
+- 默认值：`OFF`
+- 这个变量用来设置是否允许优化器选择[不可见索引 (Invisible Index)](/sql-statements/sql-statement-create-index.md#不可见索引)。默认情况下，不可见索引由 DML 语句维护，不会被查询优化器使用。当修改变量为 `ON` 时，对该会话中的查询，优化器可以选择不可见索引进行查询优化。
+
 ### `tidb_opt_write_row_id`
 
 - 作用域：SESSION
@@ -3931,8 +3984,8 @@ SHOW WARNINGS;
 - 作用域：SESSION | GLOBAL
 - 是否持久化到集群：是
 - 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：是
-- 默认值：`2097152`（即 2 MB）
-- 取值范围：`[0, 9223372036854775807]`，单位为 Byte。支持带单位的内存格式“KB|MB|GB|TB”。`0` 表示表示不设限制。
+- 默认值：`2097152`（即 2 MiB）
+- 取值范围：`[0, 9223372036854775807]`，单位为 Byte。支持带单位的内存格式 "KiB|MiB|GiB|TiB"。`0` 表示表示不设限制。
 - 这个变量用来控制可以缓存的 Prepare 或非 Prepare 语句执行计划的最大大小。超过该值的执行计划将不会被缓存到 Plan Cache 中。详情请参考 [Prepare 语句执行计划缓存](/sql-prepared-plan-cache.md#prepared-plan-cache-的内存管理)和[非 Prepare 语句执行计划缓存](/sql-non-prepared-plan-cache.md#使用方法)。
 
 ### `tidb_pprof_sql_cpu` <span class="version-mark">从 v4.0 版本开始引入</span>
@@ -4137,10 +4190,17 @@ EXPLAIN FORMAT='brief' SELECT COUNT(1) FROM t WHERE a = 1 AND b IS NOT NULL;
 - 作用域：SESSION | GLOBAL
 - 是否持久化到集群：是
 - 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：否
-- 类型：布尔型
+- 类型：枚举型
 - 默认值：`OFF`
+- 可选值：`OFF`、`ON`、`MARKER`
 - 这个变量用于控制在记录 TiDB 日志和慢日志时，是否将 SQL 中的用户信息遮蔽。
-- 将该变量设置为 `1` 即开启后，假设执行的 SQL 为 `insert into t values (1,2)`，在日志中记录的 SQL 会是 `insert into t values (?,?)`，即用户输入的信息被遮蔽。
+- 默认值为 `OFF`，即对用户输入的信息不做任何处理。
+- 将该变量设置为 `ON` 后，用户输入的信息被遮蔽。假设执行的 SQL 为 `INSERT INTO t VALUES (1,2)`，则日志中记录的 SQL 语句为 `INSERT INTO t VALUES (?,?)`。
+- 将该变量设置为 `MARKER` 后，用户输入的信息被标记符号 `‹ ›` 包裹。假设执行的 SQL 为 `INSERT INTO t VALUES (1,2)`，则日志中记录的 SQL 语句为 `INSERT INTO t VALUES (‹1›,‹2›)`。输入信息中的 `‹` 会转义成 `‹‹`，`›` 会转义成 `››`。基于标记后的日志，你可以在展示日志时决定是否对被标记信息进行脱敏处理。
+
+> **警告：**
+>
+> `MARKER` 选项目前为实验特性，不建议在生产环境中使用。该功能可能会在未事先通知的情况下发生变化或删除。如果发现 bug，请在 GitHub 上提 [issue](https://github.com/pingcap/tidb/issues) 反馈。
 
 ### `tidb_regard_null_as_point` <span class="version-mark">从 v5.4.0 版本开始引入</span>
 
@@ -4254,8 +4314,8 @@ EXPLAIN FORMAT='brief' SELECT COUNT(1) FROM t WHERE a = 1 AND b IS NOT NULL;
 - 默认值：`80%`
 - 取值范围：
     - 你可以将该变量值设为百分比格式，表示内存用量占总内存的百分比，取值范围为 `[1%, 99%]`。
-    - 你还可以将变量值设为内存大小，取值范围为 `0` 以及 `[536870912, 9223372036854775807]`，单位为 Byte。支持带单位的内存格式 "KB|MB|GB|TB"。`0` 值表示不设内存限制。
-    - 当设置的内存值小于 512 MB 且不为 0 时，TiDB 将会使用 512 MB 作为替代。
+    - 你还可以将变量值设为内存大小，取值范围为 `0` 以及 `[536870912, 9223372036854775807]`，单位为 Byte。支持带单位的内存格式 "KiB|MiB|GiB|TiB"。`0` 值表示不设内存限制。
+    - 当设置的内存值小于 512 MiB 且不为 0 时，TiDB 将会使用 512 MiB 作为替代。
 - 该变量指定 TiDB 实例的内存限制。TiDB 会在内存用量达到该限制时，对当前内存用量最高的 SQL 语句进行取消 (Cancel) 操作。在该 SQL 语句被成功 Cancel 掉后，TiDB 会尝试调用 Golang GC 立刻回收内存，以最快速度缓解内存压力。
 - 只有内存使用大于 `tidb_server_memory_limit_sess_min_size` 的 SQL 语句会被选定为最优先被 Cancel 的 SQL 语句。
 - 目前 TiDB 一次只能 Cancel 一条 SQL 语句。如果 TiDB 完全 Cancel 掉一条 SQL 语句并回收资源后，内存使用仍然大于该变量所设限制，TiDB 会开始下一次 Cancel 操作。
@@ -4274,8 +4334,8 @@ EXPLAIN FORMAT='brief' SELECT COUNT(1) FROM t WHERE a = 1 AND b IS NOT NULL;
 - 作用域：GLOBAL
 - 是否持久化到集群：是
 - 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：否
-- 默认值：`134217728`（即 128 MB）
-- 取值范围：`[128, 9223372036854775807]`，单位为 Byte。支持带单位的内存格式“KB|MB|GB|TB”。
+- 默认值：`134217728`（即 128 MiB）
+- 取值范围：`[128, 9223372036854775807]`，单位为 Byte。支持带单位的内存格式 "KiB|MiB|GiB|TiB"。
 - 开启内存限制后，TiDB 会终止当前实例上内存用量最高的 SQL 语句。本变量指定此情况下 SQL 语句被终止的最小内存用量。如果 TiDB 实例的内存超限是由许多内存使用量不明显的会话导致的，可以适当调小该变量值，使得更多会话成为 Cancel 的对象。
 
 ### `tidb_service_scope` <span class="version-mark">从 v7.4.0 版本开始引入</span>
@@ -4291,6 +4351,7 @@ EXPLAIN FORMAT='brief' SELECT COUNT(1) FROM t WHERE a = 1 AND b IS NOT NULL;
 > **注意：**
 >
 > - 如果集群内所有节点均未配置 `tidb_service_scope`，所有节点均会执行分布式执行框架的任务。如果你担心对存量业务有性能影响，可以对其中几个 TiDB 节点设置为 `background`，只有这些节点才会执行分布式执行框架的任务。
+> - 在包含多个 TiDB 节点的集群中，强烈建议选择两个或更多的 TiDB 节点将该变量设置为 `background`。若仅在单个 TiDB 节点上设置此变量，当该节点发生重启或故障时，任务会被重新调度到其它未将该变量设置为 `background` 的 TiDB 节点，因此会对这些 TiDB 节点的业务产生影响。
 > - 对于新扩容的节点，如果有运行中的分布式执行框架的任务还未调度到各个 TiDB 节点，则这个扩容的节点也会执行分布式执行框架的任务。如果希望避免占用扩容节点的资源，你需要手动设置所有或者部分存量 TiDB 节点的 `tidb_service_scope` 为 `background`，保证配置为 `background` 的节点执行分布式执行框架的任务。
 
 ### `tidb_session_alias` <span class="version-mark">从 v7.4.0 版本开始引入</span>

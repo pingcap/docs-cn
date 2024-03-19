@@ -82,7 +82,7 @@ Placement Rules 特性在 TiDB v5.0 及以上的版本中默认开启。如需�
 enable-placement-rules = true
 ```
 
-这样，PD 在初始化成功后会开启这个特性，并根据 `max-replicas` 及 `location-labels` 配置生成对应的规则：
+这样，PD 在初始化成功后会开启这个特性，并根据 [`max-replicas`](/pd-configuration-file.md#max-replicas)、[`location-labels`](/pd-configuration-file.md#location-labels) 及 [`isolation-level`](/pd-configuration-file.md#isolation-level) 配置生成对应的规则：
 
 {{< copyable "" >}}
 
@@ -107,11 +107,12 @@ enable-placement-rules = true
 pd-ctl config placement-rules enable
 ```
 
-PD 同样将根据系统的 `max-replicas` 及 `location-labels` 生成默认的规则。
+PD 同样将根据系统的 `max-replicas`、`location-labels` 及 `isolation-level` 生成默认的规则。
 
 > **注意：**
 >
-> 开启 Placement Rules 后，原先的 `max-replicas` 及 `location-labels` 配置项将不再生效。如果需要调整副本策略，应当使用 Placement Rules 相关接口。
+> - 开启 Placement Rules 且存在多条 rule 的情况下，原先的 `max-replicas`、`location-labels` 及 `isolation-level` 配置项将不再生效。如果需要调整副本策略，应当使用 Placement Rules 相关接口。
+> - 开启 Placement Rules 且只存在一条默认的 rule 的情况下，当改变 `max-replicas`、`location-labels` 或 `isolation-level` 配置项时，系统会自动更新这条默认的 rule。
 
 ### 关闭 Placement Rules 特性
 
@@ -125,7 +126,7 @@ pd-ctl config placement-rules disable
 
 > **注意：**
 >
-> 关闭 Placement Rules 后，PD 将使用原先的 `max-replicas` 及 `location-labels` 配置。在 Placement Rules 开启期间对 Rule 的修改不会导致这两项配置的同步更新。此外，设置好的所有 Rule 都会保留在系统中，会在下次开启 Placement Rules 时被使用。
+> 关闭 Placement Rules 后，PD 将使用原先的 `max-replicas`、`location-labels` 及 `isolation-level` 配置。在 Placement Rules 开启期间对 Rule 的修改不会导致这三项配置的同步更新。此外，设置好的所有 Rule 都会保留在系统中，会在下次开启 Placement Rules 时被使用。
 
 ### 使用 pd-ctl 设置规则
 

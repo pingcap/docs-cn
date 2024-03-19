@@ -16,6 +16,10 @@ TiDB 版本：6.5.4
 - 为了修复当使用 `Cursor Fetch` 获取大结果集时 TiDB 占用大量内存的问题，TiDB 会自动将结果集写入磁盘以释放内存资源 [#43233](https://github.com/pingcap/tidb/issues/43233) @[YangKeao](https://github.com/YangKeao)
 - 默认关闭 RocksDB 的周期性 compaction，使 TiKV RocksDB 的默认行为和 v6.5.0 之前的版本保持一致，避免在升级之后集中产生大量 compaction 影响系统的性能。同时，TiKV 新增 [`rocksdb.[defaultcf|writecf|lockcf].periodic-compaction-seconds`](https://docs.pingcap.com/zh/tidb/v6.5/tikv-configuration-file#periodic-compaction-seconds-从-v654-版本开始引入) 和 [`rocksdb.[defaultcf|writecf|lockcf].ttl`](https://docs.pingcap.com/zh/tidb/v6.5/tikv-configuration-file#ttl-从-v654-版本开始引入) 配置项，支持手动配置 RocksDB 的周期性 compaction [#15355](https://github.com/tikv/tikv/issues/15355) @[LykxSassinator](https://github.com/LykxSassinator)
 
+### 行为变更
+
+- 对于包含多条变更的事务，如果 Update 事件的主键或者非空唯一索引的列值发生改变，TiCDC 会将该其拆分为 Delete 和 Insert 两条事件，并确保将所有事件有序，以保证 Delete 事件在 Insert 事件之前。更多信息，请参考[用户文档](/ticdc/ticdc-behavior-change.md#含有多条-update-变更的事务拆分)。
+
 ## 改进提升
 
 + TiDB
@@ -36,7 +40,7 @@ TiDB 版本：6.5.4
 
     - 未开启 Swagger server 时，PD 默认屏蔽 Swagger API [#6786](https://github.com/tikv/pd/issues/6786) @[bufferflies](https://github.com/bufferflies)
     - 提升 etcd 的高可用性 [#6554](https://github.com/tikv/pd/issues/6554) [#6442](https://github.com/tikv/pd/issues/6442) @[lhy1024](https://github.com/lhy1024)
-    - 减少 `GetRegions` 请求的内存占用 [#6855](https://github.com/tikv/pd/issues/6835) @[lhy1024](https://github.com/lhy1024)
+    - 减少 `GetRegions` 请求的内存占用 [#6835](https://github.com/tikv/pd/issues/6835) @[lhy1024](https://github.com/lhy1024)
     - 支持重复使用 HTTP 连接 [#6913](https://github.com/tikv/pd/issues/6913) @[nolouch](https://github.com/nolouch)
 
 + TiFlash

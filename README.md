@@ -18,7 +18,7 @@
 | [`release-7.6`](https://github.com/pingcap/docs-cn/tree/release-7.6) | 7.6 开发里程碑版 (DMR) |
 | [`release-7.5`](https://github.com/pingcap/docs-cn/tree/release-7.5) | 7.5 长期支持版 (LTS) |
 | [`release-7.4`](https://github.com/pingcap/docs-cn/tree/release-7.4) | 7.4 开发里程碑版 (DMR) |
-| [`release-7.3`](https://github.com/pingcap/docs-cn/tree/release-7.3) | 7.3 开发里程碑版 (DMR) |
+| [`release-7.3`](https://github.com/pingcap/docs-cn/tree/release-7.3) | 7.3 开发里程碑版 (DMR) （该版本文档已归档，不再提供任何更新）|
 | [`release-7.2`](https://github.com/pingcap/docs-cn/tree/release-7.2) | 7.2 开发里程碑版 (DMR)（该版本文档已归档，不再提供任何更新） |
 | [`release-7.1`](https://github.com/pingcap/docs-cn/tree/release-7.1) | 7.1 长期支持版 (LTS) |
 | [`release-7.0`](https://github.com/pingcap/docs-cn/tree/release-7.0) | 7.0 开发里程碑版 (DMR)（该版本文档已归档，不再提供任何更新） |
