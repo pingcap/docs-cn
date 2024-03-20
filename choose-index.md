@@ -234,11 +234,17 @@ mysql> EXPLAIN SELECT /*+ use_index_merge(t2, idx) */ * FROM t2 WHERE a=1 AND JS
 6 rows in set, 1 warning (0.00 sec)
 ```
 
-对于多个 `json_member_of`、`json_contains` 或 `json_overlaps` 由 `OR`/`AND` 连接而成的条件，需要满足一些条件才能使用 IndexMerge 访问：
-1. 对于由 `OR` 连接而成的条件，其每个子条件都需要分别能够使用 IndexMerge 访问；
-2. 对于由 `AND` 连接而成的条件，其中一部分子条件需要分别能够使用 IndexMerge 访问，最终使用 IndexMerge 访问时也只能利用这一部分条件；
-3. 用于构成整体 IndexMerge 计划的每个子条件需要分别符合用于连接的 `OR`/`AND` 的语义。具体来说，`json_contains` 由 `AND` 连接是符合语义的；`json_overlaps` 由 `OR` 连接是符合语义的；`json_member_of` 由 `OR`/`AND` 连接都是符合语义的；包含多个值的 `json_contains` 由 `OR` 连接或包含多个值的 `json_overlaps` 由 `AND` 连接是不符合语义的，而如果它们只包含一个值则是符合语义的。
-例如：
+对于多个 `json_member_of`、`json_contains` 或 `json_overlaps` 由 `OR`/`AND` 连接而成的条件，需要满足以下条件才能使用 IndexMerge 访问：
+
+- 对于由 `OR` 连接而成的条件，其中每个子条件都需要分别能够使用 IndexMerge 访问；
+- 对于由 `AND` 连接而成的条件，其中一部分子条件需要分别能够使用 IndexMerge 访问。最终使用 IndexMerge 访问时，也只能利用这一部分条件；
+- 用于构成整体 IndexMerge 计划的每个子条件，需要分别符合用于连接的 `OR`/`AND` 的语义。具体如下：
+    - `json_contains` 由 `AND` 连接，符合语义；
+    - `json_overlaps` 由 `OR` 连接，符合语义；
+    - `json_member_of` 由 `OR`/`AND` 连接，均符合语义；
+    - 包含多个值的 `json_contains` 由 `OR` 连接或包含多个值的 `json_overlaps` 由 `AND` 连接，不符合语义，而如果它们只包含一个值则符合语义。
+
+示例如下：
 
 ```sql
 CREATE TABLE t3(a INT, j JSON, INDEX mvi1((CAST(j->'$.a' AS UNSIGNED ARRAY))), INDEX mvi2((CAST(j->'$.b' AS UNSIGNED ARRAY))));
@@ -417,13 +423,15 @@ EXPLAIN SELECT /*+ use_index_merge(t5, k1, k2, ka) */ * FROM t5 WHERE 1 member o
 +-------------------------------+---------+-----------+-----------------------------------------------------------------------------+---------------------------------------------+
 ```
 
-如果表达式包含多层嵌套的 `OR`/`AND`，或者表达式需要进行展开等变形之后才能直接一一对应各索引列，TiDB 可能无法使用 IndexMerge 或不能充分利用所有过滤条件，建议用户针对具体场景预先进行测试验证。以下是部分场景示例：
+如果表达式包含多层嵌套的 `OR`/`AND`，或者表达式需要进行展开等变形之后才能直接一一对应各索引列，TiDB 可能无法使用 IndexMerge 或不能充分利用所有过滤条件。建议针对具体场景预先进行测试验证。以下是部分场景示例：
 
 ```sql
 CREATE TABLE t6 (a INT, j JSON, b INT, k JSON, INDEX idx(a, (CAST(j AS SIGNED ARRAY)), b), INDEX idx2(a, (CAST(k as SIGNED ARRAY)), b));
 ```
 
+
 当单个 `OR` 嵌套在 `AND` 中，且需要展开表达式才能直接对应索引列的时候，TiDB 通常能够充分利用过滤条件。
+
 
 ```sql
 EXPLAIN SELECT /*+ use_index_merge(t6, idx, idx2) */ * FROM t6 WHERE a=1 AND (1 member of (j) OR 2 member of (k));
@@ -442,6 +450,7 @@ EXPLAIN SELECT /*+ use_index_merge(t6, idx, idx2) */ * FROM t6 WHERE a=1 AND (1 
 ```
 
 当多个 `OR` 嵌套在 `AND` 中，且需要展开表达式才能直接对应索引列的时候，TiDB 可能无法充分利用过滤条件。
+
 
 ```sql
 EXPLAIN SELECT /*+ use_index_merge(t6, idx, idx2) */ * FROM t6 WHERE a=1 AND (1 member of (j) OR 2 member of (k)) and (b = 1 or b = 2);
