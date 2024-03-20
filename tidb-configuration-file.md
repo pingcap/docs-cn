@@ -741,7 +741,7 @@ opentracing.reporter 相关的设置。
 >
 > 该配置项可能会在未来版本中废弃，**不要修改该配置**。
 
-+ 控制是否使用 replica selector v2 版本
++ 用于控制给 TiKV 发 RPC 请求时，是否使用新版本的 region 副本选择器。
 + 默认值：true
 
 ## tikv-client.copr-cache <span class="version-mark">从 v4.0.0 版本开始引入</span>
