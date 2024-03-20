@@ -430,9 +430,7 @@ EXPLAIN SELECT /*+ use_index_merge(t5, k1, k2, ka) */ * FROM t5 WHERE 1 member o
 CREATE TABLE t6 (a INT, j JSON, b INT, k JSON, INDEX idx(a, (CAST(j AS SIGNED ARRAY)), b), INDEX idx2(a, (CAST(k as SIGNED ARRAY)), b));
 ```
 
-
 当单个 `OR` 嵌套在 `AND` 中，且需要展开表达式才能直接对应索引列的时候，TiDB 通常能够充分利用过滤条件。
-
 
 ```sql
 EXPLAIN SELECT /*+ use_index_merge(t6, idx, idx2) */ * FROM t6 WHERE a=1 AND (1 member of (j) OR 2 member of (k));
@@ -451,7 +449,6 @@ EXPLAIN SELECT /*+ use_index_merge(t6, idx, idx2) */ * FROM t6 WHERE a=1 AND (1 
 ```
 
 当多个 `OR` 嵌套在 `AND` 中，且需要展开表达式才能直接对应索引列的时候，TiDB 可能无法充分利用过滤条件。
-
 
 ```sql
 EXPLAIN SELECT /*+ use_index_merge(t6, idx, idx2) */ * FROM t6 WHERE a=1 AND (1 member of (j) OR 2 member of (k)) and (b = 1 or b = 2);
