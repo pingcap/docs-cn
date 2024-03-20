@@ -241,7 +241,7 @@ mysql> EXPLAIN SELECT /*+ use_index_merge(t2, idx) */ * FROM t2 WHERE a=1 AND JS
 - 用于构成整体 IndexMerge 计划的每个子条件，需要分别符合用于连接的 `OR`/`AND` 的语义。具体如下：
     - `json_contains` 由 `AND` 连接，符合语义；
     - `json_overlaps` 由 `OR` 连接，符合语义；
-    - `json_member_of` 由 `OR`/`AND` 连接，均符合语义；
+    - `json_member_of` 由 `OR` 或 `AND` 连接，均符合语义；
     - 包含多个值的 `json_contains` 由 `OR` 连接，或包含多个值的 `json_overlaps` 由 `AND` 连接，不符合语义，而如果它们只包含一个值则符合语义。
 
 示例如下：
@@ -423,7 +423,7 @@ EXPLAIN SELECT /*+ use_index_merge(t5, k1, k2, ka) */ * FROM t5 WHERE 1 member o
 +-------------------------------+---------+-----------+-----------------------------------------------------------------------------+---------------------------------------------+
 ```
 
-如果表达式包含多层嵌套的 `OR`/`AND`，或者表达式需要进行展开等变形之后才能直接一一对应各索引列，TiDB 可能无法使用 IndexMerge 或不能充分利用所有过滤条件。建议针对具体场景预先进行测试验证。以下是部分场景示例：
+如果表达式包含多层嵌套的 `OR` 或 `AND`，或者表达式需要进行展开等变形之后才能直接一一对应各索引列，TiDB 可能无法使用 IndexMerge 或不能充分利用所有过滤条件。建议针对具体场景预先进行测试验证。以下是部分场景示例：
 
 ```sql
 CREATE TABLE t6 (a INT, j JSON, b INT, k JSON, INDEX idx(a, (CAST(j AS SIGNED ARRAY)), b), INDEX idx2(a, (CAST(k as SIGNED ARRAY)), b));
