@@ -134,6 +134,10 @@ SET GLOBAL tidb_server_memory_limit = "32GB";
 
 5. 通过访问状态文件所在目录（该示例中的目录为 `/tiup/deploy/tidb-4000/log/oom_record`），可以看到标记了记录时间的 record 目录（例：`record2022-10-09T17:18:38+08:00`），其中包括 `goroutinue`、`heap`、`running_sql` 3 个文件，文件以记录状态文件的时间为后缀。这 3 个文件分别用来记录报警时的 goroutine 栈信息，堆内存使用状态，及正在运行的 SQL 信息。其中 `running_sql` 文件内容请参考 [`expensive-queries`](/identify-expensive-queries.md)。
 
+## 如何降低 tidb-server 写入事务的内存使用
+
+TiDB 采用的事务模型要求，所有待提交的事务写入操作需先在内存中进行缓存。在写入大的事务时，内存使用可能会增加并成为瓶颈。为了减少或避免大事务使用大量内存，你可以在满足各项限制条件的前提下通过调整 [`tidb_dml_type`](/system-variables.md#tidb_dml_type-从-v800-版本开始引入) 为 `"bulk"` 或使用[非事务 DML 语句](/non-transactional-dml.md)的方式来实现。
+
 ## tidb-server 其它内存控制策略
 
 ### 流量控制
