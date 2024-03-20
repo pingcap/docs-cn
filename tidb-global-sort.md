@@ -7,8 +7,8 @@ summary: 了解 TiDB 全局排序功能的使用场景、限制、使用方法�
 
 > **注意：**
 >
-> 目前，全局排序会使用大量 TiDB 节点的计算与内存资源。对于在线增加索引等同时有用户业务在运行的场景，建议为集群添加新的 TiDB 节点并设置这些 TiDB 节点的 [`tidb_service_scope`](/system-variables.md#tidb_service_scope-从-v740-版本开始引入) 变量为 `"background"`，这样分布式框架就会将任务调度到这些节点上，减少执行后端任务对用户业务的影响。
-> 当需要使用全剧排序功能时，TiDB 节点规格最好使用 16 核 32G 内存避免 OOM 发生。
+> - 目前，全局排序会使用大量 TiDB 节点的计算与内存资源。对于在线增加索引等同时有用户业务在运行的场景，建议为集群添加新的 TiDB 节点并设置这些 TiDB 节点的 [`tidb_service_scope`](/system-variables.md#tidb_service_scope-从-v740-版本开始引入) 变量为 `"background"`，这样分布式框架就会将任务调度到这些节点上，减少执行后端任务对用户业务的影响。
+> - 当需要使用全局排序功能时，为避免 OOM，建议 TiDB 节点的规格至少为 16 核 CPU、32 GB 内存。
 
 ## 功能概览
 
