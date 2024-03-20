@@ -273,6 +273,7 @@ TiDB 版本：8.0.0
     TiCDC 现在可以使用一种生成 Debezium 格式的事件消息的协议，将复制事件发布到 Kafka sink。这有助于简化那些当前使用 Debezium 从 MySQL 拉取数据进行下游处理的用户从 MySQL 迁移到 TiDB 的过程。
 
     更多信息，请参考[用户文档](/ticdc/ticdc-debezium.md)。
+
 * TiCDC 支持通过双向复制模式 (Bi-Directional Replication, BDR) 同步 DDL 语句 (GA) [#10301](https://github.com/pingcap/tiflow/issues/10301) [#48519](https://github.com/pingcap/tidb/issues/48519) @[okJiang](https://github.com/okJiang) @[asddongmen](https://github.com/asddongmen) **tw@hfxsd** <!--1689/1682-->
 
     TiDB v7.6.0 引入了通过双向复制模式同步 DDL 语句的功能作为实验特性。以前，TiCDC 不支持复制 DDL 语句，因此要使用 TiCDC 双向复制必须将 DDL 语句分别应用到两个 TiDB 集群。有了该特性，TiCDC 可以为一个集群分配 `PRIMARY` BDR role，并将该集群的 DDL 语句复制到下游集群。该功能在 v8.0.0 成为正式功能。
@@ -295,7 +296,7 @@ TiDB 版本：8.0.0
     
 * TiDB Lightning 简化冲突处理策略，同时支持以 "replace" 方式处理冲突数据（实验特性） [#51036](https://github.com/pingcap/tidb/issues/51036) @[lyzx2001](https://github.com/lyzx2001) **tw@qiancai** <!--1684-->
 
-    在之前的版本中，TiDB Lightning 逻辑导入模式有一套[数据冲突处理策略](/tidb-lightning/tidb-lightning-logical-import-mode-usage.md)，物理导入模式时有[两套数据冲突处理策略](/tidb-lightning/tidb-lightning-physical-import-mode-usage.md#冲突数据检测)，不易理解和配置。
+    在之前的版本中，TiDB Lightning 逻辑导入模式有[一套数据冲突处理策略](/tidb-lightning/tidb-lightning-logical-import-mode-usage.md#冲突数据检测)，物理导入模式时有[两套数据冲突处理策略](/tidb-lightning/tidb-lightning-physical-import-mode-usage.md#冲突数据检测)，不易理解和配置。
     
     从 v8.0.0 开始，TiDB Lightning 废弃了物理导入模式下的[旧版冲突检测](/tidb-lightning/tidb-lightning-physical-import-mode-usage.md#旧版冲突检测从-v800-开始已被废弃)策略，支持通过 [`conflict.strategy`](tidb-lightning/tidb-lightning-configuration.md) 参数统一控制逻辑导入和物理导入模式的冲突检测策略，并简化了该参数的配置。此外，在物理导入模式下，当导入遇到主键或唯一键冲突的数据时，`replace` 策略支持保留最新的数据、覆盖旧的数据。
 
@@ -308,12 +309,6 @@ TiDB 版本：8.0.0
     随着 v7.4.0 引入全局排序实验特性，TiDB 支持将需要导入的数据暂时存储在外部存储（如 Amazon S3）中进行全局排序后再导入到 TiKV 中，使 TiKV 无需在导入过程中执行 compaction 操作。全局排序在 v8.0.0 成为正式功能 (GA)，可以降低 TiKV 对资源的额外消耗，显著提升 `IMPORT INTO` 的性能和稳定性。
 
     更多信息，请参考[用户文档](/tidb-global-sort.md)。    
-    
-* 功能标题 [#issue号](链接) @[贡献者 GitHub ID](链接) **tw@xxx** <!--1234-->
-
-    功能描述（需要包含这个功能是什么、在什么场景下对用户有什么价值、怎么用）
-
-    更多信息，请参考[用户文档](链接)。
 
 ## 兼容性变更
 
@@ -336,7 +331,7 @@ TiDB 版本：8.0.0
 | [`tidb_disable_txn_auto_retry`](/system-variables.md#tidb_disable_txn_auto_retry)  | 废弃 | 从 v8.0.0 开始，该系统变量被废弃，TiDB 不再支持乐观事务的自动重试。推荐使用[悲观事务模式](/pessimistic-transaction.md)。如果使用乐观事务模式发生冲突，请在应用里捕获错误并重试。 |
 | `tidb_ddl_version` | 更名 | 用于控制是否开启 TiDB DDL V2。为了使变量名称更直观，从 v8.0.0 起，该参数更名为 [`tidb_enable_fast_create_table`](/system-variables.md#tidb_enable_fast_create_table-从-v800-版本开始引入) 。 |
 | [`tidb_enable_collect_execution_info`](/system-variables.md#tidb_enable_collect_execution_info) | 修改 | 增加控制是否维护[访问索引有关的统计信息](/information-schema/information-schema-tidb-index-usage.md)，默认值为 `ON`。 |
-| [`tidb_redact_log`](/system-variables.md#tidb_redact_log) | 修改 | 控制在记录 TiDB 日志和慢日志时如何处理 SAL 文本中的用户信息，可选值为 `OFF`、`ON`，以分别支持明文日志信息、屏蔽日志信息。为了提供更丰富的处理日志中用户信息的方式，v8.0.0 中增加了 `MARKER` 选项，支持标记日志信息。当变量值为 `MARKER` 时，日志中的用户信息将被标记处理，可以在之后决定是否对日志信息进行脱敏。 |
+| [`tidb_redact_log`](/system-variables.md#tidb_redact_log) | 修改 | 控制在记录 TiDB 日志和慢日志时如何处理 SAL 文本中的用户信息，可选值为 `OFF`、`ON`，以分别支持明文日志信息、屏蔽日志信息。为了提供更丰富的处理日志中用户信息的方式，v8.0.0 中增加了 `MARKER` 选项，支持标记日志信息。 |
 | [`div_precision_increment`](/system-variables.md#div_precision_increment-从-v800-版本开始引入) | 新增 | 用于指定使用运算符 `/` 执行除法操作时，结果增加的小数位数。该功能与 MySQL 保持一致。 |
 | [`tidb_dml_type`](/system-variables.md#tidb_dml_type-从-v800-版本开始引入) | 新增 | 设置 DML 语句的执行方式，可选值为 `"standard"` 和 `"bulk"`。 |
 | [`tidb_enable_auto_analyze_priority_queue`](/system-variables.md#tidb_enable_auto_analyze_priority_queue-从-v800-版本开始引入) | 新增 | 控制是否启用优先队列来调度自动收集统计信息的任务。开启该变量后，TiDB 会优先收集那些最需要收集统计信息的表的统计信息。 |
@@ -413,7 +408,11 @@ TiDB 版本：8.0.0
 
     + Backup & Restore (BR)
 
-        - note [#issue](链接) @[贡献者 GitHub ID](链接)
+        - 增加恢复参数 --load-stats 来控制是否恢复统计信息  [#50568](https://github.com/pingcap/tidb/issues/50568) @[Leavrth](https://github.com/Leavrth)
+        - 在粗粒度打散 region 恢复放法，实现自适应获取并发参数功能 [#50701](https://github.com/pingcap/tidb/issues/50701) @[3pointer](https://github.com/3pointer)
+        - 在 help 信息中显示 log 子命令 [#50927](https://github.com/pingcap/tidb/issues/50927) @[RidRisR](https://github.com/RidRisR)
+        - 在恢复过程中提前分配好 TableID，从而最大限度复用 Table ID，提升恢复性能。 [#51736](https://github.com/pingcap/tidb/issues/51736) @[Leavrth](https://github.com/Leavrth)
+        - 使用 BR 时，禁用 TiDB 内部的 gc memory limit tuner 功能。 [#51078](https://github.com/pingcap/tidb/issues/51078) @[Leavrth](https://github.com/Leavrth)
         - note [#issue](链接) @[贡献者 GitHub ID](链接)
         - (dup): release-7.5.1.md > 改进提升> Tools> Backup & Restore (BR) - 使用更优的算法，提升数据恢复过程中 SST 文件合并的速度 [#50613](https://github.com/pingcap/tidb/issues/50613) @[Leavrth](https://github.com/Leavrth)
         - (dup): release-7.5.1.md > 改进提升> Tools> Backup & Restore (BR) - 支持在数据恢复过程中批量创建数据库 [#50767](https://github.com/pingcap/tidb/issues/50767) @[Leavrth](https://github.com/Leavrth)
@@ -466,6 +465,7 @@ TiDB 版本：8.0.0
     - (dup): release-7.1.4.md > 错误修复> TiDB - 修复修改变量 `tidb_server_memory_limit` 后，`tidb_gogc_tuner_threshold` 未进行相应调整的问题 [#48180](https://github.com/pingcap/tidb/issues/48180) @[hawkingrei]
     - (dup): release-7.1.4.md > 错误修复> TiDB - 修复当查询语句涉及 JOIN 操作时可能出现 `index out of range` 报错的问题 [#42588](https://github.com/pingcap/tidb/issues/42588) @[AilinKid](https://github.com/AilinKid)
     - (dup): release-7.1.4.md > 错误修复> TiDB - 修复当列的默认值被删除时，获取该列的默认值会报错的问题 [#50043](https://github.com/pingcap/tidb/issues/50043) [#51324](https://github.com/pingcap/tidb/issues/51324) @[crazycs520](https://github.com/crazycs520)
+    - 修复在 TiFlash 延迟物化在处理关联列时结果可能出错的问题 [#49241](https://github.com/pingcap/tidb/issues/49241) [#51204](https://github.com/pingcap/tidb/issues/51204) @[Lloyd-Pottiger](https://github.com/Lloyd-Pottiger)
 
 + TiKV
 
@@ -494,11 +494,15 @@ TiDB 版本：8.0.0
     - (dup): release-7.5.1.md > 错误修复> TiFlash - 修复移除 TiFlash 副本后重新添加可能导致 TiFlash 数据损坏的问题 [#8695](https://github.com/pingcap/tiflash/issues/8695) @[JaySon-Huang](https://github.com/JaySon-Huang)
     - (dup): release-7.5.1.md > 错误修复> TiFlash - 修复在执行 PITR 恢复任务或 `FLASHBACK CLUSTER TO` 后，TiFlash 副本数据可能被意外删除，导致数据异常的问题 [#8777](https://github.com/pingcap/tiflash/issues/8777) @[JaySon-Huang](https://github.com/JaySon-Huang)
     - (dup): release-7.5.1.md > 错误修复> TiFlash - 修复在执行 `ALTER TABLE ... MODIFY COLUMN ... NOT NULL` 时，将原本可为空的列修改为不可为空之后，导致 TiFlash panic 的问题 [#8419](https://github.com/pingcap/tiflash/issues/8419) @[JaySon-Huang](https://github.com/JaySon-Huang)
+    - 修复存算分离架构下，出现网络隔离后查询可能会被永久阻塞的问题 [#8806](https://github.com/pingcap/tiflash/issues/8806) @[JinheLin](https://github.com/JinheLin)
+    - 修复存算分离架构下，TiFlash shutdown 过程中可能 panic 的问题 [#8837](https://github.com/pingcap/tiflash/issues/8837) @[JaySon-Huang](https://github.com/JaySon-Huang)
 
 + Tools
 
     + Backup & Restore (BR)
-
+        - 修复在 Region 立刻成为 Leader 后立刻分裂或合并，导致的日志备份 Checkpoint 不推进的问题。 [#16469](https://github.com/tikv/tikv/issues/16469) @[YuJuncen](https://github.com/YuJuncen)
+        - 修复在某些情况下，日志备份无法监听 Region 的问题。[#16469](https://github.com/tikv/tikv/issues/16469) @[YuJuncen](https://github.com/YuJuncen)
+        - 修复在某些极端情况下，全量备份因找不到 peer 导致 TiKV panic 的问题。[#16394](https://github.com/tikv/tikv/issues/16394) @[Leavrth](https://github.com/Leavrth)
         - note [#issue](链接) @[贡献者 GitHub ID](链接)
         - note [#issue](链接) @[贡献者 GitHub ID](链接)
         - (dup): release-7.5.1.md > 错误修复> Tools> Backup & Restore (BR) - 修复在同一节点上更改 TiKV IP 地址导致日志备份卡住的问题 [#50445](https://github.com/pingcap/tidb/issues/50445) @[3pointer](https://github.com/3pointer)
@@ -562,4 +566,18 @@ TiDB 版本：8.0.0
 
 感谢来自 TiDB 社区的贡献者们：
 
-- [贡献者 GitHub ID]()
+- [Aoang](https://github.com/Aoang)
+- [bufferflies](https://github.com/bufferflies)
+- [daemon365](https://github.com/daemon365)
+- [eltociear](https://github.com/eltociear)
+- [lichunzhu](https://github.com/lichunzhu)
+- [jiyfhust](https://github.com/jiyfhust)
+- [pingandb](https://github.com/pingandb)
+- [renovate](https://github.com/renovate)
+- [shenqidebaozi](https://github.com/shenqidebaozi)
+- [Smityz ](https://github.com/Smityz)
+- [songzhibin97](https://github.com/songzhibin97)
+- [tangjingyu97](https://github.com/tangjingyu97)
+- [Tema](https://github.com/Tema)
+- [ub-3](https://github.com/ub-3)
+- [yoshikipom](https://github.com/yoshikipom)
