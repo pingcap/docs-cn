@@ -148,8 +148,10 @@ TiDB 版本：8.0.0
     TiDB 的[低精度 TSO 功能](/system-variables.md#tidb_low_resolution_tso)使用定期更新的 TSO 作为事务时间戳。在可以容忍读到旧数据的情况下，该功能通过牺牲一定的实时性，降低小的只读事务获取 TSO 的开销，从而提升高并发读的能力。
 
     在 v8.0.0 之前，低精度 TSO 功能的 TSO 更新周期固定，无法根据实际业务需要进行调整。在 v8.0.0 中，TiDB 引入变量 `tidb_low_resolution_tso_update_interval` 来控制低精度 TSO 功能更新 TSO 的周期。该功能仅在低精度 TSO 功能启用时有效。
-    
+
     更多信息，请参考[用户文档](/system-variables.md#tidb_low_resolution_tso_update_interval-从-v800-版本开始引入)。
+
+* 默认开启 Titan 引擎 [#16245](https://github.com/tikv/tikv/issues/16245) @[Connor1996](https://github.com/Connor1996) @[v01dstar](https://github.com/v01dstar) @[tonyxuqqi](https://github.com/tonyxuqqi)
 
 ### 稳定性
 
@@ -160,7 +162,9 @@ TiDB 版本：8.0.0
     从 v8.0.0 开始，TiDB 引入 [`tidb_schema_cache_size`](/system-variables.md#tidb_schema_cache_size-从-v800-版本开始引入) 系统变量，允许设置缓存 schema 信息所能使用的内存上限，从而避免占用过多的内存。开启该功能后，TiDB 将使用 Least Recently Used (LRU) 算法缓存所需的表，有效降低 schema 信息占用的内存。
 
     更多信息，请参考[用户文档](/system-variables.md#tidb_schema_cache_size-从-v800-版本开始引入)。
-    
+
+* 跨数据库绑定执行计划 [#48875](https://github.com/pingcap/tidb/issues/48875) @[qw4990](https://github.com/qw4990)
+
 ### 高可用
 
 * 代理组件 TiProxy 成为正式功能 (GA) [#413](https://github.com/pingcap/tiproxy/issues/413) @[djshow832](https://github.com/djshow832) @[xhebox](https://github.com/xhebox) **tw@Oreoxmt** <!--1698-->
@@ -262,6 +266,7 @@ TiDB 版本：8.0.0
     更多信息，请参考[用户文档](/system-variables.md#tidb_redact_log)。
 
 ### 数据迁移
+
 * TiCDC 支持 Simple 协议 [#9898](https://github.com/pingcap/tiflow/issues/9898) @[3AceShowHand](https://github.com/3AceShowHand) **tw@lilin90** <!--1646-->
 
     TiCDC 引入了对新的 Simple 协议的支持，该协议支持带内模式跟踪 (in-band schema tracking)。
@@ -316,6 +321,8 @@ TiDB 版本：8.0.0
 >
 > 以下为从 v7.6.0 升级至当前版本 (v8.0.0) 所需兼容性变更信息。如果从 v7.5.0 或之前版本升级到当前版本，可能也需要考虑和查看中间版本 Release Notes 中提到的兼容性变更信息。
 
+- 在安全增强模式 (SEM) 下禁止设置 [`require_secure_transport`](https://docs.pingcap.com/zh/tidb/v7.5/system-variables#require_secure_transport-从-v610-版本开始引入) 为 `ON`，避免用户无法连接的问题 [#47665](https://github.com/pingcap/tidb/issues/47665) @[tiancaiamao](https://github.com/tiancaiamao)
+
 ### 行为变更
 
 * 在之前版本中，启用添加索引加速功能 (`tidb_ddl_enable_fast_reorg = ON`) 后，编码后的索引键值 ingest 到 TiKV 的过程使用了并发数 (`16`)，并未根据下游 TiKV 的处理能力进行动态调整。从 v8.0.0 开始，支持使用 [`tidb_ddl_reorg_worker_cnt`](/system-variables.md#tidb_ddl_reorg_worker_cnt-从-v800-版本开始引入) 并发数，该变量默认值为 `4`，相比之前的默认值 `16`，在 ingest 索引键值对时性能可能会有所下降。你可以根据集群的负载按需调整该参数。**tw@hfxsd** <!--无 FD-->
@@ -362,13 +369,10 @@ TiDB 版本：8.0.0
 | TiCDC | [`tls-certificate-file`](ticdc/ticdc-sink-to-pulsar.md) | 新增 | 用于指定 Pulsar 启用 TLS 加密传输时，客户端的加密证书文件路径。 |
 | TiCDC | [`tls-key-file-path`](ticdc/ticdc-sink-to-pulsar.md) | 新增 | 用于指定 Pulsar 启用 TLS 加密传输时，客户端的加密私钥路径。 |
 
-
 ### 系统表
 
 * 新增系统表 [`INFORMATION_SCHEMA.TIDB_INDEX_USAGE`](/information-schema/information-schema-tidb-index-usage.md) 和 [`INFORMATION_SCHEMA.CLUSTER_TIDB_INDEX_USAGE`](/information-schema/information-schema-tidb-index-usage.md#cluster_tidb_index_usage) 用于记录 TiDB 节点中索引的访问统计信息。**tw@Oreoxmt**
 * 新增系统数据库 [`sys`](/sys-schema.md) 和 [`sys.schema_unused_index`](/sys-schema.md#schema_unused_index) 视图，用于记录自 TiDB 上次启动以来未被使用的索引信息。**tw@Oreoxmt** 
-
-## 离线包变更
 
 ## 废弃功能
 
@@ -478,8 +482,6 @@ TiDB 版本：8.0.0
 
 + PD
 
-    - note [#issue](链接) @[贡献者 GitHub ID](链接)
-    - note [#issue](链接) @[贡献者 GitHub ID](链接)
     - (dup): release-7.1.4.md > 错误修复> PD - 修复调用 `MergeLabels` 函数时存在数据竞争的问题 [#7535](https://github.com/tikv/pd/issues/7535) @[lhy1024](https://github.com/lhy1024)
     - (dup): release-7.1.4.md > 错误修复> PD - 修复调用 `evict-leader-scheduler` 接口时没有输出结果的问题 [#7672](https://github.com/tikv/pd/issues/7672) @[CabinfeverB](https://github.com/CabinfeverB)
     - (dup): release-7.5.1.md > 错误修复> PD - 修复 PD 监控项 `learner-peer-count` 在发生 Leader 切换后未同步旧监控值的问题 [#7728](https://github.com/tikv/pd/issues/7728) @[CabinfeverB](https://github.com/CabinfeverB)
@@ -487,8 +489,6 @@ TiDB 版本：8.0.0
 
 + TiFlash
 
-    - note [#issue](链接) @[贡献者 GitHub ID](链接)
-    - note [#issue](链接) @[贡献者 GitHub ID](链接)
     - (dup): release-7.5.1.md > 错误修复> TiFlash - 修复副本迁移时，因 TiFlash 与 PD 之间网络连接不稳定可能引发的 TiFlash panic 的问题 [#8323](https://github.com/pingcap/tiflash/issues/8323) @[JaySon-Huang](https://github.com/JaySon-Huang)
     - (dup): release-7.5.1.md > 错误修复> TiFlash - 修复慢查询导致内存使用显著增加的问题 [#8564](https://github.com/pingcap/tiflash/issues/8564) @[JinheLin](https://github.com/JinheLin)
     - (dup): release-7.5.1.md > 错误修复> TiFlash - 修复移除 TiFlash 副本后重新添加可能导致 TiFlash 数据损坏的问题 [#8695](https://github.com/pingcap/tiflash/issues/8695) @[JaySon-Huang](https://github.com/JaySon-Huang)
@@ -500,11 +500,10 @@ TiDB 版本：8.0.0
 + Tools
 
     + Backup & Restore (BR)
+
         - 修复在 Region 立刻成为 Leader 后立刻分裂或合并，导致的日志备份 Checkpoint 不推进的问题。 [#16469](https://github.com/tikv/tikv/issues/16469) @[YuJuncen](https://github.com/YuJuncen)
         - 修复在某些情况下，日志备份无法监听 Region 的问题。[#16469](https://github.com/tikv/tikv/issues/16469) @[YuJuncen](https://github.com/YuJuncen)
         - 修复在某些极端情况下，全量备份因找不到 peer 导致 TiKV panic 的问题。[#16394](https://github.com/tikv/tikv/issues/16394) @[Leavrth](https://github.com/Leavrth)
-        - note [#issue](链接) @[贡献者 GitHub ID](链接)
-        - note [#issue](链接) @[贡献者 GitHub ID](链接)
         - (dup): release-7.5.1.md > 错误修复> Tools> Backup & Restore (BR) - 修复在同一节点上更改 TiKV IP 地址导致日志备份卡住的问题 [#50445](https://github.com/pingcap/tidb/issues/50445) @[3pointer](https://github.com/3pointer)
         - (dup): release-7.5.1.md > 错误修复> Tools> Backup & Restore (BR) - 修复从 S3 读文件内容时出错后无法重试的问题 [#49942](https://github.com/pingcap/tidb/issues/49942) @[Leavrth](https://github.com/Leavrth)
         - (dup): release-7.5.1.md > 错误修复> Tools> Backup & Restore (BR) - 修复数据恢复失败后，使用断点重启报错 `the target cluster is not fresh` 的问题 [#50232](https://github.com/pingcap/tidb/issues/50232) @[Leavrth](https://github.com/Leavrth)
@@ -514,8 +513,6 @@ TiDB 版本：8.0.0
 
     + TiCDC
 
-        - note [#issue](链接) @[贡献者 GitHub ID](链接)
-        - note [#issue](链接) @[贡献者 GitHub ID](链接)
         - (dup): release-7.5.1.md > 错误修复> Tools> TiCDC - 修复使用 storage sink 时，在存储服务生成的文件序号可能出现回退的问题 [#10352](https://github.com/pingcap/tiflow/issues/10352) @[CharlesCheung96](https://github.com/CharlesCheung96)
         - (dup): release-7.5.1.md > 错误修复> Tools> TiCDC - 修复并发创建多个 changefeed 时 TiCDC 返回 `ErrChangeFeedAlreadyExists` 错误的问题 [#10430](https://github.com/pingcap/tiflow/issues/10430) @[CharlesCheung96](https://github.com/CharlesCheung96)
         - (dup): release-7.5.1.md > 错误修复> Tools> TiCDC - 修复在 `ignore-event` 中设置了过滤掉 `add table partition` 事件后，TiCDC 未将相关分区的其它类型 DML 变更事件同步到下游的问题 [#10524](https://github.com/pingcap/tiflow/issues/10524) @[CharlesCheung96](https://github.com/CharlesCheung96)
@@ -556,12 +553,6 @@ TiDB 版本：8.0.0
         - note [#issue](链接) @[贡献者 GitHub ID](链接)
         - note [#issue](链接) @[贡献者 GitHub ID](链接)
 
-## Other dup notes
-
-- (dup): release-7.5.1.md > 兼容性变更 - 在安全增强模式 (SEM) 下禁止设置 [`require_secure_transport`](https://docs.pingcap.com/zh/tidb/v7.5/system-variables#require_secure_transport-从-v610-版本开始引入) 为 `ON`，避免用户无法连接的问题 [#47665](https://github.com/pingcap/tidb/issues/47665) @[tiancaiamao](https://github.com/tiancaiamao)
-- (dup): release-7.6.0.md > # 稳定性 * 跨数据库绑定执行计划 [#48875](https://github.com/pingcap/tidb/issues/48875) @[qw4990](https://github.com/qw4990)
-- (dup): release-7.6.0.md > # 性能> -log-file restorefull.log * 默认开启 Titan 引擎 [#16245](https://github.com/tikv/tikv/issues/16245) @[Connor1996](https://github.com/Connor1996) @[v01dstar](https://github.com/v01dstar) @[tonyxuqqi](https://github.com/tonyxuqqi)
-
 ## 贡献者
 
 感谢来自 TiDB 社区的贡献者们：
@@ -575,7 +566,7 @@ TiDB 版本：8.0.0
 - [pingandb](https://github.com/pingandb)
 - [renovate](https://github.com/renovate)
 - [shenqidebaozi](https://github.com/shenqidebaozi)
-- [Smityz ](https://github.com/Smityz)
+- [Smityz](https://github.com/Smityz)
 - [songzhibin97](https://github.com/songzhibin97)
 - [tangjingyu97](https://github.com/tangjingyu97)
 - [Tema](https://github.com/Tema)
