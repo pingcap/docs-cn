@@ -242,7 +242,7 @@ mysql> EXPLAIN SELECT /*+ use_index_merge(t2, idx) */ * FROM t2 WHERE a=1 AND JS
     - `json_contains` 由 `AND` 连接，符合语义；
     - `json_overlaps` 由 `OR` 连接，符合语义；
     - `json_member_of` 由 `OR`/`AND` 连接，均符合语义；
-    - 包含多个值的 `json_contains` 由 `OR` 连接或包含多个值的 `json_overlaps` 由 `AND` 连接，不符合语义，而如果它们只包含一个值则符合语义。
+    - 包含多个值的 `json_contains` 由 `OR` 连接，或包含多个值的 `json_overlaps` 由 `AND` 连接，不符合语义，而如果它们只包含一个值则符合语义。
 
 示例如下：
 
