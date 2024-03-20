@@ -234,11 +234,11 @@ mysql> EXPLAIN SELECT /*+ use_index_merge(t2, idx) */ * FROM t2 WHERE a=1 AND JS
 6 rows in set, 1 warning (0.00 sec)
 ```
 
-对于多个 `json_member_of`、`json_contains` 或 `json_overlaps` 由 `OR`/`AND` 连接而成的条件，需要满足以下条件才能使用 IndexMerge 访问：
+对于多个 `json_member_of`、`json_contains` 或 `json_overlaps` 由 `OR` 或 `AND` 连接而成的条件，需要满足以下条件才能使用 IndexMerge 访问：
 
 - 对于由 `OR` 连接而成的条件，其中每个子条件都需要分别能够使用 IndexMerge 访问；
 - 对于由 `AND` 连接而成的条件，其中一部分子条件需要分别能够使用 IndexMerge 访问。最终使用 IndexMerge 访问时，也只能利用这一部分条件；
-- 用于构成整体 IndexMerge 计划的每个子条件，需要分别符合用于连接的 `OR`/`AND` 的语义。具体如下：
+- 用于构成整体 IndexMerge 计划的每个子条件，需要分别符合用于连接的 `OR` 或 `AND` 的语义。具体如下：
     - `json_contains` 由 `AND` 连接，符合语义；
     - `json_overlaps` 由 `OR` 连接，符合语义；
     - `json_member_of` 由 `OR` 或 `AND` 连接，均符合语义；
