@@ -316,7 +316,7 @@ Dumpling 导出 TiDB 较大单表（超过 1 TB）时，可能会因为导出数
 
 ### 手动设置 TiDB GC 时间
 
-如果导出的 TiDB 版本为 v4.0.0 或更新版本，并且 Dumpling 可以访问 TiDB 集群的 PD 地址，Dumpling 会自动配置延长 GC 时间且不会对原集群造成影响。
+如果导出的数据量少于 1 TB 且导出的 TiDB 版本为 v4.0.0 或更新版本，并且 Dumpling 可以访问 TiDB 集群的 PD 地址，Dumpling 会自动配置延长 GC 时间且不会对原集群造成影响。
 
 但是，在以下场景中，Dumpling 无法自动调整 GC 时间：
 
