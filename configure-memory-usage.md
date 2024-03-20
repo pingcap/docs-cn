@@ -152,8 +152,8 @@ TiDB 支持对执行算子的数据落盘功能。当 SQL 的内存使用超过 
 
 - 落盘行为由参数 [`tidb_mem_quota_query`](/system-variables.md#tidb_mem_quota_query)、[`tidb_enable_tmp_storage_on_oom`](/system-variables.md#tidb_enable_tmp_storage_on_oom)、[`tmp-storage-path`](/tidb-configuration-file.md#tmp-storage-path)、[`tmp-storage-quota`](/tidb-configuration-file.md#tmp-storage-quota) 共同控制。
 - 当落盘被触发时，TiDB 会在日志中打印一条包含关键字 `memory exceeds quota, spill to disk now` 或 `memory exceeds quota, set aggregate mode to spill-mode` 的日志。
-- Sort、MergeJoin、HashJoin 落盘是从 v4.0.0 版本开始引入的，HashAgg 落盘是从 v5.2.0 版本开始引入的。
-- 当包含 Sort、MergeJoin 或 HashJoin 的 SQL 语句引起内存 OOM 时，TiDB 默认会触发落盘。当包含 HashAgg 算子的 SQL 语句引起内存 OOM 时，TiDB 默认不触发落盘，请设置系统变量 `tidb_executor_concurrency = 1` 来触发 HashAgg 落盘功能。
+- Sort、MergeJoin、HashJoin 落盘是从 v4.0.0 版本开始引入的，非并发 HashAgg 的落盘是从 v5.2.0 版本开始引入的，并发 HashAgg 的落盘是从 v8.0.0 版本开始引入的。
+- 当包含 Sort、MergeJoin、HashJoin 或 HashAgg 的 SQL 语句引起内存 OOM 时，TiDB 默认会触发落盘。
 
 > **注意：**
 >
@@ -185,15 +185,7 @@ TiDB 支持对执行算子的数据落盘功能。当 SQL 的内存使用超过 
     ERROR 1105 (HY000): Out Of Memory Quota![conn_id=3]
     ```
 
-4. 设置系统变量 `tidb_executor_concurrency` 将执行器的并发度调整为 1。在此配置下，内存不足时 HashAgg 会自动尝试触发落盘。
-
-    {{< copyable "sql" >}}
-
-    ```sql
-    SET tidb_executor_concurrency = 1;
-    ```
-
-5. 执行相同的 SQL 语句，不再返回错误，可以执行成功。从详细的执行计划可以看出，HashAgg 使用了 600MB 的硬盘空间。
+4. 执行相同的 SQL 语句，不再返回错误，可以执行成功。从详细的执行计划可以看出，HashAgg 使用了 600MB 的硬盘空间。
 
     {{< copyable "sql" >}}
 
