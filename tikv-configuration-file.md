@@ -1661,7 +1661,7 @@ rocksdb defaultcf titan 相关的配置项。
 + Blob 文件的 cache 大小。
 + 默认值：0GB
 + 最小值：0
-+ 推荐值：0。从 v8.0.0 开始，TiKV 引入了 `shared-blob-cache` 配置项并默认开启，因此无需再单独设置 `blob-cache-size`。只有当 `shared-blob-cache` 设置为 `false` 时， `blob-cache-size` 的设置才能生效。
++ 推荐值：0。从 v8.0.0 开始，TiKV 引入了 `shared-blob-cache` 配置项并默认开启，因此无需再单独设置 `blob-cache-size`。只有当 `shared-blob-cache` 设置为 `false` 时，`blob-cache-size` 的设置才生效。
 + 单位：KB|MB|GB
 
 ### `shared-blob-cache`（从 v8.0.0 版本开始引入）
