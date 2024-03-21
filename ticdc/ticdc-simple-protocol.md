@@ -11,9 +11,9 @@ TiCDC Simple Protocol 是一种行级别的数据变更通知协议，为监控�
 
 当使用 Kafka 作为下游时，你可以在 changefeed 配置中指定 `protocol` 为 `"simple"`，TiCDC 会将每个行变更或者 DDL 事件 (event) 编码为一个 Message，向下游发送数据变更事件。
 
-使用 Simple 时的配置样例如下所示：
+使用 Simple Protocol 时的配置样例如下所示：
 
-sink-uri 配置：
+`sink-uri` 配置：
 
 ```shell
 --sink-uri = "kafka://127.0.0.1:9092/topic-name?kafka-version=2.4.0"
@@ -31,7 +31,7 @@ protocol = "simple"
 send-bootstrap-interval-in-sec = 120
 
 # send-bootstrap-in-msg-count 用来控制发送 bootstrap 的消息间隔，单位为消息数。
-# 默认值为 10000，即每张表每发送 10000 条行变更就发送一次 bootstrap 消息。
+# 默认值为 10000，即每张表每发送 10000 条行变更消息就发送一次 bootstrap 消息。
 send-bootstrap-in-msg-count = 10000
 # 注意：如果要关闭 bootstrap 消息的发送，则将 send-bootstrap-interval-in-sec 和 send-bootstrap-in-msg-count 均设置为 0。
 
@@ -48,13 +48,7 @@ encoding-format = "json"
 
 ## Message 类型
 
-TiCDC Simple Protocol 有如下 Message 类型：
-
-DML：
-
-- `INSERT`：插入事件。
-- `UPDATE`：更新事件。
-- `DELETE`：删除事件。
+TiCDC Simple Protocol 支持如下 Message 类型：
 
 DDL：
 
@@ -67,6 +61,12 @@ DDL：
 - `ALTER`：修改表结构，包括增加列、删除列、修改列类型和其他 TiCDC 支持的 `ALTER TABLE` 语句。
 - `QUERY`：其他 DDL 语句。
 
+DML：
+
+- `INSERT`：插入事件。
+- `UPDATE`：更新事件。
+- `DELETE`：删除事件。
+
 其他：
 
 - `WATERMARK`：与上游 TiDB 集群的 TSO 含义相同，包含一个 64 位的 timestamp，用于标记一个表的同步进度，所有早于 watermark 的事件都已经发送给下游。
@@ -74,7 +74,7 @@ DDL：
 
 ## Message 格式
 
-在 Simple Protocol 中，每一个 Message 都只会包含一个事件。当前 Simple Protocol 支持把消息编码为 JSON 格式和 Avro 格式。本文将以 JSON 格式为例进行说明。对于 Avro 格式的消息，其字段和含义与 JSON 格式的消息一致，只是编码格式不同，详见 [Avro Schema 定义](#avro-schema-定义)。
+在 Simple Protocol 中，每一个 Message 都只会包含一个事件。当前 Simple Protocol 支持把消息编码为 JSON 格式和 Avro 格式。本文将以 JSON 格式为例进行说明。对于 Avro 格式的消息，其字段和含义与 JSON 格式的消息一致，只是编码格式不同，格式详见 [Simple Protocol Avro Schema](https://github.com/pingcap/tiflow/blob/master/pkg/sink/codec/simple/message.json)。
 
 ### DDL
 
@@ -234,12 +234,10 @@ TiCDC 会把一个 DDL 事件编码成如下的 JSON 格式：
 | `version`   | Number    | 协议版本号，目前为 `1`。                                                     |
 | `type`      | String | DDL 事件类型，包括 `CREATE`、`RENAME`、`CINDEX`、`DINDEX`、`ERASE`、`TRUNCATE`、`ALTER` 和 `QUERY`。 |
 | `sql`       | String | DDL 语句。                                                            |
-| `commitTs`  | Number    | 该 DDL 在上游执行结束的 `commitTs`。                                           |
+| `commitTs`  | Number    | 该 DDL 在上游执行结束时的 `commitTs`。                                |
 | `buildTs`   | Number    | 该消息在 TiCDC 内部被编码成功时的 UNIX 时间戳。                                |
 | `tableSchema` | Object | 表的当前 schema 信息，详见 [TableSchema 定义](#tableschema-定义)。                     |
-| `preTableSchema` | Object | DDL 执行前的表的 schema 信息。     |
-
-除了 `CREATE` 类型的 DDL 事件外，其他 DDL 事件都会包含 `preTableSchema` 字段，用于记录 DDL 执行前的表的 schema 信息。
+| `preTableSchema` | Object | DDL 执行前的表的 schema 信息。除了 `CREATE` 类型的 DDL 事件外，其他类型的 DDL 事件都会包含该字段。     |
 
 ### DML
 
@@ -275,7 +273,7 @@ TiCDC 会把一个 `INSERT` 事件编码成如下的 JSON 格式：
 | `table`         | String | 表名。                                                                     |
 | `tableID`       | Number    | 表的 ID。                                                                  |
 | `type`          | String | DML 事件类型，包括 `INSERT`、`UPDATE` 和 `DELETE`。                              |
-| `commitTs`      | Number    | 该 DML 在上游执行结束的 `commitTs`。                                         |
+| `commitTs`      | Number    | 该 DML 在上游执行结束时的 `commitTs`。                              |
 | `buildTs`       | Number    | 该消息在 TiCDC 内部被编码成功时的 UNIX 时间戳。                            |
 | `schemaVersion` | Number    | 编码该 DML 消息时所使用表的 schema 版本号。                                |
 | `data`          | Object | 插入的数据，字段名为列名，字段值为列值。                                   |
@@ -320,7 +318,7 @@ TiCDC 会把一个 `UPDATE` 事件编码成如下的 JSON 格式：
 | `table`         | String | 表名。                                                                     |
 | `tableID`       | Number    | 表的 ID。                                                                  |
 | `type`          | String | DML 事件类型，包括 `INSERT`、`UPDATE` 和 `DELETE`。                              |
-| `commitTs`      | Number    | 该 DML 在上游执行结束的 `commitTs`。                                         |
+| `commitTs`      | Number    | 该 DML 在上游执行结束时的 `commitTs`。                         |
 | `buildTs`       | Number    | 该消息在 TiCDC 内部被编码成功时的 UNIX 时间戳。                            |
 | `schemaVersion` | Number    | 编码该 DML 消息时所使用表的 schema 版本号。                                |
 | `data`          | Object | 更新后的数据，字段名为列名，字段值为列值。                                 |
@@ -391,7 +389,7 @@ TiCDC 会把一个 `WATERMARK` 事件编码成如下的 JSON 格式：
 
 ### BOOTSTRAP
 
-TiCDC 会把一个 BOOTSTRAP 事件编码成如下的 JSON 格式：
+TiCDC 会把一个 `BOOTSTRAP` 事件编码成如下的 JSON 格式：
 
 ```json
 {
@@ -471,7 +469,7 @@ TiCDC 会把一个 BOOTSTRAP 事件编码成如下的 JSON 格式：
 | --------- | ------ | ------------------------------------------------------------------------- |
 | `version`  | Number    | 协议版本号，目前为 `1`。                                                     |
 | `type`      | String | BOOTSTRAP 事件类型。                                                       |
-| `commitTs`  | Number    | BOOTSTRAP 的 `commitTs` 为 0，因为它是 TiCDC 内部生成的，其 `commitTs` 没有意义。 |
+| `commitTs`  | Number    | BOOTSTRAP 的 `commitTs` 为 `0`，因为它是 TiCDC 内部生成的，其 `commitTs` 没有意义。 |
 | `buildTs`   | Number    | 该消息在 TiCDC 内部被编码成功时的 UNIX 时间戳。                            |
 | `tableSchema` | Object | 表的 schema 信息，详见 [TableSchema 定义](#tableschema-定义)。               |
 
@@ -489,22 +487,22 @@ TiCDC 会把一个 BOOTSTRAP 事件编码成如下的 JSON 格式：
 
 ### WATERMARK
 
-- 生成时机：WATERMARK 事件会周期性地被发送，用于标记一个 changefeed 的同步进度，目前的周期为 1 秒。
+- 生成时机：TiCDC 会周期性地发送 WATERMARK 事件，用于标记一个 changefeed 的同步进度，目前的周期为 1 秒。
 - 发送目的地：WATERMARK 事件将会被发送到对应 Topic 的所有 Partition。
 
 ### BOOTSTRAP
 
 - 生成时机：
     - 创建一个新的 changefeed 后，在一张表的第一条 DML 事件发送之前，TiCDC 会发送 BOOTSTRAP 事件给下游，用于给下游构建表的结构。
-    - 此外，BOOTSTRAP 事件会周期性地被发送，以供下游新加入的 consumer 构建表的结构。目前默认每 120 秒或者每间隔 10000 个消息发送一次，可以通过 sink 配置项 `send-bootstrap-interval-in-sec` 和 `send-bootstrap-in-msg-count` 来调整发送周期。
+    - 此外，TiCDC 会周期性地发送 BOOTSTRAP 事件，以供下游新加入的 consumer 构建表的结构。目前默认每 120 秒或者每间隔 10000 个消息发送一次，可以通过 `sink` 配置项 `send-bootstrap-interval-in-sec` 和 `send-bootstrap-in-msg-count` 来调整发送周期。
     - 如果一张表在 30 分钟内没有收到任何新的 DML 消息，那么该表将被认为是不活跃的。TiCDC 将停止为该表发送 BOOTSTRAP 事件，直到该表收到新的 DML 事件。
-- 发送目的地：BOOTSTRAP 事件默认发送到对应 Topic 的所有 Partition，可以通过 sink 配置项 `send-bootstrap-to-all-partition` 来调整发送策略。
+- 发送目的地：BOOTSTRAP 事件默认发送到对应 Topic 的所有 Partition，可以通过 sink 配置项 `send-bootstrap-to-all-partition` 来调整该发送策略。
 
 ## Message 消费方法
 
-由于 Simple Protocol 在发送 DML 消息时没有包含表的 schema 信息，因此在消费 DML 消息时，下游需要先接收到 DDL 或者 BOOTSTRAP 消息，并且把表的 schema 信息缓存起来。在接收到 DML 消息时，通过 DML 消息中的 table 名和 schemaVersion 字段来获取对应的 tableSchema 信息，从而正确地消费 DML 消息。
+由于 Simple Protocol 在发送 DML 消息时没有包含表的 schema 信息，因此在消费 DML 消息时，下游需要先接收到 DDL 或者 BOOTSTRAP 消息，并且把表的 schema 信息缓存起来。在接收到 DML 消息时，通过 DML 消息中的 `table` 名和 `schemaVersion` 字段来获取对应的 tableSchema 信息，从而正确地消费 DML 消息。
 
-下面介绍如何正确地根据 DDL 或者 BOOTSTRAP 消息来消费 DML 消息。
+下面介绍如何根据 DDL 或者 BOOTSTRAP 消息来消费 DML 消息。
 
 根据上文描述，已知如下信息：
 
@@ -516,13 +514,13 @@ TiCDC 会把一个 BOOTSTRAP 事件编码成如下的 JSON 格式：
 
 ### 场景一：消费者从头开始消费
 
-在此场景下，消费者从头开始消费，因此消费者能够接收到该表的所有 DDL 和 BOOTSTRAP 消息。此时，消费者可以通过一个 DML 消息中的 table 名和 schemaVersion 字段来获取对应的 tableSchema 信息。具体步骤如下图所示：
+在此场景下，消费者从创建表开始消费，因此消费者能够接收到该表的所有 DDL 和 BOOTSTRAP 消息。此时，消费者可以通过一个 DML 消息中的 `table` 名和 `schemaVersion` 字段来获取对应的 tableSchema 信息。具体过程如下图所示：
 
 ![TiCDC Simple Protocol consumer scene 1](/media/ticdc/ticdc-simple-consumer-1.png)
 
 ### 场景二：消费者从中间开始消费
 
-在一个新的消费者加入到消费者组时，它可能会从中间开始消费，因此它可能会错过之前的 DDL 和 BOOTSTRAP 消息。在这种情况下，消费者可能会先接收到一些 DML 消息，但是此时它还没有该表的 schema 信息。因此，它需要先等待一段时间，直到它接收到该表 DDL 或 BOOTSTRAP 消息，从而获取到该表的 schema 信息。由于 BOOTSTRAP 消息会周期性地被发送，消费者总是能够在一段时间内获取到该表的 schema 信息。具体步骤如下图所示：
+在一个新的消费者加入到消费者组时，它可能会从中间开始消费，因此它可能会错过之前的 DDL 和 BOOTSTRAP 消息。在这种情况下，消费者可能会先接收到一些 DML 消息，但是此时它还没有该表的 schema 信息。因此，它需要先等待一段时间，直到它接收到该表 DDL 或 BOOTSTRAP 消息，从而获取到该表的 schema 信息。由于 TiCDC 会周期性地发送 BOOTSTRAP 消息，消费者总是能够在一段时间内获取到该表的 schema 信息。具体过程如下图所示：
 
 ![TiCDC Simple Protocol consumer scene 2](/media/ticdc/ticdc-simple-consumer-2.png)
 
@@ -607,7 +605,7 @@ TableSchema 是一个 JSON 对象，包含了表的 schema 信息，包括表名
 | `tableID`   | Number    | 表的 ID。                                                              |
 | `version`   | Number    | 表的 schema 版本号。                                                       |
 | `columns`   | Array  | 列信息，包括列名、数据类型、是否可为空、默认值等。                         |
-| `indexes`   | Array  | 索引信息，包括索引名、是否唯一、是否主键、索引列等。                       |
+| `indexes`   | Array  | 索引信息，包括索引名、是否唯一、是否为主键、索引列等。                       |
 
 你可以通过表名和表的 schema 版本号来唯一标识一张表的 schema 信息。
 
@@ -644,7 +642,7 @@ Column 是一个 JSON 对象，包含了列的 schema 信息，包括列名、�
 
 #### Index 定义
 
-Index 是一个 JSON 对象，包含了索引的 schema 信息，包括索引名、是否唯一、是否主键、索引列等。
+Index 是一个 JSON 对象，包含了索引的 schema 信息，包括索引名、是否唯一、是否为主键、索引列等。
 
 ```json
 {
@@ -664,7 +662,7 @@ Index 是一个 JSON 对象，包含了索引的 schema 信息，包括索引名
 | --------- | ------ | ------------------------------------------------------------------------- |
 | `name`      | String | 索引名。                                                                   |
 | `unique`    | Boolean | 是否唯一。                                                                |
-| `primary`   | Boolean | 是否主键。                                                                |
+| `primary`   | Boolean | 是否为主键。                                                                |
 | `nullable`  | Boolean | 是否可为空。                                                              |
 | `columns`   | Array  | 索引包含的列名。                                                            |
 
@@ -674,7 +672,7 @@ Index 是一个 JSON 对象，包含了索引的 schema 信息，包括索引名
 
 其中，TiDB Type (Golang) 代表了对应 `mysqlType` 在 TiDB 和 TiCDC (Golang) 中处理时的类型，Avro Type (Java) 代表了对应 `mysqlType` 在编码为 Avro 格式消息时的类型。
 
-| MySQL Type | Value Range | TiDB Type (Golang) | Avro Type (Java) |
+| mysqlType | 取值范围 | TiDB Type (Golang) | Avro Type (Java) |
 | --- | --- | --- | --- |
 | tinyint | [-128, 127] | int64 | long |
 | tinyint unsigned | [0, 255] | uint64 | long |
