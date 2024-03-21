@@ -47,7 +47,7 @@ TiDB Operator 详细使用方法请参考以下文档：
 
 TiUP Playground 详细使用方法请参考以下文档：
 
-- [部署 PD 微服务](https://docs.pingcap.com/zh/tidb/stable/tiup/tiup-playground.md#pd-微服务部署)
+- [部署 PD 微服务](/tiup/tiup-playground.md#部署-pd-微服务)
 
 当部署和使用 PD 微服务时，请注意以下事项：
 
