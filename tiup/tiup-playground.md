@@ -200,6 +200,6 @@ tiup playground scale-in --pid 86526
 ```
 
 - `--pd.mode`：当指定 `--pd.mode` 为 `ms` 时，代表启用 PD 微服务模式。
-- `--pd.api num`：指定 PD 微服务 API 的数量，需要大于等于 1。
+- `--pd.api num`：指定 PD 微服务 API 的数量，需要大于等于 `1`。
 - `--pd.tso num`：指定要部署的 `tso` 微服务的实例数量。
 - `--pd.scheduling num`：指定要部署的 `scheduling` 微服务的实例数量。
