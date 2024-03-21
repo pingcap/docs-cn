@@ -142,7 +142,7 @@ enable-table-across-nodes = false
 # ]
 
 # protocol 用于指定编码消息时使用的格式协议
-# 当下游类型是 Kafka 时，支持 canal-json、avro、debezium、open、simple protocol。
+# 当下游类型是 Kafka 时，支持 canal-json、avro、debezium、open-protocol、simple。
 # 当下游类型是 Pulsar 时，仅支持 canal-json 协议。
 # 当下游类型是存储服务时，目前仅支持 canal-json、csv 两种协议。
 # 注意：该参数只有当下游为 Kafka、Pulsar，或存储服务时，才会生效。

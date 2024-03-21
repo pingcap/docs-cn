@@ -496,7 +496,7 @@ TiCDC 会把一个 `BOOTSTRAP` 事件编码成如下的 JSON 格式：
     - 创建一个新的 changefeed 后，在一张表的第一条 DML 事件发送之前，TiCDC 会发送 BOOTSTRAP 事件给下游，用于给下游构建表的结构。
     - 此外，TiCDC 会周期性地发送 BOOTSTRAP 事件，以供下游新加入的 consumer 构建表的结构。目前默认每 120 秒或者每间隔 10000 个消息发送一次，可以通过 `sink` 配置项 `send-bootstrap-interval-in-sec` 和 `send-bootstrap-in-msg-count` 来调整发送周期。
     - 如果一张表在 30 分钟内没有收到任何新的 DML 消息，那么该表将被认为是不活跃的。TiCDC 将停止为该表发送 BOOTSTRAP 事件，直到该表收到新的 DML 事件。
-- 发送目的地：BOOTSTRAP 事件默认发送到对应 Topic 的所有 Partition，可以通过 sink 配置项 `send-bootstrap-to-all-partition` 来调整该发送策略。
+- 发送目的地：BOOTSTRAP 事件默认发送到对应 Topic 的所有 Partition，可以通过 `sink` 配置项 `send-bootstrap-to-all-partition` 来调整该发送策略。
 
 ## Message 消费方法
 
