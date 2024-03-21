@@ -127,7 +127,6 @@ max-background-gc = 1
 min-blob-size = "32KB"
 blob-file-compression = "zstd"
 zstd-dict-size = "16KB"
-blob-cache-size = "0GB"
 discardable-ratio = 0.5
 blob-run-mode = "normal"
 level-merge = false

@@ -1661,7 +1661,7 @@ rocksdb defaultcf titan 相关的配置项。
 + Blob 文件的 cache 大小。
 + 默认值：0GB
 + 最小值：0
-+ 推荐值：建议在数据库稳定运行后，根据监控把 RocksDB block cache (`storage.block-cache.capacity`) 设置为能刚好维持接近 95% 以上的 Block Cache 命中率，`blob-cache-size` 设置为 `内存大小 * 50% 再减去 block cache 的大小`。这是为了保证 block cache 足够缓存整个 RocksDB 的前提下，blob cache 尽量大。但 Blob cache 的值不应该设置过大，否则会导致 block cache 命中率大幅下降。
++ 推荐值：0。从v8.0.0 之后引入了`shared-blob-cache`，无需单独设置`blob-cache-size`。只有当`shared-blob-cache`没有打开时`blob-cache-size`设置才能生效。
 + 单位：KB|MB|GB
 
 ### `shared-blob-cache`（从 v8.0.0 版本开始引入）
