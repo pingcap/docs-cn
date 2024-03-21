@@ -142,6 +142,16 @@ strategy = ""
 # 当后端是 “importer” 时，tikv-importer 的监听地址（需改为实际地址）。
 addr = "172.16.31.10:8287"
 
+# 从 v8.0.0 开始，`duplicate-resolution` 参数已废弃。详情参考 <https://docs.pingcap.com/zh/tidb/dev/tidb-lightning-physical-import-mode-usage.md#旧版冲突检测从-v800-开始已被废弃>。
+# 物理导入模式设置是否检测和解决重复的记录（唯一键冲突）。
+# 目前支持两种解决方法：
+#  - none: 不检测重复记录。该模式是两种模式中性能最佳的，但是如果数据源存在重复记录，会导致 TiDB 中出现数据不一致的情况。
+#  - remove：如果写入的数据 A 和 B 存在 Primary Key 或 Unique Key 冲突，
+#            则会将 A 和 B 这两条冲突数据从目标表移除，同时记录到目标 TiDB 中的 `lightning_task_info.conflict_error_v1` 表中。
+#            你可以根据业务需求选择正确的记录重新手动写入到目标表中。注意，该方法要求目标 TiKV 的版本为 v5.2.0 或更新版本。
+#            如果版本过低，则会启用 'none' 模式。
+# 默认值为 'none'。
+# duplicate-resolution = 'none'
 # 物理导入模式下，向 TiKV 发送数据时一次请求中最大 KV 数量。
 # 自 v7.2.0 开始，该参数废弃，设置后不再生效。如果希望调整一次请求中向 TiKV 发送的数据量，请使用 `send-kv-size` 参数。
 # send-kv-pairs = 32768
