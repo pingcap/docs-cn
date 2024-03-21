@@ -103,9 +103,9 @@ TiCDC 为 service GC safepoint 设置的存活有效期为 24 小时，即 TiCDC
 * 同步所有的非系统表
 * 只同步包含[有效索引](/ticdc/ticdc-overview.md#最佳实践)的表
 
-## TiCDC 是否支持输出 Canal 格式的变更数据？
+## TiCDC 是否支持输出 Canal 协议的变更数据？
 
-支持。要开启 Canal 格式输出，只需在 `--sink-uri` 中指定 protocol 为 `canal-json` 即可，例如：
+支持。注意，对于 Canal 协议，TiCDC 只支持 JSON 输出格式，而 protobuf 格式尚未得到官方支持。要开启 Canal 协议输出，只需在 `--sink-uri` 中指定 protocol 为 `canal-json` 即可，例如：
 
 ```shell
 cdc cli changefeed create --server=http://127.0.0.1:8300 --sink-uri="kafka://127.0.0.1:9092/cdc-test?kafka-version=2.4.0&protocol=canal-json" --config changefeed.toml
