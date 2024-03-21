@@ -191,13 +191,15 @@ tiup playground scale-out --db 2
 tiup playground scale-in --pid 86526
 ```
 
-## PD 微服务部署
+## 部署 PD 微服务
 
-正如 [PD 微服务](https://docs.pingcap.com/zh/tidb/stable/pd-microservices.md#使用方法) 中介绍，我们在 playground 中提供了简易的方式进行部署。
-
-- 需要指定 `--pd.mode` 为 `ms`，启动 PD 微服务模式需要指定参数 `--pd.api num`(num>=1)
-- 目前支持 TSO, Scheduling 两个微服务，可以通过 `--pd.tso num`，`--pd.scheduling num` 来分别指定启动的实例数量。
+从 v8.0.0 起，PD 支持[微服务模式](/pd-microservices.md)。你可以通过 playground 部署 PD 的 TSO 微服务和 Scheduling 微服务。
 
 ```shell
 ./tiup-playground v8.0.0 --pd.mode ms --pd.api 3  --pd.tso 2 --pd.scheduling 3
 ```
+
+- `--pd.mode`：当指定 `--pd.mode` 为 `ms` 时，代表启用 PD 微服务模式。
+- `--pd.api num`：指定 API 线程的数量，需要大于等于 1。
+- `--pd.tso num`：指定要部署的 TSO 微服务的实例数量。
+- `--pd.scheduling num`：指定要部署的 Scheduling 微服务的实例数量。
