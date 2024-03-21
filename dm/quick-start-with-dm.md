@@ -49,7 +49,7 @@ aliases: ['/docs-cn/tidb-data-migration/dev/quick-start-with-dm/','/docs-cn/tidb
     from:
       host: "127.0.0.1"
       user: "root"
-      password: "fCxfQ9XKCezSzuCD0Wf5dUD+LsKegSg="  # 使用 tiup dmctl --encrypt "123456" 加密。
+      password: "fCxfQ9XKCezSzuCD0Wf5dUD+LsKegSg="
       port: 3306
     ```
 
