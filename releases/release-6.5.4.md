@@ -40,7 +40,7 @@ TiDB 版本：6.5.4
 
     - 未开启 Swagger server 时，PD 默认屏蔽 Swagger API [#6786](https://github.com/tikv/pd/issues/6786) @[bufferflies](https://github.com/bufferflies)
     - 提升 etcd 的高可用性 [#6554](https://github.com/tikv/pd/issues/6554) [#6442](https://github.com/tikv/pd/issues/6442) @[lhy1024](https://github.com/lhy1024)
-    - 减少 `GetRegions` 请求的内存占用 [#6855](https://github.com/tikv/pd/issues/6835) @[lhy1024](https://github.com/lhy1024)
+    - 减少 `GetRegions` 请求的内存占用 [#6835](https://github.com/tikv/pd/issues/6835) @[lhy1024](https://github.com/lhy1024)
     - 支持重复使用 HTTP 连接 [#6913](https://github.com/tikv/pd/issues/6913) @[nolouch](https://github.com/nolouch)
 
 + TiFlash

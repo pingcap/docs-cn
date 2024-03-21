@@ -315,6 +315,12 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
 + 默认值：10000
 + 当查询的行数（包括中间结果，基于统计信息）大于这个值，该操作会被认为是 `expensive` 查询，并输出一个前缀带有 `[EXPENSIVE_QUERY]` 的日志。
 
+### `general-log-file` <span class="version-mark">从 v8.0.0 版本开始引入</span>
+
++ 设置 [general log](/system-variables.md#tidb_general_log) 的文件名。
++ 默认值：""
++ 如果设置了文件名，general log 会输出到指定的文件。如没有设置文件名，general log 会写入 TiDB 实例的日志文件中，该文件名通过 [`filename`](#filename) 指定。
+
 ### `timeout` <span class="version-mark">从 v7.1.0 版本开始引入</span>
 
 + 用于设置 TiDB 写日志操作的超时时间。当磁盘故障导致日志无法写入时，该配置可以让 TiDB 进程崩溃而不是卡死。
@@ -350,6 +356,13 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
 + 保留的日志的最大数量。
 + 默认值：0
 + 默认全部保存；如果设置为 7，会最多保留 7 个老的日志文件。
+
+#### `compression` <span class="version-mark">从 v8.0.0 版本开始引入</span>
+
++ 指定日志的压缩方式。
++ 默认值：""
++ 可选值：""、"gzip"
++ 默认值为 "" ，即不压缩。修改为 "gzip" 可以使用 gzip 算法压缩数据。开启压缩后会影响所有的日志文件，包括 [`slow-query-file`](#slow-query-file)、[`general-log-file`](#general-log-file-从-v800-版本开始引入) 等。
 
 ## security
 
@@ -411,24 +424,16 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
 
 + 设置用于连接 MySQL 协议的最低 TLS 版本。
 + 默认值：""，支持 TLSv1.2 及以上版本。在 v7.6.0 之前，TiDB 默认支持 TLSv1.1 及以上版本。
-+ 可选值：`"TLSv1.0"`、`"TLSv1.1"`、`"TLSv1.2"` 和 `"TLSv1.3"`
++ 可选值：`"TLSv1.2"` 和 `"TLSv1.3"`。在 v8.0.0 之前，TiDB 也支持 `"TLSv1.0"` 和 `"TLSv1.1"`。
 
 ### `auth-token-jwks` <span class="version-mark">从 v6.4.0 版本开始引入</span>
 
-> **警告：**
->
-> `tidb_auth_token` 认证方式仅用于 TiDB Cloud 内部实现，**不要修改该配置**。
-
-+ 设置 `tidb_auth_token` 认证方式的 JSON Web Key Sets (JWKS) 的本地文件路径。
++ 设置 [`tidb_auth_token`](/security-compatibility-with-mysql.md#tidb_auth_token) 认证方式的 JSON Web Key Sets (JWKS) 的本地文件路径。
 + 默认值：""
 
 ### `auth-token-refresh-interval` <span class="version-mark">从 v6.4.0 版本开始引入</span>
 
-> **警告：**
->
-> `tidb_auth_token` 认证方式仅用于 TiDB Cloud 内部实现，**不要修改该配置**。
-
-+ 设置 `tidb_auth_token` 认证方式的 JWKS 刷新时间间隔。
++ 设置 [`tidb_auth_token`](/security-compatibility-with-mysql.md#tidb_auth_token) 认证方式的 JWKS 刷新时间间隔。
 + 默认值：1h
 
 ### `disconnect-on-expired-password` <span class="version-mark">从 v6.5.0 版本开始引入</span>
@@ -496,6 +501,7 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
 + 默认值：3600000
 + 单位：毫秒
 + 超过此时间的事务只能执行提交或者回滚，提交不一定能够成功。
++ 对于使用 [`"bulk"` DML 方式](/system-variables.md#tidb_dml_type-从-v800-版本开始引入)执行的事务，其最大 TTL 可以超过该配置项的限制，最大不超过 24 小时或该配置项值中的较大者。
 
 ### `stmt-count-limit`
 
@@ -729,6 +735,15 @@ opentracing.reporter 相关的设置。
 + 默认值：60
 + 单位：秒
 
+### `enable-replica-selector-v2` <span class="version-mark">从 v8.0.0 版本开始引入</span>
+
+> **警告：**
+>
+> 该配置项可能会在未来版本中废弃，**不要修改该配置**。
+
++ 用于控制给 TiKV 发送 RPC 请求时，是否使用新版本的 Region 副本选择器。
++ 默认值：true
+
 ## tikv-client.copr-cache <span class="version-mark">从 v4.0.0 版本开始引入</span>
 
 本部分介绍 Coprocessor Cache 相关的配置项。
@@ -817,7 +832,7 @@ TiDB 服务状态相关配置。
 + 用来控制开启全局悲观事务模式下 (`tidb_txn_mode='pessimistic'`) 时，自动提交的事务使用的事务模式。默认情况下，即使开启全局悲观事务模式，自动提交事务依然使用乐观事务模式来执行。当开启该配置项后（设置为 `true`），在全局悲观事务模式下，自动提交事务将也使用悲观事务模式执行。行为与其他显式提交的悲观事务相同。
 + 对于存在冲突的场景，开启本开关可以将自动提交事务纳入全局等锁管理中，从而避免死锁，改善冲突造成死锁带来的时延尖刺。
 + 对于不存在冲突的场景，如果有大量自动提交事务（例如自动提交事务数量占业务数量的比例超过一半甚至更多，需要根据实际情况分析）且单个事务操作数据量较大的情况下，开启该配置项会造成性能回退。例如，自动提交的 `INSERT INTO SELECT` 语句。
-
++ 当 SESSION 级系统变量 [`tidb_dml_type`](/system-variables.md#tidb_dml_type-从-v800-版本开始引入) 设置为 `"bulk"` 时，在该 SESSION 中，该配置项的效果等同于设置为 `false`。
 + 默认值：false
 
 ### constraint-check-in-place-pessimistic <span class="version-mark">从 v6.4.0 版本开始引入</span>
@@ -839,7 +854,7 @@ TiDB 服务状态相关配置。
 
 ### `tidb_enable_collect_execution_info`
 
-+ 用于控制是否同时将各个执行算子的执行信息记录入 slow query log 中。
++ 用于控制是否同时将各个执行算子的执行信息记录入 slow query log 中，以及是否维护[访问索引有关的统计信息](/information-schema/information-schema-tidb-index-usage.md)。
 + 默认值：true
 + 在 v6.1.0 之前，该功能通过配置项 `enable-collect-execution-info` 进行设置。
 
