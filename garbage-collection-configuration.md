@@ -84,3 +84,10 @@ show config where type = 'tikv' and name like '%enable-compaction-filter%';
 | tikv | 172.16.5.35:20163 | gc.enable-compaction-filter | true  |
 +------+-------------------+-----------------------------+-------+
 ```
+
+> **注意：**
+>
+> 在使用 Compaction Filter 机制时，可能会出现 GC 进度延迟的情况，从而影响 TiKV 扫描性能。当你的负载中含有大量 coprocessor 请求，并且在 [**TiKV-Details > Coprocessor Detail**](/grafana-tikv-dashboard.md#coprocessor-detail) 面板中发现 Total Ops Details 的 `next()` 或 `prev()` 调用次数远远超过 `processed_keys` 调用的三倍时，可以采取以下措施：
+> 
+> - 对于 TiDB v7.1.3 之前版本，建议尝试关闭 Compaction Filter，以加快 GC 速度。
+> - 从 v7.1.3 开始，TiDB 会根据每个 Region 的冗余版本数量 [`region-compact-min-redundant-rows`](/tikv-configuration-file.md#region-compact-min-redundant-rows-从-v710-版本开始引入) 和比例 [`region-compact-redundant-rows-percent`](/tikv-configuration-file.md#region-compact-redundant-rows-percent-从-v710-版本开始引入) 自动触发 compaction，从而提高 Compaction Filter 的 GC 速度。因此，在 v7.1.3 及之后的版本中，如果遇到上述情况，建议调整这两个参数，无需关闭 Compaction Filter。
