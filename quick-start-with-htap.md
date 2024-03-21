@@ -36,7 +36,7 @@ tiup playground
 
 > **注意：**
 >
-> `tiup playground` 命令仅适用于快速上手体验，不适用于生产环境。
+> `tiup playground` 命令仅适用于快速上手体验，不适用于生产环境，也不适用于全面的功能测试和稳定性测试。
 
 ### 第 2 步：准备试用数据
 
@@ -99,6 +99,7 @@ tiup playground
 {{< copyable "sql" >}}
 
 ```sql
+USE test;
 SELECT
     l_orderkey,
     SUM(
@@ -164,7 +165,8 @@ SELECT * FROM information_schema.tiflash_replica WHERE TABLE_SCHEMA = 'test' and
 {{< copyable "sql" >}}
 
 ```sql
-explain analyze SELECT
+USE test;
+EXPLAIN ANALYZE SELECT
     l_orderkey,
     SUM(
         l_extendedprice * (1 - l_discount)

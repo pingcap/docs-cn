@@ -63,7 +63,7 @@ mysql -h 127.0.0.1 -uroot -P4000
 
 ### TiDB 是否支持会话超时？
 
-TiDB 目前支持 [`wait_timeout`](/system-variables.md#wait_timeout) 和 [`interactive_timeout`](/system-variables.md#interactive_timeout) 两种超时。
+TiDB 目前支持 [`wait_timeout`](/system-variables.md#wait_timeout)、[`interactive_timeout`](/system-variables.md#interactive_timeout) 和 [`tidb_idle_transaction_timeout`](/system-variables.md#tidb_idle_transaction_timeout-从-v760-版本开始引入) 三种超时。
 
 ### TiDB 的版本管理策略是怎么样的？
 

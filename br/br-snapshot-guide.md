@@ -71,6 +71,12 @@ tiup br restore full --pd "${PD_IP}:2379" \
 --storage "s3://backup-101/snapshot-202209081330?access-key=${access-key}&secret-access-key=${secret-access-key}"
 ```
 
+> **警告：**
+>
+> 通过设置 `--granularity="coarse-grained"` 参数启用粗粒度打散 Region 算法加速恢复为实验特性，建议在表数量不超过 1,000 的集群中使用此功能加速数据恢复。请注意，该功能暂不支持断点恢复。
+
+为进一步提升大集群的恢复速度，BR 从 v7.6.0 开始支持通过设置 `--granularity="coarse-grained"` 参数启用粗粒度打散 Region 算法（实验特性）进行更快的并行恢复。启用后，BR 可以迅速将恢复任务拆分为大量小任务，并批量分散到所有 TiKV 节点上，从而充分利用每个 TiKV 节点的所有资源，实现并行快速恢复。
+
 在恢复快照备份数据过程中，终端会显示恢复进度条。在完成恢复后，会输出恢复耗时、速度、恢复数据大小等信息。
 
 ```shell
@@ -119,7 +125,9 @@ tiup br restore full --pd "${PD_IP}:2379" \
 
 ### 恢复 `mysql` 数据库下的表
 
-自 `br` v5.1.0 开始，快照备份会备份 **mysql schema 下的系统表数据**，而不会默认恢复这些数据。自 `br` v6.2.0 开始，在设置 `--with-sys-table` 下，恢复数据时将同时恢复**部分系统表相关数据**。
+- `br` v5.1.0 开始，快照备份时默认自动备份 **mysql schema 下的系统表数据**，但恢复数据时默认不恢复系统表数据。
+- `br` v6.2.0 开始，增加恢复参数 `--with-sys-table` 支持恢复数据的同时恢复**部分系统表相关数据**。
+- `br` v7.6.0 开始，恢复参数 `--with-sys-table` 默认开启，即默认支持恢复数据的同时恢复**部分系统表相关数据**。
 
 **可恢复的部分系统表**：
 
@@ -167,7 +175,7 @@ tiup br restore full --pd "${PD_IP}:2379" \
 
 当恢复系统权限相关数据的时候，请注意：
 
-- BR 不会恢复 `user` 为 `cloud_admin` 并且 `host` 为 `'%'` 的用户数据，该用户是 TiDB Cloud 预留用户。请不要在你的环境中创建 `cloud_admin` 的用户或者角色，因为依赖 `cloud_admin` 的用户的权限将不能被完整恢复。
+- 在 v7.6.0 之前版本中，BR 无法恢复 `user` 为 `cloud_admin` 并且 `host` 为 `'%'` 的用户数据，该用户是 TiDB Cloud 预留用户。从 v7.6.0 开始，BR 默认支持恢复包括 `cloud_admin` 在内的所有用户数据。
 - 在恢复数据前 BR 会检查目标集群的系统表是否跟备份数据中的系统表兼容。这里的兼容是指满足以下所有条件：
     - 目标集群需要存在备份中的系统权限表。
     - 目标集群系统权限表**列数**需要与备份数据中一致，列的顺序可以有差异。
@@ -197,6 +205,17 @@ TiDB 备份功能对集群性能（事务延迟和 QPS）有一定的影响，�
 
 - TiDB 恢复的时候会尽可能打满 TiKV CPU、磁盘 IO、网络带宽等资源，所以推荐在空的集群上执行备份数据的恢复，避免对正在运行的业务产生影响。
 - 备份数据的恢复速度与集群配置、部署、运行的业务都有比较大的关系。在内部多场景仿真测试中，单 TiKV 存储节点上备份数据恢复速度能够达到 100 MiB/s。在不同用户场景下，快照恢复的性能和影响应以实际测试结论为准。
+- 从 v7.6.0 开始，BR 提供了一个实验性特性，允许通过指定命令行参数 `--granularity="coarse-grained"` 启用粗粒度的 Region 打散算法，加快大规模 Region 场景下的 Region 恢复速度。在这个方式下每个 TiKV 节点会得到均匀稳定的下载任务，从而充分利用每个 TiKV 节点的所有资源实现并行快速恢复。在实际案例中，大规模 Region 场景下，集群快照恢复速度最高提升约 10 倍。使用示例如下：
+
+    ```bash
+    br restore full \
+    --pd "${PDIP}:2379" \
+    --storage "s3://${Bucket}/${Folder}" \
+    --s3.region "${region}" \
+    --granularity "coarse-grained" \
+    --send-credentials-to-tikv=true \
+    --log-file restorefull.log
+    ```
 
 ## 探索更多
 

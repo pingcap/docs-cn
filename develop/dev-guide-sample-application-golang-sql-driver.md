@@ -191,7 +191,7 @@ func openDB(driverName string, runnable func(db *sql.DB)) {
 
 ```golang
 openDB("mysql", func(db *sql.DB) {
-    insertSQL = "INSERT INTO player (id, coins, goods) VALUES (?, ?, ?)"
+    insertSQL := "INSERT INTO player (id, coins, goods) VALUES (?, ?, ?)"
     _, err := db.Exec(insertSQL, "id", 1, 1)
 
     if err != nil {
@@ -206,7 +206,7 @@ openDB("mysql", func(db *sql.DB) {
 
 ```golang
 openDB("mysql", func(db *sql.DB) {
-    selectSQL = "SELECT id, coins, goods FROM player WHERE id = ?"
+    selectSQL := "SELECT id, coins, goods FROM player WHERE id = ?"
     rows, err := db.Query(selectSQL, "id")
     if err != nil {
         panic(err)
@@ -231,7 +231,7 @@ openDB("mysql", func(db *sql.DB) {
 
 ```golang
 openDB("mysql", func(db *sql.DB) {
-    updateSQL = "UPDATE player set goods = goods + ?, coins = coins + ? WHERE id = ?"
+    updateSQL := "UPDATE player set goods = goods + ?, coins = coins + ? WHERE id = ?"
     _, err := db.Exec(updateSQL, 1, -1, "id")
 
     if err != nil {
@@ -246,7 +246,7 @@ openDB("mysql", func(db *sql.DB) {
 
 ```golang
 openDB("mysql", func(db *sql.DB) {
-    deleteSQL = "DELETE FROM player WHERE id=?"
+    deleteSQL := "DELETE FROM player WHERE id=?"
     _, err := db.Exec(deleteSQL, "id")
 
     if err != nil {

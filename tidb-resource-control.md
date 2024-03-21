@@ -28,6 +28,10 @@ TiDB 资源管控特性提供了两层资源管理能力，包括在 TiDB 层的
 
 此外，合理利用资源管控特性可以减少集群数量，降低运维难度及管理成本。
 
+> **注意：**
+>
+> 推荐在部署资源相对独立的计算和存储节点上测试资源管控的效果，因为调度等对集群资源敏感的功能通常很难在单节点运行的 TiUP Playground 上表现出良好性能。
+
 ## 使用限制
 
 资源管控将带来额外的调度开销。因此，开启该特性后，性能可能会有轻微下降（低于 5%）。
@@ -65,7 +69,7 @@ Request Unit (RU) 是 TiDB 对 CPU、IO 等系统资源的统一抽象的计量�
             <td>1 KiB write request payload 消耗 1 RU</td>
         </tr>
         <tr>
-            <td>SQL CPU</td>
+            <td>CPU</td>
             <td> 3 ms 消耗 1 RU</td>
         </tr>
     </tbody>
@@ -76,10 +80,6 @@ Request Unit (RU) 是 TiDB 对 CPU、IO 等系统资源的统一抽象的计量�
 > - 每个写操作最终都被会复制到所有副本（TiKV 默认 3 个数据副本），并且每次复制都被认为是一个不同的写操作。
 > - 上表只列举了本地部署的 TiDB 计算 RU 时涉及的相关资源，其中不包括网络和存储部分。TiDB Serverless 的 RU 可参考 [TiDB Serverless Pricing Details](https://www.pingcap.com/tidb-cloud-serverless-pricing-details/)。
 > - 目前 TiFlash 资源管控仅考虑 SQL CPU（即查询的 pipeline task 运行所占用的 CPU 时间）以及 read request payload。
-
-## 估算 SQL 所消耗的 RU
-
-你可以通过 [`EXPLAIN ANALYZE`](/sql-statements/sql-statement-explain-analyze.md#ru-request-unit-消耗) 语句获取到 SQL 执行时所消耗的 RU。注意 RU 的大小会受缓存的影响（比如[下推计算结果缓存](/coprocessor-cache.md)），多次执行同一条 SQL 所消耗的 RU 可能会有不同。因此这个 RU 值并不代表每次执行的精确值，但可以作为估算的参考。
 
 ## 相关参数
 
@@ -210,7 +210,7 @@ SELECT /*+ RESOURCE_GROUP(rg1) */ * FROM t limit 10;
 >
 > 该功能目前为实验特性，不建议在生产环境中使用。该功能可能会在未事先通知的情况下发生变化或删除。如果发现 bug，请在 GitHub 上提 [issue](https://github.com/pingcap/tidb/issues) 反馈。
 
-Runaway Query 是指执行时间或消耗资源超出预期的查询。下面使用 **Runaway Queries** 表示管理 Runaway Query 这一功能。
+Runaway Query 是指执行时间或消耗资源超出预期的查询（仅指 `SELECT` 语句）。下面使用 **Runaway Queries** 表示管理 Runaway Query 这一功能。
 
 - 自 v7.2.0 起，TiDB 资源管控引入了对 Runaway Queries 的管理。你可以针对某个资源组设置条件来识别 Runaway Queries，并自动发起应对操作，防止集群资源完全被 Runaway Queries 占用而影响其他正常查询。你可以在 [`CREATE RESOURCE GROUP`](/sql-statements/sql-statement-create-resource-group.md) 或者 [`ALTER RESOURCE GROUP`](/sql-statements/sql-statement-alter-resource-group.md) 中配置 `QUERY_LIMIT` 字段，通过规则识别来管理资源组的 Runaway Queries。
 - 自 v7.3.0 起，TiDB 资源管控引入了手动管理 Runaway Queries 监控列表的功能，将给定的 SQL 或者 Digest 添加到隔离监控列表，从而实现快速隔离 Runaway Queries。你可以执行语句 [`QUERY WATCH`](/sql-statements/sql-statement-query-watch.md)，手动管理资源组中的 Runaway Queries 监控列表。
@@ -351,6 +351,8 @@ Runaway Query 是指执行时间或消耗资源超出预期的查询。下面使
 > **警告：**
 >
 > 该功能目前为实验特性，不建议在生产环境中使用。该功能可能会在未事先通知的情况下发生变化或删除。如果发现 bug，请[提交 issue](/support.md) 反馈。
+> 
+> 资源管控的后台任务管理是基于 TiKV 的 CPU/IO 的资源利用率动态调整资源配额的，因此它依赖各个实例可用资源上限 (Quota)。如果在单个服务器混合部署多个组件或实例，需要通过 cgroup 为各个实例设置合适的资源上限 (Quota)。TiUP Playground 这类共享资源的配置很难表现出预期效果。
 
 后台任务是指那些优先级不高但是需要消耗大量资源的任务，如数据备份和自动统计信息收集等。这些任务通常定期或不定期触发，在执行的时候会消耗大量资源，从而影响在线的高优先级任务的性能。
 
@@ -431,6 +433,92 @@ Runaway Query 是指执行时间或消耗资源超出预期的查询。下面使
 2. 将 TiKV 参数 [`resource-control.enabled`](/tikv-configuration-file.md#resource-control) 设为 `false`，关闭按照资源组配额调度。
 
 3. 将 TiFlash 参数 [`enable_resource_control`](/tiflash/tiflash-configuration.md#配置文件-tiflashtoml) 设为 `false`，关闭 TiFlash 资源管控。
+
+## 查看 RU 消耗
+
+你可以查看 RU 消耗的相关信息。
+
+### 查看 SQL 的 RU 消耗
+
+你可以通过以下方式查询 SQL 消耗的 RU：
+
+- 系统变量 `tidb_last_query_info`
+- `EXPLAIN ANALYZE`
+- 慢查询及对应的系统表
+- `statements_summary`
+
+#### 使用系统变量 `tidb_last_query_info` 查询执行上一条 SQL 语句的 RU 消耗
+
+TiDB 提供系统变量 [`tidb_last_query_info`](/system-variables.md#tidb_last_query_info-从-v4014-版本开始引入)，记录上一条 DML 语句执行的信息，其中包含 SQL 执行消耗的 RU。
+
+使用示例：
+
+1. 执行 `UPDATE` 语句：
+
+    ```sql
+    UPDATE sbtest.sbtest1 SET k = k + 1 WHERE id = 1;
+    ```
+
+    ```
+    Query OK, 1 row affected (0.01 sec)
+    Rows matched: 1  Changed: 1  Warnings: 0
+    ```
+
+2. 通过查询系统变量 `tidb_last_query_info`，查看上条执行的语句的相关信息：
+
+    ```sql
+    SELECT @@tidb_last_query_info;
+    ```
+
+    ```
+    +------------------------------------------------------------------------------------------------------------------------+
+    | @@tidb_last_query_info                                                                                                 |
+    +------------------------------------------------------------------------------------------------------------------------+
+    | {"txn_scope":"global","start_ts":446809472210829315,"for_update_ts":446809472210829315,"ru_consumption":4.34885578125} |
+    +------------------------------------------------------------------------------------------------------------------------+
+    1 row in set (0.01 sec)
+    ```
+
+    返回结果中的 `ru_consumption` 即为执行此 SQL 语句消耗的 RU。
+
+#### 使用 `EXPLAIN ANALYZE` 查询 SQL 执行时所消耗的 RU
+
+你也可以通过 [`EXPLAIN ANALYZE`](/sql-statements/sql-statement-explain-analyze.md#ru-request-unit-消耗) 语句获取到 SQL 执行时所消耗的 RU。注意 RU 的大小会受缓存的影响（比如[下推计算结果缓存](/coprocessor-cache.md)），多次执行同一条 SQL 所消耗的 RU 可能会有不同。因此这个 RU 值并不代表每次执行的精确值，但可以作为估算的参考。
+
+#### 慢查询及对应的系统表
+
+在开启资源管控时，TiDB 的[慢查询日志](/identify-slow-queries.md)以及对应系统表 [`INFORMATION_SCHEMA.SLOW_QUERY`](/information-schema/information-schema-slow-query.md) 中均包含对应 SQL 所属的资源组、等待可用 RU 的耗时、以及真实 RU 消耗等相关信息。
+
+#### 通过 `statements_summary` 查询 RU 相关的统计信息
+
+TiDB 的系统表 [`INFORMATION_SCHEMA.statements_summary`](/statement-summary-tables.md#statements_summary) 中保存了 SQL 语句归一化聚合后的各种统计信息，可以用于查看分析各个 SQL 语句的执行性能。其中也包含资源管控相关的统计信息，包括资源组名、RU 消耗、等待可用 RU 的耗时等信息。具体请参考[`statements_summary` 字段介绍](/statement-summary-tables.md#statements_summary-字段介绍)。
+
+### 查看资源组的 RU 消耗
+
+从 v7.6.0 版本开始，TiDB 提供系统表 [`mysql.request_unit_by_group`](/mysql-schema.md#资源管控相关系统表) 存放各个资源组每日消耗的 RU 的历史记录。
+
+示例：
+
+```sql
+SELECT * FROM request_unit_by_group LIMIT 5;
+```
+
+```
++----------------------------+----------------------------+----------------+----------+
+| start_time                 | end_time                   | resource_group | total_ru |
++----------------------------+----------------------------+----------------+----------+
+| 2024-01-01 00:00:00.000000 | 2024-01-02 00:00:00.000000 | default        |   334147 |
+| 2024-01-01 00:00:00.000000 | 2024-01-02 00:00:00.000000 | rg1            |     4172 |
+| 2024-01-01 00:00:00.000000 | 2024-01-02 00:00:00.000000 | rg2            |    34028 |
+| 2024-01-02 00:00:00.000000 | 2024-01-03 00:00:00.000000 | default        |   334088 |
+| 2024-01-02 00:00:00.000000 | 2024-01-03 00:00:00.000000 | rg1            |     3850 |
++----------------------------+----------------------------+----------------+----------+
+5 rows in set (0.01 sec)
+```
+
+> **注意：**
+>
+> `mysql.request_unit_by_group` 的数据由 TiDB 的定时任务在每天结束后自动导入。如果某个资源组当天的 RU 消耗为 0，则不会产生一条记录。此表默认只存放最近 3 个月（最多 92 天）的数据。超过此期限的数据会自动被清理。
 
 ## 监控与图表
 

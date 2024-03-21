@@ -84,10 +84,10 @@ bundle add mysql2 dotenv
     cp .env.example .env
     ```
 
-6. 编辑 `.env` 文件，按照以下方式设置 `DATABASE_URL` 环境变量，并将占位符 `<>` 替换为连接对话框中相应的连接参数：
+6. 编辑 `.env` 文件，按照以下方式设置 `DATABASE_URL` 环境变量，并将占位符 `{}` 替换为连接对话框中相应的连接参数：
 
     ```dotenv
-    DATABASE_URL=mysql2://<user>:<password>@<host>:<port>/<database_name>?ssl_mode=verify_identity
+    DATABASE_URL=mysql2://{user}:{password}@{host}:{port}/{database_name}?ssl_mode=verify_identity
     ```
 
    > **注意**
@@ -113,10 +113,10 @@ bundle add mysql2 dotenv
     cp .env.example .env
     ```
 
-5. 编辑 `.env` 文件，按照以下方式设置 `DATABASE_URL` 环境变量，将占位符 `<>` 替换为连接对话框中相应的连接参数，并将 `sslca` 查询参数设置为从连接对话框下载的 CA 证书的文件路径：
+5. 编辑 `.env` 文件，按照以下方式设置 `DATABASE_URL` 环境变量，将占位符 `{}` 替换为连接对话框中相应的连接参数，并将 `sslca` 查询参数设置为从连接对话框下载的 CA 证书的文件路径：
 
     ```dotenv
-    DATABASE_URL=mysql2://<user>:<password>@<host>:<port>/<database>?ssl_mode=verify_identity&sslca=/path/to/ca.pem
+    DATABASE_URL=mysql2://{user}:{password}@{host}:{port}/{database}?ssl_mode=verify_identity&sslca=/path/to/ca.pem
     ```
 
    > **注意**
@@ -136,10 +136,10 @@ bundle add mysql2 dotenv
     cp .env.example .env
     ```
 
-2. 编辑 `.env` 文件，按照以下方式设置 `DATABASE_URL` 环境变量，并将 `<user>`、`<password>`、`<host>`、`<port>` 和 `<database>` 替换为你自己的 TiDB 连接信息：
+2. 编辑 `.env` 文件，按照以下方式设置 `DATABASE_URL` 环境变量，并将 `{user}`、`{password}`、`{host}`、`{port}` 和 `{database}` 替换为你自己的 TiDB 连接信息：
 
     ```dotenv
-    DATABASE_URL=mysql2://<user>:<password>@<host>:<port>/<database>
+    DATABASE_URL=mysql2://{user}:{password}@{host}:{port}/{database}
     ```
 
    如果你在本地运行 TiDB，那么默认的主机地址是 `127.0.0.1`，密码为空。
@@ -173,7 +173,7 @@ bundle add mysql2 dotenv
 如果连接成功，你的终端将会输出所连接集群的版本信息：
 
 ```
-🔌 Connected to TiDB cluster! (TiDB version: 8.0.11-TiDB-v7.5.0)
+🔌 Connected to TiDB cluster! (TiDB version: 8.0.11-TiDB-v7.6.0)
 ⏳ Loading sample game data...
 ✅ Loaded sample game data.
 
