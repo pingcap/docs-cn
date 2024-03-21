@@ -269,13 +269,13 @@ IMPORT INTO t(id, name, @1) FROM '/path/to/file.csv' WITH skip_rows=1;
 假设在 `/path/to/` 目录下有 `file-01.csv`、`file-02.csv` 和 `file-03.csv` 三个文件，如需通过 `IMPORT INTO` 将这三个文件导入到目标表 `t` 中，可使用如下 SQL 语句：
 
 ```sql
-IMPORT INTO t FROM '/path/to/file-*.csv'
+IMPORT INTO t FROM '/path/to/file-*.csv';
 ```
 
 如果只需要将 `file-01.csv` 和 `file-03.csv` 导入到目标表，可以使用如下 SQL 语句：
 
 ```sql
-IMPORT INTO t FROM '/path/to/file-0[13].csv'
+IMPORT INTO t FROM '/path/to/file-0[13].csv';
 ```
 
 #### 从 S3 或 GCS 导入数据
