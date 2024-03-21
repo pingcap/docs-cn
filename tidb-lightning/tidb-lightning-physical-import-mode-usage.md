@@ -48,7 +48,7 @@ strategy = ""
 backend = "local"
 
 # 冲突数据处理方式
-# 从 v8.0.0 开始，`duplicate-resolution` 参数已废弃。详情参考 <https://docs.pingcap.com/zh/tidb/dev/tidb-lightning-physical-import-mode-usage.md#旧版冲突检测从-v800-开始已被废弃>。
+# 从 v8.0.0 开始，`duplicate-resolution` 参数已废弃。详情参考 <https://docs.pingcap.com/zh/tidb/dev/tidb-lightning-physical-import-mode-usage#旧版冲突检测从-v800-开始已被废弃>。
 duplicate-resolution = 'remove'
 
 # 本地进行 KV 排序的路径。
