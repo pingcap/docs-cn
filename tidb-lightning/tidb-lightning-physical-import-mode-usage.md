@@ -122,7 +122,7 @@ Lightning 的完整配置文件可参考[完整配置及命令行参数](/tidb-l
 
 ### 旧版冲突检测（从 v8.0.0 开始已被废弃）
 
-从 v8.0.0 起，旧版冲突检测 (`tikv-importer.duplicate-resolution`) 已被废弃。如果 `tikv-importer.duplicate-resolution` 为 `remove` 且`conflict.strategy` 为空，TiDB Lightning 会自动将 `conflict.strategy` 赋值为 `"replace"` 开启新版冲突检测。需要注意 `tikv-importer.duplicate-resolution` 不能与 `conflict.strategy` 同时配置，否则将报错。
+从 v8.0.0 起，旧版冲突检测 (`tikv-importer.duplicate-resolution`) 已被废弃。如果 `tikv-importer.duplicate-resolution` 为 `remove` 且 `conflict.strategy` 未设置，TiDB Lightning 会自动将 `conflict.strategy` 赋值为 `"replace"` 开启新版冲突检测。需要注意 `tikv-importer.duplicate-resolution` 不能与 `conflict.strategy` 同时配置，否则将报错。
 
 - 在 v7.3.0 到 v7.6.0 之间的版本中，当配置 `tikv-importer.duplicate-resolution` 不为空时，TiDB Lightning 会开启旧版冲突检测。
 - 在 v7.2.0 及之前的版本中，TiDB Lightning 仅支持旧版冲突检测。
