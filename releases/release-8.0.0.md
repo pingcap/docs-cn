@@ -379,7 +379,7 @@ TiDB 版本：8.0.0
 
 ## 改进提升
 
-+ TiDB <!--tw@qiancai, 17 条-->
++ TiDB <!--tw@qiancai, 18 条-->
 
     - 提升 Sort 算子的数据落盘性能 [#47733](https://github.com/pingcap/tidb/issues/47733) @[xzhangxian1008](https://github.com/xzhangxian1008) **tw@Oreoxmt** <!--1609-->
     - 优化数据落盘功能的退出机制，支持在数据落盘过程中取消查询 [#50511](https://github.com/pingcap/tidb/issues/50511) @[wshwsh12](https://github.com/wshwsh12) **tw@qiancai** <!--1635-->
