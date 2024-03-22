@@ -127,7 +127,7 @@ strategy = ""
 # precheck-conflict-before-import = false
 # 控制 strategy 为 "replace" 或 "ignore" 时，能处理的冲突错误数的上限。仅在 strategy 为 "replace" 或 "ignore" 时可配置。默认为 9223372036854775807，表示几乎可以容忍所有错误。
 # threshold = 9223372036854775807
-# 控制冲突数据记录表 (`conflict_records`) 中记录的冲突数据的条数上限，默认为 100。在物理导入模式下，当 strategy 为 "replace" 时会记录被覆盖的冲突记录。在逻辑导入模式下，当 strategy 为 "ignore" 时会记录被忽略写入的冲突记录，当 strategy 为 "replace" 时，会记录冲突记录，但无法记录被覆盖的冲突记录。
+# 控制冲突数据记录表 (`conflict_records`) 中记录的冲突数据的条数上限，默认为 100。在物理导入模式下，当 strategy 为 "replace" 时会记录被覆盖的冲突记录。在逻辑导入模式下，当 strategy 为 "ignore" 时会记录被忽略写入的冲突记录，当 strategy 为 "replace" 时，不会记录冲突记录。
 # max-record-rows = 100
 
 [tikv-importer]
