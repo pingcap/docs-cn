@@ -6,7 +6,7 @@ aliases: ['/docs-cn/dev/sql-statements/sql-statement-alter-index/','/docs-cn/dev
 
 # ALTER INDEX
 
-`ALTER INDEX` 语句用于修改索引的可见性，可以将索引设置为 `Visible` 或者 `Invisible`。设置为 `Invisible` 的索引即不可见索引 (Invisible Index) 由 DML 语句维护，不会被查询优化器使用。
+`ALTER INDEX` 语句用于修改索引的可见性，可以将索引设置为 `Visible` 或者 `Invisible`。设置为 `Invisible` 的索引即不可见索引 (Invisible Index) 由 DML 语句维护，不会被查询优化器使用。从 TiDB v8.0.0 开始，你可以通过修改系统变量 [`tidb_opt_use_invisible_indexes`](/system-variables.md#tidb_opt_use_invisible_indexes-从-v800-版本开始引入)，允许优化器选择不可见索引。
 
 ## 语法图
 
@@ -119,7 +119,6 @@ Query OK, 0 rows affected (0.02 sec)
 
 * TiDB 中的不可见索引是基于 MySQL 8.0 中的同等特性构建的。
 * 与 MySQL 类似，TiDB 不允许将主键索引设为不可见。
-* MySQL 中提供的优化器开关 `use_invisible_indexes=on` 可将所有的不可见索引重新设为可见。该功能在 TiDB 中不可用。
 
 ## 另请参阅
 

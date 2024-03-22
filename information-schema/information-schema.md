@@ -70,6 +70,7 @@ Information Schema 提供了一种查看系统元数据的 ANSI 标准方法。�
 | `CLUSTER_SLOW_QUERY`                                                                    | 提供 `SLOW_QUERY` 表的集群级别的视图。                         |
 | `CLUSTER_STATEMENTS_SUMMARY`                                                            | 提供 `STATEMENTS_SUMMARY` 表的集群级别的视图。                 |
 | `CLUSTER_STATEMENTS_SUMMARY_HISTORY`                                                    | 提供 `STATEMENTS_SUMMARY_HISTORY` 表的集群级别的视图。         |
+| `CLUSTER_TIDB_INDEX_USAGE`                                                              | 提供 `TIDB_INDEX_USAGE` 表的集群级别的视图。                           |
 | `CLUSTER_TIDB_TRX`                                                                      | 提供 `TIDB_TRX` 表的集群级别的视图。                           |
 | [`CLUSTER_SYSTEMINFO`](/information-schema/information-schema-cluster-systeminfo.md)    | 提供集群中服务器的内核参数配置的详细信息。                     |
 | [`DATA_LOCK_WAITS`](/information-schema/information-schema-data-lock-waits.md)          | 提供 TiKV 服务器上的等锁信息。                                 |
@@ -92,6 +93,7 @@ Information Schema 提供了一种查看系统元数据的 ANSI 标准方法。�
 | [`TIDB_HOT_REGIONS`](/information-schema/information-schema-tidb-hot-regions.md)        | 提供有关哪些 Region 访问次数最多的统计信息。                   |
 | [`TIDB_HOT_REGIONS_HISTORY`](/information-schema/information-schema-tidb-hot-regions-history.md)| 提供有关哪些 Region 访问次数最多的历史统计信息。                   |
 | [`TIDB_INDEXES`](/information-schema/information-schema-tidb-indexes.md)                | 提供有关 TiDB 表的索引信息。                                   |
+| [`TIDB_INDEX_USAGE`](/information-schema/information-schema-tidb-index-usage.md)        | 提供 TiDB 节点上有关访问索引的统计信息。 ｜
 | [`TIDB_SERVERS_INFO`](/information-schema/information-schema-tidb-servers-info.md)      | 提供 TiDB 服务器的列表                                         |
 | [`TIDB_TRX`](/information-schema/information-schema-tidb-trx.md)                        | 提供 TiDB 节点上正在执行的事务的信息。                         |
 | [`TIFLASH_REPLICA`](/information-schema/information-schema-tiflash-replica.md)          | 提供有关 TiFlash 副本的详细信息。                              |

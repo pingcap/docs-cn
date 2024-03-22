@@ -83,6 +83,12 @@ aliases: ['/docs-cn/dev/command-line-flags-for-tidb-configuration/','/docs-cn/de
 + 默认：""
 + 如果未设置该参数，log 会默认输出到 "stderr"；如果设置了该参数，log 会输出到对应的文件中。
 
+## `--log-general`
+
++ [General Log](/system-variables.md#tidb_general_log) 文件名
++ 默认：""
++ 如果未设置该参数，general log 会默认输出到 [`--log-file`](#--log-file) 指定的文件中。
+
 ## `--log-slow-query`
 
 + 慢查询日志文件路径
