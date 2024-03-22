@@ -1,6 +1,6 @@
 ---
 title: PD 微服务
-summary: 介绍如何开启 PD 微服务模式提高服务质量。
+summary: 介绍如何开启 PD 微服务模式，以提高服务质量。
 ---
 
 # PD 微服务
@@ -40,7 +40,7 @@ PD 微服务通常用于解决 PD 出现性能瓶颈的问题，提高 PD 服务
 
 ## 使用方法
 
-目前 PD 微服务支持通过 TiDB Operator 和 TiUP Playground 进行部署。
+目前 PD 微服务支持通过 TiDB Operator 或 TiUP Playground 进行部署。
 
 <SimpleTab>
 <div label="TiDB Operator">
