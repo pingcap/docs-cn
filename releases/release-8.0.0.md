@@ -416,19 +416,19 @@ TiDB 版本：8.0.0
  - 增加Region worker和快照生成 worker的CPU监控 [#16562](https://github.com/tikv/tikv/issues/16562) @[Connor1996](https://github.com/Connor1996)
  - 增加peer和store消息的slow log [#16600](https://github.com/tikv/tikv/issues/16600) @[Connor1996](https://github.com/Connor1996)
  - 默认打开 `async-io` . [#16614](https://github.com/tikv/tikv/issues/16614) @[LykxSassinator](https://github.com/LykxSassinator)
-+ PD <!--tw@Oreoxm, 11 条-->
++ PD <!--tw@Oreoxmt, 11 条-->
 
-    - 增强 PD 客户端的服务发现功能，提升其高可用性和负载平衡 [#7576](https://github.com/tikv/pd/issues/7576) @[CabinfeverB](https://github.com/CabinfeverB)
-    - 增强 PD 客户端的重试机制[#7673](https://github.com/tikv/pd/issues/7673) @[JmPotato](https://github.com/JmPotato)
-    - 添加 Cgroup 的监控和告警 [#7716](https://github.com/tikv/pd/issues/7716) [#7918](https://github.com/tikv/pd/issues/7918) @[pingandb](https://github.com/pingandb) @[rleungx](https://github.com/rleungx)
-    - 提升使用 Etcd watch 的性能和高可用 [#7738](https://github.com/tikv/pd/issues/7738) [#7724](https://github.com/tikv/pd/issues/7724) [#7689](https://github.com/tikv/pd/issues/7689) @[lhy1024](https://github.com/lhy1024)
-    - 添加更多心跳监控以帮助分析瓶颈 [#7868](https://github.com/tikv/pd/issues/7868) @[nolouch](https://github.com/nolouch)
-    - 减少 Etcd leader 对于 PD leader 的影响 [#7499](https://github.com/tikv/pd/issues/7499) @[JmPotato](https://github.com/JmPotato) @[HuSharp](https://github.com/HuSharp)
+    - 增强 PD 客户端的服务发现能力，提升其高可用性和负载平衡 [#7576](https://github.com/tikv/pd/issues/7576) @[CabinfeverB](https://github.com/CabinfeverB)
+    - 增强 PD 客户端的重试机制 [#7673](https://github.com/tikv/pd/issues/7673) @[JmPotato](https://github.com/JmPotato)
+    - 增加 cgroup 的监控和告警 [#7716](https://github.com/tikv/pd/issues/7716) [#7918](https://github.com/tikv/pd/issues/7918) @[pingandb](https://github.com/pingandb) @[rleungx](https://github.com/rleungx)
+    - 提升使用 Etcd watch 的性能和高可用性 [#7738](https://github.com/tikv/pd/issues/7738) [#7724](https://github.com/tikv/pd/issues/7724) [#7689](https://github.com/tikv/pd/issues/7689) @[lhy1024](https://github.com/lhy1024)
+    - 增加更多心跳监控，以便更好地分析性能瓶颈 [#7868](https://github.com/tikv/pd/issues/7868) @[nolouch](https://github.com/nolouch)
+    - 减少 Etcd leader 对 PD leader 的影响 [#7499](https://github.com/tikv/pd/issues/7499) @[JmPotato](https://github.com/JmPotato) @[HuSharp](https://github.com/HuSharp)
     - 增强对 Etcd 不健康节点的检测机制 [#7730](https://github.com/tikv/pd/issues/7730) @[JmPotato](https://github.com/JmPotato) @[HuSharp](https://github.com/HuSharp)
-    - 增强  pd-ctl 中 GcSafepoint 相关显示 [#7767](https://github.com/tikv/pd/issues/7767) @[nolouch](https://github.com/nolouch) 
+    - 优化 pd-ctl 中 GC safepoint 的相关显示 [#7767](https://github.com/tikv/pd/issues/7767) @[nolouch](https://github.com/nolouch) 
     - 支持动态修改热点调度器中的历史窗口配置 [#7877](https://github.com/tikv/pd/issues/7877) @[lhy1024](https://github.com/lhy1024) 
     - 减少创建 operator 中的锁争用问题 [#7837](https://github.com/tikv/pd/issues/7837) @[Leavrth](https://github.com/Leavrth) 
-    - 调整 Grpc 配置以提高可用性 [#7821](https://github.com/tikv/pd/issues/7821) @[rleungx](https://github.com/rleungx) 
+    - 调整 GRPC 配置以提升可用性 [#7821](https://github.com/tikv/pd/issues/7821) @[rleungx](https://github.com/rleungx) 
     - note [#issue](链接) @[贡献者 GitHub ID](链接)
 
 + TiFlash
