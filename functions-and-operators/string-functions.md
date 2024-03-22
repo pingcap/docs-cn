@@ -113,5 +113,3 @@ TiDB 与 MySQL 在二进制字符串 (binary string) 数据类型上的差异：
 - TiDB 与 MySQL 在捕获组的关键字上存在差异。Mysql 的捕获组关键字为`$`，而 TiDB 的捕获组关键字为`\\`，同时 TiDB 只支持编号为 0-9 的捕获组。例如：
 
   - `select regexp_replace('abcd','(.*)(.{2})$','\\1') as s;`返回结果`ab`
-  
-
