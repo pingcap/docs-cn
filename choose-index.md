@@ -481,6 +481,7 @@ CREATE TABLE t4(a INT, j JSON, INDEX mvi1((CAST(j->'$.a' AS UNSIGNED ARRAY))), I
         | └─TableRowIDScan_7(Probe)     | 19.99   | cop[tikv] | table:t4                                                                    | keep order:false, stats:pseudo              |
         +-------------------------------+---------+-----------+-----------------------------------------------------------------------------+---------------------------------------------+
         ```
+        
     - 当 `OR` 和 `AND` 同时出现（本质上是 `OR` 和 `AND` 嵌套）时，构成 IndexMerge 的条件只能全部符合 `OR` 的语义或者全部符合 `AND` 的语义，不能部分符合 `OR` 的语义而另一部分符合 `AND` 的语义。例如：
         
         ```sql
