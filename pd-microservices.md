@@ -14,7 +14,7 @@ summary: 介绍如何开启 PD 微服务模式，以提高服务质量。
 
 > **警告：**
 >
-> PD 微服务目前为实验特性，不建议在生产环境中使用。该功能可能会在未事先通知的情况下发生变化或删除。如果发现 bug，请在 GitHub 上提 [issue](https://github.com/pingcap/tidb/issues) 反馈。
+> PD 微服务目前为实验特性，不建议在生产环境中使用。该功能可能会在未事先通知的情况下发生变化或删除。如果发现 bug，请在 GitHub 上提 [issue](https://github.com/tikv/pd/issues) 反馈。
 
 ## 使用场景
 
