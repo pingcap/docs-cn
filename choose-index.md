@@ -201,6 +201,7 @@ EXPLAIN SELECT /*+ use_index_merge(t2, idx) */ * FROM t2 WHERE a=1 AND JSON_CONT
 EXPLAIN SELECT /*+ use_index_merge(t2, idx) */ * FROM t2 WHERE a=1 AND JSON_OVERLAPS((j->'$.path'), '[1, 2, 3]');
 EXPLAIN SELECT /*+ use_index_merge(t2, idx, idx2) */ * FROM t2 WHERE (a=1 AND 1 member of (j->'$.path')) AND (b=1 AND 2 member of (k->'$.path'));
 ```
+
 ```sql
 > EXPLAIN SELECT /*+ use_index_merge(t2, idx) */ * FROM t2 WHERE a=1 AND (1 MEMBER OF (j->'$.path')) AND b=2;
 +-------------------------------+---------+-----------+-----------------------------------------------------------------------------------+-----------------------------------------------------+
@@ -283,11 +284,13 @@ CREATE TABLE t4(a INT, j JSON, INDEX mvi1((CAST(j->'$.a' AS UNSIGNED ARRAY))), I
 ```
 
 - 对于由 `OR` 连接而成的条件，其中每个子条件都需要分别能够使用 IndexMerge 访问。例如：
+
     ```sql
     EXPLAIN SELECT /*+ use_index_merge(t4, mvi1) */ * FROM t4 WHERE json_overlaps(j->'$.a', '[1, 2]') OR json_overlaps(j->'$.a', '[3, 4]');
     EXPLAIN SELECT /*+ use_index_merge(t4, mvi1) */ * FROM t4 WHERE json_overlaps(j->'$.a', '[1, 2]') OR json_length(j->'$.a') = 3;
     SHOW WARNINGS;
     ```
+
     ```sql
     > EXPLAIN SELECT /*+ use_index_merge(t4, mvi1) */ * FROM t4 WHERE json_overlaps(j->'$.a', '[1, 2]') OR json_overlaps(j->'$.a', '[3, 4]');
     +----------------------------------+---------+-----------+-----------------------------------------------------------------------------+------------------------------------------------------------------------------------------------------------------------------------------------------------+
@@ -319,11 +322,14 @@ CREATE TABLE t4(a INT, j JSON, INDEX mvi1((CAST(j->'$.a' AS UNSIGNED ARRAY))), I
     | Warning | 1105 | IndexMerge is inapplicable |
     +---------+------+----------------------------+
     ```
+
 - 对于由 `AND` 连接而成的条件，其中一部分子条件需要分别能够使用 IndexMerge 访问。最终使用 IndexMerge 访问时，也只能利用这一部分条件。例如：
+
     ```sql
     EXPLAIN SELECT /*+ use_index_merge(t4, mvi1) */ * FROM t4 WHERE json_contains(j->'$.a', '[1, 2]') AND json_contains(j->'$.a', '[3, 4]');
     EXPLAIN SELECT /*+ use_index_merge(t4, mvi1) */ * FROM t4 WHERE json_contains(j->'$.a', '[1, 2]') AND json_contains(j->'$.a', '[3, 4]') AND json_length(j->'$.a') = 2;
     ```
+
     ```sql
     > EXPLAIN SELECT /*+ use_index_merge(t4, mvi1) */ * FROM t4 WHERE json_contains(j->'$.a', '[1, 2]') AND json_contains(j->'$.a', '[3, 4]');
     +-------------------------------+---------+-----------+-----------------------------------------------------------------------------+---------------------------------------------+
@@ -351,12 +357,15 @@ CREATE TABLE t4(a INT, j JSON, INDEX mvi1((CAST(j->'$.a' AS UNSIGNED ARRAY))), I
     |   └─TableRowIDScan_9          | 0.00    | cop[tikv] | table:t4                                                                    | keep order:false, stats:pseudo                     |
     +-------------------------------+---------+-----------+-----------------------------------------------------------------------------+----------------------------------------------------+
     ```
+
 - 用于构成整体 IndexMerge 计划的每个子条件，需要分别符合用于连接的 `OR` 或 `AND` 的语义。具体如下：
     - `json_contains` 由 `AND` 连接，符合语义。例如：
+
         ```sql
         EXPLAIN SELECT /*+ use_index_merge(t4, mvi1, mvi2) */ * FROM t4 WHERE json_contains(j->'$.a', '[1]') AND json_contains(j->'$.b', '[2, 3]');
         EXPLAIN SELECT /*+ use_index_merge(t4, mvi1, mvi2) */ * FROM t4 WHERE json_contains(j->'$.a', '[1]') OR json_contains(j->'$.b', '[2, 3]');
         ```
+
         ```sql
         > EXPLAIN SELECT /*+ use_index_merge(t4, mvi1, mvi2) */ * FROM t4 WHERE json_contains(j->'$.a', '[1]') AND json_contains(j->'$.b', '[2, 3]');
         +-------------------------------+---------+-----------+-----------------------------------------------------------------------------+---------------------------------------------+
@@ -379,11 +388,14 @@ CREATE TABLE t4(a INT, j JSON, INDEX mvi1((CAST(j->'$.a' AS UNSIGNED ARRAY))), I
         |   └─TableFullScan_5     | 10000.00 | cop[tikv] | table:t4      | keep order:false, stats:pseudo                                                                                                                          |
         +-------------------------+----------+-----------+---------------+---------------------------------------------------------------------------------------------------------------------------------------------------------+
         ```
+
     - `json_overlaps` 由 `OR` 连接，符合语义。例如：
+
         ```sql
         EXPLAIN SELECT /*+ use_index_merge(t4, mvi1, mvi2) */ * FROM t4 WHERE json_overlaps(j->'$.a', '[1]') OR json_overlaps(j->'$.b', '[2, 3]');
         EXPLAIN SELECT /*+ use_index_merge(t4, mvi1, mvi2) */ * FROM t4 WHERE json_overlaps(j->'$.a', '[1]') AND json_overlaps(j->'$.b', '[2, 3]');
         ```
+
         ```sql
         > EXPLAIN SELECT /*+ use_index_merge(t4, mvi1, mvi2) */ * FROM t4 WHERE json_overlaps(j->'$.a', '[1]') OR json_overlaps(j->'$.b', '[2, 3]');
         +---------------------------------+---------+-----------+-----------------------------------------------------------------------------+---------------------------------------------------------------------------------------------------------------------------------------------------------+
@@ -408,11 +420,14 @@ CREATE TABLE t4(a INT, j JSON, INDEX mvi1((CAST(j->'$.a' AS UNSIGNED ARRAY))), I
         |   └─TableRowIDScan_7(Probe)     | 10.00   | cop[tikv] | table:t4                                                                    | keep order:false, stats:pseudo                                                                                                                      |
         +---------------------------------+---------+-----------+-----------------------------------------------------------------------------+-----------------------------------------------------------------------------------------------------------------------------------------------------+
         ```
+
     - `json_member_of` 由 `OR` 或 `AND` 连接，均符合语义。例如：
+        
         ```sql
         EXPLAIN SELECT /*+ use_index_merge(t4, mvi1, mvi2) */ * FROM t4 WHERE 1 member of (j->'$.a') AND 2 member of (j->'$.b') AND 3 member of (j->'$.a');
         EXPLAIN SELECT /*+ use_index_merge(t4, mvi1, mvi2) */ * FROM t4 WHERE 1 member of (j->'$.a') OR 2 member of (j->'$.b') OR 3 member of (j->'$.a');
         ```
+
         ```sql
         > EXPLAIN SELECT /*+ use_index_merge(t4, mvi1, mvi2) */ * FROM t4 WHERE 1 member of (j->'$.a') AND 2 member of (j->'$.b') AND 3 member of (j->'$.a');
         +-------------------------------+---------+-----------+-----------------------------------------------------------------------------+---------------------------------------------+
@@ -436,12 +451,15 @@ CREATE TABLE t4(a INT, j JSON, INDEX mvi1((CAST(j->'$.a' AS UNSIGNED ARRAY))), I
         | └─TableRowIDScan_8(Probe)     | 29.97   | cop[tikv] | table:t4                                                                    | keep order:false, stats:pseudo              |
         +-------------------------------+---------+-----------+-----------------------------------------------------------------------------+---------------------------------------------+
         ```
+
     - 包含多个值的 `json_contains` 由 `OR` 连接，或包含多个值的 `json_overlaps` 由 `AND` 连接，不符合语义，而如果它们只包含一个值则符合语义。例如：
+        
         ```sql
         -- 不符合语义的例子可参考前文，此处只举符合语义的例子
         EXPLAIN SELECT /*+ use_index_merge(t4, mvi1, mvi2) */ * FROM t4 WHERE json_overlaps(j->'$.a', '[1]') AND json_overlaps(j->'$.b', '[2]');
         EXPLAIN SELECT /*+ use_index_merge(t4, mvi1, mvi2) */ * FROM t4 WHERE json_contains(j->'$.a', '[1]') OR json_contains(j->'$.b', '[2]');
         ```
+
         ```sql
         > EXPLAIN SELECT /*+ use_index_merge(t4, mvi1, mvi2) */ * FROM t4 WHERE json_overlaps(j->'$.a', '[1]') AND json_overlaps(j->'$.b', '[2]');
         +---------------------------------+---------+-----------+-----------------------------------------------------------------------------+--------------------------------------------------------------------------------------------------------------------------------------------------+
@@ -465,10 +483,12 @@ CREATE TABLE t4(a INT, j JSON, INDEX mvi1((CAST(j->'$.a' AS UNSIGNED ARRAY))), I
         +-------------------------------+---------+-----------+-----------------------------------------------------------------------------+---------------------------------------------+
         ```
     - 当 `OR` 和 `AND` 同时出现（本质上是 `OR` 和 `AND` 嵌套）时，构成 IndexMerge 的条件只能全部符合 `OR` 的语义或者全部符合 `AND` 的语义，不能部分符合 `OR` 的语义而另一部分符合 `AND` 的语义。例如：
+        
         ```sql
         EXPLAIN SELECT /*+ use_index_merge(t4, mvi1, mvi2) */ * FROM t4 WHERE 1 member of (j->'$.a') AND (2 member of (j->'$.b') OR 3 member of (j->'$.a'));
         EXPLAIN SELECT /*+ use_index_merge(t4, mvi1, mvi2) */ * FROM t4 WHERE 1 member of (j->'$.a') OR (2 member of (j->'$.b') AND 3 member of (j->'$.a'));
         ```
+
         ```sql
         -- 只有符合 `OR` 语义的 2 member of (j->'$.b') 和 3 member of (j->'$.a') 构成了 IndexMerge，而符合 `AND` 语义的 1 member of (j->'$.a') 没有构成 IndexMerge
         > EXPLAIN SELECT /*+ use_index_merge(t4, mvi1, mvi2) */ * FROM t4 WHERE 1 member of (j->'$.a') AND (2 member of (j->'$.b') OR 3 member of (j->'$.a'));
