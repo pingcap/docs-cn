@@ -311,7 +311,7 @@ TiDB 版本：8.0.0
 
     更多信息，请参考[用户文档](/tidb-global-sort.md)。    
 
-## 兼容性变更
+## 兼容性变更 <!--tw@hfxsd, 3 条-->
 
 > **注意：**
 >
@@ -319,7 +319,7 @@ TiDB 版本：8.0.0
 
 - 在安全增强模式 (SEM) 下禁止设置 [`require_secure_transport`](https://docs.pingcap.com/zh/tidb/v7.5/system-variables#require_secure_transport-从-v610-版本开始引入) 为 `ON`，避免用户无法连接的问题 [#47665](https://github.com/pingcap/tidb/issues/47665) @[tiancaiamao](https://github.com/tiancaiamao)
 - 移除 DM 硬编码密钥，同时支持用户自定义密钥 [#9492](https://github.com/pingcap/tiflow/issues/9492) @[D3Hunter](https://github.com/D3Hunter)
-
+- 移除未 GA 但默认启用的 witness 相关调度器 [#7765](https://github.com/tikv/pd/pull/7765) @[rleungx](https://github.com/rleungx)
 ### 行为变更
 
 * 在之前版本中，启用添加索引加速功能 (`tidb_ddl_enable_fast_reorg = ON`) 后，编码后的索引键值 ingest 到 TiKV 的过程使用了固定的并发数 (`16`)，并未根据下游 TiKV 的处理能力进行动态调整。从 v8.0.0 开始，支持使用 [`tidb_ddl_reorg_worker_cnt`](/system-variables.md#tidb_ddl_reorg_worker_cnt-从-v800-版本开始引入) 设置并发数。该变量默认值为 `4`，相比之前的默认值 `16`，在 ingest 索引键值对时性能可能会有所下降。你可以根据集群的负载按需调整该参数。**tw@hfxsd** <!--无 FD-->
@@ -361,7 +361,7 @@ TiDB 版本：8.0.0
 | TiDB Lightning  | [`tikv-importer.duplicate-resolution`](/tidb-lightning/tidb-lightning-physical-import-mode-usage.md#旧版冲突检测从-v800-开始已被废弃)  | 废弃 | 用于在物理导入模式下设置是否检测和解决唯一键冲突的记录。从 v8.0.0 开始使用新参数 [`conflict.strategy`](/tidb-lightning/tidb-lightning-configuration.md#tidb-lightning-任务配置) 替代。 |
 | TiDB Lightning  | [`conflict.precheck-conflict-before-import`](/tidb-lightning/tidb-lightning-configuration.md#tidb-lightning-任务配置)  | 新增 | 控制是否开启前置冲突检测，即导入数据到 TiDB 前，先检查所需导入的数据是否存在冲突。该参数默认值为 `false`，表示仅开启后置冲突检测。仅当导入模式为物理导入模式 (`tikv-importer.backend = "local"`) 时可以使用该配置项。 |
 | TiDB Lightning  | `logical-import-batch-rows` | 新增 | 用于在逻辑导入模式下设置一个 batch 里提交的数据行数，默认值为 `65536`。 |
-| TiDB Lightning  | `logical-import-batch-size` | 新增 | 用于在逻辑导入模式下设置一个 batch 里提交的数据大小，取值为字符串类型，默认值为 `96KiB`，单位可以为 KB、KiB、MB、MiB 等存储单位。 |
+| TiDB Lightning  | `logical-import-batch-size` | 新增 | 用于在逻辑导入模式下设置一个 batch 里提交的数据大小，取值为字符串类型，默认值为 `"96KiB"`，单位可以为 KB、KiB、MB、MiB 等存储单位。 |
 | Data Migration  | [`secret-key-path`](/dm/dm-master-configuration-file.md) | 新增 | 用于指定加解密上下游密码的密钥文件所在的路径。该文件内容必须是长度为 64 个字符的十六进制的 AES-256 密钥。 |
 | TiCDC | [`tls-certificate-file`](ticdc/ticdc-sink-to-pulsar.md) | 新增 | 用于指定 Pulsar 启用 TLS 加密传输时，客户端的加密证书文件路径。 |
 | TiCDC | [`tls-key-file-path`](ticdc/ticdc-sink-to-pulsar.md) | 新增 | 用于指定 Pulsar 启用 TLS 加密传输时，客户端的加密私钥路径。 |
@@ -400,15 +400,34 @@ TiDB 版本：8.0.0
 -  MDL View 中不显示 blocked DDL，当 DDL 任务中包含多张表 [#47743](https://github.com/pingcap/tidb/issues/47743) @[wjhuang2016](https://github.com/wjhuang2016)
 - 修复 7.5 multi-schema change 加多个索引优化引入的 bug [#51746](https://github.com/pingcap/tidb/issues/51746) @[tangenta](https://github.com/tangenta)
 
-+ TiKV <!--tw@Oreoxm, 3 条-->
++ TiKV <!--tw@Oreoxm, 13 条-->
 
     - 强化 TSO 校验检测，提升配置或操作不当时集群 TSO 的鲁棒性 [#16545](https://github.com/tikv/tikv/issues/16545) @[cfzjywxk](https://github.com/cfzjywxk) **tw@qiancai** <!--1624-->
     - 优化清理悲观锁逻辑，提升未提交事务处理性能 [#16158](https://github.com/tikv/tikv/issues/16158) @[cfzjywxk](https://github.com/cfzjywxk) **tw@Oreoxmt** <!--1661-->
     - 增加 TiKV 统一健康控制，降低单个 TiKV 节点异常对集群访问性能的影响。可通过 [`tikv-client.enable-replica-selector-v2`](/tidb-configuration-file.md#enable-replica-selector-v2-从-v800-版本开始引入) 禁用该优化 [#16297](https://github.com/tikv/tikv/issues/16297) [#1104](https://github.com/tikv/client-go/issues/1104) [#1167](https://github.com/tikv/client-go/issues/1167) @[MyonKeminta](https://github.com/MyonKeminta) @[zyguan](https://github.com/zyguan) @[crazycs520](https://github.com/crazycs520) **tw@qiancai** <!--1707-->
+ - pd_client: 用元数据存储接口代替原来的全局配置[#14484](https://github.com/tikv/tikv/issues/14484) @[HuSharp](https://github.com/HuSharp)
+ - 用write cf stats来决定加载数据行为,提高扫描性能[#16245](https://github.com/tikv/tikv/issues/16245) @[Connor1996](https://github.com/Connor1996)
+ - 增加Raft conf change中删除节点和Voter降级的最近一次心跳的检查，确保改行为不会导致该Region不可访问 [#15799](https://github.com/tikv/tikv/issues/15799) @[tonyxuqqi](https://github.com/tonyxuqqi)
+ - 为pipelined DML增加 Flush和 BufferBatchGet 接口 [#16291](https://github.com/tikv/tikv/issues/16291) @[ekexium](https://github.com/ekexium)
+ - Cgroup CPU和内存限制的监控改进 [#16392](https://github.com/tikv/tikv/issues/16392)@[pingandb](https://github.com/pingandb)
+ - 引入RocksDB Block和Titan Blob的共享缓存 [#16245](https://github.com/tikv/tikv/issues/16245)  @[Connor1996](https://github.com/Connor1996)
+ - 增加参数initial_scan_rate_limit的范围检查，不能小于1024 [#16488](https://github.com/tikv/tikv/issues/16488) @[RidRisR](https://github.com/RidRisR)
+ - 增加Region worker和快照生成 worker的CPU监控 [#16562](https://github.com/tikv/tikv/issues/16562) @[Connor1996](https://github.com/Connor1996)
+ - 增加peer和store消息的slow log [#16600](https://github.com/tikv/tikv/issues/16600) @[Connor1996](https://github.com/Connor1996)
+ - 默认打开 `async-io` . [#16614](https://github.com/tikv/tikv/issues/16614) @[LykxSassinator](https://github.com/LykxSassinator)
++ PD <!--tw@Oreoxm, 11 条-->
 
-+ PD
-
-    - note [#issue](链接) @[贡献者 GitHub ID](链接)
+    - 增强 PD 客户端的服务发现功能，提升其高可用性和负载平衡 [#7576](https://github.com/tikv/pd/issues/7576) @[CabinfeverB](https://github.com/CabinfeverB)
+    - 增强 PD 客户端的重试机制[#7673](https://github.com/tikv/pd/issues/7673) @[JmPotato](https://github.com/JmPotato)
+    - 添加 Cgroup 的监控和告警 [#7716](https://github.com/tikv/pd/issues/7716) [#7918](https://github.com/tikv/pd/issues/7918) @[pingandb](https://github.com/pingandb) @[rleungx](https://github.com/rleungx)
+    - 提升使用 Etcd watch 的性能和高可用 [#7738](https://github.com/tikv/pd/issues/7738) [#7724](https://github.com/tikv/pd/issues/7724) [#7689](https://github.com/tikv/pd/issues/7689) @[lhy1024](https://github.com/lhy1024)
+    - 添加更多心跳监控以帮助分析瓶颈 [#7868](https://github.com/tikv/pd/issues/7868) @[nolouch](https://github.com/nolouch)
+    - 减少 Etcd leader 对于 PD leader 的影响 [#7499](https://github.com/tikv/pd/issues/7499) @[JmPotato](https://github.com/JmPotato) @[HuSharp](https://github.com/HuSharp)
+    - 增强对 Etcd 不健康节点的检测机制 [#7730](https://github.com/tikv/pd/issues/7730) @[JmPotato](https://github.com/JmPotato) @[HuSharp](https://github.com/HuSharp)
+    - 增强  pd-ctl 中 GcSafepoint 相关显示 [#7767](https://github.com/tikv/pd/issues/7767) @[nolouch](https://github.com/nolouch) 
+    - 支持动态修改热点调度器中的历史窗口配置 [#7877](https://github.com/tikv/pd/issues/7877) @[lhy1024](https://github.com/lhy1024) 
+    - 减少创建 operator 中的锁争用问题 [#7837](https://github.com/tikv/pd/issues/7837) @[Leavrth](https://github.com/Leavrth) 
+    - 调整 Grpc 配置以提高可用性 [#7821](https://github.com/tikv/pd/issues/7821) @[rleungx](https://github.com/rleungx) 
     - note [#issue](链接) @[贡献者 GitHub ID](链接)
 
 + TiFlash
@@ -417,9 +436,9 @@ TiDB 版本：8.0.0
     - note [#issue](链接) @[贡献者 GitHub ID](链接)
     - (dup): release-7.6.0.md > 改进提升> TiFlash - 支持在存算分离架构下通过合并相同数据的读取操作，提升多并发下的数据扫描性能 [#6834](https://github.com/pingcap/tiflash/issues/6834) @[JinheLin](https://github.com/JinheLin)
 
-+ Tools <!--tw@Oreoxm, 14 条-->
++ Tools
 
-    + Backup & Restore (BR)
+    + Backup & Restore (BR) <!--tw@qiancai, 5 条-->
 
         - 增加恢复参数 --load-stats 来控制是否恢复统计信息  [#50568](https://github.com/pingcap/tidb/issues/50568) @[Leavrth](https://github.com/Leavrth)
         - 在粗粒度打散 region 恢复放法，实现自适应获取并发参数功能 [#50701](https://github.com/pingcap/tidb/issues/50701) @[3pointer](https://github.com/3pointer)
@@ -432,7 +451,7 @@ TiDB 版本：8.0.0
         - (dup): release-7.5.1.md > 改进提升> Tools> Backup & Restore (BR) - 在日志备份过程中，增加了在日志和监控指标中打印影响 global checkpoint 推进的最慢的 Region 的信息 [#51046](https://github.com/pingcap/tidb/issues/51046) @[YuJuncen](https://github.com/YuJuncen)
         - (dup): release-7.5.1.md > 改进提升> Tools> Backup & Restore (BR) - 提升了 `RESTORE` 语句在大数据量表场景下的建表性能 [#48301](https://github.com/pingcap/tidb/issues/48301) @[Leavrth](https://github.com/Leavrth)
 
-    + TiCDC
+    + TiCDC <!--tw@hfxsd, 2 条-->
 
         - note [#issue](链接) @[贡献者 GitHub ID](链接)
         - note [#issue](链接) @[贡献者 GitHub ID](链接)
@@ -440,11 +459,12 @@ TiDB 版本：8.0.0
         - 通过优化 `RowChangedEvent` 的内存占用，降低 TiCDC 同步数据时的内存消耗 [#10386](https://github.com/pingcap/tiflow/issues/10386) @[lidezhu](https://github.com/lidezhu)
         - 增加在创建和恢复 changefeed 任务时验证 start-ts 参数是否合法 [#10499](https://github.com/pingcap/tiflow/issues/10499) @[3AceShowHand](https://github.com/3AceShowHand)
 
-    + TiDB Data Migration (DM)
+    + TiDB Data Migration (DM) <!--tw@hfxsd, 2 条-->
 
         - 在 MariaDB 主从复制的场景中，即 MariaDB 主实例 -> MariaDB 从实例 -> DM -> TiDB 的迁移场景，当 `gtid_strict_mode = off` 且 MariaDB 从实例的 GTID 不严格递增时（例如，有业务数据写入 MariaDB 从实例），此时 DM 任务会报错 `less than global checkpoint position`。从 v8.0.0 开始，TiDB 兼容该场景，数据可以正常迁移到下游。[#10741](https://github.com/pingcap/tiflow/issues/10741) @[okJiang](https://github.com/okJiang) **tw@hfxsd** <!--1683-->
         - DM 丢失上游 binary 类型主键更新 [[#10672](https://github.com/pingcap/tiflow/issues/10672) @[GMHDBJD](https://github.com/GMHDBJD)
-    + TiDB Lightning
+
+    + TiDB Lightning <!--tw@hfxsd, 5 条-->
 
         - Lightning 逻辑导入模式也支持批处理最大行数配置能力。[#46607](https://github.com/pingcap/tidb/issues/46607) @[kennytm](https://github.com/kennytm)
         - 区分导入空间检查节点是否是 TiFlash 节点 [#50324](https://github.com/pingcap/tidb/issues/50324) @[okJiang](https://github.com/okJiang)
@@ -498,7 +518,7 @@ TiDB 版本：8.0.0
     - (dup): release-7.1.4.md > 错误修复> TiDB - 修复当列的默认值被删除时，获取该列的默认值会报错的问题 [#50043](https://github.com/pingcap/tidb/issues/50043) [#51324](https://github.com/pingcap/tidb/issues/51324) @[crazycs520](https://github.com/crazycs520)
     - 修复在 TiFlash 延迟物化在处理关联列时结果可能出错的问题 [#49241](https://github.com/pingcap/tidb/issues/49241) [#51204](https://github.com/pingcap/tidb/issues/51204) @[Lloyd-Pottiger](https://github.com/Lloyd-Pottiger)
 
-+ TiKV
++ TiKV <!--tw@hfxsd, 1 条-->
 
     - note [#issue](链接) @[贡献者 GitHub ID](链接)
     - note [#issue](链接) @[贡献者 GitHub ID](链接)
@@ -506,13 +526,20 @@ TiDB 版本：8.0.0
     - (dup): release-7.1.4.md > 错误修复> TiKV - 修复休眠的 Region 在异常情况下未被及时唤醒的问题 [#16368](https://github.com/tikv/tikv/issues/16368) @[LykxSassinator](https://github.com/LykxSassinator)
     - (dup): release-7.1.4.md > 错误修复> TiKV - 通过在执行下线节点操作前检查该 Region 所有副本的上一次心跳时间，修复下线一个副本导致整个 Region 不可用的问题 [#16465](https://github.com/tikv/tikv/issues/16465) @[tonyxuqqi](https://github.com/tonyxuqqi)
     - (dup): release-7.1.4.md > 错误修复> TiKV - 修复 JSON 整型数值在大于 `INT64` 最大值但小于 `UINT64` 最大值时会被 TiKV 解析成 `FLOAT64` 导致结果和 TiDB 不一致的问题 [#16512](https://github.com/tikv/tikv/issues/16512) @[YangKeao](https://github.com/YangKeao)
-
-+ PD
+ - 修复监控指标`tikv_unified_read_pool_thread_count`有时没有数据的bug。[#16629](https://github.com/tikv/tikv/issues/16629) @[YuJuncen](https://github.com/YuJuncen)
++ PD <!--tw@lilian90, 6 条-->
 
     - (dup): release-7.1.4.md > 错误修复> PD - 修复调用 `MergeLabels` 函数时存在数据竞争的问题 [#7535](https://github.com/tikv/pd/issues/7535) @[lhy1024](https://github.com/lhy1024)
     - (dup): release-7.1.4.md > 错误修复> PD - 修复调用 `evict-leader-scheduler` 接口时没有输出结果的问题 [#7672](https://github.com/tikv/pd/issues/7672) @[CabinfeverB](https://github.com/CabinfeverB)
     - (dup): release-7.5.1.md > 错误修复> PD - 修复 PD 监控项 `learner-peer-count` 在发生 Leader 切换后未同步旧监控值的问题 [#7728](https://github.com/tikv/pd/issues/7728) @[CabinfeverB](https://github.com/CabinfeverB)
     - (dup): release-7.1.4.md > 错误修复> PD - 修复 `watch etcd` 没有正确关闭导致内存泄露的问题 [#7807](https://github.com/tikv/pd/issues/7807) @[rleungx](https://github.com/rleungx)
+    - (dup): release-7.1.4.md > 修复 TSO 部分日志没有打印报错原因的问题 [#7496](https://github.com/tikv/pd/issues/7496) @[CabinfeverB](https://github.com/CabinfeverB)
+    - 修复重启后 PD 部分监控出现非预期的负数监控问题 [#4489](https://github.com/tikv/pd/issues/4489) @[lhy1024](https://github.com/lhy1024)
+    - 修复 leader lease 日志问题 [#7700](https://github.com/tikv/pd/issues/7700) @[CabinfeverB](https://github.com/CabinfeverB)
+    - 修复 PD 客户端 TLS 相关的问题 [#7900](https://github.com/tikv/pd/issues/7900) [#7902](https://github.com/tikv/pd/issues/7902) [#7916](https://github.com/tikv/pd/issues/7916) @[CabinfeverB](https://github.com/CabinfeverB)
+    - 修复 Goroutine 泄漏问题 [#7782](https://github.com/tikv/pd/issues/7782) @[HuSharp](https://github.com/HuSharp)
+    - 修复 pd-ctl 无法移除包含特殊字符的调度器的问题 [#7798](https://github.com/tikv/pd/issues/7798) @[JmPotato](https://github.com/JmPotato)
+    - 修复 PD 客户端获取 TSO 可能被阻塞的问题 [#7864](https://github.com/tikv/pd/issues/7864) @[CabinfeverB](https://github.com/CabinfeverB)
 
 + TiFlash <!--tw@hfxsd, 2 条-->
 
