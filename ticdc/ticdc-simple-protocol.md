@@ -506,9 +506,9 @@ TiCDC 会把一个 `BOOTSTRAP` 事件编码成如下的 JSON 格式：
 
 根据上文描述，已知如下信息：
 
-- 每个 DML 消息都会包含一个 schemaVersion 字段，用于标记该 DML 消息对应的表的 schema 版本号。
-- 每个 DDL 消息都会包含一个 tableSchema 和 preTableSchema 字段，用于标记该 DDL 发生前后的表的 schema 信息。
-- 每个 BOOTSTRAP 消息都会包含一个 tableSchema 字段，用于标记该 BOOTSTRAP 对应的表的 schema 信息。
+- 每个 DML 消息都会包含一个 `schemaVersion` 字段，用于标记该 DML 消息对应的表的 schema 版本号。
+- 每个 DDL 消息都会包含一个 `tableSchema` 和 `preTableSchema` 字段，用于标记该 DDL 发生前后的表的 schema 信息。
+- 每个 BOOTSTRAP 消息都会包含一个 `tableSchema` 字段，用于标记该 BOOTSTRAP 对应的表的 schema 信息。
 
 接下来介绍两种场景下的消费方法。
 
