@@ -399,19 +399,16 @@ TiDB 版本：8.0.0
 
 + TiKV <!--tw@Oreoxm, 13 条-->
 
-    - 强化 TSO 校验检测，提升配置或操作不当时集群 TSO 的鲁棒性 [#16545](https://github.com/tikv/tikv/issues/16545) @[cfzjywxk](https://github.com/cfzjywxk) **tw@qiancai** <!--1624-->
-    - 优化清理悲观锁逻辑，提升未提交事务处理性能 [#16158](https://github.com/tikv/tikv/issues/16158) @[cfzjywxk](https://github.com/cfzjywxk) **tw@Oreoxmt** <!--1661-->
+    - 增强 TSO 校验检测，提升配置或操作不当时集群 TSO 的鲁棒性 [#16545](https://github.com/tikv/tikv/issues/16545) @[cfzjywxk](https://github.com/cfzjywxk) **tw@qiancai** <!--1624-->
+    - 优化清理悲观锁的逻辑，提高未提交事务的处理性能 [#16158](https://github.com/tikv/tikv/issues/16158) @[cfzjywxk](https://github.com/cfzjywxk) **tw@Oreoxmt** <!--1661-->
     - 增加 TiKV 统一健康控制，降低单个 TiKV 节点异常对集群访问性能的影响。可通过 [`tikv-client.enable-replica-selector-v2`](/tidb-configuration-file.md#enable-replica-selector-v2-从-v800-版本开始引入) 禁用该优化 [#16297](https://github.com/tikv/tikv/issues/16297) [#1104](https://github.com/tikv/client-go/issues/1104) [#1167](https://github.com/tikv/client-go/issues/1167) @[MyonKeminta](https://github.com/MyonKeminta) @[zyguan](https://github.com/zyguan) @[crazycs520](https://github.com/crazycs520) **tw@qiancai** <!--1707-->
- - pd_client: 用元数据存储接口代替原来的全局配置[#14484](https://github.com/tikv/tikv/issues/14484) @[HuSharp](https://github.com/HuSharp)
- - 用write cf stats来决定加载数据行为,提高扫描性能[#16245](https://github.com/tikv/tikv/issues/16245) @[Connor1996](https://github.com/Connor1996)
- - 增加Raft conf change中删除节点和Voter降级的最近一次心跳的检查，确保改行为不会导致该Region不可访问 [#15799](https://github.com/tikv/tikv/issues/15799) @[tonyxuqqi](https://github.com/tonyxuqqi)
- - 为pipelined DML增加 Flush和 BufferBatchGet 接口 [#16291](https://github.com/tikv/tikv/issues/16291) @[ekexium](https://github.com/ekexium)
- - Cgroup CPU和内存限制的监控改进 [#16392](https://github.com/tikv/tikv/issues/16392)@[pingandb](https://github.com/pingandb)
- - 引入RocksDB Block和Titan Blob的共享缓存 [#16245](https://github.com/tikv/tikv/issues/16245)  @[Connor1996](https://github.com/Connor1996)
- - 增加参数initial_scan_rate_limit的范围检查，不能小于1024 [#16488](https://github.com/tikv/tikv/issues/16488) @[RidRisR](https://github.com/RidRisR)
- - 增加Region worker和快照生成 worker的CPU监控 [#16562](https://github.com/tikv/tikv/issues/16562) @[Connor1996](https://github.com/Connor1996)
- - 增加peer和store消息的slow log [#16600](https://github.com/tikv/tikv/issues/16600) @[Connor1996](https://github.com/Connor1996)
- - 默认打开 `async-io` . [#16614](https://github.com/tikv/tikv/issues/16614) @[LykxSassinator](https://github.com/LykxSassinator)
+    - PD client 使用元数据存储接口代替原有的全局配置 [#14484](https://github.com/tikv/tikv/issues/14484) @[HuSharp](https://github.com/HuSharp)
+    - 通过 write cf stats 决定数据加载行为，以提升扫描性能 [#16245](https://github.com/tikv/tikv/issues/16245) @[Connor1996](https://github.com/Connor1996)
+    - 在 Raft conf change 过程中增加对删除节点和 Voter 降级的最近一次心跳检查，确保此行为不会导致该 Region 不可访问 [#15799](https://github.com/tikv/tikv/issues/15799) @[tonyxuqqi](https://github.com/tonyxuqqi)
+    - 为 Pipelined DML 增加 Flush 和 BufferBatchGet 接口 [#16291](https://github.com/tikv/tikv/issues/16291) @[ekexium](https://github.com/ekexium)
+    - 改进 cgroup CPU 和内存限制的监控 [#16392](https://github.com/tikv/tikv/issues/16392) @[pingandb](https://github.com/pingandb)
+    - 增加 Region worker 和快照生成 worker 的 CPU 监控 [#16562](https://github.com/tikv/tikv/issues/16562) @[Connor1996](https://github.com/Connor1996)
+    - 增加 peer 和 store 消息的 slow log [#16600](https://github.com/tikv/tikv/issues/16600) @[Connor1996](https://github.com/Connor1996)
 + PD <!--tw@Oreoxmt, 11 条-->
 
     - 增强 PD 客户端的服务发现能力，提升其高可用性和负载平衡 [#7576](https://github.com/tikv/pd/issues/7576) @[CabinfeverB](https://github.com/CabinfeverB)
