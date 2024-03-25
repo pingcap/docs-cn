@@ -359,6 +359,7 @@ CREATE TABLE t4(a INT, j JSON, INDEX mvi1((CAST(j->'$.a' AS UNSIGNED ARRAY))), I
     ```
 
 - 用于构成整体 IndexMerge 计划的每个子条件，需要分别符合用于连接的 `OR` 或 `AND` 的语义。具体如下：
+
     - `json_contains` 由 `AND` 连接，符合语义。例如：
 
         ```sql
