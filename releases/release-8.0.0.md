@@ -448,7 +448,7 @@ TiDB 版本：8.0.0
         - note [#issue](链接) @[贡献者 GitHub ID](链接)
         - note [#issue](链接) @[贡献者 GitHub ID](链接)
         - (dup): release-7.5.1.md > 改进提升> Tools> TiCDC - 支持[查询 changefeed 的下游同步状态](https://docs.pingcap.com/zh/tidb/v7.5/ticdc-open-api-v2#查询特定同步任务是否完成)，以确认 TiCDC 是否已将所接收到的上游变更完全同步到下游 [#10289](https://github.com/pingcap/tiflow/issues/10289) @[hongyunyan](https://github.com/hongyunyan)
-        - 通过优化 `RowChangedEvent` 的内存占用，降低 TiCDC 同步数据时的内存消耗 [#10386](https://github.com/pingcap/tiflow/issues/10386) @[lidezhu](https://github.com/lidezhu)
+        - 优化 `RowChangedEvent` 的内存占用，降低 TiCDC 同步数据时的内存消耗 [#10386](https://github.com/pingcap/tiflow/issues/10386) @[lidezhu](https://github.com/lidezhu)
         - 增加在创建和恢复 changefeed 任务时验证 start-ts 参数是否合法 [#10499](https://github.com/pingcap/tiflow/issues/10499) @[3AceShowHand](https://github.com/3AceShowHand)
 
     + TiDB Data Migration (DM) <!--tw@hfxsd, 2 条-->
