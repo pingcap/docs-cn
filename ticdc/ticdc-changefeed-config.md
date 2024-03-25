@@ -142,7 +142,7 @@ enable-table-across-nodes = false
 # ]
 
 # protocol 用于指定编码消息时使用的格式协议
-# 当下游类型是 Kafka 时，支持 canal-json、avro、debezium 和 open-protocol。
+# 当下游类型是 Kafka 时，支持 canal-json、avro、debezium、open-protocol、simple。
 # 当下游类型是 Pulsar 时，仅支持 canal-json 协议。
 # 当下游类型是存储服务时，目前仅支持 canal-json、csv 两种协议。
 # 注意：该参数只有当下游为 Kafka、Pulsar，或存储服务时，才会生效。
@@ -199,6 +199,28 @@ enable-partition-separator = true
 # include-commit-ts = false
 # 二进制类型数据的编码方式，可选 'base64' 或 'hex'。默认值为 'base64'。
 # binary-encoding-method = 'base64'
+
+# 从 v8.0.0 开始，TiCDC 新增了 Simple Protocol 消息编码协议，以下为该协议的配置参数。
+# 关于该协议的详情，请参考 <https://docs.pingcap.com/zh/tidb/stable/ticdc-simple-protocol>。
+# 以下为 Simple Protocol 参数，用来控制 bootstrap 消息的发送行为。
+# send-bootstrap-interval-in-sec 用来控制发送 bootstrap 消息的时间间隔，单位为秒。
+# 默认值为 120 秒，即每张表每隔 120 秒发送一次 bootstrap 消息。
+# send-bootstrap-interval-in-sec = 120
+
+# send-bootstrap-in-msg-count 用来控制发送 bootstrap 的消息间隔，单位为消息数。
+# 默认值为 10000，即每张表每发送 10000 条行变更消息就发送一次 bootstrap 消息。
+# send-bootstrap-in-msg-count = 10000
+# 注意：如果要关闭 bootstrap 消息的发送，则将 send-bootstrap-interval-in-sec 和 send-bootstrap-in-msg-count 均设置为 0。
+
+# send-bootstrap-to-all-partition 用来控制是否发送 bootstrap 消息到所有的 partition。
+# 默认值为 true，即发送 bootstrap 消息到对应表 topic 的所有的 partition。
+# 如果设置为 false，则只发送 bootstrap 消息到对应表 topic 的第一个 partition。
+# send-bootstrap-to-all-partition = true
+
+[sink.kafka-config.codec-config]
+# encoding-format 用来控制 simple protocol 的消息的编码格式，目前支持 "json" 和 "avro" 两种格式。
+# 默认值为 "json"。
+# encoding-format = "json"
 
 # consistent 中的字段用于配置 Changefeed 的数据一致性。详细的信息，请参考 <https://docs.pingcap.com/tidb/stable/ticdc-sink-to-mysql#eventually-consistent-replication-in-disaster-scenarios>。
 # 注意：一致性相关参数只有当下游为数据库并且开启 redo log 功能时，才会生效。
