@@ -399,30 +399,30 @@ TiDB 版本：8.0.0
 
 + TiKV <!--tw@Oreoxm, 13 条-->
 
-    - 增强 TSO 校验检测，提升配置或操作不当时集群 TSO 的鲁棒性 [#16545](https://github.com/tikv/tikv/issues/16545) @[cfzjywxk](https://github.com/cfzjywxk) **tw@qiancai** <!--1624-->
-    - 优化清理悲观锁的逻辑，提高未提交事务的处理性能 [#16158](https://github.com/tikv/tikv/issues/16158) @[cfzjywxk](https://github.com/cfzjywxk) **tw@Oreoxmt** <!--1661-->
-    - 增加 TiKV 统一健康控制，降低单个 TiKV 节点异常对集群访问性能的影响。可通过 [`tikv-client.enable-replica-selector-v2`](/tidb-configuration-file.md#enable-replica-selector-v2-从-v800-版本开始引入) 禁用该优化 [#16297](https://github.com/tikv/tikv/issues/16297) [#1104](https://github.com/tikv/client-go/issues/1104) [#1167](https://github.com/tikv/client-go/issues/1167) @[MyonKeminta](https://github.com/MyonKeminta) @[zyguan](https://github.com/zyguan) @[crazycs520](https://github.com/crazycs520) **tw@qiancai** <!--1707-->
-    - PD client 使用元数据存储接口代替原有的全局配置 [#14484](https://github.com/tikv/tikv/issues/14484) @[HuSharp](https://github.com/HuSharp)
+    - 增强 TSO 校验检测，提升配置或操作不当时集群 TSO 的鲁棒性 [#16545](https://github.com/tikv/tikv/issues/16545) @[cfzjywxk](https://github.com/cfzjywxk)
+    - 优化清理悲观锁的逻辑，提高未提交事务的处理性能 [#16158](https://github.com/tikv/tikv/issues/16158) @[cfzjywxk](https://github.com/cfzjywxk)
+    - 增加 TiKV 统一健康控制，降低单个 TiKV 节点异常对集群访问性能的影响。可通过 [`tikv-client.enable-replica-selector-v2`](/tidb-configuration-file.md#enable-replica-selector-v2-从-v800-版本开始引入) 禁用该优化 [#16297](https://github.com/tikv/tikv/issues/16297) [#1104](https://github.com/tikv/client-go/issues/1104) [#1167](https://github.com/tikv/client-go/issues/1167) @[MyonKeminta](https://github.com/MyonKeminta) @[zyguan](https://github.com/zyguan) @[crazycs520](https://github.com/crazycs520)
+    - PD client 使用元数据存储接口代替原有的全局配置接口 [#14484](https://github.com/tikv/tikv/issues/14484) @[HuSharp](https://github.com/HuSharp)
     - 通过 write cf stats 决定数据加载行为，以提升扫描性能 [#16245](https://github.com/tikv/tikv/issues/16245) @[Connor1996](https://github.com/Connor1996)
-    - 在 Raft conf change 过程中增加对删除节点和 Voter 降级的最近一次心跳检查，确保此行为不会导致该 Region 不可访问 [#15799](https://github.com/tikv/tikv/issues/15799) @[tonyxuqqi](https://github.com/tonyxuqqi)
+    - 在 Raft conf change 过程中，增加了检查删除节点和 Voter 降级的最近一次心跳，确保此行为不会导致该 Region 不可访问 [#15799](https://github.com/tikv/tikv/issues/15799) @[tonyxuqqi](https://github.com/tonyxuqqi)
     - 为 Pipelined DML 增加 Flush 和 BufferBatchGet 接口 [#16291](https://github.com/tikv/tikv/issues/16291) @[ekexium](https://github.com/ekexium)
-    - 改进 cgroup CPU 和内存限制的监控 [#16392](https://github.com/tikv/tikv/issues/16392) @[pingandb](https://github.com/pingandb)
+    - 增加 cgroup CPU 和内存限制的监控 [#16392](https://github.com/tikv/tikv/issues/16392) @[pingandb](https://github.com/pingandb)
     - 增加 Region worker 和快照生成 worker 的 CPU 监控 [#16562](https://github.com/tikv/tikv/issues/16562) @[Connor1996](https://github.com/Connor1996)
     - 增加 peer 和 store 消息的 slow log [#16600](https://github.com/tikv/tikv/issues/16600) @[Connor1996](https://github.com/Connor1996)
+
 + PD <!--tw@Oreoxmt, 11 条-->
 
     - 增强 PD 客户端的服务发现能力，提升其高可用性和负载平衡 [#7576](https://github.com/tikv/pd/issues/7576) @[CabinfeverB](https://github.com/CabinfeverB)
     - 增强 PD 客户端的重试机制 [#7673](https://github.com/tikv/pd/issues/7673) @[JmPotato](https://github.com/JmPotato)
-    - 增加 cgroup 的监控和告警 [#7716](https://github.com/tikv/pd/issues/7716) [#7918](https://github.com/tikv/pd/issues/7918) @[pingandb](https://github.com/pingandb) @[rleungx](https://github.com/rleungx)
-    - 提升使用 Etcd watch 的性能和高可用性 [#7738](https://github.com/tikv/pd/issues/7738) [#7724](https://github.com/tikv/pd/issues/7724) [#7689](https://github.com/tikv/pd/issues/7689) @[lhy1024](https://github.com/lhy1024)
+    - 增加 cgroup CPU 和内存的监控和告警 [#7716](https://github.com/tikv/pd/issues/7716) [#7918](https://github.com/tikv/pd/issues/7918) @[pingandb](https://github.com/pingandb) @[rleungx](https://github.com/rleungx)
+    - 提升使用 etcd watch 的性能和高可用性 [#7738](https://github.com/tikv/pd/issues/7738) [#7724](https://github.com/tikv/pd/issues/7724) [#7689](https://github.com/tikv/pd/issues/7689) @[lhy1024](https://github.com/lhy1024)
     - 增加更多心跳监控，以便更好地分析性能瓶颈 [#7868](https://github.com/tikv/pd/issues/7868) @[nolouch](https://github.com/nolouch)
-    - 减少 Etcd leader 对 PD leader 的影响 [#7499](https://github.com/tikv/pd/issues/7499) @[JmPotato](https://github.com/JmPotato) @[HuSharp](https://github.com/HuSharp)
-    - 增强对 Etcd 不健康节点的检测机制 [#7730](https://github.com/tikv/pd/issues/7730) @[JmPotato](https://github.com/JmPotato) @[HuSharp](https://github.com/HuSharp)
+    - 减少 etcd leader 对 PD leader 的影响 [#7499](https://github.com/tikv/pd/issues/7499) @[JmPotato](https://github.com/JmPotato) @[HuSharp](https://github.com/HuSharp)
+    - 增强对不健康的 etcd 节点的检测机制 [#7730](https://github.com/tikv/pd/issues/7730) @[JmPotato](https://github.com/JmPotato) @[HuSharp](https://github.com/HuSharp)
     - 优化 pd-ctl 中 GC safepoint 的相关显示 [#7767](https://github.com/tikv/pd/issues/7767) @[nolouch](https://github.com/nolouch) 
     - 支持动态修改热点调度器中的历史窗口配置 [#7877](https://github.com/tikv/pd/issues/7877) @[lhy1024](https://github.com/lhy1024) 
     - 减少创建 operator 中的锁争用问题 [#7837](https://github.com/tikv/pd/issues/7837) @[Leavrth](https://github.com/Leavrth) 
     - 调整 GRPC 配置以提升可用性 [#7821](https://github.com/tikv/pd/issues/7821) @[rleungx](https://github.com/rleungx) 
-    - note [#issue](链接) @[贡献者 GitHub ID](链接)
 
 + TiFlash
 
