@@ -22,7 +22,7 @@ aliases: ['/docs-cn/dev/encryption-at-rest/']
 
 TiKV 支持静态加密，即在 [CTR](https://zh.wikipedia.org/wiki/分组密码工作模式) 模式下使用 [AES](https://zh.wikipedia.org/wiki/高级加密标准) 或 [SM4](https://zh.wikipedia.org/wiki/SM4) 对数据文件进行透明加密。要启用静态加密，用户需提供一个加密密钥，即主密钥。TiKV 自动轮换 (rotate) 用于加密实际数据文件的密钥，主密钥则可以由用户手动轮换。请注意，静态加密仅加密静态数据（即磁盘上的数据），而不加密网络传输中的数据。建议 TLS 与静态加密一起使用。
 
-可以选择将 AWS KMS (Key Management Service) 用于云上部署或本地部署，也可以指定将密钥以明文形式存储在文件中。
+可以选择将 KMS (Key Management Service) 用于云上部署或本地部署，也可以指定将密钥以明文形式存储在文件中。
 
 TiKV 当前不从核心转储 (core dumps) 中排除加密密钥和用户数据。建议在使用静态加密时禁用 TiKV 进程的核心转储，该功能目前无法由 TiKV 独立处理。
 
@@ -52,12 +52,12 @@ TiKV，TiDB 和 PD 信息日志中可能包含用于调试的用户数据。信�
 
 ## TiKV 静态加密
 
-TiKV 当前支持的加密算法包括 AES128-CTR、AES192-CTR、AES256-CTR 和 SM4-CTR (仅 v6.3.0 及之后版本)。TiKV 使用信封加密 (envelop encryption)，所以启用加密后，TiKV 使用以下两种类型的密钥：
+TiKV 当前支持的加密算法包括 AES128-CTR、AES192-CTR、AES256-CTR 和 SM4-CTR（仅 v6.3.0 及之后版本）。TiKV 使用信封加密 (envelop encryption)，所以启用加密后，TiKV 使用以下两种类型的密钥：
 
 * 主密钥 (master key)：主密钥由用户提供，用于加密 TiKV 生成的数据密钥。用户在 TiKV 外部进行主密钥的管理。
 * 数据密钥 (data key)：数据密钥由 TiKV 生成，是实际用于加密的密钥。
 
-多个 TiKV 实例可共用一个主密钥。在生产环境中，推荐通过 AWS KMS 提供主密钥。首先通过 AWS KMS 创建用户主密钥 (CMK)，然后在配置文件中将 CMK 密钥的 ID 提供给 TiKV。TiKV 进程在运行时可以通过 [IAM 角色](https://aws.amazon.com/iam/)访问 KMS CMK。如果 TiKV 无法访问 KMS CMK，TiKV 就无法启动或重新启动。详情参阅 AWS 文档中的 [KMS](https://docs.aws.amazon.com/zh_cn/kms/index.html) and [IAM](https://docs.aws.amazon.com/zh_cn/IAM/latest/UserGuide/introduction.html)。
+多个 TiKV 实例可共用一个主密钥。在生产环境中，推荐通过 KMS 提供主密钥。目前 TiKV 支持 [AWS](https://docs.aws.amazon.com/zh_cn/kms/index.html)、[Google Cloud](https://cloud.google.com/security/products/security-key-management?hl=zh-CN) 和 [Azure](https://learn.microsoft.com/zh-cn/azure/key-vault/) 平台的 KMS 加密。要开启 KMS 加密，首先通过 KMS 创建用户主密钥 (CMK)，然后在配置文件中将 CMK 密钥的 ID 提供给 TiKV。如果 TiKV 无法访问 KMS CMK，TiKV 就无法启动或重新启动。
 
 用户也可以通过文件形式提供主密钥。该文件须包含一个用十六进制字符串编码的 256 位（32 字节）密钥，并以换行符结尾（即 `\n`），且不包含其他任何内容。将密钥存储在磁盘上会泄漏密钥，因此密钥文件仅适合存储在 RAM 内存的 `tempfs` 中。
 
@@ -65,9 +65,40 @@ TiKV 当前支持的加密算法包括 AES128-CTR、AES192-CTR、AES256-CTR 和 
 
 无论用户配置了哪种数据加密方法，数据密钥都使用 AES256-GCM 算法进行加密，以方便对主密钥进行验证。所以当使用文件而不是 KMS 方式指定主密钥时，主密钥必须为 256 位（32 字节）。
 
-### 创建密钥
+### 配置加密
 
-如需在 AWS 上创建一个密钥，请执行以下步骤：
+要启用加密，你可以在 TiKV 和 PD 的配置文件中添加加密部分：
+
+```
+[security.encryption]
+data-encryption-method = "aes128-ctr"
+data-key-rotation-period = "168h" # 7 days
+```
+
+- `data-encryption-method` 用于指定加密算法，可选值为 `"aes128-ctr"`、`"aes192-ctr"`、`"aes256-ctr"`、`"sm4-ctr"`（仅 v6.3.0 及之后版本）、`"plaintext"`。默认值为 `"plaintext"`，即默认不开启加密功能。
+
+    - 对于新 TiKV 集群或现有 TiKV 集群，只有启用加密功能后写入的数据才保证被加密。
+    - 开启加密功能后，如需禁用加密，请在配置文件中删除 `data-encryption-method`，或将该参数值设置为 `"plaintext"`，然后重启 TiKV。
+    - 若要替换加密算法，请将 `data-encryption-method` 替换成已支持的加密算法，然后重启 TiKV。替换加密算法后，旧加密算法生成的加密文件会随着新数据的写入逐渐被重写成新加密算法所生成的加密文件。
+
+- `data-key-rotation-period` 用于指定 TiKV 轮换密钥的频率。
+
+如果启用了加密（即 `data-encryption-method` 的值不是 `"plaintext"`），则必须指定主密钥。你可以通过以下方式之一来指定主密钥：
+
+- [通过 KMS 指定主密钥](#通过-kms-指定主密钥)
+- [通过文件指定主密钥](#通过文件指定主密钥)
+
+#### 通过 KMS 指定主密钥
+
+TiKV 支持 AWS、Google Cloud 和 Azure 这三个平台的 KMS 加密。你可以根据服务部署的平台，选择其中之一配置 KMS 加密。
+
+<SimpleTab>
+
+<div label="AWS KMS">
+
+**第 1 步：创建主密钥**
+
+在 AWS 上创建一个密钥，请进行以下操作：
 
 1. 进入 AWS 控制台的 [AWS KMS](https://console.aws.amazon.com/kms)。
 2. 确保在控制台的右上角选择正确的区域。
@@ -83,19 +114,9 @@ aws --region us-west-2 kms create-alias --alias-name "alias/tidb-tde" --target-k
 
 需要在第二条命令中输入的 `--target-key-id` 是第一条命令的结果。
 
-### 配置加密
+**第 2 步：配置主密钥**
 
-要启用加密，你可以在 TiKV 和 PD 的配置文件中添加加密部分：
-
-```
-[security.encryption]
-data-encryption-method = "aes128-ctr"
-data-key-rotation-period = "168h" # 7 days
-```
-
-`data-encryption-method` 的可选值为 `"aes128-ctr"`、`"aes192-ctr"`、`"aes256-ctr"`、`"sm4-ctr"` (仅 v6.3.0 及之后版本) 和 `"plaintext"`。默认值为 `"plaintext"`，即默认不开启加密功能。`data-key-rotation-period` 指定 TiKV 轮换密钥的频率。可以为新 TiKV 集群或现有 TiKV 集群开启加密，但只有启用后写入的数据才保证被加密。要禁用加密，请在配置文件中删除 `data-encryption-method`，或将该参数值为 `"plaintext"`，然后重启 TiKV。若要替换加密算法，则将 `data-encryption-method` 替换成已支持的加密算法，然后重启 TiKV。替换加密算法后，旧加密算法生成的加密文件会随着新数据的写入逐渐被重写成新加密算法所生成的加密文件。
-
-如果启用了加密（即 `data-encryption-method` 的值不是 `"plaintext"`），则必须指定主密钥。要使用 AWS KMS 方式指定为主密钥，请在 `[security.encryption]` 部分之后添加 `[security.encryption.master-key]` 部分：
+要使用 AWS KMS 方式指定主密钥，请在 TiKV 的配置文件中 `[security.encryption]` 部分之后添加 `[security.encryption.master-key]` 配置：
 
 ```
 [security.encryption.master-key]
@@ -108,6 +129,87 @@ endpoint = "https://kms.us-west-2.amazonaws.com"
 `key-id` 指定 KMS CMK 的密钥 ID。`region` 为 KMS CMK 的 AWS 区域名。`endpoint` 通常无需指定，除非你在使用非 AWS 提供的 AWS KMS 兼容服务或需要使用 [KMS VPC endpoint](https://docs.aws.amazon.com/kms/latest/developerguide/kms-vpc-endpoint.html)。
 
 你也可以使用 AWS [多区域键](https://docs.aws.amazon.com/zh_cn/kms/latest/developerguide/multi-region-keys-overview.html)。为此，你需要在一个特定的区域设置一个主键，并在需要的区域中添加副本密钥。
+
+</div>
+<div label="Google Cloud KMS">
+
+**第 1 步：创建主密钥**
+
+要在 Google Cloud 平台上创建一个密钥，请进行以下操作：
+
+1. 进入 Google Cloud 控制台的[密钥管理](https://console.cloud.google.com/security/kms/keyrings)。
+2. 点击**创建密钥环**。输入密钥环的名称，选择密钥环的位置，然后点击**创建**。注意密钥环的位置需要覆盖 TiDB 集群部署的区域。
+3. 选择上一步创建的密钥环，在密钥环详情页面点击**创建密钥**。
+4. 输入密钥的名称，设置密钥的信息如下，然后点击**创建**。
+
+    - **保护级别**：**软件**或 **HSM**
+    - **密钥材料**：**生成的密钥**
+    - **用途**：**Symmetric encrypt/decrypt**
+
+你也可以使用 gcloud CLI 执行该操作：
+
+```shell
+gcloud kms keyrings create "key-ring-name" --location "global"
+gcloud kms keys create "key-name" --keyring "key-ring-name" --location "global" --purpose "encryption" --rotation-period "30d"
+```
+
+请将上述命令中的 `"key-ring-name"`、`"key-name"`、`"global"`、`"30d"` 字段的值替换为实际密钥对应的名称和配置。
+
+**第 2 步：配置主密钥**
+
+要使用 Google Cloud KMS 方式指定主密钥，请在 `[security.encryption]` 部分之后添加 `[security.encryption.master-key]` 配置：
+
+```
+[security.encryption.master-key]
+type = "kms"
+key-id = "projects/project-name/locations/global/keyRings/key-ring-name/cryptoKeys/key-name"
+vendor = "gcp"
+
+[security.encryption.master-key.gcp]
+credential-file-path = "/path/to/credential.json"
+```
+
+- `key-id` 指定 KMS CMK 的密钥 ID。
+- `credential-file-path` 指向验证凭据配置文件的路径，目前支持 Service Account 和 Authentication User 这两种凭据。如果 TiKV 的运行环境已配置[应用默认凭据](https://cloud.google.com/docs/authentication/application-default-credentials?hl=zh-cn)，则无需配置 `credential-file-path`。
+
+</div>
+<div label="Azure KMS">
+
+**第 1 步：创建主密钥**
+
+在 Azure 平台创建密钥，请参考文档[使用 Azure 门户在 Azure Key Vault 中设置和检索密钥](https://learn.microsoft.com/zh-cn/azure/key-vault/keys/quick-create-portal)。
+
+**第 2 步：配置主密钥**
+
+要使用 Azure KMS 方式指定主密钥，请在 TiKV 的配置文件中 `[security.encryption]` 部分之后添加 `[security.encryption.master-key]` 配置：
+
+```
+[security.encryption.master-key]
+type = 'kms'
+key-id = 'your-kms-key-id'
+region = 'region-name'
+endpoint = 'endpoint'
+vendor = 'azure'
+
+[security.encryption.master-key.azure]
+tenant-id = 'tenant_id'
+client-id = 'client_id'
+keyvault-url = 'keyvault_url'
+hsm-name = 'hsm_name'
+hsm-url = 'hsm_url'
+# 如下 4 个参数为可选字段，用于设置 client 认证的凭证，请根据实际的使用场景进行设置
+client_certificate = ""
+client_certificate_path = ""
+client_certificate_password = ""
+client_secret = ""
+```
+
+请将上述配置中除 `vendor` 之外的其他字段值修改为密钥实际的对应配置。
+
+</div>
+</SimpleTab>
+
+#### 通过文件指定主密钥
 
 若要使用文件方式指定主密钥，主密钥配置应如下所示：
 
@@ -129,7 +231,7 @@ path = "/path/to/key/file"
 
 TiKV 当前不支持在线轮换主密钥，因此你需要重启 TiKV 进行主密钥轮换。建议对运行中的、提供在线查询的 TiKV 集群进行滚动重启。
 
-轮换 KMS CMK 的配置示例如下：
+轮换 AWS KMS CMK 的配置示例如下：
 
 ```
 [security.encryption.master-key]

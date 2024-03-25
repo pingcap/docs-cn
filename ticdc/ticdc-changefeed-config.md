@@ -142,7 +142,7 @@ enable-table-across-nodes = false
 # ]
 
 # protocol 用于指定编码消息时使用的格式协议
-# 当下游类型是 Kafka 时，支持 canal-json、avro 和 open-protocol。
+# 当下游类型是 Kafka 时，支持 canal-json、avro、debezium 和 open-protocol。
 # 当下游类型是 Pulsar 时，仅支持 canal-json 协议。
 # 当下游类型是存储服务时，目前仅支持 canal-json、csv 两种协议。
 # 注意：该参数只有当下游为 Kafka、Pulsar，或存储服务时，才会生效。
@@ -166,7 +166,7 @@ delete-only-output-handle-key-columns = false
 
 # 是否开启 Kafka Sink V2。Kafka Sink V2 内部使用 kafka-go 实现。
 # 默认值为 false。
-# 注意：该参数只有当下游为消息队列时，才会生效。
+# 注意：该参数是一个实验特性，并且只有当下游为消息队列时才会生效。
 # enable-kafka-sink-v2 = false
 
 # 是否只向下游同步有内容更新的列。从 v7.1.0 开始支持。
