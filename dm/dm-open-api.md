@@ -517,13 +517,11 @@ curl -X 'POST' \
   'http://127.0.0.1:8261/api/v1/sources/mysql-01/relay/enable' \
   -H 'accept: */*' \
   -H 'Content-Type: application/json' \
-  -d '{
+  -d '
+{
   "worker_name_list": [
-    "worker-1"
-  ],
-  "relay_binlog_name": "mysql-bin.000002",
-  "relay_binlog_gtid": "e9a1fc22-ec08-11e9-b2ac-0242ac110003:1-7849",
-  "relay_dir": "./relay_log"
+    "dm-10.2.8.3-8862"
+  ]
 }'
 ```
 
@@ -544,9 +542,10 @@ curl -X 'POST' \
   'http://127.0.0.1:8261/api/v1/sources/mysql-01/relay/disable' \
   -H 'accept: */*' \
   -H 'Content-Type: application/json' \
-  -d '{
+  -d '
+{
   "worker_name_list": [
-    "worker-1"
+    "dm-10.2.8.3-8862"
   ]
 }'
 ```
@@ -568,7 +567,8 @@ curl -X 'POST' \
   'http://127.0.0.1:8261/api/v1/sources/mysql-01/relay/purge' \
   -H 'accept: */*' \
   -H 'Content-Type: application/json' \
-  -d '{
+  -d '
+{
   "relay_binlog_name": "mysql-bin.000002",
   "relay_dir": "string"
 }'
@@ -591,8 +591,9 @@ curl -X 'POST' \
   'http://127.0.0.1:8261/api/v1/sources/mysql-01/transfer' \
   -H 'accept: */*' \
   -H 'Content-Type: application/json' \
-  -d '{
-  "worker_name": "worker-1"
+  -d '
+{
+  "worker_name": "dm-10.2.8.3-8862"
 }'
 ```
 
@@ -616,7 +617,13 @@ curl -X 'GET' \
 
 ```json
 [
-  "db1"
+    "information_schema",
+    "mysql",
+    "performance_schema",
+    "sbtest1",
+    "sbtest3",
+    "sys",
+    "test",
 ]
 ```
 
@@ -640,7 +647,8 @@ curl -X 'GET' \
 
 ```json
 [
-  "table1"
+    "sbtest1",
+    "sbtest2"
 ]
 ```
 
@@ -661,69 +669,40 @@ curl -X 'POST' \
   'http://127.0.0.1:8261/api/v1/tasks' \
   -H 'accept: application/json' \
   -H 'Content-Type: application/json' \
-  -d '{
+  -d '
+{
   "task": {
     "name": "task-1",
     "task_mode": "all",
-    "shard_mode": "pessimistic",
     "meta_schema": "dm-meta",
     "enhance_online_schema_change": true,
-    "on_duplicate": "overwrite",
+    "on_duplicate": "error",
     "target_config": {
-      "host": "127.0.0.1",
-      "port": 3306,
+      "host": "10.2.8.3",
+      "port": 4913,
       "user": "root",
-      "password": "123456",
-      "security": {
-        "ssl_ca_content": "",
-        "ssl_cert_content": "",
-        "ssl_key_content": "",
-        "cert_allowed_cn": [
-          "string"
-        ]
-      }
+      "password": "password"
     },
     "binlog_filter_rule": {
       "rule-1": {
-        "ignore_event": [
-          "all dml"
-        ],
         "ignore_sql": [
-          "^Drop"
-        ]
-      },
-      "rule-2": {
-        "ignore_event": [
-          "all dml"
-        ],
-        "ignore_sql": [
-          "^Drop"
-        ]
-      },
-      "rule-3": {
-        "ignore_event": [
-          "all dml"
-        ],
-        "ignore_sql": [
-          "^Drop"
+          "DROP DATABASE"
         ]
       }
     },
     "table_migrate_rule": [
       {
         "source": {
-          "source_name": "source-name",
-          "schema": "db-*",
-          "table": "tb-*"
+          "source_name": "mysql-01",
+          "schema": "db1",
+          "table": "tb1"
         },
         "target": {
           "schema": "db1",
           "table": "tb1"
         },
         "binlog_filter_rule": [
-          "rule-1",
-          "rule-2",
-          "rule-3",
+          "rule-1"
         ]
       }
     ],
@@ -732,17 +711,7 @@ curl -X 'POST' \
         "export_threads": 4,
         "import_threads": 16,
         "data_dir": "./exported_data",
-        "consistency": "auto",
-        "import_mode": "physical",
-        "sorting_dir": "./sort_dir",
-        "disk_quota": "80G",
-        "checksum": "required",
-        "analyze": "optional",
-        "range_concurrency": 0,
-        "compress-kv-pairs": "",
-        "pd_addr": "",
-        "on_duplicate_logical": "error",
-        "on_duplicate_physical": "none"
+        "consistency": "auto"
       },
       "incr_migrate_conf": {
         "repl_threads": 16,
@@ -750,10 +719,7 @@ curl -X 'POST' \
       },
       "source_conf": [
         {
-          "source_name": "mysql-replica-01",
-          "binlog_name": "binlog.000001",
-          "binlog_pos": 4,
-          "binlog_gtid": "03fc0263-28c7-11e7-a653-6c0b84d59f30:1-7041423,05474d3c-28c7-11e7-8352-203db246dd3d:1-170"
+          "source_name": "mysql-01"
         }
       ]
     }
@@ -763,100 +729,61 @@ curl -X 'POST' \
 
 ```json
 {
-  "name": "task-1",
-  "task_mode": "all",
-  "shard_mode": "pessimistic",
-  "meta_schema": "dm-meta",
-  "enhance_online_schema_change": true,
-  "on_duplicate": "overwrite",
-  "target_config": {
-    "host": "127.0.0.1",
-    "port": 3306,
-    "user": "root",
-    "password": "123456",
-    "security": {
-      "ssl_ca_content": "",
-      "ssl_cert_content": "",
-      "ssl_key_content": "",
-      "cert_allowed_cn": [
-        "string"
-      ]
+    "check_result": "pre-check is passed. ",
+    "task": {
+        "binlog_filter_rule": {
+            "rule-1": {
+                "ignore_sql": [
+                    "DROP DATABASE"
+                ]
+            }
+        },
+        "enhance_online_schema_change": true,
+        "meta_schema": "dm-meta",
+        "name": "task-1",
+        "on_duplicate": "error",
+        "source_config": {
+            "full_migrate_conf": {
+                "consistency": "auto",
+                "data_dir": "./exported_data",
+                "export_threads": 4,
+                "import_threads": 16
+            },
+            "incr_migrate_conf": {
+                "repl_batch": 100,
+                "repl_threads": 16
+            },
+            "source_conf": [
+                {
+                    "source_name": "mysql-01"
+                }
+            ]
+        },
+        "table_migrate_rule": [
+            {
+                "binlog_filter_rule": [
+                    "rule-1"
+                ],
+                "source": {
+                    "schema": "db1",
+                    "source_name": "mysql-01",
+                    "table": "tb1"
+                },
+                "target": {
+                    "schema": "db1",
+                    "table": "tb1"
+                }
+            }
+        ],
+        "target_config": {
+            "host": "10.2.8.3",
+            "password": "password",
+            "port": 4913,
+            "security": null,
+            "user": "root"
+        },
+        "task_mode": "all"
     }
-  },
-  "binlog_filter_rule": {
-    "rule-1": {
-      "ignore_event": [
-        "all dml"
-      ],
-      "ignore_sql": [
-        "^Drop"
-      ]
-    },
-    "rule-2": {
-      "ignore_event": [
-        "all dml"
-      ],
-      "ignore_sql": [
-        "^Drop"
-      ]
-    },
-    "rule-3": {
-      "ignore_event": [
-        "all dml"
-      ],
-      "ignore_sql": [
-        "^Drop"
-      ]
-    }
-  },
-  "table_migrate_rule": [
-    {
-      "source": {
-        "source_name": "source-name",
-        "schema": "db-*",
-        "table": "tb-*"
-      },
-      "target": {
-        "schema": "db1",
-        "table": "tb1"
-      },
-      "binlog_filter_rule": [
-        "rule-1",
-        "rule-2",
-        "rule-3",
-      ]
-    }
-  ],
-  "source_config": {
-    "full_migrate_conf": {
-      "export_threads": 4,
-      "import_threads": 16,
-      "data_dir": "./exported_data",
-      "consistency": "auto",
-      "import_mode": "physical",
-      "sorting_dir": "./sort_dir",
-      "disk_quota": "80G",
-      "checksum": "required",
-      "analyze": "optional",
-      "range_concurrency": 0,
-      "compress-kv-pairs": "",
-      "pd_addr": "",
-      "on_duplicate_logical": "error",
-      "on_duplicate_physical": "none"
-    },
-    "incr_migrate_conf": {
-      "repl_threads": 16,
-      "repl_batch": 100
-    },
-    "source_conf": [
-      {
-        "source_name": "mysql-replica-01",
-        "binlog_name": "binlog.000001",
-        "binlog_pos": 4,
-        "binlog_gtid": "03fc0263-28c7-11e7-a653-6c0b84d59f30:1-7041423,05474d3c-28c7-11e7-8352-203db246dd3d:1-170"
-      }
-    ]
-  }
 }
 ```
 
@@ -880,100 +807,83 @@ curl -X 'GET' \
 
 ```json
 {
-  "name": "task-1",
-  "task_mode": "all",
-  "shard_mode": "pessimistic",
-  "meta_schema": "dm-meta",
-  "enhance_online_schema_change": true,
-  "on_duplicate": "overwrite",
-  "target_config": {
-    "host": "127.0.0.1",
-    "port": 3306,
-    "user": "root",
-    "password": "123456",
-    "security": {
-      "ssl_ca_content": "",
-      "ssl_cert_content": "",
-      "ssl_key_content": "",
-      "cert_allowed_cn": [
-        "string"
-      ]
-    }
-  },
-  "binlog_filter_rule": {
-    "rule-1": {
-      "ignore_event": [
-        "all dml"
-      ],
-      "ignore_sql": [
-        "^Drop"
-      ]
+    "binlog_filter_rule": {
+        "mysql-01-filter-rule-0": {
+            "ignore_sql": [
+                "DROP DATABASE"
+            ]
+        }
     },
-    "rule-2": {
-      "ignore_event": [
-        "all dml"
-      ],
-      "ignore_sql": [
-        "^Drop"
-      ]
+    "enhance_online_schema_change": true,
+    "meta_schema": "dm-meta",
+    "name": "task-1",
+    "on_duplicate": "error",
+    "source_config": {
+        "full_migrate_conf": {
+            "consistency": "auto",
+            "data_dir": "./exported_data",
+            "export_threads": 4,
+            "import_threads": 16
+        },
+        "incr_migrate_conf": {
+            "repl_batch": 100,
+            "repl_threads": 16
+        },
+        "source_conf": [
+            {
+                "source_name": "mysql-01"
+            }
+        ]
     },
-    "rule-3": {
-      "ignore_event": [
-        "all dml"
-      ],
-      "ignore_sql": [
-        "^Drop"
-      ]
-    }
-  },
-  "table_migrate_rule": [
-    {
-      "source": {
-        "source_name": "source-name",
-        "schema": "db-*",
-        "table": "tb-*"
-      },
-      "target": {
-        "schema": "db1",
-        "table": "tb1"
-      },
-      "binlog_filter_rule": [
-        "rule-1",
-        "rule-2",
-        "rule-3",
-      ]
-    }
-  ],
-  "source_config": {
-    "full_migrate_conf": {
-      "export_threads": 4,
-      "import_threads": 16,
-      "data_dir": "./exported_data",
-      "consistency": "auto",
-      "import_mode": "physical",
-      "sorting_dir": "./sort_dir",
-      "disk_quota": "80G",
-      "checksum": "required",
-      "analyze": "optional",
-      "range_concurrency": 0,
-      "compress-kv-pairs": "",
-      "pd_addr": "",
-      "on_duplicate_logical": "error",
-      "on_duplicate_physical": "none"
+    "status_list": [
+        {
+            "name": "task-1",
+            "source_name": "mysql-01",
+            "stage": "Stopped",
+            "sync_status": {
+                "binlog_type": "remote",
+                "blocking_ddls": null,
+                "master_binlog": "(mysql-bin.000005, 15403)",
+                "master_binlog_gtid": "",
+                "recent_tps": 0,
+                "seconds_behind_master": 0,
+                "synced": true,
+                "syncer_binlog": "(mysql-bin.000005, 15403)",
+                "syncer_binlog_gtid": "",
+                "total_events": 0,
+                "total_tps": 0,
+                "unresolved_groups": null
+            },
+            "unit": "Sync",
+            "unresolved_ddl_lock_id": "",
+            "worker_name": "dm-10.2.8.3-8862"
+        }
+    ],
+    "strict_optimistic_shard_mode": false,
+    "table_migrate_rule": [
+        {
+            "binlog_filter_rule": [
+                "mysql-01-filter-rule-0"
+            ],
+            "source": {
+                "schema": "db1",
+                "source_name": "mysql-01",
+                "table": "tb1"
+            },
+            "target": {
+                "schema": "db1",
+                "table": "tb1"
+            }
+        }
+    ],
+    "target_config": {
+        "host": "10.2.8.3",
+        "password": "password",
+        "port": 4913,
+        "security": null,
+        "user": "root"
     },
-    "incr_migrate_conf": {
-      "repl_threads": 16,
-      "repl_batch": 100
-    },
-    "source_conf": [
-      {
-        "source_name": "mysql-replica-01",
-        "binlog_name": "binlog.000001",
-        "binlog_pos": 4,
-        "binlog_gtid": "03fc0263-28c7-11e7-a653-6c0b84d59f30:1-7041423,05474d3c-28c7-11e7-8352-203db246dd3d:1-170"
-      }
-    ]
-  }
+    "task_mode": "all"
 }
 ```
 
@@ -1016,70 +926,31 @@ curl -X 'PUT' \
   'http://127.0.0.1:8261/api/v1/tasks/task-1' \
   -H 'accept: application/json' \
   -H 'Content-Type: application/json' \
-  -d '{
+  -d '
+{
   "task": {
     "name": "task-1",
     "task_mode": "all",
-    "shard_mode": "pessimistic",
     "meta_schema": "dm-meta",
     "enhance_online_schema_change": true,
-    "on_duplicate": "overwrite",
+    "on_duplicate": "error",
     "target_config": {
-      "host": "127.0.0.1",
-      "port": 3306,
+      "host": "10.2.8.3",
+      "port": 4913,
       "user": "root",
-      "password": "123456",
-      "security": {
-        "ssl_ca_content": "",
-        "ssl_cert_content": "",
-        "ssl_key_content": "",
-        "cert_allowed_cn": [
-          "string"
-        ]
-      }
-    },
-    "binlog_filter_rule": {
-      "rule-1": {
-        "ignore_event": [
-          "all dml"
-        ],
-        "ignore_sql": [
-          "^Drop"
-        ]
-      },
-      "rule-2": {
-        "ignore_event": [
-          "all dml"
-        ],
-        "ignore_sql": [
-          "^Drop"
-        ]
-      },
-      "rule-3": {
-        "ignore_event": [
-          "all dml"
-        ],
-        "ignore_sql": [
-          "^Drop"
-        ]
-      }
+      "password": ""
     },
     "table_migrate_rule": [
       {
         "source": {
-          "source_name": "source-name",
-          "schema": "db-*",
-          "table": "tb-*"
+          "source_name": "mysql-01",
+          "schema": "db1",
+          "table": "tb1"
         },
         "target": {
           "schema": "db1",
           "table": "tb1"
-        },
-        "binlog_filter_rule": [
-          "rule-1",
-          "rule-2",
-          "rule-3",
-        ]
+        }
       }
     ],
     "source_config": {
@@ -1087,17 +958,7 @@ curl -X 'PUT' \
         "export_threads": 4,
         "import_threads": 16,
         "data_dir": "./exported_data",
-        "consistency": "auto",
-        "import_mode": "physical",
-        "sorting_dir": "./sort_dir",
-        "disk_quota": "80G",
-        "checksum": "required",
-        "analyze": "optional",
-        "range_concurrency": 0,
-        "compress-kv-pairs": "",
-        "pd_addr": "",
-        "on_duplicate_logical": "error",
-        "on_duplicate_physical": "none"
+        "consistency": "auto"
       },
       "incr_migrate_conf": {
         "repl_threads": 16,
@@ -1105,10 +966,7 @@ curl -X 'PUT' \
       },
       "source_conf": [
         {
-          "source_name": "mysql-replica-01",
-          "binlog_name": "binlog.000001",
-          "binlog_pos": 4,
-          "binlog_gtid": "03fc0263-28c7-11e7-a653-6c0b84d59f30:1-7041423,05474d3c-28c7-11e7-8352-203db246dd3d:1-170"
+          "source_name": "mysql-01"
         }
       ]
     }
@@ -1118,100 +976,51 @@ curl -X 'PUT' \
 
 ```json
 {
-  "name": "task-1",
-  "task_mode": "all",
-  "shard_mode": "pessimistic",
-  "meta_schema": "dm-meta",
-  "enhance_online_schema_change": true,
-  "on_duplicate": "overwrite",
-  "target_config": {
-    "host": "127.0.0.1",
-    "port": 3306,
-    "user": "root",
-    "password": "123456",
-    "security": {
-      "ssl_ca_content": "",
-      "ssl_cert_content": "",
-      "ssl_key_content": "",
-      "cert_allowed_cn": [
-        "string"
-      ]
+    "check_result": "pre-check is passed. ",
+    "task": {
+        "enhance_online_schema_change": true,
+        "meta_schema": "dm-meta",
+        "name": "task-1",
+        "on_duplicate": "error",
+        "source_config": {
+            "full_migrate_conf": {
+                "consistency": "auto",
+                "data_dir": "./exported_data",
+                "export_threads": 4,
+                "import_threads": 16
+            },
+            "incr_migrate_conf": {
+                "repl_batch": 100,
+                "repl_threads": 16
+            },
+            "source_conf": [
+                {
+                    "source_name": "mysql-01"
+                }
+            ]
+        },
+        "table_migrate_rule": [
+            {
+                "source": {
+                    "schema": "db1",
+                    "source_name": "mysql-01",
+                    "table": "tb1"
+                },
+                "target": {
+                    "schema": "db1",
+                    "table": "tb1"
+                }
+            }
+        ],
+        "target_config": {
+            "host": "10.2.8.3",
+            "password": "",
+            "port": 4913,
+            "security": null,
+            "user": "root"
+        },
+        "task_mode": "all"
     }
-  },
-  "binlog_filter_rule": {
-    "rule-1": {
-      "ignore_event": [
-        "all dml"
-      ],
-      "ignore_sql": [
-        "^Drop"
-      ]
-    },
-    "rule-2": {
-      "ignore_event": [
-        "all dml"
-      ],
-      "ignore_sql": [
-        "^Drop"
-      ]
-    },
-    "rule-3": {
-      "ignore_event": [
-        "all dml"
-      ],
-      "ignore_sql": [
-        "^Drop"
-      ]
-    }
-  },
-  "table_migrate_rule": [
-    {
-      "source": {
-        "source_name": "source-name",
-        "schema": "db-*",
-        "table": "tb-*"
-      },
-      "target": {
-        "schema": "db1",
-        "table": "tb1"
-      },
-      "binlog_filter_rule": [
-        "rule-1",
-        "rule-2",
-        "rule-3",
-      ]
-    }
-  ],
-  "source_config": {
-    "full_migrate_conf": {
-      "export_threads": 4,
-      "import_threads": 16,
-      "data_dir": "./exported_data",
-      "consistency": "auto",
-      "import_mode": "physical",
-      "sorting_dir": "./sort_dir",
-      "disk_quota": "80G",
-      "checksum": "required",
-      "analyze": "optional",
-      "range_concurrency": 0,
-      "compress-kv-pairs": "",
-      "pd_addr": "",
-      "on_duplicate_logical": "error",
-      "on_duplicate_physical": "none"
-    },
-    "incr_migrate_conf": {
-      "repl_threads": 16,
-      "repl_batch": 100
-    },
-    "source_conf": [
-      {
-        "source_name": "mysql-replica-01",
-        "binlog_name": "binlog.000001",
-        "binlog_pos": 4,
-        "binlog_gtid": "03fc0263-28c7-11e7-a653-6c0b84d59f30:1-7041423,05474d3c-28c7-11e7-8352-203db246dd3d:1-170"
-      }
-    ]
-  }
 }
 ```
 
@@ -1265,60 +1074,37 @@ curl -X 'POST' \
 
 ```shell
 curl -X 'GET' \
-  'http://127.0.0.1:8261/api/v1/tasks/task-1/status?stage=running' \
+  'http://127.0.0.1:8261/api/v1/tasks/task-1/status' \
   -H 'accept: application/json'
 ```
 
 ```json
 {
-  "total": 1,
-  "data": [
-    {
-      "name": "string",
-      "source_name": "string",
-      "worker_name": "string",
-      "stage": "runing",
-      "unit": "sync",
-      "unresolved_ddl_lock_id": "string",
-      "load_status": {
-        "finished_bytes": 0,
-        "total_bytes": 0,
-        "progress": "string",
-        "meta_binlog": "string",
-        "meta_binlog_gtid": "string"
-      },
-      "sync_status": {
-        "total_events": 0,
-        "total_tps": 0,
-        "recent_tps": 0,
-        "master_binlog": "string",
-        "master_binlog_gtid": "string",
-        "syncer_binlog": "string",
-        "syncer_binlog_gtid": "string",
-        "blocking_ddls": [
-          "string"
-        ],
-        "unresolved_groups": [
-          {
-            "target": "string",
-            "ddl_list": [
-              "string"
-            ],
-            "first_location": "string",
-            "synced": [
-              "string"
-            ],
-            "unsynced": [
-              "string"
-            ]
-          }
-        ],
-        "synced": true,
-        "binlog_type": "string",
-        "seconds_behind_master": 0
-      }
-    }
-  ]
+    "data": [
+        {
+            "name": "task-1",
+            "source_name": "mysql-01",
+            "stage": "Stopped",
+            "sync_status": {
+                "binlog_type": "remote",
+                "blocking_ddls": null,
+                "master_binlog": "(mysql-bin.000005, 15403)",
+                "master_binlog_gtid": "",
+                "recent_tps": 0,
+                "seconds_behind_master": 0,
+                "synced": true,
+                "syncer_binlog": "(mysql-bin.000005, 15403)",
+                "syncer_binlog_gtid": "",
+                "total_events": 0,
+                "total_tps": 0,
+                "unresolved_groups": null
+            },
+            "unit": "Sync",
+            "unresolved_ddl_lock_id": "",
+            "worker_name": "dm-10.2.8.3-8862"
+        }
+    ],
+    "total": 1
 }
 ```
 
@@ -1342,105 +1128,54 @@ curl -X 'GET' \
 
 ```json
 {
-  "total": 2,
-  "data": [
-    {
-      "name": "task-1",
-      "task_mode": "all",
-      "shard_mode": "pessimistic",
-      "meta_schema": "dm-meta",
-      "enhance_online_schema_change": true,
-      "on_duplicate": "overwrite",
-      "target_config": {
-        "host": "127.0.0.1",
-        "port": 3306,
-        "user": "root",
-        "password": "123456",
-        "security": {
-          "ssl_ca_content": "",
-          "ssl_cert_content": "",
-          "ssl_key_content": "",
-          "cert_allowed_cn": [
-            "string"
-          ]
-        }
-      },
-      "binlog_filter_rule": {
-        "rule-1": {
-          "ignore_event": [
-            "all dml"
-          ],
-          "ignore_sql": [
-            "^Drop"
-          ]
-        },
-        "rule-2": {
-          "ignore_event": [
-            "all dml"
-          ],
-          "ignore_sql": [
-            "^Drop"
-          ]
-        },
-        "rule-3": {
-          "ignore_event": [
-            "all dml"
-          ],
-          "ignore_sql": [
-            "^Drop"
-          ]
-        }
-      },
-      "table_migrate_rule": [
+    "data": [
         {
-          "source": {
-            "source_name": "source-name",
-            "schema": "db-*",
-            "table": "tb-*"
-          },
-          "target": {
-            "schema": "db1",
-            "table": "tb1"
-          },
-          "binlog_filter_rule": [
-            "rule-1",
-            "rule-2",
-            "rule-3",
-          ]
+            "enhance_online_schema_change": true,
+            "meta_schema": "dm-meta",
+            "name": "task-1",
+            "on_duplicate": "error",
+            "source_config": {
+                "full_migrate_conf": {
+                    "consistency": "auto",
+                    "data_dir": "./exported_data",
+                    "export_threads": 4,
+                    "import_threads": 16
+                },
+                "incr_migrate_conf": {
+                    "repl_batch": 100,
+                    "repl_threads": 16
+                },
+                "source_conf": [
+                    {
+                        "source_name": "mysql-01"
+                    }
+                ]
+            },
+            "strict_optimistic_shard_mode": false,
+            "table_migrate_rule": [
+                {
+                    "source": {
+                        "schema": "db1",
+                        "source_name": "mysql-01",
+                        "table": "tb1"
+                    },
+                    "target": {
+                        "schema": "db1",
+                        "table": "tb1"
+                    }
+                }
+            ],
+            "target_config": {
+                "host": "10.2.8.3",
+                "password": "",
+                "port": 4913,
+                "security": null,
+                "user": "root"
+            },
+            "task_mode": "all"
         }
-      ],
-      "source_config": {
-        "full_migrate_conf": {
-          "export_threads": 4,
-          "import_threads": 16,
-          "data_dir": "./exported_data",
-          "consistency": "auto",
-          "import_mode": "physical",
-          "sorting_dir": "./sort_dir",
-          "disk_quota": "80G",
-          "checksum": "required",
-          "analyze": "optional",
-          "range_concurrency": 0,
-          "compress-kv-pairs": "",
-          "pd_addr": "",
-          "on_duplicate_logical": "error",
-          "on_duplicate_physical": "none"
-        },
-        "incr_migrate_conf": {
-          "repl_threads": 16,
-          "repl_batch": 100
-        },
-        "source_conf": [
-          {
-            "source_name": "mysql-replica-01",
-            "binlog_name": "binlog.000001",
-            "binlog_pos": 4,
-            "binlog_gtid": "03fc0263-28c7-11e7-a653-6c0b84d59f30:1-7041423,05474d3c-28c7-11e7-8352-203db246dd3d:1-170"
-          }
-        ]
-      }
-    }
-  ]
+    ],
+    "total": 1
 }
 ```
 
