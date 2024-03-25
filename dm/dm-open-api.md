@@ -82,8 +82,8 @@ TiDB Data Migration (DM) 提供 OpenAPI 功能，你可以通过 OpenAPI 方便�
 
 ```json
 {
-    "error_msg": "",
-    "error_code": ""
+    "error_code": 46018,
+    "error_msg": "[code=46018:class=scheduler:scope=internal:level=medium], Message: task with name task-test not exist, Workaround: Please use `query-status` command to see tasks."
 }
 ```
 
@@ -109,15 +109,27 @@ curl -X 'GET' \
 
 ```json
 {
-  "total": 1,
-  "data": [
-    {
-      "name": "master1",
-      "alive": true,
-      "leader": true,
-      "addr": "127.0.0.1:8261"
-    }
-  ]
+    "data": [
+        {
+            "addr": "http://127.0.0.1:8261",
+            "alive": true,
+            "leader": false,
+            "name": "master1"
+        },
+        {
+            "addr": "http://1.2.3.4:5678",
+            "alive": true,
+            "leader": false,
+            "name": "master2"
+        },
+        {
+            "addr": "http://2.3.4.5:6789",
+            "alive": true,
+            "leader": true,
+            "name": "master3"
+        }
+    ],
+    "total": 3
 }
 ```
 
@@ -159,15 +171,21 @@ curl -X 'GET' \
 
 ```json
 {
-  "total": 1,
-  "data": [
-    {
-      "name": "worker1",
-      "addr": "127.0.0.1:8261",
-      "bound_stage": "bound",
-      "bound_source_name": "mysql-01"
-    }
-  ]
+    "data": [
+        {
+            "addr": "10.2.8.3:8862",
+            "bound_source_name": "mysql-01",
+            "bound_stage": "bound",
+            "name": "dm-10.2.8.3-8862"
+        },
+        {
+            "addr": "10.2.8.3:8962",
+            "bound_source_name": "",
+            "bound_stage": "free",
+            "name": "dm-10.2.8.3-8962"
+        }
+    ],
+    "total": 2
 }
 ```
 
@@ -206,67 +224,30 @@ curl -X 'POST' \
   'http://127.0.0.1:8261/api/v1/sources' \
   -H 'accept: application/json' \
   -H 'Content-Type: application/json' \
-  -d '{
-  "source_name": "mysql-01",
-  "host": "127.0.0.1",
-  "port": 3306,
-  "user": "root",
-  "password": "123456",
-  "enable": true,
-  "enable_gtid": false,
-  "security": {
-    "ssl_ca_content": "",
-    "ssl_cert_content": "",
-    "ssl_key_content": "",
-    "cert_allowed_cn": [
-      "string"
-    ]
-  },
-  "purge": {
-    "interval": 3600,
-    "expires": 0,
-    "remain_space": 15
+  -d '
+{
+  "source": {
+    "source_name": "mysql-01",
+    "host": "10.2.8.3",
+    "port": 3306,
+    "user": "root",
+    "password": "password",
+    "enable": true,
+    "enable_gtid": false
   }
 }'
 ```
 
 ```json
 {
-  "source_name": "mysql-01",
-  "host": "127.0.0.1",
-  "port": 3306,
-  "user": "root",
-  "password": "123456",
-  "enable": true,
-  "enable_gtid": false,
-  "security": {
-    "ssl_ca_content": "",
-    "ssl_cert_content": "",
-    "ssl_key_content": "",
-    "cert_allowed_cn": [
-      "string"
-    ]
-  },
-  "purge": {
-    "interval": 3600,
-    "expires": 0,
-    "remain_space": 15
-  },
-  "status_list": [
-    {
-      "source_name": "mysql-replica-01",
-      "worker_name": "worker-1",
-      "relay_status": {
-        "master_binlog": "(mysql-bin.000001, 1979)",
-        "master_binlog_gtid": "e9a1fc22-ec08-11e9-b2ac-0242ac110003:1-7849",
-        "relay_dir": "./sub_dir",
-        "relay_binlog_gtid": "e9a1fc22-ec08-11e9-b2ac-0242ac110003:1-7849",
-        "relay_catch_up_master": true,
-        "stage": "Running"
-      },
-      "error_msg": "string"
-    }
-  ]
+    "enable": true,
+    "enable_gtid": false,
+    "host": "10.2.8.3",
+    "password": "support123",
+    "port": 3306,
+    "security": null,
+    "source_name": "mysql-01",
+    "user": "root"
 }
 ```
 
@@ -283,58 +264,40 @@ curl -X 'POST' \
 {{< copyable "shell-regular" >}}
 
 ```shell
-curl -X 'GET' \
-  'http://127.0.0.1:8261/api/v1/sources/source-1?with_status=true' \
+curl -X 'GET'\
+  'http://127.0.0.1:8261/api/v1/sources/mysql-01?with_status=true'\
   -H 'accept: application/json'
 ```
 
 ```json
 {
-  "source_name": "mysql-01",
-  "host": "127.0.0.1",
-  "port": 3306,
-  "user": "root",
-  "password": "123456",
-  "enable_gtid": false,
-  "enable": false,
-  "flavor": "mysql",
-  "task_name_list": [
-    "task1"
-  ],
-  "security": {
-    "ssl_ca_content": "",
-    "ssl_cert_content": "",
-    "ssl_key_content": "",
-    "cert_allowed_cn": [
-      "string"
-    ]
-  },
-  "purge": {
-    "interval": 3600,
-    "expires": 0,
-    "remain_space": 15
-  },
-  "status_list": [
-    {
-      "source_name": "mysql-replica-01",
-      "worker_name": "worker-1",
-      "relay_status": {
-        "master_binlog": "(mysql-bin.000001, 1979)",
-        "master_binlog_gtid": "e9a1fc22-ec08-11e9-b2ac-0242ac110003:1-7849",
-        "relay_dir": "./sub_dir",
-        "relay_binlog_gtid": "e9a1fc22-ec08-11e9-b2ac-0242ac110003:1-7849",
-        "relay_catch_up_master": true,
-        "stage": "Running"
-      },
-      "error_msg": "string"
-    }
-  ],
-  "relay_config": {
-    "enable_relay": true,
-    "relay_binlog_name": "mysql-bin.000002",
-    "relay_binlog_gtid": "e9a1fc22-ec08-11e9-b2ac-0242ac110003:1-7849",
-    "relay_dir": "./relay_log"
-  }
+    "enable": true,
+    "enable_gtid": false,
+    "flavor": "mysql",
+    "host": "10.2.8.3",
+    "password": "******",
+    "port": 3306,
+    "purge": {
+        "expires": 0,
+        "interval": 3600,
+        "remain_space": 15
+    },
+    "relay_config": {
+        "enable_relay": false,
+        "relay_binlog_gtid": "",
+        "relay_binlog_name": "",
+        "relay_dir": "relay-dir"
+    },
+    "security": null,
+    "source_name": "mysql-01",
+    "status_list": [
+        {
+            "source_name": "mysql-01",
+            "worker_name": "dm-10.2.8.3-8962"
+        }
+    ],
+    "task_name_list": [],
+    "user": "root"
 }
 ```
 
