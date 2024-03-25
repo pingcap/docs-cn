@@ -36,7 +36,7 @@ PD 微服务通常用于解决 PD 出现性能瓶颈的问题，提高 PD 服务
 - 只有 TiDB 组件支持通过服务发现直接连接 `tso` 微服务，其他的组件是通过请求转发的方式，将请求通过 PD 转发到 `tso` 微服务以获取时间戳。
 - 与[同步部署模式 (DR Auto-Sync)](https://docs.pingcap.com/zh/tidb/stable/two-data-centers-in-one-city-deployment) 特性不兼容。
 - 与 TiDB 系统变量 [`tidb_enable_tso_follower_proxy`](/system-variables.md#tidb_enable_tso_follower_proxy-从-v530-版本开始引入) 不兼容。
-- 由于集群中可能存在静默 Region，`scheduling` 微服务在进行主备切换时，为避免冗余调度，集群可能存在最多五分钟内没有调度的现象。
+- 由于集群中可能存在[静默 Region](https://docs.pingcap.com/zh/tidb/stable/tikv-configuration-file#hibernate-regions)，`scheduling` 微服务在进行主备切换时，为避免冗余调度，集群可能存在最多 `peer-stale-state-check-interval` 时间内（默认为五分钟）没有调度的现象。
 
 ## 使用方法
 
