@@ -988,7 +988,7 @@
         - [`SESSION_CONNECT_ATTRS`](/performance-schema/performance-schema-session-connect-attrs.md)
       - [`SYS`](/sys-schema.md)
     - [元数据锁](/metadata-lock.md)
-    - [TiDB DDL V2](/ddl-v2.md)
+    - [TiDB 加速建表](/accelerated-table-creation.md)
   - UI
     - TiDB Dashboard
       - [简介](/dashboard/dashboard-intro.md)
