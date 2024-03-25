@@ -57,7 +57,7 @@ TiDB 版本：8.0.0
   </tr>
   <tr>
     <td>TiCDC 支持 <a href="https://docs.pingcap.com/zh/tidb/v8.0/ticdc-simple-protocol">Simple 协议</a> **tw@lilin90** <!--1646--></td>
-    <td>TiCDC 引入了对新的 Simple 协议的支持，该协议支持带内模式跟踪功能。</td>
+    <td>TiCDC 引入了对新的 Simple 协议的支持，该协议支持带内模式跟踪功能 (in-band schema tracking)。</td>
   </tr>
   <tr>
     <td>TiCDC 支持 <a href="https://docs.pingcap.com/zh/tidb/v8.0/ticdc-debezium">Debezium 协议</a> **tw@lilin90** <!--1652--></td>
