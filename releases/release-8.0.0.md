@@ -360,8 +360,8 @@ TiDB 版本：8.0.0
 | TiKV | [`security.encryption.master-key.vendor`] | 新增 | 指定住密钥的服务商类型，支持可选值为 `gcp`、`azure` |
 | TiDB Lightning  | [`tikv-importer.duplicate-resolution`](/tidb-lightning/tidb-lightning-physical-import-mode-usage.md#旧版冲突检测从-v800-开始已被废弃)  | 废弃 | 用于在物理导入模式下设置是否检测和解决唯一键冲突的记录。从 v8.0.0 开始使用新参数 [`conflict.strategy`](/tidb-lightning/tidb-lightning-configuration.md#tidb-lightning-任务配置) 替代。 |
 | TiDB Lightning  | [`conflict.precheck-conflict-before-import`](/tidb-lightning/tidb-lightning-configuration.md#tidb-lightning-任务配置)  | 新增 | 控制是否开启前置冲突检测，即导入数据到 TiDB 前，先检查所需导入的数据是否存在冲突。该参数默认值为 `false`，表示仅开启后置冲突检测。仅当导入模式为物理导入模式 (`tikv-importer.backend = "local"`) 时可以使用该配置项。 |
-| TiDB Lightning  | `logical-import-batch-rows` | 新增 | 用于在逻辑导入模式下设置一个 batch 里提交的数据行数，默认值为 `65536`。 |
-| TiDB Lightning  | `logical-import-batch-size` | 新增 | 用于在逻辑导入模式下设置一个 batch 里提交的数据大小，取值为字符串类型，默认值为 `"96KiB"`，单位可以为 KB、KiB、MB、MiB 等存储单位。 |
+| TiDB Lightning  | [`logical-import-batch-rows`](/tidb-lightning/tidb-lightning-configuration.md#tidb-lightning-task) | 新增 | 用于在逻辑导入模式下设置一个 batch 里提交的数据行数，默认值为 `65536`。 |
+| TiDB Lightning  | [`logical-import-batch-size`](/tidb-lightning/tidb-lightning-configuration.md#tidb-lightning-task) | 新增 | 用于在逻辑导入模式下设置一个 batch 里提交的数据大小，取值为字符串类型，默认值为 `"96KiB"`，单位可以为 KB、KiB、MB、MiB 等存储单位。 |
 | Data Migration  | [`secret-key-path`](/dm/dm-master-configuration-file.md) | 新增 | 用于指定加解密上下游密码的密钥文件所在的路径。该文件内容必须是长度为 64 个字符的十六进制的 AES-256 密钥。 |
 | TiCDC | [`tls-certificate-file`](ticdc/ticdc-sink-to-pulsar.md) | 新增 | 用于指定 Pulsar 启用 TLS 加密传输时，客户端的加密证书文件路径。 |
 | TiCDC | [`tls-key-file-path`](ticdc/ticdc-sink-to-pulsar.md) | 新增 | 用于指定 Pulsar 启用 TLS 加密传输时，客户端的加密私钥路径。 |
@@ -456,15 +456,11 @@ TiDB 版本：8.0.0
     + TiDB Data Migration (DM) <!--tw@hfxsd, 2 条-->
 
         - 在 MariaDB 主从复制的场景中，即 MariaDB 主实例 -> MariaDB 从实例 -> DM -> TiDB 的迁移场景，当 `gtid_strict_mode = off` 且 MariaDB 从实例的 GTID 不严格递增时（例如，有业务数据写入 MariaDB 从实例），此时 DM 任务会报错 `less than global checkpoint position`。从 v8.0.0 开始，TiDB 兼容该场景，数据可以正常迁移到下游。[#10741](https://github.com/pingcap/tiflow/issues/10741) @[okJiang](https://github.com/okJiang) **tw@hfxsd** <!--1683-->
-        - DM 丢失上游 binary 类型主键更新 [[#10672](https://github.com/pingcap/tiflow/issues/10672) @[GMHDBJD](https://github.com/GMHDBJD)
 
     + TiDB Lightning <!--tw@hfxsd, 5 条-->
 
-        - Lightning 逻辑导入模式也支持批处理最大行数配置能力。[#46607](https://github.com/pingcap/tidb/issues/46607) @[kennytm](https://github.com/kennytm)
-        - 区分导入空间检查节点是否是 TiFlash 节点 [#50324](https://github.com/pingcap/tidb/issues/50324) @[okJiang](https://github.com/okJiang)
-        - 修复 lightning 不能忽略 不匹配 symlink 规则 [#50324](https://github.com/pingcap/tidb/issues/50324) @[okJiang](https://github.com/okJiang)
-        - 优化 lightning 检查 TiKV 空间导致的性能回退 [#43636](https://github.com/pingcap/tidb/issues/43636) @[lance6716](https://github.com/lance6716)
-        - 修复在 NO_ZERO_IN_DATE sql-mode 下 lightning 不正确的 datetime 值编码 [#50757](https://github.com/pingcap/tidb/issues/50757) @[GMHDBJD](https://github.com/GMHDBJD)
+        - 逻辑导入模式下，支持使用 [`logical-import-batch-rows`](/tidb-lightning/tidb-lightning-configuration.md#tidb-lightning-task) 配置批处理的最大行数 [#46607](https://github.com/pingcap/tidb/issues/46607) @[kennytm](https://github.com/kennytm)
+        - 当 TiFlash 的导入空间不足时，会报错 [#50324](https://github.com/pingcap/tidb/issues/50324) @[okJiang](https://github.com/okJiang)
 
     + TiUP
 
@@ -515,13 +511,12 @@ TiDB 版本：8.0.0
 
 + TiKV <!--tw@hfxsd, 1 条-->
 
-    - note [#issue](链接) @[贡献者 GitHub ID](链接)
-    - note [#issue](链接) @[贡献者 GitHub ID](链接)
     - (dup): release-7.5.1.md > 错误修复> TiKV - 修复开启 `tidb_enable_row_level_checksum` 可能导致 TiKV panic 的问题 [#16371](https://github.com/tikv/tikv/issues/16371) @[cfzjywxk](https://github.com/cfzjywxk)
     - (dup): release-7.1.4.md > 错误修复> TiKV - 修复休眠的 Region 在异常情况下未被及时唤醒的问题 [#16368](https://github.com/tikv/tikv/issues/16368) @[LykxSassinator](https://github.com/LykxSassinator)
     - (dup): release-7.1.4.md > 错误修复> TiKV - 通过在执行下线节点操作前检查该 Region 所有副本的上一次心跳时间，修复下线一个副本导致整个 Region 不可用的问题 [#16465](https://github.com/tikv/tikv/issues/16465) @[tonyxuqqi](https://github.com/tonyxuqqi)
     - (dup): release-7.1.4.md > 错误修复> TiKV - 修复 JSON 整型数值在大于 `INT64` 最大值但小于 `UINT64` 最大值时会被 TiKV 解析成 `FLOAT64` 导致结果和 TiDB 不一致的问题 [#16512](https://github.com/tikv/tikv/issues/16512) @[YangKeao](https://github.com/YangKeao)
- - 修复监控指标`tikv_unified_read_pool_thread_count`有时没有数据的bug。[#16629](https://github.com/tikv/tikv/issues/16629) @[YuJuncen](https://github.com/YuJuncen)
+     - 修复监控指标 `tikv_unified_read_pool_thread_count` 有时没有数据的问题 [#16629](https://github.com/tikv/tikv/issues/16629) @[YuJuncen](https://github.com/YuJuncen)
+
 + PD <!--tw@lilian90, 6 条-->
 
     - (dup): release-7.1.4.md > 错误修复> PD - 修复调用 `MergeLabels` 函数时存在数据竞争的问题 [#7535](https://github.com/tikv/pd/issues/7535) @[lhy1024](https://github.com/lhy1024)
@@ -550,9 +545,8 @@ TiDB 版本：8.0.0
 
     + Backup & Restore (BR) <!--tw@hfxsd, 3 条-->
 
-        - 修复在 Region 立刻成为 Leader 后立刻分裂或合并，导致的日志备份 Checkpoint 不推进的问题。 [#16469](https://github.com/tikv/tikv/issues/16469) @[YuJuncen](https://github.com/YuJuncen)
-        - 修复在某些情况下，日志备份无法监听 Region 的问题。[#16469](https://github.com/tikv/tikv/issues/16469) @[YuJuncen](https://github.com/YuJuncen)
-        - 修复在某些极端情况下，全量备份因找不到 peer 导致 TiKV panic 的问题。[#16394](https://github.com/tikv/tikv/issues/16394) @[Leavrth](https://github.com/Leavrth)
+        - 修复在 Region 成为 Leader 后立刻分裂或合并，导致日志备份 Checkpoint 不推进的问题 [#16469](https://github.com/tikv/tikv/issues/16469) @[YuJuncen](https://github.com/YuJuncen)
+        - 修复在某些极端情况下，全量备份因找不到 peer 导致 TiKV panic 的问题 [#16394](https://github.com/tikv/tikv/issues/16394) @[Leavrth](https://github.com/Leavrth)
         - (dup): release-7.5.1.md > 错误修复> Tools> Backup & Restore (BR) - 修复在同一节点上更改 TiKV IP 地址导致日志备份卡住的问题 [#50445](https://github.com/pingcap/tidb/issues/50445) @[3pointer](https://github.com/3pointer)
         - (dup): release-7.5.1.md > 错误修复> Tools> Backup & Restore (BR) - 修复从 S3 读文件内容时出错后无法重试的问题 [#49942](https://github.com/pingcap/tidb/issues/49942) @[Leavrth](https://github.com/Leavrth)
         - (dup): release-7.5.1.md > 错误修复> Tools> Backup & Restore (BR) - 修复数据恢复失败后，使用断点重启报错 `the target cluster is not fresh` 的问题 [#50232](https://github.com/pingcap/tidb/issues/50232) @[Leavrth](https://github.com/Leavrth)
@@ -570,20 +564,20 @@ TiDB 版本：8.0.0
         - (dup): release-7.1.4.md > 错误修复> Tools> TiCDC - 修复 TiCDC 在开启单行数据正确性校验后由于时区不匹配导致 `TIMESTAMP` 类型 checksum 验证失败的问题 [#10573](https://github.com/pingcap/tiflow/issues/10573) @[3AceShowHand](https://github.com/3AceShowHand)
         - (dup): release-7.5.1.md > 错误修复> Tools> TiCDC - 修复 Syncpoint 表可能被错误同步的问题 [#10576](https://github.com/pingcap/tiflow/issues/10576) @[asddongmen](https://github.com/asddongmen)
         - (dup): release-7.5.1.md > 错误修复> Tools> TiCDC - 修复当使用 Apache Pulsar 作为下游时，无法正常启用 OAuth2.0、TLS 和 mTLS 的问题 [#10602](https://github.com/pingcap/tiflow/issues/10602) @[asddongmen](https://github.com/asddongmen)
-        - 修复 TiKV 重启时，kv client 处理异常导致 changefeed 延迟升高的问题 [#10584](https://github.com/pingcap/tiflow/issues/10584) @[asddongmen](https://github.com/asddongmen)
-        - 修复频繁 DDL 场景下由于错误的 BarrierTS 的导致数据被写入错误的 CSV 文件的问题[#10668](https://github.com/pingcap/tiflow/issues/10668) @[lidezhu](https://github.com/lidezhu)
-        - 修复 kv client 处理异常导致 TiCDC panic 的问题 [#10718](https://github.com/pingcap/tiflow/issues/10718) @[asddongmen](https://github.com/asddongmen)
-        - 修复表同步任务调度时导致 TiCDC panic 的问题 [#10613](https://github.com/pingcap/tiflow/issues/10613) @[CharlesCheung96](https://github.com/CharlesCheung96)
+        - 修复当 TiKV 升级、重启、或驱逐 Leader 时，changefeed 可能卡住的问题 [#10584](https://github.com/pingcap/tiflow/issues/10584) @[asddongmen](https://github.com/asddongmen)
+        - 修复频繁执行 DDL 的场景中，由于错误的 BarrierTS 导致数据被写入到错误的 CSV 文件的问题 [#10668](https://github.com/pingcap/tiflow/issues/10668) @[lidezhu](https://github.com/lidezhu)
+        - 修复 KV Client 数据争用导致 TiCDC panic 的问题 [#10718](https://github.com/pingcap/tiflow/issues/10718) @[asddongmen](https://github.com/asddongmen)
+        - 修复调度表的同步任务时 TiCDC panic 的问题 [#10613](https://github.com/pingcap/tiflow/issues/10613) @[CharlesCheung96](https://github.com/CharlesCheung96)
 
     + TiDB Data Migration (DM)
 
-        - note [#issue](链接) @[贡献者 GitHub ID](链接)
-        - note [#issue](链接) @[贡献者 GitHub ID](链接)
+        - 修复上游为 binary 类型主键时丢失数据的问题 [[#10672](https://github.com/pingcap/tiflow/issues/10672) @[GMHDBJD](https://github.com/GMHDBJD)
 
     + TiDB Lightning
 
-        - note [#issue](链接) @[贡献者 GitHub ID](链接)
-        - note [#issue](链接) @[贡献者 GitHub ID](链接)
+        - 修复检查 TiKV 空间导致的性能回退的问题 [#43636](https://github.com/pingcap/tidb/issues/43636) @[lance6716](https://github.com/lance6716)
+        - 修复在 `NO_ZERO_IN_DATE` SQL 模式下，`DATETIME` 值编码错误的问题 [#50757](https://github.com/pingcap/tidb/issues/50757) @[GMHDBJD](https://github.com/GMHDBJD)
+        - 修复导入数据时没有忽略不匹配的符号链接规则的问题 [#49423](https://github.com/pingcap/tidb/issues/49423) @[lance6716](https://github.com/lance6716)
         - (dup): release-7.1.4.md > 错误修复> Tools> TiDB Lightning - 修复在扫描数据文件时，遇到不合法符号链接文件而报错的问题 [#49423](https://github.com/pingcap/tidb/issues/49423) @[lance6716](https://github.com/lance6716)
         - (dup): release-7.1.4.md > 错误修复> Tools> TiDB Lightning - 修复当 `sql_mode` 中不包含 `NO_ZERO_IN_DATE` 时，TiDB Lightning 无法正确解析包含 `0` 的日期值的问题 [#50757](https://github.com/pingcap/tidb/issues/50757) @[GMHDBJD](https://github.com/GMHDBJD)
 
