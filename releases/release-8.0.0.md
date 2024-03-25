@@ -57,11 +57,11 @@ TiDB 版本：8.0.0
   </tr>
   <tr>
     <td>TiCDC 支持 <a href="https://docs.pingcap.com/zh/tidb/v8.0/ticdc-simple-protocol">Simple 协议</a> **tw@lilin90** <!--1646--></td>
-    <td>TiCDC 引入了对新的 Simple 协议的支持，该协议支持带内模式跟踪功能 (in-band schema tracking)。</td>
+    <td>TiCDC 支持了新的 Simple 消息协议，该协议通过在 DDL 和 BOOTSTRAP 事件中嵌入模式信息，实现了动态的消息模式跟踪功能 (in-band schema tracking)。</td>
   </tr>
   <tr>
     <td>TiCDC 支持 <a href="https://docs.pingcap.com/zh/tidb/v8.0/ticdc-debezium">Debezium 协议</a> **tw@lilin90** <!--1652--></td>
-    <td>TiCDC 现在可以使用生成 Debezium 格式消息的协议向 Kafka sink 发布复制事件。</td>
+    <td>TiCDC 支持了新的 Debezium 协议，现在可以使用生成 Debezium 格式消息的协议向 Kafka sink 发布复制事件。</td>
   </tr>
 </tbody>
 </table>
@@ -265,7 +265,7 @@ TiDB 版本：8.0.0
 
 * TiCDC 支持 Simple 协议 [#9898](https://github.com/pingcap/tiflow/issues/9898) @[3AceShowHand](https://github.com/3AceShowHand) **tw@lilin90** <!--1646-->
 
-    TiCDC 引入了对新的 Simple 协议的支持，该协议支持带内模式跟踪 (in-band schema tracking)。
+    TiCDC 支持了新的 Simple 消息协议，该协议通过在 DDL 和 BOOTSTRAP 事件中嵌入模式信息，实现了动态的消息模式跟踪功能 (in-band schema tracking)。
 
     更多信息，请参考[用户文档](/ticdc/ticdc-simple-protocol.md)。
 
