@@ -500,7 +500,7 @@ TiCDC 会把一个 `BOOTSTRAP` 事件编码成如下的 JSON 格式：
 
 ## Message 消费方法
 
-由于 Simple Protocol 在发送 DML 消息时没有包含表的 schema 信息，因此在消费 DML 消息时，下游需要先接收到 DDL 或者 BOOTSTRAP 消息，并且把表的 schema 信息缓存起来。在接收到 DML 消息时，通过 DML 消息中的 `table` 名和 `schemaVersion` 字段来获取对应的 tableSchema 信息，从而正确地消费 DML 消息。
+由于 Simple Protocol 在发送 DML 消息时没有包含表的 schema 信息，因此在消费一条 DML 消息之前，下游需要先接收到 DDL 或者 BOOTSTRAP 消息，并且把表的 schema 信息缓存起来。在接收到 DML 消息时，通过 DML 消息中的 `table` 名和 `schemaVersion` 字段去缓存中查找对应的 tableSchema 信息，从而正确地消费 DML 消息。
 
 下面介绍如何根据 DDL 或者 BOOTSTRAP 消息来消费 DML 消息。
 
