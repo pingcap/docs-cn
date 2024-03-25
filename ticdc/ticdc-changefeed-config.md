@@ -193,6 +193,10 @@ date-separator = 'day'
 # 注意：该参数只有当下游为存储服务时，才会生效。
 enable-partition-separator = true
 
+# 是否禁用 schema 信息。默认值为 false，即输出 schema 信息。
+# 注意：该参数只有当下游 MQ 且输出协议为 debezium 时才会生效。
+debezium-disable-schema = false
+
 # 从 v6.5.0 开始，TiCDC 支持以 CSV 格式将数据变更记录保存至存储服务中，在 MQ 和 MySQL 类 sink 中无需设置。
 # [sink.csv]
 # 字段之间的分隔符。必须为 ASCII 字符，默认值为 `,`。
