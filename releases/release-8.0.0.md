@@ -318,7 +318,7 @@ TiDB 版本：8.0.0
 > 以下为从 v7.6.0 升级至当前版本 (v8.0.0) 所需兼容性变更信息。如果从 v7.5.0 或之前版本升级到当前版本，可能也需要考虑和查看中间版本 Release Notes 中提到的兼容性变更信息。
 
 - 在安全增强模式 (SEM) 下禁止设置 [`require_secure_transport`](/system-variables.md#require_secure_transport-从-v610-版本开始引入) 为 `ON`，避免用户无法连接的问题 [#47665](https://github.com/pingcap/tidb/issues/47665) @[tiancaiamao](https://github.com/tiancaiamao)
-- DM 移除了固定的加解密 key，并支持设置自定义加解密 key。如果升级前[数据源配置](/dm/dm-source-configuration-file.md)和[迁移任务配置](/dm/task-configuration-file-full.md)里使用了加密密码，需参考 [DM 自定义加解密 key](/dm/dm-customized-secret-key.md) 里的升级步骤进行额外操作。 [#9492](https://github.com/pingcap/tiflow/issues/9492) @[D3Hunter](https://github.com/D3Hunter)
+- DM 移除了固定的加解密 key，并支持设置自定义加解密 key。如果升级前[数据源配置](/dm/dm-source-configuration-file.md)和[迁移任务配置](/dm/task-configuration-file-full.md)里使用了加密密码，需参考 [DM 自定义加解密 key](/dm/dm-customized-secret-key.md) 里的升级步骤进行额外操作。[#9492](https://github.com/pingcap/tiflow/issues/9492) @[D3Hunter](https://github.com/D3Hunter)
 - 移除未 GA 但默认启用的 witness 相关调度器 [#7765](https://github.com/tikv/pd/pull/7765) @[rleungx](https://github.com/rleungx)
 ### 行为变更
 
@@ -385,7 +385,6 @@ TiDB 版本：8.0.0
     - 优化数据落盘功能的退出机制，支持在数据落盘过程中取消查询 [#50511](https://github.com/pingcap/tidb/issues/50511) @[wshwsh12](https://github.com/wshwsh12) **tw@qiancai** <!--1635-->
     - 用多个等值条件做表连接时，支持利用匹配到部分条件的索引做 Index Join [#47233](https://github.com/pingcap/tidb/issues/47233) @[winoros](https://github.com/winoros) **tw@Oreoxmt** <!--1601-->
     - 增强 Index merge 能力，使其能感知查询中的排序需求，并有能力选中满足排序要求的索引 [#48359](https://github.com/pingcap/tidb/issues/48359) @[AilinKid](https://github.com/AilinKid)
-    - Index Join 允许被连接的一侧为聚合数据集 [#37068](https://github.com/pingcap/tidb/issues/37068) @[elsa0520](https://github.com/elsa0520) **tw@Oreoxmt** <!--1510-->
     - 优化 warning 日志，在遇到无法进行并发 apply 的情况下，warning 中显示阻碍并发的算子名称 [#50256](https://github.com/pingcap/tidb/issues/50256) @[hawkingrei](https://github.com/hawkingrei)
     - 优化 point get 情况下的索引选择，在都是 point get 的索引的情况下选择一个最好的 point get index [#50184](https://github.com/pingcap/tidb/issues/50184) @[elsa0520](https://github.com/elsa0520)
     - 将 sync load 统计信息任务的优先级暂时调整为 high，避免在 tikv 忙碌的情况下，sync load 大面积超时导致统计信息无法加载情况 [#50332](https://github.com/pingcap/tidb/issues/50332) @[winoros](https://github.com/winoros)
@@ -395,7 +394,7 @@ TiDB 版本：8.0.0
     - index merge 可以支持在 and 谓词中内嵌  mv index 和 OR 谓词 [#51778](https://github.com/pingcap/tidb/issues/51778) @[time-and-fate](https://github.com/time-and-fate)
     - 支持同时提交 16 个 `IMPORT INTO ... FROM FILE` 任务，方便批量导入数据到目标表，极大地提升了数据文件导入的效率和性能 [#49008](https://github.com/pingcap/tidb/issues/49008) @[D3Hunter](https://github.com/D3Hunter) **tw@qiancai** <!--1680-->
     - (dup): release-7.1.4.md > 改进提升> TiDB - 当设置 `force-init-stats` 为 `true` 时，即 TiDB 启动时等待统计信息初始化完成后再对外提供服务，这一设置不再影响 HTTP server 提供服务，用户仍可查看监控 [#50854](https://github.com/pingcap/tidb/issues/50854) @[hawkingrei](https://github.com/hawkingrei)
--  MDL View 中不显示 blocked DDL，当 DDL 任务中包含多张表 [#47743](https://github.com/pingcap/tidb/issues/47743) @[wjhuang2016](https://github.com/wjhuang2016)
+    -  MDL View 中不显示 blocked DDL，当 DDL 任务中包含多张表 [#47743](https://github.com/pingcap/tidb/issues/47743) @[wjhuang2016](https://github.com/wjhuang2016)
         - DDL 创建表语句 `CREATE TABLE` 执行性能加速 10 倍，并且可线性扩展 [#50052](https://github.com/pingcap/tidb/issues/50052) @[GMHDBJD](https://github.com/GMHDBJD)
 
 + TiKV <!--tw@Oreoxm, 13 条-->
