@@ -243,7 +243,7 @@ curl -X 'POST' \
     "enable": true,
     "enable_gtid": false,
     "host": "10.2.8.3",
-    "password": "support123",
+    "password": "password",
     "port": 3306,
     "security": null,
     "source_name": "mysql-01",
