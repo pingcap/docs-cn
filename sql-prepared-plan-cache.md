@@ -4,7 +4,7 @@ title: Prepare 语句执行计划缓存
 
 # Prepare 语句执行计划缓存
 
-> **注意：**
+> **警告：**
 >
 > 如果已经被缓存的 `Update` 或 `Delete` 语句在执行的过程中，同时遇到 DDL 对相关 schema 进行变更，有可能会造成表和索引的数据不一致，进而造成结果错误 ([#51407](https://github.com/pingcap/tidb/issues/51407))，请关注修复状态，并升级到 LTS 的最新版本解决这个问题。升级前可能的规避方法：
 > - 执行 DDL 前暂时 [关闭 Prepare 语句的执行计划缓存](/system-variables.md#tidb_enable_prepared_plan_cache-从-v610-版本开始引入)，DDL 执行完毕后再恢复打开。
