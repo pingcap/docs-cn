@@ -381,20 +381,18 @@ TiDB 版本：8.0.0
 
 + TiDB <!--tw@qiancai, 18 条-->
 
-    - 提升 Sort 算子的数据落盘性能 [#47733](https://github.com/pingcap/tidb/issues/47733) @[xzhangxian1008](https://github.com/xzhangxian1008) **tw@Oreoxmt** <!--1609-->
+    - 提升 `Sort` 算子的数据落盘性能 [#47733](https://github.com/pingcap/tidb/issues/47733) @[xzhangxian1008](https://github.com/xzhangxian1008) **tw@Oreoxmt** <!--1609-->
     - 优化数据落盘功能的退出机制，支持在数据落盘过程中取消查询 [#50511](https://github.com/pingcap/tidb/issues/50511) @[wshwsh12](https://github.com/wshwsh12) **tw@qiancai** <!--1635-->
-    - 用多个等值条件做表连接时，支持利用匹配到部分条件的索引做 Index Join [#47233](https://github.com/pingcap/tidb/issues/47233) @[winoros](https://github.com/winoros) **tw@Oreoxmt** <!--1601-->
-    - 增强 Index merge 能力，使其能感知查询中的排序需求，并有能力选中满足排序要求的索引 [#48359](https://github.com/pingcap/tidb/issues/48359) @[AilinKid](https://github.com/AilinKid)
-    - 优化 warning 日志，在遇到无法进行并发 apply 的情况下，warning 中显示阻碍并发的算子名称 [#50256](https://github.com/pingcap/tidb/issues/50256) @[hawkingrei](https://github.com/hawkingrei)
-    - 优化 point get 情况下的索引选择，在都是 point get 的索引的情况下选择一个最好的 point get index [#50184](https://github.com/pingcap/tidb/issues/50184) @[elsa0520](https://github.com/elsa0520)
-    - 将 sync load 统计信息任务的优先级暂时调整为 high，避免在 tikv 忙碌的情况下，sync load 大面积超时导致统计信息无法加载情况 [#50332](https://github.com/pingcap/tidb/issues/50332) @[winoros](https://github.com/winoros)
-    - prepare 时，在 warning 中显示无法 plan cache 的具体原因 [#50407](https://github.com/pingcap/tidb/issues/50407) @[hawkingrei](https://github.com/hawkingrei)
-    - 改进在多次更新同一行的情况下，查询估算偏差的问题 [#47523](https://github.com/pingcap/tidb/issues/47523) @[terry1purcell](https://github.com/terry1purcell)
-    - 支持使用 where 条件中的部分等值条件来构造 index join [#47233](https://github.com/pingcap/tidb/issues/47233) @[winoros](https://github.com/winoros)
-    - index merge 可以支持在 and 谓词中内嵌  mv index 和 OR 谓词 [#51778](https://github.com/pingcap/tidb/issues/51778) @[time-and-fate](https://github.com/time-and-fate)
+    - 在处理包含多个等值条件的表连接查询时，支持使用匹配部分条件的索引构造 Index Join [#47233](https://github.com/pingcap/tidb/issues/47233) @[winoros](https://github.com/winoros) **tw@Oreoxmt** <!--1601-->
+    - 增强 Index Merge 能力，使其能识别查询中的排序需求，并能选中满足排序要求的索引 [#48359](https://github.com/pingcap/tidb/issues/48359) @[AilinKid](https://github.com/AilinKid
+    - 当 `Apply` 算子没有并发执行时，支持通过执行 `SHOW WARNINGS` 查看阻碍并发的算子名 [#50256](https://github.com/pingcap/tidb/issues/50256) @[hawkingrei](https://github.com/hawkingrei)
+    - 优化点查的索引选择，在所有的索引都支持点查时选择其中性能最优的一个用于查询 [#50184](https://github.com/pingcap/tidb/issues/50184) @[elsa0520](https://github.com/elsa0520)
+    - 将统计信息同步加载任务的优先级暂时调整为 high，避免在 TiKV 高负载时同步加载任务大面积超时，从而导致统计信息无法加载 [#50332](https://github.com/pingcap/tidb/issues/50332) @[winoros](https://github.com/winoros)
+    - 在 `PREPARE` 语句无法命中执行计划缓存时，支持通过执行 `SHOW WARNINGS` 查看原因 [#50407](https://github.com/pingcap/tidb/issues/50407) @[hawkingrei](https://github.com/hawkingrei)
+    - 提升当多次更新同一行的数据时查询估算信息的准确性 [#47523](https://github.com/pingcap/tidb/issues/47523) @[terry1purcell](https://github.com/terry1purcell)
+    - Index Merge 支持在 `AND` 谓词中内嵌多值索引和 `OR` 操作符 [#51778](https://github.com/pingcap/tidb/issues/51778) @[time-and-fate](https://github.com/time-and-fate)
     - 支持同时提交 16 个 `IMPORT INTO ... FROM FILE` 任务，方便批量导入数据到目标表，极大地提升了数据文件导入的效率和性能 [#49008](https://github.com/pingcap/tidb/issues/49008) @[D3Hunter](https://github.com/D3Hunter) **tw@qiancai** <!--1680-->
     - (dup): release-7.1.4.md > 改进提升> TiDB - 当设置 `force-init-stats` 为 `true` 时，即 TiDB 启动时等待统计信息初始化完成后再对外提供服务，这一设置不再影响 HTTP server 提供服务，用户仍可查看监控 [#50854](https://github.com/pingcap/tidb/issues/50854) @[hawkingrei](https://github.com/hawkingrei)
-    -  MDL View 中不显示 blocked DDL，当 DDL 任务中包含多张表 [#47743](https://github.com/pingcap/tidb/issues/47743) @[wjhuang2016](https://github.com/wjhuang2016)
         - DDL 创建表语句 `CREATE TABLE` 执行性能加速 10 倍，并且可线性扩展 [#50052](https://github.com/pingcap/tidb/issues/50052) @[GMHDBJD](https://github.com/GMHDBJD)
 
 + TiKV <!--tw@Oreoxm, 13 条-->
@@ -498,6 +496,7 @@ TiDB 版本：8.0.0
     - 修正 tablefullscan 在查询不带谓词情况下，不加载统计信息的问题 [#48257](https://github.com/pingcap/tidb/issues/48257) @[time-and-fate](https://github.com/time-and-fate)
     - 修复 init_stats 流程中，可能存在的 panic 以及 panic 后导致 init stats 流程直接退出的问题 [#51581](https://github.com/pingcap/tidb/issues/51581) @[hawkingrei](https://github.com/hawkingrei)
     - 修复 in 谓词中带 null 时，导致的查询结果错误的问题 [#51560](https://github.com/pingcap/tidb/issues/51560) @[winoros](https://github.com/winoros)
+    - 修复当 DDL 任务中包含多张表时，MDL View 中不显示 blocked DDL 的问题[#47743](https://github.com/pingcap/tidb/issues/47743) @[wjhuang2016](https://github.com/wjhuang2016)
     - (dup): release-7.5.1.md > 错误修复> TiDB - 修复表的 `ANALYZE` 任务统计的 `processed_rows` 可能超过表的总行数的问题 [#50632](https://github.com/pingcap/tidb/issues/50632) @[hawkingrei](https://github.com/hawkingrei)
     - (dup): release-7.5.1.md > 错误修复> TiDB - 修复当 `HashJoin` 算子落盘失败时 goroutine 可能泄露的问题 [#50841](https://github.com/pingcap/tidb/issues/50841) @[wshwsh12](https://github.com/wshwsh12)
     - (dup): release-7.5.1.md > 错误修复> TiDB - 修复 CTE 查询使用的内存超限时可能会导致 goroutine 泄露的问题 [#50337](https://github.com/pingcap/tidb/issues/50337) @[guo-shaoge](https://github.com/guo-shaoge)
