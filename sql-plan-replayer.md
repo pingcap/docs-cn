@@ -148,6 +148,16 @@ PLAN REPLAYER LOAD 'file_name';
 PLAN REPLAYER LOAD 'plan_replayer.zip';
 ```
 
+> **注意：**
+>
+> 你需要禁止 `auto analyze`，否则导入的统计信息会被 `analyze` 覆盖。
+
+你可以通过将 [`tidb_enable_auto_analyze`](/system-variables.md#tidb_enable_auto_analyze-从-v610-版本开始引入) 系统变量设置为 `OFF` 来禁用 `auto analyze`。
+
+```sql
+set @@global.tidb_enable_auto_analyze = OFF;
+```
+
 导入完毕后，该 TiDB 集群就载入了所需要的表结构、统计信息等其他影响构造 Plan 所需要的信息。你可以通过以下方式查看执行计划以及验证统计信息:
 
 ```sql
