@@ -340,37 +340,20 @@ curl -X 'PUT' \
   'http://127.0.0.1:8261/api/v1/sources/mysql-01' \
   -H 'accept: application/json' \
   -H 'Content-Type: application/json' \
-  -d '{
+  -d '
+{
   "source": {
     "source_name": "mysql-01",
-    "host": "127.0.0.1",
+    "host": "10.2.8.3",
     "port": 3306,
     "user": "root",
     "password": "123456",
+    "enable": true,
     "enable_gtid": false,
-    "enable": false,
-    "flavor": "mysql",
-    "task_name_list": [
-      "task1"
-    ],
-    "security": {
-      "ssl_ca_content": "",
-      "ssl_cert_content": "",
-      "ssl_key_content": "",
-      "cert_allowed_cn": [
-        "string"
-      ]
-    },
     "purge": {
-      "interval": 3600,
       "expires": 0,
+      "interval": 3600,
       "remain_space": 15
-    },
-    "relay_config": {
-      "enable_relay": true,
-      "relay_binlog_name": "mysql-bin.000002",
-      "relay_binlog_gtid": "e9a1fc22-ec08-11e9-b2ac-0242ac110003:1-7849",
-      "relay_dir": "./relay_log"
     }
   }
 }'
@@ -378,26 +361,19 @@ curl -X 'PUT' \
 
 ```json
 {
-  "source_name": "mysql-01",
-  "host": "127.0.0.1",
-  "port": 3306,
-  "user": "root",
-  "password": "123456",
-  "enable": true,
-  "enable_gtid": false,
-  "security": {
-    "ssl_ca_content": "",
-    "ssl_cert_content": "",
-    "ssl_key_content": "",
-    "cert_allowed_cn": [
-      "string"
-    ]
-  },
-  "purge": {
-    "interval": 3600,
-    "expires": 0,
-    "remain_space": 15
-  }
+    "enable": true,
+    "enable_gtid": false,
+    "host": "10.2.8.3",
+    "password": "123456",
+    "port": 3306,
+    "purge": {
+        "expires": 0,
+        "interval": 3600,
+        "remain_space": 15
+    },
+    "security": null,
+    "source_name": "mysql-01",
+    "user": "root"
 }
 ```
 
@@ -459,37 +435,38 @@ curl -X 'GET' \
 
 ```json
 {
-  "data": [
-    {
-      "enable_gtid": false,
-      "host": "127.0.0.1",
-      "password": "******",
-      "port": 3306,
-      "purge": {
-        "expires": 0,
-        "interval": 3600,
-        "remain_space": 15
-      },
-      "security": null,
-      "source_name": "mysql-01",
-      "user": "root"
-    },
-    {
-      "enable_gtid": false,
-      "host": "127.0.0.1",
-      "password": "******",
-      "port": 3307,
-      "purge": {
-        "expires": 0,
-        "interval": 3600,
-        "remain_space": 15
-      },
-      "security": null,
-      "source_name": "mysql-02",
-      "user": "root"
-    }
-  ],
-  "total": 2
+    "data": [
+        {
+            "enable": true,
+            "enable_gtid": false,
+            "flavor": "mysql",
+            "host": "10.2.8.3",
+            "password": "******",
+            "port": 3306,
+            "purge": {
+                "expires": 0,
+                "interval": 3600,
+                "remain_space": 15
+            },
+            "relay_config": {
+                "enable_relay": false,
+                "relay_binlog_gtid": "",
+                "relay_binlog_name": "",
+                "relay_dir": "relay-dir"
+            },
+            "security": null,
+            "source_name": "mysql-01",
+            "status_list": [
+                {
+                    "source_name": "mysql-01",
+                    "worker_name": "dm-10.2.8.3-8962"
+                }
+            ],
+            "task_name_list": [],
+            "user": "root"
+        }
+    ],
+    "total": 1
 }
 ```
 
@@ -513,22 +490,13 @@ curl -X 'GET' \
 
 ```json
 {
-  "total": 1,
-  "data": [
-    {
-      "source_name": "mysql-replica-01",
-      "worker_name": "worker-1",
-      "relay_status": {
-        "master_binlog": "(mysql-bin.000001, 1979)",
-        "master_binlog_gtid": "e9a1fc22-ec08-11e9-b2ac-0242ac110003:1-7849",
-        "relay_dir": "./sub_dir",
-        "relay_binlog_gtid": "e9a1fc22-ec08-11e9-b2ac-0242ac110003:1-7849",
-        "relay_catch_up_master": true,
-        "stage": "Running"
-      },
-      "error_msg": "string"
-    }
-  ]
+    "data": [
+        {
+            "source_name": "mysql-01",
+            "worker_name": "dm-10.2.8.3-8962"
+        }
+    ],
+    "total": 1
 }
 ```
 
