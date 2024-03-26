@@ -24,7 +24,7 @@ TiDB 版本：8.0.0
 <tbody>
   <tr>
     <td rowspan="4">可扩展性与性能</td>
-    <td><a href="https://docs.pingcap.com/zh/tidb/v8.0/pd-microservices">支持拆分 PD 功能为微服务，提高可扩展性（实验特性）</td>
+    <td><a href="https://docs.pingcap.com/zh/tidb/v8.0/pd-microservices">支持拆分 PD 功能为微服务，提高可扩展性（实验特性）</a></td>
     <td>Placement Driver (PD) 包含了多个确保 TiDB 集群能正常运行的关键模块。当集群的工作负载增加时，PD 中各模块的资源消耗也会随之增加，造成这些模块间功能的相互干扰，进而影响整个集群的服务质量。为了解决该问题，从 v8.0.0 起，TiDB 支持将 PD 的 TSO 和调度模块拆分成可独立部署的微服务，可以显著降低当集群规模扩大时模块间的互相影响。通过这种架构，TiDB 能够支持更大规模、更高负载的集群。
   </tr>
   <tr>
@@ -32,7 +32,7 @@ TiDB 版本：8.0.0
     <td>大批量的 DML 任务，例如大规模的清理任务、连接或聚合，可能会消耗大量内存，并且在非常大的规模上受到限制。批量 DML (<code>tidb_dml_type = "bulk"</code>) 是一种新的 DML 类型，用于更高效地处理大批量 DML 任务，同时提供事务保证并减轻 OOM 问题。该功能与用于数据加载的导入、加载和恢复操作不同。</td>
   </tr>
   <tr>
-    <td><a href="https://docs.pingcap.com/zh/tidb/v8.0/br-snapshot-guide#恢复快照备份数据">提升 BR 快照恢复速度 (GA) </td>
+    <td><a href="https://docs.pingcap.com/zh/tidb/v8.0/br-snapshot-guide#恢复快照备份数据">提升 BR 快照恢复速度 (GA) </a></td>
     <td>通过该功能，BR 可以充分利用集群的规模优势，使 TiKV 集群中的所有节点都能参与到数据恢复的准备阶段，从而显著提升大规模集群中大数据集的恢复速度。实际测试表明，在恢复较慢的情况下，该功能可将恢复速度提升大约 3 倍。</td>
   </tr>
   <tr>
