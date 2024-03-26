@@ -39,7 +39,7 @@ TiDB 版本：8.0.0
     <td>增强在有大量表时缓存 schema 信息的稳定性</td>
     <td>对于使用 TiDB 作为多租户应用程序记录系统的 SaaS 公司，经常需要存储大量的表。在以前的版本中，尽管支持处理百万级或更大数量的表，但可能会影响用户体验。TiDB v8.0.0 通过以下增强功能改善了这一问题：
   <ul>
-    <li>引入新的 <a href="https://docs.pingcap.com/zh/tidb/v8.0/system-variables#tidb_schema_cache_size-new-in-v800">schema 缓存系统</a>，为表元数据提供了懒加载的 LRU (Least Recently Used) 缓存，并更有效地管理 schema 版本变更。</li>
+    <li>引入新的 <a href="https://docs.pingcap.com/zh/tidb/v8.0/system-variables#tidb_schema_cache_size-从-v800-版本开始引入">schema 缓存系统</a>，为表元数据提供了懒加载的 LRU (Least Recently Used) 缓存，并更有效地管理 schema 版本变更。</li>
     <li>支持在 <code>auto analyze</code> 中配置<a href="https://docs.pingcap.com/zh/tidb/v8.0/system-variables#tidb_enable_auto_analyze_priority_queue-从-v800-版本开始引入">优先队列</a>，使流程更加流畅，并在大量表的情况下提高稳定性。</li>
   </ul>
     </td>
@@ -47,7 +47,7 @@ TiDB 版本：8.0.0
   <tr>
     <td rowspan="1">数据库管理与可观测性</td>
     <td>支持观测索引使用情况 </td>
-    <td>TiDB v8.0.0 引入 <a href="https://docs.pingcap.com/zh/tidb/v8.0/information-schema-tidb-index-usage"><code>INFORMATION_SCHEMA.TIDB_INDEX_USAGE</code></a> 表和 <a href="https://docs.pingcap.com/zh/tidb/v8.0/sys-schema.md"><code>sys.schema_unused_index</code></a> 视图，以提供索引的使用统计信息。该功能有助于用户评估所有索引的重要性并优化索引设计。</td>
+    <td>TiDB v8.0.0 引入 <a href="https://docs.pingcap.com/zh/tidb/v8.0/information-schema-tidb-index-usage"><code>INFORMATION_SCHEMA.TIDB_INDEX_USAGE</code></a> 表和 <a href="https://docs.pingcap.com/zh/tidb/v8.0/sys-schema#schema_unused_index"><code>sys.schema_unused_index</code></a> 视图，以提供索引的使用统计信息。该功能有助于用户评估所有索引的重要性并优化索引设计。</td>
   </tr>
   <tr>
     <td rowspan="2">数据迁移</td>
@@ -72,7 +72,7 @@ TiDB 版本：8.0.0
     - `tso` 微服务：为整个集群提供单调递增的时间戳分配。
     - `scheduling` 微服务：为整个集群提供调度功能，包括但不限于负载均衡、热点处理、副本修复、副本放置等。
 
-    每个微服务都以独立进程的方式部署。当设置某个微服务的副本数大于 1 时，该微服务会自动实现主备的容灾模式，以确保服务的高可用性和可靠性。
+  每个微服务都以独立进程的方式部署。当设置某个微服务的副本数大于 1 时，该微服务会自动实现主备的容灾模式，以确保服务的高可用性和可靠性。
 
     目前 PD 微服务仅支持通过 TiDB Operator 和 TiUP Playground 进行部署。当 PD 出现明显的性能瓶颈且无法升配的情况下，建议考虑使用该模式。
 
@@ -83,7 +83,7 @@ TiDB 版本：8.0.0
     - 默认启用 Titan Blob 文件和 RocksDB Block 文件的共享缓存（[`shared-blob-cache`](/tikv-configuration-file.md#shared-blob-cache-tidb-从-v800-版本开始引入) 默认为 `true`），无需再单独配置 [`blob-cache-size`](/tikv-configuration-file.md#blob-cache-size)。
     - 支持动态修改 [`min-blob-size`](/tikv-configuration-file.md#min-blob-size)、[`blob-file-compression`](/tikv-configuration-file.md#blob-file-compression)、[`discardable-ratio`](/tikv-configuration-file.md#min-blob-size)，以提升使用 Titan 引擎时的性能和灵活性。
 
-    更多信息，请参考[用户文档](/storage-engine/titan-configuration.md)。
+  更多信息，请参考[用户文档](/storage-engine/titan-configuration.md)。
     
 ### 性能
 
@@ -276,7 +276,7 @@ TiDB 版本：8.0.0
 
     更多信息，请参考[用户文档](dm/dm-customized-secret-key.md)。
 
-* 支持 `IMPORT INTO ... FROM SELECT` 语法（实验特性），增强 `IMPORT INTO` 功能[#49883](https://github.com/pingcap/tidb/issues/49883) @[D3Hunter](https://github.com/D3Hunter) **tw@qiancai** <!--1680-->
+* 支持 `IMPORT INTO ... FROM SELECT` 语法（实验特性），增强 `IMPORT INTO` 功能 [#49883](https://github.com/pingcap/tidb/issues/49883) @[D3Hunter](https://github.com/D3Hunter) **tw@qiancai** <!--1680-->
 
     在之前的 TiDB 版本中，将查询结果导入目标表只能通过 `INSERT INTO ... SELECT` 语句，但该语句在一些大数据量的场景中的导入效率较低。从 v8.0.0 开始，TiDB 新增支持通过 `IMPORT INTO ... FROM SELECT` 将 `SELECT` 的查询结果导入到一张空的 TiDB 目标表中，其性能最高可达 `INSERT INTO ... SELECT` 的 8 倍，可以大幅缩短导入所需的时间。
     
@@ -284,9 +284,9 @@ TiDB 版本：8.0.0
 
     更多信息，请参考[用户文档](sql-statements/sql-statement-import-into.md)。        
     
-* TiDB Lightning 简化冲突处理策略，同时支持以 `replace` 方式处理冲突数据（实验特性） [#51036](https://github.com/pingcap/tidb/issues/51036) @[lyzx2001](https://github.com/lyzx2001) **tw@qiancai** <!--1684-->
+* TiDB Lightning 简化冲突处理策略，同时支持以 `replace` 方式处理冲突数据（实验特性）[#51036](https://github.com/pingcap/tidb/issues/51036) @[lyzx2001](https://github.com/lyzx2001) **tw@qiancai** <!--1684-->
 
-    在之前的版本中，TiDB Lightning 逻辑导入模式有[一套数据冲突处理策略](/tidb-lightning/tidb-lightning-logical-import-mode-usage.md#冲突数据检测)，物理导入模式时有[两套数据冲突处理策略](/tidb-lightning/tidb-lightning-physical-import-mode-usage.md#冲突数据检测)，不易理解和配置。
+    在之前的版本中，TiDB Lightning 逻辑导入模式有[一套数据冲突处理策略](/tidb-lightning/tidb-lightning-logical-import-mode-usage.md#冲突数据检测)，而物理导入模式有[两套数据冲突处理策略](/tidb-lightning/tidb-lightning-physical-import-mode-usage.md#冲突数据检测)，不易理解和配置。
     
     从 v8.0.0 开始，TiDB Lightning 废弃了物理导入模式下的[旧版冲突检测](/tidb-lightning/tidb-lightning-physical-import-mode-usage.md#旧版冲突检测从-v800-开始已被废弃)策略，支持通过 [`conflict.strategy`](tidb-lightning/tidb-lightning-configuration.md) 参数统一控制逻辑导入和物理导入模式的冲突检测策略，并简化了该参数的配置。此外，在物理导入模式下，当导入遇到主键或唯一键冲突的数据时，`replace` 策略支持保留最新的数据、覆盖旧的数据。
 
@@ -307,8 +307,9 @@ TiDB 版本：8.0.0
 > 以下为从 v7.6.0 升级至当前版本 (v8.0.0) 所需兼容性变更信息。如果从 v7.5.0 或之前版本升级到当前版本，可能也需要考虑和查看中间版本 Release Notes 中提到的兼容性变更信息。
 
 - 在安全增强模式 (SEM) 下禁止设置 [`require_secure_transport`](/system-variables.md#require_secure_transport-从-v610-版本开始引入) 为 `ON`，避免用户无法连接的问题 [#47665](https://github.com/pingcap/tidb/issues/47665) @[tiancaiamao](https://github.com/tiancaiamao)
-- DM 移除了固定的加解密 key，并支持设置自定义加解密 key。如果升级前[数据源配置](/dm/dm-source-configuration-file.md)和[迁移任务配置](/dm/task-configuration-file-full.md)里使用了加密密码，需参考 [DM 自定义加解密 key](/dm/dm-customized-secret-key.md) 里的升级步骤进行额外操作。[#9492](https://github.com/pingcap/tiflow/issues/9492) @[D3Hunter](https://github.com/D3Hunter)
+- DM 移除了固定的加解密 key，并支持设置自定义加解密 key。如果升级前[数据源配置](/dm/dm-source-configuration-file.md)和[迁移任务配置](/dm/task-configuration-file-full.md)里使用了加密密码，需参考 [DM 自定义加解密 key](/dm/dm-customized-secret-key.md) 中的升级步骤进行额外操作。[#9492](https://github.com/pingcap/tiflow/issues/9492) @[D3Hunter](https://github.com/D3Hunter)
 - 移除未 GA 但默认启用的 witness 相关调度器 [#7765](https://github.com/tikv/pd/pull/7765) @[rleungx](https://github.com/rleungx)
+
 ### 行为变更
 
 * 在之前版本中，启用添加索引加速功能 (`tidb_ddl_enable_fast_reorg = ON`) 后，编码后的索引键值 ingest 到 TiKV 的过程使用了固定的并发数 (`16`)，并未根据下游 TiKV 的处理能力进行动态调整。从 v8.0.0 开始，支持使用 [`tidb_ddl_reorg_worker_cnt`](/system-variables.md#tidb_ddl_reorg_worker_cnt-从-v800-版本开始引入) 设置并发数。该变量默认值为 `4`，相比之前的默认值 `16`，在 ingest 索引键值对时性能可能会有所下降。你可以根据集群的负载按需调整该参数。**tw@hfxsd** <!--无 FD-->
@@ -319,10 +320,10 @@ TiDB 版本：8.0.0
 
 ### 系统变量
 
-| 变量名  | 修改类型（包括新增/修改/删除/更名）    | 描述 |
+| 变量名  | 修改类型  | 描述 |
 |--------|------------------------------|------|
 | [`tidb_disable_txn_auto_retry`](/system-variables.md#tidb_disable_txn_auto_retry)  | 废弃 | 从 v8.0.0 开始，该系统变量被废弃，TiDB 不再支持乐观事务的自动重试。推荐使用[悲观事务模式](/pessimistic-transaction.md)。如果使用乐观事务模式发生冲突，请在应用里捕获错误并重试。 |
-| `tidb_ddl_version` | 更名 | 用于控制是否开启 TiDB DDL V2。为了使变量名称更直观，从 v8.0.0 起，该参数更名为 [`tidb_enable_fast_create_table`](/system-variables.md#tidb_enable_fast_create_table-从-v800-版本开始引入) 。 |
+| `tidb_ddl_version` | 更名 | 用于控制是否开启 TiDB DDL V2。为了使变量名称更直观，从 v8.0.0 起，该变量更名为 [`tidb_enable_fast_create_table`](/system-variables.md#tidb_enable_fast_create_table-从-v800-版本开始引入)。 |
 | [`tidb_enable_collect_execution_info`](/system-variables.md#tidb_enable_collect_execution_info) | 修改 | 增加控制是否维护[访问索引有关的统计信息](/information-schema/information-schema-tidb-index-usage.md)，默认值为 `ON`。 |
 | [`tidb_redact_log`](/system-variables.md#tidb_redact_log) | 修改 | 控制在记录 TiDB 日志和慢日志时如何处理 SAL 文本中的用户信息，可选值为 `OFF`、`ON`，以分别支持明文日志信息、屏蔽日志信息。为了提供更丰富的处理日志中用户信息的方式，v8.0.0 中增加了 `MARKER` 选项，支持标记日志信息。 |
 | [`div_precision_increment`](/system-variables.md#div_precision_increment-从-v800-版本开始引入) | 新增 | 用于指定使用运算符 `/` 执行除法操作时，结果增加的小数位数。该功能与 MySQL 保持一致。 |
@@ -330,10 +331,10 @@ TiDB 版本：8.0.0
 | [`tidb_enable_auto_analyze_priority_queue`](/system-variables.md#tidb_enable_auto_analyze_priority_queue-从-v800-版本开始引入) | 新增 | 控制是否启用优先队列来调度自动收集统计信息的任务。开启该变量后，TiDB 会优先收集那些最需要收集统计信息的表的统计信息。 |
 | [`tidb_enable_concurrent_hashagg_spill`](/system-variables.md#tidb_enable_concurrent_hashagg_spill-从-v800-版本开始引入) | 新增 | 控制 TiDB 是否支持并发 HashAgg 进行落盘。当该变量设置为 `ON` 时，并发 HashAgg 将支持落盘。该变量将在功能正式发布时废弃。 |
 | [`tidb_enable_fast_create_table`](/system-variables.md#tidb_enable_fast_create_table-从-v800-版本开始引入) | 新增 | 用于控制是否开启 [TiDB 加速建表](/accelerated-table-creation.md)。将该变量的值设置为 `ON` 可以开启该功能，设置为 `OFF` 关闭该功能。默认值为 `OFF`。开启后，将使用 [`CREATE TABLE`](/sql-statements/sql-statement-create-table.md) 加速建表。 |
-| [`tidb_load_binding_timeout`](/system-variables.md#tidb_load_binding_timeout-从-v800-版本开始引入) | 新增 | 控制加载 binding 的超时时间。当加载 binding 的执行时间超过该值时，会停止加载。 |
+| [`tidb_load_binding_timeout`](/system-variables.md#tidb_load_binding_timeout-从-v800-版本开始引入) | 新增 | 控制加载绑定的超时时间。当加载绑定的执行时间超过该值时，会停止加载。 |
 | [`tidb_low_resolution_tso_update_interval`](/system-variables.md#tidb_low_resolution_tso_update_interval-从-v800-版本开始引入) | 新增 | 设置更新 TiDB [缓存 timestamp](/system-variables.md#tidb_low_resolution_tso) 的更新时间间隔。 |
 | [`tidb_opt_use_invisible_indexes`](/system-variables.md#tidb_opt_use_invisible_indexes-从-v800-版本开始引入) | 新增 | 控制会话中是否允许优化器选择[不可见索引](/sql-statements/sql-statement-create-index.md#不可见索引)。当修改变量为 `ON` 时，对该会话中的查询，优化器可以选择不可见索引进行查询优化。|
-| [`tidb_schema_cache_size`](/system-variables.md#tidb_schema_cache_size-从-v800-版本开始引入)  |  新增 |  设置缓存 schema 信息可以使用的内存上限，避免占用过多的内存。开启该功能后，将使用 LRU 算法来缓存所需的表，有效减小 schema 信息占用的内存。    |
+| [`tidb_schema_cache_size`](/system-variables.md#tidb_schema_cache_size-从-v800-版本开始引入)  |  新增 |  设置缓存 schema 信息可以使用的内存上限，避免占用过多的内存。开启该功能后，将使用 LRU 算法来缓存所需的表，有效减少 schema 信息占用的内存。    |
 
 ### 配置文件参数
 
@@ -347,8 +348,8 @@ TiDB 版本：8.0.0
 | TiKV | [`log-backup.initial-scan-rate-limit`](/system-variables.md#initial-scan-rate-limit-从-v620-版本开始引入) | 修改 | 增加了最小值为 `1MiB` 的限制。 |
 | TiKV | [`raftstore.store-io-pool-size`](/tikv-configuration-file.md#store-io-pool-size-从-v530-版本开始引入) | 修改 | 为了提升 TiKV 性能，该参数默认值从 `0` 修改为 `1`，表示 StoreWriter 线程池的大小默认为 `1`。|
 | TiKV | [`rocksdb.defaultcf.titan.blob-cache-size`](/tikv-configuration-file.md#blob-cache-size) | 修改 | 从 v8.0.0 开始，TiKV 引入了 `shared-blob-cache` 配置项并默认开启，因此无需再单独设置 `blob-cache-size`。只有当 `shared-blob-cache` 设置为 `false` 时，`blob-cache-size` 的设置才生效。|
-| TiKV | [`rocksdb.defaultcf.titan.shared-blob-cache`](/tikv-configuration-file.md#shared-blob-cache-tidb-从-v800-版本开始引入) | 新增 | 控制是否启用 Titan Blob 文件和 RocksDB Block 文件的共享缓存。默认值为 `true`。|
 | TiKV | [`security.encryption.master-key.vendor`](/encryption-at-rest.md#通过-kms-指定主密钥) | 修改 | 主密钥可选的服务商类型新增 `gcp`。 |
+| TiKV | [`rocksdb.defaultcf.titan.shared-blob-cache`](/tikv-configuration-file.md#shared-blob-cache-tidb-从-v800-版本开始引入) | 新增 | 控制是否启用 Titan Blob 文件和 RocksDB Block 文件的共享缓存。默认值为 `true`。|
 | TiKV | [`security.encryption.master-key.gcp.credential-file-path`](/encryption-at-rest.md#通过-kms-指定主密钥) | 新增 | 在 `security.encryption.master-key.vendor` 为 `gcp` 时，用于指定 Google Cloud 认证凭证文件的路径。|
 | TiDB Lightning  | [`tikv-importer.duplicate-resolution`](/tidb-lightning/tidb-lightning-physical-import-mode-usage.md#旧版冲突检测从-v800-开始已被废弃)  | 废弃 | 用于在物理导入模式下设置是否检测和解决唯一键冲突的记录。从 v8.0.0 开始使用参数 [`conflict.strategy`](/tidb-lightning/tidb-lightning-configuration.md#tidb-lightning-任务配置) 替代。 |
 | TiDB Lightning  | [`conflict.precheck-conflict-before-import`](/tidb-lightning/tidb-lightning-configuration.md#tidb-lightning-任务配置)  | 新增 | 控制是否开启前置冲突检测，即导入数据到 TiDB 前，先检查所需导入的数据是否存在冲突。该参数默认值为 `false`，表示仅开启后置冲突检测。仅当导入模式为物理导入模式 (`tikv-importer.backend = "local"`) 时可以使用该参数。 |
@@ -367,7 +368,7 @@ TiDB 版本：8.0.0
 
 * 从 v8.0.0 开始，[`tidb_disable_txn_auto_retry`](/system-variables.md#tidb_disable_txn_auto_retry) 变量被废弃。废弃后，TiDB 不再支持乐观事务的自动重试。作为替代，当使用乐观事务模式发生冲突时，请在应用里捕获错误并重试，或改用[悲观事务模式](/pessimistic-transaction.md)。**tw@lilin90** <!--1671-->
 * 从 v8.0.0 开始，TiDB 不再支持 TLSv1.0 和 TLSv1.1 协议。请升级 TLS 至 TLSv1.2 或 TLSv1.3。
-* [执行计划绑定的自动演进](/sql-plan-management.md#自动演进绑定-baseline-evolution) 计划在后续版本被重新设计，相关的变量和行为会发生变化。
+* 计划在后续版本重新设计[执行计划绑定的自动演进](/sql-plan-management.md#自动演进绑定-baseline-evolution)，相关的变量和行为会发生变化。
 
 ## 改进提升
 
@@ -378,10 +379,10 @@ TiDB 版本：8.0.0
     - 提升 `Sort` 算子的数据落盘性能 [#47733](https://github.com/pingcap/tidb/issues/47733) @[xzhangxian1008](https://github.com/xzhangxian1008) **tw@Oreoxmt** <!--1609-->
     - 优化数据落盘功能的退出机制，支持在数据落盘过程中取消查询 [#50511](https://github.com/pingcap/tidb/issues/50511) @[wshwsh12](https://github.com/wshwsh12) **tw@qiancai** <!--1635-->
     - 在处理包含多个等值条件的表连接查询时，支持使用匹配部分条件的索引构造 Index Join [#47233](https://github.com/pingcap/tidb/issues/47233) @[winoros](https://github.com/winoros) **tw@Oreoxmt** <!--1601-->
-    - 增强 Index Merge 能力，使其能识别查询中的排序需求，并能选中满足排序要求的索引 [#48359](https://github.com/pingcap/tidb/issues/48359) @[AilinKid](https://github.com/AilinKid
+    - 增强 Index Merge 能力，使其能识别查询中的排序需求，并能选中满足排序要求的索引 [#48359](https://github.com/pingcap/tidb/issues/48359) @[AilinKid](https://github.com/AilinKid)
     - 当 `Apply` 算子没有并发执行时，支持通过执行 `SHOW WARNINGS` 查看阻碍并发的算子名 [#50256](https://github.com/pingcap/tidb/issues/50256) @[hawkingrei](https://github.com/hawkingrei)
     - 优化点查的索引选择，在所有的索引都支持点查时选择其中性能最优的一个用于查询 [#50184](https://github.com/pingcap/tidb/issues/50184) @[elsa0520](https://github.com/elsa0520)
-    - 将统计信息同步加载任务的优先级暂时调整为 high，避免在 TiKV 高负载时同步加载任务大面积超时，从而导致统计信息无法加载 [#50332](https://github.com/pingcap/tidb/issues/50332) @[winoros](https://github.com/winoros)
+    - 将统计信息同步加载任务的优先级暂时调整为 `High`，避免在 TiKV 高负载时同步加载任务大面积超时，从而导致统计信息无法加载 [#50332](https://github.com/pingcap/tidb/issues/50332) @[winoros](https://github.com/winoros)
     - 在 `PREPARE` 语句无法命中执行计划缓存时，支持通过执行 `SHOW WARNINGS` 查看原因 [#50407](https://github.com/pingcap/tidb/issues/50407) @[hawkingrei](https://github.com/hawkingrei)
     - 提升当多次更新同一行的数据时查询估算信息的准确性 [#47523](https://github.com/pingcap/tidb/issues/47523) @[terry1purcell](https://github.com/terry1purcell)
     - Index Merge 支持在 `AND` 谓词中内嵌多值索引和 `OR` 操作符 [#51778](https://github.com/pingcap/tidb/issues/51778) @[time-and-fate](https://github.com/time-and-fate)
@@ -493,7 +494,7 @@ TiDB 版本：8.0.0
     - (dup): release-7.5.1.md > 错误修复> TiDB - 修复使用聚合函数分组计算时可能报错 `Can't find column ...` 的问题 [#50926](https://github.com/pingcap/tidb/issues/50926) @[qw4990](https://github.com/qw4990)
     - (dup): release-7.1.4.md > 错误修复> TiDB - 修复当 `CREATE TABLE` 语句中包含特定分区或约束的表达式时，表名变更等 DDL 操作会卡住的问题 [#50972](https://github.com/pingcap/tidb/issues/50972) @[lcwangchao](https://github.com/lcwangchao)
     - (dup): release-7.1.4.md > 错误修复> TiDB - 修复 Grafana 监控指标 `tidb_statistics_auto_analyze_total` 没有显示为整数的问题 [#51051](https://github.com/pingcap/tidb/issues/51051) @[hawkingrei](https://github.com/hawkingrei)
-    - (dup): release-7.1.4.md > 错误修复> TiDB - 修复修改变量 `tidb_server_memory_limit` 后，`tidb_gogc_tuner_threshold` 未进行相应调整的问题 [#48180](https://github.com/pingcap/tidb/issues/48180) @[hawkingrei]
+    - (dup): release-7.1.4.md > 错误修复> TiDB - 修复修改变量 `tidb_server_memory_limit` 后，`tidb_gogc_tuner_threshold` 未进行相应调整的问题 [#48180](https://github.com/pingcap/tidb/issues/48180) @[hawkingrei](https://github.com/hawkingrei)
     - (dup): release-7.1.4.md > 错误修复> TiDB - 修复当查询语句涉及 JOIN 操作时可能出现 `index out of range` 报错的问题 [#42588](https://github.com/pingcap/tidb/issues/42588) @[AilinKid](https://github.com/AilinKid)
     - (dup): release-7.1.4.md > 错误修复> TiDB - 修复当列的默认值被删除时，获取该列的默认值会报错的问题 [#50043](https://github.com/pingcap/tidb/issues/50043) [#51324](https://github.com/pingcap/tidb/issues/51324) @[crazycs520](https://github.com/crazycs520)
     - 修复 TiFlash 延迟物化在处理关联列时结果可能出错的问题 [#49241](https://github.com/pingcap/tidb/issues/49241) [#51204](https://github.com/pingcap/tidb/issues/51204) @[Lloyd-Pottiger](https://github.com/Lloyd-Pottiger)
@@ -513,7 +514,7 @@ TiDB 版本：8.0.0
     - (dup): release-7.5.1.md > 错误修复> PD - 修复 PD 监控项 `learner-peer-count` 在发生 Leader 切换后未同步旧监控值的问题 [#7728](https://github.com/tikv/pd/issues/7728) @[CabinfeverB](https://github.com/CabinfeverB)
     - (dup): release-7.1.4.md > 错误修复> PD - 修复 `watch etcd` 没有正确关闭导致内存泄露的问题 [#7807](https://github.com/tikv/pd/issues/7807) @[rleungx](https://github.com/rleungx)
     - (dup): release-7.1.4.md > 修复 TSO 部分日志没有打印报错原因的问题 [#7496](https://github.com/tikv/pd/issues/7496) @[CabinfeverB](https://github.com/CabinfeverB)
-    - 修复重启后 PD 部分监控出现非预期的负数监控问题 [#4489](https://github.com/tikv/pd/issues/4489) @[lhy1024](https://github.com/lhy1024)
+    - 修复重启后 PD 部分监控出现非预期负数的问题 [#4489](https://github.com/tikv/pd/issues/4489) @[lhy1024](https://github.com/lhy1024)
     - 修复 Leader 租约的过期时间晚于日志时间的问题 [#7700](https://github.com/tikv/pd/issues/7700) @[CabinfeverB](https://github.com/CabinfeverB)
     - 修复 PD 客户端 TLS 相关的问题 [#7900](https://github.com/tikv/pd/issues/7900) [#7902](https://github.com/tikv/pd/issues/7902) [#7916](https://github.com/tikv/pd/issues/7916) @[CabinfeverB](https://github.com/CabinfeverB)
     - 修复 Goroutine 由于没有正确关闭而泄露的问题 [#7782](https://github.com/tikv/pd/issues/7782) @[HuSharp](https://github.com/HuSharp)
