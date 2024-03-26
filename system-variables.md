@@ -1453,9 +1453,9 @@ mysql> SELECT job_info FROM mysql.analyze_jobs ORDER BY end_time DESC LIMIT 1;
 
 ### `tidb_cloud_storage_uri` <span class="version-mark">从 v7.4.0 版本开始引入</span>
 
-> **警告：**
+> **注意：**
 >
-> 该变量目前为实验特性，不建议在生产环境中使用。该功能可能会在未事先通知的情况下发生变化或删除。如果发现 bug，请在 GitHub 上提 [issue](https://github.com/pingcap/tidb/issues) 反馈。
+> 目前，[全局排序](/tidb-global-sort.md)会使用大量 TiDB 节点的计算与内存资源。对于在线增加索引等同时有用户业务在运行的场景，建议为集群添加新的 TiDB 节点并设置这些 TiDB 节点的 [`tidb_service_scope`](/system-variables.md#tidb_service_scope-从-v740-版本开始引入) 变量为 `"background"`。这样分布式框架就会将任务调度到这些节点上，将工作负载与其他 TiDB 节点隔离，以减少执行后端任务（如 `ADD INDEX` 和 `IMPORT INTO`）对用户业务的影响。
 
 - 作用域：GLOBAL
 - 是否持久化到集群：是
@@ -1520,7 +1520,7 @@ mysql> SELECT job_info FROM mysql.analyze_jobs ORDER BY end_time DESC LIMIT 1;
 - 单位：线程
 - 这个变量用来设置 DDL 操作 `re-organize` 阶段的并发度。
 
-### `tidb_ddl_version` <span class="version-mark">从 v7.6.0 版本开始引入</span>
+### `tidb_enable_fast_create_table` <span class="version-mark">从 v8.0.0 版本开始引入</span>
 
 > **警告：**
 >
@@ -1529,10 +1529,11 @@ mysql> SELECT job_info FROM mysql.analyze_jobs ORDER BY end_time DESC LIMIT 1;
 - 作用域：GLOBAL
 - 是否持久化到集群：是
 - 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：否
-- 默认值：`1`
-- 取值范围：`1` 或 `2`
-- 这个变量用于控制是否开启 [TiDB DDL V2](/ddl-v2.md)。将该变量的值设置为 `2` 可以开启该功能，设置为 `1` 可以关闭该功能。默认值为 `1`。开启后，将使用 TiDB DDL V2 执行 DDL 语句。
-- 从 TiDB v7.6.0 开始，支持加速建表 [`CREATE TABLE`](/sql-statements/sql-statement-create-table.md)。
+- 类型：布尔型
+- 默认值：`OFF`
+- 这个变量用于控制是否开启 [TiDB 加速建表](/accelerated-table-creation.md)。
+- 从 TiDB v8.0.0 开始，支持使用 `tidb_enable_fast_create_table` 加速建表 [`CREATE TABLE`](/sql-statements/sql-statement-create-table.md)。
+- 该变量是由 v7.6.0 中引入的 [`tidb_ddl_version`](https://docs.pingcap.com/zh/tidb/v7.6/system-variables#tidb_ddl_version-从-v760-版本开始引入) 更名而来。从 v8.0.0 开始，`tidb_ddl_version` 不再生效。
 
 ### `tidb_default_string_match_selectivity` <span class="version-mark">从 v6.2.0 版本开始引入</span>
 
@@ -1602,6 +1603,31 @@ mysql> SELECT job_info FROM mysql.analyze_jobs ORDER BY end_time DESC LIMIT 1;
 > **注意：**
 >
 > 自 v7.0.0 起，`tidb_dml_batch_size` 对 [`LOAD DATA` 语句](/sql-statements/sql-statement-load-data.md)不再生效。
+
+### `tidb_dml_type` <span class="version-mark">从 v8.0.0 版本开始引入</span>
+
+> **警告：**
+>
+> 批量 DML 执行方式 (`tidb_dml_type = "bulk"`) 目前为实验特性，不建议在生产环境中使用。该功能可能会在未事先通知的情况下发生变化或删除。如果发现 bug，请在 GitHub 上提 [issue](https://github.com/pingcap/tidb/issues) 反馈。使用批量 DML 执行方式执行超大事务时，可能会影响 TiCDC、TiFlash 和 TiKV 的 resolved-ts 模块的内存使用和执行效率，可能引发 OOM 问题。因此，不建议在启用这些组件和功能时使用。
+
+- 作用域：SESSION
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：是
+- 类型：字符串
+- 默认值：`"standard"`
+- 可选值：`"standard"`、`"bulk"`
+- 该变量用来设置 DML 语句的执行方式。
+    - `"standard"` 表示使用标准的 DML 执行方式，TiDB 事务在提交前缓存在内存中。适用于处理高并发且可能存在冲突的事务场景，为默认推荐使用的执行方式。
+    - `"bulk"` 表示使用批量 DML 执行方式，适合于处理因大量数据写入导致 TiDB 内存使用过多的情况。
+        - 在 TiDB 事务执行过程中，数据不是完全缓存在 TiDB 内存中，而是持续写入 TiKV，以减少内存的占用，同时平滑写入压力。
+        - 只有 `INSERT`、`UPDATE`、`REPLACE` 和 `DELETE` 语句受 `"bulk"` 方式的影响。
+        - `"bulk"` 方式仅适用于大批量**无冲突数据写入**的场景，不能高效处理写入冲突的场景，写写冲突可能会导致大批量事务提交失败并被回滚。
+        - `"bulk"` 方式只对自动提交 (auto-commit) 的语句生效。当设置为 `"bulk"` 时，[`pessimistic-auto-commit`](/tidb-configuration-file.md#pessimistic-auto-commit) 配置项的效果等同于设置为 `false`。
+        - 使用 `"bulk"` 方式执行语句时，需要确保在语句执行过程中保持[元数据锁](/metadata-lock.md)处于开启状态。
+        - `"bulk"` 方式不可以在[临时表](/temporary-tables.md)、[缓存表](/cached-tables.md)上使用。
+        - `"bulk"` 方式不可以在开启外键约束检查时 (`foreign_key_checks = ON`) 对包含外键的表和被外键引用的表使用。
+        - 当遇到不支持或不兼容的情况时，`"bulk"` 方式会回退到 `"standard"` 方式执行，并返回一条警告信息。你可以通过 [`tidb_last_txn_info`](#tidb_last_txn_info-从-v409-版本开始引入) 查看 `pipelined` 字段，如果为 `true` 则表示是使用 `"bulk"` 方式执行。
+        - 以 `"bulk"` 方式执行超大事务时，事务耗时可能较长。对于这种模式的事务，其事务锁的最大 TTL 为 [`max-txn-ttl`](/tidb-configuration-file.md#max-txn-ttl) 与 24 小时中的较大值。此外，当事务执行时间超过 [`tidb_gc_max_wait_time`](#tidb_gc_max_wait_time-从-v610-版本开始引入) 设定值后，GC 可能会强制回滚事务，导致事务失败。
+        - `"bulk"` 方式由 Pipelined DML 特性实现，详细设计和 GitHub issue 可见 [Pipelined DML](https://github.com/pingcap/tidb/blob/master/docs/design/2024-01-09-pipelined-DML.md) 和 [#50215](https://github.com/pingcap/tidb/issues/50215)。
 
 ### `tidb_enable_1pc` <span class="version-mark">从 v5.0 版本开始引入</span>
 
@@ -1752,6 +1778,19 @@ mysql> SELECT job_info FROM mysql.analyze_jobs ORDER BY end_time DESC LIMIT 1;
 - 类型：布尔型
 - 默认值：`OFF`
 - 这个变量用于控制是否开启 TiDB 对 `PREDICATE COLUMNS` 的收集。关闭该变量后，之前收集的 `PREDICATE COLUMNS` 会被清除。详情见[收集部分列的统计信息](/statistics.md#收集部分列的统计信息)。
+
+### `tidb_enable_concurrent_hashagg_spill` <span class="version-mark">从 v8.0.0 版本开始引入</span>
+
+> **警告：**
+>
+> 该变量控制的功能为实验特性，不建议在生产环境上使用。如果发现 bug，请在 GitHub 上提 [issue](https://github.com/pingcap/tidb/issues) 反馈。
+
+- 作用域：SESSION | GLOBAL
+- 是否持久化到集群：是
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：否
+- 类型：布尔型
+- 默认值：`ON`
+- 这个变量用来控制 TiDB 是否支持并发 HashAgg 进行落盘。当该变量设置为 `ON` 时，并发 HashAgg 将支持落盘。该变量将在功能正式发布时废弃。
 
 ### `tidb_enable_ddl` <span class="version-mark">从 v6.3.0 版本开始引入</span>
 
@@ -4190,10 +4229,17 @@ EXPLAIN FORMAT='brief' SELECT COUNT(1) FROM t WHERE a = 1 AND b IS NOT NULL;
 - 作用域：SESSION | GLOBAL
 - 是否持久化到集群：是
 - 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：否
-- 类型：布尔型
+- 类型：枚举型
 - 默认值：`OFF`
+- 可选值：`OFF`、`ON`、`MARKER`
 - 这个变量用于控制在记录 TiDB 日志和慢日志时，是否将 SQL 中的用户信息遮蔽。
-- 将该变量设置为 `1` 即开启后，假设执行的 SQL 为 `insert into t values (1,2)`，在日志中记录的 SQL 会是 `insert into t values (?,?)`，即用户输入的信息被遮蔽。
+- 默认值为 `OFF`，即对用户输入的信息不做任何处理。
+- 将该变量设置为 `ON` 后，用户输入的信息被遮蔽。假设执行的 SQL 为 `INSERT INTO t VALUES (1,2)`，则日志中记录的 SQL 语句为 `INSERT INTO t VALUES (?,?)`。
+- 将该变量设置为 `MARKER` 后，用户输入的信息被标记符号 `‹ ›` 包裹。假设执行的 SQL 为 `INSERT INTO t VALUES (1,2)`，则日志中记录的 SQL 语句为 `INSERT INTO t VALUES (‹1›,‹2›)`。输入信息中的 `‹` 会转义成 `‹‹`，`›` 会转义成 `››`。基于标记后的日志，你可以在展示日志时决定是否对被标记信息进行脱敏处理。
+
+> **警告：**
+>
+> `MARKER` 选项目前为实验特性，不建议在生产环境中使用。该功能可能会在未事先通知的情况下发生变化或删除。如果发现 bug，请在 GitHub 上提 [issue](https://github.com/pingcap/tidb/issues) 反馈。
 
 ### `tidb_regard_null_as_point` <span class="version-mark">从 v5.4.0 版本开始引入</span>
 
@@ -4287,6 +4333,20 @@ EXPLAIN FORMAT='brief' SELECT COUNT(1) FROM t WHERE a = 1 AND b IS NOT NULL;
 - 默认值：`OFF`
 - TiDB 默认会在建表时为新表分裂 Region。开启该变量后，会在建表语句执行时，同步打散刚分裂出的 Region。适用于批量建表后紧接着批量写入数据，能让刚分裂出的 Region 先在 TiKV 分散而不用等待 PD 进行调度。为了保证后续批量写入数据的稳定性，建表语句会等待打散 Region 完成后再返回建表成功，建表语句执行时间会是该变量关闭时的数倍。
 - 如果建表时设置了 `SHARD_ROW_ID_BITS` 和 `PRE_SPLIT_REGIONS`，建表成功后会均匀切分出指定数量的 Region。
+
+### `tidb_schema_cache_size` <span class="version-mark">从 v8.0.0 版本开始引入</span>
+
+> **警告：**
+>
+> 该变量目前为实验特性，不建议在生产环境中使用。该功能可能会在未事先通知的情况下发生变化或删除。如果发现 bug，请在 GitHub 上提 [issue](https://github.com/pingcap/tidb/issues) 反馈。
+
+- 作用域：GLOBAL
+- 是否持久化到集群：是
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：否
+- 类型：整数型
+- 默认值：`0`
+- 范围：`[0, 9223372036854775807]`
+- 这个变量用来控制 TiDB schema 信息缓存的大小。单位为 byte。默认值为 `0`，表示不打开缓存限制功能。开启该功能后，TiDB 将使用该变量的值做为可用的内存上限，并使用 Least Recently Used (LRU) 算法缓存所需的表，有效降低 schema 信息占用的内存。
 
 ### `tidb_schema_version_cache_limit` <span class="version-mark">从 v7.4.0 版本开始引入</span>
 

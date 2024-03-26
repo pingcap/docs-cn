@@ -130,7 +130,7 @@ aliases: ['/docs-cn/dev/basic-features/','/docs-cn/dev/experimental-features-4.0
 | [元数据锁](/metadata-lock.md) |  Y  |  Y  | Y | Y | N | N | N | N | N | N | N |
 | [`FLASHBACK CLUSTER`](/sql-statements/sql-statement-flashback-cluster.md) |  Y  |  Y  | Y | Y | N | N | N | N | N | N | N |
 | [暂停](/sql-statements/sql-statement-admin-pause-ddl.md)/[恢复](/sql-statements/sql-statement-admin-resume-ddl.md) DDL | Y | Y | N | N | N | N | N | N | N | N | N |
-| [TiDB DDL V2 架构](/ddl-v2.md) | E | N | N | N | N | N | N | N | N | N | N |
+| [TiDB 加速建表](/accelerated-table-creation.md) | N | N | N | N | N | N | N | N | N | N | N |
 
 ## 事务
 

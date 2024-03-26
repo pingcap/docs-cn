@@ -989,7 +989,7 @@ raftstore 相关的配置项。
 ### `store-io-pool-size` <span class="version-mark">从 v5.3.0 版本开始引入</span>
 
 + 表示处理 Raft I/O 任务的线程池中线程的数量，即 StoreWriter 线程池的大小。调整该线程池的大小时，请参考 [TiKV 线程池调优](/tune-tikv-thread-performance.md#tikv-线程池调优)。
-+ 默认值：0
++ 默认值：1（对于 TiDB v8.0.0 之前的版本，默认值为 0）
 + 最小值：0
 
 ### `future-poll-size`
@@ -1661,8 +1661,13 @@ rocksdb defaultcf titan 相关的配置项。
 + Blob 文件的 cache 大小。
 + 默认值：0GiB
 + 最小值：0
-+ 推荐值：建议在数据库稳定运行后，根据监控把 RocksDB block cache (`storage.block-cache.capacity`) 设置为能刚好维持接近 95% 以上的 Block Cache 命中率，`blob-cache-size` 设置为 `内存大小 * 50% 再减去 block cache 的大小`。这是为了保证 block cache 足够缓存整个 RocksDB 的前提下，blob cache 尽量大。但 Blob cache 的值不应该设置过大，否则会导致 block cache 命中率大幅下降。
++ 推荐值：0。从 v8.0.0 开始，TiKV 引入了 `shared-blob-cache` 配置项并默认开启，因此无需再单独设置 `blob-cache-size`。只有当 `shared-blob-cache` 设置为 `false` 时，`blob-cache-size` 的设置才生效。
 + 单位：KiB|MiB|GiB
+
+### `shared-blob-cache`（从 v8.0.0 版本开始引入）
+
++ 是否启用 Titan Blob 文件和 RocksDB Block 文件的共享缓存
++ 默认值：`true`。当开启共享缓存时，Block 文件具有更高的优先级，TiKV 将优先满足 Block 文件的缓存需求，然后将剩余的缓存用于 Blob 文件。
 
 ### `min-gc-batch-size`
 
