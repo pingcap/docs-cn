@@ -1,7 +1,6 @@
 ---
 title: 从 SQL 文件迁移数据到 TiDB
 summary: 介绍如何使用 TiDB Lightning 从 MySQL SQL 文件迁移数据到 TiDB。
-aliases: ['/docs-cn/dev/migrate-from-mysql-mydumper-files/','/zh/tidb/dev/migrate-from-mysql-mydumper-files/','/zh/tidb/dev/migrate-from-mysql-dumpling-files/']
 ---
 
 # 从 SQL 文件迁移数据到 TiDB

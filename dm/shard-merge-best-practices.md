@@ -1,7 +1,6 @@
 ---
 title: 分表合并数据迁移最佳实践
 summary: 使用 DM 对分库分表进行合并迁移时的最佳实践。
-aliases: ['/docs-cn/tidb-data-migration/dev/shard-merge-best-practices/']
 ---
 
 # 分表合并数据迁移最佳实践

@@ -1,7 +1,6 @@
 ---
 title: 静态加密
 summary: 了解如何启用静态加密功能保护敏感数据。
-aliases: ['/docs-cn/dev/encryption-at-rest/']
 ---
 
 # 静态加密

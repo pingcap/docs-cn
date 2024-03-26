@@ -1,7 +1,6 @@
 ---
 title: 删除数据
 summary: 删除数据、批量删除数据的方法、最佳实践及例子。
-aliases: ['/zh/tidb/dev/delete-data']
 ---
 
 # 删除数据
