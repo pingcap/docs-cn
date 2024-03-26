@@ -1,7 +1,6 @@
 ---
 title: 提升 TiDB 建表性能
 summary: 介绍 TiDB 加速建表中的概念、原理、实现和影响。
-aliases: ['/zh/tidb/dev/ddl-v2/']
 ---
 
 # 提升 TiDB 建表性能

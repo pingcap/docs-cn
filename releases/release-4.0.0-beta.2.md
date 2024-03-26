@@ -1,6 +1,5 @@
 ---
 title: TiDB 4.0.0 Beta.2 Release Notes
-aliases: ['/docs-cn/dev/releases/release-4.0.0-beta.2/','/docs-cn/dev/releases/4.0.0-beta.2/']
 ---
 
 # TiDB 4.0.0 Beta.2 Release Notes
