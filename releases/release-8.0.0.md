@@ -36,7 +36,7 @@ TiDB 版本：8.0.0
     <td>通过该功能，BR 可以充分利用集群的规模优势，使 TiKV 集群中的所有节点都能参与到数据恢复的准备阶段，从而显著提升大规模集群中大数据集的恢复速度。实际测试表明，在恢复较慢的情况下，该功能可将恢复速度提升大约 3 倍。</td>
   </tr>
   <tr>
-    <td>增强在有大量表时缓存 schema 信息的稳定性**tw@hfxsd** <!--1691--></td>
+    <td>增强在有大量表时缓存 schema 信息的稳定性</td>
     <td>对于使用 TiDB 作为多租户应用程序记录系统的 SaaS 公司，经常需要存储大量的表。在以前的版本中，尽管支持处理百万级或更大数量的表，但可能会影响用户体验。TiDB v8.0.0 通过以下增强功能改善了这一问题：
   <ul>
     <li>引入新的 <a href="https://docs.pingcap.com/zh/tidb/v8.0/system-variables#tidb_schema_cache_size-new-in-v800">schema 缓存系统</a>，为表元数据提供了懒加载的 LRU (Least Recently Used) 缓存，并更有效地管理 schema 版本变更。</li>
