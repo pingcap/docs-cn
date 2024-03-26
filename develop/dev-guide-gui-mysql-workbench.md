@@ -137,7 +137,7 @@ TiDB 是一个兼容 MySQL 的数据库。[MySQL Workbench](https://www.mysql.co
 </div>
 </SimpleTab>
 
-## FAQs
+## 常见问题
 
 ### 如何处理连接超时错误 "Error Code: 2013. Lost connection to MySQL server during query"？
 
