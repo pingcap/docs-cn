@@ -78,7 +78,7 @@ cd tidb-java-springboot-jpa-quickstart
 6. 复制并粘贴对应连接字符串至 `env.sh` 中。需更改部分示例结果如下：
 
     ```shell
-    export TIDB_HOST='{host}'  # e.g. gateway01.ap-northeast-1.prod.aws.tidbcloud.com
+    export TIDB_HOST='{host}'  # e.g. xxxxxx.aws.tidbcloud.com
     export TIDB_PORT='4000'
     export TIDB_USER='{user}'  # e.g. xxxxxx.root
     export TIDB_PASSWORD='{password}'
@@ -113,9 +113,9 @@ cd tidb-java-springboot-jpa-quickstart
 5. 复制并粘贴对应的连接字符串至 `env.sh` 中。需更改部分示例结果如下：
 
     ```shell
-    export TIDB_HOST='{host}'  # e.g. tidb.xxxx.clusters.tidb-cloud.com
+    export TIDB_HOST='{host}'  # e.g. xxxxxx.aws.tidbcloud.com
     export TIDB_PORT='4000'
-    export TIDB_USER='{user}'  # e.g. root
+    export TIDB_USER='{user}'  # e.g. xxxxxx.root
     export TIDB_PASSWORD='{password}'
     export TIDB_DB_NAME='test'
     export USE_SSL='false'
@@ -138,9 +138,9 @@ cd tidb-java-springboot-jpa-quickstart
 2. 复制并粘贴对应 TiDB 的连接字符串至 `env.sh` 中。需更改部分示例结果如下：
 
     ```shell
-    export TIDB_HOST='{host}'
+    export TIDB_HOST='{host}'  # e.g. xxxxxx.aws.tidbcloud.com
     export TIDB_PORT='4000'
-    export TIDB_USER='root'
+    export TIDB_USER='root'  # e.g. xxxxxx.root
     export TIDB_PASSWORD='{password}'
     export TIDB_DB_NAME='test'
     export USE_SSL='false'
@@ -200,9 +200,18 @@ spring:
 - `TIDB_USER`: `"root"`
 - `TIDB_PASSWORD`: `""`
 
-### 数据管理：`@Repository`
+### 数据管理
 
-Spring Data JPA 通过 `@Repository` 接口来管理数据。你需要继承 `JpaRepository` 接口，以使用其提供的增删改查函数。
+Spring Data JPA 通过 `@Entity` 注册数据实体，并绑定数据库的表。
+
+```java
+@Entity
+@Table(name = "player_jpa")
+public class PlayerBean {
+}
+```
+
+`PlayerRepository` 通过继承 `JpaRepository` 接口，由 `JpaRepositoryFactoryBean` 为其自动注册对应的 Repository Bean。同时，`JpaRepository` 接口的默认实现类 `SimpleJpaRepository` 提供了增删改查函数的具体实现。
 
 ```java
 @Repository

@@ -16,7 +16,7 @@ cdc cli changefeed create --server=http://10.0.10.25:8300 --sink-uri="mysql://ro
 ```shell
 Create changefeed successfully!
 ID: simple-replication-task
-Info: {"upstream_id":7178706266519722477,"namespace":"default","id":"simple-replication-task","sink_uri":"mysql://root:xxxxx@127.0.0.1:4000/?time-zone=","create_time":"2023-11-28T15:05:46.679218+08:00","start_ts":438156275634929669,"engine":"unified","config":{"case_sensitive":false,"enable_old_value":true,"force_replicate":false,"ignore_ineligible_table":false,"check_gc_safe_point":true,"enable_sync_point":true,"bdr_mode":false,"sync_point_interval":30000000000,"sync_point_retention":3600000000000,"filter":{"rules":["test.*"],"event_filters":null},"mounter":{"worker_num":16},"sink":{"protocol":"","schema_registry":"","csv":{"delimiter":",","quote":"\"","null":"\\N","include_commit_ts":false},"column_selectors":null,"transaction_atomicity":"none","encoder_concurrency":16,"terminator":"\r\n","date_separator":"none","enable_partition_separator":false},"consistent":{"level":"none","max_log_size":64,"flush_interval":2000,"storage":""}},"state":"normal","creator_version":"v7.5.0"}
+Info: {"upstream_id":7178706266519722477,"namespace":"default","id":"simple-replication-task","sink_uri":"mysql://root:xxxxx@127.0.0.1:4000/?time-zone=","create_time":"2024-01-25T15:05:46.679218+08:00","start_ts":438156275634929669,"engine":"unified","config":{"case_sensitive":false,"enable_old_value":true,"force_replicate":false,"ignore_ineligible_table":false,"check_gc_safe_point":true,"enable_sync_point":true,"bdr_mode":false,"sync_point_interval":30000000000,"sync_point_retention":3600000000000,"filter":{"rules":["test.*"],"event_filters":null},"mounter":{"worker_num":16},"sink":{"protocol":"","schema_registry":"","csv":{"delimiter":",","quote":"\"","null":"\\N","include_commit_ts":false},"column_selectors":null,"transaction_atomicity":"none","encoder_concurrency":16,"terminator":"\r\n","date_separator":"none","enable_partition_separator":false},"consistent":{"level":"none","max_log_size":64,"flush_interval":2000,"storage":""}},"state":"normal","creator_version":"v7.6.0"}
 ```
 
 - `--changefeed-id`：同步任务的 ID，格式需要符合正则表达式 `^[a-zA-Z0-9]+(\-[a-zA-Z0-9]+)*$`。如果不指定该 ID，TiCDC 会自动生成一个 UUID（version 4 格式）作为 ID。
@@ -65,6 +65,11 @@ case-sensitive = false
 # 从 v6.5.6、v7.1.3、v7.5.0 起引入，用于设置解析 DDL 时使用的 SQL 模式，多个模式之间用逗号分隔
 # 默认值和 TiDB 的默认 SQL 模式一致
 # sql-mode = "ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION"
+
+# 默认值为 false，表示不处于 BDR 模式。
+# 如果要使用 TiCDC 搭建 BDR 集群，需要将该参数设置为 true，同时要将 TiDB 集群设置为 BDR 模式。
+# 详情请参考：https://docs.pingcap.com/zh/tidb/stable/ticdc-bidirectional-replication#ticdc-双向复制
+# bdr-mode = false
 
 [mounter]
 # mounter 解码 KV 数据的线程数，默认值为 16
@@ -137,7 +142,7 @@ enable-table-across-nodes = false
 # ]
 
 # protocol 用于指定编码消息时使用的格式协议
-# 当下游类型是 Kafka 时，支持 canal-json、avro 和 open-protocol。
+# 当下游类型是 Kafka 时，支持 canal-json、avro、debezium、open-protocol、simple。
 # 当下游类型是 Pulsar 时，仅支持 canal-json 协议。
 # 当下游类型是存储服务时，目前仅支持 canal-json、csv 两种协议。
 # 注意：该参数只有当下游为 Kafka、Pulsar，或存储服务时，才会生效。
@@ -161,7 +166,7 @@ delete-only-output-handle-key-columns = false
 
 # 是否开启 Kafka Sink V2。Kafka Sink V2 内部使用 kafka-go 实现。
 # 默认值为 false。
-# 注意：该参数只有当下游为消息队列时，才会生效。
+# 注意：该参数是一个实验特性，并且只有当下游为消息队列时才会生效。
 # enable-kafka-sink-v2 = false
 
 # 是否只向下游同步有内容更新的列。从 v7.1.0 开始支持。
@@ -194,6 +199,28 @@ enable-partition-separator = true
 # include-commit-ts = false
 # 二进制类型数据的编码方式，可选 'base64' 或 'hex'。默认值为 'base64'。
 # binary-encoding-method = 'base64'
+
+# 从 v8.0.0 开始，TiCDC 新增了 Simple Protocol 消息编码协议，以下为该协议的配置参数。
+# 关于该协议的详情，请参考 <https://docs.pingcap.com/zh/tidb/stable/ticdc-simple-protocol>。
+# 以下为 Simple Protocol 参数，用来控制 bootstrap 消息的发送行为。
+# send-bootstrap-interval-in-sec 用来控制发送 bootstrap 消息的时间间隔，单位为秒。
+# 默认值为 120 秒，即每张表每隔 120 秒发送一次 bootstrap 消息。
+# send-bootstrap-interval-in-sec = 120
+
+# send-bootstrap-in-msg-count 用来控制发送 bootstrap 的消息间隔，单位为消息数。
+# 默认值为 10000，即每张表每发送 10000 条行变更消息就发送一次 bootstrap 消息。
+# send-bootstrap-in-msg-count = 10000
+# 注意：如果要关闭 bootstrap 消息的发送，则将 send-bootstrap-interval-in-sec 和 send-bootstrap-in-msg-count 均设置为 0。
+
+# send-bootstrap-to-all-partition 用来控制是否发送 bootstrap 消息到所有的 partition。
+# 默认值为 true，即发送 bootstrap 消息到对应表 topic 的所有的 partition。
+# 如果设置为 false，则只发送 bootstrap 消息到对应表 topic 的第一个 partition。
+# send-bootstrap-to-all-partition = true
+
+[sink.kafka-config.codec-config]
+# encoding-format 用来控制 simple protocol 的消息的编码格式，目前支持 "json" 和 "avro" 两种格式。
+# 默认值为 "json"。
+# encoding-format = "json"
 
 # consistent 中的字段用于配置 Changefeed 的数据一致性。详细的信息，请参考 <https://docs.pingcap.com/tidb/stable/ticdc-sink-to-mysql#eventually-consistent-replication-in-disaster-scenarios>。
 # 注意：一致性相关参数只有当下游为数据库并且开启 redo log 功能时，才会生效。
