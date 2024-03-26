@@ -144,7 +144,7 @@ TiDB 是一个兼容 MySQL 的数据库。[MySQL Workbench](https://www.mysql.co
 这个错误表示查询执行时间超过了超时限制。要解决这个问题，可以按照以下步骤调整超时设置：
 
 1. 启动 MySQL Workbench 并打开 **Workbench Preferences** 页面。
-2. 在 **SQL Editor** > **MySQL Session** 部分，配置 **DBMS connection read timeout interval (in seconds)** 选项。这个选项设置了在 MySQL Workbench 与服务器断开连接之前查询可以执行的最长时间（以秒为单位）。
+2. 在 **SQL Editor** > **MySQL Session** 部分，调整 **DBMS connection read timeout interval (in seconds)** 的设置。该字段控制了 MySQL Workbench 在断开与服务器的连接之前查询可以执行的最长时间（以秒为单位）。
 
     ![MySQL Workbench: adjust timeout option in SQL Editor settings](/media/develop/mysql-workbench-adjust-sqleditor-read-timeout.jpg)
 
