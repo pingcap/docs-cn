@@ -276,7 +276,7 @@ EXPLAIN SELECT /*+ use_index_merge(t3, k1, k2, ka) */ * FROM t3 WHERE 1 member o
 +-------------------------------+---------+-----------+-----------------------------------------------------------------------------+---------------------------------------------+
 ```
 
-对于多个 `json_member_of`、`json_contains` 或 `json_overlaps` 由 `OR` 或 `AND` 连接而成的条件，需要满足以下条件才能使用 IndexMerge 访问：
+对于由 `OR` 或 `AND` 连接而成的多个 `json_member_of`、`json_contains` 或 `json_overlaps` 条件，需要满足以下条件才能使用 IndexMerge 访问：
 
 ```sql
 CREATE TABLE t4(a INT, j JSON, INDEX mvi1((CAST(j->'$.a' AS UNSIGNED ARRAY))), INDEX mvi2((CAST(j->'$.b' AS UNSIGNED ARRAY))));
@@ -523,7 +523,7 @@ CREATE TABLE t5 (a INT, j JSON, b INT, k JSON, INDEX idx(a, (CAST(j AS SIGNED AR
 CREATE TABLE t6 (a INT, j JSON, b INT, k JSON, INDEX idx(a, (CAST(j AS SIGNED ARRAY)), b), INDEX idx2(a, (CAST(k as SIGNED ARRAY)), b));
 ```
 
-当 `AND` 嵌套在 `OR` 中，且嵌套的 `AND` 所连接的条件与多列索引的各个列能够一一对应时，TiDB 通常能够充分利用过滤条件。例如：
+当 `AND` 嵌套在由 `OR` 连接的条件中，且嵌套的 `AND` 所连接的子条件与多列索引的各个列能够一一对应时，TiDB 通常能够充分利用过滤条件。例如：
 
 ```sql
 EXPLAIN SELECT /*+ use_index_merge(t5, idx, idx2) */ * FROM t5 WHERE (a=1 AND 1 member of (j)) OR (b=2 AND 2 member of (k));
@@ -541,7 +541,7 @@ EXPLAIN SELECT /*+ use_index_merge(t5, idx, idx2) */ * FROM t5 WHERE (a=1 AND 1 
 +-------------------------------+---------+-----------+----------------------------------------------------+-------------------------------------------------+
 ```
 
-当单个 `OR` 嵌套在 `AND` 中，且需要展开表达式才能直接对应索引列的时候，TiDB 通常能够充分利用过滤条件。例如：
+当单个 `OR` 嵌套在由 `AND` 连接的条件中，且 `OR` 所连接的子条件通过展开表达式可以直接对应索引列时，TiDB 通常能够充分利用过滤条件。例如：
 
 ```sql
 EXPLAIN SELECT /*+ use_index_merge(t6, idx, idx2) */ * FROM t6 WHERE a=1 AND (1 member of (j) OR 2 member of (k));
@@ -559,7 +559,7 @@ EXPLAIN SELECT /*+ use_index_merge(t6, idx, idx2) */ * FROM t6 WHERE a=1 AND (1 
 +-------------------------------+---------+-----------+-------------------------------------------------------+-------------------------------------------------------------------------------------------------------------------------+
 ```
 
-当多个 `OR` 嵌套在 `AND` 中，且需要展开表达式才能直接对应索引列的时候，TiDB 可能无法充分利用过滤条件。例如：
+当多个 `OR` 嵌套在由 `AND` 连接的条件中，且 `OR` 所连接的子条件需要展开表达式才能直接对应索引列的时候，TiDB 可能无法充分利用过滤条件。例如：
 
 ```sql
 EXPLAIN SELECT /*+ use_index_merge(t6, idx, idx2) */ * FROM t6 WHERE a=1 AND (1 member of (j) OR 2 member of (k)) and (b = 1 OR b = 2);
