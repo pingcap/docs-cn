@@ -132,6 +132,7 @@ aliases: ['/docs-cn/dev/basic-features/','/docs-cn/dev/experimental-features-4.0
 | [暂停](/sql-statements/sql-statement-admin-pause-ddl.md)/[恢复](/sql-statements/sql-statement-admin-resume-ddl.md) DDL | Y | Y | N | N | N | N | N | N | N | N | N |
 | [TiDB 加速建表](/accelerated-table-creation.md) | N | N | N | N | N | N | N | N | N | N | N |
 | [设置 BDR Role 用于 TiCDC 双向同步时同步 DDL](/sql-statements/sql-statement-admin-bdr-role.md#admin-setshowunset-bdr-role) | E | E | N | N | N | N | N | N | N | N | N | N |
+
 ## 事务
 
 | 事务 | 8.0 | 7.6 | 7.5 | 7.1 | 6.5 | 6.1 | 5.4 | 5.3 | 5.2 | 5.1 | 5.0 | 4.0 |
