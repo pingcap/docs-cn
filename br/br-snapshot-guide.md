@@ -217,6 +217,8 @@ TiDB 备份功能对集群性能（事务延迟和 QPS）有一定的影响，�
     --log-file restorefull.log
     ```
 
+同时，新增 `--tikv-max-restore-concurrency` 参数，用于控制 BR 恢复过程中针对每个 TiKV 的最大 download/ingest 可执行任务数量, 并通过控制作业队列的最大长度, 可以控制 BR 节点的内存消耗（该参数默认情况下，会根据集群配置自动调整，一般不需要特殊设置）。
+
 ## 探索更多
 
 * [TiDB 集群备份与恢复实践示例](/br/backup-and-restore-use-cases.md)
