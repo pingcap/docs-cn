@@ -104,7 +104,7 @@
   - 第三方工具支持
     - [TiDB 支持的第三方工具](/develop/dev-guide-third-party-support.md)
     - [已知的第三方工具兼容问题](/develop/dev-guide-third-party-tools-compatibility.md)
-    - [TiDB 与 ProxySQL 集成](/develop/dev-guide-proxysql-integration.md)
+    - [ProxySQL 集成指南](/develop/dev-guide-proxysql-integration.md)
 - 部署标准集群
   - [软硬件环境需求](/hardware-and-software-requirements.md)
   - [环境与系统配置检查](/check-before-deployment.md)
@@ -321,6 +321,7 @@
   - [Load Base Split 使用文档](/configure-load-base-split.md)
   - [Store Limit 使用文档](/configure-store-limit.md)
   - [DDL 执行原理及最佳实践](/ddl-introduction.md)
+  - [PD 微服务使用文档](/pd-microservices.md)
 - TiDB 工具
   - [功能概览](/ecosystem-tool-user-guide.md)
   - [使用场景](/ecosystem-tool-user-case.md)
@@ -439,6 +440,7 @@
       - [过滤 binlog 事件](/dm/dm-binlog-event-filter.md)
       - [通过 SQL 表达式过滤 DML](/dm/feature-expression-filter.md)
       - [Online DDL 工具支持](/dm/dm-online-ddl-tool-support.md)
+      - [自定义加解密 key](/dm/dm-customized-secret-key.md)
       - 迁移任务操作
         - [任务前置检查](/dm/dm-precheck.md)
         - [创建任务](/dm/dm-create-task.md)
@@ -577,8 +579,10 @@
       - 输出数据协议
         - [TiCDC Avro Protocol](/ticdc/ticdc-avro-protocol.md)
         - [TiCDC Canal-JSON Protocol](/ticdc/ticdc-canal-json.md)
-        - [TiCDC Open Protocol](/ticdc/ticdc-open-protocol.md)
         - [TiCDC CSV Protocol](/ticdc/ticdc-csv.md)
+        - [TiCDC Debezium Protocol](/ticdc/ticdc-debezium.md)
+        - [TiCDC Open Protocol](/ticdc/ticdc-open-protocol.md)
+        - [TiCDC Simple Protocol](/ticdc/ticdc-simple-protocol.md)
       - [TiCDC Open API v2](/ticdc/ticdc-open-api-v2.md)
       - [TiCDC Open API v1](/ticdc/ticdc-open-api.md)
       - TiCDC 数据消费
@@ -965,6 +969,7 @@
         - [`TIDB_HOT_REGIONS`](/information-schema/information-schema-tidb-hot-regions.md)
         - [`TIDB_HOT_REGIONS_HISTORY`](/information-schema/information-schema-tidb-hot-regions-history.md)
         - [`TIDB_INDEXES`](/information-schema/information-schema-tidb-indexes.md)
+        - [`TIDB_INDEX_USAGE`](/information-schema/information-schema-tidb-index-usage.md)
         - [`TIDB_SERVERS_INFO`](/information-schema/information-schema-tidb-servers-info.md)
         - [`TIDB_TRX`](/information-schema/information-schema-tidb-trx.md)
         - [`TIFLASH_REPLICA`](/information-schema/information-schema-tiflash-replica.md)
@@ -981,8 +986,9 @@
       - PERFORMANCE_SCHEMA
         - [概述](/performance-schema/performance-schema.md)
         - [`SESSION_CONNECT_ATTRS`](/performance-schema/performance-schema-session-connect-attrs.md)
+      - [`SYS`](/sys-schema.md)
     - [元数据锁](/metadata-lock.md)
-    - [TiDB DDL V2](/ddl-v2.md)
+    - [TiDB 加速建表](/accelerated-table-creation.md)
   - UI
     - TiDB Dashboard
       - [简介](/dashboard/dashboard-intro.md)

@@ -92,6 +92,10 @@ mv tidb-latest-linux-amd64/bin/tidb-server ./
 
 为了安全，可配置及使用加密后的密码。使用 dmctl 对 MySQL/TiDB 的密码进行加密，以密码为 "123456" 为例：
 
+> **注意：**
+>
+> 从 v8.0.0 开始，DM-master 必须配置 [`secret-key-path`](/dm/dm-master-configuration-file.md) 后才可使用 `dmctl encrypt` 命令。
+
 {{< copyable "shell-regular" >}}
 
 ```bash

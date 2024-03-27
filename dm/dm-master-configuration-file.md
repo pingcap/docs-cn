@@ -33,7 +33,9 @@ join = ""
 ssl-ca = "/path/to/ca.pem"
 ssl-cert = "/path/to/cert.pem"
 ssl-key = "/path/to/key.pem"
-cert-allowed-cn = ["dm"] 
+cert-allowed-cn = ["dm"]
+
+secret-key-path = "/path/to/secret/key"
 ```
 
 ## 配置项说明
@@ -55,3 +57,4 @@ cert-allowed-cn = ["dm"]
 | `ssl-cert` | DM-master 组件用于与其它组件连接的 PEM 格式的 X509 证书所在的路径 |
 | `ssl-key` | DM-master 组件用于与其它组件连接的 PEM 格式的 X509 密钥所在的路径  |
 | `cert-allowed-cn` | 证书检查 Common Name 列表 |
+| `secret-key-path` | 用来加解密上下游密码的密钥所在的路径，该文件内容必须是长度为 64 个字符的十六进制的 AES-256 密钥 |
