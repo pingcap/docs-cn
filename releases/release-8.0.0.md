@@ -52,11 +52,11 @@ TiDB 版本：8.0.0
   <tr>
     <td rowspan="2">数据迁移</td>
     <td>TiCDC 支持 <a href="https://docs.pingcap.com/zh/tidb/v8.0/ticdc-simple-protocol">Simple 协议</a> </td>
-    <td>TiCDC 支持了新的 Simple 消息协议，该协议通过在 DDL 和 BOOTSTRAP 事件中嵌入模式信息，实现了动态的消息模式跟踪功能 (in-band schema tracking)。</td>
+    <td>TiCDC 支持了新的 Simple 消息协议，该协议通过在 DDL 和 BOOTSTRAP 事件中嵌入表的 schema 信息，实现了对 schema 信息的动态追踪 (in-band schema tracking)。</td>
   </tr>
   <tr>
     <td>TiCDC 支持 <a href="https://docs.pingcap.com/zh/tidb/v8.0/ticdc-debezium">Debezium 协议</a> </td>
-    <td>TiCDC 支持了新的 Debezium 协议，现在可以使用生成 Debezium 格式消息的协议向 Kafka sink 发布复制事件。</td>
+    <td>TiCDC 支持了新的 Debezium 协议，TiCDC 可以使用该协议生成 Debezium 格式的数据变更事件并发送给 Kafka sink。</td>
   </tr>
 </tbody>
 </table>
@@ -201,7 +201,7 @@ TiDB 版本：8.0.0
 
 * PITR 支持 Amazon S3 对象锁定 [#51184](https://github.com/pingcap/tidb/issues/51184) @[RidRisR](https://github.com/RidRisR) **tw@lilin90** <!--1604-->
 
-    Amazon S3 对象锁定功能支持用户通过设置留存期，有效防止备份数据在指定时间内被意外或故意删除，提升了数据的安全性和完整性。从 v6.3.0 起，BR 为快照备份引入了对 Amazon S3 对象锁定功能的支持，为全量备份增加了额外的安全性保障。从 v8.0.0 起，PITR 也引入了对 Amazon S3 对象锁定功能的支持，无论是全量备份还是日志数据备份，都可以通过对象锁定功能提供更可靠的数据保护，进一步加强了数据备份和恢复的安全性，并满足了监管方面的需求。
+    Amazon S3 对象锁定功能支持用户通过设置数据留存期，有效防止备份数据在指定时间内被意外或故意删除，提升了数据的安全性和完整性。从 v6.3.0 起，BR 为快照备份引入了对 Amazon S3 对象锁定功能的支持，为全量备份增加了额外的安全性保障。从 v8.0.0 起，PITR 也引入了对 Amazon S3 对象锁定功能的支持，无论是全量备份还是日志数据备份，都可以通过对象锁定功能提供更可靠的数据保护，进一步加强了数据备份和恢复的安全性，并满足了监管方面的需求。
     
     更多信息，请参考[用户文档](/br/backup-and-restore-storages.md#存储服务其他功能支持)。
     
@@ -260,13 +260,13 @@ TiDB 版本：8.0.0
 
 * TiCDC 支持 Simple 协议 [#9898](https://github.com/pingcap/tiflow/issues/9898) @[3AceShowHand](https://github.com/3AceShowHand) **tw@lilin90** <!--1646-->
 
-    TiCDC 支持了新的 Simple 消息协议，该协议通过在 DDL 和 BOOTSTRAP 事件中嵌入模式信息，实现了动态的消息模式跟踪功能 (in-band schema tracking)。
+    TiCDC 支持了新的 Simple 消息协议，该协议通过在 DDL 和 BOOTSTRAP 事件中嵌入表的 schema 信息，实现了对 schema 信息的动态追踪 (in-band schema tracking)。
 
     更多信息，请参考[用户文档](/ticdc/ticdc-simple-protocol.md)。
 
 * TiCDC 支持 Debezium 协议 [#1799](https://github.com/pingcap/tiflow/issues/1799) @[breezewish](https://github.com/breezewish) **tw@lilin90** <!--1652-->
 
-    TiCDC 现在可以使用一种生成 Debezium 格式的事件消息的协议，将复制事件发布到 Kafka sink。这有助于简化那些当前使用 Debezium 从 MySQL 拉取数据进行下游处理的用户从 MySQL 迁移到 TiDB 的过程。
+    通过 Debezium 协议，TiCDC 可以生成 Debezium 格式的数据变更事件，并将这些事件发送到 Kafka sink。这有助于为当前使用 Debezium 从 MySQL 拉取数据进行下游处理的用户简化从 MySQL 迁移到 TiDB 的过程。
 
     更多信息，请参考[用户文档](/ticdc/ticdc-debezium.md)。
 
