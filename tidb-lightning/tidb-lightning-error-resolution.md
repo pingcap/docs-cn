@@ -194,7 +194,7 @@ CREATE TABLE conflict_records (
     EOF
     ```
 
-3. 配置 TiDB Lightning，启用严格 SQL 模式，使用 Local 后端模式进行导入，通过删除解决重复项，并最多跳过 10 个错误：
+3. 配置 TiDB Lightning，启用严格 SQL 模式，使用 Local 后端模式进行导入，通过替换解决重复项，并最多跳过 10 个错误：
 
     {{< copyable "shell-regular" >}}
 
