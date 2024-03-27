@@ -115,7 +115,6 @@ cdc cli changefeed create --server=http://127.0.0.1:8300 --sink-uri="kafka://127
 >
 > * 该功能在 TiCDC 4.0.2 版本引入。
 > * 目前 TiCDC 仅支持将 Canal-JSON 格式的变更数据输出到 MQ 类的 Sink（例如 Kafka）。
-> * Canal-JSON 和 Canal 的区别在于，Canal 使用 protobuf 进行编码，而 Canal-JSON 使用 JSON 。
 
 更多信息请参考 [TiCDC Changefeed 配置参数](/ticdc/ticdc-changefeed-config.md)。
 
