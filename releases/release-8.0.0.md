@@ -67,16 +67,16 @@ TiDB 版本：8.0.0
 
 - PD 支持微服务模式（实验特性）[#5766](https://github.com/tikv/pd/issues/5766) @[binshi-bing](https://github.com/binshi-bing) **tw@qiancai** <!--1553/1558-->
 
-    从 v8.0.0 开始，PD 支持微服务模式。该模式可将 PD 的时间戳分配和集群调度功能拆分为以下微服务单独部署，从而实现 PD 的性能扩展，解决大规模集群下 PD 性能瓶颈问题。
+    从 v8.0.0 开始，PD 支持微服务模式。该模式可将 PD 的时间戳分配和集群调度功能拆分为以下微服务单独部署，从而实现 PD 的性能扩展，解决大规模集群下 PD 的性能瓶颈问题。
 
     - `tso` 微服务：为整个集群提供单调递增的时间戳分配。
     - `scheduling` 微服务：为整个集群提供调度功能，包括但不限于负载均衡、热点处理、副本修复、副本放置等。
 
   每个微服务都以独立进程的方式部署。当设置某个微服务的副本数大于 1 时，该微服务会自动实现主备的容灾模式，以确保服务的高可用性和可靠性。
 
-    目前 PD 微服务仅支持通过 TiDB Operator 和 TiUP Playground 进行部署。当 PD 出现明显的性能瓶颈且无法升配的情况下，建议考虑使用该模式。
+    目前 PD 微服务仅支持通过 TiDB Operator 和 TiUP Playground 进行部署。当 PD 出现明显的性能瓶颈且无法升级配置的情况下，建议考虑使用该模式。
 
-    更多信息，请参考[用户文档](pd-microservices.md)。
+    更多信息，请参考[用户文档](/pd-microservices.md)。
 
 * 增强 Titan 引擎的易用性 [#16245](https://github.com/tikv/tikv/issues/16245) @[Connor1996](https://github.com/Connor1996) **tw@qiancai** <!--1708-->
 
@@ -89,7 +89,7 @@ TiDB 版本：8.0.0
 
 * BR 快照恢复速度提升 GA [#50701](https://github.com/pingcap/tidb/issues/50701) @[3pointer](https://github.com/3pointer) @[Leavrth](https://github.com/Leavrth) **tw@qiancai** <!--1681-->
 
-    从 TiDB v8.0.0 版本开始，通过采用粗粒度打散 Region 算法、批量创建库表、降低 SST 文件下载和 Ingest 操作之间的相互影响、加速表统计信息恢复等改进措施，快照恢复的速度有大幅提升。在实际案例中，单个 TiKV 节点的数据恢复速度稳定在 1.2 GB/s，并且能够在 1 小时内完成对 100 TiB 数据的恢复。这项改进功能已在 TiDB v8.0.0 版本正式发布并默认启用。
+    TiDB v8.0.0 版本正式发布并默认启用新的快照恢复算法，通过采用粗粒度打散 Region 算法、批量创建库表、降低 SST 文件下载和 Ingest 操作之间的相互影响、加速表统计信息恢复等改进措施，快照恢复的速度有大幅提升。在实际案例中，单个 TiKV 节点的数据恢复速度稳定在 1.2 GiB/s，并且能够在 1 小时内完成对 100 TiB 数据的恢复。
     
     这意味着即使在高负载环境下，BR 工具也能够充分利用每个 TiKV 节点的资源，显著减少数据库恢复时间，增强数据库的可用性和可靠性，减少因数据丢失或系统故障引起的停机时间和业务损失。需要注意的是，恢复速度的提升是因为使用了大量的 goroutine 来并行工作，会有比较大的内存消耗，特别是在表或者 Region 数很多的时候，推荐使用内存规格较高的机器来运行 BR 的客户端。如果机器的内存规格较小，建议改用细粒度的 Region 分裂打散策略。
  
@@ -294,7 +294,7 @@ TiDB 版本：8.0.0
     
 * 全局排序成为正式功能 (GA)，可显著提升 `IMPORT INTO` 任务的导入性能和稳定性 [#45719](https://github.com/pingcap/tidb/issues/45719) @[lance6716](https://github.com/lance6716) **tw@qiancai** <!--1580-->
 
-    在 v7.4.0 以前，当使用[分布式执行框架](/tidb-distributed-execution-framework.md) 执行 `IMPORT INTO` 任务时，由于本地存储空间有限，TiDB 只能对部分数据进行局部排序后再导入到 TiKV。这导致了导入到 TiKV 的数据存在较多的重叠，需要 TiKV 在导入过程中执行额外的 compaction 操作，影响了 TiKV 的性能和稳定性。
+    在 v7.4.0 以前，当使用[分布式执行框架](/tidb-distributed-execution-framework.md)执行 `IMPORT INTO` 任务时，由于本地存储空间有限，TiDB 只能对部分数据进行局部排序后再导入到 TiKV。这导致了导入到 TiKV 的数据存在较多的重叠，需要 TiKV 在导入过程中执行额外的 compaction 操作，影响了 TiKV 的性能和稳定性。
 
     随着 v7.4.0 引入全局排序实验特性，TiDB 支持将需要导入的数据暂时存储在外部存储（如 Amazon S3）中进行全局排序后再导入到 TiKV 中，使 TiKV 无需在导入过程中执行 compaction 操作。全局排序在 v8.0.0 成为正式功能 (GA)，可以降低 TiKV 对资源的额外消耗，显著提升 `IMPORT INTO` 的性能和稳定性。启用全局排序后，单个 `IMPORT INTO` 任务支持导入 40 TiB 以内的数据。
 
@@ -428,7 +428,7 @@ TiDB 版本：8.0.0
         - 支持通过新增的恢复参数 `--load-stats` 控制是否恢复统计信息  [#50568](https://github.com/pingcap/tidb/issues/50568) @[Leavrth](https://github.com/Leavrth)
         - 粗粒度打散 Region 算法支持自适应获取并发参数，提升恢复性能 [#50701](https://github.com/pingcap/tidb/issues/50701) @[3pointer](https://github.com/3pointer)
         - 在 `br` 的命令行帮助信息中显示 `log` 命令 [#50927](https://github.com/pingcap/tidb/issues/50927) @[RidRisR](https://github.com/RidRisR)
-        - 支持在恢复过程中提前分配好 Table ID，从而最大限度复用 Table ID，提升恢复性能 [#51736](https://github.com/pingcap/tidb/issues/51736) @[Leavrth](https://github.com/Leavrth)
+        - 支持在恢复过程中提前分配好 Table ID，从而最大限度地复用 Table ID，提升恢复性能 [#51736](https://github.com/pingcap/tidb/issues/51736) @[Leavrth](https://github.com/Leavrth)
         - 使用 BR 时，禁用 TiDB 内部的 GC memory limit tuner 功能，避免 OOM 问题 [#51078](https://github.com/pingcap/tidb/issues/51078) @[Leavrth](https://github.com/Leavrth)
         - (dup): release-7.5.1.md > 改进提升> Tools> Backup & Restore (BR) - 使用更优的算法，提升数据恢复过程中 SST 文件合并的速度 [#50613](https://github.com/pingcap/tidb/issues/50613) @[Leavrth](https://github.com/Leavrth)
         - (dup): release-7.5.1.md > 改进提升> Tools> Backup & Restore (BR) - 支持在数据恢复过程中批量创建数据库 [#50767](https://github.com/pingcap/tidb/issues/50767) @[Leavrth](https://github.com/Leavrth)
