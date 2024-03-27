@@ -89,9 +89,9 @@ TiDB 版本：8.0.0
 
 * BR 快照恢复速度提升 GA [#50701](https://github.com/pingcap/tidb/issues/50701) @[3pointer](https://github.com/3pointer) @[Leavrth](https://github.com/Leavrth) **tw@qiancai** <!--1681-->
 
-    TiDB v8.0.0 版本正式发布并默认启用新的快照恢复算法，通过采用粗粒度打散 Region 算法、批量创建库表、降低 SST 文件下载和 Ingest 操作之间的相互影响、加速表统计信息恢复等改进措施，快照恢复的速度有大幅提升。在实际案例中，单个 TiKV 节点的数据恢复速度稳定在 1.2 GiB/s，并且能够在 1 小时内完成对 100 TiB 数据的恢复。
+    从 TiDB v8.0.0 版本起，BR 快照恢复提速功能正式发布并默认启用。通过采用粗粒度打散 Region 算法、批量创建库表、降低 SST 文件下载和 Ingest 操作之间的相互影响、加速表统计信息恢复等改进措施，快照恢复的速度有大幅提升。在实际案例中，单个 TiKV 节点的数据恢复速度稳定在 1.2 GiB/s，并且能够在 1 小时内完成对 100 TiB 数据的恢复。
     
-    这意味着即使在高负载环境下，BR 工具也能够充分利用每个 TiKV 节点的资源，显著减少数据库恢复时间，增强数据库的可用性和可靠性，减少因数据丢失或系统故障引起的停机时间和业务损失。需要注意的是，恢复速度的提升是因为使用了大量的 goroutine 来并行工作，会有比较大的内存消耗，特别是在表或者 Region 数很多的时候，推荐使用内存规格较高的机器来运行 BR 的客户端。如果机器的内存规格较小，建议改用细粒度的 Region 分裂打散策略。
+    这意味着即使在高负载环境下，BR 工具也能够充分利用每个 TiKV 节点的资源，显著减少数据库恢复时间，增强数据库的可用性和可靠性，减少因数据丢失或系统故障引起的停机时间和业务损失。需要注意的是，恢复速度的提升是因为使用了大量的 goroutine 来并行工作，会有比较大的内存消耗，特别是在表或者 Region 数很多的时候，推荐使用内存规格较高的机器来运行 BR 的客户端。如果机器的内存规格较小，建议改用细粒度的 Region 分裂打散策略。此外，因为粗粒度打散 Region 算法会占用大量的外部存储带宽，请避免因为外部带宽不足导致的对其他业务的影响。
  
     更多信息，请参考[用户文档](/br/br-snapshot-guide.md#恢复快照备份数据)。
     
@@ -419,7 +419,8 @@ TiDB 版本：8.0.0
 
     + Backup & Restore (BR) <!--tw@qiancai, 5 条-->
 
-        - 支持通过新增的恢复参数 `--load-stats` 控制是否恢复统计信息  [#50568](https://github.com/pingcap/tidb/issues/50568) @[Leavrth](https://github.com/Leavrth)
+        - 支持通过 `br` 命令行工具新增的恢复参数 `--load-stats` 控制是否恢复统计信息  [#50568](https://github.com/pingcap/tidb/issues/50568) @[Leavrth](https://github.com/Leavrth)
+        - 支持通过 `br` 命令行工具新增的恢复参数 `--tikv-max-restore-concurrency` 控制每个 TiKV 节点的最大 download 和 ingest 文件数量，并通过控制作业队列的最大长度，进而控制 BR 节点的内存消耗 [#51621](https://github.com/pingcap/tidb/issues/51621) @[3pointer](https://github.com/3pointer)
         - 粗粒度打散 Region 算法支持自适应获取并发参数，提升恢复性能 [#50701](https://github.com/pingcap/tidb/issues/50701) @[3pointer](https://github.com/3pointer)
         - 在 `br` 的命令行帮助信息中显示 `log` 命令 [#50927](https://github.com/pingcap/tidb/issues/50927) @[RidRisR](https://github.com/RidRisR)
         - 支持在恢复过程中提前分配好 Table ID，从而最大限度地复用 Table ID，提升恢复性能 [#51736](https://github.com/pingcap/tidb/issues/51736) @[Leavrth](https://github.com/Leavrth)
