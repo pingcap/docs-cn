@@ -415,12 +415,6 @@ TiDB 版本：8.0.0
     - 减少创建 operator 中的锁争用问题 [#7837](https://github.com/tikv/pd/issues/7837) @[Leavrth](https://github.com/Leavrth) 
     - 调整 GRPC 配置以提升可用性 [#7821](https://github.com/tikv/pd/issues/7821) @[rleungx](https://github.com/rleungx) 
 
-+ TiFlash
-
-    - note [#issue](链接) @[贡献者 GitHub ID](链接)
-    - note [#issue](链接) @[贡献者 GitHub ID](链接)
-    - (dup): release-7.6.0.md > 改进提升> TiFlash - 支持在存算分离架构下通过合并相同数据的读取操作，提升多并发下的数据扫描性能 [#6834](https://github.com/pingcap/tiflash/issues/6834) @[JinheLin](https://github.com/JinheLin)
-
 + Tools
 
     + Backup & Restore (BR) <!--tw@qiancai, 5 条-->
@@ -516,7 +510,7 @@ TiDB 版本：8.0.0
     - (dup): release-7.1.4.md > 修复 TSO 部分日志没有打印报错原因的问题 [#7496](https://github.com/tikv/pd/issues/7496) @[CabinfeverB](https://github.com/CabinfeverB)
     - 修复重启后 PD 部分监控出现非预期负数的问题 [#4489](https://github.com/tikv/pd/issues/4489) @[lhy1024](https://github.com/lhy1024)
     - 修复 Leader 租约的过期时间晚于日志时间的问题 [#7700](https://github.com/tikv/pd/issues/7700) @[CabinfeverB](https://github.com/CabinfeverB)
-    - 修复 PD 客户端 TLS 相关的问题 [#7900](https://github.com/tikv/pd/issues/7900) [#7902](https://github.com/tikv/pd/issues/7902) [#7916](https://github.com/tikv/pd/issues/7916) @[CabinfeverB](https://github.com/CabinfeverB)
+    - 修复在 TiDB（PD 客户端）和 PD 之间的 TLS 开关不一致时，TiDB panic 的问题 [#7900](https://github.com/tikv/pd/issues/7900) [#7902](https://github.com/tikv/pd/issues/7902) [#7916](https://github.com/tikv/pd/issues/7916) @[CabinfeverB](https://github.com/CabinfeverB)
     - 修复 Goroutine 由于没有正确关闭而泄露的问题 [#7782](https://github.com/tikv/pd/issues/7782) @[HuSharp](https://github.com/HuSharp)
     - 修复 pd-ctl 无法移除包含特殊字符的调度器的问题 [#7798](https://github.com/tikv/pd/issues/7798) @[JmPotato](https://github.com/JmPotato)
     - 修复 PD 客户端获取 TSO 可能被阻塞的问题 [#7864](https://github.com/tikv/pd/issues/7864) @[CabinfeverB](https://github.com/CabinfeverB)
