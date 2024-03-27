@@ -205,7 +205,8 @@ CREATE TABLE conflict_records (
         [tikv-importer]
         backend = 'local'
         sorted-kv-dir = '/tmp/lightning-tmp/'
-        duplicate-resolution = 'remove'
+        [conflict]
+        strategy = 'replace'
         [mydumper]
         data-source-dir = '.'
         [tidb]
