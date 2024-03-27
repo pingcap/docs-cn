@@ -5,7 +5,7 @@ aliases: ['/docs-cn/dev/data-type-default-values/','/docs-cn/dev/reference/sql/d
 
 # 数据类型的默认值
 
-在一个数据类型描述中的 `DEFAULT value` 段描述了一个列的默认值。通常情况下，这个默认值通常情况下必须是常量，不可以是一个函数或者是表达式，但也存在以下例外情况：
+在一个数据类型描述中的 `DEFAULT value` 段描述了一个列的默认值。这个默认值通常情况下必须是常量，不可以是一个函数或者是表达式，但也存在以下例外情况：
 
 - 对于时间类型，可以使用 `NOW`、`CURRENT_TIMESTAMP`、`LOCALTIME`、`LOCALTIMESTAMP` 等函数作为 `DATETIME` 或者 `TIMESTAMP` 的默认值。
 - 对于整数类型，可以使用 ``NEXT VALUE FOR`` 函数将序列的下一个值作为列的默认值。
