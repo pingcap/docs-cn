@@ -199,7 +199,7 @@ enable-partition-separator = true
 # include-commit-ts = false
 # 二进制类型数据的编码方式，可选 'base64' 或 'hex'。默认值为 'base64'。
 # binary-encoding-method = 'base64'
-# 是否输出 handle 列信息。默认值为 false。该变量仅用于内部实现，不推荐设置该变量。
+# 是否输出 handle 列信息。默认值为 false。该配置项仅用于内部实现，不推荐设置该配置项。
 # output-handle-key = false
 # 是否输出行数据更改前的值。默认值为 false。开启后，Update 事件会输出两行数据：第一行为 Delete 事件，输出更改前的数据；第二行为 Insert 事件，输出更改后的数据。
 # output-old-value = false
