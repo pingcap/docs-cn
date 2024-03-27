@@ -48,7 +48,7 @@ strategy = ""
 backend = "local"
 
 # 冲突数据处理方式
-# 从 v8.0.0 开始，`duplicate-resolution` 参数已废弃。该参数将于 v8.5 移除。详情参考 <https://docs.pingcap.com/zh/tidb/dev/tidb-lightning-physical-import-mode-usage#旧版冲突检测从-v800-开始已被废弃>。
+# `duplicate-resolution` 参数从 v8.0.0 开始已被废弃，并将在 v8.5.0 中被移除。详情参考 <https://docs.pingcap.com/zh/tidb/dev/tidb-lightning-physical-import-mode-usage#旧版冲突检测从-v800-开始已被废弃>。
 duplicate-resolution = 'remove'
 
 # 本地进行 KV 排序的路径。
@@ -99,7 +99,7 @@ Lightning 的完整配置文件可参考[完整配置及命令行参数](/tidb-l
 
 冲突数据是指两条或两条以上记录中存在主键或唯一键列数据重复。当数据源中的记录存在冲突数据，如果没有启用冲突数据检测功能，将导致该表的实际总行数与使用唯一索引查询的总行数不一致。
 
-冲突数据检测采用新版冲突检测 (`conflict`) 模式。旧版冲突检测 (`tikv-importer.duplicate-resolution`) 模式从 v8.0.0 开始已被废弃。该参数将于 v8.5 移除。
+冲突数据检测采用新版冲突检测 (`conflict`) 模式。旧版冲突检测 (`tikv-importer.duplicate-resolution`) 模式从 v8.0.0 开始已被废弃。`tikv-importer.duplicate-resolution` 参数将在 v8.5.0 中被移除。
 
 ### 新版冲突检测
 
@@ -126,7 +126,7 @@ Lightning 的完整配置文件可参考[完整配置及命令行参数](/tidb-l
 
 ### 旧版冲突检测（从 v8.0.0 开始已被废弃）
 
-从 v8.0.0 起，旧版冲突检测 (`tikv-importer.duplicate-resolution`) 已被废弃。该参数将于 v8.5 移除。如果 `tikv-importer.duplicate-resolution` 为 `remove` 且 `conflict.strategy` 未设置，TiDB Lightning 会自动将 `conflict.strategy` 赋值为 `"replace"` 开启新版冲突检测。需要注意 `tikv-importer.duplicate-resolution` 不能与 `conflict.strategy` 同时配置，否则将报错。
+从 v8.0.0 起，旧版冲突检测 (`tikv-importer.duplicate-resolution`) 已被废弃。`tikv-importer.duplicate-resolution` 参数将在 v8.5.0 中被移除。如果 `tikv-importer.duplicate-resolution` 为 `remove` 且 `conflict.strategy` 未设置，TiDB Lightning 会自动将 `conflict.strategy` 赋值为 `"replace"` 开启新版冲突检测。需要注意 `tikv-importer.duplicate-resolution` 不能与 `conflict.strategy` 同时配置，否则将报错。
 
 - 在 v7.3.0 到 v7.6.0 之间的版本中，当配置 `tikv-importer.duplicate-resolution` 不为空时，TiDB Lightning 会开启旧版冲突检测。
 - 在 v7.2.0 及之前的版本中，TiDB Lightning 仅支持旧版冲突检测。

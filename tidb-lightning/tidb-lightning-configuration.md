@@ -142,7 +142,7 @@ strategy = ""
 # 当后端是 “importer” 时，tikv-importer 的监听地址（需改为实际地址）。
 addr = "172.16.31.10:8287"
 
-# 从 v8.0.0 开始，`duplicate-resolution` 参数已废弃。该参数将于 v8.5 移除。详情参考 <https://docs.pingcap.com/zh/tidb/dev/tidb-lightning-physical-import-mode-usage#旧版冲突检测从-v800-开始已被废弃>。
+# `duplicate-resolution` 参数从 v8.0.0 开始已被废弃，并将在 v8.5.0 中被移除。详情参考 <https://docs.pingcap.com/zh/tidb/dev/tidb-lightning-physical-import-mode-usage#旧版冲突检测从-v800-开始已被废弃>。
 # 物理导入模式设置是否检测和解决重复的记录（唯一键冲突）。
 # 目前支持两种解决方法：
 #  - none: 不检测重复记录。该模式是两种模式中性能最佳的，但是如果数据源存在重复记录，会导致 TiDB 中出现数据不一致的情况。
