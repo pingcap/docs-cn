@@ -418,10 +418,11 @@ TiDB 版本：8.0.0
     - 支持动态修改热点调度器中的历史窗口配置 [#7877](https://github.com/tikv/pd/issues/7877) @[lhy1024](https://github.com/lhy1024)
     - 减少创建 operator 中的锁争用问题 [#7837](https://github.com/tikv/pd/issues/7837) @[Leavrth](https://github.com/Leavrth)
     - 调整 GRPC 配置以提升可用性 [#7821](https://github.com/tikv/pd/issues/7821) @[rleungx](https://github.com/rleungx)
+
 + TiFlash
 
     - 支持 `JSON_EXTRACT()` 函数中的 `json_path` 参数为非常量 [#8510](https://github.com/pingcap/tiflash/issues/8510) @[SeaRise](https://github.com/SeaRise)
-    - 支持 `JSON_LENGTH(json, path)` 函数输入两个参数 [#8711](https://github.com/pingcap/tiflash/issues/8711) @[SeaRise](https://github.com/SeaRise)
+    - 支持 `JSON_LENGTH(json, path)` 函数 [#8711](https://github.com/pingcap/tiflash/issues/8711) @[SeaRise](https://github.com/SeaRise)
 
 + Tools
 
@@ -495,9 +496,9 @@ TiDB 版本：8.0.0
     - 修复当列的默认值被删除时，获取该列的默认值会报错的问题 [#50043](https://github.com/pingcap/tidb/issues/50043) [#51324](https://github.com/pingcap/tidb/issues/51324) @[crazycs520](https://github.com/crazycs520)
     - 修复 TiFlash 延迟物化在处理关联列时结果可能出错的问题 [#49241](https://github.com/pingcap/tidb/issues/49241) [#51204](https://github.com/pingcap/tidb/issues/51204) @[Lloyd-Pottiger](https://github.com/Lloyd-Pottiger)
     - 修复 `LIKE()` 函数在处理 binary collation 的输入时可能结果错误的问题 [#50393](https://github.com/pingcap/tidb/issues/50393) @[yibin87](https://github.com/yibin87)
-    - 修复在并行 Apply 时可能会因为并发写导致 TiDB crash 的问题 [#50347](https://github.com/pingcap/tidb/issues/50347) @[SeaRise](https://github.com/SeaRise)
+    - 修复在并行 Apply 时可能会因为并发写入导致 TiDB crash 的问题 [#50347](https://github.com/pingcap/tidb/issues/50347) @[SeaRise](https://github.com/SeaRise)
     - 修复 `JSON_LENGTH()` 函数在第二个参数为 `NULL` 时结果错误的问题 [#50931](https://github.com/pingcap/tidb/issues/50931) @[SeaRise](https://github.com/SeaRise)
-    - 修复包含 `CTE` 的查询在内存超限后可能导致 Goroutine 泄露的问题 [#50337](https://github.com/pingcap/tidb/issues/50337) @[guo-shaoge](https://github.com/guo-shaoge)
+    - 修复包含 `CTE` 的查询在内存超限后可能导致 goroutine 泄露的问题 [#50337](https://github.com/pingcap/tidb/issues/50337) @[guo-shaoge](https://github.com/guo-shaoge)
     - 修复 `CAST(AS DATETIME)` 在特定情况下可能会丢失时间精度的问题 [#49555](https://github.com/pingcap/tidb/issues/49555) @[SeaRise](https://github.com/SeaRise)
     - 修复并行 Apply 在表为聚簇索引时可能导致结果错误的问题 [#51372](https://github.com/pingcap/tidb/issues/51372) @[guo-shaoge](https://github.com/guo-shaoge)
     - 修复主键类型是 `VARCHAR` 时，执行 `ALTER TABLE ... COMPACT TIFLASH REPLICA` 可能会错误地提前结束的问题 [#51810](https://github.com/pingcap/tidb/issues/51810) @[breezewish](https://github.com/breezewish)
