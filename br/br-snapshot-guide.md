@@ -216,6 +216,13 @@ TiDB 备份功能对集群性能（事务延迟和 QPS）有一定的影响，�
     --log-file restorefull.log
     ```
 
+- BR 通过参数 `--tikv-max-restore-concurrency` 来控制作业队列的最大长度，从而减少内存的消耗。作业队列的最大长度与 TiKV 数量成正比，与参数 `--tikv-max-restore-concurrency` 成正比，比例系数为 32。当硬盘吞吐接近网络带宽时，会导致低优先级的 ingest 任务堆积，从而导致作业队列堆积在 ingest 任务上，此时，我们需要设置参数 `--ratelimit` 来限制下载速度，让 ingest 任务有足够的资源。可以参考以下示例：
+
++ 当任意 TiKV 节点硬盘吞吐量为 x MB/s，任意 TiKV 下载备份文件的网络带宽大于 x/2 MB/s，可以设置参数 `--ratelimit x/2`。
++ 当任意 TiKV 节点硬盘吞吐量为 x MB/s，任意 TiKV 下载备份文件的网络带宽小于或等于 x/2 MB/s，可以不设置参数 `--ratelimit`。
+
+- 另外，我们也可以通过增大参数 `--tikv-max-restore-concurrency` 来增加作业队列的最大长度。当我们在监控面板 `TiKV-Details / Backup & Import / Import RPC count` 中发现 download 指标长时间接近于 0，而 ingest 一直处于限制上限时，说明 ingest 任务仍然堆积了，并且打到作业队列的最大长度，可以调高参数 `--tikv-max-restore-concurrency` 来增加作业队列的最大长度。
+
 ## 探索更多
 
 * [TiDB 集群备份与恢复实践示例](/br/backup-and-restore-use-cases.md)
