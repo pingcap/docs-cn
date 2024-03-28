@@ -137,3 +137,8 @@ cdc cli changefeed create --server=http://127.0.0.1:8300 --sink-uri="mysql://roo
 ```shell
 cdc cli changefeed create --server=http://127.0.0.1:8300 --sink-uri "kafka://127.0.0.1:9092/test?topic=test&protocol=open-protocol&kafka-version=2.4.0" 
 ```
+
+## 使用 TiCDC 开启 Redo 时报错 `[CDC:ErrS3StorageAPI]external storage api: NotImplemented`，该如何处理？
+
+该问题可能是由于外部存储没有完全兼容 `s3://` 协议导致。你可以替换成其他协议，比如，如果你使用的是 GCS， 可以使用 `gs://` 协议。
+
