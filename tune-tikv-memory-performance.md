@@ -77,11 +77,6 @@ log-level = "info"
 ## `shared block cache` 的大小。正常情况下应设置为系统全部内存的 30%-50%。
 ## 如果未设置该参数，则由以下字段或其默认值的总和决定。
 ##
-##   * rocksdb.defaultcf.block-cache-size 或系统全部内存的 25%
-##   * rocksdb.writecf.block-cache-size 或系统全部内存的 15%
-##   * rocksdb.lockcf.block-cache-size 或系统全部内存的 2%
-##   * raftdb.defaultcf.block-cache-size 或系统全部内存的 2%
-##
 ## 要在单个物理机上部署多个 TiKV 节点，需要显式配置该参数。
 ## 否则，TiKV 中可能会出现 OOM 错误。
 # capacity = "1GB"

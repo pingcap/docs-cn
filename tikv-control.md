@@ -453,6 +453,8 @@ tikv-ctl --host ip:port modify-tikv-config -n storage.block-cache.capacity -v 10
 success
 ```
 
+<!--TODO: update the description and command-->
+
 当禁用 `shared block cache` 时，为 `write` CF 设置 `block cache size`：
 
 ```shell
