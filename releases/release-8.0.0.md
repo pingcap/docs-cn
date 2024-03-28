@@ -505,9 +505,8 @@ TiDB 版本：8.0.0
 <!-- Lilian -->
 修复 `EXCHANGE PARTITION` 语句交换分区表时，对 'DEFAULT NULL' 属性产生的 NULL 值检查有错误的问题 [#47167](https://github.com/pingcap/tidb/issues/47167) @[jiyfhust](https://github.com/jiyfhust)
 修复使用非 UTF8 字符集时，分区表定义可能有错误行为的问题 [#49251](https://github.com/pingcap/tidb/issues/49251) @[YangKeao](https://github.com/YangKeao)
-修复对于一些系统变量的默认值在 `information_schema.VARIABLES_INFO` 表中显示错误的问 [#49461](https://github.com/pingcap/tidb/issues/49461) @[jiyfhust](https://github.com/jiyfhust)
+修复一些系统变量的默认值在 `information_schema.VARIABLES_INFO` 表中显示错误的问题 [#49461](https://github.com/pingcap/tidb/issues/49461) @[jiyfhust](https://github.com/jiyfhust)
 修复一些情况下没有对空字符串作为数据库名进行检查的问题 [#45873](https://github.com/pingcap/tidb/issues/45873) @[yoshikipom](https://github.com/yoshikipom)
-修复 `BIT` 类型数据参与 `REVERSE` 函数运算时可能会报错的问题 [#50855](https://github.com/pingcap/tidb/issues/50855) @[jiyfhust](https://github.com/jiyfhust)
 <!-- Oxreon -->
 修复一些情况下 `SPLIT TABLE ... INDEX` 语法会引发错误的问题 [#50177](https://github.com/pingcap/tidb/issues/50177) @[Defined2014](https://github.com/Defined2014)
 修复一些情况下对 "Key 分区" 类型的分区表查询可能会报错的问题 [#50206](https://github.com/pingcap/tidb/issues/50206) [#51313](https://github.com/pingcap/tidb/issues/51313) [#51196](https://github.com/pingcap/tidb/issues/51196) @[time-and-fate](https://github.com/time-and-fate) @[jiyfhust](https://github.com/jiyfhust) @[mjonss](https://github.com/mjonss)
