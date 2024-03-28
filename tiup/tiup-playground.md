@@ -196,7 +196,7 @@ tiup playground scale-in --pid 86526
 从 v8.0.0 起，PD 支持[微服务模式](/pd-microservices.md)（实验特性）。你可以通过 TiUP Playground 为集群部署 `tso` 微服务和 `scheduling` 微服务。
 
 ```shell
-./tiup-playground v8.0.0 --pd.mode ms --pd.api 3  --pd.tso 2 --pd.scheduling 3
+tiup playground v8.0.0 --pd.mode ms --pd.api 3 --pd.tso 2 --pd.scheduling 3
 ```
 
 - `--pd.mode`：当指定 `--pd.mode` 为 `ms` 时，代表启用 PD 微服务模式。
