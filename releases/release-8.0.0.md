@@ -508,8 +508,8 @@ TiDB 版本：8.0.0
 <!-- Oxreon -->
     - 修复 `SPLIT TABLE ... INDEX` 语句可能会导致 TiDB panic 的问题 [#50177](https://github.com/pingcap/tidb/issues/50177) @[Defined2014](https://github.com/Defined2014)
     - 修复查询 `KeyPartition` 类型的分区表可能会报错的问题 [#50206](https://github.com/pingcap/tidb/issues/50206) [#51313](https://github.com/pingcap/tidb/issues/51313) [#51196](https://github.com/pingcap/tidb/issues/51196) @[time-and-fate](https://github.com/time-and-fate) @[jiyfhust](https://github.com/jiyfhust) @[mjonss](https://github.com/mjonss)
-    - 修复查询 "Hash 分区" 类型的分区表结果可能不正确的问题 [#50427](https://github.com/pingcap/tidb/issues/50427) @[Defined2014](https://github.com/Defined2014)
-    - 修复 Opentracing 不能正常工作的问题 [#50508](https://github.com/pingcap/tidb/issues/50508) @[Defined2014](https://github.com/Defined2014)
+    - 修复查询 Hash 分区类型的分区表时，结果可能不正确的问题 [#50427](https://github.com/pingcap/tidb/issues/50427) @[Defined2014](https://github.com/Defined2014)
+    - 修复 opentracing 不能正常工作的问题 [#50508](https://github.com/pingcap/tidb/issues/50508) @[Defined2014](https://github.com/Defined2014)
     - 修复 `ALTER INSTANCE RELOAD TLS` 报错时，错误信息不完整的问题 [#50699](https://github.com/pingcap/tidb/issues/50699) @[dveeden](https://github.com/dveeden)
 <!-- qiancai -->
     - 修复 `AUTO_INCREMENT` 属性在分配自增 ID 时，由于不必要的事务冲突导致 ID 不连续的问题 [#50819](https://github.com/pingcap/tidb/issues/50819) @[tiancaiamao](https://github.com/tiancaiamao)
