@@ -1,6 +1,7 @@
 ---
 title: 操作符
 aliases: ['/docs-cn/dev/functions-and-operators/operators/','/docs-cn/dev/reference/sql/functions-and-operators/operators/']
+summary: 操作符是用于在MySQL中执行各种操作的关键元素。它们包括逻辑操作符（如逻辑与、逻辑或、逻辑非、逻辑异或）、赋值操作符（如赋值、赋值）、比较操作符（如相等比较、大于、小于、简单模式匹配等）等。操作符具有不同的优先级，可以用于执行各种操作。需要注意的是，MySQL不支持ILIKE操作符。详情请参考MySQL官方文档。
 ---
 
 # 操作符

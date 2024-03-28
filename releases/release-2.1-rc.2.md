@@ -1,6 +1,7 @@
 ---
 title: TiDB 2.1 RC2 Release Notes
 aliases: ['/docs-cn/dev/releases/release-2.1-rc.2/','/docs-cn/dev/releases/21rc2/']
+summary: TiDB 2.1 RC2 版本于2018年9月14日发布。该版本对系统稳定性、优化器、统计信息以及执行引擎做了很多改进。其中包括SQL优化器、SQL执行引擎、统计信息、Server、兼容性、表达式、DML、DDL等方面的改进和修复。PD方面新增了支持GetAllStores的接口和Simulator添加评估调度的统计信息等功能。TiKV方面进行了性能优化和功能改进，包括支持基于统计估算进行Region split、减少部分组件的内存拷贝等。Bug修复方面，PD修复了pd-ctl使用hot store命令错误退出的问题，TiKV修复了新分裂Region的PreVote消息被丢弃导致的leader选举问题等。
 ---
 
 # TiDB 2.1 RC2 Release Notes

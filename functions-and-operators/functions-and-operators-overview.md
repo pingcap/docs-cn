@@ -1,6 +1,7 @@
 ---
 title: 函数和操作符概述
 aliases: ['/docs-cn/dev/functions-and-operators/functions-and-operators-overview/','/docs-cn/dev/reference/sql/functions-and-operators/reference/']
+summary: TiDB中的函数和操作符使用方法与MySQL基本一致。在SQL语句中，表达式可用于诸如SELECT语句的ORDER BY或HAVING子句，SELECT/DELETE/UPDATE语句的WHERE子句，或SET语句等地方。可以使用字面值，列名，NULL，内置函数，操作符等来书写表达式。其中有些表达式下推到TiKV上执行，详见下推到TiKV的表达式列表。
 ---
 
 # 函数和操作符概述

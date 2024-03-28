@@ -1,6 +1,7 @@
 ---
 title: 位函数和操作符
 aliases: ['/docs-cn/dev/functions-and-operators/bit-functions-and-operators/','/docs-cn/dev/reference/sql/functions-and-operators/bit-functions-and-operators/']
+summary: TiDB支持使用MySQL 5.7中提供的所有位函数和操作符。这些包括BIT_COUNT()函数，用于返回参数二进制表示中为1的个数，以及位与(&)、按位取反(~)、位或(|)、位亦或(^)、左移(<<)和右移(>>)操作符。
 ---
 
 # 位函数和操作符
