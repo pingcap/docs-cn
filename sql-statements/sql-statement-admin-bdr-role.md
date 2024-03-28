@@ -9,10 +9,6 @@ summary: TiDB 数据库中 ADMIN [SET|SHOW|UNSET] BDR ROLE 的使用概况。
 - `ADMIN SHOW BDR ROLE` 可以显示该集群的 BDR role。
 - `ADMIN UNSET BDR ROLE` 可以撤销之前设置的 BDR role。
 
-> **警告：**
->
-> 双向复制的 DDL 同步目前为实验特性，不建议在生产环境中使用。该功能可能会在未事先通知的情况下发生变化或删除。如果发现 bug，请在 GitHub 上提 [issue](https://github.com/pingcap/tidb/issues) 反馈。
-
 ## 语法图
 
 ```ebnf+diagram
