@@ -508,11 +508,11 @@ TiDB 版本：8.0.0
     - 修复一些系统变量的默认值在 `information_schema.VARIABLES_INFO` 表中显示错误的问题 [#49461](https://github.com/pingcap/tidb/issues/49461) @[jiyfhust](https://github.com/jiyfhust)
     - 修复一些情况下没有对空字符串作为数据库名进行检查的问题 [#45873](https://github.com/pingcap/tidb/issues/45873) @[yoshikipom](https://github.com/yoshikipom)
 <!-- Oxreon -->
-修复一些情况下 `SPLIT TABLE ... INDEX` 语法会引发错误的问题 [#50177](https://github.com/pingcap/tidb/issues/50177) @[Defined2014](https://github.com/Defined2014)
-修复一些情况下对 "Key 分区" 类型的分区表查询可能会报错的问题 [#50206](https://github.com/pingcap/tidb/issues/50206) [#51313](https://github.com/pingcap/tidb/issues/51313) [#51196](https://github.com/pingcap/tidb/issues/51196) @[time-and-fate](https://github.com/time-and-fate) @[jiyfhust](https://github.com/jiyfhust) @[mjonss](https://github.com/mjonss)
-修复对 "Hash 分区" 类型的分区表查询结果可能不正确的问题 [#50427](https://github.com/pingcap/tidb/issues/50427) @[Defined2014](https://github.com/Defined2014)
-修复 Opentracing 不能正常工作的问题 [#50508](https://github.com/pingcap/tidb/issues/50508) @[Defined2014](https://github.com/Defined2014)
-修复 `ALTER INSTANCE RELOAD TLS` 报错时，错误信息不完全的问题 [#50699](https://github.com/pingcap/tidb/issues/50699) @[dveeden](https://github.com/dveeden)
+    - 修复 `SPLIT TABLE ... INDEX` 语句可能会导致 TiDB panic 的问题 [#50177](https://github.com/pingcap/tidb/issues/50177) @[Defined2014](https://github.com/Defined2014)
+    - 修复查询 `KeyPartition` 类型的分区表可能会报错的问题 [#50206](https://github.com/pingcap/tidb/issues/50206) [#51313](https://github.com/pingcap/tidb/issues/51313) [#51196](https://github.com/pingcap/tidb/issues/51196) @[time-and-fate](https://github.com/time-and-fate) @[jiyfhust](https://github.com/jiyfhust) @[mjonss](https://github.com/mjonss)
+    - 修复查询 "Hash 分区" 类型的分区表结果可能不正确的问题 [#50427](https://github.com/pingcap/tidb/issues/50427) @[Defined2014](https://github.com/Defined2014)
+    - 修复 Opentracing 不能正常工作的问题 [#50508](https://github.com/pingcap/tidb/issues/50508) @[Defined2014](https://github.com/Defined2014)
+    - 修复 `ALTER INSTANCE RELOAD TLS` 报错时，错误信息不完整的问题 [#50699](https://github.com/pingcap/tidb/issues/50699) @[dveeden](https://github.com/dveeden)
 <!-- qiancai -->
 修复 AUTO_INCREMENT 属性在分配自增 ID 时，由于不必要的事务冲突导致 ID 不连续的问题 [#50819](https://github.com/pingcap/tidb/issues/50819) @[tiancaiamao](https://github.com/tiancaiamao)
 修复 TiDB 日志中某些报错栈信息不完全的问题 [#50849](https://github.com/pingcap/tidb/issues/50849) @[tiancaiamao](https://github.com/tiancaiamao)
@@ -520,11 +520,11 @@ TiDB 版本：8.0.0
 修复当 `LIMIT` 子句的数字过大时，一些查询的内存使用过大的问题 [#51188](https://github.com/pingcap/tidb/issues/51188) @[Defined2014](https://github.com/Defined2014)
 修复 TTL 功能在某些情况下因没有正确切分数据范围而造成热点的问题 [#51527](https://github.com/pingcap/tidb/issues/51527) @[lcwangchao](https://github.com/lcwangchao)
 <!-- hfxsd -->
-修复当 `SET` 语句出现在显式事务的第一行时不生效的问题 [#51387](https://github.com/pingcap/tidb/issues/51387) @[YangKeao](https://github.com/YangKeao)
-修复一些情况下查询 `BINARY` 类型的 JSON 可能会报错的问题 [#51547](https://github.com/pingcap/tidb/issues/51547) @[YangKeao](https://github.com/YangKeao)
-修复 TTL 在计算过期时间时，不能正确处理夏令时跳变的问题 [#51675](https://github.com/pingcap/tidb/issues/51675) @[lcwangchao](https://github.com/lcwangchao)
-修复某些情况下 `SHOW CREATE PLACEMENT POLICY` 语句不显示 `SURVIVAL_PREFERENCES` 属性的问题 [#51699](https://github.com/pingcap/tidb/issues/51699) @[lcwangchao](https://github.com/lcwangchao)
-修复当配置文件中出现非法配置项时，配置文件不正确生效的问题 [#51399](https://github.com/pingcap/tidb/issues/51399) @[Defined2014](https://github.com/Defined2014)
+    - 修复当 `SET` 语句出现在显式事务的第一行时不生效的问题 [#51387](https://github.com/pingcap/tidb/issues/51387) @[YangKeao](https://github.com/YangKeao)
+    - 修复一些情况下查询 `BINARY` 类型的 JSON 可能会报错的问题 [#51547](https://github.com/pingcap/tidb/issues/51547) @[YangKeao](https://github.com/YangKeao)
+    - 修复 TTL 在计算过期时间时，不能正确处理夏令时跳变的问题 [#51675](https://github.com/pingcap/tidb/issues/51675) @[lcwangchao](https://github.com/lcwangchao)
+    - 修复某些情况下 `SHOW CREATE PLACEMENT POLICY` 语句不显示 `SURVIVAL_PREFERENCES` 属性的问题 [#51699](https://github.com/pingcap/tidb/issues/51699) @[lcwangchao](https://github.com/lcwangchao)
+    - 修复当配置文件中出现不合规的配置项时，配置文件不生效的问题 [#51399](https://github.com/pingcap/tidb/issues/51399) @[Defined2014](https://github.com/Defined2014)
 
 + TiKV
 
