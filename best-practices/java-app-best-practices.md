@@ -1,6 +1,7 @@
 ---
 title: 开发 Java 应用使用 TiDB 的最佳实践
 aliases: ['/docs-cn/dev/best-practices/java-app-best-practices/','/docs-cn/dev/reference/best-practices/java-app/','/docs-cn/dev/reference/best-practices/using-tidb-in-java/']
+summary: 开发 Java 应用使用 TiDB 的最佳实践，包括数据库相关组件、JDBC、连接池、数据访问框架、Spring Transaction、排查工具、火焰图等内容。TiDB 是高度兼容 MySQL 协议的数据库，基于 MySQL 开发的 Java 应用的最佳实践也多适用于 TiDB。
 ---
 
 # 开发 Java 应用使用 TiDB 的最佳实践

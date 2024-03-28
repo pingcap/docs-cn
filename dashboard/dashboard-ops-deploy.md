@@ -1,6 +1,7 @@
 ---
 title: 部署 TiDB Dashboard
 aliases: ['/docs-cn/dev/dashboard/dashboard-ops-deploy/']
+summary: TiDB Dashboard 是内置于 TiDB 4.0 或更高版本的 PD 组件中的界面，无需额外部署。对于 TiDB v6.5.0 及 TiDB Operator v1.4.0 之后的版本，在 Kubernetes 上支持将 TiDB Dashboard 作为独立的Pod部署。对于低于 4.0 版本的集群，目前不能部署或使用 TiDB Dashboard。当集群中部署了多个 PD 实例时，仅有一个 PD 实例会提供 TiDB Dashboard 服务。用户可通过 TiUP 查看实际运行 TiDB Dashboard 服务的 PD 实例，并可以切换其他 PD 实例提供 TiDB Dashboard 服务。禁用 TiDB Dashboard 后，查询和访问 TiDB Dashboard 地址将会失败。重新启用 TiDB Dashboard 时，若新启用的实例与禁用前的实例不一致，将会丢失之前存储的本地数据。
 ---
 
 # 部署 TiDB Dashboard

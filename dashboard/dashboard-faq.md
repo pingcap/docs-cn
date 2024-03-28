@@ -1,6 +1,7 @@
 ---
 title: TiDB Dashboard 常见问题
 aliases: ['/docs-cn/dev/dashboard/dashboard-faq/']
+summary: TiDB Dashboard 常见问题解决办法：防火墙或反向代理配置错误可能导致访问问题；双网卡部署时需使用反向代理访问；QPS 及 Latency 显示错误可能是因为未部署 Prometheus 监控实例；慢查询页面显示错误可能是因为开启了实验性功能；NgMonitoring 未启动可能需要升级部署工具或手动部署。
 ---
 
 # TiDB Dashboard 常见问题

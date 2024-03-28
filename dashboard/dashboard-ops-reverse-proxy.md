@@ -1,6 +1,7 @@
 ---
 title: 通过反向代理使用 TiDB Dashboard
 aliases: ['/docs-cn/dev/dashboard/dashboard-ops-reverse-proxy/']
+summary: 使用反向代理可以安全地将 TiDB Dashboard 服务从内部网络提供给外部网络。要实现这一目标，首先需要获取实际 TiDB Dashboard 地址，然后配置反向代理。如果需要自定义路径前缀，还需要修改 PD 配置和反向代理配置。最后，可以参阅提高 TiDB Dashboard 安全性文档，了解如何增强 TiDB Dashboard 的安全性。
 ---
 
 # 通过反向代理使用 TiDB Dashboard
