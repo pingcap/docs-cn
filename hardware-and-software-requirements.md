@@ -58,7 +58,7 @@ TiDB 作为一款开源一栈式实时 HTAP 数据库，可以很好地部署和
 
 支持的 CPU 架构如下：
 
-- x86_64，从 TiDB v6.6.0 开始，需要 [x84-64-v2 指令集](https://developers.redhat.com/blog/2021/01/05/building-red-hat-enterprise-linux-9-for-the-x86-64-v2-microarchitecture-level)
+- x86_64，从 TiDB v6.6.0 开始，需要 [x86-64-v2 指令集](https://developers.redhat.com/blog/2021/01/05/building-red-hat-enterprise-linux-9-for-the-x86-64-v2-microarchitecture-level)
 - ARM 64
 
 ## 软件配置要求
