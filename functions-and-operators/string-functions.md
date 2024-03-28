@@ -110,6 +110,10 @@ TiDB 与 MySQL 在二进制字符串 (binary string) 数据类型上的差异：
   - MySQL 不会对空串进行替换，其结果为 `""`。
   - TiDB 会对空串进行替换，其结果为 `"123"`。
 
-- TiDB 与 MySQL 在捕获组的关键字上存在差异。Mysql 的捕获组关键字为`$`，而 TiDB 的捕获组关键字为`\\`，同时 TiDB 只支持编号为 0-9 的捕获组。例如：
+- TiDB 与 MySQL 在捕获组的关键字上存在差异。MySQL 的捕获组关键字为`$`，而 TiDB 的捕获组关键字为`\\`。此外，TiDB 只支持编号为 `0` 到 `9` 的捕获组。
 
-  - `select regexp_replace('abcd','(.*)(.{2})$','\\1') as s;`返回结果`ab`
+    例如，以下 SQL 语句在 TiDB 中的返回结果为 `ab`。
+
+    ```sql
+    SELECT REGEXP_REPLACE('abcd','(.*)(.{2})$','\\1') AS s;
+    ```
