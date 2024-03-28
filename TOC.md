@@ -321,6 +321,7 @@
   - [Load Base Split 使用文档](/configure-load-base-split.md)
   - [Store Limit 使用文档](/configure-store-limit.md)
   - [DDL 执行原理及最佳实践](/ddl-introduction.md)
+  - [PD 微服务使用文档](/pd-microservices.md)
 - TiDB 工具
   - [功能概览](/ecosystem-tool-user-guide.md)
   - [使用场景](/ecosystem-tool-user-case.md)
@@ -578,9 +579,10 @@
       - 输出数据协议
         - [TiCDC Avro Protocol](/ticdc/ticdc-avro-protocol.md)
         - [TiCDC Canal-JSON Protocol](/ticdc/ticdc-canal-json.md)
-        - [TiCDC Open Protocol](/ticdc/ticdc-open-protocol.md)
         - [TiCDC CSV Protocol](/ticdc/ticdc-csv.md)
         - [TiCDC Debezium Protocol](/ticdc/ticdc-debezium.md)
+        - [TiCDC Open Protocol](/ticdc/ticdc-open-protocol.md)
+        - [TiCDC Simple Protocol](/ticdc/ticdc-simple-protocol.md)
       - [TiCDC Open API v2](/ticdc/ticdc-open-api-v2.md)
       - [TiCDC Open API v1](/ticdc/ticdc-open-api.md)
       - TiCDC 数据消费
@@ -986,7 +988,7 @@
         - [`SESSION_CONNECT_ATTRS`](/performance-schema/performance-schema-session-connect-attrs.md)
       - [`SYS`](/sys-schema.md)
     - [元数据锁](/metadata-lock.md)
-    - [TiDB DDL V2](/ddl-v2.md)
+    - [TiDB 加速建表](/accelerated-table-creation.md)
   - UI
     - TiDB Dashboard
       - [简介](/dashboard/dashboard-intro.md)

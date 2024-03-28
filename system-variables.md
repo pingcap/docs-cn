@@ -1520,7 +1520,7 @@ mysql> SELECT job_info FROM mysql.analyze_jobs ORDER BY end_time DESC LIMIT 1;
 - 单位：线程
 - 这个变量用来设置 DDL 操作 `re-organize` 阶段的并发度。
 
-### `tidb_ddl_version` <span class="version-mark">从 v7.6.0 版本开始引入</span>
+### `tidb_enable_fast_create_table` <span class="version-mark">从 v8.0.0 版本开始引入</span>
 
 > **警告：**
 >
@@ -1529,10 +1529,11 @@ mysql> SELECT job_info FROM mysql.analyze_jobs ORDER BY end_time DESC LIMIT 1;
 - 作用域：GLOBAL
 - 是否持久化到集群：是
 - 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：否
-- 默认值：`1`
-- 取值范围：`1` 或 `2`
-- 这个变量用于控制是否开启 [TiDB DDL V2](/ddl-v2.md)。将该变量的值设置为 `2` 可以开启该功能，设置为 `1` 可以关闭该功能。默认值为 `1`。开启后，将使用 TiDB DDL V2 执行 DDL 语句。
-- 从 TiDB v7.6.0 开始，支持加速建表 [`CREATE TABLE`](/sql-statements/sql-statement-create-table.md)。
+- 类型：布尔型
+- 默认值：`OFF`
+- 这个变量用于控制是否开启 [TiDB 加速建表](/accelerated-table-creation.md)。
+- 从 TiDB v8.0.0 开始，支持使用 `tidb_enable_fast_create_table` 加速建表 [`CREATE TABLE`](/sql-statements/sql-statement-create-table.md)。
+- 该变量是由 v7.6.0 中引入的 [`tidb_ddl_version`](https://docs.pingcap.com/zh/tidb/v7.6/system-variables#tidb_ddl_version-从-v760-版本开始引入) 更名而来。从 v8.0.0 开始，`tidb_ddl_version` 不再生效。
 
 ### `tidb_default_string_match_selectivity` <span class="version-mark">从 v6.2.0 版本开始引入</span>
 
@@ -1789,7 +1790,7 @@ mysql> SELECT job_info FROM mysql.analyze_jobs ORDER BY end_time DESC LIMIT 1;
 - 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：否
 - 类型：布尔型
 - 默认值：`ON`
-- 这个变量用来控制 TiDB 是否支持并发 HashAgg 进行落盘。当该变量设置为 `ON` 时，并发 HashAgg 将支持落盘。该变量将在功能正式发布时废弃。
+- 这个变量用来控制 TiDB 是否支持并发 HashAgg 进行落盘。当该变量设置为 `ON` 时，并发 HashAgg 将支持落盘。该变量将在功能正式发布后废弃。
 
 ### `tidb_enable_ddl` <span class="version-mark">从 v6.3.0 版本开始引入</span>
 
@@ -4652,7 +4653,8 @@ Query OK, 0 rows affected, 1 warning (0.00 sec)
 - 类型：整数型
 - 默认值：`4096`
 - 范围：`[0, 2147483647]`
-- 这个变量用来控制 [Statement Summary Tables](/statement-summary-tables.md)、[`SLOW_QUERY`](/information-schema/information-schema-slow-query.md) 表和 [TiDB Dashboard](/dashboard/dashboard-intro.md) 中显示的 SQL 字符串长度。
+- 单位：字节
+- 这个变量用来控制 [Statement Summary Tables](/statement-summary-tables.md) 和 [TiDB Dashboard](/dashboard/dashboard-intro.md) 中显示的 SQL 字符串长度。
 
 ### `tidb_stmt_summary_max_stmt_count` <span class="version-mark">从 v4.0 版本开始引入</span>
 
@@ -5251,7 +5253,7 @@ Query OK, 0 rows affected, 1 warning (0.00 sec)
 - 作用域：NONE
 - 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：否
 - 默认值：`8.0.11-TiDB-(tidb version)`
-- 这个变量的值是 MySQL 的版本和 TiDB 的版本，例如 '8.0.11-TiDB-v7.6.0'。
+- 这个变量的值是 MySQL 的版本和 TiDB 的版本，例如 '8.0.11-TiDB-v8.0.0'。
 
 ### `version_comment`
 

@@ -431,7 +431,7 @@ TiDB 支持完整的分布式事务，自 v3.0 版本起，提供乐观事务与
 
 ### 6.2 DM 问题
 
-- 6.2.1 TiDB Data Migration (DM) 是能将 MySQL/MariaDB 的数据迁移到 TiDB 的迁移工具，详情见 [DM on GitHub](https://github.com/pingcap/dm/)。
+- 6.2.1 TiDB Data Migration (DM) 是能将 MySQL/MariaDB 的数据迁移到 TiDB 的迁移工具，详情见 [DM 简介](/dm/dm-overview.md)。
 
 - 6.2.2 执行 `query-status` 或查看日志时出现 `Access denied for user 'root'@'172.31.43.27' (using password: YES)`。
 
