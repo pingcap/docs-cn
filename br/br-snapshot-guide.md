@@ -217,7 +217,7 @@ TiDB 备份功能对集群性能（事务延迟和 QPS）有一定的影响，�
     --log-file restorefull.log
     ```
 
-- 从 v8.0.0 起，`br` 命令行工具新增 `--tikv-max-restore-concurrency` 参数，用于控制每个 TiKV 节点的最大 download 和 ingest 文件数量。此外，通过调整此参数，可以控制作业队列的最大长度（作业队列的最大长度 = 32 * TiKV 节点数量 * `--tikv-max-restore-concurrency`），进而控制 BR 节点的内存消耗。
+- 从 v8.0.0 起，`br` 命令行工具新增 `--tikv-max-restore-concurrency` 参数，用于控制每个 TiKV 节点的最大 download 和 ingest 文件数量。此外，通过调整此参数，可以控制作业队列的最大长度（作业队列的最大长度 = 32 \* TiKV 节点数量 \* `--tikv-max-restore-concurrency`），进而控制 BR 节点的内存消耗。
 
     通常情况下，`--tikv-max-restore-concurrency` 会根据集群配置自动调整，无需手动设置。如果通过 Grafana 中的 **TiKV-Details** > **Backup & Import** > **Import RPC count** 监控指标发现 download 文件数量长时间接近于 0，而 ingest 文件数量一直处于上限时，说明 ingest 文件任务存在堆积，并且作业队列已达到最大长度。此时，可以采取以下措施来缓解任务堆积问题：
 
