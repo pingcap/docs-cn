@@ -4,6 +4,13 @@ title: Prepare 语句执行计划缓存
 
 # Prepare 语句执行计划缓存
 
+> **警告：**
+>
+> 如果已经被缓存的 `UPDATE` 或 `DELETE` 语句在执行过程中，同时遇到 DDL 对相关 schema 进行变更，可能会导致表和索引的数据不一致。详情参考 [Issue #51407](https://github.com/pingcap/tidb/issues/51407)。请关注该 Issue 的修复状态，并升级到[最新的 LTS 版本](https://docs.pingcap.com/zh/tidb/stable)解决该问题。在升级前，你可以尝试以下规避方法：
+> 
+> - 在执行 DDL 前，暂时[关闭 Prepare 语句的执行计划缓存](/system-variables.md#tidb_enable_prepared_plan_cache-从-v610-版本开始引入)，DDL 执行完毕后再恢复打开。
+> - 避免在业务高峰期执行 DDL。执行 DDL 后立即运行 [`ADMIN CHECK TABLE`](/sql-statements/sql-statement-admin-check-table-index.md) 检查表和索引的一致性，一旦发现错误则重建相关索引。
+
 TiDB 支持对 `Prepare`/`Execute` 请求的执行计划缓存。其中包括以下两种形式的预处理语句：
 
 - 使用 `COM_STMT_PREPARE` 和 `COM_STMT_EXECUTE` 的协议功能；
