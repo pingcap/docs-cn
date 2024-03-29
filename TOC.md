@@ -986,7 +986,9 @@
       - PERFORMANCE_SCHEMA
         - [概述](/performance-schema/performance-schema.md)
         - [`SESSION_CONNECT_ATTRS`](/performance-schema/performance-schema-session-connect-attrs.md)
-      - [`SYS`](/sys-schema.md)
+      - SYS
+        - [概述](/sys-schema/sys-schema.md)
+        - [`schema_unused_indexes`](/sys-schema/sys-schema-unused-indexes.md)
     - [元数据锁](/metadata-lock.md)
     - [TiDB 加速建表](/accelerated-table-creation.md)
   - UI
