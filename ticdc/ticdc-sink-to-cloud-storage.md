@@ -72,8 +72,12 @@ Amazon S3 配置样例如下：
 ```
 
 在同步数据之前，需要为 Amazon S3 中的目录设置相应的访问权限：
+
 - TiCDC 需要的最小权限是：`s3:ListBucket`、`s3:PutObject` 和 `s3:GetObject`。
-- 如果 changefeed 的参数 `sink.cloud-storage-config.flush-concurrency` 大于 1，表示开启了单文件的并行上传，需要额外增加 [ListParts](https://docs.aws.amazon.com/AmazonS3/latest/API/API_ListParts.html) 相关权限：`s3:AbortMultipartUpload`、`s3:ListMultipartUploadParts` 和 `s3:ListBucketMultipartUploads`。
+- 如果 changefeed 的参数 `sink.cloud-storage-config.flush-concurrency` 大于 1，表示开启了单文件的并行上传，需要额外增加 [ListParts](https://docs.aws.amazon.com/AmazonS3/latest/API/API_ListParts.html) 相关权限： 
+   - `s3:AbortMultipartUpload`
+   - `s3:ListMultipartUploadParts`
+   - `s3:ListBucketMultipartUploads`
 
 如果你还没有创建同步数据保存目录，可以参考[创建存储桶](https://docs.aws.amazon.com/zh_cn/AmazonS3/latest/user-guide/create-bucket.html)在指定的区域中创建一个 S3 存储桶。如果需要使用文件夹，可以参考[使用文件夹在 Amazon S3 控制台中组织对象](https://docs.aws.amazon.com/zh_cn/AmazonS3/latest/user-guide/create-folder.html)在存储桶中创建一个文件夹。
 
