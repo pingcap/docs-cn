@@ -60,7 +60,7 @@ URI 的 `[query_parameters]` 中可配置的参数如下：
 
 ### 配置外部存储
 
-将数据存储到云服务存储系统时，根据云服务供应商的不同，需要设置不同的鉴权参数。本部分介绍使用 Amazon S3、GCS 及 Azure Blob Storage 时所用存储服务的鉴权方式以及如何配置访问相应存储服务的账户。
+将数据存储到云服务存储系统时，根据云服务供应商的不同，需要设置不同的鉴权参数。本部分介绍使用 Amazon S3、Google Cloud Storage(GCS) 及 Azure Blob Storage 时所用存储服务的鉴权方式以及如何配置访问相应存储服务的账户。
 
 <SimpleTab groupId="storage">
 <div label="Amazon S3" value="amazon">
