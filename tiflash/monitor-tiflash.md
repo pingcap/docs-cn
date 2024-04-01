@@ -1,6 +1,7 @@
 ---
 title: TiFlash 集群监控
 aliases: ['/docs-cn/dev/tiflash/monitor-tiflash/','/docs-cn/dev/reference/tiflash/monitor/']
+summary: TiFlash集群监控包括TiFlash-Summary、TiFlash-Proxy-Summary和TiFlash-Proxy-Details。监控指标包括存储、内存、CPU使用率、请求处理、错误数量、线程数、任务调度、DDL、写入、读取、Raft等信息。注意低版本监控信息不完善，建议使用v4.0.5或更高版本的TiDB集群。
 ---
 
 # TiFlash 集群监控

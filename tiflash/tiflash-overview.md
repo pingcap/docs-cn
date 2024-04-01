@@ -1,6 +1,7 @@
 ---
 title: TiFlash 简介
 aliases: ['/docs-cn/dev/tiflash/tiflash-overview/','/docs-cn/dev/reference/tiflash/overview/','/docs-cn/dev/tiflash/use-tiflash/','/docs-cn/dev/reference/tiflash/use-tiflash/','/zh/tidb/dev/use-tiflash']
+summary: TiFlash是TiDB HTAP形态的关键组件，提供了良好的隔离性和强一致性。它使用列存扩展和Raft Learner协议异步复制，通过Raft校对索引配合MVCC实现一致性隔离级别。TiFlash架构解决了HTAP场景的隔离性和列存同步问题。它提供列式存储和借助ClickHouse高效实现的协处理器层。TiFlash可以兼容TiDB和TiSpark，推荐与TiKV不同节点部署以实现Workload隔离。具有异步复制、一致性、智能选择和计算加速等核心特性。部署完成后需要手动指定需要同步的表。
 ---
 
 # TiFlash 简介
