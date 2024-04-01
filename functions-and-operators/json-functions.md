@@ -1,6 +1,7 @@
 ---
 title: JSON 函数
 aliases: ['/docs-cn/dev/functions-and-operators/json-functions/','/docs-cn/dev/reference/sql/functions-and-operators/json-functions/']
+summary: TiDB支持MySQL 5.7 GA版本发布的大多数JSON函数，包括创建、搜索、修改、返回属性和效用函数。这些函数可用于处理JSON值，如创建JSON文档、搜索JSON文档中的值、修改JSON文档、返回JSON值属性和聚合函数。此外，还有其他相关函数可供参考。
 ---
 
 # JSON 函数

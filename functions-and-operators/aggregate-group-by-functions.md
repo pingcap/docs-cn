@@ -1,6 +1,7 @@
 ---
 title: GROUP BY 聚合函数
 aliases: ['/docs-cn/dev/functions-and-operators/aggregate-group-by-functions/','/docs-cn/dev/reference/sql/functions-and-operators/aggregate-group-by-functions/']
+summary: TiDB支持的聚合函数包括COUNT、COUNT(DISTINCT)、SUM、AVG、MAX、MIN、GROUP_CONCAT、VARIANCE、VAR_POP、STD、STDDEV、VAR_SAMP、STDDEV_SAMP和JSON_OBJECTAGG。除了GROUP_CONCAT和APPROX_PERCENTILE外，这些聚合函数可以作为窗口函数使用。另外，TiDB的GROUP BY子句支持WITH ROLLUP修饰符，还支持SQL模式ONLY_FULL_GROUP_BY。与MySQL的区别在于TiDB对标准SQL有一些扩展，允许在HAVING子句中使用别名和非列表达式。
 ---
 
 # GROUP BY 聚合函数

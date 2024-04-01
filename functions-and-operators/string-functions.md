@@ -1,6 +1,7 @@
 ---
 title: 字符串函数
 aliases: ['/docs-cn/dev/functions-and-operators/string-functions/','/docs-cn/dev/reference/sql/functions-and-operators/string-functions/','/docs-cn/dev/sql/string-functions/']
+summary: TiDB支持大部分MySQL 5.7和部分MySQL 8.0字符串函数，以及部分Oracle 21函数。不支持的函数包括LOAD_FILE()、MATCH()和SOUNDEX()。正则函数与MySQL的语法和数据类型存在一些差异，需要注意。
 ---
 
 # 字符串函数
