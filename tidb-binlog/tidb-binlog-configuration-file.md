@@ -1,6 +1,7 @@
 ---
 title: TiDB Binlog 配置说明
 aliases: ['/docs-cn/dev/tidb-binlog/tidb-binlog-configuration-file/','/docs-cn/dev/reference/tidb-binlog/configs/']
+summary: TiDB Binlog配置说明：介绍Pump和Drainer的配置项，包括地址、存储、安全和同步相关配置。 Pump包括addr、advertise-addr、socket、pd-urls、data-dir、heartbeat-interval、gen-binlog-interval、gc、log-file、log-level、node-id、security和storage配置。 Drainer包括addr、advertise-addr、log-file、log-level、node-id、data-dir、detect-interval、pd-urls、initial-commit-ts、synced-check-time、compressor、security和syncer配置。
 ---
 
 # TiDB Binlog 配置说明

@@ -1,6 +1,7 @@
 ---
 title: TiDB Binlog 集群运维
 aliases: ['/docs-cn/dev/tidb-binlog/maintain-tidb-binlog-cluster/','/docs-cn/dev/reference/tidb-binlog/maintain/','/docs-cn/dev/how-to/maintain/tidb-binlog/','/docs-cn/dev/reference/tools/tidb-binlog/maintain/']
+summary: TiDB Binlog 集群运维包括了Pump和Drainer的状态管理和启动、退出流程。通过binlogctl工具或TiDB SQL操作可以管理集群状态。具体操作方法请参考binlogctl工具的使用方法介绍。
 ---
 
 # TiDB Binlog 集群运维

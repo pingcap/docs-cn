@@ -1,6 +1,7 @@
 ---
 title: TiDB Binlog 故障诊断
 aliases: ['/docs-cn/dev/tidb-binlog/troubleshoot-tidb-binlog/','/docs-cn/dev/reference/tidb-binlog/troubleshoot/binlog/','/docs-cn/dev/how-to/troubleshoot/tidb-binlog/']
+summary: TiDB Binlog 故障诊断总结了使用过程中遇到问题的诊断流程，并指引用户通过监控、状态、日志等信息查找解决方案。排查问题的方式包括查看监控指标、使用binlogctl工具查看Pump、Drainer状态，以及查看日志中的ERROR和WARN信息。定位到问题后，在FAQ和常见错误及修复中查找解决方案，如无法解决问题可提交issue或获取支持。
 ---
 
 # TiDB Binlog 故障诊断

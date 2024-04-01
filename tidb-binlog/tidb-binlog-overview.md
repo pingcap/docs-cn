@@ -1,6 +1,7 @@
 ---
 title: TiDB Binlog 简介
 aliases: ['/docs-cn/dev/tidb-binlog/tidb-binlog-overview/','/docs-cn/dev/reference/tidb-binlog/overview/','/docs-cn/dev/reference/tidb-binlog-overview/','/docs-cn/dev/reference/tools/tidb-binlog/overview/']
+summary: TiDB Binlog是用于收集TiDB的binlog并提供实时备份和同步功能的商业工具。它支持数据同步和实时备份恢复功能。从TiDB v7.5.0开始，数据同步功能不再提供技术支持，建议使用TiCDC作为替代方案。TiDB Binlog集群主要包括Pump和Drainer两个组件，以及binlogctl工具。Pump用于记录并排序Binlog，Drainer用于归并排序并将Binlog同步到下游。TiDB Binlog还有一些注意事项，包括与TiDB v5.0版本引入的一些特性不兼容，以及Drainer支持将Binlog同步到MySQL、TiDB、Kafka或本地文件。
 ---
 
 # TiDB Binlog 简介
