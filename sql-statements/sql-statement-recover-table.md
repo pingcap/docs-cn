@@ -1,7 +1,7 @@
 ---
 title: RECOVER TABLE
 aliases: ['/docs-cn/dev/sql-statements/sql-statement-recover-table/','/docs-cn/dev/reference/sql/statements/recover-table/']
-summary: RECOVER TABLE 是用来恢复被删除的表及其数据的功能。在 DROP TABLE 后，在 GC life time 时间内，可以使用 RECOVER TABLE 语句来恢复被删除的表以及其数据。如果删除表后并过了 GC lifetime，就不能再用 RECOVER TABLE 来恢复被删除的表了。不推荐在使用 TiDB Binlog 的情况下使用 RECOVER TABLE 功能。TiDB Binlog 在 3.0.1 支持 RECOVER TABLE 后，可在特定情况下使用 RECOVER TABLE。当使用 TiDB Binlog 同步工具时，上游 TiDB 使用 RECOVER TABLE 后，可能会造成同步中断，只能通过重新全量导入被删除的表来恢复 TiDB Binlog 的数据同步。
+summary: RECOVER TABLE 是用来恢复被删除的表及其数据的功能。在 DROP TABLE 后，在 GC life time 时间内，可以使用 RECOVER TABLE 语句来恢复被删除的表以及其数据。如果删除表后并过了 GC lifetime，就不能再用 RECOVER TABLE 来恢复被删除的表了。
 ---
 
 # RECOVER TABLE
