@@ -35,6 +35,11 @@ summary: 了解 TiCDC cli 和 api 的鉴权方式。
 
 ## 通过 TiDB 用户进行客户端鉴权
 
+- 在 tidb 中创建用户，并允许从 TiCDC 所在节点登陆
+```sql
+CREATE USER 'test'@'ticdc_ip_address' IDENTIFIED BY 'password';
+```
+
 - cdc server 中开启用户名和密码鉴权
   ```toml
   [security]
@@ -43,11 +48,6 @@ summary: 了解 TiCDC cli 和 api 的鉴权方式。
   # 指定可用于客户端鉴权的用户名，列表中不存在的鉴权请求将被直接拒绝。默认值为 null。
   client-allowed-user = ["test"]
   ```
-
-- 在 tidb 中创建用户，并允许从 TiCDC 所在节点登陆
-```sql
-CREATE USER 'test'@'ticdc_ip_address' IDENTIFIED BY 'password';
-```
 
 - 使用 cli 时，cdc 按照以下顺序读取客户端鉴权配置：
   1. 通过命令行参数 `--user` 和 `--password` 指定用于鉴权的用户名和密码。
