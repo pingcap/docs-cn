@@ -5,7 +5,7 @@ summary: 了解 TiDB 8.0.0 版本的新功能、兼容性变更、改进提升�
 
 # TiDB 8.0.0 Release Notes
 
-发版日期：2024 年 3 月 28 日
+发版日期：2024 年 3 月 29 日
 
 TiDB 版本：8.0.0
 
@@ -47,7 +47,7 @@ TiDB 版本：8.0.0
   <tr>
     <td rowspan="1">数据库管理与可观测性</td>
     <td>支持观测索引使用情况 </td>
-    <td>正确的索引设计是提升数据库性能的重要前提。TiDB v8.0.0 引入内存表 <a href="https://docs.pingcap.com/zh/tidb/v8.0/information-schema-tidb-index-usage"><code>INFORMATION_SCHEMA.TIDB_INDEX_USAGE</code></a> 和视图 <a href="https://docs.pingcap.com/zh/tidb/v8.0/sys-schema#schema_unused_index"><code>sys.schema_unused_index</code></a> ，用于记录索引的使用情况。该功能有助于用户评估数据库中索引的效率并优化索引设计。</td>
+    <td>正确的索引设计是提升数据库性能的重要前提。TiDB v8.0.0 引入内存表 <a href="https://docs.pingcap.com/zh/tidb/v8.0/information-schema-tidb-index-usage"><code>INFORMATION_SCHEMA.TIDB_INDEX_USAGE</code></a> 和视图 <a href="https://docs.pingcap.com/zh/tidb/v8.0/sys-schema-unused-indexes"><code>sys.schema_unused_indexes</code></a> ，用于记录索引的使用情况。该功能有助于用户评估数据库中索引的效率并优化索引设计。</td>
   </tr>
   <tr>
     <td rowspan="2">数据迁移</td>
@@ -236,7 +236,7 @@ TiDB 版本：8.0.0
 
   通过这些信息，你可以识别未被优化器使用的索引以及过滤效果不佳的索引，从而优化索引设计，提升数据库性能。
 
-    此外，TiDB v8.0.0 新增与 MySQL 兼容的视图 [`sys.schema_unused_index`](/sys-schema.md)，用于记录自 TiDB 上次启动以来未被使用的索引信息。对于从 v8.0.0 之前版本升级的集群，`sys` 中的内容不会自动创建。你可以参考 [`sys`](/sys-schema.md) 手动创建。
+    此外，TiDB v8.0.0 新增与 MySQL 兼容的视图 [`sys.schema_unused_indexes`](/sys-schema/sys-schema-unused-indexes.md)，用于记录自 TiDB 上次启动以来未被使用的索引信息。对于从 v8.0.0 之前版本升级的集群，`sys` 中的内容不会自动创建。你可以参考 [`sys.schema_unused_indexes`](/sys-schema/sys-schema-unused-indexes.md#手动创建-schema_unused_indexes-视图) 手动创建。
 
     更多信息，请参考[用户文档](/information-schema/information-schema-tidb-index-usage.md)。
 
@@ -362,7 +362,7 @@ TiDB 版本：8.0.0
 ### 系统表
 
 * 新增系统表 [`INFORMATION_SCHEMA.TIDB_INDEX_USAGE`](/information-schema/information-schema-tidb-index-usage.md) 和 [`INFORMATION_SCHEMA.CLUSTER_TIDB_INDEX_USAGE`](/information-schema/information-schema-tidb-index-usage.md#cluster_tidb_index_usage) 用于记录 TiDB 节点中索引的访问统计信息。
-* 新增系统数据库 [`sys`](/sys-schema.md) 和 [`sys.schema_unused_index`](/sys-schema.md#schema_unused_index) 视图，用于记录自 TiDB 上次启动以来未被使用的索引信息。
+* 新增系统数据库 [`sys`](/sys-schema/sys-schema.md) 和 [`sys.schema_unused_indexes`](/sys-schema/sys-schema-unused-indexes.md) 视图，用于记录自 TiDB 上次启动以来未被使用的索引信息。
 
 ## 废弃功能
 
