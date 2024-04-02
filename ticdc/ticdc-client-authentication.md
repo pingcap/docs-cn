@@ -32,7 +32,7 @@ summary: 了解 TiCDC cli 和 api 的鉴权方式。
   3. 通过共享凭证文件 `~/.ticdc/credentials` 获取客户端证书。你可以通过命令 `cdc cli configure-credentials` 更改这个文件的配置。
 
 - 使用 curl 命令访问 api 时：
-- 通过 `--cert` 和 `--key` 指定客户端证书。如果服务端使用了自签名证书，还需要通过 `--cacert` 指定受信任的 CA 证书。
+    - 通过 `--cert` 和 `--key` 指定客户端证书。如果服务端使用了自签名证书，还需要通过 `--cacert` 指定受信任的 CA 证书。
 
 ## 通过 TiDB 用户进行客户端鉴权
 
