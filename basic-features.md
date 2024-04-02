@@ -52,7 +52,7 @@ summary: 了解 TiDB 的功能概览。
 | [Titan 插件](/storage-engine/titan-overview.md) |  Y |  Y  |  Y  | Y | Y | Y | Y | Y | Y | Y | Y | Y |
 | [Titan Level Merge](/storage-engine/titan-configuration.md#level-merge实验功能) |  E |  E  |  E  | E | E | E | E | E | E | E | E | E |
 | [使用 bucket 提高数据扫描并发度](/tune-region-performance.md#使用-bucket-增加并发) |  E |  E  |  E  | E | E | E | N | N | N | N | N | N |
-| [不可见索引](/sql-statements/sql-statement-add-index.md) |  Y |  Y  |  Y  | Y | Y | Y | Y | Y | Y | Y | Y | N |
+| [不可见索引](/sql-statements/sql-statement-create-index.md#不可见索引) |  Y |  Y  |  Y  | Y | Y | Y | Y | Y | Y | Y | Y | N |
 | [复合主键](/constraints.md#主键约束) |  Y |  Y  |  Y  | Y | Y | Y | Y | Y | Y | Y | Y | Y |
 | [`CHECK` 约束](/constraints.md#check-约束) |  Y |  Y  |  Y  | N | N | N | N | N | N | N | N | N |
 | [唯一约束](/constraints.md#唯一约束) |  Y |  Y  |  Y  | Y | Y | Y | Y | Y | Y | Y | Y | Y |
