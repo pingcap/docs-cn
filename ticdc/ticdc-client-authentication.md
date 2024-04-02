@@ -5,6 +5,11 @@ summary: 了解 TiCDC cli 和 api 的鉴权方式。
 
 # TiCDC 客户端鉴权
 
+从 v8.1.0 起，TiCDC 支持通过 mtls 或 TiDB 用户名密码进行客户端鉴权：
+  1. mtls（双向传输层安全协议）鉴权：提供了在传输层进行安全控制的方法，使 TiCDC 可以验证客户端身份。
+  2. 通过 TiDB 用户名密码鉴权：提供了在应用层进行安全控制的方法，合法用户需要有通过 TiCDC 节点进行登录的权限。
+这些方式可以单独使用，也可以结合起来使用，以满足不同的场景和安全需求。
+
 > **注意：**
 >
 > TiCDC 只支持在开启 tls 加密时进行客户端鉴权。
@@ -37,6 +42,11 @@ summary: 了解 TiCDC cli 和 api 的鉴权方式。
   # 指定可用于客户端鉴权的用户名，列表中不存在的鉴权请求将被直接拒绝。默认值为 null。
   client-allowed-user = ["test"]
   ```
+
+- 在 tidb 中创建用户，并允许从 TiCDC 所在节点登陆
+```sql
+CREATE USER 'test'@'ticdc_ip_address' IDENTIFIED BY 'password';
+```
 
 - 使用 cli 时，cdc 按照以下顺序读取客户端鉴权配置：
   1. 通过命令行参数 `--user` 和 `--password` 指定用于鉴权的用户名和密码。
