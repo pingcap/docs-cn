@@ -60,7 +60,7 @@ URI 的 `[query_parameters]` 中可配置的参数如下：
 
 ### 配置外部存储
 
-将数据存储到云服务存储系统时，根据云服务供应商的不同，需要设置不同的鉴权参数。本部分介绍使用 Amazon S3、Google Cloud Storage(GCS) 及 Azure Blob Storage 时所用存储服务的鉴权方式以及如何配置访问相应存储服务的账户。
+将数据存储到云服务存储系统时，根据云服务供应商的不同，需要设置不同的鉴权参数。本节介绍使用 Amazon S3、Google Cloud Storage (GCS) 及 Azure Blob Storage 时所用存储服务的鉴权方式以及如何配置访问相应存储服务的账户。
 
 <SimpleTab groupId="storage">
 <div label="Amazon S3" value="amazon">
@@ -81,7 +81,7 @@ Amazon S3 配置样例如下：
 
 如果你还没有创建同步数据保存目录，可以参考[创建存储桶](https://docs.aws.amazon.com/zh_cn/AmazonS3/latest/user-guide/create-bucket.html)在指定的区域中创建一个 S3 存储桶。如果需要使用文件夹，可以参考[使用文件夹在 Amazon S3 控制台中组织对象](https://docs.aws.amazon.com/zh_cn/AmazonS3/latest/user-guide/create-folder.html)在存储桶中创建一个文件夹。
 
-配置访问 Amazon S3 的账户可以通过以下两种方式：
+可以通过以下两种方式配置访问 Amazon S3 的账户：
 
 - 方式一：指定访问密钥
 
@@ -94,7 +94,7 @@ Amazon S3 配置样例如下：
 
 - 方式二：基于 IAM Role 进行访问
 
-    为运行 TiCDC Server 的 EC2 实例关联一个配置了访问 S3 访问权限的 IAM role。正确设置后，TiCDC 可以直接访问对应的 S3 中的备份目录，而不需要额外的设置。
+    为运行 TiCDC Server 的 EC2 实例关联一个[配置了访问 S3 访问权限的 IAM role](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles_use_switch-role-ec2.html)。正确设置后，TiCDC 可以直接访问对应的 S3 中的备份目录，而不需要额外的设置。
 
 </div>
 <div label="GCS" value="gcs">
