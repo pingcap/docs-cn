@@ -40,10 +40,7 @@ PD 微服务通常用于解决 PD 出现性能瓶颈的问题，提高 PD 服务
 
 ## 使用方法
 
-目前 PD 微服务支持通过 TiDB Operator 或 TiUP Playground 进行部署。
-
-<SimpleTab>
-<div label="TiDB Operator">
+目前 PD 微服务支持通过 TiDB Operator 进行部署。
 
 TiDB Operator 详细使用方法请参考以下文档：
 
@@ -51,16 +48,6 @@ TiDB Operator 详细使用方法请参考以下文档：
 - [配置 PD 微服务](https://docs.pingcap.com/zh/tidb-in-kubernetes/dev/configure-a-tidb-cluster#配置-pd-微服务)
 - [修改 PD 微服务](https://docs.pingcap.com/zh/tidb-in-kubernetes/dev/modify-tidb-configuration#修改-pd-微服务配置)
 - [扩缩容 PD 微服务组件](https://docs.pingcap.com/zh/tidb-in-kubernetes/dev/scale-a-tidb-cluster#扩缩容-pd-微服务组件)
-
-</div>
-<div label="TiUP Playground">
-
-TiUP Playground 详细使用方法请参考以下文档：
-
-- [部署 PD 微服务](/tiup/tiup-playground.md#部署-pd-微服务)
-
-</div>
-</SimpleTab>
 
 当部署和使用 PD 微服务时，请注意以下事项：
 
