@@ -120,6 +120,8 @@ Azure Blob Storage 配置样例如下：
 --sink-uri="azure://bucket/prefix?protocol=canal-json"
 ```
 
+可以通过以下方式配置访问 Azure Blob Storage 的账户：
+
 - 方式一：指定共享访问签名
 
     在 URI 中配置 `account-name` 和 `sas-token`，则使用该参数指定的存储账户名和共享访问签名令牌。由于共享访问签名令牌中带有 `&` 的字符，需要将其编码为 `%26` 后再添加到 URI 中。你也可以直接对整个 `sas-token` 进行一次百分号编码。
