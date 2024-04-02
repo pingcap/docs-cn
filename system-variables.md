@@ -3675,11 +3675,11 @@ mysql> desc select count(distinct a) from test.t;
 - 默认值：`-1`
 - 范围：`[-1, 1]`
 - 当 SQL 语句 `ORDER BY` 和 `LIMIT` 子句中的过滤条件未被索引覆盖时，该系统变量控制与 `ORDER BY` 匹配的索引的估算行数。
-- 该变量处理的是与系统变量 [tidb_opt_ordering_index_selectivity_threshold](#tidb_opt_ordering_index_selectivity_threshold-从-v700-版本开始引入) 相同的查询模式。
-- 其实现方式不同，它采用的是可能范围内符合条件的行数的比率或百分比。
+- 该变量适用的场景与系统变量 [tidb_opt_ordering_index_selectivity_threshold](#tidb_opt_ordering_index_selectivity_threshold-从-v700-版本开始引入) 相同。
+- 其实现方式与 [tidb_opt_ordering_index_selectivity_threshold](#tidb_opt_ordering_index_selectivity_threshold-从-v700-版本开始引入) 不同，它采用的是范围内符合条件的可能行数的比率或百分比。
 - 取值 `-1`（默认值）和低于零的任何其他值都会禁用此变量，从而使优化器能够估算目标行数。介于 `0` 和 `1` 之间的取值对应 0% 到 100% 的比率（例如，`0.5` 为 `50%`）。
 - 在以下示例中，表 `t` 共有 1,000,000 行。使用的查询相同，但使用了不同的 `tidb_opt_ordering_index_selectivity_ratio` 值。示例中的查询具有一个 `WHERE` 子句谓词，该谓词符合少量行（1,000,000 中的 9000 行）。有一个支持 `ORDER BY a` 的索引（索引 `ia`），但是对 `b` 的过滤不在此索引中。基于数据分布，匹配 `WHERE` 子句和 `LIMIT 1` 的行可以在扫描非过滤索引时作为第 1 行访问到，或者在几乎处理了所有行之后才找到。
-- 每个示例中都使用了一个索引提示，以展示对 estRows 的影响。最终计划选择的影响取决于其他计划的可用性和成本。
+- 每个示例中都使用了一个索引提示，以展示对 estRows 的影响。最终计划选择取决于是否存在成本更低的其他计划。
 - 第一个示例使用默认值 `-1`，使用现有的估算公式。默认行为是，在发现符合在该索引之外进行过滤的行之前，会扫描一小部分行进行估算。
 
 ```sql
