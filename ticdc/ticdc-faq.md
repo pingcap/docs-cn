@@ -261,15 +261,15 @@ Sink 为 TiDB 或 MySQL 时，下游数据库的用户需要以下权限：
 
 TiCDC 需要磁盘是为了缓冲上游写入高峰时下游消费不及时堆积的数据。TiCDC 正常运行期间都需要写入磁盘，但这通常不是同步吞吐和同步延时的瓶颈，写磁盘对延时影响在百毫秒内。TiCDC 也利用了内存来提升加速读取磁盘中的数据，以提升同步性能。
 
-## 为什么在上游使用了 TiDB Lightning 和 BR 恢复了数据之后，TiCDC 同步会出现卡顿甚至卡住？
+## 为什么在上游使用了 TiDB Lightning 物理导入模式和 BR 恢复了数据之后，TiCDC 同步会出现卡顿甚至卡住？
 
-目前 TiCDC 尚未完全适配 TiDB Lightning 和 BR，请避免在使用 TiCDC 同步的表上使用 TiDB Lightning 和 BR。否则，可能会出现未知的错误，例如 TiCDC 同步卡住、同步延迟大幅增加、或者同步数据丢失。
+目前 TiCDC 尚未完全适配 TiDB Lightning [物理导入模式 (Physical Import Mode)](/tidb-lightning/tidb-lightning-physical-import-mode.md) 和 BR，请避免在使用 TiCDC 同步的表上使用 TiDB Lightning 物理导入模式和 BR。否则，可能会出现未知的错误，例如 TiCDC 同步卡住、同步延迟大幅增加、或者同步数据丢失。
 
-如果有某些使用 TiCDC 同步的表需要使用 TiDB Lightning 或者 BR 恢复数据，可以这么做：
+如果有某些使用 TiCDC 同步的表需要使用 TiDB Lightning 物理导入模式或者 BR 恢复数据，可以这么做：
 
 1. 删除涉及这些表的 TiCDC 同步任务。
 
-2. 使用 TiDB Lightning 或 BR 在 TiCDC 的上游集群和下游集群分别恢复数据。
+2. 使用 TiDB Lightning 物理导入模式或 BR 在 TiCDC 的上游集群和下游集群分别恢复数据。
 
 3. 恢复完成并检查了上下游集群对应表的数据一致性之后，使用上游备份的时间点 (TSO) 作为 TiCDC 同步任务的 `start-ts`，创建新的 TiCDC 同步任务，进行增量同步。例如，假设上游集群的 BR 备份的 snapshot 时间点为 `431434047157698561`，那么可以使用以下命令创建新的 TiCDC 同步任务：
 
