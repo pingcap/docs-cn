@@ -1138,7 +1138,43 @@ SELECT LOWER(-012);
 
 ### [`LPAD()`](https://dev.mysql.com/doc/refman/8.0/en/string-functions.html#function_lpad)
 
-返回字符串参数，左侧添加指定字符串
+`LPAD(str, len, padstr)` 函数返回字符串参数，左侧填充指定字符串 `padstr`，直到字符串长度达到 `len` 个字符。
+
+- 如果 `len` 小于字符串 `str` 的长度，函数将字符串 `str` 截断到长度 `len`。
+- 如果 `len` 为负数，函数返回 `NULL`。
+- 如果任一参数为 `NULL`，该函数返回 `NULL`。
+
+示例：
+
+```sql
+SELECT LPAD('TiDB',8,'>');
++--------------------+
+| LPAD('TiDB',8,'>') |
++--------------------+
+| >>>>TiDB           |
++--------------------+
+1 row in set (0.00 sec)
+```
+
+```sql
+SELECT LPAD('TiDB',2,'>');
++--------------------+
+| LPAD('TiDB',2,'>') |
++--------------------+
+| Ti                 |
++--------------------+
+1 row in set (0.00 sec)
+```
+
+```sql
+SELECT LPAD('TiDB',-2,'>');
++---------------------+
+| LPAD('TiDB',-2,'>') |
++---------------------+
+| NULL                |
++---------------------+
+1 row in set (0.00 sec)
+```
 
 ### [`LTRIM()`](https://dev.mysql.com/doc/refman/8.0/en/string-functions.html#function_ltrim)
 
