@@ -410,9 +410,35 @@ SELECT CONCAT_WS(',', 'TiDB Server', 'TiKV', 'PD');
 
 返回参数在后续参数中出现的第一个位置
 
+在以下示例中，`FIELD()` 的第一个参数是 `needle`，它与后续列表中的第二个参数匹配，因此函数返回 `2`。
+
+```sql
+SELECT FIELD('needle', 'A', 'needle', 'in', 'a', 'haystack');
++-------------------------------------------------------+
+| FIELD('needle', 'A', 'needle', 'in', 'a', 'haystack') |
++-------------------------------------------------------+
+|                                                     2 |
++-------------------------------------------------------+
+1 row in set (0.00 sec)
+```
+
 ### [`FIND_IN_SET()`](https://dev.mysql.com/doc/refman/8.0/en/string-functions.html#function_find-in-set)
 
 返回第一个参数在第二个参数中出现的位置
+
+该函数通常与 [`SET`](/data-type-string.md#set-类型) 数据类型一起使用。
+
+在以下示例中，`Go` 是集合 `COBOL,BASIC,Rust,Go,Java,Fortran` 中的第四个元素，因此函数返回 `4`。
+
+```sql
+SELECT FIND_IN_SET('Go', 'COBOL,BASIC,Rust,Go,Java,Fortran');
++-------------------------------------------------------+
+| FIND_IN_SET('Go', 'COBOL,BASIC,Rust,Go,Java,Fortran') |
++-------------------------------------------------------+
+|                                                     4 |
++-------------------------------------------------------+
+1 row in set (0.00 sec)
+```
 
 ### [`FORMAT()`](https://dev.mysql.com/doc/refman/8.0/en/string-functions.html#function_format)
 
