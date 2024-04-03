@@ -55,7 +55,8 @@ TiDB 版本：6.5.9
     + TiCDC
 
         - note [#issue](https://github.com/pingcap/tiflow/issues/${issue-id}) @[贡献者 GitHub ID](https://github.com/${github-id})
-        - note [#issue](https://github.com/pingcap/tiflow/issues/${issue-id}) @[贡献者 GitHub ID](https://github.com/${github-id})
+        - 修复了一些监控显示不精确的问题 [10354](https://github.com/pingcap/tiflow/issues/10354)，[10449](https://github.com/pingcap/tiflow/issues/10449)，[#10482](https://github.com/pingcap/tiflow/issues/10482)，[10675] (https://github.com/pingcap/tiflow/issues/10675) @[CharlesCheung96](https://github.com/CharlesCheung96)，@[lidezhu](https://github.com/lidezhu)
+        - 修复 storage sink 场景下无法正常访问 azure 和 gcs 对象存储的问题 [10592](https://github.com/pingcap/tiflow/issues/10592) @[CharlesCheung96](https://github.com/CharlesCheung96)
 
     + TiDB Data Migration (DM)
 
