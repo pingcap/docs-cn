@@ -451,13 +451,13 @@ TiDB 兼容 MySQL 的错误码，在大多数情况下，返回和 MySQL 一样�
 
 * Error Number: 9001
 
-    完整的报错信息为 `ERROR 9001 (HY000) : PD Server Timeout`。
+    完整的报错信息为 `ERROR 9001 (HY000) : PD server timeout`。
 
     请求 PD 超时，请检查 PD Server 状态/监控/日志以及 TiDB Server 与 PD Server 之间的网络。
 
 * Error Number: 9002
 
-    完整的报错信息为 `ERROR 9002 (HY000) : TiKV Server Timeout`。
+    完整的报错信息为 `ERROR 9002 (HY000) : TiKV server timeout`。
 
     请求 TiKV 超时，请检查 TiKV Server 状态/监控/日志以及 TiDB Server 与 TiKV Server 之间的网络。
 
