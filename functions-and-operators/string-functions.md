@@ -128,7 +128,7 @@ SELECT CustomerName, BIT_LENGTH(CustomerName) AS BitLengthOfName FROM Customers;
 
 ### [`CHAR()`](https://dev.mysql.com/doc/refman/8.0/en/string-functions.html#function_char)
 
-`CHAR()` 函数用于获取指定 ASCII 值的对应字符。该函数执行的操作与 `ASCII()` 相反，`ASCII()` 用于返回指定字符的 ASCII 值。如果提供了多个参数，该函数将对所有参数执行操作，然后将它们连接在一起。
+`CHAR()` 函数用于获取指定 ASCII 值的对应字符。该函数执行的操作与 `ASCII()` 相反，`ASCII()` 用于返回指定字符的 ASCII 值。如果提供了多个参数，该函数将作用于所有参数作，然后将它们连接在一起。
 
 示例：
 
