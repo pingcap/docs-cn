@@ -184,7 +184,7 @@ TiDB 7.5.0 为长期支持版本 (Long-Term Support Release, LTS)。
 | TiCDC | [`flush-worker-num`](/ticdc/ticdc-changefeed-config.md) | 新增 | 控制 redo 模块中上传文件 worker 的数量。 |
 | TiCDC | [`sink.column-selectors`](/ticdc/ticdc-changefeed-config.md) | 新增 | 控制 TiCDC 将增量数据分发到 Kafka 时，只发送指定的列的数据变更事件。 |
 | TiCDC | [`sql-mode`](/ticdc/ticdc-changefeed-config.md) | 新增 | 设置 TiCDC 解析 DDL 时使用的 SQL 模式，默认值和 TiDB 的默认 SQL 模式一致。 |
-| TiCDC | [`changefeed-error-stuck-duration`](/ticdc/ticdc-changefeed-config.md) | 新增 | 控制 changefeed 发生内部错误和异常时允许自动重试的时间。 |
+| TiCDC | [`changefeed-error-stuck-duration`](/ticdc/ticdc-changefeed-config.md) | 新增 | 控制 changefeed 发生内部错误或异常时允许自动重试的时间。 |
 | TiDB Lightning | `--importer` | 删除 | 该配置项用于指定 TiKV-importer 的地址。从 v7.5.0 起，TiKV-importer 组件被废弃。 |
 
 ## 离线包变更
