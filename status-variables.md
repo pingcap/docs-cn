@@ -77,7 +77,7 @@ summary: 使用状态变量查看系统和会话状态。
 
 - 作用域：SESSION | GLOBAL
 - 类型：字符串
-- 最后一次运行[垃圾回收 (GC)](/garbage-collection-overview.md) 的时间戳。
+- 最近一次运行[垃圾回收 (GC)](/garbage-collection-overview.md) 的时间戳。
 
 ### tidb_gc_leader_desc
 
