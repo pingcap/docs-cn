@@ -1260,21 +1260,367 @@ SELECT LPAD('TiDB',-2,'>');
 
 使用正则表达式匹配模式
 
+示例：
+
+在下面示例中，一些字符串被匹配到两个正则表达式。
+
+```sql
+WITH vals AS (
+    SELECT 'TiDB' AS v 
+    UNION ALL
+    SELECT 'Titanium'
+    UNION ALL
+    SELECT 'Tungsten'
+    UNION ALL
+    SELECT 'Rust'
+)
+SELECT 
+    v,
+    v REGEXP '^Ti' AS 'starts with "Ti"',
+    v REGEXP '^.{4}$' AS 'Length is 4 characters'
+FROM
+    vals;
+```
+
+```
++----------+------------------+------------------------+
+| v        | starts with "Ti" | Length is 4 characters |
++----------+------------------+------------------------+
+| TiDB     |                1 |                      1 |
+| Titanium |                1 |                      0 |
+| Tungsten |                0 |                      0 |
+| Rust     |                0 |                      1 |
++----------+------------------+------------------------+
+4 rows in set (0.00 sec)
+```
+
+下面示例展示了 `REGEXP` 并不限于 `SELECT` 子句，还可以用于查询的 `WHERE` 子句。
+
+```sql
+SELECT
+    v
+FROM (
+        SELECT 'TiDB' AS v
+    ) AS vals
+WHERE
+    v REGEXP 'DB$';
+```
+
+```
++------+
+| v    |
++------+
+| TiDB |
++------+
+1 row in set (0.01 sec)
+```
+
 ### [`REGEXP_INSTR()`](https://dev.mysql.com/doc/refman/8.0/en/regexp.html#function_regexp-instr)
 
 返回满足正则的子字符串的第一个索引位置（与 MySQL 不完全兼容，具体请参考[正则函数与 MySQL 的兼容性](#正则函数与-mysql-的兼容性)）
+
+`REGEXP_INSTR(str, regexp, [start, [match, [ret, [match_type]]]])` 函数返回正则表达式（`regexp`）匹配字符串（`str`）的位置。
+
+如果 `str` 或 `regexp` 为 `NULL`，则函数返回 `NULL`。
+
+示例：
+
+下面示例展示了 `^.b.$` 匹配 `abc` 的情况。
+
+```sql
+SELECT REGEXP_INSTR('abc','^.b.$');
+```
+
+```
++-----------------------------+
+| REGEXP_INSTR('abc','^.b.$') |
++-----------------------------+
+|                           1 |
++-----------------------------+
+1 row in set (0.00 sec)
+```
+
+下面示例展示了使用第三个参数来查找第二个匹配值的情况。
+
+```sql
+SELECT REGEXP_INSTR('abcabc','a');
+```
+
+```
++----------------------------+
+| REGEXP_INSTR('abcabc','a') |
++----------------------------+
+|                          1 |
++----------------------------+
+1 row in set (0.00 sec)
+```
+
+```sql
+SELECT REGEXP_INSTR('abcabc','a',2);
+```
+
+```
++------------------------------+
+| REGEXP_INSTR('abcabc','a',2) |
++------------------------------+
+|                            4 |
++------------------------------+
+1 row in set (0.00 sec)
+```
+
+下面示例展示了使用第四个参数来查找第二个匹配值的情况。
+
+```sql
+SELECT REGEXP_INSTR('abcabc','a',1,2);
+```
+
+```
++--------------------------------+
+| REGEXP_INSTR('abcabc','a',1,2) |
++--------------------------------+
+|                              4 |
++--------------------------------+
+1 row in set (0.00 sec)
+```
+
+下面示例展示了使用第五个参数来查找第二个匹配值后面的值的情况，而不是匹配的值。
+
+```sql
+SELECT REGEXP_INSTR('abcabc','a',1,1,1);
+```
+
+```
++----------------------------------+
+| REGEXP_INSTR('abcabc','a',1,1,1) |
++----------------------------------+
+|                                2 |
++----------------------------------+
+1 row in set (0.00 sec)
+```
+
+下面示例展示了使用第六个参数来添加 `i` 标志以获得不区分大小写的匹配。有关正则表达式 `match_type` 的更多详细信息，请参阅 [`match_type` 兼容性](#匹配模式-match_type-兼容性)。
+
+```sql
+SELECT REGEXP_INSTR('abcabc','A',1,1,0,'');
+```
+
+```
++-------------------------------------+
+| REGEXP_INSTR('abcabc','A',1,1,0,'') |
++-------------------------------------+
+|                                   0 |
++-------------------------------------+
+1 row in set (0.00 sec)
+```
+
+```sql
+SELECT REGEXP_INSTR('abcabc','A',1,1,0,'i');
+```
+
+```
++--------------------------------------+
+| REGEXP_INSTR('abcabc','A',1,1,0,'i') |
++--------------------------------------+
+|                                    1 |
++--------------------------------------+
+1 row in set (0.00 sec)
+```
+
+除了 `match_type`，[排序规则](/character-set-and-collation.md) 也会影响匹配。在下面的示例中，使用了区分大小写和不区分大小写的排序规则来展示这种影响。
+
+```sql
+SELECT REGEXP_INSTR('abcabc','A' COLLATE utf8mb4_general_ci);
+```
+
+```
++-------------------------------------------------------+
+| REGEXP_INSTR('abcabc','A' COLLATE utf8mb4_general_ci) |
++-------------------------------------------------------+
+|                                                     1 |
++-------------------------------------------------------+
+1 row in set (0.01 sec)
+```
+
+```sql
+SELECT REGEXP_INSTR('abcabc','A' COLLATE utf8mb4_bin);
+```
+
+```
++------------------------------------------------+
+| REGEXP_INSTR('abcabc','A' COLLATE utf8mb4_bin) |
++------------------------------------------------+
+|                                              0 |
++------------------------------------------------+
+1 row in set (0.00 sec)
+```
 
 ### [`REGEXP_LIKE()`](https://dev.mysql.com/doc/refman/8.0/en/regexp.html#function_regexp-like)
 
 判断字符串是否满足正则表达式（与 MySQL 不完全兼容，具体请参考[正则函数与 MySQL 的兼容性](#正则函数与-mysql-的兼容性)）
 
+`REGEXP_LIKE(str, regex, [match_type])` 函数用于测试正则表达式是否匹配字符串。可选的 `match_type` 可以用于更改匹配行为。
+
+示例：
+
+下面示例展示了 `^a` 匹配 `abc` 的情况。
+
+```sql
+SELECT REGEXP_LIKE('abc','^a');
+```
+
+```
++-------------------------+
+| REGEXP_LIKE('abc','^a') |
++-------------------------+
+|                       1 |
++-------------------------+
+1 row in set (0.00 sec)
+```
+
+下面示例展示了 `^A` 不匹配 `abc` 的情况。
+
+```sql
+SELECT REGEXP_LIKE('abc','^A');
+```
+
+```
++-------------------------+
+| REGEXP_LIKE('abc','^A') |
++-------------------------+
+|                       0 |
++-------------------------+
+1 row in set (0.00 sec)
+```
+
+下面示例展示了 `^A` 匹配 `abc` 的情况，因为 `i` 标志启用了不区分大小写的匹配，所以能够匹配上。关于正则表达式 `match_type` 的更多详细信息，请参阅 [`match_type` 兼容性](#匹配模式-match_type-兼容性)。
+
+```sql
+SELECT REGEXP_LIKE('abc','^A','i');
+```
+
+```
++-----------------------------+
+| REGEXP_LIKE('abc','^A','i') |
++-----------------------------+
+|                           1 |
++-----------------------------+
+1 row in set (0.00 sec)
+```
+
 ### [`REGEXP_REPLACE()`](https://dev.mysql.com/doc/refman/8.0/en/regexp.html#function_regexp-replace)
 
 替换满足正则表达式的子字符串（与 MySQL 不完全兼容，具体请参考[正则函数与 MySQL 的兼容性](#正则函数与-mysql-的兼容性)）
 
+`REGEXP_REPLACE(str, regexp, replace, [start, [match, [match_type]]])` 函数可以用于基于正则表达式替换字符串。
+
+示例：
+
+下面的示例中，两个 `o` 被替换为 `i`。
+
+```sql
+SELECT REGEXP_REPLACE('TooDB', 'o{2}', 'i');
+```
+
+```
++--------------------------------------+
+| REGEXP_REPLACE('TooDB', 'o{2}', 'i') |
++--------------------------------------+
+| TiDB                                 |
++--------------------------------------+
+1 row in set (0.00 sec)
+```
+
+下面示例从第三个字符开始匹配，导致正则表达式不匹配，不进行任何替换。
+
+```sql
+SELECT REGEXP_REPLACE('TooDB', 'o{2}', 'i',3);
+```
+
+```
++----------------------------------------+
+| REGEXP_REPLACE('TooDB', 'o{2}', 'i',3) |
++----------------------------------------+
+| TooDB                                  |
++----------------------------------------+
+1 row in set (0.00 sec)
+```
+
+下面示例中，第五个参数用于设置替换第一个或第二个匹配的值。
+
+```sql
+SELECT REGEXP_REPLACE('TooDB', 'o', 'i',1,1);
+```
+
+```
++---------------------------------------+
+| REGEXP_REPLACE('TooDB', 'o', 'i',1,1) |
++---------------------------------------+
+| TioDB                                 |
++---------------------------------------+
+1 row in set (0.00 sec)
+```
+
+```sql
+SELECT REGEXP_REPLACE('TooDB', 'o', 'i',1,2);
+```
+
+```
++---------------------------------------+
+| REGEXP_REPLACE('TooDB', 'o', 'i',1,2) |
++---------------------------------------+
+| ToiDB                                 |
++---------------------------------------+
+1 row in set (0.00 sec)
+```
+
+下面示例中，第六个参数用于设置不区分大小写的匹配。更多关于正则表达式 `match_type` 的详细信息，请参阅 [`match_type` 兼容性](#匹配模式-match_type-兼容性)。
+
+```sql
+SELECT REGEXP_REPLACE('TooDB', 'O{2}','i',1,1);
+```
+
+```
++-----------------------------------------+
+| REGEXP_REPLACE('TooDB', 'O{2}','i',1,1) |
++-----------------------------------------+
+| TooDB                                   |
++-----------------------------------------+
+1 row in set (0.00 sec)
+```
+
+```sql
+SELECT REGEXP_REPLACE('TooDB', 'O{2}','i',1,1,'i');
+```
+
+```
++---------------------------------------------+
+| REGEXP_REPLACE('TooDB', 'O{2}','i',1,1,'i') |
++---------------------------------------------+
+| TiDB                                        |
++---------------------------------------------+
+1 row in set (0.00 sec)
+```
+
 ### [`REGEXP_SUBSTR()`](https://dev.mysql.com/doc/refman/8.0/en/regexp.html#function_regexp-substr)
 
 返回满足正则表达式的子字符串（与 MySQL 不完全兼容，具体请参考[正则函数与 MySQL 的兼容性](#正则函数与-mysql-的兼容性)）
+
+`REGEXP_SUBSTR(str, regexp, [start, [match, [match_type]]])` 函数用于基于正则表达式获取子字符串。
+
+下面示例使用 `Ti.{2}` 正则表达式从 `This is TiDB` 字符串中获取 `TiDB` 子字符串。
+
+```sql
+SELECT REGEXP_SUBSTR('This is TiDB','Ti.{2}');
+```
+
+```
++----------------------------------------+
+| REGEXP_SUBSTR('This is TiDB','Ti.{2}') |
++----------------------------------------+
+| TiDB                                   |
++----------------------------------------+
+1 row in set (0.00 sec)
+```
 
 ### [`REPEAT()`](https://dev.mysql.com/doc/refman/8.0/en/string-functions.html#function_repeat)
 
@@ -1551,6 +1897,15 @@ TiDB 与 MySQL 在 `match_type` 上的差异：
 
 - TiDB 不支持 `match_type` 为 `"u"`。
 
+| `match_type` | MySQL | TiDB | 描述                                   |
+|:------------:|-------|------|----------------------------------------|
+| c            | Yes   | Yes  | 大小写敏感匹配                          |
+| i            | Yes   | Yes  | 大小写不敏感匹配                        |
+| m            | Yes   | Yes  | Multi-line 模式                        |
+| s            | No    | Yes  | 匹配新行，和 MySQL 中的 `n` 相同        |
+| n            | Yes   | No   | 匹配新行，和 TiDB 中的 `s` 相同         |
+| u            | Yes   | No   | UNIX&trade，line endings               |
+
 ### 数据类型兼容性
 
 TiDB 与 MySQL 在二进制字符串 (binary string) 数据类型上的差异：
@@ -1572,3 +1927,7 @@ TiDB 与 MySQL 在二进制字符串 (binary string) 数据类型上的差异：
     ```sql
     SELECT REGEXP_REPLACE('abcd','(.*)(.{2})$','\\1') AS s;
     ```
+
+### 已知问题
+
+- [GitHub Issue #37981](https://github.com/pingcap/tidb/issues/37981)
