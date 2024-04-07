@@ -9,13 +9,13 @@ summary: TiDB 数据库中 USE 的使用概况。
 
 ## 语法图
 
-**UseStmt:**
+```ebnf+diagram
+UseStmt ::=
+    "USE" DBName
 
-![UseStmt](/media/sqlgram/UseStmt.png)
-
-**DBName:**
-
-![DBName](/media/sqlgram/DBName.png)
+DBName ::=
+    Identifier
+```
 
 ## 示例
 
