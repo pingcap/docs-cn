@@ -5,7 +5,7 @@ summary: TiDB 数据库中 EXPLAIN 的使用概况。
 
 # EXPLAIN
 
-`EXPLAIN` 语句仅用于显示查询的执行计划，而不执行查询。`EXPLAIN ANALYZE` 可执行查询，补充 `EXPLAIN` 语句。如果 `EXPLAIN` 的输出与预期结果不匹配，可考虑在查询的每个表上执行 `ANALYZE TABLE`。
+`EXPLAIN` 语句仅用于显示查询的执行计划，而不执行查询。该语句为 `EXPLAIN ANALYZE` 语句的补充，后者会执行查询。如果 `EXPLAIN` 的输出与预期结果不匹配，可考虑在查询的每个表上执行 `ANALYZE TABLE`，以确保表统计信息是最新的。
 
 语句 `DESC` 和 `DESCRIBE` 是 `EXPLAIN` 的别名。`EXPLAIN <tableName>` 的替代用法记录在 [`SHOW [FULL] COLUMNS FROM`](/sql-statements/sql-statement-show-columns-from.md) 下。
 
