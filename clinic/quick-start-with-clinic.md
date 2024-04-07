@@ -34,13 +34,13 @@ PingCAP Clinic 由 [Diag 诊断客户端](https://github.com/pingcap/diag)（以
     <SimpleTab groupId="clinicServer">
     <div label="Clinic Server 中国区" value="clinic-cn">
 
-    登录 [Clinic Server 中国区](https://clinic.pingcap.com.cn)，选择 **Sign in with AskTUG** 进入 TiDB 社区 AskTUG 的登录界面。如果你尚未注册 AskTUG 账号，可以在该界面进行注册。
+    登录 [Clinic Server 中国区](https://clinic.pingcap.com.cn)，选择 **Continue with AskTUG** 进入 TiDB 社区 AskTUG 的登录界面。如果你尚未注册 AskTUG 账号，可以在该界面进行注册。
 
     </div>
 
     <div label="Clinic Server 美国区" value="clinic-us">
 
-    登录 [Clinic Server 美国区](https://clinic.pingcap.com)，选择 **Sign in with TiDB Account** 进入 TiDB Cloud Account 的登录界面。如果你尚未注册 TiDB Cloud 账号，可以在该界面进行注册。
+    登录 [Clinic Server 美国区](https://clinic.pingcap.com)，选择 **Continue with TiDB Account** 进入 TiDB Cloud Account 的登录界面。如果你尚未注册 TiDB Cloud 账号，可以在该界面进行注册。
 
     > **注意：**
     >
