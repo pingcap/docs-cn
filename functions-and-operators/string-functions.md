@@ -411,9 +411,35 @@ SELECT CONCAT_WS(',', 'TiDB Server', 'TiKV', 'PD');
 
 返回参数在后续参数中出现的第一个位置
 
+在以下示例中，`FIELD()` 的第一个参数是 `needle`，它与后续列表中的第二个参数匹配，因此函数返回 `2`。
+
+```sql
+SELECT FIELD('needle', 'A', 'needle', 'in', 'a', 'haystack');
++-------------------------------------------------------+
+| FIELD('needle', 'A', 'needle', 'in', 'a', 'haystack') |
++-------------------------------------------------------+
+|                                                     2 |
++-------------------------------------------------------+
+1 row in set (0.00 sec)
+```
+
 ### [`FIND_IN_SET()`](https://dev.mysql.com/doc/refman/8.0/en/string-functions.html#function_find-in-set)
 
 返回第一个参数在第二个参数中出现的位置
+
+该函数通常与 [`SET`](/data-type-string.md#set-类型) 数据类型一起使用。
+
+在以下示例中，`Go` 是集合 `COBOL,BASIC,Rust,Go,Java,Fortran` 中的第四个元素，因此函数返回 `4`。
+
+```sql
+SELECT FIND_IN_SET('Go', 'COBOL,BASIC,Rust,Go,Java,Fortran');
++-------------------------------------------------------+
+| FIND_IN_SET('Go', 'COBOL,BASIC,Rust,Go,Java,Fortran') |
++-------------------------------------------------------+
+|                                                     4 |
++-------------------------------------------------------+
+1 row in set (0.00 sec)
+```
 
 ### [`FORMAT()`](https://dev.mysql.com/doc/refman/8.0/en/string-functions.html#function_format)
 
@@ -1139,7 +1165,43 @@ SELECT LOWER(-012);
 
 ### [`LPAD()`](https://dev.mysql.com/doc/refman/8.0/en/string-functions.html#function_lpad)
 
-返回字符串参数，左侧添加指定字符串
+`LPAD(str, len, padstr)` 函数返回字符串参数，左侧填充指定字符串 `padstr`，直到字符串长度达到 `len` 个字符。
+
+- 如果 `len` 小于字符串 `str` 的长度，函数将字符串 `str` 截断到长度 `len`。
+- 如果 `len` 为负数，函数返回 `NULL`。
+- 如果任一参数为 `NULL`，该函数返回 `NULL`。
+
+示例：
+
+```sql
+SELECT LPAD('TiDB',8,'>');
++--------------------+
+| LPAD('TiDB',8,'>') |
++--------------------+
+| >>>>TiDB           |
++--------------------+
+1 row in set (0.00 sec)
+```
+
+```sql
+SELECT LPAD('TiDB',2,'>');
++--------------------+
+| LPAD('TiDB',2,'>') |
++--------------------+
+| Ti                 |
++--------------------+
+1 row in set (0.00 sec)
+```
+
+```sql
+SELECT LPAD('TiDB',-2,'>');
++---------------------+
+| LPAD('TiDB',-2,'>') |
++---------------------+
+| NULL                |
++---------------------+
+1 row in set (0.00 sec)
+```
 
 ### [`LTRIM()`](https://dev.mysql.com/doc/refman/8.0/en/string-functions.html#function_ltrim)
 
