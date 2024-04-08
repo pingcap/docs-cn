@@ -92,5 +92,5 @@ TiDB 版本：6.5.7
 
     + TiCDC
 
-        - 修复数据同步到下游 MySQL 时可能出现 `checkpoint-ts` 卡住的问题 [#10334](https://github.com/pingcap/tiflow/issues/10334) @[zhangjinpeng1987](https://github.com/zhangjinpeng1987)
+        - 修复数据同步到下游 MySQL 时可能出现 `checkpoint-ts` 卡住的问题 [#10334](https://github.com/pingcap/tiflow/issues/10334) @[zhangjinpeng87](https://github.com/zhangjinpeng87)
         - 修复 `kv-client` 初始化过程中可能出现数据竞争的问题 [#10095](https://github.com/pingcap/tiflow/issues/10095) @[3AceShowHand](https://github.com/3AceShowHand)
