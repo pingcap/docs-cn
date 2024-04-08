@@ -88,6 +88,12 @@ TiDB 版本：6.5.9
 
     - note [#issue](https://github.com/pingcap/tidb/issues/${issue-id}) @[贡献者 GitHub ID](https://github.com/${github-id})
     - note [#issue](https://github.com/pingcap/tidb/issues/${issue-id}) @[贡献者 GitHub ID](https://github.com/${github-id})
+    - 修复大量创建表时，新表可能缺失 stats_meta 信息导致后续估算无法获取准确行数信息的问题 [#36004](https://github.com/pingcap/tidb/issues/36004) @[xuyifangreeneyes](https://github.com/xuyifangreeneyes)
+    - 修复已经 drop 的表依然会被计入 Grafana 的 Stats Healthy Distribution 面板的问题 [#39349](https://github.com/pingcap/tidb/issues/39349) @[xuyifangreeneyes](https://github.com/xuyifangreeneyes)
+    - 修复涉及 `MemTableScan` 算子的查询丢失 SQL 中形如 `WHERE column_name` 的过滤条件的问题 [#40937](https://github.com/pingcap/tidb/issues/40937) @[zhongzc](https://github.com/zhongzc)
+    - 修复子查询中的 `HAVING` 子句包含关联列时查询结果可能错误的问题 [#51107](https://github.com/pingcap/tidb/issues/51107) @[hawkingrei](https://github.com/hawkingrei)
+    - 修复在 CTE 中访问分区表，且该分区表缺少统计信息时，查询结果可能错误的问题 [#51873](https://github.com/pingcap/tidb/issues/51873) @[qw4990](https://github.com/qw4990)
+    - 修复当 SQL 中包含 `JOIN` 且 `SELECT` 列表只包含常量，且使用 MPP 执行时，查询结果可能错误的问题 [#50358](https://github.com/pingcap/tidb/issues/50358) @[yibin87](https://github.com/yibin87)
     - (dup): release-8.0.0.md > 错误修复> TiDB - 修复 `AUTO_INCREMENT` 属性在分配自增 ID 时，由于不必要的事务冲突导致 ID 不连续的问题 [#50819](https://github.com/pingcap/tidb/issues/50819) @[tiancaiamao](https://github.com/tiancaiamao)
     - (dup): release-8.0.0.md > 错误修复> TiDB - 修复 Grafana 监控指标 `tidb_statistics_auto_analyze_total` 没有显示为整数的问题 [#51051](https://github.com/pingcap/tidb/issues/51051) @[hawkingrei](https://github.com/hawkingrei)
     - (dup): release-7.1.4.md > 错误修复> TiDB - 修复并发合并分区表的全局统计信息时可能遇到报错的问题 [#48713](https://github.com/pingcap/tidb/issues/48713) @[hawkingrei](https://github.com/hawkingrei)
