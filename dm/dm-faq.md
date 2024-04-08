@@ -13,7 +13,7 @@ DM 仅支持解析标准版本的 MySQL/MariaDB 的 binlog，对于阿里云 RDS
 - 阿里云 RDS
     - 即使上游表没有主键，阿里云 RDS 的 binlog 中也会包含隐藏的主键列，与上游表结构不一致。
 - 华为云 RDS
-    - 不支持。详见：[华为云数据库 RDS 是否支持直接读取 Binlog 备份文件](https://support.huaweicloud.com/en-us/rds_faq/rds_faq_0210.html)。
+    - 不支持，详见：[华为云数据库 RDS 是否支持直接读取 Binlog 备份文件](https://support.huaweicloud.com/en-us/rds_faq/rds_faq_0210.html)。
 
 ## task 配置中的黑白名单的正则表达式是否支持`非获取匹配`（?!）？
 
