@@ -4357,7 +4357,7 @@ Query OK, 0 rows affected, 1 warning (0.00 sec)
 - 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：否
 - 类型：整数型
 - 默认值：`0`，自动设置内部统计信息缓存使用内存的上限为总内存的一半。
-- 这个变量用于控制 TiDB 内部统计信息缓存使用内存的上限。
+- 这个变量用于控制 TiDB 内部统计信息缓存使用内存的上限，单位为字节。
 
 ### `tidb_stats_load_sync_wait` <span class="version-mark">从 v5.4.0 版本开始引入</span>
 
