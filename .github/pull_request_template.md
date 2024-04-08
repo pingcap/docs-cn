@@ -31,7 +31,6 @@ For details, see [tips for choosing the affected versions (in Chinese)](https://
 - [ ] v5.3 (TiDB 5.3 versions)
 - [ ] v5.2 (TiDB 5.2 versions)
 - [ ] v5.1 (TiDB 5.1 versions)
-- [ ] v5.0 (TiDB 5.0 versions)
 
 ### What is the related PR or file link(s)?
 
