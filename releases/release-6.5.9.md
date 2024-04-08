@@ -31,8 +31,7 @@ TiDB 版本：6.5.9
 
 + PD
 
-    - note [#issue](https://github.com/tikv/pd/issues/${issue-id}) @[贡献者 GitHub ID](https://github.com/${github-id})
-    - note [#issue](https://github.com/tikv/pd/issues/${issue-id}) @[贡献者 GitHub ID](https://github.com/${github-id})
+    - DR Auto-Sync 支持设置 `wait-recover-timeout` [#6295](https://github.com/tikv/pd/issues/6295) @[disksing](https://github.com/disksing)
 
 + TiFlash
 
@@ -121,10 +120,10 @@ TiDB 版本：6.5.9
 
 + PD
 
-    - note [#issue](https://github.com/tikv/pd/issues/${issue-id}) @[贡献者 GitHub ID](https://github.com/${github-id})
-    - note [#issue](https://github.com/tikv/pd/issues/${issue-id}) @[贡献者 GitHub ID](https://github.com/${github-id})
-    - (dup): release-8.0.0.md > 错误修复> PD - 修复调用 `MergeLabels` 函数时存在数据竞争的问题 [#7535](https://github.com/tikv/pd/issues/7535) @[lhy1024](https://github.com/lhy1024)
+    - 修复扩缩容进度展示不准确的问题 [#7726](https://github.com/tikv/pd/issues/7726@[CabinfeverB](https://github.com/CabinfeverB)
+    - 修复调用 `MergeLabels` 函数时存在数据竞争的问题 [#7535](https://github.com/tikv/pd/issues/7535) @[lhy1024](https://github.com/lhy1024)
     - (dup): release-7.5.1.md > 错误修复> PD - 修复 PD 监控项 `learner-peer-count` 在发生 Leader 切换后未同步旧监控值的问题 [#7728](https://github.com/tikv/pd/issues/7728) @[CabinfeverB](https://github.com/CabinfeverB)
+    - 修复执行 SQL `show config` 时错误显示 `trace-region-flow` 的问题 [#7917](https://github.com/tikv/pd/issues/7917) @[rleungx](https://github.com/rleungx)
 
 + TiFlash
 
