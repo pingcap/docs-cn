@@ -56,19 +56,17 @@ aliases: ['/docs-cn/dev/tiflash/troubleshoot-tiflash/','/docs-cn/dev/tiflash/tif
     {{< copyable "shell-regular" >}}
 
     ```shell
-    echo "store" | /path/to/pd-ctl -u http://${pd-ip}:${pd-port}
+    tiup ctl:nightly pd -u http://${pd-ip}:${pd-port} store
     ```
 
     store.labels 中含有 `{"key": "engine", "value": "tiflash"}` 信息的为 TiFlash proxy。
 
-4. 查看 pd buddy 是否正常打印日志（日志路径的对应配置项 [flash.flash_cluster] log 设置的值，默认为 TiFlash 配置文件配置的 tmp 目录下）。
-
-5. 检查配置的副本数是否小于等于集群 TiKV 节点数。若配置的副本数超过 TiKV 节点数，则 PD 不会向 TiFlash 同步数据；
+4. 检查配置的副本数是否小于等于集群 TiKV 节点数。若配置的副本数超过 TiKV 节点数，则 PD 不会向 TiFlash 同步数据；
 
     {{< copyable "shell-regular" >}}
 
     ```shell
-    echo 'config placement-rules show' | /path/to/pd-ctl -u http://${pd-ip}:${pd-port}
+    tiup ctl:nightly pd -u http://${pd-ip}:${pd-port} config placement-rules show | grep -C 10 default
     ```
 
     再确认 "default: count" 参数值。
