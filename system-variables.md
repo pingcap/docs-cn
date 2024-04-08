@@ -3674,18 +3674,18 @@ mysql> desc select count(distinct a) from test.t;
 - 类型：浮点数
 - 默认值：`-1`
 - 范围：`[-1, 1]`
-- 当一个索引匹配 SQL 语句中的 `ORDER BY` 和 `LIMIT` 子句，但有过滤条件未被覆盖时，该系统变量控制该索引的估算行数。
-- 该变量适用的场景与系统变量 [tidb_opt_ordering_index_selectivity_threshold](#tidb_opt_ordering_index_selectivity_threshold-从-v700-版本开始引入) 相同。
-- 其实现方式与 [tidb_opt_ordering_index_selectivity_threshold](#tidb_opt_ordering_index_selectivity_threshold-从-v700-版本开始引入) 不同，它采用的是范围内符合条件的可能行数的比率或百分比。
-- 取值 `-1`（默认值）和小于零的值都会禁用此变量。介于 `0` 和 `1` 之间的取值对应 0% 到 100% 的比率（例如，`0.5` 对应 `50%`）。
-- 在以下示例中，表 `t` 共有 1,000,000 行。使用的查询相同，但使用了不同的 `tidb_opt_ordering_index_selectivity_ratio` 值。示例中的查询具有一个 `WHERE` 子句谓词，该谓词符合少量行（1,000,000 中的 9000 行）。有一个支持 `ORDER BY a` 的索引（索引 `ia`），但是对 `b` 的过滤不在此索引中。根据实际的数据分布，匹配 `WHERE` 子句和 `LIMIT 1` 的行可能在扫描非过滤索引时作为第 1 行访问到，也可能在几乎处理了所有行之后才找到。
+- 当一个索引满足 SQL 语句中的 `ORDER BY` 和 `LIMIT` 子句，但有部分过滤条件未被该索引覆盖时，该系统变量用于控制该索引的估算行数。
+- 该变量适用的场景与系统变量 [`tidb_opt_ordering_index_selectivity_threshold`](#tidb_opt_ordering_index_selectivity_threshold-从-v700-版本开始引入) 相同。
+- 与 `tidb_opt_ordering_index_selectivity_threshold` 的实现不同，该变量采用范围内符合条件的可能行数的比率或百分比。
+- 取值为 `-1`（默认值）或小于 `0` 时，禁用此变量。取值在 `0` 到 `1` 之间时，对应 0% 到 100% 的比率（例如，`0.5` 对应 `50%`）。
+- 在以下示例中，表 `t` 共有 1,000,000 行数据。示例使用相同查询，但应用了不同的 `tidb_opt_ordering_index_selectivity_ratio` 值。示例中的查询包含一个 `WHERE` 子句谓词，该谓词匹配少量行（1,000,000 中的 9,000 行）。存在一个支持 `ORDER BY a` 的索引（索引 `ia`），但是对 `b` 的过滤不在此索引中。根据实际的数据分布，满足 `WHERE` 子句和 `LIMIT 1` 的行可能在扫描非过滤索引时作为第一行访问到，也可能在几乎处理满足所有行后才找到。
 - 每个示例中都使用了一个索引 hint，用于展示对 estRows 的影响。最终计划选择取决于是否存在代价更低的其他计划。
 - 第一个示例使用默认值 `-1`，使用现有的估算公式。默认行为是，在找到符合条件的行之前，会扫描一小部分行进行估算。
 
     ```sql
     > SET SESSION tidb_opt_ordering_index_selectivity_ratio = -1;
 
-    >EXPLAIN SELECT * FROM t USE INDEX (ia) WHERE b <= 9000 ORDER BY a LIMIT 1;
+    > EXPLAIN SELECT * FROM t USE INDEX (ia) WHERE b <= 9000 ORDER BY a LIMIT 1;
     +-----------------------------------+---------+-----------+-----------------------+---------------------------------+
     | id                                | estRows | task      | access object         | operator info                   |
     +-----------------------------------+---------+-----------+-----------------------+---------------------------------+
@@ -3701,9 +3701,9 @@ mysql> desc select count(distinct a) from test.t;
 - 第二个示例使用 `0`，假设在找到符合条件的行之前，将扫描 0% 的行。
 
     ```sql
-    >SET SESSION tidb_opt_ordering_index_selectivity_ratio = 0;
+    > SET SESSION tidb_opt_ordering_index_selectivity_ratio = 0;
 
-    >EXPLAIN SELECT * FROM t USE INDEX (ia) WHERE b <= 9000 ORDER BY a LIMIT 1;
+    > EXPLAIN SELECT * FROM t USE INDEX (ia) WHERE b <= 9000 ORDER BY a LIMIT 1;
     +-----------------------------------+---------+-----------+-----------------------+---------------------------------+
     | id                                | estRows | task      | access object         | operator info                   |
     +-----------------------------------+---------+-----------+-----------------------+---------------------------------+
@@ -3719,9 +3719,9 @@ mysql> desc select count(distinct a) from test.t;
 - 第三个示例使用 `0.1`，假设在找到符合条件的行之前，将扫描 10% 的行。这个条件的过滤性较强，只有 1% 的行符合条件，因此最坏情况是找到这 1% 之前需要扫描 99% 的行。99% 中的 10% 大约是 9.9%，该数值会反映在 estRows 中。
 
     ```sql
-    >SET SESSION tidb_opt_ordering_index_selectivity_ratio = 0.1;
+    > SET SESSION tidb_opt_ordering_index_selectivity_ratio = 0.1;
 
-    >EXPLAIN SELECT * FROM t USE INDEX (ia) WHERE b <= 9000 ORDER BY a LIMIT 1;
+    > EXPLAIN SELECT * FROM t USE INDEX (ia) WHERE b <= 9000 ORDER BY a LIMIT 1;
     +-----------------------------------+----------+-----------+-----------------------+---------------------------------+
     | id                                | estRows  | task      | access object         | operator info                   |
     +-----------------------------------+----------+-----------+-----------------------+---------------------------------+
@@ -3737,9 +3737,9 @@ mysql> desc select count(distinct a) from test.t;
 - 第四个示例使用 `1.0`，假设在找到符合条件的行之前，将扫描 100% 的行。
 
     ```sql
-    >SET SESSION tidb_opt_ordering_index_selectivity_ratio = 1;
+    > SET SESSION tidb_opt_ordering_index_selectivity_ratio = 1;
 
-    >EXPLAIN SELECT * FROM t USE INDEX (ia) WHERE b <= 9000 ORDER BY a LIMIT 1;
+    > EXPLAIN SELECT * FROM t USE INDEX (ia) WHERE b <= 9000 ORDER BY a LIMIT 1;
     +-----------------------------------+-----------+-----------+-----------------------+---------------------------------+
     | id                                | estRows   | task      | access object         | operator info                   |
     +-----------------------------------+-----------+-----------+-----------------------+---------------------------------+
@@ -3752,10 +3752,12 @@ mysql> desc select count(distinct a) from test.t;
     +-----------------------------------+-----------+-----------+-----------------------+---------------------------------+
     ```
 
-- 第五个示例也使用 `1.0`，但是增加了一个对 `a` 的谓词，限制了最坏情况下的扫描范围，因为 `WHERE a <= 9000` 匹配了索引，大约有 9000 行符合条件。考虑到 `b` 上的过滤谓词不在索引中，所有大约 9000 行在找到符合 `b <= 9000` 的行之前都会被扫描。
+- 第五个示例也使用 `1.0`，但是增加了一个对 `a` 的谓词，限制了最坏情况下的扫描范围，因为 `WHERE a <= 9000` 匹配了索引，大约有 9,000 行符合条件。考虑到 `b` 上的过滤谓词不在索引中，所有大约 9,000 行在找到符合 `b <= 9000` 的行之前都会被扫描。
 
     ```sql
-    >EXPLAIN SELECT * FROM t USE INDEX (ia) WHERE a <= 9000 AND b <= 9000 ORDER BY a LIMIT 1;
+    > SET SESSION tidb_opt_ordering_index_selectivity_ratio = 1;
+
+    > EXPLAIN SELECT * FROM t USE INDEX (ia) WHERE a <= 9000 AND b <= 9000 ORDER BY a LIMIT 1;
     +------------------------------------+---------+-----------+-----------------------+------------------------------------+
     | id                                 | estRows | task      | access object         | operator info                      |
     +------------------------------------+---------+-----------+-----------------------+------------------------------------+
