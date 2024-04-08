@@ -43,7 +43,7 @@ summary: 使用 TiDB Serverless 构建 TiDB 集群，并连接 TiDB Serverless �
 
     <div label="macOS">
 
-    对于 macOS 操作系统，如果你没有安装 Homebrew，请参考 [Homebrew 官网](https://brew.sh/index_zh-cn)进行安装。
+    对于 macOS 操作系统，如果你没有安装 Homebrew，请参考 [Homebrew 官网](https://brew.sh/index)进行安装。
 
     ```shell
     brew install mysql-client
