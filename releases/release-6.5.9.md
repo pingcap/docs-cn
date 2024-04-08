@@ -169,7 +169,7 @@ TiDB 版本：6.5.9
         - (dup): release-8.0.0.md > 错误修复> Tools> TiCDC - 修复 KV Client 数据争用导致 TiCDC panic 的问题 [#10718](https://github.com/pingcap/tiflow/issues/10718) @[asddongmen](https://github.com/asddongmen)
         - (dup): release-7.5.1.md > 错误修复> Tools> TiCDC - 修复使用 storage sink 时，在存储服务生成的文件序号可能出现回退的问题 [#10352](https://github.com/pingcap/tiflow/issues/10352) @[CharlesCheung96](https://github.com/CharlesCheung96)
         - 修复 storage sink 场景下无法正常访问 azure 和 gcs 对象存储的问题 [#10592](https://github.com/pingcap/tiflow/issues/10592) @[CharlesCheung96](https://github.com/CharlesCheung96)
-        - 修复 open-protocol 可能按照错误类型输出默认值的问题，[#10803](https://github.com/pingcap/tiflow/issues/10803)，@[3AceShowHand](https://github.com/3AceShowHand)
+        - 修复 open-protocol 的 old value 部分错误的按照 string 类型而非真正类型输出默认值的问题 [#10803](https://github.com/pingcap/tiflow/issues/10803)，@[3AceShowHand](https://github.com/3AceShowHand)
         - 修复了当对象存储遇到暂时故障时，启用了最终一致性功能的 changefeed 可能直接失败的问题，[#10710](https://github.com/pingcap/tiflow/issues/10710) @[CharlesCheung96](https://github.com/CharlesCheung96)
 
     + TiDB Data Migration (DM)
