@@ -1,6 +1,5 @@
 ---
 title: 物理优化
-aliases: ['/docs-cn/dev/sql-physical-optimization/']
 summary: 物理优化是基于代价的优化，为逻辑执行计划制定物理执行计划。优化器根据数据统计信息选择时间复杂度、资源消耗和物理属性最小的物理执行计划。TiDB 执行计划文档介绍了索引选择、统计信息、错误索引解决方案、Distinct 优化和代价模型。
 ---
 

@@ -1,6 +1,5 @@
 ---
 title: TiDB Binlog 配置说明
-aliases: ['/docs-cn/dev/tidb-binlog/tidb-binlog-configuration-file/','/docs-cn/dev/reference/tidb-binlog/configs/']
 summary: TiDB Binlog 配置说明：介绍 Pump 和 Drainer 的配置项，包括地址、存储、安全和同步相关配置。 Pump 包括 addr、advertise-addr、socket、pd-urls、data-dir、heartbeat-interval、gen-binlog-interval、gc、log-file、log-level、node-id、security 和 storage 配置。 Drainer 包括 addr、advertise-addr、log-file、log-level、node-id、data-dir、detect-interval、pd-urls、initial-commit-ts、synced-check-time、compressor、security 和 syncer 配置。
 ---
 
@@ -10,7 +9,7 @@ summary: TiDB Binlog 配置说明：介绍 Pump 和 Drainer 的配置项，包�
 
 ## Pump
 
-本节介绍 Pump 的配置项。可以在 [Pump Configuration](https://github.com/pingcap/tidb-binlog/blob/master/cmd/pump/pump.toml) 中查看完整的 Pump 配置文件示例。
+本节介绍 Pump 的配置项。可以在 [Pump Configuration](https://github.com/pingcap/tidb-binlog/blob/release-7.5/cmd/pump/pump.toml) 中查看完整的 Pump 配置文件示例。
 
 ### addr
 
@@ -129,7 +128,7 @@ summary: TiDB Binlog 配置说明：介绍 Pump 和 Drainer 的配置项，包�
 
 ## Drainer
 
-本节介绍 Drainer 的配置项。可以在 [Drainer Configuration](https://github.com/pingcap/tidb-binlog/blob/master/cmd/drainer/drainer.toml) 中查看完整的配置文件示例。
+本节介绍 Drainer 的配置项。可以在 [Drainer Configuration](https://github.com/pingcap/tidb-binlog/blob/release-7.5/cmd/drainer/drainer.toml) 中查看完整的配置文件示例。
 
 ### addr
 

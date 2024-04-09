@@ -1,6 +1,5 @@
 ---
 title: Statement Summary Tables
-aliases: ['/docs-cn/dev/statement-summary-tables/','/docs-cn/dev/reference/performance/statement-summary/']
 summary: MySQL 的 `performance_schema` 提供了 `statement summary tables`，用于监控和统计 SQL 性能。TiDB 在 `information_schema` 中提供了类似功能的系统表，包括 `statements_summary`、`statements_summary_history`、`cluster_statements_summary` 和 `cluster_statements_summary_history`。这些表用于保存 SQL 监控指标聚合后的结果，帮助用户定位 SQL 问题。同时，还提供了参数配置来控制 statement summary 的功能，如清空周期、保存历史的数量等。
 ---
 
@@ -80,7 +79,7 @@ select * from employee where id in (...) and salary between ? and ?;
 > **注意：**
 >
 > - 在 TiDB 中，statement summary tables 中字段的时间单位是纳秒 (ns)，而 MySQL 中的时间单位是皮秒 (ps)。
-> - 从 v7.5.1 和 v7.6.0 版本开始，对于开启[资源管控](/tidb-resource-control.md)的集群，`statements_summary` 会分资源组进行聚合，即在不同资源组执行的相同语句会被收集为不同的记录。
+> - 从 v7.5.1 版本开始，对于开启[资源管控](/tidb-resource-control.md)的集群，`statements_summary` 会分资源组进行聚合，即在不同资源组执行的相同语句会被收集为不同的记录。
 
 ## `statements_summary_history`
 

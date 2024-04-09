@@ -1,6 +1,5 @@
 ---
 title: 主从集群一致性读和数据校验
-aliases: ['/docs-cn/dev/sync-diff-inspector/upstream-downstream-diff/','/docs-cn/dev/reference/tools/sync-diff-inspector/tidb-diff/', '/zh/tidb/dev/upstream-downstream-diff']
 summary: TiCDC 提供了 Syncpoint 功能，通过利用 TiDB 的 snapshot 特性，在同步过程中维护了一个上下游具有一致性 snapshot 的 `ts-map`。启用 Syncpoint 功能后，可以进行一致性快照读和数据一致性校验。要开启 Syncpoint 功能，只需在创建同步任务时把 TiCDC 的配置项 `enable-sync-point` 设置为 `true`。通过配置 `snapshot` 可以对 TiDB 主从集群的数据进行校验。
 ---
 

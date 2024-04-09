@@ -1,6 +1,5 @@
 ---
 title: DM 任务完整配置文件介绍
-aliases: ['/docs-cn/tidb-data-migration/dev/task-configuration-file-full/','/docs-cn/tidb-data-migration/dev/dm-portal/','/zh/tidb/dev/task-configuration-file']
 summary: 本文介绍了 Data Migration (DM) 的任务完整配置文件，包括全局配置和实例配置两部分。全局配置包括任务基本信息配置和功能配置集，功能配置集包括路由规则、过滤规则、block-allow-list、mydumpers、loaders 和 syncers。实例配置定义了具体的数据迁移子任务，包括路由规则、过滤规则、block-allow-list、mydumpers、loaders 和 syncers 的配置名称。
 ---
 
@@ -61,7 +60,7 @@ routes:                           # 上游和下游表之间的路由 table rout
     table-pattern: "t_*"          # 表名匹配规则，支持通配符 "*" 和 "?"
     target-schema: "test"         # 目标库名称
     target-table: "t"             # 目标表名称
-    # 可选配置：提取各分库分表的源信息，并写入下游用户自建的列，用于标识合表中各行数据的来源。如果配置该项，需要提前在下游手动创建合表，具体可参考 “table routing 文档” <https://docs.pingcap.com/zh/tidb/dev/dm-key-features#table-routing>。
+    # 可选配置：提取各分库分表的源信息，并写入下游用户自建的列，用于标识合表中各行数据的来源。如果配置该项，需要提前在下游手动创建合表，具体可参考 “table routing 文档” <https://docs.pingcap.com/zh/tidb/v7.5/dm-key-features#table-routing>。
     # extract-table:                                        # 提取分表去除 t_ 的后缀信息，并写入下游合表 c_table 列，例如，t_01 分表的数据会提取 01 写入下游 c_table 列
     #   table-regexp: "t_(.*)"
     #   target-column: "c_table"

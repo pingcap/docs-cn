@@ -1,6 +1,5 @@
 ---
 title: 如何用 Sysbench 测试 TiDB
-aliases: ['/docs-cn/dev/benchmark/benchmark-tidb-using-sysbench/','/docs-cn/dev/benchmark/how-to-run-sysbench/']
 summary: 使用 Sysbench 1.0 或更新版本测试 TiDB 性能。调整 TiDB 和 TiKV 的日志级别以提高性能。配置 RocksDB 的 block cache 以充分利用内存。调整 Sysbench 配置文件并导入数据。进行数据预热和统计信息收集。执行 Point select、Update index 和 Read-only 测试命令。解决可能出现的性能问题。
 ---
 

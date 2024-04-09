@@ -1,6 +1,5 @@
 ---
 title: GC 配置
-aliases: ['/docs-cn/dev/garbage-collection-configuration/','/docs-cn/dev/reference/garbage-collection/configuration/']
 summary: TiDB 的 GC 配置可以通过系统变量进行设置，包括启用 GC、运行间隔、数据保留时限、并发线程数量等。此外，TiDB 还支持 GC 流控，可以限制每秒数据写入量。从 TiDB 5.0 版本开始，建议使用系统变量进行配置，避免异常行为。在 TiDB 6.1.0 版本引入了新的系统变量 `tidb_gc_max_wait_time`，用于控制活跃事务阻塞 GC safe point 推进的最长时间。另外，GC in Compaction Filter 机制可以通过配置文件或在线配置开启，但可能会影响 TiKV 扫描性能。
 ---
 

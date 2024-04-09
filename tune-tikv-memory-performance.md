@@ -1,12 +1,11 @@
 ---
 title: TiKV 内存参数性能调优
-aliases: ['/docs-cn/dev/tune-tikv-memory-performance/','/docs-cn/dev/reference/performance/tune-tikv/', '/docs-cn/dev/tune-tikv-performance/']
 summary: TiKV 内存参数性能调优，根据机器配置情况调整参数以达到最佳性能。TiKV 使用 RocksDB 作为持久化存储，配置项包括 block-cache 大小和 write-buffer 大小。除此之外，系统内存还会被用于 page cache 和处理大查询时的数据结构生成。推荐将 TiKV 部署在 CPU 核数不低于 8 或内存不低于 32GB 的机器上，对写入吞吐要求高时使用吞吐能力较好的磁盘，对读写延迟要求高时使用 IOPS 较高的 SSD 盘。
 ---
 
 # TiKV 内存参数性能调优
 
-本文档用于描述如何根据机器配置情况来调整 TiKV 的参数，使 TiKV 的性能达到最优。你可以在 [etc/config-template.toml](https://github.com/tikv/tikv/blob/master/etc/config-template.toml) 找到配置文件模版，参考[使用 TiUP 修改配置参数](/maintain-tidb-using-tiup.md#修改配置参数)进行操作，部分配置项可以通过[在线修改 TiKV 配置](/dynamic-config.md#在线修改-tikv-配置)方式在线更新。具体配置项的含义可参考 [TiKV 配置文件描述](/tikv-configuration-file.md)。
+本文档用于描述如何根据机器配置情况来调整 TiKV 的参数，使 TiKV 的性能达到最优。你可以在 [etc/config-template.toml](https://github.com/tikv/tikv/blob/release-7.5/etc/config-template.toml) 找到配置文件模版，参考[使用 TiUP 修改配置参数](/maintain-tidb-using-tiup.md#修改配置参数)进行操作，部分配置项可以通过[在线修改 TiKV 配置](/dynamic-config.md#在线修改-tikv-配置)方式在线更新。具体配置项的含义可参考 [TiKV 配置文件描述](/tikv-configuration-file.md)。
 
 TiKV 最底层使用的是 RocksDB 做为持久化存储，所以 TiKV 的很多性能相关的参数都是与 RocksDB 相关的。TiKV 使用了两个 RocksDB 实例，默认 RocksDB 实例存储 KV 数据，Raft RocksDB 实例（简称 RaftDB）存储 Raft 数据。
 

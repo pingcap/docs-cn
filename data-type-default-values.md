@@ -1,6 +1,5 @@
 ---
 title: 数据类型的默认值
-aliases: ['/docs-cn/dev/data-type-default-values/','/docs-cn/dev/reference/sql/data-types/default-values/']
 summary: 数据类型的默认值描述了列的默认值设置规则。默认值必须是常量，对于时间类型可以使用特定函数。从 v8.0.0 开始，BLOB、TEXT 和 JSON 可以设置表达式默认值。如果列没有设置 DEFAULT，TiDB 会根据规则添加隐式默认值。对于 NOT NULL 列，根据 SQL_MODE 进行不同行为。表达式默认值是实验特性，不建议在生产环境中使用。MySQL 8.0.13 开始支持在 DEFAULT 子句中指定表达式为默认值。TiDB 支持为 BLOB、TEXT 和 JSON 数据类型分配默认值，但仅支持通过表达式来设置。
 ---
 
@@ -8,7 +7,7 @@ summary: 数据类型的默认值描述了列的默认值设置规则。默认�
 
 在一个数据类型描述中的 `DEFAULT value` 段描述了一个列的默认值。这个默认值必须是常量，不可以是一个函数或者是表达式。但是对于时间类型，可以例外的使用 `NOW`、`CURRENT_TIMESTAMP`、`LOCALTIME`、`LOCALTIMESTAMP` 等函数作为 `DATETIME` 或者 `TIMESTAMP` 的默认值。
 
-从 v8.0.0 开始，[`BLOB`](/data-type-string.md#blob-类型)、[`TEXT`](/data-type-string.md#text-类型) 以及 [`JSON`](/data-type-json.md#json-类型) 可以设置[表达式默认值](#表达式默认值)。
+`BLOB`、`TEXT` 以及 `JSON` 不可以设置默认值。
 
 如果一个列的定义中没有 `DEFAULT` 的设置。TiDB 按照如下的规则决定：
 
@@ -25,42 +24,3 @@ summary: 数据类型的默认值描述了列的默认值设置规则。默认�
 * 对于数值类型，它们的默认值是 0。当有 `AUTO_INCREMENT` 参数时，默认值会按照增量情况赋予正确的值。
 * 对于除了时间戳外的日期时间类型，默认值会是该类型的“零值”。时间戳类型的默认值会是当前的时间。
 * 对于除枚举以外的字符串类型，默认值会是空字符串。对于枚举类型，默认值是枚举中的第一个值。
-
-## 表达式默认值
-
-> **警告：**
->
-> 该特性为实验特性，不建议在生产环境中使用。该功能可能会在未事先通知的情况下发生变化或删除。如果发现 bug，请在 GitHub 上提 [issue](https://github.com/pingcap/tidb/issues) 反馈。
-
-MySQL 从 8.0.13 开始支持在 `DEFAULT` 子句中指定表达式为默认值。具体可参考 [Explicit Default Handling as of MySQL 8.0.13](https://dev.mysql.com/doc/refman/8.0/en/data-type-defaults.html#data-type-defaults-explicit)。
-
-TiDB 参考了该功能，支持在 `DEFAULT` 子句中指定部分表达式作为字段的默认值。从 v8.0.0 开始，TiDB 支持为 `BLOB`、`TEXT` 以及 `JSON` 数据类型分配默认值，但是默认值仅支持通过表达式来设置。以下是 `BLOB` 的示例：
-
-```sql
-CREATE TABLE t2 (b BLOB DEFAULT (RAND()));
-```
-
-TiDB 支持以下表达式：
-
-* [`RAND()`](/functions-and-operators/numeric-functions-and-operators.md)
-* [`UUID()`](/functions-and-operators/miscellaneous-functions.md)
-* [`UUID_TO_BIN()`](/functions-and-operators/miscellaneous-functions.md)
-
-从 v8.0.0 开始，在 `DEFAULT` 子句中可以使用以下表达式来设置默认值。
-
-* `UPPER(SUBSTRING_INDEX(USER(), '@', 1))`
-
-* `REPLACE(UPPER(UUID()), '-', '')`
-
-* `DATE_FORMAT` 相关表达式，具体格式如下：
-
-    * `DATE_FORMAT(NOW(), '%Y-%m')`
-    * `DATE_FORMAT(NOW(), '%Y-%m-%d')`
-    * `DATE_FORMAT(NOW(), '%Y-%m-%d %H.%i.%s')`
-    * `DATE_FORMAT(NOW(), '%Y-%m-%d %H:%i:%s')`
-
-* `STR_TO_DATE('1980-01-01', '%Y-%m-%d')`
-
-> **注意：**
->
-> 目前 `ADD COLUMN` 语句不支持使用表达式来设置默认值。

@@ -1,6 +1,5 @@
 ---
 title: TiDB 用户账户管理
-aliases: ['/docs-cn/dev/user-account-management/','/docs-cn/dev/reference/security/user-account-management/']
 summary: TiDB 用户账户管理主要包括用户名和密码设置、添加用户、删除用户、保留用户账户、设置资源限制、设置密码、忘记密码处理和刷新权限。用户可以通过 SQL 语句或图形化界面工具进行用户管理，同时可以使用 `FLUSH PRIVILEGES` 命令立即生效修改。 TiDB 在数据库初始化时会生成一个默认账户。
 ---
 

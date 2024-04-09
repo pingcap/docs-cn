@@ -1,6 +1,5 @@
 ---
 title: TiDB Lightning 快速上手
-aliases: ['/docs-cn/dev/get-started-with-tidb-lightning/','/docs-cn/dev/how-to/get-started/tidb-lightning/']
 summary: TiDB Lightning 可快速将 MySQL 数据导入到 TiDB 集群中。首先使用 Dumpling 导出数据，然后部署 TiDB 集群。安装最新版本的 TiDB Lightning 并启动，最后检查数据导入情况。详细功能和使用请参考 TiDB Lightning 简介。
 ---
 
@@ -92,8 +91,8 @@ tiup install tidb-lightning
     password = "rootroot"
     # 表架构信息在从 TiDB 的“状态端口”获取。
     status-port = 10080
-    # 集群 pd 的地址。从 v7.6.0 开始支持设置多个地址。
-    pd-addr = "172.16.31.3:2379,56.78.90.12:3456"
+    # 集群 pd 的地址
+    pd-addr = "172.16.31.3:2379"
     ```
 
 2. 运行 `tidb-lightning`。为避免直接在命令行使用 `nohup` 启动程序时因 `SIGHUP` 信号导致的程序退出，建议将 `nohup` 命令放入脚本中。示例如下：
