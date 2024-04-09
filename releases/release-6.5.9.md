@@ -36,9 +36,9 @@ TiDB 版本：6.5.9
 
     + Backup & Restore (BR) <!--tw@Oreoxmt 3 条-->
 
-        - 优化了在滚动重启场景 Log Backup 的备份时间点目标（RPO），现在滚动重启时 Log Backup Task 会有更小的 Checkpoint Lag。 [#15410](https://github.com/tikv/tikv/issues/15410) @[YuJuncen](https://github.com/YuJuncen)
-        - 优化了 Log Backup 对 Merge 的容忍度，现在在遇到合理的长时间 Merge 的时候 Log Backup Task 不容易进入 Error 状态。[#16554](https://github.com/tikv/tikv/issues/16554) @[YuJuncen](https://github.com/YuJuncen)
-        - 新增了 Log Backup 在遇到较大的 Checkpoint Lag 的时候自动放弃任务的功能，这样可以防止 Log Backup 意外长时间阻塞 GC 导致集群出现问题。[#50803](https://github.com/pingcap/tidb/issues/50803) @[RidRisR](https://github.com/RidRisR)
+        - 优化滚动重启场景下日志备份的 Recovery Point Objective (RPO)。现在，在滚动重启期间，日志备份任务的 checkpoint lag 将更小 [#15410](https://github.com/tikv/tikv/issues/15410) @[YuJuncen](https://github.com/YuJuncen)
+        - 提高日志备份对 Merge 的容忍度，如果遇到合理的长时间 Merge 操作，日志备份任务不容易进入 Error 状态 [#16554](https://github.com/tikv/tikv/issues/16554) @[YuJuncen](https://github.com/YuJuncen)
+        - 在遇到较大的 checkpoint lag 时，日志备份支持自动放弃任务，以避免日志备份意外长时间阻塞 GC，从而防止集群出现问题 [#50803](https://github.com/pingcap/tidb/issues/50803) @[RidRisR](https://github.com/RidRisR)
         - (dup): release-7.4.0.md > 改进提升> Tools> Backup & Restore (BR) - 缓解了 Region leadership 迁移导致 PITR 日志备份进度延迟变高的问题 [#13638](https://github.com/tikv/tikv/issues/13638) @[YuJuncen](https://github.com/YuJuncen)
         - (dup): release-7.5.1.md > 改进提升> Tools> Backup & Restore (BR) - 使用更优的算法，提升数据恢复过程中 SST 文件合并的速度 [#50613](https://github.com/pingcap/tidb/issues/50613) @[Leavrth](https://github.com/Leavrth)
         - (dup): release-7.5.1.md > 改进提升> Tools> Backup & Restore (BR) - 支持在数据恢复过程中批量 ingest SST 文件 [#16267](https://github.com/tikv/tikv/issues/16267) @[3pointer](https://github.com/3pointer)
@@ -114,9 +114,9 @@ TiDB 版本：6.5.9
 
     + Backup & Restore (BR) <!--tw@Oreoxmt 3 条-->
 
-        - 修复了使用 Coarse-grained Split Region 策略 Restore 失败时日志太过繁冗的问题。 [#51572](https://github.com/pingcap/tidb/issues/51572) @[Leavrth](https://github.com/Leavrth)
-        - 修复了在 Log Backup Task 被暂停之后，移除 Task 不能马上恢复 GC Safepoint 的问题。 [#52082](https://github.com/pingcap/tidb/issues/52082) @[3pointer](https://github.com/3pointer)
-        - 修复了在联合聚簇索引中包含 AUTO_RANDOM 列的时候，BR 不会备份 AUTO_RANDOM ID 分配进度的问题。[#52255](https://github.com/pingcap/tidb/issues/52255) @[Leavrth](https://github.com/Leavrth)
+        - 修复使用 Coarse-grained Split Region 策略 Restore 失败时日志太过繁冗的问题 [#51572](https://github.com/pingcap/tidb/issues/51572) @[Leavrth](https://github.com/Leavrth)
+        - 修复在日志备份任务被暂停后，移除任务无法立即恢复 GC safepoint 的问题 [#52082](https://github.com/pingcap/tidb/issues/52082) @[3pointer](https://github.com/3pointer)
+        - 修复在包含 `AUTO_RANDOM` 列的联合聚簇索引中，BR 无法备份 `AUTO_RANDOM` ID 分配进度的问题 [#52255](https://github.com/pingcap/tidb/issues/52255) @[Leavrth](https://github.com/Leavrth)
         - (dup): release-7.5.1.md > 错误修复> Tools> Backup & Restore (BR) - 修复停止日志备份任务导致 TiDB crash 的问题 [#50839](https://github.com/pingcap/tidb/issues/50839) @[YuJuncen](https://github.com/YuJuncen)
         - (dup): release-8.0.0.md > 错误修复> Tools> Backup & Restore (BR) - 修复在某些极端情况下，全量备份因找不到 peer 导致 TiKV panic 的问题 [#16394](https://github.com/tikv/tikv/issues/16394) @[Leavrth](https://github.com/Leavrth)
 
