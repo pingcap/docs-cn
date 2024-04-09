@@ -1,5 +1,7 @@
 ---
 title: TiDB 数据库的调度
+aliases: ['/docs-cn/dev/tidb-scheduling/']
+summary: TiDB 数据库的调度由 PD（Placement Driver）模块负责管理和实时调度集群数据。PD 需要收集节点和 Region 的状态信息，并根据调度策略制定调度计划，包括增加 / 删除副本、迁移 Leader 角色等基本操作。调度需满足副本数量、位置分布、负载均衡、存储空间利用等需求。PD 通过心跳包收集信息，并根据策略生成调度操作序列，但具体执行由 Region Leader 决定。
 ---
 
 # TiDB 数据库的调度
@@ -66,7 +68,7 @@ TiKV 集群是 TiDB 数据库的分布式 KV 存储引擎，数据以 Region 为
 
 **每个 TiKV 节点会定期向 PD 汇报节点的状态信息**
 
-TiKV 节点 (Store) 与 PD 之间存在心跳包，一方面 PD 通过心跳包检测每个 Store 是否存活，以及是否有新加入的 Store；另一方面，心跳包中也会携带这个 [Store 的状态信息](https://github.com/pingcap/kvproto/blob/release-7.5/proto/pdpb.proto#L473)，主要包括：
+TiKV 节点 (Store) 与 PD 之间存在心跳包，一方面 PD 通过心跳包检测每个 Store 是否存活，以及是否有新加入的 Store；另一方面，心跳包中也会携带这个 [Store 的状态信息](https://github.com/pingcap/kvproto/blob/master/proto/pdpb.proto#L473)，主要包括：
 
 * 总磁盘容量
 * 可用磁盘容量
@@ -88,7 +90,7 @@ TiKV 节点 (Store) 与 PD 之间存在心跳包，一方面 PD 通过心跳包�
 
 **每个 Raft Group 的 Leader 会定期向 PD 汇报 Region 的状态信息**
 
-每个 Raft Group 的 Leader 和 PD 之间存在心跳包，用于汇报这个 [Region 的状态](https://github.com/pingcap/kvproto/blob/release-7.5/proto/pdpb.proto#L312)，主要包括下面几点信息：
+每个 Raft Group 的 Leader 和 PD 之间存在心跳包，用于汇报这个 [Region 的状态](https://github.com/pingcap/kvproto/blob/master/proto/pdpb.proto#L312)，主要包括下面几点信息：
 
 * Leader 的位置
 * Followers 的位置

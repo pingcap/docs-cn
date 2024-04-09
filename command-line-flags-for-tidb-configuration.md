@@ -1,5 +1,7 @@
 ---
 title: TiDB 配置参数
+aliases: ['/docs-cn/dev/command-line-flags-for-tidb-configuration/','/docs-cn/dev/reference/configuration/tidb-server/configuration/']
+summary: TiDB 配置参数包括启动参数和环境变量。启动参数包括 advertise-address、config、config-check、config-strict、cors、enable-binlog 等。其中默认端口为 4000 和 10080。其他参数包括 log-file、metrics-addr、metrics-interval 等。注意配置文件的有效性和安全模式下的启动。
 ---
 
 # TiDB 配置参数
@@ -81,6 +83,12 @@ title: TiDB 配置参数
 + Log 文件
 + 默认：""
 + 如果未设置该参数，log 会默认输出到 "stderr"；如果设置了该参数，log 会输出到对应的文件中。
+
+## `--log-general`
+
++ [General Log](/system-variables.md#tidb_general_log) 文件名
++ 默认：""
++ 如果未设置该参数，general log 会默认输出到 [`--log-file`](#--log-file) 指定的文件中。
 
 ## `--log-slow-query`
 
