@@ -44,7 +44,7 @@ aliases: ['/zh/tidb/dev/build-cluster-in-cloud']
 
     <div label="macOS">
 
-    对于 macOS 操作系统，如果你没有安装 Homebrew，请参考 [Homebrew 官网](https://brew.sh/index_zh-cn)进行安装。
+    对于 macOS 操作系统，如果你没有安装 Homebrew，请参考 [Homebrew 官网](https://brew.sh/zh-cn/)进行安装。
 
     ```shell
     brew install mysql-client
