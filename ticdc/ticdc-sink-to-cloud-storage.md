@@ -94,7 +94,7 @@ Amazon S3 配置样例如下：
 
 - 方式二：基于 IAM Role 进行访问
 
-    为运行 TiCDC Server 的 EC2 实例关联一个[配置了访问 S3 访问权限的 IAM role](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles_use_switch-role-ec2.html)。正确设置后，TiCDC 可以直接访问对应的 S3 中的备份目录，而不需要额外的设置。
+    为运行 TiCDC Server 的 EC2 实例关联一个[配置了访问 S3 访问权限的 IAM role](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles_use_switch-role-ec2.html)。设置成功后，TiCDC 可以直接访问对应的 S3 中的备份目录，而不需要额外的设置。
 
 </div>
 <div label="GCS" value="gcs">
