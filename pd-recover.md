@@ -1,5 +1,6 @@
 ---
 title: PD Recover 使用文档
+summary: PD Recover 是用于恢复无法正常启动或服务的 PD 集群的工具。安装方式包括从源代码编译和下载 TiDB 工具包。恢复集群的方式有两种：从存活的 PD 节点重建和完全重建。从存活的 PD 节点重建集群需要停止所有节点，启动存活的 PD 节点，并使用 pd-recover 修复元数据。完全重建 PD 集群需要获取 Cluster ID 和已分配 ID，部署新的 PD 集群，使用 pd-recover 修复，然后重启整个集群。
 ---
 
 # PD Recover 使用文档

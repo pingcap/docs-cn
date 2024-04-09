@@ -1,5 +1,6 @@
 ---
 title: TiDB 配置参数
+summary: TiDB 配置参数包括启动参数和环境变量。启动参数包括 advertise-address、config、config-check、config-strict、cors、enable-binlog 等。其中默认端口为 4000 和 10080。其他参数包括 log-file、metrics-addr、metrics-interval 等。注意配置文件的有效性和安全模式下的启动。
 ---
 
 # TiDB 配置参数

@@ -1,5 +1,6 @@
 ---
 title: ADMIN
+summary: TiDB的 `ADMIN` 语句是用于查看TiDB状态和对表数据进行校验的扩展语法。其中包括 `ADMIN RELOAD`、`ADMIN PLUGIN`、`ADMIN ... BINDINGS`、`ADMIN REPAIR TABLE` 和 `ADMIN SHOW NEXT_ROW_ID` 等扩展语句。这些语句可以用于重新加载表达式下推的黑名单、启用或禁用插件、持久化 SQL Plan 绑定信息、修复表的元信息以及查看表中特殊列的详情。这些功能对于管理和维护 TiDB 数据库非常有用。
 ---
 
 # ADMIN

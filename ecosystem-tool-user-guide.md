@@ -1,5 +1,6 @@
 ---
 title: TiDB 工具功能概览
+summary: TiDB 提供了丰富的工具，包括部署运维工具 TiUP 和 TiDB Operator，数据管理工具如 TiDB Data Migration（DM）、Dumpling、TiDB Lightning、Backup & Restore（BR）、TiCDC、TiDB Binlog、sync-diff-inspector，以及 OLAP 分析工具 TiSpark。这些工具可用于部署、数据迁移、备份恢复、数据校验等多种操作，满足不同需求。
 ---
 
 # TiDB 工具功能概览

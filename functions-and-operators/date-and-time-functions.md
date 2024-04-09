@@ -1,5 +1,6 @@
 ---
 title: 日期和时间函数
+summary: TiDB 支持 MySQL 5.7 中的所有日期和时间函数。但是 TiDB 可能无法完全匹配 MySQL 的行为，建议使用正确的日期格式。TiDB 支持 str_to_date() 函数，但无法解析所有日期和时间值。此外，TiDB 不支持特定的日期和时间格式化选项。系统变量 default_week_format 影响 WEEK() 函数。更多信息，请参见 GitHub Issue #30082。
 ---
 
 # 日期和时间函数

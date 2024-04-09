@@ -1,5 +1,6 @@
 ---
 title: 信息函数
+summary: TiDB 支持大部分 MySQL 5.7 的信息函数，包括 BENCHMARK(), CONNECTION_ID(), CURRENT_USER(), DATABASE(), FOUND_ROWS(), LAST_INSERT_ID(), ROW_COUNT(), SCHEMA(), SESSION_USER(), SYSTEM_USER(), USER(), 和 VERSION()。此外，TiDB 还有一个特有的信息函数 CURRENT_RESOURCE_GROUP()，而不支持 CHARSET(), COERCIBILITY(), 和 COLLATION() 函数。
 ---
 
 # 信息函数

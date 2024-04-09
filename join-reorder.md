@@ -1,5 +1,6 @@
 ---
 title: Join Reorder 算法简介
+summary: Join Reorder 算法决定了多表 Join 的顺序，影响执行效率。TiDB 中有贪心算法和动态规划算法两种实现。贪心算法选择行数最小的表与其他表做 Join，直到所有节点完成 Join。动态规划算法枚举所有可能的 Join 顺序，选择最优的。算法受系统变量控制，且存在一些限制，如无法保证一定选到合适的 Join 顺序。
 ---
 
 # Join Reorder 算法简介

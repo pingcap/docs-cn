@@ -1,5 +1,6 @@
 ---
 title: Max/Min 函数消除规则
+summary: SQL 中的 max/min 函数消除规则能够将 max/min 聚合函数转换为 TopN 算子，利用索引进行查询。当只有一个 max/min 函数时，会重写为 select max(a) from (select a from t where a is not null order by a desc limit 1) t，利用索引只扫描一行数据。存在多个 max/min 函数时，会先检查列是否有索引能够保序，然后重写为两个子查询的笛卡尔积，最终避免对整个表的扫描。
 ---
 
 # Max/Min 函数消除规则

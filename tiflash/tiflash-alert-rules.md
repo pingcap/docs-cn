@@ -1,5 +1,6 @@
 ---
 title: TiFlash 报警规则
+summary: TiFlash 报警规则介绍了 TiFlash 集群的报警规则。包括了TiFlash_schema_error、TiFlash_schema_apply_duration、TiFlash_raft_read_index_duration 和 TiFlash_raft_wait_index_duration 四种报警规则，以及它们的规则描述和处理方法。报警规则主要用于监控TiFlash集群的运行状态，及时发现问题并联系 TiFlash 开发人员进行处理。
 ---
 
 # TiFlash 报警规则

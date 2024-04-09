@@ -1,5 +1,6 @@
 ---
 title: TiDB Binlog 集群监控
+summary: TiDB Binlog 集群监控包括 Pump 和 Drainer 的监控指标，以及紧急、重要和警告级别的监控报警规则。监控指标包括 Pump 的存储大小、写 Binlog QPS、写 Binlog 延迟等，以及 Drainer 的同步延迟、处理 SQL 耗时等。报警规则包括紧急级别的 Pump 存储错误、重要级别的 Drainer 同步延迟超过1小时、警告级别的 Pump 写 Binlog 耗时过大等。
 ---
 
 # TiDB Binlog 集群监控

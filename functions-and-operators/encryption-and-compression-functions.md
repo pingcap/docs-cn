@@ -1,5 +1,6 @@
 ---
 title: 加密和压缩函数
+summary: TiDB 支持大部分 MySQL 5.7 中提供的加密和压缩函数，包括MD5、PASSWORD、RANDOM_BYTES、SHA1、SHA2、AES_DECRYPT、AES_ENCRYPT、COMPRESS、UNCOMPRESS、UNCOMPRESSED_LENGTH 和 VALIDATE_PASSWORD_STRENGTH。相关系统变量 block_encryption_mode 用于设置 AES_ENCRYPT 和 AES_DECRYPT 的加密模式。不支持的函数包括 DES_DECRYPT、DES_ENCRYPT、OLD_PASSWORD 和 ENCRYPT，以及仅在 MySQL 企业版中支持的函数。
 ---
 
 # 加密和压缩函数

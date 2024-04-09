@@ -1,5 +1,6 @@
 ---
 title: RECOVER TABLE
+summary: RECOVER TABLE 是用来恢复被删除的表及其数据的功能。在 DROP TABLE 后，在 GC life time 时间内，可以使用 RECOVER TABLE 语句来恢复被删除的表以及其数据。如果删除表后并过了 GC lifetime，就不能再用 RECOVER TABLE 来恢复被删除的表了。
 ---
 
 # RECOVER TABLE
