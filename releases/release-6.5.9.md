@@ -24,7 +24,9 @@ TiDB 版本：6.5.9
 
 + TiKV <!--tw@qiancai TBD 条-->
 
-    - note [#issue](https://github.com/tikv/tikv/issues/${issue-id}) @[贡献者 GitHub ID](https://github.com/${github-id})
+    - rocksdb: 在tikv中提供RocksDB Expose track-and-verify-wals-in-manifest的配置 [#16549](https://github.com/tikv/tikv/issues/16549) @[v01dstar](https://github.com/v01dstar)
+    - *: 删除非必要的的Async block用以节省内存[#16540](https://github.com/tikv/tikv/issues/16540) @[overvenus](https://github.com/overvenus)
+    -  Raftstore: 在raftstore线程避免Snapshot的IO操作 [#16564](https://github.com/tikv/tikv/issues/16564) @[Connor1996](https://github.com/Connor1996)
     - note [#issue](https://github.com/tikv/tikv/issues/${issue-id}) @[贡献者 GitHub ID](https://github.com/${github-id})
     - (dup): release-8.0.0.md > 改进提升> TiKV - 增加 peer 和 store 消息的 slow log [#16600](https://github.com/tikv/tikv/issues/16600) @[Connor1996](https://github.com/Connor1996)
 
@@ -88,7 +90,8 @@ TiDB 版本：6.5.9
 
 + TiKV <!--tw@qiancai 1 + TBD 条-->
 
-    - note [#issue](https://github.com/tikv/tikv/issues/${issue-id}) @[贡献者 GitHub ID](https://github.com/${github-id})
+   - Raftstore: peer销毁过程被apply snapshot中断后，当apply snapshot完成时继续执行销毁操作。[#16561](https://github.com/tikv/tikv/issues/16561) @[tonyxuqqi](https://github.com/tonyxuqqi)
+    - RocksDB: 修复非活跃的WAL可能损毁数据的问题[#16705](https://github.com/tikv/tikv/issues/16705) @[Connor1996](https://github.com/Connor1996)
     - note [#issue](https://github.com/tikv/tikv/issues/${issue-id}) @[贡献者 GitHub ID](https://github.com/${github-id})
     - (dup): release-7.5.1.md > 错误修复> TiKV - 修复巴西和埃及时区转换错误的问题 [#16220](https://github.com/tikv/tikv/issues/16220) @[overvenus](https://github.com/overvenus)
     - (dup): release-8.0.0.md > 错误修复> TiKV - 修复监控指标 `tikv_unified_read_pool_thread_count` 有时没有数据的问题 [#16629](https://github.com/tikv/tikv/issues/16629) @[YuJuncen](https://github.com/YuJuncen)
