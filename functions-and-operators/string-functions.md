@@ -1308,6 +1308,21 @@ SELECT n, REPEAT('x',n) FROM nr;
 20 rows in set (0.01 sec)
 ```
 
+以下示例演示了 `REPEAT()` 可以处理包含多个字符的字符串。
+
+```sql
+SELECT REPEAT('ha',3);
+```
+
+```
++----------------+
+| REPEAT('ha',3) |
++----------------+
+| hahaha         |
++----------------+
+1 row in set (0.00 sec)
+```
+
 ### [`REPLACE()`](https://dev.mysql.com/doc/refman/8.0/en/string-functions.html#function_replace)
 
 替换所有出现的指定字符串
