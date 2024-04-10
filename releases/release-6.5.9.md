@@ -11,9 +11,10 @@ TiDB 版本：6.5.9
 
 试用链接：[快速体验](https://docs.pingcap.com/zh/tidb/v6.5/quick-start-with-tidb) | [生产部署](https://docs.pingcap.com/zh/tidb/v6.5/production-deployment-using-tiup) | [下载离线包](https://cn.pingcap.com/product-community/?version=v6.5.9#version-list)
 
-## 兼容性变更
+## 兼容性变更 <!--tw@qiancai 2 条-->
 
-- note [#issue](https://github.com/pingcap/${repo-name}/issues/${issue-id}) @[贡献者 GitHub ID](https://github.com/${github-id})
+- 在 TiKV 中提供 RocksDB [`track-and-verify-wals-in-manifest`](https://docs.pingcap.com/zh/tidb/v6.5/tikv-configuration-file#track-and-verify-wals-in-manifest-从-v659-版本开始引入) 配置，用于调查 WAL (Write Ahead Log) 可能损坏问题 [#16549](https://github.com/tikv/tikv/issues/16549) @[v01dstar](https://github.com/v01dstar)
+- DR Auto-Sync 支持设置 [`wait-recover-timeout`](https://docs.pingcap.com/zh/tidb/v6.5/two-data-centers-in-one-city-deployment#启用自适应同步模式)，用于控制当网络恢复后切换回 `sync-recover` 状态的等待时间 [#6295](https://github.com/tikv/pd/issues/6295) @[disksing](https://github.com/disksing)
 
 ## 改进提升
 
@@ -22,16 +23,11 @@ TiDB 版本：6.5.9
     - (dup): release-8.0.0.md > 改进提升> TiDB - 当设置 `force-init-stats` 为 `true` 时，即 TiDB 启动时等待统计信息初始化完成后再对外提供服务，这一设置不再影响 HTTP server 提供服务，用户仍可查看监控 [#50854](https://github.com/pingcap/tidb/issues/50854) @[hawkingrei](https://github.com/hawkingrei)
     - 优化 `ANALYZE` 语句卡住元数据锁的问题 [#47475](https://github.com/pingcap/tidb/issues/47475) @[wjhuang2016](https://github.com/wjhuang2016)
 
-+ TiKV <!--tw@qiancai 3 条-->
++ TiKV <!--tw@qiancai 2 条-->
 
-    - 在 TiKV 中提供 RocksDB `track-and-verify-wals-in-manifest` 配置，用于调查 WAL (Write Ahead Log) 可能损坏问题 [#16549](https://github.com/tikv/tikv/issues/16549) @[v01dstar](https://github.com/v01dstar)
     - 删除非必要的 async block 以减少内存使用 [#16540](https://github.com/tikv/tikv/issues/16540) @[overvenus](https://github.com/overvenus)
     - 在 raftstore 线程中避免进行 snapshot 文件的 IO 操作，提高 TiKV 稳定性 [#16564](https://github.com/tikv/tikv/issues/16564) @[Connor1996](https://github.com/Connor1996)
     - (dup): release-8.0.0.md > 改进提升> TiKV - 增加 peer 和 store 消息的 slow log [#16600](https://github.com/tikv/tikv/issues/16600) @[Connor1996](https://github.com/Connor1996)
-
-+ PD <!--tw@qiancai 1 条-->
-
-    - DR Auto-Sync 支持设置 `wait-recover-timeout` [#6295](https://github.com/tikv/pd/issues/6295) @[disksing](https://github.com/disksing)
 
 + Tools
 
@@ -87,7 +83,7 @@ TiDB 版本：6.5.9
     - 修复 `EXCHANGE PARTITION` 在处理外键时判断错误的问题 [#51807](https://github.com/pingcap/tidb/issues/51807) @[YangKeao](https://github.com/YangKeao)
     - 修复执行 CTE 函数会导致 TiDB panic 的问题 [#41688](https://github.com/pingcap/tidb/issues/41688) @[srstack](https://github.com/srstack)
 
-+ TiKV <!--tw@qiancai 1 + TBD 条-->
++ TiKV <!--tw@qiancai 3 条-->
 
    - 修复 Peer 销毁过程被 apply snapshot 操作中断后，没有在 apply snapshot 完成后继续执行销毁操作的问题 [#16561](https://github.com/tikv/tikv/issues/16561) @[tonyxuqqi](https://github.com/tonyxuqqi)
     - 修复 RocksDB 中非活跃的 WAL (Write Ahead Log) 可能损毁数据的问题[#16705](https://github.com/tikv/tikv/issues/16705) @[Connor1996](https://github.com/Connor1996)
