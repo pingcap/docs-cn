@@ -1327,7 +1327,7 @@ RocksDB 相关的配置项。
 + 默认值：`true`
 + 可选值：
     + `true`：在 MANIFEST 文件中记录 WAL 文件的信息，并在启动时验证 WAL 文件的完整性。
-    + `false`：不在 MANIFEST 文件中记录 WAL 文件的信息，并不在启动时验证 WAL 文件的完整性。
+    + `false`：不在 MANIFEST 文件中记录 WAL 文件的信息，而且不在启动时验证 WAL 文件的完整性。
 
 ## rocksdb.titan
 
