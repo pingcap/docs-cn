@@ -1220,11 +1220,53 @@ SELECT LPAD('TiDB',-2,'>');
 
 ### [`NOT REGEXP`](https://dev.mysql.com/doc/refman/8.0/en/regexp.html#operator_not-regexp)
 
-`REGEXP` 的否定形式
+[`REGEXP`](#regexp) 的否定形式
 
 ### [`OCT()`](https://dev.mysql.com/doc/refman/8.0/en/string-functions.html#function_oct)
 
-返回一个数值的八进制表示，形式为字符串
+`OCT()` 函数用于返回一个数值的[八进制](https://zh.wikipedia.org/wiki/八进制)表示，形式为字符串。
+
+示例：
+
+以下示例使用[递归的公共表表达式 (CTE)](/develop/dev-guide-use-common-table-expression.md#递归的-cte) 生成从 0 到 20 的数字序列，然后使用 `OCT()` 函数将每个数字转换为其八进制表示。从 0 到 7 的十进制数在八进制中有相同的表示，从 8 到 15 的十进制数对应从 10 到 17 的八进制数。
+
+```sql
+WITH RECURSIVE nr(n) AS (
+    SELECT 0 AS n
+    UNION ALL
+    SELECT n+1 FROM nr WHERE n<20
+)
+SELECT n, OCT(n) FROM nr;
+```
+
+```
++------+--------+
+| n    | OCT(n) |
++------+--------+
+|    0 | 0      |
+|    1 | 1      |
+|    2 | 2      |
+|    3 | 3      |
+|    4 | 4      |
+|    5 | 5      |
+|    6 | 6      |
+|    7 | 7      |
+|    8 | 10     |
+|    9 | 11     |
+|   10 | 12     |
+|   11 | 13     |
+|   12 | 14     |
+|   13 | 15     |
+|   14 | 16     |
+|   15 | 17     |
+|   16 | 20     |
+|   17 | 21     |
+|   18 | 22     |
+|   19 | 23     |
+|   20 | 24     |
++------+--------+
+20 rows in set (0.00 sec)
+```
 
 ### [`OCTET_LENGTH()`](https://dev.mysql.com/doc/refman/8.0/en/string-functions.html#function_octet-length)
 
