@@ -139,7 +139,7 @@ SELECT TABLE_NAME FROM information_schema.tables where TABLE_SCHEMA = "<db_name>
    tiup ctl:v<CLUSTER_VERSION> pd -u http://<PD_ADDRESS>:2379 store limit all engine tiflash 60 add-peer
    ```
 
-   > 上述命令中，需要将 `v<CLUSTER_VERSION>` 替换为该集群版本，例如 `v6.5.8`，`<PD_ADDRESS>:2379` 替换为任一 PD 节点的地址。替换后样例为：
+   > 上述命令中，需要将 `v<CLUSTER_VERSION>` 替换为该集群版本，例如 `v6.5.9`，`<PD_ADDRESS>:2379` 替换为任一 PD 节点的地址。替换后样例为：
    >
    > ```shell
    > tiup ctl:v6.1.1 pd -u http://192.168.1.4:2379 store limit all engine tiflash 60 add-peer
@@ -176,19 +176,19 @@ SELECT TABLE_NAME FROM information_schema.tables where TABLE_SCHEMA = "<db_name>
 
     ```
     tiflash_servers:
-      - host: 172.16.5.81
+      - host: 172.16.5.91
         config:
           logger.level: "info"
         learner_config:
           server.labels:
             zone: "z1"
-      - host: 172.16.5.82
+      - host: 172.16.5.92
         config:
           logger.level: "info"
         learner_config:
           server.labels:
             zone: "z1"
-      - host: 172.16.5.85
+      - host: 172.16.5.95
         config:
           logger.level: "info"
         learner_config:
@@ -221,7 +221,7 @@ SELECT TABLE_NAME FROM information_schema.tables where TABLE_SCHEMA = "<db_name>
 
         ...
 
-        "address": "172.16.5.82:23913",
+        "address": "172.16.5.92:23913",
         "labels": [
           { "key": "engine", "value": "tiflash"},
           { "key": "zone", "value": "z1" }
@@ -230,7 +230,7 @@ SELECT TABLE_NAME FROM information_schema.tables where TABLE_SCHEMA = "<db_name>
 
         ...
 
-        "address": "172.16.5.81:23913",
+        "address": "172.16.5.91:23913",
         "labels": [
           { "key": "engine", "value": "tiflash"},
           { "key": "zone", "value": "z1" }
@@ -239,7 +239,7 @@ SELECT TABLE_NAME FROM information_schema.tables where TABLE_SCHEMA = "<db_name>
 
         ...
 
-        "address": "172.16.5.85:23913",
+        "address": "172.16.5.95:23913",
         "labels": [
           { "key": "engine", "value": "tiflash"},
           { "key": "zone", "value": "z2" }
