@@ -1268,7 +1268,7 @@ SELECT LPAD('TiDB',-2,'>');
 
 示例：
 
-以下示例使用[递归的公共表达式 (CTE)](/develop/dev-guide-use-common-table-expression.md#递归的-cte) 生成从 1 到 20 的数字序列，并使用 `REPEAT()` 函数重复对应次数的 `x` 字符串：
+以下示例使用[递归的公共表表达式 (CTE)](/develop/dev-guide-use-common-table-expression.md#递归的-cte) 生成从 1 到 20 的数字序列，并使用 `REPEAT()` 函数重复对应次数的 `x` 字符串：
 
 ```sql
 WITH RECURSIVE nr(n) AS (
@@ -1307,7 +1307,7 @@ SELECT n, REPEAT('x',n) FROM nr;
 20 rows in set (0.01 sec)
 ```
 
-以下示例演示了 `REPEAT()` 可以处理包含多个字符的字符串。
+以下示例演示了 `REPEAT()` 可以处理包含多个字符的字符串：
 
 ```sql
 SELECT REPEAT('ha',3);
