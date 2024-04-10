@@ -1247,7 +1247,7 @@ SELECT LPAD('TiDB',-2,'>');
 
 示例：
 
-为了直接显示查询结果，而不是以十六进制编码的形式展示，你需要使用 [`--skip-binary-as-hex`](https://dev.mysql.com/doc/refman/8.0/en/mysql-command-options.html#option_mysql_skip-binary-as-hex) 选项启动 MySQL 客户端。
+为了直接显示查询结果，而不是以十六进制编码的形式展示，你需要使用 [`--skip-binary-as-hex`](https://dev.mysql.com/doc/refman/8.0/en/mysql-command-options.html#option_mysql_binary-as-hex) 选项启动 MySQL 客户端。
 
 以下示例显示了 ASCII NULL 字符被转义为 `\0`，单引号字符 `'` 被转义为 `\'`：
 
