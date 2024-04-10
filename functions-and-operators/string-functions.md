@@ -1228,7 +1228,7 @@ SELECT LPAD('TiDB',-2,'>');
 
 示例：
 
-以下示例使用[递归的公共表达式 (CTE)](/develop/dev-guide-use-common-table-expression.md#递归的-cte) 生成从 0 到 20 的数字序列，然后使用 `OCT()` 函数将每个数字转换为其八进制表示。从 0 到 7 的十进制数在八进制中有相同的表示，从 8 到 15 的十进制数对应从 10 到 17 的八进制数。
+以下示例使用[递归的公共表表达式 (CTE)](/develop/dev-guide-use-common-table-expression.md#递归的-cte) 生成从 0 到 20 的数字序列，然后使用 `OCT()` 函数将每个数字转换为其八进制表示。从 0 到 7 的十进制数在八进制中有相同的表示，从 8 到 15 的十进制数对应从 10 到 17 的八进制数。
 
 ```sql
 WITH RECURSIVE nr(n) AS (
