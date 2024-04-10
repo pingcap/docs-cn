@@ -34,7 +34,7 @@ summary: 数据类型的默认值描述了列的默认值设置规则。默认�
 
 MySQL 从 8.0.13 开始支持在 `DEFAULT` 子句中指定表达式为默认值。具体可参考 [Explicit Default Handling as of MySQL 8.0.13](https://dev.mysql.com/doc/refman/8.0/en/data-type-defaults.html#data-type-defaults-explicit)。
 
-TiDB 参考了该功能，支持在 `DEFAULT` 子句中指定部分表达式作为字段的默认值。从 v8.0.0 开始，TiDB 额外支持 `BLOB`、`TEXT` 以及 `JSON` 数据类型分配默认值，但是默认值仅支持通过表达式来设置。以下是 `BLOB` 的示例：
+TiDB 参考了该功能，支持在 `DEFAULT` 子句中指定部分表达式作为字段的默认值。从 v8.0.0 开始，TiDB 额外支持为 `BLOB`、`TEXT` 以及 `JSON` 数据类型分配默认值，但是默认值仅支持通过表达式来设置。以下是 `BLOB` 的示例：
 
 ```sql
 CREATE TABLE t2 (b BLOB DEFAULT (RAND()));
