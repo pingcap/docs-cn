@@ -1228,7 +1228,7 @@ SELECT LPAD('TiDB',-2,'>');
 
 ### [`OCTET_LENGTH()`](https://dev.mysql.com/doc/refman/8.0/en/string-functions.html#function_octet-length)
 
-与 `LENGTH()` 功能相同
+与 [`LENGTH()`](#length) 功能相同
 
 ### [`ORD()`](https://dev.mysql.com/doc/refman/8.0/en/string-functions.html#function_ord)
 
@@ -1236,11 +1236,32 @@ SELECT LPAD('TiDB',-2,'>');
 
 ### [`POSITION()`](https://dev.mysql.com/doc/refman/8.0/en/string-functions.html#function_position)
 
-与 `LOCATE()` 功能相同
+与 [`LOCATE()`](#locate) 功能相同
 
 ### [`QUOTE()`](https://dev.mysql.com/doc/refman/8.0/en/string-functions.html#function_quote)
 
-使参数逃逸，为了在 SQL 语句中使用
+`QUOTE()` 函数用于转义字符串，使其可以在 SQL 语句中使用。
+
+如果输入参数为 `NULL`，该函数返回 `NULL`。
+
+示例：
+
+为了直接显示查询结果，而不是以十六进制编码的形式展示，你需要使用 [`--skip-binary-as-hex`](https://dev.mysql.com/doc/refman/8.0/en/mysql-command-options.html#option_mysql_binary-as-hex) 选项启动 MySQL 客户端。
+
+以下示例显示了 ASCII NULL 字符被转义为 `\0`，单引号字符 `'` 被转义为 `\'`：
+
+```sql
+SELECT QUOTE(0x002774657374);
+```
+
+```
++-----------------------+
+| QUOTE(0x002774657374) |
++-----------------------+
+| '\0\'test'            |
++-----------------------+
+1 row in set (0.00 sec)
+```
 
 ### [`REGEXP`](https://dev.mysql.com/doc/refman/8.0/en/regexp.html#operator_regexp)
 
@@ -1336,7 +1357,7 @@ SELECT REPEAT('ha',3);
 
 ### [`RLIKE`](https://dev.mysql.com/doc/refman/8.0/en/regexp.html#operator_regexp)
 
-与 `REGEXP` 功能相同
+与 [`REGEXP`](#regexp) 功能相同
 
 ### [`RPAD()`](https://dev.mysql.com/doc/refman/8.0/en/string-functions.html#function_rpad)
 
