@@ -85,12 +85,6 @@ SQL 端口的配置。
 + 可选值：``, `v2`
 + 在 SQL 端口启用 [PROXY 协议](https://www.haproxy.org/download/1.8/doc/proxy-protocol.txt)。开启 PROXY 协议后能让 TiProxy 透传客户端真实的 IP 地址给 TiDB。`v2` 代表使用 PROXY 协议 v2 版本，`` 代表不使用 PROXY 协议。在 TiProxy 启用 PROXY 协议后，需要同时在 TiDB 服务器上启用 [PROXY 协议](/tidb-configuration-file.md#proxy-protocol)。
 
-#### `require-backend-tls`
-
-+ 默认值：`true`
-+ 支持热加载：是，但只对新连接有效
-+ 要求 TiProxy 和 TiDB 服务器之间使用 TLS 连接。如果 TiDB 服务器不支持 TLS，则客户端在连接到 TiProxy 时会报错。
-
 ### api
 
 HTTP 网关的配置。
@@ -194,6 +188,12 @@ TLS 对象字段：
 #### `cluster-tls`
 
 客户端 TLS 对象。用于访问 TiDB 或 PD。
+
+#### `require-backend-tls`
+
++ 默认值：`false`
++ 支持热加载：是，但只对新连接有效
++ 要求 TiProxy 和 TiDB 服务器之间使用 TLS 连接。如果 TiDB 服务器不支持 TLS，则客户端在连接到 TiProxy 时会报错。
 
 #### `sql-tls`
 
