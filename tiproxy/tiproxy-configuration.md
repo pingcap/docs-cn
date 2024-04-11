@@ -189,6 +189,12 @@ TLS 对象字段：
 
 客户端 TLS 对象。用于访问 TiDB 或 PD。
 
+#### `require-backend-tls`
+
++ 默认值：`false`
++ 支持热加载：是，但只对新连接有效
++ 要求 TiProxy 和 TiDB 服务器之间使用 TLS 连接。如果 TiDB 服务器不支持 TLS，则客户端在连接到 TiProxy 时会报错。
+
 #### `sql-tls`
 
 客户端 TLS 对象。用于访问 TiDB SQL 端口（4000）。
@@ -200,9 +206,3 @@ TLS 对象字段：
 #### `server-http-tls`
 
 服务器 TLS 对象。用于在 HTTP 状态端口（3080）上提供 TLS。
-
-#### `require-backend-tls`
-
-+ 默认值：`false`
-+ 支持热加载：是，但只对新连接有效
-+ 要求 TiProxy 和 TiDB 服务器之间使用 TLS 连接。如果 TiDB 服务器不支持 TLS，则客户端在连接到 TiProxy 时会报错。
