@@ -1,6 +1,7 @@
 ---
 title: TiDB 简介
 aliases: ['/docs-cn/dev/overview/','/docs-cn/dev/key-features/','/docs-cn/overview','/docs-cn/stable/overview/','/docs-cn/stable/key-features/']
+summary: TiDB 是 PingCAP 公司自主设计、研发的开源分布式关系型数据库，支持在线事务处理与在线分析处理 (HTAP)。具有水平扩容、金融级高可用、实时 HTAP、云原生的分布式数据库、兼容 MySQL 协议和 MySQL 生态等特性。适用于高可用、强一致性要求高、数据规模大等各种应用场景。具有一键水平扩缩容、金融级高可用、实时 HTAP、云原生的分布式数据库、兼容 MySQL 协议和 MySQL 生态等五大核心特性，以及金融行业、海量数据及高并发的 OLTP、实时 HTAP、数据汇聚、二次加工处理等四大核心应用场景。
 ---
 
 # TiDB 简介
