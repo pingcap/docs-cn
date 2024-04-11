@@ -9,29 +9,16 @@ summary: TiDB 数据库中 SHOW [GLOBAL|SESSION] BINDINGS 的使用概况。
 
 ## 语法图
 
-**ShowStmt:**
+```ebnf+diagram
+ShowBindingsStmt ::=
+    "SHOW" ("GLOBAL" | "SESSION")? "BINDINGS" ShowLikeOrWhere?
 
-![ShowStmt](/media/sqlgram/ShowStmt.png)
-
-**ShowTargetFilterable:**
-
-![ShowTargetFilterable](/media/sqlgram/ShowTargetFilterable.png)
-
-**GlobalScope:**
-
-![GlobalScope](/media/sqlgram/GlobalScope.png)
-
-**ShowLikeOrWhereOpt**
-
-![ShowLikeOrWhereOpt](/media/sqlgram/ShowLikeOrWhereOpt.png)
+ShowLikeOrWhere ::=
+    "LIKE" SimpleExpr
+|   "WHERE" Expression
+```
 
 ## 语法说明
-
-{{< copyable "sql" >}}
-
-```sql
-SHOW [GLOBAL | SESSION] BINDINGS [ShowLikeOrWhereOpt];
-```
 
 该语句会输出 GLOBAL 或者 SESSION 作用域内的执行计划绑定，在不指定作用域时默认作用域为 SESSION。目前 `SHOW BINDINGS` 会输出 8 列，具体如下：
 
@@ -48,8 +35,6 @@ SHOW [GLOBAL | SESSION] BINDINGS [ShowLikeOrWhereOpt];
 | source | 创建方式，包括 manual （由 `create [global] binding` 生成）、capture（由 tidb 自动创建生成）和 evolve （由 tidb 自动演进生成） |
 
 ## 示例
-
-{{< copyable "sql" >}}
 
 ```sql
 CREATE TABLE t1 (
