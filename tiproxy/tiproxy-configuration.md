@@ -206,4 +206,3 @@ TLS 对象字段：
 + 默认值：`false`
 + 支持热加载：是，但只对新连接有效
 + 要求 TiProxy 和 TiDB 服务器之间使用 TLS 连接。如果 TiDB 服务器不支持 TLS，则客户端在连接到 TiProxy 时会报错。
-
