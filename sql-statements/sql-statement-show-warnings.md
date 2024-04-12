@@ -9,7 +9,7 @@ summary: TiDB 数据库中 SHOW WARNINGS 的使用概况。
 
 ## 语法图
 
-```ebnf+trace
+```ebnf+diagram
 ShowWarningsStmt ::=
     "SHOW" "WARNINGS"
 ```
