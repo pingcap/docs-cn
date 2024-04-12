@@ -10,7 +10,7 @@ aliases: ['/docs-cn/dev/sql-statements/sql-statement-show-warnings/','/docs-cn/d
 
 ## 语法图
 
-```ebnf+trace
+```ebnf+diagram
 ShowWarningsStmt ::=
     "SHOW" "WARNINGS"
 ```

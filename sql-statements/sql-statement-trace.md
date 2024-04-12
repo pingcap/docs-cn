@@ -13,6 +13,7 @@ aliases: ['/docs-cn/dev/sql-statements/sql-statement-trace/','/docs-cn/dev/refer
 ```ebnf+diagram
 TraceStmt ::=
     "TRACE" ( "FORMAT" "=" stringLit )? TracableStmt
+
 TracableStmt ::=
     ( SelectStmt | DeleteFromStmt | UpdateStmt | InsertIntoStmt | ReplaceIntoStmt | UnionStmt | LoadDataStmt | BeginTransactionStmt | CommitStmt | RollbackStmt | SetStmt )
 ```
