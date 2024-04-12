@@ -18,7 +18,7 @@ aliases: ['/docs-cn/dev/user-defined-variables/','/docs-cn/dev/reference/sql/lan
 
 ## 设置用户自定义变量
 
-用 [`SET` 语句](/sql-statements/sql-statement-set-variable.md) 可以设置用户自定义变量，语法为 `SET @var_name = expr [, @var_name = expr] ...;`。例如：
+用 [`SET` 语句](/sql-statements/sql-statement-set-variable.md)可以设置用户自定义变量，语法为 `SET @var_name = expr [, @var_name = expr] ...;`。例如：
 
 ```sql
 SET @favorite_db = 'TiDB';
