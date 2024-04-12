@@ -7,16 +7,6 @@ summary: 简单介绍 TiDB 中的各种超时，为排查错误提供依据。
 
 本章将介绍 TiDB 中的各种超时，为排查错误提供依据。
 
-## GC 超时
-
-TiDB 的事务的实现采用了 MVCC（多版本并发控制）机制，当新写入的数据覆盖旧的数据时，旧的数据不会被替换掉，而是与新写入的数据同时保留，并以时间戳来区分版本。TiDB 通过定期 GC 的机制来清理不再需要的旧数据。
-
-默认配置下 TiDB 可以保障每个 MVCC 版本（一致性快照）保存 10 分钟，读取时间超过 10 分钟的事务，会收到报错 `GC life time is shorter than transaction duration`。
-
-当用户确信自己需要更长的读取时间时，比如在使用了 Dumpling 做全量备份的场景中（当 Dumpling 备份的是一致性的快照），可以通过调整 TiDB 中`mysql.tidb` 表中的 `tikv_gc_life_time` 的值来调大 MVCC 版本保留时间，需要注意的是 tikv_gc_life_time 的配置是立刻影响全局的，调大它会为当前所有存在的快照增加生命时长，调小它会立即缩短所有快照的生命时长。过多的 MVCC 版本会拖慢 TiKV 的处理效率，在使用 Dumpling 做完全量备份后需要及时把 `tikv_gc_life_time` 调整回之前的设置。
-
-更多关于 GC 的信息，请参考 [GC 机制简介](https://pingcap.com/docs-cn/stable/reference/garbage-collection/overview/)文档。
-
 ## 事务超时
 
 垃圾回收 (GC) 不会影响到正在执行的事务。但悲观事务的运行仍有上限，有基于事务超时的限制（TiDB 配置文件 [performance] 类别下的 `max-txn-ttl` 修改，默认为 60 分钟）和基于事务使用内存的限制。
