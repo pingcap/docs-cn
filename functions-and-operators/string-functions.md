@@ -1,6 +1,7 @@
 ---
 title: 字符串函数
 aliases: ['/docs-cn/dev/functions-and-operators/string-functions/','/docs-cn/dev/reference/sql/functions-and-operators/string-functions/','/docs-cn/dev/sql/string-functions/']
+summary: TiDB 支持大部分 MySQL 5.7 和部分 MySQL 8.0 字符串函数，以及部分 Oracle 21 函数。不支持的函数包括 LOAD_FILE()、MATCH() 和 SOUNDEX()。正则函数与 MySQL 的语法和数据类型存在一些差异，需要注意。
 ---
 
 # 字符串函数
@@ -411,9 +412,35 @@ SELECT CONCAT_WS(',', 'TiDB Server', 'TiKV', 'PD');
 
 返回参数在后续参数中出现的第一个位置
 
+在以下示例中，`FIELD()` 的第一个参数是 `needle`，它与后续列表中的第二个参数匹配，因此函数返回 `2`。
+
+```sql
+SELECT FIELD('needle', 'A', 'needle', 'in', 'a', 'haystack');
++-------------------------------------------------------+
+| FIELD('needle', 'A', 'needle', 'in', 'a', 'haystack') |
++-------------------------------------------------------+
+|                                                     2 |
++-------------------------------------------------------+
+1 row in set (0.00 sec)
+```
+
 ### [`FIND_IN_SET()`](https://dev.mysql.com/doc/refman/8.0/en/string-functions.html#function_find-in-set)
 
 返回第一个参数在第二个参数中出现的位置
+
+该函数通常与 [`SET`](/data-type-string.md#set-类型) 数据类型一起使用。
+
+在以下示例中，`Go` 是集合 `COBOL,BASIC,Rust,Go,Java,Fortran` 中的第四个元素，因此函数返回 `4`。
+
+```sql
+SELECT FIND_IN_SET('Go', 'COBOL,BASIC,Rust,Go,Java,Fortran');
++-------------------------------------------------------+
+| FIND_IN_SET('Go', 'COBOL,BASIC,Rust,Go,Java,Fortran') |
++-------------------------------------------------------+
+|                                                     4 |
++-------------------------------------------------------+
+1 row in set (0.00 sec)
+```
 
 ### [`FORMAT()`](https://dev.mysql.com/doc/refman/8.0/en/string-functions.html#function_format)
 
@@ -1139,7 +1166,43 @@ SELECT LOWER(-012);
 
 ### [`LPAD()`](https://dev.mysql.com/doc/refman/8.0/en/string-functions.html#function_lpad)
 
-返回字符串参数，左侧添加指定字符串
+`LPAD(str, len, padstr)` 函数返回字符串参数，左侧填充指定字符串 `padstr`，直到字符串长度达到 `len` 个字符。
+
+- 如果 `len` 小于字符串 `str` 的长度，函数将字符串 `str` 截断到长度 `len`。
+- 如果 `len` 为负数，函数返回 `NULL`。
+- 如果任一参数为 `NULL`，该函数返回 `NULL`。
+
+示例：
+
+```sql
+SELECT LPAD('TiDB',8,'>');
++--------------------+
+| LPAD('TiDB',8,'>') |
++--------------------+
+| >>>>TiDB           |
++--------------------+
+1 row in set (0.00 sec)
+```
+
+```sql
+SELECT LPAD('TiDB',2,'>');
++--------------------+
+| LPAD('TiDB',2,'>') |
++--------------------+
+| Ti                 |
++--------------------+
+1 row in set (0.00 sec)
+```
+
+```sql
+SELECT LPAD('TiDB',-2,'>');
++---------------------+
+| LPAD('TiDB',-2,'>') |
++---------------------+
+| NULL                |
++---------------------+
+1 row in set (0.00 sec)
+```
 
 ### [`LTRIM()`](https://dev.mysql.com/doc/refman/8.0/en/string-functions.html#function_ltrim)
 
@@ -1159,15 +1222,57 @@ SELECT LOWER(-012);
 
 ### [`NOT REGEXP`](https://dev.mysql.com/doc/refman/8.0/en/regexp.html#operator_not-regexp)
 
-`REGEXP` 的否定形式
+[`REGEXP`](#regexp) 的否定形式
 
 ### [`OCT()`](https://dev.mysql.com/doc/refman/8.0/en/string-functions.html#function_oct)
 
-返回一个数值的八进制表示，形式为字符串
+`OCT()` 函数用于返回一个数值的[八进制](https://zh.wikipedia.org/wiki/八进制)表示，形式为字符串。
+
+示例：
+
+以下示例使用[递归的公共表表达式 (CTE)](/develop/dev-guide-use-common-table-expression.md#递归的-cte) 生成从 0 到 20 的数字序列，然后使用 `OCT()` 函数将每个数字转换为其八进制表示。从 0 到 7 的十进制数在八进制中有相同的表示，从 8 到 15 的十进制数对应从 10 到 17 的八进制数。
+
+```sql
+WITH RECURSIVE nr(n) AS (
+    SELECT 0 AS n
+    UNION ALL
+    SELECT n+1 FROM nr WHERE n<20
+)
+SELECT n, OCT(n) FROM nr;
+```
+
+```
++------+--------+
+| n    | OCT(n) |
++------+--------+
+|    0 | 0      |
+|    1 | 1      |
+|    2 | 2      |
+|    3 | 3      |
+|    4 | 4      |
+|    5 | 5      |
+|    6 | 6      |
+|    7 | 7      |
+|    8 | 10     |
+|    9 | 11     |
+|   10 | 12     |
+|   11 | 13     |
+|   12 | 14     |
+|   13 | 15     |
+|   14 | 16     |
+|   15 | 17     |
+|   16 | 20     |
+|   17 | 21     |
+|   18 | 22     |
+|   19 | 23     |
+|   20 | 24     |
++------+--------+
+20 rows in set (0.00 sec)
+```
 
 ### [`OCTET_LENGTH()`](https://dev.mysql.com/doc/refman/8.0/en/string-functions.html#function_octet-length)
 
-与 `LENGTH()` 功能相同
+与 [`LENGTH()`](#length) 功能相同
 
 ### [`ORD()`](https://dev.mysql.com/doc/refman/8.0/en/string-functions.html#function_ord)
 
@@ -1175,11 +1280,32 @@ SELECT LOWER(-012);
 
 ### [`POSITION()`](https://dev.mysql.com/doc/refman/8.0/en/string-functions.html#function_position)
 
-与 `LOCATE()` 功能相同
+与 [`LOCATE()`](#locate) 功能相同
 
 ### [`QUOTE()`](https://dev.mysql.com/doc/refman/8.0/en/string-functions.html#function_quote)
 
-使参数逃逸，为了在 SQL 语句中使用
+`QUOTE()` 函数用于转义字符串，使其可以在 SQL 语句中使用。
+
+如果输入参数为 `NULL`，该函数返回 `NULL`。
+
+示例：
+
+为了直接显示查询结果，而不是以十六进制编码的形式展示，你需要使用 [`--skip-binary-as-hex`](https://dev.mysql.com/doc/refman/8.0/en/mysql-command-options.html#option_mysql_binary-as-hex) 选项启动 MySQL 客户端。
+
+以下示例显示了 ASCII NULL 字符被转义为 `\0`，单引号字符 `'` 被转义为 `\'`：
+
+```sql
+SELECT QUOTE(0x002774657374);
+```
+
+```
++-----------------------+
+| QUOTE(0x002774657374) |
++-----------------------+
+| '\0\'test'            |
++-----------------------+
+1 row in set (0.00 sec)
+```
 
 ### [`REGEXP`](https://dev.mysql.com/doc/refman/8.0/en/regexp.html#operator_regexp)
 
@@ -1203,7 +1329,63 @@ SELECT LOWER(-012);
 
 ### [`REPEAT()`](https://dev.mysql.com/doc/refman/8.0/en/string-functions.html#function_repeat)
 
-以指定次数重复一个字符串
+`REPEAT()` 函数用于以指定次数重复一个字符串。
+
+示例：
+
+以下示例使用[递归的公共表表达式 (CTE)](/develop/dev-guide-use-common-table-expression.md#递归的-cte) 生成从 1 到 20 的数字序列，并使用 `REPEAT()` 函数重复对应次数的 `x` 字符串：
+
+```sql
+WITH RECURSIVE nr(n) AS (
+    SELECT 1 AS n 
+    UNION ALL 
+    SELECT n+1 FROM nr WHERE n<20
+)
+SELECT n, REPEAT('x',n) FROM nr;
+```
+
+```
++------+----------------------+
+| n    | REPEAT('x',n)        |
++------+----------------------+
+|    1 | x                    |
+|    2 | xx                   |
+|    3 | xxx                  |
+|    4 | xxxx                 |
+|    5 | xxxxx                |
+|    6 | xxxxxx               |
+|    7 | xxxxxxx              |
+|    8 | xxxxxxxx             |
+|    9 | xxxxxxxxx            |
+|   10 | xxxxxxxxxx           |
+|   11 | xxxxxxxxxxx          |
+|   12 | xxxxxxxxxxxx         |
+|   13 | xxxxxxxxxxxxx        |
+|   14 | xxxxxxxxxxxxxx       |
+|   15 | xxxxxxxxxxxxxxx      |
+|   16 | xxxxxxxxxxxxxxxx     |
+|   17 | xxxxxxxxxxxxxxxxx    |
+|   18 | xxxxxxxxxxxxxxxxxx   |
+|   19 | xxxxxxxxxxxxxxxxxxx  |
+|   20 | xxxxxxxxxxxxxxxxxxxx |
++------+----------------------+
+20 rows in set (0.01 sec)
+```
+
+以下示例演示了 `REPEAT()` 可以处理包含多个字符的字符串：
+
+```sql
+SELECT REPEAT('ha',3);
+```
+
+```
++----------------+
+| REPEAT('ha',3) |
++----------------+
+| hahaha         |
++----------------+
+1 row in set (0.00 sec)
+```
 
 ### [`REPLACE()`](https://dev.mysql.com/doc/refman/8.0/en/string-functions.html#function_replace)
 
@@ -1219,7 +1401,7 @@ SELECT LOWER(-012);
 
 ### [`RLIKE`](https://dev.mysql.com/doc/refman/8.0/en/regexp.html#operator_regexp)
 
-与 `REGEXP` 功能相同
+与 [`REGEXP`](#regexp) 功能相同
 
 ### [`RPAD()`](https://dev.mysql.com/doc/refman/8.0/en/string-functions.html#function_rpad)
 

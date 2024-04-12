@@ -3,6 +3,7 @@ title: PingCAP 文档中心
 hide_sidebar: true
 hide_commit: true
 hide_leftNav: true
+summary: PingCAP 文档中心为您提供丰富的操作指南和参考资料，助您轻松上手 TiDB 产品，完成数据迁移和应用开发等操作。TiDB 是一款开源分布式关系型数据库，支持在线事务处理与在线分析处理，具备水平扩容、高可用、云原生、兼容 MySQL 协议等特性。TiDB Cloud 是全托管的数据库即服务产品，让数据库部署、运维和性能调优变得轻松简单，适用于中国出海企业和开发者。此外，还提供开发者手册、免费课程、TiDB 社区、TiDB 博客等资源，欢迎贡献内容。
 ---
 
 <DocHomeContainer title="PingCAP 文档中心" subTitle="欢迎来到 PingCAP 文档中心！我们为您提供了丰富的操作指南和详实的参考资料，助您轻松上手 TiDB 产品，顺利完成数据迁移和基于数据库的应用开发等操作。">
@@ -81,13 +82,13 @@ TiDB Cloud 是全托管的数据库即服务 (Database-as-a-Service, DBaaS) 产�
 
 </DocHomeCard>
 
-<DocHomeCard href="https://docs.pingcap.com/zh/tidb/stable/dev-guide-sample-application-java" icon="java" label="Java">
+<DocHomeCard href="https://docs.pingcap.com/zh/tidb/stable/dev-guide-sample-application-java-jdbc" icon="java" label="Java">
 
 使用 TiDB 和 Java 来构造一个简单的 CRUD 应用程序
 
 </DocHomeCard>
 
-<DocHomeCard href="https://docs.pingcap.com/zh/tidb/stable/dev-guide-sample-application-golang" icon="go" label="Golang">
+<DocHomeCard href="https://docs.pingcap.com/zh/tidb/stable/dev-guide-sample-application-golang-sql-driver" icon="go" label="Golang">
 
 使用 TiDB 和 Golang 来构造一个简单的 CRUD 应用程序
 
