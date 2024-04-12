@@ -17,7 +17,7 @@ summary: TiDB 数据库中 SHOW PLACEMENT FOR 的使用概况。
 
 ```ebnf+diagram
 ShowStmt ::=
-    "PLACEMENT" "FOR" ShowPlacementTarget
+    "SHOW" "PLACEMENT" "FOR" ShowPlacementTarget
 
 ShowPlacementTarget ::=
     DatabaseSym DBName
