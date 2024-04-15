@@ -1,32 +1,31 @@
 ---
 title: SHOW STATS_HISTOGRAMS
 summary: TiDB 数据库中 SHOW HISTOGRAMS 语句的简单说明。
+<<<<<<< HEAD:sql-statements/sql-statement-show-histograms.md
+=======
+aliases: ['/docs-cn/dev/sql-statements/sql-statement-show-histograms/','/zh/tidb/dev/sql-statement-show-histograms']
+>>>>>>> 2ebbc1f763 (sql statement: refined Synopsis (#17100)):sql-statements/sql-statement-show-stats-histograms.md
 ---
 
 # SHOW STATS_HISTOGRAMS
 
-你可以使用 `SHOW STATS_HISTOGRAMS` 语句查看统计信息中直方图的相关信息。
+你可以使用 `SHOW STATS_HISTOGRAMS` 语句查看通过 [`ANALYZE` 语句](/sql-statements/sql-statement-analyze-table.md) 收集的直方图信息，该内容是数据库 [统计信息](/statistics.md) 的一部分。
 
 ## 语法图
 
-**ShowStmt**
+```ebnf+diagram
+ShowStatsHistogramsStmt ::=
+    "SHOW" "STATS_HISTOGRAMS" ShowLikeOrWhere?
 
-![ShowStmt](/media/sqlgram/ShowStmt.png)
-
-**ShowTargetFiltertable**
-
-![ShowTargetFilterable](/media/sqlgram/ShowTargetFilterable.png)
-
-**ShowLikeOrWhereOpt**
-
-![ShowLikeOrWhereOpt](/media/sqlgram/ShowLikeOrWhereOpt.png)
+ShowLikeOrWhere ::=
+    "LIKE" SimpleExpr
+|   "WHERE" Expression
+```
 
 ## 示例
 
-{{< copyable "sql" >}}
-
 ```sql
-show stats_histograms;
+SHOW STATS_HISTOGRAMS;
 ```
 
 ```sql
@@ -40,10 +39,8 @@ show stats_histograms;
 3 rows in set (0.00 sec)
 ```
 
-{{< copyable "sql" >}}
-
 ```sql
-show stats_histograms where table_name = 't2';
+SHOW STATS_HISTOGRAMS WHERE table_name = 't2';
 ```
 
 ```sql
