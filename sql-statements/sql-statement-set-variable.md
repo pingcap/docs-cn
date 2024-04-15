@@ -6,7 +6,7 @@ aliases: ['/docs-cn/dev/sql-statements/sql-statement-set-variable/','/docs-cn/de
 
 # `SET [GLOBAL|SESSION] <variable>`
 
-`SET [GLOBAL|SESSION]` 语句用于对某个 TiDB 的内置变量进行更改。 这些变量可以是范围为 `SESSION` 或 `GLOBAL` 的[系统变量](/system-variables.md)或[用户自定义变量](/user-defined-variables.md)。
+`SET [GLOBAL|SESSION]` 语句用于对某个 TiDB 的内置变量进行更改。这些变量可以是范围为 `SESSION` 或 `GLOBAL` 的[系统变量](/system-variables.md)或是[用户自定义变量](/user-defined-variables.md)。
 
 > **警告：**
 >
@@ -121,10 +121,10 @@ SHOW SESSION VARIABLES LIKE 'sql_mode';
 以 `@` 开头的用户变量：
 
 ```sql
-mysql> SET @myvar := 5;
+SET @myvar := 5;
 Query OK, 0 rows affected (0.00 sec)
 
-mysql> SELECT @myvar, @myvar + 1;
+SELECT @myvar, @myvar + 1;
 +--------+------------+
 | @myvar | @myvar + 1 |
 +--------+------------+
@@ -140,7 +140,7 @@ mysql> SELECT @myvar, @myvar + 1;
 * 与 MySQL 不同，TiDB 中使用 `SET GLOBAL` 所作的修改会应用于集群中的全部 TiDB 实例。而在 MySQL 中，修改不会应用于副本。
 * TiDB 中的若干变量可读又可设置，这是与 MySQL 相兼容的要求，因为应用程序和连接器常读取 MySQL 变量。例如：JDBC 连接器同时读取和设置缓存查询的参数，尽管并不依赖这一行为。
 * 即使在 TiDB 服务器重启后，`SET GLOBAL` 的更改也仍然有效。这样，TiDB 中的 `SET GLOBAL` 更类似于 MySQL 8.0 及更高版本中的 `SET PERSIST`。
-* 由于 TiDB 会持久化全局变量，因此 TiDB 不支持 `SET PERSIST` 和 `SET PERSIST_ONLY`。
+* TiDB 会持久化全局变量，因此 TiDB 不支持 `SET PERSIST` 和 `SET PERSIST_ONLY`。
 
 ## 另请参阅
 

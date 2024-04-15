@@ -6,7 +6,7 @@ aliases: ['/docs-cn/dev/sql-statements/sql-statement-show-histograms/']
 
 # SHOW STATS_HISTOGRAMS
 
-你可以使用 `SHOW STATS_HISTOGRAMS` 语句查看由 [`ANALYZE` statement](/sql-statements/sql-statement-analyze-table.md) 收集的直方图的相关信息，该内容是数据库 [statistics](/statistics.md) 的一部分。
+你可以使用 `SHOW STATS_HISTOGRAMS` 语句查看通过 [`ANALYZE` 语句](/sql-statements/sql-statement-analyze-table.md) 收集的直方图信息，该内容是数据库 [统计信息](/statistics.md) 的一部分。
 
 ## 语法图
 
