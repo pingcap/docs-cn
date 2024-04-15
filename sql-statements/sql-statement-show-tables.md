@@ -85,3 +85,4 @@ mysql> SHOW TABLES IN mysql;
 * [CREATE TABLE](/sql-statements/sql-statement-create-table.md)
 * [DROP TABLE](/sql-statements/sql-statement-drop-table.md)
 * [SHOW CREATE TABLE](/sql-statements/sql-statement-show-create-table.md)
+* [`information_schema.tables`](/information-schema/information-schema-tables.md)
