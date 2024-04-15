@@ -1,10 +1,7 @@
 ---
 title: SHOW STATS_HISTOGRAMS
 summary: TiDB 数据库中 SHOW HISTOGRAMS 语句的简单说明。
-<<<<<<< HEAD:sql-statements/sql-statement-show-histograms.md
-=======
 aliases: ['/docs-cn/dev/sql-statements/sql-statement-show-histograms/','/zh/tidb/dev/sql-statement-show-histograms']
->>>>>>> 2ebbc1f763 (sql statement: refined Synopsis (#17100)):sql-statements/sql-statement-show-stats-histograms.md
 ---
 
 # SHOW STATS_HISTOGRAMS
