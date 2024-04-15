@@ -4430,6 +4430,7 @@ Query OK, 0 rows affected, 1 warning (0.00 sec)
 - 是否持久化到集群：是
 - 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：否
 - 类型：整数型
+- 单位：字节
 - 默认值：`0`，自动设置内部统计信息缓存使用内存的上限为总内存的一半。
 - 这个变量用于控制 TiDB 内部统计信息缓存使用内存的上限。
 
