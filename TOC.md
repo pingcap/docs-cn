@@ -850,7 +850,7 @@
       - [`SHOW PUMP STATUS`](/sql-statements/sql-statement-show-pump-status.md)
       - [`SHOW SCHEMAS`](/sql-statements/sql-statement-show-schemas.md)
       - [`SHOW STATS_HEALTHY`](/sql-statements/sql-statement-show-stats-healthy.md)
-      - [`SHOW STATS_HISTOGRAMS`](/sql-statements/sql-statement-show-histograms.md)
+      - [`SHOW STATS_HISTOGRAMS`](/sql-statements/sql-statement-show-stats-histograms.md)
       - [`SHOW STATS_LOCKED`](/sql-statements/sql-statement-show-stats-locked.md)
       - [`SHOW STATS_META`](/sql-statements/sql-statement-show-stats-meta.md)
       - [`SHOW STATUS`](/sql-statements/sql-statement-show-status.md)
