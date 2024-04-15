@@ -341,7 +341,7 @@ select @@tidb_slow_log_threshold;
 | instance.tidb_record_plan_in_slow_log | tidb_record_plan_in_slow_log | 控制是否在慢日志中记录执行计划 |
 | instance.tidb_force_priority | tidb_force_priority | 该 TiDB 实例的语句优先级 |
 | instance.max_connections | max_connections | 该 TiDB 实例允许的最大客户端连接数 |
-| instance.tidb_enable_ddl | tidb_enable_ddl | 控制该 tidb 实例是否可以成为 DDL owner |
+| instance.tidb_enable_ddl | tidb_enable_ddl | 控制该 TiDB 实例是否可以成为 DDL owner |
 | pessimistic-txn.constraint-check-in-place-pessimistic | tidb_constraint_check_in_place_pessimistic | 控制悲观事务中锁行为 |
 
 ### 在线修改 TiFlash 配置
