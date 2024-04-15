@@ -155,7 +155,7 @@ git push -u origin new-branch-name
 
 ## 预览 EBNF 格式的 SQL 语法图
 
-[TiDB 文档](https://docs.pingcap.com/zh/tidb/stable) 提供了大量 SQL 语法图，以帮助用户理解 SQL 语法。例如，[`ALTER INDEX` 文档](https://docs.pingcap.com/zh/tidb/stable/sql-statement-alter-index#语法图)中的语法图。
+[TiDB 文档](https://docs.pingcap.com/zh/tidb/stable)提供了大量 SQL 语法图，以帮助用户理解 SQL 语法。例如，[`ALTER INDEX` 文档](https://docs.pingcap.com/zh/tidb/stable/sql-statement-alter-index#语法图)中的语法图。
 
 这些语法图的源代码是使用[扩展巴科斯范式 (EBNF)](https://zh.wikipedia.org/wiki/扩展巴科斯范式) 编写的。在为 SQL 语句添加 EBNF 代码时，可以将代码复制到 <https://kennytm.github.io/website-docs/dist/> 并点击 **Render**，即可轻松预览 EBNF 效果图。
 
