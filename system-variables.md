@@ -3751,12 +3751,8 @@ Query OK, 0 rows affected, 1 warning (0.00 sec)
 - 作用域：GLOBAL
 - 是否持久化到集群：是
 - 类型：整数型
-<<<<<<< HEAD
-- 默认值：`0`
-=======
 - 单位：字节
-- 默认值：`0`，自动设置内部统计信息缓存使用内存的上限为总内存的一半。
->>>>>>> 796ea1f2a1 (Address a few minor changes in user docs as of 7.1 (#17016))
+- 默认值：`0`
 - 这个变量用于控制 TiDB 内部统计信息缓存使用内存的上限。
 
 ### `tidb_stats_load_sync_wait` <span class="version-mark">从 v5.4.0 版本开始引入</span>
