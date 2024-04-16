@@ -8,7 +8,7 @@ summary: 数据类型的默认值描述了列的默认值设置规则。默认�
 
 在一个数据类型描述中的 `DEFAULT value` 段描述了一个列的默认值。这个默认值必须是常量，不可以是一个函数或者是表达式。但是对于时间类型，可以例外的使用 `NOW`、`CURRENT_TIMESTAMP`、`LOCALTIME`、`LOCALTIMESTAMP` 等函数作为 `DATETIME` 或者 `TIMESTAMP` 的默认值。
 
-从 v8.0.0 开始，[`BLOB`](/data-type-string.md#blob-类型)、[`TEXT`](/data-type-string.md#text-类型) 以及 [`JSON`](/data-type-json.md#json-类型) 可以设置[表达式默认值](#表达式默认值)。
+所有数据类型都可以设置默认值。从 v8.0.0 开始，新增支持 [`BLOB`](/data-type-string.md#blob-类型)、[`TEXT`](/data-type-string.md#text-类型) 以及 [`JSON`](/data-type-json.md#json-类型) 这三种数据类型设置默认值，但仅支持使用表达式设置[默认值](#表达式默认值)。
 
 如果一个列的定义中没有 `DEFAULT` 的设置。TiDB 按照如下的规则决定：
 
@@ -34,7 +34,7 @@ summary: 数据类型的默认值描述了列的默认值设置规则。默认�
 
 MySQL 从 8.0.13 开始支持在 `DEFAULT` 子句中指定表达式为默认值。具体可参考 [Explicit Default Handling as of MySQL 8.0.13](https://dev.mysql.com/doc/refman/8.0/en/data-type-defaults.html#data-type-defaults-explicit)。
 
-TiDB 参考了该功能，支持在 `DEFAULT` 子句中指定部分表达式作为字段的默认值。从 v8.0.0 开始，TiDB 支持为 `BLOB`、`TEXT` 以及 `JSON` 数据类型分配默认值，但是默认值仅支持通过表达式来设置。以下是 `BLOB` 的示例：
+TiDB 参考了该功能，支持在 `DEFAULT` 子句中指定部分表达式作为字段的默认值。从 v8.0.0 开始，TiDB 额外支持 `BLOB`、`TEXT` 以及 `JSON` 数据类型分配默认值，但是默认值仅支持通过表达式来设置。以下是 `BLOB` 的示例：
 
 ```sql
 CREATE TABLE t2 (b BLOB DEFAULT (RAND()));
