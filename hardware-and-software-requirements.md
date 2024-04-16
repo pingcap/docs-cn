@@ -1,6 +1,7 @@
 ---
 title: TiDB 软件和硬件环境建议配置
 aliases: ['/docs-cn/dev/hardware-and-software-requirements/','/docs-cn/dev/how-to/deploy/hardware-recommendations/']
+summary: TiDB 是一款开源的一站式实时 HTAP 数据库，支持部署在多种硬件环境和操作系统上。软件和硬件环境建议配置包括操作系统要求、编译和运行依赖库、Docker 镜像依赖、软件配置要求、服务器建议配置、网络要求、磁盘空间要求、客户端 Web 浏览器要求以及 TiFlash 存算分离架构的软硬件要求。
 ---
 
 # TiDB 软件和硬件环境建议配置
@@ -58,7 +59,7 @@ TiDB 作为一款开源一栈式实时 HTAP 数据库，可以很好地部署和
 
 支持的 CPU 架构如下：
 
-- x86_64，从 TiDB v6.6.0 开始，需要 [x84-64-v2 指令集](https://developers.redhat.com/blog/2021/01/05/building-red-hat-enterprise-linux-9-for-the-x86-64-v2-microarchitecture-level)
+- x86_64，从 TiDB v6.6.0 开始，需要 [x86-64-v2 指令集](https://developers.redhat.com/blog/2021/01/05/building-red-hat-enterprise-linux-9-for-the-x86-64-v2-microarchitecture-level)
 - ARM 64
 
 ## 软件配置要求
