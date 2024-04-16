@@ -144,7 +144,7 @@ pd_servers:
 
     > **注意：**
     >
-    > 如果你使用的 TiUP v1.15.0 及之后版本，请跳过此步骤；如果你使用的 TiUP 版本早于 v1.15.0，则需要执行以下命令来更新 Prometheus 配置并重启。
+    > 如果你使用的是 TiUP v1.15.0 及之后版本，请跳过此步骤；如果你使用的 TiUP 版本早于 v1.15.0，则需要执行以下命令来更新 Prometheus 配置并重启。
 
     ```shell
     tiup cluster reload <cluster-name> -R prometheus
@@ -365,7 +365,7 @@ tiup cluster scale-in <cluster-name> --node 10.0.1.5:20160
 
     > **注意：**
     >
-    > 如果你使用的 TiUP v1.15.0 及之后版本，请跳过此步骤；如果你使用的 TiUP 版本早于 v1.15.0，则需要执行以下命令来更新 Prometheus 配置并重启。
+    > 如果你使用的是 TiUP v1.15.0 及之后版本，请跳过此步骤；如果你使用的 TiUP 版本早于 v1.15.0，则需要执行以下命令来更新 Prometheus 配置并重启。
 
     ```shell
     tiup cluster reload <cluster-name> -R prometheus
