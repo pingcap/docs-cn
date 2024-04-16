@@ -6,12 +6,13 @@ summary: 数据类型的默认值描述了列的默认值设置规则。默认�
 
 # 数据类型的默认值
 
-在一个数据类型描述中的 `DEFAULT value` 段描述了一个列的默认值。这个默认值通常情况下必须是常量，不可以是一个函数或者是表达式，但也存在以下例外情况：
+在一个数据类型描述中的 `DEFAULT value` 段描述了一个列的默认值。
+
+所有数据类型都可以设置默认值。这个默认值通常情况下必须是常量，不可以是一个函数或者是表达式，但也存在以下例外情况：
 
 - 对于时间类型，可以使用 `NOW`、`CURRENT_TIMESTAMP`、`LOCALTIME`、`LOCALTIMESTAMP` 等函数作为 `DATETIME` 或者 `TIMESTAMP` 列的默认值。
 - 对于整数类型，可以使用 `NEXT VALUE FOR` 函数将序列的下一个值作为列的默认值。
-
-所有数据类型都可以设置默认值。从 v8.0.0 开始，新增支持 [`BLOB`](/data-type-string.md#blob-类型)、[`TEXT`](/data-type-string.md#text-类型) 以及 [`JSON`](/data-type-json.md#json-类型) 这三种数据类型设置默认值，但仅支持使用表达式设置[默认值](#表达式默认值)。
+- 从 v8.0.0 开始，新增支持 [`BLOB`](/data-type-string.md#blob-类型)、[`TEXT`](/data-type-string.md#text-类型) 以及 [`JSON`](/data-type-json.md#json-类型) 这三种数据类型设置默认值，但仅支持使用表达式设置[默认值](#表达式默认值)。
 
 如果一个列的定义中没有 `DEFAULT` 的设置。TiDB 按照如下的规则决定：
 
