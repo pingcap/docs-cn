@@ -131,25 +131,25 @@ pd_servers:
 
 > **注意：**
 >
-> 该操作仅在 PD 扩容时需要被执行。
+> 该操作仅需在扩容 PD 节点时执行，扩容 TiDB 或 TiKV 节点时无需执行。
 
-（1）更新集群配置：
+1. 更新集群配置：
 
-  {{< copyable "shell-regular" >}}
+    ```shell
+    tiup cluster reload <cluster-name> --skip-restart
+    ```
 
-  ```shell
-  tiup cluster reload <cluster-name> --skip-restart
-  ```
+2. 更新 Prometheus 配置并重启：
 
-（2）更新 Prometheus 配置并重启：
+    > **注意：**
+    >
+    > 如果你使用的 TiUP v1.15.0 及之后版本，请跳过此步骤；如果你使用的 TiUP 版本早于 v1.15.0，则需要执行以下命令来更新 Prometheus 配置并重启。
 
-  {{< copyable "shell-regular" >}}
+    ```shell
+    tiup cluster reload <cluster-name> -R prometheus
+    ```
 
-  ```shell
-  tiup cluster reload <cluster-name> -R prometheus
-  ```
-
-### 4. 检查集群状态
+### 4. 查看集群状态
 
 {{< copyable "shell-regular" >}}
 
@@ -352,25 +352,25 @@ tiup cluster scale-in <cluster-name> --node 10.0.1.5:20160
 
 > **注意：**
 >
-> 该操作仅在 PD 缩容时需要被执行。
+> 该操作仅需在缩容 PD 节点时执行，缩容 TiDB 或 TiKV 节点时无需执行。
 
-（1）更新集群配置：
+1. 更新集群配置：
 
-  {{< copyable "shell-regular" >}}
+    ```shell
+    tiup cluster reload <cluster-name> --skip-restart
+    ```
 
-  ```shell
-  tiup cluster reload <cluster-name> --skip-restart
-  ```
+2. 更新 Prometheus 配置并重启：
 
-（2）更新 Prometheus 配置并重启：
+    > **注意：**
+    >
+    > 如果你使用的 TiUP v1.15.0 及之后版本，请跳过此步骤；如果你使用的 TiUP 版本早于 v1.15.0，则需要执行以下命令来更新 Prometheus 配置并重启。
 
-  {{< copyable "shell-regular" >}}
+    ```shell
+    tiup cluster reload <cluster-name> -R prometheus
+    ```
 
-  ```shell
-  tiup cluster reload <cluster-name> -R prometheus
-  ```
-
-### 4. 检查集群状态
+### 4. 查看集群状态
 
 下线需要一定时间，下线节点的状态变为 Tombstone 就说明下线成功。
 
