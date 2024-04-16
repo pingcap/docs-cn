@@ -38,32 +38,31 @@ summary: 数据类型的默认值描述了列的默认值设置规则。默认�
 
 MySQL 从 8.0.13 开始支持在 `DEFAULT` 子句中指定表达式为默认值。具体可参考 [Explicit Default Handling as of MySQL 8.0.13](https://dev.mysql.com/doc/refman/8.0/en/data-type-defaults.html#data-type-defaults-explicit)。
 
-TiDB 参考了该功能，支持在 `DEFAULT` 子句中指定部分表达式作为字段的默认值。从 v8.0.0 开始，TiDB 额外支持 `BLOB`、`TEXT` 以及 `JSON` 数据类型分配默认值，但是默认值仅支持通过表达式来设置。以下是 `BLOB` 的示例：
+TiDB 参考了该功能，支持在 `DEFAULT` 子句中指定部分表达式作为字段的默认值。而在 v8.0.0 版本，新增以下功能。
 
-```sql
-CREATE TABLE t2 (b BLOB DEFAULT (RAND()));
-```
+1. 在 `DEFAULT` 子句中可以使用以下新增的表达式来设置默认值：
+   * [`UUID_TO_BIN()`](/functions-and-operators/miscellaneous-functions.md)
+   
+   * `UPPER(SUBSTRING_INDEX(USER(), '@', 1))`
+   
+   * `REPLACE(UPPER(UUID()), '-', '')`
+   
+   * `DATE_FORMAT` 相关表达式，具体格式如下：
+   
+       * `DATE_FORMAT(NOW(), '%Y-%m')`
+       * `DATE_FORMAT(NOW(), '%Y-%m-%d')`
+       * `DATE_FORMAT(NOW(), '%Y-%m-%d %H.%i.%s')`
+       * `DATE_FORMAT(NOW(), '%Y-%m-%d %H:%i:%s')`
+   
+   * `STR_TO_DATE('1980-01-01', '%Y-%m-%d')`
+     
+2. TiDB 额外支持 `BLOB`、`TEXT` 以及 `JSON` 数据类型分配默认值，但是默认值仅支持通过表达式来设置。以下是 `BLOB` 的示例：
 
-TiDB 支持以下表达式：
+   ```sql
+   CREATE TABLE t2 (b BLOB DEFAULT (RAND()));
+   ```
 
-* [`RAND()`](/functions-and-operators/numeric-functions-and-operators.md)
-* [`UUID()`](/functions-and-operators/miscellaneous-functions.md)
-* [`UUID_TO_BIN()`](/functions-and-operators/miscellaneous-functions.md)
 
-从 v8.0.0 开始，在 `DEFAULT` 子句中可以使用以下表达式来设置默认值。
-
-* `UPPER(SUBSTRING_INDEX(USER(), '@', 1))`
-
-* `REPLACE(UPPER(UUID()), '-', '')`
-
-* `DATE_FORMAT` 相关表达式，具体格式如下：
-
-    * `DATE_FORMAT(NOW(), '%Y-%m')`
-    * `DATE_FORMAT(NOW(), '%Y-%m-%d')`
-    * `DATE_FORMAT(NOW(), '%Y-%m-%d %H.%i.%s')`
-    * `DATE_FORMAT(NOW(), '%Y-%m-%d %H:%i:%s')`
-
-* `STR_TO_DATE('1980-01-01', '%Y-%m-%d')`
 
 > **注意：**
 >
