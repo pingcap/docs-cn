@@ -21,12 +21,30 @@ summary: 了解升级 TiFlash 至 v6.2 时的注意事项。
 > - v4.x. 已接近产品周期尾声，请尽早升级到 v5.x 及以上版本。具体的版本周期请参考 [TiDB 版本周期支持策略](https://pingcap.com/zh/tidb-release-support-policy)。
 >
 > - v6.0 作为非 LTS 版本，不会推出后续的 bug 修复版，请尽量使用 v6.1 及之后的 LTS 版本。
->
-> - 若想将 TiFlash 从 v5.3.0 之前的版本升级到 v5.3.0 及之后的版本，必须进行 TiFlash 的停机升级。如果使用 TiUP 进行升级，则 TiUP 版本不高于 v1.12.0，否则不能直接升级、必须先升级到某个中间版本。参考如下步骤，可以在确保其他组件正常运行的情况下，使用 TiUP 升级 TiFlash：
->
->     - 关闭 TiFlash 实例：`tiup cluster stop <cluster-name> -R tiflash`
->     - 使用 `--offline` 参数在不重启（只更新文件）的情况下升级集群：`tiup cluster upgrade <cluster-name> <version> --offline`，例如 `tiup cluster upgrade <cluster-name> v5.3.0 --offline`
->     - reload 整个集群：`tiup cluster reload <cluster-name>`。此时，TiFlash 也会正常启动，无需额外操作。
+
+## 使用 TiUP 升级
+
+若想将 TiFlash 从 v5.3.0 之前的版本升级到 v5.3.0 及之后的版本，必须进行 TiFlash 的停机升级。如果使用 TiUP 进行升级，则 TiUP 版本不高于 v1.12.0，否则不能直接升级、必须先升级到某个中间版本。
+
+参考如下步骤，可以在确保其他组件正常运行的情况下，使用 TiUP 升级 TiFlash：
+
+1. 关闭 TiFlash 实例：
+
+    ```shell
+    tiup cluster stop <cluster-name> -R tiflash
+    ```
+
+2. 使用 `--offline` 参数在不重启（只更新文件）的情况下升级集群：
+
+    ```shell 
+    tiup cluster upgrade <cluster-name> <version> --offline`，例如 `tiup cluster upgrade <cluster-name> v5.3.0 --offline
+    ```
+
+3. reload 整个集群。此时，TiFlash 也会正常启动，无需额外操作。
+
+    ```shell 
+    tiup cluster reload <cluster-name>
+    ```
 
 ## 从 v5.x 或 v6.0 升级至 v6.1
 
