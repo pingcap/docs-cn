@@ -5,9 +5,7 @@ summary: 了解 TiDB 8.0.0 版本的新功能、兼容性变更、改进提升�
 
 # TiDB 8.0.0 Release Notes
 
-> **注意：**
->
-> v8.0.0 为 TiDB 尚未发布的版本。以下内容可能在正式发布前发生变化。
+发版日期：2024 年 3 月 29 日
 
 TiDB 版本：8.0.0
 
@@ -49,7 +47,7 @@ TiDB 版本：8.0.0
   <tr>
     <td rowspan="1">数据库管理与可观测性</td>
     <td>支持观测索引使用情况 </td>
-    <td>正确的索引设计是提升数据库性能的重要前提。TiDB v8.0.0 引入内存表 <a href="https://docs.pingcap.com/zh/tidb/v8.0/information-schema-tidb-index-usage"><code>INFORMATION_SCHEMA.TIDB_INDEX_USAGE</code></a> 和视图 <a href="https://docs.pingcap.com/zh/tidb/v8.0/sys-schema#schema_unused_index"><code>sys.schema_unused_index</code></a> ，用于记录索引的使用情况。该功能有助于用户评估数据库中索引的效率并优化索引设计。</td>
+    <td>正确的索引设计是提升数据库性能的重要前提。TiDB v8.0.0 引入内存表 <a href="https://docs.pingcap.com/zh/tidb/v8.0/information-schema-tidb-index-usage"><code>INFORMATION_SCHEMA.TIDB_INDEX_USAGE</code></a> 和视图 <a href="https://docs.pingcap.com/zh/tidb/v8.0/sys-schema-unused-indexes"><code>sys.schema_unused_indexes</code></a> ，用于记录索引的使用情况。该功能有助于用户评估数据库中索引的效率并优化索引设计。</td>
   </tr>
   <tr>
     <td rowspan="2">数据迁移</td>
@@ -76,7 +74,7 @@ TiDB 版本：8.0.0
 
   每个微服务都以独立进程的方式部署。当设置某个微服务的副本数大于 1 时，该微服务会自动实现主备的容灾模式，以确保服务的高可用性和可靠性。
 
-    目前 PD 微服务仅支持通过 TiDB Operator 和 TiUP Playground 进行部署。当 PD 出现明显的性能瓶颈且无法升级配置的情况下，建议考虑使用该模式。
+    目前 PD 微服务仅支持通过 TiDB Operator 进行部署。当 PD 出现明显的性能瓶颈且无法升级配置的情况下，建议考虑使用该模式。
 
     更多信息，请参考[用户文档](/pd-microservices.md)。
 
@@ -238,7 +236,7 @@ TiDB 版本：8.0.0
 
   通过这些信息，你可以识别未被优化器使用的索引以及过滤效果不佳的索引，从而优化索引设计，提升数据库性能。
 
-    此外，TiDB v8.0.0 新增与 MySQL 兼容的视图 [`sys.schema_unused_index`](/sys-schema.md)，用于记录自 TiDB 上次启动以来未被使用的索引信息。对于从 v8.0.0 之前版本升级的集群，`sys` 中的内容不会自动创建。你可以参考 [`sys`](/sys-schema.md) 手动创建。
+    此外，TiDB v8.0.0 新增与 MySQL 兼容的视图 [`sys.schema_unused_indexes`](/sys-schema/sys-schema-unused-indexes.md)，用于记录自 TiDB 上次启动以来未被使用的索引信息。对于从 v8.0.0 之前版本升级的集群，`sys` 中的内容不会自动创建。你可以参考 [`sys.schema_unused_indexes`](/sys-schema/sys-schema-unused-indexes.md#手动创建-schema_unused_indexes-视图) 手动创建。
 
     更多信息，请参考[用户文档](/information-schema/information-schema-tidb-index-usage.md)。
 
@@ -335,6 +333,7 @@ TiDB 版本：8.0.0
 | [`tidb_enable_fast_create_table`](/system-variables.md#tidb_enable_fast_create_table-从-v800-版本开始引入) | 新增 | 用于控制是否开启 [TiDB 加速建表](/accelerated-table-creation.md)。将该变量的值设置为 `ON` 可以开启该功能，设置为 `OFF` 关闭该功能。默认值为 `OFF`。开启后，将使用 [`CREATE TABLE`](/sql-statements/sql-statement-create-table.md) 加速建表。 |
 | [`tidb_load_binding_timeout`](/system-variables.md#tidb_load_binding_timeout-从-v800-版本开始引入) | 新增 | 控制加载绑定的超时时间。当加载绑定的执行时间超过该值时，会停止加载。 |
 | [`tidb_low_resolution_tso_update_interval`](/system-variables.md#tidb_low_resolution_tso_update_interval-从-v800-版本开始引入) | 新增 | 设置 TiDB [缓存 timestamp](/system-variables.md#tidb_low_resolution_tso) 的更新时间间隔。 |
+| [`tidb_opt_ordering_index_selectivity_ratio`](/system-variables.md#tidb_opt_ordering_index_selectivity_ratio-从-v800-版本开始引入) | 新增 | 当一个索引满足 SQL 语句中的 `ORDER BY` 和 `LIMIT` 子句，但有部分过滤条件未被该索引覆盖时，该系统变量用于控制该索引的估算行数。默认值为 `-1`，表示禁用此系统变量。  |
 | [`tidb_opt_use_invisible_indexes`](/system-variables.md#tidb_opt_use_invisible_indexes-从-v800-版本开始引入) | 新增 | 控制当前会话中是否允许优化器选择[不可见索引](/sql-statements/sql-statement-create-index.md#不可见索引)。当修改变量为 `ON` 时，对该会话中的查询，优化器可以选择不可见索引进行查询优化。|
 | [`tidb_schema_cache_size`](/system-variables.md#tidb_schema_cache_size-从-v800-版本开始引入)  |  新增 |  设置缓存 schema 信息可以使用的内存上限，避免占用过多的内存。开启该功能后，将使用 LRU 算法来缓存所需的表，有效减少 schema 信息占用的内存。    |
 
@@ -364,7 +363,7 @@ TiDB 版本：8.0.0
 ### 系统表
 
 * 新增系统表 [`INFORMATION_SCHEMA.TIDB_INDEX_USAGE`](/information-schema/information-schema-tidb-index-usage.md) 和 [`INFORMATION_SCHEMA.CLUSTER_TIDB_INDEX_USAGE`](/information-schema/information-schema-tidb-index-usage.md#cluster_tidb_index_usage) 用于记录 TiDB 节点中索引的访问统计信息。
-* 新增系统数据库 [`sys`](/sys-schema.md) 和 [`sys.schema_unused_index`](/sys-schema.md#schema_unused_index) 视图，用于记录自 TiDB 上次启动以来未被使用的索引信息。
+* 新增系统数据库 [`sys`](/sys-schema/sys-schema.md) 和 [`sys.schema_unused_indexes`](/sys-schema/sys-schema-unused-indexes.md) 视图，用于记录自 TiDB 上次启动以来未被使用的索引信息。
 
 ## 废弃功能
 

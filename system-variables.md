@@ -3667,6 +3667,110 @@ mysql> desc select count(distinct a) from test.t;
 - 实时统计信息是 TiDB 在运行时根据 DML 语句自动更新的表的总行数以及修改的行数。该变量保持默认值 `moderate` 时，TiDB 会基于实时统计信息来生成执行计划。该变量设为 `determinate` 后，TiDB 在生成执行计划时将不再使用实时统计信息，这会让执行计划相对稳定。
 - 对于长期稳定的 OLTP 业务，或者如果用户对系统已有的执行计划非常确定，则推荐使用 `determinate` 模式减少执行计划跳变的可能。同时还可以结合 [`LOCK STATS`](/sql-statements/sql-statement-lock-stats.md) 来阻止统计信息的更新，进一步稳定执行计划。
 
+### `tidb_opt_ordering_index_selectivity_ratio` <span class="version-mark">从 v8.0.0 版本开始引入</span>
+
+- 作用域：SESSION | GLOBAL
+- 是否持久化到集群：是
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：是
+- 类型：浮点数
+- 默认值：`-1`
+- 范围：`[-1, 1]`
+- 当一个索引满足 SQL 语句中的 `ORDER BY` 和 `LIMIT` 子句，但有部分过滤条件未被该索引覆盖时，该系统变量用于控制该索引的估算行数。
+- 该变量适用的场景与系统变量 [`tidb_opt_ordering_index_selectivity_threshold`](#tidb_opt_ordering_index_selectivity_threshold-从-v700-版本开始引入) 相同。
+- 与 `tidb_opt_ordering_index_selectivity_threshold` 的实现不同，该变量采用范围内符合条件的可能行数的比率或百分比。
+- 取值为 `-1`（默认值）或小于 `0` 时，禁用此变量。取值在 `0` 到 `1` 之间时，对应 0% 到 100% 的比率（例如，`0.5` 对应 `50%`）。
+- 在以下示例中，表 `t` 共有 1,000,000 行数据。示例使用相同查询，但应用了不同的 `tidb_opt_ordering_index_selectivity_ratio` 值。示例中的查询包含一个 `WHERE` 子句谓词，该谓词匹配少量行（1,000,000 中的 9,000 行）。存在一个支持 `ORDER BY a` 的索引（索引 `ia`），但是对 `b` 的过滤不在此索引中。根据实际的数据分布，满足 `WHERE` 子句和 `LIMIT 1` 的行可能在扫描非过滤索引时作为第一行访问到，也可能在几乎处理满足所有行后才找到。
+- 每个示例中都使用了一个索引 hint，用于展示对 estRows 的影响。最终计划选择取决于是否存在代价更低的其他计划。
+- 第一个示例使用默认值 `-1`，使用现有的估算公式。默认行为是，在找到符合条件的行之前，会扫描一小部分行进行估算。
+
+    ```sql
+    > SET SESSION tidb_opt_ordering_index_selectivity_ratio = -1;
+
+    > EXPLAIN SELECT * FROM t USE INDEX (ia) WHERE b <= 9000 ORDER BY a LIMIT 1;
+    +-----------------------------------+---------+-----------+-----------------------+---------------------------------+
+    | id                                | estRows | task      | access object         | operator info                   |
+    +-----------------------------------+---------+-----------+-----------------------+---------------------------------+
+    | Limit_12                          | 1.00    | root      |                       | offset:0, count:1               |
+    | └─Projection_22                   | 1.00    | root      |                       | test.t.a, test.t.b, test.t.c    |
+    |   └─IndexLookUp_21                | 1.00    | root      |                       |                                 |
+    |     ├─IndexFullScan_18(Build)     | 109.20  | cop[tikv] | table:t, index:ia(a)  | keep order:true                 |
+    |     └─Selection_20(Probe)         | 1.00    | cop[tikv] |                       | le(test.t.b, 9000)              |
+    |       └─TableRowIDScan_19         | 109.20  | cop[tikv] | table:t               | keep order:false                |
+    +-----------------------------------+---------+-----------+-----------------------+---------------------------------+
+    ```
+
+- 第二个示例使用 `0`，假设在找到符合条件的行之前，将扫描 0% 的行。
+
+    ```sql
+    > SET SESSION tidb_opt_ordering_index_selectivity_ratio = 0;
+
+    > EXPLAIN SELECT * FROM t USE INDEX (ia) WHERE b <= 9000 ORDER BY a LIMIT 1;
+    +-----------------------------------+---------+-----------+-----------------------+---------------------------------+
+    | id                                | estRows | task      | access object         | operator info                   |
+    +-----------------------------------+---------+-----------+-----------------------+---------------------------------+
+    | Limit_12                          | 1.00    | root      |                       | offset:0, count:1               |
+    | └─Projection_22                   | 1.00    | root      |                       | test.t.a, test.t.b, test.t.c    |
+    |   └─IndexLookUp_21                | 1.00    | root      |                       |                                 |
+    |     ├─IndexFullScan_18(Build)     | 1.00    | cop[tikv] | table:t, index:ia(a)  | keep order:true                 |
+    |     └─Selection_20(Probe)         | 1.00    | cop[tikv] |                       | le(test.t.b, 9000)              |
+    |       └─TableRowIDScan_19         | 1.00    | cop[tikv] | table:t               | keep order:false                |
+    +-----------------------------------+---------+-----------+-----------------------+---------------------------------+
+    ```
+
+- 第三个示例使用 `0.1`，假设在找到符合条件的行之前，将扫描 10% 的行。这个条件的过滤性较强，只有 1% 的行符合条件，因此最坏情况是找到这 1% 之前需要扫描 99% 的行。99% 中的 10% 大约是 9.9%，该数值会反映在 estRows 中。
+
+    ```sql
+    > SET SESSION tidb_opt_ordering_index_selectivity_ratio = 0.1;
+
+    > EXPLAIN SELECT * FROM t USE INDEX (ia) WHERE b <= 9000 ORDER BY a LIMIT 1;
+    +-----------------------------------+----------+-----------+-----------------------+---------------------------------+
+    | id                                | estRows  | task      | access object         | operator info                   |
+    +-----------------------------------+----------+-----------+-----------------------+---------------------------------+
+    | Limit_12                          | 1.00     | root      |                       | offset:0, count:1               |
+    | └─Projection_22                   | 1.00     | root      |                       | test.t.a, test.t.b, test.t.c    |
+    |   └─IndexLookUp_21                | 1.00     | root      |                       |                                 |
+    |     ├─IndexFullScan_18(Build)     | 99085.21 | cop[tikv] | table:t, index:ia(a)  | keep order:true                 |
+    |     └─Selection_20(Probe)         | 1.00     | cop[tikv] |                       | le(test.t.b, 9000)              |
+    |       └─TableRowIDScan_19         | 99085.21 | cop[tikv] | table:t               | keep order:false                |
+    +-----------------------------------+----------+-----------+-----------------------+---------------------------------+
+    ```
+
+- 第四个示例使用 `1.0`，假设在找到符合条件的行之前，将扫描 100% 的行。
+
+    ```sql
+    > SET SESSION tidb_opt_ordering_index_selectivity_ratio = 1;
+
+    > EXPLAIN SELECT * FROM t USE INDEX (ia) WHERE b <= 9000 ORDER BY a LIMIT 1;
+    +-----------------------------------+-----------+-----------+-----------------------+---------------------------------+
+    | id                                | estRows   | task      | access object         | operator info                   |
+    +-----------------------------------+-----------+-----------+-----------------------+---------------------------------+
+    | Limit_12                          | 1.00      | root      |                       | offset:0, count:1               |
+    | └─Projection_22                   | 1.00      | root      |                       | test.t.a, test.t.b, test.t.c    |
+    |   └─IndexLookUp_21                | 1.00      | root      |                       |                                 |
+    |     ├─IndexFullScan_18(Build)     | 990843.14 | cop[tikv] | table:t, index:ia(a)  | keep order:true                 |
+    |     └─Selection_20(Probe)         | 1.00      | cop[tikv] |                       | le(test.t.b, 9000)              |
+    |       └─TableRowIDScan_19         | 990843.14 | cop[tikv] | table:t               | keep order:false                |
+    +-----------------------------------+-----------+-----------+-----------------------+---------------------------------+
+    ```
+
+- 第五个示例也使用 `1.0`，但是增加了一个对 `a` 的谓词，限制了最坏情况下的扫描范围，因为 `WHERE a <= 9000` 匹配了索引，大约有 9,000 行符合条件。考虑到 `b` 上的过滤谓词不在索引中，所有大约 9,000 行在找到符合 `b <= 9000` 的行之前都会被扫描。
+
+    ```sql
+    > SET SESSION tidb_opt_ordering_index_selectivity_ratio = 1;
+
+    > EXPLAIN SELECT * FROM t USE INDEX (ia) WHERE a <= 9000 AND b <= 9000 ORDER BY a LIMIT 1;
+    +------------------------------------+---------+-----------+-----------------------+------------------------------------+
+    | id                                 | estRows | task      | access object         | operator info                      |
+    +------------------------------------+---------+-----------+-----------------------+------------------------------------+
+    | Limit_12                           | 1.00    | root      |                       | offset:0, count:1                  |
+    | └─Projection_22                    | 1.00    | root      |                       | test.t.a, test.t.b, test.t.c       |
+    |   └─IndexLookUp_21                 | 1.00    | root      |                       |                                    |
+    |     ├─IndexRangeScan_18(Build)     | 9074.99 | cop[tikv] | table:t, index:ia(a)  | range:[-inf,9000], keep order:true |
+    |     └─Selection_20(Probe)          | 1.00    | cop[tikv] |                       | le(test.t.b, 9000)                 |
+    |       └─TableRowIDScan_19          | 9074.99 | cop[tikv] | table:t               | keep order:false                   |
+    +------------------------------------+---------+-----------+-----------------------+------------------------------------+
+    ```
+
 ### `tidb_opt_ordering_index_selectivity_threshold` <span class="version-mark">从 v7.0.0 版本开始引入</span>
 
 - 作用域：SESSION | GLOBAL
@@ -4541,6 +4645,7 @@ Query OK, 0 rows affected, 1 warning (0.00 sec)
 - 是否持久化到集群：是
 - 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：否
 - 类型：整数型
+- 单位：字节
 - 默认值：`0`，自动设置内部统计信息缓存使用内存的上限为总内存的一半。
 - 这个变量用于控制 TiDB 内部统计信息缓存使用内存的上限。
 
@@ -5037,7 +5142,7 @@ Query OK, 0 rows affected, 1 warning (0.00 sec)
 - 当窗口函数下推到 TiFlash 执行时，可以通过该变量控制窗口函数执行的并行度。不同取值含义：
 
     * -1: 表示不使用细粒度 shuffle 功能，下推到 TiFlash 的窗口函数以单线程方式执行
-    * 0: 表示使用细粒度 shuffle 功能。如果 [`tidb_max_tiflash_threads`](/system-variables.md#tidb_max_tiflash_threads-从-v610-版本开始引入) 有效（大于 0），则 `tiflash_fine_grained_shuffle_stream_count` 会自动取值为 [`tidb_max_tiflash_threads`](/system-variables.md#tidb_max_tiflash_threads-从-v610-版本开始引入)，否则为默认值 8。最终在 TiFlash 上窗口函数的实际并发度为：min(`tiflash_fine_grained_shuffle_stream_count`，TiFlash 节点物理线程数)
+    * 0: 表示使用细粒度 shuffle 功能。如果 [`tidb_max_tiflash_threads`](/system-variables.md#tidb_max_tiflash_threads-从-v610-版本开始引入) 有效（大于 0），则 `tiflash_fine_grained_shuffle_stream_count` 会自动取值为 [`tidb_max_tiflash_threads`](/system-variables.md#tidb_max_tiflash_threads-从-v610-版本开始引入)，否则会根据 TiFlash 计算节点的 CPU 资源自动推算。最终在 TiFlash 上窗口函数的实际并发度为：min(`tiflash_fine_grained_shuffle_stream_count`，TiFlash 节点物理线程数)
     * 大于 0: 表示使用细粒度 shuffle 功能，下推到 TiFlash 的窗口函数会以多线程方式执行，并发度为： min(`tiflash_fine_grained_shuffle_stream_count`, TiFlash 节点物理线程数)
 - 理论上窗口函数的性能会随着该值的增加线性提升。但是如果设置的值超过实际的物理线程数，反而会导致性能下降。
 
