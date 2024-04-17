@@ -51,7 +51,7 @@ MySQL 从 8.0.13 开始支持在 `DEFAULT` 子句中指定表达式为默认值�
        * `DATE_FORMAT(NOW(), '%Y-%m-%d %H:%i:%s')`
    * `STR_TO_DATE('1980-01-01', '%Y-%m-%d')`
      
-2. TiDB 额外支持 `BLOB`、`TEXT` 以及 `JSON` 数据类型分配默认值，但是默认值仅支持通过表达式来设置。以下是 `BLOB` 的示例：
+此外，从 v8.0.0 开始，TiDB 额外支持 `BLOB`、`TEXT` 以及 `JSON` 数据类型分配默认值，但是默认值仅支持通过表达式来设置。以下是 `BLOB` 的示例：
 
    ```sql
    CREATE TABLE t2 (b BLOB DEFAULT (RAND()));
