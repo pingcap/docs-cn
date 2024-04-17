@@ -11,7 +11,9 @@ summary: 数据类型的默认值描述了列的默认值设置规则。默认�
 所有数据类型都可以设置默认值。这个默认值通常情况下必须是常量，不可以是一个函数或者是表达式，但也存在以下例外情况：
 
 - 对于时间类型，可以使用 `NOW`、`CURRENT_TIMESTAMP`、`LOCALTIME`、`LOCALTIMESTAMP` 等函数作为 `DATETIME` 或者 `TIMESTAMP` 列的默认值。
-- 对于整数类型，可以使用 `NEXT VALUE FOR` 函数将序列的下一个值作为列的默认值。
+- 对于整数类型，可以使用 `NEXT VALUE FOR` 函数将序列的下一个值作为列的默认值，使用 [`RAND()`](/functions-and-operators/[numeric-functions-and-operators.md](http://numeric-functions-and-operators.md/)) 函数
+- 对于字符串类型，可以使用 [`UUID()`](/functions-and-operators/[miscellaneous-functions.md](http://miscellaneous-functions.md/)) 函数
+- 对于二进制类型，可以使用 [`UUID_TO_BIN()`](/functions-and-operators/miscellaneous-functions.md) 函数
 - 从 v8.0.0 开始，新增支持 [`BLOB`](/data-type-string.md#blob-类型)、[`TEXT`](/data-type-string.md#text-类型) 以及 [`JSON`](/data-type-json.md#json-类型) 这三种数据类型设置默认值，但仅支持使用表达式设置[默认值](#表达式默认值)。
 
 如果一个列的定义中没有 `DEFAULT` 的设置。TiDB 按照如下的规则决定：
@@ -38,12 +40,8 @@ summary: 数据类型的默认值描述了列的默认值设置规则。默认�
 
 MySQL 从 8.0.13 开始支持在 `DEFAULT` 子句中指定表达式为默认值。具体可参考 [Explicit Default Handling as of MySQL 8.0.13](https://dev.mysql.com/doc/refman/8.0/en/data-type-defaults.html#data-type-defaults-explicit)。
 
-TiDB 参考了该功能，支持在 `DEFAULT` 子句中指定部分表达式作为字段的默认值。而在 v8.0.0 版本，新增以下功能。
+从 v8.0.0 起，TiDB 在 `DEFAULT` 子句中新增支持指定以下表达式作为字段的默认值：
 
-1. 在 `DEFAULT` 子句中可以使用以下新增的表达式来设置默认值：
-   * [`RAND()`](/functions-and-operators/numeric-functions-and-operators.md)
-   * [`UUID()`](/functions-and-operators/miscellaneous-functions.md)
-   * [`UUID_TO_BIN()`](/functions-and-operators/miscellaneous-functions.md)
    * `UPPER(SUBSTRING_INDEX(USER(), '@', 1))`
    * `REPLACE(UPPER(UUID()), '-', '')`
    * `DATE_FORMAT` 相关表达式，具体格式如下： 
