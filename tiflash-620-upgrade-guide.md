@@ -22,7 +22,7 @@ summary: 了解升级 TiFlash 至 v6.2 时的注意事项。
 >
 > - v6.0 作为非 LTS 版本，不会推出后续的 bug 修复版，请尽量使用 v6.1 及之后的 LTS 版本。
 >
-> - 若想将 TiFlash 从 v5.3.0 之前的版本升级到 v5.3.0 及之后的版本，必须进行 TiFlash 的停机升级。如果使用 TiUP 进行升级，则 `tiup` 版本不高于 `1.12.0`，否则不能直接升级、必须先升级到某个中间版本。参考如下步骤，可以使用 TiUP 在确保其他组件正常运行的情况下升级 TiFlash：
+> - 若想将 TiFlash 从 v5.3.0 之前的版本升级到 v5.3.0 及之后的版本，必须进行 TiFlash 的停机升级。如果使用 TiUP 进行升级，则 TiUP 版本不高于 v1.12.0，否则不能直接升级、必须先升级到某个中间版本。参考如下步骤，可以在确保其他组件正常运行的情况下，使用 TiUP 升级 TiFlash：
 >
 >     - 关闭 TiFlash 实例：`tiup cluster stop <cluster-name> -R tiflash`
 >     - 使用 `--offline` 参数在不重启（只更新文件）的情况下升级集群：`tiup cluster upgrade <cluster-name> <version> --offline`，例如 `tiup cluster upgrade <cluster-name> v5.3.0 --offline`
