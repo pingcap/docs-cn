@@ -1,5 +1,6 @@
 ---
 title: tiup cluster meta backup
+summary: TiUP meta 文件丢失会导致无法管理集群。使用“tiup cluster meta backup”命令定期备份文件。命令语法为“tiup cluster meta backup <cluster-name>”。选项包括指定备份文件存储目录和帮助信息。输出为 tiup-cluster 的执行日志。
 ---
 
 # tiup cluster meta backup

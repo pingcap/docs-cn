@@ -1,5 +1,6 @@
 ---
 title: 通过 TiUP 部署 TiDB 集群的拓扑文件配置
+summary: 介绍通过 TiUP 部署或扩容 TiDB 集群时提供的拓扑文件配置和示例。
 ---
 
 # 通过 TiUP 部署 TiDB 集群的拓扑文件配置

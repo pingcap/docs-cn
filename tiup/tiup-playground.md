@@ -1,6 +1,7 @@
 ---
 title: 本地快速部署 TiDB 集群
 aliases: ['/docs-cn/dev/tiup/tiup-playground/','/docs-cn/dev/reference/tools/tiup/playground/']
+summary: TiDB 集群是分布式系统，由多个组件构成。想要快速体验 TiDB，可以使用 TiUP 中的 playground 组件快速搭建本地测试环境。通过命令行参数可以设置各组件的数量和配置，也可以启动多个组件实例。使用 `tiup client` 可以快速连接到本地启动的 TiDB 集群。还可以查看已启动集群的信息，扩容或缩容集群。
 ---
 
 # 本地快速部署 TiDB 集群

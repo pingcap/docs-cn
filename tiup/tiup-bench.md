@@ -1,6 +1,7 @@
 ---
 title: 使用 TiUP bench 组件压测 TiDB
 aliases: ['/docs-cn/dev/tiup/tiup-bench/','/docs-cn/dev/reference/tools/tiup/bench/']
+summary: TiUP bench 组件集成了多种压测 workloads，包括 TPC-C、TPC-H、CH-benCHmark、YCSB 和自定义 SQL 文件。每种压测都有对应的命令和参数，可以通过 TiUP 运行。TPC-C 测试包括准备数据、运行测试、检查一致性和清理数据等步骤。TPC-H 测试也有类似的步骤，包括准备数据、运行测试和清理数据。YCSB 测试可以分别针对 TiDB 和 TiKV 节点进行，包括准备数据和运行测试。此外，还可以通过 RawSQL 文件进行测试，包括准备数据和执行查询。
 ---
 
 # 使用 TiUP bench 组件压测 TiDB

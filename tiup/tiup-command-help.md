@@ -1,5 +1,6 @@
 ---
 title: tiup help
+summary: TiUP 命令行界面提供丰富的帮助信息，用户可通过 `help` 命令或 `--help` 参数查看。`tiup help <command>` 等同于 `tiup <command> --help`。语法为 `tiup help [command]`，若不指定命令，则查看 TiUP 自身的帮助信息。选项为无，输出为 `[command]` 或 TiUP 的帮助信息。
 ---
 
 # tiup help

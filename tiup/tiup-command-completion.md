@@ -1,5 +1,6 @@
 ---
 title: tiup completion
+summary: TiUP 提供了 `tiup completion` 命令，用于生成命令行自动补全的配置文件。目前支持 `bash` 和 `zsh` 两种 shell 的命令补全。安装方式包括在 macOS 上执行 `brew install bash-completion` 或 `brew install bash-completion@2`，在 Linux 上执行 `yum install bash-completion` 或 `apt install bash-completion`。使用方式包括在 `.bash_profile` 中执行 `source` 命令，并在 zsh 中执行 `tiup completion zsh > "${fpath[1]}/_tiup"`。
 ---
 
 # tiup completion

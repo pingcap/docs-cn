@@ -1,5 +1,6 @@
 ---
 title: tiup cluster upgrade
+summary: tiup cluster upgrade 命令用于将指定集群升级到特定版本。命令语法为 tiup cluster upgrade <cluster-name> <version> [flags]。可使用 --force 选项忽略升级过程的错误，强制替换二进制文件并启动集群。还可通过设置 --transfer-timeout 设置最长等待时间，超时后会跳过等待直接升级服务。其他选项包括 --ignore-config-check、--ignore-version-check、--offline 等。升级服务的日志将会输出。
 ---
 
 # tiup cluster upgrade
