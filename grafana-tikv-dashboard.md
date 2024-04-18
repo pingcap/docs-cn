@@ -1,6 +1,7 @@
 ---
 title: TiKV 监控指标详解
 aliases: ['/docs-cn/dev/grafana-tikv-dashboard/','/docs-cn/dev/reference/key-monitoring-metrics/tikv-dashboard/']
+summary: TiKV 监控指标详解：TiUP 部署 TiDB 集群时，一键部署监控系统 (Prometheus & Grafana)，监控架构详见 TiDB 监控框架概述。Grafana Dashboard 分为 PD、TiDB、TiKV、Node_exporter、Overview、Performance_overview 等。对于日常运维，通过观察 TiKV-Details 面板上的指标，可以了解 TiKV 当前的状态。根据性能地图，可以检查集群的状态是否符合预期。TiKV-Details 默认的监控信息包括 Cluster、Errors、Server、gRPC、Thread CPU、PD、Raft IO、Raft process、Raft message、Raft propose、Raft admin、Local reader、Unified Read Pool、Storage、Flow Control、Scheduler 等。
 ---
 
 # TiKV 监控指标详解
