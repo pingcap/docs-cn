@@ -9,13 +9,12 @@ summary: TiDB 数据库中 SHUTDOWN 的使用概况。
 
 ## 语法图
 
-**Statement:**
-
-![Statement](/media/sqlgram/ShutdownStmt.png)
+```ebnf+diagram
+ShutdownStmt ::=
+    "SHUTDOWN"
+```
 
 ## 示例
-
-{{< copyable "sql" >}}
 
 ```sql
 SHUTDOWN;
