@@ -1,6 +1,7 @@
 ---
 title: TiDB 热点问题处理
 aliases: ['/docs-cn/dev/troubleshoot-hot-spot-issues/']
+summary: TiDB 热点问题处理：介绍定位和解决读写热点问题，包括常见热点场景、确定存在热点问题的方法、使用 TiDB Dashboard 定位热点表、使用 SHARD_ROW_ID_BITS 处理热点表、使用 AUTO_RANDOM 处理自增主键热点表、小表热点的优化、打散读热点。
 ---
 
 # TiDB 热点问题处理

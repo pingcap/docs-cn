@@ -1,5 +1,6 @@
 ---
 title: 执行计划管理 (SPM)
+summary: 介绍 TiDB 的执行计划管理 (SQL Plan Management) 功能。
 aliases: ['/docs-cn/dev/sql-plan-management/','/docs-cn/dev/reference/performance/execution-plan-bind/','/docs-cn/dev/execution-plan-binding/']
 ---
 

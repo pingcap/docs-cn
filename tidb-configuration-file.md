@@ -1,5 +1,6 @@
 ---
 title: TiDB 配置文件描述
+summary: 介绍未包含在命令行参数中的 TiDB 配置文件选项。
 aliases: ['/docs-cn/dev/tidb-configuration-file/','/docs-cn/dev/reference/configuration/tidb-server/configuration-file/']
 ---
 
