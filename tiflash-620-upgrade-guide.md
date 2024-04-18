@@ -45,9 +45,8 @@ summary: 了解升级 TiFlash 至 v6.2 时的注意事项。
     ```shell     
     `tiup cluster upgrade <cluster-name> v5.3.0 --offline
     ```
-    ```
 
-3. reload 整个集群。此时，TiFlash 也会正常启动，无需额外操作。
+3. 重新加载整个集群。此时，TiFlash 也会正常启动，无需额外操作。
 
     ```shell 
     tiup cluster reload <cluster-name>
