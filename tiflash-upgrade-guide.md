@@ -25,7 +25,7 @@ aliases: ['/zh/tidb/stable/tiflash-620-upgrade-guide']
 
 ## 使用 TiUP 升级
 
-若想将 TiFlash 从 v5.3.0 之前的版本升级到 v5.3.0 及之后的版本，必须进行 TiFlash 的停机升级。使用 TiUP 进行升级时：
+如需将 TiFlash 从 v5.3.0 之前的版本升级到 v5.3.0 及之后的版本，必须进行 TiFlash 的停机升级。使用 TiUP 进行升级时：
 
 - 如果 TiUP 版本小于 v1.12.0，则执行以下步骤进行升级。
 - 如果 TiUP 版本大于或等于 v1.12.0，则无法进行 TiFlash 的停机升级。如果目标版本要求的 TiUP 版本大于或等于 v1.12.0，则建议先使用低版本的 TiUP 将 TiFlash 升级到某个中间版本，然后进行 TiDB 集群的在线升级，之后升级 TiUP 版本，最后对 TiDB 集群进行不停机升级至目标版本。
