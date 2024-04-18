@@ -756,7 +756,7 @@ opentracing.reporter 相关的设置。
 
 ## txn-local-latches
 
-与事务锁存相关的配置。当本地事务冲突较多时，建议启用该配置。
+与事务锁存相关的配置。该参数今后可能会废弃，不建议启用。
 
 ### `enabled`
 
