@@ -228,7 +228,7 @@ summary: TiDB 配置参数包括启动参数和环境变量。启动参数包括
 
 + 设置 TiDB server 是否脱敏文件。
 + 默认：false
-+ 可以用 `./tidb-server --redact=xxx collect-log <input> <output>` 可以将 `input` 日志文件脱敏或者还原，并输出到 `output`。参考系统变量 [tidb_redact_log](/system-variables.md#tidb-redact-log)。
++ 可以用 `./tidb-server --redact=xxx collect-log <input> <output>` 可以将 `input` 日志文件脱敏或者还原，并输出到 `output`。当值为 `true` 脱敏，否则还原。参考系统变量 [tidb_redact_log](/system-variables.md#tidb-redact-log)。
 
 ## `--repair-mode`
 
