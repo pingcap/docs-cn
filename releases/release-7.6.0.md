@@ -353,7 +353,7 @@ TiDB 版本：7.6.0
 
     + Backup & Restore (BR)
 
-	- 新增了全量备份恢复阶段对 Amazon S3 `session-token` 以及 `assume-role` 的认证支持 [#39832](https://github.com/pingcap/tidb/issues/39832) @[3pointer](https://github.com/3pointer)
+        - 新增了全量备份恢复阶段对 Amazon S3 `session-token` 以及 `assume-role` 的认证支持 [#39832](https://github.com/pingcap/tidb/issues/39832) @[3pointer](https://github.com/3pointer)
         - 新增 PITR 对 delete range 场景的集成测试，提升 PITR 稳定性 [#47738](https://github.com/pingcap/tidb/issues/47738) @[Leavrth](https://github.com/Leavrth)
         - 提升了 `RESTORE` 语句在大数据量表场景下的建表性能 [#48301](https://github.com/pingcap/tidb/issues/48301) @[Leavrth](https://github.com/Leavrth)
         - 重构 BR 异常处理机制，提高对未知错误的容忍度 [#47656](https://github.com/pingcap/tidb/issues/47656) @[3pointer](https://github.com/3pointer)
