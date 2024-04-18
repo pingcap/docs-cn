@@ -1,6 +1,7 @@
 ---
 title: TiDB 4.0 RC.2 Release Notes
 aliases: ['/docs-cn/dev/releases/release-4.0.0-rc.2/']
+summary: TiDB 4.0 RC.2 发布说明：兼容性变化包括事务容量上限统一为10GB，查询CLUSTER_LOG表需指定时间范围，CREATE TABLE创建分区表时指定未支持的选项将创建非分区普通表。重点修复了多个Bug。新增了备份和恢复语句，支持预检查单个Region提交数据量。TiKV新增了加密存储适配和配置gRPC消息大小上限。PD修复了pd-ctl命令错误和缺失监控的问题。TiFlash优化了系统负载和新增了容量配置参数。Tools方面修复了多个问题和优化了功能。
 ---
 
 # TiDB 4.0 RC.2 Release Notes

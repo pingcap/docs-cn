@@ -1,5 +1,6 @@
 ---
 title: TiDB 4.0.6 Release Notes
+summary: TiDB 4.0.6 发布日期为 2020 年 9 月 15 日。新功能包括 TiFlash 中支持在广播 Join 中使用外连接，TiDB Dashboard 添加了多个页面和功能。TiCDC 从 v4.0.6 起成为正式功能，支持输出 `maxwell` 格式的数据。优化提升方面，TiDB 提升了分区表的写性能，支持调整 Union 执行算子的并发度等。Bug 修复方面，TiDB 修复了多个查询结果不正确的问题。TiKV 修复了统计信息估算错误的问题等。PD 修复了 store limit 的单位问题等。TiFlash 修复了多个启动失败和异常问题。Tools 方面也有多个问题得到解决。
 ---
 
 # TiDB 4.0.6 Release Notes

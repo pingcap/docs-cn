@@ -1,5 +1,6 @@
 ---
 title: TiDB 5.4 Release Notes
+summary: TiDB 5.4.0 版本发布日期为 2022 年 2 月 15 日。此版本新增了许多功能和改进，包括支持 GBK 字符集、索引合并、有界限过期数据读取、统计信息采集配置持久化等。同时还修复了许多 bug，提升了稳定性和性能。
 ---
 
 # TiDB 5.4 Release Notes

@@ -1,6 +1,7 @@
 ---
 title: TiDB 2.1 RC1 Release Notes
 aliases: ['/docs-cn/dev/releases/release-2.1-rc.1/','/docs-cn/dev/releases/21rc1/']
+summary: TiDB 2.1 RC1 版本于2018年8月24日发布。该版本对系统稳定性、优化器、统计信息以及执行引擎做了很多改进。包括SQL优化器、SQL执行引擎、统计信息、Server、兼容性、DML、DDL等方面的改进。PD方面新增了版本控制机制，支持集群滚动兼容升级等功能。TiKV方面新增了支持batch split等新特性，以及对性能和功能进行了优化和改进。
 ---
 
 # TiDB 2.1 RC1 Release Notes

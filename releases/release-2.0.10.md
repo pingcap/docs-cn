@@ -1,6 +1,7 @@
 ---
 title: TiDB 2.0.10 Release Notes
 aliases: ['/docs-cn/dev/releases/release-2.0.10/','/docs-cn/dev/releases/2.0.10/']
+summary: TiDB 2.0.10 版本发布，修复了系统兼容性和稳定性问题。包括取消DDL任务可能导致的问题，ORDER BY和UNION语句无法引用带表名的列的问题，UNCOMPRESS函数错误输入长度的问题等。PD修复了RaftCluster退出时可能的死锁问题，TiKV修复了迁移Leader到新节点时造成请求延时问题和多余的Region心跳问题。
 ---
 
 # TiDB 2.0.10 Release Notes

@@ -1,6 +1,7 @@
 ---
 title: TiDB 3.1 GA Release Notes
 aliases: ['/docs-cn/dev/releases/release-3.1.0-ga/','/docs-cn/dev/releases/3.1.0-ga/']
+summary: TiDB 3.1 GA 发布说明：兼容性变化包括支持报告状态配置项和BR不支持旧版TiKV集群恢复。新功能包括展示coprocessor任务信息和减少日志冗余信息。PD优化热点Region调度，TiFlash添加读写负载信息和支持函数下推。TiDB Ansible新增TiFlash监控和优化配置参数。Bug修复包括修复merge join和计算选择率问题。TiKV修复replica read和restore问题，TiFlash修复同步schema和数据丢失问题。TiDB Binlog修复因TiFlash相关DDL job导致同步中断问题，BR修复checksum和增量备份失败问题。
 ---
 
 # TiDB 3.1 GA Release Notes

@@ -1,6 +1,7 @@
 ---
 title: TiDB 4.0 RC.1 Release Notes
 aliases: ['/docs-cn/dev/releases/release-4.0.0-rc.1/','/docs-cn/dev/releases/4.0.0-rc.1/']
+summary: TiDB 4.0 RC.1 发布说明：TiDB 4.0.0-rc.1版本兼容性变化包括TiKV默认关闭hibernate region，TiDB Binlog增加对Sequence DDL的支持。重点修复了多个Bug，包括TiDB事务内执行INSERT ... ON DUPLICATE KEY UPDATE语句插入多行重复数据可能出错的问题等。新增功能包括TiDB支持发送batch coprocessor请求给TiFlash等。Bug修复包括TiDB系统表由于unsigned列定义导致无法正确显示负数的问题等。
 ---
 
 # TiDB 4.0 RC.1 Release Notes
