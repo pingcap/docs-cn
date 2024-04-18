@@ -1,7 +1,7 @@
 ---
 title: TiDB RC1 Release Notes
 aliases: ['/docs-cn/dev/releases/release-rc.1/','/docs-cn/dev/releases/rc1/']
-summary: TiDB RC1于2016年12月23日发布，TiKV提升了写入速度和稳定性，支持百TB级别数据，集群规模支持200个节点。PD优化了调度策略框架，添加了label支持，提供了PD Controler。TiDB新增了SQL查询优化器和更多MySQL内建函数，重构了time相关类型的实现，提升了和MySQL的兼容性。工具方面，Loader兼容Percona的Mydumper数据格式，提供了多线程导入、出错重试、断点续传等功能，并且针对TiDB有优化。完成了一键部署工具。
+summary: TiDB RC1 于 2016 年 12 月 23 日发布，TiKV 提升了写入速度和稳定性，支持百 TB 级别数据，集群规模支持 200 个节点。PD 优化了调度策略框架，添加了 label 支持，提供了 PD Controler。TiDB 新增了 SQL 查询优化器和更多 MySQL 内建函数，重构了 time 相关类型的实现，提升了和 MySQL 的兼容性。工具方面，Loader 兼容 Percona 的 Mydumper 数据格式，提供了多线程导入、出错重试、断点续传等功能，并且针对 TiDB 有优化。完成了一键部署工具。
 ---
 
 # TiDB RC1 Release Notes
