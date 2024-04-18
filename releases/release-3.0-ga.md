@@ -1,7 +1,7 @@
 ---
 title: TiDB 3.0 GA Release Notes
 aliases: ['/docs-cn/dev/releases/release-3.0-ga/','/docs-cn/dev/releases/3.0-ga/']
-summary: TiDB 3.0 GA 版本于2019年6月28日发布，对应的TiDB Ansible版本为3.0.0。V3.0.0版本相比V2.1在稳定性、易用性、性能和新功能方面有重要改进。新增功能包括窗口函数、视图、分区表、插件系统、悲观锁、SQL Plan Management等。SQL优化器和执行引擎也有多项优化，包括对`NOT EXISTS`子查询、`Outer Join`、`IN`子查询、Index Join等的性能提升。PD新增了从单个节点重建集群的功能，将Region元信息从etcd移至go-leveldb存储引擎。TiKV新增了分布式GC、并行Resolve Lock、多线程Raftstore和Apply等功能，以及对Engine、Server、RaftStore和Coprocessor的优化。Tools方面TiDB Lightning新增了多项功能，TiDB Binlog新增了多项功能，sync-diff-inspector也新增了多项功能。TiDB Ansible升级了监控组件版本，新增了多项监控面板和功能。
+summary: TiDB 3.0 GA 版本于 2019 年 6 月 28 日发布，对应的 TiDB Ansible 版本为 3.0.0。V3.0.0 版本相比 V2.1 在稳定性、易用性、性能和新功能方面有重要改进。新增功能包括窗口函数、视图、分区表、插件系统、悲观锁、SQL Plan Management 等。SQL 优化器和执行引擎也有多项优化，包括对 `NOT EXISTS` 子查询、`Outer Join`、`IN` 子查询、Index Join 等的性能提升。PD 新增了从单个节点重建集群的功能，将 Region 元信息从 etcd 移至 go-leveldb 存储引擎。TiKV 新增了分布式 GC、并行 Resolve Lock、多线程 Raftstore 和 Apply 等功能，以及对 Engine、Server、RaftStore 和 Coprocessor 的优化。Tools 方面 TiDB Lightning 新增了多项功能，TiDB Binlog 新增了多项功能，sync-diff-inspector 也新增了多项功能。TiDB Ansible 升级了监控组件版本，新增了多项监控面板和功能。
 ---
 
 # TiDB 3.0 GA Release Notes
