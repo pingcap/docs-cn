@@ -11,20 +11,20 @@ summary: 简单介绍 TiDB 中的各种超时，为排查错误提供依据。
 
 TiDB 的事务的实现采用了 MVCC（多版本并发控制）机制，当新写入的数据覆盖旧的数据时，旧的数据不会被替换掉，而是与新写入的数据同时保留，并以时间戳来区分版本。TiDB 通过定期 GC 的机制来清理不再需要的旧数据。
 
-- 使用 4.0 之前版本的 TiDB：
+- TiDB v4.0 之前的版本：
 
-    默认配置下 TiDB 可以保障每个 MVCC 版本（一致性快照）保存 10 分钟，读取时间超过 10 分钟的事务，会收到报错 `GC life time is shorter than transaction duration`。
+    默认情况下，TiDB 可以确保每个 MVCC 版本（一致性快照）保存 10 分钟。读取时间超过 10 分钟的事务，会收到报错 `GC life time is shorter than transaction duration`。
 
-- 使用 4.0 及之后版本的 TiDB：
+- TiDB v4.0 及之后的版本：
 
     正在运行的事务，如果持续时间不超过 24 小时，在运行期间 GC 会被阻塞，不会出现 `GC life time is shorter than transaction duration` 报错。
 
-当你确信自己在临时特殊场景中需要更长的读取时间时，可以通过以下方式调大 MVCC 版本保留时间：
+如果你确定在临时特殊场景中需要更长的读取时间，可以通过以下方式调大 MVCC 版本保留时间：
 
-- 使用 5.0 之前版本的 TiDB：调整 `mysql.tidb` 表中的 `tikv_gc_life_time`。
-- 使用 5.0 及之后版本的 TiDB：调整系统变量 [`tidb_gc_life_time`](/system-variables.md#tidb_gc_life_time-从-v50-版本开始引入)。
+- TiDB v5.0 之前的版本 ：调整 `mysql.tidb` 表中的 `tikv_gc_life_time`。
+- TiDB v5.0 及之后的版本：调整系统变量 [`tidb_gc_life_time`](/system-variables.md#tidb_gc_life_time-从-v50-版本开始引入)。
 
-需要注意的是，此变量的配置是立刻影响全局的，调大它会为当前所有存在的快照增加生命时长，调小它会立即缩短所有快照的生命时长。过多的 MVCC 版本会影响 TiDB 的集群性能，在使用后需要及时把此变量调整回之前的设置。
+需要注意的是，此变量的配置是立刻影响全局的，调大它会增加当前所有快照的生命时长，调小它也会立即缩短所有快照的生命时长。过多的 MVCC 版本会影响 TiDB 的集群性能，因此在使用后，需要及时把此变量调整回之前的设置。
 
 > **Tip:**
 >
