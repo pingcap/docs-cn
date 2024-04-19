@@ -133,8 +133,7 @@ TiDB 暂不支持 `UpdatableResultSet`，即请勿指定 `ResultSet.CONCUR_UPDAT
 
 **描述**
 
-在使用 8.0.32 及以下版本 MySQL Connector/J，
-`useLocalTransactionState` 和 `rewriteBatchedStatements` 两参数同时开启时，将导致事务无法提交。你可以使用[代码](https://github.com/Icemap/tidb-java-gitpod/tree/reproduction-local-transaction-state-txn-error)复现。
+在使用 8.0.32 及以下版本 MySQL Connector/J，`useLocalTransactionState` 和 `rewriteBatchedStatements` 两参数同时开启时，将导致事务无法提交。你可以使用[代码](https://github.com/Icemap/tidb-java-gitpod/tree/reproduction-local-transaction-state-txn-error)复现。
 
 **规避方法**
 
