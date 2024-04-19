@@ -140,7 +140,7 @@ TiDB 版本：7.1.5
 
     + TiCDC
 
-        - note [#issue](https://github.com/pingcap/tiflow/issues/${issue-id}) @[贡献者 GitHub ID](https://github.com/${github-id})
+        - 修复上游写入 `Exchange Partition ... With Validation` DDL后，TiCDC 向下游执行该 DDL 失败导致 changefeed 卡住的问题  [#10859](https://github.com/pingcap/tiflow/issues/10859) @[hongyunyan](https://github.com/hongyunyan))
         - note [#issue](https://github.com/pingcap/tiflow/issues/${issue-id}) @[贡献者 GitHub ID](https://github.com/${github-id})
         - (dup): release-6.5.9.md > 错误修复> Tools> TiCDC - 修复恢复 changefeed 时 changefeed 的 `checkpoint-ts` 小于 TiDB 的 GC safepoint，没有及时报错 `snapshot lost caused by GC` 的问题 [#10463](https://github.com/pingcap/tiflow/issues/10463) @[sdojjy](https://github.com/sdojjy)
         - (dup): release-6.5.9.md > 错误修复> Tools> TiCDC - 修复在调度表的同步任务时 TiCDC panic 的问题 [#10613](https://github.com/pingcap/tiflow/issues/10613) @[CharlesCheung96](https://github.com/CharlesCheung96)
