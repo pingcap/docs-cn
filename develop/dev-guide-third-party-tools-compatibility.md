@@ -134,15 +134,15 @@ TiDB 暂不支持 `UpdatableResultSet`，即请勿指定 `ResultSet.CONCUR_UPDAT
 
 **描述**
 
-在使用 8.0.32 及以下版本 MySQL Connector/J，`useLocalTransactionState` 和 `rewriteBatchedStatements` 两参数同时开启时，将导致事务无法提交。你可以使用[代码](https://github.com/Icemap/tidb-java-gitpod/tree/reproduction-local-transaction-state-txn-error)复现。
+在使用 8.0.32 或以下版本的 MySQL Connector/J 时，同时开启 `useLocalTransactionState` 和 `rewriteBatchedStatements` 参数将导致事务无法提交。你可以使用[代码](https://github.com/Icemap/tidb-java-gitpod/tree/reproduction-local-transaction-state-txn-error)复现。
 
 **规避方法**
 
 > **注意：**
 >
-> `maxPerformance` 会包含一组配置，其中存在 `useLocalSessionState`。可查看 MySQL Connector/J [8.0 版本](https://github.com/mysql/mysql-connector-j/blob/release/8.0/src/main/resources/com/mysql/cj/configurations/maxPerformance.properties) 或 [5.1 版本](https://github.com/mysql/mysql-connector-j/blob/release/5.1/src/com/mysql/jdbc/configs/maxPerformance.properties) 来确认当前 MySQL Connector/J 中 `maxPerformance` 包含的具体配置。请在使用 `maxPerformance` 时关闭 `useLocalTransactionState`。即 `useConfigs=maxPerformance&useLocalTransactionState=false`。
+> `maxPerformance` 配置中包含多个参数，其中包括 `useLocalSessionState` 参数。要查看当前 MySQL Connector/J  中 `maxPerformance` 包含的具体参数，可参考 MySQL Connector/J [8.0 版本](https://github.com/mysql/mysql-connector-j/blob/release/8.0/src/main/resources/com/mysql/cj/configurations/maxPerformance.properties) 或 [5.1 版本](https://github.com/mysql/mysql-connector-j/blob/release/5.1/src/com/mysql/jdbc/configs/maxPerformance.properties) 的配置文件。在使用 `maxPerformance` 时，请关闭 `useLocalTransactionState`，即 `useConfigs=maxPerformance&useLocalTransactionState=false`。
 
-MySQL Connector/J 已在 `8.0.33` 版本修复此 Bug，请使用 `8.0.33` 或更高版本。基于稳定性和性能考量，并结合到 `8.0` 版本已经停止更新，我们强烈建议升级 MySQL Connector/J 到[最新的 GA 版本](https://dev.mysql.com/downloads/connector/j/)。
+MySQL Connector/J 已在 8.0.33 版本修复此问题。请使用 8.0.33 或更高版本。基于稳定性和性能考量，并结合到 8.0.x 版本已经停止更新，强烈建议升级 MySQL Connector/J 到[最新的 GA 版本](https://dev.mysql.com/downloads/connector/j/)。
 
 ### Connector 无法兼容 5.7.5 版本以下的服务端
 
@@ -152,7 +152,7 @@ MySQL Connector/J 已在 `8.0.33` 版本修复此 Bug，请使用 `8.0.33` 或�
 
 **规避方法**
 
-MySQL Connector/J 已于 `8.0.32` 版本进行修复。请请使用 `8.0.32` 或更高版本。基于稳定性和性能考量，并结合到 `8.0` 版本已经停止更新，我们强烈建议升级 MySQL Connector/J 到[最新的 GA 版本](https://dev.mysql.com/downloads/connector/j/)。
+MySQL Connector/J 已在 8.0.32 版本修复此问题。请使用 8.0.32 或更高版本。基于稳定性和性能考量，并结合到 8.0.x 版本已经停止更新，强烈建议升级 MySQL Connector/J 到[最新的 GA 版本](https://dev.mysql.com/downloads/connector/j/)。
 
 TiDB 也对其进行了两个维度的修复：
 
