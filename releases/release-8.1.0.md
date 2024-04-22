@@ -145,7 +145,11 @@ TiDB 同时支持手动标记查询的功能。利用命令 [`QUERY WATCH`](/sql
     功能描述（需要包含这个功能是什么、在什么场景下对用户有什么价值、怎么用）
 
     更多信息，请参考[用户文档](链接)。
+支持在 TiDB 建表时使用更多的表达式设置列的默认值的功能成为正式功能（GA）[#50936](https://github.com/pingcap/tidb/issues/50936) @[zimulala](https://github.com/zimulala)**tw@hfxsd** <!--1794-->
 
+在 v8.0.0 之前，建表时指定列的默认值仅限于固定的字符串、数字和日期。从 v8.0.0 开始，TiDB 支持使用部分表达式作为列的默认值，例如将列的默认值设置为 UUID()，从而满足多样化的业务需求。同时在 8.1 版本，支持添加列时，也支持使用表达式作为列的默认值。
+
+更多信息，请参考[用户文档](https://docs.pingcap.com/zh/tidb/dev/data-type-default-values#%E8%A1%A8%E8%BE%BE%E5%BC%8F%E9%BB%98%E8%AE%A4%E5%80%BC)。
 ### 数据库管理
 
 * 功能标题 [#issue号](链接) @[贡献者 GitHub ID](链接) **tw@xxx** <!--1234-->
@@ -177,7 +181,21 @@ TiDB 同时支持手动标记查询的功能。利用命令 [`QUERY WATCH`](/sql
     功能描述（需要包含这个功能是什么、在什么场景下对用户有什么价值、怎么用）
 
     更多信息，请参考[用户文档](链接)。
+IMPORT INTO ... FROM SELECT 语法成为正式功能（GA），丰富了 IMPORT INTO 功能场景 [#49883](https://github.com/pingcap/tidb/issues/49883) @[D3Hunter](https://github.com/D3Hunter)**tw@qiancai** <!--1791-->
 
+在之前的 TiDB 版本中，将查询结果导入目标表只能通过 INSERT INTO ... SELECT 语句，但该语句在一些大数据量的场景中的导入效率较低。从 v8.0.0 开始，TiDB 新增支持通过 IMPORT INTO ... FROM SELECT 将 SELECT 的查询结果导入到一张空的 TiDB 目标表中，其性能最高可达 INSERT INTO ... SELECT 的 8 倍，可以大幅缩短导入所需的时间。
+
+此外，你还可以通过 IMPORT INTO ... FROM SELECT 导入使用 [AS OF TIMESTAMP](https://docs.pingcap.com/zh/tidb/dev/as-of-timestamp) 查询的历史数据。
+
+更多信息，请参考[用户文档](https://docs.pingcap.com/zh/tidb/dev/sql-statement-import-into)。
+
+TiDB Lightning 简化冲突处理策略，同时支持以 replace 方式处理冲突数据的功能成为正式功能（GA）[#51036](https://github.com/pingcap/tidb/issues/51036) @[lyzx2001](https://github.com/lyzx2001)**tw@qiancai** <!--1795-->
+
+在之前的版本中，TiDB Lightning 逻辑导入模式有[一套数据冲突处理策略](https://docs.pingcap.com/zh/tidb/dev/tidb-lightning-logical-import-mode-usage#%E5%86%B2%E7%AA%81%E6%95%B0%E6%8D%AE%E6%A3%80%E6%B5%8B)，而物理导入模式有[两套数据冲突处理策略](https://docs.pingcap.com/zh/tidb/dev/tidb-lightning-physical-import-mode-usage#%E5%86%B2%E7%AA%81%E6%95%B0%E6%8D%AE%E6%A3%80%E6%B5%8B)，不易理解和配置。
+
+从 v8.0.0 开始，TiDB Lightning 废弃了物理导入模式下的[旧版冲突检测](https://docs.pingcap.com/zh/tidb/dev/tidb-lightning-physical-import-mode-usage#%E6%97%A7%E7%89%88%E5%86%B2%E7%AA%81%E6%A3%80%E6%B5%8B%E4%BB%8E-v800-%E5%BC%80%E5%A7%8B%E5%B7%B2%E8%A2%AB%E5%BA%9F%E5%BC%83)策略，支持通过 [conflict.strategy](https://docs.pingcap.com/zh/tidb/dev/tidb-lightning-configuration) 参数统一控制逻辑导入和物理导入模式的冲突检测策略，并简化了该参数的配置。此外，在物理导入模式下，当导入遇到主键或唯一键冲突的数据时，replace 策略支持保留最新的数据、覆盖旧的数据。
+
+更多信息，请参考[用户文档](https://docs.pingcap.com/zh/tidb/dev/tidb-lightning-configuration)。
 ## 兼容性变更
 
 > **注意：**
@@ -209,7 +227,7 @@ TiDB 同时支持手动标记查询的功能。利用命令 [`QUERY WATCH`](/sql
 
 | 配置文件 | 配置项 | 修改类型 | 描述 |
 | -------- | -------- | -------- | -------- |
-|          |          |          |          |
+|  Lightning        | conflict.threshold  |   修改    | 将默认值从 9223372036854775807 改为 10000  |
 |          |          |          |          |
 |          |          |          |          |
 |          |          |          |          |
@@ -219,7 +237,7 @@ TiDB 同时支持手动标记查询的功能。利用命令 [`QUERY WATCH`](/sql
 ## 离线包变更
 
 ## 废弃功能
-
+* Lightning 中的参数 "conflict.max-record-rows" 计划在 v8.5.0 版本里废弃，并在之后的版本里移除。由参数 "conflict.threshold" 代替，即记录的冲突记录数和单个导入任务允许出现冲突记录数的上限数保持一致。
 * 废弃功能 1
 
 * 废弃功能 2
