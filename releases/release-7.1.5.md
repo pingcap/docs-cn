@@ -102,6 +102,15 @@ TiDB 版本：7.1.5
     - 修复当使用 insert ignore 时可能造成的唯一索引和数据不一致的问题 [#51784](https://github.com/pingcap/tidb/issues/51784) @[wjhuang2016](https://github.com/wjhuang2016)
     - 修复可能导致添加唯一索引时出现 panic 的问题 [#52312](https://github.com/pingcap/tidb/issues/52312) @[wjhuang2016](https://github.com/wjhuang2016)
     - 修复 "analyze table" 阻塞 DDL 的问题 [#47475](https://github.com/pingcap/tidb/issues/47475) @[wjhuang2016](https://github.com/wjhuang2016)
+    - 修复在 TiFlash 节点执行 MMP 可能出现错误结果的问题 [#50358](https://github.com/pingcap/tidb/issues/50358) @[yibin87](https://github.com/yibin87)
+    - 修复 Window 函数中有相关字查询时可能会 Panic 的问题 [#42734](https://github.com/pingcap/tidb/issues/42734) @[hi-rustin](https://github.com/hi-rustin)
+    <!--tw@Oreoxmt  以下 3 条-->
+    - 修复 TiDB 在启动时加载统计信息时可能会 Panic 的问题 [#51581](https://github.com/pingcap/tidb/issues/51581) @[hawkingrei](https://github.com/hawkingrei)
+    - 修复在关闭 TableDual 的 Predicate 下推关闭之后造成的性能回退问题 [#50614](https://github.com/pingcap/tidb/issues/50614) @[time-and-fate](https://github.com/time-and-fate)
+    - 修复在 having 子句中无法识别相关列导致错误查询结果的问题 [#51107](https://github.com/pingcap/tidb/issues/51107) @[hawkingrei](https://github.com/hawkingrei)
+    <!--tw@qiancai 以下 2 条-->
+    - 修复 TiDB 错误的将 outer join 转化为 inner join 的问题 [#51560](https://github.com/pingcap/tidb/issues/51560) @[winoros](https://github.com/winoros)
+    - 修复 EXPLAIN 语句可能使用错误列 ID 的问题 [#52207](https://github.com/pingcap/tidb/issues/52207) @[time-and-fate](https://github.com/time-and-fate)
 
 + TiKV <!--tw@hfxsd 4 条-->
 
