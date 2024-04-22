@@ -228,7 +228,7 @@ summary: TiDB 配置参数包括启动参数和环境变量。启动参数包括
 
 + 设置 TiDB server 是否在使用子命令 `collect-log` 时脱敏日志文件。
 + 默认：false
-+ 取值为 `true` 时为脱敏操作，所有 `‹..›` 标记的字段被替换为 `?`。取值为 `false` 时为还原操作，所有标记符号被去除。具体使用方法为，执行 `./tidb-server --redact=xxx collect-log <input> <output>` 将 `<input>` 指向的 TiDB server 日志文件进行脱敏或者还原，并输出到 `<output>`。更多详情，请参考系统变量 [`tidb_redact_log`](/system-variables.md#tidb_redact_log)。
++ 取值为 `true` 时为脱敏操作，所有被标记符号 `‹ ›` 包裹的字段会被替换为 `?`。取值为 `false` 时为还原操作，所有标记符号会被去除。具体使用方法为，执行 `./tidb-server --redact=xxx collect-log <input> <output>` 将 `<input>` 指向的 TiDB server 日志文件进行脱敏或者还原，并输出到 `<output>`。更多详情，请参考系统变量 [`tidb_redact_log`](/system-variables.md#tidb_redact_log)。
 
 ## `--repair-mode`
 
