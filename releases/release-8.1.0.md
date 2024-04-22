@@ -52,7 +52,7 @@ TiDB 8.1.0 为长期支持版本 (Long-Term Support Release, LTS)。
   </tr>
   <tr>
     <td rowspan="5">稳定性与高可用</td>
-    <td><a href="https://docs.pingcap.com/zh/tidb/v8.1/tidb-global-sort">全局排序成为正式功能（从 v8.0.0 开始 GA）</a></td><!-- **tw@qiancai** -->
+    <td><a href="https://docs.pingcap.com/zh/tidb/v8.1/tidb-global-sort">全局排序成为正式功能</a>（从 v8.0.0 开始 GA）**tw@qiancai**</td>
     <td>全局排序功能旨在提高 IMPORT INTO 和 CREATE INDEX 的稳定性与效率。通过将任务需要处理的数据进行全局排序，可以提高数据写入 TiKV 的稳定性、可控性和可扩展性，从而提供更好的数据导入与 DDL 任务的用户体验及更高质量的服务。目前已经支持 40 TiB 的数据进行导入或者添加索引。</td>
   </tr>
   <tr>
@@ -68,7 +68,7 @@ TiDB 8.1.0 为长期支持版本 (Long-Term Support Release, LTS)。
     <td>在 v7.6.0 之前，DM 迁移 MySQL 8.0 仅为实验特性，不能用于生产环境。TiDB v7.6.0 增强了该功能的稳定性、兼容性，可在生产环境帮助你平滑、快速地将数据从 MySQL 8.0 迁移到 TiDB。在 v7.6.0 中，该功能正式 GA。</td>
   </tr>
   <tr>
-    <td>资源管控支持<a href="https://docs.pingcap.com/zh/tidb/v8.1/tidb-resource-control#管理资源消耗超出预期的查询-runaway-queries">管理资源消耗超出预期的查询</a> (GA)</td><!-- **tw@lilin90** -->
+    <td>资源管控支持<a href="https://docs.pingcap.com/zh/tidb/v8.1/tidb-resource-control#管理资源消耗超出预期的查询-runaway-queries">管理资源消耗超出预期的查询</a> (GA) **tw@lilin90**</td>
     <td>通过资源组的规则，TiDB 能够自动识别出运行超出预期的查询，并对该查询进行限流或取消处理。 即使没有被规则识别，用户仍旧可以手工添加查询特征以及对应的手段措施，从而降低突发的查询性能对整个数据库的影响。</td>
   </tr>
   <tr>
