@@ -1204,17 +1204,17 @@ SELECT LPAD('TiDB',-2,'>');
 
 ### [`LTRIM()`](https://dev.mysql.com/doc/refman/8.0/en/string-functions.html#function_ltrim)
 
-`LTRIM()` 函数用于删除输入的字符串中的前导空格。
+`LTRIM()` 函数用于去掉给定的字符串中的前导空格（即字符串开头的连续空格）。
 
-如果输入的参数是 `NULL`，该函数返回 `NULL`。
+如果输入的参数为 `NULL`，该函数将返回 `NULL`。
 
 > **注意:**
 >
-> 该函数只删除空格字符（U+0020），不删除其他类似空格的字符，如制表符（U+0009）或非分隔符（U+00A0）。
+> 该函数只去掉空格字符（U+0020），不去掉其他类似空格的字符，如制表符（U+0009）或非分隔符（U+00A0）。
 
 示例：
 
-在以下示例中，`LTRIM()` 函数删除了 `'    hello'` 中的前导空格，并返回 `hello`。
+在以下示例中，`LTRIM()` 函数去掉了 `'    hello'` 中的前导空格，并返回 `hello`。
 
 ```sql
 SELECT LTRIM('    hello');
@@ -1254,7 +1254,7 @@ SELECT CONCAT('«',LTRIM('    hello'),'»');
 MAKE_SET(bits, str1, str2, ...)
 ```
 
-- `bits`：控制其后的字符串参数中的哪些些参数会包含到输出结果中。如果 `bits` 设置为 `NULL`，该函数将返回 `NULL`。
+- `bits`：控制其后的字符串参数中的哪些参数会包含到输出结果中。如果 `bits` 为 `NULL`，该函数将返回 `NULL`。
 - `str1, str2, ...`：字符串参数列表。每个字符串与 `bits` 参数中从右到左的一个 bit 依次对应。`str1` 对应于 `bits` 中从右起的第一个 bit，`str2` 对应于从右起的第二个 bit，依此类推。如果相应的 bit 为 `1`，则该字符串将包含在输出结果中；否则，将不包含在输出结果中。
 
 示例:
@@ -1274,7 +1274,7 @@ SELECT MAKE_SET(b'000','foo','bar','baz');
 1 row in set (0.00 sec)
 ```
 
-在以下示例中，因为从右起的第一个 bit 是 `1`，该函数只返回第一个字符串 `foo`。
+在以下示例中，因为只有从右起的第一个 bit 为 `1`，该函数只返回第一个字符串 `foo`。
 
 ```sql
 SELECT MAKE_SET(b'001','foo','bar','baz');
@@ -1304,7 +1304,7 @@ SELECT MAKE_SET(b'010','foo','bar','baz');
 1 row in set (0.00 sec)
 ```
 
-在以下示例中，因为只有从起的第三个 bit 为 `1`，该函数只返回第三个字符串 `baz`。
+在以下示例中，因为只有从右起的第三个 bit 为 `1`，该函数只返回第三个字符串 `baz`。
 
 ```sql
 SELECT MAKE_SET(b'100','foo','bar','baz');
