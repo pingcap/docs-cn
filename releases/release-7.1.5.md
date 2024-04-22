@@ -50,7 +50,7 @@ TiDB 版本：7.1.5
         - note [#issue](https://github.com/pingcap/tidb/issues/${issue-id}) @[贡献者 GitHub ID](https://github.com/${github-id})
         - note [#issue](https://github.com/pingcap/tidb/issues/${issue-id}) @[贡献者 GitHub ID](https://github.com/${github-id})
         - (dup): release-6.5.9.md > 改进提升> Tools> Backup & Restore (BR) - 在遇到较大的 checkpoint lag 时，日志备份支持自动放弃任务，以避免日志备份长时间阻塞 GC，从而防止集群出现问题 [#50803](https://github.com/pingcap/tidb/issues/50803) @[RidRisR](https://github.com/RidRisR)
-        - 增加集成测试用例覆盖 log backup 与 fast ddl 的兼容性 [#51987](https://github.com/pingcap/tidb/issues/51987) @Leavrth](https://github.com/Leavrth)
+        - 增加集成测试用例覆盖 log backup 与 fast ddl 的兼容性 [#51987](https://github.com/pingcap/tidb/issues/51987) @[Leavrth](https://github.com/Leavrth)
 
     + TiCDC
 
@@ -142,16 +142,15 @@ TiDB 版本：7.1.5
         - (dup): release-6.5.9.md > 错误修复> Tools> Backup & Restore (BR) - 修复全量备份失败时打印过多日志的问题 [#51572](https://github.com/pingcap/tidb/issues/51572) @[Leavrth](https://github.com/Leavrth)
         - (dup): release-6.5.9.md > 错误修复> Tools> Backup & Restore (BR) - 修复在包含 `AUTO_RANDOM` 列的联合聚簇索引中，BR 无法备份 `AUTO_RANDOM` ID 分配进度的问题 [#52255](https://github.com/pingcap/tidb/issues/52255) @[Leavrth](https://github.com/Leavrth)
         - (dup): release-6.5.9.md > 错误修复> Tools> Backup & Restore (BR) - 修复在某些极端情况下，全量备份因找不到 peer 导致 TiKV panic 的问题 [#16394](https://github.com/tikv/tikv/issues/16394) @[Leavrth](https://github.com/Leavrth)
-        - 修复一个因为 PD 无法连接，日志备份 advancer owner 所在 TiDB 可能崩溃的问题  [#52597](https://github.com/pingcap/tidb/issues/52597) @YuJuncen](https://github.com/YuJuncen)
-        - 修复一个不稳定的测试用例 [#52547](https://github.com/pingcap/tidb/issues/52547) @Leavrth](https://github.com/Leavrth)
+        - 修复一个因为 PD 无法连接，日志备份 advancer owner 所在 TiDB 可能崩溃的问题  [#52597](https://github.com/pingcap/tidb/issues/52597) @[YuJuncen](https://github.com/YuJuncen)
+        - 修复一个不稳定的测试用例 [#52547](https://github.com/pingcap/tidb/issues/52547) @[Leavrth](https://github.com/Leavrth)
         - 修复一个日志备份因为 TiKV 重启，global checkpoint 推进超前于实际备份文件写入点，可能导致的少量备份数据丢失的问题  [#16809](https://github.com/tikv/tikv/issues/16809) @[YuJuncen](https://github.com/YuJuncen)
         - 修复一个在极小的概率下，由于特殊的事件时序导致的日志备份丢数据的问题  [#16739](https://github.com/tikv/tikv/issues/16739) @[YuJuncen](https://github.com/YuJuncen)
-        - 去除 log backup 启动时检查是否有活动 ddl job 的无效检查 [#52733](https://github.com/pingcap/tidb/issues/52733) @Leavrth](https://github.com/Leavrth)
-        
+        - 去除 log backup 启动时检查是否有活动 ddl job 的无效检查 [#52733](https://github.com/pingcap/tidb/issues/52733) @[Leavrth](https://github.com/Leavrth)
 
     + TiCDC
 
-        - 修复上游写入 `Exchange Partition ... With Validation` DDL后，TiCDC 向下游执行该 DDL 失败导致 changefeed 卡住的问题  [#10859](https://github.com/pingcap/tiflow/issues/10859) @[hongyunyan](https://github.com/hongyunyan))
+        - 修复上游写入 `Exchange Partition ... With Validation` DDL后，TiCDC 向下游执行该 DDL 失败导致 changefeed 卡住的问题 [#10859](https://github.com/pingcap/tiflow/issues/10859) @[hongyunyan](https://github.com/hongyunyan)
         - note [#issue](https://github.com/pingcap/tiflow/issues/${issue-id}) @[贡献者 GitHub ID](https://github.com/${github-id})
         - (dup): release-6.5.9.md > 错误修复> Tools> TiCDC - 修复恢复 changefeed 时 changefeed 的 `checkpoint-ts` 小于 TiDB 的 GC safepoint，没有及时报错 `snapshot lost caused by GC` 的问题 [#10463](https://github.com/pingcap/tiflow/issues/10463) @[sdojjy](https://github.com/sdojjy)
         - (dup): release-6.5.9.md > 错误修复> Tools> TiCDC - 修复在调度表的同步任务时 TiCDC panic 的问题 [#10613](https://github.com/pingcap/tiflow/issues/10613) @[CharlesCheung96](https://github.com/CharlesCheung96)
