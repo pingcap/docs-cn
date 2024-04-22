@@ -105,6 +105,9 @@ TiDB 版本：7.1.5
     - (dup): release-8.0.0.md > 错误修复> TiDB - 修复 TTL 功能在某些情况下因为没有正确切分数据范围而造成数据热点的问题 [#51527](https://github.com/pingcap/tidb/issues/51527) @[lcwangchao](https://github.com/lcwangchao)
     - 修复 AUTO_ID_CACHE=1 的情况下，在 AutoID Leader 发生变更时可能造成自增列减少的问题 [#52600](https://github.com/pingcap/tidb/issues/52600) @[tiancaiamao](https://github.com/tiancaiamao)
 
+    - 修复当使用 insert ignore 时可能造成的唯一索引和数据不一致的问题 [#51784](https://github.com/pingcap/tidb/issues/51784) @[wjhuang2016](https://github.com/wjhuang2016)
+    - 修复可能导致添加唯一索引时出现 panic 的问题 [#52312](https://github.com/pingcap/tidb/issues/52312) @[wjhuang2016](https://github.com/wjhuang2016)
+    - 修复 "analyze table" 阻塞 DDL 的问题 [#47475](https://github.com/pingcap/tidb/issues/47475) @[wjhuang2016](https://github.com/wjhuang2016)
 + TiKV
 
     - note [#issue](https://github.com/tikv/tikv/issues/${issue-id}) @[贡献者 GitHub ID](https://github.com/${github-id})
@@ -143,6 +146,7 @@ TiDB 版本：7.1.5
         - 修复一个不稳定的测试用例 [#52547](https://github.com/pingcap/tidb/issues/52547) @Leavrth](https://github.com/Leavrth)
         - 修复一个日志备份因为 TiKV 重启，global checkpoint 推进超前于实际备份文件写入点，可能导致的少量备份数据丢失的问题  [#16809](https://github.com/tikv/tikv/issues/16809) @[YuJuncen](https://github.com/YuJuncen)
         - 修复一个在极小的概率下，由于特殊的事件时序导致的日志备份丢数据的问题  [#16739](https://github.com/tikv/tikv/issues/16739) @[YuJuncen](https://github.com/YuJuncen)
+        - 去除 log backup 启动时检查是否有活动 ddl job 的无效检查 [#52733](https://github.com/pingcap/tidb/issues/52733) @Leavrth](https://github.com/Leavrth)
         
 
     + TiCDC
@@ -162,8 +166,8 @@ TiDB 版本：7.1.5
 
     + TiDB Lightning
 
-        - note [#issue](https://github.com/pingcap/tidb/issues/${issue-id}) @[贡献者 GitHub ID](https://github.com/${github-id})
-        - note [#issue](https://github.com/pingcap/tidb/issues/${issue-id}) @[贡献者 GitHub ID](https://github.com/${github-id})
+        - 修复通过 Parquet 导入空表 panic 的问题 [#52518](https://github.com/pingcap/tidb/issues/52518) @[kennytm](https://github.com/kennytm)
+        - 修复在 server 模式下仍会打印敏感信息在日志中的问题 [#36374](https://github.com/pingcap/tidb/issues/36374) @[kennytm](https://github.com/kennytm)
 
     + Dumpling
 
