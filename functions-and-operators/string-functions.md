@@ -1340,13 +1340,13 @@ SELECT MAKE_SET(b'111','foo','bar','baz');
 
 `MID(str,pos,len)` 函数返回从指定的 `pos` 位置开始的长度为 `len` 的子串。
 
-如果任一参数为 `NULL`，函数将返回 `NULL`。
+如果任一参数为 `NULL`，该函数将返回 `NULL`。
 
-TiDB 不支持此函数的两参数版本。更多信息，请参见 [#52420](https://github.com/pingcap/tidb/issues/52420)。
+TiDB 不支持该函数的两参数版本。更多信息，请参见 [#52420](https://github.com/pingcap/tidb/issues/52420)。
 
 示例：
 
-在下面的示例中，`MID()` 返回输入的字符串中从第二个字符 (`b`) 开始的长度为 `3` 个字符的的子字符串。
+在以下示例中，`MID()` 返回给定的字符串中从第二个字符 (`b`) 开始的长度为 `3` 个字符的的子字符串。
 
 ```sql
 SELECT MID('abcdef',2,3);
@@ -1365,7 +1365,7 @@ SELECT MID('abcdef',2,3);
 
 否定简单模式匹配。
 
-此函数的功能与 [`LIKE`](#like) 函数相反。
+该函数的功能与 [`LIKE`](#like) 函数相反。
 
 示例：
 
