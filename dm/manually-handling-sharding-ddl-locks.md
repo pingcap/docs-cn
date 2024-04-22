@@ -66,7 +66,7 @@ Use "dmctl shard-ddl-lock [command] --help" for more information about a command
 shard-ddl-lock test
 ```
 
-<details>
+<details open>
 <summary>期望输出</summary>
 
 ```
