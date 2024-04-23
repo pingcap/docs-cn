@@ -330,7 +330,6 @@ SELECT NAME_CONST('column name', 'value') UNION ALL SELECT 'another value';
 
 上面这条语句使用了 `NAME_CONST()`，下面这条语句使用了列别名的方式（推荐）。
 
-
 ```sql
 SELECT 'value' AS 'column name' UNION ALL SELECT 'another value';
 ```
