@@ -87,7 +87,7 @@ Confluent 是一个兼容 Apache Kafka 的数据流平台，能够访问、存�
 
     根据 Avro 协议和 Confluent Connector 的要求和规范，每张表的增量数据需要发送到独立的 Topic 中，并且每个事件需要按照主键值分发 Partition。因此，需要创建一个名为 `changefeed.conf` 的配置文件，填写如下内容：
 
-    ```conf
+    ```
     [sink]
     dispatchers = [
     {matcher = ['*.*'], topic = "tidb_{schema}_{table}", partition="index-value"},

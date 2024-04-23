@@ -9,7 +9,7 @@ summary: TiDB 数据库中 SET PASSWORD 的使用概况。
 
 ## 语法图
 
-```enbf+diagram
+```ebnf+diagram
 SetPasswordStmt ::=
     "SET" "PASSWORD" ( "FOR" Username )? "=" ( stringLit | "PASSWORD" "(" stringLit ")" )
 ```
