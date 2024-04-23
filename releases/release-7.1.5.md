@@ -110,7 +110,7 @@ TiDB 版本：7.1.5
     - 修复在 having 子句中无法识别相关列导致错误查询结果的问题 [#51107](https://github.com/pingcap/tidb/issues/51107) @[hawkingrei](https://github.com/hawkingrei)
     <!--tw@qiancai 以下 2 条-->
     - 修复 TiDB 错误的将 outer join 转化为 inner join 的问题 [#51560](https://github.com/pingcap/tidb/issues/51560) @[winoros](https://github.com/winoros)
-    - 修复 EXPLAIN 语句可能使用错误列 ID 的问题 [#52207](https://github.com/pingcap/tidb/issues/52207) @[time-and-fate](https://github.com/time-and-fate)
+    - 修复当某些列的统计信息没有完全加载时，`EXPLAIN` 语句的结果中可能会显示错误的列 ID 的问题 [#52207](https://github.com/pingcap/tidb/issues/52207) @[time-and-fate](https://github.com/time-and-fate)
 
 + TiKV <!--tw@hfxsd 4 条-->
 
