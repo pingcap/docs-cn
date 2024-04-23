@@ -206,7 +206,7 @@ enable-partition-separator = true
 # binary-encoding-method = 'base64'
 
 [sink.open]
-# 是否输出行数据更改前的值。默认值为 true。关闭后，Update 事件不会输出 "p" 字段的数据。 Delete 事件只会输出 handle key 相关的列。
+# 是否输出行数据更改前的值。默认值为 true。关闭后，Update 事件不会输出 "p" 字段的数据。
 # output-old-value = false
 
 [sink.debezium]
