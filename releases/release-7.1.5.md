@@ -112,7 +112,7 @@ TiDB 版本：7.1.5
 
 + TiKV <!--tw@hfxsd 4 条-->
 
-    - 修复因为过时的 Region peer 忽略 GC 消息导致 resolve-ts 被阻塞的问题 [#16504](https://github.com/tikv/tikv/issues/16504) @[crazycs520](https://github.com/crazycs520)
+    - 修复由于过时的 Region peer 忽略 GC 消息导致 resolve-ts 被阻塞的问题 [#16504](https://github.com/tikv/tikv/issues/16504) @[crazycs520](https://github.com/crazycs520)
     - (dup): release-6.5.9.md > 错误修复> TiKV - 修复 RocksDB 中非活跃的 WAL (Write Ahead Log) 可能损毁数据的问题 [#16705](https://github.com/tikv/tikv/issues/16705) @[Connor1996](https://github.com/Connor1996)
     - (dup): release-6.5.9.md > 错误修复> TiKV - 修复监控指标 `tikv_unified_read_pool_thread_count` 有时没有数据的问题 [#16629](https://github.com/tikv/tikv/issues/16629) @[YuJuncen](https://github.com/YuJuncen)
     - (dup): release-6.5.9.md > 错误修复> TiKV - 修复乐观事务在执行期间被其它事务发起 resolve lock 时，如果事务的 primary key 上之前有通过异步提交 (Async Commit) 或一阶段提交 (1PC) 模式提交的数据，事务的原子性可能有小概率被破坏问题 [#16620](https://github.com/tikv/tikv/issues/16620) @[MyonKeminta](https://github.com/MyonKeminta)
