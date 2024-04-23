@@ -1204,7 +1204,7 @@ SELECT LPAD('TiDB',-2,'>');
 
 ### [`LTRIM()`](https://dev.mysql.com/doc/refman/8.0/en/string-functions.html#function_ltrim)
 
-`LTRIM()` 函数用于去掉给定的字符串中的前导空格（即字符串开头的连续空格）。
+`LTRIM()` 函数用于删除给定的字符串中的前导空格（即字符串开头的连续空格）。
 
 如果输入的参数为 `NULL`，该函数将返回 `NULL`。
 
@@ -1214,7 +1214,7 @@ SELECT LPAD('TiDB',-2,'>');
 
 示例：
 
-在以下示例中，`LTRIM()` 函数去掉了 `'    hello'` 中的前导空格，并返回 `hello`。
+在以下示例中，`LTRIM()` 函数删除了 `'    hello'` 中的前导空格，并返回 `hello`。
 
 ```sql
 SELECT LTRIM('    hello');
@@ -1229,7 +1229,7 @@ SELECT LTRIM('    hello');
 1 row in set (0.00 sec)
 ```
 
-在以下示例中，[`CONCAT()`](#concat) 用于将 `LTRIM('    hello')` 的结果用 `«` 和 `»` 包裹起来。通过这种格式，可以更容易地看到所有前导空格都被去掉了。
+在以下示例中，[`CONCAT()`](#concat) 用于将 `LTRIM('    hello')` 的结果用 `«` 和 `»` 包裹起来。通过这种格式，可以更容易地看到所有前导空格都被删除了。
 
 ```sql
 SELECT CONCAT('«',LTRIM('    hello'),'»');
