@@ -21,7 +21,7 @@ TiDB 版本：7.1.5
 
     - (dup): release-8.0.0.md > 改进提升> TiDB - 支持从 PD 批量加载 Region，加快在对大表进行查询时，从 KV Range 到 Regions 的转换过程 [#51326](https://github.com/pingcap/tidb/issues/51326) @[SeaRise](https://github.com/SeaRise)
     - (dup): release-6.5.9.md > 改进提升> TiDB - 优化 `ANALYZE` 语句卡住元数据锁的问题 [#47475](https://github.com/pingcap/tidb/issues/47475) @[wjhuang2016](https://github.com/wjhuang2016)
-    - 为 LDAP 身份验证添加超时时间 [#51883](https://github.com/pingcap/tidb/issues/51883) @[YangKeao](https://github.com/YangKeao)
+    - 为 LDAP 身份认证添加超时机制，避免资源锁（RLock）无法及时释放的问题 [#51883](https://github.com/pingcap/tidb/issues/51883) @[YangKeao](https://github.com/YangKeao)
 
 + TiKV <!--tw@qiancai 2 条-->
 
@@ -32,7 +32,6 @@ TiDB 版本：7.1.5
 
 + PD <!--tw@qiancai 2 条-->
 
-    - 为 Resource Control 的令牌桶添加过期清除机制，避免不必要的 RU 占用 [#7346](https://github.com/tikv/pd/issues/7346) @[guo-shaoge](https://github.com/guo-shaoge)
     - 升级 etcd 版本至 v3.4.30 [#7904](https://github.com/tikv/pd/issues/7904) @[JmPotato](https://github.com/JmPotato)
 
 + TiFlash
@@ -109,7 +108,6 @@ TiDB 版本：7.1.5
     - 修复在关闭 TableDual 的 Predicate 下推关闭之后造成的性能回退问题 [#50614](https://github.com/pingcap/tidb/issues/50614) @[time-and-fate](https://github.com/time-and-fate)
     - 修复在 having 子句中无法识别相关列导致错误查询结果的问题 [#51107](https://github.com/pingcap/tidb/issues/51107) @[hawkingrei](https://github.com/hawkingrei)
     <!--tw@qiancai 以下 2 条-->
-    - 修复 TiDB 错误的将 outer join 转化为 inner join 的问题 [#51560](https://github.com/pingcap/tidb/issues/51560) @[winoros](https://github.com/winoros)
     - 修复当某些列的统计信息没有完全加载时，`EXPLAIN` 语句的结果中可能会显示错误的列 ID 的问题 [#52207](https://github.com/pingcap/tidb/issues/52207) @[time-and-fate](https://github.com/time-and-fate)
 
 + TiKV <!--tw@hfxsd 4 条-->
@@ -124,7 +122,7 @@ TiDB 版本：7.1.5
 
 + PD <!--tw@qiancai 1 条-->
 
-    - 修复写热点调度可能会打破 Placement Policy 约束的问题 [#7848](https://github.com/tikv/pd/issues/7848) @[lhy1024](https://github.com/lhy1024)
+    - 修复写热点调度可能会违反放置策略 (placement policy) 约束的问题 [#7848](https://github.com/tikv/pd/issues/7848) @[lhy1024](https://github.com/lhy1024)
     - (dup): release-6.5.9.md > 错误修复> PD - 修复 `SHOW CONFIG` 的查询结果包含已废弃的 `trace-region-flow` 配置项的问题 [#7917](https://github.com/tikv/pd/issues/7917) @[rleungx](https://github.com/rleungx)
     - (dup): release-6.5.9.md > 错误修复> PD - 修复扩缩容进度显示不准确的问题 [#7726](https://github.com/tikv/pd/issues/7726) @[CabinfeverB](https://github.com/CabinfeverB)
 
