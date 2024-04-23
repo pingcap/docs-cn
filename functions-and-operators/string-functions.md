@@ -1336,7 +1336,7 @@ SELECT MAKE_SET(b'111','foo','bar','baz');
 
 ### [`MID()`](https://dev.mysql.com/doc/refman/8.0/en/string-functions.html#function_mid)
 
-`MID(str,pos,len)` 函数返回从指定的 `pos` 位置开始的长度为 `len` 的子串。
+`MID(str,pos,len)` 函数返回从指定的 `pos` 位置开始的长度为 `len` 的子字符串。
 
 如果任一参数为 `NULL`，该函数将返回 `NULL`。
 
