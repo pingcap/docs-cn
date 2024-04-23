@@ -9,7 +9,7 @@ summary: TiDB 数据库中 SHOW ENGINES 的使用概况。
 
 ## 语法图
 
-```enbf+diagram
+```ebnf+diagram
 ShowEnginesStmt ::=
     "SHOW" "ENGINES" ShowLikeOrWhere?
 ShowLikeOrWhere ::=
