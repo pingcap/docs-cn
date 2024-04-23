@@ -158,8 +158,8 @@ TiDB 版本：7.1.5
 
     + TiDB Lightning <!--tw@Oreoxmt 2 条-->
 
-        - 修复通过 Parquet 导入空表时，TiDB Lightning panic 的问题 [#52518](https://github.com/pingcap/tidb/issues/52518) @[kennytm](https://github.com/kennytm)
-        - 修复服务器模式下日志敏感信息被打印的问题 [#36374](https://github.com/pingcap/tidb/issues/36374) @[kennytm](https://github.com/kennytm)
+        - 修复导入 Parquet 格式的空表时，TiDB Lightning panic 的问题 [#52518](https://github.com/pingcap/tidb/issues/52518) @[kennytm](https://github.com/kennytm)
+        - 修复服务器模式下 TiDB Lightning 打印日志敏感信息的问题 [#36374](https://github.com/pingcap/tidb/issues/36374) @[kennytm](https://github.com/kennytm)
 
     + Dumpling
 
