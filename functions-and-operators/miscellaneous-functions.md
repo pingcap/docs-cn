@@ -363,7 +363,7 @@ SELECT SLEEP(1.5);
 
 ### UUID()
 
-`UUID()` 函数用于返回通用唯一标识符（UUID）(version 1)。UUID 的定义可参考 [RFC 4122](https://datatracker.ietf.org/doc/html/rfc4122) 。
+`UUID()` 函数用于返回通用唯一标识符 (UUID) version 1。UUID 的定义可参考 [RFC 4122](https://datatracker.ietf.org/doc/html/rfc4122)。
 
 ```sql
 SELECT UUID();
