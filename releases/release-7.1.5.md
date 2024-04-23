@@ -98,12 +98,12 @@ TiDB 版本：7.1.5
     - (dup): release-6.5.9.md > 错误修复> TiDB - 修复 `IFNULL` 函数返回的类型和 MySQL 不一致的问题 [#51765](https://github.com/pingcap/tidb/issues/51765) @[YangKeao](https://github.com/YangKeao)
     - (dup): release-8.0.0.md > 错误修复> TiDB - 修复 TTL 功能在某些情况下因为没有正确切分数据范围而造成数据热点的问题 [#51527](https://github.com/pingcap/tidb/issues/51527) @[lcwangchao](https://github.com/lcwangchao)
     - 修复 TiDB 持续发送探活请求到已经下线的 TiFlash 节点的问题 [#46602](https://github.com/pingcap/tidb/issues/46602) @[zyguan](https://github.com/zyguan)
-    - 修复 AUTO_ID_CACHE=1 的情况下，在 AutoID Leader 发生变更时可能造成自增列减少的问题 [#52600](https://github.com/pingcap/tidb/issues/52600) @[tiancaiamao](https://github.com/tiancaiamao)
-    - 修复当使用 insert ignore 时可能造成的唯一索引和数据不一致的问题 [#51784](https://github.com/pingcap/tidb/issues/51784) @[wjhuang2016](https://github.com/wjhuang2016)
-    - 修复可能导致添加唯一索引时出现 panic 的问题 [#52312](https://github.com/pingcap/tidb/issues/52312) @[wjhuang2016](https://github.com/wjhuang2016)
-    - 修复 "analyze table" 阻塞 DDL 的问题 [#47475](https://github.com/pingcap/tidb/issues/47475) @[wjhuang2016](https://github.com/wjhuang2016)
-    - 修复在 TiFlash 节点执行 MPP 可能出现错误结果的问题 [#50358](https://github.com/pingcap/tidb/issues/50358) @[yibin87](https://github.com/yibin87)
-    - 修复 Window 函数中有相关字查询时可能会 Panic 的问题 [#42734](https://github.com/pingcap/tidb/issues/42734) @[hi-rustin](https://github.com/hi-rustin)
+    - 修复 `AUTO_ID_CACHE=1` 的情况下，在 AutoID Leader 发生变更时可能造成自增列的值减少的问题 [#52600](https://github.com/pingcap/tidb/issues/52600) @[tiancaiamao](https://github.com/tiancaiamao)
+    - 修复执行 `INSERT IGNORE` 可能出现唯一索引和数据不一致的问题 [#51784](https://github.com/pingcap/tidb/issues/51784) @[wjhuang2016](https://github.com/wjhuang2016)
+    - 修复添加唯一索引可能导致 TiDB panic 的问题 [#52312](https://github.com/pingcap/tidb/issues/52312) @[wjhuang2016](https://github.com/wjhuang2016)
+    - 修复 `ANALYZE TABLE` 阻塞 DDL 的问题 [#47475](https://github.com/pingcap/tidb/issues/47475) @[wjhuang2016](https://github.com/wjhuang2016)
+    - 修复在 TiFlash 节点执行 MPP (Massively Parallel Processing) 查询可能出现错误结果的问题 [#50358](https://github.com/pingcap/tidb/issues/50358) @[yibin87](https://github.com/yibin87)
+    - 修复窗口函数中有某些子查询时可能会 panic 的问题 [#42734](https://github.com/pingcap/tidb/issues/42734) @[hi-rustin](https://github.com/hi-rustin)
     <!--tw@Oreoxmt  以下 3 条-->
     - 修复 TiDB 在启动时加载统计信息时可能会 Panic 的问题 [#51581](https://github.com/pingcap/tidb/issues/51581) @[hawkingrei](https://github.com/hawkingrei)
     - 修复在关闭 TableDual 的 Predicate 下推关闭之后造成的性能回退问题 [#50614](https://github.com/pingcap/tidb/issues/50614) @[time-and-fate](https://github.com/time-and-fate)
@@ -114,9 +114,9 @@ TiDB 版本：7.1.5
 
 + TiKV <!--tw@hfxsd 4 条-->
 
-    - 修复因为过时的Region peer忽略删除消息导致resolve-ts被阻塞的问题。 [#16504](https://github.com/tikv/tikv/issues/16504) @[crazycs520](https://github.com/crazycs520)
-    - 修复RocksDB引起的sync部分数据到非活跃WAL的错误，该错误可能导致TiKV重启后数据损坏。[#16705](https://github.com/tikv/tikv/issues/16705) @[Connor1996](https://github.com/Connor1996)
-    - 修复监控`tikv_unified_read_pool_thread_count`有时没有数据的问题。[#16629](https://github.com/tikv/tikv/issues/16629) @[YuJuncen](https://github.com/YuJuncen)
+    - 修复因为过时的 Region peer 忽略 GC 消息导致 resolve-ts 被阻塞的问题 [#16504](https://github.com/tikv/tikv/issues/16504) @[crazycs520](https://github.com/crazycs520)
+    - 修复 RocksDB 引起的同步部分数据到非活跃的预写式日志 (WAL, Write Ahead Log) 的错误，该错误可能导致 TiKV 重启后数据损坏 [#16705](https://github.com/tikv/tikv/issues/16705) @[Connor1996](https://github.com/Connor1996)
+    - 修复监控项 `tikv_unified_read_pool_thread_count` 有时没有数据的问题 [#16629](https://github.com/tikv/tikv/issues/16629) @[YuJuncen](https://github.com/YuJuncen)
     - 修复CheckTxnStatus没有在乐观事务主键上的撤回记录设置为保护的，有可能破坏数据的原子性。 [#16620](https://github.com/tikv/tikv/issues/16620) @[MyonKeminta](https://github.com/MyonKeminta)
     - (dup): release-6.5.9.md > 错误修复> TiKV - 修复 RocksDB 中非活跃的 WAL (Write Ahead Log) 可能损毁数据的问题 [#16705](https://github.com/tikv/tikv/issues/16705) @[Connor1996](https://github.com/Connor1996)
     - (dup): release-6.5.9.md > 错误修复> TiKV - 修复监控指标 `tikv_unified_read_pool_thread_count` 有时没有数据的问题 [#16629](https://github.com/tikv/tikv/issues/16629) @[YuJuncen](https://github.com/YuJuncen)
