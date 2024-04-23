@@ -1607,7 +1607,7 @@ mysql> SELECT job_info FROM mysql.analyze_jobs ORDER BY end_time DESC LIMIT 1;
 
 > **警告：**
 >
-> 批量 DML 执行方式 (`tidb_dml_type = "bulk"`) 目前为实验特性，不建议在生产环境中使用。该功能可能会在未事先通知的情况下发生变化或删除。如果发现 bug，请在 GitHub 上提 [issue](https://github.com/pingcap/tidb/issues) 反馈。当前版本使用批量 DML 执行方式执行超大事务时，可能会影响 TiCDC、TiFlash 和 TiKV 的 resolved-ts 模块的内存使用和执行效率，可能引发 OOM 问题。BR 在遇到锁时也会被阻塞无法推进。因此，不建议在启用这些组件和功能时使用。
+> 批量 DML 执行方式 (`tidb_dml_type = "bulk"`) 目前为实验特性，不建议在生产环境中使用。该功能可能会在未事先通知的情况下发生变化或删除。如果发现 bug，请在 GitHub 上提 [issue](https://github.com/pingcap/tidb/issues) 反馈。在当前版本中，使用批量 DML 执行方式执行超大事务时，可能会影响 TiCDC、TiFlash 和 TiKV 的 resolved-ts 模块的内存使用和执行效率，可能引发 OOM 问题。此外，BR 在遇到锁时也可能被阻塞无法继续执行。因此，不建议在启用这些组件和功能时使用。
 
 - 作用域：SESSION
 - 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：是
