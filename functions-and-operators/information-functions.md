@@ -278,11 +278,7 @@ Store: tikv
 
 以上示例来自 TiDB v7.5.1，它会将自身标识为 MySQL 8.0.11。
 
-<CustomContent platform="tidb">
-
 如需更改该函数返回的版本，可以修改 [`server-version`](/tidb-configuration-file.md#server-version) 配置项。
-
-</CustomContent>
 
 ## TiDB 特有的信息函数
 
