@@ -7,8 +7,8 @@ summary: 介绍使用 TiCDC 命令行工具或通过 OpenAPI 访问 TiCDC 时，
 
 从 v8.1.0 起，TiCDC 支持使用 mTLS（双向传输层安全性协议）或 TiDB 用户名密码进行客户端鉴权。
 
-- mTLS 鉴权：提供了在传输层进行安全控制的方法，使 TiCDC 可以验证客户端身份。
-- TiDB 用户名密码鉴权：提供了在应用层进行安全控制的方法，确保只有授权用户才能通过 TiCDC 节点登录。
+- mTLS 鉴权：在传输层进行安全控制，使 TiCDC 可以验证客户端身份。
+- TiDB 用户名密码鉴权：在应用层进行安全控制，确保只有授权用户才能通过 TiCDC 节点登录。
 
 这两种鉴权方式既可以单独使用，也可以结合使用，以满足不同的场景和安全需求。
 
@@ -31,7 +31,7 @@ summary: 介绍使用 TiCDC 命令行工具或通过 OpenAPI 访问 TiCDC 时，
     <SimpleTab groupId="cdc">
     <div label="TiCDC 命令行工具" value="cdc-cli">
 
-    使用 [TiCDC 命令行工具](/ticdc/ticdc-manage-changefeed.md)时，你可以通过以下方式指定客户端证书，TiCDC 将按照以下顺序依次尝试读取客户端证书：
+    使用 [TiCDC 命令行工具](/ticdc/ticdc-manage-changefeed.md)时，你可以通过以下方式之一指定客户端证书。TiCDC 将按照以下顺序依次尝试读取客户端证书：
 
     1. 通过命令行参数 `--cert` 和 `--key` 指定证书和私钥。如果服务端使用了自签名证书，还需要通过 `--ca` 参数指定受信任的 CA 证书：
 
@@ -53,7 +53,7 @@ summary: 介绍使用 TiCDC 命令行工具或通过 OpenAPI 访问 TiCDC 时，
 
     <div label="TiCDC OpenAPI" value="cdc-api">
 
-    使用 [TiCDC OpenAPI](/ticdc/ticdc-open-api-v2.md) 时，通过 `--cert` 和 `--key` 指定客户端证书。如果服务端使用了自签名证书，还需要通过 `--cacert` 指定受信任的 CA 证书。示例：
+    使用 [TiCDC OpenAPI](/ticdc/ticdc-open-api-v2.md) 时，通过 `--cert` 和 `--key` 指定客户端证书和私钥。如果服务端使用了自签名证书，还需要通过 `--cacert` 指定受信任的 CA 证书。示例：
 
     ```bash
     curl -X GET http://127.0.0.1:8300/api/v2/status --cert client.crt --key client.key --cacert ca.crt
@@ -62,7 +62,7 @@ summary: 介绍使用 TiCDC 命令行工具或通过 OpenAPI 访问 TiCDC 时，
     </div>
     </SimpleTab>
 
-## 使用 TiDB 用户进行客户端鉴权
+## 使用 TiDB 用户名密码进行客户端鉴权
 
 1. 在 TiDB 中[创建用户](/sql-statements/sql-statement-create-user.md)，并授权该用户从 TiCDC 所在节点登录的权限：
 
@@ -76,7 +76,7 @@ summary: 介绍使用 TiCDC 命令行工具或通过 OpenAPI 访问 TiCDC 时，
     [security]
     # 控制是否使用用户名和密码进行客户端鉴权，默认值为 false。
     client-user-required = true
-    # 指定可用于客户端鉴权的用户名，列表中不存在的鉴权请求将被直接拒绝。默认值为 null。
+    # 指定可用于客户端鉴权的用户名，列表中不存在的用户的鉴权请求将被直接拒绝。默认值为 null。
     client-allowed-user = ["test"]
     ```
 
@@ -85,7 +85,7 @@ summary: 介绍使用 TiCDC 命令行工具或通过 OpenAPI 访问 TiCDC 时，
     <SimpleTab groupId="cdc">
     <div label="TiCDC 命令行工具" value="cdc-cli">
 
-    使用 [TiCDC 命令行工具](/ticdc/ticdc-manage-changefeed.md)时，你可以通过以下方式指定用户名和密码，TiCDC 将按照以下顺序依次尝试读取用户名和密码：
+    使用 [TiCDC 命令行工具](/ticdc/ticdc-manage-changefeed.md)时，你可以通过以下方式之一指定用户名和密码。TiCDC 将按照以下顺序依次尝试读取用户名和密码：
 
     1. 通过命令行参数 `--user` 和 `--password` 指定用于鉴权的用户名和密码：
 

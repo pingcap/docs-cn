@@ -51,7 +51,7 @@ gc-tuner-memory-threshold = 0
   mtls = false
   # 控制是否使用用户名和密码进行客户端鉴权，默认值为 false。
   client-user-required = false
-  # 指定可用于客户端鉴权的用户名，列表中不存在的鉴权请求将被直接拒绝。默认值为 null。
+  # 指定可用于客户端鉴权的用户名，列表中不存在的用户的鉴权请求将被直接拒绝。默认值为 null。
   client-allowed-user = ["username_1", "username_2"]
 
 # TiCDC 与 etcd 服务间的 session 时长（单位为秒），默认为 10，可选。 
