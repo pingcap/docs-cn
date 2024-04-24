@@ -13,7 +13,7 @@ Cast 函数和操作符用于将某种数据类型的值转换为另一种数据
 | 函数和操作符名 | 功能描述 |
 | --------------- | ----------------------------------- |
 | [`BINARY`](#binary) | 将一个字符串转换成一个二进制字符串 |
-| [`CAST()`]#cast) | 将一个值转换成一个确定类型 |
+| [`CAST()`](#cast) | 将一个值转换成一个确定类型 |
 | [`CONVERT()`](#convert) | 将一个值转换成一个确定类型 |
 
 > **注意：**
@@ -30,7 +30,7 @@ Cast 函数和操作符用于将某种数据类型的值转换为另一种数据
 
 此外，你还可以将该函数用于创建[多值索引](/sql-statements/sql-statement-create-index.md#multi-valued-indexes)。
 
-Example:
+示例：
 
 ```sql
 SELECT CAST(0x54694442 AS CHAR);
@@ -66,11 +66,6 @@ SELECT CONVERT(0x616263 USING utf8mb4);
 
 ## MySQL 兼容性
 
-- TiDB does not support cast operations on spatial types. For more information, see [#6347](https://github.com/pingcap/tidb/issues/6347).
-- TiDB does not support `AT TIME ZONE` for `CAST()`. For more information, see [#51742](https://github.com/pingcap/tidb/issues/51742).
-- `CAST(24 AS YEAR)` returns 2 digits in TiDB and 4 digits in MySQL. For more information, see [#29629](https://github.com/pingcap/tidb/issues/29629).
-
 - TiDB 不支持对空间类型 (`SPATIAL`) 进行转换操作。更多信息，请参考 [#6347](https://github.com/pingcap/tidb/issues/6347)。
 - TiDB 不支持在 `CAST()` 中使用 `AT TIME ZONE`。更多信息，请参考 [#51742](https://github.com/pingcap/tidb/issues/51742)。
 - `CAST(24 AS YEAR)` 在 TiDB 中返回的结果为两位数字，而在 MySQL 中返回的结果为四位数字。更多信息，请参考 [#29629](https://github.com/pingcap/tidb/issues/29629)。
-
