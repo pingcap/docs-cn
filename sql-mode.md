@@ -32,7 +32,7 @@ TiDB 启动之后，你可以使用 `SET [ SESSION | GLOBAL ] sql_mode='modes'` 
 | `NO_KEY_OPTIONS` | 使用 `SHOW CREATE TABLE` 时不会输出 MySQL 特有的语法部分，如 `ENGINE`，使用 mysqldump 跨 DB 种类迁移的时需要考虑此选项（仅语法支持）|
 | `NO_FIELD_OPTIONS` | 使用 `SHOW CREATE TABLE` 时不会输出 MySQL 特有的语法部分，如 `ENGINE`，使用 mysqldump 跨 DB 种类迁移的时需要考虑此选项（仅语法支持）|
 | `NO_TABLE_OPTIONS` | 使用 `SHOW CREATE TABLE` 时不会输出 MySQL 特有的语法部分，如 `ENGINE`，使用 mysqldump 跨 DB 种类迁移的时需要考虑此选项（仅语法支持）|
-| `NO_AUTO_VALUE_ON_ZERO` | 若启用该模式，在 [`AUTO_INCREMENT`](/auto-increment.md) 列的处理传入的值是 `0` 或者具体数值时系统直接将该值写入此列，传入 `NULL` 时系统自动生成下一个序列号（支持）|
+| `NO_AUTO_VALUE_ON_ZERO` | 若启用该模式，在 [`AUTO_INCREMENT`](/auto-increment.md) 列传入的值是 `0` 或者具体数值时系统直接将该值写入此列，传入 `NULL` 时系统自动生成下一个序列号（支持）|
 | `NO_BACKSLASH_ESCAPES` | 若启用该模式，`\` 反斜杠符号仅代表它自己（支持）|
 | `STRICT_TRANS_TABLES` | 对于事务存储引擎启用严格模式，insert非法值之后，回滚整条语句（支持）|
 | `STRICT_ALL_TABLES` | 对于事务型表，写入非法值之后，回滚整个事务语句（支持）|
