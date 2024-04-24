@@ -57,4 +57,4 @@ TiDB 支持使用 MySQL 8.0 中提供的所有[数值函数与操作符](https:/
 
 ## 相关系统变量
 
-通过 [`div_precision_increment`](/system-variables.md#div_precision_increment-new-in-v800) 可以设置 `/` 运算符的精度。
+通过 [`div_precision_increment`](/system-variables.md#div_precision_increment-从-v800-版本开始引入) 可以设置 `/` 运算符的精度。

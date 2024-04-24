@@ -28,7 +28,7 @@ Cast 函数和操作符用于将某种数据类型的值转换为另一种数据
 
 [`CAST()`](https://dev.mysql.com/doc/refman/8.0/en/cast-functions.html#function_cast) 函数用于将一个表达式的值转换为指定的数据类型。
 
-此外，你还可以将该函数用于创建[多值索引](/sql-statements/sql-statement-create-index.md#multi-valued-indexes)。
+此外，你还可以将该函数用于创建[多值索引](/sql-statements/sql-statement-create-index.md#多值索引)。
 
 示例：
 
