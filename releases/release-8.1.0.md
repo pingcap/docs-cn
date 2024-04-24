@@ -132,9 +132,11 @@ TiDB 8.1.0 为长期支持版本 (Long-Term Support Release, LTS)。
 
 * 支持在 TiDB 建表时使用更多的表达式设置列的默认值的功能成为正式功能（GA）[#50936](https://github.com/pingcap/tidb/issues/50936) @[zimulala](https://github.com/zimulala)**tw@hfxsd** <!--1794-->
 
-    在 v8.0.0 之前，建表时指定列的默认值仅限于固定的字符串、数字和日期。从 v8.0.0 开始，TiDB 支持使用部分表达式作为列的默认值，例如将列的默认值设置为 UUID()，从而满足多样化的业务需求。同时在 8.1 版本，支持添加列时，也支持使用表达式作为列的默认值。
+    在 v8.0.0 之前，建表时指定列的默认值仅限于固定的字符串、数字、日期和个别表达式。从 v8.0.0 开始，TiDB 支持使用更多表达式作为列的默认值，例如将列的默认值设置为 `DATE_FORMAT`，从而满足多样化的业务需求。在 v8.1.0 中，该特性成为正式功能。
+    
+    从 v8.1.0 开始，支持在使用 `ADD COLUMN` 添加列时使用表达式作为默认值。
 
-    更多信息，请参考[用户文档](https://docs.pingcap.com/zh/tidb/dev/data-type-default-values#%E8%A1%A8%E8%BE%BE%E5%BC%8F%E9%BB%98%E8%AE%A4%E5%80%BC)。
+    更多信息，请参考[用户文档](/data-type-default-values.md#表达式默认值)。
 
 ### 数据库管理
 
@@ -154,9 +156,9 @@ TiDB 8.1.0 为长期支持版本 (Long-Term Support Release, LTS)。
 
 ### 安全
 
-* 增强 TiDB 日志脱敏（GA） [#52364](https://github.com/pingcap/tidb/issues/52364) @[xhebox](https://github.com/xhebox) **tw@hfxsd** <!--1817-->
+* 增强 TiDB 日志脱敏 (GA) [#52364](https://github.com/pingcap/tidb/issues/52364) @[xhebox](https://github.com/xhebox) **tw@hfxsd** <!--1817-->
 
-    TiDB 日志脱敏增强是通过对日志文件中的 SQL 文本信息进行标记，支持在查看时安全展示敏感数据。你可以控制是否对日志信息进行脱敏，以实现在不同场景下安全使用 TiDB 日志，提升了使用日志脱敏能力的安全性和灵活性。要使用此功能，可以将系统变量 `tidb_redact_log` 的值设置为 `MARKER`，此时 TiDB 的运行日志中的 SQL 文本会被标记，查看时将基于标记进行数据的安全展示，从而保护日志信息。这个功能在 v8.1.0 成为正式功能。
+    TiDB 日志脱敏增强是通过对日志文件中的 SQL 文本信息进行标记，支持在查看日志时删除敏感数据。你可以控制是否对日志信息进行标记，以实现在不同场景下安全使用 TiDB 日志，提升了使用日志脱敏能力的安全性和灵活性。要使用此功能，可以将系统变量 `tidb_redact_log` 的值设置为 `MARKER`，此时 TiDB 的运行日志中的 SQL 文本会被标记。还可以通过 TiDB server 的 `collect-log` 子命令将日志中标记的敏感数据删除，在数据安全的情况下展示日志；或移除所有标记，获取正常日志。该功能在 v8.1.0 成为正式功能。
 
     更多信息，请参考[用户文档](/system-variables.md#tidb_redact_log)。
 
