@@ -9,13 +9,15 @@ summary: TiDB 数据库中 SHOW PROFILES 的使用概况。
 
 ## 语法图
 
-**ShowStmt:**
-
-![ShowStmt](/media/sqlgram/ShowStmt.png)
+```ebnf+diagram
+ShowProfilesStmt ::=
+    "SHOW" "PROFILES" ShowLikeOrWhere?
+ShowLikeOrWhere ::=
+    "LIKE" SimpleExpr
+|   "WHERE" Expression
+```
 
 ## 示例
-
-{{< copyable "sql" >}}
 
 ```sql
 SHOW PROFILES
