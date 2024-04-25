@@ -10,33 +10,10 @@ aliases: ['/docs-cn/dev/sql-statements/sql-statement-set-names/','/docs-cn/dev/r
 
 ## 语法图
 
-**SetNamesStmt:**
-
-![SetNamesStmt](/media/sqlgram/SetNamesStmt.png)
-
-**VariableAssignmentList:**
-
-![VariableAssignmentList](/media/sqlgram/VariableAssignmentList.png)
-
-**VariableAssignment:**
-
-![VariableAssignment](/media/sqlgram/VariableAssignment.png)
-
-**CharsetName:**
-
-![CharsetName](/media/sqlgram/CharsetName.png)
-
-**StringName:**
-
-![StringName](/media/sqlgram/StringName.png)
-
-**CharsetKw:**
-
-![CharsetKw](/media/sqlgram/CharsetKw.png)
-
-**CharsetNameOrDefault:**
-
-![CharsetNameOrDefault](/media/sqlgram/CharsetNameOrDefault.png)
+```ebnf+diagram
+SetNamesStmt ::=
+    "SET" ("NAMES" ("DEFAULT" | CharsetName ("COLLATE" ("DEFAULT" | CollationName))?) | ("CHARSET" | ("CHAR" | "CHARACTER") "SET") ("DEFAULT" | CharsetName))
+```
 
 ## 示例
 

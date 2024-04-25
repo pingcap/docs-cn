@@ -10,13 +10,15 @@ aliases: ['/docs-cn/dev/sql-statements/sql-statement-show-profiles/']
 
 ## 语法图
 
-**ShowStmt:**
-
-![ShowStmt](/media/sqlgram/ShowStmt.png)
+```ebnf+diagram
+ShowProfilesStmt ::=
+    "SHOW" "PROFILES" ShowLikeOrWhere?
+ShowLikeOrWhere ::=
+    "LIKE" SimpleExpr
+|   "WHERE" Expression
+```
 
 ## 示例
-
-{{< copyable "sql" >}}
 
 ```sql
 SHOW PROFILES
