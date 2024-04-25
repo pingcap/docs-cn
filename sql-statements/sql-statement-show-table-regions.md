@@ -18,25 +18,13 @@ SHOW TABLE [table_name] INDEX [index_name] REGIONS [WhereClauseOptional];
 
 ### 语法图
 
-**ShowTableRegionStmt:**
+```ebnf+diagram
+ShowTableRegionStmt ::=
+    "SHOW" "TABLE" TableName PartitionNameList? ("INDEX" IndexName)? "REGIONS" ("WHERE" Expression)?
 
-![ShowTableRegionStmt](/media/sqlgram/ShowTableRegionStmt.png)
-
-**TableName:**
-
-![TableName](/media/sqlgram/TableName.png)
-
-**PartitionNameListOpt:**
-
-![PartitionNameListOpt](/media/sqlgram/PartitionNameListOpt.png)
-
-**WhereClauseOptional:**
-
-![WhereClauseOptional](/media/sqlgram/WhereClauseOptional.png)
-
-**WhereClause:**
-
-![WhereClause](/media/sqlgram/WhereClause.png)
+TableName ::=
+    (SchemaName ".")? Identifier
+```
 
 `SHOW TABLE REGIONS` 会返回如下列：
 
@@ -152,7 +140,7 @@ SHOW TABLE t1 REGIONS;
 {{< copyable "sql" >}}
 
 ```sql
-show table t regions;
+SHOW TABLE t REGIONS;
 ```
 
 ```sql
@@ -179,7 +167,7 @@ show table t regions;
 {{< copyable "sql" >}}
 
 ```sql
-show table t regions where leader_store_id =1;
+SHOW TABLE t REGIONS WHERE leader_store_id =1;
 ```
 
 ```
@@ -195,7 +183,7 @@ show table t regions where leader_store_id =1;
 {{< copyable "sql" >}}
 
 ```sql
-split table t index name between ("a") and ("z") regions 2;
+SPLIT TABLE t INDEX name BETWEEN ("a") AND ("z") REGIONS 2;
 ```
 
 ```
@@ -212,7 +200,7 @@ split table t index name between ("a") and ("z") regions 2;
 {{< copyable "sql" >}}
 
 ```sql
-show table t regions;
+SHOW TABLE t REGIONS;
 ```
 
 ```
