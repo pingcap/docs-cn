@@ -9,29 +9,22 @@ summary: TiDB 数据库中 UPDATE 的使用概况。
 
 ## 语法图
 
-**UpdateStmt:**
+```ebnf+diagram
+UpdateStmt ::=
+    "UPDATE" UpdateOption
+(   TableRef "SET" Assignment ("," Assignment)* WhereClause? OrderBy? Limit?
+|   TableRefs "SET" Assignment ("," Assignment)* WhereClause?
+)
 
-![UpdateStmt](/media/sqlgram/UpdateStmt.png)
+UpdateOption ::=
+    OptimizerHints? ("LOW_PRIORITY" | "HIGH_PRIORITY" | "DELAYED")? "IGNORE"?
 
-**PriorityOpt:**
+TableRef ::=
+    ( TableFactor | JoinTable )
 
-![PriorityOpt](/media/sqlgram/PriorityOpt.png)
-
-**TableRef:**
-
-![TableRef](/media/sqlgram/TableRef.png)
-
-**TableRefs:**
-
-![TableRefs](/media/sqlgram/TableRefs.png)
-
-**AssignmentList:**
-
-![AssignmentList](/media/sqlgram/AssignmentList.png)
-
-**WhereClauseOptional:**
-
-![WhereClauseOptional](/media/sqlgram/WhereClauseOptional.png)
+TableRefs ::=
+    EscapedTableRef ("," EscapedTableRef)*
+```
 
 ## 示例
 

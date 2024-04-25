@@ -12,33 +12,26 @@ title: Split Region 使用文档
 
 ## 语法图
 
-**SplitRegionStmt:**
+```ebnf+diagram
+SplitRegionStmt ::=
+    "SPLIT" SplitSyntaxOption "TABLE" TableName PartitionNameList? ("INDEX" IndexName)? SplitOption
 
-![SplitRegionStmt](/media/sqlgram/SplitRegionStmt.png)
+SplitSyntaxOption ::=
+    ("REGION" "FOR")? "PARTITION"?
 
-**SplitSyntaxOption:**
+TableName ::=
+    (SchemaName ".")? Identifier
 
-![SplitSyntaxOption](/media/sqlgram/SplitSyntaxOption.png)
+PartitionNameList ::=
+    "PARTITION" "(" PartitionName ("," PartitionName)* ")"
 
-**TableName:**
+SplitOption ::=
+    ("BETWEEN" RowValue "AND" RowValue "REGIONS" NUM
+|   "BY" RowValue ("," RowValue)* )
 
-![TableName](/media/sqlgram/TableName.png)
-
-**PartitionNameListOpt:**
-
-![PartitionNameListOpt](/media/sqlgram/PartitionNameListOpt.png)
-
-**SplitOption:**
-
-![SplitOption](/media/sqlgram/SplitOption.png)
-
-**RowValue:**
-
-![RowValue](/media/sqlgram/RowValue.png)
-
-**Int64Num:**
-
-![Int64Num](/media/sqlgram/Int64Num.png)
+RowValue ::=
+    "(" ValuesOpt ")"
+```
 
 ## Split Region 的使用
 
@@ -76,7 +69,7 @@ Split Region 有 2 种不同的语法，具体如下：
 > **注意：**
 >
 > 以下会话变量会影响 `SPLIT` 语句的行为，需要特别注意：
-> 
+>
 > * `tidb_wait_split_region_finish`：打散 Region 的时间可能较长，由 PD 调度以及 TiKV 的负载情况所决定。这个变量用来设置在执行 `SPLIT REGION` 语句时，是否同步等待所有 Region 都打散完成后再返回结果给客户端。默认 `1` 代表等待打散完成后再返回结果。`0` 代表不等待 Region 打散完成就返回结果。
 > * `tidb_wait_split_region_timeout`：这个变量用来设置 `SPLIT REGION` 语句的执行超时时间，单位是秒，默认值是 300 秒，如果超时还未完成 `Split` 操作，就返回一个超时错误。
 
@@ -274,15 +267,15 @@ region4  [("c", "")                    , maxIndexValue               )
     {{< copyable "sql" >}}
 
     ```sql
-    create table t (a int,b int,index idx(a)) partition by hash(a) partitions 2;
+    CREATE TABLE t (a INT, b INT, INDEX idx(a)) PARTITION BY HASH(a) PARTITIONS 2;
     ```
 
-    此时建完表后会为每个 partition 都单独 split 一个 Region，用 `SHOW TABLE REGIONS` 语法查看该表的 Region 如下：
+    此时建完表后会为每个 partition 都单独 split 一个 Region，用 [`SHOW TABLE REGIONS`](/sql-statements/sql-statement-show-table-regions.md) 语法查看该表的 Region 如下：
 
     {{< copyable "sql" >}}
 
     ```sql
-    show table t regions;
+    SHOW TABLE t REGIONS;
     ```
 
     ```sql
@@ -299,7 +292,7 @@ region4  [("c", "")                    , maxIndexValue               )
     {{< copyable "sql" >}}
 
     ```sql
-    split partition table t between (0) and (10000) regions 4;
+    SPLIT PARTITION TABLE t BETWEEN (0) AND (10000) REGIONS 4;
     ```
 
     其中，`0` 和 `10000` 分别代表你想要打散的热点数据对应的上、下边界的 `row_id`。
@@ -313,7 +306,7 @@ region4  [("c", "")                    , maxIndexValue               )
     {{< copyable "sql" >}}
 
     ```sql
-    show table t regions;
+    SHOW TABLE t REGIONS;
     ```
 
     ```sql
@@ -338,7 +331,7 @@ region4  [("c", "")                    , maxIndexValue               )
     {{< copyable "sql" >}}
 
     ```sql
-    split partition table t index idx between (1000) and (10000) regions 2;
+    SPLIT PARTITION TABLE t INDEX idx BETWEEN (1000) AND (10000) REGIONS 2;
     ```
 
 #### Split 单个分区的 Region 示例
@@ -350,10 +343,10 @@ region4  [("c", "")                    , maxIndexValue               )
     {{< copyable "sql" >}}
 
     ```sql
-    create table t ( a int, b int, index idx(b)) partition by range( a ) ( 
-        partition p1 values less than (10000), 
-        partition p2 values less than (20000), 
-        partition p3 values less than (MAXVALUE) );
+    CREATE TABLE t ( a INT, b INT, INDEX idx(b)) PARTITION BY RANGE( a ) (
+        PARTITION p1 VALUES LESS THAN (10000),
+        PARTITION p2 VALUES LESS THAN (20000),
+        PARTITION p3 VALUES LESS THAN (MAXVALUE) );
     ```
 
 2. 如果你要将 `p1` 分区的 [0,10000] 范围内的数据预切分 2 个 Region，示例语句如下：
@@ -361,7 +354,7 @@ region4  [("c", "")                    , maxIndexValue               )
     {{< copyable "sql" >}}
 
     ```sql
-    split partition table t partition (p1) between (0) and (10000) regions 2;
+    SPLIT PARTITION TABLE t PARTITION (p1) BETWEEN (0) AND (10000) REGIONS 2;
     ```
 
 3. 如果你要将 `p2` 分区的 [10000,20000] 范围内的数据预切分 2 个 Region，示例语句如下：
@@ -369,7 +362,7 @@ region4  [("c", "")                    , maxIndexValue               )
     {{< copyable "sql" >}}
 
     ```sql
-    split partition table t partition (p2) between (10000) and (20000) regions 2;
+    SPLIT PARTITION TABLE t PARTITION (p2) BETWEEN (10000) AND (20000) REGIONS 2;
     ```
 
 4. 用 `SHOW TABLE REGIONS` 语法查看该表的 Region 如下：
@@ -377,7 +370,7 @@ region4  [("c", "")                    , maxIndexValue               )
     {{< copyable "sql" >}}
 
     ```sql
-    show table t regions;
+    SHOW TABLE t REGIONS;
     ```
 
     ```sql
@@ -397,7 +390,7 @@ region4  [("c", "")                    , maxIndexValue               )
     {{< copyable "sql" >}}
 
     ```sql
-    split partition table t partition (p1,p2) index idx between (0) and (20000) regions 2;
+    SPLIT PARTITION TABLE t PARTITION (p1,p2) INDEX idx BETWEEN (0) AND (20000) REGIONS 2;
     ```
 
 ## pre_split_regions
@@ -417,7 +410,7 @@ region4  [("c", "")                    , maxIndexValue               )
 {{< copyable "sql" >}}
 
 ```sql
-create table t (a int, b int,index idx1(a)) shard_row_id_bits = 4 pre_split_regions=2;
+CREATE TABLE t (a INT, b INT, INDEX idx1(a)) SHARD_ROW_ID_BITS = 4 PRE_SPLIT_REGIONS=2;
 ```
 
 该语句在建表后，会对这个表 t 预切分出 4 + 1 个 Region。4 (2^2) 个 Region 是用来存 table 的行数据的，1 个 Region 是用来存 idx1 索引的数据。
