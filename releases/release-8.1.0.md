@@ -53,7 +53,7 @@ TiDB 8.1.0 为长期支持版本 (Long-Term Support Release, LTS)。
   <tr>
     <td rowspan="5">稳定性与高可用</td>
     <td><a href="https://docs.pingcap.com/zh/tidb/v8.1/tidb-global-sort">全局排序成为正式功能</a>（从 v8.0.0 开始 GA）**tw@qiancai**</td>
-    <td>全局排序功能旨在提高 `IMPORT INTO` 和 `CREATE INDEX` 的稳定性与效率。通过将需要处理的数据进行全局排序后再导入到 TiKV 中，可以提高数据写入 TiKV 的稳定性、可控性和可扩展性，从而提升数据导入与添加索引的用户体验和服务质量。启用全局排序后，目前已经支持 40 TiB 的数据进行导入或者添加索引。</td>
+    <td>全局排序功能旨在提高 `IMPORT INTO` 和 `CREATE INDEX` 的稳定性与效率。通过对需要处理的数据进行全局排序，可以提高数据写入 TiKV 的稳定性、可控性和可扩展性，从而提升数据导入与添加索引的用户体验和服务质量。启用全局排序后，目前已经支持 40 TiB 的数据进行导入或者添加索引。</td>
   </tr>
   <tr>
     <td><a href="https://docs.pingcap.com/zh/tidb/v8.1/sql-plan-management#跨数据库绑定执行计划-cross-db-binding">跨数据库绑定执行计划</a>（从 v7.6.0 开始引入）</td>
@@ -176,7 +176,7 @@ TiDB 8.1.0 为长期支持版本 (Long-Term Support Release, LTS)。
 
     在 v8.0.0 之前的版本中，TiDB Lightning 逻辑导入模式有[一套数据冲突处理策略](/tidb-lightning/tidb-lightning-logical-import-mode-usage.md#冲突数据检测)，而物理导入模式有[两套数据冲突处理策略](/tidb-lightning/tidb-lightning-physical-import-mode-usage.md#冲突数据检测)，不易理解和配置。
 
-    从 v8.0.0 开始，TiDB Lightning 废弃了物理导入模式下的[旧版冲突检测](/tidb-lightning/tidb-lightning-physical-import-mode-usage.md#旧版冲突检测从-v800-开始已被废弃)策略，并以实验特性支持通过 [`conflict.strategy`](/tidb-lightning/tidb-lightning-configuration.md) 参数统一控制逻辑导入和物理导入模式的冲突检测策略，并简化了该参数的配置。此外，在物理导入模式下，当导入遇到主键或唯一键冲突的数据时，`replace` 策略支持保留最新的数据、覆盖旧的数据。从 v8.1.0 开始，以 `replace` 方式处理冲突数据的功能成为正式功能（GA）。
+    在 v8.0.0 中，TiDB Lightning 废弃了物理导入模式下的[旧版冲突检测](/tidb-lightning/tidb-lightning-physical-import-mode-usage.md#旧版冲突检测从-v800-开始已被废弃)策略，并以实验特性支持通过 [`conflict.strategy`](/tidb-lightning/tidb-lightning-configuration.md) 参数统一控制逻辑导入和物理导入模式的冲突检测策略，并简化了该参数的配置。此外，在物理导入模式下，当导入遇到主键或唯一键冲突的数据时，`replace` 策略支持保留最新的数据、覆盖旧的数据。在 v8.1.0 中，以 `replace` 方式处理冲突数据的功能成为正式功能（GA）。
 
     更多信息，请参考[用户文档](/tidb-lightning/tidb-lightning-configuration.md)。
 
