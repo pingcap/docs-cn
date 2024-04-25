@@ -135,20 +135,53 @@ pd-ctl config set isolation-level zone
 
 ### 使用 TiUP 进行配置（推荐）
 
-如果使用 TiUP 部署集群，可以在[初始化配置文件](/production-deployment-using-tiup.md#第-3-步初始化集群拓扑文件)中统一进行 location 相关配置。TiUP 会负责在部署时生成对应的 TiKV、PD 和 TiFlash 配置文件。
+如果使用 TiUP 部署集群，可以在[初始化配置文件](/production-deployment-using-tiup.md#第-3-步初始化集群拓扑文件)中统一进行 location 相关配置。TiUP 会负责在部署时生成对应的 TiDB、TiKV、PD 和 TiFlash 配置文件。
 
-下面的例子定义了 `zone` 和 `host` 两层拓扑结构。集群的 TiKV 和 TiFlash 分布在三个 zone，z1、z2 和 z3。
-
+下面的例子定义了 `zone` 和 `host` 两层拓扑结构。集群的 TiDB、TiKV 和 TiFlash 分布在三个 zone，z1、z2 和 z3。
+- 每个 zone 内有两台主机部署 TiDB 实例，TiDB 实例均为独占机器部署。
 - 每个 zone 内有两台主机部署 TiKV 实例，z1 每台主机同时部署两个 TiKV 实例，z2 和 z3 每台主机分别独立部署一个 TiKV 实例。
 - 每个 zone 内有两台主机部署 TiFlash 实例，TiFlash 实例均为独占机器部署。
 
-以下例子中 `tikv-host-machine-n` 代表第 n 个 TiKV 节点的 IP 地址，`tiflash-host-machine-n` 代表第 n 个 TiFlash 节点的 IP 地址。
+以下例子中 `tidb-host-machine-n` 代表第 n 个 TiDB 节点的 IP 地址，`tikv-host-machine-n` 代表第 n 个 TiKV 节点的 IP 地址，`tiflash-host-machine-n` 代表第 n 个 TiFlash 节点的 IP 地址。
 
 ```
 server_configs:
   pd:
     replication.location-labels: ["zone", "host"]
-
+tidb_servers:
+# z1
+  - host: tidb-host-machine-1
+    config:
+      labels:
+        zone: z1
+        host: tidb-host-machine-1
+  - host: tidb-host-machine-2
+    config:
+      labels:
+        zone: z1
+        host: tidb-host-machine-2
+# z2
+  - host: tidb-host-machine-3
+    config:
+      labels:
+        zone: z2
+        host: tidb-host-machine-3
+  - host: tikv-host-machine-4
+    config:
+      labels:
+        zone: z2
+        host: tidb-host-machine-4
+# z3
+  - host: tidb-host-machine-5
+    config:
+      labels:
+        zone: z3
+        host: tidb-host-machine-5
+  - host: tidb-host-machine-6
+    config:
+      labels:
+        zone: z3
+        host: tidb-host-machine-6
 tikv_servers:
 # z1
   # machine-1 on z1
