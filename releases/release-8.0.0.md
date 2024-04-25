@@ -392,7 +392,7 @@ TiDB 版本：8.0.0
     - 支持 MemoryTracker 追踪 `IndexLookup` 算子的内存使用情况 [#45901](https://github.com/pingcap/tidb/issues/45901) @[solotzg](https://github.com/solotzg)
     - 支持 MemoryTracker 追踪 `MemTableReaderExec` 算子的内存使用情况 [#51456](https://github.com/pingcap/tidb/issues/51456) @[wshwsh12](https://github.com/wshwsh12)
     - 支持从 PD 批量加载 Region，加快在对大表进行查询时，从 KV Range 到 Regions 的转换过程 [#51326](https://github.com/pingcap/tidb/issues/51326) @[SeaRise](https://github.com/SeaRise)
-    - 优化了 INFORMATION_SCHEMA.TABLES，INFORMATION_SCHEMA.STATISTICS，INFORMATION_SCHEMA.KEY_COLUMN_USAGE，INFORMATION_SCHEMA.REFERENTIAL_CONSTRAINTS 的这 4 个系统表的查询性能，相比之前版本，性能最高有 100 倍的提升。
+    - 优化了 INFORMATION_SCHEMA.TABLES，INFORMATION_SCHEMA.STATISTICS，INFORMATION_SCHEMA.KEY_COLUMN_USAGE，INFORMATION_SCHEMA.REFERENTIAL_CONSTRAINTS 的这 4 个系统表的查询性能，相比之前版本，性能最高有 100 倍的提升。[#50305](https://github.com/pingcap/tidb/issues/50305) @[ywqzzy](https://github.com/ywqzzy)
 
 + TiKV
 
