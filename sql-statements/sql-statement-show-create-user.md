@@ -41,7 +41,7 @@ mysql> SHOW GRANTS FOR 'root';
 
 ## MySQL 兼容性
 
-* `SHOW CREATE USER` 的输出结果旨在匹配 MySQL，但 TiDB 尚不支持若干 `CREATE` 选项。尚未支持的选项在语句执行过程中会被解析但会被跳过执行。详情可参阅 [与 MySQL 安全特性差异](/security-compatibility-with-mysql.md)。
+* `SHOW CREATE USER` 的输出结果旨在匹配 MySQL，但 TiDB 尚不支持若干 `CREATE` 选项。尚未支持的选项在语句执行过程中会被解析但会被跳过执行。详情可参阅[与 MySQL 安全特性差异](/security-compatibility-with-mysql.md)。
 
 ## 另请参阅
 
