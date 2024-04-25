@@ -56,9 +56,9 @@ SELECT BENCHMARK(5, SLEEP(2));
 
 ### CONNECTION_ID()
 
-`CONNECTION_ID()` 函数返回连接的 ID。根据 TiDB 的 [`enable-32bits-connection-id`](/tidb-configuration-file.md#enable-32bits-connection-id-new-in-v730) 配置项的值不同，该函数将返回一个 32 位或 64 位的连接 ID。
+`CONNECTION_ID()` 函数返回连接的 ID。根据 TiDB 的 [`enable-32bits-connection-id`](/tidb-configuration-file.md#enable-32bits-connection-id-从-v730-版本开始引入) 配置项的值不同，该函数将返回一个 32 位或 64 位的连接 ID。
 
-如果启用了 [`enable-global-kill`](/tidb-configuration-file.md#enable-global-kill-new-in-v610)，连接的 ID 可用于在同一集群的多个 TiDB 实例中终止查询。
+如果启用了 [`enable-global-kill`](/tidb-configuration-file.md#enable-global-kill-从-v610-版本开始引入)，连接的 ID 可用于在同一集群的多个 TiDB 实例中终止查询。
 
 ```sql
 SELECT CONNECTION_ID();
@@ -92,7 +92,7 @@ SELECT CURRENT_ROLE();
 
 ### CURRENT_USER()
 
-`CURRENT_USER()` 函数返回当前会话中使用的帐户。
+`CURRENT_USER()` 函数返回当前会话中使用的账户。
 
 ```sql
 SELECT CURRENT_USER();
@@ -157,7 +157,7 @@ SELECT FOUND_ROWS();
 
 > **注意：**
 >
-> `SQL_CALC_FOUND_ROWS` 查询修饰符（用于计算在没有 `LIMIT` 子句的情况下结果集中的总行数）只有在启用了 [`tidb_enable_noop_functions`](/system-variables.md#tidb_enable_noop_functions-new-in-v40) 时才能使用。从 MySQL 8.0.17 开始，该查询修饰符已废弃。建议使用 `COUNT(*)` 代替。
+> `SQL_CALC_FOUND_ROWS` 查询修饰符用于计算在没有 `LIMIT` 子句的情况下结果集中的总行数，只有在启用了 [`tidb_enable_noop_functions`](/system-variables.md#tidb_enable_noop_functions-从-v40-版本开始引入) 时才能使用。从 MySQL 8.0.17 开始，该查询修饰符已废弃。建议使用 `COUNT(*)` 代替。
 
 ### LAST_INSERT_ID()
 
