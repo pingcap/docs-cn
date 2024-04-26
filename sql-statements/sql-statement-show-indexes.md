@@ -12,7 +12,7 @@ aliases: ['/docs-cn/dev/sql-statements/sql-statement-show-indexes/','/docs-cn/de
 
 ```ebnf+diagram
 ShowIndexStmt ::=
-    "SHOW" ( "INDEX" | "INDEXES" | "KEYS" ) ("FROM" | "IN" ) TableName (("FROM" | "IN") SchemaName )? ShowLikeOrWhereOpt?
+    "SHOW" ( "INDEX" | "INDEXES" | "KEYS" ) ("FROM" | "IN" ) TableName (("FROM" | "IN") SchemaName )? ShowLikeOrWhere?
 
 ShowLikeOrWhere ::=
     "LIKE" SimpleExpr
