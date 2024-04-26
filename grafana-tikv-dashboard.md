@@ -463,7 +463,7 @@ title: TiKV 监控指标详解
 - Memory Of Events： 增量扫产生的临时数据占用内存的估计值。
 - Observed Region Count： 目前监听的 region 数量。
 - Errors： 可重试、非致命的 Error 数量及类型。
-- Fatal Errors： 致命错误的数量及类型。一般致命错误会导致任务暂停。
+- Fatal Errors： 致命错误的数量及类型(一般致命错误会导致任务暂停)。
 - Checkpoint TS of Tasks： 各个任务的 Checkpoint TS。
 - Flush Duration：将缓存数据移动到外部存储的耗时的热力图。
 - Initial Scanning Duration：创建新的监听流时，增量扫的耗时的热力图。
@@ -477,7 +477,7 @@ title: TiKV 监控指标详解
 - Initial Scan RocksDB Throughput：增量扫过程中，RocksDB 内部记录产生的读流量。
 - Initial Scan RocksDB Operation：增量扫过程中，RocksDB 内部记录的各个操作的数量。
 - Initial Scanning Trigger Reason：触发增量扫的原因。
-- Region Checkpoint Key Putting：向 etcd 记录 Checkpoint 的操作的数量。
+- Region Checkpoint Key Putting：向 PD 记录 Checkpoint 的操作的数量。
 
 > **注意：**
 >
