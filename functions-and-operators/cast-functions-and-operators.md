@@ -55,7 +55,7 @@ SELECT CAST(0x54694442 AS CHAR);
 SELECT CONVERT(0x616263 USING utf8mb4);
 ```
 
-```
+```sql
 +---------------------------------+
 | CONVERT(0x616263 USING utf8mb4) |
 +---------------------------------+
