@@ -128,7 +128,7 @@ SELECT CustomerName, BIT_LENGTH(CustomerName) AS BitLengthOfName FROM Customers;
 
 ### [`CHAR()`](https://dev.mysql.com/doc/refman/8.0/en/string-functions.html#function_char)
 
-`CHAR()` 函数用于获取指定 ASCII 值的对应字符。该函数执行的操作与 `ASCII()` 相反，`ASCII()` 用于返回指定字符的 ASCII 值。如果提供了多个参数，该函数将作用于所有参数作，然后将它们连接在一起。
+`CHAR()` 函数用于获取指定 ASCII 值的对应字符。该函数执行的操作与 `ASCII()` 相反，`ASCII()` 用于返回指定字符的 ASCII 值。如果提供了多个参数，`CHAR()` 函数将作用于所有参数并将它们的结果拼接在一起返回。
 
 示例：
 
@@ -1552,7 +1552,7 @@ SELECT QUOTE(0x002774657374);
 
 示例：
 
-在下面示例中，一些字符串被匹配到两个正则表达式。
+下面示例使用了两个正则表达式来匹配一些字符串。
 
 ```sql
 WITH vals AS (
@@ -1584,7 +1584,7 @@ FROM
 4 rows in set (0.00 sec)
 ```
 
-下面示例展示了 `REGEXP` 并不限于 `SELECT` 子句，还可以用于查询的 `WHERE` 子句。
+`REGEXP` 并不限于只在 `SELECT` 子句中使用。例如，`REGEXP` 还可以用于查询的 `WHERE` 子句中。
 
 ```sql
 SELECT
@@ -1611,7 +1611,7 @@ WHERE
 
 `REGEXP_INSTR(str, regexp, [start, [match, [ret, [match_type]]]])` 函数返回正则表达式（`regexp`）匹配字符串（`str`）的位置。
 
-如果 `str` 或 `regexp` 为 `NULL`，则函数返回 `NULL`。
+如果 `str` 或 `regexp` 为 `NULL`，则该函数返回 `NULL`。
 
 示例：
 
@@ -1630,7 +1630,7 @@ SELECT REGEXP_INSTR('abc','^.b.$');
 1 row in set (0.00 sec)
 ```
 
-下面示例展示了使用第三个参数来查找第二个匹配值的情况。
+下面示例展示了使用第三个参数来从字符串的指定位置起查找匹配值的情况。
 
 ```sql
 SELECT REGEXP_INSTR('abcabc','a');
@@ -1673,7 +1673,7 @@ SELECT REGEXP_INSTR('abcabc','a',1,2);
 1 row in set (0.00 sec)
 ```
 
-下面示例展示了使用第五个参数来查找第二个匹配值后面的值的情况，而不是匹配的值。
+下面示例展示了使用第五个参数来返回匹配值后面的那个值的位置，而不是返回匹配值的位置。
 
 ```sql
 SELECT REGEXP_INSTR('abcabc','a',1,1,1);
@@ -1748,7 +1748,7 @@ SELECT REGEXP_INSTR('abcabc','A' COLLATE utf8mb4_bin);
 
 判断字符串是否满足正则表达式（与 MySQL 不完全兼容，具体请参考[正则函数与 MySQL 的兼容性](#正则函数与-mysql-的兼容性)）
 
-`REGEXP_LIKE(str, regex, [match_type])` 函数用于测试正则表达式是否匹配字符串。可选的 `match_type` 可以用于更改匹配行为。
+`REGEXP_LIKE(str, regex, [match_type])` 函数用于判断正则表达式是否匹配字符串。可选的 `match_type` 参数可以用于更改匹配行为。
 
 示例：
 
@@ -1863,7 +1863,7 @@ SELECT REGEXP_REPLACE('TooDB', 'o', 'i',1,2);
 1 row in set (0.00 sec)
 ```
 
-下面示例中，第六个参数用于设置不区分大小写的匹配。更多关于正则表达式 `match_type` 的详细信息，请参阅 [`match_type` 兼容性](#匹配模式-match_type-兼容性)。
+下面示例中，第六个参数用于设置 `match_type` 为不区分大小写的匹配。更多关于正则表达式 `match_type` 的详细信息，请参阅 [`match_type` 兼容性](#匹配模式-match_type-兼容性)。
 
 ```sql
 SELECT REGEXP_REPLACE('TooDB', 'O{2}','i',1,1);
@@ -2247,10 +2247,10 @@ TiDB 与 MySQL 在 `match_type` 上的差异：
 |:------------:|-------|------|----------------------------------------|
 | c            | Yes   | Yes  | 大小写敏感匹配                          |
 | i            | Yes   | Yes  | 大小写不敏感匹配                        |
-| m            | Yes   | Yes  | Multi-line 模式                        |
+| m            | Yes   | Yes  | 匹配多行文本的模式                        |
 | s            | No    | Yes  | 匹配新行，和 MySQL 中的 `n` 相同        |
 | n            | Yes   | No   | 匹配新行，和 TiDB 中的 `s` 相同         |
-| u            | Yes   | No   | UNIX&trade，line endings               |
+| u            | Yes   | No   | UNIX&trade 换行符           |
 
 ### 数据类型兼容性
 
