@@ -10,7 +10,7 @@ aliases: ['/docs-cn/dev/sql-statements/sql-statement-show-engines/','/docs-cn/de
 
 ## 语法图
 
-```enbf+diagram
+```ebnf+diagram
 ShowEnginesStmt ::=
     "SHOW" "ENGINES" ShowLikeOrWhere?
 ShowLikeOrWhere ::=
