@@ -80,7 +80,7 @@ summary: 介绍使用 TiCDC 命令行工具或通过 OpenAPI 访问 TiCDC 时，
     client-allowed-user = ["test"]
     ```
 
-3. 指定步骤 1 创建的授权用户的用户名和密码：
+3. 指定步骤 1 创建的授权用户的用户名和密码。
 
     <SimpleTab groupId="cdc">
     <div label="TiCDC 命令行工具" value="cdc-cli">
