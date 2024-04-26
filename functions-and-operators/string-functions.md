@@ -402,7 +402,7 @@ SELECT CONCAT_WS(',', 'TiDB Server', 'TiKV', 'PD');
 
 ### [`ELT()`](https://dev.mysql.com/doc/refman/8.0/en/string-functions.html#function_elt)
 
-返回索引号对应的元素。
+`ELT()` 函数返回索引号对应的元素。
 
 ```sql
 SELECT ELT(3, 'This', 'is', 'TiDB');
