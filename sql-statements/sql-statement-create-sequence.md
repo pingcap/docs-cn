@@ -11,7 +11,7 @@ summary: CREATE SEQUENCE 在 TiDB 中的使用概况
 
 ```ebnf+diagram
 CreateSequenceStmt ::=
-    'CREATE' 'SEQUENCE' IfNotExists TableName CreateSequenceOptionListOpt CreateTableOptionListOpt
+    'CREATE' 'SEQUENCE' IfNotExists TableName CreateSequenceOptionListOpt
 
 IfNotExists ::=
     ('IF' 'NOT' 'EXISTS')?
@@ -27,6 +27,7 @@ SequenceOptionList ::=
 
 SequenceOption ::=
     ( 'INCREMENT' ( '='? | 'BY' ) | 'START' ( '='? | 'WITH' ) | ( 'MINVALUE' | 'MAXVALUE' | 'CACHE' ) '='? ) SignedNum
+|   'COMMENT' '='? stringLit
 |   'NOMINVALUE'
 |   'NO' ( 'MINVALUE' | 'MAXVALUE' | 'CACHE' | 'CYCLE' )
 |   'NOMAXVALUE'
@@ -68,15 +69,15 @@ CREATE [TEMPORARY] SEQUENCE [IF NOT EXISTS] sequence_name
 
 + `NEXTVAL` 或 `NEXT VALUE FOR`
 
-    本质上都是 `nextval()` 函数，获取序列对象的下一个有效值，其参数为序列的 `identifier`。
+    本质上都是 `NEXTVAL()` 函数，获取序列对象的下一个有效值，其参数为序列的 `identifier`。
 
 + `LASTVAL`
 
-    `lastval()` 函数，用于获取本会话上一个使用过的值。如果没有值，则为 `NULL`，其参数为序列的 `identifier`。
+    `LASTVAL()` 函数，用于获取本会话上一个使用过的值。如果没有值，则为 `NULL`，其参数为序列的 `identifier`。
 
 + `SETVAL`
 
-    `setval()` 函数，用于设置序列的增长。其第一参数为序列的 `identifier`，第二个参数为 `num`。
+    `SETVAL()` 函数，用于设置序列的增长。其第一参数为序列的 `identifier`，第二个参数为 `num`。
 
 > **注意：**
 >
@@ -96,12 +97,12 @@ CREATE [TEMPORARY] SEQUENCE [IF NOT EXISTS] sequence_name
     Query OK, 0 rows affected (0.06 sec)
     ```
 
-+ 使用 `nextval()` 函数获取序列对象的下一个值。
++ 使用 `NEXTVAL()` 函数获取序列对象的下一个值。
 
     {{< copyable "sql" >}}
 
     ```sql
-    SELECT nextval(seq);
+    SELECT NEXTVAL(seq);
     ```
 
     ```
@@ -113,34 +114,34 @@ CREATE [TEMPORARY] SEQUENCE [IF NOT EXISTS] sequence_name
     1 row in set (0.02 sec)
     ```
 
-+ 使用 `lastval()` 函数获取本会话上一次调用序列对象所产生的值。
++ 使用 `LASTVAL()` 函数获取本会话上一次调用序列对象所产生的值。
 
     {{< copyable "sql" >}}
 
     ```sql
-    SELECT lastval(seq);
+    SELECT LASTVAL(seq);
     ```
 
     ```
     +--------------+
-    | lastval(seq) |
+    | LASTVAL(seq) |
     +--------------+
     |            1 |
     +--------------+
     1 row in set (0.02 sec)
     ```
 
-+ 使用 `setval()` 函数设置序列对象当前值的位置。
++ 使用 `SETVAL()` 函数设置序列对象当前值的位置。
 
     {{< copyable "sql" >}}
 
     ```sql
-    SELECT setval(seq, 10);
+    SELECT SETVAL(seq, 10);
     ```
 
     ```
     +-----------------+
-    | setval(seq, 10) |
+    | SETVAL(seq, 10) |
     +-----------------+
     |              10 |
     +-----------------+
@@ -176,58 +177,58 @@ CREATE [TEMPORARY] SEQUENCE [IF NOT EXISTS] sequence_name
     Query OK, 0 rows affected (0.01 sec)
     ```
 
-+ 当本会话还未使用过序列对象时，`lastval()` 函数返回 NULL 值。
++ 当本会话还未使用过序列对象时，`LASTVAL()` 函数返回 NULL 值。
 
     {{< copyable "sql" >}}
 
     ```sql
-    SELECT lastval(seq2);
+    SELECT LASTVAL(seq2);
     ```
 
     ```
     +---------------+
-    | lastval(seq2) |
+    | LASTVAL(seq2) |
     +---------------+
     |          NULL |
     +---------------+
     1 row in set (0.01 sec)
     ```
 
-+ 序列对象 `nextval()` 的第一个有效值为 `start` 值。
++ 序列对象 `NEXTVAL()` 的第一个有效值为 `start` 值。
 
     {{< copyable "sql" >}}
 
     ```sql
-    SELECT nextval(seq2);
+    SELECT NEXTVAL(seq2);
     ```
 
     ```
     +---------------+
-    | nextval(seq2) |
+    | NEXTVAL(seq2) |
     +---------------+
     |             3 |
     +---------------+
     1 row in set (0.00 sec)
     ```
 
-+ 使用 `setval()` 虽然可以改变序列对象当前值的位置，但是无法改变下一个值的等差规律。
++ 使用 `SETVAL()` 虽然可以改变序列对象当前值的位置，但是无法改变下一个值的等差规律。
 
     {{< copyable "sql" >}}
 
     ```sql
-    SELECT setval(seq2, 6);
+    SELECT SETVAL(seq2, 6);
     ```
 
     ```
     +-----------------+
-    | setval(seq2, 6) |
+    | SETVAL(seq2, 6) |
     +-----------------+
     |               6 |
     +-----------------+
     1 row in set (0.00 sec)
     ```
 
-+ 使用 `nextval()` 下一个值获取时，会遵循序列定义的等差规律。
++ 使用 `NEXTVAL()` 下一个值获取时，会遵循序列定义的等差规律。
 
     {{< copyable "sql" >}}
 
@@ -305,7 +306,7 @@ CREATE [TEMPORARY] SEQUENCE [IF NOT EXISTS] sequence_name
 
 ```
 1, 3, 5, ...            // 序列遵循起始为 1、步长为 2 的等差关系。
-select setval(seq, 6)   // 设置序列的当前值为 6。
+select SETVAL(seq, 6)   // 设置序列的当前值为 6。
 7, 9, 11, ...           // 后续产生值仍会遵循这个等差关系。
 ```
 
@@ -313,5 +314,7 @@ select setval(seq, 6)   // 设置序列的当前值为 6。
 
 ## 另请参阅
 
+* [ALTER SEQUENCE](/sql-statements/sql-statement-alter-sequence.md)
 * [DROP SEQUENCE](/sql-statements/sql-statement-drop-sequence.md)
 * [SHOW CREATE SEQUENCE](/sql-statements/sql-statement-show-create-sequence.md)
+* [Sequence 函数](/functions-and-operators/sequence-functions.md)
