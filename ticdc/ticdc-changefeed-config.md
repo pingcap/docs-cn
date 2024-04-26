@@ -207,11 +207,11 @@ enable-partition-separator = true
 
 [sink.open]
 # 是否输出行数据更改前的值。默认值为 true。关闭后，Update 事件不会输出 "p" 字段的数据。
-# output-old-value = false
+# output-old-value = true
 
 [sink.debezium]
 # 是否输出行数据更改前的值。默认值为 true。关闭后，Update 事件不会输出 "before" 字段的数据。
-# output-old-value = false
+# output-old-value = true
 
 # consistent 中的字段用于配置 Changefeed 的数据一致性。详细的信息，请参考 <https://docs.pingcap.com/tidb/stable/ticdc-sink-to-mysql#eventually-consistent-replication-in-disaster-scenarios>。
 # 注意：一致性相关参数只有当下游为数据库并且开启 redo log 功能时，才会生效。
