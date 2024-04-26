@@ -19,3 +19,13 @@ Cast 函数和操作符用于将某种数据类型的值转换为另一种数据
 > **注意：**
 >
 > TiDB 和 MySQL 对于 `SELECT CAST(MeN AS CHAR)`（或者等价的 `SELECT CONVERT(MeM, CHAR)`）的结果显示不一致，其中 `MeN` 是用科学计数法表示的双精度浮点数。MySQL 在 `-15 <= N <= 14` 时显示完整数值，在 `N < -15` 或 `N > 14` 时显示科学计数法。而 TiDB 始终显示完整数值。例如，MySQL 对于 `SELECT CAST(3.1415e15 AS CHAR)` 的显示结果为 `3.1415e15`，而 TiDB 的显示结果为 `3141500000000000`。
+
+## MySQL 兼容性
+
+TiDB 不支持部分数据类型的变更，例如部分时间类型、Bit、Set、Enum 和 JSON 等。
+
+```sql
+CREATE TABLE t (a DECIMAL(13, 7));
+ALTER TABLE t CHANGE COLUMN a a DATETIME;
+ERROR 8200 (HY000): Unsupported modify column: [ddl:8200]Unsupported modify column: change from original type decimal(13,7) to datetime is currently unsupported yet
+```
