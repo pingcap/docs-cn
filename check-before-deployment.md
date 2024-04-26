@@ -629,7 +629,7 @@ sudo systemctl enable ntpd.service
 > **注意：**
 >
 > - vm.min_free_kbytes 是 Linux 内核用于控制系统预留的最少空闲内存，单位 KB。
-> - vm.min_free_kbytes 影响内存回收机制，设置过大会导致可用内存变少，设置过小可能影响 PF_MEMALLOC 分配导致系统进入 deadlock 状态。
+> - vm.min_free_kbytes 影响内存回收机制，设置过大会导致可用内存变少，设置过小可能因为申请内存过快超过后台回收的速度而导致进行直接内存回收引起 alloc stall。
 > - 最小设置 1 GB，当开启 numa 情况下建议 numa 个数 * 1 GB。
 > - 小规格服务器如系统内存小于 16 GB，保持系统默认值即可。
 
