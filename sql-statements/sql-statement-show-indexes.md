@@ -11,7 +11,7 @@ summary: TiDB 数据库中 SHOW INDEXES [FROM|IN] 的使用概况。
 
 ```ebnf+diagram
 ShowIndexStmt ::=
-    "SHOW" ( "INDEX" | "INDEXES" | "KEYS" ) ("FROM" | "IN" ) TableName (("FROM" | "IN") SchemaName )? ShowLikeOrWhereOpt?
+    "SHOW" ( "INDEX" | "INDEXES" | "KEYS" ) ("FROM" | "IN" ) TableName (("FROM" | "IN") SchemaName )? ShowLikeOrWhere?
 
 ShowLikeOrWhere ::=
     "LIKE" SimpleExpr
