@@ -1,10 +1,5 @@
 ---
 title: 数值函数与操作符
-<<<<<<< HEAD
-=======
-aliases: ['/docs-cn/dev/functions-and-operators/numeric-functions-and-operators/','/docs-cn/dev/reference/sql/functions-and-operators/numeric-functions-and-operators/']
-summary: TiDB 支持 MySQL 8.0 中的所有数值函数和操作符。
->>>>>>> 5ccbf9c917 (translate 3 PRs for functions and operators (#17205))
 ---
 
 # 数值函数与操作符
