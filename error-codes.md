@@ -387,7 +387,7 @@ TiDB 兼容 MySQL 的错误码，在大多数情况下，返回和 MySQL 一样�
 
 * Error Number: 8228
 
-    在 Sequence 上使用 `setval` 时指定了不支持的类型，该函数的示例可以在 [Sequence 使用文档](/sql-statements/sql-statement-create-sequence.md#示例)中找到。
+    在 Sequence 上使用 `SETVAL` 时指定了不支持的类型，该函数的示例可以在 [Sequence 使用文档](/sql-statements/sql-statement-create-sequence.md#示例)中找到。
 
 * Error Number: 8229
 
