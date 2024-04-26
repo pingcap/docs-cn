@@ -408,7 +408,7 @@ SELECT CONCAT_WS(',', 'TiDB Server', 'TiKV', 'PD');
 SELECT ELT(3, 'This', 'is', 'TiDB');
 ```
 
-```
+```sql
 +------------------------------+
 | ELT(3, 'This', 'is', 'TiDB') |
 +------------------------------+
@@ -425,7 +425,7 @@ SELECT ELT(3, 'This', 'is', 'TiDB');
 
 语法：
 
-```
+```sql
 EXPORT_SET(bits, on, off, [separator[, number_of_bits]])
 ```
 
@@ -473,7 +473,7 @@ SELECT EXPORT_SET(b'00001111', 'x', '_', '', 8);
 SELECT EXPORT_SET(b'01010101', 'x', '_', '', 8);
 ```
 
-```
+```sql
 +------------------------------------------+
 | EXPORT_SET(b'01010101', 'x', '_', '', 8) |
 +------------------------------------------+
