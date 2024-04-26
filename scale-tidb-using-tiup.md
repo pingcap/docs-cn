@@ -279,7 +279,7 @@ Starting /root/.tiup/components/cluster/v1.11.3/cluster display <cluster-name>
 
 TiDB Cluster: <cluster-name>
 
-TiDB Version: v7.1.4
+TiDB Version: v7.1.5
 
 ID       Role         Host    Ports                            Status  Data Dir        Deploy Dir
 
