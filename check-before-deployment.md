@@ -592,8 +592,14 @@ sudo systemctl enable ntpd.service
     echo "net.ipv4.tcp_tw_recycle = 0">> /etc/sysctl.conf
     echo "net.ipv4.tcp_syncookies = 0">> /etc/sysctl.conf
     echo "vm.overcommit_memory = 1">> /etc/sysctl.conf
+    echo "vm.min_free_kbytes = 1048576">> /etc/sysctl.conf
     sysctl -p
     ```
+
+> **注意：**
+>
+> - vm.min_free_kbytes 是 Linux 内核用于控制系统预留的最少空闲内存，单位 KB。
+> - 建议最小设置 1 GB，当开启 numa 情况下建议 numa 个数 * 1 GB。
 
 10. 执行以下命令配置用户的 limits.conf 文件。
 
