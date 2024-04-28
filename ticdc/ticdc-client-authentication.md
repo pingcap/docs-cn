@@ -14,7 +14,7 @@ summary: 介绍使用 TiCDC 命令行工具或通过 OpenAPI 访问 TiCDC 时，
 
 > **注意：**
 >
-> TiCDC 客户端鉴权功能仅在[开启 TLS 加密传输](/enable-tls-between-clients-and-servers.md)的情况下可用。
+> 生产环境中仅建议在[开启 TLS 加密传输](/enable-tls-between-clients-and-servers.md)的情况下，使用 TiCDC 客户端鉴权功能。
 
 ## 使用 mTLS 进行客户端鉴权
 
