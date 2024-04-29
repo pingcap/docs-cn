@@ -31,7 +31,7 @@ summary: 了解如何使用 TiCDC 从 TiDB 同步数据至 Apache Kafka 和 Apac
 
 2. 部署 Kafka 集群。
 
-    - 实验环境，可以参考 [Apache Kakfa Quickstart](https://kafka.apache.org/quickstart) 启动 Kafka 集群。
+    - 实验环境，可以参考 [Apache Kafka Quickstart](https://kafka.apache.org/quickstart) 启动 Kafka 集群。
     - 生产环境，可以参考 [Running Kafka in Production](https://docs.confluent.io/platform/current/kafka/deployment.html) 完成 Kafka 集群搭建。
 
 3. （可选）部署 Flink 集群。
