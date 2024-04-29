@@ -62,7 +62,7 @@ TiDB 采用计算存储分离架构，具有出色的扩展性和弹性的扩缩
 
 ## 启用步骤
 
-1. 启用分布式执行框架，只需将 [`tidb_enable_dist_task`](/system-variables.md#tidb_enable_dist_task-从-v710-版本开始引入) 设置为 `ON`（该参数从 v8.1.0 开始默认打开，如果是新建的集群可跳过该步骤）：
+1. 启用分布式执行框架，只需将 [`tidb_enable_dist_task`](/system-variables.md#tidb_enable_dist_task-从-v710-版本开始引入) 设置为 `ON`（该变量从 v8.1.0 起默认打开，如果是新建的集群可跳过该步骤）：
 
     ```sql
     SET GLOBAL tidb_enable_dist_task = ON;
