@@ -149,9 +149,7 @@ aliases: ['/docs-cn/dev/enable-tls-between-components/','/docs-cn/dev/how-to/sec
 
     ```toml
     [security]
-    cluster-verify-cn = [
-      "TiDB",
-    ]
+    cluster-verify-cn = ["TiDB"]
     ```
 
 - TiKV
@@ -160,9 +158,7 @@ aliases: ['/docs-cn/dev/enable-tls-between-components/','/docs-cn/dev/how-to/sec
 
     ```toml
     [security]
-    cert-allowed-cn = [
-        "TiDB",
-    ]
+    cert-allowed-cn = ["TiDB"]
     ```
 
 - PD
