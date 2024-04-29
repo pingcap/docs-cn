@@ -1,10 +1,5 @@
 ---
 title: JSON 函数
-<<<<<<< HEAD
-=======
-aliases: ['/docs-cn/dev/functions-and-operators/json-functions/','/docs-cn/dev/reference/sql/functions-and-operators/json-functions/']
-summary: TiDB 支持 MySQL 8.0 中提供的大部分 JSON 函数。
->>>>>>> 967a0fae95 (translate 6 PRs for functions and operators (#17218))
 ---
 
 # JSON 函数

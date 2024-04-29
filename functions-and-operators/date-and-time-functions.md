@@ -1,10 +1,5 @@
 ---
 title: 日期和时间函数
-<<<<<<< HEAD
-=======
-aliases: ['/docs-cn/dev/functions-and-operators/date-and-time-functions/','/docs-cn/dev/reference/sql/functions-and-operators/date-and-time-functions/']
-summary: TiDB 支持 MySQL 8.0 中的所有日期和时间函数。
->>>>>>> 967a0fae95 (translate 6 PRs for functions and operators (#17218))
 ---
 
 # 日期和时间函数
