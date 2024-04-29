@@ -9,37 +9,12 @@ summary: TiDB 数据库中 SET [NAMES|CHARACTER SET] 的使用概况。
 
 ## 语法图
 
-**SetNamesStmt:**
-
-![SetNamesStmt](/media/sqlgram/SetNamesStmt.png)
-
-**VariableAssignmentList:**
-
-![VariableAssignmentList](/media/sqlgram/VariableAssignmentList.png)
-
-**VariableAssignment:**
-
-![VariableAssignment](/media/sqlgram/VariableAssignment.png)
-
-**CharsetName:**
-
-![CharsetName](/media/sqlgram/CharsetName.png)
-
-**StringName:**
-
-![StringName](/media/sqlgram/StringName.png)
-
-**CharsetKw:**
-
-![CharsetKw](/media/sqlgram/CharsetKw.png)
-
-**CharsetNameOrDefault:**
-
-![CharsetNameOrDefault](/media/sqlgram/CharsetNameOrDefault.png)
+```ebnf+diagram
+SetNamesStmt ::=
+    "SET" ("NAMES" ("DEFAULT" | CharsetName ("COLLATE" ("DEFAULT" | CollationName))?) | ("CHARSET" | ("CHAR" | "CHARACTER") "SET") ("DEFAULT" | CharsetName))
+```
 
 ## 示例
-
-{{< copyable "sql" >}}
 
 ```sql
 SHOW VARIABLES LIKE 'character_set%';
@@ -61,8 +36,6 @@ SHOW VARIABLES LIKE 'character_set%';
 8 rows in set (0.01 sec)
 ```
 
-{{< copyable "sql" >}}
-
 ```sql
 SET NAMES utf8;
 ```
@@ -70,8 +43,6 @@ SET NAMES utf8;
 ```
 Query OK, 0 rows affected (0.00 sec)
 ```
-
-{{< copyable "sql" >}}
 
 ```sql
 SHOW VARIABLES LIKE 'character_set%';
@@ -93,8 +64,6 @@ SHOW VARIABLES LIKE 'character_set%';
 8 rows in set (0.00 sec)
 ```
 
-{{< copyable "sql" >}}
-
 ```sql
 SET CHARACTER SET utf8mb4;
 ```
@@ -102,8 +71,6 @@ SET CHARACTER SET utf8mb4;
 ```
 Query OK, 0 rows affected (0.00 sec)
 ```
-
-{{< copyable "sql" >}}
 
 ```sql
 SHOW VARIABLES LIKE 'character_set%';
