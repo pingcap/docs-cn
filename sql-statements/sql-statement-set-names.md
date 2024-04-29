@@ -16,8 +16,6 @@ SetNamesStmt ::=
 
 ## 示例
 
-{{< copyable "sql" >}}
-
 ```sql
 SHOW VARIABLES LIKE 'character_set%';
 ```
@@ -38,8 +36,6 @@ SHOW VARIABLES LIKE 'character_set%';
 8 rows in set (0.01 sec)
 ```
 
-{{< copyable "sql" >}}
-
 ```sql
 SET NAMES utf8;
 ```
@@ -47,8 +43,6 @@ SET NAMES utf8;
 ```
 Query OK, 0 rows affected (0.00 sec)
 ```
-
-{{< copyable "sql" >}}
 
 ```sql
 SHOW VARIABLES LIKE 'character_set%';
@@ -70,8 +64,6 @@ SHOW VARIABLES LIKE 'character_set%';
 8 rows in set (0.00 sec)
 ```
 
-{{< copyable "sql" >}}
-
 ```sql
 SET CHARACTER SET utf8mb4;
 ```
@@ -79,8 +71,6 @@ SET CHARACTER SET utf8mb4;
 ```
 Query OK, 0 rows affected (0.00 sec)
 ```
-
-{{< copyable "sql" >}}
 
 ```sql
 SHOW VARIABLES LIKE 'character_set%';
