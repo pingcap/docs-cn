@@ -7,7 +7,7 @@ summary: TiDB 数据库中 SHOW STATS_HEALTHY 的使用概况。
 
 `SHOW STATS_HEALTHY` 语句可以预估统计信息的准确度，也就是健康度。健康度低的表可能会生成次优查询执行计划。
 
-可以通过执行 [`ANALYZE`](/sql-statements/sql-statement-analyze-table.md) 语句来改善表的健康度。当表的健康度下降到低于 [`tidb_auto_analyze_ratio`](/system-variables.md#tidb_auto_analyze_ratio) 时，则会自动执行 `ANALYZE` 命令。
+可以通过执行 [`ANALYZE`](/sql-statements/sql-statement-analyze-table.md) 语句来改善表的健康度。当表的健康度下降到低于 [`tidb_auto_analyze_ratio`](/system-variables.md#tidb_auto_analyze_ratio) 时，则会自动执行 `ANALYZE` 语句。
 
 ## 语法图
 
@@ -22,7 +22,7 @@ ShowLikeOrWhere ::=
 
 ## 示例
 
-加载示例数据并运行 `ANALYZE` 命令：
+加载示例数据并运行 `ANALYZE` 语句：
 
 ```sql
 CREATE TABLE t1 (
