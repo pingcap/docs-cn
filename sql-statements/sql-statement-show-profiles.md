@@ -13,6 +13,7 @@ aliases: ['/docs-cn/dev/sql-statements/sql-statement-show-profiles/']
 ```ebnf+diagram
 ShowProfilesStmt ::=
     "SHOW" "PROFILES" ShowLikeOrWhere?
+
 ShowLikeOrWhere ::=
     "LIKE" SimpleExpr
 |   "WHERE" Expression
