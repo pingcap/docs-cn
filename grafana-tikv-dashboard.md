@@ -457,20 +457,20 @@ title: TiKV 监控指标详解
 
 ### Log Backup
 
-- Handle Event Rate： 处理写入事件的速度。
-- Initial Scan Generate Event Throughput： 创建新的监听流时，增量扫的速度。
-- Abnormal Checkpoint TS Lag： 各个任务当前 checkpoint TS 到现在时间的 Lag。
-- Memory Of Events： 增量扫产生的临时数据占用内存的估计值。
-- Observed Region Count： 目前监听的 region 数量。
-- Errors： 可重试、非致命的 Error 数量及类型。
-- Fatal Errors： 致命错误的数量及类型(一般致命错误会导致任务暂停)。
-- Checkpoint TS of Tasks： 各个任务的 Checkpoint TS。
+- Handle Event Rate：处理写入事件的速度。
+- Initial Scan Generate Event Throughput：创建新的监听流时，增量扫的速度。
+- Abnormal Checkpoint TS Lag：各个任务当前 Checkpoint TS 到现在时间的 Lag。
+- Memory Of Events：增量扫产生的临时数据占用内存的估计值。
+- Observed Region Count：目前监听的 Region 数量。
+- Errors：可重试、非致命的 Error 数量及类型。
+- Fatal Errors：致命错误的数量及类型。通常致命错误会导致任务暂停。
+- Checkpoint TS of Tasks：各个任务的 Checkpoint TS。
 - Flush Duration：将缓存数据移动到外部存储的耗时的热力图。
 - Initial Scanning Duration：创建新的监听流时，增量扫的耗时的热力图。
-- Convert Raft Event Duration： 创建监听流后，转化 Raft 任务为备份数据的耗时的热力图。
-- Command Batch Size： 监听到的 Raft Command 的 Batch 大小（单个 Raft Group 内）。
-- Save to Temp File Duration： 将一批备份数据（跨越数个 Task）暂存到临时文件区的耗时的热力图。
-- Write to Temp File Duration： 将一批备份数据（来自某个 Task）暂存到临时文件区的耗时的热力图。
+- Convert Raft Event Duration：创建监听流后，转化 Raft 任务为备份数据的耗时的热力图。
+- Command Batch Size：监听到的 Raft Command 的 Batch 大小（单个 Raft Group 内）。
+- Save to Temp File Duration：将一批备份数据（跨越数个 Task）暂存到临时文件区的耗时的热力图。
+- Write to Temp File Duration：将一批备份数据（来自某个 Task）暂存到临时文件区的耗时的热力图。
 - System Write Call Duration：将一批备份数据（来自某个 Region）写入到临时文件耗时的热力图。
 - Internal Message Type：TiKV 内部负责 Log Backup 的 Actor 收到的消息的类型。
 - Internal Message Handling Duration (P90|P99)：消费、处理各个类型消息的速度。
@@ -481,14 +481,14 @@ title: TiKV 监控指标详解
 
 > **注意：**
 >
-> 以下这些监控的数据源都是 TiDB，但是对日志备份流程有一些影响，为了方便查阅将其放在了 TiKV Details 中。此外，大部分时候 TiKV 会主动“推送”进度，因此以下部分监控偶尔没有数据采样属于正常现象。
+> 以下这些监控的数据源都是 TiDB，但是对日志备份流程有一些影响。为了方便查阅，将其放在了 TiKV Details 中。此外，大部分时候 TiKV 会主动“推送”进度，因此以下部分监控偶尔没有数据采样属于正常现象。
 
 - Request Checkpoint Batch Size：日志备份协调器请求各个 TiKV 的 Checkpoint 信息的时候的请求攒批大小。
 - Tick Duration \[P99|P90\]：协调器内部 Tick 的耗时。
-- Region Checkpoint Failure Reason：协调器内部无法推进某个 region checkpoint 的原因的记录。
-- Request Result：协调器推进 region checkpoint 的成功 / 失败的记录。
-- Get Region Operation Count： 协调器向 PD 请求 region 信息的次数。
-- Try Advance Trigger Time：协调器尝试推进 checkpoint 时候的耗时。
+- Region Checkpoint Failure Reason：协调器内部无法推进某个 Region Checkpoint 的原因的记录。
+- Request Result：协调器推进 Region Checkpoint 的成功或失败的记录。
+- Get Region Operation Count：协调器向 PD 请求 Region 信息的次数。
+- Try Advance Trigger Time：协调器尝试推进 Checkpoint 时候的耗时。
 
 ### 面板常见参数的解释
 
