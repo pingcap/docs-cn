@@ -289,7 +289,7 @@ CREATE TABLE conflict_records (
      table_name: `example`.`t`
      index_name: PRIMARY
        key_data: 40
-       row_data: (40, "forty")
+       row_data: (40, "fourty")
         raw_key: 0x7480000000000000C15F728000000000000028
       raw_value: 0x800001000000020600666F75727479
      raw_handle: 0x7480000000000000C15F728000000000000028
