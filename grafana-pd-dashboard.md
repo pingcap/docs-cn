@@ -101,7 +101,7 @@ title: PD 重要监控指标详解
 - Replica checker：replica checker 的状态
 - Rule checker：rule checker 的状态
 - Region merge checker：merge checker 的状态
-- Filter target：尝试选择 Store 作为调度 taget 时没有通过 Filter 的计数
+- Filter target：尝试选择 Store 作为调度 target 时没有通过 Filter 的计数
 - Filter source：尝试选择 Store 作为调度 source 时没有通过 Filter 的计数
 - Balance Direction：Store 被选作调度 target 或 source 的次数
 

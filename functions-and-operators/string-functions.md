@@ -91,7 +91,38 @@ SELECT BIN(-7);
 
 ### [`CHAR_LENGTH()`](https://dev.mysql.com/doc/refman/8.0/en/string-functions.html#function_char-length)
 
+<<<<<<< HEAD
 返回字符串的字符长度
+=======
+`CHAR_LENGTH()` 函数用于获取输入参数中字符的总数。
+
+示例：
+
+```sql
+SELECT CHAR_LENGTH("TiDB") AS LengthOfString;
+
++----------------+
+| LengthOfString |
++----------------+
+|              4 |
++----------------+
+```
+
+```sql
+SELECT CustomerName, CHAR_LENGTH(CustomerName) AS LengthOfName FROM Customers;
+
++--------------------+--------------+
+| CustomerName       | LengthOfName |
++--------------------+--------------+
+| Albert Einstein    |           15 |
+| Robert Oppenheimer |           18 |
++--------------------+--------------+
+```
+
+> **注意：**
+>
+> 上面这个示例假设数据库中存在一个名为 `Customers` 的表，表中有一个名为 `CustomerName` 的列。
+>>>>>>> 6772c99cf3 (fix typos (#17247))
 
 ### [`CHARACTER_LENGTH()`](https://dev.mysql.com/doc/refman/8.0/en/string-functions.html#function_character-length)
 
