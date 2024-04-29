@@ -1,12 +1,12 @@
 ---
 title: 数值函数与操作符
 aliases: ['/docs-cn/dev/functions-and-operators/numeric-functions-and-operators/','/docs-cn/dev/reference/sql/functions-and-operators/numeric-functions-and-operators/']
-summary: TiDB 支持 MySQL 5.7 中的所有数值函数和操作符。包括加减乘除、整数除法、模运算、改变参数符号等算术操作符，以及返回乘方、自然对数、对数、正切值、余切值、正弦值、余弦值等数学函数。
+summary: TiDB 支持 MySQL 8.0 中的所有数值函数和操作符。
 ---
 
 # 数值函数与操作符
 
-TiDB 支持使用 MySQL 5.7 中提供的所有[数值函数与操作符](https://dev.mysql.com/doc/refman/5.7/en/numeric-functions.html)。
+TiDB 支持使用 MySQL 8.0 中提供的所有[数值函数与操作符](https://dev.mysql.com/doc/refman/8.0/en/numeric-functions.html)。
 
 ## 算术操作符
 
@@ -24,33 +24,37 @@ TiDB 支持使用 MySQL 5.7 中提供的所有[数值函数与操作符](https:/
 
 | 函数名                                                                                                      | 功能描述                                                       |
 |:----------------------------------------------------------------------------------------------------------|:------------------------------------------------------------------|
-| [`POW()`](https://dev.mysql.com/doc/refman/8.0/en/mathematical-functions.html#function_pow)               | 返回参数的指定乘方的结果值                 |
-| [`POWER()`](https://dev.mysql.com/doc/refman/8.0/en/mathematical-functions.html#function_power)           | 返回参数的指定乘方的结果值                 |
-| [`EXP()`](https://dev.mysql.com/doc/refman/8.0/en/mathematical-functions.html#function_exp)               | 返回 e（自然对数的底）的指定乘方后的值                                         |
-| [`SQRT()`](https://dev.mysql.com/doc/refman/8.0/en/mathematical-functions.html#function_sqrt)             | 返回非负数的二次方根                          |
-| [`LN()`](https://dev.mysql.com/doc/refman/8.0/en/mathematical-functions.html#function_ln)                 | 返回参数的自然对数                   |
-| [`LOG()`](https://dev.mysql.com/doc/refman/8.0/en/mathematical-functions.html#function_log)               | 返回第一个参数的自然对数                |
-| [`LOG2()`](https://dev.mysql.com/doc/refman/8.0/en/mathematical-functions.html#function_log2)             | 返回参数以 2 为底的对数                       |
-| [`LOG10()`](https://dev.mysql.com/doc/refman/8.0/en/mathematical-functions.html#function_log10)           | 返回参数以 10 为底的对数                    |
-| [`PI()`](https://dev.mysql.com/doc/refman/8.0/en/mathematical-functions.html#function_pi)                 | 返回 pi 的值                                           |
-| [`TAN()`](https://dev.mysql.com/doc/refman/8.0/en/mathematical-functions.html#function_tan)               | 返回参数的正切值   |
-| [`COT()`](https://dev.mysql.com/doc/refman/8.0/en/mathematical-functions.html#function_cot)               | 返回参数的余切值                                              |
-| [`SIN()`](https://dev.mysql.com/doc/refman/8.0/en/mathematical-functions.html#function_sin)               | 返回参数的正弦值                       |
-| [`COS()`](https://dev.mysql.com/doc/refman/8.0/en/mathematical-functions.html#function_cos)               | 返回参数的余弦值                                                 |
+| [`ABS()`](https://dev.mysql.com/doc/refman/8.0/en/mathematical-functions.html#function_abs)               | 返回参数的绝对值                                         |
+| [`ACOS()`](https://dev.mysql.com/doc/refman/8.0/en/mathematical-functions.html#function_acos)             | 返回参数的反余弦值                                             |
+| [`ASIN()`](https://dev.mysql.com/doc/refman/8.0/en/mathematical-functions.html#function_asin)             | 返回参数的反正弦值                                               |
 | [`ATAN()`](https://dev.mysql.com/doc/refman/8.0/en/mathematical-functions.html#function_atan)             | 返回参数的反正切值                                            |
 | [`ATAN2(), ATAN()`](https://dev.mysql.com/doc/refman/8.0/en/mathematical-functions.html#function_atan2)   | 返回两个参数的反正切值                  |
-| [`ASIN()`](https://dev.mysql.com/doc/refman/8.0/en/mathematical-functions.html#function_asin)             | 返回参数的反正弦值                                               |
-| [`ACOS()`](https://dev.mysql.com/doc/refman/8.0/en/mathematical-functions.html#function_acos)             | 返回参数的反余弦值                                             |
-| [`RADIANS()`](https://dev.mysql.com/doc/refman/8.0/en/mathematical-functions.html#function_radians)       | 返回由度转化为弧度的参数                  |
-| [`DEGREES()`](https://dev.mysql.com/doc/refman/8.0/en/mathematical-functions.html#function_degrees)       | 返回由弧度转化为度的参数              |
-| [`MOD()`](https://dev.mysql.com/doc/refman/8.0/en/mathematical-functions.html#function_mod)               | 返回余数                                              |
-| [`ABS()`](https://dev.mysql.com/doc/refman/8.0/en/mathematical-functions.html#function_abs)               | 返回参数的绝对值                                         |
 | [`CEIL()`](https://dev.mysql.com/doc/refman/8.0/en/mathematical-functions.html#function_ceil)             | 返回不小于参数的最小整数值   |
 | [`CEILING()`](https://dev.mysql.com/doc/refman/8.0/en/mathematical-functions.html#function_ceiling)       | 返回不小于参数的最小整数值  |
-| [`FLOOR()`](https://dev.mysql.com/doc/refman/8.0/en/mathematical-functions.html#function_floor)           | 返回不大于参数的最大整数值    |
-| [`ROUND()`](https://dev.mysql.com/doc/refman/8.0/en/mathematical-functions.html#function_round)           | 返回参数最近似的整数或指定小数位数的数值                                                |
-| [`RAND()`](https://dev.mysql.com/doc/refman/8.0/en/mathematical-functions.html#function_rand)             | 返回一个随机浮点值    |
-| [`SIGN()`](https://dev.mysql.com/doc/refman/8.0/en/mathematical-functions.html#function_sign)             | 返回参数的符号      |
 | [`CONV()`](https://dev.mysql.com/doc/refman/8.0/en/mathematical-functions.html#function_conv)             | 不同数基间转换数字，返回数字的字符串表示   |
+| [`COS()`](https://dev.mysql.com/doc/refman/8.0/en/mathematical-functions.html#function_cos)               | 返回参数的余弦值                                                 |
+| [`COT()`](https://dev.mysql.com/doc/refman/8.0/en/mathematical-functions.html#function_cot)               | 返回参数的余切值                                              |
+| [`CRC32()`](https://dev.mysql.com/doc/refman/8.0/en/mathematical-functions.html#function_crc32)           | 计算循环冗余码校验值并返回一个 32 位无符号值             |
+| [`DEGREES()`](https://dev.mysql.com/doc/refman/8.0/en/mathematical-functions.html#function_degrees)       | 返回由弧度转化为度的参数              |
+| [`EXP()`](https://dev.mysql.com/doc/refman/8.0/en/mathematical-functions.html#function_exp)               | 返回 e（自然对数的底）的指定乘方后的值                                         |
+| [`FLOOR()`](https://dev.mysql.com/doc/refman/8.0/en/mathematical-functions.html#function_floor)           | 返回不大于参数的最大整数值    |
+| [`LN()`](https://dev.mysql.com/doc/refman/8.0/en/mathematical-functions.html#function_ln)                 | 返回参数的自然对数                   |
+| [`LOG()`](https://dev.mysql.com/doc/refman/8.0/en/mathematical-functions.html#function_log)               | 返回第一个参数的自然对数                |
+| [`LOG10()`](https://dev.mysql.com/doc/refman/8.0/en/mathematical-functions.html#function_log10)           | 返回参数以 10 为底的对数                    |
+| [`LOG2()`](https://dev.mysql.com/doc/refman/8.0/en/mathematical-functions.html#function_log2)             | 返回参数以 2 为底的对数                       |
+| [`MOD()`](https://dev.mysql.com/doc/refman/8.0/en/mathematical-functions.html#function_mod)               | 返回余数                                              |
+| [`PI()`](https://dev.mysql.com/doc/refman/8.0/en/mathematical-functions.html#function_pi)                 | 返回 pi 的值                                           |
+| [`POW()`](https://dev.mysql.com/doc/refman/8.0/en/mathematical-functions.html#function_pow)               | 返回参数的指定乘方的结果值                 |
+| [`POWER()`](https://dev.mysql.com/doc/refman/8.0/en/mathematical-functions.html#function_power)           | 返回参数的指定乘方的结果值                 |
+| [`RADIANS()`](https://dev.mysql.com/doc/refman/8.0/en/mathematical-functions.html#function_radians)       | 返回由度转化为弧度的参数                  |
+| [`RAND()`](https://dev.mysql.com/doc/refman/8.0/en/mathematical-functions.html#function_rand)             | 返回一个随机浮点值    |
+| [`ROUND()`](https://dev.mysql.com/doc/refman/8.0/en/mathematical-functions.html#function_round)           | 返回参数最近似的整数或指定小数位数的数值                                                |
+| [`SIGN()`](https://dev.mysql.com/doc/refman/8.0/en/mathematical-functions.html#function_sign)             | 返回参数的符号      |
+| [`SIN()`](https://dev.mysql.com/doc/refman/8.0/en/mathematical-functions.html#function_sin)               | 返回参数的正弦值                       |
+| [`SQRT()`](https://dev.mysql.com/doc/refman/8.0/en/mathematical-functions.html#function_sqrt)             | 返回非负数的二次方根                          |
+| [`TAN()`](https://dev.mysql.com/doc/refman/8.0/en/mathematical-functions.html#function_tan)               | 返回参数的正切值   |
 | [`TRUNCATE()`](https://dev.mysql.com/doc/refman/8.0/en/mathematical-functions.html#function_truncate)     | 返回被舍位至指定小数位数的数字     |
-| [`CRC32()`](https://dev.mysql.com/doc/refman/8.0/en/mathematical-functions.html#function_crc32)           | 计算循环冗余码校验值并返回一个 32 位无符号值                     |
+
+## 相关系统变量
+
+通过 [`div_precision_increment`](/system-variables.md#div_precision_increment-从-v800-版本开始引入) 可以设置 `/` 运算符的精度。
