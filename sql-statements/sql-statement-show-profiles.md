@@ -12,6 +12,7 @@ summary: TiDB 数据库中 SHOW PROFILES 的使用概况。
 ```ebnf+diagram
 ShowProfilesStmt ::=
     "SHOW" "PROFILES" ShowLikeOrWhere?
+
 ShowLikeOrWhere ::=
     "LIKE" SimpleExpr
 |   "WHERE" Expression
