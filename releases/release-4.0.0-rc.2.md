@@ -72,7 +72,7 @@ TiDB 版本：4.0.0-rc.2
 + TiKV
 
     - 加密存储适配 tikv-ctl，适配后开启加密存储后通过 tikv-ctl 操作管理集群 [#7698](https://github.com/tikv/tikv/pull/7698)
-    - 新增加密码 Snapshot 中的 `lock column famliy` 的功能 [#7712](https://github.com/tikv/tikv/pull/7712)
+    - 新增加密码 Snapshot 中的 `lock column family` 的功能 [#7712](https://github.com/tikv/tikv/pull/7712)
     - 修改 Raftstore latency 在 Grafana 面板显示方式，采用 heatmap 方便诊断性能抖动问题 [#7717](https://github.com/tikv/tikv/pull/7717)
     - 支持配置 gRPC 消息大小的上限 [#7824](https://github.com/tikv/tikv/pull/7824)
     - Grafana 面板中添加了 encryption 相关的监控 [#7827](https://github.com/tikv/tikv/pull/7827)
