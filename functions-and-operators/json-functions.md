@@ -6,7 +6,7 @@ summary: TiDB 支持 MySQL 8.0 中提供的大部分 JSON 函数。
 
 # JSON 函数
 
-TiDB 支持 MySQL 8.0 中提供的大部分 [JSON 函数]((https://dev.mysql.com/doc/refman/8.0/en/json-functions.html))。
+TiDB 支持 MySQL 8.0 中提供的大部分 [JSON 函数](https://dev.mysql.com/doc/refman/8.0/en/json-functions.html)。
 
 ## 创建 JSON 值的函数
 
@@ -36,7 +36,7 @@ TiDB 支持 MySQL 8.0 中提供的大部分 [JSON 函数]((https://dev.mysql.com
 | --------------------------------- | ----------- |
 | [JSON_APPEND(json_doc, path, value)](https://dev.mysql.com/doc/refman/8.0/en/json-modification-functions.html#function_json-append) | `JSON_ARRAY_APPEND` 的别名 |
 | [JSON_ARRAY_APPEND(json_doc, path, val[, path, val] ...)](https://dev.mysql.com/doc/refman/8.0/en/json-modification-functions.html#function_json-array-append) | 将值添加到 JSON 文档指定数组的末尾，并返回添加结果 |
-| [JSON_ARRAY_INSERT(json_doc, path, val[, path, val] ...)](https://dev.mysql.com/doc/refman/8.0/en/json-modification-functions.html#function_json-array-insert) | 将值插入到 JSON 文档中的指定位置并返回结果。 |
+| [JSON_ARRAY_INSERT(json_doc, path, val[, path, val] ...)](https://dev.mysql.com/doc/refman/8.0/en/json-modification-functions.html#function_json-array-insert) | 将值插入到 JSON 文档中的指定位置并返回结果 |
 | [JSON_INSERT(json_doc, path, val[, path, val] ...)](https://dev.mysql.com/doc/refman/8.0/en/json-modification-functions.html#function_json-insert) | 在 JSON 文档中在某一路径下插入子文档 |
 | [JSON_MERGE_PATCH(json_doc, json_doc[, json_doc] ...)](https://dev.mysql.com/doc/refman/8.0/en/json-modification-functions.html#function_json-merge-patch)  | 合并 JSON 文档 |
 | [JSON_MERGE_PRESERVE(json_doc, json_doc[, json_doc] ...)](https://dev.mysql.com/doc/refman/8.0/en/json-modification-functions.html#function_json-merge-preserve)  | 将两个或多个 JSON 文档合并成一个文档，并返回合并结果 |
