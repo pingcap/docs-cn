@@ -211,8 +211,8 @@ TiDB 8.1.0 为长期支持版本 (Long-Term Support Release, LTS)。
 
 | 配置文件           | 配置项                | 修改类型 | 描述                                 |
 |----------------|--------------------|------|------------------------------------|
-| TiDB Lightning | conflict.threshold | 修改   | 将默认值从 9223372036854775807 改为 10000 |
-|                |                    |      |                                    |
+| TiDB Lightning | [conflict.threshold](/tidb-lightning/tidb-lightning-configuration.md#tidb-lightning-任务配置) | 修改   | 默认值从 `9223372036854775807` 修改为 `10000`。 |
+| TiDB Lightning | [conflict.max-record-rows](/tidb-lightning/tidb-lightning-configuration.md#tidb-lightning-任务配置) | 修改   | 从 v8.1.0 开始，TiDB Lightning 会自动将 `conflict.max-record-rows` 的值设置为 `conflict.threshold` 的值，并忽略用户输入，因此无需再单独配置 `conflict.max-record-rows`。`conflict.max-record-rows` 将在未来版本中废弃。 |
 |                |                    |      |                                    |
 |                |                    |      |                                    |
 
