@@ -521,10 +521,13 @@
     - [目标数据库要求](/tidb-lightning/tidb-lightning-requirements.md)
     - 数据源
       - [文件匹配规则](/tidb-lightning/tidb-lightning-data-source.md)
+      - [表库重命名](/tidb-lightning/tidb-lightning-data-source.md#表库重命名)
       - [CSV](/tidb-lightning/tidb-lightning-data-source.md#csv)
       - [SQL](/tidb-lightning/tidb-lightning-data-source.md#sql)
       - [Parquet](/tidb-lightning/tidb-lightning-data-source.md#parquet)
+      - [压缩文件](/tidb-lightning/tidb-lightning-data-source.md#压缩文件)
       - [自定义文件匹配](/tidb-lightning/tidb-lightning-data-source.md#自定义文件匹配)
+      - [从 Amazon S3 导入数据](/tidb-lightning/tidb-lightning-data-source.md#从-amazon-s3-导入数据)
     - 物理导入模式
       - [概述](/tidb-lightning/tidb-lightning-physical-import-mode.md)
       - [必要条件及限制](/tidb-lightning/tidb-lightning-physical-import-mode.md#必要条件及限制)
