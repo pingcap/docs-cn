@@ -77,7 +77,7 @@ TiDB 采用计算存储分离架构，具有出色的扩展性和弹性的扩缩
     * [`tidb_ddl_error_count_limit`](/system-variables.md#tidb_ddl_error_count_limit)
     * [`tidb_ddl_reorg_batch_size`](/system-variables.md#tidb_ddl_reorg_batch_size)：使用默认值即可，建议最大不超过 `1024`。
 
-3. 从 v8.1.0 开始，当提交分布式任务时，该任务会跟当前连接的 TiDB 节点的 [`tidb_service_scope`](/system-variables.md#tidb_service_scope-从-v740-版本开始引入) 设置绑定，分布式执行框架运行该任务时只会在跟绑定的 `tidb_service_scope` 相同的节点上运行。为了保持向后兼容（包括 >=v7.4.0 且 < v8.1.0 的版本），如果任务是在 `tidb_service_scope = ''` 的节点上提交，且当前集群存在 `tidb_service_scope = 'background'` 的节点时，分布式执行框架会将该任务调度到这类节点上。
+3. 从 v8.1.0 开始，当提交分布式任务时，该任务会跟当前连接的 TiDB 节点的 [`tidb_service_scope`](/system-variables.md#tidb_service_scope-从-v740-版本开始引入) 设置绑定，分布式执行框架运行该任务时只会在跟任务绑定的 `tidb_service_scope` 相同的节点上运行。为了保持向后兼容（包括 >=v7.4.0 且 < v8.1.0 的版本），如果任务是在 `tidb_service_scope = ''` 的节点上提交，且当前集群存在 `tidb_service_scope = 'background'` 的节点时，分布式执行框架会将该任务调度到这类节点上。
 
     > **注意：**
     >

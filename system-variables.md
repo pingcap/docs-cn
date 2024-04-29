@@ -4504,7 +4504,7 @@ EXPLAIN FORMAT='brief' SELECT COUNT(1) FROM t WHERE a = 1 AND b IS NOT NULL;
 - 类型：字符串
 - 默认值：""
 - 可选值：长度小于等于 64 的字符串，可用合法字符包括数字 `0-9`、字母 `a-zA-Z`、下划线 `_` 和横线 `-`
-- 该变量是一个实例级别的变量，用于控制 [TiDB 分布式执行框架](/tidb-distributed-execution-framework.md) 下各 TiDB 节点的服务范围。当提交分布式任务（如 [`ADD INDEX`](/sql-statements/sql-statement-add-index.md) 和 [`IMPORT INTO`](/sql-statements/sql-statement-import-into.md)）时，该任务会跟当前连接的 TiDB 节点的 `tidb_service_scope` 设置绑定，分布式执行框架运行该任务时只会在跟绑定的 `tidb_service_scope` 相同的节点上运行。为了保持向后兼容，如果任务是在 `tidb_service_scope = ''` 的节点上提交，且当前集群存在 `tidb_service_scope = 'background'` 的节点时，分布式执行框架会将该任务调度到这类节点上。
+- 该变量是一个实例级别的变量，用于控制 [TiDB 分布式执行框架](/tidb-distributed-execution-framework.md) 下各 TiDB 节点的服务范围。当提交分布式任务（如 [`ADD INDEX`](/sql-statements/sql-statement-add-index.md) 和 [`IMPORT INTO`](/sql-statements/sql-statement-import-into.md)）时，该任务会跟当前连接的 TiDB 节点的 `tidb_service_scope` 设置绑定，分布式执行框架运行该任务时只会在跟任务绑定的 `tidb_service_scope` 相同的节点上运行。为了保持向后兼容，如果任务是在 `tidb_service_scope = ''` 的节点上提交，且当前集群存在 `tidb_service_scope = 'background'` 的节点时，分布式执行框架会将该任务调度到这类节点上。
 
 > **注意：**
 >
