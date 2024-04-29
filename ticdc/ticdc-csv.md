@@ -28,6 +28,7 @@ quote = '"'
 null = '\N'
 include-commit-ts = true
 binary-encoding-method = 'base64'
+output-old-value = false
 ```
 
 ## 数据保存的事务性约束
@@ -48,7 +49,8 @@ CSV 文件中，单行的每一列定义如下：
 - 第二列：表名。
 - 第三列：库名。
 - 第四列：`commit ts`，即原始事务的 commit ts。该列为可选配置。
-- 第五列至最后一列：变更数据的列，可为一列或多列。
+- 第五列: `is-update`，该列仅在 `output-old-value` 为 true 时存在，用于标识该行变更来自 Update 事件（值为 true 时），还是来自 Insert/Delete 事件（值为 false）。
+- 第六列至最后一列：变更数据的列，可为一列或多列。
 
 假设某张表 `hr.employee` 的定义如下：
 
@@ -62,7 +64,7 @@ CREATE TABLE `employee` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 ```
 
-该表上的 DML 事件以 CSV 格式存储后如下所示：
+当配置中 `include-commit-ts = true`，`output-old-value = false`时，该表上的 DML 事件以 CSV 格式存储后如下所示：
 
 ```
 "I","employee","hr",433305438660591626,101,"Smith","Bob","2014-06-04","New York"
@@ -70,6 +72,18 @@ CREATE TABLE `employee` (
 "D","employee","hr",433305438660591629,101,"Smith","Bob","2017-03-13","Dallas"
 "I","employee","hr",433305438660591630,102,"Alex","Alice","2017-03-14","Shanghai"
 "U","employee","hr",433305438660591630,102,"Alex","Alice","2018-06-15","Beijing"
+```
+
+当配置中 `include-commit-ts = true`，`output-old-value = true`时，该表上的 DML 事件以 CSV 格式存储后如下所示：
+
+```
+"I","employee","hr",433305438660591626,false,101,"Smith","Bob","2014-06-04","New York"
+"D","employee","hr",433305438660591627,true,101,"Smith","Bob","2015-10-08","Shanghai"
+"I","employee","hr",433305438660591627,true,101,"Smith","Bob","2015-10-08","Los Angeles"
+"D","employee","hr",433305438660591629,false,101,"Smith","Bob","2017-03-13","Dallas"
+"I","employee","hr",433305438660591630,false,102,"Alex","Alice","2017-03-14","Shanghai"
+"D","employee","hr",433305438660591630,true,102,"Alex","Alice","2017-03-14","Beijing"
+"I","employee","hr",433305438660591630,true,102,"Alex","Alice","2018-06-15","Beijing"
 ```
 
 ## 数据类型映射
