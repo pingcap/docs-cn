@@ -133,7 +133,7 @@ TiDB 目前支持的身份验证方式可在以下的表格中查找到。服务
 
 ### `tidb_auth_token`
 
-`tidb_auth_token` 是一种基于 [JSON Web Token (JWT)](https://datatracker.ietf.org/doc/html/rfc7519) 的无密码认证方式。在 v6.4.0 中，`tidb_auth_token` 仅用于 TiDB Cloud 内部的用户认证，从 v6.5.0 起，你也可以将 `tidb_auth_token` 配置为 TiDB 自托管环境中用户的认证方式。不同于 `mysql_native_passsword`、`caching_sha2_password` 等使用密码的认证方式，`tidb_auth_token` 认证方式在创建用户时无需设置并保存自定义密码，在用户登录时只需使用一个签发的 token，从而简化用户的认证过程并提升安全性。
+`tidb_auth_token` 是一种基于 [JSON Web Token (JWT)](https://datatracker.ietf.org/doc/html/rfc7519) 的无密码认证方式。在 v6.4.0 中，`tidb_auth_token` 仅用于 TiDB Cloud 内部的用户认证，从 v6.5.0 起，你也可以将 `tidb_auth_token` 配置为 TiDB 自托管环境中用户的认证方式。不同于 `mysql_native_password`、`caching_sha2_password` 等使用密码的认证方式，`tidb_auth_token` 认证方式在创建用户时无需设置并保存自定义密码，在用户登录时只需使用一个签发的 token，从而简化用户的认证过程并提升安全性。
 
 #### JWT
 
