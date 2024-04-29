@@ -458,15 +458,15 @@ title: TiKV 监控指标详解
 ### Log Backup
 
 - Handle Event Rate：处理写入事件的速度。
-- Initial Scan Generate Event Throughput：创建新的监听流时，增量扫的速度。
+- Initial Scan Generate Event Throughput：创建新的监听流时，增量扫描的速度。
 - Abnormal Checkpoint TS Lag：各个任务当前 Checkpoint TS 到现在时间的 Lag。
-- Memory Of Events：增量扫产生的临时数据占用内存的估计值。
+- Memory Of Events：增量扫描产生的临时数据占用内存的估计值。
 - Observed Region Count：目前监听的 Region 数量。
 - Errors：可重试、非致命的 Error 数量及类型。
 - Fatal Errors：致命错误的数量及类型。通常致命错误会导致任务暂停。
 - Checkpoint TS of Tasks：各个任务的 Checkpoint TS。
 - Flush Duration：将缓存数据移动到外部存储的耗时的热力图。
-- Initial Scanning Duration：创建新的监听流时，增量扫的耗时的热力图。
+- Initial Scanning Duration：创建新的监听流时，增量扫描的耗时的热力图。
 - Convert Raft Event Duration：创建监听流后，转化 Raft 任务为备份数据的耗时的热力图。
 - Command Batch Size：监听到的 Raft Command 的 Batch 大小（单个 Raft Group 内）。
 - Save to Temp File Duration：将一批备份数据（跨越数个 Task）暂存到临时文件区的耗时的热力图。
@@ -474,9 +474,9 @@ title: TiKV 监控指标详解
 - System Write Call Duration：将一批备份数据（来自某个 Region）写入到临时文件耗时的热力图。
 - Internal Message Type：TiKV 内部负责 Log Backup 的 Actor 收到的消息的类型。
 - Internal Message Handling Duration (P90|P99)：消费、处理各个类型消息的速度。
-- Initial Scan RocksDB Throughput：增量扫过程中，RocksDB 内部记录产生的读流量。
-- Initial Scan RocksDB Operation：增量扫过程中，RocksDB 内部记录的各个操作的数量。
-- Initial Scanning Trigger Reason：触发增量扫的原因。
+- Initial Scan RocksDB Throughput：增量扫描过程中，RocksDB 内部记录产生的读流量。
+- Initial Scan RocksDB Operation：增量扫描过程中，RocksDB 内部记录的各个操作的数量。
+- Initial Scanning Trigger Reason：触发增量扫描的原因。
 - Region Checkpoint Key Putting：向 PD 记录 Checkpoint 的操作的数量。
 
 > **注意：**
