@@ -4504,13 +4504,7 @@ EXPLAIN FORMAT='brief' SELECT COUNT(1) FROM t WHERE a = 1 AND b IS NOT NULL;
 - 类型：字符串
 - 默认值：""
 - 可选值：长度小于等于 64 的字符串，可用合法字符包括数字 `0-9`、字母 `a-zA-Z`、下划线 `_` 和连字符 `-`
-- 该变量是一个实例级别的变量，用于控制 [TiDB 分布式执行框架](/tidb-distributed-execution-framework.md) 下各 TiDB 节点的服务范围。当提交分布式任务（如 [`ADD INDEX`](/sql-statements/sql-statement-add-index.md) 和 [`IMPORT INTO`](/sql-statements/sql-statement-import-into.md)）时，该任务会绑定当前连接的 TiDB 节点的 `tidb_service_scope` 值，分布式执行框架只会将该任务调度到具有相同 `tidb_service_scope` 值的 TiDB 节点上运行。但是，为了保持向后兼容（在 v8.1.0 之前，该变量的可选值为 "" 或 `background`），如果分布式任务是在 `tidb_service_scope = ""` 的节点上提交的，且当前集群存在 `tidb_service_scope = 'background'` 的节点，分布式执行框架会将该任务调度到 `tidb_service_scope = 'background'` 的 TiDB 节点上运行。
-
-> **注意：**
->
-> - 如果集群内所有节点均未配置 `tidb_service_scope`，所有节点均会执行分布式执行框架的任务。如果你担心对存量业务有性能影响，可以对其中几个 TiDB 节点设置为 `background`，只有这些节点才会执行分布式执行框架的任务。
-> - 在包含多个 TiDB 节点的集群中，强烈建议选择两个或更多的 TiDB 节点将该变量设置为 `background`。若仅在单个 TiDB 节点上设置此变量，当该节点发生重启或故障时，任务会被重新调度到其它未将该变量设置为 `background` 的 TiDB 节点，因此会对这些 TiDB 节点的业务产生影响。
-> - 对于新扩容的节点，如果有运行中的分布式执行框架的任务还未调度到各个 TiDB 节点，则这个扩容的节点也会执行分布式执行框架的任务。如果希望避免占用扩容节点的资源，你需要手动设置所有或者部分存量 TiDB 节点的 `tidb_service_scope` 为 `background`，保证配置为 `background` 的节点执行分布式执行框架的任务。
+- 该变量是一个实例级别的变量，用于控制 [TiDB 分布式执行框架](/tidb-distributed-execution-framework.md) 下各 TiDB 节点的服务范围，分布式执行框架将会根据该设置决定如何调度任务，具体规则参考 [`任务调度`](/tidb-distributed-execution-framework.md#任务调度)。
 
 ### `tidb_session_alias` <span class="version-mark">从 v7.4.0 版本开始引入</span>
 

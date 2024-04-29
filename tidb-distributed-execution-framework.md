@@ -77,11 +77,19 @@ TiDB 采用计算存储分离架构，具有出色的扩展性和弹性的扩缩
     * [`tidb_ddl_error_count_limit`](/system-variables.md#tidb_ddl_error_count_limit)
     * [`tidb_ddl_reorg_batch_size`](/system-variables.md#tidb_ddl_reorg_batch_size)：使用默认值即可，建议最大不超过 `1024`。
 
-3. 从 v8.1.0 开始，当提交分布式任务时，该任务会跟当前连接的 TiDB 节点的 [`tidb_service_scope`](/system-variables.md#tidb_service_scope-从-v740-版本开始引入) 设置绑定，分布式执行框架运行该任务时只会在跟任务绑定的 `tidb_service_scope` 相同的节点上运行。为了保持向后兼容（包括 >=v7.4.0 且 < v8.1.0 的版本），如果任务是在 `tidb_service_scope = ''` 的节点上提交，且当前集群存在 `tidb_service_scope = 'background'` 的节点时，分布式执行框架会将该任务调度到这类节点上。
+## 任务调度
+
+默认设置下，分布式执行框架将在所有节点上执行任务。
+
+在 v7.4.0 之后，v8.1.0 之前，分布式执行框架支持使用 [`tidb_service_scope`](/system-variables.md#tidb_service_scope-从-v740-版本开始引入) 来选择在哪些节点上运行任务，该变量的可选值为 `''` 或 `background`，如果当前集群存在 `tidb_service_scope = 'background'` 的节点时，分布式执行框架会将该任务调度到 `tidb_service_scope = 'background'` 的 TiDB 节点上运行，如果不存在 `tidb_service_scope = 'background'` 的节点，无论是因为故障还是正常的 scale-in，分布式执行框架会将任务调度到 `tidb_service_scope = ''` 的节点上去。
+
+从 v8.1.0 开始，[`tidb_service_scope`](/system-variables.md#tidb_service_scope-从-v740-版本开始引入) 可设置为任意合法值，当提交分布式任务时，该任务会绑定当前连接的 TiDB 节点的 `tidb_service_scope` 值，分布式执行框架只会将该任务调度到具有相同 `tidb_service_scope` 值的 TiDB 节点上运行。但是，为了保持向后兼容（在 v7.4.0 之后，v8.1.0 之前，该变量的可选值为 `''` 或 `background`），如果分布式任务是在 `tidb_service_scope = ''` 的节点上提交的，且当前集群存在 `tidb_service_scope = 'background'` 的节点，分布式执行框架会将该任务调度到 `tidb_service_scope = 'background'` 的 TiDB 节点上运行。
+
+如果在任务运行过程中扩容新节点，分布式执行框架会根据上述规则将任务调度到新的节点来执行，如果不希望新扩容的节点运行任务，建议提前设置 `tidb_service_scope`。
 
     > **注意：**
     >
-    > - 在包含多个 TiDB 节点的集群中，强烈建议选择两个或更多的 TiDB 节点将 `tidb_service_scope` 设置为 `background`。若仅在单个 TiDB 节点上设置此变量，当该节点发生重启或故障时，任务会被重新调度到其它未将该变量设置为 `background` 的 TiDB 节点，会对这些 TiDB 节点的业务产生影响。
+    > - 在 v7.4.0 之后，v8.1.0 之前，在包含多个 TiDB 节点的集群中，强烈建议选择两个或更多的 TiDB 节点将 `tidb_service_scope` 设置为 `background`。若仅在单个 TiDB 节点上设置此变量，当该节点发生重启或故障时，任务会被重新调度到 `tidb_service_scope = ''` 的 TiDB 节点，会对这些 TiDB 节点的业务产生影响。
     > - 在分布式任务执行过程中，修改 `tidb_service_scope` 的配置不会对当前任务生效，会从下次任务开始生效。
 
 ## 实现原理
