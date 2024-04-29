@@ -64,8 +64,7 @@ key 中任何一项变动（如切换数据库、重命名 `Prepare` 语句、�
 
 > **注意：**
 >
-> 变量 [`tidb_enable_prepared_plan_cache`](/system-variables.md#tidb_enable_prepared_plan_cache-从-v610-版本开始引入) 控制的执行计划缓存仅针对 `Prepare`/`Execute` 请求，对普通查询无效。普通查询的执行计划缓存参见 [非 Prepare 语句执行计划缓存](/sql-non-prepared-plan-cache.md)
-
+> 系统变量 [`tidb_enable_prepared_plan_cache`](/system-variables.md#tidb_enable_prepared_plan_cache-从-v610-版本开始引入) 控制的执行计划缓存仅针对 `Prepare`/`Execute` 请求，对普通查询无效。普通查询的执行计划缓存参见[非 Prepare 语句执行计划缓存](/sql-non-prepared-plan-cache.md)。
 
 在开启了执行计划缓存功能后，可以通过 SESSION 级别的系统变量 [`last_plan_from_cache`](/system-variables.md#last_plan_from_cache-从-v40-版本开始引入) 查看上一条 `Execute` 语句是否使用了缓存的执行计划，例如：
 
