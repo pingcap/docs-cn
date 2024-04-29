@@ -148,9 +148,7 @@ summary: 了解如何为 TiDB 集群内各组件间开启加密传输。
 
     ```toml
     [security]
-    cluster-verify-cn = [
-      "TiDB",
-    ]
+    cluster-verify-cn = ["TiDB"]
     ```
 
 - TiKV
@@ -159,9 +157,7 @@ summary: 了解如何为 TiDB 集群内各组件间开启加密传输。
 
     ```toml
     [security]
-    cert-allowed-cn = [
-        "TiDB",
-    ]
+    cert-allowed-cn = ["TiDB"]
     ```
 
 - PD
