@@ -140,7 +140,7 @@ summary: 了解如何为 TiDB 集群内各组件间开启加密传输。
 
 > **注意：**
 >
-> 目前 PD 的 `cert-allowed-cn` 配置项只能设置一个值。因此所有 `Certificate` 对象的 `commonName` 都要设置成同样一个值。
+> 目前 PD 的 `cert-allowed-cn` 配置项只能设置一个值。因此所有认证对象的 `commonName` 都要设置成同一个值。
 
 - TiDB
 
