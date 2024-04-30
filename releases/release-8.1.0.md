@@ -85,6 +85,10 @@ TiDB 8.1.0 为长期支持版本 (Long-Term Support Release, LTS)。
     <td>TiCDC 支持 <a href="https://docs.pingcap.com/zh/tidb/v8.1/ticdc-debezium">Debezium 协议</a>（从 v8.0.0 开始引入）</td>
     <td>TiCDC 支持了新的 Debezium 协议，TiCDC 可以使用该协议生成 Debezium 格式的数据变更事件并发送给 Kafka sink。</td>
   </tr>
+  <tr>
+    <td>TiCDC 支持<a href="https://docs.pingcap.com/zh/tidb/v8.1/ticdc-client-authentication.md">客户端鉴权</a>（从 v8.1.0 开始引入）**tw@Oreoxmt**</td>
+    <td>TiCDC 支持使用 mTLS（双向传输层安全性协议）或 TiDB 用户名密码进行客户端鉴权。该功能允许命令行工具或 OpenAPI 客户端验证与 TiCDC 的连接。</td>
+  </tr>
 </tbody>
 </table>
 
