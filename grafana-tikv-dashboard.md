@@ -462,7 +462,7 @@ title: TiKV 监控指标详解
 - Abnormal Checkpoint TS Lag：各个任务当前 Checkpoint TS 到现在时间的 Lag。
 - Memory Of Events：增量扫描产生的临时数据占用内存的估计值。
 - Observed Region Count：目前监听的 Region 数量。
-- Errors：可重试、非致命的 Error 数量及类型。
+- Errors：可重试、非致命错误的数量及类型。
 - Fatal Errors：致命错误的数量及类型。通常致命错误会导致任务暂停。
 - Checkpoint TS of Tasks：各个任务的 Checkpoint TS。
 - Flush Duration：将缓存数据移动到外部存储的耗时的热力图。
@@ -472,7 +472,7 @@ title: TiKV 监控指标详解
 - Save to Temp File Duration：将一批备份数据（跨越数个 Task）暂存到临时文件区的耗时的热力图。
 - Write to Temp File Duration：将一批备份数据（来自某个 Task）暂存到临时文件区的耗时的热力图。
 - System Write Call Duration：将一批备份数据（来自某个 Region）写入到临时文件耗时的热力图。
-- Internal Message Type：TiKV 内部负责 Log Backup 的 Actor 收到的消息的类型。
+- Internal Message Type：TiKV 内部负责日志备份的 Actor 收到的消息的类型。
 - Internal Message Handling Duration (P90|P99)：消费、处理各个类型消息的速度。
 - Initial Scan RocksDB Throughput：增量扫描过程中，RocksDB 内部记录产生的读流量。
 - Initial Scan RocksDB Operation：增量扫描过程中，RocksDB 内部记录的各个操作的数量。
