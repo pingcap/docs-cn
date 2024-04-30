@@ -19,7 +19,7 @@ summary: TiDB 1.0 版本发布，对 MySQL 兼容性、SQL 优化器、系统稳
 + 提升 MySQL 兼容性
 + 支持 `NO_SQL_CACHE` 语法，控制存储引擎对缓存的使用
 + 重构 Hash Aggregator 算子，降低内存使用
-+ 支持 Stream Aggragator 算子
++ 支持 Stream Aggregator 算子
 
 ## PD
 

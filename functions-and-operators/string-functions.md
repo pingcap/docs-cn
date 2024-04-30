@@ -1,12 +1,12 @@
 ---
 title: 字符串函数
 aliases: ['/docs-cn/dev/functions-and-operators/string-functions/','/docs-cn/dev/reference/sql/functions-and-operators/string-functions/','/docs-cn/dev/sql/string-functions/']
-summary: TiDB 支持大部分 MySQL 5.7 和部分 MySQL 8.0 字符串函数，以及部分 Oracle 21 函数。不支持的函数包括 LOAD_FILE()、MATCH() 和 SOUNDEX()。正则函数与 MySQL 的语法和数据类型存在一些差异，需要注意。
+summary: TiDB 支持 MySQL 8.0 中提供的大部分字符串函数以及 Oracle 21 中提供的部分函数。
 ---
 
 # 字符串函数
 
-TiDB 支持使用大部分 MySQL 5.7 中提供的[字符串函数](https://dev.mysql.com/doc/refman/5.7/en/string-functions.html)、一部分 MySQL 8.0 中提供的[字符串函数](https://dev.mysql.com/doc/refman/8.0/en/string-functions.html)和一部分 Oracle 21 所提供的[函数](https://docs.oracle.com/en/database/oracle/oracle-database/21/sqlqr/SQL-Functions.html#GUID-93EC62F8-415D-4A7E-B050-5D5B2C127009)。
+TiDB 支持使用 MySQL 8.0 中提供的大部分[字符串函数](https://dev.mysql.com/doc/refman/8.0/en/string-functions.html)以及 Oracle 21 中提供的部分[函数](https://docs.oracle.com/en/database/oracle/oracle-database/21/sqlqr/SQL-Functions.html#GUID-93EC62F8-415D-4A7E-B050-5D5B2C127009)。
 
 关于 Oracle 函数和 TiDB 函数的对照关系，请参考 [Oracle 与 TiDB 函数和语法差异对照](/oracle-functions-to-tidb.md)。
 
@@ -130,7 +130,7 @@ SELECT CustomerName, BIT_LENGTH(CustomerName) AS BitLengthOfName FROM Customers;
 
 ### [`CHAR()`](https://dev.mysql.com/doc/refman/8.0/en/string-functions.html#function_char)
 
-`CHAR()` 函数用于获取指定 ASCII 值的对应字符。该函数执行的操作与 `ASCII()` 相反，`ASCII()` 用于返回指定字符的 ASCII 值。
+`CHAR()` 函数用于获取指定 ASCII 值的对应字符。该函数执行的操作与 `ASCII()` 相反，`ASCII()` 用于返回指定字符的 ASCII 值。如果提供了多个参数，`CHAR()` 函数将作用于所有参数并将它们的结果拼接在一起返回。
 
 示例：
 
@@ -184,6 +184,19 @@ SELECT CHAR(50089);
 +--------------+
 ```
 
+```sql
+SELECT CHAR(65,66,67);
+```
+
+```
++----------------+
+| CHAR(65,66,67) |
++----------------+
+| ABC            |
++----------------+
+1 row in set (0.00 sec)
+```
+
 ### [`CHAR_LENGTH()`](https://dev.mysql.com/doc/refman/8.0/en/string-functions.html#function_char-length)
 
 `CHAR_LENGTH()` 函数用于获取输入参数中字符的总数。
@@ -201,10 +214,10 @@ SELECT CHAR_LENGTH("TiDB") AS LengthOfString;
 ```
 
 ```sql
-SELECT CustomerName, CHAR_LENGTH(CustomerName) AS LenghtOfName FROM Customers;
+SELECT CustomerName, CHAR_LENGTH(CustomerName) AS LengthOfName FROM Customers;
 
 +--------------------+--------------+
-| CustomerName       | LenghtOfName |
+| CustomerName       | LengthOfName |
 +--------------------+--------------+
 | Albert Einstein    |           15 |
 | Robert Oppenheimer |           18 |
@@ -402,11 +415,85 @@ SELECT CONCAT_WS(',', 'TiDB Server', 'TiKV', 'PD');
 
 ### [`ELT()`](https://dev.mysql.com/doc/refman/8.0/en/string-functions.html#function_elt)
 
-返回指定位置的字符串
+`ELT()` 函数返回索引号对应的元素。
+
+```sql
+SELECT ELT(3, 'This', 'is', 'TiDB');
+```
+
+```sql
++------------------------------+
+| ELT(3, 'This', 'is', 'TiDB') |
++------------------------------+
+| TiDB                         |
++------------------------------+
+1 row in set (0.00 sec)
+```
+
+在以上示例中，该函数返回第三个元素，即 `'TiDB'`。
 
 ### [`EXPORT_SET()`](https://dev.mysql.com/doc/refman/8.0/en/string-functions.html#function_export-set)
 
-返回一个字符串，其中值位中设置的每个位，可以得到一个 on 字符串，而每个未设置的位，可以得到一个 off 字符串
+`EXPORT_SET()` 函数返回一个由指定数量 (`number_of_bits`) 的 `on`/`off` 值组成的字符串，各个值之间可以用 `separator` 分隔（可选）。这些值将基于输入的 `bits` 参数中的相应 bit 是否为 `1` 而确定，其中第一个值对应于 `bits` 中的最右边（即最低）的 bit。
+
+语法：
+
+```sql
+EXPORT_SET(bits, on, off, [separator[, number_of_bits]])
+```
+
+- `bits`：一个代表 bits 值的整数。
+- `on`：如果对应的 bit 为 `1`，则返回该字符串。
+- `off`：如果对应的 bit 为 `0`，则返回该字符串。
+- `separator`（可选）：输出字符串中的分隔符。
+- `number_of_bits`（可选）：要处理的位数。如果未设置，则默认使用 `64`（最大位数），这意味着 `bits` 将被视为一个无符号 64 位整数。
+
+示例：
+
+在以下示例中，`number_of_bits` 设置为 `5`，因此该函数返回由 `|` 分隔的 5 个值。`'101'` 里的 bit 值只有三位，所以其他位被视为未设置。因此，将 `number_of_bits` 设置为 `101` 或设置为 `00101` 的返回结果相同。
+
+```sql
+SELECT EXPORT_SET(b'101',"ON",'off','|',5);
+```
+
+```sql
++-------------------------------------+
+| EXPORT_SET(b'101',"ON",'off','|',5) |
++-------------------------------------+
+| ON|off|ON|off|off                   |
++-------------------------------------+
+1 row in set (0.00 sec)
+```
+
+在以下示例中，`bits` 设置为 `00001111`，`on` 设置为 `x`，`off` 设置为 `_`。这使函数在这些 `0` 位上返回 `____`，在这些 `1` 位上返回 `xxxx`。因此，从右到左处理 `00001111` 中的位时，该函数返回 `xxxx____`。
+
+```sql
+SELECT EXPORT_SET(b'00001111', 'x', '_', '', 8);
+```
+
+```sql
++------------------------------------------+
+| EXPORT_SET(b'00001111', 'x', '_', '', 8) |
++------------------------------------------+
+| xxxx____                                 |
++------------------------------------------+
+1 row in set (0.00 sec)
+```
+
+在以下示例中，`bits` 设置为 `00001111`，`on` 设置为 `x`，`off` 设置为 `_`。这使函数在每个 `1` 位上返回 `x`，在每个 `0` 位上返回 `_`。因此，从右到左处理 `01010101` 中的位时，该函数返回 `x_x_x_x_`。
+
+```sql
+SELECT EXPORT_SET(b'01010101', 'x', '_', '', 8);
+```
+
+```sql
++------------------------------------------+
+| EXPORT_SET(b'01010101', 'x', '_', '', 8) |
++------------------------------------------+
+| x_x_x_x_                                 |
++------------------------------------------+
+1 row in set (0.00 sec)
+```
 
 ### [`FIELD()`](https://dev.mysql.com/doc/refman/8.0/en/string-functions.html#function_field)
 
@@ -1206,19 +1293,198 @@ SELECT LPAD('TiDB',-2,'>');
 
 ### [`LTRIM()`](https://dev.mysql.com/doc/refman/8.0/en/string-functions.html#function_ltrim)
 
-去掉前缀空格
+`LTRIM()` 函数用于删除给定的字符串中的前导空格（即字符串开头的连续空格）。
+
+如果输入的参数为 `NULL`，该函数将返回 `NULL`。
+
+> **注意：**
+>
+> 该函数只去掉空格字符（U+0020），不去掉其他类似空格的字符，如制表符（U+0009）或非分隔符（U+00A0）。
+
+示例：
+
+在以下示例中，`LTRIM()` 函数删除了 `'    hello'` 中的前导空格，并返回 `hello`。
+
+```sql
+SELECT LTRIM('    hello');
+```
+
+```
++--------------------+
+| LTRIM('    hello') |
++--------------------+
+| hello              |
++--------------------+
+1 row in set (0.00 sec)
+```
+
+在以下示例中，[`CONCAT()`](#concat) 用于将 `LTRIM('    hello')` 的结果用 `«` 和 `»` 包裹起来。通过这种格式，可以更容易地看到所有前导空格都被删除了。
+
+```sql
+SELECT CONCAT('«',LTRIM('    hello'),'»');
+```
+
+```
++------------------------------------+
+| CONCAT('«',LTRIM('    hello'),'»') |
++------------------------------------+
+| «hello»                            |
++------------------------------------+
+1 row in set (0.00 sec)
+```
 
 ### [`MAKE_SET()`](https://dev.mysql.com/doc/refman/8.0/en/string-functions.html#function_make-set)
 
-返回一组用逗号分隔的字符串，这些字符串的位数与给定的 bits 参数对应
+`MAKE_SET()` 函数根据输入的 `bits` 参数中相应的 bit 是否为 `1` 返回一组由逗号分隔的字符串。
+
+语法：
+
+```sql
+MAKE_SET(bits, str1, str2, ...)
+```
+
+- `bits`：控制其后的字符串参数中的哪些参数会包含到输出结果中。如果 `bits` 为 `NULL`，该函数将返回 `NULL`。
+- `str1, str2, ...`：字符串参数列表。每个字符串与 `bits` 参数中从右到左的一个 bit 依次对应。`str1` 对应于 `bits` 中从右起的第一个 bit，`str2` 对应于从右起的第二个 bit，依此类推。如果相应的 bit 为 `1`，则该字符串将包含在输出结果中；否则，将不包含在输出结果中。
+
+示例：
+
+在以下示例中，因为 `bits` 参数中的所有 bit 都为 `0`，该函数将不会在结果中包含 `bits` 后的任何字符串参数，因此返回空字符串。
+
+```sql
+SELECT MAKE_SET(b'000','foo','bar','baz');
+```
+
+```
++------------------------------------+
+| MAKE_SET(b'000','foo','bar','baz') |
++------------------------------------+
+|                                    |
++------------------------------------+
+1 row in set (0.00 sec)
+```
+
+在以下示例中，因为只有从右起的第一个 bit 为 `1`，该函数只返回第一个字符串 `foo`。
+
+```sql
+SELECT MAKE_SET(b'001','foo','bar','baz');
+```
+
+```
++------------------------------------+
+| MAKE_SET(b'001','foo','bar','baz') |
++------------------------------------+
+| foo                                |
++------------------------------------+
+1 row in set (0.00 sec)
+```
+
+在以下示例中，因为只有从右起的第二个 bit 为 `1`，该函数只返回第二个字符串 `bar`。
+
+```sql
+SELECT MAKE_SET(b'010','foo','bar','baz');
+```
+
+```
++------------------------------------+
+| MAKE_SET(b'010','foo','bar','baz') |
++------------------------------------+
+| bar                                |
++------------------------------------+
+1 row in set (0.00 sec)
+```
+
+在以下示例中，因为只有从右起的第三个 bit 为 `1`，该函数只返回第三个字符串 `baz`。
+
+```sql
+SELECT MAKE_SET(b'100','foo','bar','baz');
+```
+
+```
++------------------------------------+
+| MAKE_SET(b'100','foo','bar','baz') |
++------------------------------------+
+| baz                                |
++------------------------------------+
+1 row in set (0.00 sec)
+```
+
+在以下示例中，因为所有 bit 都为 `1`，该函数将返回全部的三个字符串，并以逗号分隔。
+
+```sql
+SELECT MAKE_SET(b'111','foo','bar','baz');
+```
+
+```
++------------------------------------+
+| MAKE_SET(b'111','foo','bar','baz') |
++------------------------------------+
+| foo,bar,baz                        |
++------------------------------------+
+1 row in set (0.0002 sec)
+```
 
 ### [`MID()`](https://dev.mysql.com/doc/refman/8.0/en/string-functions.html#function_mid)
 
-返回一个以指定位置开始的子字符串
+`MID(str,pos,len)` 函数返回从指定的 `pos` 位置开始的长度为 `len` 的子字符串。
+
+如果任一参数为 `NULL`，该函数将返回 `NULL`。
+
+TiDB 不支持该函数的两参数版本。更多信息，请参见 [#52420](https://github.com/pingcap/tidb/issues/52420)。
+
+示例：
+
+在以下示例中，`MID()` 返回给定的字符串中从第二个字符 (`b`) 开始的长度为 `3` 个字符的的子字符串。
+
+```sql
+SELECT MID('abcdef',2,3);
+```
+
+```
++-------------------+
+| MID('abcdef',2,3) |
++-------------------+
+| bcd               |
++-------------------+
+1 row in set (0.00 sec)
+```
 
 ### [`NOT LIKE`](https://dev.mysql.com/doc/refman/8.0/en/string-comparison-functions.html#operator_not-like)
 
-否定简单模式匹配
+否定简单模式匹配。
+
+该函数的功能与 [`LIKE`](#like) 函数相反。
+
+示例：
+
+在以下示例中，因为 `aaa` 匹配 `a%` 模式，`NOT LIKE` 返回 `0`（代表结果为 False）。
+
+```sql
+SELECT 'aaa' LIKE 'a%', 'aaa' NOT LIKE 'a%';
+```
+
+```
++-----------------+---------------------+
+| 'aaa' LIKE 'a%' | 'aaa' NOT LIKE 'a%' |
++-----------------+---------------------+
+|               1 |                   0 |
++-----------------+---------------------+
+1 row in set (0.00 sec)
+```
+
+在以下示例中，因为 `aaa` 与 `b%` 模式不匹配，`NOT LIKE` 返回 `1`（代表结果为 True）。
+
+```sql
+SELECT 'aaa' LIKE 'b%', 'aaa' NOT LIKE 'b%';
+```
+
+```
++-----------------+---------------------+
+| 'aaa' LIKE 'b%' | 'aaa' NOT LIKE 'b%' |
++-----------------+---------------------+
+|               0 |                   1 |
++-----------------+---------------------+
+1 row in set (0.00 sec)
+```
 
 ### [`NOT REGEXP`](https://dev.mysql.com/doc/refman/8.0/en/regexp.html#operator_not-regexp)
 
@@ -1276,7 +1542,56 @@ SELECT n, OCT(n) FROM nr;
 
 ### [`ORD()`](https://dev.mysql.com/doc/refman/8.0/en/string-functions.html#function_ord)
 
-返回该参数最左侧字符的字符编码
+返回给定的参数中最左侧字符的字符编码。
+
+该函数的功能类似于 [`CHAR()`](#char)，但处理方式相反。
+
+示例：
+
+以 `a` 和 `A` 为例，`ORD()` 返回 `a` 的字符代码 `97` 和 `A` 的字符代码 `65`。
+
+```sql
+SELECT ORD('a'), ORD('A');
+```
+
+```
++----------+----------+
+| ORD('a') | ORD('A') |
++----------+----------+
+|       97 |       65 |
++----------+----------+
+1 row in set (0.00 sec)
+```
+
+如果将从 `ORD()` 获得的字符代码作为 `CHAR()` 函数的输入，即可获取原始字符。请注意，以下输出的格式可能会根据你的 MySQL 客户端是否启用了 `binary-as-hex` 选项而有所不同。
+
+```sql
+SELECT CHAR(97), CHAR(65);
+```
+
+```
++----------+----------+
+| CHAR(97) | CHAR(65) |
++----------+----------+
+| a        | A        |
++----------+----------+
+1 row in set (0.01 sec)
+```
+
+以下示例展示了 `ORD()` 如何处理多字节字符。`101` 和 `0x65` 都是 `e` 字符的 UTF-8 编码值，但格式不同。`50091` 和 `0xC3AB` 也表示的是相同的值，但对应 `ë` 字符。
+
+```sql
+SELECT ORD('e'), ORD('ë'), HEX('e'), HEX('ë');
+```
+
+```
++----------+-----------+----------+-----------+
+| ORD('e') | ORD('ë')  | HEX('e') | HEX('ë')  |
++----------+-----------+----------+-----------+
+|      101 |     50091 | 65       | C3AB      |
++----------+-----------+----------+-----------+
+1 row in set (0.00 sec)
+```
 
 ### [`POSITION()`](https://dev.mysql.com/doc/refman/8.0/en/string-functions.html#function_position)
 
@@ -1311,21 +1626,367 @@ SELECT QUOTE(0x002774657374);
 
 使用正则表达式匹配模式
 
+示例：
+
+下面示例使用了两个正则表达式来匹配一些字符串。
+
+```sql
+WITH vals AS (
+    SELECT 'TiDB' AS v 
+    UNION ALL
+    SELECT 'Titanium'
+    UNION ALL
+    SELECT 'Tungsten'
+    UNION ALL
+    SELECT 'Rust'
+)
+SELECT 
+    v,
+    v REGEXP '^Ti' AS 'starts with "Ti"',
+    v REGEXP '^.{4}$' AS 'Length is 4 characters'
+FROM
+    vals;
+```
+
+```
++----------+------------------+------------------------+
+| v        | starts with "Ti" | Length is 4 characters |
++----------+------------------+------------------------+
+| TiDB     |                1 |                      1 |
+| Titanium |                1 |                      0 |
+| Tungsten |                0 |                      0 |
+| Rust     |                0 |                      1 |
++----------+------------------+------------------------+
+4 rows in set (0.00 sec)
+```
+
+`REGEXP` 并不限于只在 `SELECT` 子句中使用。例如，`REGEXP` 还可以用于查询的 `WHERE` 子句中。
+
+```sql
+SELECT
+    v
+FROM (
+        SELECT 'TiDB' AS v
+    ) AS vals
+WHERE
+    v REGEXP 'DB$';
+```
+
+```
++------+
+| v    |
++------+
+| TiDB |
++------+
+1 row in set (0.01 sec)
+```
+
 ### [`REGEXP_INSTR()`](https://dev.mysql.com/doc/refman/8.0/en/regexp.html#function_regexp-instr)
 
 返回满足正则的子字符串的第一个索引位置（与 MySQL 不完全兼容，具体请参考[正则函数与 MySQL 的兼容性](#正则函数与-mysql-的兼容性)）
+
+`REGEXP_INSTR(str, regexp, [start, [match, [ret, [match_type]]]])` 函数返回正则表达式（`regexp`）匹配字符串（`str`）的位置。
+
+如果 `str` 或 `regexp` 为 `NULL`，则该函数返回 `NULL`。
+
+示例：
+
+下面示例展示了 `^.b.$` 匹配 `abc` 的情况。
+
+```sql
+SELECT REGEXP_INSTR('abc','^.b.$');
+```
+
+```
++-----------------------------+
+| REGEXP_INSTR('abc','^.b.$') |
++-----------------------------+
+|                           1 |
++-----------------------------+
+1 row in set (0.00 sec)
+```
+
+下面示例展示了使用第三个参数来从字符串的指定位置起查找匹配值的情况。
+
+```sql
+SELECT REGEXP_INSTR('abcabc','a');
+```
+
+```
++----------------------------+
+| REGEXP_INSTR('abcabc','a') |
++----------------------------+
+|                          1 |
++----------------------------+
+1 row in set (0.00 sec)
+```
+
+```sql
+SELECT REGEXP_INSTR('abcabc','a',2);
+```
+
+```
++------------------------------+
+| REGEXP_INSTR('abcabc','a',2) |
++------------------------------+
+|                            4 |
++------------------------------+
+1 row in set (0.00 sec)
+```
+
+下面示例展示了使用第四个参数来查找第二个匹配值的情况。
+
+```sql
+SELECT REGEXP_INSTR('abcabc','a',1,2);
+```
+
+```
++--------------------------------+
+| REGEXP_INSTR('abcabc','a',1,2) |
++--------------------------------+
+|                              4 |
++--------------------------------+
+1 row in set (0.00 sec)
+```
+
+下面示例展示了使用第五个参数来返回匹配值后面的那个值的位置，而不是返回匹配值的位置。
+
+```sql
+SELECT REGEXP_INSTR('abcabc','a',1,1,1);
+```
+
+```
++----------------------------------+
+| REGEXP_INSTR('abcabc','a',1,1,1) |
++----------------------------------+
+|                                2 |
++----------------------------------+
+1 row in set (0.00 sec)
+```
+
+下面示例展示了使用第六个参数来添加 `i` 标志以获得不区分大小写的匹配。有关正则表达式 `match_type` 的更多详细信息，请参阅 [`match_type` 兼容性](#匹配模式-match_type-兼容性)。
+
+```sql
+SELECT REGEXP_INSTR('abcabc','A',1,1,0,'');
+```
+
+```
++-------------------------------------+
+| REGEXP_INSTR('abcabc','A',1,1,0,'') |
++-------------------------------------+
+|                                   0 |
++-------------------------------------+
+1 row in set (0.00 sec)
+```
+
+```sql
+SELECT REGEXP_INSTR('abcabc','A',1,1,0,'i');
+```
+
+```
++--------------------------------------+
+| REGEXP_INSTR('abcabc','A',1,1,0,'i') |
++--------------------------------------+
+|                                    1 |
++--------------------------------------+
+1 row in set (0.00 sec)
+```
+
+除了 `match_type`，[排序规则](/character-set-and-collation.md) 也会影响匹配。在下面的示例中，使用了区分大小写和不区分大小写的排序规则来展示这种影响。
+
+```sql
+SELECT REGEXP_INSTR('abcabc','A' COLLATE utf8mb4_general_ci);
+```
+
+```
++-------------------------------------------------------+
+| REGEXP_INSTR('abcabc','A' COLLATE utf8mb4_general_ci) |
++-------------------------------------------------------+
+|                                                     1 |
++-------------------------------------------------------+
+1 row in set (0.01 sec)
+```
+
+```sql
+SELECT REGEXP_INSTR('abcabc','A' COLLATE utf8mb4_bin);
+```
+
+```
++------------------------------------------------+
+| REGEXP_INSTR('abcabc','A' COLLATE utf8mb4_bin) |
++------------------------------------------------+
+|                                              0 |
++------------------------------------------------+
+1 row in set (0.00 sec)
+```
 
 ### [`REGEXP_LIKE()`](https://dev.mysql.com/doc/refman/8.0/en/regexp.html#function_regexp-like)
 
 判断字符串是否满足正则表达式（与 MySQL 不完全兼容，具体请参考[正则函数与 MySQL 的兼容性](#正则函数与-mysql-的兼容性)）
 
+`REGEXP_LIKE(str, regex, [match_type])` 函数用于判断正则表达式是否匹配字符串。可选的 `match_type` 参数可以用于更改匹配行为。
+
+示例：
+
+下面示例展示了 `^a` 匹配 `abc` 的情况。
+
+```sql
+SELECT REGEXP_LIKE('abc','^a');
+```
+
+```
++-------------------------+
+| REGEXP_LIKE('abc','^a') |
++-------------------------+
+|                       1 |
++-------------------------+
+1 row in set (0.00 sec)
+```
+
+下面示例展示了 `^A` 不匹配 `abc` 的情况。
+
+```sql
+SELECT REGEXP_LIKE('abc','^A');
+```
+
+```
++-------------------------+
+| REGEXP_LIKE('abc','^A') |
++-------------------------+
+|                       0 |
++-------------------------+
+1 row in set (0.00 sec)
+```
+
+下面示例展示了 `^A` 匹配 `abc` 的情况，因为 `i` 标志启用了不区分大小写的匹配，所以能够匹配上。关于正则表达式 `match_type` 的更多详细信息，请参阅 [`match_type` 兼容性](#匹配模式-match_type-兼容性)。
+
+```sql
+SELECT REGEXP_LIKE('abc','^A','i');
+```
+
+```
++-----------------------------+
+| REGEXP_LIKE('abc','^A','i') |
++-----------------------------+
+|                           1 |
++-----------------------------+
+1 row in set (0.00 sec)
+```
+
 ### [`REGEXP_REPLACE()`](https://dev.mysql.com/doc/refman/8.0/en/regexp.html#function_regexp-replace)
 
 替换满足正则表达式的子字符串（与 MySQL 不完全兼容，具体请参考[正则函数与 MySQL 的兼容性](#正则函数与-mysql-的兼容性)）
 
+`REGEXP_REPLACE(str, regexp, replace, [start, [match, [match_type]]])` 函数可以用于基于正则表达式替换字符串。
+
+示例：
+
+下面的示例中，两个 `o` 被替换为 `i`。
+
+```sql
+SELECT REGEXP_REPLACE('TooDB', 'o{2}', 'i');
+```
+
+```
++--------------------------------------+
+| REGEXP_REPLACE('TooDB', 'o{2}', 'i') |
++--------------------------------------+
+| TiDB                                 |
++--------------------------------------+
+1 row in set (0.00 sec)
+```
+
+下面示例从第三个字符开始匹配，导致正则表达式不匹配，不进行任何替换。
+
+```sql
+SELECT REGEXP_REPLACE('TooDB', 'o{2}', 'i',3);
+```
+
+```
++----------------------------------------+
+| REGEXP_REPLACE('TooDB', 'o{2}', 'i',3) |
++----------------------------------------+
+| TooDB                                  |
++----------------------------------------+
+1 row in set (0.00 sec)
+```
+
+下面示例中，第五个参数用于设置替换第一个或第二个匹配的值。
+
+```sql
+SELECT REGEXP_REPLACE('TooDB', 'o', 'i',1,1);
+```
+
+```
++---------------------------------------+
+| REGEXP_REPLACE('TooDB', 'o', 'i',1,1) |
++---------------------------------------+
+| TioDB                                 |
++---------------------------------------+
+1 row in set (0.00 sec)
+```
+
+```sql
+SELECT REGEXP_REPLACE('TooDB', 'o', 'i',1,2);
+```
+
+```
++---------------------------------------+
+| REGEXP_REPLACE('TooDB', 'o', 'i',1,2) |
++---------------------------------------+
+| ToiDB                                 |
++---------------------------------------+
+1 row in set (0.00 sec)
+```
+
+下面示例中，第六个参数用于设置 `match_type` 为不区分大小写的匹配。更多关于正则表达式 `match_type` 的详细信息，请参阅 [`match_type` 兼容性](#匹配模式-match_type-兼容性)。
+
+```sql
+SELECT REGEXP_REPLACE('TooDB', 'O{2}','i',1,1);
+```
+
+```
++-----------------------------------------+
+| REGEXP_REPLACE('TooDB', 'O{2}','i',1,1) |
++-----------------------------------------+
+| TooDB                                   |
++-----------------------------------------+
+1 row in set (0.00 sec)
+```
+
+```sql
+SELECT REGEXP_REPLACE('TooDB', 'O{2}','i',1,1,'i');
+```
+
+```
++---------------------------------------------+
+| REGEXP_REPLACE('TooDB', 'O{2}','i',1,1,'i') |
++---------------------------------------------+
+| TiDB                                        |
++---------------------------------------------+
+1 row in set (0.00 sec)
+```
+
 ### [`REGEXP_SUBSTR()`](https://dev.mysql.com/doc/refman/8.0/en/regexp.html#function_regexp-substr)
 
 返回满足正则表达式的子字符串（与 MySQL 不完全兼容，具体请参考[正则函数与 MySQL 的兼容性](#正则函数与-mysql-的兼容性)）
+
+`REGEXP_SUBSTR(str, regexp, [start, [match, [match_type]]])` 函数用于基于正则表达式获取子字符串。
+
+下面示例使用 `Ti.{2}` 正则表达式从 `This is TiDB` 字符串中获取 `TiDB` 子字符串。
+
+```sql
+SELECT REGEXP_SUBSTR('This is TiDB','Ti.{2}');
+```
+
+```
++----------------------------------------+
+| REGEXP_SUBSTR('This is TiDB','Ti.{2}') |
++----------------------------------------+
+| TiDB                                   |
++----------------------------------------+
+1 row in set (0.00 sec)
+```
 
 ### [`REPEAT()`](https://dev.mysql.com/doc/refman/8.0/en/string-functions.html#function_repeat)
 
@@ -1658,6 +2319,15 @@ TiDB 与 MySQL 在 `match_type` 上的差异：
 
 - TiDB 不支持 `match_type` 为 `"u"`。
 
+| `match_type` | MySQL | TiDB | 描述                                   |
+|:------------:|-------|------|----------------------------------------|
+| c            | Yes   | Yes  | 大小写敏感匹配                          |
+| i            | Yes   | Yes  | 大小写不敏感匹配                        |
+| m            | Yes   | Yes  | 匹配多行文本的模式                        |
+| s            | No    | Yes  | 匹配新行，和 MySQL 中的 `n` 相同        |
+| n            | Yes   | No   | 匹配新行，和 TiDB 中的 `s` 相同         |
+| u            | Yes   | No   | UNIX&trade 换行符           |
+
 ### 数据类型兼容性
 
 TiDB 与 MySQL 在二进制字符串 (binary string) 数据类型上的差异：
@@ -1679,3 +2349,7 @@ TiDB 与 MySQL 在二进制字符串 (binary string) 数据类型上的差异：
     ```sql
     SELECT REGEXP_REPLACE('abcd','(.*)(.{2})$','\\1') AS s;
     ```
+
+### 已知问题
+
+- [GitHub Issue #37981](https://github.com/pingcap/tidb/issues/37981)

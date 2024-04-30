@@ -16,62 +16,30 @@ aliases: ['/docs-cn/dev/sql-statements/sql-statement-show-columns-from/','/docs-
 
 ## 语法图
 
-**ShowStmt:**
+```ebnf+diagram
+ShowColumnsFromStmt ::=
+    "SHOW" "FULL"? ("COLUMNS" | "FIELDS") ("FROM" | "IN") TableName ( ("FROM" | "IN") SchemaName)? ShowLikeOrWhere?
 
-![ShowStmt](/media/sqlgram/ShowStmt.png)
+TableName ::=
+    (Identifier ".")? Identifier
 
-**ShowColumnsFilterable:**
-
-![ShowColumnsFilterable](/media/sqlgram/ShowColumnsFilterable.png)
-
-**OptFull:**
-
-![OptFull](/media/sqlgram/OptFull.png)
-
-**FieldsOrColumns:**
-
-![FieldsOrColumns](/media/sqlgram/FieldsOrColumns.png)
-
-**ShowTableAliasOpt:**
-
-![ShowTableAliasOpt](/media/sqlgram/ShowTableAliasOpt.png)
-
-**FromOrIn:**
-
-![FromOrIn](/media/sqlgram/FromOrIn.png)
-
-**TableName:**
-
-![TableName](/media/sqlgram/TableName.png)
-
-**ShowDatabaseNameOpt:**
-
-![ShowDatabaseNameOpt](/media/sqlgram/ShowDatabaseNameOpt.png)
-
-**DBName:**
-
-![DBName](/media/sqlgram/DBName.png)
-
-**ShowLikeOrWhereOpt:**
-
-![ShowLikeOrWhereOpt](/media/sqlgram/ShowLikeOrWhereOpt.png)
+ShowLikeOrWhere ::=
+    "LIKE" SimpleExpr
+|   "WHERE" Expression
+```
 
 ## 示例
 
-{{< copyable "sql" >}}
-
 ```sql
-create view v1 as select 1;
+CREATE VIEW v1 AS SELECT 1;
 ```
 
 ```
 Query OK, 0 rows affected (0.11 sec)
 ```
 
-{{< copyable "sql" >}}
-
 ```sql
-show columns from v1;
+SHOW COLUMNS FROM v1;
 ```
 
 ```
@@ -83,10 +51,8 @@ show columns from v1;
 1 row in set (0.00 sec)
 ```
 
-{{< copyable "sql" >}}
-
 ```sql
-desc v1;
+DESC v1;
 ```
 
 ```
@@ -98,10 +64,8 @@ desc v1;
 1 row in set (0.00 sec)
 ```
 
-{{< copyable "sql" >}}
-
 ```sql
-describe v1;
+DESCRIBE v1;
 ```
 
 ```
@@ -113,10 +77,8 @@ describe v1;
 1 row in set (0.00 sec)
 ```
 
-{{< copyable "sql" >}}
-
 ```sql
-explain v1;
+EXPLAIN v1;
 ```
 
 ```
@@ -128,10 +90,8 @@ explain v1;
 1 row in set (0.00 sec)
 ```
 
-{{< copyable "sql" >}}
-
 ```sql
-show fields from v1;
+SHOW FIELDS FROM v1;
 ```
 
 ```
@@ -143,10 +103,8 @@ show fields from v1;
 1 row in set (0.00 sec)
 ```
 
-{{< copyable "sql" >}}
-
 ```sql
-show full columns from v1;
+SHOW FULL COLUMNS FROM v1
 ```
 
 ```
@@ -158,10 +116,8 @@ show full columns from v1;
 1 row in set (0.00 sec)
 ```
 
-{{< copyable "sql" >}}
-
 ```sql
-show full columns from mysql.user;
+SHOW FULL COLUMNS FROM mysql.user;
 ```
 
 ```

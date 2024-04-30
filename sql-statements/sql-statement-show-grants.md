@@ -10,29 +10,19 @@ aliases: ['/docs-cn/dev/sql-statements/sql-statement-show-grants/','/docs-cn/dev
 
 ## 语法图
 
-**ShowGrantsStmt:**
+```ebnf+diagram
+ShowGrantsStmt ::=
+    "SHOW" "GRANTS" ("FOR" Username ("USING" RolenameList)?)?
 
-![ShowGrantsStmt](/media/sqlgram/ShowGrantsStmt.png)
+Username ::=
+    "CURRENT_USER" ( "(" ")" )?
+| Username ("@" Hostname)?
 
-**Username:**
-
-![Username](/media/sqlgram/Username.png)
-
-**UsingRoles:**
-
-![UsingRoles](/media/sqlgram/UsingRoles.png)
-
-**RolenameList:**
-
-![RolenameList](/media/sqlgram/RolenameList.png)
-
-**Rolename:**
-
-![Rolename](/media/sqlgram/Rolename.png)
+RolenameList ::=
+    Rolename ("@" Hostname)? ("," Rolename ("@" Hostname)? )*
+```
 
 ## 示例
-
-{{< copyable "sql" >}}
 
 ```sql
 SHOW GRANTS;
@@ -47,8 +37,6 @@ SHOW GRANTS;
 1 row in set (0.00 sec)
 ```
 
-{{< copyable "sql" >}}
-
 ```sql
 SHOW GRANTS FOR 'u1';
 ```
@@ -56,8 +44,6 @@ SHOW GRANTS FOR 'u1';
 ```
 ERROR 1141 (42000): There is no such grant defined for user 'u1' on host '%'
 ```
-
-{{< copyable "sql" >}}
 
 ```sql
 CREATE USER u1;
@@ -67,8 +53,6 @@ CREATE USER u1;
 Query OK, 1 row affected (0.04 sec)
 ```
 
-{{< copyable "sql" >}}
-
 ```sql
 GRANT SELECT ON test.* TO u1;
 ```
@@ -76,8 +60,6 @@ GRANT SELECT ON test.* TO u1;
 ```
 Query OK, 0 rows affected (0.04 sec)
 ```
-
-{{< copyable "sql" >}}
 
 ```sql
 SHOW GRANTS FOR u1;
