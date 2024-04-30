@@ -481,14 +481,14 @@ title: TiKV 监控指标详解
 
 > **注意：**
 >
-> 以下这些监控的数据源都是 TiDB，但是对日志备份流程有一些影响。为了方便查阅，将其放在了 TiKV Details 中。此外，大部分时候 TiKV 会主动“推送”进度，因此以下部分监控偶尔没有数据采样属于正常现象。
+> 以下这些监控指标的数据源都是 TiDB 节点，但是对日志备份流程有一些影响。因此，为了方便查阅，将其放在了 **TiKV Details** 面板中。大部分时候 TiKV 会主动“推送”进度，但以下部分监控偶尔没有数据采样也属于正常现象。
 
-- Request Checkpoint Batch Size：日志备份协调器请求各个 TiKV 的 Checkpoint 信息的时候的请求攒批大小。
+- Request Checkpoint Batch Size：日志备份协调器请求各个 TiKV 的 Checkpoint 信息时的请求攒批大小。
 - Tick Duration \[P99|P90\]：协调器内部 Tick 的耗时。
-- Region Checkpoint Failure Reason：协调器内部无法推进某个 Region Checkpoint 的原因的记录。
+- Region Checkpoint Failure Reason：协调器内部无法推进某个 Region Checkpoint 的原因。
 - Request Result：协调器推进 Region Checkpoint 的成功或失败的记录。
 - Get Region Operation Count：协调器向 PD 请求 Region 信息的次数。
-- Try Advance Trigger Time：协调器尝试推进 Checkpoint 时候的耗时。
+- Try Advance Trigger Time：协调器尝试推进 Checkpoint 的耗时。
 
 ### 面板常见参数的解释
 
