@@ -467,7 +467,7 @@ title: TiKV 监控指标详解
 - Checkpoint TS of Tasks：各个任务的 Checkpoint TS。
 - Flush Duration：将缓存数据移动到外部存储的耗时的热力图。
 - Initial Scanning Duration：创建新的监听流时，增量扫描的耗时的热力图。
-- Convert Raft Event Duration：创建监听流后，转化 Raft 任务为备份数据的耗时的热力图。
+- Convert Raft Event Duration：创建监听流后，转化 Raft 日志项为备份数据的耗时的热力图。
 - Command Batch Size：监听到的 Raft Command 的 Batch 大小（单个 Raft Group 内）。
 - Save to Temp File Duration：将一批备份数据（跨越数个 Task）暂存到临时文件区的耗时的热力图。
 - Write to Temp File Duration：将一批备份数据（来自某个 Task）暂存到临时文件区的耗时的热力图。
