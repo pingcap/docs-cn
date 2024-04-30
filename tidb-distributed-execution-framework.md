@@ -79,7 +79,7 @@ TiDB 采用计算存储分离架构，具有出色的扩展性和弹性的扩缩
 
 ## 任务调度
 
-默认设置下，分布式执行框架将在所有节点上执行任务。
+默认情况下，分布式执行框架将会调度所有 TiDB 节点执行分布式任务。从 v7.4.0 起，你可以通过设置 [`tidb_service_scope`](/system-variables.md#tidb_service_scope-从-v740-版本开始引入) 来控制分布式执行框架将会调度哪些 TiDB 节点执行分布式任务。
 
 在 v7.4.0 之后，v8.1.0 之前，分布式执行框架支持使用 [`tidb_service_scope`](/system-variables.md#tidb_service_scope-从-v740-版本开始引入) 来选择在哪些节点上运行任务，该变量的可选值为 `''` 或 `background`，如果当前集群存在 `tidb_service_scope = 'background'` 的节点时，分布式执行框架会将该任务调度到 `tidb_service_scope = 'background'` 的 TiDB 节点上运行，如果不存在 `tidb_service_scope = 'background'` 的节点，无论是因为故障还是正常的 scale-in，分布式执行框架会将任务调度到 `tidb_service_scope = ''` 的节点上去。
 
