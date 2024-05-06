@@ -36,10 +36,10 @@ data-source-dir = "/data/my_database"
 # - "replace"：遇到主键或唯一键冲突的数据时，保留最新的数据，覆盖旧的数据。
 #              冲突数据将被记录到目标 TiDB 集群中的 `lightning_task_info.conflict_error_v2` 表（该表用于记录后置冲突检测到的冲突数据）
 #              和 `conflict_records` 表（该表用于记录前置冲突检测到的冲突数据）中。
-#              如果在物理导入模式下配置了 `conflict.strategy = "replace"`，还可以在 `lightning_task_info.conflict_view` 视图中查看冲突数据。
+#              如果在物理导入模式下配置了 `conflict.strategy = "replace"`，可以在 `lightning_task_info.conflict_view` 视图中查看冲突数据。
 #              你可以根据业务需求选择正确的记录重新手动写入到目标表中。注意，该方法要求目标 TiKV 的版本为 v5.2.0 或更新版本。
 strategy = ""
-# 控制是否开启前置冲突检测，即导入数据到 TiDB 前，先检查所需导入的数据是否存在冲突。冲突记录比例大于或等于 1% 的场景建议配置 `precheck-conflict-before-import = true`，可以提升冲突检测的性能，反之建议关闭。该参数默认值为 false，表示仅开启后置冲突检测。取值为 true 时，表示同时开启前置冲突检测和后置冲突检测。
+# 控制是否开启前置冲突检测，即导入数据到 TiDB 前，先检查所需导入的数据是否存在冲突。该参数默认值为 false，表示仅开启后置冲突检测。取值为 true 时，表示同时开启前置冲突检测和后置冲突检测。为了避免潜在的报错，目前不建议配置 `precheck-conflict-before-import = true`。
 # precheck-conflict-before-import = false
 # threshold = 10000
 # 从 v8.1.0 开始，TiDB Lightning 会自动将 `max-record-rows` 的值设置为 `threshold` 的值，并忽略用户输入，因此无需再单独配置 `max-record-rows`。`max-record-rows` 将在未来版本中废弃。
