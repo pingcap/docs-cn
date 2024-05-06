@@ -77,7 +77,7 @@ TiDB 8.1.0 为长期支持版本 (Long-Term Support Release, LTS)。
     <td>正确的索引设计是提升数据库性能的重要前提。TiDB v8.0.0 引入内存表 <a href="https://docs.pingcap.com/zh/tidb/v8.1/information-schema-tidb-index-usage"><code>INFORMATION_SCHEMA.TIDB_INDEX_USAGE</code></a> 和视图 <a href="https://docs.pingcap.com/zh/tidb/v8.1/sys-schema-unused-indexes"><code>sys.schema_unused_indexes</code></a>，用于记录索引的使用情况。该功能有助于用户评估数据库中索引的效率并优化索引设计。</td>
   </tr>
   <tr>
-    <td rowspan="2">数据迁移</td>
+    <td rowspan="3">数据迁移</td>
     <td>TiCDC 支持 <a href="https://docs.pingcap.com/zh/tidb/v8.1/ticdc-simple-protocol">Simple 协议</a>（从 v8.0.0 开始引入）</td>
     <td>TiCDC 支持了新的 Simple 消息协议，该协议通过在 DDL 和 BOOTSTRAP 事件中嵌入表的 schema 信息，实现了对 schema 信息的动态追踪 (in-band schema tracking)。</td>
   </tr>
@@ -229,9 +229,13 @@ TiDB 8.1.0 为长期支持版本 (Long-Term Support Release, LTS)。
 
 | 配置文件           | 配置项                | 修改类型 | 描述                                 |
 |----------------|--------------------|------|------------------------------------|
-| TiDB Lightning | [conflict.threshold](/tidb-lightning/tidb-lightning-configuration.md#tidb-lightning-任务配置) | 修改   | 默认值从 `9223372036854775807` 修改为 `10000`。 |
+| TiDB Lightning | [conflict.threshold](/tidb-lightning/tidb-lightning-configuration.md#tidb-lightning-任务配置) | 修改   | 默认值从 `9223372036854775807` 修改为 `10000`，从而能快速地中断异常任务，让用户尽快进行相应的调整。避免导入完成后，才发现是因为异常的数据源，或者错误的表结构定义才导致导入了大量的冲突数据，浪费了时间和计算资源。 |
 | TiDB Lightning | [conflict.max-record-rows](/tidb-lightning/tidb-lightning-configuration.md#tidb-lightning-任务配置) | 修改   | 从 v8.1.0 开始，TiDB Lightning 会自动将 `conflict.max-record-rows` 的值设置为 `conflict.threshold` 的值，并忽略用户输入，因此无需再单独配置 `conflict.max-record-rows`。`conflict.max-record-rows` 将在未来版本中废弃。 |
-|                |                    |      |                                    |
+| TiCDC | [security.client-allowed-user](ticdc/ticdc-server-config.md#cdc-server-配置文件说明) | 新增 | 指定可用于客户端鉴权的用户名，列表中不存在的用户的鉴权请求将被直接拒绝。默认值为 null。|
+| TiCDC | [security.client-user-required](ticdc/ticdc-server-config.md#cdc-server-配置文件说明) | 新增 | 控制是否使用 TiDB 的用户名和密码进行客户端鉴权，默认值为 `false`。|
+| TiCDC | [security.mtls](ticdc/ticdc-server-config.md#cdc-server-配置文件说明)            | 新增 | 控制是否开启 TLS 客户端鉴权，默认值为 `false`。|
+| TiCDC | [sink.open.output-old-value](ticdc/ticdc-changefeed-config.md#TiCDC-Changefeed-配置文件说明) | 新增 | 控制是否输出行数据更改前的值。默认值为 `true`。关闭后，Update 事件不会输出 "p" 字段的数据。 |
+| TiCDC | [sink.debezium.output-old-value](ticdc/ticdc-changefeed-config.md#TiCDC-Changefeed-配置文件说明) | 新增 | 控制是否输出行数据更改前的值。默认值为 `true`。关闭后，Update 事件不会输出 "before" 字段的数据。 |
 |                |                    |      |                                    |
 
 ### 其他
@@ -242,7 +246,7 @@ TiDB 8.1.0 为长期支持版本 (Long-Term Support Release, LTS)。
 
 * 计划在后续版本重新设计[执行计划绑定的自动演进](/sql-plan-management.md#自动演进绑定-baseline-evolution)，相关的变量和行为会发生变化。
 
-* TiDB Lightning 参数 `conflict.max-record-rows` 计划在 v8.5.0 中废弃，并在后续版本中删除。该参数将由 `conflict.threshold` 替代，即记录的冲突记录数和单个导入任务允许出现冲突记录数的上限数保持一致。**tw@Oreoxmt**
+* TiDB Lightning 参数 `conflict.max-record-rows` 计划在未来版本中废弃，并在后续版本中删除。该参数将由 `conflict.threshold` 替代，即记录的冲突记录数和单个导入任务允许出现的冲突记录数的上限数保持一致。**tw@Oreoxmt**
 
 * 废弃功能 3
 
