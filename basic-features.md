@@ -256,7 +256,7 @@ aliases: ['/docs-cn/dev/basic-features/','/docs-cn/dev/experimental-features-4.0
 | [选择执行分布式执行框架任务的 TiDB 节点](/system-variables.md#tidb_service_scope-从-v740-版本开始引入) | Y | Y | N | N | N | N | N | N | N |
 | 通过系统变量 [`tidb_enable_tso_follower_proxy`](/system-variables.md#tidb_enable_tso_follower_proxy-从-v530-版本开始引入) 控制 PD Follower Proxy 功能 | Y | Y | Y | Y | Y | Y | Y | N | N |
 | 通过系统变量 [`pd_enable_follower_handle_region`](/system-variables.md#pd_enable_follower_handle_region-从-v760-版本开始引入) 控制 [Active PD Follower](/tune-region-performance.md#通过-active-pd-follower-提升-pd-region-信息查询服务的扩展能力) 功能 | E | N | N | N | N | N | N | N | N |
-| [PD 微服务](/pd-microservices.md) | Y | N | N | N | N | N | N | N | N |
+| [PD 微服务](/pd-microservices.md) | E | N | N | N | N | N | N | N | N |
 | [TiDB 分布式执行框架](/tidb-distributed-execution-framework.md) | Y | Y | E | N | N | N | N | N | N |
 | [全局排序](/tidb-global-sort.md) | Y | E | N | N | N | N | N | N | N |
 

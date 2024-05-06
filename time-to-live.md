@@ -184,7 +184,7 @@ TiDB 会定时采集 TTL 的运行时信息，并在 Grafana 中提供了相关�
     1 row in set (0.040 sec)
     ```
 
-    其中列 `table_id` 为分区表 ID，而 `parent_table_id` 为表的 ID，与 `infomation_schema.tables` 表中的 ID 对应。如果表不是分区表，则 `table_id` 与 `parent_table_id` 总是相等。
+    其中列 `table_id` 为分区表 ID，而 `parent_table_id` 为表的 ID，与 `information_schema.tables` 表中的 ID 对应。如果表不是分区表，则 `table_id` 与 `parent_table_id` 总是相等。
 
     列 `{last, current}_job_{start_time, finish_time, ttl_expire}` 分别描述了过去和当前 TTL 任务的开始时间、结束时间和过期时间。`last_job_summary` 列描述了上一次 TTL 任务的执行情况，包括总行数、成功行数、失败行数。
 
@@ -210,7 +210,7 @@ TiDB 会定时采集 TTL 的运行时信息，并在 Grafana 中提供了相关�
               status: finished
     ```
 
-  其中列 `table_id` 为分区表 ID，而 `parent_table_id` 为表的 ID，与 `infomation_schema.tables` 表中的 ID 对应。`table_schema`、`table_name`、`partition_name` 分别对应表示数据库、表名、分区名。`create_time`、`finish_time`、`ttl_expire` 分别表示 TTL 任务的创建时间、结束时间和过期时间。`expired_rows` 与 `deleted_rows` 表示过期行数与成功删除的行数。
+  其中列 `table_id` 为分区表 ID，而 `parent_table_id` 为表的 ID，与 `information_schema.tables` 表中的 ID 对应。`table_schema`、`table_name`、`partition_name` 分别对应表示数据库、表名、分区名。`create_time`、`finish_time`、`ttl_expire` 分别表示 TTL 任务的创建时间、结束时间和过期时间。`expired_rows` 与 `deleted_rows` 表示过期行数与成功删除的行数。
 
 ## TiDB 数据迁移工具兼容性
 
