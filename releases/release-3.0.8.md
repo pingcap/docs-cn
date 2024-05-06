@@ -79,7 +79,7 @@ TiDB Ansible 版本：3.0.8
     - 修改 Coprocessor 遇到错误时输出日志的级别从 `error` 改成 `warn` [#6051](https://github.com/tikv/tikv/pull/6051)
     - 修改统计信息采样数据的更新行为从直接更行改成先删除再插入，更新行为与 tidb-server 保持一致 [#6069](https://github.com/tikv/tikv/pull/6096)
 + Raftstore
-    - 修复因重复向 `peerfsm` 发送 destory 消息，`peerfsm` 被多次销毁导致 panic 的问题 [#6297](https://github.com/tikv/tikv/pull/6297)
+    - 修复因重复向 `peerfsm` 发送 destroy 消息，`peerfsm` 被多次销毁导致 panic 的问题 [#6297](https://github.com/tikv/tikv/pull/6297)
     - `split-region-on-table` 默认值由 `true` 改成 `false`，默认关闭按 table 切分 Region 的功能 [#6253](https://github.com/tikv/tikv/pull/6253)
 + Engine
     - 修复极端条件下因 RocksDB 迭代器错误未正确处理导致可能返回空数据的问题 [#6326](https://github.com/tikv/tikv/pull/6326)

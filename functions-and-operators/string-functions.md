@@ -1,12 +1,12 @@
 ---
 title: 字符串函数
 aliases: ['/docs-cn/dev/functions-and-operators/string-functions/','/docs-cn/dev/reference/sql/functions-and-operators/string-functions/','/docs-cn/dev/sql/string-functions/']
-summary: TiDB 支持大部分 MySQL 5.7 和部分 MySQL 8.0 字符串函数，以及部分 Oracle 21 函数。不支持的函数包括 LOAD_FILE()、MATCH() 和 SOUNDEX()。正则函数与 MySQL 的语法和数据类型存在一些差异，需要注意。
+summary: TiDB 支持 MySQL 8.0 中提供的大部分字符串函数以及 Oracle 21 中提供的部分函数。
 ---
 
 # 字符串函数
 
-TiDB 支持使用大部分 MySQL 5.7 中提供的[字符串函数](https://dev.mysql.com/doc/refman/5.7/en/string-functions.html)、一部分 MySQL 8.0 中提供的[字符串函数](https://dev.mysql.com/doc/refman/8.0/en/string-functions.html)和一部分 Oracle 21 所提供的[函数](https://docs.oracle.com/en/database/oracle/oracle-database/21/sqlqr/SQL-Functions.html#GUID-93EC62F8-415D-4A7E-B050-5D5B2C127009)。
+TiDB 支持使用 MySQL 8.0 中提供的大部分[字符串函数](https://dev.mysql.com/doc/refman/8.0/en/string-functions.html)以及 Oracle 21 中提供的部分[函数](https://docs.oracle.com/en/database/oracle/oracle-database/21/sqlqr/SQL-Functions.html#GUID-93EC62F8-415D-4A7E-B050-5D5B2C127009)。
 
 关于 Oracle 函数和 TiDB 函数的对照关系，请参考 [Oracle 与 TiDB 函数和语法差异对照](/oracle-functions-to-tidb.md)。
 
@@ -214,10 +214,10 @@ SELECT CHAR_LENGTH("TiDB") AS LengthOfString;
 ```
 
 ```sql
-SELECT CustomerName, CHAR_LENGTH(CustomerName) AS LenghtOfName FROM Customers;
+SELECT CustomerName, CHAR_LENGTH(CustomerName) AS LengthOfName FROM Customers;
 
 +--------------------+--------------+
-| CustomerName       | LenghtOfName |
+| CustomerName       | LengthOfName |
 +--------------------+--------------+
 | Albert Einstein    |           15 |
 | Robert Oppenheimer |           18 |

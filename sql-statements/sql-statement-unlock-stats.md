@@ -11,7 +11,7 @@ summary: TiDB 数据库中 UNLOCK STATS 的使用概况。
 
 ```ebnf+diagram
 UnlockStatsStmt ::=
-    'UNLOCK' 'STATS' (TableNameList) | (TableName 'PARTITION' PartitionNameList)
+    'UNLOCK' 'STATS' (TableNameList | TableName 'PARTITION' PartitionNameList)
 
 TableNameList ::=
     TableName (',' TableName)*
