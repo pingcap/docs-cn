@@ -152,7 +152,9 @@ TiDB 8.1.0 为长期支持版本 (Long-Term Support Release, LTS)。
 
 * 默认开启 TiDB 分布式执行框架，提升并行执行 `ADD INDEX` 或 `IMPORT INTO` 任务的性能和稳定性 [#52441](https://github.com/pingcap/tidb/issues/52441) @[D3Hunter](https://github.com/D3Hunter) **tw@qiancai** 
 
-TiDB 分布式执行框架在 v7.5.0 中成为正式功能 (GA)，但默认关闭，即一个 `ADD INDEX` 或 `IMPORT INTO` 任务默认只能由一个 TiDB 节点执行。从 v8.1.0 起，该功能默认开启（[`tidb_enable_dist_task`](/system-variables.md#tidb_enable_dist_task-从-v710-版本开始引入) 默认为 `ON`）。开启后，分布式执行框架可以调度多个 TiDB 节点并行执行同一个 `ADD INDEX` 或 `IMPORT INTO` 任务，从而充分利用 TiDB 集群的资源，大幅提升这些任务的性能。此外，你还可以通过增加 TiDB 节点并为新增的节点配置 [`tidb_service_scope`](/system-variables.md#tidb_service_scope-从-v740-版本开始引入) 来线性提升 `ADD INDEX` 和 `IMPORT INTO` 任务的性能。
+    TiDB 分布式执行框架在 v7.5.0 中成为正式功能 (GA)，但默认关闭，即一个 `ADD INDEX` 或 `IMPORT INTO` 任务默认只能由一个 TiDB 节点执行。
+
+    从 v8.1.0 起，该功能默认开启（[`tidb_enable_dist_task`](/system-variables.md#tidb_enable_dist_task-从-v710-版本开始引入) 默认为 `ON`）。开启后，分布式执行框架可以调度多个 TiDB 节点并行执行同一个 `ADD INDEX` 或 `IMPORT INTO` 任务，从而充分利用 TiDB 集群的资源，大幅提升这些任务的性能。此外，你还可以通过增加 TiDB 节点并为新增的节点配置 [`tidb_service_scope`](/system-variables.md#tidb_service_scope-从-v740-版本开始引入) 来线性提升 `ADD INDEX` 和 `IMPORT INTO` 任务的性能。
 
     更多信息，请参考[用户文档](/tidb-distributed-execution-framework.md)。
 
