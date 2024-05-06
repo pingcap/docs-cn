@@ -184,11 +184,11 @@ TiDB 8.1.0 为长期支持版本 (Long-Term Support Release, LTS)。
 
     更多信息，请参考[用户文档](/sql-statements/sql-statement-import-into.md)。
 
-* TiDB Lightning 简化冲突处理策略，同时支持以 `replace` 方式处理冲突数据的功能成为正式功能（GA）[#51036](https://github.com/pingcap/tidb/issues/51036) @[lyzx2001](https://github.com/lyzx2001)**tw@qiancai** <!--1795-->
+* TiDB Lightning 简化冲突处理策略，同时支持以 `replace` 方式处理冲突数据的功能成为正式功能 (GA) [#51036](https://github.com/pingcap/tidb/issues/51036) @[lyzx2001](https://github.com/lyzx2001)**tw@qiancai** <!--1795-->
 
     在 v8.0.0 之前的版本中，TiDB Lightning 逻辑导入模式有[一套数据冲突处理策略](/tidb-lightning/tidb-lightning-logical-import-mode-usage.md#冲突数据检测)，而物理导入模式有[两套数据冲突处理策略](/tidb-lightning/tidb-lightning-physical-import-mode-usage.md#冲突数据检测)，不易理解和配置。
 
-    在 v8.0.0 中，TiDB Lightning 废弃了物理导入模式下的[旧版冲突检测](/tidb-lightning/tidb-lightning-physical-import-mode-usage.md#旧版冲突检测从-v800-开始已被废弃)策略，并以实验特性支持通过 [`conflict.strategy`](/tidb-lightning/tidb-lightning-configuration.md) 参数统一控制逻辑导入和物理导入模式的冲突检测策略，并简化了该参数的配置。此外，在物理导入模式下，当导入遇到主键或唯一键冲突的数据时，`replace` 策略支持保留最新的数据、覆盖旧的数据。在 v8.1.0 中，以 `replace` 方式处理冲突数据的功能成为正式功能（GA）。
+    在 v8.0.0 中，TiDB Lightning 废弃了物理导入模式下的[旧版冲突检测](/tidb-lightning/tidb-lightning-physical-import-mode-usage.md#旧版冲突检测从-v800-开始已被废弃)策略，并以实验特性支持通过 [`conflict.strategy`](/tidb-lightning/tidb-lightning-configuration.md) 参数统一控制逻辑导入和物理导入模式的冲突检测策略，并简化了该参数的配置。此外，在物理导入模式下，当导入遇到主键或唯一键冲突的数据时，`replace` 策略支持保留最新的数据、覆盖旧的数据。在 v8.1.0 中，以 `replace` 方式处理冲突数据的功能成为正式功能 (GA)。
 
     更多信息，请参考[用户文档](/tidb-lightning/tidb-lightning-configuration.md)。
 
