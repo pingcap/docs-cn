@@ -53,7 +53,7 @@ TiDB 8.1.0 为长期支持版本 (Long-Term Support Release, LTS)。
   <tr>
     <td rowspan="5">稳定性与高可用</td>
     <td><a href="https://docs.pingcap.com/zh/tidb/v8.1/tidb-global-sort">全局排序成为正式功能</a>（从 v8.0.0 开始 GA）**tw@qiancai**</td>
-    <td>全局排序功能旨在提高 `IMPORT INTO` 和 `CREATE INDEX` 的稳定性与效率。通过对需要处理的数据进行全局排序，可以提高数据写入 TiKV 的稳定性、可控性和可扩展性，从而提升数据导入与添加索引的用户体验和服务质量。启用全局排序后，单条 `IMPORT INTO` 或 `CREATE INDEX` 语句目前已经支持对高达 40 TiB 的数据进行导入或者添加索引。</td>
+    <td>全局排序功能旨在提高 <code>IMPORT INTO</code> 和 <code>CREATE INDEX</code> 的稳定性与效率。通过对需要处理的数据进行全局排序，可以提高数据写入 TiKV 的稳定性、可控性和可扩展性，从而提升数据导入与索引添加的用户体验和服务质量。启用全局排序后，单条 <code>IMPORT INTO</code> 或 <code>CREATE INDEX</code> 语句目前已经支持对高达 40 TiB 的数据进行导入或者添加索引。</td>
   </tr>
   <tr>
     <td><a href="https://docs.pingcap.com/zh/tidb/v8.1/sql-plan-management#跨数据库绑定执行计划-cross-db-binding">跨数据库绑定执行计划</a>（从 v7.6.0 开始引入）</td>
@@ -176,11 +176,11 @@ TiDB 8.1.0 为长期支持版本 (Long-Term Support Release, LTS)。
 
 ### 数据迁移
 
-* `IMPORT INTO ... FROM SELECT` 语法成为正式功能（GA） [#49883](https://github.com/pingcap/tidb/issues/49883) @[D3Hunter](https://github.com/D3Hunter) **tw@qiancai** <!--1791-->
+* `IMPORT INTO ... FROM SELECT` 语法成为正式功能 (GA) [#49883](https://github.com/pingcap/tidb/issues/49883) @[D3Hunter](https://github.com/D3Hunter) **tw@qiancai** <!--1791-->
 
-    在 v8.0.0 之前的版本中，将查询结果导入目标表只能通过 `INSERT INTO ... SELECT` 语句，但该语句在一些大数据量的场景中的导入效率较低。在 v8.0.0 中，TiDB 以实验特性新增支持通过 `IMPORT INTO ... FROM SELECT` 将 `SELECT` 的查询结果导入到一张空的 TiDB 目标表中，其性能最高可达 `INSERT INTO ... SELECT` 的 8 倍，可以大幅缩短导入所需的时间。此外，你还可以通过 `IMPORT INTO ... FROM SELECT` 导入使用 [`AS OF TIMESTAMP`](/as-of-timestamp.md) 查询的历史数据。
+    在 v8.0.0 之前的版本中，将查询结果导入目标表只能通过 `INSERT INTO ... SELECT` 语句，但该语句在一些大数据量的场景中导入效率较低。在 v8.0.0 中，TiDB 以实验特性新增支持通过 `IMPORT INTO ... FROM SELECT` 将 `SELECT` 的查询结果导入到一张空的 TiDB 目标表中，其性能最高可达 `INSERT INTO ... SELECT` 的 8 倍，可以大幅缩短导入所需的时间。此外，你还可以通过 `IMPORT INTO ... FROM SELECT` 导入使用 [`AS OF TIMESTAMP`](/as-of-timestamp.md) 查询的历史数据。
 
-    在 v8.1.0 中，`IMPORT INTO ... FROM SELECT` 语法成为正式功能（GA），丰富了 `IMPORT INTO` 语句的功能场景。
+    在 v8.1.0 中，`IMPORT INTO ... FROM SELECT` 语法成为正式功能 (GA)，丰富了 `IMPORT INTO` 语句的功能场景。
 
     更多信息，请参考[用户文档](/sql-statements/sql-statement-import-into.md)。
 
