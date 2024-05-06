@@ -148,6 +148,15 @@ TiDB 支持在线添加索引操作，可通过 [`ADD INDEX`](/sql-statements/sq
 
 为了减少对在线业务的影响，添加索引的默认速度会比较保守。当添加索引的目标列仅涉及查询负载，或者与线上负载不直接相关时，可以适当调大上述变量来加速添加索引：
 
+在使用 Fast DDL 后，建议两个参数的最大值如下，**不建议设置更大的参数**：
+
+```sql
+SET @@global.tidb_ddl_reorg_worker_cnt = 16;
+SET @@global.tidb_ddl_reorg_batch_size = 1024;
+```
+
+在关闭 Fast DDL 模式后：
+
 ```sql
 SET @@global.tidb_ddl_reorg_worker_cnt = 16;
 SET @@global.tidb_ddl_reorg_batch_size = 4096;
