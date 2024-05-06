@@ -26,7 +26,7 @@ summary: 介绍使用 TiCDC 命令行工具或通过 OpenAPI 访问 TiCDC 时，
     mtls = true
     ```
 
-2. 配置客户端证书：
+2. 配置客户端证书。
 
     <SimpleTab groupId="cdc">
     <div label="TiCDC 命令行工具" value="cdc-cli">
