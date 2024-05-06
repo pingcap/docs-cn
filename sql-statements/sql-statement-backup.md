@@ -34,6 +34,7 @@ BackupOption ::=
     "RATE_LIMIT" '='? LengthNum "MB" '/' "SECOND"
 |   "CONCURRENCY" '='? LengthNum
 |   "CHECKSUM" '='? Boolean
+| "CHECKSUM_CONCURRENCY '='? LengthNum
 |   "SEND_CREDENTIALS_TO_TIKV" '='? Boolean
 |   "LAST_BACKUP" '='? BackupTSO
 |   "SNAPSHOT" '='? ( BackupTSO | LengthNum TimestampUnit "AGO" )
@@ -125,9 +126,9 @@ BACKUP DATABASE `test` TO 's3://example-bucket-2020/backup-05/'
 
 如果你需要减少网络带宽占用，可以通过 `RATE_LIMIT` 来限制每个 TiKV 节点的平均上传速度。
 
-默认情况下，每个 TiKV 节点上运行 4 个备份线程。可以通过 `CONCURRENCY` 选项来调整这个值。
+在备份完成之前，`BACKUP` 将对集群上的数据执行校验和以验证数据正确性。如果您确信此检查不必要，可以使用 `CHECKSUM` 来禁用该检查。使用 `CHECKSUM_CONCURRENCY` 来控制单个表中校验和的并发性（默认值为4）。
 
-在备份完成之前，`BACKUP` 将对集群上的数据进行校验，以验证数据的正确性。如果你确信无需进行校验，可以通过 `CHECKSUM` 选项禁用这一步骤。
+使用 `CONCURRENCY` 来指定 BR 可以同时执行的备份表和索引的任务数量。该参数控制 BR 内的线程池大小，优化备份操作的性能和效率。一个任务代表一个表范围（或一个索引范围）根据备份方案。如果有一个表带有一个索引，则会有两个任务来备份这个表。如果您需要备份许多表或索引，应增加此值。（默认值为4）
 
 {{< copyable "sql" >}}
 
