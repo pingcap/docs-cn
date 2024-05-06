@@ -120,7 +120,7 @@ driver = "file"
 # - "replace"：遇到主键或唯一键冲突的数据时，保留最新的数据，覆盖旧的数据。
 #              冲突数据将被记录到目标 TiDB 集群中的 `lightning_task_info.conflict_error_v2` 表（该表用于记录物理导入模式下后置冲突检测到的冲突数据）
 #              和 `conflict_records` 表（该表用于记录逻辑导入模式和物理导入模式下前置冲突检测到的冲突数据）中。
-#              如果在物理导入模式下配置了 `conflict.strategy = "replace"`，还可以在 `lightning_task_info.conflict_view` 视图中查看冲突数据。
+#              如果在物理导入模式下配置了 `conflict.strategy = "replace"`，可以在 `lightning_task_info.conflict_view` 视图中查看冲突数据。
 #              你可以根据业务需求选择正确的记录重新手动写入到目标表中。注意，该方法要求目标 TiKV 的版本为 v5.2.0 或更新版本。
 # - "ignore"：遇到主键或唯一键冲突的数据时，保留旧的数据，忽略新的数据。仅当导入模式为逻辑导入模式时可以使用该选项。
 strategy = ""
