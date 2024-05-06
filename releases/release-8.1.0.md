@@ -336,7 +336,7 @@ TiDB 8.1.0 为长期支持版本 (Long-Term Support Release, LTS)。
     - 修复了添加索引失败后清理不掉临时数据的问题 [#52639](https://github.com/pingcap/tidb/issues/52639) @[lance6716](https://github.com/lance6716)
     - 修复了元数据锁在 plan cache 场景下未能阻止 DDL 推进的问题 [#51407](https://github.com/pingcap/tidb/issues/51407) @[wjhuang2016](https://github.com/wjhuang2016)
     - 修复了执行 IMPORT INTO 大数据量任务时卡住的问题 [#52884](https://github.com/pingcap/tidb/issues/52884) @[lance6716](https://github.com/lance6716)
-
+    - 修复了在分区裁剪模式为 static 情况下，使用 tablesample 返回错误结果的问题 [#52282](https://github.com/pingcap/tidb/issues/52282) @[tangenta](https://github.com/tangenta)
     - note [#issue](链接) @[贡献者 GitHub ID](链接)
     - note [#issue](链接) @[贡献者 GitHub ID](链接)
     - (dup): release-6.5.9.md > 错误修复> TiDB - 修复查询 `TIDB_HOT_REGIONS` 表时结果返回内存表的问题 [#50810](https://github.com/pingcap/tidb/issues/50810) @[Defined2014](https://github.com/Defined2014)
@@ -407,7 +407,10 @@ TiDB 8.1.0 为长期支持版本 (Long-Term Support Release, LTS)。
 
     + TiDB Lightning
 
-        - note [#issue](链接) @[贡献者 GitHub ID](链接)
+    - 修复了 lightning 导入时，因源文件存在不兼容的 SQL 而报 “no database selected” 的问题 [#51800](https://github.com/pingcap/tidb/issues/51800) @[lance6716](https://github.com/lance6716)
+    - 修复了 lightning 在 server 模式下可能会打印敏感信息到日志的问题 [#36374](https://github.com/pingcap/tidb/issues/36374) @[kennytm](https://github.com/kennytm)
+    - 修复了 lightning 导入期间报 “invalid store ID 0” 错误的问题 [#50501](https://github.com/pingcap/tidb/issues/50501) @[Leavrth](https://github.com/Leavrth)
+    - 修复了 lighting 使用 replace 作为去重算法时报 “Unknown column in where clause” 错误的问题 [#52886](https://github.com/pingcap/tidb/issues/52886) @[lyzx2001](https://github.com/lyzx2001)
         - note [#issue](链接) @[贡献者 GitHub ID](链接)
         - (dup): release-7.1.5.md > 错误修复> Tools> TiDB Lightning - 修复导入 Parquet 格式的空表时，TiDB Lightning panic 的问题 [#52518](https://github.com/pingcap/tidb/issues/52518) @[kennytm](https://github.com/kennytm)
 
