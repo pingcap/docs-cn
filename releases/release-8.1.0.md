@@ -248,7 +248,7 @@ TiDB 8.1.0 为长期支持版本 (Long-Term Support Release, LTS)。
 
 * TiDB Lightning 参数 `conflict.max-record-rows` 计划在未来版本中废弃，并在后续版本中删除。该参数将由 `conflict.threshold` 替代，即记录的冲突记录数和单个导入任务允许出现的冲突记录数的上限数保持一致。**tw@Oreoxmt**
 
-* 废弃功能 3
+* 从 v8.0.0 开始，TiDB Lightning 废弃了物理导入模式下的[旧版冲突检测](/tidb-lightning/tidb-lightning-physical-import-mode-usage.md#旧版冲突检测从-v800-开始已被废弃)策略，支持通过 [`conflict.strategy`](/tidb-lightning/tidb-lightning-configuration.md) 参数统一控制逻辑导入和物理导入模式的冲突检测策略。旧版冲突检测的参数 [`duplicate-resolution`](/tidb-lightning/tidb-lightning-configuration.md) 将在未来版本中被移除。
 
 * 废弃功能 4
 
