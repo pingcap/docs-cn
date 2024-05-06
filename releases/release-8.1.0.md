@@ -192,6 +192,12 @@ TiDB 8.1.0 为长期支持版本 (Long-Term Support Release, LTS)。
 
     更多信息，请参考[用户文档](/tidb-lightning/tidb-lightning-configuration.md)。
 
+* TiCDC 支持客户端鉴权 [#10636](https://github.com/pingcap/tiflow/issues/10636) @[CharlesCheung96](https://github.com/CharlesCheung96) **tw@Oreoxmt** <!--1717-->
+
+    在 v8.1.0 中，当使用 TiCDC CLI 或 OpenAPI 时，TiCDC 支持客户端鉴权。你可以配置 TiCDC 要求客户端使用证书进行鉴权，以实现 mTLS（双向传输层安全性协议）。此外，你还可以使用 TiDB 用户名密码进行客户端鉴权。
+
+    更多信息，请参考[用户文档](/ticdc/ticdc-client-authentication.md)。
+
 ## 兼容性变更
 
 > **注意：**
