@@ -198,6 +198,11 @@ summary: TiDB 配置参数包括启动参数和环境变量。启动参数包括
 - TiDB 用于存放临时文件的目录
 - 默认："/tmp/tidb"
 
+## `--tidb-service-scope`
+
++ 用于设置当前实例 [`tidb_service_scope`](/system-variables.md#tidb_service_scope-从-v740-版本开始引入) 的初始值。
++ 默认：`""`
+
 ## `--token-limit`
 
 + TiDB 中同时允许运行的 Session 数量，用于流量控制
@@ -232,9 +237,4 @@ summary: TiDB 配置参数包括启动参数和环境变量。启动参数包括
 ## `--repair-list`
 
 + 修复模式下需要修复的表名
-+ 默认：""
-
-## `--tidb-service-scope`
-
-+ 用于设置当前实例 [`tidb_service_scope`](/system-variables.md#tidb_service_scope-从-v740-版本开始引入) 的初始值。
 + 默认：""
