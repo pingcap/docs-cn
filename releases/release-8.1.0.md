@@ -268,7 +268,7 @@ TiDB 8.1.0 为长期支持版本 (Long-Term Support Release, LTS)。
 
 + PD
 
-    - note [#issue](链接) @[贡献者 GitHub ID](链接)
+    - 优化调度 operator 相关逻辑竞争锁的开销 [#7897](https://github.com/tikv/pd/issues/7897) @[nolouch](https://github.com/nolouch)
     - note [#issue](链接) @[贡献者 GitHub ID](链接)
 
 + TiFlash
