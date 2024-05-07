@@ -16,7 +16,7 @@ summary: TiDB 数据库中 IMPORT INTO 的使用概况。
 
 > **注意：**
 >
-> 与 [TiDB Lightning](/tidb-lightning/tidb-lightning-overview.md) 相比，`IMPORT INTO` 在部署、资源利用率、任务配置便捷性、调用集成便捷性、自动化分布式任务调度和管理、基于 [TiDB 全局排序](/tidb-global-sort.md) 增强导入稳定性、高可用性和可扩展性等方面都有很大提升。建议您在合适的场景下，使用 `IMPORT INTO` 代替 TiDB Lightning。
+> 与 [TiDB Lightning](/tidb-lightning/tidb-lightning-overview.md) 相比，`IMPORT INTO` 在部署、资源利用率、任务配置便捷性、调用集成便捷性、自动化分布式任务调度和管理、基于 [TiDB 全局排序](/tidb-global-sort.md)增强导入稳定性、高可用性和可扩展性等方面都有很大提升。建议您在合适的场景下，使用 `IMPORT INTO` 代替 TiDB Lightning。
 
 ## 使用限制
 
