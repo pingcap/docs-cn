@@ -328,7 +328,7 @@ Runaway Query 是指执行时间或消耗资源超出预期的查询（仅指 `S
 + `mysql.tidb_runaway_queries` 表中包含了过去 7 天内所有识别到的 Runaway Queries 的历史记录。以其中一行为例：
 
     ```sql
-    MySQL [(none)]> SELECT * FROM mysql.tidb_runaway_queries LIMIT 1\G;
+    MySQL [(none)]> SELECT * FROM mysql.tidb_runaway_queries LIMIT 1\G
     *************************** 1. row ***************************
     resource_group_name: rg1
                    time: 2023-06-16 17:40:22
