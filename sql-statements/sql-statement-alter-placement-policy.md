@@ -61,7 +61,7 @@ AdvancedPlacementOption ::=
 CREATE PLACEMENT POLICY p1 PRIMARY_REGION="us-east-1" REGIONS="us-east-1,us-west-1";
 CREATE TABLE t1 (i INT) PLACEMENT POLICY=p1; -- 绑定放置策略 p1 到表 t1。
 ALTER PLACEMENT POLICY p1 PRIMARY_REGION="us-east-1" REGIONS="us-east-1,us-west-1,us-west-2" FOLLOWERS=4; -- t1 上的放置规则会自动更新。
-SHOW CREATE PLACEMENT POLICY p1\G;
+SHOW CREATE PLACEMENT POLICY p1\G
 ```
 
 ```

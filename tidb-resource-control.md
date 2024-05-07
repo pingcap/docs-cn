@@ -199,6 +199,227 @@ SET RESOURCE GROUP rg1;
 SELECT /*+ RESOURCE_GROUP(rg1) */ * FROM t limit 10;
 ```
 
+<<<<<<< HEAD
+=======
+### 管理资源消耗超出预期的查询 (Runaway Queries)
+
+> **警告：**
+>
+> 该功能目前为实验特性，不建议在生产环境中使用。该功能可能会在未事先通知的情况下发生变化或删除。如果发现 bug，请在 GitHub 上提 [issue](https://github.com/pingcap/tidb/issues) 反馈。
+
+Runaway Query 是指执行时间或消耗资源超出预期的查询（仅指 `SELECT` 语句）。下面使用 **Runaway Queries** 表示管理 Runaway Query 这一功能。
+
+- 自 v7.2.0 起，TiDB 资源管控引入了对 Runaway Queries 的管理。你可以针对某个资源组设置条件来识别 Runaway Queries，并自动发起应对操作，防止集群资源完全被 Runaway Queries 占用而影响其他正常查询。你可以在 [`CREATE RESOURCE GROUP`](/sql-statements/sql-statement-create-resource-group.md) 或者 [`ALTER RESOURCE GROUP`](/sql-statements/sql-statement-alter-resource-group.md) 中配置 `QUERY_LIMIT` 字段，通过规则识别来管理资源组的 Runaway Queries。
+- 自 v7.3.0 起，TiDB 资源管控引入了手动管理 Runaway Queries 监控列表的功能，将给定的 SQL 或者 Digest 添加到隔离监控列表，从而实现快速隔离 Runaway Queries。你可以执行语句 [`QUERY WATCH`](/sql-statements/sql-statement-query-watch.md)，手动管理资源组中的 Runaway Queries 监控列表。
+
+#### `QUERY_LIMIT` 参数说明
+
+支持的条件设置：
+
+- `EXEC_ELAPSED`: 当查询执行的时间超限时，识别为 Runaway Query。
+
+支持的应对操作 (`ACTION`)：
+
+- `DRYRUN`：对执行 Query 不做任何操作，仅记录识别的 Runaway Query。主要用于观测设置条件是否合理。
+- `COOLDOWN`：将查询的执行优先级降到最低，查询仍旧会以低优先级继续执行，不占用其他操作的资源。
+- `KILL`：识别到的查询将被自动终止，报错 `Query execution was interrupted, identified as runaway query`。
+
+为了避免并发的 Runaway Query 过多导致系统资源耗尽，资源管控引入了 Runaway Query 监控机制，能够快速识别并隔离 Runaway Query。该功能通过 `WATCH` 子句实现，当某一个查询被识别为 Runaway Query 之后，会提取这个查询的匹配特征（由 `WATCH` 后的匹配方式参数决定），在接下来的一段时间里（由 `DURATION` 定义），这个 Runaway Query 的匹配特征会被加入到监控列表，TiDB 实例会将查询和监控列表进行匹配，匹配到的查询直接标记为 Runaway Query，而不再等待其被条件识别，并按照当前应对操作进行隔离。其中 `KILL` 会终止该查询，并报错 `Quarantined and interrupted because of being in runaway watch list`。
+
+`WATCH` 有三种匹配方式：
+
+- `EXACT` 表示完全相同的 SQL 才会被快速识别
+- `SIMILAR` 表示会忽略字面值 (Literal)，通过 SQL Digest 匹配所有模式 (Pattern) 相同的 SQL
+- `PLAN` 表示通过 Plan Digest 匹配所有模式 (Pattern) 相同的 SQL
+
+`WATCH` 中的 `DURATION` 选项，用于表示此识别项的持续时间，默认为无限长。
+
+添加监控项后，匹配特征和 `ACTION` 都不会随着 `QUERY_LIMIT` 配置的修改或删除而改变或删除。可以使用 `QUERY WATCH REMOVE` 来删除监控项。
+
+`QUERY_LIMIT` 具体格式如下：
+
+| 参数            | 含义           | 备注                                   |
+|---------------|--------------|--------------------------------------|
+| `EXEC_ELAPSED`  | 当查询执行时间超过该值后被识别为 Runaway Query | EXEC_ELAPSED =`60s` 表示查询的执行时间超过 60 秒则被认为是 Runaway Query。 |
+| `ACTION`    | 当识别到 Runaway Query 时进行的动作 | 可选值有 `DRYRUN`，`COOLDOWN`，`KILL`。 |
+| `WATCH`   | 快速匹配已经识别到的 Runaway Query，即在一定时间内再碰到相同或相似查询直接进行相应动作 | 可选项，配置例如 `WATCH=SIMILAR DURATION '60s'`、`WATCH=EXACT DURATION '1m'`、`WATCH=PLAN`。 |
+
+#### 示例
+
+1. 创建 `rg1` 资源组，限额是每秒 500 RU，并且定义超过 60 秒为 Runaway Query，并对 Runaway Query 降低优先级执行。
+
+    ```sql
+    CREATE RESOURCE GROUP IF NOT EXISTS rg1 RU_PER_SEC = 500 QUERY_LIMIT=(EXEC_ELAPSED='60s', ACTION=COOLDOWN);
+    ```
+
+2. 修改 `rg1` 资源组，对 Runaway Query 直接终止，并且在接下来的 10 分钟里，把相同模式的查询直接标记为 Runaway Query。
+
+    ```sql
+    ALTER RESOURCE GROUP rg1 QUERY_LIMIT=(EXEC_ELAPSED='60s', ACTION=KILL, WATCH=SIMILAR DURATION='10m');
+    ```
+
+3. 修改 `rg1` 资源组，取消 Runaway Queries 检查。
+
+    ```sql
+    ALTER RESOURCE GROUP rg1 QUERY_LIMIT=NULL;
+    ```
+
+#### `QUERY WATCH` 语句说明
+
+语法详见 [`QUERY WATCH`](/sql-statements/sql-statement-query-watch.md)。
+
+参数说明如下：
+
+- `RESOURCE GROUP` 用于指定资源组。此语句添加的 Runaway Queries 监控特征将添加到该资源组的监控列表中。此参数可以省略，省略时作用于 `default` 资源组。
+- `ACTION` 的含义与 `QUERY LIMIT` 相同。此参数可以省略，省略时表示识别后的对应操作采用此时资源组中 `QUERY LIMIT` 配置的 `ACTION`，且不会随着 `QUERY LIMIT` 配置的改变而改变。如果资源组没有配置 `ACTION`，会报错。
+- `QueryWatchTextOption` 参数有 `SQL DIGEST`、`PLAN DIGEST`、`SQL TEXT` 三种类型。
+    - `SQL DIGEST` 的含义与 `QUERY LIMIT` `WATCH` 类型中的 `SIMILAR` 相同，后面紧跟的参数可以是字符串、用户自定义变量以及其他计算结果为字符串的表达式。字符串长度必须为 64，与 TiDB 中关于 Digest 的定义一致。
+    - `PLAN DIGEST` 的含义与 `PLAN` 相同。输入参数为 Digest 字符串。
+    - `SQL TEXT` 可以根据后面紧跟的参数，将输入的 SQL 的原始字符串（使用 `EXACT` 选项）作为模式匹配项，或者经过解析和编译转化为 `SQL DIGEST`（使用 `SIMILAR` 选项）、`PLAN DIGEST`（使用 `PLAN` 选项）来作为模式匹配项。
+
+- 为默认资源组的 Runaway Queries 监控列表添加监控匹配特征（需要提前为默认资源组设置 `QUERY LIMIT`）。
+
+    ```sql
+    QUERY WATCH ADD ACTION KILL SQL TEXT EXACT TO 'select * from test.t2';
+    ```
+
+- 通过将 SQL 解析成 SQL Digest，为 `rg1` 资源组的 Runaway Queries 监控列表添加监控匹配特征。未指定 `ACTION` 时，使用 `rg1` 资源组已配置的 `ACTION`。
+
+    ```sql
+    QUERY WATCH ADD RESOURCE GROUP rg1 SQL TEXT SIMILAR TO 'select * from test.t2';
+    ```
+
+- 通过 PLAN Digest 为 `rg1` 资源组的 Runaway Queries 监控列表添加监控匹配特征。
+
+    ```sql
+    QUERY WATCH ADD RESOURCE GROUP rg1 ACTION KILL PLAN DIGEST 'd08bc323a934c39dc41948b0a073725be3398479b6fa4f6dd1db2a9b115f7f57';
+    ```
+
+- 通过查询 `INFORMATION_SCHEMA.RUNAWAY_WATCHES` 获取监控项 ID，删除该监控项。
+
+    ```sql
+    SELECT * FROM INFORMATION_SCHEMA.RUNAWAY_WATCHES ORDER BY id;
+    ```
+
+    ```sql
+    *************************** 1. row ***************************
+                    ID: 20003
+    RESOURCE_GROUP_NAME: rg2
+            START_TIME: 2023-07-28 13:06:08
+            END_TIME: UNLIMITED
+                WATCH: Similar
+            WATCH_TEXT: 5b7fd445c5756a16f910192ad449c02348656a5e9d2aa61615e6049afbc4a82e
+                SOURCE: 127.0.0.1:4000
+                ACTION: Kill
+    1 row in set (0.00 sec)
+    ```
+
+    ```sql
+    QUERY WATCH REMOVE 20003;
+    ```
+
+#### 可观测性
+
+可以通过以下系统表和 `INFORMATION_SCHEMA` 表获得 Runaway 相关的更多信息：
+
++ `mysql.tidb_runaway_queries` 表中包含了过去 7 天内所有识别到的 Runaway Queries 的历史记录。以其中一行为例：
+
+    ```sql
+    MySQL [(none)]> SELECT * FROM mysql.tidb_runaway_queries LIMIT 1\G
+    *************************** 1. row ***************************
+    resource_group_name: rg1
+                   time: 2023-06-16 17:40:22
+             match_type: identify
+                 action: kill
+           original_sql: select * from sbtest.sbtest1
+            plan_digest: 5b7d445c5756a16f910192ad449c02348656a5e9d2aa61615e6049afbc4a82e
+            tidb_server: 127.0.0.1:4000
+    ```
+
+    其中，`match_type` 为该 Runaway Query 的来源，其值如下：
+
+    - `identify` 表示命中条件。
+    - `watch` 表示被快速识别机制命中。
+
++ `information_schema.runaway_watches` 表中包含了 Runaway Queries 的快速识别规则记录。详见 [`RUNAWAY_WATCHES`](/information-schema/information-schema-runaway-watches.md)。
+
+### 管理后台任务
+
+> **警告：**
+>
+> 该功能目前为实验特性，不建议在生产环境中使用。该功能可能会在未事先通知的情况下发生变化或删除。如果发现 bug，请[提交 issue](/support.md) 反馈。
+> 
+> 资源管控的后台任务管理是基于 TiKV 的 CPU/IO 的资源利用率动态调整资源配额的，因此它依赖各个实例可用资源上限 (Quota)。如果在单个服务器混合部署多个组件或实例，需要通过 cgroup 为各个实例设置合适的资源上限 (Quota)。TiUP Playground 这类共享资源的配置很难表现出预期效果。
+
+后台任务是指那些优先级不高但是需要消耗大量资源的任务，如数据备份和自动统计信息收集等。这些任务通常定期或不定期触发，在执行的时候会消耗大量资源，从而影响在线的高优先级任务的性能。
+
+自 v7.4.0 开始，TiDB 资源管控引入了对后台任务的管理。当一种任务被标记为后台任务时，TiKV 会动态地限制该任务的资源使用，以尽量避免此类任务在执行时对其他前台任务的性能产生影响。TiKV 通过实时地监测所有前台任务所消耗的 CPU 和 IO 等资源，并根据实例总的资源上限计算出后台任务可使用的资源阈值，所有后台任务在执行时会受此阈值的限制。
+
+#### `BACKGROUND` 参数说明
+
+`TASK_TYPES`：设置需要作为后台任务管理的任务类型，多个任务类型以 `,` 分隔。
+
+目前 TiDB 支持如下几种后台任务的类型：
+
+- `lightning`：使用 [TiDB Lightning](/tidb-lightning/tidb-lightning-overview.md) 执行导入任务。同时支持 TiDB Lightning 的物理和逻辑导入模式。
+- `br`：使用 [BR](/br/backup-and-restore-overview.md) 执行数据备份和恢复。目前不支持 PITR。
+- `ddl`：对于 Reorg DDL，控制批量数据回写阶段的资源使用。
+- `stats`：对应手动执行或系统自动触发的[收集统计信息](/statistics.md#统计信息的收集)任务。
+- `background`：预留的任务类型，可使用 [`tidb_request_source_type`](/system-variables.md#tidb_request_source_type-从-v740-版本开始引入) 系统变量指定当前会话的任务类型为 `background`。
+
+默认情况下，被标记为后台任务的任务类型为 `""`，此时后台任务的管理功能处于关闭状态。如需开启后台任务管理功能，你需要手动修改 `default` 资源组的后台任务类型以开启后台任务管理。后台任务类型被识别匹配后，资源管控会自动进行，即当系统资源紧张时，后台任务会自动降为最低优先级，保证前台任务的执行。
+
+> **注意：**
+>
+> 目前，所有资源组的后台任务默认都会绑定到默认资源组 `default` 下进行管控，你可以通过 `default` 全局管控后台任务类型。暂不支持将后台任务绑定到其他资源组。
+
+#### 示例
+
+1. 修改 `default` 资源组，将 `br` 和 `ddl` 标记为后台任务。
+
+    ```sql
+    ALTER RESOURCE GROUP `default` BACKGROUND=(TASK_TYPES='br,ddl');
+    ```
+
+2. 修改 `default` 资源组，将后台任务的类型还原为默认值。
+
+    ```sql
+    ALTER RESOURCE GROUP `default` BACKGROUND=NULL;
+    ```
+
+3. 修改 `default` 资源组，将后台任务的类型设置为空，此时此资源组的所有任务类型都不会作为后台任务处理。
+
+    ```sql
+    ALTER RESOURCE GROUP `default` BACKGROUND=(TASK_TYPES="");
+    ```
+
+4. 查看 `default` 资源组的后台任务类型。
+
+    ```sql
+    SELECT * FROM information_schema.resource_groups WHERE NAME="default";
+    ```
+
+    输出结果如下：
+
+    ```
+    +---------+------------+----------+-----------+-------------+---------------------+
+    | NAME    | RU_PER_SEC | PRIORITY | BURSTABLE | QUERY_LIMIT | BACKGROUND          |
+    +---------+------------+----------+-----------+-------------+---------------------+
+    | default | UNLIMITED  | MEDIUM   | YES       | NULL        | TASK_TYPES='br,ddl' |
+    +---------+------------+----------+-----------+-------------+---------------------+
+    ```
+
+5. 如果希望将当前会话里的任务显式标记为后台类型，你可以使用 `tidb_request_source_type` 显式指定任务类型，如：
+
+    ``` sql
+    SET @@tidb_request_source_type="background";
+    /* 添加 background 任务类型 */
+    ALTER RESOURCE GROUP `default` BACKGROUND=(TASK_TYPES="background");
+    /* 在当前会话中执行 LOAD DATA */
+    LOAD DATA INFILE "s3://resource-control/Lightning/test.customer.aaaa.csv"
+    ```
+
+>>>>>>> d8f5da774d (Fix formatting for TTL and other places (#17274))
 ## 关闭资源管控特性
 
 1. 执行以下命令关闭资源管控特性：
