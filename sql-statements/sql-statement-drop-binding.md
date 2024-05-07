@@ -165,7 +165,7 @@ mysql> SELECT @@LAST_PLAN_FROM_BINDING;
 +--------------------------+
 1 row in set (0.01 sec)
 
-mysql> SHOW BINDINGS\G;
+mysql> SHOW BINDINGS\G
 *************************** 1. row ***************************
 Original_sql: select * from `test` . `t` where `a` = ?
     Bind_sql: SELECT /*+ use_index(@`sel_1` `test`.`t` ) ignore_index(`t` `a`)*/ * FROM `test`.`t` WHERE `a` = 1
@@ -186,7 +186,7 @@ No query specified
 mysql> DROP BINDING FOR SQL DIGEST '6909a1bbce5f64ade0a532d7058dd77b6ad5d5068aee22a531304280de48349f';
 Query OK, 0 rows affected (0.00 sec)
 
-mysql> SHOW BINDINGS\G;
+mysql> SHOW BINDINGS\G
 Empty set (0.01 sec)
 
 ERROR:
