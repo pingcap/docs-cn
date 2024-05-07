@@ -31,7 +31,7 @@ summary: 了解 `IMPORT INTO` 和 TiDB Lightning 的差异。
 
 你可以与其他业务分享 TiDB 节点，或者在错峰使用这些节点以充分利用资源。为实现以最优性能保持业务稳定运行，你可以指定[特定的 TiDB 节点](/system-variables.md#tidb_service_scope-new-in-v740)，专门用于使用 `IMPORT INTO` 导入数据。
 
-当使用 TiDB 全局排序时，你无需加载太大的本地磁盘。TiDB 全局排序可以使用 S3。一旦完成数据导入，你可以删除相关数据以节省存储成本。
+当使用 TiDB 全局排序时，你无需加载太大的本地磁盘。TiDB 全局排序可以使用 Amazon S3。一旦完成数据导入，你可以删除相关数据以节省存储成本。
 
 #### TiDB Lightning
 
@@ -59,7 +59,7 @@ summary: 了解 `IMPORT INTO` 和 TiDB Lightning 的差异。
 
 TiDB Lightning 的配置复杂、低效且容易出错。
 
-例如，如果启动 10 个并行 TiDB Lightning 实例导入数据，则需要编写 10 个 TiDB Lightning 配置文件，并在每个配置文件中配置每个 TiDB Lightning 实例读取的源文件范围。TiDB Lightning 实例 1 读取前 100 个文件，实例 2 读取接下来的 100 个文件，依此类推。
+假设启动 10 个并行 TiDB Lightning 实例导入数据，则需要编写 10 个 TiDB Lightning 配置文件，并在每个配置文件中配置每个 TiDB Lightning 实例读取的源文件范围。例如，TiDB Lightning 实例 1 读取前 100 个文件，实例 2 读取接下来的 100 个文件，依此类推。
 
 此外，你还需要为这 10 个 TiDB Lightning 实例配置共享元数据表和其他配置信息。
 
@@ -67,17 +67,17 @@ TiDB Lightning 的配置复杂、低效且容易出错。
 
 #### `IMPORT INTO`
 
-基于 TiDB 全局排序，可以将数数十个 TiB 的源数据传输到多个 TiDB 节点，其中编码数据 KV 对和索引 KV 对传输到 S3 进行全局排序，然后写入 TiKV。
+基于 TiDB 全局排序，可以将数数十个 TiB 的源数据传输到多个 TiDB 节点，其中编码数据 KV 对和索引 KV 对传输到 Amazon S3 进行全局排序，然后写入 TiKV。
 
 由于它是全局排序的，因此从各个 TiDB 节点导入 TiKV 的数据不会重叠，从而可以直接将其摄入到 RocksDB 的 L6 层中。这样就不需要 TiKV 执行压缩操作，从而使 TiKV 的写入性能和稳定性都有显着提升。
 
-导入完成后，S3 上用于全局排序的数据将自动删除，节省存储成本。
+导入完成后，Amazon S3 上用于全局排序的数据将自动删除，节省存储成本。
 
 #### TiDB Lightning
 
 TiDB Lightning 仅支持本地排序。例如，对于数十个 TiB 的源数据，如果 TiDB Lightning 没有配置大的本地磁盘，或者使用多个 TiDB Lightning 实例并行导入，则每个 TiDB Lightning 实例只会使用本地磁盘对用于导入的数据进行排序。由于无法进行全局排序，多个 TiDB Lightning 实例导入 TiKV 的数据之间会出现重叠，尤其是索引数据较多的场景，触发 TiKV 进行压缩操作。由于压缩是非常消耗资源的操作，会导致 TiKV 的写入性能和稳定性下降。
 
-另外，数据导入完成后，你仍需要保留 TiDB Lightning 的本地磁盘，以供下次导入使用。与 S3 相比成本相对较高。
+另外，数据导入完成后，你仍需要保留 TiDB Lightning 的本地磁盘，以供下次导入使用。与 Amazon S3 相比成本相对较高。
 
 ### 性能
 
