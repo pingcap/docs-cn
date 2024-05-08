@@ -1,7 +1,7 @@
 ---
 title: TiDB RC4 Release Notes
 aliases: ['/docs-cn/dev/releases/release-rc.4/','/docs-cn/dev/releases/rc4/']
-summary: TiDB RC4 版本对 MySQL 兼容性、SQL 优化器、系统稳定性、性能做了大量工作。重点优化了写入速度，计算任务调度支持优先级，避免分析型大事务影响在线事务。SQL 优化器全新改版，查询代价估算更准确，且能自动选择 Join 物理算子。功能方面进一步 MySQL 兼容性。同时开源了 TiSpark 项目，可以通过 Spark 读取和分析 TiKV 中的数据。 PD 支持通过 PD 设置 TiKV location labels，调度优化，优化数据加载，加快 failover 速度。 TiKV 支持查询优先级设置，支持 RC 隔离级别，完善 Jepsen，支持 Document Store，提升性能，提升稳定性。 TiSpark Beta Release 支持谓词下推，支持聚合下推，支持范围裁剪。
+summary: TiDB RC4 版本对 MySQL 兼容性、SQL 优化器、系统稳定性、性能做了大量工作。重点优化了写入速度，计算任务调度支持优先级，避免分析型大事务影响在线事务。SQL 优化器全新改版，查询代价估算更准确，且能自动选择 Join 物理算子。功能方面进一步 MySQL 兼容性。同时开源了 TiSpark 项目，可以通过 Spark 读取和分析 TiKV 中的数据。PD 支持通过 PD 设置 TiKV location labels，调度优化，优化数据加载，加快 failover 速度。 TiKV 支持查询优先级设置，支持 RC 隔离级别，完善 Jepsen，支持 Document Store，提升性能，提升稳定性。TiSpark Beta Release 支持谓词下推，支持聚合下推，支持范围裁剪。
 ---
 
 # TiDB RC4 Release Notes
