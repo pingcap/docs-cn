@@ -1,5 +1,6 @@
 ---
 title: TiDB 3.0.5 Release Notes
+summary: TiDB 3.0.5 发布，包含 SQL 优化器和执行引擎的多项修复和改进，支持事务 TTL 修改接口函数，以及对 Region Cache TTL 的配置修改。TiKV 新特性包括悲观事务 Cleanup 接口支持和 Raftstore 性能优化。PD 提高了 Region 占用空间的精度和 label 监控可读性。TiDB Binlog 和 TiDB Lightning 也有多项修复和功能增强。TiDB Ansible 更新了监控表达式和配置文件内容。
 ---
 
 # TiDB 3.0.5 Release Notes

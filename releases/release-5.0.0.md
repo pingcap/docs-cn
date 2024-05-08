@@ -1,5 +1,6 @@
 ---
 title: What's New in TiDB 5.0
+summary: TiDB 5.0 版本新增了许多功能和优化，包括 MPP 架构、聚簇索引、异步提交事务、Raft Joint Consensus 算法等。此外，还优化了系统变量、配置文件参数、性能、稳定性和数据迁移功能。TiUP 工具也进行了多项优化，包括部署操作逻辑、升级稳定性、升级时长和运维功能。遥测方面新增了集群使用指标的收集。
 ---
 
 # What's New in TiDB 5.0

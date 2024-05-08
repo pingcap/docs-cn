@@ -1,5 +1,6 @@
 ---
 title: TiDB 5.1.4 Release Notes
+summary: TiDB 5.1.4 发布日期为 2022 年 2 月 22 日。此版本包含兼容性更改、提升改进和 Bug 修复。兼容性更改包括系统变量 `tidb_analyze_version` 默认值修改为 `1`，以及 TiKV 在开启 `storage.enable-ttl` 后拒绝 TiDB 请求。提升改进方面，TiDB 支持在 Range 类型分区表中对 `IN` 表达式进行分区裁剪，TiKV 升级了 proc filesystem 版本。Bug 修复方面，修复了多个 TiDB 和 TiKV 的问题，包括内存泄露、配置项不生效、panic 等。Tools 方面也有多个修复和改进，包括 TiCDC、Backup & Restore、TiDB Binlog 和 TiDB Lightning。
 ---
 
 # TiDB 5.1.4 Release Notes

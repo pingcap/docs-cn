@@ -1,5 +1,6 @@
 ---
 title: TiDB 2.1.9 Release Notes
+summary: TiDB 2.1.9 发布，修复了多个函数和权限检查问题，支持指定 collation 为 utf8mb4_0900_ai_ci，改进了慢日志输出和 PD 服务支持。 TiKV 修复了在 transfer leader 时的问题。 TiDB Binlog 和 TiDB Lightning 也有多个修复和改进。 TiDB Ansible 更新了文档链接和移除了一个参数。
 ---
 
 # TiDB 2.1.9 Release Notes

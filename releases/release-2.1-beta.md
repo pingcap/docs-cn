@@ -1,5 +1,6 @@
 ---
 title: TiDB 2.1 Beta Release Notes
+summary: TiDB 2.1 Beta 版本对系统稳定性、优化器、统计信息以及执行引擎做了很多改进。SQL 优化器优化了 Index Join 选择范围和关联子查询，下推 Filter 和扩大索引选择范围。SQL 执行引擎实现了并行 Hash Aggregate 和 Project 算子，提高了执行性能。Server 添加了 HTTP API 控制功能和支持 Server side cursor。兼容性方面支持更多 MySQL 语法和 SHOW PRIVILEGES 语句。PD 优化了 Balance Scheduler 和热点调度器，TiKV 升级了 Rust 版本和优化了性能。
 ---
 
 # TiDB 2.1 Beta Release Notes

@@ -1,5 +1,6 @@
 ---
 title: PD Control 使用说明
+summary: PD Control 是 PD 的命令行工具，用于获取集群状态信息和调整集群。
 ---
 
 # PD Control 使用说明

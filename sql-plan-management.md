@@ -1,5 +1,6 @@
 ---
 title: 执行计划管理 (SPM)
+summary: 介绍 TiDB 的执行计划管理 (SQL Plan Management) 功能。
 ---
 
 # 执行计划管理 (SPM)

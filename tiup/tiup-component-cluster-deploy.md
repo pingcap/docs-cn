@@ -1,5 +1,6 @@
 ---
 title: tiup cluster deploy
+summary: tiup cluster deploy 命令用于部署全新集群。语法为 tiup cluster deploy <cluster-name> <version> <topology.yaml> [flags]。选项包括 -u, -i, -p, --ignore-config-check, --no-labels, --skip-create-user, -h。输出为部署日志。
 ---
 
 # tiup cluster deploy

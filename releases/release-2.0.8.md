@@ -1,5 +1,6 @@
 ---
 title: TiDB 2.0.8 release notes
+summary: TiDB 2.0.8 版本在 2.0.7 版的基础上做出了改进，包括功能改进和 Bug 修复。TiKV 也修复了节点宕机时内存持续上升的问题。
 ---
 
 # TiDB 2.0.8 Release Notes

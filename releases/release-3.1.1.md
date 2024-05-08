@@ -1,5 +1,6 @@
 ---
 title: TiDB 3.1.1 Release Notes
+summary: TiDB 3.1.1 发布，新增了 auto_rand_base 表选项和 Feature ID 注释。TiFlash 优化了读写负载相关图表和 chunk encode decimal 数据的流程。修复了隔离读设置不生效、hash 分区表上的分区选择语法报错、update sql 中包含 view 仍然报错等问题。TiFlash 修复了非 normal 状态时读取数据错误、表名映射方式支持 recover table/flashback table、数据存储路径问题、读模型优化和特殊字符导致无法启动的问题。BR 修复了恢复带有 auto_random 属性的表后插入数据触发 duplicate entry 错误的问题。
 ---
 
 # TiDB 3.1.1 Release Notes

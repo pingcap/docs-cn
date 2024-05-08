@@ -1,5 +1,6 @@
 ---
 title: TiDB 5.4.3 Release Notes
+summary: TiDB 5.4.3 发布，提升了 TiKV 和 Tools 的功能，修复了多个 Bug。包括 TiKV 支持更小的 RocksDB write stall 参数，TiDB 修复了多个查询和执行时可能出现的问题。PD 也修复了一些请求和权限问题。TiFlash 修复了一些函数和并行聚合的错误。Tools 中的 TiDB Lightning 修复了一些数据导入和连接问题，DM 修复了一些数据同步和连接问题，BR 修复了备份恢复和 Region 不均衡的问题，Dumpling 修复了 IPv6 的支持问题。
 ---
 
 # TiDB 5.4.3 Release Notes

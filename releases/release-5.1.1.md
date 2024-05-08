@@ -1,5 +1,6 @@
 ---
 title: TiDB 5.1.1 Release Notes
+summary: TiDB 5.1.1 发布，兼容性更改包括默认值修改和权限变更。功能增强方面新增 OIDC SSO 支持和 DAG 请求中的 `HAVING()` 函数。改进提升包括 Stale Read 成为正式功能、加快数据插入速度、稳定结果模式支持等。Bug 修复方面修复了多个问题，包括数据丢失、panic、数据不一致等。 Tools 方面也有多个修复，包括 TiCDC、Backup & Restore、TiDB Lightning。
 ---
 
 # TiDB 5.1.1 Release Notes

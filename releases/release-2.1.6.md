@@ -1,5 +1,6 @@
 ---
 title: TiDB 2.1.6 Release Notes
+summary: TiDB 2.1.6 版本发布，对系统稳定性、优化器、统计信息和执行引擎做了改进。修复了多个问题，包括索引扫描选择问题、聚合函数兼容性问题、变量设置导致的 Panic 问题等。TiKV 修复了解析 protobuf 失败导致的错误。Lightning 修复了多个导入相关的问题，并支持 CSV 格式。
 ---
 
 # TiDB 2.1.6 Release Notes
