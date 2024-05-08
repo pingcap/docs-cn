@@ -214,11 +214,14 @@ TiDB 8.1.0 为长期支持版本 (Long-Term Support Release, LTS)。
 ## 改进提升
 
 + TiDB
-
+  <!--tw@Oreoxmt 7 -->
     - 提升了外键在 SHOW CREATE TABLE 结果中显示的 MySQL 兼容性 [#51837](https://github.com/pingcap/tidb/issues/51837) @[negachov](https://github.com/negachov)
     - 提升了表达式默认值在 SHOW CREATE TABLE 结果中显示的 MySQL 兼容性 [#52939](https://github.com/pingcap/tidb/issues/52939) @[CbcWestwolf](https://github.com/CbcWestwolf)
     - 允许使用 ingest 模式并发添加多个索引 [#52596](https://github.com/pingcap/tidb/issues/52596) @[lance6716](https://github.com/lance6716)
-    - 允许将系统变量 `tidb_service_scope` 设置为不同的值，从而更好地利用分布式框架功能 [#issue](https://github.com/pingcap/tidb/issues/52441) @[ywqzzy](https://github.com/ywqzzy)
+    - 允许将系统变量 `tidb_service_scope` 设置为不同的值，从而更好地利用分布式框架功能 [#52441](https://github.com/pingcap/tidb/issues/52441) @[ywqzzy](https://github.com/ywqzzy)
+    - 增强 TiDB 对总是 false 的 DNF 的处理，直接忽略这种过滤条件 [#40997](https://github.com/pingcap/tidb/issues/40997) @[hi-rustin](https://github.com/hi-rustin)
+    - 不允许将 tidb_auto_analyze_ratio 参数设置为 0 [#51582](https://github.com/pingcap/tidb/issues/51582) @[hi-rustin](https://github.com/hi-rustin)
+    - 如果查询有除了全表扫描以外的单索引扫描方式可以选择，优化器不会自动选择索引合并。现在可以通过 Optimizer Fix Controls 机制解除这个限制 [#52869](https://github.com/pingcap/tidb/issues/52869) @[time-and-fate](https://github.com/time-and-fate)
     - (dup): release-7.1.5.md > 改进提升> TiDB - 为 LDAP 身份认证添加超时机制，避免资源锁 (RLock) 无法及时释放的问题 [#51883](https://github.com/pingcap/tidb/issues/51883) @[YangKeao](https://github.com/YangKeao)
 
 + TiKV
@@ -226,7 +229,7 @@ TiDB 8.1.0 为长期支持版本 (Long-Term Support Release, LTS)。
     - (dup): release-6.5.9.md > 改进提升> TiKV - 在 raftstore 线程中避免进行快照文件的 IO 操作，提高 TiKV 稳定性 [#16564](https://github.com/tikv/tikv/issues/16564) @[Connor1996](https://github.com/Connor1996)
 
 + PD
-
+  <!--tw@qiancai 1 -->
     - 优化调度 operator 相关逻辑竞争锁的开销 [#7897](https://github.com/tikv/pd/issues/7897) @[nolouch](https://github.com/nolouch)
 
 + TiFlash
@@ -237,14 +240,14 @@ TiDB 8.1.0 为长期支持版本 (Long-Term Support Release, LTS)。
 + Tools
 
     + Backup & Restore (BR)
-
+      <!--tw@hfxsd 2 -->
         - (dup): release-7.1.5.md > 改进提升> Tools> Backup & Restore (BR) - 增加 PITR 集成测试用例，覆盖对日志备份与添加索引加速功能的兼容性测试 [#51987](https://github.com/pingcap/tidb/issues/51987) @[Leavrth](https://github.com/Leavrth)
         - (dup): release-7.1.5.md > 改进提升> Tools> Backup & Restore (BR) - 移除日志备份启动时检查是否存在活动 DDL job 的无效检查 [#52733](https://github.com/pingcap/tidb/issues/52733) @[Leavrth](https://github.com/Leavrth)
         - 增加测试用例测试 PITR 和添加索引加速兼容性 [#51988](https://github.com/pingcap/tidb/issues/51988) @[Leavrth](https://github.com/Leavrth)
         - BR 恢复过程中清理空 sst 文件 [#16005](https://github.com/tikv/tikv/issues/16005) @[Leavrth](https://github.com/Leavrth)
 
     + TiCDC
-
+      <!--tw@hfxsd 2 -->
         - 提升了使用 redo log 恢复数据过程中的内存稳定性，减少了 OOM 的概率 [#10900](https://github.com/pingcap/tiflow/issues/10900) @[CharlesCheung96](https://github.com/CharlesCheung96)
         - 显著提升了事务冲突场景的数据同步的稳定性，性能最高提升 10 倍 [#10896](https://github.com/pingcap/tiflow/issues/10896) @[CharlesCheung96](https://github.com/CharlesCheung96)
 
@@ -276,24 +279,22 @@ TiDB 8.1.0 为长期支持版本 (Long-Term Support Release, LTS)。
 ## 错误修复
 
 + TiDB
-
-    - 增强 TiDB 对总是 false 的 DNF 的处理，直接忽略这种过滤条件 [#40997](https://github.com/pingcap/tidb/issues/40997) @[hi-rustin](https://github.com/hi-rustin)
+  <!--tw@Oreoxmt 以下 12 条 -->
     - 修复当 SQL 涉及包含多值索引的表时，执行可能报错“Can't find a proper physical plan for this query”的问题 [#49438](https://github.com/pingcap/tidb/issues/49438) @[qw4990](https://github.com/qw4990)
     - 修复自动分析在 OOM 后卡住的问题 [#51993](https://github.com/pingcap/tidb/issues/51993) @[hi-rustin](https://github.com/hi-rustin)
-    - 不允许将 tidb_auto_analyze_ratio 参数设置为 0 [#51582](https://github.com/pingcap/tidb/issues/51582) @[hi-rustin](https://github.com/hi-rustin)
     - 修复使用 BR 恢复一张表之后，即使这张表没有统计信息，统计信息健康度也显示 100 的问题 [#29769](https://github.com/pingcap/tidb/issues/29769) @[winoros](https://github.com/winoros)
     - 修复了 TiDB 在升级过程中会为系统表创建统计信息的问题 [#52040](https://github.com/pingcap/tidb/issues/52040) @[hi-rustin](https://github.com/hi-rustin)
     - 修复 TiDB 在统计信息初始化完成前就进行自动分析的问题 [#52346](https://github.com/pingcap/tidb/issues/52346) @[hi-rustin](https://github.com/hi-rustin)
     - 修复启用 `tidb_mem_quota_analyze` 时，自动分析使用的内存超过限制可能导致 TiDB crash 的问题 [#52601](https://github.com/pingcap/tidb/issues/52601) @[hawkingrei](https://github.com/hawkingrei)
     - 修复 TiDB 统计信息同步加载机制无限重试加载空统计信息并打印“fail to get stats version for this histogram”日志的问题 [#52657](https://github.com/pingcap/tidb/issues/52657) @[hawkingrei](https://github.com/hawkingrei)
     - 修复在关闭新排序规则框架的时候，涉及不同排序规则的表达式可能导致查询 panic 的问题 [#52772](https://github.com/pingcap/tidb/issues/52772) @[wjhuang2016](https://github.com/wjhuang2016)
-    - 如果查询有除了全表扫描以外的单索引扫描方式可以选择，优化器不会自动选择索引合并。现在可以通过 Optimizer Fix Controls 机制解除这个限制 [#52869](https://github.com/pingcap/tidb/issues/52869) @[time-and-fate](https://github.com/time-and-fate)
     - 修复 `CPS by type` 监控项显示错误的问题 [#52605](https://github.com/pingcap/tidb/issues/52605) @[nolouch](https://github.com/nolouch)
     - 修复查询 `INFORMATION_SCHEMA.TIKV_REGION_STATUS` 出现空指针的问题 [#52013](https://github.com/pingcap/tidb/issues/52013) @[JmPotato](https://github.com/JmPotato)
     - 修正了指定非法列默认值时的错误提示信息 [#51592](https://github.com/pingcap/tidb/issues/51592) @[danqixu](https://github.com/danqixu)
     - 修复了 ingest 模式添加索引时，在边角案例下导致数据索引不一致的问题 [#51954](https://github.com/pingcap/tidb/issues/51954) @[lance6716](https://github.com/lance6716)
+  <!--tw@lilin90 以下 18 条 -->
     - 修复了恢复含有外键的表时，DDL 卡住的问题 [#51838](https://github.com/pingcap/tidb/issues/51838) @[YangKeao](https://github.com/YangKeao)
-    - 修复了加索引期间 TiDB 网络隔离导致加索引失败的问题 [#51846](https://github.com/pingcap/tidb/issues/51838) @[ywqzzy](https://github.com/ywqzzy)
+    - 修复了加索引期间 TiDB 网络隔离导致加索引失败的问题 [#51846](https://github.com/pingcap/tidb/issues/51846) @[ywqzzy](https://github.com/ywqzzy)
     - 修复了重命名索引后再添加同名索引时的报错问题 [#51431](https://github.com/pingcap/tidb/issues/51431) @[lance6716](https://github.com/lance6716)
     - 修复了添加索引期间升级集群导致的数据索引不一致问题 [#52411](https://github.com/pingcap/tidb/issues/52411) @[tangenta](https://github.com/tangenta)
     - 修复了开启分布式框架后为大数据量表添加索引不成功的问题 [#52640](https://github.com/pingcap/tidb/issues/52640) @[tangenta](https://github.com/tangenta)
@@ -321,9 +322,7 @@ TiDB 8.1.0 为长期支持版本 (Long-Term Support Release, LTS)。
     - (dup): release-6.5.9.md > 错误修复> TiKV - 修复 RocksDB 中非活跃的 WAL (Write Ahead Log) 可能损毁数据的问题 [#16705](https://github.com/tikv/tikv/issues/16705) @[Connor1996](https://github.com/Connor1996)
 
 + PD
-
-    - 修复 `trace-region-flow` 被错误显示的问题 [#7917](https://github.com/tikv/pd/issues/7917) @[rleungx](https://github.com/rleungx)
-    - 修复下线节点进度显示不准确的问题 [#7726](https://github.com/tikv/pd/issues/7726) @[CabinfeverB](https://github.com/CabinfeverB)
+  <!--tw@qiancai 9 -->
     - 修复切换 PD 模式时 TSO 可能卡住的问题 [#7849](https://github.com/tikv/pd/issues/7849) @[JmPotato](https://github.com/JmPotato)
     - 修复 DR Auto Sync 监控状态显示的问题 [#7974](https://github.com/tikv/pd/issues/7974) @[lhy1024](https://github.com/lhy1024)
     - 修复检查 binary 版本时可能导致的 panic 问题 [#7978](https://github.com/tikv/pd/issues/7978) @[JmPotato](https://github.com/JmPotato)
@@ -333,12 +332,11 @@ TiDB 8.1.0 为长期支持版本 (Long-Term Support Release, LTS)。
     - 修复在生成 merge 调度时可能出现的 panic 问题 [#8049](https://github.com/tikv/pd/issues/8049) @[nolouch](https://github.com/nolouch)
     - 修复 `GetAdditionalInfo` 导致的 panic 问题 [#8079](https://github.com/tikv/pd/issues/8079) @[HuSharp](https://github.com/HuSharp)
     - 修复 scatter range 调度器监控显示的问题 [#8125](https://github.com/tikv/pd/issues/8125) @[HuSharp](https://github.com/HuSharp)
-    - note [#issue](链接) @[贡献者 GitHub ID](链接)
     - (dup): release-6.5.9.md > 错误修复> PD - 修复 `SHOW CONFIG` 的查询结果包含已废弃的 `trace-region-flow` 配置项的问题 [#7917](https://github.com/tikv/pd/issues/7917) @[rleungx](https://github.com/rleungx)
     - (dup): release-6.5.9.md > 错误修复> PD - 修复扩缩容进度显示不准确的问题 [#7726](https://github.com/tikv/pd/issues/7726) @[CabinfeverB](https://github.com/CabinfeverB)
 
 + TiFlash
-
+  <!--tw@qiancai 2 -->
     - (dup): release-6.5.9.md > 错误修复> TiFlash - 修复在非严格 `sql_mode` 下插入数据到带有异常默认值的列可能导致 TiFlash panic 的问题 [#8803](https://github.com/pingcap/tiflash/issues/8803) @[Lloyd-Pottiger](https://github.com/Lloyd-Pottiger)
     - 修复 TiFlash 在高并发读的情况下，可能返回瞬时不正确的结果的问题 [#8845](https://github.com/pingcap/tiflash/issues/8845) @[JaySon-Huang](https://github.com/JaySon-Huang)
     - 修复存算分离架构下，计算节点的本地缓存容量配置项的值修改后，上报 PD 的硬盘使用量不正确的问题 [#8920](https://github.com/pingcap/tiflash/issues/8920) @[JinheLin](https://github.com/JinheLin)
@@ -346,7 +344,7 @@ TiDB 8.1.0 为长期支持版本 (Long-Term Support Release, LTS)。
 + Tools
 
     + Backup & Restore (BR)
-
+      <!--tw@hfxsd 7 -->
         - (dup): release-6.5.9.md > 错误修复> Tools> Backup & Restore (BR) - 修复在包含 `AUTO_RANDOM` 列的联合聚簇索引中，BR 无法备份 `AUTO_RANDOM` ID 分配进度的问题 [#52255](https://github.com/pingcap/tidb/issues/52255) @[Leavrth](https://github.com/Leavrth)
         - (dup): release-6.5.9.md > 错误修复> Tools> Backup & Restore (BR) - 修复在日志备份任务被暂停后，移除任务无法立即恢复 GC safepoint 的问题 [#52082](https://github.com/pingcap/tidb/issues/52082) @[3pointer](https://github.com/3pointer)
         - (dup): release-7.1.5.md > 错误修复> Tools> Backup & Restore (BR) - 修复在小概率情况下，由于特殊的事件时序导致日志备份数据丢失的问题 [#16739](https://github.com/tikv/tikv/issues/16739) @[YuJuncen](https://github.com/YuJuncen)
@@ -360,7 +358,7 @@ TiDB 8.1.0 为长期支持版本 (Long-Term Support Release, LTS)。
         - 控制测试用例  `TestGetTSWithRetry` 执行时间 [#52547](https://github.com/pingcap/tidb/issues/52547) @[Leavrth](https://github.com/Leavrth)
 
     + TiCDC
-
+      <!--tw@hfxsd 7 -->
         - 修复调用驱逐 TiCDC owner 节点（/api/v2/owner/resign）的命令后意外导致 CDC 任务重启的问题 [#10781](https://github.com/pingcap/tiflow/issues/10781) @[sdojjy](https://github.com/sdojjy)
         - 修复当下游 pulsar 下线后移除 changefeed 会导致 CDC 正常流程卡住从而引起其他 changefeed 进度卡住的问题 [#10629](https://github.com/pingcap/tiflow/issues/10629) @[asddongmen](https://github.com/asddongmen)
         - 修复 grafana 监控中 Owner 面板显示不稳定的问题 [#10796](https://github.com/pingcap/tiflow/issues/10796) @[hongyunyan](https://github.com/hongyunyan)
@@ -376,7 +374,7 @@ TiDB 8.1.0 为长期支持版本 (Long-Term Support Release, LTS)。
         - note [#issue](链接) @[贡献者 GitHub ID](链接)
 
     + TiDB Lightning
-
+      <!--tw@qiancai 4 -->
         - 修复了 lightning 导入时，因源文件存在不兼容的 SQL 而报 “no database selected” 的问题 [#51800](https://github.com/pingcap/tidb/issues/51800) @[lance6716](https://github.com/lance6716)
         - 修复了 lightning 在 server 模式下可能会打印敏感信息到日志的问题 [#36374](https://github.com/pingcap/tidb/issues/36374) @[kennytm](https://github.com/kennytm)
         - 修复了 lightning 导入期间报 “invalid store ID 0” 错误的问题 [#50501](https://github.com/pingcap/tidb/issues/50501) @[Leavrth](https://github.com/Leavrth)
