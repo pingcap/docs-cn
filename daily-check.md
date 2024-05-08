@@ -48,8 +48,8 @@ TiDB 作为分布式数据库，对比单机数据库机制更加复杂，其自
 + `down-peer-region-count`：Raft leader 上报有不响应 peer 的 Region 数量。
 + `offline-peer-region-count`：peer 下线过程中的 Region 数量。
 + `learner-peer-region-count`：learner peer 的数量。来源可能是多个，例如 TiFlash 上的 learner peer，以及配置的 Placement Rules 包含 learner peer。
-+ `oversized-region-count`: Region 大小大于 `region-max-size` 或 `region-max-keys` 的 Region 数量。
-+ `undersized-region-count`: Region 大小小于 `max-merge-region-size` 或 `max-merge-region-keys` 的 Region 数量。
++ `oversized-region-count`：Region 大小大于 `region-max-size` 或 `region-max-keys` 的 Region 数量。
++ `undersized-region-count`：Region 大小小于 `max-merge-region-size` 或 `max-merge-region-keys` 的 Region 数量。
 
 原则上来说，该监控面板偶尔有数据是符合预期的。但长期有数据，需要排查是否存在问题。
 
