@@ -1,6 +1,6 @@
 ---
 title: 序列函数
-summary: This document introduces sequence functions supported in TiDB. 了解 TiDB 中的序列函数。
+summary: 了解 TiDB 中的序列函数。
 ---
 
 # 序列函数
@@ -11,7 +11,7 @@ TiDB 中的序列函数用于返回或设置使用 [`CREATE SEQUENCE`](/sql-stat
 | :-------- | :-------------------------- |
 | `NEXTVAL()` 或 `NEXT VALUE FOR` | 返回序列的下一个值 |
 | `SETVAL()` | 设置序列的当前值 |
-| `LASTVAL()` | 返回序列中最后一个使用过的值 |
+| `LASTVAL()` | 返回序列中最近一个使用过的值 |
 
 ## MySQL 兼容性
 
