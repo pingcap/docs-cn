@@ -1,6 +1,6 @@
 ---
 title: ALTER SEQUENCE
-summary: ALTER SEQUENCE 在 TiDB 中的使用概况
+summary: 介绍 ALTER SEQUENCE 在 TiDB 中的使用概况。
 ---
 
 # ALTER SEQUENCE
@@ -122,7 +122,7 @@ SELECT NEXTVAL(s1);
 1 row in set (0.00 sec)
 ```
 
-将序列的步长更改为 `2`：
+将该序列的步长更改为 `2`：
 
 ```sql
 ALTER SEQUENCE s1 INCREMENT=2;
