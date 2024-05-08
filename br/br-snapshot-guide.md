@@ -22,7 +22,7 @@ aliases: ['/zh/tidb/dev/br-usage-backup/','/zh/tidb/dev/br-usage-restore/','/zh/
 > - 以下场景采用 Amazon S3 Access key 和 Secret key 授权方式来进行模拟。如果使用 IAM Role 授权，需要设置 `--send-credentials-to-tikv` 为 `false`。
 > - 如果使用不同存储或者其他授权方式，请参考[备份存储](/br/backup-and-restore-storages.md)来进行参数调整。
 
-使用 `br backup full` 可以进行一次快照备份。该命令的详细使用帮助可以通过执行 `br backup full --help` 查看。
+使用 `tiup br backup full` 可以进行一次快照备份。该命令的详细使用帮助可以通过执行 `tiup br backup full --help` 查看。
 
 ```shell
 tiup br backup full --pd "${PD_IP}:2379" \
@@ -33,7 +33,7 @@ tiup br backup full --pd "${PD_IP}:2379" \
 
 以上命令中：
 
-- `--backupts`：快照对应的物理时间点，格式可以是 [TSO](/glossary.md#tso) 或者时间戳，例如 `400036290571534337` 或者 `2018-05-11 01:42:23`。如果该快照的数据被垃圾回收 (GC) 了，那么 `br backup` 命令会报错并退出。如果你没有指定该参数，那么 br 会选取备份开始的时间点所对应的快照。
+- `--backupts`：快照对应的物理时间点，格式可以是 [TSO](/glossary.md#tso) 或者时间戳，例如 `400036290571534337` 或者 `2018-05-11 01:42:23`。如果该快照的数据被垃圾回收 (GC) 了，那么 `tiup br backup` 命令会报错并退出。如果你没有指定该参数，那么 br 会选取备份开始的时间点所对应的快照。
 - `--storage`：数据备份到的存储地址。快照备份支持以 Amazon S3、Google Cloud Storage、Azure Blob Storage 为备份存储，以上命令以 Amazon S3 为示例。详细存储地址格式请参考[外部存储服务的 URI 格式](/external-storage-uri.md)。
 - `--ratelimit`：**每个 TiKV** 备份数据的速度上限，单位为 MiB/s。
 
@@ -68,7 +68,7 @@ tiup br validate decode --field="end-version" \
 > - 从 BR v7.6.0 开始，为了解决大规模 Region 场景下可能出现的恢复瓶颈问题，BR 支持通过粗粒度打散 Region 的算法加速恢复（实验特性）。可以通过指定命令行参数 `--granularity="coarse-grained"` 来启用此功能。
 > - 从 BR v8.0.0 版本开始，通过粗粒度打散 Region 算法进行快照恢复的功能正式 GA，并默认启用。通过采用粗粒度打散 Region 算法、批量创建库表、降低 SST 文件下载和 Ingest 操作之间的相互影响、加速表统计信息恢复等改进措施，快照恢复的速度有大幅提升。在实际案例中，快照恢复的 SST 文件下载速度最高提升约 10 倍，单个 TiKV 节点的数据恢复速度稳定在 1.2 GiB/s，端到端的恢复速度大约提升 1.5 到 3 倍，并且能够在 1 小时内完成对 100 TiB 数据的恢复。
 
-如果你需要恢复备份的快照数据，则可以使用 `br restore full`。该命令的详细使用帮助可以通过执行 `br restore full --help` 查看。
+如果你需要恢复备份的快照数据，则可以使用 `tiup br restore full`。该命令的详细使用帮助可以通过执行 `tiup br restore full --help` 查看。
 
 将[上文备份的快照数据](#对集群进行快照备份)恢复到目标集群：
 
@@ -90,10 +90,11 @@ br 命令行工具支持只恢复备份数据中指定库、表的部分数据�
 
 **恢复单个数据库的数据**
 
-要将备份数据中的某个数据库恢复到集群中，可以使用 `br restore db` 命令。以下示例只恢复 `test` 库的数据：
+要将备份数据中的某个数据库恢复到集群中，可以使用 `tiup br restore db` 命令。以下示例只恢复 `test` 库的数据：
 
 ```shell
-tiup br restore db --pd "${PD_IP}:2379" \
+tiup br restore db \
+--pd "${PD_IP}:2379" \
 --db "test" \
 --storage "s3://backup-101/snapshot-202209081330?access-key=${access-key}&secret-access-key=${secret-access-key}"
 ```
@@ -102,7 +103,7 @@ tiup br restore db --pd "${PD_IP}:2379" \
 
 **恢复单张表的数据**
 
-要将备份数据中的某张数据表恢复到集群中，可以使用 `br restore table` 命令。以下示例只恢复 `test.usertable` 表的数据：
+要将备份数据中的某张数据表恢复到集群中，可以使用 `tiup br restore table` 命令。以下示例只恢复 `test.usertable` 表的数据：
 
 ```shell
 tiup br restore table --pd "${PD_IP}:2379" \
@@ -115,10 +116,11 @@ tiup br restore table --pd "${PD_IP}:2379" \
 
 **使用表库过滤功能恢复部分数据**
 
-要通过复杂的过滤条件恢复多个表，可以使用 `br restore full` 命令，并用 `--filter` 或 `-f` 指定[表库过滤](/table-filter.md)的条件。以下示例恢复符合 `db*.tbl*` 条件的表的数据：
+要通过复杂的过滤条件恢复多个表，可以使用 `tiup br restore full` 命令，并用 `--filter` 或 `-f` 指定[表库过滤](/table-filter.md)的条件。以下示例恢复符合 `db*.tbl*` 条件的表的数据：
 
 ```shell
-tiup br restore full --pd "${PD_IP}:2379" \
+tiup br restore full \
+--pd "${PD_IP}:2379" \
 --filter 'db*.tbl*' \
 --storage "s3://backup-101/snapshot-202209081330?access-key=${access-key}&secret-access-key=${secret-access-key}"
 ```
