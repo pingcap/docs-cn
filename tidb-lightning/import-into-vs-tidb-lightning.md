@@ -7,7 +7,7 @@ summary: 了解 `IMPORT INTO` 和 TiDB Lightning 的差异。
 
 许多用户反馈 [TiDB Lightning](/tidb-lightning/tidb-lightning-configuration.md) 的部署、配置、维护比较复杂，特别是大数据量的[并行导入](/tidb-lightning/tidb-lightning-distributed-import.md)场景。
 
-针对此问题，TiDB 逐渐将 TiDB Lightning 的一些功能整合到 [`IMPORT INTO`](/sql-statements/sql-statement-import-into.md) 中。你可以直接通过执行 `IMPORT INTO` 导入数据，从而提升导入数据的性能。此外，`IMPORT INTO` 支持某些 TiDB Lightning 不支持的功能，例如自动分布式任务调度和 [TiDB 全局排序](/tidb-global-sort.md)。
+针对此问题，TiDB 逐渐将 TiDB Lightning 的一些功能整合到 [`IMPORT INTO`](/sql-statements/sql-statement-import-into.md) 中。你可以直接通过执行 `IMPORT INTO` 导入数据，从而提升导入数据的效率。此外，`IMPORT INTO` 支持某些 TiDB Lightning 不支持的功能，例如自动分布式任务调度和 [TiDB 全局排序](/tidb-global-sort.md)。
 
 `IMPORT INTO` 是在 v7.2.0 中引入，在 v7.5.0 成为正式功能 (Generally Available, GA)。一旦 `IMPORT INTO` 能够完全取代 TiDB Lightning，TiDB Lightning 将会被废弃。到时候会在官网上提前发布相关通知。
 
@@ -59,17 +59,17 @@ summary: 了解 `IMPORT INTO` 和 TiDB Lightning 的差异。
 
 TiDB Lightning 的配置复杂、低效且容易出错。
 
-假设启动 10 个并行 TiDB Lightning 实例导入数据，则需要编写 10 个 TiDB Lightning 配置文件，并在每个配置文件中配置每个 TiDB Lightning 实例读取的源文件范围。例如，TiDB Lightning 实例 1 读取前 100 个文件，实例 2 读取接下来的 100 个文件，依此类推。
+假设启动 10 个 TiDB Lightning 实例进行并行导入数据，则需要编写 10 个 TiDB Lightning 配置文件，并在每个配置文件中配置每个 TiDB Lightning 实例读取的源文件范围。例如，TiDB Lightning 实例 1 读取前 100 个文件，实例 2 读取接下来的 100 个文件，依此类推。
 
-此外，你还需要为这 10 个 TiDB Lightning 实例配置共享元数据表和其他配置信息。
+此外，你还需要为这 10 个 TiDB Lightning 实例配置共享元数据表和其他配置信息。配置相对复杂和繁琐。
 
 ### 全局排序与本地排序
 
 #### `IMPORT INTO`
 
-基于 TiDB 全局排序，可以将数数十个 TiB 的源数据传输到多个 TiDB 节点，其中编码数据 KV 对和索引 KV 对传输到 Amazon S3 进行全局排序，然后写入 TiKV。
+基于 TiDB 全局排序，可以将几十 TiB 的源数据传输到多个 TiDB 节点，编码数据 KV 对和索引 KV 对，并传输到 Amazon S3 对这些 KV 对进行全局排序，然后写入到 TiKV。
 
-由于它是全局排序的，因此从各个 TiDB 节点导入 TiKV 的数据不会重叠，从而可以直接将其摄入到 RocksDB 的 L6 层中。这样就不需要 TiKV 执行压缩操作，从而使 TiKV 的写入性能和稳定性都有显着提升。
+由于这些 KV 对是通过全局排序过的，因此从各个 TiDB 节点导入 TiKV 的数据不会重叠，从而可以直接将其摄入到 RocksDB 的 L6 层中。这样就不需要 TiKV 执行压缩操作，从而使 TiKV 的写入性能和稳定性都有显着提升。
 
 导入完成后，Amazon S3 上用于全局排序的数据将自动删除，节省存储成本。
 
@@ -117,7 +117,7 @@ TiDB Lightning 实例节点出现故障后，需要根据之前记录的检查�
 
 ## `IMPORT INTO` 不支持的特性
 
-目前，`IMPORT INTO` 还缺少一些特性，无法替代 TiDB Lightning，例如：
+目前，`IMPORT INTO` 还缺少一些特性，在部分场景无法替代 TiDB Lightning，例如：
 
 - 逻辑导入
 
@@ -125,7 +125,7 @@ TiDB Lightning 实例节点出现故障后，需要根据之前记录的检查�
 
 - 冲突数据处理
 
-    `IMPORT INTO` 目前不支持冲突数据处理。你需要正确定义表结构，以保证导入的数据不与主键或唯一键冲突，否则可能会导致任务失败。
+    `IMPORT INTO` 目前不支持冲突数据处理。你需要正确定义表结构，且保证导入的数据不存在主键或唯一键冲突，否则可能会导致任务失败。
 
 - 将数据导入多个目标表
 
