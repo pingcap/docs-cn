@@ -10,84 +10,48 @@ aliases: ['/docs-cn/dev/sql-statements/sql-statement-select/','/docs-cn/dev/refe
 
 ## 语法图
 
-**SelectStmt:**
-
-![SelectStmt](/media/sqlgram/SelectStmt.png)
-
-**FromDual:**
-
-![FromDual](/media/sqlgram/FromDual.png)
-
-**WhereClauseOptional:**
-
-![WhereClauseOptional](/media/sqlgram/WhereClauseOptional.png)
-
-**SelectStmtOpts:**
-
-![SelectStmtOpts](/media/sqlgram/SelectStmtOpts.png)
-
-**SelectStmtFieldList:**
-
-![SelectStmtFieldList](/media/sqlgram/SelectStmtFieldList.png)
-
-**TableRefsClause:**
-
 ```ebnf+diagram
+SelectStmt ::=
+    ( SelectStmtBasic | SelectStmtFromDualTable | SelectStmtFromTable )
+    OrderBy? SelectStmtLimit? SelectLockOpt? SelectStmtIntoOption
+
+SelectStmtBasic ::=
+    "SELECT" SelectStmtOpts Field ("," Field)* ( "HAVING" Expression)?
+
+SelectStmtFromDualTable ::=
+    "SELECT" SelectStmtOpts Field ("," Field)* "FROM" "DUAL" WhereClause?
+
+SelectStmtFromTable ::=
+    "SELECT" SelectStmtOpts Field ("," Field)* "FROM" TableRefsClause
+    WhereClause? GroupByClause? ( "HAVING" Expression)? WindowClause?
+
+SelectStmtOpts ::=
+    TableOptimizerHints DefaultFalseDistictOpt PriorityOpt SelectStmtSQLSmallResult
+    SelectStmtSQLBigResult SelectStmtSQLBufferResult SelectStmtSQLCache SelectStmtCalcFoundRows
+    SelectStmtStraightJoin
+
 TableRefsClause ::=
     TableRef AsOfClause? ( ',' TableRef AsOfClause? )*
 
 AsOfClause ::=
     'AS' 'OF' 'TIMESTAMP' Expression
-```
 
-**SelectStmtGroup:**
+SelectStmtLimit ::=
+    ("LIMIT" LimitOption ( ("," | "OFFSET") LimitOption )?
+| "FETCH" ("FIRST" | "NEXT") LimitOption? ("ROW" | "ROWS") "ONLY" )
 
-![SelectStmtGroup](/media/sqlgram/SelectStmtGroup.png)
-
-**HavingClause:**
-
-![HavingClause](/media/sqlgram/HavingClause.png)
-
-**OrderByOptional:**
-
-![OrderByOptional](/media/sqlgram/OrderByOptional.png)
-
-**SelectStmtLimit:**
-
-![SelectStmtLimit](/media/sqlgram/SelectStmtLimit.png)
-
-**FirstOrNext:**
-
-![FirstOrNext](/media/sqlgram/FirstOrNext.png)
-
-**FetchFirstOpt:**
-
-![FetchFirstOpt](/media/sqlgram/FetchFirstOpt.png)
-
-**RowOrRows:**
-
-![RowOrRows](/media/sqlgram/RowOrRows.png)
-
-**SelectLockOpt:**
-
-```ebnf+diagram
-SelectLockOpt ::=
-    ( ( 'FOR' 'UPDATE' ( 'OF' TableList )? 'NOWAIT'? )
-|   ( 'LOCK' 'IN' 'SHARE' 'MODE' ) )?
+SelectLockOpt ::= 
+    ( 'FOR' 'UPDATE' ( 'OF' TableList )? 'NOWAIT'?
+|   'LOCK' 'IN' 'SHARE' 'MODE' )
 
 TableList ::=
     TableName ( ',' TableName )*
-```
 
-**WindowClauseOptional**
+WindowClause ::=
+    "WINDOW" WindowDefinition ("," WindowDefinition)*
 
-![WindowClauseOptional](/media/sqlgram/WindowClauseOptional.png)
-
-**TableSampleOpt**
-
-```ebnf+diagram
 TableSampleOpt ::=
-    'TABLESAMPLE' 'REGIONS()'
+    'TABLESAMPLE' 'REGIONS' '(' ')'
 ```
 
 ## 语法元素说明
