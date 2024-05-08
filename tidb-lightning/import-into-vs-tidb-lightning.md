@@ -29,7 +29,7 @@ summary: 了解 `IMPORT INTO` 和 TiDB Lightning 的差异。
 
 #### `IMPORT INTO`
 
-`IMPORT INTO` 任务可以与其它业务负载分享 TiDB 节点的资源，或者错峰使用这些节点以充分利用资源。为实现以最优性能保持业务稳定运行，同时保证 `IMPORT INTO` 任务的性能和稳定性，你可以指定[特定的 TiDB 节点](/system-variables.md#tidb_service_scope-new-in-v740)，专门用于使用 `IMPORT INTO` 导入数据。
+`IMPORT INTO` 任务可以与其它业务负载分享 TiDB 节点的资源，或者错峰使用这些节点以充分利用资源。为实现以最优性能保持业务稳定运行，同时保证 `IMPORT INTO` 任务的性能和稳定性，你可以指定[特定的 TiDB 节点](/system-variables.md#tidb_service_scope-从-v740-版本开始引入)，专门用于使用 `IMPORT INTO` 导入数据。
 
 当使用 TiDB 全局排序时，你无需加载太大的本地磁盘。TiDB 全局排序可以使用 Amazon S3。一旦完成数据导入，存储在 Amazon S3 上用于全局排序的数据会自动删除，以节省存储成本。
 
