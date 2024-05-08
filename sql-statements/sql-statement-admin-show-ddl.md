@@ -11,7 +11,12 @@ summary: TiDB 数据库中 ADMIN SHOW DDL [JOBS|JOB QUERIES] 的使用概况。
 
 ```ebnf+diagram
 AdminStmt ::=
-    'ADMIN' ( 'SHOW' ( 'DDL' ( 'JOBS' Int64Num? WhereClauseOptional | 'JOB' 'QUERIES' NumList | 'JOB' 'QUERIES' 'LIMIT' m 'OFFSET' n )? | TableName 'NEXT_ROW_ID' | 'SLOW' AdminShowSlow ) | 'CHECK' ( 'TABLE' TableNameList | 'INDEX' TableName Identifier ( HandleRange ( ',' HandleRange )* )? ) | 'RECOVER' 'INDEX' TableName Identifier | 'CLEANUP' ( 'INDEX' TableName Identifier | 'TABLE' 'LOCK' TableNameList ) | 'CHECKSUM' 'TABLE' TableNameList | 'CANCEL' 'DDL' 'JOBS' NumList | 'RELOAD' ( 'EXPR_PUSHDOWN_BLACKLIST' | 'OPT_RULE_BLACKLIST' | 'BINDINGS' ) | 'PLUGINS' ( 'ENABLE' | 'DISABLE' ) PluginNameList | 'REPAIR' 'TABLE' TableName CreateTableStmt | ( 'FLUSH' | 'CAPTURE' | 'EVOLVE' ) 'BINDINGS' )
+    'ADMIN' 'SHOW' 'DDL'
+    ( 
+        'JOBS' Int64Num? WhereClauseOptional 
+    |   'JOB' 'QUERIES' NumList 
+    |   'JOB' 'QUERIES' 'LIMIT' m ( ('OFFSET' | ',') n )?
+    )
 
 NumList ::=
     Int64Num ( ',' Int64Num )*
@@ -24,21 +29,27 @@ WhereClauseOptional ::=
 
 ### `ADMIN SHOW DDL`
 
-可以通过 `ADMIN SHOW DDL` 语句查看当前正在运行的 DDL 作业状态，包括当前 schema 版本号、Owner 的 DDL ID 和地址、正在执行的 DDL 任务和 SQL、当前 TiDB 实例的 DDL ID。
+可以通过 `ADMIN SHOW DDL` 语句查看当前正在运行的 DDL 作业状态，包括当前 schema 版本号、Owner 的 DDL ID 和地址、正在执行的 DDL 任务和 SQL、当前 TiDB 实例的 DDL ID。该语句返回的结果字段描述如下：
 
-{{< copyable "sql" >}}
+- `SCHEMA_VER`：schema 版本号。
+- `OWNER_ID`：DDL Owner 的 UUID。参见 [`TIDB_IS_DDL_OWNER()`](/functions-and-operators/tidb-functions.md)。
+- `OWNER_ADDRESS`：DDL Owner 的 IP 地址。
+- `RUNNING_JOBS`：正在运行的 DDL 作业的详细信息。
+- `SELF_ID`：当前连接的 TiDB 节点的 UUID。如果 `SELF_ID` 与 `OWNER_ID` 相同，这意味着你当前连接的是 DDL Owner。
+- `QUERY`：查询语句。
 
 ```sql
-ADMIN SHOW DDL;
+ADMIN SHOW DDL\G;
 ```
 
 ```sql
-ADMIN SHOW DDL;
-+------------+--------------------------------------+---------------+--------------+--------------------------------------+-------+
-| SCHEMA_VER | OWNER_ID                             | OWNER_ADDRESS | RUNNING_JOBS | SELF_ID                              | QUERY |
-+------------+--------------------------------------+---------------+--------------+--------------------------------------+-------+
-|         26 | 2d1982af-fa63-43ad-a3d5-73710683cc63 | 0.0.0.0:4000  |              | 2d1982af-fa63-43ad-a3d5-73710683cc63 |       |
-+------------+--------------------------------------+---------------+--------------+--------------------------------------+-------+
+*************************** 1. row ***************************
+   SCHEMA_VER: 26
+     OWNER_ID: 2d1982af-fa63-43ad-a3d5-73710683cc63
+OWNER_ADDRESS: 0.0.0.0:4000
+ RUNNING_JOBS: 
+      SELF_ID: 2d1982af-fa63-43ad-a3d5-73710683cc63
+        QUERY: 
 1 row in set (0.00 sec)
 ```
 
@@ -50,9 +61,12 @@ ADMIN SHOW DDL;
 - `DB_NAME`：执行 DDL 操作的数据库的名称。
 - `TABLE_NAME`：执行 DDL 操作的表的名称。
 - `JOB_TYPE`：DDL 任务的类型。常见的任务类型包括：
+    - `create schema`：[`CREATE SCHEMA`](/sql-statements/sql-statement-create-database.md) 操作。
+    - `create table`：[`CREATE TABLE`](/sql-statements/sql-statement-create-table.md) 操作。
+    - `create view`：[`CREATE VIEW`](/sql-statements/sql-statement-create-view.md) 操作。
     - `ingest`：通过 [`tidb_ddl_enable_fast_reorg`](/system-variables.md#tidb_ddl_enable_fast_reorg-从-v630-版本开始引入) 配置的加速索引回填的 ingest 任务。
     - `txn`：基本的事务性回填。
-    - `txn-merge`：在回填完成时将临时索引与原始索引合并的事务性回填。
+    - `add index /* txn-merge */`：在回填完成时将临时索引与原始索引合并的事务性回填。
 - `SCHEMA_STATE`：DDL 所操作的 schema 对象的当前状态。如果 `JOB_TYPE` 是 `ADD INDEX`，则为索引的状态；如果是 `ADD COLUMN`，则为列的状态；如果是 `CREATE TABLE`，则为表的状态。常见的状态有以下几种：
     - `none`：表示不存在。一般 `DROP` 操作或者 `CREATE` 操作失败回滚后，会变为 `none` 状态。
     - `delete only`、`write only`、`delete reorganization`、`write reorganization`：这四种状态是中间状态，具体含义请参考 [TiDB 中在线 DDL 异步变更的原理](/ddl-introduction.md#tidb-在线-ddl-异步变更的原理)。由于中间状态转换很快，一般操作中看不到这几种状态，只有执行 `ADD INDEX` 操作时能看到处于 `write reorganization` 状态，表示正在添加索引数据。
@@ -60,7 +74,9 @@ ADMIN SHOW DDL;
 - `SCHEMA_ID`：执行 DDL 操作的数据库的 ID。
 - `TABLE_ID`：执行 DDL 操作的表的 ID。
 - `ROW_COUNT`：执行 `ADD INDEX` 操作时，当前已经添加完成的数据行数。
+- `CREATE_TIME`：DDL 操作的创建时间。
 - `START_TIME`：DDL 操作的开始时间。
+- `END_TIME`：DDL 操作的结束时间。
 - `STATE`：DDL 操作的状态。常见的状态有以下几种：
     - `queueing`：表示该操作任务已经进入 DDL 任务队列中，但尚未执行，因为还在排队等待前面的 DDL 任务完成。另一种原因可能是执行 `DROP` 操作后，会变为 `none` 状态，但是很快会更新为 `synced` 状态，表示所有 TiDB 实例都已经同步到该状态。
     - `running`：表示该操作正在执行。
@@ -117,8 +133,6 @@ ADMIN SHOW DDL JOBS [NUM] [WHERE where_condition];
 
 `ADMIN SHOW DDL JOB QUERIES` 语句用于查看 `job_id` 对应的 DDL 任务的原始 SQL 语句：
 
-{{< copyable "sql" >}}
-
 ```sql
 ADMIN SHOW DDL JOBS;
 ADMIN SHOW DDL JOB QUERIES 51;
@@ -139,8 +153,6 @@ ADMIN SHOW DDL JOB QUERIES 51;
 ### `ADMIN SHOW DDL JOB QUERIES LIMIT m OFFSET n`
 
 `ADMIN SHOW DDL JOB QUERIES LIMIT m OFFSET n` 语句用于查看指定范围 `[n+1, n+m]` 的 `job_id` 对应的 DDL 任务的原始 SQL 语句：
-
-{{< copyable "sql" >}}
 
 ```sql
 ADMIN SHOW DDL JOB QUERIES LIMIT m;           # -- 取出前 m 行
@@ -193,6 +205,8 @@ ADMIN SHOW DDL JOB QUERIES LIMIT 3 OFFSET 4;  # Retrieve rows 5-7
 
 ## 另请参阅
 
+* [DDL 语句的执行原理及最佳实践](/ddl-introduction.md)
 * [ADMIN CANCEL DDL](/sql-statements/sql-statement-admin-cancel-ddl.md)
 * [ADMIN PAUSE DDL](/sql-statements/sql-statement-admin-pause-ddl.md)
 * [ADMIN RESUME DDL](/sql-statements/sql-statement-admin-resume-ddl.md)
+* [INFORMATION_SCHEMA.DDL_JOBS](/information-schema/information-schema-ddl-jobs.md)
