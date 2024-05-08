@@ -1,5 +1,6 @@
 ---
 title: TiDB 2.1.15 Release Notes
+summary: TiDB 2.1.15 发布，修复了多个函数处理微秒、空值比较、插入参数、索引建立等问题，并新增了多个 SQL 语句和监控项。TiKV 统一日志格式，提高了调度准确度。PD 也统一了日志格式。TiDB Binlog 优化了 Pump GC 策略。TiDB Lightning 修复了导入错误问题。TiDB Ansible 新增监控项用于监测 SQL 语句解析耗时和执行计划编译耗时。
 ---
 
 # TiDB 2.1.15 Release Notes

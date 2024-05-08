@@ -1,5 +1,6 @@
 ---
 title: TiDB 2.1 RC4 Release Notes
+summary: TiDB 2.1 RC4 版本对系统稳定性、优化器、统计信息和执行引擎做了很多改进。修复了多个 SQL 优化器和执行引擎的问题，重构了 Latch，提升了并发事务的执行性能。PD 修复了多个 TiKV 下线后的问题。TiKV 优化了 apply snapshot 导致的 RocksDB Write stall 的问题，并增加了 raftstore tick 相关 metrics。
 ---
 
 # TiDB 2.1 RC4 Release Notes

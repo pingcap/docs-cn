@@ -1,5 +1,6 @@
 ---
 title: tiup dm help
+summary: tiup-dm 提供丰富的命令行界面帮助信息，可通过 `help` 命令或 `--help` 参数获取。`tiup dm help <command>` 等同于 `tiup dm <command> --help`。语法：`tiup dm help [command] [flags]`。`[command]` 用于指定要查看的命令帮助信息，若不指定，则查看 tiup-dm 自身的帮助信息。使用 `-h, --help` 输出帮助信息，数据类型为 `BOOLEAN`，默认关闭。输出为 `[command]` 或 tiup-dm 的帮助信息。
 ---
 
 # tiup dm help

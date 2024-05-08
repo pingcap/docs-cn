@@ -1,5 +1,6 @@
 ---
 title: TiDB 3.0.2 Release Notes
+summary: TiDB 3.0.2 发布日期为 2019 年 8 月 7 日。该版本修复了多个 SQL 优化器和执行引擎的问题，包括修复了查询结果列名称不正确、LIKE 表达式被隐式转换为 0、SHOW 语句中使用子查询等问题。此外，还修复了 TiKV panic、悲观事务下 Insert 行为不正确等问题。PD 也修复了 Scatter Region 调度器不能工作等 bug。TiDB Ansible 也有多个修复和更新，包括修复了 Disk Performance 监控单位错误、新增了 TiDB Summary Dashboard 等。
 ---
 
 # TiDB 3.0.2 Release Notes

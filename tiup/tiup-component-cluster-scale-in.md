@@ -1,5 +1,6 @@
 ---
 title: tiup cluster scale-in
+summary: tiup cluster scale-in 命令用于集群缩容，包括下线 TiKV、TiFlash 和 TiDB Binlog 组件，以及其他组件。特殊处理包括通过 API 执行移除操作，并清理相关数据文件。命令语法为 tiup cluster scale-in <cluster-name>，必须指定要缩容的节点。其他选项包括 --force 用于强制移除宕机节点，--transfer-timeout 设置最长等待时间，-h 输出帮助信息。输出为缩容日志。
 ---
 
 # tiup cluster scale-in

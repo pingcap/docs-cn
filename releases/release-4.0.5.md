@@ -1,5 +1,6 @@
 ---
 title: TiDB 4.0.5 Release Notes
+summary: TiDB 4.0.5 发布，兼容性变化包括修改参数和添加状态检查。新增功能包括为错误定义错误码和支持统一的 log 格式。优化提升包括减少 GC 锁扫描次数和降低统计信息对性能的影响。Bug 修复包括函数错误处理和查询结果错误等。PD 修复了 TSO 不可用和 Region 调度问题。TiFlash 修复了进程启动和升级问题。Tools 修复了恢复缓慢和同步任务问题。
 ---
 
 # TiDB 4.0.5 Release Notes

@@ -1,5 +1,6 @@
 ---
 title: TiDB 版本发布历史
+summary: 介绍 TiDB 版本发布历史。
 ---
 
 # TiDB 版本发布历史

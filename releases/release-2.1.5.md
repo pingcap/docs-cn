@@ -1,5 +1,6 @@
 ---
 title: TiDB 2.1.5 Release Notes
+summary: TiDB 2.1.5 版本对系统稳定性、优化器、统计信息和执行引擎做了很多改进。包括优化器 / 执行器、Server、DDL、PD、TiKV 和 Tools 的改进和修复。
 ---
 
 # TiDB 2.1.5 Release Notes

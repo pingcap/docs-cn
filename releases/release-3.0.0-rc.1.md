@@ -1,5 +1,6 @@
 ---
 title: TiDB 3.0.0-rc.1 Release Notes
+summary: TiDB 3.0.0-rc.1 发布，对系统稳定性、易用性、功能、优化器、统计信息和执行引擎做了很多改进。包括 SQL 优化器、执行引擎、Server、DDL、PD、TiKV、Tools 和 TiDB Ansible 的更新和修复。
 ---
 
 # TiDB 3.0.0-rc.1 Release Notes

@@ -1,5 +1,6 @@
 ---
 title: TiDB 2.1 RC3 Release Notes
+summary: TiDB 2.1 RC3 版本对系统稳定性、兼容性、优化器和执行引擎做了很多改进。包括修复了多个 SQL 优化器和执行引擎的问题，增强了部分执行器的性能，修复了配置文件内存配额选项不生效的问题，支持使用 `admin show slow` 语句来获取 SLOW QUERY LOG，修复了一些兼容性问题，增加了一些内建函数的支持，修复了一些 DML 和 DDL 的问题。PD 新增了获取按大小逆序排序的 Region 列表 API，Region API 返回更详细的信息，修复了 PD 切换 leader 后可能导致 crash 的问题。TiKV 进行了性能优化，并新增了一些函数的支持，同时修复了一些 Bug。
 ---
 
 # TiDB 2.1 RC3 Release Notes

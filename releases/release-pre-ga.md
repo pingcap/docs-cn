@@ -1,5 +1,6 @@
 ---
 title: TiDB Pre-GA Release Notes
+summary: TiDB Pre-GA 版本发布，对 MySQL 兼容性、SQL 优化器、系统稳定性、性能做了大量工作。TiDB 改进了 SQL 查询优化器、大量 MySQL 兼容性相关功能、支持 Natural Join、JSON 类型支持、裁剪无用数据、支持在 SQL 语句中设置优先级、完成表达式重构。PD 支持手动切换 PD 集群 Leader。TiKV 改进了 Raft Log 使用独立的 RocksDB 实例、使用 DeleteRange 加快删除副本速度、Coprocessor 支持更多运算符下推、提升性能和稳定性。TiSpark Beta Release 支持谓词下推、支持聚合下推、支持范围裁剪。
 ---
 
 # TiDB Pre-GA Release Notes

@@ -1,5 +1,6 @@
 ---
 title: TiDB 2.0 RC4 Release Notes
+summary: TiDB 2.0 RC4 版本发布，改进了 MySQL 兼容性、系统稳定性和优化器。TiDB 支持了一些新的语法和修复了一些问题。PD 支持手动 split Region 和优化了 metrics 及代码结构。TiKV 限制了接收 snapshot 时的内存使用，支持导数据模式和改善了在被隔离的情况下的输出问题。
 ---
 
 # TiDB 2.0 RC4 Release Notes

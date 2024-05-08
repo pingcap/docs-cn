@@ -1,5 +1,6 @@
 ---
 title: TiDB 3.1 Beta.2 Release Notes
+summary: TiDB 3.1 Beta.2 发布日期为 2020 年 3 月 9 日。该版本存在已知问题，建议使用最新版本。兼容性变化包括 TiDB Lightning 配置项优化和新增命令行参数。新功能包括支持在列属性上添加 `AutoRandom` 关键字，新增通过 DDL 语句为表创建、删除列存储副本的功能等。Bug 修复包括修复静默 Region 读数据处理不当导致无法处理读请求的问题等。
 ---
 
 # TiDB 3.1 Beta.2 Release Notes

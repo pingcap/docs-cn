@@ -1,5 +1,6 @@
 ---
 title: TiDB 5.1.2 Release Notes
+summary: TiDB 5.1.2 发布，包含兼容性更改、改进提升、Bug 修复等内容。兼容性更改包括修复多个 Bug，改进提升包括根据直方图行数触发 auto-analyze、支持动态更改 TiCDC 配置项等。Bug 修复涉及 hash 列为 ENUM 类型时 index hash join 的结果可能出错、TiKV 从 v3.x 升级至较高版本后出现 Panic 等问题。Tools 方面的改进包括 BR 修复备份数据和恢复数据时显示的平均速度数值不准确的问题、Dumpling 修复特定 MySQL 版本下导致 dump 阶段卡死的问题等。
 ---
 
 # TiDB 5.1.2 Release Notes
