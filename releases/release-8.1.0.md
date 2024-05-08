@@ -326,6 +326,17 @@ TiDB 8.1.0 为长期支持版本 (Long-Term Support Release, LTS)。
 
 + TiDB
 
+    - 增强 TiDB 对总是 false 的 DNF 的处理，直接忽略这种过滤条件 [#40997](https://github.com/pingcap/tidb/issues/40997) @[hi-rustin](https://github.com/hi-rustin)
+    - 修复当 SQL 涉及包含多值索引的表时，执行可能报错“Can't find a proper physical plan for this query”的问题 [#49438](https://github.com/pingcap/tidb/issues/49438) @[qw4990](https://github.com/qw4990)
+    - 修复自动分析在 OOM 后卡住的问题 [#51993](https://github.com/pingcap/tidb/issues/51993) @[hi-rustin](https://github.com/hi-rustin)
+    - 不允许将 tidb_auto_analyze_ratio 参数设置为 0 [#51582](https://github.com/pingcap/tidb/issues/51582) @[hi-rustin](https://github.com/hi-rustin)
+    - 修复使用 BR 恢复一张表之后，即使这张表没有统计信息，统计信息健康度也显示 100 的问题 [#29769](https://github.com/pingcap/tidb/issues/29769) @[winoros](https://github.com/winoros)
+    - 修复了 TiDB 在升级过程中会为系统表创建统计信息的问题 [#52040](https://github.com/pingcap/tidb/issues/52040) @[hi-rustin](https://github.com/hi-rustin)
+    - 修复 TiDB 在统计信息初始化完成前就进行自动分析的问题 [#52346](https://github.com/pingcap/tidb/issues/52346) @[hi-rustin](https://github.com/hi-rustin)
+    - 修复启用 `tidb_mem_quota_analyze` 时，自动分析使用的内存超过限制可能导致 TiDB crash 的问题 [#52601](https://github.com/pingcap/tidb/issues/52601) @[hawkingrei](https://github.com/hawkingrei)
+    - 修复 TiDB 统计信息同步加载机制无限重试加载空统计信息并打印“fail to get stats version for this histogram”日志的问题 [#52657](https://github.com/pingcap/tidb/issues/52657) @[hawkingrei](https://github.com/hawkingrei)
+    - 修复在关闭新排序规则框架的时候，涉及不同排序规则的表达式可能导致查询 panic 的问题 [#52772](https://github.com/pingcap/tidb/issues/52772) @[wjhuang2016](https://github.com/wjhuang2016)
+    - 如果查询有除了全表扫描以外的单索引扫描方式可以选择，优化器不会自动选择索引合并。现在可以通过 Optimizer Fix Controls 机制解除这个限制 [#52869](https://github.com/pingcap/tidb/issues/52869) @[time-and-fate](https://github.com/time-and-fate)
     - 修复 `CPS by type` 监控项显示错误的问题 [#52605](https://github.com/pingcap/tidb/issues/52605) @[nolouch](https://github.com/nolouch)
     - 修复查询 `INFORMATION_SCHEMA.TIKV_REGION_STATUS` 出现空指针的问题 [#52013](https://github.com/pingcap/tidb/issues/52013) @[JmPotato](https://github.com/JmPotato)
     - 修正了指定非法列默认值时的错误提示信息 [#51592](https://github.com/pingcap/tidb/issues/51592) @[danqixu](https://github.com/danqixu)
@@ -347,7 +358,7 @@ TiDB 8.1.0 为长期支持版本 (Long-Term Support Release, LTS)。
     - 修复监控面板中链接数的计算和显示错误 [#51889](https://github.com/pingcap/tidb/issues/51889) @[YangKeao](https://github.com/YangKeao)
     - 修复回滚改写分区 DDL 任务时，状态卡住的问题 [#51090](https://github.com/pingcap/tidb/issues/51090) @[lcwangchao](https://github.com/lcwangchao)
     - 修复 lighting 导入后 TiDB 意外重启 [#52827](https://github.com/pingcap/tidb/issues/52827) @[hawkingrei](https://github.com/hawkingrei)
-    - note [#issue](链接) @[贡献者 GitHub ID](链接)
+    - 修复 TiDB `explain analyze` 结果中 `max_remote_stream` 显示不正确的问题 [#52646](https://github.com/pingcap/tidb/issues/52646) @[JaySon-Huang](https://github.com/JaySon-Huang)
     - note [#issue](链接) @[贡献者 GitHub ID](链接)
     - (dup): release-6.5.9.md > 错误修复> TiDB - 修复查询 `TIDB_HOT_REGIONS` 表时结果返回内存表的问题 [#50810](https://github.com/pingcap/tidb/issues/50810) @[Defined2014](https://github.com/Defined2014)
     - (dup): release-7.1.5.md > 错误修复> TiDB - 修复当某些列的统计信息没有完全加载时，`EXPLAIN` 语句的结果中可能会显示错误的列 ID 的问题 [#52207](https://github.com/pingcap/tidb/issues/52207) @[time-and-fate](https://github.com/time-and-fate)
@@ -384,7 +395,6 @@ TiDB 8.1.0 为长期支持版本 (Long-Term Support Release, LTS)。
     - note [#issue](链接) @[贡献者 GitHub ID](链接)
     - (dup): release-6.5.9.md > 错误修复> TiFlash - 修复在非严格 `sql_mode` 下插入数据到带有异常默认值的列可能导致 TiFlash panic 的问题 [#8803](https://github.com/pingcap/tiflash/issues/8803) @[Lloyd-Pottiger](https://github.com/Lloyd-Pottiger)
     - 修复 TiFlash 在高并发读的情况下，可能返回瞬时不正确的结果的问题 [#8845](https://github.com/pingcap/tiflash/issues/8845) @[JaySon-Huang](https://github.com/JaySon-Huang)
-    - 修复 TiDB `explain analyze` 结果中 `max_remote_stream` 显示不正确的问题 [#52646](https://github.com/pingcap/tidb/issues/52646) @[JaySon-Huang](https://github.com/JaySon-Huang)
     - 修复存算分离架构下，计算节点的本地缓存容量配置项的值修改后，上报 PD 的硬盘使用量不正确的问题 [#8920](https://github.com/pingcap/tiflash/issues/8920) @[JinheLin](https://github.com/JinheLin)
 
 + Tools
