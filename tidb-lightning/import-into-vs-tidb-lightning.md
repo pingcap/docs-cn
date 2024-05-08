@@ -75,7 +75,7 @@ TiDB Lightning 的配置复杂、低效且容易出错。
 
 #### TiDB Lightning
 
-TiDB Lightning 仅支持本地排序。例如，对于数十个 TiB 的源数据，如果 TiDB Lightning 没有配置大的本地磁盘，或者使用多个 TiDB Lightning 实例并行导入，则每个 TiDB Lightning 实例只会使用本地磁盘对用于导入的数据进行排序。由于无法进行全局排序，多个 TiDB Lightning 实例导入 TiKV 的数据之间会出现重叠，尤其是索引数据较多的场景，触发 TiKV 进行压缩操作。由于压缩是非常消耗资源的操作，会导致 TiKV 的写入性能和稳定性下降。
+TiDB Lightning 仅支持本地排序。例如，对于几十 TiB 的源数据，如果 TiDB Lightning 没有配置大的本地磁盘，或者使用多个 TiDB Lightning 实例并行导入，则每个 TiDB Lightning 实例只会使用本地磁盘对用于导入的数据进行排序。由于无法进行全局排序，多个 TiDB Lightning 实例导入 TiKV 的数据之间会出现重叠，尤其是索引数据较多的场景，触发 TiKV 进行压缩操作。由于压缩是非常消耗资源的操作，会导致 TiKV 的写入性能和稳定性下降。
 
 另外，数据导入完成后，你仍需要保留 TiDB Lightning 的本地磁盘，以供下次导入使用。与 Amazon S3 相比成本相对较高。
 
