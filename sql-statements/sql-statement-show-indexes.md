@@ -10,25 +10,14 @@ aliases: ['/docs-cn/dev/sql-statements/sql-statement-show-indexes/','/docs-cn/de
 
 ## 语法图
 
-**ShowIndexStmt:**
+```ebnf+diagram
+ShowIndexStmt ::=
+    "SHOW" ( "INDEX" | "INDEXES" | "KEYS" ) ("FROM" | "IN" ) TableName (("FROM" | "IN") SchemaName )? ShowLikeOrWhere?
 
-![ShowIndexStmt](/media/sqlgram/ShowIndexStmt.png)
-
-**ShowIndexKwd:**
-
-![ShowIndexKwd](/media/sqlgram/ShowIndexKwd.png)
-
-**FromOrIn:**
-
-![FromOrIn](/media/sqlgram/FromOrIn.png)
-
-**TableName:**
-
-![TableName](/media/sqlgram/TableName.png)
-
-**ShowLikeOrWhereOpt:**
-
-![ShowLikeOrWhereOpt](/media/sqlgram/ShowLikeOrWhereOpt.png)
+ShowLikeOrWhere ::=
+    "LIKE" SimpleExpr
+|   "WHERE" Expression
+```
 
 ## 示例
 
@@ -99,3 +88,7 @@ SHOW KEYS FROM t1;
 * [SHOW CREATE TABLE](/sql-statements/sql-statement-show-create-table.md)
 * [DROP INDEX](/sql-statements/sql-statement-drop-index.md)
 * [CREATE INDEX](/sql-statements/sql-statement-create-index.md)
+* [`information_schema.TIDB_INDEXES`](/information-schema/information-schema-tidb-indexes.md)
+* [`information_schema.TIDB_INDEX_USAGE`](/information-schema/information-schema-tidb-index-usage.md)
+* [`information_schema.KEY_COLUMN_USAGE`](/information-schema/information-schema-key-column-usage.md)
+* [`sys.schema_unused_indexes`](/sys-schema/sys-schema-unused-indexes.md)
