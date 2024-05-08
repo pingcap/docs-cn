@@ -59,7 +59,7 @@ summary: 了解 `IMPORT INTO` 和 TiDB Lightning 的差异。
 
 TiDB Lightning 的配置复杂、低效且容易出错。
 
-假设启动 10 个 TiDB Lightning 实例进行并行导入数据，则需要编写 10 个 TiDB Lightning 配置文件，并在每个配置文件中配置每个 TiDB Lightning 实例读取的源文件范围。例如，TiDB Lightning 实例 1 读取前 100 个文件，实例 2 读取接下来的 100 个文件，依此类推。
+假设你需要启动 10 个 TiDB Lightning 实例并行导入数据，那么你需要编写 10 个 TiDB Lightning 配置文件，并在每个配置文件中配置对应 TiDB Lightning 实例读取的源文件范围。例如，TiDB Lightning 实例 1 读取前 100 个文件，实例 2 读取接下来的 100 个文件，依此类推。
 
 此外，你还需要为这 10 个 TiDB Lightning 实例配置共享元数据表和其他配置信息。配置相对复杂和繁琐。
 
