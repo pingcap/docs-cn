@@ -228,7 +228,7 @@ CREATE TABLE conflict_records (
 
 5. 验证导入的表仅包含两个正常行：
 
-    ```console
+    ```sql
     $ mysql -u root -h 127.0.0.1 -P 4000 -e 'select * from example.t'
     +---+-----+
     | a | b   |

@@ -121,7 +121,7 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
     - 当使用内置函数 `VERSION()` 时。
     - 当与客户端初始连接，TiDB 返回带有服务端版本号的初始握手包时。具体可以查看 MySQL 初始握手包的[描述](https://dev.mysql.com/doc/dev/mysql-server/latest/page_protocol_connection_phase.html#sect_protocol_connection_phase_initial_handshake)。
 + 默认值：""
-+ 默认情况下，TiDB 版本号格式为：`5.7.${mysql_latest_minor_version}-TiDB-${tidb_version}`。
++ 默认情况下，TiDB 版本号格式为：`8.0.11-TiDB-${tidb_version}`。
 
 > **注意：**
 >
@@ -754,6 +754,20 @@ opentracing.reporter 相关的设置。
 + 默认值：1000.0
 + 单位：MB
 + 类型：Float
+
+## txn-local-latches
+
+与事务锁存相关的配置项。这些配置项今后可能会废弃，不建议启用。
+
+### `enabled`
+
+- 控制是否开启事务的内存锁。
+- 默认值：`false`
+
+### `capacity`
+
+- Hash 对应的 slot 数量，自动向上调整为 2 的指数倍。每个 slot 占用 32 字节内存。如果设置过小，在数据写入范围较大的场景（如导入数据），可能会导致运行速度变慢，性能变差。
+- 默认值：`2048000`
 
 ## binlog
 

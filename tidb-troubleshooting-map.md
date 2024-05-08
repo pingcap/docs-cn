@@ -375,7 +375,7 @@ TiDB 支持完整的分布式事务，自 v3.0 版本起，提供乐观事务与
 
     - binlog 数据太大，造成写 Kafka 的单条消息太大，需要修改 Kafka 的下列配置来解决：
 
-        ```conf
+        ```properties
         message.max.bytes=1073741824
         replica.fetch.max.bytes=1073741824
         fetch.message.max.bytes=1073741824

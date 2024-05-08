@@ -10,19 +10,18 @@ aliases: ['/docs-cn/dev/sql-statements/sql-statement-show-config/']
 
 ## 语法图
 
-**ShowStmt:**
+```ebnf+diagram
+ShowConfigStmt ::=
+    "SHOW" "CONFIG" ShowLikeOrWhere?
 
-![ShowStmt](/media/sqlgram/ShowStmt.png)
-
-**ShowTargetFilterable:**
-
-![ShowTargetFilterable](/media/sqlgram/ShowTargetFilterable.png)
+ShowLikeOrWhere ::=
+    "LIKE" SimpleExpr
+|   "WHERE" Expression
+```
 
 ## 示例
 
 显示所有配置：
-
-{{< copyable "sql" >}}
 
 ```sql
 SHOW CONFIG;
@@ -41,8 +40,6 @@ SHOW CONFIG;
 
 显示 `type` 是 `tidb` 的配置：
 
-{{< copyable "sql" >}}
-
 ```sql
 SHOW CONFIG WHERE type = 'tidb' AND name = 'advertise-address';
 ```
@@ -57,8 +54,6 @@ SHOW CONFIG WHERE type = 'tidb' AND name = 'advertise-address';
 ```
 
 也可以用 `LIKE` 子句来显示 `type` 是 `tidb` 的配置：
-
-{{< copyable "sql" >}}
 
 ```sql
 SHOW CONFIG LIKE 'tidb';

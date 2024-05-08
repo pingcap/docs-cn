@@ -183,7 +183,7 @@ SET DEFAULT ROLE
     TO user [, user ]
 ```
 
-比如将 `app_read` 和 `app_wirte` 设置为 `rw_user1@localhost` 的默认启用角色：
+比如将 `app_read` 和 `app_write` 设置为 `rw_user1@localhost` 的默认启用角色：
 
 {{< copyable "sql" >}}
 
