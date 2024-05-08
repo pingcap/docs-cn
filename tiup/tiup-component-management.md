@@ -1,6 +1,7 @@
 ---
 title: 使用 TiUP 命令管理组件
 aliases: ['/docs-cn/dev/tiup/tiup-component-management/','/docs-cn/dev/reference/tools/tiup/manage-component/','/docs-cn/dev/reference/tools/tiup/manage-tiup-component/']
+summary: TiUP 是一个用于管理组件的命令行工具。它提供了一系列命令来查询组件列表、安装、升级、运行、查看状态、清理实例和卸载组件。此外，还可以使用实验性的 `link` 和 `unlink` 命令来将组件的二进制符号链接到可执行文件目录。
 ---
 
 # 使用 TiUP 命令管理组件

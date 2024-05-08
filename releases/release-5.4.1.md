@@ -1,5 +1,6 @@
 ---
 title: TiDB 5.4.1 Release Notes
+summary: TiDB 5.4.1 发布日期为 2022 年 5 月 13 日。该版本未引入产品设计上的兼容性变化，但 Bug 修复可能带来兼容性变更。提升改进包括对 TiDB、TiKV、PD、TiFlash 和 Tools 的多个方面的改进。Bug 修复方面包括对 TiDB、TiKV、PD、TiFlash 和 Tools 的多个问题的修复。
 ---
 
 # TiDB 5.4.1 Release Notes

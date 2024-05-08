@@ -1,5 +1,6 @@
 ---
 title: tiup dm scale-in
+summary: tiup dm scale-in 命令用于集群缩容，即下线服务并移除指定节点和相关文件。语法为 tiup dm scale-in <cluster-name>，其中 <cluster-name> 为集群名。选项包括 -N, --node（必须非空，选择要缩容的节点），--force（强制移除宕机节点），-h, --help（输出帮助信息）。输出为缩容日志。
 ---
 
 # tiup dm scale-in

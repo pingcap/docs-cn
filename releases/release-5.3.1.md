@@ -1,5 +1,6 @@
 ---
 title: TiDB 5.3.1 Release Notes
+summary: TiDB 5.3.1 发布日期为 2022 年 3 月 3 日。此版本包含兼容性更改、提升改进和 Bug 修复。兼容性更改包括 TiDB Lightning 工具的默认值调整。提升改进包括 TiDB、TiKV 和 PD 的优化。Bug 修复包括 TiDB、TiKV、PD、TiFlash、Backup & Restore (BR)、TiCDC、TiDB Data Migration (DM) 和 TiDB Lightning 工具的问题修复。
 ---
 
 # TiDB 5.3.1 Release Notes

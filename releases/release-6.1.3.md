@@ -1,5 +1,6 @@
 ---
 title: TiDB 6.1.3 Release Notes
+summary: TiDB 6.1.3 发布日期为 2022 年 12 月 5 日。此版本兼容性变更包括 TiCDC 的默认值修改和事务拆分功能的优化。提升改进方面，PD 优化了锁的粒度，TiCDC 默认关闭 safeMode 并开启大事务拆分功能。此外，为了提升 TiDB 稳定性，Go 编译器版本从 go1.18 升级到了 go1.19。Bug 修复方面，修复了多个 TiDB、PD、TiKV、TiFlash 和 Tools 的问题。
 ---
 
 # TiDB 6.1.3 Release Notes

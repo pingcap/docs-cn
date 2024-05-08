@@ -1,5 +1,6 @@
 ---
 title: TiDB 6.1.1 Release Notes
+summary: TiDB 6.1.1 发布日期为 2022 年 9 月 1 日。该版本兼容性变更包括大小写敏感语句不再敏感，以及默认关闭持续性能分析特性。其他变更包括新增内容和不同操作系统和 CPU 架构的支持。提升改进方面，引入了新的优化器提示和支持通过 gzip 压缩 metrics 响应减少 HTTP body 大小。Bug 修复方面，修复了多个 TiDB、TiKV、PD 和 TiFlash 的问题。 Tools 方面，TiDB Lightning 修复了多个问题，TiDB Data Migration (DM) 修复了多个问题，TiCDC 修复了多个问题，Backup & Restore (BR) 修复了多个问题，Dumpling 修复了一个问题，TiDB Binlog 修复了一个问题。
 ---
 
 # TiDB 6.1.1 Release Notes

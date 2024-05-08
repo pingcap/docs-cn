@@ -1,5 +1,6 @@
 ---
 title: tiup update
+summary: tiup update 命令用于升级已安装的组件或自身。语法为 tiup update [组件名] [版本]，可指定多个组件或版本。选项包括 --all（升级所有组件）、--force（强制升级已安装版本）、--nightly（升级到 nightly 版本）、--self（升级 TiUP 自身）。
 ---
 
 # tiup update
