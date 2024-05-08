@@ -266,7 +266,7 @@ TiDB 路线图展示了 TiDB 未来的计划。随着我们发布长期稳定版
         <ul>
           <li>
             <b>Google Cloud KMS</b>
-            <br />静态加密支持基于 Google Cloud KMS 的密钥管理机制。
+            <br />完善静态加密基于 Google Cloud KMS 的密钥管理机制，使其成为正式功能。
           </li>
           <br />
           <li>
