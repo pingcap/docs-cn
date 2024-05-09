@@ -37,14 +37,14 @@ DESC SEQUENCES;
 
 ```sql
 CREATE SEQUENCE test.seq;
-SELECT nextval(test.seq);
+SELECT NEXTVAL(test.seq);
 ```
 
 输出结果如下：
 
 ```sql
 +-------------------+
-| nextval(test.seq) |
+| NEXTVAL(test.seq) |
 +-------------------+
 |                 1 |
 +-------------------+

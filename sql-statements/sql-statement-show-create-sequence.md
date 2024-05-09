@@ -51,4 +51,5 @@ SHOW CREATE SEQUENCE seq;
 ## 另请参阅
 
 * [CREATE SEQUENCE](/sql-statements/sql-statement-create-sequence.md)
+* [ALTER SEQUENCE](/sql-statements/sql-statement-alter-sequence.md)
 * [DROP SEQUENCE](/sql-statements/sql-statement-drop-sequence.md)
