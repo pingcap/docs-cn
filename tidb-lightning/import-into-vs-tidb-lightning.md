@@ -69,7 +69,7 @@ TiDB Lightning 的配置复杂、低效且容易出错。
 
 基于 TiDB 全局排序，可以将几十 TiB 的源数据传输到多个 TiDB 节点，编码数据 KV 对和索引 KV 对，并传输到 Amazon S3 对这些 KV 对进行全局排序，然后写入到 TiKV。
 
-由于这些 KV 对是通过全局排序过的，因此从各个 TiDB 节点导入 TiKV 的数据不会重叠，从而可以直接将其摄入到 RocksDB 的 L6 层中。这样就不需要 TiKV 执行压缩操作，从而使 TiKV 的写入性能和稳定性都有显着提升。
+由于这些 KV 对是通过全局排序过的，因此从各个 TiDB 节点导入 TiKV 的数据不会重叠，从而可以直接将其摄入到 RocksDB 的 L6 层中。这样就不需要 TiKV 执行 Compaction 操作，从而使 TiKV 的写入性能和稳定性都有显着提升。
 
 导入完成后，Amazon S3 上用于全局排序的数据将自动删除，节省存储成本。
 
@@ -77,7 +77,7 @@ TiDB Lightning 的配置复杂、低效且容易出错。
 
 TiDB Lightning 仅支持本地排序。例如，对于几十 TiB 的源数据，如果 TiDB Lightning 没有配置大的本地磁盘，或者使用多个 TiDB Lightning 实例并行导入，则每个 TiDB Lightning 实例只会使用本地磁盘对用于导入的数据进行排序。由于无法进行全局排序，多个 TiDB Lightning 实例导入 TiKV 的数据之间会出现重叠，尤其是索引数据较多的场景，触发 TiKV 进行压缩操作。由于压缩是非常消耗资源的操作，会导致 TiKV 的写入性能和稳定性下降。
 
-如果后续还要继续导入数据，你需要继续保留 TiDB Lightning 的机器以及机器上的磁盘，以供下次导入使用。与 `IMPORT INTO` 使用 Amazon S3 按需付费的方式相比，使用 TiDB Lightning 成本相对较高。
+如果后续还要继续导入数据，你需要继续保留 TiDB Lightning 服务器以及该服务器上的磁盘，以供下次导入使用。与 `IMPORT INTO` 使用 Amazon S3 按需付费的方式相比，使用 TiDB Lightning 成本相对较高。
 
 ### 性能
 
