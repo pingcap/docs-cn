@@ -107,7 +107,7 @@ CREATE [TEMPORARY] SEQUENCE [IF NOT EXISTS] sequence_name
 
     ```
     +--------------+
-    | nextval(seq) |
+    | NEXTVAL(seq) |
     +--------------+
     |            1 |
     +--------------+
