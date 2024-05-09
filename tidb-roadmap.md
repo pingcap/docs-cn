@@ -197,7 +197,7 @@ TiDB 路线图展示了 TiDB 未来的计划。随着我们发布长期稳定版
           </li>
           <br />
           <li>
-            <b>显示表或 SQL 与热点 Region 的关系</b>
+            <b>支持查看表或 SQL 与热点 Region 的关系</b>
           </li>
           <br />
           <li>
