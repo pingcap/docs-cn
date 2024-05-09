@@ -311,7 +311,7 @@ select SETVAL(seq, 6)   // 设置序列的当前值为 6。
 7, 9, 11, ...           // 后续产生值仍会遵循这个等差关系。
 ```
 
-在 `CYCLE` 模式下，序列的起始值第一轮为 `start`，后续轮次将会是 `MinValue` (increment > 0) 或 `MaxValue` (increment < 0)。
+在 `CYCLE` 模式下，序列的起始值第一轮为 `START`，后续轮次将会是 `MinValue` (INCREMENT > 0) 或 `MaxValue` (INCREMENT < 0)。
 
 ## 另请参阅
 
