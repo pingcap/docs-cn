@@ -182,7 +182,7 @@ TiDB 8.1.0 为长期支持版本 (Long-Term Support Release, LTS)。
 
 | 变量名  | 修改类型 | 描述 |
 |--------|------------------------------|------|
-|        |                              |      |
+| [`tidb_auto_analyze_ratio`](/system-variables.md#tidb_auto_analyze_ratio) | 修改 | 取值范围从 `[0, 18446744073709551615]` 修改为 `(0, 1]`。 |
 | [`tidb_enable_dist_task`](/system-variables.md#tidb_enable_dist_task-从-v710-版本开始引入) | 修改 | 默认值从 `OFF` 修改为 `ON`，代表默认开启分布式执行框架，从而充分利用 TiDB 集群的资源，大幅提升 `ADD INDEX` 和 `IMPORT INTO` 任务的性能。如果要从低版本的集群升级到 v8.1.0 或更高版本，且该集群已开启分布式执行框架，为了避免升级期间 `ADD INDEX` 操作可能导致数据索引不一致的问题，请在升级前关闭分布式执行框架（即将 `tidb_enable_dist_task` 设置为 `OFF`），升级后再手动开启。|
 | [`tidb_service_scope`](/system-variables.md#tidb_service_scope-从-v740-版本开始引入) | 修改  | 该变量的可选值从 "" 或 `background` 修改为长度小于或等于 64 的字符串，可用合法字符包括数字 `0-9`、字母 `a-zA-Z`、下划线 `_` 和连字符 `-`，从而更灵活地控制各 TiDB 节点的服务范围。分布式执行框架将会根据该变量的值决定将分布式任务调度到哪些 TiDB 节点上执行，具体规则请参考[`任务调度`](/tidb-distributed-execution-framework.md#任务调度)。 |
 |        |                              |      |
