@@ -217,7 +217,7 @@
       - [分析慢查询](/analyze-slow-queries.md)
     - [TiDB OOM 故障排查](/troubleshoot-tidb-oom.md)
     - [热点问题处理](/troubleshoot-hot-spot-issues.md)
-    - [CPU 占用过多导致读写延迟增加](/troubleshoot-cpu-issues.md)
+    - [读写延迟增加](/troubleshoot-cpu-issues.md)
     - [写冲突与写性能下降](/troubleshoot-write-conflicts.md)
     - [磁盘 I/O 过高](/troubleshoot-high-disk-io.md)
     - [锁冲突与 TTL 超时](/troubleshoot-lock-conflicts.md)
