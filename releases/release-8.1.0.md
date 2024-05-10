@@ -26,7 +26,7 @@ TiDB 8.1.0 为长期支持版本 (Long-Term Support Release, LTS)。
 <tbody>
   <tr>
     <td rowspan="5">可扩展性与性能</td>
-    <td><a href="https://docs.pingcap.com/zh/tidb/v8.1/br-snapshot-guide#恢复快照备份数据">提升 BR 快照恢复速度（从 v8.0.0 开始 GA）</a></td>
+    <td><a href="https://docs.pingcap.com/zh/tidb/v8.1/br-snapshot-guide#恢复快照备份数据">提升 BR 快照恢复速度</a>（从 v8.0.0 开始 GA）</td>
     <td>通过该功能，BR 可以充分利用集群的规模优势，使 TiKV 集群中的所有节点都能参与到数据恢复的准备阶段，从而显著提升大规模集群中大数据集的恢复速度。实际测试表明，该功能可将下载带宽打满，下载速度可提升 8 到 10 倍，端到端恢复速度大约提升 1.5 到 3 倍。</td>
   </tr>
   <tr>
@@ -34,11 +34,11 @@ TiDB 8.1.0 为长期支持版本 (Long-Term Support Release, LTS)。
     <td>在 v7.6.0 中引入了新的 DDL 架构，批量建表的性能提高了 10 倍。这一重大改进极大地缩短了创建大量表所需的时间。特别是在 SaaS 场景中，快速创建大量表（从数万到数十万不等）是一个常见的挑战，使用该特性能显著提升 SaaS 场景的建表速度。</td>
   </tr>
   <tr>
-    <td><a href="https://docs.pingcap.com/zh/tidb/v8.1/tune-region-performance#通过-active-pd-follower-提升-pd-region-信息查询服务的扩展能力">通过 Active PD Follower 提升 PD Region 信息查询服务的扩展能力（实验特性，从 v7.6.0 开始引入）</a></td>
+    <td><a href="https://docs.pingcap.com/zh/tidb/v8.1/tune-region-performance#通过-active-pd-follower-提升-pd-region-信息查询服务的扩展能力">通过 Active PD Follower 提升 PD Region 信息查询服务的扩展能力</a>（实验特性，从 v7.6.0 开始引入）</td>
     <td>TiDB v7.6.0 实验性地引入了 Active PD Follower 特性，允许 PD follower 提供 Region 信息查询服务。在 TiDB 节点数量较多和 Region 数量较多的集群中，该特性可以提升 PD 集群处理 <code>GetRegion</code>、<code>ScanRegions</code> 请求的能力，减轻 PD leader 的 CPU 压力。</td>
   </tr>
   <tr>
-    <td><a href="https://docs.pingcap.com/zh/tidb/v8.1/system-variables#tidb_dml_type-从-v800-版本开始引入">用于处理更大事务的批量 DML 执行方式（实验特性，从 v8.0.0 开始引入）</a></td>
+    <td><a href="https://docs.pingcap.com/zh/tidb/v8.1/system-variables#tidb_dml_type-从-v800-版本开始引入">用于处理更大事务的批量 DML 执行方式</a>（实验特性，从 v8.0.0 开始引入）</td>
     <td>大批量的 DML 任务，例如大规模的清理任务、连接或聚合，可能会消耗大量内存，并且在非常大的规模上受到限制。批量 DML (<code>tidb_dml_type = "bulk"</code>) 是一种新的 DML 类型，用于更高效地处理大批量 DML 任务，同时提供事务保证并减轻 OOM 问题。该功能与用于数据加载的导入、加载和恢复操作不同。</td>
   </tr>
   <tr>
@@ -52,7 +52,7 @@ TiDB 8.1.0 为长期支持版本 (Long-Term Support Release, LTS)。
   </tr>
   <tr>
     <td rowspan="5">稳定性与高可用</td>
-    <td><a href="https://docs.pingcap.com/zh/tidb/v8.1/tidb-global-sort">全局排序成为正式功能</a>（从 v8.0.0 开始 GA）**tw@qiancai**</td>
+    <td><a href="https://docs.pingcap.com/zh/tidb/v8.1/tidb-global-sort">全局排序成为正式功能</a>（从 v8.0.0 开始 GA）</td>
     <td>全局排序功能旨在提高 <code>IMPORT INTO</code> 和 <code>CREATE INDEX</code> 的稳定性与效率。通过对需要处理的数据进行全局排序，可以提高数据写入 TiKV 的稳定性、可控性和可扩展性，从而提升数据导入与索引添加的用户体验和服务质量。启用全局排序后，单条 <code>IMPORT INTO</code> 或 <code>CREATE INDEX</code> 语句目前已经支持对高达 40 TiB 的数据进行导入或者添加索引。</td>
   </tr>
   <tr>
@@ -60,15 +60,15 @@ TiDB 8.1.0 为长期支持版本 (Long-Term Support Release, LTS)。
     <td>在处理上百个 schema 相同的数据库时，针对其中一个数据库的 SQL binding 通常也适用于其它的数据库。例如，在 SaaS 或 PaaS 数据平台中，每个用户通常各自维护单独的数据库，这些数据库具有相同的 schema 并运行着类似的 SQL。在这种情况下，逐一为每个数据库做 SQL 绑定是不切实际的。TiDB v7.6.0 引入跨数据库绑定执行计划，支持在所有 schema 相同的数据库之间匹配绑定计划。</td>
   </tr>
   <tr>
-    <td><a href="https://docs.pingcap.com/zh/tidb/v8.1/tiproxy-overview">支持 TiProxy（从 v8.0.0 开始 GA）</a></td>
+    <td><a href="https://docs.pingcap.com/zh/tidb/v8.1/tiproxy-overview">支持 TiProxy</a>（从 v8.0.0 开始 GA）</td>
     <td>全面支持 TiProxy，可通过部署工具轻松部署。TiProxy 可以管理和维护客户端与 TiDB 的连接，在滚动重启、升级以及扩缩容过程中保持连接。</td>
   </tr>
   <tr>
-    <td><a href="https://docs.pingcap.com/zh/tidb/v8.1/dm-compatibility-catalog">Data Migration (DM) 正式支持迁移 MySQL 8.0（从 v7.6.0 开始 GA）</a></td>
+    <td><a href="https://docs.pingcap.com/zh/tidb/v8.1/dm-compatibility-catalog">Data Migration (DM) 正式支持迁移 MySQL 8.0</a>（从 v7.6.0 开始 GA）</td>
     <td>在 v7.6.0 之前，DM 迁移 MySQL 8.0 仅为实验特性，不能用于生产环境。TiDB v7.6.0 增强了该功能的稳定性、兼容性，可在生产环境帮助你平滑、快速地将数据从 MySQL 8.0 迁移到 TiDB。在 v7.6.0 中，该功能正式 GA。</td>
   </tr>
   <tr>
-    <td>资源管控支持<a href="https://docs.pingcap.com/zh/tidb/v8.1/tidb-resource-control#管理资源消耗超出预期的查询-runaway-queries">管理资源消耗超出预期的查询</a> (GA) **tw@lilin90**</td>
+    <td>资源管控支持<a href="https://docs.pingcap.com/zh/tidb/v8.1/tidb-resource-control#管理资源消耗超出预期的查询-runaway-queries">管理资源消耗超出预期的查询</a>（从 v8.1.0 开始 GA）</td>
     <td>通过资源组的规则，TiDB 能够自动识别出运行超出预期的查询，并对该查询进行限流或取消处理。即使没有被规则识别，你仍然可以手动添加查询特征以及采取对应的措施，从而降低突发的查询性能问题对整个数据库的影响。</td>
   </tr>
   <tr>
@@ -86,7 +86,7 @@ TiDB 8.1.0 为长期支持版本 (Long-Term Support Release, LTS)。
     <td>TiCDC 支持了新的 Debezium 协议，TiCDC 可以使用该协议生成 Debezium 格式的数据变更事件并发送给 Kafka sink。</td>
   </tr>
   <tr>
-    <td>TiCDC 支持<a href="https://docs.pingcap.com/zh/tidb/v8.1/ticdc-client-authentication.md">客户端鉴权</a>（从 v8.1.0 开始引入）**tw@Oreoxmt**</td>
+    <td>TiCDC 支持<a href="https://docs.pingcap.com/zh/tidb/v8.1/ticdc-client-authentication.md">客户端鉴权</a>（从 v8.1.0 开始引入）</td>
     <td>TiCDC 支持使用 mTLS（双向传输层安全性协议）或 TiDB 用户名密码进行客户端鉴权。该功能允许命令行工具或 OpenAPI 客户端验证与 TiCDC 的连接。</td>
   </tr>
 </tbody>
