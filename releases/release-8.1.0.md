@@ -249,8 +249,8 @@ TiDB 8.1.0 为长期支持版本 (Long-Term Support Release, LTS)。
 
     + TiCDC
       <!--tw@hfxsd 2 -->
-        - 提升了使用 redo log 恢复数据过程中的内存稳定性，减少了 OOM 的概率 [#10900](https://github.com/pingcap/tiflow/issues/10900) @[CharlesCheung96](https://github.com/CharlesCheung96)
-        - 显著提升了事务冲突场景的数据同步的稳定性，性能最高提升 10 倍 [#10896](https://github.com/pingcap/tiflow/issues/10896) @[CharlesCheung96](https://github.com/CharlesCheung96)
+        - 提升使用 redo log 恢复数据过程中的内存稳定性，减少 OOM 的概率 [#10900](https://github.com/pingcap/tiflow/issues/10900) @[CharlesCheung96](https://github.com/CharlesCheung96)
+        - 显著提升事务冲突场景中的数据同步的稳定性，性能最高提升可达 10 倍 [#10896](https://github.com/pingcap/tiflow/issues/10896) @[CharlesCheung96](https://github.com/CharlesCheung96)
 
     + TiDB Data Migration (DM)
 
@@ -350,23 +350,23 @@ TiDB 8.1.0 为长期支持版本 (Long-Term Support Release, LTS)。
         - (dup): release-6.5.9.md > 错误修复> Tools> Backup & Restore (BR) - 修复在日志备份任务被暂停后，移除任务无法立即恢复 GC safepoint 的问题 [#52082](https://github.com/pingcap/tidb/issues/52082) @[3pointer](https://github.com/3pointer)
         - (dup): release-7.1.5.md > 错误修复> Tools> Backup & Restore (BR) - 修复在小概率情况下，由于特殊的事件时序导致日志备份数据丢失的问题 [#16739](https://github.com/tikv/tikv/issues/16739) @[YuJuncen](https://github.com/YuJuncen)
         - (dup): release-7.1.5.md > 错误修复> Tools> Backup & Restore (BR) - 修复因 TiKV 重启，日志备份的 global checkpoint 推进提前于实际备份文件写入点，可能导致少量备份数据丢失的问题 [#16809](https://github.com/tikv/tikv/issues/16809) @[YuJuncen](https://github.com/YuJuncen)
-        - 去除全量备份日志输出无效的 concurrency 属性 [#50837](https://github.com/pingcap/tidb/issues/50837) @[BornChanger](https://github.com/BornChanger)
-        - 修复在 PD leader 丢失情况下, BR 恢复或者是 lightning 物理模式下失败的问题 [#51124](https://github.com/pingcap/tidb/issues/51124) [#50501](https://github.com/pingcap/tidb/issues/50501) @[Leavrth](https://github.com/Leavrth) 
-        - 修复日志备份在暂停, 停止,再重建任务操作后, 任务状态显示正常, 但 checkpoint 不推进的问题 [#53047](https://github.com/pingcap/tidb/issues/53047) @[RidRisR](https://github.com/RidRisR) 
+        - 修复全量备份时日志中出现无效的 concurrency 相关信息的问题 [#50837](https://github.com/pingcap/tidb/issues/50837) @[BornChanger](https://github.com/BornChanger)
+        - 修复在 BR 恢复数据或 TiDB Lightning 物理导入模式下导入数据时，从 PD 获取到的 Region 没有 Leader 的问题 [#51124](https://github.com/pingcap/tidb/issues/51124) [#50501](https://github.com/pingcap/tidb/issues/50501) @[Leavrth](https://github.com/Leavrth) 
+        - 修复日志备份在暂停、停止、再重建任务操作后，虽然任务状态显示正常，但 Checkpoint 不推进的问题 [#53047](https://github.com/pingcap/tidb/issues/53047) @[RidRisR](https://github.com/RidRisR) 
         - 修复不稳定测试用例 `TestClearCache` [#51671](https://github.com/pingcap/tidb/issues/51671) @[zxc111](https://github.com/zxc111)
-        - 修复不稳定测试用例 `TestGetMergeRegionSizeAndCount`  [#52095](https://github.com/pingcap/tidb/issues/52095) @[3pointer](https://github.com/3pointer)
+        - 修复不稳定测试用例 `TestGetMergeRegionSizeAndCount` [#52095](https://github.com/pingcap/tidb/issues/52095) @[3pointer](https://github.com/3pointer)
         - 修复不稳定集成测试 `br_tikv_outage` [#52673](https://github.com/pingcap/tidb/issues/52673) @[Leavrth](https://github.com/Leavrth)
-        - 控制测试用例  `TestGetTSWithRetry` 执行时间 [#52547](https://github.com/pingcap/tidb/issues/52547) @[Leavrth](https://github.com/Leavrth)
+        - 修复测试用例 `TestGetTSWithRetry` 执行时间过长的问题 [#52547](https://github.com/pingcap/tidb/issues/52547) @[Leavrth](https://github.com/Leavrth)
 
     + TiCDC
       <!--tw@hfxsd 7 -->
-        - 修复调用驱逐 TiCDC owner 节点（/api/v2/owner/resign）的命令后意外导致 CDC 任务重启的问题 [#10781](https://github.com/pingcap/tiflow/issues/10781) @[sdojjy](https://github.com/sdojjy)
-        - 修复当下游 pulsar 下线后移除 changefeed 会导致 CDC 正常流程卡住从而引起其他 changefeed 进度卡住的问题 [#10629](https://github.com/pingcap/tiflow/issues/10629) @[asddongmen](https://github.com/asddongmen)
-        - 修复 grafana 监控中 Owner 面板显示不稳定的问题 [#10796](https://github.com/pingcap/tiflow/issues/10796) @[hongyunyan](https://github.com/hongyunyan)
+        - 修复调用驱逐 TiCDC Owner 节点的 API (/api/v2/owner/resign) 导致 TiCDC 任务意外重启的问题 [#10781](https://github.com/pingcap/tiflow/issues/10781) @[sdojjy](https://github.com/sdojjy)
+        - 修复当下游 pulsar 下线后，移除 changefeed 会导致 TiCDC 正常流程卡住，从而引起其他 changefeed 进度卡住的问题 [#10629](https://github.com/pingcap/tiflow/issues/10629) @[asddongmen](https://github.com/asddongmen)
+        - 修复 Grafana 监控中的 **Ownership history** 面板显示不稳定的问题 [#10796](https://github.com/pingcap/tiflow/issues/10796) @[hongyunyan](https://github.com/hongyunyan)
         - 修复重启 PD 可能导致 TiCDC 节点报错重启的问题 [#10799](https://github.com/pingcap/tiflow/issues/10799) @[3AceShowHand](https://github.com/3AceShowHand)
-        - 修复当 PD 磁盘 IO 延迟较大会导致显著的 CDC 同步延迟的问题 [#9054](https://github.com/pingcap/tiflow/issues/9054) @[asddongmen](https://github.com/asddongmen)
+        - 修复 PD 磁盘 IO 延迟较大导致 TiCDC 同步大幅延迟的问题 [#9054](https://github.com/pingcap/tiflow/issues/9054) @[asddongmen](https://github.com/asddongmen)
         - 修复没有按照正确的时区设置默认值的问题 [#10931](https://github.com/pingcap/tiflow/issues/10931) @[3AceShowHand](https://github.com/3AceShowHand)
-        - 修复 drop primary/unique key 没有没正确同步的问题 [#10890](https://github.com/pingcap/tiflow/issues/10890) @[asddongmen](https://github.com/asddongmen)
+        - 修复没有正确同步 `DROP PRIMARY KEY` 和 `DROP UNIQUE KEY` 的问题 [#10890](https://github.com/pingcap/tiflow/issues/10890) @[asddongmen](https://github.com/asddongmen)
         - (dup): release-7.1.5.md > 错误修复> Tools> TiCDC - 修复上游写入 `Exchange Partition ... With Validation` DDL 后，TiCDC 向下游执行该 DDL 时失败，导致 changefeed 卡住的问题 [#10859](https://github.com/pingcap/tiflow/issues/10859) @[hongyunyan](https://github.com/hongyunyan)
 
     + TiDB Data Migration (DM)
