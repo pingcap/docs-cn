@@ -297,7 +297,7 @@ TiDB 8.1.0 为长期支持版本 (Long-Term Support Release, LTS)。
     - 修复重命名索引后再添加同名索引时报错的问题 [#51431](https://github.com/pingcap/tidb/issues/51431) @[lance6716](https://github.com/lance6716)
     - 修复添加索引期间升级集群导致数据索引不一致的问题 [#52411](https://github.com/pingcap/tidb/issues/52411) @[tangenta](https://github.com/tangenta)
     - 修复开启分布式框架后为大数据量的表添加索引不成功的问题 [#52640](https://github.com/pingcap/tidb/issues/52640) @[tangenta](https://github.com/tangenta)
-    - 修复并发添加索引时报 “文件不存在” 错误的问题 [#52475](https://github.com/pingcap/tidb/issues/52475) @[tangenta](https://github.com/tangenta)
+    - 修复并发添加索引时报 `no such file or directory` 错误的问题 [#52475](https://github.com/pingcap/tidb/issues/52475) @[tangenta](https://github.com/tangenta)
     - 修复添加索引失败后清理不掉临时数据的问题 [#52639](https://github.com/pingcap/tidb/issues/52639) @[lance6716](https://github.com/lance6716)
     - 修复元数据锁在 plan cache 场景下未能阻止 DDL 推进的问题 [#51407](https://github.com/pingcap/tidb/issues/51407) @[wjhuang2016](https://github.com/wjhuang2016)
     - 修复执行 `IMPORT INTO` 大数据量任务时卡住的问题 [#52884](https://github.com/pingcap/tidb/issues/52884) @[lance6716](https://github.com/lance6716)
