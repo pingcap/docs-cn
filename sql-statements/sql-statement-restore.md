@@ -120,7 +120,7 @@ RESTORE DATABASE * FROM 's3://example-bucket-2020/backup-05/'
 
 如果你需要减少网络带宽占用，可以通过 `RATE_LIMIT` 来限制每个 TiKV 节点的平均下载速度。
 
-在恢复完成之前，`RESTORE` 将对备份文件中的数据进行校验，以验证数据的正确性。如果您确信此检查不必要，可以使用 `CHECKSUM` 来禁用该检查。
+在恢复完成之前，`RESTORE` 将对备份文件中的数据进行校验，以验证数据的正确性。如果你确信无需进行校验，可以使用 `CHECKSUM` 参数禁用该检查。
 
 {{< copyable "sql" >}}
 
