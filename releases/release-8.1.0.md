@@ -228,7 +228,7 @@ TiDB 8.1.0 为长期支持版本 (Long-Term Support Release, LTS)。
 
 + PD
   <!--tw@qiancai 1 -->
-    - 优化调度 operator 相关逻辑竞争锁的开销 [#7897](https://github.com/tikv/pd/issues/7897) @[nolouch](https://github.com/nolouch)
+    - 优化 `OperatorController` 的逻辑，减少竞争锁的开销 [#7897](https://github.com/tikv/pd/issues/7897) @[nolouch](https://github.com/nolouch)
 
 + TiFlash
 
@@ -321,23 +321,23 @@ TiDB 8.1.0 为长期支持版本 (Long-Term Support Release, LTS)。
 
 + PD
   <!--tw@qiancai 9 -->
-    - 修复切换 PD 模式时 TSO 可能卡住的问题 [#7849](https://github.com/tikv/pd/issues/7849) @[JmPotato](https://github.com/JmPotato)
-    - 修复 DR Auto Sync 监控状态显示的问题 [#7974](https://github.com/tikv/pd/issues/7974) @[lhy1024](https://github.com/lhy1024)
-    - 修复检查 binary 版本时可能导致的 panic 问题 [#7978](https://github.com/tikv/pd/issues/7978) @[JmPotato](https://github.com/JmPotato)
-    - 修复 TTL 参数类型转换错误的问题 [#7980](https://github.com/tikv/pd/issues/7980) @[HuSharp](https://github.com/HuSharp)
-    - 修复两中心部署切换时 leader 无法迁移的问题 [#7992](https://github.com/tikv/pd/issues/7992) @[TonsnakeLin](https://github.com/TonsnakeLin)
-    - 修复 pd-ctl 标准错误重定向的问题 [#8022](https://github.com/tikv/pd/issues/8022) @[HuSharp](https://github.com/HuSharp)
-    - 修复在生成 merge 调度时可能出现的 panic 问题 [#8049](https://github.com/tikv/pd/issues/8049) @[nolouch](https://github.com/nolouch)
+    - 修复切换 PD 微服务模式时 TSO 可能卡住的问题 [#7849](https://github.com/tikv/pd/issues/7849) @[JmPotato](https://github.com/JmPotato)
+    - 修复 DR Auto-Sync 的 `State` 监控指标未显示数据的问题 [#7974](https://github.com/tikv/pd/issues/7974) @[lhy1024](https://github.com/lhy1024)
+    - 修复检查 binary 版本时可能导致 PD panic 的问题 [#7978](https://github.com/tikv/pd/issues/7978) @[JmPotato](https://github.com/JmPotato)
+    - 修复解析 TTL 参数时发生的类型转换错误 [#7980](https://github.com/tikv/pd/issues/7980) @[HuSharp](https://github.com/HuSharp)
+    - 修复两数据中心部署切换时 Leader 无法迁移的问题 [#7992](https://github.com/tikv/pd/issues/7992) @[TonsnakeLin](https://github.com/TonsnakeLin)
+    - 修复 pd-ctl 中 `PrintErrln` 无法将错误信息输出到 `stderr`（标准错误）的问题 [#8022](https://github.com/tikv/pd/issues/8022) @[HuSharp](https://github.com/HuSharp)
+    - 修复 PD 在生成 merge 调度时可能出现的 panic 问题 [#8049](https://github.com/tikv/pd/issues/8049) @[nolouch](https://github.com/nolouch)
     - 修复 `GetAdditionalInfo` 导致的 panic 问题 [#8079](https://github.com/tikv/pd/issues/8079) @[HuSharp](https://github.com/HuSharp)
-    - 修复 scatter range 调度器监控显示的问题 [#8125](https://github.com/tikv/pd/issues/8125) @[HuSharp](https://github.com/HuSharp)
+    - 修复 PD 的 `Filter target` 监控指标未提供 scatter range 信息的问题 [#8125](https://github.com/tikv/pd/issues/8125) @[HuSharp](https://github.com/HuSharp)
     - (dup): release-6.5.9.md > 错误修复> PD - 修复 `SHOW CONFIG` 的查询结果包含已废弃的 `trace-region-flow` 配置项的问题 [#7917](https://github.com/tikv/pd/issues/7917) @[rleungx](https://github.com/rleungx)
     - (dup): release-6.5.9.md > 错误修复> PD - 修复扩缩容进度显示不准确的问题 [#7726](https://github.com/tikv/pd/issues/7726) @[CabinfeverB](https://github.com/CabinfeverB)
 
 + TiFlash
   <!--tw@qiancai 2 -->
     - (dup): release-6.5.9.md > 错误修复> TiFlash - 修复在非严格 `sql_mode` 下插入数据到带有异常默认值的列可能导致 TiFlash panic 的问题 [#8803](https://github.com/pingcap/tiflash/issues/8803) @[Lloyd-Pottiger](https://github.com/Lloyd-Pottiger)
-    - 修复 TiFlash 在高并发读的情况下，可能返回瞬时不正确的结果的问题 [#8845](https://github.com/pingcap/tiflash/issues/8845) @[JaySon-Huang](https://github.com/JaySon-Huang)
-    - 修复存算分离架构下，计算节点的本地缓存容量配置项的值修改后，上报 PD 的硬盘使用量不正确的问题 [#8920](https://github.com/pingcap/tiflash/issues/8920) @[JinheLin](https://github.com/JinheLin)
+    - 修复 TiFlash 在高并发读的情况下，可能返回瞬时不正确结果的问题 [#8845](https://github.com/pingcap/tiflash/issues/8845) @[JaySon-Huang](https://github.com/JaySon-Huang)
+    - 修复存算分离架构下，修改 TiFlash 计算节点 `storage.remote.cache.capacity` 配置项的值后，Grafana 中硬盘使用量监控指标 `used_size` 显示不正确的问题 [#8920](https://github.com/pingcap/tiflash/issues/8920) @[JinheLin](https://github.com/JinheLin)
 
 + Tools
 
@@ -373,10 +373,10 @@ TiDB 8.1.0 为长期支持版本 (Long-Term Support Release, LTS)。
 
     + TiDB Lightning
       <!--tw@qiancai 4 -->
-        - 修复了 lightning 导入时，因源文件存在不兼容的 SQL 而报 “no database selected” 的问题 [#51800](https://github.com/pingcap/tidb/issues/51800) @[lance6716](https://github.com/lance6716)
-        - 修复了 lightning 在 server 模式下可能会打印敏感信息到日志的问题 [#36374](https://github.com/pingcap/tidb/issues/36374) @[kennytm](https://github.com/kennytm)
-        - 修复了 lightning 导入期间报 “invalid store ID 0” 错误的问题 [#50501](https://github.com/pingcap/tidb/issues/50501) @[Leavrth](https://github.com/Leavrth)
-        - 修复了 lighting 使用 replace 作为去重算法时报 “Unknown column in where clause” 错误的问题 [#52886](https://github.com/pingcap/tidb/issues/52886) @[lyzx2001](https://github.com/lyzx2001)
+        - 修复 TiDB Lightning 导入数据时，因源文件存在不兼容的 SQL 语句而报 `no database selected` 的问题 [#51800](https://github.com/pingcap/tidb/issues/51800) @[lance6716](https://github.com/lance6716)
+        - 修复 TiDB Lightning 在服务器模式下可能会将敏感信息打印到日志中的问题 [#36374](https://github.com/pingcap/tidb/issues/36374) @[kennytm](https://github.com/kennytm)
+        - 修复 TiDB Lightning 导入数据时，kill PD Leader 会导致 `invalid store ID 0` 报错的问题 [#50501](https://github.com/pingcap/tidb/issues/50501) @[Leavrth](https://github.com/Leavrth)
+        - 修复 TiDB Lightning 使用 `replace` 方式处理冲突数据时报 `Unknown column in where clause` 错误的问题 [#52886](https://github.com/pingcap/tidb/issues/52886) @[lyzx2001](https://github.com/lyzx2001)
         - (dup): release-7.1.5.md > 错误修复> Tools> TiDB Lightning - 修复导入 Parquet 格式的空表时，TiDB Lightning panic 的问题 [#52518](https://github.com/pingcap/tidb/issues/52518) @[kennytm](https://github.com/kennytm)
 
     + Dumpling
