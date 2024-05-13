@@ -58,6 +58,8 @@ TiKV 配置文件比命令行参数支持更多的选项。你可以在 [etc/con
 
 自 v5.4.0 版本起，废弃原 log 参数 `log-rotation-timespan`，并将 `log-level`、`log-format`、`log-file`、`log-rotation-size` 变更为下列参数，与 TiDB 的 log 参数保持一致。如果只设置了原参数、且把其值设为非默认值，原参数与新参数会保持兼容；如果同时设置了原参数和新参数，则会使用新参数。
 
+自 v5.4.0 版本起，Rocksdb 的 log 也改为由 TiKV 的 log 模块进行管理，Rocksdb 的相关配置项 `info-log-level`、`info-log-max-size`、`info-log-roll-time`、`info-log-keep-log-file-num` 等参数已被废弃不再起作用，相关配置与 TiKV 日志相关配置项合并。注意 Rocksdb 的 `info-log-dir` 依然有效，用于设置 Rocksdb 日志存储的路径。
+
 ### `level` <span class="version-mark">从 v5.4.0 版本开始引入</span>
 
 + 日志等级。
@@ -1253,6 +1255,10 @@ RocksDB 相关的配置项。
 
 ### `info-log-max-size`
 
+> **警告：**
+>
+> 自 v5.4.0 起，该配置项被废弃，其功能由配置参数 [`log.file.max-size`](#max-size-从-v540-版本开始引入) 代替。
+
 + Info 日志的最大大小。
 + 默认值：1GiB
 + 最小值：0
@@ -1260,10 +1266,18 @@ RocksDB 相关的配置项。
 
 ### `info-log-roll-time`
 
+> **警告：**
+>
+> 自 v5.4.0 起，该配置项被废弃，TiKV 不再支持按照时间自动切分日志，请使用配置参数 [`log.file.max-size`](#max-size-从-v540-版本开始引入) 配置日志自动切分的阈值。
+
 + 日志截断间隔时间，如果为 0s 则不截断。
 + 默认值：0s
 
 ### `info-log-keep-log-file-num`
+
+> **警告：**
+>
+> 自 v5.4.0 起，该配置项被废弃，其功能由配置参数 [`log.file.max-backups`](#max-backups-从-v540-版本开始引入) 代替。
 
 + 保留日志文件最大个数。
 + 默认值：10
@@ -1275,6 +1289,10 @@ RocksDB 相关的配置项。
 + 默认值：""
 
 ### `info-log-level`
+
+> **警告：**
+>
+> 自 v5.4.0 起，该配置项被废弃，其功能由配置参数 [`log.level`](#level-从-v540-版本开始引入) 代替。
 
 + RocksDB 的日志级别。
 + 默认值：`"info"`
@@ -1785,6 +1803,10 @@ raftdb 相关配置项。
 
 ### `info-log-max-size`
 
+> **警告：**
+>
+> 自 v5.4.0 起，该配置项被废弃，其功能由配置参数 [`log.file.max-size`](#max-size-从-v540-版本开始引入) 代替。
+
 + Info 日志的最大大小。
 + 默认值：`"1GiB"`
 + 最小值：`0`
@@ -1792,10 +1814,18 @@ raftdb 相关配置项。
 
 ### `info-log-roll-time`
 
+> **警告：**
+>
+> 自 v5.4.0 起，该配置项被废弃，TiKV 不再支持按照时间自动切分日志，请使用配置参数 [`log.file.max-size`](#max-size-从-v540-版本开始引入) 配置日志自动切分的阈值。
+
 + Info 日志截断间隔时间，如果为 `"0s"` 则不截断。
 + 默认值：`"0s"`
 
 ### `info-log-keep-log-file-num`
+
+> **警告：**
+>
+> 自 v5.4.0 起，该配置项被废弃，其功能由配置参数 [`log.file.max-backups`](##max-backups-从-v540-版本开始引入) 代替。
 
 + RaftDB 中保存的 Info 日志文件的最大数量。
 + 默认值：`10`
@@ -1807,6 +1837,10 @@ raftdb 相关配置项。
 + 默认值：`""`
 
 ### `info-log-level`
+
+> **警告：**
+>
+> 自 v5.4.0 起，该配置项被废弃，其功能由配置参数 [`log.level`](#level-从-v540-版本开始引入) 代替。
 
 + RaftDB 的日志级别。
 + 默认值：`"info"`
