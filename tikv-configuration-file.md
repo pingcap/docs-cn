@@ -1742,7 +1742,7 @@ raftdb 相关配置项。
 
 > **警告：**
 >
-> 自 v5.4.0 起，该配置项被废弃，其功能由配置参数 [`log.file.max-backups`](##max-backups-从-v540-版本开始引入) 代替。
+> 自 v5.4.0 起，该配置项被废弃，其功能由配置参数 [`log.file.max-backups`](#max-backups-从-v540-版本开始引入) 代替。
 
 + RaftDB 中保存的 Info 日志文件的最大数量。
 + 默认值：`10`
