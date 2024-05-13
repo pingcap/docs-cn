@@ -197,6 +197,7 @@ TiDB 8.1.0 为长期支持版本 (Long-Term Support Release, LTS)。
 | TiCDC | [`security.mtls`](/ticdc/ticdc-server-config.md#cdc-server-配置文件说明) | 新增 | 控制是否开启 TLS 客户端鉴权，默认值为 `false`。|
 | TiCDC | [`sink.debezium.output-old-value`](/ticdc/ticdc-changefeed-config.md#ticdc-changefeed-配置文件说明) | 新增 | 控制是否输出行数据更改前的值。默认值为 `true`。关闭后，Update 事件不会输出 "before" 字段的数据。 |
 | TiCDC | [`sink.open.output-old-value`](/ticdc/ticdc-changefeed-config.md#ticdc-changefeed-配置文件说明) | 新增 | 控制是否输出行数据更改前的值。默认值为 `true`。关闭后，Update 事件不会输出 "p" 字段的数据。 |
+| TiDB| [`concurrently-init-stats`](/tidb-configuration-file.md#concurrently-init-stats-从-v810-和-v752-版本开始引入) | 新增 | 用于控制 TiDB 启动时是否并发初始化统计信息。默认值为 `false`。 |
 
 ### 其他
 
@@ -357,7 +358,7 @@ TiDB 8.1.0 为长期支持版本 (Long-Term Support Release, LTS)。
 
     + TiCDC
       <!--tw@hfxsd 7 -->
-        - 修复调用驱逐 TiCDC Owner 节点的 API (/api/v2/owner/resign) 导致 TiCDC 任务意外重启的问题 [#10781](https://github.com/pingcap/tiflow/issues/10781) @[sdojjy](https://github.com/sdojjy)
+        - 修复调用驱逐 TiCDC owner 节点的 API (`/api/v2/owner/resign`) 导致 TiCDC 任务意外重启的问题 [#10781](https://github.com/pingcap/tiflow/issues/10781) @[sdojjy](https://github.com/sdojjy)
         - 修复当下游 Pulsar 下线后，移除 changefeed 会导致 TiCDC 正常流程卡住，从而引起其他 changefeed 进度卡住的问题 [#10629](https://github.com/pingcap/tiflow/issues/10629) @[asddongmen](https://github.com/asddongmen)
         - 修复 Grafana 监控中的 **Ownership history** 面板显示不稳定的问题 [#10796](https://github.com/pingcap/tiflow/issues/10796) @[hongyunyan](https://github.com/hongyunyan)
         - 修复重启 PD 可能导致 TiCDC 节点报错重启的问题 [#10799](https://github.com/pingcap/tiflow/issues/10799) @[3AceShowHand](https://github.com/3AceShowHand)
