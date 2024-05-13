@@ -128,5 +128,5 @@ spark.tispark.replica_read learner
 你可以在 br 命令行中添加 `--replica-read-label` 参数，来读取只读节点上的数据。注意，在 shell 中运行如下命令时需使用单引号包裹 label，以防止 `$` 被 shell 解析。
 
 ```shell
-br backup full ... --replica-read-label '$mode:readonly'
+tiup br backup full ... --replica-read-label '$mode:readonly'
 ```

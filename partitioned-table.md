@@ -1,5 +1,6 @@
 ---
 title: 分区表
+summary: 了解如何使用 TiDB 的分区表。
 aliases: ['/docs-cn/dev/partitioned-table/','/docs-cn/dev/reference/sql/partitioning/']
 ---
 

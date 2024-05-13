@@ -19,23 +19,23 @@ TiDB 数据迁移工具默认情况下作用于所有数据库，但实际使用
 * [BR](/br/br-snapshot-manual.md#使用表库过滤功能备份多张表的数据)：
 
     ```shell
-    ./br backup full -f 'foo*.*' -f 'bar*.*' -s 'local:///tmp/backup'
+    tiup br backup full -f 'foo*.*' -f 'bar*.*' -s 'local:///tmp/backup'
     ```
 
     ```shell
-    ./br restore full -f 'foo*.*' -f 'bar*.*' -s 'local:///tmp/backup'
+    tiup br restore full -f 'foo*.*' -f 'bar*.*' -s 'local:///tmp/backup'
     ```
 
 * [Dumpling](/dumpling-overview.md)：
 
     ```shell
-    ./dumpling -f 'foo*.*' -f 'bar*.*' -P 3306 -o /tmp/data/
+    tiup dumpling -f 'foo*.*' -f 'bar*.*' -P 3306 -o /tmp/data/
     ```
 
 * [TiDB Lightning](/tidb-lightning/tidb-lightning-overview.md)：
 
     ```shell
-    ./tidb-lightning -f 'foo*.*' -f 'bar*.*' -d /tmp/data/ --backend tidb
+    tiup tidb-lightning -f 'foo*.*' -f 'bar*.*' -d /tmp/data/ --backend tidb
     ```
 
 ### TOML 配置文件
@@ -117,8 +117,8 @@ employees.*
 以下两条表库过滤命令是等价的：
 
 ```bash
-./dumpling -f '@config/filter.txt'
-./dumpling -f 'employees.*' -f '*.WorkOrder'
+tiup dumpling -f '@config/filter.txt'
+tiup dumpling -f 'employees.*' -f '*.WorkOrder'
 ```
 
 导入的文件里不能使用过滤规则导入另一个文件。
@@ -205,10 +205,10 @@ foo\"bar.foo\`bar
 
 ```bash
 # 所有表均被过滤掉
-./dumpling -f '!*.Password'
+tiup dumpling -f '!*.Password'
 
 # 只有 “Password” 表被过滤掉，其余表仍保留
-./dumpling -f '*.*' -f '!*.Password'
+tiup dumpling -f '*.*' -f '!*.Password'
 ```
 
 如果一个表的名称与过滤列表中的多个规则匹配，则以最后匹配的规则为准。例如：

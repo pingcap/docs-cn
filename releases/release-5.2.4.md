@@ -1,6 +1,7 @@
 ---
 title: TiDB 5.2.4 Release Notes
 category: Releases
+summary: TiDB 5.2.4 发布日期为 2022 年 4 月 26 日。此版本包含兼容性更改、提升改进和 Bug 修复。兼容性更改包括 TiDB、TiKV 和 Tools 的调整。提升改进主要针对 TiKV 和 Tools 进行了优化。Bug 修复方面涉及 TiDB、TiKV、PD、TiFlash 和 Tools 的修复。
 ---
 
 # TiDB 5.2.4 Release Notes

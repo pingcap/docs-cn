@@ -1,5 +1,6 @@
 ---
 title: tiup mirror rotate
+summary: TiUP 的镜像中有一个重要文件 root.json，记录了系统需要使用的公钥和信任链基础。包含管理员签名、用于验证的公钥和过期时间。更新 root.json 需要管理员重新签名，使用命令 `tiup mirror rotate` 自动化更新流程。需要确保 TiUP 客户端升级到 v1.5.0 或以上版本。命令启动编辑器修改内容，等待管理员签名。选项包括临时服务器监听地址。输出为各个镜像管理员当前的签名状态。
 ---
 
 # tiup mirror rotate

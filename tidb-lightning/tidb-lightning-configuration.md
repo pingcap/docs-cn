@@ -438,7 +438,7 @@ log-progress = "5m"
 | --key *file* | TLS 连接的私钥路径 | `security.key-path` |
 | --server-mode | 在服务器模式下启动 TiDB Lightning | `lightning.server-mode` |
 
-如果同时对命令行参数和配置文件中的对应参数进行更改，命令行参数将优先生效。例如，在 `cfg.toml` 文件中，不管对日志等级做出什么修改，运行 `./tidb-lightning -L debug --config cfg.toml` 命令总是将日志级别设置为 “debug”。
+如果同时对命令行参数和配置文件中的对应参数进行更改，命令行参数将优先生效。例如，在 `cfg.toml` 文件中，不管对日志等级做出什么修改，运行 `tiup tidb-lightning -L debug --config cfg.toml` 命令总是将日志级别设置为 “debug”。
 
 ### `tidb-lightning-ctl`
 
