@@ -96,7 +96,7 @@ TiDB 8.1.0 为长期支持版本 (Long-Term Support Release, LTS)。
 
 ### 稳定性
 
-* 管理资源消耗超出预期的查询成为正式功能 (GA) [#43691](https://github.com/pingcap/tidb/issues/43691) @[nolouch](https://github.com/nolouch) **tw@lilin90** <!--1447-->
+* 管理资源消耗超出预期的查询成为正式功能 (GA) [#43691](https://github.com/pingcap/tidb/issues/43691) @[nolouch](https://github.com/nolouch)
 
     突发的 SQL 性能问题引发数据库整体性能下降，是数据库稳定性最常见的挑战。造成 SQL 性能问题的原因有很多，例如未经充分测试的新 SQL、数据量剧烈变化、执行计划突变等，这些问题很难从源头上完全规避。TiDB v7.2.0 引入了对资源超出预期的查询的管理能力，以快速减小 SQL 性能造成的影响范围。该功能在 v8.1.0 成为正式功能。
 
@@ -110,7 +110,7 @@ TiDB 8.1.0 为长期支持版本 (Long-Term Support Release, LTS)。
 
 ### SQL 功能
 
-* 支持在 TiDB 建表时使用更多的表达式设置列的默认值成为正式功能 (GA) [#50936](https://github.com/pingcap/tidb/issues/50936) @[zimulala](https://github.com/zimulala) **tw@hfxsd** <!--1794-->
+* 支持在 TiDB 建表时使用更多的表达式设置列的默认值成为正式功能 (GA) [#50936](https://github.com/pingcap/tidb/issues/50936) @[zimulala](https://github.com/zimulala)
 
     在 v8.0.0 之前，建表时指定列的默认值仅限于固定的字符串、数字、日期和个别表达式。从 v8.0.0 开始，TiDB 支持使用更多表达式作为列的默认值，例如将列的默认值设置为 `DATE_FORMAT`，从而满足多样化的业务需求。在 v8.1.0 中，该特性成为正式功能。
     
@@ -120,7 +120,7 @@ TiDB 8.1.0 为长期支持版本 (Long-Term Support Release, LTS)。
 
 ### 数据库管理
 
-* 默认开启 TiDB 分布式执行框架，提升并行执行 `ADD INDEX` 或 `IMPORT INTO` 任务的性能和稳定性 [#52441](https://github.com/pingcap/tidb/issues/52441) @[D3Hunter](https://github.com/D3Hunter) **tw@qiancai**
+* 默认开启 TiDB 分布式执行框架，提升并行执行 `ADD INDEX` 或 `IMPORT INTO` 任务的性能和稳定性 [#52441](https://github.com/pingcap/tidb/issues/52441) @[D3Hunter](https://github.com/D3Hunter)
 
     TiDB 分布式执行框架在 v7.5.0 中成为正式功能 (GA)，但默认关闭，即一个 `ADD INDEX` 或 `IMPORT INTO` 任务默认只能由一个 TiDB 节点执行。
 
@@ -130,7 +130,7 @@ TiDB 8.1.0 为长期支持版本 (Long-Term Support Release, LTS)。
 
 ### 安全
 
-* 增强 TiDB 日志脱敏 (GA) [#52364](https://github.com/pingcap/tidb/issues/52364) @[xhebox](https://github.com/xhebox) **tw@hfxsd** <!--1817-->
+* 增强 TiDB 日志脱敏 (GA) [#52364](https://github.com/pingcap/tidb/issues/52364) @[xhebox](https://github.com/xhebox)
 
     TiDB 日志脱敏增强是通过对日志文件中的 SQL 文本信息进行标记，支持在查看日志时删除敏感数据。你可以控制是否对日志信息进行标记，以实现在不同场景下安全使用 TiDB 日志，提升了使用日志脱敏能力的安全性和灵活性。要使用此功能，可以将系统变量 `tidb_redact_log` 的值设置为 `MARKER`，此时 TiDB 运行日志中的 SQL 文本会被标记。还可以通过 TiDB server 的 `collect-log` 子命令将日志中标记的敏感数据删除，在数据安全的情况下展示日志；或移除所有标记，获取正常日志。该功能在 v8.1.0 成为正式功能。
 
@@ -138,7 +138,7 @@ TiDB 8.1.0 为长期支持版本 (Long-Term Support Release, LTS)。
 
 ### 数据迁移
 
-* `IMPORT INTO ... FROM SELECT` 语法成为正式功能 (GA) [#49883](https://github.com/pingcap/tidb/issues/49883) @[D3Hunter](https://github.com/D3Hunter) **tw@qiancai** <!--1791-->
+* `IMPORT INTO ... FROM SELECT` 语法成为正式功能 (GA) [#49883](https://github.com/pingcap/tidb/issues/49883) @[D3Hunter](https://github.com/D3Hunter)
 
     在 v8.0.0 之前的版本中，将查询结果导入目标表只能通过 `INSERT INTO ... SELECT` 语句，但该语句在一些大数据量的场景中导入效率较低。在 v8.0.0 中，TiDB 以实验特性新增支持通过 `IMPORT INTO ... FROM SELECT` 将 `SELECT` 的查询结果导入到一张空的 TiDB 目标表中，其性能最高可达 `INSERT INTO ... SELECT` 的 8 倍，可以大幅缩短导入所需的时间。此外，你还可以通过 `IMPORT INTO ... FROM SELECT` 导入使用 [`AS OF TIMESTAMP`](/as-of-timestamp.md) 查询的历史数据。
 
@@ -146,7 +146,7 @@ TiDB 8.1.0 为长期支持版本 (Long-Term Support Release, LTS)。
 
     更多信息，请参考[用户文档](/sql-statements/sql-statement-import-into.md)。
 
-* TiDB Lightning 简化冲突处理策略，同时支持以 `replace` 方式处理冲突数据的功能成为正式功能 (GA) [#51036](https://github.com/pingcap/tidb/issues/51036) @[lyzx2001](https://github.com/lyzx2001) **tw@qiancai** <!--1795-->
+* TiDB Lightning 简化冲突处理策略，同时支持以 `replace` 方式处理冲突数据的功能成为正式功能 (GA) [#51036](https://github.com/pingcap/tidb/issues/51036) @[lyzx2001](https://github.com/lyzx2001)
 
     在 v8.0.0 之前的版本中，TiDB Lightning 逻辑导入模式有[一套数据冲突处理策略](/tidb-lightning/tidb-lightning-logical-import-mode-usage.md#冲突数据检测)，而物理导入模式有[两套数据冲突处理策略](/tidb-lightning/tidb-lightning-physical-import-mode-usage.md#冲突数据检测)，不易理解和配置。
 
@@ -154,7 +154,7 @@ TiDB 8.1.0 为长期支持版本 (Long-Term Support Release, LTS)。
 
     更多信息，请参考[用户文档](/tidb-lightning/tidb-lightning-configuration.md)。
 
-* TiCDC 支持客户端鉴权 [#10636](https://github.com/pingcap/tiflow/issues/10636) @[CharlesCheung96](https://github.com/CharlesCheung96) **tw@Oreoxmt** <!--1717-->
+* TiCDC 支持客户端鉴权 [#10636](https://github.com/pingcap/tiflow/issues/10636) @[CharlesCheung96](https://github.com/CharlesCheung96)
 
     在 v8.1.0 中，当使用 TiCDC CLI 或 OpenAPI 时，TiCDC 支持客户端鉴权。你可以配置 TiCDC 要求客户端使用证书进行鉴权，以实现 mTLS（双向传输层安全性协议）。此外，你还可以使用 TiDB 用户名密码进行客户端鉴权。
 
@@ -165,18 +165,6 @@ TiDB 8.1.0 为长期支持版本 (Long-Term Support Release, LTS)。
 > **注意：**
 >
 > 以下为从 v8.0.0 升级至当前版本 (v8.1.0) 所需兼容性变更信息。如果从 v7.6.0 或之前版本升级到当前版本，可能也需要考虑和查看中间版本 Release Notes 中提到的兼容性变更信息。
-
-### 行为变更
-
-* 行为变更 1
-
-* 行为变更 2
-
-### MySQL 兼容性
-
-* 兼容性 1
-
-* 兼容性 2
 
 ### 系统变量
 
@@ -190,6 +178,7 @@ TiDB 8.1.0 为长期支持版本 (Long-Term Support Release, LTS)。
 
 | 配置文件           | 配置项                | 修改类型 | 描述                                 |
 |----------------|--------------------|------|------------------------------------|
+| TiDB| [`concurrently-init-stats`](/tidb-configuration-file.md#concurrently-init-stats-从-v810-和-v752-版本开始引入) | 新增 | 用于控制 TiDB 启动时是否并发初始化统计信息。默认值为 `false`。 |
 | TiDB Lightning | [`conflict.max-record-rows`](/tidb-lightning/tidb-lightning-configuration.md#tidb-lightning-任务配置) | 修改 | 从 v8.1.0 开始，TiDB Lightning 会自动将 `conflict.max-record-rows` 的值设置为 `conflict.threshold` 的值，并忽略用户输入，因此无需再单独配置 `conflict.max-record-rows`。`conflict.max-record-rows` 将在未来版本中废弃。 |
 | TiDB Lightning | [`conflict.threshold`](/tidb-lightning/tidb-lightning-configuration.md#tidb-lightning-任务配置) | 修改 | 默认值从 `9223372036854775807` 修改为 `10000`，从而迅速中断异常任务，以便用户尽快进行相应调整。这避免了在导入完成后，才发现是因为数据源异常或表结构定义错误导致导入了大量冲突数据，从而节省时间和计算资源。 |
 | TiCDC | [`security.client-allowed-user`](/ticdc/ticdc-server-config.md#cdc-server-配置文件说明) | 新增 | 指定可用于客户端鉴权的用户名，列表中不存在的用户的鉴权请求将被直接拒绝。默认值为 null。|
@@ -197,11 +186,6 @@ TiDB 8.1.0 为长期支持版本 (Long-Term Support Release, LTS)。
 | TiCDC | [`security.mtls`](/ticdc/ticdc-server-config.md#cdc-server-配置文件说明) | 新增 | 控制是否开启 TLS 客户端鉴权，默认值为 `false`。|
 | TiCDC | [`sink.debezium.output-old-value`](/ticdc/ticdc-changefeed-config.md#ticdc-changefeed-配置文件说明) | 新增 | 控制是否输出行数据更改前的值。默认值为 `true`。关闭后，Update 事件不会输出 "before" 字段的数据。 |
 | TiCDC | [`sink.open.output-old-value`](/ticdc/ticdc-changefeed-config.md#ticdc-changefeed-配置文件说明) | 新增 | 控制是否输出行数据更改前的值。默认值为 `true`。关闭后，Update 事件不会输出 "p" 字段的数据。 |
-| TiDB| [`concurrently-init-stats`](/tidb-configuration-file.md#concurrently-init-stats-从-v810-和-v752-版本开始引入) | 新增 | 用于控制 TiDB 启动时是否并发初始化统计信息。默认值为 `false`。 |
-
-### 其他
-
-## 离线包变更
 
 ## 废弃功能
 
@@ -212,7 +196,7 @@ TiDB 8.1.0 为长期支持版本 (Long-Term Support Release, LTS)。
 ## 改进提升
 
 + TiDB
-  <!--tw@Oreoxmt 7 -->
+
     - 优化外键在 `SHOW CREATE TABLE` 结果中的 MySQL 兼容性 [#51837](https://github.com/pingcap/tidb/issues/51837) @[negachov](https://github.com/negachov)
     - 优化表达式默认值在 `SHOW CREATE TABLE` 结果中的 MySQL 兼容性 [#52939](https://github.com/pingcap/tidb/issues/52939) @[CbcWestwolf](https://github.com/CbcWestwolf)
     - 允许使用 ingest 模式并发添加多个索引 [#52596](https://github.com/pingcap/tidb/issues/52596) @[lance6716](https://github.com/lance6716)
@@ -221,67 +205,36 @@ TiDB 8.1.0 为长期支持版本 (Long-Term Support Release, LTS)。
     - 当查询可以选择除全表扫描以外的单索引扫描方式时，支持以 Optimizer Fix Controls 的方式解除优化器不会自动选择索引合并的限制 [#52869](https://github.com/pingcap/tidb/issues/52869) @[time-and-fate](https://github.com/time-and-fate)
     - 在 Coprocessor 算子的实际执行信息 `execution info` 中添加 `total_kv_read_wall_time` 指标 [#28937](https://github.com/pingcap/tidb/issues/28937) @[cfzjywxk](https://github.com/cfzjywxk)
     - 在 Resource Control 面板中添加 `RU (max)` 监控指标 [#49318](https://github.com/pingcap/tidb/issues/49318) @[nolouch](https://github.com/nolouch)
-    - (dup): release-7.1.5.md > 改进提升> TiDB - 为 LDAP 身份认证添加超时机制，避免资源锁 (RLock) 无法及时释放的问题 [#51883](https://github.com/pingcap/tidb/issues/51883) @[YangKeao](https://github.com/YangKeao)
+    - 为 LDAP 身份认证添加超时机制，避免资源锁 (RLock) 无法及时释放的问题 [#51883](https://github.com/pingcap/tidb/issues/51883) @[YangKeao](https://github.com/YangKeao)
 
 + TiKV
 
-  <!--tw@Oreoxmt 2 -->
-    - (dup): release-6.5.9.md > 改进提升> TiKV - 在 raftstore 线程中避免进行快照文件的 IO 操作，提高 TiKV 稳定性 [#16564](https://github.com/tikv/tikv/issues/16564) @[Connor1996](https://github.com/Connor1996)
+    - 在 raftstore 线程中避免进行快照文件的 IO 操作，提高 TiKV 稳定性 [#16564](https://github.com/tikv/tikv/issues/16564) @[Connor1996](https://github.com/Connor1996)
     - 加快 TiKV 停机的速度 [#16680](https://github.com/tikv/tikv/issues/16680) @[LykxSassinator](https://github.com/LykxSassinator)
     - 增加每个线程内存使用量的监控指标 [#15927](https://github.com/tikv/tikv/issues/15927) @[Connor1996](https://github.com/Connor1996)
 
 + PD
-  <!--tw@qiancai 1 -->
+
     - 优化 `OperatorController` 的逻辑，减少竞争锁的开销 [#7897](https://github.com/tikv/pd/issues/7897) @[nolouch](https://github.com/nolouch)
-
-+ TiFlash
-
-    - note [#issue](链接) @[贡献者 GitHub ID](链接)
-    - note [#issue](链接) @[贡献者 GitHub ID](链接)
 
 + Tools
 
     + Backup & Restore (BR)
-      <!--tw@hfxsd 2 -->
-        - (dup): release-7.1.5.md > 改进提升> Tools> Backup & Restore (BR) - 增加 PITR 集成测试用例，覆盖对日志备份与添加索引加速功能的兼容性测试 [#51987](https://github.com/pingcap/tidb/issues/51987) @[Leavrth](https://github.com/Leavrth)
-        - (dup): release-7.1.5.md > 改进提升> Tools> Backup & Restore (BR) - 移除日志备份启动时检查是否存在活动 DDL job 的无效检查 [#52733](https://github.com/pingcap/tidb/issues/52733) @[Leavrth](https://github.com/Leavrth)
+
+        - 增加 PITR 集成测试用例，覆盖对日志备份与添加索引加速功能的兼容性测试 [#51987](https://github.com/pingcap/tidb/issues/51987) @[Leavrth](https://github.com/Leavrth)
+        - 移除日志备份启动时检查是否存在活动 DDL job 的无效检查 [#52733](https://github.com/pingcap/tidb/issues/52733) @[Leavrth](https://github.com/Leavrth)
         - 增加测试用例，用于测试 PITR 和添加索引加速之间的兼容性 [#51988](https://github.com/pingcap/tidb/issues/51988) @[Leavrth](https://github.com/Leavrth)
         - BR 在恢复数据过程中，会清理空的 SST 文件 [#16005](https://github.com/tikv/tikv/issues/16005) @[Leavrth](https://github.com/Leavrth)
 
     + TiCDC
-      <!--tw@hfxsd 2 -->
+
         - 提升使用 redo log 恢复数据过程中的内存稳定性，减少 OOM 的概率 [#10900](https://github.com/pingcap/tiflow/issues/10900) @[CharlesCheung96](https://github.com/CharlesCheung96)
         - 显著提升事务冲突场景中的数据同步的稳定性，性能最高提升可达 10 倍 [#10896](https://github.com/pingcap/tiflow/issues/10896) @[CharlesCheung96](https://github.com/CharlesCheung96)
-
-    + TiDB Data Migration (DM)
-
-        - note [#issue](链接) @[贡献者 GitHub ID](链接)
-        - note [#issue](链接) @[贡献者 GitHub ID](链接)
-
-    + TiDB Lightning
-
-        - note [#issue](链接) @[贡献者 GitHub ID](链接)
-        - note [#issue](链接) @[贡献者 GitHub ID](链接)
-
-    + Dumpling
-
-        - note [#issue](链接) @[贡献者 GitHub ID](链接)
-        - note [#issue](链接) @[贡献者 GitHub ID](链接)
-
-    + TiUP
-
-        - note [#issue](链接) @[贡献者 GitHub ID](链接)
-        - note [#issue](链接) @[贡献者 GitHub ID](链接)
-
-    + TiDB Binlog
-
-        - note [#issue](链接) @[贡献者 GitHub ID](链接)
-        - note [#issue](链接) @[贡献者 GitHub ID](链接)
 
 ## 错误修复
 
 + TiDB
-  <!--tw@Oreoxmt 以下 12 条 -->
+
     - 修复当 SQL 语句涉及包含多值索引的表时，执行可能报错 `Can't find a proper physical plan for this query` 的问题 [#49438](https://github.com/pingcap/tidb/issues/49438) @[qw4990](https://github.com/qw4990)
     - 修复自动统计信息收集在 OOM 后卡住的问题 [#51993](https://github.com/pingcap/tidb/issues/51993) @[hi-rustin](https://github.com/hi-rustin)
     - 修复使用 BR 恢复一张表后，即使该表没有统计信息，统计信息健康度仍然显示为 100% 的问题 [#29769](https://github.com/pingcap/tidb/issues/29769) @[winoros](https://github.com/winoros)
@@ -294,7 +247,6 @@ TiDB 8.1.0 为长期支持版本 (Long-Term Support Release, LTS)。
     - 修复查询 `INFORMATION_SCHEMA.TIKV_REGION_STATUS` 出现空指针的问题 [#52013](https://github.com/pingcap/tidb/issues/52013) @[JmPotato](https://github.com/JmPotato)
     - 修复指定非法列默认值时的错误提示信息 [#51592](https://github.com/pingcap/tidb/issues/51592) @[danqixu](https://github.com/danqixu)
     - 修复 ingest 模式添加索引时，在某些特殊情况下导致数据索引不一致的问题 [#51954](https://github.com/pingcap/tidb/issues/51954) @[lance6716](https://github.com/lance6716)
-  <!--tw@lilin90 以下 18 条 -->
     - 修复在恢复含有外键的表时 DDL 卡住的问题 [#51838](https://github.com/pingcap/tidb/issues/51838) @[YangKeao](https://github.com/YangKeao)
     - 修复加索引期间 TiDB 网络隔离导致加索引失败的问题 [#51846](https://github.com/pingcap/tidb/issues/51846) @[ywqzzy](https://github.com/ywqzzy)
     - 修复重命名索引后再添加同名索引时报错的问题 [#51431](https://github.com/pingcap/tidb/issues/51431) @[lance6716](https://github.com/lance6716)
@@ -313,18 +265,18 @@ TiDB 8.1.0 为长期支持版本 (Long-Term Support Release, LTS)。
     - 修复 TiDB Dashboard 监控页面中连接数 (Connection Count) 的计算和显示错误 [#51889](https://github.com/pingcap/tidb/issues/51889) @[YangKeao](https://github.com/YangKeao)
     - 修复回滚改写分区 DDL 任务时，状态卡住的问题 [#51090](https://github.com/pingcap/tidb/issues/51090) @[jiyfhust](https://github.com/jiyfhust)
     - 修复 `EXPLAIN ANALYZE` 执行结果中 `max_remote_stream` 的值不正确的问题 [#52646](https://github.com/pingcap/tidb/issues/52646) @[JaySon-Huang](https://github.com/JaySon-Huang)
-    - (dup): release-6.5.9.md > 错误修复> TiDB - 修复查询 `TIDB_HOT_REGIONS` 表时结果返回内存表的问题 [#50810](https://github.com/pingcap/tidb/issues/50810) @[Defined2014](https://github.com/Defined2014)
-    - (dup): release-7.1.5.md > 错误修复> TiDB - 修复当某些列的统计信息没有完全加载时，`EXPLAIN` 语句的结果中可能会显示错误的列 ID 的问题 [#52207](https://github.com/pingcap/tidb/issues/52207) @[time-and-fate](https://github.com/time-and-fate)
-    - (dup): release-6.5.9.md > 错误修复> TiDB - 修复 `IFNULL` 函数返回的类型和 MySQL 不一致的问题 [#51765](https://github.com/pingcap/tidb/issues/51765) @[YangKeao](https://github.com/YangKeao)
-    - (dup): release-7.1.5.md > 错误修复> TiDB - 修复添加唯一索引可能导致 TiDB panic 的问题 [#52312](https://github.com/pingcap/tidb/issues/52312) @[wjhuang2016](https://github.com/wjhuang2016)
+    - 修复查询 `TIDB_HOT_REGIONS` 表时结果返回内存表的问题 [#50810](https://github.com/pingcap/tidb/issues/50810) @[Defined2014](https://github.com/Defined2014)
+    - 修复当某些列的统计信息没有完全加载时，`EXPLAIN` 语句的结果中可能会显示错误的列 ID 的问题 [#52207](https://github.com/pingcap/tidb/issues/52207) @[time-and-fate](https://github.com/time-and-fate)
+    - 修复 `IFNULL` 函数返回的类型和 MySQL 不一致的问题 [#51765](https://github.com/pingcap/tidb/issues/51765) @[YangKeao](https://github.com/YangKeao)
+    - 修复添加唯一索引可能导致 TiDB panic 的问题 [#52312](https://github.com/pingcap/tidb/issues/52312) @[wjhuang2016](https://github.com/wjhuang2016)
 
 + TiKV
 
-    - (dup): release-7.1.5.md > 错误修复> TiKV - 修复由于过时的 Region peer 忽略 GC 消息导致 resolve-ts 被阻塞的问题 [#16504](https://github.com/tikv/tikv/issues/16504) @[crazycs520](https://github.com/crazycs520)
-    - (dup): release-6.5.9.md > 错误修复> TiKV - 修复 RocksDB 中非活跃的 WAL (Write Ahead Log) 可能损毁数据的问题 [#16705](https://github.com/tikv/tikv/issues/16705) @[Connor1996](https://github.com/Connor1996)
+    - 修复由于过时的 Region peer 忽略 GC 消息导致 resolve-ts 被阻塞的问题 [#16504](https://github.com/tikv/tikv/issues/16504) @[crazycs520](https://github.com/crazycs520)
+    - 修复 RocksDB 中非活跃的 WAL (Write Ahead Log) 可能损毁数据的问题 [#16705](https://github.com/tikv/tikv/issues/16705) @[Connor1996](https://github.com/Connor1996)
 
 + PD
-  <!--tw@qiancai 9 -->
+
     - 修复切换 PD 微服务模式时 TSO 可能卡住的问题 [#7849](https://github.com/tikv/pd/issues/7849) @[JmPotato](https://github.com/JmPotato)
     - 修复 DR Auto-Sync 的 `State` 监控指标未显示数据的问题 [#7974](https://github.com/tikv/pd/issues/7974) @[lhy1024](https://github.com/lhy1024)
     - 修复检查 binary 版本时可能导致 PD panic 的问题 [#7978](https://github.com/tikv/pd/issues/7978) @[JmPotato](https://github.com/JmPotato)
@@ -334,23 +286,23 @@ TiDB 8.1.0 为长期支持版本 (Long-Term Support Release, LTS)。
     - 修复 PD 在生成 `Merge` 调度时可能出现的 panic 问题 [#8049](https://github.com/tikv/pd/issues/8049) @[nolouch](https://github.com/nolouch)
     - 修复 `GetAdditionalInfo` 导致的 panic 问题 [#8079](https://github.com/tikv/pd/issues/8079) @[HuSharp](https://github.com/HuSharp)
     - 修复 PD 的 `Filter target` 监控指标未提供 scatter range 信息的问题 [#8125](https://github.com/tikv/pd/issues/8125) @[HuSharp](https://github.com/HuSharp)
-    - (dup): release-6.5.9.md > 错误修复> PD - 修复 `SHOW CONFIG` 的查询结果包含已废弃的 `trace-region-flow` 配置项的问题 [#7917](https://github.com/tikv/pd/issues/7917) @[rleungx](https://github.com/rleungx)
-    - (dup): release-6.5.9.md > 错误修复> PD - 修复扩缩容进度显示不准确的问题 [#7726](https://github.com/tikv/pd/issues/7726) @[CabinfeverB](https://github.com/CabinfeverB)
+    - 修复 `SHOW CONFIG` 的查询结果包含已废弃的 `trace-region-flow` 配置项的问题 [#7917](https://github.com/tikv/pd/issues/7917) @[rleungx](https://github.com/rleungx)
+    - 修复扩缩容进度显示不准确的问题 [#7726](https://github.com/tikv/pd/issues/7726) @[CabinfeverB](https://github.com/CabinfeverB)
 
 + TiFlash
-  <!--tw@qiancai 2 -->
-    - (dup): release-6.5.9.md > 错误修复> TiFlash - 修复在非严格 `sql_mode` 下插入数据到带有异常默认值的列可能导致 TiFlash panic 的问题 [#8803](https://github.com/pingcap/tiflash/issues/8803) @[Lloyd-Pottiger](https://github.com/Lloyd-Pottiger)
+
+    - 修复在非严格 `sql_mode` 下插入数据到带有异常默认值的列可能导致 TiFlash panic 的问题 [#8803](https://github.com/pingcap/tiflash/issues/8803) @[Lloyd-Pottiger](https://github.com/Lloyd-Pottiger)
     - 修复 TiFlash 在高并发读的情况下，可能返回瞬时不正确结果的问题 [#8845](https://github.com/pingcap/tiflash/issues/8845) @[JaySon-Huang](https://github.com/JaySon-Huang)
     - 修复存算分离架构下，修改 TiFlash 计算节点 `storage.remote.cache.capacity` 配置项的值后，Grafana 中硬盘使用量监控指标 `used_size` 显示不正确的问题 [#8920](https://github.com/pingcap/tiflash/issues/8920) @[JinheLin](https://github.com/JinheLin)
 
 + Tools
 
     + Backup & Restore (BR)
-      <!--tw@hfxsd 7 -->
-        - (dup): release-6.5.9.md > 错误修复> Tools> Backup & Restore (BR) - 修复在包含 `AUTO_RANDOM` 列的联合聚簇索引中，BR 无法备份 `AUTO_RANDOM` ID 分配进度的问题 [#52255](https://github.com/pingcap/tidb/issues/52255) @[Leavrth](https://github.com/Leavrth)
-        - (dup): release-6.5.9.md > 错误修复> Tools> Backup & Restore (BR) - 修复在日志备份任务被暂停后，移除任务无法立即恢复 GC safepoint 的问题 [#52082](https://github.com/pingcap/tidb/issues/52082) @[3pointer](https://github.com/3pointer)
-        - (dup): release-7.1.5.md > 错误修复> Tools> Backup & Restore (BR) - 修复在小概率情况下，由于特殊的事件时序导致日志备份数据丢失的问题 [#16739](https://github.com/tikv/tikv/issues/16739) @[YuJuncen](https://github.com/YuJuncen)
-        - (dup): release-7.1.5.md > 错误修复> Tools> Backup & Restore (BR) - 修复因 TiKV 重启，日志备份的 global checkpoint 推进提前于实际备份文件写入点，可能导致少量备份数据丢失的问题 [#16809](https://github.com/tikv/tikv/issues/16809) @[YuJuncen](https://github.com/YuJuncen)
+
+        - 修复在包含 `AUTO_RANDOM` 列的联合聚簇索引中，BR 无法备份 `AUTO_RANDOM` ID 分配进度的问题 [#52255](https://github.com/pingcap/tidb/issues/52255) @[Leavrth](https://github.com/Leavrth)
+        - 修复在日志备份任务被暂停后，移除任务无法立即恢复 GC safepoint 的问题 [#52082](https://github.com/pingcap/tidb/issues/52082) @[3pointer](https://github.com/3pointer)
+        - 修复在小概率情况下，由于特殊的事件时序导致日志备份数据丢失的问题 [#16739](https://github.com/tikv/tikv/issues/16739) @[YuJuncen](https://github.com/YuJuncen)
+        - 修复因 TiKV 重启，日志备份的 global checkpoint 推进提前于实际备份文件写入点，可能导致少量备份数据丢失的问题 [#16809](https://github.com/tikv/tikv/issues/16809) @[YuJuncen](https://github.com/YuJuncen)
         - 修复全量备份时日志中出现无效的 `--concurrency` 相关信息的问题 [#50837](https://github.com/pingcap/tidb/issues/50837) @[BornChanger](https://github.com/BornChanger)
         - 修复在 BR 恢复数据或 TiDB Lightning 物理导入模式下导入数据时，从 PD 获取到的 Region 没有 Leader 的问题 [#51124](https://github.com/pingcap/tidb/issues/51124) [#50501](https://github.com/pingcap/tidb/issues/50501) @[Leavrth](https://github.com/Leavrth) 
         - 修复日志备份在暂停、停止、再重建任务操作后，虽然任务状态显示正常，但 Checkpoint 不推进的问题 [#53047](https://github.com/pingcap/tidb/issues/53047) @[RidRisR](https://github.com/RidRisR) 
@@ -360,7 +312,7 @@ TiDB 8.1.0 为长期支持版本 (Long-Term Support Release, LTS)。
         - 修复测试用例 `TestGetTSWithRetry` 执行时间过长的问题 [#52547](https://github.com/pingcap/tidb/issues/52547) @[Leavrth](https://github.com/Leavrth)
 
     + TiCDC
-      <!--tw@hfxsd 7 -->
+
         - 修复调用驱逐 TiCDC owner 节点的 API (`/api/v2/owner/resign`) 导致 TiCDC 任务意外重启的问题 [#10781](https://github.com/pingcap/tiflow/issues/10781) @[sdojjy](https://github.com/sdojjy)
         - 修复当下游 Pulsar 下线后，移除 changefeed 会导致 TiCDC 正常流程卡住，从而引起其他 changefeed 进度卡住的问题 [#10629](https://github.com/pingcap/tiflow/issues/10629) @[asddongmen](https://github.com/asddongmen)
         - 修复 Grafana 监控中的 **Ownership history** 面板显示不稳定的问题 [#10796](https://github.com/pingcap/tiflow/issues/10796) @[hongyunyan](https://github.com/hongyunyan)
@@ -368,35 +320,15 @@ TiDB 8.1.0 为长期支持版本 (Long-Term Support Release, LTS)。
         - 修复 PD 磁盘 IO 延迟较大导致 TiCDC 同步大幅延迟的问题 [#9054](https://github.com/pingcap/tiflow/issues/9054) @[asddongmen](https://github.com/asddongmen)
         - 修复 `TIMEZONE` 类型的值没有按照正确的时区设置默认值的问题 [#10931](https://github.com/pingcap/tiflow/issues/10931) @[3AceShowHand](https://github.com/3AceShowHand)
         - 修复没有正确同步 `DROP PRIMARY KEY` 和 `DROP UNIQUE KEY` 的问题 [#10890](https://github.com/pingcap/tiflow/issues/10890) @[asddongmen](https://github.com/asddongmen)
-        - (dup): release-7.1.5.md > 错误修复> Tools> TiCDC - 修复上游写入 `Exchange Partition ... With Validation` DDL 后，TiCDC 向下游执行该 DDL 时失败，导致 changefeed 卡住的问题 [#10859](https://github.com/pingcap/tiflow/issues/10859) @[hongyunyan](https://github.com/hongyunyan)
-
-    + TiDB Data Migration (DM)
-
-        - note [#issue](链接) @[贡献者 GitHub ID](链接)
-        - note [#issue](链接) @[贡献者 GitHub ID](链接)
+        - 修复上游写入 `Exchange Partition ... With Validation` DDL 后，TiCDC 向下游执行该 DDL 时失败，导致 changefeed 卡住的问题 [#10859](https://github.com/pingcap/tiflow/issues/10859) @[hongyunyan](https://github.com/hongyunyan)
 
     + TiDB Lightning
-      <!--tw@qiancai 4 -->
+
         - 修复 TiDB Lightning 导入数据时，因源文件存在不兼容的 SQL 语句而报 `no database selected` 的问题 [#51800](https://github.com/pingcap/tidb/issues/51800) @[lance6716](https://github.com/lance6716)
         - 修复 TiDB Lightning 在服务器模式下可能会将敏感信息打印到日志中的问题 [#36374](https://github.com/pingcap/tidb/issues/36374) @[kennytm](https://github.com/kennytm)
         - 修复 TiDB Lightning 导入数据时，kill PD Leader 会导致 `invalid store ID 0` 报错的问题 [#50501](https://github.com/pingcap/tidb/issues/50501) @[Leavrth](https://github.com/Leavrth)
         - 修复 TiDB Lightning 使用 `replace` 方式处理冲突数据时报 `Unknown column in where clause` 错误的问题 [#52886](https://github.com/pingcap/tidb/issues/52886) @[lyzx2001](https://github.com/lyzx2001)
-        - (dup): release-7.1.5.md > 错误修复> Tools> TiDB Lightning - 修复导入 Parquet 格式的空表时，TiDB Lightning panic 的问题 [#52518](https://github.com/pingcap/tidb/issues/52518) @[kennytm](https://github.com/kennytm)
-
-    + Dumpling
-
-        - note [#issue](链接) @[贡献者 GitHub ID](链接)
-        - note [#issue](链接) @[贡献者 GitHub ID](链接)
-
-    + TiUP
-
-        - note [#issue](链接) @[贡献者 GitHub ID](链接)
-        - note [#issue](链接) @[贡献者 GitHub ID](链接)
-
-    + TiDB Binlog
-
-        - note [#issue](链接) @[贡献者 GitHub ID](链接)
-        - note [#issue](链接) @[贡献者 GitHub ID](链接)
+        - 修复导入 Parquet 格式的空表时，TiDB Lightning panic 的问题 [#52518](https://github.com/pingcap/tidb/issues/52518) @[kennytm](https://github.com/kennytm)
 
 ## 性能测试
 
