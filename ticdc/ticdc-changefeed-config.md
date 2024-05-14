@@ -208,7 +208,7 @@ enable-partition-separator = true
 # 是否输出 handle 列信息。默认值为 false。该配置项仅用于内部实现，不推荐设置该配置项。
 # output-handle-key = false
 # 是否输出行数据更改前的值。默认值为 false。开启后，Update 事件会输出两行数据：第一行为 Delete 事件，输出更改前的数据；第二行为 Insert 事件，输出更改后的数据。
-# 当该参数设为 true 时，会在变更数据列前增加 "is-update" 列。该列用来标识当前行的变更数据是来自 Update 事件，还是原始的 Insert/Delete 事件。
+# 开启后，即当该参数设为 true 时，会在变更数据列前增加 "is-update" 列。该列用来标识当前行的变更数据是来自 Update 事件，还是原始的 Insert/Delete 事件。
 # 如果当前行的变更数据来自 Update 事件，则 "is-update" 列为 true，否则为 false。
 # output-old-value = false
 
