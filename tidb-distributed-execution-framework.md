@@ -89,7 +89,7 @@ TiDB 采用计算存储分离架构，具有出色的扩展性和弹性的扩缩
 
 > **注意：**
 >
-> - 在 v7.4.0 之后，v8.1.0 之前，在包含多个 TiDB 节点的集群中，强烈建议选择两个或更多的 TiDB 节点将 `tidb_service_scope` 设置为 `background`。若仅在单个 TiDB 节点上设置此变量，当该节点发生重启或故障时，任务会被重新调度到 `tidb_service_scope = ''` 的 TiDB 节点，会对这些 TiDB 节点的业务产生影响。
+> - 在 v7.4.0 到 v8.0.0 及其之间的版本中，对于包含多个 TiDB 节点的集群，强烈建议选择两个或更多的 TiDB 节点将 `tidb_service_scope` 设置为 `background`。若仅在单个 TiDB 节点上设置此变量，当该节点发生重启或故障时，任务会被重新调度到 `tidb_service_scope = ''` 的 TiDB 节点，会对这些 TiDB 节点的业务产生影响。
 > - 在分布式任务执行过程中，修改 `tidb_service_scope` 的配置不会对当前任务生效，会从下次任务开始生效。
 
 ## 实现原理
