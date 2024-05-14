@@ -6,7 +6,7 @@ aliases: ['/docs-cn/dev/information-schema/information-schema-schemata/']
 
 # SCHEMATA
 
-`SCHEMATA` 表提供了关于数据库的信息。表中的数据与 `SHOW DATABASES` 语句的执行结果等价。
+`SCHEMATA` 表提供了关于数据库的信息。表中的数据与 [`SHOW DATABASES`](/sql-statements/sql-statement-show-databases.md) 语句的执行结果等价。
 
 {{< copyable "sql" >}}
 
@@ -27,8 +27,6 @@ desc SCHEMATA;
 +----------------------------+--------------+------+------+---------+-------+
 5 rows in set (0.00 sec)
 ```
-
-{{< copyable "sql" >}}
 
 ```sql
 SELECT * FROM SCHEMATA;
