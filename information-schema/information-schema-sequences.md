@@ -74,3 +74,11 @@ SEQUENCE_SCHEMA: test
         COMMENT:
 1 row in set (0.00 sec)
 ```
+
+## 另请参阅
+
+- [`CREATE SEQUENCE`](/sql-statements/sql-statement-create-sequence.md)
+- [`SHOW CREATE SEQUENCE`](/sql-statements/sql-statement-show-create-sequence.md)
+- [`ALTER SEQUENCE`](/sql-statements/sql-statement-alter-sequence.md)
+- [`DROP SEQUENCE`](/sql-statements/sql-statement-drop-sequence.md)
+- [序列函数](/functions-and-operators/sequence-functions.md)
