@@ -124,9 +124,9 @@ driver = "file"
 #              你可以根据业务需求选择正确的记录重新手动写入到目标表中。注意，该方法要求目标 TiKV 的版本为 v5.2.0 或更新版本。
 # - "ignore"：遇到主键或唯一键冲突的数据时，保留旧的数据，忽略新的数据。仅当导入模式为逻辑导入模式时可以使用该选项。
 strategy = ""
-# 控制是否开启前置冲突检测，即导入数据到 TiDB 前，先检查所需导入的数据是否存在冲突。该参数默认值为 false，表示仅开启后置冲突检测。取值为 true 时，表示同时开启前置冲突检测和后置冲突检测。仅当导入模式为物理导入模式时可以使用该参数。为了避免潜在的报错，目前不建议配置 `precheck-conflict-before-import = true`。
+# 控制是否开启前置冲突检测，即导入数据到 TiDB 前，先检查所需导入的数据是否存在冲突。该参数默认值为 false，表示仅开启后置冲突检测。取值为 true 时，表示同时开启前置冲突检测和后置冲突检测。仅当导入模式为物理导入模式时可以使用该参数。冲突记录数量高于 1,000,000 的场景建议配置 `precheck-conflict-before-import = true`，可以提升冲突检测的性能，反之建议关闭。
 # precheck-conflict-before-import = false
-# 控制 strategy 为 "replace" 或 "ignore" 时，能处理的冲突错误数的上限。仅在 strategy 为 "replace" 或 "ignore" 时可配置。默认为 10000。如果设置的值大于 10000，导入过程可能会因潜在的问题而出现性能下降或失败。
+# 控制 strategy 为 "replace" 或 "ignore" 时，能处理的冲突错误数的上限。仅在 strategy 为 "replace" 或 "ignore" 时可配置。默认为 10000。如果设置的值大于 10000，导入过程可能会出现性能下降的情况。
 # threshold = 10000
 # 控制冲突数据记录表 (`conflict_records`) 中记录的冲突数据的条数上限，默认为 10000。
 # 从 v8.1.0 开始，TiDB Lightning 会自动将 `max-record-rows` 的值设置为 `threshold` 的值，并忽略用户输入，因此无需再单独配置 `max-record-rows`。`max-record-rows` 将在未来版本中废弃。
