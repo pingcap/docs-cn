@@ -1,6 +1,7 @@
 ---
 title: TiDB 2.0.3 release notes
 aliases: ['/docs-cn/dev/releases/release-2.0.3/','/docs-cn/dev/releases/203/']
+summary: TiDB 2.0.3 版本在 2.0.2 版的基础上做出了改进，包括系统兼容性和稳定性的改进。TiDB 支持在线更改日志级别和 `COM_CHANGE_USER` 命令，优化查询条件代价估算和修复多个问题。PD 修复了特定条件下的问题，TiKV 修复了错误上报和除数为 0 的问题。
 ---
 
 # TiDB 2.0.3 Release Notes

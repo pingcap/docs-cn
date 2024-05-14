@@ -1,5 +1,6 @@
 ---
 title: tiup dm template
+summary: tiup dm template 命令用于输出 TiUP 内置的集群拓扑模版内容。可以通过修改模版来生成最终的拓扑文件。可选的 --full 选项输出详细的拓扑模版，带上可配置的参数。输出拓扑模版到标准输出，可重定向到拓扑文件中用于部署。
 ---
 
 # tiup dm template

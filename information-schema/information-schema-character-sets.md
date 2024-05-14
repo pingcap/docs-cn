@@ -54,3 +54,10 @@ SELECT * FROM `CHARACTER_SETS`;
 * `DEFAULT_COLLATE_NAME`：字符集的默认排序规则名称
 * `DESCRIPTION`：字符集的描述信息
 * `MAXLEN`：该字符集存储一个字符所需要的最大字节数
+
+## 另请参阅
+
+- [`SHOW CHARACTER SET`](/sql-statements/sql-statement-show-character-set.md)
+- [`SHOW COLLATION`](/sql-statements/sql-statement-show-collation.md)
+- [`INFORMATION_SCHEMA.COLLATIONS`](/information-schema/information-schema-collations.md)
+- [`INFORMATION_SCHEMA.COLLATION_CHARACTER_SET_APPLICABILITY`](/information-schema/information-schema-collation-character-set-applicability.md)

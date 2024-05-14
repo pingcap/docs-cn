@@ -15,10 +15,10 @@ aliases: ['/zh/tidb/dev/br-log-command-line/']
 
 ## 日志备份命令行介绍
 
-你可以执行 `br log` 命令来开启和管理日志备份任务：
+你可以执行 `tiup br log` 命令来开启和管理日志备份任务：
 
 ```shell
-./br log --help
+tiup br log --help
 
 backup stream log from TiDB/TiKV cluster
 
@@ -37,22 +37,22 @@ Available Commands:
 
 各个子命令的作用如下：
 
-- `br log start`：启动一个日志备份任务
-- `br log status`：查询日志备份任务状态
-- `br log pause`：暂停日志备份任务
-- `br log resume`：重启暂停的备份任务
-- `br log stop`：停止备份任务，并删除任务元信息
-- `br log truncate`：从备份存储中清理日志备份数据
-- `br log metadata`：查询备份存储中备份数据的元信息
+- `tiup br log start`：启动一个日志备份任务
+- `tiup br log status`：查询日志备份任务状态
+- `tiup br log pause`：暂停日志备份任务
+- `tiup br log resume`：重启暂停的备份任务
+- `tiup br log stop`：停止备份任务，并删除任务元信息
+- `tiup br log truncate`：从备份存储中清理日志备份数据
+- `tiup br log metadata`：查询备份存储中备份数据的元信息
 
 ### 启动日志备份
 
-执行 `br log start` 命令，你可以在备份集群启动一个日志备份任务。该任务在 TiDB 集群持续地运行，及时地将 KV 变更日志保存到备份存储中。
+执行 `tiup br log start` 命令，你可以在备份集群启动一个日志备份任务。该任务在 TiDB 集群持续地运行，及时地将 KV 变更日志保存到备份存储中。
 
-执行 `br log start --help` 命令可获取该子命令使用介绍：
+执行 `tiup br log start --help` 命令可获取该子命令使用介绍：
 
 ```shell
-./br log start --help
+tiup br log start --help
 start a log backup task
 
 Usage:
@@ -83,18 +83,18 @@ Global Flags:
 使用示例：
 
 ```shell
-./br log start --task-name=pitr --pd="${PD_IP}:2379" \
+tiup br log start --task-name=pitr --pd="${PD_IP}:2379" \
 --storage='s3://backup-101/logbackup?access-key=${access-key}&secret-access-key=${secret-access-key}"'
 ```
 
 ### 查询日志备份任务
 
-执行 `br log status` 命令，你可以查询日志备份任务状态。
+执行 `tiup br log status` 命令，你可以查询日志备份任务状态。
 
-执行 `br log status –-help` 命令可获取该子命令使用介绍：
+执行 `tiup br log status --help` 命令可获取该子命令使用介绍：
 
 ```shell
-./br log status --help
+tiup br log status --help
 get status for the log backup task
 
 Usage:
@@ -118,7 +118,7 @@ Global Flags:
 使用示例：
 
 ```shell
-./br log status --task-name=pitr --pd="${PD_IP}:2379"
+tiup br log status --task-name=pitr --pd="${PD_IP}:2379"
 ```
 
 命令输出如下：
@@ -146,12 +146,12 @@ checkpoint[global]: 2022-07-25 22:52:15.518 +0800; gap=2m52s
 
 ### 暂停和恢复日志备份任务
 
-执行 `br log pause` 命令，你可以暂停正在运行的日志备份任务。
+执行 `tiup br log pause` 命令，你可以暂停正在运行的日志备份任务。
 
-执行 `br log pause –help` 可获取该子命令使用介绍：
+执行 `tiup br log pause --help` 可获取该子命令使用介绍：
 
 ```shell
-./br log pause --help
+tiup br log pause --help
 pause a log backup task
 
 Usage:
@@ -177,15 +177,15 @@ Global Flags:
 使用示例：
 
 ```shell
-./br log pause --task-name=pitr --pd="${PD_IP}:2379"
+tiup br log pause --task-name=pitr --pd="${PD_IP}:2379"
 ```
 
-执行 `br log resume` 命令，你可以恢复被暂停的日志备份任务。
+执行 `tiup br log resume` 命令，你可以恢复被暂停的日志备份任务。
 
-执行 `br log resume --help` 命令可获取该子命令使用介绍：
+执行 `tiup br log resume --help` 命令可获取该子命令使用介绍：
 
 ```shell
-./br log resume --help
+tiup br log resume --help
 resume a log backup task
 
 Usage:
@@ -202,26 +202,26 @@ Global Flags:
  -u, --pd strings             PD address (default [127.0.0.1:2379])
 ```
 
-暂停日志备份任务超过了 24 小时后，执行 `br log resume` 会报错，提示备份数据丢失。处理方法请参考[恢复日志备份任务失败](/faq/backup-and-restore-faq.md#执行-br-log-resume-命令恢复处于暂停状态的任务时报-errbackupgcsafepointexceeded-错误该如何处理)。
+暂停日志备份任务超过了 24 小时后，执行 `tiup br log resume` 会报错，提示备份数据丢失。处理方法请参考[恢复日志备份任务失败](/faq/backup-and-restore-faq.md#执行-br-log-resume-命令恢复处于暂停状态的任务时报-errbackupgcsafepointexceeded-错误该如何处理)。
 
 使用示例：
 
 ```shell
-./br log resume --task-name=pitr --pd="${PD_IP}:2379"
+tiup br log resume --task-name=pitr --pd="${PD_IP}:2379"
 ```
 
 ### 停止和重启日志备份任务
 
-通过执行 `br log stop` 命令，你可以停止正在进行的日志备份任务。停止的任务，可以通过 `--storage` 路径重新启动。
+通过执行 `tiup br log stop` 命令，你可以停止正在进行的日志备份任务。停止的任务，可以通过 `--storage` 路径重新启动。
 
 #### 停止日志备份任务
 
-执行 `br log stop` 命令，可以停止日志备份任务，该命令会清理备份集群中的任务元信息。
+执行 `tiup br log stop` 命令，可以停止日志备份任务，该命令会清理备份集群中的任务元信息。
 
-执行 `br log stop --help` 命令可获取该子命令使用介绍：
+执行 `tiup br log stop --help` 命令可获取该子命令使用介绍：
 
 ```shell
-./br log stop --help
+tiup br log stop --help
 stop a log backup task
 
 Usage:
@@ -240,17 +240,17 @@ Global Flags:
 
 > **注意：**
 >
-> 请谨慎使用该命令，如果你只需**暂时停止**日志备份，请使用 `br log pause` 和 `br log resume` 命令。
+> 请谨慎使用该命令，如果你只需**暂时停止**日志备份，请使用 `tiup br log pause` 和 `tiup br log resume` 命令。
 
 使用示例：
 
 ```shell
-./br log stop --task-name=pitr --pd="${PD_IP}:2379"
+tiup br log stop --task-name=pitr --pd="${PD_IP}:2379"
 ```
 
 #### 重新启动备份任务
 
-当使用 `br log stop` 命令停止日志备份任务后，可在另一个 `--storage` 路径下重新创建一个新的日志备份任务，也可以在原来的 `--storage` 路径下执行 `br log start` 命令重新启动日志备份任务。如果是在原来的 `--storage` 路径重启任务，需要注意：
+当使用 `tiup br log stop` 命令停止日志备份任务后，可在另一个 `--storage` 路径下重新创建一个新的日志备份任务，也可以在原来的 `--storage` 路径下执行 `tiup br log start` 命令重新启动日志备份任务。如果是在原来的 `--storage` 路径重启任务，需要注意：
 
 - 重启备份任务的 `--storage` 参数需要与停止任务之前的参数相同。
 - 此时不需要填入 `--start-ts` 参数，程序将自动从上次的备份进度点开始备份数据。
@@ -258,12 +258,12 @@ Global Flags:
 
 ### 清理日志备份数据
 
-执行 `br log truncate` 命令，你可以从备份存储中删除过期或不再需要的备份日志数据。
+执行 `tiup br log truncate` 命令，你可以从备份存储中删除过期或不再需要的备份日志数据。
 
-执行 `br log truncate --help` 命令可获取该子命令使用介绍：
+执行 `tiup br log truncate --help` 命令可获取该子命令使用介绍：
 
 ```shell
-./br log truncate --help
+tiup br log truncate --help
 truncate the incremental log until sometime.
 
 Usage:
@@ -289,7 +289,7 @@ Global Flags:
 使用示例：
 
 ```shell
-./br log truncate --until='2022-07-26 21:20:00+0800' \
+tiup br log truncate --until='2022-07-26 21:20:00+0800' \
 –-storage='s3://backup-101/logbackup?access-key=${access-key}&secret-access-key=${secret-access-key}"'
 ```
 
@@ -305,12 +305,12 @@ Removing metadata... DONE; take = 24.038962ms
 
 ### 查看备份数据元信息
 
-执行 `br log metadata` 命令，你可以查看备份存储中保存的日志备份的元信息，例如最早和最近的可恢复时间点。
+执行 `tiup br log metadata` 命令，你可以查看备份存储中保存的日志备份的元信息，例如最早和最近的可恢复时间点。
 
-执行 `br log metadata –-help` 命令可获取该子命令使用介绍：
+执行 `tiup br log metadata --help` 命令可获取该子命令使用介绍：
 
 ```shell
-./br log metadata --help
+tiup br log metadata --help
 get the metadata of log backup storage
 
 Usage:
@@ -330,7 +330,7 @@ Global Flags:
 使用示例：
 
 ```shell
-./br log metadata –-storage='s3://backup-101/logbackup?access-key=${access-key}&secret-access-key=${secret-access-key}"'
+tiup br log metadata –-storage='s3://backup-101/logbackup?access-key=${access-key}&secret-access-key=${secret-access-key}"'
 ```
 
 该子命令运行后输出以下信息：
@@ -341,12 +341,12 @@ Global Flags:
 
 ## 恢复到指定时间点 PITR
 
-执行 `br restore point` 命令，你可以在新集群上进行 PITR，或者只恢复日志备份数据。
+执行 `tiup br restore point` 命令，你可以在新集群上进行 PITR，或者只恢复日志备份数据。
 
-执行 `br restore point --help` 命令可获取该命令使用介绍：
+执行 `tiup br restore point --help` 命令可获取该命令使用介绍：
 
 ```shell
-./br restore point --help
+tiup br restore point --help
 restore data from log until specify commit timestamp
 
 Usage:
@@ -379,7 +379,7 @@ Global Flags:
 使用示例：
 
 ```shell
-./br restore point --pd="${PD_IP}:2379"
+tiup br restore point --pd="${PD_IP}:2379"
 --storage='s3://backup-101/logbackup?access-key=${access-key}&secret-access-key=${secret-access-key}"'
 --full-backup-storage='s3://backup-101/snapshot-202205120000?access-key=${access-key}&secret-access-key=${secret-access-key}"'
 

@@ -1,6 +1,7 @@
 ---
 title: 与 MySQL 安全特性差异
 aliases: ['/docs-cn/dev/security-compatibility-with-mysql/','/docs-cn/dev/reference/security/compatibility/']
+summary: TiDB 支持与 MySQL 5.7 类似的安全特性，同时也支持 MySQL 8.0 的部分安全特性。然而，在实现上存在一些差异，包括不支持列级别权限设置和部分权限属性。此外，TiDB 的密码过期策略和密码复杂度策略与 MySQL 存在一些差异。另外，TiDB 支持多种身份验证方式，包括 TLS 证书和 JWT。
 ---
 
 # 与 MySQL 安全特性差异

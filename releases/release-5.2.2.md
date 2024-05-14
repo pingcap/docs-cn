@@ -1,5 +1,6 @@
 ---
 title: TiDB 5.2.2 Release Notes
+summary: TiDB 5.2.2 发布日期为 2021 年 10 月 29 日。此版本包含了对 TiDB、TiKV、PD 和 Tools 的多项提升改进和 bug 修复。其中 TiDB 修复了多项问题，如 `plan cache` 无法感知 `unsigned` 标志变化、分区功能出现 `out of range` 时 `partition pruning` 出错等。TiKV 修复了因 Congest 错误而导致的 CDC 频繁增加 scan 重试的问题等。PD 修复了因超过副本配置数量而导致错误删除带有数据且处于 pending 状态的副本的问题等。TiFlash 修复了在部分平台上由于缺失 `nsl` 库而无法启动的问题。Tools 中的 TiCDC 也进行了多项修复，如当上游 TiDB 实例意外退出时，TiCDC 同步任务推进可能停滞的问题等。
 ---
 
 # TiDB 5.2.2 Release Notes
