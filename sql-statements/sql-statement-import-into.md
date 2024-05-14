@@ -10,10 +10,6 @@ summary: TiDB 数据库中 IMPORT INTO 的使用概况。
 - `IMPORT INTO ... FROM FILE` 用于将 `CSV`、`SQL`、`PARQUET` 等格式的数据文件导入到 TiDB 的一张空表中。
 - `IMPORT INTO ... FROM SELECT` 用于将 `SELECT` 语句的查询结果导入到 TiDB 的一张空表中，也支持导入使用 [`AS OF TIMESTAMP`](/as-of-timestamp.md) 查询的历史数据。
 
-> **警告：**
->
-> `IMPORT INTO ... FROM SELECT` 目前为实验特性，不建议在生产环境中使用。该功能可能会在未事先通知的情况下发生变化或删除。如果发现 bug，请在 GitHub 上提 [issue](https://github.com/pingcap/tidb/issues) 反馈。
-
 ## 使用限制
 
 - 只支持导入数据到数据库中已有的空表。
