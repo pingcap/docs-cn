@@ -74,7 +74,7 @@ Amazon S3 配置样例如下：
 在同步数据之前，需要为 Amazon S3 中的目录设置相应的访问权限：
 
 - TiCDC 需要的最小权限是：`s3:ListBucket`、`s3:PutObject` 和 `s3:GetObject`。
-- 如果 changefeed 的参数 `sink.cloud-storage-config.flush-concurrency` 大于 1，表示开启了单文件的并行上传，需要额外增加 [ListParts](https://docs.aws.amazon.com/AmazonS3/latest/API/API_ListParts.html) 相关权限： 
+- 如果 changefeed 的参数 `sink.cloud-storage-config.flush-concurrency` 大于 1，表示开启了单文件的并行上传，需要额外增加 [ListParts](https://docs.aws.amazon.com/zh_cn/AmazonS3/latest/API/API_ListParts.html) 相关权限： 
     - `s3:AbortMultipartUpload`
     - `s3:ListMultipartUploadParts`
     - `s3:ListBucketMultipartUploads`
@@ -94,7 +94,7 @@ Amazon S3 配置样例如下：
 
 - 方式二：基于 IAM Role 进行访问
 
-    为运行 TiCDC Server 的 EC2 实例关联一个[配置了访问 S3 访问权限的 IAM role](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles_use_switch-role-ec2.html)。设置成功后，TiCDC 可以直接访问对应的 S3 中的备份目录，而不需要额外的设置。
+    为运行 TiCDC Server 的 EC2 实例关联一个[配置了访问 S3 访问权限的 IAM role](https://docs.aws.amazon.com/zh_cn/IAM/latest/UserGuide/id_roles_use_switch-role-ec2.html)。设置成功后，TiCDC 可以直接访问对应的 S3 中的备份目录，而不需要额外的设置。
 
 </div>
 <div label="GCS" value="gcs">
