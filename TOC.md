@@ -635,6 +635,7 @@
     - [配置文件](/tiproxy/tiproxy-configuration.md)
     - [命令行参数](/tiproxy/tiproxy-command-line-flags.md)
     - [监控指标](/tiproxy/tiproxy-grafana.md)
+    - [API](/tiproxy/tiproxy-api.md)
     - [故障诊断](/tiproxy/troubleshoot-tiproxy.md)
     - [性能测试报告](/tiproxy/tiproxy-performance-test.md)
 - 参考指南
