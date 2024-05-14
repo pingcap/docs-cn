@@ -5,7 +5,7 @@ summary: 了解 information_schema 表 `TABLE_CONSTRAINTS`。
 
 # TABLE_CONSTRAINTS
 
-`TABLE_CONSTRAINTS` 表记录了表的约束信息。
+`TABLE_CONSTRAINTS` 表记录了表的[约束](/constraints.md)信息。
 
 {{< copyable "sql" >}}
 
