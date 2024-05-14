@@ -30,7 +30,7 @@ TiDB 全局排序功能增强了数据导入和 DDL（数据定义语言）操�
 
 要开启全局排序功能，执行以下步骤：
 
-1. 将 [`tidb_enable_dist_task`](/system-variables.md#tidb_enable_dist_task-从-v710-版本开始引入) 的值设置为 `ON`，以开启分布式执行框架（该变量从 v8.1.0 起默认打开，如果是新建的集群可跳过该步骤）：
+1. 将 [`tidb_enable_dist_task`](/system-variables.md#tidb_enable_dist_task-从-v710-版本开始引入) 的值设置为 `ON`，以开启分布式执行框架。该变量从 v8.1.0 起默认开启，对于新建的 v8.1.0 或更高版本集群，可以跳过此步骤。
 
     ```sql
     SET GLOBAL tidb_enable_dist_task = ON;

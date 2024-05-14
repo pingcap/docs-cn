@@ -62,7 +62,7 @@ TiDB 采用计算存储分离架构，具有出色的扩展性和弹性的扩缩
 
 ## 启用步骤
 
-1. 启用分布式执行框架，只需将 [`tidb_enable_dist_task`](/system-variables.md#tidb_enable_dist_task-从-v710-版本开始引入) 设置为 `ON`（该变量从 v8.1.0 起默认开启，如果是新建的集群可跳过该步骤）：
+1. 启用分布式执行框架，只需将 [`tidb_enable_dist_task`](/system-variables.md#tidb_enable_dist_task-从-v710-版本开始引入) 设置为 `ON`。该变量从 v8.1.0 起默认开启，对于新建的 v8.1.0 或更高版本集群，可以跳过此步骤。
 
     ```sql
     SET GLOBAL tidb_enable_dist_task = ON;
@@ -81,9 +81,9 @@ TiDB 采用计算存储分离架构，具有出色的扩展性和弹性的扩缩
 
 默认情况下，分布式执行框架将会调度所有 TiDB 节点执行分布式任务。从 v7.4.0 起，你可以通过设置 [`tidb_service_scope`](/system-variables.md#tidb_service_scope-从-v740-版本开始引入) 来控制分布式执行框架将会调度哪些 TiDB 节点执行分布式任务。
 
-- 在 v7.4.0 到 v8.0.0 及其之间的版本中，[`tidb_service_scope`](/system-variables.md#tidb_service_scope-从-v740-版本开始引入) 的可选值为 `''` 或 `background`。如果当前集群存在 `tidb_service_scope = 'background'` 的 TiDB 节点时，分布式执行框架会将该任务调度到 `tidb_service_scope = 'background'` 的节点上运行。如果当前集群不存在 `tidb_service_scope = 'background'` 的节点，无论是因为故障还是正常的缩容，分布式执行框架会将任务调度到 `tidb_service_scope = ''` 的节点上运行。
+- 在 v7.4.0 到 v8.0.0 及其之间的版本中，[`tidb_service_scope`](/system-variables.md#tidb_service_scope-从-v740-版本开始引入) 的可选值为 `''` 或 `background`。如果当前集群存在 `tidb_service_scope = 'background'` 的 TiDB 节点，分布式执行框架会将该任务调度到 `tidb_service_scope = 'background'` 的节点上运行。如果当前集群不存在 `tidb_service_scope = 'background'` 的节点，无论是因为故障还是正常的缩容，分布式执行框架会将任务调度到 `tidb_service_scope = ''` 的节点上运行。
 
-- 从 v8.1.0 起，[`tidb_service_scope`](/system-variables.md#tidb_service_scope-从-v740-版本开始引入) 可设置为任意合法值，当提交分布式任务时，该任务会绑定当前连接的 TiDB 节点的 `tidb_service_scope` 值，分布式执行框架只会将该任务调度到具有相同 `tidb_service_scope` 值的 TiDB 节点上运行。但是，为了兼容之前版本的配置，如果分布式任务是在 `tidb_service_scope = ''` 的节点上提交的，且当前集群存在 `tidb_service_scope = 'background'` 的节点，分布式执行框架会将该任务调度到 `tidb_service_scope = 'background'` 的 TiDB 节点上运行。
+- 从 v8.1.0 起，[`tidb_service_scope`](/system-variables.md#tidb_service_scope-从-v740-版本开始引入) 可设置为任意合法值。当提交分布式任务时，该任务会绑定当前连接的 TiDB 节点的 `tidb_service_scope` 值，分布式执行框架只会将该任务调度到具有相同 `tidb_service_scope` 值的 TiDB 节点上运行。但是，为了兼容之前版本的配置，如果分布式任务是在 `tidb_service_scope = ''` 的节点上提交的，且当前集群存在 `tidb_service_scope = 'background'` 的节点，分布式执行框架会将该任务调度到 `tidb_service_scope = 'background'` 的 TiDB 节点上运行。
 
 如果在任务运行过程中扩容新节点，分布式执行框架会根据上述规则决定是否将任务调度到新的节点来执行。如果不希望新扩容的节点运行任务，建议提前为这些节点设置 `tidb_service_scope`。
 

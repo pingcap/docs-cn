@@ -200,7 +200,7 @@ summary: TiDB 配置参数包括启动参数和环境变量。启动参数包括
 
 ## `--tidb-service-scope`
 
-+ 用于设置当前实例 [`tidb_service_scope`](/system-variables.md#tidb_service_scope-从-v740-版本开始引入) 的初始值。
++ 用于设置当前 TiDB 实例 [`tidb_service_scope`](/system-variables.md#tidb_service_scope-从-v740-版本开始引入) 的初始值。
 + 默认：`""`
 
 ## `--token-limit`
