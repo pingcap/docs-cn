@@ -171,7 +171,7 @@ aliases: ['/docs-cn/dev/basic-features/','/docs-cn/dev/experimental-features-4.0
 |---|:----:|:----:|:----:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|
 | [CM-Sketch](/statistics.md) | 默认关闭| 默认关闭 | 默认关闭 | 默认关闭 | 默认关闭 | 默认关闭 | 默认关闭 | 默认关闭 | Y | Y | Y | Y |
 | [直方图](/statistics.md) |  Y  |  Y   |  Y   | Y | Y | Y | Y | Y | Y | Y | Y | Y |
-| 扩展统计信息（多列） |  E  |  E   |  E   | E | E | E | E | E | E | E | E | N |
+| [扩展统计信息](/extended-statistics.md) |  E  |  E   |  E   | E | E | E | E | E | E | E | E | N |
 | 统计反馈 |  N  |  N   |  N   | N | N | 已废弃 | 已废弃 | E | E | E | E | E |
 | [统计信息自动更新](/statistics.md#自动更新) |  Y  |  Y  | Y | Y | Y | Y | Y | Y | Y | Y | Y |
 | [快速分析](/system-variables.md#tidb_enable_fast_analyze) | 已废弃 | 已废弃  | 已废弃  | E | E | E | E | E | E | E | E | E |

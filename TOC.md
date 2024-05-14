@@ -281,7 +281,8 @@
       - 物理优化
         - [物理优化概览](/sql-physical-optimization.md)
         - [索引的选择](/choose-index.md)
-        - [统计信息简介](/statistics.md)
+        - [常规统计信息](/statistics.md)
+        - [扩展统计信息](/extended-statistics.md)
         - [错误索引的解决方案](/wrong-index-solution.md)
         - [Distinct 优化](/agg-distinct-optimization.md)
         - [代价模型](/cost-model.md)

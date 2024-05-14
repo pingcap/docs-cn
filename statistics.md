@@ -1,12 +1,12 @@
 ---
-title: 统计信息简介
-summary: 介绍 TiDB 中统计信息的收集和使用。
+title: 常规统计信息
+summary: 介绍 TiDB 中常规统计信息的收集和使用。
 aliases: ['/docs-cn/dev/statistics/','/docs-cn/dev/reference/performance/statistics/']
 ---
 
-# 统计信息简介
+# 常规统计信息
 
-TiDB 使用统计信息来决定[索引的选择](/choose-index.md)。
+TiDB 使用统计信息来决定[索引的选择](/choose-index.md)。本文介绍 TiDB 中常规统计信息的收集和使用。
 
 ## 统计信息版本
 

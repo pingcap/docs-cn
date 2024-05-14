@@ -996,7 +996,7 @@ MPP 是 TiFlash 引擎提供的分布式计算框架，允许节点之间的数�
 - 默认值：`2`
 - 范围：`[1, 2]`
 - 这个变量用于控制 TiDB 收集统计信息的行为。
-- 在 v5.3.0 及之后的版本中，该变量的默认值为 `2`，具体可参照[统计信息简介](/statistics.md)文档。如果从 v5.3.0 之前版本的集群升级至 v5.3.0 及之后的版本，`tidb_analyze_version` 的默认值不发生变化。
+- 在 v5.3.0 及之后的版本中，该变量的默认值为 `2`，具体可参照[常规统计信息](/statistics.md)文档。如果从 v5.3.0 之前版本的集群升级至 v5.3.0 及之后的版本，`tidb_analyze_version` 的默认值不发生变化。
 
 ### `tidb_analyze_skip_column_types` <span class="version-mark">从 v7.2.0 版本开始引入</span>
 
@@ -1817,6 +1817,25 @@ mysql> SELECT job_info FROM mysql.analyze_jobs ORDER BY end_time DESC LIMIT 1;
     - `RESTRICTED_USER_ADMIN`：能够阻止其他用户更改或删除用户帐户。
     - `RESTRICTED_CONNECTION_ADMIN`：能够阻止其它用户使用 `KILL` 语句终止连接。
 
+### `tidb_enable_exchange_partition`
+
+- 作用域：SESSION | GLOBAL
+- 是否持久化到集群：是
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：否
+- 类型：布尔型
+- 默认值：`ON`
+- 该变量用于设置是否启用 [`exchange partitions with tables`](/partitioned-table.md#分区管理) 特性。默认值为 `ON`，即默认开启该功能。
+- 该变量自 v6.3.0 开始废弃，其取值将固定为默认值 `ON`，即默认开启 `exchange partitions with tables`。
+
+### `tidb_enable_extended_stats`
+
+- 作用域：SESSION | GLOBAL
+- 是否持久化到集群：是
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：是
+- 类型：布尔型
+- 默认值：`OFF`
+- 该变量指定 TiDB 是否收集[扩展统计信息](/extended-statistics.md)来指导优化器。
+
 ### `tidb_enable_external_ts_read` <span class="version-mark">从 v6.4.0 版本开始引入</span>
 
 - 作用域：SESSION | GLOBAL
@@ -1860,25 +1879,6 @@ mysql> SELECT job_info FROM mysql.analyze_jobs ORDER BY end_time DESC LIMIT 1;
     - 如果尚未提交的事务为非只读事务，在事务内执行写入的 SQL 语句会被拒绝。
     - 如果尚未提交的事务已经有数据改动，其提交也会被拒绝。
 - 当集群开启只读模式后，所有用户（包括 `SUPER` 用户）都无法执行可能写入数据的 SQL 语句，除非该用户被显式地授予了 `RESTRICTED_REPLICA_WRITER_ADMIN` 权限。
-
-### `tidb_enable_exchange_partition`
-
-- 作用域：SESSION | GLOBAL
-- 是否持久化到集群：是
-- 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：否
-- 类型：布尔型
-- 默认值：`ON`
-- 该变量用于设置是否启用 [`exchange partitions with tables`](/partitioned-table.md#分区管理) 特性。默认值为 `ON`，即默认开启该功能。
-- 该变量自 v6.3.0 开始废弃，其取值将固定为默认值 `ON`，即默认开启 `exchange partitions with tables`。
-
-### `tidb_enable_extended_stats`
-
-- 作用域：SESSION | GLOBAL
-- 是否持久化到集群：是
-- 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：是
-- 类型：布尔型
-- 默认值：`OFF`
-- 该变量指定 TiDB 是否收集扩展统计信息来指导优化器。
 
 ### `tidb_enable_fast_analyze`
 
