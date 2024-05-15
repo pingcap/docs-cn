@@ -1,6 +1,5 @@
 ---
 title: Cast 函数和操作符
-aliases: ['/docs-cn/dev/functions-and-operators/cast-functions-and-operators/','/docs-cn/dev/reference/sql/functions-and-operators/cast-functions-and-operators/']
 summary: Cast 函数和操作符用于将某种数据类型的值转换为另一种数据类型。TiDB 支持使用 MySQL 8.0 中提供的所有 Cast 函数和操作符。
 ---
 

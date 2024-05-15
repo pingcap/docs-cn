@@ -1,6 +1,5 @@
 ---
 title: Data Migration 常见问题
-aliases: ['/docs-cn/tidb-data-migration/dev/faq/']
 summary: 数据迁移常见问题包括：DM 是否支持迁移阿里 RDS 和其他云数据库的数据、task 配置中的黑白名单的正则表达式是否支持非获取匹配、处理不兼容的 DDL 语句、重置数据迁移任务、全量导入过程中遇到报错等。
 ---
 

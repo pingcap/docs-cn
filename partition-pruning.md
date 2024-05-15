@@ -1,7 +1,6 @@
 ---
 title: 分区裁剪
 summary: 了解 TiDB 分区裁剪的使用场景。
-aliases: ['/docs-cn/dev/partition-pruning/']
 ---
 
 # 分区裁剪

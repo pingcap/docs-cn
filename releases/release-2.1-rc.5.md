@@ -1,6 +1,5 @@
 ---
 title: TiDB 2.1 RC5 Release Notes
-aliases: ['/docs-cn/dev/releases/release-2.1-rc.5/','/docs-cn/dev/releases/21rc5/']
 summary: TiDB 2.1 RC5 版本发布，对系统稳定性、优化器、统计信息和执行引擎做了很多改进。包括修复了多个问题，提升了性能，增加了环境变量设置功能。PD 修复了多个问题，TiKV 优化了报错信息和接口限制。TiDB 支持 TiDB Binlog cluster，不兼容旧版本。
 ---
 

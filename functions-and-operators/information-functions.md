@@ -1,6 +1,5 @@
 ---
 title: 信息函数
-aliases: ['/docs-cn/dev/functions-and-operators/information-functions/','/docs-cn/dev/reference/sql/functions-and-operators/information-functions/']
 summary: TiDB 支持 MySQL 8.0 中提供的大部分信息函数。
 ---
 

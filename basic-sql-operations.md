@@ -1,6 +1,5 @@
 ---
 title: SQL 基本操作
-aliases: ['/docs-cn/dev/basic-sql-operations/','/docs-cn/dev/how-to/get-started/explore-sql/']
 summary: TiDB 是一个兼容 MySQL 的数据库，可以执行 DDL、DML、DQL 和 DCL 操作。可以使用 SHOW DATABASES 查看数据库列表，使用 CREATE DATABASE 创建数据库，使用 DROP DATABASE 删除数据库。使用 CREATE TABLE 创建表，使用 SHOW CREATE TABLE 查看建表语句，使用 DROP TABLE 删除表。使用 CREATE INDEX 创建索引，使用 SHOW INDEX 查看表内所有索引，使用 DROP INDEX 删除索引。使用 INSERT 向表内插入记录，使用 UPDATE 修改记录，使用 DELETE 删除记录。使用 SELECT 检索表内数据，使用 WHERE 子句进行筛选。使用 CREATE USER 创建用户，使用 GRANT 授权用户，使用 DROP USER 删除用户。
 ---
 
