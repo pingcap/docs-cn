@@ -202,6 +202,17 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
 - 默认值：0
 - 在 TiDB 等待服务器关闭期间，HTTP 状态会显示失败，使得负载均衡器可以重新路由流量。
 
+> **注意：**
+>
+> TiDB 在关闭服务器之前等待的时长也会受到以下参数的影响：
+>
+> - 当使用采用 SystemD 平台时，默认的停止超时为 90 秒。如果需要更长的超时时间，可以设置 [`TimeoutStopSec=`](https://www.freedesktop.org/software/systemd/man/latest/systemd.service.html#TimeoutStopSec=)。
+>
+> - 当使用 TiUP Cluster 组件时，默认的 [`--wait-timeout`](/tiup/tiup-component-cluster.md#--wait-timeout) 为 120 秒。
+>
+> - 当使用 Kubernetes 时，默认的 [`terminationGracePeriodSeconds`](https://kubernetes.io/docs/reference/kubernetes-api/workload-resources/pod-v1/#lifecycle) 为 30 秒。
+
+
 ### `enable-global-kill` <span class="version-mark">从 v6.1.0 版本开始引入</span>
 
 + 用于开启 Global Kill（跨节点终止查询或连接）功能。
