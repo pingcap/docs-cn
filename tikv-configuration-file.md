@@ -1099,7 +1099,7 @@ Coprocessor 相关的配置项。
 
 ### `enable-region-bucket` <span class="version-mark">从 v6.1.0 版本开始引入</span>
 
-+ 是否将 Region 划分为更小的区间 bucket，并且以 bucket 作为并发查询单位，以提高扫描数据的并发度。bucket 的详细设计可见 [Dynamic size Region](https://github.com/tikv/rfcs/blob/release-8.1/text/0082-dynamic-size-region.md)。
++ 是否将 Region 划分为更小的区间 bucket，并且以 bucket 作为并发查询单位，以提高扫描数据的并发度。bucket 的详细设计可见 [Dynamic size Region](https://github.com/tikv/rfcs/blob/master/text/0082-dynamic-size-region.md)。
 + 默认值：false
 
 > **警告：**
