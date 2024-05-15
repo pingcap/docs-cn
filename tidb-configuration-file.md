@@ -206,7 +206,7 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
 >
 > TiDB 在关闭服务器之前等待的时长也会受到以下参数的影响：
 >
-> - 当使用采用 SystemD 平台时，默认的停止超时为 90 秒。如果需要更长的超时时间，可以设置 [`TimeoutStopSec=`](https://www.freedesktop.org/software/systemd/man/latest/systemd.service.html#TimeoutStopSec=)。
+> - 当使用采用了 SystemD 的平台时，默认的停止超时为 90 秒。如果需要更长的超时时间，可以设置 [`TimeoutStopSec=`](https://www.freedesktop.org/software/systemd/man/latest/systemd.service.html#TimeoutStopSec=)。
 >
 > - 当使用 TiUP Cluster 组件时，默认的 [`--wait-timeout`](/tiup/tiup-component-cluster.md#--wait-timeout) 为 120 秒。
 >
