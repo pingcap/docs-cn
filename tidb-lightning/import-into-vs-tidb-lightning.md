@@ -31,7 +31,7 @@ summary: 了解 `IMPORT INTO` 和 TiDB Lightning 的差异。
 
 `IMPORT INTO` 任务可以与其它业务负载共享 TiDB 节点的资源，或者错峰使用这些节点以充分利用资源。为实现以最优性能保持业务稳定运行，同时保证 `IMPORT INTO` 任务的性能和稳定性，你可以指定[特定的 TiDB 节点](/system-variables.md#tidb_service_scope-从-v740-版本开始引入)，专门用于使用 `IMPORT INTO` 导入数据。
 
-当使用 [TiDB 全局排序](/tidb-global-sort.md)时，你无需加载太大的本地磁盘。TiDB 全局排序可以使用 Amazon S3。一旦完成数据导入，存储在 Amazon S3 上用于全局排序的数据会自动删除，以节省存储成本。
+当使用 [TiDB 全局排序](/tidb-global-sort.md)时，你无需加载太大的本地磁盘。TiDB 全局排序可以使用 Amazon S3 作为存储。一旦完成数据导入，存储在 Amazon S3 上用于全局排序的数据会自动删除，以节省存储成本。
 
 #### TiDB Lightning
 
@@ -116,7 +116,7 @@ TiDB Lightning 实例节点出现故障后，需要根据之前记录的检查�
 
 - 逻辑导入
 
-    在使用 `IMPORT INTO` 导入数据之前，目标表必须为空。如果需要将数据导入到已经包含数据的表中，建议使用 [`LOAD DATA`](/sql-statements/sql-statement-load-data.md) 或直接插入等方法。TiDB v8.0 支持[批量 DML](/system-variables.md#tidb_dml_type-从-v800-版本开始引入) 来执行大型事务。
+    在使用 `IMPORT INTO` 导入数据之前，目标表必须为空。如果需要将数据导入到已经包含数据的表中，建议使用 [`LOAD DATA`](/sql-statements/sql-statement-load-data.md) 或直接插入等方法。从 v8.0 起，TiDB 支持[批量 DML](/system-variables.md#tidb_dml_type-从-v800-版本开始引入) 来执行大型事务。
 
 - 冲突数据处理
 
