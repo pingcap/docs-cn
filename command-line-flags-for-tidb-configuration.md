@@ -10,7 +10,7 @@ summary: TiDB 配置参数包括启动参数和环境变量。启动参数包括
 
 要快速了解 TiDB 的参数体系与参数作用域，建议先观看下面的培训视频（时长 17 分钟）。
 
-<video src="https://download.pingcap.com/docs-cn%2FLesson10_config.mp4" width="600px" height="450px" controls="controls" poster="https://download.pingcap.com/docs-cn/poster_lesson10.png"></video> 
+<video src="https://download.pingcap.com/docs-cn%2FLesson10_config.mp4" width="600px" height="450px" controls="controls" poster="https://download.pingcap.com/docs-cn/poster_lesson10.png"></video>
 
 本文将详细介绍 TiDB 的命令行启动参数。TiDB 的默认端口为 4000（客户端请求）与 10080（状态报告）。
 
@@ -197,6 +197,11 @@ summary: TiDB 配置参数包括启动参数和环境变量。启动参数包括
 
 - TiDB 用于存放临时文件的目录
 - 默认："/tmp/tidb"
+
+## `--tidb-service-scope`
+
++ 用于设置当前 TiDB 实例 [`tidb_service_scope`](/system-variables.md#tidb_service_scope-从-v740-版本开始引入) 的初始值。
++ 默认：`""`
 
 ## `--token-limit`
 
