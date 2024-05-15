@@ -132,7 +132,7 @@ Azure Blob Storage 配置样例如下：
 
 - 方式三：使用 Azure AD 备份恢复
 
-    运行环境配置环境变量 `$AZURE_CLIENT_ID`、`$AZURE_TENANT_ID` 和 `$AZURE_CLIENT_SECRET`。
+    运行环境配置 `$AZURE_CLIENT_ID`、`$AZURE_TENANT_ID` 和 `$AZURE_CLIENT_SECRET`。
 
 </div>
 </SimpleTab>
