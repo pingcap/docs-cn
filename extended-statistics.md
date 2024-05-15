@@ -140,7 +140,7 @@ ALTER TABLE t ADD STATS_EXTENDED s1 correlation(col1, col2);
 
 在添加完统计信息对象执行 `ANALYZE` 语句时，TiDB 会计算表 `t` 的 `col` 和 `col2` 的[皮尔逊相关系数](https://zh.wikipedia.org/zh-cn/皮尔逊积矩相关系数)，并将对象写入 `mysql.stats_extended` 系统表。
 
-### 第 4 步：查看扩展统计信息发挥的作用
+### 第 4 步：查看扩展统计信息的效果
 
 当 TiDB 有了相关性扩展统计信息后，优化器可以更准确地估算需要扫描的行数。
 
