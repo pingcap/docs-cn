@@ -5,7 +5,7 @@ summary: CREATE INDEX 在 TiDB 中的使用概况
 
 # CREATE INDEX
 
-`CREATE INDEX` 语句用于在已有表中添加新索引，功能等同于 [`ALTER TABLE .. ADD INDEX`](/sql-statements/sql-statement-alter-table.md)。包含该语句提供了 MySQL 兼容性。
+`CREATE INDEX` 语句用于在已有表中添加新索引，功能等同于 [`ALTER TABLE .. ADD INDEX`](/sql-statements/sql-statement-alter-table.md)，提供了 MySQL 兼容性。
 
 ## 语法图
 
@@ -193,14 +193,14 @@ DROP INDEX idx1 ON t1;
 > - 子查询。
 > - [`AUTO_INCREMENT`](/auto-increment.md) 属性的列。一个例外是设置系统变量 [`tidb_enable_auto_increment_in_generated`](/system-variables.md#tidb_enable_auto_increment_in_generated) 为 `true` 后，可以去掉该限制。
 > - [窗口函数](/functions-and-operators/window-functions.md)。
-> - row 函数。例如 ``CREATE TABLE t (j JSON, INDEX k (((j,j))));`。
+> - row 函数。例如 `CREATE TABLE t (j JSON, INDEX k (((j,j))));`。
 > - [聚合函数](/functions-and-operators/aggregate-group-by-functions.md)。
 >
 > 表达式索引将隐式占用名字，`_V$_{index_name}_{index_offset}`，如果已有相同名字的列存在，创建表达式索引将报错。如果后续新增相同名字的列，也会报错。
 >
 > 在表达式索引中，表达式的函数参数个数必须正确。
 >
-> 当索引的表达式使用了字符串相关的函数时，受返回类型以及其长度的影响，创建表达式索引可能会失败。这时可以使用 `CAST()` 函数显式指定返回的类型以及长度。例如表达式 `repeat(a, 3)`，为了能根据该表达式建立表达式索引，需要将表达式改写为 `CAST(REPEAT(a, 3) AS CHAR(20))` 这样的形式。
+> 当索引的表达式使用了字符串相关的函数时，受返回类型以及其长度的影响，创建表达式索引可能会失败。这时可以使用 `CAST()` 函数显式指定返回的类型以及长度。例如表达式 `REPEAT(a, 3)`，为了能根据该表达式建立表达式索引，需要将表达式改写为 `CAST(REPEAT(a, 3) AS CHAR(20))` 这样的形式。
 
 当查询语句中的表达式与表达式索引中的表达式一致时，优化器可以为该查询选择使用表达式索引。依赖于统计信息，某些情况下优化器不一定选择表达式索引。这时可以通过 hint 指定强制使用表达式索引。
 
