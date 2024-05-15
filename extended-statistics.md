@@ -48,27 +48,25 @@ SET GLOBAL tidb_enable_extended_stats = ON;
 ALTER TABLE table_name ADD STATS_EXTENDED IF NOT EXISTS stats_name stats_type(column_name, column_name...);
 ```
 
-In the syntax, you can specify the table name, statistics name, statistics type, and column name of the extended statistics to be collected.
+你可以在语法中指定要收集扩展统计信息的表名、统计信息名称、统计信息类型和列名。
 
-- `table_name` specifies the name of the table from which the extended statistics are collected.
-- `stats_name` specifies the name of the statistics object, which must be unique for each table.
-- `stats_type` specifies the type of the statistics. Currently, only the correlation type is supported.
-- `column_name` specifies the column group, which might have multiple columns. Currently, you can only specify two column names.
+- `table_name`：指定要收集扩展统计信息的表名。
+- `stats_name`：指定统计信息对象的名称，每个表的统计信息对象名称必须唯一。
+- `stats_type`：指定统计信息的类型。目前仅支持相关性 (correlation) 类型。
+- `column_name`：指定列组，可以有多个列。目前只支持指定两个列名。
 
 <details>
-<summary> How it works</summary>
+<summary>实现原理</summary>
 
-To improve access performance, each TiDB node maintains a cache in the system table `mysql.stats_extended` for extended statistics. After you register the extended statistics, the next time the `ANALYZE` statement is executed, TiDB will collect the extended statistics if the system table `mysql.stats_extended` has the corresponding objects.
+为了提高访问性能，每个 TiDB 节点在系统表 `mysql.stats_extended` 中维护一份缓存，用于扩展统计信息。在添加扩展统计信息后，下次执行 `ANALYZE` 语句时，如果系统表 `mysql.stats_extended` 中有相应的对象，TiDB 将收集扩展统计信息。
 
-Each row in the `mysql.stats_extended` table has a `version` column. Once a row is updated, the value of `version` is increased. In this way, TiDB loads the table into memory incrementally, instead of fully.
+每一行在 `mysql.stats_extended` 系统表中都有一个 `version` 列。只要一行数据有更新，`version` 的值就会增加。这样，TiDB 会将表增量加载到内存中，而不是全量加载。
 
-TiDB loads `mysql.stats_extended` periodically to ensure that the cache is kept the same as the data in the table.
+TiDB 定期加载 `mysql.stats_extended` 系统表，以确保缓存与表中的数据保持一致。
 
-> **Warning:**
+> **警告：**
 >
-> It is **NOT RECOMMENDED** to directly operate on the `mysql.stats_extended` system table. Otherwise, inconsistent caches occur on different TiDB nodes.
->
-> If you have mistakenly operated on the table, you can execute the following statement on each TiDB node. Then the current cache will be cleared and the `mysql.stats_extended` table will be fully reloaded:
+> 不建议直接操作 `mysql.stats_extended` 系统表，否则不同 TiDB 节点上的缓存会不一致。如果误操作了该系统表，可以在每个 TiDB 节点上执行以下语句，以清除当前缓存，并重新加载 `mysql.stats_extended` 系统表：
 >
 > ```sql
 > ADMIN RELOAD STATS_EXTENDED;
@@ -76,26 +74,22 @@ TiDB loads `mysql.stats_extended` periodically to ensure that the cache is kept 
 
 </details>
 
-### Delete extended statistics
+### 删除扩展统计信息
 
-To delete an extended statistics object, use the following statement:
+要删除扩展统计信息对象，使用以下语句：
 
 ```sql
 ALTER TABLE table_name DROP STATS_EXTENDED stats_name;
 ```
 
 <details>
-<summary>How it works</summary>
+<summary>实现原理</summary>
 
-After you execute the statement, TiDB marks the value of the corresponding object in `mysql.stats_extended`'s column `status` to `2`, instead of deleting the object directly.
+在执行删除扩展统计信息对象的语句后，TiDB 不会直接删除 `mysql.stats_extended` 系统表中的对象，而是将相应对象的 `status` 列的值标记为 `2`。其它 TiDB 节点会读取这个变化，并删除内存缓存中的对象。后台的垃圾回收机制会最终删除该对象。
 
-Other TiDB nodes will read this change and delete the object in their memory cache. The background garbage collection will delete the object eventually.
-
-> **Warning:**
+> **警告：**
 >
-> It is **NOT RECOMMENDED** to directly operate on the `mysql.stats_extended` system table. Otherwise, inconsistent caches occur on different TiDB nodes.
->
-> If you have mistakenly operated on the table, you can use the following statement on each TiDB node. Then the current cache will be cleared and the `mysql.stats_extended` table will be fully reloaded:
+> 不建议直接操作 `mysql.stats_extended` 系统表，否则不同 TiDB 节点上的缓存会不一致。如果误操作了该系统表，可以在每个 TiDB 节点上执行以下语句，以清除当前缓存，并重新加载 `mysql.stats_extended` 系统表：
 >
 > ```sql
 > ADMIN RELOAD STATS_EXTENDED;
@@ -103,59 +97,59 @@ Other TiDB nodes will read this change and delete the object in their memory cac
 
 </details>
 
-### Export and import extended statistics
+### 导出和导入扩展统计信息
 
-The way of exporting or importing extended statistics is the same as exporting or importing basic statistics. See [Introduction to Statistics - Import and export statistics](/statistics.md#import-and-export-statistics) for details.
+导出和导入扩展统计信息的方式与导出和导入常规统计信息的方式相同。详情参见[导出和导入常规统计信息](/statistics.md#导出和导入统计信息)。
 
-## Usage examples for correlation-type extended statistics
+## 相关性类型的扩展统计信息使用示例
 
-Currently, TiDB only supports the correlation-type extended statistics. This type is used to estimate the number of rows in the range query and improve index selection. The following example shows how the correlation-type extended statistics are used to estimate the number of rows in a range query.
+目前，TiDB 仅支持相关性类型的扩展统计信息。该类型用于估算范围查询中的行数，并改善索引选择。以下示例展示了如何使用相关性类型的扩展统计信息来估算范围查询中的行数。
 
-### Step 1. Define the table
+### 第 1 步：定义表
 
-Define a table `t` as follows:
+定义表 `t` 如下：
 
 ```sql
 CREATE TABLE t(col1 INT, col2 INT, KEY(col1), KEY(col2));
 ```
 
-Suppose that `col1` and `col2` of table `t` both obey monotonically increasing constraints in row order. This means that the values of `col1` and `col2` are strictly correlated in order, and the correlation factor is `1`.
+假设表 `t` 的 `col1` 和 `col2` 在行顺序上都遵循单调递增的约束，这意味着 `col1` 和 `col2` 的值在顺序上严格相关，并且相关性系数为 `1`。
 
-### Step 2. Execute an example query without extended statistics
+### 第 2 步：执行不使用扩展统计信息的示例查询
 
-Execute the following query without using extended statistics:
+执行以下查询，不使用扩展统计信息：
 
 ```sql
 SELECT * FROM t WHERE col1 > 1 ORDER BY col2 LIMIT 1;
 ```
 
-For the execution of the preceding query, the TiDB optimizer has the following options to access table `t`:
+对于上述查询的执行，TiDB 优化器会通过以下方式之一来访问表 `t`：
 
-- Uses the index on `col1` to access table `t` and then sorts the result by `col2` to calculate `Top-1`.
-- Uses the index on `col2` to meet the first row that satisfies `col1 > 1`. The cost of this access method mainly depends on how many rows are filtered out when TiDB scans the table in `col2`'s order.
+- 使用 `col1` 上的索引访问表 `t`，然后按 `col2` 对结果进行排序以计算 `Top-1`。
+- 使用 `col2` 上的索引按顺序扫描表 `t`，直到遇到一条满足 `col1 > 1` 条件的记录后结束扫描。这种访问方式的代价主要取决于 TiDB 按 `col2` 的顺序扫描表时过滤掉了多少行。
 
-Without extended statistics, the TiDB optimizer only supposes that `col1` and `col2` are independent, which **leads to a significant estimation error**.
+在没有扩展统计信息的情况下，TiDB 优化器只会假设 `col1` 和 `col2` 是独立的，这会**导致显著的估算误差**。
 
-### Step 3. Enable extended statistics
+### 第 3 步：启用扩展统计信息
 
-Set `tidb_enable_extended_stats` to `ON`, and register the extended statistics object for `col1` and `col2`:
+将系统变量 `tidb_enable_extended_stats` 设置为 `ON`，并将 `col1` 和 `col2` 添加为扩展统计信息对象：
 
 ```sql
 ALTER TABLE t ADD STATS_EXTENDED s1 correlation(col1, col2);
 ```
 
-When you execute `ANALYZE` after the registration, TiDB calculates the [Pearson correlation coefficient](https://en.wikipedia.org/wiki/Pearson_correlation_coefficient) of `col` and `col2` of table `t`, and writes the object into the `mysql.stats_extended` table.
+在添加完统计信息对象执行 `ANALYZE` 语句时，TiDB 会计算表 `t` 的 `col` 和 `col2` 的[皮尔逊相关系数](https://zh.wikipedia.org/zh-cn/皮尔逊积矩相关系数)，并将对象写入 `mysql.stats_extended` 系统表。
 
-### Step 4. See how extended statistics make a difference
+### 第 4 步：查看扩展统计信息发挥的作用
 
-After TiDB has the extended statistics for correlation, the optimizer can estimate how many rows to be scanned more precisely.
+当 TiDB 有了相关性扩展统计信息后，优化器可以更准确地估算需要扫描的行数。
 
-At this time, for the query in [Stage 2. Execute an example query without extended statistics](#step-2-execute-an-example-query-without-extended-statistics), `col1` and `col2` are strictly correlated in order. If TiDB accesses table `t` by using the index on `col2` to meet the first row that satisfies `col1 > 1`, the TiDB optimizer will equivalently translate the row count estimation into the following query:
+此时，对于上述[第 2 步](#第-2-步执行不使用扩展统计信息的示例查询)中的查询，`col1` 和 `col2` 在顺序上严格相关。如果 TiDB 通过 `col2` 上的索引按顺序扫描表 `t`，直到遇到一条满足 `col1 > 1` 条件的记录后结束扫描，优化器会将行数估算等价转换为以下查询：
 
 ```sql
 SELECT * FROM t WHERE col1 <= 1 OR col1 IS NULL;
 ```
 
-The preceding query result plus one will be the final estimation for the row count. In this way, you do not need to use the independent assumption and **the significant estimation error is avoided**.
+上述查询结果加 1 即为对行数的最终估算值。这样不再使用独立不相关假设，**避免了显著的估算误差**。
 
-If the correlation factor (`1` in this example) is less than the value of the system variable `tidb_opt_correlation_threshold`, the optimizer will use the independent assumption, but it will also increase the estimation heuristically. The larger the value of `tidb_opt_correlation_exp_factor`, the larger the estimation result. The larger the absolute value of the correlation factor, the larger the estimation result.
+如果相关性系数（本例中为 `1`）小于系统变量 `tidb_opt_correlation_threshold` 的值，优化器会使用独立假设，但会试探性地调大估算值。`tidb_opt_correlation_exp_factor` 的值越大，估算结果越大。相关性系数的绝对值越大，估算结果越大。

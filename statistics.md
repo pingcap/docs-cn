@@ -669,7 +669,7 @@ DROP STATS TableName GLOBAL;
 
 该语句只删除该表在分区动态裁剪模式下生成的 GlobalStats。
 
-## 统计信息的加载
+## 加载统计信息
 
 默认情况下，列的统计信息占用空间大小不同，TiDB 对统计信息的加载方式也会不同。
 
@@ -695,7 +695,7 @@ DROP STATS TableName GLOBAL;
 
 `lite-init-stats` 默认值为 `true`，即开启轻量级的统计信息初始化。将 `lite-init-stats` 设置为 `true` 可以加速统计信息初始化，避免加载不必要的统计信息，从而降低 TiDB 的内存使用。
 
-## 统计信息的导入导出
+## 导出和导入统计信息
 
 ### 导出统计信息
 
