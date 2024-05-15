@@ -1,6 +1,7 @@
 ---
 title: TiDB 2.0.7 release notes
 aliases: ['/docs-cn/dev/releases/release-2.0.7/','/docs-cn/dev/releases/207/']
+summary: TiDB 2.0.7 版本在系统兼容性和稳定性方面有改进。TiDB 新增了在 `information_schema` 中添加 `PROCESSLIST` 表的功能。还对语句执行细节进行了改进，并在 `SLOW QUERY` 日志中输出更多信息。修复了多个 bug，包括 `PRIMARY KEY` 为整数的表无法使用 `USE INDEX(PRIMARY)` 的问题，以及 `Merge Join` 和 `Index Join` 在 inner row 为 `NULL` 时输出多余结果的问题。TiKV 方面，空集群默认打开 `dynamic-level-bytes` 参数减少空间放大，并在 Region merge 之后更新 Region 的 `approximate size` 和 keys。
 ---
 
 # TiDB 2.0.7 Release Notes

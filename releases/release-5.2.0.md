@@ -1,5 +1,6 @@
 ---
 title: TiDB 5.2 Release Notes
+summary: TiDB 5.2 版本于 2021 年 8 月 27 日发布。该版本新增了许多功能和改进，包括支持基于部分函数创建表达式索引、提升优化器的估算准确度、锁视图成为 GA 特性等。此外，还修复了多个 bug，提升了稳定性和性能。
 ---
 
 # TiDB 5.2 Release Notes

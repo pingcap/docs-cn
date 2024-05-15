@@ -34,10 +34,6 @@ summary: 数据类型的默认值描述了列的默认值设置规则。默认�
 
 ## 表达式默认值
 
-> **警告：**
->
-> 该特性为实验特性，不建议在生产环境中使用。该功能可能会在未事先通知的情况下发生变化或删除。如果发现 bug，请在 GitHub 上提 [issue](https://github.com/pingcap/tidb/issues) 反馈。
-
 MySQL 从 8.0.13 开始支持在 `DEFAULT` 子句中指定表达式为默认值。具体可参考 [Explicit Default Handling as of MySQL 8.0.13](https://dev.mysql.com/doc/refman/8.0/en/data-type-defaults.html#data-type-defaults-explicit)。
 
 从 v8.0.0 开始，TiDB 在 `DEFAULT` 子句中新增支持指定以下表达式作为字段的默认值：
@@ -56,7 +52,3 @@ MySQL 从 8.0.13 开始支持在 `DEFAULT` 子句中指定表达式为默认值�
 ```sql
 CREATE TABLE t2 (b BLOB DEFAULT (RAND()));
 ```
-
-> **注意：**
->
-> 目前 `ADD COLUMN` 语句不支持使用表达式来设置默认值。

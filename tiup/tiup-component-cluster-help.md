@@ -1,5 +1,6 @@
 ---
 title: tiup cluster help
+summary: tiup-cluster 是一个命令行工具，提供丰富的帮助信息。用户可以通过 `help` 命令或 `--help` 参数获取帮助信息。`tiup cluster help <command>` 等同于 `tiup cluster <command> --help`。语法为 `tiup cluster help [command] [flags]`。使用 `-h` 或 `--help` 输出帮助信息，默认关闭。输出为 `[command]` 或 tiup-cluster 的帮助信息。
 ---
 
 # tiup cluster help

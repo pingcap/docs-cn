@@ -30,18 +30,20 @@ check-requirements = true
 data-source-dir = "/data/my_database"
 
 [conflict]
-# 从 v7.3.0 开始引入的新版冲突数据处理策略。默认值为 ""。从 v8.0.0 开始，TiDB Lightning 优化了物理导入模式和逻辑导入模式的冲突策略。该优化为实验特性。
+# 从 v7.3.0 开始引入的新版冲突数据处理策略。默认值为 ""。从 v8.0.0 开始，TiDB Lightning 优化了物理导入模式和逻辑导入模式的冲突策略。
 # - ""：不进行冲突数据检测和处理。如果源文件存在主键或唯一键冲突的记录，后续步骤会报错
 # - "error"：检测到导入的数据存在主键或唯一键冲突的数据时，终止导入并报错
 # - "replace"：遇到主键或唯一键冲突的数据时，保留最新的数据，覆盖旧的数据。
 #              冲突数据将被记录到目标 TiDB 集群中的 `lightning_task_info.conflict_error_v2` 表（该表用于记录后置冲突检测到的冲突数据）
 #              和 `conflict_records` 表（该表用于记录前置冲突检测到的冲突数据）中。
+#              如果在物理导入模式下配置了 `conflict.strategy = "replace"`，可以在 `lightning_task_info.conflict_view` 视图中查看冲突数据。
 #              你可以根据业务需求选择正确的记录重新手动写入到目标表中。注意，该方法要求目标 TiKV 的版本为 v5.2.0 或更新版本。
 strategy = ""
-# 控制是否开启前置冲突检测，即导入数据到 TiDB 前，先检查所需导入的数据是否存在冲突。冲突记录比例大于或等于 1% 的场景建议开启前置冲突检测，可以提升冲突检测的性能，反之建议关闭。该参数默认值为 false，表示仅开启后置冲突检测。取值为 true 时，表示同时开启前置冲突检测和后置冲突检测。该参数为实验特性。
+# 控制是否开启前置冲突检测，即导入数据到 TiDB 前，先检查所需导入的数据是否存在冲突。该参数默认值为 false，表示仅开启后置冲突检测。取值为 true 时，表示同时开启前置冲突检测和后置冲突检测。冲突记录数量高于 1,000,000 的场景建议配置 `precheck-conflict-before-import = true`，可以提升冲突检测的性能，反之建议关闭。
 # precheck-conflict-before-import = false
-# threshold = 9223372036854775807
-# max-record-rows = 100
+# threshold = 10000
+# 从 v8.1.0 开始，TiDB Lightning 会自动将 `max-record-rows` 的值设置为 `threshold` 的值，并忽略用户输入，因此无需再单独配置 `max-record-rows`。`max-record-rows` 将在未来版本中废弃。
+# max-record-rows = 10000
 
 [tikv-importer]
 # 导入模式配置，设为 local 即使用物理导入模式

@@ -10,7 +10,7 @@ summary: TiDB 配置参数包括启动参数和环境变量。启动参数包括
 
 要快速了解 TiDB 的参数体系与参数作用域，建议先观看下面的培训视频（时长 17 分钟）。
 
-<video src="https://download.pingcap.com/docs-cn%2FLesson10_config.mp4" width="600px" height="450px" controls="controls" poster="https://download.pingcap.com/docs-cn/poster_lesson10.png"></video> 
+<video src="https://download.pingcap.com/docs-cn%2FLesson10_config.mp4" width="600px" height="450px" controls="controls" poster="https://download.pingcap.com/docs-cn/poster_lesson10.png"></video>
 
 本文将详细介绍 TiDB 的命令行启动参数。TiDB 的默认端口为 4000（客户端请求）与 10080（状态报告）。
 
@@ -198,6 +198,11 @@ summary: TiDB 配置参数包括启动参数和环境变量。启动参数包括
 - TiDB 用于存放临时文件的目录
 - 默认："/tmp/tidb"
 
+## `--tidb-service-scope`
+
++ 用于设置当前 TiDB 实例 [`tidb_service_scope`](/system-variables.md#tidb_service_scope-从-v740-版本开始引入) 的初始值。
++ 默认：`""`
+
 ## `--token-limit`
 
 + TiDB 中同时允许运行的 Session 数量，用于流量控制
@@ -223,6 +228,12 @@ summary: TiDB 配置参数包括启动参数和环境变量。启动参数包括
 
 + 设置 TiDB server CPU 亲和性，以 "," 逗号分隔，例如 "1,2,3"
 + 默认：""
+
+## `--redact`
+
++ 设置 TiDB server 是否在使用子命令 `collect-log` 时脱敏日志文件。
++ 默认：false
++ 取值为 `true` 时为脱敏操作，所有被标记符号 `‹ ›` 包裹的字段会被替换为 `?`。取值为 `false` 时为还原操作，所有标记符号会被去除。具体使用方法为：执行 `./tidb-server --redact=xxx collect-log <input> <output>` 将 `<input>` 指向的 TiDB server 日志文件进行脱敏或者还原，并输出到 `<output>`。更多详情，请参考系统变量 [`tidb_redact_log`](/system-variables.md#tidb_redact_log)。
 
 ## `--repair-mode`
 

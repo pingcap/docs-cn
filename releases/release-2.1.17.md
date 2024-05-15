@@ -1,6 +1,7 @@
 ---
 title: TiDB 2.1.17 Release Notes
 aliases: ['/docs-cn/dev/releases/release-2.1.17/','/docs-cn/dev/releases/2.1.17/']
+summary: TiDB 2.1.17 发布，新增了 `SHOW TABLE REGIONS` 语法的 `WHERE` 条件子句，以及 TiKV、PD 的 `config-check` 功能。PD 优化调度流程，TiKV 优化启动流程。TiDB 慢日志中的 `start ts` 和 `Index_ids` 字段有改动。SQL 优化器和执行引擎修复了多个问题。DDL 改进了 `SPLIT TABLE` 语法的行为。TiKV 解决了一些问题并新增了 `config-check` 选项。PD 新增了 `config-check` 选项和 `remove-tombstone` 命令。Reparo 新增了配置项，用于控制恢复速率。TiDB Ansible 更新了 Spark 版本和修复了连接等待问题。
 ---
 
 # TiDB 2.1.17 Release Notes

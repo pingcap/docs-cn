@@ -1,5 +1,6 @@
 ---
 title: TiDB 配置文件描述
+summary: 介绍未包含在命令行参数中的 TiDB 配置文件选项。
 aliases: ['/docs-cn/dev/tidb-configuration-file/','/docs-cn/dev/reference/configuration/tidb-server/configuration-file/']
 ---
 
@@ -585,6 +586,11 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
 
 + 用于控制 TiDB 是否开启统计信息缓存的内存上限。
 + 默认值：true
+
+### `concurrently-init-stats` <span class="version-mark">从 v8.1.0 和 v7.5.2 版本开始引入</span>
+
++ 用于控制 TiDB 启动时是否并发初始化统计信息。
++ 默认值：`false`
 
 ### `lite-init-stats` <span class="version-mark">从 v7.1.0 版本开始引入</span>
 

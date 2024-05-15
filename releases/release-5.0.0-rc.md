@@ -1,5 +1,6 @@
 ---
 title: TiDB 5.0 RC Release Notes
+summary: TiDB 5.0.0-rc 版本是 5.0 版本的前序版本。在 5.0 版本中，我们专注于帮助企业基于 TiDB 数据库快速构建应用程序，提升数据库性能、降低写入数据延迟、稳定性、可用性、容灾、SQL 语句效率等问题。新增聚簇索引、异步提交事务、Raft Joint Consensus 算法、不可见索引、`EXCEPT`/`INTERSECT` 操作符、悲观事务执行成功概率、字符集和排序规则优化、错误信息和日志信息脱敏、优化器选择索引稳定性、调度功能优化、备份与恢复、数据导入导出、`EXPLAIN` 功能优化、TiUP 增强功能等特性。
 ---
 
 # TiDB 5.0 RC Release Notes

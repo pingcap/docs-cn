@@ -10,10 +10,6 @@ summary: TiDB 数据库中 IMPORT INTO 的使用概况。
 - `IMPORT INTO ... FROM FILE` 用于将 `CSV`、`SQL`、`PARQUET` 等格式的数据文件导入到 TiDB 的一张空表中。
 - `IMPORT INTO ... FROM SELECT` 用于将 `SELECT` 语句的查询结果导入到 TiDB 的一张空表中，也支持导入使用 [`AS OF TIMESTAMP`](/as-of-timestamp.md) 查询的历史数据。
 
-> **警告：**
->
-> `IMPORT INTO ... FROM SELECT` 目前为实验特性，不建议在生产环境中使用。该功能可能会在未事先通知的情况下发生变化或删除。如果发现 bug，请在 GitHub 上提 [issue](https://github.com/pingcap/tidb/issues) 反馈。
-
 > **注意：**
 >
 > 与 [TiDB Lightning](/tidb-lightning/tidb-lightning-overview.md) 相比，`IMPORT INTO` 语句可以直接在 TiDB 节点上执行，支持自动化分布式任务调度和 [TiDB 全局排序](/tidb-global-sort.md)，在部署、资源利用率、任务配置便捷性、调用集成便捷性、高可用性和可扩展性等方面都有很大提升。建议在合适的场景下，使用 `IMPORT INTO` 代替 TiDB Lightning。
