@@ -10,7 +10,7 @@ summary: TiDB Binlog 配置说明：介绍 Pump 和 Drainer 的配置项，包�
 
 ## Pump
 
-本节介绍 Pump 的配置项。可以在 [Pump Configuration](https://github.com/pingcap/tidb-binlog/blob/master/cmd/pump/pump.toml) 中查看完整的 Pump 配置文件示例。
+本节介绍 Pump 的配置项。可以在 [Pump Configuration](https://github.com/pingcap/tidb-binlog/blob/release-8.1/cmd/pump/pump.toml) 中查看完整的 Pump 配置文件示例。
 
 ### addr
 
@@ -129,7 +129,7 @@ summary: TiDB Binlog 配置说明：介绍 Pump 和 Drainer 的配置项，包�
 
 ## Drainer
 
-本节介绍 Drainer 的配置项。可以在 [Drainer Configuration](https://github.com/pingcap/tidb-binlog/blob/master/cmd/drainer/drainer.toml) 中查看完整的配置文件示例。
+本节介绍 Drainer 的配置项。可以在 [Drainer Configuration](https://github.com/pingcap/tidb-binlog/blob/release-8.1/cmd/drainer/drainer.toml) 中查看完整的配置文件示例。
 
 ### addr
 

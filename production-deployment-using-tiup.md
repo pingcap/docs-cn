@@ -295,10 +295,10 @@ alertmanager_servers:
 
 更多参数说明，请参考：
 
-- [TiDB `config.toml.example`](https://github.com/pingcap/tidb/blob/master/pkg/config/config.toml.example)
-- [TiKV `config.toml.example`](https://github.com/tikv/tikv/blob/master/etc/config-template.toml)
-- [PD `config.toml.example`](https://github.com/pingcap/pd/blob/master/conf/config.toml)
-- [TiFlash `config.toml.example`](https://github.com/pingcap/tiflash/blob/master/etc/config-template.toml)
+- [TiDB `config.toml.example`](https://github.com/pingcap/tidb/blob/release-8.1/pkg/config/config.toml.example)
+- [TiKV `config.toml.example`](https://github.com/tikv/tikv/blob/release-8.1/etc/config-template.toml)
+- [PD `config.toml.example`](https://github.com/pingcap/pd/blob/release-8.1/conf/config.toml)
+- [TiFlash `config.toml.example`](https://github.com/pingcap/tiflash/blob/release-8.1/etc/config-template.toml)
 
 ## 第 4 步：执行部署命令
 

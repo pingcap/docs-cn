@@ -68,7 +68,7 @@ aliases: ['/docs-cn/tidb-data-migration/dev/error-handling/','/docs-cn/tidb-data
 
     DM 根据错误的严重程度和必要性来选择是否输出错误堆栈。错误堆栈记录了错误发生时完整的堆栈调用信息。如果用户通过错误基本信息和错误 message 描述不能完全诊断出错误发生的原因，可以通过错误堆栈进一步跟进出错时代码的运行路径。
 
-可在 DM 代码仓库[已发布的错误码](https://github.com/pingcap/tiflow/blob/master/dm/_utils/terror_gen/errors_release.txt) 中查询完整的错误码列表。
+可在 DM 代码仓库[已发布的错误码](https://github.com/pingcap/tiflow/blob/release-8.1/dm/_utils/terror_gen/errors_release.txt) 中查询完整的错误码列表。
 
 ## DM 故障诊断
 

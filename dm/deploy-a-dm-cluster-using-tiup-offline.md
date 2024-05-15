@@ -127,7 +127,7 @@ alertmanager_servers:
 >
 > - 配置的层次结构使用 `.` 表示。如：`log.slow-threshold`。更多格式说明，请参考 [TiUP 配置参数模版](https://github.com/pingcap/tiup/blob/master/embed/examples/dm/topology.example.yaml)。
 >
-> - 更多参数说明，请参考 [master `config.toml.example`](https://github.com/pingcap/tiflow/blob/master/dm/master/dm-master.toml)、[worker `config.toml.example`](https://github.com/pingcap/tiflow/blob/master/dm/worker/dm-worker.toml)。
+> - 更多参数说明，请参考 [master `config.toml.example`](https://github.com/pingcap/tiflow/blob/release-8.1/dm/master/dm-master.toml)、[worker `config.toml.example`](https://github.com/pingcap/tiflow/blob/release-8.1/dm/worker/dm-worker.toml)。
 >
 > - 需要确保以下组件间端口可正常连通：
 >

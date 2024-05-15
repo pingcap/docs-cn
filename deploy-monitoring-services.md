@@ -232,7 +232,7 @@ url = https://grafana.net
 
 2. 在侧边栏菜单中，依次点击 **Dashboards** > **Import** 打开 **Import Dashboard** 窗口。
 
-3. 点击 **Upload .json File** 上传对应的 JSON 文件（从 [pingcap/tidb](https://github.com/pingcap/tidb/tree/master/pkg/metrics/grafana)、[tikv/tikv](https://github.com/tikv/tikv/tree/master/metrics/grafana) 和 [tikv/pd](https://github.com/tikv/pd/tree/master/metrics/grafana) 下载 TiDB Grafana 配置文件）。
+3. 点击 **Upload .json File** 上传对应的 JSON 文件（从 [pingcap/tidb](https://github.com/pingcap/tidb/tree/release-8.1/pkg/metrics/grafana)、[tikv/tikv](https://github.com/tikv/tikv/tree/release-8.1/metrics/grafana) 和 [tikv/pd](https://github.com/tikv/pd/tree/release-8.1/metrics/grafana) 下载 TiDB Grafana 配置文件）。
 
     > **注意：**
     >
