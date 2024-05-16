@@ -1,6 +1,5 @@
 ---
 title: 不同库名或表名的数据校验
-aliases: ['/docs-cn/dev/sync-diff-inspector/route-diff/','/docs-cn/dev/reference/tools/sync-diff-inspector/route-diff/']
 summary: TiDB DM 等同步工具可以使用 route-rules 设置数据同步到下游指定表中。sync-diff-inspector 通过设置 rules 提供了校验不同库名、表名的表的功能。可以通过 rules 设置映射关系来简化配置，校验大量的不同库名或者表名的表。表路由的初始化和示例包括规则中存在 target-schema/target-table 表名为 schema.table 的行为，规则中只存在 target-schema 的行为，以及规则中不存在 target-schema.target-table 的行为。
 ---
 

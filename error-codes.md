@@ -1,6 +1,5 @@
 ---
 title: 错误码与故障诊断
-aliases: ['/docs-cn/dev/error-codes/','/docs-cn/dev/reference/error-codes/']
 summary: TiDB 错误码包括 MySQL 兼容的错误码和 TiDB 特有的错误码。如果遇到错误码，请参考官方文档或社区获取支持。常见错误码包括内存使用超限、写入冲突、表数据损坏、事务过大、写入冲突等。另外，TiDB 还提供了故障诊断文档供参考。
 ---
 

@@ -1,6 +1,5 @@
 ---
 title: TiDB RC3 Release Notes
-aliases: ['/docs-cn/dev/releases/release-rc.3/','/docs-cn/dev/releases/rc3/']
 summary: TiDB RC3 版本发布，对 MySQL 兼容性、SQL 优化器、系统稳定性、性能做了大量工作。重点优化了负载均衡调度策略和流程，完善权限管理功能，DDL 速度显著提升。开源了 TiDB Ansible 项目，可以一键部署 / 升级 / 启停 TiDB 集群。PD 支持 Label 对副本进行 Location 调度，基于 region 数量的快速调度，pd-ctl 支持更多功能。TiKV 支持 Async Apply 提升整体写入性能，优化单行读事务性能，修复 Bug。
 ---
 

@@ -1,6 +1,5 @@
 ---
 title: TiDB 3.0.11 Release Notes
-aliases: ['/docs-cn/dev/releases/release-3.0.11/','/docs-cn/dev/releases/3.0.11/']
 summary: TiDB 3.0.11 发布，包含兼容性变化、新功能和 Bug 修复。新增配置项 `max-index-length` 控制索引最大长度，显示分区表的分区元信息，以及 TiDB 集群之间数据双向复制功能。Bug 修复包括查询结果不正确、Goroutine 泄露等问题。TiKV 也进行了日志输出优化和问题修复。TiDB Ansible 修复了失效文档链接和未定义变量问题。
 ---
 

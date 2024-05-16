@@ -1,7 +1,6 @@
 ---
 title: OLTP 负载性能优化实践
 summary: 本文档介绍了如何对 OLTP 负载进行性能分析和优化。
-aliases: ['/zh/tidb/v6.0/performance-tuning-practices']
 ---
 
 # OLTP 负载性能优化实践

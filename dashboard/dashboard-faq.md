@@ -1,6 +1,5 @@
 ---
 title: TiDB Dashboard 常见问题
-aliases: ['/docs-cn/dev/dashboard/dashboard-faq/']
 summary: TiDB Dashboard 常见问题汇总，包括访问、界面功能方面的常见问题与解决办法。若无法解决，请获取官方或社区支持。
 ---
 

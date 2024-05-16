@@ -1,7 +1,6 @@
 ---
 title: Optimizer Hints
 summary: 介绍 TiDB 中 Optimizer Hints 的语法和不同生效范围的 Hint 的使用方法。
-aliases: ['/docs-cn/dev/optimizer-hints/','/docs-cn/dev/reference/performance/optimizer-hints/']
 ---
 
 # Optimizer Hints

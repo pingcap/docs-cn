@@ -1,7 +1,6 @@
 ---
 title: 索引的选择
 summary: 介绍 TiDB 如何选择索引去读入数据，以及相关的一些控制索引选择的方式。
-aliases: ['/docs-cn/dev/choose-index/']
 ---
 
 # 索引的选择

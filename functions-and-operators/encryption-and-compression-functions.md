@@ -1,6 +1,5 @@
 ---
 title: 加密和压缩函数
-aliases: ['/docs-cn/dev/functions-and-operators/encryption-and-compression-functions/','/docs-cn/dev/reference/sql/functions-and-operators/encryption-and-compression-functions/']
 summary: TiDB 支持 MySQL 8.0 中提供的大部分加密和压缩函数。
 ---
 

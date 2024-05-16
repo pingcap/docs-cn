@@ -1,6 +1,5 @@
 ---
 title: TiDB 2.0 RC1 Release Notes
-aliases: ['/docs-cn/dev/releases/release-2.0-rc.1/','/docs-cn/dev/releases/2rc1/']
 summary: TiDB 2.0 RC1 版本发布，改进了 MySQL 兼容性、系统稳定性和优化器。TiDB 支持限制单条 SQL 语句内存使用，下推流式聚合算子到 TiKV，配置文件合法性检测，HTTP API 获取参数信息。Parser 兼容更多 MySQL 语法，提升对 Navicat 的兼容性。优化器提升，提取多个 OR 条件的公共表达式，选取更优执行计划。PD 优化检查 Region 状态的代码逻辑，异常情况下日志信息输出，修复监控中 TiKV 节点磁盘空间不足统计。TiKV 修复 PD leader 切换 gRPC call 问题，增加获取 metrics 的 gRPC API，启动时检查是否使用 SSD，使用 ReadPool 优化读性能。
 ---
 

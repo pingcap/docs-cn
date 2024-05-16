@@ -1,6 +1,5 @@
 ---
 title: TiDB 3.0.7 Release Notes
-aliases: ['/docs-cn/dev/releases/release-3.0.7/','/docs-cn/dev/releases/3.0.7/']
 summary: TiDB 3.0.7 发布，修复了多个问题，包括本地时间落后导致锁的 TTL 过大、解析日期时时区不正确、整型数据转换精度丢失等问题。TiKV 也修复了死锁检测和内存泄漏问题。
 ---
 
