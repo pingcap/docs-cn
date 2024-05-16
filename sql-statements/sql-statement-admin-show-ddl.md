@@ -79,7 +79,7 @@ OWNER_ADDRESS: 0.0.0.0:4000
 - `END_TIME`：DDL 操作的结束时间。
 - `STATE`：DDL 操作的状态。常见的状态有以下几种：
     - `none`：表示该操作还未开始。
-    - `queueing`：表示该操作任务已经进入 DDL 任务队列中，但尚未执行，因为还在排队等待前面的 DDL 任务完成。另一种原因可能是执行 `DROP` 操作后，会变为 `none` 状态，但是很快会更新为 `synced` 状态，表示所有 TiDB 实例都已经同步到该状态。
+    - `queueing`：表示该操作任务已经进入 DDL 任务队列中，但尚未执行，因为还在排队等待前面的 DDL 任务完成。另一种原因可能是执行 `DROP` 操作后，会变为 `done` 状态，但是很快会更新为 `synced` 状态，表示所有 TiDB 实例都已经同步到该状态。
     - `running`：表示该操作正在执行。
     - `synced`：表示该操作已经执行成功，且所有 TiDB 实例都已经同步该状态。
     - `rollback done`：表示该操作执行失败，回滚完成。
@@ -88,7 +88,7 @@ OWNER_ADDRESS: 0.0.0.0:4000
     - `cancelled`：表示该操作已经取消。
     - `pausing`：表示正在暂停该操作。
     - `paused`：表示 DDL 已被暂停运行。这个状态只有在用 [`ADMIN PAUSED DDL JOBS`](/sql-statements/sql-statement-admin-pause-ddl.md) 命令暂停 DDL 任务时才会出现。可以通过 [`ADMIN RESUME DDL JOBS`](/sql-statements/sql-statement-admin-resume-ddl.md) 命令进行恢复运行。
-    - `done`：表示该操作在 owner 节点已经执行成功，但其他 TiDB 实例还没有同步该状态，一般是由于未提交事务持有元数据锁导致阻塞了状态变更。
+    - `done`：表示该操作在 owner 节点已经执行成功，但其他 TiDB 实例还没有同步该 DDL 任务所执行的变更。
 
 示例如下：
 
