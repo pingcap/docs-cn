@@ -78,13 +78,13 @@ TiCDC 作为 TiDB 的增量数据同步工具，通过 PD 内部的 etcd 实现�
 
 - 在使用 TiCDC 实现容灾的场景下，为实现最终一致性，需要配置 [redo log](/ticdc/ticdc-sink-to-mysql.md#灾难场景的最终一致性复制) 并确保 redo log 写入的存储系统在上游发生灾难时可以正常读取。
 
-## TiCDC 如何翻译数据变更
+## TiCDC 翻译数据变更的实现原理
 
-> 本章节我们只讨论 TiCDC 如何翻译上游 DML 产生的数据变更，不讨论如何处理上游 DDL 产生的变更。对于 DDL 操作，TiCDC 会获取到完整的 DDL SQL 语句，根据下游属性，转换成对应的格式发送给下游。
+> 本章节只讨论 TiCDC 如何翻译上游 DML 产生的数据变更，不讨论如何处理上游 DDL 产生的变更。对于 DDL 操作，TiCDC 会获取到完整的 DDL SQL 语句，根据下游的 Sink 类型，转换成对应的格式发送给下游。
 
 > 注意: TiCDC 翻译数据变更的逻辑可能会在后续版本发生调整。
 
-不同于 Mysql binlog 直接记录了上游执行的所有 DML 的 SQL 语句，TiCDC 通过实时监听上游 TiKV 各个 Region Raft Log 信息，我们会根据每个事务前后数据的差异生成对应多条的数据变更信息。TiCDC 只保证输出的变更事件和上游 TiDB 的变更是等价的，但是不保证能准确还原上游 TiDB 引起数据变更的 SQL。
+不同于 Mysql binlog 直接记录了上游执行的所有 DML 的 SQL 语句，TiCDC 通过实时监听上游 TiKV 各个 Region Raft Log 信息，并且会根据每个事务前后数据的差异生成对应多条的数据变更信息。TiCDC 只保证输出的变更事件和上游 TiDB 的变更是等价的，但是不保证能准确还原上游 TiDB 引起数据变更的 SQL。
 
 数据变更信息会包含数据变更类型，以及变更前后的数值。事务前后数据的差异一共可能产生三种事件：
 
@@ -95,9 +95,9 @@ TiCDC 作为 TiDB 的增量数据同步工具，通过 PD 内部的 etcd 实现�
 3. Update 事件：对应会收到一条 Put 类型的数据变更信息，包含变更前与变更后的数值。
 
 TiCDC 内部根据收到的这些数据变更信息，适配各个类型的下游来生成合适格式的数据传输给下游，如 Canal-Json， Avro等格式写入 Kafka 中，又或者是重新翻译成 SQL 语句发送给下游的 Mysql 或者 TiDB等。
-目前我们将数据变更信息适配对应的协议时，对于特定的 Update 事件，我们可能会其拆成 一条 Insert 事件和一条 Delete 事件, 具体可以参考文档 [将 Update 事件拆分为 Delete 和 Insert 事件](/ticdc/ticdc-behavior-change)。
+目前 TiCDC 将数据变更信息适配对应的协议时，对于特定的 Update 事件，可能会其拆成 一条 Insert 事件和一条 Delete 事件, 具体可以参考文档 [将 Update 事件拆分为 Delete 和 Insert 事件](/ticdc/ticdc-behavior-change)。
 
-而当下游是 Mysql 或者 TiDB 时，因为我们并非直接获取原生上游执行的 DML 语句，而是重新根据数据变更信息来生成 SQL 语句，因此不能保证写入下游的 SQL 语句和上游执行的 SQL 语句完全相同，但我们会保证最终结果的一致性。
+而当下游是 Mysql 或者 TiDB 时，因为 TiCDC 并非直接获取原生上游执行的 DML 语句，而是重新根据数据变更信息来生成 SQL 语句，因此不能保证写入下游的 SQL 语句和上游执行的 SQL 语句完全相同，但会保证最终结果的一致性。
 
 例如上游执行了以下 SQL，
 
