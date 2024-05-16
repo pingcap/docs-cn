@@ -193,7 +193,7 @@ DROP INDEX idx1 ON t1;
 > - 子查询。
 > - [`AUTO_INCREMENT`](/auto-increment.md) 属性的列。一个例外是设置系统变量 [`tidb_enable_auto_increment_in_generated`](/system-variables.md#tidb_enable_auto_increment_in_generated) 为 `true` 后，可以去掉该限制。
 > - [窗口函数](/functions-and-operators/window-functions.md)。
-> - row 函数。例如 `CREATE TABLE t (j JSON, INDEX k (((j,j))));`。
+> - ROW 函数。例如 `CREATE TABLE t (j JSON, INDEX k (((j,j))));`。
 > - [聚合函数](/functions-and-operators/aggregate-group-by-functions.md)。
 >
 > 表达式索引将隐式占用名字，`_V$_{index_name}_{index_offset}`，如果已有相同名字的列存在，创建表达式索引将报错。如果后续新增相同名字的列，也会报错。
