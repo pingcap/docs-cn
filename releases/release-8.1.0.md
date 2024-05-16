@@ -184,8 +184,8 @@ TiDB 8.1.0 为长期支持版本 (Long-Term Support Release, LTS)。
 | TiCDC | [`security.client-allowed-user`](/ticdc/ticdc-server-config.md#cdc-server-配置文件说明) | 新增 | 指定可用于客户端鉴权的用户名，列表中不存在的用户的鉴权请求将被直接拒绝。默认值为 null。|
 | TiCDC | [`security.client-user-required`](/ticdc/ticdc-server-config.md#cdc-server-配置文件说明) | 新增 | 控制是否使用 TiDB 的用户名和密码进行客户端鉴权，默认值为 `false`。|
 | TiCDC | [`security.mtls`](/ticdc/ticdc-server-config.md#cdc-server-配置文件说明) | 新增 | 控制是否开启 TLS 客户端鉴权，默认值为 `false`。|
-| TiCDC | [`sink.debezium.output-old-value`](/ticdc/ticdc-changefeed-config.md#ticdc-changefeed-配置文件说明) | 新增 | 控制是否输出行数据更改前的值。默认值为 `true`。关闭后，Update 事件不会输出 "before" 字段的数据。 |
-| TiCDC | [`sink.open.output-old-value`](/ticdc/ticdc-changefeed-config.md#ticdc-changefeed-配置文件说明) | 新增 | 控制是否输出行数据更改前的值。默认值为 `true`。关闭后，Update 事件不会输出 "p" 字段的数据。 |
+| TiCDC | [`sink.debezium.output-old-value`](/ticdc/ticdc-changefeed-config.md#ticdc-changefeed-配置文件说明) | 新增 | 控制是否输出行数据更改前的值。默认值为 `true`。关闭后，`UPDATE` 事件不会输出 "before" 字段的数据。 |
+| TiCDC | [`sink.open.output-old-value`](/ticdc/ticdc-changefeed-config.md#ticdc-changefeed-配置文件说明) | 新增 | 控制是否输出行数据更改前的值。默认值为 `true`。关闭后，`UPDATE` 事件不会输出 "p" 字段的数据。 |
 
 ## 废弃功能
 
