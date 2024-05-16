@@ -6,7 +6,7 @@ aliases: ['/docs-cn/dev/sql-statements/sql-statement-create-index/','/docs-cn/de
 
 # CREATE INDEX
 
-`CREATE INDEX` 语句用于在已有表中添加新索引，功能等同于 `ALTER TABLE .. ADD INDEX`。包含该语句提供了 MySQL 兼容性。
+`CREATE INDEX` 语句用于在已有表中添加新索引，功能等同于 [`ALTER TABLE .. ADD INDEX`](/sql-statements/sql-statement-alter-table.md)，提供了 MySQL 兼容性。
 
 ## 语法图
 
@@ -65,8 +65,6 @@ KeyOrIndex ::=
 
 ## 示例
 
-{{< copyable "sql" >}}
-
 ```sql
 CREATE TABLE t1 (id INT NOT NULL PRIMARY KEY AUTO_INCREMENT, c1 INT NOT NULL);
 ```
@@ -74,8 +72,6 @@ CREATE TABLE t1 (id INT NOT NULL PRIMARY KEY AUTO_INCREMENT, c1 INT NOT NULL);
 ```
 Query OK, 0 rows affected (0.10 sec)
 ```
-
-{{< copyable "sql" >}}
 
 ```sql
 INSERT INTO t1 (c1) VALUES (1),(2),(3),(4),(5);
@@ -85,8 +81,6 @@ INSERT INTO t1 (c1) VALUES (1),(2),(3),(4),(5);
 Query OK, 5 rows affected (0.02 sec)
 Records: 5  Duplicates: 0  Warnings: 0
 ```
-
-{{< copyable "sql" >}}
 
 ```sql
 EXPLAIN SELECT * FROM t1 WHERE c1 = 3;
@@ -103,8 +97,6 @@ EXPLAIN SELECT * FROM t1 WHERE c1 = 3;
 3 rows in set (0.00 sec)
 ```
 
-{{< copyable "sql" >}}
-
 ```sql
 CREATE INDEX c1 ON t1 (c1);
 ```
@@ -112,8 +104,6 @@ CREATE INDEX c1 ON t1 (c1);
 ```
 Query OK, 0 rows affected (0.30 sec)
 ```
-
-{{< copyable "sql" >}}
 
 ```sql
 EXPLAIN SELECT * FROM t1 WHERE c1 = 3;
@@ -129,8 +119,6 @@ EXPLAIN SELECT * FROM t1 WHERE c1 = 3;
 2 rows in set (0.00 sec)
 ```
 
-{{< copyable "sql" >}}
-
 ```sql
 ALTER TABLE t1 DROP INDEX c1;
 ```
@@ -138,8 +126,6 @@ ALTER TABLE t1 DROP INDEX c1;
 ```
 Query OK, 0 rows affected (0.30 sec)
 ```
-
-{{< copyable "sql" >}}
 
 ```sql
 CREATE UNIQUE INDEX c1 ON t1 (c1);
@@ -153,28 +139,26 @@ Query OK, 0 rows affected (0.31 sec)
 
 在一些场景中，查询的条件往往是基于某个表达式进行过滤。在这些场景中，一般的索引不能生效，执行查询只能遍历整个表，导致查询性能较差。表达式索引是一种特殊的索引，能将索引建立于表达式上。在创建了表达式索引后，基于表达式的查询便可以使用上索引，极大提升查询的性能。
 
-假设要基于 `lower(col1)` 这个表达式建立索引，示例的 SQL 语句如下：
-
-{{< copyable "sql" >}}
+假设要基于 `LOWER(col1)` 这个表达式建立索引，示例的 SQL 语句如下：
 
 ```sql
-CREATE INDEX idx1 ON t1 ((lower(col1)));
+CREATE INDEX idx1 ON t1 ((LOWER(col1)));
 ```
 
 或者等价的语句：
 
-{{< copyable "sql" >}}
-
 ```sql
-ALTER TABLE t1 ADD INDEX idx1((lower(col1)));
+ALTER TABLE t1 ADD INDEX idx1((LOWER(col1)));
 ```
 
 还可以在建表的同时指定表达式索引：
 
-{{< copyable "sql" >}}
-
 ```sql
-CREATE TABLE t1(col1 char(10), col2 char(10), index((lower(col1))));
+CREATE TABLE t1 (
+    col1 CHAR(10),
+    col2 CHAR(10),
+    INDEX ((LOWER(col1)))
+);
 ```
 
 > **注意：**
@@ -182,8 +166,6 @@ CREATE TABLE t1(col1 char(10), col2 char(10), index((lower(col1))));
 > 表达式索引中的表达式需要用 `(` 和 `)` 包围起来，否则会报语法错误。
 
 删除表达式索引与删除普通索引的方法一致：
-
-{{< copyable "sql" >}}
 
 ```sql
 DROP INDEX idx1 ON t1;
@@ -194,10 +176,10 @@ DROP INDEX idx1 ON t1;
 > 表达式索引涉及众多表达式。为了确保正确性，当前仅允许经充分测试的一部分函数用于创建表达式索引，即生产环境中仅允许表达式中包含这些函数。这些函数可以通过查询变量 `tidb_allow_function_for_expression_index` 得到。在后续版本中，这些函数会持续增加。目前允许的函数如下: 
 > 
 > ```
-> json_array, json_array_append, json_array_insert, json_contains, json_contains_path, json_depth, json_extract, json_insert, json_keys, json_length, json_merge_patch, json_merge_preserve, json_object, json_pretty, json_quote, json_remove, json_replace, json_search, json_set, json_storage_size, json_type, json_unquote, json_valid, lower, md5, reverse, tidb_shard, upper, vitess_hash
+> JSON_ARRAY, JSON_ARRAY_APPEND, JSON_ARRAY_INSERT, JSON_CONTAINS, JSON_CONTAINS_PATH, JSON_DEPTH, JSON_EXTRACT, JSON_INSERT, JSON_KEYS, JSON_LENGTH, JSON_MERGE_PATCH, JSON_MERGE_PRESERVE, JSON_OBJECT, JSON_PRETTY, JSON_QUOTE, JSON_REMOVE, JSON_REPLACE, JSON_SEARCH, JSON_SET, JSON_STORAGE_SIZE, JSON_TYPE, JSON_UNQUOTE, JSON_VALID, LOWER, MD5, REVERSE, TIDB_SHARD, UPPER, VITESS_HASH
 > ```
 >
-> 对于以上列表之外的函数，由于未完成充分测试，当前仍为实验特性，不建议在生产环境中使用。其他的表达式例如运算符、`cast` 和 `case when` 也同样为实验特性，不建议在生产环境中使用。如果仍然希望使用，可以在 [TiDB 配置文件](/tidb-configuration-file.md#allow-expression-index-从-v400-版本开始引入)中进行以下设置：
+> 对于以上列表之外的函数，由于未完成充分测试，当前仍为实验特性，不建议在生产环境中使用。其他的表达式例如运算符、`CAST` 和 `CASE WHEN` 也同样为实验特性，不建议在生产环境中使用。如果仍然希望使用，可以在 [TiDB 配置文件](/tidb-configuration-file.md#allow-expression-index-从-v400-版本开始引入)中进行以下设置：
 >
 > ```sql
 > allow-expression-index = true
@@ -207,63 +189,55 @@ DROP INDEX idx1 ON t1;
 >
 > 表达式索引中的表达式不能包含以下内容：
 >
-> - 易变函数，例如 `rand()` 和 `now()` 等。
-> - 系统变量以及用户变量。
+> - 易变函数，例如 `RAND()` 和 `NOW()` 等。
+> - [系统变量](/system-variables.md)以及[用户变量](/user-defined-variables.md)。
 > - 子查询。
-> - AUTO_INCREMENT 属性的列。一个例外是设置系统变量 `tidb_enable_auto_increment_in_generated` 为 `true` 后，可以去掉该限制。
-> - 窗口函数。
-> - row 函数。例如 `create table t (j json, key k (((j,j))));`。
-> - 聚合函数。
-> 
+> - [`AUTO_INCREMENT`](/auto-increment.md) 属性的列。一个例外是设置系统变量 [`tidb_enable_auto_increment_in_generated`](/system-variables.md#tidb_enable_auto_increment_in_generated) 为 `true` 后，可以去掉该限制。
+> - [窗口函数](/functions-and-operators/window-functions.md)。
+> - ROW 函数。例如 `CREATE TABLE t (j JSON, INDEX k (((j,j))));`。
+> - [聚合函数](/functions-and-operators/aggregate-group-by-functions.md)。
+>
 > 表达式索引将隐式占用名字，`_V$_{index_name}_{index_offset}`，如果已有相同名字的列存在，创建表达式索引将报错。如果后续新增相同名字的列，也会报错。
 >
 > 在表达式索引中，表达式的函数参数个数必须正确。
-> 
-> 当索引的表达式使用了字符串相关的函数时，受返回类型以及其长度的影响，创建表达式索引可能会失败。这时可以使用 `cast()` 函数显式指定返回的类型以及长度。例如表达式 `repeat(a, 3)`，为了能根据该表达式建立表达式索引，需要将表达式改写为 `cast(repeat(a, 3) as char(20))` 这样的形式。
+>
+> 当索引的表达式使用了字符串相关的函数时，受返回类型以及其长度的影响，创建表达式索引可能会失败。这时可以使用 `CAST()` 函数显式指定返回的类型以及长度。例如表达式 `REPEAT(a, 3)`，为了能根据该表达式建立表达式索引，需要将表达式改写为 `CAST(REPEAT(a, 3) AS CHAR(20))` 这样的形式。
 
 当查询语句中的表达式与表达式索引中的表达式一致时，优化器可以为该查询选择使用表达式索引。依赖于统计信息，某些情况下优化器不一定选择表达式索引。这时可以通过 hint 指定强制使用表达式索引。
 
-在以下示例中，假设建立在 `lower(col1)` 表达式上的索引为 `idx`。
+在以下示例中，假设建立在 `LOWER(col1)` 表达式上的索引为 `idx`。
 
 当读取的结果为相同的表达式时，可以使用表达式索引。例如：
 
-{{< copyable "sql" >}}
-
 ```sql
-SELECT lower(col1) FROM t;
+SELECT LOWER(col1) FROM t;
 ```
 
 当过滤的条件中有相同的表达式时，可以使用表达式索引。例如：
 
-{{< copyable "sql" >}}
-
 ```sql
-SELECT * FROM t WHERE lower(col1) = "a";
-SELECT * FROM t WHERE lower(col1) > "a";
-SELECT * FROM t WHERE lower(col1) BETWEEN "a" AND "b";
-SELECT * FROM t WHERE lower(col1) in ("a", "b");
-SELECT * FROM t WHERE lower(col1) > "a" AND lower(col1) < "b";
-SELECT * FROM t WHERE lower(col1) > "b" OR lower(col1) < "a";
+SELECT * FROM t WHERE LOWER(col1) = "a";
+SELECT * FROM t WHERE LOWER(col1) > "a";
+SELECT * FROM t WHERE LOWER(col1) BETWEEN "a" AND "b";
+SELECT * FROM t WHERE LOWER(col1) IN ("a", "b");
+SELECT * FROM t WHERE LOWER(col1) > "a" AND LOWER(col1) < "b";
+SELECT * FROM t WHERE LOWER(col1) > "b" OR LOWER(col1) < "a";
 ```
 
 当查询按照相同的表达式进行排序时，可以使用表达式索引。例如：
 
-{{< copyable "sql" >}}
-
 ```sql
-SELECT * FROM t ORDER BY lower(col1);
+SELECT * FROM t ORDER BY LOWER(col1);
 ```
 
 当聚合函数或者 `GROUP BY` 中包含相同的表达式时，可以使用表达式索引。例如：
 
-{{< copyable "sql" >}}
-
 ```sql
-SELECT max(lower(col1)) FROM t;
-SELECT min(col1) FROM t GROUP BY lower(col1);
+SELECT MAX(LOWER(col1)) FROM t;
+SELECT MIN(col1) FROM t GROUP BY LOWER(col1);
 ```
 
-要查看表达式索引对应的表达式，可执行 `show index` 或查看系统表 `information_schema.tidb_indexes` 以及 `information_schema.STATISTICS` 表，输出中 `Expression` 这一列显示对应的表达式。对于非表达式索引，该列的值为 `NULL`。
+要查看表达式索引对应的表达式，可执行 [`SHOW INDEX`](/sql-statements/sql-statement-show-indexes.md) 或查看系统表 [`information_schema.tidb_indexes`](/information-schema/information-schema-tidb-indexes.md) 以及 [`information_schema.STATISTICS`](/information-schema/information-schema-statistics.md) 表，输出中 `Expression` 这一列显示对应的表达式。对于非表达式索引，该列的值为 `NULL`。
 
 维护表达式索引的代价比一般的索引更高，因为在插入或者更新每一行时都需要计算出表达式的值。因为表达式的值已经存储在索引中，所以当优化器选择表达式索引时，表达式的值就不需要再计算。因此，当查询速度比插入速度和更新速度更重要时，可以考虑建立表达式索引。
 
@@ -283,7 +257,7 @@ SELECT min(col1) FROM t GROUP BY lower(col1);
 
 ### 创建多值索引
 
-创建多值索引与创建表达式索引的方法一致。在索引定义中使用 `CAST(... AS ... ARRAY)` 表达式来创建一个多值索引。
+创建多值索引与创建表达式索引的方法一致。在索引定义中使用 [`CAST(... AS ... ARRAY)`](/functions-and-operators/cast-functions-and-operators.md) 表达式来创建一个多值索引。
 
 ```sql
 mysql> CREATE TABLE customers (
