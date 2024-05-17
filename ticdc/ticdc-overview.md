@@ -112,7 +112,7 @@ Insert Into t1 values(2,2);
 Insert Into t1 values(3,3);
 Commit;
 
-Update t1 set b = 4 where b = 2; 
+Update t1 set b = 4 where b = 2;
 ```
 
 TiCDC 将根据数据变更信息重新生成 SQL 语句，向下游写以下两条 SQL 语句：
@@ -120,10 +120,10 @@ TiCDC 将根据数据变更信息重新生成 SQL 语句，向下游写以下两
 ```sql
 INSERT INTO `test.t1` (`A`,`B`) VALUES (1,1),(2,2),(3,3);
 UPDATE `test`.`t1`
-SET `A` = CASE 
+SET `A` = CASE
         WHEN `A` = 1 THEN 1
         WHEN `A` = 2 THEN 2
-END, `B` = CASE 
+END, `B` = CASE
         WHEN `A` = 1 THEN 4
         WHEN `A` = 2 THEN 4
 END
