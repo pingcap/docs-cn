@@ -26,11 +26,31 @@ Cast 函数和操作符用于将某种数据类型的值转换为另一种数据
 
 ## CAST
 
-[`CAST()`](https://dev.mysql.com/doc/refman/8.0/en/cast-functions.html#function_cast) 函数用于将一个表达式的值转换为指定的数据类型。
+[`CAST(<expression> AS <type> [ARRAY])`](https://dev.mysql.com/doc/refman/8.0/en/cast-functions.html#function_cast) 函数用于将一个表达式的值转换为指定的数据类型。
 
 此外，你还可以将该函数用于创建[多值索引](/sql-statements/sql-statement-create-index.md#多值索引)。
 
+支持的数据类型包括：
+
+| 类型                 | 描述             | 是否可用于多值索引                        |
+|----------------------|------------------|------------------------------------------------|
+| `BINARY(n)`          | 二进制字符串     | 否                                             |
+| `CHAR(n)`            | 字符串           | 是，但仅当指定了长度时才有效                       |
+| `DATE`               | 日期             | 是                                             |
+| `DATETIME(fsp)`      | 日期/时间，其中 `fsp` 是可选的 | 是                            |
+| `DECIMAL(n, m)`      | 十进制数，其中 `n` 和 `m` 是可选的，如果未指定，则默认为 `10` 和 `0` | 否 |
+| `DOUBLE`             | 双精度浮点数     | 否                                             |
+| `FLOAT(n)`           | 浮点数，其中 `n` 是可选的，应介于 `0` 和 `53` 之间 | 否                  |
+| `JSON`               | JSON             | 否                                             |
+| `REAL`               | 浮点数           | 是                                             |
+| `SIGNED [INTEGER]`   | 有符号整数       | 是                                             |
+| `TIME(fsp)`          | 时间             | 是                                             |
+| `UNSIGNED [INTEGER]` | 无符号整数       | 是                                             |
+| `YEAR`               | 年               | 否                                             |
+
 示例：
+
+以下语句将二进制字符串从十六进制文字转换为 `CHAR`。
 
 ```sql
 SELECT CAST(0x54694442 AS CHAR);
@@ -43,6 +63,43 @@ SELECT CAST(0x54694442 AS CHAR);
 | TiDB                     |
 +--------------------------+
 1 row in set (0.0002 sec)
+```
+
+以下语句将从 JSON 列中提取的 `a` 属性的值转换为无符号数组。需要注意的是，该函数只有作为多值索引定义的一部分时，才支持将数据转换为数组。
+
+```sql
+CREATE TABLE t (
+    id INT PRIMARY KEY,
+    j JSON,
+    INDEX idx_a ((CAST(j->'$.a' AS UNSIGNED ARRAY)))
+);
+INSERT INTO t VALUES (1, JSON_OBJECT('a',JSON_ARRAY(1,2,3)));
+INSERT INTO t VALUES (2, JSON_OBJECT('a',JSON_ARRAY(4,5,6)));
+INSERT INTO t VALUES (3, JSON_OBJECT('a',JSON_ARRAY(7,8,9)));
+ANALYZE TABLE t;
+```
+
+```sql
+ EXPLAIN SELECT * FROM t WHERE 1 MEMBER OF(j->'$.a')\G
+*************************** 1. row ***************************
+           id: IndexMerge_10
+      estRows: 2.00
+         task: root
+access object: 
+operator info: type: union
+*************************** 2. row ***************************
+           id: ├─IndexRangeScan_8(Build)
+      estRows: 2.00
+         task: cop[tikv]
+access object: table:t, index:idx_a(cast(json_extract(`j`, _utf8mb4'$.a') as unsigned array))
+operator info: range:[1,1], keep order:false, stats:partial[j:unInitialized]
+*************************** 3. row ***************************
+           id: └─TableRowIDScan_9(Probe)
+      estRows: 2.00
+         task: cop[tikv]
+access object: table:t
+operator info: keep order:false, stats:partial[j:unInitialized]
+3 rows in set (0.00 sec)
 ```
 
 ## CONVERT
