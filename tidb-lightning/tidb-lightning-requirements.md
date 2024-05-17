@@ -23,7 +23,7 @@ TiDB Lightning 导入数据时，根据导入方式和启用特性等，需要�
       <td rowspan="2">必需</td>
       <td rowspan="2">基本功能</td>
       <td>目标 table</td>
-      <td>CREATE,SELECT,INSERT,UPDATE,DELETE,DROP,ALTER</td>
+      <td>CREATE,SELECT,INSERT,UPDATE,DELETE,DROP,ALTER,REFERENCES</td>
       <td>DROP 仅 tidb-lightning-ctl 在执行 checkpoint-destroy-all 时需要</td>
    </tr>
    <tr>
@@ -76,6 +76,10 @@ TiDB Lightning 导入数据时，根据导入方式和启用特性等，需要�
       <td>使用数据库而非文件形式存放 checkpoint 信息时需要</td>
    </tr>
 </table>
+
+> **注意：**
+>
+> 如果你没有为下游数据库分配 `REFERENCES` 权限，你也可以提前手动在下游数据库中创建好目标表，确保顺利导入数据。
 
 ## 目标数据库所需空间
 
