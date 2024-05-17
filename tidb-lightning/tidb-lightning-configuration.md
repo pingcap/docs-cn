@@ -353,10 +353,10 @@ max-allowed-packet = 67_108_864
 
 # SQL 连接是否使用 TLS。可选值为：
 #  * ""            - 如果填充了 [tidb.security] 部分，则强制使用 TLS（与 "cluster" 情况相同），否则与 "false" 情况相同
-#  * "false"       - 禁用 TLS
-#  * "cluster"     - 强制使用 TLS 并使用 [tidb.security] 部分中指定的 CA 验证服务器的证书
-#  * "skip-verify" - 强制使用 TLS，但不验证服务器的证书（不安全！）
-#  * "preferred"   - 与 "skip-verify" 相同，但是如果服务器不支持 TLS，则会退回到未加密的连接
+#  * "false"       - 与取值为 "" 的行为相同。
+#  * "cluster"     - 强制使用 TLS 并使用 [tidb.security] 部分中指定的 CA 验证服务器的证书。
+#  * "skip-verify" - 强制使用 TLS，但不验证服务器的证书（不安全！）。如果服务器不支持 TLS，则会退回到未加密的连接。
+#  * "preferred"   - 与取值为 "skip-verify" 的行为相同。
 # tls = ""
 # 指定证书和密钥用于 TLS 连接 MySQL。
 # 默认为 [security] 部分的副本。
