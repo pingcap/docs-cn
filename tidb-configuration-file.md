@@ -207,7 +207,7 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
 >
 > - 当使用的平台采用了 SystemD 时，默认的停止超时为 90 秒。如果需要更长的超时时间，可以设置 [`TimeoutStopSec=`](https://www.freedesktop.org/software/systemd/man/latest/systemd.service.html#TimeoutStopSec=)。
 >
-> - 当使用 TiUP Cluster 组件时，默认的 [`--wait-timeout`](/tiup/tiup-component-cluster.md#--wait-timeout) 为 120 秒。
+> - 当使用 TiUP Cluster 组件时，默认的 [`--wait-timeout`](/tiup/tiup-component-cluster.md#--wait-timeoutuint默认-120) 为 120 秒。
 >
 > - 当使用 Kubernetes 时，默认的 [`terminationGracePeriodSeconds`](https://kubernetes.io/docs/reference/kubernetes-api/workload-resources/pod-v1/#lifecycle) 为 30 秒。
 
