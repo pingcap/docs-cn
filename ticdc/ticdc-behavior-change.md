@@ -52,3 +52,44 @@ COMMIT;
 在上述示例中，通过执行三条 SQL 语句对两行数据的主键进行交换，但 TiCDC 只会接收到两条 Update 变更事件，即将主键 `a` 从 `1` 变更为 `2`，将主键 `a` 从 `2` 变更为 `1`，如果 MYSQL Sink 直接将这两条 Update 事件写入下游，会出现主键冲突的问题，导致 changefeed 报错。
 
 因此，TiCDC 会将这两条事件拆分为四条事件，即删除记录 `(1, 1)` 和 `(2, 2)` 以及写入记录 `(2, 1)` 和 `(1, 2)`。
+
+从 v8.1.0 开始，使用 MySQL Sink 时，TiCDC 在启动时会从 PD 获取一个当前的时间戳（记为 `thresholdTs`），对于 `commitTS` 小于 `thresholdTs` 的 Update 事件，会将其拆分为 Delete 和 Insert 两条事件并写入 Sorter 中，并确保同一事务内所有事件按照 Delete 事件在 Insert 事件之前的顺序进行排序。对于 `commitTS` 大于等于 `thresholdTs` 的 Update 事件，TiCDC 不会对其进行拆分。详情见 GitHub issue [#10918](https://github.com/pingcap/tiflow/issues/10918)。
+
+该变更是由于 TiCDC 目前无法获取上游同一事务内多个 Update 事件之间的执行顺序，对于一个含有多条 Update 事件的事务，如果 Update 事件的主键或者非空唯一索引的列值发生改变，将 Update 事件拆分为 Delete 和 Insert 两条事件发往下游，可能会造成数据不一致问题。
+
+以如下 SQL 为例：
+
+```sql
+CREATE TABLE t (a INT PRIMARY KEY, b INT);
+INSERT INTO t VALUES (1, 1);
+INSERT INTO t VALUES (2, 2);
+
+BEGIN;
+UPDATE t SET a = 3 WHERE a = 2;
+UPDATE t SET a = 2 WHERE a = 1;
+COMMIT;
+```
+
+在上述示例中，事务内的两条 SQL 的执行顺序有先后依赖关系，即将主键 `a` 从 `2` 变更为 `3`，再将主键 `a` 从 `1` 变更为 `2`，如果 TiCDC 内部收到的 Update 事件顺序与事务内部实际的执行顺序不同，此时把它们分别拆分为 Delete 和 Insert 事件发往下游，会造成数据不一致问题。
+
+例如，TiCDC 可能收到的 Update 事件顺序如下：
+
+```sql
+UPDATE t SET a = 2 WHERE a = 1;
+UPDATE t SET a = 3 WHERE a = 2;
+```
+
+TiCDC 拆分上述 Update 事件后实际执行的事件顺序如下：
+
+```sql
+BEGIN;
+DELETE FROM t WHERE a = 1;
+REPLACE INTO t VALUES (2, 1);
+DELETE FROM t WHERE a = 2;
+REPLACE INTO t VALUES (3, 2);
+COMMIT;
+```
+
+上游执行完事务后，数据库内的记录应该为 `(3, 2)` 和 `(2, 2)`，而下游按照上述 TiCDC 拆分后的事件顺序执行，数据库内的记录为 `(3, 2)`，即发生数据不一致问题。
+
+注意，该行为变更后，在使用 MySQL Sink 时，TiCDC 在大部分情况下不会拆分 Update 事件，因此 changefeed 在运行时可能会出现主键或唯一键冲突的问题。该问题会导致 changefeed 自动重启，重启后发生冲突的 Update 事件会被拆分为 Delete 和 Insert 两条事件并写入 Sorter 中，此时可以确保同一事务内所有事件按照 Delete 事件在 Insert 事件之前的顺序进行排序从而正确完成数据同步。
