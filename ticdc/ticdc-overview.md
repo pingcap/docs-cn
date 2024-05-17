@@ -77,30 +77,32 @@ TiCDC 作为 TiDB 的增量数据同步工具，通过 PD 内部的 etcd 实现�
 
 - 在使用 TiCDC 实现容灾的场景下，为实现最终一致性，需要配置 [redo log](/ticdc/ticdc-sink-to-mysql.md#灾难场景的最终一致性复制) 并确保 redo log 写入的存储系统在上游发生灾难时可以正常读取。
 
-## TiCDC 翻译数据变更的实现原理
+## TiCDC 处理数据变更的实现原理
 
-> 本章节只讨论 TiCDC 如何翻译上游 DML 产生的数据变更，不讨论如何处理上游 DDL 产生的变更。对于 DDL 操作，TiCDC 会获取到完整的 DDL SQL 语句，根据下游的 Sink 类型，转换成对应的格式发送给下游。
+本小节主要描述 TiCDC 如何处理上游 DML 产生的数据变更。对于上游 DDL 产生的数据变更，TiCDC 会获取到完整的 DDL SQL 语句，根据下游的 Sink 类型，转换成对应的格式发送给下游，本小节不再赘述。
 
-> 注意: TiCDC 翻译数据变更的逻辑可能会在后续版本发生调整。
+> **注意：**
+>
+> TiCDC 处理数据变更的逻辑可能会在后续版本发生调整。
 
-不同于 Mysql binlog 直接记录了上游执行的所有 DML 的 SQL 语句，TiCDC 通过实时监听上游 TiKV 各个 Region Raft Log 信息，并且会根据每个事务前后数据的差异生成对应多条的数据变更信息。TiCDC 只保证输出的变更事件和上游 TiDB 的变更是等价的，但是不保证能准确还原上游 TiDB 引起数据变更的 SQL。
+MySQL binlog 直接记录了上游执行的所有 DML 操作的 SQL 语句。与 MySQL 不同，TiCDC 则实时监听上游 TiKV 各个 Region Raft Log 的信息，并根据每个事务前后数据的差异生成对应多条 SQL 语句的数据变更信息。TiCDC 只保证输出的变更事件和上游 TiDB 的变更是等价的，不保证能准确还原上游 TiDB 引起数据变更的 SQL 语句。
 
 数据变更信息会包含数据变更类型，以及变更前后的数值。事务前后数据的差异一共可能产生三种事件：
 
-1. Delete 事件：对应会收到一条 Delete 类型的数据变更信息，包含变更前的数值。
+1. `DELETE` 事件：对应会收到一条 `DELETE` 类型的数据变更信息，包含变更前的数据。
 
-2. Insert 事件：对应会收到一条 Put 类型的数据变更信息，包含变更后的数值。
+2. `INSERT` 事件：对应会收到一条 `PUT` 类型的数据变更信息，包含变更后的数据。
 
-3. Update 事件：对应会收到一条 Put 类型的数据变更信息，包含变更前与变更后的数值。
+3. `UPDATE` 事件：对应会收到一条 `PUT` 类型的数据变更信息，包含变更前与变更后的数据。
 
-TiCDC 内部根据收到的这些数据变更信息，适配各个类型的下游来生成合适格式的数据传输给下游，如 Canal-Json， Avro等格式写入 Kafka 中，又或者是重新翻译成 SQL 语句发送给下游的 Mysql 或者 TiDB等。
-目前 TiCDC 将数据变更信息适配对应的协议时，对于特定的 Update 事件，可能会其拆成 一条 Insert 事件和一条 Delete 事件, 具体可以参考文档 [将 Update 事件拆分为 Delete 和 Insert 事件](/ticdc/ticdc-behavior-change)。
+TiCDC 会根据收到的这些数据变更信息，适配各个类型的下游来生成合适格式的数据传输给下游。例如，生成 Canal-Json，Avro 等格式的数据写入 Kafka 中，或者重新转换成 SQL 语句发送给下游的 MySQL 或者 TiDB。
+目前 TiCDC 将数据变更信息适配对应的协议时，对于特定的 `UPDATE` 事件，可能会将其拆成一条 `INSERT` 事件和一条 `DELETE` 事件。详见[将 Update 事件拆分为 Delete 和 Insert 事件](/ticdc/ticdc-behavior-change.md#将-update-事件拆分为-delete-和-insert-事件)。
 
-而当下游是 Mysql 或者 TiDB 时，因为 TiCDC 并非直接获取原生上游执行的 DML 语句，而是重新根据数据变更信息来生成 SQL 语句，因此不能保证写入下游的 SQL 语句和上游执行的 SQL 语句完全相同，但会保证最终结果的一致性。
+当下游是 MySQL 或者 TiDB 时，因为 TiCDC 并非直接获取原生上游执行的 DML 语句，而是重新根据数据变更信息来生成 SQL 语句，因此不能保证写入下游的 SQL 语句和上游执行的 SQL 语句完全相同，但会保证最终结果的一致性。
 
-例如上游执行了以下 SQL，
+例如上游执行了以下 SQL 语句：
 
-```
+```sql
 Create Table t1 (A int Primary Key, B int);
 
 BEGIN;
@@ -112,9 +114,9 @@ Commit;
 Update t1 set b = 4 where b = 2; 
 ```
 
-TiCDC 根据数据变更信息后重新生成 SQL，会向下游写以下两条 SQL:
+TiCDC 将根据数据变更信息重新生成 SQL 语句，向下游写以下两条 SQL 语句：
 
-```
+```sql
 INSERT INTO `test.t1` (`A`,`B`) VALUES (1,1),(2,2),(3,3);
 UPDATE `test`.`t1`
 SET `A` = CASE 
