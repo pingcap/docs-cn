@@ -306,7 +306,7 @@ Create Table | CREATE TABLE `child` (
 - [DM](/dm/dm-overview.md) 不兼容外键功能。DM v6.6.0 在同步数据到下游 TiDB 时，会显式关闭下游 TiDB 的 [`foreign_key_checks`](/system-variables.md#foreign_key_checks)，所以由外键产生的级联操作不会从上游同步到下游，进而导致上下游数据不一致。这与 v6.6.0 之前版本 DM 的行为一致。
 - [TiCDC](/ticdc/ticdc-overview.md) v6.6.0 兼容外键功能。旧版本的 TiCDC 在同步带外键的表时，可能会报错，建议使用 v6.6.0 之前版本 TiCDC 时先关闭下游 TiDB 集群的 `foreign_key_checks`。
 - [BR](/br/backup-and-restore-overview.md) v6.6.0 兼容外键功能。之前版本的 BR 在恢复带外键的表到 v6.6.0 及之后版本的集群时，可能会报错，建议先关闭下游 TiDB 集群的 `foreign_key_checks` 后再恢复集群。
-- [TiDB Lightning](/tidb-lightning/tidb-lightning-overview.md) 导入数据到 TiDB 前，建议先关闭 TiDB 集群的 `foreign_key_checks`。对于 v6.6.0 之前的版本，关闭该系统变量也不会生效，你需要为下游数据库用户添加 `REFERENCES` 权限，或者提前手动在下游数据库中创建好目标表，以确保顺利导入数据。
+- [TiDB Lightning](/tidb-lightning/tidb-lightning-overview.md) 导入数据到 TiDB 前，如果目标表使用了外键，建议先关闭 TiDB 集群的 `foreign_key_checks`。对于 v6.6.0 之前的版本，关闭该系统变量也不会生效，你需要为下游数据库用户添加 `REFERENCES` 权限，或者提前手动在下游数据库中创建好目标表，以确保顺利导入数据。
 - [Dumpling](/dumpling-overview.md) 兼容外键功能。
 - [sync-diff-inspector](/sync-diff-inspector/sync-diff-inspector-overview.md) 在对比上下游数据时，如果上下游数据库的版本不一样，且下游 TiDB 中存在[不生效的外键](#tidb-版本间兼容性)，则 sync-diff-inspector 可能会报上下游表结构不一致的错误。因为 TiDB v6.6.0 会对表结构中不生效的外键添加一条 `/* FOREIGN KEY INVALID */` 注释。
 
