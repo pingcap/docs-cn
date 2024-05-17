@@ -168,7 +168,7 @@ TiDB 8.1.0 为长期支持版本 (Long-Term Support Release, LTS)。
 
 ### 行为变更
 
-* 在之前的版本中，对于 TiDB Lightning 的配置项 `tidb.tls`，取值为 `"false"` 和 `""` 的行为是相同的，而取值为 `"skip-verify"` 和 `"preferred"` 的行为也是相同的。从 v8.1.0 开始，TiDB Lightning 对 `tidb.tls` 取值为 `"false"`、`""`、`"skip-verify"` 和 `"preferred"` 时的行为进行了区分。更多信息，请参考 [TiDB Lightning 配置参数](/tidb-lightning-configuration.md)。
+* 在之前的版本中，TiDB Lightning 的配置项 `tidb.tls` 在取值为 `"false"` 和 `""` 时的行为是相同的，在取值为 `"skip-verify"` 和 `"preferred"` 时的行为也是相同的。从 v8.1.0 开始，TiDB Lightning 对 `tidb.tls` 取值为 `"false"`、`""`、`"skip-verify"` 和 `"preferred"` 时的行为进行了区分。更多信息，请参考 [TiDB Lightning 配置参数](/tidb-lightning/tidb-lightning-configuration.md)。
 
 ### 系统变量
 
@@ -300,7 +300,7 @@ TiDB 8.1.0 为长期支持版本 (Long-Term Support Release, LTS)。
     - 修复存算分离架构下，修改 TiFlash 计算节点 `storage.remote.cache.capacity` 配置项的值后，Grafana 中硬盘使用量监控指标 `used_size` 显示不正确的问题 [#8920](https://github.com/pingcap/tiflash/issues/8920) @[JinheLin](https://github.com/JinheLin)
     - 修复从低于 v6.5.0 的集群升级到 v6.5.0 及以上版本后，可能出现 TiFlash 元数据损坏以及进程 panic 的问题 [#9039](https://github.com/pingcap/tiflash/issues/9039) @[JaySon-Huang](https://github.com/JaySon-Huang)
     - 修复存算分离架构下，TiFlash 计算节点进程停止时可能出现 panic 的问题 [#8860](https://github.com/pingcap/tiflash/issues/8860) @[guo-shaoge](https://github.com/guo-shaoge)
-    - 修复 TiFlash 在执行部分带有虚拟生成列的查询时报错的问题 [#8787](https://github.com/pingcap/tiflash/issues/8787) @[guo-shaoge](https://github.com/guo-shaoge)
+    - 修复 TiFlash 在执行带有虚拟生成列的查询时可能报错的问题 [#8787](https://github.com/pingcap/tiflash/issues/8787) @[guo-shaoge](https://github.com/guo-shaoge)
 
 + Tools
 
