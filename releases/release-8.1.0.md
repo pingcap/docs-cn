@@ -169,6 +169,7 @@ TiDB 8.1.0 为长期支持版本 (Long-Term Support Release, LTS)。
 ### 行为变更
 
 * 在之前的版本中，对于 TiDB Lightning 的配置项 `tidb.tls`，取值为 `"false"` 和 `""` 的行为是相同的，而取值为 `"skip-verify"` 和 `"preferred"` 的行为也是相同的。从 v8.1.0 开始，TiDB Lightning 对 `tidb.tls` 取值为 `"false"`、`""`、`"skip-verify"` 和 `"preferred"` 时的行为进行了区分。更多信息，请参考 [TiDB Lightning 配置参数](/tidb-lightning-configuration.md)。
+
 ### 系统变量
 
 | 变量名  | 修改类型 | 描述 |
