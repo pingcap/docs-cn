@@ -6,7 +6,7 @@ aliases: ['/docs-cn/dev/tidb-binlog/binlog-control/']
 
 # binlogctl 工具
 
-Binlog Control（以下简称 binlogctl）是 TiDB Binlog 的命令行工具，用于管理 TiDB Binlog 集群。
+[Binlog Control](https://github.com/pingcap/tidb-binlog/tree/release-8.1/binlogctl)（以下简称 binlogctl）是 TiDB Binlog 的命令行工具，用于管理 TiDB Binlog 集群。
 
 binlogctl 支持如下这些功能：
 
