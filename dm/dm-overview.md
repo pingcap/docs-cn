@@ -9,7 +9,7 @@ summary: 了解 TiDB Data Migration
 ![star](https://img.shields.io/github/stars/pingcap/tiflow?style=for-the-badge&logo=github) ![license](https://img.shields.io/github/license/pingcap/tiflow?style=for-the-badge) ![forks](https://img.shields.io/github/forks/pingcap/tiflow?style=for-the-badge)
 -->
 
-[TiDB Data Migration](https://github.com/pingcap/tiflow/tree/master/dm) (DM) 是一款便捷的数据迁移工具，支持从与 MySQL 协议兼容的数据库（MySQL、MariaDB、Aurora MySQL）到 TiDB 的全量数据迁移和增量数据同步。使用 DM 工具有利于简化数据迁移过程，降低数据迁移运维成本。
+[TiDB Data Migration](https://github.com/pingcap/tiflow/tree/release-8.1/dm) (DM) 是一款便捷的数据迁移工具，支持从与 MySQL 协议兼容的数据库（MySQL、MariaDB、Aurora MySQL）到 TiDB 的全量数据迁移和增量数据同步。使用 DM 工具有利于简化数据迁移过程，降低数据迁移运维成本。
 
 ## 产品特性
 
@@ -61,18 +61,18 @@ tiup install dm dmctl
 
 ## Contributing
 
-欢迎参与 DM 开源项目并万分感谢您的贡献，可以查看 [CONTRIBUTING.md](https://github.com/pingcap/tiflow/blob/master/dm/CONTRIBUTING.md) 了解更多信息。
+欢迎参与 DM 开源项目并万分感谢您的贡献，可以查看 [CONTRIBUTING.md](https://github.com/pingcap/tiflow/blob/release-8.1/dm/CONTRIBUTING.md) 了解更多信息。
 
 ## 社区技术支持
 
 您可以通过在线文档了解和使用 DM，如果您遇到无法解决的问题，可以选择以下途径之一联系我们。
 
-- [GitHub](https://github.com/pingcap/tiflow/tree/master/dm)
+- [GitHub](https://github.com/pingcap/tiflow/tree/release-8.1/dm)
 - [AskTUG](https://asktug.com/tags/dm)
 
 ## License
 
-DM 遵循 Apache 2.0 协议，在 [LICENSE](https://github.com/pingcap/tiflow/blob/master/LICENSE) 了解更多信息。
+DM 遵循 Apache 2.0 协议，在 [LICENSE](https://github.com/pingcap/tiflow/blob/release-8.1/LICENSE) 了解更多信息。
 
 ## 版本变更说明
 
@@ -84,7 +84,7 @@ DM 遵循 Apache 2.0 协议，在 [LICENSE](https://github.com/pingcap/tiflow/bl
 
 > **注意：**
 >
-> - DM 的 GitHub 代码仓库已于 2021 年 10 月迁移至 [pingcap/tiflow](https://github.com/pingcap/tiflow/tree/master/dm)。如有任何关于 DM 的问题，请在 `pingcap/tiflow` 仓库提交，以获得后续支持。
+> - DM 的 GitHub 代码仓库已于 2021 年 10 月迁移至 [pingcap/tiflow](https://github.com/pingcap/tiflow/tree/release-8.1/dm)。如有任何关于 DM 的问题，请在 `pingcap/tiflow` 仓库提交，以获得后续支持。
 > - 在较早版本中（v1.0 和 v2.0），DM 采用独立于 TiDB 的版本号。从 DM v5.3 起，DM 采用与 TiDB 相同的版本号。DM v2.0 的下一个版本为 DM v5.3。DM v2.0 到 v5.3 无兼容性变更，升级过程与正常升级无差异。
 
 要快速了解 DM 的原理架构、适用场景，建议先观看下面的培训视频。注意本视频只作为学习参考，具体操作步骤和最新功能，请以文档内容为准。

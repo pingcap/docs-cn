@@ -7,7 +7,7 @@ summary: PD 配置文件包含了许多参数，如节点名称、数据路径�
 
 <!-- markdownlint-disable MD001 -->
 
-PD 配置文件比命令行参数支持更多的选项。你可以在 [conf/config.toml](https://github.com/pingcap/pd/blob/master/conf/config.toml) 找到默认的配置文件。
+PD 配置文件比命令行参数支持更多的选项。你可以在 [conf/config.toml](https://github.com/pingcap/pd/blob/release-8.1/conf/config.toml) 找到默认的配置文件。
 
 本文档只阐述未包含在命令行参数中的参数，命令行参数参见 [PD 配置参数](/command-line-flags-for-pd-configuration.md)。
 

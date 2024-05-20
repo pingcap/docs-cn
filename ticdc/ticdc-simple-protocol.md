@@ -74,7 +74,7 @@ DML：
 
 ## Message 格式
 
-在 Simple Protocol 中，每一个 Message 都只会包含一个事件。当前 Simple Protocol 支持把消息编码为 JSON 格式和 Avro 格式。本文将以 JSON 格式为例进行说明。对于 Avro 格式的消息，其字段和含义与 JSON 格式的消息一致，只是编码格式不同，格式详见 [Simple Protocol Avro Schema](https://github.com/pingcap/tiflow/blob/master/pkg/sink/codec/simple/message.json)。
+在 Simple Protocol 中，每一个 Message 都只会包含一个事件。当前 Simple Protocol 支持把消息编码为 JSON 格式和 Avro 格式。本文将以 JSON 格式为例进行说明。对于 Avro 格式的消息，其字段和含义与 JSON 格式的消息一致，只是编码格式不同，格式详见 [Simple Protocol Avro Schema](https://github.com/pingcap/tiflow/blob/release-8.1/pkg/sink/codec/simple/message.json)。
 
 ### DDL
 
@@ -713,4 +713,4 @@ Index 是一个 JSON 对象，包含了索引的 schema 信息，包括索引名
 
 ### Avro Schema 定义
 
-Simple Protocol 支持输出 Avro 格式的消息，Avro Schema 格式请参考 [Simple Protocol Avro Schema](https://github.com/pingcap/tiflow/blob/master/pkg/sink/codec/simple/message.json)。
+Simple Protocol 支持输出 Avro 格式的消息，Avro Schema 格式请参考 [Simple Protocol Avro Schema](https://github.com/pingcap/tiflow/blob/release-8.1/pkg/sink/codec/simple/message.json)。
