@@ -80,7 +80,7 @@ tiup dmctl check-task ./task.yaml
         - 主键
         - 唯一索引
 
-    - 乐观协调模式下，检查所有分表结构是否满足[乐观协调兼容](https://github.com/pingcap/tiflow/blob/master/dm/docs/RFCS/20191209_optimistic_ddl.md#modifying-column-types)。
+    - 乐观协调模式下，检查所有分表结构是否满足[乐观协调兼容](https://github.com/pingcap/tiflow/blob/release-8.1/dm/docs/RFCS/20191209_optimistic_ddl.md#modifying-column-types)。
 
     - 如果曾经通过 `start-task` 命令成功启动任务，那么将不会对一致性进行检查。
 

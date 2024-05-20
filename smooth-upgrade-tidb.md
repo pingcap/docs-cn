@@ -18,7 +18,7 @@ summary: 本文介绍支持无需手动取消 DDL 的平滑升级集群功能。
     * 从 v7.1.1 升级到 v7.2.0 或 v7.3.0 版本
     * 从 v7.2.0 升级到 v7.3.0 版本
 
-* 通过是否发送 `/upgrade/start` HTTP 请求控制此功能开关。即此功能默认关闭，可通过发送 `/upgrade/start` 请求，开启此功能。具体方式可以参考：[TiDB HTTP API 文档](https://github.com/pingcap/tidb/blob/master/docs/tidb_http_api.md)。具体版本情况：
+* 通过是否发送 `/upgrade/start` HTTP 请求控制此功能开关。即此功能默认关闭，可通过发送 `/upgrade/start` 请求，开启此功能。具体方式可以参考：[TiDB HTTP API 文档](https://github.com/pingcap/tidb/blob/release-8.1/docs/tidb_http_api.md)。具体版本情况：
     * 从 v7.1.2 以及它之后的 v7.1 版本（即 >= v7.1.2）升级到 v7.4.0 及更高版本
     * 从 v7.4.0 升级到更高的版本
 

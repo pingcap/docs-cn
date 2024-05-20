@@ -102,7 +102,7 @@ tiup install tidb-lightning
     nohup tiup tidb-lightning -config tidb-lightning.toml > nohup.out &
     ```
 
-### 第 5 步：检查数据
+## 第 5 步：检查数据
 
 导入完毕后，TiDB Lightning 会自动退出。若导入成功，日志的最后一行会显示 `tidb lightning exit`。
 
