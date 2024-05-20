@@ -169,6 +169,7 @@ TiDB 8.1.0 为长期支持版本 (Long-Term Support Release, LTS)。
 ### 行为变更
 
 * 在之前的版本中，TiDB Lightning 的配置项 `tidb.tls` 在取值为 `"false"` 和 `""` 时的行为是相同的，在取值为 `"skip-verify"` 和 `"preferred"` 时的行为也是相同的。从 v8.1.0 开始，TiDB Lightning 对 `tidb.tls` 取值为 `"false"`、`""`、`"skip-verify"` 和 `"preferred"` 时的行为进行了区分。更多信息，请参考 [TiDB Lightning 配置参数](/tidb-lightning/tidb-lightning-configuration.md)。
+* 对于 AUTO_ID_CACHE=1 的表，之前的版本中 autoid service 所在的 tidb 在退出时会执行 `forceRebase` 操作，以保证分配的 autoid 尽可能不会出现空洞。当系统中设置过 AUTO_ID_CACHE=1 的表过多时，执行 `forceRebase` 过于耗时，导致 tidb 收到退出信号后迟迟无法重启，影响可用性。因此当前版本取消了 `forceRebase` 操作，不会造成该场景下重启时 tidb 难以退出，但是会导致 autoid 分配出现不连续。
 
 ### 系统变量
 
