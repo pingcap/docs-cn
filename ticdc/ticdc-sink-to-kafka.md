@@ -31,6 +31,18 @@ Info: {"sink-uri":"kafka://127.0.0.1:9092/topic-name?protocol=canal-json&kafka-v
 - `--target-ts`：指定 changefeed 的目标 TSO。TiCDC 集群拉取数据直到这个 TSO 停止。默认为空，即 TiCDC 不会自动停止。
 - `--config`：指定 changefeed 配置文件，详见：[TiCDC Changefeed 配置参数](/ticdc/ticdc-changefeed-config.md)。
 
+## 支持的 Kafka 版本
+
+| TiCDC 版本     | 最小支持的 Kafka 版本 | 最大支持的 Kafka 版本 ｜
+| :-------------| :------------------ | :----------------- |
+| release-6.1.x | 2.0.0 | 3.7.0|
+| release-6.5.x | 2.1.0 | 3.7.0|
+| release-7.1.x | 2.1.0 | 3.7.0|
+| release-7.5.0 | 2.4.0 | 3.7.0|
+| release-7.5.1 | 2.4.0 | 3.7.0|
+| release-7.5.2 | 0.11.0.2 | 3.7.0|
+| release-8.1.x | 0.11.0.2 | 3.7.0|
+
 ## Sink URI 配置 `kafka`
 
 Sink URI 用于指定 TiCDC 目标系统的连接信息，遵循以下格式：
