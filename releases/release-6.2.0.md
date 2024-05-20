@@ -1,5 +1,6 @@
 ---
 title: TiDB 6.2.0 Release Notes
+summary: 了解 TiDB 6.2.0 版本的新功能、兼容性变更、改进提升，以及错误修复。
 ---
 
 # TiDB 6.2.0 Release Notes
@@ -317,7 +318,7 @@ TiDB 版本：6.2.0-DMR
 
     - 支持了 `SHOW COUNT(*) WARNINGS` 以及 `SHOW COUNT(*) ERRORS` [#25068](https://github.com/pingcap/tidb/issues/25068) @[likzn](https://github.com/likzn)
     - 对某些系统变量增加一些合法性验证 [#35048](https://github.com/pingcap/tidb/issues/35048) @[morgo](https://github.com/morgo)
-    - 优化了一些类型转换的错误提示 [#32447](https://github.com/pingcap/tidb/issues/32744) @[fanrenhoo](https://github.com/fanrenhoo)
+    - 优化了一些类型转换的错误提示 [#32744](https://github.com/pingcap/tidb/issues/32744) @[fanrenhoo](https://github.com/fanrenhoo)
     - `KILL` 命令增加了对 DDL 操作的支持 [#24144](https://github.com/pingcap/tidb/issues/24144) @[morgo](https://github.com/morgo)
     - 提升了 `SHOW TABLES/DATABASES LIKE …` 命令的输出与 MySQL 的兼容性，输出的列名称中会包含 `LIKE` 的值 [#35116](https://github.com/pingcap/tidb/issues/35116) @[likzn](https://github.com/likzn)
     - 提升了 JSON 相关函数的性能 [#35859](https://github.com/pingcap/tidb/issues/35859) @[wjhuang2016](https://github.com/wjhuang2016)

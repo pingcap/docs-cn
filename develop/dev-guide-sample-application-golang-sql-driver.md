@@ -54,6 +54,7 @@ cd tidb-golang-sql-driver-quickstart
 3. 确认对话框中的配置和你的运行环境一致。
 
     - **Endpoint Type** 为 `Public`。
+    - **Branch** 选择 `main`。
     - **Connect With** 选择 `General`。
     - **Operating System** 为你的运行环境。
 
@@ -61,11 +62,11 @@ cd tidb-golang-sql-driver-quickstart
     >
     > 如果你在 Windows Subsystem for Linux (WSL) 中运行，请切换为对应的 Linux 发行版。
 
-4. 如果你还没有设置密码，点击 **Create password** 生成一个随机密码。
+4. 如果你还没有设置密码，点击 **Generate Password** 生成一个随机密码。
 
     > **Tip:**
     >
-    > 如果你之前已经生成过密码，可以直接使用原密码，或点击 **Reset password** 重新生成密码。
+    > 如果你之前已经生成过密码，可以直接使用原密码，或点击 **Reset Password** 重新生成密码。
 
 5. 运行以下命令，将 `.env.example` 复制并重命名为 `.env`：
 
@@ -190,7 +191,7 @@ func openDB(driverName string, runnable func(db *sql.DB)) {
 
 ```golang
 openDB("mysql", func(db *sql.DB) {
-    insertSQL = "INSERT INTO player (id, coins, goods) VALUES (?, ?, ?)"
+    insertSQL := "INSERT INTO player (id, coins, goods) VALUES (?, ?, ?)"
     _, err := db.Exec(insertSQL, "id", 1, 1)
 
     if err != nil {
@@ -205,7 +206,7 @@ openDB("mysql", func(db *sql.DB) {
 
 ```golang
 openDB("mysql", func(db *sql.DB) {
-    selectSQL = "SELECT id, coins, goods FROM player WHERE id = ?"
+    selectSQL := "SELECT id, coins, goods FROM player WHERE id = ?"
     rows, err := db.Query(selectSQL, "id")
     if err != nil {
         panic(err)
@@ -230,7 +231,7 @@ openDB("mysql", func(db *sql.DB) {
 
 ```golang
 openDB("mysql", func(db *sql.DB) {
-    updateSQL = "UPDATE player set goods = goods + ?, coins = coins + ? WHERE id = ?"
+    updateSQL := "UPDATE player set goods = goods + ?, coins = coins + ? WHERE id = ?"
     _, err := db.Exec(updateSQL, 1, -1, "id")
 
     if err != nil {
@@ -245,7 +246,7 @@ openDB("mysql", func(db *sql.DB) {
 
 ```golang
 openDB("mysql", func(db *sql.DB) {
-    deleteSQL = "DELETE FROM player WHERE id=?"
+    deleteSQL := "DELETE FROM player WHERE id=?"
     _, err := db.Exec(deleteSQL, "id")
 
     if err != nil {
@@ -275,7 +276,7 @@ Golang 驱动程序提供对数据库的底层访问，但要求开发者：
 
 - 关于 Go-MySQL-Driver 的更多使用方法，可以参考 [Go-MySQL-Driver 官方文档](https://github.com/go-sql-driver/mysql/blob/master/README.md)。
 - 你可以继续阅读开发者文档，以获取更多关于 TiDB 应用开发的最佳实践。例如：[插入数据](/develop/dev-guide-insert-data.md)、[更新数据](/develop/dev-guide-update-data.md)、[删除数据](/develop/dev-guide-delete-data.md)、[单表读取](/develop/dev-guide-get-data-from-single-table.md)、[事务](/develop/dev-guide-transaction-overview.md)、[SQL 性能优化](/develop/dev-guide-optimize-sql-overview.md)等。
-- 如果你更倾向于参与课程进行学习，我们也提供专业的 [TiDB 开发者课程](https://cn.pingcap.com/courses-catalog/back-end-developer/?utm_source=docs-cn-dev-guide)支持，并在考试后提供相应的[资格认证](https://learn.pingcap.com/learner/certification-center)。
+- 如果你更倾向于参与课程进行学习，我们也提供专业的 [TiDB 开发者课程](https://cn.pingcap.com/courses-catalog/category/back-end-developer/?utm_source=docs-cn-dev-guide)支持，并在考试后提供相应的[资格认证](https://learn.pingcap.com/learner/certification-center)。
 
 ## 需要帮助?
 

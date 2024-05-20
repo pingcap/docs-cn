@@ -45,7 +45,6 @@ Available Commands:
   binlog-schema   manage or show table schema in schema tracker
   check-task      Checks the configuration file of the task
   config          manage config operations
-  decrypt         Decrypts cipher text to plain text
   encrypt         Encrypts plain text to cipher text
   help            Gets help about any command
   list-member     Lists member information
@@ -98,7 +97,6 @@ Available Commands:
   binlog-schema   manage or show table schema in schema tracker
   check-task      Checks the configuration file of the task
   config          manage config operations
-  decrypt         Decrypts cipher text to plain text
   encrypt         Encrypts plain text to cipher text
   help            Gets help about any command
   list-member     Lists member information

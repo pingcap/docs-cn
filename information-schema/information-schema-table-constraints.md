@@ -6,7 +6,7 @@ aliases: ['/docs-cn/dev/information-schema/information-schema-table-constraints/
 
 # TABLE_CONSTRAINTS
 
-`TABLE_CONSTRAINTS` 表记录了表的约束信息。
+`TABLE_CONSTRAINTS` 表记录了表的[约束](/constraints.md)信息。
 
 {{< copyable "sql" >}}
 

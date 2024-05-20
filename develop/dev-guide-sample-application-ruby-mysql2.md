@@ -77,10 +77,11 @@ bundle add mysql2 dotenv
 3. 确保连接对话框中的配置与你的操作环境匹配。
 
    - **Endpoint Type** 设置为 `Public`。
+   - **Branch** 选择 `main`。
    - **Connect With** 设置为 `General`。
    - **Operating System** 与你运行应用程序的操作系统相匹配。
 
-4. 如果你还没有设置密码，点击 **Create password** 生成一个随机密码。
+4. 如果你还没有设置密码，点击 **Generate Password** 生成一个随机密码。
 
 5. 运行以下命令复制 `.env.example` 并将其重命名为 `.env`：
 
@@ -88,15 +89,15 @@ bundle add mysql2 dotenv
     cp .env.example .env
     ```
 
-6. 编辑 `.env` 文件，按照以下方式设置环境变量，并将占位符 `<>`替换为连接对话框中相应的连接参数：
+6. 编辑 `.env` 文件，按照以下方式设置环境变量，并将占位符 `{}`替换为连接对话框中相应的连接参数：
 
     ```dotenv
-   DATABASE_HOST=<host>
-   DATABASE_PORT=4000
-   DATABASE_USER=<user>
-   DATABASE_PASSWORD=<password>
-   DATABASE_NAME=test
-   DATABASE_ENABLE_SSL=true
+    DATABASE_HOST={host}
+    DATABASE_PORT=4000
+    DATABASE_USER={user}
+    DATABASE_PASSWORD={password}
+    DATABASE_NAME=test
+    DATABASE_ENABLE_SSL=true
     ```
 
    > **注意：**
@@ -122,16 +123,16 @@ bundle add mysql2 dotenv
     cp .env.example .env
     ```
 
-5. 编辑 `.env` 文件，按照以下方式设置环境变量，并将占位符 `<>`替换为连接对话框中相应的连接参数：
+5. 编辑 `.env` 文件，按照以下方式设置环境变量，并将占位符 `{}`替换为连接对话框中相应的连接参数：
 
     ```dotenv
-    DATABASE_HOST=<host>
+    DATABASE_HOST={host}
     DATABASE_PORT=4000
-    DATABASE_USER=<user>
-    DATABASE_PASSWORD=<password>
+    DATABASE_USER={user}
+    DATABASE_PASSWORD={password}
     DATABASE_NAME=test
     DATABASE_ENABLE_SSL=true
-    DATABASE_SSL_CA=<downloaded_ssl_ca_path>
+    DATABASE_SSL_CA={downloaded_ssl_ca_path}
     ```
 
    > **注意：**
@@ -151,13 +152,13 @@ bundle add mysql2 dotenv
     cp .env.example .env
     ```
 
-2. 编辑 `.env` 文件，按照以下方式设置环境变量，并将占位符 `<>`替换为你的 TiDB 集群的连接参数：
+2. 编辑 `.env` 文件，按照以下方式设置环境变量，并将占位符 `{}`替换为你的 TiDB 集群的连接参数：
 
     ```dotenv
-    DATABASE_HOST=<host>
+    DATABASE_HOST={host}
     DATABASE_PORT=4000
-    DATABASE_USER=<user>
-    DATABASE_PASSWORD=<password>
+    DATABASE_USER={user}
+    DATABASE_PASSWORD={password}
     DATABASE_NAME=test
     ```
 
@@ -179,7 +180,7 @@ ruby app.rb
 如果连接成功，你的终端将会输出所连接集群的版本信息：
 
 ```
-🔌 Connected to TiDB cluster! (TiDB version: 8.0.11-TiDB-v7.4.0)
+🔌 Connected to TiDB cluster! (TiDB version: 8.0.11-TiDB-v8.0.0)
 ⏳ Loading sample game data...
 ✅ Loaded sample game data.
 
@@ -295,7 +296,7 @@ end
 
 - 从 [mysql2 的文档](https://github.com/brianmario/mysql2#readme)中了解更多关于 mysql2 驱动的使用情况。
 - 你可以继续阅读开发者文档的其它章节来获取更多 TiDB 应用开发的最佳实践。例如：[插入数据](/develop/dev-guide-insert-data.md)，[更新数据](/develop/dev-guide-update-data.md)，[删除数据](/develop/dev-guide-delete-data.md)，[单表读取](/develop/dev-guide-get-data-from-single-table.md)，[事务](/develop/dev-guide-transaction-overview.md)，[SQL 性能优化](/develop/dev-guide-optimize-sql-overview.md)等。
-- 如果你更倾向于参与课程进行学习，我们也提供专业的 [TiDB 开发者课程](https://cn.pingcap.com/courses-catalog/back-end-developer/?utm_source=docs-cn-dev-guide)支持，并在考试后提供相应的[资格认证](https://learn.pingcap.com/learner/certification-center)。
+- 如果你更倾向于参与课程进行学习，我们也提供专业的 [TiDB 开发者课程](https://cn.pingcap.com/courses-catalog/category/back-end-developer/?utm_source=docs-cn-dev-guide)支持，并在考试后提供相应的[资格认证](https://learn.pingcap.com/learner/certification-center)。
 
 ## 需要帮助？
 

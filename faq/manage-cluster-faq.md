@@ -63,7 +63,7 @@ mysql -h 127.0.0.1 -uroot -P4000
 
 ### TiDB 是否支持会话超时？
 
-TiDB 目前支持 [`wait_timeout`](/system-variables.md#wait_timeout) 和 [`interactive_timeout`](/system-variables.md#interactive_timeout) 两种超时。
+TiDB 目前支持 [`wait_timeout`](/system-variables.md#wait_timeout)、[`interactive_timeout`](/system-variables.md#interactive_timeout) 和 [`tidb_idle_transaction_timeout`](/system-variables.md#tidb_idle_transaction_timeout-从-v760-版本开始引入) 三种超时。
 
 ### TiDB 的版本管理策略是怎么样的？
 
@@ -83,10 +83,6 @@ TiDB 目前社区非常活跃，同时，我们还在不断的优化和修改 BU
 
 - 通过 `select tidb_version()` 进行查看
 - 通过执行 `tidb-server -V` 进行查看
-
-### 有没有图形化部署 TiDB 的工具？
-
-有。你可以使用 [TiUniManager](/tiunimanager/tiunimanager-overview.md)，它是一款为分布式数据库 TiDB 打造的管控平台软件和数据库运维管理平台，为 TiDB 提供数据库集群管理功能、主机管理功能和平台管理功能，涵盖了数据库运维人员 (DBA) 在 TiDB 上进行的常用运维操作，帮助 DBA 对 TiDB 进行自动化、自助化和可视化管理。
 
 ### 如何扩容 TiDB 集群？
 
@@ -137,6 +133,10 @@ PD 的大部分 API 需要在初始化 TiKV 集群以后才能使用，如果在
 ### PD 启动报错：etcd cluster ID mismatch
 
 PD 启动参数中的 `--initial-cluster` 包含了某个不属于该集群的成员。遇到这个错误时请检查各个成员的所属集群，剔除错误的成员后即可正常启动。
+
+### PD 开启静态加密报错：`[PD:encryption:ErrEncryptionNewMasterKey]fail to get encryption key from file /root/path/file%!(EXTRA string=open /root/path/file: permission denied)`
+
+静态加密不支持将密钥文件存放在 `root` 目录或其子目录下，即使增加读取权限也会报相同的错误。遇到这个报错时，可以将密钥文件存放在非 `root` 目录的路径下。
 
 ### PD 能容忍的时间同步误差是多少？
 

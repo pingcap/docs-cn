@@ -1,5 +1,6 @@
 ---
 title: TiDB 5.1.5 Release Notes
+summary: TiDB 5.1.5 发布日期为 2022 年 12 月 28 日。此版本包含 PD 默认关闭编译 swagger server 的兼容性变更以及 TiDB、TiKV、PD、TiFlash 和 Tools 中的多项 Bug 修复。修复内容涵盖了窗口函数执行、动态模式、函数传入值计算、left join 删除数据、SQL 语句计算、连接错误、索引错误、HTTP 服务异常、并发列类型变更、空闲链接、SESSION 变量、Region 合并、KV client 连接、TiDB Binlog 错误、TiKV 运行、Raftstore 线程、Region merge、Follower Read、Async Commit、网络问题、Unified Read Pool CPU 表达式、TLS、并行聚合、查询错误、日期格式、MPP query、数据回收、逻辑运算符、备份系统表、增量扫描、Sorter 组件监控数据和 ddl schema 缓存优化。
 ---
 
 # TiDB 5.1.5 Release Notes

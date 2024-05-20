@@ -1,13 +1,14 @@
 ---
 title: 为 TiDB 客户端服务端间通信开启加密传输
 aliases: ['/docs-cn/dev/enable-tls-between-clients-and-servers/','/docs-cn/dev/how-to/secure/enable-tls-clients/','/docs-cn/dev/encrypted-connections-with-tls-protocols/','/docs-cn/dev/enable-tls-between-clients/']
+summary: TiDB 服务端与客户端间默认采用非加密连接，容易造成信息泄露。建议使用加密连接确保安全性。要开启 TLS 加密传输，需要在服务端配置开启 TLS 支持，并在客户端应用程序中配置使用 TLS 加密连接。可以通过配置系统变量或在创建 / 修改用户时指定要求加密连接。可通过命令检查当前连接是否是加密连接。TLS 版本为 TLSv1.2 和 TLSv1.3，支持的加密算法包括 AES 和 CHACHA20_POLY1305。
 ---
 
 # 为 TiDB 客户端服务端间通信开启加密传输
 
 TiDB 服务端与客户端之间默认采用非加密连接，因而具备监视信道流量能力的第三方可以知悉 TiDB 服务端与客户端之间发送和接受的数据，包括但不限于查询语句内容、查询结果等。若信道是不可信的，例如客户端是通过公网连接到 TiDB 服务端的，则非加密连接容易造成信息泄露，建议使用加密连接确保安全性。
 
-TiDB 服务端支持启用基于 TLS（传输层安全）协议的加密连接，协议与 MySQL 加密连接一致，现有 MySQL Client 如 MySQL Shell 和 MySQL 驱动等能直接支持。TLS 的前身是 SSL，因而 TLS 有时也被称为 SSL，但由于 SSL 协议有已知安全漏洞，TiDB 实际上并未支持。TiDB 支持的 TLS/SSL 协议版本为 TLSv1.0、TLSv1.1、TLSv1.2 和 TLSv1.3。
+TiDB 服务端支持启用基于 TLS（传输层安全）协议的加密连接，协议与 MySQL 加密连接一致，现有 MySQL Client 如 MySQL Shell 和 MySQL 驱动等能直接支持。TLS 的前身是 SSL，因而 TLS 有时也被称为 SSL，但由于 SSL 协议有已知安全漏洞，TiDB 实际上并未支持。TiDB 支持的 TLS/SSL 协议版本为 TLSv1.2 和 TLSv1.3。
 
 使用加密连接后，连接将具有以下安全性质：
 
@@ -127,8 +128,6 @@ TiDB 支持的 TLS 版本及密钥交换协议和加密算法由 Golang 官方�
 
 ### 支持的 TLS 版本
 
-- TLSv1.0 （默认禁用）
-- TLSv1.1
 - TLSv1.2
 - TLSv1.3
 

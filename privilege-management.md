@@ -1,6 +1,7 @@
 ---
 title: 权限管理
 aliases: ['/docs-cn/dev/privilege-management/','/docs-cn/dev/reference/security/privilege-system/']
+summary: TiDB 支持 MySQL 5.7 和 MySQL 8.0 的权限管理系统。权限相关操作包括授予权限、收回权限、查看用户权限和动态权限。权限系统的实现包括授权表和连接验证。权限生效时机是在 TiDB 启动时加载到内存，并且可以手动刷新。
 ---
 
 # 权限管理

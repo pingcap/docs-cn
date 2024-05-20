@@ -72,6 +72,7 @@ npm install mysql dotenv --save
 3. 确认对话框中的选项配置和你的运行环境一致。
 
     - **Endpoint Type** 为 `Public`。
+    - **Branch** 选择 `main`。
     - **Connect With** 选择 `General`。
     - **Operating System** 为运行示例代码所在的操作系统。
 
@@ -79,7 +80,7 @@ npm install mysql dotenv --save
     >
     > 如果你的程序在 Windows Subsystem for Linux (WSL) 中运行，请切换为对应的 Linux 发行版。
 
-4. 如果你还没有设置密码，点击 **Create password** 按钮生成一个随机的密码。
+4. 如果你还没有设置密码，点击 **Generate Password** 按钮生成一个随机的密码。
 
 5. 运行以下命令，将 `.env.example` 复制并重命名为 `.env`：
 
@@ -90,12 +91,12 @@ npm install mysql dotenv --save
 6. 编辑 `.env` 文件，按照如下格式设置连接信息，将占位符 `{}` 替换为从连接对话框中复制的参数值：
 
     ```dotenv
-    TIDB_HOST={host}
-    TIDB_PORT=4000
-    TIDB_USER={user}
-    TIDB_PASSWORD={password}
-    TIDB_DATABASE=test
-    TIDB_ENABLE_SSL=true
+    TIDB_HOST='{host}'
+    TIDB_PORT='4000'
+    TIDB_USER='{user}'
+    TIDB_PASSWORD='{password}'
+    TIDB_DATABASE='test'
+    TIDB_ENABLE_SSL='true'
     ```
    
     > **Note**
@@ -123,13 +124,13 @@ npm install mysql dotenv --save
 5. 编辑 `.env` 文件，按照如下格式设置连接信息，将占位符 `{}` 替换为从连接对话框中复制的参数值：
 
     ```dotenv
-    TIDB_HOST={host}
-    TIDB_PORT=4000
-    TIDB_USER={user}
-    TIDB_PASSWORD={password}
-    TIDB_DATABASE=test
-    TIDB_ENABLE_SSL=true
-    TIDB_CA_PATH={downloaded_ssl_ca_path}
+    TIDB_HOST='{host}'
+    TIDB_PORT='4000'
+    TIDB_USER='{user}'
+    TIDB_PASSWORD='{password}'
+    TIDB_DATABASE='test'
+    TIDB_ENABLE_SSL='true'
+    TIDB_CA_PATH='{downloaded_ssl_ca_path}'
     ```
 
     > **Note**
@@ -153,11 +154,11 @@ npm install mysql dotenv --save
 2. 编辑 `.env` 文件，按照如下格式设置连接信息，将占位符 `{}` 替换为你的 TiDB 集群的连接参数值：
 
     ```dotenv
-    TIDB_HOST={host}
-    TIDB_PORT=4000
-    TIDB_USER=root
-    TIDB_PASSWORD={password}
-    TIDB_DATABASE=test
+    TIDB_HOST='{host}'
+    TIDB_PORT='4000'
+    TIDB_USER='root'
+    TIDB_PASSWORD='{password}'
+    TIDB_DATABASE='test'
     ```
 
 3. 保存 `.env` 文件。
@@ -179,7 +180,7 @@ npm run start
 如果连接成功，你的终端将会输出所连接集群的版本信息：
 
 ```
-🔌 Connected to TiDB cluster! (TiDB version: 8.0.11-TiDB-v7.4.0)
+🔌 Connected to TiDB cluster! (TiDB version: 8.0.11-TiDB-v8.0.0)
 ⏳ Loading sample game data...
 ✅ Loaded sample game data.
 
@@ -198,15 +199,15 @@ npm run start
 下面的代码使用环境变量中定义的连接选项来建立与 TiDB 集群的连接。
 
 ```javascript
-// Step 1. Import the 'mysql' and 'dotenv' packages.
+// 步骤 1. 导入 'mysql' 和 'dotenv' 依赖包。
 import { createConnection } from "mysql";
 import dotenv from "dotenv";
 import * as fs from "fs";
 
-// Step 2. Load environment variables from .env file to process.env.
+// 步骤 2. 将连接参数从 .env 文件中读取到 process.env 中。
 dotenv.config();
 
-// Step 3. Create a connection with the TiDB cluster.
+// 步骤 3. 创建与 TiDB 集群的连接。
 const options = {
    host: process.env.TIDB_HOST || '127.0.0.1',
    port: process.env.TIDB_PORT || 4000,
@@ -220,9 +221,9 @@ const options = {
 }
 const conn = createConnection(options);
 
-// Step 4. Perform some SQL operations...
+// 步骤 4. 执行 SQL 语句。
 
-// Step 5. Close the connection.
+// 步骤 5. 关闭连接。
 conn.end();
 ```
 
@@ -316,4 +317,4 @@ conn.query('DELETE FROM players WHERE id = ?;', [1], (err, ok) => {
 
 - 关于 mysql.js 驱动的更多使用方法，可以参考 [mysql.js 的 GitHub 仓库](https://github.com/mysqljs/mysql)。
 - 你可以继续阅读开发者文档的其它章节来获取更多 TiDB 应用开发的最佳实践。例如：[插入数据](/develop/dev-guide-insert-data.md)，[更新数据](/develop/dev-guide-update-data.md)，[删除数据](/develop/dev-guide-delete-data.md)，[单表读取](/develop/dev-guide-get-data-from-single-table.md)，[事务](/develop/dev-guide-transaction-overview.md)，[SQL 性能优化](/develop/dev-guide-optimize-sql-overview.md)等。
-- 如果你更倾向于参与课程进行学习，我们也提供专业的 [TiDB 开发者课程](https://cn.pingcap.com/courses-catalog/back-end-developer/?utm_source=docs-cn-dev-guide)支持，并在考试后提供相应的[资格认证](https://learn.pingcap.com/learner/certification-center)。
+- 如果你更倾向于参与课程进行学习，我们也提供了专业的 [TiDB 开发者课程](https://cn.pingcap.com/courses-catalog/category/back-end-developer/?utm_source=docs-cn-dev-guide)支持，并在考试后提供相应的[资格认证](https://learn.pingcap.com/learner/certification-center)。

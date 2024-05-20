@@ -1,6 +1,7 @@
 ---
 title: 使用 DM 迁移数据
 aliases: ['/docs-cn/tidb-data-migration/dev/replicate-data-using-dm/']
+summary: 本文介绍如何使用 DM 工具迁移数据。首先部署 DM 集群，然后检查集群信息和创建数据源。配置任务后，启动任务并查询任务状态。最后，停止任务并监控任务与查看日志。
 ---
 
 # 使用 DM 迁移数据

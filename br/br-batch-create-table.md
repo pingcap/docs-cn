@@ -27,7 +27,7 @@ Backup & Restore (BR) 默认开启批量建表功能，在 v6.0.0 或以上版�
 如果需要关闭此功能，你可以参考以下命令将 `--ddl-batch-size` 的值设置为 `1`：
 
 ```shell
-br restore full \
+tiup br restore full \
 --storage local:///br_data/ --pd "${PD_IP}:2379" --log-file restore.log \
 --ddl-batch-size=1
 ```

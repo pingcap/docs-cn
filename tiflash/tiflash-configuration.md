@@ -1,6 +1,7 @@
 ---
 title: TiFlash 配置参数
 aliases: ['/docs-cn/dev/tiflash/tiflash-configuration/','/docs-cn/dev/reference/tiflash/configuration/']
+summary: TiFlash 配置参数包括 PD 调度参数和 TiFlash 配置参数。PD 调度参数可通过 pd-ctl 调整，包括 replica-schedule-limit 和 store-balance-rate。TiFlash 配置参数包括 tiflash.toml 和 tiflash-learner.toml，用于配置 TiFlash TCP/HTTP 服务的监听和存储路径。另外，通过拓扑 label 进行副本调度和多盘部署也是可行的。
 ---
 
 # TiFlash 配置参数
@@ -128,8 +129,8 @@ delta_index_cache_size = 0
     # capacity: 858993459200           # 800 GiB
 
 [flash]
-    tidb_status_addr = tidb status 端口地址 # 多个地址以逗号分割
-    service_addr =  TiFlash raft 服务 和 coprocessor 服务监听地址
+    ## TiFlash coprocessor 服务监听地址
+    service_addr = "0.0.0.0:3930"
 
     ## 从 v7.4.0 引入，在当前 Raft 状态机推进的 applied_index 和上次落盘时的 applied_index 的差值高于 compact_log_min_gap 时，
     ## TiFlash 将执行来自 TiKV 的 CompactLog 命令，并进行数据落盘。调大该差值可能降低 TiFlash 的落盘频率，从而减少随机写场景下的读延迟，但会增大内存开销。调小该差值可能提升 TiFlash 的落盘频率，从而缓解 TiFlash 内存压力。但无论如何，在目前阶段，TiFlash 的落盘频率不会高于 TiKV，即使设置该差值为 0。
@@ -143,36 +144,39 @@ delta_index_cache_size = 0
     ## 下面的配置只针对存算分离模式生效，详情请参考 TiFlash 存算分离架构与 S3 支持文档 https://docs.pingcap.com/zh/tidb/dev/tiflash-disaggregated-and-s3
     # disaggregated_mode = tiflash_write # 可选值为 tiflash_write 或者 tiflash_compute
 
-# 多个 TiFlash 节点会选一个 master 来负责往 PD 增删 placement rule，通过 flash.flash_cluster 中的参数控制。
-[flash.flash_cluster]
-    refresh_interval = master 定时刷新有效期
-    update_rule_interval = master 定时向 tidb 获取 TiFlash 副本状态并与 pd 交互
-    master_ttl = master 选出后的有效期
-    cluster_manager_path = pd buddy 所在目录的绝对路径
-    log = pd buddy log 路径
-
 [flash.proxy]
-    addr = proxy 监听地址，不填则默认是 127.0.0.1:20170
-    advertise-addr = 外部访问 addr 的地址，不填则默认是 "addr"
-    data-dir = proxy 数据存储路径
-    config = proxy 配置文件路径
-    log-file = proxy log 路径
-    log-level = proxy log 级别，默认是 "info"
-    status-addr = 拉取 proxy metrics｜status 信息的监听地址，不填则默认是 127.0.0.1:20292
-    advertise-status-addr = 外部访问 status-addr 的地址，不填则默认是 "status-addr"
+    ## proxy 监听地址，不填则默认是 127.0.0.1:20170
+    addr = "127.0.0.1:20170"
+    ## 外部访问 addr 的地址，不填则默认使用 "addr" 的值
+    ## 当集群部署在多个节点时，需要保证 `advertise-addr` 的地址可以从其他节点连接
+    advertise-addr = ""
+    ## 拉取 proxy metrics 或 status 信息的监听地址，不填则默认是 127.0.0.1:20292
+    status-addr = "127.0.0.1:20292"
+    ## 外部访问 status-addr 的地址，不填则默认使用 "status-addr" 的值
+    ## 当集群部署在多个节点时，需要保证 `advertise-addr` 的地址可以从其他节点连接
+    advertise-status-addr = ""
+    ## proxy 数据存储路径
+    data-dir = "/tidb-data/tiflash-9000/flash"
+    ## proxy 配置文件路径
+    config = "/tidb-deploy/tiflash-9000/conf/tiflash-learner.toml"
+    ## proxy log 路径
+    log-file = "/tidb-deploy/tiflash-9000/log/tiflash_tikv.log"
+    ## proxy 的 log 级别 (支持 "trace"、"debug"、"info"、"warn"、"error"). 默认是 "info"
+    # log-level = "info" 
 
 [logger]
-    ## log 级别（支持 "trace"、"debug"、"info"、"warn"、"error"），默认是 "debug"
-    level = "debug"
-    log = TiFlash log 路径
-    errorlog = TiFlash error log 路径
+    ## log 级别（支持 "trace"、"debug"、"info"、"warn"、"error"），默认是 "info"
+    level = "info"
+    log = "/tidb-deploy/tiflash-9000/log/tiflash.log"
+    errorlog = "/tidb-deploy/tiflash-9000/log/tiflash_error.log"
     ## 单个日志文件的大小，默认是 "100M"
     size = "100M"
     ## 最多保留日志文件个数，默认是 10
     count = 10
 
 [raft]
-    pd_addr = pd 服务地址 # 多个地址以逗号隔开
+    ## PD 服务地址. 多个地址以逗号隔开
+    pd_addr = "10.0.1.11:2379,10.0.1.12:2379,10.0.1.13:2379"
 
 [status]
     ## Prometheus 拉取 metrics 信息的端口，默认是 8234

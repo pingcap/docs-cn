@@ -24,7 +24,7 @@ cdc cli changefeed create \
 输出结果如下：
 
 ```shell
-Info: {"upstream_id":7171388873935111376,"namespace":"default","id":"simple-replication-task","sink_uri":"s3://logbucket/storage_test?protocol=canal-json","create_time":"2022-11-29T18:52:05.566016967+08:00","start_ts":437706850431664129,"engine":"unified","config":{"case_sensitive":true,"enable_old_value":true,"force_replicate":false,"ignore_ineligible_table":false,"check_gc_safe_point":true,"enable_sync_point":false,"sync_point_interval":600000000000,"sync_point_retention":86400000000000,"filter":{"rules":["*.*"],"event_filters":null},"mounter":{"worker_num":16},"sink":{"protocol":"canal-json","schema_registry":"","csv":{"delimiter":",","quote":"\"","null":"\\N","include_commit_ts":false},"column_selectors":null,"transaction_atomicity":"none","encoder_concurrency":16,"terminator":"\r\n","date_separator":"none","enable_partition_separator":false},"consistent":{"level":"none","max_log_size":64,"flush_interval":2000,"storage":""}},"state":"normal","creator_version":"v6.5.0-master-dirty"}
+Info: {"upstream_id":7171388873935111376,"namespace":"default","id":"simple-replication-task","sink_uri":"s3://logbucket/storage_test?protocol=canal-json","create_time":"2024-03-28T18:52:05.566016967+08:00","start_ts":437706850431664129,"engine":"unified","config":{"case_sensitive":false,"enable_old_value":true,"force_replicate":false,"ignore_ineligible_table":false,"check_gc_safe_point":true,"enable_sync_point":false,"sync_point_interval":600000000000,"sync_point_retention":86400000000000,"filter":{"rules":["*.*"],"event_filters":null},"mounter":{"worker_num":16},"sink":{"protocol":"canal-json","schema_registry":"","csv":{"delimiter":",","quote":"\"","null":"\\N","include_commit_ts":false},"column_selectors":null,"transaction_atomicity":"none","encoder_concurrency":16,"terminator":"\r\n","date_separator":"none","enable_partition_separator":false},"consistent":{"level":"none","max_log_size":64,"flush_interval":2000,"storage":""}},"state":"normal","creator_version":"v8.0.0"}
 ```
 
 - `--server`：TiCDC 集群中任意一个 TiCDC 服务器的地址。
@@ -60,11 +60,44 @@ URI 的 `[query_parameters]` 中可配置的参数如下：
 
 ### 配置外部存储
 
+将数据存储到云服务存储系统时，根据云服务供应商的不同，需要设置不同的鉴权参数。本节介绍使用 Amazon S3、Google Cloud Storage (GCS) 及 Azure Blob Storage 时所用存储服务的鉴权方式以及如何配置访问相应存储服务的账户。
+
+<SimpleTab groupId="storage">
+<div label="Amazon S3" value="amazon">
+
 Amazon S3 配置样例如下：
 
 ```shell
 --sink-uri="s3://bucket/prefix?protocol=canal-json"
 ```
+
+在同步数据之前，需要为 Amazon S3 中的目录设置相应的访问权限：
+
+- TiCDC 需要的最小权限是：`s3:ListBucket`、`s3:PutObject` 和 `s3:GetObject`。
+- 如果 changefeed 的参数 `sink.cloud-storage-config.flush-concurrency` 大于 1，表示开启了单文件的并行上传，需要额外增加 [ListParts](https://docs.aws.amazon.com/zh_cn/AmazonS3/latest/API/API_ListParts.html) 相关权限： 
+    - `s3:AbortMultipartUpload`
+    - `s3:ListMultipartUploadParts`
+    - `s3:ListBucketMultipartUploads`
+
+如果你还没有创建同步数据保存目录，可以参考[创建存储桶](https://docs.aws.amazon.com/zh_cn/AmazonS3/latest/user-guide/create-bucket.html)在指定的区域中创建一个 S3 存储桶。如果需要使用文件夹，可以参考[使用文件夹在 Amazon S3 控制台中组织对象](https://docs.aws.amazon.com/zh_cn/AmazonS3/latest/user-guide/create-folder.html)在存储桶中创建一个文件夹。
+
+可以通过以下两种方式配置访问 Amazon S3 的账户：
+
+- 方式一：指定访问密钥
+
+    如果指定访问密钥和秘密访问密钥，将按照指定的访问密钥和秘密访问密钥进行鉴权。除了在 URI 中指定密钥外，还支持以下方式：
+
+    - 读取 `$AWS_ACCESS_KEY_ID` 和 `$AWS_SECRET_ACCESS_KEY` 环境变量
+    - 读取 `$AWS_ACCESS_KEY` 和 `$AWS_SECRET_KEY` 环境变量
+    - 读取共享凭证文件，路径由 `$AWS_SHARED_CREDENTIALS_FILE` 环境变量指定
+    - 读取共享凭证文件，路径为 `~/.aws/credentials`
+
+- 方式二：基于 IAM Role 进行访问
+
+    为运行 TiCDC Server 的 EC2 实例关联一个[配置了访问 S3 访问权限的 IAM role](https://docs.aws.amazon.com/zh_cn/IAM/latest/UserGuide/id_roles_use_switch-role-ec2.html)。设置成功后，TiCDC 可以直接访问对应的 S3 中的备份目录，而不需要额外的设置。
+
+</div>
+<div label="GCS" value="gcs">
 
 GCS 配置样例如下：
 
@@ -72,11 +105,37 @@ GCS 配置样例如下：
 --sink-uri="gcs://bucket/prefix?protocol=canal-json"
 ```
 
+配置访问 GCS 的账户可以通过指定访问密钥的方式。如果指定了 `credentials-file` 参数，将按照指定的 `credentials-file` 进行鉴权。除了在 URI 中指定密钥文件外，还支持以下方式：
+
+- 读取位于 `$GOOGLE_APPLICATION_CREDENTIALS` 环境变量所指定路径的文件内容
+- 读取位于 `~/.config/gcloud/application_default_credentials.json` 的文件内容
+- 在 GCE 或 GAE 中运行时，从元数据服务器中获取的凭证
+
+</div>
+<div label="Azure Blob Storage" value="azure">
+
 Azure Blob Storage 配置样例如下：
 
 ```shell
 --sink-uri="azure://bucket/prefix?protocol=canal-json"
 ```
+
+可以通过以下方式配置访问 Azure Blob Storage 的账户：
+
+- 方式一：指定共享访问签名
+
+    在 URI 中配置 `account-name` 和 `sas-token`，则使用该参数指定的存储账户名和共享访问签名令牌。由于共享访问签名令牌中带有 `&` 的字符，需要将其编码为 `%26` 后再添加到 URI 中。你也可以直接对整个 `sas-token` 进行一次百分号编码。
+
+- 方式二：指定访问密钥
+
+    在 URI 中配置 `account-name` 和 `account-key`，则使用该参数指定的存储账户名和密钥。除了在 URI 中指定密钥文件外，还支持读取 `$AZURE_STORAGE_KEY` 的方式。
+
+- 方式三：使用 Azure AD 备份恢复
+
+    运行环境配置 `$AZURE_CLIENT_ID`、`$AZURE_TENANT_ID` 和 `$AZURE_CLIENT_SECRET`。
+
+</div>
+</SimpleTab>
 
 > **建议：**
 >

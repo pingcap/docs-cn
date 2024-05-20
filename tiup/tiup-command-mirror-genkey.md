@@ -1,5 +1,6 @@
 ---
 title: tiup mirror genkey
+summary: TiUP 镜像命令 genkey 用于生成私钥。管理员有 root.json、index.json、snapshot.json 和 timestamp.json 的修改权限。组件管理员有相关组件的修改权限。普通用户可以下载并使用组件。私钥名默认为 private，可以显示对应的公钥。可以将公钥信息储存为文件。输出包括私钥已存在或已写入，以及公钥内容。
 ---
 
 # tiup mirror genkey

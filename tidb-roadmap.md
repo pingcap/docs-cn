@@ -7,7 +7,7 @@ summary: 了解 TiDB 未来的发展方向，包括新特性和改进提升。
 
 TiDB 路线图展示了 TiDB 未来的计划。随着我们发布长期稳定版本 (LTS)，这个路线图将会持续更新。通过路线图，你可以预先了解 TiDB 的未来规划，以便你关注进度，了解关键里程碑，并对开发工作提出反馈。
 
-在开发过程中，路线图可能会根据用户需求和反馈进行调整。越靠右侧的特性，其优先级越低。如果你有功能需求，或者想提高某个特性的优先级，请在 [GitHub](https://github.com/pingcap/tidb/issues) 上提交 issue。
+在开发过程中，路线图可能会根据用户需求和反馈进行调整，请不要根据路线图的内容制定上线计划。如果你有功能需求，或者想提高某个特性的优先级，请在 [GitHub](https://github.com/pingcap/tidb/issues) 上提交 issue。
 
 ## TiDB 重要特性规划
 
@@ -15,8 +15,8 @@ TiDB 路线图展示了 TiDB 未来的计划。随着我们发布长期稳定版
   <thead>
     <tr>
       <th>类别</th>
-      <th>2023 年底 LTS 版本</th>
-      <th>2024 年中 LTS 版本</th>
+      <th>2024 年底 LTS 版本</th>
+      <th>2025 年中 LTS 版本</th>
       <th>未来版本</th>
     </tr>
   </thead>
@@ -28,32 +28,75 @@ TiDB 路线图展示了 TiDB 未来的计划。随着我们发布长期稳定版
       <td>
         <ul>
           <li>
-            <b>Partitioned Raft KV 存储引擎 GA</b><br />支持 PB 级别的集群，提升写入速度、扩缩容操作速度，提升数据整理的稳定性
+             <b>TiKV 数据缓存</b><br />
+            TiKV 在内存中维护数据的最近版本，以减少对多版本数据的重复扫描，进而提升性能。
           </li>
           <br />
           <li>
-            <b>增强副本读取功能</b><br />降低 TiKV 跨可用区的数据传输成本
+             <b>分区表全局索引</b><br />
           </li>
           <br />
+          <li>
+             <b>自动配置统计信息收集的并行度</b><br />
+            TiDB 根据部署的节点数量和硬件规格自动配置统计信息收集任务的并行度和扫描并发度，提升收集速度。
+          </li>
+          <br />
+          <li>
+             <b>加速数据库恢复</b><br />
+            缩短全量数据库恢复和 Point-in-time recovery (PITR) 所需的时间。
+          </li>
+          <br />
+          <li>
+             <b>支持不限大小的事务</b><br />
+            未提交事务所处理的数据量不再受限于 TiDB 节点可用内存大小，提高事务和批量任务的成功率。
+          </li>
+          <br />
+          <li>
+             <b>TiProxy 根据负载转发流量</b><br />
+            TiProxy 依据目标 TiDB 节点的负载情况对流量进行转发，以充分利用硬件资源。
+          </li>
         </ul>
       </td>
       <td>
         <ul>
           <li>
-            <b>引入性能优化框架，适用于所有相关后台任务，如 DDL、TTL 和集群分析操作</b><br />
-            性能优化框架将这些后台任务的工作负载分散到整个集群中，从而提升性能，并减少各个节点上的资源消耗。该框架已经应用于 <code>ADD INDEX</code> 操作。
+            <b>PD 的 heartbeat 微服务化</b><br />
+            PD 的 heartbeat 可以独立部署和单独扩展，避免 PD 成为集群的资源瓶颈。
           </li>
           <br />
           <li>
-            <b>TiFlash 存算分离架构、基于 S3 的 TiFlash 存储引擎等功能 GA</b><br />
-            实现更具成本效益的弹性 HTAP
+            <b>减少统计信息收集时的 I/O 消耗</b><br />
+            在进行统计信息收集时，可以选择在 TiKV 上仅扫描部分数据样本，以减少统计信息收集所消耗的时间和资源。
+          </li>
+          <br />
+          <li>
+            <b>移除将 Limit 算子下推到 TiKV 的已知限制</b><br />
+          </li>
+          <br />
+          <li>
+            <b>Cascades 优化器框架</b><br />
+            引入更成熟强大的优化器框架，扩展当前优化器的基础能力。
+          </li>
+          <br />
+          <li>
+            <b>单个 DM 任务在全量迁移时达到每秒 150 MiB</b><br />
+          </li>
+          <br />
+          <li>
+            <b>增强 DDL 执行框架</b><br />
+            提供可扩展的并行 DDL 执行框架，提升 DDL 的性能和稳定性。
           </li>
         </ul>
       </td>
       <td>
         <ul>
           <li>
-            <b>移除事务大小的限制</b>
+            <b>表级别的负载均衡</b><br />
+            PD 根据每个表上各 Region 的负载情况决定数据的调度策略。
+          </li>
+          <li>
+            <b>提升大数据量系统表的处理性能</b><br />
+            当系统表中存在大量数据时，提升查询系统表的性能，降低查询开销。
           </li>
         </ul>
       </td>
@@ -66,66 +109,73 @@ TiDB 路线图展示了 TiDB 未来的计划。随着我们发布长期稳定版
       <td>
         <ul>
           <li>
-            <b>后台任务支持资源管控</b><br />
-            控制后台任务（如数据导入、DDL、TTL、自动分析、数据整理等操作）对前台流量的影响
+            <b>限制备份任务的内存消耗</b><br />
+          </li>
+          <br />
+          <li>
+            <b>限制统计信息收集的内存消耗</b><br />
+          </li>
+          <br />
+          <li>
+            <b>管理大量的 SQL Binding</b><br />
+              提升 SQL Binding 的使用体验，方便用户创建和管理大量的执行计划，以稳定数据库性能。
+          </li>
+          <br />
+          <li>
+            <b>资源组增强对复杂 SQL 的控制</b><br />
+              在复杂 SQL 执行完成前，定期评估其 Request Unit (RU) 消耗，防止其在执行期间对整个系统产生过大的影响。
+          </li>
+          <br />
+          <li>
+            <b>自动为资源消耗超出预期的查询切换资源组</b><br />
+              当一个查询被识别为 Runaway Query，用户可以选择将其调整至特定资源组，并设置资源消耗的上限。
           </li>
         </ul>
       </td>
       <td>
         <ul>
           <li>
-            <b>多租户</b>
-            <br />基于资源管控实现资源隔离
+            <b>限制表元信息的内存消耗</b><br />
+            提升大规模集群的稳定性。
+          </li>
+          <br />
+          <li>
+            <b>分布式统计信息收集</b><br />
+            统计信息收集支持在多个 TiDB 节点上并行进行，提升收集效率。
+          </li>
+          <br />
+          <li>
+            <b>多版本统计信息</b><br />
+            当统计信息被更新后，用户可以查看统计信息的历史版本，并能够选择恢复到过去某个版本的统计信息。
+          </li>
+          <br />
+          <li>
+            <b>更可靠的数据备份</b><br />
+            减少数据备份过程中可能出现的内存不足等问题，并确保备份数据的可用性。
+          </li>
+          <br />
+          <li>
+            <b>常用算子均可落盘</b><br />
+            HashAgg、Sort、TopN、HashJoin、WindowFunction、IndexJoin 和 IndexHashJoin 等常用算子均可落盘，进一步降低 OOM 风险。
           </li>
         </ul>
       </td>
       <td>
         <ul>
           <li>
-            <b>增强 TiDB 内存管理</b>
-          </li>
-        </ul>
-      </td>
-    </tr>
-    <tr>
-      <td>
-        <b>SQL 功能</b>
-        <br />增强 SQL 功能和兼容性
-      </td>
-      <td>
-        <ul>
-          <li>
-            <b>兼容 MySQL 8.0</b>
+            <b>自适应资源组</b><br />
+            资源组根据过往的运行情况自动调整资源组的 RU 设定。
           </li>
           <br />
           <li>
-            <b>为数据导入、备份恢复、PITR 提供统一的 SQL 接口</b>
-          </li>
-        </ul>
-      </td>
-      <td>
-        <ul>
-          <li>
-            <b>优化器支持 Cascades 框架</b>
-            <br />改进查询优化框架，让优化器更具可扩展性，适应未来的需求
-          </li>
-          <br />
-        </ul>
-      </td>
-      <td>
-        <ul>
-          <li>
-            <b>联邦查询</b>
+            <b>强化内存保护</b><br />
+            TiDB 主动监控所有模块的内存使用情况，阻止可能影响系统稳定性的内存操作。 
           </li>
           <br />
           <li>
-            <b>全文搜索和 GIS 支持</b>
+            <b>实例级执行计划缓存</b><br />
+            同一个 TiDB 实例的所有会话可以共享执行计划缓存，提升内存利用率。
           </li>
-          <br />
-          <li>
-            <b>用户自定义函数</b>
-          </li>
-          <br />
         </ul>
       </td>
     </tr>
@@ -137,42 +187,73 @@ TiDB 路线图展示了 TiDB 未来的计划。随着我们发布长期稳定版
       <td>
         <ul>
           <li>
-            <b>TiCDC 支持分布式同步单表数据</b>
-            <br />大幅提高 TiDB 到 TiDB 的数据吞吐量
+            <b>可靠的查询终止</b><br />
+            正在运行中的 SQL 语句能够被立即终止，并从 TiDB 和 TiKV 中释放相应的资源。
           </li>
           <br />
           <li>
-            <b>升级期间自动暂停/恢复 DDL</b>
-            <br />提供平滑的升级体验
+            <b>切换资源组的权限控制</b>
+            <br />只有被授予特定权限的用户才能切换自身的资源组，防止资源被滥用。
           </li>
           <br />
           <li>
-            <b>TiCDC 原生集成大数据生态</b>
-            <br />例如集成 Snowflake 和 Iceburg
+            <b>支持查看表或 SQL 与热点 Region 的关系</b>
+          </li>
+          <br />
+          <li>
+            <b><code>IMPORT INTO</code> 支持逻辑导入</b>
+          </li>
+          <br />
+        </ul>
+      </td>
+      <td>
+        <ul>
+          <li>
+            <b>细粒度定制统计信息收集策略</b>
+            <br />用户可以修改特定表的统计信息收集策略，例如健康度和并行度。
+          </li>
+          <br />
+          <li>
+            <b>Workload Repository</b>
+            <br />TiDB 持久化内存中记录的负载信息，包括累计统计数据和实时统计数据，有助于故障排查和分析。
+          </li>
+          <br />
+          <li>
+            <b>自动索引推荐</b>
+            <br />TiDB 自动分析可以优化的 SQL 语句，并建议创建新索引或删除已有索引。
+          </li>
+          <br />
+          <li>
+            <b>支持修改分区表的列类型</b>
+            <br />用户可以修改分区中列的类型，无论该列是否为分区键。
+          </li>
+          <br />
+          <li>
+            <b>设置 <code>IMPORT INTO</code> 的冲突策略</b>
+            <br />用户可以为导入数据时出现的冲突设置解决策略，例如报错退出、忽略或替换。
+          </li>
+          <br />
+          <li>
+            <b>全链路监控</b>
+            <br />跟踪单条 SQL 语句在整个生命周期中的时间消耗，包括 TiDB、TiKV、PD 和 TiFlash。
           </li>
         </ul>
       </td>
       <td>
         <ul>
           <li>
-            <b>TiCDC 支持多个上游数据源</b>
-            <br />支持从多个 TiDB 集群到 TiCDC (N:1)
-          </li>
-        </ul>
-      </td>
-      <td>
-        <ul>
-          <li>
-            <b>AI 索引</b>
+            <b>负载分析</b>
+            <br />分析 Workload Repository 中的过往负载数据，根据分析结果提出优化建议，例如 SQL 调优和统计信息收集策略调整。
           </li>
           <br />
           <li>
-            <b>支持迁移异构数据库</b>
+            <b>支持修改主键</b>
           </li>
           <br />
           <li>
-            <b>使用 AI 赋能 SQL 性能优化</b>
+            <b>支持将数据导出为 SQL 语句</b>
           </li>
+          <br />
         </ul>
       </td>
     </tr>
@@ -184,31 +265,40 @@ TiDB 路线图展示了 TiDB 未来的计划。随着我们发布长期稳定版
       <td>
         <ul>
           <li>
-            <b>通过 Azure Key Vault 进行密钥管理</b>
-            <br />由 Azure Key Vault 管理的静态加密
+            <b>Google Cloud KMS</b>
+            <br />完善静态加密基于 Google Cloud KMS 的密钥管理机制，使其成为正式功能。
           </li>
           <br />
           <li>
-            <b>列级访问控制</b>
-            <br />允许针对特定列来授予或限制访问权限
+            <b>完善动态权限</b>
+            <br />完善动态权限设计，限制 Super 权限的实现。
           </li>
           <br />
           <li>
-            <b>数据库级别的加密</b>
-            <br />支持配置数据库级别的静态加密
+            <b>基于标记的日志脱敏</b>
+            <br />支持在集群日志中标记敏感数据，然后根据使用场景选择是否对这些敏感信息进行脱敏。
+          </li>
+          <br />
+          <li>
+            <b>FIPS</b>
+            <br />加密场景符合 FIPS 标准。
           </li>
         </ul>
       </td>
       <td>
         <ul>
           <li>
-            <b>AWS IAM 身份验证</b>
-            <br />将 TiDB 作为 AWS 第三方 ARN，用于 AWS IAM 访问
+            <b>支持 AWS IAM 认证</b>
+            <br />TiDB 作为 AWS 第三方 ARN，用于 AWS IAM 访问。
           </li>
           <br />
           <li>
-            <b>统一的 TLS CA/密钥轮换策略</b>
-            <br />统一管理所有 TiDB 组件的证书
+            <b>Kerberos</b>
+            <br />支持基于 Kerberos 的身份认证。
+          </li>
+          <li>
+            <b>MFA</b>
+            <br />支持多因素身份认证机制。
           </li>
         </ul>
       </td>
@@ -216,18 +306,17 @@ TiDB 路线图展示了 TiDB 未来的计划。随着我们发布长期稳定版
         <ul>
           <li>
             <b>基于标签的访问控制</b>
-            <br />通过配置标签来授予访问权限
+            <br />支持通过配置标签的方式，以标签形式对数据进行访问控制。
           </li>
+          <br />
           <li>
             <b>增强客户端加密</b>
+            <br />支持客户端对关键字段进行加密，增强数据安全性。
           </li>
           <br />
           <li>
-            <b>增强数据脱敏</b>
-          </li>
-          <br />
-          <li>
-            <b>增强数据生命周期管理</b>
+            <b>业务数据动态脱敏</b>
+            <br />基于不同数据应用场景的数据脱敏，保证重要领域的数据安全。
           </li>
         </ul>
       </td>
@@ -235,29 +324,6 @@ TiDB 路线图展示了 TiDB 未来的计划。随着我们发布长期稳定版
   </tbody>
 </table>
 
-上述表格中并未列出所有功能，当前规划可能会调整。不同的服务订阅版本中的功能可能有所不同。
-
-## 已发布特性
-
-以下是历史版本路线图中已交付的部分功能。更多详细信息，请参阅 [v7.1.0 Release Notes](/releases/release-7.1.0.md)。
-
-- 多租户框架的基础：资源组的资源管控配额和调度
-- TiCDC 支持对象存储 sink，包括 Amazon S3 和 Azure Blob Storage (GA)
-- 最快的在线添加索引 `ADD INDEX` 操作 (GA)
-- TiFlash 延迟物化 (GA)
-- TiFlash 支持数据落盘 (GA)
-- LDAP 身份认证
-- SQL 审计日志增强（仅企业版可用）
-- Partitioned Raft KV 存储引擎（实验特性）
-- 通用的会话级别执行计划缓存（实验特性）
-- TiCDC 支持以 Kafka 为下游的分布式表级别数据同步（实验特性）
-
-## 已发布版本
-
-- [TiDB 7.4.0 Release Notes](/releases/release-7.4.0.md) 
-- [TiDB 7.3.0 Release Notes](/releases/release-7.3.0.md)
-- [TiDB 7.2.0 Release Notes](/releases/release-7.2.0.md)
-- [TiDB 7.1.0 Release Notes](/releases/release-7.1.0.md)
-- [TiDB 7.0.0 Release Notes](/releases/release-7.0.0.md)
-- [TiDB 6.6.0 Release Notes](/releases/release-6.6.0.md)
-- [TiDB 6.5.0 Release Notes](/releases/release-6.5.0.md)
+> **注意：**
+>
+> 上述表格中并未列出所有计划发布的内容。另外，不同的服务订阅版本中的功能可能有所不同。

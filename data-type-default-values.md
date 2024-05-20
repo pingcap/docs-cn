@@ -1,13 +1,20 @@
 ---
 title: 数据类型的默认值
 aliases: ['/docs-cn/dev/data-type-default-values/','/docs-cn/dev/reference/sql/data-types/default-values/']
+summary: 数据类型的默认值描述了列的默认值设置规则。默认值必须是常量，对于时间类型可以使用特定函数。从 v8.0.0 开始，BLOB、TEXT 和 JSON 可以设置表达式默认值。如果列没有设置 DEFAULT，TiDB 会根据规则添加隐式默认值。对于 NOT NULL 列，根据 SQL_MODE 进行不同行为。表达式默认值是实验特性，不建议在生产环境中使用。MySQL 8.0.13 开始支持在 DEFAULT 子句中指定表达式为默认值。TiDB 支持为 BLOB、TEXT 和 JSON 数据类型分配默认值，但仅支持通过表达式来设置。
 ---
 
 # 数据类型的默认值
 
-在一个数据类型描述中的 `DEFAULT value` 段描述了一个列的默认值。这个默认值必须是常量，不可以是一个函数或者是表达式。但是对于时间类型，可以例外的使用 `NOW`、`CURRENT_TIMESTAMP`、`LOCALTIME`、`LOCALTIMESTAMP` 等函数作为 `DATETIME` 或者 `TIMESTAMP` 的默认值。
+在一个数据类型描述中的 `DEFAULT value` 段描述了一个列的默认值。
 
-`BLOB`、`TEXT` 以及 `JSON` 不可以设置默认值。
+所有数据类型都可以设置默认值。这个默认值通常情况下必须是常量，不可以是一个函数或者是表达式，但也存在以下例外情况：
+
+- 对于时间类型，可以使用 `NOW`、`CURRENT_TIMESTAMP`、`LOCALTIME`、`LOCALTIMESTAMP` 等函数作为 `DATETIME` 或者 `TIMESTAMP` 列的默认值。
+- 对于整数类型，可以使用 `NEXT VALUE FOR` 函数将序列的下一个值作为列的默认值，使用 [`RAND()`](/functions-and-operators/numeric-functions-and-operators.md) 函数生成随机浮点值作为列的默认值。
+- 对于字符串类型，可以使用 [`UUID()`](/functions-and-operators/miscellaneous-functions.md) 函数生成[通用唯一标识符 (UUID)](/best-practices/uuid.md) 作为列的默认值。
+- 对于二进制类型，可以使用 [`UUID_TO_BIN()`](/functions-and-operators/miscellaneous-functions.md) 函数将 UUID 转换为二进制格式后作为列的默认值。
+- 从 v8.0.0 开始，新增支持 [`BLOB`](/data-type-string.md#blob-类型)、[`TEXT`](/data-type-string.md#text-类型) 以及 [`JSON`](/data-type-json.md#json-类型) 这三种数据类型设置默认值，但仅支持使用表达式设置[默认值](#表达式默认值)。
 
 如果一个列的定义中没有 `DEFAULT` 的设置。TiDB 按照如下的规则决定：
 
@@ -24,3 +31,24 @@ aliases: ['/docs-cn/dev/data-type-default-values/','/docs-cn/dev/reference/sql/d
 * 对于数值类型，它们的默认值是 0。当有 `AUTO_INCREMENT` 参数时，默认值会按照增量情况赋予正确的值。
 * 对于除了时间戳外的日期时间类型，默认值会是该类型的“零值”。时间戳类型的默认值会是当前的时间。
 * 对于除枚举以外的字符串类型，默认值会是空字符串。对于枚举类型，默认值是枚举中的第一个值。
+
+## 表达式默认值
+
+MySQL 从 8.0.13 开始支持在 `DEFAULT` 子句中指定表达式为默认值。具体可参考 [Explicit Default Handling as of MySQL 8.0.13](https://dev.mysql.com/doc/refman/8.0/en/data-type-defaults.html#data-type-defaults-explicit)。
+
+从 v8.0.0 开始，TiDB 在 `DEFAULT` 子句中新增支持指定以下表达式作为字段的默认值：
+
+* `UPPER(SUBSTRING_INDEX(USER(), '@', 1))`
+* `REPLACE(UPPER(UUID()), '-', '')`
+* `DATE_FORMAT` 相关表达式，具体格式如下：
+    * `DATE_FORMAT(NOW(), '%Y-%m')`
+    * `DATE_FORMAT(NOW(), '%Y-%m-%d')`
+    * `DATE_FORMAT(NOW(), '%Y-%m-%d %H.%i.%s')`
+    * `DATE_FORMAT(NOW(), '%Y-%m-%d %H:%i:%s')`
+* `STR_TO_DATE('1980-01-01', '%Y-%m-%d')`
+
+此外，从 v8.0.0 开始，TiDB 额外支持 `BLOB`、`TEXT` 以及 `JSON` 数据类型分配默认值，但是默认值仅支持通过表达式来设置。以下是 `BLOB` 的示例：
+
+```sql
+CREATE TABLE t2 (b BLOB DEFAULT (RAND()));
+```

@@ -1,6 +1,6 @@
 ---
 title: TiDB OOM 故障排查
-summary: 了解如何定位、排查 TiDB Out of Memory (OOM) 问题。
+summary: TiDB OOM 故障排查总结了 OOM 常见问题的解决思路、故障现象、原因、解决方法和需要收集的诊断信息。排查思路包括确认是否属于 OOM 问题和进一步排查触发 OOM 的原因。常见故障原因包括部署问题、数据库问题和客户端问题。处理 OOM 问题需要收集操作系统内存配置、数据库版本和内存配置、Grafana TiDB 内存使用情况等信息。详细排查方法请参考相关章节。
 ---
 
 # TiDB OOM 故障排查
@@ -19,7 +19,7 @@ OOM 常见的故障现象包括（但不限于）：
     - **TiDB-Runtime** > **Memory Usage** 显示 estimate-inuse 持续升高
 
 - 查看 `tidb.log`，可发现如下日志条目：
-    - OOM 相关的 Alarm：`[WARN] [memory_usage_alarm.go:139] ["tidb-server has the risk of OOM. Running SQLs and heap profile will be recorded in record path"]`。关于该日志的详细说明，请参考 [`memory-usage-alarm-ratio`](/system-variables.md#tidb_memory_usage_alarm_ratio)。
+    - OOM 相关的 Alarm：`[WARN] [memory_usage_alarm.go:139] ["tidb-server has the risk of OOM because of memory usage exceeds alarm ratio. Running SQLs and heap profile will be recorded in record path"]`。关于该日志的详细说明，请参考 [`memory-usage-alarm-ratio`](/system-variables.md#tidb_memory_usage_alarm_ratio)。
     - 重启相关的日志条目：`[INFO] [printer.go:33] ["Welcome to TiDB."]`。
 
 ## 整体排查思路
@@ -189,7 +189,7 @@ TiDB 节点启动后需要加载统计信息到内存中。统计信息的收集
 - 执行 `grep "tidb-server has the risk of OOM" tidb.log` 查看 TiDB Server 收集的告警文件路径，例如：
 
     ```shell
-    ["tidb-server has the risk of OOM. Running SQLs and heap profile will be recorded in record path"] ["is tidb_server_memory_limit set"=false] ["system memory total"=14388137984] ["system memory usage"=11897434112] ["tidb-server memory usage"=11223572312] [memory-usage-alarm-ratio=0.8] ["record path"="/tmp/0_tidb/MC4wLjAuMDo0MDAwLzAuMC4wLjA6MTAwODA=/tmp-storage/record"]
+    ["tidb-server has the risk of OOM because of memory usage exceeds alarm ratio. Running SQLs and heap profile will be recorded in record path"] ["is tidb_server_memory_limit set"=false] ["system memory total"=14388137984] ["system memory usage"=11897434112] ["tidb-server memory usage"=11223572312] [memory-usage-alarm-ratio=0.8] ["record path"="/tmp/0_tidb/MC4wLjAuMDo0MDAwLzAuMC4wLjA6MTAwODA=/tmp-storage/record"]
     ```
 
 ## 探索更多

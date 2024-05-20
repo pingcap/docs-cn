@@ -1,11 +1,12 @@
 ---
 title: JSON 函数
 aliases: ['/docs-cn/dev/functions-and-operators/json-functions/','/docs-cn/dev/reference/sql/functions-and-operators/json-functions/']
+summary: TiDB 支持 MySQL 8.0 中提供的大部分 JSON 函数。
 ---
 
 # JSON 函数
 
-TiDB 支持 MySQL 5.7 GA 版本发布的大多数 JSON 函数。
+TiDB 支持 MySQL 8.0 中提供的大部分 [JSON 函数](https://dev.mysql.com/doc/refman/8.0/en/json-functions.html)。
 
 ## 创建 JSON 值的函数
 
@@ -34,18 +35,16 @@ TiDB 支持 MySQL 5.7 GA 版本发布的大多数 JSON 函数。
 | 函数        | 功能描述 |
 | --------------------------------- | ----------- |
 | [JSON_APPEND(json_doc, path, value)](https://dev.mysql.com/doc/refman/8.0/en/json-modification-functions.html#function_json-append) | `JSON_ARRAY_APPEND` 的别名 |
-| [JSON_ARRAY_APPEND(json_doc, path, value)](https://dev.mysql.com/doc/refman/8.0/en/json-modification-functions.html#function_json-array-append) | 将值追加到指定路径的 JSON 数组的末尾 |
-| [JSON_ARRAY_INSERT(json_doc, path, val[, path, val] ...)](https://dev.mysql.com/doc/refman/8.0/en/json-modification-functions.html#function_json-array-insert) | 将数组插入 JSON 文档，并返回修改后的文档 |
+| [JSON_ARRAY_APPEND(json_doc, path, val[, path, val] ...)](https://dev.mysql.com/doc/refman/8.0/en/json-modification-functions.html#function_json-array-append) | 将值添加到 JSON 文档指定数组的末尾，并返回添加结果 |
+| [JSON_ARRAY_INSERT(json_doc, path, val[, path, val] ...)](https://dev.mysql.com/doc/refman/8.0/en/json-modification-functions.html#function_json-array-insert) | 将值插入到 JSON 文档中的指定位置并返回结果 |
 | [JSON_INSERT(json_doc, path, val[, path, val] ...)](https://dev.mysql.com/doc/refman/8.0/en/json-modification-functions.html#function_json-insert) | 在 JSON 文档中在某一路径下插入子文档 |
-| [JSON_MERGE(json_doc, json_doc[, json_doc] ...)](https://dev.mysql.com/doc/refman/8.0/en/json-modification-functions.html#function_json-merge)  | 已废弃的 `JSON_MERGE_PRESERVE` 别名 |
 | [JSON_MERGE_PATCH(json_doc, json_doc[, json_doc] ...)](https://dev.mysql.com/doc/refman/8.0/en/json-modification-functions.html#function_json-merge-patch)  | 合并 JSON 文档 |
 | [JSON_MERGE_PRESERVE(json_doc, json_doc[, json_doc] ...)](https://dev.mysql.com/doc/refman/8.0/en/json-modification-functions.html#function_json-merge-preserve)  | 将两个或多个 JSON 文档合并成一个文档，并返回合并结果 |
+| [JSON_MERGE(json_doc, json_doc[, json_doc] ...)](https://dev.mysql.com/doc/refman/8.0/en/json-modification-functions.html#function_json-merge)  | 已废弃，`JSON_MERGE_PRESERVE` 的别名 |
 | [JSON_REMOVE(json_doc, path[, path] ...)](https://dev.mysql.com/doc/refman/8.0/en/json-modification-functions.html#function_json-remove)    | 移除 JSON 文档中某一路径下的子文档 |
 | [JSON_REPLACE(json_doc, path, val[, path, val] ...)](https://dev.mysql.com/doc/refman/8.0/en/json-modification-functions.html#function_json-replace) | 替换 JSON 文档中的某一路径下的子文档 |
 | [JSON_SET(json_doc, path, val[, path, val] ...)](https://dev.mysql.com/doc/refman/8.0/en/json-modification-functions.html#function_json-set)  | 在 JSON 文档中为某一路径设置子文档 |
 | [JSON_UNQUOTE(json_val)](https://dev.mysql.com/doc/refman/8.0/en/json-modification-functions.html#function_json-unquote) |  去掉 JSON 值外面的引号，返回结果为字符串 |
-| [JSON_ARRAY_APPEND(json_doc, path, val[, path, val] ...)](https://dev.mysql.com/doc/refman/8.0/en/json-modification-functions.html#function_json-array-append) | 将值添加到 JSON 文档指定数组的末尾，并返回添加结果 |
-| [JSON_ARRAY_INSERT(json_doc, path, val[, path, val] ...)](https://dev.mysql.com/doc/refman/8.0/en/json-modification-functions.html#function_json-array-insert) | 将值插入到 JSON 文档的指定位置，并返回插入结果 |
 
 ## 返回 JSON 值属性的函数
 
@@ -75,3 +74,12 @@ TiDB 支持 MySQL 5.7 GA 版本发布的大多数 JSON 函数。
 
 * [JSON Function Reference](https://dev.mysql.com/doc/refman/8.0/en/json-function-reference.html)
 * [JSON Data Type](/data-type-json.md)
+
+## 不支持的函数
+
+- `JSON_SCHEMA_VALID()`
+- `JSON_SCHEMA_VALIDATION_REPORT()`
+- `JSON_TABLE()`
+- `JSON_VALUE()`
+
+更多信息，请参考 [#14486](https://github.com/pingcap/tidb/issues/14486)。

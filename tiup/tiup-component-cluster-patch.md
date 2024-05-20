@@ -1,5 +1,6 @@
 ---
 title: tiup cluster patch
+summary: tiup cluster patch 命令用于在集群运行过程中动态替换某个服务的二进制文件。它会上传替换的二进制包到目标机器，并通过 API 下线节点，停止目标服务，解压替换二进制包，最后启动目标服务。在使用命令前需要准备二进制包，包括确定组件名、版本、操作系统和平台，下载组件包，创建临时打包目录，解压原二进制包，复制要替换的文件到临时目录，最后打包所有文件。命令还包括一些选项，如 --overwrite、--transfer-timeout、-N、-R、--offline 等。
 ---
 
 # tiup cluster patch
@@ -28,7 +29,7 @@ tiup cluster patch <cluster-name> <package-path> [flags]
 1. 确定以下变量的值：
 
     - `${component}`：需要替换的组件名（例如 `tidb`、`tikv`、`pd`）。
-    - `${version}`：组件的版本（例如 `v7.4.0`、`v6.5.3`）。
+    - `${version}`：组件的版本（例如 `v8.0.0`、`v7.5.1`）。
     - `${os}`：操作系统 (`linux`)。
     - `${arch}`：组件运行的平台 (`amd64`、`arm64`)。
 2. 下载当前的组件包：

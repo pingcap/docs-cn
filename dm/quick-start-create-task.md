@@ -69,7 +69,7 @@ docker run --rm --name mysql-3307 -p 3307:3307 -e MYSQL_ALLOW_EMPTY_PASSWORD=tru
 {{< copyable "shell-regular" >}}
 
 ```bash
-wget https://download.pingcap.org/tidb-community-server-v7.4.0-linux-amd64.tar.gz
+wget https://download.pingcap.org/tidb-community-server-v8.0.0-linux-amd64.tar.gz
 tar -xzvf tidb-latest-linux-amd64.tar.gz
 mv tidb-latest-linux-amd64/bin/tidb-server ./
 ./tidb-server -P 4000 --store mocktikv --log-file "./tidb.log" &
@@ -91,6 +91,10 @@ mv tidb-latest-linux-amd64/bin/tidb-server ./
 > + DM v1.0.6 及其以后版本可以使用明文密码配置 source 信息。
 
 为了安全，可配置及使用加密后的密码。使用 dmctl 对 MySQL/TiDB 的密码进行加密，以密码为 "123456" 为例：
+
+> **注意：**
+>
+> 从 v8.0.0 开始，DM-master 必须配置 [`secret-key-path`](/dm/dm-master-configuration-file.md) 后才可使用 `dmctl encrypt` 命令。
 
 {{< copyable "shell-regular" >}}
 

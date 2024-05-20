@@ -55,20 +55,33 @@ DM 支持部署和运行在 Intel x86-64 架构的 64 位通用硬件服务器�
 - 索引会占据额外的空间
 - RocksDB 的空间放大效应
 
-可以用下面 SQL 语句统计信息表的 data_length 字段估算数据量：
-
-统计所有 schema 大小，单位 MiB，注意修改 ${schema_name}
-
-{{< copyable "sql" >}}
+可以用下面 SQL 语句统计信息表的 `DATA_LENGTH` 字段估算数据量：
 
 ```sql
-select table_schema,sum(data_length)/1024/1024 as data_length,sum(index_length)/1024/1024 as index_length,sum(data_length+index_length)/1024/1024 as sum from information_schema.tables where table_schema = "${schema_name}" group by table_schema;
-```
+-- 统计所有 schema 大小
+SELECT
+  TABLE_SCHEMA,
+  FORMAT_BYTES(SUM(DATA_LENGTH)) AS 'Data Size',
+  FORMAT_BYTES(SUM(INDEX_LENGTH)) 'Index Size'
+FROM
+  information_schema.tables
+GROUP BY
+  TABLE_SCHEMA;
 
-统计最大单表，单位 MiB，注意修改 ${schema_name}
-
-{{< copyable "sql" >}}
-
-```sql
-select table_name,table_schema,sum(data_length)/1024/1024 as data_length,sum(index_length)/1024/1024 as index_length,sum(data_length+index_length)/1024/1024 as sum from information_schema.tables where table_schema = "${schema_name}" group by table_name,table_schema order by sum  desc limit 5;
+-- 统计最大的 5 个单表
+SELECT
+  TABLE_NAME,
+  TABLE_SCHEMA,
+  FORMAT_BYTES(SUM(data_length)) AS 'Data Size',
+  FORMAT_BYTES(SUM(index_length)) AS 'Index Size',
+  FORMAT_BYTES(SUM(data_length+index_length)) AS 'Total Size'
+FROM
+  information_schema.tables
+GROUP BY
+  TABLE_NAME,
+  TABLE_SCHEMA
+ORDER BY
+  SUM(DATA_LENGTH+INDEX_LENGTH) DESC
+LIMIT
+  5;
 ```

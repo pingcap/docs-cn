@@ -1,6 +1,7 @@
 ---
 title: TiDB 软件和硬件环境建议配置
 aliases: ['/docs-cn/dev/hardware-and-software-requirements/','/docs-cn/dev/how-to/deploy/hardware-recommendations/']
+summary: TiDB 是一款开源的一站式实时 HTAP 数据库，支持部署在多种硬件环境和操作系统上。软件和硬件环境建议配置包括操作系统要求、编译和运行依赖库、Docker 镜像依赖、软件配置要求、服务器建议配置、网络要求、磁盘空间要求、客户端 Web 浏览器要求以及 TiFlash 存算分离架构的软硬件要求。
 ---
 
 # TiDB 软件和硬件环境建议配置
@@ -22,17 +23,17 @@ TiDB 作为一款开源一栈式实时 HTAP 数据库，可以很好地部署和
 | Red Hat Enterprise Linux 8.4 及以上的 8.x 版本  |  <ul><li>x86_64</li><li>ARM 64</li></ul>  |
 | <ul><li>Red Hat Enterprise Linux 7.3 及以上的 7.x 版本</li><li>CentOS 7.3 及以上的 7.x 版本</li></ul>  |  <ul><li>x86_64</li><li>ARM 64</li></ul>   |
 |  Amazon Linux 2         |  <ul><li>x86_64</li><li>ARM 64</li></ul>   |
+|  Rocky Linux 9.1 及以上的版本 |  <ul><li>x86_64</li><li>ARM 64</li></ul> |
 | 麒麟欧拉版 V10 SP1/SP2   |   <ul><li>x86_64</li><li>ARM 64</li></ul>   |
 | 统信操作系统 (UOS) V20                 |   <ul><li>x86_64</li><li>ARM 64</li></ul>   |
-| openEuler 22.03 LTS SP1 |   <ul><li>x86_64</li><li>ARM 64</li></ul>   |
+| openEuler 22.03 LTS SP1/SP3 |   <ul><li>x86_64</li><li>ARM 64</li></ul>   |
 | macOS 12 (Monterey) 及以上的版本 |  <ul><li>x86_64</li><li>ARM 64</li></ul>  |
-|  Oracle Enterprise Linux 7.3 及以上的 7.x 版本  |  x86_64           |
-|   Ubuntu LTS 18.04 及以上的版本  |  x86_64           |
+|  Oracle Enterprise Linux 8 及以上的版本  |  x86_64           |
+|   Ubuntu LTS 20.04 及以上的版本  |  x86_64           |
 | CentOS 8 Stream | <ul><li>x86_64</li><li>ARM 64</li></ul> |
-|  Debian 9 (Stretch) 及以上的版本  |  x86_64           |
-|  Fedora 35 及以上的版本   |  x86_64           |
-|  openSUSE Leap 15.3 以上的版本（不包含 Tumbleweed） |  x86_64           |
-|  Rocky Linux 9.1 及以上的版本 |  <ul><li>x86_64</li><li>ARM 64</li></ul> |
+|  Debian 10 (Buster) 及以上的版本  |  x86_64           |
+|  Fedora 38 及以上的版本   |  x86_64           |
+|  openSUSE Leap 15.5 以上的版本（不包含 Tumbleweed） |  x86_64           |
 |  SUSE Linux Enterprise Server 15  |  x86_64                        |
 
 > **注意：**
@@ -48,7 +49,7 @@ TiDB 作为一款开源一栈式实时 HTAP 数据库，可以很好地部署和
 |  编译和构建 TiDB 所需的依赖库   |  版本   |
 |   :---   |   :---   |
 |   Golang  |  1.21 及以上版本  |
-|   Rust    |   nightly-2022-07-31 及以上版本  |
+|   Rust    |   nightly-2023-12-28 及以上版本  |
 |  GCC      |   7.x      |
 |  LLVM     |  13.0 及以上版本  |
 
@@ -58,7 +59,7 @@ TiDB 作为一款开源一栈式实时 HTAP 数据库，可以很好地部署和
 
 支持的 CPU 架构如下：
 
-- x86_64，从 TiDB v6.6.0 开始，需要 [x84-64-v2 指令集](https://developers.redhat.com/blog/2021/01/05/building-red-hat-enterprise-linux-9-for-the-x86-64-v2-microarchitecture-level)
+- x86_64，从 TiDB v6.6.0 开始，需要 [x86-64-v2 指令集](https://developers.redhat.com/blog/2021/01/05/building-red-hat-enterprise-linux-9-for-the-x86-64-v2-microarchitecture-level)
 - ARM 64
 
 ## 软件配置要求
@@ -90,7 +91,7 @@ TiDB 支持部署和运行在 Intel x86-64 架构的 64 位通用硬件服务器
 
 | **组件** | **CPU** | **内存** | **本地存储** | **网络** | **实例数量(最低要求)** |
 | --- | --- | --- | --- | --- | --- |
-| TiDB | 8 核+ | 16 GB+ | 无特殊要求 | 千兆网卡 | 1（可与 PD 同机器） |
+| TiDB | 8 核+ | 16 GB+ | [磁盘空间要求](#磁盘空间要求) | 千兆网卡 | 1（可与 PD 同机器） |
 | PD | 4 核+ | 8 GB+ | SAS, 200 GB+ | 千兆网卡 | 1（可与 TiDB 同机器） |
 | TiKV | 8 核+ | 32 GB+ | SSD, 200 GB+ | 千兆网卡 | 3 |
 | TiFlash | 32 核+ | 64 GB+ | SSD, 200 GB+ | 千兆网卡 | 1 |
@@ -102,7 +103,6 @@ TiDB 支持部署和运行在 Intel x86-64 架构的 64 位通用硬件服务器
 > - 如进行性能相关的测试，避免采用低性能存储和网络硬件配置，防止对测试结果的正确性产生干扰。
 > - TiKV 的 SSD 盘推荐使用 NVME 接口以保证读写更快。
 > - 如果仅验证功能，建议使用 [TiDB 数据库快速上手指南](/quick-start-with-tidb.md)进行单机功能测试。
-> - TiDB 对于磁盘的使用以存放日志为主，因此在测试环境中对于磁盘类型和容量并无特殊要求。
 > - 从 v6.3.0 开始，在 Linux AMD64 架构的硬件平台部署 TiFlash 时，CPU 必须支持 AVX2 指令集。确保命令 `cat /proc/cpuinfo | grep avx2` 有输出。而在 Linux ARM64 架构的硬件平台部署 TiFlash 时，CPU 必须支持 ARMv8 架构。确保命令 `cat /proc/cpuinfo | grep 'crc32' | grep 'asimd'` 有输出。通过使用向量扩展指令集，TiFlash 的向量化引擎能提供更好的性能。
 
 ### 生产环境
@@ -167,7 +167,7 @@ TiDB 作为开源一栈式实时 HTAP 数据库，其正常运行需要网络环
 
 | 组件 | 磁盘空间要求 | 健康水位使用率 |
 | :-- | :-- | :-- |
-| TiDB | <ul><li>日志盘建议最少预留 30 GB。</li> <li>v6.5.0 及以上版本默认启用了 Fast Online DDL 对添加索引等 DDL 操作进行加速（通过变量 [`tidb_ddl_enable_fast_reorg`](/system-variables.md#tidb_ddl_enable_fast_reorg-从-v630-版本开始引入) 控制）。如果业务中可能存在针对大对象的 DDL 操作，推荐为 TiDB 准备额外的 SSD 磁盘空间（建议 100 GB+）。配置方式详见[设置 TiDB 节点的临时空间](/check-before-deployment.md#设置-tidb-节点的临时空间推荐)。</li></ul>| 低于 90% |
+| TiDB | <ul><li>日志盘建议最少预留 30 GB。</li> <li>v6.5.0 及以上版本默认启用了 Fast Online DDL 对添加索引等 DDL 操作进行加速（通过变量 [`tidb_ddl_enable_fast_reorg`](/system-variables.md#tidb_ddl_enable_fast_reorg-从-v630-版本开始引入) 控制）。如果业务中可能存在针对大对象的 DDL 操作，或需要使用 [<code>IMPORT INTO</code>](/sql-statements/sql-statement-import-into.md) SQL 语句导入数据，推荐为 TiDB 准备额外的 SSD 磁盘空间（建议 100 GB+）。配置方式详见[设置 TiDB 节点的临时空间](/check-before-deployment.md#设置-tidb-节点的临时空间推荐)。</li></ul>| 低于 90% |
 | PD | 数据盘和日志盘建议最少各预留 20 GB | 低于 90% |
 | TiKV | 数据盘和日志盘建议最少各预留 100 GB | 低于 80% |
 | TiFlash | 数据盘建议最少预留 100 GB，日志盘建议最少预留 30 GB | 低于 80% |
@@ -176,4 +176,33 @@ TiDB 作为开源一栈式实时 HTAP 数据库，其正常运行需要网络环
 
 ## 客户端 Web 浏览器要求
 
-TiDB 提供了基于 [Grafana](https://grafana.com/) 的技术平台，对数据库集群的各项指标进行可视化展现。采用支持 Javascript 的微软 IE、Google Chrome、Mozilla Firefox 的较新版本即可访问监控入口。
+TiDB 提供了基于 [Grafana](https://grafana.com/) 的技术平台，对数据库集群的各项指标进行可视化展现。采用支持 Javascript 的微软 Edge、Apple Safari、Google Chrome、Mozilla Firefox 的较新版本即可访问监控入口。
+
+## TiFlash 存算分离架构的软硬件要求
+
+上面的 TiFlash 软硬件要求是针对存算一体架构的。从 v7.0.0 开始，TiFlash 支持[存算分离架构](/tiflash/tiflash-disaggregated-and-s3.md)，该架构下 TiFlash 分为 Write Node 和 Compute Node 两个角色，对应的软硬件要求如下：
+
+- 软件：与存算一体架构一致，详见[操作系统及平台要求](#操作系统及平台要求)。
+- 网络端口：与存算一体架构一致，详见[网络要求](#网络要求)。
+- 磁盘空间：
+    - TiFlash Write Node：推荐 200 GB+，用作增加 TiFlash 副本、Region 副本迁移时向 Amazon S3 上传数据前的本地缓冲区。此外，还需要一个与 Amazon S3 兼容的对象存储。
+    - TiFlash Compute Node：推荐 100 GB+，主要用于缓存从 Write Node 读取的数据以提升性能。Compute Node 的缓存可能会被完全使用，这是正常现象。
+- CPU 以及内存等要求参考下文。
+
+### 开发及测试环境
+
+| 组件 | CPU | 内存 | 本地存储 | 网络 | 实例数量（最低要求） |
+| --- | --- | --- | --- | --- | --- |
+| TiFlash Write Node | 16 核+ | 32 GB+ | SSD, 200 GB+ | 千兆网卡 | 1 |
+| TiFlash Compute Node | 16 核+ | 32 GB+ | SSD, 100 GB+ | 千兆网卡 | 0（参见下文“注意”说明） |
+
+### 生产环境
+
+| 组件 | CPU | 内存 | 硬盘类型 | 网络 | 实例数量（最低要求） |
+| --- | --- | --- | --- | --- | --- |
+| TiFlash Write Node | 32 核+ | 64 GB+ | SSD, 200 GB+ | 万兆网卡（2 块最佳） | 2 |
+| TiFlash Compute Node | 32 核+ | 64 GB+ | SSD, 100 GB+  | 万兆网卡（2 块最佳） | 0（参见下文“注意”说明） |
+
+> **注意：**
+>
+> TiFlash Compute Node 可以使用 TiUP 等部署工具快速扩缩容，扩缩容范围是 `[0, +inf]`。

@@ -23,7 +23,7 @@ summary: 使用命令行配置 TiDB Lightning。
 | --backend [*backend*](/tidb-lightning/tidb-lightning-overview.md) | 选择导入的模式：`local` 为[物理导入模式](/tidb-lightning/tidb-lightning-physical-import-mode.md)，`tidb` 为[逻辑导入模式](/tidb-lightning/tidb-lightning-logical-import-mode.md) | `tikv-importer.backend` |
 | --log-file *file* | 日志文件路径（默认值为 `/tmp/lightning.log.{timestamp}`，设置为 '-' 表示日志输出到终端） | `lightning.log-file` |
 | --status-addr *ip:port* | TiDB Lightning 服务器的监听地址 | `lightning.status-port` |
-| --pd-urls *host:port* | PD endpoint 的地址 | `tidb.pd-addr` |
+| --pd-urls *host1:port1,host2:port2,...,hostn:portn* | PD endpoint 的地址。从 v7.6.0 开始支持设置多个地址。 | `tidb.pd-addr` |
 | --tidb-host *host* | TiDB Server 的 host | `tidb.host` |
 | --tidb-port *port* | TiDB Server 的端口（默认为 4000） | `tidb.port` |
 | --tidb-status *port* | TiDB Server 的状态端口的（默认为 10080） | `tidb.status-port` |
@@ -38,7 +38,7 @@ summary: 使用命令行配置 TiDB Lightning。
 | --key *file* | TLS 连接的私钥路径 | `security.key-path` |
 | --server-mode | 在服务器模式下启动 TiDB Lightning | `lightning.server-mode` |
 
-如果同时对命令行参数和配置文件中的对应参数进行更改，命令行参数将优先生效。例如，在 `cfg.toml` 文件中，不管对日志等级做出什么修改，运行 `./tidb-lightning -L debug --config cfg.toml` 命令总是将日志级别设置为 “debug”。
+如果同时对命令行参数和配置文件中的对应参数进行更改，命令行参数将优先生效。例如，在 `cfg.toml` 文件中，不管对日志等级做出什么修改，运行 `tiup tidb-lightning -L debug --config cfg.toml` 命令总是将日志级别设置为 “debug”。
 
 ### `tidb-lightning-ctl`
 

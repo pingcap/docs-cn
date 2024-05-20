@@ -12,10 +12,14 @@ aliases: ['/docs-cn/tidb-data-migration/dev/manage-source/']
 
 在 DM 相关配置文件中，推荐使用经 dmctl 加密后的密码。对于同一个原始密码，每次加密后密码不同。
 
+> **注意：**
+>
+> 从 v8.0.0 开始，DM-master 必须配置 [`secret-key-path`](/dm/dm-master-configuration-file.md) 后才可使用 `dmctl encrypt` 命令。
+
 {{< copyable "shell-regular" >}}
 
 ```bash
-./dmctl -encrypt 'abc!@#123'
+./dmctl encrypt 'abc!@#123'
 ```
 
 ```

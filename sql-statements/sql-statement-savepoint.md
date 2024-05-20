@@ -35,6 +35,19 @@ RELEASE SAVEPOINT identifier
 
     当事务提交或者回滚后，事务中所有保存点都会被删除。
 
+## 语法图
+
+```ebnf+diagram
+SavepointStmt ::=
+    "SAVEPOINT" Identifier
+
+RollbackToStmt ::=
+    "ROLLBACK" "TO" "SAVEPOINT"? Identifier
+
+ReleaseSavepointStmt ::=
+    "RELEASE" "SAVEPOINT" Identifier
+```
+
 ## 示例
 
 创建表 `t1`：
@@ -139,6 +152,8 @@ SELECT * FROM t1;
 ## MySQL 兼容性
 
 使用 `ROLLBACK TO SAVEPOINT` 语句将事物回滚到指定保存点时，MySQL 会释放该保存点之后才持有的锁，但在 TiDB 悲观事务中，不会立即释放该保存点之后才持有的锁，而是等到事务提交或者回滚时，才释放全部持有的锁。
+
+TiDB 不支持 MySQL 中的 `ROLLBACK WORK TO SAVEPOINT ...` 语法。
 
 ## 另请参阅
 

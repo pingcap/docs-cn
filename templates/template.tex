@@ -8,6 +8,8 @@ $if(linestretch)$
 \usepackage{setspace}
 \setstretch{$linestretch$}
 $endif$
+\usepackage{etoolbox}
+\usepackage{xstring}
 \usepackage{amssymb,amsmath}
 \usepackage{ifxetex,ifluatex}
 \usepackage{fixltx2e} % provides \textsubscript
@@ -68,6 +70,7 @@ $if(listings)$
 \usepackage{xcolor}
 \usepackage{listings}
 \lstset{
+    literate={_}{\_}1,
     basicstyle=\ttfamily,
     keywordstyle=\color[rgb]{0.13,0.29,0.53}\bfseries,
     stringstyle=\color[rgb]{0.31,0.60,0.02},
@@ -92,6 +95,14 @@ $if(verbatim-in-note)$
 $endif$
 $if(tables)$
 \usepackage{longtable,booktabs}
+% set table to left-aligned
+\setlength\LTleft{0pt}
+\setlength\LTright{0pt}
+% fill the columns to page width
+\makeatletter
+\patchcmd\LT@array{\tabskip\z@}{\extracolsep{\fill}}
+\makeatletter
+
 $endif$
 $if(graphics)$
 \usepackage{graphicx,grffile}
@@ -113,8 +124,8 @@ $endif$
 \fi
 \hypersetup{breaklinks=true,
             bookmarks=true,
-            pdfauthor={$author-meta$},
-            pdftitle={$title-meta$},
+            pdfauthor={$author$},
+            pdftitle={$title$},
             colorlinks=true,
             citecolor=$if(citecolor)$$citecolor$$else$blue$endif$,
             urlcolor=$if(urlcolor)$$urlcolor$$else$blue$endif$,

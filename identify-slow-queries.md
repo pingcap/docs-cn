@@ -1,6 +1,7 @@
 ---
 title: 慢查询日志
 aliases: ['/docs-cn/dev/identify-slow-queries/','/docs-cn/dev/how-to/maintain/identify-abnormal-queries/identify-slow-queries/','/docs-cn/sql/slow-query/','/docs-cn/dev/how-to/maintain/identify-slow-queries/']
+summary: TiDB 会将执行时间超过 300 毫秒的语句输出到慢查询日志中，用于帮助用户定位慢查询语句。可以通过修改系统变量来启用或禁用慢查询日志。日志示例包括执行时间、用户信息、执行计划等字段。用户可通过查询 SLOW_QUERY 表来查询慢查询日志中的内容。还可以使用 pt-query-digest 工具分析 TiDB 慢日志。ADMIN SHOW SLOW 命令可以显示最近的慢查询记录或最慢的查询记录。
 ---
 
 # 慢查询日志
@@ -159,6 +160,13 @@ Slow Query 基础信息：
 * `tiflashServerBusy`：因为 TiFlash 负载太高无法处理新请求而产生的 backoff。
 * `tikvDiskFull`：因为 TiKV 的磁盘满了而产生的 backoff。
 * `txnLockFast`：因为读数据时遇到了锁而产生的 backoff。
+
+和资源管控相关的字段：
+
+* `Resource_group`：语句执行所绑定的资源组。
+* `Request_unit_read`：执行语句消耗的总读 RU。
+* `Request_unit_write`：执行语句消耗的总写 RU。
+* `Time_queued_by_rc`：执行语句过程中等待可用资源的总耗时。
 
 ## 相关系统变量
 
@@ -609,7 +617,7 @@ ADMIN SHOW SLOW TOP all 5;
 | details | 执行语句的详细信息 |
 | succ | SQL 语句执行是否成功，1：成功，0：失败 |
 | conn_id | session 连接 ID |
-| transaction_ts | 事务提交的 commit ts |
+| transaction_ts | 事务的 start ts |
 | user | 执行该语句的用户名 |
 | db | 执行该 SQL 涉及到 database |
 | table_ids | 执行该 SQL 涉及到表的 ID |

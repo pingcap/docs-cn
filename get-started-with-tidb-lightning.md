@@ -1,54 +1,71 @@
 ---
-title: TiDB Lightning 教程
+title: TiDB Lightning 快速上手
 aliases: ['/docs-cn/dev/get-started-with-tidb-lightning/','/docs-cn/dev/how-to/get-started/tidb-lightning/']
+summary: TiDB Lightning 可快速将 MySQL 数据导入到 TiDB 集群中。首先使用 Dumpling 导出数据，然后部署 TiDB 集群。安装最新版本的 TiDB Lightning 并启动，最后检查数据导入情况。详细功能和使用请参考 TiDB Lightning 简介。
 ---
 
 # TiDB Lightning 快速上手
 
-本教程假设使用的是若干新的、纯净版 CentOS 7 实例，你可以（使用 VMware、VirtualBox 及其他工具）在本地虚拟化或在供应商提供的平台上部署一台小型的云虚拟主机。因为 TiDB Lightning 对计算机资源消耗较高，建议分配 16 GB 以上的内存以及 32 核以上的 CPU 以获取最佳性能。
+本文档介绍如何快速上手 TiDB Lightning，将 MySQL 数据导入到 TiDB 集群中。
 
 > **警告：**
 >
 > 本教程中的部署方法只适用于测试及功能体验，并不适用于生产或开发环境。
 
-## 准备全量备份数据
+## 第 1 步：准备全量备份数据
 
-我们使用 [`dumpling`](/dumpling-overview.md) 从 MySQL 导出数据，如下：
+你可以使用 [Dumpling](/dumpling-overview.md) 从 MySQL 导出数据。
 
-{{< copyable "shell-regular" >}}
-
-```sh
-tiup dumpling -h 127.0.0.1 -P 3306 -u root -t 16 -F 256MB -B test -f 'test.t[12]' -o /data/my_database/
-```
-
-其中：
-
-- `-B test`：从 `test` 数据库导出。
-- `-f test.t[12]`：只导出 `test.t1` 和 `test.t2` 这两个表。
-- `-t 16`：使用 16 个线程导出数据。
-- `-F 256MB`：将每张表切分成多个文件，每个文件大小约为 256 MB。
-
-这样全量备份数据就导出到了 `/data/my_database` 目录中。
-
-## 部署 TiDB Lightning
-
-### 第 1 步：部署 TiDB 集群
-
-在开始数据导入之前，需先部署一套要进行导入的 TiDB 集群。本教程以 TiDB v5.4.0 版本为例，具体部署方法可参考[使用 TiUP 部署 TiDB 集群](/production-deployment-using-tiup.md)。
-
-### 第 2 步：下载 TiDB Lightning 安装包
-
-TiDB Lightning 的安装包位于 TiDB 离线工具包中。下载方式，请参考 [TiDB 工具下载](/download-ecosystem-tools.md)。
-
-### 第 3 步：启动 `tidb-lightning`
-
-1. 将安装包里的 `bin/tidb-lightning` 及 `bin/tidb-lightning-ctl` 上传至部署 TiDB Lightning 的服务器。
-
-2. 将数据源也上传到同样的服务器。
-
-3. 配置 `tidb-lightning.toml`。
+1. 运行 `tiup --version` 检查是否已安装 TiUP。如果已经安装 TiUP，跳过这一步。如果没有安装 TiUP，运行以下命令：
 
     ```
+    curl --proto '=https' --tlsv1.2 -sSf https://tiup-mirrors.pingcap.com/install.sh | sh
+    ```
+
+2. 使用 TiUP 安装 Dumpling：
+
+    ```shell
+    tiup install dumpling
+    ```
+
+3. 从 MySQL 导出数据，详细步骤可参考[使用 Dumpling 导出数据](/dumpling-overview.md#导出为-sql-文件)：
+
+    ```sh
+    tiup dumpling -h 127.0.0.1 -P 3306 -u root -t 16 -F 256MB -B test -f 'test.t[12]' -o /data/my_database/
+    ```
+
+    其中：
+
+    - `-t 16`：使用 16 个线程导出数据。
+    - `-F 256MB`：将每张表切分成多个文件，每个文件大小约为 256 MB。
+    - `-B test`：从 `test` 数据库导出。
+    - `-f 'test.t[12]'`：只导出 `test.t1` 和 `test.t2` 这两个表。
+
+    导出的全量备份数据将保存在 `/data/my_database` 目录中。
+
+## 第 2 步：部署 TiDB 集群
+
+在开始导入数据之前，你需要先部署一个要进行导入的 TiDB 集群。如果你已经有 TiDB 集群，可以跳过这一步。
+
+关于部署 TiDB 集群的步骤，请参考 [TiDB 数据库快速上手指南](/quick-start-with-tidb.md)。
+
+## 第 3 步：安装 TiDB Lightning
+
+运行如下命令，安装 TiDB Lightning 的最新版本：
+
+```shell
+tiup install tidb-lightning
+```
+
+## 第 4 步：启动 TiDB Lightning
+
+> **注意：**
+>
+> 本节的导入方法只适用于测试及功能体验，生产环境请参考[从大数据量 MySQL 迁移数据到 TiDB](/migrate-large-mysql-to-tidb.md#第-2-步导入全量数据到-tidb)。
+
+1. 创建配置文件 `tidb-lightning.toml`，并根据你的集群信息填写如下配置：
+
+    ```toml
     [lightning]
     # 日志
     level = "info"
@@ -75,20 +92,18 @@ TiDB Lightning 的安装包位于 TiDB 离线工具包中。下载方式，请�
     password = "rootroot"
     # 表架构信息在从 TiDB 的“状态端口”获取。
     status-port = 10080
-    # 集群 pd 的地址
-    pd-addr = "172.16.31.3:2379"
+    # 集群 pd 的地址。从 v7.6.0 开始支持设置多个地址。
+    pd-addr = "172.16.31.3:2379,56.78.90.12:3456"
     ```
 
-4. 配置合适的参数运行 `tidb-lightning`。如果直接在命令行中用 `nohup` 启动程序，可能会因为 SIGHUP 信号而退出，建议把 `nohup` 放到脚本里面，如：
+2. 运行 `tidb-lightning`。为避免直接在命令行使用 `nohup` 启动程序时因 `SIGHUP` 信号导致的程序退出，建议将 `nohup` 命令放入脚本中。示例如下：
 
-    {{< copyable "shell-regular" >}}
-
-    ```sh
+    ```shell
     #!/bin/bash
     nohup tiup tidb-lightning -config tidb-lightning.toml > nohup.out &
     ```
 
-### 第 4 步：检查数据
+## 第 5 步：检查数据
 
 导入完毕后，TiDB Lightning 会自动退出。若导入成功，日志的最后一行会显示 `tidb lightning exit`。
 

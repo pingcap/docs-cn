@@ -1,5 +1,6 @@
 ---
 title: TiDB 5.3.4 Release Notes
+summary: TiDB 5.3.4 发布，提升了 TiKV 的自动 TLS 证书重新加载功能。修复了 TiDB、PD 和 TiFlash 的多个 bug，包括 Region 合并、权限清理、连接失败等问题。同时修复了工具 Dumpling 和 TiCDC 的导出数据和同步任务状态不正确的问题。
 ---
 
 # TiDB 5.3.4 Release Notes

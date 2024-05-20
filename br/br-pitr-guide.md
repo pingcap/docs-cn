@@ -19,11 +19,11 @@ aliases: ['/zh/tidb/dev/pitr-usage/']
 > - 以下场景采用 Amazon S3 Access key 和 Secret key 授权方式来进行模拟。如果使用 IAM Role 授权，需要设置 `--send-credentials-to-tikv` 为 `false`。
 > - 如果使用不同存储或者其他授权方式，请参考[备份存储](/br/backup-and-restore-storages.md)来进行参数调整。
 
-执行 `br log start` 命令启动日志备份任务，一个集群只能启动一个日志备份任务。
+执行 `tiup br log start` 命令启动日志备份任务，一个集群只能启动一个日志备份任务。
 
 ```shell
 tiup br log start --task-name=pitr --pd "${PD_IP}:2379" \
---storage 's3://backup-101/logbackup?access-key=${access-key}&secret-access-key=${secret-access-key}"'
+--storage 's3://backup-101/logbackup?access-key=${access-key}&secret-access-key=${secret-access-key}'
 ```
 
 日志备份任务启动后，会在 TiDB 集群后台持续地运行，直到你手动将其暂停。在这过程中，TiDB 变更数据将以小批量的形式定期备份到指定存储中。如果你需要查询日志备份任务当前状态，执行如下命令：
@@ -48,21 +48,21 @@ checkpoint[global]: 2022-05-13 11:31:47.2 +0800; gap=4m53s
 
 ### 定期执行全量备份
 
-快照备份功能可作为全量备份的方法，运行 `br backup full` 命令可以按照固定的周期（比如 2 天）进行全量备份。
+快照备份功能可作为全量备份的方法，运行 `tiup br backup full` 命令可以按照固定的周期（比如 2 天）进行全量备份。
 
 ```shell
 tiup br backup full --pd "${PD_IP}:2379" \
---storage 's3://backup-101/snapshot-${date}?access-key=${access-key}&secret-access-key=${secret-access-key}"'
+--storage 's3://backup-101/snapshot-${date}?access-key=${access-key}&secret-access-key=${secret-access-key}'
 ```
 
 ## 进行 PITR
 
-如果你想恢复到备份保留期内的任意时间点，可以使用 `br restore point` 命令。执行该命令时，你需要指定**要恢复的时间点**、**恢复时间点之前最近的快照备份**以及**日志备份数据**。br 命令行工具会自动判断和读取恢复需要的数据，然后将这些数据依次恢复到指定的集群。
+如果你想恢复到备份保留期内的任意时间点，可以使用 `tiup br restore point` 命令。执行该命令时，你需要指定**要恢复的时间点**、**恢复时间点之前最近的快照备份**以及**日志备份数据**。br 命令行工具会自动判断和读取恢复需要的数据，然后将这些数据依次恢复到指定的集群。
 
 ```shell
-br restore point --pd "${PD_IP}:2379" \
---storage='s3://backup-101/logbackup?access-key=${access-key}&secret-access-key=${secret-access-key}"' \
---full-backup-storage='s3://backup-101/snapshot-${date}?access-key=${access-key}&secret-access-key=${secret-access-key}"' \
+tiup br restore point --pd "${PD_IP}:2379" \
+--storage='s3://backup-101/logbackup?access-key=${access-key}&secret-access-key=${secret-access-key}' \
+--full-backup-storage='s3://backup-101/snapshot-${date}?access-key=${access-key}&secret-access-key=${secret-access-key}' \
 --restored-ts '2022-05-15 18:00:00+0800'
 ```
 
@@ -80,7 +80,7 @@ Restore KV Files <--------------------------------------------------------------
 
 如[使用指南概览](/br/br-use-overview.md)所述：
 
-* 进行 PITR 不仅需要恢复时间点之前的全量备份，还需要全量备份和恢复时间点之间的日志备份，因此，对于超过备份保留期的日志备份，应执行 `br log truncate` 命令删除指定时间点之前的备份。**建议只清理全量快照之前的日志备份**。
+* 进行 PITR 不仅需要恢复时间点之前的全量备份，还需要全量备份和恢复时间点之间的日志备份，因此，对于超过备份保留期的日志备份，应执行 `tiup br log truncate` 命令删除指定时间点之前的备份。**建议只清理全量快照之前的日志备份**。
 
 你可以按照以下步骤清理超过**备份保留期**的备份数据：
 
@@ -94,18 +94,16 @@ Restore KV Files <--------------------------------------------------------------
 3. 清理该快照备份 `FULL_BACKUP_TS` 之前的日志备份数据。
 
     ```shell
-    tiup br log truncate --until=${FULL_BACKUP_TS} --storage='s3://backup-101/logbackup?access-key=${access-key}&secret-access-key=${secret-access-key}"'
+    tiup br log truncate --until=${FULL_BACKUP_TS} --storage='s3://backup-101/logbackup?access-key=${access-key}&secret-access-key=${secret-access-key}'
     ```
 
 4. 清理该快照备份 `FULL_BACKUP_TS` 之前的快照备份数据。
 
     ```shell
-    rm -rf s3://backup-101/snapshot-${date}
+    aws s3 rm --recursive s3://backup-101/snapshot-${date}
     ```
 
-## PITR 的性能与影响
-
-### 能力指标
+## PITR 的性能指标
 
 - PITR 恢复速度，平均到单台 TiKV 节点：全量恢复为 280 GB/h，日志恢复为 30 GB/h
 - 使用 `br log truncate` 清理过期的日志备份数据速度为 600 GB/h
@@ -121,7 +119,7 @@ Restore KV Files <--------------------------------------------------------------
 > 所有测试集群默认设置 3 副本。
 > 如果想提升整体恢复的性能，可以通过根据实际情况调整 TiKV 配置文件中的 [`import.num-threads`](/tikv-configuration-file.md#import) 配置项以及 BR 命令的 [`concurrency`](/br/use-br-command-line-tool.md#常用选项) 参数。
 
-测试场景 1（[TiDB Cloud](https://tidbcloud.com) 上部署）
+测试场景 1（[TiDB Cloud](https://tidbcloud.com) 上部署）如下：
 
 - TiKV 节点（8 core，16 GB 内存）数量：21
 - TiKV 配置项 `import.num-threads`：8
@@ -130,7 +128,7 @@ Restore KV Files <--------------------------------------------------------------
 - 集群新增日志数据：10 GB/h
 - 写入 (INSERT/UPDATE/DELETE) QPS：10,000
 
-测试场景 2（本地部署）
+测试场景 2（本地部署）如下：
 
 - TiKV 节点（8 core，64 GB 内存）数量：6
 - TiKV 配置项 `import.num-threads`：8

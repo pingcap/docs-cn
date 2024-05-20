@@ -1,6 +1,7 @@
 ---
 title: TiDB Lightning 常见问题
 aliases: ['/docs-cn/dev/tidb-lightning/tidb-lightning-faq/','/docs-cn/dev/faq/tidb-lightning/']
+summary: TiDB Lightning 常见问题的摘要：TiDB Lightning 对TiDB/TiKV/PD 的最低版本要求，支持导入多个库，对下游数据库的账号权限要求，导数据过程中某个表报错不会影响其他表，正确重启 TiDB Lightning 的步骤，校验导入数据的正确性方法，支持的数据源格式，禁止导入不合规数据的方法，结束 tidb-lightning 进程的操作，使用千兆网卡的建议，TiDB Lightning 预留空间的原因，清除与 TiDB Lightning 相关的中间数据的步骤，获取 TiDB Lightning 运行时的 goroutine 信息的方法，TiDB Lightning 不兼容 Placement Rules in SQL 的原因，使用 TiDB Lightning 和 Dumpling 复制 schema 的步骤。
 ---
 
 # TiDB Lightning 常见问题
@@ -175,3 +176,48 @@ CREATE PLACEMENT POLICY p1 PRIMARY_REGION="us-east" REGIONS="us-east,us-west";
 2. 为 TiKV 和 PD 配置必要的 label。
 3. 创建放置规则策略，并将策略应用到目标表上。
 4. 使用 TiDB Lightning 导入数据到目标表。
+
+## 如何使用 TiDB Lightning 和 Dumpling 复制 schema？
+
+如果你想要将一个 schema 的定义和表数据复制到一个新的 schema 中，可以按照以下步骤进行操作。通过下面的示例，你可以了解如何将 `test` schema 复制到一个名为 `test2` 的新 schema 中。
+
+1. 创建原 schema 的备份，使用 `-B test` 来选定需要的 schema。
+
+    ```
+    tiup dumpling -B test -o /tmp/bck1
+    ```
+
+2. 创建 `/tmp/tidb-lightning.toml` 文件，内容如下：
+
+    ```toml
+    [tidb]
+    host = "127.0.0.1"
+    port = 4000
+    user = "root"
+
+    [tikv-importer]
+    backend = "tidb"
+
+    [mydumper]
+    data-source-dir = "/tmp/bck1"
+
+    [[mydumper.files]]
+    pattern = '^[a-z]*\.(.*)\.[0-9]*\.sql$'
+    schema = 'test2'
+    table = '$1'
+    type = 'sql'
+
+    [[mydumper.files]]
+    pattern = '^[a-z]*\.(.*)\-schema\.sql$'
+    schema = 'test2'
+    table = '$1'
+    type = 'table-schema'
+    ```
+
+    在上述配置文件中，如要使用一个和原始备份中不同的 schema 名称，设置 `schema = 'test2'`。文件名用于确定表的名称。
+
+3. 使用上述配置文件运行导入。
+
+    ```
+    tiup tidb-lightning -config /tmp/tidb-lightning.toml
+    ```

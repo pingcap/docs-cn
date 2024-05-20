@@ -19,6 +19,8 @@ summary: 了解如何为 DM 创建数据源。
 
     在 DM 的配置文件中，推荐使用经 dmctl 加密后的密文密码。按照下面的示例可以获得数据源的密文密码，用于下一步编写数据源配置文件。
 
+    从 v8.0.0 开始，DM-master 必须配置 [`secret-key-path`](/dm/dm-master-configuration-file.md) 后才可使用 `tiup dmctl encrypt` 命令。
+
     {{< copyable "shell-regular" >}}
 
     ```bash

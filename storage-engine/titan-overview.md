@@ -1,6 +1,7 @@
 ---
 title: Titan 介绍
 aliases: ['/docs-cn/dev/storage-engine/titan-overview/','/docs-cn/dev/reference/titan/overview/']
+summary: Titan 是基于 RocksDB 的高性能单机 key-value 存储引擎插件。它支持将 value 从 LSM-tree 中分离出来单独存储，以降低写放大。Titan 适合前台写入量较大的场景，但不适合范围查询或对范围查询性能敏感的情况。开启 Titan 需要考虑 value 大小、范围查询敏感性和磁盘空间。从 v7.6.0 开始，TiDB 对 Titan 性能进行了优化，并将其作为默认的存储引擎。Titan 的 GC 方式有传统 GC 和 Level Merge，而 `min-blob-size` 的大小会影响性能。
 ---
 
 # Titan 介绍
@@ -29,6 +30,8 @@ Titan 适合在以下场景中使用：
 - 没有范围查询或者对范围查询性能不敏感。Titan 存储数据的顺序性较差，所以相比 RocksDB 范围查询的性能较差，尤其是大范围查询。在测试中 Titan 范围查询性能相比 RocksDB 下降 40% 到数倍不等。
 - 磁盘剩余空间足够，推荐为相同数据量下 RocksDB 磁盘占用的两倍。Titan 降低写放大是通过牺牲空间放大达到的。另外由于 Titan 逐个压缩 value，压缩率比 RocksDB（逐个压缩 block）要差。这两个因素一起造成 Titan 占用磁盘空间比 RocksDB 要多，这是正常现象。根据实际情况和不同的配置，Titan 磁盘空间占用可能会比 RocksDB 多一倍。
 
+从 v7.6.0 开始，TiDB 对 Titan 性能进行了优化，并将 Titan 作为默认的存储引擎。由于 TiKV 在 Value 较小时会直接存在 RocksDB 中，因此即便是小 Value 也可以打开 Titan。
+
 性能提升请参考 [Titan 的设计与实现](https://pingcap.com/blog-cn/titan-design-and-implementation/#%E5%9F%BA%E5%87%86%E6%B5%8B%E8%AF%95)。
 
 ## 架构与实现
@@ -51,7 +54,7 @@ BlobFile 的实现上有几点值得关注的地方：
 
 + BlobFile 中的 key-value 是有序存放的，目的是在实现 iterator 的时候可以通过 prefetch 的方式提高顺序读取的性能。
 + 每个 blob record 都保留了 value 对应的 user key 的拷贝，这样做的目的是在进行 GC 的时候，可以通过查询 user key 是否更新来确定对应 value 是否已经过期，但同时也带来了一定的写放大。
-+ BlobFile 支持 blob record 粒度的 compression，并且支持多种 compression algorithm，包括 [Snappy](https://github.com/google/snappy)、[LZ4](https://github.com/lz4/lz4) 和 [Zstd](https://github.com/facebook/zstd) 等，目前 Titan 默认使用的 compression algorithm 是 LZ4。
++ BlobFile 支持 blob record 粒度的压缩，并且支持多种压缩算法，包括 [Snappy](https://github.com/google/snappy)、[`lz4`](https://github.com/lz4/lz4) 和 [`zstd`](https://github.com/facebook/zstd)。在 v7.6.0 之前的版本，Titan 默认使用的压缩算法是 `lz4`。v7.6.0 之后，默认使用 `zstd`。
 
 > **注意：**
 >
@@ -117,3 +120,28 @@ Range Merge 是基于 Level Merge 的一个优化。考虑如下两种情况，�
 ![RangeMerge](/media/titan/titan-7.png)
 
 因此需要通过 Range Merge 操作维持 sorted run 在一定水平，即在 OnCompactionComplete 时统计该 range 的 sorted run 数量，若数量过多则将涉及的 BlobFile 标记为 ToMerge，在下一次的 Compaction 中进行重写。
+
+### 扩容与缩容
+
+基于向后兼容的考虑，TiKV 在扩缩容时的 Snapshot 仍然是 RocksDB 的格式。因此扩容后的节点由于一开始全部来自 RocksDB，因此会显示 RocksDB 的特征，比如压缩率会高于老的 TiKV 节点、Store Size 会较小、同时 Compaction 的写放大会相对较大。后续这些 RocksDB 格式的 SST 参与 Compaction 之后逐步转换为 Titan 格式。
+
+### `min-blob-size` 对性能的影响
+
+[`min-blob-size`](/tikv-configuration-file.md#min-blob-size) 是决定一个 Value 是否用 Titan 存储的依据。如果 Value 大于或等于 `min-blob-size`，会用 Titan 存储，反之则用 RocksDB 的原生格式存储。`min-blob-size` 太小或太大都会导致性能下降。
+
+下表格列举了 YCSB 这个负载在不同 `min-blob-size` 值时的 QPS 对比。每一轮测试中测试数据的行宽和 `min-blob-size` 相等，从而确保 Titan 启用时数据保存在 Titan 中。
+
+| 行宽 (Bytes)      | `Point_Get` |  `Point_Get` (Titan)| scan100 | scan100 (Titan)| scan10000 | scan10000 (Titan)| `UPDATE` | `UPDATE` (Titan) |
+| ---------------- | ---------| -------------- | --------| ------------- | --------- | --------------- | ------ | ------------ |
+| 1KB  | 139255 | 140486 | 25171 | 21854 | 533 | 175 | 17913 | 30767 |
+| 2KB | 114201 |124075 | 12466 |11552 |249 |131 |10369 | 27188 |
+| 4KB | 92385   | 103811 | 7918 | 5937 | 131 | 87 | 5327  | 22653 |
+| 8KB  |104380  | 130647 | 7365 | 5402 | 86.6 | 68 | 3180 | 16745 |
+| 16KB | 54234  | 54600  | 4937 | 5174 | 55.4 | 58.9 |1753 | 10120 |
+| 32KB | 31035  |31052  | 2705 | 3422 | 38 | 45.3 | 984 | 5844 |
+
+> **注意：**
+>
+> `scan100` 是指扫描 100 条记录，`scan10000` 是指扫描 10000 条记录。
+
+以上可见，当行宽是 `16KB` 时，Titan 在所有 YCSB 细分负载下上都超过了 RocksDB。然而在一些极端重度扫描场景下，如运行 Dumpling，`16KB` 行宽下 Titan 的性能会有约 10% 的回退。因此，如果负载是以写和点查为主，建议将 `min-blob-size` 调整为 `1KB`；如果负载有大量扫描，建议将 `min-blob-size` 调整为至少 `16KB`。

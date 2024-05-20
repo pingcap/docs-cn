@@ -15,7 +15,7 @@ summary: 介绍了如何解决导入数据过程中的类型转换和冲突错�
 
 - `lightning.max-error`：类型错误的容忍阈值
 - `conflict.strategy`、`conflict.threshold`、`conflict.max-record-rows`：数据冲突错误的相关配置
-- `tikv-importer.duplicate-resolution`：物理导入模式下的冲突处理配置
+- `tikv-importer.duplicate-resolution`（从 v8.0.0 开始已被废弃，并将在未来版本中被移除）：物理导入模式下的冲突处理配置
 - `lightning.task-info-schema-name`：冲突数据存储的库名
 
 相关配置项详情请参考 [TiDB Lightning 任务配置](/tidb-lightning/tidb-lightning-configuration.md#tidb-lightning-任务配置)。
@@ -51,7 +51,7 @@ max-error = 0
 
 ## 冲突错误 (Conflict error)
 
-你可以通过修改配置项 [`conflict.threshold`](/tidb-lightning/tidb-lightning-configuration.md#tidb-lightning-任务配置) 来增加冲突错误相关的容错数量。如果设置为 *N*，那么 TiDB Lightning 允许数据源中出现 *N* 个冲突错误，而且会跳过这些错误继续导入，一旦超过这个错误数就会退出。在逻辑导入模式或者物理导入模式下，不同的场景会产生冲突错误，你可以参考对应导入模式的“冲突检测”文档。该配置项默认值为 `9223372036854775807`，意味着几乎能容忍全部错误。
+你可以通过修改配置项 [`conflict.threshold`](/tidb-lightning/tidb-lightning-configuration.md#tidb-lightning-任务配置) 来增加冲突错误相关的容错数量。如果设置为 *N*，那么 TiDB Lightning 允许数据源中出现 *N* 个冲突错误，而且会跳过这些错误继续导入，一旦超过这个错误数就会退出。在逻辑导入模式或者物理导入模式下，不同的场景会产生冲突错误，你可以参考对应导入模式的“冲突检测”文档。该配置项默认值为 `10000`，意味着能容忍 10000 个错误。
 
 这些错误会被记录到数据库中。在导入完成后，你可以查看数据库中的数据，手动进行处理。请参见[错误报告](#错误报告)。
 
@@ -122,7 +122,7 @@ CREATE TABLE conflict_records (
 
 `type_error_v1` 记录由 `lightning.max-error` 配置项管理的所有[类型错误 (Type error)](#类型错误-type-error)。每个错误一行。
 
-`conflict_error_v1` 记录物理导入模式的 `tikv-importer.duplicate-resolution` 功能的冲突错误，每对冲突占两行。
+`conflict_error_v2` 记录物理导入模式的 `conflict` 配置组的冲突错误，每对冲突占两行。
 
 `conflict_records` 记录逻辑导入模式和物理导入模式 `conflict` 配置组的冲突错误，每个错误占一行。
 
@@ -194,7 +194,7 @@ CREATE TABLE conflict_records (
     EOF
     ```
 
-3. 配置 TiDB Lightning，启用严格 SQL 模式，使用 Local 后端模式进行导入，通过删除解决重复项，并最多跳过 10 个错误：
+3. 配置 TiDB Lightning，启用严格 SQL 模式，使用 Local 后端模式进行导入，通过替换解决重复项，并最多跳过 10 个错误：
 
     {{< copyable "shell-regular" >}}
 
@@ -205,7 +205,8 @@ CREATE TABLE conflict_records (
         [tikv-importer]
         backend = 'local'
         sorted-kv-dir = '/tmp/lightning-tmp/'
-        duplicate-resolution = 'remove'
+        [conflict]
+        strategy = 'replace'
         [mydumper]
         data-source-dir = '.'
         [tidb]
@@ -227,7 +228,7 @@ CREATE TABLE conflict_records (
 
 5. 验证导入的表仅包含两个正常行：
 
-    ```console
+    ```sql
     $ mysql -u root -h 127.0.0.1 -P 4000 -e 'select * from example.t'
     +---+-----+
     | a | b   |

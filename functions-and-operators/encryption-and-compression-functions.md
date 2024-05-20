@@ -1,11 +1,12 @@
 ---
 title: 加密和压缩函数
 aliases: ['/docs-cn/dev/functions-and-operators/encryption-and-compression-functions/','/docs-cn/dev/reference/sql/functions-and-operators/encryption-and-compression-functions/']
+summary: TiDB 支持 MySQL 8.0 中提供的大部分加密和压缩函数。
 ---
 
 # 加密和压缩函数
 
-TiDB 支持使用 MySQL 5.7 中提供的大部分[加密和压缩函数](https://dev.mysql.com/doc/refman/5.7/en/encryption-functions.html)。
+TiDB 支持使用 MySQL 8.0 中提供的大部分[加密和压缩函数](https://dev.mysql.com/doc/refman/8.0/en/encryption-functions.html)。
 
 ## 支持的函数
 
@@ -26,9 +27,15 @@ TiDB 支持使用 MySQL 5.7 中提供的大部分[加密和压缩函数](https:/
 
 ## 相关系统变量
 
-`block_encryption_mode` 变量设置 `AES_ENCRYPT()` 和 `AES_DECRYPT()` 所使用的加密模式。
+* [`block_encryption_mode`](/system-variables.md#block_encryption_mode) 变量设置 `AES_ENCRYPT()` 和 `AES_DECRYPT()` 所使用的加密模式。
+
+* [`validate_password.*`](/system-variables.md) 变量影响 `VALIDATE_PASSWORD_STRENGTH()` 函数的行为。
 
 ## 不支持的函数
 
 * `DES_DECRYPT()`、`DES_ENCRYPT()`、`OLD_PASSWORD()` 和 `ENCRYPT()`：这些函数在 MySQL 5.7 中被废弃，并且已在 MySQL 8.0 中移除。
 * 只在 MySQL 企业版中支持的函数。见 [Issue #2632](https://github.com/pingcap/tidb/issues/2632)。
+
+## MySQL 兼容性
+
+* TiDB 不支持 `STATEMENT_DIGEST()` 和 `STATEMENT_DIGEST_TEXT()` 函数。

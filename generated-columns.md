@@ -1,6 +1,7 @@
 ---
 title: 生成列
 aliases: ['/docs-cn/dev/generated-columns/','/docs-cn/dev/reference/sql/generated-columns/']
+summary: 生成列是由列定义中的表达式计算得到的值。它包括存储生成列和虚拟生成列，存储生成列会将计算得到的值存储起来，而虚拟生成列不会存储其值。生成列可以用于从 JSON 数据类型中解出数据，并为该数据建立索引。在 INSERT 和 UPDATE 语句中，会检查生成列计算得到的值是否满足生成列的定义。生成列的局限性包括不能增加存储生成列，不能转换存储生成列为普通列，不能修改存储生成列的生成列表达式，以及不支持所有的 JSON 函数。
 ---
 
 # 生成列
@@ -19,7 +20,7 @@ aliases: ['/docs-cn/dev/generated-columns/','/docs-cn/dev/reference/sql/generate
 
 生成列的主要的作用之一：从 JSON 数据类型中解出数据，并为该数据建立索引。
 
-MySQL 5.7 及 TiDB 都不能直接为 JSON 类型的列添加索引，即不支持在如下表结构中的 `address_info` 上建立索引：
+MySQL 8.0 及 TiDB 都不能直接为 JSON 类型的列添加索引，即不支持在如下表结构中的 `address_info` 上建立索引：
 
 {{< copyable "sql" >}}
 

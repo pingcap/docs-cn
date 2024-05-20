@@ -1,6 +1,6 @@
 ---
 title: Optimizer Fix Controls
-summary: 了解 Optimizer Fix Controls 以及如何使用 `tidb_opt_fix_control` 细粒度地控制 TiDB 优化器的行为
+summary: 了解 Optimizer Fix Controls 以及如何使用 `tidb_opt_fix_control` 细粒度地控制 TiDB 优化器的行为。
 ---
 
 # Optimizer Fix Controls
@@ -14,7 +14,7 @@ summary: 了解 Optimizer Fix Controls 以及如何使用 `tidb_opt_fix_control`
 
 ## `tidb_opt_fix_control` 介绍
 
-从 TiDB v7.1.0 开始，提供了 [`tidb_opt_fix_control`](/system-variables.md#tidb_opt_fix_control-从-v710-版本开始引入) 系统变量来更细粒度地控制优化器的行为。
+从 TiDB v6.5.3 和 v7.1.0 开始，提供了 [`tidb_opt_fix_control`](/system-variables.md#tidb_opt_fix_control-从-v653-和-v710-版本开始引入) 系统变量来更细粒度地控制优化器的行为。
 
 一个 Fix 是用于调整 TiDB 优化器中一处行为的控制项。它以一个数字编号表示，该数字编号对应一个 GitHub Issue，在 Issue 中会有对技术细节的描述。例如 Fix `44262` 对应 [Issue 44262](https://github.com/pingcap/tidb/issues/44262)。
 
@@ -26,13 +26,19 @@ SET SESSION tidb_opt_fix_control = '44262:ON,44389:ON';
 
 ## Optimizer Fix Controls 参考
 
-### [`44262`](https://github.com/pingcap/tidb/issues/44262) <span class="version-mark">从 v7.2.0 版本开始引入</span>
+### [`33031`](https://github.com/pingcap/tidb/issues/33031) <span class="version-mark">从 v8.0.0 版本开始引入</span>
+
+- 默认值：`OFF`
+- 可选值：`ON`、`OFF`
+- 是否允许对分区表进行计划缓存。如果设置为 `ON`，则 [Prepared 语句计划缓存](/sql-prepared-plan-cache.md)和[非 Prepared 语句计划缓存](/sql-non-prepared-plan-cache.md)都不会对[分区表](/partitioned-table.md)启用。
+
+### [`44262`](https://github.com/pingcap/tidb/issues/44262) <span class="version-mark">从 v6.5.3 和 v7.2.0 版本开始引入</span>
 
 - 默认值：`OFF`
 - 可选值：`ON`、`OFF`
 - 是否允许在缺少 [GlobalStats](/statistics.md#动态裁剪模式下的分区表统计信息) 的情况下使用[动态裁剪模式](/partitioned-table.md#动态裁剪模式)访问分区表。
 
-### [`44389`](https://github.com/pingcap/tidb/issues/44389) <span class="version-mark">从 v7.2.0 版本开始引入</span>
+### [`44389`](https://github.com/pingcap/tidb/issues/44389) <span class="version-mark">从 v6.5.3 和 v7.2.0 版本开始引入</span>
 
 - 默认值：`OFF`
 - 可选值：`ON`、`OFF`
@@ -44,13 +50,13 @@ SET SESSION tidb_opt_fix_control = '44262:ON,44389:ON';
 - 可选值：`[0, 2147483647]`
 - 为了节省内存，对于参数个数超过此开关指定个数的查询，Plan Cache 将不会缓存。`0` 表示无限制。
 
-### [`44830`](https://github.com/pingcap/tidb/issues/44830) <span class="version-mark">从 v7.3.0 版本开始引入</span>
+### [`44830`](https://github.com/pingcap/tidb/issues/44830) <span class="version-mark">从 v6.5.7 和 v7.3.0 版本开始引入</span>
 
 - 默认值：`OFF`
 - 可选值：`ON`、`OFF`
 - 此开关控制是否让 Plan Cache 对在物理优化阶段形成的 `PointGet` 计划进行缓存。
 
-### [`44855`](https://github.com/pingcap/tidb/issues/44855) <span class="version-mark">从 v7.3.0 版本开始引入</span>
+### [`44855`](https://github.com/pingcap/tidb/issues/44855) <span class="version-mark">从 v6.5.4 和 v7.3.0 版本开始引入</span>
 
 - 默认值：`OFF`
 - 可选值：`ON`、`OFF`
@@ -64,3 +70,10 @@ SET SESSION tidb_opt_fix_control = '44262:ON,44389:ON';
 - 可选值：`[0, 2147483647]`
 - 此开关控制优化器进行启发式访问路径选择的阈值。当某个访问路径（如 `Index_A`）的估算行数远小于其他访问路径时（默认为 `1000` 倍），优化器会跳过代价比较直接选择 `Index_A`。
 - `0` 表示关闭此启发式访问路径选择策略。
+
+### [`52869`](https://github.com/pingcap/tidb/issues/52869) <span class="version-mark">从 v8.1.0 版本开始引入</span>
+
+- 默认值：`OFF`
+- 可选值：`ON`、`OFF`
+- 如果查询有除了全表扫描以外的单索引扫描方式可以选择，优化器不会自动选择索引合并。详情请参考[用 EXPLAIN 查看索引合并的 SQL 执行计划](/explain-index-merge.md#示例)中的**注意**部分。
+- 打开此开关后，这个限制会被解除。解除此限制能让优化器在更多查询中自动选择索引合并，但也有可能忽略其他更好的执行计划，因此建议在解除此限制前针对实际场景进行充分测试，确保不会带来性能回退。

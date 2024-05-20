@@ -5,7 +5,7 @@ summary: 了解如何使用 peewee 连接到 TiDB。本文提供了使用 peewee
 
 # 使用 peewee 连接到 TiDB
 
-TiDB 是一个兼容 MySQL 的数据库。[peewee](https://docs.peewee-orm.com/) 为当前流行的开源 Python ORM (Object Relational Mapper) 之一。
+TiDB 是一个兼容 MySQL 的数据库。[peewee](https://github.com/coleifer/peewee) 为当前流行的开源 Python ORM (Object Relational Mapper) 之一。
 
 本文档将展示如何使用 TiDB 和 peewee 来完成以下任务：
 
@@ -48,7 +48,7 @@ pip install -r requirements.txt
 
 #### 为什么安装 PyMySQL？
 
-peewee 是一个支持多种数据库的 ORM 库。它是对数据库的高层抽象，可以帮助开发者以更面向对象的方式编写 SQL 语句。但 peewee 并不提供数据库驱动，因此需要单独安装用于连接 TiDB 的驱动。本示例项目使用 PyMySQL 作为数据库驱动。PyMySQL 是一个与 TiDB 兼容的纯 Python 实现的 MySQL 客户端库，并可以在所有平台上安装。更多信息，参考 [peewee 官方文档](https://docs.peewee-orm.com/en/latest/peewee/database.html?highlight=mysql#using-mysql)。
+peewee 是一个支持多种数据库的 ORM 库。它是对数据库的高层抽象，可以帮助开发者以更面向对象的方式编写 SQL 语句。但 peewee 并不提供数据库驱动，因此需要单独安装用于连接 TiDB 的驱动。本示例项目使用 [PyMySQL](/develop/dev-guide-sample-application-python-pymysql.md) 作为数据库驱动。PyMySQL 是一个与 TiDB 兼容的纯 Python 实现的 MySQL 客户端库，并可以在所有平台上安装。更多信息，参考 [peewee 官方文档](https://docs.peewee-orm.com/en/latest/peewee/database.html?highlight=mysql#using-mysql)。
 
 ### 第 3 步：配置连接信息
 
@@ -65,6 +65,7 @@ peewee 是一个支持多种数据库的 ORM 库。它是对数据库的高层�
 3. 确认对话框中的配置和你的运行环境一致。
 
     - **Endpoint Type** 为 `Public`。
+    - **Branch** 选择 `main`。
     - **Connect With** 选择 `General`。
     - **Operating System** 为你的运行环境。
 
@@ -72,11 +73,11 @@ peewee 是一个支持多种数据库的 ORM 库。它是对数据库的高层�
     >
     > 如果你在 Windows Subsystem for Linux (WSL) 中运行，请切换为对应的 Linux 发行版。
 
-4. 如果你还没有设置密码，点击 **Create password** 生成一个随机密码。
+4. 如果你还没有设置密码，点击 **Generate Password** 生成一个随机密码。
 
     > **Tip:**
     >
-    > 如果你之前已经生成过密码，可以直接使用原密码，或点击 **Reset password** 重新生成密码。
+    > 如果你之前已经生成过密码，可以直接使用原密码，或点击 **Reset Password** 重新生成密码。
 
 5. 运行以下命令，将 `.env.example` 复制并重命名为 `.env`：
 
@@ -87,7 +88,7 @@ peewee 是一个支持多种数据库的 ORM 库。它是对数据库的高层�
 6. 复制并粘贴对应连接字符串至 `.env` 中。示例结果如下：
 
     ```dotenv
-    TIDB_HOST='{host}'  # e.g. gateway01.ap-northeast-1.prod.aws.tidbcloud.com
+    TIDB_HOST='{host}'  # e.g. xxxxxx.aws.tidbcloud.com
     TIDB_PORT='4000'
     TIDB_USER='{user}'  # e.g. xxxxxx.root
     TIDB_PASSWORD='{password}'
@@ -120,9 +121,9 @@ peewee 是一个支持多种数据库的 ORM 库。它是对数据库的高层�
 5. 复制并粘贴对应的连接字符串至 `.env` 中。示例结果如下：
 
     ```dotenv
-    TIDB_HOST='{host}'  # e.g. tidb.xxxx.clusters.tidb-cloud.com
+    TIDB_HOST='{host}'  # e.g. xxxxxx.aws.tidbcloud.com
     TIDB_PORT='4000'
-    TIDB_USER='{user}'  # e.g. root
+    TIDB_USER='{user}'  # e.g. xxxxxx.root
     TIDB_PASSWORD='{password}'
     TIDB_DB_NAME='test'
     CA_PATH='{your-downloaded-ca-path}'
@@ -182,20 +183,19 @@ peewee 是一个支持多种数据库的 ORM 库。它是对数据库的高层�
 from peewee import MySQLDatabase
 
 def get_db_engine():
-    config = Config()
     connect_params = {}
-    if ${ca_path}:
+    if '${ca_path}':
         connect_params = {
             "ssl_verify_cert": True,
             "ssl_verify_identity": True,
-            "ssl_ca": ${ca_path},
+            "ssl_ca": '${ca_path}',
         }
     return MySQLDatabase(
-        ${tidb_db_name},
-        host=${tidb_host},
-        port=${tidb_port},
-        user=${tidb_user},
-        password=${tidb_password},
+        '${tidb_db_name}',
+        host='${tidb_host}',
+        port='${tidb_port}',
+        user='${tidb_user}',
+        password='${tidb_password}',
         **connect_params,
     )
 ```
@@ -220,6 +220,9 @@ class Player(BaseModel):
 
     class Meta:
         table_name = "players"
+
+    def __str__(self):
+        return f"Player(name={self.name}, coins={self.coins}, goods={self.goods})"
 ```
 
 更多信息参考 [peewee 模型与字段](https://docs.peewee-orm.com/en/latest/peewee/models.html)。
@@ -231,12 +234,11 @@ class Player(BaseModel):
 Player.create(name="test", coins=100, goods=100)
 
 # 插入多个对象
-Player.insert_many(
-    [
+data = [
         {"name": "test1", "coins": 100, "goods": 100},
         {"name": "test2", "coins": 100, "goods": 100},
-    ]
-).execute()
+]
+Player.insert_many(data).execute()
 ```
 
 更多信息参考[插入数据](/develop/dev-guide-insert-data.md)。
@@ -287,7 +289,7 @@ Player.delete().where(Player.coins == 100).execute()
 
 - 关于 peewee 的更多使用方法，可以参考 [peewee 官方文档](https://docs.peewee-orm.com/)。
 - 你可以继续阅读开发者文档，以获取更多关于 TiDB 应用开发的最佳实践。例如：[插入数据](/develop/dev-guide-insert-data.md)、[更新数据](/develop/dev-guide-update-data.md)、[删除数据](/develop/dev-guide-delete-data.md)、[单表读取](/develop/dev-guide-get-data-from-single-table.md)、[事务](/develop/dev-guide-transaction-overview.md)、[SQL 性能优化](/develop/dev-guide-optimize-sql-overview.md)等。
-- 如果你更倾向于参与课程进行学习，我们也提供专业的 [TiDB 开发者课程](https://cn.pingcap.com/courses-catalog/back-end-developer/?utm_source=docs-cn-dev-guide)支持，并在考试后提供相应的[资格认证](https://learn.pingcap.com/learner/certification-center)。
+- 如果你更倾向于参与课程进行学习，我们也提供专业的 [TiDB 开发者课程](https://cn.pingcap.com/courses-catalog/category/back-end-developer/?utm_source=docs-cn-dev-guide)支持，并在考试后提供相应的[资格认证](https://learn.pingcap.com/learner/certification-center)。
 
 ## 需要帮助?
 

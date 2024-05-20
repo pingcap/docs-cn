@@ -22,12 +22,39 @@ aliases: ['/zh/tidb/dev/tiflash-620-upgrade-guide']
 > - v4.x. 已接近产品周期尾声，请尽早升级到 v5.x 及以上版本。具体的版本周期请参考 [TiDB 版本周期支持策略](https://pingcap.com/zh/tidb-release-support-policy)。
 >
 > - v6.0 作为非 LTS 版本，不会推出后续的 bug 修复版，请尽量使用 v6.1 及之后的 LTS 版本。
->
-> - 若想将 TiFlash 从 v5.3.0 之前的版本升级到 v5.3.0 及之后的版本，必须进行 TiFlash 的停机升级。参考如下步骤，可以在确保其他组件正常运行的情况下升级 TiFlash：
->
->     - 关闭 TiFlash 实例：`tiup cluster stop <cluster-name> -R tiflash`
->     - 使用 `--offline` 参数在不重启（只更新文件）的情况下升级集群：`tiup cluster upgrade <cluster-name> <version> --offline`，例如 `tiup cluster upgrade <cluster-name> v5.3.0 --offline`
->     - reload 整个集群：`tiup cluster reload <cluster-name>`。此时，TiFlash 也会正常启动，无需额外操作。
+
+## 使用 TiUP 升级
+
+如需将 TiFlash 从 v5.3.0 之前的版本升级到 v5.3.0 及之后的版本，必须进行 TiFlash 的停机升级。使用 TiUP 进行升级时：
+
+- 如果 TiUP Cluster 版本大于或等于 v1.12.0，则无法进行 TiFlash 的停机升级。如果目标版本要求的 TiUP Cluster 版本大于或等于 v1.12.0，则建议先使用 `tiup cluster:v1.11.3 <subcommand>` 将 TiFlash 升级到某个中间版本，然后进行 TiDB 集群的在线升级，之后升级 TiUP 版本，最后对 TiDB 集群进行不停机升级至目标版本。
+- 如果 TiUP Cluster 版本小于 v1.12.0，则执行以下步骤进行升级 TiFlash。
+
+参考如下步骤，可以在确保其他组件正常运行的情况下，使用 TiUP 升级 TiFlash：
+
+1. 关闭 TiFlash 实例：
+
+    ```shell
+    tiup cluster stop <cluster-name> -R tiflash
+    ```
+
+2. 使用 `--offline` 参数在不重启（只更新文件）的情况下升级集群：
+
+    ```shell 
+    tiup cluster upgrade <cluster-name> <version> --offline
+    ```
+    
+    例如： 
+    
+    ```shell     
+    tiup cluster upgrade <cluster-name> v5.3.0 --offline
+    ```
+
+3. 重新加载整个集群。此时，TiFlash 也会正常启动，无需额外操作。
+
+    ```shell 
+    tiup cluster reload <cluster-name>
+    ```
 
 ## 从 v5.x 或 v6.0 升级至 v6.1
 
@@ -68,7 +95,7 @@ TiFlash 在 v6.2.0 将数据格式升级到 V3 版本，因此，从 v5.x 或 v6
 
     2. 重启 TiFlash 节点。
 
-你可以在 Grafana 监控查看是否还有表使用旧的数据版本：Tiflash summary > storage pool > Storage Pool Run Mode
+你可以在 Grafana 监控查看是否还有表使用旧的数据版本：**TiFlash-Summary** > **Storage Pool** > **Storage Pool Run Mode**
 
 - Only V2：使用 PageStorage V2 的表数量（包括分区数）
 - Only V3：使用 PageStorage V3 的表数量（包括分区数）
@@ -84,7 +111,7 @@ TiFlash 在 v6.2.0 将数据格式升级到 V3 版本，因此，从 v5.x 或 v6
 
 ## 从 v6.x 或 v7.x 升级至 v7.3，并且设置了 `storage.format_version = 5`
 
-从 v7.3 开始，TiFlash 支持新的 DTFile 版本 V3 (实验特性），可以将多个小文件合并成一个大文件，减少文件数量。DTFile 在 v7.3 的默认版本是 V2，如需使用 V3，可通过 [TiFlash 配置参数](/tiflash/tiflash-configuration.md) `storage.format_version = 5` 来设置。设置后，TiFlash 仍可以读 V2 版本的 DTFile，并且在后续的数据整理 (Compaction) 中会将这些 V2 版本的 DMFile 逐步重新写为 V3 版本的 DTFile。
+从 v7.3 开始，TiFlash 支持新的 DTFile 版本 V3（实验特性），可以将多个小文件合并成一个大文件，减少文件数量。DTFile 在 v7.3 的默认版本是 V2，如需使用 V3，可通过 [TiFlash 配置参数](/tiflash/tiflash-configuration.md) `storage.format_version = 5` 来设置。设置后，TiFlash 仍可以读 V2 版本的 DTFile，并且在后续的数据整理 (Compaction) 中会将这些 V2 版本的 DMFile 逐步重新写为 V3 版本的 DTFile。
 
 在 TiFlash 升级到 v7.3 并且使用了 V3 版本的 DTFile 后，如需回退到之前的 TiFlash 版本，可以通过 DTTool 离线将 DTFile 重新写回 V2 版本，详见 [DTTool 迁移工具](/tiflash/tiflash-command-line-flags.md#dttool-migrate)。
 

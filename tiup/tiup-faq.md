@@ -1,6 +1,7 @@
 ---
 title: TiUP FAQ
 aliases: ['/docs-cn/dev/tiup/tiup-faq/']
+summary: TiUP 支持自定义镜像源，可以使用环境变量 TIUP_MIRRORS 指定镜像源地址。开发者可以通过 tiup-publish 组件将自己编写的组件发布到 TiUP 的官方镜像仓库。TiUP Playground 用于快速搭建开发环境，而 TiUP Cluster 用于部署生产环境集群。拓扑文件样例包括两地三中心、最小部署和完整拓扑文件。同一主机可以部署多个实例，但需要配置不同的端口和目录信息。集群部署期间可能出现 ssh 连接错误，可尝试加大 ssh 默认连接数并重启 sshd 服务解决。
 ---
 
 # TiUP FAQ
@@ -20,7 +21,7 @@ TiUP 暂时不支持外部开发的组件，但是 TiUP Team 已经制定了 TiU
 
 ## tiup-playground 和 tiup-cluster 有什么区别？
 
-TiUP Playground 组件主要定位是快速上手和搭建单机的开发环境，支持 Linux/macOS，要运行一个指定版本的 TiUP 集群更加简单。TiUP Cluster 组件主要是部署生产环境集群，通常是一个大规模的集群，还包含运维相关操作。
+TiUP Playground 组件主要定位是快速上手和搭建单机的开发环境，支持 Linux/macOS，要运行一个指定版本的 TiUP 集群更加简单。TiUP Cluster 组件主要是部署生产环境集群，通常是一个大规模的集群，还包含运维相关操作。TiUP Playground 部署的 TiDB 集群可能会缺失部分功能和运维操作，不建议用于完整的功能性测试和稳定性测试。
 
 ## 怎么样编写 tiup-cluster 组件的拓扑文件？
 

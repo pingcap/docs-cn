@@ -71,8 +71,8 @@ summary: 了解 TiDB 提供的基于多副本的单集群容灾方案。
         config:
           server.labels: { Region: "Region3", AZ: "AZ5" }
 
-          raftstore.raft-min-election-timeout-ticks: 1000
-          raftstore.raft-max-election-timeout-ticks: 1200
+          raftstore.raft-min-election-timeout-ticks: 50
+          raftstore.raft-max-election-timeout-ticks: 60
 
     monitoring_servers:
       - host: tidb-dr-test2

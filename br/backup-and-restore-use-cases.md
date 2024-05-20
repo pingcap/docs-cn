@@ -17,7 +17,7 @@ aliases: ['/docs-cn/dev/br/backup-and-restore-use-cases/','/docs-cn/dev/referenc
 
 ## 部署 TiDB 集群和 br 命令行工具
 
-使用 PITR 功能，需要部署 v6.2.0 或以上版本的 TiDB 集群，并且更新 br 命令行工具到与 TiDB 集群相同的版本，本文假设使用的是 v7.4.0 版本。
+使用 PITR 功能，需要部署 v6.2.0 或以上版本的 TiDB 集群，并且更新 br 命令行工具到与 TiDB 集群相同的版本，本文假设使用的是 v8.0.0 版本。
 
 下表介绍了在 TiDB 集群中使用日志备份功能的推荐配置。
 
@@ -44,13 +44,13 @@ aliases: ['/docs-cn/dev/br/backup-and-restore-use-cases/','/docs-cn/dev/referenc
 - 安装：
 
     ```shell
-    tiup install br:v7.4.0
+    tiup install br:v8.0.0
     ```
 
 - 升级：
 
     ```shell
-    tiup update br:v7.4.0
+    tiup update br:v8.0.0
     ```
 
 ## 配置备份存储 (Amazon S3)
@@ -70,8 +70,8 @@ aliases: ['/docs-cn/dev/br/backup-and-restore-use-cases/','/docs-cn/dev/referenc
 
 2. 配置 br 命令行工具和 TiKV 访问 S3 中的备份目录的权限。本文推荐使用最安全的 IAM 访问方式，配置过程可以参考[控制存储桶访问](https://docs.aws.amazon.com/zh_cn/AmazonS3/latest/userguide/walkthrough1.html)。权限要求如下：
 
-    - 备份集群的 TiKV 和 br 命令行工具需要的 `s3://tidb-pitr-bucket/backup-data` 权限：`s3:ListBucket`、`s3:PutObject` 和 `s3:AbortMultipartUpload`。
-    - 恢复集群的 TiKV 和 br 命令行工具需要 `s3://tidb-pitr-bucket/backup-data` 的最小权限：`s3:ListBucket`、`s3:GetObject` 和 `s3:PutObject`。
+    - 备份集群的 TiKV 和 br 命令行工具需要的 `s3://tidb-pitr-bucket/backup-data` 权限：`s3:ListBucket`、`s3:GetObject`、`s3:DeleteObject`、`s3:PutObject` 和 `s3:AbortMultipartUpload`。
+    - 恢复集群的 TiKV 和 br 命令行工具需要 `s3://tidb-pitr-bucket/backup-data` 的最小权限：`s3:ListBucket`、`s3:GetObject`、`s3:DeleteObject` 和 `s3:PutObject`。
 
 3. 规划备份数据保存的目录结构，以及快照（全量）备份和日志备份的目录。
 

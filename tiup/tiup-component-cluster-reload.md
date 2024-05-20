@@ -1,5 +1,6 @@
 ---
 title: tiup cluster reload
+summary: tiup cluster reload 命令用于在修改集群配置后重新加载配置，使其生效。命令会将配置发布到远端机器，并按顺序重启服务，重启过程中集群可用。可选参数包括 --force（忽略错误强制 reload）、--transfer-timeout（设置最长等待时间）、--ignore-config-check（跳过配置检查）、-N, --node（指定要重启的节点）、-R, --role（指定要重启的角色）、--skip-restart（仅刷新配置不重启节点）、-h, --help（输出帮助信息）。执行日志会输出到 tiup-cluster。
 ---
 
 # tiup cluster reload

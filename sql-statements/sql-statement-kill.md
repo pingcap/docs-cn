@@ -6,7 +6,7 @@ aliases: ['/docs-cn/dev/sql-statements/sql-statement-kill/','/docs-cn/dev/refere
 
 # KILL
 
-`KILL` 语句可以终止当前 TiDB 集群中任意一个 TiDB 实例中的某个连接。
+`KILL` 语句可以终止当前 TiDB 集群中任意一个 TiDB 实例中的某个连接，从 v6.2.0 开始，`KILL` 语句也可以终止正在执行中的 DDL 作业。
 
 ## 语法图
 

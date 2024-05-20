@@ -71,20 +71,37 @@ aliases: ['/docs-cn/dev/system-tables/system-table-overview/','/docs-cn/dev/refe
 
 ## Runaway Queries 相关系统表
 
-* `tidb_runaway_queries`：过去 7 天内所有识别到的 Runaway Queries 的历史记录
-* `tidb_runaway_watch`：Runaway Queries 的监控列表 (Watch List)
-* `tidb_runaway_watch_done`：被删除或者过期的 Runaway Queries 的监控列表
+* `tidb_runaway_queries` 过去 7 天内所有识别到的 Runaway Queries 的历史记录
+* `tidb_runaway_watch` Runaway Queries 的监控列表 (Watch List)
+* `tidb_runaway_watch_done` 被删除或者过期的 Runaway Queries 的监控列表
 
 ## 元数据锁相关系统表
 
-* `tidb_mdl_view`：元数据锁的视图，可以用于查看当前阻塞的 DDL 的相关信息
-* `tidb_mdl_info`：TiDB 内部用于同步各节点的元数据锁的相关信息
+* `tidb_mdl_view` 元数据锁的视图，可以用于查看当前阻塞的 DDL 的相关信息
+* `tidb_mdl_info` TiDB 内部用于同步各节点的元数据锁的相关信息
+
+## DDL 相关系统表
+
+* `tidb_ddl_history` 记录了 DDL 语句的历史记录
+* `tidb_ddl_jobs` TiDB 内部存放的正在执行的 DDL 的元数据，用于执行 DDL
+* `tidb_ddl_reorg` TiDB 内部存放的正在执行的物理 DDL（例如加索引）的元数据，用于执行物理 DDL
+
+## 分布式执行框架相关系统表
+
+* `dist_framework_meta` 存放分布式执行框架任务调度的元信息
+* `tidb_global_task` 存放当前分布式框架正在执行的任务元信息
+* `tidb_global_task_history` 存放分布式执行框架完成（成功或者失败）的任务元信息
+* `tidb_background_subtask` 存放当前正在执行的分布式执行框架任务的子任务元信息
+* `tidb_background_subtask_history` 存放历史的分布式执行框架任务的子任务元信息
+
+## 资源管控相关系统表
+
+* `request_unit_by_group` 存放资源组 RU 消耗统计的历史记录
 
 ## 其它系统表
 
 * `GLOBAL_VARIABLES` 全局系统变量表
 * `expr_pushdown_blacklist` 表达式下推的黑名单
 * `opt_rule_blacklist` 逻辑优化规则的黑名单
-* `table_cache_meta` 缓存表的信息
 * `tidb_import_jobs` 记录 [`IMPORT INTO`](/sql-statements/sql-statement-import-into.md) 任务信息
 * `tidb_timers` 存储了内部定时器的相关元信息

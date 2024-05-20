@@ -1,5 +1,6 @@
 ---
 title: TiDB 4.0.10 Release Notes
+summary: TiDB 4.0.10 发布日期为 2021 年 1 月 15 日。新功能包括 PD 添加了配置项 `enable-redact-log` 和 TiFlash 添加了配置项 `security.redact_info_log`。改进提升方面，TiDB 添加了 `txn-entry-size-limit` 配置项，PD 优化了 `store-state-filter` 监控，Tools 中 TiCDC 默认开启了 old value 特性。Bug 修复方面，TiDB 修复了多个并发导致的问题，TiKV 修复了 peer 和 ready 之间的错误映射，PD 修复了 ID 分配不是单调递增的问题，TiFlash 修复了多个启动和函数调用的问题，Tools 中 TiCDC 修复了多个协议和内存问题，Dumpling 修改了默认设置的行为。 Backup & Restore (BR) 修复了多个备份和恢复问题，TiDB Binlog 修复了启用 `AMEND TRANSACTION` 特性时的问题，TiDB Lightning 修复了多个备份和使用问题。
 ---
 
 # TiDB 4.0.10 Release Notes

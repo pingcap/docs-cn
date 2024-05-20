@@ -61,6 +61,7 @@ pip install -r requirements.txt
 3. 确认对话框中的配置和你的运行环境一致。
 
     - **Endpoint Type** 为 `Public`。
+    - **Branch** 选择 `main`。
     - **Connect With** 选择 `General`。
     - **Operating System** 为你的运行环境。
 
@@ -68,11 +69,11 @@ pip install -r requirements.txt
     >
     > 如果你在 Windows Subsystem for Linux (WSL) 中运行，请切换为对应的 Linux 发行版。
 
-4. 如果你还没有设置密码，点击 **Create password** 生成一个随机密码。
+4. 如果你还没有设置密码，点击 **Generate Password** 生成一个随机密码。
 
     > **Tip:**
     >
-    > 如果你之前已经生成过密码，可以直接使用原密码，或点击 **Reset password** 重新生成密码。
+    > 如果你之前已经生成过密码，可以直接使用原密码，或点击 **Reset Password** 重新生成密码。
 
 5. 运行以下命令，将 `.env.example` 复制并重命名为 `.env`：
 
@@ -178,7 +179,6 @@ pip install -r requirements.txt
 from pymysql import Connection
 from pymysql.cursors import DictCursor
 
-
 def get_connection(autocommit: bool = True) -> Connection:
     config = Config()
     db_conf = {
@@ -207,7 +207,7 @@ def get_connection(autocommit: bool = True) -> Connection:
 with get_connection(autocommit=True) as conn:
     with conn.cursor() as cur:
         player = ("1", 1, 1)
-        cursor.execute("INSERT INTO players (id, coins, goods) VALUES (%s, %s, %s)", player)
+        cur.execute("INSERT INTO players (id, coins, goods) VALUES (%s, %s, %s)", player)
 ```
 
 更多信息参考[插入数据](/develop/dev-guide-insert-data.md)。
@@ -228,8 +228,8 @@ with get_connection(autocommit=True) as conn:
 ```python
 with get_connection(autocommit=True) as conn:
     with conn.cursor() as cur:
-        player_id, amount, price="1", 10, 500
-        cursor.execute(
+        player_id, amount, price = "1", 1, 50
+        cur.execute(
             "UPDATE players SET goods = goods + %s, coins = coins + %s WHERE id = %s",
             (-amount, price, player_id),
         )
@@ -243,7 +243,7 @@ with get_connection(autocommit=True) as conn:
 with get_connection(autocommit=True) as conn:
     with conn.cursor() as cur:
         player_id = "1"
-        cursor.execute("DELETE FROM players WHERE id = %s", (player_id,))
+        cur.execute("DELETE FROM players WHERE id = %s", player_id)
 ```
 
 更多信息参考[删除数据](/develop/dev-guide-delete-data.md)。
@@ -258,7 +258,7 @@ Python 驱动程序提供对数据库的底层访问，但要求开发者：
 - 手动管理数据库事务
 - 手动将数据行（在 pymysql 中表示为元组 (tuple) 或者字典 (dict)）映射为数据对象
 
-建议仅在需要编写复杂的 SQL 语句时使用驱动程序。其他情况下，建议使用 [ORM](https://zh.wikipedia.org/wiki/对象关系映射) 框架进行开发，例如 [SQLAlchemy](/develop/dev-guide-sample-application-python-sqlalchemy.md)、[Peewee](/develop/dev-guide-sample-application-python-peewee.md) 和 Django。ORM 可以帮助你：
+建议仅在需要编写复杂的 SQL 语句时使用驱动程序。其他情况下，建议使用 [ORM](https://zh.wikipedia.org/wiki/对象关系映射) 框架进行开发，例如 [SQLAlchemy](/develop/dev-guide-sample-application-python-sqlalchemy.md)、[Peewee](/develop/dev-guide-sample-application-python-peewee.md) 和 [Django](/develop/dev-guide-sample-application-python-django.md)。ORM 可以帮助你：
 
 - 减少管理连接和事务的[模板代码](https://en.wikipedia.org/wiki/Boilerplate_code)
 - 使用数据对象代替大量 SQL 语句来操作数据
@@ -267,7 +267,7 @@ Python 驱动程序提供对数据库的底层访问，但要求开发者：
 
 - 关于 PyMySQL 的更多使用方法，可以参考 [PyMySQL 官方文档](https://pymysql.readthedocs.io)。
 - 你可以继续阅读开发者文档，以获取更多关于 TiDB 应用开发的最佳实践。例如：[插入数据](/develop/dev-guide-insert-data.md)、[更新数据](/develop/dev-guide-update-data.md)、[删除数据](/develop/dev-guide-delete-data.md)、[单表读取](/develop/dev-guide-get-data-from-single-table.md)、[事务](/develop/dev-guide-transaction-overview.md)、[SQL 性能优化](/develop/dev-guide-optimize-sql-overview.md)等。
-- 如果你更倾向于参与课程进行学习，我们也提供专业的 [TiDB 开发者课程](https://cn.pingcap.com/courses-catalog/back-end-developer/?utm_source=docs-cn-dev-guide)支持，并在考试后提供相应的[资格认证](https://learn.pingcap.com/learner/certification-center)。
+- 如果你更倾向于参与课程进行学习，我们也提供专业的 [TiDB 开发者课程](https://cn.pingcap.com/courses-catalog/category/back-end-developer/?utm_source=docs-cn-dev-guide)支持，并在考试后提供相应的[资格认证](https://learn.pingcap.com/learner/certification-center)。
 
 ## 需要帮助?
 

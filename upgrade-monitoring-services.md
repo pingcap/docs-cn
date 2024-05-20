@@ -41,7 +41,7 @@ summary: 介绍如何升级 TiDB 集群监控组件 Prometheus、Grafana 和 Ale
 2. 重新压缩替换文件后的 `./prometheus-v{version}-linux-amd64` 目录，并将新的压缩包命名为 `prometheus-v{new-version}.tar.gz`。其中，`{new-version}` 可以由你自行指定。
 
     ```bash
-    cd prometheus-v{version}-linux-amd64.tar.gz
+    cd prometheus-v{version}-linux-amd64
     tar -zcvf ../prometheus-v{new-version}.tar.gz ./
     ```
 
@@ -81,7 +81,7 @@ tiup cluster patch <cluster-name> prometheus-v{new-version}.tar.gz -R prometheus
 2. 重新压缩替换文件后的 `./grafana-v{version}-linux-amd64` 目录，并将新的压缩包命名为 `grafana-v{new-version}.tar.gz`。其中，`{new-version}` 可以由你自行指定。
 
     ```bash
-    cd grafana-v{version}-linux-amd64.tar.gz
+    cd grafana-v{version}-linux-amd64
     tar -zcvf ../grafana-v{new-version}.tar.gz ./
     ```
 

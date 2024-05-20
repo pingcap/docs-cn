@@ -76,7 +76,7 @@ bundle add mysql2 dotenv
 
 3. 在连接对话框中，从 **Connect With** 下拉列表中选择 `Rails`，并保持 **Endpoint Type** 的默认设置为 `Public`。
 
-4. 如果你还没有设置密码，点击 **Create password** 生成一个随机密码。
+4. 如果你还没有设置密码，点击 **Generate Password** 生成一个随机密码。
 
 5. 运行以下命令复制 `.env.example` 并将其重命名为 `.env`：
 
@@ -84,10 +84,10 @@ bundle add mysql2 dotenv
     cp .env.example .env
     ```
 
-6. 编辑 `.env` 文件，按照以下方式设置 `DATABASE_URL` 环境变量，并将占位符 `<>` 替换为连接对话框中相应的连接参数：
+6. 编辑 `.env` 文件，按照以下方式设置 `DATABASE_URL` 环境变量，并将占位符 `{}` 替换为连接对话框中相应的连接参数：
 
     ```dotenv
-    DATABASE_URL=mysql2://<user>:<password>@<host>:<port>/<database_name>?ssl_mode=verify_identity
+    DATABASE_URL=mysql2://{user}:{password}@{host}:{port}/{database_name}?ssl_mode=verify_identity
     ```
 
    > **注意**
@@ -113,10 +113,10 @@ bundle add mysql2 dotenv
     cp .env.example .env
     ```
 
-5. 编辑 `.env` 文件，按照以下方式设置 `DATABASE_URL` 环境变量，将占位符 `<>` 替换为连接对话框中相应的连接参数，并将 `sslca` 查询参数设置为从连接对话框下载的 CA 证书的文件路径：
+5. 编辑 `.env` 文件，按照以下方式设置 `DATABASE_URL` 环境变量，将占位符 `{}` 替换为连接对话框中相应的连接参数，并将 `sslca` 查询参数设置为从连接对话框下载的 CA 证书的文件路径：
 
     ```dotenv
-    DATABASE_URL=mysql2://<user>:<password>@<host>:<port>/<database>?ssl_mode=verify_identity&sslca=/path/to/ca.pem
+    DATABASE_URL=mysql2://{user}:{password}@{host}:{port}/{database}?ssl_mode=verify_identity&sslca=/path/to/ca.pem
     ```
 
    > **注意**
@@ -136,10 +136,10 @@ bundle add mysql2 dotenv
     cp .env.example .env
     ```
 
-2. 编辑 `.env` 文件，按照以下方式设置 `DATABASE_URL` 环境变量，并将 `<user>`、`<password>`、`<host>`、`<port>` 和 `<database>` 替换为你自己的 TiDB 连接信息：
+2. 编辑 `.env` 文件，按照以下方式设置 `DATABASE_URL` 环境变量，并将 `{user}`、`{password}`、`{host}`、`{port}` 和 `{database}` 替换为你自己的 TiDB 连接信息：
 
     ```dotenv
-    DATABASE_URL=mysql2://<user>:<password>@<host>:<port>/<database>
+    DATABASE_URL=mysql2://{user}:{password}@{host}:{port}/{database}
     ```
 
    如果你在本地运行 TiDB，那么默认的主机地址是 `127.0.0.1`，密码为空。
@@ -173,7 +173,7 @@ bundle add mysql2 dotenv
 如果连接成功，你的终端将会输出所连接集群的版本信息：
 
 ```
-🔌 Connected to TiDB cluster! (TiDB version: 8.0.11-TiDB-v7.4.0)
+🔌 Connected to TiDB cluster! (TiDB version: 8.0.11-TiDB-v8.0.0)
 ⏳ Loading sample game data...
 ✅ Loaded sample game data.
 
@@ -270,7 +270,7 @@ player.destroy
 
 - 从 [ActiveRecord 文档](https://guides.rubyonrails.org/active_record_basics.html)中了解更多关于 ActiveRecord ORM 的用法。
 - 你可以继续阅读开发者文档的其它章节来获取更多 TiDB 应用开发的最佳实践。例如：[插入数据](/develop/dev-guide-insert-data.md)，[更新数据](/develop/dev-guide-update-data.md)，[删除数据](/develop/dev-guide-delete-data.md)，[单表读取](/develop/dev-guide-get-data-from-single-table.md)，[事务](/develop/dev-guide-transaction-overview.md)，[SQL 性能优化](/develop/dev-guide-optimize-sql-overview.md)等。
-- 如果你更倾向于参与课程进行学习，我们也提供专业的 [TiDB 开发者课程](https://cn.pingcap.com/courses-catalog/back-end-developer/?utm_source=docs-cn-dev-guide)支持，并在考试后提供相应的[资格认证](https://learn.pingcap.com/learner/certification-center)。
+- 如果你更倾向于参与课程进行学习，我们也提供专业的 [TiDB 开发者课程](https://cn.pingcap.com/courses-catalog/category/back-end-developer/?utm_source=docs-cn-dev-guide)支持，并在考试后提供相应的[资格认证](https://learn.pingcap.com/learner/certification-center)。
 
 ## 需要帮助？
 

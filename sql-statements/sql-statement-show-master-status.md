@@ -29,6 +29,8 @@ SHOW MASTER STATUS;
 
 `SHOW MASTER STATUS` 语句与 MySQL 兼容，但是执行结果有差异，在 MySQL 中执行结果为 binlog 的位置信息，而在 TiDB 中为最新的 TSO 信息。
 
+`SHOW BINARY LOG STATUS` 语句在 TiDB 中是 `SHOW MASTER STATUS` 的别名，但 `SHOW MASTER STATUS` 在 MySQL 8.2.0 及更高版本中已被废弃。
+
 ## 另请参阅
 
 * [SHOW PUMP STATUS](/sql-statements/sql-statement-show-pump-status.md)

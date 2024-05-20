@@ -1,6 +1,7 @@
 ---
 title: 主从集群一致性读和数据校验
 aliases: ['/docs-cn/dev/sync-diff-inspector/upstream-downstream-diff/','/docs-cn/dev/reference/tools/sync-diff-inspector/tidb-diff/', '/zh/tidb/dev/upstream-downstream-diff']
+summary: TiCDC 提供了 Syncpoint 功能，通过利用 TiDB 的 snapshot 特性，在同步过程中维护了一个上下游具有一致性 snapshot 的 `ts-map`。启用 Syncpoint 功能后，可以进行一致性快照读和数据一致性校验。要开启 Syncpoint 功能，只需在创建同步任务时把 TiCDC 的配置项 `enable-sync-point` 设置为 `true`。通过配置 `snapshot` 可以对 TiDB 主从集群的数据进行校验。
 ---
 
 # TiDB 主从集群数据校验和快照读
@@ -36,7 +37,7 @@ sync-point-retention = "1h"
 
 > **注意：**
 >
-> 使用一致性快照读之前，请先[启用 TiCDC 的 Syncpoint 功能](#启用-syncpoint)。
+> 使用一致性快照读之前，请先[启用 TiCDC 的 Syncpoint 功能](#启用-syncpoint)。如果多个同步任务使用同一个下游 TiDB 集群且都开启了 Syncpoint 功能，那么这些同步任务都将根据各自的同步进度来更新 `tidb_external_ts` 和 `ts-map`。此时，你需要使用读取 `ts-map` 表中记录的方式来设置同步任务级别的一致性快照读，同时应避免下游应用程序使用 `tidb_enable_external_ts_read` 的方式读数据，因为多个同步任务之间可能存在互相干扰导致无法获得一致性的结果。
 
 当你需要从备用集群查询数据的时候，在业务应用中设置 `SET GLOBAL|SESSION tidb_enable_external_ts_read = ON;` 就可以在备用集群上获得事务状态完成的数据。
 

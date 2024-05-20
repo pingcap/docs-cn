@@ -28,7 +28,7 @@ summary: 了解如何持续地收集 TiDB、TiKV、PD 各个实例的性能数�
 
 - CPU：TiDB、TiKV、TiFlash、PD 实例上各个内部函数的 CPU 开销情况
 
-- Heap：TiDB、PD 实例上各个内部函数的内存占用开销情况
+- Heap：TiDB、PD、TiKV 实例上各个内部函数的内存占用开销情况
 
 - Mutex：TiDB、PD 实例上各个处于等待状态的 Mutex 情况
 

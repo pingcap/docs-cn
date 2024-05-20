@@ -157,7 +157,9 @@ show warnings;
 | raftstore.apply-max-batch-size | Raft 状态机由 BatchSystem 批量执行数据写入请求，该配置项指定每批可执行请求的最多 Raft 状态机个数。 |
 | raftstore.store-max-batch-size |  Raft 状态机由 BatchSystem 批量执行把日志落盘至磁盘的请求，该配置项指定每批可执行请求的最多 Raft 状态机个数。 |
 | raftstore.store-io-pool-size | 处理 Raft I/O 任务的线程池中线程的数量，即 StoreWriter 线程池的大小（不支持将该配置项由非零值调整为 0，或者从 0 调整为非零值）|
+| raftstore.periodic-full-compact-start-max-cpu | 控制 TiKV 执行周期性全量数据整理时的 CPU 使用率阈值 |
 | readpool.unified.max-thread-count | 统一处理读请求的线程池最多的线程数量，即 UnifyReadPool 线程池大小 |
+| readpool.unified.max-tasks-per-worker | 统一处理读请求的线程池中单个线程允许积压的最大任务数量，超出后会返回 Server Is Busy。 |
 | readpool.unified.auto-adjust-pool-size | 是否开启自适应调整 UnifyReadPool 的大小 |
 | coprocessor.split-region-on-table | 开启按 table 分裂 Region 的开关 |
 | coprocessor.batch-split-limit | 批量分裂 Region 的阈值 |
@@ -204,6 +206,9 @@ show warnings;
 | {db-name}.{cf-name}.soft-pending-compaction-bytes-limit | pending compaction bytes 的软限制 |
 | {db-name}.{cf-name}.hard-pending-compaction-bytes-limit | pending compaction bytes 的硬限制 |
 | {db-name}.{cf-name}.titan.blob-run-mode | 处理 blob 文件的模式 |
+| {db-name}.{cf-name}.titan.min-blob-size | 数据存储在 Titan 的阈值，当数据的 value 达到该阈值时将存储在 Titan 的 Blob 文件中 |
+| {db-name}.{cf-name}.titan.blob-file-compression | Titan 的 Blob 文件所使用的压缩算法 |
+| {db-name}.{cf-name}.titan.discardable-ratio | Titan 数据文件 GC 的垃圾数据比例阈值，当一个 Blob 文件中无用数据的比例超过该阈值时将会触发 Titan GC |
 | server.grpc-memory-pool-quota | gRPC 可使用的内存大小限制 |
 | server.max-grpc-send-msg-len | gRPC 可发送的最大消息长度 |
 | server.raft-msg-max-batch-size | 单个 gRPC 消息可包含的最大 Raft 消息个数 |
@@ -332,6 +337,12 @@ select @@tidb_slow_log_threshold;
 | instance.tidb_enable_slow_log | tidb_enable_slow_log | 慢日志的开关 |
 | instance.tidb_slow_log_threshold | tidb_slow_log_threshold | 慢日志阈值 |
 | instance.tidb_expensive_query_time_threshold  | tidb_expensive_query_time_threshold | expensive 查询阈值 |
+| instance.tidb_enable_collect_execution_info | tidb_enable_collect_execution_info | 控制是否记录各个算子的执行信息 |
+| instance.tidb_record_plan_in_slow_log | tidb_record_plan_in_slow_log | 控制是否在慢日志中记录执行计划 |
+| instance.tidb_force_priority | tidb_force_priority | 该 TiDB 实例的语句优先级 |
+| instance.max_connections | max_connections | 该 TiDB 实例同时允许的最大客户端连接数 |
+| instance.tidb_enable_ddl | tidb_enable_ddl | 控制该 TiDB 实例是否可以成为 DDL owner |
+| pessimistic-txn.constraint-check-in-place-pessimistic | tidb_constraint_check_in_place_pessimistic | 控制悲观事务中唯一约束检查是否会被推迟到下一次对该唯一索引加锁时或事务提交时才进行 |
 
 ### 在线修改 TiFlash 配置
 

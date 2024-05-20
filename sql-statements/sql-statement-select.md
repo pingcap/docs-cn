@@ -10,84 +10,48 @@ aliases: ['/docs-cn/dev/sql-statements/sql-statement-select/','/docs-cn/dev/refe
 
 ## 语法图
 
-**SelectStmt:**
-
-![SelectStmt](/media/sqlgram/SelectStmt.png)
-
-**FromDual:**
-
-![FromDual](/media/sqlgram/FromDual.png)
-
-**WhereClauseOptional:**
-
-![WhereClauseOptional](/media/sqlgram/WhereClauseOptional.png)
-
-**SelectStmtOpts:**
-
-![SelectStmtOpts](/media/sqlgram/SelectStmtOpts.png)
-
-**SelectStmtFieldList:**
-
-![SelectStmtFieldList](/media/sqlgram/SelectStmtFieldList.png)
-
-**TableRefsClause:**
-
 ```ebnf+diagram
+SelectStmt ::=
+    ( SelectStmtBasic | SelectStmtFromDualTable | SelectStmtFromTable )
+    OrderBy? SelectStmtLimit? SelectLockOpt? SelectStmtIntoOption
+
+SelectStmtBasic ::=
+    "SELECT" SelectStmtOpts Field ("," Field)* ( "HAVING" Expression)?
+
+SelectStmtFromDualTable ::=
+    "SELECT" SelectStmtOpts Field ("," Field)* "FROM" "DUAL" WhereClause?
+
+SelectStmtFromTable ::=
+    "SELECT" SelectStmtOpts Field ("," Field)* "FROM" TableRefsClause
+    WhereClause? GroupByClause? ( "HAVING" Expression)? WindowClause?
+
+SelectStmtOpts ::=
+    TableOptimizerHints DefaultFalseDistictOpt PriorityOpt SelectStmtSQLSmallResult
+    SelectStmtSQLBigResult SelectStmtSQLBufferResult SelectStmtSQLCache SelectStmtCalcFoundRows
+    SelectStmtStraightJoin
+
 TableRefsClause ::=
     TableRef AsOfClause? ( ',' TableRef AsOfClause? )*
 
 AsOfClause ::=
     'AS' 'OF' 'TIMESTAMP' Expression
-```
 
-**SelectStmtGroup:**
+SelectStmtLimit ::=
+    ("LIMIT" LimitOption ( ("," | "OFFSET") LimitOption )?
+| "FETCH" ("FIRST" | "NEXT") LimitOption? ("ROW" | "ROWS") "ONLY" )
 
-![SelectStmtGroup](/media/sqlgram/SelectStmtGroup.png)
-
-**HavingClause:**
-
-![HavingClause](/media/sqlgram/HavingClause.png)
-
-**OrderByOptional:**
-
-![OrderByOptional](/media/sqlgram/OrderByOptional.png)
-
-**SelectStmtLimit:**
-
-![SelectStmtLimit](/media/sqlgram/SelectStmtLimit.png)
-
-**FirstOrNext:**
-
-![FirstOrNext](/media/sqlgram/FirstOrNext.png)
-
-**FetchFirstOpt:**
-
-![FetchFirstOpt](/media/sqlgram/FetchFirstOpt.png)
-
-**RowOrRows:**
-
-![RowOrRows](/media/sqlgram/RowOrRows.png)
-
-**SelectLockOpt:**
-
-```ebnf+diagram
-SelectLockOpt ::=
-    ( ( 'FOR' 'UPDATE' ( 'OF' TableList )? 'NOWAIT'? )
-|   ( 'LOCK' 'IN' 'SHARE' 'MODE' ) )?
+SelectLockOpt ::= 
+    ( 'FOR' 'UPDATE' ( 'OF' TableList )? 'NOWAIT'?
+|   'LOCK' 'IN' 'SHARE' 'MODE' )
 
 TableList ::=
     TableName ( ',' TableName )*
-```
 
-**WindowClauseOptional**
+WindowClause ::=
+    "WINDOW" WindowDefinition ("," WindowDefinition)*
 
-![WindowClauseOptional](/media/sqlgram/WindowClauseOptional.png)
-
-**TableSampleOpt**
-
-```ebnf+diagram
 TableSampleOpt ::=
-    'TABLESAMPLE' 'REGIONS()'
+    'TABLESAMPLE' 'REGIONS' '(' ')'
 ```
 
 ## 语法元素说明
@@ -113,6 +77,8 @@ TableSampleOpt ::=
 |`TABLESAMPLE`| 从表中获取一些行的样本数据。|
 
 ## 示例
+
+### SELECT
 
 {{< copyable "sql" >}}
 
@@ -174,11 +140,84 @@ mysql> SELECT AVG(s_quantity), COUNT(s_quantity) FROM stock;
 1 row in set (0.52 sec)
 ```
 
+### SELECT ... INTO OUTFILE
+
+`SELECT ... INTO OUTFILE` 语句用于将查询结果写入到文件中。
+
+> **注意：**
+>
+> 该语句不支持将查询结果写入任何[外部存储](/br/backup-and-restore-storages.md)，如 Amazon S3 或 GCS。
+
+在该语句中，你可以使用以下子句来指定输出文件的格式：
+
+- `FIELDS TERMINATED BY`：指定文件中字段的分隔符。例如，你可以将分隔符指定为 `','` 以输出逗号分隔值（CSV）或 `'\t'` 以输出制表符分隔值（TSV）。
+- `FIELDS ENCLOSED BY`：指定文件中包裹每个字段的字符。
+- `LINES TERMINATED BY`：如果你希望以某个特殊的字符为结尾来切分行数据，可以使用该子句指定文件中行的终止符。
+
+假设有一个名为 `t` 的表，包含以下三列：
+
+```sql
+mysql> CREATE TABLE t (a INT, b VARCHAR(10), c DECIMAL(10,2));
+Query OK, 0 rows affected (0.02 sec)
+
+mysql> INSERT INTO t VALUES (1, 'a', 1.1), (2, 'b', 2.2), (3, 'c', 3.3);
+Query OK, 3 rows affected (0.01 sec)
+```
+
+以下示例展示了如何使用 `SELECT ... INTO OUTFILE` 语句将查询结果写入到文件中。
+
+**示例 1:**
+
+```sql
+mysql> SELECT * FROM t INTO OUTFILE '/tmp/tmp_file1';
+Query OK, 3 rows affected (0.00 sec)
+```
+
+在此示例中，你可以在 `/tmp/tmp_file1` 中看到以下查询结果：
+
+```
+1       a       1.10
+2       b       2.20
+3       c       3.30
+```
+
+**示例 2:**
+
+```sql
+mysql> SELECT * FROM t INTO OUTFILE '/tmp/tmp_file2' FIELDS TERMINATED BY ',' ENCLOSED BY '"';
+Query OK, 3 rows affected (0.00 sec)
+```
+
+在此示例中，你可以在 `/tmp/tmp_file2` 中看到以下查询结果：
+
+```
+"1","a","1.10"
+"2","b","2.20"
+"3","c","3.30"
+```
+
+**示例 3:**
+
+```sql
+mysql> SELECT * FROM t INTO OUTFILE '/tmp/tmp_file3'
+    -> FIELDS TERMINATED BY ',' ENCLOSED BY '\'' LINES TERMINATED BY '<<<\n';
+Query OK, 3 rows affected (0.00 sec)
+```
+
+在此示例中，你可以在 `/tmp/tmp_file3` 中看到以下查询结果：
+
+```
+'1','a','1.10'<<<
+'2','b','2.20'<<<
+'3','c','3.30'<<<
+```
+
 ## MySQL 兼容性
 
 - 不支持 `SELECT ... INTO @variable` 语法。
+- 不支持 `SELECT ... INTO DUMPFILE` 语法。
 - 不支持 MySQL 5.7 中支持的 `SELECT .. GROUP BY expr` 语法，而是匹配 MySQL 8.0 的行为，不按照默认的顺序进行排序。
-- `SELECT ... TABLESAMPLE ...` 是 TiDB 的扩展语法，MySQL 不支持该语法。
+- `SELECT ... TABLESAMPLE ...` 是 TiDB 的扩展语法，用于兼容其他数据库以及 [ISO/IEC 9075-2](https://standards.iso.org/iso-iec/9075/-2/ed-6/en/) 标准，但 MySQL 不支持该语法。
 
 ## 另请参阅
 

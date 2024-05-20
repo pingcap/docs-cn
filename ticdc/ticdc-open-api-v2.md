@@ -90,7 +90,7 @@ curl -X GET http://127.0.0.1:8300/api/v2/status
 
 ```json
 {
-  "version": "v7.4.0",
+  "version": "v8.0.0",
   "git_hash": "10413bded1bdb2850aa6d7b94eb375102e9c44dc",
   "id": "d2912e63-3349-447c-90ba-72a4e04b5e9e",
   "pid": 1447,
@@ -145,7 +145,7 @@ curl -X GET http://127.0.0.1:8300/api/v2/health
   "changefeed_id": "string",
   "replica_config": {
     "bdr_mode": true,
-    "case_sensitive": true,
+    "case_sensitive": false,
     "check_gc_safe_point": true,
     "consistent": {
       "flush_interval": 0,
@@ -156,15 +156,6 @@ curl -X GET http://127.0.0.1:8300/api/v2/health
     "enable_old_value": true,
     "enable_sync_point": true,
     "filter": {
-      "do_dbs": [
-        "string"
-      ],
-      "do_tables": [
-        {
-          "database_name": "string",
-          "table_name": "string"
-        }
-      ],
       "event_filters": [
         {
           "ignore_delete_value_expr": "string",
@@ -180,15 +171,6 @@ curl -X GET http://127.0.0.1:8300/api/v2/health
           "matcher": [
             "string"
           ]
-        }
-      ],
-      "ignore_dbs": [
-        "string"
-      ],
-      "ignore_tables": [
-        {
-          "database_name": "string",
-          "table_name": "string"
         }
       ],
       "ignore_txn_start_ts": [
@@ -261,21 +243,21 @@ curl -X GET http://127.0.0.1:8300/api/v2/health
 
 `replica_config` 参数说明如下：
 
-| 参数名                       | 说明                                                                                                  |
-|:--------------------------|:----------------------------------------------------------------------------------------------------|
-| `bdr_mode`                | `BOOLEAN` 类型，是否开启[双向同步复制](/ticdc/ticdc-bidirectional-replication.md)。默认值为 `false`。（非必选）            |
-| `case_sensitive`          | `BOOLEAN` 类型，过滤表名时大小写是否敏感，默认值为 `true`。（非必选）                                                |
-| `check_gc_safe_point`     | `BOOLEAN` 类型，是否检查同步任务的开始时间早于 GC 时间，默认值为 `true`。（非必选）                                               |
-| `consistent`              | Redo log 配置。（非必选）                                                                                   |
-| `enable_sync_point`       | `BOOLEAN` 类型，是否开启 `sync point` 功能。（非必选）                                                             |
-| `filter`                  | filter 配置。（非必选）                                                                                     |
-| `force_replicate`         | `BOOLEAN` 类型，该值默认为 `false`，当指定为 `true` 时，同步任务会尝试强制同步没有唯一索引的表。（非必选）                                  |
-| `ignore_ineligible_table` | `BOOLEAN` 类型，该值默认为 `false`，当指定为 `true` 时，同步任务会忽略无法进行同步的表。（非必选）                                      |
-| `memory_quota`            | `UINT64` 类型，同步任务的内存 quota。（非必选）                                                                     |
-| `mounter`                 | 同步任务 `mounter` 配置。（非必选）                                                                             |
-| `sink`                    | 同步任务的`sink`配置。（非必选）                                                                                 |
+| 参数名                       | 说明                                                                                                       |
+|:--------------------------|:---------------------------------------------------------------------------------------------------------|
+| `bdr_mode`                | `BOOLEAN` 类型，是否开启[双向同步复制](/ticdc/ticdc-bidirectional-replication.md)。默认值为 `false`。（非必选）                  |
+| `case_sensitive`          | `BOOLEAN` 类型，过滤表名时大小写是否敏感。自 v6.5.6、v7.1.3 和 v7.5.0 起，默认值由 `true` 改为 `false`。（非必选）                        |
+| `check_gc_safe_point`     | `BOOLEAN` 类型，是否检查同步任务的开始时间早于 GC 时间，默认值为 `true`。（非必选）                                                     |
+| `consistent`              | Redo log 配置。（非必选）                                                                                        |
+| `enable_sync_point`       | `BOOLEAN` 类型，是否开启 `sync point` 功能。（非必选）                                                                  |
+| `filter`                  | filter 配置。（非必选）                                                                                          |
+| `force_replicate`         | `BOOLEAN` 类型，该值默认为 `false`，当指定为 `true` 时，同步任务会尝试强制同步没有唯一索引的表。（非必选）                                       |
+| `ignore_ineligible_table` | `BOOLEAN` 类型，该值默认为 `false`，当指定为 `true` 时，同步任务会忽略无法进行同步的表。（非必选）                                           |
+| `memory_quota`            | `UINT64` 类型，同步任务的内存 quota。（非必选）                                                                          |
+| `mounter`                 | 同步任务 `mounter` 配置。（非必选）                                                                                  |
+| `sink`                    | 同步任务的`sink`配置。（非必选）                                                                                      |
 | `sync_point_interval`     | `STRING` 类型，注意返回值为 `UINT64` 类型的纳秒级时间，`sync point` 功能开启时，对齐上下游 snapshot 的时间间隔。默认值为 `10m`，最小值为 `30s`。（非必选） |
-| `sync_point_retention`    | `STRING` 类型，注意返回值为 `UINT64` 类型的纳秒级时间，`sync point` 功能开启时，在下游表中保存的数据的时长，超过这个时间的数据会被清理。默认值为 `24h`。（非必选） |
+| `sync_point_retention`    | `STRING` 类型，注意返回值为 `UINT64` 类型的纳秒级时间，`sync point` 功能开启时，在下游表中保存的数据的时长，超过这个时间的数据会被清理。默认值为 `24h`。（非必选）     |
 
 `consistent` 参数说明如下：
 
@@ -285,15 +267,16 @@ curl -X GET http://127.0.0.1:8300/api/v2/health
 | `level`          | `STRING` 类型，同步数据的一致性级别。（非必选）           |
 | `max_log_size`   | `UINT64` 类型，redo log 的最大值。（非必选）        |
 | `storage`        | `STRING` 类型，存储的目标地址。（非必选）              |
+| `use_file_backend`        | `BOOL` 类型，是否将 redo log 存储到本地文件中。（非必选）              |
+| `encoding_worker_num`        | `INT` 类型，redo 模块中编解码 worker 的数量。（非必选）|
+|`flush_worker_num`        | `INT` 类型，redo 模块中上传文件 worker 的数量。（非必选）              |
+| `compression`         | `STRING` 类型，redo 文件的压缩行为，可选值为 `""` 和 `"lz4"`。默认值为 `""`，表示不进行压缩。（非必选）        |
+| `flush_concurrency`    | `INT` 类型，redo log 上传单个文件的并发数，默认值为 1，表示禁用并发。（非必选）                      |
 
 `filter` 参数说明如下：
 
 | 参数名                   | 说明                                                                                    |
 |:----------------------|:--------------------------------------------------------------------------------------|
-| `do_dbs`              | `STRING ARRAY` 类型，需要同步的数据库。（非必选）                                                      |
-| `do_tables`           | 需要同步的表。（非必选）                                                                          |
-| `ignore_dbs`          | `STRING ARRAY` 类型，不同步的数据库。（非必选）                                                       |
-| `ignore_tables`       |  不同步的表。（非必选）                                                                          |
 | `event_filters`       | event 过滤配置。（非必选）                                                                       |
 | `ignore_txn_start_ts` | `UINT64 ARRAY` 类型，指定之后会忽略指定 `start_ts` 的事务，如 `[1, 2]`。（非必选）                             |
 | `rules`               | `STRING ARRAY` 类型，表库过滤的规则，如 `['foo*.*', 'bar*.*']`。详情请参考[表库过滤](/table-filter.md)。（非必选） |
@@ -318,18 +301,21 @@ curl -X GET http://127.0.0.1:8300/api/v2/health
 
 `sink` 参数说明如下：
 
-| 参数名                     | 说明                                                                                                                   |
-|:------------------------|:---------------------------------------------------------------------------------------------------------------------|
-| `column_selectors`      | column selector 配置。（非必选）                                                                                             |
-| `csv`                   | CSV 配置。（非必选）                                                                                                         |
-| `date_separator`        | `STRING` 类型，文件路径的日期分隔类型。可选类型有 `none`、`year`、`month` 和 `day`。默认值为 `none`，即不使用日期分隔。（非必选）                               |
-| `dispatchers`           | 事件分发配置数组。（非必选）                                                                                                       |
-| `encoder_concurrency`   | `INT` 类型。MQ sink 中编码器的线程数。默认值为 `16`。（非必选）                                                                            |
-| `protocol`              | `STRING` 类型，对于 MQ 类的 Sink，可以指定消息的协议格式。目前支持以下协议：`canal-json`、`open-protocol`、`canal`、`avro` 和 `maxwell`。              |
-| `schema_registry`       | `STRING` 类型，schema registry 地址。（非必选）                                                                                 |
-| `terminator`            | `STRING` 类型，换行符，用来分隔两个数据变更事件。默认值为空，表示使用 `"\r\n"` 作为换行符。（非必选）                                                         |
-| `transaction_atomicity` | `STRING` 类型，事务一致性等级。（非必选）                                                                                            |
-| `only_output_updated_columns`             | `BOOLEAN` 类型，对于 MQ 类型的 Sink 中的 `canal-json` 和 `open-protocol`，表示是否只向下游同步有内容更新的列。默认值为 `false`。（非必选）                        |
+| 参数名                           | 说明                                                                                                 |
+|:------------------------------|:---------------------------------------------------------------------------------------------------|
+| `column_selectors`            | column selector 配置。（非必选）                                                                           |
+| `csv`                         | CSV 配置。（非必选）                                                                                       |
+| `date_separator`              | `STRING` 类型，文件路径的日期分隔类型。可选类型有 `none`、`year`、`month` 和 `day`。默认值为 `none`，即不使用日期分隔。（非必选）             |
+| `dispatchers`                 | 事件分发配置数组。（非必选）                                                                                     |
+| `encoder_concurrency`         | `INT` 类型。MQ sink 中编码器的线程数。默认值为 `16`。（非必选）                                                          |
+| `protocol`                    | `STRING` 类型，对于 MQ 类的 Sink，可以指定消息的协议格式。目前支持以下协议：`canal-json`、`open-protocol`、`avro` 和 `maxwell`。    |
+| `schema_registry`             | `STRING` 类型，schema registry 地址。（非必选）                                                               |
+| `terminator`                  | `STRING` 类型，换行符，用来分隔两个数据变更事件。默认值为空，表示使用 `"\r\n"` 作为换行符。（非必选）                                       |
+| `transaction_atomicity`       | `STRING` 类型，事务一致性等级。（非必选）                                                                          |
+| `only_output_updated_columns` | `BOOLEAN` 类型，对于 MQ 类型的 Sink 中的 `canal-json` 和 `open-protocol`，表示是否只向下游同步有内容更新的列。默认值为 `false`。（非必选） |
+| `cloud_storage_config`        | storage sink 配置。（非必选）                                                                              |
+| `open`                        | Open Protocol 配置。（非必选）                                                                             |
+| `debezium`                    | Debezium Protocol 配置。（非必选）                                                                             |
 
 `sink.column_selectors` 是一个数组，元素参数说明如下：
 
@@ -340,18 +326,19 @@ curl -X GET http://127.0.0.1:8300/api/v2/health
 
 `sink.csv` 参数说明如下：
 
-| 参数名                 | 说明                                              |
-|:--------------------|:------------------------------------------------|
-| `delimiter`         | `STRING` 类型，字段之间的分隔符。必须为 ASCII 字符，默认值为 `,`。     |
-| `include_commit_ts` | `BOOLEAN` 类型，是否在 CSV 行中包含 commit-ts。默认值为 `false`。 |
-| `null`              | `STRING` 类型，如果这一列是 null，那这一列该如何表示。默认是用 `\N` 来表示。 |
-| `quote`             | `STRING` 类型，用于包裹字段的引号字符。空值代表不使用引号字符。默认值为 `"`。   |
+| 参数名                    | 说明                                              |
+|:-------------------------|:------------------------------------------------|
+| `delimiter`              | `STRING` 类型，字段之间的分隔符。必须为 ASCII 字符，默认值为 `,`。     |
+| `include_commit_ts`      | `BOOLEAN` 类型，是否在 CSV 行中包含 commit-ts。默认值为 `false`。 |
+| `null`                   | `STRING` 类型，如果这一列是 null，那这一列该如何表示。默认是用 `\N` 来表示。 |
+| `quote`                  | `STRING` 类型，用于包裹字段的引号字符。空值代表不使用引号字符。默认值为 `"`。   |
+| `binary_encoding_method` | `STRING` 类型，二进制类型数据的编码方式，可选 `"base64"` 或 `"hex"`。默认值为 `"base64"`。   |
 
-`sink.dispatchers`：对于 MQ 类的 Sink，可以通过该参数配置 event 分发器，支持以下分发器：`default`、`ts`、`rowid`、`table` 。分发规则如下：
+`sink.dispatchers`：对于 MQ 类的 Sink，可以通过该参数配置 event 分发器，支持以下分发器：`default`、`ts`、`index-value`、`table` 。分发规则如下：
 
 - `default`：按照 table 分发。
 - `ts`：以行变更的 commitTs 做 Hash 计算并进行 event 分发。
-- `rowid`：以所选的 HandleKey 列名和列值做 Hash 计算并进行 event 分发。
+- `index-value`：以所选的 HandleKey 列名和列值做 Hash 计算并进行 event 分发。
 - `table`：以表的 schema 名和 table 名做 Hash 计算并进行 event 分发。
 
 `sink.dispatchers` 是一个数组，元素参数说明如下：
@@ -361,6 +348,29 @@ curl -X GET http://127.0.0.1:8300/api/v2/health
 | `matcher`   | `STRING ARRAY` 类型，匹配语法和过滤器规则的语法相同。 |
 | `partition` | `STRING` 类型，事件分发的目标 partition。    |
 | `topic`     | `STRING` 类型，事件分发的目标 topic。        |
+
+`sink.cloud_storage_config` 参数说明如下：
+
+| 参数名         | 说明                                |
+|:------------|:----------------------------------|
+| `worker_count`   | `INT` 类型，向下游存储服务保存数据变更记录的并发度。 |
+| `flush_interval`   | `STRING` 类型，向下游存储服务保存数据变更记录的间隔。 |
+| `file_size`   | `INT` 类型，单个数据变更文件的字节数超过 `file-size` 时将其保存至存储服务中。 |
+| `file_expiration_days`   | `INT` 类型，文件保留的时长。|
+| `file_cleanup_cron_spec`   | `STRING` 类型，定时清理任务的运行周期，与 crontab 配置兼容，格式为 `<Second> <Minute> <Hour> <Day of the month> <Month> <Day of the week (Optional)>`。|
+| `flush_concurrency`   | `INT` 类型，上传单个文件的并发数。|
+
+`sink.open` 参数说明如下：
+
+| 参数名                | 说明                                                            |
+|:-------------------|:--------------------------------------------------------------|
+| `output_old_value` | `BOOLEAN` 类型，是否输出行数据更改前的值。默认值为 `true`。关闭后，Update 事件不会输出 "p" 字段的数据。 |
+
+`sink.debezium` 参数说明如下：
+
+| 参数名                | 说明                                                                 |
+|:-------------------|:-------------------------------------------------------------------|
+| `output_old_value` | `BOOLEAN` 类型，是否输出行数据更改前的值。默认值为 `true`。关闭后，Update 事件不会输出 "before" 字段的数据。 |
 
 ### 使用样例
 
@@ -381,7 +391,7 @@ curl -X POST -H "'Content-type':'application/json'" http://127.0.0.1:8300/api/v2
   "checkpoint_ts": 0,
   "config": {
     "bdr_mode": true,
-    "case_sensitive": true,
+    "case_sensitive": false,
     "check_gc_safe_point": true,
     "consistent": {
       "flush_interval": 0,
@@ -392,15 +402,6 @@ curl -X POST -H "'Content-type':'application/json'" http://127.0.0.1:8300/api/v2
     "enable_old_value": true,
     "enable_sync_point": true,
     "filter": {
-      "do_dbs": [
-        "string"
-      ],
-      "do_tables": [
-        {
-          "database_name": "string",
-          "table_name": "string"
-        }
-      ],
       "event_filters": [
         {
           "ignore_delete_value_expr": "string",
@@ -416,15 +417,6 @@ curl -X POST -H "'Content-type':'application/json'" http://127.0.0.1:8300/api/v2
           "matcher": [
             "string"
           ]
-        }
-      ],
-      "ignore_dbs": [
-        "string"
-      ],
-      "ignore_tables": [
-        {
-          "database_name": "string",
-          "table_name": "string"
         }
       ],
       "ignore_txn_start_ts": [
@@ -585,7 +577,7 @@ curl -X DELETE http://127.0.0.1:8300/api/v2/changefeeds/test1
 {
   "replica_config": {
     "bdr_mode": true,
-    "case_sensitive": true,
+    "case_sensitive": false,
     "check_gc_safe_point": true,
     "consistent": {
       "flush_interval": 0,
@@ -596,15 +588,6 @@ curl -X DELETE http://127.0.0.1:8300/api/v2/changefeeds/test1
     "enable_old_value": true,
     "enable_sync_point": true,
     "filter": {
-      "do_dbs": [
-        "string"
-      ],
-      "do_tables": [
-        {
-          "database_name": "string",
-          "table_name": "string"
-        }
-      ],
       "event_filters": [
         {
           "ignore_delete_value_expr": "string",
@@ -620,15 +603,6 @@ curl -X DELETE http://127.0.0.1:8300/api/v2/changefeeds/test1
           "matcher": [
             "string"
           ]
-        }
-      ],
-      "ignore_dbs": [
-        "string"
-      ],
-      "ignore_tables": [
-        {
-          "database_name": "string",
-          "table_name": "string"
         }
       ],
       "ignore_txn_start_ts": [
@@ -789,6 +763,95 @@ curl -X GET http://127.0.0.1:8300/api/v2/changefeeds/test1
 ```
 
 响应的 JSON 格式以及字段含义与[创建同步任务](#创建同步任务)中的响应参数相同，此处不再赘述。
+
+## 查询特定同步任务是否完成
+
+该接口是一个同步接口，请求成功后会返回指定同步任务 (changefeed) 的同步完成情况，包括是否同步完成，以及一些更详细的信息。
+
+### 请求 URI
+
+`GET /api/v2/changefeed/{changefeed_id}/synced`
+
+### 参数说明
+
+#### 路径参数
+
+| 参数名             | 说明                          |
+|:----------------|:----------------------------|
+| `changefeed_id` | 需要查询的同步任务 (changefeed) 的 ID |
+
+### 使用样例
+
+以下请求会查询 ID 为 `test1` 的同步任务的同步完成状态。
+
+```shell
+curl -X GET http://127.0.0.1:8300/api/v2/changefeed/test1/synced
+```
+
+**示例 1：同步已完成**
+
+```json
+{
+  "synced": true,
+  "sink_checkpoint_ts": "2023-11-30 15:14:11.015",
+  "puller_resolved_ts": "2023-11-30 15:14:12.215",
+  "last_synced_ts": "2023-11-30 15:08:35.510",
+  "now_ts": "2023-11-30 15:14:11.511",
+  "info": "Data syncing is finished"
+}
+```
+
+以上返回的信息的说明如下：
+
+- `synced`：该同步任务是否已完成。`true` 表示已完成；`false` 表示不一定完成，具体状态需要结合 `info` 字段以及其他字段进行判断。
+- `sink_checkpoint_ts`：sink 模块的 checkpoint-ts 值，时间为 PD 时间。
+- `puller_resolved_ts`：puller 模块的 resolved-ts 值，时间为 PD 时间。
+- `last_synced_ts`：TiCDC 处理的最新一条数据的 commit-ts 值，时间为 PD 时间。
+- `now_ts`：当前的 PD 时间。
+- `info`：一些帮助判断同步状态的信息，特别是在 `synced` 为 `false` 时可以为你提供参考。
+
+**示例 2：同步未完成**
+
+```json
+{
+  "synced": false,
+  "sink_checkpoint_ts": "2023-11-30 15:26:31.519",
+  "puller_resolved_ts": "2023-11-30 15:26:23.525",
+  "last_synced_ts": "2023-11-30 15:24:30.115",
+  "now_ts": "2023-11-30 15:26:31.511",
+  "info": "The data syncing is not finished, please wait"
+}
+```
+
+此示例展示了当未完成同步任务时该接口返回的查询结果。你可以结合 `synced` 和 `info` 字段判断出数据目前还未完成同步，需要继续等待。
+
+**示例 3：同步状态需要进一步判断**
+
+```json
+{
+  "synced":false,
+  "sink_checkpoint_ts":"2023-12-13 11:45:13.515",
+  "puller_resolved_ts":"2023-12-13 11:45:13.525",
+  "last_synced_ts":"2023-12-13 11:45:07.575",
+  "now_ts":"2023-12-13 11:50:24.875",
+  "info":"Please check whether PD is online and TiKV Regions are all available. If PD is offline or some TiKV regions are not available, it means that the data syncing process is complete. To check whether TiKV regions are all available, you can view 'TiKV-Details' > 'Resolved-Ts' > 'Max Leader Resolved TS gap' on Grafana. If the gap is large, such as a few minutes, it means that some regions in TiKV are unavailable. Otherwise, if the gap is small and PD is online, it means the data syncing is incomplete, so please wait"
+}
+```
+
+本接口支持在上游集群遇到灾害时对同步状态进行查询判断。在部分情况下，你可能无法直接判定 TiCDC 目前的数据同步任务是否完成。此时，你可以查询该接口，并结合返回结果中的 `info` 字段以及目前上游集群的状态进行判断。
+
+在此示例中，`sink_checkpoint_ts` 在时间上落后于 `now_ts`，这可能是因为 TiCDC 还在追数据，也可能是由于 PD 或者 TiKV 出现了故障。如果这是 TiCDC 还在追数据导致的，说明同步任务尚未完成。如果这是由于 PD 或者 TiKV 出现了故障导致的，说明同步任务已经完成。因此，你需要参考 `info` 中的信息对集群状态进行辅助判断。
+
+**示例 4：查询报错**
+
+```json
+{
+  "error_msg": "[CDC:ErrPDEtcdAPIError]etcd api call error: context deadline exceeded",
+  "error_code": "CDC:ErrPDEtcdAPIError"
+}
+```
+
+在上游集群的 PD 长时间故障后，查询该 API 接口时会返回类似如上的错误，无法提供进一步的判断信息。因为 PD 故障会直接影响 TiCDC 的数据同步，当遇到这类错误时，你可以认为 TiCDC 已经尽可能完成数据同步，但下游集群仍然可能存在因 PD 故障导致的数据丢失。
 
 ## 暂停同步任务
 

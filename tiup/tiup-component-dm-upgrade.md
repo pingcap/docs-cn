@@ -1,5 +1,6 @@
 ---
 title: tiup dm upgrade
+summary: tiup dm upgrade 命令用于将指定集群升级到特定版本。语法为 tiup dm upgrade <cluster-name> <version> [flags]。cluster-name 为要操作的集群名字，version 为要升级到的目标版本。选项 --offline 声明当前集群处于离线状态，-h, --help 输出帮助信息。升级服务的日志可查看。
 ---
 
 # tiup dm upgrade
@@ -13,7 +14,7 @@ tiup dm upgrade <cluster-name> <version> [flags]
 ```
 
 - `<cluster-name>` 为要操作的集群名字，如果忘记集群名字可查看[集群列表](/tiup/tiup-component-dm-list.md)。
-- `<version>` 为要升级到的目标版本，例如 `v7.4.0`。目前仅允许升级到比当前集群更高的版本，不允许升级到比当前集群更低的版本，即不允许降级。同时也不允许升级成 nightly 版本。
+- `<version>` 为要升级到的目标版本，例如 `v8.0.0`。目前仅允许升级到比当前集群更高的版本，不允许升级到比当前集群更低的版本，即不允许降级。同时也不允许升级成 nightly 版本。
 
 ## 选项
 

@@ -1,6 +1,7 @@
 ---
 title: TiDB Lightning 监控告警
 aliases: ['/docs-cn/dev/tidb-lightning/monitor-tidb-lightning/','/docs-cn/dev/reference/tools/tidb-lightning/monitor/']
+summary: TiDB Lightning 支持使用Prometheus采集监控指标。监控配置需手动部署，配置方法在 tidb-lightning.toml 中。Grafana 面板可用于监控速度、进度、资源使用和存储空间。监控指标包括计数器和直方图，用于计算引擎文件数量、闲置 worker、KV 编码器、处理过的表、引擎文件和 Chunks的状态，以及导入每个表所需时间等。
 ---
 
 # TiDB Lightning 监控告警

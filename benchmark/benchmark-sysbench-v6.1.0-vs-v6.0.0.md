@@ -1,5 +1,6 @@
 ---
 title: TiDB Sysbench 性能对比测试报告 - v6.1.0 对比 v6.0.0
+summary: TiDB v6.1.0 在 OLTP 场景下的 Sysbench 性能表现优于 v6.0.0。写性能有提升，Write-heavy 负载性能提升了 2.33% 到 4.61%。Point Select 性能基本持平，略下降了 2.1%。Update Non-index 性能提升了 3.88%。Update Index 性能提升了 4.61%。Read Write 性能提升了 2.23%。
 ---
 
 # TiDB Sysbench 性能对比测试报告 - v6.1.0 对比 v6.0.0

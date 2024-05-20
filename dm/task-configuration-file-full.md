@@ -1,6 +1,7 @@
 ---
 title: DM 任务完整配置文件介绍
 aliases: ['/docs-cn/tidb-data-migration/dev/task-configuration-file-full/','/docs-cn/tidb-data-migration/dev/dm-portal/','/zh/tidb/dev/task-configuration-file']
+summary: 本文介绍了 Data Migration (DM) 的任务完整配置文件，包括全局配置和实例配置两部分。全局配置包括任务基本信息配置和功能配置集，功能配置集包括路由规则、过滤规则、block-allow-list、mydumpers、loaders 和 syncers。实例配置定义了具体的数据迁移子任务，包括路由规则、过滤规则、block-allow-list、mydumpers、loaders 和 syncers 的配置名称。
 ---
 
 # DM 任务完整配置文件介绍
@@ -46,6 +47,7 @@ target-database:                # 下游数据库实例配置
     sql_mode: "ANSI_QUOTES,NO_ZERO_IN_DATE,NO_ZERO_DATE" # 从 DM v2.0.0 起，如果配置文件中没有出现该项，DM 会自动从下游 TiDB 中获得适合用于 "sql_mode" 的值。手动配置该项具有更高优先级
     tidb_skip_utf8_check: 1                              # 从 DM v2.0.0 起，如果配置文件中没有出现该项，DM 会自动从下游 TiDB 中获得适合用于 "tidb_skip_utf8_check" 的值。手动配置该项具有更高优先级
     tidb_constraint_check_in_place: 0
+    sql_require_primary_key: OFF   # 在 session 级别控制表是否必须有主键。DM 任务创建期间，会在 TiDB 创建几个元数据表，其中有些表是无主键表。如果开启该参数，这些无主键的元数据表就无法被创建出来，导致 DM 任务创建失败。因此，需要将该参数设置为 `OFF`。
   security:                       # 下游 TiDB TLS 相关配置
     ssl-ca: "/path/to/ca.pem"
     ssl-cert: "/path/to/cert.pem"

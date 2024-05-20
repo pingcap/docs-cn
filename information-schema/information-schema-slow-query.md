@@ -5,7 +5,7 @@ summary: 了解 INFORMATION_SCHEMA 表 `SLOW_QUERY`。
 
 # SLOW_QUERY
 
-`SLOW_QUERY` 表中提供了当前节点的慢查询相关的信息，其内容通过解析当前节点的 TiDB 慢查询日志而来，列名和慢日志中的字段名是一一对应。关于如何使用该表调查和改善慢查询，请参考[慢查询日志文档](/identify-slow-queries.md)。
+`SLOW_QUERY` 表中提供了当前节点的慢查询相关的信息，其内容通过解析当前节点的 TiDB [慢查询日志](/tidb-configuration-file.md#slow-query-file)而来，列名和慢日志中的字段名是一一对应。关于如何使用该表调查和改善慢查询，请参考[慢查询日志文档](/identify-slow-queries.md)。
 
 ```sql
 USE INFORMATION_SCHEMA;
@@ -23,6 +23,7 @@ DESC slow_query;
 | User                          | varchar(64)         | YES  |      | NULL    |       |
 | Host                          | varchar(64)         | YES  |      | NULL    |       |
 | Conn_ID                       | bigint(20) unsigned | YES  |      | NULL    |       |
+| Session_alias                 | varchar(64)         | YES  |      | NULL    |       |
 | Exec_retry_count              | bigint(20) unsigned | YES  |      | NULL    |       |
 | Exec_retry_time               | double              | YES  |      | NULL    |       |
 | Query_time                    | double              | YES  |      | NULL    |       |
@@ -87,13 +88,17 @@ DESC slow_query;
 | Plan_from_cache               | tinyint(1)          | YES  |      | NULL    |       |
 | Plan_from_binding             | tinyint(1)          | YES  |      | NULL    |       |
 | Has_more_results              | tinyint(1)          | YES  |      | NULL    |       |
+| Resource_group                | varchar(64)         | YES  |      | NULL    |       |
+| Request_unit_read             | double              | YES  |      | NULL    |       |
+| Request_unit_write            | double              | YES  |      | NULL    |       |
+| Time_queued_by_rc             | double              | YES  |      | NULL    |       |
 | Plan                          | longtext            | YES  |      | NULL    |       |
 | Plan_digest                   | varchar(128)        | YES  |      | NULL    |       |
 | Binary_plan                   | longtext            | YES  |      | NULL    |       |
 | Prev_stmt                     | longtext            | YES  |      | NULL    |       |
 | Query                         | longtext            | YES  |      | NULL    |       |
 +-------------------------------+---------------------+------+------+---------+-------+
-74 rows in set (0.001 sec)
+79 rows in set (0.00 sec)
 ```
 
 ## CLUSTER_SLOW_QUERY table
@@ -116,6 +121,7 @@ DESC CLUSTER_SLOW_QUERY;
 | User                          | varchar(64)         | YES  |      | NULL    |       |
 | Host                          | varchar(64)         | YES  |      | NULL    |       |
 | Conn_ID                       | bigint(20) unsigned | YES  |      | NULL    |       |
+| Session_alias                 | varchar(64)         | YES  |      | NULL    |       |
 | Exec_retry_count              | bigint(20) unsigned | YES  |      | NULL    |       |
 | Exec_retry_time               | double              | YES  |      | NULL    |       |
 | Query_time                    | double              | YES  |      | NULL    |       |
@@ -180,13 +186,17 @@ DESC CLUSTER_SLOW_QUERY;
 | Plan_from_cache               | tinyint(1)          | YES  |      | NULL    |       |
 | Plan_from_binding             | tinyint(1)          | YES  |      | NULL    |       |
 | Has_more_results              | tinyint(1)          | YES  |      | NULL    |       |
+| Resource_group                | varchar(64)         | YES  |      | NULL    |       |
+| Request_unit_read             | double              | YES  |      | NULL    |       |
+| Request_unit_write            | double              | YES  |      | NULL    |       |
+| Time_queued_by_rc             | double              | YES  |      | NULL    |       |
 | Plan                          | longtext            | YES  |      | NULL    |       |
 | Plan_digest                   | varchar(128)        | YES  |      | NULL    |       |
 | Binary_plan                   | longtext            | YES  |      | NULL    |       |
 | Prev_stmt                     | longtext            | YES  |      | NULL    |       |
 | Query                         | longtext            | YES  |      | NULL    |       |
 +-------------------------------+---------------------+------+------+---------+-------+
-75 rows in set (0.001 sec)
+80 rows in set (0.00 sec)
 ```
 
 查询集群系统表时，TiDB 也会将相关计算下推给其他节点执行，而不是把所有节点的数据都取回来，可以查看执行计划，如下：
@@ -202,9 +212,9 @@ DESC SELECT COUNT(*) FROM CLUSTER_SLOW_QUERY WHERE user = 'u1';
 | id                         | estRows  | task      | access object            | operator info                                        |
 +----------------------------+----------+-----------+--------------------------+------------------------------------------------------+
 | StreamAgg_7                | 1.00     | root      |                          | funcs:count(1)->Column#75                            |
-| └─TableReader_13       | 10.00    | root      |                          | data:Selection_12                                    |
-|   └─Selection_12       | 10.00    | cop[tidb] |                          | eq(INFORMATION_SCHEMA.cluster_slow_query.user, "u1") |
-|     └─TableFullScan_11 | 10000.00 | cop[tidb] | table:CLUSTER_SLOW_QUERY | keep order:false, stats:pseudo                       |
+| └─TableReader_13           | 10.00    | root      |                          | data:Selection_12                                    |
+|   └─Selection_12           | 10.00    | cop[tidb] |                          | eq(INFORMATION_SCHEMA.cluster_slow_query.user, "u1") |
+|     └─TableFullScan_11     | 10000.00 | cop[tidb] | table:CLUSTER_SLOW_QUERY | keep order:false, stats:pseudo                       |
 +----------------------------+----------+-----------+--------------------------+------------------------------------------------------+
 4 rows in set (0.00 sec)
 ```

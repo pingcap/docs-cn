@@ -297,4 +297,8 @@ Region Merge 速度慢也很有可能是受到 limit 配置的限制（`merge-sc
 
 实践中，如果能确定这个节点的故障是不可恢复的，可以立即做下线处理，这样 PD 能尽快补齐副本，降低数据丢失的风险。与之相对，如果确定这个节点是能恢复的，但可能半小时之内来不及，则可以把 `max-store-down-time` 临时调整为比较大的值，这样能避免超时之后产生不必要的副本补充，造成资源浪费。
 
-自 v5.2.0 起，TiKV 引入了慢节点检测机制。通过对 TiKV 中的请求进行采样，计算出一个范围在 1~100 的分数。当分数大于等于 80 时，该 TiKV 节点会被设置为 slow 状态。可以通过添加 [`evict-slow-store-scheduler`](/pd-control.md#scheduler-show--add--remove--pause--resume--config--describe) 来针对慢节点进行对应的检测和调度。当检测到有且只有一个 TiKV 节点为慢节点，并且该 TiKV 的 slow score 到达限定值（默认 80）时，将节点上的 leader 驱逐（其作用类似于 `evict-leader-scheduler`）。
+自 v5.2.0 起，TiKV 引入了慢节点检测机制。通过对 TiKV 中的请求进行采样，计算出一个范围在 1~100 的分数。当分数大于等于 80 时，该 TiKV 节点会被设置为 slow 状态。可以通过添加 [`evict-slow-store-scheduler`](/pd-control.md#scheduler-show--add--remove--pause--resume--config--describe) 来针对慢节点进行对应的检测和调度。当检测到有且只有一个 TiKV 节点为慢节点，并且该 TiKV 的 slow score 到达限定值（默认 80）时，将节点上的 Leader 驱逐（其作用类似于 `evict-leader-scheduler`）。
+
+> **注意：**
+>
+> **Leader 驱逐**是通过 PD 向 TiKV 慢节点发送调度请求，然后 TiKV 按时间顺序执行收到的调度请求来完成的。受 **I/O 慢**或者其他因素的影响，慢节点可能存在请求堆积的情况，使得部分 Leader 需要等待滞后的请求处理完后才能处理 **Leader 驱逐**的请求，造成 **Leader 驱逐**的整体时间过长。因此，在开启 `evict-slow-store-scheduler` 时，建议同步配置[`store-io-pool-size`](/tikv-configuration-file.md#store-io-pool-size-从-v530-版本开始引入) 以缓解该情况。

@@ -41,7 +41,7 @@ Hive 中每个表都能通过标注 `STORED AS PARQUET LOCATION '/path/in/hdfs'`
     DROP TABLE temp;
     ```
 
-3. 从 Hive 导出的 Parquet 文件可能不带有 `.parquet` 的后缀，无法被 TiDB Lightning 正确识别。因此，在进行导入之前，需要对导出的文件进行重命名，添加 `.parquet` 后缀。
+3. 从 Hive 导出的 Parquet 文件可能不带有 `.parquet` 的后缀，无法被 TiDB Lightning 正确识别。因此，在进行导入之前，需要对导出的文件进行重命名，添加 `.parquet` 后缀，将完整的文件名修改为 TiDB Lightning 能识别的格式 `${db_name}.${table_name}.parquet`。更多文件类型和命名规则，请参考 [TiDB Lightning 数据源](/tidb-lightning/tidb-lightning-data-source.md)。你也可以通过设置正确的[自定义表达式](/tidb-lightning/tidb-lightning-data-source.md#自定义文件匹配)匹配数据文件。
 
 4. 将所有 Parquet 文件放到统一目录下，例如 `/data/my_datasource/` 或 `s3://my-bucket/sql-backup`。TiDB Lightning 将递归地寻找该目录及其子目录内的所有 `.parquet` 文件。
 

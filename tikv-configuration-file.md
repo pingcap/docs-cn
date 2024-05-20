@@ -107,13 +107,6 @@ TiKV 配置文件比命令行参数支持更多的选项。你可以在 [etc/con
     + 如果把此参数设置为非 `0` 的值，TiKV 最多会保留 `max-backups` 中指定的数量的旧日志文件。比如，如果该值设置为 `7`，TiKV 最多会保留 7 个旧的日志文件。
 + 默认值：0
 
-### `pd.enable-forwarding` <span class="version-mark">从 v5.0.0 版本开始引入</span>
-
-+ 控制 TiKV 中的 PD client 在疑似网络隔离的情况下是否通过 follower 将请求转发给 leader。
-+ 默认值：false
-+ 如果确认环境存在网络隔离的可能，开启这个参数可以减少服务不可用的窗口期。
-+ 如果无法准确判断隔离、网络中断、宕机等情况，这个机制存在误判情况从而导致可用性、性能降低。如果网络中从未发生过网络故障，不推荐开启此选项。
-
 ## server
 
 服务器相关的配置项。
@@ -186,9 +179,9 @@ TiKV 配置文件比命令行参数支持更多的选项。你可以在 [etc/con
 ### `grpc-stream-initial-window-size`
 
 + gRPC stream 的 window 大小。
-+ 默认值：2MB
-+ 单位：KB|MB|GB
-+ 最小值：1KB
++ 默认值：2MiB
++ 单位：KiB|MiB|GiB
++ 最小值：1KiB
 
 ### `grpc-keepalive-time`
 
@@ -229,9 +222,9 @@ TiKV 配置文件比命令行参数支持更多的选项。你可以在 [etc/con
 ### `snap-io-max-bytes-per-sec`
 
 + 处理 snapshot 时最大允许使用的磁盘带宽。
-+ 默认值：100MB
-+ 单位：KB|MB|GB
-+ 最小值：1KB
++ 默认值：100MiB
++ 单位：KiB|MiB|GiB
++ 最小值：1KiB
 
 ### `enable-request-batch`
 
@@ -292,9 +285,9 @@ TiKV 配置文件比命令行参数支持更多的选项。你可以在 [etc/con
 
 + 统一处理读请求的线程池中线程的栈大小。
 + 类型：整数 + 单位
-+ 默认值：10MB
-+ 单位：KB|MB|GB
-+ 最小值：2MB
++ 默认值：10MiB
++ 单位：KiB|MiB|GiB
++ 最小值：2MiB
 + 最大值：在系统中执行 `ulimit -sH` 命令后，输出的千字节数。
 
 ### `max-tasks-per-worker`
@@ -357,9 +350,9 @@ TiKV 配置文件比命令行参数支持更多的选项。你可以在 [etc/con
 
 + Storage 读线程池中线程的栈大小。
 + 类型：整数 + 单位
-+ 默认值：10MB
-+ 单位：KB|MB|GB
-+ 最小值：2MB
++ 默认值：10MiB
++ 单位：KiB|MiB|GiB
++ 最小值：2MiB
 + 最大值：在系统中执行 `ulimit -sH` 命令后，输出的千字节数。
 
 ## readpool.coprocessor
@@ -410,9 +403,9 @@ TiKV 配置文件比命令行参数支持更多的选项。你可以在 [etc/con
 ### `stack-size`
 
 + Coprocessor 线程池中线程的栈大小。
-+ 默认值：10MB
-+ 单位：KB|MB|GB
-+ 最小值：2MB
++ 默认值：10MiB
++ 单位：KiB|MiB|GiB
++ 最小值：2MiB
 + 最大值：在系统中执行 `ulimit -sH` 命令后，输出的千字节数。
 
 ## storage
@@ -452,8 +445,8 @@ TiKV 配置文件比命令行参数支持更多的选项。你可以在 [etc/con
 ### `scheduler-pending-write-threshold`
 
 + 写入数据队列的最大值，超过该值之后对于新的写入 TiKV 会返回 Server Is Busy 错误。
-+ 默认值：100MB
-+ 单位：MB|GB
++ 默认值：100MiB
++ 单位：MiB|GiB
 
 ### `enable-async-apply-prewrite`
 
@@ -464,9 +457,9 @@ TiKV 配置文件比命令行参数支持更多的选项。你可以在 [etc/con
 
 + TiKV 启动时会预留一块空间用于保护磁盘空间。当磁盘剩余空间小于该预留空间时，TiKV 会限制部分写操作。预留空间形式上分为两个部分：预留空间的 80% 用作磁盘空间不足时的运维操作所需要的额外磁盘空间，剩余的 20% 为磁盘临时文件。在回收空间的过程中，如果额外使用的磁盘空间过多，导致存储耗尽时，该临时文件会成为恢复服务的最后一道防御。
 + 临时文件名为 `space_placeholder_file`，位于 `storage.data-dir` 目录下。当 TiKV 因磁盘空间耗尽而下线时，重启 TiKV 会自动删除该临时文件，并自动尝试回收空间。
-+ 当剩余空间不足时，TiKV 不会创建该临时文件。防御的有效性与预留空间的大小有关。预留空间大小的计算方式为磁盘容量的 5% 与该配置项之间的最大值。当该配置项的值为 `0MB` 时，TiKV 会关闭磁盘防护功能。
-+ 默认值：5GB
-+ 单位：MB|GB
++ 当剩余空间不足时，TiKV 不会创建该临时文件。防御的有效性与预留空间的大小有关。预留空间大小的计算方式为磁盘容量的 5% 与该配置项之间的最大值。当该配置项的值为 `0MiB` 时，TiKV 会关闭磁盘防护功能。
++ 默认值：5GiB
++ 单位：MiB|GiB
 
 ### `enable-ttl`
 
@@ -522,7 +515,7 @@ RocksDB 多个 CF 之间共享 block cache 的配置选项。
     + 当 `storage.engine="raft-kv"` 时，默认值为系统总内存大小的 45%。
     + 当 `storage.engine="partitioned-raft-kv"` 时，默认值为系统总内存大小的 30%。
 
-+ 单位：KB|MB|GB
++ 单位：KiB|MiB|GiB
 
 ## storage.flow-control
 
@@ -546,12 +539,12 @@ RocksDB 多个 CF 之间共享 block cache 的配置选项。
 ### `soft-pending-compaction-bytes-limit`
 
 + 当 KvDB 的 pending compaction bytes 达到该阈值时，流控机制开始拒绝部分写入请求，报错 `ServerIsBusy`。当 `enable` 的值为 `true` 时，会覆盖 `rocksdb.(defaultcf|writecf|lockcf).soft-pending-compaction-bytes-limit` 的配置。
-+ 默认值："192GB"
++ 默认值："192GiB"
 
 ### `hard-pending-compaction-bytes-limit`
 
 + 当 KvDB 的 pending compaction bytes 达到该阈值时，流控机制拒绝所有写入请求，报错 `ServerIsBusy`。当 `enable` 的值为 `true` 时，会覆盖 `rocksdb.(defaultcf|writecf|lockcf).hard-pending-compaction-bytes-limit` 的配置。
-+ 默认值："1024GB"
++ 默认值："1024GiB"
 
 ## storage.io-rate-limit
 
@@ -560,7 +553,7 @@ I/O rate limiter 相关的配置项。
 ### `max-bytes-per-sec`
 
 + 限制服务器每秒从磁盘读取数据或写入数据的最大 I/O 字节数，I/O 类型由下面的 `mode` 配置项决定。达到该限制后，TiKV 倾向于放缓后台操作为前台操作节流。该配置项值应设为磁盘的最佳 I/O 带宽，例如云盘厂商指定的最大 I/O 带宽。
-+ 默认值："0MB"
++ 默认值："0MiB"
 
 ### `mode`
 
@@ -569,6 +562,13 @@ I/O rate limiter 相关的配置项。
 + 默认值：`"write-only"`
 
 ## pd
+
+### `enable-forwarding` <span class="version-mark">从 v5.0.0 版本开始引入</span>
+
++ 控制 TiKV 中的 PD client 在疑似网络隔离的情况下是否通过 follower 将请求转发给 leader。
++ 默认值：false
++ 如果确认环境存在网络隔离的可能，开启这个参数可以减少服务不可用的窗口期。
++ 如果无法准确判断隔离、网络中断、宕机等情况，这个机制存在误判情况从而导致可用性、性能降低。如果网络中从未发生过网络故障，不推荐开启此选项。
 
 ### `endpoints`
 
@@ -605,7 +605,7 @@ raftstore 相关的配置项。
 
 + 存储容量，即允许的最大数据存储大小。如果没有设置，则使用当前磁盘容量。如果要将多个 TiKV 实例部署在同一块物理磁盘上，需要在 TiKV 配置中添加该参数，参见[混合部署的关键参数介绍](/hybrid-deployment-topology.md#混合部署的关键参数介绍)。
 + 默认值：0
-+ 单位：KB|MB|GB
++ 单位：KiB|MiB|GiB
 
 ### `raftdb-path`
 
@@ -669,10 +669,10 @@ raftstore 相关的配置项。
 > 该配置项不支持通过 SQL 语句查询，但支持在配置文件中进行配置。
 
 + 产生的单个消息包的大小限制，软限制。
-+ 默认值：1MB
++ 默认值：1MiB
 + 最小值：大于 0
-+ 最大值: 3GB
-+ 单位：KB|MB|GB
++ 最大值: 3GiB
++ 单位：KiB|MiB|GiB
 
 ### `raft-max-inflight-msgs`
 
@@ -688,9 +688,9 @@ raftstore 相关的配置项。
 ### `raft-entry-max-size`
 
 + 单个日志最大大小，硬限制。
-+ 默认值：8MB
++ 默认值：8MiB
 + 最小值：0
-+ 单位：MB|GB
++ 单位：MiB|GiB
 
 ### `raft-log-compact-sync-interval` <span class="version-mark">从 v5.3 版本开始引入</span>
 
@@ -784,13 +784,13 @@ raftstore 相关的配置项。
 
 ### `region-compact-min-redundant-rows` <span class="version-mark">从 v7.1.0 版本开始引入</span>
 
-+ 触发 RocksDB compaction 需要的冗余的 MVCC 数据行数。该配置只对 Partitioned Raft KV (storage.engine="partitioned-raft-kv") 生效。
++ 触发 RocksDB compaction 需要的冗余的 MVCC 数据行数。
 + 默认值：`50000`
 + 最小值：`0`
 
 ### `region-compact-redundant-rows-percent` <span class="version-mark">从 v7.1.0 版本开始引入</span>
 
-+ 触发 RocksDB compaction 需要的冗余的 MVCC 数据行所占比例。该配置只对 Partitioned Raft KV (`storage.engine="partitioned-raft-kv"`) 生效。
++ 触发 RocksDB compaction 需要的冗余的 MVCC 数据行所占比例。
 + 默认值：`20`
 + 最小值：`1`
 + 最大值：`100`
@@ -844,9 +844,9 @@ raftstore 相关的配置项。
 ### `lock-cf-compact-bytes-threshold`
 
 + 触发对 lock CF 进行 compact 的大小。
-+ 默认值：256MB
++ 默认值：256MiB
 + 最小值：0
-+ 单位：MB
++ 单位：MiB
 
 ### `notify-capacity`
 
@@ -899,9 +899,9 @@ raftstore 相关的配置项。
 ### `snap-apply-batch-size`
 
 + 当导入 snapshot 文件需要写数据时，内存写缓存的大小。
-+ 默认值：10MB
++ 默认值：10MiB
 + 最小值：0
-+ 单位：MB
++ 单位：MiB
 
 ### `consistency-check-interval`
 
@@ -989,7 +989,7 @@ raftstore 相关的配置项。
 ### `store-io-pool-size` <span class="version-mark">从 v5.3.0 版本开始引入</span>
 
 + 表示处理 Raft I/O 任务的线程池中线程的数量，即 StoreWriter 线程池的大小。调整该线程池的大小时，请参考 [TiKV 线程池调优](/tune-tikv-thread-performance.md#tikv-线程池调优)。
-+ 默认值：0
++ 默认值：1（对于 TiDB v8.0.0 之前的版本，默认值为 0）
 + 最小值：0
 
 ### `future-poll-size`
@@ -1007,13 +1007,13 @@ raftstore 相关的配置项。
 
 + TiKV 每隔一段时间会检测 Raftstore 组件的延迟情况，该配置项设置检测的时间间隔。当检测的延迟超过该时间，该检测会被记为超时。
 + 根据超时的检测延迟的比例计算判断 TiKV 是否为慢节点。
-+ 默认值：500ms
++ 默认值：100ms
 + 最小值：1ms
 
 ### `raft-write-size-limit` <span class="version-mark">从 v5.3.0 版本开始引入</span>
 
 + 触发 Raft 数据写入的阈值。当数据大小超过该配置项值，数据会被写入磁盘。当 `store-io-pool-size` 的值为 `0` 时，该配置项不生效。
-+ 默认值：1MB
++ 默认值：1MiB
 + 最小值：0
 
 ### `report-min-resolved-ts-interval` <span class="version-mark">从 v6.0.0 版本开始引入</span>
@@ -1022,6 +1022,29 @@ raftstore 相关的配置项。
 + 默认值：在 v6.3.0 之前版本中为 `"0s"`，在 v6.3.0 及之后的版本中为 `"1s"`，即最小正值。
 + 最小值：0
 + 单位：秒
+
+### `evict-cache-on-memory-ratio` <span class="version-mark">从 v7.5.0 版本开始引入</span> 
+
++ 当 TiKV 的内存使用超过系统可用内存的 90%，并且 Raft 缓存条目占用的内存超过已使用内存 * `evict-cache-on-memory-ratio` 时，TiKV 会逐出 Raft 缓存条目。
++ 设置为 `0` 表示禁用该功能。
++ 默认值：0.1
++ 最小值：0
+
+### `periodic-full-compact-start-times` <span class="version-mark">从 v7.6.0 版本开始引入</span>
+
+> **警告：**
+>
+> 周期性全量数据整理目前为实验特性，不建议在生产环境中使用。该功能可能会在未事先通知的情况下发生变化或删除。如果发现 bug，请在 GitHub 上提 [issue](https://github.com/pingcap/tidb/issues) 反馈。
+
++ 设置 TiKV 启动周期性全量数据整理 (Compaction) 的时间。你可以在数组中指定一个或多个时间计划。例如：
+    + `periodic-full-compact-start-times = ["03:00", "23:00"]` 表示 TiKV 基于 TiKV 节点的本地时区，在每天凌晨 3 点和晚上 11 点进行全量数据整理。
+    + `periodic-full-compact-start-times = ["03:00 +0000", "23:00 +0000"]` 表示 TiKV 在每天 UTC 时间的凌晨 3 点和晚上 11 点进行全量数据整理。
++ 默认值：`[]`，表示默认情况下禁用周期性全量数据整理。
+
+### `periodic-full-compact-start-max-cpu` <span class="version-mark">从 v7.6.0 版本开始引入</span>
+
++ 控制 TiKV 执行周期性全量数据整理时的 CPU 使用率阈值。
++ 默认值：`0.1`，表示全量数据整理进程的最大 CPU 使用率为 10%。
 
 ## coprocessor
 
@@ -1131,9 +1154,9 @@ RocksDB 相关的配置项。
 ### `max-manifest-file-size`
 
 + RocksDB Manifest 文件最大大小。
-+ 默认值：128MB
++ 默认值：128MiB
 + 最小值：0
-+ 单位：B|KB|MB|GB
++ 单位：B|KiB|MiB|GiB
 
 ### `create-if-missing`
 
@@ -1152,8 +1175,8 @@ RocksDB 相关的配置项。
 
 ### `wal-dir`
 
-+ WAL 存储目录，默认：“tmp/tikv/store”。
-+ 默认值：/tmp/tikv/store
++ WAL 存储目录，若未指定，WAL 将存储在数据目录。
++ 默认值：`""`
 
 ### `wal-ttl-seconds`
 
@@ -1167,13 +1190,13 @@ RocksDB 相关的配置项。
 + 归档 WAL 大小限制，超过该值时，系统会删除相关 WAL。
 + 默认值：0
 + 最小值：0
-+ 单位：B|KB|MB|GB
++ 单位：B|KiB|MiB|GiB
 
 ### `max-total-wal-size`
 
 + RocksDB WAL 总大小限制，即 `data-dir` 目录下 `*.log` 文件的大小总和。
 + 默认值：
-    + 当 `storage.engine="raft-kv"` 时，默认值为 `"4GB"`
+    + 当 `storage.engine="raft-kv"` 时，默认值为 `"4GiB"`
     + 当 `storage.engine="partitioned-raft-kv"` 时，默认值为 `1`
 
 ### `stats-dump-period`
@@ -1186,17 +1209,17 @@ RocksDB 相关的配置项。
 
 ### `compaction-readahead-size`
 
-+ 开启 RocksDB compaction 过程中的预读功能，该项指定预读数据的大小。如果使用的是机械磁盘，建议该值至少为 2MB。
++ 开启 RocksDB compaction 过程中的预读功能，该项指定预读数据的大小。如果使用的是机械磁盘，建议该值至少为 2MiB。
 + 默认值：0
 + 最小值：0
-+ 单位：B|KB|MB|GB
++ 单位：B|KiB|MiB|GiB
 
 ### `writable-file-max-buffer-size`
 
 + WritableFileWrite 所使用的最大的 buffer 大小。
-+ 默认值：1MB
++ 默认值：1MiB
 + 最小值：0
-+ 单位：B|KB|MB|GB
++ 单位：B|KiB|MiB|GiB
 
 ### `use-direct-io-for-flush-and-compaction`
 
@@ -1205,10 +1228,10 @@ RocksDB 相关的配置项。
 
 ### `rate-bytes-per-sec`
 
-+ RocksDB compaction rate limiter 的限制速率。
-+ 默认值：10GB
++ 未开启 Titan 时，限制 RocksDB Compaction 的 I/O 速率，以达到在流量高峰时，限制 RocksDB Compaction 减少其 I/O 带宽和 CPU 消耗对前台读写性能的影响。开启 Titan 时，限制 RocksDB Compaction 和 Titan GC 的 I/O 速率总和。当发现在流量高峰时 RocksDB Compaction 和 Titan GC 的 I/O 和/或 CPU 消耗过大，可以根据磁盘 I/O 带宽和实际写入流量适当配置这个选项。
++ 默认值：10GiB
 + 最小值：0
-+ 单位：B|KB|MB|GB
++ 单位：B|KiB|MiB|GiB
 
 ### `rate-limiter-refill-period`
 
@@ -1234,23 +1257,23 @@ RocksDB 相关的配置项。
 ### `bytes-per-sync`
 
 + 异步 Sync 限速速率。
-+ 默认值：1MB
++ 默认值：1MiB
 + 最小值：0
-+ 单位：B|KB|MB|GB
++ 单位：B|KiB|MiB|GiB
 
 ### `wal-bytes-per-sync`
 
-+ WAL Sync 限速速率，默认：512KB。
-+ 默认值：512KB
++ WAL Sync 限速速率。
++ 默认值：512KiB
 + 最小值：0
-+ 单位：B|KB|MB|GB
++ 单位：B|KiB|MiB|GiB
 
 ### `info-log-max-size`
 
 + Info 日志的最大大小。
-+ 默认值：1GB
++ 默认值：1GiB
 + 最小值：0
-+ 单位：B|KB|MB|GB
++ 单位：B|KiB|MiB|GiB
 
 ### `info-log-roll-time`
 
@@ -1299,14 +1322,28 @@ RocksDB 相关的配置项。
 
 + 单位：KiB|MiB|GiB
 
+### `track-and-verify-wals-in-manifest` <span class="version-mark">从 v6.5.9、v7.1.5、v8.0.0 版本开始引入</span>
+
++ 控制是否在 RocksDB 的 MANIFEST 文件中记录 WAL (Write Ahead Log) 文件的信息，以及在启动时是否验证 WAL 文件的完整性。详情请参考 RocksDB [Track WAL in MANIFEST](https://github.com/facebook/rocksdb/wiki/Track-WAL-in-MANIFEST)。
++ 默认值：`true`
++ 可选值：
+    + `true`：在 MANIFEST 文件中记录 WAL 文件的信息，并在启动时验证 WAL 文件的完整性。
+    + `false`：不在 MANIFEST 文件中记录 WAL 文件的信息，而且不在启动时验证 WAL 文件的完整性。
+
 ## rocksdb.titan
 
 Titan 相关的配置项。
 
 ### `enabled`
 
+> **注意：**
+>
+> - 从 TiDB v7.6.0 开始，参数默认值从 `false` 变更为 `true`，即新集群默认开启 Titan，以更好地支持 TiDB 宽表写入场景和 JSON。
+> - 如果集群在升级到 TiDB v7.6.0 或更高版本之前未启用 Titan，则升级后将保持原有配置，继续使用 RocksDB，不会启用 Titan。
+> - 如果集群在升级到 TiDB v7.6.0 或更高版本之前已经启用了 Titan，则升级后将维持原有配置，保持启用 Titan 引擎，并保留升级前 [`min-blob-size`](/tikv-configuration-file.md#min-blob-size) 的配置。如果升级前没有显式配置该值，则升级后仍然保持了老版本默认值 `1KiB`，以确保升级后集群配置的稳定性。
+
 + 开启 Titan 开关。
-+ 默认值：false
++ 默认值：`true`
 
 ### `dirname`
 
@@ -1320,7 +1357,7 @@ Titan 相关的配置项。
 
 ### `max-background-gc`
 
-+ Titan 后台 GC 的线程个数。
++ Titan 后台 GC 的线程个数，当从 **TiKV Details** > **Thread CPU** > **RocksDB CPU** 监控中观察到 Titan GC 线程长期处于满负荷状态时，应该考虑增加 Titan GC 线程池大小。
 + 默认值：4
 + 最小值：1
 
@@ -1331,11 +1368,11 @@ rocksdb defaultcf、rocksdb writecf 和 rocksdb lockcf 相关的配置项。
 ### `block-size`
 
 + 一个 RocksDB block 的默认大小。
-+ `defaultcf` 默认值：32KB
-+ `writecf` 默认值：32KB
-+ `lockcf` 默认值：16KB
-+ 最小值：1KB
-+ 单位：KB|MB|GB
++ `defaultcf` 默认值：32KiB
++ `writecf` 默认值：32KiB
++ `lockcf` 默认值：16KiB
++ 最小值：1KiB
++ 单位：KiB|MiB|GiB
 
 ### `block-cache-size`
 
@@ -1348,7 +1385,7 @@ rocksdb defaultcf、rocksdb writecf 和 rocksdb lockcf 相关的配置项。
 + `writecf` 默认值：机器总内存 * 15%
 + `lockcf` 默认值：机器总内存 * 2%
 + 最小值：0
-+ 单位：KB|MB|GB
++ 单位：KiB|MiB|GiB
 
 ### `disable-block-cache`
 
@@ -1430,13 +1467,13 @@ rocksdb defaultcf、rocksdb writecf 和 rocksdb lockcf 相关的配置项。
 ### `write-buffer-size`
 
 + memtable 大小。
-+ `defaultcf` 默认值：`"128MB"`
-+ `writecf` 默认值：`"128MB"`
++ `defaultcf` 默认值：`"128MiB"`
++ `writecf` 默认值：`"128MiB"`
 + `lockcf` 默认值：
-    + 当 `storage.engine="raft-kv"` 时，默认值为 `"32MB"`
-    + 当 `storage.engine="partitioned-raft-kv"` 时，默认值为 `"4MB"`
+    + 当 `storage.engine="raft-kv"` 时，默认值为 `"32MiB"`
+    + 当 `storage.engine="partitioned-raft-kv"` 时，默认值为 `"4MiB"`
 + 最小值：0
-+ 单位：KB|MB|GB
++ 单位：KiB|MiB|GiB
 
 ### `max-write-buffer-number`
 
@@ -1453,19 +1490,19 @@ rocksdb defaultcf、rocksdb writecf 和 rocksdb lockcf 相关的配置项。
 ### `max-bytes-for-level-base`
 
 + base level (L1) 最大字节数，一般设置为 memtable 大小 4 倍。当 L1 的数据量大小达到 `max-bytes-for-level-base` 限定的值的时候，会触发 L1 的 SST 文件和 L2 中有 overlap 的 SST 文件进行 compaction。
-+ `defaultcf` 默认值：`"512MB"`
-+ `writecf` 默认值：`"512MB"`
-+ `lockcf` 默认值：`"128MB"`
++ `defaultcf` 默认值：`"512MiB"`
++ `writecf` 默认值：`"512MiB"`
++ `lockcf` 默认值：`"128MiB"`
 + 最小值：0
-+ 单位：KB|MB|GB
-+ 建议 `max-bytes-for-level-base` 的取值和 L0 的数据量大致相等，以减少不必要的 compaction。假如压缩方式为 "no:no:lz4:lz4:lz4:lz4:lz4"，那么 `max-bytes-for-level-base` 的值应该是 `write-buffer-size * 4`，因为 L0 和 L1 均没有压缩，且 L0 触发 compaction 的条件是 SST 文件的个数到达 4（默认值）。当 L0 和 L1 都发生了 compaction 时，需要分析 RocksDB 的日志了解由一个 memtable 压缩成的 SST 文件的大小。如果文件大小为 32MB，那么 `max-bytes-for-level-base` 的值建议设为 32MB * 4 = 128MB。
++ 单位：KiB|MiB|GiB
++ 建议 `max-bytes-for-level-base` 的取值和 L0 的数据量大致相等，以减少不必要的 compaction。假如压缩方式为 "no:no:lz4:lz4:lz4:lz4:lz4"，那么 `max-bytes-for-level-base` 的值应该是 `write-buffer-size * 4`，因为 L0 和 L1 均没有压缩，且 L0 触发 compaction 的条件是 SST 文件的个数到达 4（默认值）。当 L0 和 L1 都发生了 compaction 时，需要分析 RocksDB 的日志了解由一个 memtable 压缩成的 SST 文件的大小。如果文件大小为 32MiB，那么 `max-bytes-for-level-base` 的值建议设为 32MiB * 4 = 128MiB。
 
 ### `target-file-size-base`
 
 + base level 的目标文件大小。当 `enable-compaction-guard` 的值为 `true` 时，`compaction-guard-max-output-file-size` 会覆盖此配置。
-+ 默认值：8MB
++ 默认值：8MiB
 + 最小值：0
-+ 单位：KB|MB|GB
++ 单位：KiB|MiB|GiB
 
 ### `level0-file-num-compaction-trigger`
 
@@ -1489,10 +1526,10 @@ rocksdb defaultcf、rocksdb writecf 和 rocksdb lockcf 相关的配置项。
 
 ### `max-compaction-bytes`
 
-+ 一次 compaction 最大写入字节数，默认 2GB。
-+ 默认值：2GB
++ 一次 compaction 最大写入字节数。
++ 默认值：2GiB
 + 最小值：0
-+ 单位：KB|MB|GB
++ 单位：KiB|MiB|GiB
 
 ### `compaction-pri`
 
@@ -1535,14 +1572,14 @@ rocksdb defaultcf、rocksdb writecf 和 rocksdb lockcf 相关的配置项。
 ### `soft-pending-compaction-bytes-limit`
 
 + pending compaction bytes 的软限制。当 `storage.flow-control.enable` 的值为 `true` 时，`storage.flow-control.soft-pending-compaction-bytes-limit` 会覆盖此配置。
-+ 默认值：192GB
-+ 单位：KB|MB|GB
++ 默认值：192GiB
++ 单位：KiB|MiB|GiB
 
 ### `hard-pending-compaction-bytes-limit`
 
 + pending compaction bytes 的硬限制。当 `storage.flow-control.enable` 的值为 `true` 时，`storage.flow-control.hard-pending-compaction-bytes-limit` 会覆盖此配置。
-+ 默认值：256GB
-+ 单位：KB|MB|GB
++ 默认值：256GiB
++ 单位：KiB|MiB|GiB
 
 ### `enable-compaction-guard`
 
@@ -1554,14 +1591,14 @@ rocksdb defaultcf、rocksdb writecf 和 rocksdb lockcf 相关的配置项。
 ### `compaction-guard-min-output-file-size`
 
 + 设置 compaction guard 启用时 SST 文件大小的最小值，防止 SST 文件过小。
-+ 默认值：`"8MB"`
-+ 单位：KB|MB|GB
++ 默认值：`"8MiB"`
++ 单位：KiB|MiB|GiB
 
 ### `compaction-guard-max-output-file-size`
 
 + 设置 compaction guard 启用时 SST 文件大小的最大值，防止 SST 文件过大。对于同一列族，此配置项的值会覆盖 `target-file-size-base`。
-+ 默认值：128MB
-+ 单位：KB|MB|GB
++ 默认值：128MiB
++ 单位：KiB|MiB|GiB
 
 ### `format-version` <span class="version-mark">从 v6.2.0 版本开始引入</span>
 
@@ -1592,48 +1629,78 @@ rocksdb defaultcf、rocksdb writecf 和 rocksdb lockcf 相关的配置项。
 
 ## rocksdb.defaultcf.titan
 
+> **注意：**
+>
+> 仅支持在 `rocksdb.defaultcf` 启用 Titan，不支持在 `rocksdb.writecf` 启用 Titan。
+
 rocksdb defaultcf titan 相关的配置项。
 
 ### `min-blob-size`
 
+> **注意：**
+>
+> - 为了提高宽表和 JSON 数据写入和点查性能，TiDB 从 v7.6.0 版本起默认启用 Titan，并将写入 Titan 的阈值参数 `min-blob-size` 的默认值从之前版本的 `1KiB` 调整为 `32KiB`，即当数据的 value 超过 `32KiB` 时，将存储在 Titan 中，而其他数据则继续存储在 RocksDB 中。
+> - 为了保证配置的连续性，已有集群升级到 TiDB v7.6.0 版本或者更高版本后，如果升级前用户未显式设置 `min-blob-size`，则维持使用老版本默认值 `1KiB`，以确保升级后集群配置的稳定性。
+> - 当参数被设置为小于 `32KiB` 时，TiKV 大范围扫描性能会受到一些影响。然而，如果负载主要是写入和点查为主，你可以适当调小 `min-blob-size` 的值以获取更好的写入和点查性能。
+
 + 最小存储在 Blob 文件中 value 大小，低于该值的 value 还是存在 LSM-Tree 中。
-+ 默认值：1KB
++ 默认值：32KiB
 + 最小值：0
-+ 单位：KB|MB|GB
++ 单位：KiB|MiB|GiB
 
 ### `blob-file-compression`
 
-+ Blob 文件所使用的压缩算法，可选值：no、snappy、zlib、bz2、lz4、lz4hc、zstd。
-+ 默认值：lz4
-
 > **注意：**
 >
-> Snappy 压缩文件必须遵循[官方 Snappy 格式](https://github.com/google/snappy)。不支持其他非官方压缩格式。
+> - Snappy 压缩文件必须遵循[官方 Snappy 格式](https://github.com/google/snappy)。不支持其他非官方压缩格式。
+> - TiDB v7.5.0 及更早的版本，参数默认值为 `lz4`。TiDB v7.6.0 及更高版本，参数默认值调整为 `zstd`。
 
++ Blob 文件所使用的压缩算法，可选值：no、snappy、zlib、bz2、lz4、lz4hc、zstd。
++ 默认值：zstd
+
+### `zstd-dict-size`
+
++ 指定 zstd 字典大小，默认为 `"0KiB"`，表示关闭 zstd 字典压缩，也就是说 Titan 中压缩的是单个 value 值，而 RocksDB 压缩以 Block（默认值为 `32KiB`）为单位。因此当关闭字典压缩、且 value 平均小于 `32KiB` 时，Titan 的压缩率低于 RocksDB。以 JSON 内容为例，Titan 的 Store Size 可能比 RocksDB 高 30% 至 50%。实际压缩率还取决于 value 内容是否适合压缩，以及不同 value 之间的相似性。你可以通过设置 `zstd-dict-size`（比如 `16KiB`）启用 zstd 字典以大幅提高压缩率（实际 Store Size 可以低于 RocksDB），但 zstd 字典压缩在有些负载下会有 10% 左右的性能损失。
++ 默认值：`"0KiB"`
++ 单位：KiB|MiB|GiB
+   
 ### `blob-cache-size`
 
 + Blob 文件的 cache 大小。
-+ 默认值：0GB
++ 默认值：0GiB
 + 最小值：0
-+ 单位：KB|MB|GB
++ 推荐值：0。从 v8.0.0 开始，TiKV 引入了 `shared-blob-cache` 配置项并默认开启，因此无需再单独设置 `blob-cache-size`。只有当 `shared-blob-cache` 设置为 `false` 时，`blob-cache-size` 的设置才生效。
++ 单位：KiB|MiB|GiB
+
+### `shared-blob-cache`（从 v8.0.0 版本开始引入）
+
++ 是否启用 Titan Blob 文件和 RocksDB Block 文件的共享缓存
++ 默认值：`true`。当开启共享缓存时，Block 文件具有更高的优先级，TiKV 将优先满足 Block 文件的缓存需求，然后将剩余的缓存用于 Blob 文件。
 
 ### `min-gc-batch-size`
 
 + 做一次 GC 所要求的最低 Blob 文件大小总和。
-+ 默认值：16MB
++ 默认值：16MiB
 + 最小值：0
-+ 单位：KB|MB|GB
++ 单位：KiB|MiB|GiB
 
 ### `max-gc-batch-size`
 
 + 做一次 GC 所要求的最高 Blob 文件大小总和。
-+ 默认值：64MB
++ 默认值：64MiB
 + 最小值：0
-+ 单位：KB|MB|GB
++ 单位：KiB|MiB|GiB
 
 ### `discardable-ratio`
 
-+ Blob 文件 GC 的触发比例，如果某 Blob 文件中的失效 value 的比例高于该值才可能被 GC 选中。
++ 当一个 blob file 中无用数据（相应的 key 已经被更新或删除）比例超过以下阈值时，将会触发 Titan GC。将此文件有用的数据重写到另一个文件。这个值可以估算 Titan 的写放大和空间放大的上界（假设关闭压缩）。公式是：
+
+    写放大上界 = 1 / `discardable-ratio`
+
+    空间放大上界 = 1 / (1 - `discardable-ratio`)
+
+    可以看到，减少这个阈值可以减少空间放大，但是会造成 Titan 更频繁 GC；增加这个值可以减少 Titan GC，减少相应的 I/O 带宽和 CPU 消耗，但是会增加磁盘空间占用。
+
 + 默认值：0.5
 + 最小值：0
 + 最大值：1
@@ -1648,16 +1715,16 @@ rocksdb defaultcf titan 相关的配置项。
 ### `merge-small-file-threshold`
 
 + Blob 文件的大小小于该值时，无视 discardable-ratio 仍可能被 GC 选中。
-+ 默认值：8MB
++ 默认值：8MiB
 + 最小值：0
-+ 单位：KB|MB|GB
++ 单位：KiB|MiB|GiB
 
 ### `blob-run-mode`
 
 + Titan 的运行模式选择。
 + 可选值：
-    + "normal"：value size 超过 min-blob-size 的数据会写入到 blob 文件。
-    + "read_only"：不再写入新数据到 blob，原有 blob 内的数据仍然可以读取。
+    + "normal"：value size 超过 [`min-blob-size`](#min-blob-size) 的数据会写入到 blob 文件。
+    + "read-only"：不再写入新数据到 blob，原有 blob 内的数据仍然可以读取。
     + "fallback"：将 blob 内的数据写回 LSM。
 + 默认值："normal"
 
@@ -1691,9 +1758,9 @@ raftdb 相关配置项。
 ### `max-manifest-file-size`
 
 + 单个 RocksDB Manifest 文件的最大大小。
-+ 默认值：`"20MB"`
++ 默认值：`"20MiB"`
 + 最小值：`0`
-+ 单位：B|KB|MB|GB
++ 单位：B|KiB|MiB|GiB
 
 ### `create-if-missing`
 
@@ -1724,29 +1791,29 @@ raftdb 相关配置项。
 + 归档 WAL 文件的大小限制。当超过该值时，系统将删除这些文件。
 + 默认值：`0`
 + 最小值：`0`
-+ 单位：B|KB|MB|GB
++ 单位：B|KiB|MiB|GiB
 
 ### `max-total-wal-size`
 
 + RocksDB WAL 文件的最大总大小。
 + 默认值：
-    + 当 `storage.engine="raft-kv"` 时，默认值为 `"4GB"`
+    + 当 `storage.engine="raft-kv"` 时，默认值为 `"4GiB"`
     + 当 `storage.engine="partitioned-raft-kv"` 时，默认值为 `1`
 
 ### `compaction-readahead-size`
 
 + 控制在 RocksDB compaction 时是否开启预读取功能，并指定预读取数据的大小。
-+ 如果使用机械硬盘，建议将该值至少设置为 `2MB`。
++ 如果使用机械硬盘，建议将该值至少设置为 `2MiB`。
 + 默认值：`0`
 + 最小值：`0`
-+ 单位：B|KB|MB|GB
++ 单位：B|KiB|MiB|GiB
 
 ### `writable-file-max-buffer-size`
 
 + WriteableFileWrite 中使用的最大缓冲区大小。
-+ 默认值：`"1MB"`
++ 默认值：`"1MiB"`
 + 最小值：`0`
-+ 单位：B|KB|MB|GB
++ 单位：B|KiB|MiB|GiB
 
 ### `use-direct-io-for-flush-and-compaction`
 
@@ -1766,23 +1833,23 @@ raftdb 相关配置项。
 ### `bytes-per-sync`
 
 + 异步 Sync 限速速率。
-+ 默认值：`"1MB"`
++ 默认值：`"1MiB"`
 + 最小值：`0`
-+ 单位：B|KB|MB|GB
++ 单位：B|KiB|MiB|GiB
 
 ### `wal-bytes-per-sync`
 
 + WAL Sync 限速速率。
-+ 默认值：`"512KB"`
++ 默认值：`"512KiB"`
 + 最小值：`0`
-+ 单位：B|KB|MB|GB
++ 单位：B|KiB|MiB|GiB
 
 ### `info-log-max-size`
 
 + Info 日志的最大大小。
-+ 默认值：`"1GB"`
++ 默认值：`"1GiB"`
 + 最小值：`0`
-+ 单位：B|KB|MB|GB
++ 单位：B|KiB|MiB|GiB
 
 ### `info-log-roll-time`
 
@@ -1829,24 +1896,24 @@ Raft Engine 相关的配置项。
 ### `batch-compression-threshold`
 
 + 指定日志批处理的阈值大小。大于此配置的日志批次将被压缩。如果将此配置项设置为 `0`，则禁用压缩。
-+ 默认值：`"8KB"`
++ 默认值：`"8KiB"`
 
 ### `bytes-per-sync`
 
 + 指定缓存写入的最大累积大小。当超过此配置值时，缓存的写入将被刷写到磁盘。
 + 如果将此配置项设置为 `0`，则禁用增量同步。
-+ 默认值：`"4MB"`
++ 默认值：`"4MiB"`
 
 ### `target-file-size`
 
 + 指定日志文件的最大大小。当日志文件大于此值时，将对其进行轮转。
-+ 默认值：`"128MB"`
++ 默认值：`"128MiB"`
 
 ### `purge-threshold`
 
 + 指定主日志队列的阈值大小。当超过此配置值时，将对主日志队列执行垃圾回收。
 + 此参数可用于调整 Raft Engine 的空间占用大小。
-+ 默认值：`"10GB"`
++ 默认值：`"10GiB"`
 
 ### `recovery-mode`
 
@@ -1857,7 +1924,7 @@ Raft Engine 相关的配置项。
 ### `recovery-read-block-size`
 
 + 恢复期间读取日志文件的最小 I/O 大小。
-+ 默认值：`"16KB"`
++ 默认值：`"16KiB"`
 + 最小值：`"512B"`
 
 ### `recovery-threads`
@@ -2015,6 +2082,11 @@ Raft Engine 相关的配置项。
 + 触发 GC 的垃圾比例阈值。
 + 默认值：`1.1`
 
+### `num-threads` <span class="version-mark">从 v6.5.8、v7.1.4、v7.5.1 和 v7.6.0 版本开始引入</span>
+
++ 当 `enable-compaction-filter` 为 `false` 时 GC 线程个数。
++ 默认值：1
+
 ## backup
 
 用于 BR 备份相关的配置项。
@@ -2035,7 +2107,7 @@ Raft Engine 相关的配置项。
 
 + 备份 SST 文件大小的阈值。如果 TiKV Region 中备份文件的大小超过该阈值，则将该文件备份到 Region 分割的多个 Region 文件中，每个分割 Region 中的文件大小均为 `sst-max-size`（或略大）。
 + 例如，当 Region `[a,e)` 中备份文件大小超过 `sst-max-size` 时，该文件会被备份到多个 Region 范围中，分别为 Region `[a,b)`、`[b,c)`、`[c,d)` 和 `[d,e)`，并且 `[a,b)`、`[b,c)` 和 `[c,d)` 的大小均为 `sst-max-size`（或略大）。
-+ 默认值：`"144MB"`
++ 默认值：`"144MiB"`
 
 ### `enable-auto-tune` <span class="version-mark">从 v5.4 版本开始引入</span>
 
@@ -2083,12 +2155,13 @@ Raft Engine 相关的配置项。
 ### `initial-scan-pending-memory-quota` <span class="version-mark">从 v6.2.0 版本开始引入</span>
 
 + 日志备份任务在扫描增量数据时，用于存放扫描数据的缓存大小。
-+ 默认值：`min(机器总内存 * 10%, 512 MB)`
++ 默认值：`min(机器总内存 * 10%, 512 MiB)`
 
 ### `initial-scan-rate-limit` <span class="version-mark">从 v6.2.0 版本开始引入</span>
 
-+ 日志备份任务在扫描增量数据时的吞吐限流参数。
-+ 默认值：60，即默认限流 60 MB/s
++ 日志备份任务在扫描增量数据时的吞吐限流参数，表示每秒最多从硬盘读出的数据量。注意，如果仅指定数字（如 `60`），则单位为 Byte 而不是 KiB。
++ 默认值：60MiB
++ 最小值：1MiB
 
 ### `max-flush-interval` <span class="version-mark">从 v6.2.0 版本开始引入</span>
 
@@ -2118,17 +2191,17 @@ Raft Engine 相关的配置项。
 ### `old-value-cache-memory-quota`
 
 + 缓存在内存中的 TiCDC Old Value 的条目占用内存的上限。
-+ 默认值：512MB
++ 默认值：512MiB
 
 ### `sink-memory-quota`
 
 + 缓存在内存中的 TiCDC 数据变更事件占用内存的上限。
-+ 默认值：512MB
++ 默认值：512MiB
 
 ### `incremental-scan-speed-limit`
 
 + 增量扫描历史数据的速度上限。
-+ 默认值：128MB，即 128MB 每秒。
++ 默认值：128MiB，即 128MiB 每秒。
 
 ### `incremental-scan-threads`
 
@@ -2212,14 +2285,14 @@ Raft Engine 相关的配置项。
 #### `foreground-write-bandwidth` <span class="version-mark">从 v6.0.0 版本开始引入</span>
 
 + 限制前台事务写入的带宽，这是一个软限制。
-+ 默认值：0KB（即无限制）
-+ 推荐设置：除非因为 `foreground-cpu-time` 设置不足以对写带宽做限制，一般情况下本配置项使用默认值 `0` 即可；否则，在 4 核及 4 核以下规格实例上，建议设置在 `50MB` 以下。
++ 默认值：0KiB（即无限制）
++ 推荐设置：除非因为 `foreground-cpu-time` 设置不足以对写带宽做限制，一般情况下本配置项使用默认值 `0` 即可；否则，在 4 核及 4 核以下规格实例上，建议设置在 `50MiB` 以下。
 
 #### `foreground-read-bandwidth` <span class="version-mark">从 v6.0.0 版本开始引入 </span>
 
 + 限制前台事务读取数据和 Coprocessor 读取数据的带宽，这是一个软限制。
-+ 默认值：0KB（即无限制）
-+ 推荐设置：除非因为 `foreground-cpu-time` 设置不足以对读带宽做限制，一般情况本配置项使用默认值 `0` 即可；否则，在 4 核及 4 核以下规格实例上，建议设置在 `20MB` 以内。
++ 默认值：0KiB（即无限制）
++ 推荐设置：除非因为 `foreground-cpu-time` 设置不足以对读带宽做限制，一般情况本配置项使用默认值 `0` 即可；否则，在 4 核及 4 核以下规格实例上，建议设置在 `20MiB` 以内。
 
 ### 后台限流
 
@@ -2245,7 +2318,7 @@ Raft Engine 相关的配置项。
 > 该配置项可以通过 `SHOW CONFIG` 查询到，但暂未生效。设置该配置项的值不生效。
 
 + 限制后台事务写入的带宽，这是一个软限制。
-+ 默认值：0KB（即无限制）
++ 默认值：0KiB（即无限制）
 
 #### `background-read-bandwidth` <span class="version-mark">从 v6.2.0 版本开始引入</span>
 
@@ -2254,7 +2327,7 @@ Raft Engine 相关的配置项。
 > 该配置项可以通过 `SHOW CONFIG` 查询到，但暂未生效。设置该配置项的值不生效。
 
 + 限制后台事务读取数据和 Coprocessor 读取数据的带宽，这是一个软限制。
-+ 默认值：0KB（即无限制）
++ 默认值：0KiB（即无限制）
 
 #### `enable-auto-tune` <span class="version-mark">从 v6.2.0 版本开始引入</span>
 
@@ -2319,21 +2392,33 @@ Raft Engine 相关的配置项。
 + 控制某个 Region 被识别为热点 Region 的流量阈值。
 + 默认值：
 
-    + 当 [`region-split-size`](#region-split-size) 小于 4 GB 时，默认值为每秒 `30MiB` 流量。
-    + 当 [`region-split-size`](#region-split-size) 大于或等于 4 GB 时，默认值为每秒 `100MiB` 流量。
+    + 当 [`region-split-size`](#region-split-size) 小于 4 GiB 时，默认值为每秒 `30MiB` 流量。
+    + 当 [`region-split-size`](#region-split-size) 大于或等于 4 GiB 时，默认值为每秒 `100MiB` 流量。
 
 ### `qps-threshold`
 
 + 控制某个 Region 被识别为热点 Region 的 QPS 阈值。
 + 默认值：
 
-    + 当 [`region-split-size`](#region-split-size) 小于 4 GB 时，默认值为每秒 `3000` QPS。
-    + 当 [`region-split-size`](#region-split-size) 大于或等于 4 GB 时，默认值为每秒 `7000` QPS。
+    + 当 [`region-split-size`](#region-split-size) 小于 4 GiB 时，默认值为每秒 `3000` QPS。
+    + 当 [`region-split-size`](#region-split-size) 大于或等于 4 GiB 时，默认值为每秒 `7000` QPS。
 
 ### `region-cpu-overload-threshold-ratio` <span class="version-mark">从 v6.2.0 版本开始引入</span>
 
 + 控制某个 Region 被识别为热点 Region 的 CPU 使用率阈值。
 + 默认值：
 
-    + 当 [`region-split-size`](#region-split-size) 小于 4 GB 时，默认值为 `0.25`。
-    + 当 [`region-split-size`](#region-split-size) 大于或等于 4 GB 时，默认值为 `0.75`。
+    + 当 [`region-split-size`](#region-split-size) 小于 4 GiB 时，默认值为 `0.25`。
+    + 当 [`region-split-size`](#region-split-size) 大于或等于 4 GiB 时，默认值为 `0.75`。
+
+## memory <span class="version-mark">从 v7.5.0 版本开始引入</span>
+
+### `enable-heap-profiling` <span class="version-mark">从 v7.5.0 版本开始引入</span>
+
++ 控制是否开启 TiKV 堆内存分析功能，以跟踪 TiKV 的内存使用情况。
++ 默认值：true
+
+### `profiling-sample-per-bytes` <span class="version-mark">从 v7.5.0 版本开始引入</span>
+
++ 设置 TiKV 堆内存分析每次采样的数据量，以 2 的指数次幂向上取整。
++ 默认值：512KiB
