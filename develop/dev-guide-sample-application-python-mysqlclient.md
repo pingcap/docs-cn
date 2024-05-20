@@ -87,7 +87,7 @@ pip install -r requirement.txt
 
 <div label="TiDB Dedicated">
 
-1. 在 TiDB Cloud Web Console 中，选择你的 TiDB Dedicated 集群，进入 **Overview** 页面，点击右上角的 **Connect** 按钮。点击 **Allow Access from Anywhere** 并点击 **Download TiDB cluster CA** 下载证书。
+1. 在 TiDB Cloud Web Console 中，选择你的 TiDB Dedicated 集群，进入 **Overview** 页面，点击右上角的 **Connect** 按钮。点击 **Allow Access from Anywhere** 并点击 **Download CA cert** 下载证书。
 
     <Tip>
 
