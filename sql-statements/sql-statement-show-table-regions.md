@@ -95,7 +95,7 @@ SHOW TABLE t1 REGIONS;
 
 解释：
 
-上面 START_KEY 列的值 `t_75_r_31717` 和 END_KEY 列的值 `t_75_r_63434` 表示主键在 `31717` 和 `63434` 之间的数据存储在该 Region 中。`t_75_` 是前缀，表示这是表格 (`t`) 的 Region，`75` 是表格的内部 ID。若 `START_KEY` 或 `END_KEY` 的一对键值为空，分别表示负无穷大或正无穷大。
+上面 `START_KEY` 列的值 `t_75_r_31717` 和 END_KEY 列的值 `t_75_r_63434` 表示主键在 `31717` 和 `63434` 之间的数据存储在该 Region 中。`t_75_` 是前缀，表示这是表格 (`t`) 的 Region，`75` 是表格的内部 ID。若 `START_KEY` 或 `END_KEY` 的一对键值为空，分别表示负无穷大或正无穷大。
 
 TiDB 会根据需要自动重新平衡 Regions。建议使用 `SPLIT TABLE REGION` 语句手动进行平衡：
 
@@ -132,8 +132,8 @@ SHOW TABLE t1 REGIONS;
 
 上面的输出结果显示 Region 96 被切分，并创建一个新的 Region 98。切分操作不会影响表中的其他 Region。输出结果同样证实：
 
-- TOTAL_SPLIT_REGION 表示新切的 Region 数量。以上示例新切了 1 个 Region。
-- SCATTER_FINISH_RATIO 表示新切的 Region 的打散成功率，1.0 表示都已经打散了。
+- `TOTAL_SPLIT_REGION` 表示新切的 Region 数量。以上示例新切了 1 个 Region。
+- `SCATTER_FINISH_RATIO` 表示新切的 Region 的打散成功率，1.0 表示都已经打散了。
 
 更详细的示例如下：
 
@@ -159,10 +159,10 @@ SHOW TABLE t REGIONS;
 
 解释：
 
-- Region 102 的 START_KEY 和 END_KEY 中，t_43 是表数据前缀和 table ID，_r 是表 t record 数据的前缀，索引数据的前缀是 _i，所以 Region 102 的 START_KEY 和 END_KEY 表示用来存储 [-inf, 20000) 之前的 record 数据。其他 Region (106, 110, 114, 3) 的存储范围依次类推。
-- Region 98 用来存储索引数据存储。表 t 索引数据的起始 key 是 t_43_i，处于 Region 98 的存储范围内。
+- Region 102 的 `START_KEY` 和 `END_KEY` 中，`t_43` 是表数据前缀和 table ID，`_r` 是表 t record 数据的前缀，索引数据的前缀是 `_i`，所以 Region 102 的 `START_KEY` 和 `END_KEY` 表示用来存储 `[-inf, 20000)` 之前的 record 数据。其他 Region (106, 110, 114, 3) 的存储范围依次类推。
+- Region 98 用来存储索引数据存储。表 t 索引数据的起始 key 是 `t_43_i`，处于 Region 98 的存储范围内。
 
-查看表 t 在 store 1 上的 region，用 where 条件过滤。
+查看表 t 在 store 1 上的 region，用 `WHERE` 条件过滤。
 
 {{< copyable "sql" >}}
 
