@@ -56,56 +56,9 @@ pip install -r requirement.txt
 
     <Tip>如果你在 Windows Subsystem for Linux (WSL) 中运行，请切换为对应的 Linux 发行版。</Tip>
 
-<<<<<<< HEAD
 3. 点击 **Generate Password** 生成密码。
    
    <Tip>如果你之前已经生成过密码，可以直接使用原密码，或点击 **Reset Password** 重新生成密码。</Tip>
-=======
-    > **Tip:**
-    >
-    > 如果你在 Windows Subsystem for Linux (WSL) 中运行，请切换为对应的 Linux 发行版。
-
-4. 如果你还没有设置密码，点击 **Generate Password** 生成一个随机密码。
-
-    > **Tip:**
-    >
-    > 如果你之前已经生成过密码，可以直接使用原密码，或点击 **Reset Password** 重新生成密码。
-
-5. 运行以下命令，将 `.env.example` 复制并重命名为 `.env`：
-
-    ```bash
-    cp .env.example .env
-    ```
-
-6. 复制并粘贴对应连接字符串至 `.env` 中。示例结果如下：
-
-    ```dotenv
-    TIDB_HOST='{host}'  # e.g. xxxxxx.aws.tidbcloud.com
-    TIDB_PORT='4000'
-    TIDB_USER='{user}'  # e.g. xxxxxx.root
-    TIDB_PASSWORD='{password}'
-    TIDB_DB_NAME='test'
-    CA_PATH=''
-    ```
-
-    注意替换 `{}` 中的占位符为连接对话框中获得的值。
-
-    TiDB Serverless 要求使用 TLS (SSL) connection，由于 mysqlclient 的 `ssl_mode` 默认为 `PREFERRED`，所以不需要你手动指定 `CA_PATH`，设置为空即可。但如果你有特殊原因需要手动指定 `CA_PATH`，可以参考 [TiDB Cloud 文档](https://docs.pingcap.com/tidbcloud/secure-connections-to-serverless-clusters#root-certificate-default-path)获取不同操作系统下证书的路径。
-
-7. 保存 `.env` 文件。
-
-</div>
-
-<div label="TiDB Dedicated">
-
-1. 在 TiDB Cloud 的 [**Clusters**](https://tidbcloud.com/console/clusters) 页面中，选择你的 TiDB Dedicated 集群，进入集群的 **Overview** 页面。
-
-2. 点击右上角的 **Connect** 按钮，将会出现连接对话框。
-
-3. 在对话框中点击 **Allow Access from Anywhere**，然后点击 **Download CA cert** 下载 TiDB Cloud 提供的 CA 证书。
-
-    更多配置细节，可参考 [TiDB Dedicated 标准连接教程（英文）](https://docs.pingcap.com/tidbcloud/connect-via-standard-connection)。
->>>>>>> d9afa701fa (update the UI string for downloading CA (#15437))
 
 4. 运行以下命令，将 `.env.example` 复制并重命名为 `.env`：
 
