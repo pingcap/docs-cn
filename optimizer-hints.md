@@ -83,6 +83,7 @@ SELECT /*+ QB_NAME(QB1) */ * FROM (SELECT * FROM t) t1, (SELECT * FROM t) t2;
 > **警告：**
 >
 > 强烈建议不要利用此 Hint 修改没有明确支持的变量，这可能会引发不可预知的行为。
+> `SET_VAR` 请尽量写在最外层而不要写在子查询中，否则可能会不生效。
 
 下面是一个使用示例：
 
@@ -1040,4 +1041,26 @@ CREATE TABLE t2 (a INT);
 set tidb_opt_enable_hash_join=off;
 EXPLAIN SELECT /*+ NO_MERGE_JOIN(t1) */ * FROM t1, t2 WHERE t1.a=t2.a;
 ERROR 1815 (HY000): Internal : Can't find a proper physical plan for this query
+```
+
+### `SET_VAR` 写在子查询中不生效
+
+`SET_VAR` 用来设置当前语句的系统变量，需要尽量写在最外层，如果写在子查询中，由于子查询会被特殊处理，可能导致 `SET_VAR` 无法生效：
+
+```sql
+mysql> SELECT @@MAX_EXECUTION_TIME, a FROM (SELECT /*+ SET_VAR(MAX_EXECUTION_TIME=123) */ 1 as a) t;
++----------------------+---+
+| @@MAX_EXECUTION_TIME | a |
++----------------------+---+
+|                    0 | 1 |
++----------------------+---+
+1 row in set (0.00 sec)
+
+mysql> SELECT /*+ SET_VAR(MAX_EXECUTION_TIME=123) */ @@MAX_EXECUTION_TIME, a FROM (SELECT 1 as a) t;
++----------------------+---+
+| @@MAX_EXECUTION_TIME | a |
++----------------------+---+
+|                  123 | 1 |
++----------------------+---+
+1 row in set (0.00 sec)
 ```
