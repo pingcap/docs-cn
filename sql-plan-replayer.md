@@ -240,7 +240,7 @@ mysql> SELECT * FROM mysql.plan_replayer_task;
 
 ### 查看 `PLAN REPLAYER CAPTURE` 抓取结果
 
-当 `PLAN REPLAYER CAPTURE` 成功抓取到结果后，可以通过以下 SQL 语句查看用于下载的文件标识:
+当 `PLAN REPLAYER CAPTURE` 成功抓取到结果后，可以通过以下 SQL 语句查看用于下载的文件标识：
 
 ```sql
 mysql> SELECT * FROM mysql.plan_replayer_status;
