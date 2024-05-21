@@ -262,7 +262,7 @@ mysql> SELECT * FROM mysql.plan_replayer_status;
 
 ### 移除 `PLAN REPLAYER CAPTURE` 抓取任务
 
-不再需要某个 `PLAN REPLAYER CAPTURE` 抓取任务后，你可以通过 `PLAN REPLAYER CAPTURE REMOVE` 语句移除它。例如：
+不再需要某个 `PLAN REPLAYER CAPTURE` 抓取任务后，你可以通过 `PLAN REPLAYER CAPTURE REMOVE` 语句将其移除。示例如下：
 
 ```sql
 mysql> PLAN REPLAYER CAPTURE '077a87a576e42360c95530ccdac7a1771c4efba17619e26be50a4cfd967204a0' '4838af52c1e07fc8694761ad193d16a689b2128bc5ced9d13beb31ae27b370ce';
