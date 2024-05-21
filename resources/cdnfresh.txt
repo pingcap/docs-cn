@@ -34,10 +34,10 @@ https://download.pingcap.org/tidb-v4.0-zh-manual.pdf
 https://download.pingcap.org/tidb-v4.0-en-manual.pdf
 https://download.pingcap.org/tidb-in-kubernetes-dev-zh-manual.pdf
 https://download.pingcap.org/tidb-in-kubernetes-dev-en-manual.pdf
-https://download.pingcap.org/tidb-in-kubernetes-v1.6-zh-manual.pdf
-https://download.pingcap.org/tidb-in-kubernetes-v1.6-en-manual.pdf
 https://download.pingcap.org/tidb-in-kubernetes-stable-zh-manual.pdf
 https://download.pingcap.org/tidb-in-kubernetes-stable-en-manual.pdf
+https://download.pingcap.org/tidb-in-kubernetes-v1.5-zh-manual.pdf
+https://download.pingcap.org/tidb-in-kubernetes-v1.5-en-manual.pdf
 https://download.pingcap.org/tidb-in-kubernetes-v1.4-zh-manual.pdf
 https://download.pingcap.org/tidb-in-kubernetes-v1.4-en-manual.pdf
 https://download.pingcap.org/tidb-in-kubernetes-v1.3-zh-manual.pdf
