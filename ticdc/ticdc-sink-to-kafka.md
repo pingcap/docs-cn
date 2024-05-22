@@ -33,20 +33,14 @@ Info: {"sink-uri":"kafka://127.0.0.1:9092/topic-name?protocol=canal-json&kafka-v
 
 ## 支持的 Kafka 版本
 
-| TiCDC 版本     | 最小支持的 Kafka 版本 |
-| :-------------| :------------------ |
-| release-6.1.x | 2.0.0 |
-| release-6.5.x | 2.1.0 |
-| release-7.1.x | 2.1.0 |
-| release-7.2.x | 2.1.0 |
-| release-7.3.x | 2.1.0 |
-| release-7.4.x | 2.1.0 |
-| release-7.5.0 | 2.4.0 |
-| release-7.5.1 | 2.4.0 |
-| release-7.5.2 | 0.11.0.2 |
-| release-7.6.x | 2.4.0 |
-| release-8.0.x | 2.4.0 |
-| release-8.1.x | 0.11.0.2 |
+| TiCDC 版本               | 最小支持的 Kafka 版本 |
+| :-----------------------| :------------------ |
+| 6.1.0 <= TiCDC < 6.5.0  | 2.0.0               |
+| 6.5.0 <= TiCDC < 7.5    | 2.1.0               |
+| 7.5.0 <= TiCDC <= 7.5.1 | 2.4.0               |
+| 7.5.2 = TiCDC           | 0.11.0.2            |
+| 7.6.0 <= TiCDC <= 8.0   | 2.4.0               |
+| 8.1.0 <= TiCDC          | 0.11.0.2            |
 
 ## Sink URI 配置 `kafka`
 
