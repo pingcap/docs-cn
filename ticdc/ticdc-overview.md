@@ -76,7 +76,60 @@ TiCDC 作为 TiDB 的增量数据同步工具，通过 PD 内部的 etcd 实现�
 >
 > 从 TiCDC v4.0.8 版本开始，可通过修改任务配置来同步**没有有效索引**的表，但在数据一致性的保证上有所减弱。具体使用方法和注意事项参考[同步没有有效索引的表](/ticdc/ticdc-manage-changefeed.md#同步没有有效索引的表)。
 
-### 暂不支持的场景
+## TiCDC 处理数据变更的实现原理
+
+本小节主要描述 TiCDC 如何处理上游 DML 产生的数据变更。对于上游 DDL 产生的数据变更，TiCDC 会获取到完整的 DDL SQL 语句，根据下游的 Sink 类型，转换成对应的格式发送给下游，本小节不再赘述。
+
+> **注意：**
+>
+> TiCDC 处理数据变更的逻辑可能会在后续版本发生调整。
+
+MySQL binlog 直接记录了上游执行的所有 DML 操作的 SQL 语句。与 MySQL 不同，TiCDC 则实时监听上游 TiKV 各个 Region Raft Log 的信息，并根据每个事务前后数据的差异生成对应多条 SQL 语句的数据变更信息。TiCDC 只保证输出的变更事件和上游 TiDB 的变更是等价的，不保证能准确还原上游 TiDB 引起数据变更的 SQL 语句。
+
+数据变更信息会包含数据变更类型，以及变更前后的数值。事务前后数据的差异一共可能产生三种事件：
+
+1. `DELETE` 事件：对应会收到一条 `DELETE` 类型的数据变更信息，包含变更前的数据。
+
+2. `INSERT` 事件：对应会收到一条 `PUT` 类型的数据变更信息，包含变更后的数据。
+
+3. `UPDATE` 事件：对应会收到一条 `PUT` 类型的数据变更信息，包含变更前与变更后的数据。
+
+TiCDC 会根据收到的这些数据变更信息，适配各个类型的下游来生成合适格式的数据传输给下游。例如，生成 Canal-JSON、Avro 等格式的数据写入 Kafka 中，或者重新转换成 SQL 语句发送给下游的 MySQL 或者 TiDB。
+
+目前 TiCDC 将数据变更信息适配对应的协议时，对于特定的 `UPDATE` 事件，可能会将其拆成一条 `DELETE` 事件和一条 `INSERT` 事件。详见[将 Update 事件拆分为 Delete 和 Insert 事件](/ticdc/ticdc-behavior-change.md#将-update-事件拆分为-delete-和-insert-事件)。
+
+当下游是 MySQL 或者 TiDB 时，因为 TiCDC 并非直接获取原生上游执行的 DML 语句，而是重新根据数据变更信息来生成 SQL 语句，因此不能保证写入下游的 SQL 语句和上游执行的 SQL 语句完全相同，但会保证最终结果的一致性。
+
+例如上游执行了以下 SQL 语句：
+
+```sql
+Create Table t1 (A int Primary Key, B int);
+
+BEGIN;
+Insert Into t1 values(1,2);
+Insert Into t1 values(2,2);
+Insert Into t1 values(3,3);
+Commit;
+
+Update t1 set b = 4 where b = 2;
+```
+
+TiCDC 将根据数据变更信息重新生成 SQL 语句，向下游写以下两条 SQL 语句：
+
+```sql
+INSERT INTO `test.t1` (`A`,`B`) VALUES (1,1),(2,2),(3,3);
+UPDATE `test`.`t1`
+SET `A` = CASE
+        WHEN `A` = 1 THEN 1
+        WHEN `A` = 2 THEN 2
+END, `B` = CASE
+        WHEN `A` = 1 THEN 4
+        WHEN `A` = 2 THEN 4
+END
+WHERE `A` = 1 OR `A` = 2;
+```
+
+## 暂不支持的场景
 
 目前 TiCDC 暂不支持的场景如下：
 
