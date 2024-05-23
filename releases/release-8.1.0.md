@@ -169,7 +169,7 @@ TiDB 8.1.0 为长期支持版本 (Long-Term Support Release, LTS)。
 ### 行为变更
 
 * 在之前的版本中，TiDB Lightning 的配置项 `tidb.tls` 在取值为 `"false"` 和 `""` 时的行为是相同的，在取值为 `"skip-verify"` 和 `"preferred"` 时的行为也是相同的。从 v8.1.0 开始，TiDB Lightning 对 `tidb.tls` 取值为 `"false"`、`""`、`"skip-verify"` 和 `"preferred"` 时的行为进行了区分。更多信息，请参考 [TiDB Lightning 配置参数](/tidb-lightning/tidb-lightning-configuration.md)。
-* 对于设置了 `AUTO_ID_CACHE=1` 的表，TiDB 支持[中心化分配自增 ID 服务](/auto-increment.md#mysql-兼容模式)。在之前的版本中，该服务的 “主” TiDB 节点在进程退出（如该 TiDB 节点重启）时会自动执行 `forceRebase` 操作，以确保自动分配的 ID 尽可能连续。然而，当设置过 `AUTO_ID_CACHE=1` 的表过多时，执行 `forceRebase` 也会非常耗时，导致 TiDB 无法及时重启，甚至阻塞数据写入，影响系统可用性。因此，从 v8.1.0 起，TiDB 取消了 `forceRebase` 操作，解决了上述问题，但会造成主备切换期间自动分配的 ID 出现不连续。
+* 对于设置了 `AUTO_ID_CACHE=1` 的表，TiDB 支持[中心化分配自增 ID 服务](/auto-increment.md#mysql-兼容模式)。在之前的版本中，该服务的 “主” TiDB 节点在进程退出（如该 TiDB 节点重启）时会自动执行 `forceRebase` 操作，以确保自动分配的 ID 尽可能连续。然而，当设置过 `AUTO_ID_CACHE=1` 的表过多时，执行 `forceRebase` 也会非常耗时，导致 TiDB 无法及时重启，甚至阻塞数据写入，影响系统可用性。因此，从 v8.1.0 起，TiDB 取消了 `forceRebase` 操作，解决了上述问题，但会造成主备切换期间部分自动分配的 ID 出现不连续。
 
 ### 系统变量
 
