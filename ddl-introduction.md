@@ -27,7 +27,7 @@ TiDB 采用在线异步变更的方式执行 DDL 语句，从而实现 DDL 语�
 
 - **物理 DDL 语句**：不但会修改变更对象的元数据，同时也修改变更对象所存储的用户数据。例如，为表创建索引，不仅需要变更表的定义，同时也需要做一次全表扫描以构建新增加的索引。
 
-    在 TiDB 中，物理 DDL 被称为 Reorg DDL（Reorg 即  Reorganization）。目前物理 DDL 只包含 `ADD INDEX` 以及有损列类型变更（例如从 `INT` 转成 `CHAR` 类型）这两种类型。物理 DDL 的特点是执行时间较长，且执行时间与表的数据量、机器配置以及业务负载有关。
+    在 TiDB 中，物理 DDL 被称为 Reorg DDL（Reorg 即 Reorganization）。目前物理 DDL 只包含 `ADD INDEX` 以及有损列类型变更（例如从 `INT` 转成 `CHAR` 类型）这两种类型。物理 DDL 的特点是执行时间较长，且执行时间与表的数据量、机器配置以及业务负载有关。
 
     执行物理 DDL 会影响业务负载，具体有两个方面。一方面需要从 TiKV 中读取数据并写入新数据，因此会消耗 TiKV 的 CPU 及 I/O 资源。另一方面，**DDL Owner 所在的 TiDB 节点**或者**被 TiDB 分布式执行框架调度而执行 `ADD INDEX` 任务的 TiDB 节点**需要进行相应的计算，因此会消耗 TiDB 的 CPU 资源。
 
