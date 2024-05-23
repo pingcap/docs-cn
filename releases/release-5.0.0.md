@@ -66,7 +66,6 @@ TiDB 版本：5.0.0
 
 + 升级前，请检查 TiDB 配置项 [`feedback-probability`](https://docs.pingcap.com/zh/tidb/v5.0/tidb-configuration-file#feedback-probability) 的值。如果不为 0，升级后会触发 "panic in the recoverable goroutine" 报错，但不影响升级。
 + 为了避免造成数据正确性问题，列类型变更不再允许 `VARCHAR` 类型和 `CHAR` 类型的互相转换。
-+ 废弃 `rocksdb.info-log-level`、`rocksdb.info-log-max-size`、`rocksdb.info-log-roll-time`、`rocksdb.info-log-keep-log-file-num` 等 RocksDB 日志相关的参数，Rocksdb 的日志改为由 TiKV 的日志模块进行统一管理，仅保留 `rocksdb.info-log-dir` 用于设置 RocksDB 日志存储的路径。
 
 ## 新功能
 
