@@ -33,7 +33,6 @@ Info: {"sink-uri":"kafka://127.0.0.1:9092/topic-name?protocol=canal-json&kafka-v
 
 ## 支持的 Kafka 版本
 
-
 TiCDC 与最低支持的 Kafka 版本对应关系如下：
 
 | TiCDC 版本               | 最低支持的 Kafka 版本 |
