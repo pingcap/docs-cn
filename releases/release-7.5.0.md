@@ -5,6 +5,8 @@ summary: 了解 TiDB 7.5.0 版本的新功能、兼容性变更、改进提升�
 
 # TiDB 7.5.0 Release Notes
 
+<EmailSubscriptionWrapper />
+
 发版日期：2023 年 12 月 1 日
 
 TiDB 版本：7.5.0
