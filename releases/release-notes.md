@@ -7,6 +7,10 @@ summary: 介绍 TiDB 版本发布历史。
 
 TiDB 历史版本发布声明如下：
 
+## 8.1
+
+- [8.1.0](/releases/release-8.1.0.md): 2024-05-24
+
 ## 8.0
 
 - [8.0.0-DMR](/releases/release-8.0.0.md): 2024-03-29
