@@ -222,6 +222,10 @@ TiDB 8.1.0 为长期支持版本 (Long-Term Support Release, LTS)。
 
     - 优化 `OperatorController` 的逻辑，减少竞争锁的开销 [#7897](https://github.com/tikv/pd/issues/7897) @[nolouch](https://github.com/nolouch)
 
++ TiFlash
+
+    - 降低 TiFlash 在开启 TLS 后因更新证书而导致 panic 的概率 [#8535](https://github.com/pingcap/tiflash/issues/8535) @[windtalker](https://github.com/windtalker)
+
 + Tools
 
     + Backup & Restore (BR)
