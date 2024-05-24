@@ -1007,7 +1007,7 @@ raftstore 相关的配置项。
 
 + TiKV 每隔一段时间会检测 Raftstore 组件的延迟情况，该配置项设置检测的时间间隔。当检测的延迟超过该时间，该检测会被记为超时。
 + 根据超时的检测延迟的比例计算判断 TiKV 是否为慢节点。
-+ 默认值：500ms
++ 默认值：100ms
 + 最小值：1ms
 
 ### `raft-write-size-limit` <span class="version-mark">从 v5.3.0 版本开始引入</span>

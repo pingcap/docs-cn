@@ -84,6 +84,7 @@ WITH RECURSIVE cte(a) AS (SELECT 1 UNION SELECT a+1 FROM cte WHERE a < 5) SELECT
 
 ## 另请参阅
 
+* [公共表表达式 (CTE)](/develop/dev-guide-use-common-table-expression.md)
 * [SELECT](/sql-statements/sql-statement-select.md)
 * [INSERT](/sql-statements/sql-statement-insert.md)
 * [DELETE](/sql-statements/sql-statement-delete.md)
