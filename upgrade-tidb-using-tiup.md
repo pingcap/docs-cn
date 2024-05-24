@@ -1,11 +1,6 @@
 ---
 title: 使用 TiUP 升级 TiDB
-<<<<<<< HEAD
-summary: TiUP 可用于将 TiDB 4.0 版本及更高版本升级至 TiDB 8.0。升级过程中需注意不支持 TiFlash 组件从 5.3 之前的老版本在线升级至 5.3 及之后的版本，只能采用停机升级。在升级过程中，不要执行 DDL 语句，避免出现行为未定义的问题。升级前需查看集群中是否有正在进行的 DDL Job，并等待其完成或取消后再进行升级。升级完成后，可使用 TiUP 安装对应版本的 `ctl` 组件来更新相关工具版本。
-=======
-aliases: ['/docs-cn/dev/upgrade-tidb-using-tiup/','/docs-cn/dev/how-to/upgrade/using-tiup/','/docs-cn/dev/upgrade-tidb-using-tiup-offline/', '/zh/tidb/dev/upgrade-tidb-using-tiup-offline']
 summary: TiUP 可用于 TiDB 升级。升级过程中需注意不支持 TiFlash 组件从 5.3 之前的老版本在线升级至 5.3 及之后的版本，只能采用停机升级。在升级过程中，不要执行 DDL 语句，避免出现行为未定义的问题。升级前需查看集群中是否有正在进行的 DDL Job，并等待其完成或取消后再进行升级。升级完成后，可使用 TiUP 安装对应版本的 `ctl` 组件来更新相关工具版本。
->>>>>>> 3c530863a2 (bump TiDB version to v8.1.0 (#17341))
 ---
 
 # 使用 TiUP 升级 TiDB
