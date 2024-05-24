@@ -32,7 +32,7 @@ TiDB 8.1.0 为长期支持版本 (Long-Term Support Release, LTS)。
     <td>通过该功能，BR 可以充分利用集群的规模优势，使 TiKV 集群中的所有节点都能参与到数据恢复的准备阶段，从而显著提升大规模集群中大数据集的恢复速度。实际测试表明，该功能可将下载带宽打满，下载速度可提升 8 到 10 倍，端到端恢复速度大约提升 1.5 到 3 倍。</td>
   </tr>
   <tr>
-    <td><a href="https://docs.pingcap.com/zh/tidb/v8.1/ddl-v2">建表性能提升 10 倍</a>（实验特性，从 v7.6.0 开始引入）</td>
+    <td><a href="https://docs.pingcap.com/zh/tidb/v8.1/accelerated-table-creation">建表性能提升 10 倍</a>（实验特性，从 v7.6.0 开始引入）</td>
     <td>在 v7.6.0 中引入了新的 DDL 架构，批量建表的性能提高了 10 倍。这一重大改进极大地缩短了创建大量表所需的时间。特别是在 SaaS 场景中，快速创建大量表（从数万到数十万不等）是一个常见的挑战，使用该特性能显著提升 SaaS 场景的建表速度。</td>
   </tr>
   <tr>
@@ -88,7 +88,7 @@ TiDB 8.1.0 为长期支持版本 (Long-Term Support Release, LTS)。
     <td>TiCDC 支持了新的 Debezium 协议，TiCDC 可以使用该协议生成 Debezium 格式的数据变更事件并发送给 Kafka sink。</td>
   </tr>
   <tr>
-    <td>TiCDC 支持<a href="https://docs.pingcap.com/zh/tidb/v8.1/ticdc-client-authentication.md">客户端鉴权</a>（从 v8.1.0 开始引入）</td>
+    <td>TiCDC 支持<a href="https://docs.pingcap.com/zh/tidb/v8.1/ticdc-client-authentication">客户端鉴权</a>（从 v8.1.0 开始引入）</td>
     <td>TiCDC 支持使用 mTLS（双向传输层安全性协议）或 TiDB 用户名密码进行客户端鉴权。该功能允许命令行工具或 OpenAPI 客户端验证与 TiCDC 的连接。</td>
   </tr>
 </tbody>
@@ -347,7 +347,7 @@ TiDB 8.1.0 为长期支持版本 (Long-Term Support Release, LTS)。
 
 ## 性能测试
 
-如需了解 TiDB v8.1.0 的性能表现，你可以参考 TiDB Dedicated 集群的 [TPC-C 性能测试报告](https://docs.pingcap.com/tidbcloud/v8.1.0-performance-benchmarking-with-tpcc)和 [Sysbench 性能测试报告](https://docs.pingcap.com/tidbcloud/v8.1.0-performance-benchmarking-with-sysbench)（英文版）。
+如需了解 TiDB v8.1.0 的性能表现，你可以参考 TiDB Dedicated 集群的 [TPC-C 性能测试报告](https://docs.pingcap.com/tidbcloud/v8.1-performance-benchmarking-with-tpcc)和 [Sysbench 性能测试报告](https://docs.pingcap.com/tidbcloud/v8.1-performance-benchmarking-with-sysbench)（英文版）。
 
 ## 贡献者
 
