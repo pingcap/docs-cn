@@ -95,4 +95,17 @@ COMMIT;
 
 上游执行完事务后，数据库内的记录应该为 `(3, 2)` 和 `(2, 1)`，而下游执行完事务后，数据库内的记录为 `(3, 2)`，即发生数据不一致问题。
 
-注意，该行为变更后，在使用 MySQL Sink 时，TiCDC 在大部分情况下不会拆分 Update 事件，因此 changefeed 在运行时可能会出现主键或唯一键冲突的问题。该问题会导致 changefeed 自动重启，重启后发生冲突的 Update 事件会被拆分为 Delete 和 Insert 事件并写入 Sorter 模块中，此时可以确保同一事务内所有事件按照 Delete 事件在 Insert 事件之前的顺序进行排序从而正确完成数据同步。
+如果在 Update 事件写入 Sorter 模块之前将其拆分为 Delete 和 Insert 事件，则经过 Sorter 排序后下游实际执行的事件顺序为：
+
+```sql
+BEGIN;
+DELETE FROM t WHERE a = 1;
+DELETE FROM t WHERE a = 2;
+REPLACE INTO t VALUES (2, 1);
+REPLACE INTO t VALUES (3, 2);
+COMMIT;
+```
+
+可以看到，在写入 Sorter 模块之前将 Update 事件拆分为 Delete 和 Insert 事件，可以保证拆分后的所有 Delete 事件在 Insert 事件之前执行，这样无论 TiCDC 收到的 Update 事件顺序，均可以保证数据一致性。
+
+注意，该行为变更后，在使用 MySQL Sink 时，TiCDC 在大部分情况下不会拆分 Update 事件，因此 changefeed 在运行时可能会出现主键或唯一键冲突的问题。该问题会导致 Changefeed 自动重启，重启后发生冲突的 Update 事件会被拆分为 Delete 和 Insert 事件并写入 Sorter 模块中，此时可以确保同一事务内所有事件按照 Delete 事件在 Insert 事件之前的顺序进行排序从而正确完成数据同步。
