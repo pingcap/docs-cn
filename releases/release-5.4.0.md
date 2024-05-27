@@ -4,6 +4,8 @@ title: TiDB 5.4 Release Notes
 
 # TiDB 5.4 Release Notes
 
+<EmailSubscriptionWrapper />
+
 发版日期：2022 年 2 月 15 日
 
 TiDB 版本：5.4.0
