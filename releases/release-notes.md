@@ -4,6 +4,8 @@ title: TiDB 版本发布历史
 
 # TiDB 版本发布历史
 
+<EmailSubscriptionWrapper />
+
 TiDB 历史版本发布声明如下：
 
 ## 7.1

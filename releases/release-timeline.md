@@ -5,6 +5,8 @@ summary: 了解 TiDB 的版本发布时间线。
 
 # TiDB 版本发布时间线
 
+<EmailSubscriptionWrapper />
+
 本文列出了所有已发布的 TiDB 版本，按发布时间倒序呈现。
 
 | 版本 | 发布日期 |
