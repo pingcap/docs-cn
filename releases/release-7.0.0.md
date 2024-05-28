@@ -268,7 +268,7 @@ TiDB 版本：7.0.0
 
   更多信息，请参考[用户文档](/sql-statements/sql-statement-load-data.md)。
 
-* TiDB Lightning 向 TiKV 传输键值对时支持启用压缩传输 [#41163](https://github.com/pingcap/tidb/issues/41163) @[gozssky](https://github.com/gozssky)
+* TiDB Lightning 向 TiKV 传输键值对时支持启用压缩传输 [#41163](https://github.com/pingcap/tidb/issues/41163) @[sleepymole](https://github.com/sleepymole)
 
      自 v7.0.0 起，TiDB Lightning 正式支持将本地编码排序后的键值对在网络传输时进行压缩再发送到 TiKV，从而减少网络传输的数据量，降低 50% ~ 80% 网络带宽开销。在 v6.6.0 版本之前不支持该功能，在数据量较大的情况下，TiDB Lightning 对网络带宽要求相对较高，且会产生较高的流量费。相比 v6.6.0, v7.0.0 优化了压缩算法，能以更快的速度将数据导入到 TiKV 中。同样是开启压缩选项，v6.6.0 会增加 2 倍导入时间，而 v7.0.0 只会增加大约 60% 时间。以上的压缩率和导入时长仅供参考，不同的使用场景会有差异。
 
@@ -419,7 +419,7 @@ TiDB 版本：7.0.0
 
     + TiDB Lightning
 
-        - TiDB Lightning 的物理导入模式 (Physical Import Mode) 支持导入数据和索引分离导入，提升导入速度和稳定性 [#42132](https://github.com/pingcap/tidb/issues/42132) @[gozssky](https://github.com/gozssky)
+        - TiDB Lightning 的物理导入模式 (Physical Import Mode) 支持导入数据和索引分离导入，提升导入速度和稳定性 [#42132](https://github.com/pingcap/tidb/issues/42132) @[sleepymole](https://github.com/sleepymole)
 
             TiDB Lightning 增加 `add-index-by-sql` 参数。默认值为 `false`，表示仍然会用 TiDB Lightning 将行数据以及索引数据编码成 KV pairs 后再一同导入到 TiKV。如果设置为 `true`，表示在物理导入模式 (Physical Import Mode) 下，会在导入数据完成后，通过 `ADD INDEX` 的 SQL 语句帮你建索引，提升导入数据的速度和稳定性。
 
