@@ -15,7 +15,7 @@ summary: 了解 TiCDC 集群监控报警规则以及处理方法。
 
 * 报警规则：
 
-    (time() - ticdc_owner_checkpoint_ts / 1000) > 600
+    `ticdc_owner_checkpoint_ts_lag > 600`
 
 * 规则描述：
 
@@ -29,7 +29,7 @@ summary: 了解 TiCDC 集群监控报警规则以及处理方法。
 
 * 报警规则：
 
-    (time() - ticdc_owner_resolved_ts / 1000) > 300
+     `ticdc_owner_resolved_ts_lag > 300`
 
 * 规则描述：
 
