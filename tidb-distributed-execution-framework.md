@@ -11,7 +11,7 @@ TiDB 采用计算存储分离架构，具有出色的扩展性和弹性的扩缩
 
 ## 使用场景
 
-在数据库中，除了核心的事务型负载任务 (TP) 和分析型查询任务 (AP)，也存在着其他重要任务，如 DDL 语句、IMPORT INTO、TTL、Analyze 和 Backup/Restore 等。这些任务需要处理数据库对象（表）中的大量数据，通常具有如下特点：
+在数据库中，除了核心的事务型负载任务 (TP) 和分析型查询任务 (AP)，也存在着其他重要任务，如 DDL 语句、[`IMPORT INTO`](/sql-statements/sql-statement-import-into.md)、[TTL](/time-to-live.md)、[`ANALYZE`](/sql-statements/sql-statement-analyze-table.md) 和 Backup/Restore 等。这些任务需要处理数据库对象（表）中的大量数据，通常具有如下特点：
 
 - 需要处理一个 schema 或者一个数据库对象（表）中的所有数据。
 - 可能需要周期执行，但频率较低。
@@ -23,20 +23,20 @@ TiDB 采用计算存储分离架构，具有出色的扩展性和弹性的扩缩
 - 支持任务分布式执行，可以在整个 TiDB 集群可用的计算资源范围内进行灵活的调度，从而更好地利用 TiDB 集群内的计算资源。
 - 提供统一的资源使用和管理能力，从整体和单个任务两个维度提供资源管理的能力。
 
-目前，分布式执行框架支持分布式执行 `ADD INDEX` 和 `IMPORT INTO` 这两类任务。
+目前，分布式执行框架支持分布式执行 [`ADD INDEX`](/sql-statements/sql-statement-add-index.md) 和 [`IMPORT INTO`](/sql-statements/sql-statement-import-into.md) 这两类任务。
 
-- `ADD INDEX`，即 DDL 创建索引的场景。例如以下 SQL 语句：
+- [`ADD INDEX`](/sql-statements/sql-statement-add-index.md)，即 DDL 创建索引的场景。例如以下 SQL 语句：
 
     ```sql
     ALTER TABLE t1 ADD INDEX idx1(c1);
     CREATE INDEX idx1 ON table t1(c1);
     ```
 
-- `IMPORT INTO` 即通过该 SQL 语句将 `CSV`、`SQL`、`PARQUET` 等格式的数据导入到一张空表中。详情请参考 [`IMPORT INTO`](/sql-statements/sql-statement-import-into.md)。
+- [`IMPORT INTO`](/sql-statements/sql-statement-import-into.md) 即通过该 SQL 语句将 CSV、SQL、PARQUET 等格式的数据导入到一张空表中。
 
 ## 使用限制
 
-分布式执行框架最多同时调度 16 个任务（包括 `ADD INDEX` 和 `IMPORT INTO`）。
+分布式执行框架最多同时调度 16 个任务（包括 [`ADD INDEX`](/sql-statements/sql-statement-add-index.md) 和 [`IMPORT INTO`](/sql-statements/sql-statement-import-into.md)）。
 
 ### `ADD INDEX` 的使用限制
 
@@ -45,7 +45,7 @@ TiDB 采用计算存储分离架构，具有出色的扩展性和弹性的扩缩
 
 ## 启用前提
 
-如需使用分布式执行框架执行 `ADD INDEX` 任务，需要先开启 [Fast Online DDL](/system-variables.md#tidb_ddl_enable_fast_reorg-从-v630-版本开始引入) 模式。
+如需使用分布式执行框架执行 [`ADD INDEX`](/sql-statements/sql-statement-add-index.md) 任务，需要先开启 [Fast Online DDL](/system-variables.md#tidb_ddl_enable_fast_reorg-从-v630-版本开始引入) 模式。
 
 1. 调整 Fast Online DDL 相关的系统变量：
 
@@ -79,10 +79,14 @@ TiDB 采用计算存储分离架构，具有出色的扩展性和弹性的扩缩
 
 3. 从 v7.4.0 开始，你可以根据实际需求，调整用于分布式执行框架任务的 TiDB 节点数量，在部署 TiDB 后为每一个 TiDB 节点设置 Instance 级别系统变量 [`tidb_service_scope`](/system-variables.md#tidb_service_scope-从-v740-版本开始引入)。`tidb_service_scope` 设置为 `background` 时，TiDB 节点可执行分布式执行框架的任务。`tidb_service_scope` 设置为默认值 "" 时，TiDB 节点不可执行分布式执行框架的任务。如果所有节点均未配置 `tidb_service_scope`，分布式执行框架将调度所有 TiDB 节点执行任务。
 
-    > **注意：**
-    >
-    > - 在包含多个 TiDB 节点的集群中，强烈建议选择两个或更多的 TiDB 节点将 `tidb_service_scope` 设置为 `background`。若仅在单个 TiDB 节点上设置此变量，当该节点发生重启或故障时，任务会被重新调度到其它未将该变量设置为 `background` 的 TiDB 节点，会对这些 TiDB 节点的业务产生影响。
-    > - 在分布式任务执行过程中，修改 `tidb_service_scope` 的配置不会对当前任务生效，会从下次任务开始生效。
+默认情况下，分布式执行框架将会调度所有 TiDB 节点执行分布式任务。从 v7.4.0 起，你可以通过设置 [`tidb_service_scope`](/system-variables.md#tidb_service_scope-从-v740-版本开始引入) 来控制分布式执行框架将会调度哪些 TiDB 节点执行分布式任务。
+
+在 v7.4.0 到 v8.0.0 及其之间的版本中，[`tidb_service_scope`](/system-variables.md#tidb_service_scope-从-v740-版本开始引入) 的可选值为 `''` 或 `background`。如果当前集群存在 `tidb_service_scope = 'background'` 的 TiDB 节点，分布式执行框架会将该任务调度到 `tidb_service_scope = 'background'` 的节点上运行。如果当前集群不存在 `tidb_service_scope = 'background'` 的节点，无论是因为故障还是正常的缩容，分布式执行框架会将任务调度到 `tidb_service_scope = ''` 的节点上运行。
+
+> **注意：**
+>
+> - 在 v7.4.0 到 v8.0.0 及其之间的版本中，对于包含多个 TiDB 节点的集群，强烈建议选择两个或更多的 TiDB 节点将 [`tidb_service_scope`](/system-variables.md#tidb_service_scope-从-v740-版本开始引入) 设置为 `background`。若仅在单个 TiDB 节点上设置此变量，当该节点发生重启或故障时，任务会被重新调度到 `tidb_service_scope = ''` 的 TiDB 节点，会对这些 TiDB 节点的业务产生影响。
+> - 在分布式任务执行过程中，修改 [`tidb_service_scope`](/system-variables.md#tidb_service_scope-从-v740-版本开始引入) 的配置不会对当前任务生效，会从下次任务开始生效。
 
 ## 实现原理
 
