@@ -5,18 +5,18 @@ summary: 了解如何使用扩展统计信息指导优化器。
 
 # 扩展统计信息
 
-TiDB 可以收集以下两种类型的统计信息，本文主要介绍如何使用扩展统计信息来指导优化器。
+TiDB 可以收集以下两种类型的统计信息，本文主要介绍如何使用扩展统计信息来指导优化器。阅读本文前，建议先阅读[常规统计信息](/statistics.md)。
 
 - 常规统计信息：例如直方图和 Count-Min Sketch，详情参见[常规统计信息](/statistics.md)。
 - 扩展统计信息：通过表和列过滤的统计信息。
 
-> **Tip:**
->
-> 阅读本文前，建议先阅读[常规统计信息](/statistics.md)。
-
 当手动或自动执行 `ANALYZE` 语句时，TiDB 默认只收集常规统计信息，不收集扩展统计信息。这是因为扩展统计信息仅在特定场景下用于优化器估算，而且收集扩展统计信息会增加额外开销。
 
-扩展统计信息默认关闭。如果要收集扩展统计信息，需要先启用扩展统计信息，然后添加每个扩展统计信息对象。添加之后，下次执行 `ANALYZE` 语句时，TiDB 会同时收集常规统计信息和已添加的扩展统计信息。
+扩展统计信息默认关闭。如果要收集扩展统计信息，请先启用扩展统计信息，然后逐个添加所需的扩展统计信息对象。添加之后，下次执行 `ANALYZE` 语句时，TiDB 会同时收集常规统计信息和已添加对象的扩展统计信息。
+
+> **警告：**
+>
+> 该功能目前为实验特性，不建议在生产环境中使用。该功能可能会在未事先通知的情况下发生变化或删除。如果发现 bug，请在 GitHub 上提 [issue](https://github.com/pingcap/tidb/issues) 反馈。
 
 ## 使用限制
 
@@ -38,11 +38,11 @@ SET GLOBAL tidb_enable_extended_stats = ON;
 
 该变量的默认值为 `OFF`。该系统变量的设置对所有扩展统计信息对象生效。
 
-### 添加扩展统计信息
+### 添加扩展统计信息对象
 
-添加扩展统计信息不是一次性任务，需要为每个扩展统计信息对象都进行添加。
+添加扩展统计信息对象不是一次性任务，你需要为每个要收集的扩展统计信息分别添加对象。
 
-要添加扩展统计信息，使用 SQL 语句 `ALTER TABLE ADD STATS_EXTENDED`。语法如下：
+要添加扩展统计信息对象，使用 SQL 语句 `ALTER TABLE ADD STATS_EXTENDED`。语法如下：
 
 ```sql
 ALTER TABLE table_name ADD STATS_EXTENDED IF NOT EXISTS stats_name stats_type(column_name, column_name...);
@@ -58,9 +58,9 @@ ALTER TABLE table_name ADD STATS_EXTENDED IF NOT EXISTS stats_name stats_type(co
 <details>
 <summary>实现原理</summary>
 
-为了提高访问性能，每个 TiDB 节点在系统表 `mysql.stats_extended` 中维护一份缓存，用于扩展统计信息。在添加扩展统计信息后，下次执行 `ANALYZE` 语句时，如果系统表 `mysql.stats_extended` 中有相应的对象，TiDB 将收集扩展统计信息。
+为了提高访问性能，每个 TiDB 节点在系统表 `mysql.stats_extended` 中维护一份缓存，用于记录扩展统计信息。在添加扩展统计信息后，下次执行 `ANALYZE` 语句时，如果系统表 `mysql.stats_extended` 中有相应的对象，TiDB 将收集扩展统计信息。
 
-每一行在 `mysql.stats_extended` 系统表中都有一个 `version` 列。只要一行数据有更新，`version` 的值就会增加。这样，TiDB 会将表增量加载到内存中，而不是全量加载。
+`mysql.stats_extended` 系统表中的每一行都有一个 `version` 列。只要一行数据有更新，`version` 的值就会增加。这样，TiDB 会将表增量加载到内存中，而不是全量加载。
 
 TiDB 定期加载 `mysql.stats_extended` 系统表，以确保缓存与表中的数据保持一致。
 
@@ -74,7 +74,7 @@ TiDB 定期加载 `mysql.stats_extended` 系统表，以确保缓存与表中的
 
 </details>
 
-### 删除扩展统计信息
+### 删除扩展统计信息对象
 
 要删除扩展统计信息对象，使用以下语句：
 
@@ -138,7 +138,7 @@ SELECT * FROM t WHERE col1 > 1 ORDER BY col2 LIMIT 1;
 ALTER TABLE t ADD STATS_EXTENDED s1 correlation(col1, col2);
 ```
 
-在添加完统计信息对象执行 `ANALYZE` 语句时，TiDB 会计算表 `t` 的 `col` 和 `col2` 的[皮尔逊相关系数](https://zh.wikipedia.org/zh-cn/皮尔逊积矩相关系数)，并将对象写入 `mysql.stats_extended` 系统表。
+添加完统计信息对象后，当执行 `ANALYZE` 语句时，TiDB 会计算表 `t` 的 `col1` 和 `col2` 的[皮尔逊相关系数](https://zh.wikipedia.org/zh-cn/皮尔逊积矩相关系数)，并将对象写入 `mysql.stats_extended` 系统表。
 
 ### 第 4 步：查看扩展统计信息的效果
 
