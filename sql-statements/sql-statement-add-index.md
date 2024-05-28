@@ -10,7 +10,7 @@ aliases: ['/docs-cn/dev/sql-statements/sql-statement-add-index/','/docs-cn/dev/r
 
 > **Tip:**
 >
-> 你可以使用 [TiDB 分布式执行框架](/tidb-distributed-execution-framework.md)加速执行该语句。
+> 你可以使用 [TiDB 分布式执行框架](/tidb-distributed-execution-framework.md)加速该语句的执行。
 
 > **警告：**
 >
