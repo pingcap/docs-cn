@@ -1,5 +1,6 @@
 ---
 title: TiDB 配置文件描述
+summary: 介绍未包含在命令行参数中的 TiDB 配置文件选项。
 aliases: ['/docs-cn/dev/tidb-configuration-file/','/docs-cn/dev/reference/configuration/tidb-server/configuration-file/']
 ---
 
@@ -121,7 +122,7 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
     - 当使用内置函数 `VERSION()` 时。
     - 当与客户端初始连接，TiDB 返回带有服务端版本号的初始握手包时。具体可以查看 MySQL 初始握手包的[描述](https://dev.mysql.com/doc/dev/mysql-server/latest/page_protocol_connection_phase.html#sect_protocol_connection_phase_initial_handshake)。
 + 默认值：""
-+ 默认情况下，TiDB 版本号格式为：`5.7.${mysql_latest_minor_version}-TiDB-${tidb_version}`。
++ 默认情况下，TiDB 版本号格式为：`8.0.11-TiDB-${tidb_version}`。
 
 > **注意：**
 >
@@ -200,6 +201,16 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
 - 指定关闭服务器时 TiDB 等待的秒数，使得客户端有时间断开连接。
 - 默认值：0
 - 在 TiDB 等待服务器关闭期间，HTTP 状态会显示失败，使得负载均衡器可以重新路由流量。
+
+> **注意：**
+>
+> TiDB 在关闭服务器之前等待的时长也会受到以下参数的影响：
+>
+> - 当使用的平台采用了 SystemD 时，默认的停止超时为 90 秒。如果需要更长的超时时间，可以设置 [`TimeoutStopSec=`](https://www.freedesktop.org/software/systemd/man/latest/systemd.service.html#TimeoutStopSec=)。
+>
+> - 当使用 TiUP Cluster 组件时，默认的 [`--wait-timeout`](/tiup/tiup-component-cluster.md#--wait-timeoutuint默认-120) 为 120 秒。
+>
+> - 当使用 Kubernetes 时，默认的 [`terminationGracePeriodSeconds`](https://kubernetes.io/docs/reference/kubernetes-api/workload-resources/pod-v1/#lifecycle) 为 30 秒。
 
 ### `enable-global-kill` <span class="version-mark">从 v6.1.0 版本开始引入</span>
 
@@ -586,6 +597,11 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
 + 用于控制 TiDB 是否开启统计信息缓存的内存上限。
 + 默认值：true
 
+### `concurrently-init-stats` <span class="version-mark">从 v8.1.0 和 v7.5.2 版本开始引入</span>
+
++ 用于控制 TiDB 启动时是否并发初始化统计信息。
++ 默认值：`false`
+
 ### `lite-init-stats` <span class="version-mark">从 v7.1.0 版本开始引入</span>
 
 + 用于控制 TiDB 启动时是否采用轻量级的统计信息初始化。
@@ -754,6 +770,20 @@ opentracing.reporter 相关的设置。
 + 默认值：1000.0
 + 单位：MB
 + 类型：Float
+
+## txn-local-latches
+
+与事务锁存相关的配置项。这些配置项今后可能会废弃，不建议启用。
+
+### `enabled`
+
+- 控制是否开启事务的内存锁。
+- 默认值：`false`
+
+### `capacity`
+
+- Hash 对应的 slot 数量，自动向上调整为 2 的指数倍。每个 slot 占用 32 字节内存。如果设置过小，在数据写入范围较大的场景（如导入数据），可能会导致运行速度变慢，性能变差。
+- 默认值：`2048000`
 
 ## binlog
 

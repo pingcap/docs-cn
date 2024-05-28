@@ -60,6 +60,10 @@ SQLAlchemy 是一个支持多种数据库的 ORM 库。它是对数据库的高�
 
 <div label="TiDB Serverless">
 
+> **注意：**
+>
+> TiDB Serverless 集群目前存在一个限制：如果 5 分钟内没有活跃连接，集群将会自动关闭，这会导致所有连接中断。因此，当使用 SQLAlchemy 连接到 TiDB Serverless 集群时，从连接池中获取的连接可能会遇到 `OperationalError` 报错，例如 `Lost connection to MySQL server during query` 或 `MySQL Connection not available`。为了避免该错误，可将 `pool_recycle` 参数设置为 `300`。更多信息，请参阅 SQLAlchemy 文档 [Dealing with Disconnects](https://docs.sqlalchemy.org/en/20/core/pooling.html#dealing-with-disconnects)。
+
 1. 在 TiDB Cloud 的 [**Clusters**](https://tidbcloud.com/console/clusters) 页面中，选择你的 TiDB Serverless 集群，进入集群的 **Overview** 页面。
 
 2. 点击右上角的 **Connect** 按钮，将会弹出连接对话框。
@@ -110,7 +114,7 @@ SQLAlchemy 是一个支持多种数据库的 ORM 库。它是对数据库的高�
 
 2. 点击右上角的 **Connect** 按钮，将会出现连接对话框。
 
-3. 在对话框中点击 **Allow Access from Anywhere**，然后点击 **Download TiDB cluster CA** 下载 TiDB Cloud 提供的 CA 证书。
+3. 在对话框中点击 **Allow Access from Anywhere**，然后点击 **Download CA cert** 下载 TiDB Cloud 提供的 CA 证书。
 
     更多配置细节，可参考 [TiDB Dedicated 标准连接教程（英文）](https://docs.pingcap.com/tidbcloud/connect-via-standard-connection)。
 

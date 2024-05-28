@@ -1,5 +1,6 @@
 ---
 title: tiup dm display
+summary: tiup-dm 提供了 `tiup dm display` 命令来高效查看集群中每个组件的运行状态。命令语法为 `tiup dm display <cluster-name>`，可指定要查询的节点和角色。输出包括集群名称、版本、SSH 客户端类型，以及节点 ID、角色、IP、端口号、操作系统、状态、数据目录和部署目录等信息。
 ---
 
 # tiup dm display

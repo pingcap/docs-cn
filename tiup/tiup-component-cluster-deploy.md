@@ -1,5 +1,6 @@
 ---
 title: tiup cluster deploy
+summary: tiup cluster deploy 命令用于部署全新集群。语法为 tiup cluster deploy <cluster-name> <version> <topology.yaml> [flags]。选项包括 -u, -i, -p, --ignore-config-check, --no-labels, --skip-create-user, -h。输出为部署日志。
 ---
 
 # tiup cluster deploy
@@ -13,7 +14,7 @@ tiup cluster deploy <cluster-name> <version> <topology.yaml> [flags]
 ```
 
 - `<cluster-name>` 表示新集群的名字，不能和现有集群同名
-- `<version>` 为要部署的 TiDB 集群版本号，如 `v8.0.0`
+- `<version>` 为要部署的 TiDB 集群版本号，如 `v8.1.0`
 - `<topology.yaml>` 为事先编写好的[拓扑文件](/tiup/tiup-cluster-topology-reference.md)
 
 ## 选项

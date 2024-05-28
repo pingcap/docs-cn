@@ -174,7 +174,7 @@ git push -u origin new-branch-name
 
 1. 查看待认领 PR
 
-    打开 [pingcap/docs-cn PR 翻译任务页面](https://github.com/pingcap/docs-cn/pulls?q=is%3Apr+label%3Atranslation%2Fwelcome+)，即可看到所有打上了 `translation/welcome` label 的 PR。这类 PR 无论是处于 open 还是 closed 状态，均可认领。
+    打开 [pingcap/docs-cn PR 翻译任务页面](https://github.com/pingcap/docs-cn/pulls?q=is%3Apr+label%3Atranslation%2Fwelcome+-label%3Atranslation%2Fdone+)，即可看到所有打上了 `translation/welcome` label 的 PR。这类 PR 只要没有 `translation/done` 的 label，无论是处于 open 还是 closed 状态，均可认领。
 
 2. 认领 PR
 

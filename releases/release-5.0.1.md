@@ -1,5 +1,6 @@
 ---
 title: TiDB 5.0.1 Release Notes
+summary: TiDB 5.0.1 发布日期为 2021 年 4 月 24 日。此版本包含兼容性更改、改进提升、Bug 修复等内容。兼容性更改包括 TiDB 配置文件的默认值改变。改进提升方面，TiDB 支持 `VITESS_HASH()` 函数，TiKV 使用 `zstd` 压缩 Region Snapshot，PD 调整 Region 分数公式等。Bug 修复方面，TiDB 修复了多个查询结果可能错误的问题，TiKV 修复了多个导致问题的 Bug。Tools 方面也有多个 Bug 修复。
 ---
 
 # TiDB 5.0.1 Release Notes

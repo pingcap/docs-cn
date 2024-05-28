@@ -1007,7 +1007,7 @@ raftstore 相关的配置项。
 
 + TiKV 每隔一段时间会检测 Raftstore 组件的延迟情况，该配置项设置检测的时间间隔。当检测的延迟超过该时间，该检测会被记为超时。
 + 根据超时的检测延迟的比例计算判断 TiKV 是否为慢节点。
-+ 默认值：500ms
++ 默认值：100ms
 + 最小值：1ms
 
 ### `raft-write-size-limit` <span class="version-mark">从 v5.3.0 版本开始引入</span>
@@ -1322,7 +1322,7 @@ RocksDB 相关的配置项。
 
 + 单位：KiB|MiB|GiB
 
-### `track-and-verify-wals-in-manifest` <span class="version-mark">从 v6.5.9 和 v8.0.0 版本开始引入</span>
+### `track-and-verify-wals-in-manifest` <span class="version-mark">从 v6.5.9、v7.1.5、v8.0.0 版本开始引入</span>
 
 + 控制是否在 RocksDB 的 MANIFEST 文件中记录 WAL (Write Ahead Log) 文件的信息，以及在启动时是否验证 WAL 文件的完整性。详情请参考 RocksDB [Track WAL in MANIFEST](https://github.com/facebook/rocksdb/wiki/Track-WAL-in-MANIFEST)。
 + 默认值：`true`

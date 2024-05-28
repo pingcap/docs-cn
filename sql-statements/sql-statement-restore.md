@@ -120,9 +120,7 @@ RESTORE DATABASE * FROM 's3://example-bucket-2020/backup-05/'
 
 如果你需要减少网络带宽占用，可以通过 `RATE_LIMIT` 来限制每个 TiKV 节点的平均下载速度。
 
-默认情况下，每个 TiKV 节点上运行 128 个恢复线程。可以通过 `CONCURRENCY` 选项来调整这个值。
-
-在恢复完成之前，`RESTORE` 将对备份文件中的数据进行校验，以验证数据的正确性。如果你确信无需进行校验，可以通过 `CHECKSUM` 选项禁用这一步骤。
+在恢复完成之前，`RESTORE` 将对备份文件中的数据进行校验，以验证数据的正确性。如果你确定无需进行校验，可以通过将 `CHECKSUM` 参数设置为 `FALSE` 来禁用该检查。
 
 {{< copyable "sql" >}}
 

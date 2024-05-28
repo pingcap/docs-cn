@@ -1,6 +1,7 @@
 ---
 title: TiDB 3.0.0-rc.3 Release Notes
 aliases: ['/docs-cn/dev/releases/release-3.0.0-rc.3/','/docs-cn/dev/releases/3.0.0-rc.3/']
+summary: TiDB 3.0.0-rc.3 发布，对系统稳定性、易用性、功能、优化器、统计信息和执行引擎做了很多改进。包括 SQL 优化器、执行引擎、Server、DDL、PD、TiKV、Transaction、tikv-ctl、Misc 等方面的修复和新增功能。TiDB Ansible 新增预测集群最大 QPS 的监控项。
 ---
 
 # TiDB 3.0.0-rc.3 Release Notes

@@ -10,7 +10,7 @@ aliases: ['/docs-cn/dev/sql-statements/sql-statement-set-password/','/docs-cn/de
 
 ## 语法图
 
-```enbf+diagram
+```ebnf+diagram
 SetPasswordStmt ::=
     "SET" "PASSWORD" ( "FOR" Username )? "=" ( stringLit | "PASSWORD" "(" stringLit ")" )
 ```

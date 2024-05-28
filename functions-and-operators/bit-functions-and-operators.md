@@ -1,12 +1,12 @@
 ---
 title: 位函数和操作符
 aliases: ['/docs-cn/dev/functions-and-operators/bit-functions-and-operators/','/docs-cn/dev/reference/sql/functions-and-operators/bit-functions-and-operators/']
-summary: TiDB 支持 MySQL 5.7 中的所有位函数和操作符，包括BIT_COUNT()、&、~、|、^、<<和>>。BIT_COUNT() 返回参数二进制表示中为 1 的个数，& 表示位与，~ 表示按位取反，| 表示位或，^ 表示位亦或，<< 表示左移，>> 表示右移。
+summary: TiDB 支持 MySQL 8.0 中的所有位函数和操作符。
 ---
 
 # 位函数和操作符
 
-TiDB 支持使用 MySQL 5.7 中提供的所有[位函数和操作符](https://dev.mysql.com/doc/refman/5.7/en/bit-functions.html)。
+TiDB 支持使用 MySQL 8.0 中提供的所有[位函数和操作符](https://dev.mysql.com/doc/refman/8.0/en/bit-functions.html)。
 
 **位函数和操作符表**
 
@@ -19,3 +19,14 @@ TiDB 支持使用 MySQL 5.7 中提供的所有[位函数和操作符](https://de
 | [^](https://dev.mysql.com/doc/refman/8.0/en/bit-functions.html#operator_bitwise-xor) | 位亦或 |
 | [<<](https://dev.mysql.com/doc/refman/8.0/en/bit-functions.html#operator_left-shift) | 左移 |
 | [>>](https://dev.mysql.com/doc/refman/8.0/en/bit-functions.html#operator_right-shift) | 右移 |
+
+## MySQL 兼容性
+
+在处理位函数和操作符时，MySQL 8.0 与之前版本的 MySQL 之间存在一些差异。TiDB 旨在遵循 MySQL 8.0 的行为。
+
+## 已知问题
+
+在以下情况中，TiDB 中的查询结果与 MySQL 5.7 相同，但与 MySQL 8.0 不同。
+
+- 二进制参数的位操作。更多信息，请参考 [#30637](https://github.com/pingcap/tidb/issues/30637)。
+- `BIT_COUNT()` 函数的结果。更多信息，请参考 [#44621](https://github.com/pingcap/tidb/issues/44621)。

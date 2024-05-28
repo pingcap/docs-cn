@@ -1,5 +1,6 @@
 ---
 title: TiDB 5.2.1 Release Notes
+summary: TiDB 5.2.1 发布日期为 2021 年 9 月 9 日。此版本修复了 TiDB 在分区中下推聚合算子时的执行计划和执行报错问题。同时，TiKV 修复了 Region 迁移时出现的死锁导致 TiKV 不可用的问题。用户可通过关闭调度并重启出问题的 TiKV 来临时应对。
 ---
 
 # TiDB 5.2.1 Release Notes

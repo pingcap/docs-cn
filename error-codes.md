@@ -364,7 +364,7 @@ TiDB 兼容 MySQL 的错误码，在大多数情况下，返回和 MySQL 一样�
 
 * Error Number: 8216
 
-    自动随机列使用的方法不正确，请参考 [auto random 功能文档](/auto-random.md)进行修改。
+    `AUTO_RANDOM` 的使用方法不正确。请参考 [`AUTO_RANDOM`](/auto-random.md) 进行修改。
 
 * Error Number: 8223
 
@@ -388,7 +388,7 @@ TiDB 兼容 MySQL 的错误码，在大多数情况下，返回和 MySQL 一样�
 
 * Error Number: 8228
 
-    在 Sequence 上使用 `setval` 时指定了不支持的类型，该函数的示例可以在 [Sequence 使用文档](/sql-statements/sql-statement-create-sequence.md#示例)中找到。
+    在 Sequence 上使用 `SETVAL` 时指定了不支持的类型，该函数的示例可以在 [Sequence 使用文档](/sql-statements/sql-statement-create-sequence.md#示例)中找到。
 
 * Error Number: 8229
 
