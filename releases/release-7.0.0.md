@@ -504,7 +504,7 @@ TiDB 版本：7.0.0
 - [BornChanger](https://github.com/BornChanger)
 - [Dousir9](https://github.com/Dousir9)
 - [erwadba](https://github.com/erwadba)
-- [HappyUncle](https://github.com/HappyUncle)
+- [happy-v587](https://github.com/happy-v587)
 - [jiyfhust](https://github.com/jiyfhust)
 - [L-maple](https://github.com/L-maple)
 - [liumengya94](https://github.com/liumengya94)
