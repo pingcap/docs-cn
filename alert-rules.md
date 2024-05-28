@@ -119,7 +119,7 @@ aliases: ['/docs-cn/dev/alert-rules/','/docs-cn/dev/reference/alert-rules/']
 
 * 规则描述：
 
-    TiDB 处理请求的延时。99% 的请求的响应时间都应小于 1s，否则报警。
+    TiDB 处理请求的延时。99% 的请求的响应时间都应在 1 秒之内，否则报警。
 
 * 处理方法：
 
