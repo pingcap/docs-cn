@@ -4,7 +4,7 @@
 - [文档中心](https://docs.pingcap.com/zh)
 - 关于 TiDB
   - [TiDB 简介](/overview.md)
-  - [TiDB 8.0 Release Notes](/releases/release-8.0.0.md)
+  - [TiDB 8.1 Release Notes](/releases/release-8.1.0.md)
   - [功能概览](/basic-features.md)
   - [与 MySQL 的兼容性](/mysql-compatibility.md)
   - [使用限制](/tidb-limitations.md)
@@ -517,6 +517,7 @@
       - [版本发布历史](/dm/dm-release-notes.md)
   - TiDB Lightning
     - [概述](/tidb-lightning/tidb-lightning-overview.md)
+    - [`IMPORT INTO` 和 TiDB Lightning 对比](/tidb-lightning/import-into-vs-tidb-lightning.md)
     - [快速上手](/get-started-with-tidb-lightning.md)
     - [部署 TiDB Lightning](/tidb-lightning/deploy-tidb-lightning.md)
     - [目标数据库要求](/tidb-lightning/tidb-lightning-requirements.md)
@@ -1051,6 +1052,8 @@
   - [版本发布时间线](/releases/release-timeline.md)
   - [TiDB 版本规则](/releases/versioning.md)
   - [TiDB 离线包](/binary-package.md)
+  - v8.1
+    - [8.1.0](/releases/release-8.1.0.md)
   - v8.0
     - [8.0.0-DMR](/releases/release-8.0.0.md)
   - v7.6

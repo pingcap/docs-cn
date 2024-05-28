@@ -59,3 +59,8 @@ SELECT * FROM information_schema.memory_usage;
 * GC_TOTAL：从 TiDB 启动到当前累计由内存使用触发 Golang GC 的次数。
 * DISK_USAGE：当前数据落盘的硬盘使用量，单位为 byte。
 * QUERY_FORCE_DISK：从 TiDB 启动到当前累计的落盘次数。
+
+## 另请参阅
+
+- [TiDB 内存控制](/configure-memory-usage.md)
+- [TiKV 内存参数性能调优](/tune-tikv-memory-performance.md)

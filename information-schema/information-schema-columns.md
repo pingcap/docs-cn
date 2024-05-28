@@ -122,3 +122,7 @@ SHOW COLUMNS FROM t1 FROM test;
 +-------+---------+------+------+---------+-------+
 1 row in set (0.00 sec)
 ```
+
+## 另请参阅
+
+- [`SHOW COLUMNS FROM`](/sql-statements/sql-statement-show-columns-from.md)
