@@ -977,10 +977,6 @@ MPP 是 TiFlash 引擎提供的分布式计算框架，允许节点之间的数�
 
 ### `tidb_analyze_partition_concurrency`
 
-> **警告：**
->
-> 当前版本中该变量控制的功能尚未完全生效，请保留默认值。
-
 - 作用域：SESSION | GLOBAL
 - 是否持久化到集群：是
 - 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：否
@@ -5350,7 +5346,7 @@ Query OK, 0 rows affected, 1 warning (0.00 sec)
 - 作用域：NONE
 - 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：否
 - 默认值：`8.0.11-TiDB-(tidb version)`
-- 这个变量的值是 MySQL 的版本和 TiDB 的版本，例如 '8.0.11-TiDB-v8.0.0'。
+- 这个变量的值是 MySQL 的版本和 TiDB 的版本，例如 '8.0.11-TiDB-v8.1.0'。
 
 ### `version_comment`
 
