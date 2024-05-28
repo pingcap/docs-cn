@@ -8,6 +8,10 @@ aliases: ['/docs-cn/dev/sql-statements/sql-statement-add-index/','/docs-cn/dev/r
 
 `ALTER TABLE.. ADD INDEX` 语句用于在已有表中添加一个索引。在 TiDB 中，`ADD INDEX` 为在线操作，不会阻塞表中的数据读写。
 
+> **Tip:**
+>
+> 你可以使用 [TiDB 分布式执行框架](/tidb-distributed-execution-framework.md)加速执行该语句。
+
 > **警告：**
 >
 > - 在升级 TiDB 集群的过程中，**请勿执行** DDL 语句，否则可能会出现行为未定义的问题。
@@ -124,3 +128,4 @@ EXPLAIN SELECT * FROM t1 WHERE c1 = 3;
 * [ADD COLUMN](/sql-statements/sql-statement-add-column.md)
 * [CREATE TABLE](/sql-statements/sql-statement-create-table.md)
 * [EXPLAIN](/sql-statements/sql-statement-explain.md)
+* [TiDB 分布式执行框架](/tidb-distributed-execution-framework.md)
