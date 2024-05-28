@@ -84,7 +84,7 @@ TiDB 采用计算存储分离架构，具有出色的扩展性和弹性的扩缩
 
 - 从 v8.1.0 起，[`tidb_service_scope`](/system-variables.md#tidb_service_scope-从-v740-版本开始引入) 可设置为任意合法值。当提交分布式任务时，该任务会绑定当前连接的 TiDB 节点的 [`tidb_service_scope`](/system-variables.md#tidb_service_scope-从-v740-版本开始引入) 值，分布式执行框架只会将该任务调度到具有相同 [`tidb_service_scope`](/system-variables.md#tidb_service_scope-从-v740-版本开始引入) 值的 TiDB 节点上运行。但是，为了兼容之前版本的配置，如果分布式任务是在 `tidb_service_scope = ''` 的节点上提交的，且当前集群存在 `tidb_service_scope = 'background'` 的节点，分布式执行框架会将该任务调度到 `tidb_service_scope = 'background'` 的 TiDB 节点上运行。
 
-从 v8.1.0 起，如果在任务运行过程中扩容新节点，分布式执行框架会根据上述规则决定是否将任务调度到新的节点来执行。如果不希望新扩容的节点运行任务，建议提前为这些节点设置 [`tidb_service_scope`](/system-variables.md#tidb_service_scope-从-v740-版本开始引入)。
+从 v8.1.0 起，如果在任务运行过程中扩容新节点，分布式执行框架会根据上述规则决定是否将任务调度到新的节点来执行。如果不希望新扩容的节点运行任务，建议提前为这些节点设置 [`tidb_service_scope`](/system-variables.md#tidb_service_scope-从-v740-版本开始引入)，取值要和已经在运行分布式任务的 TiDB 节点不同。
 
 > **注意：**
 >
