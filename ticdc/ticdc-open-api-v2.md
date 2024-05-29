@@ -336,8 +336,8 @@ curl -X GET http://127.0.0.1:8300/api/v2/health
 | `transaction_atomicity`       | `STRING` 类型，事务一致性等级。（非必选）                                                                          |
 | `only_output_updated_columns` | `BOOLEAN` 类型，对于 MQ 类型的 Sink 中的 `canal-json` 和 `open-protocol`，表示是否只向下游同步有内容更新的列。默认值为 `false`。（非必选） |
 | `cloud_storage_config`        | storage sink 配置。（非必选）                                                                              |
-| `open`                        | Open Protocol 配置。（非必选）                                                                             |
-| `debezium`                    | Debezium Protocol 配置。（非必选）                                                                             |
+| `open`                        | Open Protocol 配置，从 v7.5.2 开始支持。（非必选）                                                                             |
+| `debezium`                    | Debezium Protocol 配置，从 v7.5.2 开始支持。（非必选）                                                                             |
 
 `sink.column_selectors` 是一个数组，元素参数说明如下：
 
