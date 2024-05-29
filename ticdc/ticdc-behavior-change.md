@@ -55,7 +55,7 @@ COMMIT;
 
 ### MySQL Sink
 
-从 v8.1.0 开始，当使用 MySQL Sink 时，TiCDC 在启动时会从 PD 获取一个当前的时间戳 `thresholdTs`，并根据时间戳的值决定是否拆分 `UPDATE` 事件：
+从 v8.1.0 开始，当使用 MySQL Sink 时，TiCDC 在启动时会从 PD 获取当前的时间戳 `thresholdTs`，并根据时间戳的值决定是否拆分 `UPDATE` 事件：
 
 - 对于含有单条或多条 `UPDATE` 变更的事务，如果 `UPDATE` 事件的主键或者非空唯一索引的列值发生改变，且事务的 `commitTS` 小于 `thresholdTs`，在写入 Sorter 模块之前 TiCDC 会将每条 `UPDATE` 事件拆分为 `DELETE` 和 `INSERT` 两条事件。
 - 对于事务的 `commitTS` 大于或等于 `thresholdTs` 的 `UPDATE` 事件，TiCDC 不会对其进行拆分。详情见 GitHub issue [#10918](https://github.com/pingcap/tiflow/issues/10918)。
@@ -114,4 +114,4 @@ UPDATE t SET a = 3 WHERE a = 2;
 
 > **注意：**
 >
-> 该行为变更后，在使用 MySQL Sink 时，TiCDC 在大部分情况下都不会拆分 `UPDATE` 事件，因此 changefeed 在运行时可能会出现主键或唯一键冲突的问题。该问题会导致 changefeed 自动重启，重启后发生冲突的 `UPDATE` 事件会被拆分为 `DELETE` 和 `INSERT` 事件并写入 Sorter 模块中，此时可以确保同一事务内所有事件按照 `DELETE` 事件在 `INSERT` 事件之前的顺序进行排序从而正确完成数据同步。
+> 该行为变更后，在使用 MySQL Sink 时，TiCDC 在大部分情况下都不会拆分 `UPDATE` 事件，因此 changefeed 在运行时可能会出现主键或唯一键冲突的问题。该问题会导致 changefeed 自动重启，重启后发生冲突的 `UPDATE` 事件会被拆分为 `DELETE` 和 `INSERT` 事件并写入 Sorter 模块中，此时可以确保同一事务内所有事件按照 `DELETE` 事件在 `INSERT` 事件之前的顺序进行排序，从而正确完成数据同步。
