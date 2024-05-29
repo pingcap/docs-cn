@@ -257,7 +257,7 @@ SELECT MIN(col1) FROM t GROUP BY LOWER(col1);
 
 ### 创建多值索引
 
-创建多值索引与创建表达式索引的方法一致。在索引定义中使用 [`CAST(... AS ... ARRAY)`](/functions-and-operators/cast-functions-and-operators.md) 表达式来创建一个多值索引。
+创建多值索引与创建表达式索引的方法一致。在索引定义中使用 [`CAST(... AS ... ARRAY)`](/functions-and-operators/cast-functions-and-operators.md#cast) 函数来创建一个多值索引。
 
 ```sql
 mysql> CREATE TABLE customers (
