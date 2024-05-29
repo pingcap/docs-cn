@@ -53,7 +53,7 @@ COMMIT;
 
 因此，TiCDC 会将这两条事件拆分为四条事件，即删除记录 `(1, 1)` 和 `(2, 2)` 以及写入记录 `(2, 1)` 和 `(1, 2)`。
 
-#### MySQL Sink
+### MySQL Sink
 
 从 v8.1.0 开始，当使用 MySQL Sink 时，TiCDC 在启动时会从 PD 获取一个当前的时间戳 `thresholdTs`，并根据时间戳的值决定是否拆分 `UPDATE` 事件：
 
