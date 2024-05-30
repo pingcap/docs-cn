@@ -9,29 +9,17 @@ summary: 了解 TiDB Lightning 和 IMPORT INTO、Log Backup、TiCDC 的兼容性
 
 ## TiDB Lightning 和 IMPORT INTO 对比
 
-[`IMPORT INTO`](/sql-statements/sql-statement-import-into.md) 目前已经集成了 TiDB Lightning 的物理导入模式，但二者还存在一些差异。
+[`IMPORT INTO`](/sql-statements/sql-statement-import-into.md) 目前已经集成了 TiDB Lightning 的物理导入模式，但二者还存在一些差异。详情请参见 [IMPORT INTO 和 TiDB Lightning 对比](/tidb-lightning/import-into-vs-tidb-lightning.md)
 
 > **注意：**
 >
 > 与 [TiDB Lightning](/tidb-lightning/tidb-lightning-overview.md) 相比，[`IMPORT INTO`](/sql-statements/sql-statement-import-into.md) 语句可以直接在 TiDB 节点上执行，支持自动化分布式任务调度和 [TiDB 全局排序](/tidb-global-sort.md)，在部署、资源利用率、任务配置便捷性、调用集成便捷性、高可用性和可扩展性等方面都有很大提升。建议在合适的场景下，使用 `IMPORT INTO` 代替 TiDB Lightning。
 
-### TiDB Lightning
+## 和 Log Backup 以及 TiCDC 的兼容性
 
-TiDB Lightning 目前支持物理导入模式和逻辑导入模式，不同的模式决定 TiDB Lightning 如何将数据导入到目标 TiDB 集群。你可以通过 [`backend`](/tidb-lightning/tidb-lightning-configuration.md#tidb-lightning-任务配置) 配置使用相关导入模式。
+- TiDB Lightning 的[逻辑导入模式](/tidb-lightning/tidb-lightning-logical-import-mode.md)与 Log Backup 以及 [TiCDC](/ticdc/ticdc-overview.md) 兼容。
 
-- [物理导入模式](/tidb-lightning/tidb-lightning-physical-import-mode.md)：TiDB Lightning 首先将数据编码成键值对并排序存储在本地临时目录，然后将这些键值对上传到各个 TiKV 节点，最后调用 TiKV Ingest 接口将数据插入到 TiKV 的 RocksDB 中。如果用于初始化导入，请优先考虑使用物理导入模式，其拥有较高的导入速度，单节点峰值性能可达到 500 GiB/h。物理导入模式对应的后端模式为 `local`。
-
-- [逻辑导入模式](/tidb-lightning/tidb-lightning-logical-import-mode.md)：TiDB Lightning 先将数据编码成 SQL，然后直接运行这些 SQL 语句进行数据导入，单节点性能峰值 50 GiB/h。如果需要导入的集群为生产环境线上集群，或需要导入的目标表中已包含数据，则应使用逻辑导入模式。逻辑导入模式对应的后端模式为 `tidb`。
-
-### IMPORT INTO
-
-[`IMPORT INTO`](/sql-statements/sql-statement-import-into.md) 目前已经集成了 TiDB Lightning 的物理导入模式，但尚不支持逻辑导入模式。
-
-## 兼容性说明
-
-- TiDB Lightning 的逻辑导入模式与 Log Backup 以及 TiCDC 兼容。
-
-- TiDB Lightning 的物理导入模式以及 `IMPORT INTO` 与 Log Backup 以及 TiCDC 均不兼容。原因是 TiDB Lightning 物理导入模式或 `IMPORT INTO`，均是将源数据编码后的 KV Pairs 直接 Ingest 到 TiKV，该过程 TiKV 不会产生相应的 Change log，由于没有这部分的 Change log，相关数据无法被 Log Backup 备份，也无法被 TiCDC 复制。
+- TiDB Lightning 的[物理导入模式](/tidb-lightning/tidb-lightning-physical-import-mode.md)以及 `IMPORT INTO` 与 Log Backup 以及 TiCDC 均不兼容。原因是 TiDB Lightning 物理导入模式或 `IMPORT INTO`，均是将源数据编码后的 KV Pairs 直接 Ingest 到 TiKV，该过程 TiKV 不会产生相应的 Change log，由于没有这部分的 Change log，相关数据无法被 Log Backup 备份，也无法被 TiCDC 复制。
 
 ## TiDB Lightning 物理导入模式的使用场景
 
