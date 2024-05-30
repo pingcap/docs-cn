@@ -29,7 +29,7 @@ summary: 了解 TiCDC 集群监控报警规则以及处理方法。
 
 * 报警规则：
 
-     `ticdc_owner_resolved_ts_lag > 300`
+    `ticdc_owner_resolved_ts_lag > 300`
 
 * 规则描述：
 
