@@ -24,7 +24,7 @@ summary: 了解 TiProxy 的命令行参数。
 
 > **注意：**
 >
-> TiProxy Control 主要用于诊断调试，不保证和 TiProxy 未来引入的新特性完全兼容。因此不推荐客户在应用程序开发或工具开发中利用 TiProxy Control 获取结果。
+> TiProxy Control 主要用于诊断调试，不保证和 TiProxy 未来引入的新特性完全兼容。因此不推荐在应用程序开发或工具开发中利用 TiProxy Control 获取结果。
 
 ### 语法
 
@@ -89,7 +89,7 @@ tiproxyctl --curls 127.0.0.1:3080 config get
 
 `tiproxyctl config set` 从标准输入读取 TOML 格式的配置，并将这些配置项设置到 TiProxy。其他未指定的配置项将保持不变，因此只需指定需要更改的配置项。
 
-以下命令将 `log.level` 设置为 `"warning"`，其他配置项的值保持不变：
+以下命令将 `log.level` 设置为 `'warning'`，其他配置项的值保持不变：
 
 ```bash
 $ cat test.toml
