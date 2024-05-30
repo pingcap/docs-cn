@@ -1,11 +1,11 @@
 ---
 title: TiDB Lightning 和 IMPORT INTO 的兼容性和使用场景
-summary: 了解 TiDB Lightning 和 IMPORT INTO、Log Backup、TiCDC 的兼容性。
+summary: 了解 TiDB Lightning 和 IMPORT INTO、日志备份、TiCDC 的兼容性。
 ---
 
 # TiDB Lightning 和 IMPORT INTO 的兼容性和使用场景
 
-本文档介绍 TiDB Lightning 和 `IMPORT INTO` 与 Log Backup、TiCDC 的兼容性，以及某些特殊的使用场景。
+本文档介绍 TiDB Lightning 和 `IMPORT INTO` 与[日志备份](/br/br-pitr-guide.md)、[TiCDC](/ticdc/ticdc-overview.md) 的兼容性，以及某些特殊的使用场景。
 
 ## TiDB Lightning 和 IMPORT INTO 对比
 
@@ -15,23 +15,25 @@ summary: 了解 TiDB Lightning 和 IMPORT INTO、Log Backup、TiCDC 的兼容性
 >
 > 与 [TiDB Lightning](/tidb-lightning/tidb-lightning-overview.md) 相比，[`IMPORT INTO`](/sql-statements/sql-statement-import-into.md) 语句可以直接在 TiDB 节点上执行，支持自动化分布式任务调度和 [TiDB 全局排序](/tidb-global-sort.md)，在部署、资源利用率、任务配置便捷性、调用集成便捷性、高可用性和可扩展性等方面都有很大提升。建议在合适的场景下，使用 `IMPORT INTO` 代替 TiDB Lightning。
 
-## 和 Log Backup 以及 TiCDC 的兼容性
+## 和日志备份以及 TiCDC 的兼容性
 
-- TiDB Lightning 的[逻辑导入模式](/tidb-lightning/tidb-lightning-logical-import-mode.md)与 Log Backup 以及 [TiCDC](/ticdc/ticdc-overview.md) 兼容。
+- TiDB Lightning 的[逻辑导入模式](/tidb-lightning/tidb-lightning-logical-import-mode.md)与日志备份以及 TiCDC 兼容。
 
-- TiDB Lightning 的[物理导入模式](/tidb-lightning/tidb-lightning-physical-import-mode.md)以及 `IMPORT INTO` 与 Log Backup 以及 TiCDC 均不兼容。原因是 TiDB Lightning 物理导入模式或 `IMPORT INTO`，均是将源数据编码后的 KV Pairs 直接 Ingest 到 TiKV，该过程 TiKV 不会产生相应的 Change log，由于没有这部分的 Change log，相关数据无法被 Log Backup 备份，也无法被 TiCDC 复制。
+- TiDB Lightning 的[物理导入模式](/tidb-lightning/tidb-lightning-physical-import-mode.md)以及 `IMPORT INTO` 与日志备份以及 TiCDC 均不兼容。原因是 TiDB Lightning 物理导入模式或 `IMPORT INTO`，均是将源数据编码后的 KV Pairs 直接 Ingest 到 TiKV，该过程 TiKV 不会产生相应的 Change log，由于没有这部分的 Change log，相关数据无法被日志备份备份，也无法被 TiCDC 复制。
 
 ## TiDB Lightning 物理导入模式的使用场景
+
+本节介绍 `IMPORT INTO` 与[日志备份](/br/br-pitr-guide.md)和 [TiCDC](/ticdc/ticdc-overview.md) 同时使用时的操作方法。
 
 如果 TiDB Lightning 逻辑导入的性能可以满足业务的性能要求，且业务要求 TiDB Lightning 导入的表进行数据备份，或者使用 TiCDC 同步到下游，建议使用 TiDB Lightning 逻辑导入模式。
 
 如果业务对导入性能有要求，且只能使用 TiDB Lightning 物理导入模式的场景，同时这些表还需要备份或者使用 TiCDC 同步到下游，则建议使用以下方案进行处理。
 
-### TiDB Lightning 物理导入模式和 Log Backup
+### TiDB Lightning 物理导入模式和日志备份
 
 #### 场景 1：物理导入模式的表不需要备份
 
-该场景下，由于开启了 [PITR](/br/br-log-architecture.md#pitr)，因此启动 TiDB Lightning 后兼容性检查会报错。如果你确定这些表不需要备份或者 Log Backup，你可以把 [TiDB Lightning 配置文件](/tidb-lightning/tidb-lightning-configuration.md#tidb-lightning-任务配置)中的 `Lightning.check-requirements` 参数改成 `false`，然后重新启动任务即可。
+该场景下，由于开启了 [PITR](/br/br-log-architecture.md#pitr)，因此启动 TiDB Lightning 后兼容性检查会报错。如果你确定这些表不需要备份或者日志备份，你可以把 [TiDB Lightning 配置文件](/tidb-lightning/tidb-lightning-configuration.md#tidb-lightning-任务配置)中的 `Lightning.check-requirements` 参数改成 `false`，然后重新启动任务即可。
 
 #### 场景 2：物理导入模式导入完成后，该表不会有 DML 操作
 
@@ -55,9 +57,11 @@ summary: 了解 TiDB Lightning 和 IMPORT INTO、Log Backup、TiCDC 的兼容性
 
 ## `IMPORT INTO` 的使用场景
 
-### `IMPORT INTO` 和 Log Backup
+本节介绍 `IMPORT INTO` 与[日志备份](/br/br-pitr-guide.md)和 [TiCDC](/ticdc/ticdc-overview.md) 同时使用时的操作方法。
 
-该场景下，由于开启了 [PITR](/br/br-log-architecture.md#pitr)，因此提交 `IMPORT INTO` SQL 后兼容性检查会报错。如果你确定这些表不需要备份或者 Log Backup，你可以在该 SQL 的 [`WithOptions`](/sql-statements/sql-statement-import-into.md#withoptions) 里带上参数 `DISABLE_PRECHECK`（从 v8.0.0 版本引入）重新提交即可，这样数据导入任务会忽略该兼容性检查，直接导入数据。
+### `IMPORT INTO` 和日志备份
+
+该场景下，由于开启了 [PITR](/br/br-log-architecture.md#pitr)，因此提交 `IMPORT INTO` SQL 后兼容性检查会报错。如果你确定这些表不需要备份或者日志备份，你可以在该 SQL 的 [`WithOptions`](/sql-statements/sql-statement-import-into.md#withoptions) 里带上参数 `DISABLE_PRECHECK`（从 v8.0.0 版本引入）重新提交即可，这样数据导入任务会忽略该兼容性检查，直接导入数据。
 
 ### `IMPORT INTO` 和 TiCDC
 
