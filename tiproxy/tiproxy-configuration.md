@@ -102,6 +102,51 @@ HTTP 网关的配置。
 + 可选值：``, `v2`
 + 在端口启用 [PROXY 协议](https://www.haproxy.org/download/1.8/doc/proxy-protocol.txt)。`v2` 代表使用 PROXY 协议 v2 版本，`` 代表不使用 PROXY 协议。
 
+### balance
+
+#### `priority-order`
+
++ 默认值：`["error", "memory", "cpu", "location"]`
++ 支持热加载：是
++ 可选值：`"error"`, `"memory"`, `"cpu"`, `"location"` 的组合
++ 各个负载均衡策略的优先级。每个策略最多只能出现一次。策略的顺序代表优先级，例如在默认值中，优先级顺序为 `"error"` > `"memory"` > `"cpu"` > `"location"`。请参阅[ TiProxy 负载均衡策略](/tiproxy/tiproxy-load-balance.md)。
+
+#### `error`
+
+##### `indicators`
+
+`indicators` 指定判断 TiDB server 是否异常的规则。它是一个列表，列表的每一项包含 `query-expr`, `fail-threshold`, `recover-threshold` 三个配置项。当列表中只要有一项指标异常时，就认为该 TiDB server 异常；当指标全部正常时，才认为该 TiDB server 正常。请参阅[基于错误率的负载均衡](/tiproxy/tiproxy-load-balance.md#基于错误率的负载均衡)。
+
+各字段的含义：
+
+- `query-expr`: PromQL 表达式，查询结果应当是一个瞬时向量
+- `fail-threshold`: 当 `query-expr` 的查询结果大于该值时，认为该指标异常
+- `recover-threshold`: 当 `query-expr` 的查询结果小于该值时，认为指标正常
+
+所有字段都支持热加载。
+
+`indicators` 的默认值为：
+
+```toml
+[[balance.error.indicators]]
+query-expr = 'sum(increase(tidb_tikvclient_backoff_seconds_count{type="pdRPC"}[1m])) by (instance)'
+fail-threshold = 100
+recover-threshold = 10
+
+[[balance.error.indicators]]
+query-expr = 'sum(increase(tidb_tikvclient_backoff_seconds_count{type=~"regionMiss|tikvRPC"}[1m])) by (instance)'
+fail-threshold = 1000
+recover-threshold = 100
+```
+
+其中第一个指标是当 TiDB server 连接 PD 失败时出现异常；第二个指标是当 TiDB server 连接 TiKV 失败时出现异常。
+
+### labels
+
++ 默认值：`{}`
++ 支持热加载：是
++ 指定服务器标签，例如 `{ zone = "us-west-1", dc = "dc1" }`。
+
 ### log
 
 #### `level`
