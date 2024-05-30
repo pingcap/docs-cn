@@ -11,7 +11,7 @@ summary: 了解如何使用 TiProxy API 获取 TiProxy 的配置、健康状况�
 >
 > TiProxy API 主要用于诊断调试，不保证与 TiProxy 未来引入的新特性完全兼容。因此不推荐在应用程序开发或工具开发中利用 TiProxy API 获取结果。
 
-TiProxy API 的地址为 `http://${host}:${port}`，其中 `host` 和 `port` 由 TiProxy 配置项 [`api.addr`](/tiproxy/tiproxy-configuration.md#addr-1) 指定。例如：
+TiProxy API 的地址为 `http://${host}:${port}${path}`，其中 `${host}:${port}` 为 TiProxy 配置项 [`api.addr`](/tiproxy/tiproxy-configuration.md#addr-1) 的值，`${path}` 为你要访问的具体 API 的路径。例如：
 
 ```bash
 curl http://127.0.0.1:3080/api/admin/config/
@@ -39,7 +39,7 @@ curl "http://127.0.0.1:3080/api/admin/config/?format=json"
 
 ## 设置 TiProxy 的配置
 
-使用 TOML 格式修改 TiProxy 的配置。未指定的配置项将保持不变，因此只需指定需要更改的配置项。
+目前，仅支持使用 TOML 格式修改 TiProxy 的配置。未指定的配置项将保持不变，因此只需指定需要更改的配置项。
 
 ### 请求 URI
 
@@ -97,7 +97,7 @@ level='warning'
 
 ## 获取 TiProxy 的健康状况
 
-用于获取 TiProxy 的健康状况以及配置的校验和 (checksum)。当 TiProxy 正常运行时，返回配置的 checksum。当 TiProxy 正在关闭时，返回错误。
+用于获取 TiProxy 的健康状况以及配置的校验和 (checksum)。当 TiProxy 正常运行时，返回配置的 checksum。当 TiProxy 处于关闭状态或者正在关闭时，返回错误。
 
 ### 请求 URI
 
