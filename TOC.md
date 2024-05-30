@@ -518,6 +518,7 @@
   - TiDB Lightning
     - [概述](/tidb-lightning/tidb-lightning-overview.md)
     - [`IMPORT INTO` 和 TiDB Lightning 对比](/tidb-lightning/import-into-vs-tidb-lightning.md)
+    - [`IMPORT INTO` 和 TiDB Lightning 的兼容性及使用场景](/tidb-lightning/tidb-lightning-compatibility-and-scenarios.md)
     - [快速上手](/get-started-with-tidb-lightning.md)
     - [部署 TiDB Lightning](/tidb-lightning/deploy-tidb-lightning.md)
     - [目标数据库要求](/tidb-lightning/tidb-lightning-requirements.md)
