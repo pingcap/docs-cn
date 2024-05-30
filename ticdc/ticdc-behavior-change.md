@@ -9,11 +9,7 @@ summary: 介绍 TiCDC changefeed 的行为变更，说明变更原因以及影�
 
 ### 含有单条 `UPDATE` 变更的事务拆分
 
-<<<<<<< HEAD
-从 v6.5.3 开始，使用非 MySQL Sink 时，对于仅包含一条 Update 变更的事务，如果 Update 事件的主键或者非空唯一索引的列值发生改变，TiCDC 会将该条事件拆分为 Delete 和 Insert 两条事件。详情见 GitHub issue [#9086](https://github.com/pingcap/tiflow/issues/9086)。
-=======
-从 v6.5.3、v7.1.1 和 v7.2.0 开始，使用非 MySQL Sink 时，对于仅包含一条 `UPDATE` 变更的事务，如果 `UPDATE` 事件的主键或者非空唯一索引的列值发生改变，TiCDC 会将该条事件拆分为 `DELETE` 和 `INSERT` 两条事件。详情见 GitHub issue [#9086](https://github.com/pingcap/tiflow/issues/9086)。
->>>>>>> 228b32213f (ticdc: add description for cdc behaviour change (#17363))
+从 v6.5.3 开始，使用非 MySQL Sink 时，对于仅包含一条 `UPDATE` 变更的事务，如果 `UPDATE` 事件的主键或者非空唯一索引的列值发生改变，TiCDC 会将该条事件拆分为 `DELETE` 和 `INSERT` 两条事件。详情见 GitHub issue [#9086](https://github.com/pingcap/tiflow/issues/9086)。
 
 该变更主要为了解决如下问题：
 
@@ -35,11 +31,7 @@ UPDATE t SET a = 2 WHERE a = 1;
 
 ### 含有多条 `UPDATE` 变更的事务拆分
 
-<<<<<<< HEAD
-从 v6.5.4 开始，对于一个含有多条变更的事务，如果 Update 事件的主键或者非空唯一索引的列值发生改变，TiCDC 会将该其拆分为 Delete 和 Insert 两条事件，并确保所有事件按照 Delete 事件在 Insert 事件之前的顺序进行排序。详情见 GitHub issue [#9430](https://github.com/pingcap/tiflow/issues/9430)。
-=======
-从 v6.5.4、v7.1.2 和 v7.4.0 开始，对于一个含有多条变更的事务，如果 `UPDATE` 事件的主键或者非空唯一索引的列值发生改变，TiCDC 会将该其拆分为 `DELETE` 和 `INSERT` 两条事件，并确保所有事件按照 `DELETE` 事件在 `INSERT` 事件之前的顺序进行排序。详情见 GitHub issue [#9430](https://github.com/pingcap/tiflow/issues/9430)。
->>>>>>> 228b32213f (ticdc: add description for cdc behaviour change (#17363))
+从 v6.5.4 开始，对于一个含有多条变更的事务，如果 `UPDATE` 事件的主键或者非空唯一索引的列值发生改变，TiCDC 会将该其拆分为 `DELETE` 和 `INSERT` 两条事件，并确保所有事件按照 `DELETE` 事件在 `INSERT` 事件之前的顺序进行排序。详情见 GitHub issue [#9430](https://github.com/pingcap/tiflow/issues/9430)。
 
 该变更主要为了解决当使用 MySQL Sink 直接将这两条事件写入下游时，可能会出现主键或唯一键冲突的问题，从而导致 changefeed 报错。当使用 Kafka Sink 或其他 Sink 时，如果消费者需要将数据变更写入关系型数据库或进行类似操作，也可能遇到相同问题。
 
