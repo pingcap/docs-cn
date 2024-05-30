@@ -1,21 +1,21 @@
 ---
-title: IMPORT INTO 和 TiDB Lightning 的兼容性及使用场景
-summary: 了解 IMPORT INTO 和 TiDB Lightning、日志备份、TiCDC 的兼容性。
+title: IMPORT INTO 和 TiDB Lightning 与 日志备份和 TiCDC 的兼容性
+summary: 了解 IMPORT INTO 和 TiDB Lightning、日志备份、TiCDC 的兼容性及使用场景。
 ---
 
-# IMPORT INTO 和 TiDB Lightning 的兼容性及使用场景
+# IMPORT INTO 和 TiDB Lightning 与 日志备份和 TiCDC 的兼容性
 
 本文档介绍 TiDB Lightning 和 `IMPORT INTO` 与[日志备份](/br/br-pitr-guide.md)、[TiCDC](/ticdc/ticdc-overview.md) 的兼容性，以及某些特殊的使用场景。
 
 ## `IMPORT INTO` 和 TiDB Lightning 对比
 
-[`IMPORT INTO`](/sql-statements/sql-statement-import-into.md) 目前已经集成了 TiDB Lightning 的物理导入模式，但二者还存在一些差异。详情请参见 [`IMPORT INTO` 和 TiDB Lightning 对比](/tidb-lightning/import-into-vs-tidb-lightning.md)
+[`IMPORT INTO`](/sql-statements/sql-statement-import-into.md) 目前已经集成了 TiDB Lightning 的物理导入模式，但二者还存在一些差异。详情请参见 [`IMPORT INTO` 和 TiDB Lightning 对比](/tidb-lightning/import-into-vs-tidb-lightning.md)。
 
 ## 与日志备份和 TiCDC 的兼容性
 
 - TiDB Lightning 的[逻辑导入模式](/tidb-lightning/tidb-lightning-logical-import-mode.md)与日志备份以及 TiCDC 兼容。
 
-- TiDB Lightning 的[物理导入模式](/tidb-lightning/tidb-lightning-physical-import-mode.md)与日志备份以及 TiCDC 均不兼容。原因是 TiDB Lightning 物理导入模式或 `IMPORT INTO`，均是将源数据编码后的 KV Pairs 直接 Ingest 到 TiKV，该过程 TiKV 不会产生相应的 Change log，由于没有这部分的 Change log，相关数据无法通过日志备份的方式备份，也无法被 TiCDC 复制。
+- TiDB Lightning 的[物理导入模式](/tidb-lightning/tidb-lightning-physical-import-mode.md)与日志备份以及 TiCDC 均不兼容。原因是 TiDB Lightning 物理导入模式是将源数据编码后的 KV Pairs 直接 Ingest 到 TiKV，该过程 TiKV 不会产生相应的 Change log，由于没有这部分的 Change log，相关数据无法通过日志备份的方式备份，也无法被 TiCDC 复制。
 
 - `IMPORT INTO` 与日志备份以及 TiCDC 均不兼容。
 
