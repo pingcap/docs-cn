@@ -9,7 +9,7 @@ summary: 了解如何使用 TiProxy API 获取 TiProxy 的配置、健康状况�
 
 > **注意：**
 >
-> TiProxy API 主要用于诊断调试，不保证与 TiProxy 未来引入的新特性完全兼容。因此不推荐客户在应用程序开发或工具开发中利用 TiProxy API 获取结果。
+> TiProxy API 主要用于诊断调试，不保证与 TiProxy 未来引入的新特性完全兼容。因此不推荐在应用程序开发或工具开发中利用 TiProxy API 获取结果。
 
 TiProxy API 的地址为 `http://${host}:${port}`，其中 `host` 和 `port` 由 TiProxy 配置项 [`api.addr`](/tiproxy/tiproxy-configuration.md#addr-1) 指定。例如：
 
@@ -56,7 +56,7 @@ level='warning'
 
 ### 使用样例
 
-以下示例将 `log.level` 设置为 `"warning"`，其他配置项的值保持不变。
+以下示例将 `log.level` 设置为 `'warning'`，其他配置项的值保持不变。
 
 1. 查看当前 TiProxy 的配置：
 
