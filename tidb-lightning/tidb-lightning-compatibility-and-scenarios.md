@@ -1,6 +1,6 @@
 ---
 title: IMPORT INTO 和 TiDB Lightning 与日志备份和 TiCDC 的兼容性
-summary: 了解 IMPORT INTO 和 TiDB Lightning、日志备份、TiCDC 的兼容性及使用场景。
+summary: 了解 IMPORT INTO 和 TiDB Lightning 与日志备份和 TiCDC 的兼容性及使用场景。
 ---
 
 # IMPORT INTO 和 TiDB Lightning 与日志备份和 TiCDC 的兼容性
