@@ -87,7 +87,7 @@ tiproxyctl --curls 127.0.0.1:3080 config get
 
 #### `config set`
 
-`tiproxyctl config set` 从标准输入读取 TOML 格式的配置，并将这些配置项设置到 TiProxy。其他未指定的配置项将保持不变，因此只需指定需要更改的配置项。
+`tiproxyctl config set` 从标准输入读取 TOML 格式的配置文件，并将这些配置项设置到 TiProxy。其他未指定的配置项将保持不变，因此只需指定需要更改的配置项。
 
 以下命令将 `log.level` 设置为 `'warning'`，其他配置项的值保持不变：
 
@@ -107,7 +107,7 @@ level = 'warning'
 
 #### `health`
 
-`tiproxyctl health` 用于获取 TiProxy 的健康状况以及配置的校验和 (checksum)。当 TiProxy 正常运行时，返回配置的 checksum。当 TiProxy 正在关闭时，返回错误。
+`tiproxyctl health` 用于获取 TiProxy 的健康状况以及配置的校验和 (checksum)。当 TiProxy 正常运行时，返回配置的 checksum。当 TiProxy 处于关闭状态或者正在关闭时，返回错误。
 
 输出示例：
 
