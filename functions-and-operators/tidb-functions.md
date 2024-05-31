@@ -312,12 +312,14 @@ select tidb_decode_sql_digests(@digests, 10);
 SET GLOBAL tidb_enable_row_level_checksum = ON;
 ```
 
+现在，你需要重新连接以激活会话。
+
 创建表 `t` 并插入数据：
 
 ```sql
 USE test;
-CREATE TABLE t (id INT PRIMARY KEY, k INT, c int);
-INSERT INTO TABLE t values (1, 10, a);
+CREATE TABLE t (id INT PRIMARY KEY, k INT, c CHAR(1));
+INSERT INTO t values (1, 10, 'a');
 ```
 
 查询表 `t` 中 `id = 1` 的行数据的 Checksum 值：
