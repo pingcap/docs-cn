@@ -108,7 +108,7 @@ TiCDC 会根据收到的这些数据变更信息，适配各个类型的下游�
 Create Table t1 (A int Primary Key, B int);
 
 BEGIN;
-Insert Into t1 values(1,1);
+Insert Into t1 values(1,2);
 Insert Into t1 values(2,2);
 Insert Into t1 values(3,3);
 Commit;
@@ -119,7 +119,7 @@ Update t1 set b = 4 where b = 2;
 TiCDC 将根据数据变更信息重新生成 SQL 语句，向下游写以下两条 SQL 语句：
 
 ```sql
-INSERT INTO `test.t1` (`A`,`B`) VALUES (1,1),(2,2),(3,3);
+INSERT INTO `test.t1` (`A`,`B`) VALUES (1,2),(2,2),(3,3);
 UPDATE `test`.`t1`
 SET `A` = CASE
         WHEN `A` = 1 THEN 1
