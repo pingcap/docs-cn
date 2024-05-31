@@ -136,7 +136,7 @@ SELECT /*+ NO_MERGE_JOIN(t1, t2) */ * FROM t1, t2 WHERE t1.id = t2.id;
 
 > **注意：**
 >
-> 部分情况下 `INL_JOIN` 可能无法生效，请看
+> 部分情况下 `INL_JOIN` 可能无法生效，请看 [`INL_JOIN` Hint 不生效](#inl_join-hint-不生效)。
 
 `INL_JOIN(t1_name [, tl_name ...])` 提示优化器对指定表使用 Index Nested Loop Join 算法。这个算法可能会在某些场景更快，消耗更少系统资源，有的场景会更慢，消耗更多系统资源。对于外表经过 WHERE 条件过滤后结果集较小（小于 1 万行）的场景，可以尝试使用。例如：
 
