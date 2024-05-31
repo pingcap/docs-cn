@@ -5,12 +5,14 @@ summary: 介绍 TiProxy 的负载均衡策略。
 
 # TiProxy 负载均衡策略简介
 
-在 TiProxy v1.0.0 中，TiProxy 只根据 TiDB 的健康状态和连接数来迁移连接。从 v1.1.0 版本开始，增加了 4 种负载均衡策略，并且可以配置它们的组合与优先级。
+在 TiProxy v1.0.0 中，TiProxy 只根据 TiDB 的健康状态和连接数来迁移连接。从 v1.1.0 版本开始，增加了 4 种负载均衡策略，并且可以分别设置是否启用。
 
-你可以通过配置项 [`priority-order`](/tiproxy/tiproxy-configuration.md#priority-order) 配置这些负载均衡策略是否启用、优先级顺序。例如：
+默认启用所有策略，且优先级的顺序依次为 `error`, `memory`, `cpu`, `location`，它的含义为：
 
-- `["location", "cpu"]` 指根据地理位置和 CPU 使用率来负载均衡。TiProxy 就近路由到同地理位置的 TiDB server，同地理位置的 TiDB server 之间再根据 CPU 使用率来负载均衡。
-- `["memory", "cpu", "location"]` 指根据内存、CPU 使用率、地理位置来负载均衡。当有 TiDB server 出现 OOM 风险时，优先根据内存迁移连接；当没有 TiDB server 有 OOM 风险时，根据 CPU 使用率负载均衡；当没有 TiDB server 有 OOM 风险且 CPU 使用率差异较小时，优先把连接路由到本地的 TiDB server。
+1. 当有 TiDB server 的错误指标异常时，把连接从该 TiDB server 迁移到错误指标正常的 TiDB server。
+2. 当以上情况不存在，且有 TiDB server 有 OOM 风险时，把连接从该 TiDB server 迁移到内存使用量较低的 TiDB server。
+3. 当以上情况不存在，且有 TiDB server 的 CPU 使用率远高于其他 TiDB server 时，把连接从该 TiDB server 迁移到 CPU 使用率较低的 TiDB server。
+4. 当以上情况不存在，则优先把请求路由到离 TiProxy 较近的 TiDB server。
 
 # 负载均衡策略类型
 
@@ -22,25 +24,16 @@ summary: 介绍 TiProxy 的负载均衡策略。
 
 TiProxy 通过从 Prometheus 查询 TiDB server 的错误速率，当一台 TiDB server 的每分钟错误数过高而其他 TiDB server 正常时，TiProxy 将该 TiDB server 的连接迁移到其他 TiDB server 上，实现自动故障转移。
 
-该策略通过 [`indicators`](/tiproxy/tiproxy-configuration.md#indicators) 配置错误指标。默认的指标包含了 TiDB server 连接 PD、TiKV 失败的错误。
+该策略适用于以下场景：
 
-迁移连接的规则为：
-
-- 当一台 TiDB server 的其中一个指标的 `query-expr` 查询结果超过 `fail-threshold` 时，认为该 TiDB server 出现异常。
-- 当一台 TiDB server 的所有指标的 `query-expr` 查询结果低于 `recover-threshold` 时，认为该 TiDB server 正常。
-- 当一台 TiDB server 出现异常，且另一台 TiDB server 正常时，TiProxy 会将连接从异常的 TiDB server 迁移到正常的 TiDB server。
-- 当 TiDB server 从异常状态转为正常状态时，TiProxy 会根据其他的负载均衡策略（例如基于 CPU 的负载均衡）将连接迁移回该 TiDB server。
-
-指标的选择应当遵循以下规则：
-
-- 当 TiDB server 异常但该 TiDB server 上没有连接时，`query-expr` 查询结果应该大于 `fail-threshold`，否则 TiProxy 误以为该 TiDB server 恢复正常并将连接迁移回该 TiDB server。例如当 TiDB server 与 PD 断开连接时，由于后台任务连接 PD 失败，`tidb_tikvclient_backoff_seconds_count{type="pdRPC"}` 的值仍然大于 `fail-threshold`，因此 TiProxy 不会将连接迁移回来。
-- 当 TiDB server 正常但 QPS 很高时，`query-expr` 查询结果应该小于 `recover-threshold`，否则 TiProxy 会误以为该 TiDB server 出错并将连接迁移到其他 TiDB server。
-
-建议将 `indicators` 保持默认值。
+- TiDB server 向 TiKV 发送请求频繁失败，导致执行 SQL 频繁失败
+- TiDB server 向 PD 发送请求频繁失败，导致执行 SQL 频繁失败
 
 ## 基于内存的负载均衡
 
 TiProxy 通过从 Prometheus 查询 TiDB server 的内存使用率，当 TiDB server 内存快速上升或使用率很高时，TiProxy 将该 TiDB server 的连接迁移到其他 TiDB server 上，避免因为 TiDB server 出现 OOM 导致不必要的连接断开。TiProxy 并不保证各个 TiDB server 的内存使用率接近，而是仅在 TiDB server 有 OOM 风险时才生效。
+
+在 TiDB server 出现 OOM 风险时，TiProxy 会尽量迁移所有连接。OOM 通常是 Runaway Query 引起的，由于连接要等到事务结束才能迁移，因此正在执行中的 Runaway Query 不会迁移到其他 TiDB server 上重新执行。
 
 该策略有以下限制：
 
@@ -57,18 +50,20 @@ TiProxy 通过从 Prometheus 查询 TiDB server 的 CPU 使用率，将连接从
 - 当有后台任务（例如 Analyze）占用较多 CPU 资源时，执行后台任务的 TiDB server 的 CPU 使用率更高，导致查询延迟更高
 - 当不同连接上的工作负载差异较大时，尽管各个 TiDB server 上的连接数接近，但 CPU 使用率差异较大
 
-当没有启用该策略时，TiProxy 根据连接数来实现负载均衡。
+当没有启用该策略时，TiProxy 使用基于最少连接数的负载均衡策略，且该策略的优先级低于其他策略。
 
 ## 基于地理位置的负载均衡
 
-TiProxy 根据自身和 TiDB server 的地理位置，将连接优先路由到本地的 TiDB server。该策略的优先级默认最低，以优先保证可用性和性能。如果需要调高它的优先级，建议保证同一地理位置的 TiDB server 至少为三台。
+TiProxy 根据自身和 TiDB server 的地理位置，将连接优先路由到本地的 TiDB server。
 
 该策略适用于以下场景：
 
 - TiDB 集群在云上跨可用区部署时，为了降低 TiProxy 与 TiDB server 之间的跨可用区流量费，TiProxy 优先将请求路由到同可用区的 TiDB server 上
 - TiDB 集群跨数据中心部署时，为了降低 TiProxy 与 TiDB server 之间的网络延迟，TiProxy 优先将请求路由到同数据中心的 TiDB server 上
 
-TiProxy 根据自身和 TiDB server 的标签确定各自的地理位置。你需要设置以下配置项：
+该策略的优先级默认最低，以优先保证可用性和性能。你可以通过设置 [`location-first`](/tiproxy/tiproxy-configuration.md#location-first) 为 `true` 来使该策略的优先级高于其他策略，但建议保证同一地理位置的 TiDB server 至少为三台，以保证可用性和性能。
+
+TiProxy 根据自身和 TiDB server 的标签确定各自的地理位置。你需要同时设置以下配置项：
 
 - 在 PD 的 [`location-labels`](/pd-configuration-file.md#location-labels) 中设置用于标识地理位置的标签。配置方式请参阅[设置 PD 的 `location-labels` 配置](/schedule-replicas-by-topology-labels.md#设置-pd-的-location-labels-配置)。
 - 设置 TiDB server 用于标识地理位置的 [`labels`](/tidb-configuration-file.md#labels) 。配置方式请参阅[设置 TiDB 的 `labels`](/schedule-replicas-by-topology-labels.md#设置-tidb-的-labels可选)。
@@ -88,20 +83,20 @@ tiproxy_servers:
   - host: tiproxy-host-1
     config:
       labels:
-        zone: z1
+        zone: east
   - host: tiproxy-host-2
     config:
       labels:
-        zone: z2
+        zone: west
 tidb_servers:
   - host: tidb-host-1
     config:
       labels:
-        zone: z1
+        zone: east
   - host: tidb-host-2
     config:
       labels:
-        zone: z2
+        zone: west
 tikv_servers:
   - host: tikv-host-1
     port：20160
