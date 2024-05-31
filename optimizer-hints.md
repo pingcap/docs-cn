@@ -893,7 +893,7 @@ SHOW WARNINGS;
 从 TiDB v8.0.0 起，你通过设置 [`tidb_enable_inl_join_inner_multi_pattern`](/system-variables.md#tidb_enable_inl_join_inner_multi_pattern-从-v700-版本开始引入) 为 `ON` 来避免该问题。
 
 ```sql
-mysql> set @@tidb_enable_inl_join_inner_multi_pattern=1;
+mysql> SET @@tidb_enable_inl_join_inner_multi_pattern=ON;
 Query OK, 0 rows affected (0.00 sec)
 
 mysql> explain SELECT /*+ INL_JOIN(t1, t2) */ * FROM t1, t2 WHERE t1.id=t2.id and substr(t1.tname,1,2)=substr(t2.tname,1,2);
