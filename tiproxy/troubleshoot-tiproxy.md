@@ -33,7 +33,7 @@ summary: 介绍 TiProxy 的常见问题、原因及解决办法。
 可以通过以下步骤依次排查：
 
 1. 检查 TiDB server 之间的 CPU 使用率差异是否较大。TiProxy 并不保证 CPU 使用率接近，只有当 CPU 使用率差异较大影响查询延迟时才会负载均衡。
-2. 如果有 TiDB server 的连接数逐渐降为 0，可能是因为受到了其他负载均衡策略的影响，请检查该 TiDB server 是否有连接 PD 或 TiKV 失败、内存使用量很高或快速增长的情况。
+2. 如果有 TiDB server 的连接数逐渐降为 0，可能是因为受到了其他负载均衡策略的影响，你可以通过查看 Grafana 中的 [`Session Migration Reasons`](/tiproxy/tiproxy-grafana.md#balance) 查看是否有基于其他策略的迁移。
 3. 请检查是否将 [`location.enable`](/tiproxy/tiproxy-configuration.md#enable-2) 设置为 `true` 且将 [`location-first`](/tiproxy/tiproxy-configuration.md#location-first) 设置为 `true`。调高地理位置的优先级之后，TiProxy 将不保证不同地理位置的 TiProxy 之间的 CPU 使用率均衡。
 4. 请检查 TiProxy 的版本，仅 v1.1.0 及以上版本才支持基于 CPU 使用率的负载均衡，较低版本基于最少连接数的策略负载均衡。
 5. 如果以上情况均不是，可能是迁移连接失败，请根据 [TiProxy 没有迁移连接](#tiproxy-没有迁移连接)排查。
