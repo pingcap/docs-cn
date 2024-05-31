@@ -62,7 +62,6 @@ summary: 了解 TiDB 系统表。
 
 * `table_cache_meta` 存储了缓存表的元信息
 
-<<<<<<< HEAD
 ## TTL 相关系统表
 
 * `mysql.tidb_ttl_table_status` 所有 TTL 表的上一次执行与正在执行的 TTL 任务
@@ -73,18 +72,12 @@ summary: 了解 TiDB 系统表。
 
 * `tidb_mdl_view`：元数据锁的视图，可以用于查看当前阻塞的 DDL 的相关信息
 * `tidb_mdl_info`：TiDB 内部用于同步各节点的元数据锁的相关信息
-=======
-## 元数据锁相关系统表
-
-* `tidb_mdl_view` 元数据锁的视图，可以用于查看当前阻塞的 DDL 的相关信息
-* `tidb_mdl_info` TiDB 内部用于同步各节点的元数据锁的相关信息
 
 ## DDL 相关系统表
 
 * `tidb_ddl_history` 记录了 DDL 语句的历史记录
 * `tidb_ddl_jobs` TiDB 内部存放的正在执行的 DDL 的元数据，用于执行 DDL
 * `tidb_ddl_reorg` TiDB 内部存放的正在执行的物理 DDL（例如加索引）的元数据，用于执行物理 DDL
->>>>>>> 97f63543b3 (Add some table's description (#17476))
 
 ## 其它系统表
 
