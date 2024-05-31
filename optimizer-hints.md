@@ -896,7 +896,7 @@ SHOW WARNINGS;
 mysql> SET @@tidb_enable_inl_join_inner_multi_pattern=ON;
 Query OK, 0 rows affected (0.00 sec)
 
-mysql> explain SELECT /*+ INL_JOIN(t1, t2) */ * FROM t1, t2 WHERE t1.id=t2.id and substr(t1.tname,1,2)=substr(t2.tname,1,2);
+EXPLAIN SELECT /*+ INL_JOIN(t1, t2) */ * FROM t1, t2 WHERE t1.id=t2.id AND SUBSTR(t1.tname,1,2)=SUBSTR(t2.tname,1,2);
 +------------------------------+--------------+-----------+---------------+--------------------------------------------------------------------------------------------------------------------------------------------+
 | id                           | estRows      | task      | access object | operator info                                                                                                                              |
 +------------------------------+--------------+-----------+---------------+--------------------------------------------------------------------------------------------------------------------------------------------+
