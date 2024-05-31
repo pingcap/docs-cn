@@ -1038,6 +1038,7 @@ raftstore 相关的配置项。
 + 设置 TiKV 启动周期性全量数据整理 (Compaction) 的时间。你可以在数组中指定一个或多个时间计划。例如：
     + `periodic-full-compact-start-times = ["03:00", "23:00"]` 表示 TiKV 基于 TiKV 节点的本地时区，在每天凌晨 3 点和晚上 11 点进行全量数据整理。
     + `periodic-full-compact-start-times = ["03:00 +0000", "23:00 +0000"]` 表示 TiKV 在每天 UTC 时间的凌晨 3 点和晚上 11 点进行全量数据整理。
+    + `periodic-full-compact-start-times = ["03:00 +0800", "23:00 +0800"]` 表示 TiKV 在每天 UTC+08:00 时间的凌晨 3 点和晚上 11 点进行全量数据整理。
 + 默认值：`[]`，表示默认情况下禁用周期性全量数据整理。
 
 ### `periodic-full-compact-start-max-cpu` <span class="version-mark">从 v7.6.0 版本开始引入</span>
