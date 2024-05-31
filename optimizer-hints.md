@@ -955,7 +955,7 @@ CREATE TABLE t2 (id varchar(10) primary key, tname varchar(10));
 EXPLAIN SELECT /*+ INL_JOIN(t1, t2) */ * FROM t1, t2 WHERE t1.id=t2.id and substr(t1.tname,1,2)=substr(t2.tname,1,2);
 ```
 
-上面例子中，我们在管理表的列 `tname` 上使用了内置函数 `substr`，其查询计划输出结果如下：
+其查询计划输出结果如下：
 
 ```sql
 mysql> explain SELECT /*+ INL_JOIN(t1, t2) */ * FROM t1, t2 WHERE t1.id=t2.id and substr(t1.tname,1,2)=substr(t2.tname,1,2);
