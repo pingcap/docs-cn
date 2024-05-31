@@ -955,7 +955,7 @@ CREATE TABLE t2 (id varchar(10) primary key, tname varchar(10));
 EXPLAIN SELECT /*+ INL_JOIN(t1, t2) */ * FROM t1, t2 WHERE t1.id=t2.id and SUBSTR(t1.tname,1,2)=SUBSTR(t2.tname,1,2);
 ```
 
-其查询计划输出结果如下：
+查询计划输出结果如下：
 
 ```sql
 +------------------------------+----------+-----------+---------------+-----------------------------------------------------------------------+
@@ -974,6 +974,9 @@ EXPLAIN SELECT /*+ INL_JOIN(t1, t2) */ * FROM t1, t2 WHERE t1.id=t2.id and SUBST
 
 ```sql
 SHOW WARNINGS;
+```
+
+```
 +---------+------+------------------------------------------------------------------------------------+
 | Level   | Code | Message                                                                            |
 +---------+------+------------------------------------------------------------------------------------+
@@ -982,12 +985,12 @@ SHOW WARNINGS;
 1 row in set (0.00 sec)
 ```
 
-从该示例中可以看到，`INL_JOIN` Hint 没有生效。这个问题的根本原因是优化器限制导致无法使用 `Projection` 或者 `Selection` 算子作为 `IndexJoin` 的探测 (Probe) 端。
+从该示例中可以看到，`INL_JOIN` Hint 没有生效。该问题的根本原因是优化器限制导致无法使用 `Projection` 或者 `Selection` 算子作为 `IndexJoin` 的探测 (Probe) 端。
 
 从 TiDB v8.0.0 起，你通过设置 [`tidb_enable_inl_join_inner_multi_pattern`](/system-variables.md#tidb_enable_inl_join_inner_multi_pattern-从-v700-版本开始引入) 为 `ON` 来避免该问题。
 
 ```sql
-mysql> SET @@tidb_enable_inl_join_inner_multi_pattern=ON;
+SET @@tidb_enable_inl_join_inner_multi_pattern=ON;
 Query OK, 0 rows affected (0.00 sec)
 
 EXPLAIN SELECT /*+ INL_JOIN(t1, t2) */ * FROM t1, t2 WHERE t1.id=t2.id AND SUBSTR(t1.tname,1,2)=SUBSTR(t2.tname,1,2);
