@@ -913,7 +913,9 @@ Warning 信息如下：
 
 #### 关联表的列上使用内置函数导致 `INL_JOIN` Hint 不生效
 
-某些情况下，如果在关联表的列上使用了内置函数，优化器可能无法选择 `IndexJoin` 计划，`INL_JOIN` 也无法生效。例如：
+在某些情况下，如果在关联表的列上使用了内置函数，优化器可能无法选择 `IndexJoin` 计划，导致 `INL_JOIN` Hint 也无法生效。
+
+例如，以下查询在关联表的列 `tname` 上使用了内置函数 `substr`：
 
 ```sql
 CREATE TABLE t1 (id varchar(10) primary key, tname varchar(10));
