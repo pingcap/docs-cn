@@ -312,7 +312,7 @@ select tidb_decode_sql_digests(@digests, 10);
 SET GLOBAL tidb_enable_row_level_checksum = ON;
 ```
 
-现在，你需要重新连接以激活会话。
+上述配置仅对新创建的会话生效，因此需要重新连接 TiDB。
 
 创建表 `t` 并插入数据：
 
