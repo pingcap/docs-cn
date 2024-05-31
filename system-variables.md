@@ -509,7 +509,7 @@ mysql> SELECT * FROM t1;
 - 作用域：NONE
 - 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：否
 - 默认值：（系统主机名）
-- 这个变量一个只读变量，表示 TiDB server 的主机名。
+- 这个变量为只读变量，表示 TiDB server 的主机名。
 
 ### `identity` <span class="version-mark">从 v5.3.0 版本开始引入</span>
 
