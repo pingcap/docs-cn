@@ -163,7 +163,7 @@ TiDB 版本：7.5.1
     - 修复扩容时可能导致 DR Auto-Sync 的 joint state 超时问题 [#15817](https://github.com/tikv/tikv/issues/15817) @[Connor1996](https://github.com/Connor1996)
     - 修复 Resolved TS 可能被阻塞两小时的问题 [#11847](https://github.com/tikv/tikv/issues/11847) [#15520](https://github.com/tikv/tikv/issues/15520) [#39130](https://github.com/pingcap/tidb/issues/39130) @[overvenus](https://github.com/overvenus)
     - 修复 `cast_duration_as_time` 可能返回错误结果的问题 [#16211](https://github.com/tikv/tikv/issues/16211) @[gengliqi](https://github.com/gengliqi)
-    - 修复 TiKV 在 Raftstore 阻塞在 I/O 操作上时异常假死的问题 [#16408](https://github.com/tikv/tikv/pull/16408) @[LykxSassinator](https://github.com/LykxSassinator)
+    - 修复 TiKV 在某些异常场景下 (如阻塞在 Disk I/O 操作上) 假死而影响可用性的问题 [#16408](https://github.com/tikv/tikv/pull/16408) @[LykxSassinator](https://github.com/LykxSassinator)
 
 + PD
 
