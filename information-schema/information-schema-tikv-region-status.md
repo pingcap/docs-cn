@@ -56,7 +56,7 @@ DESC TIKV_REGION_STATUS;
 * `INDEX_NAME`：Region 所属的索引的名称。如果 `IS_INDEX` 为 0，这一列的值就为 NULL。
 * `IS_PARTITION`：Region 所属的表是否为分区表。
 * `PARTITION_ID`：如果 Region 所属的表是否为分区表，显示 Region 所属的分区的 ID。
-* `PARTITION_NAME`：如果 Region 所属的表是否为分区表，显示 Region 所属的分区名。
+* `PARTITION_NAME`：如果 Region 所属的表是否为分区表，显示 Region 所属的分区的名字。
 * `EPOCH_CONF_VER`：Region 的配置的版本号，在增加或减少 peer 时版本号会递增。
 * `EPOCH_VERSION`：Region 的当前版本号，在分裂或合并时版本号会递增。
 * `WRITTEN_BYTES`：已经往 Region 写入的数据量 (bytes)。
