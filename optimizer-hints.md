@@ -972,7 +972,6 @@ EXPLAIN SELECT /*+ INL_JOIN(t1, t2) */ * FROM t1, t2 WHERE t1.id=t2.id and SUBST
 |     └─TableFullScan_15       | 10000.00 | cop[tikv] | table:t1      | keep order:false, stats:pseudo                                        |
 +------------------------------+----------+-----------+---------------+-----------------------------------------------------------------------+
 7 rows in set, 1 warning (0.01 sec)
-
 ```
 
 ```sql
