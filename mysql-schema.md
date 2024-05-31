@@ -70,8 +70,8 @@ summary: 了解 TiDB 系统表。
 
 ## 元数据锁相关系统表
 
-* `tidb_mdl_view`：元数据锁的视图，可以用于查看当前阻塞的 DDL 的相关信息
-* `tidb_mdl_info`：TiDB 内部用于同步各节点的元数据锁的相关信息
+* `tidb_mdl_view` 元数据锁的视图，可以用于查看当前阻塞的 DDL 的相关信息
+* `tidb_mdl_info` TiDB 内部用于同步各节点的元数据锁的相关信息
 
 ## DDL 相关系统表
 
