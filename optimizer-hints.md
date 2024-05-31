@@ -132,6 +132,10 @@ SELECT /*+ NO_MERGE_JOIN(t1, t2) */ * FROM t1, t2 WHERE t1.id = t2.id;
 
 ### INL_JOIN(t1_name [, tl_name ...])
 
+> **注意：**
+>
+> 部分情况下 `INL_JOIN` Hint 可能无法生效，详情请参阅 [`INL_JOIN` Hint 不生效](#inl_join-hint-不生效)。
+
 `INL_JOIN(t1_name [, tl_name ...])` 提示优化器对指定表使用 Index Nested Loop Join 算法。这个算法可能会在某些场景更快，消耗更少系统资源，有的场景会更慢，消耗更多系统资源。对于外表经过 WHERE 条件过滤后结果集较小（小于 1 万行）的场景，可以尝试使用。例如：
 
 {{< copyable "sql" >}}
@@ -937,7 +941,74 @@ Warning 信息如下：
 
 在上面的示例中，你需要将 Hint 直接放在 `SELECT` 关键字之后。具体的语法规则参见 [Hint 语法](#语法)部分。
 
-### 排序规则不兼容导致 `INL_JOIN` Hint 不生效
+### `INL_JOIN` Hint 不生效
+
+#### 关联表的列上使用内置函数导致 `INL_JOIN` Hint 不生效
+
+在某些情况下，如果在关联表的列上使用了内置函数，优化器可能无法选择 `IndexJoin` 计划，导致 `INL_JOIN` Hint 也无法生效。
+
+例如，以下查询在关联表的列 `tname` 上使用了内置函数 `substr`：
+
+```sql
+CREATE TABLE t1 (id varchar(10) primary key, tname varchar(10));
+CREATE TABLE t2 (id varchar(10) primary key, tname varchar(10));
+EXPLAIN SELECT /*+ INL_JOIN(t1, t2) */ * FROM t1, t2 WHERE t1.id=t2.id and SUBSTR(t1.tname,1,2)=SUBSTR(t2.tname,1,2);
+```
+
+查询计划输出结果如下：
+
+```sql
++------------------------------+----------+-----------+---------------+-----------------------------------------------------------------------+
+| id                           | estRows  | task      | access object | operator info                                                         |
++------------------------------+----------+-----------+---------------+-----------------------------------------------------------------------+
+| HashJoin_12                  | 12500.00 | root      |               | inner join, equal:[eq(test.t1.id, test.t2.id) eq(Column#5, Column#6)] |
+| ├─Projection_17(Build)       | 10000.00 | root      |               | test.t2.id, test.t2.tname, substr(test.t2.tname, 1, 2)->Column#6      |
+| │ └─TableReader_19           | 10000.00 | root      |               | data:TableFullScan_18                                                 |
+| │   └─TableFullScan_18       | 10000.00 | cop[tikv] | table:t2      | keep order:false, stats:pseudo                                        |
+| └─Projection_14(Probe)       | 10000.00 | root      |               | test.t1.id, test.t1.tname, substr(test.t1.tname, 1, 2)->Column#5      |
+|   └─TableReader_16           | 10000.00 | root      |               | data:TableFullScan_15                                                 |
+|     └─TableFullScan_15       | 10000.00 | cop[tikv] | table:t1      | keep order:false, stats:pseudo                                        |
++------------------------------+----------+-----------+---------------+-----------------------------------------------------------------------+
+7 rows in set, 1 warning (0.01 sec)
+```
+
+```sql
+SHOW WARNINGS;
+```
+
+```
++---------+------+------------------------------------------------------------------------------------+
+| Level   | Code | Message                                                                            |
++---------+------+------------------------------------------------------------------------------------+
+| Warning | 1815 | Optimizer Hint /*+ INL_JOIN(t1, t2) */ or /*+ TIDB_INLJ(t1, t2) */ is inapplicable |
++---------+------+------------------------------------------------------------------------------------+
+1 row in set (0.00 sec)
+```
+
+从该示例中可以看到，`INL_JOIN` Hint 没有生效。该问题的根本原因是优化器限制导致无法使用 `Projection` 或者 `Selection` 算子作为 `IndexJoin` 的探测 (Probe) 端。
+
+从 TiDB v8.0.0 起，你通过设置 [`tidb_enable_inl_join_inner_multi_pattern`](/system-variables.md#tidb_enable_inl_join_inner_multi_pattern-从-v700-版本开始引入) 为 `ON` 来避免该问题。
+
+```sql
+SET @@tidb_enable_inl_join_inner_multi_pattern=ON;
+Query OK, 0 rows affected (0.00 sec)
+
+EXPLAIN SELECT /*+ INL_JOIN(t1, t2) */ * FROM t1, t2 WHERE t1.id=t2.id AND SUBSTR(t1.tname,1,2)=SUBSTR(t2.tname,1,2);
++------------------------------+--------------+-----------+---------------+--------------------------------------------------------------------------------------------------------------------------------------------+
+| id                           | estRows      | task      | access object | operator info                                                                                                                              |
++------------------------------+--------------+-----------+---------------+--------------------------------------------------------------------------------------------------------------------------------------------+
+| IndexJoin_18                 | 12500.00     | root      |               | inner join, inner:Projection_14, outer key:test.t1.id, inner key:test.t2.id, equal cond:eq(Column#5, Column#6), eq(test.t1.id, test.t2.id) |
+| ├─Projection_32(Build)       | 10000.00     | root      |               | test.t1.id, test.t1.tname, substr(test.t1.tname, 1, 2)->Column#5                                                                           |
+| │ └─TableReader_34           | 10000.00     | root      |               | data:TableFullScan_33                                                                                                                      |
+| │   └─TableFullScan_33       | 10000.00     | cop[tikv] | table:t1      | keep order:false, stats:pseudo                                                                                                             |
+| └─Projection_14(Probe)       | 100000000.00 | root      |               | test.t2.id, test.t2.tname, substr(test.t2.tname, 1, 2)->Column#6                                                                           |
+|   └─TableReader_13           | 10000.00     | root      |               | data:TableRangeScan_12                                                                                                                     |
+|     └─TableRangeScan_12      | 10000.00     | cop[tikv] | table:t2      | range: decided by [eq(test.t2.id, test.t1.id)], keep order:false, stats:pseudo                                                             |
++------------------------------+--------------+-----------+---------------+--------------------------------------------------------------------------------------------------------------------------------------------+
+7 rows in set (0.00 sec)
+```
+
+#### 排序规则不兼容导致 `INL_JOIN` Hint 不生效
 
 如果两个表的 Join key 的排序规则不能兼容，将无法使用 IndexJoin 来执行查询。此时 [`INL_JOIN` Hint](#inl_joint1_name--tl_name-) 将无法生效。例如：
 
@@ -974,7 +1045,7 @@ SHOW WARNINGS;
 1 row in set (0.00 sec)
 ```
 
-### 连接顺序导致 `INL_JOIN` Hint 不生效
+#### 连接顺序导致 `INL_JOIN` Hint 不生效
 
 [`INL_JOIN(t1, t2)`](#inl_joint1_name--tl_name-) 或 `TIDB_INLJ(t1, t2)` 的语义是让 `t1` 和 `t2` 作为 `IndexJoin` 的内表与其他表进行连接，而不是直接将 `t1` 和 `t2` 进行 `IndexJoin` 连接。例如：
 
