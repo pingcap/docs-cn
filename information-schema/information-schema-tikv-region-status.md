@@ -11,9 +11,11 @@ aliases: ['/docs-cn/dev/information-schema/information-schema-tikv-region-status
 {{< copyable "sql" >}}
 
 ```sql
-USE information_schema;
-DESC tikv_region_status;
+USE INFORMATION_SCHEMA;
+DESC TIKV_REGION_STATUS;
 ```
+
+输出结果如下：
 
 ```sql
 +---------------------------+-------------+------+------+---------+-------+
@@ -28,6 +30,9 @@ DESC tikv_region_status;
 | IS_INDEX                  | tinyint(1)  | NO   |      | 0       |       |
 | INDEX_ID                  | bigint(21)  | YES  |      | NULL    |       |
 | INDEX_NAME                | varchar(64) | YES  |      | NULL    |       |
+| IS_PARTITION              | tinyint(1)  | NO   |      | 0       |       |
+| PARTITION_ID              | bigint(21)  | YES  |      | NULL    |       |
+| PARTITION_NAME            | varchar(64) | YES  |      | NULL    |       |
 | EPOCH_CONF_VER            | bigint(21)  | YES  |      | NULL    |       |
 | EPOCH_VERSION             | bigint(21)  | YES  |      | NULL    |       |
 | WRITTEN_BYTES             | bigint(21)  | YES  |      | NULL    |       |
@@ -37,7 +42,7 @@ DESC tikv_region_status;
 | REPLICATIONSTATUS_STATE   | varchar(64) | YES  |      | NULL    |       |
 | REPLICATIONSTATUS_STATEID | bigint(21)  | YES  |      | NULL    |       |
 +---------------------------+-------------+------+------+---------+-------+
-17 rows in set (0.00 sec)
+20 rows in set (0.00 sec)
 ```
 
 `TIKV_REGION_STATUS` 表中列的含义如下：
@@ -51,6 +56,9 @@ DESC tikv_region_status;
 * `IS_INDEX`：Region 数据是否是索引，0 代表不是索引，1 代表是索引。如果当前 Region 同时包含表数据和索引数据，会有多行记录，`IS_INDEX` 分别是 0 和 1。
 * `INDEX_ID`：Region 所属的索引的 ID。如果 `IS_INDEX` 为 0，这一列的值就为 NULL。
 * `INDEX_NAME`：Region 所属的索引的名称。如果 `IS_INDEX` 为 0，这一列的值就为 NULL。
+* `IS_PARTITION`：Region 所属的表是否为分区表。
+* `PARTITION_ID`：如果 Region 所属的表是否为分区表，显示 Region 所属的分区的 ID。
+* `PARTITION_NAME`：如果 Region 所属的表是否为分区表，显示 Region 所属的分区名。
 * `EPOCH_CONF_VER`：Region 的配置的版本号，在增加或减少 peer 时版本号会递增。
 * `EPOCH_VERSION`：Region 的当前版本号，在分裂或合并时版本号会递增。
 * `WRITTEN_BYTES`：已经往 Region 写入的数据量 (bytes)。
