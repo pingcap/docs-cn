@@ -45,7 +45,7 @@ TiDB 版本：7.5.1
 
 + TiKV
 
-    - 对慢节点检测的判定算法进行了改善，提升了算法检测的灵敏度，同时降低了算法对于热读写场景下的误判率。[#15909](https://github.com/tikv/tikv/issues/15909) @[LykxSassinator](https://github.com/LykxSassinator)
+    - 改善慢节点检测的判定算法，提升算法检测的灵敏度，同时降低了算法对于热读写场景下的误判率 [#15909](https://github.com/tikv/tikv/issues/15909) @[LykxSassinator](https://github.com/LykxSassinator)
 
 + TiFlash
 
