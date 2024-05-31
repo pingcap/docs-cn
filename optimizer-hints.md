@@ -984,7 +984,7 @@ mysql> show warnings;
 
 从该示例中可以看到，`INL_JOIN` Hint 没有生效。这个问题的根本原因是优化器限制导致无法使用 `Projection` 或者 `Selection` 算子作为 `IndexJoin` 的探测 (Probe) 端。
 
-在 TiDB v8.0.0 及其后续版本，可以通过设置 `tidb_enable_inl_join_inner_multi_pattern` 为 `ON` 来解决这个问题。
+从 TiDB v8.0.0 起，你通过设置 [`tidb_enable_inl_join_inner_multi_pattern`](/system-variables.md#tidb_enable_inl_join_inner_multi_pattern-从-v700-版本开始引入) 为 `ON` 来避免该问题。
 
 ```sql
 mysql> set @@tidb_enable_inl_join_inner_multi_pattern=1;
