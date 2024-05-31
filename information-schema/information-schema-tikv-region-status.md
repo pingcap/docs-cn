@@ -8,8 +8,6 @@ aliases: ['/docs-cn/dev/information-schema/information-schema-tikv-region-status
 
 `TIKV_REGION_STATUS` 表通过 PD 的 API 展示 TiKV Region 的基本信息，比如 Region ID、开始和结束键值以及读写流量。
 
-{{< copyable "sql" >}}
-
 ```sql
 USE INFORMATION_SCHEMA;
 DESC TIKV_REGION_STATUS;
