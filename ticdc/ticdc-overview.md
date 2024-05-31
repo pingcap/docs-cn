@@ -107,7 +107,7 @@ TiCDC 会根据收到的这些数据变更信息，适配各个类型的下游�
 Create Table t1 (A int Primary Key, B int);
 
 BEGIN;
-Insert Into t1 values(1,2);
+Insert Into t1 values(1,1);
 Insert Into t1 values(2,2);
 Insert Into t1 values(3,3);
 Commit;
