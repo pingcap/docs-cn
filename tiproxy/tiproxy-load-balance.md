@@ -64,13 +64,15 @@ TiProxy 根据自身和 TiDB server 的地理位置，将连接优先路由到�
 
 该策略的优先级默认最低，以优先保证可用性和性能。你可以通过设置 [`location-first`](/tiproxy/tiproxy-configuration.md#location-first) 为 `true` 来使该策略的优先级高于其他策略，但建议保证同一地理位置的 TiDB server 至少为三台，以保证可用性和性能。
 
-TiProxy 根据自身和 TiDB server 的标签确定各自的地理位置。你需要同时设置以下配置项：
+TiProxy 根据自身和 TiDB server 的 `zone` 标签确定各自的地理位置。你需要同时设置以下配置项：
 
-- 在 PD 的 [`location-labels`](/pd-configuration-file.md#location-labels) 中设置用于标识地理位置的标签。配置方式请参阅[设置 PD 的 `location-labels` 配置](/schedule-replicas-by-topology-labels.md#设置-pd-的-location-labels-配置)。
-- 设置 TiDB server 用于标识地理位置的 [`labels`](/tidb-configuration-file.md#labels) 。配置方式请参阅[设置 TiDB 的 `labels`](/schedule-replicas-by-topology-labels.md#设置-tidb-的-labels可选)。
-- 设置 TiProxy 用于标识地理位置的 [`labels`](/tiproxy/tiproxy-configuration.md#labels) 。
+- 在 PD 的 [`location-labels`](/pd-configuration-file.md#location-labels) 中增加 `zone` 标签。配置方式请参阅[设置 PD 的 `location-labels` 配置](/schedule-replicas-by-topology-labels.md#设置-pd-的-location-labels-配置)。
+- 在 TiDB server 的 [`labels`](/tidb-configuration-file.md#labels) 配置项中将 `zone` 设置为当前可用区。配置方式请参阅[设置 TiDB 的 `labels`](/schedule-replicas-by-topology-labels.md#设置-tidb-的-labels可选)。
+- 在 TiProxy 的 [`labels`](/tiproxy/tiproxy-configuration.md#labels) 配置项中将 `zone` 设置为当前可用区。
 
-例如，假如根据 `zone` 标识地理位置，则如下配置集群：
+如果是使用 TiDB Operator 部署的集群，请参考[数据的高可用](https://docs.pingcap.com/zh/tidb-in-kubernetes/stable/configure-a-tidb-cluster#数据的高可用)进行配置。
+
+以下是一个集群配置的示例：
 
 ```yaml
 component_versions:
