@@ -5,7 +5,7 @@ summary: 了解 TiDB 7.5.2 版本的兼容性变更、改进提升，以及错�
 
 # TiDB 7.5.2 Release Notes
 
-发版日期：2023 年 x 月 x 日
+发版日期：2024 年 x 月 x 日
 
 TiDB 版本：7.5.2
 
@@ -63,17 +63,17 @@ TiDB 版本：7.5.2
         - (dup): release-8.0.0.md > 改进提升> Tools> Backup & Restore (BR) - 支持在恢复过程中提前分配好 Table ID，从而最大限度地复用 Table ID，提升恢复性能 [#51736](https://github.com/pingcap/tidb/issues/51736) @[Leavrth](https://github.com/Leavrth)
         - (dup): release-7.1.5.md > 改进提升> Tools> Backup & Restore (BR) - 移除日志备份启动时检查是否存在活动 DDL job 的无效检查 [#52733](https://github.com/pingcap/tidb/issues/52733) @[Leavrth](https://github.com/Leavrth)
         - (dup): release-6.5.9.md > 改进提升> Tools> Backup & Restore (BR) - 移除使用 Google Cloud Storage (GCS) 作为外部存储时一个过时的兼容性检查 [#50533](https://github.com/pingcap/tidb/issues/50533) @[lance6716](https://github.com/lance6716)
-        - 增加备份恢复对 pd 因为 dns 错误失败的重试[#53029](https://github.com/pingcap/tidb/issues/53029) @[YuJuncen](https://github.com/YuJuncen)
+        - 增加由于 DNS 错误而导致的失败的重试次数 [#53029](https://github.com/pingcap/tidb/issues/53029) @[YuJuncen](https://github.com/YuJuncen)
 
     + TiCDC <!--tw@hfxsd 5 条-->
 
         - (dup): release-8.1.0.md > 改进提升> Tools> TiCDC - 提升使用 redo log 恢复数据过程中的内存稳定性，减少 OOM 的概率 [#10900](https://github.com/pingcap/tiflow/issues/10900) @[CharlesCheung96](https://github.com/CharlesCheung96)
         - (dup): release-8.1.0.md > 改进提升> Tools> TiCDC - 显著提升事务冲突场景中的数据同步的稳定性，性能最高提升可达 10 倍 [#10896](https://github.com/pingcap/tiflow/issues/10896) @[CharlesCheung96](https://github.com/CharlesCheung96)
-        - 开启 PD client 转发功能，提升 TiCDC 在和 PD leader 之间存在网络隔离时 TiCDC 的稳定性. [#10849](https://github.com/pingcap/tiflow/issues/10849) @[asddongmen](https://github.com/asddongmen)
-        - 提升同步任务初始化速度 [#11124]([https://github.com/pingcap/tiflow/issues/11124]@[asddongmen]([https://github.com/asddongmen]
-        - 异步初始同步任务，减少 processor 和 owner 的初始化时间  [#10845](https://github.com/pingcap/tiflow/issues/10845) @[sdojjy](https://github.com/sdojjy)
-        - 自动探测 Kafka 集群版本, 提升与 Kafka 的兼容性 [#10852](https://github.com/pingcap/tiflow/issues/10852) @[wk989898](https://github.com/wk989898)
-        - 针对 Open Protocol, 添加 `sink.open.output-old-value`  配置项来控制是否输出更新前的值到下游. [#10916](https://github.com/pingcap/tiflow/issues/10916)) @[sdojjy]([https://github.com/sdojjy)
+        - 开启 PD client 转发功能，提升 TiCDC 和 PD leader 之间存在网络隔离时 TiCDC 的稳定性 [#10849](https://github.com/pingcap/tiflow/issues/10849) @[asddongmen](https://github.com/asddongmen)
+        - 提升同步任务初始化速度 [#11124]([https://github.com/pingcap/tiflow/issues/11124) @[asddongmen]([https://github.com/asddongmen]
+        - 采用异步方式初始化同步任务，减少 Processor 和 Owner 的初始化时间 [#10845](https://github.com/pingcap/tiflow/issues/10845) @[sdojjy](https://github.com/sdojjy)
+        - 自动探测 Kafka 集群版本，提升与 Kafka 的兼容性 [#10852](https://github.com/pingcap/tiflow/issues/10852) @[wk989898](https://github.com/wk989898)
+        - 针对 Open Protocol，添加 `sink.open.output-old-value` 配置项来控制是否输出更新前的值到下游 [#10916](https://github.com/pingcap/tiflow/issues/10916) @[sdojjy]([https://github.com/sdojjy)
 
     + TiDB Data Migration (DM)
 
@@ -110,6 +110,25 @@ TiDB 版本：7.5.2
     - 修复网络问题导致的 DDL 卡住的问题 [#47060](https://github.com/pingcap/tidb/issues/47060) @[wjhuang2016](https://github.com/wjhuang2016)
     - 升级 go-mysql 来修复连接阻塞的问题 [#11041](https://github.com/pingcap/tiflow/issues/11041) @[D3Hunter](https://github.com/D3Hunter)
     - 修复 TiDB 启动加载统计信息时可能因为 gc 推进报错的问题 [#53592](https://github.com/pingcap/tidb/issues/53592) @[you06](https://github.com/you06)
+ <!--tw@hfxsd 18 条-->
+    - 修复 join 条件可能为 cast 函数时导致 panic 的问题 [#46556](https://github.com/pingcap/tidb/issues/46556) @[qw4990](https://github.com/qw4990)
+    - 修复 year 类型与超出范围的无符号整数比较导致错误结果的问题 [#50235](https://github.com/pingcap/tidb/issues/50235) @[qw4990](https://github.com/qw4990)
+    - 修复 Update List 中包含子查询可能会导致 panic 的问题 [#53271](https://github.com/pingcap/tidb/pull/53271) @[winoros](https://github.com/winoros)
+    - 修复 longlong 类型在谓词中会溢出的问题 [#45783](https://github.com/pingcap/tidb/issues/45783) @[hawkingrei](https://github.com/hawkingrei)
+    - 修复 SELECT INTO OUTFILE 在聚簇索引作为谓词时不生效的问题 [#42093](https://github.com/pingcap/tidb/issues/42093) @[qw4990](https://github.com/qw4990)
+    - 修复 TopN 可能被错误下推的问题 [#53412](https://github.com/pingcap/tidb/pull/53412) @[qw4990](https://github.com/qw4990)
+    - 修复可能出现空 projection 导致 panic 得问题 [#49109](https://github.com/pingcap/tidb/issues/49109) @[winoros](https://github.com/winoros)
+    - 修复当索引计划保持有序时，索引合并不应下推 partial limit 的问题 [#52947](https://github.com/pingcap/tidb/issues/52947) @[AilinKid](https://github.com/AilinKid)
+    - 修复在 recursive CTE 中无法使用 view 的问题 [#49721](https://github.com/pingcap/tidb/issues/49721) @[hawkingrei](https://github.com/hawkingrei)
+    - 修复 Update 语句可能因为 column 的 unique ID 不稳定导致查询报错的问题 [#53236](https://github.com/pingcap/tidb/issues/53236) @[winoros](https://github.com/winoros)
+    - 修复使用 SHOW ERRORS 语句并且包含永远为 true 的谓词时导致 panic 得问题 [#46962](https://github.com/pingcap/tidb/issues/46962) @[elsa0520](https://github.com/elsa0520)
+    - 修复 MPP 中 final agg 和 non-final 模式无法共存的问题 [#53475](https://github.com/pingcap/tidb/pull/53475) @[AilinKid](https://github.com/AilinKid)
+    - 修复错误的 dual table 计划导致查询错误的问题 [#50051](https://github.com/pingcap/tidb/issues/50051) @[onlyacat](https://github.com/pingcap/tidb/commits?author=onlyacat)
+    - 修复在初始化统计信息的时候可能 panic 的问题 [#52223](https://github.com/pingcap/tidb/issues/52223) @[hawkingrei](https://github.com/hawkingrei)
+    - 修复 no_join 相关 hints 无法与 sql binding 一起使用的问题 [#52813](https://github.com/pingcap/tidb/issues/52813) @[qw4990](https://github.com/qw4990)
+    - 修复 all 操作中包含子查询时可能会出现错误结果的问题 [#52755](https://github.com/pingcap/tidb/issues/52755) @[hawkingrei](https://github.com/hawkingrei)
+    - 修复 var_samp 无法作为窗口函数的问题 [#52933](https://github.com/pingcap/tidb/issues/52933) @[hi-rustin](https://github.com/hi-rustin)
+    - 修复列裁剪可能会导致 panic 的问题 [#52768](https://github.com/pingcap/tidb/issues/52768) @[winoros](https://github.com/winoros)
     - (dup): release-7.1.5.md > 错误修复> TiDB - 修复添加唯一索引可能导致 TiDB panic 的问题 [#52312](https://github.com/pingcap/tidb/issues/52312) @[wjhuang2016](https://github.com/wjhuang2016)
     - (dup): release-6.5.9.md > 错误修复> TiDB - 修复 TiDB Server 在初始化完成之前就标记为 Health 的问题 [#51596](https://github.com/pingcap/tidb/issues/51596) @[shenqidebaozi](https://github.com/shenqidebaozi)
     - (dup): release-6.5.9.md > 错误修复> TiDB - 修复 `IFNULL` 函数返回的类型和 MySQL 不一致的问题 [#51765](https://github.com/pingcap/tidb/issues/51765) @[YangKeao](https://github.com/YangKeao)
@@ -229,8 +248,8 @@ TiDB 版本：7.5.2
         - (dup): release-8.1.0.md > 错误修复> Tools> Backup & Restore (BR) - 修复在 BR 恢复数据或 TiDB Lightning 物理导入模式下导入数据时，从 PD 获取到的 Region 没有 Leader 的问题 [#51124](https://github.com/pingcap/tidb/issues/51124) [#50501](https://github.com/pingcap/tidb/issues/50501) @[Leavrth](https://github.com/Leavrth)
         - (dup): release-6.5.9.md > 错误修复> Tools> Backup & Restore (BR) - 修复在某些极端情况下，全量备份因找不到 peer 导致 TiKV panic 的问题 [#16394](https://github.com/tikv/tikv/issues/16394) @[Leavrth](https://github.com/Leavrth)
         - (dup): release-6.5.9.md > 错误修复> Tools> Backup & Restore (BR) - 修复在日志备份任务被暂停后，移除任务无法立即恢复 GC safepoint 的问题 [#52082](https://github.com/pingcap/tidb/issues/52082) @[3pointer](https://github.com/3pointer)
-        - 修复不稳定测试用例 TestClearCache [#50743](https://github.com/pingcap/tidb/issues/50743) @[3pointer](https://github.com/3pointer)
-        - 修复事务 kv 恢复因为 end_key 为空失败的问题 [#52574](https://github.com/pingcap/tidb/issues/52574) @[3pointer](https://github.com/3pointer)
+        - 修复不稳定测试用例 `TestClearCache` [#50743](https://github.com/pingcap/tidb/issues/50743) @[3pointer](https://github.com/3pointer)
+        - 修复由于 `EndKey` 为空导致恢复事务 KV 集群失败的问题 [#52574](https://github.com/pingcap/tidb/issues/52574) @[3pointer](https://github.com/3pointer)
 
     + TiCDC <!--tw@hfxsd 1 条-->
 
@@ -249,7 +268,7 @@ TiDB 版本：7.5.2
         - (dup): release-8.1.0.md > 错误修复> Tools> TiCDC - 修复 `TIMEZONE` 类型的值没有按照正确的时区设置默认值的问题 [#10931](https://github.com/pingcap/tiflow/issues/10931) @[3AceShowHand](https://github.com/3AceShowHand)
         - (dup): release-7.1.5.md > 错误修复> Tools> TiCDC - 修复上游写入 `Exchange Partition ... With Validation` DDL 后，TiCDC 向下游执行该 DDL 时失败，导致 changefeed 卡住的问题 [#10859](https://github.com/pingcap/tiflow/issues/10859) @[hongyunyan](https://github.com/hongyunyan)
         - (dup): release-6.5.9.md > 错误修复> Tools> TiCDC - 修复 KV Client 数据争用导致 TiCDC panic 的问题 [#10718](https://github.com/pingcap/tiflow/issues/10718) @[asddongmen](https://github.com/asddongmen)
-        - 修复上游更新唯一键时可能导致上下游数据不一致的问题 [#10918](https://github.com/pingcap/tiflow/issues/10918) @[lidezhu](https://github.com/lidezhu)
+        - 修复上游更新主键或唯一键可能导致上下游数据不一致的问题 [#10918](https://github.com/pingcap/tiflow/issues/10918) @[lidezhu](https://github.com/lidezhu)
 
     + TiDB Data Migration (DM)
 
