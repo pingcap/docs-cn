@@ -132,7 +132,7 @@ HTTP 网关的配置。
 
 + 默认值：false
 + 支持热加载：是
-+ 指定地理位置的优先级是否高于其他策略。如果设置为 `true`，则优先级顺序依次为 `location`, `error`, `memory`, `cpu`，否则优先级顺序为 `error`, `memory`, `cpu`, `location`。请参阅[ TiProxy 负载均衡策略](/tiproxy/tiproxy-load-balance.md)。
++ 指定地理位置的优先级是否高于其他策略。如果设置为 `true`，则优先级顺序依次为 `location`, `error`, `memory`, `cpu`，否则优先级顺序为 `error`, `memory`, `cpu`, `location`。请参阅 [TiProxy 负载均衡策略](/tiproxy/tiproxy-load-balance.md)。
 
 #### `memory`
 
