@@ -32,7 +32,7 @@ TiProxy 在保持客户端连接不变的情况下，能将一台 TiDB server �
 
 ### 故障转移
 
-当一台 TiDB server 发生 OOM、连接 PD 或 TiKV 失败时，TiProxy 感知故障，并将连接迁移到其他 TiDB server 上，保持客户端连接不断开。
+当一台 TiDB server 发生 Out of Memory (OOM)、连接 PD 或 TiKV 失败时，TiProxy 感知故障，并将连接迁移到其他 TiDB server 上，从而保持客户端连接不断开。
 
 ### 服务发现
 
@@ -49,7 +49,7 @@ TiProxy 适用于以下场景：
 - 连接保持：当 TiDB 缩容、滚动升级、滚动重启操作时，客户端连接会断开，导致报错。如果客户端没有幂等的错误重试机制，则需要人工手动检查错误并修复，这大大增加了人力成本。TiProxy 能保持客户端连接，因此可以避免客户端报错。
 - 频繁扩缩容：应用的负载可能周期性地变化，为了节省成本，你可以将 TiDB 部署到云上，并根据负载自动地扩缩容 TiDB server。然而，缩容可能导致客户端断连，而扩容不能及时地实现负载均衡。通过迁移连接功能，TiProxy 能保持客户端连接并实现负载均衡。
 - CPU 负载不均：后台任务占用较多 CPU 资源，或者不同连接上的工作负载差异较大，导致 CPU 负载不均时，TiProxy 能根据 CPU 使用率迁移连接，实现负载均衡。请参阅[基于 CPU 的负载均衡](/tiproxy/tiproxy-load-balance.md#基于-cpu-的负载均衡)。
-- TiDB server OOM：当出现 Runaway Query 导致 TiDB server OOM 时，TiProxy 能提前感知到 TiDB server OOM 的风险，并将其他正常连接迁移到其他 TiDB server 上，保持客户端连接不断开。请参阅[基于内存的负载均衡](/tiproxy/tiproxy-load-balance.md#基于内存的负载均衡)。
+- TiDB server OOM：当出现 Runaway Query 导致 TiDB server OOM 时，TiProxy 能提前感知到 TiDB server OOM 的风险，并将其他正常连接迁移到其他 TiDB server 上，从而保持客户端连接不断开。请参阅[基于内存的负载均衡](/tiproxy/tiproxy-load-balance.md#基于内存的负载均衡)。
 
 TiProxy 不适用于以下场景：
 

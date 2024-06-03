@@ -104,11 +104,13 @@ HTTP 网关的配置。
 
 ### balance
 
+TiProxy 负载均衡策略的配置。
+
 #### `cpu`
 
 ##### `enable`
 
-+ 默认值：true
++ 默认值：`true`
 + 支持热加载：是
 + 指定是否开启基于 CPU 使用率的负载均衡。请参阅[基于 CPU 的负载均衡](/tiproxy/tiproxy-load-balance.md#基于-cpu-的负载均衡)。
 
@@ -116,7 +118,7 @@ HTTP 网关的配置。
 
 ##### `enable`
 
-+ 默认值：true
++ 默认值：`true`
 + 支持热加载：是
 + 指定是否开启基于错误率的负载均衡。请参阅[基于错误率的负载均衡](/tiproxy/tiproxy-load-balance.md#基于错误率的负载均衡)。
 
@@ -124,21 +126,21 @@ HTTP 网关的配置。
 
 ##### `enable`
 
-+ 默认值：true
++ 默认值：`true`
 + 支持热加载：是
-+ 指定是否开启基于错误率的负载均衡。请参阅[基于地理位置的负载均衡](/tiproxy/tiproxy-load-balance.md#基于地理位置的负载均衡)。
++ 指定是否开启基于地理位置的负载均衡。请参阅[基于地理位置的负载均衡](/tiproxy/tiproxy-load-balance.md#基于地理位置的负载均衡)。
 
 ##### `location-first`
 
-+ 默认值：false
++ 默认值：`false`
 + 支持热加载：是
-+ 指定地理位置的优先级是否高于其他策略。如果设置为 `true`，则优先级顺序依次为 `location`, `error`, `memory`, `cpu`，否则优先级顺序为 `error`, `memory`, `cpu`, `location`。请参阅 [TiProxy 负载均衡策略](/tiproxy/tiproxy-load-balance.md)。
++ 指定地理位置的优先级是否高于其他负载均衡策略。如果设置为 `true`，则优先级顺序依次为：`location`、`error`、`memory`、`cpu`，否则优先级顺序依次为：`error`、`memory`、`cpu`、`location`。详情参见 [TiProxy 负载均衡策略](/tiproxy/tiproxy-load-balance.md)。
 
 #### `memory`
 
 ##### `enable`
 
-+ 默认值：true
++ 默认值：`true`
 + 支持热加载：是
 + 指定是否开启基于内存的负载均衡。请参阅[基于内存的负载均衡](/tiproxy/tiproxy-load-balance.md#基于内存的负载均衡)。
 

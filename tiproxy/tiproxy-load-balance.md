@@ -102,11 +102,11 @@ tidb_servers:
         zone: west
 tikv_servers:
   - host: tikv-host-1
-    port：20160
+    port: 20160
   - host: tikv-host-2
-    port：20160
+    port: 20160
   - host: tikv-host-3
-    port：20160
+    port: 20160
 ```
 
 在以上配置中，`tiproxy-host-1` 上的 TiProxy 优先路由到 `tidb-host-1` 上的 TiDB server，`tiproxy-host-2` 上的 TiProxy 优先路由到 `tidb-host-2` 上的 TiDB server。
