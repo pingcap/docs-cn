@@ -41,7 +41,7 @@ Sink URI 用于指定 TiCDC 目标系统的连接信息，遵循以下格式：
 
 > **Tip:**
 >
-> 如果下游 Kafka 有多个 host 或端 port，可以在 sink URI 中配置多个 `[host]:[port]`。例如：
+> 如果下游 Kafka 有多个主机或端口，可以在 Sink URI 中配置多个 `[host]:[port]`。例如：
 >
 > ```shell
 > [scheme]://[host]:[port],[host]:[port],[host]:[port][/path]?[query_parameters]
