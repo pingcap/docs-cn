@@ -322,6 +322,11 @@
   - [Store Limit 使用文档](/configure-store-limit.md)
   - [DDL 执行原理及最佳实践](/ddl-introduction.md)
   - [PD 微服务使用文档](/pd-microservices.md)
+    - [部署 PD 微服务](/pd-microservices-deployment-topology.md)
+    - [TSO 配置文件描述](/tso-configuration-file.md)
+    - [TSO 配置参数](/command-line-flags-for-tso-configuration.md)
+    - [Scheduling 配置文件描述](/scheduling-configuration-file.md)
+    - [Scheduling 配置参数](/command-line-flags-for-scheduling-configuration.md)
 - TiDB 工具
   - [功能概览](/ecosystem-tool-user-guide.md)
   - [使用场景](/ecosystem-tool-user-case.md)

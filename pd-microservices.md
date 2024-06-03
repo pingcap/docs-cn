@@ -58,6 +58,11 @@ TiDB Operator 详细使用方法请参考以下文档：
 TiUP 详细使用方法请参考以下文档：
 
 - [部署 PD 微服务](/pd-microservices-deployment-topology.md)
+- [使用 TiUP 扩容缩容开启微服务的集群](/scale-microservices-using-tiup.md)
+- [TSO 配置文件描述](/tso-configuration-file.md)
+- [TSO 配置参数](/command-line-flags-for-tso-configuration.md)
+- [Scheduling 配置文件描述](/scheduling-configuration-file.md)
+- [Scheduling 配置参数](/command-line-flags-for-scheduling-configuration.md)
 
 </div>
 <div label="TiUP Playground">
@@ -75,7 +80,7 @@ TiUP Playground 详细使用方法请参考以下文档：
 - 如果集群中部署了 `scheduling` 微服务，调度功能将由 `scheduling` 微服务提供。如果没有部署 `scheduling` 微服务，调度功能仍然由 PD 提供。
 - `scheduling` 微服务支持动态切换。该功能默认开启（`enable-scheduling-fallback` 默认为 `true`）。如果 `scheduling` 微服务进程关闭，PD 默认会继续为集群提供调度服务。
 
-  如果 `scheduling` 微服务和 PD 使用的 binary 版本不同，为防止调度逻辑出现变化，可以通过执行 `pd-ctl config set enable-scheduling-fallback false` 关闭 `scheduling` 微服务动态切换功能。关闭后，如果 `scheduling` 微服务的进程关闭，PD 将不会接管调度服务。这意味着，在 `scheduling` 微服务重新启动前，集群将无法提供调度服务。
+    如果 `scheduling` 微服务和 PD 使用的 binary 版本不同，为防止调度逻辑出现变化，可以通过执行 `pd-ctl config set enable-scheduling-fallback false` 关闭 `scheduling` 微服务动态切换功能。关闭后，如果 `scheduling` 微服务的进程关闭，PD 将不会接管调度服务。这意味着，在 `scheduling` 微服务重新启动前，集群将无法提供调度服务。
 
 ## 工具兼容性
 
