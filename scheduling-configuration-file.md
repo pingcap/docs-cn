@@ -1,6 +1,5 @@
 ---
 title: Scheduling 配置文件描述
-aliases: ["/docs-cn/dev/scheduling-configuration-file/"]
 summary: Scheduling 配置文件包含了许多参数，如节点名称、数据路径、节点 URL 等。
 ---
 

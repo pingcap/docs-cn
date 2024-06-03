@@ -29,6 +29,8 @@ summary: 介绍通过 TiUP 部署或扩容 TiDB 集群时提供的拓扑文件�
 - [cdc_servers](/tiup/tiup-cluster-topology-reference.md#cdc_servers)：CDC 实例的配置，用来指定 CDC 组件部署到哪些机器上
 - [tispark_masters](/tiup/tiup-cluster-topology-reference.md#tispark_masters)：TiSpark Master 实例的配置，用来指定 TiSpark Master 组件部署到哪台机器上，仅允许部署一个 TiSpark Master 节点
 - [tispark_workers](/tiup/tiup-cluster-topology-reference.md#tispark_workers)：TiSpark Worker 实例的配置，用来指定 TiSpark Worker 组件部署到哪些机器上
+- [tso_servers](/tiup/tiup-cluster-topology-reference.md#tso_servers)：TSO 实例的配置，用来指定 TSO 部署在哪些机器上（需要开启微服务）
+- [scheduling_servers](/tiup/tiup-cluster-topology-reference.md#scheduling_servers)：Scheduling 实例的配置，用来指定 Scheduling 部署在哪些机器上（需要开启微服务）
 - [monitoring_servers](/tiup/tiup-cluster-topology-reference.md#monitoring_servers)：用来指定 Prometheus 和 NGMonitoring 部署在哪些机器上，TiUP 支持部署多台 Prometheus 实例，但真实投入使用的只有第一个
 - [grafana_servers](/tiup/tiup-cluster-topology-reference.md#grafana_servers)：Grafana 实例的配置，用来指定 Grafana 部署在哪台机器上
 - [alertmanager_servers](/tiup/tiup-cluster-topology-reference.md#alertmanager_servers)：Alertemanager 实例的配置，用来指定 Alertmanager 部署在哪些机器上
@@ -43,26 +45,26 @@ summary: 介绍通过 TiUP 部署或扩容 TiDB 集群时提供的拓扑文件�
 - `enable_tls`：是否对集群启用 TLS。启用之后，组件之间、客户端与组件之间都必须使用生成的 TLS 证书进行连接，默认值：false
 - `listen_host`：默认使用的监听 IP。如果为空，每个实例会根据其 `host` 字段是否包含 `:` 来自动设置为 `::` 或 `0.0.0.0`。tiup-cluster v1.14.0 引入该配置
 - `deploy_dir`：每个组件的部署目录，默认值："deploy"。其应用规则如下：
-  - 如果在实例级别配置了绝对路径的 `deploy_dir`，那么实际部署目录为该实例设定的 `deploy_dir`
-  - 对于每个实例，如果用户未配置 `deploy_dir`，其默认值为相对路径 `<component-name>-<component-port>`
-  - 如果 `global.deploy_dir` 为绝对路径，那么组件会部署到 `<global.deploy_dir>/<instance.deploy_dir>` 目录
-  - 如果 `global.deploy_dir` 为相对路径，那么组件会部署到 `/home/<global.user>/<global.deploy_dir>/<instance.deploy_dir>` 目录
+    - 如果在实例级别配置了绝对路径的 `deploy_dir`，那么实际部署目录为该实例设定的 `deploy_dir`
+    - 对于每个实例，如果用户未配置 `deploy_dir`，其默认值为相对路径 `<component-name>-<component-port>`
+    - 如果 `global.deploy_dir` 为绝对路径，那么组件会部署到 `<global.deploy_dir>/<instance.deploy_dir>` 目录
+    - 如果 `global.deploy_dir` 为相对路径，那么组件会部署到 `/home/<global.user>/<global.deploy_dir>/<instance.deploy_dir>` 目录
 - `data_dir`：数据目录，默认值："data"。其应用规则如下：
-  - 如果在实例级别配置了绝对路径的 `data_dir`，那么实际数据目录为该实例设定的 `data_dir`
-  - 对于每个实例，如果用户未配置 `data_dir`，其默认值为 `<global.data_dir>`
-  - 如果 `data_dir` 为相对路径，那么组件数据将放到 `<deploy_dir>/<data_dir>` 中，其中 `<deploy_dir>` 的计算规则请参考 `deploy_dir` 字段的应用规则
+    - 如果在实例级别配置了绝对路径的 `data_dir`，那么实际数据目录为该实例设定的 `data_dir`
+    - 对于每个实例，如果用户未配置 `data_dir`，其默认值为 `<global.data_dir>`
+    - 如果 `data_dir` 为相对路径，那么组件数据将放到 `<deploy_dir>/<data_dir>` 中，其中 `<deploy_dir>` 的计算规则请参考 `deploy_dir` 字段的应用规则
 - `log_dir`：日志目录，默认值："log"。其应用规则如下：
-  - 如果在实例级别配置了绝对路径的 `log_dir`，那么实际日志目录为该实例设定的 `log_dir`
-  - 对于每个实例，如果用户未配置 `log_dir`，其默认值为 `<global.log_dir>`
-  - 如果 `log_dir` 为相对路径，那么组件日志将放到 `<deploy_dir>/<log_dir>` 中，其中 `<deploy_dir>` 的计算规则请参考 `deploy_dir` 字段的应用规则
+    - 如果在实例级别配置了绝对路径的 `log_dir`，那么实际日志目录为该实例设定的 `log_dir`
+    - 对于每个实例，如果用户未配置 `log_dir`，其默认值为 `<global.log_dir>`
+    - 如果 `log_dir` 为相对路径，那么组件日志将放到 `<deploy_dir>/<log_dir>` 中，其中 `<deploy_dir>` 的计算规则请参考 `deploy_dir` 字段的应用规则
 - `os`：目标机器的操作系统，该字段决定了向目标机器推送适配哪个操作系统的组件，默认值：linux
 - `arch`：目标机器的 CPU 架构，该字段决定了向目标机器推送哪个平台的二进制包，支持 amd64 和 arm64，默认值：amd64
 - `resource_control`：运行时资源控制，该字段下所有配置都将写入 systemd 的 service 文件中，默认无限制。支持控制的资源如下：
-  - `memory_limit`：限制运行时最大内存，例如 "2G" 表示最多使用 2GB 内存
-  - `cpu_quota`：限制运行时最大 CPU 占用率，例如 "200%"
-  - `io_read_bandwidth_max`：读磁盘 I/O 的最大带宽，例如："/dev/disk/by-path/pci-0000:00:1f.2-scsi-0:0:0:0 100M"
-  - `io_write_bandwidth_max`：写磁盘 I/O 的最大带宽，例如："/dev/disk/by-path/pci-0000:00:1f.2-scsi-0:0:0:0 100M"
-  - `limit_core`：控制 core dump 的大小
+    - `memory_limit`：限制运行时最大内存，例如 "2G" 表示最多使用 2GB 内存
+    - `cpu_quota`：限制运行时最大 CPU 占用率，例如 "200%"
+    - `io_read_bandwidth_max`：读磁盘 I/O 的最大带宽，例如："/dev/disk/by-path/pci-0000:00:1f.2-scsi-0:0:0:0 100M"
+    - `io_write_bandwidth_max`：写磁盘 I/O 的最大带宽，例如："/dev/disk/by-path/pci-0000:00:1f.2-scsi-0:0:0:0 100M"
+    - `limit_core`：控制 core dump 的大小
 
 `global` 配置示例：
 
@@ -648,8 +650,8 @@ scheduling_servers:
 - `storage_retention`：Prometheus 监控数据保留时间，默认 "30d"
 - `rule_dir`：该字段指定一个本地目录，该目录中应当含有完整的 `*.rules.yml` 文件，这些文件会在集群配置初始化阶段被传输到目标机器上，作为 Prometheus 的规则
 - `remote_config`：用于支持将 Prometheus 数据写到远端，或从远端读取数据，该字段下有两个配置：
-  - `remote_write`：参考 Prometheus [`<remote_write>`](https://prometheus.io/docs/prometheus/latest/configuration/configuration/#remote_write) 文档
-  - `remote_read`：参考 Prometheus [`<remote_read>`](https://prometheus.io/docs/prometheus/latest/configuration/configuration/#remote_read) 文档
+    - `remote_write`：参考 Prometheus [`<remote_write>`](https://prometheus.io/docs/prometheus/latest/configuration/configuration/#remote_write) 文档
+    - `remote_read`：参考 Prometheus [`<remote_read>`](https://prometheus.io/docs/prometheus/latest/configuration/configuration/#remote_read) 文档
 - `external_alertmanagers`：若配置了 `external_alertmanagers`，Prometheus 会将配置行为报警通知到集群外的 Alertmanager。该字段为一个数组，数组的元素为每个外部的 Alertmanager，由 `host` 和 `web_port` 字段构成
 - `os`：`host` 字段所指定的机器的操作系统，若不指定该字段，则默认为 `global` 中的 `os`
 - `arch`：`host` 字段所指定的机器的架构，若不指定该字段，则默认为 `global` 中的 `arch`
@@ -674,22 +676,22 @@ monitoring_servers:
   - host: 10.0.1.11
     rule_dir: /local/rule/dir
     additional_args:
-      - --web.enable-lifecycle
+    - --web.enable-lifecycle
     remote_config:
       remote_write:
-        - queue_config:
-            batch_send_deadline: 5m
-            capacity: 100000
-            max_samples_per_send: 10000
-            max_shards: 300
-          url: http://127.0.0.1:8003/write
+      - queue_config:
+          batch_send_deadline: 5m
+          capacity: 100000
+          max_samples_per_send: 10000
+          max_shards: 300
+        url: http://127.0.0.1:8003/write
       remote_read:
-        - url: http://127.0.0.1:8003/read
+      - url: http://127.0.0.1:8003/read
     external_alertmanagers:
-      - host: 10.1.1.1
-        web_port: 9093
-      - host: 10.1.1.2
-        web_port: 9094
+    - host: 10.1.1.1
+      web_port: 9093
+    - host: 10.1.1.2
+      web_port: 9094
 ```
 
 ### `grafana_servers`

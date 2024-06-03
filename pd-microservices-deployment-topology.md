@@ -1,7 +1,6 @@
 ---
 title: PD 微服务部署拓扑
 summary: 了解在部署最小拓扑集群的基础上，部署 PD 微服务的拓扑结构。
-aliases: ["/docs-cn/dev/pd-microservices-deployment-topology/"]
 ---
 
 # PD 微服务部署拓扑

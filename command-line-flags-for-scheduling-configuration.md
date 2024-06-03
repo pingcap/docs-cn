@@ -1,6 +1,5 @@
 ---
 title: Scheduling 配置参数
-aliases: ["/docs-cn/dev/command-line-flags-for-scheduling-configuration/"]
 summary: Scheduling 配置参数可以通过命令行参数或环境变量配置。
 ---
 
