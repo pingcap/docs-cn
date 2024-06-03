@@ -1,12 +1,6 @@
 ---
-<<<<<<< HEAD
-title: 统计信息简介
-summary: 介绍 TiDB 中统计信息的收集和使用。
-=======
 title: 常规统计信息
 summary: 介绍 TiDB 中常规统计信息的收集和使用。
-aliases: ['/docs-cn/dev/statistics/','/docs-cn/dev/reference/performance/statistics/']
->>>>>>> c57bd16817 (*: add extended statistics doc and update related pages (#17339))
 ---
 
 # 常规统计信息
