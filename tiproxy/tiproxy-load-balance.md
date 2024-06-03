@@ -47,8 +47,9 @@ TiProxy 通过从 Prometheus 查询 TiDB server 的 CPU 使用率，将连接从
 
 该策略适用于以下场景：
 
-- 当有后台任务（例如 Analyze）占用较多 CPU 资源时，执行后台任务的 TiDB server 的 CPU 使用率更高，导致查询延迟更高
+- 当有后台任务（例如 Analyze）占用较多 CPU 资源时，执行后台任务的 TiDB server 的 CPU 使用率更高
 - 当不同连接上的工作负载差异较大时，尽管各个 TiDB server 上的连接数接近，但 CPU 使用率差异较大
+- 当集群内 TiDB server 的 CPU 资源配置不同时，即使连接数均衡，实际的 CPU 使用率也不均衡
 
 当没有启用该策略，或 CPU 使用率已经均衡时，TiProxy 使用基于最少连接数的负载均衡策略，且该策略的优先级低于其他策略。
 
