@@ -1,11 +1,11 @@
 ---
-title: 统计信息简介
-summary: 介绍 TiDB 中统计信息的收集和使用。
+title: 常规统计信息
+summary: 介绍 TiDB 中常规统计信息的收集和使用。
 ---
 
-# 统计信息简介
+# 常规统计信息
 
-TiDB 使用统计信息来决定[索引的选择](/choose-index.md)。
+TiDB 使用统计信息来决定[索引的选择](/choose-index.md)。本文介绍 TiDB 中常规统计信息的收集和使用。
 
 ## 统计信息版本
 
@@ -668,7 +668,7 @@ DROP STATS TableName GLOBAL;
 
 该语句只删除该表在分区动态裁剪模式下生成的 GlobalStats。
 
-## 统计信息的加载
+## 加载统计信息
 
 默认情况下，列的统计信息占用空间大小不同，TiDB 对统计信息的加载方式也会不同。
 
@@ -694,7 +694,7 @@ DROP STATS TableName GLOBAL;
 
 `lite-init-stats` 默认值为 `true`，即开启轻量级的统计信息初始化。将 `lite-init-stats` 设置为 `true` 可以加速统计信息初始化，避免加载不必要的统计信息，从而降低 TiDB 的内存使用。
 
-## 统计信息的导入导出
+## 导出和导入统计信息
 
 ### 导出统计信息
 

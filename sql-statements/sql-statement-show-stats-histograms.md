@@ -6,7 +6,7 @@ summary: TiDB 数据库中 SHOW HISTOGRAMS 语句的简单说明。
 
 # SHOW STATS_HISTOGRAMS
 
-你可以使用 `SHOW STATS_HISTOGRAMS` 语句查看通过 [`ANALYZE` 语句](/sql-statements/sql-statement-analyze-table.md) 收集的直方图信息，该内容是数据库 [统计信息](/statistics.md) 的一部分。
+你可以使用 `SHOW STATS_HISTOGRAMS` 语句查看通过 [`ANALYZE` 语句](/sql-statements/sql-statement-analyze-table.md) 收集的直方图信息，该内容是数据库[常规统计信息](/statistics.md) 的一部分。
 
 ## 语法图
 
@@ -56,5 +56,5 @@ SHOW STATS_HISTOGRAMS WHERE table_name = 't2';
 
 ## 另请参阅
 
-* [ANALYZE](/sql-statements/sql-statement-analyze-table.md)
-* [统计信息介绍](/statistics.md)
+* [`ANALYZE`](/sql-statements/sql-statement-analyze-table.md)
+* [常规统计信息](/statistics.md)

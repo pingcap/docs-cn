@@ -38,4 +38,4 @@ Query OK, 0 rows affected (0.00 sec)
 
 ## 另请参阅
 
-* [统计信息](/statistics.md)
+* [常规统计信息](/statistics.md)
