@@ -337,7 +337,6 @@ curl -X GET http://127.0.0.1:8300/api/v2/health
 | `only_output_updated_columns` | `BOOLEAN` 类型，对于 MQ 类型的 Sink 中的 `canal-json` 和 `open-protocol`，表示是否只向下游同步有内容更新的列。默认值为 `false`。（非必选） |
 | `cloud_storage_config`        | storage sink 配置。（非必选）                                                                              |
 | `open`                        | Open Protocol 配置，从 v7.5.2 开始支持。（非必选）                                                                             |
-| `debezium`                    | Debezium Protocol 配置，从 v7.5.2 开始支持。（非必选）                                                                             |
 
 `sink.column_selectors` 是一个数组，元素参数说明如下：
 
@@ -387,12 +386,6 @@ curl -X GET http://127.0.0.1:8300/api/v2/health
 | 参数名                | 说明                                                            |
 |:-------------------|:--------------------------------------------------------------|
 | `output_old_value` | `BOOLEAN` 类型，是否输出行数据更改前的值。默认值为 `true`。关闭后，Update 事件不会输出 "p" 字段的数据。 |
-
-`sink.debezium` 参数说明如下：
-
-| 参数名                | 说明                                                                 |
-|:-------------------|:-------------------------------------------------------------------|
-| `output_old_value` | `BOOLEAN` 类型，是否输出行数据更改前的值。默认值为 `true`。关闭后，Update 事件不会输出 "before" 字段的数据。 |
 
 ### 使用样例
 
