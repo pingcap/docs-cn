@@ -29,7 +29,7 @@ TiDB 版本：7.5.2
 
 + TiKV <!--tw@qiancai 2 条-->
 
-    - 调整 coprocessor 的日志级别，减少集群中不必要的日志 [#15881](https://github.com/tikv/tikv/issues/15881) @[cfzjywxk](https://github.com/cfzjywxk)
+    - 将 Coprocessor 遇到错误时的日志输出级别从 `warn` 调整为 `debug`，以减少集群中不必要的日志输出 [#15881](https://github.com/tikv/tikv/issues/15881) @[cfzjywxk](https://github.com/cfzjywxk)
     - 添加 CDC event 的等待处理时长监控指标，便于排查下游 CDC event 延迟问题 [#16282](https://github.com/tikv/tikv/issues/16282) @[hicqu](https://github.com/hicqu)
     - (dup): release-6.5.9.md > 改进提升> TiKV - 在 raftstore 线程中避免进行快照文件的 IO 操作，提高 TiKV 稳定性 [#16564](https://github.com/tikv/tikv/issues/16564) @[Connor1996](https://github.com/Connor1996)
     - (dup): release-6.5.9.md > 改进提升> TiKV - 增加 peer 和 store 消息的 slow log [#16600](https://github.com/tikv/tikv/issues/16600) @[Connor1996](https://github.com/Connor1996)
