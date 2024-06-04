@@ -117,6 +117,7 @@ summary: 了解 TiDB 的基本功能。
 
 ## 统计信息
 
+<<<<<<< HEAD
 | 统计信息                                                                                           | 5.2      | 5.1      | 5.0      | 4.0      |
 |----------------------------------------------------------------------------------------------------------|:------------:|:------------:|:------------:|:------------:|
 | [CM-Sketch](/statistics.md)                                                                               | 已废弃   | 已废弃   | 已废弃   | Y            |
@@ -124,6 +125,22 @@ summary: 了解 TiDB 的基本功能。
 | 扩展统计信息（多列）                                                 | 实验特性 | 实验特性 | 实验特性 | N            |
 | [统计反馈](/statistics.md#自动更新)                                                   | 实验特性 | 实验特性 | 实验特性 | 实验特性 |
 | [快速分析](/system-variables.md#tidb_enable_fast_analyze)                                            | 实验特性 | 实验特性 | 实验特性 | 实验特性 |
+=======
+| 统计信息 | 8.1 | 7.5  | 7.1 | 6.5 | 6.1 | 5.4 | 5.3 | 5.2 | 5.1 |
+|---|:----:|:----:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|
+| [CM-Sketch](/statistics.md) | 默认关闭| 默认关闭 | 默认关闭 | 默认关闭 | 默认关闭 | 默认关闭 | 默认关闭 | Y | Y |
+| [直方图](/statistics.md) |  Y  |  Y   | Y | Y | Y | Y | Y | Y | Y |
+| [扩展统计信息](/extended-statistics.md) |  E  |  E   | E | E | E | E | E | E | E |
+| 统计反馈 |  N  |  N   | N | N | 已废弃 | 已废弃 | E | E | E |
+| [统计信息自动更新](/statistics.md#自动更新) |  Y  | Y | Y | Y | Y | Y | Y | Y | Y |
+| [动态裁剪](/partitioned-table.md#动态裁剪模式) |  Y   |  Y   | Y | Y | Y | E | E | E | E |
+| [收集部分列的统计信息](/statistics.md#收集部分列的统计信息) |  E   |  E   | E | E | E | E | N | N | N |
+| [限制统计信息的内存使用量](/statistics.md#统计信息收集的内存限制) |  E  |  E   | E | E | E | N | N | N | N |
+| [随机采样约 10000 行数据来快速构建统计信息](/system-variables.md#tidb_enable_fast_analyze) | 已废弃 | 已废弃 | E | E | E | E | E | E | E |
+| [锁定统计信息](/statistics.md#锁定统计信息) |  Y  |  Y   | E | E | N | N | N | N | N |
+| [轻量级统计信息初始化](/statistics.md#加载统计信息) |  Y  |  Y   | E | N | N | N | N | N | N |
+| [显示统计信息收集的进度](/sql-statements/sql-statement-show-analyze-status.md) |  Y  |  Y   | N | N | N | N | N | N | N |
+>>>>>>> d9425f9227 (Remove fast analyze from the list of basic features (#17535))
 
 ## 安全
 
