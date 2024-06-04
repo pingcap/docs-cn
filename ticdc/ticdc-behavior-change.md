@@ -57,7 +57,7 @@ COMMIT;
 
 对于从 v7.5.2 开始的 v7.5 补丁版本，当使用 MySQL Sink 时，TiCDC 在启动时会从 PD 获取当前的时间戳 `thresholdTs`，并根据时间戳的值决定是否拆分 `UPDATE` 事件：
 
-- 对于含有单条或多条 `UPDATE` 变更的事务，如果 `UPDATE` 事件的主键或者非空唯一索引的列值发生改变，且事务的 `commitTS` 小于 `thresholdTs`，在写入 Sorter 模块之前 TiCDC 会将每条 `UPDATE` 事件拆分为 `DELETE` 和 `INSERT` 两条事件。
+- 对于含有单条或多条 `UPDATE` 变更的事务，如果该事务的 `commitTS` 小于 `thresholdTs`，在写入 Sorter 模块之前 TiCDC 会将每条 `UPDATE` 事件拆分为 `DELETE` 和 `INSERT` 两条事件。
 - 对于事务的 `commitTS` 大于或等于 `thresholdTs` 的 `UPDATE` 事件，TiCDC 不会对其进行拆分。详情见 GitHub issue [#10918](https://github.com/pingcap/tiflow/issues/10918)。
 
 该行为变更解决了由于 TiCDC 接收到的 `UPDATE` 事件顺序可能不正确，导致拆分后的 `DELETE` 和 `INSERT` 事件顺序也可能不正确，从而引发下游数据不一致的问题。
