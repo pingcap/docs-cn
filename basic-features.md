@@ -173,7 +173,6 @@ summary: 了解 TiDB 的功能概览。
 | [扩展统计信息](/extended-statistics.md) |  E  |  E   | E | E | E | E | E | E | E |
 | 统计反馈 |  N  |  N   | N | N | 已废弃 | 已废弃 | E | E | E |
 | [统计信息自动更新](/statistics.md#自动更新) |  Y  | Y | Y | Y | Y | Y | Y | Y | Y |
-| [快速分析](/system-variables.md#tidb_enable_fast_analyze) | 已废弃 | 已废弃  | E | E | E | E | E | E | E |
 | [动态裁剪](/partitioned-table.md#动态裁剪模式) |  Y   |  Y   | Y | Y | Y | E | E | E | E |
 | [收集部分列的统计信息](/statistics.md#收集部分列的统计信息) |  E   |  E   | E | E | E | E | N | N | N |
 | [限制统计信息的内存使用量](/statistics.md#统计信息收集的内存限制) |  E  |  E   | E | E | E | N | N | N | N |
