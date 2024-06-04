@@ -15,7 +15,7 @@ TiDB 版本：7.5.2
 
 - (dup): release-6.5.9.md > 兼容性变更 - 在 TiKV 中提供 RocksDB [`track-and-verify-wals-in-manifest`](https://docs.pingcap.com/zh/tidb/v6.5/tikv-configuration-file#track-and-verify-wals-in-manifest-从-v659-版本开始引入) 配置，用于调查 WAL (Write Ahead Log) 可能损坏问题 [#16549](https://github.com/tikv/tikv/issues/16549) @[v01dstar](https://github.com/v01dstar)
 - (dup): release-7.1.4.md > 兼容性变更 - 为减少日志打印的开销，TiFlash 配置项 `logger.level` 默认值由 `"debug"` 改为 `"info"` [#8641](https://github.com/pingcap/tiflash/issues/8641) @[JaySon-Huang](https://github.com/JaySon-Huang)
-- 使用 strict-format / split_file 时必须设置行分隔符 [#37338](https://github.com/pingcap/tidb/issues/37338) @[lance6716](https://github.com/lance6716)
+- 使用 `strict-format` 或 `split_file` 时必须设置行分隔符 [#37338](https://github.com/pingcap/tidb/issues/37338) @[lance6716](https://github.com/lance6716)
 
 ## 改进提升
 
@@ -39,7 +39,7 @@ TiDB 版本：7.5.2
 + PD <!--tw@lilin90 1 条-->
 
     - (dup): release-7.1.5.md > 改进提升> PD - 升级 etcd 版本至 v3.4.30 [#7904](https://github.com/tikv/pd/issues/7904) @[JmPotato](https://github.com/JmPotato)
-    - 增加 max RU 的监控指标 [#7908](https://github.com/tikv/pd/issues/7908) @[nolouch](https://github.com/nolouch)
+    - 增加每秒 max RU (Request Unit) 的监控指标 [#7908](https://github.com/tikv/pd/issues/7908) @[nolouch](https://github.com/nolouch)
 
 + TiFlash
 
@@ -196,14 +196,14 @@ TiDB 版本：7.5.2
 + PD <!--tw@lilin90 7 条-->
 
     - 修复 TiDB 网络分区故障恢复后可能导致连接 panic 的问题 [#7926](https://github.com/tikv/pd/issues/7926) @[CabinfeverB](https://github.com/CabinfeverB)
-    - 修复执行 online recovery 后，调度可能被错误暂停的问题 [#8095](https://github.com/tikv/pd/issues/8095) @[JmPotato](https://github.com/JmPotato)
+    - 修复执行在线数据恢复后，调度可能被错误暂停的问题 [#8095](https://github.com/tikv/pd/issues/8095) @[JmPotato](https://github.com/JmPotato)
     - 修复开启资源组后，CPS by type 监控类型错误的问题 [#52605](https://github.com/pingcap/tidb/issues/52605) @[nolouch](https://github.com/nolouch)
     - 修复无法通过配置文件更改日志级别的问题 [#8117](https://github.com/tikv/pd/issues/8117) @[rleungx](https://github.com/rleungx)
     - 修复资源组查询取消导致大量重试的问题 [#8217](https://github.com/tikv/pd/issues/8217) @[nolouch](https://github.com/nolouch)
-    - 修复 ALTER PLACEMENT POLICY 无法修改 placement policy 的问题 [#52257](https://github.com/pingcap/tidb/issues/52257) @[jiyfhust](https://github.com/jiyfhust)
+    - 修复 `ALTER PLACEMENT POLICY` 无法修改 placement policy 的问题 [#52257](https://github.com/pingcap/tidb/issues/52257) @[jiyfhust](https://github.com/jiyfhust)
 
-    - 修复使用 placement policy 的情况下，down peer 可能无法被修复的问题 [#7808](https://github.com/tikv/pd/issues/7808) @[rleungx](https://github.com/rleungx)
-    - 修复 PD leader 手动切换可能失败的问题 [#8225](https://github.com/tikv/pd/issues/8225) @[HuSharp](https://github.com/HuSharp) 
+    - 修复使用 placement policy 的情况下，down peer 可能无法恢复的问题 [#7808](https://github.com/tikv/pd/issues/7808) @[rleungx](https://github.com/rleungx)
+    - 修复手动切换 PD leader 可能失败的问题 [#8225](https://github.com/tikv/pd/issues/8225) @[HuSharp](https://github.com/HuSharp) 
     - (dup): release-7.1.5.md > 错误修复> PD - 修复写热点调度可能会违反放置策略 (placement policy) 约束的问题 [#7848](https://github.com/tikv/pd/issues/7848) @[lhy1024](https://github.com/lhy1024)
     - (dup): release-7.1.4.md > 错误修复> PD - 修复资源组 (Resource Group) 客户端中未完全删除的 slot 导致分配 token 低于给定值的问题 [#7346](https://github.com/tikv/pd/issues/7346) @[guo-shaoge](https://github.com/guo-shaoge)
     - (dup): release-6.5.9.md > 错误修复> PD - 修复扩缩容进度显示不准确的问题 [#7726](https://github.com/tikv/pd/issues/7726) @[CabinfeverB](https://github.com/CabinfeverB)
@@ -213,8 +213,8 @@ TiDB 版本：7.5.2
 
 + TiFlash <!--tw@lilin90 2 条-->
 
-    - 修复在存算分离架构下，DDL 新增带有 not null 属性的列后，查询可能返回错误的 NULL 值的问题 [#9084](https://github.com/pingcap/tiflash/issues/9084) @[Lloyd-Pottiger](https://github.com/Lloyd-Pottiger)
-    - 修复在带空分区的分区表上执行查询，可能会导致查询超时的问题 [#9024](https://github.com/pingcap/tiflash/issues/9024) @[JinheLin](https://github.com/JinheLin)
+    - 修复在存算分离架构下，DDL 新增带有 not null 属性的列后，查询可能返回错误的 null 值的问题 [#9084](https://github.com/pingcap/tiflash/issues/9084) @[Lloyd-Pottiger](https://github.com/Lloyd-Pottiger)
+    - 修复在含空分区的分区表上执行查询时，可能会超时的问题 [#9024](https://github.com/pingcap/tiflash/issues/9024) @[JinheLin](https://github.com/JinheLin)
     - note [#issue](https://github.com/pingcap/tiflash/issues/${issue-id}) @[贡献者 GitHub ID](https://github.com/${github-id})
     - (dup): release-8.1.0.md > 错误修复> TiFlash - 修复存算分离架构下，TiFlash 计算节点进程停止时可能出现 panic 的问题 [#8860](https://github.com/pingcap/tiflash/issues/8860) @[guo-shaoge](https://github.com/guo-shaoge)
     - (dup): release-7.1.5.md > 错误修复> TiFlash - 修复查询生成列出错的问题 [#8787](https://github.com/pingcap/tiflash/issues/8787) @[guo-shaoge](https://github.com/guo-shaoge)
