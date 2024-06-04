@@ -33,7 +33,6 @@ TiDB 版本：8.2.0
 
 * 支持下推以下字符串函数到 TiKV [#48170](https://github.com/pingcap/tidb/issues/48170) @[dbsid](https://github.com/dbsid)  **tw@Oreoxmt** <!--1663-->
 
-    * `JSON_APPEND()`
     * `JSON_ARRAY_APPEND()`
     * `JSON_MERGE_PATCH()`
     * `JSON_REPLACE()`
