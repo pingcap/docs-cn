@@ -1,13 +1,13 @@
 ---
 title: Scheduling 配置文件描述
-summary: Scheduling 配置文件包含了许多参数，如节点名称、数据路径、节点 URL 等。
+summary: Scheduling 配置文件包含了多个配置项，如节点名称、数据路径、节点 URL 等。
 ---
 
 # Scheduling 配置文件描述
 
 <!-- markdownlint-disable MD001 -->
 
-本文档仅在 PD 开启微服务模式下适用。
+Scheduling 节点用于提供 PD 的 `scheduling` 微服务。 本文档仅在 PD 开启微服务模式下适用。
 
 > **Tip:**
 >
@@ -17,29 +17,29 @@ summary: Scheduling 配置文件包含了许多参数，如节点名称、数据
 
 - Scheduling 节点名称。
 - 默认值：`"Scheduling"`
-- 如果你需要启动多个 Scheduling，一定要给 Scheduling 使用不同的名字。
+- 如果你需要启动多个 Scheduling 节点，请确保不同的 Scheduling 节点使用不同的名字。
 
 ### `data-dir`
 
-- Scheduling 存储数据路径。
+- Scheduling 节点数据存储路径。
 - 默认值：`"default.${name}"`
 
 ### `listen-addr`
 
-- Scheduling 监听的客户端 URL。
+- Scheduling 节点监听的客户端 URL。
 - 默认值：`"http://127.0.0.1:3379"`
 - 如果部署一个集群，listen-addr 必须指定当前主机的 IP 地址，例如 `"http://192.168.100.113:3379"`，如果是运行在 Docker 则需要指定为 `"http://0.0.0.0:3379"`。
 
 ### `advertise-listen-addr`
 
-- 用于外部访问 Scheduling 的 URL。
+- 用于外部访问 Scheduling 节点的 URL。
 - 默认值：`"${listen-addr}"`
-- 在某些情况下，例如 Docker 或者 NAT 网络环境，客户端并不能通过 Scheduling 自己监听的地址来访问到 Scheduling，这时候，你就可以设置 advertise addr 来让客户端访问。
-- 例如，Docker 内部 IP 地址为 `172.17.0.1`，而宿主机的 IP 地址为 `192.168.100.113` 并且设置了端口映射 `-p 2379:2379`，那么可以设置为 `advertise-listen-addr="http://192.168.100.113:2379"`，客户端可以通过 `http://192.168.100.113:2379` 来找到这个服务。
+- 在某些情况下，例如 Docker 或者 NAT 网络环境，客户端并不能通过 Scheduling 节点自己监听的地址来访问 Scheduling 节点。此时，你可以设置 `advertise-listen-addr` 来让客户端访问。
+- 例如，Docker 内部 IP 地址为 `172.17.0.1`，而宿主机的 IP 地址为 `192.168.100.113` 并且设置了端口映射 `-p 2379:2379`，那么可以设置 `advertise-listen-addr="http://192.168.100.113:2379"`，然后客户端就可以通过 `http://192.168.100.113:2379` 来找到这个服务。
 
 ### `backend-endpoints`
 
-- Scheduling 节点监听其他 PD 节点的 URL 列表。
+- Scheduling 节点监听其他 Scheduling 节点的 URL 列表。
 - 默认值：`"http://127.0.0.1:2379"`
 
 ### `lease`
@@ -69,7 +69,7 @@ summary: Scheduling 配置文件包含了许多参数，如节点名称、数据
 
 ### `redact-info-log`
 
-- 控制 Scheduling 日志脱敏的开关
+- 控制 Scheduling 节点日志脱敏的开关
 - 该配置项值设为 true 时将对 Scheduling 日志脱敏，遮蔽日志中的用户信息。
 - 默认值：false
 

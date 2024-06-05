@@ -29,8 +29,8 @@ summary: 介绍通过 TiUP 部署或扩容 TiDB 集群时提供的拓扑文件�
 - [cdc_servers](/tiup/tiup-cluster-topology-reference.md#cdc_servers)：CDC 实例的配置，用来指定 CDC 组件部署到哪些机器上
 - [tispark_masters](/tiup/tiup-cluster-topology-reference.md#tispark_masters)：TiSpark Master 实例的配置，用来指定 TiSpark Master 组件部署到哪台机器上，仅允许部署一个 TiSpark Master 节点
 - [tispark_workers](/tiup/tiup-cluster-topology-reference.md#tispark_workers)：TiSpark Worker 实例的配置，用来指定 TiSpark Worker 组件部署到哪些机器上
-- [tso_servers](/tiup/tiup-cluster-topology-reference.md#tso_servers)：TSO 实例的配置，用来指定 TSO 部署在哪些机器上（需要开启微服务）
-- [scheduling_servers](/tiup/tiup-cluster-topology-reference.md#scheduling_servers)：Scheduling 实例的配置，用来指定 Scheduling 部署在哪些机器上（需要开启微服务）
+- [tso_servers](/tiup/tiup-cluster-topology-reference.md#tso_servers)：TSO 实例的配置，用来指定 `tso` 微服务部署在哪些机器上（需要开启 [PD 微服务](/pd-microservices.md)）
+- [scheduling_servers](/tiup/tiup-cluster-topology-reference.md#scheduling_servers)：Scheduling 实例的配置，用来指定 `scheduling` 微服务部署在哪些机器上（需要开启 [PD 微服务](/pd-microservices.md)）
 - [monitoring_servers](/tiup/tiup-cluster-topology-reference.md#monitoring_servers)：用来指定 Prometheus 和 NGMonitoring 部署在哪些机器上，TiUP 支持部署多台 Prometheus 实例，但真实投入使用的只有第一个
 - [grafana_servers](/tiup/tiup-cluster-topology-reference.md#grafana_servers)：Grafana 实例的配置，用来指定 Grafana 部署在哪台机器上
 - [alertmanager_servers](/tiup/tiup-cluster-topology-reference.md#alertmanager_servers)：Alertemanager 实例的配置，用来指定 Alertmanager 部署在哪些机器上
@@ -110,8 +110,8 @@ monitored:
 - `pump`：Pump 服务的相关配置，支持的完整配置请参考 [TiDB Binlog 配置说明](/tidb-binlog/tidb-binlog-configuration-file.md#pump)
 - `drainer`：Drainer 服务的相关配置，支持的完整配置请参考 [TiDB Binlog 配置说明](/tidb-binlog/tidb-binlog-configuration-file.md#drainer)
 - `cdc`：CDC 服务的相关配置，支持的完整配置请参考 [TiCDC 安装部署](/ticdc/deploy-ticdc.md)
-- `tso`：TSO 服务的相关配置，支持的完整配置请参考 [TSO 参数配置](/tso-configuration-file.md)
-- `scheduling`：Scheduling 服务的相关配置，支持的完整配置请参考 [：Scheduling 参数配置](/scheduling-configuration-file.md)
+- `tso`：`tso` 微服务的相关配置，支持的完整配置请参考 [TSO 参数配置](/tso-configuration-file.md)
+- `scheduling`：`scheduling` 微服务的相关配置，支持的完整配置请参考 [Scheduling 参数配置](/scheduling-configuration-file.md)
 
 `server_configs` 配置示例：
 
@@ -577,11 +577,11 @@ tispark_workers:
 
 ### `tso_servers`
 
-`tso_servers` 约定了将 TSO 服务部署到哪些机器上，同时可以指定每台机器上的服务配置。`tso_servers` 是一个数组，每个数组元素包含以下字段：
+`tso_servers` 约定了将 `tso` 微服务部署到哪些机器上，同时可以指定每台机器上的服务配置。`tso_servers` 是一个数组，每个数组元素包含以下字段：
 
 - `host`：指定部署到哪台机器，字段值填 IP 地址，不可省略。
 - `ssh_port`：指定连接目标机器进行操作的时候使用的 SSH 端口，若不指定，则使用 `global` 区块中的 `ssh_port`。
-- `port`：TSO 服务的监听端口，默认值：`3379`。
+- `port`：`tso` 微服务的监听端口，默认值：`3379`。
 - `deploy_dir`：指定部署目录，若不指定，或指定为相对目录，则按照 `global` 中配置的 `deploy_dir` 生成。
 - `data_dir`：指定数据目录，若不指定，或指定为相对目录，则按照 `global` 中配置的 `data_dir` 生成。
 - `config`：该字段配置规则和 `server_configs` 里的 `tso` 配置规则相同，若配置了该字段，会将该字段内容和 `server_configs` 里的 `tso` 内容合并（若字段重叠，以本字段内容为准），然后生成配置文件并下发到 `host` 指定的机器。
@@ -607,14 +607,14 @@ tso_servers:
 
 ### `scheduling_servers`
 
-`scheduling_servers` 约定了将 Scheduling 服务部署到哪些机器上，同时可以指定每台机器上的服务配置。`scheduling_servers` 是一个数组，每个数组元素包含以下字段：
+`scheduling_servers` 约定了将 `scheduling` 微服务部署到哪些机器上，同时可以指定每台机器上的服务配置。`scheduling_servers` 是一个数组，每个数组元素包含以下字段：
 
 - `host`：指定部署到哪台机器，字段值填 IP 地址，不可省略。
 - `ssh_port`：指定连接目标机器进行操作的时候使用的 SSH 端口，若不指定，则使用 `global` 区块中的 `ssh_port`。
-- `port`：TSO 服务的监听端口，默认值：`3379`。
+- `port`：`scheduling` 微服务的监听端口，默认值：`3379`。
 - `deploy_dir`：指定部署目录，若不指定，或指定为相对目录，则按照 `global` 中配置的 `deploy_dir` 生成。
 - `data_dir`：指定数据目录，若不指定，或指定为相对目录，则按照 `global` 中配置的 `data_dir` 生成。
-- `config`：该字段配置规则和 `server_configs` 里的 `scheduling` 配置规则相同，若配置了该字段，会将该字段内容和 `server_configs` 里的 `tso` 内容合并（若字段重叠，以本字段内容为准），然后生成配置文件并下发到 `host` 指定的机器。
+- `config`：该字段配置规则和 `server_configs` 里的 `scheduling` 配置规则相同，若配置了该字段，会将该字段内容和 `server_configs` 里的 `scheduling` 内容合并（若字段重叠，以本字段内容为准），然后生成配置文件并下发到 `host` 指定的机器。
 - `os`：`host` 字段所指定的机器的操作系统，若不指定该字段，则默认为 `global` 中的 `os`。
 - `arch`：`host` 字段所指定的机器的架构，若不指定该字段，则默认为 `global` 中的 `arch`。
 

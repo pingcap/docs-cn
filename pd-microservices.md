@@ -40,22 +40,22 @@ PD 微服务通常用于解决 PD 出现性能瓶颈的问题，提高 PD 服务
 
 ## 使用方法
 
-目前 PD 微服务支持通过 TiDB Operator 和 TiUP 进行部署。
+PD 微服务支持通过 TiDB Operator 或 TiUP 进行部署。
 
 <SimpleTab>
 <div label="TiDB Operator">
 
-TiDB Operator 详细使用方法请参考以下文档：
+对于通过 TiDB Operator 部署的 TiDB 集群，PD 微服务详细使用方法请参考以下文档：
 
-- [部署 PD 微服务](https://docs.pingcap.com/zh/tidb-in-kubernetes/dev/configure-a-tidb-cluster#部署-pd-微服务)
-- [配置 PD 微服务](https://docs.pingcap.com/zh/tidb-in-kubernetes/dev/configure-a-tidb-cluster#配置-pd-微服务)
-- [修改 PD 微服务](https://docs.pingcap.com/zh/tidb-in-kubernetes/dev/modify-tidb-configuration#修改-pd-微服务配置)
-- [扩缩容 PD 微服务组件](https://docs.pingcap.com/zh/tidb-in-kubernetes/dev/scale-a-tidb-cluster#扩缩容-pd-微服务组件)
+- [部署 PD 微服务](https://docs.pingcap.com/zh/tidb-in-kubernetes/stable/configure-a-tidb-cluster#部署-pd-微服务)
+- [配置 PD 微服务](https://docs.pingcap.com/zh/tidb-in-kubernetes/stable/configure-a-tidb-cluster#配置-pd-微服务)
+- [修改 PD 微服务](https://docs.pingcap.com/zh/tidb-in-kubernetes/stable/modify-tidb-configuration#修改-pd-微服务配置)
+- [扩缩容 PD 微服务组件](https://docs.pingcap.com/zh/tidb-in-kubernetes/stable/scale-a-tidb-cluster#扩缩容-pd-微服务组件)
 
 <SimpleTab>
 <div label="TiUP">
 
-TiUP 详细使用方法请参考以下文档：
+对于通过 TiUP 部署的 TiDB 集群，PD 微服务详细使用方法请参考以下文档：
 
 - [部署 PD 微服务](/pd-microservices-deployment-topology.md)
 - [使用 TiUP 扩容缩容开启微服务的集群](/scale-microservices-using-tiup.md)
@@ -67,12 +67,14 @@ TiUP 详细使用方法请参考以下文档：
 </div>
 <div label="TiUP Playground">
 
-TiUP Playground 详细使用方法请参考以下文档：
+对于通过 TiUP 的 Playground 组件部署的 TiDB 本地集群，PD 微服务详细使用方法请参考以下文档：
 
 - [部署 PD 微服务](/tiup/tiup-playground.md#部署-pd-微服务)
 
 </div>
 </SimpleTab>
+
+## 注意事项
 
 当部署和使用 PD 微服务时，请注意以下事项：
 
