@@ -123,7 +123,6 @@ summary: 了解 TiDB 的基本功能。
 | [直方图](/statistics.md)                                                                             | Y            | Y            | Y            | Y            |
 | 扩展统计信息（多列）                                                 | 实验特性 | 实验特性 | 实验特性 | N            |
 | [统计反馈](/statistics.md#自动更新)                                                   | 实验特性 | 实验特性 | 实验特性 | 实验特性 |
-| [快速分析](/system-variables.md#tidb_enable_fast_analyze)                                            | 实验特性 | 实验特性 | 实验特性 | 实验特性 |
 
 ## 安全
 
