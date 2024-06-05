@@ -1,7 +1,11 @@
 ---
-title: 使用 TiUP 扩容缩容开启微服务的集群
-summary: TiUP 可以在不中断线上服务的情况下扩容和缩容 集群。使用 `tiup cluster list` 查看当前集群名称列表。扩容 TSO/Scheduling 节点需要编写扩容拓扑配置，并执行扩容命令。扩容后，使用 `tiup cluster display <cluster-name>` 检查集群状态。缩容 TSO/Scheduling 节点需要查看节点 ID 信息，执行缩容操作，然后检查集群状态。
+title: 使用 TiUP 扩容缩容集群中的 PD 微服务节点
+summary: 介绍如何使用 TiUP 扩容缩容集群中的 PD 微服务节点。
 ---
+
+# 使用 TiUP 扩容缩容集群中的 PD 微服务节点
+
+本文介绍如何使用 TiUP 扩容缩容集群中的 PD 微服务节点，包括 TSO 节点和 Scheduling 节点。
 
 你可以通过 `tiup cluster list` 查看当前的集群名称列表。
 
@@ -18,7 +22,7 @@ summary: TiUP 可以在不中断线上服务的情况下扩容和缩容 集群�
 
 ## 扩容 TSO/Scheduling 节点
 
-如果要添加一个 TSO 和一个 Scheduling 节点，IP 地址分别为 10.0.1.8，10.0.1.9，可以按照如下步骤进行操作。
+如果要添加一个 IP 地址为 10.0.1.8 的 TSO 节点和一个 IP 地址为 10.0.1.9 的 Scheduling 节点，可以按照如下步骤进行操作。
 
 ### 1. 编写扩容拓扑配置
 
@@ -34,9 +38,7 @@ summary: TiUP 可以在不中断线上服务的情况下扩容和缩容 集群�
 vi scale-out.yml
 ```
 
-TSO 配置文件参考：
-
-{{< copyable "" >}}
+TSO 配置参考：
 
 ```ini
 tso_servers:
@@ -44,9 +46,7 @@ tso_servers:
     port: 3379
 ```
 
-Scheduling 配置文件参考：
-
-{{< copyable "" >}}
+Scheduling 配置参考：
 
 ```ini
 scheduling_servers:
@@ -62,39 +62,31 @@ scheduling_servers:
 
 （1）检查集群存在的潜在风险：
 
-  {{< copyable "shell-regular" >}}
-
-  ```shell
-  tiup cluster check <cluster-name> scale-out.yml --cluster --user root [-p] [-i /home/root/.ssh/gcp_rsa]
-  ```
+```shell
+tiup cluster check <cluster-name> scale-out.yml --cluster --user root [-p] [-i /home/root/.ssh/gcp_rsa]
+```
 
 （2）自动修复集群存在的潜在风险：
 
-  {{< copyable "shell-regular" >}}
-
-  ```shell
-  tiup cluster check <cluster-name> scale-out.yml --cluster --apply --user root [-p] [-i /home/root/.ssh/gcp_rsa]
-  ```
+```shell
+tiup cluster check <cluster-name> scale-out.yml --cluster --apply --user root [-p] [-i /home/root/.ssh/gcp_rsa]
+```
 
 （3）执行 scale-out 命令扩容 TiDB 集群：
 
-  {{< copyable "shell-regular" >}}
-
-  ```shell
-  tiup cluster scale-out <cluster-name> scale-out.yml [-p] [-i /home/root/.ssh/gcp_rsa]
-  ```
+```shell
+tiup cluster scale-out <cluster-name> scale-out.yml [-p] [-i /home/root/.ssh/gcp_rsa]
+```
 
 以上操作示例中：
 
 - 扩容配置文件为 `scale-out.yml`。
 - `--user root` 表示通过 root 用户登录到目标主机完成集群部署，该用户需要有 ssh 到目标机器的权限，并且在目标机器有 sudo 权限。也可以用其他有 ssh 和 sudo 权限的用户完成部署。
-- [-i] 及 [-p] 为可选项，如果已经配置免密登录目标机，则不需填写。否则选择其一即可，[-i] 为可登录到目标机的 root 用户（或 --user 指定的其他用户）的私钥，也可使用 [-p] 交互式输入该用户的密码。
+- [-i] 及 [-p] 为可选项，如果已经配置免密登录目标机，则无需填写。否则选择其一即可，[-i] 为可登录到目标机的 root 用户（或 --user 指定的其他用户）的私钥，也可使用 [-p] 交互式输入该用户的密码。
 
 预期日志结尾输出 ```Scaled cluster `<cluster-name>` out successfully``` 信息，表示扩容操作成功。
 
 ### 3. 查看集群状态
-
-{{< copyable "shell-regular" >}}
 
 ```shell
 tiup cluster display <cluster-name>
@@ -115,14 +107,11 @@ tiup cluster display <cluster-name>
 | 10.0.1.8   | TSO   |
 | 10.0.1.9   | Scheduling   |
 
-## 缩容 TiDB/PD/TiKV 节点
+## 缩容 TSO/Scheduling 节点
 
-如果要移除 IP 地址为 10.0.1.8 的一个 TSO 节点和 IP 地址为 10.0.1.9 的一个 Scheduling 节点和，可以按照如下步骤进行操作。
-
+如果要移除一个 IP 地址为 10.0.1.8 的 TSO 节点和一个 IP 地址为 10.0.1.9 的 Scheduling 节点，可以按照如下步骤进行操作。
 
 ### 1. 查看节点 ID 信息
-
-{{< copyable "shell-regular" >}}
 
 ```shell
 tiup cluster display <cluster-name>
@@ -168,8 +157,6 @@ ID       Role         Host    Ports                            Status  Data Dir 
 
 ### 2. 执行缩容操作
 
-{{< copyable "shell-regular" >}}
-
 ```shell
 tiup cluster scale-in <cluster-name> --node 10.0.1.8:3379
 tiup cluster scale-in <cluster-name> --node 10.0.1.9:3379
@@ -182,8 +169,6 @@ tiup cluster scale-in <cluster-name> --node 10.0.1.9:3379
 ### 3. 查看集群状态
 
 执行如下命令检查节点是否下线成功：
-
-{{< copyable "shell-regular" >}}
 
 ```shell
 tiup cluster display <cluster-name>
