@@ -66,7 +66,6 @@ TiProxy 根据自身和 TiDB server 的地理位置，将连接优先路由到�
 
 TiProxy 根据自身和 TiDB server 的 `zone` 标签确定各自的地理位置。你需要同时设置以下配置项：
 
-- 在 PD 的 [`location-labels`](/pd-configuration-file.md#location-labels) 中增加 `zone` 标签。配置方式请参阅[设置 PD 的 `location-labels` 配置](/schedule-replicas-by-topology-labels.md#设置-pd-的-location-labels-配置)。
 - 在 TiDB server 的 [`labels`](/tidb-configuration-file.md#labels) 配置项中将 `zone` 设置为当前可用区。配置方式请参阅[设置 TiDB 的 `labels`](/schedule-replicas-by-topology-labels.md#设置-tidb-的-labels可选)。
 - 在 TiProxy 的 [`labels`](/tiproxy/tiproxy-configuration.md#labels) 配置项中将 `zone` 设置为当前可用区。
 
@@ -78,8 +77,6 @@ TiProxy 根据自身和 TiDB server 的 `zone` 标签确定各自的地理位置
 component_versions:
   tiproxy: "v1.1.0"
 server_configs:
-  pd:
-    replication.location-labels: ["zone"]
   tidb:
     graceful-wait-before-shutdown: 15
 tiproxy_servers:
