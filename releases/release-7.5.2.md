@@ -64,7 +64,7 @@ TiDB 版本：7.5.2
         - 提升使用 redo log 恢复数据过程中的内存稳定性，减少 OOM 的概率 [#10900](https://github.com/pingcap/tiflow/issues/10900) @[CharlesCheung96](https://github.com/CharlesCheung96)
         - 显著提升事务冲突场景中的数据同步的稳定性，性能最高提升可达 10 倍 [#10896](https://github.com/pingcap/tiflow/issues/10896) @[CharlesCheung96](https://github.com/CharlesCheung96)
         - 开启 PD client 转发功能，提升 TiCDC 和 PD leader 之间存在网络隔离时 TiCDC 的稳定性 [#10849](https://github.com/pingcap/tiflow/issues/10849) @[asddongmen](https://github.com/asddongmen)
-        - 提升同步任务初始化速度 [#11124]([https://github.com/pingcap/tiflow/issues/11124) @[asddongmen](https://github.com/asddongmen)
+        - 提升同步任务初始化速度 [#11124](https://github.com/pingcap/tiflow/issues/11124) @[asddongmen](https://github.com/asddongmen)
         - 采用异步方式初始化同步任务，减少 Processor 和 Owner 的初始化时间 [#10845](https://github.com/pingcap/tiflow/issues/10845) @[sdojjy](https://github.com/sdojjy)
         - 自动探测 Kafka 集群版本，提升与 Kafka 的兼容性 [#10852](https://github.com/pingcap/tiflow/issues/10852) @[wk989898](https://github.com/wk989898)
 
