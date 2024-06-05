@@ -1253,6 +1253,10 @@ RocksDB 相关的配置项。
 
 ### `info-log-max-size`
 
+> **警告：**
+>
+> 自 v5.4.0 起，RocksDB 的日志改为由 TiKV 的日志模块进行管理，因此该配置项被废弃，其功能由配置参数 [`log.file.max-size`](#max-size-从-v540-版本开始引入) 代替。
+
 + Info 日志的最大大小。
 + 默认值：1GiB
 + 最小值：0
@@ -1260,10 +1264,18 @@ RocksDB 相关的配置项。
 
 ### `info-log-roll-time`
 
+> **警告：**
+>
+> 自 v5.4.0 起，RocksDB 的日志改为由 TiKV 的日志模块进行管理，因此该配置项被废弃。TiKV 不再支持按照时间自动切分日志，请使用配置参数 [`log.file.max-size`](#max-size-从-v540-版本开始引入) 配置按照文件大小自动切分日志的阈值。
+
 + 日志截断间隔时间，如果为 0s 则不截断。
 + 默认值：0s
 
 ### `info-log-keep-log-file-num`
+
+> **警告：**
+>
+> 自 v5.4.0 起，RocksDB 的日志改为由 TiKV 的日志模块进行管理，因此该配置项被废弃，其功能由配置参数 [`log.file.max-backups`](#max-backups-从-v540-版本开始引入) 代替。
 
 + 保留日志文件最大个数。
 + 默认值：10
@@ -1275,6 +1287,10 @@ RocksDB 相关的配置项。
 + 默认值：""
 
 ### `info-log-level`
+
+> **警告：**
+>
+> 自 v5.4.0 起，RocksDB 的日志改为由 TiKV 的日志模块进行管理，因此该配置项被废弃，其功能由配置参数 [`log.level`](#level-从-v540-版本开始引入) 代替。
 
 + RocksDB 的日志级别。
 + 默认值：`"info"`
@@ -1785,6 +1801,10 @@ raftdb 相关配置项。
 
 ### `info-log-max-size`
 
+> **警告：**
+>
+> 自 v5.4.0 起，RocksDB 的日志改为由 TiKV 的日志模块进行管理，因此该配置项被废弃，其功能由配置参数 [`log.file.max-size`](#max-size-从-v540-版本开始引入) 代替。
+
 + Info 日志的最大大小。
 + 默认值：`"1GiB"`
 + 最小值：`0`
@@ -1792,10 +1812,18 @@ raftdb 相关配置项。
 
 ### `info-log-roll-time`
 
+> **警告：**
+>
+> 自 v5.4.0 起，RocksDB 的日志改为由 TiKV 的日志模块进行管理，因此该配置项被废弃。TiKV 不再支持按照时间自动切分日志，请使用配置参数 [`log.file.max-size`](#max-size-从-v540-版本开始引入) 配置按照文件大小自动切分日志的阈值。
+
 + Info 日志截断间隔时间，如果为 `"0s"` 则不截断。
 + 默认值：`"0s"`
 
 ### `info-log-keep-log-file-num`
+
+> **警告：**
+>
+> 自 v5.4.0 起，RocksDB 的日志改为由 TiKV 的日志模块进行管理，因此该配置项被废弃，其功能由配置参数 [`log.file.max-backups`](#max-backups-从-v540-版本开始引入) 代替。
 
 + RaftDB 中保存的 Info 日志文件的最大数量。
 + 默认值：`10`
@@ -1807,6 +1835,10 @@ raftdb 相关配置项。
 + 默认值：`""`
 
 ### `info-log-level`
+
+> **警告：**
+>
+> 自 v5.4.0 起，RocksDB 的日志改为由 TiKV 的日志模块进行管理，因此该配置项被废弃，其功能由配置参数 [`log.level`](#level-从-v540-版本开始引入) 代替。
 
 + RaftDB 的日志级别。
 + 默认值：`"info"`
