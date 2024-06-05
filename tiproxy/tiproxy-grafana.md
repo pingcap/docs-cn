@@ -60,7 +60,7 @@ TiProxy 有四个面板组。这些面板上的指标表示 TiProxy 的当前状
     - `memory`：TiProxy 进行了[基于内存的负载均衡](/tiproxy/tiproxy-load-balance.md#基于内存的负载均衡)
     - `cpu`：TiProxy 进行了[基于 CPU 的负载均衡](/tiproxy/tiproxy-load-balance.md#基于-cpu-的负载均衡)
     - `location`：TiProxy 进行了[基于地理位置的负载均衡](/tiproxy/tiproxy-load-balance.md#基于地理位置的负载均衡)
-    - `conn`：TiProxy 进行了基于连接数的负载均衡
+    - `conn`：TiProxy 进行了[基于连接数的负载均衡](/tiproxy/tiproxy-load-balance.md#基于连接数的负载均衡)
 
 ## Backend
 

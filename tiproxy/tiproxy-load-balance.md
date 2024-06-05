@@ -13,6 +13,7 @@ TiProxy 默认启用所有策略，优先级从高到低依次为：
 2. 基于内存的负载均衡：当某个 TiDB server 存在 Out of Memory (OOM) 风险时，TiProxy 将连接从该 TiDB server 迁移到内存使用量较低的 TiDB server。
 3. 基于 CPU 的负载均衡：当某个 TiDB server 的 CPU 使用率远高于其他 TiDB server 时，TiProxy 将连接从该 TiDB server 迁移到 CPU 使用率较低的 TiDB server。
 4. 基于地理位置的负载均衡：优先将请求路由到地理位置上距离 TiProxy 较近的 TiDB server。
+5. 基于连接数的负载均衡：当某个 TiDB server 的连接数远高于其他 TiDB server 时，TiProxy 将连接从该 TiDB server 迁移到连接数较少的 TiDB server。
 
 > **注意：**
 >
@@ -48,8 +49,6 @@ TiProxy 通过从 Prometheus 查询 TiDB server 的 CPU 使用率，将连接从
 - 当有后台任务（例如 Analyze）占用较多 CPU 资源时，执行后台任务的 TiDB server 的 CPU 使用率更高。
 - 当不同连接上的工作负载差异较大时，即使各个 TiDB server 上的连接数接近，但 CPU 使用率差异较大。
 - 当集群内 TiDB server 的 CPU 资源配置不同时，即使连接数均衡，实际的 CPU 使用率也不均衡。
-
-当没有启用该策略，或 CPU 使用率已经均衡时，TiProxy 使用基于最少连接数的负载均衡策略，且该策略的优先级低于其他策略。
 
 ## 基于地理位置的负载均衡
 
@@ -105,3 +104,12 @@ tikv_servers:
 ```
 
 在以上配置中，`tiproxy-host-1` 上的 TiProxy 会优先将请求路由到 `tidb-host-1` 上的 TiDB server，`tiproxy-host-2` 上的 TiProxy 会优先将请求路由到 `tidb-host-2` 上的 TiDB server。
+
+## 基于连接数的负载均衡
+
+TiProxy 将连接从连接数较多的 TiDB server 迁移到连接数较少的 TiDB server。该策略不可配置且优先级最低。
+
+TiProxy 通常根据 CPU 使用率来识别 TiDB server 的负载。该策略通常在以下场景下生效：
+
+- TiDB 集群刚启动，所有 TiDB server 的 CPU 使用率接近 0，此时该策略防止启动时负载不均。
+- 未启用基于 CPU 的负载均衡时，使用该策略确保负载均衡。
