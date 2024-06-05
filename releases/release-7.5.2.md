@@ -14,9 +14,9 @@ TiDB 版本：7.5.2
 ## 兼容性变更 <!--tw@lilin90 1 条-->
 
 - (dup): release-6.5.9.md > 兼容性变更 - 在 TiKV 中提供 RocksDB [`track-and-verify-wals-in-manifest`](https://docs.pingcap.com/zh/tidb/v6.5/tikv-configuration-file#track-and-verify-wals-in-manifest-从-v659-版本开始引入) 配置，用于调查 WAL (Write Ahead Log) 可能损坏问题 [#16549](https://github.com/tikv/tikv/issues/16549) @[v01dstar](https://github.com/v01dstar)
-- (dup): release-7.1.4.md > 兼容性变更 - 为减少日志打印的开销，TiFlash 配置项 `logger.level` 默认值由 `"debug"` 改为 `"info"` [#8641](https://github.com/pingcap/tiflash/issues/8641) @[JaySon-Huang](https://github.com/JaySon-Huang)
 - 使用严格格式 `strict-format` 或 `SPLIT_FILE` 时必须设置行分隔符 [#37338](https://github.com/pingcap/tidb/issues/37338) @[lance6716](https://github.com/lance6716)
-- 针对 Open Protocol，添加 `sink.open.output-old-value` 配置项来控制是否输出更新前的值到下游 [#10916](https://github.com/pingcap/tiflow/issues/10916) @[sdojjy]([https://github.com/sdojjy)
+- 针对 TiCDC Open Protocol，添加 `sink.open.output-old-value` 配置项来控制是否输出更新前的值到下游 [#10916](https://github.com/pingcap/tiflow/issues/10916) @[sdojjy]([https://github.com/sdojjy)
+- 在之前的版本中，TiCDC 在处理包含 `UPDATE` 变更的事务时，如果事件的主键或者非空唯一索引的列值发生改变，则会将该条事件拆分为 `DELETE` 和 `INSERT` 两条事件。从 v7.5.2 开始，当使用 MySQL Sink 时，如果 `UPDATE` 变更所在事务的 `commitTS` 小于 TiCDC 启动时从 PD 获取的当前时间戳 `thresholdTs`，TiCDC 就会将该 `UPDATE` 事件拆分为 `DELETE` 和 `INSERT` 两条事件，然后写入 Sorter 模块。该行为变更解决了由于 TiCDC 接收到的 `UPDATE` 事件顺序可能不正确，导致拆分后的 `DELETE` 和 `INSERT` 事件顺序也可能不正确，从而引发下游数据不一致的问题。更多信息，请参考[用户文档](https://docs.pingcap.com/zh/tidb/v7.5/ticdc-behavior-change#mysql-sink)。
 
 ## 改进提升
 
@@ -69,7 +69,6 @@ TiDB 版本：7.5.2
         - 提升同步任务初始化速度 [#11124]([https://github.com/pingcap/tiflow/issues/11124) @[asddongmen]([https://github.com/asddongmen]
         - 采用异步方式初始化同步任务，减少 Processor 和 Owner 的初始化时间 [#10845](https://github.com/pingcap/tiflow/issues/10845) @[sdojjy](https://github.com/sdojjy)
         - 自动探测 Kafka 集群版本，提升与 Kafka 的兼容性 [#10852](https://github.com/pingcap/tiflow/issues/10852) @[wk989898](https://github.com/wk989898)
-        - 针对 Open Protocol，添加 `sink.open.output-old-value` 配置项来控制是否输出更新前的值到下游 [#10916](https://github.com/pingcap/tiflow/issues/10916) @[sdojjy]([https://github.com/sdojjy)
 
     + TiDB Data Migration (DM)
 
@@ -111,16 +110,16 @@ TiDB 版本：7.5.2
     - 修复解析索引数据时可能发生 panic 的问题 [#47115](https://github.com/pingcap/tidb/issues/47115) @[zyguan](https://github.com/zyguan)
  <!--tw@hfxsd 18 条-->
     - 修复 JOIN 条件包含隐式类型转换时 TiDB 可能 panic 的问题 [#46556](https://github.com/pingcap/tidb/issues/46556) @[qw4990](https://github.com/qw4990)
-    - 修复 `YEAR` 类型的列与超出范围的无符号整数比较导致错误结果的问题 [#50235](https://github.com/pingcap/tidb/issues/50235) @[qw4990](https://github.com/qw4990)
-    - 修复 `UPDATE` List 中包含子查询可能会导致TiDB panic 的问题 [#52687](https://github.com/pingcap/tidb/issues/52687) @[winoros](https://github.com/winoros)
+    - 修复 `YEAR` 类型的列与超出范围的无符号整数进行比较导致错误结果的问题 [#50235](https://github.com/pingcap/tidb/issues/50235) @[qw4990](https://github.com/qw4990)
+    - 修复 `UPDATE` List 中包含子查询可能会导致 TiDB panic 的问题 [#52687](https://github.com/pingcap/tidb/issues/52687) @[winoros](https://github.com/winoros)
     - 修复 `Longlong` 类型在谓词中溢出的问题 [#45783](https://github.com/pingcap/tidb/issues/45783) @[hawkingrei](https://github.com/hawkingrei)
     - 修复在聚簇索引作为谓词时 `SELECT INTO OUTFILE` 不生效的问题 [#42093](https://github.com/pingcap/tidb/issues/42093) @[qw4990](https://github.com/qw4990)
-    - 修复 TopN 可能被错误下推的问题 [#37986](https://github.com/pingcap/tidb/issues/37986) @[qw4990](https://github.com/qw4990)
+    - 修复 TopN 算子可能被错误下推的问题 [#37986](https://github.com/pingcap/tidb/issues/37986) @[qw4990](https://github.com/qw4990)
     - 修复空 Projection 导致 TiDB panic 的问题 [#49109](https://github.com/pingcap/tidb/issues/49109) @[winoros](https://github.com/winoros)
-    - 修复当索引计划保持有序时，索引合并错误地下推 partial limit 的问题 [#52947](https://github.com/pingcap/tidb/issues/52947) @[AilinKid](https://github.com/AilinKid)
-    - 修复在 Recursive CTE 中无法使用视图的问题 [#49721](https://github.com/pingcap/tidb/issues/49721) @[hawkingrei](https://github.com/hawkingrei)
+    - 修复当索引计划保持有序时，索引合并错误地下推部分限制条件的问题 [#52947](https://github.com/pingcap/tidb/issues/52947) @[AilinKid](https://github.com/AilinKid)
+    - 修复在递归 CTE 中无法使用视图的问题 [#49721](https://github.com/pingcap/tidb/issues/49721) @[hawkingrei](https://github.com/hawkingrei)
     - 修复 `UPDATE` 语句可能因为列的唯一 ID 不稳定导致查询报错的问题 [#53236](https://github.com/pingcap/tidb/issues/53236) @[winoros](https://github.com/winoros)
-    - 修复使用 `SHOW ERRORS` 语句并且包含总是为 `true` 的谓词导致 TiDB panic 的问题 [#46962](https://github.com/pingcap/tidb/issues/46962) @[elsa0520](https://github.com/elsa0520)
+    - 修复执行谓词总是为 `true` 的 `SHOW ERRORS` 语句导致 TiDB panic 的问题 [#46962](https://github.com/pingcap/tidb/issues/46962) @[elsa0520](https://github.com/elsa0520)
     - 修复 Massively Parallel Processing (MPP) 中 `final` AggMode 和 `non-final` AggMode 无法共存的问题 [#51362](https://github.com/pingcap/tidb/issues/51362) @[AilinKid](https://github.com/AilinKid)
     - 修复错误的 TableDual 计划导致查询结果为空的问题 [#50051](https://github.com/pingcap/tidb/issues/50051) @[onlyacat](https://github.com/onlyacat)
     - 修复同时启用 `lite-init-stats` 和 `concurrently-init-stats` 后，初始化统计信息时 TiDB 可能 panic 的问题 [#52223](https://github.com/pingcap/tidb/issues/52223) @[hawkingrei](https://github.com/hawkingrei)
