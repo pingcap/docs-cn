@@ -1001,6 +1001,10 @@ rocksdb 相关的配置项。
 
 ### `info-log-max-size`
 
+> **警告：**
+>
+> 自 v5.4.0 起，RocksDB 的日志改为由 TiKV 的日志模块进行管理，因此该配置项被废弃，其功能由配置参数 [`log.file.max-size`](#max-size-从-v540-版本开始引入) 代替。
+
 + Info 日志的最大大小。
 + 默认值：1GB
 + 最小值：0
@@ -1008,10 +1012,18 @@ rocksdb 相关的配置项。
 
 ### `info-log-roll-time`
 
+> **警告：**
+>
+> 自 v5.4.0 起，RocksDB 的日志改为由 TiKV 的日志模块进行管理，因此该配置项被废弃。TiKV 不再支持按照时间自动切分日志，请使用配置参数 [`log.file.max-size`](#max-size-从-v540-版本开始引入) 配置按照文件大小自动切分日志的阈值。
+
 + 日志截断间隔时间，如果为 0s 则不截断。
 + 默认值：0s
 
 ### `info-log-keep-log-file-num`
+
+> **警告：**
+>
+> 自 v5.4.0 起，RocksDB 的日志改为由 TiKV 的日志模块进行管理，因此该配置项被废弃，其功能由配置参数 [`log.file.max-backups`](#max-backups-从-v540-版本开始引入) 代替。
 
 + 保留日志文件最大个数。
 + 默认值：10
@@ -1022,6 +1034,52 @@ rocksdb 相关的配置项。
 + 日志存储目录。
 + 默认值：""
 
+<<<<<<< HEAD
+=======
+### `info-log-level`
+
+> **警告：**
+>
+> 自 v5.4.0 起，RocksDB 的日志改为由 TiKV 的日志模块进行管理，因此该配置项被废弃，其功能由配置参数 [`log.level`](#level-从-v540-版本开始引入) 代替。
+
++ RocksDB 的日志级别。
++ 默认值：`"info"`
+
+### `write-buffer-flush-oldest-first` <span class="version-mark">从 v6.6.0 版本开始引入</span>
+
+> **警告：**
+>
+> 该功能目前为实验特性，不建议在生产环境中使用。该功能可能会在未事先通知的情况下发生变化或删除。如果发现 bug，请在 GitHub 上提 [issue](https://github.com/pingcap/tidb/issues) 反馈。
+
++ 设置当 RocksDB 当前 memtable 内存占用达到阈值之后的 Flush 策略。
++ 默认值：`false`
++ 可选值：
+    + `false`：Flush 策略是优先选择数据量大的 memtable 落盘到 SST。
+    + `true`：Flush 策略是优先选择最早的 memtable 落盘到 SST。该策略可以清除冷数据的 memtable，用于有明显冷热数据的场景。
+
+### `write-buffer-limit` <span class="version-mark">从 v6.6.0 版本开始引入</span>
+
+> **警告：**
+>
+> 该功能目前为实验特性，不建议在生产环境中使用。该功能可能会在未事先通知的情况下发生变化或删除。如果发现 bug，请在 GitHub 上提 [issue](https://github.com/pingcap/tidb/issues) 反馈。
+
++ 设置单个 TiKV 中所有 RocksDB 实例使用的 memtable 的总内存上限。`0` 表示不设限制。
++ 默认值：
+
+    + 当 `storage.engine="raft-kv"` 时，默认值为 `0`，即不限制。
+    + 当 `storage.engine="partitioned-raft-kv"` 时，默认值为本机内存的 20%。
+
++ 单位：KiB|MiB|GiB
+
+### `track-and-verify-wals-in-manifest` <span class="version-mark">从 v6.5.9、v7.1.5、v8.0.0 版本开始引入</span>
+
++ 控制是否在 RocksDB 的 MANIFEST 文件中记录 WAL (Write Ahead Log) 文件的信息，以及在启动时是否验证 WAL 文件的完整性。详情请参考 RocksDB [Track WAL in MANIFEST](https://github.com/facebook/rocksdb/wiki/Track-WAL-in-MANIFEST)。
++ 默认值：`true`
++ 可选值：
+    + `true`：在 MANIFEST 文件中记录 WAL 文件的信息，并在启动时验证 WAL 文件的完整性。
+    + `false`：不在 MANIFEST 文件中记录 WAL 文件的信息，而且不在启动时验证 WAL 文件的完整性。
+
+>>>>>>> 9a57792e7d (tikv: deprecate rocksdb's log configs (#17321))
 ## rocksdb.titan
 
 Titan 相关的配置项。
@@ -1362,8 +1420,124 @@ raftdb 相关配置项。
 
 ### `wal-dir`
 
+<<<<<<< HEAD
 + WAL 存储目录。
 + 默认值：/tmp/tikv/store
+=======
++ 存储 Raft RocksDB WAL 文件的目录，即 WAL 的绝对路径。**请勿**将该配置项设置为与 [`rocksdb.wal-dir`](#wal-dir) 相同的值。
++ 如果未设置该配置项，日志文件将存储在与数据相同的目录中。
++ 如果机器上有两个磁盘，将 RocksDB 数据和 WAL 日志存储在不同磁盘上可以提高性能。
++ 默认值：`""`
+
+### `wal-ttl-seconds`
+
++ 归档的 WAL 文件的保留时间。当超过该值时，系统将删除这些文件。
++ 默认值：`0`
++ 最小值：`0`
++ 单位：秒
+
+### `wal-size-limit`
+
++ 归档 WAL 文件的大小限制。当超过该值时，系统将删除这些文件。
++ 默认值：`0`
++ 最小值：`0`
++ 单位：B|KiB|MiB|GiB
+
+### `max-total-wal-size`
+
++ RocksDB WAL 文件的最大总大小。
++ 默认值：
+    + 当 `storage.engine="raft-kv"` 时，默认值为 `"4GiB"`
+    + 当 `storage.engine="partitioned-raft-kv"` 时，默认值为 `1`
+
+### `compaction-readahead-size`
+
++ 控制在 RocksDB compaction 时是否开启预读取功能，并指定预读取数据的大小。
++ 如果使用机械硬盘，建议将该值至少设置为 `2MiB`。
++ 默认值：`0`
++ 最小值：`0`
++ 单位：B|KiB|MiB|GiB
+
+### `writable-file-max-buffer-size`
+
++ WriteableFileWrite 中使用的最大缓冲区大小。
++ 默认值：`"1MiB"`
++ 最小值：`0`
++ 单位：B|KiB|MiB|GiB
+
+### `use-direct-io-for-flush-and-compaction`
+
++ 控制是否在后台刷新和 compaction 时使用 `O_DIRECT` 进行读写。启用 `O_DIRECT` 的性能影响：它可以绕过和防止操作系统缓存污染，但是后续文件读取需要重新读取内容到缓存中。
++ 默认值：`false`
+
+### `enable-pipelined-write`
+
++ 控制是否开启 Pipelined Write。开启时会使用旧的 Pipelined Write，关闭时会使用新的 Pipelined Commit 机制。
++ 默认值：`true`
+
+### `allow-concurrent-memtable-write`
+
++ 控制是否开启并发 memtable 写入。
++ 默认值：`true`
+
+### `bytes-per-sync`
+
++ 异步 Sync 限速速率。
++ 默认值：`"1MiB"`
++ 最小值：`0`
++ 单位：B|KiB|MiB|GiB
+
+### `wal-bytes-per-sync`
+
++ WAL Sync 限速速率。
++ 默认值：`"512KiB"`
++ 最小值：`0`
++ 单位：B|KiB|MiB|GiB
+
+### `info-log-max-size`
+
+> **警告：**
+>
+> 自 v5.4.0 起，RocksDB 的日志改为由 TiKV 的日志模块进行管理，因此该配置项被废弃，其功能由配置参数 [`log.file.max-size`](#max-size-从-v540-版本开始引入) 代替。
+
++ Info 日志的最大大小。
++ 默认值：`"1GiB"`
++ 最小值：`0`
++ 单位：B|KiB|MiB|GiB
+
+### `info-log-roll-time`
+
+> **警告：**
+>
+> 自 v5.4.0 起，RocksDB 的日志改为由 TiKV 的日志模块进行管理，因此该配置项被废弃。TiKV 不再支持按照时间自动切分日志，请使用配置参数 [`log.file.max-size`](#max-size-从-v540-版本开始引入) 配置按照文件大小自动切分日志的阈值。
+
++ Info 日志截断间隔时间，如果为 `"0s"` 则不截断。
++ 默认值：`"0s"`
+
+### `info-log-keep-log-file-num`
+
+> **警告：**
+>
+> 自 v5.4.0 起，RocksDB 的日志改为由 TiKV 的日志模块进行管理，因此该配置项被废弃，其功能由配置参数 [`log.file.max-backups`](#max-backups-从-v540-版本开始引入) 代替。
+
++ RaftDB 中保存的 Info 日志文件的最大数量。
++ 默认值：`10`
++ 最小值：`0`
+
+### `info-log-dir`
+
++ Info 日志存储的目录。
++ 默认值：`""`
+
+### `info-log-level`
+
+> **警告：**
+>
+> 自 v5.4.0 起，RocksDB 的日志改为由 TiKV 的日志模块进行管理，因此该配置项被废弃，其功能由配置参数 [`log.level`](#level-从-v540-版本开始引入) 代替。
+
++ RaftDB 的日志级别。
++ 默认值：`"info"`
+>>>>>>> 9a57792e7d (tikv: deprecate rocksdb's log configs (#17321))
 
 ## raft-engine
 
