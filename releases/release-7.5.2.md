@@ -232,6 +232,7 @@ TiDB 版本：7.5.2
 
     + TiDB Data Migration (DM)
 
+        - 升级 `go-mysql` 以修复连接阻塞的问题 [#11041](https://github.com/pingcap/tiflow/issues/11041) @[D3Hunter](https://github.com/D3Hunter)
         - 修复上游为 binary 类型主键时丢失数据的问题 [#10672](https://github.com/pingcap/tiflow/issues/10672) @[GMHDBJD](https://github.com/GMHDBJD)
 
     + TiDB Lightning
