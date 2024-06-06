@@ -61,6 +61,8 @@ data-source-dir = "${data-path}" # 本地或 S3 路径，例如：'s3://my-bucke
 separator = ','
 # 引用定界符，可以为零或多个字符。
 delimiter = '"'
+# 行结束符。默认将 \r、\n、\r\n 都作为行结束符处理。
+# terminator = "\r\n"
 # CSV 文件是否包含表头。
 # 如果为 true，则 lightning 会使用首行内容解析字段的对应关系。
 header = true
@@ -101,6 +103,8 @@ pd-addr = "${ip}:${port}"     # 集群 PD 的地址，Lightning 通过 PD 获取
 
 - delimiter 为空；
 - 每个字段不包含 CR (\\r）或 LF（\\n）。
+
+严格格式 `strict-format` 的 CSV 文件需要显式指定行结束符 `terminator`。
 
 如果你确认满足条件，可按如下配置开启 `strict-format` 模式以加快导入速度。
 
