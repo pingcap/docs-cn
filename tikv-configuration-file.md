@@ -1321,7 +1321,11 @@ RocksDB 相关的配置项。
 
 + 单位：KiB|MiB|GiB
 
+<<<<<<< HEAD
 ### `track-and-verify-wals-in-manifest` <span class="version-mark">从 v6.5.9、v7.1.5、v7.5.2 版本开始引入</span>
+=======
+### `track-and-verify-wals-in-manifest` <span class="version-mark">从 v6.5.9、v7.1.5、v7.5.2、v8.0.0 版本开始引入</span>
+>>>>>>> 1a9e86ab8b (track-and-verify-wals-in-manifest: add v7.5.2 as a supported version (#17581))
 
 + 控制是否在 RocksDB 的 MANIFEST 文件中记录 WAL (Write Ahead Log) 文件的信息，以及在启动时是否验证 WAL 文件的完整性。详情请参考 RocksDB [Track WAL in MANIFEST](https://github.com/facebook/rocksdb/wiki/Track-WAL-in-MANIFEST)。
 + 默认值：`true`
