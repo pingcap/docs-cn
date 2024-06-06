@@ -1134,8 +1134,6 @@ rocksdb 相关的配置项。
 + 日志存储目录。
 + 默认值：""
 
-<<<<<<< HEAD
-=======
 ### `info-log-level`
 
 > **警告：**
@@ -1145,41 +1143,6 @@ rocksdb 相关的配置项。
 + RocksDB 的日志级别。
 + 默认值：`"info"`
 
-### `write-buffer-flush-oldest-first` <span class="version-mark">从 v6.6.0 版本开始引入</span>
-
-> **警告：**
->
-> 该功能目前为实验特性，不建议在生产环境中使用。该功能可能会在未事先通知的情况下发生变化或删除。如果发现 bug，请在 GitHub 上提 [issue](https://github.com/pingcap/tidb/issues) 反馈。
-
-+ 设置当 RocksDB 当前 memtable 内存占用达到阈值之后的 Flush 策略。
-+ 默认值：`false`
-+ 可选值：
-    + `false`：Flush 策略是优先选择数据量大的 memtable 落盘到 SST。
-    + `true`：Flush 策略是优先选择最早的 memtable 落盘到 SST。该策略可以清除冷数据的 memtable，用于有明显冷热数据的场景。
-
-### `write-buffer-limit` <span class="version-mark">从 v6.6.0 版本开始引入</span>
-
-> **警告：**
->
-> 该功能目前为实验特性，不建议在生产环境中使用。该功能可能会在未事先通知的情况下发生变化或删除。如果发现 bug，请在 GitHub 上提 [issue](https://github.com/pingcap/tidb/issues) 反馈。
-
-+ 设置单个 TiKV 中所有 RocksDB 实例使用的 memtable 的总内存上限。`0` 表示不设限制。
-+ 默认值：
-
-    + 当 `storage.engine="raft-kv"` 时，默认值为 `0`，即不限制。
-    + 当 `storage.engine="partitioned-raft-kv"` 时，默认值为本机内存的 20%。
-
-+ 单位：KiB|MiB|GiB
-
-### `track-and-verify-wals-in-manifest` <span class="version-mark">从 v6.5.9、v7.1.5、v8.0.0 版本开始引入</span>
-
-+ 控制是否在 RocksDB 的 MANIFEST 文件中记录 WAL (Write Ahead Log) 文件的信息，以及在启动时是否验证 WAL 文件的完整性。详情请参考 RocksDB [Track WAL in MANIFEST](https://github.com/facebook/rocksdb/wiki/Track-WAL-in-MANIFEST)。
-+ 默认值：`true`
-+ 可选值：
-    + `true`：在 MANIFEST 文件中记录 WAL 文件的信息，并在启动时验证 WAL 文件的完整性。
-    + `false`：不在 MANIFEST 文件中记录 WAL 文件的信息，而且不在启动时验证 WAL 文件的完整性。
-
->>>>>>> 9a57792e7d (tikv: deprecate rocksdb's log configs (#17321))
 ## rocksdb.titan
 
 Titan 相关的配置项。
@@ -1521,10 +1484,8 @@ raftdb 相关配置项。
 
 ### `wal-dir`
 
-<<<<<<< HEAD
 + WAL 存储目录。
 + 默认值：/tmp/tikv/store
-=======
 + 存储 Raft RocksDB WAL 文件的目录，即 WAL 的绝对路径。**请勿**将该配置项设置为与 [`rocksdb.wal-dir`](#wal-dir) 相同的值。
 + 如果未设置该配置项，日志文件将存储在与数据相同的目录中。
 + 如果机器上有两个磁盘，将 RocksDB 数据和 WAL 日志存储在不同磁盘上可以提高性能。
@@ -1638,7 +1599,6 @@ raftdb 相关配置项。
 
 + RaftDB 的日志级别。
 + 默认值：`"info"`
->>>>>>> 9a57792e7d (tikv: deprecate rocksdb's log configs (#17321))
 
 ## raft-engine
 
