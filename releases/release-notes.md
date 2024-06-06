@@ -24,7 +24,7 @@ TiDB 历史版本发布声明如下：
 
 ## 7.5
 
-- [7.5.2](/releases/release-7.5.2.md): 2024-06-06
+- [7.5.2](/releases/release-7.5.2.md): 2024-06-xx
 - [7.5.1](/releases/release-7.5.1.md): 2024-02-29
 - [7.5.0](/releases/release-7.5.0.md): 2023-12-01
 
