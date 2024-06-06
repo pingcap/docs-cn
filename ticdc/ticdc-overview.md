@@ -119,7 +119,7 @@ Update t1 set b = 4 where b = 2;
 TiCDC 将根据数据变更信息重新生成 SQL 语句，向下游写以下两条 SQL 语句：
 
 ```sql
-INSERT INTO `test.t1` (`A`,`B`) VALUES (1,1),(2,2),(3,3);
+INSERT INTO `test.t1` (`A`,`B`) VALUES (1,2),(2,2),(3,3);
 UPDATE `test`.`t1`
 SET `A` = CASE
         WHEN `A` = 1 THEN 1
@@ -131,7 +131,7 @@ END
 WHERE `A` = 1 OR `A` = 2;
 ```
 
-### 暂不支持的场景
+## 暂不支持的场景
 
 目前 TiCDC 暂不支持的场景如下：
 

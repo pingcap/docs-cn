@@ -174,7 +174,7 @@ TiDB 7.1.0 为长期支持版本 (Long-Term Support Release, LTS)。
 
     在 TiDB 启动阶段，如果在初始统计信息加载完成之前执行 SQL，可能会产生不合理的执行计划，进而造成性能问题。为了避免这种情况，TiDB v7.1.0 引入了配置项 [`force-init-stats`](/tidb-configuration-file.md#force-init-stats-从-v657-和-v710-版本开始引入)。你可以控制 TiDB 是否在统计信息初始化完成后再对外提供服务。该配置项默认关闭。
 
-    更多信息，请参考[用户文档](/statistics.md#统计信息的加载)。
+    更多信息，请参考[用户文档](/statistics.md#加载统计信息)。
 
 * TiCDC 支持单行数据正确性校验功能 [#8718](https://github.com/pingcap/tiflow/issues/8718) [#42747](https://github.com/pingcap/tidb/issues/42747) @[3AceShowHand](https://github.com/3AceShowHand) @[zyguan](https://github.com/zyguan)
 

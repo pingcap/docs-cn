@@ -10,7 +10,7 @@ aliases: ['/docs-cn/dev/sql-statements/sql-statement-analyze-table/','/docs-cn/d
 
 当 TiDB 逐渐发现这些统计数据与预估不一致时，也会自动更新其统计数据。
 
-目前 TiDB 收集统计信息为全量收集，通过 `ANALYZE TABLE` 语句来实现。关于该语句的详细使用方式，可参考[统计信息简介](/statistics.md)。
+目前 TiDB 收集统计信息为全量收集，通过 `ANALYZE TABLE` 语句来实现。关于该语句的详细使用方式，可参考[常规统计信息](/statistics.md)。
 
 ## 语法图
 
