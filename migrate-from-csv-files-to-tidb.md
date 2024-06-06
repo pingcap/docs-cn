@@ -104,7 +104,7 @@ pd-addr = "${ip}:${port}"     # 集群 PD 的地址，Lightning 通过 PD 获取
 - delimiter 为空；
 - 每个字段不包含 CR (\\r）或 LF（\\n）。
 
-严格格式的 CSV 文件需要显式指定行结束符 `terminator`。
+严格格式 `strict-format` 的 CSV 文件需要显式指定行结束符 `terminator`。
 
 如果你确认满足条件，可按如下配置开启 `strict-format` 模式以加快导入速度。
 
