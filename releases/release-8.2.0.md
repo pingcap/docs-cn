@@ -31,13 +31,25 @@ TiDB 版本：8.2.0
 
     更多信息，请参考[用户文档](链接)。
 
-* 支持下推以下字符串函数到 TiKV [#48170](https://github.com/pingcap/tidb/issues/48170) @[dbsid](https://github.com/dbsid)  **tw@Oreoxmt** <!--1663-->
+* 支持下推以下字符串函数到 TiKV [#50601](https://github.com/pingcap/tidb/issues/50601) @[dbsid](https://github.com/dbsid)  **tw@Oreoxmt** <!--1663-->
 
     * `JSON_ARRAY_APPEND()`
     * `JSON_MERGE_PATCH()`
     * `JSON_REPLACE()`
 
   更多信息，请参考[用户文档](/functions-and-operators/expressions-pushed-down.md)。
+  
+* TiDB 支持并行排序功能 [#49217](https://github.com/pingcap/tidb/issues/49217) [#50746](https://github.com/pingcap/tidb/issues/50746) @[xzhangxian1008](https://github.com/xzhangxian1008) **tw@Oreoxmt** <!--1665-->
+
+    在 v8.2.0 版本之前，TiDB 进行排序计算时只能以非并行的方式进行处理，当需要对大量数据进行排序时，查询性能收到影响。
+
+    在 v8.2.0 版本中，TiDB 支持并行排序功能，所有的排序计算性能都将得到提升。该功能不需要单独开启，TiDB 将根据变量 [`tidb_executor_concurrency`](/system-variables.md#tidb_executor_concurrency-从-v50-版本开始引入) 的设定，确定使用并行方式或非并行方式进行排序。
+
+* TiDB 的并发 HashAgg 算法支持数据落盘（GA）[#35637](https://github.com/pingcap/tidb/issues/35637) @[xzhangxian1008](https://github.com/xzhangxian1008)  **tw@Oreoxmt** <!--1842-->
+
+    在 v8.0.0 中，TiDB 以实验特性发布了并发 HashAgg 算法支持数据落盘功能。
+    
+    在 v8.2.0 中，TiDB 正式发布该功能。TiDB 在使用并发 HashAgg 算法时，将根据内存使用情况自动触发数据落盘，从而兼顾性能和数据处理量。该功能默认打开，变量 `tidb_enable_concurrent_hashagg_spill` 将被废弃。
 
 ### 稳定性
 
@@ -87,6 +99,12 @@ TiDB 版本：8.2.0
 
     更多信息，请参考[用户文档](链接)。
 
+* 增强 TiFlash 日志脱敏 [#8977](https://github.com/pingcap/tiflash/issues/8977) @[JaySon-Huang](https://github.com/JaySon-Huang) **tw@Oreoxmt** <!--1818-->
+
+    在 v8.0,0 版本，TiDB 增强了日志脱敏功能，可以控制是否对日志信息进行脱敏，以实现在不同场景下安全使用 TiDB 日志，提升了使用日志脱敏能力的安全性和灵活性。在 v8.2.0 版本中，TiFlash 进行了类似的日志脱敏功能增强。要使用此功能，需要将 tiflash-server 中 `security.redact_info_log` 配置项的值均设为 `MARKER`。
+
+    更多信息，请参考[用户文档](/tiflash/tiflash-configuration.md#配置文件-tiflashtoml)。
+
 ### 数据迁移
 
 * 功能标题 [#issue号](链接) @[贡献者 GitHub ID](链接) **tw@xxx** <!--1234-->
@@ -132,7 +150,7 @@ TiDB 版本：8.2.0
 
 * 废弃功能 1
 
-* 废弃功能 2
+* 变量 [`tidb_enable_concurrent_hashagg_spill`](/system-variables.md#tidb_enable_concurrent_hashagg_spill-从-v800-版本开始引入) 将被废弃。
 
 ## 改进提升
 
@@ -140,6 +158,8 @@ TiDB 版本：8.2.0
 
     - note [#issue](链接) @[贡献者 GitHub ID](链接)
     - note [#issue](链接) @[贡献者 GitHub ID](链接)
+    - 优化客户端读取数据超时无法终止查询的问题 [#44009](https://github.com/pingcap/tidb/issues/44009) @[wshwsh12](https://github.com/wshwsh12)  **tw@Oreoxmt** <!--1636-->
+    - 优化对大数据量的表进行简单查询的性能 [#53850](https://github.com/pingcap/tidb/issues/53850) @[you06](https://github.com/you06)  **tw@Oreoxmt** <!--1561-->
 
 + TiKV
 
