@@ -1257,40 +1257,10 @@ RocksDB 相关的配置项。
 + RocksDB 的日志级别。
 + 默认值：`"info"`
 
-<<<<<<< HEAD
 ### `track-and-verify-wals-in-manifest` <span class="version-mark">从 v6.5.9 版本开始引入</span>
-=======
-### `write-buffer-flush-oldest-first` <span class="version-mark">从 v6.6.0 版本开始引入</span>
-
-> **警告：**
->
-> 该功能目前为实验特性，不建议在生产环境中使用。该功能可能会在未事先通知的情况下发生变化或删除。如果发现 bug，请在 GitHub 上提 [issue](https://github.com/pingcap/tidb/issues) 反馈。
-
-+ 设置当 RocksDB 当前 memtable 内存占用达到阈值之后的 Flush 策略。
-+ 默认值：`false`
-+ 可选值：
-    + `false`：Flush 策略是优先选择数据量大的 memtable 落盘到 SST。
-    + `true`：Flush 策略是优先选择最早的 memtable 落盘到 SST。该策略可以清除冷数据的 memtable，用于有明显冷热数据的场景。
-
-### `write-buffer-limit` <span class="version-mark">从 v6.6.0 版本开始引入</span>
-
-> **警告：**
->
-> 该功能目前为实验特性，不建议在生产环境中使用。该功能可能会在未事先通知的情况下发生变化或删除。如果发现 bug，请在 GitHub 上提 [issue](https://github.com/pingcap/tidb/issues) 反馈。
-
-+ 设置单个 TiKV 中所有 RocksDB 实例使用的 memtable 的总内存上限。`0` 表示不设限制。
-+ 默认值：
-
-    + 当 `storage.engine="raft-kv"` 时，默认值为 `0`，即不限制。
-    + 当 `storage.engine="partitioned-raft-kv"` 时，默认值为本机内存的 20%。
-
-+ 单位：KiB|MiB|GiB
-
-### `track-and-verify-wals-in-manifest` <span class="version-mark">从 v6.5.9、v7.1.5、v7.5.2、v8.0.0 版本开始引入</span>
->>>>>>> 1a9e86ab8b (track-and-verify-wals-in-manifest: add v7.5.2 as a supported version (#17581))
 
 + 控制是否在 RocksDB 的 MANIFEST 文件中记录 WAL (Write Ahead Log) 文件的信息，以及在启动时是否验证 WAL 文件的完整性。详情请参考 RocksDB [Track WAL in MANIFEST](https://github.com/facebook/rocksdb/wiki/Track-WAL-in-MANIFEST)。
-+ 默认值：`true`
++ 默认值：`false`
 + 可选值：
     + `true`：在 MANIFEST 文件中记录 WAL 文件的信息，并在启动时验证 WAL 文件的完整性。
     + `false`：不在 MANIFEST 文件中记录 WAL 文件的信息，而且不在启动时验证 WAL 文件的完整性。
