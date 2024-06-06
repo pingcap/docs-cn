@@ -31,6 +31,8 @@ summary: 了解 IMPORT INTO 和 TiDB Lightning 与日志备份和 TiCDC 的兼�
 
 ### 和日志备份同时使用
 
+可根据如下不同的场景进行操作：
+
 #### 场景 1：物理导入模式的表不需要备份
 
 该场景下，如果开启了 [PITR](/br/br-log-architecture.md#pitr)，启动 TiDB Lightning 后兼容性检查会报错。如果你确定这些表不需要备份或者[日志备份](/br/br-pitr-guide.md)，你可以把 [TiDB Lightning 配置文件](/tidb-lightning/tidb-lightning-configuration.md#tidb-lightning-任务配置)中的 `Lightning.check-requirements` 参数改成 `false`，然后重新启动导入任务即可。
@@ -51,15 +53,23 @@ summary: 了解 IMPORT INTO 和 TiDB Lightning 与日志备份和 TiCDC 的兼�
 
 可根据如下不同的场景进行操作：
 
-- 场景 1：该表不需要被 TiCDC 同步到下游。在该场景下，如果开启了 TiCDC 同步任务，启动 TiDB Lightning 后兼容性检查会报错。如果你确定这些表不需要被 TiCDC 同步，你可以把 [TiDB Lightning 配置文件](/tidb-lightning/tidb-lightning-configuration.md#tidb-lightning-任务配置)中的 `Lightning.check-requirements` 参数改成 `false`，然后重新启动导入任务即可。
+- 场景 1：该表不需要被 TiCDC 同步到下游。
 
-- 场景 2：该表需要被 TiCDC 同步到下游。在该场景下，由于上游 TiDB 集群开启了 TiCDC 同步任务，因此启动 TiDB Lightning 后兼容性检查会报错。你需要在上游 TiDB 集群把 [TiDB Lightning 配置文件](/tidb-lightning/tidb-lightning-configuration.md#tidb-lightning-任务配置)中的 `Lightning.check-requirements` 参数改成 `false`，然后重新启动导入任务即可。上游 TiDB 集群的导入任务完成后，再使用 TiDB Lightning 在下游 TiDB 集群也导入一份同样的数据。如果下游是 Redshift、Snowflake 等数据库，可直接让这些数据库从 Cloud Storage 读取 CSV、Parquet 等格式的文件并写入到数据库。
+    在该场景下，如果开启了 TiCDC 同步任务，启动 TiDB Lightning 后兼容性检查会报错。如果你确定这些表不需要被 TiCDC 同步，你可以把 [TiDB Lightning 配置文件](/tidb-lightning/tidb-lightning-configuration.md#tidb-lightning-任务配置)中的 `Lightning.check-requirements` 参数改成 `false`，然后重新启动导入任务即可。
+
+- 场景 2：该表需要被 TiCDC 同步到下游。
+
+    在该场景下，由于上游 TiDB 集群开启了 TiCDC 同步任务，因此启动 TiDB Lightning 后兼容性检查会报错。你需要在上游 TiDB 集群把 [TiDB Lightning 配置文件](/tidb-lightning/tidb-lightning-configuration.md#tidb-lightning-任务配置)中的 `Lightning.check-requirements` 参数改成 `false`，然后重新启动导入任务即可。
+
+    上游 TiDB 集群的导入任务完成后，再使用 TiDB Lightning 在下游 TiDB 集群也导入一份同样的数据。如果下游是 Redshift、Snowflake 等数据库，可直接让这些数据库从 Cloud Storage 读取 CSV、Parquet 等格式的文件并写入到数据库。
 
 ## `IMPORT INTO` 的使用场景
 
 本节介绍 `IMPORT INTO` 与[日志备份](/br/br-pitr-guide.md)和 [TiCDC](/ticdc/ticdc-overview.md) 同时使用时的操作方法。
 
 ### 和日志备份同时使用
+
+可根据如下不同的场景进行操作：
 
 #### 场景 1：导入的表不需要备份
 
@@ -79,6 +89,12 @@ summary: 了解 IMPORT INTO 和 TiDB Lightning 与日志备份和 TiCDC 的兼�
 
 可根据如下不同的场景进行操作：
 
-- 场景 1：该表不需要被 TiCDC 同步到下游。在该场景下，如果开启了 TiCDC Changefeed，提交 `IMPORT INTO` SQL 语句后兼容性检查会报错。如果你确定这些表不需要被 TiCDC 同步，你可以在该 SQL 的 [`WithOptions`](/sql-statements/sql-statement-import-into.md#withoptions) 里带上参数 `DISABLE_PRECHECK`（从 v8.0.0 版本引入）重新提交即可，这样数据导入任务会忽略该兼容性检查，直接导入数据。
+- 场景 1：该表不需要被 TiCDC 同步到下游。
 
-- 场景 2：该表需要被 TiCDC 同步到下游。在该场景下，如果上游 TiDB 集群开启了 TiCDC 同步任务，提交 `IMPORT INTO` SQL 语句后兼容性检查会报错。你需要在该 SQL 的 [`WithOptions`](/sql-statements/sql-statement-import-into.md#withoptions) 里带上参数 `DISABLE_PRECHECK`（从 v8.0.0 版本引入）重新提交即可。上游 TiDB 集群的导入任务完成后，再使用 TiDB Lightning 在下游 TiDB 集群也导入一份同样的数据。如果下游是 Redshift、Snowflake 等数据库，可直接让这些数据库从 Cloud Storage 读取 CSV、Parquet 等格式的文件并写入到数据库。
+    在该场景下，如果开启了 TiCDC Changefeed，提交 `IMPORT INTO` SQL 语句后兼容性检查会报错。如果你确定这些表不需要被 TiCDC 同步，你可以在该 SQL 的 [`WithOptions`](/sql-statements/sql-statement-import-into.md#withoptions) 里带上参数 `DISABLE_PRECHECK`（从 v8.0.0 版本引入）重新提交即可，这样数据导入任务会忽略该兼容性检查，直接导入数据。
+
+- 场景 2：该表需要被 TiCDC 同步到下游。
+
+    在该场景下，如果上游 TiDB 集群开启了 TiCDC 同步任务，提交 `IMPORT INTO` SQL 语句后兼容性检查会报错。你需要在该 SQL 的 [`WithOptions`](/sql-statements/sql-statement-import-into.md#withoptions) 里带上参数 `DISABLE_PRECHECK`（从 v8.0.0 版本引入）重新提交即可。
+
+    上游 TiDB 集群的导入任务完成后，再使用 TiDB Lightning 在下游 TiDB 集群也导入一份同样的数据。如果下游是 Redshift、Snowflake 等数据库，可直接让这些数据库从 Cloud Storage 读取 CSV、Parquet 等格式的文件并写入到数据库。
