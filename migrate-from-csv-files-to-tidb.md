@@ -61,7 +61,7 @@ data-source-dir = "${data-path}" # 本地或 S3 路径，例如：'s3://my-bucke
 separator = ','
 # 引用定界符，可以为零或多个字符。
 delimiter = '"'
-# 行结束符。默认同时将 \r, \n, \r\n 作为行结束符
+# 行结束符。默认将 \r、 \n、\r\n 都作为行结束符处理。
 # terminator = "\r\n"
 # CSV 文件是否包含表头。
 # 如果为 true，则 lightning 会使用首行内容解析字段的对应关系。
