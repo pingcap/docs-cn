@@ -61,8 +61,24 @@ summary: 了解 IMPORT INTO 和 TiDB Lightning 与日志备份和 TiCDC 的兼�
 
 ### 和日志备份同时使用
 
+#### 场景 1：导入的表不需要备份
+
 该场景下，如果开启了 [PITR](/br/br-log-architecture.md#pitr)，提交 `IMPORT INTO` SQL 语句后兼容性检查会报错。如果你确定这些表不需要备份或者[日志备份](/br/br-pitr-guide.md)，你可以在该 SQL 的 [`WithOptions`](/sql-statements/sql-statement-import-into.md#withoptions) 里带上参数 `DISABLE_PRECHECK`（从 v8.0.0 版本引入）重新提交即可，这样数据导入任务会忽略该兼容性检查，直接导入数据。
+
+#### 场景 2：导入完成后，该表不会有新的 DML 操作
+
+该场景由于不涉及增量数据写入，因此在完成数据导入后，对该表执行一次表级别快照备份即可，操作步骤请参考[备份单张表的数据](/br/br-snapshot-manual.md#备份单张表的数据)。
+
+在数据恢复时，对该表的快照数据进行恢复，操作步骤请参考[恢复单张表格](/br/br-snapshot-manual.md#恢复单张表的数据)。
+
+#### 场景 3：导入完成后，该表会执行新的 DML 操作（不支持）
+
+该场景下，对该表的备份操作，只能在执行[全量快照备份](/br/br-snapshot-guide.md)和[日志备份](/br/br-pitr-guide.md)之间二选一，无法备份并恢复该表的全量快照数据+日志备份数据。
 
 ### 和 TiCDC 同时使用
 
-在该场景下，如果开启了 TiCDC Changefeed，提交 `IMPORT INTO` SQL 语句后兼容性检查会报错。如果你确定这些表不需要被 TiCDC 同步，你可以在该 SQL 的 [`WithOptions`](/sql-statements/sql-statement-import-into.md#withoptions) 里带上参数 `DISABLE_PRECHECK`（从 v8.0.0 版本引入）重新提交即可，这样数据导入任务会忽略该兼容性检查，直接导入数据。
+可根据如下不同的场景进行操作：
+
+- 场景 1：该表不需要被 TiCDC 同步到下游。在该场景下，如果开启了 TiCDC Changefeed，提交 `IMPORT INTO` SQL 语句后兼容性检查会报错。如果你确定这些表不需要被 TiCDC 同步，你可以在该 SQL 的 [`WithOptions`](/sql-statements/sql-statement-import-into.md#withoptions) 里带上参数 `DISABLE_PRECHECK`（从 v8.0.0 版本引入）重新提交即可，这样数据导入任务会忽略该兼容性检查，直接导入数据。
+
+- 场景 2：该表需要被 TiCDC 同步到下游。在该场景下，如果上游 TiDB 集群开启了 TiCDC 同步任务，提交 `IMPORT INTO` SQL 语句后兼容性检查会报错。你需要在该 SQL 的 [`WithOptions`](/sql-statements/sql-statement-import-into.md#withoptions) 里带上参数 `DISABLE_PRECHECK`（从 v8.0.0 版本引入）重新提交即可。上游 TiDB 集群的导入任务完成后，再使用 TiDB Lightning 在下游 TiDB 集群也导入一份同样的数据。如果下游是 Redshift、Snowflake 等数据库，可直接让这些数据库从 Cloud Storage 读取 CSV、Parquet 等格式的文件并写入到数据库。
