@@ -205,6 +205,10 @@ enable-partition-separator = true
 # 二进制类型数据的编码方式，可选 'base64' 或 'hex'。默认值为 'base64'。
 # binary-encoding-method = 'base64'
 
+[sink.open]
+# 是否输出行数据更改前的值。默认值为 true。关闭后，Update 事件不会输出 "p" 字段的数据。从 v7.5.2 开始支持。
+# output-old-value = true
+
 # consistent 中的字段用于配置 Changefeed 的数据一致性。详细的信息，请参考 <https://docs.pingcap.com/tidb/stable/ticdc-sink-to-mysql#eventually-consistent-replication-in-disaster-scenarios>。
 # 注意：一致性相关参数只有当下游为数据库并且开启 redo log 功能时，才会生效。
 [consistent]
