@@ -174,6 +174,7 @@ TiDB 版本：8.2.0
     - note [#issue](链接) @[贡献者 GitHub ID](链接)
     - 优化客户端读取数据超时无法终止查询的问题 [#44009](https://github.com/pingcap/tidb/issues/44009) @[wshwsh12](https://github.com/wshwsh12)  **tw@Oreoxmt** <!--1636-->
     - 优化对大数据量的表进行简单查询的性能 [#53850](https://github.com/pingcap/tidb/issues/53850) @[you06](https://github.com/you06)  **tw@Oreoxmt** <!--1561-->
+    - 聚合的结果集能够作为 Index Join 的内表 [#37068](https://github.com/pingcap/tidb/issues/37068) @[elsa0520](https://github.com/elsa0520) **tw@hfxsdt** <!--1510-->
 
 + TiKV
 
