@@ -5,7 +5,7 @@ summary: 了解 IMPORT INTO 和 TiDB Lightning 与日志备份和 TiCDC 的兼�
 
 # IMPORT INTO 和 TiDB Lightning 与日志备份和 TiCDC 的兼容性
 
-本文档介绍 TiDB Lightning 和 `IMPORT INTO` 与[日志备份](/br/br-pitr-guide.md)、[TiCDC](/ticdc/ticdc-overview.md) 的兼容性，以及某些特殊的使用场景。
+本文档介绍 TiDB Lightning 和 [`IMPORT INTO`](/sql-statements/sql-statement-import-into.md) 与[日志备份](/br/br-pitr-guide.md)、[TiCDC](/ticdc/ticdc-overview.md) 的兼容性，以及某些特殊的使用场景。
 
 ## `IMPORT INTO` 和 TiDB Lightning 对比
 
