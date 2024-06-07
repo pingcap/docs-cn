@@ -397,7 +397,6 @@ checksum-via-sql = "false"
 # 此配置的可选配置项与 `checksum` 相同，但默认值为 "optional"。
 analyze = "optional"
 
-
 # 设置周期性后台操作。
 # 支持的单位：h（时）、m（分）、s（秒）。
 [cron]
