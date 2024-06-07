@@ -59,7 +59,7 @@ TiProxy 根据自身与 TiDB server 的地理位置，将连接优先路由到�
 - 当 TiDB 集群在云上跨可用区部署时，为了降低 TiProxy 与 TiDB server 之间的跨可用区流量费用，TiProxy 优先将请求路由到同一可用区的 TiDB server 上。
 - 当 TiDB 集群跨数据中心部署时，为了降低 TiProxy 与 TiDB server 之间的网络延迟，TiProxy 优先将请求路由到同一数据中心的 TiDB server 上。
 
-该策略的优先级默认最低，以优先保证可用性和性能。你可以通过设置 [`location-first`](/tiproxy/tiproxy-configuration.md#location-first) 为 `true` 来提升该策略优先级，但建议确保同一地理位置的 TiDB server 至少有三台，以保证可用性和性能。
+该策略的优先级默认低于基于错误率、内存和 CPU 的负载均衡策略，你可以通过设置 [`location-first`](/tiproxy/tiproxy-configuration.md#location-first) 为 `true` 来提升该策略优先级，但建议确保同一地理位置的 TiDB server 至少有三台，以保证可用性和性能。
 
 TiProxy 根据自身和 TiDB server 的 `zone` 标签确定各自的地理位置。你需要同时设置以下配置项：
 
@@ -112,4 +112,4 @@ TiProxy 将连接从连接数较多的 TiDB server 迁移到连接数较少的 T
 TiProxy 通常根据 CPU 使用率来识别 TiDB server 的负载。该策略通常在以下场景下生效：
 
 - TiDB 集群刚启动，所有 TiDB server 的 CPU 使用率接近 0，此时该策略防止启动时负载不均。
-- 未启用基于 CPU 的负载均衡时，使用该策略确保负载均衡。
+- 未启用[基于 CPU 的负载均衡](#基于-cpu-的负载均衡)时，使用该策略确保负载均衡。
