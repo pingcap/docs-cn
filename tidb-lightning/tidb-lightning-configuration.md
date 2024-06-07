@@ -351,7 +351,6 @@ checksum-via-sql = "false"
 # 此配置的可选配置项与 `checksum` 相同，但默认值为 "optional"。
 analyze = "optional"
 
-
 # 设置周期性后台操作。
 # 支持的单位：h（时）、m（分）、s（秒）。
 [cron]
@@ -363,6 +362,7 @@ log-progress = "5m"
 # 使用物理导入模式时，检查本地磁盘配额的时间间隔，默认为 60 秒。
 # check-disk-quota = "60s"
 ```
+<<<<<<< HEAD
 
 ## 命令行参数
 
@@ -417,3 +417,5 @@ log-progress = "5m"
 *tablename* 必须是`` `db`.`tbl` `` 中的限定表名（包括反引号），或关键词 `all`。
 
 此外，上表中所有 `tidb-lightning` 的参数也适用于 `tidb-lightning-ctl`。
+=======
+>>>>>>> 34021570fb (remove redundant lightning command line flags doc (#17484))
