@@ -44,7 +44,7 @@ SQL 端口的配置。
 + 支持热加载：否
 + SQL 网关地址。格式为 `<ip>:<port>`。
 
-### `advertise-addr`
+#### `advertise-addr`
 
 + 默认值：`""`
 + 支持热加载：否
