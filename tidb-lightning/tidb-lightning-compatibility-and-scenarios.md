@@ -61,7 +61,7 @@ summary: 了解 IMPORT INTO 和 TiDB Lightning 与日志备份和 TiCDC 的兼�
 
     在该场景下，由于上游 TiDB 集群开启了 TiCDC 同步任务，因此启动 TiDB Lightning 后兼容性检查会报错。你需要在上游 TiDB 集群把 [TiDB Lightning 配置文件](/tidb-lightning/tidb-lightning-configuration.md#tidb-lightning-任务配置)中的 `Lightning.check-requirements` 参数改成 `false`，然后重新启动导入任务即可。
 
-    上游 TiDB 集群的导入任务完成后，再使用 TiDB Lightning 在下游 TiDB 集群也导入一份同样的数据。如果下游是 Redshift、Snowflake 等数据库，可直接让这些数据库从 Cloud Storage 读取 CSV、Parquet 等格式的文件并写入到数据库。
+    上游 TiDB 集群的导入任务完成后，再使用 TiDB Lightning 在下游 TiDB 集群也导入一份同样的数据。如果下游是 Redshift、Snowflake 等数据库，可直接让这些数据库从 Cloud Storage 读取 CSV、SQL、Parquet 等格式的文件并写入到数据库。
 
 ## `IMPORT INTO` 的使用场景
 
@@ -97,4 +97,4 @@ summary: 了解 IMPORT INTO 和 TiDB Lightning 与日志备份和 TiCDC 的兼�
 
     在该场景下，如果上游 TiDB 集群开启了 TiCDC 同步任务，提交 `IMPORT INTO` SQL 语句后兼容性检查会报错。你需要在该 SQL 的 [`WithOptions`](/sql-statements/sql-statement-import-into.md#withoptions) 里带上参数 `DISABLE_PRECHECK`（从 v8.0.0 版本引入）重新提交即可。
 
-    上游 TiDB 集群的导入任务完成后，再使用 TiDB Lightning 在下游 TiDB 集群也导入一份同样的数据。如果下游是 Redshift、Snowflake 等数据库，可直接让这些数据库从 Cloud Storage 读取 CSV、Parquet 等格式的文件并写入到数据库。
+    上游 TiDB 集群的导入任务完成后，再使用 `IMPORT INTO` 在下游 TiDB 集群也导入一份同样的数据。如果下游是 Redshift、Snowflake 等数据库，可直接让这些数据库从 Cloud Storage 读取 CSV、SQL、Parquet 等格式的文件并写入到数据库。
