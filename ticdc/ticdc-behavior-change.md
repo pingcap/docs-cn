@@ -97,7 +97,7 @@ UPDATE t SET a = 3 WHERE a = 2;
 
     下游执行完该事务后，数据库内的记录为 `(3, 2)`，与上游数据库的记录（即 `(2, 1)` 和 `(3, 2)`）不同，即发生了数据不一致问题。
 
-- 在引入该行为变更之后，如果该事务的 `commitTS`小于对应表开始向下游同步数据时获取的 `thresholdTS`，TiCDC 会在这些 `UPDATE` 事件写入 Sorter 模块之前将其拆分为 `DELETE` 和 `INSERT` 事件，经过 Sorter 排序后下游实际执行的事件顺序如下：
+- 在引入该行为变更之后，如果该事务的 `commitTS` 小于对应表开始向下游同步数据时 TiCDC 获取的 `thresholdTS`，TiCDC 会在这些 `UPDATE` 事件写入 Sorter 模块之前将其拆分为 `DELETE` 和 `INSERT` 事件，经过 Sorter 排序后下游实际执行的事件顺序如下：
 
     ```sql
     BEGIN;
