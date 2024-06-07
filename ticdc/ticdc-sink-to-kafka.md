@@ -36,8 +36,16 @@ Info: {"sink-uri":"kafka://127.0.0.1:9092/topic-name?protocol=canal-json&kafka-v
 Sink URI 用于指定 TiCDC 目标系统的连接信息，遵循以下格式：
 
 ```shell
-[scheme]://[userinfo@][host]:[port][/path]?[query_parameters]
+[scheme]://[host]:[port][/path]?[query_parameters]
 ```
+
+> **Tip:**
+>
+> 如果下游 Kafka 有多个主机或端口，可以在 Sink URI 中配置多个 `[host]:[port]`。例如：
+>
+> ```shell
+> [scheme]://[host]:[port],[host]:[port],[host]:[port][/path]?[query_parameters]
+> ```
 
 一个通用的配置样例如下所示：
 
