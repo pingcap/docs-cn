@@ -32,7 +32,7 @@ TiProxy 在保持客户端连接不变的情况下，能将一台 TiDB server �
 
 ### 故障转移
 
-当一台 TiDB server 发生 Out of Memory (OOM)、连接 PD 或 TiKV 失败时，TiProxy 感知故障，并将连接迁移到其他 TiDB server 上，从而保持客户端连接不断开。
+当一台 TiDB server 存在 Out of Memory (OOM) 风险、连接 PD 或 TiKV 失败时，TiProxy 感知故障，并将连接迁移到其他 TiDB server 上，从而保持客户端连接不断开。
 
 ### 服务发现
 

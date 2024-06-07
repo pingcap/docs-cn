@@ -44,6 +44,12 @@ SQL 端口的配置。
 + 支持热加载：否
 + SQL 网关地址。格式为 `<ip>:<port>`。
 
+### `advertise-addr`
+
++ 默认值：`""`
++ 支持热加载：否
++ 指定客户端用该地址连接到 TiProxy。使用 TiUP 或 TiDB-Operator 部署时，会自动设置该配置项。如果没有设置该配置项，则使用该 TiProxy 实例的外部 IP 地址。
+
 #### `graceful-wait-before-shutdown`
 
 + 默认值：`0`
