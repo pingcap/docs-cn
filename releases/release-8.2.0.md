@@ -91,6 +91,14 @@ TiDB 版本：8.2.0
 
     更多信息，请参考[用户文档](链接)。
 
+* 为切换资源组的操作增加权限控制 [#issue号](链接) @[glorv](https://github.com/glorv) **tw@lilin90** <!--1847-->
+
+    TiDB 允许用户利用命令 [`SET RESOURCE GROUP`](/sql-statements/sql-statement-set-resource-group.md) 或 Hint [`RESOURCE_GROUP()`](/optimizer-hints.md#resource_groupresource_group_name) 切换到其他资源组，这可能会造成部分数据库用户对资源组的滥用。TiDB v8.2.0 增加了对资源组切换行为的管控，只有被授予动态权限 `RESOURCE_GROUP_ADMIN` 或者 `RESOURCE_GROUP_USER` 的数据库用户，才能切换到其他资源组，加强对系统资源的保护。
+
+    为了维持兼容性，从旧版本升级的集群维持原行为不变。通过设置新增变量 [`tidb_resource_control_strict_mode`](/system-variables.md) 为 `ON` ，开启上述的增强权限控制。
+
+    更多信息，请参考[用户文档](/tidb-resource-control.md#绑定资源组)。
+
 ### 可观测性
 
 * 功能标题 [#issue号](链接) @[贡献者 GitHub ID](链接) **tw@xxx** <!--1234-->
