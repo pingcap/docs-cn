@@ -5,23 +5,28 @@ summary: 介绍 TiProxy 的负载均衡策略及其适用场景。
 
 # TiProxy 负载均衡策略简介
 
-在 TiProxy v1.0.0 中，TiProxy 仅根据 TiDB 的健康状态和连接数迁移连接。从 v1.1.0 开始，TiProxy 新增了四种可独立配置的负载均衡策略：基于错误率、内存、CPU 和地理位置。
+在 TiProxy v1.0.0 中，TiProxy 仅根据 TiDB 的状态和连接数迁移连接。从 v1.1.0 开始，TiProxy 新增了四种可独立配置的负载均衡策略：基于健康度、内存、CPU 和地理位置。
 
 TiProxy 默认启用所有策略，优先级从高到低依次为：
 
-1. 基于错误率的负载均衡：当某个 TiDB server 的错误指标异常时，TiProxy 将连接从该 TiDB server 迁移到错误指标正常的 TiDB server。
-2. 基于内存的负载均衡：当某个 TiDB server 存在 Out of Memory (OOM) 风险时，TiProxy 将连接从该 TiDB server 迁移到内存使用量较低的 TiDB server。
-3. 基于 CPU 的负载均衡：当某个 TiDB server 的 CPU 使用率远高于其他 TiDB server 时，TiProxy 将连接从该 TiDB server 迁移到 CPU 使用率较低的 TiDB server。
-4. 基于地理位置的负载均衡：优先将请求路由到地理位置上距离 TiProxy 较近的 TiDB server。
-5. 基于连接数的负载均衡：当某个 TiDB server 的连接数远高于其他 TiDB server 时，TiProxy 将连接从该 TiDB server 迁移到连接数较少的 TiDB server。
+1. 基于状态的负载均衡：当某个 TiDB server 正在关闭时，TiProxy 将连接从该 TiDB server 迁移到其他 TiDB server。
+2. 基于健康度的负载均衡：当某个 TiDB server 的健康度异常时，TiProxy 将连接从该 TiDB server 迁移到健康度正常的 TiDB server。
+3. 基于内存的负载均衡：当某个 TiDB server 存在 Out of Memory (OOM) 风险时，TiProxy 将连接从该 TiDB server 迁移到内存使用量较低的 TiDB server。
+4. 基于 CPU 的负载均衡：当某个 TiDB server 的 CPU 使用率远高于其他 TiDB server 时，TiProxy 将连接从该 TiDB server 迁移到 CPU 使用率较低的 TiDB server。
+5. 基于地理位置的负载均衡：优先将请求路由到地理位置上距离 TiProxy 较近的 TiDB server。
+6. 基于连接数的负载均衡：当某个 TiDB server 的连接数远高于其他 TiDB server 时，TiProxy 将连接从该 TiDB server 迁移到连接数较少的 TiDB server。
 
 > **注意：**
 >
-> 基于错误率、内存、CPU 的负载均衡均依赖 [Prometheus](https://prometheus.io)。请确保 Prometheus 可用，否则这些负载均衡策略将不生效。
+> 基于健康度、内存、CPU 的负载均衡均依赖 [Prometheus](https://prometheus.io)。请确保 Prometheus 可用，否则这些负载均衡策略将不生效。
 
-## 基于错误率的负载均衡
+## 基于状态的负载均衡
 
-TiProxy 通过从 Prometheus 查询 TiDB server 的错误率指标，当某个 TiDB server 的每分钟错误数过高而其他 TiDB server 正常时，TiProxy 将该 TiDB server 的连接迁移到其他 TiDB server 上，实现自动故障转移。
+TiProxy 定时通过 SQL 端口和状态端口检查 TiDB 是否已下线或正在关闭。
+
+## 基于健康度的负载均衡
+
+TiProxy 通过从 Prometheus 查询 TiDB server 的错误率指标判断 TiDB server 的健康度，当某个 TiDB server 的健康度异常而其他 TiDB server 正常时，TiProxy 将该 TiDB server 的连接迁移到其他 TiDB server 上，实现自动故障转移。
 
 该策略适用于以下场景：
 
@@ -113,3 +118,15 @@ TiProxy 通常根据 CPU 使用率来识别 TiDB server 的负载。该策略通
 
 - TiDB 集群刚启动，所有 TiDB server 的 CPU 使用率接近 0，此时该策略防止启动时负载不均。
 - 未启用[基于 CPU 的负载均衡](#基于-cpu-的负载均衡)时，使用该策略确保负载均衡。
+
+# 负载均衡策略配置
+
+TiProxy 支持通过配置项 [`policy`](/tiproxy/tiproxy-configuration.md#policy) 配置上述负载均衡策略的组合和优先级。
+
+- `resource`: 资源优先策略，优先级顺序依次为基于状态、健康度、内存、CPU、地理位置、连接数的负载均衡。
+- `location`: 地理优先策略，优先级顺序依次为基于状态、地理位置、健康度、内存、CPU、连接数的负载均衡。
+- `connection`: 最小连接数策略，优先级顺序依次为基于状态、连接数的负载均衡。
+
+# 资源
+
+关于 TiProxy 负载均衡策略更详细的信息，请参阅[设计文档](https://github.com/pingcap/tiproxy/tree/main/docs/design/2024-02-01-multi-factor-based-balance.md)。
