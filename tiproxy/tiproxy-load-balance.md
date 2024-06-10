@@ -9,7 +9,7 @@ summary: 介绍 TiProxy 的负载均衡策略及其适用场景。
 
 TiProxy 默认启用所有策略，优先级从高到低依次为：
 
-1. 基于状态的负载均衡：当某个 TiDB server 正在关闭时，TiProxy 将连接从该 TiDB server 迁移到其他 TiDB server。
+1. 基于状态的负载均衡：当某个 TiDB server 正在关闭时，TiProxy 将连接从该 TiDB server 迁移到在线的 TiDB server。
 2. 基于健康度的负载均衡：当某个 TiDB server 的健康度异常时，TiProxy 将连接从该 TiDB server 迁移到健康度正常的 TiDB server。
 3. 基于内存的负载均衡：当某个 TiDB server 存在 Out of Memory (OOM) 风险时，TiProxy 将连接从该 TiDB server 迁移到内存使用量较低的 TiDB server。
 4. 基于 CPU 的负载均衡：当某个 TiDB server 的 CPU 使用率远高于其他 TiDB server 时，TiProxy 将连接从该 TiDB server 迁移到 CPU 使用率较低的 TiDB server。

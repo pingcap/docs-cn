@@ -55,8 +55,8 @@ TiProxy 有四个面板组。这些面板上的指标表示 TiProxy 的当前状
 - Session Migration OPM：每分钟发生的会话迁移数，记录从 TiDB 实例迁移到另一个 TiDB 实例的会话。例如，`succeed: 10.24.31.2:4000 => 10.24.31.3:4000` 表示从 TiDB 实例 `10.24.31.2:4000` 成功迁移到 TiDB 实例 `10.24.31.3:4000` 的会话数。
 - Session Migration Duration：会话迁移的平均、P95、P99 时长。
 - Session Migration Reasons：每分钟发生的会话迁移数，以及迁移的原因。原因包括：
-    - `health`：原 TiDB 实例不可用或正在关闭
-    - `error`：TiProxy 进行了[基于错误率的负载均衡](/tiproxy/tiproxy-load-balance.md#基于错误率的负载均衡)
+    - `status`：TiProxy 进行了[基于状态的负载均衡](/tiproxy/tiproxy-load-balance.md#基于状态的负载均衡)
+    - `health`：TiProxy 进行了[基于健康度的负载均衡](/tiproxy/tiproxy-load-balance.md#基于健康度的负载均衡)
     - `memory`：TiProxy 进行了[基于内存的负载均衡](/tiproxy/tiproxy-load-balance.md#基于内存的负载均衡)
     - `cpu`：TiProxy 进行了[基于 CPU 的负载均衡](/tiproxy/tiproxy-load-balance.md#基于-cpu-的负载均衡)
     - `location`：TiProxy 进行了[基于地理位置的负载均衡](/tiproxy/tiproxy-load-balance.md#基于地理位置的负载均衡)
