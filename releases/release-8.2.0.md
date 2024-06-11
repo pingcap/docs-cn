@@ -200,6 +200,8 @@ TiDB 版本：8.2.0
 * 废弃功能 1
 
 * 变量 [`tidb_enable_concurrent_hashagg_spill`](/system-variables.md#tidb_enable_concurrent_hashagg_spill-从-v800-版本开始引入) 将被废弃。
+* BR 快照恢复参数 [`concurrency`](/use-br-command-line-tool#常用选项) 将被废弃。
+* BR 快照恢复参数 [`granularity`](/br-snapshot-guide#快照恢复的性能与影响) 将被废弃。
 
 ## 改进提升
 
