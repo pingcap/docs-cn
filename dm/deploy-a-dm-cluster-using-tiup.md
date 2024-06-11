@@ -15,9 +15,11 @@ summary: 学习如何使用 TiUP DM 组件来部署 TiDB Data Migration 工具�
 
 ## 前提条件
 
-当 DM 执行全量数据复制任务时，每个 DM-worker 只绑定一个上游数据库。DM-worker 首先在上游导出全部数据，然后将数据导入下游数据库。因此，DM-worker 的主机空间需要容纳所有要导出的上游表，具体存储路径在后续创建迁移任务时指定。
+- 当 DM 执行全量数据复制任务时，每个 DM-worker 只绑定一个上游数据库。DM-worker 首先在上游导出全部数据，然后将数据导入下游数据库。因此，DM-worker 的主机空间需要容纳所有要导出的上游表，具体存储路径在后续创建迁移任务时指定。
 
-另外，部署 DM 集群需参照 [DM 集群软硬件环境需求](/dm/dm-hardware-and-software-requirements.md)，满足相应要求。
+- 部署 DM 集群需参照 [DM 集群软硬件环境需求](/dm/dm-hardware-and-software-requirements.md)，满足相应要求。
+
+- 从 v8.0.0 开始，如果需要使用[加密数据库密码](/dm/dm-manage-source.md#加密数据库密码)的方式配置 DM 任务，需要提前在 DM-master 存储一个[用于加解密数据库密码的密钥文件](/dm/dm-customized-secret-key.md)，且配置 [`secret-key-path`](/dm/dm-master-configuration-file.md) 后才可使用 `dmctl encrypt` 命令。
 
 ## 第 1 步：在中控机上安装 TiUP 组件
 
@@ -233,3 +235,7 @@ tiup dm display dm-test
 dmctl 是用来控制集群运行命令的工具，推荐[通过 TiUP 获取该工具](/dm/maintain-dm-using-tiup.md#集群控制工具-dmctl)。
 
 dmctl 支持命令模式与交互模式，具体请见[使用 dmctl 运维集群](/dm/dmctl-introduction.md)。
+
+## 第 9 步：加密数据库密码
+
+部署完后，你可以使用加密数据库密码的方式配置 DM 任务。详情请参考[加密数据库密码](/dm/dm-manage-source.md#加密数据库密码)。
