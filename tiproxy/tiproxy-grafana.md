@@ -74,4 +74,4 @@ TiProxy 有四个面板组。这些面板上的指标表示 TiProxy 的当前状
 - Packets/Second from Backends：每个 TiDB 实例每秒向每个 TiProxy 实例发送的 MySQL 数据包数量。
 - Bytes/Second to Backends：每个 TiProxy 实例每秒向每个 TiDB 实例发送的数据量，单位为字节。
 - Packets/Second to Backends：每个 TiProxy 实例每秒向每个 TiDB 实例发送的 MySQL 数据包数量。
-- Cross Location Bytes/Second：每个 TiProxy 实例每秒向跨地理位置的 TiDB 实例发送的数据量，单位为字节。
+- Cross Location Bytes/Second：每个 TiProxy 实例每秒与跨地理位置的 TiDB 实例之间传输的数据量，单位为字节。
