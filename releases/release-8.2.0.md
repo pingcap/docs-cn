@@ -51,6 +51,8 @@ TiDB 版本：8.2.0
 
     在 v8.2.0 中，TiDB 正式发布该功能。TiDB 在使用并发 HashAgg 算法时，将根据内存使用情况自动触发数据落盘，从而兼顾性能和数据处理量。该功能默认打开，变量 `tidb_enable_concurrent_hashagg_spill` 将被废弃。
 
+* 提升备份百万表场景的备份稳定性以及性能。解决备份过程中因为各种原因(节点重启/扩容/网络问题)带来的长尾问题。 [#52534](https://github.com/pingcap/tidb/issues/52534) @[3pointer](https://github.com/3pointer) **tw@qiancai** <!--1844-->
+
 ### 稳定性
 
 * 功能标题 [#issue号](链接) @[贡献者 GitHub ID](链接) **tw@xxx** <!--1234-->
@@ -228,6 +230,7 @@ TiDB 版本：8.2.0
 
     + Backup & Restore (BR)
 
+	-  优化恢复过程中对 Changefeed 的检查，对于安全的 Changefeed(checkpoint 大于备份时间)，不再阻止其恢复。[#53131](https://github.com/pingcap/tidb/issues/53131) @[YuJuncen](https://github.com/YuJuncen) **tw@qiancai** <!--1843-->
         - note [#issue](链接) @[贡献者 GitHub ID](链接)
         - note [#issue](链接) @[贡献者 GitHub ID](链接)
 
