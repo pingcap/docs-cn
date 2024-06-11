@@ -129,4 +129,4 @@ TiProxy 支持通过配置项 [`policy`](/tiproxy/tiproxy-configuration.md#polic
 
 # 资源
 
-关于 TiProxy 负载均衡策略更详细的信息，请参阅[设计文档](https://github.com/pingcap/tiproxy/tree/main/docs/design/2024-02-01-multi-factor-based-balance.md)。
+关于 TiProxy 负载均衡策略更详细的信息，请参阅[设计文档](https://github.com/pingcap/tiproxy/blob/main/docs/design/2024-02-01-multi-factor-based-balance.md)。
