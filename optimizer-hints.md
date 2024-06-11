@@ -1009,9 +1009,9 @@ EXPLAIN SELECT /*+ INL_JOIN(t1, t2) */ * FROM t1, t2 WHERE t1.id=t2.id AND SUBST
 7 rows in set (0.00 sec)
 ```
 
-#### 排序规则不兼容导致 `INL_JOIN` Hint 不生效
+#### 排序规则不兼容导致 `INL_JOIN` Hint、`INL_HASH_JOIN` Hint、`INL_MERGE_JOIN` Hint 不生效
 
-如果两个表的 Join key 的排序规则不能兼容，将无法使用 IndexJoin 来执行查询。此时 [`INL_JOIN` Hint](#inl_joint1_name--tl_name-) 将无法生效。例如：
+如果两个表的 Join key 的排序规则不能兼容，将无法使用 IndexJoin 来执行查询。此时 [`INL_JOIN` Hint](#inl_joint1_name--tl_name-)、[`INL_HASH_JOIN` Hint](#inl_hash_join)、[`INL_MERGE_JOIN` Hint](#inl_merge_join) 将无法生效。例如：
 
 ```sql
 CREATE TABLE t1 (k varchar(8), key(k)) COLLATE=utf8mb4_general_ci;
