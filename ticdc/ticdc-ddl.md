@@ -106,7 +106,7 @@ rules = ['test.t*']
 
 ### 使用 Event Filter 过滤 DDL 事件的注意事项
 
-如果被过滤的 DDL 语句涉及到表的创建或删除，则 TiCDC 只会过滤掉 DDL 语句，DML 的同步行为不受影响。下面使用具体示例进行说明。
+如果被过滤的 DDL 语句涉及表的创建或删除，TiCDC 只会过滤掉这些 DDL 语句，DML 的同步行为不受影响。下面使用具体示例进行说明。
 
 假设你的 changefeed 的配置文件如下：
 
@@ -114,22 +114,22 @@ rules = ['test.t*']
 [filter]
 rules = ['test.t*']
 
-matcher = ["test.t1"] # 该过滤规则只应用于 test 库中的 worker 表
+matcher = ["test.t1"] # 该过滤规则只应用于 test 库中的 t1 表
 ignore-event = ["create table", "drop table", "truncate table"]
 ```
 
 | DDL | DDL 行为 | DML 行为 | 原因 |
 | --- | --- | --- | --- |
-| `CREATE TABLE test.t1 (id INT, name VARCHAR(50));` | 忽略 | 同步 | test.t1 符合 Event Filter 过滤规则，create table 事件被忽略，但不影响 DML 事件的同步 |
+| `CREATE TABLE test.t1 (id INT, name VARCHAR(50));` | 忽略 | 同步 | test.t1 符合 Event Filter 过滤规则，`CREATE TABLE` 事件被忽略，但不影响 DML 事件的同步 |
 | `CREATE TABLE test.t2 (id INT, name VARCHAR(50));` | 同步 | 同步 | test.t2 不符合 Event Filter 过滤规则 |
-| `CREATE TABLE test.ignore (id INT, name VARCHAR(50));` | 忽略 | 忽略 | test.ignore 符合 Table Filter 过滤规则，因此DDL 和 DML 事件均被忽略 |
-| `DROP TABLE test.t1;` | 忽略 | - | test.t1 符合 Event Filter，drop table 事件被忽略。由于这张表已经被删除，cdc 不再同步 t1 的 DML 事件 |
-| `TRUNCATE TABLE test.t1;` | 忽略 | 同步 | test.t1 符合 Event Filter，truncate table 事件被忽略，但不影响 DML 事件的同步  |
+| `CREATE TABLE test.ignore (id INT, name VARCHAR(50));` | 忽略 | 忽略 | test.ignore 符合 Table Filter 过滤规则，因此 DDL 和 DML 事件均被忽略 |
+| `DROP TABLE test.t1;` | 忽略 | - | test.t1 符合 Event Filter，`DROP TABLE` 事件被忽略。该表已被删除，TiCDC 不再同步 t1 的 DML 事件 |
+| `TRUNCATE TABLE test.t1;` | 忽略 | 同步 | test.t1 符合 Event Filter，`TRUNCATE TABLE` 事件被忽略，但不影响 DML 事件的同步  |
 
 > **注意：**
 >
-> - 当同步数据到数据库时，应谨慎使用 Event Filter 过滤 DDL 事件，同步过程中需确保上下游的库表结构始终一致。否则，TiCDC 可能会报错或存在未定义的同步行为。
-> - 在 v6.5.8、v7.1.4、v7.5.1 之前的版本中，使用 Event Filter 过滤涉及创建或删除表的 DDL 事件，会影响 DML 的同步，不推荐使用该特性。
+> - 当同步数据到数据库时，应谨慎使用 Event Filter 过滤 DDL 事件，同步过程中需确保上下游的库表结构始终一致。否则，TiCDC 可能会报错或产生未定义的同步行为。
+> - 在 v6.5.8、v7.1.4、v7.5.1 之前的版本中，使用 Event Filter 过滤涉及创建或删除表的 DDL 事件，会影响 DML 的同步，不推荐使用该功能。
 
 ### SQL 模式
 
