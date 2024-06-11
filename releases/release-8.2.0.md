@@ -77,8 +77,8 @@ TiDB 版本：8.2.0
 
 * TiProxy 支持多种负载均衡策略 [#465](https://github.com/pingcap/tiproxy/issues/465) @[djshow832](https://github.com/djshow832) @[xhebox](https://github.com/xhebox)  **tw@Oreoxmt** <!--1777-->
 
-    TiProxy 是 TiDB 的官方代理组件，位于客户端和 TiDB server 之间，为 TiDB 提供负载均衡、连接保持功能。在 v8.2.0 之前，TiProxy 只能基于连接数进行负载均衡。
-    在 v8.2.0 中，TiProxy 引入了多种负载均衡策略，除了连接数，还可以根据 TiDB 健康度、资源、地理位置等信息，对集群的连接进行动态负载均衡调度，使整个集群更加稳定。
+    TiProxy 是 TiDB 的官方代理组件，位于客户端和 TiDB server 之间，为 TiDB 集群提供负载均衡、连接保持功能。在 v8.2.0 之前，TiProxy 默认使用 v1.0.0 版本，只能基于状态和连接数进行负载均衡。
+    在 v8.2.0 中，TiProxy 默认使用 v1.1.0 版本，引入了多种负载均衡策略，除了状态和连接数，还可以根据健康度、资源、地理位置等信息，对 TiDB 集群的连接进行动态负载均衡调度，使整个 TiDB 集群更加稳定。
 
     TiProxy 的负载均衡策略可以通过配置项进行配置，具体策略包括：
     * `resource`: 资源优先策略，优先级顺序依次为基于状态、健康度、内存、CPU、地理位置、连接数的负载均衡。
