@@ -19,7 +19,7 @@ summary: 学习如何使用 TiUP DM 组件来部署 TiDB Data Migration 工具�
 
 - 部署 DM 集群需参照 [DM 集群软硬件环境需求](/dm/dm-hardware-and-software-requirements.md)，满足相应要求。
 
-- 从 v8.0.0 开始，如果需要使用[加密数据库密码](/dm/dm-manage-source.md#加密数据库密码)的方式配置 DM 任务，DM-master 必须配置 [`secret-key-path`](/dm/dm-master-configuration-file.md) 后才可使用 `dmctl encrypt` 命令。
+- 从 v8.0.0 开始，如果需要使用[加密数据库密码](/dm/dm-manage-source.md#加密数据库密码)的方式配置 DM 任务，需要提前在 DM-master 存储用于加解密数据库密码的密钥文件，且配置 [`secret-key-path`](/dm/dm-master-configuration-file.md) 后才可使用 `dmctl encrypt` 命令。
 
 ## 第 1 步：在中控机上安装 TiUP 组件
 
