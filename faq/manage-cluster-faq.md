@@ -385,7 +385,7 @@ TiKV 的内存占用主要来自于 RocksDB 的 block-cache，默认为系统总
 这取决于你使用的 TiDB 版本以及是否启用了 TiKV API V2 （即 [`storage.api-version = 2`](/tikv-configuration-file.md#api-version-从-v610-版本开始引入)）。
 
 - 如果你使用的是 v6.1.0 或之后版本的 TiDB，并且启用了 TiKV API V2，那么 TiDB 数据和 RawKV 数据可以共存于同一个 TiKV 集群。
-- 否则，不可以将 TiDB 数据和 RawKV 数据存储于同一个 TiKV 集群中，因为 TiDB 数据的 key 的格式（或使用事务 API 创建的数据）与使用 RawKV API 创建的数据（或来自其他基于 RawKV 的服务生成的数据）不兼容。
+- 否则，不可以将 TiDB 数据和 RawKV 数据存储于同一个 TiKV 集群中，因为 TiDB 数据（或使用事务 API 创建的数据）的 key 的格式与使用 RawKV API 创建的数据（或来自其他基于 RawKV 的服务生成的数据）不兼容。
 
 ## TiDB 测试
 
