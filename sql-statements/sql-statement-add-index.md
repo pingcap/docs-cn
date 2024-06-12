@@ -113,7 +113,8 @@ EXPLAIN SELECT * FROM t1 WHERE c1 = 3;
 
 ## MySQL 兼容性
 
-* 不支持 `FULLTEXT`，`HASH` 和 `SPATIAL` 索引。
+* 不支持 `HASH` 和 `SPATIAL` 索引。
+* `FULLTEXT` 只是语法兼容 MySQL，实际上并不支持。
 * 不支持降序索引（类似于 MySQL 5.7）。
 * 无法向表中添加 `CLUSTERED` 类型的 `PRIMARY KEY`。要了解关于 `CLUSTERED` 主键的详细信息，请参考[聚簇索引](/clustered-indexes.md)。
 
