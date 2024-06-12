@@ -48,7 +48,7 @@ SQL 端口的配置。
 
 + 默认值：`""`
 + 支持热加载：否
-+ 指定客户端用该地址连接到 TiProxy。使用 TiUP 或 TiDB-Operator 部署时，会自动设置该配置项。如果没有设置该配置项，则使用该 TiProxy 实例的外部 IP 地址。
++ 指定客户端连接 TiProxy 时使用的地址。使用 TiUP 或 TiDB Operator 部署 TiProxy 时，此配置项会自动设置。如果未设置该配置项，将使用该 TiProxy 实例的外部 IP 地址。
 
 #### `graceful-wait-before-shutdown`
 
@@ -117,7 +117,7 @@ TiProxy 负载均衡策略的配置。
 + 默认值：`resource`
 + 支持热加载：是
 + 可选值：`resource`, `location`, `connection`
-+ 指定负载均衡策略。请参阅 [TiProxy 负载均衡策略](/tiproxy/tiproxy-load-balance.md)。
++ 指定负载均衡策略。请参阅 [TiProxy 负载均衡策略](/tiproxy/tiproxy-load-balance.md#负载均衡策略配置)。
 
 ### labels
 

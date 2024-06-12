@@ -13,10 +13,10 @@ summary: 了解 TiProxy 的命令行参数。
 
 ### `--advertise-addr`
 
-+ 指定客户端用该地址连接到 TiProxy。
++ 指定客户端连接 TiProxy 时使用的地址。
 + 类型：`string`
 + 默认值：`""`
-+ 使用 TiUP 或 TiDB-Operator 部署时，会自动设置该配置项。如果没有设置该配置项，则使用该 TiProxy 实例的外部 IP 地址。
++ 使用 TiUP 或 TiDB Operator 部署 TiProxy 时，此命令行参数会自动设置。如果未设置该参数，将使用该 TiProxy 实例的外部 IP 地址。
 
 ### `--config`
 

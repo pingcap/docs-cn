@@ -3,7 +3,7 @@ title: TiProxy 负载均衡策略
 summary: 介绍 TiProxy 的负载均衡策略及其适用场景。
 ---
 
-# TiProxy 负载均衡策略简介
+# TiProxy 负载均衡策略
 
 在 TiProxy v1.0.0 中，TiProxy 仅根据 TiDB 的状态和连接数迁移连接。从 v1.1.0 开始，TiProxy 新增了四种可独立配置的负载均衡策略：基于健康度、内存、CPU 和地理位置。
 
@@ -119,14 +119,14 @@ TiProxy 通常根据 CPU 使用率来识别 TiDB server 的负载。该策略通
 - TiDB 集群刚启动，所有 TiDB server 的 CPU 使用率接近 0，此时该策略防止启动时负载不均。
 - 未启用[基于 CPU 的负载均衡](#基于-cpu-的负载均衡)时，使用该策略确保负载均衡。
 
-# 负载均衡策略配置
+## 负载均衡策略配置
 
 TiProxy 支持通过配置项 [`policy`](/tiproxy/tiproxy-configuration.md#policy) 配置上述负载均衡策略的组合和优先级。
 
-- `resource`: 资源优先策略，优先级顺序依次为基于状态、健康度、内存、CPU、地理位置、连接数的负载均衡。
-- `location`: 地理优先策略，优先级顺序依次为基于状态、地理位置、健康度、内存、CPU、连接数的负载均衡。
-- `connection`: 最小连接数策略，优先级顺序依次为基于状态、连接数的负载均衡。
+- `resource`：资源优先策略，优先级顺序依次为基于状态、健康度、内存、CPU、地理位置、连接数的负载均衡。
+- `location`：地理优先策略，优先级顺序依次为基于状态、地理位置、健康度、内存、CPU、连接数的负载均衡。
+- `connection`：最小连接数策略，优先级顺序依次为基于状态、连接数的负载均衡。
 
-# 资源
+## 资源
 
 关于 TiProxy 负载均衡策略更详细的信息，请参阅[设计文档](https://github.com/pingcap/tiproxy/blob/main/docs/design/2024-02-01-multi-factor-based-balance.md)。
