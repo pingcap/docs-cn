@@ -14,6 +14,7 @@ TiDB 版本：6.5.10
 ## 兼容性变更
 
 - (dup): release-7.5.2.md > 兼容性变更 - 在之前的版本中，TiCDC 在处理包含 `UPDATE` 变更的事务时，如果事件的主键或者非空唯一索引的列值发生改变，则会将该条事件拆分为 `DELETE` 和 `INSERT` 两条事件。从 v7.5.2 开始，当使用 MySQL Sink 时，如果 `UPDATE` 变更所在事务的 `commitTS` 小于 TiCDC 启动时从 PD 获取的当前时间戳 `thresholdTS`，TiCDC 就会将该 `UPDATE` 事件拆分为 `DELETE` 和 `INSERT` 两条事件，然后写入 Sorter 模块。该行为变更解决了由于 TiCDC 接收到的 `UPDATE` 事件顺序可能不正确，导致拆分后的 `DELETE` 和 `INSERT` 事件顺序也可能不正确，从而引发下游数据不一致的问题。更多信息，请参考[用户文档](https://docs.pingcap.com/zh/tidb/v7.5/ticdc-behavior-change#mysql-sink)。[#10918](https://github.com/pingcap/tiflow/issues/10918) @[lidezhu](https://github.com/lidezhu)
+- TiDB-lightning 在使用 CSV 严格模式（strict-format）功能时需要显式设置行结束符 [#37338](https://github.com/pingcap/tidb/issues/37338) @[lance6716](https://github.com/lance6716)
 
 ## 改进提升
 
@@ -113,6 +114,10 @@ TiDB 版本：6.5.10
     - (dup): release-7.5.2.md > 错误修复> TiDB - 修复空 Projection 导致 TiDB panic 的问题 [#49109](https://github.com/pingcap/tidb/issues/49109) @[winoros](https://github.com/winoros)
     - (dup): release-7.5.2.md > 错误修复> TiDB - 修复 TopN 算子可能被错误地下推的问题 [#37986](https://github.com/pingcap/tidb/issues/37986) @[qw4990](https://github.com/qw4990)
     - (dup): release-7.5.2.md > 错误修复> TiDB - 修复执行谓词总是为 `true` 的 `SHOW ERRORS` 语句导致 TiDB panic 的问题 [#46962](https://github.com/pingcap/tidb/issues/46962) @[elsa0520](https://github.com/elsa0520)
+    - 修复 information schema 缓存未命中导致的 stale read 延迟上升的问题 [#53428](https://github.com/pingcap/tidb/issues/53428) @[crazycs520](https://github.com/crazycs520)
+    - 修复 DDL 错误使用 etcd 导致任务排队等问题 [#52335](https://github.com/pingcap/tidb/issues/52335) @[wjhuang2016](https://github.com/wjhuang2016)
+    - 修复重命名表达式索引残留内部列的问题 [#51431](https://github.com/pingcap/tidb/issues/51431) @[ywqzzy](https://github.com/ywqzzy)
+    - 修复并发执行 CREATE OR REPLACE VIEW 可能报错 “table doesn't exist” 的问题 [#53673](https://github.com/pingcap/tidb/issues/53673) @[tangenta](https://github.com/tangenta)
 
 + TiKV
 
@@ -172,11 +177,14 @@ TiDB 版本：6.5.10
         - note [#issue](https://github.com/pingcap/tidb/issues/${issue-id}) @[贡献者 GitHub ID](https://github.com/${github-id})
         - (dup): release-8.1.0.md > 错误修复> Tools> TiDB Lightning - 修复 TiDB Lightning 导入数据时，kill PD Leader 会导致 `invalid store ID 0` 报错的问题 [#50501](https://github.com/pingcap/tidb/issues/50501) @[Leavrth](https://github.com/Leavrth)
         - (dup): release-7.1.0.md > 错误修复> Tools> TiDB Lightning - 修复 TiDB Lightning Grafana 面板缺失数据的问题 [#43357](https://github.com/pingcap/tidb/issues/43357) @[lichunzhu](https://github.com/lichunzhu)
+        - 使用 `strict-format` 需要设置行结束符以确保正确性 [#37338](https://github.com/pingcap/tidb/issues/37338) @[lance6716](https://github.com/lance6716)
+        - 在 SHARD_ROW_ID_BITS 与 AUTO_ID_CACHE=1 功能时正确设置 AUTO ID [#52654](https://github.com/pingcap/tidb/issues/52654) @[D3Hunter](https://github.com/D3Hunter)
 
     + Dumpling
 
         - note [#issue](https://github.com/pingcap/tidb/issues/${issue-id}) @[贡献者 GitHub ID](https://github.com/${github-id})
         - note [#issue](https://github.com/pingcap/tidb/issues/${issue-id}) @[贡献者 GitHub ID](https://github.com/${github-id})
+        - 修复同时导出 TABLE 和 VIEW 运行报错的问题 [#53682](https://github.com/pingcap/tidb/issues/53682) @[tangenta](https://github.com/tangenta)
 
     + TiUP
 
@@ -187,3 +195,4 @@ TiDB 版本：6.5.10
 
         - note [#issue](https://github.com/pingcap/tidb-binlog/issues/${issue-id}) @[贡献者 GitHub ID](https://github.com/${github-id})
         - note [#issue](https://github.com/pingcap/tidb-binlog/issues/${issue-id}) @[贡献者 GitHub ID](https://github.com/${github-id})
+        - 修复在 ADD COLUMN 时删除行可能报错 ”data and columnID count not match“ 的问题 [#53133](https://github.com/pingcap/tidb/issues/53133) @[tangenta](https://github.com/tangenta)
