@@ -49,7 +49,7 @@ strategy = ""
 backend = "local"
 
 # 冲突数据处理方式
-# `duplicate-resolution` 参数从 v8.0.0 开始已被废弃，并将在未来版本中被移除。如果 `duplicate-resolution` 设置为 'none' 且 `conflict.strategy` 未设置，TiDB Lightning 会自动将 `conflict.strategy` 赋值为 ""。详情参考 <https://docs.pingcap.com/zh/tidb/stable/tidb-lightning-physical-import-mode-usage#旧版冲突检测从-v800-开始已被废弃>。
+# `duplicate-resolution` 参数从 v8.0.0 开始已被废弃，并将在未来版本中被移除。如果 `duplicate-resolution` 设置为 'none' 且 `conflict.strategy` 未设置，TiDB Lightning 会自动将 `conflict.strategy` 赋值为 ""。如果 `duplicate-resolution` 设置为 `remove` 且 `conflict.strategy` 未设置，TiDB Lightning 会自动将 `conflict.strategy` 赋值为 "replace" 开启新版冲突检测。详情参考 <https://docs.pingcap.com/zh/tidb/stable/tidb-lightning-physical-import-mode-usage#旧版冲突检测从-v800-开始已被废弃>。
 duplicate-resolution = 'none'
 
 # 本地进行 KV 排序的路径。
