@@ -305,7 +305,7 @@ TiDB 支持完整的分布式事务，自 v3.0 版本起，提供乐观事务与
 
     - TiKV 磁盘使用 `80%` 容量，PD 不会进行补副本操作，miss peer 数量上升，需要扩容 TiKV，见案例 [case-801](https://github.com/pingcap/tidb-map/blob/master/maps/diagnose-case-study/case801.md)。
 
-    - 下线 TiKV，有 Region 长时间迁移不走。v3.0.4 版本已经修复改问题，见 [#5526](https://github.com/tikv/tikv/pull/5526) 和案例 [case-870](https://github.com/pingcap/tidb-map/blob/master/maps/diagnose-case-study/case870.md)。
+    - 下线 TiKV，有 Region 长时间迁移不走。v3.0.4 版本已经修复该问题，见 [#5526](https://github.com/tikv/tikv/pull/5526) 和案例 [case-870](https://github.com/pingcap/tidb-map/blob/master/maps/diagnose-case-study/case870.md)。
 
 - 5.1.3 Balance 问题：
 
