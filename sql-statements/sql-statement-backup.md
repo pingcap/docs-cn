@@ -31,11 +31,15 @@ BRIETables ::=
 |   "TABLE" TableNameList
 
 BackupOption ::=
-    "RATE_LIMIT" '='? LengthNum "MB" '/' "SECOND"
+    "CHECKSUM" '='? Boolean
+|   "CHECKSUM_CONCURRENCY" '='? LengthNum
+|   "COMPRESSION_LEVEL" '='? LengthNum
+|   "COMPRESSION_TYPE" '='? stringLit
 |   "CONCURRENCY" '='? LengthNum
-|   "CHECKSUM" '='? Boolean
-|   "SEND_CREDENTIALS_TO_TIKV" '='? Boolean
+|   "IGNORE_STATS" '='? Boolean
 |   "LAST_BACKUP" '='? BackupTSO
+|   "RATE_LIMIT" '='? LengthNum "MB" '/' "SECOND"
+|   "SEND_CREDENTIALS_TO_TIKV" '='? Boolean
 |   "SNAPSHOT" '='? ( BackupTSO | LengthNum TimestampUnit "AGO" )
 
 Boolean ::=
@@ -125,9 +129,13 @@ BACKUP DATABASE `test` TO 's3://example-bucket-2020/backup-05/'
 
 如果你需要减少网络带宽占用，可以通过 `RATE_LIMIT` 来限制每个 TiKV 节点的平均上传速度。
 
-在备份完成之前，`BACKUP` 将对集群上的数据执行校验和以验证数据正确性。如果你确定无需进行校验，可以通过将 `CHECKSUM` 参数设置为 `FALSE` 来禁用该检查。
+在备份完成之前，`BACKUP` 将对集群上的数据执行校验和以验证数据正确性。如果你确定无需进行校验，可以通过将 `CHECKSUM` 参数设置为 `FALSE` 来禁用该检查。`CHECKSUM_CONCURRENCY` 参数设置对单张表做数据校验作业的并发度， 默认是 4。    
 
 要指定 BR 可以同时执行的备份表和索引的任务数量，可使用 `CONCURRENCY`。该参数控制 BR 的线程池大小，可以优化备份操作的性能和效率。根据备份类型不同，一个任务代表一个表范围或一个索引范围。如果有一个表带有一个索引，则会有两个任务来备份这个表。参数 `CONCURRENCY` 的默认值为 `4`，如果你要备份许多表或索引，需调大该参数的值。
+
+统计信息默认不会备份，如果你确定需要备份统计信息，可以将  `IGNORE_STATS` 参数设置为 `FALSE`。
+
+备份生成的 sst 文件默认是使用 `zstd` 压缩算法， 你可以根据需求， 通过 `COMPRESSION_TYPE` 参数指定压缩算法。可选的算法包括 `lz4`,`zstd` 和 `snappy`。你还可以通过 `COMPRESSION_LEVEL` 设置压缩级别，压缩级别数字越高，压缩比越高，但 CPU 消耗越大。
 
 {{< copyable "sql" >}}
 

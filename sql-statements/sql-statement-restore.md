@@ -39,10 +39,14 @@ BRIETables ::=
 |   "TABLE" TableNameList
 
 RestoreOption ::=
-    "RATE_LIMIT" '='? LengthNum "MB" '/' "SECOND"
+    "CHECKSUM_CONCURRENCY" '='? LengthNum
 |   "CONCURRENCY" '='? LengthNum
 |   "CHECKSUM" '='? Boolean
+|   "LOAD_STATS" '='? Boolean
+|   "RATE_LIMIT" '='? LengthNum "MB" '/' "SECOND"
 |   "SEND_CREDENTIALS_TO_TIKV" '='? Boolean
+|   "WAIT_TIFLASH_READY" '='? Boolean
+|   "WITH_SYS_TABLE" '='? Boolean
 
 Boolean ::=
     NUM | "TRUE" | "FALSE"
@@ -120,7 +124,13 @@ RESTORE DATABASE * FROM 's3://example-bucket-2020/backup-05/'
 
 如果你需要减少网络带宽占用，可以通过 `RATE_LIMIT` 来限制每个 TiKV 节点的平均下载速度。
 
-在恢复完成之前，`RESTORE` 将对备份文件中的数据进行校验，以验证数据的正确性。如果你确定无需进行校验，可以通过将 `CHECKSUM` 参数设置为 `FALSE` 来禁用该检查。
+在恢复完成之前，`RESTORE` 将对备份文件中的数据进行校验，以验证数据的正确性。如果你确定无需进行校验，可以通过将 `CHECKSUM` 参数设置为 `FALSE` 来禁用该检查。`CHECKSUM_CONCURRENCY` 参数设置对单张表做数据校验作业的并发度， 默认是 4。
+
+统计信息默认会尝试恢复，如果你确定不需要恢复统计信息，可以将 `LOAD_STATS` 参数设置为 `FALSE`。
+
+系统权限表默认会恢复， 如果你确定不需要恢复系统权限表，可以将 `WITH_SYS_TABLE` 参数设置为 `FALSE`。
+
+默认情况下，恢复任务不用等待 tiflash 的副本都创建好才能结束。如果你确定要等待的话，可以将 `WAIT_TIFLASH_READY` 参数设置为 `TRUE`。
 
 {{< copyable "sql" >}}
 
