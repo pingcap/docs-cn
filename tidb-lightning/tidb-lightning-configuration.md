@@ -148,10 +148,10 @@ addr = "172.16.31.10:8287"
 # `duplicate-resolution` 参数从 v8.0.0 开始已被废弃，并将在未来版本中被移除。详情参考 <https://docs.pingcap.com/zh/tidb/stable/tidb-lightning-physical-import-mode-usage#旧版冲突检测从-v800-开始已被废弃>。
 # 物理导入模式设置是否检测和解决重复的记录（唯一键冲突）。
 # 目前支持两种解决方法：
-#  - none：不检测重复记录。
+#  - 'none'：不检测重复记录。
 #          如果数据源存在重复记录，会导致 TiDB 中出现数据不一致的情况。
-#          如果 `duplicate-resolution` 设置为 `none` 且 `conflict.strategy` 未设置，TiDB Lightning 会自动将 `conflict.strategy` 赋值为 ""。
-#  - remove：如果 `duplicate-resolution` 设置为 `remove` 且 `conflict.strategy` 未设置，TiDB Lightning 会自动将 `conflict.strategy` 赋值为 "replace" 开启新版冲突检测。
+#          如果 `duplicate-resolution` 设置为 'none' 且 `conflict.strategy` 未设置，TiDB Lightning 会自动将 `conflict.strategy` 赋值为 ""。
+#  - 'remove'：如果 `duplicate-resolution` 设置为 'remove' 且 `conflict.strategy` 未设置，TiDB Lightning 会自动将 `conflict.strategy` 赋值为 "replace" 开启新版冲突检测。
 # duplicate-resolution = 'none'
 # 物理导入模式下，向 TiKV 发送数据时一次请求中最大 KV 数量。
 # 自 v7.2.0 开始，该参数废弃，设置后不再生效。如果希望调整一次请求中向 TiKV 发送的数据量，请使用 `send-kv-size` 参数。
