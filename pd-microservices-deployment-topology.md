@@ -66,7 +66,7 @@ scheduling_servers:
   - host: 10.0.1.8
   - host: 10.0.1.9
 
-# # Specifies the configuration of Prometheus server.
+# # Specifies the configuration of Prometheus servers.
 monitoring_servers:
   - host: 10.0.1.13
 
