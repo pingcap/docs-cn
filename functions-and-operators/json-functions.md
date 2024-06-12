@@ -70,7 +70,7 @@ TiDB 支持 MySQL 8.0 中提供的大部分 [JSON 函数](https://dev.mysql.com/
 | [JSON_ARRAYAGG(key)](https://dev.mysql.com/doc/refman/8.0/en/aggregate-functions.html#function_json-arrayagg) | 提供指定列 key 的聚合 |
 | [JSON_OBJECTAGG(key, value)](https://dev.mysql.com/doc/refman/8.0/en/aggregate-functions.html#function_json-objectagg) | 提供给定两列键值对的聚合 |
 
-## Validation functions
+## 验证函数
 
 | 函数                 | 功能描述 |
 | --------------------------------- | ----------- |
