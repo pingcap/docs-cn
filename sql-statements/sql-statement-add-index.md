@@ -113,8 +113,10 @@ EXPLAIN SELECT * FROM t1 WHERE c1 = 3;
 
 ## MySQL 兼容性
 
-* 不支持 `HASH` 和 `SPATIAL` 索引。
+* TiDB 在语法中接受诸如 `HASH`、`BTREE` 和 `RTREE` 等索引类型，但出于兼容性原因会忽略它们。
+* 不支持 `SPATIAL` 索引。
 * `FULLTEXT` 只是语法兼容 MySQL，实际上并不支持。
+* TiDB 支持解析 `FULLTEXT` 语法，但不支持使用 `FULLTEXT` 索引。
 * 不支持降序索引（类似于 MySQL 5.7）。
 * 无法向表中添加 `CLUSTERED` 类型的 `PRIMARY KEY`。要了解关于 `CLUSTERED` 主键的详细信息，请参考[聚簇索引](/clustered-indexes.md)。
 
