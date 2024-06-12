@@ -5,7 +5,7 @@ summary: 了解在部署最小拓扑集群的基础上，部署 PD 微服务的�
 
 # PD 微服务部署拓扑
 
-本文介绍在部署最小拓扑集群的基础上，部署 [PD 微服务](/pd-microservices.md) 的拓扑结构。
+本文介绍在部署最小拓扑集群的基础上，部署 [PD 微服务](/pd-microservices.md)的拓扑结构。
 
 ## 拓扑信息
 
@@ -39,44 +39,39 @@ monitored:
   node_exporter_port: 9200
   blackbox_exporter_port: 9215
 
-# # Server configs are used to specify the configuration of PD Servers.
+# # Specifies the configuration of PD servers.
 pd_servers:
-  # # The ip address of the PD Server.
   - host: 10.0.1.3
   - host: 10.0.1.4
   - host: 10.0.1.5
 
-# # Server configs are used to specify the configuration of TiDB Servers.
+# # Specifies the configuration of TiDB servers.
 tidb_servers:
-  # # The ip address of the TiDB Server.
   - host: 10.0.1.1
   - host: 10.0.1.2
 
-# # Server configs are used to specify the configuration of TiKV Servers.
+# # Specifies the configuration of TiKV servers.
 tikv_servers:
-  # # The ip address of the TiKV Server.
   - host: 10.0.1.10
   - host: 10.0.1.11
   - host: 10.0.1.12
 
+# # Specifies the configuration of TSO servers.
 tso_servers:
-  # # The ip address of the TSO Server.
   - host: 10.0.1.6
   - host: 10.0.1.7
 
+# # Specifies the configuration of Scheduling servers.
 scheduling_servers:
-  # # The ip address of the Scheduling Server.
   - host: 10.0.1.8
   - host: 10.0.1.9
 
-# # Server configs are used to specify the configuration of Prometheus Server.
+# # Specifies the configuration of Prometheus server.
 monitoring_servers:
-  # # The ip address of the Monitoring Server.
   - host: 10.0.1.13
 
-# # Server configs are used to specify the configuration of Grafana Servers.
+# # Specifies the configuration of Grafana servers.
 grafana_servers:
-  # # The ip address of the Grafana Server.
   - host: 10.0.1.13
 ```
 
@@ -86,9 +81,9 @@ grafana_servers:
 
 ### 关键参数介绍
 
-- `tso_servers` 实例级别配置 `"-host"` 目前只支持 IP，不支持域名。
+- `tso_servers` 实例级别配置 `-host` 目前只支持 IP 地址，不支持域名。
 - TSO 具体的参数配置介绍可参考 [TSO 参数配置](/tso-configuration-file.md)。
-- `scheduling_servers` 实例级别配置 `"-host"` 目前只支持 IP，不支持域名。
+- `scheduling_servers` 实例级别配置 `-host` 目前只支持 IP 地址，不支持域名。
 - Scheduling 具体的参数配置介绍可参考 [Scheduling 参数配置](/scheduling-configuration-file.md)。
 
 > **注意：**
