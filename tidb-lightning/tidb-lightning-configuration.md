@@ -302,7 +302,7 @@ distsql-scan-concurrency = 15
 index-serial-scan-concurrency = 20
 checksum-table-concurrency = 2
 
-# 设置其他 TiDB会话变量
+# 设置其他 TiDB 会话变量
 # [tidb.session-vars]
 # tidb_enable_clustered_index = "OFF"
 
