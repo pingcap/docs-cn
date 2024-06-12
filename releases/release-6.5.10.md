@@ -14,7 +14,7 @@ TiDB 版本：6.5.10
 ## 兼容性变更
 
 - (dup): release-7.5.2.md > 兼容性变更 - 在之前的版本中，TiCDC 在处理包含 `UPDATE` 变更的事务时，如果事件的主键或者非空唯一索引的列值发生改变，则会将该条事件拆分为 `DELETE` 和 `INSERT` 两条事件。从 v7.5.2 开始，当使用 MySQL Sink 时，如果 `UPDATE` 变更所在事务的 `commitTS` 小于 TiCDC 启动时从 PD 获取的当前时间戳 `thresholdTS`，TiCDC 就会将该 `UPDATE` 事件拆分为 `DELETE` 和 `INSERT` 两条事件，然后写入 Sorter 模块。该行为变更解决了由于 TiCDC 接收到的 `UPDATE` 事件顺序可能不正确，导致拆分后的 `DELETE` 和 `INSERT` 事件顺序也可能不正确，从而引发下游数据不一致的问题。更多信息，请参考[用户文档](https://docs.pingcap.com/zh/tidb/v6.5/ticdc-behavior-change#mysql-sink)。[#10918](https://github.com/pingcap/tiflow/issues/10918) @[lidezhu](https://github.com/lidezhu)
-- TiDB-lightning 在使用 CSV 严格模式（strict-format）功能时需要显式设置行结束符 [#37338](https://github.com/pingcap/tidb/issues/37338) @[lance6716](https://github.com/lance6716)
+- (dup): release-7.5.2.md > 兼容性变更 - TiDB Lightning 使用严格格式 `strict-format` 或 `SPLIT_FILE` 导入 CSV 文件时必须设置行分隔符 [#37338](https://github.com/pingcap/tidb/issues/37338) @[lance6716](https://github.com/lance6716)
 
 ## 改进提升
 
@@ -103,12 +103,14 @@ TiDB 版本：6.5.10
     - (dup): release-7.5.2.md > 错误修复> TiDB - 修复 `YEAR` 类型的列与超出范围的无符号整数进行比较导致错误结果的问题 [#50235](https://github.com/pingcap/tidb/issues/50235) @[qw4990](https://github.com/qw4990)
     - (dup): release-7.1.5.md > 错误修复> TiDB - 修复在 `AUTO_ID_CACHE=1` 时，AutoID Leader 发生变更可能造成自增列的值减少的问题 [#52600](https://github.com/pingcap/tidb/issues/52600) @[tiancaiamao](https://github.com/tiancaiamao)
     - (dup): release-7.0.0.md > 错误修复> TiDB - 修复非 `BIGINT` 类型的无符号整数与 `STRING`/`DECIMAL` 比较时可能出现错误结果的问题 [#41736](https://github.com/pingcap/tidb/issues/41736) @[LittleFall](https://github.com/LittleFall)
+    - (dup): release-7.5.2.md > 错误修复> TiDB - 修复将数据从 `FLOAT` 类型转换为 `UNSIGNED` 类型时结果错误的问题 [#41736](https://github.com/pingcap/tidb/issues/41736) @[guo-shaoge](https://github.com/guo-shaoge)
     - (dup): release-7.5.2.md > 错误修复> TiDB - 修复 `VAR_SAMP()` 无法作为窗口函数的问题 [#52933](https://github.com/pingcap/tidb/issues/52933) @[hi-rustin](https://github.com/hi-rustin)
     - (dup): release-7.5.2.md > 错误修复> TiDB - 修复错误的 TableDual 计划导致查询结果为空的问题 [#50051](https://github.com/pingcap/tidb/issues/50051) @[onlyacat](https://github.com/onlyacat)
     - (dup): release-8.1.0.md > 错误修复> TiDB - 修复 TiDB 统计信息同步加载机制无限重试加载空统计信息并打印 `fail to get stats version for this histogram` 日志的问题 [#52657](https://github.com/pingcap/tidb/issues/52657) @[hawkingrei](https://github.com/hawkingrei)
     - (dup): release-7.5.2.md > 错误修复> TiDB - 修复空 Projection 导致 TiDB panic 的问题 [#49109](https://github.com/pingcap/tidb/issues/49109) @[winoros](https://github.com/winoros)
     - (dup): release-7.5.2.md > 错误修复> TiDB - 修复 TopN 算子可能被错误地下推的问题 [#37986](https://github.com/pingcap/tidb/issues/37986) @[qw4990](https://github.com/qw4990)
     - (dup): release-7.5.2.md > 错误修复> TiDB - 修复执行谓词总是为 `true` 的 `SHOW ERRORS` 语句导致 TiDB panic 的问题 [#46962](https://github.com/pingcap/tidb/issues/46962) @[elsa0520](https://github.com/elsa0520)
+    - (dup): release-8.1.0.md > 错误修复> TiDB - 修复元数据锁在计划缓存场景下未能阻止 DDL 推进的问题 [#51407](https://github.com/pingcap/tidb/issues/51407) @[wjhuang2016](https://github.com/wjhuang2016)
     - 修复 information schema 缓存未命中导致的 stale read 延迟上升的问题 [#53428](https://github.com/pingcap/tidb/issues/53428) @[crazycs520](https://github.com/crazycs520)
     - 修复 DDL 错误使用 etcd 导致任务排队等问题 [#52335](https://github.com/pingcap/tidb/issues/52335) @[wjhuang2016](https://github.com/wjhuang2016)
     - 修复重命名表达式索引残留内部列的问题 [#51431](https://github.com/pingcap/tidb/issues/51431) @[ywqzzy](https://github.com/ywqzzy)
@@ -173,6 +175,7 @@ TiDB 版本：6.5.10
         - note [#issue](https://github.com/pingcap/tidb/issues/${issue-id}) @[贡献者 GitHub ID](https://github.com/${github-id})
         - (dup): release-8.1.0.md > 错误修复> Tools> TiDB Lightning - 修复 TiDB Lightning 导入数据时，kill PD Leader 会导致 `invalid store ID 0` 报错的问题 [#50501](https://github.com/pingcap/tidb/issues/50501) @[Leavrth](https://github.com/Leavrth)
         - (dup): release-7.1.0.md > 错误修复> Tools> TiDB Lightning - 修复 TiDB Lightning Grafana 面板缺失数据的问题 [#43357](https://github.com/pingcap/tidb/issues/43357) @[lichunzhu](https://github.com/lichunzhu)
+        - (dup): release-8.1.0.md > 错误修复> Tools> TiDB Lightning - 修复 TiDB Lightning 在服务器模式下可能会将敏感信息打印到日志中的问题 [#36374](https://github.com/pingcap/tidb/issues/36374) @[kennytm](https://github.com/kennytm)
         - 使用 `strict-format` 需要设置行结束符以确保正确性 [#37338](https://github.com/pingcap/tidb/issues/37338) @[lance6716](https://github.com/lance6716)
         - 在 SHARD_ROW_ID_BITS 与 AUTO_ID_CACHE=1 功能时正确设置 AUTO ID [#52654](https://github.com/pingcap/tidb/issues/52654) @[D3Hunter](https://github.com/D3Hunter)
 
