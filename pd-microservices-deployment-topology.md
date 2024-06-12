@@ -36,16 +36,8 @@ global:
   pd_mode: "ms"
 
 monitored:
-  # # The communication port for reporting system information of each node in the TiDB cluster.
   node_exporter_port: 9200
-  # # Blackbox_exporter communication port, used for TiDB cluster port monitoring.
   blackbox_exporter_port: 9215
-  # # Storage directory for deployment files, startup scripts, and configuration files of monitoring components.
-  # deploy_dir: "/tidb-deploy/monitored-9100"
-  # # Data storage directory of monitoring components.
-  # data_dir: "/tidb-data/monitored-9100"
-  # # Log storage directory of the monitoring component.
-  # log_dir: "/tidb-deploy/monitored-9100/log"
 
 # # Server configs are used to specify the configuration of PD Servers.
 pd_servers:
