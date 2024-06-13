@@ -82,6 +82,10 @@ TiDB 版本：6.5.10
 
 + TiDB
 
+    - 修复一些情况下对元数据查询会导致内存使用过大的问题 [#52219](https://github.com/pingcap/tidb/issues/52219) @[hawkingrei](https://github.com/hawkingrei)
+    - 修复表结构中设置 AUTO_ID_CACHE=1 时，使用非默认的 @@auto_increment_increment 和 @@auto_increment_offset 会导致错误 ID 分配的问题 [#52622](https://github.com/pingcap/tidb/issues/52622) @[tiancaiamao](https://github.com/tiancaiamao)
+    - 修复表结构中设置 AUTO_ID_CACHE=1 时，使用 RESTORE 命令恢复表数据后 ID 分配可能错误的问题 [#52680](https://github.com/pingcap/tidb/issues/52680) @[tiancaiamao](https://github.com/tiancaiamao)
+    - 修复表结构中设置 AUTO_ID_CACHE=1 时，在 AUTO ID Leader 发生切换后 ID 分配可能发生重复的问题 [#52600](https://github.com/pingcap/tidb/issues/52600) @[tiancaiamao](https://github.com/tiancaiamao)
     - 修复 infoschema `tidb_trx` 表 txn size 字段未定义的问题 [#53026](https://github.com/pingcap/tidb/issues/53026) @[cfzjywxk](https://github.com/cfzjywxk)
     - note [#issue](https://github.com/pingcap/tidb/issues/${issue-id}) @[贡献者 GitHub ID](https://github.com/${github-id})
     - note [#issue](https://github.com/pingcap/tidb/issues/${issue-id}) @[贡献者 GitHub ID](https://github.com/${github-id})
