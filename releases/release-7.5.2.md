@@ -5,7 +5,7 @@ summary: 了解 TiDB 7.5.2 版本的兼容性变更、改进提升，以及错�
 
 # TiDB 7.5.2 Release Notes
 
-发版日期：2024 年 6 月 xx 日
+发版日期：2024 年 6 月 13 日
 
 TiDB 版本：7.5.2
 
@@ -28,6 +28,7 @@ TiDB 版本：7.5.2
     - 优化 `EXPLAIN ANALYZE` 中 TiFlash `TableScan` 算子执行过程的统计信息 [#51727](https://github.com/pingcap/tidb/issues/51727) @[JinheLin](https://github.com/JinheLin)
     - 在 MPP 负载均衡时移除不包含任何 Region 的 Store [#52313](https://github.com/pingcap/tidb/issues/52313) @[xzhangxian1008](https://github.com/xzhangxian1008)
     - (dup): release-7.1.5.md > 改进提升> TiDB - 支持从 PD 批量加载 Region，加快在对大表进行查询时，从 KV Range 到 Regions 的转换过程 [#51326](https://github.com/pingcap/tidb/issues/51326) @[SeaRise](https://github.com/SeaRise)
+    - 在 `Resource Control` 监控页面，新增各个资源组最大 RU 消耗速率的 `RU(Max)` 面板 [#49318] (https://github.com/pingcap/tidb/issues/49318) @[nolouch](https://github.com/nolouch)
 
     - 改进 sync load 的性能，减少加载统计信息的延时 [#52994](https://github.com/pingcap/tidb/issues/52294) [hawkingrei](https://github.com/hawkingrei)
     - 增加并发 init-stats，加速启动速度 [#52466] (https://github.com/pingcap/tidb/issues/52466) [#52102](https://github.com/pingcap/tidb/issues/52102) [#52553](https://github.com/pingcap/tidb/issues/52553) [hawkingrei](https://github.com/hawkingrei)
@@ -153,7 +154,10 @@ TiDB 版本：7.5.2
     - 修复 `TIMESTAMPADD()` 函数结果错误的问题 [#41052](https://github.com/pingcap/tidb/issues/41052) @[xzhangxian1008](https://github.com/xzhangxian1008)
     - 修复将数据从 `FLOAT` 类型转换为 `UNSIGNED` 类型时结果错误的问题 [#41736](https://github.com/pingcap/tidb/issues/41736) @[guo-shaoge](https://github.com/guo-shaoge)
     - 修复 `TRUNCATE()` 函数的第二个参数为大负数时结果错误的问题 [#52978](https://github.com/pingcap/tidb/issues/52978) @[yibin87](https://github.com/yibin87)
+    - 修复 Grafana 中重复的面板 ID 可能导致展示异常的问题 [#51556](https://github.com/pingcap/tidb/issues/51556) @[D3Hunter](https://github.com/D3Hunter)
     - (dup): release-8.1.0.md > 错误修复> TiDB - 修复打印 gRPC 错误日志时 TiDB 意外重启的问题 [#51301](https://github.com/pingcap/tidb/issues/51301) @[guo-shaoge](https://github.com/guo-shaoge)
+    - 修复 TiDB 启动时由于加载统计信息可能导致 TiDB OOM 的问题 [#52219](https://github.com/pingcap/tidb/issues/52219) @[hawkingrei](https://github.com/hawkingrei)
+    - 修复删除表之后该表的 TTL 任务不会停止的问题 [#51540](https://github.com/pingcap/tidb/issues/51540) @[YangKeao](https://github.com/YangKeao)
 
 + TiKV
 
