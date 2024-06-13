@@ -14,7 +14,7 @@ TiDB 版本：6.5.10
 ## 兼容性变更
 
 - (dup): release-7.5.2.md > 兼容性变更 - 在之前的版本中，TiCDC 在处理包含 `UPDATE` 变更的事务时，如果事件的主键或者非空唯一索引的列值发生改变，则会将该条事件拆分为 `DELETE` 和 `INSERT` 两条事件。从 v7.5.2 开始，当使用 MySQL Sink 时，如果 `UPDATE` 变更所在事务的 `commitTS` 小于 TiCDC 启动时从 PD 获取的当前时间戳 `thresholdTS`，TiCDC 就会将该 `UPDATE` 事件拆分为 `DELETE` 和 `INSERT` 两条事件，然后写入 Sorter 模块。该行为变更解决了由于 TiCDC 接收到的 `UPDATE` 事件顺序可能不正确，导致拆分后的 `DELETE` 和 `INSERT` 事件顺序也可能不正确，从而引发下游数据不一致的问题。更多信息，请参考[用户文档](https://docs.pingcap.com/zh/tidb/v6.5/ticdc-behavior-change#mysql-sink)。[#10918](https://github.com/pingcap/tiflow/issues/10918) @[lidezhu](https://github.com/lidezhu)
-- (dup): release-7.5.2.md > 兼容性变更 - TiDB Lightning 使用严格格式 `strict-format` 或 `SPLIT_FILE` 导入 CSV 文件时必须设置行分隔符 [#37338](https://github.com/pingcap/tidb/issues/37338) @[lance6716](https://github.com/lance6716)
+- TiDB Lightning 使用严格格式 `strict-format` 导入 CSV 文件时必须设置行分隔符 [#37338](https://github.com/pingcap/tidb/issues/37338) @[lance6716](https://github.com/lance6716)
 
 ## 改进提升
 
@@ -176,7 +176,6 @@ TiDB 版本：6.5.10
         - (dup): release-8.1.0.md > 错误修复> Tools> TiDB Lightning - 修复 TiDB Lightning 导入数据时，kill PD Leader 会导致 `invalid store ID 0` 报错的问题 [#50501](https://github.com/pingcap/tidb/issues/50501) @[Leavrth](https://github.com/Leavrth)
         - (dup): release-7.1.0.md > 错误修复> Tools> TiDB Lightning - 修复 TiDB Lightning Grafana 面板缺失数据的问题 [#43357](https://github.com/pingcap/tidb/issues/43357) @[lichunzhu](https://github.com/lichunzhu)
         - (dup): release-8.1.0.md > 错误修复> Tools> TiDB Lightning - 修复 TiDB Lightning 在服务器模式下可能会将敏感信息打印到日志中的问题 [#36374](https://github.com/pingcap/tidb/issues/36374) @[kennytm](https://github.com/kennytm)
-        - 使用 `strict-format` 需要设置行结束符以确保正确性 [#37338](https://github.com/pingcap/tidb/issues/37338) @[lance6716](https://github.com/lance6716)
         - 在 SHARD_ROW_ID_BITS 与 AUTO_ID_CACHE=1 功能时正确设置 AUTO ID [#52654](https://github.com/pingcap/tidb/issues/52654) @[D3Hunter](https://github.com/D3Hunter)
 
     + Dumpling
