@@ -75,6 +75,7 @@ KeyPart ::=
 IndexOption ::=
     'COMMENT' String
 |   ( 'VISIBLE' | 'INVISIBLE' )
+|   ('USING' | 'TYPE') ('BTREE' | 'RTREE' | 'HASH')
 
 ForeignKeyDef
          ::= ( 'CONSTRAINT' Identifier )? 'FOREIGN' 'KEY'
