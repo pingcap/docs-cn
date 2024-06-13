@@ -28,10 +28,9 @@ TiDB 版本：7.5.2
     - 优化 `EXPLAIN ANALYZE` 中 TiFlash `TableScan` 算子执行过程的统计信息 [#51727](https://github.com/pingcap/tidb/issues/51727) @[JinheLin](https://github.com/JinheLin)
     - 在 MPP 负载均衡时移除不包含任何 Region 的 Store [#52313](https://github.com/pingcap/tidb/issues/52313) @[xzhangxian1008](https://github.com/xzhangxian1008)
     - (dup): release-7.1.5.md > 改进提升> TiDB - 支持从 PD 批量加载 Region，加快在对大表进行查询时，从 KV Range 到 Regions 的转换过程 [#51326](https://github.com/pingcap/tidb/issues/51326) @[SeaRise](https://github.com/SeaRise)
-    - 在 `Resource Control` 监控页面，新增各个资源组最大 RU 消耗速率的 `RU(Max)` 面板 [#49318] (https://github.com/pingcap/tidb/issues/49318) @[nolouch](https://github.com/nolouch)
-
+    - 在 `Resource Control` 监控页面，新增 `RU(Max)` 面板用于展示各个资源组的最大 RU 消耗速率 [#49318](https://github.com/pingcap/tidb/issues/49318) @[nolouch](https://github.com/nolouch)
     - 改进 sync load 的性能，减少加载统计信息的延时 [#52994](https://github.com/pingcap/tidb/issues/52294) [hawkingrei](https://github.com/hawkingrei)
-    - 增加并发 init-stats，加速启动速度 [#52466] (https://github.com/pingcap/tidb/issues/52466) [#52102](https://github.com/pingcap/tidb/issues/52102) [#52553](https://github.com/pingcap/tidb/issues/52553) [hawkingrei](https://github.com/hawkingrei)
+    - 提升统计信息初始化的并发度，加速启动速度 [#52466] (https://github.com/pingcap/tidb/issues/52466) [#52102](https://github.com/pingcap/tidb/issues/52102) [#52553](https://github.com/pingcap/tidb/issues/52553) [hawkingrei](https://github.com/hawkingrei)
 
 + TiKV
 
@@ -73,7 +72,6 @@ TiDB 版本：7.5.2
         - 提升同步任务初始化速度 [#11124](https://github.com/pingcap/tiflow/issues/11124) @[asddongmen](https://github.com/asddongmen)
         - 采用异步方式初始化同步任务，减少 Processor 和 Owner 的初始化时间 [#10845](https://github.com/pingcap/tiflow/issues/10845) @[sdojjy](https://github.com/sdojjy)
         - 自动探测 Kafka 集群版本，提升与 Kafka 的兼容性 [#10852](https://github.com/pingcap/tiflow/issues/10852) @[wk989898](https://github.com/wk989898)
-        - (dup): release-6.5.8.md > 改进提升> Tools> TiCDC - 支持[查询 changefeed 的下游同步状态](https://docs.pingcap.com/zh/tidb/v6.5/ticdc-open-api-v2#查询特定同步任务是否完成)，以确认 TiCDC 是否已将所接收到的上游变更完全同步到下游 [#10289](https://github.com/pingcap/tiflow/issues/10289) @[hongyunyan](https://github.com/hongyunyan)
 
 ## 错误修复
 
