@@ -389,7 +389,7 @@ tiup dmctl --master-addr master1:8261 operate-source create /tmp/source1.yml
 
 此时可以通过命令行参数 `--native-ssh` 启用系统自带命令行：
 
-- 部署集群：`tiup dm deploy <cluster-name> <version> <topo> --native-ssh`，其中 `<cluster-name>` 为集群名称，`<version>` 为 DM 集群版本（例如 `v7.5.1`），`<topo>` 为拓扑文件路径
+- 部署集群：`tiup dm deploy <cluster-name> <version> <topo> --native-ssh`，其中 `<cluster-name>` 为集群名称，`<version>` 为 DM 集群版本（例如 `v7.5.2`），`<topo>` 为拓扑文件路径
 - 启动集群：`tiup dm start <cluster-name> --native-ssh`
 - 升级集群：`tiup dm upgrade ... --native-ssh`
 
