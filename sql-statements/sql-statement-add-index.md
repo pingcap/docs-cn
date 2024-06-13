@@ -112,7 +112,7 @@ EXPLAIN SELECT * FROM t1 WHERE c1 = 3;
 
 ## MySQL 兼容性
 
-* TiDB 在语法中接受诸如 `HASH`、`BTREE` 和 `RTREE` 等索引类型，但出于兼容性原因会忽略它们。
+* 为了兼容 MySQL，TiDB 在语法上支持 `HASH`、`BTREE` 和 `RTREE` 等索引类型，但会忽略它们。
 * 不支持 `SPATIAL` 索引。
 * TiDB 支持解析 `FULLTEXT` 语法，但不支持使用 `FULLTEXT` 索引。
 * 不支持降序索引（类似于 MySQL 5.7）。
