@@ -79,7 +79,7 @@ SHOW KEYS FROM t1;
 2 rows in set (0.00 sec)
 ```
 
-注意 TiDB 在语法中接受诸如 `HASH`、`BTREE` 和 `RTREE` 等索引类型，但出于兼容性原因会忽略它们。
+注意为了兼容 MySQL，TiDB 在语法上支持 `HASH`、`BTREE` 和 `RTREE` 等索引类型，但会忽略它们。
 
 ## MySQL 兼容性
 
