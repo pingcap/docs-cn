@@ -43,7 +43,7 @@ IndexOption ::=
 |   IndexType
 |   'WITH' 'PARSER' Identifier
 |   'COMMENT' stringLit
-|   IndexInvisible
+|   ("VISIBLE" | "INVISIBLE")
 
 IndexTypeName ::=
     'BTREE'
