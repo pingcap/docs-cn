@@ -52,7 +52,7 @@ PD 微服务支持通过 TiDB Operator 或 TiUP 进行部署。
 - [修改 PD 微服务](https://docs.pingcap.com/zh/tidb-in-kubernetes/stable/modify-tidb-configuration#修改-pd-微服务配置)
 - [扩缩容 PD 微服务组件](https://docs.pingcap.com/zh/tidb-in-kubernetes/stable/scale-a-tidb-cluster#扩缩容-pd-微服务组件)
 
-<SimpleTab>
+</div>
 <div label="TiUP">
 
 对于通过 TiUP 部署的 TiDB 集群，PD 微服务详细使用方法请参考以下文档：

@@ -60,23 +60,23 @@ scheduling_servers:
 
 执行 scale-out 命令前，先使用 `check` 及 `check --apply` 命令，检查和自动修复集群存在的潜在风险：
 
-（1）检查集群存在的潜在风险：
+1. 检查集群存在的潜在风险：
 
-```shell
-tiup cluster check <cluster-name> scale-out.yml --cluster --user root [-p] [-i /home/root/.ssh/gcp_rsa]
-```
+    ```shell
+    tiup cluster check <cluster-name> scale-out.yml --cluster --user root [-p] [-i /home/root/.ssh/gcp_rsa]
+    ```
 
-（2）自动修复集群存在的潜在风险：
+2. 自动修复集群存在的潜在风险：
 
-```shell
-tiup cluster check <cluster-name> scale-out.yml --cluster --apply --user root [-p] [-i /home/root/.ssh/gcp_rsa]
-```
+    ```shell
+    tiup cluster check <cluster-name> scale-out.yml --cluster --apply --user root [-p] [-i /home/root/.ssh/gcp_rsa]
+    ```
 
-（3）执行 scale-out 命令扩容 TiDB 集群：
+3. 执行 `scale-out` 命令扩容 TiDB 集群：
 
-```shell
-tiup cluster scale-out <cluster-name> scale-out.yml [-p] [-i /home/root/.ssh/gcp_rsa]
-```
+    ```shell
+    tiup cluster scale-out <cluster-name> scale-out.yml [-p] [-i /home/root/.ssh/gcp_rsa]
+    ```
 
 以上操作示例中：
 
@@ -151,8 +151,6 @@ ID       Role         Host    Ports                            Status  Data Dir 
 10.0.1.7:3379  scheduling   10.0.1.7    3379                            Up|P     data/scheduling-3379     deploy/scheduling-3379
 
 10.0.1.9:3379  scheduling   10.0.1.9    3379                            Up       data/scheduling-3379     deploy/scheduling-3379
-
-
 ```
 
 ### 2. 执行缩容操作

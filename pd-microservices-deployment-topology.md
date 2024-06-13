@@ -81,9 +81,9 @@ grafana_servers:
 
 ### 关键参数介绍
 
-- `tso_servers` 实例级别配置 `-host` 目前只支持 IP 地址，不支持域名。
+- `tso_servers` 实例级别配置 `host` 目前只支持 IP 地址，不支持域名。
 - TSO 具体的参数配置介绍可参考 [TSO 参数配置](/tso-configuration-file.md)。
-- `scheduling_servers` 实例级别配置 `-host` 目前只支持 IP 地址，不支持域名。
+- `scheduling_servers` 实例级别配置 `host` 目前只支持 IP 地址，不支持域名。
 - Scheduling 具体的参数配置介绍可参考 [Scheduling 参数配置](/scheduling-configuration-file.md)。
 
 > **注意：**
