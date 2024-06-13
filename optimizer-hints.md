@@ -867,6 +867,10 @@ SELECT /*+ NTH_PLAN(3) */ count(*) from t where a > 5;
 SELECT /*+ RESOURCE_GROUP(rg1) */ * FROM t limit 10;
 ```
 
+> **注意：**
+>
+> - 使用此 Hint 需要用户具有 `SUPER` 或者 `RESOURCE_GROUP_ADMIN` 或者 `RESOURCE_GROUP_ADMIN` 权限，如果用户不具有这些权限，则此 Hint 会被忽略，同时 TiDB 会返回 arning，用户可以在查询结束后通过 `Show Warnings` 命令查看具体信息。
+
 ## 常见 Hint 不生效问题排查
 
 ### MySQL 命令行客户端清除 Hint 导致不生效
