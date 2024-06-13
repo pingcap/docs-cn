@@ -131,7 +131,7 @@ enable-table-across-nodes = false
 # 注意：当下游 MQ 为 Pulsar 时，如果 partition 的路由规则未指定为 'ts', 'index-value', 'table', 'default' 中的任意一个，那么将会使用你设置的字符串作为每一条 Pulsar message 的 key 进行路由。例如，如果你指定的路由规则为 'code' 字符串，那么符合该 matcher 的所有 Pulsar message 都将会以 'code' 作为 key 进行路由。
 # dispatchers = [
 #    {matcher = ['test1.*', 'test2.*'], topic = "Topic 表达式 1", partition = "index-value"},
-#    {matcher = ['test3.*', 'test4.*'], topic = "Topic 表达式 2", partition = "index-value", index-name="index1"},
+#    {matcher = ['test3.*', 'test4.*'], topic = "Topic 表达式 2", partition = "index-value", index = "index1"},
 #    {matcher = ['test1.*', 'test5.*'], topic = "Topic 表达式 3", partition = "table"},
 #    {matcher = ['test6.*'], partition = "columns", columns = "['a', 'b']"}
 #    {matcher = ['test7.*'], partition = "ts"}
