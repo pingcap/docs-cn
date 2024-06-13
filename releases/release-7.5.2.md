@@ -30,7 +30,7 @@ TiDB 版本：7.5.2
     - 支持从 PD 批量加载 Region，加快在对大表进行查询时，从 KV Range 到 Regions 的转换过程 [#51326](https://github.com/pingcap/tidb/issues/51326) @[SeaRise](https://github.com/SeaRise)
     - 在 `Resource Control` 监控页面，新增 `RU(Max)` 面板用于展示各个资源组的最大 RU 消耗速率 [#49318](https://github.com/pingcap/tidb/issues/49318) @[nolouch](https://github.com/nolouch)
     - 改进 sync load 的性能，减少加载统计信息的延时 [#52994](https://github.com/pingcap/tidb/issues/52294) [hawkingrei](https://github.com/hawkingrei)
-    - 提升统计信息初始化的并发度，加速启动速度 [#52466] (https://github.com/pingcap/tidb/issues/52466) [#52102](https://github.com/pingcap/tidb/issues/52102) [#52553](https://github.com/pingcap/tidb/issues/52553) [hawkingrei](https://github.com/hawkingrei)
+    - 提升统计信息初始化的并发度，加速启动速度 [#52466](https://github.com/pingcap/tidb/issues/52466) [#52102](https://github.com/pingcap/tidb/issues/52102) [#52553](https://github.com/pingcap/tidb/issues/52553) [hawkingrei](https://github.com/hawkingrei)
 
 + TiKV
 
