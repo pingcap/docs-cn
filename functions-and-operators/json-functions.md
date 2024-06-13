@@ -74,7 +74,7 @@ TiDB 支持 MySQL 8.0 中提供的大部分 [JSON 函数](https://dev.mysql.com/
 
 | 函数                 | 功能描述 |
 | --------------------------------- | ----------- |
-| [JSON_SCHEMA_VALID(schema,json_doc)](https://dev.mysql.com/doc/refman/8.0/en/json-validation-functions.html#function_json-schema-valid) | 验证 JSON 数据的有效性，提高数据的完整性和一致性 |
+| [JSON_SCHEMA_VALID(schema,json_doc)](https://dev.mysql.com/doc/refman/8.0/en/json-validation-functions.html#function_json-schema-valid) | 根据 schema 验证 JSON 文档，确保数据的完整性和一致性 |
 
 ## 另请参阅
 
