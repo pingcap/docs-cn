@@ -226,7 +226,8 @@ mysql> DESC t1;
 ## MySQL 兼容性
 
 * 支持除空间类型以外的所有数据类型。
-* 不支持 `FULLTEXT`，`HASH` 和 `SPATIAL` 索引。
+* 为了兼容 MySQL，TiDB 在语法上支持 `HASH`、`BTREE` 和 `RTREE` 等索引类型，但会忽略它们。
+* TiDB 支持解析 `FULLTEXT` 语法，但不支持使用 `FULLTEXT` 索引。
 * 为了与 MySQL 兼容，`index_col_name` 属性支持 length 选项，最大长度默认限制为 3072 字节。此长度限制可以通过配置项 `max-index-length` 更改，具体请参阅 [TiDB 配置文件描述](/tidb-configuration-file.md#max-index-length)。
 * 为了与 MySQL 兼容，TiDB 会解析但忽略 `index_col_name` 属性的 `[ASC | DESC]` 索引排序选项。
 * `COMMENT` 属性不支持 `WITH PARSER` 选项。

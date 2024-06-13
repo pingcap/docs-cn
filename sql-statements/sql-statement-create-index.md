@@ -373,7 +373,8 @@ CREATE UNIQUE INDEX c1 ON t1 (c1) INVISIBLE;
 
 ## MySQL 兼容性
 
-* TiDB 支持解析 `FULLTEXT` 和 `SPATIAL` 语法，但尚不支持使用 `FULLTEXT`，`HASH` 和 `SPATIAL` 索引。
+* TiDB 支持解析 `FULLTEXT` 语法，但尚不支持使用 `FULLTEXT`、`HASH` 和 `SPATIAL` 索引。
+* 为了兼容 MySQL，TiDB 在语法上支持 `HASH`、`BTREE` 和 `RTREE` 等索引类型，但会忽略它们。
 * 不支持降序索引 （类似于 MySQL 5.7）。
 * 无法向表中添加 `CLUSTERED` 类型的 `PRIMARY KEY`。要了解关于 `CLUSTERED` 主键的详细信息，请参考[聚簇索引](/clustered-indexes.md)。
 * 表达式索引与视图存在兼容性问题。通过视图进行查询时，无法使用上表达式索引。
