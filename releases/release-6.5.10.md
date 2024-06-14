@@ -38,7 +38,7 @@ TiDB 版本：6.5.10
 
     + TiCDC
       <!-- tw:@Oreoxmt 1-->
-        - 支持在下游为消息队列或云存储时直接输出原始事件 [#11211](https://github.com/pingcap/tiflow/issues/11211) @[CharlesCheung96](https://github.com/CharlesCheung96)
+        - 支持当下游为消息队列 (Message Queue, MQ) 或存储服务时直接输出原始事件 [#11211](https://github.com/pingcap/tiflow/issues/11211) @[CharlesCheung96](https://github.com/CharlesCheung96)
         - (dup): release-8.1.0.md > 改进提升> Tools> TiCDC - 提升使用 redo log 恢复数据过程中的内存稳定性，减少 OOM 的概率 [#10900](https://github.com/pingcap/tiflow/issues/10900) @[CharlesCheung96](https://github.com/CharlesCheung96)
         - (dup): release-8.1.0.md > 改进提升> Tools> TiCDC - 显著提升事务冲突场景中的数据同步的稳定性，性能最高提升可达 10 倍 [#10896](https://github.com/pingcap/tiflow/issues/10896) @[CharlesCheung96](https://github.com/CharlesCheung96)
 
@@ -126,11 +126,11 @@ TiDB 版本：6.5.10
         - (dup): release-8.1.0.md > 错误修复> Tools> Backup & Restore (BR) - 修复因 TiKV 重启，日志备份的 global checkpoint 推进提前于实际备份文件写入点，可能导致少量备份数据丢失的问题 [#16809](https://github.com/tikv/tikv/issues/16809) @[YuJuncen](https://github.com/YuJuncen)
         - (dup): release-7.5.2.md > 错误修复> Tools> Backup & Restore (BR) - 修复 PD leader 发生迁移可能导致恢复数据时 panic 的问题 [#53724](https://github.com/pingcap/tidb/issues/53724) @[Leavrth](https://github.com/Leavrth)
         - (dup): release-8.1.0.md > 错误修复> Tools> Backup & Restore (BR) - 修复恢复暂停的日志备份任务时，如果与 PD 的网络连接不稳定可能导致 TiKV panic 的问题 [#17020](https://github.com/tikv/tikv/issues/17020) @[YuJuncen](https://github.com/YuJuncen)
-        - 修复 log backup 在 advancer owner 发生迁移后有可能变成暂停状态的问题 [#53561](https://github.com/tikv/tikv/issues/53561) @[[RidRisR](https://github.com/RidRisR)
+        - 修复日志备份在 advancer owner 发生迁移后可能被暂停的问题 [#53561](https://github.com/pingcap/tidb/issues/53561) @[RidRisR](https://github.com/RidRisR)
 
     + TiCDC
       <!-- tw:@Oreoxmt 1-->
-        - 修复当 MySQL 密码以 Base64 编码时，导致创建启用 Syncpoint 功能的 Changefeed 任务失败的问题 [#10516](https://github.com/pingcap/tiflow/issues/10516) @[asddongmen](https://github.com/asddongmen)
+        - 修复 MySQL 密码以 Base64 编码导致创建启用 Syncpoint 功能的 Changefeed 任务失败的问题 [#10516](https://github.com/pingcap/tiflow/issues/10516) @[asddongmen](https://github.com/asddongmen)
         - (dup): release-8.1.0.md > 错误修复> Tools> TiCDC - 修复没有正确同步 `DROP PRIMARY KEY` 和 `DROP UNIQUE KEY` 的问题 [#10890](https://github.com/pingcap/tiflow/issues/10890) @[asddongmen](https://github.com/asddongmen)
         - (dup): release-8.1.0.md > 错误修复> Tools> TiCDC - 修复 `TIMEZONE` 类型的值没有按照正确的时区设置默认值的问题 [#10931](https://github.com/pingcap/tiflow/issues/10931) @[3AceShowHand](https://github.com/3AceShowHand)
 
@@ -143,8 +143,8 @@ TiDB 版本：6.5.10
 
     + Dumpling
       <!-- tw:@Oreoxmt 1-->
-        - 修复同时导出 TABLE 和 VIEW 运行报错的问题 [#53682](https://github.com/pingcap/tidb/issues/53682) @[tangenta](https://github.com/tangenta)
+        - 修复 Dumpling 在同时导出表和视图时报错的问题 [#53682](https://github.com/pingcap/tidb/issues/53682) @[tangenta](https://github.com/tangenta)
 
     + TiDB Binlog
       <!-- tw:@Oreoxmt 1-->
-        - 修复在 ADD COLUMN 时删除行可能报错 ”data and columnID count not match“ 的问题 [#53133](https://github.com/pingcap/tidb/issues/53133) @[tangenta](https://github.com/tangenta)
+        - 修复开启 TiDB Binlog 后，在 `ADD COLUMN` 中删除行可能报错 `data and columnID count not match` 的问题 [#53133](https://github.com/pingcap/tidb/issues/53133) @[tangenta](https://github.com/tangenta)
