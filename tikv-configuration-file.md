@@ -1304,7 +1304,7 @@ RocksDB 相关的配置项。
 ### `track-and-verify-wals-in-manifest` <span class="version-mark">从 v6.5.9 和 v7.1.5 版本开始引入</span>
 
 + 控制是否在 RocksDB 的 MANIFEST 文件中记录 WAL (Write Ahead Log) 文件的信息，以及在启动时是否验证 WAL 文件的完整性。详情请参考 RocksDB [Track WAL in MANIFEST](https://github.com/facebook/rocksdb/wiki/Track-WAL-in-MANIFEST)。
-+ 默认值：`true`
++ 默认值：`false`
 + 可选值：
     + `true`：在 MANIFEST 文件中记录 WAL 文件的信息，并在启动时验证 WAL 文件的完整性。
     + `false`：不在 MANIFEST 文件中记录 WAL 文件的信息，而且不在启动时验证 WAL 文件的完整性。
