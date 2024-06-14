@@ -388,7 +388,7 @@ large-message-handle-compression = "none"
 
 开启了 `large-message-handle-compression` 之后，消费者收到的消息经过特定压缩协议编码，消费者应用程序需要使用指定的压缩协议进行数据解码。
 
-压缩率的计算方法为：`compression ratio = 压缩前的大小 / 压缩后的大小 * 100`
+两种压缩方法的压缩率的计算方法均为：`compression ratio = 压缩前的大小 / 压缩后的大小 * 100`
 
 ### 只发送 Handle Key
 
