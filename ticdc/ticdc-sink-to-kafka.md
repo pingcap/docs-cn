@@ -383,10 +383,12 @@ large-message-handle-compression = "none"
 
 该功能和 Kafka producer 的压缩功能不同：
 
-* `large-message-handle-compression` 中指定的压缩算法，它启用的是对单条 Kafka 消息进行压缩，并且压缩是在与消息大小限制参数比较之前进行。
-* 用户可以在 `sink-uri` 中配置压缩算法，它所启用的压缩功能应用在整个发送数据请求，其中包含多条 Kafka 消息，并且压缩是在和消息大小限制参数比较之后进行的。
+* `large-message-handle-compression` 中指定的压缩算法是对单条 Kafka 消息进行压缩，并且压缩是在与消息大小限制参数比较之前进行。
+* 你也可以同时通过 `sink-uri` 的 `compression` 参数配置压缩算法，该配置启用的压缩功能应用在整个发送数据请求，其中包含多条 Kafka 消息，并且压缩是在和消息大小限制参数比较之后进行的。
 
 开启了 `large-message-handle-compression` 之后，消费者收到的消息经过特定压缩协议编码，消费者应用程序需要使用指定的压缩协议进行数据解码。
+
+压缩率的计算方法为：`compression ratio = 压缩前的大小 / 压缩后的大小 * 100`
 
 ### 只发送 Handle Key
 
