@@ -119,7 +119,7 @@ TiProxy 负载均衡策略的配置。
 + 可选值：`resource`、`location`、`connection`
 + 指定负载均衡策略。各个可选值的含义请参阅 [TiProxy 负载均衡策略](/tiproxy/tiproxy-load-balance.md#负载均衡策略配置)。
 
-### labels
+### `labels`
 
 + 默认值：`{}`
 + 支持热加载：是

@@ -109,7 +109,7 @@ tikv_servers:
     port: 20160
 ```
 
-在以上配置中，`tiproxy-host-1` 上的 TiProxy 会优先将请求路由到 `tidb-host-1` 上的 TiDB server，`tiproxy-host-2` 上的 TiProxy 会优先将请求路由到 `tidb-host-2` 上的 TiDB server。
+在以上配置中，`tiproxy-host-1` 与 `tidb-host-1` 的 `zone` 配置相同，因此 `tiproxy-host-1` 上的 TiProxy 会优先将请求路由到 `tidb-host-1` 上的 TiDB server。同理，`tiproxy-host-2` 上的 TiProxy 会优先将请求路由到 `tidb-host-2` 上的 TiDB server。
 
 ## 基于连接数的负载均衡
 
