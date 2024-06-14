@@ -79,6 +79,8 @@ SHOW KEYS FROM t1;
 2 rows in set (0.00 sec)
 ```
 
+注意为了兼容 MySQL，TiDB 在语法上支持 `HASH`、`BTREE` 和 `RTREE` 等索引类型，但会忽略它们。
+
 ## MySQL 兼容性
 
 `SHOW INDEXES [FROM|IN]` 语句与 MySQL 完全兼容。如发现任何兼容性差异，请尝试 [TiDB 支持资源](/support.md)。
