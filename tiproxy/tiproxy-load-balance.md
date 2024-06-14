@@ -42,7 +42,7 @@ TiProxy 通过从 Prometheus 查询 TiDB server 的内存使用率，当某个 T
 
 该策略有以下限制：
 
-- 当 TiDB server 内存增长过快，在 30 秒内出现 OOM 时，TiProxy 可能无法及时判断 TiDB server 的 OOM 风险，因此仍可能断开连接。
+- 当 TiDB server 的内存使用增长过快，在 30 秒内出现 OOM 时，TiProxy 可能无法及时判断 TiDB server 的 OOM 风险，因此仍可能断开连接。
 - TiProxy 的目的是保持客户端连接不断开，而不是降低 TiDB server 的内存使用率以避免 OOM，因此 TiDB server 仍可能出现 OOM。
 - 仅支持 v8.0.0 及以上版本的 TiDB server，当使用较低版本的 TiDB server 时该策略不生效。
 
