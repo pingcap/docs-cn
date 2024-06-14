@@ -159,10 +159,10 @@ CREATE TABLE IF NOT EXISTS `order_line` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
 ```
 
-若在导入过程中检测到冲突数据，则可以查询 `lightning_task_info.conflict_error_v1` 表得到以下内容：
+若在导入过程中检测到冲突数据，则可以查询 `lightning_task_info.conflict_error_v3` 表得到以下内容：
 
 ```sql
-mysql> select table_name,index_name,key_data,row_data from conflict_error_v1 limit 10;
+mysql> select table_name,index_name,key_data,row_data from conflict_error_v3 limit 10;
 +---------------------+------------+----------+-----------------------------------------------------------------------------+
 |  table_name         | index_name | key_data | row_data                                                                    |
 +---------------------+------------+----------+-----------------------------------------------------------------------------+

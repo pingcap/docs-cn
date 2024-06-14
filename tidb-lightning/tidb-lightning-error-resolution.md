@@ -280,10 +280,10 @@ CREATE VIEW conflict_view AS
        row_data: (600,'six hundred')
     ```
 
-7. 检查 `conflict_error_v1` 表是否捕获了具有唯一键/主键冲突的四行：
+7. 检查 `conflict_error_v3` 表是否捕获了具有唯一键/主键冲突的四行：
 
     ```sql
-    $ mysql -u root -h 127.0.0.1 -P 4000 -e 'select * from lightning_task_info.conflict_error_v1;' --binary-as-hex -E
+    $ mysql -u root -h 127.0.0.1 -P 4000 -e 'select * from lightning_task_info.conflict_error_v3;' --binary-as-hex -E
     *************************** 1. row ***************************
         task_id: 1635888701843303564
     create_time: 2021-11-02 21:31:42.669601
