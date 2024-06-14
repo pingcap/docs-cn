@@ -144,6 +144,10 @@ aliases: ['/zh/tidb/dev/incremental-replication-between-clusters/']
     1 row in set (0.00 sec)
     ```
 
+> **注意：**
+>
+> 默认的 `gc-ttl` 为 24 小时可能无法满足需求。此时应该根据实际情况，在启动 TiCDC server 时指定 `gc-ttl` 的值。请参考:[TiCDC 的 `gc-ttl` 是什么](/ticdc/ticdc-faq.md#ticdc-的-gc-ttl-是什么)
+
 2. 备份数据。
 
     在上游集群中执行 BACKUP 语句备份数据：
