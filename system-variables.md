@@ -1778,7 +1778,7 @@ mysql> SELECT job_info FROM mysql.analyze_jobs ORDER BY end_time DESC LIMIT 1;
 - 默认值：`OFF`
 - 这个变量用于控制是否开启 TiDB 对 `PREDICATE COLUMNS` 的收集。关闭该变量后，之前收集的 `PREDICATE COLUMNS` 会被清除。详情见[收集部分列的统计信息](/statistics.md#收集部分列的统计信息)。
 
-### `tidb_enable_concurrent_hashagg_spill` <span class="version-mark">从 v8.0.0 版本开始引入</span>
+### `tidb_enable_parallel_hashagg_spill` <span class="version-mark">从 v8.0.0 版本开始引入</span>
 
 > **警告：**
 >
@@ -1789,7 +1789,7 @@ mysql> SELECT job_info FROM mysql.analyze_jobs ORDER BY end_time DESC LIMIT 1;
 - 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：否
 - 类型：布尔型
 - 默认值：`ON`
-- 这个变量用来控制 TiDB 是否支持并发 HashAgg 进行落盘。当该变量设置为 `ON` 时，并发 HashAgg 将支持落盘。该变量将在功能正式发布后废弃。
+- 这个变量用来控制 TiDB 是否支持并行 HashAgg 进行落盘。当该变量设置为 `ON` 时，并行 HashAgg 将支持落盘。该变量将在功能正式发布后废弃。
 
 ### `tidb_enable_ddl` <span class="version-mark">从 v6.3.0 版本开始引入</span>
 
