@@ -82,8 +82,8 @@ CREATE TABLE daily_data (
     customer_id VARCHAR(20),    -- 客户 ID
     daily_fee DECIMAL(20,2));   -- 单日汇总费用
 
-ALTER TABLE detail_data SET TIFLASH REPLICA 1;
-ALTER TABLE daily_data SET TIFLASH REPLICA 1;
+ALTER TABLE detail_data SET TIFLASH REPLICA 2;
+ALTER TABLE daily_data SET TIFLASH REPLICA 2;
 
 -- ... (detail_data 表不断增加数据)
 INSERT INTO detail_data(ts,customer_id,detail_fee) VALUES 
