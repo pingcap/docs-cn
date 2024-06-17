@@ -108,4 +108,4 @@ select * from tidb_cdc.syncpoint_v1;
     - 每当 TiCDC 产生一个新的 primary_ts 时，它必须是 `sync-point-interval` 的整数倍。
     - 对于每个新的 changefeed，TiCDC 会计算出一个初始的 primary_ts。这个初始值是大于或等于 changefeed 开始时间（startTs）的最小的 `sync-point-interval` 的整数倍。
 
-  该设定保证在数据同步过程中，多个下游中 primary_ts 时间戳的一致性和可预测性，便于各个下游集群中进行数据的同步和恢复。
+  该设定用于在数据同步过程中，对齐不同 changefeed 的 Sycnpoint。比如多个下游集群可以分别 [flash back](https://docs.pingcap.com/zh/tidb/stable/sql-statement-flashback-table) 到具有相同 primary_ts 的 Syncpoint 的 secondary_ts，从而让下游集群之间获得一致的数据。
