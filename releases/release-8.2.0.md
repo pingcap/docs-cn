@@ -232,7 +232,7 @@ TiDB 版本：8.2.0
 
     + Backup & Restore (BR)
 
-	-  优化恢复过程中对 Changefeed 的检查，对于安全的 Changefeed(checkpoint 大于备份时间)，不再阻止其恢复 [#53131](https://github.com/pingcap/tidb/issues/53131) @[YuJuncen](https://github.com/YuJuncen) **tw@qiancai** <!--1843-->
+        - 优化恢复过程中对 Changefeed 的细粒度检查，如果 Changefeed 的检查点时间（Checkpoint）大于备份时间，则不会影响正常的恢复操作，减少恢复的不必要等待时间，提升用户体验 [#53131](https://github.com/pingcap/tidb/issues/53131) @[YuJuncen](https://github.com/YuJuncen) **tw@qiancai** <!--1843-->
 	-  对 `BACKUP` 和 `RESTORE` SQL 语句添加了若干常用的参数选项 [#53040](https://github.com/pingcap/tidb/issues/53040) @[[RidRisR](https://github.com/RidRisR) **tw@qiancai** <!--1849-->
         - note [#issue](链接) @[贡献者 GitHub ID](链接)
         - note [#issue](链接) @[贡献者 GitHub ID](链接)
