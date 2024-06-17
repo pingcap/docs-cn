@@ -12,7 +12,7 @@ TiDB 中的序列函数用于返回或设置使用 [`CREATE SEQUENCE`](/sql-stat
 | [`NEXTVAL()`](#nextval) | 返回序列的下一个值 |
 | [`NEXT VALUE FOR`](#next-value-for) | 返回序列的下一个值（`NEXTVAL()` 的别名） |
 | [`SETVAL()`](#setval) | 设置序列的当前值 |
-| [`LASTVAL()`](#lastval) | 返回当前会话中最后使用的序列值 |
+| [`LASTVAL()`](#lastval) | 返回当前会话中最近一次生成的序列值 |
 
 ## `NEXTVAL()`
 
@@ -142,7 +142,7 @@ SELECT NEXTVAL(s1);
 
 ## `LASTVAL()`
 
-`LASTVAL()` 函数返回**当前会话中**最后使用的序列值。
+`LASTVAL()` 函数返回**当前会话中**最近一次生成的序列值。
 
 示例：
 
