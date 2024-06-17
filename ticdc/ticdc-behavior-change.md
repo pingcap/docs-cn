@@ -88,7 +88,7 @@ UPDATE t SET a = 2 WHERE a = 1;
 
 从 v6.5.4、v7.1.2 和 v7.4.0 开始，对于一个含有多条变更的事务，如果 `UPDATE` 事件的主键或者非空唯一索引的列值发生改变，TiCDC 会将该其拆分为 `DELETE` 和 `INSERT` 两条事件，并确保所有事件按照 `DELETE` 事件在 `INSERT` 事件之前的顺序进行排序。详情见 GitHub issue [#9430](https://github.com/pingcap/tiflow/issues/9430)。
 
-该变更主要为了解决当使用 Kafka Sink 或其他 Sink 时，由于 TiCDC 接收到的 UPDATE 事件顺序可能不正确，如果消费者需要将数据变更写入关系型数据库或进行类似操作，可能遇到主键或唯一键冲突的问题问题。
+该变更主要为了解决当使用 Kafka Sink 或其他 Sink 时，由于 TiCDC 接收到的 UPDATE 事件顺序可能不正确，消费者将数据变更写入关系型数据库或进行类似操作，可能遇到主键或唯一键冲突的问题。
 
 以如下 SQL 为例：
 
@@ -110,7 +110,7 @@ COMMIT;
 
 ### 控制是否拆分 `UPDATE` 主键或唯一键事件
 
-从 v6.5.10、v7.1.6、v7.5.2 和 v8.1.1 开始，使用非 MySQL Sink 时，TiCDC 通过 `output-raw-change-event` 参数控制是否拆分 `UPDATE` 主键或唯一键事件，具体行为是：
+从 v6.5.10、v7.1.6、v7.5.2 和 v8.1.1 开始，使用非 MySQL Sink 时，TiCDC 支持通过 `output-raw-change-event` 参数控制是否拆分 `UPDATE` 主键或唯一键事件，具体行为是：
 
 1. `output-raw-change-event = false`, 不拆分 `UPDATE` 事件。
 2. `output-raw-change-event = true`, 如果 `UPDATE` 事件的主键或者非空唯一索引的列值发生改变，TiCDC 会将该其拆分为 `DELETE` 和 `INSERT` 两条事件，并确保所有事件按照 `DELETE` 事件在 `INSERT` 事件之前的顺序进行排序。
