@@ -139,7 +139,7 @@ TiDB 版本：6.5.10
         - (dup): release-8.1.0.md > 错误修复> Tools> TiDB Lightning - 修复 TiDB Lightning 导入数据时，kill PD Leader 会导致 `invalid store ID 0` 报错的问题 [#50501](https://github.com/pingcap/tidb/issues/50501) @[Leavrth](https://github.com/Leavrth)
         - (dup): release-7.1.0.md > 错误修复> Tools> TiDB Lightning - 修复 TiDB Lightning Grafana 面板缺失数据的问题 [#43357](https://github.com/pingcap/tidb/issues/43357) @[lichunzhu](https://github.com/lichunzhu)
         - (dup): release-8.1.0.md > 错误修复> Tools> TiDB Lightning - 修复 TiDB Lightning 在服务器模式下可能会将敏感信息打印到日志中的问题 [#36374](https://github.com/pingcap/tidb/issues/36374) @[kennytm](https://github.com/kennytm)
-        - 在 SHARD_ROW_ID_BITS 与 AUTO_ID_CACHE=1 功能时正确设置 AUTO ID [#52654](https://github.com/pingcap/tidb/issues/52654) @[D3Hunter](https://github.com/D3Hunter)
+        - 修复使用 TiDB Lightning 导入同时设置了 `SHARD_ROW_ID_BITS` 和 `AUTO_ID_CACHE=1` 的数据表后，无法生成自增 ID 并报错 `Failed to read auto-increment value from storage engine` 的问题 [#52654](https://github.com/pingcap/tidb/issues/52654) @[D3Hunter](https://github.com/D3Hunter)
 
     + Dumpling
       <!-- tw:@Oreoxmt 1-->
