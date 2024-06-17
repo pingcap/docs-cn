@@ -1,9 +1,9 @@
 ---
-title: TiCDC 行为变更说明
-summary: 介绍 TiCDC changefeed 的行为变更，说明变更原因以及影响范围。
+title: TiCDC 拆分 UPDATE 事件行为说明
+summary: 介绍 TiCDC changefeed 拆分 UPDATE 事件的行为变更，说明变更原因以及影响范围。
 ---
 
-# TiCDC 行为变更说明
+# TiCDC 拆分 UPDATE 事件行为说明
 
 ## MySQL Sink 拆分所有 `UPDATE` 事件
 
