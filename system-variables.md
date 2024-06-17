@@ -2289,8 +2289,8 @@ mysql> SELECT job_info FROM mysql.analyze_jobs ORDER BY end_time DESC LIMIT 1;
 - 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：否
 - 类型：布尔型
 - 默认值：`ON`
-- 该变量是 [SET RESOURCE GROUP](/sql-statements/sql-statement-set-resource-group.md) 和 优化器 [`RESOURCE_GROUP()`](/optimizer-hints.md#resource_groupresource_group_name) Hint 权限控制的开关，当此变量设置为 `ON` 时，用户需要具有对应的权限才能使用这两种方式修改当前会话或当前语句绑定的资源组。
-- 从旧版本升级到 v8.2.0 及之后版本，该功能默认关闭，此时该变量默认为 `OFF`。
+- 该变量是 [SET RESOURCE GROUP](/sql-statements/sql-statement-set-resource-group.md) 和优化器 [`RESOURCE_GROUP()`](/optimizer-hints.md#resource_groupresource_group_name) Hint 权限控制的开关。当此变量设置为 `ON` 时，你需要具有对应的权限才能使用这两种方式修改当前会话或当前语句绑定的资源组。
+- 从旧版本升级到 v8.2.0 及之后版本时，该功能默认关闭，此时该变量默认值为 `OFF`。
 
 ### `tidb_enable_reuse_chunk` <span class="version-mark">从 v6.4.0 版本开始引入</span>
 
