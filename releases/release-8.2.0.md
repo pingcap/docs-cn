@@ -25,12 +25,6 @@ TiDB 版本：8.2.0
 
 ### 性能
 
-* 功能标题 [#issue号](链接) @[贡献者 GitHub ID](链接) **tw@xxx** <!--1234-->
-
-    功能描述（需要包含这个功能是什么、在什么场景下对用户有什么价值、怎么用）
-
-    更多信息，请参考[用户文档](链接)。
-
 * 支持下推以下字符串函数到 TiKV [#50601](https://github.com/pingcap/tidb/issues/50601) @[dbsid](https://github.com/dbsid)  **tw@Oreoxmt** <!--1663-->
 
     * `JSON_ARRAY_APPEND()`
@@ -55,12 +49,6 @@ TiDB 版本：8.2.0
 
 ### 稳定性
 
-* 功能标题 [#issue号](链接) @[贡献者 GitHub ID](链接) **tw@xxx** <!--1234-->
-
-    功能描述（需要包含这个功能是什么、在什么场景下对用户有什么价值、怎么用）
-
-    更多信息，请参考[用户文档](链接)。
-
 * 统计信息加载效率提升 10 倍 [#52831](https://github.com/pingcap/tidb/issues/52831) @[hawkingrei](https://github.com/hawkingrei) **tw@hfxsdt** <!--1754-->
 
     SaaS 或 PaaS 类业务应用中可能存在大量的数据表，这会拖慢了初始统计信息加载的速度，也会降低运行时加载的成功率。TiDB 的启动时间，以及执行计划的准确性都相应会受到影响。在 v8.2.0 中，我们从并发模型，内存分配方式等多个角度了优化统计信息的加载过程，降低延迟，提升吞吐，避免由于统计信息加载问题造成的大规模性能回退，进一步提升了数据库的稳定性。
@@ -70,12 +58,6 @@ TiDB 版本：8.2.0
     更多信息，请参考[用户文档](/tidb-configuration-file.md#stats-load-concurrency-从-v540-版本开始引入)。
 
 ### 高可用
-
-* 功能标题 [#issue号](链接) @[贡献者 GitHub ID](链接) **tw@xxx** <!--1234-->
-
-    功能描述（需要包含这个功能是什么、在什么场景下对用户有什么价值、怎么用）
-
-    更多信息，请参考[用户文档](链接)。
 
 * TiProxy 支持多种负载均衡策略 [#465](https://github.com/pingcap/tiproxy/issues/465) @[djshow832](https://github.com/djshow832) @[xhebox](https://github.com/xhebox)  **tw@Oreoxmt** <!--1777-->
 
@@ -91,25 +73,13 @@ TiDB 版本：8.2.0
 
 ### SQL 功能
 
-* 功能标题 [#issue号](链接) @[贡献者 GitHub ID](链接) **tw@xxx** <!--1234-->
-
-    功能描述（需要包含这个功能是什么、在什么场景下对用户有什么价值、怎么用）
-
-    更多信息，请参考[用户文档](链接)。
-
-* TiDB 支持 JSON Schema Validation 函数 [#52780](https://github.com/pingcap/tidb/pull/52780) @[dveeden](https://github.com/dveeden) **tw@hfxsd** <!--1840-->
+* TiDB 支持 JSON Schema Validation 函数 [#52779](https://github.com/pingcap/tidb/issues/52779) @[dveeden](https://github.com/dveeden) **tw@hfxsd** <!--1840-->
 
     在 v8.2.0 版本之前，用户需要依赖外部工具或自定义验证逻辑进行 JSON 数据验证，增加了开发和维护的复杂度，降低了开发效率。 引入该功能后，允许用户在 TiDB 中直接验证 JSON 数据的有效性，提高数据的完整性和一致性，提升了用户的开发效率。
 
     更多信息，请参考[用户文档](链接)。
 
 ### 数据库管理
-
-* 功能标题 [#issue号](链接) @[贡献者 GitHub ID](链接) **tw@xxx** <!--1234-->
-
-    功能描述（需要包含这个功能是什么、在什么场景下对用户有什么价值、怎么用）
-
-    更多信息，请参考[用户文档](链接)。
 
 * TiUP 支持部署 PD 微服务 [#5766](https://github.com/tikv/pd/issues/5766) @[rleungx](https://github.com/rleungx) **tw@qiancai** <!--1841-->
 
@@ -127,25 +97,13 @@ TiDB 版本：8.2.0
 
 ### 可观测性
 
-* 功能标题 [#issue号](链接) @[贡献者 GitHub ID](链接) **tw@xxx** <!--1234-->
-
-    功能描述（需要包含这个功能是什么、在什么场景下对用户有什么价值、怎么用）
-
-    更多信息，请参考[用户文档](链接)。
-
-* 记录执行计划没有被缓存的原因 [#issue号](链接) @[qw4990](https://github.com/qw4990) **tw@hfxsdt** <!--1819-->
+* 记录执行计划没有被缓存的原因 [#issue号](链接) @[qw4990](https://github.com/qw4990) **tw@hfxsd** <!--1819-->
 
     在一些场景下，用户希望多数执行计划能够被缓存，以节省执行开销，并降低延迟。目前执行计划缓存对 SQL 有一定限制，部分形态 SQL 的执行计划无法被缓存，但是用户很难识别出无法被缓存的 SQL 以及对应的原因。因此，在新版本中，我们向系统表 [`STATEMENTS_SUMMARY`](/statement-summary-tables.md) 中增加了新的列，解释计划无法被缓存的原因，协助用户做性能调优。
 
     更多信息，请参考[用户文档](/statement-summary-tables.md#表的字段介绍)。
 
 ### 安全
-
-* 功能标题 [#issue号](链接) @[贡献者 GitHub ID](链接) **tw@xxx** <!--1234-->
-
-    功能描述（需要包含这个功能是什么、在什么场景下对用户有什么价值、怎么用）
-
-    更多信息，请参考[用户文档](链接)。
 
 * 增强 TiFlash 日志脱敏 [#8977](https://github.com/pingcap/tiflash/issues/8977) @[JaySon-Huang](https://github.com/JaySon-Huang) **tw@Oreoxmt** <!--1818-->
 
@@ -188,6 +146,12 @@ TiDB 版本：8.2.0
 | [`tidb_analyze_skip_column_types`](/system-variables.md#tidb_analyze_skip_column_types-从-v720-版本开始引入) | 修改 | 默认设置下，TiDB 不会收集类型为 `mediumtext` 和 `longtext` 的列，避免潜在的 OOM 风险。**tw@hfxsd** <!--1759--> |
 |        |                              |      |
 |        |                              |      |
+
+### 配置文件参数
+
+| 配置文件           | 配置项                | 修改类型 | 描述                                 |
+|----------------|--------------------|------|------------------------------------|
+| | | | |
 
 ### 系统表
 
