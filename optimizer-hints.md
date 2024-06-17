@@ -869,7 +869,7 @@ SELECT /*+ RESOURCE_GROUP(rg1) */ * FROM t limit 10;
 
 > **注意：**
 >
-> - 自 v8.2.0 版本开始，TiDB 为此 Hint 引入权限控制。当 系统变量 [tidb_resource_control_strict_mode](/system-variables.md#tidb_resource_control_strict_mode-从-v820-版本开始引入) 设置为 `ON` 时，你需要有 `SUPER` 或者 `RESOURCE_GROUP_ADMIN` 或者 `RESOURCE_GROUP_USER` 权限 才能使用此 Hint。如果你没有所需权限，则此 Hint 会被忽略，同时 TiDB 会返回 warning，你可以在查询结束后通过 `SHOW WARNINGS;` 命令查看具体信息。
+> - 自 v8.2.0 版本开始，TiDB 为此 Hint 引入权限控制。当 系统变量 [tidb_resource_control_strict_mode](/system-variables.md#tidb_resource_control_strict_mode-从-v820-版本开始引入) 设置为 `ON` 时，你需要有 `SUPER` 或者 `RESOURCE_GROUP_ADMIN` 或者 `RESOURCE_GROUP_USER` 权限 才能使用此 Hint。如果没有所需权限，则此 Hint 会被忽略，同时 TiDB 会返回 warning，你可以在查询结束后通过 `SHOW WARNINGS;` 命令查看具体信息。
 
 ## 常见 Hint 不生效问题排查
 
