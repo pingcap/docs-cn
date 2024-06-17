@@ -242,7 +242,7 @@ delta_index_cache_size = 0
 
 ## 安全相关配置，从 v4.0.5 开始生效
 [security]
-    ## 从 v5.0 引入，控制是否开启日志脱敏。从 v8.2 开始，支持设置为 false/true/marker。
+    ## 从 v5.0 引入，控制是否开启日志脱敏。可选值为 true、false、marker。其中，marker 从 v8.2.0 开始支持。
     ## 默认值为 false，即对用户日志不做处理。
     ## 若设置为 true，日志中的用户数据会以 `?` 代替显示。
     ## 若设置为 marker，日志中的用户数据会被标记符号 `‹ ›` 包裹。输入信息中的 `‹` 会转义成 `‹‹`，`›` 会转义成 `››`。基于标记后的日志，你可以在展示日志时决定是否对被标记信息进行脱敏处理。
@@ -274,7 +274,7 @@ delta_index_cache_size = 0
     store-batch-retry-recv-timeout = "4ms"
 
 [security]
-    ## 从 v5.0 引入，控制是否开启日志脱敏。支持设置为 false/true。
+    ## 从 v5.0 引入，控制是否开启日志脱敏。可选值为 true、false。
     ## 默认值为 false，即对用户日志不做处理。
     ## 若设置为 true，日志中的用户数据会以 `?` 代替显示。
     redact-info-log = false
