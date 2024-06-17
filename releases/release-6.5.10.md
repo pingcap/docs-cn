@@ -130,7 +130,7 @@ TiDB 版本：6.5.10
 
     + TiCDC
       <!-- tw:@Oreoxmt 1-->
-        - 修复 MySQL 密码以 Base64 编码导致创建启用 Syncpoint 功能的 Changefeed 任务失败的问题 [#10516](https://github.com/pingcap/tiflow/issues/10516) @[asddongmen](https://github.com/asddongmen)
+        - 修复下游数据库密码以 Base64 编码导致创建启用 Syncpoint 功能的 Changefeed 任务失败的问题 [#10516](https://github.com/pingcap/tiflow/issues/10516) @[asddongmen](https://github.com/asddongmen)
         - (dup): release-8.1.0.md > 错误修复> Tools> TiCDC - 修复没有正确同步 `DROP PRIMARY KEY` 和 `DROP UNIQUE KEY` 的问题 [#10890](https://github.com/pingcap/tiflow/issues/10890) @[asddongmen](https://github.com/asddongmen)
         - (dup): release-8.1.0.md > 错误修复> Tools> TiCDC - 修复 `TIMEZONE` 类型的值没有按照正确的时区设置默认值的问题 [#10931](https://github.com/pingcap/tiflow/issues/10931) @[3AceShowHand](https://github.com/3AceShowHand)
 
