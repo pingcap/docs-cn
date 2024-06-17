@@ -60,9 +60,9 @@ TiDB 版本：6.5.10
     - 修复使用 Optimizer Hints 时，可能输出错误的 WARNINGS 信息的问题。 [#53767](https://github.com/pingcap/tidb/issues/53767) @[hawkingrei](https://github.com/hawkingrei)
     - 修复 information schema 缓存未命中导致的 stale read 延迟上升的问题 [#53428](https://github.com/pingcap/tidb/issues/53428) @[crazycs520](https://github.com/crazycs520)
   <!-- tw:@hfxsd 3-->
-    - 修复 DDL 错误使用 etcd 导致任务排队等问题 [#52335](https://github.com/pingcap/tidb/issues/52335) @[wjhuang2016](https://github.com/wjhuang2016)
-    - 修复重命名表达式索引残留内部列的问题 [#51431](https://github.com/pingcap/tidb/issues/51431) @[ywqzzy](https://github.com/ywqzzy)
-    - 修复并发执行 CREATE OR REPLACE VIEW 可能报错 “table doesn't exist” 的问题 [#53673](https://github.com/pingcap/tidb/issues/53673) @[tangenta](https://github.com/tangenta)
+    - 修复 DDL 错误使用 etcd 导致任务排队的问题 [#52335](https://github.com/pingcap/tidb/issues/52335) @[wjhuang2016](https://github.com/wjhuang2016)
+    - 修复执行 `RENAME INDEX` 语句重命名表达式索引出现残留内部列的问题 [#51431](https://github.com/pingcap/tidb/issues/51431) @[ywqzzy](https://github.com/ywqzzy)
+    - 修复并发执行 `CREATE OR REPLACE VIEW` 可能报错 `table doesn't exist` 的问题 [#53673](https://github.com/pingcap/tidb/issues/53673) @[tangenta](https://github.com/tangenta)
     - (dup): release-7.5.2.md > 错误修复> TiDB - 修复在 `AUTO_ID_CACHE=1` 时，AutoID Leader 发生变更可能造成自增列的值减少的问题 [#52600](https://github.com/pingcap/tidb/issues/52600) @[tiancaiamao](https://github.com/tiancaiamao)
     - (dup): release-7.5.2.md > 错误修复> TiDB - 修复 JOIN 条件包含隐式类型转换时 TiDB 可能 panic 的问题 [#46556](https://github.com/pingcap/tidb/issues/46556) @[qw4990](https://github.com/qw4990)
     - (dup): release-7.5.2.md > 错误修复> TiDB - 修复网络问题导致 DDL 卡住的问题 [#47060](https://github.com/pingcap/tidb/issues/47060) @[wjhuang2016](https://github.com/wjhuang2016)
@@ -108,9 +108,9 @@ TiDB 版本：6.5.10
 
 + TiFlash
   <!-- tw:@hfxsd 3-->
-    - 修复跨 database 之间执行 `ALTER TABLE ... EXCHANGE PARTITION` 后可能导致 TiFlash 同步 schema 失败的问题 [#7296](https://github.com/pingcap/tiflash/issues/7296) @[JaySon-Huang](https://github.com/JaySon-Huang)
-    - 修复收到空的 Region key-range 查询可能导致 TiFlash 查询被阻塞的问题 [#9108](https://github.com/pingcap/tiflash/issues/9108) @[JinheLin](https://github.com/JinheLin)
-    - 修复函数 `SUBSTRING_INDEX` 可能导致 Crash 的问题 [#9116](https://github.com/pingcap/tiflash/issues/9116) @[wshwsh12](https://github.com/wshwsh12)
+    - 修复跨数据库之间执行 `ALTER TABLE ... EXCHANGE PARTITION` 后可能导致 TiFlash 同步 schema 失败的问题 [#7296](https://github.com/pingcap/tiflash/issues/7296) @[JaySon-Huang](https://github.com/JaySon-Huang)
+    - 修复 key range 为空的查询导致 TiFlash 上没有 segment，从而可能阻塞 TiFlash 查询的问题 [#9108](https://github.com/pingcap/tiflash/issues/9108) @[JinheLin](https://github.com/JinheLin)
+    - 修复函数 `SUBSTRING_INDEX()` 可能导致 TiFlash Crash 的问题 [#9116](https://github.com/pingcap/tiflash/issues/9116) @[wshwsh12](https://github.com/wshwsh12)
     - (dup): release-8.1.0.md > 错误修复> TiFlash - 修复从低于 v6.5.0 的集群升级到 v6.5.0 及以上版本后，可能出现 TiFlash 元数据损坏以及进程 panic 的问题 [#9039](https://github.com/pingcap/tiflash/issues/9039) @[JaySon-Huang](https://github.com/JaySon-Huang)
     - (dup): release-8.1.0.md > 错误修复> TiFlash - 修复 TiFlash 在高并发读的情况下，可能返回瞬时不正确结果的问题 [#8845](https://github.com/pingcap/tiflash/issues/8845) @[JinheLin](https://github.com/JinheLin)
 
