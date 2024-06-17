@@ -185,7 +185,7 @@ TiDB 版本：8.2.0
 | 变量名  | 修改类型（包括新增/修改/删除）    | 描述 |
 |--------|------------------------------|------|
 | [`tidb_enable_historical_stats`](/system-variables.md#tidb_enable_historical_stats) | 修改 | 自 v8.2.0，默认不保存历史统计信息，避免潜在的稳定性问题 **tw@hfxsd** <!--1759--> |
-| [`tidb_analyze_skip_column_types`](/system-variables.md#tidb_analyze_skip_column_types-从-v720-版本开始引入) | 修改 | 默认设置下，TiDB 不会收集类型为 `mediumtext` 和 `longtext` 的列，避免潜在的 OOM 风险。 |
+| [`tidb_analyze_skip_column_types`](/system-variables.md#tidb_analyze_skip_column_types-从-v720-版本开始引入) | 修改 | 默认设置下，TiDB 不会收集类型为 `mediumtext` 和 `longtext` 的列，避免潜在的 OOM 风险。**tw@hfxsd** <!--1759--> |
 |        |                              |      |
 |        |                              |      |
 
