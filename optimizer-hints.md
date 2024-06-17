@@ -869,7 +869,7 @@ SELECT /*+ RESOURCE_GROUP(rg1) */ * FROM t limit 10;
 
 > **注意：**
 >
-> - 要使用此 Hint，你需要有 `SUPER` 或者 `RESOURCE_GROUP_ADMIN` 或者 `RESOURCE_GROUP_USER` 权限。如果你没有所需权限，则此 Hint 会被忽略，同时 TiDB 会返回 warning，你可以在查询结束后通过 `SHOW WARNINGS;` 命令查看具体信息。
+> 要使用此 Hint，你需要有 `SUPER` 或者 `RESOURCE_GROUP_ADMIN` 或者 `RESOURCE_GROUP_USER` 权限。如果没有所需权限，则此 Hint 会被忽略，同时 TiDB 会返回 warning，你可以在查询结束后通过 `SHOW WARNINGS;` 命令查看具体信息。
 
 ## 常见 Hint 不生效问题排查
 
