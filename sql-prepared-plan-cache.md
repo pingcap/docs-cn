@@ -148,7 +148,7 @@ MySQL [test]> select @@last_plan_from_cache;
 
 ## 诊断 Prepared Plan Cache
 
-### 通过 Explain 诊断 
+### 通过 Show Warnings 诊断 
 
 对于无法进行缓存的查询或计划，可通过 `SHOW WARNINGS` 语句查看查询或计划是否被缓存。如果未被缓存，则可在结果中查看无法被缓存的原因。示例如下：
 
