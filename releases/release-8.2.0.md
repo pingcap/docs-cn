@@ -25,7 +25,7 @@ TiDB 版本：8.2.0
 
 ### 性能
 
-* 支持下推以下字符串函数到 TiKV [#50601](https://github.com/pingcap/tidb/issues/50601) @[dbsid](https://github.com/dbsid)  **tw@Oreoxmt** <!--1663-->
+* 支持下推以下字符串函数到 TiKV [#50601](https://github.com/pingcap/tidb/issues/50601) @[dbsid](https://github.com/dbsid) **tw@Oreoxmt** <!--1663-->
 
     * `JSON_ARRAY_APPEND()`
     * `JSON_MERGE_PATCH()`
@@ -33,17 +33,19 @@ TiDB 版本：8.2.0
 
   更多信息，请参考[用户文档](/functions-and-operators/expressions-pushed-down.md)。
 
-* TiDB 支持并行排序功能 [#49217](https://github.com/pingcap/tidb/issues/49217) [#50746](https://github.com/pingcap/tidb/issues/50746) @[xzhangxian1008](https://github.com/xzhangxian1008) **tw@Oreoxmt** <!--1665-->
+* TiDB 支持并行排序 [#49217](https://github.com/pingcap/tidb/issues/49217) [#50746](https://github.com/pingcap/tidb/issues/50746) @[xzhangxian1008](https://github.com/xzhangxian1008) **tw@Oreoxmt** <!--1665-->
 
-    在 v8.2.0 版本之前，TiDB 进行排序计算时只能以非并行的方式进行处理，当需要对大量数据进行排序时，查询性能受到影响。
+    在 v8.2.0 之前，TiDB 只能以非并行的方式执行排序计算，当需要对大量数据进行排序时，查询性能会受到影响。
 
-    在 v8.2.0 版本中，TiDB 支持并行排序功能，所有的排序计算性能都将得到提升。该功能不需要单独开启，TiDB 将根据变量 [`tidb_executor_concurrency`](/system-variables.md#tidb_executor_concurrency-从-v50-版本开始引入) 的设定，确定使用并行方式或非并行方式进行排序。
+    从 v8.2.0 开始，TiDB 支持并行排序功能，显著提升了排序计算的性能。该功能无需手动开启，TiDB 会根据系统变量 [`tidb_executor_concurrency`](/system-variables.md#tidb_executor_concurrency-从-v50-版本开始引入) 的值自动选择并行或非并行排序。
 
-* TiDB 的并发 HashAgg 算法支持数据落盘（GA）[#35637](https://github.com/pingcap/tidb/issues/35637) @[xzhangxian1008](https://github.com/xzhangxian1008)  **tw@Oreoxmt** <!--1842-->
+    更多信息，请参考[用户文档](/system-variables.md#tidb_executor_concurrency-从-v50-版本开始引入)。
 
-    在 v8.0.0 中，TiDB 以实验特性发布了并发 HashAgg 算法支持数据落盘功能。
+* TiDB 的并行 HashAgg 算法支持数据落盘成为正式功能 (GA) [#35637](https://github.com/pingcap/tidb/issues/35637) @[xzhangxian1008](https://github.com/xzhangxian1008) **tw@Oreoxmt** <!--1842-->
 
-    在 v8.2.0 中，TiDB 正式发布该功能。TiDB 在使用并发 HashAgg 算法时，将根据内存使用情况自动触发数据落盘，从而兼顾性能和数据处理量。该功能默认打开，变量 `tidb_enable_concurrent_hashagg_spill` 将被废弃。
+    TiDB v8.0.0 以实验特性引入了并行 HashAgg 算法支持数据落盘功能。在 v8.2.0 中，该功能成为正式功能 (GA)。TiDB 在使用并行 HashAgg 算法时，将根据内存使用情况自动触发数据落盘，从而兼顾性能和数据处理量。该功能默认开启，控制该功能的变量 `tidb_enable_parallel_hashagg_spill` 将在未来版本中废弃。
+
+    更多信息，请参考[用户文档](/system-variables.md#tidb_enable_parallel_hashagg_spill-从-v800-版本开始引入)。
 
 * 提升备份百万表场景的备份稳定性以及性能。解决备份过程中因为各种原因(节点重启/扩容/网络问题)带来的长尾问题。 [#52534](https://github.com/pingcap/tidb/issues/52534) @[3pointer](https://github.com/3pointer) **tw@qiancai** <!--1844-->
 
@@ -59,17 +61,19 @@ TiDB 版本：8.2.0
 
 ### 高可用
 
-* TiProxy 支持多种负载均衡策略 [#465](https://github.com/pingcap/tiproxy/issues/465) @[djshow832](https://github.com/djshow832) @[xhebox](https://github.com/xhebox)  **tw@Oreoxmt** <!--1777-->
+* TiProxy 支持多种负载均衡策略 [#465](https://github.com/pingcap/tiproxy/issues/465) @[djshow832](https://github.com/djshow832) @[xhebox](https://github.com/xhebox) **tw@Oreoxmt** <!--1777-->
 
-    TiProxy 是 TiDB 的官方代理组件，位于客户端和 TiDB server 之间，为 TiDB 集群提供负载均衡、连接保持功能。在 v8.2.0 之前，TiProxy 默认使用 v1.0.0 版本，只能基于状态和连接数进行负载均衡。
-    在 v8.2.0 中，TiProxy 默认使用 v1.1.0 版本，引入了多种负载均衡策略，除了状态和连接数，还可以根据健康度、资源、地理位置等信息，对 TiDB 集群的连接进行动态负载均衡调度，使整个 TiDB 集群更加稳定。
+    TiProxy 是 TiDB 的官方代理组件，位于客户端和 TiDB server 之间，为 TiDB 集群提供负载均衡、连接保持功能。在 v8.2.0 之前，TiProxy 默认使用 v1.0.0 版本，仅支持基于 TiDB server 状态和连接数的负载均衡策略。
 
-    TiProxy 的负载均衡策略可以通过配置项进行配置，具体策略包括：
-    * `resource`: 资源优先策略，优先级顺序依次为基于状态、健康度、内存、CPU、地理位置、连接数的负载均衡。
-    * `location`: 地理优先策略，优先级顺序依次为基于状态、地理位置、健康度、内存、CPU、连接数的负载均衡。
-    * `connection`: 最小连接数策略，优先级顺序依次为基于状态、连接数的负载均衡。
+    从 v8.2.0 开始，TiProxy 默认使用 v1.1.0 版本，新增多种负载均衡策略，除了状态和连接数，还支持根据健康度、内存、CPU、地理位置等信息对 TiDB 集群的连接进行动态负载均衡调度，提高整个 TiDB 集群的稳定性。
 
-    更多信息，请参考[用户文档](/tiproxy/tiproxy-load-balance.md)。
+    你可以通过 TiProxy 配置项 [`policy`](/tiproxy/tiproxy-configuration.md#policy) 配置负载均衡策略的组合和优先级，具体策略包括：
+
+    * `resource`：资源优先策略，优先级顺序依次为基于状态、健康度、内存、CPU、地理位置、连接数的负载均衡。
+    * `location`：地理优先策略，优先级顺序依次为基于状态、地理位置、健康度、内存、CPU、连接数的负载均衡。
+    * `connection`：最小连接数策略，优先级顺序依次为基于状态、连接数的负载均衡。
+
+  更多信息，请参考[用户文档](/tiproxy/tiproxy-load-balance.md)。
 
 ### SQL 功能
 
@@ -107,7 +111,7 @@ TiDB 版本：8.2.0
 
 * 增强 TiFlash 日志脱敏 [#8977](https://github.com/pingcap/tiflash/issues/8977) @[JaySon-Huang](https://github.com/JaySon-Huang) **tw@Oreoxmt** <!--1818-->
 
-    在 v8.0.0 版本，TiDB 增强了日志脱敏功能，可以控制是否对日志信息进行脱敏，以实现在不同场景下安全使用 TiDB 日志，提升了使用日志脱敏能力的安全性和灵活性。在 v8.2.0 版本中，TiFlash 进行了类似的日志脱敏功能增强。要使用此功能，需要将 tiflash-server 中 `security.redact_info_log` 配置项的值设为 `marker`。
+    TiDB v8.0.0 增强了日志脱敏功能，支持控制是否对日志信息进行脱敏，以实现在不同场景下安全使用 TiDB 日志，提升了使用日志脱敏能力的安全性和灵活性。在 v8.2.0 中，TiFlash 进行了类似的日志脱敏功能增强。要使用该功能，可以将 TiFlash 配置项 `security.redact_info_log` 的值设置为 `marker`。
 
     更多信息，请参考[用户文档](/tiflash/tiflash-configuration.md#配置文件-tiflashtoml)。
 
