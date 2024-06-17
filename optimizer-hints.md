@@ -76,38 +76,6 @@ SELECT /*+ QB_NAME(QB1) */ * FROM (SELECT * FROM t) t1, (SELECT * FROM t) t2;
 >
 > 上述例子中，如果指定的 `QB_NAME` 为 `sel_2`，并且不给原本 `sel_2` 对应的第二个查询块指定新的 `QB_NAME`，则第二个查询块的默认名字 `sel_2` 会失效。
 
-### SET_VAR(VAR_NAME=VAR_VALUE)
-
-`SET_VAR(VAR_NAME=VAR_VALUE)` 允许在语句执行期间以 Hint 形式临时修改会话级系统变量的值。当语句执行完成后，系统变量将在当前会话中自动恢复为原始值。通过这个 Hint 可以修改一部分与优化器、执行器相关的系统变量行为。支持通过 `SET_VAR(VAR_NAME=VAR_VALUE)` Hint 修改的系统变量请查看[系统变量](/system-variables.md)。
-
-> **警告：**
->
-> 强烈建议不要利用此 Hint 修改没有明确支持的变量，这可能会引发不可预知的行为。
-> `SET_VAR` 请尽量写在最外层而不要写在子查询中，否则可能会不生效。
-
-下面是一个使用示例：
-
-```sql
-SELECT /*+ SET_VAR(MAX_EXECUTION_TIME=1234) */ @@MAX_EXECUTION_TIME;
-SELECT @@MAX_EXECUTION_TIME;
-```
-
-执行上述 SQL，第一个查询返回的结果是 Hint 中设置的 `1234`，而不是变量 `MAX_EXECUTION_TIME` 的默认值。第二个查询会返回变量的默认值。
-
-```sql
-+----------------------+
-| @@MAX_EXECUTION_TIME |
-+----------------------+
-|                 1234 |
-+----------------------+
-1 row in set (0.00 sec)
-+----------------------+
-| @@MAX_EXECUTION_TIME |
-+----------------------+
-|                    0 |
-+----------------------+
-1 row in set (0.00 sec)
-```
 
 ### MERGE_JOIN(t1_name [, tl_name ...])
 
@@ -817,6 +785,39 @@ SELECT /*+ READ_CONSISTENT_REPLICA() */ * FROM t;
 
 ```sql
 prepare stmt FROM 'SELECT  /*+ IGNORE_PLAN_CACHE() */ * FROM t WHERE t.id = ?';
+```
+
+### SET_VAR(VAR_NAME=VAR_VALUE)
+
+`SET_VAR(VAR_NAME=VAR_VALUE)` 允许在语句执行期间以 Hint 形式临时修改会话级系统变量的值。当语句执行完成后，系统变量将在当前会话中自动恢复为原始值。通过这个 Hint 可以修改一部分与优化器、执行器相关的系统变量行为。支持通过 `SET_VAR(VAR_NAME=VAR_VALUE)` Hint 修改的系统变量请查看[系统变量](/system-variables.md)。
+
+> **警告：**
+>
+> 强烈建议不要利用此 Hint 修改没有明确支持的变量，这可能会引发不可预知的行为。
+> 请注意不要把 `SET_VAR` 写在子查询中，否则可能会不生效。
+
+下面是一个使用示例：
+
+```sql
+SELECT /*+ SET_VAR(MAX_EXECUTION_TIME=1234) */ @@MAX_EXECUTION_TIME;
+SELECT @@MAX_EXECUTION_TIME;
+```
+
+执行上述 SQL，第一个查询返回的结果是 Hint 中设置的 `1234`，而不是变量 `MAX_EXECUTION_TIME` 的默认值。第二个查询会返回变量的默认值。
+
+```sql
++----------------------+
+| @@MAX_EXECUTION_TIME |
++----------------------+
+|                 1234 |
++----------------------+
+1 row in set (0.00 sec)
++----------------------+
+| @@MAX_EXECUTION_TIME |
++----------------------+
+|                    0 |
++----------------------+
+1 row in set (0.00 sec)
 ```
 
 ### STRAIGHT_JOIN()
