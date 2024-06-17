@@ -97,7 +97,7 @@ MySQL binlog 直接记录了上游执行的所有 DML 操作的 SQL 语句。与
 
 TiCDC 会根据收到的这些数据变更信息，适配各个类型的下游来生成合适格式的数据传输给下游。例如，生成 Canal-JSON、Avro 等格式的数据写入 Kafka 中，或者重新转换成 SQL 语句发送给下游的 MySQL 或者 TiDB。
 
-目前 TiCDC 将数据变更信息适配对应的协议时，对于特定的 `UPDATE` 事件，可能会将其拆成一条 `DELETE` 事件和一条 `INSERT` 事件。详见[将 Update 事件拆分为 Delete 和 Insert 事件](/ticdc/ticdc-behavior-change.md#将-update-事件拆分为-delete-和-insert-事件)。
+目前 TiCDC 将数据变更信息适配对应的协议时，对于特定的 `UPDATE` 事件，可能会将其拆成一条 `DELETE` 事件和一条 `INSERT` 事件。详见[MySQL Sink 拆分所有 `UPDATE` 事件](/ticdc/ticdc-split-update-behavior.md#mysql-sink-拆分所有-update-事件)及[非 MySQL Sink 拆分 `UPDATE` 主键或唯一键事件](/ticdc/ticdc-split-update-behavior.md#非-mysql-sink-拆分-update-主键或唯一键事件)。
 
 当下游是 MySQL 或者 TiDB 时，因为 TiCDC 并非直接获取原生上游执行的 DML 语句，而是重新根据数据变更信息来生成 SQL 语句，因此不能保证写入下游的 SQL 语句和上游执行的 SQL 语句完全相同，但会保证最终结果的一致性。
 
