@@ -135,7 +135,7 @@ BACKUP DATABASE `test` TO 's3://example-bucket-2020/backup-05/'
 
 统计信息默认不会备份，如果你确定需要备份统计信息，可以将 `IGNORE_STATS` 参数设置为 `FALSE`。
 
-备份生成的 SST 文件默认使用 `zstd` 压缩算法。你可以根据需求， 通过 `COMPRESSION_TYPE` 参数指定压缩算法。可选的算法包括 `lz4`、`zstd`、`snappy`。你还可以通过 `COMPRESSION_LEVEL` 设置压缩级别，压缩级别数字越高，压缩比越高，但 CPU 消耗越大。
+备份生成的 SST 文件默认使用 `zstd` 压缩算法。你可以根据需求，通过 `COMPRESSION_TYPE` 参数指定压缩算法。可选的算法包括 `lz4`、`zstd`、`snappy`。你还可以通过 `COMPRESSION_LEVEL` 设置压缩级别，压缩级别数字越高，压缩比越高，但 CPU 消耗越大。
 
 {{< copyable "sql" >}}
 
