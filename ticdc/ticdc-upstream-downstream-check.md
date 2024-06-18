@@ -100,7 +100,7 @@ select * from tidb_cdc.syncpoint_v1;
 
 ## 注意事项
 
-- TiCDC 在创建 Changefeed 前，请确保 TiCDC 的配置项 `enable-sync-point` 已设置为 `true`，这样才会开启 Syncpoint 功能，在下游保存 `ts-map`。配置项 `sync-point-interval` 默认格式为 h m s, 例如 "1h30m30s"，最小值支持 30s。更多完整的配置信息请参考 [TiCDC 同步任务配置文件描述](/ticdc/ticdc-changefeed-config.md)。
+- TiCDC 在创建 Changefeed 前，请确保 TiCDC 的配置项 `enable-sync-point` 已设置为 `true`，这样才会开启 Syncpoint 功能，在下游保存 `ts-map`。配置项 `sync-point-interval` 的默认格式为 `"h m s"`，例如 `"1h30m30s"`，最小值为 `"30s"`。更多完整的配置信息请参考 [TiCDC 同步任务配置文件描述](/ticdc/ticdc-changefeed-config.md)。
 - 在使用 Syncpoint 功能进行数据校验时，需要调整 TiKV 的 GC 时间，保证在校验时 snapshot 对应的历史数据不会被执行 GC。建议调整为 1 个小时，在校验后再还原 GC 设置。
 - 以上配置只展示了 `Datasource config` 部分，完整配置请参考 [sync-diff-inspector 用户文档](/sync-diff-inspector/sync-diff-inspector-overview.md)。
 - 从 v6.4.0 开始，TiCDC 使用 Syncpoint 功能需要同步任务拥有下游集群的 `SYSTEM_VARIABLES_ADMIN` 或者 `SUPER` 权限。
