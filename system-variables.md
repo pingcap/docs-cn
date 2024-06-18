@@ -2515,6 +2515,7 @@ MPP 是 TiFlash 引擎提供的分布式计算框架，允许节点之间的数�
 - `hash aggregation`（partial 和 final 阶段）
 - `window`
 - `projection`
+- `sort`
 
 `tidb_executor_concurrency` 整合了已有的系统变量，方便管理。这些变量所列如下：
 
