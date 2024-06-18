@@ -130,7 +130,7 @@ TiDB 版本：6.5.10
 
     + TiCDC
       <!-- tw:@Oreoxmt 1-->
-        - 修复下游数据库密码以 Base64 编码导致创建启用 Syncpoint 功能的 Changefeed 任务失败的问题 [#10516](https://github.com/pingcap/tiflow/issues/10516) @[asddongmen](https://github.com/asddongmen)
+        - 修复下游数据库密码以 Base64 编码时启用 Syncpoint 功能的 Changefeed 创建失败的问题 [#10516](https://github.com/pingcap/tiflow/issues/10516) @[asddongmen](https://github.com/asddongmen)
         - (dup): release-8.1.0.md > 错误修复> Tools> TiCDC - 修复没有正确同步 `DROP PRIMARY KEY` 和 `DROP UNIQUE KEY` 的问题 [#10890](https://github.com/pingcap/tiflow/issues/10890) @[asddongmen](https://github.com/asddongmen)
         - (dup): release-8.1.0.md > 错误修复> Tools> TiCDC - 修复 `TIMEZONE` 类型的值没有按照正确的时区设置默认值的问题 [#10931](https://github.com/pingcap/tiflow/issues/10931) @[3AceShowHand](https://github.com/3AceShowHand)
 
@@ -147,4 +147,4 @@ TiDB 版本：6.5.10
 
     + TiDB Binlog
       <!-- tw:@Oreoxmt 1-->
-        - 修复开启 TiDB Binlog 后，在 `ADD COLUMN` 中删除行可能报错 `data and columnID count not match` 的问题 [#53133](https://github.com/pingcap/tidb/issues/53133) @[tangenta](https://github.com/tangenta)
+        - 修复开启 TiDB Binlog 后，在 `ADD COLUMN` 执行过程中删除行可能报错 `data and columnID count not match` 的问题 [#53133](https://github.com/pingcap/tidb/issues/53133) @[tangenta](https://github.com/tangenta)
