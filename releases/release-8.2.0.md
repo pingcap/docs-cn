@@ -79,9 +79,9 @@ TiDB 版本：8.2.0
 
 * TiDB 支持 JSON Schema Validation 函数 [#52779](https://github.com/pingcap/tidb/issues/52779) @[dveeden](https://github.com/dveeden) **tw@hfxsd** <!--1840-->
 
-    在 v8.2.0 版本之前，用户需要依赖外部工具或自定义验证逻辑进行 JSON 数据验证，增加了开发和维护的复杂度，降低了开发效率。 引入该功能后，允许用户在 TiDB 中直接验证 JSON 数据的有效性，提高数据的完整性和一致性，提升了用户的开发效率。
+    在 v8.2.0 版本之前，你需要依赖外部工具或自定义验证逻辑进行 JSON 数据验证，开发和维护比较复杂，开发效率低。从 v8.2.0 版本开始，引入了 `JSON_SCHEMA_VALID()` 函数，你可以在 TiDB 中直接验证 JSON 数据的有效性，提高数据的完整性和一致性，提升了开发效率。
 
-    更多信息，请参考[用户文档](链接)。
+    更多信息，请参考[用户文档](/functions-and-operators/json-functions.md#验证函数)。
 
 ### 数据库管理
 
@@ -181,7 +181,7 @@ TiDB 版本：8.2.0
     - note [#issue](链接) @[贡献者 GitHub ID](链接)
     - 优化客户端读取数据超时无法终止查询的问题 [#44009](https://github.com/pingcap/tidb/issues/44009) @[wshwsh12](https://github.com/wshwsh12)  **tw@Oreoxmt** <!--1636-->
     - 优化对大数据量的表进行简单查询的性能 [#53850](https://github.com/pingcap/tidb/issues/53850) @[you06](https://github.com/you06)  **tw@Oreoxmt** <!--1561-->
-    - 聚合的结果集能够作为 Index Join 的内表 [#37068](https://github.com/pingcap/tidb/issues/37068) @[elsa0520](https://github.com/elsa0520) **tw@hfxsdt** <!--1510-->
+    - 聚合的结果集能够作为 IndexJoin 的内表，使更多的复杂查询可以匹配到 IndexJoin，从而可以通过索引提升查询效率 [#37068](https://github.com/pingcap/tidb/issues/37068) @[elsa0520](https://github.com/elsa0520) **tw@hfxsd** <!--1510-->
 
 + TiKV
 
