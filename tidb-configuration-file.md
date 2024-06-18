@@ -572,8 +572,8 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
 ### `stats-load-concurrency` <span class="version-mark">从 v5.4.0 版本开始引入</span>
 
 + TiDB 统计信息同步加载功能可以并发处理的最大列数
-+ 默认值：5
-+ 目前的合法值范围：`[1, 128]`
++ 默认值：0, 在 v8.2 之前，默认值为5
++ 目前的合法值范围：`[0, 128]`, 0 为自动模式，根据机器情况，自动调节并发度, 在 v8.2 之前，最小值为 1 
 
 ### `stats-load-queue-size` <span class="version-mark">从 v5.4.0 版本开始引入</span>
 
