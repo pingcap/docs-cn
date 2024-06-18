@@ -46,10 +46,10 @@ TiDB 版本：6.5.10
 
 + TiDB
   <!-- tw:@qiancai 6-->
-    - 修复一些情况下对元数据查询会导致内存使用过大的问题 [#52219](https://github.com/pingcap/tidb/issues/52219) @[hawkingrei](https://github.com/hawkingrei)
-    - 修复表结构中设置 AUTO_ID_CACHE=1 时，使用非默认的 @@auto_increment_increment 和 @@auto_increment_offset 会导致错误 ID 分配的问题 [#52622](https://github.com/pingcap/tidb/issues/52622) @[tiancaiamao](https://github.com/tiancaiamao)
-    - 修复表结构中设置 AUTO_ID_CACHE=1 时，使用 RESTORE 命令恢复表数据后 ID 分配可能错误的问题 [#52680](https://github.com/pingcap/tidb/issues/52680) @[tiancaiamao](https://github.com/tiancaiamao)
-    - 修复 `INFORMATION_SCHEMA.TIDB_TRX` 表中 `STATE` 字段的 `size` 未定义导致 `STATE`显示为空的问题 [#53026](https://github.com/pingcap/tidb/issues/53026) @[cfzjywxk](https://github.com/cfzjywxk)
+    - 修复统计信息初始化过程中对元数据的查询可能导致 OOM 的问题 [#52219](https://github.com/pingcap/tidb/issues/52219) @[hawkingrei](https://github.com/hawkingrei)
+    - 修复当表中包含 `AUTO_ID_CACHE=1` 的自增列时，系统变量 `auto_increment_increment` 和 `auto_increment_offset` 配置为非默认值可能导致自增 ID 分配错误的问题 [#52622](https://github.com/pingcap/tidb/issues/52622) @[tiancaiamao](https://github.com/tiancaiamao)
+    - 修复通过 `RESTORE` 语句恢复 `AUTO_ID_CACHE=1` 的表时，会遇到 `Duplicate entry` 报错的问题 [#52680](https://github.com/pingcap/tidb/issues/52680) @[tiancaiamao](https://github.com/tiancaiamao)
+    - 修复 `INFORMATION_SCHEMA.TIDB_TRX` 表中 `STATE` 字段的 `size` 未定义导致 `STATE` 显示为空的问题 [#53026](https://github.com/pingcap/tidb/issues/53026) @[cfzjywxk](https://github.com/cfzjywxk)
     - 修复创建带有外键的表时，TiDB 未创建对应的统计信息元信息（`stats_meta`）的问题 [#53652](https://github.com/pingcap/tidb/issues/53652) @[hawkingrei](https://github.com/hawkingrei)
     - 修复在查询并发较高时，统计信息同步加载机制可能意外加载失败的问题 [#52294](https://github.com/pingcap/tidb/issues/52294) @[hawkingrei](https://github.com/hawkingrei)
   <!-- tw:@lilin90 6-->
