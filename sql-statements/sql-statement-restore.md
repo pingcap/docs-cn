@@ -126,7 +126,7 @@ RESTORE DATABASE * FROM 's3://example-bucket-2020/backup-05/'
 
 在恢复完成之前，`RESTORE` 将对备份文件中的数据进行校验，以验证数据的正确性。如果你确定无需进行校验，可以通过将 `CHECKSUM` 参数设置为 `FALSE` 来禁用该检查。`CHECKSUM_CONCURRENCY` 参数设置对单张表做数据校验作业的并发度， 默认是 4。
 
-统计信息默认会尝试恢复，如果你确定不需要恢复统计信息，可以将 `LOAD_STATS` 参数设置为 `FALSE`。
+统计信息已备份的前提下，恢复过程中默认会恢复统计信息，如果你确定不需要恢复统计信息，可以将 `LOAD_STATS` 参数设置为 `FALSE`。
 
 系统权限表默认会恢复， 如果你确定不需要恢复系统权限表，可以将 `WITH_SYS_TABLE` 参数设置为 `FALSE`。
 
