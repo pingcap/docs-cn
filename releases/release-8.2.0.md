@@ -170,6 +170,8 @@ TiDB 版本：8.2.0
 * 从 v8.0.0 开始，变量 [`tidb_enable_concurrent_hashagg_spill`](/system-variables.md#tidb_enable_concurrent_hashagg_spill-从-v800-版本开始引入) 被废弃。
 * 从 v8.0.0 开始，BR 快照恢复参数 [`concurrency`](/use-br-command-line-tool#常用选项) 被废弃。 **tw@qiancai** <!--1850-->
 * 从 v8.0.0 开始，BR 快照恢复参数 [`granularity`](/br-snapshot-guide#快照恢复的性能与影响) 被废弃。**tw@qiancai** <!--1850-->
+* TiDB 在 v8.0.0 引入了 [Priority Queue](/system-variables.md#tidb_enable_auto_analyze_priority_queue-从-v800-版本开始引入)，用来优化统计信息收集的对象排序。[Priority Queue](/system-variables.md#tidb_enable_auto_analyze_priority_queue-从-v800-版本开始引入) 将会成为统计信息收集的唯一排序方式，变量 [`tidb_enable_auto_analyze_priority_queue`](/system-variables.md#tidb_enable_auto_analyze_priority_queue-从-v800-版本开始引入) 计划在未来版本废弃。
+* 计划在后续版本重新设计[执行计划绑定的自动演进](/sql-plan-management.md#自动演进绑定-baseline-evolution)，相关的变量和行为会发生变化。
 
 ## 改进提升
 
