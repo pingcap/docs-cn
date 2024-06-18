@@ -104,8 +104,8 @@ select * from tidb_cdc.syncpoint_v1;
 - 在使用 Syncpoint 功能进行数据校验时，需要调整 TiKV 的 GC 时间，保证在校验时 snapshot 对应的历史数据不会被执行 GC。建议调整为 1 个小时，在校验后再还原 GC 设置。
 - 以上配置只展示了 `Datasource config` 部分，完整配置请参考 [sync-diff-inspector 用户文档](/sync-diff-inspector/sync-diff-inspector-overview.md)。
 - 从 v6.4.0 开始，TiCDC 使用 Syncpoint 功能需要同步任务拥有下游集群的 `SYSTEM_VARIABLES_ADMIN` 或者 `SUPER` 权限。
-- 从 v8.2.0 开始，TiCDC 对 primary_ts 值的生成规则做了以下调整：
-    - 每当 TiCDC 产生一个新的 primary_ts 时，它必须是 `sync-point-interval` 的整数倍。
-    - 对于每个新的 changefeed，TiCDC 会计算出一个初始的 primary_ts。这个初始值是大于或等于 changefeed 开始时间（startTs）的最小的 `sync-point-interval` 的整数倍。
+- 从 v8.2.0 开始，TiCDC 对 `primary_ts` 值的生成规则做了以下调整：
+    - 每当 TiCDC 产生一个新的 `primary_ts` 时，它必须是 `sync-point-interval` 的整数倍。
+    - 对于每个新的 changefeed，TiCDC 会计算出一个初始的 `primary_ts`。这个初始值大于或等于 changefeed 开始时间 (`startTs`) 的最小的 `sync-point-interval` 的整数倍。
 
-  该设定用于在数据同步过程中，对齐不同 changefeed 的 Sycnpoint。比如多个下游集群可以分别 [flash back](https://docs.pingcap.com/zh/tidb/stable/sql-statement-flashback-table) 到具有相同 primary_ts 的 Syncpoint 的 secondary_ts，从而让下游集群之间获得一致的数据。
+    该设定用于在数据同步过程中，对齐不同 changefeed 的 Syncpoint。比如多个下游集群可以分别 [flash back](/sql-statements/sql-statement-flashback-table.md) 到具有相同 `primary_ts` 的 Syncpoint 的 `secondary_ts`，从而让下游集群之间获得一致的数据。
