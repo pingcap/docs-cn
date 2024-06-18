@@ -27,7 +27,7 @@ summary: 了解备份恢复的监控告警。
 
 | 指标                                                    | 类型        | 说明                                                                                                                                              |
 |-------------------------------------------------------|-----------|-------------------------------------------------------------------------------------------------------------------------------------------------|
-| **tikv_log_backup_interal_actor_acting_duration_sec** | Histogram | 处理内部各种消息事件的耗时。<br/>`message :: TaskType`                                                                                                        |
+| **tikv_log_backup_internal_actor_acting_duration_sec** | Histogram | 处理内部各种消息事件的耗时。<br/>`message :: TaskType`                                                                                                        |
 | **tikv_log_backup_initial_scan_reason**               | Counter   | 触发增量扫的原因统计。主要是 Leader 迁移或者 Region Version 变更。<br/> `reason :: {"leader-changed", "region-changed", "retry"}`                                    |
 | **tikv_log_backup_event_handle_duration_sec**         | Histogram | 处理 KV Event 的耗时。和 `tikv_log_backup_on_event_duration_seconds` 相比，这个指标还包含了一些内部转化消耗的时间。  <br/>`stage :: {"to_stream_event", "save_to_temp_file"}` |
 | **tikv_log_backup_handle_kv_batch**                   | Histogram | 由 RaftStore 发送的 KV 对的 Batch 大小统计，统计数据为 Region 级别。                                                                                               |
