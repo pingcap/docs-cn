@@ -186,7 +186,7 @@ ALTER USER 'usr3'@'%' RESOURCE GROUP `default`;
 
 #### 将当前会话绑定到资源组
 
-使用 [SET RESOURCE GROUP](/sql-statements/sql-statement-set-resource-group.md) 语句，可以修改当前会话绑定的资源组。 通过把当前会话绑定到资源组，会话对资源的占用会受到指定配额 (RU) 的限制。
+使用 [`SET RESOURCE GROUP`](/sql-statements/sql-statement-set-resource-group.md) 语句，可以修改当前会话绑定的资源组。 通过把当前会话绑定到资源组，会话对资源的占用会受到指定配额 (RU) 的限制。
 
 当全局变量 [`tidb_resource_control_strict_mode`](/system-variables.md#tidb_resource_control_strict_mode-从-v820-版本开始引入) 设置为 `ON` 时，你需要有 `SUPER` 或者 `RESOURCE_GROUP_ADMIN` 或者 `RESOURCE_GROUP_USER` 权限才能执行该语句。
 
