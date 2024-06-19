@@ -1229,6 +1229,17 @@ Encoding 格式示例：
     >> scheduler config balance-hot-region-scheduler set enable-for-tiflash true
     ```
 
+### `scheduler config evict-leader-scheduler`
+
+用于查看和控制 `evict-leader-scheduler` 配置。
+
+```bash
+scheduler config evict-leader-scheduler add-store 2       // 为 store 2 添加 leader 驱逐调度
+scheduler config evict-leader-scheduler delete-store 2    // 为 store 2 移除 leader 驱逐调度
+```
+
+当一个 `evict-leader-scheduler` 的所有 store 配置都被移除后，该调度器也会被同时移除。
+
 ### `service-gc-safepoint`
 
 用于查询当前的 GC safepoint 与 service GC safepoint，输出结果示例如下：
