@@ -108,4 +108,4 @@ select * from tidb_cdc.syncpoint_v1;
     - 每当 TiCDC 产生一个新的 `primary_ts` 时，它必须是 `sync-point-interval` 的整数倍。
     - 对于每个新的 changefeed，TiCDC 会计算出一个初始的 `primary_ts`。这个初始值大于或等于 changefeed 开始时间 (`startTs`) 的最小的 `sync-point-interval` 的整数倍。
 
-    该设定用于在数据同步过程中，对齐不同 changefeed 的 Syncpoint。比如多个下游集群可以分别 [flash back](/sql-statements/sql-statement-flashback-table.md) 到具有相同 `primary_ts` 的 Syncpoint 的 `secondary_ts`，从而让下游集群之间获得一致的数据。
+  该设定用于在数据同步过程中，对齐不同 changefeed 的 Syncpoint。比如多个下游集群可以分别通过执行 [`FLASHBACK TABLE`](/sql-statements/sql-statement-flashback-table.md) 语句恢复到具有相同 `primary_ts` 的 Syncpoint 的 `secondary_ts`，从而让下游集群之间获得一致的数据。
