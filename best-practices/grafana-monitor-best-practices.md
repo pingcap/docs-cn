@@ -27,7 +27,7 @@ TiDB 的 3 个核心组件（TiDB server、TiKV server 和 PD server）可以通
 | 组件        | 端口    |
 |:------------|:-------|
 | TiDB server | 10080 |
-| TiKV server | 20181 |
+| TiKV server | 20180 |
 | PD server   | 2379  |
 
 下面以 TiDB server 为例，展示如何通过 HTTP 接口查看一个语句的 QPS 数据：
@@ -160,7 +160,7 @@ Prometheus 的 API 接口如下：
 {{< copyable "shell-regular" >}}
 
 ```bash
-curl -u user:pass 'http://__grafana_ip__:3000/api/datasources/proxy/1/api/v1/query_range?query=sum(tikv_engine_size_bytes%7Binstancexxxxxxxxx20181%22%7D)%20by%20(instance)&start=1565879269&end=1565882869&step=30' |python -m json.tool
+curl -u user:pass 'http://__grafana_ip__:3000/api/datasources/proxy/1/api/v1/query_range?query=sum(tikv_engine_size_bytes%7Binstancexxxxxxxxx20180%22%7D)%20by%20(instance)&start=1565879269&end=1565882869&step=30' |python -m json.tool
 ```
 
 ```
@@ -169,7 +169,7 @@ curl -u user:pass 'http://__grafana_ip__:3000/api/datasources/proxy/1/api/v1/que
         "result": [
             {
                 "metric": {
-                    "instance": "xxxxxxxxxx:20181"
+                    "instance": "xxxxxxxxxx:20180"
                 },
                 "values": [
                     [
