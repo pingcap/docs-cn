@@ -226,7 +226,7 @@ PLAN REPLAYER CAPTURE 'sql_digest' '*';
 你可以通过以下方式查看集群中目前正在工作的 `PLAN REPLAYER CAPTURE` 的抓取任务:
 
 ```sql
-mysql> PLAN PLAYER CAPTURE 'example_sql' 'example_plan';
+mysql> PLAN REPLAYER CAPTURE 'example_sql' 'example_plan';
 Query OK, 1 row affected (0.01 sec)
 
 mysql> SELECT * FROM mysql.plan_replayer_task;
