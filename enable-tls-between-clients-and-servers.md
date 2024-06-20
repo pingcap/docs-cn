@@ -18,9 +18,18 @@ TiDB 服务端支持启用基于 TLS（传输层安全）协议的加密连接�
 
 要为 TiDB 客户端与服务端间的通信开启 TLS 加密传输，首先需要在 TiDB 服务端通过配置开启 TLS 加密连接的支持，然后通过配置客户端应用程序使用 TLS 加密连接。一般情况下，如果服务端正确配置了 TLS 加密连接支持，客户端库都会自动启用 TLS 加密传输。
 
+TiDB 客户端与服务端间的通信开启 TLS 加密可以分为两种：1、只开启SSL加密通信；2、强制校验客户端证书。
+
 另外，与 MySQL 相同，TiDB 也支持在同一 TCP 端口上开启 TLS 连接或非 TLS 连接。对于开启了 TLS 连接支持的 TiDB 服务端，客户端既可以选择通过加密连接安全地连接到该 TiDB 服务端，也可以选择使用普通的非加密连接。如需使用加密连接，你可以通过以下方式进行配置：
 
-+ 通过配置系统变量 `require_secure_transport` 要求所有用户必须使用加密连接来连接到 TiDB。
++ 通过配置系统变量 `require_secure_transport` 要求所有用户必须使用加密连接来连接到 TiDB。开启后会校验客户端证书。此为上文说的强制校验客户端证书。
++ 开启方式，修改tidb.toml
+    ```[security]
+    require-secure-transport = true
+    ssl-ca = "/path/root.crt"
+    ssl-cert = "/path/tidb.crt"
+    ssl-key = "/path/tidb.key"
+    ```
 + 通过在创建用户 (`create user`)，或修改已有用户 (`alter user`) 时指定 `REQUIRE SSL` 要求指定用户必须使用加密连接来连接 TiDB。以创建用户为例：
 
     ```sql
@@ -41,7 +50,12 @@ TiDB 服务端支持启用基于 TLS（传输层安全）协议的加密连接�
 - [`ssl-ca`](/tidb-configuration-file.md#ssl-ca)：可选，指定受信任的 CA 证书文件路径
 - [`tls-version`](/tidb-configuration-file.md#tls-version)：可选，指定最低 TLS 版本，例如 `TLSv1.2`
 
-`auto-tls` 支持安全连接，但不提供客户端证书验证。有关证书验证和控制证书生成方式的说明，请参考下面配置 `ssl-cert`，`ssl-key` 和 `ssl-ca` 变量的建议：
+`auto-tls` 支持安全连接，但不提供客户端证书验证。此为上文说的只开启SSL加密通信。
++ 开启方式，修改tidb.toml
+    ```[security]
+    auto-tls = true
+    ```
+有关证书验证和控制证书生成方式的说明，请参考下面配置 `ssl-cert`，`ssl-key` 和 `ssl-ca` 变量的建议：
 
 - 在启动 TiDB 时，至少需要在配置文件中同时指定 `ssl-cert` 和 `ssl-key` 参数，才能在 TiDB 服务端开启安全连接。还可以指定 `ssl-ca` 参数进行客户端身份验证（请参见[配置启用身份验证](#配置启用身份验证)章节）。
 - 参数指定的文件都为 PEM 格式。另外目前 TiDB 尚不支持加载有密码保护的私钥，因此必须提供一个没有密码的私钥文件。若提供的证书或私钥无效，则 TiDB 服务端将照常启动，但并不支持客户端加密连接到 TiDB 服务端。
