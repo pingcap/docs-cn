@@ -140,3 +140,4 @@ WHERE `A` = 1 OR `A` = 2;
 - 暂不支持对 TiCDC 正在同步的表和库进行 [TiDB Lightning 物理导入](/tidb-lightning/tidb-lightning-physical-import-mode.md)。详情请参考[为什么在上游使用了 TiDB Lightning 和 BR 恢复了数据之后，TiCDC 同步会出现卡顿甚至卡住](/ticdc/ticdc-faq.md#为什么在上游使用了-tidb-lightning-物理导入模式和-br-恢复了数据之后ticdc-同步会出现卡顿甚至卡住)。
 - 在 BR v8.2.0 之前的版本中，BR 不支持对 TiCDC 正在同步的表和库进行[数据恢复](/br/backup-and-restore-overview.md)。详情请参考[为什么在上游使用了 TiDB Lightning 和 BR 恢复了数据之后，TiCDC 同步会出现卡顿甚至卡住](/ticdc/ticdc-faq.md#为什么在上游使用了-tidb-lightning-物理导入模式和-br-恢复了数据之后ticdc-同步会出现卡顿甚至卡住)。
 - 从 BR 8.2.0 起，BR 数据恢复对 TiCDC 的限制被放宽：如果所恢复数据的 BackupTS（即备份时间）早于 Changefeed 的 [CheckpointTS](/ticdc/ticdc-architecture.md#checkpointts)（即记录当前同步进度的时间戳），BR 数据恢复可以正常进行。考虑到 BackupTS 的时间通常较早，此时可以认为绝大部分场景下，BR 支持对 TiCDC 正在同步的表和库进行数据恢复。
+- 对上游存在较大事务的场景提供部分支持，详见 [TiCDC 是否支持同步大事务？有什么风险吗？](/ticdc/ticdc-faq.md#ticdc-支持同步大事务吗有什么风险吗)。
