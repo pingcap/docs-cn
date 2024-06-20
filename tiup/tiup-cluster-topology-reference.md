@@ -110,8 +110,8 @@ monitored:
 - `pump`：Pump 服务的相关配置，支持的完整配置请参考 [TiDB Binlog 配置说明](/tidb-binlog/tidb-binlog-configuration-file.md#pump)
 - `drainer`：Drainer 服务的相关配置，支持的完整配置请参考 [TiDB Binlog 配置说明](/tidb-binlog/tidb-binlog-configuration-file.md#drainer)
 - `cdc`：CDC 服务的相关配置，支持的完整配置请参考 [TiCDC 安装部署](/ticdc/deploy-ticdc.md)
-- `tso`：`tso` 微服务的相关配置，支持的完整配置请参考 [TSO 参数配置](/tso-configuration-file.md)
-- `scheduling`：`scheduling` 微服务的相关配置，支持的完整配置请参考 [Scheduling 参数配置](/scheduling-configuration-file.md)
+- `tso`：`tso` 微服务的相关配置，支持的完整配置请参考 [TSO 配置文件描述](/tso-configuration-file.md)
+- `scheduling`：`scheduling` 微服务的相关配置，支持的完整配置请参考 [Scheduling 配置文件描述](/scheduling-configuration-file.md)
 
 `server_configs` 配置示例：
 
