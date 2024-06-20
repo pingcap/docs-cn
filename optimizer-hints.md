@@ -1058,6 +1058,11 @@ mysql> SELECT @@MAX_EXECUTION_TIME, a FROM (SELECT /*+ SET_VAR(MAX_EXECUTION_TIM
 |                    0 | 1 |
 +----------------------+---+
 1 row in set (0.00 sec)
+```
+
+下面示例把 SET_VAR 写在了最外层，所以可以生效。
+
+```sql
 mysql> SELECT /*+ SET_VAR(MAX_EXECUTION_TIME=123) */ @@MAX_EXECUTION_TIME, a FROM (SELECT 1 as a) t;
 +----------------------+---+
 | @@MAX_EXECUTION_TIME | a |
