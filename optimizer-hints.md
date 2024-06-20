@@ -794,7 +794,7 @@ prepare stmt FROM 'SELECT  /*+ IGNORE_PLAN_CACHE() */ * FROM t WHERE t.id = ?';
 > **警告：**
 >
 > 强烈建议不要利用此 Hint 修改没有明确支持的变量，这可能会引发不可预知的行为。
-> 请注意不要把 `SET_VAR` 写在子查询中，否则可能会不生效。
+> 请注意不要把 `SET_VAR` 写在子查询中，否则可能会不生效。详情请参考 [`SET_VAR` 写在子查询中不生效](#set_var-写在子查询中不生效)。
 
 下面是一个使用示例：
 
@@ -1046,7 +1046,9 @@ ERROR 1815 (HY000): Internal : Can't find a proper physical plan for this query
 
 ### `SET_VAR` 写在子查询中不生效
 
-`SET_VAR` 用来设置当前语句的系统变量，需要尽量写在最外层，如果写在子查询中，由于子查询会被特殊处理，可能导致 `SET_VAR` 无法生效：
+`SET_VAR` 用来设置当前语句的系统变量，需要尽量写在最外层。如果写在子查询中，由于子查询会被特殊处理，可能导致 `SET_VAR` 无法生效。
+
+下面示例把 `SET_VAR` 写在了子查询中，所以没有生效。
 
 ```sql
 mysql> SELECT @@MAX_EXECUTION_TIME, a FROM (SELECT /*+ SET_VAR(MAX_EXECUTION_TIME=123) */ 1 as a) t;
@@ -1056,7 +1058,6 @@ mysql> SELECT @@MAX_EXECUTION_TIME, a FROM (SELECT /*+ SET_VAR(MAX_EXECUTION_TIM
 |                    0 | 1 |
 +----------------------+---+
 1 row in set (0.00 sec)
-
 mysql> SELECT /*+ SET_VAR(MAX_EXECUTION_TIME=123) */ @@MAX_EXECUTION_TIME, a FROM (SELECT 1 as a) t;
 +----------------------+---+
 | @@MAX_EXECUTION_TIME | a |
