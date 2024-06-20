@@ -1046,7 +1046,7 @@ ERROR 1815 (HY000): Internal : Can't find a proper physical plan for this query
 
 ### `SET_VAR` 写在子查询中不生效
 
-`SET_VAR` 用来设置当前语句的系统变量，不要写在字查询中。如果写在子查询中，由于子查询会被特殊处理，可能导致 `SET_VAR` 无法生效。
+`SET_VAR` 用来设置当前语句的系统变量，不要写在子查询中。如果写在子查询中，由于子查询会被特殊处理，可能导致 `SET_VAR` 无法生效。
 
 下面示例把 `SET_VAR` 写在了子查询中，所以没有生效。
 
@@ -1060,7 +1060,7 @@ mysql> SELECT @@MAX_EXECUTION_TIME, a FROM (SELECT /*+ SET_VAR(MAX_EXECUTION_TIM
 1 row in set (0.00 sec)
 ```
 
-下面示例把 SET_VAR 写在了最外层，所以可以生效。
+下面示例没有把 SET_VAR 写在子查询中，所以可以生效。
 
 ```sql
 mysql> SELECT /*+ SET_VAR(MAX_EXECUTION_TIME=123) */ @@MAX_EXECUTION_TIME, a FROM (SELECT 1 as a) t;
