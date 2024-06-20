@@ -33,7 +33,7 @@ global:
   data_dir: "/tidb-data"
   listen_host: 0.0.0.0
   arch: "amd64"
-  pd_mode: "ms"
+  pd_mode: "ms" # To enable PD microservices, you must specify this field as "ms".
 
 monitored:
   node_exporter_port: 9200
