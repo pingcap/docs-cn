@@ -1109,6 +1109,8 @@ region check miss-peer
 >> scheduler add grant-leader-scheduler 1                 // 把 store 1 上的所有 Region 的 leader 调度到 store 1
 >> scheduler add evict-leader-scheduler 1                 // 把 store 1 上的所有 Region 的 leader 从 store 1 调度出去
 >> scheduler config evict-leader-scheduler                // v4.0.0 起，展示该调度器具体在哪些 store 上
+>> scheduler config evict-leader-scheduler add-store 2    // 为 store 2 添加 leader 驱逐调度
+>> scheduler config evict-leader-scheduler delete-store 2 // 为 store 2 移除 leader 驱逐调度
 >> scheduler add shuffle-leader-scheduler                 // 随机交换不同 store 上的 leader
 >> scheduler add shuffle-region-scheduler                 // 随机调度不同 store 上的 Region
 >> scheduler add evict-slow-store-scheduler               // 当有且仅有一个 slow store 时将该 store 上的所有 Region 的 leader 驱逐出去
@@ -1266,14 +1268,21 @@ scheduler config balance-hot-region-scheduler  // 显示 balance-hot-region 调�
 
 ### `scheduler config evict-leader-scheduler`
 
-用于查看和控制 `evict-leader-scheduler` 配置。
+用于查看和管理 `evict-leader-scheduler` 的配置。
 
-```bash
-scheduler config evict-leader-scheduler add-store 2       // 为 store 2 添加 leader 驱逐调度
-scheduler config evict-leader-scheduler delete-store 2    // 为 store 2 移除 leader 驱逐调度
-```
+- 在已有 `evict-leader-scheduler` 时，使用 `add-store` 子命令，为指定的 store 添加 leader 驱逐调度：
 
-当一个 `evict-leader-scheduler` 的所有 store 配置都被移除后，该调度器也会被同时移除。
+    ```bash
+    scheduler config evict-leader-scheduler add-store 2       // 为 store 2 添加 leader 驱逐调度
+    ```
+
+- 在已有 `evict-leader-scheduler` 时，使用 `delete-store` 子命令，移除指定 store 的 leader 驱逐调度：
+
+    ```bash
+    scheduler config evict-leader-scheduler delete-store 2    // 为 store 2 移除 leader 驱逐调度
+    ```
+
+    当一个 `evict-leader-scheduler` 的所有 store 配置都被移除后，该调度器也会自动被移除。
 
 ### `service-gc-safepoint`
 
