@@ -139,7 +139,7 @@ SELECT TABLE_NAME FROM information_schema.tables where TABLE_SCHEMA = "<db_name>
    tiup ctl:v<CLUSTER_VERSION> pd -u http://<PD_ADDRESS>:2379 store limit all engine tiflash 60 add-peer
    ```
 
-   > 上述命令中，需要将 `v<CLUSTER_VERSION>` 替换为该集群版本，例如 `v6.5.9`，`<PD_ADDRESS>:2379` 替换为任一 PD 节点的地址。替换后样例为：
+   > 上述命令中，需要将 `v<CLUSTER_VERSION>` 替换为该集群版本，例如 `v6.5.10`，`<PD_ADDRESS>:2379` 替换为任一 PD 节点的地址。替换后样例为：
    >
    > ```shell
    > tiup ctl:v6.1.1 pd -u http://192.168.1.4:2379 store limit all engine tiflash 60 add-peer

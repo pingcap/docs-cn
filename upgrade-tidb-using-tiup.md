@@ -29,12 +29,12 @@ title: 使用 TiUP 升级 TiDB
 ## 1. 升级兼容性说明
 
 - TiDB 目前暂不支持版本降级或升级后回退。
-- 使用 TiDB Ansible 管理的 4.0 版本集群，需要先按照 [4.0 版本文档的说明](https://docs.pingcap.com/zh/tidb/v4.0/upgrade-tidb-using-tiup)将集群导入到 TiUP (`tiup cluster`) 管理后，再按本文档说明升级到 6.5.9 版本。
-- 若要将 3.0 之前的版本升级至 6.5.9 版本：
+- 使用 TiDB Ansible 管理的 4.0 版本集群，需要先按照 [4.0 版本文档的说明](https://docs.pingcap.com/zh/tidb/v4.0/upgrade-tidb-using-tiup)将集群导入到 TiUP (`tiup cluster`) 管理后，再按本文档说明升级到 6.5.10 版本。
+- 若要将 3.0 之前的版本升级至 6.5.10 版本：
     1. 首先[通过 TiDB Ansible 升级到 3.0 版本](https://docs.pingcap.com/zh/tidb/v3.0/upgrade-tidb-using-ansible)。
     2. 然后按照 [4.0 版本文档的说明](https://docs.pingcap.com/zh/tidb/v4.0/upgrade-tidb-using-tiup)，使用 TiUP (`tiup cluster`) 将 TiDB Ansible 配置导入。
     3. 将集群升级至 4.0 版本。
-    4. 按本文档说明将集群升级到 6.5.9 版本。
+    4. 按本文档说明将集群升级到 6.5.10 版本。
 - 支持 TiDB Binlog，TiCDC，TiFlash 等组件版本的升级。
 - 将 v6.3.0 之前的 TiFlash 升级至 v6.3.0 及之后的版本时，需要特别注意：在 Linux AMD64 架构的硬件平台部署 TiFlash 时，CPU 必须支持 AVX2 指令集。而在 Linux ARM64 架构的硬件平台部署 TiFlash 时，CPU 必须支持 ARMv8 架构。具体请参考 [6.3.0 版本 Release Notes](/releases/release-6.3.0.md#其他) 中的描述。
 - 具体不同版本的兼容性说明，请查看各个版本的 [Release Note](/releases/release-notes.md)。请根据各个版本的 Release Note 的兼容性更改调整集群的配置。
@@ -48,7 +48,7 @@ title: 使用 TiUP 升级 TiDB
 
 查阅 TiDB release notes 中的兼容性变更。如果有任何变更影响到了你的升级，请采取相应的措施。
 
-以下为从 v6.4.0 升级至当前版本 (v6.5.9) 所需兼容性变更信息。如果从 v6.3.0 或之前版本升级到当前版本，可能也需要考虑和查看中间版本 [release notes](/releases/release-notes.md) 中提到的兼容性变更信息。
+以下为从 v6.4.0 升级至当前版本 (v6.5.10) 所需兼容性变更信息。如果从 v6.3.0 或之前版本升级到当前版本，可能也需要考虑和查看中间版本 [release notes](/releases/release-notes.md) 中提到的兼容性变更信息。
 
 - TiDB v6.5.0 release notes 中的[兼容性变更](/releases/release-6.5.0.md#兼容性变更)和[废弃功能](/releases/release-6.5.0.md#废弃功能)
 - TiDB v6.5.1 release notes 中的[兼容性变更](/releases/release-6.5.1.md#兼容性变更)
@@ -60,6 +60,7 @@ title: 使用 TiUP 升级 TiDB
 - TiDB v6.5.7 [release notes](/releases/release-6.5.7.md)
 - TiDB v6.5.8 [release notes](/releases/release-6.5.8.md)
 - TiDB v6.5.9 [release notes](/releases/release-6.5.9.md)
+- TiDB v6.5.10 [release notes](/releases/release-6.5.10.md)
 
 ### 2.2 升级 TiUP 或更新 TiUP 离线镜像
 
@@ -136,7 +137,7 @@ tiup update cluster
 > 以下情况可跳过此步骤：
 >
 > - 原集群没有修改过配置参数，或通过 tiup cluster 修改过参数但不需要调整。
-> - 升级后对未修改过的配置项希望使用 `6.5.9` 默认参数。
+> - 升级后对未修改过的配置项希望使用 `6.5.10` 默认参数。
 
 1. 进入拓扑文件的 `vi` 编辑模式：
 
@@ -152,7 +153,7 @@ tiup update cluster
 
 > **注意：**
 >
-> 升级到 6.5.9 版本前，请确认已在 4.0 修改的参数在 6.5.9 版本中是兼容的，可参考 [TiKV 配置文件描述](/tikv-configuration-file.md)。
+> 升级到 6.5.10 版本前，请确认已在 4.0 修改的参数在 6.5.10 版本中是兼容的，可参考 [TiKV 配置文件描述](/tikv-configuration-file.md)。
 
 ### 2.4 检查当前集群的健康状况
 
@@ -189,12 +190,12 @@ tiup cluster check <cluster-name> --cluster
 tiup cluster upgrade <cluster-name> <version>
 ```
 
-以升级到 6.5.9 版本为例：
+以升级到 6.5.10 版本为例：
 
 {{< copyable "shell-regular" >}}
 
 ```
-tiup cluster upgrade <cluster-name> v6.5.9
+tiup cluster upgrade <cluster-name> v6.5.10
 ```
 
 > **注意：**
@@ -218,7 +219,7 @@ tiup cluster upgrade <cluster-name> v6.5.9
 tiup cluster stop <cluster-name>
 ```
 
-之后通过 `upgrade` 命令添加 `--offline` 参数来进行停机升级，其中 `<cluster-name>` 为集群名，`<version>` 为升级的目标版本，例如 `v6.5.9`。
+之后通过 `upgrade` 命令添加 `--offline` 参数来进行停机升级，其中 `<cluster-name>` 为集群名，`<version>` 为升级的目标版本，例如 `v6.5.10`。
 
 {{< copyable "shell-regular" >}}
 
@@ -247,7 +248,7 @@ tiup cluster display <cluster-name>
 ```
 Cluster type:       tidb
 Cluster name:       <cluster-name>
-Cluster version:    v6.5.9
+Cluster version:    v6.5.10
 ```
 
 ## 4. 升级 FAQ
@@ -302,7 +303,7 @@ Cluster version:    v6.5.9
 
 ### 4.3 升级过程中 evict leader 等待时间过长，如何跳过该步骤快速升级
 
-可以指定 `--force`，升级时会跳过 `PD transfer leader` 和 `TiKV evict leader` 过程，直接重启并升级版本，对线上运行的集群性能影响较大。命令如下，其中 `<version>` 为升级的目标版本，例如 `v6.5.9`：
+可以指定 `--force`，升级时会跳过 `PD transfer leader` 和 `TiKV evict leader` 过程，直接重启并升级版本，对线上运行的集群性能影响较大。命令如下，其中 `<version>` 为升级的目标版本，例如 `v6.5.10`：
 
 {{< copyable "shell-regular" >}}
 
@@ -317,5 +318,5 @@ tiup cluster upgrade <cluster-name> <version> --force
 {{< copyable "" >}}
 
 ```
-tiup install ctl:v6.5.9
+tiup install ctl:v6.5.10
 ```
