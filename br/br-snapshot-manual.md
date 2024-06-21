@@ -34,7 +34,7 @@ summary: 介绍备份与恢复 TiDB 集群快照的命令行。
 ```shell
 tiup br backup full \
     --pd "${PD_IP}:2379" \
-    --backupts '2022-09-08 13:30:00' \
+    --backupts '2022-09-08 13:30:00 +08:00' \
     --storage "s3://${backup_collection_addr}/snapshot-${date}?access-key=${access-key}&secret-access-key=${secret-access-key}" \
     --ratelimit 128 \
     --log-file backupfull.log
