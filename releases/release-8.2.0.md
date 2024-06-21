@@ -25,7 +25,7 @@ TiDB 版本：8.2.0
   <tr>
     <td rowspan="3">稳定性与高可用</td>
     <td><a href="https://docs.pingcap.com/zh/tidb/v8.2/tiproxy-load-balance">TiProxy 支持多种负载均衡策略<!--tw@Oreoxmt--></td>
-    <td>在 TiDB v8.2.0 中，TiProxy 支持从多个维度（包括状态、连接数、健康度、内存、CPU 和地理位置）对 TiDB 节点进行评估和排序。根据 <code>policy</code> 配置项设置的负载均衡策略，TiProxy 动态选择最优 TiDB 节点执行数据库操作，从而优化 TiDB 节点的整体资源使用率，提升集群性能和吞吐。</td>
+    <td>在 TiDB v8.2.0 中，TiProxy 支持从多个维度（包括状态、连接数、健康度、内存、CPU 和地理位置）对 TiDB 节点进行评估和排序，同时支持通过 <code>policy</code> 配置项配置这些负载均衡策略的优先级。TiProxy 将根据 <code>policy</code> 动态选择最优 TiDB 节点执行数据库操作，从而优化 TiDB 节点的整体资源使用率，提升集群性能和吞吐。</td>
   </tr>
   <tr>
     <td><a href="https://docs.pingcap.com/zh/tidb/v8.2/system-variables#tidb_enable_parallel_hashagg_spill-从-v800-版本开始引入">并行 HashAgg 算法支持数据落盘成为正式功能 (GA)<!--tw@Oreoxmt--></td>
@@ -73,7 +73,7 @@ TiDB 版本：8.2.0
 
 * TiDB 的并行 HashAgg 算法支持数据落盘成为正式功能 (GA) [#35637](https://github.com/pingcap/tidb/issues/35637) @[xzhangxian1008](https://github.com/xzhangxian1008) **tw@Oreoxmt** <!--1842-->
 
-    TiDB v8.0.0 以实验特性引入了并行 HashAgg 算法支持数据落盘功能。在 v8.2.0 中，该功能成为正式功能 (GA)。TiDB 在使用并行 HashAgg 算法时，将根据内存使用情况自动触发数据落盘，从而兼顾性能和数据处理量。该功能默认开启，控制该功能的变量 `tidb_enable_parallel_hashagg_spill` 将在未来版本中废弃。
+    TiDB v8.0.0 以实验特性引入了并行 HashAgg 算法支持数据落盘功能。在 v8.2.0 中，该功能成为正式功能 (GA)。TiDB 在使用并行 HashAgg 算法时，将根据内存使用情况自动触发数据落盘，从而兼顾查询性能和数据处理量。该功能默认开启，控制该功能的变量 `tidb_enable_parallel_hashagg_spill` 将在未来版本中废弃。
 
     更多信息，请参考[用户文档](/system-variables.md#tidb_enable_parallel_hashagg_spill-从-v800-版本开始引入)。
 
@@ -93,9 +93,9 @@ TiDB 版本：8.2.0
 
 * TiProxy 支持多种负载均衡策略 [#465](https://github.com/pingcap/tiproxy/issues/465) @[djshow832](https://github.com/djshow832) @[xhebox](https://github.com/xhebox) **tw@Oreoxmt** <!--1777-->
 
-    TiProxy 是 TiDB 的官方代理组件，位于客户端和 TiDB server 之间，为 TiDB 集群提供负载均衡、连接保持功能。在 v8.2.0 之前，TiProxy 默认使用 v1.0.0 版本，仅支持基于 TiDB server 状态和连接数的负载均衡策略。
+    TiProxy 是 TiDB 的官方代理组件，位于客户端和 TiDB server 之间，为 TiDB 集群提供负载均衡和连接保持功能。在 v8.2.0 之前，TiProxy 默认使用 v1.0.0 版本，仅支持基于 TiDB server 状态和连接数的负载均衡策略。
 
-    从 v8.2.0 开始，TiProxy 默认使用 v1.1.0 版本，新增多种负载均衡策略，除了状态和连接数，还支持根据健康度、内存、CPU、地理位置等信息对 TiDB 集群的连接进行动态负载均衡调度，提高整个 TiDB 集群的稳定性。
+    从 v8.2.0 开始，TiProxy 默认使用 v1.1.0 版本，新增多种负载均衡策略，除了状态和连接数，还支持根据健康度、内存、CPU、地理位置对 TiDB 集群的连接进行动态负载均衡调度，提高整个 TiDB 集群的稳定性。
 
     你可以通过 TiProxy 配置项 [`policy`](/tiproxy/tiproxy-configuration.md#policy) 配置负载均衡策略的组合和优先级，具体策略包括：
 
@@ -141,7 +141,7 @@ TiDB 版本：8.2.0
 
 * 增强 TiFlash 日志脱敏 [#8977](https://github.com/pingcap/tiflash/issues/8977) @[JaySon-Huang](https://github.com/JaySon-Huang) **tw@Oreoxmt** <!--1818-->
 
-    TiDB v8.0.0 增强了日志脱敏功能，支持控制是否对日志信息进行脱敏，以实现在不同场景下安全使用 TiDB 日志，提升了使用日志脱敏能力的安全性和灵活性。在 v8.2.0 中，TiFlash 进行了类似的日志脱敏功能增强。要使用该功能，可以将 TiFlash 配置项 `security.redact_info_log` 的值设置为 `marker`。
+    TiDB v8.0.0 增强了日志脱敏功能，支持控制是否使用标记符号 `‹ ›` 包裹 TiDB 日志中的用户数据。基于标记后的日志，你可以在展示日志时决定是否对被标记信息进行脱敏处理，从而提升日志脱敏功能的灵活性。在 v8.2.0 中，TiFlash 进行了类似的日志脱敏功能增强。要使用该功能，可以将 TiFlash 配置项 `security.redact_info_log` 的值设置为 `marker`。
 
     更多信息，请参考[用户文档](/tiflash/tiflash-configuration.md#配置文件-tiflashtoml)。
 
