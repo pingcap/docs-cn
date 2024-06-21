@@ -25,7 +25,7 @@ TiDB 版本：8.2.0
   <tr>
     <td rowspan="3">稳定性与高可用</td>
     <td><a href="https://docs.pingcap.com/zh/tidb/v8.2/tiproxy-load-balance">TiProxy 支持多种负载均衡策略<!--tw@Oreoxmt--></td>
-    <td>在新版本中，TiProxy 能够从多个维度（状态，连接数，健康度、内存、CPU、地理位置）对 TiDB 节点进行评估和排序，根据用户设置的目标策略动态选择合适的 TiDB 节点，发送相应的数据库操作。从而优化 TiDB 节点的整体资源使用率，提升集群性能和吞吐。</td>
+    <td>在 TiDB v8.2.0 中，TiProxy 支持从多个维度（包括状态、连接数、健康度、内存、CPU 和地理位置）对 TiDB 节点进行评估和排序。根据 <code>policy</code> 配置项设置的负载均衡策略，TiProxy 动态选择最优 TiDB 节点执行数据库操作，从而优化 TiDB 节点的整体资源使用率，提升集群性能和吞吐。</td>
   </tr>
   <tr>
     <td><a href="https://docs.pingcap.com/zh/tidb/v8.2/system-variables#tidb_enable_parallel_hashagg_spill-从-v800-版本开始引入">并行 HashAgg 算法支持数据落盘成为正式功能 (GA)<!--tw@Oreoxmt--></td>
