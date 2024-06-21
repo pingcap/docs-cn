@@ -29,7 +29,7 @@ TiDB 版本：8.2.0
   </tr>
   <tr>
     <td><a href="https://docs.pingcap.com/zh/tidb/v8.2/system-variables#tidb_enable_parallel_hashagg_spill-从-v800-版本开始引入">并行 HashAgg 算法支持数据落盘成为正式功能 (GA)<!--tw@Oreoxmt--></td>
-    <td>HashAgg 是 TiDB 上最常见的聚合算子，用来快速聚合部分相同字段的行数据，并行 HashAgg 能够进一步提升处理速度。从 v8.0.0 开始，当内存资源不足时，并行的 HashAgg 能够将临时排序数据落盘，避免由于过渡内存使用造成潜在 OOM 风险。在提升性能的同时，也保护了节点的稳定性。这个能力在 v8.2.0 成为正式功能，用户可以安全地设置其并发度。</td>
+    <td>HashAgg 是 TiDB 中常用的聚合算子，用于快速聚合相同字段值的行。TiDB v8.0.0 引入并行 HashAgg 作为实验特性，以进一步提升处理速度。当内存资源不足时，并行 HashAgg 能将临时排序数据落盘，避免由于内存使用过度而引发的潜在 OOM 风险，在提升性能的同时保护了节点的稳定性。该功能在 v8.2.0 成为正式功能，用户可以安全地设置并行 HashAgg 的并发度。</td>
   </tr>
   <tr>
     <td><a href="https://docs.pingcap.com/zh/tidb/v8.2/tidb-configuration-file#stats-load-concurrency-从-v540-版本开始引入">统计信息加载效率提升 10 倍<!--tw@hfxsd--></td>
