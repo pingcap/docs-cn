@@ -182,7 +182,7 @@ mysql> SHOW WARNINGS;
 1 row in set (0.00 sec)
 ```
 
-### 通过 Statements Summary 诊断
+### 通过 `Statements Summary` 诊断
 
 在 `Statements Summary` 表中包含有 `plan_cache_unqualified` 和 `last_plan_cache_unqualified_reason` 两个字段，分别表示对应查询无法使用 Plan Cache 的次数和原因，可以通过这两个字段来进行诊断：
 
