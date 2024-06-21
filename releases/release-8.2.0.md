@@ -121,7 +121,7 @@ TiDB 版本：8.2.0
 
     更多信息，请参考[用户文档](/pd-microservices.md)。
 
-* 为切换资源组的操作增加权限控制 [#issue号](链接) @[glorv](https://github.com/glorv) **tw@lilin90** <!--1740-->
+* 为切换资源组的操作增加权限控制 [#53440](https://github.com/pingcap/tidb/issues/53440) @[glorv](https://github.com/glorv) **tw@lilin90** <!--1740-->
 
     TiDB 允许用户利用命令 [`SET RESOURCE GROUP`](/sql-statements/sql-statement-set-resource-group.md) 或 Hint [`RESOURCE_GROUP()`](/optimizer-hints.md#resource_groupresource_group_name) 切换到其他资源组，这可能会造成部分数据库用户对资源组的滥用。TiDB v8.2.0 增加了对资源组切换行为的管控，只有被授予动态权限 `RESOURCE_GROUP_ADMIN` 或者 `RESOURCE_GROUP_USER` 的数据库用户，才能切换到其他资源组，加强对系统资源的保护。
 
