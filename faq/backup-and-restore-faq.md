@@ -144,7 +144,7 @@ BR 在 v6.0.0 之前不支持[放置规则](/placement-rules-in-sql.md)，在 v6
 
 该问题一般是因为恢复数据的时候，恢复集群的性能不足导致的。可以从恢复集群的监控或者 TiKV 日志来辅助确认。
 
-要解决这类问题，可以尝试扩大集群资源，以及调小恢复时的并发度 (concurrency)，打开限速 (ratelimit) 设置。
+要解决这类问题，可以尝试扩大集群资源，以及调小恢复时的并发度 (tikv-max-restore-concurrency)，打开限速 (ratelimit) 设置。
 
 ### 恢复备份数据时，BR 会报错 `entry too large, the max entry size is 6291456, the size of data is 7690800`
 
