@@ -77,8 +77,6 @@ TiDB 版本：8.2.0
 
     更多信息，请参考[用户文档](/system-variables.md#tidb_enable_parallel_hashagg_spill-从-v800-版本开始引入)。
 
-* 提升备份百万表场景的备份稳定性以及性能。解决备份过程中因为各种原因(节点重启/扩容/网络问题)带来的长尾问题。 [#52534](https://github.com/pingcap/tidb/issues/52534) @[3pointer](https://github.com/3pointer) **tw@qiancai** <!--1844-->
-
 ### 稳定性
 
 * 统计信息加载效率提升 10 倍 [#52831](https://github.com/pingcap/tidb/issues/52831) @[hawkingrei](https://github.com/hawkingrei) **tw@hfxsd** <!--1754-->
@@ -117,9 +115,11 @@ TiDB 版本：8.2.0
 
 * TiUP 支持部署 PD 微服务 [#5766](https://github.com/tikv/pd/issues/5766) @[rleungx](https://github.com/rleungx) **tw@qiancai** <!--1841-->
 
-   通过将 PD 拆分成多个单独的服务，独立部署进行管理，可以更好地控制资源的使用和隔离，减少不同服务相互之间的影响。从 v8.2.0 开始，TiUP 支持将 PD 以微服务的模式进行部署，用户可以将 TSO 微服务和 Scheduling 微服务，单独进行部署，实现资源隔离以及快速迭代的目的。 
+     PD 从 v8.0.0 开始支持微服务模式。该模式通过将 PD 的时间戳分配和集群调度功能拆分为独立的服务进行部署和管理，可以更好地控制资源的使用和隔离，减少不同服务相互之间的影响。但是，在 v8.2.0 之前的版本中，PD 微服务仅支持通过 TiDB Operator 进行部署。
 
-    更多信息，请参考[用户文档]()。
+    从 v8.2.0 开始，PD 微服务支持通过 TiUP 进行部署。你可以在集群中单独部署 `tso` 微服务和 `scheduling` 微服务，从而实现 PD 的性能扩展，解决大规模集群下 PD 的性能瓶颈问题。当 PD 出现明显的性能瓶颈且无法升级配置的情况下，建议考虑使用该模式。
+
+    更多信息，请参考[用户文档](/pd-microservices.md)。
 
 * 为切换资源组的操作增加权限控制 [#issue号](链接) @[glorv](https://github.com/glorv) **tw@lilin90** <!--1740-->
 
@@ -234,7 +234,8 @@ TiDB 版本：8.2.0
 
     + Backup & Restore (BR)
 
-        - 优化恢复过程中对 Changefeed 的细粒度检查，如果 Changefeed 的检查点时间（Checkpoint）大于备份时间，则不会影响正常的恢复操作，减少恢复的不必要等待时间，提升用户体验 [#53131](https://github.com/pingcap/tidb/issues/53131) @[YuJuncen](https://github.com/YuJuncen) **tw@qiancai** <!--1843-->
+        - 优化备份稳定性以及性能，提升在大量表备份过程发生节点重启、扩容、网络抖动时的备份性能 [#52534](https://github.com/pingcap/tidb/issues/52534) @[3pointer](https://github.com/3pointer) **tw@qiancai** <!--1844-->
+        - 优化恢复过程中对 TiCDC Changefeed 的细粒度检查，如果 Changefeed 的 [CheckpointTS](/ticdc/ticdc-architecture.md#checkpointts) 晚于数据的备份时间，则不会影响恢复操作，从而减少不必要的等待时间，提升用户体验 [#53131](https://github.com/pingcap/tidb/issues/53131) @[YuJuncen](https://github.com/YuJuncen) **tw@qiancai** <!--1843-->
         - 为 [`BACKUP`](/sql-statements/sql-statement-backup.md) 语句和 [`RESTORE`](sql-statements/sql-statement-restore.md) 语句添加了若干常用的参数选项，例如 `CHECKSUM_CONCURRENCY` [#53040](https://github.com/pingcap/tidb/issues/53040) @[RidRisR](https://github.com/RidRisR) **tw@qiancai** <!--1849-->
         - note [#issue](链接) @[贡献者 GitHub ID](链接)
         - note [#issue](链接) @[贡献者 GitHub ID](链接)
