@@ -65,7 +65,7 @@ summary: 介绍如何使用 TiDB Dashboard 的资源管控页面查看资源管�
 
 > **注意：**
 >
-> 使用`容量估算`功能需要当前登录用户具有 `SUPER` 或 `RESOURCE_GROUP_ADMIN` 权限以及部分系统表的访问权限，在使用此功能前，请确保当前用户已具备相关的权限，否则部分功能将无法正确使用。详细请参考 [容量预估的权限要求](/sql-statements/sql-statement-calibrate-resource.md#权限)
+> 要使用容量估算功能，当前登录用户需要拥有 `SUPER` 或 `RESOURCE_GROUP_ADMIN` 权限，并拥有部分系统表的访问权限。在使用此功能前，请确保当前用户已拥有这些权限，否则部分功能可能无法正常使用。详情请参考[容量预估的权限要求](/sql-statements/sql-statement-calibrate-resource.md#权限)。
 
 ## 监控指标
 
