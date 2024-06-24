@@ -147,6 +147,12 @@ TiDB 版本：8.2.0
 
 ### 数据迁移
 
+* 对齐不同 changefeed 的 Syncpoint [#11212](https://github.com/pingcap/tiflow/issues/11212) @[hongyunyan](https://github.com/hongyunyan) **tw@lilin90** <!--1869-->
+
+    在 v8.2.0 之前，对齐多个 changefeed 的 Syncpoint 很有挑战性。在创建 changefeed 时，必须谨慎选择 changefeed 的 `startTs`，以便与其他 changefeed 的 Syncpoint 对齐。从 v8.2.0 开始，为 changefeed 创建的 Syncpoint 是 changefeed 的 `sync-point-interval` 配置的倍数。这个调整让你可以对齐具有相同 `sync-point-interval` 配置的多个 changefeed 的 Syncpoint，简化和提高了对齐多个下游集群的能力。
+
+    更多信息，请参考[用户文档](/ticdc/ticdc-upstream-downstream-check.md#注意事项)。
+
 * 功能标题 [#issue号](链接) @[贡献者 GitHub ID](链接) **tw@xxx** <!--1234-->
 
     功能描述（需要包含这个功能是什么、在什么场景下对用户有什么价值、怎么用）
