@@ -176,6 +176,7 @@ TiDB 版本：8.2.0
 
 | 变量名  | 修改类型（包括新增/修改/删除）    | 描述 |
 |--------|------------------------------|------|
+| [`tidb_enable_parallel_hashagg_spill`](/system-variables.md#tidb_enable_parallel_hashagg_spill-从-v800-版本开始引入) | 废弃 | **tw@Oreoxmt** <!--1842--> |
 | [`tidb_analyze_distsql_scan_concurrency`](/system-variables.md#tidb_analyze_distsql_scan_concurrency-从-v760-版本开始引入) | 修改 | 最小值从 `1` 改为 `0`。当设置为 `0` 时，TiDB 会根据集群规模自适应调整并发度。**tw@hfxsd** <!--xxx--> |
 | [`tidb_analyze_skip_column_types`](/system-variables.md#tidb_analyze_skip_column_types-从-v720-版本开始引入) | 修改 | 从 v8.2.0 开始，默认设置下，TiDB 不会收集类型为 `mediumtext` 和 `longtext` 的列，避免潜在的 OOM 风险。**tw@hfxsd** <!--1759--> |
 | [`tidb_enable_historical_stats`](/system-variables.md#tidb_enable_historical_stats) | 修改 | 默认值改为 `OFF`，即关闭历史统计信息，避免潜在的稳定性问题。 **tw@hfxsd** <!--1759--> |
@@ -188,23 +189,24 @@ TiDB 版本：8.2.0
 | 配置文件           | 配置项                | 修改类型 | 描述                                 |
 |----------------|--------------------|------|------------------------------------|
 | TiDB | [`stats-load-concurrency`](/tidb-configuration-file.md#stats-load-concurrency-从-v540-版本开始引入) | 修改 | 默认值从 `5` 修改为 `0`，最小值从 `1` 修改为 `0`。`0` 为自动模式，根据服务器情况，自动调节并发度。 |
+| TiDB | [`token-limit`](/tidb-configuration-file.md#token-limit) | 修改 | 最大值从 `18446744073709551615` （64 位平台）和 `4294967295`（32 位平台）修改为 `1048576`，代表同时执行请求的 session 个数最多可以设置为 `1048576`。|
+| TiKV | [`max-apply-unpersisted-log-limit`](/tikv-configuration-file.md#max-apply-unpersisted-log-limit-从-v820-版本开始引入) | 新增 | 允许 apply 已经 `commit` 但尚未持久化的 Raft 日志的最大数量。 默认值为 `1024`。 |
 
 ### 系统表
 
 ### 其他
 
+- 在 BR v8.2.0 之前的版本中，当 TiCDC 存在同步任务时，BR 不支持进行[数据恢复](/br/backup-and-restore-overview.md)。从 BR 8.2.0 起，BR 数据恢复对 TiCDC 的限制被放宽：如果所恢复数据的 BackupTS（即备份时间）早于 Changefeed 的 [CheckpointTS](/ticdc/ticdc-architecture.md#checkpointts)（即记录当前同步进度的时间戳），BR 数据恢复可以正常进行。考虑到 BackupTS 的时间通常较早，此时可以认为绝大部分场景下，当 TiCDC 存在同步任务时，BR 都可以进行数据恢复。 **tw@qiancai** <!--1843-->
+
 ## 离线包变更
 
 ## 废弃功能
 
-* 废弃功能 1
-
-* 从 v8.2.0 开始，变量 [`tidb_enable_concurrent_hashagg_spill`](/system-variables.md#tidb_enable_concurrent_hashagg_spill-从-v800-版本开始引入) 被废弃。
-* 从 v8.2.0 开始，BR 快照恢复参数 [`concurrency`](/use-br-command-line-tool#常用选项) 被废弃。 **tw@qiancai** <!--1850-->
-* 从 v8.20 开始，BR 快照恢复参数 [`granularity`](/br-snapshot-guide#快照恢复的性能与影响) 被废弃。**tw@qiancai** <!--1850-->
 * TiDB 在 v8.0.0 引入了 [Priority Queue](/system-variables.md#tidb_enable_auto_analyze_priority_queue-从-v800-版本开始引入)，用来优化统计信息收集的对象排序。[Priority Queue](/system-variables.md#tidb_enable_auto_analyze_priority_queue-从-v800-版本开始引入) 将会成为统计信息收集的唯一排序方式，变量 [`tidb_enable_auto_analyze_priority_queue`](/system-variables.md#tidb_enable_auto_analyze_priority_queue-从-v800-版本开始引入) 计划在未来版本废弃。
 * TiDB 在 v7.5.0 增加了新的统计信息合并方法，用来避免分区统计信息合并时出现 OOM。原有的合并方法将在未来版本被移除，对应的变量 [`tidb_enable_async_merge_global_stats`](/system-variables.md#tidb_enable_async_merge_global_stats-从-v750-版本开始引入) 也将废弃。
 * 计划在后续版本重新设计[执行计划绑定的自动演进](/sql-plan-management.md#自动演进绑定-baseline-evolution)，相关的变量和行为会发生变化。
+* 从 v8.2.0 开始，BR 快照恢复参数 [`--concurrency`](/use-br-command-line-tool#常用选项) 被废弃。作为替代，你可以通过 [`--tikv-max-restore-concurrency`](/use-br-command-line-tool#常用选项) 配置快照恢复阶段的单个 TiKV 节点的任务最大并发数。 **tw@qiancai** <!--1850-->
+* 从 v8.20 开始，BR 快照恢复参数 [`--granularity`](/br-snapshot-guide#快照恢复的性能与影响) 被废弃，[粗粒度打散 Region 算法](/br/br-snapshot-guide.md#恢复快照备份数据)默认启用。**tw@qiancai** <!--1850-->
 
 ## 改进提升
 
