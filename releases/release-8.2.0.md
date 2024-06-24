@@ -196,7 +196,7 @@ TiDB 版本：8.2.0
 
 ### 其他
 
-- 在 BR v8.2.0 之前的版本中，当 TiCDC 存在同步任务时，BR 不支持进行[数据恢复](/br/backup-and-restore-overview.md)。从 BR 8.2.0 起，BR 数据恢复对 TiCDC 的限制被放宽：如果所恢复数据的 BackupTS（即备份时间）早于 Changefeed 的 [CheckpointTS](/ticdc/ticdc-architecture.md#checkpointts)（即记录当前同步进度的时间戳），BR 数据恢复可以正常进行。考虑到 BackupTS 的时间通常较早，此时可以认为绝大部分场景下，当 TiCDC 存在同步任务时，BR 都可以进行数据恢复。 **tw@qiancai** <!--1843-->
+- 在 BR v8.2.0 之前的版本中，当集群存在 TiCDC 同步任务时，BR 不支持进行[数据恢复](/br/backup-and-restore-overview.md)。从 BR 8.2.0 起，BR 数据恢复对 TiCDC 的限制被放宽：如果所恢复数据的 BackupTS（即备份时间）早于 Changefeed 的 [CheckpointTS](/ticdc/ticdc-architecture.md#checkpointts)（即记录当前同步进度的时间戳），BR 数据恢复可以正常进行。考虑到 BackupTS 的时间通常较早，此时可以认为绝大部分场景下，当集群存在 TiCDC 同步任务时，BR 都可以进行数据恢复。 **tw@qiancai** <!--1843-->
 
 ## 离线包变更
 
