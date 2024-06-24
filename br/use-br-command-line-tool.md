@@ -49,7 +49,7 @@ tiup br backup full --pd "${PD_IP}:2379" \
 * `--status-addr`：向 Prometheus 提供统计数据的监听地址。
 * `--concurrency`：备份阶段的任务并发数。
 * `--pitr-concurrency`：日志恢复阶段的任务并发数。
-* `--tikv-max-restore-concurrency`：快照恢复阶段的单 TiKV 的任务并发数。
+* `--tikv-max-restore-concurrency`：快照恢复阶段的单个 TiKV 节点的任务最大并发数。
 * `--compression`：备份生成文件的压缩算法，支持 `lz4`、`snappy`、`zstd`，默认 `zstd`（多数情况下无须修改）。如何选择不同的压缩算法，可以参考[文档](https://github.com/EighteenZi/rocksdb_wiki/blob/master/Compression.md)。
 * `--compression-level`：备份选择的压缩算法对应的压缩级别，`zstd` 默认为 3。大多数情况下无需设置。
 
