@@ -37,7 +37,7 @@ TiDB 版本：8.2.0
   </tr>
   <tr>
     <td rowspan="1">数据库管理与可观测性</td>
-    <td><a href="">切换资源组受权限控制<!--tw@lilin90--></td>
+    <td><a href="">为切换资源组引入权限控制<!--tw@lilin90--></td>
     <td>随着资源管控功能被广泛应用，对资源组切换操作的权限控制能够避免数据库用户对资源的滥用，强化管理员对整体资源使用的保护，从而提升集群的稳定性。</td>
   </tr>
 </tbody>
@@ -123,7 +123,7 @@ TiDB 版本：8.2.0
 
 * 为切换资源组的操作增加权限控制 [#53440](https://github.com/pingcap/tidb/issues/53440) @[glorv](https://github.com/glorv) **tw@lilin90** <!--1740-->
 
-    TiDB 允许用户利用命令 [`SET RESOURCE GROUP`](/sql-statements/sql-statement-set-resource-group.md) 或 Hint [`RESOURCE_GROUP()`](/optimizer-hints.md#resource_groupresource_group_name) 切换到其他资源组，这可能会造成部分数据库用户对资源组的滥用。TiDB v8.2.0 增加了对资源组切换行为的管控，只有被授予动态权限 `RESOURCE_GROUP_ADMIN` 或者 `RESOURCE_GROUP_USER` 的数据库用户，才能切换到其他资源组，加强对系统资源的保护。
+    TiDB 允许用户使用命令 [`SET RESOURCE GROUP`](/sql-statements/sql-statement-set-resource-group.md) 或 Hint [`RESOURCE_GROUP()`](/optimizer-hints.md#resource_groupresource_group_name) 切换到其他资源组，这可能会造成部分数据库用户对资源组的滥用。TiDB v8.2.0 增加了对资源组切换行为的管控，只有被授予动态权限 `RESOURCE_GROUP_ADMIN` 或者 `RESOURCE_GROUP_USER` 的数据库用户，才能切换到其他资源组，以加强对系统资源的保护。
 
     为了维持兼容性，从旧版本升级的集群维持原行为不变。通过设置新增变量 [`tidb_resource_control_strict_mode`](/system-variables.md) 为 `ON` ，开启上述的增强权限控制。
 
