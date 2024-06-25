@@ -258,6 +258,7 @@ aliases: ['/docs-cn/dev/basic-features/','/docs-cn/dev/experimental-features-4.0
 | [PD 微服务](/pd-microservices.md) | E | E | N | N | N | N | N | N | N | N |
 | [TiDB 分布式执行框架](/tidb-distributed-execution-framework.md) | Y | Y | Y | E | N | N | N | N | N | N |
 | [全局排序](/tidb-global-sort.md) | Y | Y | E | N | N | N | N | N | N | N |
+| [TiProxy](/tiproxy/tiproxy-overview.md) | Y | Y | N | N | N | N | N | N | N | N |
 
 [^1]: TiDB 误将 latin1 处理为 utf8 的子集。见 [TiDB #18955](https://github.com/pingcap/tidb/issues/18955)。
 
