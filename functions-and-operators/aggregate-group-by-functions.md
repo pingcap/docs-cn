@@ -25,7 +25,8 @@ TiDB 支持的 MySQL `GROUP BY` 聚合函数如下所示：
 | [`STD()`，`STDDEV()`，`STDDEV_POP`](https://dev.mysql.com/doc/refman/8.0/en/aggregate-functions.html#function_std) | 返回总体标准差 |
 | [`VAR_SAMP()`](https://dev.mysql.com/doc/refman/8.0/en/aggregate-functions.html#function_var-samp) | 返回采样方差 |
 | [`STDDEV_SAMP()`](https://dev.mysql.com/doc/refman/8.0/en/aggregate-functions.html#function_stddev-samp) | 返回采样标准方差 |
-| [`JSON_OBJECTAGG(key, value)`](https://dev.mysql.com/doc/refman/8.0/en/aggregate-functions.html#function_json-objectagg) | 将结果集返回为单个含 (key, value) 键值对的 JSON object |
+| [`JSON_ARRAYAGG()`](/functions-and-operators/json-functions/json-functions-aggregate.md#json_arrayagg)    | 将结果集返回为单个 JSON 数组    |
+| [`JSON_OBJECTAGG()`](/functions-and-operators/json-functions/json-functions-aggregate.md#json_objectagg) | 将结果集返回为单个含 (key, value) 键值对的 JSON object |
 
 > **注意：**
 >
@@ -45,20 +46,20 @@ TiDB 支持的 MySQL `GROUP BY` 聚合函数如下所示：
     {{< copyable "sql" >}}
 
     ```sql
-    drop table if exists t;
-    create table t(a int);
-    insert into t values(1), (2), (3);
+    DROP TABLE IF EXISTS t;
+    CREATE TABLE t(a INT);
+    INSERT INTO t VALUES(1), (2), (3);
     ```
 
     {{< copyable "sql" >}}
 
     ```sql
-    select approx_percentile(a, 50) from t;
+    SELECT APPROX_PERCENTILE(a, 50) FROM t;
     ```
 
     ```sql
     +--------------------------+
-    | approx_percentile(a, 50) |
+    | APPROX_PERCENTILE(a, 50) |
     +--------------------------+
     |                        2 |
     +--------------------------+
@@ -188,4 +189,4 @@ group by id, val;
 
 ## 相关系统变量
 
-`group_concat_max_len` 变量设置 `GROUP_CONCAT()` 函数缓冲区的最大长度。
+[`group_concat_max_len`](/system-variables.md#group_concat_max_len) 变量设置 `GROUP_CONCAT()` 函数缓冲区的最大长度。
