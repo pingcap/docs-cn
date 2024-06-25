@@ -209,11 +209,11 @@ TiDB 版本：8.2.0
 
 ## 废弃功能
 
-* TiDB 在 v8.0.0 引入了 [Priority Queue](/system-variables.md#tidb_enable_auto_analyze_priority_queue-从-v800-版本开始引入)，用来优化统计信息收集的对象排序。[Priority Queue](/system-variables.md#tidb_enable_auto_analyze_priority_queue-从-v800-版本开始引入) 将会成为统计信息收集的唯一排序方式，变量 [`tidb_enable_auto_analyze_priority_queue`](/system-variables.md#tidb_enable_auto_analyze_priority_queue-从-v800-版本开始引入) 计划在未来版本废弃。
-* TiDB 在 v7.5.0 增加了新的统计信息合并方法，用来避免分区统计信息合并时出现 OOM。原有的合并方法将在未来版本被移除，对应的变量 [`tidb_enable_async_merge_global_stats`](/system-variables.md#tidb_enable_async_merge_global_stats-从-v750-版本开始引入) 也将废弃。
+* TiDB 在 v8.0.0 引入了系统变量 [`tidb_enable_auto_analyze_priority_queue`](/system-variables.md#tidb_enable_auto_analyze_priority_queue-从-v800-版本开始引入)，用于控制是否启用优先队列来优化自动收集统计信息任务的排序。在未来版本中，优先队列将成为自动收集统计信息任务的唯一排序方式，系统变量 [`tidb_enable_auto_analyze_priority_queue`](/system-variables.md#tidb_enable_auto_analyze_priority_queue-从-v800-版本开始引入) 将被废弃。
+* TiDB 在 v7.5.0 引入了系统变量 [`tidb_enable_async_merge_global_stats`](/system-variables.md#tidb_enable_async_merge_global_stats-从-v750-版本开始引入)，用于设置 TiDB 使用异步方式合并分区统计信息，以避免 OOM 问题。在未来版本中，分区统计信息将统一使用异步方式进行合并，系统变量 [`tidb_enable_async_merge_global_stats`](/system-variables.md#tidb_enable_async_merge_global_stats-从-v750-版本开始引入) 将被废弃。
 * 计划在后续版本重新设计[执行计划绑定的自动演进](/sql-plan-management.md#自动演进绑定-baseline-evolution)，相关的变量和行为会发生变化。
-* 从 v8.2.0 开始，BR 快照恢复参数 [`--concurrency`](/use-br-command-line-tool#常用选项) 被废弃。作为替代，你可以通过 [`--tikv-max-restore-concurrency`](/use-br-command-line-tool#常用选项) 配置快照恢复阶段的单个 TiKV 节点的任务最大并发数。 **tw@qiancai** <!--1850-->
-* 从 v8.20 开始，BR 快照恢复参数 [`--granularity`](/br-snapshot-guide#快照恢复的性能与影响) 被废弃，[粗粒度打散 Region 算法](/br/br-snapshot-guide.md#恢复快照备份数据)默认启用。**tw@qiancai** <!--1850-->
+* 从 v8.2.0 开始，BR 快照恢复参数 `--concurrency` 被废弃。作为替代，你可以通过 [`--tikv-max-restore-concurrency`](/use-br-command-line-tool#常用选项) 配置快照恢复阶段的单个 TiKV 节点的任务最大并发数。 **tw@qiancai** <!--1850-->
+* 从 v8.2.0 开始，BR 快照恢复参数 `--granularity` 被废弃，[粗粒度打散 Region 算法](/br/br-snapshot-guide.md#恢复快照备份数据)默认启用。**tw@qiancai** <!--1850-->
 
 ## 改进提升
 
