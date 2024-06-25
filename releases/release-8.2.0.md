@@ -37,7 +37,7 @@ TiDB 版本：8.2.0
   </tr>
   <tr>
     <td rowspan="1">数据库管理与可观测性</td>
-    <td><a href="">为切换资源组引入权限控制<!--tw@lilin90--></td>
+    <td><a href="https://docs.pingcap.com/zh/tidb/v8.2/tidb-resource-control#绑定资源组">为切换资源组引入权限控制</a><!--tw@lilin90--></td>
     <td>随着资源管控功能被广泛应用，对资源组切换操作的权限控制能够避免数据库用户对资源的滥用，强化管理员对整体资源使用的保护，从而提升集群的稳定性。</td>
   </tr>
 </tbody>
