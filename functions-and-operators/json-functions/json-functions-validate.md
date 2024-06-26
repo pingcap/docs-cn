@@ -9,48 +9,44 @@ summary: 了解验证 JSON 文档的函数。
 
 ## [JSON_SCHEMA_VALID()](https://dev.mysql.com/doc/refman/8.0/en/json-validation-functions.html#function_json-schema-valid)
 
-The `JSON_SCHEMA_VALID(schema, json_doc)` function validate a JSON document against a schema to ensure data integrity and consistency. 
+`JSON_SCHEMA_VALID(schema, json_doc)` 函数根据 schema 验证 JSON 文档，确保数据的完整性和一致性。该函数可以与 [CHECK](/constraints.md#check) 约束一起使用，以便在修改表时自动进行 schema 验证。该函数遵循 [JSON Schema specification](https://json-schema.org/specification)。
 
-This can be used together with a [CHECK](/constraints.md#check) constraint to do automatic schema validation when a table is modified.
+验证关键词如下：
 
-This is following the [JSON Schema specification](https://json-schema.org/specification).
-
-Validation keywords:
-
-| Validation Keyword | Applies to | Description |
+| 验证关键词 | 适用于 | 描述 |
 |---|---|---|
-| `type`                 | Any | Tests the type (e.g. `array`,`string`, etc) |
-| `enum`                 | Any | Tests if a value is in the specified array of values |
-| `const`                | Any | Similar to `enum`, but for a single value |
-| `allOf`                | Any | Match all of the specified schemas |
-| `anyOf`                | Any | Match any of the specified schemas |
-| `multipleOf`           | `number`/`integer` | Tests if the value is a multiple of the specified value |
-| `maximum`              | `number`/`integer` | Tests if the value is below the maximum (inclusive) |
-| `exclusiveMaximum`     | `number`/`integer` | Tests if the value is below the maximum (exclusive) |
-| `minimum`              | `number`/`integer` | Tests if the value is above the minimum (inclusive) |
-| `exclusiveMinimum`     | `number`/`integer` | Tests if the value is above the minimum (exclusive) |
-| `maxlength`            | `string` | Test if the length of the value is not exceeding the specified value |
-| `minLength`            | `string` | Test if the length of the value is at least the specified value |
-| `format`               | `string` | Test if a string matches a named format |
-| `pattern`              | `string` | Test if a string matches a pattern |
-| `items`                | `array` | Schema to apply to the items of an array |
-| `prefixItems`          | `array` | Schema to apply to positional items of an array |
-| `maxItems`             | `array` | Test if the number of items in the array is not exceeding the specified value |
-| `minItems`             | `array` | Test if the number of items in the array is at least the specified value |
-| `uniqueItems`          | `array` | Test if the items in the array are unique, `true`/`false`|
-| `contains`             | `array` | Set schema for items contained in the array |
-| `maxContains`          | `array` | Used together with `contains` to set how many times something can be present |
-| `minContains`          | `array` | Used together with `contains` to set how many times something can be present |
-| `properties`           | `object` | Schema to apply to the properties of an object |
-| `patternProperties`    | `object` | Schema to apply to certain properties based on pattern matching of the property name |
-| `additionalProperties` | `object` | Whether additional properties are allowed or not, `true`/`false` |
-| `minProperties`        | `object` | Test the number of properties that the object has |
-| `maxProperties`        | `object` | Test the number of properties that the object has|
-| `required`             | `object` | The property names that are required |
+| `type`                 | Any | 测试类型，如 `array`、`string` |
+| `enum`                 | Any | 测试某个值是否在指定的值数组中 |
+| `const`                | Any | 与 `enum` 相似，但只适用于一个值 |
+| `allOf`                | Any | 匹配所有指定的 schema |
+| `anyOf`                | Any | 匹配任意指定的 schema |
+| `multipleOf`           | `number`/`integer` | 测试值是否是指定值的倍数 |
+| `maximum`              | `number`/`integer` | 测试数值是否小于最大值（包括最大值在内）|
+| `exclusiveMaximum`     | `number`/`integer` | 测试数值是否小于最大值（不包括最大值）  |
+| `minimum`              | `number`/`integer` | 测试数值是否大于最小值（包括最小值在内）|
+| `exclusiveMinimum`     | `number`/`integer` | 测试值是否大于最小值（不包括最小值）    |
+| `maxlength`            | `string` | 测试值的长度是否不超过指定值 |
+| `minLength`            | `string` | 测试数值的长度是否至少为指定值 |
+| `format`               | `string` | 测试字符串是否符合指定格式 |
+| `pattern`              | `string` | 测试字符串是否与模式匹配  |
+| `items`                | `array` | 适用于数组项的 schema |
+| `prefixItems`          | `array` | 适用于数组的位置项的 |
+| `maxItems`             | `array` | 测试数组中的条目数是否不超过指定值 |
+| `minItems`             | `array` | 测试数组中的条目数是否至少为指定值 |
+| `uniqueItems`          | `array` | 测试数组中的项目是否唯一，`true`/`false`|
+| `contains`             | `array` | 为数组中的项目设置 schema |
+| `maxContains`          | `array` | 与 `contains` 一起使用时，用于设置某些内容的出现的最多次数 |
+| `minContains`          | `array` | 与 `contains` 一起使用时，用于设置某些内容的出现的最少次数 |
+| `properties`           | `object` | 适用于对象属性的 schema |
+| `patternProperties`    | `object` | 根据属性名称的模式匹配，应用于某些属性的 schema  |
+| `additionalProperties` | `object` | 是否允许额外的属性，`true`/`false` |
+| `minProperties`        | `object` | 测试对象的最小属性数量 |
+| `maxProperties`        | `object` | 测试对象的最大属性数量 |
+| `required`             | `object` | 必须填写的属性名称     |
 
-Examples:
+示例：
 
-For some of the examples, use this JSON document:
+下面一些示例使用了如下 JSON 文档：
 
 ```json
 {
@@ -66,13 +62,13 @@ For some of the examples, use this JSON document:
 }
 ```
 
-Use a [user defined variable](/user-defined-variables.md) to hold the JSON document.
+使用[用户自定义的变量](/user-defined-variables.md)存放 JSON 文档。
 
 ```sql
 SET @j := '{"fruits": ["orange", "apple", "pear"], "vegetables": ["carrot", "pepper", "kale"]}';
 ```
 
-Start by testing the type::
+先测试类型：
 
 ```sql
 SELECT JSON_SCHEMA_VALID('{"type": "object"}',@j);
@@ -113,9 +109,9 @@ mysql> SELECT JSON_TYPE(@j);
 1 row in set (0.00 sec)
 ```
 
-As you can see in the preceding output, the type is `object`. This matches with the output of [`JSON_TYPE()`](/functions-and-operators/json-functions/json-functions-return.md#json_type).
+从上面的输出中可以看到，类型是 `object`，与 [`JSON_TYPE()`](/functions-and-operators/json-functions/json-functions-return.md#json_type) 的输出结果一致。
 
-Now validate the presence of certain attributes.
+现在验证某些属性是否存在。
 
 ```sql
 SELECT JSON_SCHEMA_VALID('{"required": ["fruits","vegetables"]}',@j);
@@ -130,7 +126,7 @@ SELECT JSON_SCHEMA_VALID('{"required": ["fruits","vegetables"]}',@j);
 1 row in set (0.00 sec)
 ```
 
-In the preceding output, you can see that see that validation of the presence of the `fruits` and `vegetables` attributes succeeds.
+在前面的输出中，可以看到，`fruits` 和 `vegetables` 的属性是存在的，验证成功了。
 
 ```sql
 SELECT JSON_SCHEMA_VALID('{"required": ["fruits","vegetables","grains"]}',@j);
@@ -145,9 +141,9 @@ SELECT JSON_SCHEMA_VALID('{"required": ["fruits","vegetables","grains"]}',@j);
 1 row in set (0.00 sec)
 ```
 
-In the preceding output, you can see that see that validation of the presence of the `fruits`, `vegetables` and `grains` attributes fails because the latter is not present.
+在前面的输出中，可以看到验证 `fruits`、`vegetables` 和 `grains` 属性是否存在失败了，因为 `grains` 不存在。
 
-Now validate that `fruits` is an array.
+现在验证 `fruits` 是数组。
 
 ```sql
 SELECT JSON_SCHEMA_VALID('{"properties": {"fruits": {"type": "array"}}}',@j);
@@ -162,7 +158,7 @@ SELECT JSON_SCHEMA_VALID('{"properties": {"fruits": {"type": "array"}}}',@j);
 1 row in set (0.01 sec)
 ```
 
-The preceding output confirms that `fruits` is an array.
+从上面的输出结果，可以确认 `fruits` 是数组。
 
 ```sql
 SELECT JSON_SCHEMA_VALID('{"properties": {"fruits": {"type": "string"}}}',@j);
@@ -177,9 +173,9 @@ SELECT JSON_SCHEMA_VALID('{"properties": {"fruits": {"type": "string"}}}',@j);
 1 row in set (0.00 sec)
 ```
 
-The preceding output shows that `fruits` is **not** a string.
+上面的输出结果显示 `fruits` **不是**字符串。
 
-Now verify the number of items in the array
+现在验证数组中的项目数。
 
 ```sql
 SELECT JSON_SCHEMA_VALID('{"properties": {"fruits": {"type": "array", "minItems": 3}}}',@j);
@@ -194,7 +190,7 @@ SELECT JSON_SCHEMA_VALID('{"properties": {"fruits": {"type": "array", "minItems"
 1 row in set (0.00 sec)
 ```
 
-The preceding output shows that `fruits` is an array with at least 3 items.
+前面的输出结果显示，`fruits` 是一个至少有 3 个项的数组。
 
 ```sql
 SELECT JSON_SCHEMA_VALID('{"properties": {"fruits": {"type": "array", "minItems": 4}}}',@j);
@@ -209,9 +205,9 @@ SELECT JSON_SCHEMA_VALID('{"properties": {"fruits": {"type": "array", "minItems"
 1 row in set (0.00 sec)
 ```
 
-The preceding output shows that `fruits` is **not** an array with at least 4 items. This is because it does not meet the minimum number of items.
+前面的输出结果显示，`fruits` **不是**一个至少有 4 个项的数组，它没有达到最小项数的要求。
 
-For integers values, you can check if they are in a certain range.
+对于整数值，可以检查它们是否在某个范围内。
 
 ```sql
 SELECT JSON_SCHEMA_VALID('{"type": "integer", "minimum": 40, "maximum": 45}', '42');
@@ -236,7 +232,7 @@ SELECT JSON_SCHEMA_VALID('{"type": "integer", "minimum": 40, "maximum": 45}', '1
 1 row in set (0.00 sec)
 ```
 
-For strings, you can do pattern matching.
+对于字符串，可以进行模式匹配。
 
 ```sql
 SELECT JSON_SCHEMA_VALID('{"type": "string", "pattern": "^Ti"}', '"TiDB"');
@@ -264,7 +260,7 @@ SELECT JSON_SCHEMA_VALID('{"type": "string", "pattern": "^Ti"}', '"PingCAP"');
 1 row in set (0.00 sec)
 ```
 
-There are also a few named formats available that can be used to check a value. Other available formats include `ipv6`, `time`, `date`, `duration`, `email`, `hostname`, `uuid` and `uri`.
+还有一些命名格式可用来检查值。其他可用格式包括：`ipv6`、`time`、`date`、`duration`、`email`、`hostname`、`uuid` 和 `uri`。
 
 ```sql
 SELECT JSON_SCHEMA_VALID('{"format": "ipv4"}', '"127.0.0.1"');
@@ -292,7 +288,7 @@ SELECT JSON_SCHEMA_VALID('{"format": "ipv4"}', '"327.0.0.1"');
 1 row in set (0.00 sec)
 ```
 
-You can also use `enum` to check if a string is in an array of values. 
+你还可以使用 `enum` 来检查字符串是否在值数组中。
 
 ```sql
 SELECT JSON_SCHEMA_VALID('{"enum": ["TiDB", "MySQL"]}', '"TiDB"');
@@ -333,7 +329,7 @@ SELECT JSON_SCHEMA_VALID('{"enum": ["TiDB", "MySQL"]}', '"SQLite"');
 1 row in set (0.00 sec)
 ```
 
-With `anyOf` it is possible to combine certain requirements.
+使用 `anyOf` 可以将某些验证要求结合起来。
 
 ```sql
 SELECT JSON_SCHEMA_VALID('{"anyOf": [{"type": "string"},{"type": "integer"}]}', '"TiDB"');
@@ -374,8 +370,8 @@ SELECT JSON_SCHEMA_VALID('{"anyOf": [{"type": "string"},{"type": "integer"}]}', 
 1 row in set (0.00 sec)
 ```
 
-## See also
+## 另请参阅
 
 - [JSON Schema Reference](https://json-schema.org/understanding-json-schema/reference)
-- [JSON Functions Overview](/functions-and-operators/json-functions.md)
-- [JSON Data Type](/data-type-json.md)
+- [JSON 函数](/functions-and-operators/json-functions.md)
+- [JSON 数据类型](/data-type-json.md)
