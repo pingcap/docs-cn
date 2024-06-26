@@ -751,7 +751,7 @@ opentracing.reporter 相关的设置。
 + 默认值：60
 + 单位：秒
 
-### `enable-replica-selector-v2`（已废弃）
+### `enable-replica-selector-v2` <span class="version-mark">从 v8.0.0 版本开始引入</span>
 
 > **警告：**
 >
