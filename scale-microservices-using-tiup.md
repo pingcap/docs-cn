@@ -1,11 +1,11 @@
 ---
 title: 使用 TiUP 扩容缩容集群中的 PD 微服务节点
-summary: 介绍如何使用 TiUP 扩容缩容集群中的 PD 微服务节点。
+summary: 介绍如何使用 TiUP 扩容缩容集群中的 PD 微服务节点，以及如何切换微服务模式。
 ---
 
 # 使用 TiUP 扩容缩容集群中的 PD 微服务节点
 
-本文介绍如何使用 TiUP 扩容缩容集群中的 PD 微服务节点，包括 TSO 节点和 Scheduling 节点。
+本文介绍如何使用 TiUP 扩容缩容集群中的 [PD 微服务](pd-microservices.md)节点（包括 TSO 节点和 Scheduling 节点），以及如何换微服务模式。
 
 你可以通过 `tiup cluster list` 查看当前的集群名称列表。
 
@@ -22,7 +22,11 @@ summary: 介绍如何使用 TiUP 扩容缩容集群中的 PD 微服务节点。
 
 ## 扩容 TSO/Scheduling 节点
 
-如果要添加一个 IP 地址为 10.0.1.8 的 TSO 节点和一个 IP 地址为 10.0.1.9 的 Scheduling 节点，可以按照如下步骤进行操作。
+> **注意：**
+>
+> 对于尚未开启 PD 微服务的集群，如需添加 TSO/Scheduling 节点，请参考[从非微服务模式切换为微服务模式](#从非微服务模式切换为微服务模式)中的步骤进行操作。
+
+对于已开启 PD 微服务的集群，如需添加一个 IP 地址为 10.0.1.8 的 TSO 节点和一个 IP 地址为 10.0.1.9 的 Scheduling 节点，可以按照如下步骤进行操作。
 
 ### 1. 编写扩容拓扑配置
 
@@ -109,7 +113,11 @@ tiup cluster display <cluster-name>
 
 ## 缩容 TSO/Scheduling 节点
 
-如果要移除一个 IP 地址为 10.0.1.8 的 TSO 节点和一个 IP 地址为 10.0.1.9 的 Scheduling 节点，可以按照如下步骤进行操作。
+> **注意：**
+>
+> 对于已开启 PD 微服务的集群，如需切换为非微服务模式，请参考[从微服务模式切换为非微服务模式](#从微服务模式切换为非微服务模式)中的步骤进行操作。
+
+对于包含多个 TSO 或 Scheduling 节点的集群，如需移除 IP 地址为 10.0.1.8 的 TSO 节点和 IP 地址为 10.0.1.9 的 Scheduling 节点，可以按照如下步骤进行操作。
 
 ### 1. 查看节点 ID 信息
 
@@ -189,17 +197,20 @@ tiup cluster display <cluster-name>
 
 > **注意：**
 >
-> - 微服务的切换过程会伴随有短暂的服务不可用。
+> 微服务切换期间会出现短暂的 PD 服务不可用的情况。
 
-### 1. 从非微服务模式切换为微服务模式
+### 从非微服务模式切换为微服务模式
 
-1. 编写扩容配置：
+对于尚未开启 PD 微服务的集群，如需切换为 PD 微服务模式，并添加一个 IP 地址为 10.0.1.8 的 TSO 节点和一个 IP 地址为 10.0.1.9 的 Scheduling 节点，可以按照如下步骤进行操作。
+
+1. 编写扩容拓扑配置：
 
     ```shell
     vi scale-out.yml
     ```
 
     配置参考：
+
     ```ini
     tso_servers:
       - host: 10.0.1.8
@@ -209,13 +220,14 @@ tiup cluster display <cluster-name>
         port: 3379
     ```
 
-2. 切换 PD 模式：
+2. 修改集群配置，将集群切换为 PD 微服务模式：
 
     ```shell
     tiup cluster edit-config <cluster-name>
     ```
 
-    添加 `pd_mode` 字段：
+    在 `global` 中添加 `pd_mode: ms` 配置：
+
     ```ini
     global:
     user: tidb
@@ -229,27 +241,30 @@ tiup cluster display <cluster-name>
     pd_mode: ms
     ```
 
-3. 滚动更新 PD：
+3. 滚动更新 PD 节点配置：
 
-    ```
+    ```shell
     tiup cluster reload <cluster-name> -R pd
     ```
 
-4. 扩容微服务节点：
+4. 扩容 PD 微服务节点：
 
     ```shell
     tiup cluster scale-out <cluster-name> scale-out.yml
     ```
 
-### 2. 从微服务模式切换为非微服务模式
+### 从微服务模式切换为非微服务模式
 
-1. 切换 PD 模式：
+对于已开启 PD 微服务的集群，假设该集群包含一个 IP 地址为 10.0.1.8 的 TSO 节点和一个 IP 地址为 10.0.1.9 的 Scheduling 节点，如需切换为非微服务模式，可以按照如下步骤进行操作。
+
+1. 修改集群配置，将集群切换为非 PD 微服务模式：
 
     ```shell
     tiup cluster edit-config <cluster-name>
     ```
 
-    删除 `pd_mode` 字段：
+    在 `global` 中删除 `pd_mode: ms` 配置：
+
     ```ini
     global:
     user: tidb
@@ -262,14 +277,14 @@ tiup cluster display <cluster-name>
     systemd_mode: system
     ```
 
-2. 缩容微服务节点：
+2. 缩容集群中所有的 PD 微服务节点：
 
     ```shell
     tiup cluster scale-in <cluster-name> --node 10.0.1.8:3379,10.0.1.9:3379
     ```
 
-3. 滚动更新 PD：
+3. 滚动更新 PD 节点配置：
 
-    ```
+    ```shell
     tiup cluster reload <cluster-name> -R pd
     ```
