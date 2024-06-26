@@ -139,9 +139,9 @@ implementation 'mysql:mysql-connector-java:8.0.33'
 
 ```xml
 <dependency>
-  <groupId>org.mybatis</groupId>
-  <artifactId>mybatis</artifactId>
-  <version>3.5.13</version>
+    <groupId>org.mybatis</groupId>
+    <artifactId>mybatis</artifactId>
+    <version>3.5.13</version>
 </dependency>
 
 <dependency>
