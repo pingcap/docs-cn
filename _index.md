@@ -119,7 +119,7 @@ summary: TiDB 是 PingCAP 公司自主设计、研发的开源分布式关系型
 
 <LearningPath label="参考" icon="cloud-dev">
 
-[TiDB 路线图](https://docs.pingcap.com/zh/tidb/v8.1/tidb-roadmap)
+[TiDB 路线图](https://docs.pingcap.com/zh/tidb/dev/tidb-roadmap)
 
 [TiDB 配置文件参数](https://docs.pingcap.com/zh/tidb/v8.1/tidb-configuration-file)
 
