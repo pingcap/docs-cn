@@ -81,7 +81,7 @@ TiDB 版本：8.2.0
 
 * 统计信息加载效率提升 10 倍 [#52831](https://github.com/pingcap/tidb/issues/52831) @[hawkingrei](https://github.com/hawkingrei) **tw@hfxsd** <!--1754-->
 
-    SaaS 或 PaaS 类业务应用中可能存在大量的数据表，这些表不但会拖慢初始统计信息的加载速度，也会增加高负载的情况下同步负载的失败率。TiDB 的启动时间以及执行计划的准确性都会受到影响。在 v8.2.0 中，TiDB 从并发模型、内存分配方式等多个角度优化了统计信息的加载过程，降低延迟，提升吞吐，避免由于统计信息加载速度过慢，影响业务扩容。
+    SaaS 或 PaaS 类业务应用中可能存在大量的数据表，这些表不但会拖慢初始统计信息的加载速度，也会增加高负载情况下同步负载的失败率。TiDB 的启动时间以及执行计划的准确性都会受到影响。在 v8.2.0 中，TiDB 从并发模型、内存分配方式等多个角度优化了统计信息的加载过程，降低延迟，提升吞吐，避免由于统计信息加载速度过慢，影响业务扩容。
 
     新增支持自适应的并行加载。默认情况下，配置项 [`stats-load-concurrency`](/tidb-configuration-file.md#stats-load-concurrency-从-v540-版本开始引入) 的值为 `0`，统计信息加载的并行度会根据硬件规格自动选择。 
 
@@ -107,7 +107,7 @@ TiDB 版本：8.2.0
 
 * TiDB 支持 JSON Schema Validation 函数 [#52779](https://github.com/pingcap/tidb/issues/52779) @[dveeden](https://github.com/dveeden) **tw@hfxsd** <!--1840-->
 
-    在 v8.2.0 版本之前，你需要依赖外部工具或自定义验证逻辑进行 JSON 数据验证，开发和维护比较复杂，开发效率低。从 v8.2.0 版本开始，引入了 `JSON_SCHEMA_VALID()` 函数，你可以在 TiDB 中直接验证 JSON 数据的有效性，提高数据的完整性和一致性，提升了开发效率。
+    在 v8.2.0 之前，你需要依赖外部工具或自定义验证逻辑进行 JSON 数据验证，开发和维护比较复杂，开发效率低。从 v8.2.0 版本开始，引入了 `JSON_SCHEMA_VALID()` 函数，你可以在 TiDB 中直接验证 JSON 数据的有效性，提高数据的完整性和一致性，提升了开发效率。
 
     更多信息，请参考[用户文档](/functions-and-operators/json-functions.md#验证函数)。
 
