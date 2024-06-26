@@ -184,3 +184,92 @@ tiup cluster display <cluster-name>
 | 10.0.1.2   | TiKV   |
 | 10.0.1.6   | TSO   |
 | 10.0.1.7   | Scheduling   |
+
+## 微服务切换
+
+> **注意：**
+>
+> - 微服务的切换过程会伴随有短暂的服务不可用。
+
+### 1. 从非微服务模式切换为微服务模式
+
+1. 编写扩容配置：
+
+    ```shell
+    vi scale-out.yml
+    ```
+
+    配置参考：
+    ```ini
+    tso_servers:
+      - host: 10.0.1.8
+        port: 3379
+    scheduling_servers:
+      - host: 10.0.1.9
+        port: 3379
+    ```
+
+2. 切换 PD 模式：
+
+    ```shell
+    tiup cluster edit-config <cluster-name>
+    ```
+
+    添加 `pd_mode` 字段：
+    ```ini
+    global:
+    user: tidb
+    ssh_port: 22
+    listen_host: 0.0.0.0
+    deploy_dir: /tidb-deploy
+    data_dir: /tidb-data
+    os: linux
+    arch: amd64
+    systemd_mode: system
+    pd_mode: ms
+    ```
+
+3. 滚动更新 PD：
+
+    ```
+    tiup cluster reload <cluster-name> -R pd
+    ```
+
+4. 扩容微服务节点：
+
+    ```shell
+    tiup cluster scale-out <cluster-name> scale-out.yml
+    ```
+
+### 2. 从微服务模式切换为非微服务模式
+
+1. 切换 PD 模式：
+
+    ```shell
+    tiup cluster edit-config <cluster-name>
+    ```
+
+    删除 `pd_mode` 字段：
+    ```ini
+    global:
+    user: tidb
+    ssh_port: 22
+    listen_host: 0.0.0.0
+    deploy_dir: /tidb-deploy
+    data_dir: /tidb-data
+    os: linux
+    arch: amd64
+    systemd_mode: system
+    ```
+
+2. 缩容微服务节点：
+
+    ```shell
+    tiup cluster scale-in <cluster-name> --node 10.0.1.8:3379,10.0.1.9:3379
+    ```
+
+3. 滚动更新 PD：
+
+    ```
+    tiup cluster reload <cluster-name> -R pd
+    ```
