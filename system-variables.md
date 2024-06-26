@@ -1580,7 +1580,7 @@ mysql> SELECT job_info FROM mysql.analyze_jobs ORDER BY end_time DESC LIMIT 1;
 - 这个变量用来设置 scan 操作的并发度。
 - AP 类应用适合较大的值，TP 类应用适合较小的值。对于 AP 类应用，最大值建议不要超过所有 TiKV 节点的 CPU 核数。
 - 若表的分区较多可以适当调小该参数（取决于扫描数据量的大小以及扫描频率），避免 TiKV 内存溢出 (OOM)。
-- 对于只有 LIMIT 的简单查询，在 scan 操作被下推到 TiKV 时，为了提升执行效率，如果 LIMIT 行数小于 100000，该变量将按照 1 进行处理。查询语句 `SELECT MAX/MIN(col) FROM ...` 也会改写为 `SELECT col FROM ... ORDER BY col LIMIT 1`，该变量也将按照 1 进行处理。
+- 对于只有 LIMIT 的简单查询，在 scan 操作被下推到 TiKV 时，为了提升执行效率，如果 LIMIT 行数小于 100000，该变量将按照 1 进行处理。查询语句 `SELECT MAX/MIN(col) FROM ...` 在 col 列有索引、有序性满足要求时，会改写为 `SELECT col FROM ... LIMIT 1`，该变量也将按照 1 进行处理。
 
 ### `tidb_dml_batch_size`
 
