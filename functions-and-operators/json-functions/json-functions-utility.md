@@ -31,11 +31,11 @@ JSON_PRETTY('{"person":{"name":{"first":"John","last":"Doe"},"age":23}}'): {
 
 ## [JSON_STORAGE_FREE()](https://dev.mysql.com/doc/refman/8.0/en/json-utility-functions.html#function_json-storage-free)
 
-`JSON_STORAGE_FREE(json_doc)` 函数返回 JSON 值（以二进制表示），表示在更新后释放了多少存储空间。
+`JSON_STORAGE_FREE(json_doc)` 函数返回 JSON 值在更新后释放了多少存储空间，以二进制表示。
 
 > **注意：**
 >
-> 由于 TiDB 的存储架构与 MySQL 不同，因此对于有效的 JSON 值，该函数总是返回 `0`，而且它的实现是为了[与 MySQL 8.0 兼容](/mysql-compatibility.md)。请注意，TiDB 不能进行就地更新。更多信息，请参阅 [RocksDB 空间占用](/storage-engine/rocksdb-overview.md#rocksdb-的空间占用)。
+> 由于 TiDB 的存储架构与 MySQL 不同，因此对于有效的 JSON 值，该函数总是返回 `0`，而且它的实现是为了[与 MySQL 8.0 兼容](/mysql-compatibility.md)。请注意，TiDB 不能进行就地更新。更多信息，请参阅 [RocksDB 的空间占用](/storage-engine/rocksdb-overview.md#rocksdb-的空间占用)。
 
 ```sql
 SELECT JSON_STORAGE_FREE('{}');

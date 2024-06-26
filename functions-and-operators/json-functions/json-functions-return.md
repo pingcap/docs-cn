@@ -104,7 +104,7 @@ SELECT v, JSON_TYPE(v) FROM demo ORDER BY 2;
 8 rows in set (0.00 sec)
 ```
 
-请注意，看起来相同的值可能不具有相同的类型，如下例所示。
+请注意，看起来相同的值可能属于不同的类型，如下例所示。
 
 ```sql
 SELECT '"2025-06-14"',CAST(CAST('2025-06-14' AS date) AS json);

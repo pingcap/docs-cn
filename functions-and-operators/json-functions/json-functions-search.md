@@ -141,7 +141,7 @@ SELECT JSON_CONTAINS_PATH('{"foo": "bar", "aaa": 5}','all','$.foo', '$.aaa');
 
 ## [JSON_EXTRACT()](https://dev.mysql.com/doc/refman/8.0/en/json-search-functions.html#function_json-extract)
 
-`JSON_EXTRACT(json_doc,path)` 函数从 JSON 文档中提取数据，这些数据来与 `path` 参数匹配的文档部分。
+`JSON_EXTRACT(json_doc,path)` 函数从 JSON 文档中提取数据，这些数据来自与 `path` 参数匹配的文档的部分。
 
 ```sql
 SELECT JSON_EXTRACT('{"foo": "bar", "aaa": 5}', '$.foo');
@@ -242,11 +242,11 @@ SELECT JSON_KEYS('{"name": {"first": "John", "last": "Doe"}, "type": "Person"}',
 
 ## [JSON_SEARCH()](https://dev.mysql.com/doc/refman/8.0/en/json-search-functions.html#function_json-search)
 
-`JSON_SEARCH(json_doc,one_or_all,str)` 函数会在 JSON 文档中搜索一个或所有匹配的字符串。
+`JSON_SEARCH(json_doc,one_or_all,str)` 函数会在 JSON 文档中搜索与字符串匹配的一个或所有的匹配项。
 
 示例：
 
-在下面的示例中，你可以搜索 `cc` 的第一个结果，它位于 `a` 数组的第 2 位。
+在下面的示例中，搜索 `cc` 的第一个结果，它位于 `a` 数组的第 2 位。
 
 ```sql
 SELECT JSON_SEARCH('{"a": ["aa", "bb", "cc"], "b": ["cc", "dd"]}','one','cc');
@@ -296,7 +296,7 @@ SELECT '🍍' MEMBER OF ('["🍍","🥥","🥭"]') AS 'Contains pineapple';
 
 ## [JSON_OVERLAPS()](https://dev.mysql.com/doc/refman/8.0/en/json-search-functions.html#function_json-overlaps)
 
-`JSON_OVERLAPS(json_doc, json_doc)`函数检查两个 JSON 文档是否有重叠部分。如果有重叠，则返回 `1`，如果没有，则返回 `0`。如果任一参数为 `NULL`，则返回 `NULL`。
+`JSON_OVERLAPS(json_doc, json_doc)` 函数检查两个 JSON 文档是否有重叠部分。如果有重叠，则返回 `1`，如果没有重叠，则返回 `0`。如果任一参数为 `NULL`，则返回 `NULL`。
 
 示例：
 

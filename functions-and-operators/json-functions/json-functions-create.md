@@ -26,7 +26,7 @@ SELECT JSON_ARRAY(1,2,3,4,5), JSON_ARRAY("foo", "bar");
 
 ## [JSON_OBJECT()](https://dev.mysql.com/doc/refman/8.0/en/json-creation-functions.html#function_json-object)
 
-`JSON_OBJECT([key,val[,key,val]...])` 函数对键值对（可能为空）列表进行评估，并返回一个包含这些键值对的 JSON 对象。
+`JSON_OBJECT([key,val[,key,val]...])` 函数对键值对列表（可能为空）进行评估，并返回一个包含这些键值对的 JSON 对象。
 
 ```sql
 SELECT JSON_OBJECT("database", "TiDB", "distributed", TRUE);

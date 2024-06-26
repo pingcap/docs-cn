@@ -102,7 +102,6 @@ TABLE plant_attributes;
 7 rows in set (0.00 sec)
 ```
 
-You can use the `JSON_OBJECTAGG()` function with this data. Here you can see that for every group multiple key/value pairs are combined into a JSON object.
 你可以使用 `JSON_OBJECTAGG()` 函数来处理这些数据。在下面示例中，你可以看到每个 Group 中，多个键/值对被组合成一个 JSON 对象。
 
 ```sql

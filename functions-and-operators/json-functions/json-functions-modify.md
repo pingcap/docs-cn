@@ -15,7 +15,7 @@ summary: 了解修改 JSON 值的 JSON 函数。
 
 `JSON_ARRAY_APPEND(json_array, path, val)` 函数按照指定的 `path` 将值追加到 JSON 文档中指定数组的末尾，并返回结果。
 
-该函数接收成对的参数，其中每一对参数都包含一个路径 `path` 和一个值 `value`。
+该函数接受成对的参数，其中每一对参数都包含一个路径 `path` 和一个值 `value`。
 
 示例：
 
@@ -53,7 +53,7 @@ SELECT JSON_ARRAY_APPEND('{"transport_options": ["Car", "Boat", "Train"]}', '$.t
 
 `JSON_ARRAY_INSERT(json_array, path, value [,path, value] ...)` 函数将 `value` 插入 `path` 中 `json_array` 的指定位置，并返回结果。
 
-该函数接收成对的参数，其中每一对参数都包含一个路径 `path` 和一个值 `value`。
+该函数接受成对的参数，其中每一对参数都包含一个路径 `path` 和一个值 `value`。
 
 示例：
 
@@ -91,7 +91,7 @@ SELECT JSON_ARRAY_INSERT('["Car", "Boat", "Train"]', '$[1]', "Airplane") AS "Tra
 
 `JSON_INSERT(json_doc,path,value[,path,value] ...)` 函数将一个或多个值插入到 JSON 文档，并返回结果。
 
-该函数接收成对的参数，其中每一对参数包含一个路径 `path` 和一个值 `value`。
+该函数接受成对的参数，其中每一对参数包含一个路径 `path` 和一个值 `value`。
 
 ```sql
 SELECT JSON_INSERT(
@@ -131,7 +131,7 @@ SELECT JSON_INSERT('{"a": 61, "b": 62}', '$.a', 41, '$.c', 63);
 
 示例：
 
-在下面的示例中，你可以看到 `a` 的值被第二个参数覆盖，而 `c` 被添加为一个新属性。
+在下面的示例中，可以看到 `a` 的值被第二个参数覆盖，而 `c` 被添加为一个新属性。
 
 ```sql
 SELECT JSON_MERGE_PATCH(
@@ -219,7 +219,7 @@ SELECT JSON_REMOVE('{"a": 61, "b": 62, "c": 63}','$.b','$.c');
 
 `JSON_REPLACE(json_doc,path,value[,path,value]...)` 函数替换 JSON 文档中的现有的值并返回结果。如果指定的路径不存在，则不会添加到结果中。
 
-该函数接收成对的参数，其中每一对参数包含一个路径 `path` 和一个值 `value`。
+该函数接受成对的参数，其中每一对参数包含一个路径 `path` 和一个值 `value`。
 
 示例：
 
@@ -257,7 +257,7 @@ SELECT JSON_REPLACE('{"a": 41, "b": 62}','$.b',42,'$.c',43);
 
 `JSON_SET(json_doc,path,value[,path,value] ...)` 函数在 JSON 文档中插入或更新数据，并返回结果。
 
-该函数接收成对的参数，其中每一对参数包含一个路径 `path` 和一个值 `value`。
+该函数接受成对的参数，其中每一对参数包含一个路径 `path` 和一个值 `value`。
 
 示例：
 
@@ -312,7 +312,7 @@ SELECT JSON_UNQUOTE('"foo"');
 1 row in set (0.00 sec)
 ```
 
-该函数通常与 [`JSON_EXTRACT()`](/functions-and-operators/json-functions/json-functions-search.md#json_extract) 一起使用。在下面的示例中，首先提取一个带引号的值，而在第二个示例中，取消提取的值的引号。请注意，你可以使用 [`->>`](/functions-and-operators/json-functions/json-functions-search.md#--1) 速记来代替 `JSON_UNQUOTE(JSON_EXTRACT(...))`。
+该函数通常与 [`JSON_EXTRACT()`](/functions-and-operators/json-functions/json-functions-search.md#json_extract) 一起使用。在下面的示例中，首先提取一个带引号的值，然后在第二个示例中，取消提取的值的引号。请注意，你可以使用 [`->>`](/functions-and-operators/json-functions/json-functions-search.md#--1) 速记来代替 `JSON_UNQUOTE(JSON_EXTRACT(...))`。
 
 ```sql
 SELECT JSON_EXTRACT('{"database": "TiDB"}', '$.database');

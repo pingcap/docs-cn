@@ -17,7 +17,7 @@ summary: 了解验证 JSON 文档的函数。
 |---|---|---|
 | `type`                 | Any | 测试类型，如 `array`、`string` |
 | `enum`                 | Any | 测试某个值是否在指定的值数组中 |
-| `const`                | Any | 与 `enum` 相似，但只适用于一个值 |
+| `const`                | Any | 与 `enum` 相似，但只适用于单个值 |
 | `allOf`                | Any | 匹配所有指定的 schema |
 | `anyOf`                | Any | 匹配任意指定的 schema |
 | `multipleOf`           | `number`/`integer` | 测试值是否是指定值的倍数 |
@@ -30,7 +30,7 @@ summary: 了解验证 JSON 文档的函数。
 | `format`               | `string` | 测试字符串是否符合指定格式 |
 | `pattern`              | `string` | 测试字符串是否与模式匹配  |
 | `items`                | `array` | 适用于数组项的 schema |
-| `prefixItems`          | `array` | 适用于数组的位置项的 |
+| `prefixItems`          | `array` | 适用于数组的位置项的 schema |
 | `maxItems`             | `array` | 测试数组中的条目数是否不超过指定值 |
 | `minItems`             | `array` | 测试数组中的条目数是否至少为指定值 |
 | `uniqueItems`          | `array` | 测试数组中的项目是否唯一，`true`/`false`|
@@ -126,7 +126,7 @@ SELECT JSON_SCHEMA_VALID('{"required": ["fruits","vegetables"]}',@j);
 1 row in set (0.00 sec)
 ```
 
-在前面的输出中，可以看到，`fruits` 和 `vegetables` 的属性是存在的，验证成功了。
+在前面的输出中可以看到，`fruits` 和 `vegetables` 的属性是存在的，验证成功。
 
 ```sql
 SELECT JSON_SCHEMA_VALID('{"required": ["fruits","vegetables","grains"]}',@j);
@@ -141,7 +141,7 @@ SELECT JSON_SCHEMA_VALID('{"required": ["fruits","vegetables","grains"]}',@j);
 1 row in set (0.00 sec)
 ```
 
-在前面的输出中，可以看到验证 `fruits`、`vegetables` 和 `grains` 属性是否存在失败了，因为 `grains` 不存在。
+在前面的输出中可以看到验证 `fruits`、`vegetables` 和 `grains` 属性是否存在失败了，因为 `grains` 不存在。
 
 现在验证 `fruits` 是数组。
 
