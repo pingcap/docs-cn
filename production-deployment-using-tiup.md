@@ -66,7 +66,7 @@ aliases: ['/docs-cn/dev/production-offline-deployment-using-tiup/', '/zh/tidb/de
     tiup update --self && tiup update cluster
     ```
 
-    预期输出 `“Update successfully!”` 字样。
+    预期输出 `“Updated successfully!”` 字样。
 
 5. 验证当前 TiUP cluster 版本信息。执行如下命令查看 TiUP cluster 组件版本：
 
