@@ -32,7 +32,7 @@ TiDB 版本：8.2.0
     <td>HashAgg 是 TiDB 中常用的聚合算子，用于快速聚合具有相同字段值的行。TiDB v8.0.0 引入并行 HashAgg 作为实验特性，以进一步提升处理速度。当内存资源不足时，并行 HashAgg 可以将临时排序数据落盘，避免因内存使用过度而导致的 OOM 风险，从而提升查询性能和节点稳定性。该功能在 v8.2.0 成为正式功能，并默认开启，用户可以安全地设置并行 HashAgg 的并发度。</td>
   </tr>
   <tr>
-    <td><a href="https://docs.pingcap.com/zh/tidb/v8.2/tidb-configuration-file#stats-load-concurrency-从-v540-版本开始引入">统计信息加载效率提升 10 倍<!--tw@hfxsd--></td>
+    <td><a href="https://docs.pingcap.com/zh/tidb/v8.2/tidb-configuration-file#stats-load-concurrency-从-v540-版本开始引入">统计信息加载效率提升 10 倍</a><!--tw@hfxsd--></td>
     <td>对于拥有大量表和分区的集群，比如 SaaS 或 PaaS 服务，统计信息加载效率的提升能够解决 TiDB 实例启动缓慢的问题，从而减少由于统计信息加载失败造成的性能回退，提升集群的稳定性。</td>
   </tr>
   <tr>
