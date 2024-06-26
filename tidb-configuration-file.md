@@ -751,11 +751,11 @@ opentracing.reporter 相关的设置。
 + 默认值：60
 + 单位：秒
 
-### `enable-replica-selector-v2` <span class="version-mark">从 v8.0.0 版本开始引入</span>
+### `enable-replica-selector-v2`（已废弃）
 
 > **警告：**
 >
-> 该配置项可能会在未来版本中废弃，**不要修改该配置**。
+> 自 v8.2.0 起，该配置项已被废弃。
 
 + 用于控制给 TiKV 发送 RPC 请求时，是否使用新版本的 Region 副本选择器。
 + 默认值：true
