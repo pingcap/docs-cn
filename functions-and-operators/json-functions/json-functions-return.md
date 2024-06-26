@@ -70,7 +70,7 @@ SELECT JSON_LENGTH('{"weather": {"current": "sunny", "tomorrow": "cloudy"}}','$.
 
 ## [JSON_TYPE()](https://dev.mysql.com/doc/refman/8.0/en/json-attribute-functions.html#function_json-type)
 
-`JSON_TYPE(json_val)` 函数返回一个字符串，表示 [JSON 值的类型](/data-type-json.md#json-value-types)。
+`JSON_TYPE(json_val)` 函数返回一个字符串，表示 [JSON 值的类型](/data-type-json.md#json-值的类型)。
 
 示例：
 

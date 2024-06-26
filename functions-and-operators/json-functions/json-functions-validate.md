@@ -9,7 +9,7 @@ summary: 了解验证 JSON 文档的函数。
 
 ## [JSON_SCHEMA_VALID()](https://dev.mysql.com/doc/refman/8.0/en/json-validation-functions.html#function_json-schema-valid)
 
-`JSON_SCHEMA_VALID(schema, json_doc)` 函数根据 schema 验证 JSON 文档，确保数据的完整性和一致性。该函数可以与 [CHECK](/constraints.md#check) 约束一起使用，以便在修改表时自动进行 schema 验证。该函数遵循 [JSON Schema specification](https://json-schema.org/specification)。
+`JSON_SCHEMA_VALID(schema, json_doc)` 函数根据 schema 验证 JSON 文档，确保数据的完整性和一致性。该函数可以与 [CHECK](/constraints.md#check-约束) 约束一起使用，以便在修改表时自动进行 schema 验证。该函数遵循 [JSON Schema specification](https://json-schema.org/specification)。
 
 验证关键词如下：
 
