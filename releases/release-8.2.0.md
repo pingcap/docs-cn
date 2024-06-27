@@ -355,7 +355,13 @@ TiDB 版本：8.2.0
 - 修复了 `AUTH_SOCKET` 认证插件在某些情况下 [#54031](https://github.com/pingcap/tidb/issues/54031) @[lcwangchao](https://github.com/lcwangchao)
 - 修复了 JSON 相关的函数在某些情况下报错信息与 MySQL 不同的问题 [#53799](https://github.com/pingcap/tidb/issues/53799) @[dveeden](https://github.com/dveeden)
 - 修复了分区表在 `INFORMATION_SCHEMA.PARTITIONS` 中的 `INDEX_LENGTH` 列显示不正确的问题 [#54173](https://github.com/pingcap/tidb/issues/54173) @[Defined2014](https://github.com/Defined2014)
-
+- 修复了 `infomation_schema.tables` 中 `TIDB_ROW_ID_SHARDING_INFO` 输出错误的问题 [#52330](https://github.com/pingcap/tidb/issues/52330) @[tangenta](https://github.com/tangenta)
+- 修复了生成列输出非法时间戳的问题 [#52509](https://github.com/pingcap/tidb/issues/52509) @[lcwangchao](https://github.com/lcwangchao)
+- 修复了分布式加索引时设置 `max-index-length` 时 TiDB panic 问题 [#53281](https://github.com/pingcap/tidb/issues/53281) @[zimulala](https://github.com/zimulala)
+- 修复了意外创建非法的 `Decimal(0,0)` 列类型的问题
+ [#53779](https://github.com/pingcap/tidb/issues/53779) @[tangenta](https://github.com/tangenta)
+- 修复了使用 `current_date` 作为列默认值时，查询结果错误的问题
+ [#53746](https://github.com/pingcap/tidb/issues/53746) @[tangenta](https://github.com/tangenta)
 + TiKV
 
 - 修复不稳定测试用例 test_raw_put_key_guard [#16825](https://github.com/tikv/tikv/issues/16825) @[pingyu](https://github.com/pingyu)
@@ -416,10 +422,13 @@ TiDB 版本：8.2.0
         - note [#issue](链接) @[贡献者 GitHub ID](链接)
         - note [#issue](链接) @[贡献者 GitHub ID](链接)
         - (dup): release-7.5.2.md > 错误修复> Tools> TiDB Data Migration (DM) - 升级 `go-mysql` 以修复连接阻塞的问题 [#11041](https://github.com/pingcap/tiflow/issues/11041) @[D3Hunter](https://github.com/D3Hunter)
+        - 修复了在同步 MariaDB 数据时，`SET`语句导致的 panic 问题
+ [#10207](https://github.com/pingcap/tiflow/issues/10207) @[dveeden](https://github.com/dveeden)
 
     + TiDB Lightning
 
-        - note [#issue](链接) @[贡献者 GitHub ID](链接)
+        - 修复了 lightning 导入 zstd 压缩文件时遇到的并发问题
+ [#53587](https://github.com/pingcap/tidb/issues/53587) @[lance6716](https://github.com/lance6716)
         - note [#issue](链接) @[贡献者 GitHub ID](链接)
 
     + Dumpling
