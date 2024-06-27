@@ -34,7 +34,7 @@ TiDB 作为一款开源一栈式实时 HTAP 数据库，可以很好地部署和
 
     > **注意：**
     >
-    > - 根据 [CentOS Linux EOL](https://www.centos.org/centos-linux-eol/)，CentOS Linux 8 的上游支持已于 2021 年 12 月 31 日终止。[CentOS Stream 8 的上游支持](https://blog.centos.org/2023/04/end-dates-are-coming-for-centos-stream-8-and-centos-linux-7/) 已于 2024 年 5 月 31 日终止。CentOS 将继续提供对 CentOS Stream 9 的支持。
+    > - 根据 [CentOS Linux EOL](https://www.centos.org/centos-linux-eol/)，CentOS Linux 8 的上游支持已于 2021 年 12 月 31 日终止。[CentOS Stream 8 的上游支持](https://blog.centos.org/2023/04/end-dates-are-coming-for-centos-stream-8-and-centos-linux-7/)已于 2024 年 5 月 31 日终止。CentOS 将继续提供对 CentOS Stream 9 的支持。
     > - 根据 [CentOS Linux EOL](https://blog.centos.org/2023/04/end-dates-are-coming-for-centos-stream-8-and-centos-linux-7/)，CentOS Linux 7 的上游支持于 2024 年 6 月 30 日终止。TiDB 将在 8.5 LTS 版本结束对 CentOS 7 的支持，建议使用 Rocky Linux 9.1 及以上的版本。
 
 + 在以下操作系统以及对应的 CPU 架构组合上，你可以编译、构建和部署 TiDB，可使用 OLTP 和 OLAP 以及数据工具的基本功能。但是 TiDB **不保障企业级生产质量要求**：
