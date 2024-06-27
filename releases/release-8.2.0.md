@@ -414,7 +414,8 @@ TiDB 版本：8.2.0
 
     + TiCDC
 
-        - note [#issue](链接) @[贡献者 GitHub ID](链接)
+        - 修复 Grafana 监控中的 **Kafka Outgoing Bytes** 面板显示不准确的问题  [#10777](https://github.com/pingcap/tiflow/issues/10777) @[asddongmen](https://github.com/asddongmen)
+        - 修复在多节点环境下进行大量 Update 操作时，反复重启 Changefeed 可能导致的数据不一致问题。 [#11219](https://github.com/pingcap/tiflow/issues/11219) @[lidezhu](https://github.com/lidezhu)
         - note [#issue](链接) @[贡献者 GitHub ID](链接)
 
     + TiDB Data Migration (DM)
