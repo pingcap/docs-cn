@@ -54,6 +54,13 @@ TiProxy 有四个面板组。这些面板上的指标表示 TiProxy 的当前状
 - Backend Connections：每个 TiDB 实例和每个 TiProxy 实例之间的连接数。例如，`10.24.31.1:6000 | 10.24.31.2:4000` 表示 TiProxy 实例 `10.24.31.1:6000` 和 TiDB 实例 `10.24.31.2:4000`。
 - Session Migration OPM：每分钟发生的会话迁移数，记录从 TiDB 实例迁移到另一个 TiDB 实例的会话。例如，`succeed: 10.24.31.2:4000 => 10.24.31.3:4000` 表示从 TiDB 实例 `10.24.31.2:4000` 成功迁移到 TiDB 实例 `10.24.31.3:4000` 的会话数。
 - Session Migration Duration：会话迁移的平均、P95、P99 时长。
+- Session Migration Reasons：每分钟发生的会话迁移数，以及迁移的原因。原因包括：
+    - `status`：TiProxy 进行了[基于状态的负载均衡](/tiproxy/tiproxy-load-balance.md#基于状态的负载均衡)
+    - `health`：TiProxy 进行了[基于健康度的负载均衡](/tiproxy/tiproxy-load-balance.md#基于健康度的负载均衡)
+    - `memory`：TiProxy 进行了[基于内存的负载均衡](/tiproxy/tiproxy-load-balance.md#基于内存的负载均衡)
+    - `cpu`：TiProxy 进行了[基于 CPU 的负载均衡](/tiproxy/tiproxy-load-balance.md#基于-cpu-的负载均衡)
+    - `location`：TiProxy 进行了[基于地理位置的负载均衡](/tiproxy/tiproxy-load-balance.md#基于地理位置的负载均衡)
+    - `conn`：TiProxy 进行了[基于连接数的负载均衡](/tiproxy/tiproxy-load-balance.md#基于连接数的负载均衡)
 
 ## Backend
 
@@ -67,3 +74,4 @@ TiProxy 有四个面板组。这些面板上的指标表示 TiProxy 的当前状
 - Packets/Second from Backends：每个 TiDB 实例每秒向每个 TiProxy 实例发送的 MySQL 数据包数量。
 - Bytes/Second to Backends：每个 TiProxy 实例每秒向每个 TiDB 实例发送的数据量，单位为字节。
 - Packets/Second to Backends：每个 TiProxy 实例每秒向每个 TiDB 实例发送的 MySQL 数据包数量。
+- Cross Location Bytes/Second：每个 TiProxy 实例每秒与跨地理位置的 TiDB 实例之间传输的数据量，单位为字节。
