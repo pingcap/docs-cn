@@ -87,13 +87,13 @@ implementation group: 'org.bouncycastle', name: 'bcpkix-jdk15on', version: '1.67
 
 ### Java ORM 框架
 
+<SimpleTab>
+<div label="Hibernate">
+
 > **注意：**
 >
 > - Hibernate 当前[不支持嵌套事务](https://stackoverflow.com/questions/37927208/nested-transaction-in-spring-app-with-jpa-postgres)。
 > - TiDB 从 v6.2.0 版本开始支持 [Savepoint](/sql-statements/sql-statement-savepoint.md)。如需在 `@Transactional` 中使用 `Propagation.NESTED` 事务传播选项，即 `@Transactional(propagation = Propagation.NESTED)`，请确认你的 TiDB 版本为 v6.2.0 或以上。
-
-<SimpleTab>
-<div label="Hibernate">
 
 支持等级：**Full**
 
