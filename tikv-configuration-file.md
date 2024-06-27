@@ -742,7 +742,7 @@ raftstore 相关的配置项。
 
 > **警告：**
 >
-> 该功能目前为实验特性，不建议在生产环境中使用。该功能可能会在未事先通知的情况下发生变化或删除。如果发现 bug，请在 GitHub 上提 [issue](https://github.com/pingcap/tidb/issues) 反馈。
+> 当前版本中该变量控制的功能尚未完全生效，请保留默认值。
 
 + 允许 apply 已经 `commit` 但尚未持久化的 Raft 日志的最大数量。
 
