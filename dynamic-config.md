@@ -128,6 +128,7 @@ show warnings;
 | raftstore.raft-max-size-per-msg | 允许生成的单个消息包的大小，软限制 |
 | raftstore.raft-entry-max-size | 单个 Raft 日志最大大小，硬限制 |
 | raftstore.raft-entry-cache-life-time | 内存中日志 cache 允许的最长残留时间 |
+| raftstore.max-apply-unpersisted-log-limit | 允许 apply 已 commit 但尚未持久化的 Raft 日志的最大数量 |
 | raftstore.split-region-check-tick-interval | 检查 Region 是否需要分裂的时间间隔 |
 | raftstore.region-split-check-diff | 允许 Region 数据超过指定大小的最大值 |
 | raftstore.region-compact-check-interval | 检查是否需要人工触发 RocksDB compaction 的时间间隔 |
