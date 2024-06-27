@@ -193,11 +193,15 @@ tiup cluster display <cluster-name>
 | 10.0.1.6   | TSO   |
 | 10.0.1.7   | Scheduling   |
 
-## 微服务切换
+## 切换 PD 工作模式
+
+- 常规模式：在常规模式下， 由 PD 自身提供路由，时间戳分配和集群调度功能。
+- 微服务模式：该模式可将 PD 的时间戳分配和集群调度功能拆分成微服务单独部署，从而与 PD 的路由功能解耦，让 PD 专注于元数据的路由服务。
 
 > **注意：**
 >
-> 微服务切换期间会出现短暂的 PD 服务不可用的情况。
+> 切换期间会出现 PD 服务分钟级不可用的情况。
+
 
 ### 从非微服务模式切换为微服务模式
 
@@ -253,6 +257,8 @@ tiup cluster display <cluster-name>
     tiup cluster scale-out <cluster-name> scale-out.yml
     ```
 
+从第三步开始到第四步结束期间，整个授时服务不可用。
+
 ### 从微服务模式切换为非微服务模式
 
 对于已开启 PD 微服务的集群，假设该集群包含一个 IP 地址为 10.0.1.8 的 TSO 节点和一个 IP 地址为 10.0.1.9 的 Scheduling 节点，如需切换为非微服务模式，可以按照如下步骤进行操作。
@@ -288,3 +294,5 @@ tiup cluster display <cluster-name>
     ```shell
     tiup cluster reload <cluster-name> -R pd
     ```
+
+从第二步开始到第三步结束期间，整个授时服务不可用。
