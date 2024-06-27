@@ -4380,6 +4380,16 @@ EXPLAIN FORMAT='brief' SELECT COUNT(1) FROM t WHERE a = 1 AND b IS NOT NULL;
 - 可选值：`"ddl"`、`"stats"`、`"br"`、`"lightning"`、`"background"`
 - 显式指定当前会话的任务类型，用于[资源管控](/tidb-resource-control.md)识别并控制。如 `SET @@tidb_request_source_type = "background"`。
 
+### `tidb_resource_control_strict_mode` <span class="version-mark">从 v8.2.0 版本开始引入</span>
+
+- 作用域：GLOBAL
+- 是否持久化到集群：是
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：否
+- 类型：布尔型
+- 默认值：`ON`
+- 该变量是 [`SET RESOURCE GROUP`](/sql-statements/sql-statement-set-resource-group.md) 和优化器 [`RESOURCE_GROUP()`](/optimizer-hints.md#resource_groupresource_group_name) Hint 权限控制的开关。当此变量设置为 `ON` 时，你需要有 `SUPER` 或者 `RESOURCE_GROUP_ADMIN` 或者 `RESOURCE_GROUP_USER` 权限才能使用这两种方式修改当前会话或当前语句绑定的资源组；当此变量设置为 `OFF` 时，则无需上述权限，其行为与不支持此变量的 TiDB 之前版本相同。
+- 从旧版本升级到 v8.2.0 及之后版本时，该功能默认关闭，此时该变量默认值为 `OFF`。
+
 ### `tidb_retry_limit`
 
 - 作用域：SESSION | GLOBAL
