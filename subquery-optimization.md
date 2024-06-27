@@ -84,3 +84,9 @@ explain select * from t1 where exists (select * from t2);
 | └─TableFullScan_11     | 10000.00 | cop[tikv] | table:t1      | keep order:false, stats:pseudo |
 +------------------------+----------+-----------+---------------+--------------------------------+
 ```
+
+在上述优化中，优化器会自动优化语句执行。除以上情况外，你也可以在语句中添加 [`SEMI_JOIN_REWRITE`](/optimizer-hints.md#semi_join_rewrite) hint 进一步改写语句。
+
+如果不使用 `SEMI_JOIN_REWRITE` 进行改写，Semi Join 在选择 Hash Join 的执行方式时，只能够使用子查询构建哈希表，因此在子查询比外查询结果集大时，执行速度可能会不及预期。Semi Join 在选择 Index Join 的执行方式时，只能够使用外查询作为驱动表，因此在子查询比外查询结果集小时，执行速度可能会不及预期。
+
+使用 `SEMI_JOIN_REWRITE` 改写后，优化器便可以扩大选择范围，选择更好的执行方式。
