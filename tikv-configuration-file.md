@@ -739,7 +739,7 @@ raftstore 相关的配置项。
 + 默认值：30s
 + 最小值：0
 
-### `max-apply-unpersisted-log-limit` <span class="version-mark">从 v8.2.0 版本开始引入</span>
+### `max-apply-unpersisted-log-limit` <span class="version-mark">从 v8.1.0 版本开始引入</span>
 
 + 允许 apply 已经 `commit` 但尚未持久化的 Raft 日志的最大数量。
 
