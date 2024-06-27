@@ -740,12 +740,16 @@ raftstore 相关的配置项。
 
 ### `max-apply-unpersisted-log-limit` <span class="version-mark">从 v8.1.0 版本开始引入</span>
 
+> **警告：**
+>
+> 该功能目前为实验特性，不建议在生产环境中使用。该功能可能会在未事先通知的情况下发生变化或删除。如果发现 bug，请在 GitHub 上提 [issue](https://github.com/pingcap/tidb/issues) 反馈。
+
 + 允许 apply 已经 `commit` 但尚未持久化的 Raft 日志的最大数量。
 
     + 将此配置项设置为大于 0 的值将使该 TiKV 节点能够提前 apply 已 `commit` 但尚未持久化的 Raft 日志，从而有效降低该节点上因 IO 抖动导致的长尾延迟。但这也可能会增加 TiKV 内存使用量和 Raft 日志占用的磁盘容量。
-    + 将此配置项设置为 0 则表示关闭此特性，此时 TiKV 需要等待 Raft 日志被 `commit` 且持久化之后才能对其进行 apply，此行为与 v8.2.0 之前版本的行为一致。
+    + 将此配置项设置为 0 则表示关闭此特性，此时 TiKV 需要等待 Raft 日志被 `commit` 且持久化之后才能对其进行 apply，此默认行为与 v8.1.0 之前版本的行为一致。
 
-+ 默认值：1024
++ 默认值：0
 + 最小值：0
 
 ### `hibernate-regions`
