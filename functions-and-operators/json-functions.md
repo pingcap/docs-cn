@@ -12,8 +12,8 @@ summary: TiDB 支持 MySQL 8.0 中提供的大部分 JSON 函数。
 
 | 函数                                                              | 功能描述                                                   |
 | ------------------------------------------------------------------ | ---------------------------------------------------------- |
-| [JSON_ARRAY()](/functions-and-operators/json-functions/json-functions-create.md#json_array)   | 根据一系列元素创建一个 JSON 文档 |
-| [JSON_OBJECT()](/functions-and-operators/json-functions/json-functions-create.md#json_object) | 根据一系列 K/V 对创建一个 JSON 文档 |
+| [JSON_ARRAY()](/functions-and-operators/json-functions/json-functions-create.md#json_array)   | 根据一系列元素（也可以为空）创建一个 JSON 文档 |
+| [JSON_OBJECT()](/functions-and-operators/json-functions/json-functions-create.md#json_object) | 根据一系列 K/V 对（也可以为空）创建一个 JSON 文档 |
 | [JSON_QUOTE()](/functions-and-operators/json-functions/json-functions-create.md#json_quote)   | 返回一个字符串，该字符串为带引号的 JSON 值 |
 
 ## 搜索 JSON 值的函数
@@ -26,7 +26,7 @@ summary: TiDB 支持 MySQL 8.0 中提供的大部分 JSON 函数。
 | [->](/functions-and-operators/json-functions/json-functions-search.md#-)           | 返回执行路径后面的 JSON 列的值；`JSON_EXTRACT(doc, path_literal)` 的别名 |
 | [->>](/functions-and-operators/json-functions/json-functions-search.md#--1)       | 返回执行路径后面的 JSON 列的值和转义后的结果； `JSON_UNQUOTE(JSON_EXTRACT(doc, path_literal))` 的别名 |
 | [JSON_KEYS()](/functions-and-operators/json-functions/json-functions-search.md#json_keys)        | 返回从 JSON 对象的顶级值作为 JSON array 的键，如果给定了路径参数，则从选定路径中获取顶级键 |
-| [JSON_SEARCH()](/functions-and-operators/json-functions/json-functions-search.md#json_search)    | 返回指定字符在 JSON 文档中的路径                             |
+| [JSON_SEARCH()](/functions-and-operators/json-functions/json-functions-search.md#json_search)    | 在 JSON 文档中搜索字符串的一个或所有匹配项                             |
 | [MEMBER OF()](/functions-and-operators/json-functions/json-functions-search.md#member-of)         | 如果传入值是 JSON array 中的一个元素，返回 1，否则返回 0 |
 | [JSON_OVERLAPS()](/functions-and-operators/json-functions/json-functions-search.md#json_overlaps) | 表示两个 JSON 文档中是否包含公共部分。返回 1 表示两个 JSON 文档中包含公共部分，否则返回 0 |
 
@@ -41,9 +41,9 @@ summary: TiDB 支持 MySQL 8.0 中提供的大部分 JSON 函数。
 | [JSON_MERGE_PATCH()](/functions-and-operators/json-functions/json-functions-modify.md#json_merge_patch) | 通过修补或覆盖的方式将两个或多个 JSON 文档合并成一个文档 |
 | [JSON_MERGE_PRESERVE()](/functions-and-operators/json-functions/json-functions-modify.md#json_merge_preserve) | 通过保留所有值的方式将两个或多个 JSON 文档合并成一个文档，并返回合并结果 |
 | [JSON_MERGE()](/functions-and-operators/json-functions/json-functions-modify.md#json_merge)  | 已废弃，`JSON_MERGE_PRESERVE()` 的别名 |
-| [JSON_REMOVE()](/functions-and-operators/json-functions/json-functions-modify.md#json_remove)    | 移除 JSON 文档中某一路径下的子文档 |
-| [JSON_REPLACE()](/functions-and-operators/json-functions/json-functions-modify.md#json_replace)| 替换 JSON 文档中的某一路径下的子文档 |
-| [JSON_SET()](/functions-and-operators/json-functions/json-functions-modify.md#json_set)  | 在 JSON 文档中为某一路径设置子文档 |
+| [JSON_REMOVE()](/functions-and-operators/json-functions/json-functions-modify.md#json_remove)    | 移除 JSON 文档中某一路径下的子文档，并返回结果 |
+| [JSON_REPLACE()](/functions-and-operators/json-functions/json-functions-modify.md#json_replace)| 替换 JSON 文档中的某一路径下的子文档，并返回结果 |
+| [JSON_SET()](/functions-and-operators/json-functions/json-functions-modify.md#json_set)  | 在 JSON 文档中为某一路径设置子文档，并返回结果 |
 | [JSON_UNQUOTE()](/functions-and-operators/json-functions/json-functions-modify.md#json_unquote) |  去掉 JSON 值外面的引号，返回结果为字符串 |
 
 ## 返回 JSON 值属性的函数
@@ -53,14 +53,14 @@ summary: TiDB 支持 MySQL 8.0 中提供的大部分 JSON 函数。
 | [JSON_DEPTH()](/functions-and-operators/json-functions/json-functions-return.md#json_depth) | 返回 JSON 文档的最大深度 |
 | [JSON_LENGTH(json_doc[, path])](https://dev.mysql.com/doc/refman/8.0/en/json-attribute-functions.html#function_json-length) | 返回 JSON 文档的长度；如果路径参数已定，则返回该路径下值的长度 |
 | [JSON_TYPE()](/functions-and-operators/json-functions/json-functions-return.md#json_type)  | 检查某 JSON 文档内部内容的类型 |
-| [JSON_VALID()](/functions-and-operators/json-functions/json-functions-return.md#json_valid)  | 检查 JSON 文档内容是否有效；用于将列转换为 JSON 类型之前对该列进行检查 |
+| [JSON_VALID()](/functions-and-operators/json-functions/json-functions-return.md#json_valid)  | 检查 json\_doc 是否为有效的 JSON 文档  |
 
 ## 效用函数
 
 | 函数                     | 功能描述 |
 | --------------------------------- | ----------- |
 | [JSON_PRETTY()](/functions-and-operators/json-functions/json-functions-utility.md#json_pretty)  |格式化 JSON 文档 |
-| [JSON_STORAGE_FREE()](/functions-and-operators/json-functions/json-functions-utility.md#json_storage_free) | 返回该 JSON 对象的存储空间中空闲的字节数。由于 TiDB 采用与 MySQL 完全不同的存储结构，本函数对合法的 JSON 值总是返回 0，主要用于兼容 MySQL 8.0 |
+| [JSON_STORAGE_FREE()](/functions-and-operators/json-functions/json-functions-utility.md#json_storage_free) | 返回 JSON 值的在更新到位后释放了多少存储空间，以二进制表示。 |
 | [JSON_STORAGE_SIZE()](/functions-and-operators/json-functions/json-functions-utility.md#json_storage_size) | 返回存储 JSON 值所需的大致字节大小，由于不考虑 TiKV 压缩的字节大小，因此函数的输出与 MySQL 不严格兼容 |
 
 ## 聚合函数
