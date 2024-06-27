@@ -115,7 +115,7 @@ TiDB 版本：8.2.0
 
 * TiUP 支持部署 PD 微服务 [#5766](https://github.com/tikv/pd/issues/5766) @[rleungx](https://github.com/rleungx) **tw@qiancai** <!--1841-->
 
-     PD 从 v8.0.0 开始支持微服务模式。该模式通过将 PD 的时间戳分配和集群调度功能拆分为独立的服务进行部署和管理，可以更好地控制资源的使用和隔离，减少不同服务相互之间的影响。但是，在 v8.2.0 之前的版本中，PD 微服务仅支持通过 TiDB Operator 进行部署。
+    PD 从 v8.0.0 开始支持微服务模式。该模式通过将 PD 的时间戳分配和集群调度功能拆分为独立的服务进行部署和管理，可以更好地控制资源的使用和隔离，减少不同服务之间的相互影响。但是，在 v8.2.0 之前的版本中，PD 微服务仅支持通过 TiDB Operator 进行部署。
 
     从 v8.2.0 开始，PD 微服务支持通过 TiUP 进行部署。你可以在集群中单独部署 `tso` 微服务和 `scheduling` 微服务，从而实现 PD 的性能扩展，解决大规模集群下 PD 的性能瓶颈问题。当 PD 出现明显的性能瓶颈且无法升级配置的情况下，建议考虑使用该模式。
 
@@ -213,7 +213,7 @@ TiDB 版本：8.2.0
 * 以下为从 v8.2.0 开始已废弃的功能：
 
     * 从 v8.2.0 开始，TiDB 的配置项 `enable-replica-selector-v2` 被废弃。TiKV 发送 RPC 请求时，默认使用新版本的 Region 副本选择器。
-    * 从 v8.2.0 开始，BR 快照恢复参数 `--concurrency` 被废弃。作为替代，你可以通过 [`--tikv-max-restore-concurrency`](/use-br-command-line-tool#常用选项) 配置快照恢复阶段的单个 TiKV 节点的任务最大并发数。 **tw@qiancai** <!--1850-->
+    * 从 v8.2.0 开始，BR 快照恢复参数 `--concurrency` 被废弃。作为替代，你可以通过 [`--tikv-max-restore-concurrency`](/use-br-command-line-tool#常用选项) 配置快照恢复阶段单个 TiKV 节点的任务最大并发数。 **tw@qiancai** <!--1850-->
     * 从 v8.2.0 开始，BR 快照恢复参数 `--granularity` 被废弃，[粗粒度打散 Region 算法](/br/br-snapshot-guide.md#恢复快照备份数据)默认启用。**tw@qiancai** <!--1850-->
 
 * 以下为计划将在未来版本中废弃的功能：
@@ -282,9 +282,9 @@ TiDB 版本：8.2.0
 
     + Backup & Restore (BR)
 
-        - 优化备份功能，提升在大量表备份过程发生节点重启、扩容、网络抖动时的备份性能和稳定性 [#52534](https://github.com/pingcap/tidb/issues/52534) @[3pointer](https://github.com/3pointer) **tw@qiancai** <!--1844-->
+        - 优化备份功能，提升在大量表备份过程中遇到节点重启、扩容或网络抖动时的备份性能和稳定性 [#52534](https://github.com/pingcap/tidb/issues/52534) @[3pointer](https://github.com/3pointer) **tw@qiancai** <!--1844-->
         - 优化恢复过程中对 TiCDC Changefeed 的细粒度检查，如果 Changefeed 的 [CheckpointTS](/ticdc/ticdc-architecture.md#checkpointts) 晚于数据的备份时间，则不会影响恢复操作，从而减少不必要的等待时间，提升用户体验 [#53131](https://github.com/pingcap/tidb/issues/53131) @[YuJuncen](https://github.com/YuJuncen) **tw@qiancai** <!--1843-->
-        - 为 [`BACKUP`](/sql-statements/sql-statement-backup.md) 语句和 [`RESTORE`](sql-statements/sql-statement-restore.md) 语句添加了若干常用的参数选项，例如 `CHECKSUM_CONCURRENCY` [#53040](https://github.com/pingcap/tidb/issues/53040) @[RidRisR](https://github.com/RidRisR) **tw@qiancai** <!--1849-->
+        - 为 [`BACKUP`](/sql-statements/sql-statement-backup.md) 语句和 [`RESTORE`](sql-statements/sql-statement-restore.md) 语句添加了多个常用参数选项，例如 `CHECKSUM_CONCURRENCY` [#53040](https://github.com/pingcap/tidb/issues/53040) @[RidRisR](https://github.com/RidRisR) **tw@qiancai** <!--1849-->
         - 去掉在 `br log` 命令 除了 `br log restore` 之外子命令对 tidb `domain` 数据结构的载入, 降低内存消耗 [#52088](https://github.com/pingcap/tidb/issues/52088) @[Leavrth](https://github.com/Leavrth)
         - 对日志备份过程中临时落盘的文件做加密支持  [#15083](https://github.com/tikv/tikv/issues/15083) @[YuJuncen](https://github.com/YuJuncen)
         - 在 grafana 面板增加了 `tikv_log_backup_pending_initial_scan` [#16656](https://github.com/tikv/tikv/issues/16656) @[3pointer](https://github.com/3pointer)
