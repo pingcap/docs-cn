@@ -196,7 +196,7 @@ TiDB 版本：8.2.0
 
 * 以下为从 v8.2.0 开始已废弃的功能：
 
-    * 从 v8.2.0 开始，TiDB 的配置项 `enable-replica-selector-v2` 被废弃。TiKV 发送 RPC 请求时，默认使用新版本的 Region 副本选择器。
+    * 从 v8.2.0 开始，TiDB 的配置项 `enable-replica-selector-v2` 被废弃。向 TiKV 发送 RPC 请求时，默认使用新版本的 Region 副本选择器。
     * 从 v8.2.0 开始，BR 快照恢复参数 `--concurrency` 被废弃。作为替代，你可以通过 [`--tikv-max-restore-concurrency`](/use-br-command-line-tool#常用选项) 配置快照恢复阶段单个 TiKV 节点的任务最大并发数。 **tw@qiancai** <!--1850-->
     * 从 v8.2.0 开始，BR 快照恢复参数 `--granularity` 被废弃，[粗粒度打散 Region 算法](/br/br-snapshot-guide.md#恢复快照备份数据)默认启用。**tw@qiancai** <!--1850-->
 
