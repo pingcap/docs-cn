@@ -6,7 +6,26 @@ aliases: ['/docs-cn/dev/statistics/','/docs-cn/dev/reference/performance/statist
 
 # 常规统计信息
 
-TiDB 使用统计信息来决定[索引的选择](/choose-index.md)。本文介绍 TiDB 中常规统计信息的收集和使用。
+TiDB 使用统计信息作为优化器的输入，用来估算 SQL 语句中每个执行计划步骤处理的行数。优化器会估算每个可用执行计划的成本，包括[索引的选择](/choose-index.md)和表连接的顺序，并为每个可用执行计划生成成本。然后，优化器会选择总体成本最低的执行计划。
+
+## 收集统计信息
+
+### 自动更新
+
+对于 [`INSERT`](/sql-statements/sql-statement-insert.md)、[`DELETE`](/sql-statements/sql-statement-delete.md) 或 [`UPDATE`](/sql-statements/sql-statement-update.md) 语句，TiDB 会自动更新统计信息中表的总行数和修改的行数。
+
+TiDB 会定期持久化更新的统计信息，更新周期为 20 * [`stats-lease`](/tidb-configuration-file.md#stats-lease)。`stats-lease` 配置项的默认值为 `3s`，如果将其指定为 `0`，TiDB 将停止自动更新统计信息。
+
+TiDB 根据表的变更次数自动调度 [`ANALYZE`](/sql-statements/sql-statement-analyze-table.md) 来收集这些表的统计信息。统计信息的自动更新由 [`tidb_enable_auto_analyze`](/system-variables.md#tidb_enable_auto_analyze-从-v610-版本开始引入) 系统变量和以下 `tidb_auto_analyze%` 变量控制。
+
+
+
+
+### 手动收集
+
+
+
+--------------------------------------------
 
 ## 统计信息版本
 
@@ -18,17 +37,17 @@ Version 2 的统计信息避免了 Version 1 中因为哈希冲突导致的在�
 
 | 信息 | Version 1 | Version 2|
 | --- | --- | ---|
-| 表的总行数 | √ | √ |
-| 列的 Count-Min Sketch | √ | × |
-| 索引的 Count-Min Sketch | √ | × |
-| 列的 Top-N | √ | √（改善了维护方式和精度） |
-| 索引的 Top-N | √（维护精度不足，会产生较大误差） | √（改善了维护方式和精度） |
-| 列的直方图 | √ | √（直方图中不包含 Top-N 中出现的值） |
-| 索引的直方图 | √ | √（直方图的桶中记录了各自的不同值的个数，且直方图不包含 Top-N 中出现的值） |
-| 列的 NULL 值个数 | √ | √ |
-| 索引的 NULL 值个数 | √ | √ |
-| 列的平均长度 | √ | √ |
-| 索引的平均长度 | √ | √ |
+| 表的总行数 | ⎷ | ⎷ |
+| 列的 Count-Min Sketch | ⎷ | × |
+| 索引的 Count-Min Sketch | ⎷ | × |
+| 列的 Top-N | ⎷ | ⎷（改善了维护方式和精度） |
+| 索引的 Top-N | ⎷（维护精度不足，会产生较大误差） | ⎷（改善了维护方式和精度） |
+| 列的直方图 | ⎷ | ⎷（直方图中不包含 Top-N 中出现的值） |
+| 索引的直方图 | ⎷ | ⎷（直方图的桶中记录了各自的不同值的个数，且直方图不包含 Top-N 中出现的值） |
+| 列的 NULL 值个数 | ⎷ | ⎷ |
+| 索引的 NULL 值个数 | ⎷ | ⎷ |
+| 列的平均长度 | ⎷ | ⎷ |
+| 索引的平均长度 | ⎷ | ⎷ |
 
 当 `tidb_analyze_version = 2` 时，如果执行 ANALYZE 语句后发生 OOM，需要设置全局变量 `tidb_analyze_version = 1`，回退到 Version 1，然后根据情况进行以下操作：
 
