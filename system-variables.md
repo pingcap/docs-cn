@@ -1000,7 +1000,7 @@ MPP 是 TiFlash 引擎提供的分布式计算框架，允许节点之间的数�
 - 作用域：SESSION | GLOBAL
 - 是否持久化到集群：是
 - 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：否
-- 默认值："json,blob,mediumblob,longblob"
+- 默认值："json,blob,mediumblob,longblob,mediumtext,longtext"。在 v8.2.0 之前，默认值为 "json,blob,mediumblob,longblob"。
 - 可选值："json,blob,mediumblob,longblob,text,mediumtext,longtext"
 - 这个变量表示在执行 `ANALYZE` 命令收集统计信息时，跳过哪些类型的列的统计信息收集。该变量仅适用于 [`tidb_analyze_version = 2`](#tidb_analyze_version-从-v510-版本开始引入) 的情况。即使使用 `ANALYZE TABLE t COLUMNS c1, ..., cn` 语法指定列，如果指定的列的类型在 `tidb_analyze_skip_column_types` 中，也不会收集该列的统计信息。
 
