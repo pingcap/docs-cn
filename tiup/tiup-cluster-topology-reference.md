@@ -59,7 +59,7 @@ summary: 介绍通过 TiUP 部署或扩容 TiDB 集群时提供的拓扑文件�
     - 如果 `log_dir` 为相对路径，那么组件日志将放到 `<deploy_dir>/<log_dir>` 中，其中 `<deploy_dir>` 的计算规则请参考 `deploy_dir` 字段的应用规则
 - `os`：目标机器的操作系统，该字段决定了向目标机器推送适配哪个操作系统的组件，默认值：linux
 - `arch`：目标机器的 CPU 架构，该字段决定了向目标机器推送哪个平台的二进制包，支持 amd64 和 arm64，默认值：amd64
-- `pd_mode`：PD 启动模式。该字段控制是否启用 [PD 微服务](/pd-microservices.md)。取值选项为 "ms"。指定该参数代表启用 PD 微服务模式。
+- `pd_mode`：PD 工作模式。该字段控制是否启用 [PD 微服务](/pd-microservices.md)。取值选项为 "ms"。指定该参数代表启用 PD 微服务模式。
 - `resource_control`：运行时资源控制，该字段下所有配置都将写入 systemd 的 service 文件中，默认无限制。支持控制的资源如下：
     - `memory_limit`：限制运行时最大内存，例如 "2G" 表示最多使用 2GB 内存
     - `cpu_quota`：限制运行时最大 CPU 占用率，例如 "200%"

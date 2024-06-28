@@ -47,7 +47,7 @@ Flags:
       --pd.host host               指定 PD 的监听地址
       --pd.binpath string          指定 PD 二进制文件的位置（开发调试用，可忽略）
       --pd.config string           指定 PD 的配置文件（开发调试用，可忽略）
-      --pd.mode string             指定 PD 的启动模式，取值选项为 'ms'。指定该参数代表启用 PD 微服务模式。
+      --pd.mode string             指定 PD 的工作模式，取值选项为 'ms'。指定该参数代表启用 PD 微服务模式。
       --pump int                   设置集群中 Pump 节点的数量（非 0 的时候 TiDB 会开启 TiDB Binlog）
       --pump.binpath string        指定 Pump 二进制文件的位置（开发调试用，可忽略）
       --pump.config string         指定 Pump 的配置文件（开发调试用，可忽略）

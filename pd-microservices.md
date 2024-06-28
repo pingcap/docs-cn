@@ -50,7 +50,7 @@ PD 微服务支持通过 [TiDB Operator]((https://docs.pingcap.com/zh/tidb-in-ku
 - [部署 PD 微服务](https://docs.pingcap.com/zh/tidb-in-kubernetes/stable/configure-a-tidb-cluster#部署-pd-微服务)
 - [配置 PD 微服务](https://docs.pingcap.com/zh/tidb-in-kubernetes/stable/configure-a-tidb-cluster#配置-pd-微服务)
 - [修改 PD 微服务](https://docs.pingcap.com/zh/tidb-in-kubernetes/stable/modify-tidb-configuration#修改-pd-微服务配置)
-- [使用 TiDB Operator 扩容缩容开启微服务的集群](https://docs.pingcap.com/zh/tidb-in-kubernetes/stable/scale-a-tidb-cluster#扩缩容-pd-微服务组件)
+- [扩容缩容 PD 微服务组件](https://docs.pingcap.com/zh/tidb-in-kubernetes/stable/scale-a-tidb-cluster#扩缩容-pd-微服务组件)
 
 </div>
 <div label="TiUP">
