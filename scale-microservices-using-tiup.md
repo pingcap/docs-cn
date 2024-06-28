@@ -1,9 +1,9 @@
 ---
-title: 使用 TiUP 扩容缩容集群中的 PD 微服务节点
+title: 使用 TiUP 扩容缩容 PD 微服务节点
 summary: 介绍如何使用 TiUP 扩容缩容集群中的 PD 微服务节点，以及如何切换 PD 工作模式。
 ---
 
-# 使用 TiUP 扩容缩容集群中的 PD 微服务节点
+# 使用 TiUP 扩容缩容 PD 微服务节点
 
 本文介绍如何使用 TiUP 扩容缩容集群中的 [PD 微服务](pd-microservices.md)节点（包括 TSO 节点和 Scheduling 节点），以及如何切换 PD 工作模式。
 
@@ -195,7 +195,7 @@ tiup cluster display <cluster-name>
 
 ## 切换 PD 工作模式
 
-PD 支持在以下两种工作模式之间进行切换：
+PD 服务支持在以下两种工作模式之间进行切换：
 
 - 常规模式：由 PD 节点自身提供路由、时间戳分配和集群调度功能。
 - 微服务模式：支持将 PD 的时间戳分配和集群调度功能单独部署到 TSO 节点（提供 `tso` 微服务）和 Scheduling 节点 （提供 `scheduling` 微服务），从而与 PD 的路由功能解耦，让 PD 专注于元数据的路由服务。
@@ -252,15 +252,15 @@ PD 支持在以下两种工作模式之间进行切换：
     tiup cluster reload <cluster-name> -R pd
     ```
 
+   > **注意：**
+    >
+    > 从该步骤中的 `reload` 命令开始执行到下一步的 `scale-out` 命令执行结束期间，PD 时间戳分配服务将不可用。
+
 4. 扩容 PD 微服务节点：
 
     ```shell
     tiup cluster scale-out <cluster-name> scale-out.yml
     ```
-
-> **注意：**
->
-> 以上步骤中，从这 3 步开始执行到第 4 步执行结束期间，PD 时间戳分配服务不可用。
 
 ### 从微服务模式切换为常规模式
 
@@ -292,12 +292,12 @@ PD 支持在以下两种工作模式之间进行切换：
     tiup cluster scale-in <cluster-name> --node 10.0.1.8:3379,10.0.1.9:3379
     ```
 
+    > **注意：**
+    >
+    > 从该步骤中的 `scale-in` 命令开始执行到下一步的 `reload` 命令执行结束期间，PD 时间戳分配服务将不可用。
+
 3. 滚动更新 PD 节点配置：
 
     ```shell
     tiup cluster reload <cluster-name> -R pd
     ```
-
-> **注意：**
->
-> 以上步骤中，从这 2 步开始执行到第 3 步执行结束期间，PD 时间戳分配服务不可用。

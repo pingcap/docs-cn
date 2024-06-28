@@ -58,7 +58,7 @@ PD 微服务支持通过 [TiDB Operator]((https://docs.pingcap.com/zh/tidb-in-ku
 对于通过 TiUP 部署的 TiDB 集群，PD 微服务详细使用方法请参考以下文档：
 
 - [部署 PD 微服务](/pd-microservices-deployment-topology.md)
-- [使用 TiUP 扩容缩容开启微服务的集群](/scale-microservices-using-tiup.md)
+- [扩容缩容 PD 微服务节点](/scale-microservices-using-tiup.md)
 - 配置 `tso` 微服务 
     - [通过配置文件配置](/tso-configuration-file.md)
     - [通过命令行参数配置](/command-line-flags-for-tso-configuration.md)

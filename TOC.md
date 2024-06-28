@@ -324,7 +324,7 @@
   - [DDL 执行原理及最佳实践](/ddl-introduction.md)
   - PD 微服务使用文档
     - [PD 微服务概览](/pd-microservices.md)
-    - [使用 TiUP 扩容缩容集群中的 PD 微服务节点](/scale-microservices-using-tiup.md)
+    - [使用 TiUP 扩容缩容 PD 微服务节点](/scale-microservices-using-tiup.md)
     - [TSO 配置文件描述](/tso-configuration-file.md)
     - [TSO 配置参数](/command-line-flags-for-tso-configuration.md)
     - [Scheduling 配置文件描述](/scheduling-configuration-file.md)
