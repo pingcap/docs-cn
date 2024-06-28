@@ -233,7 +233,8 @@ TiDB 版本：8.2.0
     - 将 `token-limit` 的最大值设置为 1048576, 避免设置过大导致 TiDB-Server OOM [#53312](https://github.com/pingcap/tidb/issues/53312) @[djshow832](https://github.com/djshow832)
     - 将 tls 配置项 `InsecureSkipVerify` 设置为 false，打开后客户端将要求服务器证书中的 CN 与客户端期望的主机名匹配 [#53358](https://github.com/pingcap/tidb/pull/53358) @[lance6716](https://github.com/lance6716)
     - 改进了对于 MPP 执行计划的列裁剪功能，以提升 TiFlash MPP 的执行性能 [#52133](https://github.com/pingcap/tidb/issues/52133) @[yibin87](https://github.com/yibin87)
-    -
+    - 优化 `IndexLookUp` 算子在回表数据量较多（大于 1024 行）时的性能开销 [#53871](https://github.com/pingcap/tidb/issues/53871) @[crazycs520](https://github.com/crazycs520)
+
 + TiKV
 
     - 支持 json_merge_patch 函数下推到 TiKV [#16770](https://github.com/tikv/tikv/issues/16770) @[dbsid](https://github.com/dbsid)
@@ -336,6 +337,7 @@ TiDB 版本：8.2.0
     - 修复 gRPC source duration 在监控中显示错误的问题 [#17133](https://github.com/tikv/tikv/issues/17133) @[King-Dylan](https://github.com/King-Dylan)
     - 修复 gRPC 设置压缩方式对 TiKV 发送到 TiDB 的消息不起作用的问题 [#17176](https://github.com/tikv/tikv/issues/17176) @[ekexium](https://github.com/ekexium)
     - (dup): release-7.5.2.md > 错误修复> TiKV - 修复 tikv-ctl 的 `raft region` 命令的输出中未包含 Region 状态信息的问题 [#17037](https://github.com/tikv/tikv/issues/17037) @[glorv](https://github.com/glorv)
+    -  修复 CDC 和 log-backup 没有用 `advance-ts-interval` 配置限制 `check_leader` 的 timeout 的问题，这在一些情况下可能导致 TiKV 正常重启时 resolved ts lag 过大 [#17107](https://github.com/tikv/tikv/issues/17107) @[MyonKeminta](https://github.com/MyonKeminta)
 
 
 + PD
