@@ -5,7 +5,7 @@ summary: 介绍如何使用 TiUP 扩容缩容集群中的 PD 微服务节点，�
 
 # 使用 TiUP 扩容缩容 PD 微服务节点
 
-本文介绍如何使用 TiUP 扩容缩容集群中的 [PD 微服务](pd-microservices.md)节点（包括 TSO 节点和 Scheduling 节点），以及如何切换 PD 工作模式。
+本文介绍如何使用 TiUP 扩容缩容集群中的 [PD 微服务](/pd-microservices.md)节点（包括 TSO 节点和 Scheduling 节点），以及如何切换 PD 工作模式。
 
 你可以通过 `tiup cluster list` 查看当前的集群名称列表。
 
