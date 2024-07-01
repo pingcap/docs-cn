@@ -213,19 +213,16 @@ TiDB 版本：8.2.0
 ## 改进提升
 
 + TiDB <!--tw@hfxsd: 13 条-->
-    - 支持并行执行[逻辑 DDL 语句 (General DDL) ](ddl-introduction#ddl-语句类型简介)，在使用 10 个会话并发提交不同 DDL 语句的场景下，相比 v8.1.0 有 3~6 倍的性能提升[#53246](https://github.com/pingcap/tidb/issues/53246) @[D3Hunter](https://github.com/D3Hunter)
-    - 改进形如 `((a = 1 and b = 2 and c > 3) or (a = 4 and b = 5 and c > 6)) and d > 3` 的表达式匹配多列索引的逻辑，使其能生成更加精准的 `Range`。 [#41598](https://github.com/pingcap/tidb/issues/41598) @[ghazalfamilyusa](https://github.com/ghazalfamilyusa)
-    - 支持在 DML 语句的 SELECT 子句中使用查询范围生效的 Optimizer Hints。 [#53834](https://github.com/pingcap/tidb/issues/53834) @[qw4990](https://github.com/qw4990)
-    - 改进形如 `(a, b) > (1, 2)` 的表达式的处理机制，使其能够生成对应索引上的 `Range`。 [#41598](https://github.com/pingcap/tidb/issues/41598) @[elsa0520](https://github.com/elsa0520)
-    - 当 SQL 满足特定条件时，支持在内表包含 Aggregation 时使用 Index Join。 [#37068](https://github.com/pingcap/tidb/issues/37068) @[elsa0520](https://github.com/elsa0520)
+    - 支持并行执行[逻辑 DDL 语句 (General DDL)](/ddl-introduction.md#ddl-语句类型简介)。相比 v8.1.0，在使用 10 个会话并发提交不同 DDL 语句的场景下，性能有 3~6 倍的提升 [#53246](https://github.com/pingcap/tidb/issues/53246) @[D3Hunter](https://github.com/D3Hunter)
+    - 改进形如 `((a = 1 and b = 2 and c > 3) or (a = 4 and b = 5 and c > 6)) and d > 3` 的表达式匹配多列索引的逻辑，使其能生成更加精准的 `Range` [#41598](https://github.com/pingcap/tidb/issues/41598) @[ghazalfamilyusa](https://github.com/ghazalfamilyusa)
     - 优化对大数据量的表进行简单查询时获取数据分布信息的性能 [#53850](https://github.com/pingcap/tidb/issues/53850) @[you06](https://github.com/you06)  **tw@Oreoxmt** <!--1561-->
     - 聚合的结果集能够作为 IndexJoin 的内表，使更多的复杂查询可以匹配到 IndexJoin，从而可以通过索引提升查询效率 [#37068](https://github.com/pingcap/tidb/issues/37068) @[elsa0520](https://github.com/elsa0520) **tw@hfxsd** <!--1510-->
-    - 通过批量删除 TiFlash placement rule 的方式，提升 truncate、 drop 分区表后数据 GC 的处理速度 [#54068](https://github.com/pingcap/tidb/issues/54068) @[Lloyd-Pottiger](https://github.com/Lloyd-Pottiger)
-    - 增加了创建用户时对选项 `PASSWORD REQUIRE CURRENT DEFAULT` 的支持 [#53305](https://github.com/pingcap/tidb/issues/53305) @[https://github.com/dveeden](dveeden)
-    - 升级第三方库 Azure 的版本，增强了安全性 [#53990](https://github.com/pingcap/tidb/issues/53990) @[hawkingrei](https://github.com/hawkingrei)
-    - 将 `token-limit` 的最大值设置为 1048576, 避免设置过大导致 TiDB-Server OOM [#53312](https://github.com/pingcap/tidb/issues/53312) @[djshow832](https://github.com/djshow832)
-    - 将 tls 配置项 `InsecureSkipVerify` 设置为 false，打开后客户端将要求服务器证书中的 CN 与客户端期望的主机名匹配 [#53358](https://github.com/pingcap/tidb/pull/53358) @[lance6716](https://github.com/lance6716)
-    - 改进了对于 MPP 执行计划的列裁剪功能，以提升 TiFlash MPP 的执行性能 [#52133](https://github.com/pingcap/tidb/issues/52133) @[yibin87](https://github.com/yibin87)
+    - 通过批量删除 TiFlash placement rule 的方式，提升对分区表执行 `TRUNCATE`、`DROP` 后数据 GC 的处理速度 [#54068](https://github.com/pingcap/tidb/issues/54068) @[Lloyd-Pottiger](https://github.com/Lloyd-Pottiger)
+    - 创建用户的 SQL 语句 `CREATE USER` 支持 `PASSWORD REQUIRE CURRENT DEFAULT` 选项，以和 MySQL 兼容 [#53305](https://github.com/pingcap/tidb/issues/53305) @[https://github.com/dveeden](dveeden)
+    - 升级第三方库 Azure 的版本，增强安全性 [#53990](https://github.com/pingcap/tidb/issues/53990) @[hawkingrei](https://github.com/hawkingrei)
+    - 将 `token-limit` 的最大值设置为 `1048576`，避免设置过大导致 TiDB Server OOM [#53312](https://github.com/pingcap/tidb/issues/53312) @[djshow832](https://github.com/djshow832)
+    - 将 TLS 配置项 `InsecureSkipVerify` 设置为 `false`，打开后客户端将要求服务器证书中的 CN 与客户端期望的主机名匹配 [#53357](https://github.com/pingcap/tidb/issues/53357) @[lance6716](https://github.com/lance6716)
+    - 改进对于 MPP 执行计划的列裁剪功能，以提升 TiFlash MPP 的执行性能 [#52133](https://github.com/pingcap/tidb/issues/52133) @[yibin87](https://github.com/yibin87)
     - 优化 `IndexLookUp` 算子在回表数据量较多（大于 1024 行）时的性能开销 [#53871](https://github.com/pingcap/tidb/issues/53871) @[crazycs520](https://github.com/crazycs520)
     - (dup): release-6.5.10.md > 改进提升> TiDB - 在 MPP 负载均衡时移除不包含任何 Region 的 Store [#52313](https://github.com/pingcap/tidb/issues/52313) @[xzhangxian1008](https://github.com/xzhangxian1008)
 
@@ -249,7 +246,7 @@ TiDB 版本：8.2.0
 + TiFlash <!--tw@hfxsd: 5 条-->
 
     - 减少数据高并发读取下的锁冲突，优化短查询性能 [#9125](https://github.com/pingcap/tiflash/issues/9125) @[JinheLin](https://github.com/JinheLin)
-    - 升级默认编译工具链到 llvm 17 [#7193](https://github.com/pingcap/tiflash/issues/7193) @[Lloyd-Pottiger](https://github.com/Lloyd-Pottiger)
+    - 升级默认编译工具链到 LLVM 17 [#7193](https://github.com/pingcap/tiflash/issues/7193) @[Lloyd-Pottiger](https://github.com/Lloyd-Pottiger)
     - 消除 `Join` 算子中对于 Join Key 的冗余拷贝 [#9057](https://github.com/pingcap/tiflash/issues/9057) @[gengliqi](https://github.com/gengliqi)
     - 将 `HashAgg` 算子中转换两级哈希表的过程并行化 [#8956](https://github.com/pingcap/tiflash/issues/8956) @[gengliqi](https://github.com/gengliqi)
     - 为 `HashAgg` 算子移除冗余的聚合函数以减少计算开销 [#8891](https://github.com/pingcap/tiflash/issues/8891) @[guo-shaoge](https://github.com/guo-shaoge)
@@ -320,6 +317,8 @@ TiDB 版本：8.2.0
     - 修复 `AUTO_ID_CACHE=1` 时，单条语句插入多行导致 `AUTO_INCREMENT` 列不连续的问题 [#52465](https://github.com/pingcap/tidb/issues/52465) @[tiancaiamao](https://github.com/tiancaiamao)
     - 修复弃用警告的格式 [#52515](https://github.com/pingcap/tidb/issues/52515) @[dveeden](https://github.com/dveeden)
     - 修复 `TRACE` 命令在 `copr.buildCopTasks` 中丢失的问题 [#53085](https://github.com/pingcap/tidb/issues/53085) @[time-and-fate](https://github.com/time-and-fate)
+    - 修复包含 `memory_quota` 的绑定在子查询中可能不生效的问题 [#53834](https://github.com/pingcap/tidb/issues/53834) @[qw4990](https://github.com/qw4990)
+    - 修复在某些情况下，元数据锁使用不当可能导致使用 plan cache 时写入异常数据的问题 [#53634](https://github.com/pingcap/tidb/issues/53634) @[zimulala](https://github.com/zimulala)
 
 + TiKV <!--tw@lilin90: 以下 8 条-->
 
@@ -346,7 +345,7 @@ TiDB 版本：8.2.0
     - (dup): release-7.5.2.md > 错误修复> TiFlash - 修复在含空分区的分区表上执行查询时，可能会超时的问题 [#9024](https://github.com/pingcap/tiflash/issues/9024) @[JinheLin](https://github.com/JinheLin)
     - (dup): release-7.5.2.md > 错误修复> TiFlash - 修复在存算分离架构下，DDL 新增带有 not null 属性的列后，查询可能返回错误的 null 值的问题 [#9084](https://github.com/pingcap/tiflash/issues/9084) @[Lloyd-Pottiger](https://github.com/Lloyd-Pottiger)
     - (dup): release-6.5.10.md > 错误修复> TiFlash - 修复函数 `SUBSTRING_INDEX()` 可能导致 TiFlash Crash 的问题 [#9116](https://github.com/pingcap/tiflash/issues/9116) @[wshwsh12](https://github.com/wshwsh12)
-    - 修复通过 br 或 tidb-lightning 导入数据后， FastScan 模式下可能读到大量重复数据的问题 [#9118](https://github.com/pingcap/tiflash/issues/9118) @[JinheLin](https://github.com/JinheLin)
+    - 修复通过 br 或 TiDB Lightning 导入数据后，FastScan 模式下可能读到大量重复数据的问题 [#9118](https://github.com/pingcap/tiflash/issues/9118) @[JinheLin](https://github.com/JinheLin)
 
 + Tools
 
@@ -364,8 +363,8 @@ TiDB 版本：8.2.0
 
     + TiCDC <!--tw@hfxsd: 2 条-->
 
-        - 修复 Grafana 监控中的 **Kafka Outgoing Bytes** 面板显示不准确的问题  [#10777](https://github.com/pingcap/tiflow/issues/10777) @[asddongmen](https://github.com/asddongmen)
-        - 修复在多节点环境下进行大量 Update 操作时，反复重启 Changefeed 可能导致的数据不一致问题。 [#11219](https://github.com/pingcap/tiflow/issues/11219) @[lidezhu](https://github.com/lidezhu)
+        - 修复 Grafana 监控中的 **Kafka Outgoing Bytes** 面板显示不准确的问题 [#10777](https://github.com/pingcap/tiflow/issues/10777) @[asddongmen](https://github.com/asddongmen)
+        - 修复在多节点环境下进行大量 `UPDATE` 操作时，反复重启 Changefeed 可能导致的数据不一致问题 [#11219](https://github.com/pingcap/tiflow/issues/11219) @[lidezhu](https://github.com/lidezhu)
 
     + TiDB Data Migration (DM) <!--tw@Oreoxmt: 1 条-->
 
