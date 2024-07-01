@@ -184,7 +184,7 @@ mysql> SHOW WARNINGS;
 
 ### 通过 `Statements Summary` 诊断
 
-在 `Statements Summary` 表中包含有 `plan_cache_unqualified` 和 ` plan_cache_unqualified_last_reason` 两个字段，分别表示对应查询无法使用 Plan Cache 的次数和原因，可以通过这两个字段来进行诊断：
+在 `Statements Summary` 表中包含有 `plan_cache_unqualified` 和 `plan_cache_unqualified_last_reason` 两个字段，分别表示对应查询无法使用 Plan Cache 的次数和原因，可以通过这两个字段来进行诊断：
 
 ```sql
 mysql> SELECT digest_text, plan_cache_unqualified,  plan_cache_unqualified_last_reason FROM information_schema.statements_summary WHERE plan_cache_unqualified > 0 ORDER BY plan_cache_unqualified DESC
