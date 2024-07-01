@@ -20,7 +20,7 @@ Event 分为三类：
 使用 `Canal-JSON` 时的配置样例如下所示：
 
 ```shell
-cdc cli changefeed create --server=http://127.0.0.1:8300 --changefeed-id="kafka-canal-json" --sink-uri="kafka://127.0.0.1:9092/topic-name?kafka-version=2.4.0&protocol=canal-json"
+cdc cli changefeed create --server=http://127.0.0.1:8300 --changefeed-id="kafka-canal-json" --sink-uri="kafka://127.0.0.1:9092/topic-name?kafka-version=${kafka_version}&protocol=canal-json"
 ```
 
 ## TiDB 扩展字段
@@ -33,7 +33,7 @@ Canal-JSON 协议本是为 MySQL 设计的，其中并不包含 TiDB 专有的 C
 配置样例如下所示：
 
 ```shell
-cdc cli changefeed create --server=http://127.0.0.1:8300 --changefeed-id="kafka-canal-json-enable-tidb-extension" --sink-uri="kafka://127.0.0.1:9092/topic-name?kafka-version=2.4.0&protocol=canal-json&enable-tidb-extension=true"
+cdc cli changefeed create --server=http://127.0.0.1:8300 --changefeed-id="kafka-canal-json-enable-tidb-extension" --sink-uri="kafka://127.0.0.1:9092/topic-name?kafka-version=${kafka_version}&protocol=canal-json&enable-tidb-extension=true"
 ```
 
 ## Message 格式定义
