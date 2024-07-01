@@ -213,7 +213,7 @@ TiDB 版本：8.2.0
 ## 改进提升
 
 + TiDB <!--tw@hfxsd: 13 条-->
-
+    - 支持并行执行[逻辑 DDL 语句 (General DDL) ](ddl-introduction#ddl-语句类型简介)，在使用 10 个会话并发提交不同 DDL 语句的场景下，相比 v8.1.0 有 3~6 倍的性能提升[#53246](https://github.com/pingcap/tidb/issues/53246) @[D3Hunter](https://github.com/D3Hunter)
     - 改进形如 `((a = 1 and b = 2 and c > 3) or (a = 4 and b = 5 and c > 6)) and d > 3` 的表达式匹配多列索引的逻辑，使其能生成更加精准的 `Range`。 [#41598](https://github.com/pingcap/tidb/issues/41598) @[ghazalfamilyusa](https://github.com/ghazalfamilyusa)
     - 支持在 DML 语句的 SELECT 子句中使用查询范围生效的 Optimizer Hints。 [#53834](https://github.com/pingcap/tidb/issues/53834) @[qw4990](https://github.com/qw4990)
     - 改进形如 `(a, b) > (1, 2)` 的表达式的处理机制，使其能够生成对应索引上的 `Range`。 [#41598](https://github.com/pingcap/tidb/issues/41598) @[elsa0520](https://github.com/elsa0520)
@@ -228,7 +228,6 @@ TiDB 版本：8.2.0
     - 改进了对于 MPP 执行计划的列裁剪功能，以提升 TiFlash MPP 的执行性能 [#52133](https://github.com/pingcap/tidb/issues/52133) @[yibin87](https://github.com/yibin87)
     - 优化 `IndexLookUp` 算子在回表数据量较多（大于 1024 行）时的性能开销 [#53871](https://github.com/pingcap/tidb/issues/53871) @[crazycs520](https://github.com/crazycs520)
     - (dup): release-6.5.10.md > 改进提升> TiDB - 在 MPP 负载均衡时移除不包含任何 Region 的 Store [#52313](https://github.com/pingcap/tidb/issues/52313) @[xzhangxian1008](https://github.com/xzhangxian1008)
-* 支持并行执行[逻辑 DDL 语句 (General DDL) ](ddl-introduction#ddl-语句类型简介)，在使用 10 个会话并发提交不同 DDL 语句的场景下，相比 v8.1.0 有 3~6 倍的性能提升[#53246](https://github.com/pingcap/tidb/issues/53246) @[D3Hunter](https://github.com/D3Hunter)
 
 + TiKV <!--tw@lilin90: 9 条-->
 
