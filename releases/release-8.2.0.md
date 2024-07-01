@@ -274,14 +274,14 @@ TiDB 版本：8.2.0
 
 + TiDB <!--tw@qiancai: 以下 9 条-->
 
-    - 修复 SQL 中包含 outer join，且 join 条件包含形如 `false IN (column_name)` 的表达式时，查询结果缺少部分数据的问题。 [#49476](https://github.com/pingcap/tidb/issues/49476) @[ghazalfamilyusa](https://github.com/ghazalfamilyusa)
-    - 在统计表的 `PREDICATE COLUMNS` 使用情况时，不再收集系统表的信息。 [#53403](https://github.com/pingcap/tidb/issues/53403) @[hi-rustin](https://github.com/hi-rustin)
-    - 修复 `tidb_persist_analyze_options` 关闭时可能导致 `tidb_enable_column_tracking` 无法工作的问题。 [#53478](https://github.com/pingcap/tidb/issues/53478) @[hi-rustin](https://github.com/hi-rustin)
-    - 修复 `(*PointGetPlan).StatsInfo()` 可能出现 DATA RACE 的问题。 [#49803](https://github.com/pingcap/tidb/issues/49803) [#43339](https://github.com/pingcap/tidb/issues/43339) @[qw4990](https://github.com/qw4990)
-    - 修复在已有写入的事务中查询带有虚拟列的表时，查询结果可能错误的问题。 [#53951](https://github.com/pingcap/tidb/issues/53951) @[qw4990](https://github.com/qw4990)
-    - 修复 `tidb_enable_async_merge_global_stats` 和 `tidb_analyze_partition_concurrency` 在自动分析无法生效的问题。 [#53972](https://github.com/pingcap/tidb/issues/53972) @[hi-rustin](https://github.com/hi-rustin)
-    - 修复查询 TABLESAMPLE 时可能报错“plan not supported”的问题。 [#54015](https://github.com/pingcap/tidb/issues/54015) @[tangenta](https://github.com/tangenta)
-    - 修复形如 `SELECT DISTINCT CAST(col AS DECIMAL), CAST(col AS SIGNED) FROM ...` 的 SQL 查询结果出错的问题。 [#53726](https://github.com/pingcap/tidb/issues/53726) @[hawkingrei](https://github.com/hawkingrei)
+    - 修复当 SQL 语句包含 Outer Join，且 Join 条件包含 `false IN (column_name)` 表达式时，查询结果缺少部分数据的问题 [#49476](https://github.com/pingcap/tidb/issues/49476) @[ghazalfamilyusa](https://github.com/ghazalfamilyusa)
+    - 在收集表中 `PREDICATE COLUMNS` 的统计信息时，不再收集系统表中列的统计信息 [#53403](https://github.com/pingcap/tidb/issues/53403) @[hi-rustin](https://github.com/hi-rustin)
+    - 修复系统变量 `tidb_persist_analyze_options` 为 `OFF` 时，系统变量 `tidb_enable_column_tracking` 未生效的问题 [#53478](https://github.com/pingcap/tidb/issues/53478) @[hi-rustin](https://github.com/hi-rustin)
+    - 修复在 `(*PointGetPlan).StatsInfo()` 执行过程中可能遇到数据竞争的问题 [#49803](https://github.com/pingcap/tidb/issues/49803) [#43339](https://github.com/pingcap/tidb/issues/43339) @[qw4990](https://github.com/qw4990)
+    - 修复在包含数据修改操作的事务中查询带有虚拟列的表时，查询结果可能错误的问题 [#53951](https://github.com/pingcap/tidb/issues/53951) @[qw4990](https://github.com/qw4990)
+    - 修复在自动收集统计信息时，系统变量 `tidb_enable_async_merge_global_stats` 和 `tidb_analyze_partition_concurrency` 未生效的问题 [#53972](https://github.com/pingcap/tidb/issues/53972) @[hi-rustin](https://github.com/hi-rustin)
+    - 修复查询 `TABLESAMPLE` 时可能遇到 `plan not supported` 报错的问题 [#54015](https://github.com/pingcap/tidb/issues/54015) @[tangenta](https://github.com/tangenta)
+    - 修复执行 `SELECT DISTINCT CAST(col AS DECIMAL), CAST(col AS SIGNED) FROM ...` 查询时结果出错的问题 [#53726](https://github.com/pingcap/tidb/issues/53726) @[hawkingrei](https://github.com/hawkingrei)
     - 修复在客户端读取数据超时后查询无法被终止的问题 [#44009](https://github.com/pingcap/tidb/issues/44009) @[wshwsh12](https://github.com/wshwsh12)  **tw@Oreoxmt** <!--1636-->
     - (dup): release-6.5.10.md > 错误修复> TiDB - 修复 `Longlong` 类型在谓词中溢出的问题 [#45783](https://github.com/pingcap/tidb/issues/45783) @[hawkingrei](https://github.com/hawkingrei)
     - (dup): release-7.1.5.md > 错误修复> TiDB - 修复窗口函数中有某些子查询时可能会 panic 的问题 [#42734](https://github.com/pingcap/tidb/issues/42734) @[hi-rustin](https://github.com/hi-rustin)
@@ -356,7 +356,7 @@ TiDB 版本：8.2.0
         - (dup): release-6.5.10.md > 错误修复> Tools> Backup & Restore (BR) - 修复 PD 连接失败导致日志备份 advancer owner 所在的 TiDB 可能崩溃的问题 [#52597](https://github.com/pingcap/tidb/issues/52597) @[YuJuncen](https://github.com/YuJuncen)
         - (dup): release-6.5.10.md > 错误修复> Tools> Backup & Restore (BR) - 修复日志备份在 advancer owner 发生迁移后可能被暂停的问题 [#53561](https://github.com/pingcap/tidb/issues/53561) @[RidRisR](https://github.com/RidRisR)
         - (dup): release-6.5.10.md > 错误修复> Tools> Backup & Restore (BR) - 修复在恢复过程中，由于多层重试导致 BR 无法正确识别错误的问题 [#54053](https://github.com/pingcap/tidb/issues/54053) @[RidRisR](https://github.com/RidRisR)
-        - 修复获取 TiKV 配置的连接可能未被关闭的问题 [#52595](https://github.com/pingcap/tidb/issues/52595) @[RidRisR](https://github.com/RidRisR)
+        - 修复用于获取 TiKV 配置的连接可能未被关闭的问题 [#52595](https://github.com/pingcap/tidb/issues/52595) @[RidRisR](https://github.com/RidRisR)
         - 修复测试用例 `TestStoreRemoved` 不稳定的问题 [#52791](https://github.com/pingcap/tidb/issues/52791) @[YuJuncen](https://github.com/YuJuncen)
         - 修复 PITR 恢复过程中 TiFlash 崩溃的问题 [#52628](https://github.com/pingcap/tidb/issues/52628) @[RidRisR](https://github.com/RidRisR)
         - 修复增量备份过程中扫描 DDL 作业的效率较低的问题 [#54139](https://github.com/pingcap/tidb/issues/54139) @[3pointer](https://github.com/3pointer)
