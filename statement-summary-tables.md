@@ -280,7 +280,7 @@ SQL 的基础信息：
 - `PLAN_CACHE_HITS`：这类 SQL 语句命中 plan cache 的总次数
 - `PLAN_IN_CACHE`：这类 SQL 语句的上次执行是否命中了 plan cache
 - `PLAN_CACHE_UNQUALIFIED`：这类 SQL 语句没有命中 plan cache 的次数
-- `LAST_PLAN_CACHE_UNQUALIFIED_REASON`：这类 SQL 语句最后一次没有命中 plan cache 的原因
+- `PLAN_CACHE_UNQUALIFIED_LAST_REASON`：这类 SQL 语句最后一次没有命中 plan cache 的原因
 
 执行时间相关的信息：
 
