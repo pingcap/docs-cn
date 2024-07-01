@@ -228,6 +228,7 @@ TiDB 版本：8.2.0
     - 改进了对于 MPP 执行计划的列裁剪功能，以提升 TiFlash MPP 的执行性能 [#52133](https://github.com/pingcap/tidb/issues/52133) @[yibin87](https://github.com/yibin87)
     - 优化 `IndexLookUp` 算子在回表数据量较多（大于 1024 行）时的性能开销 [#53871](https://github.com/pingcap/tidb/issues/53871) @[crazycs520](https://github.com/crazycs520)
     - (dup): release-6.5.10.md > 改进提升> TiDB - 在 MPP 负载均衡时移除不包含任何 Region 的 Store [#52313](https://github.com/pingcap/tidb/issues/52313) @[xzhangxian1008](https://github.com/xzhangxian1008)
+* 支持并行执行[逻辑 DDL 语句 (General DDL) ](ddl-introduction#ddl-语句类型简介)，在使用 10 个会话并发提交不同 DDL 语句的场景下，相比 v8.1.0 有 3~6 倍的性能提升[#53246](https://github.com/pingcap/tidb/issues/53246) @[D3Hunter](https://github.com/D3Hunter)
 
 + TiKV <!--tw@lilin90: 9 条-->
 
