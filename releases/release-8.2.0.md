@@ -261,10 +261,10 @@ TiDB 版本：8.2.0
         - 优化备份功能，提升在大量表备份过程中遇到节点重启、扩容或网络抖动时的备份性能和稳定性 [#52534](https://github.com/pingcap/tidb/issues/52534) @[3pointer](https://github.com/3pointer) **tw@qiancai** <!--1844-->
         - 优化恢复过程中对 TiCDC Changefeed 的细粒度检查，如果 Changefeed 的 [CheckpointTS](/ticdc/ticdc-architecture.md#checkpointts) 晚于数据的备份时间，则不会影响恢复操作，从而减少不必要的等待时间，提升用户体验 [#53131](https://github.com/pingcap/tidb/issues/53131) @[YuJuncen](https://github.com/YuJuncen) **tw@qiancai** <!--1843-->
         - 为 [`BACKUP`](/sql-statements/sql-statement-backup.md) 语句和 [`RESTORE`](sql-statements/sql-statement-restore.md) 语句添加了多个常用参数选项，例如 `CHECKSUM_CONCURRENCY` [#53040](https://github.com/pingcap/tidb/issues/53040) @[RidRisR](https://github.com/RidRisR) **tw@qiancai** <!--1849-->
-        - 去掉在 `br log` 命令 除了 `br log restore` 之外子命令对 tidb `domain` 数据结构的载入, 降低内存消耗 [#52088](https://github.com/pingcap/tidb/issues/52088) @[Leavrth](https://github.com/Leavrth)
-        - 对日志备份过程中临时落盘的文件做加密支持  [#15083](https://github.com/tikv/tikv/issues/15083) @[YuJuncen](https://github.com/YuJuncen)
-        - 在 grafana 面板增加了 `tikv_log_backup_pending_initial_scan` [#16656](https://github.com/tikv/tikv/issues/16656) @[3pointer](https://github.com/3pointer)
-        - 优化 pitr 日志输出的格式, 并添加了 `RestoreTS` 字段 [#53645](https://github.com/pingcap/tidb/issues/53645) @[dveeden](https://github.com/dveeden)
+        - 去掉除了 `br log restore` 子命令之外其它 `br log` 子命令对 TiDB `domain` 数据结构的载入，降低内存消耗 [#52088](https://github.com/pingcap/tidb/issues/52088) @[Leavrth](https://github.com/Leavrth)
+        - 支持对日志备份过程中生成的临时文件进行加密 [#15083](https://github.com/tikv/tikv/issues/15083) @[YuJuncen](https://github.com/YuJuncen)
+        - 在 Grafana 面板中新增 `tikv_log_backup_pending_initial_scan` 监控指标 [#16656](https://github.com/tikv/tikv/issues/16656) @[3pointer](https://github.com/3pointer)
+        - 优化 PITR 日志的输出格式，并在日志中新增 `RestoreTS` 字段 [#53645](https://github.com/pingcap/tidb/issues/53645) @[dveeden](https://github.com/dveeden)
 
     + TiCDC
 
@@ -359,7 +359,7 @@ TiDB 版本：8.2.0
         - 修复获取 TiKV 配置的连接可能未被关闭的问题 [#52595](https://github.com/pingcap/tidb/issues/52595) @[RidRisR](https://github.com/RidRisR)
         - 修复测试用例 `TestStoreRemoved` 不稳定的问题 [#52791](https://github.com/pingcap/tidb/issues/52791) @[YuJuncen](https://github.com/YuJuncen)
         - 修复 PITR 恢复过程中 TiFlash 崩溃的问题 [#52628](https://github.com/pingcap/tidb/issues/52628) @[RidRisR](https://github.com/RidRisR)
-        - 修复增量备份过程中 DDL 扫描作业的效率较低的问题 [#54139](https://github.com/pingcap/tidb/issues/54139) @[3pointer](https://github.com/3pointer)
+        - 修复增量备份过程中扫描 DDL 作业的效率较低的问题 [#54139](https://github.com/pingcap/tidb/issues/54139) @[3pointer](https://github.com/3pointer)
         - 修复断点备份过程中查找 Region leader 中断导致备份性能受影响问题 [#17168](https://github.com/tikv/tikv/issues/17168) @[Leavrth](https://github.com/Leavrth)
 
     + TiCDC <!--tw@hfxsd: 2 条-->
