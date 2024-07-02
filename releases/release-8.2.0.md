@@ -161,8 +161,7 @@ TiDB 版本：8.2.0
 
 ### MySQL 兼容性
 
-* 兼容性 1
-* 兼容性 2
+* 在 v8.1.0 之前，执行带有 `PASSWORD REQUIRE CURRENT DEFAULT` 选项的 [`CREATE USER`](/sql-statements/sql-statement-create-user.md) 语句会返回错误，因为 TiDB 不支持且无法解析该选项。从 v8.1.0 开始，TiDB 支持解析并忽略该选项，以便与 MySQL 兼容 [#53305](https://github.com/pingcap/tidb/issues/53305) @[https://github.com/dveeden](dveeden)
 
 ### 系统变量
 
@@ -221,7 +220,6 @@ TiDB 版本：8.2.0
     - 优化对大数据量的表进行简单查询时获取数据分布信息的性能 [#53850](https://github.com/pingcap/tidb/issues/53850) @[you06](https://github.com/you06)  **tw@Oreoxmt** <!--1561-->
     - 聚合的结果集能够作为 IndexJoin 的内表，使更多的复杂查询可以匹配到 IndexJoin，从而可以通过索引提升查询效率 [#37068](https://github.com/pingcap/tidb/issues/37068) @[elsa0520](https://github.com/elsa0520) **tw@hfxsd** <!--1510-->
     - 通过批量删除 TiFlash placement rule 的方式，提升对分区表执行 `TRUNCATE`、`DROP` 后数据 GC 的处理速度 [#54068](https://github.com/pingcap/tidb/issues/54068) @[Lloyd-Pottiger](https://github.com/Lloyd-Pottiger)
-    - 创建用户的 SQL 语句 `CREATE USER` 支持 `PASSWORD REQUIRE CURRENT DEFAULT` 选项，以和 MySQL 兼容 [#53305](https://github.com/pingcap/tidb/issues/53305) @[https://github.com/dveeden](dveeden)
     - 升级 Azure Identity Libraries 和 Microsoft Authentication Library 的版本，增强安全性 [#53990](https://github.com/pingcap/tidb/issues/53990) @[hawkingrei](https://github.com/hawkingrei)
     - 将 `token-limit` 的最大值设置为 `1048576`，避免设置过大导致 TiDB Server OOM [#53312](https://github.com/pingcap/tidb/issues/53312) @[djshow832](https://github.com/djshow832)
     - 改进对于 MPP 执行计划的列裁剪功能，以提升 TiFlash MPP 的执行性能 [#52133](https://github.com/pingcap/tidb/issues/52133) @[yibin87](https://github.com/yibin87)
