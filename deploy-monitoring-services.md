@@ -26,9 +26,9 @@ title: 集群监控部署
 {{< copyable "shell-regular" >}}
 
 ```bash
-wget https://download.pingcap.org/prometheus-2.27.1.linux-amd64.tar.gz
+wget https://download.pingcap.org/prometheus-2.49.1.linux-amd64.tar.gz
 wget https://download.pingcap.org/node_exporter-v1.3.1-linux-amd64.tar.gz
-wget https://download.pingcap.org/grafana-7.5.11.linux-amd64.tar.gz
+wget https://download.pingcap.org/grafana-7.5.17.linux-amd64.tar.gz
 ```
 
 解压二进制包：
@@ -36,9 +36,9 @@ wget https://download.pingcap.org/grafana-7.5.11.linux-amd64.tar.gz
 {{< copyable "shell-regular" >}}
 
 ```bash
-tar -xzf prometheus-2.27.1.linux-amd64.tar.gz
+tar -xzf prometheus-2.49.1.linux-amd64.tar.gz
 tar -xzf node_exporter-v1.3.1-linux-amd64.tar.gz
-tar -xzf grafana-7.5.11.linux-amd64.tar.gz
+tar -xzf grafana-7.5.17.linux-amd64.tar.gz
 ```
 
 ### 第 2 步：在 Node1，Node2，Node3，Node4 上启动 `node_exporter`
@@ -65,7 +65,7 @@ cd node_exporter-v1.3.1-linux-amd64
 {{< copyable "shell-regular" >}}
 
 ```bash
-cd prometheus-2.27.1.linux-amd64 &&
+cd prometheus-2.49.1.linux-amd64 &&
 vi prometheus.yml
 ```
 
@@ -137,7 +137,7 @@ scrape_configs:
 编辑 Grafana 的配置文件：
 
 ```bash
-cd grafana-7.5.11 &&
+cd grafana-7.5.17 &&
 vi conf/grafana.ini
 ```
 
