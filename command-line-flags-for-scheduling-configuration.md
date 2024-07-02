@@ -26,7 +26,7 @@ Scheduling 节点用于提供 PD 的 `scheduling` 微服务。你可以通过命
 
 ## `--cert`
 
-- 包含 X509 证书的 PEM 文件路径，用于开启 TLS。
+- 包含 X.509 证书的 PEM 文件路径，用于开启 TLS。
 - 默认：""
 
 ## `--config`
@@ -42,7 +42,7 @@ Scheduling 节点用于提供 PD 的 `scheduling` 微服务。你可以通过命
 
 ## `--key`
 
-- 包含 X509 key 的 PEM 文件路径，用于开启 TLS。
+- 包含 X.509 key 的 PEM 文件路径，用于开启 TLS。
 - 默认：""
 
 ## `--listen-addr`

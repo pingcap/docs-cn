@@ -59,12 +59,12 @@ Scheduling 节点用于提供 PD 的 `scheduling` 微服务。本文档仅在 PD
 
 ### `cert-path`
 
-- 包含 X509 证书的 PEM 文件路径
+- 包含 X.509 证书的 PEM 文件路径
 - 默认值：""
 
 ### `key-path`
 
-- 包含 X509 key 的 PEM 文件路径
+- 包含 X.509 key 的 PEM 文件路径
 - 默认值：""
 
 ### `redact-info-log`
