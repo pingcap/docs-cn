@@ -43,7 +43,7 @@ TiCDC 中的 Changefeed 和 Task 是两个逻辑概念，前者是分配同步�
 例如：
 
 ```
-cdc cli changefeed create --server="http://127.0.0.1:8300" --sink-uri="kafka://127.0.0.1:9092/cdc-test?kafka-version=2.4.0&partition-num=6&max-message-bytes=67108864&replication-factor=1"
+cdc cli changefeed create --server="http://127.0.0.1:8300" --sink-uri="kafka://127.0.0.1:9092/cdc-test?kafka-version=${kafka_version}&partition-num=6&max-message-bytes=67108864&replication-factor=1"
 cat changefeed.toml
 ......
 [sink]
