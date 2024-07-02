@@ -219,7 +219,7 @@ TiDB 版本：8.2.0
     - 聚合的结果集能够作为 IndexJoin 的内表，使更多的复杂查询可以匹配到 IndexJoin，从而可以通过索引提升查询效率 [#37068](https://github.com/pingcap/tidb/issues/37068) @[elsa0520](https://github.com/elsa0520) **tw@hfxsd** <!--1510-->
     - 通过批量删除 TiFlash placement rule 的方式，提升对分区表执行 `TRUNCATE`、`DROP` 后数据 GC 的处理速度 [#54068](https://github.com/pingcap/tidb/issues/54068) @[Lloyd-Pottiger](https://github.com/Lloyd-Pottiger)
     - 创建用户的 SQL 语句 `CREATE USER` 支持 `PASSWORD REQUIRE CURRENT DEFAULT` 选项，以和 MySQL 兼容 [#53305](https://github.com/pingcap/tidb/issues/53305) @[https://github.com/dveeden](dveeden)
-    - 升级第三方库 Azure 的版本，增强安全性 [#53990](https://github.com/pingcap/tidb/issues/53990) @[hawkingrei](https://github.com/hawkingrei)
+    - 升级 Azure Identity Libraries 和 Microsoft Authentication Library 的版本，增强安全性 [#53990](https://github.com/pingcap/tidb/issues/53990) @[hawkingrei](https://github.com/hawkingrei)
     - 将 `token-limit` 的最大值设置为 `1048576`，避免设置过大导致 TiDB Server OOM [#53312](https://github.com/pingcap/tidb/issues/53312) @[djshow832](https://github.com/djshow832)
     - 将 TLS 配置项 `InsecureSkipVerify` 设置为 `false`，打开后客户端将要求服务器证书中的 CN 与客户端期望的主机名匹配 [#53357](https://github.com/pingcap/tidb/issues/53357) @[lance6716](https://github.com/lance6716)
     - 改进对于 MPP 执行计划的列裁剪功能，以提升 TiFlash MPP 的执行性能 [#52133](https://github.com/pingcap/tidb/issues/52133) @[yibin87](https://github.com/yibin87)
