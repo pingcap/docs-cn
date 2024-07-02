@@ -33,9 +33,9 @@ summary: 使用命令行配置 TiDB Lightning。
 | --analyze *level* | 导入后分析表信息，可选值为 required、optional（默认值）、off | `post-restore.analyze` |
 | --checksum *level* | 导入后比较校验和，可选值为 required（默认值）、optional、off | `post-restore.checksum` |
 | --check-requirements *bool* | 任务开始之前检查集群版本兼容性，以及运行过程中检查 TiKV 的可用存储空间是否大于 10%（默认值为 true）| `lightning.check-requirements` |
-| --ca *file* | TLS 连接的 CA 证书路径 | `security.ca-path` |
-| --cert *file* | TLS 连接的证书路径 | `security.cert-path` |
-| --key *file* | TLS 连接的私钥路径 | `security.key-path` |
+| --ca *file* | 与 TiDB Server 建立 TLS 连接的 CA 证书路径 | `tidb.security.ca-path` |
+| --cert *file* | 与 TiDB Server 建立 TLS 连接的证书路径 | `tidb.security.cert-path` |
+| --key *file* | 与 TiDB Server 建立 TLS 连接的私钥路径 | `tidb.security.key-path` |
 | --server-mode | 在服务器模式下启动 TiDB Lightning | `lightning.server-mode` |
 
 如果同时对命令行参数和配置文件中的对应参数进行更改，命令行参数将优先生效。例如，在 `cfg.toml` 文件中，不管对日志等级做出什么修改，运行 `tiup tidb-lightning -L debug --config cfg.toml` 命令总是将日志级别设置为 “debug”。
