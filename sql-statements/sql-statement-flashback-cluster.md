@@ -1,7 +1,6 @@
 ---
 title: FLASHBACK CLUSTER
 summary: TiDB 数据库中 FLASHBACK CLUSTER 的使用概况。
-aliases: ['/zh/tidb/dev/sql-statement-flashback-to-timestamp']
 ---
 
 # FLASHBACK CLUSTER

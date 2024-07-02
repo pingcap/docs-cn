@@ -1,6 +1,5 @@
 ---
 title: Distinct 优化
-aliases: ['/docs-cn/dev/agg-distinct-optimization/']
 summary: 本文介绍了对于 DISTINCT 的优化，包括简单 DISTINCT 和聚合函数 DISTINCT 的优化。简单的 DISTINCT 通常会被优化成 GROUP BY 来执行。而带有 DISTINCT 的聚合函数会在 TiDB 侧单线程执行，可以通过系统变量或 TiDB 配置项控制优化器是否执行。在优化后，DISTINCT 被下推到了 Coprocessor，在 HashAgg 里新增了一个 group by 列。
 ---
 

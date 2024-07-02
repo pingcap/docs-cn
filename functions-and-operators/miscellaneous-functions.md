@@ -1,6 +1,5 @@
 ---
 title: 其他函数
-aliases: ['/docs-cn/dev/functions-and-operators/miscellaneous-functions/','/docs-cn/dev/reference/sql/functions-and-operators/miscellaneous-functions/']
 summary: TiDB 支持使用 MySQL 8.0 中提供的大部分其他函数。
 ---
 

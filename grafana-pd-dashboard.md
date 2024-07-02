@@ -1,6 +1,5 @@
 ---
 title: PD 重要监控指标详解
-aliases: ['/docs-cn/dev/grafana-pd-dashboard/','/docs-cn/dev/reference/key-monitoring-metrics/pd-dashboard/']
 summary: PD 重要监控指标详解：使用 TiUP 部署 TiDB 集群时，一键部署监控系统 (Prometheus & Grafana)，监控架构参见 [TiDB 监控框架概述]。Grafana Dashboard 分为 PD、TiDB、TiKV、Node_exporter、Overview、Performance_overview 等。通过观察 PD 面板上的 Metrics，可以了解 PD 当前的状态。监控包括 PD role、Storage capacity、Current storage size、Current storage usage、Normal stores、Number of Regions、Abnormal stores、Region health、Current peer count 等。Cluster、Operator、Statistics - Balance、Statistics - hot write、Statistics - hot read、Scheduler、gRPC、etcd、TiDB、Heartbeat、Region storage 等指标也很重要。
 ---
 

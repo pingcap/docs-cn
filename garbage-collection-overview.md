@@ -1,6 +1,5 @@
 ---
 title: GC 机制简介
-aliases: ['/docs-cn/dev/garbage-collection-overview/','/docs-cn/dev/reference/garbage-collection/overview/']
 summary: TiDB 的事务实现采用了 MVCC 机制，GC 的任务是清理不再需要的旧数据。整体流程包括 GC leader 控制 GC 的运行，定期触发 GC，以及三个步骤：Resolve Locks 清理锁，Delete Ranges 删除区间，Do GC 进行 GC 清理。Resolve Locks 清理锁有两种执行模式：LEGACY 和 PHYSICAL。Delete Ranges 删除区间会快速物理删除待删除的区间及删除操作的时间戳。Do GC 进行 GC 清理会删除所有 key 的过期版本。GC 每 10 分钟触发一次，默认保留最近 10 分钟内的数据。
 ---
 

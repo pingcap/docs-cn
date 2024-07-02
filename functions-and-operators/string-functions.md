@@ -1,6 +1,5 @@
 ---
 title: 字符串函数
-aliases: ['/docs-cn/dev/functions-and-operators/string-functions/','/docs-cn/dev/reference/sql/functions-and-operators/string-functions/','/docs-cn/dev/sql/string-functions/']
 summary: TiDB 支持 MySQL 8.0 中提供的大部分字符串函数以及 Oracle 21 中提供的部分函数。
 ---
 

@@ -1,7 +1,6 @@
 ---
 title: 乐观事务模型下写写冲突问题排查
 summary: 介绍 TiDB 中乐观锁下写写冲突出现的原因以及解决方案。
-aliases: ['/docs-cn/dev/troubleshoot-write-conflicts/']
 ---
 
 # 乐观事务模型下写写冲突问题排查

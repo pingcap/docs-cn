@@ -1,6 +1,5 @@
 ---
 title: TiDB 2.1.14 Release Notes
-aliases: ['/docs-cn/dev/releases/release-2.1.14/','/docs-cn/dev/releases/2.1.14/']
 summary: TiDB 2.1.14 发布说明：修复查询结果不正确的问题，支持自动调整 Auto ID 分配的步长，新增全局系统变量 `max_execution_time`，修复内存配额超出时返回结果不正确的问题，禁用 `TRACE` 语句，新增系统表控制函数下推，优化 Raftstore 消息处理，调整无效配置项日志级别，新增 Binlog 配置项，修复 Binlog 更新失败问题，新增 Ansible 命令预检查功能。
 ---
 

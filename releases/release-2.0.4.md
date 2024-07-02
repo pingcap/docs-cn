@@ -1,6 +1,5 @@
 ---
 title: TiDB 2.0.4 release notes
-aliases: ['/docs-cn/dev/releases/release-2.0.4/','/docs-cn/dev/releases/204/']
 summary: TiDB 2.0.4 版本发布，改进了系统兼容性和稳定性。TiDB 支持了新的语法和变量设置，优化了监控项和查询代价估计精度。PD 改进了调度参数行为，TiKV 新增了调试接口和命令，优化了问题和修复了崩溃。
 ---
 

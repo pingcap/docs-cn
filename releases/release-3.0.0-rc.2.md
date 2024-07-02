@@ -1,6 +1,5 @@
 ---
 title: TiDB 3.0.0-rc.2 Release Notes
-aliases: ['/docs-cn/dev/releases/release-3.0.0-rc.2/','/docs-cn/dev/releases/3.0.0-rc.2/']
 summary: TiDB 3.0.0-rc.2 发布，对系统稳定性、易用性、功能、优化器、统计信息和执行引擎做了很多改进。包括 SQL 优化器、执行引擎、Server、DDL 和 PD 的更新。TiKV 的更新包括 Engine、Server、Raftstore 和 Coprocessor 的改进。工具方面，TiDB Binlog 增加下游同步延迟监控项，TiDB Lightning 支持数据库合并和新增 KV 写入失败重试机制。
 ---
 

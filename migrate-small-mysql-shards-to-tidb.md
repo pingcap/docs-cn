@@ -1,7 +1,6 @@
 ---
 title: 从小数据量分库分表 MySQL 合并迁移数据到 TiDB
 summary: 介绍如何从 TB 级以下分库分表 MySQL 迁移数据到 TiDB。
-aliases: ['/zh/tidb/dev/usage-scenario-shard-merge/','/zh/tidb/dev/usage-scenario-simple-migration/']
 ---
 
 # 从小数据量分库分表 MySQL 合并迁移数据到 TiDB

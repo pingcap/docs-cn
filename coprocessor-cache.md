@@ -1,6 +1,5 @@
 ---
 title: 下推计算结果缓存
-aliases: ['/docs-cn/dev/coprocessor-cache/']
 summary: TiDB 4.0 支持下推计算结果缓存，配置位于 `tikv-client.copr-cache`，缓存仅存储在 TiDB 内存中，不共享缓存，对 Region 写入会导致缓存失效。缓存命中率可通过 `EXPLAIN ANALYZE` 或 Grafana 监控面板查看。
 ---
 

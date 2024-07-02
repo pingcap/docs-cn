@@ -1,6 +1,5 @@
 ---
 title: TiKV 内存参数性能调优
-aliases: ['/docs-cn/dev/tune-tikv-memory-performance/','/docs-cn/dev/reference/performance/tune-tikv/', '/docs-cn/dev/tune-tikv-performance/']
 summary: TiKV 内存参数性能调优，根据机器配置情况调整参数以达到最佳性能。TiKV 使用 RocksDB 作为持久化存储，配置项包括 block-cache 大小和 write-buffer 大小。除此之外，系统内存还会被用于 page cache 和处理大查询时的数据结构生成。推荐将 TiKV 部署在 CPU 核数不低于 8 或内存不低于 32GB 的机器上，对写入吞吐要求高时使用吞吐能力较好的磁盘，对读写延迟要求高时使用 IOPS 较高的 SSD 盘。
 ---
 

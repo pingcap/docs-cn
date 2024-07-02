@@ -1,7 +1,6 @@
 ---
 title: 迁移常见问题
 summary: 介绍 TiDB 迁移中的常见问题。
-aliases: ['/docs-cn/dev/faq/migration-tidb-faq/']
 ---
 
 # 迁移常见问题

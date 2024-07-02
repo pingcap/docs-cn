@@ -1,6 +1,5 @@
 ---
 title: TiDB 2.1.4 Release Notes
-aliases: ['/docs-cn/dev/releases/release-2.1.4/','/docs-cn/dev/releases/2.1.4/']
 summary: TiDB 2.1.4 版本发布，对系统稳定性、优化器、统计信息和执行引擎做了很多改进。修复了多个函数处理结果不正确的问题，优化了服务器日志和 DDL 操作。TiKV 修复了关闭时可能发生重复写的问题和事件监听器处理异常的问题。工具方面优化了内存使用，减少了对 dump 文件的解析，提高了导入稳定性。数据同步对比统计支持使用 TiDB 统计信息来划分 chunk。
 ---
 

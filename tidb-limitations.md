@@ -1,6 +1,5 @@
 ---
 title: TiDB 使用限制
-aliases: ['/docs-cn/dev/tidb-limitations/']
 summary: TiDB 中的使用限制包括标识符长度限制、数据库、表、视图、连接总个数限制、单个数据库和表的限制、单行限制、数据类型限制、SQL 语句限制和 TiKV 版本限制。
 ---
 
