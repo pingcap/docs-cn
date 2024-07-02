@@ -189,7 +189,7 @@ TiDB 版本：8.2.0
 
 ### 其他
 
-    - 为了提升 TiFlash 的开发体验，编译和构建 TiDB 所需的 LLVM 的最低版本从 13.0 升级到了 17.0。如果你是 TiDB 的开发者，为了能保证顺利编译，请对应升级你的 LLVM 编译器版本。[#7193](https://github.com/pingcap/tiflash/issues/7193) @[Lloyd-Pottiger](https://github.com/Lloyd-Pottiger)
+为了提升 TiFlash 的开发体验，编译和构建 TiDB 所需的 LLVM 的最低版本从 13.0 升级到了 17.0。如果你是 TiDB 开发者，为了保证顺利编译，请对应升级你的 LLVM 编译器版本。[#7193](https://github.com/pingcap/tiflash/issues/7193) @[Lloyd-Pottiger](https://github.com/Lloyd-Pottiger)
 
 ## 离线包变更
 
@@ -216,7 +216,7 @@ TiDB 版本：8.2.0
 ## 改进提升
 
 + TiDB <!--tw@hfxsd: 13 条-->
-    - 支持并行执行[逻辑 DDL 语句 (General DDL)](/ddl-introduction.md#ddl-语句类型简介)。相比 v8.1.0，在使用 10 个会话并发提交不同 DDL 语句的场景下，性能有 3 到 6 倍的提升 [#53246](https://github.com/pingcap/tidb/issues/53246) @[D3Hunter](https://github.com/D3Hunter)
+    - 支持并行执行[逻辑 DDL 语句 (General DDL)](/ddl-introduction.md#ddl-语句类型简介)。相比 v8.1.0，在使用 10 个会话并发提交不同 DDL 语句的场景下，性能提升了 3 到 6 倍 [#53246](https://github.com/pingcap/tidb/issues/53246) @[D3Hunter](https://github.com/D3Hunter)
     - 改进形如 `((a = 1 and b = 2 and c > 3) or (a = 4 and b = 5 and c > 6)) and d > 3` 的表达式匹配多列索引的逻辑，使其能生成更加精准的 `Range` [#41598](https://github.com/pingcap/tidb/issues/41598) @[ghazalfamilyusa](https://github.com/ghazalfamilyusa)
     - 优化对大数据量的表进行简单查询时获取数据分布信息的性能 [#53850](https://github.com/pingcap/tidb/issues/53850) @[you06](https://github.com/you06)  **tw@Oreoxmt** <!--1561-->
     - 聚合的结果集能够作为 IndexJoin 的内表，使更多的复杂查询可以匹配到 IndexJoin，从而可以通过索引提升查询效率 [#37068](https://github.com/pingcap/tidb/issues/37068) @[elsa0520](https://github.com/elsa0520) **tw@hfxsd** <!--1510-->
@@ -343,7 +343,7 @@ TiDB 版本：8.2.0
     - (dup): release-7.5.2.md > 错误修复> TiFlash - 修复在含空分区的分区表上执行查询时，可能会超时的问题 [#9024](https://github.com/pingcap/tiflash/issues/9024) @[JinheLin](https://github.com/JinheLin)
     - (dup): release-7.5.2.md > 错误修复> TiFlash - 修复在存算分离架构下，DDL 新增带有 not null 属性的列后，查询可能返回错误的 null 值的问题 [#9084](https://github.com/pingcap/tiflash/issues/9084) @[Lloyd-Pottiger](https://github.com/Lloyd-Pottiger)
     - (dup): release-6.5.10.md > 错误修复> TiFlash - 修复函数 `SUBSTRING_INDEX()` 可能导致 TiFlash Crash 的问题 [#9116](https://github.com/pingcap/tiflash/issues/9116) @[wshwsh12](https://github.com/wshwsh12)
-    - 修复通过 br 或 TiDB Lightning 导入数据后，FastScan 模式下可能读到大量重复数据的问题 [#9118](https://github.com/pingcap/tiflash/issues/9118) @[JinheLin](https://github.com/JinheLin)
+    - 修复通过 BR 或 TiDB Lightning 导入数据后，FastScan 模式下可能读到大量重复数据的问题 [#9118](https://github.com/pingcap/tiflash/issues/9118) @[JinheLin](https://github.com/JinheLin)
 
 + Tools
 
