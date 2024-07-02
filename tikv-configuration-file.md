@@ -2046,6 +2046,7 @@ Raft Engine 相关的配置项。
 
 + 若开启该选项，日志中的用户数据会以 `?` 代替。
 + 默认值：`false`
++ 具体使用方法请参考 [日志脱敏](/log-redaction.md#tikv-组件日志脱敏)。
 
 ## security.encryption
 

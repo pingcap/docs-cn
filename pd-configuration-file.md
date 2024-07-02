@@ -193,8 +193,9 @@ pd-server 相关配置项。
 ### `redact-info-log` <span class="version-mark">从 v5.0 版本开始引入</span>
 
 + 控制 PD 日志脱敏的开关
-+ 该配置项值设为 true 时将对 PD 日志脱敏，遮蔽日志中的用户信息。
++ 可选值：false, true, "MARKER"
 + 默认值：false
++ 具体使用方法请参考 [日志脱敏](/log-redaction.md#pd-组件日志脱敏)。
 
 ## log
 
