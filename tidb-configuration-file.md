@@ -40,8 +40,7 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
 + 类型：Integer
 + 默认值：1000
 + 最小值：1
-+ 最大值（64 位平台）：`18446744073709551615`
-+ 最大值（32 位平台）：`4294967295`
++ 最大值：`1048576`
 
 ### `temp-dir` <span class="version-mark">从 v6.3.0 版本开始引入</span>
 
@@ -583,8 +582,8 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
 ### `stats-load-concurrency` <span class="version-mark">从 v5.4.0 版本开始引入</span>
 
 + TiDB 统计信息同步加载功能可以并发处理的最大列数
-+ 默认值：5
-+ 目前的合法值范围：`[1, 128]`
++ 默认值：`0`。在 v8.2.0 之前，默认值为 `5`。
++ 目前的合法值范围：`[0, 128]`。`0` 为自动模式，根据服务器情况，自动调节并发度。在 v8.2.0 之前，最小值为 `1`。
 
 ### `stats-load-queue-size` <span class="version-mark">从 v5.4.0 版本开始引入</span>
 
@@ -607,7 +606,7 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
 + 用于控制 TiDB 启动时是否采用轻量级的统计信息初始化。
 + 默认值：在 v7.2.0 之前版本中为 `false`，在 v7.2.0 及之后的版本中为 `true`。
 + 当 `lite-init-stats` 为 `true` 时，统计信息初始化时列和索引的直方图、TopN、Count-Min Sketch 均不会加载到内存中。当 `lite-init-stats` 为 `false` 时，统计信息初始化时索引和主键的直方图、TopN、Count-Min Sketch 会被加载到内存中，非主键列的直方图、TopN、Count-Min Sketch 不会加载到内存中。当优化器需要某一索引或者列的直方图、TopN、Count-Min Sketch 时，这些统计信息会被同步或异步加载到内存中（由 [`tidb_stats_load_sync_wait`](/system-variables.md#tidb_stats_load_sync_wait-从-v540-版本开始引入) 控制）。
-+ 将 `lite-init-stats` 设置为 true，可以加速统计信息初始化，避免加载不必要的统计信息，从而降低 TiDB 的内存使用。详情请参考[统计信息的加载](/statistics.md#统计信息的加载)。
++ 将 `lite-init-stats` 设置为 true，可以加速统计信息初始化，避免加载不必要的统计信息，从而降低 TiDB 的内存使用。详情请参考[统计信息的加载](/statistics.md#加载统计信息)。
 
 ### `force-init-stats` <span class="version-mark">从 v6.5.7 和 v7.1.0 版本开始引入</span>
 
@@ -755,7 +754,7 @@ opentracing.reporter 相关的设置。
 
 > **警告：**
 >
-> 该配置项可能会在未来版本中废弃，**不要修改该配置**。
+> 从 v8.2.0 开始，该配置项被废弃。给 TiKV 发送 RPC 请求时，默认使用新版本的 Region 副本选择器。
 
 + 用于控制给 TiKV 发送 RPC 请求时，是否使用新版本的 Region 副本选择器。
 + 默认值：true

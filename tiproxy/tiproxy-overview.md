@@ -11,11 +11,11 @@ TiProxy 是可选组件，你也可以使用第三方的代理组件，或者直
 
 TiProxy 示意图如下：
 
-<img src="https://download.pingcap.com/images/docs-cn/tiproxy/tiproxy-architecture.png" alt="TiProxy 架构" width="500"></img>
+<img src="https://download.pingcap.com/images/docs-cn/tiproxy/tiproxy-architecture.png" alt="TiProxy 架构" width="500" />
 
 ## 主要功能
 
-TiProxy 提供连接迁移、服务发现和一键部署的功能。
+TiProxy 提供连接迁移、故障转移、服务发现和一键部署的功能。
 
 ### 连接迁移
 
@@ -23,12 +23,16 @@ TiProxy 在保持客户端连接不变的情况下，能将一台 TiDB server �
 
 如下图所示，原先客户端通过 TiProxy 连接到 TiDB 1 上，连接迁移之后，客户端实际连接到 TiDB 2 上。在 TiDB 1 即将下线或 TiDB 1 上的连接数比 TiDB 2 上的连接数超过设定阈值时，会触发连接迁移。连接迁移对客户端无感知。
 
-<img src="https://download.pingcap.com/images/docs-cn/tiproxy/tiproxy-session-migration.png" alt="TiProxy 连接迁移" width="400"></img>
+<img src="https://download.pingcap.com/images/docs-cn/tiproxy/tiproxy-session-migration.png" alt="TiProxy 连接迁移" width="400" />
 
 连接迁移通常发生在以下场景：
 
 - 当 TiDB server 进行缩容、滚动升级、滚动重启操作时，TiProxy 能把连接从即将下线的 TiDB server 迁移到其他 TiDB server 上，从而保持客户端连接不断开。
 - 当 TiDB server 进行扩容操作时，TiProxy 能将已有的部分连接迁移到新的 TiDB server 上，从而实现了实时的负载均衡，无需客户端重置连接池。
+
+### 故障转移
+
+当一台 TiDB server 存在 Out of Memory (OOM) 风险、连接 PD 或 TiKV 失败时，TiProxy 自动感知故障，并将连接迁移到其他 TiDB server 上，从而保持客户端连接不断开。
 
 ### 服务发现
 
@@ -44,12 +48,14 @@ TiProxy 适用于以下场景：
 
 - 连接保持：当 TiDB 缩容、滚动升级、滚动重启操作时，客户端连接会断开，导致报错。如果客户端没有幂等的错误重试机制，则需要人工手动检查错误并修复，这大大增加了人力成本。TiProxy 能保持客户端连接，因此可以避免客户端报错。
 - 频繁扩缩容：应用的负载可能周期性地变化，为了节省成本，你可以将 TiDB 部署到云上，并根据负载自动地扩缩容 TiDB server。然而，缩容可能导致客户端断连，而扩容不能及时地实现负载均衡。通过迁移连接功能，TiProxy 能保持客户端连接并实现负载均衡。
+- CPU 负载不均：后台任务占用较多 CPU 资源，或者不同连接上的工作负载差异较大，导致 CPU 负载不均时，TiProxy 能根据 CPU 使用率迁移连接，实现负载均衡。请参阅[基于 CPU 的负载均衡](/tiproxy/tiproxy-load-balance.md#基于-cpu-的负载均衡)。
+- TiDB server OOM：当出现 Runaway Query 导致 TiDB server OOM 时，TiProxy 能提前感知到 TiDB server OOM 的风险，并将其他正常连接迁移到其他 TiDB server 上，从而保持客户端连接不断开。请参阅[基于内存的负载均衡](/tiproxy/tiproxy-load-balance.md#基于内存的负载均衡)。
 
 TiProxy 不适用于以下场景：
 
 - 对性能敏感：TiProxy 的性能低于 HAProxy 等负载均衡器，因此使用 TiProxy 会降低 QPS。请参阅 [TiProxy 性能测试报告](/tiproxy/tiproxy-performance-test.md)。
 - 对成本敏感：如果 TiDB 集群使用了硬件负载均衡、虚拟 IP 或 Kubernetes 自带的负载均衡器，此时增加 TiProxy 组件会增加成本。另外，如果在云上跨可用区部署 TiDB 集群，增加 TiProxy 组件也会增加跨可用区的流量费用。
-- TiDB server 的故障转移：只有当 TiDB server 在计划内的下线或重启操作时，TiProxy 才能保持连接。如果 TiDB server 意外下线，则连接仍然会断开。
+- TiDB server 意外下线时的故障转移：只有当 TiDB server 在计划内的下线或重启操作时，TiProxy 才能保持连接。如果 TiDB server 意外下线，则连接仍然会断开。
 
 当符合 TiProxy 的使用场景时，推荐使用 TiProxy。当对性能敏感时，推荐使用 HAProxy 或其他代理。
 

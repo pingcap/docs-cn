@@ -74,8 +74,9 @@ SHOW PRIVILEGES;
 | RESTRICTED_CONNECTION_ADMIN     | Server Admin                          |                                                       |
 | RESTRICTED_REPLICA_WRITER_ADMIN | Server Admin                          |                                                       |
 | RESOURCE_GROUP_ADMIN            | Server Admin                          |                                                       |
+| RESOURCE_GROUP_USER             | Server Admin                          |                                                       |
 +---------------------------------+---------------------------------------+-------------------------------------------------------+
-49 rows in set (0.00 sec)
+50 rows in set (0.00 sec)
 ```
 
 ## MySQL 兼容性

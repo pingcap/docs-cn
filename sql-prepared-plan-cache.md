@@ -141,6 +141,8 @@ MySQL [test]> select @@last_plan_from_cache;
 
 ## 诊断 Prepared Plan Cache
 
+### 通过 `SHOW WARNINGS` 诊断 
+
 对于无法进行缓存的查询或计划，可通过 `SHOW WARNINGS` 语句查看查询或计划是否被缓存。如果未被缓存，则可在结果中查看无法被缓存的原因。示例如下：
 
 ```sql
@@ -171,6 +173,24 @@ mysql> SHOW WARNINGS;
 | Warning | 1105 | skip plan-cache: '1' may be converted to INT |
 +---------+------+----------------------------------------------+
 1 row in set (0.00 sec)
+```
+
+### 通过 `Statements Summary` 诊断
+
+在 `Statements Summary` 表中包含有 `plan_cache_unqualified` 和 `plan_cache_unqualified_last_reason` 两个字段，分别表示对应查询无法使用 Plan Cache 的次数和原因，可以通过这两个字段来进行诊断：
+
+```sql
+mysql> SELECT digest_text, plan_cache_unqualified,  plan_cache_unqualified_last_reason FROM information_schema.statements_summary WHERE plan_cache_unqualified > 0 ORDER BY plan_cache_unqualified DESC
+LIMIT 10;
++---------------------------------+------------------------+----------------------------------------+
+| digest_text                     | plan_cache_unqualified | plan_cache_unqualified_last_reason     |
++---------------------------------+------------------------+----------------------------------------+
+| select * from `t` where `a` < ? |                     10 | '1' may be converted to INT            |
+| select * from `t` order by ?    |                      4 | query has 'order by ?' is un-cacheable |
+| select database ( ) from `t`    |                      2 | query has 'database()' is un-cacheable |
+...
++---------------------------------+------------------------+----------------------------------------+
+10 row in set (0.01 sec)
 ```
 
 ## Prepared Plan Cache 的内存管理

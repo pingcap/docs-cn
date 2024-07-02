@@ -520,7 +520,7 @@ mysql> SELECT * FROM t1;
 - 作用域：NONE
 - 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：否
 - 默认值：（系统主机名）
-- 这个变量一个只读变量，表示 TiDB server 的主机名。
+- 这个变量为只读变量，表示 TiDB server 的主机名。
 
 ### `identity` <span class="version-mark">从 v5.3.0 版本开始引入</span>
 
@@ -898,6 +898,7 @@ mysql> SHOW GLOBAL VARIABLES LIKE 'max_prepared_stmt_count';
 - 作用域：SESSION | GLOBAL
 - 是否持久化到集群：是
 - 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：否
+- 类型：整数型
 - 默认值：`4096`
 - 取值范围：`[0, 9223372036854775807]`
 - 单位：字节
@@ -941,8 +942,8 @@ mysql> SHOW GLOBAL VARIABLES LIKE 'max_prepared_stmt_count';
 
 - 作用域：NONE
 - 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：否
-- 默认值：`json_array`、`json_array_append`、`json_array_insert`、`json_contains`、`json_contains_path`、`json_depth`、`json_extract`、`json_insert`、`json_keys`、`json_length`、`json_merge_patch`、`json_merge_preserve`、`json_object`、`json_pretty`、`json_quote`、`json_remove`、`json_replace`、`json_search`、`json_set`、`json_storage_size`、`json_type`、`json_unquote`、`json_valid`、`lower`、`md5`、`reverse`、`tidb_shard`、`upper`、`vitess_hash`
-- 这个变量用于显示创建表达式索引所允许使用的函数。
+- 默认值：`json_array, json_array_append, json_array_insert, json_contains, json_contains_path, json_depth, json_extract, json_insert, json_keys, json_length, json_merge_patch, json_merge_preserve, json_object, json_pretty, json_quote, json_remove, json_replace, json_search, json_set, json_storage_size, json_type, json_unquote, json_valid, lower, md5, reverse, tidb_shard, upper, vitess_hash`
+- 这个只读变量用于显示创建[表达式索引](/sql-statements/sql-statement-create-index.md#表达式索引)所允许使用的函数。
 
 ### `tidb_allow_mpp` <span class="version-mark">从 v5.0 版本开始引入</span>
 
@@ -992,14 +993,14 @@ MPP 是 TiFlash 引擎提供的分布式计算框架，允许节点之间的数�
 - 默认值：`2`
 - 范围：`[1, 2]`
 - 这个变量用于控制 TiDB 收集统计信息的行为。
-- 在 v5.3.0 及之后的版本中，该变量的默认值为 `2`，具体可参照[统计信息简介](/statistics.md)文档。如果从 v5.3.0 之前版本的集群升级至 v5.3.0 及之后的版本，`tidb_analyze_version` 的默认值不发生变化。
+- 在 v5.3.0 及之后的版本中，该变量的默认值为 `2`，具体可参照[常规统计信息](/statistics.md)文档。如果从 v5.3.0 之前版本的集群升级至 v5.3.0 及之后的版本，`tidb_analyze_version` 的默认值不发生变化。
 
 ### `tidb_analyze_skip_column_types` <span class="version-mark">从 v7.2.0 版本开始引入</span>
 
 - 作用域：SESSION | GLOBAL
 - 是否持久化到集群：是
 - 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：否
-- 默认值："json,blob,mediumblob,longblob"
+- 默认值："json,blob,mediumblob,longblob,mediumtext,longtext"。在 v8.2.0 之前，默认值为 "json,blob,mediumblob,longblob"。
 - 可选值："json,blob,mediumblob,longblob,text,mediumtext,longtext"
 - 这个变量表示在执行 `ANALYZE` 命令收集统计信息时，跳过哪些类型的列的统计信息收集。该变量仅适用于 [`tidb_analyze_version = 2`](#tidb_analyze_version-从-v510-版本开始引入) 的情况。即使使用 `ANALYZE TABLE t COLUMNS c1, ..., cn` 语法指定列，如果指定的列的类型在 `tidb_analyze_skip_column_types` 中，也不会收集该列的统计信息。
 
@@ -1777,19 +1778,6 @@ mysql> SELECT job_info FROM mysql.analyze_jobs ORDER BY end_time DESC LIMIT 1;
 - 默认值：`OFF`
 - 这个变量用于控制是否开启 TiDB 对 `PREDICATE COLUMNS` 的收集。关闭该变量后，之前收集的 `PREDICATE COLUMNS` 会被清除。详情见[收集部分列的统计信息](/statistics.md#收集部分列的统计信息)。
 
-### `tidb_enable_concurrent_hashagg_spill` <span class="version-mark">从 v8.0.0 版本开始引入</span>
-
-> **警告：**
->
-> 该变量控制的功能为实验特性，不建议在生产环境上使用。如果发现 bug，请在 GitHub 上提 [issue](https://github.com/pingcap/tidb/issues) 反馈。
-
-- 作用域：SESSION | GLOBAL
-- 是否持久化到集群：是
-- 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：否
-- 类型：布尔型
-- 默认值：`ON`
-- 这个变量用来控制 TiDB 是否支持并发 HashAgg 进行落盘。当该变量设置为 `ON` 时，并发 HashAgg 将支持落盘。该变量将在功能正式发布后废弃。
-
 ### `tidb_enable_ddl` <span class="version-mark">从 v6.3.0 版本开始引入</span>
 
 - 作用域：GLOBAL
@@ -1812,6 +1800,25 @@ mysql> SELECT job_info FROM mysql.analyze_jobs ORDER BY end_time DESC LIMIT 1;
     - `RESTRICTED_VARIABLES_ADMIN`：能够在 `SHOW [GLOBAL] VARIABLES` 和 `SET` 命令中查看和设置包含敏感内容的变量。
     - `RESTRICTED_USER_ADMIN`：能够阻止其他用户更改或删除用户帐户。
     - `RESTRICTED_CONNECTION_ADMIN`：能够阻止其它用户使用 `KILL` 语句终止连接。
+
+### `tidb_enable_exchange_partition`
+
+- 作用域：SESSION | GLOBAL
+- 是否持久化到集群：是
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：否
+- 类型：布尔型
+- 默认值：`ON`
+- 该变量用于设置是否启用 [`exchange partitions with tables`](/partitioned-table.md#分区管理) 特性。默认值为 `ON`，即默认开启该功能。
+- 该变量自 v6.3.0 开始废弃，其取值将固定为默认值 `ON`，即默认开启 `exchange partitions with tables`。
+
+### `tidb_enable_extended_stats`
+
+- 作用域：SESSION | GLOBAL
+- 是否持久化到集群：是
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：是
+- 类型：布尔型
+- 默认值：`OFF`
+- 该变量指定 TiDB 是否收集[扩展统计信息](/extended-statistics.md)来指导优化器。
 
 ### `tidb_enable_external_ts_read` <span class="version-mark">从 v6.4.0 版本开始引入</span>
 
@@ -1856,25 +1863,6 @@ mysql> SELECT job_info FROM mysql.analyze_jobs ORDER BY end_time DESC LIMIT 1;
     - 如果尚未提交的事务为非只读事务，在事务内执行写入的 SQL 语句会被拒绝。
     - 如果尚未提交的事务已经有数据改动，其提交也会被拒绝。
 - 当集群开启只读模式后，所有用户（包括 `SUPER` 用户）都无法执行可能写入数据的 SQL 语句，除非该用户被显式地授予了 `RESTRICTED_REPLICA_WRITER_ADMIN` 权限。
-
-### `tidb_enable_exchange_partition`
-
-- 作用域：SESSION | GLOBAL
-- 是否持久化到集群：是
-- 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：否
-- 类型：布尔型
-- 默认值：`ON`
-- 该变量用于设置是否启用 [`exchange partitions with tables`](/partitioned-table.md#分区管理) 特性。默认值为 `ON`，即默认开启该功能。
-- 该变量自 v6.3.0 开始废弃，其取值将固定为默认值 `ON`，即默认开启 `exchange partitions with tables`。
-
-### `tidb_enable_extended_stats`
-
-- 作用域：SESSION | GLOBAL
-- 是否持久化到集群：是
-- 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：是
-- 类型：布尔型
-- 默认值：`OFF`
-- 该变量指定 TiDB 是否收集扩展统计信息来指导优化器。
 
 ### `tidb_enable_fast_analyze`
 
@@ -1974,8 +1962,8 @@ mysql> SELECT job_info FROM mysql.analyze_jobs ORDER BY end_time DESC LIMIT 1;
 - 是否持久化到集群：是
 - 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：否
 - 类型：布尔型
-- 默认值：`ON`
-- 这个变量用来控制是否开启历史统计信息。默认值为 `ON` 表示默认开启历史统计信息。
+- 默认值：`OFF`。在 v8.2.0 之前，默认值为 `ON`。
+- 这个变量用来控制是否开启历史统计信息。默认值为 `OFF`，表示默认关闭历史统计信息。
 
 ### `tidb_enable_historical_stats_for_capture`
 
@@ -2184,6 +2172,15 @@ mysql> SELECT job_info FROM mysql.analyze_jobs ORDER BY end_time DESC LIMIT 1;
 - 类型：布尔型
 - 默认值：`OFF`
 - 这个变量用于控制是否开启 Apply 算子并发，并发数由 `tidb_executor_concurrency` 变量控制。Apply 算子用来处理关联子查询且默认无并发，所以执行速度较慢。打开 Apply 并发开关可增加并发度，提高执行速度。目前默认关闭。
+
+### `tidb_enable_parallel_hashagg_spill` <span class="version-mark">从 v8.0.0 版本开始引入</span>
+
+- 作用域：SESSION | GLOBAL
+- 是否持久化到集群：是
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：否
+- 类型：布尔型
+- 默认值：`ON`
+- 这个变量用来控制 TiDB 是否支持并行 HashAgg 进行落盘。当该变量设置为 `ON` 时，在任意并发条件下，HashAgg 算子都可以根据内存使用情况自动触发数据落盘，从而兼顾性能和数据处理量。因此，不推荐将此变量修改为 `OFF`。从 v8.2.0 开始，将该变量设置为 `OFF` 时会产生警告。该变量将在未来版本中废弃。
 
 ### `tidb_enable_pipelined_window_function`
 
@@ -2440,6 +2437,7 @@ Query OK, 0 rows affected (0.09 sec)
 - 类型：布尔型
 - 默认值：`OFF`
 - 这个变量用于控制是否开启 [TiCDC 单行数据正确性校验](/ticdc/ticdc-integrity-check.md)功能。
+- 你可以使用 [`TIDB_ROW_CHECKSUM()`](/functions-and-operators/tidb-functions.md#tidb_row_checksum) 函数查询行数据的 Checksum 值。
 
 ### `tidb_enforce_mpp` <span class="version-mark">从 v5.1 版本开始引入</span>
 
@@ -2505,7 +2503,7 @@ MPP 是 TiFlash 引擎提供的分布式计算框架，允许节点之间的数�
 - 范围：`[1, 256]`
 - 单位：线程
 
-变量用来统一设置各个 SQL 算子的并发度，包括：
+该变量用来统一设置各个 SQL 算子的并发度，包括：
 
 - `index lookup`
 - `index lookup join`
@@ -2513,6 +2511,7 @@ MPP 是 TiFlash 引擎提供的分布式计算框架，允许节点之间的数�
 - `hash aggregation`（partial 和 final 阶段）
 - `window`
 - `projection`
+- `sort`
 
 `tidb_executor_concurrency` 整合了已有的系统变量，方便管理。这些变量所列如下：
 
@@ -4337,7 +4336,7 @@ EXPLAIN FORMAT='brief' SELECT COUNT(1) FROM t WHERE a = 1 AND b IS NOT NULL;
 - 这个变量用于控制在记录 TiDB 日志和慢日志时，是否将 SQL 中的用户信息遮蔽。
 - 默认值为 `OFF`，即对用户输入的信息不做任何处理。
 - 将该变量设置为 `ON` 后，用户输入的信息被遮蔽。假设执行的 SQL 为 `INSERT INTO t VALUES (1,2)`，则日志中记录的 SQL 语句为 `INSERT INTO t VALUES (?,?)`。
-- 将该变量设置为 `MARKER` 后，用户输入的信息被标记符号 `‹ ›` 包裹。假设执行的 SQL 为 `INSERT INTO t VALUES (1,2)`，则日志中记录的 SQL 语句为 `INSERT INTO t VALUES (‹1›,‹2›)`。输入信息中的 `‹` 会转义成 `‹‹`，`›` 会转义成 `››`。基于标记后的日志，你可以在展示日志时决定是否对被标记信息进行脱敏处理。
+- 将该变量设置为 `MARKER` 后，用户输入的信息被标记符号 `‹ ›` 包裹。假设执行的 SQL 为 `INSERT INTO t VALUES (1,2)`，则日志中记录的 SQL 语句为 `INSERT INTO t VALUES (‹1›,‹2›)`。用户数据中的 `‹` 会转义成 `‹‹`，`›` 会转义成 `››`。基于标记后的日志，你可以在展示日志时决定是否对被标记信息进行脱敏处理。
 
 ### `tidb_regard_null_as_point` <span class="version-mark">从 v5.4.0 版本开始引入</span>
 
@@ -4377,6 +4376,16 @@ EXPLAIN FORMAT='brief' SELECT COUNT(1) FROM t WHERE a = 1 AND b IS NOT NULL;
 - 默认值：`""`
 - 可选值：`"ddl"`、`"stats"`、`"br"`、`"lightning"`、`"background"`
 - 显式指定当前会话的任务类型，用于[资源管控](/tidb-resource-control.md)识别并控制。如 `SET @@tidb_request_source_type = "background"`。
+
+### `tidb_resource_control_strict_mode` <span class="version-mark">从 v8.2.0 版本开始引入</span>
+
+- 作用域：GLOBAL
+- 是否持久化到集群：是
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：否
+- 类型：布尔型
+- 默认值：`ON`
+- 该变量是 [`SET RESOURCE GROUP`](/sql-statements/sql-statement-set-resource-group.md) 和优化器 [`RESOURCE_GROUP()`](/optimizer-hints.md#resource_groupresource_group_name) Hint 权限控制的开关。当此变量设置为 `ON` 时，你需要有 `SUPER` 或者 `RESOURCE_GROUP_ADMIN` 或者 `RESOURCE_GROUP_USER` 权限才能使用这两种方式修改当前会话或当前语句绑定的资源组；当此变量设置为 `OFF` 时，则无需上述权限，其行为与不支持此变量的 TiDB 之前版本相同。
+- 从旧版本升级到 v8.2.0 及之后版本时，该功能默认关闭，此时该变量默认值为 `OFF`。
 
 ### `tidb_retry_limit`
 
@@ -4646,7 +4655,7 @@ Query OK, 0 rows affected, 1 warning (0.00 sec)
 - 默认值：`100`
 - 单位：毫秒
 - 范围：`[0, 2147483647]`
-- 这个变量用于控制是否开启统计信息的同步加载模式（为 `0` 代表不开启，即为异步加载模式），以及开启的情况下，SQL 执行同步加载完整统计信息等待多久后会超时。更多信息，请参考[统计信息的加载](/statistics.md#统计信息的加载)。
+- 这个变量用于控制是否开启统计信息的同步加载模式（为 `0` 代表不开启，即为异步加载模式），以及开启的情况下，SQL 执行同步加载完整统计信息等待多久后会超时。更多信息，请参考[统计信息的加载](/statistics.md#加载统计信息)。
 
 ### `tidb_stats_load_pseudo_timeout` <span class="version-mark">从 v5.4.0 版本开始引入</span>
 

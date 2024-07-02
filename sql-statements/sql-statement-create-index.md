@@ -43,7 +43,7 @@ IndexOption ::=
 |   IndexType
 |   'WITH' 'PARSER' Identifier
 |   'COMMENT' stringLit
-|   IndexInvisible
+|   ("VISIBLE" | "INVISIBLE")
 
 IndexTypeName ::=
     'BTREE'
@@ -171,19 +171,45 @@ CREATE TABLE t1 (
 DROP INDEX idx1 ON t1;
 ```
 
+表达式索引涉及众多表达式。为了确保正确性，当前仅允许经充分测试的一部分函数用于创建表达式索引，即生产环境中仅允许表达式中包含这些函数。这些函数可以通过查询变量 [`tidb_allow_function_for_expression_index`](/system-variables.md#tidb_allow_function_for_expression_index-从-v520-版本开始引入) 得到。在后续版本中，这些函数会持续增加。目前允许的函数如下：
+
+- [`JSON_ARRAY()`](/functions-and-operators/json-functions.md)
+- [`JSON_ARRAY_APPEND()`](/functions-and-operators/json-functions.md)
+- [`JSON_ARRAY_INSERT()`](/functions-and-operators/json-functions.md)
+- [`JSON_CONTAINS()`](/functions-and-operators/json-functions.md)
+- [`JSON_CONTAINS_PATH()`](/functions-and-operators/json-functions.md)
+- [`JSON_DEPTH()`](/functions-and-operators/json-functions.md)
+- [`JSON_EXTRACT()`](/functions-and-operators/json-functions.md)
+- [`JSON_INSERT()`](/functions-and-operators/json-functions.md)
+- [`JSON_KEYS()`](/functions-and-operators/json-functions.md)
+- [`JSON_LENGTH()`](/functions-and-operators/json-functions.md)
+- [`JSON_MERGE_PATCH()`](/functions-and-operators/json-functions.md)
+- [`JSON_MERGE_PRESERVE()`](/functions-and-operators/json-functions.md)
+- [`JSON_OBJECT()`](/functions-and-operators/json-functions.md)
+- [`JSON_PRETTY()`](/functions-and-operators/json-functions.md)
+- [`JSON_QUOTE()`](/functions-and-operators/json-functions.md)
+- [`JSON_REMOVE()`](/functions-and-operators/json-functions.md)
+- [`JSON_REPLACE()`](/functions-and-operators/json-functions.md)
+- [`JSON_SEARCH()`](/functions-and-operators/json-functions.md)
+- [`JSON_SET()`](/functions-and-operators/json-functions.md)
+- [`JSON_STORAGE_SIZE()`](/functions-and-operators/json-functions.md)
+- [`JSON_TYPE()`](/functions-and-operators/json-functions.md)
+- [`JSON_UNQUOTE()`](/functions-and-operators/json-functions.md)
+- [`JSON_VALID()`](/functions-and-operators/json-functions.md)
+- [`LOWER()`](/functions-and-operators/string-functions.md#lower)
+- [`MD5()`](/functions-and-operators/encryption-and-compression-functions.md)
+- [`REVERSE()`](/functions-and-operators/string-functions.md#reverse)
+- [`TIDB_SHARD()`](/functions-and-operators/tidb-functions.md#tidb_shard)
+- [`UPPER()`](/functions-and-operators/string-functions.md#upper)
+- [`VITESS_HASH()`](/functions-and-operators/tidb-functions.md)
+
+对于以上列表之外的函数，由于未完成充分测试，当前仍为实验特性，不建议在生产环境中使用。其他的表达式例如运算符、`CAST` 和 `CASE WHEN` 也同样为实验特性，不建议在生产环境中使用。如果仍然希望使用，可以在 [TiDB 配置文件](/tidb-configuration-file.md#allow-expression-index-从-v400-版本开始引入)中进行以下设置：
+
+```sql
+allow-expression-index = true
+```
+
 > **注意：**
-> 
-> 表达式索引涉及众多表达式。为了确保正确性，当前仅允许经充分测试的一部分函数用于创建表达式索引，即生产环境中仅允许表达式中包含这些函数。这些函数可以通过查询变量 `tidb_allow_function_for_expression_index` 得到。在后续版本中，这些函数会持续增加。目前允许的函数如下: 
-> 
-> ```
-> JSON_ARRAY, JSON_ARRAY_APPEND, JSON_ARRAY_INSERT, JSON_CONTAINS, JSON_CONTAINS_PATH, JSON_DEPTH, JSON_EXTRACT, JSON_INSERT, JSON_KEYS, JSON_LENGTH, JSON_MERGE_PATCH, JSON_MERGE_PRESERVE, JSON_OBJECT, JSON_PRETTY, JSON_QUOTE, JSON_REMOVE, JSON_REPLACE, JSON_SEARCH, JSON_SET, JSON_STORAGE_SIZE, JSON_TYPE, JSON_UNQUOTE, JSON_VALID, LOWER, MD5, REVERSE, TIDB_SHARD, UPPER, VITESS_HASH
-> ```
->
-> 对于以上列表之外的函数，由于未完成充分测试，当前仍为实验特性，不建议在生产环境中使用。其他的表达式例如运算符、`CAST` 和 `CASE WHEN` 也同样为实验特性，不建议在生产环境中使用。如果仍然希望使用，可以在 [TiDB 配置文件](/tidb-configuration-file.md#allow-expression-index-从-v400-版本开始引入)中进行以下设置：
->
-> ```sql
-> allow-expression-index = true
-> ```
 >
 > 表达式索引不能为主键。
 >
@@ -374,7 +400,8 @@ CREATE UNIQUE INDEX c1 ON t1 (c1) INVISIBLE;
 
 ## MySQL 兼容性
 
-* TiDB 支持解析 `FULLTEXT` 和 `SPATIAL` 语法，但尚不支持使用 `FULLTEXT`，`HASH` 和 `SPATIAL` 索引。
+* TiDB 支持解析 `FULLTEXT` 语法，但尚不支持使用 `FULLTEXT`、`HASH` 和 `SPATIAL` 索引。
+* 为了兼容 MySQL，TiDB 在语法上支持 `HASH`、`BTREE` 和 `RTREE` 等索引类型，但会忽略它们。
 * 不支持降序索引 （类似于 MySQL 5.7）。
 * 无法向表中添加 `CLUSTERED` 类型的 `PRIMARY KEY`。要了解关于 `CLUSTERED` 主键的详细信息，请参考[聚簇索引](/clustered-indexes.md)。
 * 表达式索引与视图存在兼容性问题。通过视图进行查询时，无法使用上表达式索引。

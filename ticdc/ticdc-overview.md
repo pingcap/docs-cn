@@ -61,7 +61,7 @@ TiCDC 作为 TiDB 的增量数据同步工具，通过 PD 内部的 etcd 实现�
 在以上架构图中：
 
 - TiKV Server：代表 TiDB 集群中的 TiKV 节点，当数据发生改变时 TiKV 节点会主动将发生的数据改变以变更日志（KV change logs，简称 change logs）的方式发送给 TiCDC 节点。当然，当 TiCDC 节点发现收到的 change logs 并不是连续的，也会主动发起请求，获得需要的 change logs。
-- TiCDC：代表运行了运行 TiCDC 进程的各个节点。每个节点都运行一个 TiCDC 进程，每个进程会从 TiKV 节点中拉取一个或者多个表中的数据改变，并通过 Sink 模块同步到下游系统。
+- TiCDC：代表运行了 TiCDC 进程的各个节点。每个节点都运行一个 TiCDC 进程，每个进程会从 TiKV 节点中拉取一个或者多个表中的数据改变，并通过 Sink 模块同步到下游系统。
 - PD：代表 TiDB 集群中的调度模块，负责集群数据的事实调度，这个模块通常是由 3 个 PD 节点构成的，内部通过 etcd 集群来实现选举等高可用相关的能力。 TiCDC 集群使用了 PD 集群内置的 etcd 集群来保存自己的元数据信息，例如：节点的状态信息，changefeed 配置信息等。
 
 另外，从上面的架构图中也可以看到，目前 TiCDC 支持将数据同步到 TiDB、MySQL 数据库、Kafka 以及存储服务等。
@@ -119,7 +119,7 @@ Update t1 set b = 4 where b = 2;
 TiCDC 将根据数据变更信息重新生成 SQL 语句，向下游写以下两条 SQL 语句：
 
 ```sql
-INSERT INTO `test.t1` (`A`,`B`) VALUES (1,1),(2,2),(3,3);
+INSERT INTO `test.t1` (`A`,`B`) VALUES (1,2),(2,2),(3,3);
 UPDATE `test`.`t1`
 SET `A` = CASE
         WHEN `A` = 1 THEN 1
@@ -131,10 +131,14 @@ END
 WHERE `A` = 1 OR `A` = 2;
 ```
 
-### 暂不支持的场景
+## 暂不支持的场景
 
 目前 TiCDC 暂不支持的场景如下：
 
 - 暂不支持单独使用 RawKV 的 TiKV 集群。
 - 暂不支持在 TiDB 中[创建 SEQUENCE 的 DDL 操作](/sql-statements/sql-statement-create-sequence.md)和 [SEQUENCE 函数](/sql-statements/sql-statement-create-sequence.md#sequence-函数)。在上游 TiDB 使用 SEQUENCE 时，TiCDC 将会忽略掉上游执行的 SEQUENCE DDL 操作/函数，但是使用 SEQUENCE 函数的 DML 操作可以正确地同步。
-- 暂不支持在同步的过程中对 TiCDC 正在同步的表和库进行 [BR 数据恢复](/br/backup-and-restore-overview.md) 和 [TiDB Lightning 物理导入](/tidb-lightning/tidb-lightning-physical-import-mode.md)。详情请参考[为什么在上游使用了 TiDB Lightning 和 BR 恢复了数据之后，TiCDC 同步会出现卡顿甚至卡住](/ticdc/ticdc-faq.md#为什么在上游使用了-tidb-lightning-物理导入模式和-br-恢复了数据之后ticdc-同步会出现卡顿甚至卡住)。
+- 暂不支持对 TiCDC 正在同步的表和库进行 [TiDB Lightning 物理导入](/tidb-lightning/tidb-lightning-physical-import-mode.md)。详情请参考[为什么在上游使用了 TiDB Lightning 和 BR 恢复了数据之后，TiCDC 同步会出现卡顿甚至卡住](/ticdc/ticdc-faq.md#为什么在上游使用了-tidb-lightning-物理导入模式和-br-恢复了数据之后ticdc-同步会出现卡顿甚至卡住)。
+- 在 BR v8.2.0 之前的版本中，当集群存在 TiCDC 同步任务时，BR 不支持进行[数据恢复](/br/backup-and-restore-overview.md)。详情请参考[为什么在上游使用了 TiDB Lightning 和 BR 恢复了数据之后，TiCDC 同步会出现卡顿甚至卡住](/ticdc/ticdc-faq.md#为什么在上游使用了-tidb-lightning-物理导入模式和-br-恢复了数据之后ticdc-同步会出现卡顿甚至卡住)。
+- 从 BR v8.2.0 起，BR 数据恢复对 TiCDC 的限制被放宽：如果所恢复数据的 BackupTS（即备份时间）早于 Changefeed 的 [CheckpointTS](/ticdc/ticdc-architecture.md#checkpointts)（即记录当前同步进度的时间戳），BR 数据恢复可以正常进行。考虑到 BackupTS 通常较早，此时可以认为绝大部分场景下，当集群存在 TiCDC 同步任务时，BR 都可以进行数据恢复。
+
+对上游存在较大事务的场景提供部分支持，详见 [TiCDC 是否支持同步大事务？有什么风险吗？](/ticdc/ticdc-faq.md#ticdc-支持同步大事务吗有什么风险吗)。

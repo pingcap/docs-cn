@@ -242,9 +242,11 @@ delta_index_cache_size = 0
 
 ## 安全相关配置，从 v4.0.5 开始生效
 [security]
-    ## 从 v5.0 引入，控制是否开启日志脱敏
-    ## 若开启该选项，日志中的用户数据会以 `?` 代替显示
-    ## 注意，tiflash-learner 对应的安全配置选项为 `security.redact-info-log`，需要在 tiflash-learner.toml 中另外开启
+    ## 从 v5.0 引入，控制是否开启日志脱敏。可选值为 true、false、marker。其中，marker 从 v8.2.0 开始支持。
+    ## 默认值为 false，即对用户日志不做处理。
+    ## 若设置为 true，日志中的用户数据会以 `?` 代替显示。
+    ## 若设置为 marker，日志中的用户数据会被标记符号 `‹ ›` 包裹。用户数据中的 `‹` 会转义成 `‹‹`，`›` 会转义成 `››`。基于标记后的日志，你可以在展示日志时决定是否对被标记信息进行脱敏处理。
+    ## 注意，tiflash-learner 对应的安全配置选项为 `security.redact-info-log`，需要在 tiflash-learner.toml 中另外设置。
     # redact_info_log = false
 
     ## 包含可信 SSL CA 列表的文件路径。如果你设置了该值，`cert_path` 和 `key_path` 中的路径也需要填写
@@ -272,9 +274,9 @@ delta_index_cache_size = 0
     store-batch-retry-recv-timeout = "4ms"
 
 [security]
-    ## 从 v5.0 引入，控制是否开启日志脱敏
-    ## 若开启该选项，日志中的用户数据会以 `?` 代替显示
-    ## 默认值为 false
+    ## 从 v5.0 引入，控制是否开启日志脱敏。可选值为 true、false。
+    ## 默认值为 false，即对用户日志不做处理。
+    ## 若设置为 true，日志中的用户数据会以 `?` 代替显示。
     redact-info-log = false
 
 [security.encryption]

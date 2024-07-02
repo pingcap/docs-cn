@@ -331,7 +331,7 @@ TiDB 在执行 SQL 语句时，会根据隔离级别确定一个对象的 `schem
 
 ### 统计信息收集
 
-详细解读[统计信息](/statistics.md)。
+详细解读[常规统计信息](/statistics.md)。
 
 ### Count 如何加速？
 

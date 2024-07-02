@@ -23,6 +23,7 @@ TiDB 作为一款开源一栈式实时 HTAP 数据库，可以很好地部署和
 | Red Hat Enterprise Linux 8.4 及以上的 8.x 版本  |  <ul><li>x86_64</li><li>ARM 64</li></ul>  |
 | <ul><li>Red Hat Enterprise Linux 7.3 及以上的 7.x 版本</li><li>CentOS 7.3 及以上的 7.x 版本</li></ul>  |  <ul><li>x86_64</li><li>ARM 64</li></ul>   |
 |  Amazon Linux 2         |  <ul><li>x86_64</li><li>ARM 64</li></ul>   |
+|  Amazon Linux 2023      |  <ul><li>x86_64</li><li>ARM 64</li></ul>   |
 |  Rocky Linux 9.1 及以上的版本 |  <ul><li>x86_64</li><li>ARM 64</li></ul> |
 | 麒麟欧拉版 V10 SP1/SP2   |   <ul><li>x86_64</li><li>ARM 64</li></ul>   |
 | 统信操作系统 (UOS) V20                 |   <ul><li>x86_64</li><li>ARM 64</li></ul>   |
@@ -51,7 +52,7 @@ TiDB 作为一款开源一栈式实时 HTAP 数据库，可以很好地部署和
 |   Golang  |  1.21 及以上版本  |
 |   Rust    |   nightly-2023-12-28 及以上版本  |
 |  GCC      |   7.x      |
-|  LLVM     |  13.0 及以上版本  |
+|  LLVM     |  17.0 及以上版本  |
 
 运行时所需的依赖库：glibc（2.28-151.el8 版本）
 
@@ -103,7 +104,7 @@ TiDB 支持部署和运行在 Intel x86-64 架构的 64 位通用硬件服务器
 > - 如进行性能相关的测试，避免采用低性能存储和网络硬件配置，防止对测试结果的正确性产生干扰。
 > - TiKV 的 SSD 盘推荐使用 NVME 接口以保证读写更快。
 > - 如果仅验证功能，建议使用 [TiDB 数据库快速上手指南](/quick-start-with-tidb.md)进行单机功能测试。
-> - 从 v6.3.0 开始，在 Linux AMD64 架构的硬件平台部署 TiFlash 时，CPU 必须支持 AVX2 指令集。确保命令 `cat /proc/cpuinfo | grep avx2` 有输出。而在 Linux ARM64 架构的硬件平台部署 TiFlash 时，CPU 必须支持 ARMv8 架构。确保命令 `cat /proc/cpuinfo | grep 'crc32' | grep 'asimd'` 有输出。通过使用向量扩展指令集，TiFlash 的向量化引擎能提供更好的性能。
+> - 从 v6.3.0 开始，在 Linux AMD64 架构的硬件平台部署 TiFlash 时，CPU 必须支持 AVX2 指令集。确保命令 `grep avx2 /proc/cpuinfo` 有输出。而在 Linux ARM64 架构的硬件平台部署 TiFlash 时，CPU 必须支持 ARMv8 架构。确保命令 `grep 'crc32' /proc/cpuinfo | grep 'asimd'` 有输出。通过使用向量扩展指令集，TiFlash 的向量化引擎能提供更好的性能。
 
 ### 生产环境
 
