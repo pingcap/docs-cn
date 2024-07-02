@@ -231,7 +231,6 @@ TiDB 版本：8.2.0
 + TiKV <!--tw@lilin90: 9 条-->
     - 增加指标来呈现单个 compaction job 涉及的 SST 文件数 [#16837](https://github.com/tikv/tikv/issues/16837) @[zhangjinpeng87](https://github.com/zhangjinpeng87)
     - 默认开启[提前 apply](/tikv-configuration-file.md#max-apply-unpersisted-log-limit-从-v810-版本开始引入) 特性，开启后，Raft leader 在多数 peer 完成 Raft log 持久化之后即可进行 apply，不再要求 leader 自身完成 Raft log 的持久化，降低少数 TiKV 抖动对写请求延迟的影响 [#16717](https://github.com/tikv/tikv/issues/16717) @[glorv](https://github.com/glorv)
-    - 在复制快照前引入 precheck 机制，确保在 follower ready 的情况下再发送快照，提高了快照复制的有效性 [#15972](https://github.com/tikv/tikv/issues/15972) @[hbisheng](https://github.com/hbisheng)
     - 在 Raft 日志持久化之前，将 Raft 日志保留在缓存中，以提升 follower 对日志的读取性能 [#16717](https://github.com/tikv/tikv/issues/16717) @[glorv](https://github.com/glorv)
     - 增加 Raft dropped messages 事件的可观测性，以便定位写入慢的根本原因 [#17093](https://github.com/tikv/tikv/issues/17093) @[Connor1996](https://github.com/Connor1996)
     - 增加对 ingest file 的延迟可观测性，以便排查集群的延迟问题 [#17078](https://github.com/tikv/tikv/issues/17078) @[LykxSassinator](https://github.com/LykxSassinator)
