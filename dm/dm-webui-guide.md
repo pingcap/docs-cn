@@ -11,7 +11,6 @@ DM WebUI 是一个 TiDB Data Migration (DM) 迁移任务管理界面，方便用
 
 > **警告：**
 >
-> - DM WebUI 当前为实验特性，不建议在生产环境中使用。
 > - DM WebUI 中 `task` 的生命周期有所改变，不建议与 dmctl 同时使用。
 
 DM WebUI 主要包含以下界面：
