@@ -221,7 +221,6 @@ TiDB 版本：8.2.0
     - 创建用户的 SQL 语句 `CREATE USER` 支持 `PASSWORD REQUIRE CURRENT DEFAULT` 选项，以和 MySQL 兼容 [#53305](https://github.com/pingcap/tidb/issues/53305) @[https://github.com/dveeden](dveeden)
     - 升级 Azure Identity Libraries 和 Microsoft Authentication Library 的版本，增强安全性 [#53990](https://github.com/pingcap/tidb/issues/53990) @[hawkingrei](https://github.com/hawkingrei)
     - 将 `token-limit` 的最大值设置为 `1048576`，避免设置过大导致 TiDB Server OOM [#53312](https://github.com/pingcap/tidb/issues/53312) @[djshow832](https://github.com/djshow832)
-    - 将 TLS 配置项 `InsecureSkipVerify` 设置为 `false`，打开后客户端将要求服务器证书中的 CN 与客户端期望的主机名匹配 [#53357](https://github.com/pingcap/tidb/issues/53357) @[lance6716](https://github.com/lance6716)
     - 改进对于 MPP 执行计划的列裁剪功能，以提升 TiFlash MPP 的执行性能 [#52133](https://github.com/pingcap/tidb/issues/52133) @[yibin87](https://github.com/yibin87)
     - 优化 `IndexLookUp` 算子在回表数据量较多（大于 1024 行）时的性能开销 [#53871](https://github.com/pingcap/tidb/issues/53871) @[crazycs520](https://github.com/crazycs520)
     - (dup): release-6.5.10.md > 改进提升> TiDB - 在 MPP 负载均衡时移除不包含任何 Region 的 Store [#52313](https://github.com/pingcap/tidb/issues/52313) @[xzhangxian1008](https://github.com/xzhangxian1008)
