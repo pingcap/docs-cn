@@ -62,7 +62,7 @@ COMMIT;
 
 > **注意：**
 >
-> 在 v8.1.0 中，当使用 MySQL Sink 时，同样会根据 `thresholdTS` 决定是否拆分 `UPDATE` 事件，但是 `thresholdTS` 的获取方式不同，具体来说，TiCDC 在启动时会从 PD 获取当前的时间戳作为 `thresholdTS`。这种方式在多节点场景下可能会造成数据不一致问题，详情见 GitHub issue [#11219](https://github.com/pingcap/tiflow/issues/11219)。
+> 在 v8.1.0 中，当使用 MySQL Sink 时，TiCDC 同样会根据 `thresholdTS` 决定是否拆分 `UPDATE` 事件，但是 `thresholdTS` 的获取方式不同，具体来说，TiCDC 在启动时会从 PD 获取当前的时间戳作为 `thresholdTS`。这种方式在多节点场景下可能会造成数据不一致问题，详情见 GitHub issue [#11219](https://github.com/pingcap/tiflow/issues/11219)。
 
 该行为变更解决了由于 TiCDC 接收到的 `UPDATE` 事件顺序可能不正确，导致拆分后的 `DELETE` 和 `INSERT` 事件顺序也可能不正确，从而引发下游数据不一致的问题。
 
