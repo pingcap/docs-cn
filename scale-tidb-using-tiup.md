@@ -440,6 +440,14 @@ tiup cluster display <cluster-name>
     tiup cluster scale-in <cluster-name> --node 10.0.1.4:9000
     ```
 
+3. 等待该 TiFlash 节点对应的 store state_name 变成 Tombstone 后，从 TiUP 拓扑信息中删除已经下线的 TiFlash 节点信息。TiUP 会自动清理 TiFlash 相关的数据文件：
+
+    {{< copyable "shell-regular" >}}
+
+    ```shell
+    tiup cluster prune <cluster-name>
+    ```
+
 #### 方案二：手动缩容 TiFlash 节点
 
 在特殊情况下（比如需要强制下线节点），或者 TiUP 操作失败的情况下，可以使用以下方法手动下线 TiFlash 节点。
@@ -478,19 +486,18 @@ tiup cluster display <cluster-name>
 
 3. 等待该 TiFlash 节点对应的 store 消失或者 state_name 变成 Tombstone 再关闭 TiFlash 进程。
 
-4. 手动删除 TiFlash 的数据文件，具体位置可查看在集群拓扑配置文件中 TiFlash 配置部分下的 data_dir 目录。
-
-5. 从 TiUP 拓扑信息中删除已经下线的 TiFlash 节点信息：
+4. 从 TiUP 拓扑信息中删除已经下线的 TiFlash 节点信息。TiUP 会自动清理 TiFlash 相关的数据文件：
 
     {{< copyable "shell-regular" >}}
 
     ```shell
-    tiup cluster scale-in <cluster-name> --node <pd_ip>:<pd_port> --force
+    tiup cluster prune <cluster-name>
     ```
 
 > **注意：**
 >
-> 如果在集群中所有的 TiFlash 节点停止运行之前，没有取消所有同步到 TiFlash 的表，则需要手动在 PD 中清除同步规则，否则无法成功完成 TiFlash 节点的下线。
+> 如果集群版本不低于 v6.0.0，通过 `ALTER TABLE <db-name>.<table-name> SET tiflash replica '0'` 后，PD 的同步规则会自动清除，不需要进行以下手动清理 PD 同步规则的操作。
+> 如果在低于 v6.0.0 的集群，在所有的 TiFlash 节点停止运行之前，没有取消所有同步到 TiFlash 的表，则需要按照以下步骤手动在 PD 中清除同步规则，否则无法成功完成 TiFlash 节点的下线。
 
 手动在 PD 中清除同步规则的步骤如下：
 
