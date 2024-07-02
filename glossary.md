@@ -179,3 +179,12 @@ Top SQL 用于找到一段时间内对某个 TiDB 或 TiKV 节点消耗负载较
 ### TTL
 
 [Time to Live (TTL)](/time-to-live.md) 提供了行级别的生命周期控制策略。通过为表设置 TTL 属性，TiDB 可以周期性地自动检查并清理表中的过期数据。
+
+## W
+
+### Witness
+
+Witness 副本只会存储最近的 Raft 日志来进行多数派确认，不会存储数据。Witness 副本的使用场景如下：
+
+- 在高可靠的存储环境下帮助节约成本。具体使用方法，可参考[使用 Witness 节约成本](/use-witness-to-save-costs.md)。
+- 快速恢复 (failover)，提高系统可用性。具体使用方法，可参考[使用 Witness 副本加速恢复](/use-witness-to-speed-up-failover.md)。
