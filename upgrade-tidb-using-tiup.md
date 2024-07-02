@@ -8,11 +8,11 @@ summary: TiUP 可用于 TiDB 升级。升级过程中需注意不支持 TiFlash 
 
 本文档适用于以下升级路径：
 
-- 使用 TiUP 从 TiDB 4.0 版本升级至 TiDB 8.1。
-- 使用 TiUP 从 TiDB 5.0-5.4 版本升级至 TiDB 8.1。
-- 使用 TiUP 从 TiDB 6.0-6.6 版本升级至 TiDB 8.1。
-- 使用 TiUP 从 TiDB 7.0-7.6 版本升级至 TiDB 8.1。
-- 使用 TiUP 从 TiDB 8.0 版本升级至 TiDB 8.1。
+- 使用 TiUP 从 TiDB 4.0 版本升级至 TiDB 8.2。
+- 使用 TiUP 从 TiDB 5.0-5.4 版本升级至 TiDB 8.2。
+- 使用 TiUP 从 TiDB 6.0-6.6 版本升级至 TiDB 8.2。
+- 使用 TiUP 从 TiDB 7.0-7.6 版本升级至 TiDB 8.2。
+- 使用 TiUP 从 TiDB 8.0-8.1 版本升级至 TiDB 8.2。
 
 > **警告：**
 >
@@ -24,7 +24,7 @@ summary: TiUP 可用于 TiDB 升级。升级过程中需注意不支持 TiFlash 
 
 > **注意：**
 >
-> - 如果原集群是 3.0 或 3.1 或更早的版本，不支持直接升级到 v8.1.0 及后续修订版本。你需要先从早期版本升级到 4.0 后，再从 4.0 升级到 v8.1.0 及后续修订版本。
+> - 如果原集群是 3.0 或 3.1 或更早的版本，不支持直接升级到 v8.2.0 及后续修订版本。你需要先从早期版本升级到 4.0 后，再从 4.0 升级到 v8.2.0 及后续修订版本。
 > - 如果原集群是 6.2 之前的版本，升级到 6.2 及以上版本时，部分场景会遇到升级卡住的情况，你可以参考[如何解决升级卡住的问题](#42-升级到-v620-及以上版本时如何解决升级卡住的问题)。
 > - 配置参数 [`server-version`](/tidb-configuration-file.md#server-version) 的值会被 TiDB 节点用于验证当前 TiDB 的版本。因此在进行 TiDB 集群升级前，请将 `server-version` 的值设置为空或者当前 TiDB 真实的版本值，避免出现非预期行为。
 > - 配置项 [`performance.force-init-stats`](/tidb-configuration-file.md#force-init-stats-从-v657-和-v710-版本开始引入) 设置为 `ON` 会延长 TiDB 的启动时间，这可能会造成启动超时，升级失败。为避免这种情况，建议为 TiUP 设置更长的等待超时。
@@ -55,12 +55,12 @@ summary: TiUP 可用于 TiDB 升级。升级过程中需注意不支持 TiFlash 
 ## 1. 升级兼容性说明
 
 - TiDB 目前暂不支持版本降级或升级后回退。
-- 使用 TiDB Ansible 管理的 4.0 版本集群，需要先按照 [4.0 版本文档的说明](https://docs.pingcap.com/zh/tidb/v4.0/upgrade-tidb-using-tiup)将集群导入到 TiUP (`tiup cluster`) 管理后，再按本文档说明升级到 v8.1.0 版本。
-- 若要将 v3.0 之前的版本升级至 v8.1.0 版本：
+- 使用 TiDB Ansible 管理的 4.0 版本集群，需要先按照 [4.0 版本文档的说明](https://docs.pingcap.com/zh/tidb/v4.0/upgrade-tidb-using-tiup)将集群导入到 TiUP (`tiup cluster`) 管理后，再按本文档说明升级到 v8.2.0 版本。
+- 若要将 v3.0 之前的版本升级至 v8.2.0 版本：
     1. 首先[通过 TiDB Ansible 升级到 3.0 版本](https://docs.pingcap.com/zh/tidb/v3.0/upgrade-tidb-using-ansible)。
     2. 然后按照 [4.0 版本文档的说明](https://docs.pingcap.com/zh/tidb/v4.0/upgrade-tidb-using-tiup)，使用 TiUP (`tiup cluster`) 将 TiDB Ansible 配置导入。
     3. 将集群升级至 v4.0 版本。
-    4. 按本文档说明将集群升级到 v8.1.0 版本。
+    4. 按本文档说明将集群升级到 v8.2.0 版本。
 - 支持 TiDB Binlog，TiCDC，TiFlash 等组件版本的升级。
 - 将 v6.3.0 之前的 TiFlash 升级至 v6.3.0 及之后的版本时，需要特别注意：在 Linux AMD64 架构的硬件平台部署 TiFlash 时，CPU 必须支持 AVX2 指令集。而在 Linux ARM64 架构的硬件平台部署 TiFlash 时，CPU 必须支持 ARMv8 架构。具体请参考 [6.3.0 版本 Release Notes](/releases/release-6.3.0.md#其他) 中的描述。
 - 具体不同版本的兼容性说明，请查看各个版本的 [Release Note](/releases/release-notes.md)。请根据各个版本的 Release Note 的兼容性更改调整集群的配置。
@@ -72,7 +72,7 @@ summary: TiUP 可用于 TiDB 升级。升级过程中需注意不支持 TiFlash 
 
 ### 2.1 查阅兼容性变更
 
-查阅 TiDB v8.1.0 release notes 中的[兼容性变更](/releases/release-8.1.0.md#兼容性变更)。如果有任何变更影响到了你的升级，请采取相应的措施。
+查阅 TiDB v8.2.0 release notes 中的[兼容性变更](/releases/release-8.2.0.md#兼容性变更)。如果有任何变更影响到了你的升级，请采取相应的措施。
 
 ### 2.2 升级 TiUP 或更新 TiUP 离线镜像
 
@@ -149,7 +149,7 @@ tiup update cluster
 > 以下情况可跳过此步骤：
 >
 > - 原集群没有修改过配置参数，或通过 tiup cluster 修改过参数但不需要调整。
-> - 升级后对未修改过的配置项希望使用 `8.1.0` 默认参数。
+> - 升级后对未修改过的配置项希望使用 `8.2.0` 默认参数。
 
 1. 进入拓扑文件的 `vi` 编辑模式：
 
@@ -165,7 +165,7 @@ tiup update cluster
 
 > **注意：**
 >
-> 升级到 v8.1.0 版本前，请确认已在 4.0 修改的参数在 v8.1.0 版本中是兼容的，可参考 [TiKV 配置文件描述](/tikv-configuration-file.md)。
+> 升级到 v8.2.0 版本前，请确认已在 4.0 修改的参数在 v8.2.0 版本中是兼容的，可参考 [TiKV 配置文件描述](/tikv-configuration-file.md)。
 
 ### 2.4 检查当前集群的 DDL 和 Backup 情况
 
@@ -202,12 +202,12 @@ tiup cluster check <cluster-name> --cluster
 tiup cluster upgrade <cluster-name> <version>
 ```
 
-以升级到 v8.1.0 版本为例：
+以升级到 v8.2.0 版本为例：
 
 {{< copyable "shell-regular" >}}
 
 ```
-tiup cluster upgrade <cluster-name> v8.1.0
+tiup cluster upgrade <cluster-name> v8.2.0
 ```
 
 > **注意：**
@@ -251,7 +251,7 @@ tiup cluster upgrade -h | grep "version"
 tiup cluster stop <cluster-name>
 ```
 
-之后通过 `upgrade` 命令添加 `--offline` 参数来进行停机升级，其中 `<cluster-name>` 为集群名，`<version>` 为升级的目标版本，例如 `v8.1.0`。
+之后通过 `upgrade` 命令添加 `--offline` 参数来进行停机升级，其中 `<cluster-name>` 为集群名，`<version>` 为升级的目标版本，例如 `v8.2.0`。
 
 {{< copyable "shell-regular" >}}
 
@@ -280,7 +280,7 @@ tiup cluster display <cluster-name>
 ```
 Cluster type:       tidb
 Cluster name:       <cluster-name>
-Cluster version:    v8.1.0
+Cluster version:    v8.2.0
 ```
 
 ## 4. 升级 FAQ
@@ -335,7 +335,7 @@ Cluster version:    v8.1.0
 
 ### 4.3 升级过程中 evict leader 等待时间过长，如何跳过该步骤快速升级
 
-可以指定 `--force`，升级时会跳过 `PD transfer leader` 和 `TiKV evict leader` 过程，直接重启并升级版本，对线上运行的集群性能影响较大。命令如下，其中 `<version>` 为升级的目标版本，例如 `v8.1.0`：
+可以指定 `--force`，升级时会跳过 `PD transfer leader` 和 `TiKV evict leader` 过程，直接重启并升级版本，对线上运行的集群性能影响较大。命令如下，其中 `<version>` 为升级的目标版本，例如 `v8.2.0`：
 
 {{< copyable "shell-regular" >}}
 
@@ -350,5 +350,5 @@ tiup cluster upgrade <cluster-name> <version> --force
 {{< copyable "" >}}
 
 ```
-tiup install ctl:v8.1.0
+tiup install ctl:v8.2.0
 ```
