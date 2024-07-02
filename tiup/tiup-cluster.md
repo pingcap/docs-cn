@@ -563,7 +563,7 @@ Starting component `cluster`: /home/tidb/.tiup/components/cluster/v1.12.3/cluste
 ID      Time                       Command
 --      ----                       -------
 4BLhr0  2024-07-04T23:55:09+08:00  /home/tidb/.tiup/components/cluster/v1.12.3/cluster deploy test v8.2.0 /tmp/topology.yaml
-4BKWjF  22024-07-04T23:36:57+08:00  /home/tidb/.tiup/components/cluster/v1.12.3/cluster deploy test v8.2.0 /tmp/topology.yaml
+4BKWjF  2024-07-04T23:36:57+08:00  /home/tidb/.tiup/components/cluster/v1.12.3/cluster deploy test v8.2.0 /tmp/topology.yaml
 4BKVwH  2024-07-04T23:02:08+08:00  /home/tidb/.tiup/components/cluster/v1.12.3/cluster deploy test v8.2.0 /tmp/topology.yaml
 4BKKH1  2024-07-04T16:39:04+08:00  /home/tidb/.tiup/components/cluster/v1.12.3/cluster destroy test
 4BKKDx  2024-07-04T16:36:57+08:00  /home/tidb/.tiup/components/cluster/v1.12.3/cluster deploy test v8.2.0 /tmp/topology.yaml
