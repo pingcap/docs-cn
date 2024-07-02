@@ -1,6 +1,5 @@
 ---
 title: 定位消耗系统资源多的查询
-aliases: ['/docs-cn/dev/identify-expensive-queries/','/docs-cn/dev/how-to/maintain/identify-abnormal-queries/identify-expensive-queries/','/docs-cn/how-to/maintain/identify-abnormal-queries/identify-aborted-queries/','/docs-cn/dev/how-to/maintain/identify-abnormal-queries/identify-aborted-queries/']
 summary: TiDB 会将执行时间超过 tidb_expensive_query_time_threshold 限制（默认值为 60s），或使用内存超过 tidb_mem_quota_query 限制（默认值为 1 GB）的语句输出到 tidb-server 日志文件中，用于定位消耗系统资源多的查询语句。expensive query 日志和慢查询日志的区别在于，expensive query 日志可以将正在执行的语句的相关信息打印出来。当一条语句在执行过程中达到资源使用阈值时，TiDB 会即时将这条语句的相关信息写入日志。
 ---
 

@@ -1,7 +1,6 @@
 ---
 title: CLUSTER_LOAD
 summary: 了解 information_schema 表 `CLUSTER_LOAD`。
-aliases: ['/docs-cn/dev/system-tables/system-table-cluster-load/','/docs-cn/dev/reference/system-databases/cluster-load/','/zh/tidb/dev/system-table-cluster-load/']
 ---
 
 # CLUSTER_LOAD

@@ -1,7 +1,6 @@
 ---
 title: SHOW [BACKUPS|RESTORES]
 summary: TiDB 数据库中 SHOW [BACKUPS|RESTORES] 的使用概况。
-aliases: ['/docs-cn/dev/sql-statements/sql-statement-show-backups/']
 ---
 
 # SHOW [BACKUPS|RESTORES]

@@ -1,6 +1,5 @@
 ---
 title: TiDB 3.0.8 Release Notes
-aliases: ['/docs-cn/dev/releases/release-3.0.8/','/docs-cn/dev/releases/3.0.8/']
 summary: TiDB 3.0.8 发布，修复了 SQL 优化器、SQL 执行引擎、DDL、Server、Transaction、Monitor 等方面的多个问题。TiKV 也进行了多项修复和优化。PD 新增了一些功能，并升级了 etcd 版本。TiDB Ansible 进行了配置项回滚和优化，TiSpark 版本升级到 2.1.8。
 ---
 

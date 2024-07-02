@@ -1,6 +1,5 @@
 ---
 title: Overview 面板重要监控指标详解
-aliases: ['/docs-cn/dev/grafana-overview-dashboard/','/docs-cn/dev/reference/key-monitoring-metrics/overview-dashboard/']
 summary: TiUP 部署 TiDB 集群时，一键部署监控系统 (Prometheus & Grafana)。Grafana Dashboard 分为 PD、TiDB、TiKV、Node_exporter、Overview、Performance_overview。重要监控指标包括服务在线节点数量、PD 角色、存储容量、Region 数量、TiDB 执行数量、CPU 使用率、内存大小、网络流量等。详细监控说明可参见文章。
 ---
 

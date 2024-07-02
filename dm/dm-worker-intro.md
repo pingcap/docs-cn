@@ -1,6 +1,5 @@
 ---
 title: DM-worker 简介
-aliases: ['/docs-cn/tidb-data-migration/dev/dm-worker-intro/']
 summary: DM-worker 是 DM (Data Migration) 的一个组件，负责执行数据迁移任务。主要功能包括注册为 MySQL 或 MariaDB 服务器的 slave，读取 binlog event 并持久化保存在本地，支持迁移一个 MySQL 或 MariaDB 实例的数据到多个 TiDB 实例，以及支持迁移多个 MySQL 或 MariaDB 实例的数据到一个 TiDB 实例。处理单元包括 Relay log、dump、load 和 Binlog replication/sync。上游数据库用户需具有 SELECT、RELOAD、REPLICATION SLAVE 和 REPLICATION CLIENT 权限，下游数据库用户需具有 SELECT、INSERT、UPDATE、DELETE、CREATE、DROP 和 INDEX 权限。处理单元所需的最小权限根据具体情况可能会改变。
 ---
 
