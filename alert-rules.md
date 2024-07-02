@@ -448,7 +448,7 @@ aliases: ['/docs-cn/dev/alert-rules/','/docs-cn/dev/reference/alert-rules/']
 
 * 处理方法：
 
-    调整 `rocksdb.defaultcf` 和 `rocksdb.writecf` 的 `block-cache-size` 的大小。
+    调整 [`storage.block-cache.capacity`](/tikv-configuration-file.md#capacity) 的大小。
 
 #### `TiKV_GC_can_not_work`
 

@@ -301,7 +301,7 @@ TiKV 使用了 RocksDB 的 Column Family (CF) 特性，KV 数据最终存储在�
 - write CF 存储的是数据的版本信息 (MVCC)、索引、小表相关的数据，相关的参数位于 `[rocksdb.writecf]` 项中。
 - lock CF 存储的是锁信息，系统使用默认参数。
 - Raft RocksDB 实例存储 Raft log。default CF 主要存储的是 Raft log，与其对应的参数位于 `[raftdb.defaultcf]` 项中。
-- 所有 CF 共享一个 Block-cache，用于缓存数据块，加速 RocksDB 的读取速度。Block-cache 的大小通过参数 `block-cache-size` 控制，`block-cache-size` 越大，能够缓存的热点数据越多，对读取操作越有利，同时占用的系统内存也会越多。
+- 所有 CF 共享一个 block cache，用于缓存数据块，加速 RocksDB 的读取速度。block cache 的大小通过参数 [`storage.block-cache.capacity`](/tikv-configuration-file.md#capacity) 控制，`storage.block-cache.capacity` 越大，能够缓存的热点数据越多，对读取操作越有利，同时占用的系统内存也会越多。
 - 每个 CF 有各自的 Write-buffer，大小通过 `write-buffer-size` 控制。
 
 ### TiKV channel full 是什么原因？
@@ -374,7 +374,7 @@ TiKV 支持单独进行接口调用，理论上也可以起个实例做为 Cache
 
 ### 为什么 TiKV 容易出现 OOM？
 
-TiKV 的内存占用主要来自于 RocksDB 的 block-cache，默认为系统总内存的 40%。当 TiKV 容易出现 OOM 时，检查 `block-cache-size` 配置是否过高。还需要注意，当单机部署了多个 TiKV 实例时，需要显式地配置该参数，以防止多个实例占用过多系统内存导致 OOM。
+TiKV 的内存占用主要来自于 RocksDB 的 block-cache，默认为系统总内存的 40%。当 TiKV 容易出现 OOM 时，检查 [`storage.block-cache.capacity`](/tikv-configuration-file.md#capacity) 配置是否过高。还需要注意，当单机部署了多个 TiKV 实例时，需要显式地配置该参数，以防止多个实例占用过多系统内存导致 OOM。
 
 ### TiDB 数据和 RawKV 数据可存储于同一个 TiKV 集群里吗？
 
