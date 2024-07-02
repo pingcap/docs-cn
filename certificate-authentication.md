@@ -233,7 +233,7 @@ ssl-ca="path/to/ca-cert.pem"
 启动 TiDB 日志。如果日志中有以下内容，即代表配置生效：
 
 ```
-[INFO] [server.go:264] ["secure connection is enabled"] ["client verification enabled"=true]
+[INFO] [server.go:286] ["mysql protocol server secure connection is enabled"] ["client verification enabled"=true]
 ```
 
 ### 配置客户端程序
@@ -258,9 +258,9 @@ mysql -utest -h0.0.0.0 -P4000 --ssl-cert /path/to/client-cert.new.pem --ssl-key 
 
 ### 获取用户证书信息
 
-用户证书信息可由 `require subject`、`require issuer`、`require san` 和 `require cipher` 来指定，用于检查 X.509 certificate attributes。
+用户证书信息可由 `REQUIRE SUBJECT`、`REQUIRE ISSUER`、`REQUIRE SAN` 和 `REQUIRE CIPHER` 来指定，用于检查 X.509 certificate attributes。
 
-+ `require subject`：指定用户在连接时需要提供客户端证书的 `subject` 内容。指定该选项后，不需要再配置 `require ssl` 或 x509。配置内容对应[生成客户端密钥和证书](#生成客户端密钥和证书)中的录入信息。
++ `REQUIRE SUBJECT`：指定用户在连接时需要提供客户端证书的 `subject` 内容。指定该选项后，不需要再配置 `require ssl` 或 x509。配置内容对应[生成客户端密钥和证书](#生成客户端密钥和证书)中的录入信息。
 
     可以执行以下命令来获取该项的信息：
 
@@ -270,7 +270,7 @@ mysql -utest -h0.0.0.0 -P4000 --ssl-cert /path/to/client-cert.new.pem --ssl-key 
     openssl x509 -noout -subject -in client-cert.pem | sed 's/.\{8\}//'  | sed 's/, /\//g' | sed 's/ = /=/g' | sed 's/^/\//'
     ```
 
-+ `require issuer`：指定签发用户证书的 CA 证书的 `subject` 内容。配置内容对应[生成 CA 密钥和证书](#生成-ca-密钥和证书)中的录入信息。
++ `REQUIRE ISSUER`：指定签发用户证书的 CA 证书的 `subject` 内容。配置内容对应[生成 CA 密钥和证书](#生成-ca-密钥和证书)中的录入信息。
 
     可以执行以下命令来获取该项的信息：
 
@@ -280,9 +280,9 @@ mysql -utest -h0.0.0.0 -P4000 --ssl-cert /path/to/client-cert.new.pem --ssl-key 
     openssl x509 -noout -subject -in ca-cert.pem | sed 's/.\{8\}//'  | sed 's/, /\//g' | sed 's/ = /=/g' | sed 's/^/\//'
     ```
 
-+ `require san`：指定签发用户证书的 CA 证书的 `Subject Alternative Name` 内容。配置内容对应生成客户端证书使用的 [openssl.cnf 配置文件的 `alt_names` 信息](/generate-self-signed-certificates.md)。
++ `REQUIRE SAN`：指定签发用户证书的 CA 证书的 `Subject Alternative Name` 内容。配置内容对应生成客户端证书使用的 [openssl.cnf 配置文件的 `alt_names` 信息](/generate-self-signed-certificates.md)。
 
-    + 可以执行以下命令来获取已生成证书中的 `require san` 项的信息：
+    + 可以执行以下命令来获取已生成证书中的 `REQUIRE SAN` 项的信息：
 
         {{< copyable "shell-regular" >}}
 
@@ -290,7 +290,7 @@ mysql -utest -h0.0.0.0 -P4000 --ssl-cert /path/to/client-cert.new.pem --ssl-key 
         openssl x509 -noout -extensions subjectAltName -in client.crt
         ```
 
-    + `require san` 目前支持以下 `Subject Alternative Name` 检查项：
+    + `REQUIRE SAN` 目前支持以下 `Subject Alternative Name` 检查项：
 
         - URI
         - IP
@@ -301,14 +301,12 @@ mysql -utest -h0.0.0.0 -P4000 --ssl-cert /path/to/client-cert.new.pem --ssl-key 
         {{< copyable "sql" >}}
 
         ```sql
-        create user 'u1'@'%' require san 'DNS:d1,URI:spiffe://example.org/myservice1,URI:spiffe://example.org/myservice2'
+        CREATE USER 'u1'@'%' REQUIRE SAN 'DNS:d1,URI:spiffe://example.org/myservice1,URI:spiffe://example.org/myservice2';
         ```
 
         以上配置只允许用户 `u1` 使用 URI 项为 `spiffe://example.org/myservice1` 或 `spiffe://example.org/myservice2`、DNS 项为 `d1` 的证书登录 TiDB。
 
-+ `require cipher`：配置该项检查客户端支持的 `cipher method`。可以使用以下语句来查看支持的列表：
-
-    {{< copyable "sql" >}}
++ `REQUIRE CIPHER`：配置该项检查客户端支持的 `cipher method`。可以使用以下语句来查看支持的列表：
 
     ```sql
     SHOW SESSION STATUS LIKE 'Ssl_cipher_list';
@@ -316,44 +314,34 @@ mysql -utest -h0.0.0.0 -P4000 --ssl-cert /path/to/client-cert.new.pem --ssl-key 
 
 ### 配置用户证书信息
 
-获取用户证书信息（`require subject`, `require issuer`、`require san` 和 `require cipher`）后，可在创建用户、赋予权限或更改用户时配置用户证书信息。将以下命令中的 `<replaceable>` 替换为对应的信息。可以选择配置其中一项或多项，使用空格或 `and` 分隔。
+获取用户证书信息（`REQUIRE SUBJECT`、`REQUIRE ISSUER`、`REQUIRE SAN` 和 `REQUIRE CIPHER`）后，可在创建用户、赋予权限或更改用户时配置用户证书信息。将以下命令中的 `<replaceable>` 替换为对应的信息。可以选择配置其中一项或多项，使用空格或 `and` 分隔。
 
-+ 可以在创建用户 (`create user`) 时配置登录时需要校验的证书信息：
++ 可以在创建用户 (`CREATE USER`) 时配置登录时需要校验的证书信息：
 
     {{< copyable "sql" >}}
 
     ```sql
-    create user 'u1'@'%'  require issuer '<replaceable>' subject '<replaceable>' san '<replaceable>' cipher '<replaceable>';
+    CREATE USER 'u1'@'%' REQUIRE ISSUER '<replaceable>' SUBJECT '<replaceable>' SAN '<replaceable>' CIPHER '<replaceable>';
     ```
 
-+ 可以在赋予权限 (`grant`) 时配置登录时需要校验的证书信息：
++ 可以在修改已有用户 (`ALTER USER`) 时配置登录时需要校验的证书信息：
 
     {{< copyable "sql" >}}
 
     ```sql
-    grant all on *.* to 'u1'@'%' require issuer '<replaceable>' subject '<replaceable>' san '<replaceable>' cipher '<replaceable>';
-    ```
-
-+ 还可以在修改已有用户 (alter user) 时配置登录时需要校验的证书信息：
-
-    {{< copyable "sql" >}}
-
-    ```sql
-    alter user 'u1'@'%' require issuer '<replaceable>' subject '<replaceable>' san '<replaceable>' cipher '<replaceable>';
+    ALTER USER 'u1'@'%' REQUIRE ISSUER '<replaceable>' SUBJECT '<replaceable>' SAN '<replaceable>' CIPHER '<replaceable>';
     ```
 
 配置完成后，用户在登录时 TiDB 会验证以下内容：
 
 + 使用 SSL 登录，且证书为服务器配置的 CA 证书所签发
-+ 证书的 `Issuer` 信息和权限配置里的信息相匹配
-+ 证书的 `Subject` 信息和权限配置里的信息相匹配
-+ 证书的 `Subject Alternative Name` 信息和权限配置里的信息相匹配
++ 证书的 `issuer` 信息和权限配置里的 `REQUIRE ISSUER` 信息相匹配
++ 证书的 `subject` 信息和权限配置里的 `REQUIRE CIPHER` 信息相匹配
++ 证书的 `Subject Alternative Name` 信息和权限配置里的 `REQUIRE SAN` 信息相匹配
 
 全部验证通过后用户才能登录，否则会报 `ERROR 1045 (28000): Access denied` 错误。登录后，可以通过以下命令来查看当前链接是否使用证书登录、TLS 版本和 Cipher 算法。
 
 连接 MySQL 客户端并执行：
-
-{{< copyable "sql" >}}
 
 ```sql
 \s
@@ -363,20 +351,18 @@ mysql -utest -h0.0.0.0 -P4000 --ssl-cert /path/to/client-cert.new.pem --ssl-key 
 
 ```
 --------------
-mysql  Ver 15.1 Distrib 10.4.10-MariaDB, for Linux (x86_64) using readline 5.1
+mysql  Ver 8.3.0 for Linux on x86_64 (MySQL Community Server - GPL)
 
 Connection id:       1
 Current database:    test
 Current user:        root@127.0.0.1
-SSL:                 Cipher in use is TLS_AES_256_GCM_SHA384
+SSL:                 Cipher in use is TLS_AES_128_GCM_SHA256
 ```
 
 然后执行：
 
-{{< copyable "sql" >}}
-
 ```sql
-show variables like '%ssl%';
+SHOW VARIABLES LIKE '%ssl%';
 ```
 
 返回结果如下：
@@ -385,13 +371,14 @@ show variables like '%ssl%';
 +---------------+----------------------------------+
 | Variable_name | Value                            |
 +---------------+----------------------------------+
-| ssl_cert      | /path/to/server-cert.pem         |
-| ssl_ca        | /path/to/ca-cert.pem             |
-| have_ssl      | YES                              |
 | have_openssl  | YES                              |
+| have_ssl      | YES                              |
+| ssl_ca        | /path/to/ca-cert.pem             |
+| ssl_cert      | /path/to/server-cert.pem         |
+| ssl_cipher    |                                  |
 | ssl_key       | /path/to/server-key.pem          |
 +---------------+----------------------------------+
-6 rows in set (0.067 sec)
+6 rows in set (0.06 sec)
 ```
 
 ## 更新和替换证书
