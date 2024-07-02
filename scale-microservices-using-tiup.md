@@ -198,7 +198,7 @@ tiup cluster display <cluster-name>
 PD 服务支持在以下两种工作模式之间进行切换：
 
 - 常规模式：由 PD 节点自身提供路由、时间戳分配和集群调度功能。
-- 微服务模式：支持将 PD 的时间戳分配和集群调度功能单独部署到 TSO 节点（提供 `tso` 微服务）和 Scheduling 节点 （提供 `scheduling` 微服务），从而与 PD 的路由功能解耦，让 PD 专注于元数据的路由服务。
+- 微服务模式：支持将 PD 的时间戳分配和集群调度功能单独部署到 TSO 节点（提供 `tso` 微服务）和 Scheduling 节点（提供 `scheduling` 微服务），从而与 PD 的路由功能解耦，让 PD 专注于元数据的路由服务。
 
 > **注意：**
 >
@@ -235,15 +235,15 @@ PD 服务支持在以下两种工作模式之间进行切换：
 
     ```ini
     global:
-    user: tidb
-    ssh_port: 22
-    listen_host: 0.0.0.0
-    deploy_dir: /tidb-deploy
-    data_dir: /tidb-data
-    os: linux
-    arch: amd64
-    systemd_mode: system
-    pd_mode: ms
+      user: tidb
+      ssh_port: 22
+      listen_host: 0.0.0.0
+      deploy_dir: /tidb-deploy
+      data_dir: /tidb-data
+      os: linux
+      arch: amd64
+      systemd_mode: system
+      pd_mode: ms
     ```
 
 3. 滚动更新 PD 节点配置：
@@ -252,9 +252,9 @@ PD 服务支持在以下两种工作模式之间进行切换：
     tiup cluster reload <cluster-name> -R pd
     ```
 
-   > **注意：**
+    > **注意：**
     >
-    > 从该步骤中的 `reload` 命令开始执行到下一步的 `scale-out` 命令执行结束期间，PD 时间戳分配服务将不可用。
+    > 从执行 `reload` 命令开始到下一步的 `scale-out` 命令执行结束期间，PD 时间戳分配服务将不可用。
 
 4. 扩容 PD 微服务节点：
 
@@ -276,14 +276,14 @@ PD 服务支持在以下两种工作模式之间进行切换：
 
     ```ini
     global:
-    user: tidb
-    ssh_port: 22
-    listen_host: 0.0.0.0
-    deploy_dir: /tidb-deploy
-    data_dir: /tidb-data
-    os: linux
-    arch: amd64
-    systemd_mode: system
+      user: tidb
+      ssh_port: 22
+      listen_host: 0.0.0.0
+      deploy_dir: /tidb-deploy
+      data_dir: /tidb-data
+      os: linux
+      arch: amd64
+      systemd_mode: system
     ```
 
 2. 缩容集群中所有的 PD 微服务节点：
@@ -294,7 +294,7 @@ PD 服务支持在以下两种工作模式之间进行切换：
 
     > **注意：**
     >
-    > 从该步骤中的 `scale-in` 命令开始执行到下一步的 `reload` 命令执行结束期间，PD 时间戳分配服务将不可用。
+    > 从执行 `scale-in` 命令开始到下一步的 `reload` 命令执行结束期间，PD 时间戳分配服务将不可用。
 
 3. 滚动更新 PD 节点配置：
 
