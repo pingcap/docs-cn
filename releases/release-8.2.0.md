@@ -161,7 +161,7 @@ TiDB 版本：8.2.0
 
 ### MySQL 兼容性
 
-* 在 v8.1.0 之前，执行带有 `PASSWORD REQUIRE CURRENT DEFAULT` 选项的 [`CREATE USER`](/sql-statements/sql-statement-create-user.md) 语句会返回错误，因为 TiDB 不支持且无法解析该选项。从 v8.1.0 开始，TiDB 支持解析并忽略该选项，以便与 MySQL 兼容 [#53305](https://github.com/pingcap/tidb/issues/53305) @[dveeden](https://github.com/dveeden)
+* 在 v8.2.0 之前，执行带有 `PASSWORD REQUIRE CURRENT DEFAULT` 选项的 [`CREATE USER`](/sql-statements/sql-statement-create-user.md) 语句会返回错误，因为 TiDB 不支持且无法解析该选项。从 v8.2.0 开始，TiDB 支持解析并忽略该选项，以便与 MySQL 兼容 [#53305](https://github.com/pingcap/tidb/issues/53305) @[dveeden](https://github.com/dveeden)
 
 ### 系统变量
 
