@@ -70,6 +70,12 @@ TiDB 支持 MySQL 8.0 中提供的大部分 [JSON 函数](https://dev.mysql.com/
 | [JSON_ARRAYAGG(key)](https://dev.mysql.com/doc/refman/8.0/en/aggregate-functions.html#function_json-arrayagg) | 提供指定列 key 的聚合 |
 | [JSON_OBJECTAGG(key, value)](https://dev.mysql.com/doc/refman/8.0/en/aggregate-functions.html#function_json-objectagg) | 提供给定两列键值对的聚合 |
 
+## 验证函数
+
+| 函数                 | 功能描述 |
+| --------------------------------- | ----------- |
+| [JSON_SCHEMA_VALID(schema,json_doc)](https://dev.mysql.com/doc/refman/8.0/en/json-validation-functions.html#function_json-schema-valid) | 根据 schema 验证 JSON 文档，确保数据的完整性和一致性 |
+
 ## 另请参阅
 
 * [JSON Function Reference](https://dev.mysql.com/doc/refman/8.0/en/json-function-reference.html)
@@ -77,7 +83,6 @@ TiDB 支持 MySQL 8.0 中提供的大部分 [JSON 函数](https://dev.mysql.com/
 
 ## 不支持的函数
 
-- `JSON_SCHEMA_VALID()`
 - `JSON_SCHEMA_VALIDATION_REPORT()`
 - `JSON_TABLE()`
 - `JSON_VALUE()`

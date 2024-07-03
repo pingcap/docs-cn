@@ -111,6 +111,7 @@
   - 规划集群拓扑
     - [最小部署拓扑结构](/minimal-deployment-topology.md)
     - [TiFlash 部署拓扑](/tiflash-deployment-topology.md)
+    - [PD 微服务部署拓扑](/pd-microservices-deployment-topology.md)
     - [TiProxy 部署拓扑](/tiproxy/tiproxy-deployment-topology.md)
     - [TiCDC 部署拓扑](/ticdc-deployment-topology.md)
     - [TiDB Binlog 部署拓扑](/tidb-binlog-deployment-topology.md)
@@ -322,7 +323,13 @@
   - [Load Base Split 使用文档](/configure-load-base-split.md)
   - [Store Limit 使用文档](/configure-store-limit.md)
   - [DDL 执行原理及最佳实践](/ddl-introduction.md)
-  - [PD 微服务使用文档](/pd-microservices.md)
+  - PD 微服务使用文档
+    - [PD 微服务概览](/pd-microservices.md)
+    - [使用 TiUP 扩容缩容 PD 微服务节点](/scale-microservices-using-tiup.md)
+    - [TSO 配置文件描述](/tso-configuration-file.md)
+    - [TSO 配置参数](/command-line-flags-for-tso-configuration.md)
+    - [Scheduling 配置文件描述](/scheduling-configuration-file.md)
+    - [Scheduling 配置参数](/command-line-flags-for-scheduling-configuration.md)
 - TiDB 工具
   - [功能概览](/ecosystem-tool-user-guide.md)
   - [使用场景](/ecosystem-tool-user-case.md)
@@ -635,6 +642,7 @@
     - [基于 DM 同步场景下的数据校验](/sync-diff-inspector/dm-diff.md)
   - TiProxy
     - [概述](/tiproxy/tiproxy-overview.md)
+    - [负载均衡策略](/tiproxy/tiproxy-load-balance.md)
     - [配置文件](/tiproxy/tiproxy-configuration.md)
     - [命令行参数](/tiproxy/tiproxy-command-line-flags.md)
     - [监控指标](/tiproxy/tiproxy-grafana.md)

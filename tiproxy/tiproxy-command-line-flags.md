@@ -11,6 +11,13 @@ summary: 了解 TiProxy 的命令行参数。
 
 本节介绍 TiProxy 服务器程序 `tiproxy` 的参数。
 
+### `--advertise-addr`
+
++ 指定客户端连接 TiProxy 时使用的地址。
++ 类型：`string`
++ 默认值：`""`
++ 使用 TiUP 或 TiDB Operator 部署 TiProxy 时，此命令行参数会自动设置。如果未设置该参数，将使用该 TiProxy 实例的外部 IP 地址。
+
 ### `--config`
 
 + 指定 TiProxy 配置文件的路径。
