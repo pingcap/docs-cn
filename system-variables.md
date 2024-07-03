@@ -4437,7 +4437,7 @@ EXPLAIN FORMAT='brief' SELECT COUNT(1) FROM t WHERE a = 1 AND b IS NOT NULL;
 
 > **警告：**
 >
-> 该变量目前为实验特性，不建议在生产环境中使用。该功能可能会在未事先通知的情况下发生变化或删除。如果发现 bug，请在 GitHub 上提 [issue](https://github.com/pingcap/tidb/issues) 反馈。
+> 当前版本中该变量控制的功能尚未生效，请保留默认值。
 
 - 作用域：GLOBAL
 - 是否持久化到集群：是
