@@ -37,12 +37,7 @@ TiDB 版本：8.0.0
   </tr>
   <tr>
     <td>增强在有大量表时缓存 schema 信息的稳定性</td>
-    <td>对于使用 TiDB 作为多租户应用程序记录系统的 SaaS 公司，经常需要存储大量的表。在以前的版本中，尽管支持处理百万级或更大数量的表，但可能会影响用户体验。TiDB v8.0.0 通过以下增强功能改善了这一问题：
-  <ul>
-    <li>引入新的 <a href="https://docs.pingcap.com/zh/tidb/v8.0/system-variables#tidb_schema_cache_size-从-v800-版本开始引入">schema 缓存系统</a>，为表元数据提供了懒加载的 LRU (Least Recently Used) 缓存，并更有效地管理 schema 版本变更。</li>
-    <li>支持在 <code>auto analyze</code> 中配置<a href="https://docs.pingcap.com/zh/tidb/v8.0/system-variables#tidb_enable_auto_analyze_priority_queue-从-v800-版本开始引入">优先队列</a>，使流程更加流畅，并在大量表的情况下提高稳定性。</li>
-  </ul>
-    </td>
+    <td>对于使用 TiDB 作为多租户应用程序记录系统的 SaaS 公司，经常需要存储大量的表。在以前的版本中，尽管支持处理百万级或更大数量的表，但可能会影响用户体验。TiDB v8.0.0 通过以下增强功能改善了这一问题：支持在 <code>auto analyze</code> 中配置<a href="https://docs.pingcap.com/zh/tidb/v8.0/system-variables#tidb_enable_auto_analyze_priority_queue-从-v800-版本开始引入">优先队列</a>，使流程更加流畅，并在大量表的情况下提高稳定性。</td>
   </tr>
   <tr>
     <td rowspan="1">数据库管理与可观测性</td>
@@ -145,16 +140,6 @@ TiDB 版本：8.0.0
     在 v8.0.0 之前，低精度 TSO 功能的 TSO 更新周期固定，无法根据实际业务需要进行调整。在 v8.0.0 中，TiDB 引入变量 `tidb_low_resolution_tso_update_interval` 来控制低精度 TSO 功能更新 TSO 的周期。该功能仅在低精度 TSO 功能启用时有效。
 
     更多信息，请参考[用户文档](/system-variables.md#tidb_low_resolution_tso_update_interval-从-v800-版本开始引入)。
-
-### 稳定性
-
-* 支持根据 LRU 算法缓存所需的 schema 信息，以减少 TiDB server 的内存消耗（实验特性）[#50959](https://github.com/pingcap/tidb/issues/50959) @[gmhdbjd](https://github.com/gmhdbjd)
-
-    在 v8.0.0 之前，每个 TiDB 节点都会缓存所有表的 schema 信息。在表数量较多的情况下，例如高达几十万张表，仅缓存这些表的 schema 信息就会占用大量内存。
-
-    从 v8.0.0 开始，TiDB 引入 [`tidb_schema_cache_size`](/system-variables.md#tidb_schema_cache_size-从-v800-版本开始引入) 系统变量，允许设置缓存 schema 信息所能使用的内存上限，从而避免占用过多的内存。开启该功能后，TiDB 将使用 Least Recently Used (LRU) 算法缓存所需的表，有效降低 schema 信息占用的内存。
-
-    更多信息，请参考[用户文档](/system-variables.md#tidb_schema_cache_size-从-v800-版本开始引入)。
 
 ### 高可用
 

@@ -45,12 +45,7 @@ TiDB 8.1.0 为长期支持版本 (Long-Term Support Release, LTS)。
   </tr>
   <tr>
     <td>增强在有大量表时缓存 schema 信息的稳定性（实验特性，从 v8.0.0 开始引入）</td>
-    <td>对于使用 TiDB 作为多租户应用程序记录系统的 SaaS 公司，经常需要存储大量的表。在以前的版本中，尽管支持处理百万级或更大数量的表，但可能会影响用户体验。TiDB v8.0.0 通过以下增强功能改善了这一问题：
-      <ul>
-      <li>引入新的 <a href="https://docs.pingcap.com/zh/tidb/v8.1/system-variables#tidb_schema_cache_size-从-v800-版本开始引入">schema 缓存系统</a>，为表元数据提供了基于 LRU (Least Recently Used) 算法的缓存策略，优先将最近访问频率较高的表元数据存储在缓存中，从而减少表数量较多场景下的内存占用。</li>
-      <li>支持在 <code>auto analyze</code> 中配置<a href="https://docs.pingcap.com/zh/tidb/v8.1/system-variables#tidb_enable_auto_analyze_priority_queue-从-v800-版本开始引入">优先队列</a>，使流程更加流畅，并在大量表的情况下提高稳定性。</li>
-      </ul>
-    </td>
+    <td>对于使用 TiDB 作为多租户应用程序记录系统的 SaaS 公司，经常需要存储大量的表。在以前的版本中，尽管支持处理百万级或更大数量的表，但可能会影响用户体验。TiDB v8.0.0 通过以下增强功能改善了这一问题：支持在 <code>auto analyze</code> 中配置<a href="https://docs.pingcap.com/zh/tidb/v8.1/system-variables#tidb_enable_auto_analyze_priority_queue-从-v800-版本开始引入">优先队列</a>，使流程更加流畅，并在大量表的情况下提高稳定性。</td>
   </tr>
   <tr>
     <td rowspan="5">稳定性与高可用</td>
