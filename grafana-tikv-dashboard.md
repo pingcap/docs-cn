@@ -346,7 +346,7 @@ summary: TiKV 监控指标详解：TiUP 部署 TiDB 集群时，一键部署监�
 - Bytes/Write：每次写的大小
 - Compaction flow：compaction 相关的流量
 - Compaction pending bytes：等待 compaction 的大小
-- Compaction Job Size(files): compaction 任务涉及的 SST 文件个数
+- Compaction Job Size(files)：单个 compaction 任务涉及的 SST 文件数量
 - Read amplification：每个 TiKV 实例的读放大
 - Compression ratio：每一层的压缩比
 - Number of snapshots：每个 TiKV 的 snapshot 的数量
