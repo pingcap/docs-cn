@@ -179,7 +179,7 @@ TiDB 版本：8.2.0
 | 配置文件           | 配置项                | 修改类型 | 描述                                 |
 |----------------|--------------------|------|------------------------------------|
 | TiDB | [`stats-load-concurrency`](/tidb-configuration-file.md#stats-load-concurrency-从-v540-版本开始引入) | 修改 | 默认值从 `5` 修改为 `0`，最小值从 `1` 修改为 `0`。`0` 为自动模式，根据服务器情况，自动调节并发度。 |
-| TiDB | [`token-limit`](/tidb-configuration-file.md#token-limit) | 修改 | 最大值从 `18446744073709551615` （64 位平台）和 `4294967295`（32 位平台）修改为 `1048576`，代表同时执行请求的 session 个数最多可以设置为 `1048576`，避免设置过大导致 TiDB Server OOM。|
+| TiDB | [`token-limit`](/tidb-configuration-file.md#token-limit) | 修改 | 最大值从 `18446744073709551615`（64 位平台）和 `4294967295`（32 位平台）修改为 `1048576`，代表同时执行请求的 session 个数最多可以设置为 `1048576`，避免设置过大导致 TiDB Server OOM。|
 | TiKV | [`max-apply-unpersisted-log-limit`](/tikv-configuration-file.md#max-apply-unpersisted-log-limit-从-v820-版本开始引入) | 修改 | 默认值从 `0` 修改为 `1024`，代表允许 apply 已经 `commit` 但尚未持久化的 Raft 日志的最大数量为 1024，用于降低 TiKV 节点上因 I/O 抖动导致的长尾延迟。 |
 | TiKV | [`server.grpc-compression-type`](/tikv-configuration-file.md#grpc-compression-type) | 修改 | 该配置项现在也会影响 TiKV 向 TiDB 发送的响应消息的压缩算法。开启压缩可能消耗更多 CPU 资源。 |
 | TiFlash | [`security.redact_info_log`](/tiflash/tiflash-configuration.md#配置文件-tiflashtoml) | 修改 | 可选值新增 `marker` 选项。当配置项的值设置为 `marker` 时，日志中的用户数据会被标记符号 `‹ ›` 包裹。 |
