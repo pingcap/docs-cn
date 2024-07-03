@@ -99,7 +99,7 @@ TiDB 版本：8.2.0
 
 * TiDB 支持 JSON Schema Validation 函数 [#52779](https://github.com/pingcap/tidb/issues/52779) @[dveeden](https://github.com/dveeden) **tw@hfxsd** <!--1840-->
 
-    在 v8.2.0 之前，你需要依赖外部工具或自定义验证逻辑进行 JSON 数据验证，开发和维护比较复杂，开发效率低。从 v8.2.0 版本开始，引入了 `JSON_SCHEMA_VALID()` 函数，你可以在 TiDB 中直接验证 JSON 数据的有效性，提高数据的完整性和一致性，提升了开发效率。
+    在 v8.2.0 之前，你需要依赖外部工具或自定义验证逻辑进行 JSON 数据验证，开发和维护比较复杂，开发效率低。从 v8.2.0 版本开始，引入了 `JSON_SCHEMA_VALID()` 函数。通过在 `CHECK` 约束中使用 `JSON_SCHEMA_VALID()`，可以避免插入不符合要求的数据，而不是事后检查数据。你可以在 TiDB 中直接验证 JSON 数据的有效性，提高数据的完整性和一致性，提升了开发效率。
 
     更多信息，请参考[用户文档](/functions-and-operators/json-functions.md#验证函数)。
 
