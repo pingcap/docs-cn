@@ -1,7 +1,6 @@
 ---
 title: 读写延迟增加
 summary: 介绍读写延时增加、抖动时的排查思路，可能的原因和解决方法。
-aliases: ['/docs-cn/dev/troubleshoot-cpu-issues/']
 ---
 
 # 读写延迟增加

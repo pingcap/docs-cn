@@ -1,6 +1,5 @@
 ---
 title: TiUP 常见运维操作
-aliases: ['/docs-cn/dev/maintain-tidb-using-tiup/','/docs-cn/dev/how-to/maintain/tiup-operations/']
 summary: TiUP 是用于管理 TiDB 集群的工具，可以进行查看集群列表、启动、关闭、修改配置参数、查看状态等常见运维操作。操作简单方便，适合用于 TiDB 集群的管理。
 ---
 

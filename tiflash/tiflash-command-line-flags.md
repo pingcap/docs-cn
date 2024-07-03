@@ -1,6 +1,5 @@
 ---
 title: TiFlash 命令行参数
-aliases: ['/docs-cn/dev/tiflash/tiflash-command-line-flags/']
 summary: TiFlash 的命令行启动参数包括 server --config-file、dttool migrate、dttool bench 和 dttool inspect。server --config-file 用于指定配置文件路径，dttool migrate 用于迁移 DTFile 的文件格式，dttool bench 用于提供 DTFile 的简单 IO 速度测试，dttool inspect 用于检查 DTFile 的完整性。每个命令都有对应的参数，可以根据需求进行配置。警告：TiFlash 目前只支持默认压缩等级的 LZ4 算法，自定义压缩参数并未经过大量测试。注意：为保证安全，DTTool 在迁移模式下会尝试对工作目录进行加锁。
 ---
 

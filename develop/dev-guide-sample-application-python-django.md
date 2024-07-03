@@ -1,7 +1,6 @@
 ---
 title: 使用 Django 连接到 TiDB
 summary: 了解如何使用 Django 连接到 TiDB。本文提供了使用 Django 与 TiDB 交互的 Python 示例代码片段。
-aliases: ['/zh/tidb/dev/dev-guide-sample-application-django']
 ---
 
 # 使用 Django 连接到 TiDB

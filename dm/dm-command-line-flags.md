@@ -1,7 +1,6 @@
 ---
 title: TiDB Data Migration 命令行参数
 summary: 介绍 DM 各组件的主要命令行参数。
-aliases: ['/docs-cn/tidb-data-migration/dev/command-line-flags/']
 ---
 
 # TiDB Data Migration 命令行参数

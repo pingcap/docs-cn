@@ -1,6 +1,5 @@
 ---
 title: TiDB Sysbench 性能对比测试报告 - v2.1 对比 v2.0
-aliases: ['/docs-cn/dev/benchmark/benchmark-sysbench-v3/','/docs-cn/dev/benchmark/sysbench-v3/']
 summary: TiDB 2.1 版本在 Point Select 查询性能上提升了 50%，而在 Update Non-Index 和 Update Index 写入性能上与 2.0 版本基本一致。
 ---
 

@@ -1,7 +1,6 @@
 ---
 title: CREATE USER
 summary: TiDB 数据库中 CREATE USER 的使用概况。
-aliases: ['/docs-cn/dev/sql-statements/sql-statement-create-user/','/docs-cn/dev/reference/sql/statements/create-user/']
 ---
 
 # CREATE USER
