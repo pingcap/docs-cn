@@ -24,11 +24,11 @@ TiDB 版本：8.2.0
 <tbody>
   <tr>
     <td rowspan="3">稳定性与高可用</td>
-    <td><a href="https://docs.pingcap.com/zh/tidb/v8.2/tiproxy-load-balance">TiProxy 支持多种负载均衡策略</td>
+    <td><a href="https://docs.pingcap.com/zh/tidb/v8.2/tiproxy-load-balance">TiProxy 支持多种负载均衡策略</a></td>
     <td>在 TiDB v8.2.0 中，TiProxy 支持从多个维度（包括状态、连接数、健康度、内存、CPU 和地理位置）对 TiDB 节点进行评估和排序，并支持通过 <code>policy</code> 配置项配置这些负载均衡策略的优先级。TiProxy 将根据 <code>policy</code> 动态选择最优 TiDB 节点执行数据库操作，从而优化 TiDB 节点的整体资源使用率，提升集群性能和吞吐。</td>
   </tr>
   <tr>
-    <td><a href="https://docs.pingcap.com/zh/tidb/v8.2/system-variables#tidb_enable_parallel_hashagg_spill-从-v800-版本开始引入">并行 HashAgg 算法支持数据落盘成为正式功能 (GA)</td>
+    <td><a href="https://docs.pingcap.com/zh/tidb/v8.2/system-variables#tidb_enable_parallel_hashagg_spill-从-v800-版本开始引入">并行 HashAgg 算法支持数据落盘成为正式功能 (GA)</a></td>
     <td>HashAgg 是 TiDB 中常用的聚合算子，用于快速聚合具有相同字段值的行。TiDB v8.0.0 引入并行 HashAgg 作为实验特性，以进一步提升处理速度。当内存资源不足时，并行 HashAgg 可以将临时排序数据落盘，避免因内存使用过度而导致的 OOM 风险，从而提升查询性能和节点稳定性。该功能在 v8.2.0 成为正式功能，并默认开启，用户可以通过 <code>tidb_executor_concurrency</code> 安全地设置并行 HashAgg 的并发度。</td>
   </tr>
   <tr>
