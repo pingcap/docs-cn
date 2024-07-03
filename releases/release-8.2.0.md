@@ -125,7 +125,7 @@ TiDB 版本：8.2.0
 
 * 记录执行计划没有被缓存的原因 [#50618](https://github.com/pingcap/tidb/issues/50618) @[qw4990](https://github.com/qw4990) **tw@hfxsd** <!--1819-->
 
-    在一些场景下，用户希望多数执行计划能够被缓存，以节省执行开销，并降低延迟。目前执行计划缓存对 SQL 有一定限制，部分形态 SQL 的执行计划无法被缓存，但是用户很难识别出无法被缓存的 SQL 以及对应的原因。因此，从 v8.2.0 开始，为系统表 [`STATEMENTS_SUMMARY`](/statement-summary-tables.md) 增加了新的列 `PLAN_CACHE_UNQUALIFIED` 和 `PLAN_CACHE_UNQUALIFIED_LAST_REASON`，来解释计划无法被缓存的原因，协助用户做性能调优。
+    在一些场景下，用户希望多数执行计划能够被缓存，以节省执行开销，并降低延迟。目前执行计划缓存对 SQL 有一定限制，部分形态 SQL 的执行计划无法被缓存，但是用户很难识别出无法被缓存的 SQL 以及对应的原因。因此，从 v8.2.0 开始，为系统表 [`STATEMENTS_SUMMARY`](/statement-summary-tables.md) 增加了新的列 `PLAN_CACHE_UNQUALIFIED` 和 `PLAN_CACHE_UNQUALIFIED_LAST_REASON`，来解释计划无法被缓存的原因，协助用户进行性能调优。
 
     更多信息，请参考[用户文档](/statement-summary-tables.md#表的字段介绍)。
 
