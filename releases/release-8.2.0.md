@@ -306,10 +306,10 @@ TiDB 版本：8.2.0
     - 修复使用 `CURRENT_DATE()` 作为列默认值时查询结果错误的问题 [#53746](https://github.com/pingcap/tidb/issues/53746) @[tangenta](https://github.com/tangenta)
     - 修复 `ALTER DATABASE ... SET TIFLASH REPLICA` 语句错误地给 `SEQUENCE` 表添加 TiFlash 副本的问题 [#51990](https://github.com/pingcap/tidb/issues/51990) @[jiyfhust](https://github.com/jiyfhust)
     - 修复 `INFORMATION_SCHEMA.KEY_COLUMN_USAGE` 表中 `REFERENCED_TABLE_SCHEMA` 字段显示不正确的问题 [#52350](https://github.com/pingcap/tidb/issues/52350) @[wd0517](https://github.com/wd0517)
-    - 修复 `AUTO_ID_CACHE=1` 时，单条语句插入多行导致 `AUTO_INCREMENT` 列不连续的问题 [#52465](https://github.com/pingcap/tidb/issues/52465) @[tiancaiamao](https://github.com/tiancaiamao)
-    - 修复弃用警告的格式 [#52515](https://github.com/pingcap/tidb/issues/52515) @[dveeden](https://github.com/dveeden)
+    - 修复 `AUTO_ID_CACHE=1` 时，单条语句插入多行数据导致 `AUTO_INCREMENT` 列不连续的问题 [#52465](https://github.com/pingcap/tidb/issues/52465) @[tiancaiamao](https://github.com/tiancaiamao)
+    - 修复弃用警告的格式问题 [#52515](https://github.com/pingcap/tidb/issues/52515) @[dveeden](https://github.com/dveeden)
     - 修复 `TRACE` 命令在 `copr.buildCopTasks` 中丢失的问题 [#53085](https://github.com/pingcap/tidb/issues/53085) @[time-and-fate](https://github.com/time-and-fate)
-    - 修复包含 `memory_quota` 的绑定在子查询中可能不生效的问题 [#53834](https://github.com/pingcap/tidb/issues/53834) @[qw4990](https://github.com/qw4990)
+    - 修复 `memory_quota` Hint 在子查询中可能不生效的问题 [#53834](https://github.com/pingcap/tidb/issues/53834) @[qw4990](https://github.com/qw4990)
     - 修复在某些情况下，元数据锁使用不当可能导致使用 plan cache 时写入异常数据的问题 [#53634](https://github.com/pingcap/tidb/issues/53634) @[zimulala](https://github.com/zimulala)
 
 + TiKV <!--tw@lilin90: 以下 8 条-->
