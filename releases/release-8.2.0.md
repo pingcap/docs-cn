@@ -193,7 +193,7 @@ TiDB 版本：8.2.0
 * 以下为从 v8.2.0 开始已废弃的功能：
 
     * 从 v8.2.0 开始，TiDB 的配置项 `enable-replica-selector-v2` 被废弃。向 TiKV 发送 RPC 请求时，默认使用新版本的 Region 副本选择器。
-    * 从 v8.2.0 开始，BR 快照恢复参数 `--concurrency` 被废弃。作为替代，你可以通过 [`--tikv-max-restore-concurrency`](/use-br-command-line-tool#常用选项) 配置快照恢复阶段单个 TiKV 节点的任务最大并发数。 **tw@qiancai** <!--1850-->
+    * 从 v8.2.0 开始，BR 快照恢复参数 `--concurrency` 被废弃。作为替代，你可以通过 [`--tikv-max-restore-concurrency`](/br/use-br-command-line-tool.md#常用选项) 配置快照恢复阶段单个 TiKV 节点的任务最大并发数。 **tw@qiancai** <!--1850-->
     * 从 v8.2.0 开始，BR 快照恢复参数 `--granularity` 被废弃，[粗粒度打散 Region 算法](/br/br-snapshot-guide.md#恢复快照备份数据)默认启用。**tw@qiancai** <!--1850-->
 
 * 以下为计划将在未来版本中废弃的功能：
@@ -211,6 +211,7 @@ TiDB 版本：8.2.0
 ## 改进提升
 
 + TiDB <!--tw@hfxsd: 13 条-->
+
     - 支持并行执行[逻辑 DDL 语句 (General DDL)](/ddl-introduction.md#ddl-语句类型简介)。相比 v8.1.0，在使用 10 个会话并发提交不同 DDL 语句的场景下，性能提升了 3 到 6 倍 [#53246](https://github.com/pingcap/tidb/issues/53246) @[D3Hunter](https://github.com/D3Hunter)
     - 改进形如 `((a = 1 and b = 2 and c > 3) or (a = 4 and b = 5 and c > 6)) and d > 3` 的表达式匹配多列索引的逻辑，使其能生成更加精准的 `Range` [#41598](https://github.com/pingcap/tidb/issues/41598) @[ghazalfamilyusa](https://github.com/ghazalfamilyusa)
     - 优化对大数据量的表进行简单查询时获取数据分布信息的性能 [#53850](https://github.com/pingcap/tidb/issues/53850) @[you06](https://github.com/you06)  **tw@Oreoxmt** <!--1561-->
@@ -223,6 +224,7 @@ TiDB 版本：8.2.0
     - (dup): release-6.5.10.md > 改进提升> TiDB - 在 MPP 负载均衡时移除不包含任何 Region 的 Store [#52313](https://github.com/pingcap/tidb/issues/52313) @[xzhangxian1008](https://github.com/xzhangxian1008)
 
 + TiKV <!--tw@lilin90: 9 条-->
+
     - 增加 **Compaction Job Size(files)** 指标来呈现单个 compaction job 涉及的 SST 文件数 [#16837](https://github.com/tikv/tikv/issues/16837) @[zhangjinpeng87](https://github.com/zhangjinpeng87)
     - 默认开启[提前 apply](/tikv-configuration-file.md#max-apply-unpersisted-log-limit-从-v810-版本开始引入) 特性，开启后，Raft leader 在多数 peer 完成 Raft log 持久化之后即可进行 apply，不再要求 leader 自身完成 Raft log 的持久化，降低少数 TiKV 抖动对写请求延迟的影响 [#16717](https://github.com/tikv/tikv/issues/16717) @[glorv](https://github.com/glorv)
     - 在 Raft 日志持久化之前，将 Raft 日志保留在缓存中，以提升 follower 对日志的读取性能 [#16717](https://github.com/tikv/tikv/issues/16717) @[glorv](https://github.com/glorv)
