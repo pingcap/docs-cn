@@ -624,7 +624,7 @@ systemctl start docker
 
 ## 生产环境
 
-对于生产环境，建议直接使用 [TiDB Cloud](https://en.pingcap.com/tidb-cloud/) 以获得完全托管的体验。
+对于生产环境，建议直接使用 [TiDB Dedicated](https://www.pingcap.com/tidb-dedicated/) 以获得完全托管的体验。
 
 ### 前提条件
 
