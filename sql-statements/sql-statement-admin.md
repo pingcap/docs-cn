@@ -28,15 +28,11 @@ summary: TiDB的 `ADMIN` 语句是用于查看TiDB状态和对表数据进行校
 
 ## `ADMIN RELOAD` 语句
 
-{{< copyable "sql" >}}
-
 ```sql
 ADMIN RELOAD expr_pushdown_blacklist;
 ```
 
 以上语句用于重新加载表达式下推的黑名单。
-
-{{< copyable "sql" >}}
 
 ```sql
 ADMIN RELOAD opt_rule_blacklist;
@@ -46,15 +42,11 @@ ADMIN RELOAD opt_rule_blacklist;
 
 ## `ADMIN PLUGIN` 语句
 
-{{< copyable "sql" >}}
-
 ```sql
 ADMIN PLUGINS ENABLE plugin_name [, plugin_name] ...;
 ```
 
 以上语句用于启用 `plugin_name` 插件。
-
-{{< copyable "sql" >}}
 
 ```sql
 ADMIN PLUGINS DISABLE plugin_name [, plugin_name] ...;
@@ -64,15 +56,11 @@ ADMIN PLUGINS DISABLE plugin_name [, plugin_name] ...;
 
 ## `ADMIN ... BINDINGS` 语句
 
-{{< copyable "sql" >}}
-
 ```sql
 ADMIN FLUSH bindings;
 ```
 
 以上语句用于持久化 SQL Plan 绑定的信息。
-
-{{< copyable "sql" >}}
 
 ```sql
 ADMIN CAPTURE bindings;
@@ -80,15 +68,11 @@ ADMIN CAPTURE bindings;
 
 以上语句可以将出现超过一次的 `select`execution-plan 语句生成 SQL Plan 的绑定。
 
-{{< copyable "sql" >}}
-
 ```sql
 ADMIN EVOLVE bindings;
 ```
 
 开启自动绑定功能后，每隔 `bind-info-lease`（默认值为 `3s`）触发一次 SQL Plan 绑定信息的演进。以上语句用于主动触发此演进，SQL Plan 绑定详情可参考：[执行计划管理](/sql-plan-management.md)。
-
-{{< copyable "sql" >}}
 
 ```sql
 ADMIN RELOAD bindings;
@@ -97,8 +81,6 @@ ADMIN RELOAD bindings;
 以上语句用于重新加载 SQL Plan 绑定的信息。
 
 ## `ADMIN REPAIR TABLE` 语句
-
-{{< copyable "sql" >}}
 
 ```sql
 ADMIN REPAIR TABLE tbl_name CREATE TABLE STATEMENT;
@@ -116,13 +98,9 @@ ADMIN SHOW t NEXT_ROW_ID;
 
 ## `ADMIN SHOW SLOW` 语句
 
-{{< copyable "sql" >}}
-
 ```sql
 ADMIN SHOW SLOW RECENT N;
 ```
-
-{{< copyable "sql" >}}
 
 ```sql
 ADMIN SHOW SLOW TOP [INTERNAL | ALL] N;
@@ -134,14 +112,56 @@ ADMIN SHOW SLOW TOP [INTERNAL | ALL] N;
 
 ```ebnf+diagram
 AdminStmt ::=
-    'ADMIN' ( 'SHOW' ( 'DDL' ( 'JOBS' Int64Num? WhereClauseOptional | 'JOB' 'QUERIES' NumList )? | TableName 'NEXT_ROW_ID' | 'SLOW' AdminShowSlow ) | 'CHECK' ( 'TABLE' TableNameList | 'INDEX' TableName Identifier ( HandleRange ( ',' HandleRange )* )? ) | 'RECOVER' 'INDEX' TableName Identifier | 'CLEANUP' ( 'INDEX' TableName Identifier | 'TABLE' 'LOCK' TableNameList ) | 'CHECKSUM' 'TABLE' TableNameList | 'CANCEL' 'DDL' 'JOBS' NumList | 'RELOAD' ( 'EXPR_PUSHDOWN_BLACKLIST' | 'OPT_RULE_BLACKLIST' | 'BINDINGS' ) | 'PLUGINS' ( 'ENABLE' | 'DISABLE' ) PluginNameList | 'REPAIR' 'TABLE' TableName CreateTableStmt | ( 'FLUSH' | 'CAPTURE' | 'EVOLVE' ) 'BINDINGS' )
+    'ADMIN' ( 
+        'SHOW' ( 
+            'DDL' ( 
+                'JOBS' Int64Num? WhereClauseOptional 
+                | 'JOB' 'QUERIES' (NumList | AdminStmtLimitOpt)
+            )? 
+            | TableName 'NEXT_ROW_ID' 
+            | 'SLOW' AdminShowSlow 
+            | 'BDR' 'ROLE'
+        ) 
+        | 'CHECK' ( 
+            'TABLE' TableNameList 
+            | 'INDEX' TableName Identifier ( HandleRange ( ',' HandleRange )* )? 
+        ) 
+        | 'RECOVER' 'INDEX' TableName Identifier 
+        | 'CLEANUP' ( 
+            'INDEX' TableName Identifier 
+            | 'TABLE' 'LOCK' TableNameList ) 
+        | 'CHECKSUM' 'TABLE' TableNameList | 'CANCEL' 'DDL' 'JOBS' NumList 
+        | ( 'CANCEL' | 'PAUSE' | 'RESUME' ) 'DDL' 'JOBS' NumList
+        | 'RELOAD' (
+            'EXPR_PUSHDOWN_BLACKLIST' 
+            | 'OPT_RULE_BLACKLIST' 
+            | 'BINDINGS'
+            | 'STATS_EXTENDED'
+            | 'STATISTICS'
+        ) 
+        | 'PLUGINS' ( 'ENABLE' | 'DISABLE' ) PluginNameList 
+        | 'REPAIR' 'TABLE' TableName CreateTableStmt 
+        | ( 'FLUSH' | 'CAPTURE' | 'EVOLVE' ) 'BINDINGS'
+        | 'FLUSH' ('SESSION' | 'INSTANCE') 'PLAN_CACHE'
+        | 'SET' 'BDR' 'ROLE' ( 'PRIMARY' | 'SECONDARY' )
+        | 'UNSET' 'BDR' 'ROLE'
+    )
+
+NumList ::=
+    Int64Num ( ',' Int64Num )*
+
+AdminStmtLimitOpt ::=
+    'LIMIT' LengthNum
+|    'LIMIT' LengthNum ',' LengthNum
+|    'LIMIT' LengthNum 'OFFSET' LengthNum
+
+TableNameList ::=
+    TableName ( ',' TableName )*
 ```
 
 ## 使用示例
 
 执行以下命令，可查看正在执行的 DDL 任务中最近 10 条已经完成的 DDL 任务。未指定 `NUM` 时，默认只显示最近 10 条已经执行完的 DDL 任务。
-
-{{< copyable "sql" >}}
 
 ```sql
 ADMIN SHOW DDL jobs;
@@ -166,8 +186,6 @@ ADMIN SHOW DDL jobs;
 ```
 
 执行以下命令，可查看正在执行的 DDL 任务中最近 5 条已经执行完的 DDL 任务：
-
-{{< copyable "sql" >}}
 
 ```sql
 ADMIN SHOW DDL JOBS 5;
@@ -203,8 +221,6 @@ ADMIN SHOW t NEXT_ROW_ID;
 ```
 
 执行以下命令，可查看 test 数据库中未执行完成的 DDL 任务，包括正在执行中以及最近 5 条已经执行完但是执行失败的 DDL 任务。
-
-{{< copyable "sql" >}}
 
 ```sql
 ADMIN SHOW DDL JOBS 5 WHERE state != 'synced' AND db_name = 'test';

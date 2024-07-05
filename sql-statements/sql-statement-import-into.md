@@ -349,6 +349,7 @@ IMPORT INTO t FROM SELECT * FROM src AS OF TIMESTAMP '2024-02-27 11:38:00';
 
 ## 另请参阅
 
-* [`SHOW IMPORT JOB(s)`](/sql-statements/sql-statement-show-import-job.md)
+* [`ADMIN CHECKSUM TABLE`](/sql-statements/sql-statement-admin-checksum-table.md)
 * [`CANCEL IMPORT JOB`](/sql-statements/sql-statement-cancel-import-job.md)
+* [`SHOW IMPORT JOB(s)`](/sql-statements/sql-statement-show-import-job.md)
 * [TiDB 分布式执行框架](/tidb-distributed-execution-framework.md)
