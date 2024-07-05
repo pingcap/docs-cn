@@ -136,8 +136,15 @@ Restore KV Files <--------------------------------------------------------------
 - 集群新增日志数据：10 GB/h
 - 写入 (INSERT/UPDATE/DELETE) QPS：10,000
 
+## 监控与告警
+
+在日志备份任务下发后，各 TiKV 节点会持续将数据写入外部存储。此过程的监控数据可以通过 **TiKV-Details > Backup Log** 面板查看。
+
+如需在指标异常时收到通知，可以参考[日志备份告警](/br/br-monitoring-and-alert.md#日志备份告警)配置告警规则。
+
 ## 探索更多
 
 * [TiDB 集群备份与恢复实践示例](/br/backup-and-restore-use-cases.md)
 * [`br` 命令行手册](/br/use-br-command-line-tool.md)
 * [日志备份与 PITR 架构设计](/br/br-log-architecture.md)
+* [备份恢复监控告警](/br/br-monitoring-and-alert.md)
