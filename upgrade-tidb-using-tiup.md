@@ -51,6 +51,8 @@ summary: TiUP 可用于 TiDB 升级。升级过程中需注意不支持 TiFlash 
 >          如果原集群是 v7.1.0 或更早的版本，升级到 v7.2.0 或以上版本时，由于 [`performance.lite-init-stats`](/tidb-configuration-file.md#lite-init-stats-从-v710-版本开始引入) 的引入，统计信息加载时间会大幅减少。这个情况下，升级前的 `init stats info time` 会比升级后加载所需的时间偏长。
 >     - 如果想要缩短 TiDB 滚动升级的时间，并且在升级过程中能够承受初始统计信息缺失带来的潜在性能影响，可以在升级前[用 TiUP 修改目标实例的配置](/maintain-tidb-using-tiup.md#修改配置参数)，将 `performance.force-init-stats` 设置为 `OFF`。升级完成后可酌情改回。
 
+升级过程中还有一些[用户操作限制](/smooth-upgrade-tidb.md#用户操作限制)，强烈建议在升级之前先阅读相关内容。
+
 ## 1. 升级兼容性说明
 
 - TiDB 目前暂不支持版本降级或升级后回退。
