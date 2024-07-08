@@ -95,7 +95,7 @@ Top-N 值是列或索引中出现次数前 N 的值。Top-N 统计信息通常�
 
 TiDB 会记录 Top-N 的值和出现次数。参数 `WITH NUM TOPN` 控制 Top-N 值的数量，默认值是 `20`，表示收集出现频率前 20 的值；最大值是 `1024`。关于该参数的详细信息，参见[手动收集](#手动收集)小节。
 
-## 选择性统计信息收集
+## 选择性收集统计信息
 
 本小节介绍如何选择性地收集统计信息。
 
@@ -204,16 +204,16 @@ ANALYZE TABLE TableName INDEX [IndexNameList] [WITH NUM BUCKETS|TOPN|CMSKETCH DE
 
 ## 提升统计信息收集性能
 
-> **Note:**
+> **注意：**
 >
-> - The execution time of `ANALYZE TABLE` in TiDB might be longer than that in MySQL or InnoDB. In InnoDB, only a small number of pages are sampled, while by default in TiDB a comprehensive set of statistics are completely rebuilt.
+> 在 TiDB 中执行 `ANALYZE TABLE` 语句可能比在 MySQL 或 InnoDB 中耗时更长。InnoDB 采样的只是少量页面，而 TiDB 默认会完全重构一套全面的统计信息。
 
-TiDB provides two options to improve the performance of statistics collection:
+TiDB 提供了两种方法来提升统计信息收集的性能：
 
-- Collecting statistics on a subset of the columns. See [Collecting statistics on some columns](#collect-statistics-on-some-columns).
-- Sampling.
+- 收集列的子集的统计信息。参见[收集部分列的统计信息](#收集部分列的统计信息)。
+- 采样。参见[统计信息采样](#统计信息采样)。
 
-### Statistics sampling
+### 统计信息采样
 
 Sampling is available via two separate options of the `ANALYZE` statement - with each corresponding to a different collection algorithm:
 
