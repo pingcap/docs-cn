@@ -3850,8 +3850,8 @@ explain select * from t where age=5;
 - 作用域：SESSION
 - 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：是
 - 类型：布尔型
-- 默认值：`OFF`
-- 指定是否允许优化器将 `Projection` 算子下推到 TiKV 或者 TiFlash。
+- 默认值：`ON`
+- 指定是否允许优化器将 `Projection` 算子下推到 TiKV。
 
 ### `tidb_opt_range_max_size` <span class="version-mark">从 v6.4.0 版本开始引入</span>
 
