@@ -10,6 +10,8 @@ TiDB 使用统计信息作为优化器的输入，用来估算 SQL 语句中每�
 
 ## 收集统计信息
 
+本小节介绍收集统计信息的两种方式：自动更新和手动收集。
+
 ### 自动更新
 
 对于 [`INSERT`](/sql-statements/sql-statement-insert.md)、[`DELETE`](/sql-statements/sql-statement-delete.md) 或 [`UPDATE`](/sql-statements/sql-statement-update.md) 语句，TiDB 会自动更新统计信息中表的总行数和修改的行数。
@@ -18,11 +20,250 @@ TiDB 会定期持久化更新的统计信息，更新周期为 20 * [`stats-leas
 
 TiDB 根据表的变更次数自动调度 [`ANALYZE`](/sql-statements/sql-statement-analyze-table.md) 来收集这些表的统计信息。统计信息的自动更新由 [`tidb_enable_auto_analyze`](/system-variables.md#tidb_enable_auto_analyze-从-v610-版本开始引入) 系统变量和以下 `tidb_auto_analyze%` 变量控制。
 
+|  系统变量名 | 默认值 | 功能描述 |
+| --------- | ----- | --------- |
+| [`tidb_enable_auto_analyze`](/system-variables.md#tidb_enable_auto_analyze-从-v610-版本开始引入) | `ON` | 是否启用自动更新表的统计信息 |
+| [`tidb_auto_analyze_ratio`](/system-variables.md#tidb_auto_analyze_ratio) | `0.5` | 自动更新阈值 |
+| [`tidb_auto_analyze_start_time`](/system-variables.md#tidb_auto_analyze_start_time) | `00:00 +0000` | 一天中能够进行自动更新的开始时间 |
+| [`tidb_auto_analyze_end_time`](/system-variables.md#tidb_auto_analyze_end_time) | `23:59 +0000` | 一天中能够进行自动更新的结束时间 |
+| [`tidb_auto_analyze_partition_batch_size`](/system-variables.md#tidb_auto_analyze_partition_batch_size-从-v640-版本开始引入)   | `128` | TiDB 自动 analyze 分区表（即自动更新分区表的统计信息）时，每次同时 analyze 分区的个数 |
+| [`tidb_enable_auto_analyze_priority_queue`](/system-variables.md#tidb_enable_auto_analyze_priority_queue-从-v800-版本开始引入) | `ON` | 是否启用优先队列来调度自动收集统计信息的任务。开启该变量后，TiDB 会优先收集那些更有收集价值的表，例如新创建的索引、发生分区变更的分区表等。同时，TiDB 也会优先处理那些健康度较低的表，将它们安排在队列的前端。 |
 
+当某个表 `tbl` 的修改行数与总行数的比值大于 `tidb_auto_analyze_ratio`，并且当前时间在 `tidb_auto_analyze_start_time` 和 `tidb_auto_analyze_end_time` 之间时，TiDB 会在后台执行 `ANALYZE TABLE tbl` 语句自动更新这个表的统计信息。
 
+为了避免小表因为少量数据修改而频繁触发自动更新，当表的行数小于 1000 时，TiDB 不会触发对此表的自动更新。你可以通过 `SHOW STATS_META` 语句来查看表的行数。
+
+> **注意：**
+>
+> 目前，自动更新不会记录手动 `ANALYZE` 时输入的配置项。因此，当你使用 [`WITH`](/sql-statements/sql-statement-analyze-table.md) 语法控制 `ANALYZE` 的收集行为时，需要手动设置定时任务来收集统计信息。
 
 ### 手动收集
 
+目前 TiDB 收集统计信息为全量收集。你可以通过 `ANALYZE TABLE` 语句的以下语法来全量收集统计信息：
+
+- 收集 `TableNameList` 中所有表的统计信息：
+
+    ```sql
+    ANALYZE TABLE TableNameList [WITH NUM BUCKETS|TOPN|CMSKETCH DEPTH|CMSKETCH WIDTH]|[WITH NUM SAMPLES|WITH FLOATNUM SAMPLERATE];
+    ```
+
+- `WITH NUM BUCKETS` 用于指定生成直方图的桶数量上限。
+- `WITH NUM TOPN` 用于指定生成的 `TOPN` 数量的上限。
+- `WITH NUM CMSKETCH DEPTH` 用于指定 CM Sketch 的长。
+- `WITH NUM CMSKETCH WIDTH` 用于指定 CM Sketch 的宽。
+- `WITH NUM SAMPLES` 用于指定采样的数目。
+- `WITH FLOAT_NUM SAMPLERATE` 用于指定采样率。
+
+`WITH NUM SAMPLES` 与 `WITH FLOAT_NUM SAMPLERATE` 这两种设置对应了两种不同的收集采样的算法。
+
+**WIP** See [Histograms](#histogram), [Top-N](#top-n-values) and [CMSketch](#count-min-sketch) (Count-Min Sketch) for detailed explanations. For `SAMPLES`/`SAMPLERATE`, see [Improve collection performance](#improve-collection-performance).
+
+For information on persisting the options for easier reuse, see [Persist ANALYZE configurations](#persist-analyze-configurations).
+
+## 统计信息的类型
+
+本小节介绍统计信息的三种类型：直方图、Count-Min Sketch 和 Top-N。
+
+### 直方图
+
+直方图统计信息被优化器用于估算区间或范围谓词的选择，并可能用于确定列中不同值的数量，以估算 Version 2 统计信息中的等值或 `IN` 谓词（参见[统计信息版本](#统计信息版本)）。
+
+直方图是对数据分布的近似表示。它将整个数值范围划分为一系列桶，并使用简单的数据来描述每个桶，例如落入该桶的数值数量。在 TiDB 中，会为每个表的具体列创建等深直方图，可用于估算区间查询。
+
+等深直方图，就是让落入每个桶里的数值数量尽量相等。例如，对于给定的集合 {1.6, 1.9, 1.9, 2.0, 2.4, 2.6, 2.7, 2.7, 2.8, 2.9, 3.4, 3.5} 生成 4 个桶，那么最终的等深直方图就会如下图所示，包含四个桶 [1.6, 1.9]，[2.0, 2.6]，[2.7, 2.8]，[2.9, 3.5]，其桶深均为 3。
+
+![等深直方图示例](/media/statistics-1.png)
+
+关于控制直方图的桶数量上限的参数 `WITH NUM BUCKETS`，参见[手动收集](#手动收集)小节。桶数量越多，直方图的估算精度就越高，不过也会同时增加统计信息的内存使用。可以视具体情况来调整桶的数量上限。
+
+### Count-Min Sketch
+
+> **注意：**
+>
+> Count-Min Sketch 在统计信息 Version 1 中仅用于等值或 `IN` 谓词的选择估算。在 Version 2 中，为了管理 Count-Min Sketch 以避免碰撞，使用了其他统计信息，如下所述。
+
+Count-Min Sketch 是一种哈希结构，当查询中出现诸如 `a = 1` 或者 `IN` 查询（如 `a in (1, 2, 3)`）这样的等值查询时，TiDB 便会使用这个数据结构来进行估算。
+
+由于 Count-Min Sketch 是一个哈希结构，就有出现哈希碰撞的可能。当在 `EXPLAIN` 语句中发现等值查询的估算偏离实际值较大时，就可以认为是一个比较大的值和一个比较小的值被哈希到了一起。这时有以下两种方法来避免哈希碰撞：
+
+- 修改 `WITH NUM TOPN` 参数。TiDB 会将出现频率前 x 的数据单独储存，之后的数据再储存到 Count-Min Sketch 中。因此，为了避免一个比较大的值和一个比较小的值被哈希到一起，可以调大 `WITH NUM TOPN` 的值。该参数的默认值是 `20`，最大值是 `1024`。关于该参数的更多信息，参见[手动收集](#手动收集)小节。
+- 修改 `WITH NUM CMSKETCH DEPTH` 和 `WITH NUM CMSKETCH WIDTH` 两个参数。这两个参数会影响哈希的桶数和碰撞概率，可视具体情况适当调大这两个参数的值来减少碰撞概率，不过调大后也会增加统计信息的内存使用。`WITH NUM CMSKETCH DEPTH` 的默认值是 `5`，`WITH NUM CMSKETCH WIDTH` 的默认值是 `2048`。关于该参数的更多信息，参见[手动收集](#手动收集)小节。
+
+### Top-N 值
+
+Top-N 值是列或索引中出现次数前 N 的值。Top-N 统计信息通常被称为频率统计信息或数据倾斜。
+
+TiDB 会记录 Top-N 的值和出现次数。参数 `WITH NUM TOPN` 控制 Top-N 值的数量，默认值是 `20`，表示收集出现频率前 20 的值；最大值是 `1024`。关于该参数的详细信息，参见[手动收集](#手动收集)小节。
+
+## 选择性统计信息收集
+
+本小节介绍如何选择性地收集统计信息。
+
+### 收集索引的统计信息
+
+如果要收集 `TableName` 中 `IndexNameList` 里所有索引的统计信息，请使用以下语法：
+
+```sql
+ANALYZE TABLE TableName INDEX [IndexNameList] [WITH NUM BUCKETS|TOPN|CMSKETCH DEPTH|CMSKETCH WIDTH]|[WITH NUM SAMPLES|WITH FLOATNUM SAMPLERATE];
+```
+
+当 `IndexNameList` 为空时，该语法将收集 `TableName` 中所有索引的统计信息。
+
+> **注意：**
+>
+> 为了保证收集前与收集后统计信息的一致性，当设置 `tidb_analyze_version = 2` 时，该语法也会收集整个表的统计信息（包括所有列和所有索引的统计信息），而不限于索引的统计信息。
+
+### 收集部分列的统计信息
+
+执行 SQL 语句时，优化器在大多数情况下只会用到部分列的统计信息。例如，`WHERE`、`JOIN`、`ORDER BY`、`GROUP BY` 子句中出现的列，这些被用到的列称为 `PREDICATE COLUMNS`。
+
+如果一个表有很多列，收集所有列的统计信息会产生较大的开销。为了降低开销，你可以只收集选定列或者 `PREDICATE COLUMNS` 的统计信息供优化器使用。To persist the column list of any subset of columns for reuse in future, see [Persist column configurations](#persist-column-configurations). **WIP**
+
+> **注意：**
+>
+> - 收集部分列的统计信息的功能仅适用于 [`tidb_analyze_version = 2`](/system-variables.md#tidb_analyze_version-从-v510-版本开始引入) 的情况。
+> - TiDB v7.2.0 引入了系统变量 [`tidb_analyze_skip_column_types`](/system-variables.md#tidb_analyze_skip_column_types-从-v720-版本开始引入)，该变量可以控制在执行 `ANALYZE` 命令收集统计信息时，跳过哪些类型的列的统计信息收集。该变量仅适用于 `tidb_analyze_version = 2` 的情况。
+
+- 如果要收集指定列的统计信息，请使用以下语法：
+
+    ```sql
+    ANALYZE TABLE TableName COLUMNS ColumnNameList [WITH NUM BUCKETS|TOPN|CMSKETCH DEPTH|CMSKETCH WIDTH]|[WITH NUM SAMPLES|WITH FLOATNUM SAMPLERATE];
+    ```
+
+    其中，`ColumnNameList` 表示指定列的名称列表。如果需要指定多列，请使用用逗号 `,` 分隔列名。例如, `ANALYZE table t columns a, b`。该语法除了收集指定表中指定列的统计信息，将同时收集该表中索引列的统计信息以及所有索引的统计信息。
+
+- 如果要收集 `PREDICATE COLUMNS` 的统计信息，请进行以下操作：
+
+    > **警告：**
+    >
+    > 收集 `PREDICATE COLUMNS` 的统计信息目前为实验特性，不建议在生产环境中使用。
+
+    1. 将系统变量 [`tidb_enable_column_tracking`](/system-variables.md#tidb_enable_column_tracking-从-v540-版本开始引入) 的值设置为 `ON`，以开启 TiDB 对 `PREDICATE COLUMNS` 的收集。
+
+        开启后，TiDB 将每隔 100 * [`stats-lease`](/tidb-configuration-file.md#stats-lease) 时间将 `PREDICATE COLUMNS` 信息写入系统表 `mysql.column_stats_usage`。
+
+    2. 在业务的查询模式稳定以后，使用以下语法收集 `PREDICATE COLUMNS` 的统计信息。
+
+        ```sql
+        ANALYZE TABLE TableName PREDICATE COLUMNS [WITH NUM BUCKETS|TOPN|CMSKETCH DEPTH|CMSKETCH WIDTH]|[WITH NUM SAMPLES|WITH FLOATNUM SAMPLERATE];
+        ```
+
+        该语法除了收集指定表中 `PREDICATE COLUMNS` 的统计信息，将同时收集该表中索引列的统计信息以及所有索引的统计信息。
+
+        > **注意：**
+        >
+        > - 如果系统表 [`mysql.column_stats_usage`](/mysql-schema.md#statistics-system-tables) 中没有关于该表的 `PREDICATE COLUMNS` 记录，执行以上语句会收集该表中所有列的统计信息以及所有索引的统计信息。
+        > - 任何被排除在统计信息收集（无论是手动列出列名，还是使用 `PREDICATE COLUMNS`）之外的列都不会被覆盖。当执行新类型的 SQL 查询时，如果存在旧的统计信息，优化器将使用这些列的旧统计信息；如果从未收集过列的统计信息，则使用伪列统计信息。下一次使用 `PREDICATE COLUMNS` 的 `ANALYZE` 将收集这些列的统计信息。
+
+- 如果要收集所有列的统计信息以及所有索引的统计信息，请使用以下语法：
+
+    ```sql
+    ANALYZE TABLE TableName ALL COLUMNS [WITH NUM BUCKETS|TOPN|CMSKETCH DEPTH|CMSKETCH WIDTH]|[WITH NUM SAMPLES|WITH FLOATNUM SAMPLERATE];
+    ```
+
+### 收集分区的统计信息
+
+- 如果要收集 `TableName` 中 `PartitionNameList` 里所有分区的统计信息，请使用以下语法：
+
+    ```sql
+    ANALYZE TABLE TableName PARTITION PartitionNameList [WITH NUM BUCKETS|TOPN|CMSKETCH DEPTH|CMSKETCH WIDTH]|[WITH NUM SAMPLES|WITH FLOATNUM SAMPLERATE];
+    ```
+
+- 如果要收集 `TableName` 中 `PartitionNameList` 里所有分区的索引统计信息，请使用以下语法：
+
+    ```sql
+    ANALYZE TABLE TableName PARTITION PartitionNameList INDEX [IndexNameList] [WITH NUM BUCKETS|TOPN|CMSKETCH DEPTH|CMSKETCH WIDTH]|[WITH NUM SAMPLES|WITH FLOATNUM SAMPLERATE];
+    ```
+
+- 当收集分区的统计信息时，如果只需要[收集部分列的统计信息](/statistics.md#收集部分列的统计信息)，请使用以下语法：
+
+    > **警告：**
+    >
+    > 收集 `PREDICATE COLUMNS` 的统计信息目前为实验特性，不建议在生产环境中使用。
+
+    ```sql
+    ANALYZE TABLE TableName PARTITION PartitionNameList [COLUMNS ColumnNameList|PREDICATE COLUMNS|ALL COLUMNS] [WITH NUM BUCKETS|TOPN|CMSKETCH DEPTH|CMSKETCH WIDTH]|[WITH NUM SAMPLES|WITH FLOATNUM SAMPLERATE];
+    ```
+
+#### 收集动态裁剪模式下的分区表统计信息
+
+在分区表开启[动态裁剪模式](/partitioned-table.md#动态裁剪模式)（从 v6.3.0 开始，默认开启）的情况下，TiDB 将收集表级别的汇总统计信息，以下称 GlobalStats。目前 GlobalStats 由分区统计信息合并汇总得到。在动态裁剪模式下，任何分区表的统计信息更新都可能触发 GlobalStats 更新。
+
+如果分区为空，或者某些分区上的列缺失，那么统计信息收集行为将受 [`tidb_skip_missing_partition_stats`](/system-variables.md#tidb_skip_missing_partition_stats-从-v730-版本开始引入) 变量的控制：
+
+- 当触发 GlobalStats 更新且 [`tidb_skip_missing_partition_stats`](/system-variables.md#tidb_skip_missing_partition_stats-从-v730-版本开始引入) 为 `OFF` 时：
+
+    - 如果某些分区缺失统计信息（例如从未进行过 analyze 的新分区），GlobalStats 生成会中断，并显示 warning 信息提示这些分区没有可用的统计信息。
+    - 如果某些分区中缺失某些列的统计信息（这些分区中指定了不同的列进行 analyze），当这些列的统计信息被合并汇总时，GlobalStats 生成会中断，并显示 warning 信息提示某些分区中缺少某些列的统计信息。
+
+- When GlobalStats update is triggered and [`tidb_skip_missing_partition_stats`](/system-variables.md#tidb_skip_missing_partition_stats-new-in-v730) is `ON`: 当触发 GlobalStats 更新且 [`tidb_skip_missing_partition_stats`](/system-variables.md#tidb_skip_missing_partition_stats-从-v730-版本开始引入) 为 `ON` 时：
+
+    - 如果某些分区缺失全部列或部分列的统计信息，TiDB 在生成 GlobalStats 时会跳过这些缺失的分区统计信息，不影响 GlobalStats 生成。
+
+在动态裁剪模式下，分区和分区表的 `ANALYZE` 配置应保持一致。因此，如果在 `ANALYZE TABLE TableName PARTITION PartitionNameList` 语句后指定了 `COLUMNS` 配置或在 `WITH` 后指定了 `OPTIONS` 配置，TiDB 将忽略这些配置并返回 warning 信息提示。
+
+## 提升统计信息收集性能
+
+> **Note:**
+>
+> - The execution time of `ANALYZE TABLE` in TiDB might be longer than that in MySQL or InnoDB. In InnoDB, only a small number of pages are sampled, while by default in TiDB a comprehensive set of statistics are completely rebuilt.
+
+TiDB provides two options to improve the performance of statistics collection:
+
+- Collecting statistics on a subset of the columns. See [Collecting statistics on some columns](#collect-statistics-on-some-columns).
+- Sampling.
+
+### Statistics sampling
+
+Sampling is available via two separate options of the `ANALYZE` statement - with each corresponding to a different collection algorithm:
+
+- `WITH NUM SAMPLES` specifies the size of the sampling set, which is implemented in the reservoir sampling method in TiDB. When a table is large, it is not recommended to use this method to collect statistics. Because the intermediate result set of the reservoir sampling contains redundant results, it causes additional pressure on resources such as memory.
+- `WITH FLOAT_NUM SAMPLERATE` is a sampling method introduced in v5.3.0. With the value range `(0, 1]`, this parameter specifies the sampling rate. It is implemented in the way of Bernoulli sampling in TiDB, which is more suitable for sampling larger tables and performs better in collection efficiency and resource usage.
+
+Before v5.3.0, TiDB uses the reservoir sampling method to collect statistics. Since v5.3.0, the TiDB Version 2 statistics uses the Bernoulli sampling method to collect statistics by default. To re-use the reservoir sampling method, you can use the `WITH NUM SAMPLES` statement.
+
+The current sampling rate is calculated based on an adaptive algorithm. When you can observe the number of rows in a table using [`SHOW STATS_META`](/sql-statements/sql-statement-show-stats-meta.md), you can use this number of rows to calculate the sampling rate corresponding to 100,000 rows. If you cannot observe this number, you can use the sum of all the values in the `APPROXIMATE_KEYS` column in the results of [`SHOW TABLE REGIONS`](/sql-statements/sql-statement-show-table-regions.md) of the table as another reference to calculate the sampling rate.
+
+> **Note:**
+>
+> Normally, `STATS_META` is more credible than `APPROXIMATE_KEYS`. However, when the result of `STATS_META` is much smaller than the result of `APPROXIMATE_KEYS`, it is recommended that you use `APPROXIMATE_KEYS` to calculate the sampling rate.
+
+### The memory quota for collecting statistics
+
+> **Warning:**
+>
+> Currently, the `ANALYZE` memory quota is an experimental feature, and the memory statistics might be inaccurate in production environments.
+
+Since TiDB v6.1.0, you can use the system variable [`tidb_mem_quota_analyze`](/system-variables.md#tidb_mem_quota_analyze-new-in-v610) to control the memory quota for collecting statistics in TiDB.
+
+To set a proper value of `tidb_mem_quota_analyze`, consider the data size of the cluster. When the default sampling rate is used, the main considerations are the number of columns, the size of column values, and the memory configuration of TiDB. Consider the following suggestions when you configure the maximum and minimum values:
+
+> **Note:**
+>
+> The following suggestions are for reference only. You need to configure the values based on the real scenario.
+>
+> - Minimum value: should be greater than the maximum memory usage when TiDB collects statistics from the table with the most columns. An approximate reference: when TiDB collects statistics from a table with 20 columns using the default configuration, the maximum memory usage is about 800 MiB; when TiDB collects statistics from a table with 160 columns using the default configuration, the maximum memory usage is about 5 GiB.
+> - Maximum value: should be less than the available memory when TiDB is not collecting statistics.
+
+## 持久化 ANALYZE 配置
+
+
+## 统计信息版本
+
+
+## 查看统计信息
+
+## 删除统计信息
+
+## 加载统计信息
+
+## 导出和导入统计信息
+
+## 锁定统计信息
+
+## 管理 ANALYZE 任务与并发
+
+## 另请参阅
 
 
 --------------------------------------------
