@@ -812,7 +812,12 @@
     - [分区表](/partitioned-table.md)
     - [临时表](/temporary-tables.md)
     - [缓存表](/cached-tables.md)
+<<<<<<< HEAD
     - 字符集和排序
+=======
+    - [外键约束](/foreign-key.md)
+    - 字符集和排序规则
+>>>>>>> 7cf76beef2 (toc: update wording for collation (#17881))
       - [概述](/character-set-and-collation.md)
       - [GBK](/character-set-gbk.md)
     - [Placement Rules in SQL](/placement-rules-in-sql.md)
