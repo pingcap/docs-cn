@@ -6,14 +6,14 @@ summary: TiDB 支持 MySQL 8.0 中提供的大部分 JSON 函数。
 
 # JSON 函数
 
-你可以使用 JSON 函数处理 [JSON 数据类型](/data-type-json.md)中的数据。
+你可以使用 JSON 函数处理 [JSON 类型](/data-type-json.md)的数据。
 
 ## 创建 JSON 值的函数
 
 | 函数                                                              | 功能描述                                                   |
 | ------------------------------------------------------------------ | ---------------------------------------------------------- |
-| [JSON_ARRAY()](/functions-and-operators/json-functions/json-functions-create.md#json_array)   | 根据一系列元素（也可以为空）创建一个 JSON 文档 |
-| [JSON_OBJECT()](/functions-and-operators/json-functions/json-functions-create.md#json_object) | 根据一系列 K/V 对（也可以为空）创建一个 JSON 文档 |
+| [JSON_ARRAY()](/functions-and-operators/json-functions/json-functions-create.md#json_array)   | 根据一系列元素（也可以为空）创建一个 JSON 数组 |
+| [JSON_OBJECT()](/functions-and-operators/json-functions/json-functions-create.md#json_object) | 根据一系列包含 (key, value) 键值对的元素（也可以为空）创建一个 JSON 对象 |
 | [JSON_QUOTE()](/functions-and-operators/json-functions/json-functions-create.md#json_quote)   | 返回一个字符串，该字符串为带引号的 JSON 值 |
 
 ## 搜索 JSON 值的函数
@@ -51,7 +51,7 @@ summary: TiDB 支持 MySQL 8.0 中提供的大部分 JSON 函数。
 | 函数        | 功能描述 |
 | --------------------------------- | ----------- |
 | [JSON_DEPTH()](/functions-and-operators/json-functions/json-functions-return.md#json_depth) | 返回 JSON 文档的最大深度 |
-| [JSON_LENGTH(json_doc[, path])](https://dev.mysql.com/doc/refman/8.0/en/json-attribute-functions.html#function_json-length) | 返回 JSON 文档的长度；如果路径参数已定，则返回该路径下值的长度 |
+| [JSON_DEPTH()](/functions-and-operators/json-functions/json-functions-return.md#json_depth) | 返回 JSON 文档的长度；如果路径参数已定，则返回该路径下值的长度 |
 | [JSON_TYPE()](/functions-and-operators/json-functions/json-functions-return.md#json_type)  | 检查某 JSON 文档内部内容的类型 |
 | [JSON_VALID()](/functions-and-operators/json-functions/json-functions-return.md#json_valid)  | 检查 json\_doc 是否为有效的 JSON 文档  |
 
@@ -60,7 +60,7 @@ summary: TiDB 支持 MySQL 8.0 中提供的大部分 JSON 函数。
 | 函数                     | 功能描述 |
 | --------------------------------- | ----------- |
 | [JSON_PRETTY()](/functions-and-operators/json-functions/json-functions-utility.md#json_pretty)  |格式化 JSON 文档 |
-| [JSON_STORAGE_FREE()](/functions-and-operators/json-functions/json-functions-utility.md#json_storage_free) | 返回 JSON 值的在更新到位后释放了多少存储空间，以二进制表示。 |
+| [JSON_STORAGE_FREE()](/functions-and-operators/json-functions/json-functions-utility.md#json_storage_free) | 返回 JSON 值在原地更新操作后释放了多少存储空间，以二进制表示。 |
 | [JSON_STORAGE_SIZE()](/functions-and-operators/json-functions/json-functions-utility.md#json_storage_size) | 返回存储 JSON 值所需的大致字节大小，由于不考虑 TiKV 压缩的字节大小，因此函数的输出与 MySQL 不严格兼容 |
 
 ## 聚合函数
@@ -76,9 +76,9 @@ summary: TiDB 支持 MySQL 8.0 中提供的大部分 JSON 函数。
 | --------------------------------- | ----------- |
 | [JSON_SCHEMA_VALID()](/functions-and-operators/json-functions/json-functions-validate.md#json_schema_valid) | 根据 schema 验证 JSON 文档，确保数据的完整性和一致性 |
 
-## JSON 路径
+## JSONPath
 
-许多 JSON 函数都使用 JSON 路径来选择 JSON 文档的部分内容。
+许多 JSON 函数都使用 [JSONPath](https://www.rfc-editor.org/rfc/rfc9535.html) 来选择 JSON 文档中的特定内容。
 
 | 符号         | 描述                  |
 | -------------- | ---------------------------- |
@@ -89,9 +89,7 @@ summary: TiDB 支持 MySQL 8.0 中提供的大部分 JSON 函数。
 | `**`           | 路径通配符               |
 | `[<n> to <n>]` | 选择数组范围       |
 
-示例：
-
-示例的 JSON 文档如下：
+下面以如下 JSON 文档为例，说明如何使用 JSONPath：
 
 ```json
 {
@@ -128,19 +126,19 @@ summary: TiDB 支持 MySQL 8.0 中提供的大部分 JSON 函数。
 }
 ```
 
-| JSON 路径                              | 描述                             | [`JSON_EXTRACT()`](/functions-and-operators/json-functions/json-functions-search.md#json_extract) 示例| 
+| JSONPath                              | 描述                             | [`JSON_EXTRACT()`](/functions-and-operators/json-functions/json-functions-search.md#json_extract) 示例| 
 |-------------------------------------- |-----------------------------------------|-------------------------------|
 | `$`                                   | 文档根目录               | 返回完整文档                             |
-| `$.database`                          | 数据库属性               |   返回以 `"database"` 开头的完整结构。不包括 `"migration_tool"` 和其下的结构。                            |
-| `$.database.name`                     | 数据库名称              | `"TiDB"`                      |
-| `$.database.features`                 | 全部数据库特性                   | `["distributed", "scalable", "relational", "cloud native"]`                              |
-| `$.database.features[0]`              | 第一个数据库特性             | `"distributed"`               |
-| `$.database.features[2]`              | 第三个数据库特性            | `"relational"`                |
-| `$.database.versions[0].type`         | 第一个数据库版本的类型 | `"lts"`                       |
-| `$.database.versions[*].release_date` | 所有版本的发布日期     | `["2024-05-24","2024-03-29"]` |
-| `$.*.features`                        | 特性组成的两个数组             | `[["distributed", "scalable", "relational", "cloud native"], ["MySQL compatible", "Shard merging"]]`                              |
-| `$**.version`                         | 包含路径通配符的所有版本     | `["v8.1.0","v8.0.0"]`         |
-| `$.database.features[0 to 2]`         | 数据库特性的范围             | `["scalable","relational"]`   |
+| `$.database`                          | `database` 对象               |   返回以 `"database"` 开头的完整结构。不包括 `"migration_tool"` 和其下的结构。                            |
+| `$.database.name`                     | `database` 的 `name` 值             | `"TiDB"`                      |
+| `$.database.features`                 | `database` 的 `features` 值                   | `["distributed", "scalable", "relational", "cloud native"]`                              |
+| `$.database.features[0]`              | `database` 的 `features` 中的第一个值            | `"distributed"`               |
+| `$.database.features[2]`              | `database` 的 `features` 中的第三个值           | `"relational"`                |
+| `$.database.versions[0].type`         | `database` 的 `versions` 中第一个元素的 `type` 值 | `"lts"`                       |
+| `$.database.versions[*].release_date` | `versions` 中所有的 `release_date` 值     | `["2024-05-24","2024-03-29"]` |
+| `$.*.features`                        | 由所有的 `features` 值组成的两个数组             | `[["distributed", "scalable", "relational", "cloud native"], ["MySQL compatible", "Shard merging"]]`                              |
+| `$**.version`                         | 包含用通配符匹配到所有的 `version` 值     | `["v8.1.0","v8.0.0"]`         |
+| `$.database.features[0 to 2]`         | `database` 中指定范围的 `features` 值，`features[0 to 2]` 代表从 `features` 的第一个值到第三个值            | `["scalable","relational"]`   |
 
 更多信息，请参考 [JSONPath -- XPath for JSON](https://www.ietf.org/archive/id/draft-goessner-dispatch-jsonpath-00.html)。
 

@@ -28,7 +28,7 @@ SELECT id FROM city WHERE population >= 100;
 
 ## JSON 值的类型
 
-JSON 文档中的值是有类型的。可以从 [`JSON_TYPE`()](/functions-and-operators/json-functions/json-functions-return.md#json_type) 的输出结果中看到。
+JSON 文档中的每个值都属于一种特定的数据类型。可以通过 [`JSON_TYPE`()](/functions-and-operators/json-functions/json-functions-return.md#json_type) 的输出结果查看。
 
 | 类型             | 示例                        |
 |------------------|--------------------------------|

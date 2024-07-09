@@ -38,7 +38,7 @@ SELECT JSON_DEPTH('{"weather": {"current": "sunny"}}');
 
 示例：
 
-在下面的示例中，返回值是 `1`，因为文档根目录下仅有一项 `weather`。
+在下面的示例中，返回值是 `1`，因为文档根目录下仅有一个元素  `weather`。
 
 ```sql
 SELECT JSON_LENGTH('{"weather": {"current": "sunny", "tomorrow": "cloudy"}}','$');
@@ -53,7 +53,7 @@ SELECT JSON_LENGTH('{"weather": {"current": "sunny", "tomorrow": "cloudy"}}','$'
 1 row in set (0.00 sec)
 ```
 
-在下面的示例中，由于 `$.weather` 中有两个值：`current` 和`tomorrow`，因此返回值为 `2`。
+在下面的示例中，`$.weather` 包含两个元素 `current` 和`tomorrow`，因此返回值为 `2`。
 
 ```sql
 SELECT JSON_LENGTH('{"weather": {"current": "sunny", "tomorrow": "cloudy"}}','$.weather');
@@ -134,7 +134,7 @@ SELECT JSON_TYPE('"2025-06-14"'),JSON_TYPE(CAST(CAST('2025-06-14' AS date) AS js
 
 ## [JSON_VALID()](https://dev.mysql.com/doc/refman/8.0/en/json-attribute-functions.html#function_json-valid)
 
-`JSON_VALID(str)` 函数检查第一个参数是否为有效的 JSON。该函数对于在将列转换为 `json` 类型之前进行检查非常有用。
+`JSON_VALID(str)` 函数检查输入的参数是否为有效的 JSON 格式。该函数对于在将列转换为 `JSON` 类型之前进行检查非常有用。
 
 ```sql
 SELECT JSON_VALID('{"foo"="bar"}');

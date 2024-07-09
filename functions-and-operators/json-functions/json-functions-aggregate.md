@@ -5,11 +5,11 @@ summary: 了解聚合 JSON 值的 JSON 函数。
 
 # 聚合 JSON 值的 JSON 函数
 
-本文档介绍的函数是 TiDB 支持的[聚合函数](/functions-and-operators/aggregate-group-by-functions.md)的一部分，专门用于处理 JSON。
+本文档介绍 TiDB [聚合函数](/functions-and-operators/aggregate-group-by-functions.md) 中专门用于处理 JSON 的聚合函数。
 
 ## [JSON_ARRAYAGG()](https://dev.mysql.com/doc/refman/8.0/en/aggregate-functions.html#function_json-arrayagg)
 
-`JSON_ARRAYAGG(key)` 函数提供了键的聚合。
+`JSON_ARRAYAGG(key)` 函数可以根据给定的 `key` 将 `key` 值聚合到一个 JSON 数组中。`key` 通常为表达式或列名。
 
 示例：
 
@@ -30,7 +30,7 @@ SELECT JSON_ARRAYAGG(v) FROM (SELECT 1 'v' UNION SELECT 2);
 
 ## [JSON_OBJECTAGG()](https://dev.mysql.com/doc/refman/8.0/en/aggregate-functions.html#function_json-objectagg)
 
-`JSON_OBJECTAGG(key,value)` 函数提供指定键值的聚合。
+`JSON_OBJECTAGG(key,value)` 函数可以根据给定的 `key` 和 `value` 将 `key` 值和 `value` 值聚合成一个 JSON 对象。`key` 和 `value` 通常为表达式或列名。
 
 示例：
 
@@ -102,7 +102,7 @@ TABLE plant_attributes;
 7 rows in set (0.00 sec)
 ```
 
-你可以使用 `JSON_OBJECTAGG()` 函数来处理这些数据。在下面示例中，你可以看到每个 Group 中，多个键/值对被组合成一个 JSON 对象。
+你可以使用 `JSON_OBJECTAGG()` 函数来处理这些数据。在下面示例中，你可以看到每个 Group 中，多个键/值对被聚合成一个 JSON 对象。
 
 ```sql
 SELECT

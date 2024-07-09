@@ -5,11 +5,11 @@ summary: 了解创建 JSON 值的 JSON 函数。
 
 # 创建 JSON 值的 JSON 函数
 
-本文档介绍了创建 JSON 值的 JSON 函数。
+本文档介绍用于创建 JSON 值的 JSON 函数。
 
 ## [JSON_ARRAY()](https://dev.mysql.com/doc/refman/8.0/en/json-creation-functions.html#function_json-array)
 
-`JSON_ARRAY([val[, val] ...])` 函数对一个值列表（可能为空）进行求值，并返回一个包含这些值的 JSON 数组。
+`JSON_ARRAY([val[, val] ...])` 函数接受一个值列表（可能为空）作为参数，并返回一个包含这些值的 JSON 数组。
 
 ```sql
 SELECT JSON_ARRAY(1,2,3,4,5), JSON_ARRAY("foo", "bar");
@@ -26,7 +26,7 @@ SELECT JSON_ARRAY(1,2,3,4,5), JSON_ARRAY("foo", "bar");
 
 ## [JSON_OBJECT()](https://dev.mysql.com/doc/refman/8.0/en/json-creation-functions.html#function_json-object)
 
-`JSON_OBJECT([key,val[,key,val]...])` 函数对键值对列表（可能为空）进行评估，并返回一个包含这些键值对的 JSON 对象。
+`JSON_OBJECT([key,val[,key,val]...])` 函数接受一个键值对列表（可能为空）作为参数，并返回一个包含这些键值对的 JSON 对象。
 
 ```sql
 SELECT JSON_OBJECT("database", "TiDB", "distributed", TRUE);

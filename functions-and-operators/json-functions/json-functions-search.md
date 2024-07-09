@@ -5,15 +5,15 @@ summary: 了解搜索 JSON 值的 JSON 函数。
 
 # 搜索 JSON 值的 JSON 函数
 
-本文档介绍搜索 JSON 值的 JSON 函数。
+本文档介绍用于搜索 JSON 值的 JSON 函数。
 
 ## [JSON_CONTAINS()](https://dev.mysql.com/doc/refman/8.0/en/json-search-functions.html#function_json-contains)
 
-通过返回 `1` 或 `0`，`JSON_CONTAINS(json_doc, search [,path])` 函数用于确认指定的 JSON 文档是否包含在目标 JSON 文档中。
+通过返回 `1` 或 `0`，`JSON_CONTAINS(json_doc, candidate [,path])` 函数用于确认指定的 JSON 文档 `candidate` 是否包含在目标 JSON 文档中。
 
 示例：
 
-下面示例中，`a` 包含在了文档中。
+下面示例中，`a` 包含在了目标文档中。
 
 ```sql
 SELECT JSON_CONTAINS('["a","b","c"]','"a"');
@@ -28,7 +28,7 @@ SELECT JSON_CONTAINS('["a","b","c"]','"a"');
 1 row in set (0.00 sec)
 ```
 
-下面示例中，`a` 没有包含在文档中。
+下面示例中，`a` 没有包含在目标文档中。
 
 ```sql
 SELECT JSON_CONTAINS('["a","b","c"]','"e"');
@@ -43,7 +43,7 @@ SELECT JSON_CONTAINS('["a","b","c"]','"e"');
 1 row in set (0.00 sec)
 ```
 
-下面示例中，`{"foo": "bar"}` 包含在了文档中。
+下面示例中，`{"foo": "bar"}` 包含在了目标文档中。
 
 ```sql
 SELECT JSON_CONTAINS('{"foo": "bar", "aaa": 5}','{"foo": "bar"}');
@@ -58,7 +58,7 @@ SELECT JSON_CONTAINS('{"foo": "bar", "aaa": 5}','{"foo": "bar"}');
 1 row in set (0.00 sec)
 ```
 
-下面示例中，`"bar"` 没有包含在文档的根目录中。
+下面示例中，`"bar"` 没有包含在目标文档的根目录中。
 
 ```sql
 SELECT JSON_CONTAINS('{"foo": "bar", "aaa": 5}','"bar"');
@@ -73,7 +73,7 @@ SELECT JSON_CONTAINS('{"foo": "bar", "aaa": 5}','"bar"');
 1 row in set (0.00 sec)
 ```
 
-下面示例中，`"bar"` 没有包含在文档的 `$.foo` 属性中。
+下面示例中，`"bar"` 包含在了目标文档的 `$.foo` 属性中。
 
 ```sql
 SELECT JSON_CONTAINS('{"foo": "bar", "aaa": 5}','"bar"', '$.foo');
@@ -141,7 +141,7 @@ SELECT JSON_CONTAINS_PATH('{"foo": "bar", "aaa": 5}','all','$.foo', '$.aaa');
 
 ## [JSON_EXTRACT()](https://dev.mysql.com/doc/refman/8.0/en/json-search-functions.html#function_json-extract)
 
-`JSON_EXTRACT(json_doc,path)` 函数从 JSON 文档中提取数据，这些数据来自与 `path` 参数匹配的文档的部分。
+`JSON_EXTRACT(json_doc, path[, path] ...)` 函数从 JSON 文档中提取与 `path` 参数匹配的数据。
 
 ```sql
 SELECT JSON_EXTRACT('{"foo": "bar", "aaa": 5}', '$.foo');
@@ -158,7 +158,7 @@ SELECT JSON_EXTRACT('{"foo": "bar", "aaa": 5}', '$.foo');
 
 ## [->](https://dev.mysql.com/doc/refman/8.0/en/json-search-functions.html#operator_json-column-path)
 
-该函数在评估路径后，返回 JSON 列的值。该函数是 [`JSON_EXTRACT()`](#json_extract) 的别名。
+`column->path` 函数返回 `column` 中与 `path` 参数匹配的数据。该函数是 [`JSON_EXTRACT()`](#json_extract) 的别名。
 
 ```sql
 SELECT
@@ -181,7 +181,7 @@ FROM (
 
 ## [->>](https://dev.mysql.com/doc/refman/8.0/en/json-search-functions.html#operator_json-inline-path)
 
-该函数在评估路径并取消引号后，返回 JSON 列的值。它是 `JSON_UNQUOTE(JSON_EXTRACT(doc,path_literal))` 的别名。
+`column->>path` 函数去掉 `column` 中与 `path` 参数匹配的数据的引号。它是 `JSON_UNQUOTE(JSON_EXTRACT(doc,path_literal))` 的别名。
 
 ```sql
 SELECT
@@ -206,11 +206,11 @@ FROM (
 
 ## [JSON_KEYS()](https://dev.mysql.com/doc/refman/8.0/en/json-search-functions.html#function_json-keys)
 
-`JSON_KEYS(json_doc [,path])` 函数以 JSON 数组的形式返回 JSON 对象顶层值的键值。如果指定了 `path` 参数，则返回所选路径的顶层键值。
+`JSON_KEYS(json_doc [,path])` 函数以 JSON 数组的形式返回 JSON 对象的顶层键 (key)。如果指定了 `path` 参数，则返回所选路径的顶层键 (key)。
 
 示例：
 
-下面示例显示了 JSON 文档中的两个顶级键。
+下面示例返回了 JSON 文档中的两个顶层键。
 
 ```sql
 SELECT JSON_KEYS('{"name": {"first": "John", "last": "Doe"}, "type": "Person"}');
@@ -225,7 +225,7 @@ SELECT JSON_KEYS('{"name": {"first": "John", "last": "Doe"}, "type": "Person"}')
 1 row in set (0.00 sec)
 ```
 
-下面示例显示了 JSON 文档的 `$.name` 路径中的键。
+下面示例返回了 JSON 文档的 `$.name` 路径中的顶层键。
 
 ```sql
 SELECT JSON_KEYS('{"name": {"first": "John", "last": "Doe"}, "type": "Person"}', '$.name');
@@ -246,7 +246,7 @@ SELECT JSON_KEYS('{"name": {"first": "John", "last": "Doe"}, "type": "Person"}',
 
 示例：
 
-在下面的示例中，搜索 `cc` 的第一个结果，它位于 `a` 数组的第 2 位。
+在下面的示例中，搜索 `cc` 的第一个结果，它在 `a` 数组中索引为 2 的位置。
 
 ```sql
 SELECT JSON_SEARCH('{"a": ["aa", "bb", "cc"], "b": ["cc", "dd"]}','one','cc');
@@ -261,7 +261,7 @@ SELECT JSON_SEARCH('{"a": ["aa", "bb", "cc"], "b": ["cc", "dd"]}','one','cc');
 1 row in set (0.00 sec)
 ```
 
-现在执行和上个示例类似的操作，但是将 `sub_or_all` 设置为 `all`，不仅获取第一个结果，而且要获取全部结果。
+现在执行和上个示例类似的操作，但将 `one_or_all` 设置为 `all`。这将获取全部搜索结果，而不仅仅是第一个结果。
 
 ```json
 SELECT JSON_SEARCH('{"a": ["aa", "bb", "cc"], "b": ["cc", "dd"]}','all','cc');
@@ -278,7 +278,7 @@ SELECT JSON_SEARCH('{"a": ["aa", "bb", "cc"], "b": ["cc", "dd"]}','all','cc');
 
 ## [MEMBER OF()](https://dev.mysql.com/doc/refman/8.0/en/json-search-functions.html#operator_member-of)
 
-`str MEMBER OF (json_array)` 函数测试传递的值是否是 `json_array` 的元素，如果是则返回 `1`，否则返回 `0`。如果任一参数为 `NULL`，则返回 `NULL`。
+`str MEMBER OF (json_array)` 函数测试传入的 `str` 值是否是 `json_array` 的元素，如果是则返回 `1`，否则返回 `0`。如果任一参数为 `NULL`，则返回 `NULL`。
 
 ```
 SELECT '🍍' MEMBER OF ('["🍍","🥥","🥭"]') AS 'Contains pineapple';
