@@ -79,7 +79,7 @@ tiup cluster reload <cluster-name> [flags]
 
 - 在 `reload` 开始前运行该脚本。
 - 数据类型：`STRINGS`
-- 该选项指定主机在 `reload` 前要运行的脚本的路径。
+- 该选项指定节点在 `reload` 前要运行的脚本的路径。
 
 ### --post-restart-script
 
@@ -89,7 +89,7 @@ tiup cluster reload <cluster-name> [flags]
 
 - 在 `reload` 完成后运行该脚本。
 - 数据类型：`STRINGS`
-- 该选项指定主机在 `reload` 后要运行的脚本的路径。
+- 该选项指定节点在 `reload` 后要运行的脚本的路径。
 
 ## 输出
 
