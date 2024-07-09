@@ -128,7 +128,7 @@ tiup cluster upgrade <cluster-name> <version> [flags]
 
 - 在升级开始前运行该脚本。
 - 数据类型：`STRINGS`
-- 该选项指定主机在升级前要运行的脚本的路径。
+- 该选项指定节点在升级前要运行的脚本的路径。
 
 ### ---post-upgrade-script
 
@@ -138,7 +138,7 @@ tiup cluster upgrade <cluster-name> <version> [flags]
 
 - 在升级完成后运行该脚本。
 - 数据类型：`STRINGS`
-- 该选项指定主机在升级后要运行的脚本的路径。
+- 该选项指定节点在升级后要运行的脚本的路径。
 
 ## 输出
 
