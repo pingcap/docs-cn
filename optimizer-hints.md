@@ -988,9 +988,9 @@ SHOW WARNINGS;
 
 从该示例中可以看到，`INL_JOIN` Hint 没有生效。该问题的根本原因是优化器限制导致无法使用 `Projection` 或者 `Selection` 算子作为 `IndexJoin` 的探测 (Probe) 端。
 
-#### 排序规则不兼容导致 `INL_JOIN` Hint 不生效
+#### 排序规则不兼容导致 `INL_JOIN` Hint、`INL_HASH_JOIN` Hint、`INL_MERGE_JOIN` Hint 不生效
 
-如果两个表的 Join key 的排序规则不能兼容，将无法使用 IndexJoin 来执行查询。此时 [`INL_JOIN` Hint](#inl_joint1_name--tl_name-) 将无法生效。例如：
+如果两个表的 Join key 的排序规则不能兼容，将无法使用 IndexJoin 来执行查询。此时 [`INL_JOIN` Hint](#inl_joint1_name--tl_name-)、[`INL_HASH_JOIN` Hint](#inl_hash_join)、[`INL_MERGE_JOIN` Hint](#inl_merge_join) 将无法生效。例如：
 
 ```sql
 CREATE TABLE t1 (k varchar(8), key(k)) COLLATE=utf8mb4_general_ci;
