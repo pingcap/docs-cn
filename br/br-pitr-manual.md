@@ -341,6 +341,10 @@ tiup br log metadata –-storage='s3://backup-101/logbackup?access-key=${access-
 
 ## 恢复到指定时间点 PITR
 
+> **注意：**
+>
+> - 如果 restore point 指定 --full-backup-storage 是增量备份地址，那么需要保证该备份，以及之前的任意增量备份的恢复，均设置了 `--allow-pitr-from-incremental=true`。
+
 执行 `tiup br restore point` 命令，你可以在新集群上进行 PITR，或者只恢复日志备份数据。
 
 执行 `tiup br restore point --help` 命令可获取该命令使用介绍：
