@@ -3857,7 +3857,6 @@ explain select * from t where age=5;
     - 算子顶层表达式全部为直接的列读取，且输出的列数量小于输入的列数量。
 - `Projection` 算子最终下推与否，还取决于优化器对于性能的综合评估。
 
-
 ### `tidb_opt_range_max_size` <span class="version-mark">从 v6.4.0 版本开始引入</span>
 
 - 作用域：SESSION | GLOBAL
