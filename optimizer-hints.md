@@ -955,9 +955,34 @@ SHOW WARNINGS;
 
 从该示例中可以看到，`INL_JOIN` Hint 没有生效。该问题的根本原因是优化器限制导致无法使用 `Projection` 或者 `Selection` 算子作为 `IndexJoin` 的探测 (Probe) 端。
 
+<<<<<<< HEAD
 #### 排序规则不兼容导致 `INL_JOIN` Hint 不生效
+=======
+从 TiDB v8.0.0 起，你通过设置 [`tidb_enable_inl_join_inner_multi_pattern`](/system-variables.md#tidb_enable_inl_join_inner_multi_pattern-从-v700-版本开始引入) 为 `ON` 来避免该问题。
 
-如果两个表的 Join key 的排序规则不能兼容，将无法使用 IndexJoin 来执行查询。此时 [`INL_JOIN` Hint](#inl_joint1_name--tl_name-) 将无法生效。例如：
+```sql
+SET @@tidb_enable_inl_join_inner_multi_pattern=ON;
+Query OK, 0 rows affected (0.00 sec)
+
+EXPLAIN SELECT /*+ INL_JOIN(t1, t2) */ * FROM t1, t2 WHERE t1.id=t2.id AND SUBSTR(t1.tname,1,2)=SUBSTR(t2.tname,1,2);
++------------------------------+--------------+-----------+---------------+--------------------------------------------------------------------------------------------------------------------------------------------+
+| id                           | estRows      | task      | access object | operator info                                                                                                                              |
++------------------------------+--------------+-----------+---------------+--------------------------------------------------------------------------------------------------------------------------------------------+
+| IndexJoin_18                 | 12500.00     | root      |               | inner join, inner:Projection_14, outer key:test.t1.id, inner key:test.t2.id, equal cond:eq(Column#5, Column#6), eq(test.t1.id, test.t2.id) |
+| ├─Projection_32(Build)       | 10000.00     | root      |               | test.t1.id, test.t1.tname, substr(test.t1.tname, 1, 2)->Column#5                                                                           |
+| │ └─TableReader_34           | 10000.00     | root      |               | data:TableFullScan_33                                                                                                                      |
+| │   └─TableFullScan_33       | 10000.00     | cop[tikv] | table:t1      | keep order:false, stats:pseudo                                                                                                             |
+| └─Projection_14(Probe)       | 100000000.00 | root      |               | test.t2.id, test.t2.tname, substr(test.t2.tname, 1, 2)->Column#6                                                                           |
+|   └─TableReader_13           | 10000.00     | root      |               | data:TableRangeScan_12                                                                                                                     |
+|     └─TableRangeScan_12      | 10000.00     | cop[tikv] | table:t2      | range: decided by [eq(test.t2.id, test.t1.id)], keep order:false, stats:pseudo                                                             |
++------------------------------+--------------+-----------+---------------+--------------------------------------------------------------------------------------------------------------------------------------------+
+7 rows in set (0.00 sec)
+```
+
+#### 排序规则不兼容导致 `INL_JOIN` Hint、`INL_HASH_JOIN` Hint、`INL_MERGE_JOIN` Hint 不生效
+>>>>>>> 403f7ca31f (*: improve INL_HASH_JOIN document about collation incompatibility (#17650))
+
+如果两个表的 Join key 的排序规则不能兼容，将无法使用 IndexJoin 来执行查询。此时 [`INL_JOIN` Hint](#inl_joint1_name--tl_name-)、[`INL_HASH_JOIN` Hint](#inl_hash_join)、[`INL_MERGE_JOIN` Hint](#inl_merge_join) 将无法生效。例如：
 
 ```sql
 CREATE TABLE t1 (k varchar(8), key(k)) COLLATE=utf8mb4_general_ci;
