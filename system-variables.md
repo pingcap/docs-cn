@@ -3852,8 +3852,8 @@ explain select * from t where age=5;
 - 类型：布尔型
 - 默认值：`ON`
 - 指定是否允许优化器将 `Projection` 算子下推到 TiKV。目前只有三种类型的 `Projection` 算子被允许下推：
-    - 算子顶层表达式全部为 JSON 查询类函数, 如 `JSON_EXTRACT`, `JSON_CONTAINS` 等。
-    - 算子顶层表达式部分为 JSON 查询类函数，部分为直接的列读取。
+    - 算子顶层表达式全部为 JSON 查询类或者 JSON 值属性类函数, 如 `JSON_EXTRACT`, `JSON_DEPTH` 等。
+    - 算子顶层表达式部分为 JSON 查询类或者 JSON 值属性类函数，部分为直接的列读取。
     - 算子顶层表达式全部为直接的列读取，且输出的列数量小于输入的列数量。
 - `Projection` 算子最终下推与否，还取决于优化器对于性能的综合评估。
 
