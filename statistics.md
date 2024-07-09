@@ -80,11 +80,11 @@ For information on persisting the options for easier reuse, see [Persist ANALYZE
 
 > **注意：**
 >
-> Count-Min Sketch 在统计信息 Version 1 中仅用于等值或 `IN` 谓词的选择估算。在 Version 2 中，为了管理 Count-Min Sketch 以避免碰撞，使用了其他统计信息，如下所述。
+> Count-Min Sketch 在统计信息 Version 1 中仅用于等值或 `IN` 谓词的选择率估算。在 Version 2 中，为了管理 Count-Min Sketch 以避免冲突，使用了其他统计信息，如下所述。
 
 Count-Min Sketch 是一种哈希结构，当查询中出现诸如 `a = 1` 或者 `IN` 查询（如 `a in (1, 2, 3)`）这样的等值查询时，TiDB 便会使用这个数据结构来进行估算。
 
-由于 Count-Min Sketch 是一个哈希结构，就有出现哈希碰撞的可能。当在 `EXPLAIN` 语句中发现等值查询的估算偏离实际值较大时，就可以认为是一个比较大的值和一个比较小的值被哈希到了一起。这时有以下两种方法来避免哈希碰撞：
+由于 Count-Min Sketch 是一个哈希结构，就有出现哈希冲突的可能。当在 `EXPLAIN` 语句中发现等值查询的估算偏离实际值较大时，就可以认为是一个比较大的值和一个比较小的值被哈希到了一起。这时有以下两种方法来避免哈希冲突：
 
 - 修改 `WITH NUM TOPN` 参数。TiDB 会将出现频率前 x 的数据单独储存，之后的数据再储存到 Count-Min Sketch 中。因此，为了避免一个比较大的值和一个比较小的值被哈希到一起，可以调大 `WITH NUM TOPN` 的值。该参数的默认值是 `20`，最大值是 `1024`。关于该参数的更多信息，参见[手动收集](#手动收集)小节。
 - 修改 `WITH NUM CMSKETCH DEPTH` 和 `WITH NUM CMSKETCH WIDTH` 两个参数。这两个参数会影响哈希的桶数和碰撞概率，可视具体情况适当调大这两个参数的值来减少碰撞概率，不过调大后也会增加统计信息的内存使用。`WITH NUM CMSKETCH DEPTH` 的默认值是 `5`，`WITH NUM CMSKETCH WIDTH` 的默认值是 `2048`。关于该参数的更多信息，参见[手动收集](#手动收集)小节。
@@ -215,43 +215,189 @@ TiDB 提供了两种方法来提升统计信息收集的性能：
 
 ### 统计信息采样
 
-Sampling is available via two separate options of the `ANALYZE` statement - with each corresponding to a different collection algorithm:
+采样是通过 `ANALYZE` 语句的两个选项来实现的，每个选项对应一种不同的收集算法：
 
-- `WITH NUM SAMPLES` specifies the size of the sampling set, which is implemented in the reservoir sampling method in TiDB. When a table is large, it is not recommended to use this method to collect statistics. Because the intermediate result set of the reservoir sampling contains redundant results, it causes additional pressure on resources such as memory.
-- `WITH FLOAT_NUM SAMPLERATE` is a sampling method introduced in v5.3.0. With the value range `(0, 1]`, this parameter specifies the sampling rate. It is implemented in the way of Bernoulli sampling in TiDB, which is more suitable for sampling larger tables and performs better in collection efficiency and resource usage.
+- `WITH NUM SAMPLES` 指定了采样集的大小，在 TiDB 中是以蓄水池采样的方式实现。当表较大时，不推荐使用这种方式收集统计信息。因为蓄水池采样中间结果集会产生一定的冗余结果，会对内存等资源造成额外的压力。
+- `WITH FLOAT_NUM SAMPLERATE` 是从 v5.3.0 开始引入的采样方式，指定了采样率的大小，取值范围是 `(0, 1]`。在 TiDB 中是以伯努利采样的方式实现，更适合对较大的表进行采样，在收集效率和资源使用上更有优势。
 
-Before v5.3.0, TiDB uses the reservoir sampling method to collect statistics. Since v5.3.0, the TiDB Version 2 statistics uses the Bernoulli sampling method to collect statistics by default. To re-use the reservoir sampling method, you can use the `WITH NUM SAMPLES` statement.
+在 v5.3.0 之前，TiDB 采用蓄水池采样的方式收集统计信息。自 v5.3.0 版本起，TiDB Version 2 的统计信息默认会选取伯努利采样的方式收集统计信息。若要重新使用蓄水池采样的方式采样，可以使用 `WITH NUM SAMPLES` 语句。
 
-The current sampling rate is calculated based on an adaptive algorithm. When you can observe the number of rows in a table using [`SHOW STATS_META`](/sql-statements/sql-statement-show-stats-meta.md), you can use this number of rows to calculate the sampling rate corresponding to 100,000 rows. If you cannot observe this number, you can use the sum of all the values in the `APPROXIMATE_KEYS` column in the results of [`SHOW TABLE REGIONS`](/sql-statements/sql-statement-show-table-regions.md) of the table as another reference to calculate the sampling rate.
+目前采样率基于自适应算法进行计算。当你通过 [`SHOW STATS_META`](/sql-statements/sql-statement-show-stats-meta.md) 可以观察到一个表的行数时，可通过这个行数去计算采集 10 万行所对应的采样率。如果你观察不到这个值，可通过表 [`SHOW TABLE REGIONS`](/sql-statements/sql-statement-show-table-regions.md) 结果中所有 `APPROXIMATE_KEYS` 列值的总和作为另一个参考来计算采样率。
 
-> **Note:**
+> **注意：**
 >
-> Normally, `STATS_META` is more credible than `APPROXIMATE_KEYS`. However, when the result of `STATS_META` is much smaller than the result of `APPROXIMATE_KEYS`, it is recommended that you use `APPROXIMATE_KEYS` to calculate the sampling rate.
+> 通常情况下，`STATS_META` 比 `APPROXIMATE_KEYS` 更可信。但是，当 `STATS_META` 的结果远小于 `APPROXIMATE_KEYS` 的结果时，推荐使用 `APPROXIMATE_KEYS` 计算采样率。
 
-### The memory quota for collecting statistics
+### 统计信息收集的内存限制
 
-> **Warning:**
+> **警告：**
 >
-> Currently, the `ANALYZE` memory quota is an experimental feature, and the memory statistics might be inaccurate in production environments.
+> 目前限制 `ANALYZE` 的内存使用量为实验特性，在生产环境中使用时可能存在内存统计有误差的情况。
 
-Since TiDB v6.1.0, you can use the system variable [`tidb_mem_quota_analyze`](/system-variables.md#tidb_mem_quota_analyze-new-in-v610) to control the memory quota for collecting statistics in TiDB.
+TiDB 从 v6.1.0 开始引入了统计信息收集的内存限制，你可以通过 [`tidb_mem_quota_analyze`](/system-variables.md#tidb_mem_quota_analyze-从-v610-版本开始引入) 变量来控制 TiDB 更新统计信息时的最大总内存占用。
 
-To set a proper value of `tidb_mem_quota_analyze`, consider the data size of the cluster. When the default sampling rate is used, the main considerations are the number of columns, the size of column values, and the memory configuration of TiDB. Consider the following suggestions when you configure the maximum and minimum values:
+要合理地配置 `tidb_mem_quota_analyze` 的值，你需要考虑集群的数据规模。在使用默认采样率的情况下，主要考虑列的数量、列值的大小，以及 TiDB 的内存配置。你可参考以下建议来配置该变量的最大值和最小值：
 
-> **Note:**
+> **注意：**
 >
-> The following suggestions are for reference only. You need to configure the values based on the real scenario.
+> 以下配置建议仅供参考，实际配置需要在真实场景中测试确定。
+
+- 最小值：需要大于 TiDB 从集群上列最多的表收集统计信息时使用的最大内存。一个粗略的参考信息是，在测试集上，20 列的表在默认配置下，统计信息收集的最大内存使用量约为 800 MiB；160 列的表在默认配置下，统计信息收集的最大内存使用约为 5 GiB。
+- 最大值：需要小于集群在不进行统计信息收集时的内存空余量。
+
+## 持久化 `ANALYZE` 配置
+
+从 v5.4.0 起，TiDB 支持 `ANALYZE` 配置持久化，方便后续收集统计信息时沿用已有配置。
+
+TiDB 支持以下 `ANALYZE` 配置的持久化：
+
+| 配置 | 对应的 `ANALYZE` 语法 |
+| --- | --- |
+| 直方图桶数 | `WITH NUM BUCKETS` |
+| TopN 个数 | `WITH NUM TOPN` |
+| 采样数 | `WITH NUM SAMPLES` |
+| 采样率 | `WITH FLOATNUM SAMPLERATE` |
+| `ANALYZE` 的列的类型 | AnalyzeColumnOption ::= ( 'ALL COLUMNS' \| 'PREDICATE COLUMNS' \| 'COLUMNS' ColumnNameList ) |
+| `ANALYZE` 的列 | ColumnNameList ::= Identifier ( ',' Identifier )* |
+
+#### 开启 `ANALYZE` 配置持久化
+
+`ANALYZE` 配置持久化功能默认开启，即系统变量 `tidb_analyze_version` 为默认值 `2`，`tidb_persist_analyze_options` 为默认值 `ON`。
+
+`ANALYZE` 配置持久化功能可用于记录手动执行 `ANALYZE` 语句时指定的持久化配置。记录后，当 TiDB 下一次自动更新统计信息或者你手动收集统计信息但未指定配置时，TiDB 会按照记录的配置收集统计信息。
+
+如果要查询特定表上持久化的配置用于自动分析操作，使用以下 SQL 语句：
+
+```sql
+SELECT sample_num, sample_rate, buckets, topn, column_choice, column_ids FROM mysql.analyze_options opt JOIN information_schema.tables tbl ON opt.table_id = tbl.tidb_table_id WHERE tbl.table_schema = '{db_name}' AND tbl.table_name = '{table_name}';
+```
+
+TiDB 会使用最新的 `ANALYZE` 语句中指定的配置覆盖先前记录的持久化配置。例如，如果你运行 `ANALYZE TABLE t WITH 200 TOPN;` ，它将在 `ANALYZE` 语句中设置前 200 个值。随后，执行 `ANALYZE TABLE t WITH 0.1 SAMPLERATE;` 将为自动 `ANALYZE` 语句同时设置前 200 个值和 0.1 的采样率，类似于 `ANALYZE TABLE t WITH 200 TOPN, 0.1 SAMPLERATE;`。
+
+#### 关闭 `ANALYZE` 配置持久化
+
+如果要关闭 `ANALYZE` 配置持久化功能，请将系统变量 `tidb_persist_analyze_options` 设置为 `OFF`。此外，由于 `ANALYZE` 配置持久化功能在 `tidb_analyze_version = 1` 的情况下不适用，因此设置 `tidb_analyze_version = 1` 同样会达到关闭配置持久化的效果。
+
+关闭 `ANALYZE` 配置持久化功能后，已持久化的配置记录不会被清除。因此，当再次开启该功能时，TiDB 会继续使用之前记录的持久化配置收集统计信息。
+
+> **注意：**
 >
-> - Minimum value: should be greater than the maximum memory usage when TiDB collects statistics from the table with the most columns. An approximate reference: when TiDB collects statistics from a table with 20 columns using the default configuration, the maximum memory usage is about 800 MiB; when TiDB collects statistics from a table with 160 columns using the default configuration, the maximum memory usage is about 5 GiB.
-> - Maximum value: should be less than the available memory when TiDB is not collecting statistics.
+> 当再次开启 `ANALYZE` 配置持久化功能时，如果之前记录的持久化配置项已经不适用当前的数据，请手动执行 `ANALYZE` 语句并指定新的持久化配置。
 
-## 持久化 ANALYZE 配置
+#### 持久化列配置
 
+如果要持久化 `ANALYZE` 语句中列的配置（包括 `COLUMNS ColumnNameList`、`PREDICATE COLUMNS`、`ALL COLUMNS`），请将系统变量 [`tidb_persist_analyze_options`](/system-variables.md#tidb_persist_analyze_options-从-v540-版本开始引入) 的值设置为 `ON`，以开启[持久化 `ANALYZE` 配置](/statistics.md#持久化-analyze-配置)功能。开启 `ANALYZE` 配置持久化之后：
+
+- 当 TiDB 自动收集统计信息或者你手动执行 `ANALYZE` 语句收集统计信息但未指定列的配置时，TiDB 会继续沿用之前持久化的配置。
+- 当多次手动执行 `ANALYZE` 语句并指定列的配置时，TiDB 会使用最新一次 `ANALYZE` 指定的配置项覆盖上一次记录的持久化配置。
+
+如果要查看一个表中哪些列是 `PREDICATE COLUMNS`、哪些列的统计信息已经被收集，请使用 [`SHOW COLUMN_STATS_USAGE`](/sql-statements/sql-statement-show-column-stats-usage.md) 语句。
+
+在以下示例中，执行 `ANALYZE TABLE t PREDICATE COLUMNS;` 后，TiDB 将收集 `b`、`c`、`d` 列的统计信息，其中 `b` 列是 `PREDICATE COLUMN`，`c` 列和 `d` 列是索引列。
+
+```sql
+SET GLOBAL tidb_enable_column_tracking = ON;
+Query OK, 0 rows affected (0.00 sec)
+
+CREATE TABLE t (a INT, b INT, c INT, d INT, INDEX idx_c_d(c, d));
+Query OK, 0 rows affected (0.00 sec)
+
+-- 在此查询中优化器用到了 b 列的统计信息。
+SELECT * FROM t WHERE b > 1;
+Empty set (0.00 sec)
+
+-- 等待一段时间（100 * stats-lease）后，TiDB 将收集的 `PREDICATE COLUMNS` 写入 mysql.column_stats_usage。
+-- 指定 `last_used_at IS NOT NULL` 表示显示 TiDB 收集到的 `PREDICATE COLUMNS`。
+SHOW COLUMN_STATS_USAGE WHERE db_name = 'test' AND table_name = 't' AND last_used_at IS NOT NULL;
++---------+------------+----------------+-------------+---------------------+------------------+
+| Db_name | Table_name | Partition_name | Column_name | Last_used_at        | Last_analyzed_at |
++---------+------------+----------------+-------------+---------------------+------------------+
+| test    | t          |                | b           | 2022-01-05 17:21:33 | NULL             |
++---------+------------+----------------+-------------+---------------------+------------------+
+1 row in set (0.00 sec)
+
+ANALYZE TABLE t PREDICATE COLUMNS;
+Query OK, 0 rows affected, 1 warning (0.03 sec)
+
+-- 指定 `last_analyzed_at IS NOT NULL` 表示显示收集过统计信息的列。
+SHOW COLUMN_STATS_USAGE WHERE db_name = 'test' AND table_name = 't' AND last_analyzed_at IS NOT NULL;
++---------+------------+----------------+-------------+---------------------+---------------------+
+| Db_name | Table_name | Partition_name | Column_name | Last_used_at        | Last_analyzed_at    |
++---------+------------+----------------+-------------+---------------------+---------------------+
+| test    | t          |                | b           | 2022-01-05 17:21:33 | 2022-01-05 17:23:06 |
+| test    | t          |                | c           | NULL                | 2022-01-05 17:23:06 |
+| test    | t          |                | d           | NULL                | 2022-01-05 17:23:06 |
++---------+------------+----------------+-------------+---------------------+---------------------+
+3 rows in set (0.00 sec)
+```
 
 ## 统计信息版本
 
+系统变量 [`tidb_analyze_version`](/system-variables.md#tidb_analyze_version-从-v510-版本开始引入) 用于控制 TiDB 收集统计信息的行为。目前 TiDB 支持两个版本的统计信息，即 `tidb_analyze_version = 1` 和 `tidb_analyze_version = 2`。
+
+- 从 v5.3.0 开始，变量 `tidb_analyze_version` 的默认值从 `1` 变为了 `2`。
+- 如果从 v5.3.0 之前版本的集群升级至 v5.3.0 或之后的版本，该变量的默认值不会发生变化。
+<!-- - TiDB Cloud 中，从 v6.5.0 开始，该变量的默认值从 `1` 变为了 `2`。-->
+
+更推荐选择 Version 2。Version 2 将继续增强，并最终完全取代 Version 1。与 Version 1 相比，Version 2 提高了大数据量场景下多项统计信息收集的准确性。Version 2 还取消了为谓词选择率估算收集 Count-Min Sketch 统计信息，并支持仅对选定列进行自动收集（参见[收集部分列的统计信息](#收集部分列的统计信息)），从而提高了收集性能。
+
+以下表格列出了两个统计信息版本为优化器估算收集的信息：
+
+| 信息 | Version 1 | Version 2|
+| --- | --- | ---|
+| 表的总行数 | ⎷ | ⎷ |
+| 等值或 `IN` 谓词估算 | ⎷（列/索引 Top-N & Count-Min Sketch） | ⎷（列/索引 Top-N & 直方图） |
+| Range 范围谓词估算 | ⎷（列/索引 Top-N & 直方图） | ⎷（列/索引 Top-N & 直方图） |
+| `NULL` 谓词估算 | ⎷ | ⎷ |
+| 列的平均长度 | ⎷ | ⎷ |
+| 索引的平均长度 | ⎷ | ⎷ |
+
+### 切换统计信息版本
+
+建议确保所有表、索引（和分区）使用相同版本的统计信息收集功能。推荐使用 Version 2，但不建议在没有正当理由（例如使用中的版本出现问题）的情况下切换版本。版本之间的切换可能需要一段时间，在此期间可能没有统计信息，直到所有表都使用了新版本进行统计。如果没有统计信息，可能会影响优化器的计划选择。
+
+切换版本的正当理由可能包括：使用 Version 1 在收集 Count-Min Sketch 统计信息时，由于哈希冲突导致等值或 `IN` 谓词估算不准确。两个解决方案：参见 [Count-Min Sketch](#count-min-sketch)小节；设置 `tidb_analyze_version = 2` 并对所有对象重新运行 `ANALYZE`。在 Version 2 的早期阶段，执行 `ANALYZE` 后有内存溢出的风险，现在这个问题已经解决，但最初的解决方案是设置 `tidb_analyze_version = 1` 并对所有对象重新运行 `ANALYZE`。
+
+要为切换统计信息版本做好 `ANALYZE` 准备，请根据情况进行以下操作：
+
+- 如果 `ANALYZE` 语句是手动执行的，请手动统计每张需要统计的表：
+
+    ```sql
+    SELECT DISTINCT(CONCAT('ANALYZE TABLE ', table_schema, '.', table_name, ';'))
+    FROM information_schema.tables JOIN mysql.stats_histograms
+    ON table_id = tidb_table_id
+    WHERE stats_ver = 2;
+    ```
+
+- 如果 TiDB 自动执行的 `ANALYZE` 语句，因为已经启用了自动分析，请执行以下语句生成 [`DROP STATS`](/sql-statements/sql-statement-drop-stats.md) 语句：
+
+    ```sql
+    SELECT DISTINCT(CONCAT('DROP STATS ', table_schema, '.', table_name, ';'))
+    FROM information_schema.tables ON mysql.stats_histograms
+    ON table_id = tidb_table_id
+    WHERE stats_ver = 2;
+    ```
+
+- 如果上一条语句的返回结果太长，不方便复制粘贴，可以将结果导出到临时文件后，再执行：
+
+    ```sql
+    SELECT DISTINCT ... INTO OUTFILE '/tmp/sql.txt';
+    mysql -h ${TiDB_IP} -u user -P ${TIDB_PORT} ... < '/tmp/sql.txt'
+    ```
 
 ## 查看统计信息
+
+### `ANALYZE` 状态
+
+### 表的元信息
+
+### 表的健康度信息
+
+### 列的元信息
+
+### 直方图桶的信息
+
+### Top-N 信息
 
 ## 删除统计信息
 
@@ -266,8 +412,8 @@ To set a proper value of `tidb_mem_quota_analyze`, consider the data size of the
 ## 另请参阅
 
 
---------------------------------------------
 
+<!--
 ## 统计信息版本
 
 变量 `tidb_analyze_version` 用于控制所收集到的统计信息。目前 TiDB 中支持两种统计信息：`tidb_analyze_version = 1` 以及 `tidb_analyze_version = 2`。在 v5.3.0 及之后的版本中，该变量的默认值为 `2`。如果从 v5.3.0 之前版本的集群升级至 v5.3.0 及之后的版本，`tidb_analyze_version` 的默认值不发生变化。
@@ -327,7 +473,7 @@ Version 2 的统计信息避免了 Version 1 中因为哈希冲突导致的在�
 
 Count-Min Sketch 是一种哈希结构，当查询中出现诸如 `a = 1` 或者 `IN` 查询（如 `a in (1, 2, 3)`）这样的等值查询时，TiDB 便会使用这个数据结构来进行估算。
 
-由于 Count-Min Sketch 是一个哈希结构，就有出现哈希碰撞的可能。当在 `EXPLAIN` 语句中发现等值查询的估算偏离实际值较大时，就可以认为是一个比较大的值和一个比较小的值被哈希到了一起。这时有以下两种手段来避免这个情况：
+由于 Count-Min Sketch 是一个哈希结构，就有出现哈希冲突的可能。当在 `EXPLAIN` 语句中发现等值查询的估算偏离实际值较大时，就可以认为是一个比较大的值和一个比较小的值被哈希到了一起。这时有以下两种手段来避免这个情况：
 
 - 修改[手动收集统计信息](#手动收集)中提到的 `WITH NUM TOPN` 参数。TiDB 会将出现频率前 x 大的数据单独储存，之后的数据再储存到 Count-Min Sketch 中。因此可以调大这个值来避免一个比较大的值和一个比较小的值被哈希到一起。在 TiDB 中，这个参数的默认值是 20，最大可以设置为 1024。
 - 修改[统计信息的收集-手动收集](#手动收集)中提到的 `WITH NUM CMSKETCH DEPTH` 和 `WITH NUM CMSKETCH WIDTH` 两个参数，这两个参数会影响哈希的桶数和碰撞概率，可是适当调大来减少冲突概率，同时它会影响统计信息的内存使用，可以视具体情况来调整。在 TiDB 中，`DEPTH` 的默认值是 5，`WIDTH` 的默认值是 2048。
@@ -1168,3 +1314,4 @@ mysql> SHOW WARNINGS;
 * [LOCK STATS](/sql-statements/sql-statement-lock-stats.md)
 * [UNLOCK STATS](/sql-statements/sql-statement-unlock-stats.md)
 * [SHOW STATS_LOCKED](/sql-statements/sql-statement-show-stats-locked.md)
+-->
