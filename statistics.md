@@ -140,7 +140,7 @@ ANALYZE TABLE TableName INDEX [IndexNameList] [WITH NUM BUCKETS|TOPN|CMSKETCH DE
 
     1. 将系统变量 [`tidb_enable_column_tracking`](/system-variables.md#tidb_enable_column_tracking-从-v540-版本开始引入) 的值设置为 `ON`，以开启 TiDB 对 `PREDICATE COLUMNS` 的收集。
 
-        开启后，TiDB 将每隔 100 * [`stats-lease`](/tidb-configuration-file.md#stats-lease) 时间将 `PREDICATE COLUMNS` 信息写入系统表 `mysql.column_stats_usage`。
+        开启后，TiDB 将每隔 100 * [`stats-lease`](/tidb-configuration-file.md#stats-lease) 时间将 `PREDICATE COLUMNS` 信息写入系统表 [`mysql.column_stats_usage`](/mysql-schema.md#statistics-system-tables)。
 
     2. 在业务的查询模式稳定以后，使用以下语法收集 `PREDICATE COLUMNS` 的统计信息。
 
