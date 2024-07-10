@@ -14,7 +14,7 @@ summary: 数据类型的默认值描述了列的默认值设置规则。默认�
 - 对于整数类型，可以使用 `NEXT VALUE FOR` 函数将序列的下一个值作为列的默认值，使用 [`RAND()`](/functions-and-operators/numeric-functions-and-operators.md) 函数生成随机浮点值作为列的默认值。
 - 对于字符串类型，可以使用 [`UUID()`](/functions-and-operators/miscellaneous-functions.md) 函数生成[通用唯一标识符 (UUID)](/best-practices/uuid.md) 作为列的默认值。
 - 对于二进制类型，可以使用 [`UUID_TO_BIN()`](/functions-and-operators/miscellaneous-functions.md) 函数将 UUID 转换为二进制格式后作为列的默认值。
-- 从 v8.0.0 开始，新增支持 [`BLOB`](/data-type-string.md#blob-类型)、[`TEXT`](/data-type-string.md#text-类型) 以及 [`JSON`](/data-type-json.md#json-类型) 这三种数据类型设置默认值，但仅支持使用表达式设置[默认值](#表达式默认值)。
+- 从 v8.0.0 开始，新增支持 [`BLOB`](/data-type-string.md#blob-类型)、[`TEXT`](/data-type-string.md#text-类型) 以及 [`JSON`](/data-type-json.md#json-数据类型) 这三种数据类型设置默认值，但仅支持使用表达式设置[默认值](#表达式默认值)。
 
 如果一个列的定义中没有 `DEFAULT` 的设置。TiDB 按照如下的规则决定：
 
