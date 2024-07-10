@@ -144,7 +144,7 @@ summary: TiDB 支持 MySQL 8.0 中提供的大部分 JSON 函数。
 
 ## 另请参阅
 
-* [JSON Data Type](/data-type-json.md)
+- [JSON Data Type](/data-type-json.md)
 
 ## 不支持的函数
 
