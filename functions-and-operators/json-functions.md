@@ -142,7 +142,7 @@ summary: TiDB 支持 MySQL 8.0 中提供的大部分 JSON 函数。
 
 更多信息，请参考 [JSONPath -- XPath for JSON](https://www.ietf.org/archive/id/draft-goessner-dispatch-jsonpath-00.html)。
 
-## 另请参阅
+## 另请参阅 
 
 - [JSON 数据类型](/data-type-json.md)
 
