@@ -1,5 +1,6 @@
 ---
 title: 系统变量
+summary: 使用 TiDB 系统变量来优化性能或修改运行行为。
 ---
 
 # 系统变量
@@ -414,7 +415,6 @@ mysql> SELECT * FROM t1;
 - 类型：枚举型
 - 默认值：`mysql_native_password`
 - 可选值：`mysql_native_password`，`caching_sha2_password`，`tidb_sm3_password`，`tidb_auth_token`，`authentication_ldap_sasl` 或 `authentication_ldap_simple`。
-- `tidb_auth_token` 认证方式仅用于 TiDB Cloud 内部实现，**不要设置为该值**。
 - 服务器和客户端建立连接时，这个变量用于设置服务器对外通告的默认身份验证方式。如要了解该变量的其他可选值，参见[可用的身份验证插件](/security-compatibility-with-mysql.md#可用的身份验证插件)。
 - 若要在用户登录时使用 `tidb_sm3_password` 插件，需要使用 [TiDB-JDBC](https://github.com/pingcap/mysql-connector-j/tree/release/8.0-sm3) 进行连接。
 
@@ -486,7 +486,7 @@ mysql> SELECT * FROM t1;
 - 类型：整数型
 - 默认值：`1024`
 - 取值范围：`[4, 18446744073709551615]`
-- 表示 `GROUP_CONCAT()` 函数中，项目的最大缓冲区大小。
+- 表示 `GROUP_CONCAT()` 函数缓冲区的最大长度。
 
 ### `have_openssl`
 
@@ -509,7 +509,7 @@ mysql> SELECT * FROM t1;
 - 作用域：NONE
 - 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：否
 - 默认值：（系统主机名）
-- 这个变量一个只读变量，表示 TiDB server 的主机名。
+- 这个变量为只读变量，表示 TiDB server 的主机名。
 
 ### `identity` <span class="version-mark">从 v5.3.0 版本开始引入</span>
 
@@ -765,6 +765,7 @@ mysql> SHOW GLOBAL VARIABLES LIKE 'max_prepared_stmt_count';
 - 该变量控制是否所有 TiDB 的连接都在本地 socket 上进行通信，或使用 TLS。详情见[为 TiDB 客户端服务端间通信开启加密传输](/enable-tls-between-clients-and-servers.md)。
 - 该变量设置为 `ON` 时，必须使用开启 TLS 的会话连接到 TiDB，防止在 TLS 配置不正确时出现锁定的情况。
 - 在 v6.1.0 之前这个开关通过 TiDB 配置文件 (`security.require-secure-transport`) 进行配置，升级到 v6.1.0 时会自动继承原有设置。
+- 对于 v7.5.1 或更高的 v7.5 补丁版本，当启用了安全增强模式 (SEM) 时，禁止将 `security.require-secure-transport` 设置为 `ON`。
 
 ### `skip_name_resolve` <span class="version-mark">从 v5.2.0 版本开始引入</span>
 
@@ -870,6 +871,7 @@ mysql> SHOW GLOBAL VARIABLES LIKE 'max_prepared_stmt_count';
 - 作用域：SESSION | GLOBAL
 - 是否持久化到集群：是
 - 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：否
+- 类型：整数型
 - 默认值：`4096`
 - 取值范围：`[0, 9223372036854775807]`
 - 单位：字节
@@ -924,8 +926,8 @@ mysql> SHOW GLOBAL VARIABLES LIKE 'max_prepared_stmt_count';
 - 类型：布尔型
 - 默认值：`ON`
 - 这个变量用于控制是否使用 TiFlash 的 MPP 模式执行查询，可以设置的值包括：
-    - 0 或 OFF，代表从不使用 MPP 模式
-    - 1 或 ON，代表由优化器根据代价估算选择是否使用 MPP 模式（默认）
+    - `0` 或 `OFF`，代表从不使用 MPP 模式。如果在 v7.3.0 及之后的版本将该变量值设置为 `0` 或 `OFF`，你需要同时开启 [`tidb_allow_tiflash_cop`](/system-variables.md#tidb_allow_tiflash_cop-从-v730-版本开始引入) 变量，否则可能遇到查询报错。
+    - `1` 或 `ON`，代表由优化器根据代价估算选择是否使用 MPP 模式（默认）。
 
 MPP 是 TiFlash 引擎提供的分布式计算框架，允许节点之间的数据交换并提供高性能、高吞吐的 SQL 算法。MPP 模式选择的详细说明参见[控制是否选择 MPP 模式](/tiflash/use-tiflash-mpp-mode.md#控制是否选择-mpp-模式)。
 
@@ -938,10 +940,6 @@ MPP 是 TiFlash 引擎提供的分布式计算框架，允许节点之间的数�
 - 这个变量用来控制是否允许通过 `ALTER TABLE MODIFY` 或 `ALTER TABLE CHANGE` 来移除某个列的 `AUTO_INCREMENT` 属性。默认 (`OFF`) 为不允许。
 
 ### `tidb_analyze_partition_concurrency`
-
-> **警告：**
->
-> 当前版本中该变量控制的功能尚未完全生效，请保留默认值。
 
 - 作用域：SESSION | GLOBAL
 - 是否持久化到集群：是
@@ -1447,7 +1445,7 @@ mysql> SELECT job_info FROM mysql.analyze_jobs ORDER BY end_time DESC LIMIT 1;
 - 类型：整数型
 - 默认值：`64`
 - 范围：`[1, 256]`
-- 这个变量用来控制 [`FLASHBACK CLUSTER TO TIMESTAMP`](/sql-statements/sql-statement-flashback-to-timestamp.md) 的并发数。
+- 这个变量用来控制 [`FLASHBACK CLUSTER`](/sql-statements/sql-statement-flashback-cluster.md) 的并发数。
 
 ### `tidb_ddl_reorg_batch_size`
 
@@ -1526,6 +1524,8 @@ mysql> SELECT job_info FROM mysql.analyze_jobs ORDER BY end_time DESC LIMIT 1;
 - 这个变量用来设置 scan 操作的并发度。
 - AP 类应用适合较大的值，TP 类应用适合较小的值。对于 AP 类应用，最大值建议不要超过所有 TiKV 节点的 CPU 核数。
 - 若表的分区较多可以适当调小该参数（取决于扫描数据量的大小以及扫描频率），避免 TiKV 内存溢出 (OOM)。
+- 对于仅包含 `LIMIT` 子句的简单查询，如果 `LIMIT` 行数小于 100000，该查询的 scan 操作被下推到 TiKV 时，会将该变量的值视为 `1` 进行处理，以提升执行效率。
+- 对于查询语句 `SELECT MAX/MIN(col) FROM ...`，如果 `col` 列有索引且该索引的顺序与 `MAX(col)` 或 `MIN(col)` 函数所需的顺序一致，TiDB 会将该查询改写为 `SELECT col FROM ... LIMIT 1` 进行处理，该变量的值也将视为 `1` 进行处理。例如，对于 `SELECT MIN(col) FROM ...`，如果 `col` 列有升序排列的索引，TiDB 通过将该查询改写为 `SELECT col FROM ... LIMIT 1`，可以直接读取该索引中第一条数据，从而快速得到 `MIN(col)` 值。
 
 ### `tidb_dml_batch_size`
 
@@ -2812,6 +2812,7 @@ v5.0 后，用户仍可以单独修改以上系统变量（会有废弃警告）
     - `start_ts`：事务开始的时间戳。
     - `for_update_ts`：先前执行的 DML 语句的 `for_update_ts` 信息。这是 TiDB 用于测试的内部术语。通常，你可以忽略此信息。
     - `error`：错误消息（如果有）。
+    - `ru_consumption`：执行语句的 [RU](/tidb-resource-control.md#什么是-request-unit-ru) 消耗。
 
 ### `tidb_last_txn_info` <span class="version-mark">从 v4.0.9 版本开始引入</span>
 
@@ -3858,8 +3859,8 @@ SHOW WARNINGS;
 - 作用域：SESSION | GLOBAL
 - 是否持久化到集群：是
 - 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：是
-- 默认值：`2097152`（即 2 MB）
-- 取值范围：`[0, 9223372036854775807]`，单位为 Byte。支持带单位的内存格式“KB|MB|GB|TB”。`0` 表示表示不设限制。
+- 默认值：`2097152`（即 2 MiB）
+- 取值范围：`[0, 9223372036854775807]`，单位为 Byte。支持带单位的内存格式 "KiB|MiB|GiB|TiB"。`0` 表示表示不设限制。
 - 这个变量用来控制可以缓存的 Prepare 或非 Prepare 语句执行计划的最大大小。超过该值的执行计划将不会被缓存到 Plan Cache 中。详情请参考 [Prepare 语句执行计划缓存](/sql-prepared-plan-cache.md#prepared-plan-cache-的内存管理)和[非 Prepare 语句执行计划缓存](/sql-non-prepared-plan-cache.md#使用方法)。
 
 ### `tidb_pprof_sql_cpu` <span class="version-mark">从 v4.0 版本开始引入</span>
@@ -4181,8 +4182,8 @@ EXPLAIN FORMAT='brief' SELECT COUNT(1) FROM t WHERE a = 1 AND b IS NOT NULL;
 - 默认值：`80%`
 - 取值范围：
     - 你可以将该变量值设为百分比格式，表示内存用量占总内存的百分比，取值范围为 `[1%, 99%]`。
-    - 你还可以将变量值设为内存大小，取值范围为 `0` 以及 `[536870912, 9223372036854775807]`，单位为 Byte。支持带单位的内存格式 "KB|MB|GB|TB"。`0` 值表示不设内存限制。
-    - 当设置的内存值小于 512 MB 且不为 0 时，TiDB 将会使用 512 MB 作为替代。
+    - 你还可以将变量值设为内存大小，取值范围为 `0` 以及 `[536870912, 9223372036854775807]`，单位为 Byte。支持带单位的内存格式 "KiB|MiB|GiB|TiB"。`0` 值表示不设内存限制。
+    - 当设置的内存值小于 512 MiB 且不为 0 时，TiDB 将会使用 512 MiB 作为替代。
 - 该变量指定 TiDB 实例的内存限制。TiDB 会在内存用量达到该限制时，对当前内存用量最高的 SQL 语句进行取消 (Cancel) 操作。在该 SQL 语句被成功 Cancel 掉后，TiDB 会尝试调用 Golang GC 立刻回收内存，以最快速度缓解内存压力。
 - 只有内存使用大于 `tidb_server_memory_limit_sess_min_size` 的 SQL 语句会被选定为最优先被 Cancel 的 SQL 语句。
 - 目前 TiDB 一次只能 Cancel 一条 SQL 语句。如果 TiDB 完全 Cancel 掉一条 SQL 语句并回收资源后，内存使用仍然大于该变量所设限制，TiDB 会开始下一次 Cancel 操作。
@@ -4201,8 +4202,8 @@ EXPLAIN FORMAT='brief' SELECT COUNT(1) FROM t WHERE a = 1 AND b IS NOT NULL;
 - 作用域：GLOBAL
 - 是否持久化到集群：是
 - 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：否
-- 默认值：`134217728`（即 128 MB）
-- 取值范围：`[128, 9223372036854775807]`，单位为 Byte。支持带单位的内存格式“KB|MB|GB|TB”。
+- 默认值：`134217728`（即 128 MiB）
+- 取值范围：`[128, 9223372036854775807]`，单位为 Byte。支持带单位的内存格式 "KiB|MiB|GiB|TiB"。
 - 开启内存限制后，TiDB 会终止当前实例上内存用量最高的 SQL 语句。本变量指定此情况下 SQL 语句被终止的最小内存用量。如果 TiDB 实例的内存超限是由许多内存使用量不明显的会话导致的，可以适当调小该变量值，使得更多会话成为 Cancel 的对象。
 
 ### `tidb_service_scope` <span class="version-mark">从 v7.4.0 版本开始引入</span>
@@ -4299,7 +4300,7 @@ Query OK, 0 rows affected, 1 warning (0.00 sec)
 - 分区表在开启[动态裁剪模式](/partitioned-table.md#动态裁剪模式)时，TiDB 会汇总各个分区的统计信息生成 GlobalStats。这个变量用于控制当分区统计信息缺失时生成 GlobalStats 的行为。
 
     - 当开启该变量时，TiDB 生成 GlobalStats 时会跳过缺失的分区统计信息，不影响 GlobalStats 生成。
-    - 当关闭该变量时，遇到缺失的分区统计信息，TiDB 会停止生成 GloablStats。
+    - 当关闭该变量时，遇到缺失的分区统计信息，TiDB 会停止生成 GlobalStats。
 
 ### `tidb_skip_utf8_check`
 
@@ -4355,6 +4356,7 @@ Query OK, 0 rows affected, 1 warning (0.00 sec)
 - 是否持久化到集群：是
 - 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：否
 - 类型：整数型
+- 单位：字节
 - 默认值：`0`，自动设置内部统计信息缓存使用内存的上限为总内存的一半。
 - 这个变量用于控制 TiDB 内部统计信息缓存使用内存的上限。
 
@@ -4467,7 +4469,8 @@ Query OK, 0 rows affected, 1 warning (0.00 sec)
 - 类型：整数型
 - 默认值：`4096`
 - 范围：`[0, 2147483647]`
-- 这个变量用来控制 [Statement Summary Tables](/statement-summary-tables.md)、[`SLOW_QUERY`](/information-schema/information-schema-slow-query.md) 表和 [TiDB Dashboard](/dashboard/dashboard-intro.md) 中显示的 SQL 字符串长度。
+- 单位：字节
+- 这个变量用来控制 [Statement Summary Tables](/statement-summary-tables.md) 和 [TiDB Dashboard](/dashboard/dashboard-intro.md) 中显示的 SQL 字符串长度。
 
 ### `tidb_stmt_summary_max_stmt_count` <span class="version-mark">从 v4.0 版本开始引入</span>
 
@@ -4835,7 +4838,7 @@ Query OK, 0 rows affected, 1 warning (0.00 sec)
 - 当窗口函数下推到 TiFlash 执行时，可以通过该变量控制窗口函数执行的并行度。不同取值含义：
 
     * -1: 表示不使用细粒度 shuffle 功能，下推到 TiFlash 的窗口函数以单线程方式执行
-    * 0: 表示使用细粒度 shuffle 功能。如果 [`tidb_max_tiflash_threads`](/system-variables.md#tidb_max_tiflash_threads-从-v610-版本开始引入) 有效（大于 0），则 `tiflash_fine_grained_shuffle_stream_count` 会自动取值为 [`tidb_max_tiflash_threads`](/system-variables.md#tidb_max_tiflash_threads-从-v610-版本开始引入)，否则为默认值 8。最终在 TiFlash 上窗口函数的实际并发度为：min(`tiflash_fine_grained_shuffle_stream_count`，TiFlash 节点物理线程数)
+    * 0: 表示使用细粒度 shuffle 功能。如果 [`tidb_max_tiflash_threads`](/system-variables.md#tidb_max_tiflash_threads-从-v610-版本开始引入) 有效（大于 0），则 `tiflash_fine_grained_shuffle_stream_count` 会自动取值为 [`tidb_max_tiflash_threads`](/system-variables.md#tidb_max_tiflash_threads-从-v610-版本开始引入)，否则会根据 TiFlash 计算节点的 CPU 资源自动推算。最终在 TiFlash 上窗口函数的实际并发度为：min(`tiflash_fine_grained_shuffle_stream_count`，TiFlash 节点物理线程数)
     * 大于 0: 表示使用细粒度 shuffle 功能，下推到 TiFlash 的窗口函数会以多线程方式执行，并发度为： min(`tiflash_fine_grained_shuffle_stream_count`, TiFlash 节点物理线程数)
 - 理论上窗口函数的性能会随着该值的增加线性提升。但是如果设置的值超过实际的物理线程数，反而会导致性能下降。
 
@@ -5051,7 +5054,7 @@ Query OK, 0 rows affected, 1 warning (0.00 sec)
 - 作用域：NONE
 - 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：否
 - 默认值：`8.0.11-TiDB-(tidb version)`
-- 这个变量的值是 MySQL 的版本和 TiDB 的版本，例如 '8.0.11-TiDB-v7.5.0'。
+- 这个变量的值是 MySQL 的版本和 TiDB 的版本，例如 '8.0.11-TiDB-v7.5.2'。
 
 ### `version_comment`
 

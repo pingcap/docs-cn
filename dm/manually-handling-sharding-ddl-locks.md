@@ -1,5 +1,6 @@
 ---
 title: 手动处理 Sharding DDL Lock
+summary: DM 使用 sharding DDL lock 来确保分库分表的 DDL 操作可以正确执行。在异常情况下，需要手动处理异常的 DDL lock。使用 shard-ddl-lock 命令查看 DDL lock 信息，使用 shard-ddl-lock unlock 命令请求 DM-master 解除指定的 DDL lock。支持处理部分 MySQL source 被移除和 unlock 过程中部分 DM-worker 异常停止或网络中断的情况。
 ---
 
 # 手动处理 Sharding DDL Lock
@@ -64,7 +65,7 @@ Use "dmctl shard-ddl-lock [command] --help" for more information about a command
 shard-ddl-lock test
 ```
 
-<details>
+<details open>
 <summary>期望输出</summary>
 
 ```

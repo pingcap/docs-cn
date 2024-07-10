@@ -1,5 +1,6 @@
 ---
 title: 使用 TiUP 命令管理组件
+summary: TiUP 是一个用于管理组件的命令行工具。它提供了一系列命令来查询组件列表、安装、升级、运行、查看状态、清理实例和卸载组件。此外，还可以使用实验性的 `link` 和 `unlink` 命令来将组件的二进制符号链接到可执行文件目录。
 ---
 
 # 使用 TiUP 命令管理组件
@@ -70,12 +71,12 @@ tiup install tidb
 tiup install tidb:nightly
 ```
 
-示例三：使用 TiUP 安装 v7.5.0 版本的 TiKV
+示例三：使用 TiUP 安装 v7.5.2 版本的 TiKV
 
 {{< copyable "shell-regular" >}}
 
 ```shell
-tiup install tikv:v7.5.0
+tiup install tikv:v7.5.2
 ```
 
 ## 升级组件
@@ -128,12 +129,12 @@ Flags:
 
 如果想要多次启动同一个组件并复用之前的工作目录，就可以在启动时用 `--tag` 指定相同的名字。指定 tag 后，在实例终止时就*不会自动删除*工作目录，方便下次启动时复用。
 
-示例一：运行 v7.5.0 版本的 TiDB
+示例一：运行 v7.5.2 版本的 TiDB
 
 {{< copyable "shell-regular" >}}
 
 ```shell
-tiup tidb:v7.5.0
+tiup tidb:v7.5.2
 ```
 
 示例二：指定 tag 运行 TiKV
@@ -219,12 +220,12 @@ component 为要卸载的组件名称，version 为要卸载的版本，这两�
 - 若省略版本，加 `--all` 表示卸载该组件所有版本
 - 若版本和组件都省略，则加 `--all` 表示卸载所有组件及其所有版本
 
-示例一：卸载 v7.5.0 版本的 TiDB
+示例一：卸载 v7.5.2 版本的 TiDB
 
 {{< copyable "shell-regular" >}}
 
 ```shell
-tiup uninstall tidb:v7.5.0
+tiup uninstall tidb:v7.5.2
 ```
 
 示例二：卸载所有版本的 TiKV

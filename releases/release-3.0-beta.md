@@ -1,5 +1,6 @@
 ---
 title: TiDB 3.0 Beta Release Notes
+summary: TiDB 3.0 Beta 版本发布，新增支持 View、窗口函数、Range 分区、Hash 分区等特性。SQL 优化器做了很多改进，包括重新支持聚合消除、优化 `NOT EXISTS` 子查询、支持 Index Join 等。SQL 执行引擎优化了 Merge Join 算子、日志打印等功能。权限管理增加了对 `ANALYZE`、`USE`、`SET GLOBAL`、`SHOW PROCESSLIST` 语句的权限检查。Server 支持了 `Trace` 功能、插件框架、`unix_socket` 和 TCP 连接等功能。兼容性方面支持了 `ALLOW_INVALID_DATES` SQL mode、load data 对 CSV 文件的容错能力等。DDL 支持了快速恢复误删除的表、动态调整 ADD INDEX 的并发数等功能。Tools 方面 TiDB Lightning 大幅优化了 SQL 转 KV 的处理速度。PD 和 TiKV 也做了很多功能增加和优化。
 ---
 
 # TiDB 3.0 Beta Release Notes

@@ -15,7 +15,7 @@ summary: 了解 TiCDC 集群监控报警规则以及处理方法。
 
 * 报警规则：
 
-    (time() - ticdc_owner_checkpoint_ts / 1000) > 600
+    `ticdc_owner_checkpoint_ts_lag > 600`
 
 * 规则描述：
 
@@ -29,11 +29,25 @@ summary: 了解 TiCDC 集群监控报警规则以及处理方法。
 
 * 报警规则：
 
-    (time() - ticdc_owner_resolved_ts / 1000) > 300
+    `ticdc_owner_resolved_ts_lag > 300`
 
 * 规则描述：
 
     TiCDC 某个同步任务的 resolved ts 延迟超过 5 分钟。
+
+* 处理方法：
+
+    该告警与同步任务中断类似，可参考 [TiCDC 同步任务出现中断](/ticdc/troubleshoot-ticdc.md#ticdc-同步任务出现中断)的处理方法。
+
+### `ticdc_changefeed_failed`
+
+* 报警规则：
+
+    `(max_over_time(ticdc_owner_status[1m]) == 2) > 0`
+
+* 规则描述：
+
+    TiCDC 某个同步任务遇到无法自动恢复的错误，进入 failed 状态。
 
 * 处理方法：
 
@@ -131,7 +145,7 @@ summary: 了解 TiCDC 集群监控报警规则以及处理方法。
 
 * 报警规则：
 
-    `changes(tikv_cdc_min_resolved_ts[1m]) < 1 and ON (instance) tikv_cdc_region_resolve_status{status="resolved"} > 0`
+    `changes(tikv_cdc_min_resolved_ts[1m]) < 1 and ON (instance) tikv_cdc_region_resolve_status{status="resolved"} > 0 and ON (instance) tikv_cdc_captured_region_total > 0`
 
 * 规则描述：
 

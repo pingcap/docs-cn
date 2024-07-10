@@ -1,5 +1,6 @@
 ---
 title: TiDB RC2 Release Notes
+summary: TiDB RC2 版本发布，提升了 MySQL 兼容性、SQL 优化器、系统稳定性和性能。对于 OLTP 场景，读取性能提升 60%，写入性能提升 30%。新增权限管理功能，支持基本权限管理和大量 MySQL 内建函数。完善监控，修复 Bug 和内存泄漏问题。PD 支持 Label 对副本进行 Location 调度，基于 region 数量的快速调度，pd-ctl 支持更多功能。TiKV 支持 Async Apply 提升整体写入性能，优化单行读事务性能，支持更多下推功能，加入更多统计，修复 Bug。
 ---
 
 # TiDB RC2 Release Notes

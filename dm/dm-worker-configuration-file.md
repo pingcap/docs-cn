@@ -1,5 +1,6 @@
 ---
 title: DM-worker 配置文件介绍
+summary: 本文介绍了 DM-worker 的配置文件，包括配置文件示例和配置项说明。配置文件示例包括了 worker 的名称、日志配置、worker 的地址等内容。配置项说明包括了全局配置中的各个配置项的说明，如 name、log-level、log-file 等。同时还介绍了一些新增的配置项，如 relay-keepalive-ttl 和 relay-dir。SSL 相关的配置项也有详细说明。
 ---
 
 # DM-worker 配置文件介绍

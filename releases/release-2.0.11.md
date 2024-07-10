@@ -1,5 +1,6 @@
 ---
 title: TiDB 2.0.11 Release Notes
+summary: TiDB 2.0.11 版本发布，对系统兼容性和稳定性做出改进。修复了多个问题，包括 PD 异常处理问题、Rename 行为问题、ADMIN CHECK TABLE 误报问题、前缀索引错误问题和添加列导致 UPDATE 语句 panic 问题。TiKV 修复了两个 Region merge 相关问题。
 ---
 
 # TiDB 2.0.11 Release Notes

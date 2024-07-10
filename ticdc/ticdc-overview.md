@@ -1,5 +1,6 @@
 ---
 title: TiCDC 简介
+summary: TiCDC 是一款 TiDB 增量数据同步工具，适用于多 TiDB 集群的高可用和容灾方案，以及实时同步变更数据到异构系统。其主要特性包括数据容灾复制、双向复制、低延迟的增量数据同步能力等。TiCDC 架构包括 TiKV Server、TiCDC 和 PD，支持将数据同步到 TiDB、MySQL 数据库、Kafka 以及存储服务。目前暂不支持单独使用 RawKV 的 TiKV 集群，创建 SEQUENCE 的 DDL 操作和在同步过程中对 TiCDC 正在同步的表和库进行 BR 数据恢复和 TiDB Lightning 导入。
 ---
 
 # TiCDC 简介
@@ -59,7 +60,7 @@ TiCDC 作为 TiDB 的增量数据同步工具，通过 PD 内部的 etcd 实现�
 在以上架构图中：
 
 - TiKV Server：代表 TiDB 集群中的 TiKV 节点，当数据发生改变时 TiKV 节点会主动将发生的数据改变以变更日志（KV change logs，简称 change logs）的方式发送给 TiCDC 节点。当然，当 TiCDC 节点发现收到的 change logs 并不是连续的，也会主动发起请求，获得需要的 change logs。
-- TiCDC：代表运行了运行 TiCDC 进程的各个节点。每个节点都运行一个 TiCDC 进程，每个进程会从 TiKV 节点中拉取一个或者多个表中的数据改变，并通过 Sink 模块同步到下游系统。
+- TiCDC：代表运行了 TiCDC 进程的各个节点。每个节点都运行一个 TiCDC 进程，每个进程会从 TiKV 节点中拉取一个或者多个表中的数据改变，并通过 Sink 模块同步到下游系统。
 - PD：代表 TiDB 集群中的调度模块，负责集群数据的事实调度，这个模块通常是由 3 个 PD 节点构成的，内部通过 etcd 集群来实现选举等高可用相关的能力。 TiCDC 集群使用了 PD 集群内置的 etcd 集群来保存自己的元数据信息，例如：节点的状态信息，changefeed 配置信息等。
 
 另外，从上面的架构图中也可以看到，目前 TiCDC 支持将数据同步到 TiDB、MySQL 数据库、Kafka 以及存储服务等。
@@ -76,10 +77,63 @@ TiCDC 作为 TiDB 的增量数据同步工具，通过 PD 内部的 etcd 实现�
 
 - 在使用 TiCDC 实现容灾的场景下，为实现最终一致性，需要配置 [redo log](/ticdc/ticdc-sink-to-mysql.md#灾难场景的最终一致性复制) 并确保 redo log 写入的存储系统在上游发生灾难时可以正常读取。
 
-### 暂不支持的场景
+## TiCDC 处理数据变更的实现原理
+
+本小节主要描述 TiCDC 如何处理上游 DML 产生的数据变更。对于上游 DDL 产生的数据变更，TiCDC 会获取到完整的 DDL SQL 语句，根据下游的 Sink 类型，转换成对应的格式发送给下游，本小节不再赘述。
+
+> **注意：**
+>
+> TiCDC 处理数据变更的逻辑可能会在后续版本发生调整。
+
+MySQL binlog 直接记录了上游执行的所有 DML 操作的 SQL 语句。与 MySQL 不同，TiCDC 则实时监听上游 TiKV 各个 Region Raft Log 的信息，并根据每个事务前后数据的差异生成对应多条 SQL 语句的数据变更信息。TiCDC 只保证输出的变更事件和上游 TiDB 的变更是等价的，不保证能准确还原上游 TiDB 引起数据变更的 SQL 语句。
+
+数据变更信息会包含数据变更类型，以及变更前后的数值。事务前后数据的差异一共可能产生三种事件：
+
+1. `DELETE` 事件：对应会收到一条 `DELETE` 类型的数据变更信息，包含变更前的数据。
+
+2. `INSERT` 事件：对应会收到一条 `PUT` 类型的数据变更信息，包含变更后的数据。
+
+3. `UPDATE` 事件：对应会收到一条 `PUT` 类型的数据变更信息，包含变更前与变更后的数据。
+
+TiCDC 会根据收到的这些数据变更信息，适配各个类型的下游来生成合适格式的数据传输给下游。例如，生成 Canal-JSON、Avro 等格式的数据写入 Kafka 中，或者重新转换成 SQL 语句发送给下游的 MySQL 或者 TiDB。
+
+目前 TiCDC 将数据变更信息适配对应的协议时，对于特定的 `UPDATE` 事件，可能会将其拆成一条 `DELETE` 事件和一条 `INSERT` 事件。详见[将 Update 事件拆分为 Delete 和 Insert 事件](/ticdc/ticdc-behavior-change.md#将-update-事件拆分为-delete-和-insert-事件)。
+
+当下游是 MySQL 或者 TiDB 时，因为 TiCDC 并非直接获取原生上游执行的 DML 语句，而是重新根据数据变更信息来生成 SQL 语句，因此不能保证写入下游的 SQL 语句和上游执行的 SQL 语句完全相同，但会保证最终结果的一致性。
+
+例如上游执行了以下 SQL 语句：
+
+```sql
+Create Table t1 (A int Primary Key, B int);
+
+BEGIN;
+Insert Into t1 values(1,2);
+Insert Into t1 values(2,2);
+Insert Into t1 values(3,3);
+Commit;
+
+Update t1 set b = 4 where b = 2;
+```
+
+TiCDC 将根据数据变更信息重新生成 SQL 语句，向下游写以下两条 SQL 语句：
+
+```sql
+INSERT INTO `test.t1` (`A`,`B`) VALUES (1,2),(2,2),(3,3);
+UPDATE `test`.`t1`
+SET `A` = CASE
+        WHEN `A` = 1 THEN 1
+        WHEN `A` = 2 THEN 2
+END, `B` = CASE
+        WHEN `A` = 1 THEN 4
+        WHEN `A` = 2 THEN 4
+END
+WHERE `A` = 1 OR `A` = 2;
+```
+
+## 暂不支持的场景
 
 目前 TiCDC 暂不支持的场景如下：
 
 - 暂不支持单独使用 RawKV 的 TiKV 集群。
 - 暂不支持在 TiDB 中[创建 SEQUENCE 的 DDL 操作](/sql-statements/sql-statement-create-sequence.md)和 [SEQUENCE 函数](/sql-statements/sql-statement-create-sequence.md#sequence-函数)。在上游 TiDB 使用 SEQUENCE 时，TiCDC 将会忽略掉上游执行的 SEQUENCE DDL 操作/函数，但是使用 SEQUENCE 函数的 DML 操作可以正确地同步。
-- 暂不支持在同步的过程中对 TiCDC 正在同步的表和库进行 [BR 数据恢复](/br/backup-and-restore-overview.md) 和 [TiDB Lightning](/tidb-lightning/tidb-lightning-overview.md) 导入。详情请参考[为什么在上游使用了 TiDB Lightning 和 BR 恢复了数据之后，TiCDC 同步会出现卡顿甚至卡住](/ticdc/ticdc-faq.md#为什么在上游使用了-tidb-lightning-和-br-恢复了数据之后ticdc-同步会出现卡顿甚至卡住)。
+- 暂不支持在同步的过程中对 TiCDC 正在同步的表和库进行 [BR 数据恢复](/br/backup-and-restore-overview.md) 和 [TiDB Lightning 物理导入](/tidb-lightning/tidb-lightning-physical-import-mode.md)。详情请参考[为什么在上游使用了 TiDB Lightning 和 BR 恢复了数据之后，TiCDC 同步会出现卡顿甚至卡住](/ticdc/ticdc-faq.md#为什么在上游使用了-tidb-lightning-物理导入模式和-br-恢复了数据之后ticdc-同步会出现卡顿甚至卡住)。

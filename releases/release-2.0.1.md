@@ -1,5 +1,6 @@
 ---
 title: TiDB 2.0.1 release notes
+summary: TiDB 2.0.1 版本对 MySQL 兼容性和系统稳定性做出了改进。TiDB 新增了实时更新 `Add Index` 进度到 DDL 任务信息中的功能，添加了 Session 变量 `tidb_auto_analyze_ratio` 控制统计信息自动更新阈值的功能。修复了事务提交失败时可能未清理所有残留状态的问题，以及其他 Bug 和兼容性问题。PD 新增了 `Scatter Range` 调度和 learner 相关的 metrics，修复了多个问题。TiKV 修复了多个问题，优化了慢查询的日志，减少了 `thread_yield` 的调用次数。
 ---
 <!-- markdownlint-disable MD001 -->
 # TiDB 2.0.1 Release Notes

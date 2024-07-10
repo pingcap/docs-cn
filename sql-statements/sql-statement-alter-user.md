@@ -19,6 +19,12 @@ UserSpecList ::=
 UserSpec ::=
     Username AuthOption
 
+RequireClauseOpt ::=
+    ( 'REQUIRE' 'NONE' | 'REQUIRE' 'SSL' | 'REQUIRE' 'X509' | 'REQUIRE' RequireList )?  
+    
+RequireList ::=
+    ( "ISSUER" stringLit | "SUBJECT" stringLit | "CIPHER" stringLit | "SAN" stringLit | "TOKEN_ISSUER" stringLit )*
+
 Username ::=
     StringName ('@' StringName | singleAtIdentifier)? | 'CURRENT_USER' OptionalBraces
 

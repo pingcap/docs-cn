@@ -1,5 +1,6 @@
 ---
 title: 控制流程函数
+summary: TiDB 支持 MySQL 5.7 中的控制流程函数，包括 CASE、IF()、IFNULL() 和 NULLIF()。这些函数可以用于构建 if/else 语句和处理 NULL 值。
 ---
 
 # 控制流程函数

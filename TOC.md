@@ -104,7 +104,7 @@
   - 第三方工具支持
     - [TiDB 支持的第三方工具](/develop/dev-guide-third-party-support.md)
     - [已知的第三方工具兼容问题](/develop/dev-guide-third-party-tools-compatibility.md)
-    - [TiDB 与 ProxySQL 集成](/develop/dev-guide-proxysql-integration.md)
+    - [ProxySQL 集成指南](/develop/dev-guide-proxysql-integration.md)
 - 部署标准集群
   - [软硬件环境需求](/hardware-and-software-requirements.md)
   - [环境与系统配置检查](/check-before-deployment.md)
@@ -218,7 +218,7 @@
       - [分析慢查询](/analyze-slow-queries.md)
     - [TiDB OOM 故障排查](/troubleshoot-tidb-oom.md)
     - [热点问题处理](/troubleshoot-hot-spot-issues.md)
-    - [CPU 占用过多导致读写延迟增加](/troubleshoot-cpu-issues.md)
+    - [读写延迟增加](/troubleshoot-cpu-issues.md)
     - [写冲突与写性能下降](/troubleshoot-write-conflicts.md)
     - [磁盘 I/O 过高](/troubleshoot-high-disk-io.md)
     - [锁冲突与 TTL 超时](/troubleshoot-lock-conflicts.md)
@@ -518,10 +518,13 @@
     - [目标数据库要求](/tidb-lightning/tidb-lightning-requirements.md)
     - 数据源
       - [文件匹配规则](/tidb-lightning/tidb-lightning-data-source.md)
+      - [表库重命名](/tidb-lightning/tidb-lightning-data-source.md#表库重命名)
       - [CSV](/tidb-lightning/tidb-lightning-data-source.md#csv)
       - [SQL](/tidb-lightning/tidb-lightning-data-source.md#sql)
       - [Parquet](/tidb-lightning/tidb-lightning-data-source.md#parquet)
+      - [压缩文件](/tidb-lightning/tidb-lightning-data-source.md#压缩文件)
       - [自定义文件匹配](/tidb-lightning/tidb-lightning-data-source.md#自定义文件匹配)
+      - [从 Amazon S3 导入数据](/tidb-lightning/tidb-lightning-data-source.md#从-amazon-s3-导入数据)
     - 物理导入模式
       - [概述](/tidb-lightning/tidb-lightning-physical-import-mode.md)
       - [必要条件及限制](/tidb-lightning/tidb-lightning-physical-import-mode.md#必要条件及限制)
@@ -653,6 +656,7 @@
     - [TiDB 分布式执行框架介绍](/tidb-distributed-execution-framework.md)
     - [TiDB 全局排序](/tidb-global-sort.md)
   - [系统变量](/system-variables.md)
+  - [服务器状态变量](/status-variables.md)
   - 配置文件参数
     - [tidb-server](/tidb-configuration-file.md)
     - [tikv-server](/tikv-configuration-file.md)
@@ -723,6 +727,7 @@
       - [`ALTER PLACEMENT POLICY`](/sql-statements/sql-statement-alter-placement-policy.md)
       - [`ALTER RANGE`](/sql-statements/sql-statement-alter-range.md)
       - [`ALTER RESOURCE GROUP`](/sql-statements/sql-statement-alter-resource-group.md)
+      - [`ALTER SEQUENCE`](/sql-statements/sql-statement-alter-sequence.md)
       - [`ALTER TABLE`](/sql-statements/sql-statement-alter-table.md)
       - [`ALTER TABLE COMPACT`](/sql-statements/sql-statement-alter-table-compact.md)
       - [`ALTER USER`](/sql-statements/sql-statement-alter-user.md)
@@ -767,7 +772,7 @@
       - [`EXECUTE`](/sql-statements/sql-statement-execute.md)
       - [`EXPLAIN ANALYZE`](/sql-statements/sql-statement-explain-analyze.md)
       - [`EXPLAIN`](/sql-statements/sql-statement-explain.md)
-      - [`FLASHBACK CLUSTER TO TIMESTAMP`](/sql-statements/sql-statement-flashback-to-timestamp.md)
+      - [`FLASHBACK CLUSTER`](/sql-statements/sql-statement-flashback-cluster.md)
       - [`FLASHBACK DATABASE`](/sql-statements/sql-statement-flashback-database.md)
       - [`FLASHBACK TABLE`](/sql-statements/sql-statement-flashback-table.md)
       - [`FLUSH PRIVILEGES`](/sql-statements/sql-statement-flush-privileges.md)
@@ -883,6 +888,7 @@
       - [其它函数](/functions-and-operators/miscellaneous-functions.md)
       - [精度数学](/functions-and-operators/precision-math.md)
       - [集合运算](/functions-and-operators/set-operators.md)
+      - [序列函数](/functions-and-operators/sequence-functions.md)
       - [下推到 TiKV 的表达式列表](/functions-and-operators/expressions-pushed-down.md)
       - [TiDB 特有的函数](/functions-and-operators/tidb-functions.md)
       - [Oracle 与 TiDB 函数和语法差异对照](/oracle-functions-to-tidb.md)
@@ -902,7 +908,7 @@
     - [临时表](/temporary-tables.md)
     - [缓存表](/cached-tables.md)
     - [外键约束](/foreign-key.md)
-    - 字符集和排序
+    - 字符集和排序规则
       - [概述](/character-set-and-collation.md)
       - [GBK](/character-set-gbk.md)
     - [Placement Rules in SQL](/placement-rules-in-sql.md)
@@ -1026,6 +1032,8 @@
   - [TiDB 版本规则](/releases/versioning.md)
   - [TiDB 离线包](/binary-package.md)
   - v7.5
+    - [7.5.2](/releases/release-7.5.2.md)
+    - [7.5.1](/releases/release-7.5.1.md)
     - [7.5.0](/releases/release-7.5.0.md)
   - v7.4
     - [7.4.0-DMR](/releases/release-7.4.0.md)
@@ -1034,6 +1042,8 @@
   - v7.2
     - [7.2.0-DMR](/releases/release-7.2.0.md)
   - v7.1
+    - [7.1.5](/releases/release-7.1.5.md)
+    - [7.1.4](/releases/release-7.1.4.md)
     - [7.1.3](/releases/release-7.1.3.md)
     - [7.1.2](/releases/release-7.1.2.md)
     - [7.1.1](/releases/release-7.1.1.md)
@@ -1043,6 +1053,8 @@
   - v6.6
     - [6.6.0-DMR](/releases/release-6.6.0.md)
   - v6.5
+    - [6.5.10](/releases/release-6.5.10.md)
+    - [6.5.9](/releases/release-6.5.9.md)
     - [6.5.8](/releases/release-6.5.8.md)
     - [6.5.7](/releases/release-6.5.7.md)
     - [6.5.6](/releases/release-6.5.6.md)

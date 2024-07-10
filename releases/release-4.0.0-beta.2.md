@@ -1,5 +1,6 @@
 ---
 title: TiDB 4.0.0 Beta.2 Release Notes
+summary: TiDB 4.0.0 Beta.2 发布日期为 2020 年 3 月 18 日。该版本修复了 TiDB Binlog 在配置 `disable-dispatch`、`disable-causality` 时系统直接报错并退出的问题。新增了 TiKV 和 PD 支持将动态修改配置的结果持久化存储到硬盘的功能。另外，TiDB Binlog 新增了 TiDB 集群之间数据双向复制功能，TiDB Lightning 新增了配置 TLS 功能，新增了 TiCDC 工具，提供了进程级别的高可用能力。此外，BR 开启了增量备份、支持将备份文件存储在 AWS S3 等实验性功能。TiDB Ansible 新增了将节点信息注册到 etcd 的功能，新增支持在 ARM 平台上部署 TiDB 服务的功能。修复了 TiKV、PD 和 Tools 中的多个 bug。
 ---
 
 # TiDB 4.0.0 Beta.2 Release Notes

@@ -1,5 +1,6 @@
 ---
 title: 字符串函数
+summary: TiDB 支持大部分 MySQL 5.7 和部分 MySQL 8.0 字符串函数，以及部分 Oracle 21 函数。不支持的函数包括 LOAD_FILE()、MATCH() 和 SOUNDEX()。正则函数与 MySQL 的语法和数据类型存在一些差异，需要注意。
 ---
 
 # 字符串函数
@@ -105,9 +106,15 @@ TiDB 与 MySQL 在二进制字符串 (binary string) 数据类型上的差异：
 
 ### 其它兼容性
 
-TiDB 与 MySQL 在替换空字符串上的差异：
+- TiDB 与 MySQL 在替换空字符串上存在差异，下面以 `REGEXP_REPLACE("", "^$", "123")` 为例：
 
-下面以 `REGEXP_REPLACE("", "^$", "123")` 为例：
+    - MySQL 不会对空串进行替换，其结果为 `""`。
+    - TiDB 会对空串进行替换，其结果为 `"123"`。
 
-- MySQL 不会对空串进行替换，其结果为 `""`。
-- TiDB 会对空串进行替换，其结果为 `"123"`。
+- TiDB 与 MySQL 在捕获组的关键字上存在差异。MySQL 的捕获组关键字为`$`，而 TiDB 的捕获组关键字为`\\`。此外，TiDB 只支持编号为 `0` 到 `9` 的捕获组。
+
+    例如，以下 SQL 语句在 TiDB 中的返回结果为 `ab`。
+
+    ```sql
+    SELECT REGEXP_REPLACE('abcd','(.*)(.{2})$','\\1') AS s;
+    ```

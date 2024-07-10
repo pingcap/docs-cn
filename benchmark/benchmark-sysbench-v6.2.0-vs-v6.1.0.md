@@ -1,5 +1,6 @@
 ---
 title: TiDB Sysbench 性能对比测试报告 - v6.2.0 对比 v6.1.0
+summary: TiDB v6.2.0 和 v6.1.0 在 OLTP 场景下的 Sysbench 性能对比测试结果显示，两个版本性能基本持平。然而，v6.2.0 的 Point Select 性能下降了 3.58%，而 Update Non-index、Update Index 和 Read Write 性能基本持平或下降了不到 1.5%。
 ---
 
 # TiDB Sysbench 性能对比测试报告 - v6.2.0 对比 v6.1.0

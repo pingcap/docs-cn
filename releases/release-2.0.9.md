@@ -1,5 +1,6 @@
 ---
 title: TiDB 2.0.9 Release Notes
+summary: TiDB 2.0.9 版本发布，改进了系统兼容性和稳定性。修复了多个问题，包括统计信息、DDL JOB、Commit 操作、Limit 值、字符集支持、内建函数、主键选择率估算、Session 变量、Union 语句、统计信息清除、事务运行时间、表创建语句、取消 DDL 任务、全局环境变量等。PD 修复了 etcd 启动失败和 pd-ctl 读取 Region key 的问题。TiKV 增加了 kv_scan 接口扫描上界的限制，废弃了 max-tasks-xxx 配置，并修复了 RocksDB CompactFiles 的问题。
 ---
 
 # TiDB 2.0.9 Release Notes

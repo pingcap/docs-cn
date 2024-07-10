@@ -1,5 +1,6 @@
 ---
 title: DM-master 配置文件介绍
+summary: 本文介绍了 DM-master 的配置文件，包括示例配置和配置项说明。示例配置包括日志配置、DM-master 监听地址、集群配置等。配置项说明包括全局配置，如标识 DM-master、日志级别、日志文件、地址等。另外还包括 SSL 证书路径、证书检查 Common Name 列表和加解密密钥路径等内容。
 ---
 
 # DM-master 配置文件介绍

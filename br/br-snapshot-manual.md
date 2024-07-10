@@ -34,7 +34,7 @@ summary: 介绍备份与恢复 TiDB 集群快照的命令行。
 ```shell
 br backup full \
     --pd "${PD_IP}:2379" \
-    --backupts '2022-09-08 13:30:00' \
+    --backupts '2022-09-08 13:30:00 +08:00' \
     --storage "s3://${backup_collection_addr}/snapshot-${date}?access-key=${access-key}&secret-access-key=${secret-access-key}" \
     --ratelimit 128 \
     --log-file backupfull.log
@@ -115,6 +115,10 @@ br backup full \
 从 TiDB v7.5.0 开始，br 命令行工具引入参数 `--ignore-stats`。当指定该参数值为 `false` 时，br 命令行工具支持备份和恢复数据库的列、索引、和表级别的统计信息，因此从备份中恢复的 TiDB 数据库不再需要手动运行统计信息收集任务，也无需等待自动收集任务的完成，从而简化了数据库维护工作，并提升了查询性能。
 
 当未指定该参数值为 `false` 时，br 命令行工具默认 `--ignore-stats=true`，即在备份数据时不备份统计信息。
+
+> **警告：**
+>
+> TiDB v7.5.0 版本中，当使用 br 命令行工具恢复统计信息时，需要占用较多的内存，特别是在表数量较多的情况下。因此建议在运行 br 的节点上适当增加内存，以确保正常运行。
 
 下面是备份集群快照数据并备份表统计信息的示例，需要设置 `--ignore-stats=false`：
 

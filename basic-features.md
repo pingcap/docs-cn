@@ -52,7 +52,7 @@ summary: 了解 TiDB 的功能概览。
 | [Titan 插件](/storage-engine/titan-overview.md) |  Y  | Y | Y | Y | Y | Y | Y | Y | Y | Y |
 | [Titan Level Merge](/storage-engine/titan-configuration.md#level-merge实验功能) |  E  | E | E | E | E | E | E | E | E | E |
 | [使用 bucket 提高数据扫描并发度](/tune-region-performance.md#使用-bucket-增加并发) |  E  | E | E | E | N | N | N | N | N | N |
-| [不可见索引](/sql-statements/sql-statement-add-index.md) |  Y  | Y | Y | Y | Y | Y | Y | Y | Y | N |
+| [不可见索引](/sql-statements/sql-statement-create-index.md#不可见索引) |  Y  | Y | Y | Y | Y | Y | Y | Y | Y | N |
 | [复合主键](/constraints.md#主键约束) |  Y  | Y | Y | Y | Y | Y | Y | Y | Y | Y |
 | [`CHECK` 约束](/constraints.md#check-约束) |  Y  | N | N | N | N | N | N | N | N | N |
 | [唯一约束](/constraints.md#唯一约束) |  Y  | Y | Y | Y | Y | Y | Y | Y | Y | Y |
@@ -126,7 +126,7 @@ summary: 了解 TiDB 的功能概览。
 | 并行 DDL |  Y  | Y | Y | N | N | N | N | N | N | N |
 | [添加索引加速](/system-variables.md#tidb_ddl_enable_fast_reorg-从-v630-版本开始引入) |  Y  | Y | Y | N | N | N | N | N | N | N |
 | [元数据锁](/metadata-lock.md) |  Y  | Y | Y | N | N | N | N | N | N | N |
-| [`FLASHBACK CLUSTER TO TIMESTAMP`](/sql-statements/sql-statement-flashback-to-timestamp.md) |  Y  | Y | Y | N | N | N | N | N | N | N |
+| [`FLASHBACK CLUSTER`](/sql-statements/sql-statement-flashback-cluster.md) |  Y  | Y | Y | N | N | N | N | N | N | N |
 | [暂停](/sql-statements/sql-statement-admin-pause-ddl.md)/[恢复](/sql-statements/sql-statement-admin-resume-ddl.md) DDL | Y | N | N | N | N | N | N | N | N | N |
 
 ## 事务
@@ -169,12 +169,11 @@ summary: 了解 TiDB 的功能概览。
 | 扩展统计信息（多列） |  E   | E | E | E | E | E | E | E | E | N |
 | 统计反馈 |  N   | N | N | 已废弃 | 已废弃 | E | E | E | E | E |
 | [统计信息自动更新](/statistics.md#自动更新) |  Y   | Y | Y | Y | Y | Y | Y | Y | Y | Y |
-| [快速分析](/system-variables.md#tidb_enable_fast_analyze) | 已废弃  | E | E | E | E | E | E | E | E | E |
 | [动态裁剪](/partitioned-table.md#动态裁剪模式) |  Y   | Y | Y | Y | E | E | E | E | N | N |
 | [收集部分列的统计信息](/statistics.md#收集部分列的统计信息) |  E   | E | E | E | E | N | N | N | N | N |
 | [限制统计信息的内存使用量](/statistics.md#统计信息收集的内存限制) |  E   | E | E | E | N | N | N | N | N | N |
 | [随机采样约 10000 行数据来快速构建统计信息](/system-variables.md#tidb_enable_fast_analyze) | 已废弃 | E | E | E | E | E | E | E | E | E |
-| [锁定统计信息](/statistics.md#锁定统计信息) |  E   | E | E | N | N | N | N | N | N | N |
+| [锁定统计信息](/statistics.md#锁定统计信息) |  Y   | E | E | N | N | N | N | N | N | N |
 | [轻量级统计信息初始化](/statistics.md#统计信息的加载) |  Y   | E | N | N | N | N | N | N | N | N |
 | [显示统计信息收集的进度](/sql-statements/sql-statement-show-analyze-status.md) |  Y   | N | N | N | N | N | N | N | N | N |
 
@@ -188,7 +187,7 @@ summary: 了解 TiDB 的功能概览。
 | [证书鉴权](/certificate-authentication.md) |  Y  | Y | Y | Y | Y | Y | Y | Y | Y | Y |
 | [`caching_sha2_password` 认证](/system-variables.md#default_authentication_plugin) |  Y  | Y | Y | Y | Y | Y | Y | N | N | N |
 | [`tidb_sm3_password` 认证](/system-variables.md#default_authentication_plugin) |  Y  | Y | Y | N | N | N | N | N | N | N |
-| [`tidb_auth_token` 认证](/system-variables.md#default_authentication_plugin) |  Y  | Y | Y | N | N | N | N | N | N | N |
+| [`tidb_auth_token` 认证](/security-compatibility-with-mysql.md#tidb_auth_token) |  Y  | Y | Y | N | N | N | N | N | N | N |
 | [`authentication_ldap_sasl` 认证](/system-variables.md#default_authentication_plugin) |  Y  | Y | N | N | N | N | N | N | N | N |
 | [`authentication_ldap_simple` 认证](/system-variables.md#default_authentication_plugin) |  Y  | Y | N | N | N | N | N | N | N | N |
 | [密码管理](/password-management.md) |  Y  | Y | Y | N | N | N | N | N | N | N |

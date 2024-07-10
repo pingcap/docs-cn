@@ -1,5 +1,6 @@
 ---
 title: JSON 类型
+summary: JSON 类型存储半结构化数据，使用 Binary 格式序列化，加快查询和解析速度。JSON 字段不能创建索引，但可以对 JSON 文档中的子字段创建索引。TiDB 仅支持下推部分 JSON 函数到 TiFlash，不建议使用 BR 恢复包含 JSON 列的数据到 v6.3.0 之前的 TiDB 集群。请勿同步非标准 JSON 类型的数据。MySQL 误标记二进制类型数据为 STRING 类型，TiDB 保持正确的二进制类型。ENUM 或 SET 数据类型转换为 JSON 时，TiDB 会检查格式正确性。TiDB 支持使用 ORDER BY 对 JSON Array 或 JSON Object 进行排序。在 INSERT JSON 列时，TiDB 会将值隐式转换为 JSON。
 ---
 
 # JSON 类型

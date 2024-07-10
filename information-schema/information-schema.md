@@ -1,5 +1,6 @@
 ---
 title: Information Schema
+summary: Information Schema 是一种查看系统元数据的 ANSI 标准方法。TiDB 提供了许多自定义的 `INFORMATION_SCHEMA` 表，包括与 MySQL 兼容的表和 TiDB 中的扩展表。这些表提供了关于字符集、排序规则、列、存储引擎、索引、表大小、慢查询等信息，帮助用户进行系统监控和优化。
 ---
 
 # Information Schema

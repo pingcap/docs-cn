@@ -1,5 +1,6 @@
 ---
 title: TiDB Lightning 断点续传
+summary: TiDB Lightning 提供了“断点续传”的功能，即使 `tidb-lightning` 崩溃，在重启时仍然接着之前的进度继续工作。断点续传可通过配置启用，存储方式包括本地文件和 MySQL 数据库。在出现不可恢复的错误时，可以使用 `tidb-lightning-ctl` 工具来控制断点的处理，包括重置断点状态、清除出错状态和移除断点。
 ---
 
 # TiDB Lightning 断点续传

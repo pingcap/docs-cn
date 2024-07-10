@@ -1,5 +1,6 @@
 ---
 title: 字符串类型
+summary: TiDB 支持 MySQL 所有字符串类型，包括 CHAR、VARCHAR、BINARY、VARBINARY、BLOB、TEXT、ENUM 和 SET。CHAR 是定长字符串，长度固定为创建表时声明的长度。VARCHAR 是变长字符串，空间占用大小不得超过 65535 字节。TEXT 是文本串，最大列长为 65535 字节。TINYTEXT 最大列长度为 255。MEDIUMTEXT 最大列长度为 16777215。LONGTEXT 最大列长度为 4294967295。BINARY 存储二进制字符串。VARBINARY 存储二进制字符串。BLOB 是二进制大文件，最大列长度为 65535 字节。TINYBLOB 最大列长度为 255。MEDIUMBLOB 最大列长度为 16777215。LONGBLOB 最大列长度为 4294967295。ENUM 是枚举类型，值必须从固定集合中选取。SET 是集合类型，包含零个或多个值的字符串。
 ---
 
 # 字符串类型

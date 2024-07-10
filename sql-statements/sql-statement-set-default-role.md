@@ -9,21 +9,10 @@ summary: TiDB 数据库中 SET DEFAULT ROLE 的使用概况。
 
 ## 语法图
 
-**SetDefaultRoleStmt:**
-
-![SetDefaultRoleStmt](/media/sqlgram/SetDefaultRoleStmt.png)
-
-**SetDefaultRoleOpt:**
-
-![SetDefaultRoleOpt](/media/sqlgram/SetDefaultRoleOpt.png)
-
-**RolenameList:**
-
-![RolenameList](/media/sqlgram/RolenameList.png)
-
-**UsernameList:**
-
-![UsernameList](/media/sqlgram/UsernameList.png)
+```ebnf+diagram
+SetDefaultRoleStmt ::=
+    "SET" "DEFAULT" "ROLE" ( "NONE" | "ALL" | Rolename ("," Rolename)* ) "TO" Username ("," Username)*
+```
 
 ## 示例
 

@@ -88,13 +88,13 @@ implementation group: 'org.bouncycastle', name: 'bcpkix-jdk15on', version: '1.67
 
 ### Java ORM 框架
 
+<SimpleTab>
+<div label="Hibernate">
+
 > **注意：**
 >
 > - Hibernate 当前[不支持嵌套事务](https://stackoverflow.com/questions/37927208/nested-transaction-in-spring-app-with-jpa-postgres)。
 > - TiDB 从 v6.2.0 版本开始支持 [Savepoint](/sql-statements/sql-statement-savepoint.md)。如需在 `@Transactional` 中使用 `Propagation.NESTED` 事务传播选项，即 `@Transactional(propagation = Propagation.NESTED)`，请确认你的 TiDB 版本为 v6.2.0 或以上。
-
-<SimpleTab>
-<div label="Hibernate">
 
 支持等级：**Full**
 
@@ -106,21 +106,21 @@ implementation group: 'org.bouncycastle', name: 'bcpkix-jdk15on', version: '1.67
 <dependency>
     <groupId>org.hibernate.orm</groupId>
     <artifactId>hibernate-core</artifactId>
-    <version>6.0.0.CR2</version>
+    <version>6.2.3.Final</version>
 </dependency>
 
 <dependency>
     <groupId>mysql</groupId>
     <artifactId>mysql-connector-java</artifactId>
-    <version>5.1.49</version>
+    <version>8.0.33</version>
 </dependency>
 ```
 
 如果你使用的是 `Gradle`，请将以下内容添加到你的 `dependencies`：
 
 ```gradle
-implementation 'org.hibernate:hibernate-core:6.0.0.CR2'
-implementation 'mysql:mysql-connector-java:5.1.49'
+implementation 'org.hibernate:hibernate-core:6.2.3.Final'
+implementation 'mysql:mysql-connector-java:8.0.33'
 ```
 
 - 有关原生 Java 使用 Hibernate 进行 TiDB 应用程序构建的例子，可参阅 [TiDB 和 Hibernate 的简单 CRUD 应用程序](/develop/dev-guide-sample-application-java-hibernate.md)。
@@ -142,21 +142,21 @@ implementation 'mysql:mysql-connector-java:5.1.49'
 <dependency>
     <groupId>org.mybatis</groupId>
     <artifactId>mybatis</artifactId>
-    <version>3.5.9</version>
+    <version>3.5.13</version>
 </dependency>
 
 <dependency>
     <groupId>mysql</groupId>
     <artifactId>mysql-connector-java</artifactId>
-    <version>5.1.49</version>
+    <version>8.0.33</version>
 </dependency>
 ```
 
 如果你使用的是 Gradle，请将以下内容添加到你的 `dependencies`：
 
 ```gradle
-implementation 'org.mybatis:mybatis:3.5.9'
-implementation 'mysql:mysql-connector-java:5.1.49'
+implementation 'org.mybatis:mybatis:3.5.13'
+implementation 'mysql:mysql-connector-java:8.0.33'
 ```
 
 使用 MyBatis 进行 TiDB 应用程序构建的例子，可参阅 [TiDB 和 MyBatis 的简单 CRUD 应用程序](/develop/dev-guide-sample-application-java-mybatis.md)。

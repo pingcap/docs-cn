@@ -9,17 +9,14 @@ summary: TiDB 数据库中 SHOW [GLOBAL|SESSION] VARIABLES 的使用概况。
 
 ## 语法图
 
-**ShowStmt:**
+```ebnf+diagram
+ShowVariablesStmt ::=
+    "SHOW" ("GLOBAL" | "SESSION")? VARIABLES ShowLikeOrWhere?
 
-![ShowStmt](/media/sqlgram/ShowStmt.png)
-
-**ShowTargetFilterable:**
-
-![ShowTargetFilterable](/media/sqlgram/ShowTargetFilterable.png)
-
-**GlobalScope:**
-
-![GlobalScope](/media/sqlgram/GlobalScope.png)
+ShowLikeOrWhere ::=
+    "LIKE" SimpleExpr
+|   "WHERE" Expression
+```
 
 ## 示例
 
@@ -150,13 +147,45 @@ SHOW GLOBAL VARIABLES LIKE 'tidb%';
 SHOW GLOBAL VARIABLES LIKE 'time_zone%';
 ```
 
-```
+```sql
 +---------------+--------+
 | Variable_name | Value  |
 +---------------+--------+
 | time_zone     | SYSTEM |
 +---------------+--------+
 1 row in set (0.00 sec)
+```
+
+```sql
+SHOW VARIABLES WHERE Variable_name="tidb_window_concurrency";
+```
+
+```sql
++-------------------------+-------+
+| Variable_name           | Value |
++-------------------------+-------+
+| tidb_window_concurrency | -1    |
++-------------------------+-------+
+1 row in set (0.00 sec)
+```
+
+```sql
+SHOW VARIABLES WHERE Value=300;
+```
+
+```sql
++--------------------------------+-------+
+| Variable_name                  | Value |
++--------------------------------+-------+
+| ddl_slow_threshold             | 300   |
+| delayed_insert_timeout         | 300   |
+| innodb_purge_batch_size        | 300   |
+| key_cache_age_threshold        | 300   |
+| slave_checkpoint_period        | 300   |
+| tidb_slow_log_threshold        | 300   |
+| tidb_wait_split_region_timeout | 300   |
++--------------------------------+-------+
+7 rows in set (0.00 sec)
 ```
 
 ## MySQL 兼容性

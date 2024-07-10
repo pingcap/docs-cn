@@ -1,5 +1,6 @@
 ---
 title: 通过拓扑 label 进行副本调度
+summary: TiDB v5.3.0 引入了通过拓扑 label 进行副本调度的功能。为了提升集群的高可用性和数据容灾能力，推荐让 TiKV 节点在物理层面上尽可能分散。通过设置 TiKV 和 TiFlash 的 labels，可以标识它们的地理位置。同时，需要配置 PD 的 location-labels 和 isolation-level 来使 PD 理解 TiKV 节点拓扑并加强拓扑隔离要求。PD 在副本调度时会保证同一份数据的不同副本尽可能分散，以提高集群容灾能力。
 ---
 
 # 通过拓扑 label 进行副本调度
@@ -12,141 +13,60 @@ title: 通过拓扑 label 进行副本调度
 
 要让这个机制生效，需要在部署时进行合理配置，把集群的拓扑信息（特别是 TiKV 的位置）上报给 PD。阅读本章前，请先确保阅读 [TiUP 部署方案](/production-deployment-using-tiup.md)。
 
-## 根据集群拓扑配置 labels
+## 配置 TiKV、TiFlash 和 TiDB 的 labels
 
-### 设置 TiKV 和 TiFlash 的 `labels`
-
-TiKV 和 TiFlash 支持在命令行参数或者配置文件中以键值对的形式绑定一些属性，我们把这些属性叫做标签 (label)。TiKV 和 TiFlash 在启动后，会将自身的标签上报给 PD，因此可以使用标签来标识 TiKV 和 TiFlash 节点的地理位置。
-
-比如集群的拓扑结构分成四层：可用区 (zone) -> 数据中心 (dc) -> 机架 (rack) -> 主机 (host)，就可以使用这 4 个标签来设置 TiKV 和 TiFlash 的位置。
-
-使用命令行参数的方式启动一个 TiKV 实例：
-
-{{< copyable "" >}}
-
-```
-tikv-server --labels zone=<zone>,dc=<dc>,rack=<rack>,host=<host>
-```
-
-使用配置文件的方式：
-
-{{< copyable "" >}}
-
-```toml
-[server]
-[server.labels]
-zone = "<zone>"
-dc = "<dc>"
-rack = "<rack>"
-host = "<host>"
-```
-
-TiFlash 支持通过 tiflash-learner.toml （tiflash-proxy 的配置文件）的方式设置 labels：
-
-{{< copyable "" >}}
-
-```toml
-[server]
-[server.labels]
-zone = "<zone>"
-dc = "<dc>"
-rack = "<rack>"
-host = "<host>"
-```
-
-### 设置 TiDB 的 `labels`（可选）
-
-如果需要使用 [Follower Read](/follower-read.md) 的优先读同一区域副本的功能，需要为 TiDB 节点配置相关的 `labels`。
-
-TiDB 支持使用配置文件的方式设置 `labels`：
-
-{{< copyable "" >}}
-
-```
-[labels]
-zone = "<zone>"
-dc = "<dc>"
-rack = "<rack>"
-host = "<host>"
-```
-
-> **注意：**
->
-> 目前，TiDB 依赖 `zone` 标签匹配选择同一区域的副本。如果需要使用此功能，需要在 PD [`location-labels` 配置](#设置-pd-的-isolation-level-配置)中包含 `zone`，并在 TiDB、TiKV 和 TiFlash 设置的 `labels` 中包含 `zone`。关于如何设置 TiKV 和 TiFlash 的 `labels`，可参考[设置 TiKV 和 TiFlash 的 `labels`](#设置-tikv-和-tiflash-的-labels)。
-
-### 设置 PD 的 `location-labels` 配置
-
-根据前面的描述，标签可以是用来描述 TiKV 属性的任意键值对，但 PD 无从得知哪些标签是用来标识地理位置的，而且也无从得知这些标签的层次关系。因此，PD 也需要一些配置来使得 PD 理解 TiKV 节点拓扑。
-
-PD 上的配置叫做 `location-labels`，是一个字符串数组。该配置的每一项与 TiKV `labels` 的 key 是对应的，而且其中每个 key 的顺序代表不同标签的级别关系（从左到右，隔离级别依次递减）。
-
-`location-labels` 没有默认值，你可以根据具体需求来设置该值，包括 `zone`、`rack`、`host` 等等。同时，`location-labels` 对标签级别的数量也**没有**限制（即不限定于 3 个），只要其级别与 TiKV 服务器的标签匹配，则可以配置成功。
-
-> **注意：**
->
-> - 必须同时配置 PD 的 `location-labels` 和 TiKV 的 `labels` 参数，否则 PD 不会根据拓扑结构进行调度。
-> - 如果你使用 Placement Rules in SQL，只需要配置 TiKV 的 `labels` 即可。Placement Rules in SQL 目前不兼容 PD `location-labels` 设置，会忽略该设置。不建议 `location-labels` 与 Placement Rules in SQL 混用，否则可能产生非预期的结果。
-
-你可以根据集群状态来选择不同的配置方式：
-
-- 在集群初始化之前，可以通过 PD 的配置文件进行配置：
-
-    {{< copyable "" >}}
-
-    ```toml
-    [replication]
-    location-labels = ["zone", "rack", "host"]
-    ```
-
-- 如果需要在 PD 集群初始化完成后进行配置，则需要使用 pd-ctl 工具进行在线更改：
-
-    {{< copyable "shell-regular" >}}
-
-    ```bash
-    pd-ctl config set location-labels zone,rack,host
-    ```
-
-### 设置 PD 的 `isolation-level` 配置
-
-在配置了 `location-labels` 的前提下，用户可以还通过 `isolation-level` 配置来进一步加强对 TiKV 集群的拓扑隔离要求。假设按照上面的说明通过 `location-labels` 将集群的拓扑结构分成三层：可用区 (zone) -> 机架 (rack) -> 主机 (host)，并对 `isolation-level` 作如下配置：
-
-{{< copyable "" >}}
-
-```toml
-[replication]
-isolation-level = "zone"
-```
-
-当 PD 集群初始化完成后，需要使用 pd-ctl 工具进行在线更改：
-
-{{< copyable "shell-regular" >}}
-
-```bash
-pd-ctl config set isolation-level zone
-```
-
-其中，`isolation-level` 配置是一个字符串，需要与 `location-labels` 的其中一个 key 对应。该参数限制 TiKV 拓扑集群的最小且强制隔离级别要求。
-
-> **注意：**
->
-> `isolation-level` 默认情况下为空，即不进行强制隔离级别限制，若要对其进行设置，必须先配置 PD 的 `location-labels` 参数，同时保证 `isolation-level` 的值一定为 `location-labels` 中的一个。
+你可以根据集群拓扑配置 TiKV、TiFlash 和 TiDB 的 labels。
 
 ### 使用 TiUP 进行配置（推荐）
 
-如果使用 TiUP 部署集群，可以在[初始化配置文件](/production-deployment-using-tiup.md#第-3-步初始化集群拓扑文件)中统一进行 location 相关配置。TiUP 会负责在部署时生成对应的 TiKV、PD 和 TiFlash 配置文件。
+如果使用 TiUP 部署集群，可以在[初始化配置文件](/production-deployment-using-tiup.md#第-3-步初始化集群拓扑文件)中统一进行 location 相关配置。TiUP 会负责在部署时生成对应的 TiDB、TiKV、PD 和 TiFlash 配置文件。
 
-下面的例子定义了 `zone` 和 `host` 两层拓扑结构。集群的 TiKV 和 TiFlash 分布在三个 zone，z1、z2 和 z3。
+下面的例子定义了 `zone` 和 `host` 两层拓扑结构。集群的 TiDB、TiKV 和 TiFlash 分布在三个 zone，z1、z2 和 z3。
 
+- 每个 zone 内有两台主机部署 TiDB 实例，TiDB 实例均为独占机器部署。
 - 每个 zone 内有两台主机部署 TiKV 实例，z1 每台主机同时部署两个 TiKV 实例，z2 和 z3 每台主机分别独立部署一个 TiKV 实例。
 - 每个 zone 内有两台主机部署 TiFlash 实例，TiFlash 实例均为独占机器部署。
 
-以下例子中 `tikv-host-machine-n` 代表第 n 个 TiKV 节点的 IP 地址，`tiflash-host-machine-n` 代表第 n 个 TiFlash 节点的 IP 地址。
+以下例子中 `tidb-host-machine-n` 代表第 n 个 TiDB 节点的 IP 地址，`tikv-host-machine-n` 代表第 n 个 TiKV 节点的 IP 地址，`tiflash-host-machine-n` 代表第 n 个 TiFlash 节点的 IP 地址。
 
 ```
 server_configs:
   pd:
     replication.location-labels: ["zone", "host"]
-
+tidb_servers:
+# z1
+  - host: tidb-host-machine-1
+    config:
+      labels:
+        zone: z1
+        host: tidb-host-machine-1
+  - host: tidb-host-machine-2
+    config:
+      labels:
+        zone: z1
+        host: tidb-host-machine-2
+# z2
+  - host: tidb-host-machine-3
+    config:
+      labels:
+        zone: z2
+        host: tidb-host-machine-3
+  - host: tikv-host-machine-4
+    config:
+      labels:
+        zone: z2
+        host: tidb-host-machine-4
+# z3
+  - host: tidb-host-machine-5
+    config:
+      labels:
+        zone: z3
+        host: tidb-host-machine-5
+  - host: tidb-host-machine-6
+    config:
+      labels:
+        zone: z3
+        host: tidb-host-machine-6
 tikv_servers:
 # z1
   # machine-1 on z1
@@ -239,6 +159,125 @@ tiflash_servers:
 > **注意：**
 >
 > 如果你未在配置文件中配置 `replication.location-labels` 项，使用该拓扑配置文件部署集群时可能会报错。建议在部署集群前，确认 `replication.location-labels` 已配置。
+
+### 使用命令行或配置文件进行配置
+
+#### 设置 TiKV 和 TiFlash 的 `labels`
+
+TiKV 和 TiFlash 支持在命令行参数或者配置文件中以键值对的形式绑定一些属性，我们把这些属性叫做标签 (label)。TiKV 和 TiFlash 在启动后，会将自身的标签上报给 PD，因此可以使用标签来标识 TiKV 和 TiFlash 节点的地理位置。
+
+比如集群的拓扑结构分成四层：可用区 (zone) -> 数据中心 (dc) -> 机架 (rack) -> 主机 (host)，就可以使用这 4 个标签来设置 TiKV 和 TiFlash 的位置。
+
+使用命令行参数的方式启动一个 TiKV 实例：
+
+{{< copyable "" >}}
+
+```
+tikv-server --labels zone=<zone>,dc=<dc>,rack=<rack>,host=<host>
+```
+
+使用配置文件的方式：
+
+{{< copyable "" >}}
+
+```toml
+[server]
+[server.labels]
+zone = "<zone>"
+dc = "<dc>"
+rack = "<rack>"
+host = "<host>"
+```
+
+TiFlash 支持通过 tiflash-learner.toml （tiflash-proxy 的配置文件）的方式设置 labels：
+
+{{< copyable "" >}}
+
+```toml
+[server]
+[server.labels]
+zone = "<zone>"
+dc = "<dc>"
+rack = "<rack>"
+host = "<host>"
+```
+
+#### 设置 TiDB 的 `labels`（可选）
+
+如果需要使用 [Follower Read](/follower-read.md) 的优先读同一区域副本的功能，需要为 TiDB 节点配置相关的 `labels`。
+
+TiDB 支持使用配置文件的方式设置 `labels`：
+
+{{< copyable "" >}}
+
+```
+[labels]
+zone = "<zone>"
+dc = "<dc>"
+rack = "<rack>"
+host = "<host>"
+```
+
+> **注意：**
+>
+> 目前，TiDB 依赖 `zone` 标签匹配选择同一区域的副本。如果需要使用此功能，需要在 PD [`location-labels` 配置](#设置-pd-的-isolation-level-配置)中包含 `zone`，并在 TiDB、TiKV 和 TiFlash 设置的 `labels` 中包含 `zone`。关于如何设置 TiKV 和 TiFlash 的 `labels`，可参考[设置 TiKV 和 TiFlash 的 `labels`](#设置-tikv-和-tiflash-的-labels)。
+
+## 设置 PD 的 `location-labels` 配置
+
+根据前面的描述，标签可以是用来描述 TiKV 属性的任意键值对，但 PD 无从得知哪些标签是用来标识地理位置的，而且也无从得知这些标签的层次关系。因此，PD 也需要一些配置来使得 PD 理解 TiKV 节点拓扑。
+
+PD 上的配置叫做 `location-labels`，是一个字符串数组。该配置的每一项与 TiKV `labels` 的 key 是对应的，而且其中每个 key 的顺序代表不同标签的级别关系（从左到右，隔离级别依次递减）。
+
+`location-labels` 没有默认值，你可以根据具体需求来设置该值，包括 `zone`、`rack`、`host` 等等。同时，`location-labels` 对标签级别的数量也**没有**限制（即不限定于 3 个），只要其级别与 TiKV 服务器的标签匹配，则可以配置成功。
+
+> **注意：**
+>
+> - 必须同时配置 PD 的 `location-labels` 和 TiKV 的 `labels` 参数，否则 PD 不会根据拓扑结构进行调度。
+> - 如果你使用 Placement Rules in SQL，只需要配置 TiKV 的 `labels` 即可。Placement Rules in SQL 目前不兼容 PD `location-labels` 设置，会忽略该设置。不建议 `location-labels` 与 Placement Rules in SQL 混用，否则可能产生非预期的结果。
+
+你可以根据集群状态来选择不同的配置方式：
+
+- 在集群初始化之前，可以通过 PD 的配置文件进行配置：
+
+    {{< copyable "" >}}
+
+    ```toml
+    [replication]
+    location-labels = ["zone", "rack", "host"]
+    ```
+
+- 如果需要在 PD 集群初始化完成后进行配置，则需要使用 pd-ctl 工具进行在线更改：
+
+    {{< copyable "shell-regular" >}}
+
+    ```bash
+    pd-ctl config set location-labels zone,rack,host
+    ```
+
+## 设置 PD 的 `isolation-level` 配置
+
+在配置了 `location-labels` 的前提下，用户可以还通过 `isolation-level` 配置来进一步加强对 TiKV 集群的拓扑隔离要求。假设按照上面的说明通过 `location-labels` 将集群的拓扑结构分成三层：可用区 (zone) -> 机架 (rack) -> 主机 (host)，并对 `isolation-level` 作如下配置：
+
+{{< copyable "" >}}
+
+```toml
+[replication]
+isolation-level = "zone"
+```
+
+当 PD 集群初始化完成后，需要使用 pd-ctl 工具进行在线更改：
+
+{{< copyable "shell-regular" >}}
+
+```bash
+pd-ctl config set isolation-level zone
+```
+
+其中，`isolation-level` 配置是一个字符串，需要与 `location-labels` 的其中一个 key 对应。该参数限制 TiKV 拓扑集群的最小且强制隔离级别要求。
+
+> **注意：**
+>
+> `isolation-level` 默认情况下为空，即不进行强制隔离级别限制，若要对其进行设置，必须先配置 PD 的 `location-labels` 参数，同时保证 `isolation-level` 的值一定为 `location-labels` 中的一个。
 
 ## 基于拓扑 label 的 PD 调度策略
 

@@ -5,68 +5,74 @@ summary: TiDB 数据库中 SHOW [GLOBAL|SESSION] STATUS 的使用概况。
 
 # SHOW [GLOBAL|SESSION] STATUS
 
-`SHOW [GLOBAL|SESSION] STATUS` 语句用于提供 MySQL 兼容性，对 TiDB 没有作用。因为 TiDB 使用 Prometheus 和 Grafana 而非 `SHOW STATUS` 来进行集中度量收集。
+`SHOW [GLOBAL|SESSION] STATUS` 语句用于提供 MySQL 兼容性。对于大部分监控指标，TiDB 使用 Prometheus 和 Grafana 来集中收集，而不是使用 `SHOW STATUS`。
+
+该语句输出中各变量的详细介绍，请参考[服务器状态变量](/status-variables.md)。
 
 ## 语法图
 
-**ShowStmt:**
+```ebnf+diagram
+ShowStatusStmt ::=
+    'SHOW' Scope? 'STATUS' ShowLikeOrWhere?
 
-![ShowStmt](/media/sqlgram/ShowStmt.png)
+Scope ::=
+    ( 'GLOBAL' | 'SESSION' )
 
-**ShowTargetFilterable:**
-
-![ShowTargetFilterable](/media/sqlgram/ShowTargetFilterable.png)
-
-**GlobalScope:**
-
-![GlobalScope](/media/sqlgram/GlobalScope.png)
+ShowLikeOrWhere ::=
+    "LIKE" SimpleExpr
+|   "WHERE" Expression
+```
 
 ## 示例
 
-{{< copyable "sql" >}}
+```sql
+SHOW SESSION STATUS;
+```
 
 ```sql
-show status;
++-------------------------------+--------------------------------------+
+| Variable_name                 | Value                                |
++-------------------------------+--------------------------------------+
+| Ssl_cipher                    |                                      |
+| Ssl_cipher_list               |                                      |
+| Ssl_server_not_after          |                                      |
+| Ssl_server_not_before         |                                      |
+| Ssl_verify_mode               | 0                                    |
+| Ssl_version                   |                                      |
+| Uptime                        | 1409                                 |
+| ddl_schema_version            | 116                                  |
+| last_plan_binding_update_time | 0000-00-00 00:00:00                  |
+| server_id                     | 61160e73-ab80-40ff-8f33-27d55d475fd1 |
++-------------------------------+--------------------------------------+
+10 rows in set (0.00 sec)
 ```
-
-```
-+--------------------+--------------------------------------+
-| Variable_name      | Value                                |
-+--------------------+--------------------------------------+
-| Ssl_cipher_list    |                                      |
-| server_id          | 93e2e07d-6bb4-4a1b-90b7-e035fae154fe |
-| ddl_schema_version | 141                                  |
-| Ssl_verify_mode    | 0                                    |
-| Ssl_version        |                                      |
-| Ssl_cipher         |                                      |
-+--------------------+--------------------------------------+
-6 rows in set (0.01 sec)
-```
-
-{{< copyable "sql" >}}
 
 ```sql
-show global status;
+SHOW GLOBAL STATUS;
 ```
 
-```
-+--------------------+--------------------------------------+
-| Variable_name      | Value                                |
-+--------------------+--------------------------------------+
-| Ssl_cipher         |                                      |
-| Ssl_cipher_list    |                                      |
-| Ssl_verify_mode    | 0                                    |
-| Ssl_version        |                                      |
-| server_id          | 93e2e07d-6bb4-4a1b-90b7-e035fae154fe |
-| ddl_schema_version | 141                                  |
-+--------------------+--------------------------------------+
-6 rows in set (0.00 sec)
+```sql
++-----------------------+--------------------------------------+
+| Variable_name         | Value                                |
++-----------------------+--------------------------------------+
+| Ssl_cipher            |                                      |
+| Ssl_cipher_list       |                                      |
+| Ssl_server_not_after  |                                      |
+| Ssl_server_not_before |                                      |
+| Ssl_verify_mode       | 0                                    |
+| Ssl_version           |                                      |
+| Uptime                | 1413                                 |
+| ddl_schema_version    | 116                                  |
+| server_id             | 61160e73-ab80-40ff-8f33-27d55d475fd1 |
++-----------------------+--------------------------------------+
+9 rows in set (0.00 sec)
 ```
 
 ## MySQL 兼容性
 
-`SHOW [GLOBAL|SESSION] STATUS` 语句仅用于提供 MySQL 兼容性。
+`SHOW [GLOBAL|SESSION] STATUS` 语句与 MySQL 兼容。
 
 ## 另请参阅
 
 * [FLUSH STATUS](/sql-statements/sql-statement-flush-status.md)
+* [服务器状态变量](/status-variables.md)

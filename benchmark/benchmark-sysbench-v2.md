@@ -1,5 +1,6 @@
 ---
 title: TiDB Sysbench 性能对比测试报告 - v2.0.0 对比 v1.0.0
+summary: TiDB 2.0 版本和 1.0 版本在 OLTP 场景下进行性能对比测试。测试结果显示，GA 2.0 在 Select 查询性能上提升了约 10%，在 OLTP 性能上基本一致，而在 Insert 性能上略有提升。
 ---
 
 # TiDB Sysbench 性能对比测试报告 - v2.0.0 对比 v1.0.0

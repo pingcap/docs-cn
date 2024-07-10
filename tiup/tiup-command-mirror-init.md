@@ -1,5 +1,6 @@
 ---
 title: tiup mirror init
+summary: tiup mirror init 命令用于初始化一个空的镜像。初始化的镜像不包含任何组件和组件管理员，仅生成一些文件。语法为 tiup mirror init <path> [flags]，其中 <path> 为本地目录路径，可以为相对路径。选项包括 -k, --key-dir（string，默认 {path}/keys）。输出包括若成功则无输出，若 <path> 不为空则输出错误信息，若 <path> 不是目录则输出错误信息。
 ---
 
 # tiup mirror init

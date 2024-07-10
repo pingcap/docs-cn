@@ -16,7 +16,7 @@ cdc cli changefeed create --server=http://10.0.10.25:8300 --sink-uri="mysql://ro
 ```shell
 Create changefeed successfully!
 ID: simple-replication-task
-Info: {"upstream_id":7178706266519722477,"namespace":"default","id":"simple-replication-task","sink_uri":"mysql://root:xxxxx@127.0.0.1:4000/?time-zone=","create_time":"2023-11-28T15:05:46.679218+08:00","start_ts":438156275634929669,"engine":"unified","config":{"case_sensitive":false,"enable_old_value":true,"force_replicate":false,"ignore_ineligible_table":false,"check_gc_safe_point":true,"enable_sync_point":true,"bdr_mode":false,"sync_point_interval":30000000000,"sync_point_retention":3600000000000,"filter":{"rules":["test.*"],"event_filters":null},"mounter":{"worker_num":16},"sink":{"protocol":"","schema_registry":"","csv":{"delimiter":",","quote":"\"","null":"\\N","include_commit_ts":false},"column_selectors":null,"transaction_atomicity":"none","encoder_concurrency":16,"terminator":"\r\n","date_separator":"none","enable_partition_separator":false},"consistent":{"level":"none","max_log_size":64,"flush_interval":2000,"storage":""}},"state":"normal","creator_version":"v7.5.0"}
+Info: {"upstream_id":7178706266519722477,"namespace":"default","id":"simple-replication-task","sink_uri":"mysql://root:xxxxx@127.0.0.1:4000/?time-zone=","create_time":"2024-06-06T15:05:46.679218+08:00","start_ts":438156275634929669,"engine":"unified","config":{"case_sensitive":false,"enable_old_value":true,"force_replicate":false,"ignore_ineligible_table":false,"check_gc_safe_point":true,"enable_sync_point":true,"bdr_mode":false,"sync_point_interval":30000000000,"sync_point_retention":3600000000000,"filter":{"rules":["test.*"],"event_filters":null},"mounter":{"worker_num":16},"sink":{"protocol":"","schema_registry":"","csv":{"delimiter":",","quote":"\"","null":"\\N","include_commit_ts":false},"column_selectors":null,"transaction_atomicity":"none","encoder_concurrency":16,"terminator":"\r\n","date_separator":"none","enable_partition_separator":false},"consistent":{"level":"none","max_log_size":64,"flush_interval":2000,"storage":""}},"state":"normal","creator_version":"v7.5.2"}
 ```
 
 - `--changefeed-id`：同步任务的 ID，格式需要符合正则表达式 `^[a-zA-Z0-9]+(\-[a-zA-Z0-9]+)*$`。如果不指定该 ID，TiCDC 会自动生成一个 UUID（version 4 格式）作为 ID。
@@ -65,6 +65,16 @@ case-sensitive = false
 # 从 v6.5.6、v7.1.3、v7.5.0 起引入，用于设置解析 DDL 时使用的 SQL 模式，多个模式之间用逗号分隔
 # 默认值和 TiDB 的默认 SQL 模式一致
 # sql-mode = "ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION"
+
+# 默认值为 false，表示不处于 BDR 模式。
+# 详情请参考：https://docs.pingcap.com/zh/tidb/stable/ticdc-bidirectional-replication#ticdc-双向复制
+# bdr-mode = false
+
+# changefeed 发生内部错误或异常时允许自动重试的时间，默认值为 30 分钟。
+# 若 changefeed 发生内部错误或异常，且持续时间超过该参数设置的时间，changefeed 会进入 Failed 状态。
+# 当 changefeed 处于 failed 状态时，需要手动重启 changefeed 才能恢复。
+# 配置格式为 "h m s"，例如 "1h30m30s"。
+changefeed-error-stuck-duration = "30m"
 
 [mounter]
 # mounter 解码 KV 数据的线程数，默认值为 16
@@ -121,7 +131,7 @@ enable-table-across-nodes = false
 # 注意：当下游 MQ 为 Pulsar 时，如果 partition 的路由规则未指定为 'ts', 'index-value', 'table', 'default' 中的任意一个，那么将会使用你设置的字符串作为每一条 Pulsar message 的 key 进行路由。例如，如果你指定的路由规则为 'code' 字符串，那么符合该 matcher 的所有 Pulsar message 都将会以 'code' 作为 key 进行路由。
 # dispatchers = [
 #    {matcher = ['test1.*', 'test2.*'], topic = "Topic 表达式 1", partition = "index-value"},
-#    {matcher = ['test3.*', 'test4.*'], topic = "Topic 表达式 2", partition = "index-value", index-name="index1"},
+#    {matcher = ['test3.*', 'test4.*'], topic = "Topic 表达式 2", partition = "index-value", index = "index1"},
 #    {matcher = ['test1.*', 'test5.*'], topic = "Topic 表达式 3", partition = "table"},
 #    {matcher = ['test6.*'], partition = "columns", columns = "['a', 'b']"}
 #    {matcher = ['test7.*'], partition = "ts"}
@@ -161,7 +171,7 @@ delete-only-output-handle-key-columns = false
 
 # 是否开启 Kafka Sink V2。Kafka Sink V2 内部使用 kafka-go 实现。
 # 默认值为 false。
-# 注意：该参数只有当下游为消息队列时，才会生效。
+# 注意：该参数是一个实验特性，并且只有当下游为消息队列时才会生效。
 # enable-kafka-sink-v2 = false
 
 # 是否只向下游同步有内容更新的列。从 v7.1.0 开始支持。
@@ -195,6 +205,10 @@ enable-partition-separator = true
 # 二进制类型数据的编码方式，可选 'base64' 或 'hex'。默认值为 'base64'。
 # binary-encoding-method = 'base64'
 
+[sink.open]
+# 是否输出行数据更改前的值。默认值为 true。关闭后，Update 事件不会输出 "p" 字段的数据。从 v7.5.2 开始支持。
+# output-old-value = true
+
 # consistent 中的字段用于配置 Changefeed 的数据一致性。详细的信息，请参考 <https://docs.pingcap.com/tidb/stable/ticdc-sink-to-mysql#eventually-consistent-replication-in-disaster-scenarios>。
 # 注意：一致性相关参数只有当下游为数据库并且开启 redo log 功能时，才会生效。
 [consistent]
@@ -207,8 +221,16 @@ max-log-size = 64
 flush-interval = 2000
 # redo log 使用存储服务的 URI。默认值为空。
 storage = ""
-# 是否将 redo log 存储到文件中。默认值为 false。
+# 是否将 redo log 存储到本地文件中。默认值为 false。
 use-file-backend = false
+# 控制 redo 模块中编解码 worker 的数量，默认值为 16。
+encoding-worker-num = 16
+# 控制 redo 模块中上传文件 worker 的数量，默认值为 8。
+flush-worker-num = 8
+# redo log 文件的压缩行为，可选值为 "" 和 "lz4"。默认值为 ""，表示不进行压缩。
+compression = ""
+# redo log 上传单个文件的并发数，默认值为 1，表示禁用并发。
+flush-concurrency = 1
 
 [integrity]
 # 是否开启单行数据的 Checksum 校验功能，默认值为 "none"，即不开启。可选值为 "none" 和 "correctness"。
@@ -283,4 +305,18 @@ batching-max-messages=1000
 batching-max-publish-delay=10
 # Pulsar Producer 发送消息的超时时间，默认 30 秒。
 send-timeout=30
+
+[sink.cloud-storage-config]
+# 向下游存储服务保存数据变更记录的并发度，默认值为 16。
+worker-count = 16
+# 向下游存储服务保存数据变更记录的间隔，默认值为 "2s"。
+flush-interval = "2s"
+# 单个数据变更文件的字节数超过 `file-size` 时将其保存至存储服务中，默认值为 67108864，即 64 MiB。
+file-size = 67108864
+# 文件保留的时长，仅在 date-separator 配置为 day 时生效，默认值为 0，表示禁用文件清理。假设 `file-expiration-days = 1` 且 `file-cleanup-cron-spec = "0 0 0 * * *"`，TiCDC 将在每天 00:00:00 时刻清理已保存超过 24 小时的文件。例如，2023/12/02 00:00:00 将清理 2023/12/01 之前（注意：不包括 2023/12/01）的文件。
+file-expiration-days = 0
+# 定时清理任务的运行周期，与 crontab 配置兼容，格式为 `<Second> <Minute> <Hour> <Day of the month> <Month> <Day of the week (Optional)>`，默认值为 "0 0 2 * * *"，表示每天凌晨两点执行清理任务
+file-cleanup-cron-spec = "0 0 2 * * *"
+# 上传单个文件的并发数，默认值为 1，表示禁用并发。
+flush-concurrency = 1
 ```

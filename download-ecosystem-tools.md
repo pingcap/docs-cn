@@ -1,5 +1,6 @@
 ---
 title: TiDB 工具下载
+summary: 本文介绍如何下载 TiDB 工具包。TiDB 工具包包含常用工具如 Dumpling、TiDB Lightning、BR 等。如果部署环境能访问互联网，可直接通过 TiUP 命令一键部署所需的 TiDB 工具。操作系统需为 Linux，架构为 amd64 或 arm64。下载步骤包括访问 TiDB 社区版页面，找到 TiDB-community-toolkit 软件包并点击立即下载。注意，点击立即下载后默认下载当前 TiDB 的最新发布版本。根据要使用的工具选择安装对应的离线包。
 ---
 
 # TiDB 工具下载

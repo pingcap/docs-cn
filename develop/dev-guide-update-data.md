@@ -109,7 +109,7 @@ INSERT INTO {table} ({columns}) VALUES ({values})
 
 ### `INSERT ON DUPLICATE KEY UPDATE` 最佳实践
 
-- 在仅有一个唯一键的表上使用 `INSERT ON DUPLICATE KEY UPDATE`。此语句在检测到任何 **_唯一键_** (包括主键) 冲突时，将更新数据。在不止匹配到一行冲突时，将只会一行数据。因此，除非能保证仅有一行冲突，否则不建议在有多个唯一键的表中使用 `INSERT ON DUPLICATE KEY UPDATE` 语句。
+- 在仅有一个唯一键的表上使用 `INSERT ON DUPLICATE KEY UPDATE`。此语句在检测到任何 **_唯一键_** (包括主键) 冲突时，将更新数据。在不止匹配到一行冲突时，将只会更新一行数据。因此，除非能保证仅有一行冲突，否则不建议在有多个唯一键的表中使用 `INSERT ON DUPLICATE KEY UPDATE` 语句。
 - 在创建或更新的场景中使用此语句。
 
 ### `INSERT ON DUPLICATE KEY UPDATE` 例子

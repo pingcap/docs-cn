@@ -1,5 +1,6 @@
 ---
 title: 访问 TiDB Dashboard
+summary: TiDB Dashboard 可通过浏览器访问，支持多 PD 实例访问。浏览器兼容性包括 Chrome、Firefox 和 Edge。登录界面可使用 root 用户或自定义 SQL 用户登录。支持简体中文和英文语言切换。可在用户页面登出当前用户。
 ---
 
 # 访问 TiDB Dashboard

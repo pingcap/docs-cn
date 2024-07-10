@@ -11,9 +11,14 @@ summary: TiDB 数据库中 SHOW ERRORS 的使用概况。
 
 ## 语法图
 
-**ShowErrorsStmt:**
+```ebnf+diagram
+ShowErrorsStmt ::=
+    "SHOW" "ERRORS" ShowLikeOrWhere?
 
-![ShowErrorsStmt](/media/sqlgram/ShowErrorsStmt.png)
+ShowLikeOrWhere ::=
+    "LIKE" SimpleExpr
+|   "WHERE" Expression
+```
 
 ## 示例
 

@@ -1,5 +1,6 @@
 ---
 title: TiDB 2.1.10 Release Notes
+summary: TiDB 2.1.10 发布，修复了多个 bug 和兼容性问题，增强了安全性。PD 修复了 Leader 优先级不生效的问题。TiKV 修复了多个问题，包括 transfer leader 中可能发生的脏读问题。TiDB Lightning 新增了发送数据到 importer 失败时进行重试的功能。TiDB Binlog 优化了 Pump storage 组件 log。TiDB Ansible 更新了配置文件，新增了 tidb_lightning_ctl 脚本。
 ---
 
 # TiDB 2.1.10 Release Notes

@@ -13,22 +13,24 @@ summary: TiDB 数据库中 SHOW COLLATION 的使用概况。
 
 ## 语法图
 
-**ShowCollationStmt:**
+```ebnf+diagram
+ShowCollationStmt ::=
+    "SHOW" "COLLATION" ShowLikeOrWhere?
 
-![ShowCollationStmt](/media/sqlgram/ShowCollationStmt.png)
+ShowLikeOrWhere ::=
+    "LIKE" SimpleExpr
+|   "WHERE" Expression
+```
 
 ## 示例
 
 若未开启新排序规则框架，仅展示二进制排序规则：
 
-{{< copyable "sql" >}}
-
 ```sql
-
 SHOW COLLATION;
 ```
 
-```
+```sql
 +-------------+---------+------+---------+----------+---------+
 | Collation   | Charset | Id   | Default | Compiled | Sortlen |
 +-------------+---------+------+---------+----------+---------+
@@ -43,14 +45,11 @@ SHOW COLLATION;
 
 若开启了新排序规则框架，则在二进制排序规则之外，额外支持 `utf8_general_ci` 和 `utf8mb4_general_ci` 两种大小写和口音不敏感的排序规则：
 
-{{< copyable "sql" >}}
-
 ```sql
-
 SHOW COLLATION;
 ```
 
-```
+```sql
 +--------------------+---------+------+---------+----------+---------+
 | Collation          | Charset | Id   | Default | Compiled | Sortlen |
 +--------------------+---------+------+---------+----------+---------+
@@ -67,6 +66,25 @@ SHOW COLLATION;
 | utf8mb4_unicode_ci | utf8mb4 |  224 |         | Yes      |       1 |
 +--------------------+---------+------+---------+----------+---------+
 11 rows in set (0.001 sec)
+```
+
+要过滤字符集，可以添加 `WHERE` 子句。
+
+```sql
+SHOW COLLATION WHERE Charset="utf8mb4";
+```
+
+```sql
++--------------------+---------+-----+---------+----------+---------+
+| Collation          | Charset | Id  | Default | Compiled | Sortlen |
++--------------------+---------+-----+---------+----------+---------+
+| utf8mb4_0900_ai_ci | utf8mb4 | 255 |         | Yes      |       1 |
+| utf8mb4_0900_bin   | utf8mb4 | 309 |         | Yes      |       1 |
+| utf8mb4_bin        | utf8mb4 |  46 | Yes     | Yes      |       1 |
+| utf8mb4_general_ci | utf8mb4 |  45 |         | Yes      |       1 |
+| utf8mb4_unicode_ci | utf8mb4 | 224 |         | Yes      |       1 |
++--------------------+---------+-----+---------+----------+---------+
+5 rows in set (0.00 sec)
 ```
 
 ## MySQL 兼容性

@@ -1,5 +1,6 @@
 ---
 title: 视图
+summary: TiDB 支持视图，视图是虚拟表，结构由创建时的 SELECT 语句定义。使用视图可保证数据安全，简化复杂查询。查询视图类似查询表，TiDB 执行查询时会展开视图。可通过 SHOW CREATE TABLE 或 SHOW CREATE VIEW 查看视图创建语句及相关信息。也可查询 INFORMATION_SCHEMA.VIEWS 表或访问 HTTP API 获取视图元信息。视图有局限性，不支持物化视图，且为只读视图，不支持写入操作。已创建的视图仅支持 DROP 操作。
 ---
 
 # 视图

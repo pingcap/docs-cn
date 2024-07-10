@@ -1,5 +1,6 @@
 ---
 title: TiDB 3.0.4 Release Notes
+summary: TiDB 3.0.4 发布日期为 2019 年 10 月 8 日。此版本新增了系统表 `performance_schema.events_statements_summary_by_digest` 用于排查 SQL 性能问题。同时，TiDB 的 `SHOW TABLE REGIONS` 语法新增了 `WHERE` 条件子句。此外，Reparo 新增了 `worker-count` 和 `txn-batch` 配置项，用于控制恢复速率。还修复了一些问题，如特殊语法 `PRE_SPLIT_REGIONS` 没有使用注释的方式向下游同步的问题。
 ---
 
 # TiDB 3.0.4 Release Notes

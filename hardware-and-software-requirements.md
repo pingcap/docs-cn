@@ -1,5 +1,6 @@
 ---
 title: TiDB 软件和硬件环境建议配置
+summary: TiDB 是一款开源的一站式实时 HTAP 数据库，支持部署在多种硬件环境和操作系统上。软件和硬件环境建议配置包括操作系统要求、编译和运行依赖库、Docker 镜像依赖、软件配置要求、服务器建议配置、网络要求、磁盘空间要求、客户端 Web 浏览器要求以及 TiFlash 存算分离架构的软硬件要求。
 ---
 
 # TiDB 软件和硬件环境建议配置
@@ -23,16 +24,17 @@ TiDB 作为一款开源一栈式实时 HTAP 数据库，可以很好地部署和
     |  操作系统   |   支持的 CPU 架构   |
     |   :---   |   :---   |
     | Red Hat Enterprise Linux 8.4 及以上的 8.x 版本  |  <ul><li>x86_64</li><li>ARM 64</li></ul>  |
-    | <ul><li>Red Hat Enterprise Linux 7.3 及以上的 7.x 版本</li><li>CentOS 7.3 及以上的 7.x 版本</li></ul>  |  <ul><li>x86_64</li><li>ARM 64</li></ul>   |
+    | <ul><li>Red Hat Enterprise Linux 7.3 及以上的 7.x 版本</li><li>CentOS 7.3 及以上的 7.x 版本（将在 TiDB 8.5 LTS 版本结束支持）</li></ul>  |  <ul><li>x86_64</li><li>ARM 64</li></ul>   |
     |  Amazon Linux 2         |  <ul><li>x86_64</li><li>ARM 64</li></ul>   |
     | Rocky Linux 9.1 及以上的版本 |  <ul><li>x86_64</li><li>ARM 64</li></ul> |
     | 麒麟欧拉版 V10 SP1/SP2   |   <ul><li>x86_64</li><li>ARM 64</li></ul>   |
     | 统信操作系统 (UOS) V20                 |   <ul><li>x86_64</li><li>ARM 64</li></ul>   |
-    | openEuler 22.03 LTS SP1 |   <ul><li>x86_64</li><li>ARM 64</li></ul>   |
+    | openEuler 22.03 LTS SP1/SP3 |   <ul><li>x86_64</li><li>ARM 64</li></ul>   |
 
     > **注意：**
     >
-    > 根据 [CentOS Linux EOL](https://www.centos.org/centos-linux-eol/)，CentOS Linux 8 的上游支持已于 2021 年 12 月 31 日终止，但 CentOS 将继续提供对 CentOS Stream 8 的支持。
+    > - 根据 [CentOS Linux EOL](https://blog.centos.org/2023/04/end-dates-are-coming-for-centos-stream-8-and-centos-linux-7/)，CentOS Linux 7 的上游支持于 2024 年 6 月 30 日终止。TiDB 将在 8.5 LTS 版本结束对 CentOS 7 的支持，建议使用 Rocky Linux 9.1 及以上的版本。
+    > - 根据 [CentOS Linux EOL](https://www.centos.org/centos-linux-eol/)，CentOS Linux 8 的上游支持已于 2021 年 12 月 31 日终止。[CentOS Stream 8 的上游支持](https://blog.centos.org/2023/04/end-dates-are-coming-for-centos-stream-8-and-centos-linux-7/)已于 2024 年 5 月 31 日终止。CentOS 将继续提供对 CentOS Stream 9 的支持。
 
 + 在以下操作系统以及对应的 CPU 架构组合上，你可以编译、构建和部署 TiDB，可使用 OLTP 和 OLAP 以及数据工具的基本功能。但是 TiDB **不保障企业级生产质量要求**：
 
@@ -71,7 +73,7 @@ TiDB 作为一款开源一栈式实时 HTAP 数据库，可以很好地部署和
 
 支持的 CPU 架构如下：
 
-- x86_64，从 TiDB v6.6.0 开始，需要 [x84-64-v2 指令集](https://developers.redhat.com/blog/2021/01/05/building-red-hat-enterprise-linux-9-for-the-x86-64-v2-microarchitecture-level)
+- x86_64，从 TiDB v6.6.0 开始，需要 [x86-64-v2 指令集](https://developers.redhat.com/blog/2021/01/05/building-red-hat-enterprise-linux-9-for-the-x86-64-v2-microarchitecture-level)
 - ARM 64
 
 ## 软件配置要求
@@ -189,3 +191,32 @@ TiDB 作为开源一栈式实时 HTAP 数据库，其正常运行需要网络环
 ## 客户端 Web 浏览器要求
 
 TiDB 提供了基于 [Grafana](https://grafana.com/) 的技术平台，对数据库集群的各项指标进行可视化展现。采用支持 Javascript 的微软 IE、Google Chrome、Mozilla Firefox 的较新版本即可访问监控入口。
+
+## TiFlash 存算分离架构的软硬件要求
+
+上面的 TiFlash 软硬件要求是针对存算一体架构的。从 v7.0.0 开始，TiFlash 支持[存算分离架构](/tiflash/tiflash-disaggregated-and-s3.md)，该架构下 TiFlash 分为 Write Node 和 Compute Node 两个角色，对应的软硬件要求如下：
+
+- 软件：与存算一体架构一致，详见[操作系统及平台要求](#操作系统及平台要求)。
+- 网络端口：与存算一体架构一致，详见[网络要求](#网络要求)。
+- 磁盘空间：
+    - TiFlash Write Node：推荐 200 GB+，用作增加 TiFlash 副本、Region 副本迁移时向 Amazon S3 上传数据前的本地缓冲区。此外，还需要一个与 Amazon S3 兼容的对象存储。
+    - TiFlash Compute Node：推荐 100 GB+，主要用于缓存从 Write Node 读取的数据以提升性能。Compute Node 的缓存可能会被完全使用，这是正常现象。
+- CPU 以及内存等要求参考下文。
+
+### 开发及测试环境
+
+| 组件 | CPU | 内存 | 本地存储 | 网络 | 实例数量（最低要求） |
+| --- | --- | --- | --- | --- | --- |
+| TiFlash Write Node | 16 核+ | 32 GB+ | SSD, 200 GB+ | 千兆网卡 | 1 |
+| TiFlash Compute Node | 16 核+ | 32 GB+ | SSD, 100 GB+ | 千兆网卡 | 0（参见下文“注意”说明） |
+
+### 生产环境
+
+| 组件 | CPU | 内存 | 硬盘类型 | 网络 | 实例数量（最低要求） |
+| --- | --- | --- | --- | --- | --- |
+| TiFlash Write Node | 32 核+ | 64 GB+ | SSD, 200 GB+ | 万兆网卡（2 块最佳） | 2 |
+| TiFlash Compute Node | 32 核+ | 64 GB+ | SSD, 100 GB+  | 万兆网卡（2 块最佳） | 0（参见下文“注意”说明） |
+
+> **注意：**
+>
+> TiFlash Compute Node 可以使用 TiUP 等部署工具快速扩缩容，扩缩容范围是 `[0, +inf]`。

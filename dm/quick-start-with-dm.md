@@ -5,7 +5,7 @@ summary: 了解如何快速上手部署试用 TiDB Data Migration 工具。
 
 # TiDB Data Migration 快速上手指南
 
-本文介绍如何快速体验使用数据迁移工具 [TiDB Data Migration](https://github.com/pingcap/dm) (DM) 从 MySQL 迁移数据到 TiDB。此文档用于快速体验 DM 产品功能特性，并不建议适合在生产环境中使用。
+本文介绍如何快速体验使用数据迁移工具 [TiDB Data Migration (DM)](/dm/dm-overview.md) 从 MySQL 迁移数据到 TiDB。此文档用于快速体验 DM 产品功能特性，并不建议适合在生产环境中使用。
 
 ## 第 1 步：部署 DM 集群
 

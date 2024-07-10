@@ -1,5 +1,6 @@
 ---
 title: tiup dm deploy
+summary: tiup dm deploy 命令用于部署全新的集群。语法为 tiup dm deploy <cluster-name> <version> <topology.yaml> [flags]，其中 cluster-name 表示新集群的名字，version 为要部署的 DM 集群版本号，topology.yaml 为事先编写好的拓扑文件。选项包括 -u, -i, -p, -h，分别用于指定连接目标机器的用户名、密钥文件、密码登录和输出帮助信息。输出为部署日志。
 ---
 
 # tiup dm deploy

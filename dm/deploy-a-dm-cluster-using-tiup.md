@@ -149,7 +149,7 @@ alertmanager_servers:
 >
 >     - TiUP 节点可连通所有 DM-worker 节点的 `port`（默认为 `8262`）。
 
-更多 `master_servers.host.config` 参数说明，请参考 [master parameter](https://github.com/pingcap/dm/blob/master/dm/master/dm-master.toml)；更多 `worker_servers.host.config` 参数说明，请参考 [worker parameter](https://github.com/pingcap/dm/blob/master/dm/worker/dm-worker.toml)。
+更多 `master_servers.host.config` 参数说明，请参考 [master parameter](https://github.com/pingcap/tiflow/blob/master/dm/master/dm-master.toml)；更多 `worker_servers.host.config` 参数说明，请参考 [worker parameter](https://github.com/pingcap/tiflow/blob/master/dm/worker/dm-worker.toml)。
 
 ## 第 3 步：执行部署命令
 

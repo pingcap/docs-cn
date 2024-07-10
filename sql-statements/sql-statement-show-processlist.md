@@ -9,17 +9,12 @@ summary: TiDB 数据库中 SHOW [FULL] PROCESSLIST 的使用概况。
 
 ## 语法图
 
-**ShowProcesslistStmt:**
-
-![ShowProcesslistStmt](/media/sqlgram/ShowProcesslistStmt.png)
-
-**OptFull:**
-
-![OptFull](/media/sqlgram/OptFull.png)
+```ebnf+diagram
+ShowProcesslistStmt ::=
+    "SHOW" "FULL"? "PROCESSLIST"
+```
 
 ## 示例
-
-{{< copyable "sql" >}}
 
 ```sql
 SHOW PROCESSLIST;
@@ -48,3 +43,4 @@ SHOW PROCESSLIST;
 ## 另请参阅
 
 * [KILL \[TIDB\]](/sql-statements/sql-statement-kill.md)
+* [`INFORMATION_SCHEMA.PROCESSLIST`](/information-schema/information-schema-processlist.md)

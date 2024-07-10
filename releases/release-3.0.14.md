@@ -1,5 +1,6 @@
 ---
 title: TiDB 3.0.14 Release Notes
+summary: TiDB 3.0.14 发布日期为 2020 年 5 月 9 日。该版本兼容性变化包括 `performance_schema` 和 `metrics_schema` 由读写改为只读。重点修复的 Bug 包括 join 条件在 handle 列上存在多个等值条件时，index join 查询结果错误等问题。新功能包括 `admin show ddl jobs` 查询结果中添加库名和表名列等功能。Bug 修复包括 `WEEKEND` 函数在 SQL mode 为 `ALLOW_INVALID_DATES` 时结果与 MySQL 不兼容等问题。TiKV 也有相关 Bug 修复，如节点隔离恢复之后无法被正确删掉等问题。
 ---
 
 # TiDB 3.0.14 Release Notes

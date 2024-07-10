@@ -1,5 +1,6 @@
 ---
 title: TiDB 3.0.15 Release Notes
+summary: TiDB 3.0.15 发布，新增禁止分区表查询使用 plan cache 功能、支持 admin recover index、admin check index 语句、优化统计信息 CMSketch 的内存分配机制等功能。PD 新增按照 Leader 个数调度的策略。修复了多处 Bug，包括 Hash 聚合函数中的深拷贝方式、点查整数溢出处理逻辑、CHAR() 函数查询条件处理逻辑等问题。TiKV 修复了长时间运行后碎片整理不再有效、系统意外重启后删除 snapshot 文件导致系统 panic、消息包过大导致 gRPC 连接断开的问题。
 ---
 
 # TiDB 3.0.15 Release Notes

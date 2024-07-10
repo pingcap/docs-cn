@@ -1,5 +1,6 @@
 ---
 title: TiDB Binlog 版本升级方法
+summary: TiDB Binlog 版本升级方法介绍了手动部署的步骤，包括升级 Pump 和 Drainer。同时，还介绍了从 Kafka/Local 版本升级到 Cluster 版本的流程，以及如何确认数据同步完成后启动新版本的 Drainer。强烈建议使用 PITR 作为数据恢复的替代方案。
 ---
 
 # TiDB Binlog 版本升级方法
@@ -30,7 +31,7 @@ title: TiDB Binlog 版本升级方法
 
 ## 从 Kafka/Local 版本升级到 Cluster 版本
 
-新版本的 TiDB（v2.0.8-binlog、v2.1.0-rc.5 及以上版本）不兼容 [Kafka 版本](https://pingcap.com/docs-cn/v2.1/reference/tidb-binlog/tidb-binlog-kafka/)以及 [Local 版本](https://pingcap.com/docs-cn/v2.1/reference/tidb-binlog/tidb-binlog-local/)的 TiDB Binlog，集群升级到新版本后只能使用 Cluster 版本的 TiDB Binlog。如果在升级前已经使用了 Kafka／Local 版本的 TiDB Binlog，必须将其升级到 Cluster 版本。
+新版本的 TiDB（v2.0.8-binlog、v2.1.0-rc.5 及以上版本）不兼容 [Kafka 版本](https://docs.pingcap.com/zh/tidb/v2.1/tidb-binlog-kafka-deployment/)以及 [Local 版本](https://docs.pingcap.com/zh/tidb/v2.1/tidb-binlog-local-deployment/)的 TiDB Binlog，集群升级到新版本后只能使用 Cluster 版本的 TiDB Binlog。如果在升级前已经使用了 Kafka／Local 版本的 TiDB Binlog，必须将其升级到 Cluster 版本。
 
 TiDB Binlog 版本与 TiDB 版本的对应关系如下：
 

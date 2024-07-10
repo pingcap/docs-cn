@@ -106,18 +106,18 @@ TiCDC 为 service GC safepoint 设置的默认存活有效期为 24 小时，即
 * 同步所有的非系统表
 * 只同步包含[有效索引](/ticdc/ticdc-overview.md#最佳实践)的表
 
-## TiCDC 是否支持输出 Canal 格式的变更数据？
+## TiCDC 是否支持输出 Canal 协议的变更数据？
 
-支持。要开启 Canal 格式输出，只需在 `--sink-uri` 中指定 protocol 为 `canal` 即可，例如：
+支持。注意：对于 Canal 协议，TiCDC 只支持 JSON 输出格式，对 protobuf 格式尚未提供官方支持。要开启 Canal 协议的输出，只需在 `--sink-uri` 配置中指定 `protocol` 为 `canal-json` 即可。例如：
 
 ```shell
-cdc cli changefeed create --server=http://127.0.0.1:8300 --sink-uri="kafka://127.0.0.1:9092/cdc-test?kafka-version=2.4.0&protocol=canal" --config changefeed.toml
+cdc cli changefeed create --server=http://127.0.0.1:8300 --sink-uri="kafka://127.0.0.1:9092/cdc-test?kafka-version=2.4.0&protocol=canal-json" --config changefeed.toml
 ```
 
 > **注意：**
 >
 > * 该功能在 TiCDC 4.0.2 版本引入。
-> * 目前 TiCDC 仅支持将 Canal 格式的变更数据输出到 MQ 类的 Sink（例如 Kafka）。
+> * 目前 TiCDC 仅支持将 Canal-JSON 格式的变更数据输出到 MQ 类的 Sink（例如 Kafka）。
 
 更多信息请参考 [TiCDC Changefeed 配置参数](/ticdc/ticdc-changefeed-config.md)。
 
@@ -131,7 +131,7 @@ cdc cli changefeed create --server=http://127.0.0.1:8300 --sink-uri="kafka://127
 
 ## TiCDC 把数据同步到 Kafka 时，能在 TiDB 中控制单条消息大小的上限吗？
 
-对于 Avro 和 Canal-JSON 格式，消息是以行变更为单位发送的，一条 Kafka Message 仅包含一条行变更。一般情况下，消息的大小不会超过 Kafka 单条消息上限，因此，一般不需要限制单条消息大小。如果单条 Kafka 消息大小确实超过 Kakfa 上限，请参考[为什么 TiCDC 到 Kafka 的同步任务延时越来越大](/ticdc/ticdc-faq.md#为什么-ticdc-到-kafka-的同步任务延时越来越大)。
+对于 Avro 和 Canal-JSON 格式，消息是以行变更为单位发送的，一条 Kafka Message 仅包含一条行变更。一般情况下，消息的大小不会超过 Kafka 单条消息上限，因此，一般不需要限制单条消息大小。如果单条 Kafka 消息大小确实超过 Kafka 上限，请参考[为什么 TiCDC 到 Kafka 的同步任务延时越来越大](/ticdc/ticdc-faq.md#为什么-ticdc-到-kafka-的同步任务延时越来越大)。
 
 对于 Open Protocol 格式，一条 Kafka Message 可能包含多条行变更。因此，有可能存在某条 Kafka Message 消息过大。可以通过 `max-message-bytes` 控制每次向 Kafka broker 发送消息的最大数据量（可选，默认值 10 MB），通过 `max-batch-size` 参数指定每条 kafka 消息中变更记录的最大数量（可选，默认值 `16`）。
 
@@ -261,15 +261,15 @@ Sink 为 TiDB 或 MySQL 时，下游数据库的用户需要以下权限：
 
 TiCDC 需要磁盘是为了缓冲上游写入高峰时下游消费不及时堆积的数据。TiCDC 正常运行期间都需要写入磁盘，但这通常不是同步吞吐和同步延时的瓶颈，写磁盘对延时影响在百毫秒内。TiCDC 也利用了内存来提升加速读取磁盘中的数据，以提升同步性能。
 
-## 为什么在上游使用了 TiDB Lightning 和 BR 恢复了数据之后，TiCDC 同步会出现卡顿甚至卡住？
+## 为什么在上游使用了 TiDB Lightning 物理导入模式和 BR 恢复了数据之后，TiCDC 同步会出现卡顿甚至卡住？
 
-目前 TiCDC 尚未完全适配 TiDB Lightning 和 BR，请避免在使用 TiCDC 同步的表上使用 TiDB Lightning 和 BR。否则，可能会出现未知的错误，例如 TiCDC 同步卡住、同步延迟大幅增加、或者同步数据丢失。
+目前 TiCDC 尚未完全适配 TiDB Lightning [物理导入模式 (Physical Import Mode)](/tidb-lightning/tidb-lightning-physical-import-mode.md) 和 BR，请避免在使用 TiCDC 同步的表上使用 TiDB Lightning 物理导入模式和 BR。否则，可能会出现未知的错误，例如 TiCDC 同步卡住、同步延迟大幅增加、或者同步数据丢失。
 
-如果有某些使用 TiCDC 同步的表需要使用 TiDB Lightning 或者 BR 恢复数据，可以这么做：
+如果有某些使用 TiCDC 同步的表需要使用 TiDB Lightning 物理导入模式或者 BR 恢复数据，可以这么做：
 
 1. 删除涉及这些表的 TiCDC 同步任务。
 
-2. 使用 TiDB Lightning 或 BR 在 TiCDC 的上游集群和下游集群分别恢复数据。
+2. 使用 TiDB Lightning 物理导入模式或 BR 在 TiCDC 的上游集群和下游集群分别恢复数据。
 
 3. 恢复完成并检查了上下游集群对应表的数据一致性之后，使用上游备份的时间点 (TSO) 作为 TiCDC 同步任务的 `start-ts`，创建新的 TiCDC 同步任务，进行增量同步。例如，假设上游集群的 BR 备份的 snapshot 时间点为 `431434047157698561`，那么可以使用以下命令创建新的 TiCDC 同步任务：
 

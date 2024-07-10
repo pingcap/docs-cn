@@ -1,5 +1,6 @@
 ---
 title: TiDB 2.1.3 Release Notes
+summary: TiDB 2.1.3 版本发布，对系统稳定性、优化器、统计信息和执行引擎做了很多改进。修复了多个问题，包括 Prepared Plan Cache panic、Range 计算错误、统计信息溢出、Generated Column 在 Update 中 Panic 等。还支持了一些新特性，如对 `_tidb_rowid` 构造查询的 Range、`CASE` 子句返回 JSON 类型等。PD 修复了 Leader 选举相关的 Watch 问题，TiKV 支持了使用 HTTP 方式获取监控信息，并修复了一些问题。TiDB Binlog 也修复了一些启动或重启时的问题。
 ---
 
 # TiDB 2.1.3 Release Notes

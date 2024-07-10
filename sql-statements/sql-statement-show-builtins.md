@@ -9,13 +9,12 @@ summary: TiDB 数据库中 SHOW BUILTINS 的使用概况。
 
 ## 语法图
 
-**ShowBuiltinsStmt:**
-
-![ShowBuiltinsStmt](/media/sqlgram/ShowBuiltinsStmt.png)
+```ebnf+diagram
+ShowBuiltinsStmt ::=
+    "SHOW" "BUILTINS"
+```
 
 ## 示例
-
-{{< copyable "sql" >}}
 
 ```sql
 SHOW BUILTINS;

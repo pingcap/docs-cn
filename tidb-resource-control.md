@@ -69,7 +69,7 @@ Request Unit (RU) 是 TiDB 对 CPU、IO 等系统资源的统一抽象的计量�
             <td>1 KiB write request payload 消耗 1 RU</td>
         </tr>
         <tr>
-            <td>SQL CPU</td>
+            <td>CPU</td>
             <td> 3 ms 消耗 1 RU</td>
         </tr>
     </tbody>
@@ -80,10 +80,6 @@ Request Unit (RU) 是 TiDB 对 CPU、IO 等系统资源的统一抽象的计量�
 > - 每个写操作最终都被会复制到所有副本（TiKV 默认 3 个数据副本），并且每次复制都被认为是一个不同的写操作。
 > - 上表只列举了本地部署的 TiDB 计算 RU 时涉及的相关资源，其中不包括网络和存储部分。TiDB Serverless 的 RU 可参考 [TiDB Serverless Pricing Details](https://www.pingcap.com/tidb-cloud-serverless-pricing-details/)。
 > - 目前 TiFlash 资源管控仅考虑 SQL CPU（即查询的 pipeline task 运行所占用的 CPU 时间）以及 read request payload。
-
-## 估算 SQL 所消耗的 RU
-
-你可以通过 [`EXPLAIN ANALYZE`](/sql-statements/sql-statement-explain-analyze.md#ru-request-unit-消耗) 语句获取到 SQL 执行时所消耗的 RU。注意 RU 的大小会受缓存的影响（比如[下推计算结果缓存](/coprocessor-cache.md)），多次执行同一条 SQL 所消耗的 RU 可能会有不同。因此这个 RU 值并不代表每次执行的精确值，但可以作为估算的参考。
 
 ## 相关参数
 
@@ -332,7 +328,7 @@ Runaway Query 是指执行时间或消耗资源超出预期的查询（仅指 `S
 + `mysql.tidb_runaway_queries` 表中包含了过去 7 天内所有识别到的 Runaway Queries 的历史记录。以其中一行为例：
 
     ```sql
-    MySQL [(none)]> SELECT * FROM mysql.tidb_runaway_queries LIMIT 1\G;
+    MySQL [(none)]> SELECT * FROM mysql.tidb_runaway_queries LIMIT 1\G
     *************************** 1. row ***************************
     resource_group_name: rg1
                    time: 2023-06-16 17:40:22
@@ -437,6 +433,65 @@ Runaway Query 是指执行时间或消耗资源超出预期的查询（仅指 `S
 2. 将 TiKV 参数 [`resource-control.enabled`](/tikv-configuration-file.md#resource-control) 设为 `false`，关闭按照资源组配额调度。
 
 3. 将 TiFlash 参数 [`enable_resource_control`](/tiflash/tiflash-configuration.md#配置文件-tiflashtoml) 设为 `false`，关闭 TiFlash 资源管控。
+
+## 查看 RU 消耗
+
+你可以查看 RU 消耗的相关信息。
+
+### 查看 SQL 的 RU 消耗
+
+你可以通过以下方式查询 SQL 消耗的 RU：
+
+- 系统变量 `tidb_last_query_info`
+- `EXPLAIN ANALYZE`
+- 慢查询及对应的系统表
+- `statements_summary`
+
+#### 使用系统变量 `tidb_last_query_info` 查询执行上一条 SQL 语句的 RU 消耗
+
+TiDB 提供系统变量 [`tidb_last_query_info`](/system-variables.md#tidb_last_query_info-从-v4014-版本开始引入)，记录上一条 DML 语句执行的信息，其中包含 SQL 执行消耗的 RU。
+
+使用示例：
+
+1. 执行 `UPDATE` 语句：
+
+    ```sql
+    UPDATE sbtest.sbtest1 SET k = k + 1 WHERE id = 1;
+    ```
+
+    ```
+    Query OK, 1 row affected (0.01 sec)
+    Rows matched: 1  Changed: 1  Warnings: 0
+    ```
+
+2. 通过查询系统变量 `tidb_last_query_info`，查看上条执行的语句的相关信息：
+
+    ```sql
+    SELECT @@tidb_last_query_info;
+    ```
+
+    ```
+    +------------------------------------------------------------------------------------------------------------------------+
+    | @@tidb_last_query_info                                                                                                 |
+    +------------------------------------------------------------------------------------------------------------------------+
+    | {"txn_scope":"global","start_ts":446809472210829315,"for_update_ts":446809472210829315,"ru_consumption":4.34885578125} |
+    +------------------------------------------------------------------------------------------------------------------------+
+    1 row in set (0.01 sec)
+    ```
+
+    返回结果中的 `ru_consumption` 即为执行此 SQL 语句消耗的 RU。
+
+#### 使用 `EXPLAIN ANALYZE` 查询 SQL 执行时所消耗的 RU
+
+你也可以通过 [`EXPLAIN ANALYZE`](/sql-statements/sql-statement-explain-analyze.md#ru-request-unit-消耗) 语句获取到 SQL 执行时所消耗的 RU。注意 RU 的大小会受缓存的影响（比如[下推计算结果缓存](/coprocessor-cache.md)），多次执行同一条 SQL 所消耗的 RU 可能会有不同。因此这个 RU 值并不代表每次执行的精确值，但可以作为估算的参考。
+
+#### 慢查询及对应的系统表
+
+在开启资源管控时，TiDB 的[慢查询日志](/identify-slow-queries.md)以及对应系统表 [`INFORMATION_SCHEMA.SLOW_QUERY`](/information-schema/information-schema-slow-query.md) 中均包含对应 SQL 所属的资源组、等待可用 RU 的耗时、以及真实 RU 消耗等相关信息。
+
+#### 通过 `statements_summary` 查询 RU 相关的统计信息
+
+TiDB 的系统表 [`INFORMATION_SCHEMA.statements_summary`](/statement-summary-tables.md#statements_summary) 中保存了 SQL 语句归一化聚合后的各种统计信息，可以用于查看分析各个 SQL 语句的执行性能。其中也包含资源管控相关的统计信息，包括资源组名、RU 消耗、等待可用 RU 的耗时等信息。具体请参考[`statements_summary` 字段介绍](/statement-summary-tables.md#statements_summary-字段介绍)。
 
 ## 监控与图表
 

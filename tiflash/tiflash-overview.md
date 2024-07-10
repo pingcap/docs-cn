@@ -1,5 +1,6 @@
 ---
 title: TiFlash 简介
+summary: TiFlash 是 TiDB HTAP 形态的关键组件，提供了良好的隔离性和强一致性。它使用列存扩展和 Raft Learner 协议异步复制，通过 Raft 校对索引配合 MVCC 实现一致性隔离级别。TiFlash 架构解决了 HTAP 场景的隔离性和列存同步问题。它提供列式存储和借助 ClickHouse 高效实现的协处理器层。TiFlash 可以兼容 TiDB 和 TiSpark，推荐与 TiKV 不同节点部署以实现 Workload 隔离。具有异步复制、一致性、智能选择和计算加速等核心特性。部署完成后需要手动指定需要同步的表。
 ---
 
 # TiFlash 简介

@@ -1,6 +1,6 @@
 ---
 title: TiDB OOM 故障排查
-summary: 了解如何定位、排查 TiDB Out of Memory (OOM) 问题。
+summary: TiDB OOM 故障排查总结了 OOM 常见问题的解决思路、故障现象、原因、解决方法和需要收集的诊断信息。排查思路包括确认是否属于 OOM 问题和进一步排查触发 OOM 的原因。常见故障原因包括部署问题、数据库问题和客户端问题。处理 OOM 问题需要收集操作系统内存配置、数据库版本和内存配置、Grafana TiDB 内存使用情况等信息。详细排查方法请参考相关章节。
 ---
 
 # TiDB OOM 故障排查
@@ -183,7 +183,7 @@ TiDB 节点启动后需要加载统计信息到内存中。统计信息的收集
 - 执行以下命令收集内存使用率高的时候 TiDB 的 Profile 信息：
 
     ```shell
-    curl -G http://{TiDBIP}:10080/debug/zip?seconds=10" > profile.zip
+    curl -G "http://{TiDBIP}:10080/debug/zip?seconds=10" > profile.zip
     ```
 
 - 执行 `grep "tidb-server has the risk of OOM" tidb.log` 查看 TiDB Server 收集的告警文件路径，例如：

@@ -1,5 +1,6 @@
 ---
 title: 执行计划管理 (SPM)
+summary: 介绍 TiDB 的执行计划管理 (SQL Plan Management) 功能。
 ---
 
 # 执行计划管理 (SPM)
@@ -241,7 +242,7 @@ CREATE [GLOBAL | SESSION] BINDING FROM HISTORY USING PLAN DIGEST 'plan_digest';
     ```sql
     CREATE TABLE t(id INT PRIMARY KEY , a INT, KEY(a));
     SELECT /*+ IGNORE_INDEX(t, a) */ * FROM t WHERE a = 1;
-    SELECT * FROM INFORMATION_SCHEMA.STATEMENTS_SUMMARY WHERE QUERY_SAMPLE_TEXT = 'SELECT /*+ IGNORE_INDEX(t, a) */ * FROM t WHERE a = 1'\G;
+    SELECT * FROM INFORMATION_SCHEMA.STATEMENTS_SUMMARY WHERE QUERY_SAMPLE_TEXT = 'SELECT /*+ IGNORE_INDEX(t, a) */ * FROM t WHERE a = 1'\G
     ```
 
     以下为 `statements_summary` 部分查询结果：
@@ -270,7 +271,7 @@ CREATE [GLOBAL | SESSION] BINDING FROM HISTORY USING PLAN DIGEST 'plan_digest';
 创建完毕后可以[查看绑定](#查看绑定)，验证绑定是否生效。
 
 ```sql
-SHOW BINDINGS\G;
+SHOW BINDINGS\G
 ```
 
 ```

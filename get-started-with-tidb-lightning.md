@@ -1,5 +1,6 @@
 ---
 title: TiDB Lightning 快速上手
+summary: TiDB Lightning 可快速将 MySQL 数据导入到 TiDB 集群中。首先使用 Dumpling 导出数据，然后部署 TiDB 集群。安装最新版本的 TiDB Lightning 并启动，最后检查数据导入情况。详细功能和使用请参考 TiDB Lightning 简介。
 ---
 
 # TiDB Lightning 快速上手
@@ -101,7 +102,7 @@ tiup install tidb-lightning
     nohup tiup tidb-lightning -config tidb-lightning.toml > nohup.out &
     ```
 
-### 第 5 步：检查数据
+## 第 5 步：检查数据
 
 导入完毕后，TiDB Lightning 会自动退出。若导入成功，日志的最后一行会显示 `tidb lightning exit`。
 

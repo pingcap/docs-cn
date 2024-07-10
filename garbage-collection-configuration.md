@@ -1,5 +1,6 @@
 ---
 title: GC 配置
+summary: TiDB 的 GC 配置可以通过系统变量进行设置，包括启用 GC、运行间隔、数据保留时限、并发线程数量等。此外，TiDB 还支持 GC 流控，可以限制每秒数据写入量。从 TiDB 5.0 版本开始，建议使用系统变量进行配置，避免异常行为。在 TiDB 6.1.0 版本引入了新的系统变量 `tidb_gc_max_wait_time`，用于控制活跃事务阻塞 GC safe point 推进的最长时间。另外，GC in Compaction Filter 机制可以通过配置文件或在线配置开启，但可能会影响 TiKV 扫描性能。
 ---
 
 # GC 配置
@@ -84,3 +85,10 @@ show config where type = 'tikv' and name like '%enable-compaction-filter%';
 | tikv | 172.16.5.35:20163 | gc.enable-compaction-filter | true  |
 +------+-------------------+-----------------------------+-------+
 ```
+
+> **注意：**
+>
+> 在使用 Compaction Filter 机制时，可能会出现 GC 进度延迟的情况，从而影响 TiKV 扫描性能。当你的负载中含有大量 coprocessor 请求，并且在 [**TiKV-Details > Coprocessor Detail**](/grafana-tikv-dashboard.md#coprocessor-detail) 面板中发现 Total Ops Details 的 `next()` 或 `prev()` 调用次数远远超过 `processed_keys` 调用的三倍时，可以采取以下措施：
+> 
+> - 对于 TiDB v7.1.3 之前版本，建议尝试关闭 Compaction Filter，以加快 GC 速度。
+> - 从 v7.1.3 开始，TiDB 会根据每个 Region 的冗余版本数量 [`region-compact-min-redundant-rows`](/tikv-configuration-file.md#region-compact-min-redundant-rows-从-v710-版本开始引入) 和比例 [`region-compact-redundant-rows-percent`](/tikv-configuration-file.md#region-compact-redundant-rows-percent-从-v710-版本开始引入) 自动触发 compaction，从而提高 Compaction Filter 的 GC 速度。因此，在 v7.1.3 及之后的版本中，如果遇到上述情况，建议调整这两个参数，无需关闭 Compaction Filter。

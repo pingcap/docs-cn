@@ -1,5 +1,6 @@
 ---
 title: 本地快速部署 TiDB 集群
+summary: TiDB 集群是分布式系统，由多个组件构成。想要快速体验 TiDB，可以使用 TiUP 中的 playground 组件快速搭建本地测试环境。通过命令行参数可以设置各组件的数量和配置，也可以启动多个组件实例。使用 `tiup client` 可以快速连接到本地启动的 TiDB 集群。还可以查看已启动集群的信息，扩容或缩容集群。
 ---
 
 # 本地快速部署 TiDB 集群
@@ -18,7 +19,7 @@ tiup playground ${version} [flags]
 
 - 因为该命令没有指定 playground 的版本，TiUP 会先查找已安装的 playground 的最新版本，假设已安装的 playground 最新版为 v1.12.3，则该命令相当于 tiup playground:v1.12.3
 - 如果 playground 从未安装过任何版本的 TiDB/TiKV/PD 组件，TiUP 会先安装这些组件的最新稳定版，然后再启动运行这些组件的实例
-- 因为该命令没有指定 TiDB/PD/TiKV 各组件的版本，默认情况下，它会使用各组件的最新发布版本，假设当前为 v7.5.0，则该命令相当于 tiup playground:1.12.3 v7.5.0
+- 因为该命令没有指定 TiDB/PD/TiKV 各组件的版本，默认情况下，它会使用各组件的最新发布版本，假设当前为 v7.5.2，则该命令相当于 tiup playground:1.12.3 v7.5.2
 - 因为该命令也没有指定各组件的个数，默认情况下，它会启动由 1 个 TiDB、1 个 TiKV、1 个 PD 和 1 个 TiFlash 实例构成的最小化集群
 - 在依次启动完各个 TiDB 组件后，playground 会提醒集群启动成功，并告诉你一些有用的信息，譬如如何通过 MySQL 客户端连接集群、如何访问 [TiDB Dashboard](/dashboard/dashboard-intro.md) 等
 

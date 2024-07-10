@@ -1,5 +1,6 @@
 ---
 title: TiDB Binlog 集群部署
+summary: TiDB Binlog 集群部署需要满足服务器硬件配置要求。推荐使用 TiUP 部署 TiDB Binlog，也可以使用 Binary 部署。部署过程中需要注意配置参数和启动命令。在运行 TiDB 时，需要保证至少一个 Pump 正常运行。Drainer 不支持对 ignore schemas 的 table 进行 rename DDL 操作。
 ---
 
 # TiDB Binlog 集群部署

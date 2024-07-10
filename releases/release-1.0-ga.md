@@ -1,5 +1,6 @@
 ---
 title: TiDB 1.0 release notes
+summary: TiDB 1.0 版本发布，对 MySQL 兼容性、SQL 优化器、系统稳定性、性能做了大量工作。TiDB 优化了 SQL 查询优化器、内部数据格式、MySQL 兼容性，并支持 `NO_SQL_CACHE` 语法。PD 支持基于读流量的热点调度和设置 Store 权重。TiKV 支持更多下推函数和手动触发数据 Compact。TiSpark Beta 版本支持可配置框架和 ThriftSever/JDBC 和 Spark SQL 脚本入口。感谢参与项目的企业和团队，以及提供出色开源软件/服务的组织/个人。
 ---
 
 # TiDB 1.0 Release Notes
@@ -17,7 +18,7 @@ title: TiDB 1.0 release notes
 + 提升 MySQL 兼容性
 + 支持 `NO_SQL_CACHE` 语法，控制存储引擎对缓存的使用
 + 重构 Hash Aggregator 算子，降低内存使用
-+ 支持 Stream Aggragator 算子
++ 支持 Stream Aggregator 算子
 
 ## PD
 

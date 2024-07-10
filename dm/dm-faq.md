@@ -1,5 +1,6 @@
 ---
 title: Data Migration 常见问题
+summary: 数据迁移常见问题包括：DM 是否支持迁移阿里 RDS 和其他云数据库的数据、task 配置中的黑白名单的正则表达式是否支持非获取匹配、处理不兼容的 DDL 语句、重置数据迁移任务、全量导入过程中遇到报错等。
 ---
 
 # Data Migration 常见问题
@@ -13,7 +14,7 @@ DM 仅支持解析标准版本的 MySQL/MariaDB 的 binlog，对于阿里云 RDS
 - 阿里云 RDS
     - 即使上游表没有主键，阿里云 RDS 的 binlog 中也会包含隐藏的主键列，与上游表结构不一致。
 - 华为云 RDS
-    - 不支持，详见：[华为云数据库 RDS 是否支持直接读取 Binlog 备份文件](https://support.huaweicloud.com/rds_faq/rds_faq_0210.html)。
+    - 不支持，详见：[华为云数据库 RDS 是否支持直接读取 Binlog 备份文件](https://support.huaweicloud.com/en-us/rds_faq/rds_faq_0210.html)。
 
 ## task 配置中的黑白名单的正则表达式是否支持`非获取匹配`（?!）？
 
@@ -21,7 +22,7 @@ DM 仅支持解析标准版本的 MySQL/MariaDB 的 binlog，对于阿里云 RDS
 
 ## 如果在上游执行的一个 statement 包含多个 DDL 操作，DM 是否支持迁移？
 
-DM 会尝试将包含多个 DDL 变更操作的单条语句拆分成只包含一个 DDL 操作的多条语句，但是可能没有覆盖所有的场景。建议在上游执行的一条 statement 中只包含一个 DDL 操作，或者在测试环境中验证一下，如果不支持，可以给 DM 提 [issue](https://github.com/pingcap/dm/issues)。
+DM 会尝试将包含多个 DDL 变更操作的单条语句拆分成只包含一个 DDL 操作的多条语句，但是可能没有覆盖所有的场景。建议在上游执行的一条 statement 中只包含一个 DDL 操作，或者在测试环境中验证一下，如果不支持，可以给 `pingcap/tiflow` 提 [issue](https://github.com/pingcap/tiflow/issues)。
 
 ## 如何处理不兼容的 DDL 语句？
 
@@ -51,7 +52,7 @@ DM 会尝试将包含多个 DDL 变更操作的单条语句拆分成只包含一
 ## 设置了 `online-ddl-scheme: "gh-ost"`，gh-ost 表相关的 DDL 报错该如何处理？
 
 ```
-[unit=Sync] ["error information"="{\"msg\":\"[code=36046:class=sync-unit:scope=internal:level=high] online ddls on ghost table `xxx`.`_xxxx_gho`\\ngithub.com/pingcap/dm/pkg/terror.(*Error).Generate ......
+[unit=Sync] ["error information"="{\"msg\":\"[code=36046:class=sync-unit:scope=internal:level=high] online ddls on ghost table `xxx`.`_xxxx_gho`\\ngithub.com/pingcap/tiflow/pkg/terror.(*Error).Generate ......
 ```
 
 出现上述错误可能有以下原因：

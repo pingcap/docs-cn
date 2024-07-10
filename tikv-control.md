@@ -1,5 +1,6 @@
 ---
 title: TiKV Control 使用说明
+summary: TiKV Control（tikv-ctl）是 TiKV 的命令行工具，用于管理 TiKV 集群。它的安装目录在 `~/.tiup/components/ctl/{VERSION}/` 目录下。通过 TiUP 使用 TiKV Control，可以调用 `tikv-ctl` 工具。通用参数包括远程模式和本地模式，以及两个简单的命令 `--to-hex` 和 `--to-escaped`。其他子命令包括查看 Raft 状态机的信息、查看 Region 的大小、扫描查看给定范围的 MVCC、查看给定 key 的 MVCC、扫描 raw key、打印某个 key 的值、打印 Region 的 properties 信息、手动 compact 单个 TiKV 的数据、手动 compact 整个 TiKV 集群的数据、设置一个 Region 副本为 tombstone 状态、向 TiKV 发出 consistency-check 请求、Dump snapshot 元文件、打印 Raft 状态机出错的 Region、动态修改 TiKV 的配置、强制 Region 从多副本失败状态恢复服务、恢复损坏的 MVCC 数据、Ldb 命令、打印加密元数据、打印损坏的 SST 文件信息、获取一个 Region 的 RegionReadProgress 状态。
 ---
 
 # TiKV Control 使用说明

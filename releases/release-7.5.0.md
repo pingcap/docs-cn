@@ -5,6 +5,8 @@ summary: 了解 TiDB 7.5.0 版本的新功能、兼容性变更、改进提升�
 
 # TiDB 7.5.0 Release Notes
 
+<EmailSubscriptionWrapper />
+
 发版日期：2023 年 12 月 1 日
 
 TiDB 版本：7.5.0
@@ -172,6 +174,7 @@ TiDB 7.5.0 为长期支持版本 (Long-Term Support Release, LTS)。
 | 配置文件 | 配置项 | 修改类型 | 描述 |
 | -------- | -------- | -------- | -------- |
 | TiDB | [`tikv-client.copr-req-timeout`](/tidb-configuration-file.md#copr-req-timeout-从-v750-版本开始引入) | 新增 | 设置单个 Coprocessor request 的超时时间。|
+| TiKV | [`raftstore.inspect-interval`](/tikv-configuration-file.md#inspect-interval) | 修改 | 经过算法调优后，默认值由 `500ms` 调整为 `100ms`，以提升慢节点检测的灵敏度。|
 | TiKV | [`raftstore.region-compact-min-redundant-rows`](/tikv-configuration-file.md#region-compact-min-redundant-rows-从-v710-版本开始引入) | 修改 | 触发 RocksDB compaction 需要的冗余的 MVCC 数据行数。从 v7.5.0 开始，该配置项对 `"raft-kv"` 存储引擎生效。|
 | TiKV | [`raftstore.region-compact-redundant-rows-percent`](/tikv-configuration-file.md#region-compact-redundant-rows-percent-从-v710-版本开始引入) | 修改 | 触发 RocksDB compaction 需要的冗余的 MVCC 数据行所占比例。从 v7.5.0 开始，该配置项对 `"raft-kv"` 存储引擎生效。 |
 | TiKV | [`raftstore.evict-cache-on-memory-ratio`](/tikv-configuration-file.md#evict-cache-on-memory-ratio-从-v750-版本开始引入) | 新增 | 当 TiKV 的内存使用超过系统可用内存的 90%，并且 Raft 缓存条目占用的内存超过已使用内存的 `evict-cache-on-memory-ratio` 比例时，TiKV 会逐出 Raft 缓存条目。 |
@@ -180,6 +183,9 @@ TiDB 7.5.0 为长期支持版本 (Long-Term Support Release, LTS)。
 | BR | [`--ignore-stats`](/br/br-snapshot-manual.md#备份统计信息) | 新增 | 用于备份和恢复数据库统计信息。当指定该参数值为 `false` 时，BR 备份工具支持备份和恢复数据库的列、索引、和表级别的统计信息。 |
 | TiCDC | [`case-sensitive`](/ticdc/ticdc-changefeed-config.md) | 修改 | 经进一步的测试后，默认值由 `true` 改为 `false`，即默认情况下 TiCDC 配置文件中涉及的表名、库名大小写不敏感。 |
 | TiCDC | [`sink.dispatchers.partition`](/ticdc/ticdc-changefeed-config.md) | 修改 | 控制增量数据的 Kafka Partition 分发策略，可选值新增 `columns` 选项，即使用明确指定的列值计算 partition 编号。 |
+| TiCDC | [`changefeed-error-stuck-duration`](/ticdc/ticdc-changefeed-config.md) | 新增 | 控制 changefeed 发生内部错误和异常时允许自动重试的时间。 |
+| TiCDC | [`encoding-worker-num`](/ticdc/ticdc-changefeed-config.md) | 新增 | 控制 redo 模块中编解码 worker 的数量。 |
+| TiCDC | [`flush-worker-num`](/ticdc/ticdc-changefeed-config.md) | 新增 | 控制 redo 模块中上传文件 worker 的数量。 |
 | TiCDC | [`sink.column-selectors`](/ticdc/ticdc-changefeed-config.md) | 新增 | 控制 TiCDC 将增量数据分发到 Kafka 时，只发送指定的列的数据变更事件。 |
 | TiCDC | [`sql-mode`](/ticdc/ticdc-changefeed-config.md) | 新增 | 设置 TiCDC 解析 DDL 时使用的 SQL 模式，默认值和 TiDB 的默认 SQL 模式一致。 |
 | TiDB Lightning | `--importer` | 删除 | 该配置项用于指定 TiKV-importer 的地址。从 v7.5.0 起，TiKV-importer 组件被废弃。 |

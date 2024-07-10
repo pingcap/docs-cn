@@ -1,5 +1,6 @@
 ---
 title: 分库分表场景下的数据校验
+summary: sync-diff-inspector 支持对分库分表场景进行数据校验。使用 Datasource config 进行配置，设置对应 rules，配置上游表与下游表的映射关系。当上游分表较多且符合一定规则时，可以使用 table-rules 进行配置。注意事项：如果上游数据库有 test.table-0 也会被下游数据库匹配到。
 ---
 
 # 分库分表场景下的数据校验

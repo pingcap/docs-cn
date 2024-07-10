@@ -1,5 +1,6 @@
 ---
 title: 迁移使用 GH-ost/PT-osc 的源数据库
+summary: 使用 GH-ost/PT-osc 进行在线 DDL 工具执行 DDL 时，会产生锁表操作，阻塞数据库读写。为降低影响，可选择在线 DDL 工具 gh-ost 和 pt-osc。在 DM 迁移 MySQL 到 TiDB 时，可开启 `online-ddl` 配置，实现 DM 工具与 gh-ost 或 pt-osc 的协同。 DM 与 online DDL 工具协作细节包括 gh-ost 和 pt-osc 的实现过程，以及自定义规则配置。
 ---
 
 # 迁移使用 GH-ost/PT-osc 的源数据库

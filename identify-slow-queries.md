@@ -1,5 +1,6 @@
 ---
 title: 慢查询日志
+summary: TiDB 会将执行时间超过 300 毫秒的语句输出到慢查询日志中，用于帮助用户定位慢查询语句。可以通过修改系统变量来启用或禁用慢查询日志。日志示例包括执行时间、用户信息、执行计划等字段。用户可通过查询 SLOW_QUERY 表来查询慢查询日志中的内容。还可以使用 pt-query-digest 工具分析 TiDB 慢日志。ADMIN SHOW SLOW 命令可以显示最近的慢查询记录或最慢的查询记录。
 ---
 
 # 慢查询日志
@@ -158,6 +159,13 @@ Slow Query 基础信息：
 * `tiflashServerBusy`：因为 TiFlash 负载太高无法处理新请求而产生的 backoff。
 * `tikvDiskFull`：因为 TiKV 的磁盘满了而产生的 backoff。
 * `txnLockFast`：因为读数据时遇到了锁而产生的 backoff。
+
+和资源管控相关的字段：
+
+* `Resource_group`：语句执行所绑定的资源组。
+* `Request_unit_read`：执行语句消耗的总读 RU。
+* `Request_unit_write`：执行语句消耗的总写 RU。
+* `Time_queued_by_rc`：执行语句过程中等待可用资源的总耗时。
 
 ## 相关系统变量
 

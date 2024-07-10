@@ -1,5 +1,6 @@
 ---
 title: 统计信息简介
+summary: 介绍 TiDB 中统计信息的收集和使用。
 ---
 
 # 统计信息简介
@@ -111,9 +112,9 @@ ANALYZE TABLE TableNameList [WITH NUM BUCKETS|TOPN|CMSKETCH DEPTH|CMSKETCH WIDTH
 
 > **注意：**
 >
-> 目前采样率基于自适应算法进行计算。当你通过 [`SHOW STATS_META`](/sql-statements/sql-statement-show-stats-meta.md) 可以观察到一个表的行数时，可通过这个行数去计算采集 10 万行所对应的采样率。如果你观察不到这个值，可通过 [`TABLE_STORAGE_STATS`](/information-schema/information-schema-table-storage-stats.md) 表的 `TABLE_KEYS` 列作为另一个参考来计算采样率。
+> 目前采样率基于自适应算法进行计算。当你通过 [`SHOW STATS_META`](/sql-statements/sql-statement-show-stats-meta.md) 可以观察到一个表的行数时，可通过这个行数去计算采集 10 万行所对应的采样率。如果你观察不到这个值，可通过表 [`SHOW TABLE REGIONS`](/sql-statements/sql-statement-show-table-regions.md) 结果中所有 `APPROXIMATE_KEYS` 列值的总和作为另一个参考来计算采样率。
 >
-> 通常情况下，`STATS_META` 相对 `TABLE_KEYS` 更可信，但是通过 [TiDB Lightning](/tidb-lightning/tidb-lightning-overview.md) 等方式导入数据结束后，`STATS_META` 结果是 `0`。为了处理这个情况，你可以在 `STATS_META` 的结果远小于 `TABLE_KEYS` 的结果时，使用 `TABLE_KEYS` 计算采样率。
+> 通常情况下，`STATS_META` 相对 `APPROXIMATE_KEYS` 更可信，但是通过 [TiDB Lightning 的物理导入模式](/tidb-lightning/tidb-lightning-physical-import-mode.md)等方式导入数据结束后，`STATS_META` 结果是 `0`。为了处理这个情况，你可以在 `STATS_META` 的结果远小于 `APPROXIMATE_KEYS` 的结果时，使用 `APPROXIMATE_KEYS` 计算采样率。
 
 #### 收集部分列的统计信息
 
@@ -741,10 +742,6 @@ LOAD STATS 'file_name';
 `file_name` 为要导入的统计信息的文件名。
 
 ## 锁定统计信息
-
-> **警告：**
->
-> 锁定统计信息目前为实验特性，不建议在生产环境中使用。
 
 从 v6.5.0 开始，TiDB 引入了锁定统计信息的特性。当一张表或一个分区的统计信息被锁定以后，该表或分区的统计信息将无法被修改，也无法对该表进行 `ANALYZE` 操作。用例如下：
 

@@ -1,5 +1,6 @@
 ---
 title: 错误码与故障诊断
+summary: TiDB 错误码包括 MySQL 兼容的错误码和 TiDB 特有的错误码。如果遇到错误码，请参考官方文档或社区获取支持。常见错误码包括内存使用超限、写入冲突、表数据损坏、事务过大、写入冲突等。另外，TiDB 还提供了故障诊断文档供参考。
 ---
 
 # 错误码与故障诊断
@@ -386,7 +387,7 @@ TiDB 兼容 MySQL 的错误码，在大多数情况下，返回和 MySQL 一样�
 
 * Error Number: 8228
 
-    在 Sequence 上使用 `setval` 时指定了不支持的类型，该函数的示例可以在 [Sequence 使用文档](/sql-statements/sql-statement-create-sequence.md#示例)中找到。
+    在 Sequence 上使用 `SETVAL` 时指定了不支持的类型，该函数的示例可以在 [Sequence 使用文档](/sql-statements/sql-statement-create-sequence.md#示例)中找到。
 
 * Error Number: 8229
 
@@ -446,13 +447,13 @@ TiDB 兼容 MySQL 的错误码，在大多数情况下，返回和 MySQL 一样�
 
 * Error Number: 9001
 
-    完整的报错信息为 `ERROR 9001 (HY000) : PD Server Timeout`。
+    完整的报错信息为 `ERROR 9001 (HY000) : PD server timeout`。
 
     请求 PD 超时，请检查 PD Server 状态/监控/日志以及 TiDB Server 与 PD Server 之间的网络。
 
 * Error Number: 9002
 
-    完整的报错信息为 `ERROR 9002 (HY000) : TiKV Server Timeout`。
+    完整的报错信息为 `ERROR 9002 (HY000) : TiKV server timeout`。
 
     请求 TiKV 超时，请检查 TiKV Server 状态/监控/日志以及 TiDB Server 与 TiKV Server 之间的网络。
 

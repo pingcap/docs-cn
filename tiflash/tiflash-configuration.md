@@ -1,5 +1,6 @@
 ---
 title: TiFlash 配置参数
+summary: TiFlash 配置参数包括 PD 调度参数和 TiFlash 配置参数。PD 调度参数可通过 pd-ctl 调整，包括 replica-schedule-limit 和 store-balance-rate。TiFlash 配置参数包括 tiflash.toml 和 tiflash-learner.toml，用于配置 TiFlash TCP/HTTP 服务的监听和存储路径。另外，通过拓扑 label 进行副本调度和多盘部署也是可行的。
 ---
 
 # TiFlash 配置参数
@@ -163,8 +164,8 @@ delta_index_cache_size = 0
     # log-level = "info" 
 
 [logger]
-    ## log 级别（支持 "trace"、"debug"、"info"、"warn"、"error"），默认是 "debug"
-    level = "debug"
+    ## log 级别（支持 "trace"、"debug"、"info"、"warn"、"error"），从 v7.5.1 起，默认值从 "debug" 变更为 "info"
+    level = "info"
     log = "/tidb-deploy/tiflash-9000/log/tiflash.log"
     errorlog = "/tidb-deploy/tiflash-9000/log/tiflash_error.log"
     ## 单个日志文件的大小，默认是 "100M"

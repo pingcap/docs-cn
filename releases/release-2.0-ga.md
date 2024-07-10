@@ -1,5 +1,6 @@
 ---
 title: TiDB 2.0 release notes
+summary: TiDB 2.0 GA 版本发布，对 MySQL 兼容性、系统稳定性、优化器和执行器做了很多改进。包括 SQL 优化器、SQL 执行引擎、Server、兼容性、DDL、PD、TiKV 和 TiSpark 的功能、性能和稳定性优化。
 ---
 
 # TiDB 2.0 Release Notes

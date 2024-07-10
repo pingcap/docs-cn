@@ -1,5 +1,6 @@
 ---
 title: 字符集和排序规则
+summary: TiDB 支持的字符集包括 ascii、binary、gbk、latin1、utf8 和 utf8mb4。排序规则包括 ascii_bin、binary、gbk_bin、gbk_chinese_ci、latin1_bin、utf8_bin、utf8_general_ci、utf8_unicode_ci、utf8mb4_0900_ai_ci、utf8mb4_0900_bin、utf8mb4_bin、utf8mb4_general_ci 和 utf8mb4_unicode_ci。TiDB 强烈建议使用 utf8mb4 字符集，因为它支持更多字符。在 TiDB 中，默认的排序规则受到客户端的连接排序规则设置的影响。如果客户端使用 utf8mb4_0900_ai_ci 作为连接排序规则，TiDB 将遵循客户端的配置。TiDB 还支持新的排序规则框架，用于在语义上支持不同的排序规则。
 ---
 
 # 字符集和排序规则
@@ -110,7 +111,7 @@ SHOW COLLATION;
 >
 > TiDB 会错误地将 `latin1` 视为 `utf8` 的子集。当用户存储不同于 `latin1` 和 `utf8` 编码的字符时，可能会导致意外情况出现。因此强烈建议使用 `utf8mb4` 字符集。详情参阅 [TiDB #18955](https://github.com/pingcap/tidb/issues/18955)。
 >
-> 如果查询条件中包含对字符串前缀的 `LIKE` 过滤， 比如 `LIKE 'prefix%'`，并且该列被设置为非二进制排序规则（即排序规则的后缀不是以 `_bin` 结尾），那么 TiDB 优化器暂时无法把这个过滤条件转化为范围扫描 (Range Scan)，而是用全量扫描代替。因此这类 SQL 有可能造成超出预期的资源消耗。
+> 在 TiDB v7.5.0 中，如果查询条件中包含对字符串前缀的 `LIKE` 过滤， 比如 `LIKE 'prefix%'`，并且该列被设置为非二进制排序规则（即排序规则的后缀不是以 `_bin` 结尾），那么 TiDB 优化器暂时无法把这个过滤条件转化为范围扫描 (Range Scan)，而是用全量扫描代替。因此这类 SQL 有可能造成超出预期的资源消耗。从 v7.5.1 开始，TiDB 优化器移除该限制。
 
 > **注意：**
 >
