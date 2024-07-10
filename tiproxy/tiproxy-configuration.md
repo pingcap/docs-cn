@@ -44,6 +44,12 @@ SQL 端口的配置。
 + 支持热加载：否
 + SQL 网关地址。格式为 `<ip>:<port>`。
 
+#### `advertise-addr`
+
++ 默认值：`""`
++ 支持热加载：否
++ 指定客户端连接 TiProxy 时使用的地址。使用 TiUP 或 TiDB Operator 部署 TiProxy 时，此配置项会自动设置。如果未设置该配置项，将使用该 TiProxy 实例的外部 IP 地址。
+
 #### `graceful-wait-before-shutdown`
 
 + 默认值：`0`
@@ -101,6 +107,23 @@ HTTP 网关的配置。
 + 支持热加载：否
 + 可选值：``, `v2`
 + 在端口启用 [PROXY 协议](https://www.haproxy.org/download/1.8/doc/proxy-protocol.txt)。`v2` 代表使用 PROXY 协议 v2 版本，`` 代表不使用 PROXY 协议。
+
+### balance
+
+TiProxy 负载均衡策略的配置。
+
+#### `policy`
+
++ 默认值：`resource`
++ 支持热加载：是
++ 可选值：`resource`、`location`、`connection`
++ 指定负载均衡策略。各个可选值的含义请参阅 [TiProxy 负载均衡策略](/tiproxy/tiproxy-load-balance.md#负载均衡策略配置)。
+
+### `labels`
+
++ 默认值：`{}`
++ 支持热加载：是
++ 指定服务器标签，例如 `{ zone = "us-west-1", dc = "dc1" }`。
 
 ### log
 
