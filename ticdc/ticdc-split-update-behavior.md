@@ -116,8 +116,8 @@ COMMIT;
 
 从 v6.5.10、v7.1.6、v7.5.2 和 v8.1.1 开始，使用非 MySQL Sink 时，TiCDC 支持通过 `output-raw-change-event` 参数控制是否拆分 `UPDATE` 主键或唯一键事件，详情见 GitHub issue [#11211](https://github.com/pingcap/tiflow/issues/11211)。这个参数的具体行为是：
 
-1. `output-raw-change-event = false`, 如果 `UPDATE` 事件的主键或者非空唯一索引的列值发生改变，TiCDC 会将该其拆分为 `DELETE` 和 `INSERT` 两条事件，并确保所有事件按照 `DELETE` 事件在 `INSERT` 事件之前的顺序进行排序。
-2. `output-raw-change-event = true`, TiCDC 不拆分 `UPDATE` 事件。注意，当表的主键为聚簇索引时，对主键的更新会在 TiDB 中拆分为 `DELETE` 和 `INSERT` 两个事件，这个行为不受 `output-raw-change-event` 参数的影响。
+- 当 `output-raw-change-event = false` 时，如果 `UPDATE` 事件的主键或者非空唯一索引的列值发生改变，TiCDC 会将该其拆分为 `DELETE` 和 `INSERT` 两条事件，并确保所有事件按照 `DELETE` 事件在 `INSERT` 事件之前的顺序进行排序。
+- 当 `output-raw-change-event = true` 时，TiCDC 不拆分 `UPDATE` 事件。注意，当表的主键为聚簇索引时，对主键的更新会在 TiDB 中拆分为 `DELETE` 和 `INSERT` 两个事件，该行为不受 `output-raw-change-event` 参数的影响。
 
 #### Release 6.5 的兼容性
 
@@ -128,7 +128,7 @@ COMMIT;
 | v6.5.3 | CSV/Avro | ✗ | ✗ | 拆分但是不排序, 详见 [#9086](https://github.com/pingcap/tiflow/issues/9658) |
 | v6.5.4 | Canal/Open | ✗ | ✗ | 只拆分并排序包含多条变更的事务 |
 | v6.5.5 ～ v6.5.9 | ALL | ✓ | ✗ |
-| \>= v6.5.10 | ALL | ✓  (默认值：output-raw-change-event = false) | ✓(可选配置项：output-raw-change-event = true) |
+| \>= v6.5.10 | ALL | ✓  (默认值：`output-raw-change-event = false`) | ✓(可选配置项：`output-raw-change-event = true`) |
 
 #### Release 7.1 的兼容性
 
@@ -138,18 +138,18 @@ COMMIT;
 | v7.1.1 | Canal/Open | ✗ | ✓ |  |
 | v7.1.1 | CSV/Avro | ✗ | ✗ | 拆分但是不排序, 详见 [#9086](https://github.com/pingcap/tiflow/issues/9658) |
 | v7.1.2  ~ v7.1.5 | ALL | ✓ | ✗ |  |
-| \>= v7.1.6 (not released yet) | ALL | ✓  (默认值：output-raw-change-event = false) | ✓  |(可选配置项：output-raw-change-event = true) |  |
+| \>= v7.1.6 (not released yet) | ALL | ✓  (默认值：`output-raw-change-event = false`) | ✓  |(可选配置项：`output-raw-change-event = true`) |  |
 
 #### Release 7.5 的兼容性
 
 | 版本 | 协议 | 拆分 Update 主键/唯一键 | 不拆分 Update 主键/唯一键 | 备注 |
 | -- | -- | -- | -- |
 | <= v7.5.2 | ALL | ✓ | ✗ |
-| \>= v7.5.3 (not released yet) | ALL | ✓  (默认值：output-raw-change-event = false) | ✓  (可选配置项：output-raw-change-event = true) |
+| \>= v7.5.3 (not released yet) | ALL | ✓  (默认值：`output-raw-change-event = false`) | ✓  (可选配置项：`output-raw-change-event = true`) |
 
 #### Release 8.1 的兼容性
 
 | 版本 | 协议 | 拆分 Update 主键/唯一键 | 不拆分 Update 主键/唯一键 | 备注 |
 | -- | -- | -- | -- |
 | v8.1.0 | ALL | ✓ | ✗ |
-| \>= v8.1.1 (not released yet) | ALL | ✓  (默认值：output-raw-change-event = false) | ✓  (可选配置项：output-raw-change-event = true) |
+| \>= v8.1.1 (not released yet) | ALL | ✓  (默认值：`output-raw-change-event = false`) | ✓  (可选配置项：`output-raw-change-event = true`) |
