@@ -32,7 +32,7 @@ TiDB 兼容 MySQL 的协议，但存在部分与 MySQL 不兼容或有差异的�
 > **注意：**
 >
 > - 在 8.0.32 之前的 MySQL Connector/J 8.0 版本中存在一个 [bug](https://bugs.mysql.com/bug.php?id=106252)，当与 TiDB v6.3.0 之前的版本一起使用时，可能会导致线程卡死。为了避免此问题，建议使用 MySQL Connector/J 8.0.32 或更高版本，或者使用 TiDB JDBC（见 *TiDB-JDBC* 标签）。
-> - MySQL Connector/J 8.0 与 TiDB v7.5.0 一起使用时，建议将 TiDB 配置项 [`server-version`](/tidb-configuration-file.md#server-version) 设置为 `"5.7.25-TiDB-v7.5.0"`。这是因为，当 TiDB 服务器报告版本为 MySQL 8.0.11 或更高版本时，MySQL Connector/J 会尝试访问 TiDB v7.5.0 中不存在的 `information_schema.KEYWORDS` 表。
+> - MySQL Connector/J 8.0 与 TiDB v7.5.2 或之前版本一起使用时，建议将 TiDB 配置项 [`server-version`](/tidb-configuration-file.md#server-version) 设置为 `"5.7.25-TiDB-v7.5.x"`。这是因为，当 TiDB 服务器报告版本为 MySQL 8.0.11 或更高版本时，MySQL Connector/J 会尝试访问 TiDB v7.5.2 及之前版本中不存在的 `information_schema.KEYWORDS` 表。
 
 有关一个完整的实例应用程序，可参阅 [TiDB 和 JDBC 的简单 CRUD 应用程序](/develop/dev-guide-sample-application-java-jdbc.md)。
 
