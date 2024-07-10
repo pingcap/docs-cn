@@ -907,7 +907,6 @@
         - [返回 JSON 的函数](/functions-and-operators/json-functions/json-functions-return.md)
         - [JSON 效用函数](/functions-and-operators/json-functions/json-functions-utility.md)
         - [聚合 JSON 的函数](/functions-and-operators/json-functions/json-functions-aggregate.md)
-        - [验证 JSON 的函数](/functions-and-operators/json-functions/json-functions-validate.md)
       - [GROUP BY 聚合函数](/functions-and-operators/aggregate-group-by-functions.md)
       - [GROUP BY 修饰符](/functions-and-operators/group-by-modifier.md)
       - [窗口函数](/functions-and-operators/window-functions.md)

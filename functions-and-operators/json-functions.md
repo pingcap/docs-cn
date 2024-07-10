@@ -69,14 +69,6 @@ summary: TiDB 支持 MySQL 8.0 中提供的大部分 JSON 函数。
 | [JSON_ARRAYAGG()](/functions-and-operators/json-functions/json-functions-aggregate.md#json_arrayagg)  | 提供指定列 key 的聚合 |
 | [JSON_OBJECTAGG()](/functions-and-operators/json-functions/json-functions-aggregate.md#json_objectagg) | 提供给定两列键值对的聚合 |
 
-<<<<<<< HEAD
-=======
-## 验证函数
-
-| 函数                    | 功能描述 |
-| --------------------------------- | ----------- |
-| [JSON_SCHEMA_VALID()](/functions-and-operators/json-functions/json-functions-validate.md#json_schema_valid) | 根据 schema 验证 JSON 文档，确保数据的完整性和一致性 |
-
 ## JSONPath
 
 许多 JSON 函数都使用 [JSONPath](https://www.rfc-editor.org/rfc/rfc9535.html) 来选择 JSON 文档中的特定内容。
@@ -143,7 +135,6 @@ summary: TiDB 支持 MySQL 8.0 中提供的大部分 JSON 函数。
 
 更多信息，请参考 [JSONPath -- XPath for JSON](https://www.ietf.org/archive/id/draft-goessner-dispatch-jsonpath-00.html)。
 
->>>>>>> 857d33773b (Extend JSON function docs (#17784))
 ## 另请参阅
 
 - [JSON 数据类型](/data-type-json.md)
