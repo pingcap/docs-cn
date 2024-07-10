@@ -38,7 +38,7 @@ summary: TiDB 支持 MySQL 8.0 中提供的大部分 JSON 函数。
 | [JSON_ARRAY_APPEND()](/functions-and-operators/json-functions/json-functions-modify.md#json_array_append) | 将值添加到 JSON 文档指定数组的末尾，并返回添加结果 |
 | [JSON_ARRAY_INSERT()](/functions-and-operators/json-functions/json-functions-modify.md#json_array_insert)  | 将值插入到 JSON 文档中的指定位置并返回结果 |
 | [JSON_INSERT()](/functions-and-operators/json-functions/json-functions-modify.md#json_insert) | 在 JSON 文档中在某一路径下插入子文档 |
-| [JSON_MERGE_PATCH()](/functions-and-operators/json-functions/json-functions-modify.md#json_merge_patch) | 通过修补或覆盖的方式将两个或多个 JSON 文档合并成一个文档 |
+| [JSON_MERGE_PATCH()](/functions-and-operators/json-functions/json-functions-modify.md#json_merge_patch) | 将两个或多个 JSON 文档合并为一个 JSON 文档，但不保留重复键的值 |
 | [JSON_MERGE_PRESERVE()](/functions-and-operators/json-functions/json-functions-modify.md#json_merge_preserve) | 通过保留所有值的方式将两个或多个 JSON 文档合并成一个文档，并返回合并结果 |
 | [JSON_MERGE()](/functions-and-operators/json-functions/json-functions-modify.md#json_merge)  | 已废弃，`JSON_MERGE_PRESERVE()` 的别名 |
 | [JSON_REMOVE()](/functions-and-operators/json-functions/json-functions-modify.md#json_remove)    | 移除 JSON 文档中某一路径下的子文档，并返回结果 |
