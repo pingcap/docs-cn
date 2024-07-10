@@ -127,7 +127,7 @@ SELECT JSON_INSERT('{"a": 61, "b": 62}', '$.a', 41, '$.c', 63);
 
 ## [JSON_MERGE_PATCH()](https://dev.mysql.com/doc/refman/8.0/en/json-modification-functions.html#function_json-merge-patch)
 
-`JSON_MERGE_PATCH(json_doc, json_doc [,json_doc] ...)` 函数通过修补现有属性来合并两个或多个 JSON 文档，并返回合并结果。
+`JSON_MERGE_PATCH(json_doc, json_doc [,json_doc] ...)` 将两个或多个 JSON 文档合并为一个 JSON 文档，但不保留重复键的值。如果其中某些 `json_doc` 参数包含重复的键，合并后的结果只保留后面指定的那个 `json_doc` 参数中的值。
 
 示例：
 

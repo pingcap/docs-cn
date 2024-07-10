@@ -372,7 +372,7 @@ SELECT JSON_SCHEMA_VALID('{"anyOf": [{"type": "string"},{"type": "integer"}]}', 
 
 ## MySQL 兼容性
 
-- 如果 `JSON_SCHEMA_VALID()` 中待验证的 schema 无效（如 `{"type"： "sting"}`），MySQL 可能会接受该 schema ，但 TiDB 会返回错误。注意这里的 `"sting"` 存在拼写错误，应为` "string"`。
+- 如果 `JSON_SCHEMA_VALID()` 中待验证的 schema 无效（如 `{"type"： "sting"}`），MySQL 可能会接受该 schema ，但 TiDB 会返回错误。注意这里的 `"sting"` 存在拼写错误，应为 `"string"`。
 - MySQL 使用的是较早 draft 版本的 JSON Schema standard。
 
 ## 另请参阅
