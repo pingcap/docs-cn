@@ -158,7 +158,8 @@ tidb-lightning-ctl --config conf/tidb-lightning.toml --checkpoint-error-destroy=
 
 **解决办法**:
 
-目前无法绕过 TiDB 的限制，只能忽略这张表，确保其它表顺利导入。
+- 使用系统变量 [`tidb_txn_entry_size_limit`](/system-variables.md#tidb_txn_entry_size_limit-从-v760-版本开始引入) 动态增加限制。
+- 注意，TiKV 也有类似的限制。若单个写入请求的数据量大小超出 [`raft-entry-max-size`](/tikv-configuration-file.md#raft-entry-max-size)（默认值为 `8MiB`），TiKV 会拒绝处理该请求。当表中单行的数据量较大时，需要同时修改这两个配置。
 
 ### switch-mode 时遇到 `rpc error: code = Unimplemented ...`
 
