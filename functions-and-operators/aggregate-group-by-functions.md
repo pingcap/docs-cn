@@ -24,7 +24,8 @@ TiDB 支持的 MySQL `GROUP BY` 聚合函数如下所示：
 | [`STD()`，`STDDEV()`，`STDDEV_POP`](https://dev.mysql.com/doc/refman/8.0/en/aggregate-functions.html#function_std) | 返回总体标准差 |
 | [`VAR_SAMP()`](https://dev.mysql.com/doc/refman/8.0/en/aggregate-functions.html#function_var-samp) | 返回采样方差 |
 | [`STDDEV_SAMP()`](https://dev.mysql.com/doc/refman/8.0/en/aggregate-functions.html#function_stddev-samp) | 返回采样标准方差 |
-| [`JSON_OBJECTAGG(key, value)`](https://dev.mysql.com/doc/refman/8.0/en/aggregate-functions.html#function_json-objectagg) | 将结果集返回为单个含 (key, value) 键值对的 JSON object |
+| [`JSON_ARRAYAGG()`](/functions-and-operators/json-functions/json-functions-aggregate.md#json_arrayagg)    | 将结果集返回为单个 JSON 数组    |
+| [`JSON_OBJECTAGG()`](/functions-and-operators/json-functions/json-functions-aggregate.md#json_objectagg) | 将结果集返回为单个含 (key, value) 键值对的 JSON 对象 |
 
 > **注意：**
 >
@@ -41,23 +42,19 @@ TiDB 支持的 MySQL `GROUP BY` 聚合函数如下所示：
 
     以下是一个计算第 50 百分位数的例子：
 
-    {{< copyable "sql" >}}
-
     ```sql
-    drop table if exists t;
-    create table t(a int);
-    insert into t values(1), (2), (3);
+    DROP TABLE IF EXISTS t;
+    CREATE TABLE t(a INT);
+    INSERT INTO t VALUES(1), (2), (3);
     ```
 
-    {{< copyable "sql" >}}
-
     ```sql
-    select approx_percentile(a, 50) from t;
+    SELECT APPROX_PERCENTILE(a, 50) FROM t;
     ```
 
     ```sql
     +--------------------------+
-    | approx_percentile(a, 50) |
+    | APPROX_PERCENTILE(a, 50) |
     +--------------------------+
     |                        2 |
     +--------------------------+
@@ -74,15 +71,11 @@ TiDB 支持的 MySQL `GROUP BY` 聚合函数如下所示：
 
 TiDB 支持 SQL 模式 `ONLY_FULL_GROUP_BY`，当启用该模式时，TiDB 拒绝不明确的非聚合列的查询。例如，以下查询在启用 `ONLY_FULL_GROUP_BY` 时是不合规的，因为 `SELECT` 列表中的非聚合列 "b" 在 `GROUP BY` 语句中不显示：
 
-{{< copyable "sql" >}}
-
 ```sql
 drop table if exists t;
 create table t(a bigint, b bigint, c bigint);
 insert into t values(1, 2, 3), (2, 2, 3), (3, 2, 3);
 ```
-
-{{< copyable "sql" >}}
 
 ```sql
 select a, b, sum(c) from t group by a;
@@ -99,8 +92,6 @@ select a, b, sum(c) from t group by a;
 3 rows in set (0.01 sec)
 ```
 
-{{< copyable "sql" >}}
-
 ```sql
 set sql_mode = 'ONLY_FULL_GROUP_BY';
 ```
@@ -108,8 +99,6 @@ set sql_mode = 'ONLY_FULL_GROUP_BY';
 ```
 Query OK, 0 rows affected (0.00 sec)
 ```
-
-{{< copyable "sql" >}}
 
 ```sql
 select a, b, sum(c) from t group by a;
@@ -124,8 +113,6 @@ ERROR 1055 (42000): Expression #2 of SELECT list is not in GROUP BY clause and c
 ### 与 MySQL 的区别
 
 TiDB 目前实现的 `ONLY_FULL_GROUP_BY` 没有 MySQL 5.7 严格。例如，假设我们执行以下查询，希望结果按 "c" 排序：
-
-{{< copyable "sql" >}}
 
 ```sql
 drop table if exists t;
@@ -145,8 +132,6 @@ select distinct a, b from t order by c;
 
 TiDB 中另一个标准 SQL 的扩展允许 `HAVING` 子句中的引用使用 `SELECT` 列表中的别名表达式。例如：以下查询返回在 `orders` 中只出现一次的 `name` 值
 
-{{< copyable "sql" >}}
-
 ```sql
 select name, count(name) from orders
 group by name
@@ -155,8 +140,6 @@ having count(name) = 1;
 
 这个 TiDB 扩展允许在聚合列的 `HAVING` 子句中使用别名：
 
-{{< copyable "sql" >}}
-
 ```sql
 select name, count(name) as c from orders
 group by name
@@ -164,8 +147,6 @@ having c = 1;
 ```
 
 标准 SQL 只支持 `GROUP BY` 子句中的列表达式，以下语句不合规，因为 `FLOOR(value/100)` 是一个非列表达式：
-
-{{< copyable "sql" >}}
 
 ```sql
 select id, floor(value/100)
@@ -177,8 +158,6 @@ TiDB 对标准 SQL 的扩展支持 `GROUP BY` 子句中非列表达式，认为�
 
 标准 SQL 也不支持 `GROUP BY` 子句中使用别名。TiDB 对标准 SQL 的扩展支持使用别名，查询的另一种写法如下：
 
-{{< copyable "sql" >}}
-
 ```sql
 select id, floor(value/100) as val
 from tbl_name
@@ -187,4 +166,4 @@ group by id, val;
 
 ## 相关系统变量
 
-`group_concat_max_len` 变量设置 `GROUP_CONCAT()` 函数缓冲区的最大长度。
+[`group_concat_max_len`](/system-variables.md#group_concat_max_len) 变量设置 `GROUP_CONCAT()` 函数缓冲区的最大长度。
