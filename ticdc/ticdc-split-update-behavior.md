@@ -117,7 +117,7 @@ COMMIT;
 
 #### Release 6.5 的兼容性
 
-| Version | Protocol | Split ALL Update UK/PK | Not Split Update UK/PK | Comments |
+| 版本 | 协议 | 拆分 Update 主键/唯一键 | 不拆分 Update 主键/唯一键 | 备注 |
 | -- | -- | -- | -- | -- |
 | <= v6.5.2 | ALL | ✗ | ✓ |  |
 | v6.5.3 / v6.5.4 | Canal/Open | ✗ | ✓ |  |
@@ -128,7 +128,7 @@ COMMIT;
 
 #### Release 7.1 的兼容性
 
-| Version | Protocol | Split ALL Update UK/PK | Not Split Update UK/PK | Comments |
+| 版本 | 协议 | 拆分 Update 主键/唯一键 | 不拆分 Update 主键/唯一键 | 备注 |
 | -- | -- | -- | -- | -- |
 | v7.1.0 | ALL | ✗ | ✓ |  |
 | v7.1.1 | Canal/Open | ✗ | ✓ |  |
@@ -138,14 +138,14 @@ COMMIT;
 
 #### Release 7.5 的兼容性
 
-| Version | Protocol | Split ALL Update UK/PK | Not Split Update UK/PK |
+| 版本 | 协议 | 拆分 Update 主键/唯一键 | 不拆分 Update 主键/唯一键 | 备注 |
 | -- | -- | -- | -- |
 | <= v7.5.2 | ALL | ✓ | ✗ |
 | \>= v7.5.3 (not released yet) | ALL | ✓  (默认值：output-raw-change-event = false) | ✓  (可选配置项：output-raw-change-event = true) |
 
 #### Release 8.1 的兼容性
 
-| Version | Protocol | Split ALL Update UK/PK | Not Split Update UK/PK |
+| 版本 | 协议 | 拆分 Update 主键/唯一键 | 不拆分 Update 主键/唯一键 | 备注 |
 | -- | -- | -- | -- |
 | v8.1.0 | ALL | ✓ | ✗ |
 | \>= v8.1.1 (not released yet) | ALL | ✓  (默认值：output-raw-change-event = false) | ✓  (可选配置项：output-raw-change-event = true) |
