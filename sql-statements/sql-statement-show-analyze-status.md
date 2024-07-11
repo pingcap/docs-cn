@@ -14,6 +14,22 @@ aliases: ['/docs-cn/dev/sql-statements/sql-statement-show-analyze-status/']
 
 从 TiDB v7.3.0 起，你可以通过系统表 `mysql.analyze_jobs` 或者 `SHOW ANALYZE STATUS` 查看当前 `ANALYZE` 任务的进度。
 
+目前，`SHOW ANALYZE STATUS` 语句会返回以下列：
+
+| 列名 | 说明            |
+| -------- | ------------- |
+| `Table_schema` |  数据库名    |
+| `Table_name` | 表名 |
+| `Partition_name` | 分区名 |
+| `Job_info` | 任务具体信息。如果分析索引，该信息会包含索引名。当 `tidb_analyze_version = 2` 时，该信息会包含采样率等配置项。 |
+| `Processed_rows` | 已经分析的行数 |
+| `Start_time` | 任务开始执行的时间 |
+| `End_time` | 任务结束执行的时间 |
+| `State` | 任务状态，包括 pending（等待）、running（正在执行）、finished（执行成功）和 failed（执行失败）|
+| `Fail_reason` | 任务失败的原因。如果执行成功则为 `NULL`。 |
+| `Instance` | 执行任务的 TiDB 实例 |
+| `Process_id` | 执行任务的 process ID |
+
 ## 语法图
 
 ```ebnf+diagram
@@ -72,4 +88,4 @@ mysql> show analyze status;
 
 ## 另请参阅
 
-* [ANALYZE_STATUS 表](/information-schema/information-schema-analyze-status.md)
+* [`ANALYZE_STATUS` 表](/information-schema/information-schema-analyze-status.md)

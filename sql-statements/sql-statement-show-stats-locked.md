@@ -7,6 +7,15 @@ summary: TiDB 数据库中 SHOW STATS_LOCKED 的使用概况。
 
 `SHOW STATS_LOCKED` 语句显示统计信息被锁定的表。
 
+目前，`SHOW STATS_LOCKED` 语句会返回以下列：
+
+| 列名 | 说明          |
+| -------- | ------------- |
+| `Db_name` | 数据库名 |
+| `Table_name` | 表名 |
+| `Partition_name` | 分区名 |
+| `Status` | 统计信息状态，例如 `locked` |
+
 ## 语法图
 
 ```ebnf+diagram

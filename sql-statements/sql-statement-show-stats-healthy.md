@@ -9,6 +9,15 @@ summary: TiDB 数据库中 SHOW STATS_HEALTHY 的使用概况。
 
 可以通过执行 [`ANALYZE`](/sql-statements/sql-statement-analyze-table.md) 语句来改善表的健康度。当表的健康度下降到低于 [`tidb_auto_analyze_ratio`](/system-variables.md#tidb_auto_analyze_ratio) 时，则会自动执行 `ANALYZE` 语句。
 
+目前，`SHOW STATS_HEALTHY` 语句会返回以下列：
+
+| 列名 | 说明            |
+| :-------- | :------------- |
+| `Db_name`  |  数据库名    |
+| `Table_name` | 表名 |
+| `Partition_name`| 分区名 |
+| `Healthy` | 健康度，0~100 之间 |
+
 ## 语法图
 
 ```ebnf+diagram
