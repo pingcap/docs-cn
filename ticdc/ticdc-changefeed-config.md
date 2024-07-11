@@ -286,7 +286,7 @@ sasl-oauth-scopes = ["producer.kafka", "consumer.kafka"]
 # Kafka SASL OAUTHBEARER 认证机制中的 grant-type。默认值为 "client_credentials"。在使用该认证机制时，该参数可选填。
 sasl-oauth-grant-type = "client_credentials"
 # Kafka SASL OAUTHBEARER 认证机制中的 audience。默认值为空。在使用该认证机制时，该参数可选填。
-sasl-oauth-audience="kafka"
+sasl-oauth-audience = "kafka"
 
 # 控制是否输出原始的数据变更事件，默认值为 false，表示可能拆分事件，如果 `UPDATE` 事件的主键或者非空唯一索引的列值发生改变，TiCDC 会将该其拆分为 `DELETE` 和 `INSERT` 两条事件，并确保所有事件按照 `DELETE` 事件在 `INSERT` 事件之前的顺序进行排序。设置为 true 时，表示不拆分事件，直接输出原始事件。
 # output-raw-change-event = false
