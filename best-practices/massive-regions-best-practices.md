@@ -56,7 +56,7 @@ summary: 了解海量 Region 导致性能问题的原因和优化方法。
 
     参考值：低于 200-500ms。
 
-    ![图 4 查看 Commit log duration](/media/best-practices/commit-log-duration.jpeg)
+    ![图 4 查看 Commit log duration](/media/best-practices/commit-log-duration.png)
 
 ## 性能优化方法
 
