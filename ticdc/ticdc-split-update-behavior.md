@@ -128,7 +128,7 @@ COMMIT;
 | v6.5.3 | CSV/Avro | ✗ | ✗ | 拆分但是不排序, 详见 [#9086](https://github.com/pingcap/tiflow/issues/9658) |
 | v6.5.4 | Canal/Open | ✗ | ✗ | 只拆分并排序包含多条变更的事务 |
 | v6.5.5 ～ v6.5.9 | ALL | ✓ | ✗ | |
-| \>= v6.5.10 | ALL | ✓  (默认值：`output-raw-change-event = false`) | ✓(可选配置项：`output-raw-change-event = true`) | |
+| \>= v6.5.10 | ALL | ✓ (默认值：`output-raw-change-event = false`) | ✓ (可选配置项：`output-raw-change-event = true`) | |
 
 #### Release 7.1 的兼容性
 
@@ -138,18 +138,18 @@ COMMIT;
 | v7.1.1 | Canal/Open | ✗ | ✓ |  |
 | v7.1.1 | CSV/Avro | ✗ | ✗ | 拆分但是不排序, 详见 [#9086](https://github.com/pingcap/tiflow/issues/9658) |
 | v7.1.2  ~ v7.1.5 | ALL | ✓ | ✗ |  |
-| \>= v7.1.6 (not released yet) | ALL | ✓  (默认值：`output-raw-change-event = false`) | ✓  |(可选配置项：`output-raw-change-event = true`) | |
+| \>= v7.1.6 (not released yet) | ALL | ✓ (默认值：`output-raw-change-event = false`) | ✓ (可选配置项：`output-raw-change-event = true`) | |
 
 #### Release 7.5 的兼容性
 
 | 版本 | 协议 | 拆分所有 UPDATE 主键或唯一键 | 不拆分 Update 主键或唯一键 | 备注 |
 | -- | -- | -- | -- | -- |
 | <= v7.5.2 | ALL | ✓ | ✗ | |
-| \>= v7.5.3 (not released yet) | ALL | ✓  (默认值：`output-raw-change-event = false`) | ✓  (可选配置项：`output-raw-change-event = true`) | |
+| \>= v7.5.3 (not released yet) | ALL | ✓  (默认值：`output-raw-change-event = false`) | ✓ (可选配置项：`output-raw-change-event = true`) | |
 
 #### Release 8.1 的兼容性
 
 | 版本 | 协议 | 拆分所有 UPDATE 主键或唯一键 | 不拆分 Update 主键或唯一键 | 备注 |
 | -- | -- | -- | -- | -- |
 | v8.1.0 | ALL | ✓ | ✗ | |
-| \>= v8.1.1 (not released yet) | ALL | ✓  (默认值：`output-raw-change-event = false`) | ✓  (可选配置项：`output-raw-change-event = true`) | |
+| \>= v8.1.1 (not released yet) | ALL | ✓ (默认值：`output-raw-change-event = false`) | ✓ (可选配置项：`output-raw-change-event = true`) | |
