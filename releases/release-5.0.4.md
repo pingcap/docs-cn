@@ -1,5 +1,6 @@
 ---
 title: TiDB 5.0.4 Release Notes
+summary: TiDB 5.0.4 发布日期为 2021 年 9 月 27 日。此版本包含兼容性更改、功能增强、提升改进、Bug 修复等内容。兼容性更改包括修复了 `SHOW VARIABLES` 速度慢的问题，系统变量 `tidb_stmt_summary_max_stmt_count` 默认值修改为 `3000` 等。功能增强包括支持将系统变量 `tidb_enforce_mpp` 的值设为 `1` 以忽略优化器代价估算，强制使用 MPP 模式。提升改进包括基于直方图的 row count 来触发 auto-analyze、支持 MPP 查询的重试等。Bug 修复包括修复了查询分区表且分区键带有 `IS NULL` 条件时 TiDB 可能 panic 的问题等。
 ---
 
 # TiDB 5.0.4 Release Notes

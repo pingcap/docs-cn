@@ -8,7 +8,7 @@ aliases: ['/zh/tidb/dev/build-cluster-in-cloud']
 
 # 使用 TiDB Serverless 构建 TiDB 集群
 
-本章节将介绍如何以最快的方式开始使用 TiDB。你将使用 [TiDB Cloud](https://en.pingcap.com/tidb-cloud) 创建并启动一个 TiDB Serverless 集群，使用 TiDB SQL 客户端，插入数据。随后将从示例程序读取出数据。
+本文将介绍如何以最快的方式开始使用 TiDB。你将创建并启动一个 [TiDB Serverless](https://www.pingcap.com/tidb-serverless/) 集群，使用 TiDB SQL 客户端，插入数据。随后将从示例程序读取出数据。
 
 若你需要在本地计算机上启动 TiDB，请参阅[本地启动 TiDB](/quick-start-with-tidb.md)。
 
@@ -44,7 +44,7 @@ aliases: ['/zh/tidb/dev/build-cluster-in-cloud']
 
     <div label="macOS">
 
-    对于 macOS 操作系统，如果你没有安装 Homebrew，请参考 [Homebrew 官网](https://brew.sh/index_zh-cn)进行安装。
+    对于 macOS 操作系统，如果你没有安装 Homebrew，请参考 [Homebrew 官网](https://brew.sh/zh-cn/)进行安装。
 
     ```shell
     brew install mysql-client

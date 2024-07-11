@@ -142,22 +142,22 @@ curl -X GET http://127.0.0.1:8300/api/v1/health
 {
   "dispatchers":[
     {"matcher":["test1.*", "test2.*"], "dispatcher":"ts"},
-    {"matcher":["test3.*", "test4.*"], "dispatcher":"rowid"}
+    {"matcher":["test3.*", "test4.*"], "dispatcher":"index-value"}
   ],
   "protocol":"canal-json"
 }
 ```
 
-`dispatchers`：对于 MQ 类的 Sink，可以通过 dispatchers 配置 event 分发器，支持 default、ts、rowid、table 四种分发器，分发规则如下：
+`dispatchers`：对于 MQ 类的 Sink，可以通过 dispatchers 配置 event 分发器，支持 default、ts、index-value、table 四种分发器，分发规则如下：
 
 - default：按照 table 分发。
 - ts：以行变更的 commitTs 做 Hash 计算并进行 event 分发。
-- rowid：以所选的 HandleKey 列名和列值做 Hash 计算并进行 event 分发。
+- index-value：以所选的 HandleKey 列名和列值做 Hash 计算并进行 event 分发。
 - table：以表的 schema 名和 table 名做 Hash 计算并进行 event 分发。
 
 `matcher`：匹配语法和过滤器规则语法相同。
 
-`protocol`：对于 MQ 类的 Sink，可以指定消息的协议格式。目前支持 `canal-json`、`open-protocol`、`canal`、`avro` 和 `maxwell` 五种协议。
+`protocol`：对于 MQ 类的 Sink，可以指定消息的协议格式。目前支持 `canal-json`、`open-protocol`、`avro` 和 `maxwell` 五种协议。
 
 ### 使用样例
 

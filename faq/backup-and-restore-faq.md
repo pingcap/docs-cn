@@ -144,7 +144,7 @@ BR 在 v6.0.0 之前不支持[放置规则](/placement-rules-in-sql.md)，在 v6
 
 该问题一般是因为恢复数据的时候，恢复集群的性能不足导致的。可以从恢复集群的监控或者 TiKV 日志来辅助确认。
 
-要解决这类问题，可以尝试扩大集群资源，以及调小恢复时的并发度 (concurrency)，打开限速 (ratelimit) 设置。
+要解决这类问题，可以尝试扩大集群资源，以及调小恢复时的并发度 (`tikv-max-restore-concurrency`)，打开限速 (`ratelimit`) 设置。
 
 ### 恢复备份数据时，BR 会报错 `entry too large, the max entry size is 6291456, the size of data is 7690800`
 
@@ -279,7 +279,7 @@ br restore full -f 'mysql.usertable' -s $external_storage_url --with-sys-table
 
 - 统计信息表（`mysql.stat_*`）(但可以恢复统计信息，详细参考[备份统计信息](/br/br-snapshot-manual.md#备份统计信息))
 - 系统变量表（`mysql.tidb`、`mysql.global_variables`）
-- [其他系统表](https://github.com/pingcap/tidb/blob/master/br/pkg/restore/systable_restore.go#L31)
+- [其他系统表](https://github.com/pingcap/tidb/blob/master/br/pkg/restore/snap_client/systable_restore.go#L31)
 
 ### 恢复的时候，报错 `cannot file rewrite rule`，该如何处理？
 
@@ -324,3 +324,9 @@ BR v4.0.9 备份统计信息使 br 工具消耗过多内存，为保证备份过
 ### 恢复完成后，可以再针对某张表删除后重新恢复吗？
 
 删除某张特定的表后可以再重新进行恢复，但删除时需要使用 `DROP TABLE` 或 `TRUNCATE TABLE` 语句，不能使用 `DELETE FROM` 语句。因为 `DELETE FROM` 只是通过更新 MVCC 版本标记要删除的数据，这些数据直到 GC 后才会被真正删除。
+
+### 恢复统计信息时为什么会占用大量内存？
+
+在 v7.6.0 之前，BR 备份的统计信息数据会与库表信息存放到一起，在恢复的时候加载到内存中。因此，当备份的统计信息数据非常大时，BR 就需要占用大量的内存。
+
+从 v7.6.0 开始，备份的统计信息会单独存放在特定的文件中，当需要恢复某张表的统计信息时，才会加载对应表的统计信息到内存中来，从而可以节省内存空间。

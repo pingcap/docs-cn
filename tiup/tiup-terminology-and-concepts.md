@@ -1,6 +1,7 @@
 ---
 title: TiUP 术语及核心概念
 aliases: ['/docs-cn/dev/tiup/tiup-terminology-and-concepts/']
+summary: TiUP 是一个用于下载、更新、卸载组件的程序，通过各种组件来扩展其功能。组件是可以运行的程序或脚本，通过 tiup <component> 命令来运行。TiUP 组件可以从镜像仓库下载，用户可以通过设置 TIUP_MIRRORS 环境变量来自定义镜像仓库。
 ---
 
 # TiUP 术语及核心概念

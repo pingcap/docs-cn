@@ -90,7 +90,7 @@ curl -X GET http://127.0.0.1:8300/api/v2/status
 
 ```json
 {
-  "version": "v7.6.0",
+  "version": "v8.1.0",
   "git_hash": "10413bded1bdb2850aa6d7b94eb375102e9c44dc",
   "id": "d2912e63-3349-447c-90ba-72a4e04b5e9e",
   "pid": 1447,
@@ -156,15 +156,6 @@ curl -X GET http://127.0.0.1:8300/api/v2/health
     "enable_old_value": true,
     "enable_sync_point": true,
     "filter": {
-      "do_dbs": [
-        "string"
-      ],
-      "do_tables": [
-        {
-          "database_name": "string",
-          "table_name": "string"
-        }
-      ],
       "event_filters": [
         {
           "ignore_delete_value_expr": "string",
@@ -180,15 +171,6 @@ curl -X GET http://127.0.0.1:8300/api/v2/health
           "matcher": [
             "string"
           ]
-        }
-      ],
-      "ignore_dbs": [
-        "string"
-      ],
-      "ignore_tables": [
-        {
-          "database_name": "string",
-          "table_name": "string"
         }
       ],
       "ignore_txn_start_ts": [
@@ -295,10 +277,6 @@ curl -X GET http://127.0.0.1:8300/api/v2/health
 
 | 参数名                   | 说明                                                                                    |
 |:----------------------|:--------------------------------------------------------------------------------------|
-| `do_dbs`              | `STRING ARRAY` 类型，需要同步的数据库。（非必选）                                                      |
-| `do_tables`           | 需要同步的表。（非必选）                                                                          |
-| `ignore_dbs`          | `STRING ARRAY` 类型，不同步的数据库。（非必选）                                                       |
-| `ignore_tables`       |  不同步的表。（非必选）                                                                          |
 | `event_filters`       | event 过滤配置。（非必选）                                                                       |
 | `ignore_txn_start_ts` | `UINT64 ARRAY` 类型，指定之后会忽略指定 `start_ts` 的事务，如 `[1, 2]`。（非必选）                             |
 | `rules`               | `STRING ARRAY` 类型，表库过滤的规则，如 `['foo*.*', 'bar*.*']`。详情请参考[表库过滤](/table-filter.md)。（非必选） |
@@ -323,19 +301,21 @@ curl -X GET http://127.0.0.1:8300/api/v2/health
 
 `sink` 参数说明如下：
 
-| 参数名                     | 说明                                                                                                                   |
-|:------------------------|:---------------------------------------------------------------------------------------------------------------------|
-| `column_selectors`      | column selector 配置。（非必选）                                                                                             |
-| `csv`                   | CSV 配置。（非必选）                                                                                                         |
-| `date_separator`        | `STRING` 类型，文件路径的日期分隔类型。可选类型有 `none`、`year`、`month` 和 `day`。默认值为 `none`，即不使用日期分隔。（非必选）                               |
-| `dispatchers`           | 事件分发配置数组。（非必选）                                                                                                       |
-| `encoder_concurrency`   | `INT` 类型。MQ sink 中编码器的线程数。默认值为 `16`。（非必选）                                                                            |
-| `protocol`              | `STRING` 类型，对于 MQ 类的 Sink，可以指定消息的协议格式。目前支持以下协议：`canal-json`、`open-protocol`、`canal`、`avro` 和 `maxwell`。              |
-| `schema_registry`       | `STRING` 类型，schema registry 地址。（非必选）                                                                                 |
-| `terminator`            | `STRING` 类型，换行符，用来分隔两个数据变更事件。默认值为空，表示使用 `"\r\n"` 作为换行符。（非必选）                                                         |
-| `transaction_atomicity` | `STRING` 类型，事务一致性等级。（非必选）                                                                                            |
-| `only_output_updated_columns`             | `BOOLEAN` 类型，对于 MQ 类型的 Sink 中的 `canal-json` 和 `open-protocol`，表示是否只向下游同步有内容更新的列。默认值为 `false`。（非必选）                        |
-| `cloud_storage_config`             | storage sink 配置。（非必选） |
+| 参数名                           | 说明                                                                                                 |
+|:------------------------------|:---------------------------------------------------------------------------------------------------|
+| `column_selectors`            | column selector 配置。（非必选）                                                                           |
+| `csv`                         | CSV 配置。（非必选）                                                                                       |
+| `date_separator`              | `STRING` 类型，文件路径的日期分隔类型。可选类型有 `none`、`year`、`month` 和 `day`。默认值为 `none`，即不使用日期分隔。（非必选）             |
+| `dispatchers`                 | 事件分发配置数组。（非必选）                                                                                     |
+| `encoder_concurrency`         | `INT` 类型。MQ sink 中编码器的线程数。默认值为 `16`。（非必选）                                                          |
+| `protocol`                    | `STRING` 类型，对于 MQ 类的 Sink，可以指定消息的协议格式。目前支持以下协议：`canal-json`、`open-protocol`、`avro` 和 `maxwell`。    |
+| `schema_registry`             | `STRING` 类型，schema registry 地址。（非必选）                                                               |
+| `terminator`                  | `STRING` 类型，换行符，用来分隔两个数据变更事件。默认值为空，表示使用 `"\r\n"` 作为换行符。（非必选）                                       |
+| `transaction_atomicity`       | `STRING` 类型，事务一致性等级。（非必选）                                                                          |
+| `only_output_updated_columns` | `BOOLEAN` 类型，对于 MQ 类型的 Sink 中的 `canal-json` 和 `open-protocol`，表示是否只向下游同步有内容更新的列。默认值为 `false`。（非必选） |
+| `cloud_storage_config`        | storage sink 配置。（非必选）                                                                              |
+| `open`                        | Open Protocol 配置。（非必选）                                                                             |
+| `debezium`                    | Debezium Protocol 配置。（非必选）                                                                             |
 
 `sink.column_selectors` 是一个数组，元素参数说明如下：
 
@@ -354,11 +334,11 @@ curl -X GET http://127.0.0.1:8300/api/v2/health
 | `quote`                  | `STRING` 类型，用于包裹字段的引号字符。空值代表不使用引号字符。默认值为 `"`。   |
 | `binary_encoding_method` | `STRING` 类型，二进制类型数据的编码方式，可选 `"base64"` 或 `"hex"`。默认值为 `"base64"`。   |
 
-`sink.dispatchers`：对于 MQ 类的 Sink，可以通过该参数配置 event 分发器，支持以下分发器：`default`、`ts`、`rowid`、`table` 。分发规则如下：
+`sink.dispatchers`：对于 MQ 类的 Sink，可以通过该参数配置 event 分发器，支持以下分发器：`default`、`ts`、`index-value`、`table` 。分发规则如下：
 
 - `default`：按照 table 分发。
 - `ts`：以行变更的 commitTs 做 Hash 计算并进行 event 分发。
-- `rowid`：以所选的 HandleKey 列名和列值做 Hash 计算并进行 event 分发。
+- `index-value`：以所选的 HandleKey 列名和列值做 Hash 计算并进行 event 分发。
 - `table`：以表的 schema 名和 table 名做 Hash 计算并进行 event 分发。
 
 `sink.dispatchers` 是一个数组，元素参数说明如下：
@@ -379,6 +359,18 @@ curl -X GET http://127.0.0.1:8300/api/v2/health
 | `file_expiration_days`   | `INT` 类型，文件保留的时长。|
 | `file_cleanup_cron_spec`   | `STRING` 类型，定时清理任务的运行周期，与 crontab 配置兼容，格式为 `<Second> <Minute> <Hour> <Day of the month> <Month> <Day of the week (Optional)>`。|
 | `flush_concurrency`   | `INT` 类型，上传单个文件的并发数。|
+
+`sink.open` 参数说明如下：
+
+| 参数名                | 说明                                                            |
+|:-------------------|:--------------------------------------------------------------|
+| `output_old_value` | `BOOLEAN` 类型，是否输出行数据更改前的值。默认值为 `true`。关闭后，Update 事件不会输出 "p" 字段的数据。 |
+
+`sink.debezium` 参数说明如下：
+
+| 参数名                | 说明                                                                 |
+|:-------------------|:-------------------------------------------------------------------|
+| `output_old_value` | `BOOLEAN` 类型，是否输出行数据更改前的值。默认值为 `true`。关闭后，Update 事件不会输出 "before" 字段的数据。 |
 
 ### 使用样例
 
@@ -410,15 +402,6 @@ curl -X POST -H "'Content-type':'application/json'" http://127.0.0.1:8300/api/v2
     "enable_old_value": true,
     "enable_sync_point": true,
     "filter": {
-      "do_dbs": [
-        "string"
-      ],
-      "do_tables": [
-        {
-          "database_name": "string",
-          "table_name": "string"
-        }
-      ],
       "event_filters": [
         {
           "ignore_delete_value_expr": "string",
@@ -434,15 +417,6 @@ curl -X POST -H "'Content-type':'application/json'" http://127.0.0.1:8300/api/v2
           "matcher": [
             "string"
           ]
-        }
-      ],
-      "ignore_dbs": [
-        "string"
-      ],
-      "ignore_tables": [
-        {
-          "database_name": "string",
-          "table_name": "string"
         }
       ],
       "ignore_txn_start_ts": [
@@ -614,15 +588,6 @@ curl -X DELETE http://127.0.0.1:8300/api/v2/changefeeds/test1
     "enable_old_value": true,
     "enable_sync_point": true,
     "filter": {
-      "do_dbs": [
-        "string"
-      ],
-      "do_tables": [
-        {
-          "database_name": "string",
-          "table_name": "string"
-        }
-      ],
       "event_filters": [
         {
           "ignore_delete_value_expr": "string",
@@ -638,15 +603,6 @@ curl -X DELETE http://127.0.0.1:8300/api/v2/changefeeds/test1
           "matcher": [
             "string"
           ]
-        }
-      ],
-      "ignore_dbs": [
-        "string"
-      ],
-      "ignore_tables": [
-        {
-          "database_name": "string",
-          "table_name": "string"
         }
       ],
       "ignore_txn_start_ts": [

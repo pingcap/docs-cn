@@ -1,9 +1,10 @@
 ---
-title: JSON 类型
+title: JSON 数据类型
 aliases: ['/docs-cn/dev/data-type-json/','/docs-cn/dev/reference/sql/data-types/json/']
+summary: JSON 类型存储半结构化数据，使用 Binary 格式序列化，加快查询和解析速度。JSON 字段不能创建索引，但可以对 JSON 文档中的子字段创建索引。TiDB 仅支持下推部分 JSON 函数到 TiFlash，不建议使用 BR 恢复包含 JSON 列的数据到 v6.3.0 之前的 TiDB 集群。请勿同步非标准 JSON 类型的数据。MySQL 误标记二进制类型数据为 STRING 类型，TiDB 保持正确的二进制类型。ENUM 或 SET 数据类型转换为 JSON 时，TiDB 会检查格式正确性。TiDB 支持使用 ORDER BY 对 JSON Array 或 JSON Object 进行排序。在 INSERT JSON 列时，TiDB 会将值隐式转换为 JSON。
 ---
 
-# JSON 类型
+# JSON 数据类型
 
 JSON 类型可以存储 JSON 这种半结构化的数据，相比于直接将 JSON 存储为字符串，它的好处在于：
 
@@ -11,8 +12,6 @@ JSON 类型可以存储 JSON 这种半结构化的数据，相比于直接将 JS
 2. 多了 JSON 合法性验证的步骤，只有合法的 JSON 文档才可以放入这个字段中；
 
 JSON 字段本身上，并不能创建索引，但是可以对 JSON 文档中的某个子字段创建索引。例如：
-
-{{< copyable "sql" >}}
 
 ```sql
 CREATE TABLE city (
@@ -24,6 +23,29 @@ CREATE TABLE city (
 INSERT INTO city (id,detail) VALUES (1, '{"name": "Beijing", "population": 100}');
 SELECT id FROM city WHERE population >= 100;
 ```
+
+更多信息，请参考 [JSON 函数](/functions-and-operators/json-functions.md)和[生成列](/generated-columns.md)。
+
+## JSON 值的类型
+
+JSON 文档中的每个值都属于一种特定的数据类型。可以通过 [`JSON_TYPE`()](/functions-and-operators/json-functions/json-functions-return.md#json_type) 的输出结果查看。
+
+| 类型             | 示例                        |
+|------------------|--------------------------------|
+| ARRAY            | `[]`                           |
+| BIT              |                                |
+| BLOB             | `0x616263`                          |
+| BOOLEAN          | `true`                         |
+| DATE             | `"2025-06-14"`                 |
+| DATETIME         | `"2025-06-14 09:05:10.000000"` |
+| DOUBLE           | `1.14`                         |
+| INTEGER          | `5`                            |
+| NULL             | `null`                         |
+| OBJECT           | `{}`                           |
+| OPAQUE           |                                |
+| STRING           | `"foobar"`                     |
+| TIME             | `"09:10:00.000000"`            |
+| UNSIGNED INTEGER | `9223372036854776000`          |
 
 ## 使用限制
 

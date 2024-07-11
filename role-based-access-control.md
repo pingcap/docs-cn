@@ -1,6 +1,7 @@
 ---
 title: 基于角色的访问控制
 aliases: ['/docs-cn/dev/role-based-access-control/','/docs-cn/dev/reference/security/role-based-access-control/']
+summary: TiDB 的基于角色的访问控制 (RBAC) 系统类似于 MySQL 8.0 的 RBAC 系统。用户可以创建、删除和授予角色权限，也可以将角色授予其他用户。角色需要在用户启用后才能生效。用户可以通过 `SHOW GRANTS` 查看角色权限，也可以设置默认启用角色。角色授权具有原子性，失败会回滚。除了角色授权外，还有用户管理和权限管理相关操作。
 ---
 
 # 基于角色的访问控制
@@ -182,7 +183,7 @@ SET DEFAULT ROLE
     TO user [, user ]
 ```
 
-比如将 `app_read` 和 `app_wirte` 设置为 `rw_user1@localhost` 的默认启用角色：
+比如将 `app_read` 和 `app_write` 设置为 `rw_user1@localhost` 的默认启用角色：
 
 {{< copyable "sql" >}}
 

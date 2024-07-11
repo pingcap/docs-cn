@@ -8,6 +8,10 @@ aliases: ['/docs-cn/dev/sql-statements/sql-statement-add-index/','/docs-cn/dev/r
 
 `ALTER TABLE.. ADD INDEX` 语句用于在已有表中添加一个索引。在 TiDB 中，`ADD INDEX` 为在线操作，不会阻塞表中的数据读写。
 
+> **Tip:**
+>
+> 你可以使用 [TiDB 分布式执行框架](/tidb-distributed-execution-framework.md)加速该语句的执行。
+
 > **警告：**
 >
 > - 在升级 TiDB 集群的过程中，**请勿执行** DDL 语句，否则可能会出现行为未定义的问题。
@@ -109,7 +113,9 @@ EXPLAIN SELECT * FROM t1 WHERE c1 = 3;
 
 ## MySQL 兼容性
 
-* 不支持 `FULLTEXT`，`HASH` 和 `SPATIAL` 索引。
+* 为了兼容 MySQL，TiDB 在语法上支持 `HASH`、`BTREE` 和 `RTREE` 等索引类型，但会忽略它们。
+* 不支持 `SPATIAL` 索引。
+* TiDB 支持解析 `FULLTEXT` 语法，但不支持使用 `FULLTEXT` 索引。
 * 不支持降序索引（类似于 MySQL 5.7）。
 * 无法向表中添加 `CLUSTERED` 类型的 `PRIMARY KEY`。要了解关于 `CLUSTERED` 主键的详细信息，请参考[聚簇索引](/clustered-indexes.md)。
 
@@ -124,3 +130,4 @@ EXPLAIN SELECT * FROM t1 WHERE c1 = 3;
 * [ADD COLUMN](/sql-statements/sql-statement-add-column.md)
 * [CREATE TABLE](/sql-statements/sql-statement-create-table.md)
 * [EXPLAIN](/sql-statements/sql-statement-explain.md)
+* [TiDB 分布式执行框架](/tidb-distributed-execution-framework.md)

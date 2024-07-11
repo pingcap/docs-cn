@@ -144,9 +144,9 @@ TiSpark 是 Spark 的第三方 jar 包，提供读写 TiKV 的能力。
 
 ```
 spark.sql.extensions  org.apache.spark.sql.TiExtensions
-spark.tispark.pd.addresses  ${your_pd_adress}
+spark.tispark.pd.addresses  ${your_pd_address}
 spark.sql.catalog.tidb_catalog  org.apache.spark.sql.catalyst.catalog.TiCatalog
-spark.sql.catalog.tidb_catalog.pd.addresses  ${your_pd_adress}
+spark.sql.catalog.tidb_catalog.pd.addresses  ${your_pd_address}
 ```
 
 启动 spark-shell：
@@ -443,7 +443,7 @@ TiSpark 可以使用 TiDB 的统计信息：
 - 选择代价最低的索引访问
 - 估算数据大小以决定是否进行广播优化
 
-如果你希望 TiSpark 使用统计信息支持，需要确保所涉及的表已经被分析。参考[统计信息简介](/statistics.md)了解如何进行表分析。
+如果你希望 TiSpark 使用统计信息支持，需要确保所涉及的表已经被分析。参考[常规统计信息](/statistics.md)了解如何进行表分析。
 
 从 TiSpark 2.0 开始，统计信息将会默认被读取。
 

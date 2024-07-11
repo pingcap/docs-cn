@@ -1,6 +1,7 @@
 ---
 title: TiDB 集群监控 API
 aliases: ['/docs-cn/dev/tidb-monitoring-api/']
+summary: TiDB 提供状态接口和 Metrics 接口来监控集群状态。状态接口可获取 TiDB Server 的运行状态和存储信息，PD 的状态接口可查看整个 TiKV 集群的详细信息。Metrics 接口用于监控整个集群的状态和性能。部署 Prometheus 和 Grafana 后，配置 Grafana 即可使用 Metrics 接口。
 ---
 
 # TiDB 集群监控 API
@@ -32,7 +33,7 @@ curl http://127.0.0.1:10080/status
 ```
 {
     connections: 0,  # 当前 TiDB Server 上的客户端连接数
-    version: "8.0.11-TiDB-v7.6.0",  # TiDB 版本号
+    version: "8.0.11-TiDB-v8.1.0",  # TiDB 版本号
     git_hash: "7267747ae0ec624dffc3fdedb00f1ed36e10284b"  # TiDB 当前代码的 Git Hash
 }
 ```

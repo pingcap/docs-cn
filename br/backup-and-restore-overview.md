@@ -25,6 +25,7 @@ TiDB 备份恢复功能可以用于满足以下业务的需求：
 - PITR 仅支持集群粒度的恢复，不支持对单个 database 或 table 的恢复。
 - PITR 不支持恢复系统表中用户表和权限表的数据。
 - 不支持在一个集群上**同时**运行多个数据备份任务。
+- 不支持在一个集群上**同时**运行快照备份任务和数据恢复任务。
 - PITR 数据恢复任务运行期间，不支持同时运行日志备份任务，也不支持通过 TiCDC 同步数据到下游集群。
 
 ### 使用建议
@@ -93,7 +94,7 @@ TiDB 备份恢复功能可以用于满足以下业务的需求：
 
 #### 恢复的性能
 
-- 恢复集群快照数据备份，速度可以达到单 TiKV 存储节点 100 MiB/s，恢复速度具有可扩展性；BR 只支持恢复数据到新集群，会尽可能多的使用恢复集群的资源。更详细说明请参考[恢复性能和影响](/br/br-snapshot-guide.md#快照恢复的性能与影响)。
+- 恢复集群快照数据备份，速度可以达到单 TiKV 存储节点 100 MiB/s，恢复速度具有可扩展性。更详细说明请参考[恢复性能和影响](/br/br-snapshot-guide.md#快照恢复的性能与影响)。
 - 恢复日志备份数据，速度可以达到 30 GiB/h。更详细说明请参考 [PITR 的性能指标](/br/br-pitr-guide.md#pitr-的性能指标)。
 
 ## 备份存储
@@ -118,6 +119,7 @@ TiDB 支持将数据备份到 Amazon S3、Google Cloud Storage (GCS)、Azure Blo
 | New collation  | [#352](https://github.com/pingcap/br/issues/352)       | 确保恢复时集群的 `mysql.tidb` 表中 `new_collation_enabled` 变量值和备份时的一致，否则会导致数据索引不一致和 checksum 通不过。更多信息，请参考 [FAQ - BR 为什么会报 `new_collations_enabled_on_first_bootstrap` 不匹配？](/faq/backup-and-restore-faq.md#恢复时为什么会报-new_collation_enabled-不匹配)。 |
 | 全局临时表 | | 确保使用 BR v5.3.0 及以上版本进行备份和恢复，否则会导致全局临时表的表定义错误。 |
 | TiDB Lightning 物理导入模式| |上游数据库使用 TiDB Lightning 物理导入模式导入的数据，无法作为数据日志备份下来。推荐在数据导入后执行一次全量备份，细节参考[上游数据库使用 TiDB Lightning 物理导入模式导入数据的恢复](/faq/backup-and-restore-faq.md#上游数据库使用-tidb-lightning-物理导入模式导入数据时为什么无法使用日志备份功能)。|
+| TiCDC | | BR v8.2.0 及以上版本：如果在恢复的目标集群有 [CheckpointTS](/ticdc/ticdc-architecture.md#checkpointts) 早于 BackupTS 的 Changefeed，BR 会拒绝执行恢复。BR v8.2.0 之前的版本：如果在恢复的目标集群有任何活跃的 TiCDC Changefeed，BR 会拒绝执行恢复。 |
 
 ### 版本间兼容性
 

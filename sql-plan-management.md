@@ -1,5 +1,6 @@
 ---
 title: 执行计划管理 (SPM)
+summary: 介绍 TiDB 的执行计划管理 (SQL Plan Management) 功能。
 aliases: ['/docs-cn/dev/sql-plan-management/','/docs-cn/dev/reference/performance/execution-plan-bind/','/docs-cn/dev/execution-plan-binding/']
 ---
 
@@ -227,7 +228,7 @@ CREATE BINDING FOR SELECT * FROM t WHERE a > 1 USING SELECT * FROM t use index(i
 以下为根据历史执行计划创建绑定的注意事项：
 
 - 该功能是根据历史的执行计划生成 hint 而实现的绑定，历史的执行计划来源是 [Statement Summary Tables](/statement-summary-tables.md)，因此在使用此功能之前需开启系统变量 [`tidb_enable_stmt_summary`](/system-variables.md#tidb_enable_stmt_summary-从-v304-版本开始引入)。
-- 对于包含子查询的查询、访问 TiFlash 的查询、3 张表或更多表进行 Join 的查询，目前还不支持通过历史执行计划进行绑定。
+- 对于包含子查询的查询、访问 TiFlash 的查询、3 张表或更多表进行 Join 的查询，自动生成的 hint 不够完备，可能导致无法完全固定住计划，对于这类情况在创建时会产生告警。
 - 原执行计划对应 SQL 语句中的 hint 也会被应用在创建的绑定中，如执行 `SELECT /*+ max_execution_time(1000) */ * FROM t` 后，使用其 `plan_digest` 创建的绑定中会带上 `max_execution_time(1000)`。
 
 使用方式:
@@ -247,7 +248,7 @@ CREATE [GLOBAL | SESSION] BINDING FROM HISTORY USING PLAN DIGEST 'plan_digest';
     ```sql
     CREATE TABLE t(id INT PRIMARY KEY , a INT, KEY(a));
     SELECT /*+ IGNORE_INDEX(t, a) */ * FROM t WHERE a = 1;
-    SELECT * FROM INFORMATION_SCHEMA.STATEMENTS_SUMMARY WHERE QUERY_SAMPLE_TEXT = 'SELECT /*+ IGNORE_INDEX(t, a) */ * FROM t WHERE a = 1'\G;
+    SELECT * FROM INFORMATION_SCHEMA.STATEMENTS_SUMMARY WHERE QUERY_SAMPLE_TEXT = 'SELECT /*+ IGNORE_INDEX(t, a) */ * FROM t WHERE a = 1'\G
     ```
 
     以下为 `statements_summary` 部分查询结果：
@@ -276,7 +277,7 @@ CREATE [GLOBAL | SESSION] BINDING FROM HISTORY USING PLAN DIGEST 'plan_digest';
 创建完毕后可以[查看绑定](#查看绑定)，验证绑定是否生效。
 
 ```sql
-SHOW BINDINGS\G;
+SHOW BINDINGS\G
 ```
 
 ```
@@ -474,6 +475,52 @@ SHOW binding_cache status;
 |                 1 |                 1 | 159 Bytes    | 64 MB        |
 +-------------------+-------------------+--------------+--------------+
 1 row in set (0.00 sec)
+```
+
+## 利用 Statement Summary 表获取需要绑定的查询
+
+[Statement Summary](/statement-summary-tables.md) 的表中存放了近期的 SQL 相关的执行信息，如延迟、执行次数、对应计划等。你可以通过查询 Statement Summary 表得到符合条件查询的 `plan_digest`，然后[根据历史执行计划创建绑定](/sql-plan-management.md#根据历史执行计划创建绑定)。
+
+以下示例查找过去两周执行次数超过 10 次、执行计划不稳定且未被绑定的 `SELECT` 语句，并按照执行次数排序，将执行次数前 100 的查询绑定到对应的查询延迟最低的计划上。
+
+```sql
+WITH stmts AS (                                                -- Gets all information
+  SELECT * FROM INFORMATION_SCHEMA.CLUSTER_STATEMENTS_SUMMARY
+  UNION ALL
+  SELECT * FROM INFORMATION_SCHEMA.CLUSTER_STATEMENTS_SUMMARY_HISTORY 
+),
+best_plans AS (
+  SELECT plan_digest, `digest`, avg_latency, 
+  CONCAT('create global binding from history using plan digest "', plan_digest, '"') as binding_stmt 
+  FROM stmts t1
+  WHERE avg_latency = (SELECT min(avg_latency) FROM stmts t2   -- The plan with the lowest query latency
+                       WHERE t2.`digest` = t1.`digest`)
+)
+
+SELECT any_value(digest_text) as query, 
+       SUM(exec_count) as exec_count, 
+       plan_hint, binding_stmt
+FROM stmts, best_plans
+WHERE stmts.`digest` = best_plans.`digest`
+  AND summary_begin_time > DATE_SUB(NOW(), interval 14 day)    -- Executed in the past 2 weeks
+  AND stmt_type = 'Select'                                     -- Only consider select statements
+  AND schema_name NOT IN ('INFORMATION_SCHEMA', 'mysql')       -- Not an internal query
+  AND plan_in_binding = 0                                      -- No binding yet
+GROUP BY stmts.`digest`
+  HAVING COUNT(DISTINCT(stmts.plan_digest)) > 1                -- This query is unstable. It has more than 1 plan.
+         AND SUM(exec_count) > 10                              -- High-frequency, and has been executed more than 10 times.
+ORDER BY SUM(exec_count) DESC LIMIT 100;                       -- Top 100 high-frequency queries.
+```
+
+通过一些过滤条件得到满足条件的查询，然后直接运行 `binding_stmt` 列对应的语句即可创建相应的绑定。
+
+```
++---------------------------------------------+------------+-----------------------------------------------------------------------------+-------------------------------------------------------------------------------------------------------------------------+
+| query                                       | exec_count | plan_hint                                                                   | binding_stmt                                                                                                            |
++---------------------------------------------+------------+-----------------------------------------------------------------------------+-------------------------------------------------------------------------------------------------------------------------+
+| select * from `t` where `a` = ? and `b` = ? |        401 | use_index(@`sel_1` `test`.`t` `a`), no_order_index(@`sel_1` `test`.`t` `a`) | create global binding from history using plan digest "0d6e97fb1191bbd08dddefa7bd007ec0c422b1416b152662768f43e64a9958a6" |
+| select * from `t` where `b` = ? and `c` = ? |        104 | use_index(@`sel_1` `test`.`t` `b`), no_order_index(@`sel_1` `test`.`t` `b`) | create global binding from history using plan digest "80c2aa0aa7e6d3205755823aa8c6165092c8521fb74c06a9204b8d35fc037dd9" |
++---------------------------------------------+------------+-----------------------------------------------------------------------------+-------------------------------------------------------------------------------------------------------------------------+
 ```
 
 ## 跨数据库绑定执行计划 (Cross-DB Binding)

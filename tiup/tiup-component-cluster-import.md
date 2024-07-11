@@ -1,5 +1,6 @@
 ---
 title: tiup cluster import
+summary: TiUP Cluster 提供了 `import` 命令，用于将 TiDB Ansible 部署的集群过渡到使用 tiup-cluster 组件管理。导入过程的日志信息将会输出。暂不支持导入启用了 TLS 加密功能、纯 KV 集群、启用了 Kafka 的集群、启用了 Spark 的集群、启用了 TiDB Lightning/Importer 的集群、仍使用老版本 `push` 的方式收集监控指标、单独为机器的 `node_exporter` / `blackbox_exporter` 设置了非默认端口的集群。如果集群中有部分节点未部署监控，应当先补充对应节点的信息，并将补充的监控组件部署完整。
 ---
 
 # tiup cluster import

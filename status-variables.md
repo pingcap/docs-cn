@@ -1,6 +1,6 @@
 ---
 title: 服务器状态变量
-summary: 使用状态变量查看系统和会话状态
+summary: 使用状态变量查看系统和会话状态。
 ---
 
 # 服务器状态变量
@@ -35,13 +35,13 @@ summary: 使用状态变量查看系统和会话状态
 
 - 作用域：SESSION | GLOBAL
 - 类型：字符串
-- 正在使用的 TLS 加密套件.
+- 正在使用的 TLS 加密套件。
 
 ### Ssl_cipher_list
 
 - 作用域：SESSION | GLOBAL
 - 类型：字符串
-- 服务器支持的 TLS 加密套件列表.
+- 服务器支持的 TLS 加密套件列表。
 
 ### Ssl_server_not_after
 
@@ -79,7 +79,7 @@ summary: 使用状态变量查看系统和会话状态
 - 类型：整数型
 - DDL schema 使用的版本。
 
-### last_plan_binding_update_time <span class="version-mark">New in v5.2.0</span>
+### last_plan_binding_update_time <span class="version-mark">从 v5.2.0 版本开始引入</span>
 
 - 作用域：SESSION
 - 类型：时间戳
@@ -90,3 +90,33 @@ summary: 使用状态变量查看系统和会话状态
 - 作用域：SESSION | GLOBAL
 - 类型：字符串
 - 服务器的通用唯一识别码 (UUID)。
+
+### tidb_gc_last_run_time
+
+- 作用域：SESSION | GLOBAL
+- 类型：字符串
+- 最近一次运行[垃圾回收 (GC)](/garbage-collection-overview.md) 的时间戳。
+
+### tidb_gc_leader_desc
+
+- 作用域：SESSION | GLOBAL
+- 类型：字符串
+- [GC](/garbage-collection-overview.md) leader 的相关信息，包括主机名和进程 ID (PID)。
+
+### tidb_gc_leader_lease
+
+- 作用域：SESSION | GLOBAL
+- 类型：字符串
+- [GC](/garbage-collection-overview.md) leader 的租约时间戳。
+
+### tidb_gc_leader_uuid
+
+- 作用域：SESSION | GLOBAL
+- 类型：字符串
+- [GC](/garbage-collection-overview.md) leader 的 UUID。
+
+### tidb_gc_safe_point
+
+- 作用域：SESSION | GLOBAL
+- 类型：字符串
+- [GC](/garbage-collection-overview.md) safe point 的时间戳。

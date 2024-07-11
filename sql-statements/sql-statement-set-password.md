@@ -10,9 +10,10 @@ aliases: ['/docs-cn/dev/sql-statements/sql-statement-set-password/','/docs-cn/de
 
 ## 语法图
 
-**SetStmt:**
-
-![SetStmt](/media/sqlgram/SetStmt.png)
+```ebnf+diagram
+SetPasswordStmt ::=
+    "SET" "PASSWORD" ( "FOR" Username )? "=" ( stringLit | "PASSWORD" "(" stringLit ")" )
+```
 
 ## 示例
 

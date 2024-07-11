@@ -1,6 +1,6 @@
 ---
 title: 理解 TiKV 中的 Stale Read 和 safe-ts
-summary: 介绍 TiKV 中 Stale Read 和 safe-ts 的原理，并提供故障诊断建议和示例以诊断与 Stale Read 相关的常见问题。
+summary: TiKV 中的 Stale Read 依赖于 safe-ts，保证读取历史数据版本的安全性。safe-ts 由每个 Region 中的 peer 维护，resolved-ts 则由 Region leader 维护。诊断 Stale Read 问题可通过 Grafana、tikv-ctl 和日志。常见原因包括事务提交时间过长、事务存在时间过长以及 CheckLeader 信息推送延迟。处理慢事务提交可通过识别锁所属的事务和检查应用程序逻辑。处理长事务可通过识别事务、检查应用程序逻辑和处理慢查询。解决 CheckLeader 问题可通过检查网络和监控面板指标。
 ---
 
 # 理解 TiKV 中的 Stale Read 和 safe-ts

@@ -47,15 +47,31 @@ TiProxy 有四个面板组。这些面板上的指标表示 TiProxy 的当前状
 - CPS by Instance：每个 TiProxy 实例的每秒命令数。
 - CPS by Backend：每个 TiDB 实例的每秒命令数。
 - CPS by CMD：按 SQL 命令类型分组的每秒命令数。
+- Handshake Duration：客户端与 TiProxy 握手阶段的平均、P95、P99 时长。
 
 ## Balance
 
 - Backend Connections：每个 TiDB 实例和每个 TiProxy 实例之间的连接数。例如，`10.24.31.1:6000 | 10.24.31.2:4000` 表示 TiProxy 实例 `10.24.31.1:6000` 和 TiDB 实例 `10.24.31.2:4000`。
 - Session Migration OPM：每分钟发生的会话迁移数，记录从 TiDB 实例迁移到另一个 TiDB 实例的会话。例如，`succeed: 10.24.31.2:4000 => 10.24.31.3:4000` 表示从 TiDB 实例 `10.24.31.2:4000` 成功迁移到 TiDB 实例 `10.24.31.3:4000` 的会话数。
 - Session Migration Duration：会话迁移的平均、P95、P99 时长。
+- Session Migration Reasons：每分钟发生的会话迁移数，以及迁移的原因。原因包括：
+    - `status`：TiProxy 进行了[基于状态的负载均衡](/tiproxy/tiproxy-load-balance.md#基于状态的负载均衡)
+    - `health`：TiProxy 进行了[基于健康度的负载均衡](/tiproxy/tiproxy-load-balance.md#基于健康度的负载均衡)
+    - `memory`：TiProxy 进行了[基于内存的负载均衡](/tiproxy/tiproxy-load-balance.md#基于内存的负载均衡)
+    - `cpu`：TiProxy 进行了[基于 CPU 的负载均衡](/tiproxy/tiproxy-load-balance.md#基于-cpu-的负载均衡)
+    - `location`：TiProxy 进行了[基于地理位置的负载均衡](/tiproxy/tiproxy-load-balance.md#基于地理位置的负载均衡)
+    - `conn`：TiProxy 进行了[基于连接数的负载均衡](/tiproxy/tiproxy-load-balance.md#基于连接数的负载均衡)
 
 ## Backend
 
 - Get Backend Duration：TiProxy 连接到 TiDB 实例的平均、P95、P99 时长。
 - Ping Backend Duration：每个 TiProxy 实例和每个 TiProxy 实例之间的网络延迟。例如，`10.24.31.1:6000 | 10.24.31.2:4000` 表示 TiProxy 实例 `10.24.31.1:6000` 和 TiDB 实例 `10.24.31.2:4000` 之间的网络延迟。
 - Health Check Cycle：每个 TiProxy 实例和所有 TiDB 实例之间的健康检查周期。例如，`10.24.31.1:6000` 表示 TiProxy 实例 `10.24.31.1:6000` 在所有 TiDB 实例上执行的最新健康检查的持续时间。如果此持续时间大于 3 秒，则 TiProxy 可能无法及时刷新后端 TiDB 列表。
+
+## Traffic
+
+- Bytes/Second from Backends：每个 TiDB 实例每秒向每个 TiProxy 实例发送的数据量，单位为字节。
+- Packets/Second from Backends：每个 TiDB 实例每秒向每个 TiProxy 实例发送的 MySQL 数据包数量。
+- Bytes/Second to Backends：每个 TiProxy 实例每秒向每个 TiDB 实例发送的数据量，单位为字节。
+- Packets/Second to Backends：每个 TiProxy 实例每秒向每个 TiDB 实例发送的 MySQL 数据包数量。
+- Cross Location Bytes/Second：每个 TiProxy 实例每秒与跨地理位置的 TiDB 实例之间传输的数据量，单位为字节。

@@ -139,10 +139,10 @@ SELECT TABLE_NAME FROM information_schema.tables where TABLE_SCHEMA = "<db_name>
     tiup ctl:v<CLUSTER_VERSION> pd -u http://<PD_ADDRESS>:2379 store limit all engine tiflash 60 add-peer
     ```
 
-    > 上述命令中，需要将 `v<CLUSTER_VERSION>` 替换为该集群版本，例如 `v7.6.0`，`<PD_ADDRESS>:2379` 替换为任一 PD 节点的地址。替换后样例为：
+    > 上述命令中，需要将 `v<CLUSTER_VERSION>` 替换为该集群版本，例如 `v8.1.0`，`<PD_ADDRESS>:2379` 替换为任一 PD 节点的地址。替换后样例为：
     >
     > ```shell
-    > tiup ctl:v7.6.0 pd -u http://192.168.1.4:2379 store limit all engine tiflash 60 add-peer
+    > tiup ctl:v8.1.0 pd -u http://192.168.1.4:2379 store limit all engine tiflash 60 add-peer
     > ```
 
     执行完毕后，几分钟内，你将观察到 TiFlash 节点的 CPU 及磁盘 IO 资源占用显著提升，TiFlash 将更快地创建副本。同时，TiKV 节点的 CPU 及磁盘 IO 资源占用也将有所上升。

@@ -164,7 +164,7 @@ TiDB 版本：6.6.0-[DMR](/releases/versioning.md#开发里程碑版本)
 
   更多信息，请参考[用户文档](/placement-rules-in-sql.md#指定生存偏好)。
 
-* 支持通过 `FLASHBACK CLUSTER TO TIMESTAMP` 命令闪回 DDL 操作 [#14088](https://github.com/tikv/tikv/issues/14045) @[Defined2014](https://github.com/Defined2014) @[JmPotato](https://github.com/JmPotato)
+* 支持通过 `FLASHBACK CLUSTER TO TIMESTAMP` 命令闪回 DDL 操作 [#14045](https://github.com/tikv/tikv/issues/14045) @[Defined2014](https://github.com/Defined2014) @[JmPotato](https://github.com/JmPotato)
 
     [`FLASHBACK CLUSTER TO TIMESTAMP`](/sql-statements/sql-statement-flashback-cluster.md) 语句支持在 Garbage Collection (GC) life time 内快速回退整个集群到指定的时间点。在 TiDB v6.6.0 版本中，该功能新支持撤销 DDL 操作，适用于快速撤消集群的 DML 或 DDL 误操作、支持分钟级别的快速回退集群、支持在时间线上多次回退以确定特定数据更改发生的时间。
 
@@ -312,7 +312,7 @@ TiDB 版本：6.6.0-[DMR](/releases/versioning.md#开发里程碑版本)
 
     更多信息，请参考[用户文档](/enable-tls-between-components.md)。
 
-* TiDB Lightning 支持通过 AWS IAM 角色的密钥以及会话令牌来访问 S3 数据 [#4075](https://github.com/pingcap/tidb/issues/40750) @[okJiang](https://github.com/okJiang)
+* TiDB Lightning 支持通过 AWS IAM 角色的密钥以及会话令牌来访问 S3 数据 [#40750](https://github.com/pingcap/tidb/issues/40750) @[okJiang](https://github.com/okJiang)
 
     在 v6.6.0 之前，TiDB Lightning 仅支持通过 AWS IAM **用户密钥**访问 S3 的数据，无法使用临时会话令牌。自 v6.6.0 起，TiDB Lightning 支持通过 AWS IAM **角色密钥 + 会话令牌**的方式来访问 S3 数据，以提高安全性。
 
@@ -382,7 +382,7 @@ TiDB 版本：6.6.0-[DMR](/releases/versioning.md#开发里程碑版本)
 | TiDB  |  [`enable-telemetry`](/tidb-configuration-file.md#enable-telemetry-从-v402-版本开始引入)  |  修改 |  自 v6.6.0 起，该配置项默认值由 `true` 改为 `false`，表示默认关闭 TiDB 的遥测功能。  |
 | TiKV  | [`rocksdb.defaultcf.block-size`](/tikv-configuration-file.md#block-size) 和 [`rocksdb.writecf.block-size`](/tikv-configuration-file.md#block-size)  |  修改  |   默认值由 `64K` 调整为 `32K`。  |
 | TiKV | [`rocksdb.defaultcf.block-cache-size`](/tikv-configuration-file.md#block-cache-size), [`rocksdb.writecf.block-cache-size`](/tikv-configuration-file.md#block-cache-size), [`rocksdb.lockcf.block-cache-size`](/tikv-configuration-file.md#block-cache-size) | 修改 | 从 v6.6.0 起，这三个配置项被废弃。详情参见 [#12936](https://github.com/tikv/tikv/issues/12936)。 |
-| PD   |  [`enable-telemetry`](/pd-configuration-file.md#enable-telemetry)  |  修改  |   从 v6.6.0 起，该配置项的默认值由 `true` 改为 `false`，表示默认关闭 TiDB Dasboard 的遥测功能。  |
+| PD   |  [`enable-telemetry`](/pd-configuration-file.md#enable-telemetry)  |  修改  |   从 v6.6.0 起，该配置项的默认值由 `true` 改为 `false`，表示默认关闭 TiDB Dashboard 的遥测功能。  |
 | TiFlash |  [`profile.default.max_memory_usage_for_all_queries`](/tiflash/tiflash-configuration.md#配置文件-tiflashtoml)  |  修改  |  表示所有查询过程中，节点对中间数据的内存限制。自 v6.6.0 起默认值由 `0` 改为 `0.8`，表示节点占总内存的 80%。  |
 | TiCDC  | [`consistent.storage`](/ticdc/ticdc-sink-to-mysql.md#使用前提)  |  修改  | redo log 备份文件的地址，除了 NFS，支持的 `scheme` 新增了 GCS 和 Azure。  |
 | DM | [`import-mode`](/dm/task-configuration-file-full.md) | 修改 | 该配置项的可选值由 `"sql"` 和 `"loader"` 变更为 `"logical"` 和 `"physical"`。默认值为 `"logical"`，即使用 TiDB Lightning 的逻辑导入模式进行导入。 |

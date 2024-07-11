@@ -1,6 +1,7 @@
 ---
 title: PD 配置文件描述
 aliases: ['/docs-cn/dev/pd-configuration-file/','/docs-cn/dev/reference/configuration/pd-server/configuration-file/']
+summary: PD 配置文件包含了许多参数，如节点名称、数据路径、客户端 URL、广告客户端 URL、节点 URL 等。还包括了一些实验性特性的配置项，如内存限制、GC 触发阈值、GOGC Tuner 等。此外，还有监控、调度、副本、标签、Dashboard、同步模式和资源控制等相关配置项。
 ---
 
 # PD 配置文件描述
@@ -475,7 +476,7 @@ PD 中内置的 [TiDB Dashboard](/dashboard/dashboard-intro.md) 相关配置项�
 
 Region 同步模式相关的配置项。更多详情，请参阅[启用自适应同步模式](/two-data-centers-in-one-city-deployment.md#启用自适应同步模式)。
 
-## Controllor
+## Controller
 
 PD 中内置的 [Resource Control](/tidb-resource-control.md) 相关的配置项。
 

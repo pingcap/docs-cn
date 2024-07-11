@@ -1,5 +1,6 @@
 ---
 title: TiDB 配置文件描述
+summary: 介绍未包含在命令行参数中的 TiDB 配置文件选项。
 aliases: ['/docs-cn/dev/tidb-configuration-file/','/docs-cn/dev/reference/configuration/tidb-server/configuration-file/']
 ---
 
@@ -39,8 +40,7 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
 + 类型：Integer
 + 默认值：1000
 + 最小值：1
-+ 最大值（64 位平台）：`18446744073709551615`
-+ 最大值（32 位平台）：`4294967295`
++ 最大值：`1048576`
 
 ### `temp-dir` <span class="version-mark">从 v6.3.0 版本开始引入</span>
 
@@ -121,7 +121,7 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
     - 当使用内置函数 `VERSION()` 时。
     - 当与客户端初始连接，TiDB 返回带有服务端版本号的初始握手包时。具体可以查看 MySQL 初始握手包的[描述](https://dev.mysql.com/doc/dev/mysql-server/latest/page_protocol_connection_phase.html#sect_protocol_connection_phase_initial_handshake)。
 + 默认值：""
-+ 默认情况下，TiDB 版本号格式为：`5.7.${mysql_latest_minor_version}-TiDB-${tidb_version}`。
++ 默认情况下，TiDB 版本号格式为：`8.0.11-TiDB-${tidb_version}`。
 
 > **注意：**
 >
@@ -200,6 +200,16 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
 - 指定关闭服务器时 TiDB 等待的秒数，使得客户端有时间断开连接。
 - 默认值：0
 - 在 TiDB 等待服务器关闭期间，HTTP 状态会显示失败，使得负载均衡器可以重新路由流量。
+
+> **注意：**
+>
+> TiDB 在关闭服务器之前等待的时长也会受到以下参数的影响：
+>
+> - 当使用的平台采用了 SystemD 时，默认的停止超时为 90 秒。如果需要更长的超时时间，可以设置 [`TimeoutStopSec=`](https://www.freedesktop.org/software/systemd/man/latest/systemd.service.html#TimeoutStopSec=)。
+>
+> - 当使用 TiUP Cluster 组件时，默认的 [`--wait-timeout`](/tiup/tiup-component-cluster.md#--wait-timeoutuint默认-120) 为 120 秒。
+>
+> - 当使用 Kubernetes 时，默认的 [`terminationGracePeriodSeconds`](https://kubernetes.io/docs/reference/kubernetes-api/workload-resources/pod-v1/#lifecycle) 为 30 秒。
 
 ### `enable-global-kill` <span class="version-mark">从 v6.1.0 版本开始引入</span>
 
@@ -315,6 +325,12 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
 + 默认值：10000
 + 当查询的行数（包括中间结果，基于统计信息）大于这个值，该操作会被认为是 `expensive` 查询，并输出一个前缀带有 `[EXPENSIVE_QUERY]` 的日志。
 
+### `general-log-file` <span class="version-mark">从 v8.0.0 版本开始引入</span>
+
++ 设置 [general log](/system-variables.md#tidb_general_log) 的文件名。
++ 默认值：""
++ 如果设置了文件名，general log 会输出到指定的文件。如没有设置文件名，general log 会写入 TiDB 实例的日志文件中，该文件名通过 [`filename`](#filename) 指定。
+
 ### `timeout` <span class="version-mark">从 v7.1.0 版本开始引入</span>
 
 + 用于设置 TiDB 写日志操作的超时时间。当磁盘故障导致日志无法写入时，该配置可以让 TiDB 进程崩溃而不是卡死。
@@ -350,6 +366,13 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
 + 保留的日志的最大数量。
 + 默认值：0
 + 默认全部保存；如果设置为 7，会最多保留 7 个老的日志文件。
+
+#### `compression` <span class="version-mark">从 v8.0.0 版本开始引入</span>
+
++ 指定日志的压缩方式。
++ 默认值：""
++ 可选值：""、"gzip"
++ 默认值为 "" ，即不压缩。修改为 "gzip" 可以使用 gzip 算法压缩数据。开启压缩后会影响所有的日志文件，包括 [`slow-query-file`](#slow-query-file)、[`general-log-file`](#general-log-file-从-v800-版本开始引入) 等。
 
 ## security
 
@@ -488,6 +511,7 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
 + 默认值：3600000
 + 单位：毫秒
 + 超过此时间的事务只能执行提交或者回滚，提交不一定能够成功。
++ 对于使用 [`"bulk"` DML 方式](/system-variables.md#tidb_dml_type-从-v800-版本开始引入)执行的事务，其最大 TTL 可以超过该配置项的限制，最大不超过 24 小时或该配置项值中的较大者。
 
 ### `stmt-count-limit`
 
@@ -558,8 +582,8 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
 ### `stats-load-concurrency` <span class="version-mark">从 v5.4.0 版本开始引入</span>
 
 + TiDB 统计信息同步加载功能可以并发处理的最大列数
-+ 默认值：5
-+ 目前的合法值范围：`[1, 128]`
++ 默认值：`0`。在 v8.2.0 之前，默认值为 `5`。
++ 目前的合法值范围：`[0, 128]`。`0` 为自动模式，根据服务器情况，自动调节并发度。在 v8.2.0 之前，最小值为 `1`。
 
 ### `stats-load-queue-size` <span class="version-mark">从 v5.4.0 版本开始引入</span>
 
@@ -572,12 +596,17 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
 + 用于控制 TiDB 是否开启统计信息缓存的内存上限。
 + 默认值：true
 
+### `concurrently-init-stats` <span class="version-mark">从 v8.1.0 和 v7.5.2 版本开始引入</span>
+
++ 用于控制 TiDB 启动时是否并发初始化统计信息。
++ 默认值：`false`
+
 ### `lite-init-stats` <span class="version-mark">从 v7.1.0 版本开始引入</span>
 
 + 用于控制 TiDB 启动时是否采用轻量级的统计信息初始化。
 + 默认值：在 v7.2.0 之前版本中为 `false`，在 v7.2.0 及之后的版本中为 `true`。
 + 当 `lite-init-stats` 为 `true` 时，统计信息初始化时列和索引的直方图、TopN、Count-Min Sketch 均不会加载到内存中。当 `lite-init-stats` 为 `false` 时，统计信息初始化时索引和主键的直方图、TopN、Count-Min Sketch 会被加载到内存中，非主键列的直方图、TopN、Count-Min Sketch 不会加载到内存中。当优化器需要某一索引或者列的直方图、TopN、Count-Min Sketch 时，这些统计信息会被同步或异步加载到内存中（由 [`tidb_stats_load_sync_wait`](/system-variables.md#tidb_stats_load_sync_wait-从-v540-版本开始引入) 控制）。
-+ 将 `lite-init-stats` 设置为 true，可以加速统计信息初始化，避免加载不必要的统计信息，从而降低 TiDB 的内存使用。详情请参考[统计信息的加载](/statistics.md#统计信息的加载)。
++ 将 `lite-init-stats` 设置为 true，可以加速统计信息初始化，避免加载不必要的统计信息，从而降低 TiDB 的内存使用。详情请参考[统计信息的加载](/statistics.md#加载统计信息)。
 
 ### `force-init-stats` <span class="version-mark">从 v6.5.7 和 v7.1.0 版本开始引入</span>
 
@@ -721,6 +750,15 @@ opentracing.reporter 相关的设置。
 + 默认值：60
 + 单位：秒
 
+### `enable-replica-selector-v2` <span class="version-mark">从 v8.0.0 版本开始引入</span>
+
+> **警告：**
+>
+> 从 v8.2.0 开始，该配置项被废弃。给 TiKV 发送 RPC 请求时，默认使用新版本的 Region 副本选择器。
+
++ 用于控制给 TiKV 发送 RPC 请求时，是否使用新版本的 Region 副本选择器。
++ 默认值：true
+
 ## tikv-client.copr-cache <span class="version-mark">从 v4.0.0 版本开始引入</span>
 
 本部分介绍 Coprocessor Cache 相关的配置项。
@@ -731,6 +769,20 @@ opentracing.reporter 相关的设置。
 + 默认值：1000.0
 + 单位：MB
 + 类型：Float
+
+## txn-local-latches
+
+与事务锁存相关的配置项。这些配置项今后可能会废弃，不建议启用。
+
+### `enabled`
+
+- 控制是否开启事务的内存锁。
+- 默认值：`false`
+
+### `capacity`
+
+- Hash 对应的 slot 数量，自动向上调整为 2 的指数倍。每个 slot 占用 32 字节内存。如果设置过小，在数据写入范围较大的场景（如导入数据），可能会导致运行速度变慢，性能变差。
+- 默认值：`2048000`
 
 ## binlog
 
@@ -809,7 +861,7 @@ TiDB 服务状态相关配置。
 + 用来控制开启全局悲观事务模式下 (`tidb_txn_mode='pessimistic'`) 时，自动提交的事务使用的事务模式。默认情况下，即使开启全局悲观事务模式，自动提交事务依然使用乐观事务模式来执行。当开启该配置项后（设置为 `true`），在全局悲观事务模式下，自动提交事务将也使用悲观事务模式执行。行为与其他显式提交的悲观事务相同。
 + 对于存在冲突的场景，开启本开关可以将自动提交事务纳入全局等锁管理中，从而避免死锁，改善冲突造成死锁带来的时延尖刺。
 + 对于不存在冲突的场景，如果有大量自动提交事务（例如自动提交事务数量占业务数量的比例超过一半甚至更多，需要根据实际情况分析）且单个事务操作数据量较大的情况下，开启该配置项会造成性能回退。例如，自动提交的 `INSERT INTO SELECT` 语句。
-
++ 当 SESSION 级系统变量 [`tidb_dml_type`](/system-variables.md#tidb_dml_type-从-v800-版本开始引入) 设置为 `"bulk"` 时，在该 SESSION 中，该配置项的效果等同于设置为 `false`。
 + 默认值：false
 
 ### constraint-check-in-place-pessimistic <span class="version-mark">从 v6.4.0 版本开始引入</span>
@@ -831,7 +883,7 @@ TiDB 服务状态相关配置。
 
 ### `tidb_enable_collect_execution_info`
 
-+ 用于控制是否同时将各个执行算子的执行信息记录入 slow query log 中。
++ 用于控制是否同时将各个执行算子的执行信息记录入 slow query log 中，以及是否维护[访问索引有关的统计信息](/information-schema/information-schema-tidb-index-usage.md)。
 + 默认值：true
 + 在 v6.1.0 之前，该功能通过配置项 `enable-collect-execution-info` 进行设置。
 

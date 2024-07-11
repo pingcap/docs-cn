@@ -1,5 +1,6 @@
 ---
 title: 通过 SQL 表达式过滤 DML
+summary: 增量数据迁移时可通过 SQL 表达式过滤 binlog event，例如不向下游迁移 `DELETE` 事件。从 v2.0.5 起，DM 支持使用 `binlog value filter` 过滤迁移数据。在 `ROW` 格式的 binlog 中，可以基于列的值配置 SQL 表达式。如果表达式结果为 `TRUE`，DM 就不会向下游迁移该条行变更。具体操作步骤和实现细节，请参考如何通过 SQL 表达式过滤 DML。
 ---
 
 # 通过 SQL 表达式过滤 DML

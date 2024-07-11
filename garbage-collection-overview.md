@@ -1,6 +1,7 @@
 ---
 title: GC 机制简介
 aliases: ['/docs-cn/dev/garbage-collection-overview/','/docs-cn/dev/reference/garbage-collection/overview/']
+summary: TiDB 的事务实现采用了 MVCC 机制，GC 的任务是清理不再需要的旧数据。整体流程包括 GC leader 控制 GC 的运行，定期触发 GC，以及三个步骤：Resolve Locks 清理锁，Delete Ranges 删除区间，Do GC 进行 GC 清理。Resolve Locks 清理锁有两种执行模式：LEGACY 和 PHYSICAL。Delete Ranges 删除区间会快速物理删除待删除的区间及删除操作的时间戳。Do GC 进行 GC 清理会删除所有 key 的过期版本。GC 每 10 分钟触发一次，默认保留最近 10 分钟内的数据。
 ---
 
 # GC 机制简介
@@ -23,7 +24,7 @@ GC 会被定期触发。每次 GC 时，首先，TiDB 会计算一个称为 safe
 
 ### Resolve Locks（清理锁）
 
-TiDB 的事务是基于 [Google Percolator](https://ai.google/research/pubs/pub36726) 模型实现的，事务的提交是一个两阶段提交的过程。第一阶段完成时，所有涉及的 key 都会上锁，其中一个锁会被选为 Primary，其余的锁 (Secondary) 则会存储一个指向 Primary 的指针；第二阶段会将 Primary 锁所在的 key 加上一个 Write 记录，并去除锁。这里的 Write 记录就是历史上对该 key 进行写入或删除，或者该 key 上发生事务回滚的记录。Primary 锁被替换为何种 Write 记录标志着该事务提交成功与否。接下来，所有 Secondary 锁也会被依次替换。如果因为某些原因（如发生故障等），这些 Secondary 锁没有完成替换、残留了下来，那么也可以根据锁中的信息取找到 Primary，并根据 Primary 是否提交来判断整个事务是否提交。但是，如果 Primary 的信息在 GC 中被删除了，而该事务又存在未成功提交的 Secondary 锁，那么就永远无法得知该锁是否可以提交。这样，数据的正确性就无法保证。
+TiDB 的事务是基于 [Google Percolator](https://ai.google/research/pubs/pub36726) 模型实现的，事务的提交是一个两阶段提交的过程。第一阶段完成时，所有涉及的 key 都会上锁，其中一个锁会被选为 Primary，其余的锁 (Secondary) 则会存储一个指向 Primary 的指针；第二阶段会将 Primary 锁所在的 key 加上一个 Write 记录，并去除锁。这里的 Write 记录就是历史上对该 key 进行写入或删除，或者该 key 上发生事务回滚的记录。Primary 锁被替换为何种 Write 记录标志着该事务提交成功与否。接下来，所有 Secondary 锁也会被依次替换。如果因为某些原因（如发生故障等），这些 Secondary 锁没有完成替换、残留了下来，那么也可以根据锁中的信息找到 Primary，并根据 Primary 是否提交来判断整个事务是否提交。但是，如果 Primary 的信息在 GC 中被删除了，而该事务又存在未成功提交的 Secondary 锁，那么就永远无法得知该锁是否可以提交。这样，数据的正确性就无法保证。
 
 Resolve Locks 这一步的任务即对 safe point 之前的锁进行清理。即如果一个锁对应的 Primary 已经提交，那么该锁也应该被提交；反之，则应该回滚。而如果 Primary 仍然是上锁的状态（没有提交也没有回滚），则应当将该事务视为超时失败而回滚。
 

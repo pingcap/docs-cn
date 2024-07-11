@@ -1,6 +1,7 @@
 ---
 title: DM-master 配置文件介绍
 aliases: ['/docs-cn/tidb-data-migration/dev/dm-master-configuration-file/']
+summary: 本文介绍了 DM-master 的配置文件，包括示例配置和配置项说明。示例配置包括日志配置、DM-master 监听地址、集群配置等。配置项说明包括全局配置，如标识 DM-master、日志级别、日志文件、地址等。另外还包括 SSL 证书路径、证书检查 Common Name 列表和加解密密钥路径等内容。
 ---
 
 # DM-master 配置文件介绍
@@ -33,7 +34,9 @@ join = ""
 ssl-ca = "/path/to/ca.pem"
 ssl-cert = "/path/to/cert.pem"
 ssl-key = "/path/to/key.pem"
-cert-allowed-cn = ["dm"] 
+cert-allowed-cn = ["dm"]
+
+secret-key-path = "/path/to/secret/key"
 ```
 
 ## 配置项说明
@@ -55,3 +58,4 @@ cert-allowed-cn = ["dm"]
 | `ssl-cert` | DM-master 组件用于与其它组件连接的 PEM 格式的 X509 证书所在的路径 |
 | `ssl-key` | DM-master 组件用于与其它组件连接的 PEM 格式的 X509 密钥所在的路径  |
 | `cert-allowed-cn` | 证书检查 Common Name 列表 |
+| `secret-key-path` | 用来加解密上下游密码的密钥所在的路径，该文件内容必须是长度为 64 个字符的十六进制的 AES-256 密钥 |

@@ -1,6 +1,7 @@
 ---
 title: 权限管理
 aliases: ['/docs-cn/dev/privilege-management/','/docs-cn/dev/reference/security/privilege-system/']
+summary: TiDB 支持 MySQL 5.7 和 MySQL 8.0 的权限管理系统。权限相关操作包括授予权限、收回权限、查看用户权限和动态权限。权限系统的实现包括授权表和连接验证。权限生效时机是在 TiDB 启动时加载到内存，并且可以手动刷新。
 ---
 
 # 权限管理
@@ -481,6 +482,10 @@ SELECT * FROM INFORMATION_SCHEMA.USER_PRIVILEGES WHERE grantee = "'root'@'%'";
 ### CALIBRATE RESOURCE
 
 需要拥有 `SUPER` 或者 `RESOURCE_GROUP_ADMIN` 权限。
+
+### SET RESOURCE GROUP
+
+当系统变量 [`tidb_resource_control_strict_mode`](/system-variables.md#tidb_resource_control_strict_mode-从-v820-版本开始引入) 设置为 `ON` 时，你需要有 `SUPER` 或者 `RESOURCE_GROUP_ADMIN` 或者 `RESOURCE_GROUP_USER` 权限才能执行该语句。
 
 ## 权限系统的实现
 

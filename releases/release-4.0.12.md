@@ -1,5 +1,6 @@
 ---
 title: TiDB 4.0.12 Release Notes
+summary: TiDB 4.0.12 发布，新增 TiFlash 工具用于检测状态。优化了 EXPLAIN 语句输出信息，在 metrics 监控中记录了 PREPARE 执行失败的问题。TiKV 修复了多个问题，包括处理 JSON 向字符串转换时空格缺失的问题。PD 修复了 store 缺失 label 的隔离级别错误问题。TiFlash 修复了多个查询结果错误的问题。TiCDC 修复了多个数据丢失和资源释放问题。BR 修复了多个备份和恢复问题。TiDB Lightning 修复了多个数据错误和文件损坏问题。
 ---
 
 # TiDB 4.0.12 Release Notes

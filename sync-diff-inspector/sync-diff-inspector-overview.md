@@ -1,6 +1,7 @@
 ---
 title: sync-diff-inspector 用户文档
 aliases: ['/docs-cn/dev/sync-diff-inspector/sync-diff-inspector-overview/','/docs-cn/dev/reference/tools/sync-diff-inspector/overview/']
+summary: sync-diff-inspector 是一个用于校验 MySQL/TiDB 中数据一致性的工具，提供修复数据的功能。它支持对比表结构和数据，生成用于修复数据的 SQL 语句。需要注意的是，在校验数据时会消耗一定的服务器资源，需要避免在业务高峰期间校验。生成的 SQL 文件仅作为修复数据的参考，需要确认后再执行这些 SQL 修复数据。
 ---
 
 # sync-diff-inspector 用户文档
@@ -191,7 +192,7 @@ sync-diff-inspector 在执行过程中会往 `stdout` 发送进度信息。进�
 >
 > 为了达成显示效果，请保持显示窗口宽度在 80 字符以上。
 
-```progress
+```
 A total of 2 tables need to be compared
 
 Comparing the table structure of ``sbtest`.`sbtest96`` ... equivalent
@@ -202,7 +203,7 @@ _____________________________________________________________________________
 Progress [==========================================================>--] 98% 193/200
 ```
 
-```progress
+```
 A total of 2 tables need to be compared
 
 Comparing the table structure of ``sbtest`.`sbtest96`` ... equivalent
@@ -248,13 +249,13 @@ sync-diff-inspector 的日志存放在 `${output}/sync_diff.log` 中，其中 `$
 
 #### 校验进度
 
-sync-diff-inspector 会在运行时定期（间隔 10s）输出校验进度到 checkpoint 中(位于 `${output}/checkpoint/sync_diff_checkpoints.pb` 中，其中 `${output}` 是 `config.toml` 文件中 `output-dir` 的值。
+sync-diff-inspector 会在运行时定期（间隔 10s）输出校验进度到 checkpoint 中（位于 `${output}/checkpoint/sync_diff_checkpoints.pb`），其中 `${output}` 是 `config.toml` 文件中 `output-dir` 的值。
 
 #### 校验结果
 
 当校验结束时，sync-diff-inspector 会输出一份校验报告，位于 `${output}/summary.txt` 中，其中 `${output}` 是 `config.toml` 文件中 `output-dir` 的值。
 
-```summary
+```
 +---------------------+---------+--------------------+----------------+---------+-----------+
 |        TABLE        | RESULT  | STRUCTURE EQUALITY | DATA DIFF ROWS | UPCOUNT | DOWNCOUNT |
 +---------------------+---------+--------------------+----------------+---------+-----------+

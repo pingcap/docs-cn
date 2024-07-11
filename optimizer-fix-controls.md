@@ -26,6 +26,12 @@ SET SESSION tidb_opt_fix_control = '44262:ON,44389:ON';
 
 ## Optimizer Fix Controls 参考
 
+### [`33031`](https://github.com/pingcap/tidb/issues/33031) <span class="version-mark">从 v8.0.0 版本开始引入</span>
+
+- 默认值：`OFF`
+- 可选值：`ON`、`OFF`
+- 是否允许对分区表进行计划缓存。如果设置为 `ON`，则 [Prepared 语句计划缓存](/sql-prepared-plan-cache.md)和[非 Prepared 语句计划缓存](/sql-non-prepared-plan-cache.md)都不会对[分区表](/partitioned-table.md)启用。
+
 ### [`44262`](https://github.com/pingcap/tidb/issues/44262) <span class="version-mark">从 v6.5.3 和 v7.2.0 版本开始引入</span>
 
 - 默认值：`OFF`
@@ -64,3 +70,10 @@ SET SESSION tidb_opt_fix_control = '44262:ON,44389:ON';
 - 可选值：`[0, 2147483647]`
 - 此开关控制优化器进行启发式访问路径选择的阈值。当某个访问路径（如 `Index_A`）的估算行数远小于其他访问路径时（默认为 `1000` 倍），优化器会跳过代价比较直接选择 `Index_A`。
 - `0` 表示关闭此启发式访问路径选择策略。
+
+### [`52869`](https://github.com/pingcap/tidb/issues/52869) <span class="version-mark">从 v8.1.0 版本开始引入</span>
+
+- 默认值：`OFF`
+- 可选值：`ON`、`OFF`
+- 如果查询有除了全表扫描以外的单索引扫描方式可以选择，优化器不会自动选择索引合并。详情请参考[用 EXPLAIN 查看索引合并的 SQL 执行计划](/explain-index-merge.md#示例)中的**注意**部分。
+- 打开此开关后，这个限制会被解除。解除此限制能让优化器在更多查询中自动选择索引合并，但也有可能忽略其他更好的执行计划，因此建议在解除此限制前针对实际场景进行充分测试，确保不会带来性能回退。

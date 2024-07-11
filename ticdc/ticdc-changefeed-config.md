@@ -16,7 +16,7 @@ cdc cli changefeed create --server=http://10.0.10.25:8300 --sink-uri="mysql://ro
 ```shell
 Create changefeed successfully!
 ID: simple-replication-task
-Info: {"upstream_id":7178706266519722477,"namespace":"default","id":"simple-replication-task","sink_uri":"mysql://root:xxxxx@127.0.0.1:4000/?time-zone=","create_time":"2024-01-25T15:05:46.679218+08:00","start_ts":438156275634929669,"engine":"unified","config":{"case_sensitive":false,"enable_old_value":true,"force_replicate":false,"ignore_ineligible_table":false,"check_gc_safe_point":true,"enable_sync_point":true,"bdr_mode":false,"sync_point_interval":30000000000,"sync_point_retention":3600000000000,"filter":{"rules":["test.*"],"event_filters":null},"mounter":{"worker_num":16},"sink":{"protocol":"","schema_registry":"","csv":{"delimiter":",","quote":"\"","null":"\\N","include_commit_ts":false},"column_selectors":null,"transaction_atomicity":"none","encoder_concurrency":16,"terminator":"\r\n","date_separator":"none","enable_partition_separator":false},"consistent":{"level":"none","max_log_size":64,"flush_interval":2000,"storage":""}},"state":"normal","creator_version":"v7.6.0"}
+Info: {"upstream_id":7178706266519722477,"namespace":"default","id":"simple-replication-task","sink_uri":"mysql://root:xxxxx@127.0.0.1:4000/?time-zone=","create_time":"2024-05-24T15:05:46.679218+08:00","start_ts":438156275634929669,"engine":"unified","config":{"case_sensitive":false,"enable_old_value":true,"force_replicate":false,"ignore_ineligible_table":false,"check_gc_safe_point":true,"enable_sync_point":true,"bdr_mode":false,"sync_point_interval":30000000000,"sync_point_retention":3600000000000,"filter":{"rules":["test.*"],"event_filters":null},"mounter":{"worker_num":16},"sink":{"protocol":"","schema_registry":"","csv":{"delimiter":",","quote":"\"","null":"\\N","include_commit_ts":false},"column_selectors":null,"transaction_atomicity":"none","encoder_concurrency":16,"terminator":"\r\n","date_separator":"none","enable_partition_separator":false},"consistent":{"level":"none","max_log_size":64,"flush_interval":2000,"storage":""}},"state":"normal","creator_version":"v8.1.0"}
 ```
 
 - `--changefeed-id`：同步任务的 ID，格式需要符合正则表达式 `^[a-zA-Z0-9]+(\-[a-zA-Z0-9]+)*$`。如果不指定该 ID，TiCDC 会自动生成一个 UUID（version 4 格式）作为 ID。
@@ -70,6 +70,12 @@ case-sensitive = false
 # 如果要使用 TiCDC 搭建 BDR 集群，需要将该参数设置为 true，同时要将 TiDB 集群设置为 BDR 模式。
 # 详情请参考：https://docs.pingcap.com/zh/tidb/stable/ticdc-bidirectional-replication#ticdc-双向复制
 # bdr-mode = false
+
+# changefeed 发生内部错误或异常时允许自动重试的时间，默认值为 30 分钟。
+# 若 changefeed 发生内部错误或异常，且持续时间超过该参数设置的时间，changefeed 会进入 Failed 状态。
+# 当 changefeed 处于 failed 状态时，需要手动重启 changefeed 才能恢复。
+# 配置格式为 "h m s"，例如 "1h30m30s"。
+changefeed-error-stuck-duration = "30m"
 
 [mounter]
 # mounter 解码 KV 数据的线程数，默认值为 16
@@ -126,7 +132,7 @@ enable-table-across-nodes = false
 # 注意：当下游 MQ 为 Pulsar 时，如果 partition 的路由规则未指定为 'ts', 'index-value', 'table', 'default' 中的任意一个，那么将会使用你设置的字符串作为每一条 Pulsar message 的 key 进行路由。例如，如果你指定的路由规则为 'code' 字符串，那么符合该 matcher 的所有 Pulsar message 都将会以 'code' 作为 key 进行路由。
 # dispatchers = [
 #    {matcher = ['test1.*', 'test2.*'], topic = "Topic 表达式 1", partition = "index-value"},
-#    {matcher = ['test3.*', 'test4.*'], topic = "Topic 表达式 2", partition = "index-value", index-name="index1"},
+#    {matcher = ['test3.*', 'test4.*'], topic = "Topic 表达式 2", partition = "index-value", index = "index1"},
 #    {matcher = ['test1.*', 'test5.*'], topic = "Topic 表达式 3", partition = "table"},
 #    {matcher = ['test6.*'], partition = "columns", columns = "['a', 'b']"}
 #    {matcher = ['test7.*'], partition = "ts"}
@@ -142,7 +148,7 @@ enable-table-across-nodes = false
 # ]
 
 # protocol 用于指定编码消息时使用的格式协议
-# 当下游类型是 Kafka 时，支持 canal-json、avro 和 open-protocol。
+# 当下游类型是 Kafka 时，支持 canal-json、avro、debezium、open-protocol、simple。
 # 当下游类型是 Pulsar 时，仅支持 canal-json 协议。
 # 当下游类型是存储服务时，目前仅支持 canal-json、csv 两种协议。
 # 注意：该参数只有当下游为 Kafka、Pulsar，或存储服务时，才会生效。
@@ -166,7 +172,7 @@ delete-only-output-handle-key-columns = false
 
 # 是否开启 Kafka Sink V2。Kafka Sink V2 内部使用 kafka-go 实现。
 # 默认值为 false。
-# 注意：该参数只有当下游为消息队列时，才会生效。
+# 注意：该参数是一个实验特性，并且只有当下游为消息队列时才会生效。
 # enable-kafka-sink-v2 = false
 
 # 是否只向下游同步有内容更新的列。从 v7.1.0 开始支持。
@@ -199,6 +205,42 @@ enable-partition-separator = true
 # include-commit-ts = false
 # 二进制类型数据的编码方式，可选 'base64' 或 'hex'。默认值为 'base64'。
 # binary-encoding-method = 'base64'
+# 是否输出 handle 列信息。默认值为 false。该配置项仅用于内部实现，不推荐设置该配置项。
+# output-handle-key = false
+# 是否输出行数据更改前的值。默认值为 false。开启后，Update 事件会输出两行数据：第一行为 Delete 事件，输出更改前的数据；第二行为 Insert 事件，输出更改后的数据。
+# 开启后，即当该参数设为 true 时，会在变更数据列前增加 "is-update" 列。该列用来标识当前行的变更数据是来自 Update 事件，还是原始的 Insert/Delete 事件。
+# 如果当前行的变更数据来自 Update 事件，则 "is-update" 列为 true，否则为 false。
+# output-old-value = false
+
+# 从 v8.0.0 开始，TiCDC 新增了 Simple Protocol 消息编码协议，以下为该协议的配置参数。
+# 关于该协议的详情，请参考 <https://docs.pingcap.com/zh/tidb/stable/ticdc-simple-protocol>。
+# 以下为 Simple Protocol 参数，用来控制 bootstrap 消息的发送行为。
+# send-bootstrap-interval-in-sec 用来控制发送 bootstrap 消息的时间间隔，单位为秒。
+# 默认值为 120 秒，即每张表每隔 120 秒发送一次 bootstrap 消息。
+# send-bootstrap-interval-in-sec = 120
+
+# send-bootstrap-in-msg-count 用来控制发送 bootstrap 的消息间隔，单位为消息数。
+# 默认值为 10000，即每张表每发送 10000 条行变更消息就发送一次 bootstrap 消息。
+# send-bootstrap-in-msg-count = 10000
+# 注意：如果要关闭 bootstrap 消息的发送，则将 send-bootstrap-interval-in-sec 和 send-bootstrap-in-msg-count 均设置为 0。
+
+# send-bootstrap-to-all-partition 用来控制是否发送 bootstrap 消息到所有的 partition。
+# 默认值为 true，即发送 bootstrap 消息到对应表 topic 的所有的 partition。
+# 如果设置为 false，则只发送 bootstrap 消息到对应表 topic 的第一个 partition。
+# send-bootstrap-to-all-partition = true
+
+[sink.kafka-config.codec-config]
+# encoding-format 用来控制 simple protocol 的消息的编码格式，目前支持 "json" 和 "avro" 两种格式。
+# 默认值为 "json"。
+# encoding-format = "json"
+
+[sink.open]
+# 是否输出行数据更改前的值。默认值为 true。关闭后，Update 事件不会输出 "p" 字段的数据。
+# output-old-value = true
+
+[sink.debezium]
+# 是否输出行数据更改前的值。默认值为 true。关闭后，Update 事件不会输出 "before" 字段的数据。
+# output-old-value = true
 
 # TiCDC 从 8.0 开始新增了 Simple Protocol 消息编码协议，以下为该协议的配置参数。
 # 对于该协议详情，请参考 <https://docs.pingcap.com/zh/tidb/stable/ticdc-simple-protocol>。

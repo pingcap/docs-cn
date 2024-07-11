@@ -1,6 +1,7 @@
 ---
 title: 逻辑优化
 aliases: ['/docs-cn/dev/sql-logical-optimization/']
+summary: 本章节介绍了 TiDB 查询计划的关键逻辑改写，包括子查询优化、列裁剪、关联子查询去关联、Max/Min 消除、谓词下推、分区裁剪、TopN 和 Limit 下推以及 Join 重排序。这些改写帮助 TiDB 生成最终的查询计划，提高查询效率。
 ---
 
 # 逻辑优化

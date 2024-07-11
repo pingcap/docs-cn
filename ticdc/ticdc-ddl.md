@@ -77,12 +77,12 @@ rules = ['test.t*']
 | `RENAME TABLE test.t1 TO test.t2` | 同步 | test.t1 符合 filter 规则 |
 | `RENAME TABLE test.t1 TO ignore.t1` | 同步 | test.t1 符合 filter 规则 |
 | `RENAME TABLE ignore.t1 TO ignore.t2` | 忽略 | ignore.t1 不符合 filter 规则 |
-| `RENAME TABLE test.n1 TO test.t1` | 报错，并停止同步。 | test.n1 不符合 filter 规则，但是 test.t1 符合 filter 规则，这是非法操作。请参考错误提示信息进行处理 |
+| `RENAME TABLE test.n1 TO test.t1` | 报错，并停止同步。 | 旧表名 test.n1 不符合 filter 规则，但是新表名 test.t1 符合 filter 规则，这是非法操作。请参考错误提示信息进行处理 |
 | `RENAME TABLE ignore.t1 TO test.t1` | 报错，并停止同步。 | 理由同上 |
 
 #### 一条 DDL 语句内 rename 多个表
 
-如果一条 DDL 语句重命名多个表，则只有当旧的表库名和新的库名都符合过滤规则时，TiCDC 才会同步该 DDL 语句。此外，TiCDC 不支持同步对表名进行交换的 rename table DDL。下面使用具体示例进行说明。
+如果一条 DDL 语句重命名多个表，则只有当**旧的表库名**和**新的库名**都符合过滤规则时，TiCDC 才会同步该 DDL 语句。此外，TiCDC 不支持同步对表名进行交换的 rename table DDL。下面使用具体示例进行说明。
 
 假设你的 changefeed 的配置文件如下：
 
@@ -100,25 +100,33 @@ rules = ['test.t*']
 | `RENAME TABLE test.t1 TO ignore.t1, test.t2 TO test.t22;` | 报错 | 新的库名 ignore 不符合 filter 规则 |
 | `RENAME TABLE test.t1 TO test.t4, test.t3 TO test.t1, test.t4 TO test.t3;` | 报错 | 在一条 DDL 中交换 test.t1 和 test.t3 两个表的名字，TiCDC 无法正确处理。请参考错误提示提示信息处理。 |
 
-### SQL 模式
+### DDL 语句注意事项
 
-TiCDC 默认采用 TiDB 的默认 SQL 模式来解析 DDL 语句。如果你的上游 TiDB 集群使用了非默认的 SQL 模式，你需要在 TiCDC 的配置文件中指定 SQL 模式，否则 TiCDC 可能无法正确解析 DDL。关于 TiDB SQL 模式的更多信息，请参考 [SQL 模式](/sql-mode.md)。
+当在上游执行跨数据库的 DDL 语句（如 `CREATE TABLE db1.t1 LIKE t2`）时，建议在 DDL 语句中显式地指定所有相关的库名（如 `CREATE TABLE db1.t1 LIKE db2.t2`）。否则，由于缺少库名信息，跨数据库的 DDL 语句可能无法正确地在下游执行。
 
-例如，如果你的上游 TiDB 集群设置了 `ANSI_QUOTES` 模式，你需要在 changefeed 的配置文件中指定 SQL 模式：
+### 使用 Event Filter 过滤 DDL 事件的注意事项
+
+如果被过滤的 DDL 语句涉及表的创建或删除，TiCDC 只会过滤掉这些 DDL 语句，而不影响 DML 的同步行为。下面使用具体示例进行说明。
+
+假设你的 changefeed 的配置文件如下：
 
 ```toml
-# 其中，前面的 "ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION" 是 TiDB 默认的 SQL 模式
-# 后面的 "ANSI_QUOTES" 是你的上游 TiDB 集群添加的 SQL 模式
+[filter]
+rules = ['test.t*']
 
-sql-mode = "ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION,ANSI_QUOTES"
+matcher = ["test.t1"] # 该过滤规则只应用于 test 库中的 t1 表
+ignore-event = ["create table", "drop table", "truncate table"]
 ```
 
-如果未设置 SQL 模式，那么 TiCDC 可能无法正确解析一些 DDL 语句，例如：
+| DDL | DDL 行为 | DML 行为 | 原因 |
+| --- | --- | --- | --- |
+| `CREATE TABLE test.t1 (id INT, name VARCHAR(50));` | 忽略 | 同步 | `test.t1` 符合 Event Filter 过滤规则，`CREATE TABLE` 事件被忽略，但不影响 DML 事件的同步 |
+| `CREATE TABLE test.t2 (id INT, name VARCHAR(50));` | 同步 | 同步 | `test.t2` 不符合 Event Filter 过滤规则 |
+| `CREATE TABLE test.ignore (id INT, name VARCHAR(50));` | 忽略 | 忽略 | `test.ignore` 符合 Table Filter 过滤规则，因此 DDL 和 DML 事件均被忽略 |
+| `DROP TABLE test.t1;` | 忽略 | - | `test.t1` 符合 Event Filter，`DROP TABLE` 事件被忽略。该表已被删除，TiCDC 不再同步 t1 的 DML 事件 |
+| `TRUNCATE TABLE test.t1;` | 忽略 | 同步 | `test.t1` 符合 Event Filter，`TRUNCATE TABLE` 事件被忽略，但不影响 DML 事件的同步  |
 
-```sql
-CREATE TABLE "t1" ("a" int PRIMARY KEY);
-```
-
-因为在 TiDB 的默认 SQL 模式下，双引号会被视为字符串而不是标志符，这将会导致 TiCDC 无法正确解析该 DDL 语句。
-
-因此，在创建同步任务的时候，建议在配置文件中指定使用上游 TiDB 集群设置的 SQL 模式。
+> **注意：**
+>
+> - 当同步数据到数据库时，应谨慎使用 Event Filter 过滤 DDL 事件，同步过程中需确保上下游的库表结构始终一致。否则，TiCDC 可能会报错或产生未定义的同步行为。
+> - 在 v6.5.8、v7.1.4、v7.5.1 之前的版本中，使用 Event Filter 过滤涉及创建或删除表的 DDL 事件，会影响 DML 的同步，不推荐使用该功能。

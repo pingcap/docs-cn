@@ -14,26 +14,26 @@ summary: 了解 br 命令行的定义、组成与使用。
 以下是一条完整的 `br` 命令行：
 
 ```shell
-br backup full --pd "${PD_IP}:2379" \
+tiup br backup full --pd "${PD_IP}:2379" \
 --storage "s3://backup-data/snapshot-202209081330/"
 ```
 
 上面命令行中各部分的解释如下：
 
-* `backup`：`br` 的子命令。
-* `full`：`br backup` 的子命令。
+* `backup`：`tiup br` 的子命令。
+* `full`：`tiup br backup` 的子命令。
 * `-s` 或 `--storage`：备份数据的存储地址选项。`"s3://backup-data/snapshot-202209081330/"` 是 `-s` 的参数值。
 * `--pd`：PD 访问地址选项。`"${PD_IP}:2379"` 是 `--pd` 的参数值。
 
 ### 命令和子命令
 
-`br` 由多层命令组成。目前，`br` 包含的主要命令有：
+`tiup br` 由多层命令组成。目前，`tiup br` 包含的主要命令有：
 
-* `br backup`：用于备份 TiDB 集群的全量数据。
-* `br log`：用于启动和管理日志备份任务。
-* `br restore`：用于恢复备份数据到 TiDB 集群。
+* `tiup br backup`：用于备份 TiDB 集群的全量数据。
+* `tiup br log`：用于启动和管理日志备份任务。
+* `tiup br restore`：用于恢复备份数据到 TiDB 集群。
 
-`br backup` 和 `br restore` 还包含这些子命令：
+`tiup br backup` 和 `tiup br restore` 还包含这些子命令：
 
 * `full`：用于备份或恢复整个备份数据。
 * `db`：用于备份或恢复集群中的指定数据库。
@@ -47,13 +47,15 @@ br backup full --pd "${PD_IP}:2379" \
 * `--cert`：指定 PEM 格式的 SSL 证书文件路径。
 * `--key`：指定 PEM 格式的 SSL 证书密钥文件路径。
 * `--status-addr`：向 Prometheus 提供统计数据的监听地址。
-* `--concurrency`：备份或恢复阶段的任务并发数。
+* `--concurrency`：备份阶段的任务并发数。
+* `--pitr-concurrency`：日志恢复阶段的任务并发数。
+* `--tikv-max-restore-concurrency`：快照恢复阶段的单个 TiKV 节点的任务最大并发数。
 * `--compression`：备份生成文件的压缩算法，支持 `lz4`、`snappy`、`zstd`，默认 `zstd`（多数情况下无须修改）。如何选择不同的压缩算法，可以参考[文档](https://github.com/EighteenZi/rocksdb_wiki/blob/master/Compression.md)。
 * `--compression-level`：备份选择的压缩算法对应的压缩级别，`zstd` 默认为 3。大多数情况下无需设置。
 
 ## 全量备份命令行
 
-使用 `br backup` 命令来备份集群全量数据。可选择添加 `full` 或 `table` 子命令来指定备份的范围：全部集群数据 (`full`) 或单张表的数据 (`table`)。
+使用 `tiup br backup` 命令来备份集群全量数据。可选择添加 `full` 或 `table` 子命令来指定备份的范围：全部集群数据 (`full`) 或单张表的数据 (`table`)。
 
 - [备份集群快照数据](/br/br-snapshot-manual.md#备份集群快照)
 - [备份单个数据库的数据](/br/br-snapshot-manual.md#备份单个数据库的数据)
@@ -63,7 +65,7 @@ br backup full --pd "${PD_IP}:2379" \
 
 ## 日志备份命令行
 
-使用 `br log` 命令来开启和管理日志备份任务。
+使用 `tiup br log` 命令来开启和管理日志备份任务。
 
 - [启动日志备份](/br/br-pitr-manual.md#启动日志备份)
 - [查询日志备份状态](/br/br-pitr-manual.md#查询日志备份任务)
@@ -74,7 +76,7 @@ br backup full --pd "${PD_IP}:2379" \
 
 ## 恢复备份数据命令行
 
-使用 `br restore` 命令来恢复备份数据。可选择添加 `full`、`db` 或 `table` 子命令来指定恢复操作的范围：全部集群数据 (`full`)、某个数据库 (`db`) 或某张数据表 (`table`)。
+使用 `tiup br restore` 命令来恢复备份数据。可选择添加 `full`、`db` 或 `table` 子命令来指定恢复操作的范围：全部集群数据 (`full`)、某个数据库 (`db`) 或某张数据表 (`table`)。
 
 - [Point-in-time recovery](/br/br-pitr-manual.md#恢复到指定时间点-pitr)
 - [恢复快照备份数据](/br/br-snapshot-manual.md#恢复快照备份数据)

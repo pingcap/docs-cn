@@ -1,6 +1,7 @@
 ---
 title: SQL 模式
 aliases: ['/docs-cn/dev/sql-mode/','/docs-cn/dev/reference/sql/sql-mode/']
+summary: TiDB 服务器采用不同 SQL 模式来操作，可以使用 `SET [SESSION | GLOBAL] sql_mode='modes'` 语句设置 SQL 模式。`GLOBAL` 级别的 SQL 模式需要 `SUPER` 权限，影响新连接；`SESSION` 级别的 SQL 模式只影响当前客户端。重要的 sql_mode 值包括 `ANSI`、`STRICT_TRANS_TABLES` 和 `TRADITIONAL`。SQL mode 列表包括 `PIPES_AS_CONCAT`、`ANSI_QUOTES`、`IGNORE_SPACE`、`ONLY_FULL_GROUP_BY` 等。
 ---
 
 # SQL 模式
@@ -27,13 +28,13 @@ TiDB 启动之后，你可以使用 `SET [ SESSION | GLOBAL ] sql_mode='modes'` 
 | `PIPES_AS_CONCAT` | 将 "\|\|" 视为字符串连接操作符 (`＋`)（同 `CONCAT()`），而不视为 `OR`（支持）|
 | `ANSI_QUOTES` | 将 `"` 视为识别符，如果启用 `ANSI_QUOTES`，只单引号内的会被认为是 String Literals，双引号被解释为识别符，因此不能用双引号来引用字符串（支持）|
 | `IGNORE_SPACE` | 若开启该模式，系统忽略空格。例如：“user” 和 “user “ 是相同的（支持）|
-| `ONLY_FULL_GROUP_BY` | 如果未被聚合函数处理或未被 `GROUP BY` 的列出现在 `SELECT`、`HAVING`、`ORDER BY` 中，此 SQL 不合法，因为这种列被查询展示出来不合常规（支持）|
+| `ONLY_FULL_GROUP_BY` | 如果未被聚合函数处理或未被 `GROUP BY` 的列出现在 `SELECT`、`HAVING`、`ORDER BY` 中，此 SQL 不合法，因为这种列被查询展示出来不合常规。该设置受系统变量 [`tidb_enable_new_only_full_group_by_check`](/system-variables.md#tidb_enable_new_only_full_group_by_check-从-v610-版本开始引入) 影响。（支持）|
 | `NO_UNSIGNED_SUBTRACTION` | 在减运算中，如果某个操作数没有符号，不要将结果标记为 `UNSIGNED`（支持）|
 | `NO_DIR_IN_CREATE` | 创建表时，忽视所有 `INDEX DIRECTORY` 和 `DATA DIRECTORY` 指令，该选项仅对从复制服务器有用 （仅语法支持）|
 | `NO_KEY_OPTIONS` | 使用 `SHOW CREATE TABLE` 时不会输出 MySQL 特有的语法部分，如 `ENGINE`，使用 mysqldump 跨 DB 种类迁移的时需要考虑此选项（仅语法支持）|
 | `NO_FIELD_OPTIONS` | 使用 `SHOW CREATE TABLE` 时不会输出 MySQL 特有的语法部分，如 `ENGINE`，使用 mysqldump 跨 DB 种类迁移的时需要考虑此选项（仅语法支持）|
 | `NO_TABLE_OPTIONS` | 使用 `SHOW CREATE TABLE` 时不会输出 MySQL 特有的语法部分，如 `ENGINE`，使用 mysqldump 跨 DB 种类迁移的时需要考虑此选项（仅语法支持）|
-| `NO_AUTO_VALUE_ON_ZERO` | 若启用该模式，在AUTO_INCREMENT列的处理传入的值是 `0` 或者具体数值时系统直接将该值写入此列，传入 `NULL` 时系统自动生成下一个序列号（支持）|
+| `NO_AUTO_VALUE_ON_ZERO` | 若启用该模式，在 [`AUTO_INCREMENT`](/auto-increment.md) 列传入的值是 `0` 或者具体数值时系统直接将该值写入此列，传入 `NULL` 时系统自动生成下一个序列号（支持）|
 | `NO_BACKSLASH_ESCAPES` | 若启用该模式，`\` 反斜杠符号仅代表它自己（支持）|
 | `STRICT_TRANS_TABLES` | 对于事务存储引擎启用严格模式，insert非法值之后，回滚整条语句（支持）|
 | `STRICT_ALL_TABLES` | 对于事务型表，写入非法值之后，回滚整个事务语句（支持）|

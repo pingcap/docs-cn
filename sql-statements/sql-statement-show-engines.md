@@ -10,12 +10,12 @@ aliases: ['/docs-cn/dev/sql-statements/sql-statement-show-engines/','/docs-cn/de
 
 ## 语法图
 
-**ShowEnginesStmt:**
-
-![ShowEnginesStmt](/media/sqlgram/ShowEnginesStmt.png)
-
-```sql
-SHOW ENGINES;
+```ebnf+diagram
+ShowEnginesStmt ::=
+    "SHOW" "ENGINES" ShowLikeOrWhere?
+ShowLikeOrWhere ::=
+    "LIKE" SimpleExpr
+|   "WHERE" Expression
 ```
 
 ## 示例
@@ -37,4 +37,4 @@ SHOW ENGINES;
 
 ## MySQL 兼容性
 
-* `SHOW ENGINES` 语句始终只返回 InnoDB 作为其支持的引擎。但 TiDB 内部通常使用 TiKV 作为存储引擎。
+* `SHOW ENGINES` 语句始终只返回 InnoDB 作为其支持的引擎。但 TiDB 内部通常使用 [TiKV](/tikv-overview.md) 作为存储引擎。
