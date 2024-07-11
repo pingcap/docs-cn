@@ -15,7 +15,7 @@ summary: TiDB 数据库中 ANALYZE 的使用概况。
 
 ```ebnf+diagram
 AnalyzeTableStmt ::=
-    'ANALYZE' ( 'TABLE' ( TableNameList ( 'ALL COLUMNS' | 'PREDICATE COLUMNS' ) | TableName ( 'INDEX' IndexNameList? | AnalyzeColumnOption | 'PARTITION' PartitionNameList ( 'INDEX' IndexNameList? | AnalyzeColumnOption )? )? ) 'INDEX' IndexNameList? ) AnalyzeOptionListOpt
+    'ANALYZE' ( 'TABLE' ( TableNameList ( 'ALL COLUMNS' | 'PREDICATE COLUMNS' ) | TableName ( 'INDEX' IndexNameList? | AnalyzeColumnOption | 'PARTITION' PartitionNameList ( 'INDEX' IndexNameList? | AnalyzeColumnOption )? )? ) ) AnalyzeOptionListOpt
 
 AnalyzeOptionListOpt ::=
 ( WITH AnalyzeOptionList )?
