@@ -10,7 +10,7 @@ summary: TiDB 数据库中 ADMIN SHOW DDL [JOBS|JOB QUERIES] 的使用概况。
 ## 语法图
 
 ```ebnf+diagram
-AdminStmt ::=
+AdminShowDDLStmt ::=
     'ADMIN' 'SHOW' 'DDL'
     ( 
         'JOBS' Int64Num? WhereClauseOptional 

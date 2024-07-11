@@ -10,7 +10,7 @@ summary: TiDB 数据库中 ADMIN RECOVER INDEX 的使用概况。
 ## 语法图
 
 ```ebnf+diagram
-AdminCleanupStmt ::=
+AdminRecoverStmt ::=
     'ADMIN' 'RECOVER' 'INDEX' TableName IndexName
 ```
 
