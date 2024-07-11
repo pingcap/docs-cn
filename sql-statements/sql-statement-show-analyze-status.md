@@ -14,7 +14,7 @@ aliases: ['/docs-cn/dev/sql-statements/sql-statement-show-analyze-status/']
 
 从 TiDB v7.3.0 起，你可以通过系统表 `mysql.analyze_jobs` 或者 `SHOW ANALYZE STATUS` 查看当前 `ANALYZE` 任务的进度。
 
-目前，`SHOW ANALYZE STATUS` 语句会返回以下列：
+目前，`SHOW ANALYZE STATUS` 语句返回以下列：
 
 | 列名 | 说明            |
 | -------- | ------------- |

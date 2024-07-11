@@ -8,7 +8,7 @@ aliases: ['/docs-cn/dev/sql-statements/sql-statement-show-histograms/','/zh/tidb
 
 你可以使用 `SHOW STATS_HISTOGRAMS` 语句查看通过 [`ANALYZE` 语句](/sql-statements/sql-statement-analyze-table.md)收集的直方图信息，该内容是数据库[常规统计信息](/statistics.md)的一部分。
 
-目前，`SHOW STATS_HISTOGRAMS` 语句会返回以下列：
+目前，`SHOW STATS_HISTOGRAMS` 语句返回以下列：
 
 | 列名 | 说明            |
 | -------- | ------------- |
