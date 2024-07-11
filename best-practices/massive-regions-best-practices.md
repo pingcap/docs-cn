@@ -51,6 +51,14 @@ aliases: ['/docs-cn/dev/best-practices/massive-regions-best-practices/','/docs-c
 
     ![图 3 查看 Propose wait duration](/media/best-practices/propose-wait-duration.png)
 
++ Raft IO 下的 `Commit log duration`
+
+    `Commit log duration` 是 Raftstore 提交 Raft 日志到相应 Region 的多数派成员所花费的时间。如果该延迟时间较长且存在大幅度波动，说明 Raftstore 比较繁忙或者处理 append log 比较慢，又或者是由于网络阻塞导致不能及时提交 Raft 日志。
+
+    参考值：低于 200-500ms。
+
+    ![图 4 查看 Commit log duration](/media/best-practices/commit-log-duration.jpeg)
+
 ## 性能优化方法
 
 找到性能问题的根源后，可从以下两个方向来解决性能问题：
@@ -131,6 +139,14 @@ Region 默认的大小约为 96 MiB，将其调大也可以减少 Region 个数�
 > + 更容易发生性能抖动。
 > + 查询性能回退，尤其是大范围数据查询的性能会有回退。
 > + 调度变慢。
+
+### 方法七：提高 Raft 通信连接数
+
+Raft 通信的默认连接数为 1，将其调大可以减少因为海量 Region 通信量过大导致的阻塞情况。配置的具体说明可以参考[grpc-raft-conn-num](/tikv-configuration-file.md#grpc-raft-conn-num)
+
+> **注意：**
+>
+> 连接数不宜过大，建议范围为 [1, 4]
 
 ## 其他问题和解决方案
 
