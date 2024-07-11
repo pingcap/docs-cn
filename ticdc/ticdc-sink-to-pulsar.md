@@ -63,7 +63,7 @@ URI 中可配置的的参数如下：
 
 | 参数               | 描述                                                         |
 | :------------------ | :------------------------------------------------------------ |
-| `pulsar` | 下游 Pulsar 的连接协议。 支持 `pulsar`, `pulsar+ssh`, `pulsar+http`, `pulsar+https` 这四种协议。 |
+| `pulsar` | 下游 Pulsar 的连接协议。 支持 `pulsar`, `pulsar+ssl`, `pulsar+http`, `pulsar+https` 这四种协议。 |
 | `127.0.0.1`          | 下游 Pulsar 对外提供服务的 IP。                                 |
 | `6650`               | 下游 Pulsar 的连接端口。                                          |
 | `persistent://abc/def/yktest`   |  参考上面的示例 1，该参数用于指定 Pulsar 的租户、命名空间、topic。                                      |
