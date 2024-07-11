@@ -179,7 +179,7 @@ TiDB 版本：7.4.0
     - `lightning`：使用 [TiDB Lightning](/tidb-lightning/tidb-lightning-overview.md) 或 [`IMPORT INTO`](/sql-statements/sql-statement-import-into.md) 执行导入任务。
     - `br`：使用 [BR](/br/backup-and-restore-overview.md) 执行数据备份和恢复。目前不支持 PITR。
     - `ddl`：对于 Reorg DDL，控制批量数据回写阶段的资源使用。
-    - `stats`：对应手动执行或系统自动触发的[收集统计信息](/statistics.md#统计信息的收集)任务。
+    - `stats`：对应手动执行或系统自动触发的[收集统计信息](/statistics.md#收集统计信息)任务。
 
   默认情况下，被标记为后台任务的任务类型为空，此时后台任务的管理功能处于关闭状态，其行为与 TiDB v7.4.0 之前版本保持一致。你需要手动修改 `default` 资源组的后台任务类型以开启后台任务管理。
 
