@@ -58,7 +58,7 @@ summary: 了解海量 Region 导致性能问题的原因和优化方法。
     - append log 较慢
     - Raft 日志由于网络阻塞无法及时提交
 
-    参考值：低于 200-500ms。
+  参考值：低于 200-500ms。
 
     ![图 4 查看 Commit log duration](/media/best-practices/commit-log-duration.png)
 
