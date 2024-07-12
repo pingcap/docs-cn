@@ -78,9 +78,9 @@ tiup cluster reload <cluster-name> [flags]
 >
 > 此选项目前为实验特性，不建议在生产环境中使用。
 
-- 在 `reload` 开始前运行该脚本。
+- 在重新加载配置前运行该脚本。
 - 数据类型：`STRINGS`
-- 该选项指定节点在 `reload` 前要运行的脚本的路径。
+- 该选项指定节点在重新加载配置前要运行的脚本的路径。当 `--skip-restart` 为 `true`，该选项不生效。
 
 ### --post-restart-script
 
@@ -88,9 +88,9 @@ tiup cluster reload <cluster-name> [flags]
 >
 > 此选项目前为实验特性，不建议在生产环境中使用。
 
-- 在 `reload` 完成后运行该脚本。
+- 在重新加载配置后运行该脚本。
 - 数据类型：`STRINGS`
-- 该选项指定节点在 `reload` 后要运行的脚本的路径。
+- 该选项指定节点在重新加载配置后要运行的脚本的路径。当 `--skip-restart` 为 `true`，该选项不生效。
 
 ## 输出
 
