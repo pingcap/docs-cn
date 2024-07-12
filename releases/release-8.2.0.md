@@ -47,7 +47,7 @@ TiDB 版本：8.2.0
 
 ### 性能
 
-* 支持下推以下字符串函数到 TiKV [#50601](https://github.com/pingcap/tidb/issues/50601) @[dbsid](https://github.com/dbsid)
+* 支持下推以下 JSON 函数到 TiKV [#50601](https://github.com/pingcap/tidb/issues/50601) @[dbsid](https://github.com/dbsid)
 
     * `JSON_ARRAY_APPEND()`
     * `JSON_MERGE_PATCH()`
