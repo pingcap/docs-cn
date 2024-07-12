@@ -53,7 +53,7 @@ summary: 了解海量 Region 导致性能问题的原因和优化方法。
 + Raft IO 下的 `Commit log duration`
 
     `Commit log duration` 是 Raftstore 将 Raft 日志提交到相应 Region 的多数成员所花费的时间。如果该指标的值较高且波动较大，可能的原因有：
-    
+
     - Raftstore 的负载较高
     - append log 较慢
     - Raft 日志由于网络阻塞无法及时提交
