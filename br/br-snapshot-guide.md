@@ -26,14 +26,14 @@ aliases: ['/zh/tidb/dev/br-usage-backup/','/zh/tidb/dev/br-usage-restore/','/zh/
 
 ```shell
 tiup br backup full --pd "${PD_IP}:2379" \
-    --backupts '2022-09-08 13:30:00' \
+    --backupts '2022-09-08 13:30:00 +08:00' \
     --storage "s3://backup-101/snapshot-202209081330?access-key=${access-key}&secret-access-key=${secret-access-key}" \
     --ratelimit 128 \
 ```
 
 以上命令中：
 
-- `--backupts`：快照对应的物理时间点，格式可以是 [TSO](/glossary.md#tso) 或者时间戳，例如 `400036290571534337` 或者 `2018-05-11 01:42:23`。如果该快照的数据被垃圾回收 (GC) 了，那么 `tiup br backup` 命令会报错并退出。如果你没有指定该参数，那么 br 会选取备份开始的时间点所对应的快照。
+- `--backupts`：快照对应的物理时间点，格式可以是 [TSO](/glossary.md#tso) 或者时间戳，例如 `400036290571534337` 或者 `2018-05-11 01:42:23 +08:00`。如果该快照的数据被垃圾回收 (GC) 了，那么 `tiup br backup` 命令会报错并退出。使用日期方式备份时，建议同时指定时区，否则 br 默认使用本地时间构造时间戳，可能导致备份时间点错误。如果你没有指定该参数，那么 br 会选取备份开始的时间点所对应的快照。
 - `--storage`：数据备份到的存储地址。快照备份支持以 Amazon S3、Google Cloud Storage、Azure Blob Storage 为备份存储，以上命令以 Amazon S3 为示例。详细存储地址格式请参考[外部存储服务的 URI 格式](/external-storage-uri.md)。
 - `--ratelimit`：**每个 TiKV** 备份数据的速度上限，单位为 MiB/s。
 
@@ -66,7 +66,8 @@ tiup br validate decode --field="end-version" \
 >
 > - 在 BR v7.5.0 及之前版本中，每个 TiKV 节点的快照恢复速度约为 100 MiB/s。
 > - 从 BR v7.6.0 开始，为了解决大规模 Region 场景下可能出现的恢复瓶颈问题，BR 支持通过粗粒度打散 Region 的算法加速恢复（实验特性）。可以通过指定命令行参数 `--granularity="coarse-grained"` 来启用此功能。
-> - 从 BR v8.0.0 版本开始，通过粗粒度打散 Region 算法进行快照恢复的功能正式 GA，并默认启用。通过采用粗粒度打散 Region 算法、批量创建库表、降低 SST 文件下载和 Ingest 操作之间的相互影响、加速表统计信息恢复等改进措施，快照恢复的速度有大幅提升。在实际案例中，快照恢复的 SST 文件下载速度最高提升约 10 倍，单个 TiKV 节点的数据恢复速度稳定在 1.2 GiB/s，端到端的恢复速度大约提升 1.5 到 3 倍，并且能够在 1 小时内完成对 100 TiB 数据的恢复。
+> - 从 BR v8.0.0 开始，通过粗粒度打散 Region 算法进行快照恢复的功能正式 GA，并默认启用。通过采用粗粒度打散 Region 算法、批量创建库表、降低 SST 文件下载和 Ingest 操作之间的相互影响、加速表统计信息恢复等改进措施，快照恢复的速度有大幅提升。在实际案例中，快照恢复的 SST 文件下载速度最高提升约 10 倍，单个 TiKV 节点的数据恢复速度稳定在 1.2 GiB/s，端到端的恢复速度大约提升 1.5 到 3 倍，并且能够在 1 小时内完成对 100 TiB 数据的恢复。
+> - 从 BR v8.2.0 开始，命令行参数 `--granularity` 被废弃，粗粒度打散 Region 算法默认启用。
 
 如果你需要恢复备份的快照数据，则可以使用 `tiup br restore full`。该命令的详细使用帮助可以通过执行 `tiup br restore full --help` 查看。
 
@@ -205,18 +206,7 @@ TiDB 备份功能对集群性能（事务延迟和 QPS）有一定的影响，�
 
 - TiDB 恢复的时候会尽可能打满 TiKV CPU、磁盘 IO、网络带宽等资源，所以推荐在空的集群上执行备份数据的恢复，避免对正在运行的业务产生影响。
 - 备份数据的恢复速度与集群配置、部署、运行的业务都有比较大的关系。在内部多场景仿真测试中，单 TiKV 存储节点上备份数据恢复速度能够达到 100 MiB/s。在不同用户场景下，快照恢复的性能和影响应以实际测试结论为准。
-- BR 提供了粗粒度的 Region 打散算法，用于提升大规模 Region 场景下的 Region 恢复速度。该算法通过命令行参数 `--granularity="coarse-grained"` 控制，并默认启用。在这个方式下每个 TiKV 节点会得到均匀稳定的下载任务，从而充分利用每个 TiKV 节点的所有资源实现并行快速恢复。在实际案例中，大规模 Region 场景下，集群快照恢复速度最高提升约 3 倍。使用示例如下：
-
-    ```bash
-    br restore full \
-    --pd "${PDIP}:2379" \
-    --storage "s3://${Bucket}/${Folder}" \
-    --s3.region "${region}" \
-    --granularity "coarse-grained" \
-    --send-credentials-to-tikv=true \
-    --log-file restorefull.log
-    ```
-
+- BR 提供了粗粒度的 Region 打散算法，用于提升大规模 Region 场景下的 Region 恢复速度。在这个方式下每个 TiKV 节点会得到均匀稳定的下载任务，从而充分利用每个 TiKV 节点的所有资源实现并行快速恢复。在实际案例中，大规模 Region 场景下，集群快照恢复速度最高提升约 3 倍。
 - 从 v8.0.0 起，`br` 命令行工具新增 `--tikv-max-restore-concurrency` 参数，用于控制每个 TiKV 节点的最大 download 和 ingest 文件数量。此外，通过调整此参数，可以控制作业队列的最大长度（作业队列的最大长度 = 32 \* TiKV 节点数量 \* `--tikv-max-restore-concurrency`），进而控制 BR 节点的内存消耗。
 
     通常情况下，`--tikv-max-restore-concurrency` 会根据集群配置自动调整，无需手动设置。如果通过 Grafana 中的 **TiKV-Details** > **Backup & Import** > **Import RPC count** 监控指标发现 download 文件数量长时间接近于 0，而 ingest 文件数量一直处于上限时，说明 ingest 文件任务存在堆积，并且作业队列已达到最大长度。此时，可以采取以下措施来缓解任务堆积问题：

@@ -4,7 +4,7 @@
 - [文档中心](https://docs.pingcap.com/zh)
 - 关于 TiDB
   - [TiDB 简介](/overview.md)
-  - [TiDB 8.1 Release Notes](/releases/release-8.1.0.md)
+  - [TiDB 8.2 Release Notes](/releases/release-8.2.0.md)
   - [功能概览](/basic-features.md)
   - [与 MySQL 的兼容性](/mysql-compatibility.md)
   - [使用限制](/tidb-limitations.md)
@@ -111,6 +111,7 @@
   - 规划集群拓扑
     - [最小部署拓扑结构](/minimal-deployment-topology.md)
     - [TiFlash 部署拓扑](/tiflash-deployment-topology.md)
+    - [PD 微服务部署拓扑](/pd-microservices-deployment-topology.md)
     - [TiProxy 部署拓扑](/tiproxy/tiproxy-deployment-topology.md)
     - [TiCDC 部署拓扑](/ticdc-deployment-topology.md)
     - [TiDB Binlog 部署拓扑](/tidb-binlog-deployment-topology.md)
@@ -322,7 +323,13 @@
   - [Load Base Split 使用文档](/configure-load-base-split.md)
   - [Store Limit 使用文档](/configure-store-limit.md)
   - [DDL 执行原理及最佳实践](/ddl-introduction.md)
-  - [PD 微服务使用文档](/pd-microservices.md)
+  - PD 微服务使用文档
+    - [PD 微服务概览](/pd-microservices.md)
+    - [使用 TiUP 扩容缩容 PD 微服务节点](/scale-microservices-using-tiup.md)
+    - [TSO 配置文件描述](/tso-configuration-file.md)
+    - [TSO 配置参数](/command-line-flags-for-tso-configuration.md)
+    - [Scheduling 配置文件描述](/scheduling-configuration-file.md)
+    - [Scheduling 配置参数](/command-line-flags-for-scheduling-configuration.md)
 - TiDB 工具
   - [功能概览](/ecosystem-tool-user-guide.md)
   - [使用场景](/ecosystem-tool-user-case.md)
@@ -635,6 +642,7 @@
     - [基于 DM 同步场景下的数据校验](/sync-diff-inspector/dm-diff.md)
   - TiProxy
     - [概述](/tiproxy/tiproxy-overview.md)
+    - [负载均衡策略](/tiproxy/tiproxy-load-balance.md)
     - [配置文件](/tiproxy/tiproxy-configuration.md)
     - [命令行参数](/tiproxy/tiproxy-command-line-flags.md)
     - [监控指标](/tiproxy/tiproxy-grafana.md)
@@ -855,7 +863,7 @@
       - [`SHOW PLACEMENT LABELS`](/sql-statements/sql-statement-show-placement-labels.md)
       - [`SHOW PLUGINS`](/sql-statements/sql-statement-show-plugins.md)
       - [`SHOW PRIVILEGES`](/sql-statements/sql-statement-show-privileges.md)
-      - [`SHOW PROCESSSLIST`](/sql-statements/sql-statement-show-processlist.md)
+      - [`SHOW PROCESSLIST`](/sql-statements/sql-statement-show-processlist.md)
       - [`SHOW PROFILES`](/sql-statements/sql-statement-show-profiles.md)
       - [`SHOW PUMP STATUS`](/sql-statements/sql-statement-show-pump-status.md)
       - [`SHOW SCHEMAS`](/sql-statements/sql-statement-show-schemas.md)
@@ -900,7 +908,15 @@
       - [加密和压缩函数](/functions-and-operators/encryption-and-compression-functions.md)
       - [锁函数](/functions-and-operators/locking-functions.md)
       - [信息函数](/functions-and-operators/information-functions.md)
-      - [JSON 函数](/functions-and-operators/json-functions.md)
+      - JSON 函数
+        - [概览](/functions-and-operators/json-functions.md)
+        - [创建 JSON 的函数](/functions-and-operators/json-functions/json-functions-create.md)
+        - [搜索 JSON 的函数](/functions-and-operators/json-functions/json-functions-search.md)
+        - [修改 JSON 的函数](/functions-and-operators/json-functions/json-functions-modify.md)
+        - [返回 JSON 的函数](/functions-and-operators/json-functions/json-functions-return.md)
+        - [JSON 效用函数](/functions-and-operators/json-functions/json-functions-utility.md)
+        - [聚合 JSON 的函数](/functions-and-operators/json-functions/json-functions-aggregate.md)
+        - [验证 JSON 的函数](/functions-and-operators/json-functions/json-functions-validate.md)
       - [GROUP BY 聚合函数](/functions-and-operators/aggregate-group-by-functions.md)
       - [GROUP BY 修饰符](/functions-and-operators/group-by-modifier.md)
       - [窗口函数](/functions-and-operators/window-functions.md)
@@ -927,7 +943,7 @@
     - [临时表](/temporary-tables.md)
     - [缓存表](/cached-tables.md)
     - [外键约束](/foreign-key.md)
-    - 字符集和排序
+    - 字符集和排序规则
       - [概述](/character-set-and-collation.md)
       - [GBK](/character-set-gbk.md)
     - [Placement Rules in SQL](/placement-rules-in-sql.md)
@@ -1055,6 +1071,8 @@
   - [版本发布时间线](/releases/release-timeline.md)
   - [TiDB 版本规则](/releases/versioning.md)
   - [TiDB 离线包](/binary-package.md)
+  - v8.2
+    - [8.2.0-DMR](/releases/release-8.2.0.md)
   - v8.1
     - [8.1.0](/releases/release-8.1.0.md)
   - v8.0
@@ -1083,6 +1101,7 @@
   - v6.6
     - [6.6.0-DMR](/releases/release-6.6.0.md)
   - v6.5
+    - [6.5.10](/releases/release-6.5.10.md)
     - [6.5.9](/releases/release-6.5.9.md)
     - [6.5.8](/releases/release-6.5.8.md)
     - [6.5.7](/releases/release-6.5.7.md)

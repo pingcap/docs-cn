@@ -31,6 +31,19 @@ Info: {"sink-uri":"kafka://127.0.0.1:9092/topic-name?protocol=canal-json&kafka-v
 - `--target-ts`：指定 changefeed 的目标 TSO。TiCDC 集群拉取数据直到这个 TSO 停止。默认为空，即 TiCDC 不会自动停止。
 - `--config`：指定 changefeed 配置文件，详见：[TiCDC Changefeed 配置参数](/ticdc/ticdc-changefeed-config.md)。
 
+## 支持的 Kafka 版本
+
+TiCDC 与支持的 Kafka 最低版本对应关系如下：
+
+| TiCDC 版本               | 支持的 Kafka 最低版本 |
+| :-----------------------| :------------------ |
+| TiCDC >= v8.1.0          | 2.1.0              |
+| v7.6.0 <= TiCDC < v8.1.0 | 2.4.0              |
+| v7.5.2 <= TiCDC < v8.0.0 | 2.1.0              |
+| v7.5.0 <= TiCDC < v7.5.2 | 2.4.0              |
+| v6.5.0 <= TiCDC < v7.5.0 | 2.1.0              |
+| v6.1.0 <= TiCDC < v6.5.0 | 2.0.0              |
+
 ## Sink URI 配置 `kafka`
 
 Sink URI 用于指定 TiCDC 目标系统的连接信息，遵循以下格式：
@@ -59,8 +72,8 @@ URI 中可配置的的参数如下：
 | :------------------ | :------------------------------------------------------------ |
 | `127.0.0.1`          | 下游 Kafka 对外提供服务的 IP。                                 |
 | `9092`               | 下游 Kafka 的连接端口。                                          |
-| `topic-name`           | 变量，使用的 Kafka topic 名字。                                      |
-| `kafka-version`      | 下游 Kafka 版本号（可选，默认值 `2.4.0`，目前支持的最低版本为 `0.11.0.2`，最高版本为 `3.2.0`。该值需要与下游 Kafka 的实际版本保持一致）。 |
+| `topic-name`         | 变量，使用的 Kafka topic 名字。                                      |
+| `kafka-version`      | 下游 Kafka 版本号。该值需要与下游 Kafka 的实际版本保持一致。 |
 | `kafka-client-id`    | 指定同步任务的 Kafka 客户端的 ID（可选，默认值为 `TiCDC_sarama_producer_同步任务的 ID`）。 |
 | `partition-num`      | 下游 Kafka partition 数量（可选，不能大于实际 partition 数量，否则创建同步任务会失败，默认值 `3`）。|
 | `max-message-bytes`  | 每次向 Kafka broker 发送消息的最大数据量（可选，默认值 `10MB`）。从 v5.0.6 和 v4.0.6 开始，默认值分别从 64MB 和 256MB 调整至 10 MB。|

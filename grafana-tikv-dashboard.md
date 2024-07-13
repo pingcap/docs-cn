@@ -69,9 +69,9 @@ summary: TiKV 监控指标详解：TiUP 部署 TiDB 集群时，一键部署监�
 - Average gRPC message duration：gRPC 请求平均的执行时间
 - gRPC batch size：TiDB 与 TiKV 之间 grpc 请求的 batch 大小
 - raft message batch size：TiKV 与 TiKV 之间 raft 消息的 batch 大小
-- gRPC request sources QPS: 不同 gRPC 请求来源的速度
-- gRPC request sources duration: 不同 gRPC 请求来源的执行总时间
-- gRPC resource group QPS: 不同 resource group 的 gRPC 请求速度 
+- gRPC request sources QPS：不同 gRPC 请求来源的速度
+- gRPC request sources duration：不同 gRPC 请求来源的执行总时间
+- gRPC resource group QPS：不同 resource group 的 gRPC 请求速度
 
 ### Thread CPU
 
@@ -114,13 +114,13 @@ summary: TiKV 监控指标详解：TiUP 部署 TiDB 集群时，一键部署监�
 ### Raft process
 
 - Ready handled：Raft 中不同 ready 类型的 ops
-    - count: 批量处理 ready 的 ops
-    - has_ready_region: 获得 ready 的 Region 的 ops
-    - pending_region: 被检查是否获得 ready 的 Region 的 ops，v3.0.0 后废弃
-    - message: ready 内待发送 message 的 ops
-    - append: ready 内 Raft log entry 的 ops
-    - commit: ready 内 committed Raft log entry 的 ops
-    - snapshot: 携带 snapshot 的 ready 的 ops
+    - count：批量处理 ready 的 ops
+    - has_ready_region：获得 ready 的 Region 的 ops
+    - pending_region：被检查是否获得 ready 的 Region 的 ops，v3.0.0 后废弃
+    - message：ready 内待发送 message 的 ops
+    - append：ready 内 Raft log entry 的 ops
+    - commit：ready 内 committed Raft log entry 的 ops
+    - snapshot：携带 snapshot 的 ready 的 ops
 - Max Duration of Raft store events：raftstore 处理事件最慢一次所花费的时间
 - Replica read lock checking duration：处理 Replica Read 时检查 lock 所花费的时间
 - Peer msg length distribution：每个 TiKV 中每个 region 一次性处理 Peer 消息的个数，消息越多说明 peer 越繁忙。
@@ -346,6 +346,7 @@ summary: TiKV 监控指标详解：TiUP 部署 TiDB 集群时，一键部署监�
 - Bytes/Write：每次写的大小
 - Compaction flow：compaction 相关的流量
 - Compaction pending bytes：等待 compaction 的大小
+- Compaction Job Size(files)：单个 compaction 任务涉及的 SST 文件数量
 - Read amplification：每个 TiKV 实例的读放大
 - Compression ratio：每一层的压缩比
 - Number of snapshots：每个 TiKV 的 snapshot 的数量

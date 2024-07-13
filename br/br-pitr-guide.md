@@ -117,13 +117,13 @@ Restore KV Files <--------------------------------------------------------------
 >
 > 其中全量恢复数据量，是指单个副本中所有 KV 的逻辑大小，并不代表实际恢复的数据量。BR 恢复数据时会根据集群设置的副本数来恢复全部副本，当副本数越多时，实际恢复的数据量也就越多。
 > 所有测试集群默认设置 3 副本。
-> 如果想提升整体恢复的性能，可以通过根据实际情况调整 TiKV 配置文件中的 [`import.num-threads`](/tikv-configuration-file.md#import) 配置项以及 BR 命令的 [`concurrency`](/br/use-br-command-line-tool.md#常用选项) 参数。
+> 如果想提升整体恢复的性能，可以通过根据实际情况调整 TiKV 配置文件中的 [`import.num-threads`](/tikv-configuration-file.md#import) 配置项以及 BR 命令的 [`pitr-concurrency`](/br/use-br-command-line-tool.md#常用选项) 参数。
 
 测试场景 1（[TiDB Cloud](https://tidbcloud.com) 上部署）如下：
 
 - TiKV 节点（8 core，16 GB 内存）数量：21
 - TiKV 配置项 `import.num-threads`：8
-- BR 命令参数 `concurrency`：128
+- BR 命令参数 `pitr-concurrency`：128
 - Region 数量：183,000
 - 集群新增日志数据：10 GB/h
 - 写入 (INSERT/UPDATE/DELETE) QPS：10,000
@@ -132,13 +132,20 @@ Restore KV Files <--------------------------------------------------------------
 
 - TiKV 节点（8 core，64 GB 内存）数量：6
 - TiKV 配置项 `import.num-threads`：8
-- BR 命令参数 `concurrency`：128
+- BR 命令参数 `pitr-concurrency`：128
 - Region 数量：50,000
 - 集群新增日志数据：10 GB/h
 - 写入 (INSERT/UPDATE/DELETE) QPS：10,000
+
+## 监控与告警
+
+在日志备份任务下发后，各 TiKV 节点会持续将数据写入外部存储。此过程的监控数据可以通过 **TiKV-Details > Backup Log** 面板查看。
+
+如需在指标异常时收到通知，可以参考[日志备份告警](/br/br-monitoring-and-alert.md#日志备份告警)配置告警规则。
 
 ## 探索更多
 
 * [TiDB 集群备份与恢复实践示例](/br/backup-and-restore-use-cases.md)
 * [`br` 命令行手册](/br/use-br-command-line-tool.md)
 * [日志备份与 PITR 架构设计](/br/br-log-architecture.md)
+* [备份恢复监控告警](/br/br-monitoring-and-alert.md)
