@@ -51,6 +51,18 @@ aliases: ['/docs-cn/dev/best-practices/massive-regions-best-practices/','/docs-c
 
     ![图 3 查看 Propose wait duration](/media/best-practices/propose-wait-duration.png)
 
++ Raft IO 下的 `Commit log duration`
+
+    `Commit log duration` 是 Raftstore 将 Raft 日志提交到相应 Region 的多数成员所花费的时间。如果该指标的值较高且波动较大，可能的原因有：
+
+    - Raftstore 的负载较高
+    - append log 较慢
+    - Raft 日志由于网络阻塞无法及时提交
+
+  参考值：低于 200-500ms。
+
+    ![图 4 查看 Commit log duration](/media/best-practices/commit-log-duration.png)
+
 ## 性能优化方法
 
 找到性能问题的根源后，可从以下两个方向来解决性能问题：
@@ -131,6 +143,14 @@ Region 默认的大小约为 96 MiB，将其调大也可以减少 Region 个数�
 > + 更容易发生性能抖动。
 > + 查询性能回退，尤其是大范围数据查询的性能会有回退。
 > + 调度变慢。
+
+### 方法七：提高 Raft 通信的的最大连接数
+
+TiKV 节点间用于 Raft 通信的最大连接数默认为 1，将其调大可以减少因为海量 Region 通信量过大而导致的阻塞情况。具体的配置说明可以参考 [`grpc-raft-conn-num`](/tikv-configuration-file.md#grpc-raft-conn-num)。
+
+> **注意：**
+>
+> 为了减少不必要的线程切换开销，并避免批量处理效果不佳的影响，该连接数的建议范围为 `[1, 4]`。
 
 ## 其他问题和解决方案
 
