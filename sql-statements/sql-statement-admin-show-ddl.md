@@ -10,8 +10,18 @@ summary: TiDB 数据库中 ADMIN SHOW DDL [JOBS|JOB QUERIES] 的使用概况。
 ## 语法图
 
 ```ebnf+diagram
+<<<<<<< HEAD
 AdminStmt ::=
     'ADMIN' ( 'SHOW' ( 'DDL' ( 'JOBS' Int64Num? WhereClauseOptional | 'JOB' 'QUERIES' NumList | 'JOB' 'QUERIES' 'LIMIT' m 'OFFSET' n )? | TableName 'NEXT_ROW_ID' | 'SLOW' AdminShowSlow ) | 'CHECK' ( 'TABLE' TableNameList | 'INDEX' TableName Identifier ( HandleRange ( ',' HandleRange )* )? ) | 'RECOVER' 'INDEX' TableName Identifier | 'CLEANUP' ( 'INDEX' TableName Identifier | 'TABLE' 'LOCK' TableNameList ) | 'CHECKSUM' 'TABLE' TableNameList | 'CANCEL' 'DDL' 'JOBS' NumList | 'RELOAD' ( 'EXPR_PUSHDOWN_BLACKLIST' | 'OPT_RULE_BLACKLIST' | 'BINDINGS' ) | 'PLUGINS' ( 'ENABLE' | 'DISABLE' ) PluginNameList | 'REPAIR' 'TABLE' TableName CreateTableStmt | ( 'FLUSH' | 'CAPTURE' | 'EVOLVE' ) 'BINDINGS' )
+=======
+AdminShowDDLStmt ::=
+    'ADMIN' 'SHOW' 'DDL'
+    ( 
+        'JOBS' Int64Num? WhereClauseOptional 
+    |   'JOB' 'QUERIES' NumList 
+    |   'JOB' 'QUERIES' 'LIMIT' m ( ('OFFSET' | ',') n )?
+    )?
+>>>>>>> ad1b67b214 (admin show ddl: Fix EBNF (#17896))
 
 NumList ::=
     Int64Num ( ',' Int64Num )*
