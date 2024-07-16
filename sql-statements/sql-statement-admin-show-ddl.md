@@ -10,18 +10,13 @@ summary: TiDB 数据库中 ADMIN SHOW DDL [JOBS|JOB QUERIES] 的使用概况。
 ## 语法图
 
 ```ebnf+diagram
-<<<<<<< HEAD
 AdminStmt ::=
-    'ADMIN' ( 'SHOW' ( 'DDL' ( 'JOBS' Int64Num? WhereClauseOptional | 'JOB' 'QUERIES' NumList | 'JOB' 'QUERIES' 'LIMIT' m 'OFFSET' n )? | TableName 'NEXT_ROW_ID' | 'SLOW' AdminShowSlow ) | 'CHECK' ( 'TABLE' TableNameList | 'INDEX' TableName Identifier ( HandleRange ( ',' HandleRange )* )? ) | 'RECOVER' 'INDEX' TableName Identifier | 'CLEANUP' ( 'INDEX' TableName Identifier | 'TABLE' 'LOCK' TableNameList ) | 'CHECKSUM' 'TABLE' TableNameList | 'CANCEL' 'DDL' 'JOBS' NumList | 'RELOAD' ( 'EXPR_PUSHDOWN_BLACKLIST' | 'OPT_RULE_BLACKLIST' | 'BINDINGS' ) | 'PLUGINS' ( 'ENABLE' | 'DISABLE' ) PluginNameList | 'REPAIR' 'TABLE' TableName CreateTableStmt | ( 'FLUSH' | 'CAPTURE' | 'EVOLVE' ) 'BINDINGS' )
-=======
-AdminShowDDLStmt ::=
     'ADMIN' 'SHOW' 'DDL'
     ( 
         'JOBS' Int64Num? WhereClauseOptional 
     |   'JOB' 'QUERIES' NumList 
     |   'JOB' 'QUERIES' 'LIMIT' m ( ('OFFSET' | ',') n )?
     )?
->>>>>>> ad1b67b214 (admin show ddl: Fix EBNF (#17896))
 
 NumList ::=
     Int64Num ( ',' Int64Num )*
@@ -34,7 +29,14 @@ WhereClauseOptional ::=
 
 ### `ADMIN SHOW DDL`
 
-可以通过 `ADMIN SHOW DDL` 语句查看当前正在运行的 DDL 作业状态，包括当前 schema 版本号、Owner 的 DDL ID 和地址、正在执行的 DDL 任务和 SQL、当前 TiDB 实例的 DDL ID。
+可以通过 `ADMIN SHOW DDL` 语句查看当前正在运行的 DDL 作业状态，包括当前 schema 版本号、Owner 的 DDL ID 和地址、正在执行的 DDL 任务和 SQL、当前 TiDB 实例的 DDL ID。该语句返回的结果字段描述如下：
+
+- `SCHEMA_VER`：schema 版本号。
+- `OWNER_ID`：DDL Owner 的 UUID。参见 [`TIDB_IS_DDL_OWNER()`](/functions-and-operators/tidb-functions.md)。
+- `OWNER_ADDRESS`：DDL Owner 的 IP 地址。
+- `RUNNING_JOBS`：正在运行的 DDL 作业的详细信息。
+- `SELF_ID`：当前连接的 TiDB 节点的 UUID。如果 `SELF_ID` 与 `OWNER_ID` 相同，这意味着你当前连接的是 DDL Owner。
+- `QUERY`：查询语句。
 
 {{< copyable "sql" >}}
 
