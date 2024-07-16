@@ -290,7 +290,7 @@ SELECT UNCOMPRESSED_LENGTH(0x03000000789C72747206040000FFFF018D00C7);
 
 示例：
 
-- 要启用密码复杂度检查，将系统变量 [`validate_password.enable`](/system-variables.md#validate_passwordenable-new-in-v650) 设置为 `ON`：
+- 要启用密码复杂度检查，将系统变量 [`validate_password.enable`](/system-variables.md#validate_passwordenable-从-v650-版本开始引入) 设置为 `ON`：
 
     ```sql
     SET GLOBAL validate_password.enable=ON;
