@@ -50,6 +50,18 @@ summary: 了解海量 Region 导致性能问题的原因和优化方法。
 
     ![图 3 查看 Propose wait duration](/media/best-practices/propose-wait-duration.png)
 
++ Raft IO 下的 `Commit log duration`
+
+    `Commit log duration` 是 Raftstore 将 Raft 日志提交到相应 Region 的多数成员所花费的时间。如果该指标的值较高且波动较大，可能的原因有：
+
+    - Raftstore 的负载较高
+    - append log 较慢
+    - Raft 日志由于网络阻塞无法及时提交
+
+  参考值：低于 200-500ms。
+
+    ![图 4 查看 Commit log duration](/media/best-practices/commit-log-duration.png)
+
 ## 性能优化方法
 
 找到性能问题的根源后，可从以下两个方向来解决性能问题：
@@ -118,6 +130,14 @@ Hibernate Region 在 [TiKV master](https://github.com/tikv/tikv/tree/master) 分
 详情请参考[如何配置 Region Merge（英文）](https://tikv.org/docs/4.0/tasks/configure/region-merge/) 和 [PD 配置文件描述](/pd-configuration-file.md#schedule)。
 
 同时，默认配置的 `Region Merge` 的参数设置较为保守，可以根据需求参考 [PD 调度策略最佳实践](/best-practices/pd-scheduling-best-practices.md#region-merge-速度慢)中提供的方法加快 `Region Merge` 过程的速度。
+
+### 方法六：提高 Raft 通信的的最大连接数
+
+TiKV 节点间用于 Raft 通信的最大连接数默认为 1，将其调大可以减少因为海量 Region 通信量过大而导致的阻塞情况。具体的配置说明可以参考 [`grpc-raft-conn-num`](/tikv-configuration-file.md#grpc-raft-conn-num)。
+
+> **注意：**
+>
+> 为了减少不必要的线程切换开销，并避免批量处理效果不佳的影响，该连接数的建议范围为 `[1, 4]`。
 
 ## 其他问题和解决方案
 
