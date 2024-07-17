@@ -121,7 +121,6 @@ SELECT @@tidb_current_ts;
 
 必须将 [`tidb_generate_binary_plan`](/system-variables.md#tidb_generate_binary_plan-从-v620-版本开始引入) 变量设置为 `ON`，二进制计划才可用。
 
-
 示例：
 
 ```sql
