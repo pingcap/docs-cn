@@ -179,7 +179,7 @@ TiDB 使用的 SQL 语句旨在遵循 ISO/IEC SQL 标准，并在必要时对 My
 | [`SHOW ENGINES`](/sql-statements/sql-statement-show-engines.md) | 显示可用的存储引擎。 |
 | [`SHOW PLUGINS`](/sql-statements/sql-statement-show-plugins.md) | 显示已安装的插件。 |
 | [`SHOW PROCESSLIST`](/sql-statements/sql-statement-show-processlist.md) | 显示连接到相同 TiDB 服务器的当前会话。 |
-| [`SHOW PROFILES`](/sql-statements/sql-statement-show-profiles.md) | 在 MySQL 中显示查询概要。在 TiDB 中仅用于提供 [MySQL 兼容性](/mysql-compatibility.md)，目前显示结果为空。 |
+| [`SHOW PROFILES`](/sql-statements/sql-statement-show-profiles.md) | 用于提供 [MySQL 兼容性](/mysql-compatibility.md)，目前返回结果为空。 |
 | [`SHUTDOWN`](/sql-statements/sql-statement-shutdown.md) | 停止客户端连接的 TiDB 实例，而不是整个 TiDB 集群。 |
 
 ## 锁定语句
