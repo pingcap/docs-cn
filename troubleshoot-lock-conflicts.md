@@ -164,72 +164,9 @@ CURRENT_SQL_DIGEST_TEXT: update `t` set `v` = `v` + ? where `id` = ? ;
 
 以下介绍乐观事务模式下常见的锁冲突问题的处理方式。
 
-### 读写冲突
-
-在 TiDB 中，读取数据时，会获取一个包含当前物理时间且全局唯一递增的时间戳作为当前事务的 start_ts。事务在读取时，需要读到目标 key 的 commit_ts 小于这个事务的 start_ts 的最新的数据版本。当读取时发现目标 key 上存在 lock 时，因为无法知道上锁的那个事务是在 Commit 阶段还是 Prewrite 阶段，所以就会出现读写冲突的情况，如下图：
-
-![读写冲突](/media/troubleshooting-lock-pic-04.png)
-
-分析：
-
-Txn0 完成了 Prewrite，在 Commit 的过程中 Txn1 对该 key 发起了读请求，Txn1 需要读取 start_ts > commit_ts 最近的 key 的版本。此时，Txn1 的 `start_ts > Txn0` 的 lock_ts，需要读取的 key 上的锁信息仍未清理，故无法判断 Txn0 是否提交成功，因此 Txn1 与 Txn0 出现读写冲突。
-
-你可以通过如下两种途径来检测当前环境中是否存在读写冲突：
-
-1. TiDB 监控及日志
-
-    * 通过 TiDB Grafana 监控分析：
-
-        观察 KV Errors 下 Lock Resolve OPS 面板中的 not_expired/resolve 监控项以及 KV Backoff OPS 面板中的 tikvLockFast 监控项，如果有较为明显的上升趋势，那么可能是当前的环境中出现了大量的读写冲突。其中，not_expired 是指对应的锁还没有超时，resolve 是指尝试清锁的操作，tikvLockFast 代表出现了读写冲突。
-
-        ![KV-backoff-txnLockFast-optimistic](/media/troubleshooting-lock-pic-09.png)
-        ![KV-Errors-resolve-optimistic](/media/troubleshooting-lock-pic-08.png)
-
-    * 通过 TiDB 日志分析：
-
-        在 TiDB 的日志中可以看到下列信息：
-
-        ```log
-        [INFO] [coprocessor.go:743] ["[TIME_COP_PROCESS] resp_time:406.038899ms txnStartTS:416643508703592451 region_id:8297 store_addr:10.8.1.208:20160 backoff_ms:255 backoff_types:[txnLockFast,txnLockFast] kv_process_ms:333 scan_total_write:0 scan_processed_write:0 scan_total_data:0 scan_processed_data:0 scan_total_lock:0 scan_processed_lock:0"]
-        ```
-
-        * txnStartTS：发起读请求的事务的 start_ts，如上面示例中的 416643508703592451
-        * backoff_types：读写发生了冲突，并且读请求进行了 backoff 重试，重试的类型为 txnLockFast
-        * backoff_ms：读请求 backoff 重试的耗时，单位为 ms，如上面示例中的 255
-        * region_id：读请求访问的目标 region 的 id
-
-2. 通过 TiKV 日志分析：
-
-    在 TiKV 的日志可以看到下列信息：
-
-    ```log
-    [ERROR] [endpoint.rs:454] [error-response] [err=""locked primary_lock:7480000000000004D35F6980000000000000010380000000004C788E0380000000004C0748 lock_version: 411402933858205712 key: 7480000000000004D35F7280000000004C0748 lock_ttl: 3008 txn_size: 1""]
-    ```
-
-    这段报错信息表示出现了读写冲突，当读数据时发现 key 有锁阻碍读，这个锁包括未提交的乐观锁和未提交的 prewrite 后的悲观锁。
-
-    * primary_lock：锁对应事务的 primary lock。
-    * lock_version：锁对应事务的 start_ts。
-    * key：表示被锁的 key。
-    * lock_ttl: 锁的 TTL。
-    * txn_size：锁所在事务在其 Region 的 key 数量，指导清锁方式。
-
-处理建议：
-
-* 在遇到读写冲突时会有 backoff 自动重试机制，如上述示例中 Txn1 会进行 backoff 重试，单次初始 10 ms，单次最大 3000 ms，总共最大 20000 ms
-
-* 可以使用 TiDB Control 的子命令 [decoder](/tidb-control.md#decoder-命令) 来查看指定 key 对应的行的 table id 以及 rowid：
-
-    ```sh
-    ./tidb-ctl decoder "t\x00\x00\x00\x00\x00\x00\x00\x1c_r\x00\x00\x00\x00\x00\x00\x00\xfa"
-    format: table_row
-    table_id: -9223372036854775780
-    row_id: -9223372036854775558
-    ```
-
 ### KeyIsLocked 错误
 
-事务在 Prewrite 阶段的第一步就会检查是否有写写冲突，第二步会检查目标 key 是否已经被另一个事务上锁。当检测到该 key 被 lock 后，会在 TiKV 端报出 KeyIsLocked。目前该报错信息没有打印到 TiDB 以及 TiKV 的日志中。与读写冲突一样，在出现 KeyIsLocked 时，后台会自动进行 backoff 重试。
+事务在 Prewrite 阶段的第一步就会检查是否有写写冲突，第二步会检查目标 key 是否已经被另一个事务上锁。当检测到该 key 被 lock 后，会在 TiKV 端报出 KeyIsLocked。目前该报错信息没有打印到 TiDB 以及 TiKV 的日志中。在出现 KeyIsLocked 时，后台会自动进行 backoff 重试。
 
 你可以通过 TiDB Grafana 监控检测 KeyIsLocked 错误：
 
@@ -291,10 +228,6 @@ TxnLockNotFound 错误是由于事务提交的慢了，超过了 TTL 的时间�
 > **注意：**
 >
 > 即使设置了悲观事务模式，autocommit 事务仍然会优先尝试使用乐观事务模式进行提交，并在发生冲突后、自动重试时切换为悲观事务模式。
-
-### 读写冲突
-
-报错信息以及处理建议同乐观锁模式。
 
 ### pessimistic lock retry limit reached
 
