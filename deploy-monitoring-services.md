@@ -118,6 +118,16 @@ scrape_configs:
 ...
 ```
 
+如需告警，可额外下载告警文件 (可从 [pingcap/tidb](https://github.com/pingcap/tidb/blob/master/pkg/metrics/alertmanager/tidb.rules.yml)，[tikv/tikv](https://github.com/tikv/tikv/blob/master/metrics/alertmanager/tikv.rules.yml)，[tikv/pd](https://github.com/tikv/pd/blob/master/metrics/alertmanager/pd.rules.yml) 下载）。并在 prometheus 中添加如下配置：
+
+```
+rule_files:
+  - 'tidb.rules.yml'
+  - 'pd.rules.yml'
+  - 'tikv.rules.yml'
+  - 'tikv.accelerate.rules.yml'
+```
+
 启动 Prometheus 服务：
 
 {{< copyable "shell-regular" >}}
