@@ -131,7 +131,7 @@ TiDB 使用的 SQL 语句旨在遵循 ISO/IEC SQL 标准，并在必要时对 My
 | [`SHOW CREATE PLACEMENT POLICY`](/sql-statements/sql-statement-show-create-placement-policy.md) | 显示放置策略的 `CREATE` 语句。 |
 | [`SHOW PLACEMENT FOR`](/sql-statements/sql-statement-show-placement-for.md) | 显示指定表的放置策略。 |
 | [`SHOW PLACEMENT LABELS`](/sql-statements/sql-statement-show-placement-labels.md) | 显示可用的放置标签。 |
-| [`SHOW PLACEMENT`](/sql-statements/sql-statement-show-placement.md) | 显示所有放置策略。 |
+| [`SHOW PLACEMENT`](/sql-statements/sql-statement-show-placement.md) | 显示放置规则。 |
 
 ## 资源组
 
