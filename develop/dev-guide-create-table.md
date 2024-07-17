@@ -179,7 +179,7 @@ CREATE TABLE `bookshop`.`ratings` (
 );
 ```
 
-额外的，如果需更新时也默认填入当前时间，可使用以下语句（但 `ON UPDATE` 后仅可填入[当前时间相关语句](https://pingcap.github.io/sqlgram/#NowSymOptionFraction)，`DEFAULT` 后支持[更多选择](https://pingcap.github.io/sqlgram/#DefaultValueExpr)）：
+此外，如需在数据更新时也默认填入当前时间，可使用以下语句（但 `ON UPDATE` 后仅可填入与当前时间相关的表达式）：
 
 ```sql
 CREATE TABLE `bookshop`.`ratings` (
@@ -190,6 +190,8 @@ CREATE TABLE `bookshop`.`ratings` (
   PRIMARY KEY (`book_id`,`user_id`) CLUSTERED
 );
 ```
+
+关于不同数据类型默认值的更多信息，请参阅[数据类型的默认值](/data-type-default-values.md)。
 
 ### 防止重复
 
