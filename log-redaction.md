@@ -59,7 +59,7 @@ ERROR 1062 (23000): Duplicate entry '‹1›' for key 't.a'
 
 ## TiKV 组件日志脱敏
 
-TiKV 侧的日志脱敏需要将 [`security.redact-info-log`](/tikv-configuration-file.md#redact-info-log-从-v408-版本开始引入) 的值设为 `true`。该配置项值默认为 `false`，即关闭脱敏。
+TiKV 侧的日志脱敏需要将 [`security.redact-info-log`](/tikv-configuration-file.md#redact-info-log-从-v408-版本开始引入) 的值设为 `true` 或 `"marker"`。该配置项值默认为 `false`，即关闭脱敏。
 
 ## PD 组件日志脱敏
 
