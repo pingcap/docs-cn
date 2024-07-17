@@ -414,5 +414,5 @@ SELECT UNCOMPRESSED_LENGTH(0x03000000789C72747206040000FFFF018D00C7);
 ## MySQL 兼容性
 
 * TiDB 不支持 `STATEMENT_DIGEST()` 和 `STATEMENT_DIGEST_TEXT()` 函数。
-* TiDB 不支持 MySQL 8.0.30 中为 [`AES_ENCRYPT()`](#aes_encrypt) and [`AES_DECRYPT`](#aes_decrypt) 新增的 `kdf_name`、`salt` 和 `iterations` 参数。
+* TiDB 不支持 MySQL 8.0.30 中为 [`AES_ENCRYPT()`](#aes_encrypt) 和 [`AES_DECRYPT`](#aes_decrypt) 新增的 `kdf_name`、`salt` 和 `iterations` 参数。
 * MySQL 未实现 [`SM3()`](#sm3) 函数。
