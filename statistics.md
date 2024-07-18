@@ -80,20 +80,20 @@ TiDB 根据表的变更次数自动调度 [`ANALYZE`](/sql-statements/sql-statem
 
 > **注意：**
 >
-> Count-Min Sketch 在统计信息 Version 1 中仅用于等值或 `IN` 谓词的选择率估算。在 Version 2 中，为了管理 Count-Min Sketch 以避免冲突，使用了其他统计信息，如下所述。
+> Count-Min Sketch 在统计信息 Version 1 仅用于等值查询或 `IN` 查询的谓词估算。在 Version 2 中，为了避免 Count-Min Sketch 可能带来的哈希冲突，TiDB 不再使用 Count-Min Sketch 统计信息，而是使用直方图估算等值查询或 `IN` 查询的谓词。
 
-Count-Min Sketch 是一种哈希结构，当查询中出现诸如 `a = 1` 或者 `IN` 查询（如 `a in (1, 2, 3)`）这样的等值查询时，TiDB 便会使用这个数据结构来进行估算。
+Count-Min Sketch 是一种哈希结构，当处理等值查询（如 `a = 1`）或者 `IN` 查询（如 `a in (1, 2, 3)`）时，TiDB 便会使用这种数据结构来进行估算。
 
 由于 Count-Min Sketch 是一个哈希结构，就有出现哈希冲突的可能。当在 `EXPLAIN` 语句中发现等值查询的估算偏离实际值较大时，就可以认为是一个比较大的值和一个比较小的值被哈希到了一起。这时有以下两种方法来避免哈希冲突：
 
 - 修改 `WITH NUM TOPN` 参数。TiDB 会将出现频率前 x 的数据单独储存，之后的数据再储存到 Count-Min Sketch 中。因此，为了避免一个比较大的值和一个比较小的值被哈希到一起，可以调大 `WITH NUM TOPN` 的值。该参数的默认值是 `20`，最大值是 `1024`。关于该参数的更多信息，参见[手动收集](#手动收集)小节。
-- 修改 `WITH NUM CMSKETCH DEPTH` 和 `WITH NUM CMSKETCH WIDTH` 两个参数。这两个参数会影响哈希的桶数和碰撞概率，可视具体情况适当调大这两个参数的值来减少碰撞概率，不过调大后也会增加统计信息的内存使用。`WITH NUM CMSKETCH DEPTH` 的默认值是 `5`，`WITH NUM CMSKETCH WIDTH` 的默认值是 `2048`。关于该参数的更多信息，参见[手动收集](#手动收集)小节。
+- 修改 `WITH NUM CMSKETCH DEPTH` 和 `WITH NUM CMSKETCH WIDTH` 两个参数。这两个参数会影响哈希的桶数和冲突概率，可视具体情况适当调大这两个参数的值来减少冲突概率，不过调大后也会增加统计信息的内存使用。`WITH NUM CMSKETCH DEPTH` 的默认值是 `5`，`WITH NUM CMSKETCH WIDTH` 的默认值是 `2048`。关于这两个参数的更多信息，参见[手动收集](#手动收集)小节。
 
 ### Top-N 值
 
 Top-N 值是列或索引中出现次数前 N 的值。Top-N 统计信息通常被称为频率统计信息或数据倾斜。
 
-TiDB 会记录 Top-N 的值和出现次数。参数 `WITH NUM TOPN` 控制 Top-N 值的数量，默认值是 `20`，表示收集出现频率前 20 的值；最大值是 `1024`。关于该参数的详细信息，参见[手动收集](#手动收集)小节。
+TiDB 会记录 Top-N 的值和出现次数。参数 `WITH NUM TOPN` 控制 Top-N 值的数量，默认值是 `20`，表示收集出现频率最高的前 20 个值；最大值是 `1024`。关于该参数的详细信息，参见[手动收集](#手动收集)小节。
 
 ## 选择性收集统计信息
 
@@ -153,7 +153,7 @@ ANALYZE TABLE TableName INDEX [IndexNameList] [WITH NUM BUCKETS|TOPN|CMSKETCH DE
         > **注意：**
         >
         > - 如果系统表 [`mysql.column_stats_usage`](/mysql-schema.md#统计信息相关系统表) 中没有关于该表的 `PREDICATE COLUMNS` 记录，执行以上语句会收集该表中所有列的统计信息以及所有索引的统计信息。
-        > - 任何被排除在统计信息收集（无论是手动列出列名，还是使用 `PREDICATE COLUMNS`）之外的列都不会被覆盖。当执行新类型的 SQL 查询时，如果存在旧的统计信息，优化器将使用这些列的旧统计信息；如果从未收集过列的统计信息，则使用伪列统计信息。下一次使用 `PREDICATE COLUMNS` 的 `ANALYZE` 将收集这些列的统计信息。
+        > - 对于任何被排除在此次统计信息收集（无论是手动列出列名，还是使用 `PREDICATE COLUMNS`）之外的列，它们的统计信息不会被覆盖。当执行新类型的 SQL 查询时，如果存在旧的统计信息，优化器将使用这些列的旧统计信息；如果从未收集过列的统计信息，则使用伪列统计信息。下一次使用 `PREDICATE COLUMNS` 的 `ANALYZE` 将收集这些列的统计信息。
 
 - 如果要收集所有列的统计信息以及所有索引的统计信息，请使用以下语法：
 
@@ -196,7 +196,7 @@ ANALYZE TABLE TableName INDEX [IndexNameList] [WITH NUM BUCKETS|TOPN|CMSKETCH DE
     - 如果某些分区缺失统计信息（例如从未进行过 analyze 的新分区），GlobalStats 生成会中断，并显示 warning 信息提示这些分区没有可用的统计信息。
     - 如果某些分区中缺失某些列的统计信息（这些分区中指定了不同的列进行 analyze），当这些列的统计信息被合并汇总时，GlobalStats 生成会中断，并显示 warning 信息提示某些分区中缺少某些列的统计信息。
 
-- When GlobalStats update is triggered and [`tidb_skip_missing_partition_stats`](/system-variables.md#tidb_skip_missing_partition_stats-从-v730-版本开始引入) is `ON`: 当触发 GlobalStats 更新且 [`tidb_skip_missing_partition_stats`](/system-variables.md#tidb_skip_missing_partition_stats-从-v730-版本开始引入) 为 `ON` 时：
+- 当触发 GlobalStats 更新且 [`tidb_skip_missing_partition_stats`](/system-variables.md#tidb_skip_missing_partition_stats-从-v730-版本开始引入) 为 `ON` 时：
 
     - 如果某些分区缺失全部列或部分列的统计信息，TiDB 在生成 GlobalStats 时会跳过这些缺失的分区统计信息，不影响 GlobalStats 生成。
 
@@ -242,7 +242,7 @@ TiDB 从 v6.1.0 开始引入了统计信息收集的内存限制，你可以通�
 >
 > 以下配置建议仅供参考，实际配置需要在真实场景中测试确定。
 
-- 最小值：需要大于 TiDB 从集群上列最多的表收集统计信息时使用的最大内存。一个粗略的参考信息是，在测试集上，20 列的表在默认配置下，统计信息收集的最大内存使用量约为 800 MiB；160 列的表在默认配置下，统计信息收集的最大内存使用约为 5 GiB。
+- 最小值：需要大于 TiDB 从集群上列最多的表收集统计信息时使用的最大内存。一个粗略的参考信息是，在测试集上，20 列的表在默认配置下，统计信息收集的最大内存使用量约为 800 MiB；160 列的表在默认配置下，统计信息收集的最大内存使用量约为 5 GiB。
 - 最大值：需要小于集群在不进行统计信息收集时的内存空余量。
 
 ## 持久化 `ANALYZE` 配置
@@ -266,7 +266,7 @@ TiDB 支持以下 `ANALYZE` 配置的持久化：
 
 `ANALYZE` 配置持久化功能可用于记录手动执行 `ANALYZE` 语句时指定的持久化配置。记录后，当 TiDB 下一次自动更新统计信息或者你手动收集统计信息但未指定配置时，TiDB 会按照记录的配置收集统计信息。
 
-如果要查询特定表上持久化的配置用于自动分析操作，使用以下 SQL 语句：
+如果要查询某张表上的持久化配置用于自动更新统计信息，使用以下 SQL 语句：
 
 ```sql
 SELECT sample_num, sample_rate, buckets, topn, column_choice, column_ids FROM mysql.analyze_options opt JOIN information_schema.tables tbl ON opt.table_id = tbl.tidb_table_id WHERE tbl.table_schema = '{db_name}' AND tbl.table_name = '{table_name}';
@@ -339,14 +339,14 @@ SHOW COLUMN_STATS_USAGE WHERE db_name = 'test' AND table_name = 't' AND last_ana
 - 如果从 v5.3.0 之前版本的集群升级至 v5.3.0 或之后的版本，该变量的默认值不会发生变化。
 <!-- - TiDB Cloud 中，从 v6.5.0 开始，该变量的默认值从 `1` 变为了 `2`。-->
 
-更推荐选择 Version 2。Version 2 将继续增强，并最终完全取代 Version 1。与 Version 1 相比，Version 2 提高了大数据量场景下多项统计信息收集的准确性。Version 2 还取消了为谓词选择率估算收集 Count-Min Sketch 统计信息，并支持仅对选定列进行自动收集（参见[收集部分列的统计信息](#收集部分列的统计信息)），从而提高了收集性能。
+更推荐选择 Version 2。Version 2 将继续增强，并最终完全取代 Version 1。与 Version 1 相比，Version 2 提高了大数据量场景下多项统计信息收集的准确性。此外，Version 2 在进行谓词选择率估算时不再需要收集 Count-Min Sketch 统计信息，并支持仅对选定列进行自动收集（参见[收集部分列的统计信息](#收集部分列的统计信息)），从而提高了收集性能。
 
 以下表格列出了两个统计信息版本为优化器估算收集的信息：
 
 | 信息 | Version 1 | Version 2|
 | --- | --- | ---|
 | 表的总行数 | ⎷ | ⎷ |
-| 等值或 `IN` 谓词估算 | ⎷（列/索引 Top-N & Count-Min Sketch） | ⎷（列/索引 Top-N & 直方图） |
+| 等值查询或 `IN` 查询的谓词估算 | ⎷（列/索引 Top-N & Count-Min Sketch） | ⎷（列/索引 Top-N & 直方图） |
 | Range 范围谓词估算 | ⎷（列/索引 Top-N & 直方图） | ⎷（列/索引 Top-N & 直方图） |
 | `NULL` 谓词估算 | ⎷ | ⎷ |
 | 列的平均长度 | ⎷ | ⎷ |
@@ -356,7 +356,7 @@ SHOW COLUMN_STATS_USAGE WHERE db_name = 'test' AND table_name = 't' AND last_ana
 
 建议确保所有表、索引（和分区）使用相同版本的统计信息收集功能。推荐使用 Version 2，但不建议在没有正当理由（例如使用中的版本出现问题）的情况下切换版本。版本之间的切换可能需要一段时间，在此期间可能没有统计信息，直到所有表都使用了新版本进行统计。如果没有统计信息，可能会影响优化器的计划选择。
 
-切换版本的正当理由可能包括：使用 Version 1 在收集 Count-Min Sketch 统计信息时，由于哈希冲突导致等值或 `IN` 谓词估算不准确。两个解决方案：参见 [Count-Min Sketch](#count-min-sketch)小节；设置 `tidb_analyze_version = 2` 并对所有对象重新运行 `ANALYZE`。在 Version 2 的早期阶段，执行 `ANALYZE` 后有内存溢出的风险，现在这个问题已经解决，但最初的解决方案是设置 `tidb_analyze_version = 1` 并对所有对象重新运行 `ANALYZE`。
+切换版本的正当理由可能包括：使用 Version 1 在收集 Count-Min Sketch 统计信息时，由于哈希冲突导致等值查询或 `IN` 查询谓词估算不准确。此时，你可以参考 [Count-Min Sketch](#count-min-sketch) 小节中描述的解决方案，或者设置 `tidb_analyze_version = 2` 并对所有对象重新运行 `ANALYZE`。在 Version 2 的早期阶段，执行 `ANALYZE` 后有内存溢出的风险，现在这个问题已经解决，但最初的解决方案是设置 `tidb_analyze_version = 1` 并对所有对象重新运行 `ANALYZE`。
 
 要为切换统计信息版本做好 `ANALYZE` 准备，请根据情况进行以下操作：
 
@@ -369,7 +369,7 @@ SHOW COLUMN_STATS_USAGE WHERE db_name = 'test' AND table_name = 't' AND last_ana
     WHERE stats_ver = 2;
     ```
 
-- 如果 TiDB 自动执行的 `ANALYZE` 语句，因为已经启用了自动分析，请执行以下语句生成 [`DROP STATS`](/sql-statements/sql-statement-drop-stats.md) 语句：
+- 如果 `ANALYZE` 语句是由 TiDB 自动执行的（当开启自动更新统计信息时），请执行以下语句生成 [`DROP STATS`](/sql-statements/sql-statement-drop-stats.md) 语句：
 
     ```sql
     SELECT DISTINCT(CONCAT('DROP STATS ', table_schema, '.', table_name, ';'))
@@ -456,7 +456,7 @@ SHOW ANALYZE STATUS [ShowLikeOrWhere];
 - 通过修改 TiDB 配置项 [`stats-load-concurrency`](/tidb-configuration-file.md#stats-load-concurrency-从-v540-版本开始引入) 的值控制统计信息同步加载可以并发处理的最大列数。该配置项的默认值为 `5`。
 - 通过修改 TiDB 配置项 [`stats-load-queue-size`](/tidb-configuration-file.md#stats-load-queue-size-从-v540-版本开始引入) 的值设置统计信息同步加载最多可以缓存多少列的请求。该配置项的默认值为 `1000`。
 
-在 TiDB 启动阶段，初始统计信息加载完成之前执行的 SQL 可能有不合理的执行计划，从而影响性能。为了避免这种情况，从 v7.1.0 开始，TiDB 引入了配置参数 [`force-init-stats`](/tidb-configuration-file.md#force-init-stats-从-v657-和-v710-版本开始引入)。你可以使用该配置项控制 TiDB 启动时是否在统计信息初始化完成后再对外提供服务。该配置项从 v7.2.0 起默认开启。
+在 TiDB 启动阶段，初始统计信息加载完成之前执行的 SQL 可能有不合理的执行计划，从而影响性能。为了避免这种情况，从 v7.1.0 开始，TiDB 引入了配置参数 [`force-init-stats`](/tidb-configuration-file.md#force-init-stats-从-v657-和-v710-版本开始引入)。你可以使用该配置参数控制 TiDB 启动时是否在统计信息初始化完成后再对外提供服务。该配置参数从 v7.2.0 起默认开启。
 
 从 v7.1.0 开始，TiDB 引入了配置参数 [`lite-init-stats`](/tidb-configuration-file.md#lite-init-stats-从-v710-版本开始引入)，用于控制是否开启轻量级的统计信息初始化。
 
