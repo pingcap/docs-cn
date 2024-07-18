@@ -197,6 +197,66 @@ sasl-oauth-scopes = ["producer.kafka", "consumer.kafka"]
 sasl-oauth-grant-type = "client_credentials"
 # Kafka SASL OAUTHBEARER 认证机制中的 audience。默认值为空。在使用该认证机制时，该参数可选填。
 sasl-oauth-audience = "kafka"
+<<<<<<< HEAD
+=======
+
+# 控制是否输出原始的数据变更事件，默认值为 false，表示当使用非 MySQL Sink 且 `UPDATE` 事件的主键或者非空唯一索引的列值发生改变时，TiCDC 会将该其拆分为 `DELETE` 和 `INSERT` 两条事件，并确保所有事件按照 `DELETE` 事件在 `INSERT` 事件之前的顺序进行排序。设置为 true 时，表示不拆分事件，直接输出原始事件。
+# output-raw-change-event = false
+
+# 以下配置仅在选用 avro 作为协议，并且使用 AWS Glue Schema Registry 时需要配置
+# 请参考 "同步数据到 Kafka" 这一文档中 "使用 AWS Glue Schema Registry" 这一节内容：https://docs.pingcap.com/zh/tidb/dev/ticdc-sink-to-kafka#ticdc-集成-aws-glue-schema-registry
+# [sink.kafka-config.glue-schema-registry-config]
+# region="us-west-1"
+# registry-name="ticdc-test"
+# access-key="xxxx"
+# secret-access-key="xxxx"
+# token="xxxx"
+
+# 以下参数仅在下游为 Pulsar 时生效。
+[sink.pulsar-config]
+# 使用 token 进行 Pulsar 服务端的认证，此处为 token 的值。
+authentication-token = "xxxxxxxxxxxxx"
+# 指定使用 token 进行 Pulsar 服务端的认证，此处为 token 所在文件的路径。
+token-from-file="/data/pulsar/token-file.txt"
+# Pulsar 使用 basic 账号密码验证身份。
+basic-user-name="root"
+# Pulsar  使用 basic 账号密码验证身份，此处为密码。
+basic-password="password"
+# Pulsar TLS 加密认证证书路径。
+auth-tls-certificate-path="/data/pulsar/certificate"
+# Pulsar TLS 加密认证私钥路径。
+auth-tls-private-key-path="/data/pulsar/certificate.key"
+# Pulsar TLS 加密可信证书文件路径。
+tls-trust-certs-file-path="/data/pulsar/tls-trust-certs-file"
+# Pulsar oauth2 issuer-url 更多详细配置请看 Pulsar 官方介绍：https://pulsar.apache.org/docs/2.10.x/client-libraries-go/#tls-encryption-and-authentication
+oauth2.oauth2-issuer-url="https://xxxx.auth0.com"
+# Pulsar oauth2 audience
+oauth2.oauth2-audience="https://xxxx.auth0.com/api/v2/"
+# Pulsar oauth2 private-key
+oauth2.oauth2-private-key="/data/pulsar/privateKey"
+# Pulsar oauth2 client-id
+oauth2.oauth2-client-id="0Xx...Yyxeny"
+# Pulsar oauth2 oauth2-scope
+oauth2.oauth2-scope="xxxx"
+
+# TiCDC 中缓存 Pulsar Producer 的个数，默认上限为 10240 个。每个 Pulsar Producer 对应一个 topic，如果你需要同步的 topic 数量大于默认值，则需要调大该数量。
+pulsar-producer-cache-size=10240
+# Pulsar 数据压缩方式，默认不压缩，可选 "lz4"、"zlib"、"zstd"。
+compression-type=""
+# Pulsar 客户端与服务端建立 TCP 连接的超时时间，默认 5 秒。
+connection-timeout=5
+# Pulsar 客户端发起创建、订阅等操作的超时时间，默认为 30 秒。
+operation-timeout=30
+# Pulsar Producer 发送消息时的单个 batch 内的消息数量上限，默认值为 1000。
+batching-max-messages=1000
+# Pulsar Producer 消息攒批的时间间隔，默认 10 毫秒。
+batching-max-publish-delay=10
+# Pulsar Producer 发送消息的超时时间，默认 30 秒。
+send-timeout=30
+>>>>>>> b01d47ca4e (ticdc: add output-raw-change-event parameter and update ticdc-behavior-change (#17699))
+
+# 控制是否输出原始的数据变更事件，默认值为 false，表示当使用非 MySQL Sink 且 `UPDATE` 事件的主键或者非空唯一索引的列值发生改变时，TiCDC 会将该其拆分为 `DELETE` 和 `INSERT` 两条事件，并确保所有事件按照 `DELETE` 事件在 `INSERT` 事件之前的顺序进行排序。设置为 true 时，表示不拆分事件，直接输出原始事件。
+# output-raw-change-event = false
 
 [sink.cloud-storage-config]
 # 向下游存储服务保存数据变更记录的并发度，默认值为 16。
@@ -211,4 +271,6 @@ file-expiration-days = 0
 file-cleanup-cron-spec = "0 0 2 * * *"
 # 上传单个文件的并发数，默认值为 1，表示禁用并发。
 flush-concurrency = 1
+# 控制是否输出原始的数据变更事件，默认值为 false，表示当使用非 MySQL Sink 且 `UPDATE` 事件的主键或者非空唯一索引的列值发生改变时，TiCDC 会将该其拆分为 `DELETE` 和 `INSERT` 两条事件，并确保所有事件按照 `DELETE` 事件在 `INSERT` 事件之前的顺序进行排序。设置为 true 时，表示不拆分事件，直接输出原始事件。
+output-raw-change-event = false
 ```
