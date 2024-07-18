@@ -9,6 +9,10 @@ summary: TiDB 中下推到 TiKV 的表达式列表及相关设置。
 
 TiFlash 也支持[本页](/tiflash/tiflash-supported-pushdown-calculations.md)列出的函数和算子下推。
 
+> **注意：**
+>
+> 当作为[窗口函数](/functions-and-operators/window-functions.md)使用时，聚合函数不支持下推到 TiKV。
+
 ## 已支持下推的表达式列表
 
 | 表达式分类 | 具体操作 |
@@ -25,6 +29,7 @@ TiFlash 也支持[本页](/tiflash/tiflash-supported-pushdown-calculations.md)�
 | [加密和压缩函数](/functions-and-operators/encryption-and-compression-functions.md#加密和压缩函数) | [MD5()](/functions-and-operators/encryption-and-compression-functions.md#md5) <br/>[SHA1(), SHA()](/functions-and-operators/encryption-and-compression-functions.md#sha1) <br/>[UNCOMPRESSED_LENGTH()](/functions-and-operators/encryption-and-compression-functions.md#uncompressed_length) |
 | [Cast 函数](/functions-and-operators/cast-functions-and-operators.md#cast-函数和操作符) | [CAST()](/functions-and-operators/cast-functions-and-operators.md#cast) <br/>[CONVERT()](/functions-and-operators/cast-functions-and-operators.md#convert) |
 | [其他函数](/functions-and-operators/miscellaneous-functions.md#支持的函数) | [UUID()](/functions-and-operators/miscellaneous-functions.md#uuid) |
+| [窗口函数](/functions-and-operators/window-functions.md) | 无 |
 
 ## 禁止特定表达式下推
 
