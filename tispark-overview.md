@@ -99,6 +99,10 @@ TiSpark 是 Spark 的第三方 jar 包，提供读写 TiKV 的能力。
 
 推荐使用 TiSpark 的最新稳定版本，包括 2.4.4、2.5.2、3.0.2、3.1.1 和 3.2.3。
 
+> **Note:**
+>
+> TiSpark 不保证和 TiDB >= 7.x 版本兼容。
+
 ## 获取 TiSpark jar 包
 
 你能用以下方式获取 jar 包：
@@ -135,7 +139,7 @@ TiSpark 是 Spark 的第三方 jar 包，提供读写 TiKV 的能力。
 |--------------------------------| -------------------------------------------------- |
 | 2.4.x-\${scala_version}, 2.5.0 | tispark-assembly                                   |
 | 2.5.1                          | tispark-assembly-\${spark_version}                  |
-| 3.0.x, 3.1.x                   | tispark-assembly-\${spark_version}-\${scala_version} |
+| 3.0.x, 3.1.x, 3.2.x            | tispark-assembly-\${spark_version}-\${scala_version} |
 
 ## 快速开始
 
@@ -200,7 +204,7 @@ customerDF.write
 
 详见 [Data Source API User Guide](https://github.com/pingcap/tispark/blob/master/docs/features/datasource_api_userguide.md)。
 
-在 TiSpark 3.1 之后，你还能通过 Spark SQL 写入 TiSpark 3.1。详见 [Insert SQL](https://github.com/pingcap/tispark/blob/master/docs/features/insert_sql_userguide.md)。
+在 TiSpark 3.1 之后，你还能通过 Spark SQL 写入 TiSpark。详见 [Insert SQL](https://github.com/pingcap/tispark/blob/master/docs/features/insert_sql_userguide.md)。
 
 ### 通过 JDBC 数据源写入数据
 
