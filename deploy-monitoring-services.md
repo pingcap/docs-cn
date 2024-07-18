@@ -119,7 +119,7 @@ scrape_configs:
 ...
 ```
 
-如需开启 [TiDB 集群报警规则](/alert-rules.md)，请单独下载 [TiDB](https://github.com/pingcap/tidb/blob/master/pkg/metrics/alertmanager/tidb.rules.yml)、[TiKV](https://github.com/tikv/tikv/blob/master/metrics/alertmanager/tikv.rules.yml)  和 [PD](https://github.com/tikv/pd/blob/master/metrics/alertmanager/pd.rules.yml) 组件的报警规则文件，并在 Prometheus 的配置文件中添加如下配置：
+如需开启 [TiDB 集群报警规则](/alert-rules.md)，请单独下载 TiDB、TiKV 和 PD 组件的报警规则文件 [`tidb.rules.yml`](https://github.com/pingcap/tidb/blob/master/pkg/metrics/alertmanager/tidb.rules.yml)、[`tikv.rules.yml`](https://github.com/tikv/tikv/blob/master/metrics/alertmanager/tikv.rules.yml) 和 [`pd.rules.yml`](https://github.com/tikv/pd/blob/master/metrics/alertmanager/pd.rules.yml)，并在 Prometheus 的配置文件中添加如下配置：
 
 ```ini
 rule_files:
