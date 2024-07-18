@@ -71,7 +71,7 @@ UPDATE t SET a = 3 WHERE a = 2;
 
 ## 非 MySQL Sink 拆分主键或唯一键 `UPDATE` 事件
 
-### 含有单条 UPDATE 变更的事务拆分
+### 含有单条 `UPDATE` 变更的事务拆分
 
 从 v6.5.3、v7.1.1 和 v7.2.0 开始，使用非 MySQL Sink 时，对于仅包含一条 `UPDATE` 变更的事务，如果 `UPDATE` 事件的主键或者非空唯一索引的列值发生改变，TiCDC 会将该条事件拆分为 `DELETE` 和 `INSERT` 两条事件。详情见 GitHub issue [#9086](https://github.com/pingcap/tiflow/issues/9086)。
 
