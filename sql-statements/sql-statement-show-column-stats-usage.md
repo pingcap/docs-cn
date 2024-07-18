@@ -5,7 +5,7 @@ summary: TiDB 数据库中 SHOW COLUMN_STATS_USAGE 的使用概况。
 
 # SHOW COLUMN_STATS_USAGE
 
-`SHOW COLUMN_STATS_USAGE` 语句显示列统计信息的最近一次使用时间和收集时间。你还可以使用该语句来定位 `PREDICATE COLUMNS` 和已收集统计信息的列。
+`SHOW COLUMN_STATS_USAGE` 语句显示列统计信息的最近一次使用时间和收集时间。你还可以使用该语句来查看 `PREDICATE COLUMNS` 和已收集统计信息的列。
 
 目前，`SHOW COLUMN_STATS_USAGE` 语句返回以下列：
 
@@ -16,7 +16,7 @@ summary: TiDB 数据库中 SHOW COLUMN_STATS_USAGE 的使用概况。
 | `Partition_name` | 分区名 |
 | `Column_name` | 列名 |
 | `Last_used_at` | 最近一次将列统计信息用于查询优化的时间 |
-| `Last_analyzed_at` | 最近一次搜集列统计信息的时间 |
+| `Last_analyzed_at` | 最近一次收集列统计信息的时间 |
 
 ## 语法图
 

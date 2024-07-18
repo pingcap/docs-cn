@@ -17,12 +17,12 @@ aliases: ['/docs-cn/dev/sql-statements/sql-statement-show-analyze-status/']
 目前，`SHOW ANALYZE STATUS` 语句返回以下列：
 
 | 列名 | 说明            |
-| -------- | ------------- |
+| :-------- | :------------- |
 | `Table_schema` |  数据库名    |
 | `Table_name` | 表名 |
 | `Partition_name` | 分区名 |
-| `Job_info` | 任务具体信息。如果分析索引，该信息会包含索引名。当 `tidb_analyze_version = 2` 时，该信息会包含采样率等配置项。 |
-| `Processed_rows` | 已经分析的行数 |
+| `Job_info` | 任务具体信息。当收集索引的统计信息时，该信息会包含索引名。当 `tidb_analyze_version = 2` 时，该信息会包含采样率等配置项。 |
+| `Processed_rows` | 已经 `ANALYZE` 的行数 |
 | `Start_time` | 任务开始执行的时间 |
 | `End_time` | 任务结束执行的时间 |
 | `State` | 任务状态，包括 pending（等待）、running（正在执行）、finished（执行成功）和 failed（执行失败）|
