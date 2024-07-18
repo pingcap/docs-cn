@@ -56,7 +56,7 @@ TiDB 根据表的变更次数自动调度 [`ANALYZE`](/sql-statements/sql-statem
 
 `WITH NUM SAMPLES` 与 `WITH FLOAT_NUM SAMPLERATE` 这两种设置对应了两种不同的收集采样的算法。
 
-相关详细解释参见[直方图](#直方图)、[Top-N 值](#top-n-值) and [CMSketch](#count-min-sketch) (Count-Min Sketch)。关于 `SAMPLES` 和 `SAMPLERATE`，参见[提升统计信息收集性能](#提升统计信息收集性能)。
+相关详细解释参见[直方图](#直方图)、[Top-N 值](#top-n) and [CMSketch](#count-min-sketch) (Count-Min Sketch)。关于 `SAMPLES` 和 `SAMPLERATE`，参见[提升统计信息收集性能](#提升统计信息收集性能)。
 
 关于持久化 `ANALYZE` 配置以便后续沿用的更多信息，参见[持久化 `ANALYZE` 配置](#持久化-analyze-配置)。
 
