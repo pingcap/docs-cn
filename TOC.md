@@ -561,7 +561,7 @@
       - [双向复制](/ticdc/ticdc-bidirectional-replication.md)
       - [单行数据正确性校验](/ticdc/ticdc-integrity-check.md)
       - [主从集群一致性读和数据校验](/ticdc/ticdc-upstream-downstream-check.md)
-      - [TiCDC 行为变更说明](/ticdc/ticdc-behavior-change.md)
+      - [拆分 UPDATE 事件行为说明](/ticdc/ticdc-split-update-behavior.md)
     - 监控告警
       - [基本监控指标](/ticdc/ticdc-summary-monitor.md)
       - [详细监控指标](/ticdc/monitor-ticdc.md)
