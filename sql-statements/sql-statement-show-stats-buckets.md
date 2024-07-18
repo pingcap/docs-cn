@@ -14,7 +14,7 @@ summary: TiDB 数据库中 SHOW STATS_BUCKETS 的使用概况。
 | `Db_name`  |  数据库名  |
 | `Table_name` | 表名 |
 | `Partition_name` | 分区名 |
-| `Column_name` | 根据 `Is_index` 来变化：`Is_index` 为 `0` 时是列名，为 `1` 时是索引名 |
+| `Column_name` | 取决于 `Is_index` 值：`Is_index` 为 `0` 时显示列名，为 `1` 时显示索引名 |
 | `Is_index` | 是否是索引列 |
 | `Bucket_id` | 桶的 ID |
 | `Count` | 该桶和之前桶中所有数值的个数 |

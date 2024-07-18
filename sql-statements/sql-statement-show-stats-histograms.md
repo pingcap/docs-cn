@@ -15,7 +15,7 @@ aliases: ['/docs-cn/dev/sql-statements/sql-statement-show-histograms/','/zh/tidb
 | `Db_name`  |  数据库名    |
 | `Table_name` | 表名 |
 | `Partition_name` | 分区名 |
-| `Column_name` | 根据 `Is_index` 来变化：`Is_index` 为 `0` 时是列名，为 `1` 时是索引名 |
+| `Column_name` | 取决于 `Is_index` 值：`Is_index` 为 `0` 时显示列名，为 `1` 时显示索引名 |
 | `Is_index` | 是否是索引列 |
 | `Update_time` | 更新时间 |
 | `Distinct_count` | 不同值数量 |
