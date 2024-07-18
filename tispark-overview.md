@@ -203,7 +203,7 @@ customerDF.write
 
 详见 [Data Source API User Guide](https://github.com/pingcap/tispark/blob/master/docs/features/datasource_api_userguide.md)。
 
-在 TiSpark 3.1 之后，你还能通过 Spark SQL 写入数据到 TiSpark。详见 [Insert SQL](https://github.com/pingcap/tispark/blob/master/docs/features/insert_sql_userguide.md)。
+TiSpark 3.1 及之后版本支持通过 Spark SQL 写入数据到 TiKV。详见 [Insert SQL](https://github.com/pingcap/tispark/blob/master/docs/features/insert_sql_userguide.md)。
 
 ### 通过 JDBC 数据源写入数据
 
