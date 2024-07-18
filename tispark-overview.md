@@ -101,7 +101,7 @@ TiSpark 是 Spark 的第三方 jar 包，提供读写 TiKV 的能力。
 
 > **Note:**
 >
-> TiSpark 不保证和 TiDB >= 7.x 版本兼容。
+> TiSpark 不保证与 TiDB v7.0.0 及之后版本兼容。
 
 ## 获取 TiSpark jar 包
 
