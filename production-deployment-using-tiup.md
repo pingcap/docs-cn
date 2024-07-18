@@ -66,7 +66,7 @@ aliases: ['/docs-cn/dev/production-offline-deployment-using-tiup/', '/zh/tidb/de
     tiup update --self && tiup update cluster
     ```
 
-    预期输出 `“Update successfully!”` 字样。
+    预期输出 `“Updated successfully!”` 字样。
 
 5. 验证当前 TiUP cluster 版本信息。执行如下命令查看 TiUP cluster 组件版本：
 
@@ -341,13 +341,13 @@ alertmanager_servers:
     {{< copyable "shell-regular" >}}
 
     ```shell
-    tiup cluster deploy tidb-test v8.1.0 ./topology.yaml --user root [-p] [-i /home/root/.ssh/gcp_rsa]
+    tiup cluster deploy tidb-test v8.2.0 ./topology.yaml --user root [-p] [-i /home/root/.ssh/gcp_rsa]
     ```
 
 以上部署示例中：
 
 - `tidb-test` 为部署的集群名称。
-- `v8.1.0` 为部署的集群版本，可以通过执行 `tiup list tidb` 来查看 TiUP 支持的最新可用版本。
+- `v8.2.0` 为部署的集群版本，可以通过执行 `tiup list tidb` 来查看 TiUP 支持的最新可用版本。
 - 初始化配置文件为 `topology.yaml`。
 - `--user root` 表示通过 root 用户登录到目标主机完成集群部署，该用户需要有 ssh 到目标机器的权限，并且在目标机器有 sudo 权限。也可以用其他有 ssh 和 sudo 权限的用户完成部署。
 - [-i] 及 [-p] 为可选项，如果已经配置免密登录目标机，则不需填写。否则选择其一即可，[-i] 为可登录到目标机的 root 用户（或 --user 指定的其他用户）的私钥，也可使用 [-p] 交互式输入该用户的密码。
