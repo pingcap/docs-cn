@@ -1,11 +1,12 @@
 ---
 title: TiCDC 拆分 UPDATE 事件行为说明
 summary: 介绍 TiCDC changefeed 拆分 UPDATE 事件的行为变更，说明变更原因以及影响范围。
+aliases: ['/zh/tidb/dev/ticdc-behavior-change']
 ---
 
 # TiCDC 拆分 UPDATE 事件行为说明
 
-## MySQL Sink 拆分所有 `UPDATE` 事件
+## MySQL Sink 拆分 `UPDATE` 事件行为说明
 
 在 v8.1.0 中，当使用 MySQL Sink 时，TiCDC 在启动时会从 PD 获取当前的时间戳 `thresholdTS`，并根据时间戳的值决定是否拆分 `UPDATE` 事件：
 
@@ -68,13 +69,13 @@ UPDATE t SET a = 3 WHERE a = 2;
 >
 > 该行为变更后，在使用 MySQL Sink 时，TiCDC 在大部分情况下都不会拆分 `UPDATE` 事件，因此 changefeed 在运行时可能会出现主键或唯一键冲突的问题。该问题会导致 changefeed 自动重启，重启后发生冲突的 `UPDATE` 事件会被拆分为 `DELETE` 和 `INSERT` 事件并写入 Sorter 模块中，此时可以确保同一事务内所有事件按照 `DELETE` 事件在 `INSERT` 事件之前的顺序进行排序，从而正确完成数据同步。
 
-## 非 MySQL Sink 拆分 `UPDATE` 主键或唯一键事件
+## 非 MySQL Sink 拆分主键或唯一键 `UPDATE` 事件
 
 ### 含有单条 UPDATE 变更的事务拆分
 
 从 v6.5.3、v7.1.1 和 v7.2.0 开始，使用非 MySQL Sink 时，对于仅包含一条 `UPDATE` 变更的事务，如果 `UPDATE` 事件的主键或者非空唯一索引的列值发生改变，TiCDC 会将该条事件拆分为 `DELETE` 和 `INSERT` 两条事件。详情见 GitHub issue [#9086](https://github.com/pingcap/tiflow/issues/9086)。
 
-该变更主要为了解决在使用 CSV 和 AVRO 协议时，TiCDC 在默认配置下仅输出新值而不输出旧值。因此，当主键或者非空唯一索引的列值发生改变时，消费者只能接收到变化后的新值，无法得到旧值，导致无法处理变更前的值（例如删除旧值）。以如下 SQL 为例：
+该变更主要为了解决在使用 CSV 和 AVRO 协议时，TiCDC 在默认配置下仅输出新值而不输出旧值的问题。因此，当主键或者非空唯一索引的列值发生改变时，消费者只能接收到变化后的新值，无法得到旧值，导致无法处理变更前的值（例如删除旧值）。以如下 SQL 为例：
 
 ```sql
 CREATE TABLE t (a INT PRIMARY KEY, b INT);
@@ -88,7 +89,7 @@ UPDATE t SET a = 2 WHERE a = 1;
 
 从 v6.5.4、v7.1.2 和 v7.4.0 开始，对于一个含有多条变更的事务，如果 `UPDATE` 事件的主键或者非空唯一索引的列值发生改变，TiCDC 会将该其拆分为 `DELETE` 和 `INSERT` 两条事件，并确保所有事件按照 `DELETE` 事件在 `INSERT` 事件之前的顺序进行排序。详情见 GitHub issue [#9430](https://github.com/pingcap/tiflow/issues/9430)。
 
-该变更主要为了解决当使用 Kafka Sink 或其他 Sink 时，由于 TiCDC 接收到的 UPDATE 事件顺序可能不正确，消费者将数据变更写入关系型数据库或进行类似操作，可能遇到主键或唯一键冲突的问题。
+该变更主要为了解决当使用 Kafka Sink 或其他 Sink 时，由于 TiCDC 接收到的 `UPDATE` 事件顺序可能不正确，消费者将数据变更写入关系型数据库或进行类似操作，可能遇到主键或唯一键冲突的问题。
 
 以如下 SQL 为例：
 
@@ -108,19 +109,19 @@ COMMIT;
 
 因此，TiCDC 会将这两条事件拆分为四条事件，即删除记录 `(1, 1)` 和 `(2, 2)` 以及写入记录 `(2, 1)` 和 `(1, 2)`。
 
-### 控制是否拆分 `UPDATE` 主键或唯一键事件
+### 控制是否拆分主键或唯一键 `UPDATE` 事件
 
-从 v6.5.10、v7.1.6、v7.5.2 和 v8.1.1 开始，使用非 MySQL Sink 时，TiCDC 支持通过 `output-raw-change-event` 参数控制是否拆分 `UPDATE` 主键或唯一键事件，详情见 GitHub issue [#11211](https://github.com/pingcap/tiflow/issues/11211)。这个参数的具体行为是：
+从 v6.5.10、v7.1.6、v7.5.3 和 v8.1.1 开始，使用非 MySQL Sink 时，TiCDC 支持通过 `output-raw-change-event` 参数控制是否拆分主键或唯一键 `UPDATE` 事件，详情见 GitHub issue [#11211](https://github.com/pingcap/tiflow/issues/11211)。这个参数的具体行为是：
 
 - 当 `output-raw-change-event = false` 时，如果 `UPDATE` 事件的主键或者非空唯一索引的列值发生改变，TiCDC 会将该其拆分为 `DELETE` 和 `INSERT` 两条事件，并确保所有事件按照 `DELETE` 事件在 `INSERT` 事件之前的顺序进行排序。
 - 当 `output-raw-change-event = true` 时，TiCDC 不拆分 `UPDATE` 事件。注意，当表的主键为聚簇索引时，对主键的更新会在 TiDB 中拆分为 `DELETE` 和 `INSERT` 两个事件，该行为不受 `output-raw-change-event` 参数的影响。
 
 #### Release 6.5 的兼容性
 
-| 版本 | 协议 | 拆分所有 UPDATE 主键或唯一键 | 不拆分 Update 主键或唯一键 | 备注 |
+| 版本 | 协议 | 拆分主键或唯一键 `UPDATE` 事件 | 不拆分主键或唯一键 `UPDATE` 事件 | 备注 |
 | -- | -- | -- | -- | -- |
 | <= v6.5.2 | ALL | ✗ | ✓ |  |
-| v6.5.3 / v6.5.4 | Canal/Open | ✗ | ✓ |  |
+| v6.5.3、v6.5.4 | Canal/Open | ✗ | ✓ |  |
 | v6.5.3 | CSV/Avro | ✗ | ✗ | 拆分但是不排序, 详见 [#9086](https://github.com/pingcap/tiflow/issues/9658) |
 | v6.5.4 | Canal/Open | ✗ | ✗ | 只拆分并排序包含多条变更的事务 |
 | v6.5.5 ～ v6.5.9 | ALL | ✓ | ✗ | |
@@ -128,24 +129,24 @@ COMMIT;
 
 #### Release 7.1 的兼容性
 
-| 版本 | 协议 | 拆分所有 UPDATE 主键或唯一键 | 不拆分 Update 主键或唯一键 | 备注 |
+| 版本 | 协议 | 拆分主键或唯一键 `UPDATE` 事件 | 不拆分主键或唯一键 `UPDATE` 事件 | 备注 |
 | -- | -- | -- | -- | -- |
 | v7.1.0 | ALL | ✗ | ✓ |  |
 | v7.1.1 | Canal/Open | ✗ | ✓ |  |
 | v7.1.1 | CSV/Avro | ✗ | ✗ | 拆分但是不排序, 详见 [#9086](https://github.com/pingcap/tiflow/issues/9658) |
 | v7.1.2  ~ v7.1.5 | ALL | ✓ | ✗ |  |
-| \>= v7.1.6 (not released yet) | ALL | ✓ (默认值：`output-raw-change-event = false`) | ✓ (可选配置项：`output-raw-change-event = true`) | |
+| \>= v7.1.6（待发布）| ALL | ✓ (默认值：`output-raw-change-event = false`) | ✓ (可选配置项：`output-raw-change-event = true`) | |
 
 #### Release 7.5 的兼容性
 
-| 版本 | 协议 | 拆分所有 UPDATE 主键或唯一键 | 不拆分 Update 主键或唯一键 | 备注 |
+| 版本 | 协议 | 拆分主键或唯一键 `UPDATE` 事件 | 不拆分主键或唯一键 `UPDATE` 事件 | 备注 |
 | -- | -- | -- | -- | -- |
 | <= v7.5.2 | ALL | ✓ | ✗ | |
-| \>= v7.5.3 (not released yet) | ALL | ✓  (默认值：`output-raw-change-event = false`) | ✓ (可选配置项：`output-raw-change-event = true`) | |
+| \>= v7.5.3（待发布） | ALL | ✓  (默认值：`output-raw-change-event = false`) | ✓ (可选配置项：`output-raw-change-event = true`) | |
 
 #### Release 8.1 的兼容性
 
-| 版本 | 协议 | 拆分所有 UPDATE 主键或唯一键 | 不拆分 Update 主键或唯一键 | 备注 |
+| 版本 | 协议 | 拆分主键或唯一键 `UPDATE` 事件 | 不拆分主键或唯一键 `UPDATE` 事件 | 备注 |
 | -- | -- | -- | -- | -- |
 | v8.1.0 | ALL | ✓ | ✗ | |
-| \>= v8.1.1 (not released yet) | ALL | ✓ (默认值：`output-raw-change-event = false`) | ✓ (可选配置项：`output-raw-change-event = true`) | |
+| \>= v8.1.1（待发布） | ALL | ✓ (默认值：`output-raw-change-event = false`) | ✓ (可选配置项：`output-raw-change-event = true`) | |
