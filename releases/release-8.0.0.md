@@ -291,6 +291,8 @@ TiDB 版本：8.0.0
 >
 > 以下为从 v7.6.0 升级至当前版本 (v8.0.0) 所需兼容性变更信息。如果从 v7.5.0 或之前版本升级到当前版本，可能也需要考虑和查看中间版本 Release Notes 中提到的兼容性变更信息。
 
+- 由 TiUP 默认部署的 Prometheus 版本从 v2.27.1 升级到 2.49.1
+- 由 TiUP 默认部署的 Grafana 版本从 7.5.11 升级到 7.5.17
 - 移除未 GA 但默认启用的 witness 相关调度器 [#7765](https://github.com/tikv/pd/pull/7765) @[rleungx](https://github.com/rleungx)
 
 ### 行为变更
