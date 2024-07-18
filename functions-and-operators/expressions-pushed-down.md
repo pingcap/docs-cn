@@ -11,7 +11,7 @@ TiFlash 也支持[本页](/tiflash/tiflash-supported-pushdown-calculations.md)�
 
 > **注意：**
 >
-> 当作为[窗口函数](/functions-and-operators/window-functions.md)使用时，聚合函数不支持下推。
+> 当作为[窗口函数](/functions-and-operators/window-functions.md)使用时，聚合函数不支持下推到 TiKV。
 
 ## 已支持下推的表达式列表
 
