@@ -71,7 +71,71 @@ TiSpark 可以在 YARN，Mesos，Standalone 等任意 Spark 模式下运行。
 
 ## 部署 TiSpark 集群
 
+<<<<<<< HEAD
 你可以在 [TiSpark Releases](https://github.com/pingcap/tispark/releases) 上下载对应版本的 TiSpark 的 jar 包，并存储到 `${SPARKPATH}/jars` 目录下。
+=======
+TiSpark 是 Spark 的第三方 jar 包，提供读写 TiKV 的能力。
+
+### 获取 mysql-connector-j
+
+由于 GPL 许可证的限制，TiSpark 不再提供 `mysql-connector-java` 的依赖。以下版本将不再包含 `mysql-connector-java`：
+
+- TiSpark > 3.0.1
+- TiSpark > 2.5.1 (TiSpark 2.5.x)
+- TiSpark > 2.4.3 (TiSpark 2.4.x)
+
+在使用 TiSpark 写入与鉴权时，仍需要 `mysql-connector-java` 依赖，因此你需要手动下载，并使用以下方式引入：
+
+- 将 `mysql-connector-java` 放入 Spark jars 包中。
+- 在你提交 Spark 任务时，引入 `mysql-connector-java`，详见以下示例:
+
+  ```
+  spark-submit --jars tispark-assembly-3.0_2.12-3.1.0-SNAPSHOT.jar,mysql-connector-java-8.0.29.jar
+  ```
+
+### 选择 TiSpark 版本
+
+你可以根据 TiDB 和 Spark 版本选择相应的 TiSpark 版本。
+
+| TiSpark 版本       | TiDB、TiKV、PD 版本 | Spark 版本                   | Scala 版本 |
+|------------------|-----------------|----------------------------|----------|
+| 2.4.x-scala_2.11 | 5.x, 4.x        | 2.3.x, 2.4.x               | 2.11     |
+| 2.4.x-scala_2.12 | 5.x, 4.x        | 2.4.x                      | 2.12     |
+| 2.5.x            | 5.x, 4.x        | 3.0.x, 3.1.x               | 2.12     |
+| 3.0.x            | 5.x, 4.x        | 3.0.x, 3.1.x, 3.2.x        | 2.12     |
+| 3.1.x            | 6.x, 5.x, 4.x   | 3.0.x, 3.1.x, 3.2.x, 3.3.x | 2.12     |
+| 3.2.x            | 6.x, 5.x, 4.x   | 3.0.x, 3.1.x, 3.2.x, 3.3.x | 2.12     |
+
+推荐使用 TiSpark 的最新稳定版本，包括 2.4.4、2.5.2、3.0.2、3.1.1 和 3.2.3。
+
+> **Note:**
+>
+> TiSpark 不保证与 TiDB v7.0.0 及之后版本兼容。
+
+## 获取 TiSpark jar 包
+
+你能用以下方式获取 jar 包：
+
+- 从 [maven 中央仓库](https://search.maven.org/)获取，你可以搜索 [`pingcap`](http://search.maven.org/#search%7Cga%7C1%7Cpingcap) 关键词。
+- 从 [TiSpark releases](https://github.com/pingcap/tispark/releases) 获取。
+- 通过以下步骤从源码构建：
+
+1. 下载 TiSpark 源码：
+
+    ```
+    git clone https://github.com/pingcap/tispark.git
+    cd tisapark
+    ```
+
+2. 在 TiSpark 根目录运行如下命令：
+
+    ```
+    // add -Dmaven.test.skip=true to skip the tests
+    mvn clean install -Dmaven.test.skip=true
+    // or you can add properties to specify spark version
+    mvn clean install -Dmaven.test.skip=true -Pspark3.2.1
+    ```
+>>>>>>> f9bb9c84db (Update tispark-overview.md version matrix (#17979))
 
 > **注意：**
 >
@@ -81,9 +145,31 @@ TiSpark 可以在 YARN，Mesos，Standalone 等任意 Spark 模式下运行。
 
 {{< copyable "shell-regular" >}}
 
+<<<<<<< HEAD
 ```shell
 wget https://github.com/pingcap/tispark/releases/download/v2.4.1/tispark-assembly-2.4.1.jar
 mv tispark-assembly-2.4.1.jar $SPARKPATH/jars/
+=======
+| TiSpark 版本                     | Artifact ID                                        |
+|--------------------------------| -------------------------------------------------- |
+| 2.4.x-\${scala_version}, 2.5.0 | tispark-assembly                                   |
+| 2.5.1                          | tispark-assembly-\${spark_version}                  |
+| 3.0.x, 3.1.x, 3.2.x            | tispark-assembly-\${spark_version}-\${scala_version} |
+
+## 快速开始
+
+本章节将以 spark-shell 为例，介绍如何使用 TiSpark。请保证您已下载 Spark。
+
+### 启动 spark-shell
+
+在 `spark-defaults.conf` 中添加如下配置：
+
+```
+spark.sql.extensions  org.apache.spark.sql.TiExtensions
+spark.tispark.pd.addresses  ${your_pd_address}
+spark.sql.catalog.tidb_catalog  org.apache.spark.sql.catalyst.catalog.TiCatalog
+spark.sql.catalog.tidb_catalog.pd.addresses  ${your_pd_address}
+>>>>>>> f9bb9c84db (Update tispark-overview.md version matrix (#17979))
 ```
 
 将 `spark-defaults.conf.template` 文件拷贝到 `spark-defaults.conf`：
@@ -250,7 +336,11 @@ spark.sql("select * from hive_table a, tispark_table b where a.col1 = b.col1").s
 
 ## 通过 TiSpark 将 DataFrame 批量写入 TiDB
 
+<<<<<<< HEAD
 TiSpark 从 v2.3 版本开始原生支持将 DataFrame 批量写入 TiDB 集群，该写入模式通过 TiKV 的两阶段提交协议实现。
+=======
+在 TiSpark 3.1 之后，你还能通过 Spark SQL 写入数据到 TiSpark。详见 [Insert SQL](https://github.com/pingcap/tispark/blob/master/docs/features/insert_sql_userguide.md)。
+>>>>>>> f9bb9c84db (Update tispark-overview.md version matrix (#17979))
 
 TiSpark 批量写入相比 Spark + JDBC 写入，有以下特点：
 
