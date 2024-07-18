@@ -33,7 +33,7 @@ TiDB 支持除 `GROUP_CONCAT()` 和 `APPROX_PERCENTILE()` 以外的所有 [`GROU
 
 ## [`CUME_DIST()`](https://dev.mysql.com/doc/refman/8.0/en/window-function-descriptions.html#function_cume-dist)
 
-`CUME_DIST()` 计算一个值在一组值中的累积分布。请注意，你需要在 `CUME_DIST()` 中使用 `ORDER BY` 子句对该组中的值进行排序。否则，此函数将不会返回预期值。
+`CUME_DIST()` 计算一个值在一组值中的累积分布。请注意，你需要在 `CUME_DIST()` 后使用 `ORDER BY` 子句对该组中的值进行排序。否则，此函数将不会返回预期值。
 
 ```sql
 WITH RECURSIVE cte(n) AS (
