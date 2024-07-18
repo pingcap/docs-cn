@@ -124,13 +124,13 @@ cdc cli changefeed resume -c test-cf --server=http://127.0.0.1:8300
 
 如果希望跳过这条出错的 DDL 语句，可以通过配置 `ignore-txn-start-ts` 参数跳过指定的 `start-ts` 对应的事务。例如：
 
-1. 首先在 TiCDC log 中搜寻 `apply job` 字段，确认耗时较长的 DDL 的 `start-ts`。
+1. 首先在 TiCDC 日志中搜寻 `apply job` 字段，确认耗时较长的 DDL 操作的 `start-ts`。
 2. 修改 changefeed 配置，将上述 `start-ts` 添加到 `ignore-txn-start-ts` 配置项中。
 3. 恢复被暂停的 changefeed。
 
 > **注意：**
 > 
-> 将 changefeed 的 `start-ts` 设为报错时的 `checkpoint-ts` 加上一，然后重建任务，这样虽然可以跳过该 DDL 语句，但同时会导致 TiCDC 丢失 `checkpointTs+1` 时刻对应的 DML 数据变更。严禁在生产环境执行这样的操作。
+> 虽然将 changefeed 的 `start-ts` 设为报错时的 `checkpoint-ts` 值加上 1，然后重建任务也可以跳过该 DDL 语句，但同时会导致 TiCDC 丢失 `checkpointTs+1` 时刻对应的 DML 数据变更。严禁在生产环境执行这样的操作。
 
 ```shell
 cdc cli changefeed remove --server=http://127.0.0.1:8300 --changefeed-id simple-replication-task
