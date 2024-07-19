@@ -1,6 +1,7 @@
 ---
 title: 数据迁移概述
 summary: 了解各种数据迁移场景和对应的数据迁移方案。
+aliases: ['/zh/tidb/stable/migrate-full-data-from-mysql']
 ---
 
 # 数据迁移概述
