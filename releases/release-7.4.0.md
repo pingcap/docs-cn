@@ -495,4 +495,4 @@ TiDB 版本：7.4.0
 - [shawn0915](https://github.com/shawn0915)
 - [tedyu](https://github.com/tedyu)
 - [yumchina](https://github.com/yumchina)
-- [ZhuohaoHe](https://github.com/ZhuohaoHe)
+- [ZzzhHe](https://github.com/ZzzhHe)
