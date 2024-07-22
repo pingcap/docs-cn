@@ -19,8 +19,8 @@ summary: TiUP 可用于 TiDB 升级。升级过程中需注意不支持 TiFlash 
 > 1. 不支持将 TiFlash 组件从 5.3 之前的老版本在线升级至 5.3 及之后的版本，只能采用停机升级。如果集群中其他组件（如 tidb，tikv）不能停机升级，参考[不停机升级](#不停机升级)中的注意事项。
 > 2. 在升级 TiDB 集群的过程中，**请勿执行** DDL 语句，否则可能会出现行为未定义的问题。
 > 3. 集群中有 DDL 语句正在被执行时（通常为 `ADD INDEX` 和列类型变更等耗时较久的 DDL 语句），**请勿进行**升级操作。在升级前，建议使用 [`ADMIN SHOW DDL`](/sql-statements/sql-statement-admin-show-ddl.md) 命令查看集群中是否有正在进行的 DDL Job。如需升级，请等待 DDL 执行完成或使用 [`ADMIN CANCEL DDL`](/sql-statements/sql-statement-admin-cancel-ddl.md) 命令取消该 DDL Job 后再进行升级。
->
-> 从 TiDB v7.1 版本升级至更高的版本时，可以不遵循上面的限制 2 和 3，建议参考[平滑升级 TiDB 的限制](/smooth-upgrade-tidb.md#使用限制)。
+> 4. 从 TiDB v7.1 版本升级至更高的版本时，可以不遵循上面的限制 2 和 3，请参考[平滑升级 TiDB 的限制](/smooth-upgrade-tidb.md#使用限制)。
+> 5. 务必在升级之前阅读[用户操作限制](/smooth-upgrade-tidb.md#用户操作限制)。
 
 > **注意：**
 >
@@ -30,7 +30,7 @@ summary: TiUP 可用于 TiDB 升级。升级过程中需注意不支持 TiFlash 
 > - 配置项 [`performance.force-init-stats`](/tidb-configuration-file.md#force-init-stats-从-v657-和-v710-版本开始引入) 设置为 `ON` 会延长 TiDB 的启动时间，这可能会造成启动超时，升级失败。为避免这种情况，建议为 TiUP 设置更长的等待超时。
 >     - 可能受影响的场景：
 >         - 原集群版本低于 v6.5.7、v7.1.0（尚未支持 `performance.force-init-stats`），目标版本为 v7.2.0 及更高。
->         - 原集群版本高于或等于 v6.5.7、v7.1.0，且配置项 `performance.force-init-stats` 被设置为 `ON`。 
+>         - 原集群版本高于或等于 v6.5.7、v7.1.0，且配置项 `performance.force-init-stats` 被设置为 `ON`。
 >     - 查看配置项 `performance.force-init-stats` 的值：
 >
 >         ```
@@ -51,8 +51,6 @@ summary: TiUP 可用于 TiDB 升级。升级过程中需注意不支持 TiFlash 
 >
 >          如果原集群是 v7.1.0 或更早的版本，升级到 v7.2.0 或以上版本时，由于 [`performance.lite-init-stats`](/tidb-configuration-file.md#lite-init-stats-从-v710-版本开始引入) 的引入，统计信息加载时间会大幅减少。这个情况下，升级前的 `init stats info time` 会比升级后加载所需的时间偏长。
 >     - 如果想要缩短 TiDB 滚动升级的时间，并且在升级过程中能够承受初始统计信息缺失带来的潜在性能影响，可以在升级前[用 TiUP 修改目标实例的配置](/maintain-tidb-using-tiup.md#修改配置参数)，将 `performance.force-init-stats` 设置为 `OFF`。升级完成后可酌情改回。
-
-升级过程中还有一些[用户操作限制](/smooth-upgrade-tidb.md#用户操作限制)，强烈建议在升级之前先阅读相关内容。
 
 ## 1. 升级兼容性说明
 
