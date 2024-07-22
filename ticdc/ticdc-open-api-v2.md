@@ -359,6 +359,7 @@ curl -X GET http://127.0.0.1:8300/api/v2/health
 | `file_expiration_days`   | `INT` 类型，文件保留的时长。|
 | `file_cleanup_cron_spec`   | `STRING` 类型，定时清理任务的运行周期，与 crontab 配置兼容，格式为 `<Second> <Minute> <Hour> <Day of the month> <Month> <Day of the week (Optional)>`。|
 | `flush_concurrency`   | `INT` 类型，上传单个文件的并发数。|
+| `output_raw_change_event`   | `BOOLEAN` 类型，控制使用非 MySQL Sink 时是否输出原始的数据变更事件。|
 
 `sink.open` 参数说明如下：
 
