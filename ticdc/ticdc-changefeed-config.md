@@ -253,7 +253,10 @@ sasl-oauth-scopes = ["producer.kafka", "consumer.kafka"]
 # Kafka SASL OAUTHBEARER 认证机制中的 grant-type。默认值为 "client_credentials"。在使用该认证机制时，该参数可选填。
 sasl-oauth-grant-type = "client_credentials"
 # Kafka SASL OAUTHBEARER 认证机制中的 audience。默认值为空。在使用该认证机制时，该参数可选填。
-sasl-oauth-audience="kafka"
+sasl-oauth-audience = "kafka"
+
+# 控制是否输出原始的数据变更事件，默认值为 false，表示当使用非 MySQL Sink 且 `UPDATE` 事件的主键或者非空唯一索引的列值发生改变时，TiCDC 会将该其拆分为 `DELETE` 和 `INSERT` 两条事件，并确保所有事件按照 `DELETE` 事件在 `INSERT` 事件之前的顺序进行排序。设置为 true 时，表示不拆分事件，直接输出原始事件。
+# output-raw-change-event = false
 
 # 以下配置仅在选用 avro 作为协议，并且使用 AWS Glue Schema Registry 时需要配置
 # 请参考 "同步数据到 Kafka" 这一文档中 "使用 AWS Glue Schema Registry" 这一节内容：https://docs.pingcap.com/zh/tidb/dev/ticdc-sink-to-kafka#ticdc-集成-aws-glue-schema-registry
@@ -306,6 +309,9 @@ batching-max-publish-delay=10
 # Pulsar Producer 发送消息的超时时间，默认 30 秒。
 send-timeout=30
 
+# 控制是否输出原始的数据变更事件，默认值为 false，表示当使用非 MySQL Sink 且 `UPDATE` 事件的主键或者非空唯一索引的列值发生改变时，TiCDC 会将该其拆分为 `DELETE` 和 `INSERT` 两条事件，并确保所有事件按照 `DELETE` 事件在 `INSERT` 事件之前的顺序进行排序。设置为 true 时，表示不拆分事件，直接输出原始事件。
+# output-raw-change-event = false
+
 [sink.cloud-storage-config]
 # 向下游存储服务保存数据变更记录的并发度，默认值为 16。
 worker-count = 16
@@ -319,4 +325,6 @@ file-expiration-days = 0
 file-cleanup-cron-spec = "0 0 2 * * *"
 # 上传单个文件的并发数，默认值为 1，表示禁用并发。
 flush-concurrency = 1
+# 控制是否输出原始的数据变更事件，默认值为 false，表示当使用非 MySQL Sink 且 `UPDATE` 事件的主键或者非空唯一索引的列值发生改变时，TiCDC 会将该其拆分为 `DELETE` 和 `INSERT` 两条事件，并确保所有事件按照 `DELETE` 事件在 `INSERT` 事件之前的顺序进行排序。设置为 true 时，表示不拆分事件，直接输出原始事件。
+output-raw-change-event = false
 ```
