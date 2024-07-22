@@ -57,7 +57,7 @@ Binlog replication/sync 处理单元读取上游 MySQL/MariaDB 的 binlog event 
 {{< copyable "sql" >}}
 
 ```sql
-GRANT RELOAD,REPLICATION SLAVE, REPLICATION CLIENT ON *.* TO 'your_user'@'your_wildcard_of_host'
+GRANT RELOAD,REPLICATION SLAVE, REPLICATION CLIENT ON *.* TO 'your_user'@'your_wildcard_of_host';
 GRANT SELECT ON db1.* TO 'your_user'@'your_wildcard_of_host';
 ```
 
