@@ -13,7 +13,7 @@ TiDB 版本：7.5.3
 
 ## 兼容性变更
 
-- note [#issue](https://github.com/pingcap/${repo-name}/issues/${issue-id}) @[贡献者 GitHub ID](https://github.com/${github-id})
+- 新增系统表 [`INFORMATION_SCHEMA.KEYWORDS`](/information-schema/information-schema-keywords.md) 用来展示 TiDB 支持的所有关键字的信息 [#48801](https://github.com/pingcap/tidb/issues/48801) @[dveeden](https://github.com/dveeden)
 
 ## 改进提升
 
