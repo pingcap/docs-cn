@@ -29,11 +29,11 @@ summary: TiUP 可用于回退 TiDB 版本。本文档介绍如何使用 TiUP 回
     - 原集群版本低于 v6.5.7、v7.1.0（尚未支持 `performance.force-init-stats`），目标版本为 v7.2.0 或更高。
     - 原集群版本高于或等于 v6.5.7、v7.1.0，且配置项 `performance.force-init-stats` 被设置为 `true`。
 
- 设置 TiUP 的等待超时的步骤如下：
+设置 TiUP 的等待超时的步骤如下：
 
- 1. 查看配置项 `performance.force-init-stats` 的值。通常情况下，`20` 分钟超时等待能满足绝大部分场景的需求。如果需要更准确的预估，可以在 TiDB 日志中搜索 `init stats info time` 关键字，获取上次启动的统计信息加载时间作为参考。
+1. 查看配置项 `performance.force-init-stats` 的值。通常情况下，`20` 分钟超时等待能满足绝大部分场景的需求。如果需要更准确的预估，可以在 TiDB 日志中搜索 `init stats info time` 关键字，获取上次启动的统计信息加载时间作为参考。
  
- 2. 通过增加命令行选项 [`--wait-timeout`](/tiup/tiup-component-dm.md#--wait-timeoutuint默认-120) 设置 TiUP 超时等待时间。如下命令可将超时等待设置为 `1200` 秒（即 `20` 分钟）:
+2. 通过增加命令行选项 [`--wait-timeout`](/tiup/tiup-component-dm.md#--wait-timeoutuint默认-120) 设置 TiUP 超时等待时间。如下命令可将超时等待设置为 `1200` 秒（即 `20` 分钟）:
  
     ```shell
     `tiup update cluster --wait-timeout 1200 [other options]`
