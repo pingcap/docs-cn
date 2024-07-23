@@ -33,7 +33,7 @@ summary: TiUP 可用于回退 TiDB 版本。本文档介绍如何使用 TiUP 回
 ### 兼容性变更
 
 - TiDB 目前仅支持有限的补丁版本回退。请参见[支持回退的版本](#支持回退的版本)。
-- 仅支持 PD、TiDB、TiKV、TiFlash、TiCDC、BR、PITR 这些组件的补丁版本回退。
+- 仅支持 PD、TiDB、TiKV、TiFlash、TiCDC、BR、PITR 组件的补丁版本回退。
 - 查看对应版本的 [Release Notes](/releases/release-notes.md) 中的兼容性变更。如果有任何变更影响到回退，请采取相应的措施。例如，从 TiDB v7.5.2 回退至 v7.5.1 时，需查阅以下各版本的兼容性变更：
 
     - [TiDB v7.5.1 Release Notes](/releases/release-7.5.1.md#兼容性变更) 中的兼容性变更
