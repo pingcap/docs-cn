@@ -40,7 +40,7 @@ summary: TiUP 可用于回退 TiDB 版本。本文档介绍如何使用 TiUP 回
 
 ## 回退前的准备工作
 
-开始回退前需要更新 TiUP 和 TiUP 集群组件版本等。
+开始回退前需要[更新 TiUP 和 TiUP 集群组件版本](/tiup/tiup-component-management.md#升级组件)。
 
 ### 兼容性变更
 
