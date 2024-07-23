@@ -35,7 +35,7 @@ summary: TiUP 可用于回退 TiDB 版本。本文档介绍如何使用 TiUP 回
 2. 通过增加命令行选项 [`--wait-timeout`](/tiup/tiup-component-dm.md#--wait-timeoutuint默认-120) 设置 TiUP 超时等待时间。如下命令可将超时等待设置为 `1200` 秒（即 `20` 分钟）:
  
     ```shell
-    `tiup update cluster --wait-timeout 1200 [other options]`
+    tiup update cluster --wait-timeout 1200 [other options]
     ```
 
 ## 回退前的准备工作
