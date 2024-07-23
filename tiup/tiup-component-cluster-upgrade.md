@@ -124,7 +124,7 @@ tiup cluster upgrade <cluster-name> <version> [flags]
 
 > **警告：**
 >
-> 此选项目前为实验特性，不建议在生产环境中使用。
+> 该选项目前为实验特性，不建议在生产环境中使用。
 
 - 在升级前运行该脚本。
 - 数据类型：`STRINGS`
@@ -134,7 +134,7 @@ tiup cluster upgrade <cluster-name> <version> [flags]
 
 > **警告：**
 >
-> 此选项目前为实验特性，不建议在生产环境中使用。
+> 该选项目前为实验特性，不建议在生产环境中使用。
 
 - 在升级后运行该脚本。
 - 数据类型：`STRINGS`
