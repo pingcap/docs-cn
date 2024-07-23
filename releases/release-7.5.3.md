@@ -14,7 +14,6 @@ TiDB 版本：7.5.3
 ## 兼容性变更
 
 - note [#issue](https://github.com/pingcap/${repo-name}/issues/${issue-id}) @[贡献者 GitHub ID](https://github.com/${github-id})
-- (dup): release-7.1.4.md > 兼容性变更 - 为减少日志打印的开销，TiFlash 配置项 `logger.level` 默认值由 `"debug"` 改为 `"info"` [#8641](https://github.com/pingcap/tiflash/issues/8641) @[JaySon-Huang](https://github.com/JaySon-Huang)
 
 ## 改进提升
 
