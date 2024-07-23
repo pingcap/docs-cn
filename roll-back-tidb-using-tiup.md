@@ -104,7 +104,7 @@ tiup cluster patch {cluster_name} {/tmp/tiflash-v7.5.0-linux-amd64.tar.gz} -R ti
 
 > **注意：**
 >
-> - 一定要按上面的顺序执行回退操作。
+> - 必须按上面命令行的顺序执行回退操作。
 > - 滚动回退会逐个回退所有的组件。回退 TiKV 期间，会逐个将 TiKV 上的所有 leader 切走再停止该 TiKV 实例。默认超时时间为 5 分钟（300 秒），超时后会直接停止该实例。
 > - 使用 [`--force`](/tiup//tiup-component-cluster-upgrade.md#--force) 参数可以在不驱逐 leader 的前提下快速回退集群至指定版本，但是该方式会忽略所有回退中的错误，在回退失败后得不到有效提示，请谨慎使用。
 
