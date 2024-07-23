@@ -711,7 +711,7 @@ opentracing.reporter 相关的设置。
 
 ### `grpc-compression-type`
 
-+ 控制 TiDB 向 TiKV 节点传输数据使用的压缩算法类型。默认值为 "none" 即不压缩。修改为 "gzip" 可以使用 gzip 算法压缩数据。注意，TiKV 返回给 TiDB 的响应消息的压缩算法由 TiKV 配置项[grpc-compression-type](/tikv-configuration-file.md#grpc-compression-type) 单独控制。
++ 控制 TiDB 向 TiKV 节点传输数据使用的压缩算法类型。默认值为 "none" 即不压缩。修改为 "gzip" 可以使用 gzip 算法压缩数据。注意，TiKV 返回给 TiDB 的响应消息的压缩算法由 TiKV 配置项 [`grpc-compression-type`](/tikv-configuration-file.md#grpc-compression-type) 单独控制。
 + 默认值："none"
 + 可选值："none", "gzip"
 
