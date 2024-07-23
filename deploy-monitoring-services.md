@@ -117,14 +117,23 @@ scrape_configs:
 ...
 ```
 
-如需开启 [TiDB 集群报警规则](/alert-rules.md)，请单独下载 TiDB、TiKV 和 PD 组件的报警规则文件 [`tidb.rules.yml`](https://github.com/pingcap/tidb/blob/master/pkg/metrics/alertmanager/tidb.rules.yml)、[`tikv.rules.yml`](https://github.com/tikv/tikv/blob/master/metrics/alertmanager/tikv.rules.yml) 和 [`pd.rules.yml`](https://github.com/tikv/pd/blob/master/metrics/alertmanager/pd.rules.yml)，并在 Prometheus 的配置文件中添加如下配置：
+如需开启 TiDB、PD 和 TiKV 等组件的报警规则，请单独下载组件对应的报警规则文件，并在 Prometheus 的配置文件中添加报警规则文件的配置。
+
+- TiDB：[`tidb.rules.yml`](https://github.com/pingcap/tidb/blob/master/pkg/metrics/alertmanager/tidb.rules.yml)
+- PD：[`pd.rules.yml`](https://github.com/tikv/pd/blob/master/metrics/alertmanager/pd.rules.yml)
+- TiKV：[`tikv.rules.yml`](https://github.com/tikv/tikv/blob/master/metrics/alertmanager/tikv.rules.yml)
+- TiFlash：[`tiflash.rules.yml`](https://github.com/pingcap/tiflash/blob/master/metrics/alertmanager/tiflash.rules.yml)
+- TiCDC：[`ticdc.rules.yml`](https://github.com/pingcap/tiflow/blob/master/metrics/alertmanager/ticdc.rules.yml)
+- TiDB Lightning：[`lightning.rules.yml`](https://github.com/pingcap/tidb/blob/master/br/metrics/alertmanager/lightning.rules.yml)
 
 ```ini
 rule_files:
   - 'tidb.rules.yml'
   - 'pd.rules.yml'
   - 'tikv.rules.yml'
-  - 'tikv.accelerate.rules.yml'
+  - 'tiflash.rules.yml'
+  - 'ticdc.rules.yml'
+  - 'lightning.rules.yml'
 ```
 
 启动 Prometheus 服务：
