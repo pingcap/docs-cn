@@ -39,19 +39,18 @@ summary: TiUP 可用于回退 TiDB 版本。本文档介绍如何使用 TiUP 回
     `tiup update cluster --wait-timeout 1200 [other options]`
     ```
 
-## 回退兼容性说明
-
-- TiDB 目前仅支持有限的补丁版本回退。请参见[支持回退的版本](#支持回退的版本)。
-- 仅支持 PD、TiDB、TiKV、TiFlash、TiCDC、BR、PITR 这些组件的补丁版本回退。
-- 具体不同版本的兼容性说明，请查看各个版本的 Release Note。请根据各个版本的 Release Note 的兼容性更改调整集群的配置。
-
 ## 回退前的准备工作
 
 开始回退前需要更新 TiUP 和 TiUP 集群组件版本等。
 
-### 查阅兼容性变更
+### 兼容性变更
 
-查看对应版本的 [Release Notes](/releases/release-notes.md) 中的兼容性变更。如果有任何变更影响到回退，请采取相应的措施。
+- TiDB 目前仅支持有限的补丁版本回退。请参见[支持回退的版本](#支持回退的版本)。
+- 仅支持 PD、TiDB、TiKV、TiFlash、TiCDC、BR、PITR 这些组件的补丁版本回退。
+- 查看对应版本的 [Release Notes](/releases/release-notes.md) 中的兼容性变更。如果有任何变更影响到回退，请采取相应的措施。例如，从 TiDB v7.5.2 回退至 v7.5.1 时，需查阅以下各版本的兼容性变更：
+
+    - [TiDB v7.5.1 Release Notes](/releases/release-7.5.1#兼容性变更) 中的兼容性变更
+    - [TiDB v7.5.2 Release Notes](/releases/release-7.5.2#兼容性变更) 中的兼容性变更
 
 ### 检查当前集群的 DDL
 
