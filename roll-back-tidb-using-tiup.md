@@ -17,7 +17,6 @@ summary: TiUP 可用于回退 TiDB 版本。本文档介绍如何使用 TiUP 回
 
 ## 注意事项
 
-
 回退版本时，请注意以下事项：
 
 - 对于无法进行连接重试的客户端，版本回退会导致连接到被关闭的 TiDB 节点的数据库的连接失效，造成部分业务请求失败。对于这类业务，推荐在客户端添加重试功能，或者在低峰期进行 TiDB 的滚动更新操作。
@@ -49,8 +48,8 @@ summary: TiUP 可用于回退 TiDB 版本。本文档介绍如何使用 TiUP 回
 - 仅支持 PD、TiDB、TiKV、TiFlash、TiCDC、BR、PITR 这些组件的补丁版本回退。
 - 查看对应版本的 [Release Notes](/releases/release-notes.md) 中的兼容性变更。如果有任何变更影响到回退，请采取相应的措施。例如，从 TiDB v7.5.2 回退至 v7.5.1 时，需查阅以下各版本的兼容性变更：
 
-    - [TiDB v7.5.1 Release Notes](/releases/release-7.5.1#兼容性变更) 中的兼容性变更
-    - [TiDB v7.5.2 Release Notes](/releases/release-7.5.2#兼容性变更) 中的兼容性变更
+    - [TiDB v7.5.1 Release Notes](/releases/release-7.5.1.md#兼容性变更) 中的兼容性变更
+    - [TiDB v7.5.2 Release Notes](/releases/release-7.5.2.md#兼容性变更) 中的兼容性变更
 
 ### 检查当前集群的 DDL
 
