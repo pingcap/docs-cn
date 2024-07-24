@@ -11,7 +11,7 @@ summary: 学习使用 TiDB 特有的函数。
 | :-------------- | :------------------------------------- |
 | [`CURRENT_RESOURCE_GROUP()`](#current_resource_group) | 用于查询当前连接绑定的资源组名。参见[使用资源管控 (Resource Control) 实现资源隔离](/tidb-resource-control.md)。 |
 | [`TIDB_BOUNDED_STALENESS()`](#tidb_bounded_staleness) | 指示 TiDB 在指定时间范围内读取尽可能新的数据。参见[使用 `AS OF TIMESTAMP` 语法读取历史数据](/as-of-timestamp.md)。 |
-| [`TIDB_CURRENT_TSO()`](#tidb_current_tso) | 返回当前的 [TSO](/tso.md)。 |
+| [`TIDB_CURRENT_TSO()`](#tidb_current_tso) | 返回当前的 [TimeStamp Oracle (TSO)](/tso.md)。 |
 | [`TIDB_DECODE_BINARY_PLAN()`](#tidb_decode_binary_plan) | 用于解码以二进制格式编码的执行计划。 |
 | [`TIDB_DECODE_KEY()`](#tidb_decode_key) | 用于将 TiDB 编码的键输入解码为包含 `_tidb_rowid` 和 `table_id` 的 JSON 结构。一些系统表和日志输出中有 TiDB 编码的键。 |
 | [`TIDB_DECODE_PLAN()`](#tidb_decode_plan) | 用于解码 TiDB 执行计划。 |
@@ -37,8 +37,8 @@ summary: 学习使用 TiDB 特有的函数。
 
 ```sql
 CREATE USER 'user1';
-CREATE RESOURCE GROUP 'rg1' RU_PER_SEC = 1000;
-CREATE RESOURCE GROUP 'rg2' RU_PER_SEC = 2000;
+CREATE RESOURCE GROUP rg1 RU_PER_SEC = 1000;
+CREATE RESOURCE GROUP rg2 RU_PER_SEC = 2000;
 ALTER USER 'user1' RESOURCE GROUP `rg1`;
 ```
 
@@ -277,14 +277,14 @@ SELECT tidb_decode_plan('8QIYMAkzMV83CQEH8E85LjA0CWRhdGE6U2VsZWN0aW9uXzYJOTYwCXR
 >     * 该函数开销大的原因是，其每次被调用时，都会在内部发起对 `STATEMENTS_SUMMARY`、`STATEMENTS_SUMMARY_HISTORY`、`CLUSTER_STATEMENTS_SUMMARY` 和 `CLUSTER_STATEMENTS_SUMMARY_HISTORY` 这几张表的查询，且其中涉及 `UNION` 操作。且该函数目前不支持向量化，即对于多行数据调用该函数时，对每行都会独立进行一次上述的查询。
 
 ```sql
-set @digests = '["e6f07d43b5c21db0fbb9a31feac2dc599787763393dd5acbfad80e247eb02ad5","38b03afa5debbdf0326a014dbe5012a62c51957f1982b3093e748460f8b00821","e5796985ccafe2f71126ed6c0ac939ffa015a8c0744a24b7aee6d587103fd2f7"]';
+SET @digests = '["e6f07d43b5c21db0fbb9a31feac2dc599787763393dd5acbfad80e247eb02ad5","38b03afa5debbdf0326a014dbe5012a62c51957f1982b3093e748460f8b00821","e5796985ccafe2f71126ed6c0ac939ffa015a8c0744a24b7aee6d587103fd2f7"]';
 
-select tidb_decode_sql_digests(@digests);
+SELECT TIDB_DECODE_SQL_DIGESTS(@digests);
 ```
 
 ```
 +------------------------------------+
-| tidb_decode_sql_digests(@digests)  |
+| TIDB_DECODE_SQL_DIGESTS(@digests)  |
 +------------------------------------+
 | ["begin",null,"select * from `t`"] |
 +------------------------------------+
@@ -294,12 +294,12 @@ select tidb_decode_sql_digests(@digests);
 上面的例子中，参数是一个包含 3 个 SQL Digest 的 JSON 数组，其对应的 SQL 语句分别为查询结果中给出的三项。但是其中第二条 SQL Digest 所对应的 SQL 语句未能从集群中找到，因而结果中的第二项为 `null`。
 
 ```sql
-select tidb_decode_sql_digests(@digests, 10);
+SELECT TIDB_DECODE_SQL_DIGESTS(@digests, 10);
 ```
 
 ```sql
 +---------------------------------------+
-| tidb_decode_sql_digests(@digests, 10) |
+| TIDB_DECODE_SQL_DIGESTS(@digests, 10) |
 +---------------------------------------+
 | ["begin",null,"select * f..."]        |
 +---------------------------------------+
@@ -435,7 +435,7 @@ SET GLOBAL tidb_enable_row_level_checksum = ON;
 ```sql
 USE test;
 CREATE TABLE t (id INT PRIMARY KEY, k INT, c CHAR(1));
-INSERT INTO t values (1, 10, 'a');
+INSERT INTO t VALUES (1, 10, 'a');
 ```
 
 查询表 `t` 中 `id = 1` 的行数据的 Checksum 值：
@@ -518,15 +518,15 @@ SELECT TIDB_VERSION()\G
 
 ```sql
 *************************** 1. row ***************************
-TIDB_VERSION(): Release Version: v5.1.0-alpha-13-gd5e0ed0aa-dirty
+TIDB_VERSION(): Release Version: v8.2.0
 Edition: Community
-Git Commit Hash: d5e0ed0aaed72d2f2dfe24e9deec31cb6cb5fdf0
-Git Branch: master
-UTC Build Time: 2021-05-24 14:39:20
-GoVersion: go1.13
+Git Commit Hash: 821e491a20fbab36604b36b647b5bae26a2c1418
+Git Branch: HEAD
+UTC Build Time: 2024-07-11 19:16:25
+GoVersion: go1.21.10
 Race Enabled: false
-TiKV Min Version: v3.0.0-60965b006877ca7234adaced7890d7b029ed1306
 Check Table Before Drop: false
+Store: tikv
 1 row in set (0.00 sec)
 ```
 
