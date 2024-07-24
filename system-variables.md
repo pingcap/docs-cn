@@ -3856,6 +3856,7 @@ explain select * from t where age=5;
     - 算子顶层表达式部分为 JSON 查询类或者 JSON 值属性类函数，部分为直接的列读取。
     - 算子顶层表达式全部为直接的列读取，且输出的列数量小于输入的列数量。
 - `Projection` 算子最终下推与否，还取决于优化器对于性能的综合评估。
+- 对于从 v8.3.0 以前的版本升级到 v8.3.0 或更新版本的 TiDB 集群，该选项默认关闭。
 
 ### `tidb_opt_range_max_size` <span class="version-mark">从 v6.4.0 版本开始引入</span>
 
