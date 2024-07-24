@@ -70,10 +70,6 @@ tiup cluster check <cluster-name> --cluster
 
 配置项 [`performance.force-init-stats`](/tidb-configuration-file.md#force-init-stats-从-v657-和-v710-版本开始引入) 设置为 `true` 会延长 TiDB 的启动时间，这可能会造成启动超时，回退失败。为避免这种情况，建议为 TiUP 设置更长的等待超时。
 
-可能受影响的场景：
-
-- 原集群版本低于 v6.5.7、v7.1.0（尚未支持 `performance.force-init-stats`），目标版本为 v7.2.0 或更高。
-- 原集群版本高于或等于 v6.5.7、v7.1.0，且配置项 `performance.force-init-stats` 被设置为 `true`。
 
 设置 TiUP 的等待超时的步骤如下：
 
