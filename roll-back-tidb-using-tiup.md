@@ -84,7 +84,7 @@ tiup cluster check <cluster-name> --cluster
 
 ### 使用选项 `--transfer-timeout` 修改最长等待时间
 
-如果希望回退过程保持性能稳定，则需要保证 TiKV 上的所有 Leader 驱逐完成后再停止该 TiKV 实例，可以指定 [`--transfer-timeout`](/tiup/tiup-component-cluster-reload.md#--transfer-timeoutuint默认-600) 为一个更大的值，如 `--transfer-timeout 3600`，单位为秒。
+如果希望回退过程保持性能稳定，则需要保证 TiKV 上的所有 Leader 驱逐完成后再停止该 TiKV 实例，可以使用选项 [`--transfer-timeout`](/tiup/tiup-component-cluster-reload.md#--transfer-timeoutuint默认-600) 将最长等待时间设置为更大的值，如 `--transfer-timeout 3600`，单位为秒。
 
 ## 执行回退操作
 
