@@ -159,6 +159,23 @@ Range 分区在下列条件之一或者多个都满足时，尤其有效：
 
 Range COLUMNS 分区是 Range 分区的一种变体。你可以使用一个或者多个列作为分区键，分区列的数据类型可以是整数 (integer)、字符串（`CHAR`/`VARCHAR`），`DATE` 和 `DATETIME`。不支持使用任何表达式。
 
+和 Range 分区一样，Range COLUMNS 分区同样需要分区的定义是严格递增的。如下的定义就是不被允许的
+
+```sql
+CREATE TABLE t(
+    a int,
+    b datetime,
+    c varchar(8)
+) PARTITION BY RANGE COLUMNS(`c`,`b`)
+(PARTITION `p20240520A` VALUES LESS THAN ('A','2024-05-20 00:00:00')
+ PARTITION `p20240520Z` VALUES LESS THAN ('Z','2024-05-20 00:00:00'),
+ PARTITION `p20240521A` VALUES LESS THAN ('A','2024-05-21 00:00:00'));
+```
+
+```sql
+Error 1493 (HY000): VALUES LESS THAN value must be strictly increasing for each partition
+```
+
 假设你想要按名字进行分区，并且能够轻松地删除旧的无效数据，那么你可以创建一个表格，如下所示：
 
 ```sql
