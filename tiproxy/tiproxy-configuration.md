@@ -128,7 +128,13 @@ TiProxy 的高可用配置。
 
 + 默认值：``
 + 支持热加载：否
-+ 指定虚拟 IP 地址，使用 CIDR 格式，例如 `10.0.1.10/24`。当 TiProxy 以主备的方式部署时，只有一台活跃的 TiProxy 实例绑定虚拟 IP。虚拟 IP 仅支持 Linux 操作系统。请确保运行 TiProxy 的 Linux 用户具有绑定 IP 地址的权限。
++ 指定虚拟 IP 地址，使用 CIDR 格式，例如 `10.0.1.10/24`。当集群中部署了多台 TiProxy 时，只有一台 TiProxy 会绑定虚拟 IP。当该 TiProxy 下线时，其他 TiProxy 会绑定该 IP，确保客户端使用该虚拟 IP 总能连接到可用的 TiProxy。
+
+> **注意：**
+>
+> - 虚拟 IP 仅支持 Linux 操作系统。
+> - 请确保运行 TiProxy 的 Linux 用户具有绑定 IP 地址的权限。
+> - 请确保虚拟 IP 和所有 TiProxy 的 IP 在同一个 CIDR 段内。
 
 #### `interface`
 
