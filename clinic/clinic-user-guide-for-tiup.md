@@ -183,7 +183,7 @@ summary: 详细介绍在使用 TiUP 部署的 TiDB 集群或 DM 集群上如何�
         > 要查看可用的指标前缀，可以运行以下命令查询 TiDB 监控 API:
         >
         > ```bash
-        > `$ curl -s 'http://${prometheus-host}:${prometheus-port}/api/v1/label/__name__/values' | jq -r '.data[]' | cut -d\_ -f1 | uniq -c | sort -rn`
+        > $ curl -s 'http://${prometheus-host}:${prometheus-port}/api/v1/label/__name__/values' | jq -r '.data[]' | cut -d\_ -f1 | uniq -c | sort -rn
         > ```
 
     运行 Diag 数据采集命令后，Diag 不会立即开始采集数据，而会在输出中提供预估数据量大小和数据存储路径，并询问你是否进行数据收集。例如：
