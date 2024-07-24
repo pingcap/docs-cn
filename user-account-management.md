@@ -14,21 +14,17 @@ summary: TiDB 用户账户管理主要包括用户名和密码设置、添加用
 
 ## 用户名和密码
 
-TiDB 将用户账户存储在 `mysql.user` 系统表里面。每个账户由用户名和 host 作为标识。每个账户可以设置一个密码。每个用户名最长为 32 个字符。
+TiDB 将用户账户存储在 [`mysql.user`](/mysql-schema.md) 系统表里面。每个账户由用户名和 host 作为标识。每个账户可以设置一个密码。每个用户名最长为 32 个字符。
 
 通过 MySQL 客户端连接到 TiDB 服务器，通过指定的账户和密码登录：
 
-{{< copyable "shell-regular" >}}
-
-```
+```shell
 mysql --port 4000 --user xxx --password
 ```
 
 使用缩写的命令行参数则是：
 
-{{< copyable "shell-regular" >}}
-
-```
+```shell
 mysql -P 4000 -u xxx -p
 ```
 
@@ -36,20 +32,16 @@ mysql -P 4000 -u xxx -p
 
 添加用户有两种方式：
 
-* 通过标准的用户管理的 SQL 语句创建用户以及授予权限，比如 `CREATE USER` 和 `GRANT`。
-* 直接通过 `INSERT`、`UPDATE` 和 `DELETE` 操作授权表。不推荐使用这种方式添加用户，因为容易导致修改不完整。
+* 通过标准的用户管理的 SQL 语句创建用户以及授予权限，比如 [`CREATE USER`](/sql-statements/sql-statement-create-user.md) 和 [`GRANT`](/sql-statements/sql-statement-grant-privileges.md)。
+* 直接通过[`INSERT`](/sql-statements/sql-statement-insert.md)、[`UPDATE`](/sql-statements/sql-statement-update.md) 和 [`DELETE`](/sql-statements/sql-statement-delete.md) 操作授权表，然后执行 [`FLUSH PRIVILEGES`](/sql-statements/sql-statement-flush-privileges.md)。不推荐使用这种方式添加或修改用户，因为容易导致修改不完整。
 
-除以上两种方法外，你还可以使用第三方图形化界面工具来添加用户。
-
-{{< copyable "sql" >}}
+除以上两种方法外，你还可以使用[第三方图形化界面工具](/develop/dev-guide-third-party-support.md#gui)来添加用户。
 
 ```sql
 CREATE USER [IF NOT EXISTS] user [IDENTIFIED BY 'auth_string'];
 ```
 
-设置登录密码后，`auth_string` 会被 TiDB 经过加密存储在 `mysql.user` 表中。
-
-{{< copyable "sql" >}}
+设置登录密码后，`auth_string` 会被 TiDB 加密并存储在 [`mysql.user`](/mysql-schema.md) 表中。
 
 ```sql
 CREATE USER 'test'@'127.0.0.1' IDENTIFIED BY 'xxx';
@@ -62,8 +54,6 @@ TiDB 的用户账户名由一个用户名和一个主机名组成。账户名的
 
 host 支持模糊匹配，比如：
 
-{{< copyable "sql" >}}
-
 ```sql
 CREATE USER 'test'@'192.168.10.%';
 ```
@@ -72,69 +62,49 @@ CREATE USER 'test'@'192.168.10.%';
 
 如果没有指定 host，则默认是所有 IP 均可登录。如果没有指定密码，默认为空：
 
-{{< copyable "sql" >}}
-
 ```sql
 CREATE USER 'test';
 ```
 
 等价于：
 
-{{< copyable "sql" >}}
-
 ```sql
 CREATE USER 'test'@'%' IDENTIFIED BY '';
 ```
 
-为一个不存在的用户授权时，是否会自动创建用户的行为受 `sql_mode` 影响。如果 `sql_mode` 中包含 `NO_AUTO_CREATE_USER`，则 `GRANT` 不会自动创建用户并报错。
+为一个不存在的用户授权时，是否会自动创建用户的行为受 [`sql_mode`](/system-variables.md#sql_mode) 影响。如果 `sql_mode` 中包含 `NO_AUTO_CREATE_USER`，则 `GRANT` 不会自动创建用户并报错。
 
 假设 `sql_mode` 不包含 `NO_AUTO_CREATE_USER`，下面的例子用 `CREATE USER` 和 `GRANT` 语句创建了四个账户：
-
-{{< copyable "sql" >}}
 
 ```sql
 CREATE USER 'finley'@'localhost' IDENTIFIED BY 'some_pass';
 ```
 
-{{< copyable "sql" >}}
-
 ```sql
 GRANT ALL PRIVILEGES ON *.* TO 'finley'@'localhost' WITH GRANT OPTION;
 ```
-
-{{< copyable "sql" >}}
 
 ```sql
 CREATE USER 'finley'@'%' IDENTIFIED BY 'some_pass';
 ```
 
-{{< copyable "sql" >}}
-
 ```sql
 GRANT ALL PRIVILEGES ON *.* TO 'finley'@'%' WITH GRANT OPTION;
 ```
-
-{{< copyable "sql" >}}
 
 ```sql
 CREATE USER 'admin'@'localhost' IDENTIFIED BY 'admin_pass';
 ```
 
-{{< copyable "sql" >}}
-
 ```sql
 GRANT RELOAD,PROCESS ON *.* TO 'admin'@'localhost';
 ```
-
-{{< copyable "sql" >}}
 
 ```sql
 CREATE USER 'dummy'@'localhost';
 ```
 
-使用 `SHOW GRANTS` 可以看到为一个用户授予的权限：
-
-{{< copyable "sql" >}}
+使用 [`SHOW GRANTS`](/sql-statements/sql-statement-show-grants.md) 可以看到为一个用户授予的权限：
 
 ```sql
 SHOW GRANTS FOR 'admin'@'localhost';
@@ -148,17 +118,30 @@ SHOW GRANTS FOR 'admin'@'localhost';
 +-----------------------------------------------------+
 ```
 
+使用 [`SHOW CREATE USER`](/sql-statements/sql-statement-show-create-user.md) 查看用户的定义语句：
+
+```sql
+SHOW CREATE USER 'admin'@'localhost';
+```
+
+```
++--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| CREATE USER for admin@localhost                                                                                                                                                                                                      |
++--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| CREATE USER 'admin'@'localhost' IDENTIFIED WITH 'mysql_native_password' AS '*14E65567ABDB5135D0CFD9A70B3032C179A49EE7' REQUIRE NONE PASSWORD EXPIRE DEFAULT ACCOUNT UNLOCK PASSWORD HISTORY DEFAULT PASSWORD REUSE INTERVAL DEFAULT  |
++--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+1 row in set (0.00 sec)
+```
+
 ## 删除用户
 
-使用 `DROP USER` 语句可以删除用户，例如：
-
-{{< copyable "sql" >}}
+使用 [`DROP USER`](/sql-statements/sql-statement-drop-user.md) 语句可以删除用户，例如：
 
 ```sql
 DROP USER 'test'@'localhost';
 ```
 
-这个操作会清除用户在 `mysql.user` 表里面的记录项，并且清除在授权表里面的相关记录。
+这个操作会清除用户在 [`mysql.user`](/mysql-schema.md) 表里面的记录项，并且清除在授权表里面的相关记录。
 
 ## 保留用户账户
 
@@ -170,27 +153,21 @@ TiDB 可以利用资源组对用户消耗的资源进行限制，详情参见[�
 
 ## 设置密码
 
-TiDB 将密码存在 `mysql.user` 系统数据库里面。只有拥有 `CREATE USER` 权限，或者拥有 `mysql` 数据库权限（`INSERT` 权限用于创建，`UPDATE` 权限用于更新）的用户才能够设置或修改密码。
+TiDB 将密码存在 [`mysql.user`](/mysql-schema.md) 系统表里面。只有拥有 `CREATE USER` 权限，或者拥有 `mysql` 数据库权限（`INSERT` 权限用于创建，`UPDATE` 权限用于更新）的用户才能够设置或修改密码。
 
-- 在 `CREATE USER` 创建用户时通过 `IDENTIFIED BY` 指定密码：
-
-    {{< copyable "sql" >}}
+- 在 [`CREATE USER`](/sql-statements/sql-statement-create-user.md) 创建用户时通过 `IDENTIFIED BY` 指定密码：
 
     ```sql
     CREATE USER 'test'@'localhost' IDENTIFIED BY 'mypass';
     ```
 
-- 为一个已存在的账户修改密码，可以通过 `SET PASSWORD FOR` 或者 `ALTER USER` 语句完成：
-
-    {{< copyable "sql" >}}
+- 为一个已存在的账户修改密码，可以通过 [`SET PASSWORD FOR`](/sql-statements/sql-statement-set-password.md) 或者 [`ALTER USER`](/sql-statements/sql-statement-alter-user.md) 语句完成：
 
     ```sql
     SET PASSWORD FOR 'root'@'%' = 'xxx';
     ```
 
     或者：
-
-    {{< copyable "sql" >}}
 
     ```sql
     ALTER USER 'test'@'localhost' IDENTIFIED BY 'mypass';
@@ -202,7 +179,7 @@ TiDB 将密码存在 `mysql.user` 系统数据库里面。只有拥有 `CREATE U
 
     1. 登录其中一台 tidb-server 实例所在的机器。
     2. 进入 TiDB 节点的部署目录下的 `conf` 目录，找到 `tidb.toml` 配置文件。
-    3. 在配置文件的 `security` 部分添加配置项 `skip-grant-table`。如无 `security` 部分，则将以下两行内容添加至 tidb.toml 配置文件尾部：
+    3. 在配置文件的 [`security`](/tidb-configuration-file.md#security) 部分添加配置项 [`skip-grant-table`](/tidb-configuration-file.md)。如无 `security` 部分，则将以下两行内容添加至 `tidb.toml` 配置文件尾部：
 
         ```
         [security]
@@ -221,7 +198,7 @@ TiDB 将密码存在 `mysql.user` 系统数据库里面。只有拥有 `CREATE U
 
         ```bash
         kill -9 <pid>
-        ```    
+        ```
 
 3. 使用修改之后的配置启动 TiDB：
 
@@ -242,14 +219,8 @@ TiDB 将密码存在 `mysql.user` 系统数据库里面。只有拥有 `CREATE U
 
 ## `FLUSH PRIVILEGES`
 
-用户以及权限相关的信息都存储在 TiKV 服务器中，TiDB 在进程内部会缓存这些信息。一般通过 `CREATE USER`，`GRANT` 等语句来修改相关信息时，可在整个集群迅速生效。如果遇到网络或者其它因素影响，由于 TiDB 会周期性地更新缓存信息，正常情况下，最多 15 分钟左右生效。
+用户以及权限相关的信息都存储在 TiKV 服务器中，TiDB 在进程内部会缓存这些信息。一般通过 [`CREATE USER`](/sql-statements/sql-statement-create-user.md)、[`GRANT`](/sql-statements/sql-statement-grant-privileges.md) 等语句来修改相关信息时，可在整个集群迅速生效。如果遇到网络或者其它因素影响，由于 TiDB 会周期性地更新缓存信息，正常情况下，最多 15 分钟左右生效。
 
-如果授权表已被直接修改，则不会通知 TiDB 节点更新缓存，运行如下命令可使改动立即生效：
-
-{{< copyable "sql" >}}
-
-```sql
-FLUSH PRIVILEGES;
-```
+如果授权表已被直接修改，则不会通知 TiDB 节点更新缓存，执行 [`FLUSH PRIVILEGES`](/sql-statements/sql-statement-flush-privileges.md) 可使改动立即生效。
 
 详情参见[权限管理](/privilege-management.md)。
