@@ -159,7 +159,7 @@ Range 分区在下列条件之一或者多个都满足时，尤其有效：
 
 Range COLUMNS 分区是 Range 分区的一种变体。你可以使用一个或者多个列作为分区键，分区列的数据类型可以是整数 (integer)、字符串（`CHAR`/`VARCHAR`），`DATE` 和 `DATETIME`。不支持使用任何表达式。
 
-和 Range 分区一样，Range COLUMNS 分区同样需要分区的定义是严格递增的。如下的定义就是不被允许的
+和 Range 分区一样，Range COLUMNS 分区同样需要分区的定义是严格递增的。如下的分区定义就是不被允许的
 
 ```sql
 CREATE TABLE t(
