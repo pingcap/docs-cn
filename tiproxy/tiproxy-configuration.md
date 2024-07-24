@@ -140,7 +140,7 @@ TiProxy 的高可用配置。
 
 + 默认值：``
 + 支持热加载：否
-+ 指定绑定虚拟 IP 地址的网络接口，例如 `eth0`。仅当 `virtual_ip` 和 `interface` 同时设置时，该实例才会争抢虚拟 IP 地址。
++ 指定绑定虚拟 IP 的网络接口，例如 `eth0`。仅当 `virtual_ip` 和 `interface` 同时设置时，该实例才有可能绑定虚拟 IP。
 
 ### `labels`
 
