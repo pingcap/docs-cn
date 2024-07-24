@@ -85,9 +85,17 @@ TiDB 版本：7.5.3
 ## 错误修复
 
 + TiDB
-
+    - 修复加载 index 统计信息可能会造成内存泄漏的问题 [#54022](https://github.com/pingcap/tidb/issues/54022) @[hi-rustin](https://github.com/hi-rustin)
+    - 修复了 update 操作可以触发 stats cache的淘汰机制 [#53742](https://github.com/pingcap/tidb/issues/53742) @[hawkingrei](https://github.com/hawkingrei)
+    - 修复了在 Group By 语句中的引用间接占位符 ？会无法找到列的问题 [#53872] https://github.com/pingcap/tidb/issues/53872 @[qw4990](https://github.com/qw4990)
+    - 修复当排序规则为 utf8_bin 或 utf8mb4_bin 时意外消除“length()”条件的错误 [#53730](https://github.com/pingcap/tidb/issues/53730) @[elsa0520](https://github.com/elsa0520)
+    - 修复插入大科学记数法数字时的行为，使其与 mysql 保持一致 [#47787](https://github.com/pingcap/tidb/issues/47787) @[qw4990](https://github.com/qw4990)
+    - 修复递归 CTE 查询中可能会导致的无效指针 [#54449](https://github.com/pingcap/tidb/issues/54449) @[hawkingrei](https://github.com/hawkingrei)
+    - 修复统计数据在遇到重复时应该更新 stats_history 表，而不是现实插入 duplicate 错误 [#47539](https://github.com/pingcap/tidb/issues/47539) @[Defined2014](https://github.com/Defined2014)
+    - 修复了包含 Limit 的非关联子查询列剪裁不完善导致产生不必要回表的问题 [#54213](https://github.com/pingcap/tidb/issues/54213) @[qw4990](https://github.com/qw4990)
     - Fixed the issue of abnormally high memory usage caused by memTracker not being detached in HashJoin and IndexLookUp operators when used as the inner side of the Apply operator. [#54005](https://github.com/pingcap/tidb/issues/54005) @[XuHuaiyu](https://github.com/XuHuaiyu)
     - Fix the issue that recursive CTE operator tracks memory usage incorrectly. [#54181](https://github.com/pingcap/tidb/issues/54181) @[guo-shaoge](https://github.com/guo-shaoge)
+    - 修复了一些事务 buffer 内存被重复统计的问题 [#53984](https://github.com/pingcap/tidb/issues/53984) @[ekexium](https://github.com/ekexium)
     - note [#issue](https://github.com/pingcap/tidb/issues/${issue-id}) @[贡献者 GitHub ID](https://github.com/${github-id})
     - note [#issue](https://github.com/pingcap/tidb/issues/${issue-id}) @[贡献者 GitHub ID](https://github.com/${github-id})
     - (dup): release-6.5.10.md > 错误修复> TiDB - 修复并发执行 `CREATE OR REPLACE VIEW` 可能报错 `table doesn't exist` 的问题 [#53673](https://github.com/pingcap/tidb/issues/53673) @[tangenta](https://github.com/tangenta)
