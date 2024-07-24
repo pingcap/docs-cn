@@ -3847,7 +3847,7 @@ explain select * from t where age=5;
 
 ### `tidb_opt_projection_push_down` <span class="version-mark">从 v6.1.0 版本开始引入</span>
 
-- 作用域：SESSION
+- 作用域：SESSION | GLOBAL
 - 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：是
 - 类型：布尔型
 - 默认值：`ON`。在 v8.3.0 之前，默认值为 `OFF`。
