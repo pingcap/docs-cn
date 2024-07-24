@@ -33,7 +33,7 @@ mysql -P 4000 -u xxx -p
 添加用户有两种方式：
 
 * 通过标准的用户管理的 SQL 语句创建用户以及授予权限，比如 [`CREATE USER`](/sql-statements/sql-statement-create-user.md) 和 [`GRANT`](/sql-statements/sql-statement-grant-privileges.md)。
-* 直接通过 [`INSERT`](/sql-statements/sql-statement-insert.md)、[`UPDATE`](/sql-statements/sql-statement-update.md) 和 [`DELETE`](/sql-statements/sql-statement-delete.md) 操作授权表。不推荐使用这种方式添加或修改用户，因为容易导致修改不完整。
+* 直接通过[`INSERT`](/sql-statements/sql-statement-insert.md)、[`UPDATE`](/sql-statements/sql-statement-update.md) 和 [`DELETE`](/sql-statements/sql-statement-delete.md) 操作授权表，然后执行 [`FLUSH PRIVILEGES`](/sql-statements/sql-statement-flush-privileges.md)。不推荐使用这种方式添加或修改用户，因为容易导致修改不完整。
 
 除以上两种方法外，你还可以使用[第三方图形化界面工具](/develop/dev-guide-third-party-support.md#gui)来添加用户。
 
@@ -41,7 +41,7 @@ mysql -P 4000 -u xxx -p
 CREATE USER [IF NOT EXISTS] user [IDENTIFIED BY 'auth_string'];
 ```
 
-设置登录密码后，`auth_string` 会被 TiDB 经过加密存储在 [`mysql.user`](/mysql-schema.md) 表中。
+设置登录密码后，`auth_string` 会被 TiDB 加密并存储在 [`mysql.user`](/mysql-schema.md) 表中。
 
 ```sql
 CREATE USER 'test'@'127.0.0.1' IDENTIFIED BY 'xxx';

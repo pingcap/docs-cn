@@ -159,7 +159,7 @@ SELECT user,host,db FROM mysql.db WHERE user='genius';
 
 [`REVOKE`](/sql-statements/sql-statement-revoke-privileges.md) 语句允许系统管理员收回用户的权限。
 
-`REVOKE`  语句与 `GRANT` 对应：
+`REVOKE` 语句的作用与 `GRANT` 相反：
 
 ```sql
 REVOKE ALL PRIVILEGES ON `test`.* FROM 'genius'@'localhost';
@@ -572,6 +572,6 @@ User+Host 可能会匹配 `user` 表里面多行，为了处理这种情况，`u
 
 ### 生效时机
 
-TiDB 启动时，将一些权限检查的表加载到内存，之后使用缓存的数据来验证权限。系统会周期性的将授权表从数据库同步到缓存，生效则是由同步的周期决定，目前这个值设定的是 5 分钟。
+TiDB 启动时，会将一些权限检查的表加载到内存，之后使用缓存的数据来验证权限。执行权限管理语句（如 `GRANT`、`REVOKE`、`CREATE USER` 和 `DROP USER`）将立即生效。
 
-修改了授权表，如果需要立即生效，可以手动执行 [`FLUSH PRIVILEGES`](/sql-statements/sql-statement-flush-privileges.md)。
+使用 `INSERT`、`DELETE`、`UPDATE` 等语句手动修改 `mysql.user` 等授权表不会立即生效。该行为与 MySQL 兼容。如需立即生效，可以手动执行 [`FLUSH PRIVILEGES`](/sql-statements/sql-statement-flush-privileges.md) 语句更新权限的缓存。
