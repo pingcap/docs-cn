@@ -71,6 +71,26 @@ tiup cluster reload <cluster-name> [flags]
 - 数据类型：`BOOLEAN`
 - 该选项默认关闭，默认值为 `false`。在命令中添加该选项，并传入 `true` 值或不传值，均可开启此功能。
 
+#### --pre-restart-script
+
+> **警告：**
+>
+> 该选项目前为实验特性，不建议在生产环境中使用。
+
+- 在重新加载配置前运行该脚本。
+- 数据类型：`STRINGS`
+- 该选项指定节点在重新加载配置前要运行的脚本的路径。当 `--skip-restart` 为 `true`，该选项不生效。
+
+### --post-restart-script
+
+> **警告：**
+>
+> 该选项目前为实验特性，不建议在生产环境中使用。
+
+- 在重新加载配置后运行该脚本。
+- 数据类型：`STRINGS`
+- 该选项指定节点在重新加载配置后要运行的脚本的路径。当 `--skip-restart` 为 `true`，该选项不生效。
+
 ## 输出
 
 tiup-cluster 的执行日志。
