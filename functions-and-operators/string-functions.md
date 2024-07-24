@@ -537,7 +537,7 @@ SELECT FIND_IN_SET('Go', 'COBOL,BASIC,Rust,Go,Java,Fortran');
 
 - `X`：要格式化的数字。可以是直接的数字值、数字字符串、或科学记数法格式的数字。
 - `D`：指定返回值的小数位数。该函数根据 `D` 对 `X` 进行四舍五入。如果 `D` 大于 `X` 的实际小数位数，则会在结果中填充相应长度的零。
-- `[locale]`：指定一个区域设置，用于结果中数字的小数点、千位分隔符和分隔符之间的分组。合法的区域设置值与 [`lc_time_names`](https://dev.mysql.com/doc/refman/8.3/en/server-system-variables.html#sysvar_lc_time_names) 系统变量的合法值相同。如果未指定或者设置为 `NULL`，则默认使用 `'en_US'` 区域设置。该参数可选。
+- `[locale]`：指定一个区域设置，用于结果中数字的小数点、千位分隔符和分隔符之间的分组。合法的区域设置值与 [`lc_time_names`](https://dev.mysql.com/doc/refman/8.0/en/server-system-variables.html#sysvar_lc_time_names) 系统变量的合法值相同。如果未指定或者设置为 `NULL`，则默认使用 `'en_US'` 区域设置。该参数可选。
 
 行为细节：
 
