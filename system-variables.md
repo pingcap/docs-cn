@@ -3850,7 +3850,7 @@ explain select * from t where age=5;
 - 作用域：SESSION
 - 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：是
 - 类型：布尔型
-- 默认值：`ON`
+- 默认值：`ON`。在 v8.3.0 之前，默认值为 `OFF`。
 - 指定是否允许优化器将 `Projection` 算子下推到 TiKV。目前只有三种类型的 `Projection` 算子被允许下推：
     - 算子顶层表达式全部为 JSON 查询类或者 JSON 值属性类函数, 如 `JSON_EXTRACT`, `JSON_DEPTH` 等。
     - 算子顶层表达式部分为 JSON 查询类或者 JSON 值属性类函数，部分为直接的列读取。
