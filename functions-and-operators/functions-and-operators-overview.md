@@ -7,6 +7,9 @@ summary: TiDB 中的函数和操作符使用方法与 MySQL 基本一致。在 S
 
 TiDB 中函数和操作符使用方法与 MySQL 基本一致，详情参见：[Functions and Operators](https://dev.mysql.com/doc/refman/8.0/en/functions.html)。
 
-在 SQL 语句中，表达式可用于诸如 `SELECT` 语句的 `ORDER BY` 或 `HAVING` 子句，`SELECT`/`DELETE`/`UPDATE` 语句的 `WHERE` 子句，或 `SET` 语句之类的地方。
+在 SQL 语句中，表达式可用于诸如 [`SELECT`](/sql-statements/sql-statement-select.md) 语句的 `ORDER BY` 或 `HAVING` 子句，[`SELECT`](/sql-statements/sql-statement-select.md)、[`DELETE`](/sql-statements/sql-statement-delete.md) 或 [`UPDATE`](/sql-statements/sql-statement-update.md) 语句的 `WHERE` 子句，或 [`SET`](/sql-statements/sql-statement-set-variable.md) 语句之类的地方。
 
-可使用字面值，列名，NULL，内置函数，操作符等来书写表达式。其中有些表达式下推到 TiKV 上执行，详见[下推到 TiKV 的表达式列表](/functions-and-operators/expressions-pushed-down.md)。
+你可以使用字面值、列名、`NULL`、内置函数、操作符等来编写表达式。
+
+- TiDB 支持下推到 TiKV 上执行的表达式，请参阅[支持下推到 TiKV 的表达式](/functions-and-operators/expressions-pushed-down.md#已支持下推的表达式列表)。
+- TiDB 支持下推到 [TiFlash](/tiflash/tiflash-overview.md) 上执行的表达式，请参阅[支持下推到 TiFlash 的表达式](/tiflash/tiflash-supported-pushdown-calculations.md#支持下推的表达式)。
