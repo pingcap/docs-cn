@@ -165,7 +165,7 @@ delta_index_cache_size = 0
     log-file = "/tidb-deploy/tiflash-9000/log/tiflash_tikv.log"
 
 [logger]
-    ## 注意，以下参数只对 tiflash.log，tiflash_error.log 生效。proxy 的日志参数配置需要在 tiflash-learner.toml 中指定。
+    ## 注意，以下参数只对 tiflash.log，tiflash_error.log 生效。TiFlash proxy 的日志参数配置需要在 tiflash-learner.toml 中指定。
 
     ## log 级别（支持 "trace"、"debug"、"info"、"warn"、"error"），默认是 "info"
     level = "info"
