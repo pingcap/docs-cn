@@ -38,10 +38,6 @@ TiDB 采用计算存储分离架构，具有出色的扩展性和弹性的扩缩
 
 分布式执行框架最多同时调度 16 个任务（包括 [`ADD INDEX`](/sql-statements/sql-statement-add-index.md) 和 [`IMPORT INTO`](/sql-statements/sql-statement-import-into.md)）。
 
-### `ADD INDEX` 的使用限制
-
-- 不支持通过分布式执行框架对数据类型为 [`TIMESTAMP`](/data-type-date-and-time.md#timestamp-类型) 的列添加索引，否则会导致索引和数据不一致的问题。
-
 ## 启用前提
 
 如需使用分布式执行框架执行 [`ADD INDEX`](/sql-statements/sql-statement-add-index.md) 任务，需要先开启 [Fast Online DDL](/system-variables.md#tidb_ddl_enable_fast_reorg-从-v630-版本开始引入) 模式。
