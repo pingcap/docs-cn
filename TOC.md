@@ -726,8 +726,12 @@
       - [表达式语法](/expression-syntax.md)
       - [注释语法](/comment-syntax.md)
     - SQL 语句
+<<<<<<< HEAD
       - [`ADD COLUMN`](/sql-statements/sql-statement-add-column.md)
       - [`ADD INDEX`](/sql-statements/sql-statement-add-index.md)
+=======
+      - [概览](/sql-statements/sql-statement-overview.md)
+>>>>>>> 78ffba98a4 (Replace sqlgram links (#17992))
       - [`ADMIN`](/sql-statements/sql-statement-admin.md)
       - [`ADMIN CANCEL DDL`](/sql-statements/sql-statement-admin-cancel-ddl.md)
       - [`ADMIN CHECKSUM TABLE`](/sql-statements/sql-statement-admin-checksum-table.md)
