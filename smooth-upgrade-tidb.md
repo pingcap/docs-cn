@@ -35,9 +35,21 @@ TiDB 引入平滑升级功能前，对于升级过程中的 DDL 操作有如下�
 
 使用平滑升级功能时，需要注意以下限制。
 
+> **注意：**
+>
+> 本小节中的使用限制不仅适用于使用平滑升级功能的场景，也适用于[使用 TiUP 升级 TiDB](/upgrade-tidb-using-tiup.md#使用-tiup-升级-tidb)的场景。
+
 ### 用户操作限制
 
+<<<<<<< HEAD
 * 在升级前，如果集群中存在正在处理的 canceling DDL job，即有正在被处理的 DDL job 被用户取消了，由于处于 canceling 状态的 job 无法被 `pause`，TiDB 会尝试重试。如果重试失败，会报错并退出升级。
+=======
+* 在升级前有如下两种限制：
+
+    * 如果集群中存在正在处理的 canceling DDL job，即有正在被处理的 DDL job 被用户取消了，由于处于 canceling 状态的 job 无法被 `pause`，TiDB 会尝试重试。如果重试失败，会报错并退出升级。
+
+    * 如果当前集群版本 < v8.1.0，且 [TiDB 分布式执行框架](/tidb-distributed-execution-framework.md)已启用，请关闭 TiDB 分布式执行框架（即将 [`tidb_enable_dist_task`](/system-variables.md#tidb_enable_dist_task-从-v710-版本开始引入) 设置为 `OFF`），并确保所有分布式 `ADD INDEX` 和 `IMPORT INTO` 任务已完成，或者取消这些任务并等待升级完成后重新开始。否则，升级期间的 `ADD INDEX` 操作可能导致数据索引不一致。如果当前集群版本 >= v8.1.0，则无需关闭 TiDB 分布式执行框架，请忽略此限制。
+>>>>>>> 57dcf35530 (Improve upgrade limitations (#18076))
 
 * 在使用 TiUP 进行升级的场景下，由于 TiUP 升级存在超时时间，如果在升级之前集群中有大量 DDL（超过 300 条）正在处理队列中等待执行，则此次升级可能会失败。
 
