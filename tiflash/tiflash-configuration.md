@@ -268,16 +268,16 @@ delta_index_cache_size = 0
 ```toml
 [log]
     ## Proxy 的 log 级别，可选值为 "trace"、"debug"、"info"、"warn"、"error"，默认值为 "info"。从 v5.4.0 版本开始引入。
-    # level = "info"
+    level = "info"
 [log.file]
     ## 可保留的 log 文件的最大数量。从 v5.4.0 版本开始引入。
     ## 如果未设置该参数或把该参数设置为默认值 `0`，TiKV 会保存所有的日志文件；
     ## 如果把此参数设置为非 `0` 的值，TiKV 最多会保留 `max-backups` 中指定数量的旧日志文件。比如，如果该值设置为 `7`，TiKV 最多会保留 7 个旧的日志文件。
-    # max-backups = 0
+    max-backups = 0
     ## 保留 log 文件的最长天数。从 v5.4.0 版本开始引入。
     ## 如果未设置本参数或把此参数设置为默认值 `0`，TiKV 会保存所有的日志文件。
     ## 如果把此参数设置为非 `0` 的值，在 `max-days` 之后，TiKV 会清理过期的日志文件。
-    # max-days = 0
+    max-days = 0
 
 [raftstore]
     ## 处理 Raft 数据落盘的线程池中线程的数量
