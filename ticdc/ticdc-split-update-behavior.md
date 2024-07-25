@@ -142,4 +142,4 @@ COMMIT;
 | 版本 | 协议 | 拆分主键或唯一键 `UPDATE` 事件 | 不拆分主键或唯一键 `UPDATE` 事件 | 备注 |
 | -- | -- | -- | -- | -- |
 | <= v7.5.2 | 所有协议 | ✓ | ✗ | |
-| \>= v7.5.3（待发布） | 所有协议 | ✓  (默认值：`output-raw-change-event = false`) | ✓ (可选配置项：`output-raw-change-event = true`) | |
+| \>= v7.5.3 | 所有协议 | ✓  (默认值：`output-raw-change-event = false`) | ✓ (可选配置项：`output-raw-change-event = true`) | |
