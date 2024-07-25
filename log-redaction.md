@@ -63,7 +63,7 @@ TiKV 侧的日志脱敏需要将 [`security.redact-info-log`](/tikv-configuratio
 
 ## PD 组件日志脱敏
 
-PD 侧的日志脱敏需要将 [`security.redact-info-log`](/pd-configuration-file.md#redact-info-log-从-v50-版本开始引入) 的值设为 `true` 或 `"MARKER"`。该配置项值默认为 `false`，即关闭脱敏。
+PD 侧的日志脱敏需要将 [`security.redact-info-log`](/pd-configuration-file.md#redact-info-log-从-v50-版本开始引入) 的值设为 `true` 或 `"marker"`。该配置项值默认为 `false`，即关闭脱敏。
 
 ## TiFlash 组件日志脱敏
 
