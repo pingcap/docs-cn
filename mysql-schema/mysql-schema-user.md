@@ -1,6 +1,6 @@
 ---
 title：`mysql.user`
-summary：了解 `mysql` 系统表中的 `user` 表。
+summary：了解 `mysql` 系统表 `user` 。
 ---
 
 # `mysql.user`
@@ -69,7 +69,7 @@ DESC mysql.user;
 
 `mysql.user` 表包含多个字段，可分为三组：
 
-* 作用域相关字段：
+* 账户相关字段：
     * `Host`：指定 TiDB 用户账户的主机名。
     * `User`：指定 TiDB 用户账户的用户名。
 * 权限相关字段：
