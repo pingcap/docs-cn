@@ -1,12 +1,7 @@
 ---
 title: SHOW STATS_HISTOGRAMS
-<<<<<<< HEAD
 aliases: ['/zh/tidb/stable/sql-statement-show-histograms']
-summary: TiDB 数据库中 SHOW HISTOGRAMS 语句的简单说明。
-=======
 summary: TiDB 数据库中 SHOW STATS_HISTOGRAMS 语句的简单说明。
-aliases: ['/docs-cn/dev/sql-statements/sql-statement-show-histograms/','/zh/tidb/dev/sql-statement-show-histograms']
->>>>>>> cbccda9615 (Rehash and update statistics and SQL docs (#17827))
 ---
 
 # SHOW STATS_HISTOGRAMS
