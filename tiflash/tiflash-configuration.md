@@ -164,17 +164,17 @@ delta_index_cache_size = 0
     log-file = "/tidb-deploy/tiflash-9000/log/tiflash_tikv.log"
 
 [logger]
-    ## 注意，以下参数只对 tiflash.log，tiflash_error.log 生效。TiFlash proxy 的日志参数配置需要在 tiflash-learner.toml 中指定。
+    ## 注意，以下参数只对 tiflash.log、tiflash_error.log 生效。TiFlash proxy 的日志参数配置需要在 tiflash-learner.toml 中指定。
 
     ## log 级别（支持 "trace"、"debug"、"info"、"warn"、"error"），默认是 "info"
     level = "info"
-    ## tiflash 日志
+    ## TiFlash 日志
     log = "/tidb-deploy/tiflash-9000/log/tiflash.log"
-    ## tiflash 错误日志。对于 "warn", "error" 级别的日志，会额外输出到该日志文件中。
+    ## TiFlash 错误日志。对于 "warn"、"error" 级别的日志，会额外输出到该日志文件中。
     errorlog = "/tidb-deploy/tiflash-9000/log/tiflash_error.log"
     ## 单个日志文件的大小，默认是 "100M"
     size = "100M"
-    ## 最多保留日志文件个数，默认是 10。对于 tiflash 日志和 tiflash 错误日志各自最多保留 `count` 个。
+    ## 最多保留日志文件个数，默认是 10。对于 TiFlash 日志和 TiFlash 错误日志各自最多保留 `count` 个日志文件。
     count = 10
 
 [raft]
@@ -260,7 +260,7 @@ delta_index_cache_size = 0
 
 ### 配置文件 tiflash-learner.toml
 
-tiflash-learner.toml 中的功能参数和 TiKV 基本一致，可以参照[TiKV 配置](/tikv-configuration-file.md)来进行配置，下面只列出常用的部分参数。需要注意的是：
+`tiflash-learner.toml` 中的功能参数和 TiKV 基本一致，可以参照 [TiKV 配置](/tikv-configuration-file.md)来进行配置。下面只列了常用的部分参数。需要注意的是：
 
 1. 相对于 TiKV，TiFlash proxy 新增了 `raftstore.snap-handle-pool-size` 参数。
 2. `key` 为 `engine` 的 `label` 是保留项，不可手动配置。
