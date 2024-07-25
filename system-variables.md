@@ -2579,7 +2579,7 @@ v5.0 后，用户仍可以单独修改以上系统变量（会有废弃警告）
 - 功能：此变量用于控制 GC（垃圾回收）过程中的并发线程数。
 - 影响的 GC 步骤：
   - [Resolve Locks（清理锁）](/garbage-collection-overview.md#resolve-locks清理锁)：直接使用设定的线程数。
-  - [Delete Range（删除区间）](/garbage-collection-overview.md#Delete-Ranges删除区间)：使用设定值的 1/4（向上取整）作为线程数。
+  - [Delete Range（删除区间）](/garbage-collection-overview.md#Delete-Ranges删除区间)：使用设定值的 1/4 作为线程数。
 - 默认值说明：当设置为 `-1` 时，TiDB 将自动决定适当的线程数。
 
 ### `tidb_gc_enable` <span class="version-mark">从 v5.0 版本开始引入</span>
