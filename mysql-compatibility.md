@@ -110,7 +110,7 @@ MySQL 系统变量 `optimizer_switch` 在 TiDB 中是只读的，对查询计划
 
 ### 内建函数
 
-支持常用的 MySQL 内建函数，有部分函数并未支持。可通过执行 `SHOW BUILTINS` 语句查看可用的内建函数。参考 [SQL 语法文档](https://pingcap.github.io/sqlgram/#functioncallkeyword)。
+支持常用的 MySQL 内建函数，有部分函数并未支持。可通过执行 [`SHOW BUILTINS`](/sql-statements/sql-statement-show-builtins.md) 语句查看可用的内建函数。
 
 ### DDL 的限制
 

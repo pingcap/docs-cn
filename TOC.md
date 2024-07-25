@@ -734,6 +734,7 @@
       - [表达式语法](/expression-syntax.md)
       - [注释语法](/comment-syntax.md)
     - SQL 语句
+      - [概览](/sql-statements/sql-statement-overview.md)
       - [`ADMIN`](/sql-statements/sql-statement-admin.md)
       - [`ADMIN CANCEL DDL`](/sql-statements/sql-statement-admin-cancel-ddl.md)
       - [`ADMIN CHECKSUM TABLE`](/sql-statements/sql-statement-admin-checksum-table.md)
