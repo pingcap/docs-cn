@@ -40,13 +40,13 @@ tiup br backup full --pd "${PD_IP}:2379" \
 * `db`：用于备份或恢复集群中的指定数据库。
 * `table`：用于备份或恢复集群指定数据库中的单张表。
 
-`tiup br debug` 包含这些子命令：
+`tiup br debug` 包含以下子命令：
 
-* `checksum`：（隐藏参数）离线校验备份数据完整性，确保全部备份文件跟记录的 table checksum crc64 校验结果一致。
+* `checksum`：（隐藏参数）离线校验备份数据完整性，确保全部备份文件跟记录的 [`ADMIN CHECKSUM TABLE`](/sql-statements/sql-statement-admin-checksum-table.md) 计算的 CRC64 校验结果一致。
 * `backupmeta`：检查备份数据文件是否有交集。正常情况下备份数据没有交集。
-* `decode`：将全量备份的元信息 backupmeta 文件解析成 json，并且支持通过 `--field` 参数解析特定的字段。
-* `encode`：将全量备份的元信息 backupmeta.json 文件编码成恢复使用的 protobuf 格式。
-* `reset-pd-config-as-default`：复原恢复过程中改变的 PD 设置（废弃）
+* `decode`：将全量备份的元信息 `backupmeta` 文件解析成 JSON 格式，并且支持通过 `--field` 参数解析特定的字段。
+* `encode`：将全量备份的元信息 `backupmeta.json` 文件编码成恢复数据时使用的 protobuf 格式。
+* `reset-pd-config-as-default`：复原数据恢复过程中改变的 PD 设置（已废弃）。
 * `search-log-backup`：在日志备份数据中查找特定的 Key 信息。         
 
 ### 常用选项
