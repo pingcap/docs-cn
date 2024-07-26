@@ -34,7 +34,7 @@ Info: {"sink-uri":"mysql://root:123456@127.0.0.1:3306/","opts":{},"create-time":
 > **注意：**
 >
 > TiCDC 工具只负责复制增量数据，需要使用 `dumpling/tidb-lightning` 工具或者 `bk` 工具进行全量数据的初始化。
-> 经过全量数据的初始化后，start-ts 需要指定为上游备份时的 TSO，如：dumpling 目录下 metadata 文件中的 pos 值，或者是 bk 备份完成后输出日志中的 backupTS。
+> 经过全量数据的初始化后，需要将 `start-ts` 指定为上游备份时的 TSO。例如：Dumpling 目录下 metadata 文件中的 pos 值，或者 BR 备份完成后输出日志中的 `backupTS`。
 
 ## Sink URI 配置 `mysql`/`tidb`
 
