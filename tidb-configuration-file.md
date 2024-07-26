@@ -233,8 +233,15 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
 ### `slow-threshold`
 
 + 输出慢日志的耗时阈值。
+<<<<<<< HEAD
 + 默认值：300ms
 + 当查询大于这个值，就会当做是一个慢查询，输出到慢查询日志。
+=======
++ 默认值：300
++ 单位：毫秒
++ 如果查询耗时大于这个值，会视作一个慢查询，并记录到慢查询日志。注意，当日志的输出级别 [`log.level`](#level) 是 `"debug"` 时，所有查询都会记录到慢日志，不受该参数的限制。
++ 自 v6.1.0 起，已改用配置项 `instance.tidb_slow_log_threshold` 或系统变量 `tidb_slow_log_threshold` 来设置输出慢日志的耗时阈值。`slow-threshold` 仍可使用，但如果同时设置了 `slow-threshold` 与 `instance.tidb_slow_log_threshold`，TiDB 将采用 `instance.tidb_slow_log_threshold` 的值。
+>>>>>>> 246e235dfb (Refine slow log description (#18127))
 
 ### `record-plan-in-slow-log`
 
@@ -729,6 +736,136 @@ TiDB 服务状态相关配置。
 + 默认值：["tikv", "tiflash", "tidb"]，表示由优化器自动选择存储引擎。
 + 可选值："tikv", "tiflash", "tidb" 的组合，如：["tikv", "tidb"]、["tiflash", "tidb"]。
 
+<<<<<<< HEAD
+=======
+## instance
+
+### `tidb_enable_collect_execution_info`
+
++ 用于控制是否同时将各个执行算子的执行信息记录入 slow query log 中，以及是否维护[访问索引有关的统计信息](/information-schema/information-schema-tidb-index-usage.md)。
++ 默认值：true
++ 在 v6.1.0 之前，该功能通过配置项 `enable-collect-execution-info` 进行设置。
+
+### `tidb_enable_slow_log`
+
++ 是否开启慢查询日志。
++ 默认值：true
++ 可以设置成 `true` 或 `false` 来启用或禁用慢查询日志。
++ 在 v6.1.0 之前，该功能通过配置项 `enable-slow-log` 进行设置。
+
+### `tidb_slow_log_threshold`
+
++ 输出慢日志的耗时阈值。
++ 默认值：300
++ 范围：`[-1, 9223372036854775807]`
++ 单位：毫秒
++ 如果查询耗时大于这个值，会视作一个慢查询，并记录到慢查询日志。注意，当日志的输出级别 [`log.level`](#level) 是 `"debug"` 时，所有查询都会记录到慢日志，不受该参数的限制。
++ 在 v6.1.0 之前，该功能通过配置项 `slow-threshold` 进行设置。
+
+### `in-mem-slow-query-topn-num` <span class="version-mark">从 v7.3.0 版本开始引入</span>
+
++ 缓存在内存中的最慢的 slow query 个数。
++ 默认值：30
+
+### `in-mem-slow-query-recent-num` <span class="version-mark">从 v7.3.0 版本开始引入</span>
+
++ 缓存在内存中的最近使用的 slow query 个数。
++ 默认值：500
+
+### `tidb_expensive_query_time_threshold`
+
++ 控制打印 expensive query 日志的阈值时间，默认值是 60 秒。expensive query 日志和慢日志的差别是，慢日志是在语句执行完后才打印，expensive query 日志可以把正在执行中且执行时间超过该阈值的语句及其相关信息打印出来。
++ 默认值：60
++ 范围：`[10, 2147483647]`
++ 单位：秒
++ 在 v5.4.0 之前，该功能通过配置项 `expensive-threshold` 进行设置。
+
+### `tidb_record_plan_in_slow_log`
+
++ 在慢日志中记录执行计划。
++ 默认值：1
++ 0 表示关闭，1 表示开启，默认开启，该值作为系统变量 [`tidb_record_plan_in_slow_log`](/system-variables.md#tidb_record_plan_in_slow_log) 的初始值。
++ 在 v6.1.0 之前，该功能通过配置项 `record-plan-in-slow-log` 进行设置。
+
+### `tidb_force_priority`
+
++ 把所有的语句优先级设置为系统变量 `tidb_force_priority` 的值。
++ 默认值：NO_PRIORITY
++ 默认值 NO_PRIORITY 表示不强制改变执行语句的优先级，其它优先级从低到高可设置为 LOW_PRIORITY、DELAYED 或 HIGH_PRIORITY。
++ 在 v6.1.0 之前，该功能通过配置项 `force-priority` 进行设置。
+
+> **注意：**
+>
+> TiDB 从 v6.6.0 版本开始支持[使用资源管控 (Resource Control) 实现资源隔离](/tidb-resource-control.md)功能。该功能可以将不同优先级的语句放在不同的资源组中执行，并为这些资源组分配不同的配额和优先级，可以达到更好的资源管控效果。在开启资源管控功能后，语句的调度主要受资源组的控制，`PRIORITY` 将不再生效。建议在支持资源管控的版本优先使用资源管控功能。
+
+### `max_connections`
+
++ TiDB 中同时允许的最大客户端连接数，用于资源控制。
++ 默认值：0
++ 取值范围：`[0, 100000]`
++ 默认情况下，TiDB 不限制客户端连接数。当本配置项的值大于 `0` 且客户端连接数到达此值时，TiDB 服务端将会拒绝新的客户端连接。
++ 该值作为系统变量 [`max_connections`](/system-variables.md#max_connections) 的初始值。
++ 在 v6.2.0 之前，该功能通过配置项 `max-server-connections` 进行设置。
+
+### `tidb_enable_ddl`
+
++ 用于表示该 tidb-server 是否可以成为 DDL owner。
++ 默认值：true
++ 该值作为系统变量 [`tidb_enable_ddl`](/system-variables.md#tidb_enable_ddl-从-v630-版本开始引入) 的初始值。
++ 在 v6.3.0 之前，该功能由配置项 `run-ddl` 进行设置。
+
+### `tidb_stmt_summary_enable_persistent` <span class="version-mark">从 v6.6.0 版本开始引入</span>
+
+> **警告：**
+>
+> statements summary 持久化目前为实验特性，不建议在生产环境中使用。该功能可能会在未事先通知的情况下发生变化或删除。如果发现 bug，请在 GitHub 上提 [issue](https://github.com/pingcap/tidb/issues) 反馈。
+
++ 用于控制是否开启 statements summary 持久化。
++ 默认值：false
++ 详情参考[持久化 statements summary](/statement-summary-tables.md#持久化-statements-summary)。
+
+### `tidb_stmt_summary_filename` <span class="version-mark">从 v6.6.0 版本开始引入</span>
+
+> **警告：**
+>
+> statements summary 持久化目前为实验特性，不建议在生产环境中使用。该功能可能会在未事先通知的情况下发生变化或删除。如果发现 bug，请在 GitHub 上提 [issue](https://github.com/pingcap/tidb/issues) 反馈。
+
++ 当开启了 statements summary 持久化时，该配置用于指定持久化数据所写入的文件。
++ 默认值："tidb-statements.log"
+
+### `tidb_stmt_summary_file_max_days` <span class="version-mark">从 v6.6.0 版本开始引入</span>
+
+> **警告：**
+>
+> statements summary 持久化目前为实验特性，不建议在生产环境中使用。该功能可能会在未事先通知的情况下发生变化或删除。如果发现 bug，请在 GitHub 上提 [issue](https://github.com/pingcap/tidb/issues) 反馈。
+
++ 当开启了 statements summary 持久化时，该配置用于指定持久化数据文件所保留的最大天数。
++ 默认值：3
++ 单位：天
++ 可结合数据保留时长需求与磁盘空间占用适当调整。
+
+### `tidb_stmt_summary_file_max_size` <span class="version-mark">从 v6.6.0 版本开始引入</span>
+
+> **警告：**
+>
+> statements summary 持久化目前为实验特性，不建议在生产环境中使用。该功能可能会在未事先通知的情况下发生变化或删除。如果发现 bug，请在 GitHub 上提 [issue](https://github.com/pingcap/tidb/issues) 反馈。
+
++ 当开启了 statements summary 持久化时，该配置用于限制持久化数据单个文件的大小。
++ 默认值：64
++ 单位：MiB
++ 可结合数据保留时长需求与磁盘空间占用适当调整。
+
+### `tidb_stmt_summary_file_max_backups` <span class="version-mark">从 v6.6.0 版本开始引入</span>
+
+> **警告：**
+>
+> statements summary 持久化目前为实验特性，不建议在生产环境中使用。该功能可能会在未事先通知的情况下发生变化或删除。如果发现 bug，请在 GitHub 上提 [issue](https://github.com/pingcap/tidb/issues) 反馈。
+
++ 当开启了 statements summary 持久化时，该配置用于限制持久化数据文件最大数量，`0` 表示不限制。
++ 默认值：0
++ 可结合数据保留时长需求与磁盘空间占用适当调整。
+
+>>>>>>> 246e235dfb (Refine slow log description (#18127))
 ## proxy-protocol
 
 PROXY 协议相关的配置项。
