@@ -4606,7 +4606,7 @@ Query OK, 0 rows affected, 1 warning (0.00 sec)
 - 类型：整数型
 - 范围：`[-1, 9223372036854775807]`
 - 单位：毫秒
-- 输出慢日志的耗时阈值，默认为 300 ms。如果查询耗时大于这个值，会视作一个慢查询，并记录到慢查询日志。注意，当日志的输出级别 [`log.level`](/tidb-configuration-file.md#level) 是 `"debug"` 时，所有查询都会记录到慢日志，不受该参数的限制。
+- 输出慢日志的耗时阈值，默认为 300 ms。如果查询耗时大于这个值，会视作一个慢查询，并记录到慢查询日志。注意，当日志的输出级别 [`log.level`](/tidb-configuration-file.md#level) 是 `"debug"` 时，所有查询都会记录到慢日志，不受该变量的限制。
 
 ### `tidb_slow_query_file`
 
