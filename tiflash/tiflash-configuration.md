@@ -165,7 +165,7 @@ delta_index_cache_size = 0
     log-file = "/tidb-deploy/tiflash-9000/log/tiflash_tikv.log"
 
 [logger]
-    ## 注意，以下参数只对 tiflash.log、tiflash_error.log 生效。TiFlash proxy 的日志参数配置需要在 tiflash-learner.toml 中指定。
+    ## 注意，以下参数只对 tiflash.log、tiflash_error.log 生效。TiFlash Proxy 的日志参数配置需要在 tiflash-learner.toml 中指定。
 
     ## log 级别（支持 "trace"、"debug"、"info"、"warn"、"error"），默认是 "info"
     level = "info"
@@ -265,21 +265,22 @@ delta_index_cache_size = 0
 
 `tiflash-learner.toml` 中的功能参数和 TiKV 基本一致，可以参照 [TiKV 配置](/tikv-configuration-file.md)来进行配置。下面只列了常用的部分参数。需要注意的是：
 
-1. 相对于 TiKV，TiFlash proxy 新增了 `raftstore.snap-handle-pool-size` 参数。
-2. `key` 为 `engine` 的 `label` 是保留项，不可手动配置。
+- 相对于 TiKV，TiFlash Proxy 新增了 `raftstore.snap-handle-pool-size` 参数。
+- `key` 为 `engine` 的 `label` 是保留项，不可手动配置。
 
 ```toml
 [log]
-    ## Proxy 的 log 级别，可选值为 "trace"、"debug"、"info"、"warn"、"error"，默认值为 "info"。从 v5.4.0 版本开始引入。
+    ## TiFlash Proxy 的 log 级别，可选值为 "trace"、"debug"、"info"、"warn"、"error"，默认值为 "info"。从 v5.4.0 版本开始引入。
     level = "info"
+
 [log.file]
     ## 可保留的 log 文件的最大数量。从 v5.4.0 版本开始引入。
-    ## 如果未设置该参数或把该参数设置为默认值 `0`，TiKV 会保存所有的日志文件；
-    ## 如果把此参数设置为非 `0` 的值，TiKV 最多会保留 `max-backups` 中指定数量的旧日志文件。比如，如果该值设置为 `7`，TiKV 最多会保留 7 个旧的日志文件。
+    ## 如果未设置该参数或把该参数设置为默认值 `0`，TiFlash Proxy 会保存所有的日志文件；
+    ## 如果把此参数设置为非 `0` 的值，TiFlash Proxy 最多会保留 `max-backups` 中指定数量的旧日志文件。比如，如果该值设置为 `7`，TiFlash Proxy 最多会保留 7 个旧的日志文件。
     max-backups = 0
     ## 保留 log 文件的最长天数。从 v5.4.0 版本开始引入。
-    ## 如果未设置本参数或把此参数设置为默认值 `0`，TiKV 会保存所有的日志文件。
-    ## 如果把此参数设置为非 `0` 的值，在 `max-days` 之后，TiKV 会清理过期的日志文件。
+    ## 如果未设置本参数或把此参数设置为默认值 `0`，TiFlash Proxy 会保存所有的日志文件。
+    ## 如果把此参数设置为非 `0` 的值，在 `max-days` 之后，TiFlash Proxy 会清理过期的日志文件。
     max-days = 0
 
 [raftstore]
