@@ -278,7 +278,7 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
 + 输出慢日志的耗时阈值。
 + 默认值：300
 + 单位：毫秒
-+ 当查询大于这个值，就会当做是一个慢查询，输出到慢查询日志。
++ 当查询耗时大于这个值，就会当做是一个慢查询，记录到慢查询日志。注意，当日志的输出级别是 debug 时，所有的查询都会记录到慢日志。
 + 自 v6.1.0 起，已改用配置项 `instance.tidb_slow_log_threshold` 或系统变量 `tidb_slow_log_threshold` 来设置输出慢日志的耗时阈值。`slow-threshold` 仍可使用，但如果同时设置了 `slow-threshold` 与 `instance.tidb_slow_log_threshold`，TiDB 将采用 `instance.tidb_slow_log_threshold` 的值。
 
 ### `record-plan-in-slow-log`
@@ -829,7 +829,7 @@ TiDB 服务状态相关配置。
 + 默认值：300
 + 范围：`[-1, 9223372036854775807]`
 + 单位：毫秒
-+ 当查询大于这个值，就会当做是一个慢查询，输出到慢查询日志。
++ 当查询耗时大于这个值，就会当做是一个慢查询，记录到慢查询日志。注意，当日志的输出级别是 debug 时，所有的查询都会记录到慢日志。
 + 在 v6.1.0 之前，该功能通过配置项 `slow-threshold` 进行设置。
 
 ### `tidb_expensive_query_time_threshold`
