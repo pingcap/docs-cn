@@ -239,12 +239,21 @@ sync-diff-inspector 会在运行时定期（间隔 10s）输出校验进度到�
 
 + 数据校验一致的日志示例如下：
 
+<<<<<<< HEAD
     ```log
     [2020/11/12 17:47:00.174 +08:00] [INFO] [report.go:80] ["check result summary"] ["check passed num"=1] ["check failed num"=0]
     [2020/11/12 17:47:00.174 +08:00] [INFO] [report.go:87] ["table check result"] [schema=test] [table=test_table] ["struct equal"=true] ["data equal"=true]
     [2020/11/12 17:47:00.174 +08:00] [INFO] [main.go:75] ["check data finished"] [cost=353.462744ms]
     [2020/11/12 17:47:00.174 +08:00] [INFO] [main.go:69] ["check pass!!!"]
     ```
+=======
+- `TABLE`：该列表示对应的数据库及表名
+- `RESULT`：校验是否完成。如果设置了 `skip-non-existing-table = true`，对于上游或下游不存在的表，该列的值将为 `skipped`
+- `STRUCTURE EQUALITY`：表结构是否相同
+- `DATA DIFF ROWS`：即 `rowAdd`/`rowDelete`，表示该表修复需要增加/删除的行数
+- `UPCOUNT`：表示该表在上游数据源的行数
+- `DOWNCOUNT`：表示该表在下游数据源的行数
+>>>>>>> c600447763 (Update sync-diff-inspector-overview.md (#18125))
 
 + 数据校验不一致或者遇到错误时的日志示例如下：
 
