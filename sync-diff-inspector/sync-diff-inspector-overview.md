@@ -265,6 +265,8 @@ Average Speed: 113.277149MB/s
 - STRUCTURE EQUALITY: 表结构是否相同
 
 - DATA DIFF ROWS: 即 `rowAdd` / `rowDelete`，表示该表修复需要增加/删除的行数
+- `UPCOUNT`：表示该表在上游数据源的行数
+- `DOWNCOUNT`：表示该表在下游数据源的行数
 
 #### SQL 修复
 
