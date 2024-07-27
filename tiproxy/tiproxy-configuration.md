@@ -16,7 +16,7 @@ max-connections = 100
 addr = "0.0.0.0:3080"
 
 [ha]
-virtual_ip = "10.0.1.10/24"
+virtual-ip = "10.0.1.10/24"
 interface = "eth0"
 
 [security]
@@ -124,7 +124,7 @@ TiProxy 负载均衡策略的配置。
 
 TiProxy 的高可用配置。
 
-#### `virtual_ip`
+#### `virtual-ip`
 
 + 默认值：``
 + 支持热加载：否
@@ -140,7 +140,7 @@ TiProxy 的高可用配置。
 
 + 默认值：``
 + 支持热加载：否
-+ 指定绑定虚拟 IP 的网络接口，例如 `eth0`。仅当 `virtual_ip` 和 `interface` 同时设置时，该实例才有可能绑定虚拟 IP。
++ 指定绑定虚拟 IP 的网络接口，例如 `eth0`。仅当 `virtual-ip` 和 `interface` 同时设置时，该实例才有可能绑定虚拟 IP。
 
 ### `labels`
 

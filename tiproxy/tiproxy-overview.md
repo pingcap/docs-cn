@@ -112,7 +112,7 @@ TiProxy 不适用于以下场景：
         security.server-tls.ca: "/var/ssl/ca.pem"
         security.server-tls.cert: "/var/ssl/cert.pem"
         security.server-tls.key: "/var/ssl/key.pem"
-        ha.virtual_ip: "10.0.1.10/24"
+        ha.virtual-ip: "10.0.1.10/24"
         ha.interface: "eth0"
     ```
 

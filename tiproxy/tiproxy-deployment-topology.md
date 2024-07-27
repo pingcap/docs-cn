@@ -36,7 +36,7 @@ component_versions:
     tiproxy: "v1.2.0"
 server_configs:
   tiproxy:
-    ha.virtual_ip: "10.0.1.10/24"
+    ha.virtual-ip: "10.0.1.10/24"
     ha.interface: "eth0"
 
 pd_servers:
