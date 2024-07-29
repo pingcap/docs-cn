@@ -510,7 +510,7 @@ SELECT * FROM INFORMATION_SCHEMA.USER_PRIVILEGES WHERE grantee = "'root'@'%'";
 
 ### 授权表
 
-以下几张 [`mysql` 系统表](/mysql-schema.md)是非常特殊的表，权限相关的数据全部存储在这几张表内。
+以下几张 [`mysql` 系统表](/mysql-schema/mysql-schema-user.md)是非常特殊的表，权限相关的数据全部存储在这几张表内。
 
 - `mysql.user`：用户账户，全局权限
 - `mysql.db`：数据库级别的权限

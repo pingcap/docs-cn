@@ -31,7 +31,7 @@ mysql -h 127.0.0.1 -uroot -P4000
 
 ### TiDB 有哪些系统表？
 
-和 MySQL 类似，TiDB 中也有系统表，用于存放数据库运行时所需信息，具体信息参考 [TiDB 系统表](/mysql-schema.md)文档。
+和 MySQL 类似，TiDB 中也有系统表，用于存放数据库运行时所需信息，具体信息参考 [TiDB 系统表](/mysql-schema/mysql-schema-user.md)文档。
 
 ### TiDB 各节点服务器下是否有日志文件，如何管理？
 

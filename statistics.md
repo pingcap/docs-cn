@@ -140,7 +140,7 @@ ANALYZE TABLE TableName INDEX [IndexNameList] [WITH NUM BUCKETS|TOPN|CMSKETCH DE
 
     1. 将系统变量 [`tidb_enable_column_tracking`](/system-variables.md#tidb_enable_column_tracking-从-v540-版本开始引入) 的值设置为 `ON`，以开启 TiDB 对 `PREDICATE COLUMNS` 的收集。
 
-        开启后，TiDB 将每隔 100 * [`stats-lease`](/tidb-configuration-file.md#stats-lease) 时间将 `PREDICATE COLUMNS` 信息写入系统表 [`mysql.column_stats_usage`](/mysql-schema.md#统计信息相关系统表)。
+        开启后，TiDB 将每隔 100 * [`stats-lease`](/tidb-configuration-file.md#stats-lease) 时间将 `PREDICATE COLUMNS` 信息写入系统表 [`mysql.column_stats_usage`](/mysql-schema/mysql-schema.md#统计信息相关系统表)。
 
     2. 在业务的查询模式稳定以后，使用以下语法收集 `PREDICATE COLUMNS` 的统计信息。
 
@@ -152,7 +152,7 @@ ANALYZE TABLE TableName INDEX [IndexNameList] [WITH NUM BUCKETS|TOPN|CMSKETCH DE
 
         > **注意：**
         >
-        > - 如果系统表 [`mysql.column_stats_usage`](/mysql-schema.md#统计信息相关系统表) 中没有关于该表的 `PREDICATE COLUMNS` 记录，执行以上语句会收集该表中所有列的统计信息以及所有索引的统计信息。
+        > - 如果系统表 [`mysql.column_stats_usage`](/mysql-schema/mysql-schema.md#统计信息相关系统表) 中没有关于该表的 `PREDICATE COLUMNS` 记录，执行以上语句会收集该表中所有列的统计信息以及所有索引的统计信息。
         > - 对于任何被排除在此次统计信息收集（无论是手动列出列名，还是使用 `PREDICATE COLUMNS`）之外的列，它们的统计信息不会被覆盖。当执行新类型的 SQL 查询时，如果存在旧的统计信息，优化器将使用这些列的旧统计信息；如果从未收集过列的统计信息，则使用伪列统计信息。下一次使用 `PREDICATE COLUMNS` 的 `ANALYZE` 将收集这些列的统计信息。
 
 - 如果要收集所有列的统计信息以及所有索引的统计信息，请使用以下语法：
