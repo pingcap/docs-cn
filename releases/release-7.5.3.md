@@ -23,7 +23,6 @@ TiDB 版本：7.5.3
 
 + TiKV
   <!-- tw: @qiancai (1)-->
-    - 删除非必要的 async block 以减少内存使用 [#16540](https://github.com/tikv/tikv/issues/16540) @[overvenus](https://github.com/overvenus)
 
 + PD
   <!-- tw: @qiancai (1)-->
