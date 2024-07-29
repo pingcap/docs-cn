@@ -77,14 +77,14 @@ TiDB 版本：7.5.3
 
 + TiDB
   <!-- tw: @hfxsd (8)-->
-    - 修复加载 index 统计信息可能会造成内存泄漏的问题 [#54022](https://github.com/pingcap/tidb/issues/54022) @[hi-rustin](https://github.com/hi-rustin)
-    - 修复了 update 操作可以触发 stats cache的淘汰机制 [#53742](https://github.com/pingcap/tidb/issues/53742) @[hawkingrei](https://github.com/hawkingrei)
-    - 修复了在 Group By 语句中的引用间接占位符 ？会无法找到列的问题 [#53872] https://github.com/pingcap/tidb/issues/53872 @[qw4990](https://github.com/qw4990)
-    - 修复当排序规则为 utf8_bin 或 utf8mb4_bin 时意外消除“length()”条件的错误 [#53730](https://github.com/pingcap/tidb/issues/53730) @[elsa0520](https://github.com/elsa0520)
-    - 修复插入大科学记数法数字时的行为，使其与 mysql 保持一致 [#47787](https://github.com/pingcap/tidb/issues/47787) @[qw4990](https://github.com/qw4990)
-    - 修复递归 CTE 查询中可能会导致的无效指针 [#54449](https://github.com/pingcap/tidb/issues/54449) @[hawkingrei](https://github.com/hawkingrei)
-    - 修复统计数据在遇到重复时应该更新 stats_history 表，而不是现实插入 duplicate 错误 [#47539](https://github.com/pingcap/tidb/issues/47539) @[Defined2014](https://github.com/Defined2014)
-    - 修复了包含 Limit 的非关联子查询列剪裁不完善导致产生不必要回表的问题 [#54213](https://github.com/pingcap/tidb/issues/54213) @[qw4990](https://github.com/qw4990)
+    - 修复加载索引统计信息可能会造成内存泄漏的问题 [#54022](https://github.com/pingcap/tidb/issues/54022) @[hi-rustin](https://github.com/hi-rustin)
+    - 修复 `UPDATE` 操作在多表场景下导致 TiDB OOM 的问题 [#53742](https://github.com/pingcap/tidb/issues/53742) @[hawkingrei](https://github.com/hawkingrei)
+    - 修复在 `GROUP BY` 语句中引用间接占位符 `?` 无法找到列的问题 [#53872](https://github.com/pingcap/tidb/issues/53872) @[qw4990](https://github.com/qw4990)
+    - 修复当排序规则为 `utf8_bin` 或 `utf8mb4_bin` 时意外消除 `LENGTH()` 条件的错误 [#53730](https://github.com/pingcap/tidb/issues/53730) @[elsa0520](https://github.com/elsa0520)
+    - 修复插入大科学记数法数字时的异常行为，使其与 MySQL 保持一致 [#47787](https://github.com/pingcap/tidb/issues/47787) @[qw4990](https://github.com/qw4990)
+    - 修复递归 CTE 查询可能导致无效指针的问题 [#54449](https://github.com/pingcap/tidb/issues/54449) @[hawkingrei](https://github.com/hawkingrei)
+    - 修复统计数据在遇到主键重复时没有更新 `stats_history` 表的问题 [#47539](https://github.com/pingcap/tidb/issues/47539) @[Defined2014](https://github.com/Defined2014)
+    - 修复查询包含非关联子查询和 Limit 子句时，列剪裁可能不完善导致计划不优的问题 [#54213](https://github.com/pingcap/tidb/issues/54213) @[qw4990](https://github.com/qw4990)
   <!-- tw: @lilin90 (9)-->
     - 修复在 `HashJoin` 或 `IndexLookUp` 算子作为 `Apply` 算子的被驱动侧子节点时，由于 `memTracker` 未被析构而导致的内存异常高的问题 [#54005](https://github.com/pingcap/tidb/issues/54005) @[XuHuaiyu](https://github.com/XuHuaiyu)
     - 修复递归的 CTE 算子错误地跟踪内存使用的问题 [#54181](https://github.com/pingcap/tidb/issues/54181) @[guo-shaoge](https://github.com/guo-shaoge)
