@@ -27,7 +27,7 @@ TiDB 版本：7.5.3
 
 + PD
   <!-- tw: @qiancai (1)-->
-    - 禁止将资源组（resource group）设置为角色（role） [#54417](https://github.com/pingcap/tidb/issues/54417) @[JmPotato](https://github.com/JmPotato)
+    - 禁止将资源组(resource group) 绑定到角色 (role) [#54417](https://github.com/pingcap/tidb/issues/54417) @[JmPotato](https://github.com/JmPotato)
 
 + TiFlash
 
