@@ -726,6 +726,7 @@
       - [表达式语法](/expression-syntax.md)
       - [注释语法](/comment-syntax.md)
     - SQL 语句
+      - [概览](/sql-statements/sql-statement-overview.md)
       - [`ADD COLUMN`](/sql-statements/sql-statement-add-column.md)
       - [`ADD INDEX`](/sql-statements/sql-statement-add-index.md)
       - [`ADMIN`](/sql-statements/sql-statement-admin.md)

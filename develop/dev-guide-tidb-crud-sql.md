@@ -19,7 +19,7 @@ summary: 简单介绍 TiDB 的增删改查 SQL。
 
 成功部署 TiDB 集群之后，便可以在 TiDB 中执行 SQL 语句了。因为 TiDB 兼容 MySQL，你可以使用 MySQL 客户端连接 TiDB，并且[大多数情况下](/mysql-compatibility.md)可以直接执行 MySQL 语句。
 
-SQL 是一门声明性语言，它是数据库用户与数据库交互的方式。它更像是一种自然语言，好像在用英语与数据库进行对话。本文档介绍基本的 SQL 操作。完整的 SQL 语句列表，参见 [TiDB SQL 语法详解](https://pingcap.github.io/sqlgram/)。
+SQL 是一门声明性语言，它是数据库用户与数据库交互的方式。它更像是一种自然语言，好像在用英语与数据库进行对话。本文档介绍基本的 SQL 操作。完整的 SQL 语句列表，参见 [SQL 语句概览](/sql-statements/sql-statement-overview.md)。
 
 ## 分类
 
@@ -30,7 +30,7 @@ SQL 语言通常按照功能划分成以下的 4 个部分：
 - **DQL (Data Query Language)**：数据查询语言，用来查询经过条件筛选的记录。
 - **DCL (Data Control Language)**：数据控制语言，用来定义访问权限和安全级别。
 
-此文档中，主要介绍 DML 和 DQL，即数据操作语言和数据查询语言。其余部分可查看 [SQL 基本操作](/basic-sql-operations.md)或 [TiDB SQL 语法详解](https://pingcap.github.io/sqlgram/)获得更多信息。
+此文档中，主要介绍 DML 和 DQL，即数据操作语言和数据查询语言。其余部分可查看 [SQL 基本操作](/basic-sql-operations.md)或 [SQL 语句概览](/sql-statements/sql-statement-overview.md)获得更多信息。
 
 ## DML 数据操作语言
 
