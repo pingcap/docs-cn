@@ -101,9 +101,9 @@ MTIzNDU2
 - `Alter`
 - `Create View`
 
-如果要同步 `recover table` 到下游 TiDB，需要有 `Super` 权限。
+如果要同步 [`RECOVER TABLE`](/sql-statements/sql-statement-recover-table.md) 到下游 TiDB，下游数据库的用户还需要有 `Super` 权限。
 
-如果下游 TiDB 集群开启了[只读模式](/system-variables.md#tidb_restricted_read_only-从-v520-版本开始引入)，需要有 `RESTRICTED_REPLICA_WRITER_ADMIN` 权限。
+如果下游 TiDB 集群开启了[只读模式](/system-variables.md#tidb_restricted_read_only-从-v520-版本开始引入)，下游数据库的用户还需要有 `RESTRICTED_REPLICA_WRITER_ADMIN` 权限。
 
 ## 灾难场景的最终一致性复制
 
