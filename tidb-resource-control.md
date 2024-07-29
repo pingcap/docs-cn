@@ -491,7 +491,7 @@ TiDB 的系统表 [`INFORMATION_SCHEMA.statements_summary`](/statement-summary-t
 
 ### 查看资源组的 RU 消耗
 
-从 v7.6.0 版本开始，TiDB 提供系统表 [`mysql.request_unit_by_group`](/mysql-schema.md#资源管控相关系统表) 存放各个资源组每日消耗的 RU 的历史记录。
+从 v7.6.0 版本开始，TiDB 提供系统表 [`mysql.request_unit_by_group`](/mysql-schema/mysql-schema.md#资源管控相关系统表) 存放各个资源组每日消耗的 RU 的历史记录。
 
 示例：
 

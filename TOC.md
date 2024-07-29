@@ -942,7 +942,9 @@
       - [GBK](/character-set-gbk.md)
     - [Placement Rules in SQL](/placement-rules-in-sql.md)
     - 系统表
-      - [`mysql`](/mysql-schema.md)
+      - `mysql` Schema
+        - [概述](/mysql-schema/mysql-schema.md)
+        - [`user`](/mysql-schema/mysql-schema-user.md)
       - INFORMATION_SCHEMA
         - [概述](/information-schema/information-schema.md)
         - [`ANALYZE_STATUS`](/information-schema/information-schema-analyze-status.md)
