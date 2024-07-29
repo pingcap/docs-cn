@@ -1,5 +1,5 @@
 ---
-title: `mysql.user`
+title: mysql.user
 summary: 了解 `mysql` 系统表 `user`。
 ---
 
