@@ -86,12 +86,13 @@ TiDB 版本：7.5.3
     - 修复递归 CTE 查询中可能会导致的无效指针 [#54449](https://github.com/pingcap/tidb/issues/54449) @[hawkingrei](https://github.com/hawkingrei)
     - 修复统计数据在遇到重复时应该更新 stats_history 表，而不是现实插入 duplicate 错误 [#47539](https://github.com/pingcap/tidb/issues/47539) @[Defined2014](https://github.com/Defined2014)
     - 修复了包含 Limit 的非关联子查询列剪裁不完善导致产生不必要回表的问题 [#54213](https://github.com/pingcap/tidb/issues/54213) @[qw4990](https://github.com/qw4990)
-  <!-- tw: @lilin90 (8)-->
+  <!-- tw: @lilin90 (9)-->
     - Fixed the issue of abnormally high memory usage caused by memTracker not being detached in HashJoin and IndexLookUp operators when used as the inner side of the Apply operator. [#54005](https://github.com/pingcap/tidb/issues/54005) @[XuHuaiyu](https://github.com/XuHuaiyu)
     - Fix the issue that recursive CTE operator tracks memory usage incorrectly. [#54181](https://github.com/pingcap/tidb/issues/54181) @[guo-shaoge](https://github.com/guo-shaoge)
     - 修复了一些事务 buffer 内存被重复统计的问题 [#53984](https://github.com/pingcap/tidb/issues/53984) @[ekexium](https://github.com/ekexium)
     - 修复了 `show warnings` 获取警告时可能 panic 的问题 [#48756](https://github.com/pingcap/tidb/issues/48756) @[xhebox](https://github.com/xhebox)
     - 修复了在 `sql_mode=''` 时，将 unsigned 类型字段更新为 `-1` 会得到 NULL 而不是 0 的问题。[#47816](https://github.com/pingcap/tidb/issues/47816) @[lcwangchao](https://github.com/lcwangchao)
+    - 修复了当第一个参数是`month`并且第二个参数是负数时，`timestampadd`函数会进入无限循环的问题。[#54908](https://github.com/pingcap/tidb/issues/54908) @[xzhangxian1008](https://github.com/xzhangxian1008)
     - 修复了插入过大的科学计数法表示的数字时，返回 Warning 而非 Error 的问题。[#47787](https://github.com/pingcap/tidb/issues/47787) @[qw4990](https://github.com/qw4990)
     - 修复了监控指标中连接数小于正常值的问题。[#54428](https://github.com/pingcap/tidb/issues/54428) @[YangKeao](https://github.com/YangKeao)
     - 修复了使用 TiProxy 和 Resource Group 功能时连接数显示不正常的问题。[#54545](https://github.com/pingcap/tidb/issues/54545) @[YangKeao](https://github.com/YangKeao)
