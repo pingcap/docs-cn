@@ -14,6 +14,7 @@ summary: 了解 information_schema 表 `PROCESSLIST`。
 * `DISK` 列：显示磁盘空间使用情况，单位是 byte。
 * `TxnStart`列：显示事务的开始时间。
 * `RESOURCE_GROUP`列：显示对应的资源组名称。
+* `SESSION_ALIAS`列：显示当前连接的别名。
 
 ```sql
 USE information_schema;
@@ -37,6 +38,7 @@ DESC processlist;
 | DISK                | bigint(21) unsigned | YES  |      | NULL    |       |
 | TxnStart            | varchar(64)         | NO   |      |         |       |
 | RESOURCE_GROUP      | varchar(32)         | NO   |      |         |       |
+| SESSION_ALIAS       | varchar(64)         | NO   |      |         |       |
 +---------------------+---------------------+------+------+---------+-------+
 13 rows in set (0.00 sec)
 ```
@@ -60,6 +62,7 @@ SELECT * FROM processlist\G
                DISK: 0
            TxnStart:
      RESOURCE_GROUP: rg1
+     SESSION_ALIAS :
 1 row in set (0.00 sec)
 ```
 
@@ -78,6 +81,7 @@ SELECT * FROM processlist\G
 * `DISK` 列：磁盘空间使用情况，单位是 byte。
 * `TxnStart`列：显示事务的开始时间。
 * `RESOURCE_GROUP`列：显示对应的资源组名称。
+* `SESSION_ALIAS`列：显示当前连接的别名。
 
 ## CLUSTER_PROCESSLIST
 
@@ -90,14 +94,14 @@ SELECT * FROM information_schema.cluster_processlist;
 ```
 
 ```sql
-+-----------------+-----+------+----------+------+---------+------+------------+------------------------------------------------------+-----+----------------------------------------+----------------+
-| INSTANCE        | ID  | USER | HOST     | DB   | COMMAND | TIME | STATE      | INFO                                                 | MEM | TxnStart                               | RESOURCE_GROUP | 
-+-----------------+-----+------+----------+------+---------+------+------------+------------------------------------------------------+-----+----------------------------------------+----------------+
++-----------------+-----+------+----------+------+---------+------+------------+------------------------------------------------------+-----+----------------------------------------+----------------+---------------+
+| INSTANCE        | ID  | USER | HOST     | DB   | COMMAND | TIME | STATE      | INFO                                                 | MEM | TxnStart                               | RESOURCE_GROUP | SESSION_ALIAS | 
++-----------------+-----+------+----------+------+---------+------+------------+------------------------------------------------------+-----+----------------------------------------+----------------+---------------+
 
-| 10.0.1.22:10080 | 150 | u1   | 10.0.1.1 | test | Query   | 0    | autocommit | select count(*) from usertable                       | 372 | 05-28 03:54:21.230(416976223923077223) | default        |
-| 10.0.1.22:10080 | 138 | root | 10.0.1.1 | test | Query   | 0    | autocommit | SELECT * FROM information_schema.cluster_processlist | 0   | 05-28 03:54:21.230(416976223923077220) | rg1            |
-| 10.0.1.22:10080 | 151 | u1   | 10.0.1.1 | test | Query   | 0    | autocommit | select count(*) from usertable                       | 372 | 05-28 03:54:21.230(416976223923077224) | rg2            |
-| 10.0.1.21:10080 | 15  | u2   | 10.0.1.1 | test | Query   | 0    | autocommit | select max(field0) from usertable                    | 496 | 05-28 03:54:21.230(416976223923077222) | default        |
-| 10.0.1.21:10080 | 14  | u2   | 10.0.1.1 | test | Query   | 0    | autocommit | select max(field0) from usertable                    | 496 | 05-28 03:54:21.230(416976223923077225) | default        |
-+-----------------+-----+------+----------+------+---------+------+------------+------------------------------------------------------+-----+----------------------------------------+----------------+
+| 10.0.1.22:10080 | 150 | u1   | 10.0.1.1 | test | Query   | 0    | autocommit | select count(*) from usertable                       | 372 | 05-28 03:54:21.230(416976223923077223) | default        |               |
+| 10.0.1.22:10080 | 138 | root | 10.0.1.1 | test | Query   | 0    | autocommit | SELECT * FROM information_schema.cluster_processlist | 0   | 05-28 03:54:21.230(416976223923077220) | rg1            |               |
+| 10.0.1.22:10080 | 151 | u1   | 10.0.1.1 | test | Query   | 0    | autocommit | select count(*) from usertable                       | 372 | 05-28 03:54:21.230(416976223923077224) | rg2            |               |
+| 10.0.1.21:10080 | 15  | u2   | 10.0.1.1 | test | Query   | 0    | autocommit | select max(field0) from usertable                    | 496 | 05-28 03:54:21.230(416976223923077222) | default        |               |
+| 10.0.1.21:10080 | 14  | u2   | 10.0.1.1 | test | Query   | 0    | autocommit | select max(field0) from usertable                    | 496 | 05-28 03:54:21.230(416976223923077225) | default        |               |
++-----------------+-----+------+----------+------+---------+------+------------+------------------------------------------------------+-----+----------------------------------------+----------------+---------------+
 ```
