@@ -90,7 +90,7 @@ TiDB 版本：7.5.3
     - 修复递归的 CTE 算子错误地跟踪内存使用的问题 [#54181](https://github.com/pingcap/tidb/issues/54181) @[guo-shaoge](https://github.com/guo-shaoge)
     - 修复事务占用的内存可能被多次重复统计的问题 [#53984](https://github.com/pingcap/tidb/issues/53984) @[ekexium](https://github.com/ekexium)
     - 修复使用 `SHOW WARNINGS;` 获取警告时可能导致 panic 的问题 [#48756](https://github.com/pingcap/tidb/issues/48756) @[xhebox](https://github.com/xhebox)
-    - 修复在 `sql_mode=''` 时，将 `UNSIGNED` 类型字段更新为 `-1` 会得到 NULL 而不是 `0` 的问题 [#47816](https://github.com/pingcap/tidb/issues/47816) @[lcwangchao](https://github.com/lcwangchao)
+    - 修复在 `sql_mode=''` 时，将 `UNSIGNED` 类型的字段更新为 `-1` 会得到 NULL 而不是 `0` 的问题 [#47816](https://github.com/pingcap/tidb/issues/47816) @[lcwangchao](https://github.com/lcwangchao)
     - 修复当第一个参数是 `month` 并且第二个参数是负数时，`TIMESTAMPADD()` 函数会进入无限循环的问题 [#54908](https://github.com/pingcap/tidb/issues/54908) @[xzhangxian1008](https://github.com/xzhangxian1008)
     - 修复插入过大的科学计数法表示的数字时，返回 Warning 而非 Error 的问题 [#47787](https://github.com/pingcap/tidb/issues/47787) @[qw4990](https://github.com/qw4990)
     - 修复某些连接在握手完成之前退出导致监控指标中连接数 (Connection Count) 不正确的问题 [#54428](https://github.com/pingcap/tidb/issues/54428) @[YangKeao](https://github.com/YangKeao)
