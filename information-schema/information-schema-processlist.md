@@ -15,6 +15,8 @@ aliases: ['/docs-cn/dev/information-schema/information-schema-processlist/']
 * `DISK` 列：显示磁盘空间使用情况，单位是 byte。
 * `TxnStart`列：显示事务的开始时间。
 * `RESOURCE_GROUP`列：显示对应的资源组名称。
+* `SESSION_ALIAS`列：显示当前连接的别名。
+* `ROWS_AFFECTED`列：显示当前语句影响的行数。
 
 ```sql
 USE information_schema;
@@ -22,46 +24,48 @@ DESC processlist;
 ```
 
 ```sql
-+---------------------+---------------------+------+------+---------+-------+
-| Field               | Type                | Null | Key  | Default | Extra |
-+---------------------+---------------------+------+------+---------+-------+
-| ID                  | bigint(21) unsigned | NO   |      | 0       |       |
-| USER                | varchar(16)         | NO   |      |         |       |
-| HOST                | varchar(64)         | NO   |      |         |       |
-| DB                  | varchar(64)         | YES  |      | NULL    |       |
-| COMMAND             | varchar(16)         | NO   |      |         |       |
-| TIME                | int(7)              | NO   |      | 0       |       |
-| STATE               | varchar(7)          | YES  |      | NULL    |       |
-| INFO                | longtext            | YES  |      | NULL    |       |
-| DIGEST              | varchar(64)         | YES  |      |         |       |
-| MEM                 | bigint(21) unsigned | YES  |      | NULL    |       |
-| DISK                | bigint(21) unsigned | YES  |      | NULL    |       |
-| TxnStart            | varchar(64)         | NO   |      |         |       |
-| RESOURCE_GROUP      | varchar(32)         | NO   |      |         |       |
-+---------------------+---------------------+------+------+---------+-------+
-13 rows in set (0.00 sec)
++----------------+---------------------+------+------+---------+-------+
+| Field          | Type                | Null | Key  | Default | Extra |
++----------------+---------------------+------+------+---------+-------+
+| ID             | bigint(21) unsigned | NO   |      | 0       |       |
+| USER           | varchar(16)         | NO   |      |         |       |
+| HOST           | varchar(64)         | NO   |      |         |       |
+| DB             | varchar(64)         | YES  |      | NULL    |       |
+| COMMAND        | varchar(16)         | NO   |      |         |       |
+| TIME           | int(7)              | NO   |      | 0       |       |
+| STATE          | varchar(7)          | YES  |      | NULL    |       |
+| INFO           | longtext            | YES  |      | NULL    |       |
+| DIGEST         | varchar(64)         | YES  |      |         |       |
+| MEM            | bigint(21) unsigned | YES  |      | NULL    |       |
+| DISK           | bigint(21) unsigned | YES  |      | NULL    |       |
+| TxnStart       | varchar(64)         | NO   |      |         |       |
+| RESOURCE_GROUP | varchar(32)         | NO   |      |         |       |
+| SESSION_ALIAS  | varchar(64)         | NO   |      |         |       |
+| ROWS_AFFECTED  | bigint(21) unsigned | YES  |      | NULL    |       |
++----------------+---------------------+------+------+---------+-------+
 ```
 
 ```sql
-SELECT * FROM processlist\G
+SELECT * FROM information_schema.processlist\G
 ```
 
 ```sql
 *************************** 1. row ***************************
-                 ID: 2300033189772525975
-               USER: root
-               HOST: 127.0.0.1:51289
-                 DB: NULL
-            COMMAND: Query
-               TIME: 0
-              STATE: autocommit
-               INFO: SELECT * FROM processlist
-             DIGEST: dbfaa16980ec628011029f0aaf0d160f4b040885240dfc567bf760d96d374f7e
-                MEM: 0
-               DISK: 0
-           TxnStart:
-     RESOURCE_GROUP: rg1
-1 row in set (0.00 sec)
+            ID: 1268776964
+          USER: root
+          HOST: 127.0.0.1:59922
+            DB: NULL
+       COMMAND: Query
+          TIME: 0
+         STATE: autocommit
+          INFO: SELECT * FROM information_schema.processlist
+        DIGEST: 4b5e7cdd5d3ed84d6c1a6d56403a3d512554b534313caf296268abdec1c9ea99
+           MEM: 0
+          DISK: 0
+      TxnStart:
+RESOURCE_GROUP: default
+ SESSION_ALIAS:
+ ROWS_AFFECTED: 0
 ```
 
 `PROCESSLIST` 表各列的含义如下：
@@ -79,6 +83,8 @@ SELECT * FROM processlist\G
 * `DISK` 列：磁盘空间使用情况，单位是 byte。
 * `TxnStart`列：显示事务的开始时间。
 * `RESOURCE_GROUP`列：显示对应的资源组名称。
+* `SESSION_ALIAS`列：显示当前连接的别名。
+* `ROWS_AFFECTED`列：显示当前语句影响的行数。
 
 ## CLUSTER_PROCESSLIST
 
@@ -91,14 +97,9 @@ SELECT * FROM information_schema.cluster_processlist;
 ```
 
 ```sql
-+-----------------+-----+------+----------+------+---------+------+------------+------------------------------------------------------+-----+----------------------------------------+----------------+
-| INSTANCE        | ID  | USER | HOST     | DB   | COMMAND | TIME | STATE      | INFO                                                 | MEM | TxnStart                               | RESOURCE_GROUP | 
-+-----------------+-----+------+----------+------+---------+------+------------+------------------------------------------------------+-----+----------------------------------------+----------------+
-
-| 10.0.1.22:10080 | 150 | u1   | 10.0.1.1 | test | Query   | 0    | autocommit | select count(*) from usertable                       | 372 | 05-28 03:54:21.230(416976223923077223) | default        |
-| 10.0.1.22:10080 | 138 | root | 10.0.1.1 | test | Query   | 0    | autocommit | SELECT * FROM information_schema.cluster_processlist | 0   | 05-28 03:54:21.230(416976223923077220) | rg1            |
-| 10.0.1.22:10080 | 151 | u1   | 10.0.1.1 | test | Query   | 0    | autocommit | select count(*) from usertable                       | 372 | 05-28 03:54:21.230(416976223923077224) | rg2            |
-| 10.0.1.21:10080 | 15  | u2   | 10.0.1.1 | test | Query   | 0    | autocommit | select max(field0) from usertable                    | 496 | 05-28 03:54:21.230(416976223923077222) | default        |
-| 10.0.1.21:10080 | 14  | u2   | 10.0.1.1 | test | Query   | 0    | autocommit | select max(field0) from usertable                    | 496 | 05-28 03:54:21.230(416976223923077225) | default        |
-+-----------------+-----+------+----------+------+---------+------+------------+------------------------------------------------------+-----+----------------------------------------+----------------+
++-----------------+------------+------+-----------------+------+---------+------+------------+------------------------------------------------------+------------------------------------------------------------------+------+------+----------------------------------------+----------------+---------------+---------------+
+| INSTANCE        | ID         | USER | HOST            | DB   | COMMAND | TIME | STATE      | INFO                                                 | DIGEST                                                           | MEM  | DISK | TxnStart                               | RESOURCE_GROUP | SESSION_ALIAS | ROWS_AFFECTED |
++-----------------+------------+------+-----------------+------+---------+------+------------+------------------------------------------------------+------------------------------------------------------------------+------+------+----------------------------------------+----------------+---------------+---------------+
+| 127.0.0.1:10080 | 1268776964 | root | 127.0.0.1:59922 | NULL | Query   |    0 | autocommit | SELECT * FROM information_schema.cluster_processlist | b1e38e59fbbc3e2b35546db5c8053040db989a497ac6cd71ff8dd4394395701a |    0 |    0 | 07-29 12:39:24.282(451471727468740609) | default        |               |             0 |
++-----------------+------------+------+-----------------+------+---------+------+------------+------------------------------------------------------+------------------------------------------------------------------+------+------+----------------------------------------+----------------+---------------+---------------+
 ```
