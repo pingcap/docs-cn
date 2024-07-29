@@ -286,9 +286,9 @@ TiCDC 需要磁盘是为了缓冲上游写入高峰时下游消费不及时堆�
 
 目前，TiCDC 采用了以下执行顺序：
 
-1. TiCDC 阻塞受 DDL 影响的表的同步进度，直到 DDL CommiTs 的时间点，以确保在 DDL CommiTs 之前执行的 DML 先成功同步到下游。
+1. TiCDC 阻塞受 DDL 影响的表的同步进度，直到 DDL `commitTS` 的时间点，以确保在 DDL `commitTS` 之前执行的 DML 先成功同步到下游。
 2. TiCDC 继续同步 DDL。当存在多个 DDL 时，TiCDC 是以串行的方式进行同步的。
-3. 当 DDL 在下游执行完成之后，TiCDC 继续同步 DDL CommiTs 之后执行的 DML。
+3. 当 DDL 在下游执行完成之后，TiCDC 继续同步 DDL `commitTS` 之后执行的 DML。
 
 ## 如何对比上下游数据的一致性？
 
