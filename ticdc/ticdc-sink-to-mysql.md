@@ -103,6 +103,8 @@ MTIzNDU2
 
 如果要同步 `recover table` 到下游 TiDB，需要有 `Super` 权限。
 
+如果下游 TiDB 集群开启了[只读模式](/system-variables.md#tidb_restricted_read_only-从-v520-版本开始引入)，需要有 `RESTRICTED_REPLICA_WRITER_ADMIN` 权限。
+
 ## 灾难场景的最终一致性复制
 
 从 v6.1.1 版本开始，容灾场景下的最终一致性复制功能 GA。从 v5.3.0 开始，TiCDC 支持将上游 TiDB 的增量数据备份到下游集群的对象存储或 NFS 文件系统。当上游集群出现了灾难，完全无法使用时，TiCDC 可以将下游集群恢复到最近的一致状态，即提供灾备场景的最终一致性复制能力，确保应用可以快速切换到下游集群，避免数据库长时间不可用，提高业务连续性。
