@@ -1,6 +1,6 @@
 ---
-title：`mysql.user`
-summary：了解 `mysql` 系统表 `user` 。
+title: `mysql.user`
+summary: 了解 `mysql` 系统表 `user`。
 ---
 
 # `mysql.user`

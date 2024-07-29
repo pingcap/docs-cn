@@ -10,7 +10,7 @@ aliases: ['/docs-cn/dev/system-tables/system-table-overview/','/docs-cn/dev/refe
 
 > **注意：**
 >
-> 在大多数情况下，不建议直接使用 `INSERT`、`UPDATE` 或 `DELETE` 更改系统表的内容。相反，建议使用 [`CREATE USER`](/sql-statements/sql-statement-create-user.md)、[`ALTER USER`](/sql-statements/sql-statement-alter-user.md)、[`DROP USER`](/sql-statements/sql-statement-drop-user.md)、[`GRANT`](/sql-statements/sql-statement-grant-privileges.md)、[`REVOKE`](/sql-statements/sql-statement-revoke-privileges.md) 和 [`SHOW CREATE USER`](/sql-statements/sql-statement-show-create-user.md) 等语句管理用户和权限。如果必须直接修改系统表，请使用 [`FLUSH PRIVILEGES`](/sql-statements/sql-statement-flush-privileges.md) 使更改生效。
+> 在大多数情况下，不建议直接使用 `INSERT`、`UPDATE` 或 `DELETE` 更改系统表的内容。而是建议使用 [`CREATE USER`](/sql-statements/sql-statement-create-user.md)、[`ALTER USER`](/sql-statements/sql-statement-alter-user.md)、[`DROP USER`](/sql-statements/sql-statement-drop-user.md)、[`GRANT`](/sql-statements/sql-statement-grant-privileges.md)、[`REVOKE`](/sql-statements/sql-statement-revoke-privileges.md) 和 [`SHOW CREATE USER`](/sql-statements/sql-statement-show-create-user.md) 等语句管理用户和权限。如果必须直接修改系统表，请使用 [`FLUSH PRIVILEGES`](/sql-statements/sql-statement-flush-privileges.md) 使更改生效。
 
 ## 权限系统表
 
