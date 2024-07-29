@@ -241,22 +241,6 @@ TiCDC 提供至少一次的数据同步保证，当下游有重复数据时，�
 
 在 v6.1.3 版本之前，`safe-mode` 默认为 `true`，即所有的 `INSERT` 和 `UPDATE` 语句都转成 `REPLACE INTO` 语句。在 v6.1.3 及之后版本，系统能自动判断下游是否存在重复数据，`safe-mode` 默认更改为 `false`，当系统判断下游无重复数据时，会直接同步 `INSERT` 和 `UPDATE` 语句。
 
-## 数据同步下游的 Sink 为 TiDB 或 MySQL 时，下游数据库的用户需要哪些权限？
-
-Sink 为 TiDB 或 MySQL 时，下游数据库的用户需要以下权限：
-
-- `Select`
-- `Index`
-- `Insert`
-- `Update`
-- `Delete`
-- `Create`
-- `Drop`
-- `Alter`
-- `Create View`
-
-如果要同步 `recover table` 到下游 TiDB，需要有 `Super` 权限。
-
 ## 为什么 TiCDC 需要使用磁盘，什么时候会写磁盘，TiCDC 能否利用内存缓存提升同步性能？
 
 TiCDC 需要磁盘是为了缓冲上游写入高峰时下游消费不及时堆积的数据。TiCDC 正常运行期间都需要写入磁盘，但这通常不是同步吞吐和同步延时的瓶颈，写磁盘对延时影响在百毫秒内。TiCDC 也利用了内存来提升加速读取磁盘中的数据，以提升同步性能。
