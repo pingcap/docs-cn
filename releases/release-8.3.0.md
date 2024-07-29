@@ -1,17 +1,17 @@
 ---
-title: TiDB 8.2.0 Release Notes
-summary: 了解 TiDB 8.2.0 版本的新功能、兼容性变更、改进提升，以及错误修复。
+title: TiDB 8.3.0 Release Notes
+summary: 了解 TiDB 8.3.0 版本的新功能、兼容性变更、改进提升，以及错误修复。
 ---
 
-# TiDB 8.2.0 Release Notes
+# TiDB 8.3.0 Release Notes
 
 发版日期：2024 年 x 月 x 日
 
-TiDB 版本：8.2.0
+TiDB 版本：8.3.0
 
-试用链接：[快速体验](https://docs.pingcap.com/zh/tidb/v8.2/quick-start-with-tidb) | [下载离线包](https://cn.pingcap.com/product-community/?version=v8.2.0-DMR#version-list)
+试用链接：[快速体验](https://docs.pingcap.com/zh/tidb/v8.3/quick-start-with-tidb) | [下载离线包](https://cn.pingcap.com/product-community/?version=v8.3.0-DMR#version-list)
 
-在 8.2.0 版本中，你可以获得以下关键特性：
+在 8.3.0 版本中，你可以获得以下关键特性：
 
 ## 功能详情
 
@@ -91,7 +91,8 @@ TiDB 版本：8.2.0
 
 > **注意：**
 >
-> 以下为从 v7.5.0 升级至当前版本 (v8.2.0) 所需兼容性变更信息。如果从 v7.4.0 或之前版本升级到当前版本，可能也需要考虑和查看中间版本 Release Notes 中提到的兼容性变更信息。
+> 以下为从 v8.2.0 升级至当前版本 (v8.3.0) 所需兼容性变更信息。如果从 v8.1.0 或之前版本升级到当前版本，可能也需要考虑和查看中间版本 Release Notes 中提到的兼容性变更信息。
+
 ### 行为变更
 
 * 行为变更 1
