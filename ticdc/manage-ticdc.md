@@ -208,7 +208,7 @@ URI 中可配置的的参数如下：
 | `max-message-bytes`  | 每次向 Kafka broker 发送消息的最大数据量（可选，默认值 `10MB`）。从 v5.0.6 和 v4.0.6 开始，默认值分别从 64MB 和 256MB 调整至 10MB。|
 | `replication-factor` | Kafka 消息保存副本数（可选，默认值 `1`）                       |
 | `compression` | 设置发送消息时使用的压缩算法（可选值为 `none`、`lz4`、`gzip`、`snappy` 和 `zstd`，默认值为 `none`）。|
-| `protocol` | 输出到 Kafka 的消息协议，可选值有 `canal-json`、`open-protocol`、`avro`、`maxwell` |
+| `protocol` | 输出到 Kafka 的消息协议，可选值有 `canal-json`、`open-protocol` 和 `avro` |
 | `auto-create-topic` | 当传入的 `topic-name` 在 Kafka 集群不存在时，TiCDC 是否要自动创建该 topic（可选，默认值 `true`） |
 | `enable-tidb-extension` | 当输出协议为 `canal-json` 时，如果该值为 `true`，TiCDC 会发送 Resolved 事件，并在 Kafka 消息中添加 TiDB 扩展字段（可选，默认值 `false`）|
 | `max-batch-size` |  从 v4.0.9 开始引入。当消息协议支持把多条变更记录输出至一条 Kafka 消息时，该参数用于指定这一条 Kafka 消息中变更记录的最多数量。目前，仅当 Kafka 消息的 `protocol` 为 `open-protocol` 时有效（可选，默认值 `16`）|
@@ -275,7 +275,7 @@ URI 中可配置的的参数如下：
 | `auth.tls` | 使用 TLS 模式认证下游 Pulsar（可选，示例 `auth=tls&auth.tlsCertFile=/path/to/cert&auth.tlsKeyFile=/path/to/key`）|
 | `auth.token` | 使用 token 模式认证下游（可选，示例 `auth=token&auth.token=secret-token` 或者 `auth=token&auth.file=path/to/secret-token-file`）|
 | `name` | TiCDC 中 Pulsar producer 名字（可选） |
-| `protocol` | 输出到 Pulsar 的消息协议，可选值有 `canal-json`、`open-protocol`、`avro`、`maxwell` |
+| `protocol` | 输出到 Pulsar 的消息协议，可选值有 `canal-json`、`open-protocol` 和 `avro` |
 | `maxPendingMessages` | Pending 消息队列的最大大小，例如，等待接收来自 Pulsar 的确认的消息（可选，默认值为 1000） |
 | `disableBatching` | 禁止自动批量发送消息（可选） |
 | `batchingMaxPublishDelay` | 设置发送消息的批处理时间（默认值为 10ms） |
@@ -582,7 +582,7 @@ dispatchers = [
     {matcher = ['test3.*', 'test4.*'], dispatcher = "rowid"},
 ]
 # 对于 MQ 类的 Sink，可以指定消息的协议格式
-# 目前支持 canal-json、open-protocol、avro 和 maxwell 协议。
+# 目前支持 canal-json、open-protocol 和 avro 协议。
 protocol = "canal-json"
 
 ```
