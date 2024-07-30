@@ -121,13 +121,13 @@ TiDB 版本：7.5.3
 + PD
   <!-- tw: @qiancai (8)-->
     - (dup): release-7.1.4.md > 错误修复> PD - 修复资源组 (Resource Group) 客户端中未完全删除的 slot 导致分配 token 低于给定值的问题 [#7346](https://github.com/tikv/pd/issues/7346) @[guo-shaoge](https://github.com/guo-shaoge)
-    - 修复资源组 (Resource Group) 在请求 token 超过 500ms 时遇到超出配额限制的问题 [#8349](https://github.com/tikv/pd/issues/8349) @[nolouch](https://github.com/nolouch)
+    - 修复资源组 (Resource Group) 在请求 token 超过 500 ms 时遇到超出配额限制的问题 [#8349](https://github.com/tikv/pd/issues/8349) @[nolouch](https://github.com/nolouch)
     - 修复资源组 (Resource Group) 遇到的数据竞争问题 [#8267](https://github.com/tikv/pd/issues/8267) @[HuSharp](https://github.com/HuSharp)
     - 修复 PD 在进行 operator 检查时遇到的数据竞争问题 [#8263](https://github.com/tikv/pd/issues/8263) @[lhy1024](https://github.com/lhy1024)
     - 修复 etcd client 中已经删除的节点仍然出现在候选连接列表中的问题 [#8286](https://github.com/tikv/pd/issues/8286) @[JmPotato](https://github.com/JmPotato)
     - 修复将 TiKV 配置项 [`coprocessor.region-split-size`](/tikv-configuration-file.md#region-split-size) 设置为小于 1 MiB 的值会导致 PD panic 的问题 [#8323](https://github.com/tikv/pd/issues/8323) @[JmPotato](https://github.com/JmPotato)
     - 修复加密管理器在使用前未初始化的问题 [#8384](https://github.com/tikv/pd/issues/8384) @[releungx](https://github.com/releungx)
-    - 修复 PD 配置项 [`redact-info-log`](/pd-configuration-file.md#redact-info-log-从-v50-版本开始引入) 开启时 PD 日志未完全脱敏的问题 [#8419](https://github.com/tikv/pd/issues/8419) @[releungx](https://github.com/releungx)
+    - 修复 PD 配置项 [`security.redact-info-log`](/pd-configuration-file.md#redact-info-log-从-v50-版本开始引入) 开启时 PD 日志未完全脱敏的问题 [#8419](https://github.com/tikv/pd/issues/8419) @[releungx](https://github.com/releungx)
     - 修复将角色 (role) 绑定到资源组 (Resource Group) 时未报错的问题 [#54417](https://github.com/pingcap/tidb/issues/54417) @[JmPotato](https://github.com/JmPotato)
 
 + TiFlash
