@@ -2685,7 +2685,7 @@ v5.0 后，用户仍可以单独修改以上系统变量（会有废弃警告）
 - 默认值：`ON`
 - 这个变量用于指定是否在 slow log 和 statement summary 里包含以二进制格式编码的执行计划。
 - 开启该变量后，即可在 TiDB Dashboard 中查看查询的图形化执行计划。注意，TiDB Dashboard 只显示变量开启时产生的查询的执行计划。
-- 用 `select tidb_decode_binary_plan('xxx...')` SQL 语句可以从编码后的执行计划解析出具体的执行计划。
+- 用 [`SELECT tidb_decode_binary_plan('xxx...')`](/functions-and-operators/tidb-functions.md#tidb_decode_binary_plan) SQL 语句可以从编码后的执行计划解析出具体的执行计划。
 
 ### `tidb_gogc_tuner_max_value` <span class="version-mark">从 v7.5.0 版本开始引入</span>
 
