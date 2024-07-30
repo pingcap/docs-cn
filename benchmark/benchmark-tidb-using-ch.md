@@ -87,7 +87,7 @@ SELECT * FROM information_schema.tiflash_replica WHERE TABLE_SCHEMA = 'tpcc';
 
 ## 搜集统计信息
 
-为了确保优化器能生成最优的执行计划，请执行以下 SQL 语句提前搜集统计信息。**务必确保将 [`tidb_analyze_column_options`](/system-variables.md#tidb_analyze_column_options-从-v830-版本开始引入) 系统变量的值设置为 `ALL`，否则，搜集统计信息可能会导致查询性能显著下降。**
+为了确保优化器能生成最优的执行计划，请执行以下 SQL 语句提前搜集统计信息。**务必确保将 [`tidb_analyze_column_options`](/system-variables.md#tidb_analyze_column_options-从-v830-版本开始引入) 系统变量的值设置为 `ALL`，否则统计信息收集可能会导致查询性能显著下降。**
 
 ```
 set global tidb_analyze_column_options='ALL';
