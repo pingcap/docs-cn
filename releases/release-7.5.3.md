@@ -22,10 +22,10 @@ TiDB 版本：7.5.3
     - (dup): release-8.2.0.md > 改进提升> TiDB - 通过批量删除 TiFlash placement rule 的方式，提升对分区表执行 `TRUNCATE`、`DROP` 后数据 GC 的处理速度 [#54068](https://github.com/pingcap/tidb/issues/54068) @[Lloyd-Pottiger](https://github.com/Lloyd-Pottiger)
 
 + TiKV
-  <!-- tw: @qiancai (1)-->
+  <!-- tw: @qiancai (0)-->
 
 + PD
-  <!-- tw: @qiancai (1)-->
+  <!-- tw: @qiancai (0)-->
 
 + TiFlash
 
@@ -119,7 +119,7 @@ TiDB 版本：7.5.3
     - 修复 TiKV 在应用损坏的 Raft 数据快照时反复 panic 的问题 [#15292](https://github.com/tikv/tikv/issues/15292) @[LykxSassinator](https://github.com/LykxSassinator)
 
 + PD
-  <!-- tw: @qiancai (7)-->
+  <!-- tw: @qiancai (8)-->
     - (dup): release-7.1.4.md > 错误修复> PD - 修复资源组 (Resource Group) 客户端中未完全删除的 slot 导致分配 token 低于给定值的问题 [#7346](https://github.com/tikv/pd/issues/7346) @[guo-shaoge](https://github.com/guo-shaoge)
     - 修复资源组 (Resource Group) 在请求 token 超过 500ms 时遇到超出配额限制的问题 [#8349](https://github.com/tikv/pd/issues/8349) @[nolouch](https://github.com/nolouch)
     - 修复资源组 (Resource Group) 遇到的数据竞争问题 [#8267](https://github.com/tikv/pd/issues/8267) @[HuSharp](https://github.com/HuSharp)
