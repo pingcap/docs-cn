@@ -7,7 +7,7 @@ summary: 本文介绍如何对 TiDB 进行 CH-benCHmark 测试。
 
 本文介绍如何对 TiDB 进行 CH-benCHmark 测试。
 
-CH-benCHmark 是包含 [TPC-C](http://www.tpc.org/tpcc/) 和 [TPC-H](http://www.tpc.org/tpch/) 的混合负载，也是用于测试 HTAP 系统的最常见负载。更多信息，请参考 [The mixed workload CH-benCHmark](https://research.tableau.com/sites/default/files/a8-cole.pdf)。
+CH-benCHmark 是包含 [TPC-C](http://www.tpc.org/tpcc/) 和 [TPC-H](http://www.tpc.org/tpch/) 的混合负载，也是用于测试 HTAP 系统的最常见负载。更多信息，请参考 [The mixed workload CH-benCHmark](https://dl.acm.org/doi/10.1145/1988842.1988850)。
 
 在进行 CH-benCHmark 测试前，你需要先部署 TiDB 的 HTAP 组件 [TiFlash](/tiflash/tiflash-overview.md)。部署 TiFlash 并[创建 TiFlash 副本](#创建-tiflash-副本)后，对于 TPC-C 联机交易数据，系统将实时同步最新的数据到 TiFlash 组件；TiDB 优化器会自动将 TPC-H 负载的 OLAP 查询下推到 TiFlash MPP 引擎进行高效执行。
 
@@ -87,9 +87,10 @@ SELECT * FROM information_schema.tiflash_replica WHERE TABLE_SCHEMA = 'tpcc';
 
 ## 搜集统计信息
 
-为了确保优化器能生成最优的执行计划，请执行以下 SQL 语句提前搜集统计信息：
+为了确保优化器能生成最优的执行计划，请执行以下 SQL 语句提前搜集统计信息。**务必确保将 [`tidb_analyze_column_options`](/system-variables.md#tidb_analyze_column_options-从-v830-版本开始引入) 系统变量的值设置为 `ALL`，否则，搜集统计信息可能会导致查询性能显著下降。**
 
 ```
+set global tidb_analyze_column_options='ALL';
 analyze table customer;
 analyze table district;
 analyze table history;
@@ -168,4 +169,4 @@ tpmC: 93826.9, efficiency: 729.6%
 [Summary] Q7     - Count: 11, Sum(ms): 158928.2, Avg(ms): 14446.3
 ```
 
-测试完成之后，也可以运行 `tiup bench tpcc -H 172.16.5.140 -P 4000 -D tpcc --warehouses 1000 check`  验证数据正确性。
+测试完成之后，也可以运行 `tiup bench tpcc -H 172.16.5.140 -P 4000 -D tpcc --warehouses 1000 check` 验证数据正确性。

@@ -966,6 +966,22 @@ MPP 是 TiFlash 引擎提供的分布式计算框架，允许节点之间的数�
 - 默认值：`OFF`
 - 这个变量用来控制是否允许通过 `ALTER TABLE MODIFY` 或 `ALTER TABLE CHANGE` 来移除某个列的 `AUTO_INCREMENT` 属性。默认 (`OFF`) 为不允许。
 
+### tidb_analyze_column_options<span class="version-mark">从 v8.3.0 版本开始引入</span>
+
+> **注意：**
+>
+> - 该变量只在 [`tidb_analyze_version`](#tidb_analyze_version-从-v510-版本开始引入) 设置为 `2` 时生效。
+> - 如果将 TiDB 集群从 v8.3.0 之前的版本升级至 v8.3.0 或更高版本，该变量会默认设置为 `ALL`，以保持原有行为。
+> - 从 v8.3.0 开始，对于新部署的 TiDB 集群，该变量默认设置为 `PREDICATE`。
+
+- 作用域：GLOBAL
+- 是否持久化到集群：是
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：否
+- 类型：枚举型
+- 默认值：`PREDICATE`
+- 可选值：`ALL`，`PREDICATE`
+- 该变量控制 `ANALYZE TABLE` 语句的行为。将其设置为 `PREDICATE` 表示仅收集 [predicate columns](/statistics.md#收集部分列的统计信息) 的统计信息；将其设置为 `ALL` 表示收集所有列的统计信息。在使用 OLAP 查询的场景中，建议将其设置为 `ALL`，否则查询性能可能会显著下降。
+
 ### `tidb_analyze_distsql_scan_concurrency` <span class="version-mark">从 v7.6.0 版本开始引入</span>
 
 - 作用域：GLOBAL
@@ -1772,7 +1788,7 @@ mysql> SELECT job_info FROM mysql.analyze_jobs ORDER BY end_time DESC LIMIT 1;
 
 > **警告：**
 >
-> 收集 `PREDICATE COLUMNS` 的统计信息目前为实验特性，不建议在生产环境中使用。
+> 从 v8.3.0 开始，该变量被废弃，TiDB 默认收集 [predicate columns](/glossary.md#predicate-columns) 的统计信息。更多信息，参见 [`tidb_analyze_column_options`](#tidb_analyze_column_options-从-v830-版本开始引入)。
 
 - 作用域：GLOBAL
 - 是否持久化到集群：是
