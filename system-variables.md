@@ -1930,19 +1930,21 @@ mysql> SELECT job_info FROM mysql.analyze_jobs ORDER BY end_time DESC LIMIT 1;
 
 > **警告：**
 >
-> 该变量控制的功能为实验特性，不建议在生产环境中使用。
+> 该变量控制的功能为实验特性，不建议在生产环境中使用。该功能可能会在未事先通知的情况下发生变化或删除。如果发现 bug，请在 GitHub 上提 [issue](https://github.com/pingcap/tidb/issues) 反馈。
 
 - 作用域：GLOBAL
 - 是否持久化到集群：是
 - 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：否
 - 类型：布尔型
 - 默认值：`OFF`
-- 这个变量用于控制 [Cursor Fetch](/develop/dev-guide-connection-parameters.md#使用-streamingresult-流式获取执行结果) 功能的行为。在变量为 `OFF` 时，开启 Cursor Fetch 的情况下，TiDB 将在语句开始执行时将所有数据读取完成并保存在 TiDB 内存中，并在后续客户端读取的过程中依据客户端指定 `FetchSize` 返回给客户端，如果结果集过大，可能触发落盘临时将结果写入硬盘。在变量为 `ON` 时，开启 Cursor Fetch 的情况下，TiDB 将不会一次把所有数据读取到 TiDB 节点，而是会随着客户端的读取不断将数据读到 TiDB 节点。
-- 该功能存在如下限制：
-    - 1. 不支持处于显式事务中的语句。
-    - 2. 当前仅支持包含且仅包含 `TableReader`、`IndexReader`、`IndexLookUp`、`Projection`、`Selection` 算子的执行计划。
-    - 3. 对于使用 Lazy Cursor Fetch 的语句，执行信息将不会出现在 [Statements Summary](/statement-summary-tables.md) 和 [Slow Log](/identify-slow-queries.md) 中。
-- 对于暂不支持的场景，行为将会与变量为 `OFF` 时保持一致。
+- 这个变量用于控制 [Cursor Fetch](/develop/dev-guide-connection-parameters.md#使用-streamingresult-流式获取执行结果) 功能的行为。
+    - 当开启 Cursor Fetch 且该变量设置为 `OFF` 时，TiDB 会在语句开始执行时将所有数据读取完成并保存至 TiDB 内存，在后续客户端读取的过程中会依据客户端指定的 `FetchSize` 返回给客户端。如果结果集过大，可能会触发落盘临时将结果写入硬盘。
+    - 当开启 Cursor Fetch 且该变量设置为 `ON` 时，TiDB 不会一次把所有数据读取到 TiDB 节点，而是会随着客户端的读取不断将数据读到 TiDB 节点。
+- 该功能存在以下限制：
+    - 不支持处于显式事务中的语句。
+    - 当前仅支持包含且仅包含 `TableReader`、`IndexReader`、`IndexLookUp`、`Projection`、`Selection` 算子的执行计划。
+    - 对于使用 Lazy Cursor Fetch 的语句，执行信息将不会出现在 [Statements Summary](/statement-summary-tables.md) 和 [慢查询日志](/identify-slow-queries.md) 中。
+- 对于暂不支持的场景，行为与变量设置为 `OFF` 时一致。
 
 ### `tidb_enable_non_prepared_plan_cache`
 
