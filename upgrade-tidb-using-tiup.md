@@ -8,11 +8,14 @@ summary: TiUP 可用于 TiDB 升级。升级过程中需注意不支持 TiFlash 
 
 本文档适用于以下升级路径：
 
-- 使用 TiUP 从 TiDB 4.0 版本升级至 TiDB 8.2。
-- 使用 TiUP 从 TiDB 5.0-5.4 版本升级至 TiDB 8.2。
-- 使用 TiUP 从 TiDB 6.0-6.6 版本升级至 TiDB 8.2。
-- 使用 TiUP 从 TiDB 7.0-7.6 版本升级至 TiDB 8.2。
-- 使用 TiUP 从 TiDB 8.0-8.1 版本升级至 TiDB 8.2。
+- 针对 LTS 版本：
+    - 使用 TiUP 从 TiDB v6.1 版本升级至 TiDB v6.5 或 TiDB v7.1 版本
+    - 使用 TiUP 从 TiDB v6.5 版本升级至 TiDB v7.1 或 TiDB v7.5 版本
+    - 使用 TiUP 从 TiDB v7.1 版本升级至 TiDB v7.5 或 TiDB v8.1 版本
+    - 使用 TiUP 从 TiDB v7.5 版本升级至 TiDB v8.1 版本
+
+- 针对 DRM 版本：
+    - 仅支持升级到下一个版本，如 TiDB v6.1 版本升级到 TiDB v6.2 版本
 
 > **警告：**
 >
