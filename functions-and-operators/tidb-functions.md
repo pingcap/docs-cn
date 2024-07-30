@@ -79,7 +79,7 @@ SELECT CURRENT_RESOURCE_GROUP();
 
 ## TIDB_CURRENT_TSO
 
-`TIDB_CURRENT_TSO()` 函数返回当前事务的 TSO，类似于 [`tidb_current_ts`](/system-variables.md#tidb_current_ts) 变量。
+`TIDB_CURRENT_TSO()` 函数返回当前事务的 [TSO](/tso.md)，类似于 [`tidb_current_ts`](/system-variables.md#tidb_current_ts) 变量。
 
 ```sql
 BEGIN;
@@ -142,7 +142,7 @@ TIDB_DECODE_BINARY_PLAN(BINARY_PLAN):
 
 `TIDB_DECODE_KEY()` 函数用于将 TiDB 编码的键输入解码为包含 `_tidb_rowid` 和 `table_id` 的 JSON 结构。在一些系统表和日志输出中有 TiDB 编码的键。
 
-以下示例中，表 `t1` 有一个隐藏的 `rowid`，该 `rowid` 由 TiDB 生成。语句中使用了 `TIDB_DECODE_KEY` 函数。结果显示，隐藏的 `rowid` 被解码后并输出，这是典型的非聚簇主键结果。
+以下示例中，表 `t1` 有一个隐藏的 `rowid`，该 `rowid` 由 TiDB 生成。语句中使用了 `TIDB_DECODE_KEY()` 函数。结果显示，隐藏的 `rowid` 被解码后并输出，这是典型的非聚簇主键结果。
 
 ```sql
 SELECT START_KEY, TIDB_DECODE_KEY(START_KEY) FROM information_schema.tikv_region_status WHERE table_name='t1' AND REGION_ID=2\G
@@ -265,9 +265,9 @@ SELECT tidb_decode_plan('8QIYMAkzMV83CQEH8E85LjA0CWRhdGE6U2VsZWN0aW9uXzYJOTYwCXR
 `TIDB_DECODE_SQL_DIGESTS()` 函数用于在集群中查询一组 SQL Digest 所对应的 SQL 语句的归一化形式（即去除格式和参数后的形式）。函数接受 1 个或 2 个参数：
 
 * `digests`：字符串类型，该参数应符合 JSON 字符串数组的格式，数组中的每个字符串应为一个 SQL Digest。
-* `stmtTruncateLength`：可选参数，整数类型，用来限制返回结果中每条 SQL 语句的长度，超过指定的长度会被截断。0 表示不限制长度。
+* `stmtTruncateLength`：可选参数，整数类型，用来限制返回结果中每条 SQL 语句的长度，超过指定的长度会被截断。`0` 表示不限制长度。
 
-该函数返回一个字符串，符合 JSON 字符串数组的格式，数组中的第 *i* 项为参数 `digests` 中的第 *i* 个元素所对应的语句。如果参数 `digests` 中的某一项不是一个有效的 SQL Digest 或系统无法查询到其对应的 SQL 语句，则返回结果中对应项为 `null`。如果指定了截断长度（`stmtTruncateLength > 0`），则返回结果中每条超过该长度的语句，保留前 `stmtTruncateLength` 个字符，并在尾部增加 `"..."` 后缀表示发生了截断。如果参数 `digests` 为 `NULL`，则函数的返回值为 `NULL`。
+该函数返回一个字符串，符合 JSON 字符串数组的格式，数组中的第 *i* 项为参数 `digests` 中的第 *i* 个元素所对应的语句。如果参数 `digests` 中的某一项不是一个有效的 SQL Digest 或系统无法查询到其对应的 SQL 语句，则返回结果中对应项为 `null`。如果指定了截断长度 (`stmtTruncateLength > 0`)，则返回结果中每条超过该长度的语句，保留前 `stmtTruncateLength` 个字符，并在尾部增加 `"..."` 后缀表示发生了截断。如果参数 `digests` 为 `NULL`，则函数的返回值为 `NULL`。
 
 > **注意：**
 >
@@ -310,7 +310,7 @@ SELECT TIDB_DECODE_SQL_DIGESTS(@digests, 10);
 
 另请参阅：
 
-- [`Statement Summary Tables`](/statement-summary-tables.md)
+- [Statement Summary Tables](/statement-summary-tables.md)
 - [`INFORMATION_SCHEMA.TIDB_TRX`](/information-schema/information-schema-tidb-trx.md)
 
 ## TIDB_ENCODE_SQL_DIGEST
@@ -390,7 +390,7 @@ ROLLBACK;
 
 ## TIDB_PARSE_TSO_LOGICAL
 
-`TIDB_PARSE_TSO_LOGICAL(tso)` 函数返回从 TiDB TSO 时间戳中提取逻辑时间戳。
+`TIDB_PARSE_TSO_LOGICAL(tso)` 函数返回从 TiDB [TSO](/tso.md) 时间戳中提取的逻辑时间戳。
 
 ```sql
 SELECT TIDB_PARSE_TSO_LOGICAL(450456244814610433);
