@@ -111,11 +111,11 @@ ANALYZE TABLE TableName INDEX [IndexNameList] [WITH NUM BUCKETS|TOPN|CMSKETCH DE
 
 > **注意：**
 >
-> 为了保证收集前与收集后统计信息的一致性，当设置 `tidb_analyze_version = 2` 时，该语法也会收集整个表的统计信息（包括所有列和所有索引的统计信息），而不限于索引的统计信息。
+> 为了保证收集前与收集后统计信息的一致性，当设置 `tidb_analyze_version = 2` 时，以上语法会收集表中索引列的统计信息和所有索引的统计信息。
 
 ### 收集部分列的统计信息
 
-执行 SQL 语句时，优化器在大多数情况下只会用到部分列的统计信息。例如，`WHERE`、`JOIN`、`ORDER BY`、`GROUP BY` 子句中出现的列，这些被用到的列称为 `PREDICATE COLUMNS`。
+当 TiDB 执行 SQL 语句时，优化器在大多数情况下只会用到部分列的统计信息。例如，`WHERE`、`JOIN`、`ORDER BY`、`GROUP BY` 子句中出现的列，这些被用到的列称为 `PREDICATE COLUMNS`。
 
 如果一个表有很多列，收集所有列的统计信息会产生较大的开销。为了降低开销，你可以只收集选定列或者 `PREDICATE COLUMNS` 的统计信息供优化器使用。如果要持久化列配置以便将来沿用，参见[持久化列配置](#持久化列配置)。
 
@@ -132,28 +132,20 @@ ANALYZE TABLE TableName INDEX [IndexNameList] [WITH NUM BUCKETS|TOPN|CMSKETCH DE
 
     其中，`ColumnNameList` 表示指定列的名称列表。如果需要指定多列，请使用用逗号 `,` 分隔列名。例如, `ANALYZE table t columns a, b`。该语法除了收集指定表中指定列的统计信息，将同时收集该表中索引列的统计信息以及所有索引的统计信息。
 
-- 如果要收集 `PREDICATE COLUMNS` 的统计信息，请进行以下操作：
+- 如果要收集 `PREDICATE COLUMNS` 的统计信息，请使用以下语法：
 
-    > **警告：**
+    ```sql
+    ANALYZE TABLE TableName PREDICATE COLUMNS [WITH NUM BUCKETS|TOPN|CMSKETCH DEPTH|CMSKETCH WIDTH]|[WITH NUM SAMPLES|WITH FLOATNUM SAMPLERATE];
+    ```
+
+    TiDB 将每隔 100 * [`stats-lease`](/tidb-configuration-file.md#stats-lease) 的时间将 `PREDICATE COLUMNS` 信息写入系统表 [`mysql.column_stats_usage`](/mysql-schema/mysql-schema.md#统计信息相关系统表)。
+
+    以上语法除了收集指定表中 `PREDICATE COLUMNS` 的统计信息之外，将同时收集该表中索引列的统计信息以及所有索引的统计信息。
+
+    > **注意：**
     >
-    > 收集 `PREDICATE COLUMNS` 的统计信息目前为实验特性，不建议在生产环境中使用。
-
-    1. 将系统变量 [`tidb_enable_column_tracking`](/system-variables.md#tidb_enable_column_tracking-从-v540-版本开始引入) 的值设置为 `ON`，以开启 TiDB 对 `PREDICATE COLUMNS` 的收集。
-
-        开启后，TiDB 将每隔 100 * [`stats-lease`](/tidb-configuration-file.md#stats-lease) 时间将 `PREDICATE COLUMNS` 信息写入系统表 [`mysql.column_stats_usage`](/mysql-schema/mysql-schema.md#统计信息相关系统表)。
-
-    2. 在业务的查询模式稳定以后，使用以下语法收集 `PREDICATE COLUMNS` 的统计信息。
-
-        ```sql
-        ANALYZE TABLE TableName PREDICATE COLUMNS [WITH NUM BUCKETS|TOPN|CMSKETCH DEPTH|CMSKETCH WIDTH]|[WITH NUM SAMPLES|WITH FLOATNUM SAMPLERATE];
-        ```
-
-        该语法除了收集指定表中 `PREDICATE COLUMNS` 的统计信息，将同时收集该表中索引列的统计信息以及所有索引的统计信息。
-
-        > **注意：**
-        >
-        > - 如果系统表 [`mysql.column_stats_usage`](/mysql-schema/mysql-schema.md#统计信息相关系统表) 中没有关于该表的 `PREDICATE COLUMNS` 记录，执行以上语句会收集该表中所有列的统计信息以及所有索引的统计信息。
-        > - 对于任何被排除在此次统计信息收集（无论是手动列出列名，还是使用 `PREDICATE COLUMNS`）之外的列，它们的统计信息不会被覆盖。当执行新类型的 SQL 查询时，如果存在旧的统计信息，优化器将使用这些列的旧统计信息；如果从未收集过列的统计信息，则使用伪列统计信息。下一次使用 `PREDICATE COLUMNS` 的 `ANALYZE` 将收集这些列的统计信息。
+    > - 如果系统表 [`mysql.column_stats_usage`](/mysql-schema/mysql-schema.md#统计信息相关系统表) 中没有关于该表的 `PREDICATE COLUMNS` 记录，执行以上语句会收集该表中索引列的统计信息以及所有索引的统计信息。
+    > - 对于任何被排除在此次统计信息收集（无论是手动列出列名，还是使用 `PREDICATE COLUMNS`）之外的列，它们的统计信息不会被覆盖。当执行新类型的 SQL 查询时，如果存在旧的统计信息，优化器将使用这些列的旧统计信息；如果从未收集过列的统计信息，则使用伪列统计信息。下一次使用 `PREDICATE COLUMNS` 的 `ANALYZE` 将收集这些列的统计信息。
 
 - 如果要收集所有列的统计信息以及所有索引的统计信息，请使用以下语法：
 
@@ -296,9 +288,6 @@ TiDB 会使用最新的 `ANALYZE` 语句中指定的配置覆盖先前记录的�
 在以下示例中，执行 `ANALYZE TABLE t PREDICATE COLUMNS;` 后，TiDB 将收集 `b`、`c`、`d` 列的统计信息，其中 `b` 列是 `PREDICATE COLUMN`，`c` 列和 `d` 列是索引列。
 
 ```sql
-SET GLOBAL tidb_enable_column_tracking = ON;
-Query OK, 0 rows affected (0.00 sec)
-
 CREATE TABLE t (a INT, b INT, c INT, d INT, INDEX idx_c_d(c, d));
 Query OK, 0 rows affected (0.00 sec)
 
