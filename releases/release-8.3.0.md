@@ -109,6 +109,12 @@ TiDB 版本：8.3.0
 
     更多信息，请参考[用户文档](链接)。
 
+* 系统视图 `PROCESS LIST` 增加 `ROWS_AFFECTED` 字段 [#54486](https://github.com/pingcap/tidb/issues/54486) @[ekexium](https://github.com/ekexium) **tw@qiancai** <!--1903-->
+
+    TiDB 并不能显示当前 DML 语句已经处理的数据行数。在 v8.3.0 版本中，系统视图 `PROCESS LIST` 增加 `ROWS_AFFECTED` 字段，展示当前 DML 语句已经写入的数据行数。
+    
+    更多信息，请参考[用户文档](/information-schema/information-schema-processlist.md)。
+    
 ### 安全
 
 * 功能标题 [#issue号](链接) @[贡献者 GitHub ID](链接) **tw@xxx** <!--1234-->
@@ -173,7 +179,7 @@ TiDB 版本：8.3.0
     - TiDB 支持 `WITH ROLLUP` 修饰符和 `GROUPING` 函数 [#42631](https://github.com/pingcap/tidb/issues/42631) @[Arenatlx](https://github.com/Arenatlx) **tw@Oreoxmt** <!--1714-->
     - 变量 `tidb_low_resolution_tso` 增加全局作用域 [#55022](https://github.com/pingcap/tidb/issues/55022) @[cfzjywxk](https://github.com/cfzjywxk) **tw@hfxsd** <!--1857-->
     - 优化 MemDB 实现，降低写事务延迟 [#xxx](https://github.com/pingcap/tidb/issues/xxx) @[you06](https://github.com/you06) **tw@hfxsd** <!--1892-->
-    - GC 支持并发删除 Range，提升 GC 效率 [#xxx](https://github.com/pingcap/tidb/issues/xxx) @[ekexium](https://github.com/ekexium) **tw@qiancai** <!--1890-->
+    - GC 支持并发删除 Range 以提升处理效率 [#xxx](https://github.com/pingcap/tidb/issues/xxx) @[ekexium](https://github.com/ekexium) **tw@qiancai** <!--1890-->
 
 + TiKV
 
