@@ -142,8 +142,6 @@ strategy = ""
 # 多个 TiDB Lightning 实例（物理导入模式）同时导入一张表时，此开关必须设置为 true。
 # 但前提是目标表不能存在数据，即所有的数据都只能是由 TiDB Lightning 导入。
 # parallel-import = false
-# 当后端是 “importer” 时，tikv-importer 的监听地址（需改为实际地址）。
-addr = "172.16.31.10:8287"
 
 # `duplicate-resolution` 参数从 v8.0.0 开始已被废弃，并将在未来版本中被移除。详情参考 <https://docs.pingcap.com/zh/tidb/dev/tidb-lightning-physical-import-mode-usage#旧版冲突检测从-v800-开始已被废弃>。
 # 物理导入模式设置是否检测和解决重复的记录（唯一键冲突）。
