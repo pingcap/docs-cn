@@ -11,7 +11,7 @@ TiDB 支持使用 MySQL 8.0 中提供的所有[位函数和操作符](https://de
 
 | 函数和操作符名 | 功能描述 |
 | -------------- | ------------------------------------- |
-| [`BIT_COUNT()`](#bit_count) | 返回参数二进制表示中为 1 的位数 |
+| [`BIT_COUNT()`](#bit_count) | 返回参数二进制表示中为 1 的个数 |
 | [`&`](#按位与) | 按位与 |
 | [`~`](#按位取反) | 按位取反 |
 | [`\|`](#按位或) | 按位或 |
@@ -21,7 +21,7 @@ TiDB 支持使用 MySQL 8.0 中提供的所有[位函数和操作符](https://de
 
 ## [`BIT_COUNT()`](https://dev.mysql.com/doc/refman/8.0/en/bit-functions.html#function_bit-count)
 
-`BIT_COUNT(expr)` 函数返回 `expr` 的二进制表示中为 1 的位数。
+`BIT_COUNT(expr)` 函数返回 `expr` 中为 1 的位数。
 
 ```sql
 SELECT BIT_COUNT(b'00101001');
@@ -72,7 +72,7 @@ SELECT BIT_COUNT(INET_ATON('255.255.255.0'));
 
 ## [`&`（按位与）](https://dev.mysql.com/doc/refman/8.0/en/bit-functions.html#operator_bitwise-and)
 
-`&` 操作符用于执行按位与 (bitwise AND) 操作。它会比较两个数字中的对应位，如果两个对应位都是 1，则结果的对应位为 1，否则为 0。
+`&` 操作符用于执行按位与 (bitwise AND) 操作。它会比较两个数中的对应位，如果两个对应位都是 1，则结果的对应位为 1，否则为 0。
 
 例如，对 `1010` 和 `1100` 进行按位与操作会返回 `1000`，因为在这两个数中只有最左边的第一位都是 1。
 
@@ -198,7 +198,7 @@ SELECT CONV(b'1010' | b'1100',10,2);
 
 ## [`^`（按位异或）](https://dev.mysql.com/doc/refman/8.0/en/bit-functions.html#operator_bitwise-xor)
 
-`^` 操作符用于执行按位异或 (bitwise XOR) 操作。它会比较两个数字中的每一个对应位，如果对应位不同，则结果中的对应位为 1。
+`^` 操作符用于执行按位异或 (bitwise XOR) 操作。它会比较两个数中的对应位，如果对应位不同，则结果中的对应位为 1。
 
 例如，对 `1010` 和 `1100` 进行按位异或操作会返回 `0110`，因为这两个数中的第二位不同，第三位也不同。
 
