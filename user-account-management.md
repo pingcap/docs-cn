@@ -14,7 +14,7 @@ summary: TiDB 用户账户管理主要包括用户名和密码设置、添加用
 
 ## 用户名和密码
 
-TiDB 将用户账户存储在 [`mysql.user`](/mysql-schema.md) 系统表里面。每个账户由用户名和 host 作为标识。每个账户可以设置一个密码。每个用户名最长为 32 个字符。
+TiDB 将用户账户存储在 [`mysql.user`](/mysql-schema/mysql-schema-user.md) 系统表里面。每个账户由用户名和 host 作为标识。每个账户可以设置一个密码。每个用户名最长为 32 个字符。
 
 通过 MySQL 客户端连接到 TiDB 服务器，通过指定的账户和密码登录：
 
@@ -41,7 +41,7 @@ mysql -P 4000 -u xxx -p
 CREATE USER [IF NOT EXISTS] user [IDENTIFIED BY 'auth_string'];
 ```
 
-设置登录密码后，`auth_string` 会被 TiDB 加密并存储在 [`mysql.user`](/mysql-schema.md) 表中。
+设置登录密码后，`auth_string` 会被 TiDB 加密并存储在 [`mysql.user`](/mysql-schema/mysql-schema-user.md) 表中。
 
 ```sql
 CREATE USER 'test'@'127.0.0.1' IDENTIFIED BY 'xxx';
@@ -141,7 +141,7 @@ SHOW CREATE USER 'admin'@'localhost';
 DROP USER 'test'@'localhost';
 ```
 
-这个操作会清除用户在 [`mysql.user`](/mysql-schema.md) 表里面的记录项，并且清除在授权表里面的相关记录。
+这个操作会清除用户在 [`mysql.user`](/mysql-schema/mysql-schema-user.md) 表里面的记录项，并且清除在授权表里面的相关记录。
 
 ## 保留用户账户
 
@@ -153,7 +153,7 @@ TiDB 可以利用资源组对用户消耗的资源进行限制，详情参见[�
 
 ## 设置密码
 
-TiDB 将密码存在 [`mysql.user`](/mysql-schema.md) 系统表里面。只有拥有 `CREATE USER` 权限，或者拥有 `mysql` 数据库权限（`INSERT` 权限用于创建，`UPDATE` 权限用于更新）的用户才能够设置或修改密码。
+TiDB 将密码存在 [`mysql.user`](/mysql-schema/mysql-schema-user.md) 系统表里面。只有拥有 `CREATE USER` 权限，或者拥有 `mysql` 数据库权限（`INSERT` 权限用于创建，`UPDATE` 权限用于更新）的用户才能够设置或修改密码。
 
 - 在 [`CREATE USER`](/sql-statements/sql-statement-create-user.md) 创建用户时通过 `IDENTIFIED BY` 指定密码：
 
