@@ -12,9 +12,9 @@ summary: 了解 information_schema 表 `PROCESSLIST`。
 * `DIGEST` 列：显示 SQL 语句的 digest。
 * `MEM` 列：显示正在处理的请求已使用的内存，单位是 byte。
 * `DISK` 列：显示磁盘空间使用情况，单位是 byte。
-* `TxnStart`列：显示事务的开始时间。
-* `RESOURCE_GROUP`列：显示对应的资源组名称。
-* `SESSION_ALIAS`列：显示当前连接的别名。
+* `TxnStart` 列：显示事务的开始时间。
+* `RESOURCE_GROUP` 列：显示对应的资源组名称。
+* `SESSION_ALIAS` 列：显示当前连接的别名。
 
 ```sql
 USE information_schema;
@@ -79,9 +79,9 @@ SELECT * FROM processlist\G
 * `DIGEST` 列：SQL 语句的 digest。
 * `MEM` 列：正在处理的请求已使用的内存，单位是 byte。
 * `DISK` 列：磁盘空间使用情况，单位是 byte。
-* `TxnStart`列：显示事务的开始时间。
-* `RESOURCE_GROUP`列：显示对应的资源组名称。
-* `SESSION_ALIAS`列：显示当前连接的别名。
+* `TxnStart` 列：显示事务的开始时间。
+* `RESOURCE_GROUP` 列：显示对应的资源组名称。
+* `SESSION_ALIAS` 列：显示当前连接的别名。
 
 ## CLUSTER_PROCESSLIST
 
