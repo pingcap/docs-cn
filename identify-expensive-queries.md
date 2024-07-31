@@ -25,7 +25,7 @@ TiDB 会将执行时间超过 [`tidb_expensive_query_time_threshold`](/system-va
 * `table_ids`：语句涉及到的表的 ID。
 * `txn_start_ts`：事务的开始时间戳，也是事务的唯一 ID，可以用这个值在 TiDB 日志中查找事务相关的其他日志。
 * `sql`：SQL 语句。
-* `session_alias`: 当前连接的别名。
+* `session_alias`：当前连接的别名。
 * `affected rows`：语句当前影响的行数。
 
 和内存使用相关的字段：
