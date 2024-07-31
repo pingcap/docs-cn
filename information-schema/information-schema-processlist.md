@@ -62,7 +62,7 @@ SELECT * FROM processlist\G
                DISK: 0
            TxnStart:
      RESOURCE_GROUP: rg1
-     SESSION_ALIAS :
+      SESSION_ALIAS:
 1 row in set (0.00 sec)
 ```
 
