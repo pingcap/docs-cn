@@ -186,7 +186,7 @@ TiDB 版本：8.2.0
 
 ### 系统表
 
-* 在系统表 [`INFORMATION_SCHEMA.PROCESSLIST`](/information-schema/information-schema-processlist.md) 和 [`INFORMATION_SCHEMA.CLUSTER_PROCESSLIST`](/information-schema-processlist.md#cluster_processlist) 中新增 `SESSION_ALIAS` 字段，用于显示当前连接的别名。[#46889](https://github.com/pingcap/tidb/issues/46889) @[lcwangchao](https://github.com/lcwangchao)
+* 在系统表 [`INFORMATION_SCHEMA.PROCESSLIST`](/information-schema/information-schema-processlist.md) 和 [`INFORMATION_SCHEMA.CLUSTER_PROCESSLIST`](/information-schema/information-schema-processlist.md#cluster_processlist) 中新增 `SESSION_ALIAS` 字段，用于显示当前连接的别名。[#46889](https://github.com/pingcap/tidb/issues/46889) @[lcwangchao](https://github.com/lcwangchao)
 
 ### 编译器版本
 
