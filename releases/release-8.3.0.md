@@ -117,11 +117,17 @@ TiDB 版本：8.3.0
     
 ### 安全
 
-* 功能标题 [#issue号](链接) @[贡献者 GitHub ID](链接) **tw@xxx** <!--1234-->
+* 增强 PD 日志脱敏 [#51306](https://github.com/pingcap/tidb/issues/51306) @[xhe](https://github.com/xhebox)
 
-    功能描述（需要包含这个功能是什么、在什么场景下对用户有什么价值、怎么用）
+    TiDB v8.0.0 增强了日志脱敏功能，支持控制是否使用标记符号 `‹ ›` 包裹 TiDB 日志中的用户数据。基于标记后的日志，你可以在展示日志时决定是否对被标记信息进行脱敏处理，从而提升日志脱敏功能的灵活性。在 v8.2.0 中，TiFlash 实现了类似的日志脱敏功能增强。在 v8.3.0 中，PD 实现了类似的日志脱敏功能增强，要使用该功能，可以将 PD 配置项 `security.redact_info_log` 的值设置为 `marker`。
 
-    更多信息，请参考[用户文档](链接)。
+    更多信息，请参考[用户文档](/log-redaction.md)。
+
+  * 增强 TiKV 日志脱敏 [#17206](https://github.com/tikv/tikv/issues/17206) @[lucasliang](https://github.com/LykxSassinator)
+
+    TiDB v8.0.0 增强了日志脱敏功能，支持控制是否使用标记符号 `‹ ›` 包裹 TiDB 日志中的用户数据。基于标记后的日志，你可以在展示日志时决定是否对被标记信息进行脱敏处理，从而提升日志脱敏功能的灵活性。在 v8.2.0 中，TiFlash 实现了类似的日志脱敏功能增强。在 v8.3.0 中，TiKV 实现了类似的日志脱敏功能增强，要使用该功能，可以将 TiKV 配置项 `security.redact_info_log` 的值设置为 `marker`。
+
+    更多信息，请参考[用户文档](/log-redaction.md)。
 
 ### 数据迁移
 
