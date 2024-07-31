@@ -176,6 +176,15 @@ summary: 详细介绍在使用 TiUP 部署的 TiDB 集群或 DM 集群上如何�
     - `-N/--node`：支持只收集指定节点的数据，格式为 `ip:port`。
     - `--include`：只收集特定类型的数据，可选值为 `system`，`monitor`，`log`，`config`，`db_vars`。如需同时列出多种类型的数据，你可以使用逗号 `,` 来分割不同的数据类型。
     - `--exclude`：不收集特定类型的数据，可选值为 `system`，`monitor`，`log`，`config`，`db_vars`。如需同时列出多种类型的数据，你可以使用逗号 `,` 来分割不同的数据类型。
+    - `--metricsfilter`：只收集指定的 Prometheus 监控指标。你可以使用以逗号分隔的指标前缀列表来指定要收集的指标。例如，`--metricsfilter=tidb,pd` 将收集以 `tidb` 开头的指标和以 `pd` 开头的指标。
+
+        > **Tip:**
+        >
+        > 要查看可用的指标前缀，可以运行以下命令查询 TiDB 监控 API:
+        >
+        > ```bash
+        > curl -s 'http://${prometheus-host}:${prometheus-port}/api/v1/label/__name__/values' | jq -r '.data[]' | cut -d\_ -f1 | uniq -c | sort -rn
+        > ```
 
     运行 Diag 数据采集命令后，Diag 不会立即开始采集数据，而会在输出中提供预估数据量大小和数据存储路径，并询问你是否进行数据收集。例如：
 
