@@ -21,6 +21,7 @@ summary: TiUP 可用于 TiDB 升级。升级过程中需注意不支持 TiFlash 
 > 3. 集群中有 DDL 语句正在被执行时（通常为 `ADD INDEX` 和列类型变更等耗时较久的 DDL 语句），**请勿进行**升级操作。在升级前，建议使用 [`ADMIN SHOW DDL`](/sql-statements/sql-statement-admin-show-ddl.md) 命令查看集群中是否有正在进行的 DDL Job。如需升级，请等待 DDL 执行完成或使用 [`ADMIN CANCEL DDL`](/sql-statements/sql-statement-admin-cancel-ddl.md) 命令取消该 DDL Job 后再进行升级。
 > 4. 从 TiDB v7.1 版本升级至更高的版本时，可以不遵循上面的限制 2 和 3，请参考[平滑升级 TiDB 的限制](/smooth-upgrade-tidb.md#使用限制)。
 > 5. 在使用 TiUP 升级 TiDB 集群之前，务必阅读[用户操作限制](/smooth-upgrade-tidb.md#用户操作限制)。
+> 6. 如果当前集群版本为 TiDB 7.6-8.2，升级目标版本 >= 8.3，并且开启了实验特性[加速建表](/accelerated-table-creation.md)，请先关闭该实验特性，等升级完成后再按需开启。否则集群中会残留部分该实验特性新增的元数据 KV。从 v8.3.0 开始实验特性[加速建表](/accelerated-table-creation.md)被集成常规 DDL 执行路径中，不再产生该类 KV。
 
 > **注意：**
 >
