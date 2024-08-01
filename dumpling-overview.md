@@ -37,7 +37,7 @@ TiDB 还提供了其他工具，你可以根据需要选择使用：
 - 支持导出到 Amazon S3 云盘。
 - 针对 TiDB 进行了更多优化：
     - 支持配置 TiDB 单条 SQL 内存限制。
-    - 针对 TiDB v4.0.0 及更新版本，如果 Dumpling 能够直接连接到 PD，则支持自动调整 TiDB GC 时间。
+    - 针对 TiDB v4.0.0 及更新版本，如果 Dumpling 能够访问 TiDB 集群的 PD 地址以及 [`INFORMATION_SCHEMA.CLUSTER_INFO`](/information-schema/information-schema-cluster-info.md) 表，则支持自动调整 [GC](/garbage-collection-overview.md) 的 safe point 从而阻塞 GC。
     - 使用 TiDB 的隐藏列 `_tidb_rowid` 优化了单表内数据的并发导出性能。
     - 对于 TiDB 可以设置 [tidb_snapshot](/read-historical-data.md#操作流程) 的值指定备份数据的时间点，从而保证备份的一致性，而不是通过 `FLUSH TABLES WITH READ LOCK` 来保证备份一致性。
 
@@ -296,7 +296,7 @@ Dumpling 导出 TiDB 较大单表（超过 1 TB）时，可能会因为导出数
 
 ### 手动设置 TiDB GC 时间
 
-如果导出的 TiDB 版本为 v4.0.0 或更新版本，并且 Dumpling 可以访问 TiDB 集群的 PD 地址，Dumpling 会自动配置延长 GC 时间且不会对原集群造成影响。
+当导出的数据量少于 1 TB，导出的 TiDB 版本为 v4.0.0 或更新版本，且 Dumpling 可以访问 TiDB 集群的 PD 地址以及 [`INFORMATION_SCHEMA.CLUSTER_INFO`](/information-schema/information-schema-cluster-info.md) 表时，Dumpling 会自动调整 GC 的 safe point 从而阻塞 GC 且不会对原集群造成影响。
 
 但是，在以下场景中，Dumpling 无法自动调整 GC 时间：
 
