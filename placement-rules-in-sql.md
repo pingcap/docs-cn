@@ -303,7 +303,7 @@ PARTITION BY RANGE( YEAR(purchased) ) (
 - `p4` 分区将会应用 `storagefornewdata` 策略
 - `p1`、`p2`、`p3` 分区将会应用表 `t1` 的放置策略 `companystandardpolicy`
 - 全局索引 `idx` 将应用与表 `t1` 相同的 `companystandardpolicy` 放置策略
-- 如果没有为表 `t1`、`p1`、`p2` 和 `p3` 分区指定放置策略，全局索引 `idx` 将继承数据库默认策略或全局默认策略
+- 如果没有为表 `t1` 指定放置策略，`p1`、`p2` 和 `p3` 分区以及全局索引 `idx` 将继承数据库默认策略或全局默认策略
 
 给分区绑定放置策略后，你可以更改指定分区的放置策略。示例如下：
 

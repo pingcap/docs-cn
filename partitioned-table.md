@@ -1705,7 +1705,7 @@ CREATE TABLE t1 (
 ERROR 1503 (HY000): A CLUSTERED INDEX must include all columns in the table's partitioning function
 ```
 
-聚簇索引不能成为全局索引，是因为如果聚簇索引是全局索引，则表将不再分区。这是因为聚类索引的键也是记录键，应该位于分区级别上，但全局索引位于表级别，这就造成了冲突。
+聚簇索引不能成为全局索引，是因为如果聚簇索引是全局索引，则表将不再分区。这是因为聚簇索引的键也是行数据的键，而行数据应该是分区级别的，但全局索引是表级别，这就造成了冲突。
 
 你可以通过查询 [`information_schema.tidb_indexes`](/information-schema/information-schema-tidb-indexes.md) 表并检查表结构来识别全局索引。
 
