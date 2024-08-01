@@ -1631,8 +1631,6 @@ PARTITIONS 4;
 
 DDL 变更时，添加唯一索引也需要考虑到这个限制。比如创建了这样一个表：
 
-{{< copyable "sql" >}}
-
 ```sql
 CREATE TABLE t_no_pk (c1 INT, c2 INT)
     PARTITION BY RANGE(c1) (
@@ -1664,6 +1662,66 @@ CREATE TABLE t (a varchar(20), b blob,
 
 ```sql
 ERROR 1503 (HY000): A UNIQUE INDEX must include all columns in the table's partitioning function
+```
+
+#### 全局索引
+
+如果你需要创建的唯一索引**不包含分区表达式中使用的所有列**，可以通过启用 [`tidb_enable_global_index`](/system-variables.md#tidb_enable_global_index-从-v760-版本开始引入) 系统变量来实现。
+
+以前，分区表上的索引是为每个分区创建的，因此有一个限制，即所有唯一键都需要包含所有分区列。唯一性只能在每个分区内强制执行。全局索引将在表级别创建，因此无论分区如何，它都可以强制执行唯一性。注意，全局索引对分区管理有影响，`DROP`、`TRUNCATE` 和 `REORGANIZE PARTITION` 也需要管理表级全局索引。
+
+启用该变量后，任何不符合前述约束条件的唯一索引都将自动成为全局索引。
+
+```sql
+SET tidb_enable_global_index = ON;
+
+CREATE TABLE t1 (
+    col1 INT NOT NULL,
+    col2 DATE NOT NULL,
+    col3 INT NOT NULL,
+    col4 INT NOT NULL,
+    UNIQUE KEY uidx12(col1, col2),
+    UNIQUE KEY uidx3(col3)
+)
+PARTITION BY HASH(col3)
+PARTITIONS 4;
+```
+
+在上面示例中，唯一索引 `uidx12` 将隐式地成为全局索引，但 `uidx3` 仍是常规的唯一索引。
+
+请注意，**聚簇索引**不能成为全局索引，如下例所示：
+
+```sql
+SET tidb_enable_global_index = ON;
+
+CREATE TABLE t1 (
+    col1 INT NOT NULL,
+    col2 DATE NOT NULL,
+    PRIMARY KEY (col2) clustered
+) PARTITION BY HASH(col1) PARTITIONS 5;
+```
+
+```
+ERROR 1503 (HY000): A CLUSTERED INDEX must include all columns in the table's partitioning function
+```
+
+聚簇索引不能成为全局索引，是因为如果聚簇索引是全局索引，则表将不再分区。这是因为聚类索引的键也是记录键，应该位于分区级别上，但全局索引位于表级别，这就造成了冲突。
+
+你可以通过查询 [`information_schema.tidb_indexes`](/information-schema/information-schema-tidb-indexes.md) 表并检查表结构来识别全局索引。
+
+```sql
+SELECT * FROM information_schema.tidb_indexes WHERE table_name='t1';
+```
+
+```
++--------------+------------+------------+----------+--------------+-------------+----------+---------------+------------+----------+------------+-----------+-----------+
+| TABLE_SCHEMA | TABLE_NAME | NON_UNIQUE | KEY_NAME | SEQ_IN_INDEX | COLUMN_NAME | SUB_PART | INDEX_COMMENT | Expression | INDEX_ID | IS_VISIBLE | CLUSTERED | IS_GLOBAL |
++--------------+------------+------------+----------+--------------+-------------+----------+---------------+------------+----------+------------+-----------+-----------+
+| test         | t1         |          0 | uidx12   |            1 | col1        |     NULL |               | NULL       |        1 | YES        | NO        |         1 |
+| test         | t1         |          0 | uidx12   |            2 | col2        |     NULL |               | NULL       |        1 | YES        | NO        |         1 |
+| test         | t1         |          0 | uidx3    |            1 | col3        |     NULL |               | NULL       |        2 | YES        | NO        |         0 |
++--------------+------------+------------+----------+--------------+-------------+----------+---------------+------------+----------+------------+-----------+-----------+
+3 rows in set (0.00 sec)
 ```
 
 ### 关于函数的分区限制

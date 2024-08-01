@@ -1919,13 +1919,17 @@ mysql> SELECT job_info FROM mysql.analyze_jobs ORDER BY end_time DESC LIMIT 1;
 
 ### `tidb_enable_global_index` <span class="version-mark">从 v7.6.0 版本开始引入</span>
 
+> **警告：**
+>
+> 该变量控制的功能为实验特性，不建议在生产环境中使用。该功能可能会在未事先通知的情况下发生变化或删除。如果发现 bug，请在 GitHub 上提 [issue](https://github.com/pingcap/tidb/issues) 反馈。
+
 - 作用域：SESSION | GLOBAL
 - 是否持久化到集群：是
 - 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：否
 - 类型：布尔型
 - 默认值：`OFF`
 - 可选值：`OFF`，`ON`
-- 这个变量用于控制是否支持对分区表创建 `Global index`。`Global index` 当前正处于开发阶段，**不推荐修改该变量值**。
+- 该变量控制是否支持为分区表创建 [`全局索引`](/partitioned-table.md#全局索引)。启用此变量后，TiDB 将创建唯一索引，该索引不包含分区表达式中的所有列。
 
 ### `tidb_enable_non_prepared_plan_cache`
 
