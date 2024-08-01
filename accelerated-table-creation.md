@@ -8,7 +8,7 @@ aliases: ['/zh/tidb/dev/ddl-v2/']
 
 TiDB v7.6.0 引入了系统变量 [`tidb_ddl_version`](https://docs.pingcap.com/zh/tidb/v7.6/system-variables#tidb_ddl_version-从-v760-版本开始引入) 实现支持加速建表，可提升大批量建表的速度。从 v8.0.0 开始，该系统变量更名为 [`tidb_enable_fast_create_table`](/system-variables.md#tidb_enable_fast_create_table-从-v800-版本开始引入)。从 v8.3.0 开始，加速建表相关优化集成进了常规的 DDL 执行流程，同样通过该参数控制。
 
-开启加速建表后，同时提交到同一个 TiDB 节点的相同 schema 的建表语句会被合并为批量建表语句，以提高建表性能。因此为了提高建表性能，需要尽量连接相同的 TiDB 节点并发创建同 schema 下的表，并适当提高并发度。
+开启加速建表后，同时提交到同一个 TiDB 节点的相同 schema 的建表语句会被合并为批量建表语句，以提高建表性能。因此为了提高建表性能，需要尽量连接相同的 TiDB 节点并发创建同一个 schema 下的表，并适当提高并发度。
 
 合并后的批量建表语句在同一个事务内执行，如果其中有一个失败，所有语句同时失败。
 
