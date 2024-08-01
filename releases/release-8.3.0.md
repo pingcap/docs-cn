@@ -78,6 +78,16 @@ TiDB 版本：8.3.0
     当应用代码通过 [Cursor Fetch](/develop/dev-guide-connection-parameters.md#使用-streamingresult-流式获取执行结果) 获取结果集时，TiDB 通常会将完整结果保存至 TiDB ，再分批返回给客户端。如果结果集过大，可能会触发临时落盘。自 v8.3.0 开始，通过设置系统变量[`tidb_enable_lazy_cursor_fetch`](/system-variables.md#tidb_enable_lazy_cursor_fetch-从-v830-版本开始引入) 为 `ON`，TiDB 不再把所有数据读取到 TiDB 节点，而是会随着客户端的读取逐步将数据传送至 TiDB 节点。在处理较大结果集时，这将会减少 TiDB 节点的内存使用，提升集群的稳定性。
 
     更多信息，请参考[用户文档](/system-variables.md#tidb_enable_lazy_cursor_fetch-从-v830-版本开始引入)。
+
+* SQL 绑定的增强 [#issue号](链接) @[time-and-fate](https://github.com/time-and-fate) **tw@lilin90** <!--1760-->
+
+    在 OLTP 负载环境中，绝大部分 SQL 的最优执行计划是固定的，因此对业务中的重要 SQL 实施执行计划绑定，可以减少执行计划变差的机会，提升系统稳定性。为了满足客户创建大量 SQL 绑定的需求，TiDB 对 SQL 绑定的能力和体验进行了增强，其中包括：
+
+    - 用单条 SQL 从多个历史执行计划中创建 SQL 绑定
+    - 从历史执行计划创建绑定不再受表数量的限制
+    - SQL 绑定支持更多的优化器提示，能够更稳定重现原执行计划
+
+    更多信息，请参考[用户文档](/sql-plan-management.md)。
     
 ### 高可用
 
