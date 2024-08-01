@@ -68,6 +68,7 @@ tiup br validate decode --field="end-version" \
 > - 从 BR v7.6.0 开始，为了解决大规模 Region 场景下可能出现的恢复瓶颈问题，BR 支持通过粗粒度打散 Region 的算法加速恢复（实验特性）。可以通过指定命令行参数 `--granularity="coarse-grained"` 来启用此功能。
 > - 从 BR v8.0.0 开始，通过粗粒度打散 Region 算法进行快照恢复的功能正式 GA，并默认启用。通过采用粗粒度打散 Region 算法、批量创建库表、降低 SST 文件下载和 Ingest 操作之间的相互影响、加速表统计信息恢复等改进措施，快照恢复的速度有大幅提升。在实际案例中，快照恢复的 SST 文件下载速度最高提升约 10 倍，单个 TiKV 节点的数据恢复速度稳定在 1.2 GiB/s，端到端的恢复速度大约提升 1.5 到 3 倍，并且能够在 1 小时内完成对 100 TiB 数据的恢复。
 > - 从 BR v8.2.0 开始，命令行参数 `--granularity` 被废弃，粗粒度打散 Region 算法默认启用。
+> - 从 BR v8.3.0 开始，快照恢复增加了对 TiKV 以及 TiFlash 磁盘可用空间大小的检查，包括在开始阶段根据需要恢复的 sst 文件大小检查 TiKV 以及 TiFlash 磁盘可用空间大小，同时也增加了在 TiKV （v8.3.0及以上）侧下载每个 sst 文件前对磁盘剩余空间的检查。如果可用空间检查失败，恢复任务会报错失败。你可以通过设置 `--check-requirements=false` 来选择跳过恢复任务开始阶段的检查，但 TiKV 侧下载文件前的磁盘空间检查不可以跳过。
 
 如果你需要恢复备份的快照数据，则可以使用 `tiup br restore full`。该命令的详细使用帮助可以通过执行 `tiup br restore full --help` 查看。
 
