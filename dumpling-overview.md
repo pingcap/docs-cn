@@ -37,7 +37,7 @@ Dumpling 具有以下优势：
 - 支持导出到 Amazon S3 云盘。
 - 针对 TiDB 进行了更多优化：
     - 支持配置 TiDB 单条 SQL 内存限制。
-    - 针对 TiDB v4.0.0 及更新版本，如果 Dumpling 能够访问 TiDB 集群的 PD 地址以及 [`INFORMATION_SCHEMA.CLUSTER_INFO`](/information-schema/information-schema-cluster-info.md) 表，则支持自动调整 [GC](/garbage-collection-overview.md#gc-机制简介) 的 safe point 从而阻塞 GC。
+    - 针对 TiDB v4.0.0 及更新版本，如果 Dumpling 能够访问 TiDB 集群的 PD 地址以及 [`INFORMATION_SCHEMA.CLUSTER_INFO`](/information-schema/information-schema-cluster-info.md) 表，则支持自动调整 [GC](/garbage-collection-overview.md) 的 safe point 从而阻塞 GC。
     - 使用 TiDB 的隐藏列 `_tidb_rowid` 优化了单表内数据的并发导出性能。
     - 对于 TiDB 可以设置 [tidb_snapshot](/read-historical-data.md#操作流程) 的值指定备份数据的时间点，从而保证备份的一致性，而不是通过 `FLUSH TABLES WITH READ LOCK` 来保证备份一致性。
 
