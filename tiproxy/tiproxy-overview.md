@@ -91,7 +91,7 @@ TiProxy 不适用于以下场景：
 
 3. 配置 TiProxy 实例。
 
-    为了保证 TiProxy 的高可用，建议部署至少 2 台 TiProxy 实例，并配置虚拟 IP 使流量路由到可用的 TiProxy 实例上。
+    为了保证 TiProxy 的高可用，建议部署至少 2 台 TiProxy 实例，并配置虚拟 IP（[`ha.virtual-ip`](/tiproxy/tiproxy-configuration.md#virtual-ip) 和 [`ha.interface`](/tiproxy/tiproxy-configuration.md#interface)）使流量路由到可用的 TiProxy 实例上。
 
     选择 TiProxy 的机型和实例数时需要考虑以下因素：
 

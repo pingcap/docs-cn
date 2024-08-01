@@ -33,7 +33,7 @@ global:
   deploy_dir: "/tidb-deploy"
   data_dir: "/tidb-data"
 component_versions:
-    tiproxy: "v1.2.0"
+  tiproxy: "v1.2.0"
 server_configs:
   tiproxy:
     ha.virtual-ip: "10.0.1.10/24"
