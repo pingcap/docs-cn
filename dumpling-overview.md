@@ -296,11 +296,7 @@ Dumpling 导出 TiDB 较大单表（超过 1 TB）时，可能会因为导出数
 
 ### 手动设置 TiDB GC 时间
 
-<<<<<<< HEAD
-如果导出的 TiDB 版本为 v4.0.0 或更新版本，并且 Dumpling 可以访问 TiDB 集群的 PD 地址，Dumpling 会自动配置延长 GC 时间且不会对原集群造成影响。
-=======
 当导出的数据量少于 1 TB，导出的 TiDB 版本为 v4.0.0 或更新版本，且 Dumpling 可以访问 TiDB 集群的 PD 地址以及 [`INFORMATION_SCHEMA.CLUSTER_INFO`](/information-schema/information-schema-cluster-info.md) 表时，Dumpling 会自动调整 GC 的 safe point 从而阻塞 GC 且不会对原集群造成影响。
->>>>>>> 85c9f77c0f (dumpling: update the gc info (#18215))
 
 但是，在以下场景中，Dumpling 无法自动调整 GC 时间：
 
