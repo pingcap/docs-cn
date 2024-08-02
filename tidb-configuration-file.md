@@ -726,6 +726,12 @@ opentracing.reporter 相关的设置。
 + 默认值：41s
 + 这个值必须是大于两倍 Raft 选举的超时时间。
 
+### `batch-policy`
+
++ 控制 TiDB 向 TiKV 发送请求的攒批策略，目前支持 "basic"、"standard" 和 "positive" 三种策略。设置为 "basic" 时，行为与之前版本保持一致，仅当 `max-batch-wait-time` 大于 0 且 TiKV 的负载超过 `overload-threshold` 会进行额外攒批；设置为 "standard" 时，TiDB 会根据最近请求到达时间间隔动态攒批，高吞吐场景能够获益；设置为 "positive" 时，TiDB 总会进行额外攒批，这通常用于在高吞吐压测场景中获得极致性能，但在低负荷场景下会引入不必要的攒批等待时间，导致性能回退。
++ 默认值："standard"
++ 可选值："basic", "standard", "positive"
+
 ### `max-batch-size`
 
 + 批量发送 rpc 封包的最大数量，如果不为 0，将使用 BatchCommands api 发送请求到 TiKV，可以在并发度高的情况降低 rpc 的延迟，推荐不修改该值。
