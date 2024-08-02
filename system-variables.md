@@ -3320,6 +3320,18 @@ v5.0 后，用户仍可以单独修改以上系统变量（会有废弃警告）
 - 默认值：`60s`
 - 刚重启的 TiFlash 可能不能正常提供服务。为了防止查询失败，TiDB 会限制 tidb-server 向刚重启的 TiFlash 节点发送查询。这个变量表示刚重启的 TiFlash 不被发送请求的时间范围。
 
+<<<<<<< HEAD
+=======
+### `tidb_enable_shared_lock_upgrade` <span class="version-mark">从 v8.3.0 版本开始引入</span>
+
+- 作用域：SESSION | GLOBAL
+- 是否持久化到集群：是
+- 类型：布尔型
+- 默认值：`OFF`
+- 该变量用于控制是否启用共享锁升级为排他锁的功能。当该变量值为 `ON` 时，TiDB 会尝试将共享锁升级为排他锁，以减少死锁的概率。该变量默认值为 `OFF`，表示不启用共享锁升级为排他锁的功能。
+如该变量和 [`tidb_enable_noop_functions`](#tidb_enable_noop_functions-span-classversion-mark从-v40-版本开始引入span) 同时开启，会覆盖 [`tidb_enable_noop_functions`](#tidb_enable_noop_functions-span-classversion-mark从-v40-版本开始引入span) 的设置。
+
+>>>>>>> a8de92e88629f34c616bd02f2c9bbb2cf6fa085d
 ### `tidb_multi_statement_mode` <span class="version-mark">从 v4.0.11 版本开始引入</span>
 
 - 作用域：SESSION | GLOBAL
