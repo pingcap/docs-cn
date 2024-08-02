@@ -14,15 +14,16 @@ aliases: ['/docs-cn/dev/sql-statements/sql-statement-show-databases/','/docs-cn/
 
 **ShowDatabasesStmt:**
 
-![ShowDatabasesStmt](/media/sqlgram/ShowDatabasesStmt.png)
+```ebnf+diagram
+ShowDatabasesStmt ::=
+    "SHOW" "DATABASES" ShowLikeOrWhere?
 
-**ShowLikeOrWhereOpt:**
-
-![ShowLikeOrWhereOpt](/media/sqlgram/ShowLikeOrWhereOpt.png)
+ShowLikeOrWhere ::=
+    "LIKE" SimpleExpr
+|   "WHERE" Expression
+```
 
 ## 示例
-
-{{< copyable "sql" >}}
 
 ```sql
 SHOW DATABASES;
@@ -40,8 +41,6 @@ SHOW DATABASES;
 4 rows in set (0.00 sec)
 ```
 
-{{< copyable "sql" >}}
-
 ```sql
 CREATE DATABASE mynewdb;
 ```
@@ -49,8 +48,6 @@ CREATE DATABASE mynewdb;
 ```
 Query OK, 0 rows affected (0.10 sec)
 ```
-
-{{< copyable "sql" >}}
 
 ```sql
 SHOW DATABASES;
@@ -78,3 +75,4 @@ SHOW DATABASES;
 * [SHOW SCHEMAS](/sql-statements/sql-statement-show-schemas.md)
 * [DROP DATABASE](/sql-statements/sql-statement-drop-database.md)
 * [CREATE DATABASE](/sql-statements/sql-statement-create-database.md)
+* [`INFORMATION_SCHEMA.SCHEMATA`](/information-schema/information-schema-schemata.md)

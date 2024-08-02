@@ -31,13 +31,34 @@ Info: {"sink-uri":"kafka://127.0.0.1:9092/topic-name?protocol=canal-json&kafka-v
 - `--target-ts`：指定 changefeed 的目标 TSO。TiCDC 集群拉取数据直到这个 TSO 停止。默认为空，即 TiCDC 不会自动停止。
 - `--config`：指定 changefeed 配置文件，详见：[TiCDC Changefeed 配置参数](/ticdc/ticdc-changefeed-config.md)。
 
+## 支持的 Kafka 版本
+
+TiCDC 与支持的 Kafka 最低版本对应关系如下：
+
+| TiCDC 版本               | 支持的 Kafka 最低版本 |
+| :-----------------------| :------------------ |
+| TiCDC >= v8.1.0          | 2.1.0              |
+| v7.6.0 <= TiCDC < v8.1.0 | 2.4.0              |
+| v7.5.2 <= TiCDC < v8.0.0 | 2.1.0              |
+| v7.5.0 <= TiCDC < v7.5.2 | 2.4.0              |
+| v6.5.0 <= TiCDC < v7.5.0 | 2.1.0              |
+| v6.1.0 <= TiCDC < v6.5.0 | 2.0.0              |
+
 ## Sink URI 配置 `kafka`
 
 Sink URI 用于指定 TiCDC 目标系统的连接信息，遵循以下格式：
 
 ```shell
-[scheme]://[userinfo@][host]:[port][/path]?[query_parameters]
+[scheme]://[host]:[port][/path]?[query_parameters]
 ```
+
+> **Tip:**
+>
+> 如果下游 Kafka 有多个主机或端口，可以在 Sink URI 中配置多个 `[host]:[port]`。例如：
+>
+> ```shell
+> [scheme]://[host]:[port],[host]:[port],[host]:[port][/path]?[query_parameters]
+> ```
 
 一个通用的配置样例如下所示：
 
@@ -51,15 +72,15 @@ URI 中可配置的的参数如下：
 | :------------------ | :------------------------------------------------------------ |
 | `127.0.0.1`          | 下游 Kafka 对外提供服务的 IP。                                 |
 | `9092`               | 下游 Kafka 的连接端口。                                          |
-| `topic-name`           | 变量，使用的 Kafka topic 名字。                                      |
-| `kafka-version`      | 下游 Kafka 版本号（可选，默认值 `2.4.0`，目前支持的最低版本为 `0.11.0.2`，最高版本为 `3.2.0`。该值需要与下游 Kafka 的实际版本保持一致）。 |
+| `topic-name`         | 变量，使用的 Kafka topic 名字。                                      |
+| `kafka-version`      | 下游 Kafka 版本号。该值需要与下游 Kafka 的实际版本保持一致。 |
 | `kafka-client-id`    | 指定同步任务的 Kafka 客户端的 ID（可选，默认值为 `TiCDC_sarama_producer_同步任务的 ID`）。 |
 | `partition-num`      | 下游 Kafka partition 数量（可选，不能大于实际 partition 数量，否则创建同步任务会失败，默认值 `3`）。|
 | `max-message-bytes`  | 每次向 Kafka broker 发送消息的最大数据量（可选，默认值 `10MB`）。从 v5.0.6 和 v4.0.6 开始，默认值分别从 64MB 和 256MB 调整至 10 MB。|
 | `replication-factor` | Kafka 消息保存副本数（可选，默认值 `1`），需要大于等于 Kafka 中 [`min.insync.replicas`](https://kafka.apache.org/33/documentation.html#brokerconfigs_min.insync.replicas) 的值。 |
 | `required-acks`      | 在 `Produce` 请求中使用的配置项，用于告知 broker 需要收到多少副本确认后才进行响应。可选值有：`0`（`NoResponse`：不发送任何响应，只有 TCP ACK），`1`（`WaitForLocal`：仅等待本地提交成功后再响应）和 `-1`（`WaitForAll`：等待所有同步副本提交后再响应。最小同步副本数量可通过 broker 的 [`min.insync.replicas`](https://kafka.apache.org/33/documentation.html#brokerconfigs_min.insync.replicas) 配置项进行配置）。（可选，默认值为 `-1`）。                      |
 | `compression`        | 设置发送消息时使用的压缩算法（可选值为 `none`、`lz4`、`gzip`、`snappy` 和 `zstd`，默认值为 `none`）。注意 Snappy 压缩文件必须遵循[官方 Snappy 格式](https://github.com/google/snappy)。不支持其他非官方压缩格式。|
-| `protocol` | 输出到 Kafka 的消息协议，可选值有 `canal-json`、`open-protocol`、`avro`、`maxwell`。 |
+| `protocol` | 输出到 Kafka 的消息协议，可选值有 `canal-json`、`open-protocol`、`avro`、`debezium` 和 `simple`。 |
 | `auto-create-topic` | 当传入的 `topic-name` 在 Kafka 集群不存在时，TiCDC 是否要自动创建该 topic（可选，默认值 `true`）。 |
 | `enable-tidb-extension` | 可选，默认值是 `false`。当输出协议为 `canal-json` 时，如果该值为 `true`，TiCDC 会发送 [WATERMARK 事件](/ticdc/ticdc-canal-json.md#watermark-event)，并在 Kafka 消息中添加 TiDB 扩展字段。从 6.1.0 开始，该参数也可以和输出协议 `avro` 一起使用。如果该值为 `true`，TiCDC 会在 Kafka 消息中添加[三个 TiDB 扩展字段](/ticdc/ticdc-avro-protocol.md#tidb-扩展字段)。|
 | `max-batch-size` |  从 v4.0.9 开始引入。当消息协议支持把多条变更记录输出至一条 Kafka 消息时，该参数用于指定这一条 Kafka 消息中变更记录的最多数量。目前，仅当 Kafka 消息的 `protocol` 为 `open-protocol` 时有效（可选，默认值 `16`）。|
@@ -249,7 +270,7 @@ Topic 表达式的基本规则为 `[prefix][{schema}][middle][{table}][suffix]`�
 partition 分发器用 `partition = "xxx"` 来指定，支持 `default`、`index-value`、`columns`、`table` 和 `ts` 共五种 partition 分发器，分发规则如下：
 
 - `default`：默认使用 table 分发规则。使用所属库名和表名计算 partition 编号，一张表的数据被发送到相同的 partition。单表数据只存在于一个 partition 中并保证有序，但是发送吞吐量有限，无法通过添加消费者的方式提升消费速度。
-- `index-value`：使用事件所属表的主键、唯一索引或由 `index-name` 指定的索引的值计算 partition 编号，一张表的数据被发送到多个 partition。单表数据被发送到多个 partition 中，每个 partition 中的数据有序，可以通过添加消费者的方式提升消费速度。
+- `index-value`：使用事件所属表的主键、唯一索引或由 `index` 配置指定的索引的值计算 partition 编号，一张表的数据被发送到多个 partition。单表数据被发送到多个 partition 中，每个 partition 中的数据有序，可以通过添加消费者的方式提升消费速度。
 - `columns`：使用由 `columns` 指定的列的值计算 partition 编号。一张表的数据被发送到多个 partition。单表数据被发送到多个 partition 中，每个 partition 中的数据有序，可以通过添加消费者的方式提升消费速度。
 - `table`：使用事件所属的表的库名和表名计算 partition 编号。
 - `ts`：使用事件的 commitTs 计算 partition 编号。一张表的数据被发送到多个 partition。单表数据被发送到多个 partition 中，每个 partition 中的数据有序，可以通过添加消费者的方式提升消费速度。一条数据的多次修改可能被发送到不同的 partition 中。消费者消费进度不同可能导致消费端数据不一致。因此，消费端需要对来自多个 partition 的数据按 commitTs 排序后再进行消费。
@@ -260,14 +281,14 @@ partition 分发器用 `partition = "xxx"` 来指定，支持 `default`、`index
 [sink]
 dispatchers = [
     {matcher = ['test.*'], partition = "index-value"},
-    {matcher = ['test1.*'], partition = "index-value", index-name = "index1"},
+    {matcher = ['test1.*'], partition = "index-value", index = "index1"},
     {matcher = ['test2.*'], partition = "columns", columns = ["id", "a"]},
     {matcher = ['test3.*'], partition = "table"},
 ]
 ```
 
 - 任何属于库 `test` 的表均使用 `index-value` 分发规则，即使用主键或者唯一索引的值计算 partition 编号。如果有主键则使用主键，否则使用最短的唯一索引。
-- 任何属于库 `test1` 的表均使用 `index-value` 分发规则，并且使用名为 `index1` 的索引的所有列的值计算 partition 编号。如果指定的索引不存在，则报错。注意，`index-name` 指定的索引必须是唯一索引。
+- 任何属于库 `test1` 的表均使用 `index-value` 分发规则，并且使用名为 `index1` 的索引的所有列的值计算 partition 编号。如果指定的索引不存在，则报错。注意，`index` 指定的索引必须是唯一索引。
 - 任何属于库 `test2` 的表均使用 `columns` 分发规则，并且使用列 `id` 和 `a` 的值计算 partition 编号。如果任一列不存在，则报错。
 - 任何属于库 `test3` 的表均使用 `table` 分发规则。
 - 对于属于库 `test4` 的表，因为不匹配上述任何一个规则，所以使用默认的 `default`，即 `table` 分发规则。
@@ -373,12 +394,16 @@ Kafka Topic 对可以接收的消息大小有限制，该限制由 [`max.message
 large-message-handle-compression = "none"
 ```
 
+开启了 `large-message-handle-compression` 之后，消费者收到的消息经过特定压缩协议编码，消费者应用程序需要使用指定的压缩协议进行数据解码。
+
 该功能和 Kafka producer 的压缩功能不同：
 
-* `large-message-handle-compression` 中指定的压缩算法，它启用的是对单条 Kafka 消息进行压缩，并且压缩是在与消息大小限制参数比较之前进行。
-* 用户可以在 `sink-uri` 中配置压缩算法，它所启用的压缩功能应用在整个发送数据请求，其中包含多条 Kafka 消息，并且压缩是在和消息大小限制参数比较之后进行的。
+* `large-message-handle-compression` 中指定的压缩算法是对单条 Kafka 消息进行压缩，并且压缩是在与消息大小限制参数比较之前进行。
+* 你也可以同时通过 [`sink-uri`](#sink-uri-配置-kafka) 的 `compression` 参数配置压缩算法，该配置启用的压缩功能应用在整个发送数据请求，其中包含多条 Kafka 消息。
 
-开启了 `large-message-handle-compression` 之后，消费者收到的消息经过特定压缩协议编码，消费者应用程序需要使用指定的压缩协议进行数据解码。
+如果设置了 `large-message-handle-compression`，TiCDC 在收到一条消息后，先将该消息与消息大小限制参数的值进行对比，大于该消息大小限制的消息会被压缩。如果同时还设置了 [`sink-uri`](#sink-uri-配置-kafka) 的 `compression`，TiCDC 会根据 `sink-uri` 的设置，在 sink 级别再次对整个发送数据请求进行压缩。
+
+两种压缩方法的压缩率的计算方法均为：`compression ratio = 压缩前的大小 / 压缩后的大小 * 100`
 
 ### 只发送 Handle Key
 

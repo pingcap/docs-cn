@@ -11,15 +11,21 @@ TiDB 集群增量数据包含在某个时间段的起始和结束两个快照的
 >
 > 当前该功能已经停止开发迭代，推荐你选择[日志备份与恢复功能](/br/br-pitr-guide.md)代替。
 
+## 使用限制
+
+由于增量备份的恢复依赖于备份时间点的库表快照来过滤增量 DDL，因此对于增量备份过程中删除的表，在恢复后可能仍然存在，需要手动删除。
+
+增量备份尚不支持批量重命名表的操作。如果在增量备份过程中发生了批量重命名表的操作，则有可能造成恢复失败。建议在批量重命名表后进行一次全量备份，并在恢复时使用最新的全量备份替代增量数据。
+
 ## 对集群进行增量备份
 
-使用 `br backup` 进行增量备份只需要指定**上一次的备份时间戳** `--lastbackupts`，br 命令行工具会判定需要备份 `lastbackupts` 和当前时间之间增量数据。使用 `validate` 指令获取上一次备份的时间戳，示例如下：
+使用 `tiup br backup` 进行增量备份只需要指定**上一次的备份时间戳** `--lastbackupts`，br 命令行工具会判定需要备份 `lastbackupts` 和当前时间之间增量数据。使用 `validate` 指令获取上一次备份的时间戳，示例如下：
 
 ```shell
 LAST_BACKUP_TS=`tiup br validate decode --field="end-version" --storage "s3://backup-101/snapshot-202209081330?access-key=${access-key}&secret-access-key=${secret-access-key}"| tail -n1`
 ```
 
-备份 `(LAST_BACKUP_TS, current timestamp]` 之间的增量数据，以及这段时间内的 DDL：
+备份 `(LAST_BACKUP_TS, current PD timestamp]` 之间的增量数据，以及这段时间内的 DDL：
 
 ```shell
 tiup br backup full --pd "${PD_IP}:2379" \

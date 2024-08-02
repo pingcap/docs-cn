@@ -283,7 +283,7 @@ TiFlash 当前支持的加密算法与 TiKV 一致，包括 AES128-CTR、AES192-
 
 多个 TiFlash 实例可共用一个主密钥，并且也可以和 TiKV 共用一个主密钥。在生产环境中，推荐通过 AWS KMS 提供主密钥。另外，你也可以通过文件形式提供主密钥。具体的主密钥生成方式和格式均与 TiKV 相同。
 
-TiFlash 使用数据密钥加密所有落盘的数据文件，包括数据文件、Schmea 文件和计算过程中产生的临时数据文件等。默认情况下，TiFlash 每周自动轮换数据密钥，该轮换周期也可根据需要自定义配置。密钥轮换时，TiFlash 不会重写全部现有文件来替换密钥，但如果集群的写入量恒定，则后台 compaction 任务将会用最新的数据密钥对数据重新加密。TiFlash 跟踪密钥和加密方法，并使用密钥信息对读取的内容进行解密。
+TiFlash 使用数据密钥加密所有落盘的数据文件，包括数据文件、Schema 文件和计算过程中产生的临时数据文件等。默认情况下，TiFlash 每周自动轮换数据密钥，该轮换周期也可根据需要自定义配置。密钥轮换时，TiFlash 不会重写全部现有文件来替换密钥，但如果集群的写入量恒定，则后台 compaction 任务将会用最新的数据密钥对数据重新加密。TiFlash 跟踪密钥和加密方法，并使用密钥信息对读取的内容进行解密。
 
 ### 创建密钥
 
@@ -400,19 +400,19 @@ TiFlash 在 v4.0.9 同样对加密元数据操作进行了优化，其兼容性�
 使用 BR 备份数据到 S3 时，若要启用 S3 服务端加密，需要传递 `--s3.sse` 参数并将参数值设置为 `aws:kms`。S3 将使用自己的 KMS 密钥进行加密。示例如下：
 
 ```
-./br backup full --pd <pd-address> --storage "s3://<bucket>/<prefix>" --s3.sse aws:kms
+tiup br backup full --pd <pd-address> --storage "s3://<bucket>/<prefix>" --s3.sse aws:kms
 ```
 
 若要使用用户创建和拥有的自定义 AWS KMS CMK，需另外传递 `--s3.sse-kms-key-id` 参数。此时，BR 进程和集群中的所有 TiKV 节点都需访问该 KMS CMK（例如，通过 AWS IAM），并且该 KMS CMK 必须与存储备份的 S3 bucket 位于同一 AWS 区域。建议通过 AWS IAM 向 BR 进程和 TiKV 节点授予对 KMS CMK 的访问权限。参见 AWS 文档中的 [IAM](https://docs.aws.amazon.com/zh_cn/IAM/latest/UserGuide/introduction.html)。示例如下：
 
 ```
-./br backup full --pd <pd-address> --storage "s3://<bucket>/<prefix>" --s3.sse aws:kms --s3.sse-kms-key-id 0987dcba-09fe-87dc-65ba-ab0987654321
+tiup br backup full --pd <pd-address> --storage "s3://<bucket>/<prefix>" --s3.sse aws:kms --s3.sse-kms-key-id 0987dcba-09fe-87dc-65ba-ab0987654321
 ```
 
 恢复备份时，不需要也不可指定 `--s3.sse` 和 `--s3.sse-kms-key-id` 参数。S3 将自动相应进行解密。用于恢复备份数据的 BR 进程和集群中的 TiKV 节点也需要访问 KMS CMK，否则恢复将失败。示例如下：
 
 ```
-./br restore full --pd <pd-address> --storage "s3://<bucket>/<prefix>"
+tiup br restore full --pd <pd-address> --storage "s3://<bucket>/<prefix>"
 ```
 
 ## BR Azure Blob Storage 服务端加密
@@ -426,13 +426,13 @@ TiFlash 在 v4.0.9 同样对加密元数据操作进行了优化，其兼容性�
 - 在 `backup` 命令中添加 `--azblob.encryption-scope` 参数，并设置为加密范围名：
 
     ```shell
-    ./br backup full --pd <pd-address> --storage "azure://<bucket>/<prefix>" --azblob.encryption-scope scope1
+    tiup br backup full --pd <pd-address> --storage "azure://<bucket>/<prefix>" --azblob.encryption-scope scope1
     ```
 
 - 在 URI 中添加 `encryption-scope`，并设置为加密范围名：
 
     ```shell
-    ./br backup full --pd <pd-address> --storage "azure://<bucket>/<prefix>?encryption-scope=scope1"
+    tiup br backup full --pd <pd-address> --storage "azure://<bucket>/<prefix>?encryption-scope=scope1"
     ```
 
 更多信息请参考 Azure 文档中的[上传具有加密范围的 blob](https://learn.microsoft.com/zh-cn/azure/storage/blobs/encryption-scope-manage?tabs=powershell#upload-a-blob-with-an-encryption-scope)。
@@ -440,7 +440,7 @@ TiFlash 在 v4.0.9 同样对加密元数据操作进行了优化，其兼容性�
 在恢复备份时，不需要指定加密范围，Azure Blob Storage 将自动进行解密。示例如下：
 
 ```shell
-./br restore full --pd <pd-address> --storage "azure://<bucket>/<prefix>"
+tiup br restore full --pd <pd-address> --storage "azure://<bucket>/<prefix>"
 ```
 
 ### 方法二：使用加密密钥
@@ -450,20 +450,20 @@ TiFlash 在 v4.0.9 同样对加密元数据操作进行了优化，其兼容性�
 - 在 `backup` 命令中添加 `--azblob.encryption-key` 参数，并设置为 AES256 加密密钥：
 
     ```shell
-    ./br backup full --pd <pd-address> --storage "azure://<bucket>/<prefix>" --azblob.encryption-key <aes256-key>
+    tiup br backup full --pd <pd-address> --storage "azure://<bucket>/<prefix>" --azblob.encryption-key <aes256-key>
     ```
 
 - 在 URI 中添加 `encryption-key`，并设置为 AES256 加密密钥。如果密钥包含 URI 保留字符，例如 `&`、`%` 等，需要先进行百分号编码：
 
     ```shell
-    ./br backup full --pd <pd-address> --storage "azure://<bucket>/<prefix>?encryption-key=<aes256-key>"
+    tiup br backup full --pd <pd-address> --storage "azure://<bucket>/<prefix>?encryption-key=<aes256-key>"
     ```
 
 - 在 BR 的环境变量中添加 `AZURE_ENCRYPTION_KEY`，并设置为 AES256 加密密钥。在运行前，请确保环境变量中的加密密钥是已知的，避免忘记密钥。
 
     ```shell
     export AZURE_ENCRYPTION_KEY=<aes256-key>
-    ./br backup full --pd <pd-address> --storage "azure://<bucket>/<prefix>"
+    tiup br backup full --pd <pd-address> --storage "azure://<bucket>/<prefix>"
     ```
 
 更多信息请参考 Azure 文档中的[在对 Blob 存储的请求中提供加密密钥](https://learn.microsoft.com/zh-cn/azure/storage/blobs/encryption-customer-provided-keys)。
@@ -473,18 +473,18 @@ TiFlash 在 v4.0.9 同样对加密元数据操作进行了优化，其兼容性�
 - 在 `restore` 命令中传递 `--azblob.encryption-key` 参数：
 
     ```shell
-    ./br restore full --pd <pd-address> --storage "azure://<bucket>/<prefix>" --azblob.encryption-key <aes256-key>
+    tiup br restore full --pd <pd-address> --storage "azure://<bucket>/<prefix>" --azblob.encryption-key <aes256-key>
     ```
 
 - 在 URI 中添加 `encryption-key`：
 
     ```shell
-    ./br restore full --pd <pd-address> --storage "azure://<bucket>/<prefix>?encryption-key=<aes256-key>"
+    tiup br restore full --pd <pd-address> --storage "azure://<bucket>/<prefix>?encryption-key=<aes256-key>"
     ```
 
 - 在 BR 的环境变量中添加 `AZURE_ENCRYPTION_KEY`：
 
     ```shell
     export AZURE_ENCRYPTION_KEY=<aes256-key>
-    ./br restore full --pd <pd-address> --storage "azure://<bucket>/<prefix>"
+    tiup br restore full --pd <pd-address> --storage "azure://<bucket>/<prefix>"
     ```

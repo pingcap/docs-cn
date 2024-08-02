@@ -17,9 +17,9 @@ TiDB 支持 MySQL 5.7 的权限管理系统，包括 MySQL 的语法和权限类
 
 ### 授予权限
 
-授予 `xxx` 用户对数据库 `test` 的读权限：
+[`GRANT`](/sql-statements/sql-statement-grant-privileges.md) 语句用于为 TiDB 中的用户分配权限。
 
-{{< copyable "sql" >}}
+授予 `xxx` 用户对数据库 `test` 的读权限：
 
 ```sql
 GRANT SELECT ON test.* TO 'xxx'@'%';
@@ -27,61 +27,101 @@ GRANT SELECT ON test.* TO 'xxx'@'%';
 
 为 `xxx` 用户授予所有数据库，全部权限：
 
-{{< copyable "sql" >}}
-
 ```sql
 GRANT ALL PRIVILEGES ON *.* TO 'xxx'@'%';
 ```
 
-默认情况下，如果指定的用户不存在，`GRANT` 语句将报错。该行为受 SQL Mode 中的 `NO_AUTO_CREATE_USER` 控制。
-
-{{< copyable "sql" >}}
+默认情况下，如果指定的用户不存在，[`GRANT`](/sql-statements/sql-statement-grant-privileges.md) 语句将报错。该行为受 [SQL 模式](/system-variables.md#sql_mode)中的 `NO_AUTO_CREATE_USER` 控制。
 
 ```sql
 SET sql_mode=DEFAULT;
-Query OK, 0 rows affected (0.00 sec)
+```
 
+```
+Query OK, 0 rows affected (0.00 sec)
+```
+
+```sql
 SELECT @@sql_mode;
+```
+
+```
 +-------------------------------------------------------------------------------------------------------------------------------------------+
 | @@sql_mode                                                                                                                                |
 +-------------------------------------------------------------------------------------------------------------------------------------------+
 | ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION |
 +-------------------------------------------------------------------------------------------------------------------------------------------+
 1 row in set (0.00 sec)
+```
 
+```sql
 SELECT * FROM mysql.user WHERE user='idontexist';
-Empty set (0.00 sec)
+```
 
-GRANT ALL PRIVILEGES ON test.* TO 'idontexist';
-ERROR 1105 (HY000): You are not allowed to create a user with GRANT
-
-SELECT user,host,authentication_string FROM mysql.user WHERE user='idontexist';
+```
 Empty set (0.00 sec)
 ```
 
-在下面的例子中，由于没有将 SQL Mode 设置为 `NO_AUTO_CREATE_USER`，用户 `idontexist` 会被自动创建且密码为空。**不推荐**使用这种方式，因为会带来安全风险：如果用户名拼写错误，会导致新用户被创建且密码为空。
+```sql
+GRANT ALL PRIVILEGES ON test.* TO 'idontexist';
+```
 
-{{< copyable "sql" >}}
+```
+ERROR 1105 (HY000): You are not allowed to create a user with GRANT
+```
+
+```sql
+SELECT user,host,authentication_string FROM mysql.user WHERE user='idontexist';
+```
+
+```
+Empty set (0.00 sec)
+```
+
+在下面的例子中，由于没有将 SQL 模式设置为 `NO_AUTO_CREATE_USER`，用户 `idontexist` 会被自动创建且密码为空。**不推荐**使用这种方式，因为会带来安全风险：如果用户名拼写错误，会导致新用户被创建且密码为空。
 
 ```sql
 SET @@sql_mode='ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION';
-Query OK, 0 rows affected (0.00 sec)
+```
 
+```
+Query OK, 0 rows affected (0.00 sec)
+```
+
+```sql
 SELECT @@sql_mode;
+```
+
+```
 +-----------------------------------------------------------------------------------------------------------------------+
 | @@sql_mode                                                                                                            |
 +-----------------------------------------------------------------------------------------------------------------------+
 | ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION |
 +-----------------------------------------------------------------------------------------------------------------------+
 1 row in set (0.00 sec)
+```
 
+```sql
 SELECT * FROM mysql.user WHERE user='idontexist';
+```
+
+```
 Empty set (0.00 sec)
+```
 
+```sql
 GRANT ALL PRIVILEGES ON test.* TO 'idontexist';
-Query OK, 1 row affected (0.05 sec)
+```
 
+```
+Query OK, 1 row affected (0.05 sec)
+```
+
+```sql
 SELECT user,host,authentication_string FROM mysql.user WHERE user='idontexist';
+```
+
+```
 +------------+------+-----------------------+
 | user       | host | authentication_string |
 +------------+------+-----------------------+
@@ -90,9 +130,7 @@ SELECT user,host,authentication_string FROM mysql.user WHERE user='idontexist';
 1 row in set (0.01 sec)
 ```
 
-`GRANT` 还可以模糊匹配地授予用户数据库的权限：
-
-{{< copyable "sql" >}}
+[`GRANT`](/sql-statements/sql-statement-grant-privileges.md) 还可以模糊匹配地授予用户数据库的权限：
 
 ```sql
 GRANT ALL PRIVILEGES ON `te%`.* TO genius;
@@ -101,8 +139,6 @@ GRANT ALL PRIVILEGES ON `te%`.* TO genius;
 ```
 Query OK, 0 rows affected (0.00 sec)
 ```
-
-{{< copyable "sql" >}}
 
 ```sql
 SELECT user,host,db FROM mysql.db WHERE user='genius';
@@ -121,9 +157,9 @@ SELECT user,host,db FROM mysql.db WHERE user='genius';
 
 ### 收回权限
 
-`REVOKE` 语句与 `GRANT` 对应：
+[`REVOKE`](/sql-statements/sql-statement-revoke-privileges.md) 语句允许系统管理员收回用户的权限。
 
-{{< copyable "sql" >}}
+`REVOKE` 语句的作用与 `GRANT` 相反：
 
 ```sql
 REVOKE ALL PRIVILEGES ON `test`.* FROM 'genius'@'localhost';
@@ -132,8 +168,6 @@ REVOKE ALL PRIVILEGES ON `test`.* FROM 'genius'@'localhost';
 > **注意：**
 >
 > `REVOKE` 收回权限时只做精确匹配，若找不到记录则报错。而 `GRANT` 授予权限时可以使用模糊匹配。
-
-{{< copyable "sql" >}}
 
 ```sql
 REVOKE ALL PRIVILEGES ON `te%`.* FROM 'genius'@'%';
@@ -144,8 +178,6 @@ ERROR 1141 (42000): There is no such grant defined for user 'genius' on host '%'
 ```
 
 关于模糊匹配和转义，字符串和 identifier：
-
-{{< copyable "sql" >}}
 
 ```sql
 GRANT ALL PRIVILEGES ON `te\%`.* TO 'genius'@'localhost';
@@ -159,8 +191,6 @@ Query OK, 0 rows affected (0.00 sec)
 
 以单引号包含的部分，是一个字符串。以反引号包含的部分，是一个 identifier。注意下面的区别：
 
-{{< copyable "sql" >}}
-
 ```sql
 GRANT ALL PRIVILEGES ON 'test'.* TO 'genius'@'localhost';
 ```
@@ -171,8 +201,6 @@ manual that corresponds to your MySQL server version for the right
 syntax to use near ''test'.* to 'genius'@'localhost'' at line 1
 ```
 
-{{< copyable "sql" >}}
-
 ```sql
 GRANT ALL PRIVILEGES ON `test`.* TO 'genius'@'localhost';
 ```
@@ -182,8 +210,6 @@ Query OK, 0 rows affected (0.00 sec)
 ```
 
 如果想将一些特殊的关键字做为表名，可以用反引号包含起来。比如：
-
-{{< copyable "sql" >}}
 
 ```sql
 CREATE TABLE `select` (id int);
@@ -199,8 +225,6 @@ Query OK, 0 rows affected (0.27 sec)
 
 查看当前用户的权限：
 
-{{< copyable "sql" >}}
-
 ```sql
 SHOW GRANTS;
 ```
@@ -215,23 +239,17 @@ SHOW GRANTS;
 
 或者：
 
-{{< copyable "sql" >}}
-
 ```sql
 SHOW GRANTS FOR CURRENT_USER();
 ```
 
 查看某个特定用户的权限：
 
-{{< copyable "sql" >}}
-
 ```sql
 SHOW GRANTS FOR 'user'@'host';
 ```
 
 例如，创建一个用户 `rw_user@192.168.%` 并为其授予 `test.write_table` 表的写权限，和全局读权限。
-
-{{< copyable "sql" >}}
 
 ```sql
 CREATE USER `rw_user`@`192.168.%`;
@@ -240,8 +258,6 @@ GRANT INSERT, UPDATE ON `test`.`write_table` TO `rw_user`@`192.168.%`;
 ```
 
 查看用户 `rw_user@192.168.%` 的权限。
-
-{{< copyable "sql" >}}
 
 ```sql
 SHOW GRANTS FOR `rw_user`@`192.168.%`;
@@ -290,6 +306,9 @@ TiDB 用户目前拥有的权限可以在 `INFORMATION_SCHEMA.USER_PRIVILEGES` �
 
 ```sql
 SELECT * FROM INFORMATION_SCHEMA.USER_PRIVILEGES WHERE grantee = "'root'@'%'";
+```
+
+```
 +------------+---------------+-------------------------+--------------+
 | GRANTEE    | TABLE_CATALOG | PRIVILEGE_TYPE          | IS_GRANTABLE |
 +------------+---------------+-------------------------+--------------+
@@ -483,11 +502,15 @@ SELECT * FROM INFORMATION_SCHEMA.USER_PRIVILEGES WHERE grantee = "'root'@'%'";
 
 需要拥有 `SUPER` 或者 `RESOURCE_GROUP_ADMIN` 权限。
 
+### SET RESOURCE GROUP
+
+当系统变量 [`tidb_resource_control_strict_mode`](/system-variables.md#tidb_resource_control_strict_mode-从-v820-版本开始引入) 设置为 `ON` 时，你需要有 `SUPER` 或者 `RESOURCE_GROUP_ADMIN` 或者 `RESOURCE_GROUP_USER` 权限才能执行该语句。
+
 ## 权限系统的实现
 
 ### 授权表
 
-以下几张系统表是非常特殊的表，权限相关的数据全部存储在这几张表内。
+以下几张 [`mysql` 系统表](/mysql-schema/mysql-schema-user.md)是非常特殊的表，权限相关的数据全部存储在这几张表内。
 
 - `mysql.user`：用户账户，全局权限
 - `mysql.db`：数据库级别的权限
@@ -495,8 +518,6 @@ SELECT * FROM INFORMATION_SCHEMA.USER_PRIVILEGES WHERE grantee = "'root'@'%'";
 - `mysql.columns_priv`：列级别的权限，当前暂不支持
 
 这几张表包含了数据的生效范围和权限信息。例如，`mysql.user` 表的部分数据：
-
-{{< copyable "sql" >}}
 
 ```sql
 SELECT User,Host,Select_priv,Insert_priv FROM mysql.user LIMIT 1;
@@ -519,15 +540,11 @@ SELECT User,Host,Select_priv,Insert_priv FROM mysql.user LIMIT 1;
 
 实现层面其实也只是包装了一层语法糖。例如删除用户会执行：
 
-{{< copyable "sql" >}}
-
 ```sql
 DELETE FROM mysql.user WHERE user='test';
 ```
 
 但是，不推荐手动修改授权表，建议使用 `DROP USER` 语句：
-
-{{< copyable "sql" >}}
 
 ```sql
 DROP USER 'test';
@@ -555,12 +572,6 @@ User+Host 可能会匹配 `user` 表里面多行，为了处理这种情况，`u
 
 ### 生效时机
 
-TiDB 启动时，将一些权限检查的表加载到内存，之后使用缓存的数据来验证权限。系统会周期性的将授权表从数据库同步到缓存，生效则是由同步的周期决定，目前这个值设定的是 5 分钟。
+TiDB 启动时，会将一些权限检查的表加载到内存，之后使用缓存的数据来验证权限。执行权限管理语句（如 `GRANT`、`REVOKE`、`CREATE USER` 和 `DROP USER`）将立即生效。
 
-修改了授权表，如果需要立即生效，可以手动调用：
-
-{{< copyable "sql" >}}
-
-```sql
-FLUSH PRIVILEGES;
-```
+使用 `INSERT`、`DELETE`、`UPDATE` 等语句手动修改 `mysql.user` 等授权表不会立即生效。该行为与 MySQL 兼容。如需立即生效，可以手动执行 [`FLUSH PRIVILEGES`](/sql-statements/sql-statement-flush-privileges.md) 语句更新权限的缓存。

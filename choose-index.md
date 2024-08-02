@@ -1,5 +1,6 @@
 ---
 title: 索引的选择
+summary: 介绍 TiDB 如何选择索引去读入数据，以及相关的一些控制索引选择的方式。
 aliases: ['/docs-cn/dev/choose-index/']
 ---
 
@@ -123,15 +124,15 @@ mysql> SHOW WARNINGS;
 
 1. 估算的行数量不准确？
 
-    一般是统计信息过期或者准确度不够造成的，可以重新执行 `analyze table` 或者修改 `analyze table` 的参数。
+    一般是统计信息过期或者准确度不够造成的，可以重新执行 `ANALYZE TABLE` 或者修改 `ANALYZE TABLE` 的参数。
 
 2. 统计信息准确，为什么读 TiFlash 更快，而优化器选择了 TiKV？
 
-    目前区别 TiFlash 和 TiKV 的代价模型还比较粗糙，可以调小 `tidb_opt_seek_factor` 的值，让优化器倾向于选择 TiFlash。
-    
+    目前区别 TiFlash 和 TiKV 的代价模型还比较粗糙，可以调小 [`tidb_opt_seek_factor`](/system-variables.md#tidb_opt_seek_factor) 的值，让优化器倾向于选择 TiFlash。
+
 3. 统计信息准确，某个索引要回表，但是它比另一个不用回表的索引实际执行更快，为什么选择了不用回表的索引？
 
-    碰到这种情况，可能是代价估算时对于回表的代价计算得过大，可以调小 `tidb_opt_network_factor`，降低回表的代价。
+    碰到这种情况，可能是代价估算时对于回表的代价计算得过大，可以调小 [`tidb_opt_network_factor`](/system-variables.md#tidb_opt_network_factor)，降低回表的代价。
 
 ## 控制索引的选择
 
@@ -143,7 +144,7 @@ mysql> SHOW WARNINGS;
 
 ## 使用多值索引
 
-[多值索引](/sql-statements/sql-statement-create-index.md#多值索引)和普通索引有所不同，TiDB 目前只会使用 [IndexMerge](/explain-index-merge.md) 来访问多值索引。因此要想使用多值索引进行数据访问，请确保`tidb_enable_index_merge` 被设置为 `ON`。
+[多值索引](/sql-statements/sql-statement-create-index.md#多值索引)和普通索引有所不同，TiDB 目前只会使用 [IndexMerge](/explain-index-merge.md) 来访问多值索引。因此要想使用多值索引进行数据访问，请确保 [`tidb_enable_index_merge`](/system-variables.md#tidb_enable_index_merge-从-v40-版本开始引入) 被设置为 `ON`。
 
 多值索引的使用限制请参考 [`CREATE INDEX`](/sql-statements/sql-statement-create-index.md#特性与限制)。
 

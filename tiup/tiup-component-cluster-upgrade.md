@@ -1,5 +1,6 @@
 ---
 title: tiup cluster upgrade
+summary: tiup cluster upgrade 命令用于将指定集群升级到特定版本。命令语法为 tiup cluster upgrade <cluster-name> <version> [flags]。可使用 --force 选项忽略升级过程的错误，强制替换二进制文件并启动集群。还可通过设置 --transfer-timeout 设置最长等待时间，超时后会跳过等待直接升级服务。其他选项包括 --ignore-config-check、--ignore-version-check、--offline 等。升级服务的日志将会输出。
 ---
 
 # tiup cluster upgrade
@@ -13,7 +14,7 @@ tiup cluster upgrade <cluster-name> <version> [flags]
 ```
 
 - `<cluster-name>` 为要操作的集群名字，如果忘记集群名字可通过[集群列表](/tiup/tiup-component-cluster-list.md)查看。
-- `<version>` 为要升级到的目标版本，例如 `v8.0.0`。目前仅允许升级到比当前集群更高的版本，不允许升级到比当前集群更低的版本，即不允许降级。同时也不允许升级成 nightly 版本。
+- `<version>` 为要升级到的目标版本，例如 `v8.2.0`。目前仅允许升级到比当前集群更高的版本，不允许升级到比当前集群更低的版本，即不允许降级。同时也不允许升级成 nightly 版本。
 
 ## 选项
 
@@ -118,6 +119,26 @@ tiup cluster upgrade <cluster-name> <version> [flags]
 - 输出帮助信息。
 - 数据类型：`BOOLEAN`
 - 该选项默认关闭，默认值为 `false`。在命令中添加该选项，并传入 `true` 值或不传值，均可开启此功能。
+
+### ---pre-upgrade-script
+
+> **警告：**
+>
+> 该选项目前为实验特性，不建议在生产环境中使用。
+
+- 在升级前运行该脚本。
+- 数据类型：`STRINGS`
+- 该选项指定节点在升级前要运行的脚本的路径。
+
+### ---post-upgrade-script
+
+> **警告：**
+>
+> 该选项目前为实验特性，不建议在生产环境中使用。
+
+- 在升级后运行该脚本。
+- 数据类型：`STRINGS`
+- 该选项指定节点在升级后要运行的脚本的路径。该脚本只会在已完成升级的节点上运行。
 
 ## 输出
 

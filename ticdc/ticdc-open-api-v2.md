@@ -90,7 +90,7 @@ curl -X GET http://127.0.0.1:8300/api/v2/status
 
 ```json
 {
-  "version": "v8.0.0",
+  "version": "v8.2.0",
   "git_hash": "10413bded1bdb2850aa6d7b94eb375102e9c44dc",
   "id": "d2912e63-3349-447c-90ba-72a4e04b5e9e",
   "pid": 1447,
@@ -301,19 +301,21 @@ curl -X GET http://127.0.0.1:8300/api/v2/health
 
 `sink` 参数说明如下：
 
-| 参数名                     | 说明                                                                                                                   |
-|:------------------------|:---------------------------------------------------------------------------------------------------------------------|
-| `column_selectors`      | column selector 配置。（非必选）                                                                                             |
-| `csv`                   | CSV 配置。（非必选）                                                                                                         |
-| `date_separator`        | `STRING` 类型，文件路径的日期分隔类型。可选类型有 `none`、`year`、`month` 和 `day`。默认值为 `none`，即不使用日期分隔。（非必选）                               |
-| `dispatchers`           | 事件分发配置数组。（非必选）                                                                                                       |
-| `encoder_concurrency`   | `INT` 类型。MQ sink 中编码器的线程数。默认值为 `16`。（非必选）                                                                            |
-| `protocol`              | `STRING` 类型，对于 MQ 类的 Sink，可以指定消息的协议格式。目前支持以下协议：`canal-json`、`open-protocol`、`avro` 和 `maxwell`。              |
-| `schema_registry`       | `STRING` 类型，schema registry 地址。（非必选）                                                                                 |
-| `terminator`            | `STRING` 类型，换行符，用来分隔两个数据变更事件。默认值为空，表示使用 `"\r\n"` 作为换行符。（非必选）                                                         |
-| `transaction_atomicity` | `STRING` 类型，事务一致性等级。（非必选）                                                                                            |
-| `only_output_updated_columns`             | `BOOLEAN` 类型，对于 MQ 类型的 Sink 中的 `canal-json` 和 `open-protocol`，表示是否只向下游同步有内容更新的列。默认值为 `false`。（非必选）                        |
-| `cloud_storage_config`             | storage sink 配置。（非必选） |
+| 参数名                           | 说明                                                                                                 |
+|:------------------------------|:---------------------------------------------------------------------------------------------------|
+| `column_selectors`            | column selector 配置。（非必选）                                                                           |
+| `csv`                         | CSV 配置。（非必选）                                                                                       |
+| `date_separator`              | `STRING` 类型，文件路径的日期分隔类型。可选类型有 `none`、`year`、`month` 和 `day`。默认值为 `none`，即不使用日期分隔。（非必选）             |
+| `dispatchers`                 | 事件分发配置数组。（非必选）                                                                                     |
+| `encoder_concurrency`         | `INT` 类型。MQ sink 中编码器的线程数。默认值为 `16`。（非必选）                                                          |
+| `protocol`                    | `STRING` 类型，对于 MQ 类的 Sink，可以指定消息的协议格式。目前支持以下协议：`canal-json`、`open-protocol`、`avro`、`debezium` 和 `simple`。    |
+| `schema_registry`             | `STRING` 类型，schema registry 地址。（非必选）                                                               |
+| `terminator`                  | `STRING` 类型，换行符，用来分隔两个数据变更事件。默认值为空，表示使用 `"\r\n"` 作为换行符。（非必选）                                       |
+| `transaction_atomicity`       | `STRING` 类型，事务一致性等级。（非必选）                                                                          |
+| `only_output_updated_columns` | `BOOLEAN` 类型，对于 MQ 类型的 Sink 中的 `canal-json` 和 `open-protocol`，表示是否只向下游同步有内容更新的列。默认值为 `false`。（非必选） |
+| `cloud_storage_config`        | storage sink 配置。（非必选）                                                                              |
+| `open`                        | Open Protocol 配置。（非必选）                                                                             |
+| `debezium`                    | Debezium Protocol 配置。（非必选）                                                                             |
 
 `sink.column_selectors` 是一个数组，元素参数说明如下：
 
@@ -357,6 +359,19 @@ curl -X GET http://127.0.0.1:8300/api/v2/health
 | `file_expiration_days`   | `INT` 类型，文件保留的时长。|
 | `file_cleanup_cron_spec`   | `STRING` 类型，定时清理任务的运行周期，与 crontab 配置兼容，格式为 `<Second> <Minute> <Hour> <Day of the month> <Month> <Day of the week (Optional)>`。|
 | `flush_concurrency`   | `INT` 类型，上传单个文件的并发数。|
+| `output_raw_change_event`   | `BOOLEAN` 类型，控制使用非 MySQL Sink 时是否输出原始的数据变更事件。|
+
+`sink.open` 参数说明如下：
+
+| 参数名                | 说明                                                            |
+|:-------------------|:--------------------------------------------------------------|
+| `output_old_value` | `BOOLEAN` 类型，是否输出行数据更改前的值。默认值为 `true`。关闭后，Update 事件不会输出 "p" 字段的数据。 |
+
+`sink.debezium` 参数说明如下：
+
+| 参数名                | 说明                                                                 |
+|:-------------------|:-------------------------------------------------------------------|
+| `output_old_value` | `BOOLEAN` 类型，是否输出行数据更改前的值。默认值为 `true`。关闭后，Update 事件不会输出 "before" 字段的数据。 |
 
 ### 使用样例
 

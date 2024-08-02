@@ -10,23 +10,29 @@ aliases: ['/docs-cn/dev/sql-statements/sql-statement-trace/','/docs-cn/dev/refer
 
 ## 语法图
 
-**TraceStmt:**
+```ebnf+diagram
+TraceStmt ::=
+    "TRACE" ( "FORMAT" "=" stringLit )? TracableStmt
 
-![TraceStmt](/media/sqlgram/TraceStmt.png)
+TracableStmt ::=
+    ( SelectStmt | DeleteFromStmt | UpdateStmt | InsertIntoStmt | ReplaceIntoStmt | UnionStmt | LoadDataStmt | BeginTransactionStmt | CommitStmt | RollbackStmt | SetStmt )
+```
 
-**TraceableStmt:**
-
-![TraceableStmt](/media/sqlgram/TraceableStmt.png)
+| Format | 描述                                |
+|--------|------------------------------------|
+| `row`  | 以树形格式输出                       |
+| `json` | 以 JSON 格式结构化输出                |
+| `log`  | 基于日志输出                         |
 
 ## 示例
 
-{{< copyable "sql" >}}
+### Row
 
 ```sql
-trace format='row' select * from mysql.user;
+TRACE FORMAT='row' SELECT * FROM mysql.user;
 ```
 
-```
+```sql
 +--------------------------------------------+-----------------+------------+
 | operation                                  | startTS         | duration   |
 +--------------------------------------------+-----------------+------------+
@@ -47,10 +53,10 @@ trace format='row' select * from mysql.user;
 13 rows in set (0.00 sec)
 ```
 
-{{< copyable "sql" >}}
+### JSON
 
 ```sql
-trace format='json' select * from mysql.user;
+TRACE FORMAT='json' SELECT * FROM mysql.user;
 ```
 
 可将 JSON 格式的跟踪文件粘贴到跟踪查看器中。查看器可通过 TiDB 状态端口访问：
@@ -58,6 +64,34 @@ trace format='json' select * from mysql.user;
 ![TiDB Trace Viewer-1](/media/trace-paste.png)
 
 ![TiDB Trace Viewer-2](/media/trace-view.png)
+
+### Log
+
+```sql
+TRACE FORMAT='log' SELECT * FROM mysql.user;
+```
+
+```sql
++----------------------------+--------------------------------------------------------+------+------------------------------------+
+| time                       | event                                                  | tags | spanName                           |
++----------------------------+--------------------------------------------------------+------+------------------------------------+
+| 2024-04-08 08:41:47.358734 | --- start span trace ----                              |      | trace                              |
+| 2024-04-08 08:41:47.358737 | --- start span session.ExecuteStmt ----                |      | session.ExecuteStmt                |
+| 2024-04-08 08:41:47.358746 | --- start span executor.Compile ----                   |      | executor.Compile                   |
+| 2024-04-08 08:41:47.358984 | --- start span session.runStmt ----                    |      | session.runStmt                    |
+| 2024-04-08 08:41:47.359035 | --- start span TableReaderExecutor.Open ----           |      | TableReaderExecutor.Open           |
+| 2024-04-08 08:41:47.359047 | --- start span distsql.Select ----                     |      | distsql.Select                     |
+| 2024-04-08 08:41:47.359073 | --- start span *executor.TableReaderExecutor.Next ---- |      | *executor.TableReaderExecutor.Next |
+| 2024-04-08 08:41:47.359077 | table scan table: user, range: [[-inf,+inf]]           |      | *executor.TableReaderExecutor.Next |
+| 2024-04-08 08:41:47.359094 | --- start span regionRequest.SendReqCtx ----           |      | regionRequest.SendReqCtx           |
+| 2024-04-08 08:41:47.359098 | send Cop request to region 16 at store1                |      | regionRequest.SendReqCtx           |
+| 2024-04-08 08:41:47.359237 | --- start span *executor.TableReaderExecutor.Next ---- |      | *executor.TableReaderExecutor.Next |
+| 2024-04-08 08:41:47.359240 | table scan table: user, range: [[-inf,+inf]]           |      | *executor.TableReaderExecutor.Next |
+| 2024-04-08 08:41:47.359242 | execute done, ReturnRow: 1, ModifyRow: 0               |      | trace                              |
+| 2024-04-08 08:41:47.359252 | execute done, modify row: 0                            |      | trace                              |
++----------------------------+--------------------------------------------------------+------+------------------------------------+
+14 rows in set (0.0008 sec)
+```
 
 ## MySQL 兼容性
 

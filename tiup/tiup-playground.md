@@ -1,6 +1,7 @@
 ---
 title: 本地快速部署 TiDB 集群
 aliases: ['/docs-cn/dev/tiup/tiup-playground/','/docs-cn/dev/reference/tools/tiup/playground/']
+summary: TiDB 集群是分布式系统，由多个组件构成。想要快速体验 TiDB，可以使用 TiUP 中的 playground 组件快速搭建本地测试环境。通过命令行参数可以设置各组件的数量和配置，也可以启动多个组件实例。使用 `tiup client` 可以快速连接到本地启动的 TiDB 集群。还可以查看已启动集群的信息，扩容或缩容集群。
 ---
 
 # 本地快速部署 TiDB 集群
@@ -19,7 +20,7 @@ tiup playground ${version} [flags]
 
 - 因为该命令没有指定 playground 的版本，TiUP 会先查找已安装的 playground 的最新版本，假设已安装的 playground 最新版为 v1.12.3，则该命令相当于 tiup playground:v1.12.3
 - 如果 playground 从未安装过任何版本的 TiDB/TiKV/PD 组件，TiUP 会先安装这些组件的最新稳定版，然后再启动运行这些组件的实例
-- 因为该命令没有指定 TiDB/PD/TiKV 各组件的版本，默认情况下，它会使用各组件的最新发布版本，假设当前为 v8.0.0，则该命令相当于 tiup playground:1.12.3 v8.0.0
+- 因为该命令没有指定 TiDB/PD/TiKV 各组件的版本，默认情况下，它会使用各组件的最新发布版本，假设当前为 v8.2.0，则该命令相当于 tiup playground:1.12.3 v8.2.0
 - 因为该命令也没有指定各组件的个数，默认情况下，它会启动由 1 个 TiDB、1 个 TiKV、1 个 PD 和 1 个 TiFlash 实例构成的最小化集群
 - 在依次启动完各个 TiDB 组件后，playground 会提醒集群启动成功，并告诉你一些有用的信息，譬如如何通过 MySQL 客户端连接集群、如何访问 [TiDB Dashboard](/dashboard/dashboard-intro.md) 等
 
@@ -27,44 +28,53 @@ playground 的命令行参数说明：
 
 ```bash
 Flags:
-      --db int                   设置集群中 TiDB 节点的数量（默认为1）
-      --db.host host             指定 TiDB 的监听地址
-      --db.port int              指定 TiDB 的端口号
-      --db.binpath string        指定 TiDB 二进制文件的位置（开发调试用，可忽略）
-      --db.config string         指定 TiDB 的配置文件（开发调试用，可忽略）
-      --db.timeout int           指定 TiDB 最长等待超时时间，单位为秒。若配置为 0，则永不超时。
-      --drainer int              设置集群中 Drainer 数据
-      --drainer.binpath string   指定 Drainer 二进制文件的位置（开发调试用，可忽略）
-      --drainer.config string    指定 Drainer 的配置文件
-  -h, --help                     打印帮助信息
-      --host string              设置每个组件的监听地址（默认为 127.0.0.1），如果要提供给别的电脑访问，可设置为 0.0.0.0
-      --kv int                   设置集群中 TiKV 节点的数量（默认为1）
-      --kv.binpath string        指定 TiKV 二进制文件的位置（开发调试用，可忽略）
-      --kv.config string         指定 TiKV 的配置文件（开发调试用，可忽略）
-      --mode string              指定 playground 的运行模式，取值选项为 'tidb'（默认）和 'tikv-slim'
-      --pd int                   设置集群中 PD 节点的数量（默认为1）
-      --pd.host host             指定 PD 的监听地址
-      --pd.binpath string        指定 PD 二进制文件的位置（开发调试用，可忽略）
-      --pd.config string         指定 PD 的配置文件（开发调试用，可忽略）
-      --pump int                 设置集群中 Pump 节点的数量（非 0 的时候 TiDB 会开启 TiDB Binlog）
-      --pump.binpath string      指定 Pump 二进制文件的位置（开发调试用，可忽略）
-      --pump.config string       指定 Pump 的配置文件（开发调试用，可忽略）
-  -T, --tag string               设置 playground 的 tag 信息
-      --ticdc int                设置集群中 TiCDC 节点的数量（默认为 0）
-      --ticdc.binpath string     指定 TiCDC 二进制文件的位置（开发调试用，可忽略）
-      --ticdc.config string      指定 TiCDC 的配置文件（开发调试用，可忽略）
-      --tiflash int              设置集群中 TiFlash 节点的数量（默认为 1）
-      --tiflash.binpath string   指定 TiFlash 的二进制文件位置（开发调试用，可忽略）
-      --tiflash.config string    指定 TiFlash 的配置文件（开发调试用，可忽略）
-      --tiflash.timeout int      指定 TiFlash 最长等待超时时间，单位为秒，若配置为 0，则永不超时。
-      --tiproxy int              设置集群中 TiProxy 节点的数量
-      --tiproxy.binpath string   指定 TiProxy 的二进制文件位置
-      --tiproxy.config string    指定 TiProxy 的配置文件
-      --tiproxy.host host        Playground 的 TiProxy host。如果没有提供，TiProxy 会使用 host 参数作为它的 host
-      --tiproxy.port int         Playground 的 TiProxy 端口。如果没有提供，TiProxy 会使用 6000 作为它的端口
-      --tiproxy.timeout int      TiProxy 最长等待超时时间，单位为秒，若配置为 0，则永不超时（默认为 60）。
-  -v, --version                  显示 playground 的版本号
-      --without-monitor          设置不使用 Prometheus 和 Grafana 的监控功能。若不添加此参数，则默认开启监控功能。
+      --db int                     设置集群中 TiDB 节点的数量（默认为1）
+      --db.host host               指定 TiDB 的监听地址
+      --db.port int                指定 TiDB 的端口号
+      --db.binpath string          指定 TiDB 二进制文件的位置（开发调试用，可忽略）
+      --db.config string           指定 TiDB 的配置文件（开发调试用，可忽略）
+      --db.timeout int             指定 TiDB 最长等待超时时间，单位为秒。若配置为 0，则永不超时。
+      --drainer int                设置集群中 Drainer 数据
+      --drainer.binpath string     指定 Drainer 二进制文件的位置（开发调试用，可忽略）
+      --drainer.config string      指定 Drainer 的配置文件
+  -h, --help                       打印帮助信息
+      --host string                设置每个组件的监听地址（默认为 127.0.0.1），如果要提供给别的电脑访问，可设置为 0.0.0.0
+      --kv int                     设置集群中 TiKV 节点的数量（默认为1）
+      --kv.binpath string          指定 TiKV 二进制文件的位置（开发调试用，可忽略）
+      --kv.config string           指定 TiKV 的配置文件（开发调试用，可忽略）
+      --mode string                指定 playground 的运行模式，取值选项为 'tidb'（默认）和 'tikv-slim'
+      --pd int                     设置集群中 PD 节点的数量（默认为1）
+      --pd.host host               指定 PD 的监听地址
+      --pd.binpath string          指定 PD 二进制文件的位置（开发调试用，可忽略）
+      --pd.config string           指定 PD 的配置文件（开发调试用，可忽略）
+      --pd.mode string             指定 PD 的工作模式，取值选项为 'ms'。指定该参数代表启用 PD 微服务模式。
+      --pump int                   设置集群中 Pump 节点的数量（非 0 的时候 TiDB 会开启 TiDB Binlog）
+      --pump.binpath string        指定 Pump 二进制文件的位置（开发调试用，可忽略）
+      --pump.config string         指定 Pump 的配置文件（开发调试用，可忽略）
+      --scheduling int             设置集群中 Scheduling 节点的数量（默认为 1），只能在 pd.mode 为 'ms' 的时候设置
+      --scheduling.host host       指定 Scheduling 节点的监听地址
+      --scheduling.binpath string  指定 Scheduling 节点上二进制文件的位置（开发调试用，可忽略）
+      --scheduling.config string   指定 Scheduling 节点的配置文件（开发调试用，可忽略）
+  -T, --tag string                 设置 playground 的 tag 信息
+      --ticdc int                  设置集群中 TiCDC 节点的数量（默认为 0）
+      --ticdc.binpath string       指定 TiCDC 二进制文件的位置（开发调试用，可忽略）
+      --ticdc.config string        指定 TiCDC 的配置文件（开发调试用，可忽略）
+      --tiflash int                设置集群中 TiFlash 节点的数量（默认为 1）
+      --tiflash.binpath string     指定 TiFlash 的二进制文件位置（开发调试用，可忽略）
+      --tiflash.config string      指定 TiFlash 的配置文件（开发调试用，可忽略）
+      --tiflash.timeout int        指定 TiFlash 最长等待超时时间，单位为秒，若配置为 0，则永不超时。
+      --tiproxy int                设置集群中 TiProxy 节点的数量
+      --tiproxy.binpath string     指定 TiProxy 的二进制文件位置
+      --tiproxy.config string      指定 TiProxy 的配置文件
+      --tiproxy.host host          Playground 的 TiProxy host。如果没有提供，TiProxy 会使用 host 参数作为它的 host
+      --tiproxy.port int           Playground 的 TiProxy 端口。如果没有提供，TiProxy 会使用 6000 作为它的端口
+      --tiproxy.timeout int        TiProxy 最长等待超时时间，单位为秒，若配置为 0，则永不超时（默认为 60）。
+      --tso int                    设置集群中 TSO 节点的数量（默认为 1），只能在 pd.mode 为 'ms' 的时候设置
+      --tso.host host              指定 TSO 节点的监听地址
+      --tso.binpath string         指定 TSO 节点上二进制文件的位置（开发调试用，可忽略）
+      --tso.config string          指定 TSO 节点的配置文件（开发调试用，可忽略）
+  -v, --version                    显示 playground 的版本号
+      --without-monitor            设置不使用 Prometheus 和 Grafana 的监控功能。若不添加此参数，则默认开启监控功能。
 
 ```
 
@@ -190,3 +200,16 @@ tiup playground scale-out --db 2
 ```shell
 tiup playground scale-in --pid 86526
 ```
+
+## 部署 PD 微服务
+
+从 v8.2.0 起，[PD 微服务](/pd-microservices.md)（实验特性）支持通过 TiUP 部署。你可以通过 TiUP Playground 为集群部署 `tso` 微服务和 `scheduling` 微服务。
+
+```shell
+tiup playground v8.2.0 --pd.mode ms --pd 3 --tso 2 --scheduling 2
+```
+
+- `--pd.mode`：当指定 `--pd.mode` 为 `ms` 时，代表启用 PD 微服务模式。
+- `--pd <num>`：指定 PD 微服务 API 的数量，需要大于等于 `1`。
+- `--tso <num>`：指定要部署的 `tso` 微服务的实例数量。
+- `--scheduling <num>`：指定要部署的 `scheduling` 微服务的实例数量。

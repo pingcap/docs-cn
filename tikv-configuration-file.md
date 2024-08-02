@@ -141,7 +141,7 @@ TiKV 配置文件比命令行参数支持更多的选项。你可以在 [etc/con
 
 ### `grpc-compression-type`
 
-+ gRPC 消息的压缩算法。
++ gRPC 消息的压缩算法。它会影响 TiKV 节点之间的 gRPC 消息以及 TiKV 发送给 TiDB 的 gRPC（响应）消息。
 + 可选值：`"none"`、`"deflate"`、`"gzip"`
 + 默认值：`"none"`
 
@@ -165,7 +165,7 @@ TiKV 配置文件比命令行参数支持更多的选项。你可以在 [etc/con
 
 ### `grpc-raft-conn-num`
 
-+ TiKV 节点之间用于 Raft 通讯的链接最大数量。
++ TiKV 节点之间用于 Raft 通信的连接最大数量。
 + 默认值：1
 + 最小值：1
 
@@ -739,6 +739,16 @@ raftstore 相关的配置项。
 + 默认值：30s
 + 最小值：0
 
+### `max-apply-unpersisted-log-limit` <span class="version-mark">从 v8.1.0 版本开始引入</span>
+
++ 允许 apply 已经 `commit` 但尚未持久化的 Raft 日志的最大数量。
+
+    + 将此配置项设置为大于 0 的值将使该 TiKV 节点能够提前 apply 已 `commit` 但尚未持久化的 Raft 日志，从而有效降低该节点上因 IO 抖动导致的长尾延迟。但这也可能会增加 TiKV 内存使用量和 Raft 日志占用的磁盘容量。
+    + 将此配置项设置为 0 则表示关闭此特性，此时 TiKV 需要等待 Raft 日志被 `commit` 且持久化之后才能对其进行 apply，此行为与 v8.2.0 之前版本的行为一致。
+
++ 默认值：1024
++ 最小值：0
+
 ### `hibernate-regions`
 
 + 打开或关闭静默 Region。打开后，如果 Region 长时间处于非活跃状态，即被自动设置为静默状态。静默状态的 Region 可以降低 Leader 和 Follower 之间心跳信息的系统开销。可以通过 `peer-stale-state-check-interval` 调整 Leader 和 Follower 之间的心跳间隔。
@@ -1007,7 +1017,7 @@ raftstore 相关的配置项。
 
 + TiKV 每隔一段时间会检测 Raftstore 组件的延迟情况，该配置项设置检测的时间间隔。当检测的延迟超过该时间，该检测会被记为超时。
 + 根据超时的检测延迟的比例计算判断 TiKV 是否为慢节点。
-+ 默认值：500ms
++ 默认值：100ms
 + 最小值：1ms
 
 ### `raft-write-size-limit` <span class="version-mark">从 v5.3.0 版本开始引入</span>
@@ -1039,6 +1049,7 @@ raftstore 相关的配置项。
 + 设置 TiKV 启动周期性全量数据整理 (Compaction) 的时间。你可以在数组中指定一个或多个时间计划。例如：
     + `periodic-full-compact-start-times = ["03:00", "23:00"]` 表示 TiKV 基于 TiKV 节点的本地时区，在每天凌晨 3 点和晚上 11 点进行全量数据整理。
     + `periodic-full-compact-start-times = ["03:00 +0000", "23:00 +0000"]` 表示 TiKV 在每天 UTC 时间的凌晨 3 点和晚上 11 点进行全量数据整理。
+    + `periodic-full-compact-start-times = ["03:00 +0800", "23:00 +0800"]` 表示 TiKV 在每天 UTC+08:00 时间的凌晨 3 点和晚上 11 点进行全量数据整理。
 + 默认值：`[]`，表示默认情况下禁用周期性全量数据整理。
 
 ### `periodic-full-compact-start-max-cpu` <span class="version-mark">从 v7.6.0 版本开始引入</span>
@@ -1270,6 +1281,10 @@ RocksDB 相关的配置项。
 
 ### `info-log-max-size`
 
+> **警告：**
+>
+> 自 v5.4.0 起，RocksDB 的日志改为由 TiKV 的日志模块进行管理，因此该配置项被废弃，其功能由配置参数 [`log.file.max-size`](#max-size-从-v540-版本开始引入) 代替。
+
 + Info 日志的最大大小。
 + 默认值：1GiB
 + 最小值：0
@@ -1277,10 +1292,18 @@ RocksDB 相关的配置项。
 
 ### `info-log-roll-time`
 
+> **警告：**
+>
+> 自 v5.4.0 起，RocksDB 的日志改为由 TiKV 的日志模块进行管理，因此该配置项被废弃。TiKV 不再支持按照时间自动切分日志，请使用配置参数 [`log.file.max-size`](#max-size-从-v540-版本开始引入) 配置按照文件大小自动切分日志的阈值。
+
 + 日志截断间隔时间，如果为 0s 则不截断。
 + 默认值：0s
 
 ### `info-log-keep-log-file-num`
+
+> **警告：**
+>
+> 自 v5.4.0 起，RocksDB 的日志改为由 TiKV 的日志模块进行管理，因此该配置项被废弃，其功能由配置参数 [`log.file.max-backups`](#max-backups-从-v540-版本开始引入) 代替。
 
 + 保留日志文件最大个数。
 + 默认值：10
@@ -1292,6 +1315,10 @@ RocksDB 相关的配置项。
 + 默认值：""
 
 ### `info-log-level`
+
+> **警告：**
+>
+> 自 v5.4.0 起，RocksDB 的日志改为由 TiKV 的日志模块进行管理，因此该配置项被废弃，其功能由配置参数 [`log.level`](#level-从-v540-版本开始引入) 代替。
 
 + RocksDB 的日志级别。
 + 默认值：`"info"`
@@ -1321,6 +1348,14 @@ RocksDB 相关的配置项。
     + 当 `storage.engine="partitioned-raft-kv"` 时，默认值为本机内存的 20%。
 
 + 单位：KiB|MiB|GiB
+
+### `track-and-verify-wals-in-manifest` <span class="version-mark">从 v6.5.9、v7.1.5、v7.5.2、v8.0.0 版本开始引入</span>
+
++ 控制是否在 RocksDB 的 MANIFEST 文件中记录 WAL (Write Ahead Log) 文件的信息，以及在启动时是否验证 WAL 文件的完整性。详情请参考 RocksDB [Track WAL in MANIFEST](https://github.com/facebook/rocksdb/wiki/Track-WAL-in-MANIFEST)。
++ 默认值：`true`
++ 可选值：
+    + `true`：在 MANIFEST 文件中记录 WAL 文件的信息，并在启动时验证 WAL 文件的完整性。
+    + `false`：不在 MANIFEST 文件中记录 WAL 文件的信息，而且不在启动时验证 WAL 文件的完整性。
 
 ## rocksdb.titan
 
@@ -1838,6 +1873,10 @@ raftdb 相关配置项。
 
 ### `info-log-max-size`
 
+> **警告：**
+>
+> 自 v5.4.0 起，RocksDB 的日志改为由 TiKV 的日志模块进行管理，因此该配置项被废弃，其功能由配置参数 [`log.file.max-size`](#max-size-从-v540-版本开始引入) 代替。
+
 + Info 日志的最大大小。
 + 默认值：`"1GiB"`
 + 最小值：`0`
@@ -1845,10 +1884,18 @@ raftdb 相关配置项。
 
 ### `info-log-roll-time`
 
+> **警告：**
+>
+> 自 v5.4.0 起，RocksDB 的日志改为由 TiKV 的日志模块进行管理，因此该配置项被废弃。TiKV 不再支持按照时间自动切分日志，请使用配置参数 [`log.file.max-size`](#max-size-从-v540-版本开始引入) 配置按照文件大小自动切分日志的阈值。
+
 + Info 日志截断间隔时间，如果为 `"0s"` 则不截断。
 + 默认值：`"0s"`
 
 ### `info-log-keep-log-file-num`
+
+> **警告：**
+>
+> 自 v5.4.0 起，RocksDB 的日志改为由 TiKV 的日志模块进行管理，因此该配置项被废弃，其功能由配置参数 [`log.file.max-backups`](#max-backups-从-v540-版本开始引入) 代替。
 
 + RaftDB 中保存的 Info 日志文件的最大数量。
 + 默认值：`10`
@@ -1860,6 +1907,10 @@ raftdb 相关配置项。
 + 默认值：`""`
 
 ### `info-log-level`
+
+> **警告：**
+>
+> 自 v5.4.0 起，RocksDB 的日志改为由 TiKV 的日志模块进行管理，因此该配置项被废弃，其功能由配置参数 [`log.level`](#level-从-v540-版本开始引入) 代替。
 
 + RaftDB 的日志级别。
 + 默认值：`"info"`

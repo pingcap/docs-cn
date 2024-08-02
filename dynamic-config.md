@@ -128,6 +128,7 @@ show warnings;
 | raftstore.raft-max-size-per-msg | 允许生成的单个消息包的大小，软限制 |
 | raftstore.raft-entry-max-size | 单个 Raft 日志最大大小，硬限制 |
 | raftstore.raft-entry-cache-life-time | 内存中日志 cache 允许的最长残留时间 |
+| raftstore.max-apply-unpersisted-log-limit | 允许 apply 已 commit 但尚未持久化的 Raft 日志的最大数量 |
 | raftstore.split-region-check-tick-interval | 检查 Region 是否需要分裂的时间间隔 |
 | raftstore.region-split-check-diff | 允许 Region 数据超过指定大小的最大值 |
 | raftstore.region-compact-check-interval | 检查是否需要人工触发 RocksDB compaction 的时间间隔 |
@@ -337,6 +338,12 @@ select @@tidb_slow_log_threshold;
 | instance.tidb_enable_slow_log | tidb_enable_slow_log | 慢日志的开关 |
 | instance.tidb_slow_log_threshold | tidb_slow_log_threshold | 慢日志阈值 |
 | instance.tidb_expensive_query_time_threshold  | tidb_expensive_query_time_threshold | expensive 查询阈值 |
+| instance.tidb_enable_collect_execution_info | tidb_enable_collect_execution_info | 控制是否记录各个算子的执行信息 |
+| instance.tidb_record_plan_in_slow_log | tidb_record_plan_in_slow_log | 控制是否在慢日志中记录执行计划 |
+| instance.tidb_force_priority | tidb_force_priority | 该 TiDB 实例的语句优先级 |
+| instance.max_connections | max_connections | 该 TiDB 实例同时允许的最大客户端连接数 |
+| instance.tidb_enable_ddl | tidb_enable_ddl | 控制该 TiDB 实例是否可以成为 DDL owner |
+| pessimistic-txn.constraint-check-in-place-pessimistic | tidb_constraint_check_in_place_pessimistic | 控制悲观事务中唯一约束检查是否会被推迟到下一次对该唯一索引加锁时或事务提交时才进行 |
 
 ### 在线修改 TiFlash 配置
 

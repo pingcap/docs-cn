@@ -8,11 +8,15 @@ aliases: ['/docs-cn/dev/system-tables/system-table-overview/','/docs-cn/dev/refe
 
 `mysql` 库里存储的是 TiDB 系统表。该设计类似于 MySQL 中的 `mysql` 库，其中 `mysql.user` 之类的表可以直接编辑。该库还包含许多 MySQL 的扩展表。
 
+> **注意：**
+>
+> 在大多数情况下，不建议直接使用 `INSERT`、`UPDATE` 或 `DELETE` 更改系统表的内容。而是建议使用 [`CREATE USER`](/sql-statements/sql-statement-create-user.md)、[`ALTER USER`](/sql-statements/sql-statement-alter-user.md)、[`DROP USER`](/sql-statements/sql-statement-drop-user.md)、[`GRANT`](/sql-statements/sql-statement-grant-privileges.md)、[`REVOKE`](/sql-statements/sql-statement-revoke-privileges.md) 和 [`SHOW CREATE USER`](/sql-statements/sql-statement-show-create-user.md) 等语句管理用户和权限。如果必须直接修改系统表，请使用 [`FLUSH PRIVILEGES`](/sql-statements/sql-statement-flush-privileges.md) 使更改生效。
+
 ## 权限系统表
 
 这些系统表里面包含了用户账户以及相应的授权信息：
 
-* `user` 用户账户，全局权限，以及其它一些非权限的列
+* [`user`](/mysql-schema/mysql-schema-user.md) 用户账户，全局权限，以及其它一些非权限的列
 * `db` 数据库级别的权限
 * `tables_priv` 表级的权限
 * `columns_priv` 列级的权限

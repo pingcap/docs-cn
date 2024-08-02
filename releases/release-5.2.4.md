@@ -1,6 +1,7 @@
 ---
 title: TiDB 5.2.4 Release Notes
 category: Releases
+summary: TiDB 5.2.4 发布日期为 2022 年 4 月 26 日。此版本包含兼容性更改、提升改进和 Bug 修复。兼容性更改包括 TiDB、TiKV 和 Tools 的调整。提升改进主要针对 TiKV 和 Tools 进行了优化。Bug 修复方面涉及 TiDB、TiKV、PD、TiFlash 和 Tools 的修复。
 ---
 
 # TiDB 5.2.4 Release Notes
@@ -88,7 +89,7 @@ TiDB 版本：5.2.4
     - 修复系统变量 `max_allowed_packet` 不生效的问题 [#31422](https://github.com/pingcap/tidb/issues/31422)
     - 修复当 auto ID 超出范围时，`REPLACE` 语句错误地修改了其它行的问题 [#29483](https://github.com/pingcap/tidb/issues/29483)
     - 修复慢查询日志无法正常输出而且可能消耗大量内存的问题 [#32656](https://github.com/pingcap/tidb/issues/32656)
-    - 修复 NATRUAL JOIN 可能输出多余列的问题 [#29481](https://github.com/pingcap/tidb/issues/29481)
+    - 修复 NATURAL JOIN 可能输出多余列的问题 [#29481](https://github.com/pingcap/tidb/issues/29481)
     - 修复使用前缀列索引时，ORDER + LIMIT 语句可能导致结果出错的问题 [#29711](https://github.com/pingcap/tidb/issues/29711)
     - 修复乐观事务重试时，DOUBLE 类型的自增列可能在重试时值发生改变的问题 [#29892](https://github.com/pingcap/tidb/issues/29892)
     - 修复 STR_TO_DATE 函数无法正确处理微秒部分的前导 0 的问题 [#30078](https://github.com/pingcap/tidb/issues/30078)
@@ -181,7 +182,7 @@ TiDB 版本：5.2.4
         - 修复在某些 RHEL 发行版上因时区问题导致服务无法启动的问题 [#3584](https://github.com/pingcap/tiflow/issues/3584)
         - 修复集群升级后 `stopped` 状态的 changefeed 自动恢复的问题 [#3473](https://github.com/pingcap/tiflow/issues/3473)
         - 修复 MySQL sink 模块出现死锁时告警过于频繁的问题 [#2706](https://github.com/pingcap/tiflow/issues/2706)
-        - 修复 Canal 和 Maxwell 协议下 TiCDC 没有自动开启 `enable-old-value` 选项的问题 [#3676](https://github.com/pingcap/tiflow/issues/3676)
+        - 修复 Canal 协议下 TiCDC 没有自动开启 `enable-old-value` 选项的问题 [#3676](https://github.com/pingcap/tiflow/issues/3676)
         - 修复 Avro sink 模块不支持解析 JSON 类型列的问题 [#3624](https://github.com/pingcap/tiflow/issues/3624)
         - 修复监控 checkpoint lag 出现负值的问题 [#3010](https://github.com/pingcap/tiflow/issues/3010)
         - 修复在容器环境中 OOM 的问题 [#1798](https://github.com/pingcap/tiflow/issues/1798)

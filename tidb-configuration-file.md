@@ -1,5 +1,6 @@
 ---
 title: TiDB 配置文件描述
+summary: 介绍未包含在命令行参数中的 TiDB 配置文件选项。
 aliases: ['/docs-cn/dev/tidb-configuration-file/','/docs-cn/dev/reference/configuration/tidb-server/configuration-file/']
 ---
 
@@ -39,8 +40,7 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
 + 类型：Integer
 + 默认值：1000
 + 最小值：1
-+ 最大值（64 位平台）：`18446744073709551615`
-+ 最大值（32 位平台）：`4294967295`
++ 最大值：`1048576`
 
 ### `temp-dir` <span class="version-mark">从 v6.3.0 版本开始引入</span>
 
@@ -91,7 +91,7 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
 + 当 [`enable-global-kill`](#enable-global-kill-从-v610-版本开始引入) 为 `false` 时，`compatible-kill-query` 控制杀死一条查询时是否需要加上 `TIDB` 关键词。
     - `compatible-kill-query` 为 `false` 时，TiDB 中 `KILL xxx` 的行为和 MySQL 中的行为不同。为杀死一条查询，在 TiDB 中需要加上 `TIDB` 关键词，即 `KILL TIDB xxx`。
     - `compatible-kill-query` 为 `true` 时，为杀死一条查询，在 TiDB 中无需加上 `TIDB` 关键词。**强烈不建议**设置 `compatible-kill-query` 为 `true`，**除非**你确定客户端将始终连接到同一个 TiDB 节点。这是因为当你在默认的 MySQL 客户端按下 <kbd>Control</kbd>+<kbd>C</kbd> 时，客户端会开启一个新连接，并在这个新连接中执行 `KILL` 语句。此时，如果客户端和 TiDB 之间存在代理，新连接可能会被路由到其他 TiDB 节点，从而错误地终止其他会话。
-+ 当 [`enable-global-kill`](#enable-global-kill-从-v610-版本开始引入) 为 `true` 时，`KILL xxx` 和 `KILL TIDB xxx` 的作用相同，但是暂不支持 <kbd>Control</kbd>+<kbd>C</kbd> 终止查询。
++ 当 [`enable-global-kill`](#enable-global-kill-从-v610-版本开始引入) 为 `true` 时，`KILL xxx` 和 `KILL TIDB xxx` 的作用相同。
 + 关于 `KILL` 语句的更多信息，请参考 [KILL [TIDB]](/sql-statements/sql-statement-kill.md)。
 
 ### `check-mb4-value-in-utf8`
@@ -121,7 +121,7 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
     - 当使用内置函数 `VERSION()` 时。
     - 当与客户端初始连接，TiDB 返回带有服务端版本号的初始握手包时。具体可以查看 MySQL 初始握手包的[描述](https://dev.mysql.com/doc/dev/mysql-server/latest/page_protocol_connection_phase.html#sect_protocol_connection_phase_initial_handshake)。
 + 默认值：""
-+ 默认情况下，TiDB 版本号格式为：`5.7.${mysql_latest_minor_version}-TiDB-${tidb_version}`。
++ 默认情况下，TiDB 版本号格式为：`8.0.11-TiDB-${tidb_version}`。
 
 > **注意：**
 >
@@ -200,6 +200,16 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
 - 指定关闭服务器时 TiDB 等待的秒数，使得客户端有时间断开连接。
 - 默认值：0
 - 在 TiDB 等待服务器关闭期间，HTTP 状态会显示失败，使得负载均衡器可以重新路由流量。
+
+> **注意：**
+>
+> TiDB 在关闭服务器之前等待的时长也会受到以下参数的影响：
+>
+> - 当使用的平台采用了 SystemD 时，默认的停止超时为 90 秒。如果需要更长的超时时间，可以设置 [`TimeoutStopSec=`](https://www.freedesktop.org/software/systemd/man/latest/systemd.service.html#TimeoutStopSec=)。
+>
+> - 当使用 TiUP Cluster 组件时，默认的 [`--wait-timeout`](/tiup/tiup-component-cluster.md#--wait-timeoutuint默认-120) 为 120 秒。
+>
+> - 当使用 Kubernetes 时，默认的 [`terminationGracePeriodSeconds`](https://kubernetes.io/docs/reference/kubernetes-api/workload-resources/pod-v1/#lifecycle) 为 30 秒。
 
 ### `enable-global-kill` <span class="version-mark">从 v6.1.0 版本开始引入</span>
 
@@ -296,7 +306,7 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
 + 输出慢日志的耗时阈值。
 + 默认值：300
 + 单位：毫秒
-+ 当查询大于这个值，就会当做是一个慢查询，输出到慢查询日志。
++ 如果查询耗时大于这个值，会视作一个慢查询，并记录到慢查询日志。注意，当日志的输出级别 [`log.level`](#level) 是 `"debug"` 时，所有查询都会记录到慢日志，不受该参数的限制。
 + 自 v6.1.0 起，已改用配置项 `instance.tidb_slow_log_threshold` 或系统变量 `tidb_slow_log_threshold` 来设置输出慢日志的耗时阈值。`slow-threshold` 仍可使用，但如果同时设置了 `slow-threshold` 与 `instance.tidb_slow_log_threshold`，TiDB 将采用 `instance.tidb_slow_log_threshold` 的值。
 
 ### `record-plan-in-slow-log`
@@ -421,6 +431,10 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
 + 默认值：`false`
 
 ### `tls-version`
+
+> **警告：**
+>
+> TiDB v7.6.0 废弃了对 `"TLSv1.0"` 和 `"TLSv1.1"` 协议对支持，并从 v8.0.0 开始移除对这两个协议的支持。
 
 + 设置用于连接 MySQL 协议的最低 TLS 版本。
 + 默认值：""，支持 TLSv1.2 及以上版本。在 v7.6.0 之前，TiDB 默认支持 TLSv1.1 及以上版本。
@@ -572,8 +586,8 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
 ### `stats-load-concurrency` <span class="version-mark">从 v5.4.0 版本开始引入</span>
 
 + TiDB 统计信息同步加载功能可以并发处理的最大列数
-+ 默认值：5
-+ 目前的合法值范围：`[1, 128]`
++ 默认值：`0`。在 v8.2.0 之前，默认值为 `5`。
++ 目前的合法值范围：`[0, 128]`。`0` 为自动模式，根据服务器情况，自动调节并发度。在 v8.2.0 之前，最小值为 `1`。
 
 ### `stats-load-queue-size` <span class="version-mark">从 v5.4.0 版本开始引入</span>
 
@@ -586,12 +600,17 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
 + 用于控制 TiDB 是否开启统计信息缓存的内存上限。
 + 默认值：true
 
+### `concurrently-init-stats` <span class="version-mark">从 v8.1.0 和 v7.5.2 版本开始引入</span>
+
++ 用于控制 TiDB 启动时是否并发初始化统计信息。
++ 默认值：`false`
+
 ### `lite-init-stats` <span class="version-mark">从 v7.1.0 版本开始引入</span>
 
 + 用于控制 TiDB 启动时是否采用轻量级的统计信息初始化。
 + 默认值：在 v7.2.0 之前版本中为 `false`，在 v7.2.0 及之后的版本中为 `true`。
 + 当 `lite-init-stats` 为 `true` 时，统计信息初始化时列和索引的直方图、TopN、Count-Min Sketch 均不会加载到内存中。当 `lite-init-stats` 为 `false` 时，统计信息初始化时索引和主键的直方图、TopN、Count-Min Sketch 会被加载到内存中，非主键列的直方图、TopN、Count-Min Sketch 不会加载到内存中。当优化器需要某一索引或者列的直方图、TopN、Count-Min Sketch 时，这些统计信息会被同步或异步加载到内存中（由 [`tidb_stats_load_sync_wait`](/system-variables.md#tidb_stats_load_sync_wait-从-v540-版本开始引入) 控制）。
-+ 将 `lite-init-stats` 设置为 true，可以加速统计信息初始化，避免加载不必要的统计信息，从而降低 TiDB 的内存使用。详情请参考[统计信息的加载](/statistics.md#统计信息的加载)。
++ 将 `lite-init-stats` 设置为 true，可以加速统计信息初始化，避免加载不必要的统计信息，从而降低 TiDB 的内存使用。详情请参考[统计信息的加载](/statistics.md#加载统计信息)。
 
 ### `force-init-stats` <span class="version-mark">从 v6.5.7 和 v7.1.0 版本开始引入</span>
 
@@ -697,6 +716,10 @@ opentracing.reporter 相关的设置。
 + 默认值："none"
 + 可选值："none", "gzip"
 
+> **注意：**
+>
+> TiKV 节点返回给 TiDB 的响应消息的压缩算法是由 TiKV 配置项 [`grpc-compression-type`](/tikv-configuration-file.md#grpc-compression-type) 控制的。
+
 ### `commit-timeout`
 
 + 执行事务提交时，最大的超时时间。
@@ -739,7 +762,7 @@ opentracing.reporter 相关的设置。
 
 > **警告：**
 >
-> 该配置项可能会在未来版本中废弃，**不要修改该配置**。
+> 从 v8.2.0 开始，该配置项被废弃。给 TiKV 发送 RPC 请求时，默认使用新版本的 Region 副本选择器。
 
 + 用于控制给 TiKV 发送 RPC 请求时，是否使用新版本的 Region 副本选择器。
 + 默认值：true
@@ -754,6 +777,20 @@ opentracing.reporter 相关的设置。
 + 默认值：1000.0
 + 单位：MB
 + 类型：Float
+
+## txn-local-latches
+
+与事务锁存相关的配置项。这些配置项今后可能会废弃，不建议启用。
+
+### `enabled`
+
+- 控制是否开启事务的内存锁。
+- 默认值：`false`
+
+### `capacity`
+
+- Hash 对应的 slot 数量，自动向上调整为 2 的指数倍。每个 slot 占用 32 字节内存。如果设置过小，在数据写入范围较大的场景（如导入数据），可能会导致运行速度变慢，性能变差。
+- 默认值：`2048000`
 
 ## binlog
 
@@ -871,7 +908,7 @@ TiDB 服务状态相关配置。
 + 默认值：300
 + 范围：`[-1, 9223372036854775807]`
 + 单位：毫秒
-+ 当查询大于这个值，就会当做是一个慢查询，输出到慢查询日志。
++ 如果查询耗时大于这个值，会视作一个慢查询，并记录到慢查询日志。注意，当日志的输出级别 [`log.level`](#level) 是 `"debug"` 时，所有查询都会记录到慢日志，不受该参数的限制。
 + 在 v6.1.0 之前，该功能通过配置项 `slow-threshold` 进行设置。
 
 ### `in-mem-slow-query-topn-num` <span class="version-mark">从 v7.3.0 版本开始引入</span>

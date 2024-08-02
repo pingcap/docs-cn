@@ -44,6 +44,12 @@ SQL 端口的配置。
 + 支持热加载：否
 + SQL 网关地址。格式为 `<ip>:<port>`。
 
+#### `advertise-addr`
+
++ 默认值：`""`
++ 支持热加载：否
++ 指定客户端连接 TiProxy 时使用的地址。使用 TiUP 或 TiDB Operator 部署 TiProxy 时，此配置项会自动设置。如果未设置该配置项，将使用该 TiProxy 实例的外部 IP 地址。
+
 #### `graceful-wait-before-shutdown`
 
 + 默认值：`0`
@@ -85,19 +91,13 @@ SQL 端口的配置。
 + 可选值：``, `v2`
 + 在 SQL 端口启用 [PROXY 协议](https://www.haproxy.org/download/1.8/doc/proxy-protocol.txt)。开启 PROXY 协议后能让 TiProxy 透传客户端真实的 IP 地址给 TiDB。`v2` 代表使用 PROXY 协议 v2 版本，`` 代表不使用 PROXY 协议。在 TiProxy 启用 PROXY 协议后，需要同时在 TiDB 服务器上启用 [PROXY 协议](/tidb-configuration-file.md#proxy-protocol)。
 
-#### `require-backend-tls`
-
-+ 默认值：`true`
-+ 支持热加载：是，但只对新连接有效
-+ 要求 TiProxy 和 TiDB 服务器之间使用 TLS 连接。如果 TiDB 服务器不支持 TLS，则客户端在连接到 TiProxy 时会报错。
-
 ### api
 
 HTTP 网关的配置。
 
 #### `addr`
 
-+ 默认值：`0.0.0.0:3090`
++ 默认值：`0.0.0.0:3080`
 + 支持热加载：否
 + API 网关地址。格式为 `<ip>:<port>`。
 
@@ -107,6 +107,23 @@ HTTP 网关的配置。
 + 支持热加载：否
 + 可选值：``, `v2`
 + 在端口启用 [PROXY 协议](https://www.haproxy.org/download/1.8/doc/proxy-protocol.txt)。`v2` 代表使用 PROXY 协议 v2 版本，`` 代表不使用 PROXY 协议。
+
+### balance
+
+TiProxy 负载均衡策略的配置。
+
+#### `policy`
+
++ 默认值：`resource`
++ 支持热加载：是
++ 可选值：`resource`、`location`、`connection`
++ 指定负载均衡策略。各个可选值的含义请参阅 [TiProxy 负载均衡策略](/tiproxy/tiproxy-load-balance.md#负载均衡策略配置)。
+
+### `labels`
+
++ 默认值：`{}`
++ 支持热加载：是
++ 指定服务器标签，例如 `{ zone = "us-west-1", dc = "dc1" }`。
 
 ### log
 
@@ -194,6 +211,12 @@ TLS 对象字段：
 #### `cluster-tls`
 
 客户端 TLS 对象。用于访问 TiDB 或 PD。
+
+#### `require-backend-tls`
+
++ 默认值：`false`
++ 支持热加载：是，但只对新连接有效
++ 要求 TiProxy 和 TiDB 服务器之间使用 TLS 连接。如果 TiDB 服务器不支持 TLS，则客户端在连接到 TiProxy 时会报错。
 
 #### `sql-tls`
 

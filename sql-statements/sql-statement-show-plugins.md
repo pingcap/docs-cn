@@ -10,17 +10,12 @@ aliases: ['/docs-cn/dev/sql-statements/sql-statement-show-plugins/']
 
 ## 语法图
 
-**ShowStmt:**
-
-![ShowStmt](/media/sqlgram/ShowStmt.png)
-
-**ShowTargetFilterable:**
-
-![ShowTargetFilterable](/media/sqlgram/ShowTargetFilterable.png)
+```ebnf+diagram
+ShowPluginsStmt ::=
+    "SHOW" "PLUGINS" ShowLikeOrWhere?
+```
 
 ## 示例
-
-{{< copyable "sql" >}}
 
 ```sql
 SHOW PLUGINS;
@@ -36,8 +31,6 @@ SHOW PLUGINS;
 ```
 
 `SHOW PLUGINS` 也支持模糊匹配：
-
-{{< copyable "sql" >}}
 
 ```sql
 SHOW PLUGINS LIKE 'a%';
@@ -55,3 +48,7 @@ SHOW PLUGINS LIKE 'a%';
 ## MySQL 兼容性
 
 `SHOW PLUGINS` 语句与 MySQL 完全兼容。如发现任何兼容性差异，请尝试 [TiDB 支持资源](/support.md)。
+
+## 扩展阅读
+
+- [`ADMIN PLUGINS`](/sql-statements/sql-statement-admin.md#admin-plugin-语句)

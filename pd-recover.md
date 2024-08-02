@@ -80,7 +80,7 @@ PD Recover 的安装包位于 TiDB 离线工具包中。下载方式，请参考
 {{< copyable "shell-regular" >}}
 
 ```bash
-cat {{/path/to}}/pd.log | grep "init cluster id"
+grep "init cluster id" {{/path/to}}/pd.log
 ```
 
 ```bash
@@ -97,7 +97,7 @@ cat {{/path/to}}/pd.log | grep "init cluster id"
 {{< copyable "shell-regular" >}}
 
 ```bash
-cat {{/path/to}}/tidb.log | grep "init cluster id"
+grep "init cluster id" {{/path/to}}/tidb.log
 ```
 
 ```bash
@@ -112,7 +112,7 @@ cat {{/path/to}}/tidb.log | grep "init cluster id"
 {{< copyable "shell-regular" >}}
 
 ```bash
-cat {{/path/to}}/tikv.log | grep "connect to PD cluster"
+grep "connect to PD cluster" {{/path/to}}/tikv.log
 ```
 
 ```bash
@@ -135,7 +135,7 @@ cat {{/path/to}}/tikv.log | grep "connect to PD cluster"
 {{< copyable "shell-regular" >}}
 
 ```bash
-cat {{/path/to}}/pd*.log | grep "idAllocator allocates a new id" |  awk -F'=' '{print $2}' | awk -F']' '{print $1}' | sort -r -n | head -n 1
+grep "idAllocator allocates a new id" {{/path/to}}/pd*.log |  awk -F'=' '{print $2}' | awk -F']' '{print $1}' | sort -r -n | head -n 1
 ```
 
 ```bash

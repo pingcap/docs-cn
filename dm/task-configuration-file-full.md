@@ -61,7 +61,7 @@ routes:                           # 上游和下游表之间的路由 table rout
     table-pattern: "t_*"          # 表名匹配规则，支持通配符 "*" 和 "?"
     target-schema: "test"         # 目标库名称
     target-table: "t"             # 目标表名称
-    # 可选配置：提取各分库分表的源信息，并写入下游用户自建的列，用于标识合表中各行数据的来源。如果配置该项，需要提前在下游手动创建合表，具体可参考 “table routing 文档” <https://docs.pingcap.com/zh/tidb/dev/dm-key-features#table-routing>。
+    # 可选配置：提取各分库分表的源信息，并写入下游用户自建的列，用于标识合表中各行数据的来源。如果配置该项，需要提前在下游手动创建合表，具体可参考 “table routing 文档” <https://docs.pingcap.com/zh/tidb/dev/dm-table-routing>。
     # extract-table:                                        # 提取分表去除 t_ 的后缀信息，并写入下游合表 c_table 列，例如，t_01 分表的数据会提取 01 写入下游 c_table 列
     #   table-regexp: "t_(.*)"
     #   target-column: "c_table"
@@ -135,10 +135,10 @@ loaders:                             # load 处理单元的运行配置参数
     # - "none"（默认）。对应 TiDB Lightning 物理导入模式冲突数据检测的 "none" 选项 
     # (https://docs.pingcap.com/zh/tidb/stable/tidb-lightning-physical-import-mode-usage#冲突数据检测)，
     # 表示遇到冲突数据时不进行处理。该模式性能最佳，但下游数据库会遇到数据索引不一致的问题。
-    # - "manual"。对应 TiDB Lightning 物理导入模式冲突数据检测的 "remove" 选项 
+    # - "manual"。对应 TiDB Lightning 物理导入模式冲突数据检测的 "replace" 选项 
     # (https://docs.pingcap.com/zh/tidb/stable/tidb-lightning-physical-import-mode-usage#冲突数据检测)。
-    # 在遇到冲突数据时将所有相互冲突的数据删除，并记录在 ${meta-schema}_${name}.conflict_error_v1 表中。
-    # 在本配置文件中，会记录在 dm_meta_test.conflict_error_v1 表中。全量导入阶段结束后，任务
+    # 在遇到冲突数据时将所有相互冲突的数据删除，并记录在 ${meta-schema}_${name}.conflict_error_v3 表中。
+    # 在本配置文件中，会记录在 dm_meta_test.conflict_error_v3 表中。全量导入阶段结束后，任务
     # 会暂停并提示用户查询这张表并按照文档进行手动处理。使用 resume-task 命令让任务恢复运行并
     # 进入到增量同步阶段。
     on-duplicate-physical: "none"

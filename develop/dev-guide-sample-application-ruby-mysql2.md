@@ -113,7 +113,7 @@ bundle add mysql2 dotenv
 
 2. 点击右上角的 **Connect** 按钮，将会弹出连接对话框。
 
-3. 在对话框中点击 **Allow Access from Anywhere**，然后点击 **Download TiDB cluster CA** 下载 TiDB Cloud 提供的 CA 证书。
+3. 在对话框中点击 **Allow Access from Anywhere**，然后点击 **Download CA cert** 下载 TiDB Cloud 提供的 CA 证书。
 
    更多配置细节，可参考 [TiDB Dedicated 标准连接教程（英文）](https://docs.pingcap.com/tidbcloud/connect-via-standard-connection)。
 
@@ -180,7 +180,7 @@ ruby app.rb
 如果连接成功，你的终端将会输出所连接集群的版本信息：
 
 ```
-🔌 Connected to TiDB cluster! (TiDB version: 8.0.11-TiDB-v8.0.0)
+🔌 Connected to TiDB cluster! (TiDB version: 8.0.11-TiDB-v8.2.0)
 ⏳ Loading sample game data...
 ✅ Loaded sample game data.
 

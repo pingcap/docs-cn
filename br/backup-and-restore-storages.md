@@ -19,7 +19,7 @@ TiDB 支持 Amazon S3、Google Cloud Storage (GCS)、Azure Blob Storage 和 NFS 
 但是，这个操作不适合云端环境，如果采用了 IAM Role 方式授权，那么每个节点都有自己的角色和权限。在这种情况下，你需要设置 `--send-credentials-to-tikv=false`（或简写为 `-c=0`）来禁止发送凭证：
 
 ```bash
-./br backup full -c=0 -u pd-service:2379 --storage 's3://bucket-name/prefix'
+tiup br backup full -c=0 -u pd-service:2379 --storage 's3://bucket-name/prefix'
 ```
 
 使用 SQL 进行[备份](/sql-statements/sql-statement-backup.md)[恢复](/sql-statements/sql-statement-restore.md)时，可加上 `SEND_CREDENTIALS_TO_TIKV = FALSE` 选项：
@@ -50,14 +50,14 @@ BACKUP DATABASE * TO 's3://bucket-name/prefix' SEND_CREDENTIALS_TO_TIKV = FALSE;
 **备份快照数据到 Amazon S3**
 
 ```shell
-./br backup full -u "${PD_IP}:2379" \
+tiup br backup full -u "${PD_IP}:2379" \
 --storage "s3://external/backup-20220915?access-key=${access-key}&secret-access-key=${secret-access-key}"
 ```
 
 **从 Amazon S3 恢复快照备份数据**
 
 ```shell
-./br restore full -u "${PD_IP}:2379" \
+tiup br restore full -u "${PD_IP}:2379" \
 --storage "s3://external/backup-20220915?access-key=${access-key}&secret-access-key=${secret-access-key}"
 ```
 
@@ -67,14 +67,14 @@ BACKUP DATABASE * TO 's3://bucket-name/prefix' SEND_CREDENTIALS_TO_TIKV = FALSE;
 **备份快照数据到 GCS**
 
 ```shell
-./br backup full --pd "${PD_IP}:2379" \
+tiup br backup full --pd "${PD_IP}:2379" \
 --storage "gcs://external/backup-20220915?credentials-file=${credentials-file-path}"
 ```
 
 **从 GCS 恢复快照备份数据**
 
 ```shell
-./br restore full --pd "${PD_IP}:2379" \
+tiup br restore full --pd "${PD_IP}:2379" \
 --storage "gcs://external/backup-20220915?credentials-file=${credentials-file-path}"
 ```
 
@@ -84,14 +84,14 @@ BACKUP DATABASE * TO 's3://bucket-name/prefix' SEND_CREDENTIALS_TO_TIKV = FALSE;
 **备份快照数据到 Azure Blob Storage**
 
 ```shell
-./br backup full -u "${PD_IP}:2379" \
+tiup br backup full -u "${PD_IP}:2379" \
 --storage "azure://external/backup-20220915?account-name=${account-name}&account-key=${account-key}"
 ```
 
 **从 Azure Blob Storage 恢复快照备份数据中 `test` 数据库**
 
 ```shell
-./br restore db --db test -u "${PD_IP}:2379" \
+tiup br restore db --db test -u "${PD_IP}:2379" \
 --storage "azure://external/backup-20220915account-name=${account-name}&account-key=${account-key}"
 ```
 
@@ -107,8 +107,8 @@ BACKUP DATABASE * TO 's3://bucket-name/prefix' SEND_CREDENTIALS_TO_TIKV = FALSE;
 
 在备份之前，需要为 br 命令行工具访问 Amazon S3 中的备份目录设置相应的访问权限：
 
-- 备份时 TiKV 和 br 命令行工具需要的访问备份数据目录的最小权限：`s3:ListBucket`、`s3:PutObject` 和 `s3:AbortMultipartUpload`。
-- 恢复时 TiKV 和 br 命令行工具需要的访问备份数据目录的最小权限：`s3:ListBucket`、`s3:GetObject` 和 `s3:PutObject`。br 命令行工具会将断点信息写到备份数据目录下的 `./checkpoints` 子目录。在恢复日志备份数据时，br 命令行工具会将备份恢复集群的表 ID 映射关系写到备份数据目录下的 `./pitr_id_maps` 子目录。
+- 备份时 TiKV 和 br 命令行工具需要的访问备份数据目录的最小权限：`s3:ListBucket`、`s3:GetObject`、`s3:DeleteObject`、`s3:PutObject` 和 `s3:AbortMultipartUpload`。
+- 恢复时 TiKV 和 br 命令行工具需要的访问备份数据目录的最小权限：`s3:ListBucket`、`s3:GetObject`、`s3:DeleteObject` 和 `s3:PutObject`。br 命令行工具会将断点信息写到备份数据目录下的 `./checkpoints` 子目录。在恢复日志备份数据时，br 命令行工具会将备份恢复集群的表 ID 映射关系写到备份数据目录下的 `./pitr_id_maps` 子目录。
 
 如果你还没有创建备份数据保存目录，可以参考[创建存储桶](https://docs.aws.amazon.com/zh_cn/AmazonS3/latest/user-guide/create-bucket.html)在指定的区域中创建一个 S3 存储桶。如果需要使用文件夹，可以参考[使用文件夹在 Amazon S3 控制台中组织对象](https://docs.aws.amazon.com/zh_cn/AmazonS3/latest/user-guide/create-folder.html)在存储桶中创建一个文件夹。
 
@@ -128,7 +128,7 @@ BACKUP DATABASE * TO 's3://bucket-name/prefix' SEND_CREDENTIALS_TO_TIKV = FALSE;
     为运行 TiKV 和 br 命令行工具的 EC2 实例关联一个配置了访问 S3 访问权限的 IAM role。正确设置后，br 命令行工具可以直接访问对应的 S3 中的备份目录，而不需要额外的设置。
 
     ```shell
-    br backup full --pd "${PD_IP}:2379" \
+    tiup br backup full --pd "${PD_IP}:2379" \
     --storage "s3://${host}/${path}"
     ```
 
@@ -195,7 +195,7 @@ BACKUP DATABASE * TO 's3://bucket-name/prefix' SEND_CREDENTIALS_TO_TIKV = FALSE;
     - 使用 br 命令行工具将数据备份至 Azure Blob Storage：
 
         ```shell
-        ./br backup full -u "${PD_IP}:2379" \
+        tiup br backup full -u "${PD_IP}:2379" \
         --storage "azure://external/backup-20220915?account-name=${account-name}"
         ```
 

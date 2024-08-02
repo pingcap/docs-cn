@@ -192,7 +192,7 @@ sync-diff-inspector 在执行过程中会往 `stdout` 发送进度信息。进�
 >
 > 为了达成显示效果，请保持显示窗口宽度在 80 字符以上。
 
-```progress
+```
 A total of 2 tables need to be compared
 
 Comparing the table structure of ``sbtest`.`sbtest96`` ... equivalent
@@ -203,7 +203,7 @@ _____________________________________________________________________________
 Progress [==========================================================>--] 98% 193/200
 ```
 
-```progress
+```
 A total of 2 tables need to be compared
 
 Comparing the table structure of ``sbtest`.`sbtest96`` ... equivalent
@@ -249,13 +249,13 @@ sync-diff-inspector 的日志存放在 `${output}/sync_diff.log` 中，其中 `$
 
 #### 校验进度
 
-sync-diff-inspector 会在运行时定期（间隔 10s）输出校验进度到 checkpoint 中(位于 `${output}/checkpoint/sync_diff_checkpoints.pb` 中，其中 `${output}` 是 `config.toml` 文件中 `output-dir` 的值。
+sync-diff-inspector 会在运行时定期（间隔 10s）输出校验进度到 checkpoint 中（位于 `${output}/checkpoint/sync_diff_checkpoints.pb`），其中 `${output}` 是 `config.toml` 文件中 `output-dir` 的值。
 
 #### 校验结果
 
 当校验结束时，sync-diff-inspector 会输出一份校验报告，位于 `${output}/summary.txt` 中，其中 `${output}` 是 `config.toml` 文件中 `output-dir` 的值。
 
-```summary
+```
 +---------------------+---------+--------------------+----------------+---------+-----------+
 |        TABLE        | RESULT  | STRUCTURE EQUALITY | DATA DIFF ROWS | UPCOUNT | DOWNCOUNT |
 +---------------------+---------+--------------------+----------------+---------+-----------+
@@ -271,6 +271,8 @@ Average Speed: 113.277149MB/s
 - `RESULT`：校验是否完成。如果设置了 `skip-non-existing-table = true`，对于上游或下游不存在的表，该列的值将为 `skipped`
 - `STRUCTURE EQUALITY`：表结构是否相同
 - `DATA DIFF ROWS`：即 `rowAdd`/`rowDelete`，表示该表修复需要增加/删除的行数
+- `UPCOUNT`：表示该表在上游数据源的行数
+- `DOWNCOUNT`：表示该表在下游数据源的行数
 
 #### SQL 修复
 

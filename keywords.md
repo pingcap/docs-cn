@@ -8,11 +8,9 @@ aliases: ['/docs-cn/dev/keywords/','/docs-cn/dev/keywords-and-reserved-words/','
 
 本文介绍 TiDB 的关键字，对保留字和非保留字作出区分，并汇总所有的关键字以供查询使用。
 
-关键字是 SQL 语句中具有特殊含义的单词，例如 `SELECT`，`UPDATE`，`DELETE` 等等。它们之中有的能够直接作为标识符，被称为**非保留关键字**（简称**非保留字**），但有需要经过特殊处理才能作为标识符的字，被称为**保留关键字**（简称**保留字**）。但是，也存在一些特殊的非保留关键字，有时候可能也需要进行特殊处理，推荐你将它们当作保留关键字处理。
+关键字是 SQL 语句中具有特殊含义的单词，例如  [`SELECT`](/sql-statements/sql-statement-select.md)、[`UPDATE`](/sql-statements/sql-statement-update.md) 和 [`DELETE`](/sql-statements/sql-statement-delete.md) 等等。它们之中有的能够直接作为标识符，被称为**非保留关键字**（简称**非保留字**），但有需要经过特殊处理才能作为标识符的字，被称为**保留关键字**（简称**保留字**）。但是，也存在一些特殊的非保留关键字，有时候可能也需要进行特殊处理，推荐你将它们当作保留关键字处理。
 
 对于保留字，必须使用反引号包裹，才能作为标识符被使用。例如：
-
-{{< copyable "sql" >}}
 
 ```sql
 CREATE TABLE select (a INT);
@@ -21,8 +19,6 @@ CREATE TABLE select (a INT);
 ```
 ERROR 1105 (HY000): line 0 column 19 near " (a INT)" (total length 27)
 ```
-
-{{< copyable "sql" >}}
 
 ```sql
 CREATE TABLE `select` (a INT);
@@ -34,8 +30,6 @@ Query OK, 0 rows affected (0.09 sec)
 
 而非保留字则不需要反引号也能直接作为标识符。例如 `BEGIN` 和 `END` 是非保留字，以下语句能够正常执行：
 
-{{< copyable "sql" >}}
-
 ```sql
 CREATE TABLE `select` (BEGIN int, END int);
 ```
@@ -45,8 +39,6 @@ Query OK, 0 rows affected (0.09 sec)
 ```
 
 有一种特殊情况，如果使用了限定符 `.`，那么也不需要用反引号：
-
-{{< copyable "sql" >}}
 
 ```sql
 CREATE TABLE test.select (BEGIN int, END int);

@@ -155,23 +155,27 @@ delta_index_cache_size = 0
     ## 外部访问 status-addr 的地址，不填则默认使用 "status-addr" 的值
     ## 当集群部署在多个节点时，需要保证 `advertise-addr` 的地址可以从其他节点连接
     advertise-status-addr = ""
+    ## 外部访问 TiFlash coprocessor 服务的地址
+    engine-addr = "10.0.1.20:3930"
     ## proxy 数据存储路径
     data-dir = "/tidb-data/tiflash-9000/flash"
     ## proxy 配置文件路径
     config = "/tidb-deploy/tiflash-9000/conf/tiflash-learner.toml"
     ## proxy log 路径
     log-file = "/tidb-deploy/tiflash-9000/log/tiflash_tikv.log"
-    ## proxy 的 log 级别 (支持 "trace"、"debug"、"info"、"warn"、"error"). 默认是 "info"
-    # log-level = "info" 
 
 [logger]
+    ## 注意，以下参数只对 tiflash.log、tiflash_error.log 生效。TiFlash Proxy 的日志参数配置需要在 tiflash-learner.toml 中指定。
+
     ## log 级别（支持 "trace"、"debug"、"info"、"warn"、"error"），默认是 "info"
     level = "info"
+    ## TiFlash 日志
     log = "/tidb-deploy/tiflash-9000/log/tiflash.log"
+    ## TiFlash 错误日志。对于 "warn"、"error" 级别的日志，会额外输出到该日志文件中。
     errorlog = "/tidb-deploy/tiflash-9000/log/tiflash_error.log"
     ## 单个日志文件的大小，默认是 "100M"
     size = "100M"
-    ## 最多保留日志文件个数，默认是 10
+    ## 最多保留日志文件个数，默认是 10。对于 TiFlash 日志和 TiFlash 错误日志各自最多保留 `count` 个日志文件。
     count = 10
 
 [raft]
@@ -242,9 +246,11 @@ delta_index_cache_size = 0
 
 ## 安全相关配置，从 v4.0.5 开始生效
 [security]
-    ## 从 v5.0 引入，控制是否开启日志脱敏
-    ## 若开启该选项，日志中的用户数据会以 `?` 代替显示
-    ## 注意，tiflash-learner 对应的安全配置选项为 `security.redact-info-log`，需要在 tiflash-learner.toml 中另外开启
+    ## 从 v5.0 引入，控制是否开启日志脱敏。可选值为 true、false、marker。其中，marker 从 v8.2.0 开始支持。
+    ## 默认值为 false，即对用户日志不做处理。
+    ## 若设置为 true，日志中的用户数据会以 `?` 代替显示。
+    ## 若设置为 marker，日志中的用户数据会被标记符号 `‹ ›` 包裹。用户数据中的 `‹` 会转义成 `‹‹`，`›` 会转义成 `››`。基于标记后的日志，你可以在展示日志时决定是否对被标记信息进行脱敏处理。
+    ## 注意，tiflash-learner 对应的安全配置选项为 `security.redact-info-log`，需要在 tiflash-learner.toml 中另外设置。
     # redact_info_log = false
 
     ## 包含可信 SSL CA 列表的文件路径。如果你设置了该值，`cert_path` 和 `key_path` 中的路径也需要填写
@@ -257,9 +263,25 @@ delta_index_cache_size = 0
 
 ### 配置文件 tiflash-learner.toml
 
+`tiflash-learner.toml` 中的功能参数和 TiKV 基本一致，可以参照 [TiKV 配置](/tikv-configuration-file.md)来进行配置。下面只列了常用的部分参数。需要注意的是：
+
+- 相对于 TiKV，TiFlash Proxy 新增了 `raftstore.snap-handle-pool-size` 参数。
+- `key` 为 `engine` 的 `label` 是保留项，不可手动配置。
+
 ```toml
-[server]
-    engine-addr = 外部访问 TiFlash coprocessor 服务的地址
+[log]
+    ## TiFlash Proxy 的 log 级别，可选值为 "trace"、"debug"、"info"、"warn"、"error"，默认值为 "info"。从 v5.4.0 版本开始引入。
+    level = "info"
+
+[log.file]
+    ## 可保留的 log 文件的最大数量。从 v5.4.0 版本开始引入。
+    ## 如果未设置该参数或把该参数设置为默认值 `0`，TiFlash Proxy 会保存所有的日志文件；
+    ## 如果把此参数设置为非 `0` 的值，TiFlash Proxy 最多会保留 `max-backups` 中指定数量的旧日志文件。比如，如果该值设置为 `7`，TiFlash Proxy 最多会保留 7 个旧的日志文件。
+    max-backups = 0
+    ## 保留 log 文件的最长天数。从 v5.4.0 版本开始引入。
+    ## 如果未设置本参数或把此参数设置为默认值 `0`，TiFlash Proxy 会保存所有的日志文件。
+    ## 如果把此参数设置为非 `0` 的值，在 `max-days` 之后，TiFlash Proxy 会清理过期的日志文件。
+    max-days = 0
 
 [raftstore]
     ## 处理 Raft 数据落盘的线程池中线程的数量
@@ -267,14 +289,13 @@ delta_index_cache_size = 0
     ## 处理 Raft 的线程池中线程的数量，即 Raftstore 线程池的大小。
     store-pool-size = 4
     ## 控制处理 snapshot 的线程数，默认为 2。设为 0 则关闭多线程优化
+    ## TiFlash Proxy 特有参数，从 v4.0.0 版本开始引入。
     snap-handle-pool-size = 2
-    ## 控制 raft store 持久化 WAL 的最小间隔。通过适当增大延迟以减少 IOPS 占用，默认为 "4ms"，设为 "0ms" 则关闭该优化。
-    store-batch-retry-recv-timeout = "4ms"
 
 [security]
-    ## 从 v5.0 引入，控制是否开启日志脱敏
-    ## 若开启该选项，日志中的用户数据会以 `?` 代替显示
-    ## 默认值为 false
+    ## 从 v5.0 引入，控制是否开启日志脱敏。可选值为 true、false。
+    ## 默认值为 false，即对用户日志不做处理。
+    ## 若设置为 true，日志中的用户数据会以 `?` 代替显示。
     redact-info-log = false
 
 [security.encryption]
@@ -291,8 +312,6 @@ delta_index_cache_size = 0
 [security.encryption.previous-master-key]
     ## 指定轮换新主密钥时的旧主密钥。旧主密钥的配置格式与主密钥相同。若要了解如何配置主密钥，可以参考《静态加密 - 配置加密》：https://docs.pingcap.com/zh/tidb/dev/encryption-at-rest#配置加密
 ```
-
-除以上几项外，其余功能参数和 TiKV 的配置相同。需要注意的是：`key` 为 `engine` 的 `label` 是保留项，不可手动配置。
 
 ### 通过拓扑 label 进行副本调度
 

@@ -1,6 +1,7 @@
 ---
 title: TiDB 2.0 RC3 Release Notes
 aliases: ['/docs-cn/dev/releases/release-2.0-rc.3/','/docs-cn/dev/releases/2rc3/']
+summary: TiDB 2.0 RC3 版本发布，改进了 MySQL 兼容性、系统稳定性和优化器。TiDB 修复了 MAX/MIN 结果错误、Sort Merge Join 排序问题、uint 和 int 比较错误等。PD 支持 Region Merge 和忽略有大量 pending peer 的节点。TiKV 支持 Region Merge、Raft snapshot 通知 PD 加速调度、增加 Raw DeleteRange API 等。
 ---
 
 # TiDB 2.0 RC3 Release Notes
