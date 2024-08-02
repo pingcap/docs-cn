@@ -2295,6 +2295,7 @@ mysql> SELECT job_info FROM mysql.analyze_jobs ORDER BY end_time DESC LIMIT 1;
 
 - 作用域：SESSION | GLOBAL
 - 是否持久化到集群：是
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：否
 - 类型：布尔型
 - 默认值：`OFF`
 - 该变量用于控制是否启用共享锁升级为排他锁的功能。当该变量值为 `ON` 时，TiDB 会尝试将共享锁升级为排他锁，以减少死锁的概率。该变量默认值为 `OFF`，表示不启用共享锁升级为排他锁的功能。
