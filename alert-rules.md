@@ -63,21 +63,6 @@ summary: TiDB 集群中各组件的报警规则详解。
 
     参考 [`TiDB_schema_error`](#tidb_schema_error) 的处理方法。
 
-#### `TiDB_monitor_keep_alive`
-
-* 报警规则：
-
-    `increase(tidb_monitor_keep_alive_total[10m]) < 100`
-
-* 规则描述：
-
-    表示 TiDB 的进程是否仍然存在。如果在 10 分钟之内 `tidb_monitor_keep_alive_total` 增加次数少于 100，则 TiDB 的进程可能已经退出，此时会报警。
-
-* 处理方法：
-
-    * 检查 TiDB 进程是否 OOM。
-    * 检查机器是否发生了重启。
-
 ### 严重级别报警项
 
 #### `TiDB_server_panic_total`
