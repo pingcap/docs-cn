@@ -34,7 +34,7 @@ SELECT count(1) FROM t GROUP BY a,b,c WITH ROLLUP;
 
 ## 准备条件
 
-目前，TiDB 仅在 TiFlash MPP 模式下支持为 `WITH ROLLUP` 语法生成有效的执行计划，因此你的 TiDB 集群需要包含 TiFlash 节点，并且对目标分析表进行了正确的 TiFlash 副本的配置。
+目前，TiDB 支持在 TiDB 自身和 TiFlash MPP 模式下为 `WITH ROLLUP` 语法生成有效的执行计划，可以在执行计划中通过观察 `EXPAND` 算子存储引擎属性来辨别。`EXPAND` 的 MPP 属性要求 TiDB 集群需要包含 TiFlash 节点，并且对目标分析表进行了正确的 TiFlash 副本的配置。
 
 更多信息，请参考[扩容 TiFlash 节点](/scale-tidb-using-tiup.md#扩容-tiflash-节点)。
 
@@ -51,7 +51,7 @@ CREATE TABLE bank
     profit  DECIMAL(13, 7)
 );
 
-ALTER TABLE bank SET TIFLASH REPLICA 1; -- 为该表添加一个 TiFlash 副本
+ALTER TABLE bank SET TIFLASH REPLICA 1; -- MPP 模式可以先为该表添加一个 TiFlash 副本
 
 INSERT INTO bank VALUES(2000, "Jan", 1, 10.3),(2001, "Feb", 2, 22.4),(2000,"Mar", 3, 31.6)
 ```
@@ -163,6 +163,23 @@ SELECT year, month, SUM(profit) AS profit, grouping(year) as grp_year, grouping(
 以下为一个执行计划示例：
 
 ```sql
+-- 这个是 TiDB Root 模式下的执行计划
+tidb> explain SELECT year, month, grouping(year), grouping(month), SUM(profit) AS profit FROM bank GROUP BY year, month WITH ROLLUP;
++--------------------------------+---------+-----------+---------------+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| id                             | estRows | task      | access object | operator info                                                                                                                                                                                                                        |
++--------------------------------+---------+-----------+---------------+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| Projection_7                   | 2.40    | root      |               | Column#6->Column#12, Column#7->Column#13, grouping(gid)->Column#14, grouping(gid)->Column#15, Column#9->Column#16                                                                                                                    |
+| └─HashAgg_8                    | 2.40    | root      |               | group by:Column#6, Column#7, gid, funcs:sum(test.bank.profit)->Column#9, funcs:firstrow(Column#6)->Column#6, funcs:firstrow(Column#7)->Column#7, funcs:firstrow(gid)->gid                                                            |
+|   └─Expand_12                  | 3.00    | root      |               | level-projection:[test.bank.profit, <nil>->Column#6, <nil>->Column#7, 0->gid],[test.bank.profit, Column#6, <nil>->Column#7, 1->gid],[test.bank.profit, Column#6, Column#7, 3->gid]; schema: [test.bank.profit,Column#6,Column#7,gid] |
+|     └─Projection_14            | 3.00    | root      |               | test.bank.profit, test.bank.year->Column#6, test.bank.month->Column#7                                                                                                                                                                |
+|       └─TableReader_16         | 3.00    | root      |               | data:TableFullScan_15                                                                                                                                                                                                                |
+|         └─TableFullScan_15     | 3.00    | cop[tikv] | table:bank    | keep order:false, stats:pseudo                                                                                                                                                                                                       |
++--------------------------------+---------+-----------+---------------+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+6 rows in set (0.00 sec)
+```
+
+```sql
+-- 这个是 TiDB MPP 模式下的执行计划
 explain SELECT year, month, grouping(year), grouping(month), SUM(profit) AS profit FROM bank GROUP BY year, month WITH ROLLUP;
 +----------------------------------------+---------+--------------+---------------+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
 | id                                     | estRows | task         | access object | operator info                                                                                                                                                                                                                        |
