@@ -56,7 +56,17 @@ TiDB 版本：8.3.0
     TiFlash 的 Hashagg 聚合计算中，第一阶段也会进行聚集计算。对于高 NDV 数据，这种模式效率较低。在 v8.3.0 版本中，TiFlash 引入多种 Hashagg 聚合计算模式，提升不同特征数据的聚集计算性能。通过新增的变量 [tiflash_hashagg_preaggregation_mode](/system-variables.md#tiflash_hashagg_preaggregation_mode-从-v830-版本开始引入) 设定 Hashagg 聚合计算模式。
     
     更多信息，请参考[用户文档](/system-variables.md#tiflash_hashagg_preaggregation_mode-从-v830-版本开始引入)。
+
+* 统计信息收集忽略不必要的列 [#53567](https://github.com/pingcap/tidb/issues/53567) @[hi-rustin](https://github.com/hi-rustin) **tw@lilin90** <!--1753-->
+
+    当优化器生成执行计划时，只需要部分列的统计信息，例如过滤条件上的列，连接键上的列，聚合目标用到的列。从 v8.3.0 起，TiDB 会持续观测 SQL 语句对列的使用历史，默认只收集有索引的列，以及被观测到的有必要收集统计信息的列。这将会提升统计信息的收集速度，避免不必要的资源浪费。
+
+    从旧版本升级到 v8.3.0 或更高版本的用户，默认保留原有行为，收集所有列的统计信息，需要手工设置变量 [`tidb_analyze_column_options`](/system-variables.md#tidb_analyze_column_options-从-v830-版本开始引入) 为 `PREDICATE` 来启用，新部署默认开启。
     
+    对于随机查询比较多的偏分析型系统，可以设置 [`tidb_analyze_column_options`](/system-variables.md#tidb_analyze_column_options-从-v830-版本开始引入) 为 `ALL` 收集所有列的统计信息，保证随机查询的性能。其余类型的系统推荐保留 [`tidb_analyze_column_options`](/system-variables.md#tidb_analyze_column_options-从-v830-版本开始引入) 为 `PREDICATE` 只收集必要的列。
+
+    更多信息，请参考[用户文档](/statistics.md#收集部分列的统计信息)。
+
 ### 稳定性
 
 * 功能标题 [#issue号](链接) @[贡献者 GitHub ID](链接) **tw@xxx** <!--1234-->
