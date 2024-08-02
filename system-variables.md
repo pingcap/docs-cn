@@ -2291,6 +2291,14 @@ mysql> SELECT job_info FROM mysql.analyze_jobs ORDER BY end_time DESC LIMIT 1;
 - 可选值：`OFF`，`ON`
 - 该变量用于控制 TiDB 是否启用 Chunk 对象缓存。如果为 `ON`，则优先使用缓存中的 Chunk 对象，缓存中找不到申请的对象时才会从系统内存中申请。如果为 `OFF`，则直接从系统内存中申请 Chunk 对象。
 
+### `tidb_enable_shared_lock_upgrade` <span class="version-mark">从 v8.3.0 版本开始引入</span>
+
+- 作用域：SESSION | GLOBAL
+- 是否持久化到集群：是
+- 类型：布尔型
+- 默认值：`OFF`
+- 该变量用于控制是否启用共享锁升级为排他锁的功能。当该变量值为 `ON` 时，TiDB 会尝试将共享锁升级为排他锁，以减少死锁的概率。该变量默认值为 `OFF`，表示不启用共享锁升级为排他锁的功能。注意该变量不可和 [`tidb_enable_noop_functions`](#tidb_enable_noop_functions-span-classversion-mark从-v40-版本开始引入span) 同时开启。
+
 ### `tidb_enable_slow_log`
 
 - 作用域：GLOBAL
@@ -3311,14 +3319,6 @@ v5.0 后，用户仍可以单独修改以上系统变量（会有废弃警告）
 - 类型：Duration
 - 默认值：`60s`
 - 刚重启的 TiFlash 可能不能正常提供服务。为了防止查询失败，TiDB 会限制 tidb-server 向刚重启的 TiFlash 节点发送查询。这个变量表示刚重启的 TiFlash 不被发送请求的时间范围。
-
-### `tidb_enable_shared_lock_upgrade` <span class="version-mark">从 v8.3.0 版本开始引入</span>
-
-- 作用域：SESSION | GLOBAL
-- 是否持久化到集群：是
-- 类型：布尔型
-- 默认值：`OFF`
-- 该变量用于控制是否启用共享锁升级为排他锁的功能。当该变量值为 `ON` 时，TiDB 会尝试将共享锁升级为排他锁，以减少死锁的概率。该变量默认值为 `OFF`，表示不启用共享锁升级为排他锁的功能。注意该变量不可和 [`tidb_enable_noop_functions`](#tidb_enable_noop_functions-span-classversion-mark从-v40-版本开始引入span) 同时开启。
 
 ### `tidb_multi_statement_mode` <span class="version-mark">从 v4.0.11 版本开始引入</span>
 
