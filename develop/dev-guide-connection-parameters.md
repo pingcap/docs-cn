@@ -140,7 +140,7 @@ TiDB 中同时支持两种方式，但更推荐使用第一种将 **FetchSize** 
 
 对于第二种方法，TiDB 会先将所有数据加载到 TiDB 节点上，然后根据 `FetchSize` 依次返回给客户端。因此，通常会比第一种方法使用更多的内存，如果 [`tidb_enable_tmp_storage_on_oom`](/system-variables.md#tidb_enable_tmp_storage_on_oom) 为 `ON` 时，可能会将数据存储到临时磁盘中。
 
-如果系统变量 [`tidb_enable_lazy_cursor_fetch`](/system-variables.md#tidb_enable_lazy_cursor_fetch) 为 `ON`，TiDB 将尝试仅在客户端请求数据时读取部分数据，以使用更少的内存。有关详细信息和限制，请阅读变量 [`tidb_enable_lazy_cursor_fetch`](/system-variables.md#tidb_enable_lazy_cursor_fetch) 的描述。
+如果系统变量 [`tidb_enable_lazy_cursor_fetch`](/system-variables.md#tidb_enable_lazy_cursor_fetch-从-v830-版本开始引入) 为 `ON`，TiDB 将尝试仅在客户端请求数据时读取部分数据，以使用更少的内存。有关详细信息和限制，请阅读变量 [`tidb_enable_lazy_cursor_fetch`](/system-variables.md#tidb_enable_lazy_cursor_fetch) 的描述。
 
 ### MySQL JDBC 参数
 
