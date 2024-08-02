@@ -150,7 +150,7 @@ grep "idAllocator allocates a new id" {{/path/to}}/pd*.log |  awk -F'=' '{print 
 
 ### 第 4 步：使用 pd-recover
 
-只需在一个 PD 节点上执行 `pd-recover` 即可。需要注意的是，为了避免重新分配，最好在已分配 ID 增加一定值，比如从监控或者 日志获得的最大的已分配 ID 是 9000，则传入的参数最好是 10000 甚至更大。
+只需在一个 PD 节点上执行 `pd-recover` 即可。需要注意的是，为了避免重新分配，建议使用大于已分配 ID 的值，比如从监控或者日志获得的最大已分配 ID 是 9000，则建议传入参数 10000 或更大值。
 
 {{< copyable "shell-regular" >}}
 
