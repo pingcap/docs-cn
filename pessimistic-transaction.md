@@ -107,7 +107,7 @@ BEGIN /*T! PESSIMISTIC */;
 
 2. TiDB 不支持 `SELECT LOCK IN SHARE MODE`。
 
-    TiDB 默认不支持 `SELECT LOCK IN SHARE MODE``。
+    TiDB 默认不支持 `SELECT LOCK IN SHARE MODE`。
 
     从 v8.3.0 版本开始，TiDB 支持使用 [`tidb_enable_shared_lock_upgrade`](/system-variables.md#tidb_enable_shared_lock_upgrade-span-classversion-mark从-v830-版本开始引入span) 系统变量开启 `SELECT LOCK IN SHARE MODE` 语句的功能。开启后，`SELECT LOCK IN SHARE MODE` 语句会升级为 `SELECT FOR UPDATE` 语句，对数据行加悲观锁。
 
