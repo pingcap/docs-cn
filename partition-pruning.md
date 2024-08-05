@@ -232,6 +232,7 @@ explain select * from t where x between 7 and 14;
 
 * [`UNIX_TIMESTAMP()`](/functions-and-operators/date-and-time-functions.md)
 * [`TO_DAYS()`](/functions-and-operators/date-and-time-functions.md)
+* [`EXTRACT(<time unit> FROM <DATETIME/DATE/TIME column>)`](/functions-and-operators/date-and-time-functions.md)。对于 `DATE` 和 `DATETIME` 列，`YEAR` 和 `YEAR_MONTH` 时间单位被视为单调函数。对于 `TIME` 列，`HOUR`、`HOUR_MINUTE`、`HOUR_SECOND` 和 `HOUR_MICROSECOND` 被视为单调函数。请注意，`EXTRACT` 中不支持将 `WEEK` 作为分区修剪的时间单位。
 
 例如，分区表达式是 `fn(col)` 形式，`fn` 为我们支持的单调函数 `to_days`，就可以使用分区裁剪：
 
