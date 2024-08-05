@@ -34,7 +34,7 @@ tiup br backup full --pd "${PD_IP}:2379" \
 * `tiup br restore`：用于恢复备份数据到 TiDB 集群。
 * `tiup br debug`：用于解析备份元信息，检查备份数据等操作。
 
-`tiup br backup` 和 `tiup br restore` 还包含以下子命令：
+`tiup br backup` 和 `tiup br restore` 包含以下子命令：
 
 * `full`：用于备份或恢复整个备份数据。
 * `db`：用于备份或恢复集群中的指定数据库。
