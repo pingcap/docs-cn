@@ -24,24 +24,24 @@ TiDB 版本：8.3.0
 <tbody>
   <tr>
     <td rowspan="4">可扩展性和性能</td>
-    <td> 分区表全局索引（实验特性）</td>
+    <td> <a href="https://docs.pingcap.com/zh/tidb/v8.3/partitioned-table#全局索引">分区表全局索引（实验特性）</a></td> **tw@hfxsd** <!--1531-->
     <td>全局索引能够有效提升对非分区键的检索效率，同时也解除了分区键一定要包含唯一键 (Unique Key) 的限制，扩展了 TiDB 分区表的使用场景，也能够避免数据迁移可能遇到的部分应用改造工作。</td>
   </tr>
   <tr>
-    <td>Projection 下推成为正式功能</td>
+    <td>Projection 下推成为正式功能</td>**tw@Oreoxmt** <!--1872-->
     <td> Projection 下推能够尽可能将负载分散到存储节点，也可以减少节点间的数据传输，这能够降低一部分 SQL 的执行时间，提升数据库整体性能。</td>
   </tr>
   <tr>
-    <td>统计信息收集忽略不必要的列</td>
+    <td>统计信息收集忽略不必要的列</td>**tw@lilin90** <!--1753-->
     <td>在保证优化器能够获取到必要信息的前提下，加快了统计信息收集的速度，提升统计信息的时效性，进而保证最优的执行计划的选择，提升集群性能。同时也降低的系统开销，改善资源利用率。</td>
   </tr>
   <tr>
-    <td>读写性能的细粒度优化</td>
+    <td>读写性能的细粒度优化</td>**tw@qiancai** <!--1893-->
     <td>通过优化 KV 请求的策略，增加获取 TSO 的模式等多重手段，进一步提升 TiDB 的读写性能，降低业务的执行时间，改善延迟。</td>
   </tr>
   <tr>
     <td rowspan="1">稳定性与高可用</td>
-    <td>TiProxy 管理虚拟 IP</td>
+    <td>TiProxy 管理虚拟 IP</td>**tw@Oreoxmt** <!--1887-->
     <td>在 TiProxy 内实现了对连接地址的管理，支持自动的地址切换，而不依赖外部平台或工具。这能够简化 TiProxy 的部署形式，降低了数据库接入层的复杂度。</td>
   </tr>
 </tbody>
@@ -191,7 +191,7 @@ TiDB 版本：8.3.0
 
     TiDB 暂不支持 `Shared Lock`. 在 v8.3.0 版本中，TiDB 支持将 `Shared Lock` 升级为 `Exclusive Lock`，实现对 `Shared Lock` 语法的支持。通过新增的变量 [tidb_enable_shared_lock_upgrade](/system-variables.md#tidb_enable_shared_lock_upgrade-从-v830-版本开始引入) 控制是否启用该功能。
 
-* 分区表支持全局索引 (Global Index)（实验特性） [#45133](https://github.com/pingcap/tidb/issues/45133) @[mjonss](https://github.com/mjonss) **tw@hfxsd** <!--1234-->
+* 分区表支持全局索引 (Global Index)（实验特性） [#45133](https://github.com/pingcap/tidb/issues/45133) @[mjonss](https://github.com/mjonss) **tw@hfxsd** <!--1531-->
 
     之前版本的分区表，因为不支持全局索引有较多的限制，比如唯一键必须包含分区建，如果查询条件不带分区建，查询时会扫描所有分区，导致性能较差。从 v7.6.0 开始，引入了参数 [`tidb_enable_global_index`](/system-variables.md#tidb_enable_global_index-从-v760-版本开始引入) 用于开启全局索引特性，但该功能当时处于开发中，不够完善，不建议开启。
     
