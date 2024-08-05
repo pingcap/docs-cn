@@ -5,15 +5,7 @@ summary: 介绍 TiCDC 数据正确性校验功能的实现原理和使用方法�
 
 # TiCDC 单行数据正确性校验
 
-从 v7.1.0 开始，TiCDC 引入了单行数据正确性校验功能。该功能基于 Checksum 算法，校验一行数据从 TiDB 写入、通过 TiCDC 同步，到写入 Kafka 集群的过程中数据内容是否发生错误。TiCDC 数据正确性校验功能仅支持下游是 Kafka 的 Changefeed，目前支持 Avro 协议。
-
-## 实现原理
-
-在启用单行数据 Checksum 正确性校验功能后，TiDB 使用 CRC32 算法计算该行数据的 Checksum 值，并将其一并写入 TiKV。TiCDC 从 TiKV 读取数据，根据相同的算法重新计算 Checksum，如果该值与 TiDB 写入的值相同，则可以证明数据在 TiDB 至 TiCDC 的传输过程中是正确的。
-
-TiCDC 将数据编码成特定格式并发送至 Kafka。Kafka Consumer 读取数据后，可以使用与 TiDB 相同的算法计算得到新的 Checksum，将此值与数据中携带的 Checksum 值进行比较，若二者一致，则可证明从 TiCDC 至 Kafka Consumer 的传输链路上的数据是正确的。
-
-关于 Checksum 值的计算规则，请参考 [Checksum 计算规则](#checksum-计算规则)。
+从 v7.1.0 开始，TiCDC 引入了单行数据正确性校验功能。该功能基于 Checksum 算法，校验一行数据从 TiDB 写入、通过 TiCDC 同步，到写入 Kafka 集群的过程中数据内容是否发生错误。TiCDC 数据正确性校验功能仅支持下游是 Kafka 的 Changefeed，目前支持 Simple, Avro 协议。
 
 ## 启用功能
 
@@ -35,18 +27,6 @@ TiCDC 数据正确性校验功能默认关闭，要使用该功能，请执行�
     corruption-handle-level = "warn"
     ```
 
-3. 当使用 Avro 作为数据编码格式时，你需要在 [`sink-uri`](/ticdc/ticdc-sink-to-kafka.md#sink-uri-配置-kafka) 中设置 [`enable-tidb-extension=true`](/ticdc/ticdc-sink-to-kafka.md#sink-uri-配置-kafka)。同时，为了防止数值类型在网络传输过程中发生精度丢失，导致 Checksum 校验失败，还需要设置 [`avro-decimal-handling-mode=string`](/ticdc/ticdc-sink-to-kafka.md#sink-uri-配置-kafka) 和 [`avro-bigint-unsigned-handling-mode=string`](/ticdc/ticdc-sink-to-kafka.md#sink-uri-配置-kafka)。下面是一个配置示例：
-
-    ```shell
-    cdc cli changefeed create --server=http://127.0.0.1:8300 --changefeed-id="kafka-avro-checksum" --sink-uri="kafka://127.0.0.1:9092/topic-name?protocol=avro&enable-tidb-extension=true&avro-decimal-handling-mode=string&avro-bigint-unsigned-handling-mode=string" --schema-registry=http://127.0.0.1:8081 --config changefeed_config.toml
-    ```
-
-    通过上述配置，Changefeed 会在每条写入 Kafka 的消息中携带该消息对应数据的 Checksum，你可以根据此 Checksum 的值进行数据一致性校验。
-
-    > **注意：**
-    >
-    > 对于已有 Changefeed，如果未设置 `avro-decimal-handling-mode` 和 `avro-bigint-unsigned-handling-mode`，开启 Checksum 校验功能时会引起 Schema 不兼容问题。可以通过修改 Schema Registry 的兼容性为 `NONE` 解决该问题。详情可参考 [Schema 兼容性](https://docs.confluent.io/platform/current/schema-registry/fundamentals/avro.html#no-compatibility-checking)。
-
 ## 关闭功能
 
 TiCDC 默认关闭单行数据的 Checksum 校验功能。若要在开启此功能后将其关闭，请执行以下步骤：
@@ -66,6 +46,62 @@ TiCDC 默认关闭单行数据的 Checksum 校验功能。若要在开启此功�
     ```
 
     上述配置仅对新创建的会话生效。在所有写入 TiDB 的客户端都完成数据库连接重建后，Changefeed 写入 Kafka 的消息中将不再携带该条消息对应数据的 Checksum 值。
+
+## Checksum V2
+
+从 v8.4.0 开始，TiDB 和 TiCDC 引入了新的 Checksum 校验计算算法。当开启 Checksum 功能之后，默认使用该算法进行 Checksum 计算和校验。之前的版本集群升级到 v8.4.0 之后，TiDB 默认使用 Checksum V2 对新写入的数据计算 Checksum 并且写入到 TiKV。TiCDC 支持同时处理 V1 和 V2 两种 Checksum，对外不感知。
+
+引入新算法的原因是，使用之前的 Checksum 计算算法，TiCDC 无法应对在 Add Column / Drop Column 之后执行的 Update / Delete 事件的 Old Value 部分的正确校验。
+
+* 如果 Old Value 部分是由 Checksum V1 写入，并且有执行过 Add Column / Drop Column 语句，那么这部分的 Old Value Checksum，TiCDC 无法正确解析计算。
+
+
+7.5.0 -> 8.4.0
+
+```
+
+create table t (a int primary key, b int);
+
+insert into t values (1, 2);   -> 7.5 write in, checksum v1
+
+alter table t add column c int default 3;
+
+-- upgrade cluster -> v8.4.0
+
+update t set b = 1 where a = 1;  -> 7.4 write in
+
+old value  -> v1
+
+value  -> v2
+
+```
+
+
+2. 对于 checksum v1 的 old value 部分，做校验，如果不成功，那么打印 warn log，说明可能出现了 add column，drop column 的情况。
+
+changefeed 不失败；不打日志 / 打日志，避免打太多。
+
+## Checksum V1 实现原理
+
+在启用单行数据 Checksum 正确性校验功能后，TiDB 使用 CRC32 算法计算该行数据的 Checksum 值，并将其一并写入 TiKV。TiCDC 从 TiKV 读取数据，根据相同的算法重新计算 Checksum，如果该值与 TiDB 写入的值相同，则可以证明数据在 TiDB 至 TiCDC 的传输过程中是正确的。
+
+TiCDC 将数据编码成特定格式并发送至 Kafka。Kafka Consumer 读取数据后，可以使用与 TiDB 相同的算法计算得到新的 Checksum，将此值与数据中携带的 Checksum 值进行比较，若二者一致，则可证明从 TiCDC 至 Kafka Consumer 的传输链路上的数据是正确的。
+
+关于 Checksum 值的计算规则，请参考 [Checksum 计算规则](#checksum-计算规则)。
+
+
+3. 当使用 Avro 作为数据编码格式时，你需要在 [`sink-uri`](/ticdc/ticdc-sink-to-kafka.md#sink-uri-配置-kafka) 中设置 [`enable-tidb-extension=true`](/ticdc/ticdc-sink-to-kafka.md#sink-uri-配置-kafka)。同时，为了防止数值类型在网络传输过程中发生精度丢失，导致 Checksum 校验失败，还需要设置 [`avro-decimal-handling-mode=string`](/ticdc/ticdc-sink-to-kafka.md#sink-uri-配置-kafka) 和 [`avro-bigint-unsigned-handling-mode=string`](/ticdc/ticdc-sink-to-kafka.md#sink-uri-配置-kafka)。下面是一个配置示例：
+
+    ```shell
+    cdc cli changefeed create --server=http://127.0.0.1:8300 --changefeed-id="kafka-avro-checksum" --sink-uri="kafka://127.0.0.1:9092/topic-name?protocol=avro&enable-tidb-extension=true&avro-decimal-handling-mode=string&avro-bigint-unsigned-handling-mode=string" --schema-registry=http://127.0.0.1:8081 --config changefeed_config.toml
+    ```
+
+    通过上述配置，Changefeed 会在每条写入 Kafka 的消息中携带该消息对应数据的 Checksum，你可以根据此 Checksum 的值进行数据一致性校验。
+
+    > **注意：**
+    >
+    > 对于已有 Changefeed，如果未设置 `avro-decimal-handling-mode` 和 `avro-bigint-unsigned-handling-mode`，开启 Checksum 校验功能时会引起 Schema 不兼容问题。可以通过修改 Schema Registry 的兼容性为 `NONE` 解决该问题。详情可参考 [Schema 兼容性](https://docs.confluent.io/platform/current/schema-registry/fundamentals/avro.html#no-compatibility-checking)。
+
 
 ## Checksum 计算规则
 
