@@ -29,7 +29,7 @@ TiDB 的事务的实现采用了 MVCC（多版本并发控制）机制，当新�
 
 > **Tip:**
 >
-> 特别地，在 Dumpling 备份时，如果导出的数据量少于 1 TB 且导出的 TiDB 版本为 v4.0.0 或更新版本，并且 Dumpling 可以访问 TiDB 集群的 PD 地址，Dumpling 会自动配置延长 GC 时间且不会对原集群造成影响。以下场景除外：
+> 特别地，在 Dumpling 备份时，如果导出的数据量少于 1 TB 且导出的 TiDB 版本为 v4.0.0 或更新版本，并且 Dumpling 可以访问 TiDB 集群的 PD 地址以及 [`INFORMATION_SCHEMA.CLUSTER_INFO`](/information-schema/information-schema-cluster-info.md) 表，Dumpling 会自动调整 GC 的 safe point 从而阻塞 GC 且不会对原集群造成影响。以下场景除外：
 >
 > - 数据量非常大（超过 1 TB）。
 > - Dumpling 无法直接连接到 PD，例如 TiDB 集群运行在 TiDB Cloud 上，或者 TiDB 集群运行在 Kubernetes 上且与 Dumpling 分离。
