@@ -49,41 +49,15 @@ TiCDC 默认关闭单行数据的 Checksum 校验功能。若要在开启此功�
 
 ## Checksum V2
 
-从 v8.4.0 开始，TiDB 和 TiCDC 引入了新的 Checksum 校验计算算法。当开启 Checksum 功能之后，默认使用该算法进行 Checksum 计算和校验。之前的版本集群升级到 v8.4.0 之后，TiDB 默认使用 Checksum V2 对新写入的数据计算 Checksum 并且写入到 TiKV。TiCDC 支持同时处理 V1 和 V2 两种 Checksum，对外不感知。
+从 v8.4.0 开始，TiDB 和 TiCDC 引入了新的 Checksum 校验计算算法。当开启 Checksum 功能之后，默认使用该算法进行 Checksum 计算和校验。
 
-引入新算法的原因是，使用之前的 Checksum 计算算法，TiCDC 无法应对在 Add Column / Drop Column 之后执行的 Update / Delete 事件的 Old Value 部分的正确校验。
+引入新算法的原因是，使用之前的 Checksum 计算算法，TiCDC 无法应对在 Add Column / Drop Column 之后执行的 Update / Delete 事件的 Old Value 部分的正确校验。Checksum V2 可以正确地应对该场景。
 
-* 如果 Old Value 部分是由 Checksum V1 写入，并且有执行过 Add Column / Drop Column 语句，那么这部分的 Old Value Checksum，TiCDC 无法正确解析计算。
-
-
-7.5.0 -> 8.4.0
-
-```
-
-create table t (a int primary key, b int);
-
-insert into t values (1, 2);   -> 7.5 write in, checksum v1
-
-alter table t add column c int default 3;
-
--- upgrade cluster -> v8.4.0
-
-update t set b = 1 where a = 1;  -> 7.4 write in
-
-old value  -> v1
-
-value  -> v2
-
-```
-
-
-2. 对于 checksum v1 的 old value 部分，做校验，如果不成功，那么打印 warn log，说明可能出现了 add column，drop column 的情况。
-
-changefeed 不失败；不打日志 / 打日志，避免打太多。
+之前的版本集群升级到 v8.4.0 之后，TiDB 默认使用 Checksum V2 对新写入的数据计算 Checksum 并且写入到 TiKV。TiCDC 支持同时处理 V1 和 V2 两种 Checksum，对外不感知。该功能只影响 TiDB 和 TiCDC 内部的实现细节，下游 Kafka consumer 的 Checksum 计算校验方法无变化。
 
 ## Checksum V1 实现原理
 
-在启用单行数据 Checksum 正确性校验功能后，TiDB 使用 CRC32 算法计算该行数据的 Checksum 值，并将其一并写入 TiKV。TiCDC 从 TiKV 读取数据，根据相同的算法重新计算 Checksum，如果该值与 TiDB 写入的值相同，则可以证明数据在 TiDB 至 TiCDC 的传输过程中是正确的。
+在 v8.4.0 版本之前，TiDB 和 TiCDC 采用 Checksum v1 进行 Checksum 计算和校验。在启用单行数据 Checksum 正确性校验功能后，TiDB 使用 CRC32 算法计算该行数据的 Checksum 值，并将其一并写入 TiKV。TiCDC 从 TiKV 读取数据，根据相同的算法重新计算 Checksum，如果该值与 TiDB 写入的值相同，则可以证明数据在 TiDB 至 TiCDC 的传输过程中是正确的。
 
 TiCDC 将数据编码成特定格式并发送至 Kafka。Kafka Consumer 读取数据后，可以使用与 TiDB 相同的算法计算得到新的 Checksum，将此值与数据中携带的 Checksum 值进行比较，若二者一致，则可证明从 TiCDC 至 Kafka Consumer 的传输链路上的数据是正确的。
 
