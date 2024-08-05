@@ -214,12 +214,6 @@ TiDB 版本：8.3.0
 
     更多信息，请参考[用户文档](链接)。
 
-* 系统视图 `PROCESS LIST` 增加 `ROWS_AFFECTED` 字段 [#54486](https://github.com/pingcap/tidb/issues/54486) @[ekexium](https://github.com/ekexium) **tw@qiancai** <!--1903-->
-
-    TiDB 并不能显示当前 DML 语句已经处理的数据行数。在 v8.3.0 版本中，系统视图 `PROCESS LIST` 增加 `ROWS_AFFECTED` 字段，展示当前 DML 语句已经写入的数据行数。
-    
-    更多信息，请参考[用户文档](/information-schema/information-schema-processlist.md)。
-
 * 展示初始统计信息加载的进度 [#issue号](链接) @[hawkingrei](https://github.com/hawkingrei) **tw@lilin90** <!--1792-->
 
     TiDB 在启动时要对基础统计信息进行加载，在表或者分区数量很多的情况下，这个过程要耗费一定时间，当配置项 [`force-init-stats`](/tidb-configuration-file.md#force-init-stats-从-v657-和-v710-版本开始引入) 为 `ON` 时，初始统计信息加载完成前 TiDB 不会对外提供服务。在这种情况下，用户需要对加载过程进行观测，从而能够预期服务开启时间。自 v8.3.0，TiDB 会在日志中分阶段打印初始统计信息加载的进度，让客户了解运行情况。为了给外部工具提供格式化的结果，TiDB 增加了额外的监控 [API](/tidb-monitoring-api.md)，能够在启动阶段随时获取初始统计信息的加载进度。
@@ -273,6 +267,8 @@ TiDB 版本：8.3.0
 |        |                              |      |
 
 ### 系统表
+
+* 在系统表 [`INFORMATION_SCHEMA.PROCESSLIST`](/information-schema/information-schema-processlist.md) 和 [`INFORMATION_SCHEMA.CLUSTER_PROCESSLIST`](/information-schema/information-schema-processlist.md#cluster_processlist) 中新增 `ROWS_AFFECTED` 字段，用于显示当前 DML 语句已经写入的数据行数。[#46889](https://github.com/pingcap/tidb/issues/46889) @[lcwangchao](https://github.com/lcwangchao) **tw@qiancai** <!--1903-->
 
 ### 其他
 
