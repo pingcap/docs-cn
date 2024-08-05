@@ -47,7 +47,7 @@ tiup br backup full --pd "${PD_IP}:2379" \
 * `decode`：将全量备份的元信息 `backupmeta` 文件解析成 JSON 格式，并且支持通过 `--field` 参数解析特定的字段。
 * `encode`：将全量备份的元信息 `backupmeta.json` 文件编码成恢复数据时使用的 protobuf 格式。
 * `reset-pd-config-as-default`：复原数据恢复过程中改变的 PD 设置（已废弃）。
-* `search-log-backup`：在日志备份数据中查找特定的 Key 信息。         
+* `search-log-backup`：在日志备份数据中查找特定的 Key 信息。
 
 ### 常用选项
 
