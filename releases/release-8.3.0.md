@@ -42,7 +42,7 @@ TiDB 版本：8.3.0
   <tr>
     <td rowspan="1">稳定性与高可用</td>
     <td>TiProxy 管理虚拟 IP</td>**tw@Oreoxmt** <!--1887-->
-    <td>在 TiProxy 内实现了对连接地址的管理，支持自动的地址切换，而不依赖外部平台或工具。这能够简化 TiProxy 的部署形式，降低了数据库接入层的复杂度。</td>
+    <td>在 TiProxy 内实现了对虚拟 IP 的管理，支持自动的虚拟 IP 切换，而不依赖外部平台或工具。这能够简化 TiProxy 的部署形式，降低了数据库接入层的复杂度。</td>
   </tr>
 </tbody>
 </table>
@@ -149,9 +149,9 @@ TiDB 版本：8.3.0
 
 * TiProxy 支持虚拟 IP 管理功能 [#583](https://github.com/pingcap/tiproxy/issues/583) @[djshow832](https://github.com/djshow832) **tw@Oreoxmt** <!--1887-->
 
-    在 v8.3.0 版本之前，使用主从模式保证高可用时，TiProxy 还需要额外的组件管理虚拟 IP 功能。在 v8.3.0 版本，TiProxy 支持虚拟 IP 管理功能。在主动模式下，当出现主从节点切换时，主节点自动绑定指定的虚拟 IP，保证客户端的正常访问。 
+    在 v8.3.0 版本之前，使用主从模式保证高可用时，TiProxy 还需要额外的组件管理虚拟 IP 功能。在 v8.3.0 版本，TiProxy 支持虚拟 IP 管理功能。在主从模式下，当出现主从节点切换时，新的主节点自动绑定指定的虚拟 IP，保证客户端的正常访问。 
     
-    通过设定 TiProxy 配置项 [`ha.virtual-ip`](/tiproxy/tiproxy-configuration.md#virtual-ip) 指定虚拟 IP。如果未指定，则表示不启用该功能。
+    通过设定 TiProxy 配置项 [`ha.virtual-ip`](/tiproxy/tiproxy-configuration.md#virtual-ip) 指定虚拟 IP，[`ha.interface`](/tiproxy/tiproxy-configuration.md#interface) 指定绑定虚拟 IP 的网络接口。如果未指定，则表示不启用该功能。
     
     更多信息，请参考[用户文档](/tiproxy/tiproxy-overview.md)。
 
