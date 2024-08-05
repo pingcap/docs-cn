@@ -91,7 +91,7 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
 + 当 [`enable-global-kill`](#enable-global-kill-从-v610-版本开始引入) 为 `false` 时，`compatible-kill-query` 控制杀死一条查询时是否需要加上 `TIDB` 关键词。
     - `compatible-kill-query` 为 `false` 时，TiDB 中 `KILL xxx` 的行为和 MySQL 中的行为不同。为杀死一条查询，在 TiDB 中需要加上 `TIDB` 关键词，即 `KILL TIDB xxx`。
     - `compatible-kill-query` 为 `true` 时，为杀死一条查询，在 TiDB 中无需加上 `TIDB` 关键词。**强烈不建议**设置 `compatible-kill-query` 为 `true`，**除非**你确定客户端将始终连接到同一个 TiDB 节点。这是因为当你在默认的 MySQL 客户端按下 <kbd>Control</kbd>+<kbd>C</kbd> 时，客户端会开启一个新连接，并在这个新连接中执行 `KILL` 语句。此时，如果客户端和 TiDB 之间存在代理，新连接可能会被路由到其他 TiDB 节点，从而错误地终止其他会话。
-+ 当 [`enable-global-kill`](#enable-global-kill-从-v610-版本开始引入) 为 `true` 时，`KILL xxx` 和 `KILL TIDB xxx` 的作用相同，但是暂不支持 <kbd>Control</kbd>+<kbd>C</kbd> 终止查询。
++ 当 [`enable-global-kill`](#enable-global-kill-从-v610-版本开始引入) 为 `true` 时，`KILL xxx` 和 `KILL TIDB xxx` 的作用相同。
 + 关于 `KILL` 语句的更多信息，请参考 [KILL [TIDB]](/sql-statements/sql-statement-kill.md)。
 
 ### `check-mb4-value-in-utf8`
@@ -296,7 +296,7 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
 + 输出慢日志的耗时阈值。
 + 默认值：300
 + 单位：毫秒
-+ 当查询大于这个值，就会当做是一个慢查询，输出到慢查询日志。
++ 如果查询耗时大于这个值，会视作一个慢查询，并记录到慢查询日志。注意，当日志的输出级别 [`log.level`](#level) 是 `"debug"` 时，所有查询都会记录到慢日志，不受该参数的限制。
 + 自 v6.1.0 起，已改用配置项 `instance.tidb_slow_log_threshold` 或系统变量 `tidb_slow_log_threshold` 来设置输出慢日志的耗时阈值。`slow-threshold` 仍可使用，但如果同时设置了 `slow-threshold` 与 `instance.tidb_slow_log_threshold`，TiDB 将采用 `instance.tidb_slow_log_threshold` 的值。
 
 ### `record-plan-in-slow-log`
@@ -866,7 +866,7 @@ TiDB 服务状态相关配置。
 + 默认值：300
 + 范围：`[-1, 9223372036854775807]`
 + 单位：毫秒
-+ 当查询大于这个值，就会当做是一个慢查询，输出到慢查询日志。
++ 如果查询耗时大于这个值，会视作一个慢查询，并记录到慢查询日志。注意，当日志的输出级别 [`log.level`](#level) 是 `"debug"` 时，所有查询都会记录到慢日志，不受该参数的限制。
 + 在 v6.1.0 之前，该功能通过配置项 `slow-threshold` 进行设置。
 
 ### `in-mem-slow-query-topn-num` <span class="version-mark">从 v7.3.0 版本开始引入</span>

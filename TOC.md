@@ -938,6 +938,7 @@
         - [`INSPECTION_RESULT`](/information-schema/information-schema-inspection-result.md)
         - [`INSPECTION_RULES`](/information-schema/information-schema-inspection-rules.md)
         - [`INSPECTION_SUMMARY`](/information-schema/information-schema-inspection-summary.md)
+        - [`KEYWORDS`](/information-schema/information-schema-keywords.md)
         - [`KEY_COLUMN_USAGE`](/information-schema/information-schema-key-column-usage.md)
         - [`MEMORY_USAGE`](/information-schema/information-schema-memory-usage.md)
         - [`MEMORY_USAGE_OPS_HISTORY`](/information-schema/information-schema-memory-usage-ops-history.md)
@@ -1031,6 +1032,7 @@
   - [TiDB 版本规则](/releases/versioning.md)
   - [TiDB 离线包](/binary-package.md)
   - v7.5
+    - [7.5.3](/releases/release-7.5.3.md)
     - [7.5.2](/releases/release-7.5.2.md)
     - [7.5.1](/releases/release-7.5.1.md)
     - [7.5.0](/releases/release-7.5.0.md)
