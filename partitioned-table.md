@@ -1097,6 +1097,12 @@ SELECT store_id, COUNT(department_id) AS c
 
 本节介绍当前 TiDB 分区表的一些约束和限制。
 
+- 不支持使用 [`ALTER TABLE ... CHANGE COLUMN`](/sql-statements/sql-statement-change-column.md) 语句更改分区表的列类型。
+- 不支持使用 [`ALTER TABLE ... CACHE`](/cached-tables.md) 语句将分区表设为缓存表。
+- 与 TiDB 的[临时表](/temporary-tables.md)功能不兼容。
+- 不支持在分区表上创建[外键](/foreign-key.md)。
+- [`ORDER_INDEX(t1_name, idx1_name [, idx2_name ...])`](/optimizer-hints.md#order_indext1_name-idx1_name--idx2_name-) Hint 对分区表及其相关索引不生效，因为分区表上的索引不支持按顺序读取。
+
 ### 分区键，主键和唯一键
 
 本节讨论分区键，主键和唯一键之间的关系。一句话总结它们之间的关系要满足的规则：**分区表的每个唯一键，必须包含分区表达式中用到的所有列**。
