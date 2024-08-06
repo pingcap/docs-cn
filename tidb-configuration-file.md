@@ -726,7 +726,7 @@ opentracing.reporter 相关的设置。
 + 默认值：41s
 + 这个值必须是大于两倍 Raft 选举的超时时间。
 
-### `batch-policy`
+### `batch-policy` <span class="version-mark">从 v8.3.0 版本开始引入</span>
 
 + 控制 TiDB 向 TiKV 发送请求时的批处理策略。
 + 默认值：`"standard"`
