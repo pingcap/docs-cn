@@ -131,12 +131,9 @@ TiDB 版本：8.3.0
 
     更多信息，请参考[用户文档](/partition-pruning.md#场景三)。
     
-* 批量建表 (`CREATE TABLE`) 的性能提升了 2.75 倍，批量建库 (`CREATE DATABASE`) 的性能提升了 2.1 倍 [#54436](https://github.com/pingcap/tidb/issues/54436) @[D3Hunter](https://github.com/D3Hunter) **tw@hfxsd** <!--1863-->
-
+* 批量建表 (`CREATE TABLE`) 的性能提升了 2.75 倍，批量建库 (`CREATE DATABASE`) 的性能提升了 2.1 倍，批量加列（`ADD COLUMN`） 性能提升 10 倍 [#54436](https://github.com/pingcap/tidb/issues/54436) @[D3Hunter](https://github.com/D3Hunter) **tw@hfxsd** <!--1863-->
+     除了 ADD INDEX  和 CREATE TABLE 之外的其他 General DDL 在批量执行时的性能相比 V8.2.0 均有提升，其中通过 10 个 session 并发批量建库 (`CREATE DATABASE`) 的性能相比 v8.1.0 提升了 19 倍，相比 v8.2.0 提升了 2.1 倍。10 个 session 对同个库内的多个表批量加列（`ADD COLUMN`） 性能相比 v8.1.0 提升了 10 倍，相比 v8.2.0 提升了 2 倍。
     v8.0.0 引入了系统变量 [`tidb_enable_fast_create_table`](/system-variables.md#tidb_enable_fast_create_table-从-v800-版本开始引入)，用于在批量建表的场景中提升建表的性能。在 v8.3.0 中，通过 10 个 session 在单个库内并发提交建表的 DDL，相比 v8.2.0 性能有 2.75 倍的提升。
-    
-    从 v8.3.0 开始，该变量也优化了批量建库的性能，相比 v8.2.0，通过 10 个 session 并发提交建库的 DDL ，性能有 2.1 倍的提升。 
-
     更多信息，请参考[用户文档](/system-variables.md#tidb_enable_fast_create_table-从-v800-版本开始引入)。    
 
 ### 稳定性
