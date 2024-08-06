@@ -133,11 +133,13 @@ TiDB 版本：8.3.0
 
     更多信息，请参考[用户文档](/partition-pruning.md#场景三)。
     
-* 批量建库 (`CREATE DATABASE`) 的性能提升近 5 倍 [#54436 ](https://github.com/pingcap/tidb/issues/54436) @[D3Hunter](https://github.com/D3Hunter) **tw@hfxsd** <!--1863-->
+* 批量建表 (`CREATE TABLE`) 的性能提升了 2.75 倍，批量建库 (`CREATE DATABASE`) 的性能提升了 2.1 倍 [#54436](https://github.com/pingcap/tidb/issues/54436) @[D3Hunter](https://github.com/D3Hunter) **tw@hfxsd** <!--1863-->
 
-    v8.0.0 引入了参数 [`tidb_enable_fast_create_table`](/system-variables.md#tidb_enable_fast_create_table-从-v800-版本开始引入)，用于在批量建表的场景提升建表的性能。从 v8.3.0 版本开始，该参数对批量建库的性能也有提升，相比 v8.2.0，性能有近 5 倍的提升。 
+    v8.0.0 引入了系统变量 [`tidb_enable_fast_create_table`](/system-variables.md#tidb_enable_fast_create_table-从-v800-版本开始引入)，用于在批量建表的场景中提升建表的性能。在 v8.3.0 中，通过 10 个 session 在单个库内并发提交建表的 DDL，相比 v8.2.0 性能有 2.75 倍的提升。
+    
+    从 v8.3.0 开始，该变量也优化了批量建库的性能，相比 v8.2.0，通过 10 个 session 并发提交建库的 DDL ，性能有 2.1 倍的提升。 
 
-    更多信息，请参考[用户文档](/system-variables.md#tiflash_hashagg_preaggregation_mode-从-v830-版本开始引入)。    
+    更多信息，请参考[用户文档](/system-variables.md#tidb_enable_fast_create_table-从-v800-版本开始引入)。    
 
 ### 稳定性
 
@@ -195,7 +197,7 @@ TiDB 版本：8.3.0
 
     之前版本的分区表，因为不支持全局索引有较多的限制，比如唯一键必须包含分区建，如果查询条件不带分区建，查询时会扫描所有分区，导致性能较差。从 v7.6.0 开始，引入了参数 [`tidb_enable_global_index`](/system-variables.md#tidb_enable_global_index-从-v760-版本开始引入) 用于开启全局索引特性，但该功能当时处于开发中，不够完善，不建议开启。
     
-    从 v8.3.0 开始，全局索引作为实验特性正式发布了。你可以显式地创建全局索引，唯一键也不需要强制包含分区建，满足灵活的业务需求。同时基于全局索引也提升了不带分区建的索引的查询性能。
+    从 v8.3.0 开始，全局索引作为实验特性正式发布了。你在创建不包含全部分区建的唯一键时，TiDB 会隐式的创建全局索引，去除了唯一建必须包含全部分区键的限制，满足灵活的业务需求。同时基于全局索引也提升了不带分区建的索引的查询性能。
 
     更多信息，请参考[用户文档](/partitioned-table.md#全局索引)。
 ### 数据库管理
@@ -220,17 +222,21 @@ TiDB 版本：8.3.0
     
 ### 安全
 
-* 增强 PD 日志脱敏 [#51306](https://github.com/pingcap/tidb/issues/51306) @[xhe](https://github.com/xhebox)
+* 增强 PD 日志脱敏 [#51306](https://github.com/pingcap/tidb/issues/51306) @[xhe](https://github.com/xhebox) **tw@hfxsd** <!--1861-->
 
-    TiDB v8.0.0 增强了日志脱敏功能，支持控制是否使用标记符号 `‹ ›` 包裹 TiDB 日志中的用户数据。基于标记后的日志，你可以在展示日志时决定是否对被标记信息进行脱敏处理，从而提升日志脱敏功能的灵活性。在 v8.2.0 中，TiFlash 实现了类似的日志脱敏功能增强。在 v8.3.0 中，PD 实现了类似的日志脱敏功能增强，要使用该功能，可以将 PD 配置项 `security.redact_info_log` 的值设置为 `marker`。
+    TiDB v8.0.0 增强了日志脱敏功能，支持控制是否使用标记符号 `‹ ›` 包裹 TiDB 日志中的用户数据。基于标记后的日志，你可以在展示日志时决定是否对被标记信息进行脱敏处理，从而提升日志脱敏功能的灵活性。在 v8.2.0 中，TiFlash 实现了类似的日志脱敏功能增强。
+    
+    在 v8.3.0 中，PD 实现了类似的日志脱敏功能增强，要使用该功能，可以将 PD 配置项 `security.redact-info-log` 的值设置为 `marker`。
 
-    更多信息，请参考[用户文档](/log-redaction.md)。
+    更多信息，请参考[用户文档](/log-redaction.md#pd-组件日志脱敏)。
 
-  * 增强 TiKV 日志脱敏 [#17206](https://github.com/tikv/tikv/issues/17206) @[lucasliang](https://github.com/LykxSassinator)
+* 增强 TiKV 日志脱敏 [#17206](https://github.com/tikv/tikv/issues/17206) @[lucasliang](https://github.com/LykxSassinator) **tw@hfxsd** <!--1862-->
 
-    TiDB v8.0.0 增强了日志脱敏功能，支持控制是否使用标记符号 `‹ ›` 包裹 TiDB 日志中的用户数据。基于标记后的日志，你可以在展示日志时决定是否对被标记信息进行脱敏处理，从而提升日志脱敏功能的灵活性。在 v8.2.0 中，TiFlash 实现了类似的日志脱敏功能增强。在 v8.3.0 中，TiKV 实现了类似的日志脱敏功能增强，要使用该功能，可以将 TiKV 配置项 `security.redact_info_log` 的值设置为 `marker`。
+    TiDB v8.0.0 增强了日志脱敏功能，支持控制是否使用标记符号 `‹ ›` 包裹 TiDB 日志中的用户数据。基于标记后的日志，你可以在展示日志时决定是否对被标记信息进行脱敏处理，从而提升日志脱敏功能的灵活性。在 v8.2.0 中，TiFlash 实现了类似的日志脱敏功能增强。
+    
+    在 v8.3.0 中，TiKV 实现了类似的日志脱敏功能增强，要使用该功能，可以将 TiKV 配置项 `security.redact-info-log` 的值设置为 `marker`。
 
-    更多信息，请参考[用户文档](/log-redaction.md)。
+    更多信息，请参考[用户文档](/log-redaction.md#tikv-组件日志脱敏)。
 
 ### 数据迁移
 
@@ -265,6 +271,18 @@ TiDB 版本：8.3.0
 | [`tidb_enable_lazy_cursor_fetch`](/system-variables.md#tidb_enable_lazy_cursor_fetch-从-v830-版本开始引入) | 新增 | 这个变量用于控制 [Cursor Fetch](/develop/dev-guide-connection-parameters.md#使用-streamingresult-流式获取执行结果) 功能的行为。|
 |        |                              |      |
 |        |                              |      |
+| [`tidb_enable_shared_lock_upgrade`](/system-variables.md#tidb_enable_shared_lock_upgrade-从-v830-版本开始引入)       | 新增  | 控制是否启用共享锁升级为排他锁的功能。默认值为 `OFF`，表示不启用共享锁升级为排他锁的功能。  |
+
+
+### 配置文件参数
+
+| 配置文件           | 配置项                | 修改类型 | 描述                                 |
+|----------------|--------------------|------|------------------------------------|
+| PD   |  [`security.redact-info-log`](/pd-configuration-file.md#redact-info-log-从-v50-版本开始引入) |  修改 | 支持将 PD 配置项 `security.redact-info-log` 的值设置为 `marker`，使用单角形引号 `‹›` 标记出敏感信息，而不是直接隐藏，以便你能够自定义脱敏规则。  |
+| TiKV  | [`security.redact-info-log`](/tikv-configuration-file.md#redact-info-log-从-v408-版本开始引入)  | 修改 | 支持将 TiKV 配置项 `security.redact-info-log` 的值设置为 `marker`，使用单角形引号 `‹›` 标记出敏感信息，而不是直接隐藏，以便你能够自定义脱敏规则。   |
+| TiFlash   | [`security.redact_info_log`](/tiflash/tiflash-configuration.md#配置文件-tiflashtoml)  | 修改 | 支持将 TiFlash Server 配置项 `security.redact-info-log` 的值设置为 `marker`，使用单角形引号 `‹›` 标记出敏感信息，而不是直接隐藏，以便你能够自定义脱敏规则。    |
+| TiFlash   | [`security.redact-info-log`](/tiflash/tiflash-configuration.md#配置文件-tiflash-learnertoml) | 修改 | 支持将 TiFlash Learner 配置项 `security.redact-info-log` 的值设置为 `marker`，使用单角形引号 `‹›` 标记出敏感信息，而不是直接隐藏，以便你能够自定义脱敏规则。   |
+|    |   |   |   |
 
 ### 系统表
 
