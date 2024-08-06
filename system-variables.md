@@ -5194,11 +5194,11 @@ Query OK, 0 rows affected, 1 warning (0.00 sec)
 - 作用域：SESSION | GLOBAL
 - 是否持久化到集群：是
 - 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：是
-- 类型：字符串
+- 类型：枚举型
 - 默认值：`force_preagg`
-- 可选值：`auto`、`force_streaming`、`force_preagg`
+- 可选值：`force_preagg`、`force_streaming`、`auto`
 - 该变量用于控制下推到 TiFlash 的两阶段或者三阶段 HashAgg 的第一阶段采用哪种预聚合策略：
-    - `force_preagg`: 表示 TiFlash 会在第一阶段的 HashAgg 进行强制预聚合操作
+    - `force_preagg`: 表示 TiFlash 会在第一阶段的 HashAgg 进行强制预聚合操作。引入改变量前，TiFlash 的行为等效于该选项
     - `force_streaming`: 表示 TiFlash 会直接将数据发送给下一阶段的 HashAgg ，不进行预聚合操作
     - `auto`: 表示 TiFlash 会自动根据所看到的 workload 的聚合度进行判断是否进行预聚合
 
