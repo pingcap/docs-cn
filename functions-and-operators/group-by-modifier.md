@@ -160,7 +160,7 @@ SELECT year, month, SUM(profit) AS profit, grouping(year) as grp_year, grouping(
 
 `Expand` 算子的实现类似 `Projection` 算子，但区别在于 `Expand` 是多层级的 `Projection`，具有多层级投影运算表达式。对于每行原始数据行，`Projection` 算子只会生成一行结果输出，而 `Expand` 算子会生成多行结果（行数等于多层级投影运算表达式的层数）。
 
-以下为一个执行计划示例：
+以下为不包含 TiFlash 节点的 TiDB 集群的执行计划示例，其中 `Expand` 算子的 `task` 为 `root`，表示 `Expand` 算子在 TiDB 中执行：
 
 ```sql
 -- 这个是 TiDB Root 模式下的执行计划
