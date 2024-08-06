@@ -5194,7 +5194,8 @@ Query OK, 0 rows affected, 1 warning (0.00 sec)
 - 作用域：SESSION | GLOBAL
 - 是否持久化到集群：是
 - 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：是
-- 默认值：`auto`
+- 类型：字符串
+- 默认值：`force_preagg`
 - 可选值：`auto`、`force_streaming`、`force_preagg`
 - 该变量用于控制下推到 TiFlash 的两阶段或者三阶段 HashAgg 的第一阶段采用哪种预聚合策略：
     - `force_preagg`: 表示 TiFlash 会在第一阶段的 HashAgg 进行强制预聚合操作
