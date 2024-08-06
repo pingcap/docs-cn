@@ -28,8 +28,8 @@ TiDB 版本：8.3.0
     <td>全局索引能够有效提升对非分区键的检索效率，同时也解除了分区键一定要包含唯一键 (Unique Key) 的限制，扩展了 TiDB 分区表的使用场景，也能够避免数据迁移可能遇到的部分应用改造工作。</td>
   </tr>
   <tr>
-    <td>Projection 下推成为正式功能</td>**tw@Oreoxmt** <!--1872-->
-    <td> Projection 下推能够尽可能将负载分散到存储节点，也可以减少节点间的数据传输，这能够降低一部分 SQL 的执行时间，提升数据库整体性能。</td>
+    <td>默认将 <code>Projection</code> 算子下推到存储引擎</td>**tw@Oreoxmt** <!--1872-->
+    <td><code>Projection</code> 算子下推可以将负载分散到存储节点，同时减少节点间的数据传输。这有助于降低部分 SQL 的执行时间，提升数据库的整体性能。</td>
   </tr>
   <tr>
     <td>统计信息收集忽略不必要的列</td>**tw@lilin90** <!--1753-->
@@ -41,8 +41,8 @@ TiDB 版本：8.3.0
   </tr>
   <tr>
     <td rowspan="1">稳定性与高可用</td>
-    <td>TiProxy 管理虚拟 IP</td>**tw@Oreoxmt** <!--1887-->
-    <td>在 TiProxy 内实现了对虚拟 IP 的管理，支持自动的虚拟 IP 切换，而不依赖外部平台或工具。这能够简化 TiProxy 的部署形式，降低了数据库接入层的复杂度。</td>
+    <td>TiProxy 内置虚拟 IP 管理</td>**tw@Oreoxmt** <!--1887-->
+    <td>在 v8.3.0 中，TiProxy 内置虚拟 IP 管理功能，支持自动切换虚拟 IP，而无需依赖外部平台或工具。这简化了 TiProxy 的部署，降低了数据库接入层的复杂度。</td>
   </tr>
 </tbody>
 </table>
@@ -65,17 +65,15 @@ TiDB 版本：8.3.0
 
     更多信息，请参考[用户文档](链接)。
 
-* Projection 下推功能正式发布 [#51876](https://github.com/pingcap/tidb/issues/51876) @[yibin87](https://github.com/yibin87) **tw@Oreoxmt** <!--1872-->
+* 优化器默认将 `Projection` 算子下推到存储引擎 [#51876](https://github.com/pingcap/tidb/issues/51876) @[yibin87](https://github.com/yibin87) **tw@Oreoxmt** <!--1872-->
 
-    将 `Projection` 算子下推到存储引擎可以减少计算引擎和存储引擎之间的传输的数据量，特别是对 [JSON 查询类函数](/functions-and-operators/json-functions/json-functions-search.md)或 [JSON 值属性类函数](/functions-and-operators/json-functions/json-functions-return.md)，效果更加显著。在 v8.3.0 版本中，TiDB 正式发布 Projection 下推功能。在该功能启用时，优化器会自动将符合条件的 JSON 查询类函数、JSON 值属性类函数等下推至存储引擎。
-    
-    变量 [tidb_opt_projection_push_down](/system-variables.md#tidb_opt_projection_push_down-从-v610-版本开始引入) 控制是否启用 Projection 下推功能。该变量的默认值将调整为 `ON`，表示默认启用该功能。
+    将 `Projection` 算子下推到存储引擎可以减少计算引擎和存储引擎之间的数据传输量。这在处理 [JSON 查询类函数](/functions-and-operators/json-functions/json-functions-search.md)或 [JSON 值属性类函数](/functions-and-operators/json-functions/json-functions-return.md)时尤其有效。从 v8.3.0 开始，TiDB 默认开启 `Projection` 算子下推功能，控制该功能的系统变量 [`tidb_opt_projection_push_down`](/system-variables.md#tidb_opt_projection_push_down-从-v610-版本开始引入) 的默认值从 `OFF` 修改为 `ON`。启用该功能后，优化器会自动将符合条件的 JSON 查询类函数、JSON 值属性类函数等下推到存储引擎。
 
     更多信息，请参考[用户文档](/system-variables.md#tidb_opt_projection_push_down-从-v610-版本开始引入)。
     
-* 优化 KV 请求的批处理策略 [#xxx](https://github.com/pingcap/tidb/issues/xxx) @[zyguan](https://github.com/zyguan) **tw@Oreoxmt** <!--1897-->
+* 优化 KV 请求的批处理策略 [#55206](https://github.com/pingcap/tidb/issues/55206) @[zyguan](https://github.com/zyguan) **tw@Oreoxmt** <!--1897-->
 
-    TiDB 读取数据需要通过 KV 请求进行。通过将 KV 请求攒批并进行批处理，可以有效提高执行效率。在 v8.3.0 版本之前，TiDB 批处理策略的效率不高。在 v8.3.0 版本，TiDB 在现有的基础 KV 请求批处理策略基础上，引入更加高效的策略。通过新增的配置项 [`tikv-client.batch-policy·](/tidb-configuration-file.md#batch-policy-从-v830-版本开始引入) 设定不同的批处理策略。
+    TiDB 通过 KV 请求读取数据。将 KV 请求攒批并进行批处理，可以有效提高执行效率。在 v8.3.0 之前，TiDB 的批处理策略效率不高。从 v8.3.0 开始，TiDB 在现有的 KV 请求批处理策略基础上，引入更高效的策略。你可以通过配置项 [`tikv-client.batch-policy`](/tidb-configuration-file.md#batch-policy-从-v830-版本开始引入) 设置不同的批处理策略，以适应不同的业务场景。
     
     更多信息，请参考[用户文档](/tidb-configuration-file.md#batch-policy-从-v830-版本开始引入)。
     
@@ -85,9 +83,9 @@ TiDB 版本：8.3.0
     
     更多信息，请参考[用户文档](/system-variables.md#tidb_tso_client_rpc_mode-从-v830-版本开始引入)。
     
-* TiFlash 新增 Hashagg 聚合计算模式，提升高 NDV 数据的聚集计算性能 [#9196](https://github.com/pingcap/tiflash/issues/9196) @[guo-shaoge](https://github.com/guo-shaoge) **tw@Oreoxmt** <!--1855-->
+* TiFlash 新增 HashAgg 聚合计算模式，提升高 NDV 数据的聚集计算性能 [#9196](https://github.com/pingcap/tiflash/issues/9196) @[guo-shaoge](https://github.com/guo-shaoge) **tw@Oreoxmt** <!--1855-->
 
-    TiFlash 的 Hashagg 聚合计算中，第一阶段也会进行聚集计算。对于高 NDV 数据，这种模式效率较低。在 v8.3.0 版本中，TiFlash 引入多种 Hashagg 聚合计算模式，提升不同特征数据的聚集计算性能。通过新增的变量 [tiflash_hashagg_preaggregation_mode](/system-variables.md#tiflash_hashagg_preaggregation_mode-从-v830-版本开始引入) 设定 Hashagg 聚合计算模式。
+    在 v8.3.0 之前，TiFlash 在 HashAgg 聚合计算中处理高 NDV (number of distinct rows) 数据时，第一阶段的聚集计算效率较低。从 v8.3.0 开始，TiFlash 引入多种 HashAgg 聚合计算模式，以提升不同特征数据的聚集计算性能。你可以通过系统变量 [`tiflash_hashagg_preaggregation_mode`](/system-variables.md#tiflash_hashagg_preaggregation_mode-从-v830-版本开始引入) 设置 HashAgg 聚合计算模式。
     
     更多信息，请参考[用户文档](/system-variables.md#tiflash_hashagg_preaggregation_mode-从-v830-版本开始引入)。
 
@@ -149,11 +147,11 @@ TiDB 版本：8.3.0
 
     更多信息，请参考[用户文档](链接)。
 
-* TiProxy 支持虚拟 IP 管理功能 [#583](https://github.com/pingcap/tiproxy/issues/583) @[djshow832](https://github.com/djshow832) **tw@Oreoxmt** <!--1887-->
+* TiProxy 内置虚拟 IP 管理功能 [#583](https://github.com/pingcap/tiproxy/issues/583) @[djshow832](https://github.com/djshow832) **tw@Oreoxmt** <!--1887-->
 
-    在 v8.3.0 版本之前，使用主从模式保证高可用时，TiProxy 还需要额外的组件管理虚拟 IP 功能。在 v8.3.0 版本，TiProxy 支持虚拟 IP 管理功能。在主从模式下，当出现主从节点切换时，新的主节点自动绑定指定的虚拟 IP，保证客户端的正常访问。 
+    在 v8.3.0 之前，当使用主从模式以保证高可用性时，TiProxy 需要额外的组件管理虚拟 IP。从 v8.3.0 开始，TiProxy 内置虚拟 IP 管理功能。在主从模式下，当主节点发生切换时，新的主节点会自动绑定指定的虚拟 IP，确保客户端始终能通过虚拟 IP 连接到可用的 TiProxy。
     
-    通过设定 TiProxy 配置项 [`ha.virtual-ip`](/tiproxy/tiproxy-configuration.md#virtual-ip) 指定虚拟 IP，[`ha.interface`](/tiproxy/tiproxy-configuration.md#interface) 指定绑定虚拟 IP 的网络接口。如果未指定，则表示不启用该功能。
+    要启用虚拟 IP 管理功能，需要通过 TiProxy 配置项 [`ha.virtual-ip`](/tiproxy/tiproxy-configuration.md#virtual-ip) 指定虚拟 IP 地址，以及 [`ha.interface`](/tiproxy/tiproxy-configuration.md#interface) 指定绑定虚拟 IP 的网络接口。如果这两个配置项均未设置，则表示不启用该功能。
     
     更多信息，请参考[用户文档](/tiproxy/tiproxy-overview.md)。
 
