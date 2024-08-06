@@ -36,7 +36,7 @@ SELECT count(1) FROM t GROUP BY a,b,c WITH ROLLUP;
 
 在 v8.3.0 之前版本中，TiDB 仅支持在 [TiFlash MPP 模式](/tiflash/use-tiflash-mpp-mode.md)下为 `WITH ROLLUP` 语法生成有效的执行计划。因此你的 TiDB 集群需要包含 TiFlash 节点，并且对目标分析表进行了正确的 TiFlash 副本的配置。更多信息，请参考[扩容 TiFlash 节点](/scale-tidb-using-tiup.md#扩容-tiflash-节点)。
 
-从 v8.3.0 开始，TiDB 支持在不包含 TiFlash 节点的集群中为 `WITH ROLLUP` 语法生成有效的执行计划。
+从 v8.3.0 开始，TiDB 支持在不包含 TiFlash 节点的集群中为 `WITH ROLLUP` 语法生成有效的执行计划，可以在执行计划中通过观察 `EXPAND` 算子存储引擎属性来辨别。
 
 ## 使用示例
 
