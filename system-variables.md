@@ -2299,7 +2299,7 @@ mysql> SELECT job_info FROM mysql.analyze_jobs ORDER BY end_time DESC LIMIT 1;
 - 类型：布尔型
 - 默认值：`OFF`
 - 该变量用于控制是否启用共享锁升级为排他锁的功能。TiDB 默认不支持 `SELECT LOCK IN SHARE MODE`, 当该变量值为 `ON` 时，TiDB 会尝试将 `SELECT LOCK IN SHARE MODE` 语句升级为 `SELECT FOR UPDATE` 并真正加悲观锁。该变量默认值为 `OFF`，表示不启用共享锁升级为排他锁的功能。
-- 如该变量和 [`tidb_enable_noop_functions`](#tidb_enable_noop_functions-span-classversion-mark从-v40-版本开始引入span) 同时开启，对于 `SELECT LOCK IN SHARE MODE` 语句 TiDB 会优先启用该功能。
+- 如果该变量和 [`tidb_enable_noop_functions`](#tidb_enable_noop_functions-span-classversion-mark从-v40-版本开始引入span) 同时开启，该变量会对 `SELECT LOCK IN SHARE MODE` 语句生效。
 
 ### `tidb_enable_slow_log`
 
