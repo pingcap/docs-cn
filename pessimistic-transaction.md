@@ -107,9 +107,11 @@ BEGIN /*T! PESSIMISTIC */;
 
 2. TiDB 不支持 `SELECT LOCK IN SHARE MODE`。
 
-    TiDB 默认不支持 `SELECT LOCK IN SHARE MODE`。
+    TiDB 默认不支持 `SELECT LOCK IN SHARE MODE` 语法。
+    
+    可以通过启用 [`tidb_enable_noop_functions`](/system-variables.md#tidb_enable_noop_functions-从-v40-版本开始引入) 来兼容 `SELECT LOCK IN SHARE MODE` 语法。此时，该语法的效果和没有加锁是一样的，不会阻塞其他事务的读写。
 
-    从 v8.3.0 版本开始，TiDB 支持使用 [`tidb_enable_shared_lock_upgrade`](/system-variables.md#tidb_enable_shared_lock_upgrade-span-classversion-mark从-v830-版本开始引入span) 系统变量开启 `SELECT LOCK IN SHARE MODE` 语句的功能。开启后，`SELECT LOCK IN SHARE MODE` 语句会升级为 `SELECT FOR UPDATE` 语句，对数据行加悲观锁。
+    从 v8.3.0 版本开始，TiDB 支持使用 [`tidb_enable_shared_lock_upgrade`](/system-variables.md#tidb_enable_shared_lock_upgrade-span-classversion-mark从-v830-版本开始引入span) 系统变量，使 `SELECT LOCK IN SHARE MODE` 语句产生加锁行为。但需要注意此时加的锁并不是真正的共享锁，而是与 `SELECT FOR UPDATE` 一致，实际加的是排他锁。当希望兼容 `SELECT LOCK IN SHARE MODE` 语法的同时，可以与写入相互阻塞、避免读期间数据被并行的写入事务修改时，可考虑启用该变量。 该变量无论 [`tidb_enable_noop_functions`](/system-variables.md#tidb_enable_noop_functions-从-v40-版本开始引入) 配置如何都会生效。
 
 3. DDL 可能会导致悲观事务提交失败。
 
