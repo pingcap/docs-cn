@@ -323,3 +323,21 @@ TiDB 有事务超时的机制，当事务运行超过 [`max-txn-ttl`](/tidb-conf
   }
 ]
 ```
+
+## 创建 changefeed 一段时间后，changefeed 变为 Failed 状态并停止同步，经过一段时间后调整 tidb_gc_life_time 参数并重新创建 changefeed 出现 GC 报错无法创建成功？
+
+调整 tidb_gc_life_time 只保证 start-ts 为当前时间及之后创建的 changefeed 可以正确同步，对于调整tidb_gc_life_time 之前的 changefeed，需要延长 gc-ttl 来阻止 GC 的推进，进而保证同步成功。
+changefeed 遇到错误进入 Failed 状态后。此时之前创建的 changefeed 会继续阻塞上游 GC，阻塞时长为 gc-ttl 所配置的时长（默认为24小时）。  
+避免由于GC导致数据同步出现错误的解决办法：
+1. changefeed 停滞时间小于 gc-ttl 所指定的时长，故障被修复，执行 changefeed resume 恢复同步任务。
+2. 不能保证故障及时修复，需要更新 Server config 中的 gc-ttl 参数，并重启 TiCDC 集群。
+3. 恢复同步：
+  - 无需重建 changefeed 场景：update 更新配置，resume 恢复同步。
+  - 需重建 changefeed 场景：
+    - 先按照相关配置新建 changefeed
+    - 等待新 changefeed 同步延迟恢复正常后，删除报错的 changefeed
+    - 注意操作顺序，如果先删除出错的 changefeed，会导致 gc safepoint 被推进
+
+> **注意：**
+>
+>changefeed 停滞时间超过 gc-ttl 所指定的时长，遭遇 GC 推进错误，不可被恢复
