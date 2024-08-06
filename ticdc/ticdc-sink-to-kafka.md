@@ -151,6 +151,15 @@ URI 中可配置的的参数如下：
     - 对 Topic [资源类型](https://docs.confluent.io/platform/current/kafka/authorization.html#resources)的 `Create` 、`Write` 和 `Describe` 权限。
     - 对 Cluster 资源类型的 `DescribeConfigs` 权限。
 
+| Resource Type | Operation      | Usage                            |
+| :-------------| :------------- | :--------------------------------|
+| Cluster       | DescribeConfig | changefeed 运行过程中，获取集群元数据 |
+| Topic         | Describe       | changefeed 启动时，尝试创建 Topic   |                
+| Topic         | Create         | changefeed 启动时，尝试创建 Topic   |
+| Topic         | Write          | 发送数据到 Topic                   | 
+
+* 创建或启动 changefeed 时，如果指定的 Kafka Topic 已存在，可以不用开启 `Describe` 和 `Create` 权限。
+
 ### TiCDC 集成 Kafka Connect (Confluent Platform)
 
 如要使用 Confluent 提供的 [data connectors](https://docs.confluent.io/current/connect/managing/connectors.html) 向关系型或非关系型数据库传输数据，请选择 `avro` 协议，并在 `schema-registry` 中提供 [Confluent Schema Registry](https://www.confluent.io/product/confluent-platform/data-compatibility/) 的 URL。
