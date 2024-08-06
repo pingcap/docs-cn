@@ -178,7 +178,6 @@ EXPLAIN SELECT year, month, grouping(year), grouping(month), SUM(profit) AS prof
 ```
 
 ```sql
--- 这个是 TiDB MPP 模式下的执行计划
 explain SELECT year, month, grouping(year), grouping(month), SUM(profit) AS profit FROM bank GROUP BY year, month WITH ROLLUP;
 +----------------------------------------+---------+--------------+---------------+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
 | id                                     | estRows | task         | access object | operator info                                                                                                                                                                                                                        |
