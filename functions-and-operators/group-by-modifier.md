@@ -177,6 +177,8 @@ EXPLAIN SELECT year, month, grouping(year), grouping(month), SUM(profit) AS prof
 6 rows in set (0.00 sec)
 ```
 
+以下为 TiFlash MPP 模式下的执行计划示例，其中 `Expand` 算子的 `task` 为 `mpp[tiflash]`，表示 `Expand` 算子在 TiFlash 中执行：
+
 ```sql
 explain SELECT year, month, grouping(year), grouping(month), SUM(profit) AS profit FROM bank GROUP BY year, month WITH ROLLUP;
 +----------------------------------------+---------+--------------+---------------+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
