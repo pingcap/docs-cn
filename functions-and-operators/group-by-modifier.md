@@ -163,7 +163,7 @@ SELECT year, month, SUM(profit) AS profit, grouping(year) as grp_year, grouping(
 以下为不包含 TiFlash 节点的 TiDB 集群的执行计划示例，其中 `Expand` 算子的 `task` 为 `root`，表示 `Expand` 算子在 TiDB 中执行：
 
 ```sql
-tidb> explain SELECT year, month, grouping(year), grouping(month), SUM(profit) AS profit FROM bank GROUP BY year, month WITH ROLLUP;
+EXPLAIN SELECT year, month, grouping(year), grouping(month), SUM(profit) AS profit FROM bank GROUP BY year, month WITH ROLLUP;
 +--------------------------------+---------+-----------+---------------+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
 | id                             | estRows | task      | access object | operator info                                                                                                                                                                                                                        |
 +--------------------------------+---------+-----------+---------------+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
