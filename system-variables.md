@@ -1929,7 +1929,7 @@ mysql> SELECT job_info FROM mysql.analyze_jobs ORDER BY end_time DESC LIMIT 1;
 - 类型：布尔型
 - 默认值：`OFF`
 - 可选值：`OFF`，`ON`
-- 该变量控制是否支持为分区表创建 [全局索引](/partitioned-table.md#全局索引)。启用此变量后，TiDB 将创建唯一索引，该索引不包含分区表达式中的所有列。
+- 该变量控制是否支持为分区表创建[全局索引](/partitioned-table.md#全局索引)。启用此变量后，TiDB 将创建唯一索引，该索引不包含分区表达式中的所有列。
 
 ### `tidb_enable_non_prepared_plan_cache`
 
