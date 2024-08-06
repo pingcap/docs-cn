@@ -83,9 +83,9 @@ TiDB 版本：8.3.0
     
     更多信息，请参考[用户文档](/system-variables.md#tidb_tso_client_rpc_mode-从-v830-版本开始引入)。
     
-* TiFlash 新增 HashAgg 聚合计算模式，提升高 NDV 数据的聚集计算性能 [#9196](https://github.com/pingcap/tiflash/issues/9196) @[guo-shaoge](https://github.com/guo-shaoge) **tw@Oreoxmt** <!--1855-->
+* TiFlash 新增 HashAgg 聚合计算模式，提升高 NDV 数据的聚合计算性能 [#9196](https://github.com/pingcap/tiflash/issues/9196) @[guo-shaoge](https://github.com/guo-shaoge) **tw@Oreoxmt** <!--1855-->
 
-    在 v8.3.0 之前，TiFlash 在 HashAgg 聚合计算中处理高 NDV (number of distinct rows) 数据时，第一阶段的聚集计算效率较低。从 v8.3.0 开始，TiFlash 引入多种 HashAgg 聚合计算模式，以提升不同特征数据的聚集计算性能。你可以通过系统变量 [`tiflash_hashagg_preaggregation_mode`](/system-variables.md#tiflash_hashagg_preaggregation_mode-从-v830-版本开始引入) 设置 HashAgg 聚合计算模式。
+    在 v8.3.0 之前，TiFlash 在 HashAgg 聚合计算中处理高 NDV (number of distinct rows) 数据时，第一阶段的聚合计算效率较低。从 v8.3.0 开始，TiFlash 引入多种 HashAgg 聚合计算模式，以提升不同特征数据的聚合计算性能。你可以通过系统变量 [`tiflash_hashagg_preaggregation_mode`](/system-variables.md#tiflash_hashagg_preaggregation_mode-从-v830-版本开始引入) 设置 HashAgg 聚合计算模式。
     
     更多信息，请参考[用户文档](/system-variables.md#tiflash_hashagg_preaggregation_mode-从-v830-版本开始引入)。
 
