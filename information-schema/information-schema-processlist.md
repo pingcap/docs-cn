@@ -16,7 +16,7 @@ aliases: ['/docs-cn/dev/information-schema/information-schema-processlist/']
 * `TxnStart` 列：显示事务的开始时间。
 * `RESOURCE_GROUP` 列：显示对应的资源组名称。
 * `SESSION_ALIAS` 列：显示当前连接的别名。
-* `ROWS_AFFECTED` 列：显示当前语句影响的行数。
+* `ROWS_AFFECTED` 列：显示语句当前影响的行数。
 
 ```sql
 USE information_schema;
@@ -84,7 +84,7 @@ RESOURCE_GROUP: default
 * `TxnStart` 列：显示事务的开始时间。
 * `RESOURCE_GROUP` 列：显示对应的资源组名称。
 * `SESSION_ALIAS` 列：显示当前连接的别名。
-* `ROWS_AFFECTED` 列：显示当前语句影响的行数。
+* `ROWS_AFFECTED` 列：显示语句当前影响的行数。
 
 ## CLUSTER_PROCESSLIST
 
