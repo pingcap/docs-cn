@@ -133,6 +133,7 @@ TiDB 版本：8.1.1
     - 修复 local backend 初始化期间报错可能导致资源泄露的问题 [#53659](https://github.com/pingcap/tidb/issues/53659) @[D3Hunter](https://github.com/D3Hunter)
     - 修复当 view 定义中使用子查询作为列定义时，无法通过 information_schema.columns 获取列信息的问题 [#54343](https://github.com/pingcap/tidb/issues/54343) @[lance6716](https://github.com/lance6716)
     - 修复使用索引加速添加唯一索引在遇到 owner 切换时可能导致 duplicate entry 的问题 [#49233](https://github.com/pingcap/tidb/issues/49233) @[lance6716](https://github.com/lance6716)
+    - 修复设置 global.tidb_cloud_storage_uri 报错信息不清晰的问题 [#54096](https://github.com/pingcap/tidb/issues/54096) @[lance6716](https://github.com/lance6716)
 
 + TiKV
 
