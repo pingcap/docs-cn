@@ -21,7 +21,7 @@ summary: TiDB 数据库中 SHOW STATS_BUCKETS 的使用概况。
 | `Repeats` | 最大值的出现次数 |
 | `Lower_bound` | 最小值 |
 | `Upper_bound` | 最大值 |
-| `Ndv` | 桶中不同值的数量。当 `tidb_analyze_version` = `1` 时，`Ndv` 总是 `0`，没有实际意义。 |
+| `Ndv` | 桶中不同值的数量。该字段已废弃，其值由于不准确会始终显示为 `0`。 |
 
 ## 语法图
 
