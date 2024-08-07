@@ -238,6 +238,7 @@
     - [TiFlash 性能分析方法](/tiflash-performance-tuning-methods.md)
     - [TiCDC 性能分析方法](/ticdc-performance-tuning-methods.md)
     - [延迟的拆解分析](/latency-breakdown.md)
+    - [在公有云上部署 TiDB 的最佳实践](/best-practices-on-public-cloud.md)
   - 配置调优
       - [操作系统性能参数调优](/tune-operating-system.md)
       - [TiDB 内存调优](/configure-memory-usage.md)
