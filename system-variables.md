@@ -4359,6 +4359,8 @@ EXPLAIN FORMAT='brief' SELECT COUNT(1) FROM t WHERE a = 1 AND b IS NOT NULL;
 - 类型：布尔型
 - 默认值：在 v7.2.0 之前版本中为 `OFF`，在 v7.2.0 及之后版本中为 `ON`。
 - 指定是否在子查询中移除 `ORDER BY` 子句。
+- 在 SQL 标准中，`ORDER BY` 的行为主要用于顶层查询结果的排序。对于子查询，标准并不要求结果按 `ORDER BY` 排序。这个行为可以在 SQL 标准文档中找到相关说明，或者在数据库系统的文档中查看其实现细节。
+- 如果需要子查询结果排序，通常可以在外层查询中处理，例如使用窗口函数或在外层查询中再次使用 `ORDER BY`。这样做可以确保最终结果集的顺序。
 
 ### `tidb_replica_read` <span class="version-mark">从 v4.0 版本开始引入</span>
 
