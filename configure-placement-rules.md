@@ -39,6 +39,7 @@ Placement Rules 示意图如下所示：
 | `StartKey`        | `string`，十六进制编码                | 适用 Range 起始 key                 |
 | `EndKey`          | `string`，十六进制编码                | 适用 Range 终止 key                 |
 | `Role`            | `string` | 副本角色，包括 voter/leader/follower/learner                           |
+| `IsWitness`       | `true`/`false` | 副本是否为 [Witness](/glossary.md#witness)                          |
 | `Count`           | `int`，正整数                     | 副本数量                            |
 | `LabelConstraint` | `[]Constraint`                    | 用于按 label 筛选节点               |
 | `LocationLabels`  | `[]string`                        | 用于物理隔离                        |
@@ -490,4 +491,33 @@ table ttt ranges: (NOTE: key range might be changed after DDL)
   "index": 1024,
   "override": true,
 }
+```
+
+### 场景六：在高可靠的存储环境下配置 Witness 副本
+
+本场景展示了如何在高可靠存储环境配置 `IsWitness`。下面的例子在 Amazon EBS 环境下配置 [Witness](/glossary.md#witness) 副本用于节约成本。
+
+添加规则示例如下：
+
+```json
+[
+    {
+        "group_id": "pd",
+        "id": "default",
+        "start_key": "",
+        "end_key": "",
+        "role": "voter",
+        "is_witness": false,
+        "count": 2
+    },
+    {
+        "group_id": "pd",
+        "id": "witness",
+        "start_key": "",
+        "end_key": "",
+        "role": "voter",
+        "is_witness": true,
+        "count": 1
+    }
+]
 ```
