@@ -613,7 +613,7 @@ SHOW STATS_BUCKETS [ShowLikeOrWhere];
 | repeats | 最大值出现的次数 |
 | lower_bound | 最小值 |
 | upper_bound | 最大值 |
-| ndv | 当前桶内不同值的个数。当 `tidb_analyze_version` = 1 时，该值恒为 0，没有实际意义。 |
+| Ndv | 桶中不同值的数量。该字段已废弃，其值由于不准确会始终显示为 `0`。 |
 
 ### Top-N 信息
 
