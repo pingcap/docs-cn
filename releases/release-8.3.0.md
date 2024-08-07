@@ -304,7 +304,7 @@ TiDB 版本：8.3.0
     - TiDB 支持 `WITH ROLLUP` 修饰符和 `GROUPING` 函数 [#42631](https://github.com/pingcap/tidb/issues/42631) @[Arenatlx](https://github.com/Arenatlx) **tw@Oreoxmt** <!--1714-->
     - 变量 `tidb_low_resolution_tso` 增加全局作用域 [#55022](https://github.com/pingcap/tidb/issues/55022) @[cfzjywxk](https://github.com/cfzjywxk) **tw@hfxsd** <!--1857-->
     - 优化 MemDB 实现，降低写事务延迟 [#xxx](https://github.com/pingcap/tidb/issues/xxx) @[you06](https://github.com/you06) **tw@hfxsd** <!--1892-->
-    - GC 支持并发删除 Range 以提升处理效率 [#xxx](https://github.com/pingcap/tidb/issues/xxx) @[ekexium](https://github.com/ekexium) **tw@qiancai** <!--1890-->
+    - GC（垃圾回收）支持并发 Delete Range（删除区间）以提升处理效率，可以通过 [`tidb_gc_concurrency`](/system-variables.md#tidb_gc_concurrency-从-v50-版本开始引入) 控制并发线程数 [#54570](https://github.com/pingcap/tidb/issues/54570) @[ekexium](https://github.com/ekexium) **tw@qiancai** <!--1890-->
 
 + TiKV
 
