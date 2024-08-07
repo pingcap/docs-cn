@@ -145,6 +145,12 @@ TiDB 版本：8.2.0
 
     更多信息，请参考[用户文档](/ticdc/ticdc-upstream-downstream-check.md#注意事项)。
 
+* TiCDC Pulsar Sink 新增支持 `pulsar+http` 和 `pulsar+https` 连接协议 [#11336](https://github.com/pingcap/tiflow/issues/11336) @[SandeepPadhi](https://github.com/SandeepPadhi)
+
+    在 v8.2.0 之前，TiCDC Pulsar Sink 仅支持使用 `pulsar` 和 `pulsar+ssl` 协议进行连接。从 v8.2.0 开始，TiCDC Pulsar Sink 新增支持使用 `pulsar+http` 和 `pulsar+https` 协议进行连接。这个调整可以让你更加灵活地配置 Pulsar Sink 的连接方式。
+
+    更多信息，请参考[用户文档](/ticdc/ticdc-sink-to-pulsar.md#sink-uri)。
+
 ## 兼容性变更
 
 > **注意：**
