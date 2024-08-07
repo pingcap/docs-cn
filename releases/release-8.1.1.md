@@ -33,8 +33,7 @@ TiDB 版本：8.1.1
 
 + PD
 
-    - note [#issue](https://github.com/tikv/pd/issues/${issue-id}) @[贡献者 GitHub ID](https://github.com/${github-id})
-    - note [#issue](https://github.com/tikv/pd/issues/${issue-id}) @[贡献者 GitHub ID](https://github.com/${github-id})
+    - 改进 HTTP client 的重试逻辑 [#8142](https://github.com/tikv/pd/issues/8142) @[JmPotato](https://github.com/JmPotato)
 
 + TiFlash
 
@@ -149,8 +148,16 @@ TiDB 版本：8.1.1
 
 + PD
 
-    - note [#issue](https://github.com/tikv/pd/issues/${issue-id}) @[贡献者 GitHub ID](https://github.com/${github-id})
-    - note [#issue](https://github.com/tikv/pd/issues/${issue-id}) @[贡献者 GitHub ID](https://github.com/${github-id})
+    - 修复获取表属性时错误调用 PD API 的问题 [#55188](https://github.com/pingcap/tidb/issues/55188) @[JmPotato](https://github.com/JmPotato)
+    - 修复 `INFORMATION_SCHEMA.RUNAWAY_WATCHES` 表时间类型不正确的问题 [#54770](https://github.com/pingcap/tidb/issues/54770) @[HuSharp](https://github.com/HuSharp)
+    - 修复部分日志未脱敏的问题 [#8419](https://github.com/tikv/pd/issues/8419) @[rleungx](https://github.com/rleungx)
+    - 修复 `Filter` 监控项缺少部分数据的问题 [#8098](https://github.com/tikv/pd/issues/8098) @[nolouch](https://github.com/nolouch)
+    - 修复 HTTP client 在开启 TLS 的时候可能 panic 的问题 [#8237](https://github.com/tikv/pd/issues/8237) @[okJiang](https://github.com/okJiang)
+    - 修复 `encryption key manager` 未正确初始化的问题 [#8384](https://github.com/tikv/pd/issues/8384) @[rleungx](https://github.com/rleungx)
+    - 修复资源组在高并发场景下无法有效限制资源使用的问题 [#8435](https://github.com/tikv/pd/issues/8435) @[nolouch](https://github.com/nolouch)
+    - 修复 `store limit` 相关的数据竞争问题 [#8253](https://github.com/tikv/pd/issues/8253) @[lhy1024](https://github.com/lhy1024)
+    - 修复开启调度微服务后，扩缩容进度显示有误的问题 [#8331](https://github.com/tikv/pd/issues/8331) @[rleungx](https://github.com/rleungx)
+    - 修复开启 TSO 微服务后，TSO 节点无法动态更新的问题 [#8154](https://github.com/tikv/pd/issues/8154) @[rleungx](https://github.com/rleungx)
     - (dup): release-7.5.3.md > 错误修复> PD - 修复资源组遇到的数据竞争问题 [#8267](https://github.com/tikv/pd/issues/8267) @[HuSharp](https://github.com/HuSharp)
     - (dup): release-7.5.3.md > 错误修复> PD - 修复资源组在请求 token 超过 500 ms 时遇到超出配额限制的问题 [#8349](https://github.com/tikv/pd/issues/8349) @[nolouch](https://github.com/nolouch)
     - (dup): release-8.2.0.md > 错误修复> PD - 修复手动切换 PD leader 可能失败的问题 [#8225](https://github.com/tikv/pd/issues/8225) @[HuSharp](https://github.com/HuSharp)
