@@ -2291,7 +2291,7 @@ mysql> SELECT job_info FROM mysql.analyze_jobs ORDER BY end_time DESC LIMIT 1;
 - 可选值：`OFF`，`ON`
 - 该变量用于控制 TiDB 是否启用 Chunk 对象缓存。如果为 `ON`，则优先使用缓存中的 Chunk 对象，缓存中找不到申请的对象时才会从系统内存中申请。如果为 `OFF`，则直接从系统内存中申请 Chunk 对象。
 
-### `tidb_enable_shared_lock_upgrade` <span class="version-mark">从 v8.3.0 版本开始引入</span>
+### `tidb_enable_shared_lock_promotion` <span class="version-mark">从 v8.3.0 版本开始引入</span>
 
 - 作用域：SESSION | GLOBAL
 - 是否持久化到集群：是
