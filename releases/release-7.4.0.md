@@ -270,6 +270,8 @@ TiDB 版本：7.4.0
 
     更多信息，请参考[用户文档](/ticdc/ticdc-sink-to-kafka.md#发送大消息到外部存储)。
 
+* TiCDC 移除 `enable-old-value` 参数 [#9667](https://github.com/pingcap/tiflow/issues/9667) @[3AceShowHand](https://github.com/3AceShowHand)
+
 ## 兼容性变更
 
 > **注意：**
