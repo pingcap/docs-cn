@@ -51,10 +51,10 @@ TiDB 版本：8.1.1
 
 + TiDB <!--tw:hfxsd 以下 7 条-->
 
-    - 修复了当 SQL 异常中断时，index_hash_join 无法正常退出的问题 [#54688](https://github.com/pingcap/tidb/issues/54688) @[wshwsh12](https://github.com/wshwsh12)
-    - 禁止创建不是严格自增的 RANGE 分区表 [#54829](https://github.com/pingcap/tidb/issues/54829) @[Defined2014](https://github.com/Defined2014)
-    - 禁止生成 _tidb_rowid 的 PointGet 执行计划，避免错误结果 [#54583](https://github.com/pingcap/tidb/issues/54583) @[Defined2014](https://github.com/Defined2014)
-    - 修复 slowlog 中内部语句中 SQL 默认被脱敏为空 [#54190](https://github.com/pingcap/tidb/issues/54190) [#52743](https://github.com/pingcap/tidb/issues/52743) [#53264](https://github.com/pingcap/tidb/issues/53264) @[lcwangchao](https://github.com/lcwangchao)
+    - 修复当 SQL 异常中断时，`INDEX_HASH_JOIN` 无法正常退出的问题 [#54688](https://github.com/pingcap/tidb/issues/54688) @[wshwsh12](https://github.com/wshwsh12)
+    - 修复可以创建非严格自增的 RANGE 分区表的问题 [#54829](https://github.com/pingcap/tidb/issues/54829) @[Defined2014](https://github.com/Defined2014)
+    - 修复可以生成 `_tidb_rowid` 的点查 (PointGet) 执行计划的问题 [#54583](https://github.com/pingcap/tidb/issues/54583) @[Defined2014](https://github.com/Defined2014)
+    - 修复慢日志中内部语句中的 SQL 默认被脱敏为空的问题 [#54190](https://github.com/pingcap/tidb/issues/54190) [#52743](https://github.com/pingcap/tidb/issues/52743) [#53264](https://github.com/pingcap/tidb/issues/53264) @[lcwangchao](https://github.com/lcwangchao)
     - (dup): release-7.5.3.md > 错误修复> TiDB - 修复 `UPDATE` 操作在多表场景下导致 TiDB OOM 的问题 [#53742](https://github.com/pingcap/tidb/issues/53742) @[hawkingrei](https://github.com/hawkingrei)
     - (dup): release-7.1.5.md > 错误修复> TiDB - 修复窗口函数中有某些子查询时可能会 panic 的问题 [#42734](https://github.com/pingcap/tidb/issues/42734) @[hi-rustin](https://github.com/hi-rustin)
     - (dup): release-7.5.3.md > 错误修复> TiDB - 修复当排序规则为 `utf8_bin` 或 `utf8mb4_bin` 时意外消除 `LENGTH()` 条件的错误 [#53730](https://github.com/pingcap/tidb/issues/53730) @[elsa0520](https://github.com/elsa0520)
@@ -99,8 +99,8 @@ TiDB 版本：8.1.1
     - (dup): release-7.5.3.md > 错误修复> TiDB - 修复事务占用的内存可能被多次重复统计的问题 [#53984](https://github.com/pingcap/tidb/issues/53984) @[ekexium](https://github.com/ekexium)
     - (dup): release-7.5.3.md > 错误修复> TiDB - 修复使用 `CURRENT_DATE()` 作为列默认值时查询结果错误的问题 [#53746](https://github.com/pingcap/tidb/issues/53746) @[tangenta](https://github.com/tangenta)
     - 修复使用全局排序添加索引时性能不稳定的问题 [#54147](https://github.com/pingcap/tidb/issues/54147) @[tangenta](https://github.com/tangenta)
-    - 修复从 v7.1 升级后 show import jobs 报 unknow column summary 的问题 [#54241](https://github.com/pingcap/tidb/issues/54241) @[tangenta](https://github.com/tangenta)
-    - 修复 root 用户无法查询 tidb_mdl_view 的问题 [#53292](https://github.com/pingcap/tidb/issues/53292) @[tangenta](https://github.com/tangenta) <!--tw:lilin90 以下 8 条-->
+    - 修复从 v7.1 升级后 `SHOW IMPORT JOBS` 报错 `Unknow column `summary`` 的问题 [#54241](https://github.com/pingcap/tidb/issues/54241) @[tangenta](https://github.com/tangenta)
+    - 修复 `root` 用户无法查询 `tidb_mdl_view` 的问题 [#53292](https://github.com/pingcap/tidb/issues/53292) @[tangenta](https://github.com/tangenta) <!--tw:lilin90 以下 8 条-->
     - 修复使用分布式框架添加索引期间出现网络分区可能导致数据索引不一致的问题 [#54897](https://github.com/pingcap/tidb/issues/54897) @[tangenta](https://github.com/tangenta)
     - 修复 local backend 初始化期间报错可能导致资源泄露的问题 [#53659](https://github.com/pingcap/tidb/issues/53659) @[D3Hunter](https://github.com/D3Hunter)
     - 修复当 view 定义中使用子查询作为列定义时，无法通过 information_schema.columns 获取列信息的问题 [#54343](https://github.com/pingcap/tidb/issues/54343) @[lance6716](https://github.com/lance6716)
