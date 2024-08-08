@@ -64,7 +64,7 @@ sdd           1033.00   4132.00   1141.33  31685.33   571.00    0.94 100.00
 
 对于不同的公有云，推荐的中端磁盘如下：
 
-- AWS：推荐使用 [gp3](https://aws.amazon.com/cn/ebs/general-purpose/) 卷。gp3 卷提供 3000 IOPS 和 125 MB/s 的免费吞吐量，无论为 gp3 卷的大小如何选择，通常都足以满足 Raft Engine 的需求。
+- AWS：推荐使用 [gp3](https://aws.amazon.com/cn/ebs/general-purpose/) 卷。gp3 卷提供 3000 IOPS 和 125 MB/s 的免费吞吐量，无论 gp3 卷的大小如何选择，通常都足以满足 Raft Engine 的需求。
 
 - Google Cloud：推荐使用 [pd-ssd](https://cloud.google.com/compute/docs/disks?hl=zh-cn#disk-types/)。IOPS 和 MBPS 随分配的磁盘大小而不同。为了满足性能需求，建议为 Raft Engine 分配 200 GB 的空间。尽管 Raft Engine 并不需要这么大的空间，但这样可以确保最佳的性能。
 
