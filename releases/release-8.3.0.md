@@ -99,18 +99,18 @@ TiDB 版本：8.3.0
 
     更多信息，请参考[用户文档](/statistics.md#收集部分列的统计信息)。
 
-* 提升了一些系统表的查询性能 [#]() @[tangenta](https://github.com/tangenta) **tw@hfxsd** <!--1865-->
+* 提升了一些系统表的查询性能 [#50305](https://github.com/pingcap/tidb/issues/50305) @[tangenta](https://github.com/tangenta) **tw@hfxsd** <!--1865-->
 
     在之前的版本，当集群规模变大，表数量较多时，查询系统表性能较慢。
 
-    在 v8.0.0 优化了以下 4 个系统表的查询性能:
+    在 v8.0.0 优化了以下 4 个系统表的查询性能：
     
     - INFORMATION_SCHEMA.TABLES
     - INFORMATION_SCHEMA.STATISTICS
     - INFORMATION_SCHEMA.KEY_COLUMN_USAGE
     - INFORMATION_SCHEMA.REFERENTIAL_CONSTRAINTS
 
-    在 v8.3.0 版本优化了以下系统表的查询性能，相比 v8.2.0 性能有数倍的提升:
+    在 v8.3.0 版本优化了以下系统表的查询性能，相比 v8.2.0 性能有数倍的提升：
 
     - INFORMATION_SCHEMA.CHECK_CONSTRAINTS
     - INFORMATION_SCHEMA.COLUMNS
@@ -123,17 +123,15 @@ TiDB 版本：8.3.0
     - INFORMATION_SCHEMA.TIDB_INDEX_USAGE
     - INFORMATION_SCHEMA.VIEWS
 
-    更多信息，请参考[用户文档](/system-variables.md#tiflash_hashagg_preaggregation_mode-从-v830-版本开始引入)。
-
 * 分区表达式使用 `EXTRACT(YEAR_MONTH...)` 函数时，支持分区裁剪，提升查询性能 [#54209](https://github.com/pingcap/tidb/pull/54209) @[mjonss](https://github.com/mjonss) **tw@hfxsd** <!--1885-->
 
     之前的版本，当分区表达式使用 `EXTRACT(YEAR_MONTH...)` 函数时，不支持分区裁剪，导致查询性能较差。从 v8.3.0 开始，当分区表达式使用该函数时，支持分区裁剪，提升了查询性能。
 
     更多信息，请参考[用户文档](/partition-pruning.md#场景三)。
     
-* 批量建表 (`CREATE TABLE`) 的性能提升了 2.75 倍，批量建库 (`CREATE DATABASE`) 的性能提升了 2.1 倍，批量加列（`ADD COLUMN`） 性能提升 2 倍 [#54436](https://github.com/pingcap/tidb/issues/54436) @[D3Hunter](https://github.com/D3Hunter) **tw@hfxsd** <!--1863-->
+* 批量建表 (`CREATE TABLE`) 的性能提升了 1.4 倍，批量建库 (`CREATE DATABASE`) 的性能提升了 2.1 倍，批量加列（`ADD COLUMN`） 性能提升 2 倍 [#54436](https://github.com/pingcap/tidb/issues/54436) @[D3Hunter](https://github.com/D3Hunter) **tw@hfxsd** <!--1863-->
      除了 CREATE TABLE 之外的其他 General DDL 在批量执行时的性能相比 V8.2.0 均有提升，其中通过 10 个 session 并发批量建库 (`CREATE DATABASE`) 的性能相比 v8.1.0 提升了 19 倍，相比 v8.2.0 提升了 2.1 倍。10 个 session 对同个库内的多个表批量加列（`ADD COLUMN`） 性能相比 v8.1.0 提升了 10 倍，相比 v8.2.0 提升了 2 倍。
-    v8.0.0 引入了系统变量 [`tidb_enable_fast_create_table`](/system-variables.md#tidb_enable_fast_create_table-从-v800-版本开始引入)，用于在批量建表的场景中提升建表的性能。在 v8.3.0 中，通过 10 个 session 在单个库内并发提交建表的 DDL，相比 v8.2.0 性能有 2.75 倍的提升。
+    v8.0.0 引入了系统变量 [`tidb_enable_fast_create_table`](/system-variables.md#tidb_enable_fast_create_table-从-v800-版本开始引入)，用于在批量建表的场景中提升建表的性能。在 v8.3.0 中，通过 10 个 session 在单个库内并发提交建表的 DDL，相比 v8.2.0 性能有 1.4 倍的提升。
     更多信息，请参考[用户文档](/system-variables.md#tidb_enable_fast_create_table-从-v800-版本开始引入)。    
 
 ### 稳定性
@@ -183,17 +181,21 @@ TiDB 版本：8.3.0
 
     更多信息，请参考[用户文档](链接)。
 
-* 支持 `Shared Lock` 升级为 `Exclusive Lock` [#54999](https://github.com/pingcap/tidb/issues/54999) @[cfzjywxk](https://github.com/cfzjywxk) **tw@hfxsd** <!--1857-->
+* 支持 `SELECT LOCK IN SHARE MODE` 升级为排它锁 [#54999](https://github.com/pingcap/tidb/issues/54999) @[cfzjywxk](https://github.com/cfzjywxk) **tw@hfxsd** <!--1871-->
 
-    TiDB 暂不支持 `Shared Lock`. 在 v8.3.0 版本中，TiDB 支持将 `Shared Lock` 升级为 `Exclusive Lock`，实现对 `Shared Lock` 语法的支持。通过新增的变量 [tidb_enable_shared_lock_upgrade](/system-variables.md#tidb_enable_shared_lock_upgrade-从-v830-版本开始引入) 控制是否启用该功能。
-
-* 分区表支持全局索引 (Global Index)（实验特性） [#45133](https://github.com/pingcap/tidb/issues/45133) @[mjonss](https://github.com/mjonss) **tw@hfxsd** <!--1531-->
-
-    之前版本的分区表，因为不支持全局索引有较多的限制，比如唯一键必须包含分区建，如果查询条件不带分区建，查询时会扫描所有分区，导致性能较差。从 v7.6.0 开始，引入了参数 [`tidb_enable_global_index`](/system-variables.md#tidb_enable_global_index-从-v760-版本开始引入) 用于开启全局索引特性，但该功能当时处于开发中，不够完善，不建议开启。
+    TiDB 暂不支持 `SELECT LOCK IN SHARE MODE`。在 v8.3.0 版本中，TiDB 支持将 `SELECT LOCK IN SHARE MODE` 升级为排它锁，实现对 `SELECT LOCK IN SHARE MODE` 语法的支持。通过新增的变量 [`tidb_enable_shared_lock_upgrade`](/system-variables.md#tidb_enable_shared_lock_upgrade-从-v830-版本开始引入) 控制是否启用该功能。
     
-    从 v8.3.0 开始，全局索引作为实验特性正式发布了。你在创建不包含全部分区建的唯一键时，TiDB 会隐式的创建全局索引，去除了唯一建必须包含全部分区键的限制，满足灵活的业务需求。同时基于全局索引也提升了不带分区建的索引的查询性能。
+    更多信息，请参考[用户文档](/system-variables.md#tidb_enable_shared_lock_upgrade-从-v830-版本开始引入)。
+    
+
+* 分区表支持全局索引 (Global Index)（实验特性）[#45133](https://github.com/pingcap/tidb/issues/45133) @[mjonss](https://github.com/mjonss) **tw@hfxsd** <!--1531-->
+
+    之前版本的分区表，因为不支持全局索引有较多的限制，比如唯一键必须包含分区键，如果查询条件不带分区键，查询时会扫描所有分区，导致性能较差。从 v7.6.0 开始，引入了系统变量 [`tidb_enable_global_index`](/system-variables.md#tidb_enable_global_index-从-v760-版本开始引入) 用于开启全局索引特性，但该功能当时处于开发中，不够完善，不建议开启。
+    
+    从 v8.3.0 开始，全局索引作为实验特性正式发布了。你在创建不包含全部分区键的唯一键时，TiDB 会隐式的创建全局索引，去除了唯一建必须包含全部分区键的限制，满足灵活的业务需求。同时基于全局索引也提升了不带分区键的索引的查询性能。
 
     更多信息，请参考[用户文档](/partitioned-table.md#全局索引)。
+    
 ### 数据库管理
 
 * 功能标题 [#issue号](链接) @[贡献者 GitHub ID](链接) **tw@xxx** <!--1234-->
@@ -302,7 +304,7 @@ TiDB 版本：8.3.0
     - note [#issue](链接) @[贡献者 GitHub ID](链接)
     - TopN 算子支持数据落盘功能 [#47733](https://github.com/pingcap/tidb/issues/47733) @[xzhangxian1008](https://github.com/xzhangxian1008) **tw@Oreoxmt** <!--1715-->
     - TiDB 支持 `WITH ROLLUP` 修饰符和 `GROUPING` 函数 [#42631](https://github.com/pingcap/tidb/issues/42631) @[Arenatlx](https://github.com/Arenatlx) **tw@Oreoxmt** <!--1714-->
-    - 变量 `tidb_low_resolution_tso` 增加全局作用域 [#55022](https://github.com/pingcap/tidb/issues/55022) @[cfzjywxk](https://github.com/cfzjywxk) **tw@hfxsd** <!--1857-->
+    - 变量 [`tidb_low_resolution_tso`](/system-variables.md#tidb_low_resolution_tso-从-v830-版本开始引入) 增加全局作用域 [#55022](https://github.com/pingcap/tidb/issues/55022) @[cfzjywxk](https://github.com/cfzjywxk) **tw@hfxsd** <!--1857-->
     - 优化 MemDB 实现，降低写事务延迟 [#xxx](https://github.com/pingcap/tidb/issues/xxx) @[you06](https://github.com/you06) **tw@hfxsd** <!--1892-->
     - GC（垃圾回收）支持并发 Delete Range（删除区间）以提升处理效率，可以通过 [`tidb_gc_concurrency`](/system-variables.md#tidb_gc_concurrency-从-v50-版本开始引入) 控制并发线程数 [#54570](https://github.com/pingcap/tidb/issues/54570) @[ekexium](https://github.com/ekexium) **tw@qiancai** <!--1890-->
 
