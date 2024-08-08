@@ -190,6 +190,10 @@ TiDB 版本：8.2.0
 | TiKV | [`server.grpc-compression-type`](/tikv-configuration-file.md#grpc-compression-type) | 修改 | 该配置项现在也会影响 TiKV 向 TiDB 发送的响应消息的压缩算法。开启压缩可能消耗更多 CPU 资源。 |
 | TiFlash | [`security.redact_info_log`](/tiflash/tiflash-configuration.md#配置文件-tiflashtoml) | 修改 | 可选值新增 `marker` 选项。当配置项的值设置为 `marker` 时，日志中的用户数据会被标记符号 `‹ ›` 包裹。 |
 
+### 系统表
+
+* 在系统表 [`INFORMATION_SCHEMA.PROCESSLIST`](/information-schema/information-schema-processlist.md) 和 [`INFORMATION_SCHEMA.CLUSTER_PROCESSLIST`](/information-schema/information-schema-processlist.md#cluster_processlist) 中新增 `SESSION_ALIAS` 字段，用于显示当前连接的别名。[#46889](https://github.com/pingcap/tidb/issues/46889) @[lcwangchao](https://github.com/lcwangchao)
+
 ### 编译器版本
 
 * 为了提升 TiFlash 的开发体验，编译和构建 TiDB 所需的 LLVM 的最低版本从 13.0 升级到了 17.0。如果你是 TiDB 开发者，为了保证顺利编译，请对应升级你的 LLVM 编译器版本。[#7193](https://github.com/pingcap/tiflash/issues/7193) @[Lloyd-Pottiger](https://github.com/Lloyd-Pottiger)
