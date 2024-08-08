@@ -16,10 +16,7 @@ TiProxy 默认启用所有策略，优先级从高到低依次为：
 5. 基于地理位置的负载均衡：优先将请求路由到地理位置上距离 TiProxy 较近的 TiDB server。
 6. 基于连接数的负载均衡：当某个 TiDB server 的连接数远高于其他 TiDB server 时，TiProxy 将连接从该 TiDB server 迁移到连接数较少的 TiDB server。
 
-> **注意：**
->
-> - 基于健康度、内存、CPU 的负载均衡均依赖 [Prometheus](https://prometheus.io)。请确保 Prometheus 可用，否则这些负载均衡策略将不生效。
-> - 如需调整负载均衡策略的优先级，请参考[负载均衡策略配置](#负载均衡策略配置)。
+如需调整负载均衡策略的优先级，请参考[负载均衡策略配置](#负载均衡策略配置)。
 
 ## 基于状态的负载均衡
 
@@ -27,7 +24,7 @@ TiProxy 定时通过 SQL 端口和状态端口检查 TiDB 是否已下线或正�
 
 ## 基于健康度的负载均衡
 
-TiProxy 通过从 Prometheus 查询 TiDB server 的错误数来判断 TiDB server 的健康度，当某个 TiDB server 的健康度异常而其他 TiDB server 正常时，TiProxy 将该 TiDB server 的连接迁移到其他 TiDB server 上，实现自动故障转移。
+TiProxy 查询 TiDB server 的错误数来判断 TiDB server 的健康度，当某个 TiDB server 的健康度异常而其他 TiDB server 正常时，TiProxy 将该 TiDB server 的连接迁移到其他 TiDB server 上，实现自动故障转移。
 
 该策略适用于以下场景：
 
@@ -36,7 +33,7 @@ TiProxy 通过从 Prometheus 查询 TiDB server 的错误数来判断 TiDB serve
 
 ## 基于内存的负载均衡
 
-TiProxy 通过从 Prometheus 查询 TiDB server 的内存使用率，当某个 TiDB server 内存快速上升或使用率很高时，TiProxy 将该 TiDB server 的连接迁移到其他 TiDB server 上，避免 OOM 导致不必要的连接断开。TiProxy 并不保证各个 TiDB server 的内存使用率接近，该策略仅在 TiDB server 存在 OOM 风险时生效。
+TiProxy 查询 TiDB server 的内存使用率，当某个 TiDB server 内存快速上升或使用率很高时，TiProxy 将该 TiDB server 的连接迁移到其他 TiDB server 上，避免 OOM 导致不必要的连接断开。TiProxy 并不保证各个 TiDB server 的内存使用率接近，该策略仅在 TiDB server 存在 OOM 风险时生效。
 
 当 TiDB server 出现 OOM 风险时，TiProxy 会尽量迁移该 TiDB server 的所有连接。通常情况下，如果 OOM 是由 Runaway Query 引起的，由于连接需等到事务结束才能迁移，因此正在执行中的 Runaway Query 不会迁移到其他 TiDB server 上重新执行。
 
@@ -48,7 +45,7 @@ TiProxy 通过从 Prometheus 查询 TiDB server 的内存使用率，当某个 T
 
 ## 基于 CPU 的负载均衡
 
-TiProxy 通过从 Prometheus 查询 TiDB server 的 CPU 使用率，将连接从 CPU 使用率较高的 TiDB server 迁移到使用率较低的 TiDB server 上，降低整体的查询延迟。TiProxy 并不会保证各个 TiDB server 的 CPU 使用率完全一致，仅确保 CPU 使用率的差异不会过大。
+TiProxy 查询 TiDB server 的 CPU 使用率，将连接从 CPU 使用率较高的 TiDB server 迁移到使用率较低的 TiDB server 上，降低整体的查询延迟。TiProxy 并不会保证各个 TiDB server 的 CPU 使用率完全一致，仅确保 CPU 使用率的差异不会过大。
 
 该策略适用于以下场景：
 

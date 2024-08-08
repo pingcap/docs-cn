@@ -40,7 +40,7 @@ TiProxy 在保持客户端连接不变的情况下，能将一台 TiDB server �
 
 ### 一键部署
 
-TiProxy 集成到了 [TiUP](https://github.com/pingcap/tiup)、[TiDB Operator](https://github.com/pingcap/tidb-operator)、[TiDB Dashboard](/dashboard/dashboard-intro.md) 和 [Grafana](/tiproxy/tiproxy-grafana.md) 中，降低了部署和运维成本。
+TiProxy 集成到了 [TiUP](https://github.com/pingcap/tiup)、[TiDB Operator](https://github.com/pingcap/tidb-operator)、[TiDB Dashboard](/dashboard/dashboard-intro.md) 和 [Grafana](/tiproxy/tiproxy-grafana.md) 中，且内置虚拟 IP 管理，降低了部署和运维成本。
 
 ## 使用场景
 
@@ -91,7 +91,7 @@ TiProxy 不适用于以下场景：
 
 3. 配置 TiProxy 实例。
 
-    为了保证 TiProxy 的高可用，建议部署至少 2 台 TiProxy 实例。可以通过硬件负载均衡使流量分发到各 TiProxy 实例上，或配置虚拟 IP 使流量路由到可用的 TiProxy 实例上。
+    为了保证 TiProxy 的高可用，建议部署至少 2 台 TiProxy 实例，并配置虚拟 IP（[`ha.virtual-ip`](/tiproxy/tiproxy-configuration.md#virtual-ip) 和 [`ha.interface`](/tiproxy/tiproxy-configuration.md#interface)）使流量路由到可用的 TiProxy 实例上。
 
     选择 TiProxy 的机型和实例数时需要考虑以下因素：
 
@@ -106,12 +106,14 @@ TiProxy 不适用于以下场景：
 
     ```yaml
     component_versions:
-      tiproxy: "v1.0.0"
+      tiproxy: "v1.2.0"
     server_configs:
       tiproxy:
         security.server-tls.ca: "/var/ssl/ca.pem"
         security.server-tls.cert: "/var/ssl/cert.pem"
         security.server-tls.key: "/var/ssl/key.pem"
+        ha.virtual-ip: "10.0.1.10/24"
+        ha.interface: "eth0"
     ```
 
 4. 启动集群。

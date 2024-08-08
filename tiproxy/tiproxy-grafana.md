@@ -38,6 +38,9 @@ TiProxy 有四个面板组。这些面板上的指标表示 TiProxy 的当前状
     - backend network break：无法从 TiDB 读取或写入。这可能是由于网络问题或 TiDB 服务器关闭引起的。
     - backend handshake fail：TiProxy 与 TiDB 服务器握手失败。
 - Goroutine Count：每个 TiProxy 实例的 Goroutine 数量
+- Owner：执行各个任务的 TiProxy 实例，例如 `10.24.31.1:3080 - vip` 表示 TiProxy 实例 `10.24.31.1:3080` 绑定了虚拟 IP。任务包括：
+    - vip：绑定虚拟 IP。
+    - metric_reader：读取 TiDB server 的监控数据。
 
 ## Query-Summary
 
