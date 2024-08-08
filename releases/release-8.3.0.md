@@ -23,7 +23,7 @@ TiDB 版本：8.3.0
 </thead>
 <tbody>
   <tr>
-    <td rowspan="4">可扩展性和性能</td>
+    <td rowspan="3">可扩展性和性能</td>
     <td> <a href="https://docs.pingcap.com/zh/tidb/v8.3/partitioned-table#全局索引">分区表全局索引（实验特性）</a></td> **tw@hfxsd** <!--1531-->
     <td>全局索引能够有效提升对非分区键的检索效率，同时也解除了分区键一定要包含唯一键 (Unique Key) 的限制，扩展了 TiDB 分区表的使用场景，也能够避免数据迁移可能遇到的部分应用改造工作。</td>
   </tr>
@@ -34,10 +34,6 @@ TiDB 版本：8.3.0
   <tr>
     <td>统计信息收集忽略不必要的列</td>**tw@lilin90** <!--1753-->
     <td>在保证优化器能够获取到必要信息的前提下，加快了统计信息收集的速度，提升统计信息的时效性，进而保证最优的执行计划的选择，提升集群性能。同时也降低的系统开销，改善资源利用率。</td>
-  </tr>
-  <tr>
-    <td>读写性能的细粒度优化</td>**tw@qiancai** <!--1893-->
-    <td>通过优化 KV 请求的策略，增加获取 TSO 的模式等多重手段，进一步提升 TiDB 的读写性能，降低业务的执行时间，改善延迟。</td>
   </tr>
   <tr>
     <td rowspan="1">稳定性与高可用</td>
@@ -76,12 +72,6 @@ TiDB 版本：8.3.0
     TiDB 通过 KV 请求读取数据。将 KV 请求攒批并进行批处理，可以有效提高执行效率。在 v8.3.0 之前，TiDB 的批处理策略效率不高。从 v8.3.0 开始，TiDB 在现有的 KV 请求批处理策略基础上，引入更高效的策略。你可以通过配置项 [`tikv-client.batch-policy`](/tidb-configuration-file.md#batch-policy-从-v830-版本开始引入) 设置不同的批处理策略，以适应不同的业务场景。
     
     更多信息，请参考[用户文档](/tidb-configuration-file.md#batch-policy-从-v830-版本开始引入)。
-    
-* 增加获取 TSO 的 RPC 模式，降低获取 TSO 的延迟 [#54960](https://github.com/pingcap/tidb/issues/54960) @[MyonKeminta](https://github.com/MyonKeminta) **tw@qiancai** <!--1893-->
-
-    TiDB 在向 PD 请求 TSO 时，会汇总一定时间段的请求并以同步的方式进行批处理以减少 RPC 请求数量、降低 PD 负载。对于延迟敏感的场景，这种模式的性能并不理想。在 v8.3.0 版本中，TiDB 新增 TSO 请求的异步批处理模式，并提供不同的并发能力，以增加相应的 PD 负载为代价，降低获取 TSO 的延迟。通过新增的变量 [tidb_tso_client_rpc_mode](/system-variables.md#tidb_tso_client_rpc_mode-从-v830-版本开始引入) 设定获取 TSO 的 RPC 模式。
-    
-    更多信息，请参考[用户文档](/system-variables.md#tidb_tso_client_rpc_mode-从-v830-版本开始引入)。
     
 * TiFlash 新增 HashAgg 聚合计算模式，提升高 NDV 数据的聚合计算性能 [#9196](https://github.com/pingcap/tiflash/issues/9196) @[guo-shaoge](https://github.com/guo-shaoge) **tw@Oreoxmt** <!--1855-->
 
