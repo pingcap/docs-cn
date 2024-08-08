@@ -130,8 +130,11 @@ TiDB 版本：8.3.0
     更多信息，请参考[用户文档](/partition-pruning.md#场景三)。
     
 * 批量建表 (`CREATE TABLE`) 的性能提升了 1.4 倍，批量建库 (`CREATE DATABASE`) 的性能提升了 2.1 倍，批量加列（`ADD COLUMN`） 性能提升 2 倍 [#54436](https://github.com/pingcap/tidb/issues/54436) @[D3Hunter](https://github.com/D3Hunter) **tw@hfxsd** <!--1863-->
-     除了 CREATE TABLE 之外的其他 General DDL 在批量执行时的性能相比 V8.2.0 均有提升，其中通过 10 个 session 并发批量建库 (`CREATE DATABASE`) 的性能相比 v8.1.0 提升了 19 倍，相比 v8.2.0 提升了 2.1 倍。10 个 session 对同个库内的多个表批量加列（`ADD COLUMN`） 性能相比 v8.1.0 提升了 10 倍，相比 v8.2.0 提升了 2 倍。
+
     v8.0.0 引入了系统变量 [`tidb_enable_fast_create_table`](/system-variables.md#tidb_enable_fast_create_table-从-v800-版本开始引入)，用于在批量建表的场景中提升建表的性能。在 v8.3.0 中，通过 10 个 session 在单个库内并发提交建表的 DDL，相比 v8.2.0 性能有 1.4 倍的提升。
+        
+    在 v8.3.0 中，逻辑 DDL (General DDL) 在批量执行时的性能相比 v8.2.0 也均有提升，其中通过 10 个 session 并发批量建库 (`CREATE DATABASE`) 的性能相比 v8.1.0 提升了 19 倍，相比 v8.2.0 提升了 2.1 倍。10 个 session 对同个库内的多个表批量加列（`ADD COLUMN`） 性能相比 v8.1.0 提升了 10 倍，相比 v8.2.0 提升了 2 倍。
+     
     更多信息，请参考[用户文档](/system-variables.md#tidb_enable_fast_create_table-从-v800-版本开始引入)。    
 
 ### 稳定性
@@ -186,7 +189,6 @@ TiDB 版本：8.3.0
     TiDB 暂不支持 `SELECT LOCK IN SHARE MODE`。在 v8.3.0 版本中，TiDB 支持将 `SELECT LOCK IN SHARE MODE` 升级为排它锁，实现对 `SELECT LOCK IN SHARE MODE` 语法的支持。通过新增的变量 [`tidb_enable_shared_lock_upgrade`](/system-variables.md#tidb_enable_shared_lock_upgrade-从-v830-版本开始引入) 控制是否启用该功能。
     
     更多信息，请参考[用户文档](/system-variables.md#tidb_enable_shared_lock_upgrade-从-v830-版本开始引入)。
-    
 
 * 分区表支持全局索引 (Global Index)（实验特性）[#45133](https://github.com/pingcap/tidb/issues/45133) @[mjonss](https://github.com/mjonss) **tw@hfxsd** <!--1531-->
 
@@ -236,11 +238,13 @@ TiDB 版本：8.3.0
 
 ### 数据迁移
 
-* 功能标题 [#issue号](链接) @[贡献者 GitHub ID](链接) **tw@xxx** <!--1234-->
+* TiCDC 支持通过双向复制模式 (Bi-Directional Replication, BDR) 同步 DDL 语句 (GA) [#10301](https://github.com/pingcap/tiflow/issues/10301) [#48519](https://github.com/pingcap/tidb/issues/48519) @okJiang @asddongmen **tw@hfxsd** <!--1689-->
 
-    功能描述（需要包含这个功能是什么、在什么场景下对用户有什么价值、怎么用）
-
-    更多信息，请参考[用户文档](链接)。
+    从 v7.6.0 开始，TiCDC 支持在配置了双向复制的情况下同步 DDL 语句。以前，TiCDC 不支持复制 DDL 语句，因此要使用 TiCDC 双向复制必须将 DDL 语句分别应用到两个 TiDB 集群。有了该特性，TiCDC 可以为一个集群分配 `PRIMARY` BDR role，并将该集群的 DDL 语句复制到下游集群。
+    
+    在 v8.3.0，该功能成为正式功能 (GA)。
+    
+    更多信息，请参考[用户文档](/ticdc-bidirectional-replication.md)。
 
 ## 兼容性变更
 
@@ -304,8 +308,8 @@ TiDB 版本：8.3.0
     - note [#issue](链接) @[贡献者 GitHub ID](链接)
     - TopN 算子支持数据落盘功能 [#47733](https://github.com/pingcap/tidb/issues/47733) @[xzhangxian1008](https://github.com/xzhangxian1008) **tw@Oreoxmt** <!--1715-->
     - TiDB 支持 `WITH ROLLUP` 修饰符和 `GROUPING` 函数 [#42631](https://github.com/pingcap/tidb/issues/42631) @[Arenatlx](https://github.com/Arenatlx) **tw@Oreoxmt** <!--1714-->
-    - 变量 [`tidb_low_resolution_tso`](/system-variables.md#tidb_low_resolution_tso-从-v830-版本开始引入) 增加全局作用域 [#55022](https://github.com/pingcap/tidb/issues/55022) @[cfzjywxk](https://github.com/cfzjywxk) **tw@hfxsd** <!--1857-->
-    - 优化 MemDB 实现，降低写事务延迟 [#xxx](https://github.com/pingcap/tidb/issues/xxx) @[you06](https://github.com/you06) **tw@hfxsd** <!--1892-->
+    - 系统变量 [`tidb_low_resolution_tso`](/system-variables.md#tidb_low_resolution_tso-从-v830-版本开始引入) 增加全局作用域 [#55022](https://github.com/pingcap/tidb/issues/55022) @[cfzjywxk](https://github.com/cfzjywxk) **tw@hfxsd** <!--1857-->
+    - 优化 MemDB 实现，降低写事务延迟 [#55287](https://github.com/pingcap/tidb/issues/55287) @[you06](https://github.com/you06) **tw@hfxsd** <!--1892-->
     - GC（垃圾回收）支持并发 Delete Range（删除区间）以提升处理效率，可以通过 [`tidb_gc_concurrency`](/system-variables.md#tidb_gc_concurrency-从-v50-版本开始引入) 控制并发线程数 [#54570](https://github.com/pingcap/tidb/issues/54570) @[ekexium](https://github.com/ekexium) **tw@qiancai** <!--1890-->
 
 + TiKV
