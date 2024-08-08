@@ -129,7 +129,7 @@ TiDB 版本：8.1.1
     - 修复部分日志未脱敏的问题 [#8419](https://github.com/tikv/pd/issues/8419) @[rleungx](https://github.com/rleungx)
     - 修复 `Filter` 监控项缺少部分数据的问题 [#8098](https://github.com/tikv/pd/issues/8098) @[nolouch](https://github.com/nolouch)
     - 修复 HTTP 客户端在开启 TLS 时可能 panic 的问题 [#8237](https://github.com/tikv/pd/issues/8237) @[okJiang](https://github.com/okJiang)
-    - 修复 `encryption key manager` 未正确初始化的问题 [#8384](https://github.com/tikv/pd/issues/8384) @[rleungx](https://github.com/rleungx)
+    - (dup): release-7.5.3.md > 错误修复> PD - 修复加密管理器在使用前未初始化的问题 [#8384](https://github.com/tikv/pd/issues/8384) @[releungx](https://github.com/releungx)
     - 修复资源组 (Resource Group) 在高并发场景下无法有效限制资源使用的问题 [#8435](https://github.com/tikv/pd/issues/8435) @[nolouch](https://github.com/nolouch)
     - 修复 `store limit` 相关的数据竞争问题 [#8253](https://github.com/tikv/pd/issues/8253) @[lhy1024](https://github.com/lhy1024)
     - 修复开启 `scheduling` 微服务后，扩缩容进度显示错误的问题 [#8331](https://github.com/tikv/pd/issues/8331) @[rleungx](https://github.com/rleungx)
