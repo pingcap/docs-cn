@@ -194,8 +194,8 @@ pd-server 相关配置项。
 
 + 控制 PD 日志脱敏的开关
 + 可选值：`false`、`true`、`"marker"`
-+ 默认值：false
-+ 具体使用方法请参考 [日志脱敏](/log-redaction.md#pd-组件日志脱敏)。
++ 默认值：`false`
++ 具体使用方法参见[日志脱敏](/log-redaction.md#pd-组件日志脱敏)。
 
 ## log
 
