@@ -33,7 +33,9 @@ ERROR 1062 (23000): Duplicate entry '1' for key 't.a'
 [2024/07/02 11:35:32.686 +08:00] [INFO] [conn.go:1146] ["command dispatched failed"] [conn=1482686470] [session_alias=] [connInfo="id:1482686470, addr:127.0.0.1:52258 status:10, collation:utf8mb4_0900_ai_ci, user:root"] [command=Query] [status="inTxn:0, autocommit:1"] [sql="insert into `t` values ( ... )"] [txn_mode=PESSIMISTIC] [timestamp=450859193514065921] [err="[kv:1062]Duplicate entry '?' for key 't.a'"]
 ```
 
-从以上报错日志可以看到，当把 `tidb_redact_log` 的值设为 `ON` 后，TiDB 日志中会把敏感信息隐藏掉（以问号 ? 替换），以此规避数据安全风险。同时，TiDB 还提供了 `MARKER` 选项，当设置 `tidb_redact_log` 的值为 `MARKER` 时，TiDB 会在日志中用单角形引号 `‹›` 标记出敏感信息，而不是直接隐藏，以便用户能够自定义脱敏规则。
+从以上报错日志可以看到，当把 `tidb_redact_log` 的值设为 `ON` 后，TiDB 日志中会把敏感信息隐藏掉（以问号 `?` 替换），以此规避数据安全风险。
+
+此外，TiDB 还提供了 `MARKER` 选项，当设置 `tidb_redact_log` 的值为 `MARKER` 时，TiDB 会在日志中用 `‹ ›` 符号标记出敏感信息，而不是直接隐藏，以便用户能够自定义脱敏规则。
 
 ```sql
 set @@global.tidb_redact_log = MARKER;
@@ -55,7 +57,7 @@ ERROR 1062 (23000): Duplicate entry '‹1›' for key 't.a'
 [2024/07/02 11:35:01.426 +08:00] [INFO] [conn.go:1146] ["command dispatched failed"] [conn=1482686470] [session_alias=] [connInfo="id:1482686470, addr:127.0.0.1:52258 status:10, collation:utf8mb4_0900_ai_ci, user:root"] [command=Query] [status="inTxn:0, autocommit:1"] [sql="insert into `t` values ( ‹1› ) , ( ‹1› )"] [txn_mode=PESSIMISTIC] [timestamp=450859185309483010] [err="[kv:1062]Duplicate entry '‹1›' for key 't.a'"]
 ```
 
-从以上报错日志可以看到，当把 `tidb_redact_log` 的值设为 `MARKER` 后，TiDB 日志中会用单角形引号 `‹›` 标记出敏感信息，你可以根据自己的需求自定义脱敏规则来处理日志中的敏感信息。
+从以上报错日志可以看到，当把 `tidb_redact_log` 的值设为 `MARKER` 后，TiDB 日志中会用 `‹ ›` 符号标记出敏感信息，你可以根据自己的需求自定义脱敏规则来处理日志中的敏感信息。
 
 ## TiKV 组件日志脱敏
 
