@@ -133,10 +133,14 @@ Java 应用尽管可以选择在不同的框架中封装，但在最底层一般
 
 在 JDBC 中通常有以下两种处理方式：
 
-- 设置 [**FetchSize** 为 `Integer.MIN_VALUE`](https://dev.mysql.com/doc/connector-j/en/connector-j-reference-implementation-notes.html#ResultSet) 让客户端不缓存，客户端通过 StreamingResult 的方式从网络连接上流式读取执行结果。
-- 使用 Cursor Fetch，首先需[设置 **FetchSize**](http://makejavafaster.blogspot.com/2015/06/jdbc-fetch-size-performance.html) 为正整数，且在 JDBC URL 中配置 `useCursorFetch = true`。
+- 方式一：设置 [**FetchSize** 为 `Integer.MIN_VALUE`](https://dev.mysql.com/doc/connector-j/en/connector-j-reference-implementation-notes.html#ResultSet) 让客户端不缓存，客户端通过 StreamingResult 的方式从网络连接上流式读取执行结果。
+- 方式二：使用 Cursor Fetch，首先需[设置 **FetchSize**](http://makejavafaster.blogspot.com/2015/06/jdbc-fetch-size-performance.html) 为正整数，且在 JDBC URL 中配置 `useCursorFetch = true`。
 
-TiDB 中同时支持两种方式，但更推荐使用第一种将 **FetchSize** 设置为 `Integer.MIN_VALUE` 的方式，比第二种功能实现更简单且执行效率更高。
+TiDB 同时支持以上两种方式，但更推荐使用第一种将 `FetchSize` 设置为 `Integer.MIN_VALUE` 的方式，比第二种功能实现更简单且执行效率更高。
+
+对于第二种方式，TiDB 会先将所有数据加载到 TiDB 节点上，然后根据 `FetchSize` 依次返回给客户端。因此，通常会比第一种方式使用更多内存。如果将 [`tidb_enable_tmp_storage_on_oom`](/system-variables.md#tidb_enable_tmp_storage_on_oom) 设置为 `ON`，可能会触发落盘临时将结果写入硬盘。
+
+如果系统变量 [`tidb_enable_lazy_cursor_fetch`](/system-variables.md#tidb_enable_lazy_cursor_fetch-从-v830-版本开始引入) 设置为 `ON`，TiDB 将尝试仅在客户端请求数据时读取部分数据，以使用更少的内存。更多信息和使用限制，参见系统变量 [`tidb_enable_lazy_cursor_fetch`](/system-variables.md#tidb_enable_lazy_cursor_fetch-从-v830-版本开始引入) 的详细描述。
 
 ### MySQL JDBC 参数
 
