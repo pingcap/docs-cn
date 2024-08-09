@@ -535,4 +535,21 @@ Kafka 消费者会收到一条含有大消息在外部存储服务中的地址�
 }
 ```
 
-`key` 和 `value` 分别存有编码后的大消息，该消息原本应该发送到 Kafka 消息中的对应字段。消费者可以通过解析这两部分的数据，还原大消息的内容。
+`key` 和 `value` 分别存有编码后的大消息，该消息原本应该发送到 Kafka 消息中的对应字段。消费者可以通过解析这两部分的数据，还原大消息的内容。目前，只有 Open-Protocol 编码的 Kafka 消息，有 Key 字段，通过将 Key 和 Value 编码进同一个 JSON 对象，一次性发送完整的消息。对于其余协议，Key 字段总是为空。
+
+#### 只发送 Kafka 消息的 Value 部分到外部存储
+
+从 v8.4.0 开始，支持 `claim-check-raw-value` 参数，该参数默认为 false。当使用非 Open-Protocol 协议时，可以设置为 true，反之则报错。
+
+配置样例如下所示：
+
+```toml
+protocol = "simple"
+
+[sink.kafka-config.large-message-handle]
+large-message-handle-option = "claim-check"
+claim-check-storage-uri = "s3://claim-check-bucket"
+claim-check-raw-value = true
+```
+
+该参数为 true 时，changefeed 直接发送 Kafka 消息的 Value 部分到外部存储，避免了将 Key 和 Value 进一步执行 JSON 序列化的过程，减少了 CPU 开销。在消费端，可以直接从外部存储读取到可以被直接消费的数据，减少了反序列化过程的开销。
