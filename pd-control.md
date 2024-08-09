@@ -28,7 +28,7 @@ PD Control 是 PD 的命令行工具，用于获取集群状态信息和调整�
 
 > **注意：**
 >
-> 下载链接中的 `{version}` 为 TiDB 的版本号。例如，amd64 架构的 `v8.1.0` 版本的下载链接为 `https://download.pingcap.org/tidb-community-server-v8.1.0-linux-amd64.tar.gz`。
+> 下载链接中的 `{version}` 为 TiDB 的版本号。例如，amd64 架构的 `v8.1.1` 版本的下载链接为 `https://download.pingcap.org/tidb-community-server-v8.1.1-linux-amd64.tar.gz`。
 
 ### 源码编译
 

@@ -42,4 +42,4 @@ Changefeed 是 TiCDC 中的单个同步任务。Changefeed 将一个 TiDB 集群
 
 通过 TiCDC 提供的命令行工具 `cdc cli`，你可以管理 TiCDC 集群和同步任务，具体可参考[管理 TiCDC Changefeed](/ticdc/ticdc-manage-changefeed.md)。你也可以通过 HTTP 接口，即 TiCDC OpenAPI 来管理 TiCDC 集群和同步任务，详见 [TiCDC OpenAPI](/ticdc/ticdc-open-api-v2.md)。
 
-如果你使用的 TiCDC 是用 TiUP 部署的，可以通过 `tiup cdc:v<CLUSTER_VERSION> cli` 来使用 TiCDC 命令行工具，注意需要将 `v<CLUSTER_VERSION>` 替换为 TiCDC 集群版本，例如 v8.1.0。你也可以通过直接执行 `cdc cli` 直接使用命令行工具。
+如果你使用的 TiCDC 是用 TiUP 部署的，可以通过 `tiup cdc:v<CLUSTER_VERSION> cli` 来使用 TiCDC 命令行工具，注意需要将 `v<CLUSTER_VERSION>` 替换为 TiCDC 集群版本，例如 v8.1.1。你也可以通过直接执行 `cdc cli` 直接使用命令行工具。
