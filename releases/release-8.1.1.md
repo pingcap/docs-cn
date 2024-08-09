@@ -189,7 +189,7 @@ TiDB 版本：8.1.1
     + TiDB Lightning  <!--tw:qiancai 1 条-->
 
         - (dup): release-6.5.10.md > 错误修复> Tools> TiDB Lightning - 修复 TiDB Lightning 导入数据时，kill PD Leader 会导致 `invalid store ID 0` 报错的问题 [#50501](https://github.com/pingcap/tidb/issues/50501) @[Leavrth](https://github.com/Leavrth)
-        - 修复 TiDB Lightning 获取 keyspace 名称时输出的 `WARN` 日志可能引起用户混淆的问题 [#54232](https://github.com/pingcap/tidb/issues/54232) @[kennytm](https://github.com/kennytm)
+        - 修复 TiDB Lightning 在 keyspace 名称为空时输出的 `WARN` 日志可能引起用户混淆的问题 [#54232](https://github.com/pingcap/tidb/issues/54232) @[kennytm](https://github.com/kennytm)
 
     + Dumpling
 
