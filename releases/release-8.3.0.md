@@ -33,7 +33,7 @@ TiDB 版本：8.3.0
   </tr>
   <tr>
     <td>统计信息收集忽略不必要的列</td>**tw@lilin90** <!--1753-->
-    <td>在保证优化器能够获取到必要信息的前提下，加快了统计信息收集的速度，提升统计信息的时效性，进而保证最优的执行计划的选择，提升集群性能。同时也降低的系统开销，改善资源利用率。</td>
+    <td>在保证优化器能够获取到必要信息的前提下，加快了统计信息收集的速度，提升统计信息的时效性，进而保证选择最优的执行计划，提升集群性能。同时也降低了系统开销，改善了资源利用率。</td>
   </tr>
   <tr>
     <td rowspan="1">稳定性与高可用</td>
@@ -66,26 +66,26 @@ TiDB 版本：8.3.0
     将 `Projection` 算子下推到存储引擎可以减少计算引擎和存储引擎之间的数据传输量。这在处理 [JSON 查询类函数](/functions-and-operators/json-functions/json-functions-search.md)或 [JSON 值属性类函数](/functions-and-operators/json-functions/json-functions-return.md)时尤其有效。从 v8.3.0 开始，TiDB 默认开启 `Projection` 算子下推功能，控制该功能的系统变量 [`tidb_opt_projection_push_down`](/system-variables.md#tidb_opt_projection_push_down-从-v610-版本开始引入) 的默认值从 `OFF` 修改为 `ON`。启用该功能后，优化器会自动将符合条件的 JSON 查询类函数、JSON 值属性类函数等下推到存储引擎。
 
     更多信息，请参考[用户文档](/system-variables.md#tidb_opt_projection_push_down-从-v610-版本开始引入)。
-    
+
 * 优化 KV 请求的批处理策略 [#55206](https://github.com/pingcap/tidb/issues/55206) @[zyguan](https://github.com/zyguan) **tw@Oreoxmt** <!--1897-->
 
     TiDB 通过 KV 请求读取数据。将 KV 请求攒批并进行批处理，可以有效提高执行效率。在 v8.3.0 之前，TiDB 的批处理策略效率不高。从 v8.3.0 开始，TiDB 在现有的 KV 请求批处理策略基础上，引入更高效的策略。你可以通过配置项 [`tikv-client.batch-policy`](/tidb-configuration-file.md#batch-policy-从-v830-版本开始引入) 设置不同的批处理策略，以适应不同的业务场景。
-    
+
     更多信息，请参考[用户文档](/tidb-configuration-file.md#batch-policy-从-v830-版本开始引入)。
-    
+
 * TiFlash 新增 HashAgg 聚合计算模式，提升高 NDV 数据的聚合计算性能 [#9196](https://github.com/pingcap/tiflash/issues/9196) @[guo-shaoge](https://github.com/guo-shaoge) **tw@Oreoxmt** <!--1855-->
 
     在 v8.3.0 之前，TiFlash 在 HashAgg 聚合计算中处理高 NDV (number of distinct rows) 数据时，第一阶段的聚合计算效率较低。从 v8.3.0 开始，TiFlash 引入多种 HashAgg 聚合计算模式，以提升不同特征数据的聚合计算性能。你可以通过系统变量 [`tiflash_hashagg_preaggregation_mode`](/system-variables.md#tiflash_hashagg_preaggregation_mode-从-v830-版本开始引入) 设置 HashAgg 聚合计算模式。
-    
+
     更多信息，请参考[用户文档](/system-variables.md#tiflash_hashagg_preaggregation_mode-从-v830-版本开始引入)。
 
 * 统计信息收集忽略不必要的列 [#53567](https://github.com/pingcap/tidb/issues/53567) @[hi-rustin](https://github.com/hi-rustin) **tw@lilin90** <!--1753-->
 
-    当优化器生成执行计划时，只需要部分列的统计信息，例如过滤条件上的列，连接键上的列，聚合目标用到的列。从 v8.3.0 起，TiDB 会持续观测 SQL 语句对列的使用历史，默认只收集有索引的列，以及被观测到的有必要收集统计信息的列。这将会提升统计信息的收集速度，避免不必要的资源浪费。
+    当优化器生成执行计划时，只需要部分列的统计信息，例如过滤条件上的列、连接键上的列、聚合目标用到的列。从 v8.3.0 起，TiDB 会持续观测 SQL 语句对列的使用历史，默认只收集有索引的列，以及被观测到的有必要收集统计信息的列。这将会提升统计信息的收集速度，避免不必要的资源浪费。
 
-    从旧版本升级到 v8.3.0 或更高版本的用户，默认保留原有行为，收集所有列的统计信息，需要手工设置变量 [`tidb_analyze_column_options`](/system-variables.md#tidb_analyze_column_options-从-v830-版本开始引入) 为 `PREDICATE` 来启用，新部署默认开启。
-    
-    对于随机查询比较多的偏分析型系统，可以设置 [`tidb_analyze_column_options`](/system-variables.md#tidb_analyze_column_options-从-v830-版本开始引入) 为 `ALL` 收集所有列的统计信息，保证随机查询的性能。其余类型的系统推荐保留 [`tidb_analyze_column_options`](/system-variables.md#tidb_analyze_column_options-从-v830-版本开始引入) 为 `PREDICATE` 只收集必要的列。
+    从 v8.3.0 之前的版本升级到 v8.3.0 或更高版本时，TiDB 默认保留原有行为，即收集所有列的统计信息。如果要启用该功能，需要手动将系统变量 [`tidb_analyze_column_options`](/system-variables.md#tidb_analyze_column_options-从-v830-版本开始引入) 设置为 `PREDICATE`，新部署的集群默认开启该功能。
+
+    对于随机查询比较多的偏分析型系统，可以将系统变量 [`tidb_analyze_column_options`](/system-variables.md#tidb_analyze_column_options-从-v830-版本开始引入) 设置为 `ALL` 来收集所有列的统计信息，以保证随机查询的性能。对于其余类型的系统，推荐保留 [`tidb_analyze_column_options`](/system-variables.md#tidb_analyze_column_options-从-v830-版本开始引入) 的默认设置 `PREDICATE`，只收集必要列的统计信息。
 
     更多信息，请参考[用户文档](/statistics.md#收集部分列的统计信息)。
 
@@ -94,7 +94,7 @@ TiDB 版本：8.3.0
     在之前的版本，当集群规模变大，表数量较多时，查询系统表性能较慢。
 
     在 v8.0.0 优化了以下 4 个系统表的查询性能：
-    
+
     - INFORMATION_SCHEMA.TABLES
     - INFORMATION_SCHEMA.STATISTICS
     - INFORMATION_SCHEMA.KEY_COLUMN_USAGE
@@ -118,14 +118,14 @@ TiDB 版本：8.3.0
     之前的版本，当分区表达式使用 `EXTRACT(YEAR_MONTH...)` 函数时，不支持分区裁剪，导致查询性能较差。从 v8.3.0 开始，当分区表达式使用该函数时，支持分区裁剪，提升了查询性能。
 
     更多信息，请参考[用户文档](/partition-pruning.md#场景三)。
-    
+
 * 批量建表 (`CREATE TABLE`) 的性能提升了 1.4 倍，批量建库 (`CREATE DATABASE`) 的性能提升了 2.1 倍，批量加列（`ADD COLUMN`） 性能提升 2 倍 [#54436](https://github.com/pingcap/tidb/issues/54436) @[D3Hunter](https://github.com/D3Hunter) **tw@hfxsd** <!--1863-->
 
     v8.0.0 引入了系统变量 [`tidb_enable_fast_create_table`](/system-variables.md#tidb_enable_fast_create_table-从-v800-版本开始引入)，用于在批量建表的场景中提升建表的性能。在 v8.3.0 中，通过 10 个 session 在单个库内并发提交建表的 DDL，相比 v8.2.0 性能有 1.4 倍的提升。
-        
+
     在 v8.3.0 中，逻辑 DDL (General DDL) 在批量执行时的性能相比 v8.2.0 也均有提升，其中通过 10 个 session 并发批量建库 (`CREATE DATABASE`) 的性能相比 v8.1.0 提升了 19 倍，相比 v8.2.0 提升了 2.1 倍。10 个 session 对同个库内的多个表批量加列（`ADD COLUMN`） 性能相比 v8.1.0 提升了 10 倍，相比 v8.2.0 提升了 2 倍。
-     
-    更多信息，请参考[用户文档](/system-variables.md#tidb_enable_fast_create_table-从-v800-版本开始引入)。    
+
+    更多信息，请参考[用户文档](/system-variables.md#tidb_enable_fast_create_table-从-v800-版本开始引入)。
 
 ### 稳定性
 
@@ -135,21 +135,23 @@ TiDB 版本：8.3.0
 
     更多信息，请参考[用户文档](链接)。
 
-* 新增以流式获取游标的结果集 （实验特性） [#54526](https://github.com/pingcap/tidb/issues/54526) @[YangKeao](https://github.com/YangKeao) **tw@lilin90** <!--1891-->
+* 支持以流式获取游标的结果集（实验特性）[#54526](https://github.com/pingcap/tidb/issues/54526) @[YangKeao](https://github.com/YangKeao) **tw@lilin90** <!--1891-->
 
-    当应用代码通过 [Cursor Fetch](/develop/dev-guide-connection-parameters.md#使用-streamingresult-流式获取执行结果) 获取结果集时，TiDB 通常会将完整结果保存至 TiDB ，再分批返回给客户端。如果结果集过大，可能会触发临时落盘。自 v8.3.0 开始，通过设置系统变量[`tidb_enable_lazy_cursor_fetch`](/system-variables.md#tidb_enable_lazy_cursor_fetch-从-v830-版本开始引入) 为 `ON`，TiDB 不再把所有数据读取到 TiDB 节点，而是会随着客户端的读取逐步将数据传送至 TiDB 节点。在处理较大结果集时，这将会减少 TiDB 节点的内存使用，提升集群的稳定性。
+    当应用代码通过 [Cursor Fetch](/develop/dev-guide-connection-parameters.md#使用-streamingresult-流式获取执行结果) 获取结果集时，TiDB 通常会先将完整结果保存至 TiDB 内存，再分批返回给客户端。如果结果集过大，可能会触发落盘临时将结果写入硬盘。
+
+    从 v8.3.0 开始，如果将系统变量 [`tidb_enable_lazy_cursor_fetch`](/system-variables.md#tidb_enable_lazy_cursor_fetch-从-v830-版本开始引入) 设置为 `ON`，TiDB 不再把所有数据读取到 TiDB 节点，而是会随着客户端的读取逐步将数据读到 TiDB 节点。在处理较大的结果集时，这将减少 TiDB 节点的内存使用，提升集群的稳定性。
 
     更多信息，请参考[用户文档](/system-variables.md#tidb_enable_lazy_cursor_fetch-从-v830-版本开始引入)。
 
-* SQL 绑定的增强 [#issue号](链接) @[time-and-fate](https://github.com/time-and-fate) **tw@lilin90** <!--1760-->
+* 增强 SQL 执行计划绑定 [#51347](https://github.com/pingcap/tidb/issues/51347) @[time-and-fate](https://github.com/time-and-fate) **tw@lilin90** <!--1760-->
 
-    在 OLTP 负载环境中，绝大部分 SQL 的最优执行计划是固定不变的。对业务中的重要 SQL 实施执行计划绑定，可以减少执行计划变差的机会，提升系统稳定性。为了满足创建大量 SQL 绑定的场景需求，TiDB 对 SQL 绑定的能力和体验进行了增强，其中包括：
+    在 OLTP 负载环境中，绝大部分 SQL 的最优执行计划是固定不变的。对业务中的重要 SQL 实施执行计划绑定，可以降低执行计划变差的几率，提升系统稳定性。为了满足创建大量 SQL 执行计划绑定的场景需求，TiDB 对 SQL 绑定的能力和体验进行了增强，其中包括：
 
-    - 用单条 SQL 从多个历史执行计划中创建 SQL 绑定，提升创建绑定的效率。
-    - SQL 绑定支持更多的优化器提示，并优化了对复杂执行计划的转换方法，使得 SQL 绑定能够更稳定地还原执行计划。
+    - 用单条 SQL 语句从多个历史执行计划中创建 SQL 执行计划绑定，提升创建绑定的效率。
+    - SQL 执行计划绑定支持更多的优化器提示，并优化了对复杂执行计划的转换方法，使得绑定能够更稳定地还原执行计划。
 
     更多信息，请参考[用户文档](/sql-plan-management.md)。
-    
+
 ### 高可用
 
 * 功能标题 [#issue号](链接) @[贡献者 GitHub ID](链接) **tw@xxx** <!--1234-->
@@ -161,9 +163,9 @@ TiDB 版本：8.3.0
 * TiProxy 内置虚拟 IP 管理功能 [#583](https://github.com/pingcap/tiproxy/issues/583) @[djshow832](https://github.com/djshow832) **tw@Oreoxmt** <!--1887-->
 
     在 v8.3.0 之前，当使用主从模式以保证高可用性时，TiProxy 需要额外的组件管理虚拟 IP。从 v8.3.0 开始，TiProxy 内置虚拟 IP 管理功能。在主从模式下，当主节点发生切换时，新的主节点会自动绑定指定的虚拟 IP，确保客户端始终能通过虚拟 IP 连接到可用的 TiProxy。
-    
+
     要启用虚拟 IP 管理功能，需要通过 TiProxy 配置项 [`ha.virtual-ip`](/tiproxy/tiproxy-configuration.md#virtual-ip) 指定虚拟 IP 地址，以及 [`ha.interface`](/tiproxy/tiproxy-configuration.md#interface) 指定绑定虚拟 IP 的网络接口。如果这两个配置项均未设置，则表示不启用该功能。
-    
+
     更多信息，请参考[用户文档](/tiproxy/tiproxy-overview.md)。
 
 ### SQL 功能
@@ -177,17 +179,17 @@ TiDB 版本：8.3.0
 * 支持 `SELECT LOCK IN SHARE MODE` 升级为排它锁 [#54999](https://github.com/pingcap/tidb/issues/54999) @[cfzjywxk](https://github.com/cfzjywxk) **tw@hfxsd** <!--1871-->
 
     TiDB 暂不支持 `SELECT LOCK IN SHARE MODE`。在 v8.3.0 版本中，TiDB 支持将 `SELECT LOCK IN SHARE MODE` 升级为排它锁，实现对 `SELECT LOCK IN SHARE MODE` 语法的支持。通过新增的变量 [`tidb_enable_shared_lock_promotion`](/system-variables.md#tidb_enable_shared_lock_promotion-从-v830-版本开始引入) 控制是否启用该功能。
-    
+
     更多信息，请参考[用户文档](/system-variables.md#tidb_enable_shared_lock_promotion-从-v830-版本开始引入)。
 
 * 分区表支持全局索引 (Global Index)（实验特性）[#45133](https://github.com/pingcap/tidb/issues/45133) @[mjonss](https://github.com/mjonss) **tw@hfxsd** <!--1531-->
 
     之前版本的分区表，因为不支持全局索引有较多的限制，比如唯一键必须包含分区键，如果查询条件不带分区键，查询时会扫描所有分区，导致性能较差。从 v7.6.0 开始，引入了系统变量 [`tidb_enable_global_index`](/system-variables.md#tidb_enable_global_index-从-v760-版本开始引入) 用于开启全局索引特性，但该功能当时处于开发中，不够完善，不建议开启。
-    
+
     从 v8.3.0 开始，全局索引作为实验特性正式发布了。你在创建不包含全部分区键的唯一键时，TiDB 会隐式的创建全局索引，去除了唯一建必须包含全部分区键的限制，满足灵活的业务需求。同时基于全局索引也提升了不带分区键的索引的查询性能。
 
     更多信息，请参考[用户文档](/partitioned-table.md#全局索引)。
-    
+
 ### 数据库管理
 
 * 功能标题 [#issue号](链接) @[贡献者 GitHub ID](链接) **tw@xxx** <!--1234-->
@@ -204,16 +206,18 @@ TiDB 版本：8.3.0
 
     更多信息，请参考[用户文档](链接)。
 
-* 展示初始统计信息加载的进度 [#issue号](链接) @[hawkingrei](https://github.com/hawkingrei) **tw@lilin90** <!--1792-->
+* 展示初始统计信息的加载进度 [#53564](https://github.com/pingcap/tidb/issues/53564) @[hawkingrei](https://github.com/hawkingrei) **tw@lilin90** <!--1792-->
 
-    TiDB 在启动时要对基础统计信息进行加载，在表或者分区数量很多的情况下，这个过程要耗费一定时间，当配置项 [`force-init-stats`](/tidb-configuration-file.md#force-init-stats-从-v657-和-v710-版本开始引入) 为 `ON` 时，初始统计信息加载完成前 TiDB 不会对外提供服务。在这种情况下，用户需要对加载过程进行观测，从而能够预期服务开启时间。自 v8.3.0，TiDB 会在日志中分阶段打印初始统计信息加载的进度，让客户了解运行情况。为了给外部工具提供格式化的结果，TiDB 增加了额外的监控 [API](/tidb-monitoring-api.md)，能够在启动阶段随时获取初始统计信息的加载进度。
-    
+    TiDB 在启动时要加载基础统计信息，在表或者分区数量很多的情况下，该过程要耗费一定时间。当配置项 [`force-init-stats`](/tidb-configuration-file.md#force-init-stats-从-v657-和-v710-版本开始引入) 设置为 `ON` 时，初始统计信息加载完成前，TiDB 不会对外提供服务。在这种情况下，你需要对加载过程进行观测，从而预期服务开启时间。
+
+    从 v8.3.0 开始，TiDB 会在日志中分阶段打印初始统计信息的加载进度，以便了解运行情况。为了给外部工具提供格式化的结果，TiDB 增加了额外的监控 [API](/tidb-monitoring-api.md)，以便能够在启动阶段随时获取初始统计信息的加载进度。
+
 ### 安全
 
 * 增强 PD 日志脱敏 [#51306](https://github.com/pingcap/tidb/issues/51306) @[xhe](https://github.com/xhebox) **tw@hfxsd** <!--1861-->
 
     TiDB v8.0.0 增强了日志脱敏功能，支持控制是否使用标记符号 `‹ ›` 包裹 TiDB 日志中的用户数据。基于标记后的日志，你可以在展示日志时决定是否对被标记信息进行脱敏处理，从而提升日志脱敏功能的灵活性。在 v8.2.0 中，TiFlash 实现了类似的日志脱敏功能增强。
-    
+
     在 v8.3.0 中，PD 实现了类似的日志脱敏功能增强，要使用该功能，可以将 PD 配置项 `security.redact-info-log` 的值设置为 `marker`。
 
     更多信息，请参考[用户文档](/log-redaction.md#pd-组件日志脱敏)。
@@ -221,7 +225,7 @@ TiDB 版本：8.3.0
 * 增强 TiKV 日志脱敏 [#17206](https://github.com/tikv/tikv/issues/17206) @[lucasliang](https://github.com/LykxSassinator) **tw@hfxsd** <!--1862-->
 
     TiDB v8.0.0 增强了日志脱敏功能，支持控制是否使用标记符号 `‹ ›` 包裹 TiDB 日志中的用户数据。基于标记后的日志，你可以在展示日志时决定是否对被标记信息进行脱敏处理，从而提升日志脱敏功能的灵活性。在 v8.2.0 中，TiFlash 实现了类似的日志脱敏功能增强。
-    
+
     在 v8.3.0 中，TiKV 实现了类似的日志脱敏功能增强，要使用该功能，可以将 TiKV 配置项 `security.redact-info-log` 的值设置为 `marker`。
 
     更多信息，请参考[用户文档](/log-redaction.md#tikv-组件日志脱敏)。
@@ -231,9 +235,9 @@ TiDB 版本：8.3.0
 * TiCDC 支持通过双向复制模式 (Bi-Directional Replication, BDR) 同步 DDL 语句 (GA) [#10301](https://github.com/pingcap/tiflow/issues/10301) [#48519](https://github.com/pingcap/tidb/issues/48519) @okJiang @asddongmen **tw@hfxsd** <!--1689-->
 
     从 v7.6.0 开始，TiCDC 支持在配置了双向复制的情况下同步 DDL 语句。以前，TiCDC 不支持复制 DDL 语句，因此要使用 TiCDC 双向复制必须将 DDL 语句分别应用到两个 TiDB 集群。有了该特性，TiCDC 可以为一个集群分配 `PRIMARY` BDR role，并将该集群的 DDL 语句复制到下游集群。
-    
+
     在 v8.3.0，该功能成为正式功能 (GA)。
-    
+
     更多信息，请参考[用户文档](/ticdc-bidirectional-replication.md)。
 
 ## 兼容性变更
