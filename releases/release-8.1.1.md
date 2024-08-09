@@ -108,7 +108,7 @@ TiDB 版本：8.1.1
     - 修复设置 `global.tidb_cloud_storage_uri` 时报错信息不清晰的问题 [#54096](https://github.com/pingcap/tidb/issues/54096) @[lance6716](https://github.com/lance6716)
     - 支持在多值索引的 `IndexRangeScan` 上生成 `Selection` [#55012](https://github.com/pingcap/tidb/issues/55012)@[time-and-fate](https://github.com/time-and-fate)
     - 修复 Sync Load QPS 监控指标显示不正确的问题 [#53558](https://github.com/pingcap/tidb/issues/53558)@[hawkingrei](https://github.com/hawkingrei)
-    - 修复 concurrency init stats 可能遗漏加载的问题 [#53607](https://github.com/pingcap/tidb/issues/53607) @[hawkingrei](https://github.com/hawkingrei)
+    - 修复并发加载初始统计信息时可能遗漏加载的问题 [#53607](https://github.com/pingcap/tidb/issues/53607) @[hawkingrei](https://github.com/hawkingrei)
     - (dup): release-7.5.3.md > 错误修复> TiDB - 修复针对 `SELECT ... FOR UPDATE` 复用了错误点查询计划的问题 [#54652](https://github.com/pingcap/tidb/issues/54652) @[qw4990](https://github.com/qw4990)
 
 + TiKV <!--tw:qiancai 1 条-->
