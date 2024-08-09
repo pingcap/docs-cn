@@ -143,7 +143,7 @@ TiDB 版本：8.3.0
 
     更多信息，请参考[用户文档](/system-variables.md#tidb_enable_lazy_cursor_fetch-从-v830-版本开始引入)。
 
-* 增强 SQL 执行计划绑定 [#51347](https://github.com/pingcap/tidb/issues/51347) @[time-and-fate](https://github.com/time-and-fate) **tw@lilin90** <!--1760-->
+* 增强 SQL 执行计划绑定 [#55280](https://github.com/pingcap/tidb/issues/55280) [#issue2](to-be-added) @[time-and-fate](https://github.com/time-and-fate) **tw@lilin90** <!--1760-->
 
     在 OLTP 负载环境中，绝大部分 SQL 的最优执行计划是固定不变的。对业务中的重要 SQL 实施执行计划绑定，可以降低执行计划变差的几率，提升系统稳定性。为了满足创建大量 SQL 执行计划绑定的场景需求，TiDB 对 SQL 绑定的能力和体验进行了增强，其中包括：
 
@@ -208,9 +208,9 @@ TiDB 版本：8.3.0
 
 * 展示初始统计信息的加载进度 [#53564](https://github.com/pingcap/tidb/issues/53564) @[hawkingrei](https://github.com/hawkingrei) **tw@lilin90** <!--1792-->
 
-    TiDB 在启动时要加载基础统计信息，在表或者分区数量很多的情况下，该过程要耗费一定时间。当配置项 [`force-init-stats`](/tidb-configuration-file.md#force-init-stats-从-v657-和-v710-版本开始引入) 设置为 `ON` 时，初始统计信息加载完成前，TiDB 不会对外提供服务。在这种情况下，你需要对加载过程进行观测，从而预期服务开启时间。
+    TiDB 在启动时要加载基础统计信息，在表或者分区数量很多的情况下，该过程要耗费一定时间。当配置项 [`force-init-stats`](/tidb-configuration-file.md#force-init-stats-从-v657-和-v710-版本开始引入) 设置为 `ON` 时，初始统计信息加载完成前，TiDB 不会对外提供服务。在这种情况下，你需要对加载过程进行观测，从而预估服务开启时间。
 
-    从 v8.3.0 开始，TiDB 会在日志中分阶段打印初始统计信息的加载进度，以便了解运行情况。为了给外部工具提供格式化的结果，TiDB 增加了额外的监控 [API](/tidb-monitoring-api.md)，以便能够在启动阶段随时获取初始统计信息的加载进度。
+    从 v8.3.0 开始，TiDB 会在日志中分阶段打印初始统计信息的加载进度，以便了解运行情况。为了给外部工具提供格式化的结果，TiDB 增加了额外的[监控 API](/tidb-monitoring-api.md)，以便能够在启动阶段随时获取初始统计信息的加载进度。
 
 ### 安全
 
