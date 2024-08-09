@@ -2576,7 +2576,7 @@ v5.0 后，用户仍可以单独修改以上系统变量（会有废弃警告）
 - 默认值：`-1`
 - 范围：`-1` 或 `[1, 256]`
 - 单位：线程
-- 该变量用于控制 [GC（垃圾回收）](/garbage-collection-overview.md) 过程中 [Resolve Locks（清理锁）] 和 [Delete Range（删除区间）](/garbage-collection-overview.md#Delete-Ranges删除区间) 的并发线程数。
+- 该变量用于控制[垃圾回收 (GC)](/garbage-collection-overview.md) 过程中 [Resolve Locks（清理锁）](/garbage-collection-overview.md#resolve-locks清理锁)和 [Delete Range（删除区间）](/garbage-collection-overview.md#Delete-Ranges删除区间)的并发线程数。
 - 默认情况下，该变量值为 `-1`，TiDB 将根据负载情况自动决定适当的线程数。
 - 当设置为 `[1, 256]` 之间的数时：
     - Resolve Locks（清理锁）直接使用该变量设定值作为线程数。
