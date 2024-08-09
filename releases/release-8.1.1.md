@@ -44,7 +44,7 @@ TiDB 版本：8.1.1
 
     + TiCDC <!--tw:qiancai 1 条-->
 
-        - 支持 Simple Protocol 在 changefeed 启动时一次性发送所有表的 BOOTSTRAP 消息 [#11315](https://github.com/pingcap/tiflow/issues/11315) @[asddongmen](https://github.com/asddongmen)
+        - 支持使用 Simple Protocol 的 changefeed 在启动时将所有表的 BOOTSTRAP 消息一次性发送到下游 [#11315](https://github.com/pingcap/tiflow/issues/11315) @[asddongmen](https://github.com/asddongmen)
         - (dup): release-6.5.10.md > 改进提升> Tools> TiCDC - 支持当下游为消息队列 (Message Queue, MQ) 或存储服务时直接输出原始事件 [#11211](https://github.com/pingcap/tiflow/issues/11211) @[CharlesCheung96](https://github.com/CharlesCheung96)
 
 ## 错误修复
