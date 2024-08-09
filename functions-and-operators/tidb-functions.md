@@ -522,7 +522,7 @@ TIDB_VERSION(): Release Version: v8.1.1
 Edition: Community
 Git Commit Hash: 821e491a20fbab36604b36b647b5bae26a2c1418
 Git Branch: HEAD
-UTC Build Time: 2024-07-11 19:16:25
+UTC Build Time: 2024-08-13 19:16:25
 GoVersion: go1.21.10
 Race Enabled: false
 Check Table Before Drop: false
