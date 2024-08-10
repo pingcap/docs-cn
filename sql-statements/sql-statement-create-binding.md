@@ -161,12 +161,14 @@ SELECT @@LAST_PLAN_FROM_BINDING;
 ```
 
 方法一：
+
 ```sql
 SELECT query_sample_text, stmt_type, table_names, plan_digest FROM information_schema.statements_summary_history WHERE table_names LIKE '%test.t1%' AND stmt_type != 'CreateTable';
 CREATE GLOBAL BINDING FROM HISTORY USING PLAN DIGEST 'e72819cf99932f63a548156dbf433adda60e10337e89dcaa8638b4caf16f64d8,c291edc36b2482738d3389d335f37efc76290be2930330fe5034c5f4c42eeb36,8dc146249484f4a6ab219bfe9effa6b7a18aeed3764d49b610da61ac347ab914,73b2dec866595688ea416675f88ccb3456eb8e7443a79cd816695b688e07ac6b';
 ```
 
 方法二：
+
 ```sql
 SELECT @digests:=GROUP_CONCAT(plan_digest) FROM information_schema.statements_summary_history WHERE table_names LIKE '%test.t1%' AND stmt_type != 'CreateTable';
 CREATE GLOBAL BINDING FROM HISTORY USING PLAN DIGEST @digests;
