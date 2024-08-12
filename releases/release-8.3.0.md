@@ -121,6 +121,14 @@ TiDB 版本：8.3.0
 
     更多信息，请参考[用户文档](/system-variables.md#tidb_enable_fast_create_table-从-v800-版本开始引入)。
 
+* 分区表支持全局索引 (Global Index)（实验特性）[#45133](https://github.com/pingcap/tidb/issues/45133) @[mjonss](https://github.com/mjonss) **tw@hfxsd** <!--1531-->
+
+    之前版本的分区表，因为不支持全局索引有较多的限制，比如唯一键必须包含分区键，如果查询条件不带分区键，查询时会扫描所有分区，导致性能较差。从 v7.6.0 开始，引入了系统变量 [`tidb_enable_global_index`](/system-variables.md#tidb_enable_global_index-从-v760-版本开始引入) 用于开启全局索引特性，但该功能当时处于开发中，不够完善，不建议开启。
+
+    从 v8.3.0 开始，全局索引作为实验特性正式发布。你可通过关键字 `Global` 为分区表显式创建一个 Global Index，从而去除分区表唯一建必须包含全部分区键的限制，满足灵活的业务需求。同时基于全局索引也提升了不带分区键的唯一索引的查询性能。
+
+    更多信息，请参考[用户文档](/partitioned-table.md#全局索引)。
+
 ### 稳定性
 
 * 支持以流式获取游标的结果集（实验特性）[#54526](https://github.com/pingcap/tidb/issues/54526) @[YangKeao](https://github.com/YangKeao) **tw@lilin90** <!--1891-->
@@ -157,14 +165,6 @@ TiDB 版本：8.3.0
     TiDB 暂不支持 `SELECT LOCK IN SHARE MODE`。在 v8.3.0 版本中，TiDB 支持将 `SELECT LOCK IN SHARE MODE` 升级为排它锁，实现对 `SELECT LOCK IN SHARE MODE` 语法的支持。你可以使用系统变量 [`tidb_enable_shared_lock_promotion`](/system-variables.md#tidb_enable_shared_lock_promotion-从-v830-版本开始引入) 控制是否启用该功能。
 
     更多信息，请参考[用户文档](/system-variables.md#tidb_enable_shared_lock_promotion-从-v830-版本开始引入)。
-
-* 分区表支持全局索引 (Global Index)（实验特性）[#45133](https://github.com/pingcap/tidb/issues/45133) @[mjonss](https://github.com/mjonss) **tw@hfxsd** <!--1531-->
-
-    之前版本的分区表，因为不支持全局索引有较多的限制，比如唯一键必须包含分区键，如果查询条件不带分区键，查询时会扫描所有分区，导致性能较差。从 v7.6.0 开始，引入了系统变量 [`tidb_enable_global_index`](/system-variables.md#tidb_enable_global_index-从-v760-版本开始引入) 用于开启全局索引特性，但该功能当时处于开发中，不够完善，不建议开启。
-
-    从 v8.3.0 开始，全局索引作为实验特性正式发布。你在创建不包含全部分区键的唯一键时，TiDB 会隐式的创建全局索引，去除了唯一建必须包含全部分区键的限制，满足灵活的业务需求。同时基于全局索引也提升了不带分区键的唯一索引的查询性能。
-
-    更多信息，请参考[用户文档](/partitioned-table.md#全局索引)。
 
 ### 数据库管理
 
@@ -278,8 +278,6 @@ TiDB 版本：8.3.0
 
 + TiDB
 
-    - note [#issue](链接) @[贡献者 GitHub ID](链接)
-    - note [#issue](链接) @[贡献者 GitHub ID](链接)
     - TopN 算子支持数据落盘功能 [#47733](https://github.com/pingcap/tidb/issues/47733) @[xzhangxian1008](https://github.com/xzhangxian1008) **tw@Oreoxmt** <!--1715-->
     - TiDB 支持 `WITH ROLLUP` 修饰符和 `GROUPING` 函数 [#42631](https://github.com/pingcap/tidb/issues/42631) @[Arenatlx](https://github.com/Arenatlx) **tw@Oreoxmt** <!--1714-->
     - 系统变量 [`tidb_low_resolution_tso`](/system-variables.md#tidb_low_resolution_tso-从-v830-版本开始引入) 增加全局作用域 [#55022](https://github.com/pingcap/tidb/issues/55022) @[cfzjywxk](https://github.com/cfzjywxk) **tw@hfxsd** <!--1857-->
