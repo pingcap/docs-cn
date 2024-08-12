@@ -243,7 +243,7 @@ CREATE [GLOBAL | SESSION] BINDING FROM HISTORY USING PLAN DIGEST StringLiteralOr
 
 1. 从 `Statement Summary Tables` 的记录中查找执行计划对应的 Plan Digest。
 
-    例如:
+    例如：
 
     ```sql
     CREATE TABLE t(id INT PRIMARY KEY , a INT, KEY(a));
@@ -337,7 +337,7 @@ explain SELECT * FROM t1,t2 WHERE t1.id = t2.id;
 
 #### 根据 SQL Digest 删除绑定
 
-除了可以根据 SQL 语句删除对应的绑定以外，也可以根据 SQL Digest 删除绑定。详细的说明和更多示例可以参考 [DROP [GLOBAL|SESSION] BINDING](/sql-statements/sql-statement-drop-binding.md) 页面。
+你既可以根据 SQL 语句删除对应的绑定，也可以根据 SQL Digest 删除绑定。详细说明和更多示例参见 [`DROP [GLOBAL|SESSION] BINDING`](/sql-statements/sql-statement-drop-binding.md)。
 
 ```sql
 DROP [GLOBAL | SESSION] BINDING FOR SQL DIGEST StringLiteralOrUserVariableList;

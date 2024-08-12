@@ -32,8 +32,6 @@ StringLiteralOrUserVariable:
     stringLiteral | UserVariable
 ```
 
-****
-
 ## 示例
 
 你可以根据 SQL 或历史执行计划创建绑定。
