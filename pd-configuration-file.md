@@ -256,7 +256,7 @@ pd-server 相关配置项。
 ### `max-merge-region-size`
 
 + 控制 Region Merge 的 size 上限，当 Region Size 大于指定值时 PD 不会将其与相邻的 Region 合并。
-+ 默认：20
++ 默认：54
 + 单位：MiB
 
 ### `max-merge-region-keys`

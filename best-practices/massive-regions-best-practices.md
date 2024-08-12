@@ -123,8 +123,8 @@ Hibernate Region 在 [TiKV master](https://github.com/tikv/tikv/tree/master) 分
 {{< copyable "" >}}
 
 ```
-config set max-merge-region-size 20
-config set max-merge-region-keys 200000
+config set max-merge-region-size 54
+config set max-merge-region-keys 540000
 config set merge-schedule-limit 8
 ```
 

@@ -111,8 +111,8 @@ region-split-check-diff = "32MB"
 
 ## 当区间为 [a,e) 的 Region 的大小超过 `region_max_size`，TiKV 会尝试分裂该 Region，例如分裂成 [a,b)、[b,c)、[c,d)、[d,e) 等区间的 Region 后
 ## 这些 Region [a,b), [b,c), [c,d) 的大小为 `region_split_size` (或者稍大于 `region_split_size`）
-# region-max-size = "144MB"
-# region-split-size = "96MB"
+# region-max-size = "384MB"
+# region-split-size = "256MB"
 
 [rocksdb]
 # RocksDB 进行后台任务的最大线程数，后台任务包括 compaction 和 flush。具体 RocksDB 为什么需要进行 compaction，
