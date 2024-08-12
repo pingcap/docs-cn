@@ -2185,8 +2185,8 @@ mysql> SELECT job_info FROM mysql.analyze_jobs ORDER BY end_time DESC LIMIT 1;
 - 是否持久化到集群：是
 - 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：否
 - 类型：布尔型
-- 默认值：`OFF`
-- 这个变量用来控制 TiDB 是否支持并行 HashAgg 进行落盘。当该变量设置为 `ON` 时，并行 HashAgg 将支持落盘。默认值在 v8.1.0 为`ON`，从 v8.1.1 起为`OFF`。该变量将在功能正式发布后废弃。
+- 默认值：在 v8.1.0 为 `ON`，从 v8.1.1 起为 `OFF`
+- 这个变量用来控制 TiDB 是否支持并行 HashAgg 进行落盘。当该变量设置为 `ON` 时，并行 HashAgg 将支持落盘。该变量将在功能正式发布后废弃。
 
 ### `tidb_enable_pipelined_window_function`
 
