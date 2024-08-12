@@ -13,7 +13,8 @@ TiDB 版本：8.1.1
 
 ## 兼容性变更
 
-- (dup): release-6.5.10.md > 兼容性变更 - 使用 TiDB Lightning 的严格格式 `strict-format` 导入 CSV 文件时，必须设置行分隔符 [#37338](https://github.com/pingcap/tidb/issues/37338) @[lance6716](https://github.com/lance6716)
+- (dup): release-8.2.0.md > 兼容性变更 - 使用 TiDB Lightning 导入 CSV 文件时，如果设置了严格格式 `strict-format = true` 将一个大 CSV 文件切分为多个小 CSV 文件来提升并发和导入性能，需要显式指定行结束符 `terminator`，参数的取值为 `\r`、`\n` 或 `\r\n`。如果没有指定行结束符，可能导致 CSV 文件数据解析异常。 [#37338](https://github.com/pingcap/tidb/issues/37338) @[lance6716](https://github.com/lance6716)
+- (dup): release-8.2.0.md > 兼容性变更 - 使用 [`IMPORT INTO`](/sql-statements/sql-statement-import-into.md) 导入 CSV 文件时，如果指定 `SPLIT_FILE` 参数将一个大 CSV 文件切分为多个小 CSV 文件来提升并发和导入性能，需显式指定行结束符 `LINES_TERMINATED_BY`，参数的取值为 `\r`、`\n` 或 `\r\n`。如果没有指定行结束符，可能导致 CSV 文件数据解析异常。[#37338](https://github.com/pingcap/tidb/issues/37338) @[lance6716](https://github.com/lance6716)
 
 ## 改进提升
 
@@ -40,7 +41,7 @@ TiDB 版本：8.1.1
         - (dup): release-8.2.0.md > 改进提升> Tools> Backup & Restore (BR) - 支持对日志备份过程中生成的临时文件进行加密 [#15083](https://github.com/tikv/tikv/issues/15083) @[YuJuncen](https://github.com/YuJuncen)
         - (dup): release-7.5.3.md > 改进提升> Tools> Backup & Restore (BR) - 去掉除了 `br log restore` 子命令之外其它 `br log` 子命令对 TiDB `domain` 数据结构的载入，降低内存消耗 [#52088](https://github.com/pingcap/tidb/issues/52088) @[Leavrth](https://github.com/Leavrth)
         - (dup): release-7.5.3.md > 改进提升> Tools> Backup & Restore (BR) - 支持通过环境变量设置阿里云访问身份 [#45551](https://github.com/pingcap/tidb/issues/45551) @[RidRisR](https://github.com/RidRisR)
-        - 在 TiKV 下载 SST 文件之前，新增对 TiKV 是否有足够磁盘空间的检查；如果空间不足，BR 会终止恢复并返回报错 [#17224](https://github.com/tikv/tikv/issues/17224) @[RidRisR](https://github.com/RidRisR)
+        - 在 TiKV 下载 SST 文件之前，新增对 TiKV 是否有足够磁盘空间的检查；如果空间不足，BR 会终止恢复并返回错误 [#17224](https://github.com/tikv/tikv/issues/17224) @[RidRisR](https://github.com/RidRisR)
 
     + TiCDC <!--tw:qiancai 1 条-->
 
@@ -107,7 +108,7 @@ TiDB 版本：8.1.1
     - 修复使用索引加速添加唯一索引在遇到 owner 切换时可能导致 `Duplicate entry` 报错的问题 [#49233](https://github.com/pingcap/tidb/issues/49233) @[lance6716](https://github.com/lance6716)
     - 修复设置 `global.tidb_cloud_storage_uri` 时报错信息不清晰的问题 [#54096](https://github.com/pingcap/tidb/issues/54096) @[lance6716](https://github.com/lance6716)
     - 修复多值索引的 `IndexRangeScan` 上不支持生成 `Selection` 的问题 [#55012](https://github.com/pingcap/tidb/issues/55012)@[time-and-fate](https://github.com/time-and-fate)
-    - 修复 Sync Load QPS 监控指标显示不正确的问题 [#53558](https://github.com/pingcap/tidb/issues/53558)@[hawkingrei](https://github.com/hawkingrei)
+    - 修复 Sync Load QPS 监控指标显示不正确的问题 [#53558](https://github.com/pingcap/tidb/issues/53558) @[hawkingrei](https://github.com/hawkingrei)
     - 修复并发加载初始统计信息时可能遗漏加载的问题 [#53607](https://github.com/pingcap/tidb/issues/53607) @[hawkingrei](https://github.com/hawkingrei)
     - (dup): release-7.5.3.md > 错误修复> TiDB - 修复针对 `SELECT ... FOR UPDATE` 复用了错误点查询计划的问题 [#54652](https://github.com/pingcap/tidb/issues/54652) @[qw4990](https://github.com/qw4990)
 
@@ -174,7 +175,7 @@ TiDB 版本：8.1.1
     + TiCDC <!--tw:qiancai 2 条-->
 
         - 修复 Region 变更导致下游 panic 的问题 [#17233](https://github.com/tikv/tikv/issues/17233) @[hicqu](https://github.com/hicqu)
-        - 修复当上游未启用新的排序规则时，TiCDC 无法正确解码聚簇索引表中的主键的问题 [#11371](https://github.com/pingcap/tiflow/issues/11371)@[lidezhu](https://github.com/lidezhu)
+        - 修复当上游未启用新的排序规则时，TiCDC 无法正确解码聚簇索引表中的主键的问题 [#11371](https://github.com/pingcap/tiflow/issues/11371) @[lidezhu](https://github.com/lidezhu)
         - (dup): release-7.5.3.md > 错误修复> Tools> TiCDC - 修复拆分 `UPDATE` 事件后校验码未正确设置为 `0` 的问题 [#11402](https://github.com/pingcap/tiflow/issues/11402) @[3AceShowHand](https://github.com/3AceShowHand)
         - (dup): release-8.2.0.md > 错误修复> Tools> TiCDC - 修复在多节点环境下进行大量 `UPDATE` 操作时，反复重启 Changefeed 可能导致的数据不一致问题 [#11219](https://github.com/pingcap/tiflow/issues/11219) @[lidezhu](https://github.com/lidezhu)
         - (dup): release-7.5.3.md > 错误修复> Tools> TiCDC - 修复当下游 Kafka 无法访问时，Processor 模块可能卡住的问题 [#11340](https://github.com/pingcap/tiflow/issues/11340) @[asddongmen](https://github.com/asddongmen)
@@ -184,7 +185,7 @@ TiDB 版本：8.1.1
         - (dup): release-8.2.0.md > 错误修复> Tools> TiDB Data Migration (DM) - 修复同步 MariaDB 数据时 `SET` 语句导致 DM panic 的问题 [#10206](https://github.com/pingcap/tiflow/issues/10206) @[dveeden](https://github.com/dveeden)
         - (dup): release-8.2.0.md > 错误修复> Tools> TiDB Data Migration (DM) - 升级 `go-mysql` 以修复连接阻塞的问题 [#11041](https://github.com/pingcap/tiflow/issues/11041) @[D3Hunter](https://github.com/D3Hunter)
         - 修复当索引长度超过 `max-index-length` 默认值时数据同步中断的问题 [#11459](https://github.com/pingcap/tiflow/issues/11459) @[michaelmdeng](https://github.com/michaelmdeng)
-        - 修复 schema tracker 无法正确处理 LIST 分区表导致 DM 报错的问题 [#11408](https://github.com/pingcap/tiflow/issues/11408) @[lance6716](https://github.com/lance6716)"
+        - 修复 schema tracker 无法正确处理 LIST 分区表导致 DM 报错的问题 [#11408](https://github.com/pingcap/tiflow/issues/11408) @[lance6716](https://github.com/lance6716)
 
     + TiDB Lightning  <!--tw:qiancai 1 条-->
 
