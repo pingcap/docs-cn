@@ -240,9 +240,11 @@ TiDB 版本：8.3.0
 | [`tidb_analyze_column_options`](/system-variables.md#tidb_analyze_column_options-从-v830-版本开始引入) | 新增 | 控制 `ANALYZE TABLE` 语句默认收集的列。将其设置为 `PREDICATE` 表示仅收集 [predicate columns](/statistics.md#收集部分列的统计信息) 的统计信息；将其设置为 `ALL` 表示收集所有列的统计信息。 |
 | [`tidb_enable_lazy_cursor_fetch`](/system-variables.md#tidb_enable_lazy_cursor_fetch-从-v830-版本开始引入) | 新增 | 这个变量用于控制 [Cursor Fetch](/develop/dev-guide-connection-parameters.md#使用-streamingresult-流式获取执行结果) 功能的行为。|
 | [`tiflash_hashagg_preaggregation_mode`](/system-variables.md#tiflash_hashagg_preaggregation_mode-从-v830-版本开始引入) | 新增 | 控制下推到 TiFlash 的两阶段或三阶段 HashAgg 的第一阶段采用哪种预聚合策略。 |
-|        |                              |      |
+| [`tidb_ddl_reorg_batch_size`](/system-variables.md#tidb_ddl_reorg_batch_size)     | 修改   | 之前该变量仅支持 `GLOBAL` 级别设置。从 v8.3.0 开始，该变量也支持 `SESSION`级别设置。     |
+| [`tidb_ddl_reorg_worker_cnt`](/system-variables.md#tidb_ddl_reorg_worker_cnt)    | 修改   | 之前该变量仅支持 `GLOBAL` 级别设置。从 v8.3.0 开始，该变量也支持 `SESSION` 级别设置。     |
 | [`tidb_gc_concurrency`](/system-variables.md#tidb_gc_concurrency-从-v50-版本开始引入) | 修改 | 从 v8.3.0 起，该变量可以控制 [GC（垃圾回收）](/garbage-collection-overview.md) 过程中 [Resolve Locks（清理锁）] 和 [Delete Range（删除区间）](/garbage-collection-overview.md#Delete-Ranges删除区间) 的并发线程数。在 v8.3.0 之前，该变量只能控制 Resolve Locks（清理锁）的线程数。|
 | [`tidb_enable_shared_lock_upgrade`](/system-variables.md#tidb_enable_shared_lock_upgrade-从-v830-版本开始引入)       | 新增  | 控制是否启用共享锁升级为排他锁的功能。默认值为 `OFF`，表示不启用共享锁升级为排他锁的功能。  |
+| [`tidb_low_resolution_tso`](/system-variables.md#tidb_low_resolution_tso) | 修改 | 增加 GLOBAL 作用域。|
 | [`tidb_opt_projection_push_down`](/system-variables.md#tidb_opt_projection_push_down-从-v610-版本开始引入) | 修改 | 增加 GLOBAL 作用域，变量值可以持久化到集群。经进一步的测试，默认值从 `OFF` 修改为 `ON`，即默认允许优化器将 `Projection` 算子下推到 TiKV。|
 
 ### 配置文件参数
@@ -259,7 +261,8 @@ TiDB 版本：8.3.0
 | TiKV  | [`backup.sst-max-size`](/tikv-configuration-file.md#sst-max-size)  | 修改 | 将默认值从 `144`MiB 修改为 `384`MiB。   |
 | TiFlash   | [`security.redact_info_log`](/tiflash/tiflash-configuration.md#配置文件-tiflashtoml)  | 修改 | 支持将 TiFlash Server 配置项 `security.redact-info-log` 的值设置为 `marker`，使用标记符号 `‹ ›` 标记出敏感信息，而不是直接隐藏，以便你能够自定义脱敏规则。    |
 | TiFlash   | [`security.redact-info-log`](/tiflash/tiflash-configuration.md#配置文件-tiflash-learnertoml) | 修改 | 支持将 TiFlash Learner 配置项 `security.redact-info-log` 的值设置为 `marker`，使用标记符号 `‹ ›` 标记出敏感信息，而不是直接隐藏，以便你能够自定义脱敏规则。   |
-|    |   |   |   |
+|  BR  |  [`--allow-pitr-from-incremental`](/br/br-incremental-guide.md#使用限制)
+) | 新增  |  控制增量备份和后续的日志备份是否兼容。默认值为 `true`，即增量备份兼容后续的日志备份。兼容的情况下，增量恢复开始前会对需要回放的 DDL 进行严格检查。 |
 
 ### 系统表
 
