@@ -25,18 +25,18 @@ GlobalScope ::=
 BindableStmt ::=
     ( SelectStmt | UpdateStmt | InsertIntoStmt | ReplaceIntoStmt | DeleteStmt )
 
-StringLiteralOrUserVariableList:
-    (StringLitOrUserVariable | StringLiteralOrUserVariableList ',' StringLitOrUserVariable)
+StringLiteralOrUserVariableList ::=
+    ( StringLitOrUserVariable | StringLiteralOrUserVariableList ',' StringLitOrUserVariable )
 
-StringLiteralOrUserVariable:
-    stringLiteral | UserVariable
+StringLiteralOrUserVariable ::=
+    ( stringLiteral | UserVariable )
 ```
 
 ## 示例
 
 你可以根据 SQL 或历史执行计划创建绑定。
 
-通过历史执行计划创建绑定时，你需要指定 Plan Digest。指定 Plan Digest 时，你既可以通过字符串字面量来指定，也可以通过字符串类型的用户变量来指定。你可以通过指定多个 Plan Digest 来同时为多个语句创建绑定，此时，你可以指定多个字符串，同时每个字符串也可以包含多个 digest，它们之间均需要使用逗号隔开。
+根据历史执行计划创建绑定时，你需要指定 Plan Digest，既可以通过字符串字面量来指定，也可以通过字符串类型的用户变量来指定。你可以通过指定多个 Plan Digest 来同时为多个语句创建绑定，此时你可以指定多个字符串，同时每个字符串也可以包含多个 digest，字符串之间和 digest 之间均需使用逗号隔开。
 
 下面的示例演示如何根据 SQL 创建绑定。
 
