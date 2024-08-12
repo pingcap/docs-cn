@@ -103,8 +103,8 @@ TiDB 版本：8.1.1
     - 修复从 v7.1 升级后 `SHOW IMPORT JOBS` 报错 `Unknow column `summary`` 的问题 [#54241](https://github.com/pingcap/tidb/issues/54241) @[tangenta](https://github.com/tangenta)
     - 修复 `root` 用户无法查询 `tidb_mdl_view` 的问题 [#53292](https://github.com/pingcap/tidb/issues/53292) @[tangenta](https://github.com/tangenta) <!--tw:lilin90 以下 8 条-->
     - 修复使用分布式框架添加索引期间出现网络分区可能导致数据索引不一致的问题 [#54897](https://github.com/pingcap/tidb/issues/54897) @[tangenta](https://github.com/tangenta)
-    - 修复 local backend 初始化期间报错可能导致资源泄露的问题 [#53659](https://github.com/pingcap/tidb/issues/53659) @[D3Hunter](https://github.com/D3Hunter)
-    - 修复当视图定义中使用子查询作为列定义时，无法通过 `information_schema.columns` 获取列信息的问题 [#54343](https://github.com/pingcap/tidb/issues/54343) @[lance6716](https://github.com/lance6716)
+    - 修复 TiDB Lightning 物理导入模式初始化期间报错可能导致资源泄露的问题 [#53659](https://github.com/pingcap/tidb/issues/53659) @[D3Hunter](https://github.com/D3Hunter)
+    - 修复当视图定义中使用子查询作为列定义时，通过 `information_schema.columns` 获取列信息返回告警 Warning 1356 的问题 [#54343](https://github.com/pingcap/tidb/issues/54343) @[lance6716](https://github.com/lance6716)
     - 修复使用索引加速添加唯一索引在遇到 owner 切换时可能导致 `Duplicate entry` 报错的问题 [#49233](https://github.com/pingcap/tidb/issues/49233) @[lance6716](https://github.com/lance6716)
     - 修复设置 `global.tidb_cloud_storage_uri` 时报错信息不清晰的问题 [#54096](https://github.com/pingcap/tidb/issues/54096) @[lance6716](https://github.com/lance6716)
     - 修复多值索引的 `IndexRangeScan` 上不支持生成 `Selection` 的问题 [#55012](https://github.com/pingcap/tidb/issues/55012)@[time-and-fate](https://github.com/time-and-fate)
