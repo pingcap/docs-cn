@@ -223,7 +223,7 @@ CREATE BINDING FOR SELECT * FROM t WHERE a > 1 USING SELECT * FROM t use index(i
 
 #### 根据历史执行计划创建绑定
 
-如需将 SQL 语句的执行计划固定为之前使用过的执行计划，可以使用 Plan Digest 为该 SQL 语句绑定一个历史的执行计划。相比于使用 SQL 创建绑定的方式，此方式更加简便，并且可以支持一次为多个语句绑定执行计划。详细的说明和更多示例可以参考[CREATE [GLOBAL|SESSION] BINDING](/sql-statements/sql-statement-create-binding.md) 页面。
+如需将 SQL 语句的执行计划固定为之前使用过的执行计划，可以使用 Plan Digest 为该 SQL 语句绑定一个历史的执行计划。相比于使用 SQL 创建绑定的方式，此方式更加简便，并且支持一次为多个语句绑定执行计划。详细说明和更多示例参见 [`CREATE [GLOBAL|SESSION] BINDING`](/sql-statements/sql-statement-create-binding.md)。
 
 以下为根据历史执行计划创建绑定的注意事项：
 
@@ -231,7 +231,7 @@ CREATE BINDING FOR SELECT * FROM t WHERE a > 1 USING SELECT * FROM t use index(i
 - 对于包含子查询的查询、访问 TiFlash 的查询、3 张表或更多表进行 Join 的查询，自动生成的 hint 不够完备，可能导致无法完全固定住计划，对于这类情况在创建时会产生告警。
 - 原执行计划对应 SQL 语句中的 hint 也会被应用在创建的绑定中，如执行 `SELECT /*+ max_execution_time(1000) */ * FROM t` 后，使用其 Plan Digest 创建的绑定中会带上 `max_execution_time(1000)`。
 
-使用方式:
+使用方式：
 
 ```sql
 CREATE [GLOBAL | SESSION] BINDING FROM HISTORY USING PLAN DIGEST StringLiteralOrUserVariableList;
