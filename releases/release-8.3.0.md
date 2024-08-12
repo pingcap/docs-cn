@@ -142,12 +142,6 @@ TiDB 版本：8.3.0
 
 ### 高可用
 
-* 功能标题 [#issue号](链接) @[贡献者 GitHub ID](链接) **tw@xxx** <!--1234-->
-
-    功能描述（需要包含这个功能是什么、在什么场景下对用户有什么价值、怎么用）
-
-    更多信息，请参考[用户文档](链接)。
-
 * TiProxy 内置虚拟 IP 管理功能 [#583](https://github.com/pingcap/tiproxy/issues/583) @[djshow832](https://github.com/djshow832) **tw@Oreoxmt** <!--1887-->
 
     在 v8.3.0 之前，当使用主从模式以保证高可用性时，TiProxy 需要额外的组件管理虚拟 IP。从 v8.3.0 开始，TiProxy 内置虚拟 IP 管理功能。在主从模式下，当主节点发生切换时，新的主节点会自动绑定指定的虚拟 IP，确保客户端始终能通过虚拟 IP 连接到可用的 TiProxy。
@@ -158,7 +152,7 @@ TiDB 版本：8.3.0
 
 ### SQL 功能
 
-* 支持 `SELECT LOCK IN SHARE MODE` 升级为排它锁 [#54999](https://github.com/pingcap/tidb/issues/54999) @[cfzjywxk](https://github.com/cfzjywxk) **tw@hfxsd** <!--1871-->
+* 支持将 `SELECT LOCK IN SHARE MODE` 升级为排它锁 [#54999](https://github.com/pingcap/tidb/issues/54999) @[cfzjywxk](https://github.com/cfzjywxk) **tw@hfxsd** <!--1871-->
 
     TiDB 暂不支持 `SELECT LOCK IN SHARE MODE`。在 v8.3.0 版本中，TiDB 支持将 `SELECT LOCK IN SHARE MODE` 升级为排它锁，实现对 `SELECT LOCK IN SHARE MODE` 语法的支持。你可以使用系统变量 [`tidb_enable_shared_lock_promotion`](/system-variables.md#tidb_enable_shared_lock_promotion-从-v830-版本开始引入) 控制是否启用该功能。
 
@@ -168,7 +162,7 @@ TiDB 版本：8.3.0
 
     之前版本的分区表，因为不支持全局索引有较多的限制，比如唯一键必须包含分区键，如果查询条件不带分区键，查询时会扫描所有分区，导致性能较差。从 v7.6.0 开始，引入了系统变量 [`tidb_enable_global_index`](/system-variables.md#tidb_enable_global_index-从-v760-版本开始引入) 用于开启全局索引特性，但该功能当时处于开发中，不够完善，不建议开启。
 
-    从 v8.3.0 开始，全局索引作为实验特性正式发布了。你在创建不包含全部分区键的唯一键时，TiDB 会隐式的创建全局索引，去除了唯一建必须包含全部分区键的限制，满足灵活的业务需求。同时基于全局索引也提升了不带分区键的唯一索引的查询性能。
+    从 v8.3.0 开始，全局索引作为实验特性正式发布。你在创建不包含全部分区键的唯一键时，TiDB 会隐式的创建全局索引，去除了唯一建必须包含全部分区键的限制，满足灵活的业务需求。同时基于全局索引也提升了不带分区键的唯一索引的查询性能。
 
     更多信息，请参考[用户文档](/partitioned-table.md#全局索引)。
 
