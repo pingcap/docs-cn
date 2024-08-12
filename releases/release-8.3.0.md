@@ -251,7 +251,12 @@ TiDB 版本：8.3.0
 |----------------|--------------------|------|------------------------------------|
 | TiDB | [`tikv-client.batch-policy`](/tidb-configuration-file.md#batch-policy-从-v830-版本开始引入) | 新增 | 控制 TiDB 向 TiKV 发送请求时的批处理策略。 |
 | PD   |  [`security.redact-info-log`](/pd-configuration-file.md#redact-info-log-从-v50-版本开始引入) |  修改 | 支持将 PD 配置项 `security.redact-info-log` 的值设置为 `marker`，使用标记符号 `‹ ›` 标记出敏感信息，而不是直接隐藏，以便你能够自定义脱敏规则。  |
+| PD   |  [`schedule.max-merge-region-keys`](/pd-configuration-file.md#max-merge-region-keys) |  修改 | 将默认值从 `200000` 修改为 `540000`。 |
+| PD   |  [`schedule.max-merge-region-size`](/pd-configuration-file.md#max-merge-region-size) |  修改 | 将默认值从 `20` MiB 修改为 `54` MiB。 |
 | TiKV  | [`security.redact-info-log`](/tikv-configuration-file.md#redact-info-log-从-v408-版本开始引入)  | 修改 | 支持将 TiKV 配置项 `security.redact-info-log` 的值设置为 `marker`，使用标记符号 `‹ ›` 标记出敏感信息，而不是直接隐藏，以便你能够自定义脱敏规则。   |
+| TiKV  | [`coprocessor.region-split-size`](/tikv-configuration-file.md#region-split-size)  | 修改 | 将默认值从 `96`MiB 修改为 `256`MiB。   |
+| TiKV  | [`coprocessor.region-max-size`](/tikv-configuration-file.md#region-max-size)  | 修改 | 将默认值从 `144`MiB 修改为 `384`MiB。   |
+| TiKV  | [`backup.sst-max-size`](/tikv-configuration-file.md#sst-max-size)  | 修改 | 将默认值从 `144`MiB 修改为 `384`MiB。   |
 | TiFlash   | [`security.redact_info_log`](/tiflash/tiflash-configuration.md#配置文件-tiflashtoml)  | 修改 | 支持将 TiFlash Server 配置项 `security.redact-info-log` 的值设置为 `marker`，使用标记符号 `‹ ›` 标记出敏感信息，而不是直接隐藏，以便你能够自定义脱敏规则。    |
 | TiFlash   | [`security.redact-info-log`](/tiflash/tiflash-configuration.md#配置文件-tiflash-learnertoml) | 修改 | 支持将 TiFlash Learner 配置项 `security.redact-info-log` 的值设置为 `marker`，使用标记符号 `‹ ›` 标记出敏感信息，而不是直接隐藏，以便你能够自定义脱敏规则。   |
 |    |   |   |   |
