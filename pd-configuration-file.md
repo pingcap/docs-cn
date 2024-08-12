@@ -262,7 +262,7 @@ pd-server 相关配置项。
 ### `max-merge-region-keys`
 
 + 控制 Region Merge 的 key 上限，当 Region key 大于指定值时 PD 不会将其与相邻的 Region 合并。
-+ 默认：200000
++ 默认：540000
 
 ### `patrol-region-interval`
 
