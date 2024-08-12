@@ -320,10 +320,11 @@ TiDB 版本：7.4.0
 | TiCDC | [`large-message-handle-compression`](/ticdc/ticdc-sink-to-kafka.md#ticdc-层数据压缩功能) | 新增 | 控制是否开启编码时的压缩功能，默认为空，即不开启。|
 | TiCDC | [`large-message-handle-option`](/ticdc/ticdc-sink-to-kafka.md#发送大消息到外部存储) | 修改 | 该配置项新增一个可选值 `claim-check`。当设置为 `claim-check` 时，TiCDC Kafka sink 支持在消息大小超过限制时将该条消息发送到外部存储服务，同时向 Kafka 发送一条含有该大消息在外部存储服务中的地址的消息。 |
 
-## 废弃功能
+## 废弃和删除的功能
 
 + [Mydumper](https://docs.pingcap.com/zh/tidb/v4.0/mydumper-overview) 计划在 v7.5.0 中废弃，其绝大部分功能已经被 [Dumpling](/dumpling-overview.md) 取代，强烈建议切换到 Dumpling。
 + TiKV-importer 组件计划在 v7.5.0 中废弃，建议使用 [TiDB Lightning 物理导入模式](/tidb-lightning/tidb-lightning-physical-import-mode.md)作为替代方案。
++ TiCDC 移除 `enable-old-value` 参数 [#9667](https://github.com/pingcap/tiflow/issues/9667) @[3AceShowHand](https://github.com/3AceShowHand)
 
 ## 改进提升
 
