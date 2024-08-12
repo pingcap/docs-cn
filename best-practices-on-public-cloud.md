@@ -7,11 +7,11 @@ summary: 了解在公有云上部署 TiDB 的最佳实践。
 
 随着公有云基础设施的普及，越来越多的用户选择在公有云上部署和管理 TiDB。然而，要想在公有云上充分发挥 TiDB 的性能，需要关注多个方面，包括性能优化、成本控制、系统可靠性和可扩展性。
 
-本文介绍在公有云上部署 TiDB 的一系列最佳实践，例如减少 KV RocksDB 中的压缩 I/O 流量、为 Raft Engine 配置专用磁盘、优化跨可用区的流量成本、缓解 Google Cloud 上实时迁移维护事件带来的性能影响，以及对大规模集群中的 PD Server 进行性能调优。遵循这些最佳实践，可以显著提升 TiDB 在公有云上的性能、成本效率、可靠性和可扩展性。
+本文介绍在公有云上部署 TiDB 的一系列最佳实践，例如减少 KV RocksDB 中的 compaction I/O 流量、为 Raft Engine 配置专用磁盘、优化跨可用区的流量成本、缓解 Google Cloud 上实时迁移维护事件带来的性能影响，以及对大规模集群中的 PD Server 进行性能调优。遵循这些最佳实践，可以显著提升 TiDB 在公有云上的性能、成本效率、可靠性和可扩展性。
 
-## 减少 KV RocksDB 中的压缩 I/O 流量
+## 减少 KV RocksDB 中的 compaction I/O 流量
 
-[RocksDB](https://rocksdb.org/) 是 TiKV 的存储引擎，负责存储用户数据。出于成本考虑，云上提供的 EBS IO 吞吐量通常比较有限，因此 RocksDB 可能会表现出较高的写放大，导致磁盘吞吐量成为负载的瓶颈。随着时间的推移，待压缩的字节总量会不断增加从而触发流量控制，这意味着此时 TiKV 缺乏足够的磁盘带宽来处理前台写入流量。
+[RocksDB](https://rocksdb.org/) 是 TiKV 的存储引擎，负责存储用户数据。出于成本考虑，云上提供的 EBS IO 吞吐量通常比较有限，因此 RocksDB 可能会表现出较高的写放大，导致磁盘吞吐量成为负载的瓶颈。随着时间的推移，待 compaction 的字节总量会不断增加从而触发流量控制，这意味着此时 TiKV 缺乏足够的磁盘带宽来处理前台写入流量。
 
 要缓解由磁盘吞吐量受限引起的瓶颈，你可以通过[启用 Titan](#enable-titan) 来改善性能。如果数据的平均行大小低于 512 字节，Titan 并不适用，此时你可以通过[提高所有压缩级别](#increase-all-the-compression-levels) 来改善性能。
 
@@ -180,7 +180,7 @@ Google Cloud 的 [实时迁移功能](https://cloud.google.com/compute/docs/inst
 [`tso-update-physical-interval`](/pd-configuration-file.md#tso-update-physical-interval)：此参数控制 PD Server 更新物理 TSO batch 的间隔。通过缩短此间隔，PD Server 可以更频繁地分配 TSO batch，从而减少下一次分配的等待时间。
 
 ```
-tso-update-physical-interval = "10ms" # 默认值: 50ms
+tso-update-physical-interval = "10ms" # 默认值为 50ms
 ```
 
 #### 调整 TiDB 全局变量
