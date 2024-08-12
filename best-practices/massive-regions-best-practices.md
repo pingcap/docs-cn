@@ -134,7 +134,7 @@ config set merge-schedule-limit 8
 
 ### 方法六：调整 Region 大小
 
-Region 默认的大小约为 96 MiB，将其调大也可以减少 Region 个数，具体介绍可参考[使用更大的 Region](/tune-region-performance.md)。
+Region 默认的大小约为 256 MiB，将其调大也可以减少 Region 个数，具体介绍可参考[使用更大的 Region](/tune-region-performance.md)。
 
 > **警告：**
 >
