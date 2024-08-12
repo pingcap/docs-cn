@@ -37,7 +37,6 @@ TiDB 版本：8.1.1
 
     + Backup & Restore (BR) <!--tw:qiancai 1 条-->
 
-        - (dup): release-7.1.5.md > 改进提升> Tools> Backup & Restore (BR) - 增加 PITR 集成测试用例，覆盖对日志备份与添加索引加速功能的兼容性测试 [#51987](https://github.com/pingcap/tidb/issues/51987) @[Leavrth](https://github.com/Leavrth)
         - (dup): release-8.2.0.md > 改进提升> Tools> Backup & Restore (BR) - 支持对日志备份过程中生成的临时文件进行加密 [#15083](https://github.com/tikv/tikv/issues/15083) @[YuJuncen](https://github.com/YuJuncen)
         - (dup): release-7.5.3.md > 改进提升> Tools> Backup & Restore (BR) - 去掉除了 `br log restore` 子命令之外其它 `br log` 子命令对 TiDB `domain` 数据结构的载入，降低内存消耗 [#52088](https://github.com/pingcap/tidb/issues/52088) @[Leavrth](https://github.com/Leavrth)
         - (dup): release-7.5.3.md > 改进提升> Tools> Backup & Restore (BR) - 支持通过环境变量设置阿里云访问身份 [#45551](https://github.com/pingcap/tidb/issues/45551) @[RidRisR](https://github.com/RidRisR)
@@ -189,7 +188,6 @@ TiDB 版本：8.1.1
 
     + TiDB Lightning  <!--tw:qiancai 1 条-->
 
-        - (dup): release-6.5.10.md > 错误修复> Tools> TiDB Lightning - 修复 TiDB Lightning 导入数据时，kill PD Leader 会导致 `invalid store ID 0` 报错的问题 [#50501](https://github.com/pingcap/tidb/issues/50501) @[Leavrth](https://github.com/Leavrth)
         - 修复 TiDB Lightning 获取 keyspace 失败时输出的 `WARN` 日志可能引起用户混淆的问题 [#54232](https://github.com/pingcap/tidb/issues/54232) @[kennytm](https://github.com/kennytm)
 
     + Dumpling
