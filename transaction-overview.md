@@ -299,7 +299,7 @@ TiDB 中，单个事务的总大小默认不超过 100 MB，这个默认值可�
 
 > **注意：**
 >
-> 通常，用户会开启 [TiDB Binlog](/tidb-binlog/tidb-binlog-overview.md) 将数据向下游进行同步。某些场景下，用户会使用消息中间件来消费同步到下游的 binlog，例如 Kafka。
+> 通常，用户会开启 [TiDB Binlog](/tidb-binlog/tidb-binlog-overview.md)（从 v8.3.0 开始被废弃）将数据向下游进行同步。某些场景下，用户会使用消息中间件来消费同步到下游的 binlog，例如 Kafka。
 >
 > 以 Kafka 为例，Kafka 的单条消息处理能力的上限是 1 GB。因此，当把 `txn-total-size-limit` 设置为 1 GB 以上时，可能出现事务在 TiDB 中执行成功，但下游 Kafka 报错的情况。为避免这种情况出现，请用户根据最终消费者的限制来决定 `txn-total-size-limit` 的实际大小。例如：下游使用了 Kafka，则 `txn-total-size-limit` 不应超过 1 GB。
 

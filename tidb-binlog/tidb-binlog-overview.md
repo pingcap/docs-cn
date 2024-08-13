@@ -8,15 +8,15 @@ summary: TiDB Binlog 是用于收集 TiDB 的 binlog 并提供实时备份和同
 
 TiDB Binlog 是一个用于收集 TiDB 的 binlog，并提供准实时备份和同步功能的商业工具。
 
-TiDB Binlog 支持以下功能场景：
-
-- **数据同步**：同步 TiDB 集群数据到其他数据库。
-- **实时备份和恢复**：备份 TiDB 集群数据，同时可以用于 TiDB 集群故障时恢复。
-
 > **警告：**
 >
 > - 从 v8.3.0 开始，TiDB Binlog 被废弃，并计划在未来版本中移除。请使用 [TiCDC](/ticdc/ticdc-overview.md) 作为增量数据同步的替代方案。如有 Point-in-Time Recovery (PITR) 场景的需求，请使用 [PITR](/br/br-pitr-guide.md)。
 > - TiDB Binlog 与 TiDB v5.0 开始引入的一些特性不兼容，无法一起使用，详情参照[注意事项](#注意事项)。
+
+TiDB Binlog 支持以下功能场景：
+
+- **数据同步**：同步 TiDB 集群数据到其他数据库。
+- **实时备份和恢复**：备份 TiDB 集群数据，同时可以用于 TiDB 集群故障时恢复。
 
 要快速了解 Binlog 的基本原理和使用方法，建议先观看下面的培训视频（时长 32 分钟）。注意本视频只为学习参考，具体操作步骤和最新功能，请以文档内容为准。
 
