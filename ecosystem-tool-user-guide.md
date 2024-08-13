@@ -125,6 +125,10 @@ TiDB 提供了 TiUP 和 TiDB Operator 部署运维工具，满足你在不同系
 
 [TiDB Binlog](/tidb-binlog/tidb-binlog-overview.md) 是收集 TiDB 的增量 binlog 数据，并提供准实时同步和备份的工具。该工具可用于 TiDB 集群间的增量数据同步，如将其中一个 TiDB 集群作为另一个 TiDB 集群的从集群。
 
+> **警告：**
+>
+> 从 v8.3.0 开始，TiDB Binlog 被废弃。请使用 [TiCDC](/ticdc/ticdc-overview.md) 进行增量数据同步。
+
 基本信息：
 
 - TiDB Binlog 的输入：TiDB 集群

@@ -6,6 +6,10 @@ summary: TiDB Binlog 集群部署需要满足服务器硬件配置要求。推�
 
 # TiDB Binlog 集群部署
 
+> **警告：**
+>
+> - 从 v8.3.0 开始，TiDB Binlog 被废弃，请使用 [TiCDC](/ticdc/ticdc-overview.md) 作为增量数据同步的替代方案。
+
 ## 服务器要求
 
 Pump 和 Drainer 均可部署和运行在 Intel x86-64 架构的 64 位通用硬件服务器平台上。在开发、测试和生产环境下，对服务器硬件配置的要求和建议如下：
