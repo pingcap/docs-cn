@@ -1,14 +1,14 @@
 ---
 title: TiDB Binlog 集群部署
 aliases: ['/docs-cn/dev/tidb-binlog/deploy-tidb-binlog/','/docs-cn/dev/reference/tidb-binlog/deploy/','/docs-cn/dev/how-to/deploy/tidb-binlog/','/docs-cn/dev/reference/tools/tidb-binlog/deploy/']
-summary: TiDB Binlog 集群部署需要满足服务器硬件配置要求。推荐使用 TiUP 部署 TiDB Binlog，也可以使用 Binary 部署。部署过程中需要注意配置参数和启动命令。在运行 TiDB 时，需要保证至少一个 Pump 正常运行。Drainer 不支持对 ignore schemas 的 table 进行 rename DDL 操作。
+summary: TiDB Binlog 集群部署需要满足服务器硬件配置要求。推荐使用 TiUP 部署 TiDB Binlog，也可以使用 Binary 部署。部署过程中需要注意配置参数和启动命令。在运行 TiDB 时，需要保证至少一个 Pump 正常运行。Drainer 不支持对 ignore schemas 的 table 进行 rename DDL 操作。从 v8.3.0 开始，TiDB Binlog 被废弃，请使用 TiCDC 作为增量数据同步的替代方案。
 ---
 
 # TiDB Binlog 集群部署
 
 > **警告：**
 >
-> - 从 v8.3.0 开始，TiDB Binlog 被废弃，请使用 [TiCDC](/ticdc/ticdc-overview.md) 作为增量数据同步的替代方案。
+> 从 v8.3.0 开始，TiDB Binlog 被废弃，请使用 [TiCDC](/ticdc/ticdc-overview.md) 作为增量数据同步的替代方案。
 
 ## 服务器要求
 
