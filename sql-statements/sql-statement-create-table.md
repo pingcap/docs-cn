@@ -45,8 +45,8 @@ ColumnOptionList ::=
 ColumnOption ::=
     'NOT'? 'NULL'
 |   'AUTO_INCREMENT'
-|   PrimaryOpt 'KEY'
-|   'UNIQUE' 'KEY'?
+|   PrimaryOpt 'KEY' ( 'GLOBAL' | 'LOCAL' )?
+|   'UNIQUE' 'KEY'? ( 'GLOBAL' | 'LOCAL' )?
 |   'DEFAULT' DefaultValueExpr
 |   'SERIAL' 'DEFAULT' 'VALUE'
 |   'ON' 'UPDATE' NowSymOptionFraction
@@ -77,6 +77,7 @@ IndexOption ::=
     'COMMENT' String
 |   ( 'VISIBLE' | 'INVISIBLE' )
 |   ('USING' | 'TYPE') ('BTREE' | 'RTREE' | 'HASH')
+|   ( 'GLOBAL' | 'LOCAL' )
 
 ForeignKeyDef
          ::= ( 'CONSTRAINT' Identifier )? 'FOREIGN' 'KEY'
@@ -234,6 +235,7 @@ mysql> DESC t1;
 * `COMMENT` 属性不支持 `WITH PARSER` 选项。
 * TiDB 在单个表中默认支持 1017 列，最大可支持 4096 列。InnoDB 中相应的数量限制为 1017 列，MySQL 中的硬限制为 4096 列。详情参阅 [TiDB 使用限制](/tidb-limitations.md)。
 * 当前仅支持 Range、Hash 和 Range Columns（单列）类型的分区表，详情参阅[分区表](/partitioned-table.md)。
+* TiDB 对[全局索引](/partitioned-table.md#global-indexes)进行了扩展。你可以使用 `GLOBAL` IndexOption 创建 `PRIMARY KEY` 或 `UNIQUE INDEX`。该扩展与 MySQL 不兼容。
 
 ## 另请参阅
 

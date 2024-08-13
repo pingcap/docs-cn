@@ -1668,9 +1668,9 @@ ERROR 1503 (HY000): A UNIQUE INDEX must include all columns in the table's parti
 
 如果你需要创建的唯一索引**不包含分区表达式中使用的所有列**，可以通过启用 [`tidb_enable_global_index`](/system-variables.md#tidb_enable_global_index-从-v760-版本开始引入) 系统变量来实现。
 
-以前，分区表上的索引是为每个分区创建的，因此有一个限制，即所有唯一键都需要包含所有分区键。唯一性只能在每个分区内强制执行。全局索引将在表级别创建，因此无论分区如何，它都可以强制执行唯一性。注意，全局索引对分区管理有影响，`DROP`、`TRUNCATE` 和 `REORGANIZE PARTITION` 也需要管理表级全局索引。
+以前，分区表上的索引是为每个分区创建的，因此有一个[限制](#分区键主键和唯一键)，即分区表的每个唯一键，必须包含分区表达式中用到的所有列。唯一性只能在每个分区内强制实现。全局索引将在表级别创建，因此无论分区如何，它都可以强制实现唯一性。注意，全局索引对分区管理有影响，`DROP`、`TRUNCATE` 和 `REORGANIZE PARTITION` 也需要管理表级全局索引。
 
-启用该变量后，任何不符合前述约束条件的唯一索引都将自动成为全局索引。
+启用此变量后，任何不符合前述约束条件的唯一索引都需要使用 `GLOBAL` 属性，然后成为全局索引。
 
 ```sql
 SET tidb_enable_global_index = ON;
@@ -1680,24 +1680,24 @@ CREATE TABLE t1 (
     col2 DATE NOT NULL,
     col3 INT NOT NULL,
     col4 INT NOT NULL,
-    UNIQUE KEY uidx12(col1, col2),
+    UNIQUE KEY uidx12(col1, col2) GLOBAL,
     UNIQUE KEY uidx3(col3)
 )
 PARTITION BY HASH(col3)
 PARTITIONS 4;
 ```
 
-在上面示例中，唯一索引 `uidx12` 将隐式地成为全局索引，但 `uidx3` 仍是常规的唯一索引。
+在上面示例中，唯一索引 `uidx12` 将成为全局索引，但 `uidx3` 仍是常规的唯一索引。
 
 请注意，**聚簇索引**不能成为全局索引，如下例所示：
 
 ```sql
 SET tidb_enable_global_index = ON;
 
-CREATE TABLE t1 (
+CREATE TABLE t2 (
     col1 INT NOT NULL,
     col2 DATE NOT NULL,
-    PRIMARY KEY (col2) clustered
+    PRIMARY KEY (col2) CLUSTERED GLOBAL
 ) PARTITION BY HASH(col1) PARTITIONS 5;
 ```
 
@@ -1707,7 +1707,27 @@ ERROR 1503 (HY000): A CLUSTERED INDEX must include all columns in the table's pa
 
 聚簇索引不能成为全局索引，是因为如果聚簇索引是全局索引，则表将不再分区。这是因为聚簇索引的键也是行数据的键，而行数据应该是分区级别的，但全局索引是表级别，这就造成了冲突。
 
-你可以通过查询 [`information_schema.tidb_indexes`](/information-schema/information-schema-tidb-indexes.md) 表并检查表结构来识别全局索引。
+你可以通过 [`SHOW CREATE TABLE`](/sql-statements/sql-statement-show-create-table.md) 输出中的 `GLOBAL IndexOption` 来识别全局索引。
+
+```sql
+SHOW CREATE TABLE t1\G
+```
+
+```
+       Table: t1
+Create Table: CREATE TABLE `t1` (
+  `col1` int(11) NOT NULL,
+  `col2` date NOT NULL,
+  `col3` int(11) NOT NULL,
+  `col4` int(11) NOT NULL,
+  UNIQUE KEY `uidx12` (`col1`,`col2`) /*T![global_index] GLOBAL */,
+  UNIQUE KEY `uidx3` (`col3`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin
+PARTITION BY HASH (`col3`) PARTITIONS 4
+1 row in set (0.00 sec)
+```
+
+或查询 [`information_schema.tidb_indexes`](/information-schema/information-schema-tidb-indexes.md) 表并检查表结构来识别全局索引。
 
 ```sql
 SELECT * FROM information_schema.tidb_indexes WHERE table_name='t1';
@@ -1722,6 +1742,12 @@ SELECT * FROM information_schema.tidb_indexes WHERE table_name='t1';
 | test         | t1         |          0 | uidx3    |            1 | col3        |     NULL |               | NULL       |        2 | YES        | NO        |         0 |
 +--------------+------------+------------+----------+--------------+-------------+----------+---------------+------------+----------+------------+-----------+-----------+
 3 rows in set (0.00 sec)
+```
+
+在分区非分区表、或重新分区已经分区的表时，可以将索引更新为全局索引或默认本地索引。
+
+```sql
+ALTER TABLE t1 PARTITION BY HASH (col1) PARTITIONS 3 UPDATE INDEXES (uidx12 LOCAL, uidx3 GLOBAL);
 ```
 
 ### 关于函数的分区限制
