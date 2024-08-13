@@ -89,12 +89,12 @@ TiCDC 复制功能只会将指定时间点之后的增量变更复制到下游�
 
 为了能够解决上述可复制的 DDL 和不可复制的 DDL 两类 DDL 的同步问题，TiDB 引入了两种 BDR role：
 
-- `PRIMARY`：你可以执行可复制的 DDL，但不能执行不可复制的 DDL。TiCDC 会把 Primary 集群执行的可复制的 DDL 同步到下游。
+- `PRIMARY`：你可以执行可复制的 DDL，但不能执行不可复制的 DDL。TiCDC 会把 PRIMARY 集群执行的可复制的 DDL 同步到下游。
 - `SECONDARY`：你不能执行上述所有的 DDL。但是，TiCDC 能够把 PRIMARY 集群接收到的 DDL 同步到 SECONDARY 集群。
 
 在不设置 BDR role 时，你可以执行任意 DDL。但是处于 BDR 模式中的 changefeed 不会同步该集群上的任何 DDL。
 
-总的来说，在 BDR 模式中，TiCDC 仅会同步 Primary 集群上的可复制的 DDL 到下游。
+总的来说，在 BDR 模式中，TiCDC 仅会同步 PRIMARY 集群上的可复制的 DDL 到下游。
 
 ### 可复制的 DDL 的同步场景
 
