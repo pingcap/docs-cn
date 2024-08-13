@@ -1668,7 +1668,7 @@ ERROR 1503 (HY000): A UNIQUE INDEX must include all columns in the table's parti
 
 如果你需要创建的唯一索引**不包含分区表达式中使用的所有列**，可以通过启用 [`tidb_enable_global_index`](/system-variables.md#tidb_enable_global_index-从-v760-版本开始引入) 系统变量来实现。
 
-以前，分区表上的索引是为每个分区创建的，因此有一个限制，即所有唯一键都需要包含所有分区列。唯一性只能在每个分区内强制执行。全局索引将在表级别创建，因此无论分区如何，它都可以强制执行唯一性。注意，全局索引对分区管理有影响，`DROP`、`TRUNCATE` 和 `REORGANIZE PARTITION` 也需要管理表级全局索引。
+以前，分区表上的索引是为每个分区创建的，因此有一个限制，即所有唯一键都需要包含所有分区键。唯一性只能在每个分区内强制执行。全局索引将在表级别创建，因此无论分区如何，它都可以强制执行唯一性。注意，全局索引对分区管理有影响，`DROP`、`TRUNCATE` 和 `REORGANIZE PARTITION` 也需要管理表级全局索引。
 
 启用该变量后，任何不符合前述约束条件的唯一索引都将自动成为全局索引。
 
