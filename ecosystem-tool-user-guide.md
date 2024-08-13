@@ -127,7 +127,7 @@ TiDB 提供了 TiUP 和 TiDB Operator 部署运维工具，满足你在不同系
 
 > **警告：**
 >
-> 从 v8.3.0 开始，TiDB Binlog 被废弃。请使用 [TiCDC](/ticdc/ticdc-overview.md) 进行增量数据同步。
+> 从 v8.3.0 开始，TiDB Binlog 被废弃，并计划在未来版本中移除。请使用 [TiCDC](/ticdc/ticdc-overview.md) 进行增量数据同步。
 
 基本信息：
 
