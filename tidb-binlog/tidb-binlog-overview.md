@@ -15,7 +15,7 @@ TiDB Binlog 支持以下功能场景：
 
 > **警告：**
 >
-> - 从 v8.3.0 开始，TiDB Binlog 被废弃，请使用 [TiCDC](/ticdc/ticdc-overview.md) 作为增量数据同步的替代方案。如有 Point-in-Time Recovery (PITR) 场景的需求，请使用 [PITR](/br/br-pitr-guide.md)。
+> - 从 v8.3.0 开始，TiDB Binlog 被废弃，并计划在未来版本中移除。请使用 [TiCDC](/ticdc/ticdc-overview.md) 作为增量数据同步的替代方案。如有 Point-in-Time Recovery (PITR) 场景的需求，请使用 [PITR](/br/br-pitr-guide.md)。
 > - TiDB Binlog 与 TiDB v5.0 开始引入的一些特性不兼容，无法一起使用，详情参照[注意事项](#注意事项)。
 
 要快速了解 Binlog 的基本原理和使用方法，建议先观看下面的培训视频（时长 32 分钟）。注意本视频只为学习参考，具体操作步骤和最新功能，请以文档内容为准。
