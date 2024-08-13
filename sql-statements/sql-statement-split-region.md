@@ -351,7 +351,7 @@ region4  [("c", "")                    , maxIndexValue               )
 
 ## pre_split_regions
 
-使用带有 `AUTO_RANDOM` 或 `SHARD_ROW_ID_BITS` 属性的表时，如果希望建表时就均匀切分 Region，可以考虑配合 `PRE_SPLIT_REGIONS` 一起使用，用来在建表成功后就开始预均匀切分 `2^(PRE_SPLIT_REGIONS)` 个 Region。
+创建带有 `AUTO_RANDOM` 或 `SHARD_ROW_ID_BITS` 属性的表时，如果希望在建表成功后就开始预均匀切分 Region，可以考虑配合 `PRE_SPLIT_REGIONS` 一起使用。预切分成的 Region 数量为 `2^(PRE_SPLIT_REGIONS)`。
 
 > **注意：**
 >
