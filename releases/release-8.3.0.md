@@ -123,9 +123,9 @@ TiDB 版本：8.3.0
 
 * 分区表支持全局索引 (Global Index)（实验特性）[#45133](https://github.com/pingcap/tidb/issues/45133) @[mjonss](https://github.com/mjonss) **tw@hfxsd** <!--1531-->
 
-    之前版本的分区表，因为不支持全局索引有较多的限制，比如唯一键必须包含分区键，如果查询条件不带分区键，查询时会扫描所有分区，导致性能较差。从 v7.6.0 开始，引入了系统变量 [`tidb_enable_global_index`](/system-variables.md#tidb_enable_global_index-从-v760-版本开始引入) 用于开启全局索引特性，但该功能当时处于开发中，不够完善，不建议开启。
+    之前版本的分区表，因为不支持全局索引有较多的限制，比如唯一键必须包含分区表达式中用到的所有列，如果查询条件不带分区键，查询时会扫描所有分区，导致性能较差。从 v7.6.0 开始，引入了系统变量 [`tidb_enable_global_index`](/system-variables.md#tidb_enable_global_index-从-v760-版本开始引入) 用于开启全局索引特性，但该功能当时处于开发中，不够完善，不建议开启。
 
-    从 v8.3.0 开始，全局索引作为实验特性正式发布。你可通过关键字 `Global` 为分区表显式创建一个 Global Index，从而去除分区表唯一建必须包含全部分区键的限制，满足灵活的业务需求。同时基于全局索引也提升了不带分区键的唯一索引的查询性能。
+    从 v8.3.0 开始，全局索引作为实验特性正式发布。你可通过关键字 `Global` 为分区表显式创建一个 Global Index，从而去除分区表唯一建必须包含分区表达式中用到的所有列的限制，满足灵活的业务需求。同时基于全局索引也提升了不带分区键的唯一索引的查询性能。
 
     更多信息，请参考[用户文档](/partitioned-table.md#全局索引)。
 
@@ -204,7 +204,7 @@ TiDB 版本：8.3.0
 
 * TiCDC 支持通过双向复制模式 (Bi-Directional Replication, BDR) 同步 DDL 语句 (GA) [#10301](https://github.com/pingcap/tiflow/issues/10301) [#48519](https://github.com/pingcap/tidb/issues/48519) @okJiang @asddongmen **tw@hfxsd** <!--1689-->
 
-    从 v7.6.0 开始，TiCDC 支持在配置了双向复制的情况下同步 DDL 语句。以前，TiCDC 不支持复制 DDL 语句，因此要使用 TiCDC 双向复制必须将 DDL 语句分别应用到两个 TiDB 集群。有了该特性，TiCDC 可以为一个集群分配 `PRIMARY` BDR role，并将该集群的 DDL 语句复制到下游集群。
+    从 v7.6.0 开始，TiCDC 支持在配置了双向复制的情况下同步 DDL 语句。以前，TiCDC 不支持双向复制 DDL 语句，因此要使用 TiCDC 双向复制必须将 DDL 语句在两个 TiDB 集群分别执行。有了该特性，在为一个集群分配 `PRIMARY` BDR role 之后，TiCDC 可以将该集群的 DDL 语句复制到 `SECONDARY` 集群。
 
     在 v8.3.0，该功能成为正式功能 (GA)。
 
@@ -253,7 +253,6 @@ TiDB 版本：8.3.0
 | TiKV  | [`coprocessor.region-split-size`](/tikv-configuration-file.md#region-split-size)  | 修改 | 默认值从 `96` MiB 修改为 `256` MiB，减小随着集群规模增大后 Region 个数过多带来的管理压力。   |
 | TiKV  | [`coprocessor.region-max-size`](/tikv-configuration-file.md#region-max-size)  | 修改 | 默认值从 `144` MiB 修改为 `384` MiB，以兼容 `coprocessor.region-split-size` 扩大为 `256` MiB 的修改。   |
 | TiKV  | [`backup.sst-max-size`](/tikv-configuration-file.md#sst-max-size)  | 修改 | 默认值从 `144` MiB 修改为 `384` MiB，以兼容 `coprocessor.region-max-size` 扩大为 `384` MiB 的修改。   |
-| TiFlash   | [`security.redact_info_log`](/tiflash/tiflash-configuration.md#配置文件-tiflashtoml)  | 修改 | 支持将 TiFlash Server 配置项 `security.redact-info-log` 的值设置为 `marker`，使用标记符号 `‹ ›` 标记出敏感信息，而不是直接隐藏，以便你能够自定义脱敏规则。    |
 | TiFlash   | [`security.redact-info-log`](/tiflash/tiflash-configuration.md#配置文件-tiflash-learnertoml) | 修改 | 支持将 TiFlash Learner 配置项 `security.redact-info-log` 的值设置为 `marker`，使用标记符号 `‹ ›` 标记出敏感信息，而不是直接隐藏，以便你能够自定义脱敏规则。   |
 |  BR  |  [`--allow-pitr-from-incremental`](/br/br-incremental-guide.md#使用限制)
 ) | 新增  |  控制增量备份和后续的日志备份是否兼容。默认值为 `true`，即增量备份兼容后续的日志备份。兼容的情况下，增量恢复开始前会对需要回放的 DDL 进行严格检查。 |
