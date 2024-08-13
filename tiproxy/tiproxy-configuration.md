@@ -128,7 +128,7 @@ TiProxy 的高可用配置。
 
 + 默认值：`""`
 + 支持热加载：否
-+ 指定虚拟 IP 地址，使用 CIDR 格式表示，例如 `10.0.1.10/24`。当集群中部署了多台 TiProxy 时，只有一台 TiProxy 会绑定虚拟 IP。当该 TiProxy 下线时，另外一台 TiProxy 会自动绑定该 IP，确保客户端始终能通过虚拟 IP 连接到可用的 TiProxy。
++ 指定虚拟 IP 地址，使用 CIDR 格式表示，例如 `"10.0.1.10/24"`。当集群中部署了多台 TiProxy 时，只有一台 TiProxy 会绑定虚拟 IP。当该 TiProxy 下线时，另外一台 TiProxy 会自动绑定该 IP，确保客户端始终能通过虚拟 IP 连接到可用的 TiProxy。
 
 > **注意：**
 >
@@ -140,7 +140,7 @@ TiProxy 的高可用配置。
 
 + 默认值：`""`
 + 支持热加载：否
-+ 指定绑定虚拟 IP 的网络接口，例如 `eth0`。只有同时设置 [`ha.virtual-ip`](#virtual-ip) 和 `ha.interface` 时，该 TiProxy 实例才能绑定虚拟 IP。
++ 指定绑定虚拟 IP 的网络接口，例如 `"eth0"`。只有同时设置 [`ha.virtual-ip`](#virtual-ip) 和 `ha.interface` 时，该 TiProxy 实例才能绑定虚拟 IP。
 
 ### `labels`
 
