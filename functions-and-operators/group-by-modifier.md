@@ -38,7 +38,7 @@ SELECT count(1) FROM t GROUP BY a,b,c WITH ROLLUP;
 
 从 v8.3.0 开始，上述限制已被移除。无论 TiDB 集群是否包含 TiFlash 节点，TiDB 都支持为 `WITH ROLLUP` 语法生成有效的执行计划。
 
-你可以通过执行计划中 `Expand` 算子的 `task` 属性判断执行 `Expand` 算子的存储引擎。更多信息，请参考[如何阅读 ROLLUP 的执行计划](#如何阅读-rollup-的执行计划)。
+你可以通过执行计划中 `Expand` 算子的 `task` 属性判断执行 `Expand` 算子的是 TiDB 还是 TiFlash。更多信息，请参考[如何阅读 ROLLUP 的执行计划](#如何阅读-rollup-的执行计划)。
 
 ## 使用示例
 
