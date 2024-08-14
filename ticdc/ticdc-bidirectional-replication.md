@@ -94,7 +94,7 @@ TiCDC 复制功能只会将指定时间点之后的增量变更复制到下游�
 
 在不设置 BDR role 时，你可以执行任意 DDL。但是处于 BDR 模式中的 changefeed 不会同步该集群上的任何 DDL。
 
-总的来说，在 BDR 模式中，TiCDC 仅会将 PRIMARY 集群上可复制的 DDL 同步到下游。
+总的来说，在 BDR 模式下，TiCDC 仅会将 PRIMARY 集群上可复制的 DDL 同步到下游。
 
 ### 可复制的 DDL 的同步场景
 
