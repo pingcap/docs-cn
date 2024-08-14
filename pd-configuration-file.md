@@ -256,13 +256,13 @@ pd-server 相关配置项。
 ### `max-merge-region-size`
 
 + 控制 Region Merge 的 size 上限，当 Region Size 大于指定值时 PD 不会将其与相邻的 Region 合并。
-+ 默认：54（8.2.0 及之前版本默认值为 20）
++ 默认：54。在 v8.3.0 之前，默认值为 20。
 + 单位：MiB
 
 ### `max-merge-region-keys`
 
 + 控制 Region Merge 的 key 上限，当 Region key 大于指定值时 PD 不会将其与相邻的 Region 合并。
-+ 默认：540000（8.2.0 及之前版本默认值为 200000）
++ 默认：540000。在 v8.3.0 之前，默认值为 200000。
 
 ### `patrol-region-interval`
 
