@@ -1666,11 +1666,15 @@ ERROR 1503 (HY000): A UNIQUE INDEX must include all columns in the table's parti
 
 #### 全局索引
 
-如果你需要创建的唯一索引**不包含分区表达式中使用的所有列**，可以通过启用 [`tidb_enable_global_index`](/system-variables.md#tidb_enable_global_index-从-v760-版本开始引入) 系统变量来实现。
+在引入全局索引 (Global Index) 之前，TiDB 为每个分区创建一个局部索引 (Local Index)，即一个分区对应一个局部索引。因此，主键和唯一键必须包含分区键，以确保数据的全局唯一性。此外，当查询的数据跨越多个分区时，系统需要扫描每个分区的数据才能返回结果。
 
-以前，分区表上的索引是为每个分区创建的，因此有一个[限制](#分区键主键和唯一键)，即分区表的每个唯一键，必须包含分区表达式中用到的所有列。唯一性只能在每个分区内强制实现。全局索引将在表级别创建，因此无论分区如何，它都可以强制实现唯一性。注意，全局索引对分区管理有影响，`DROP`、`TRUNCATE` 和 `REORGANIZE PARTITION` 也需要管理表级全局索引。
+为解决这些问题，TiDB 从 v8.3.0 开始引入全局索引。全局索引通过一个单一的索引覆盖整个表的数据，使得主键和唯一键在不包含分区键的情况下仍能保持全局唯一性。同时，全局索引可以一次性访问跨多个分区的数据，显著提升了针对非分区键的查询性能。
 
-启用此变量后，任何不符合前述约束条件的唯一索引都需要使用 `GLOBAL` 属性，然后成为全局索引。
+以前，分区表上的索引是为每个分区创建的，因此有一个[限制](#分区键主键和唯一键)，即分区表的每个唯一键，必须包含分区表达式中用到的所有列。唯一性只能在每个分区内强制实现。全局索引将在表级别创建，因此无论分区如何，它都可以强制实现唯一性。
+
+如果你需要创建的唯一索引**不包含分区表达式中使用的所有列**，可以通过启用 [`tidb_enable_global_index`](/system-variables.md#tidb_enable_global_index-从-v760-版本开始引入) 系统变量来实现。启用此变量后，任何不符合前述约束条件的唯一索引都需要使用 `GLOBAL` 属性来将其创建为全局索引。
+
+注意，全局索引对分区管理有影响，`DROP`、`TRUNCATE` 和 `REORGANIZE PARTITION` 也需要管理表级全局索引，即这些 DDL 需要更新完全局索引后才会返回结果。
 
 ```sql
 SET tidb_enable_global_index = ON;
@@ -1705,7 +1709,7 @@ CREATE TABLE t2 (
 ERROR 1503 (HY000): A CLUSTERED INDEX must include all columns in the table's partitioning function
 ```
 
-聚簇索引不能成为全局索引，是因为如果聚簇索引是全局索引，则表将不再分区。这是因为聚簇索引的键也是行数据的键，而行数据应该是分区级别的，但全局索引是表级别，这就造成了冲突。
+聚簇索引不能成为全局索引，是因为如果聚簇索引是全局索引，则表将不再分区。这是因为聚簇索引的键也是行数据的键，而行数据应该是分区级别的，但全局索引是表级别，这就造成了冲突。如果需要将主键设置为全局索引，则需要显式设置该主键为非聚簇索引，如 `PRIMARY KEY(col1, col2) NONCLUSTERED GLOBAL`。
 
 你可以通过 [`SHOW CREATE TABLE`](/sql-statements/sql-statement-show-create-table.md) 输出中的 `GLOBAL IndexOption` 来识别全局索引。
 
@@ -1749,6 +1753,12 @@ SELECT * FROM information_schema.tidb_indexes WHERE table_name='t1';
 ```sql
 ALTER TABLE t1 PARTITION BY HASH (col1) PARTITIONS 3 UPDATE INDEXES (uidx12 LOCAL, uidx3 GLOBAL);
 ```
+##### 全局索引的限制
+
+- 如果未显式指定 `GLOBAL` 关键字，将默认创建局部索引 (local Index)。
+- `GLOBAL` 和 `LOCAL` 关键字仅适用于分区表，对非分区表没有影响。即在非分区表中，全局索引和局部索引之间没有区别。
+- DDL 操作如 `ADD PARTITION`、`DROP PARTITION`、`TRUNCATE PARTITION`、`REORGANIZE PARTITION`、`SPLIT PARTITION` 和 `EXCHANGE PARTITION` 等 DDL 会触发全局索引的更新，DDL 执行结果将在全局索引更新完成后才会返回。而如果没有全局索引，在一些场景，如数据归档，`EXCHANGE PARTITION`、`TRUNCATE PARTITION` 和 `DROP PARTITION` 这些 DDL 可以立即执行完成。
+- 默认情况下，分区表的主键为聚簇索引，必须包含分区键。如果要求主键不包含分区建，可以在建表时显式指定主键为非聚簇的全局索引，例如：`PRIMARY KEY(col1, col2) NONCLUSTERED GLOBAL`。
 
 ### 关于函数的分区限制
 
