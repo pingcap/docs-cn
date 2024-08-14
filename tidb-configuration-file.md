@@ -734,7 +734,7 @@ opentracing.reporter 相关的设置。
     - `"basic"`：行为与 v8.3.0 之前的版本一致，即 TiDB 仅在 [`tikv-client.max-batch-wait-time`](#max-batch-wait-time) 大于 0 且 TiKV 的负载超过 [`tikv-client.overload-threshold`](#overload-threshold) 时进行额外的批处理。
     - `"standard"`：TiDB 根据最近请求的到达时间间隔动态批处理，适用于高吞吐场景。
     - `"positive"`：TiDB 始终进行额外的批处理，适用于高吞吐压测场景，以获得最佳性能。但在低负载场景下，该策略可能会引入不必要的批处理等待时间，从而导致性能下降。
-    - `"custom{...}"`：允许自定义批处理策略参数，不推荐使用。
+    - `"custom{...}"`：自定义批处理策略参数，仅用于 TiDB 内部测试，**不推荐用户使用**。
 
 ### `max-batch-size`
 
