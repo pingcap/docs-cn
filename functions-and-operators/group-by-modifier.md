@@ -158,7 +158,7 @@ SELECT year, month, SUM(profit) AS profit, grouping(year) as grp_year, grouping(
 
 ## 如何阅读 ROLLUP 的执行计划
 
-多维度数据聚合使用了 `Expand` 算子来复制数据以满足多维度分组的需求，每个复制的数据副本都对应一个特定维度的分组。特别的在 MPP 模式下，`Expand` 算子能够利于数据 shuffle 快速地在多个节点之间重新组织和计算大量的数据，充分利用每个节点的计算能力；而在 TiDB 模式下，`Expand` 算子因为只在 TiDB 单节点上执行，数据冗余会根据 `Grouping Sets` 的数量而膨胀。
+多维度数据聚合使用了 `Expand` 算子来复制数据以满足多维度分组的需求，每个复制的数据副本都对应一个特定维度的分组。在 MPP 模式下，`Expand` 算子能够利用数据 shuffle 快速地在多个节点之间重新组织和计算大量的数据，充分利用每个节点的计算能力。在不包含 TiFlash 节点的 TiDB 集群中，`Expand` 算子因为只在 TiDB 单节点上执行，数据冗余会随着维度分组 (`grouping set`) 数量的增加而增加。
 
 `Expand` 算子的实现类似 `Projection` 算子，但区别在于 `Expand` 是多层级的 `Projection`，具有多层级投影运算表达式。对于每行原始数据行，`Projection` 算子只会生成一行结果输出，而 `Expand` 算子会生成多行结果（行数等于多层级投影运算表达式的层数）。
 
