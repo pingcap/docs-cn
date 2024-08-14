@@ -1,5 +1,6 @@
 ---
 title: TiDB 4.0.7 Release Notes
+summary: TiDB 4.0.7 发布，新增 PD 客户端函数 `GetAllMembers` 和 TiDB Dashboard 统计指标关系图支持。TiDB 优化了 `join` 算子执行信息和协处理器缓存命中率信息，支持将 `ROUND` 函数下推至 TiFlash，并修复了多个 bug。TiKV 支持日志输出为 JSON 格式，修复了 TLS 握手失败导致 Status API 不可用的问题。PD 修复了多个问题，TiFlash 修正了 right outer join 结果错误。Backup & Restore (BR) 修复了恢复数据后导致 TiDB 配置变更的错误，Dumpling 修复了 metadata 解析失败的问题。
 ---
 
 # TiDB 4.0.7 Release Notes

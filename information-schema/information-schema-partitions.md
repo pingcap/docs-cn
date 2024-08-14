@@ -5,7 +5,7 @@ summary: 了解 INFORMATION_SCHEMA 表 `PARTITIONS`。
 
 # PARTITIONS
 
-`PARTITIONS` 表提供有关分区表的信息。
+`PARTITIONS` 表提供有关[分区表](/partitioned-table.md)的信息。
 
 ```sql
 USE INFORMATION_SCHEMA;
@@ -115,3 +115,7 @@ SUBPARTITION_ORDINAL_POSITION: NULL
    TIDB_PLACEMENT_POLICY_NAME: NULL
 2 rows in set (0.00 sec)
 ```
+
+## 另请参阅
+
+- [用 EXPLAIN 查看分区查询的执行计划](/explain-partitions.md)

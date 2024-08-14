@@ -1,5 +1,6 @@
 ---
 title: tiup cluster replay
+summary: tiup cluster replay 命令用于重试集群操作中失败的命令，并跳过已成功的步骤。使用 `tiup cluster audit` 查看历史命令及其 audit-id。执行命令：tiup cluster replay <audit-id>。选项：-h, --help。输出为对应命令的输出。
 ---
 
 # tiup cluster replay

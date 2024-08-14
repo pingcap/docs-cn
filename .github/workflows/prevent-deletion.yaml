@@ -15,7 +15,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout base
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
       - name: Fetch head
         run: |
           git remote add head ${{ github.event.pull_request.head.repo.clone_url }}

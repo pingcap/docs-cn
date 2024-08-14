@@ -50,7 +50,7 @@ tikv-server --labels region=<region>,zone=<zone>,host=<host>
 | --- | --- |
 | 手动部署 | [通过拓扑 label 进行副本调度](/schedule-replicas-by-topology-labels.md) |
 | TiUP 部署 | [跨机房部署拓扑结构](/geo-distributed-deployment-topology.md) |
-| Operator 部署| [在 Kubernetes 中配置 TiDB 集群](https://docs.pingcap.com/zh/tidb-in-kubernetes/stable/configure-a-tidb-cluster#高数据的高可用) |
+| Operator 部署| [在 Kubernetes 中配置 TiDB 集群](https://docs.pingcap.com/zh/tidb-in-kubernetes/stable/configure-a-tidb-cluster#数据的高可用) |
 
 如需查看当前 TiKV 集群中所有可用的标签，可以使用 [`SHOW PLACEMENT LABELS`](/sql-statements/sql-statement-show-placement-labels.md) 语句：
 

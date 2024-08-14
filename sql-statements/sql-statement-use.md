@@ -10,13 +10,13 @@ aliases: ['/docs-cn/dev/sql-statements/sql-statement-use/','/docs-cn/dev/referen
 
 ## 语法图
 
-**UseStmt:**
+```ebnf+diagram
+UseStmt ::=
+    "USE" DBName
 
-![UseStmt](/media/sqlgram/UseStmt.png)
-
-**DBName:**
-
-![DBName](/media/sqlgram/DBName.png)
+DBName ::=
+    Identifier
+```
 
 ## 示例
 

@@ -1,5 +1,6 @@
 ---
 title: Data Migration DDL 特殊处理说明
+summary: 数据迁移中，根据不同的 DDL 语句和场景，采用不同处理方式。DM 不支持的 DDL 语句会直接跳过。部分 DDL 语句在同步到下游前会进行改写。在合库合表迁移任务中，DDL 同步行为存在变更。Online DDL 特性也会对 DDL 事件进行特殊处理。
 ---
 
 # Data Migration DDL 特殊处理说明

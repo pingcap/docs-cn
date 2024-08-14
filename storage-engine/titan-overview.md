@@ -1,6 +1,7 @@
 ---
 title: Titan 介绍
 aliases: ['/docs-cn/dev/storage-engine/titan-overview/','/docs-cn/dev/reference/titan/overview/']
+summary: Titan 是基于 RocksDB 的高性能单机 key-value 存储引擎插件。它支持将 value 从 LSM-tree 中分离出来单独存储，以降低写放大。Titan 适合前台写入量较大的场景，但不适合范围查询或对范围查询性能敏感的情况。开启 Titan 需要考虑 value 大小、范围查询敏感性和磁盘空间。从 v7.6.0 开始，TiDB 对 Titan 性能进行了优化，并将其作为默认的存储引擎。Titan 的 GC 方式有传统 GC 和 Level Merge，而 `min-blob-size` 的大小会影响性能。
 ---
 
 # Titan 介绍

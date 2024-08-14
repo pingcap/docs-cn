@@ -1346,7 +1346,7 @@ curl -X 'GET' \
       "name": "string",
       "source_name": "string",
       "worker_name": "string",
-      "stage": "runing",
+      "stage": "running",
       "unit": "sync",
       "unresolved_ddl_lock_id": "string",
       "load_status": {

@@ -1,5 +1,6 @@
 ---
 title: tiup dm prune
+summary: tiup dm prune 命令用于在缩容集群后清理 etcd 中的少量元信息。通常情况下不会有问题，但如果需要清理，可以手动执行该命令。语法为 tiup dm prune <cluster-name>，选项包括 -h, --help，输出为清理过程的日志。
 ---
 
 # tiup dm prune

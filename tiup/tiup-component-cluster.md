@@ -1,5 +1,6 @@
 ---
 title: TiUP Cluster
+summary: TiUP Cluster 是使用 Golang 编写的集群管理组件，可进行部署、启动、关闭、销毁、弹性扩缩容、升级 TiDB 集群、管理参数。支持的命令有 import、template、check、deploy、list、display、start、stop、restart、scale-in、scale-out、upgrade、prune、edit-config、reload、patch、rename、clean、destroy、audit、replay、enable、disable、meta backup、meta restore、help。
 ---
 
 # TiUP Cluster

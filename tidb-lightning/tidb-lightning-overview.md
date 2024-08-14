@@ -24,6 +24,10 @@ TiDB Lightning 支持从以下位置读取：
 - [Amazon S3](/external-storage-uri.md#amazon-s3-uri-格式)
 - [Google GCS](/external-storage-uri.md#gcs-uri-格式)
 
+> **注意：**
+>
+> 与 TiDB Lightning 相比，[`IMPORT INTO`](/sql-statements/sql-statement-import-into.md) 语句可以直接在 TiDB 节点上执行，支持自动化分布式任务调度和 [TiDB 全局排序](/tidb-global-sort.md)，在部署、资源利用率、任务配置便捷性、调用集成便捷性、高可用性和可扩展性等方面都有很大提升。建议在合适的场景下，使用 `IMPORT INTO` 代替 TiDB Lightning。
+
 ## TiDB Lightning 整体架构
 
 ![TiDB Lightning 整体架构](/media/tidb-lightning-architecture.png)

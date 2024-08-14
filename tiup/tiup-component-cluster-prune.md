@@ -1,5 +1,6 @@
 ---
 title: tiup cluster prune
+summary: tiup cluster prune 命令用于在缩容集群时清理数据。对于某些组件，需要等数据调度完成后，用户手动执行该命令。选项包括 -h 或 --help，用于输出帮助信息。清理过程会生成日志。
 ---
 
 # tiup cluster prune

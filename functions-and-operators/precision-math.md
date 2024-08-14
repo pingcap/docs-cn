@@ -1,6 +1,7 @@
 ---
 title: 精度数学
 aliases: ['/docs-cn/dev/functions-and-operators/precision-math/','/docs-cn/dev/reference/sql/functions-and-operators/precision-math/']
+summary: TiDB 中的精确数值运算与 MySQL 基本一致。精确数值运算包括整型和 DECIMAL 类型，以及精确值数字字面量。DECIMAL 数据类型是定点数类型，其运算是精确计算。在表达式计算中，TiDB 会尽可能不做任何修改的使用每个输入的数值。数值修约时，`round()` 函数将使用四舍五入的规则。向 DECIMAL 或整数类型列插入数据时，round 的规则将采用 round half away from zero 的方式。
 ---
 
 # 精度数学

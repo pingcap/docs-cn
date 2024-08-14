@@ -1,5 +1,6 @@
 ---
 title: tiup mirror sign
+summary: tiup mirror sign 命令用于对镜像中定义的元信息文件进行签名。语法为 tiup mirror sign <manifest-file>。选项包括 -k, --key 和 --timeout。输出包括成功、文件已被指定的 key 签名过和文件不是合法的 manifest。
 ---
 
 # tiup mirror sign

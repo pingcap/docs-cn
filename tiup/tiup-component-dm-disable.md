@@ -1,5 +1,6 @@
 ---
 title: tiup dm disable
+summary: tiup dm disable 命令用于关闭集群服务重启后的自启动。语法为 tiup dm disable <cluster-name>，其中 <cluster-name> 为要关闭自启的集群。选项包括 -N, --node 和 -R, --role，分别用于指定要关闭自启的节点和角色。若不指定选项，默认关闭所有节点和角色的自启。执行该命令将输出 tiup-dm 的执行日志。
 ---
 
 # tiup dm disable

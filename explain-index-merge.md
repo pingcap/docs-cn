@@ -90,7 +90,7 @@ EXPLAIN SELECT /*+ USE_INDEX_MERGE(t, idx_a, idx_b, idx_c) */ * FROM t WHERE a >
 >
 > - TiDB 的索引合并特性在 v5.4.0 及之后的版本默认开启，即 [`tidb_enable_index_merge`](/system-variables.md#tidb_enable_index_merge-从-v40-版本开始引入) 为 `ON`。
 > - 如果查询中使用了 SQL 优化器 Hint [`USE_INDEX_MERGE`](/optimizer-hints.md#use_index_merget1_name-idx1_name--idx2_name-)，无论 `tidb_enable_index_merge` 开关是否开启，都会强制使用索引合并特性。当过滤条件中有无法下推的表达式时，必须使用 Hint [`USE_INDEX_MERGE`](/optimizer-hints.md#use_index_merget1_name-idx1_name--idx2_name-) 才能开启索引合并。
-> - 如果查询有除了全表扫描以外的单索引扫描方式可以选择，优化器不会自动选择索引合并，只能通过 Hint 指定使用索引合并。
+> - 如果查询有除了全表扫描以外的单索引扫描方式可以选择，优化器不会自动选择索引合并，只能通过 Hint 指定使用索引合并。从 v8.1.0 开始，这个限制可以通过 [Optimizer Fix Control 52869](/optimizer-fix-controls.md#52869-从-v810-版本开始引入) 解除。解除此限制能让优化器在更多查询中自动选择索引合并，但也有可能忽略其他更好的执行计划，因此建议在解除此限制前针对实际场景进行充分测试，确保不会带来性能回退。
 > - 索引合并目前无法在临时表上使用。
 > - 交集型索引合并目前不会被优化器自动选择，必须使用 [`USE_INDEX_MERGE`](/optimizer-hints.md#use_index_merget1_name-idx1_name--idx2_name-) Hint 指定**表名和索引名**时才会被选择。
 

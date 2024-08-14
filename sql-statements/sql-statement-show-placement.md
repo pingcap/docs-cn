@@ -17,12 +17,10 @@ summary: TiDB 数据库中 SHOW PLACEMENT 的使用概况。
 
 ```ebnf+diagram
 ShowStmt ::=
-    "PLACEMENT"
+    "SHOW" "PLACEMENT" ShowLikeOrWhere?
 ```
 
 ## 示例
-
-{{< copyable "sql" >}}
 
 ```sql
 CREATE PLACEMENT POLICY p1 PRIMARY_REGION="us-east-1" REGIONS="us-east-1,us-west-1" FOLLOWERS=4;

@@ -152,6 +152,10 @@ v7.3.0 引入了以下主要功能。[功能详情](#功能详情)中列出的�
 
 ### 行为变更
 
+* TiDB
+
+    - MPP 是 TiFlash 引擎提供的分布式计算框架，允许节点之间的数据交换并提供高性能、高吞吐的 SQL 算法。相对其他协议，MPP 协议更加成熟，能提供更好的任务和资源管理。从 v7.3.0 起，当 TiDB 向 TiFlash 下推计算任务时，优化器默认只生成使用 MPP 协议的执行计划。如果设置了 [`tidb_allow_mpp`](/system-variables.md#tidb_allow_mpp-从-v50-版本开始引入) 为 `OFF`，在升级 TiDB 后查询可能会报错，建议在升级前检查 `tidb_allow_mpp` 的值并将其设置为 `ON`。如果仍然需要优化器根据成本估算从 Cop、BatchCop 和 MPP 协议中选择一个用于生成执行计划，可以将 [`tidb_allow_tiflash_cop`](/system-variables.md#tidb_allow_tiflash_cop-从-v730-版本开始引入) 变量设置为 `ON`。
+
 * Backup & Restore (BR)
 
     - 全量恢复前增加了空集群检查，默认不支持恢复到非空集群。如果强制恢复，可以使用 `--filter` 指定对应表名。

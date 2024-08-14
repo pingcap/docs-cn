@@ -1,6 +1,7 @@
 ---
 title: TiDB 2.1.12 Release Notes
 aliases: ['/docs-cn/dev/releases/release-2.1.12/','/docs-cn/dev/releases/2.1.12/']
+summary: TiDB 2.1.12 发布，修复了多个 bug，包括类型不匹配导致进程 panic、字符集改变导致类型变化、事务中的 GRANT 误报错误等问题。同时提升了与 MySQL 的兼容性，修复了 TiDB 跟 TiKV 在 gRPC 最大封包设置不一致导致的超大封包报错问题。PD 修复了极端情况下 etcd Leader 选举阻塞的问题，TiKV 修复了 Leader 迁移过程中 Region 不可用的问题和异常掉电导致丢数据的问题。
 ---
 
 # TiDB 2.1.12 Release Notes

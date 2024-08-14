@@ -79,3 +79,7 @@ SELECT * FROM USER_PRIVILEGES;
 * `TABLE_CATALOG`：表所属的目录的名称。该值始终为 `def`。
 * `PRIVILEGE_TYPE`：被授权的权限类型，每行只列一个权限。
 * `IS_GRANTABLE`：如果用户有 `GRANT OPTION` 的权限，则为 `YES`，否则为 `NO`。
+
+## 另请参阅
+
+- [`SHOW GRANTS`](/sql-statements/sql-statement-show-grants.md)

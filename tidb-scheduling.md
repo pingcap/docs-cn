@@ -1,6 +1,7 @@
 ---
 title: TiDB 数据库的调度
 aliases: ['/docs-cn/dev/tidb-scheduling/']
+summary: TiDB 数据库的调度由 PD（Placement Driver）模块负责管理和实时调度集群数据。PD 需要收集节点和 Region 的状态信息，并根据调度策略制定调度计划，包括增加 / 删除副本、迁移 Leader 角色等基本操作。调度需满足副本数量、位置分布、负载均衡、存储空间利用等需求。PD 通过心跳包收集信息，并根据策略生成调度操作序列，但具体执行由 Region Leader 决定。
 ---
 
 # TiDB 数据库的调度

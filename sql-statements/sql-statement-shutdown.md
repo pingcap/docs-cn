@@ -10,13 +10,12 @@ aliases: ['/docs-cn/dev/sql-statements/sql-statement-shutdown/']
 
 ## 语法图
 
-**Statement:**
-
-![Statement](/media/sqlgram/ShutdownStmt.png)
+```ebnf+diagram
+ShutdownStmt ::=
+    "SHUTDOWN"
+```
 
 ## 示例
-
-{{< copyable "sql" >}}
 
 ```sql
 SHUTDOWN;

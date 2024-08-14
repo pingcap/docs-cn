@@ -1,13 +1,14 @@
 ---
 title: SQL 基本操作
 aliases: ['/docs-cn/dev/basic-sql-operations/','/docs-cn/dev/how-to/get-started/explore-sql/']
+summary: TiDB 是一个兼容 MySQL 的数据库，可以执行 DDL、DML、DQL 和 DCL 操作。可以使用 SHOW DATABASES 查看数据库列表，使用 CREATE DATABASE 创建数据库，使用 DROP DATABASE 删除数据库。使用 CREATE TABLE 创建表，使用 SHOW CREATE TABLE 查看建表语句，使用 DROP TABLE 删除表。使用 CREATE INDEX 创建索引，使用 SHOW INDEX 查看表内所有索引，使用 DROP INDEX 删除索引。使用 INSERT 向表内插入记录，使用 UPDATE 修改记录，使用 DELETE 删除记录。使用 SELECT 检索表内数据，使用 WHERE 子句进行筛选。使用 CREATE USER 创建用户，使用 GRANT 授权用户，使用 DROP USER 删除用户。
 ---
 
 # SQL 基本操作
 
 成功部署 TiDB 集群之后，便可以在 TiDB 中执行 SQL 语句了。因为 TiDB 兼容 MySQL，你可以使用 MySQL 客户端连接 TiDB，并且[大多数情况下](/mysql-compatibility.md)可以直接执行 MySQL 语句。
 
-SQL 是一门声明性语言，它是数据库用户与数据库交互的方式。它更像是一种自然语言，好像在用英语与数据库进行对话。本文档介绍基本的 SQL 操作。完整的 SQL 语句列表，参见 [TiDB SQL 语法详解](https://pingcap.github.io/sqlgram/)。
+SQL 是一门声明性语言，它是数据库用户与数据库交互的方式。它更像是一种自然语言，好像在用英语与数据库进行对话。本文档介绍基本的 SQL 操作。完整的 TiDB SQL 语句列表，参见 [SQL 语句概览](/sql-statements/sql-statement-overview.md)。
 
 ## 分类
 

@@ -1,34 +1,37 @@
 ---
 title: 使用 TiUP 升级 TiDB
 aliases: ['/docs-cn/dev/upgrade-tidb-using-tiup/','/docs-cn/dev/how-to/upgrade/using-tiup/','/docs-cn/dev/upgrade-tidb-using-tiup-offline/', '/zh/tidb/dev/upgrade-tidb-using-tiup-offline']
+summary: TiUP 可用于 TiDB 升级。升级过程中需注意不支持 TiFlash 组件从 5.3 之前的老版本在线升级至 5.3 及之后的版本，只能采用停机升级。在升级过程中，不要执行 DDL 语句，避免出现行为未定义的问题。升级前需查看集群中是否有正在进行的 DDL Job，并等待其完成或取消后再进行升级。升级完成后，可使用 TiUP 安装对应版本的 `ctl` 组件来更新相关工具版本。
 ---
 
 # 使用 TiUP 升级 TiDB
 
 本文档适用于以下升级路径：
 
-- 使用 TiUP 从 TiDB 4.0 版本升级至 TiDB 7.6。
-- 使用 TiUP 从 TiDB 5.0-5.4 版本升级至 TiDB 7.6。
-- 使用 TiUP 从 TiDB 6.0-6.6 版本升级至 TiDB 7.6。
-- 使用 TiUP 从 TiDB 7.0-7.5 版本升级至 TiDB 7.6。
+- 使用 TiUP 从 TiDB 4.0 版本升级至 TiDB 8.2。
+- 使用 TiUP 从 TiDB 5.0-5.4 版本升级至 TiDB 8.2。
+- 使用 TiUP 从 TiDB 6.0-6.6 版本升级至 TiDB 8.2。
+- 使用 TiUP 从 TiDB 7.0-7.6 版本升级至 TiDB 8.2。
+- 使用 TiUP 从 TiDB 8.0-8.1 版本升级至 TiDB 8.2。
 
 > **警告：**
 >
 > 1. 不支持将 TiFlash 组件从 5.3 之前的老版本在线升级至 5.3 及之后的版本，只能采用停机升级。如果集群中其他组件（如 tidb，tikv）不能停机升级，参考[不停机升级](#不停机升级)中的注意事项。
 > 2. 在升级 TiDB 集群的过程中，**请勿执行** DDL 语句，否则可能会出现行为未定义的问题。
 > 3. 集群中有 DDL 语句正在被执行时（通常为 `ADD INDEX` 和列类型变更等耗时较久的 DDL 语句），**请勿进行**升级操作。在升级前，建议使用 [`ADMIN SHOW DDL`](/sql-statements/sql-statement-admin-show-ddl.md) 命令查看集群中是否有正在进行的 DDL Job。如需升级，请等待 DDL 执行完成或使用 [`ADMIN CANCEL DDL`](/sql-statements/sql-statement-admin-cancel-ddl.md) 命令取消该 DDL Job 后再进行升级。
->
-> 从 TiDB v7.1 版本升级至更高的版本时，可以不遵循上面的限制 2 和 3，建议参考[平滑升级 TiDB 的限制](/smooth-upgrade-tidb.md#使用限制)。
+> 4. 从 TiDB v7.1 版本升级至更高的版本时，可以不遵循上面的限制 2 和 3，请参考[平滑升级 TiDB 的限制](/smooth-upgrade-tidb.md#使用限制)。
+> 5. 在使用 TiUP 升级 TiDB 集群之前，务必阅读[用户操作限制](/smooth-upgrade-tidb.md#用户操作限制)。
+> 6. 如果当前集群版本为 TiDB v7.6.0 - v8.2.0，升级的目标版本为 v8.3.0 或更高版本，并且通过 [`tidb_enable_fast_create_table`](/system-variables.md#tidb_enable_fast_create_table-从-v800-版本开始引入) 系统变量开启了加速建表，请先关闭加速建表功能，等升级完成后再按需开启。否则，集群中会残留该功能新增的部分元数据 KV。从 v8.3.0 开始，对该功能做了优化，升级到更高版本时，不会再产生并残留该类元数据 KV。
 
 > **注意：**
 >
-> - 如果原集群是 3.0 或 3.1 或更早的版本，不支持直接升级到 v7.6.0 及后续修订版本。你需要先从早期版本升级到 4.0 后，再从 4.0 升级到 v7.6.0 及后续修订版本。
+> - 如果原集群是 3.0 或 3.1 或更早的版本，不支持直接升级到 v8.2.0 及后续修订版本。你需要先从早期版本升级到 4.0 后，再从 4.0 升级到 v8.2.0 及后续修订版本。
 > - 如果原集群是 6.2 之前的版本，升级到 6.2 及以上版本时，部分场景会遇到升级卡住的情况，你可以参考[如何解决升级卡住的问题](#42-升级到-v620-及以上版本时如何解决升级卡住的问题)。
 > - 配置参数 [`server-version`](/tidb-configuration-file.md#server-version) 的值会被 TiDB 节点用于验证当前 TiDB 的版本。因此在进行 TiDB 集群升级前，请将 `server-version` 的值设置为空或者当前 TiDB 真实的版本值，避免出现非预期行为。
 > - 配置项 [`performance.force-init-stats`](/tidb-configuration-file.md#force-init-stats-从-v657-和-v710-版本开始引入) 设置为 `ON` 会延长 TiDB 的启动时间，这可能会造成启动超时，升级失败。为避免这种情况，建议为 TiUP 设置更长的等待超时。
 >     - 可能受影响的场景：
 >         - 原集群版本低于 v6.5.7、v7.1.0（尚未支持 `performance.force-init-stats`），目标版本为 v7.2.0 及更高。
->         - 原集群版本高于或等于 v6.5.7、v7.1.0，且配置项 `performance.force-init-stats` 被设置为 `ON`。 
+>         - 原集群版本高于或等于 v6.5.7、v7.1.0，且配置项 `performance.force-init-stats` 被设置为 `ON`。
 >     - 查看配置项 `performance.force-init-stats` 的值：
 >
 >         ```
@@ -53,16 +56,16 @@ aliases: ['/docs-cn/dev/upgrade-tidb-using-tiup/','/docs-cn/dev/how-to/upgrade/u
 ## 1. 升级兼容性说明
 
 - TiDB 目前暂不支持版本降级或升级后回退。
-- 使用 TiDB Ansible 管理的 4.0 版本集群，需要先按照 [4.0 版本文档的说明](https://docs.pingcap.com/zh/tidb/v4.0/upgrade-tidb-using-tiup)将集群导入到 TiUP (`tiup cluster`) 管理后，再按本文档说明升级到 v7.6.0 版本。
-- 若要将 v3.0 之前的版本升级至 v7.6.0 版本：
+- 使用 TiDB Ansible 管理的 4.0 版本集群，需要先按照 [4.0 版本文档的说明](https://docs.pingcap.com/zh/tidb/v4.0/upgrade-tidb-using-tiup)将集群导入到 TiUP (`tiup cluster`) 管理后，再按本文档说明升级到 v8.2.0 版本。
+- 若要将 v3.0 之前的版本升级至 v8.2.0 版本：
     1. 首先[通过 TiDB Ansible 升级到 3.0 版本](https://docs.pingcap.com/zh/tidb/v3.0/upgrade-tidb-using-ansible)。
     2. 然后按照 [4.0 版本文档的说明](https://docs.pingcap.com/zh/tidb/v4.0/upgrade-tidb-using-tiup)，使用 TiUP (`tiup cluster`) 将 TiDB Ansible 配置导入。
     3. 将集群升级至 v4.0 版本。
-    4. 按本文档说明将集群升级到 v7.6.0 版本。
+    4. 按本文档说明将集群升级到 v8.2.0 版本。
 - 支持 TiDB Binlog，TiCDC，TiFlash 等组件版本的升级。
 - 将 v6.3.0 之前的 TiFlash 升级至 v6.3.0 及之后的版本时，需要特别注意：在 Linux AMD64 架构的硬件平台部署 TiFlash 时，CPU 必须支持 AVX2 指令集。而在 Linux ARM64 架构的硬件平台部署 TiFlash 时，CPU 必须支持 ARMv8 架构。具体请参考 [6.3.0 版本 Release Notes](/releases/release-6.3.0.md#其他) 中的描述。
 - 具体不同版本的兼容性说明，请查看各个版本的 [Release Note](/releases/release-notes.md)。请根据各个版本的 Release Note 的兼容性更改调整集群的配置。
-- 升级 v5.3 之前版本的集群到 v5.3 及后续版本时，默认部署的 Prometheus 会从 v2.8.1 升级到 v2.27.1，v2.27.1 提供更多的功能并解决了安全风险。Prometheus v2.27.1 相对于 v2.8.1 存在 Alert 时间格式变化，详情见 [Prometheus commit](https://github.com/prometheus/prometheus/commit/7646cbca328278585be15fa615e22f2a50b47d06)。
+- 升级 v5.3 之前版本的集群到 v5.3 及后续版本时，默认部署的 Prometheus 生成的 Alert 存在时间格式变化。该格式变化是从 Prometheus v2.27.1 开始引入的，详情见 [Prometheus commit](https://github.com/prometheus/prometheus/commit/7646cbca328278585be15fa615e22f2a50b47d06)。
 
 ## 2. 升级前准备
 
@@ -70,7 +73,7 @@ aliases: ['/docs-cn/dev/upgrade-tidb-using-tiup/','/docs-cn/dev/how-to/upgrade/u
 
 ### 2.1 查阅兼容性变更
 
-查阅 TiDB v7.6.0 release notes 中的[兼容性变更](/releases/release-7.6.0.md#兼容性变更)。如果有任何变更影响到了你的升级，请采取相应的措施。
+查阅 TiDB v8.2.0 release notes 中的[兼容性变更](/releases/release-8.2.0.md#兼容性变更)。如果有任何变更影响到了你的升级，请采取相应的措施。
 
 ### 2.2 升级 TiUP 或更新 TiUP 离线镜像
 
@@ -147,7 +150,7 @@ tiup update cluster
 > 以下情况可跳过此步骤：
 >
 > - 原集群没有修改过配置参数，或通过 tiup cluster 修改过参数但不需要调整。
-> - 升级后对未修改过的配置项希望使用 `7.6.0` 默认参数。
+> - 升级后对未修改过的配置项希望使用 `8.2.0` 默认参数。
 
 1. 进入拓扑文件的 `vi` 编辑模式：
 
@@ -163,13 +166,17 @@ tiup update cluster
 
 > **注意：**
 >
-> 升级到 v7.6.0 版本前，请确认已在 4.0 修改的参数在 v7.6.0 版本中是兼容的，可参考 [TiKV 配置文件描述](/tikv-configuration-file.md)。
+> 升级到 v8.2.0 版本前，请确认已在 4.0 修改的参数在 v8.2.0 版本中是兼容的，可参考 [TiKV 配置文件描述](/tikv-configuration-file.md)。
 
 ### 2.4 检查当前集群的 DDL 和 Backup 情况
 
 为避免升级过程中出现未定义行为或其他故障，建议检查以下指标后再进行升级操作。
 
-- 集群 DDL 情况：建议使用 [`ADMIN SHOW DDL`](/sql-statements/sql-statement-admin-show-ddl.md) 命令查看集群中是否有正在进行的 DDL Job。如需升级，请等待 DDL 执行完成或使用 [`ADMIN CANCEL DDL`](/sql-statements/sql-statement-admin-cancel-ddl.md) 命令取消该 DDL Job 后再进行升级。
+- 集群 DDL 情况：
+
+    - 如果你采用的是[平滑升级](/smooth-upgrade-tidb.md)，则不需要检查集群的 DDL 情况，无需等待 DDL job 完成或取消正在进行的 DDL job。
+    - 如果你没有采用[平滑升级](/smooth-upgrade-tidb.md)，则建议使用 [`ADMIN SHOW DDL`](/sql-statements/sql-statement-admin-show-ddl.md) 语句查看集群中是否存在正在进行的 DDL job。如果存在，请等待 DDL job 执行完成或使用 [`ADMIN CANCEL DDL`](/sql-statements/sql-statement-admin-cancel-ddl.md) 语句取消该 DDL job 后再进行升级。
+
 - 集群 Backup 情况：建议使用 [`SHOW [BACKUPS|RESTORES]`](/sql-statements/sql-statement-show-backups.md) 命令查看集群中是否有正在进行的 Backup 或者 Restore 任务。如需升级，请等待 Backup 执行完成后，得到一个有效的备份后再执行升级。
 
 ### 2.5 检查当前集群的健康状况
@@ -200,12 +207,12 @@ tiup cluster check <cluster-name> --cluster
 tiup cluster upgrade <cluster-name> <version>
 ```
 
-以升级到 v7.6.0 版本为例：
+以升级到 v8.2.0 版本为例：
 
 {{< copyable "shell-regular" >}}
 
 ```
-tiup cluster upgrade <cluster-name> v7.6.0
+tiup cluster upgrade <cluster-name> v8.2.0
 ```
 
 > **注意：**
@@ -213,10 +220,7 @@ tiup cluster upgrade <cluster-name> v7.6.0
 > - 滚动升级会逐个升级所有的组件。升级 TiKV 期间，会逐个将 TiKV 上的所有 leader 切走再停止该 TiKV 实例。默认超时时间为 5 分钟（300 秒），超时后会直接停止该实例。
 > - 使用 `--force` 参数可以在不驱逐 leader 的前提下快速升级集群至新版本，但是该方式会忽略所有升级中的错误，在升级失败后得不到有效提示，请谨慎使用。
 > - 如果希望保持性能稳定，则需要保证 TiKV 上的所有 leader 驱逐完成后再停止该 TiKV 实例，可以指定 `--transfer-timeout` 为一个更大的值，如 `--transfer-timeout 3600`，单位为秒。
-> - 若想将 TiFlash 从 5.3 之前的版本升级到 5.3 及之后的版本，必须进行 TiFlash 的停机升级。参考如下步骤，可以在确保其他组件正常运行的情况下升级 TiFlash：
->   1. 关闭 TiFlash 实例：`tiup cluster stop <cluster-name> -R tiflash`
->   2. 使用 `--offline` 参数在不重启（只更新文件）的情况下升级集群：`tiup cluster upgrade <cluster-name> <version> --offline`，例如 `tiup cluster upgrade <cluster-name> v6.3.0 --offline`
->   3. reload 整个集群：`tiup cluster reload <cluster-name>`。此时，TiFlash 也会正常启动，无需额外操作。
+> - 如需将 TiFlash 从 v5.3.0 之前的版本升级到 v5.3.0 及之后的版本，必须进行 TiFlash 的停机升级，且 TiUP 版本小于 v1.12.0。具体升级步骤，请参考[使用 TiUP 升级](/tiflash-upgrade-guide.md#使用-tiup-升级)。
 > - 在对使用 TiDB Binlog 的集群进行滚动升级过程中，请避免新创建聚簇索引表。
 
 #### 升级时指定组件版本
@@ -252,7 +256,7 @@ tiup cluster upgrade -h | grep "version"
 tiup cluster stop <cluster-name>
 ```
 
-之后通过 `upgrade` 命令添加 `--offline` 参数来进行停机升级，其中 `<cluster-name>` 为集群名，`<version>` 为升级的目标版本，例如 `v7.6.0`。
+之后通过 `upgrade` 命令添加 `--offline` 参数来进行停机升级，其中 `<cluster-name>` 为集群名，`<version>` 为升级的目标版本，例如 `v8.2.0`。
 
 {{< copyable "shell-regular" >}}
 
@@ -281,7 +285,7 @@ tiup cluster display <cluster-name>
 ```
 Cluster type:       tidb
 Cluster name:       <cluster-name>
-Cluster version:    v7.6.0
+Cluster version:    v8.2.0
 ```
 
 ## 4. 升级 FAQ
@@ -336,7 +340,7 @@ Cluster version:    v7.6.0
 
 ### 4.3 升级过程中 evict leader 等待时间过长，如何跳过该步骤快速升级
 
-可以指定 `--force`，升级时会跳过 `PD transfer leader` 和 `TiKV evict leader` 过程，直接重启并升级版本，对线上运行的集群性能影响较大。命令如下，其中 `<version>` 为升级的目标版本，例如 `v7.6.0`：
+可以指定 `--force`，升级时会跳过 `PD transfer leader` 和 `TiKV evict leader` 过程，直接重启并升级版本，对线上运行的集群性能影响较大。命令如下，其中 `<version>` 为升级的目标版本，例如 `v8.2.0`：
 
 {{< copyable "shell-regular" >}}
 
@@ -351,5 +355,5 @@ tiup cluster upgrade <cluster-name> <version> --force
 {{< copyable "" >}}
 
 ```
-tiup install ctl:v7.6.0
+tiup install ctl:v8.2.0
 ```

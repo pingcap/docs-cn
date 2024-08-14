@@ -1,6 +1,7 @@
 ---
 title: TiDB 2.0 RC5 Release Notes
 aliases: ['/docs-cn/dev/releases/release-2.0-rc.5/','/docs-cn/dev/releases/2rc5/']
+summary: TiDB 2.0 RC5 版本发布，对 MySQL 兼容性、系统稳定性和优化器做了很多改进。TiDB 修复了多个问题，并优化了性能。PD 添加了 Raft Learner 支持，优化了 Balance Region Scheduler，并修复了多个问题。TiKV 支持了更多功能，并解决了多个问题。
 ---
 
 # TiDB 2.0 RC5 Release Notes

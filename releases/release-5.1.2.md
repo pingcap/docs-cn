@@ -1,5 +1,6 @@
 ---
 title: TiDB 5.1.2 Release Notes
+summary: TiDB 5.1.2 发布，包含兼容性更改、改进提升、Bug 修复等内容。兼容性更改包括修复多个 Bug，改进提升包括根据直方图行数触发 auto-analyze、支持动态更改 TiCDC 配置项等。Bug 修复涉及 hash 列为 ENUM 类型时 index hash join 的结果可能出错、TiKV 从 v3.x 升级至较高版本后出现 Panic 等问题。Tools 方面的改进包括 BR 修复备份数据和恢复数据时显示的平均速度数值不准确的问题、Dumpling 修复特定 MySQL 版本下导致 dump 阶段卡死的问题等。
 ---
 
 # TiDB 5.1.2 Release Notes
@@ -74,7 +75,7 @@ TiDB 版本：5.1.2
     - 修复 hash 列为 `ENUM` 类型时 index hash join 的结果可能出错的问题 [#27893](https://github.com/pingcap/tidb/issues/27893)
     - 修复极少数情况下 batch client 复用空闲连接可能阻塞请求发送的问题 [#27678](https://github.com/pingcap/tidb/pull/27678)
     - 修复了 `FLOAT64` 类型的溢出检查与 MySQL 不一致的问题 [#23897](https://github.com/pingcap/tidb/issues/23897)
-    - 修复 TiDB 把 `pd is timeout` 错误返回成 `unkonwn` 的问题 [#26147](https://github.com/pingcap/tidb/issues/26147)
+    - 修复 TiDB 把 `pd is timeout` 错误返回成 `unknown` 的问题 [#26147](https://github.com/pingcap/tidb/issues/26147)
     - 修复了 `case when` 表达式的字符集和排序规则错误的问题 [#26662](https://github.com/pingcap/tidb/issues/26662)
     - 修复 MPP 查询可能返回 `can not found column in Schema column` 错误的问题 [#28148](https://github.com/pingcap/tidb/pull/28148)
     - 修复 TiFlash 宕机可能导致 TiDB Panic 的问题 [#28096](https://github.com/pingcap/tidb/issues/28096)

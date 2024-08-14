@@ -121,7 +121,7 @@ TiDB 版本：7.2.0
 
     从 v7.2.0 起，新建的集群在启动阶段将默认加载轻量级统计信息，并在加载完成后再对外提供服务。对于从旧版本升级上来的集群，可通过修改 TiDB 配置项 [`lite-init-stats`](/tidb-configuration-file.md#lite-init-stats-从-v710-版本开始引入) 和 [`force-init-stats`](/tidb-configuration-file.md#force-init-stats-从-v657-和-v710-版本开始引入) 为 `true` 开启此功能。
 
-    更多信息，请参考[用户文档](/statistics.md#统计信息的加载)。
+    更多信息，请参考[用户文档](/statistics.md#加载统计信息)。
 
 ### SQL 功能
 
@@ -172,7 +172,7 @@ TiDB 版本：7.2.0
 
 ### 行为变更
 
-- TiCDC 在处理 Update 事件时，如果事件的主键或者非空唯一索引的列值发生改变，则会将该条事件拆分为 Delete 和 Insert 两条事件。更多信息，请参考[用户文档](/ticdc/ticdc-behavior-change.md#含有单条-update-变更的事务拆分)。
+- TiCDC 在处理 Update 事件时，如果事件的主键或者非空唯一索引的列值发生改变，则会将该条事件拆分为 Delete 和 Insert 两条事件。更多信息，请参考[用户文档](/ticdc/ticdc-split-update-behavior.md#含有单条-update-变更的事务拆分)。
 
 ### 系统变量
 
@@ -324,7 +324,7 @@ TiDB 版本：7.2.0
 - [darraes](https://github.com/darraes)
 - [demoManito](https://github.com/demoManito)
 - [dhysum](https://github.com/dhysum)
-- [HappyUncle](https://github.com/HappyUncle)
+- [happy-v587](https://github.com/happy-v587)
 - [jiyfhust](https://github.com/jiyfhust)
 - [L-maple](https://github.com/L-maple)
 - [nyurik](https://github.com/nyurik)

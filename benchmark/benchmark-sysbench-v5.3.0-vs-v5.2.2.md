@@ -1,5 +1,6 @@
 ---
 title: TiDB Sysbench 性能对比测试报告 - v5.3.0 对比 v5.2.2
+summary: TiDB v5.3.0 和 v5.2.2 在 OLTP 场景下的 Sysbench 性能对比测试结果显示，v5.3.0 相比于 v5.2.2，性能基本持平。具体测试结果如下：Point Select 性能：v5.3.0 略下降了 0.81%、Update Non-index 性能：v5.3.0 略上升了 0.95%、Update Index 性能：v5.3.0 略上升了 1.83%、Read Write 性能：v5.3.0 略下降了 0.62%。
 ---
 
 # TiDB Sysbench 性能对比测试报告 - v5.3.0 对比 v5.2.2

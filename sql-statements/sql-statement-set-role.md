@@ -10,23 +10,14 @@ aliases: ['/docs-cn/dev/sql-statements/sql-statement-set-role/']
 
 ## 语法图
 
-**SetRoleStmt:**
-
-![SetRoleStmt](/media/sqlgram/SetRoleStmt.png)
-
-**SetRoleOpt:**
-
-![SetRoleOpt](/media/sqlgram/SetRoleOpt.png)
-
-**SetDefaultRoleOpt:**
-
-![SetDefaultRoleOpt](/media/sqlgram/SetDefaultRoleOpt.png)
+```ebnf+diagram
+SetRoleStmt ::=
+    "SET" "ROLE" ( "DEFAULT" | "ALL" ( "EXCEPT" Rolename ("," Rolename)* )? | "NONE" | Rolename ("," Rolename)* )?
+```
 
 ## 示例
 
 创建一个用户 `'u1'@'%'`，创建三个角色 `'r1'@'%'`、`'r2'@'%'` 和 `'r3'@'%'` 并将这些角色授予给 `'u1'@'%'`。将 `'u1'@'%'` 的默认启用角色设置为 `'r1'@'%'`。
-
-{{< copyable "sql" >}}
 
 ```sql
 CREATE USER 'u1'@'%';
@@ -36,8 +27,6 @@ SET DEFAULT ROLE 'r1' TO 'u1'@'%';
 ```
 
 使用 `'u1'@'%'` 登录，执行 `SET ROLE` 将启用角色设置为 `ALL`。
-
-{{< copyable "sql" >}}
 
 ```sql
 SET ROLE ALL;
@@ -55,8 +44,6 @@ SELECT CURRENT_ROLE();
 
 执行 `SET ROLE` 将启用角色设置为 `'r2'` 和 `'r3'`。
 
-{{< copyable "sql" >}}
-
 ```sql
 SET ROLE 'r2', 'r3';
 SELECT CURRENT_ROLE();
@@ -73,8 +60,6 @@ SELECT CURRENT_ROLE();
 
 执行 `SET ROLE` 将启用角色设置为 `DEFAULT`。
 
-{{< copyable "sql" >}}
-
 ```sql
 SET ROLE DEFAULT;
 SELECT CURRENT_ROLE();
@@ -90,8 +75,6 @@ SELECT CURRENT_ROLE();
 ```
 
 执行 `SET ROLE` 将启用角色设置为 `NONE`。
-
-{{< copyable "sql" >}}
 
 ```sql
 SET ROLE NONE;

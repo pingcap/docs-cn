@@ -1,5 +1,6 @@
 ---
 title: TiDB Data Migration 数据迁移任务配置向导
+summary: 本文介绍了如何配置 TiDB Data Migration (DM) 的数据迁移任务。包括配置数据源、目标 TiDB 集群、需要迁移的表、需要过滤的操作、数据源表到目标 TiDB 表的映射以及分库分表合并等配置。详细配置规则可参考相关链接。
 ---
 
 # TiDB Data Migration 数据迁移任务配置向导

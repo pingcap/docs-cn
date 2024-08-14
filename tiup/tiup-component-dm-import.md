@@ -1,5 +1,6 @@
 ---
 title: tiup dm import
+summary: TiUP DM 提供了 `import` 命令，用于将 DM v1.0 集群导入到全新的 v2.0 集群。在导入前，请先停止原集群，并确认升级 TiUP DM 组件到最新版本。导入过程中会生成日志信息，不支持导入 v1.0 集群中的 DM Portal 组件。对于需要升级到 v2.0 的数据迁移任务，请不要执行 `stop-task`。具体语法和选项可以使用 `tiup dm import [flags]` 命令查看。
 ---
 
 # tiup dm import <span class="version-mark">仅适用于升级 DM v1.0</span>

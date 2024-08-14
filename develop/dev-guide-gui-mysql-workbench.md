@@ -137,6 +137,19 @@ TiDB 是一个兼容 MySQL 的数据库。[MySQL Workbench](https://www.mysql.co
 </div>
 </SimpleTab>
 
+## 常见问题
+
+### 如何处理连接超时错误 "Error Code: 2013. Lost connection to MySQL server during query"？
+
+这个错误表示查询执行时间超过了超时限制。要解决这个问题，可以按照以下步骤调整超时设置：
+
+1. 启动 MySQL Workbench 并打开 **Workbench Preferences** 页面。
+2. 在 **SQL Editor** > **MySQL Session** 部分，调整 **DBMS connection read timeout interval (in seconds)** 的设置。该字段控制了 MySQL Workbench 在断开与服务器的连接之前查询可以执行的最长时间（以秒为单位）。
+
+    ![MySQL Workbench: adjust timeout option in SQL Editor settings](/media/develop/mysql-workbench-adjust-sqleditor-read-timeout.jpg)
+
+更多信息，可以参考 [MySQL Workbench 常见问题](https://dev.mysql.com/doc/workbench/en/workbench-faq.html)。
+
 ## 下一步
 
 - 关于 MySQL Workbench 的更多使用方法，可以参考 [MySQL Workbench 官方文档](https://dev.mysql.com/doc/workbench/en/)。

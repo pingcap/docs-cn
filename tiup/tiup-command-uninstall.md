@@ -1,5 +1,6 @@
 ---
 title: tiup uninstall
+summary: tiup uninstall 命令用于卸载已安装的组件。语法为 tiup uninstall <component1> <version> [component2...N] [flags]。选项包括 --all 用于卸载指定组件的全部已安装版本，--self 用于卸载 TiUP 自身。正常退出时会显示"Uninstalled component "%s" successfully!"，若未指定 <version> 也未指定 --all 则会报错"Use "tiup uninstall tidbx --all" if you want to remove all versions."。
 ---
 
 # tiup uninstall

@@ -1,5 +1,6 @@
 ---
 title: tiup cluster destroy
+summary: tiup cluster destroy 命令用于销毁集群，包括停止集群、删除服务的日志目录、部署目录和数据目录。选项包括 --force（忽略错误）、--retain-node-data（指定保留数据的节点）、--retain-role-data（指定保留数据的角色）、-h（输出帮助信息）。执行日志将作为输出。
 ---
 
 # tiup cluster destroy

@@ -1,6 +1,7 @@
 ---
 title: TiDB 4.0 GA Release Notes
 aliases: ['/docs-cn/dev/releases/release-4.0-ga/']
+summary: TiDB 4.0 GA 发布日期为 2020 年 5 月 28 日。该版本包含兼容性变化、重点修复的 Bug、新功能、Bug 修复等内容。其中 TiDB 新增了多项配置项和语法支持，TiFlash 修复了多项功能不一致的问题，TiKV 修复了多个备份和系统 panic 相关的问题，PD 修复了删除调度器和 presplit 功能无法正常使用的问题，Tools 中 BR 修复了从云存储恢复数据失败的问题，TiCDC 修复了多个系统 panic 和资源泄露的问题。
 ---
 
 # TiDB 4.0 GA Release Notes

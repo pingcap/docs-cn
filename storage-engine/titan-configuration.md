@@ -1,6 +1,7 @@
 ---
 title: Titan 配置
 aliases: ['/docs-cn/dev/storage-engine/titan-configuration/','/docs-cn/dev/reference/titan/configuration/','/docs-cn/dev/titan-configuration/']
+summary: Titan 配置介绍了如何开启、关闭 Titan、数据迁移原理、相关参数以及 Level Merge 功能。从 TiDB v7.6.0 开始，默认启用 Titan，支持宽表写入场景和 JSON。开启 Titan 方法包括使用 TiUP 部署集群、直接编辑 TiKV 配置文件、编辑 TiDB Operator 配置文件。数据迁移是逐步进行的，可以通过全量 Compaction 提高迁移速度。常用配置参数包括 `min-blob-size`、`blob-file-compression`、`blob-cache-size` 等。关闭 Titan 可通过设置 `blob-run-mode` 参数。Level Merge 是实验功能，可提升范围查询性能并降低 Titan GC 对前台写入性能的影响。
 ---
 
 # Titan 配置
@@ -107,6 +108,10 @@ Titan 对 RocksDB 兼容，也就是说，使用 RocksDB 存储引擎的现有 T
 
 通过调整 [`rate-bytes-per-sec`](/tikv-configuration-file.md#rate-bytes-per-sec)，你可以限制 RocksDB compaction 的 I/O 速率，从而在高流量时减少对前台读写性能的影响。
 
+### `shared-blob-cache`（从 v8.0.0 版本开始引入）
+
+你可以通过 [`shared-blob-cache`](/tikv-configuration-file.md#shared-blob-cache从-v800-版本开始引入) 控制是否启用 Titan Blob 文件和 RocksDB Block 文件的共享缓存，默认值为 `true`。当开启共享缓存时，Block 文件具有更高的优先级，TiKV 将优先满足 Block 文件的缓存需求，然后将剩余的缓存用于 Blob 文件。
+
 ### Titan 配置文件示例
 
 下面是一个 Titan 配置文件的样例，更多的参数说明，请参考 [TiKV 配置文件描述](/tikv-configuration-file.md)。你可以使用 TiUP [修改配置参数](/maintain-tidb-using-tiup.md#修改配置参数)，也可以通过[在 Kubernetes 中配置 TiDB 集群](https://docs.pingcap.com/zh/tidb-in-kubernetes/stable/configure-a-tidb-cluster)修改配置参数。
@@ -123,7 +128,6 @@ max-background-gc = 1
 min-blob-size = "32KB"
 blob-file-compression = "zstd"
 zstd-dict-size = "16KB"
-blob-cache-size = "0GB"
 discardable-ratio = 0.5
 blob-run-mode = "normal"
 level-merge = false
@@ -155,6 +159,10 @@ level-merge = false
     > 在磁盘空间不足以同时保持 Titan 和 RocksDB 数据时，应该使用 [`discardable-ratio`](/tikv-configuration-file.md#discardable-ratio) 的默认值 `0.5`。一般来说，如果磁盘可用空间小于 50% 时，推荐使用默认值。因为当 `discardable-ratio = 1.0` 时，RocksDB 数据一方面在不断增加，同时 Titan 原有的 blob 文件回收需要该文件所有数据都迁移至 RocksDB 才会发生，这个过程会比较缓慢。如果磁盘空间足够大，设置 `discardable-ratio = 1.0` 可以减小 compaction 过程中 Blob 文件自身的 GC，从而节省带宽。
 
 2. （可选）使用 `tikv-ctl` 执行全量数据整理 (Compaction)。这一步骤将消耗大量 I/O 和 CPU 资源。
+
+    > **警告：**
+    >
+    > 如果在磁盘空间不足时执行以下命令，可能会导致整个集群无可用空间从而无法写入数据。
 
     ```bash
     tikv-ctl --pd <PD_ADDR> compact-cluster --bottommost force

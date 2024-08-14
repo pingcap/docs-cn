@@ -1,5 +1,6 @@
 ---
 title: tiup cluster clean
+summary: tiup cluster clean 命令用于在测试环境中重置集群到刚部署的状态。它会停止集群并删除数据。警告：生产环境禁止使用。语法：tiup cluster clean <cluster-name>。选项包括 --all（清理数据和日志）、--data（开启数据清理）、--log（开启日志清理）、--ignore-node（指定不清理的节点）、--ignore-role（指定不清理的角色）、-h, --help（输出帮助信息）。输出为 tiup-cluster 的执行日志。
 ---
 
 # tiup cluster clean

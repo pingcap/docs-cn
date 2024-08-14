@@ -1,6 +1,6 @@
 ---
 title: 数据索引一致性错误
-summary: 了解如何处理数据索引一致性检查的报错。
+summary: TiDB 在执行事务或执行 ADMIN CHECK 命令时会检查数据索引的一致性。如果发现不一致，会报错并记录相关错误日志。报错处理可通过改写 SQL 或关闭错误检查来绕过。对于特定错误代码，可通过设置 @@tidb_enable_mutation_checker=0 或 @@tidb_txn_assertion_level=OFF 来跳过检查。需注意关闭开关会关闭所有 SQL 语句的对应检查。
 ---
 
 # 数据索引一致性报错

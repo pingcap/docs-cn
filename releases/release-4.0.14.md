@@ -1,5 +1,6 @@
 ---
 title: TiDB 4.0.14 Release Notes
+summary: TiDB 4.0.14 发布，包含兼容性更改、功能增强、改进提升和 Bug 修复。兼容性更改包括默认值修改和配置项更新。功能增强包括监控项添加和新功能支持。改进提升包括算子优化和系统变量支持。Bug 修复包括查询结果错误和函数参数错误修复。PD、TiDB Dashboard、TiFlash 和 Tools 也有相关更新和修复。
 ---
 
 # TiDB 4.0.14 Release Notes

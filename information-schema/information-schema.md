@@ -1,13 +1,14 @@
 ---
 title: Information Schema
 aliases: ['/docs-cn/dev/reference/system-databases/information-schema/','/docs-cn/dev/reference/system-databases/information-schema/','/docs-cn/dev/system-tables/system-table-information-schema/','/zh/tidb/dev/system-table-information-schema/']
+summary: Information Schema 是一种查看系统元数据的 ANSI 标准方法。TiDB 提供了许多自定义的 `INFORMATION_SCHEMA` 表，包括与 MySQL 兼容的表和 TiDB 中的扩展表。这些表提供了关于字符集、排序规则、列、存储引擎、索引、表大小、慢查询等信息，帮助用户进行系统监控和优化。
 ---
 
 # Information Schema
 
 Information Schema 提供了一种查看系统元数据的 ANSI 标准方法。除了包含与 MySQL 兼容的表外，TiDB 还提供了许多自定义的 `INFORMATION_SCHEMA` 表。
 
-许多 `INFORMATION_SCHEMA` 表都有相应的 `SHOW` 命令。查询 `INFORMATION_SCHEMA` 的好处是可以在表之间进行 `join` 操作。
+许多 `INFORMATION_SCHEMA` 表都可以通过相应的 `SHOW` 语句查看。查询 `INFORMATION_SCHEMA` 的好处是可以在表之间进行 `join` 操作。
 
 ## 与 MySQL 兼容的表
 

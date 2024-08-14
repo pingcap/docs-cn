@@ -15,7 +15,7 @@ summary: 介绍了如何解决导入数据过程中的类型转换和冲突错�
 
 - `lightning.max-error`：类型错误的容忍阈值
 - `conflict.strategy`、`conflict.threshold`、`conflict.max-record-rows`：数据冲突错误的相关配置
-- `tikv-importer.duplicate-resolution`：物理导入模式下的冲突处理配置
+- `tikv-importer.duplicate-resolution`（从 v8.0.0 开始已被废弃，并将在未来版本中被移除）：物理导入模式下的冲突处理配置
 - `lightning.task-info-schema-name`：冲突数据存储的库名
 
 相关配置项详情请参考 [TiDB Lightning 任务配置](/tidb-lightning/tidb-lightning-configuration.md#tidb-lightning-任务配置)。
@@ -51,7 +51,7 @@ max-error = 0
 
 ## 冲突错误 (Conflict error)
 
-你可以通过修改配置项 [`conflict.threshold`](/tidb-lightning/tidb-lightning-configuration.md#tidb-lightning-任务配置) 来增加冲突错误相关的容错数量。如果设置为 *N*，那么 TiDB Lightning 允许数据源中出现 *N* 个冲突错误，而且会跳过这些错误继续导入，一旦超过这个错误数就会退出。在逻辑导入模式或者物理导入模式下，不同的场景会产生冲突错误，你可以参考对应导入模式的“冲突检测”文档。该配置项默认值为 `9223372036854775807`，意味着几乎能容忍全部错误。
+你可以通过修改配置项 [`conflict.threshold`](/tidb-lightning/tidb-lightning-configuration.md#tidb-lightning-任务配置) 来增加冲突错误相关的容错数量。如果设置为 *N*，那么 TiDB Lightning 允许数据源中出现 *N* 个冲突错误，而且会跳过这些错误继续导入，一旦超过这个错误数就会退出。在逻辑导入模式或者物理导入模式下，不同的场景会产生冲突错误，你可以参考对应导入模式的“冲突检测”文档。该配置项默认值为 `10000`，意味着能容忍 10000 个错误。
 
 这些错误会被记录到数据库中。在导入完成后，你可以查看数据库中的数据，手动进行处理。请参见[错误报告](#错误报告)。
 
@@ -82,7 +82,7 @@ max-error = 0
 task-info-schema-name = 'lightning_task_info'
 ```
 
-在此数据库中，TiDB Lightning 创建了 3 个表：
+在此数据库中，TiDB Lightning 创建了 3 个表和 1 个视图：
 
 ```sql
 CREATE TABLE type_error_v1 (
@@ -94,7 +94,7 @@ CREATE TABLE type_error_v1 (
     error       text NOT NULL,
     row_data    text NOT NULL
 );
-CREATE TABLE conflict_error_v1 (
+CREATE TABLE conflict_error_v3 (
     task_id     bigint NOT NULL,
     create_time datetime(6) NOT NULL DEFAULT now(6),
     table_name  varchar(261) NOT NULL,
@@ -105,7 +105,11 @@ CREATE TABLE conflict_error_v1 (
     raw_value   mediumblob NOT NULL,
     raw_handle  mediumblob NOT NULL,
     raw_row     mediumblob NOT NULL,
-    KEY (task_id, table_name)
+    kv_type     tinyint(1) NOT NULL,
+    INDEX (task_id, table_name),
+    INDEX (index_name),
+    INDEX (table_name, index_name),
+    INDEX (kv_type)
 );
 CREATE TABLE conflict_records (
     task_id     bigint NOT NULL,
@@ -113,18 +117,26 @@ CREATE TABLE conflict_records (
     table_name  varchar(261) NOT NULL,
     path        varchar(2048) NOT NULL,
     offset      bigint NOT NULL,
-    error          text NOT NULL,
-    row_id        bigint NOT NULL COMMENT 'the row id of the conflicted row',
+    error       text NOT NULL,
+    row_id      bigint NOT NULL COMMENT 'the row id of the conflicted row',
     row_data    text NOT NULL COMMENT 'the row data of the conflicted row',
     KEY (task_id, table_name)
 );
+CREATE VIEW conflict_view AS
+    SELECT 0 AS is_precheck_conflict, task_id, create_time, table_name, index_name, key_data, row_data, raw_key, raw_value, raw_handle, raw_row, kv_type, NULL AS path, NULL AS offset, NULL AS error, NULL AS row_id
+    FROM conflict_error_v3
+    UNION ALL
+    SELECT 1 AS is_precheck_conflict, task_id, create_time, table_name, NULL AS index_name, NULL AS key_data, row_data, NULL AS raw_key, NULL AS raw_value, NULL AS raw_handle, NULL AS raw_row, NULL AS kv_type, path, offset, error, row_id
+    FROM conflict_records;
 ```
 
-`type_error_v1` 记录由 `lightning.max-error` 配置项管理的所有[类型错误 (Type error)](#类型错误-type-error)。每个错误一行。
+`type_error_v1` 表记录由 `lightning.max-error` 配置项管理的所有[类型错误 (Type error)](#类型错误-type-error)。每个错误一行。
 
-`conflict_error_v1` 记录物理导入模式的 `tikv-importer.duplicate-resolution` 功能的冲突错误，每对冲突占两行。
+`conflict_error_v3` 表记录物理导入模式的 `conflict` 配置组的后置检测冲突错误，每对冲突占两行。
 
-`conflict_records` 记录逻辑导入模式和物理导入模式 `conflict` 配置组的冲突错误，每个错误占一行。
+`conflict_records` 表记录逻辑导入模式和物理导入模式 `conflict` 配置组的前置检测冲突错误，每个错误占一行。
+
+`conflict_view` 视图记录物理导入模式和逻辑导入模式 `conflict` 配置组的前置和后置检测冲突错误，是通过对 `conflict_error_v3` 表和 `conflict_records` 表进行 `UNION` 操作生成的。
 
 | 列名     | 语法 | 类型 | 冲突 | 说明                                                                                                                         |
 | ------------ | ------ | ---- | ---------- | ----------------------------------------------------------------------------------------------------------------------------------- |
@@ -194,7 +206,7 @@ CREATE TABLE conflict_records (
     EOF
     ```
 
-3. 配置 TiDB Lightning，启用严格 SQL 模式，使用 Local 后端模式进行导入，通过删除解决重复项，并最多跳过 10 个错误：
+3. 配置 TiDB Lightning，启用严格 SQL 模式，使用 Local 后端模式进行导入，通过替换解决重复项，并最多跳过 10 个错误：
 
     {{< copyable "shell-regular" >}}
 
@@ -205,7 +217,8 @@ CREATE TABLE conflict_records (
         [tikv-importer]
         backend = 'local'
         sorted-kv-dir = '/tmp/lightning-tmp/'
-        duplicate-resolution = 'remove'
+        [conflict]
+        strategy = 'replace'
         [mydumper]
         data-source-dir = '.'
         [tidb]
@@ -227,7 +240,7 @@ CREATE TABLE conflict_records (
 
 5. 验证导入的表仅包含两个正常行：
 
-    ```console
+    ```sql
     $ mysql -u root -h 127.0.0.1 -P 4000 -e 'select * from example.t'
     +---+-----+
     | a | b   |
@@ -267,10 +280,10 @@ CREATE TABLE conflict_records (
        row_data: (600,'six hundred')
     ```
 
-7. 检查 `conflict_error_v1` 表是否捕获了具有唯一键/主键冲突的四行：
+7. 检查 `conflict_error_v3` 表是否捕获了具有唯一键/主键冲突的四行：
 
     ```sql
-    $ mysql -u root -h 127.0.0.1 -P 4000 -e 'select * from lightning_task_info.conflict_error_v1;' --binary-as-hex -E
+    $ mysql -u root -h 127.0.0.1 -P 4000 -e 'select * from lightning_task_info.conflict_error_v3;' --binary-as-hex -E
     *************************** 1. row ***************************
         task_id: 1635888701843303564
     create_time: 2021-11-02 21:31:42.669601

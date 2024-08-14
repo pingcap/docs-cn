@@ -139,16 +139,17 @@ aliases: ['/docs-cn/dev/enable-tls-between-components/','/docs-cn/dev/how-to/sec
 
 如希望进行组件调用者身份认证，需要在生证书时通过 `Common Name` 标识证书使用者身份，并在被调用者配置检查证书 `Common Name` 列表来检查调用者身份。
 
+> **注意：**
+>
+> 目前 PD 的 `cert-allowed-cn` 配置项只能设置一个值。因此所有认证对象的 `commonName` 都要设置成同一个值。
+
 - TiDB
 
     在 `config` 文件或命令行参数中设置：
 
     ```toml
     [security]
-    cluster-verify-cn = [
-      "TiDB-Server",
-      "TiKV-Control",
-    ]
+    cluster-verify-cn = ["TiDB"]
     ```
 
 - TiKV
@@ -157,9 +158,7 @@ aliases: ['/docs-cn/dev/enable-tls-between-components/','/docs-cn/dev/how-to/sec
 
     ```toml
     [security]
-    cert-allowed-cn = [
-        "TiDB-Server", "PD-Server", "TiKV-Control", "RawKvClient1",
-    ]
+    cert-allowed-cn = ["TiDB"]
     ```
 
 - PD
@@ -168,7 +167,7 @@ aliases: ['/docs-cn/dev/enable-tls-between-components/','/docs-cn/dev/how-to/sec
 
     ```toml
     [security]
-    cert-allowed-cn = ["TiKV-Server", "TiDB-Server", "PD-Control"]
+    cert-allowed-cn = ["TiDB"]
     ```
 
 - TiFlash（从 v4.0.5 版本开始引入）
@@ -177,14 +176,14 @@ aliases: ['/docs-cn/dev/enable-tls-between-components/','/docs-cn/dev/how-to/sec
 
     ```toml
     [security]
-    cert_allowed_cn = ["TiKV-Server", "TiDB-Server"]
+    cert_allowed_cn = ["TiDB"]
     ```
 
     在 `tiflash-learner.toml` 文件中设置：
 
     ```toml
     [security]
-    cert-allowed-cn = ["PD-Server", "TiKV-Server", "TiFlash-Server"]
+    cert-allowed-cn = ["TiDB"]
     ```
 
 ## 证书重新加载

@@ -1,5 +1,6 @@
 ---
 title: TiDB 4.0.16 Release Notes
+summary: TiDB 4.0.16 发布，包含兼容性更改、提升改进和 Bug 修复。TiKV 改进了对非法 UTF-8 字符串的处理，Tools 中 TiCDC 改变了 Kafka Sink 默认值。TiDB 升级了 Grafana，TiKV 使用 zstd 算法压缩 SST 文件。Bug 修复包括统计信息模块的查询崩溃、`ENUM` 类型控制函数返回结果不正确等问题。TiKV 修复了多个问题，包括 Decimal 除法计算结果为负、监控项中 gRPC 平均延迟时间不准确等问题。PD 修复了节点缩容后可能导致 Panic 的问题。TiFlash 修复了无法启动的问题。Tools 中 TiDB Binlog 修复了 Drainer 传输事务超过 1 GB 时退出的问题，TiCDC 修复了多个问题。
 ---
 
 # TiDB 4.0.16 Release Notes

@@ -1,11 +1,12 @@
 ---
 title: 日期和时间函数
 aliases: ['/docs-cn/dev/functions-and-operators/date-and-time-functions/','/docs-cn/dev/reference/sql/functions-and-operators/date-and-time-functions/']
+summary: TiDB 支持 MySQL 8.0 中的所有日期和时间函数。
 ---
 
 # 日期和时间函数
 
-TiDB 支持使用 MySQL 5.7 中提供的所有[日期和时间函数](https://dev.mysql.com/doc/refman/5.7/en/date-and-time-functions.html)。
+TiDB 支持使用 MySQL 8.0 中提供的所有[日期和时间函数](https://dev.mysql.com/doc/refman/8.0/en/date-and-time-functions.html)。
 
 > **注意：**
 >
@@ -79,7 +80,7 @@ TiDB 支持使用 MySQL 5.7 中提供的所有[日期和时间函数](https://de
 
 ## MySQL 兼容性
 
-TiDB 支持 `str_to_date()` 函数，但是无法解析所有的日期和时间值。此外，TiDB 不支持以下日期和时间格式化选项：
+TiDB 支持 `STR_TO_DATE()` 函数，但是无法解析所有的日期和时间值。此外，TiDB 不支持以下日期和时间格式化选项：
 
 | 格式 | 说明                                                                           |
 |--------|---------------------------------------------------------------------------------------|
@@ -98,4 +99,4 @@ TiDB 支持 `str_to_date()` 函数，但是无法解析所有的日期和时间�
 
 ## 相关系统变量
 
-`default_week_format` 变量影响 `WEEK()` 函数。
+[`default_week_format`](/system-variables.md#default_week_format) 变量影响 `WEEK()` 函数。

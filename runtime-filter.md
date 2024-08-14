@@ -67,7 +67,7 @@ Runtime Filter 的执行方式如下：
             |    | filter data                   |
             |    |                               |
       +-----+----v------+                +-------+--------+
-      |  TableFullScan  |                | TabelFullScan  |
+      |  TableFullScan  |                | TableFullScan  |
       |  store_sales    |                |    date_dim    |
       +-----------------+                +----------------+
 ```

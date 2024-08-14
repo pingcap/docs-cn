@@ -5,7 +5,7 @@ summary: 了解 INFORMATION_SCHEMA 表 `SLOW_QUERY`。
 
 # SLOW_QUERY
 
-`SLOW_QUERY` 表中提供了当前节点的慢查询相关的信息，其内容通过解析当前节点的 TiDB 慢查询日志而来，列名和慢日志中的字段名是一一对应。关于如何使用该表调查和改善慢查询，请参考[慢查询日志文档](/identify-slow-queries.md)。
+`SLOW_QUERY` 表中提供了当前节点的慢查询相关的信息，其内容通过解析当前节点的 TiDB [慢查询日志](/tidb-configuration-file.md#slow-query-file)而来，列名和慢日志中的字段名是一一对应。关于如何使用该表调查和改善慢查询，请参考[慢查询日志文档](/identify-slow-queries.md)。
 
 ```sql
 USE INFORMATION_SCHEMA;

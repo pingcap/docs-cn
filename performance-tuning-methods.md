@@ -39,7 +39,7 @@ TiDB 对 SQL 的处理路径和数据库时间进行了完善的测量和记录�
 
 - 按 SQL 处理的 4 个步骤（即 get_token/parse/compile/execute）分解，判断哪个步骤消耗的时间最多。对应的分解公式为：
 
-    `DB Time = Get Token Time + Parse Time + Comiple Time + Execute Time`
+    `DB Time = Get Token Time + Parse Time + Compile Time + Execute Time`
 
 - 对于 execute 耗时，按照 TiDB 执行器本身的时间、TSO 等待时间、KV 请求时间和重试的执行时间，判断执行阶段的瓶颈。对应的分解公式为：
 
@@ -163,10 +163,10 @@ TPC-C 负载类型主要以 Update、Select 和 Insert 语句为主。总的 QPS
 
 **示例 3：OLTP 负载，使用 prepared statement 接口无法使用执行计划缓存**
 
-StmtPreare 次数 = StmtExecute 次数 = StmtClose 次数 ~= StmtFetch 次数，应用使用了 prepare > execute > fetch > close 的 loop，很多框架都会在 execute 之后调用 close，确保资源不会泄露。这会带来两个问题：
+StmtPrepare 次数 = StmtExecute 次数 = StmtClose 次数 ~= StmtFetch 次数，应用使用了 prepare > execute > fetch > close 的 loop，很多框架都会在 execute 之后调用 close，确保资源不会泄露。这会带来两个问题：
 
 - 执行每条 SQL 语句需要 4 个命令，以及 4 次网络往返。
-- Queries Using Plan Cache OPS 为 0，无法命中执行计划缓存。StmtClose 命令默认会清理缓存的执行计划，导致下一次 StmtPreare 命令需要重新生成执行计划。
+- Queries Using Plan Cache OPS 为 0，无法命中执行计划缓存。StmtClose 命令默认会清理缓存的执行计划，导致下一次 StmtPrepare 命令需要重新生成执行计划。
 
 > **注意：**
 >
@@ -272,7 +272,7 @@ Duration 面板包含了所有语句的 99 延迟和每种 SQL 类型的平均�
 
 - 所有 SQL 语句的平均延迟 10.8 ms，P99 延迟 84.1 ms。
 - 事务中连接空闲时间 `avg-in-txn` 为 9.4 ms。
-- 集群总的连接数为 3.7K，每个 TiDB 节点的连接数为 1.8 K。平均活跃连接数为 40.3，大部分连接处于空闲状态。`disonnnection/s` 平均为 55.8，说明应用在频繁的新建和断开连接。短连接的行为会对 TiDB 的资源和响应时间造成一定的影响。
+- 集群总的连接数为 3.7K，每个 TiDB 节点的连接数为 1.8 K。平均活跃连接数为 40.3，大部分连接处于空闲状态。`disconnection/s` 平均为 55.8，说明应用在频繁的新建和断开连接。短连接的行为会对 TiDB 的资源和响应时间造成一定的影响。
 
 **示例 2：用户响应时间的瓶颈在 TiDB 中**
 
@@ -378,15 +378,15 @@ Avg TiDB KV Request Duration 和 Avg TiKV GRPC Duration 的差值跟网络流量
 
 #### Storage Async Write Duration、Store Duration 和 Apply Duration
 
-TiKV 对于写请求的处理流程如下图
+TiKV 对于写请求的处理流程如下：
 
 - `scheduler worker` 会先处理写请求，进行事务一致性检查，并把写请求转化成键值对，发送到 `raftstore` 模块。
 - `raftstore` 为 TiKV 的共识模块，使用 Raft 共识算法，使多个 TiKV 组成的存储层可以容错。
 
-    Raftstore 分为 store 线程和 apply 线程。：
+    Raftstore 分为 Store 线程和 Apply 线程：
 
-    - store 线程负载处理 Raft 消息和新的 `proposals`。当收到新的 `proposals` 时，leader 节点的 store 线程会写入本地 Raft DB，并将消息复制到多个 follower 节点。当这个 `proposals` 在多数实例持久化成功之后，`proposals` 成功被提交。
-    - apply 线程会负载将提交的内容写入到 KV DB 中。当写操作的内容被成功的写入 KV 数据库中，apply 线程会通知外层请求写请求已经完成。
+    - Store 线程负责处理 Raft 消息和新的 `proposals`。当收到新的 `proposals` 时，leader 节点的 store 线程会写入本地 Raft DB，并将消息复制到多个 follower 节点。当这个 `proposals` 在多数实例持久化成功之后，`proposals` 成功被提交。
+    - Apply 线程负责将提交的数据写入到 KV DB 中。当写操作的数据被成功地写入 KV 数据库中时，Apply 线程会通知外层请求写请求已经完成。
 
 ![TiKV Write](/media/performance/store_apply.png)
 
@@ -404,7 +404,7 @@ avg Storage Async Write Duration  = avg Store Duration + avg Apply Duration
 
 **示例 1：同一个 OLTP 负载在 v5.3.0 和 v5.4.0 版本的对比**
 
-v5.4.0 版本，一个写密集的 OLTP 负载 QPS 比 v5.3.0 提升了 14%。应用以上公式
+应用以上公式：v5.4.0 版本中，一个写密集的 OLTP 负载 QPS 比 v5.3.0 提升了 14%。
 
 - v5.3.0：24.4 ms ~= 17.7 ms + 6.59 ms
 - v5.4.0：21.4 ms ~= 14.0 ms + 7.33 ms
@@ -477,7 +477,7 @@ v5.4.0：
 Store 线程的 Commit Log Duration 明显比 Apply Log Duration 高，并且 Append Log Duration 比 Apply Log Duration 明显的高，说明 Store 线程在 CPU 和 IO 都可能都存在瓶颈。可能降低 Commit Log Duration 和 Append Log Duration 的方式如下：
 
 - 如果 TiKV CPU 资源充足，考虑增加 Store 线程，即 `raftstore.store-pool-size`。
-- 如果 TiDB 为 v5.4.0 及之后的版本，考虑启用 [`Raft Engine`](/tikv-configuration-file.md#raft-engine)，Raft Engine 具有更轻量的执行路径，在一些场景下显著减少 IO 写入量和写入请求的长尾延迟，启用方式为设置：`raft-engine.enable: true`
+- 如果 TiDB 为 v5.4.0 及之后的版本，考虑启用 [`Raft Engine`](/tikv-configuration-file.md#raft-engine)，Raft Engine 具有更轻量的执行路径，在一些场景下显著减少 IO 写入量和写入请求的长尾延迟，启用方式为设置 `raft-engine.enable: true`。
 - 如果 TiKV CPU 资源充足，且 TiDB 为 v5.3.0 及之后的版本，考虑启用 [`StoreWriter`](/tune-tikv-thread-performance.md#tikv-线程池调优)。启用方式：`raftstore.store-io-pool-size: 1`。
 
 ## 低于 v6.1.0 的 TiDB 版本如何使用 Performance overview 面板

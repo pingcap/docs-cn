@@ -1,6 +1,7 @@
 ---
 title: 数值类型
 aliases: ['/docs-cn/dev/data-type-numeric/','/docs-cn/dev/reference/sql/data-types/numeric/']
+summary: TiDB 支持 MySQL 的所有数值类型，包括整数类型、浮点类型和定点类型。整数类型包括 BIT、BOOLEAN、TINYINT、SMALLINT、MEDIUMINT、INTEGER 和 BIGINT，存储空间和取值范围各不相同。浮点类型包括 FLOAT 和 DOUBLE，存储空间分别为 4 和 8 字节。定点类型包括 DECIMAL 和 NUMERIC，可设置小数位数和小数点后位数。建议使用 DECIMAL 类型存储精确值。
 ---
 
 # 数值类型

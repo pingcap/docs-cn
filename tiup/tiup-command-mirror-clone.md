@@ -1,5 +1,6 @@
 ---
 title: tiup mirror clone
+summary: tiup mirror clone 命令用于克隆已存在的镜像或部分组件生成新镜像。新旧镜像的组件相同，但使用的签名密钥不同。命令语法为 tiup mirror clone <target-dir> [global version] [flags]。选项包括 -f, --full, -a, --arch, -o, --os, --prefix, --{component}。
 ---
 
 # tiup mirror clone

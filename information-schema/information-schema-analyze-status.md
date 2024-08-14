@@ -11,8 +11,6 @@ summary: 了解 information_schema 表 `ANALYZE_STATUS`。
 
 从 TiDB v6.1.0 起，可以通过系统表 `mysql.analyze_jobs` 查看过去 7 天内的历史任务记录。
 
-{{< copyable "sql" >}}
-
 ```sql
 USE information_schema;
 DESC analyze_status;
@@ -39,8 +37,6 @@ DESC analyze_status;
 +----------------------+---------------------+------+------+---------+-------+
 14 rows in set (0.00 sec)
 ```
-
-{{< copyable "sql" >}}
 
 ```sql
 SELECT * FROM information_schema.analyze_status;
@@ -77,3 +73,8 @@ SELECT * FROM information_schema.analyze_status;
 * `REMAINING_SECONDS`：执行任务预计还需要多少秒才能完成。
 * `PROGRESS`：执行任务的进度。
 * `ESTIMATED_TOTAL_ROWS`：执行任务需要分析的总行数。
+
+## 另请参阅
+
+- [`ANALYZE TABLE`](/sql-statements/sql-statement-analyze-table.md)
+- [`SHOW ANALYZE STATUS`](/sql-statements/sql-statement-show-analyze-status.md)

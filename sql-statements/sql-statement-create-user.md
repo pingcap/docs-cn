@@ -21,8 +21,8 @@ UserSpecList ::=
     UserSpec ( ',' UserSpec )*
 
 RequireClauseOpt ::=
-    ( 'REQUIRE' 'NONE' | 'REQUIRE' 'SSL' | 'REQUIRE' 'X509' | 'REQUIRE' RequireList )?  
-    
+    ( 'REQUIRE' 'NONE' | 'REQUIRE' 'SSL' | 'REQUIRE' 'X509' | 'REQUIRE' RequireList )?
+
 RequireList ::=
     ( "ISSUER" stringLit | "SUBJECT" stringLit | "CIPHER" stringLit | "SAN" stringLit | "TOKEN_ISSUER" stringLit )*
 
@@ -36,13 +36,22 @@ StringName ::=
     stringLit
 |   Identifier
 
-PasswordOption ::= ( 'PASSWORD' 'EXPIRE' ( 'DEFAULT' | 'NEVER' | 'INTERVAL' N 'DAY' )? | 'PASSWORD' 'HISTORY' ( 'DEFAULT' | N ) | 'PASSWORD' 'REUSE' 'INTERVAL' ( 'DEFAULT' | N 'DAY' ) | 'FAILED_LOGIN_ATTEMPTS' N | 'PASSWORD_LOCK_TIME' ( N | 'UNBOUNDED' ) )*
+PasswordOption ::= ( 'PASSWORD' 'EXPIRE' ( 'DEFAULT' | 'NEVER' | 'INTERVAL' N 'DAY' )?
+| 'PASSWORD' 'HISTORY' ( 'DEFAULT' | N )
+| 'PASSWORD' 'REUSE' 'INTERVAL' ( 'DEFAULT' | N 'DAY' )
+| 'PASSWORD' 'REQUIRE' 'CURRENT' 'DEFAULT'
+| 'FAILED_LOGIN_ATTEMPTS' N
+| 'PASSWORD_LOCK_TIME' ( N | 'UNBOUNDED' ) )*
 
 LockOption ::= ( 'ACCOUNT' 'LOCK' | 'ACCOUNT' 'UNLOCK' )?
 
 AttributeOption ::= ( 'COMMENT' CommentString | 'ATTRIBUTE' AttributeString )?
 
 ResourceGroupNameOption::= ( 'RESOURCE' 'GROUP' Identifier)?
+
+RequireClauseOpt ::= ('REQUIRE' ('NONE' | 'SSL' | 'X509' | RequireListElement ('AND'? RequireListElement)*))?
+
+RequireListElement ::= 'ISSUER' Issuer | 'SUBJECT' Subject | 'CIPHER' Cipher | 'SAN' SAN | 'TOKEN_ISSUER' TokenIssuer
 ```
 
 ## 示例
@@ -177,9 +186,17 @@ SELECT USER, HOST, USER_ATTRIBUTES FROM MYSQL.USER WHERE USER='newuser7';
 
 ## MySQL 兼容性
 
-* TiDB 不支持 `WITH MAX_QUERIES_PER_HOUR`、`WITH MAX_UPDATES_PER_HOUR`、`WITH MAX_USER_CONNECTIONS` 等 `CREATE` 选项。
-* TiDB 不支持 `DEFAULT ROLE` 选项。
-* 对于 TiDB 尚不支持的 `CREATE` 选项。这些选项可被解析，但会被忽略。
+TiDB 不支持以下 `CREATE USER` 选项。这些选项可被解析，但会被忽略。
+
+* `PASSWORD REQUIRE CURRENT DEFAULT`
+* `WITH MAX_QUERIES_PER_HOUR`
+* `WITH MAX_UPDATES_PER_HOUR`
+* `WITH MAX_USER_CONNECTIONS`
+
+TiDB 也不支持以下 `CREATE USER` 选项。这些选项无法被语法解析器解析。
+
+* `DEFAULT ROLE`
+* `PASSWORD REQUIRE CURRENT OPTIONAL`
 
 ## 另请参阅
 

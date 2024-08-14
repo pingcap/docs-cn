@@ -1,5 +1,6 @@
 ---
 title: TiDB 5.0.6 Release Notes
+summary: TiDB 5.0.6 发布日期为 2021 年 12 月 31 日。此版本包含兼容性更改、提升改进和 Bug 修复。兼容性更改包括 TiCDC 工具的错误输出改为标准错误，以及 Kafka sink 模块的默认值设置。提升改进方面，TiDB 改进了 coprocessor 遇到锁时的调试日志显示，TiKV 提高了插入 SST 文件的速度，PD 优化了调度器退出的速度。Bug 修复方面，TiDB 修复了多个问题，包括乐观事务冲突、MPP 查询相关日志、DML 和 DDL 语句并发执行等。TiKV 修复了多个节点停机导致的问题，PD 修复了节点缩容后可能导致 Panic 的问题。TiFlash 修复了多个数据不一致的问题。TiCDC 修复了多个同步任务推进停滞的问题。Backup & Restore (BR) 修复了平均速度不准确的问题。Dumpling 修复了导出速度过慢的问题。
 ---
 
 # TiDB 5.0.6 Release Notes
@@ -149,7 +150,7 @@ TiDB 版本：5.0.6
         - 修复 Avro sink 模块不支持解析 JSON 类型列的问题 [#3624](https://github.com/pingcap/tiflow/issues/3624)
         - 修复 TiKV owner 重启时 TiCDC 从 TiKV 读取到错误的元数据快照的问题 [#2603](https://github.com/pingcap/tiflow/issues/2603)
         - 修复执行 DDL 后的内存泄漏的问题 [#3174](https://github.com/pingcap/tiflow/issues/3174)
-        - 修复 Canal 和 Maxwell 协议下 TiCDC 没有自动开启 `enable-old-value` 选项的问题 [#3676](https://github.com/pingcap/tiflow/issues/3676)
+        - 修复 Canal 协议下 TiCDC 没有自动开启 `enable-old-value` 选项的问题 [#3676](https://github.com/pingcap/tiflow/issues/3676)
         - 修复 `cdc server` 命令在 Red Hat Enterprise Linux 系统的部分版本（如 6.8、6.9 等）上运行时出现时区错误的问题  [#3584](https://github.com/pingcap/tiflow/issues/3584)
         - 修复当 Kafka 为下游时 `txn_batch_size` 监控指标数据不准确的问题 [#3431](https://github.com/pingcap/tiflow/issues/3431)
         - 修复 tikv_cdc_min_resolved_ts_no_change_for_1m 监控在没有 changefeed 的情况下持续更新的问题 [#11017](https://github.com/tikv/tikv/issues/11017)

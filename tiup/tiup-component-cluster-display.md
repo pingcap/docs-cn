@@ -1,5 +1,6 @@
 ---
 title: tiup cluster display
+summary: tiup cluster display 命令用于查看集群中每个组件的运行状态。可以通过指定选项来展示特定信息，如节点的 CPU 和内存使用情况，节点的 uptime 信息等。输出包括集群名称、版本、SSH 客户端类型、Dashboard 地址以及节点的 ID、角色、主机 IP、端口号、操作系统和机器架构、服务状态、数据目录和部署目录。节点服务状态包括在线、离线、已缩容下线、下线中和未知。详细状态含义可参考相关文档。
 ---
 
 # tiup cluster display

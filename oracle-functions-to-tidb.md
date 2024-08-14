@@ -65,13 +65,13 @@ TiDB 中区分 `NULL` 和空字符串 `''`。
 Oracle 支持 `INSERT` 语句中读写同一张表。例如：
 
 ```sql
-INSERT INTO table1 VALUES (feild1,(SELECT feild2 FROM table1 WHERE...))
+INSERT INTO table1 VALUES (field1,(SELECT field2 FROM table1 WHERE...))
 ```
 
 TiDB 不支持 `INSERT` 语句中读写同一张表。例如：
 
 ```sql
-INSERT INTO table1 VALUES (feild1,(SELECT T.fields2 FROM table1 T WHERE...))
+INSERT INTO table1 VALUES (field1,(SELECT T.fields2 FROM table1 T WHERE...))
 ```
 
 ### 获取前 n 行数据

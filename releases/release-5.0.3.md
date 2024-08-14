@@ -1,5 +1,6 @@
 ---
 title: TiDB 5.0.3 Release Notes
+summary: TiDB 5.0.3 发布日期为 2021 年 7 月 2 日。此版本包含兼容性更改、功能增强、提升改进和 Bug 修复。兼容性更改包括 `tidb_multi_statement_mode` 变量默认值变更和兼容 MySQL 5.7 的 noop 变量配置。功能增强方面，TiCDC 增加了 HTTP API 获取 changefeed 信息和节点健康信息。TiDB 提升了多个内置函数的支持和优化了聚合算子的代价常数。Bug 修复方面，修复了多个查询和函数使用时可能出现的问题。PD 升级了 TiDB Dashboard。TiFlash 支持了多个新功能和修复了多个问题。TiCDC、BR 和 TiDB Lightning 也进行了多项修复和优化。
 ---
 
 # TiDB 5.0.3 Release Notes

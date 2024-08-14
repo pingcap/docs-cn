@@ -1,6 +1,7 @@
 ---
 title: 慢查询日志
 aliases: ['/docs-cn/dev/identify-slow-queries/','/docs-cn/dev/how-to/maintain/identify-abnormal-queries/identify-slow-queries/','/docs-cn/sql/slow-query/','/docs-cn/dev/how-to/maintain/identify-slow-queries/']
+summary: TiDB 会将执行时间超过 300 毫秒的语句输出到慢查询日志中，用于帮助用户定位慢查询语句。可以通过修改系统变量来启用或禁用慢查询日志。日志示例包括执行时间、用户信息、执行计划等字段。用户可通过查询 SLOW_QUERY 表来查询慢查询日志中的内容。还可以使用 pt-query-digest 工具分析 TiDB 慢日志。ADMIN SHOW SLOW 命令可以显示最近的慢查询记录或最慢的查询记录。
 ---
 
 # 慢查询日志
@@ -73,7 +74,7 @@ Slow Query 基础信息：
 * `Succ`：表示语句是否执行成功。
 * `Backoff_time`：表示语句遇到需要重试的错误时在重试前等待的时间。常见的需要重试的错误有以下几种：遇到了 lock、Region 分裂、`tikv server is busy`。
 * `Plan`：表示语句的执行计划，用 `select tidb_decode_plan('xxx...')` SQL 语句可以解析出具体的执行计划。
-* `Binary_plan`：表示以二进制格式编码后的语句的执行计划，用 `select tidb_decode_binary_plan('xxx...')` SQL 语句可以解析出具体的执行计划。传递的信息和 `Plan` 字段基本相同，但是解析出的执行计划的格式会和 `Plan` 字段不同。
+* `Binary_plan`：表示以二进制格式编码后的语句的执行计划，用 [`SELECT tidb_decode_binary_plan('xxx...')`](/functions-and-operators/tidb-functions.md#tidb_decode_binary_plan) SQL 语句可以解析出具体的执行计划。传递的信息和 `Plan` 字段基本相同，但是解析出的执行计划的格式会和 `Plan` 字段不同。
 * `Prepared`：表示这个语句是否是 `Prepare` 或 `Execute` 的请求。
 * `Plan_from_cache`：表示这个语句是否命中了执行计划缓存。
 * `Plan_from_binding`：表示这个语句是否用的绑定的执行计划。

@@ -1,5 +1,6 @@
 ---
 title: TiDB 5.0.2 Release Notes
+summary: TiDB 5.0.2 发布日期为 2021 年 6 月 10 日。此版本包含兼容性更改、新功能、提升改进和 Bug 修复。兼容性更改包括 TiCDC 工具中的参数废弃和 TiKV 默认开启 Hibernate Region 特性。新功能包括 BR 支持 S3 兼容的存储和 TiFlash 优化锁操作。提升改进方面，TiDB 避免后台作业频繁读取表造成高 CPU 使用率，TiKV 添加背压功能和减少扫描的内存使用量。Bug 修复方面，修复了多个问题，包括索引导致的 panic、事务中的语句不正确使用、排序规则写入错误值等。
 ---
 
 # TiDB 5.0.2 Release Notes

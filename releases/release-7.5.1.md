@@ -43,6 +43,10 @@ TiDB 版本：7.5.1
     - 允许多个快速加索引 DDL 任务排队执行，而非回退为普通加索引任务 [#47758](https://github.com/pingcap/tidb/issues/47758) @[tangenta](https://github.com/tangenta)
     - 提升空表加索引的速度 [#49682](https://github.com/pingcap/tidb/issues/49682) @[zimulala](https://github.com/zimulala)
 
++ TiKV
+
+    - 改善慢节点检测的判定算法，提升算法检测的灵敏度，同时降低了算法对于热读写场景下的误判率 [#15909](https://github.com/tikv/tikv/issues/15909) @[LykxSassinator](https://github.com/LykxSassinator)
+
 + TiFlash
 
     - 改进 [RU (Request Unit)](/tidb-resource-control.md#什么是-request-unit-ru) 计算方法，以提高 RU 值的稳定性 [#8391](https://github.com/pingcap/tiflash/issues/8391) @[guo-shaoge](https://github.com/guo-shaoge)
@@ -159,6 +163,7 @@ TiDB 版本：7.5.1
     - 修复扩容时可能导致 DR Auto-Sync 的 joint state 超时问题 [#15817](https://github.com/tikv/tikv/issues/15817) @[Connor1996](https://github.com/Connor1996)
     - 修复 Resolved TS 可能被阻塞两小时的问题 [#11847](https://github.com/tikv/tikv/issues/11847) [#15520](https://github.com/tikv/tikv/issues/15520) [#39130](https://github.com/pingcap/tidb/issues/39130) @[overvenus](https://github.com/overvenus)
     - 修复 `cast_duration_as_time` 可能返回错误结果的问题 [#16211](https://github.com/tikv/tikv/issues/16211) @[gengliqi](https://github.com/gengliqi)
+    - 修复在某些异常场景下（如阻塞在 Disk I/O 操作上）TiKV 假死而影响可用性的问题 [#16368](https://github.com/tikv/tikv/issues/16368) @[LykxSassinator](https://github.com/LykxSassinator)
 
 + PD
 

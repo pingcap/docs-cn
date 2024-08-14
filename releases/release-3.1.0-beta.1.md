@@ -1,6 +1,7 @@
 ---
 title: TiDB 3.1 Beta.1 Release Notes
 aliases: ['/docs-cn/dev/releases/release-3.1.0-beta.1/','/docs-cn/dev/releases/3.1.0-beta.1/']
+summary: TiDB 3.1 Beta.1 发布日期为 2020 年 1 月 10 日。TiDB 版本为 3.1.0-beta.1，TiDB Ansible 版本也为 3.1.0-beta.1。TiKV 新增了备份功能和 SST 文件恢复修复。Tools 中 BR 组件修复了备份进度信息不准确的问题，并新增了自动调度 PD schedulers 功能。TiDB Ansible 新增了初始化阶段自动关闭操作系统 THP 的功能和 BR 组件的 Grafana 监控。
 ---
 
 # TiDB 3.1 Beta.1 Release Notes

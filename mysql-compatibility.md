@@ -32,7 +32,6 @@ TiDB 高度兼容 MySQL 协议，以及 MySQL 5.7 和 MySQL 8.0 常用的功能�
 * 全文语法与索引 [#1793](https://github.com/pingcap/tidb/issues/1793)
 * 空间类型的函数（即 `GIS`/`GEOMETRY`）、数据类型和索引 [#6347](https://github.com/pingcap/tidb/issues/6347)
 * 非 `ascii`、`latin1`、`binary`、`utf8`、`utf8mb4`、`gbk` 的字符集
-* SYS schema
 * MySQL 追踪优化器
 * XML 函数
 * X-Protocol [#1109](https://github.com/pingcap/tidb/issues/1109)
@@ -112,7 +111,7 @@ MySQL 系统变量 `optimizer_switch` 在 TiDB 中是只读的，对查询计划
 
 ### 内建函数
 
-支持常用的 MySQL 内建函数，有部分函数并未支持。可通过执行 `SHOW BUILTINS` 语句查看可用的内建函数。参考 [SQL 语法文档](https://pingcap.github.io/sqlgram/#functioncallkeyword)。
+支持常用的 MySQL 内建函数，有部分函数并未支持。可通过执行 [`SHOW BUILTINS`](/sql-statements/sql-statement-show-builtins.md) 语句查看可用的内建函数。
 
 ### DDL 的限制
 
@@ -223,6 +222,10 @@ TiDB 与 MySQL 在日期时间处理上有如下差异：
 ### 类型系统
 
 MySQL 支持 `SQL_TSI_*`（包括 `SQL_TSI_MONTH`、`SQL_TSI_WEEK`、`SQL_TSI_DAY`、`SQL_TSI_HOUR`、`SQL_TSI_MINUTE` 和 `SQL_TSI_SECOND`，但不包括 `SQL_TSI_YEAR`），但 TiDB 不支持。
+
+### 正则函数
+
+关于 TiDB 中正则函数 `REGEXP_INSTR()`、`REGEXP_LIKE()`、`REGEXP_REPLACE()`、`REGEXP_SUBSTR()` 与 MySQL 的兼容情况，请参考[正则函数与 MySQL 的兼容性](/functions-and-operators/string-functions.md#正则函数与-mysql-的兼容性)。
 
 ### MySQL 弃用功能导致的不兼容问题
 

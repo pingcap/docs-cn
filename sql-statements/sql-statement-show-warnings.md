@@ -10,9 +10,10 @@ aliases: ['/docs-cn/dev/sql-statements/sql-statement-show-warnings/','/docs-cn/d
 
 ## 语法图
 
-**ShowWarningsStmt:**
-
-![ShowWarningsStmt](/media/sqlgram/ShowWarningsStmt.png)
+```ebnf+diagram
+ShowWarningsStmt ::=
+    "SHOW" "WARNINGS"
+```
 
 ## 示例
 

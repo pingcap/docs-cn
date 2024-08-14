@@ -1,6 +1,7 @@
 ---
 title: TiDB 内存控制文档
 aliases: ['/docs-cn/dev/configure-memory-usage/','/docs-cn/dev/how-to/configure/memory-control/']
+summary: TiDB 内存控制文档介绍了如何追踪和控制 SQL 查询过程中的内存使用情况，以及配置内存使用阈值和 tidb-server 实例的内存使用阈值。还介绍了使用 INFORMATION_SCHEMA 系统表查看内存使用情况，以及降低写入事务内存使用的方法。另外还介绍了流量控制和数据落盘的内存控制策略，以及通过设置环境变量 GOMEMLIMIT 缓解 OOM 问题。
 ---
 
 # TiDB 内存控制文档
@@ -152,7 +153,7 @@ TiDB 支持对执行算子的数据落盘功能。当 SQL 的内存使用超过 
 
 - 落盘行为由参数 [`tidb_mem_quota_query`](/system-variables.md#tidb_mem_quota_query)、[`tidb_enable_tmp_storage_on_oom`](/system-variables.md#tidb_enable_tmp_storage_on_oom)、[`tmp-storage-path`](/tidb-configuration-file.md#tmp-storage-path)、[`tmp-storage-quota`](/tidb-configuration-file.md#tmp-storage-quota) 共同控制。
 - 当落盘被触发时，TiDB 会在日志中打印一条包含关键字 `memory exceeds quota, spill to disk now` 或 `memory exceeds quota, set aggregate mode to spill-mode` 的日志。
-- Sort、MergeJoin、HashJoin 落盘是从 v4.0.0 版本开始引入的，非并发 HashAgg 的落盘是从 v5.2.0 版本开始引入的，并发 HashAgg 的落盘是从 v8.0.0 版本开始引入的。
+- Sort、MergeJoin、HashJoin 落盘是从 v4.0.0 版本开始引入的，非并行 HashAgg 的落盘是从 v5.2.0 版本开始引入的，并行 HashAgg 的落盘在 v8.0.0 版本以实验特性引入，在 v8.2.0 版本成为正式功能 (GA)。你可以通过系统变量 [`tidb_enable_parallel_hashagg_spill`](/system-variables.md#tidb_enable_parallel_hashagg_spill-从-v800-版本开始引入) 控制是否启用支持落盘的并行 HashAgg 算法。该变量将在未来版本中废弃。
 - 当包含 Sort、MergeJoin、HashJoin 或 HashAgg 的 SQL 语句引起内存 OOM 时，TiDB 默认会触发落盘。
 
 > **注意：**

@@ -1,5 +1,6 @@
 ---
 title: 通过 TiUP 部署 TiDB 集群的拓扑文件配置
+summary: 介绍通过 TiUP 部署或扩容 TiDB 集群时提供的拓扑文件配置和示例。
 ---
 
 # 通过 TiUP 部署 TiDB 集群的拓扑文件配置
@@ -28,6 +29,8 @@ title: 通过 TiUP 部署 TiDB 集群的拓扑文件配置
 - [cdc_servers](/tiup/tiup-cluster-topology-reference.md#cdc_servers)：CDC 实例的配置，用来指定 CDC 组件部署到哪些机器上
 - [tispark_masters](/tiup/tiup-cluster-topology-reference.md#tispark_masters)：TiSpark Master 实例的配置，用来指定 TiSpark Master 组件部署到哪台机器上，仅允许部署一个 TiSpark Master 节点
 - [tispark_workers](/tiup/tiup-cluster-topology-reference.md#tispark_workers)：TiSpark Worker 实例的配置，用来指定 TiSpark Worker 组件部署到哪些机器上
+- [tso_servers](/tiup/tiup-cluster-topology-reference.md#tso_servers)：TSO 实例的配置，用来指定 `tso` 微服务部署在哪些机器上（需要在 [`global`](#global) 中配置 `pd_mode: "ms"` 开启 [PD 微服务](/pd-microservices.md)）
+- [scheduling_servers](/tiup/tiup-cluster-topology-reference.md#scheduling_servers)：Scheduling 实例的配置，用来指定 `scheduling` 微服务部署在哪些机器上（需要在 [`global`](#global) 中配置 `pd_mode: "ms"` 开启 [PD 微服务](/pd-microservices.md)）
 - [monitoring_servers](/tiup/tiup-cluster-topology-reference.md#monitoring_servers)：用来指定 Prometheus 和 NGMonitoring 部署在哪些机器上，TiUP 支持部署多台 Prometheus 实例，但真实投入使用的只有第一个
 - [grafana_servers](/tiup/tiup-cluster-topology-reference.md#grafana_servers)：Grafana 实例的配置，用来指定 Grafana 部署在哪台机器上
 - [alertmanager_servers](/tiup/tiup-cluster-topology-reference.md#alertmanager_servers)：Alertemanager 实例的配置，用来指定 Alertmanager 部署在哪些机器上
@@ -56,6 +59,7 @@ title: 通过 TiUP 部署 TiDB 集群的拓扑文件配置
     - 如果 `log_dir` 为相对路径，那么组件日志将放到 `<deploy_dir>/<log_dir>` 中，其中 `<deploy_dir>` 的计算规则请参考 `deploy_dir` 字段的应用规则
 - `os`：目标机器的操作系统，该字段决定了向目标机器推送适配哪个操作系统的组件，默认值：linux
 - `arch`：目标机器的 CPU 架构，该字段决定了向目标机器推送哪个平台的二进制包，支持 amd64 和 arm64，默认值：amd64
+- `pd_mode`：PD 工作模式。该字段控制是否启用 [PD 微服务](/pd-microservices.md)。取值选项为 "ms"。指定该参数代表启用 PD 微服务模式。
 - `resource_control`：运行时资源控制，该字段下所有配置都将写入 systemd 的 service 文件中，默认无限制。支持控制的资源如下：
     - `memory_limit`：限制运行时最大内存，例如 "2G" 表示最多使用 2GB 内存
     - `cpu_quota`：限制运行时最大 CPU 占用率，例如 "200%"
@@ -107,6 +111,8 @@ monitored:
 - `pump`：Pump 服务的相关配置，支持的完整配置请参考 [TiDB Binlog 配置说明](/tidb-binlog/tidb-binlog-configuration-file.md#pump)
 - `drainer`：Drainer 服务的相关配置，支持的完整配置请参考 [TiDB Binlog 配置说明](/tidb-binlog/tidb-binlog-configuration-file.md#drainer)
 - `cdc`：CDC 服务的相关配置，支持的完整配置请参考 [TiCDC 安装部署](/ticdc/deploy-ticdc.md)
+- `tso`：`tso` 微服务的相关配置，支持的完整配置请参考 [TSO 配置文件描述](/tso-configuration-file.md)
+- `scheduling`：`scheduling` 微服务的相关配置，支持的完整配置请参考 [Scheduling 配置文件描述](/scheduling-configuration-file.md)
 
 `server_configs` 配置示例：
 
@@ -151,6 +157,8 @@ server_configs:
 - `prometheus`：Prometheus 组件的版本
 - `grafana`：Grafana 组件的版本
 - `alertmanager`：Alertmanager 组件的版本
+- `tso`：TSO 组件的版本
+- `scheduling`：Scheduling 组件的版本
 
 `component_versions` 配置示例：
 
@@ -568,6 +576,66 @@ tispark_workers:
   - host: 10.0.1.23
 ```
 
+### `tso_servers`
+
+`tso_servers` 约定了将 `tso` 微服务部署到哪些机器上，同时可以指定每台机器上的服务配置。`tso_servers` 是一个数组，每个数组元素包含以下字段：
+
+- `host`：指定部署到哪台机器，字段值填 IP 地址，不可省略。
+- `ssh_port`：指定连接目标机器进行操作的时候使用的 SSH 端口，若不指定，则使用 `global` 区块中的 `ssh_port`。
+- `port`：`tso` 微服务的监听端口，默认值：`3379`。
+- `deploy_dir`：指定部署目录，若不指定，或指定为相对目录，则按照 `global` 中配置的 `deploy_dir` 生成。
+- `data_dir`：指定数据目录，若不指定，或指定为相对目录，则按照 `global` 中配置的 `data_dir` 生成。
+- `config`：该字段配置规则和 `server_configs` 里的 `tso` 配置规则相同，若配置了该字段，会将该字段内容和 `server_configs` 里的 `tso` 内容合并（若字段重叠，以本字段内容为准），然后生成配置文件并下发到 `host` 指定的机器。
+- `os`：`host` 字段所指定的机器的操作系统，若不指定该字段，则默认为 `global` 中的 `os`。
+- `arch`：`host` 字段所指定的机器的架构，若不指定该字段，则默认为 `global` 中的 `arch`。
+
+在上述字段中，部分字段部署完成之后不能再修改。如下所示：
+
+- `host`
+- `port`
+- `deploy_dir`
+- `data_dir`
+- `arch`
+- `os`
+
+`tso_servers` 配置示例：
+
+```yaml
+tso_servers:
+  - host: 10.0.1.21
+  - host: 10.0.1.22
+```
+
+### `scheduling_servers`
+
+`scheduling_servers` 约定了将 `scheduling` 微服务部署到哪些机器上，同时可以指定每台机器上的服务配置。`scheduling_servers` 是一个数组，每个数组元素包含以下字段：
+
+- `host`：指定部署到哪台机器，字段值填 IP 地址，不可省略。
+- `ssh_port`：指定连接目标机器进行操作的时候使用的 SSH 端口，若不指定，则使用 `global` 区块中的 `ssh_port`。
+- `port`：`scheduling` 微服务的监听端口，默认值：`3379`。
+- `deploy_dir`：指定部署目录，若不指定，或指定为相对目录，则按照 `global` 中配置的 `deploy_dir` 生成。
+- `data_dir`：指定数据目录，若不指定，或指定为相对目录，则按照 `global` 中配置的 `data_dir` 生成。
+- `config`：该字段配置规则和 `server_configs` 里的 `scheduling` 配置规则相同，若配置了该字段，会将该字段内容和 `server_configs` 里的 `scheduling` 内容合并（若字段重叠，以本字段内容为准），然后生成配置文件并下发到 `host` 指定的机器。
+- `os`：`host` 字段所指定的机器的操作系统，若不指定该字段，则默认为 `global` 中的 `os`。
+- `arch`：`host` 字段所指定的机器的架构，若不指定该字段，则默认为 `global` 中的 `arch`。
+
+在上述字段中，部分字段部署完成之后不能再修改。如下所示：
+
+- `host`
+- `port`
+- `deploy_dir`
+- `data_dir`
+- `arch`
+- `os`
+
+`scheduling_servers` 配置示例：
+
+```yaml
+scheduling_servers:
+  - host: 10.0.1.21
+  - host: 10.0.1.22
+```
+
 ### `monitoring_servers`
 
 `monitoring_servers` 约定了将 Prometheus 服务部署到哪台机器上，同时可以指定这台机器上的服务配置，`monitoring_servers` 是一个数组，每个数组元素包含以下字段：
@@ -589,6 +657,7 @@ tispark_workers:
 - `os`：`host` 字段所指定的机器的操作系统，若不指定该字段，则默认为 `global` 中的 `os`
 - `arch`：`host` 字段所指定的机器的架构，若不指定该字段，则默认为 `global` 中的 `arch`
 - `resource_control`：针对该服务的资源控制，如果配置了该字段，会将该字段和 `global` 中的 `resource_control` 内容合并（若字段重叠，以本字段内容为准），然后生成 systemd 配置文件并下发到 `host` 指定机器。`resource_control` 的配置规则同 `global` 中的 `resource_control`
+- `additional_args`：从 TiUP v1.15.0 开始引入，用于配置 Prometheus 额外运行参数。该字段是一个数组，数组元素为 Prometheus 运行参数。例如，要开启 Prometheus 热加载功能，可以将该字段配置为 `--web.enable-lifecycle`
 - `additional_scrape_conf`：自定义 Prometheus scrape 配置。在集群进行 deploy/scale-out/scale-in/reload 操作时，TiUP 会将 `additional_scrape_conf` 字段的内容添加到 Prometheus 配置文件的对应参数中。更多信息，请参考[自定义监控组件的配置](/tiup/customized-montior-in-tiup-environment.md#自定义-prometheus-scrape-配置)
 
 以上所有字段中，部分字段部署完成之后不能再修改。如下所示：
@@ -607,6 +676,8 @@ tispark_workers:
 monitoring_servers:
   - host: 10.0.1.11
     rule_dir: /local/rule/dir
+    additional_args:
+    - --web.enable-lifecycle
     remote_config:
       remote_write:
       - queue_config:

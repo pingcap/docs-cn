@@ -95,6 +95,13 @@ TiSpark 是 Spark 的第三方 jar 包，提供读写 TiKV 的能力。
 | 2.5.x            | 5.x, 4.x        | 3.0.x, 3.1.x               | 2.12     |
 | 3.0.x            | 5.x, 4.x        | 3.0.x, 3.1.x, 3.2.x        | 2.12     |
 | 3.1.x            | 6.x, 5.x, 4.x   | 3.0.x, 3.1.x, 3.2.x, 3.3.x | 2.12     |
+| 3.2.x            | 6.x, 5.x, 4.x   | 3.0.x, 3.1.x, 3.2.x, 3.3.x | 2.12     |
+
+推荐使用 TiSpark 的最新稳定版本，包括 2.4.4、2.5.2、3.0.2、3.1.1 和 3.2.3。
+
+> **Note:**
+>
+> TiSpark 不保证与 TiDB v7.0.0 及之后版本兼容。
 
 ## 获取 TiSpark jar 包
 
@@ -132,7 +139,7 @@ TiSpark 是 Spark 的第三方 jar 包，提供读写 TiKV 的能力。
 |--------------------------------| -------------------------------------------------- |
 | 2.4.x-\${scala_version}, 2.5.0 | tispark-assembly                                   |
 | 2.5.1                          | tispark-assembly-\${spark_version}                  |
-| 3.0.x, 3.1.x                   | tispark-assembly-\${spark_version}-\${scala_version} |
+| 3.0.x, 3.1.x, 3.2.x            | tispark-assembly-\${spark_version}-\${scala_version} |
 
 ## 快速开始
 
@@ -144,9 +151,9 @@ TiSpark 是 Spark 的第三方 jar 包，提供读写 TiKV 的能力。
 
 ```
 spark.sql.extensions  org.apache.spark.sql.TiExtensions
-spark.tispark.pd.addresses  ${your_pd_adress}
+spark.tispark.pd.addresses  ${your_pd_address}
 spark.sql.catalog.tidb_catalog  org.apache.spark.sql.catalyst.catalog.TiCatalog
-spark.sql.catalog.tidb_catalog.pd.addresses  ${your_pd_adress}
+spark.sql.catalog.tidb_catalog.pd.addresses  ${your_pd_address}
 ```
 
 启动 spark-shell：
@@ -197,7 +204,7 @@ customerDF.write
 
 详见 [Data Source API User Guide](https://github.com/pingcap/tispark/blob/master/docs/features/datasource_api_userguide.md)。
 
-在 TiSpark 3.1 之后，你还能通过 Spark SQL 写入 TiSpark 3.1。详见 [Insert SQL](https://github.com/pingcap/tispark/blob/master/docs/features/insert_sql_userguide.md)。
+TiSpark 3.1 及之后版本支持通过 Spark SQL 写入数据到 TiKV。详见 [Insert SQL](https://github.com/pingcap/tispark/blob/master/docs/features/insert_sql_userguide.md)。
 
 ### 通过 JDBC 数据源写入数据
 
@@ -443,7 +450,7 @@ TiSpark 可以使用 TiDB 的统计信息：
 - 选择代价最低的索引访问
 - 估算数据大小以决定是否进行广播优化
 
-如果你希望 TiSpark 使用统计信息支持，需要确保所涉及的表已经被分析。参考[统计信息简介](/statistics.md)了解如何进行表分析。
+如果你希望 TiSpark 使用统计信息支持，需要确保所涉及的表已经被分析。参考[常规统计信息](/statistics.md)了解如何进行表分析。
 
 从 TiSpark 2.0 开始，统计信息将会默认被读取。
 

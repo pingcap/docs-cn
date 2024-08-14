@@ -220,6 +220,8 @@ cat default.json
     primary-replicas = 3
     dr-replicas = 2
     wait-store-timeout = "1m"
+    wait-recover-timeout = "0s"
+    pause-region-split = false
     ```
 
 + 方法二：如果已经部署了集群，则使用 pd-ctl 命令修改 PD 的配置。
@@ -242,6 +244,8 @@ cat default.json
 + `primary-replicas` 是主 AZ 上 Voter 副本的数量。
 + `dr-replicas` 是从 AZ 上 Voter 副本的数量。
 + `wait-store-timeout` 是当出现网络隔离或者故障时，切换到异步复制模式的等待时间。如果超过这个时间还没恢复，则自动切换到异步复制模式。默认时间为 60 秒。
++ `wait-recover-timeout` 是当网络恢复后，切换回 `sync-recover` 状态的等待时间。默认为 0 秒。
++ `pause-region-split` 用于控制在 `async_wait` 和 `async` 状态下是否暂停 Region 的 split 操作。暂停 Region split 可以防止在 `sync-recover` 状态同步数据时从属 AZ 出现短暂的部分数据缺失。默认为 `false`。
 
 如果需要检查当前集群的复制状态，可以通过以下 API 获取：
 

@@ -1,6 +1,7 @@
 ---
 title: TiDB 3.0.1 Release Notes
 aliases: ['/docs-cn/dev/releases/release-3.0.1/','/docs-cn/dev/releases/3.0.1/']
+summary: TiDB 3.0.1 发布，新增多项功能和修复了多个问题。TiKV 新增了对 Blob 文件大小的统计和死锁检测性能的提升。PD 优化了热点 Region 调度策略和 Region Merge 处理逻辑。TiDB Binlog 优化了 Pump GC 策略。TiDB Lightning 修正了导入错误的问题。TiDB Ansible 新增了预检查功能和更新了监控信息。
 ---
 
 # TiDB 3.0.1 Release Notes

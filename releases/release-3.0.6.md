@@ -1,6 +1,7 @@
 ---
 title: TiDB 3.0.6 Release Notes
 aliases: ['/docs-cn/dev/releases/release-3.0.6/','/docs-cn/dev/releases/3.0.6/']
+summary: TiDB 3.0.6 发布，包含多项 SQL 优化器和执行引擎的修复和优化，以及 Server、DDL、TiKV、PD 和 Tools 的更新和修复。TiKV 修复了悲观锁支持和 GC worker 写入量限制等问题。PD 添加了新维度和降低日志级别。Tools 中 TiDB Binlog 和 TiDB Lightning 也有多项修复和新增配置。
 ---
 
 # TiDB 3.0.6 Release Notes

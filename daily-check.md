@@ -42,12 +42,15 @@ TiDB 作为分布式数据库，对比单机数据库机制更加复杂，其自
 
 以上 Region 信息面板说明如下：
 
-+ `miss-peer-region-count`：缺副本的 Region 数量，不会一直大于 0。
-+ `extra-peer-region-count`：多副本的 Region 数量，调度过程中会产生。
-+ `empty-region-count`：空 Region 的数量，一般是 `TRUNCATE TABLE`/`DROP TABLE` 语句导致。如果数量较多，可以考虑开启跨表 Region merge。
-+ `pending-peer-region-count`：Raft log 落后的 Region 数量。由于调度产生少量的 pending peer 是正常的，但是如果 pending peer 的数量持续（超过 30 分钟）很高，可能存在问题。
 + `down-peer-region-count`：Raft leader 上报有不响应 peer 的 Region 数量。
++ `empty-region-count`：空 Region 的数量，大小小于 1 MiB。一般是 `TRUNCATE TABLE`/`DROP TABLE` 语句导致。如果数量较多，可以考虑开启跨表 Region merge。
++ `extra-peer-region-count`：多副本的 Region 数量，调度过程中会产生。
++ `learner-peer-region-count`：含有 learner peer 的 Region 数量。learner peer 的来源可能是多个，例如 TiFlash 上的 learner peer，以及配置的 Placement Rules 包含 learner peer。
++ `miss-peer-region-count`：缺副本的 Region 数量，不会一直大于 0。
 + `offline-peer-region-count`：peer 下线过程中的 Region 数量。
++ `oversized-region-count`：Region 大小大于 `region-max-size` 或 `region-max-keys` 的 Region 数量。
++ `pending-peer-region-count`：Raft log 落后的 Region 数量。由于调度产生少量的 pending peer 是正常的，但是如果 pending peer 的数量持续（超过 30 分钟）很高，可能存在问题。
++ `undersized-region-count`：Region 大小小于 `max-merge-region-size` 或 `max-merge-region-keys` 的 Region 数量。
 
 原则上来说，该监控面板偶尔有数据是符合预期的。但长期有数据，需要排查是否存在问题。
 

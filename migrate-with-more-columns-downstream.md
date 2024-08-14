@@ -107,5 +107,5 @@ CREATE TABLE `messages` (
     {{< copyable "shell-regular" >}}
 
     ```
-    tiup dmctl --master-addr ${advertise-addr} query-status resume-task ${task-name}
+    tiup dmctl --master-addr ${advertise-addr} query-status ${task-name}
     ```

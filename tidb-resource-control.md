@@ -186,7 +186,9 @@ ALTER USER 'usr3'@'%' RESOURCE GROUP `default`;
 
 #### 将当前会话绑定到资源组
 
-通过把当前会话绑定到资源组，会话对资源的占用会受到指定用量 (RU) 的限制。
+使用 [`SET RESOURCE GROUP`](/sql-statements/sql-statement-set-resource-group.md) 语句，可以修改当前会话绑定的资源组。通过把当前会话绑定到资源组，会话对资源的占用会受到指定配额 (RU) 的限制。
+
+当系统变量 [`tidb_resource_control_strict_mode`](/system-variables.md#tidb_resource_control_strict_mode-从-v820-版本开始引入) 设置为 `ON` 时，你需要有 `SUPER` 或者 `RESOURCE_GROUP_ADMIN` 或者 `RESOURCE_GROUP_USER` 权限才能执行该语句。
 
 下面的示例将当前的会话绑定至资源组 `rg1`。
 
@@ -198,6 +200,8 @@ SET RESOURCE GROUP rg1;
 
 通过在 SQL 语句中添加 [`RESOURCE_GROUP(resource_group_name)`](/optimizer-hints.md#resource_groupresource_group_name) Hint，可以将该语句绑定到指定的资源组。此 Hint 支持 `SELECT`、`INSERT`、`UPDATE`、`DELETE` 四种语句。
 
+当系统变量 [`tidb_resource_control_strict_mode`](/system-variables.md#tidb_resource_control_strict_mode-从-v820-版本开始引入) 设置为 `ON` 时，你需要有 `SUPER` 或者 `RESOURCE_GROUP_ADMIN` 或者 `RESOURCE_GROUP_USER` 权限才能使用此 Hint。
+
 示例：
 
 ```sql
@@ -205,10 +209,6 @@ SELECT /*+ RESOURCE_GROUP(rg1) */ * FROM t limit 10;
 ```
 
 ### 管理资源消耗超出预期的查询 (Runaway Queries)
-
-> **警告：**
->
-> 该功能目前为实验特性，不建议在生产环境中使用。该功能可能会在未事先通知的情况下发生变化或删除。如果发现 bug，请在 GitHub 上提 [issue](https://github.com/pingcap/tidb/issues) 反馈。
 
 Runaway Query 是指执行时间或消耗资源超出预期的查询（仅指 `SELECT` 语句）。下面使用 **Runaway Queries** 表示管理 Runaway Query 这一功能。
 
@@ -328,7 +328,7 @@ Runaway Query 是指执行时间或消耗资源超出预期的查询（仅指 `S
 + `mysql.tidb_runaway_queries` 表中包含了过去 7 天内所有识别到的 Runaway Queries 的历史记录。以其中一行为例：
 
     ```sql
-    MySQL [(none)]> SELECT * FROM mysql.tidb_runaway_queries LIMIT 1\G;
+    MySQL [(none)]> SELECT * FROM mysql.tidb_runaway_queries LIMIT 1\G
     *************************** 1. row ***************************
     resource_group_name: rg1
                    time: 2023-06-16 17:40:22
@@ -367,7 +367,7 @@ Runaway Query 是指执行时间或消耗资源超出预期的查询（仅指 `S
 - `lightning`：使用 [TiDB Lightning](/tidb-lightning/tidb-lightning-overview.md) 执行导入任务。同时支持 TiDB Lightning 的物理和逻辑导入模式。
 - `br`：使用 [BR](/br/backup-and-restore-overview.md) 执行数据备份和恢复。目前不支持 PITR。
 - `ddl`：对于 Reorg DDL，控制批量数据回写阶段的资源使用。
-- `stats`：对应手动执行或系统自动触发的[收集统计信息](/statistics.md#统计信息的收集)任务。
+- `stats`：对应手动执行或系统自动触发的[收集统计信息](/statistics.md#收集统计信息)任务。
 - `background`：预留的任务类型，可使用 [`tidb_request_source_type`](/system-variables.md#tidb_request_source_type-从-v740-版本开始引入) 系统变量指定当前会话的任务类型为 `background`。
 
 默认情况下，被标记为后台任务的任务类型为 `""`，此时后台任务的管理功能处于关闭状态。如需开启后台任务管理功能，你需要手动修改 `default` 资源组的后台任务类型以开启后台任务管理。后台任务类型被识别匹配后，资源管控会自动进行，即当系统资源紧张时，后台任务会自动降为最低优先级，保证前台任务的执行。
@@ -495,7 +495,7 @@ TiDB 的系统表 [`INFORMATION_SCHEMA.statements_summary`](/statement-summary-t
 
 ### 查看资源组的 RU 消耗
 
-从 v7.6.0 版本开始，TiDB 提供系统表 [`mysql.request_unit_by_group`](/mysql-schema.md#资源管控相关系统表) 存放各个资源组每日消耗的 RU 的历史记录。
+从 v7.6.0 版本开始，TiDB 提供系统表 [`mysql.request_unit_by_group`](/mysql-schema/mysql-schema.md#资源管控相关系统表) 存放各个资源组每日消耗的 RU 的历史记录。
 
 示例：
 

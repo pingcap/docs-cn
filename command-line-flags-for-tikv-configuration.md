@@ -1,6 +1,7 @@
 ---
 title: TiKV 配置参数
 aliases: ['/docs-cn/dev/command-line-flags-for-tikv-configuration/','/docs-cn/dev/reference/configuration/tikv-server/configuration/']
+summary: TiKV 配置参数支持文件大小和时间的可读性好的单位转换。命令行参数包括监听地址、对外访问地址、服务状态监听端口、对外访问服务状态地址、配置文件、存储数据的容量、配置信息输出格式、数据存储路径、日志级别、日志文件、PD 地址列表。需要注意的是，PD 地址列表需要使用逗号分隔多个地址。
 ---
 
 # TiKV 配置参数

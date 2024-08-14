@@ -1,6 +1,7 @@
 ---
 title: TiFlash 简介
 aliases: ['/docs-cn/dev/tiflash/tiflash-overview/','/docs-cn/dev/reference/tiflash/overview/','/docs-cn/dev/tiflash/use-tiflash/','/docs-cn/dev/reference/tiflash/use-tiflash/','/zh/tidb/dev/use-tiflash']
+summary: TiFlash 是 TiDB HTAP 形态的关键组件，提供了良好的隔离性和强一致性。它使用列存扩展和 Raft Learner 协议异步复制，通过 Raft 校对索引配合 MVCC 实现一致性隔离级别。TiFlash 架构解决了 HTAP 场景的隔离性和列存同步问题。它提供列式存储和借助 ClickHouse 高效实现的协处理器层。TiFlash 可以兼容 TiDB 和 TiSpark，推荐与 TiKV 不同节点部署以实现 Workload 隔离。具有异步复制、一致性、智能选择和计算加速等核心特性。部署完成后需要手动指定需要同步的表。
 ---
 
 # TiFlash 简介
@@ -17,7 +18,7 @@ TiFlash 提供列式存储，且拥有借助 ClickHouse 高效实现的协处理
 
 TiFlash 以低消耗不阻塞 TiKV 写入的方式，实时复制 TiKV 集群中的数据，并同时提供与 TiKV 一样的一致性读取，且可以保证读取到最新的数据。TiFlash 中的 Region 副本与 TiKV 中完全对应，且会跟随 TiKV 中的 Leader 副本同时进行分裂与合并。
 
-在 Linux AMD64 架构的硬件平台部署 TiFlash 时，CPU 必须支持 AVX2 指令集。确保命令 `cat /proc/cpuinfo | grep avx2` 有输出。而在 Linux ARM64 架构的硬件平台部署 TiFlash 时，CPU 必须支持 ARMv8 架构。确保命令 `cat /proc/cpuinfo | grep 'crc32' | grep 'asimd'` 有输出。通过使用向量扩展指令集，TiFlash 的向量化引擎能提供更好的性能。
+在 Linux AMD64 架构的硬件平台部署 TiFlash 时，CPU 必须支持 AVX2 指令集。确保命令 `grep avx2 /proc/cpuinfo` 有输出。而在 Linux ARM64 架构的硬件平台部署 TiFlash 时，CPU 必须支持 ARMv8 架构。确保命令 `grep 'crc32' /proc/cpuinfo | grep 'asimd'` 有输出。通过使用向量扩展指令集，TiFlash 的向量化引擎能提供更好的性能。
 
 TiFlash 可以兼容 TiDB 与 TiSpark，用户可以选择使用不同的计算引擎。
 
