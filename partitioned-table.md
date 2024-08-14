@@ -1757,6 +1757,7 @@ SELECT * FROM information_schema.tidb_indexes WHERE table_name='t1';
 ```sql
 ALTER TABLE t1 PARTITION BY HASH (col1) PARTITIONS 3 UPDATE INDEXES (uidx12 LOCAL, uidx3 GLOBAL);
 ```
+
 ##### 全局索引的限制
 
 - 如果未显式指定 `GLOBAL` 关键字，将默认创建局部索引 (local Index)。
