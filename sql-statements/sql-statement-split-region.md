@@ -349,11 +349,11 @@ region4  [("c", "")                    , maxIndexValue               )
 
 ## pre_split_regions
 
-使用带有 `SHARD_ROW_ID_BITS` 的表时，如果希望建表时就均匀切分 Region，可以考虑配合 `PRE_SPLIT_REGIONS` 一起使用，用来在建表成功后就开始预均匀切分 `2^(PRE_SPLIT_REGIONS)` 个 Region。
+创建带有 `AUTO_RANDOM` 或 `SHARD_ROW_ID_BITS` 属性的表时，如果希望在建表成功后就开始预均匀切分 Region，可以考虑配合 `PRE_SPLIT_REGIONS` 一起使用。预切分成的 Region 数量为 `2^(PRE_SPLIT_REGIONS)`。
 
 > **注意：**
 >
-> `PRE_SPLIT_REGIONS` 必须小于等于 `SHARD_ROW_ID_BITS`。
+> `PRE_SPLIT_REGIONS` 的值必须小于或等于 `SHARD_ROW_ID_BITS` 或 `AUTO_RANDOM` 的值。
 
 以下全局变量会影响 `PRE_SPLIT_REGIONS` 的行为，需要特别注意：
 
@@ -378,7 +378,7 @@ region4:   [ 3<<61     ,  +inf  )
 
 ## 注意事项
 
-Split Region 语句切分的 Region 会受到 PD 中 [Region merge](/best-practices/pd-scheduling-best-practices.md#region-merge) 调度的控制，需要[动态修改](/pd-control.md) Region merge 相关的配置项，避免新切分的 Region 不久后又被 PD 重新合并的情况。
+Split Region 语句切分的 Region 会受到 PD 中 [Region merge](/best-practices/pd-scheduling-best-practices.md#region-merge) 调度的控制，需要使用[表属性](/table-attributes.md)或者[动态修改](/pd-control.md) Region merge 相关的配置项，避免新切分的 Region 不久后又被 PD 重新合并的情况。
 
 ## MySQL 兼容性
 
