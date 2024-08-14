@@ -254,8 +254,7 @@ TiDB 版本：8.3.0
 | TiKV  | [`coprocessor.region-max-size`](/tikv-configuration-file.md#region-max-size)  | 修改 | 默认值从 `144` MiB 修改为 `384` MiB，以兼容 `coprocessor.region-split-size` 扩大为 `256` MiB 的修改。   |
 | TiKV  | [`backup.sst-max-size`](/tikv-configuration-file.md#sst-max-size)  | 修改 | 默认值从 `144` MiB 修改为 `384` MiB，以兼容 `coprocessor.region-max-size` 扩大为 `384` MiB 的修改。   |
 | TiFlash   | [`security.redact-info-log`](/tiflash/tiflash-configuration.md#配置文件-tiflash-learnertoml) | 修改 | 支持将 TiFlash Learner 配置项 `security.redact-info-log` 的值设置为 `marker`，使用标记符号 `‹ ›` 标记出敏感信息，而不是直接隐藏，以便你能够自定义脱敏规则。   |
-|  BR  |  [`--allow-pitr-from-incremental`](/br/br-incremental-guide.md#使用限制)
-) | 新增  |  控制增量备份和后续的日志备份是否兼容。默认值为 `true`，即增量备份兼容后续的日志备份。兼容的情况下，增量恢复开始前会对需要回放的 DDL 进行严格检查。 |
+|  BR  |  [`--allow-pitr-from-incremental`](/br/br-incremental-guide.md#使用限制) | 新增  |  控制增量备份和后续的日志备份是否兼容。默认值为 `true`，即增量备份兼容后续的日志备份。兼容的情况下，增量恢复开始前会对需要回放的 DDL 进行严格检查。 |
 
 ### 系统表
 
