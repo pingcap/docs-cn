@@ -193,7 +193,7 @@ date-separator = 'day'
 # 注意：该参数只有当下游为存储服务时，才会生效。
 enable-partition-separator = true
 
-# 是否禁用 schema 信息。默认值为 false，即输出 schema 信息。
+# 是否关闭 schema 信息的输出。默认值为 false，即输出 schema 信息。
 # 注意：该参数只有当 sink 类型为 MQ 且输出协议为 Debezium 时才生效。
 debezium-disable-schema = false
 
