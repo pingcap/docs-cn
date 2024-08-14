@@ -310,8 +310,7 @@ TiDB 版本：8.3.0
 
     + TiCDC
 
-        - note [#issue](链接) @[贡献者 GitHub ID](链接)
-        - note [#issue](链接) @[贡献者 GitHub ID](链接)
+        - kafka sink 的 claim check 功能支持将大 value 存储到外部存储系统 [#11396](https://github.com/pingcap/tiflow/issues/11396)) @[3AceShowHand](https://github.com/3AceShowHand)
 
     + TiDB Data Migration (DM)
 
@@ -394,9 +393,7 @@ TiDB 版本：8.3.0
 
     + TiCDC
 
-        - note [#issue](https://github.com/pingcap/tiflow/issues/${issue-id}) @[贡献者 GitHub ID](https://github.com/${github-id})
-        - note [#issue](https://github.com/pingcap/tiflow/issues/${issue-id}) @[贡献者 GitHub ID](https://github.com/${github-id})
-        - (dup): release-7.5.3.md > 错误修复> Tools> TiCDC - 修复当下游 Kafka 无法访问时，Processor 模块可能卡住的问题 [#11340](https://github.com/pingcap/tiflow/issues/11340) @[asddongmen](https://github.com/asddongmen)
+        - 修复当下游 Kafka 无法访问时，Processor 模块可能卡住的问题 [#11340](https://github.com/pingcap/tiflow/issues/11340) @[asddongmen](https://github.com/asddongmen)
 
     + TiDB Data Migration (DM)
 
