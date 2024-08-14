@@ -146,7 +146,7 @@ aliases: ['/zh/tidb/dev/incremental-replication-between-clusters/']
 
 > **注意：**
 >
-> TiCDC 的 `gc-ttl` 默认为 24 小时, 如果备份恢复耗时过长，此时  `gc-ttl` 可能无法满足需求， 导致同步任务运行失败，请在启动 TiCDC server 时根据实际情况指定 `gc-ttl` 的值。更多信息，请参考 [TiCDC 的 `gc-ttl` 是什么](/ticdc/ticdc-faq.md#ticdc-的-gc-ttl-是什么)。
+> TiCDC 的 `gc-ttl` 默认为 24 小时。如果备份恢复耗时过长，默认的 `gc-ttl` 可能无法满足需求，从而导致后续的[增量同步任务](/update-migrate-from-tidb-to-tidb/migrate-from-tidb-to-tidb.md#第-3-步迁移增量数据)运行失败。为了避免这种情况，请在启动 TiCDC server 时根据实际需求调整 `gc-ttl` 的值。更多信息，请参考 [TiCDC 的 `gc-ttl` 是什么](/ticdc/ticdc-faq.md#ticdc-的-gc-ttl-是什么)。
 
 2. 备份数据。
 
