@@ -75,6 +75,7 @@ aliases: ['/docs-cn/dev/basic-features/','/docs-cn/dev/experimental-features-4.0
 | `UNION`，`UNION ALL` | Y |  Y |  Y |  Y  | Y | Y | Y | Y | Y | Y | Y |
 | [`EXCEPT` 和 `INTERSECT` 运算符](/functions-and-operators/set-operators.md) | Y |  Y |  Y |  Y  | Y | Y | Y | Y | Y | Y | Y |
 | `GROUP BY`，`ORDER BY` | Y |  Y |  Y |  Y  | Y | Y | Y | Y | Y | Y | Y |
+| [`GROUP BY` 修饰符](/functions-and-operators/group-by-modifier.md) | Y |  Y |  Y |  Y  | N | N | N | N | N | N | N |
 | [窗口函数](/functions-and-operators/window-functions.md) | Y |  Y |  Y |  Y  | Y | Y | Y | Y | Y | Y | Y |
 | [公共表表达式 (CTE)](/sql-statements/sql-statement-with.md) | Y |  Y |  Y |  Y  | Y | Y | Y | Y | Y | Y | Y |
 | `START TRANSACTION`，`COMMIT`，`ROLLBACK` | Y |  Y |  Y |  Y  | Y | Y | Y | Y | Y | Y | Y |
