@@ -358,7 +358,7 @@ large-message-handle-option = "handle-key-only"
     ],
     "old": null,
     "_tidb": {     // TiDB 的扩展字段
-        "commitTs": 163963314122145239,
+        "commitTs": 429918007904436226,  // TiDB TSO 时间戳
         "onlyHandleKey": true
     }
 }
