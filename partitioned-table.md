@@ -1463,7 +1463,7 @@ SELECT store_id, COUNT(department_id) AS c
 
 > **注意：**
 >
-> 该规则仅适用于 [`tidb_enable_global_index`](/system-variables.md#tidb_enable_global_index-new-in-v760) 未开启的场景。
+> 该规则仅适用于 [`tidb_enable_global_index`](/system-variables.md#tidb_enable_global_index-从-v760-版本开始引入) 未开启的场景。
 
 这里所指的唯一也包含了主键，因为根据主键的定义，主键必须是唯一的。例如，下面这些建表语句就是无效的：
 
