@@ -8,7 +8,6 @@ summary: 本文介绍了如何使用 TiDB Binlog 实现集群间双向同步，�
 
 > **警告：**
 >
-> - 目前双向同步属于实验特性，尚未经过完备的测试，不建议在生产环境中使用该功能。
 > - TiDB Binlog 与 TiDB v5.0 开始引入的一些特性不兼容，无法一起使用，详情参照[注意事项](/tidb-binlog/tidb-binlog-overview.md#注意事项)。
 > - 从 TiDB v7.5.0 开始，TiDB Binlog 组件的数据同步功能不再提供技术支持，强烈建议使用 [TiCDC](/ticdc/ticdc-overview.md) 作为数据同步的替代方案。
 > - 尽管 TiDB v7.5.0 仍支持 TiDB Binlog 组件的实时备份和恢复，但该组件在未来版本中将被完全废弃，推荐使用 [PITR](/br/br-pitr-guide.md) 作为数据恢复的替代方案。
