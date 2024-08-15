@@ -144,7 +144,15 @@ Flags:
     tiup bench tpch --sf=1 prepare
     ```
 
-2. 运行 TPC-H 测试，根据是否检查结果执行相应命令：
+2. 收集统计信息：
+
+    对于 OLAP 场景，为了确保 TiDB 优化器能够生成最优的执行计划，请执行以下 SQL 语句提前收集统计信息。**务必确保将 [`tidb_analyze_column_options`](/system-variables.md#tidb_analyze_column_options-从-v830-版本开始引入) 系统变量的值设置为 `ALL`，否则统计信息收集可能会导致查询性能显著下降。**
+
+    ```sql
+    set global tidb_analyze_column_options='ALL';
+    ```
+
+3. 运行 TPC-H 测试，根据是否检查结果执行相应命令：
 
     - 检查结果：
 
@@ -158,7 +166,7 @@ Flags:
         tiup bench tpch --count=22 --sf=1 run
         ```
 
-3. 清理数据：
+4. 清理数据：
 
     ```shell
     tiup bench tpch cleanup
