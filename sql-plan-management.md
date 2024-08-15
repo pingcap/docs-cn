@@ -223,27 +223,27 @@ CREATE BINDING FOR SELECT * FROM t WHERE a > 1 USING SELECT * FROM t use index(i
 
 #### 根据历史执行计划创建绑定
 
-如需将 SQL 语句的执行计划固定为之前使用过的执行计划，可以使用 `plan_digest` 为该 SQL 语句绑定一个历史的执行计划。相比于使用 SQL 创建绑定的方式，此方式更加简便。
+如需将 SQL 语句的执行计划固定为之前使用过的执行计划，可以使用 Plan Digest 为该 SQL 语句绑定一个历史的执行计划。相比于使用 SQL 创建绑定的方式，此方式更加简便，并且支持一次为多个语句绑定执行计划。详细说明和更多示例参见 [`CREATE [GLOBAL|SESSION] BINDING`](/sql-statements/sql-statement-create-binding.md)。
 
 以下为根据历史执行计划创建绑定的注意事项：
 
 - 该功能是根据历史的执行计划生成 hint 而实现的绑定，历史的执行计划来源是 [Statement Summary Tables](/statement-summary-tables.md)，因此在使用此功能之前需开启系统变量 [`tidb_enable_stmt_summary`](/system-variables.md#tidb_enable_stmt_summary-从-v304-版本开始引入)。
 - 对于包含子查询的查询、访问 TiFlash 的查询、3 张表或更多表进行 Join 的查询，自动生成的 hint 不够完备，可能导致无法完全固定住计划，对于这类情况在创建时会产生告警。
-- 原执行计划对应 SQL 语句中的 hint 也会被应用在创建的绑定中，如执行 `SELECT /*+ max_execution_time(1000) */ * FROM t` 后，使用其 `plan_digest` 创建的绑定中会带上 `max_execution_time(1000)`。
+- 原执行计划对应 SQL 语句中的 hint 也会被应用在创建的绑定中，如执行 `SELECT /*+ max_execution_time(1000) */ * FROM t` 后，使用其 Plan Digest 创建的绑定中会带上 `max_execution_time(1000)`。
 
-使用方式:
+使用方式：
 
 ```sql
-CREATE [GLOBAL | SESSION] BINDING FROM HISTORY USING PLAN DIGEST 'plan_digest';
+CREATE [GLOBAL | SESSION] BINDING FROM HISTORY USING PLAN DIGEST StringLiteralOrUserVariableList;
 ```
 
-该语句使用 `plan_digest` 为 SQL 语句绑定执行计划，在不指定作用域时默认作用域为 SESSION。所创建绑定的适用 SQL、优先级、作用域、生效条件等与[根据 SQL 创建绑定](#根据-sql-创建绑定)相同。
+该语句使用 Plan Digest 为 SQL 语句绑定执行计划，在不指定作用域时默认作用域为 SESSION。所创建绑定的适用 SQL、优先级、作用域、生效条件等与[根据 SQL 创建绑定](#根据-sql-创建绑定)相同。
 
-使用此绑定方式时，你需要先从 `statements_summary` 中找到需要绑定的执行计划对应的 `plan_digest`，再通过 `plan_digest` 创建绑定。具体步骤如下：
+使用此绑定方式时，你需要先从 `statements_summary` 中找到需要绑定的执行计划对应的 Plan Digest，再通过 Plan Digest 创建绑定。具体步骤如下：
 
-1. 从 `Statement Summary Tables` 的记录中查找执行计划对应的 `plan_digest`。
+1. 从 `Statement Summary Tables` 的记录中查找执行计划对应的 Plan Digest。
 
-    例如:
+    例如：
 
     ```sql
     CREATE TABLE t(id INT PRIMARY KEY , a INT, KEY(a));
@@ -266,9 +266,9 @@ CREATE [GLOBAL | SESSION] BINDING FROM HISTORY USING PLAN DIGEST 'plan_digest';
           BINARY_PLAN: 6QOYCuQDCg1UYWJsZVJlYWRlcl83Ev8BCgtTZWxlY3Rpb25fNhKOAQoPBSJQRnVsbFNjYW5fNSEBAAAAOA0/QSkAAQHwW4jDQDgCQAJKCwoJCgR0ZXN0EgF0Uh5rZWVwIG9yZGVyOmZhbHNlLCBzdGF0czpwc2V1ZG9qInRpa3ZfdGFzazp7dGltZTo1NjAuOMK1cywgbG9vcHM6MH1w////CQMEAXgJCBD///8BIQFzCDhVQw19BAAkBX0QUg9lcSgBfCAudC5hLCAxKWrmYQAYHOi0gc6hBB1hJAFAAVIQZGF0YTo9GgRaFAW4HDQuMDVtcywgCbYcMWKEAWNvcF8F2agge251bTogMSwgbWF4OiA1OTguNsK1cywgcHJvY19rZXlzOiAwLCBycGNfBSkAMgkMBVcQIDYwOS4pEPBDY29wcl9jYWNoZV9oaXRfcmF0aW86IDAuMDAsIGRpc3RzcWxfY29uY3VycmVuY3k6IDE1fXCwAXj///////////8BGAE=
     ```
 
-    可以看到执行计划对应的 `plan_digest` 为 `4e3159169cc63c14b139a4e7d72eae1759875c9a9581f94bb2079aae961189cb`。
+    可以看到执行计划对应的 Plan Digest 为 `4e3159169cc63c14b139a4e7d72eae1759875c9a9581f94bb2079aae961189cb`。
 
-2. 使用 `plan_digest` 创建绑定。
+2. 使用 Plan Digest 创建绑定。
 
     ```sql
     CREATE BINDING FROM HISTORY USING PLAN DIGEST '4e3159169cc63c14b139a4e7d72eae1759875c9a9581f94bb2079aae961189cb';
@@ -309,7 +309,7 @@ SELECT @@LAST_PLAN_FROM_BINDING;
 
 ### 删除绑定
 
-你可以根据 SQL 语句或者 `sql_digest` 删除绑定。
+你可以根据 SQL 语句或者 SQL Digest 删除绑定。
 
 #### 根据 SQL 语句删除绑定
 
@@ -335,15 +335,15 @@ explain SELECT * FROM t1,t2 WHERE t1.id = t2.id;
 
 在这里 SESSION 作用域内被删除掉的绑定会屏蔽 GLOBAL 作用域内相应的绑定，优化器不会为 `SELECT` 语句添加 `sm_join(t1, t2)` hint，`explain` 给出的执行计划中最上层节点并不被 hint 固定为 MergeJoin，而是由优化器经过代价估算后自主进行选择。
 
-#### 根据 `sql_digest` 删除绑定
+#### 根据 SQL Digest 删除绑定
 
-除了可以根据 SQL 语句删除对应的绑定以外，也可以根据 `sql_digest` 删除绑定：
+你既可以根据 SQL 语句删除对应的绑定，也可以根据 SQL Digest 删除绑定。详细说明和更多示例参见 [`DROP [GLOBAL|SESSION] BINDING`](/sql-statements/sql-statement-drop-binding.md)。
 
 ```sql
-DROP [GLOBAL | SESSION] BINDING FOR SQL DIGEST 'sql_digest';
+DROP [GLOBAL | SESSION] BINDING FOR SQL DIGEST StringLiteralOrUserVariableList;
 ```
 
-该语句用于在 GLOBAL 或者 SESSION 作用域内删除 `sql_digest` 对应的的执行计划绑定，在不指定作用域时默认作用域为 SESSION。你可以通过[查看绑定](#查看绑定)语句获取 `sql_digest`。
+该语句用于在 GLOBAL 或者 SESSION 作用域内删除 SQL Digest 对应的的执行计划绑定，在不指定作用域时默认作用域为 SESSION。你可以通过[查看绑定](#查看绑定)语句获取 SQL Digest。
 
 > **注意：**
 >
