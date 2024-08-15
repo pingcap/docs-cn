@@ -158,7 +158,7 @@ WATERMARK Event 的示例如下：
     "data": null,
     "old": null,
     "_tidb": {     // TiDB 的扩展字段
-        "watermarkTs": 429918007904436226  // tidb tso
+        "watermarkTs": 429918007904436226  // TiDB TSO 时间戳
     }
 }
 ```
