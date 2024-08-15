@@ -139,7 +139,7 @@ TiDB 版本：8.3.0
 
     更多信息，请参考[用户文档](/system-variables.md#tidb_enable_lazy_cursor_fetch-从-v830-版本开始引入)。
 
-* 增强 SQL 执行计划绑定 [#55280](https://github.com/pingcap/tidb/issues/55280) [#issue2](to-be-added) @[time-and-fate](https://github.com/time-and-fate) **tw@lilin90** <!--1760-->
+* 增强 SQL 执行计划绑定 [#55280](https://github.com/pingcap/tidb/issues/55280) [#55343](https://github.com/pingcap/tidb/issues/55343) @[time-and-fate](https://github.com/time-and-fate) **tw@lilin90** <!--1760-->
 
     在 OLTP 负载环境中，绝大部分 SQL 的最优执行计划是固定不变的。对业务中的重要 SQL 实施执行计划绑定，可以降低执行计划变差的几率，提升系统稳定性。为了满足创建大量 SQL 执行计划绑定的场景需求，TiDB 对 SQL 绑定的能力和体验进行了增强，其中包括：
 
