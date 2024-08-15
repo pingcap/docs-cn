@@ -728,7 +728,7 @@ opentracing.reporter 相关的设置。
 
 ### `batch-policy` <span class="version-mark">从 v8.3.0 版本开始引入</span>
 
-+ 控制 TiDB 向 TiKV 发送请求时的批处理策略。TiDB 在向 TiKV 发送请求时，始终会将当前等待队列中的请求封装为 `BatchCommandsRequest` 并打包发送给 TiKV，这是基础的批处理机制。当负载吞吐较高时，TiDB 会根据 `batch-policy` 的配置决定是否在基础的批处理后额外等待一段时间，以在单个 `BatchCommandsRequest` 中封装更多的请求，即进行额外的批处理。
++ 控制 TiDB 向 TiKV 发送请求时的批处理策略。TiDB 在向 TiKV 发送请求时，始终会将当前等待队列中的请求封装为 `BatchCommandsRequest` 并打包发送给 TiKV，这是基础的批处理机制。当 TiKV 负载吞吐较高时，TiDB 会根据 `batch-policy` 的配置决定是否在基础的批处理后额外等待一段时间，以在单个 `BatchCommandsRequest` 中封装更多的请求，即进行额外的批处理。
 + 默认值：`"standard"`
 + 可选值：
     - `"basic"`：行为与 v8.3.0 之前的版本一致，即 TiDB 仅在 [`tikv-client.max-batch-wait-time`](#max-batch-wait-time) 大于 0 且 TiKV 的负载超过 [`tikv-client.overload-threshold`](#overload-threshold) 时进行额外的批处理。
