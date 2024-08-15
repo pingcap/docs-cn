@@ -442,7 +442,7 @@ large-message-handle-option = "handle-key-only"
     ],
     "old": null,
     "_tidb": {     // TiDB 的扩展字段
-        "commitTs": 163963314122145239,
+        "commitTs": 429918007904436226,  // TiDB TSO 时间戳
         "onlyHandleKey": true
     }
 }
@@ -508,7 +508,7 @@ Kafka 消费者会收到一条含有大消息在外部存储服务中的地址�
     ],
     "old": null,
     "_tidb": {     // TiDB 的扩展字段
-        "commitTs": 163963314122145239,
+        "commitTs": 429918007904436226,  // TiDB TSO 时间戳
         "claimCheckLocation": "s3:/claim-check-bucket/${uuid}.json"
     }
 }
