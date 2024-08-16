@@ -367,7 +367,7 @@ Runaway Query 是指执行时间或消耗资源超出预期的查询（仅指 `S
 - `lightning`：使用 [TiDB Lightning](/tidb-lightning/tidb-lightning-overview.md) 执行导入任务。同时支持 TiDB Lightning 的物理和逻辑导入模式。
 - `br`：使用 [BR](/br/backup-and-restore-overview.md) 执行数据备份和恢复。目前不支持 PITR。
 - `ddl`：对于 Reorg DDL，控制批量数据回写阶段的资源使用。
-- `stats`：对应手动执行或系统自动触发的[收集统计信息](/statistics.md#统计信息的收集)任务。
+- `stats`：对应手动执行或系统自动触发的[收集统计信息](/statistics.md#收集统计信息)任务。
 - `background`：预留的任务类型，可使用 [`tidb_request_source_type`](/system-variables.md#tidb_request_source_type-从-v740-版本开始引入) 系统变量指定当前会话的任务类型为 `background`。
 
 默认情况下，被标记为后台任务的任务类型为 `""`，此时后台任务的管理功能处于关闭状态。如需开启后台任务管理功能，你需要手动修改 `default` 资源组的后台任务类型以开启后台任务管理。后台任务类型被识别匹配后，资源管控会自动进行，即当系统资源紧张时，后台任务会自动降为最低优先级，保证前台任务的执行。
@@ -495,7 +495,7 @@ TiDB 的系统表 [`INFORMATION_SCHEMA.statements_summary`](/statement-summary-t
 
 ### 查看资源组的 RU 消耗
 
-从 v7.6.0 版本开始，TiDB 提供系统表 [`mysql.request_unit_by_group`](/mysql-schema.md#资源管控相关系统表) 存放各个资源组每日消耗的 RU 的历史记录。
+从 v7.6.0 版本开始，TiDB 提供系统表 [`mysql.request_unit_by_group`](/mysql-schema/mysql-schema.md#资源管控相关系统表) 存放各个资源组每日消耗的 RU 的历史记录。
 
 示例：
 

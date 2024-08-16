@@ -86,10 +86,10 @@ SQL 端口的配置。
 
 #### `proxy-protocol`
 
-+ 默认值：``
++ 默认值：`""`
 + 支持热加载：是，但只对新连接有效
-+ 可选值：``, `v2`
-+ 在 SQL 端口启用 [PROXY 协议](https://www.haproxy.org/download/1.8/doc/proxy-protocol.txt)。开启 PROXY 协议后能让 TiProxy 透传客户端真实的 IP 地址给 TiDB。`v2` 代表使用 PROXY 协议 v2 版本，`` 代表不使用 PROXY 协议。在 TiProxy 启用 PROXY 协议后，需要同时在 TiDB 服务器上启用 [PROXY 协议](/tidb-configuration-file.md#proxy-protocol)。
++ 可选值：`""`, `"v2"`
++ 在 SQL 端口启用 [PROXY 协议](https://www.haproxy.org/download/1.8/doc/proxy-protocol.txt)。开启 PROXY 协议后能让 TiProxy 透传客户端真实的 IP 地址给 TiDB。`"v2"` 代表使用 PROXY 协议 v2 版本，`""` 代表不使用 PROXY 协议。在 TiProxy 启用 PROXY 协议后，需要同时在 TiDB 服务器上启用 [PROXY 协议](/tidb-configuration-file.md#proxy-protocol)。
 
 ### api
 
@@ -103,10 +103,10 @@ HTTP 网关的配置。
 
 #### `proxy-protocol`
 
-+ 默认值：``
++ 默认值：`""`
 + 支持热加载：否
-+ 可选值：``, `v2`
-+ 在端口启用 [PROXY 协议](https://www.haproxy.org/download/1.8/doc/proxy-protocol.txt)。`v2` 代表使用 PROXY 协议 v2 版本，`` 代表不使用 PROXY 协议。
++ 可选值：`""`, `"v2"`
++ 在端口启用 [PROXY 协议](https://www.haproxy.org/download/1.8/doc/proxy-protocol.txt)。`"v2"` 代表使用 PROXY 协议 v2 版本，`""` 代表不使用 PROXY 协议。
 
 ### balance
 
@@ -147,7 +147,7 @@ TiProxy 负载均衡策略的配置。
 
 #### `filename`
 
-+ 默认值：``
++ 默认值：`""`
 + 支持热加载：是
 + 日志文件路径。非空值将启用日志记录到文件。使用 TiUP 部署时会自动设置文件路径。
 

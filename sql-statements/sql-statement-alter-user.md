@@ -21,8 +21,8 @@ UserSpec ::=
     Username AuthOption
 
 RequireClauseOpt ::=
-    ( 'REQUIRE' 'NONE' | 'REQUIRE' 'SSL' | 'REQUIRE' 'X509' | 'REQUIRE' RequireList )?  
-    
+    ( 'REQUIRE' 'NONE' | 'REQUIRE' 'SSL' | 'REQUIRE' 'X509' | 'REQUIRE' RequireList )?
+
 RequireList ::=
     ( "ISSUER" stringLit | "SUBJECT" stringLit | "CIPHER" stringLit | "SAN" stringLit | "TOKEN_ISSUER" stringLit )*
 
@@ -222,7 +222,8 @@ SELECT USER, JSON_EXTRACT(User_attributes, "$.resource_group") FROM mysql.user W
 
 ## 另请参阅
 
-* [Security Compatibility with MySQL](/security-compatibility-with-mysql.md)
+* [TiDB 用户账户管理](/user-account-management.md)
+* [TiDB 与 MySQL 安全特性差异](/security-compatibility-with-mysql.md)
 * [CREATE USER](/sql-statements/sql-statement-create-user.md)
 * [DROP USER](/sql-statements/sql-statement-drop-user.md)
 * [SHOW CREATE USER](/sql-statements/sql-statement-show-create-user.md)

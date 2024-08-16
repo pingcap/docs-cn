@@ -276,7 +276,7 @@ SQL 的基础信息：
 - `SAMPLE_USER`：执行这类 SQL 的用户名，多个用户名只取其中一个
 - `PLAN_DIGEST`：执行计划的 digest
 - `PLAN`：原执行计划，多条语句只取其中一条的执行计划
-- `BINARY_PLAN`：以二进制格式编码后的原执行计划，存在多条语句时，只取其中一条语句的执行计划。用 `select tidb_decode_binary_plan('xxx...')` SQL 语句可以解析出具体的执行计划。
+- `BINARY_PLAN`：以二进制格式编码后的原执行计划，存在多条语句时，只取其中一条语句的执行计划。用 [`SELECT tidb_decode_binary_plan('xxx...')`](/functions-and-operators/tidb-functions.md#tidb_decode_binary_plan) SQL 语句可以解析出具体的执行计划。
 - `PLAN_CACHE_HITS`：这类 SQL 语句命中 plan cache 的总次数
 - `PLAN_IN_CACHE`：这类 SQL 语句的上次执行是否命中了 plan cache
 - `PLAN_CACHE_UNQUALIFIED`：这类 SQL 语句没有命中 plan cache 的次数
