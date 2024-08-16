@@ -47,7 +47,6 @@ TiDB 版本：6.5.9
 
 + TiDB
 
-    - 修复大量创建表时，新表可能缺失 `stats_meta` 信息导致后续的查询估算无法获取准确行数信息的问题 [#36004](https://github.com/pingcap/tidb/issues/36004) @[xuyifangreeneyes](https://github.com/xuyifangreeneyes)
     - 修复已删除的表仍然会计入到 Grafana 的 `Stats Healthy Distribution` 面板的问题 [#39349](https://github.com/pingcap/tidb/issues/39349) @[xuyifangreeneyes](https://github.com/xuyifangreeneyes)
     - 修复当查询涉及 `MemTableScan` 算子时，TiDB 没有处理 SQL 语句中 `WHERE <column_name>` 过滤条件的问题 [#40937](https://github.com/pingcap/tidb/issues/40937) @[zhongzc](https://github.com/zhongzc)
     - 修复当子查询中的 `HAVING` 子句包含关联列时，查询结果可能出错的问题 [#51107](https://github.com/pingcap/tidb/issues/51107) @[hawkingrei](https://github.com/hawkingrei)
