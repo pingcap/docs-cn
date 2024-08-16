@@ -182,6 +182,8 @@ TiDB 版本：8.3.0
 
     从 v8.3.0 开始，TiDB 会在日志中分阶段打印初始统计信息的加载进度，以便了解运行情况。为了给外部工具提供格式化的结果，TiDB 增加了额外的[监控 API](/tidb-monitoring-api.md)，以便能够在启动阶段随时获取初始统计信息的加载进度。
 
+* 展示资源组信息 [#8444](https://github.com/tikv/pd/issues/8444) @[nolouch](https://github.com/nolouch)
+
 ### 安全
 
 * 增强 PD 日志脱敏 [#8305](https://github.com/tikv/pd/issues/8305) @[JmPotato](https://github.com/JmPotato) **tw@hfxsd** <!--1861-->
@@ -218,7 +220,7 @@ TiDB 版本：8.3.0
 
 ### 行为变更
 
-* 行为变更 1
+* 为了避免命令错误使用，pd-ctl 取消了前缀匹配的机制，例如 `store remove-tombstone` 不能通过 `store remove` 来调用 [#8413](https://github.com/tikv/pd/issues/8413) @[lhy1024](https://github.com/lhy1024)
 * 行为变更 2
 
 ### MySQL 兼容性
@@ -302,6 +304,14 @@ TiDB 版本：8.3.0
     - PD 微服务添加了 --name 启动参数，以便部署时更精确地显示服务名称 [#7995](https://github.com/tikv/pd/issues/7995) @[HuSharp](https://github.com/HuSharp)
     - 可以通过 region 数量动态调整 `PatrolRegionScanLimit`，减少扫描 region 需要的时间 [#7963](https://github.com/tikv/pd/issues/7963) @[lhy1024](https://github.com/lhy1024)
 
++ TiKV <!--tw@hfxsd: 5 notes-->
+
+    - 优化 async-io 的 batching 的能力，减少对 IO bandwidth 资源的使用 [#16907](https://github.com/tikv/tikv/issues/16907) @[LykxSassinator](https://github.com/LykxSassinator)
+    - 重新设计了 CDC  的 delegate 和 downstream 模块以更好的支持 partial subscription [#16362](https://github.com/tikv/tikv/issues/16362) @[hicqu](https://github.com/hicqu)
+    - 减少单个 slow log 的大小  [#17294](https://github.com/tikv/tikv/issues/17294) @(Connor1996)[https://github.com/Connor1996]
+    - 增加 `min safe ts` metric [#17307](https://github.com/tikv/tikv/issues/17307) @[mittalrishabh](https://github.com/mittalrishabh)
+    - 减少 peer message channel 的内存使用 [#16229](https://github.com/tikv/tikv/issues/16229) @[Connor1996](https://github.com/Connor1996)
+    
 + TiFlash <!--tw@lilin90: 1 note-->
 
     - 支持生成 svg 格式的堆内存分析结果 [#9320](https://github.com/pingcap/tiflash/issues/9320) @[CalvinNeo](https://github.com/CalvinNeo)
@@ -340,16 +350,16 @@ TiDB 版本：8.3.0
     - 修复了 `ADMIN CANCEL DDL JOBS` 可能导致 DDL 失败的问题 [#54687](https://github.com/pingcap/tidb/issues/54687) @[lance6716](https://github.com/lance6716)
     - 修复了库数量较多情况下 `FLASHBACK DATABASE` 死循环的问题 [#54915](https://github.com/pingcap/tidb/issues/54915) @[lance6716](https://github.com/lance6716)
     - 修复了来自 DM 同步的超过索引列最大长度的表时同步失败的问题 [#55138](https://github.com/pingcap/tidb/issues/55138) @[lance6716](https://github.com/lance6716) <!--tw@hfxsd: the following 12 notes-->
-    - 修复打开 `tidb_enable_inl_join_inner_multi_pattern` 时，执行 SQL 语句可能报错 `runtime error: index out of range` 的问题 [#54535](https://github.com/pingcap/tidb/issues/54535) @[joechenrh](https://github.com/joechenrh)
+    - 修复开启 `tidb_enable_inl_join_inner_multi_pattern` 时，执行 SQL 语句可能报错 `runtime error: index out of range` 的问题 [#54535](https://github.com/pingcap/tidb/issues/54535) @[joechenrh](https://github.com/joechenrh)
     - 修复 TiDB 在统计信息初始化的过程中，无法通过 `CTRL+C` 的方式退出 TiDB 的问题 [#54589](https://github.com/pingcap/tidb/issues/54589) @[tiancaiamao](https://github.com/tiancaiamao)
-    - 废弃 `inl_merge_join` Optimizer Hint. [#54064](https://github.com/pingcap/tidb/issues/54064) @[AilinKid](https://github.com/AilinKid)
-    - 修复关联子查询中包含 `WITH ROLLUP` 时可能 panic 并报错 `runtime error: index out of range` 的问题 [#54983](https://github.com/pingcap/tidb/issues/54983) @[AilinKid](https://github.com/AilinKid)
+    - 修复 `INL_MERGE_JOIN` Optimizer Hint 返回错误结果的问题，将其废弃 [#54064](https://github.com/pingcap/tidb/issues/54064) @[AilinKid](https://github.com/AilinKid)
+    - 修复关联子查询中包含 `WITH ROLLUP` 时 TiDB 可能 panic 并报错 `runtime error: index out of range` 的问题 [#54983](https://github.com/pingcap/tidb/issues/54983) @[AilinKid](https://github.com/AilinKid)
     - 修复当 SQL 查询的过滤条件中包含虚拟列，且执行条件中包含 `UnionScan` 时，谓词无法正常下推的问题 [#54870](https://github.com/pingcap/tidb/issues/54870) @[qw4990](https://github.com/qw4990)
-    - 修复打开 `tidb_enable_inl_join_inner_multi_pattern` 时，执行 SQL 语句可能报错 `runtime error: invalid memory address or nil pointer dereference` 的问题 [#55169](https://github.com/pingcap/tidb/issues/55169) @[hawkingrei](https://github.com/hawkingrei)
-    - 修复包含 `UNION` 的查询语句结果可能错误的问题 [#52985](https://github.com/pingcap/tidb/issues/52985) @[XuHuaiyu](https://github.com/XuHuaiyu)
+    - 修复开启 `tidb_enable_inl_join_inner_multi_pattern` 时，执行 SQL 语句可能报错 `runtime error: invalid memory address or nil pointer dereference` 的问题 [#55169](https://github.com/pingcap/tidb/issues/55169) @[hawkingrei](https://github.com/hawkingrei)
+    - 修复包含 `UNION` 的查询语句可能返回错误结果的问题 [#52985](https://github.com/pingcap/tidb/issues/52985) @[XuHuaiyu](https://github.com/XuHuaiyu)
     - 修复 `mysql.stats_histograms` 表的 `tot_col_size` 列可能为负数的潜在风险 [#55126](https://github.com/pingcap/tidb/issues/55126) @[qw4990](https://github.com/qw4990)
-    - 修复 `columnEvaluator` 无法识别输入 chunk 中的列引用，导致执行 SQL 报错 `runtime error: index out of range` 的问题。 [#53713](https://github.com/pingcap/tidb/issues/53713) @[AilinKid](https://github.com/AilinKid)
-    - `STATS_EXTENDED` 不再是保留关键字 [#39573](https://github.com/pingcap/tidb/issues/39573) @[wddevries](https://github.com/wddevries)
+    - 修复 `columnEvaluator` 无法识别输入 chunk 中的列引用，导致执行 SQL 报错 `runtime error: index out of range` 的问题 [#53713](https://github.com/pingcap/tidb/issues/53713) @[AilinKid](https://github.com/AilinKid)
+    - 修复 `STATS_EXTENDED` 变成保留关键字的问题 [#39573](https://github.com/pingcap/tidb/issues/39573) @[wddevries](https://github.com/wddevries)
     - 修复 `tidb_low_resolution` 开启时，`select for update` 可以被执行的问题 [#54684](https://github.com/pingcap/tidb/issues/54684) @[cfzjywxk](https://github.com/cfzjywxk)
     - 修复 `tidb_redact_log` 开启时，内部 SQL 在慢日志里无法显示的问题 [#54190](https://github.com/pingcap/tidb/issues/54190) @[lcwangchao](https://github.com/lcwangchao)
     - (dup): release-7.5.3.md > 错误修复> TiDB - 修复事务占用的内存可能被多次重复统计的问题 [#53984](https://github.com/pingcap/tidb/issues/53984) @[ekexium](https://github.com/ekexium)
@@ -401,6 +411,14 @@ TiDB 版本：8.3.0
     - (dup): release-8.1.1.md > 错误修复> TiFlash - 修复 TiFlash 与任意 PD 之间发生网络分区（即网络连接断开），可能导致读请求超时报错的问题 [#9243](https://github.com/pingcap/tiflash/issues/9243) @[Lloyd-Pottiger](https://github.com/Lloyd-Pottiger)
     - 修复在存算分离架构下，TiFlash 写节点可能重启失败的问题 [#9282](https://github.com/pingcap/tiflash/issues/9282) @[JaySon-Huang](https://github.com/JaySon-Huang)
     - 修复在存算分离架构下，TiFlash 写节点的读快照可能没有被及时释放的问题 [#9298](https://github.com/pingcap/tiflash/issues/9298) @[JinheLin](https://github.com/JinheLin)
+
++ TiKV <!--tw@hfxsd: 5 notes-->
+
+    - 修复了 grafana TiKV 组件中的 `Ingestion picked level` 和 `Compaction Job Size(files)` 显示不正确的问题 [#15990](https://github.com/tikv/tikv/issues/15990) @[Connor1996](https://github.com/Connor1996)
+    - 修复了 `cancel_generating_snap` 错误更新 `snap_tried_cnt` 导致 TiKV panic 的问题 [#17226](https://github.com/tikv/tikv/issues/17226) @[hbisheng](https://github.com/hbisheng)
+    - 修复了 `Ingest SST duration seconds` 统计 tag 错误的问题 [#17239](https://github.com/tikv/tikv/issues/17239) @[LykxSassinator](https://github.com/LykxSassinator)
+    - 修复了 CPU profiling flag 在出现错误时没有正确重置的问题 [#17234](https://github.com/tikv/tikv/issues/17234) @[Connor1996](https://github.com/Connor1996)
+    - 修复了旧版本 (< 7.1) 和之后版本 bloom filter 无法兼容的问题 [#17272](https://github.com/tikv/tikv/issues/17272) @[v01dstar](https://github.com/v01dstar)
 
 + Tools
 
