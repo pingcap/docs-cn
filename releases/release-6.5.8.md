@@ -48,7 +48,6 @@ TiDB 版本：6.5.8
     - 修复使用 `PREPARE` 方式执行 `SELECT INTO OUTFILE` 语句时，应报错却返回执行成功的问题 [#49166](https://github.com/pingcap/tidb/issues/49166) @[qw4990](https://github.com/qw4990)
     - 修复执行包含 `ORDER BY` 的 `UNIQUE` 索引点查时可能报错的问题 [#49920](https://github.com/pingcap/tidb/issues/49920) @[jackysp](https://github.com/jackysp)
     - 修复开启 `tidb_multi_statement_mode` 模式时，使用索引点查的 `DELETE` 和 `UPDATE` 语句可能会报错的问题 [#50012](https://github.com/pingcap/tidb/issues/50012) @[tangenta](https://github.com/tangenta)
-    - 修复在短时间内执行大量 `CREATE TABLE` 语句时，TiDB 可能不会同步建立这些表的新统计信息元信息的问题 [#36004](https://github.com/pingcap/tidb/issues/36004) @[xuyifangreeneyes](https://github.com/xuyifangreeneyes)
     - 修复 `LEADING` hint 在 `UNION ALL` 语句中无法生效的问题 [#50067](https://github.com/pingcap/tidb/issues/50067) @[hawkingrei](https://github.com/hawkingrei)
     - 修复使用旧接口导致表的元信息可能不一致的问题 [#49751](https://github.com/pingcap/tidb/issues/49751) @[hawkingrei](https://github.com/hawkingrei)
     - 修复常见 hint 在 `UNION ALL` 语句中未生效的问题 [#50068](https://github.com/pingcap/tidb/issues/50068) @[hawkingrei](https://github.com/hawkingrei)
