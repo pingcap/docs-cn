@@ -247,12 +247,7 @@ TiDB 版本：8.3.0
 |----------------|--------------------|------|------------------------------------|
 | TiDB | [`tikv-client.batch-policy`](/tidb-configuration-file.md#batch-policy-从-v830-版本开始引入) | 新增 | 控制 TiDB 向 TiKV 发送请求时的批处理策略。 |
 | PD   |  [`security.redact-info-log`](/pd-configuration-file.md#redact-info-log-从-v50-版本开始引入) |  修改 | 支持将 PD 配置项 `security.redact-info-log` 的值设置为 `marker`，使用标记符号 `‹ ›` 标记出敏感信息，而不是直接隐藏，以便你能够自定义脱敏规则。  |
-| PD   | [`schedule.max-merge-region-keys`](/pd-configuration-file.md#max-merge-region-keys) |  修改 | 默认值从 `200000` 修改为 `540000`，以兼容 `schedule.max-merge-region-size` 的默认值调整，减小随着集群规模增大后 Region 个数过多带来的管理压力。 |
-| PD   | [`schedule.max-merge-region-size`](/pd-configuration-file.md#max-merge-region-size) |  修改 | 将默认值从 `20` MiB 修改为 `54` MiB，以兼容 TiKV 侧默认 Region 大小扩大为 `256` MiB 的调整，减小随着集群规模增大后 Region 个数过多带来的管理压力。 |
 | TiKV  | [`security.redact-info-log`](/tikv-configuration-file.md#redact-info-log-从-v408-版本开始引入)  | 修改 | 支持将 TiKV 配置项 `security.redact-info-log` 的值设置为 `marker`，使用标记符号 `‹ ›` 标记出敏感信息，而不是直接隐藏，以便你能够自定义脱敏规则。   |
-| TiKV  | [`coprocessor.region-split-size`](/tikv-configuration-file.md#region-split-size)  | 修改 | 默认值从 `96` MiB 修改为 `256` MiB，减小随着集群规模增大后 Region 个数过多带来的管理压力。   |
-| TiKV  | [`coprocessor.region-max-size`](/tikv-configuration-file.md#region-max-size)  | 修改 | 默认值从 `144` MiB 修改为 `384` MiB，以兼容 `coprocessor.region-split-size` 扩大为 `256` MiB 的修改。   |
-| TiKV  | [`backup.sst-max-size`](/tikv-configuration-file.md#sst-max-size)  | 修改 | 默认值从 `144` MiB 修改为 `384` MiB，以兼容 `coprocessor.region-max-size` 扩大为 `384` MiB 的修改。   |
 | TiFlash   | [`security.redact-info-log`](/tiflash/tiflash-configuration.md#配置文件-tiflash-learnertoml) | 修改 | 支持将 TiFlash Learner 配置项 `security.redact-info-log` 的值设置为 `marker`，使用标记符号 `‹ ›` 标记出敏感信息，而不是直接隐藏，以便你能够自定义脱敏规则。   |
 |  BR  |  [`--allow-pitr-from-incremental`](/br/br-incremental-guide.md#使用限制) | 新增  |  控制增量备份和后续的日志备份是否兼容。默认值为 `true`，即增量备份兼容后续的日志备份。兼容的情况下，增量恢复开始前会对需要回放的 DDL 进行严格检查。 |
 
