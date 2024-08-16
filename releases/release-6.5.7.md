@@ -44,7 +44,7 @@ TiDB 版本：6.5.7
 
 + TiDB
 
-    - 修复创建表之后 `stats_meta` 未创建的问题 [#38189](https://github.com/pingcap/tidb/issues/38189) @[xuyifangreeneyes](https://github.com/xuyifangreeneyes)
+    - 修复在短时间内执行大量 `CREATE TABLE` 语句时，TiDB 可能不会同步创建这些表的新统计信息元信息，导致后续的查询估算无法获取准确行数信息的问题 [#36004](https://github.com/pingcap/tidb/issues/36004) [#38189](https://github.com/pingcap/tidb/issues/38189) @[xuyifangreeneyes](https://github.com/xuyifangreeneyes)
     - 修复 TiDB server 在使用企业插件审计日志时可能占用大量资源的问题 [#49273](https://github.com/pingcap/tidb/issues/49273) @[lcwangchao](https://github.com/lcwangchao)
     - 修复 `ErrLoadDataInvalidURI`（无效的 S3 URI 错误）报错中的信息内容 [#48164](https://github.com/pingcap/tidb/issues/48164) @[lance6716](https://github.com/lance6716)
     - 修复 `tidb_server_memory_limit` 导致内存长期压力较高时，TiDB CPU 利用率过高的问题 [#48741](https://github.com/pingcap/tidb/issues/48741) @[XuHuaiyu](https://github.com/XuHuaiyu)
