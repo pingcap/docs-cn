@@ -8,7 +8,7 @@ summary: TiDB Binlog 集群部署需要满足服务器硬件配置要求。推�
 
 > **警告：**
 >
-> 从 v8.3.0 开始，TiDB Binlog 被废弃，并计划在未来版本中移除。请使用 [TiCDC](/ticdc/ticdc-overview.md) 进行增量数据同步。
+> 从 v7.5.0 开始，[TiDB Binlog](/tidb-binlog/tidb-binlog-overview.md) 的数据同步功能被废弃。从 v8.3.0 开始，TiDB Binlog 被完全废弃，并计划在未来版本中移除。请使用 [TiCDC](/ticdc/ticdc-overview.md) 进行增量数据同步。
 
 ## 服务器要求
 

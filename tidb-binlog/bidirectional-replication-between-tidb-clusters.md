@@ -8,7 +8,7 @@ summary: 本文介绍了如何使用 TiDB Binlog 实现集群间双向同步，�
 
 > **警告：**
 >
-> - 从 v8.3.0 开始，TiDB Binlog 被废弃，并计划在未来版本中移除。请使用 [TiCDC](/ticdc/ticdc-overview.md) 作为增量数据同步的替代方案。如有 Point-in-Time Recovery (PITR) 场景的需求，请使用 [PITR](/br/br-pitr-guide.md)。
+> - 从 v7.5.0 开始，[TiDB Binlog](/tidb-binlog/tidb-binlog-overview.md) 的数据同步功能被废弃。从 v8.3.0 开始，TiDB Binlog 被完全废弃，并计划在未来版本中移除。请使用 [TiCDC](/ticdc/ticdc-overview.md) 作为增量数据同步的替代方案。如有 Point-in-Time Recovery (PITR) 场景的需求，请使用 [PITR](/br/br-pitr-guide.md)。
 > - TiDB Binlog 与 TiDB v5.0 开始引入的一些特性不兼容，无法一起使用，详情参照[注意事项](/tidb-binlog/tidb-binlog-overview.md#注意事项)。
 
 本文档介绍如何将一个 TiDB 集群的数据双向同步到另一个 TiDB 集群、双向同步的实现原理、如何开启双向同步、以及如何同步 DDL 操作。
