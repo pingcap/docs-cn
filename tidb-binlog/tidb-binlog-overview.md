@@ -1,7 +1,7 @@
 ---
 title: TiDB Binlog 简介
 aliases: ['/docs-cn/dev/tidb-binlog/tidb-binlog-overview/','/docs-cn/dev/reference/tidb-binlog/overview/','/docs-cn/dev/reference/tidb-binlog-overview/','/docs-cn/dev/reference/tools/tidb-binlog/overview/']
-summary: TiDB Binlog 是用于收集 TiDB 的 binlog 并提供实时备份和同步功能的商业工具。它支持数据同步和实时备份恢复功能。从 v8.3.0 开始，TiDB Binlog 被废弃，请使用 TiCDC 作为增量数据同步的替代方案。
+summary: TiDB Binlog 是用于收集 TiDB 的 binlog 并提供实时备份和同步功能的商业工具。它支持数据同步和实时备份恢复功能。从 v8.3.0 开始，TiDB Binlog 被完全废弃，请使用 TiCDC 作为增量数据同步的替代方案。
 ---
 
 # TiDB Binlog 简介
