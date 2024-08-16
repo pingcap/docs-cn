@@ -356,8 +356,7 @@ TiDB 版本：8.3.0
     - 修复 `columnEvaluator` 无法识别输入 chunk 中的列引用，导致执行 SQL 报错 `runtime error: index out of range` 的问题。 [#53713](https://github.com/pingcap/tidb/issues/53713) @[AilinKid](https://github.com/AilinKid)
     - `STATS_EXTENDED` 不再是保留关键字 [#39573](https://github.com/pingcap/tidb/issues/39573) @[wddevries](https://github.com/wddevries)
     - 修复 `tidb_low_resolution` 开启时，`select for update` 可以被执行的问题 [#54684](https://github.com/pingcap/tidb/issues/54684) @[cfzjywxk](https://github.com/cfzjywxk)
-    - note [#issue](https://github.com/pingcap/tidb/issues/${issue-id}) @[贡献者 GitHub ID](https://github.com/${github-id})
-    - note [#issue](https://github.com/pingcap/tidb/issues/${issue-id}) @[贡献者 GitHub ID](https://github.com/${github-id})
+    - 修复 `tidb_redact_log` 开启时，内部 SQL 在慢日志里无法显示的问题 [#54190](https://github.com/pingcap/tidb/issues/54190) @[lcwangchao](https://github.com/lcwangchao)
     - (dup): release-7.5.3.md > 错误修复> TiDB - 修复事务占用的内存可能被多次重复统计的问题 [#53984](https://github.com/pingcap/tidb/issues/53984) @[ekexium](https://github.com/ekexium)
     - (dup): release-7.5.3.md > 错误修复> TiDB - 修复使用 `SHOW WARNINGS;` 获取警告时可能导致 panic 的问题 [#48756](https://github.com/pingcap/tidb/issues/48756) @[xhebox](https://github.com/xhebox)
     - (dup): release-7.5.3.md > 错误修复> TiDB - 修复加载索引统计信息可能会造成内存泄漏的问题 [#54022](https://github.com/pingcap/tidb/issues/54022) @[hi-rustin](https://github.com/hi-rustin)
@@ -376,7 +375,6 @@ TiDB 版本：8.3.0
     - (dup): release-8.1.1.md > 错误修复> TiDB - 修复可以创建非严格自增的 RANGE 分区表的问题 [#54829](https://github.com/pingcap/tidb/issues/54829) @[Defined2014](https://github.com/Defined2014)
     - (dup): release-8.1.1.md > 错误修复> TiDB - 修复当 SQL 异常中断时，`INDEX_HASH_JOIN` 无法正常退出的问题 [#54688](https://github.com/pingcap/tidb/issues/54688) @[wshwsh12](https://github.com/wshwsh12)
     - (dup): release-8.1.1.md > 错误修复> TiDB - 修复使用分布式框架添加索引期间出现网络分区可能导致数据索引不一致的问题 [#54897](https://github.com/pingcap/tidb/issues/54897) @[tangenta](https://github.com/tangenta)
-    - 修复 `tidb_redact_log` 开启时，内部 SQL 在慢日志里无法显示的问题 [#54190](https://github.com/pingcap/tidb/issues/54190) @[lcwangchao](https://github.com/lcwangchao)
 
 + PD <!--tw@qiancai: 6 notes-->
 
@@ -397,7 +395,7 @@ TiDB 版本：8.3.0
     
 + TiFlash <!--tw@hfxsd: 4 notes-->
 
-    - 修复了将字符串转换为带时区或非法字符的日期时间时产生错误结果的漏洞 [#8754](https://github.com/pingcap/tiflash/issues/8754) @[solotzg](https://github.com/solotzg)
+    - 修复使用 `CAST()` 函数将字符串转换为带时区或非法字符的日期时间时结果错误的问题 [#8754](https://github.com/pingcap/tiflash/issues/8754) @[solotzg](https://github.com/solotzg)
     - 修复 TiFlash 与任意 PD 发生网络分区后，可能导致读请求超时报错的问题 [#9243](https://github.com/pingcap/tiflash/issues/9243) @[Lloyd-Pottiger](https://github.com/Lloyd-Pottiger)
     - note [#issue](https://github.com/pingcap/tiflash/issues/${issue-id}) @[贡献者 GitHub ID](https://github.com/${github-id})
     - (dup): release-7.5.3.md > 错误修复> TiFlash - 修复跨数据库对含空分区的分区表执行 `RENAME TABLE ... TO ...` 后，TiFlash 可能 panic 的问题 [#9132](https://github.com/pingcap/tiflash/issues/9132) @[JaySon-Huang](https://github.com/JaySon-Huang)
