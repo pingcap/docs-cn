@@ -293,15 +293,15 @@ TiDB 版本：8.3.0
 
 + PD <!--tw@qiancai: 9 notes-->
 
-    - 可以通过 pd-ctl 修改 evict-leader-scheduler 的 batch 配置，来提升 evict leader 的速度 [#8265](https://github.com/tikv/pd/issues/8265) @[rleungx](https://github.com/rleungx)
-    - Label distribution 面板新增了 store_id，可以看到不同的 label 对应的 store [#8337](https://github.com/tikv/pd/issues/8337) @[HuSharp](https://github.com/HuSharp)
-    - 当指定的资源组不存在时，可回退到默认资源组 [#8388](https://github.com/tikv/pd/issues/8388) @[JmPotato](https://github.com/JmPotato)
-    - 使用 pd-ctl 展示 region 信息时，会展示 approximate_kv_size [#8412](https://github.com/tikv/pd/issues/8412) @[zeminzhou](https://github.com/zeminzhou)
-    - 优化调用 API 删除 ttl 配置时的输出信息 [#8450](https://github.com/tikv/pd/issues/8450) @[lhy1024](https://github.com/lhy1024)
-    - 优化大查询读请求消耗 RU 的行为，减少对其他请求的影响 [#8457](https://github.com/tikv/pd/issues/8457) @[nolouch](https://github.com/nolouch)
-    - 优化了 pd 微服务设置错误的报错信息 [#52912](https://github.com/pingcap/tidb/issues/52912) @[rleungx](https://github.com/rleungx)
-    - PD 微服务添加了 --name 启动参数，以便部署时更精确地显示服务名称 [#7995](https://github.com/tikv/pd/issues/7995) @[HuSharp](https://github.com/HuSharp)
-    - 可以通过 region 数量动态调整 `PatrolRegionScanLimit`，减少扫描 region 需要的时间 [#7963](https://github.com/tikv/pd/issues/7963) @[lhy1024](https://github.com/lhy1024)
+    - 支持通过 `pd-ctl` 修改 `evict-leader-scheduler` 的 `batch` 配置，以提升驱逐 Leader 的速度 [#8265](https://github.com/tikv/pd/issues/8265) @[rleungx](https://github.com/rleungx)
+    -  Grafana 上的 `Label distribution` 面板新增 ` store_id` 监控指标，用于显示不同的 label 对应的 store ID [#8337](https://github.com/tikv/pd/issues/8337) @[HuSharp](https://github.com/HuSharp)
+    - 当指定的资源组不存在时，支持回退到默认资源组 [#8388](https://github.com/tikv/pd/issues/8388) @[JmPotato](https://github.com/JmPotato)
+    - 使用 `pd-ctl` 的 `region` 命令显示 Region 信息时，输出中新增 `approximate_kv_size` 信息 [#8412](https://github.com/tikv/pd/issues/8412) @[zeminzhou](https://github.com/zeminzhou)
+    - 优化调用 API 删除 TTL 配置时的输出信息 [#8450](https://github.com/tikv/pd/issues/8450) @[lhy1024](https://github.com/lhy1024)
+    - 优化大查询读请求消耗 RU 的行为，以减少对其他请求的影响 [#8457](https://github.com/tikv/pd/issues/8457) @[nolouch](https://github.com/nolouch)
+    - 优化了 PD 微服务设置错误时返回的报错信息 [#52912](https://github.com/pingcap/tidb/issues/52912) @[rleungx](https://github.com/rleungx)
+    - PD 微服务新增 `--name` 启动参数，以便部署时更精确地显示服务名称 [#7995](https://github.com/tikv/pd/issues/7995) @[HuSharp](https://github.com/HuSharp)
+    - 支持通过 Region 数量动态调整 `PatrolRegionScanLimit`，以减少扫描 Region 所需的时间 [#7963](https://github.com/tikv/pd/issues/7963) @[lhy1024](https://github.com/lhy1024)
 
 + TiKV <!--tw@hfxsd: 5 notes-->
 
