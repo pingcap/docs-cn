@@ -5197,7 +5197,7 @@ Query OK, 0 rows affected, 1 warning (0.00 sec)
 - 类型：枚举型
 - 默认值：`force_preagg`
 - 可选值：`force_preagg`、`force_streaming`、`auto`
-- 该变量用于控制下推到 TiFlash 的两阶段或三阶段 HashAgg 的第一阶段采用哪种预聚合策略：
+- 该变量用于控制下推到 TiFlash 的两阶段或三阶段 HashAgg 在第一阶段采用哪种预聚合策略：
     - `force_preagg`：TiFlash 在第一阶段的 HashAgg 中强制进行预聚合操作，与 v8.3.0 之前版本的行为一致
     - `force_streaming`：TiFlash 直接将数据发送到下一阶段的 HashAgg，不进行预聚合操作
     - `auto`：TiFlash 根据当前工作负载的聚合度自动选择是否进行预聚合操作
