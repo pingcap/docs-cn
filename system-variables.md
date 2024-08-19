@@ -5243,6 +5243,19 @@ Query OK, 0 rows affected, 1 warning (0.00 sec)
 > - 如果 TiDB 节点未设置[区域属性](/schedule-replicas-by-topology-labels.md#设置-tidb-的-labels可选)，并且 TiFlash 副本选择策略不是 `all_replicas` 时，TiFlash 引擎将忽略 TiFlash 副本选择策略，使用所有 TiFlash 副本进行 TiFlash 查询，并且返回警告 `The variable tiflash_replica_read is ignored`。
 > - 如果 TiFlash 节点未设置[区域属性](/schedule-replicas-by-topology-labels.md#设置-tikv-和-tiflash-的-labels)，则将其视为不属于任何区域的节点。
 
+### `tiflash_hashagg_preaggregation_mode` <span class="version-mark">从 v8.3.0 版本开始引入</span>
+
+- 作用域：SESSION | GLOBAL
+- 是否持久化到集群：是
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：是
+- 类型：枚举型
+- 默认值：`force_preagg`
+- 可选值：`force_preagg`、`force_streaming`、`auto`
+- 该变量用于控制下推到 TiFlash 的两阶段或三阶段 HashAgg 在第一阶段采用哪种预聚合策略：
+    - `force_preagg`：TiFlash 在第一阶段的 HashAgg 中强制进行预聚合操作，与 v8.3.0 之前版本的行为一致
+    - `force_streaming`：TiFlash 直接将数据发送到下一阶段的 HashAgg，不进行预聚合操作
+    - `auto`：TiFlash 根据当前工作负载的聚合度自动选择是否进行预聚合操作
+
 ### `tikv_client_read_timeout` <span class="version-mark">从 v7.4.0 版本开始引入</span>
 
 - 作用域：SESSION | GLOBAL
