@@ -261,6 +261,7 @@ TiDB 版本：8.3.0
 
 * 以下为从 v8.3.0 开始已废弃的功能：
 
+    * 从 v7.5.0 开始，[TiDB Binlog](/tidb-binlog/tidb-binlog-overview.md) 的数据同步功能被废弃。从 v8.3.0 开始，TiDB Binlog 被完全废弃，并计划在未来版本中移除。如需进行增量数据同步，请使用 [TiCDC](/ticdc/ticdc-overview.md)。如需按时间点恢复 (point-in-time recovery, PITR)，请使用 [PITR](/br/br-pitr-guide.md)。
     * 从 v8.3.0 开始，系统变量 [`tidb_enable_column_tracking`](/system-variables.md#tidb_enable_column_tracking-从-v540-版本开始引入) 被废弃。TiDB 默认收集 [predicate columns](/glossary.md#predicate-columns) 的统计信息。更多信息，参见 [`tidb_analyze_column_options`](/system-variables.md#tidb_analyze_column_options-从-v830-版本开始引入)。
 
 * 以下为计划将在未来版本中废弃的功能：
@@ -393,7 +394,7 @@ TiDB 版本：8.3.0
     - 修复极端场景下可能导致获取 TSO 慢的问题 [#8500](https://github.com/tikv/pd/issues/8500) @[rleungx](https://github.com/rleungx)
     - 修复了大规模集群下可能发生数据竞争的问题 [#8386](https://github.com/tikv/pd/issues/8386) @[rleungx](https://github.com/rleungx)
     - 修复 runaway 只统计 coprocessor 过程时间消耗的 bug，增加 TiDB 侧的时间统计 [#51325](https://github.com/pingcap/tidb/issues/51325) @[HuSharp](https://github.com/HuSharp)
-    
+
 + TiFlash <!--tw@hfxsd: 4 notes-->
 
     - 修复使用 `CAST()` 函数将字符串转换为带时区或非法字符的日期时间时结果错误的问题 [#8754](https://github.com/pingcap/tiflash/issues/8754) @[solotzg](https://github.com/solotzg)
