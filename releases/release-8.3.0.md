@@ -24,20 +24,20 @@ TiDB 版本：8.3.0
 <tbody>
   <tr>
     <td rowspan="3">可扩展性和性能</td>
-    <td> <a href="https://docs.pingcap.com/zh/tidb/v8.3/partitioned-table#全局索引">分区表全局索引（实验特性）</a></td> **tw@hfxsd** <!--1531-->
+    <td> <a href="https://docs.pingcap.com/zh/tidb/v8.3/partitioned-table#全局索引">分区表全局索引（实验特性）</a></td>
     <td>全局索引能够有效提升对非分区键的检索效率，同时也解除了分区键一定要包含唯一键 (Unique Key) 的限制，扩展了 TiDB 分区表的使用场景，也能够避免数据迁移可能遇到的部分应用改造工作。</td>
   </tr>
   <tr>
-    <td><a href="https://docs.pingcap.com/zh/tidb/v8.3/system-variables#tidb_opt_projection_push_down-从-v610-版本开始引入">默认允许将 <code>Projection</code> 算子下推到存储引擎</a></td>**tw@Oreoxmt** <!--1872-->
+    <td><a href="https://docs.pingcap.com/zh/tidb/v8.3/system-variables#tidb_opt_projection_push_down-从-v610-版本开始引入">默认允许将 <code>Projection</code> 算子下推到存储引擎</a></td>
     <td><code>Projection</code> 算子下推可以将负载分散到存储节点，同时减少节点间的数据传输。这有助于降低部分 SQL 的执行时间，提升数据库的整体性能。</td>
   </tr>
   <tr>
-    <td><a href="https://docs.pingcap.com/zh/tidb/v8.3/statistics#收集部分列的统计信息">统计信息收集忽略不必要的列</a></td>**tw@lilin90** <!--1753-->
+    <td><a href="https://docs.pingcap.com/zh/tidb/v8.3/statistics#收集部分列的统计信息">统计信息收集忽略不必要的列</a></td>
     <td>在保证优化器能够获取到必要信息的前提下，加快了统计信息收集的速度，提升统计信息的时效性，进而保证选择最优的执行计划，提升集群性能。同时也降低了系统开销，改善了资源利用率。</td>
   </tr>
   <tr>
     <td rowspan="1">稳定性与高可用</td>
-    <td><a href="https://docs.pingcap.com/zh/tidb/v8.3/tiproxy-overview">TiProxy 内置虚拟 IP 管理</a></td>**tw@Oreoxmt** <!--1887-->
+    <td><a href="https://docs.pingcap.com/zh/tidb/v8.3/tiproxy-overview">TiProxy 内置虚拟 IP 管理</a></td>
     <td>TiProxy 内置了虚拟 IP 管理功能，配置后支持自动切换虚拟 IP，而无需依赖外部平台或工具。这简化了 TiProxy 的部署，降低了数据库接入层的复杂度。</td>
   </tr>
 </tbody>
@@ -94,7 +94,7 @@ TiDB 版本：8.3.0
     - INFORMATION_SCHEMA.KEY_COLUMN_USAGE
     - INFORMATION_SCHEMA.REFERENTIAL_CONSTRAINTS
 
-    在 v8.3.0 版本优化了以下系统表的查询性能，相比 v8.2.0 性能有数倍的提升：
+  在 v8.3.0 版本优化了以下系统表的查询性能，相比 v8.2.0 性能有数倍的提升：
 
     - INFORMATION_SCHEMA.CHECK_CONSTRAINTS
     - INFORMATION_SCHEMA.COLUMNS
@@ -162,7 +162,7 @@ TiDB 版本：8.3.0
 
 * 支持将 `SELECT LOCK IN SHARE MODE` 升级为排它锁 [#54999](https://github.com/pingcap/tidb/issues/54999) @[cfzjywxk](https://github.com/cfzjywxk) **tw@hfxsd** <!--1871-->
 
-    TiDB 暂不支持 `SELECT LOCK IN SHARE MODE`。在 v8.3.0 版本中，TiDB 支持将 `SELECT LOCK IN SHARE MODE` 升级为排它锁，实现对 `SELECT LOCK IN SHARE MODE` 语法的支持。你可以使用系统变量 [`tidb_enable_shared_lock_promotion`](/system-variables.md#tidb_enable_shared_lock_promotion-从-v830-版本开始引入) 控制是否启用该功能。
+    TiDB 暂不支持 `SELECT LOCK IN SHARE MODE`。从 v8.3.0 开始，TiDB 支持将 `SELECT LOCK IN SHARE MODE` 升级为排它锁，实现对 `SELECT LOCK IN SHARE MODE` 语法的支持。你可以使用系统变量 [`tidb_enable_shared_lock_promotion`](/system-variables.md#tidb_enable_shared_lock_promotion-从-v830-版本开始引入) 控制是否启用该功能。
 
     更多信息，请参考[用户文档](/system-variables.md#tidb_enable_shared_lock_promotion-从-v830-版本开始引入)。
 
@@ -182,13 +182,13 @@ TiDB 版本：8.3.0
 
     从 v8.3.0 开始，TiDB 会在日志中分阶段打印初始统计信息的加载进度，以便了解运行情况。为了给外部工具提供格式化的结果，TiDB 增加了额外的[监控 API](/tidb-monitoring-api.md)，以便能够在启动阶段随时获取初始统计信息的加载进度。
 
-* 展示资源组信息 [#8444](https://github.com/tikv/pd/issues/8444) @[nolouch](https://github.com/nolouch)
+* 添加 Request Unit (RU) 配置监控指标 [#8444](https://github.com/tikv/pd/issues/8444) @[nolouch](https://github.com/nolouch)
 
 ### 安全
 
 * 增强 PD 日志脱敏 [#8305](https://github.com/tikv/pd/issues/8305) @[JmPotato](https://github.com/JmPotato) **tw@hfxsd** <!--1861-->
 
-    TiDB v8.0.0 增强了日志脱敏功能，支持控制是否使用标记符号 `‹ ›` 包裹 TiDB 日志中的用户数据。基于标记后的日志，你可以在展示日志时决定是否对被标记信息进行脱敏处理，从而提升日志脱敏功能的灵活性。在 v8.2.0 中，TiFlash 实现了类似的日志脱敏功能增强。
+    TiDB v8.0.0 增强了日志脱敏功能，支持控制是否使用 `‹ ›` 包裹 TiDB 日志中的用户数据。基于标记后的日志，你可以在展示日志时决定是否对被标记信息进行脱敏处理，从而提升日志脱敏功能的灵活性。在 v8.2.0 中，TiFlash 实现了类似的日志脱敏功能增强。
 
     在 v8.3.0 中，PD 实现了类似的日志脱敏功能增强。要使用该功能，可以将 PD 配置项 `security.redact-info-log` 的值设置为 `marker`。
 
@@ -196,7 +196,7 @@ TiDB 版本：8.3.0
 
 * 增强 TiKV 日志脱敏 [#17206](https://github.com/tikv/tikv/issues/17206) @[lucasliang](https://github.com/LykxSassinator) **tw@hfxsd** <!--1862-->
 
-    TiDB v8.0.0 增强了日志脱敏功能，支持控制是否使用标记符号 `‹ ›` 包裹 TiDB 日志中的用户数据。基于标记后的日志，你可以在展示日志时决定是否对被标记信息进行脱敏处理，从而提升日志脱敏功能的灵活性。在 v8.2.0 中，TiFlash 实现了类似的日志脱敏功能增强。
+    TiDB v8.0.0 增强了日志脱敏功能，支持控制是否使用 `‹ ›` 包裹 TiDB 日志中的用户数据。基于标记后的日志，你可以在展示日志时决定是否对被标记信息进行脱敏处理，从而提升日志脱敏功能的灵活性。在 v8.2.0 中，TiFlash 实现了类似的日志脱敏功能增强。
 
     在 v8.3.0 中，TiKV 实现了类似的日志脱敏功能增强。要使用该功能，可以将 TiKV 配置项 `security.redact-info-log` 的值设置为 `marker`。
 
@@ -305,8 +305,8 @@ TiDB 版本：8.3.0
 
 + TiKV <!--tw@hfxsd: 5 notes-->
 
-    - 优化 `async-io` 的 batching 的能力，减少对 I/O bandwidth 资源的使用 [#16907](https://github.com/tikv/tikv/issues/16907) @[LykxSassinator](https://github.com/LykxSassinator)
-    - 重新设计了 TiCDC  的 delegate 和 downstream 模块以更好地支持 partial subscription [#16362](https://github.com/tikv/tikv/issues/16362) @[hicqu](https://github.com/hicqu)
+    - 优化 `async-io` 下写 Raft 日志的攒批策略，减少对磁盘 I/O 带宽资源的使用 [#16907](https://github.com/tikv/tikv/issues/16907) @[LykxSassinator](https://github.com/LykxSassinator)
+    - 重新设计了 TiCDC  的 delegate 和 downstream 模块以更好地支持 Region 局部订阅 [#16362](https://github.com/tikv/tikv/issues/16362) @[hicqu](https://github.com/hicqu)
     - 减少单个慢日志的大小 [#17294](https://github.com/tikv/tikv/issues/17294) @(Connor1996)[https://github.com/Connor1996]
     - 增加监控指标 `min safe ts` [#17307](https://github.com/tikv/tikv/issues/17307) @[mittalrishabh](https://github.com/mittalrishabh)
     - 减少 peer message channel 的内存使用 [#16229](https://github.com/tikv/tikv/issues/16229) @[Connor1996](https://github.com/Connor1996)
