@@ -1461,6 +1461,10 @@ SELECT store_id, COUNT(department_id) AS c
 
 本节讨论分区键，主键和唯一键之间的关系。一句话总结它们之间的关系要满足的规则：**分区表的每个唯一键，必须包含分区表达式中用到的所有列**。
 
+> **注意：**
+>
+> 该规则仅适用于系统变量 [`tidb_enable_global_index`](/system-variables.md#tidb_enable_global_index-从-v760-版本开始引入) 未开启的场景。当开启该变量时，分区表的唯一键可以不包含分区表达式中用到的所有列，详情参考[全局索引](#全局索引)。
+
 这里所指的唯一也包含了主键，因为根据主键的定义，主键必须是唯一的。例如，下面这些建表语句就是无效的：
 
 {{< copyable "sql" >}}
@@ -1637,8 +1641,6 @@ PARTITIONS 4;
 
 DDL 变更时，添加唯一索引也需要考虑到这个限制。比如创建了这样一个表：
 
-{{< copyable "sql" >}}
-
 ```sql
 CREATE TABLE t_no_pk (c1 INT, c2 INT)
     PARTITION BY RANGE(c1) (
@@ -1671,6 +1673,107 @@ CREATE TABLE t (a varchar(20), b blob,
 ```sql
 ERROR 1503 (HY000): A UNIQUE INDEX must include all columns in the table's partitioning function
 ```
+
+#### 全局索引
+
+在引入全局索引 (Global Index) 之前，TiDB 会为每个分区创建一个局部索引 (Local Index)，即一个分区对应一个局部索引。这种索引方式存在一个[使用限制](#分区键主键和唯一键)：主键和唯一键必须包含所有的分区键，以确保数据的全局唯一性。此外，当查询的数据跨越多个分区时，TiDB 需要扫描各个分区的数据才能返回结果。
+
+为解决这些问题，TiDB 从 v8.3.0 开始引入全局索引。全局索引能覆盖整个表的数据，使得主键和唯一键在不包含分区键的情况下仍能保持全局唯一性。同时，全局索引可以在一次操作中访问多个分区的数据，显著提升了针对非分区键的查询性能。
+
+> **警告：**
+>
+> 全局索引目前为实验特性，不建议在生产环境中使用。该功能可能会在未事先通知的情况下发生变化或删除。如果发现 bug，请在 GitHub 上提 [issue](https://github.com/pingcap/tidb/issues) 反馈。
+
+如果你需要创建的唯一索引**不包含分区表达式中使用的所有列**，可以通过启用 [`tidb_enable_global_index`](/system-variables.md#tidb_enable_global_index-从-v760-版本开始引入) 系统变量并在索引定义中添加 `GLOBAL` 关键字来实现。
+
+> **注意：**
+>
+> 全局索引对分区管理有影响，执行 `DROP`、`TRUNCATE` 和 `REORGANIZE PARTITION` 操作也会触发表级别全局索引的更新，这意味着这些 DDL 操作只有在对应表的全局索引完全更新后才会返回结果。
+
+```sql
+SET tidb_enable_global_index = ON;
+
+CREATE TABLE t1 (
+    col1 INT NOT NULL,
+    col2 DATE NOT NULL,
+    col3 INT NOT NULL,
+    col4 INT NOT NULL,
+    UNIQUE KEY uidx12(col1, col2) GLOBAL,
+    UNIQUE KEY uidx3(col3)
+)
+PARTITION BY HASH(col3)
+PARTITIONS 4;
+```
+
+在上面示例中，唯一索引 `uidx12` 将成为全局索引，但 `uidx3` 仍是常规的唯一索引。
+
+请注意，**聚簇索引**不能成为全局索引，如下例所示：
+
+```sql
+SET tidb_enable_global_index = ON;
+
+CREATE TABLE t2 (
+    col1 INT NOT NULL,
+    col2 DATE NOT NULL,
+    PRIMARY KEY (col2) CLUSTERED GLOBAL
+) PARTITION BY HASH(col1) PARTITIONS 5;
+```
+
+```
+ERROR 1503 (HY000): A CLUSTERED INDEX must include all columns in the table's partitioning function
+```
+
+聚簇索引不能成为全局索引，是因为如果聚簇索引是全局索引，则表将不再分区。这是因为聚簇索引的键是分区级别的行数据的键，但全局索引是表级别的，这就造成了冲突。如果需要将主键设置为全局索引，则需要显式设置该主键为非聚簇索引，如 `PRIMARY KEY(col1, col2) NONCLUSTERED GLOBAL`。
+
+你可以通过 [`SHOW CREATE TABLE`](/sql-statements/sql-statement-show-create-table.md) 输出中的 `GLOBAL` 索引选项来识别全局索引。
+
+```sql
+SHOW CREATE TABLE t1\G
+```
+
+```
+       Table: t1
+Create Table: CREATE TABLE `t1` (
+  `col1` int(11) NOT NULL,
+  `col2` date NOT NULL,
+  `col3` int(11) NOT NULL,
+  `col4` int(11) NOT NULL,
+  UNIQUE KEY `uidx12` (`col1`,`col2`) /*T![global_index] GLOBAL */,
+  UNIQUE KEY `uidx3` (`col3`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin
+PARTITION BY HASH (`col3`) PARTITIONS 4
+1 row in set (0.00 sec)
+```
+
+或查询 [`INFORMATION_SCHEMA.TIDB_INDEXES`](/information-schema/information-schema-tidb-indexes.md) 表并查看输出中的 `IS_GLOBAL` 列来识别全局索引。
+
+```sql
+SELECT * FROM information_schema.tidb_indexes WHERE table_name='t1';
+```
+
+```
++--------------+------------+------------+----------+--------------+-------------+----------+---------------+------------+----------+------------+-----------+-----------+
+| TABLE_SCHEMA | TABLE_NAME | NON_UNIQUE | KEY_NAME | SEQ_IN_INDEX | COLUMN_NAME | SUB_PART | INDEX_COMMENT | Expression | INDEX_ID | IS_VISIBLE | CLUSTERED | IS_GLOBAL |
++--------------+------------+------------+----------+--------------+-------------+----------+---------------+------------+----------+------------+-----------+-----------+
+| test         | t1         |          0 | uidx12   |            1 | col1        |     NULL |               | NULL       |        1 | YES        | NO        |         1 |
+| test         | t1         |          0 | uidx12   |            2 | col2        |     NULL |               | NULL       |        1 | YES        | NO        |         1 |
+| test         | t1         |          0 | uidx3    |            1 | col3        |     NULL |               | NULL       |        2 | YES        | NO        |         0 |
++--------------+------------+------------+----------+--------------+-------------+----------+---------------+------------+----------+------------+-----------+-----------+
+3 rows in set (0.00 sec)
+```
+
+在对未分区的表进行分区，或对已分区的表进行重新分区时，可以根据需要将索引更新为全局索引或将其还原为本地索引：
+
+```sql
+ALTER TABLE t1 PARTITION BY HASH (col1) PARTITIONS 3 UPDATE INDEXES (uidx12 LOCAL, uidx3 GLOBAL);
+```
+
+##### 全局索引的限制
+
+- 如果索引定义中未显式指定 `GLOBAL` 关键字，TiDB 将默认创建局部索引 (Local Index)。
+- `GLOBAL` 和 `LOCAL` 关键字仅适用于分区表，对非分区表没有影响。即在非分区表中，全局索引和局部索引之间没有区别。
+- DDL 操作如 `ADD PARTITION`、`DROP PARTITION`、`TRUNCATE PARTITION`、`REORGANIZE PARTITION`、`SPLIT PARTITION` 和 `EXCHANGE PARTITION` 等也会触发对全局索引的更新，这些 DDL 的执行结果将在全局索引更新完成后才会返回。因此，这可能会延迟一些通常需要快速完成的 DDL 的操作，如数据归档操作（`EXCHANGE PARTITION`、`TRUNCATE PARTITION` 和 `DROP PARTITION`）。而如果没有全局索引，这些 DDL 操作可以立即执行完成。
+- 默认情况下，分区表的主键为聚簇索引，且必须包含分区键。如果要求主键不包含分区建，可以在建表时显式指定主键为非聚簇的全局索引，例如：`PRIMARY KEY(col1, col2) NONCLUSTERED GLOBAL`。
 
 ### 关于函数的分区限制
 
