@@ -336,9 +336,9 @@ TiDB 版本：8.3.0
 
 + TiDB <!--tw@lilin90: the following 11 notes-->
 
-    - 重置 pipelinedwindow 的 Open 方法中的参数，以避免当 pipelinedwindow 作为 apply 的子节点使用时，由于重复的打开和关闭操作导致重用先前的参数值而发生的意外错误 [#53600](https://github.com/pingcap/tidb/issues/53600) @[XuHuaiyu](https://github.com/XuHuaiyu)
-    - 修复了由于超出 tidb_mem_quota_query 而导致查询被终止时可能卡住的问题 [#55042](https://github.com/pingcap/tidb/issues/55042) @[yibin87](https://github.com/yibin87)
-    - 修复了触发 HashAgg 落盘时计算错误结果的问题 [#55290](https://github.com/pingcap/tidb/issues/55290) @[xzhangxian1008](https://github.com/xzhangxian1008)
+    - 通过重置 `PipelinedWindow` 的 `Open` 方法中的参数，修复当 `PipelinedWindow` 作为 apply 的子节点使用时，由于重复的打开和关闭操作导致重用之前的参数值而发生的意外错误 [#53600](https://github.com/pingcap/tidb/issues/53600) @[XuHuaiyu](https://github.com/XuHuaiyu)
+    - 修复由于查询超出 `tidb_mem_quota_query` 设定的内存使用限制，导致终止查询时可能卡住的问题 [#55042](https://github.com/pingcap/tidb/issues/55042) @[yibin87](https://github.com/yibin87)
+    - 修复了 HashAgg 算子在并行计算过程中因落盘导致查询结果不正确的问题 [#55290](https://github.com/pingcap/tidb/issues/55290) @[xzhangxian1008](https://github.com/xzhangxian1008)
     - 修复从 `YEAR` 转换为 JSON 格式时的 `json_type` 错误的问题 [#54027](https://github.com/pingcap/tidb/issues/54027) @[YangKeao](https://github.com/YangKeao)
     - 修复系统变量 `tidb_schema_cache_size` 的取值范围错误的问题 [#54034](https://github.com/pingcap/tidb/issues/54034) @[lilinghai](https://github.com/lilinghai)
     - 修复当分区表达式为 `EXTRACT(YEAR FROM col)` 时不会分区裁剪的问题 [#54210](https://github.com/pingcap/tidb/issues/54210) @[mjonss](https://github.com/mjonss)
@@ -426,7 +426,7 @@ TiDB 版本：8.3.0
 
     + TiCDC <!--tw@lilin90: 1 note-->
 
-        - 修复当下游 Kafka 无法访问时，Processor 模块可能卡住的问题 [#11340](https://github.com/pingcap/tiflow/issues/11340) @[asddongmen](https://github.com/asddongmen)
+        - 修复当下游 Kafka 无法访问时，Processor 可能卡住的问题 [#11340](https://github.com/pingcap/tiflow/issues/11340) @[asddongmen](https://github.com/asddongmen)
 
     + TiDB Data Migration (DM) <!--tw@hfxsd: 1 note-->
 
