@@ -1,7 +1,7 @@
 ---
 title: TiDB Binlog 简介
 aliases: ['/docs-cn/dev/tidb-binlog/tidb-binlog-overview/','/docs-cn/dev/reference/tidb-binlog/overview/','/docs-cn/dev/reference/tidb-binlog-overview/','/docs-cn/dev/reference/tools/tidb-binlog/overview/']
-summary: TiDB Binlog 是用于收集 TiDB 的 binlog 并提供实时备份和同步功能的商业工具。它支持数据同步和实时备份恢复功能。从 v8.3.0 开始，TiDB Binlog 被完全废弃，请使用 TiCDC 作为增量数据同步的替代方案。
+summary: TiDB Binlog 是用于收集 TiDB 的 binlog 并提供实时备份和同步功能的商业工具。它支持数据同步和实时备份恢复功能。从 v8.3.0 开始，TiDB Binlog 被完全废弃。
 ---
 
 # TiDB Binlog 简介
@@ -10,7 +10,7 @@ TiDB Binlog 是一个用于收集 TiDB 的 binlog，并提供准实时备份和�
 
 > **警告：**
 >
-> - 从 v7.5.0 开始，TiDB Binlog 的数据同步功能被废弃。从 v8.3.0 开始，TiDB Binlog 被完全废弃，并计划在未来版本中移除。请使用 [TiCDC](/ticdc/ticdc-overview.md) 作为增量数据同步的替代方案。如有 Point-in-Time Recovery (PITR) 场景的需求，请使用 [PITR](/br/br-pitr-guide.md)。
+> - 从 v7.5.0 开始，TiDB Binlog 的数据同步功能被废弃。从 v8.3.0 开始，TiDB Binlog 被完全废弃，并计划在未来版本中移除。如需进行增量数据同步，请使用 [TiCDC](/ticdc/ticdc-overview.md)。如需按时间点恢复 (point-in-time recovery, PITR)，请使用 [TiDB 日志备份与 PITR](/br/br-pitr-guide.md)。
 > - TiDB Binlog 与 TiDB v5.0 开始引入的一些特性不兼容，无法一起使用，详情参照[注意事项](#注意事项)。
 
 TiDB Binlog 支持以下功能场景：
