@@ -329,7 +329,7 @@ TiDB 版本：8.3.0
 
     + TiCDC <!--tw@qiancai: 1 note-->
 
-        - kafka sink 的 claim check 功能支持将大 value 存储到外部存储系统 [#11396](https://github.com/pingcap/tiflow/issues/11396) @[3AceShowHand](https://github.com/3AceShowHand)
+        - Kafka sink 引入 `claim-check-raw-value` 参数，设置为 `true` 时支持在消息大小超过限制时只将该条消息的 value 发送到外部存储服务 [#11396](https://github.com/pingcap/tiflow/issues/11396) @[3AceShowHand](https://github.com/3AceShowHand)
 
 ## 错误修复
 
