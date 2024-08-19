@@ -24,20 +24,20 @@ TiDB 版本：8.3.0
 <tbody>
   <tr>
     <td rowspan="3">可扩展性和性能</td>
-    <td> <a href="https://docs.pingcap.com/zh/tidb/v8.3/partitioned-table#全局索引">分区表全局索引（实验特性）</a></td> **tw@hfxsd** <!--1531-->
+    <td> <a href="https://docs.pingcap.com/zh/tidb/v8.3/partitioned-table#全局索引">分区表全局索引（实验特性）</a></td>
     <td>全局索引能够有效提升对非分区键的检索效率，同时也解除了分区键一定要包含唯一键 (Unique Key) 的限制，扩展了 TiDB 分区表的使用场景，也能够避免数据迁移可能遇到的部分应用改造工作。</td>
   </tr>
   <tr>
-    <td><a href="https://docs.pingcap.com/zh/tidb/v8.3/system-variables#tidb_opt_projection_push_down-从-v610-版本开始引入">默认允许将 <code>Projection</code> 算子下推到存储引擎</a></td>**tw@Oreoxmt** <!--1872-->
+    <td><a href="https://docs.pingcap.com/zh/tidb/v8.3/system-variables#tidb_opt_projection_push_down-从-v610-版本开始引入">默认允许将 <code>Projection</code> 算子下推到存储引擎</a></td>
     <td><code>Projection</code> 算子下推可以将负载分散到存储节点，同时减少节点间的数据传输。这有助于降低部分 SQL 的执行时间，提升数据库的整体性能。</td>
   </tr>
   <tr>
-    <td><a href="https://docs.pingcap.com/zh/tidb/v8.3/statistics#收集部分列的统计信息">统计信息收集忽略不必要的列</a></td>**tw@lilin90** <!--1753-->
+    <td><a href="https://docs.pingcap.com/zh/tidb/v8.3/statistics#收集部分列的统计信息">统计信息收集忽略不必要的列</a></td>
     <td>在保证优化器能够获取到必要信息的前提下，加快了统计信息收集的速度，提升统计信息的时效性，进而保证选择最优的执行计划，提升集群性能。同时也降低了系统开销，改善了资源利用率。</td>
   </tr>
   <tr>
     <td rowspan="1">稳定性与高可用</td>
-    <td><a href="https://docs.pingcap.com/zh/tidb/v8.3/tiproxy-overview">TiProxy 内置虚拟 IP 管理</a></td>**tw@Oreoxmt** <!--1887-->
+    <td><a href="https://docs.pingcap.com/zh/tidb/v8.3/tiproxy-overview">TiProxy 内置虚拟 IP 管理</a></td>
     <td>TiProxy 内置了虚拟 IP 管理功能，配置后支持自动切换虚拟 IP，而无需依赖外部平台或工具。这简化了 TiProxy 的部署，降低了数据库接入层的复杂度。</td>
   </tr>
 </tbody>
@@ -94,7 +94,7 @@ TiDB 版本：8.3.0
     - INFORMATION_SCHEMA.KEY_COLUMN_USAGE
     - INFORMATION_SCHEMA.REFERENTIAL_CONSTRAINTS
 
-    在 v8.3.0 版本优化了以下系统表的查询性能，相比 v8.2.0 性能有数倍的提升：
+  在 v8.3.0 版本优化了以下系统表的查询性能，相比 v8.2.0 性能有数倍的提升：
 
     - INFORMATION_SCHEMA.CHECK_CONSTRAINTS
     - INFORMATION_SCHEMA.COLUMNS
@@ -162,7 +162,7 @@ TiDB 版本：8.3.0
 
 * 支持将 `SELECT LOCK IN SHARE MODE` 升级为排它锁 [#54999](https://github.com/pingcap/tidb/issues/54999) @[cfzjywxk](https://github.com/cfzjywxk) **tw@hfxsd** <!--1871-->
 
-    TiDB 暂不支持 `SELECT LOCK IN SHARE MODE`。在 v8.3.0 版本中，TiDB 支持将 `SELECT LOCK IN SHARE MODE` 升级为排它锁，实现对 `SELECT LOCK IN SHARE MODE` 语法的支持。你可以使用系统变量 [`tidb_enable_shared_lock_promotion`](/system-variables.md#tidb_enable_shared_lock_promotion-从-v830-版本开始引入) 控制是否启用该功能。
+    TiDB 暂不支持 `SELECT LOCK IN SHARE MODE`。从 v8.3.0 开始，TiDB 支持将 `SELECT LOCK IN SHARE MODE` 升级为排它锁，实现对 `SELECT LOCK IN SHARE MODE` 语法的支持。你可以使用系统变量 [`tidb_enable_shared_lock_promotion`](/system-variables.md#tidb_enable_shared_lock_promotion-从-v830-版本开始引入) 控制是否启用该功能。
 
     更多信息，请参考[用户文档](/system-variables.md#tidb_enable_shared_lock_promotion-从-v830-版本开始引入)。
 
@@ -182,13 +182,13 @@ TiDB 版本：8.3.0
 
     从 v8.3.0 开始，TiDB 会在日志中分阶段打印初始统计信息的加载进度，以便了解运行情况。为了给外部工具提供格式化的结果，TiDB 增加了额外的[监控 API](/tidb-monitoring-api.md)，以便能够在启动阶段随时获取初始统计信息的加载进度。
 
-* 展示资源组信息 [#8444](https://github.com/tikv/pd/issues/8444) @[nolouch](https://github.com/nolouch)
+* 添加 Request Unit (RU) 配置监控指标 [#8444](https://github.com/tikv/pd/issues/8444) @[nolouch](https://github.com/nolouch)
 
 ### 安全
 
 * 增强 PD 日志脱敏 [#8305](https://github.com/tikv/pd/issues/8305) @[JmPotato](https://github.com/JmPotato) **tw@hfxsd** <!--1861-->
 
-    TiDB v8.0.0 增强了日志脱敏功能，支持控制是否使用标记符号 `‹ ›` 包裹 TiDB 日志中的用户数据。基于标记后的日志，你可以在展示日志时决定是否对被标记信息进行脱敏处理，从而提升日志脱敏功能的灵活性。在 v8.2.0 中，TiFlash 实现了类似的日志脱敏功能增强。
+    TiDB v8.0.0 增强了日志脱敏功能，支持控制是否使用 `‹ ›` 包裹 TiDB 日志中的用户数据。基于标记后的日志，你可以在展示日志时决定是否对被标记信息进行脱敏处理，从而提升日志脱敏功能的灵活性。在 v8.2.0 中，TiFlash 实现了类似的日志脱敏功能增强。
 
     在 v8.3.0 中，PD 实现了类似的日志脱敏功能增强。要使用该功能，可以将 PD 配置项 `security.redact-info-log` 的值设置为 `marker`。
 
@@ -196,7 +196,7 @@ TiDB 版本：8.3.0
 
 * 增强 TiKV 日志脱敏 [#17206](https://github.com/tikv/tikv/issues/17206) @[lucasliang](https://github.com/LykxSassinator) **tw@hfxsd** <!--1862-->
 
-    TiDB v8.0.0 增强了日志脱敏功能，支持控制是否使用标记符号 `‹ ›` 包裹 TiDB 日志中的用户数据。基于标记后的日志，你可以在展示日志时决定是否对被标记信息进行脱敏处理，从而提升日志脱敏功能的灵活性。在 v8.2.0 中，TiFlash 实现了类似的日志脱敏功能增强。
+    TiDB v8.0.0 增强了日志脱敏功能，支持控制是否使用 `‹ ›` 包裹 TiDB 日志中的用户数据。基于标记后的日志，你可以在展示日志时决定是否对被标记信息进行脱敏处理，从而提升日志脱敏功能的灵活性。在 v8.2.0 中，TiFlash 实现了类似的日志脱敏功能增强。
 
     在 v8.3.0 中，TiKV 实现了类似的日志脱敏功能增强。要使用该功能，可以将 TiKV 配置项 `security.redact-info-log` 的值设置为 `marker`。
 
@@ -275,39 +275,38 @@ TiDB 版本：8.3.0
 
     - 支持 `SELECT ... STRAIGHT_JOIN ... USING ( ... )` 语句 [#54162](https://github.com/pingcap/tidb/issues/54162) @[dveeden](https://github.com/dveeden)
     - 支持为形如 `((idx_col_1 > 1) or (idx_col_1 = 1 and idx_col_2 > 10)) and ((idx_col_1 < 10) or (idx_col_1 = 10 and idx_col_2 < 20))` 的过滤条件构造更精准的索引访问 Range [#54337](https://github.com/pingcap/tidb/issues/54337) @[ghazalfamilyusa](https://github.com/ghazalfamilyusa)
-    - 支持形如 `WHERE idx_col_1 IS NULL ORDER BY idx_col_2` 的 SQL 查询利用索引的顺序而不需要额外的排序操作 [#54188](https://github.com/pingcap/tidb/issues/54188) @[ari-e](https://github.com/ari-e)
+    - 支持形如 `WHERE idx_col_1 IS NULL ORDER BY idx_col_2` 的 SQL 查询利用索引顺序避免额外排序操作 [#54188](https://github.com/pingcap/tidb/issues/54188) @[ari-e](https://github.com/ari-e)
     - 在 `analyze_jobs` 中显示被分析的索引 [#53567](https://github.com/pingcap/tidb/issues/53567) @[hi-rustin](https://github.com/hi-rustin)
-    - 为 `EXPLAIN` 支持 `tidb_redact_log` [#54565](https://github.com/pingcap/tidb/issues/54565) @[hawkingrei](https://github.com/hawkingrei)
-    - 支持备份和恢复 mysql.column_stats_usage 表 [#53567](https://github.com/pingcap/tidb/issues/53567) @[hi-rustin](https://github.com/hi-rustin)
+    - `EXPLAIN` 语句支持应用 `tidb_redact_log` [#54565](https://github.com/pingcap/tidb/issues/54565) @[hawkingrei](https://github.com/hawkingrei)
+    - 支持备份和恢复 `mysql.column_stats_usage` 表 [#53567](https://github.com/pingcap/tidb/issues/53567) @[hi-rustin](https://github.com/hi-rustin)
     - 支持在多值索引的 `IndexRangeScan` 上生成 `Selection` [#54876](https://github.com/pingcap/tidb/issues/54876) @[time-and-fate](https://github.com/time-and-fate)
-    - 支持在设定的自动 `ANALYZE` 时间窗口外 kill 正在执行的自动 `ANALYZE` [#55283](https://github.com/pingcap/tidb/issues/55283) @[hawkingrei](https://github.com/hawkingrei)
-    - 当某个统计信息完全由 TopN 构成，且对应表的统计信息中的修改行数不为 0 时，对于未命中 TopN 的等值条件，估算结果将从 0 变为 1 [#47400](https://github.com/pingcap/tidb/issues/47400) @[terry1purcell](https://github.com/terry1purcell)
+    - 支持在设定的自动 `ANALYZE` 时间窗口外终止正在执行的自动 `ANALYZE` [#55283](https://github.com/pingcap/tidb/issues/55283) @[hawkingrei](https://github.com/hawkingrei)
+    - 当某个统计信息完全由 TopN 构成，且对应表的统计信息中修改行数不为 0 时，对于未命中 TopN 的等值条件，估算结果从 0 调整为 1 [#47400](https://github.com/pingcap/tidb/issues/47400) @[terry1purcell](https://github.com/terry1purcell)
     - TopN 算子支持数据落盘功能 [#47733](https://github.com/pingcap/tidb/issues/47733) @[xzhangxian1008](https://github.com/xzhangxian1008) **tw@Oreoxmt** <!--1715-->
     - TiDB 节点支持执行包含 `WITH ROLLUP` 修饰符和 `GROUPING` 函数的查询 [#42631](https://github.com/pingcap/tidb/issues/42631) @[Arenatlx](https://github.com/Arenatlx) **tw@Oreoxmt** <!--1714-->
     - 系统变量 [`tidb_low_resolution_tso`](/system-variables.md#tidb_low_resolution_tso-从-v830-版本开始引入) 增加全局作用域 [#55022](https://github.com/pingcap/tidb/issues/55022) @[cfzjywxk](https://github.com/cfzjywxk) **tw@hfxsd** <!--1857-->
     - GC（垃圾回收）支持并发 Delete Range（删除区间）以提升处理效率，可以通过 [`tidb_gc_concurrency`](/system-variables.md#tidb_gc_concurrency-从-v50-版本开始引入) 控制并发线程数 [#54570](https://github.com/pingcap/tidb/issues/54570) @[ekexium](https://github.com/ekexium) **tw@qiancai** <!--1890-->
-    - (dup): release-8.0.0.md > - 提升了 bulk 模式 (Pipelined DML) 的性能 [#50215](https://github.com/pingcap/tidb/issues/50215) @[ekexium](https://github.com/ekexium)
-    - 系统表 `information_schema.processlist` 中新增了一列 `ROWS_AFFECTED`
-    - 提升了 schema 信息缓存相关接口 `SchemaByID` 的性能 [#54074](https://github.com/pingcap/tidb/issues/54074) @[ywqzzy](https://github.com/ywqzzy)
-    - 提升了 schema 信息缓存开启时部分系统表的查询性能 [#50305](https://github.com/pingcap/tidb/issues/50305) @[tangenta](https://github.com/tangenta)
-    - 优化了添加唯一索引时冲突键的报错信息 [#53004](https://github.com/pingcap/tidb/issues/53004) @[lance6716](https://github.com/lance6716)
-    
+    - 提升批量 DML 执行方式 (`tidb_dml_type = "bulk"`) 的性能 [#50215](https://github.com/pingcap/tidb/issues/50215) @[ekexium](https://github.com/ekexium)
+    - 提升 schema 信息缓存相关接口 `SchemaByID` 的性能 [#54074](https://github.com/pingcap/tidb/issues/54074) @[ywqzzy](https://github.com/ywqzzy)
+    - 提升 schema 信息缓存开启时部分系统表的查询性能 [#50305](https://github.com/pingcap/tidb/issues/50305) @[tangenta](https://github.com/tangenta)
+    - 优化添加唯一索引时冲突键的报错信息 [#53004](https://github.com/pingcap/tidb/issues/53004) @[lance6716](https://github.com/lance6716)
+
 + PD <!--tw@qiancai: 9 notes-->
 
-    - 可以通过 pd-ctl 修改 evict-leader-scheduler 的 batch 配置，来提升 evict leader 的速度 [#8265](https://github.com/tikv/pd/issues/8265) @[rleungx](https://github.com/rleungx)
-    - Label distribution 面板新增了 store_id，可以看到不同的 label 对应的 store [#8337](https://github.com/tikv/pd/issues/8337) @[HuSharp](https://github.com/HuSharp)
-    - 当指定的资源组不存在时，可回退到默认资源组 [#8388](https://github.com/tikv/pd/issues/8388) @[JmPotato](https://github.com/JmPotato)
-    - 使用 pd-ctl 展示 region 信息时，会展示 approximate_kv_size [#8412](https://github.com/tikv/pd/issues/8412) @[zeminzhou](https://github.com/zeminzhou)
-    - 优化调用 API 删除 ttl 配置时的输出信息 [#8450](https://github.com/tikv/pd/issues/8450) @[lhy1024](https://github.com/lhy1024)
-    - 优化大查询读请求消耗 RU 的行为，减少对其他请求的影响 [#8457](https://github.com/tikv/pd/issues/8457) @[nolouch](https://github.com/nolouch)
-    - 优化了 pd 微服务设置错误的报错信息 [#52912](https://github.com/pingcap/tidb/issues/52912) @[rleungx](https://github.com/rleungx)
-    - PD 微服务添加了 --name 启动参数，以便部署时更精确地显示服务名称 [#7995](https://github.com/tikv/pd/issues/7995) @[HuSharp](https://github.com/HuSharp)
-    - 可以通过 region 数量动态调整 `PatrolRegionScanLimit`，减少扫描 region 需要的时间 [#7963](https://github.com/tikv/pd/issues/7963) @[lhy1024](https://github.com/lhy1024)
+    - 支持通过 `pd-ctl` 修改 `evict-leader-scheduler` 的 `batch` 配置，以提升驱逐 Leader 的速度 [#8265](https://github.com/tikv/pd/issues/8265) @[rleungx](https://github.com/rleungx)
+    -  Grafana 上的 `Label distribution` 面板新增 ` store_id` 监控指标，用于显示不同的 label 对应的 store ID [#8337](https://github.com/tikv/pd/issues/8337) @[HuSharp](https://github.com/HuSharp)
+    - 当指定的资源组不存在时，支持回退到默认资源组 [#8388](https://github.com/tikv/pd/issues/8388) @[JmPotato](https://github.com/JmPotato)
+    - 使用 `pd-ctl` 的 `region` 命令显示 Region 信息时，输出中新增 `approximate_kv_size` 信息 [#8412](https://github.com/tikv/pd/issues/8412) @[zeminzhou](https://github.com/zeminzhou)
+    - 优化调用 API 删除 TTL 配置时的输出信息 [#8450](https://github.com/tikv/pd/issues/8450) @[lhy1024](https://github.com/lhy1024)
+    - 优化大查询读请求消耗 RU 的行为，以减少对其他请求的影响 [#8457](https://github.com/tikv/pd/issues/8457) @[nolouch](https://github.com/nolouch)
+    - 优化了 PD 微服务设置错误时返回的报错信息 [#52912](https://github.com/pingcap/tidb/issues/52912) @[rleungx](https://github.com/rleungx)
+    - PD 微服务新增 `--name` 启动参数，以便部署时更精确地显示服务名称 [#7995](https://github.com/tikv/pd/issues/7995) @[HuSharp](https://github.com/HuSharp)
+    - 支持通过 Region 数量动态调整 `PatrolRegionScanLimit`，以减少扫描 Region 所需的时间 [#7963](https://github.com/tikv/pd/issues/7963) @[lhy1024](https://github.com/lhy1024)
 
 + TiKV <!--tw@hfxsd: 5 notes-->
 
-    - 优化 `async-io` 的 batching 的能力，减少对 I/O bandwidth 资源的使用 [#16907](https://github.com/tikv/tikv/issues/16907) @[LykxSassinator](https://github.com/LykxSassinator)
-    - 重新设计了 TiCDC  的 delegate 和 downstream 模块以更好地支持 partial subscription [#16362](https://github.com/tikv/tikv/issues/16362) @[hicqu](https://github.com/hicqu)
+    - 优化 `async-io` 下写 Raft 日志的攒批策略，减少对磁盘 I/O 带宽资源的使用 [#16907](https://github.com/tikv/tikv/issues/16907) @[LykxSassinator](https://github.com/LykxSassinator)
+    - 重新设计了 TiCDC  的 delegate 和 downstream 模块以更好地支持 Region 局部订阅 [#16362](https://github.com/tikv/tikv/issues/16362) @[hicqu](https://github.com/hicqu)
     - 减少单个慢日志的大小 [#17294](https://github.com/tikv/tikv/issues/17294) @(Connor1996)[https://github.com/Connor1996]
     - 增加监控指标 `min safe ts` [#17307](https://github.com/tikv/tikv/issues/17307) @[mittalrishabh](https://github.com/mittalrishabh)
     - 减少 peer message channel 的内存使用 [#16229](https://github.com/tikv/tikv/issues/16229) @[Connor1996](https://github.com/Connor1996)
@@ -330,7 +329,7 @@ TiDB 版本：8.3.0
 
     + TiCDC <!--tw@qiancai: 1 note-->
 
-        - kafka sink 的 claim check 功能支持将大 value 存储到外部存储系统 [#11396](https://github.com/pingcap/tiflow/issues/11396) @[3AceShowHand](https://github.com/3AceShowHand)
+        - Kafka sink 引入 `claim-check-raw-value` 参数，设置为 `true` 时支持在消息大小超过限制时只将该条消息的 value 发送到外部存储服务 [#11396](https://github.com/pingcap/tiflow/issues/11396) @[3AceShowHand](https://github.com/3AceShowHand)
 
 ## 错误修复
 
@@ -438,10 +437,10 @@ TiDB 版本：8.3.0
 
         - note [#issue](https://github.com/pingcap/tidb/issues/${issue-id}) @[贡献者 GitHub ID](https://github.com/${github-id})
         - (dup): release-8.1.1.md > 错误修复> Tools> TiDB Lightning - 修复 TiDB Lightning 获取 keyspace 失败时输出的 `WARN` 日志可能引起用户混淆的问题 [#54232](https://github.com/pingcap/tidb/issues/54232) @[kennytm](https://github.com/kennytm)
-        - 修复了 lightning TLS 配置影响集群证书的问题 [#54172](https://github.com/pingcap/tidb/issues/54172) @[ei-sugimoto](https://github.com/ei-sugimoto)
-        - 修复了使用 lightning 导入数据时报事务冲突的问题 [#49826](https://github.com/pingcap/tidb/issues/49826) @[lance6716](https://github.com/lance6716)
-        - 修复了导入大量库表时，checkpoint 文件过大导致性能差的问题 [#55054](https://github.com/pingcap/tidb/issues/55054) @[D3Hunter](https://github.com/D3Hunter)
- 
+        - 修复 TiDB Lightning 的 TLS 配置影响集群证书的问题 [#54172](https://github.com/pingcap/tidb/issues/54172) @[ei-sugimoto](https://github.com/ei-sugimoto)
+        - 修复使用 TiDB Lightning 导入数据时报事务冲突的问题 [#49826](https://github.com/pingcap/tidb/issues/49826) @[lance6716](https://github.com/lance6716)
+        - 修复导入大量库表时 checkpoint 文件过大导致性能下降的问题 [#55054](https://github.com/pingcap/tidb/issues/55054) @[D3Hunter](https://github.com/D3Hunter)
+
 ## 贡献者
 
 感谢来自 TiDB 社区的贡献者们：
