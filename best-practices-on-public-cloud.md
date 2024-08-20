@@ -206,7 +206,7 @@ set global tidb_tso_client_batch_max_wait_time = 2; # 默认值为 0
 
 - 每秒 TSO 请求数减少到 64,800 次。
 - CPU 利用率显著降低，从约 4600% 降低到 1400%。
-- `PD server TSO handle time` 的 P999 值从 2ms 降低到 0.5ms。
+- `PD server TSO handle time` 的 P999 值从 2 ms 降低到 0.5 ms。
 
 以上性能提升表明，这些调整措施成功地降低了 PD Server 的 CPU 利用率，同时保持了稳定的 TSO 处理性能。
 
