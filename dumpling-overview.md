@@ -1,7 +1,6 @@
 ---
 title: 使用 Dumpling 导出数据
 summary: 使用 Dumpling 从 TiDB 导出数据。
-aliases: ['/docs-cn/dev/dumpling-overview/','/docs-cn/dev/mydumper-overview/','/docs-cn/dev/reference/tools/mydumper/','/zh/tidb/dev/mydumper-overview/']
 ---
 
 # 使用 Dumpling 导出数据

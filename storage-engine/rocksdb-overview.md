@@ -1,6 +1,5 @@
 ---
 title: RocksDB 简介
-aliases: ['/docs-cn/dev/storage-engine/rocksdb-overview/','/docs-cn/dev/rocksdb/rocksdb-overview/']
 summary: RocksDB 是 Facebook 基于 LevelDB 开发的 LSM-tree 架构引擎，提供键值存储与读写功能。数据先写入磁盘上的 WAL，再写入内存中的跳表。内存数据达到阈值后刷到磁盘生成 SST 文件，分为多层，90% 数据存储在最后一层。RocksDB 允许创建多个 ColumnFamily，共享同一个 WAL 文件。为提高读取性能，文件按大小切分成 block，存在 BlockCache 中。后台线程执行 MemTable 转化为 SST 文件和合并操作。L0 文件数量过多会触发 WriteStall 阻塞写入。
 ---
 

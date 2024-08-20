@@ -1,6 +1,5 @@
 ---
 title: 位函数和操作符
-aliases: ['/docs-cn/dev/functions-and-operators/bit-functions-and-operators/','/docs-cn/dev/reference/sql/functions-and-operators/bit-functions-and-operators/']
 summary: TiDB 支持 MySQL 8.0 中的所有位函数和操作符。
 ---
 

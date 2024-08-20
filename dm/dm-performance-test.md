@@ -1,7 +1,6 @@
 ---
 title: DM 集群性能测试
 summary: 了解如何测试 DM 集群的性能。
-aliases: ['/docs-cn/tidb-data-migration/dev/performance-test/']
 ---
 
 # DM 集群性能测试
