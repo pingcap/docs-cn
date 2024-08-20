@@ -262,11 +262,11 @@ TiDB 版本：8.3.0
     - 支持 `SELECT ... STRAIGHT_JOIN ... USING ( ... )` 语句 [#54162](https://github.com/pingcap/tidb/issues/54162) @[dveeden](https://github.com/dveeden)
     - 支持为形如 `((idx_col_1 > 1) or (idx_col_1 = 1 and idx_col_2 > 10)) and ((idx_col_1 < 10) or (idx_col_1 = 10 and idx_col_2 < 20))` 的过滤条件构造更精准的索引访问 Range [#54337](https://github.com/pingcap/tidb/issues/54337) @[ghazalfamilyusa](https://github.com/ghazalfamilyusa)
     - 支持形如 `WHERE idx_col_1 IS NULL ORDER BY idx_col_2` 的 SQL 查询利用索引顺序避免额外排序操作 [#54188](https://github.com/pingcap/tidb/issues/54188) @[ari-e](https://github.com/ari-e)
-    - 在 `analyze_jobs` 中显示被分析的索引 [#53567](https://github.com/pingcap/tidb/issues/53567) @[hi-rustin](https://github.com/hi-rustin)
+    - 在系统表 `mysql.analyze_jobs` 中显示被 `ANALYZE` 过的索引 [#53567](https://github.com/pingcap/tidb/issues/53567) @[hi-rustin](https://github.com/hi-rustin)
     - `EXPLAIN` 语句支持应用 `tidb_redact_log` [#54565](https://github.com/pingcap/tidb/issues/54565) @[hawkingrei](https://github.com/hawkingrei)
     - 支持备份和恢复 `mysql.column_stats_usage` 表 [#53567](https://github.com/pingcap/tidb/issues/53567) @[hi-rustin](https://github.com/hi-rustin)
-    - 支持在多值索引的 `IndexRangeScan` 上生成 `Selection` [#54876](https://github.com/pingcap/tidb/issues/54876) @[time-and-fate](https://github.com/time-and-fate)
-    - 支持在设定的自动 `ANALYZE` 时间窗口外终止正在执行的自动 `ANALYZE` [#55283](https://github.com/pingcap/tidb/issues/55283) @[hawkingrei](https://github.com/hawkingrei)
+    - 支持在多值索引的 `IndexRangeScan` 上生成 `Selection`，以提高查询效率 [#54876](https://github.com/pingcap/tidb/issues/54876) @[time-and-fate](https://github.com/time-and-fate)
+    - 支持在设定的自动 `ANALYZE` 时间窗口外终止正在执行的自动 `ANALYZE` 任务 [#55283](https://github.com/pingcap/tidb/issues/55283) @[hawkingrei](https://github.com/hawkingrei)
     - 当某个统计信息完全由 TopN 构成，且对应表的统计信息中修改行数不为 0 时，对于未命中 TopN 的等值条件，估算结果从 0 调整为 1 [#47400](https://github.com/pingcap/tidb/issues/47400) @[terry1purcell](https://github.com/terry1purcell)
     - TopN 算子支持数据落盘功能 [#47733](https://github.com/pingcap/tidb/issues/47733) @[xzhangxian1008](https://github.com/xzhangxian1008) **tw@Oreoxmt** <!--1715-->
     - TiDB 节点支持执行包含 `WITH ROLLUP` 修饰符和 `GROUPING` 函数的查询 [#42631](https://github.com/pingcap/tidb/issues/42631) @[Arenatlx](https://github.com/Arenatlx) **tw@Oreoxmt** <!--1714-->

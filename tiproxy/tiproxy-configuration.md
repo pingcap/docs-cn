@@ -15,8 +15,9 @@ max-connections = 100
 [api]
 addr = "0.0.0.0:3080"
 
-[log]
-level = "info"
+[ha]
+virtual-ip = "10.0.1.10/24"
+interface = "eth0"
 
 [security]
 [security.cluster-tls]
@@ -118,6 +119,28 @@ TiProxy 负载均衡策略的配置。
 + 支持热加载：是
 + 可选值：`resource`、`location`、`connection`
 + 指定负载均衡策略。各个可选值的含义请参阅 [TiProxy 负载均衡策略](/tiproxy/tiproxy-load-balance.md#负载均衡策略配置)。
+
+### ha
+
+TiProxy 的高可用配置。
+
+#### `virtual-ip`
+
++ 默认值：`""`
++ 支持热加载：否
++ 指定虚拟 IP 地址，使用 CIDR 格式表示，例如 `"10.0.1.10/24"`。当集群中部署了多台 TiProxy 时，只有一台 TiProxy 会绑定虚拟 IP。当该 TiProxy 下线时，另外一台 TiProxy 会自动绑定该 IP，确保客户端始终能通过虚拟 IP 连接到可用的 TiProxy。
+
+> **注意：**
+>
+> - 虚拟 IP 仅支持 Linux 操作系统。
+> - 运行 TiProxy 的 Linux 用户必须具有绑定 IP 地址的权限。
+> - 虚拟 IP 和所有 TiProxy 实例的 IP 必须处于同一个 CIDR 范围内。
+
+#### `interface`
+
++ 默认值：`""`
++ 支持热加载：否
++ 指定绑定虚拟 IP 的网络接口，例如 `"eth0"`。只有同时设置 [`ha.virtual-ip`](#virtual-ip) 和 `ha.interface` 时，该 TiProxy 实例才能绑定虚拟 IP。
 
 ### `labels`
 
