@@ -8,7 +8,7 @@ aliases: ['/docs-cn/dev/production-offline-deployment-using-tiup/', '/zh/tidb/de
 
 [TiUP](https://github.com/pingcap/tiup) 是 TiDB 4.0 版本引入的集群运维工具，[TiUP cluster](https://github.com/pingcap/tiup/tree/master/components/cluster) 是 TiUP 提供的使用 Golang 编写的集群管理组件，通过 TiUP cluster 组件就可以进行日常的运维工作，包括部署、启动、关闭、销毁、弹性扩缩容、升级 TiDB 集群，以及管理 TiDB 集群参数。
 
-目前 TiUP 可以支持部署 TiDB、TiFlash、TiDB Binlog、TiCDC 以及监控系统。本文将介绍不同集群拓扑的具体部署步骤。
+目前 TiUP 可以支持部署 TiDB、TiFlash、[TiDB Binlog](/tidb-binlog/tidb-binlog-overview.md)（已废弃）、TiCDC 以及监控系统。本文将介绍不同集群拓扑的具体部署步骤。
 
 ## 第 1 步：软硬件环境需求及前置检查
 

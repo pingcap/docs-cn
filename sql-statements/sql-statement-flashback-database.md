@@ -37,7 +37,7 @@ FlashbackToNewName ::=
 
 - 不能用 `FLASHBACK DATABASE` 多次恢复同一个被删除的数据库，因为 `FLASHBACK DATABASE` 所恢复数据库的 schema ID 和原被删除数据库的 schema ID 一致，多次恢复同一数据库会导致重复的 schema ID。在 TiDB 中，所有数据库的 schema ID 必须全局唯一。
 
-- 在开启 TiDB Binlog 时，使用 `FLASHBACK DATABASE` 需要注意以下情况：
+- 在开启 TiDB Binlog（已废弃）时，使用 `FLASHBACK DATABASE` 需要注意以下情况：
 
     * 下游从集群也需要支持 `FLASHBACK DATABASE`。
     * 从集群的 GC life time 一定要长于主集群的 GC life time。否则上下游同步存在的延迟可能也会造成下游恢复数据失败。

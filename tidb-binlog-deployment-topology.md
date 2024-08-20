@@ -6,7 +6,11 @@ aliases: ['/docs-cn/dev/tidb-binlog-deployment-topology/']
 
 # TiDB Binlog 部署拓扑
 
-本文介绍在部署最小拓扑集群的基础上，同时部署 [TiDB Binlog](/tidb-binlog/tidb-binlog-overview.md)。TiDB Binlog 是目前广泛使用的增量同步组件，可提供准实时备份和同步功能。
+本文介绍在部署最小拓扑集群的基础上，同时部署 [TiDB Binlog](/tidb-binlog/tidb-binlog-overview.md)。TiDB Binlog 可提供准实时备份和同步功能。
+
+> **警告：**
+>
+> 从 v7.5.0 开始，[TiDB Binlog](/tidb-binlog/tidb-binlog-overview.md) 的数据同步功能被废弃。从 v8.3.0 开始，TiDB Binlog 被完全废弃，并计划在未来版本中移除。如需进行增量数据同步，请使用 [TiCDC](/ticdc/ticdc-overview.md)。如需按时间点恢复 (point-in-time recovery, PITR)，请使用 [PITR](/br/br-pitr-guide.md)。
 
 ## 拓扑信息
 
