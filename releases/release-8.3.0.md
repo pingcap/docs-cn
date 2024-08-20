@@ -326,7 +326,7 @@ TiDB 版本：8.3.0
         - (dup): release-7.5.3.md > 改进提升> Tools> Backup & Restore (BR) - 支持通过环境变量设置阿里云访问身份 [#45551](https://github.com/pingcap/tidb/issues/45551) @[RidRisR](https://github.com/RidRisR)
         - (dup): release-8.2.0.md > 改进提升> Tools> Backup & Restore (BR) - 优化备份功能，提升在大量表备份过程中遇到节点重启、扩容或网络抖动时的备份性能和稳定性 [#52534](https://github.com/pingcap/tidb/issues/52534) @[3pointer](https://github.com/3pointer)<!--tw@lilin90: the following 2 notes-->
         - 使用 BR 进行备份恢复时，会根据 BR 进程的可用内存自动设置环境变量 `GOMEMLIMIT`，避免出现 OOM [#53777](https://github.com/pingcap/tidb/issues/53777) @[Leavrth](https://github.com/Leavrth)
-        - 使增量备份兼容按时间点恢复 [#54474](https://github.com/pingcap/tidb/issues/54474) @[3pointer](https://github.com/3pointer)
+        - 使增量备份兼容按时间点恢复 (PITR) [#54474](https://github.com/pingcap/tidb/issues/54474) @[3pointer](https://github.com/3pointer)
 
     + TiCDC <!--tw@qiancai: 1 note-->
 
@@ -339,7 +339,7 @@ TiDB 版本：8.3.0
     - 通过重置 `PipelinedWindow` 的 `Open` 方法中的参数，修复当 `PipelinedWindow` 作为 apply 的子节点使用时，由于重复的打开和关闭操作导致重用之前的参数值而发生的意外错误 [#53600](https://github.com/pingcap/tidb/issues/53600) @[XuHuaiyu](https://github.com/XuHuaiyu)
     - 修复由于查询超出 `tidb_mem_quota_query` 设定的内存使用限制，导致终止查询时可能卡住的问题 [#55042](https://github.com/pingcap/tidb/issues/55042) @[yibin87](https://github.com/yibin87)
     - 修复 HashAgg 算子在并行计算过程中因落盘导致查询结果不正确的问题 [#55290](https://github.com/pingcap/tidb/issues/55290) @[xzhangxian1008](https://github.com/xzhangxian1008)
-    - 修复从 `YEAR` 转换为 JSON 格式时 `JSON_TYPE` 错误的问题 [#54027](https://github.com/pingcap/tidb/issues/54027) @[YangKeao](https://github.com/YangKeao)
+    - 修复从 `YEAR` 转换为 JSON 格式时 `JSON_TYPE` 错误的问题 [#54494](https://github.com/pingcap/tidb/issues/54494) @[YangKeao](https://github.com/YangKeao)
     - 修复系统变量 `tidb_schema_cache_size` 的取值范围错误的问题 [#54034](https://github.com/pingcap/tidb/issues/54034) @[lilinghai](https://github.com/lilinghai)
     - 修复当分区表达式为 `EXTRACT(YEAR FROM col)` 时没有分区裁剪的问题 [#54210](https://github.com/pingcap/tidb/issues/54210) @[mjonss](https://github.com/mjonss)
     - 修复表较多的情况下 `FLASHBACK DATABASE` 失败的问题 [#54415](https://github.com/pingcap/tidb/issues/54415) @[lance6716](https://github.com/lance6716)
