@@ -7,11 +7,7 @@ summary: Scheduling 配置参数可以通过命令行参数或环境变量配置
 
 Scheduling 节点用于提供 PD 的 `scheduling` 微服务。你可以通过命令行参数或环境变量配置 Scheduling 节点。
 
-## `--name`
-
-> **注意：**
-> 
-> PD 微服务从 v8.3.0 版本支持 name 参数。
+## `--name` <span class="version-mark">从 v8.3.0 版本开始引入</span>
 
 + 当前 Scheduling 服务的名字。
 + 默认：Scheduling-hostname
