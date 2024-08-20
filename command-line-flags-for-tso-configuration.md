@@ -7,6 +7,16 @@ summary: TSO 配置参数可以通过命令行参数或环境变量配置。
 
 TSO 节点用于提供 PD 的 `tso` 微服务。你可以通过命令行参数或环境变量配置 TSO 节点。
 
+## `--name`
+
+> **注意：**
+> 
+> PD 微服务从 v8.3.0 版本支持 name 参数。
+
++ 当前 TSO 服务的名字。
++ 默认：TSO-hostname
++ 如果你需要启动多个 TSO，最好要给 TSO 使用不同的名字
+
 ## `--advertise-listen-addr`
 
 - 用于外部访问 TSO 节点的 URL。
