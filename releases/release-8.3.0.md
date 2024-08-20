@@ -77,27 +77,27 @@ TiDB 版本：8.3.0
 
 * 提升部分系统表的查询性能 [#50305](https://github.com/pingcap/tidb/issues/50305) @[tangenta](https://github.com/tangenta) **tw@hfxsd** <!--1865-->
 
-    在之前的版本，当集群规模变大，表数量较多时，查询系统表性能较慢。
+    之前的版本中，当集群规模变大、表数量较多时，查询系统表性能较慢。
 
     在 v8.0.0 优化了以下 4 个系统表的查询性能：
 
-    - INFORMATION_SCHEMA.TABLES
-    - INFORMATION_SCHEMA.STATISTICS
-    - INFORMATION_SCHEMA.KEY_COLUMN_USAGE
-    - INFORMATION_SCHEMA.REFERENTIAL_CONSTRAINTS
+    - `INFORMATION_SCHEMA.TABLES`
+    - `INFORMATION_SCHEMA.STATISTICS`
+    - `INFORMATION_SCHEMA.KEY_COLUMN_USAGE`
+    - `INFORMATION_SCHEMA.REFERENTIAL_CONSTRAINTS`
 
-  在 v8.3.0 版本优化了以下系统表的查询性能，相比 v8.2.0 性能有数倍的提升：
+  在 v8.3.0 版本优化了以下系统表的查询性能，相比 v8.2.0，性能有数倍的提升：
 
-    - INFORMATION_SCHEMA.CHECK_CONSTRAINTS
-    - INFORMATION_SCHEMA.COLUMNS
-    - INFORMATION_SCHEMA.PARTITIONS
-    - INFORMATION_SCHEMA.SCHEMATA
-    - INFORMATION_SCHEMA.SEQUENCES
-    - INFORMATION_SCHEMA.TABLE_CONSTRAINTS
-    - INFORMATION_SCHEMA.TIDB_CHECK_CONSTRAINTS
-    - INFORMATION_SCHEMA.TiDB_INDEXES
-    - INFORMATION_SCHEMA.TIDB_INDEX_USAGE
-    - INFORMATION_SCHEMA.VIEWS
+    - `INFORMATION_SCHEMA.CHECK_CONSTRAINTS`
+    - `INFORMATION_SCHEMA.COLUMNS`
+    - `INFORMATION_SCHEMA.PARTITIONS`
+    - `INFORMATION_SCHEMA.SCHEMATA`
+    - `INFORMATION_SCHEMA.SEQUENCES`
+    - `INFORMATION_SCHEMA.TABLE_CONSTRAINTS`
+    - `INFORMATION_SCHEMA.TIDB_CHECK_CONSTRAINTS`
+    - `INFORMATION_SCHEMA.TiDB_INDEXES`
+    - `INFORMATION_SCHEMA.TIDB_INDEX_USAGE`
+    - `INFORMATION_SCHEMA.VIEWS`
 
 * 分区表达式使用 `EXTRACT(YEAR_MONTH...)` 函数时，支持分区裁剪，提升查询性能 [#54209](https://github.com/pingcap/tidb/pull/54209) @[mjonss](https://github.com/mjonss) **tw@hfxsd** <!--1885-->
 
@@ -107,9 +107,9 @@ TiDB 版本：8.3.0
 
 * 批量建表 (`CREATE TABLE`) 的性能提升了 1.4 倍，批量建库 (`CREATE DATABASE`) 的性能提升了 2.1 倍，批量加列 (`ADD COLUMN`) 的性能提升了 2 倍 [#54436](https://github.com/pingcap/tidb/issues/54436) @[D3Hunter](https://github.com/D3Hunter) **tw@hfxsd** <!--1863-->
 
-    v8.0.0 引入了系统变量 [`tidb_enable_fast_create_table`](/system-variables.md#tidb_enable_fast_create_table-从-v800-版本开始引入)，用于在批量建表的场景中提升建表的性能。在 v8.3.0 中，通过 10 个 session 在单个库内并发提交建表的 DDL，相比 v8.2.0 性能有 1.4 倍的提升。
+    v8.0.0 引入了系统变量 [`tidb_enable_fast_create_table`](/system-variables.md#tidb_enable_fast_create_table-从-v800-版本开始引入)，用于在批量建表的场景中提升建表的性能。在 v8.3.0 中，通过 10 个 session 在单个库内并发提交建表的 DDL，相比 v8.2.0，性能有 1.4 倍的提升。
 
-    在 v8.3.0 中，逻辑 DDL (General DDL) 在批量执行时的性能相比 v8.2.0 也均有提升，其中通过 10 个 session 并发批量建库 (`CREATE DATABASE`) 的性能相比 v8.1.0 提升了 19 倍，相比 v8.2.0 提升了 2.1 倍。10 个 session 对同个库内的多个表批量加列 (`ADD COLUMN`) 性能相比 v8.1.0 提升了 10 倍，相比 v8.2.0 提升了 2 倍。
+    在 v8.3.0 中，逻辑 DDL (General DDL) 在批量执行时的性能相比 v8.2.0 也均有提升，其中通过 10 个 session 并发批量建库 (`CREATE DATABASE`) 的性能相比 v8.1.0 提升了 19 倍，相比 v8.2.0 提升了 2.1 倍。10 个 session 对同个库内的多个表批量加列 (`ADD COLUMN`) 的性能相比 v8.1.0 提升了 10 倍，相比 v8.2.0 提升了 2 倍。
 
     更多信息，请参考[用户文档](/system-variables.md#tidb_enable_fast_create_table-从-v800-版本开始引入)。
 
@@ -270,7 +270,7 @@ TiDB 版本：8.3.0
     - 当某个统计信息完全由 TopN 构成，且对应表的统计信息中修改行数不为 0 时，对于未命中 TopN 的等值条件，估算结果从 0 调整为 1 [#47400](https://github.com/pingcap/tidb/issues/47400) @[terry1purcell](https://github.com/terry1purcell)
     - TopN 算子支持数据落盘功能 [#47733](https://github.com/pingcap/tidb/issues/47733) @[xzhangxian1008](https://github.com/xzhangxian1008) **tw@Oreoxmt** <!--1715-->
     - TiDB 节点支持执行包含 `WITH ROLLUP` 修饰符和 `GROUPING` 函数的查询 [#42631](https://github.com/pingcap/tidb/issues/42631) @[Arenatlx](https://github.com/Arenatlx) **tw@Oreoxmt** <!--1714-->
-    - 系统变量 [`tidb_low_resolution_tso`](/system-variables.md#tidb_low_resolution_tso-从-v830-版本开始引入) 增加全局作用域 [#55022](https://github.com/pingcap/tidb/issues/55022) @[cfzjywxk](https://github.com/cfzjywxk) **tw@hfxsd** <!--1857-->
+    - 系统变量 [`tidb_low_resolution_tso`](/system-variables.md#tidb_low_resolution_tso) 增加全局 (GLOBAL) 作用域 [#55022](https://github.com/pingcap/tidb/issues/55022) @[cfzjywxk](https://github.com/cfzjywxk) **tw@hfxsd** <!--1857-->
     - GC（垃圾回收）支持并发 Delete Range（删除区间）以提升处理效率，可以通过 [`tidb_gc_concurrency`](/system-variables.md#tidb_gc_concurrency-从-v50-版本开始引入) 控制并发线程数 [#54570](https://github.com/pingcap/tidb/issues/54570) @[ekexium](https://github.com/ekexium) **tw@qiancai** <!--1890-->
     - 提升批量 DML 执行方式 (`tidb_dml_type = "bulk"`) 的性能 [#50215](https://github.com/pingcap/tidb/issues/50215) @[ekexium](https://github.com/ekexium)
     - 提升 schema 信息缓存相关接口 `SchemaByID` 的性能 [#54074](https://github.com/pingcap/tidb/issues/54074) @[ywqzzy](https://github.com/ywqzzy)
@@ -292,7 +292,7 @@ TiDB 版本：8.3.0
 + TiKV <!--tw@hfxsd: 5 notes-->
 
     - 优化 `async-io` 下写 Raft 日志的攒批策略，减少对磁盘 I/O 带宽资源的使用 [#16907](https://github.com/tikv/tikv/issues/16907) @[LykxSassinator](https://github.com/LykxSassinator)
-    - 重新设计了 TiCDC  的 delegate 和 downstream 模块以更好地支持 Region 局部订阅 [#16362](https://github.com/tikv/tikv/issues/16362) @[hicqu](https://github.com/hicqu)
+    - 重新设计了 TiCDC 的 delegate 和 downstream 模块以更好地支持 Region 局部订阅 [#16362](https://github.com/tikv/tikv/issues/16362) @[hicqu](https://github.com/hicqu)
     - 减少单个慢日志的大小 [#17294](https://github.com/tikv/tikv/issues/17294) @(Connor1996)[https://github.com/Connor1996]
     - 增加监控指标 `min safe ts` [#17307](https://github.com/tikv/tikv/issues/17307) @[mittalrishabh](https://github.com/mittalrishabh)
     - 减少 peer message channel 的内存使用 [#16229](https://github.com/tikv/tikv/issues/16229) @[Connor1996](https://github.com/Connor1996)
@@ -329,7 +329,7 @@ TiDB 版本：8.3.0
     - 修复 `ADMIN CANCEL DDL JOBS` 可能导致 DDL 失败的问题 [#54687](https://github.com/pingcap/tidb/issues/54687) @[lance6716](https://github.com/lance6716)
     - 修复来自 DM 同步的表超过索引列最大长度 `max-index-length` 时，同步失败的问题 [#55138](https://github.com/pingcap/tidb/issues/55138) @[lance6716](https://github.com/lance6716) <!--tw@hfxsd: the following 12 notes-->
     - 修复开启 `tidb_enable_inl_join_inner_multi_pattern` 时，执行 SQL 语句可能报错 `runtime error: index out of range` 的问题 [#54535](https://github.com/pingcap/tidb/issues/54535) @[joechenrh](https://github.com/joechenrh)
-    - 修复 TiDB 在统计信息初始化的过程中，无法通过 `CTRL+C` 的方式退出 TiDB 的问题 [#54589](https://github.com/pingcap/tidb/issues/54589) @[tiancaiamao](https://github.com/tiancaiamao)
+    - 修复 TiDB 在统计信息初始化的过程中，无法通过 <kbd>Control</kbd>+<kbd>C</kbd> 的方式退出 TiDB 的问题 [#54589](https://github.com/pingcap/tidb/issues/54589) @[tiancaiamao](https://github.com/tiancaiamao)
     - 修复 `INL_MERGE_JOIN` Optimizer Hint 返回错误结果的问题，将其废弃 [#54064](https://github.com/pingcap/tidb/issues/54064) @[AilinKid](https://github.com/AilinKid)
     - 修复关联子查询中包含 `WITH ROLLUP` 时 TiDB 可能 panic 并报错 `runtime error: index out of range` 的问题 [#54983](https://github.com/pingcap/tidb/issues/54983) @[AilinKid](https://github.com/AilinKid)
     - 修复当 SQL 查询的过滤条件中包含虚拟列，且执行条件中包含 `UnionScan` 时，谓词无法正常下推的问题 [#54870](https://github.com/pingcap/tidb/issues/54870) @[qw4990](https://github.com/qw4990)
@@ -378,7 +378,7 @@ TiDB 版本：8.3.0
 
 + TiFlash <!--tw@hfxsd: 4 notes-->
 
-    - 修复使用 `CAST()` 函数将字符串转换为带时区或非法字符的日期时间时结果错误的问题 [#8754](https://github.com/pingcap/tiflash/issues/8754) @[solotzg](https://github.com/solotzg)
+    - 修复使用 `CAST()` 函数将字符串转换为带时区或非法字符的日期时间时，结果错误的问题 [#8754](https://github.com/pingcap/tiflash/issues/8754) @[solotzg](https://github.com/solotzg)
     - 修复 TiFlash 与任意 PD 发生网络分区后，可能导致读请求超时报错的问题 [#9243](https://github.com/pingcap/tiflash/issues/9243) @[Lloyd-Pottiger](https://github.com/Lloyd-Pottiger)
     - (dup): release-7.5.3.md > 错误修复> TiFlash - 修复跨数据库对含空分区的分区表执行 `RENAME TABLE ... TO ...` 后，TiFlash 可能 panic 的问题 [#9132](https://github.com/pingcap/tiflash/issues/9132) @[JaySon-Huang](https://github.com/JaySon-Huang)
     - (dup): release-7.5.3.md > 错误修复> TiFlash - 修复开启延迟物化后，部分查询在执行时可能报列类型不匹配错误的问题 [#9175](https://github.com/pingcap/tiflash/issues/9175) @[JinheLin](https://github.com/JinheLin)
