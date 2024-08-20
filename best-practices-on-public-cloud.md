@@ -78,7 +78,7 @@ sdd           1033.00   4132.00   1141.33  31685.33   571.00    0.94 100.00
 
 - Google Cloud：推荐使用 [pd-extreme](https://cloud.google.com/compute/docs/disks?hl=zh-cn#disk-types/)。磁盘大小、IOPS 和 MBPS 可以进行配置，但仅在 CPU 核数超过 64 的实例上可用。
 
-- Azure：推荐使用 [ultra disk](https://learn.microsoft.com/zh-cn/azure/virtual-machines/disks-types#ultra-disks)。磁盘大小、IOPS 和 MBPS 可以根据你的具体需求进行配置。
+- Azure：推荐使用 [Ultra Disk](https://learn.microsoft.com/zh-cn/azure/virtual-machines/disks-types#ultra-disks)。磁盘大小、IOPS 和 MBPS 可以根据你的具体需求进行配置。
 
 ### 示例 1：在 AWS 上运行社交网络工作负载
 
@@ -148,7 +148,7 @@ server_configs:
 
 ## 缓解 Google Cloud 上的实时迁移维护事件带来的性能影响
 
-Google Cloud 的 [实时迁移功能](https://cloud.google.com/compute/docs/instances/live-migration-process?hl=zh-cn)允许虚拟机在主机之间无缝迁移而不会导致停机。然而，这些迁移事件虽不频繁，但可能会显著影响虚拟机的性能，其中包括那些在 TiDB 集群中运行的虚拟机。在这些事件发生期间，受影响的虚拟机可能会出现性能下降，导致 TiDB 集群中的查询处理时间增加。
+Google Cloud 的[实时迁移功能](https://cloud.google.com/compute/docs/instances/live-migration-process?hl=zh-cn)允许虚拟机在主机之间无缝迁移而不会导致停机。然而，这些迁移事件虽不频繁，但可能会显著影响虚拟机的性能，其中包括那些在 TiDB 集群中运行的虚拟机。在这些事件发生期间，受影响的虚拟机可能会出现性能下降，导致 TiDB 集群中的查询处理时间增加。
 
 为了检测 Google Cloud 发起的实时迁移事件并减轻这些事件对性能的影响，TiDB 提供了一个[监控脚本](https://github.com/PingCAP-QE/tidb-google-maintenance)（该脚本基于 Google 元数据[示例](https://github.com/GoogleCloudPlatform/python-docs-samples/blob/master/compute/metadata/main.py)）。你可以将此脚本部署在 TiDB、TiKV 和 PD 节点上，以检测维护事件。当检测到维护事件时，该脚本将自动采取以下适当措施，以尽量减少中断并优化集群行为：
 
@@ -166,7 +166,7 @@ Google Cloud 的 [实时迁移功能](https://cloud.google.com/compute/docs/inst
 
 ### PD 限制的特征
 
-以下图表展示了一个由三个 PD Server 组成的大规模 TiDB 集群的特征，其中每个 PD Server 均配置了 56 核的 CPU。可以看出，当每秒查询数（QPS）超过 100 万次且每秒 TSO 请求数超过 162,000 次时，CPU 利用率达到约 4,600%。这一高 CPU 利用率表明 PD Leader 的负载已经相当高且可用的 CPU 资源即将耗尽。
+以下图表展示了一个由三个 PD Server 组成的大规模 TiDB 集群的特征，其中每个 PD Server 均配置了 56 核的 CPU。可以看出，当每秒查询数（QPS）超过 100 万次且每秒 TSO 请求数超过 162,000 次时，CPU 利用率达到约 4600%。这一高 CPU 利用率表明 PD Leader 的负载已经相当高且可用的 CPU 资源即将耗尽。
 
 ![pd-server-cpu](/media/performance/public-cloud-best-practice/baseline_cpu.png)
 ![pd-server-metrics](/media/performance/public-cloud-best-practice/baseline_metrics.png)
@@ -205,7 +205,7 @@ set global tidb_tso_client_batch_max_wait_time = 2; # 默认值为 0
 调整后的效果如下：
 
 - 每秒 TSO 请求数减少到 64,800 次。
-- CPU 利用率显著降低，从约 4,600% 降低到 1,400%。
+- CPU 利用率显著降低，从约 4600% 降低到 1400%。
 - `PD server TSO handle time` 的 P999 值从 2ms 降低到 0.5ms。
 
 以上性能提升表明，这些调整措施成功地降低了 PD Server 的 CPU 利用率，同时保持了稳定的 TSO 处理性能。
