@@ -1,6 +1,5 @@
 ---
 title: TiDB 2.0.5 release notes
-aliases: ['/docs-cn/dev/releases/release-2.0.5/','/docs-cn/dev/releases/205/']
 summary: TiDB 2.0.5 版本发布，改进了系统兼容性和稳定性。新增系统变量 `tidb_disable_txn_auto_retry`，调整计算 `Selection` 代价的方式，优化查询条件匹配唯一索引或主键，修复多个 bug。PD 修复副本迁移导致 TiKV 磁盘空间耗尽和 `AdjacentRegionScheduler` 导致的崩溃问题。TiKV 修复 decimal 运算中的溢出和 merge 过程中的脏读问题。
 ---
 

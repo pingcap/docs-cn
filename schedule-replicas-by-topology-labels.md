@@ -1,6 +1,5 @@
 ---
 title: 通过拓扑 label 进行副本调度
-aliases: ['/docs-cn/dev/schedule-replicas-by-topology-labels/','/docs-cn/dev/how-to/deploy/geographic-redundancy/location-awareness/','/docs-cn/dev/location-awareness/']
 summary: TiDB v5.3.0 引入了通过拓扑 label 进行副本调度的功能。为了提升集群的高可用性和数据容灾能力，推荐让 TiKV 节点在物理层面上尽可能分散。通过设置 TiKV 和 TiFlash 的 labels，可以标识它们的地理位置。同时，需要配置 PD 的 location-labels 和 isolation-level 来使 PD 理解 TiKV 节点拓扑并加强拓扑隔离要求。PD 在副本调度时会保证同一份数据的不同副本尽可能分散，以提高集群容灾能力。
 ---
 

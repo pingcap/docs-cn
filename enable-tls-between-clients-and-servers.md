@@ -1,6 +1,5 @@
 ---
 title: 为 TiDB 客户端服务端间通信开启加密传输
-aliases: ['/docs-cn/dev/enable-tls-between-clients-and-servers/','/docs-cn/dev/how-to/secure/enable-tls-clients/','/docs-cn/dev/encrypted-connections-with-tls-protocols/','/docs-cn/dev/enable-tls-between-clients/']
 summary: TiDB 服务端与客户端间默认采用非加密连接，容易造成信息泄露。建议使用加密连接确保安全性。要开启 TLS 加密传输，需要在服务端配置开启 TLS 支持，并在客户端应用程序中配置使用 TLS 加密连接。可以通过配置系统变量或在创建 / 修改用户时指定要求加密连接。可通过命令检查当前连接是否是加密连接。TLS 版本为 TLSv1.2 和 TLSv1.3，支持的加密算法包括 AES 和 CHACHA20_POLY1305。
 ---
 

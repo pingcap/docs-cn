@@ -1,6 +1,5 @@
 ---
 title: 线上负载与 `ADD INDEX` 相互影响测试
-aliases: ['/docs-cn/dev/benchmark/online-workloads-and-add-index-operations/','/docs-cn/dev/benchmark/add-index-with-load/']
 summary: 线上负载与 ADD INDEX 相互影响测试结果显示，当目标列频繁更新时，会造成写冲突和长时间完成。目标列仅涉及查询负载或与线上负载不相关时，可以直接使用默认配置。
 ---
 

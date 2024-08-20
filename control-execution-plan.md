@@ -1,6 +1,5 @@
 ---
 title: 控制执行计划
-aliases: ['/docs-cn/dev/control-execution-plan/']
 summary: 本章节介绍了控制执行计划的方法，包括使用提示指导执行计划、执行计划管理、优化规则及表达式下推的黑名单。此外，还介绍了一些系统变量对执行计划的影响，以及引入的特殊变量 `tidb_opt_fix_control`，用于更细粒度地控制优化器的行为。
 ---
 

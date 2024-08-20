@@ -1,7 +1,6 @@
 ---
 title: 单区域多 AZ 部署 TiDB
 summary: 本文档介绍单个区域多个可用区部署 TiDB 的方案。
-aliases: ['/docs-cn/dev/how-to/deploy/geographic-redundancy/overview/','/docs-cn/dev/geo-redundancy-deployment/']
 ---
 
 # 单区域多 AZ 部署 TiDB

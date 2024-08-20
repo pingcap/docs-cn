@@ -1,6 +1,5 @@
 ---
 title: TiCDC 简介
-aliases: ['/docs-cn/dev/ticdc/ticdc-overview/','/docs-cn/dev/reference/tools/ticdc/overview/']
 summary: TiCDC 是一款 TiDB 增量数据同步工具，适用于多 TiDB 集群的高可用和容灾方案，以及实时同步变更数据到异构系统。其主要特性包括数据容灾复制、双向复制、低延迟的增量数据同步能力等。TiCDC 架构包括 TiKV Server、TiCDC 和 PD，支持将数据同步到 TiDB、MySQL 数据库、Kafka 以及存储服务。目前暂不支持单独使用 RawKV 的 TiKV 集群，创建 SEQUENCE 的 DDL 操作和在同步过程中对 TiCDC 正在同步的表和库进行 BR 数据恢复和 TiDB Lightning 导入。
 ---
 

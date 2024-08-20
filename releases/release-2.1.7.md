@@ -1,6 +1,5 @@
 ---
 title: TiDB 2.1.7 Release Notes
-aliases: ['/docs-cn/dev/releases/release-2.1.7/','/docs-cn/dev/releases/2.1.7/']
 summary: TiDB 2.1.7 发布，修复了 DDL 取消导致升级程序启动时间变长的问题，提升了内置函数的兼容性，新增了系统表管理 Table 与 Index 之间的关系，支持在 DO 语句中使用子查询，修复了对 JSON 数据的聚合函数在计算过程中 Panic 的问题。PD 修改副本数为 1 时 balance-region 无法迁移 leader 的问题。Tools 支持 binlog 同步 generated column。TiDB Ansible 将 Prometheus 监控数据默认保留时间改成 30d。
 ---
 

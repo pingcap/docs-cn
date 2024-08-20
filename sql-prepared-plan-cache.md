@@ -1,6 +1,5 @@
 ---
 title: Prepare 语句执行计划缓存
-aliases: ['/docs-cn/dev/sql-prepare-plan-cache/','zh/tidb/dev/sql-prepare-plan-cache']
 summary: Prepare 语句执行计划缓存功能默认打开，可通过变量启用或关闭。缓存功能仅针对 Prepare/Execute 请求，对普通查询无效。缓存功能会有一定内存开销，可通过监控查看内存使用情况。可手动清空计划缓存，但不支持一次性清空整个集群的计划缓存。忽略 COM_STMT_CLOSE 指令和 DEALLOCATE PREPARE 语句，可解决计划被立即清理的问题。监控 Queries Using Plan Cache OPS 和 Plan Cache Miss OPS，以确保 SQL 执行计划缓存正常工作。Prepared Statement Count 图表显示非零值，表示应用使用了预处理语句。
 ---
 

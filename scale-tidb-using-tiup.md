@@ -1,6 +1,5 @@
 ---
 title: 使用 TiUP 扩容缩容 TiDB 集群
-aliases: ['/docs-cn/dev/scale-tidb-using-tiup/','/docs-cn/dev/how-to/scale/with-tiup/','/docs-cn/dev/reference/tiflash/scale/']
 summary: TiUP 可以在不中断线上服务的情况下扩容和缩容 TiDB 集群。使用 `tiup cluster list` 查看当前集群名称列表。扩容 TiDB/PD/TiKV 节点需要编写扩容拓扑配置，并执行扩容命令。扩容后，使用 `tiup cluster display <cluster-name>` 检查集群状态。缩容 TiDB/PD/TiKV 节点需要查看节点 ID 信息，执行缩容操作，然后检查集群状态。缩容 TiFlash/TiCDC 节点也需要执行相似的操作。
 ---
 

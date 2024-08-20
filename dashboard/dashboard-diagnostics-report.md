@@ -1,6 +1,5 @@
 ---
 title: TiDB Dashboard 诊断报告
-aliases: ['/docs-cn/dev/dashboard/dashboard-diagnostics-report/']
 summary: TiDB Dashboard 诊断报告介绍了诊断报告的内容和查看技巧。报告包括基本信息、诊断信息、负载信息、概览信息、TiDB/PD/TiKV 监控信息和配置信息。对比报告显示两个时间段的差异，通过 DIFF_RATIO 和 Maximum Different Item 报表可以快速发现监控项的差异。
 ---
 
