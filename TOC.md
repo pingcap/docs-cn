@@ -606,7 +606,7 @@
     - [故障处理](/ticdc/troubleshoot-ticdc.md)
     - [常见问题解答](/ticdc/ticdc-faq.md)
     - [术语表](/ticdc/ticdc-glossary.md)
-  - TiDB Binlog
+  - TiDB Binlog（已废弃）
     - [概述](/tidb-binlog/tidb-binlog-overview.md)
     - [快速上手](/tidb-binlog/get-started-with-tidb-binlog.md)
     - [部署使用](/tidb-binlog/deploy-tidb-binlog.md)
