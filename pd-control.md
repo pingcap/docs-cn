@@ -1322,7 +1322,8 @@ scheduler config balance-hot-region-scheduler  // 显示 balance-hot-region 调�
 
     当一个 `evict-leader-scheduler` 的所有 store 配置都被移除后，该调度器也会自动被移除。
 
-- `batch`可以用来调整单次调度过程中生成 `Operator` 的数量，`batch` 值越大，调度速度越快，默认值为：3，取值范围：[1,10]。在已有 `evict-leader-scheduler` 时，使用 `set batch` 子命令修改 `batch` 值，示例如下：
+- 在已有 `evict-leader-scheduler` 时，可以使用 `set batch` 子命令修改 `batch` 值。其中，`batch` 用于调整单次调度过程中生成 `Operator` 的数量，默认值为 `3`，取值范围为 `[1, 10]`。`batch` 值越大，调度速度越快。
+
     ```bash
     scheduler config evict-leader-scheduler set batch 10 // 设置 batch 值为 10
     ```
