@@ -98,7 +98,7 @@ sdd           1033.00   4132.00   1141.33  31685.33   571.00    0.94 100.00
 
 ### 示例 2：在 Azure 上运行 TPC-C/Sysbench 工作负载
 
-在 Azure 上，为 Raft Engine 分配一个专用的 32 GB [ultra disk](https://learn.microsoft.com/zh-cn/azure/virtual-machines/disks-types#ultra-disks) 后，性能提升如下：
+在 Azure 上，为 Raft Engine 分配一个专用的 32 GB [Ultra Disk](https://learn.microsoft.com/zh-cn/azure/virtual-machines/disks-types#ultra-disks) 后，性能提升如下：
 
 - Sysbench `oltp_read_write` 工作负载：QPS 提高 17.8%，平均延迟降低 15.6%。
 - TPC-C 工作负载：QPS 提高 27.6%，平均延迟降低 23.1%。
