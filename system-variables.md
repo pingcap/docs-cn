@@ -601,7 +601,7 @@ mysql> SELECT * FROM t1;
 - 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：否
 - 类型：布尔型
 - 默认值：`OFF`
-- 该变量表示是否使用 [TiDB Binlog](/tidb-binlog/tidb-binlog-overview.md)。
+- 该变量表示是否使用 [TiDB Binlog](/tidb-binlog/tidb-binlog-overview.md)（已废弃）。
 
 ### `max_connections`
 
@@ -965,6 +965,22 @@ MPP 是 TiFlash 引擎提供的分布式计算框架，允许节点之间的数�
 - 类型：布尔型
 - 默认值：`OFF`
 - 这个变量用来控制是否允许通过 `ALTER TABLE MODIFY` 或 `ALTER TABLE CHANGE` 来移除某个列的 `AUTO_INCREMENT` 属性。默认 (`OFF`) 为不允许。
+
+### tidb_analyze_column_options <span class="version-mark">从 v8.3.0 版本开始引入</span>
+
+> **注意：**
+>
+> - 该变量只在 [`tidb_analyze_version`](#tidb_analyze_version-从-v510-版本开始引入) 设置为 `2` 时生效。
+> - 如果将 TiDB 集群从 v8.3.0 之前的版本升级至 v8.3.0 或更高版本，该变量会默认设置为 `ALL`，以保持原有行为。
+> - 从 v8.3.0 开始，对于新部署的 TiDB 集群，该变量默认设置为 `PREDICATE`。
+
+- 作用域：GLOBAL
+- 是否持久化到集群：是
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：否
+- 类型：枚举型
+- 默认值：`PREDICATE`
+- 可选值：`ALL`，`PREDICATE`
+- 该变量控制 `ANALYZE TABLE` 语句的行为。将其设置为 `PREDICATE` 表示仅收集 [predicate columns](/statistics.md#收集部分列的统计信息) 的统计信息；将其设置为 `ALL` 表示收集所有列的统计信息。在使用 OLAP 查询的场景中，建议将其设置为 `ALL`，否则查询性能可能会显著下降。
 
 ### `tidb_analyze_distsql_scan_concurrency` <span class="version-mark">从 v7.6.0 版本开始引入</span>
 
@@ -1487,7 +1503,7 @@ mysql> SELECT job_info FROM mysql.analyze_jobs ORDER BY end_time DESC LIMIT 1;
 
 ### `tidb_ddl_reorg_batch_size`
 
-- 作用域：GLOBAL
+- 作用域：SESSION | GLOBAL
 - 是否持久化到集群：是
 - 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：否
 - 类型：整数型
@@ -1510,7 +1526,7 @@ mysql> SELECT job_info FROM mysql.analyze_jobs ORDER BY end_time DESC LIMIT 1;
 
 ### `tidb_ddl_reorg_worker_cnt`
 
-- 作用域：GLOBAL
+- 作用域：SESSION | GLOBAL
 - 是否持久化到集群：是
 - 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：否
 - 类型：整数型
@@ -1643,7 +1659,7 @@ mysql> SELECT job_info FROM mysql.analyze_jobs ORDER BY end_time DESC LIMIT 1;
 > **注意：**
 >
 > - 对于新创建的集群，默认值为 ON。对于升级版本的集群，如果升级前是 v5.0 以下版本，升级后默认值为 `OFF`。
-> - 启用 TiDB Binlog 后，开启该选项无法获得性能提升。要获得性能提升，建议使用 [TiCDC](/ticdc/ticdc-overview.md) 替代 TiDB Binlog。
+> - 启用 TiDB Binlog（已废弃）后，开启该选项无法获得性能提升。要获得性能提升，建议使用 [TiCDC](/ticdc/ticdc-overview.md) 替代 TiDB Binlog。
 > - 启用该参数仅意味着一阶段提交成为可选的事务提交模式，实际由 TiDB 自行判断选择最合适的提交模式进行事务提交。
 
 ### `tidb_enable_analyze_snapshot` <span class="version-mark">从 v6.2.0 版本开始引入</span>
@@ -1672,7 +1688,7 @@ mysql> SELECT job_info FROM mysql.analyze_jobs ORDER BY end_time DESC LIMIT 1;
 > **注意：**
 >
 > - 对于新创建的集群，默认值为 ON。对于升级版本的集群，如果升级前是 v5.0 以下版本，升级后默认值为 `OFF`。
-> - 启用 TiDB Binlog 后，开启该选项无法获得性能提升。要获得性能提升，建议使用 [TiCDC](/ticdc/ticdc-overview.md) 替代 TiDB Binlog。
+> - 启用 TiDB Binlog（已废弃）后，开启该选项无法获得性能提升。要获得性能提升，建议使用 [TiCDC](/ticdc/ticdc-overview.md) 替代 TiDB Binlog。
 > - 启用该参数仅意味着 Async Commit 成为可选的事务提交模式，实际由 TiDB 自行判断选择最合适的提交模式进行事务提交。
 
 ### `tidb_enable_auto_analyze` <span class="version-mark">从 v6.1.0 版本开始引入</span>
@@ -1772,7 +1788,7 @@ mysql> SELECT job_info FROM mysql.analyze_jobs ORDER BY end_time DESC LIMIT 1;
 
 > **警告：**
 >
-> 收集 `PREDICATE COLUMNS` 的统计信息目前为实验特性，不建议在生产环境中使用。
+> 从 v8.3.0 开始，该变量被废弃，TiDB 默认收集 [predicate columns](/glossary.md#predicate-columns) 的统计信息。更多信息，参见 [`tidb_analyze_column_options`](#tidb_analyze_column_options-从-v830-版本开始引入)。
 
 - 作用域：GLOBAL
 - 是否持久化到集群：是
@@ -1919,13 +1935,38 @@ mysql> SELECT job_info FROM mysql.analyze_jobs ORDER BY end_time DESC LIMIT 1;
 
 ### `tidb_enable_global_index` <span class="version-mark">从 v7.6.0 版本开始引入</span>
 
+> **警告：**
+>
+> 该变量控制的功能为实验特性，不建议在生产环境中使用。该功能可能会在未事先通知的情况下发生变化或删除。如果发现 bug，请在 GitHub 上提 [issue](https://github.com/pingcap/tidb/issues) 反馈。
+
 - 作用域：SESSION | GLOBAL
 - 是否持久化到集群：是
 - 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：否
 - 类型：布尔型
 - 默认值：`OFF`
 - 可选值：`OFF`，`ON`
-- 这个变量用于控制是否支持对分区表创建 `Global index`。`Global index` 当前正处于开发阶段，**不推荐修改该变量值**。
+- 该变量控制是否支持为分区表创建[全局索引](/partitioned-table.md#全局索引)。启用此变量后，你可以通过在索引定义中添加 `GLOBAL` 选项创建不包含分区表达式中所有列的唯一索引。
+
+### `tidb_enable_lazy_cursor_fetch` <span class="version-mark">从 v8.3.0 版本开始引入</span>
+
+> **警告：**
+>
+> 该变量控制的功能为实验特性，不建议在生产环境中使用。该功能可能会在未事先通知的情况下发生变化或删除。如果发现 bug，请在 GitHub 上提 [issue](https://github.com/pingcap/tidb/issues) 反馈。
+
+- 作用域：GLOBAL
+- 是否持久化到集群：是
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：否
+- 类型：布尔型
+- 默认值：`OFF`
+- 可选值：`OFF`，`ON`
+- 这个变量用于控制 [Cursor Fetch](/develop/dev-guide-connection-parameters.md#使用-streamingresult-流式获取执行结果) 功能的行为。
+    - 当开启 Cursor Fetch 且该变量设置为 `OFF` 时，TiDB 会在语句开始执行时将所有数据读取完成并保存至 TiDB 内存，在后续客户端读取的过程中会依据客户端指定的 `FetchSize` 返回给客户端。如果结果集过大，可能会触发落盘临时将结果写入硬盘。
+    - 当开启 Cursor Fetch 且该变量设置为 `ON` 时，TiDB 不会一次把所有数据读取到 TiDB 节点，而是会随着客户端的读取不断将数据读到 TiDB 节点。
+- 该变量控制的功能存在以下限制：
+    - 不支持处于显式事务中的语句。
+    - 当前仅支持包含且仅包含 `TableReader`、`IndexReader`、`IndexLookUp`、`Projection`、`Selection` 算子的执行计划。
+    - 对于使用 Lazy Cursor Fetch 的语句，执行信息将不会出现在 [statements summary](/statement-summary-tables.md) 和[慢查询日志](/identify-slow-queries.md)中。
+- 对于暂不支持的场景，其行为与将变量设置为 `OFF` 时一致。
 
 ### `tidb_enable_non_prepared_plan_cache`
 
@@ -2291,6 +2332,16 @@ mysql> SELECT job_info FROM mysql.analyze_jobs ORDER BY end_time DESC LIMIT 1;
 - 可选值：`OFF`，`ON`
 - 该变量用于控制 TiDB 是否启用 Chunk 对象缓存。如果为 `ON`，则优先使用缓存中的 Chunk 对象，缓存中找不到申请的对象时才会从系统内存中申请。如果为 `OFF`，则直接从系统内存中申请 Chunk 对象。
 
+### `tidb_enable_shared_lock_promotion` <span class="version-mark">从 v8.3.0 版本开始引入</span>
+
+- 作用域：SESSION | GLOBAL
+- 是否持久化到集群：是
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：否
+- 类型：布尔型
+- 默认值：`OFF`
+- 该变量用于控制是否启用共享锁升级为排他锁的功能。TiDB 默认不支持 `SELECT LOCK IN SHARE MODE`，当该变量值为 `ON` 时，TiDB 会尝试将 `SELECT LOCK IN SHARE MODE` 语句升级为 `SELECT FOR UPDATE` 并真正加悲观锁。该变量默认值为 `OFF`，表示不启用共享锁升级为排他锁的功能。
+- 无论 [`tidb_enable_noop_functions`](#tidb_enable_noop_functions-从-v40-版本开始引入) 是否开启，启用该变量都会对 `SELECT LOCK IN SHARE MODE` 语句生效。
+
 ### `tidb_enable_slow_log`
 
 - 作用域：GLOBAL
@@ -2574,9 +2625,14 @@ v5.0 后，用户仍可以单独修改以上系统变量（会有废弃警告）
 - 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：否
 - 类型：整数型
 - 默认值：`-1`
-- 范围：`[1, 256]`
+- 范围：`-1` 或 `[1, 256]`
 - 单位：线程
-- 这个变量用于指定 GC 在[Resolve Locks（清理锁）](/garbage-collection-overview.md#resolve-locks清理锁)步骤中线程的数量。默认值 `-1` 表示由 TiDB 自主判断运行 GC 要使用的线程的数量。
+- 该变量用于控制[垃圾回收 (GC)](/garbage-collection-overview.md) 过程中 [Resolve Locks（清理锁）](/garbage-collection-overview.md#resolve-locks清理锁)的并发线程数。
+- 从 v8.3.0 开始，该变量也用于控制 GC 过程中 [Delete Range（删除区间）](/garbage-collection-overview.md#delete-ranges删除区间)的并发线程数。
+- 默认情况下，该变量值为 `-1`，TiDB 将根据负载情况自动决定适当的线程数。
+- 当设置为 `[1, 256]` 之间的数时：
+    - Resolve Locks（清理锁）直接使用该变量设定值作为线程数。
+    - Delete Range（删除区间）使用该变量设定值的 1/4 作为线程数。
 
 ### `tidb_gc_enable` <span class="version-mark">从 v5.0 版本开始引入</span>
 
@@ -3849,11 +3905,17 @@ explain select * from t where age=5;
 
 ### `tidb_opt_projection_push_down` <span class="version-mark">从 v6.1.0 版本开始引入</span>
 
-- 作用域：SESSION
+- 作用域：SESSION | GLOBAL
+- 是否持久化到集群：是
 - 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：是
 - 类型：布尔型
-- 默认值：`OFF`
-- 指定是否允许优化器将 `Projection` 算子下推到 TiKV 或者 TiFlash。
+- 默认值：`ON`。在 v8.3.0 之前，默认值为 `OFF`。
+- 指定是否允许优化器将 `Projection` 算子下推到 TiKV。开启后，优化器可能会将以下三种类型的 `Projection` 算子下推到 TiKV：
+    - 算子顶层表达式全部为 [JSON 查询类函数](/functions-and-operators/json-functions/json-functions-search.md)或 [JSON 值属性类函数](/functions-and-operators/json-functions/json-functions-return.md)，例如 `SELECT JSON_EXTRACT(data, '$.name') FROM users;`。
+    - 算子顶层表达式部分为 JSON 查询类函数或 JSON 值属性类函数，部分为直接的列读取，例如 `SELECT JSON_DEPTH(data), name FROM users;`。
+    - 算子顶层表达式全部为直接的列读取，且输出的列数量小于输入的列数量，例如 `SELECT name FROM users;`。
+- `Projection` 算子最终下推与否，还取决于优化器对查询代价的综合评估。
+- 对于从 v8.3.0 以前的版本升级到 v8.3.0 或更新版本的 TiDB 集群，该变量将默认为 `OFF`。
 
 ### `tidb_opt_range_max_size` <span class="version-mark">从 v6.4.0 版本开始引入</span>
 
@@ -5191,6 +5253,19 @@ Query OK, 0 rows affected, 1 warning (0.00 sec)
 >
 > - 如果 TiDB 节点未设置[区域属性](/schedule-replicas-by-topology-labels.md#设置-tidb-的-labels可选)，并且 TiFlash 副本选择策略不是 `all_replicas` 时，TiFlash 引擎将忽略 TiFlash 副本选择策略，使用所有 TiFlash 副本进行 TiFlash 查询，并且返回警告 `The variable tiflash_replica_read is ignored`。
 > - 如果 TiFlash 节点未设置[区域属性](/schedule-replicas-by-topology-labels.md#设置-tikv-和-tiflash-的-labels)，则将其视为不属于任何区域的节点。
+
+### `tiflash_hashagg_preaggregation_mode` <span class="version-mark">从 v8.3.0 版本开始引入</span>
+
+- 作用域：SESSION | GLOBAL
+- 是否持久化到集群：是
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：是
+- 类型：枚举型
+- 默认值：`force_preagg`
+- 可选值：`force_preagg`、`force_streaming`、`auto`
+- 该变量用于控制下推到 TiFlash 的两阶段或三阶段 HashAgg 在第一阶段采用哪种预聚合策略：
+    - `force_preagg`：TiFlash 在第一阶段的 HashAgg 中强制进行预聚合操作，与 v8.3.0 之前版本的行为一致
+    - `force_streaming`：TiFlash 直接将数据发送到下一阶段的 HashAgg，不进行预聚合操作
+    - `auto`：TiFlash 根据当前工作负载的聚合度自动选择是否进行预聚合操作
 
 ### `tikv_client_read_timeout` <span class="version-mark">从 v7.4.0 版本开始引入</span>
 

@@ -726,6 +726,16 @@ opentracing.reporter 相关的设置。
 + 默认值：41s
 + 这个值必须是大于两倍 Raft 选举的超时时间。
 
+### `batch-policy` <span class="version-mark">从 v8.3.0 版本开始引入</span>
+
++ 控制 TiDB 向 TiKV 发送请求时的批处理策略。TiDB 在向 TiKV 发送请求时，始终会将当前等待队列中的请求封装为 `BatchCommandsRequest` 并打包发送给 TiKV，这是基础的批处理机制。当 TiKV 负载吞吐较高时，TiDB 会根据 `batch-policy` 的配置决定是否在基础的批处理后额外等待一段时间，以在单个 `BatchCommandsRequest` 中封装更多的请求，即进行额外的批处理。
++ 默认值：`"standard"`
++ 可选值：
+    - `"basic"`：行为与 v8.3.0 之前的版本一致，即 TiDB 仅在 [`tikv-client.max-batch-wait-time`](#max-batch-wait-time) 大于 0 且 TiKV 的负载超过 [`tikv-client.overload-threshold`](#overload-threshold) 时进行额外的批处理。
+    - `"standard"`：TiDB 根据最近请求的到达时间间隔动态批处理，适用于高吞吐场景。
+    - `"positive"`：TiDB 始终进行额外的批处理，适用于高吞吐压测场景，以获得最佳性能。但在低负载场景下，该策略可能会引入不必要的批处理等待时间，从而导致性能下降。
+    - `"custom{...}"`：自定义批处理策略参数，仅用于 TiDB 内部测试，**不推荐用户使用**。
+
 ### `max-batch-size`
 
 + 批量发送 rpc 封包的最大数量，如果不为 0，将使用 BatchCommands api 发送请求到 TiKV，可以在并发度高的情况降低 rpc 的延迟，推荐不修改该值。

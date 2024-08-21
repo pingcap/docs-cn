@@ -10,7 +10,7 @@ aliases: ['/docs-cn/dev/ticdc-deployment-topology/','/docs-cn/dev/reference/tool
 >
 > TiCDC 从 v4.0.6 起成为正式功能，可用于生产环境。
 
-本文介绍 [TiCDC](/ticdc/ticdc-overview.md) 部署的拓扑，以及如何在最小拓扑的基础上同时部署 TiCDC。TiCDC 是 4.0 版本开始支持的 TiDB 增量数据同步工具，支持多种下游（TiDB、MySQL、Kafka、MQ、存储服务等）。相比于 TiDB Binlog，TiCDC 有延迟更低、天然高可用等优点。
+本文介绍 [TiCDC](/ticdc/ticdc-overview.md) 部署的拓扑，以及如何在最小拓扑的基础上同时部署 TiCDC。TiCDC 是 4.0 版本开始支持的 TiDB 增量数据同步工具，支持多种下游（TiDB、MySQL、Kafka、MQ、存储服务等）。相比于 TiDB Binlog（已废弃），TiCDC 有延迟更低、天然高可用等优点。
 
 ## 拓扑信息
 
