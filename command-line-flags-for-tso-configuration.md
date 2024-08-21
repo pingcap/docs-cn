@@ -60,7 +60,7 @@ TSO 节点用于提供 PD 的 `tso` 微服务。你可以通过命令行参数�
 ## `--name` <span class="version-mark">从 v8.3.0 版本开始引入</span>
 
 + 当前 TSO 节点的名字。
-+ 默认：`"TSO-hostname"`
++ 默认：`"tso-${hostname}"`
 + 如果你需要启动多个 TSO 节点，建议为不同 TSO 节点设置不同的名字，以方便区分。
 
 ## `-L`
