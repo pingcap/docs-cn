@@ -194,7 +194,7 @@ TiDB 版本：8.3.0
 
     在 v8.3.0，该功能成为正式功能 (GA)。
 
-    更多信息，请参考[用户文档](/ticdc-bidirectional-replication.md)。
+    更多信息，请参考[用户文档](/ticdc/ticdc-bidirectional-replication.md)。
 
 ## 兼容性变更
 
