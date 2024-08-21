@@ -31,7 +31,7 @@ blob-file-compression = "zstd"
 
 > **注意：**
 >
-> 启用 Titan 后，主键范围扫描的性能可能会略有下降。更多信息，请参考 [`min-blob-size` 对性能的影响](/storage-engine/titan-overview.md#min-blob-size-对性能的影响)。
+> 启用 Titan 后，主键范围扫描的性能可能会略有下降。更多信息，请参考 [`min-blob-size` 对性能的影响](https://docs.pingcap.com/zh/tidb/stable/titan-overview#min-blob-size-对性能的影响)。
 
 ### 提高所有压缩级别
 
