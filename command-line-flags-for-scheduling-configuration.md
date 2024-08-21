@@ -60,7 +60,7 @@ Scheduling 节点用于提供 PD 的 `scheduling` 微服务。你可以通过命
 ## `--name` <span class="version-mark">从 v8.3.0 版本开始引入</span>
 
 + 当前 Scheduling 节点的名字。
-+ 默认：`"Scheduling-hostname"`
++ 默认：`"scheduling-${hostname}"`
 + 如果你需要启动多个 Scheduling 节点，建议为不同 Scheduling 节点设置不同的名字，以方便区分。
 
 ## `-L`
