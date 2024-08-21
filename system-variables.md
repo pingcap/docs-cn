@@ -2624,9 +2624,14 @@ v5.0 后，用户仍可以单独修改以上系统变量（会有废弃警告）
 - 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：否
 - 类型：整数型
 - 默认值：`-1`
-- 范围：`[1, 256]`
+- 范围：`-1` 或 `[1, 256]`
 - 单位：线程
-- 这个变量用于指定 GC 在[Resolve Locks（清理锁）](/garbage-collection-overview.md#resolve-locks清理锁)步骤中线程的数量。默认值 `-1` 表示由 TiDB 自主判断运行 GC 要使用的线程的数量。
+- 该变量用于控制[垃圾回收 (GC)](/garbage-collection-overview.md) 过程中 [Resolve Locks（清理锁）](/garbage-collection-overview.md#resolve-locks清理锁)的并发线程数。
+- 从 v8.3.0 开始，该变量也用于控制 GC 过程中 [Delete Range（删除区间）](/garbage-collection-overview.md#delete-ranges删除区间)的并发线程数。
+- 默认情况下，该变量值为 `-1`，TiDB 将根据负载情况自动决定适当的线程数。
+- 当设置为 `[1, 256]` 之间的数时：
+    - Resolve Locks（清理锁）直接使用该变量设定值作为线程数。
+    - Delete Range（删除区间）使用该变量设定值的 1/4 作为线程数。
 
 ### `tidb_gc_enable` <span class="version-mark">从 v5.0 版本开始引入</span>
 
