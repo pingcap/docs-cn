@@ -407,7 +407,7 @@ TiDB 版本：8.3.0
         - 修复当索引长度超过 `max-index-length` 默认值时数据同步中断的问题 [#11459](https://github.com/pingcap/tiflow/issues/11459) @[michaelmdeng](https://github.com/michaelmdeng)
         - 修复 DM 无法正确处理 `FAKE_ROTATE_EVENT` 的问题 [#11381](https://github.com/pingcap/tiflow/issues/11381) @[lance6716](https://github.com/lance6716)
 
-    + TiDB Lightning <!--tw@Oreoxmt: 3 notes-->
+    + TiDB Lightning
 
         - 修复 TiDB Lightning 获取 keyspace 失败时输出的 `WARN` 日志可能引起用户混淆的问题 [#54232](https://github.com/pingcap/tidb/issues/54232) @[kennytm](https://github.com/kennytm)
         - 修复 TiDB Lightning 的 TLS 配置影响集群证书的问题 [#54172](https://github.com/pingcap/tidb/issues/54172) @[ei-sugimoto](https://github.com/ei-sugimoto)
