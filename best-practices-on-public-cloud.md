@@ -144,7 +144,7 @@ server_configs:
     server.grpc-compression-type: gzip
 ```
 
-要减少 TiFlash MPP 任务中数据交换（data shuffle 过程）所带来的网络流量，建议在同一可用区内部署多个 TiFlash 实例。从 v6.6.0 开始，[Exchange 数据压缩](/explain-mpp.md#mpp-version-和-exchange-数据压缩)功能默认启用，以减少 MPP 数据交换导致的网络流量。
+要减少 TiFlash MPP 任务中数据交换（data shuffle 过程）所带来的网络流量，建议在同一可用区内部署多个 TiFlash 实例。
 
 ## 缓解 Google Cloud 上的实时迁移维护事件带来的性能影响
 
