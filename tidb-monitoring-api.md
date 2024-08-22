@@ -32,7 +32,7 @@ curl http://127.0.0.1:10080/status
 ```
 {
     connections: 0,  # 当前 TiDB Server 上的客户端连接数
-    version: "8.0.11-TiDB-v8.2.0",  # TiDB 版本号
+    version: "8.0.11-TiDB-v8.3.0",  # TiDB 版本号
     git_hash: "7267747ae0ec624dffc3fdedb00f1ed36e10284b"  # TiDB 当前代码的 Git Hash
 }
 ```
