@@ -190,6 +190,10 @@ TiDB 8.1.0 为长期支持版本 (Long-Term Support Release, LTS)。
 | TiCDC | [`sink.debezium.output-old-value`](/ticdc/ticdc-changefeed-config.md#ticdc-changefeed-配置文件说明) | 新增 | 控制是否输出行数据更改前的值。默认值为 `true`。关闭后，`UPDATE` 事件不会输出 "before" 字段的数据。 |
 | TiCDC | [`sink.open.output-old-value`](/ticdc/ticdc-changefeed-config.md#ticdc-changefeed-配置文件说明) | 新增 | 控制是否输出行数据更改前的值。默认值为 `true`。关闭后，`UPDATE` 事件不会输出 "p" 字段的数据。 |
 
+## 离线包变更
+
+在 v8.1.0 中，`TiDB-community-toolkit` [二进制软件包](/binary-package.md)移除了 `arbiter`。
+
 ## 废弃功能
 
 * 计划在后续版本重新设计[执行计划绑定的自动演进](/sql-plan-management.md#自动演进绑定-baseline-evolution)，相关的变量和行为会发生变化。
