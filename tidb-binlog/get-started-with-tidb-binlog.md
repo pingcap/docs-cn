@@ -6,7 +6,7 @@ summary: TiDB Binlog 是用于将数据从 TiDB 推送到 MariaDB 实例的工�
 
 # TiDB Binlog 教程
 
-本文档主要介绍如何使用 TiDB Binlog 将数据从 TiDB 推送到 MariaDB 实例。文中的 TiDB Binlog 集群包含 Pump 和 Drainer 的单个节点，TiDB 集群包含 TiDB、TiKV 和 Placement Driver (PD) 各组件的单个节点。
+本文档主要介绍如何使用 [TiDB Binlog](/tidb-binlog/tidb-binlog-overview.md)（已废弃）将数据从 TiDB 推送到 MariaDB 实例。文中的 TiDB Binlog 集群包含 Pump 和 Drainer 的单个节点，TiDB 集群包含 TiDB、TiKV 和 Placement Driver (PD) 各组件的单个节点。
 
 希望上手实践 TiDB Binlog 工具的用户需要对 [TiDB 架构](/tidb-architecture.md)有一定的了解，最好有创建过 TiDB 集群的经验。该文档也有助于简单快速了解 TiDB Binlog 架构以及相关概念。
 
@@ -48,7 +48,7 @@ sudo yum install -y mariadb-server
 {{< copyable "shell-regular" >}}
 
 ```bash
-curl -LO https://download.pingcap.org/tidb-community-server-v8.2.0-linux-amd64.tar.gz | tar xzf - &&
+curl -LO https://download.pingcap.org/tidb-community-server-v8.3.0-linux-amd64.tar.gz | tar xzf - &&
 cd tidb-latest-linux-amd64
 ```
 

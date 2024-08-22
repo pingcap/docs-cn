@@ -130,7 +130,7 @@ Starting /root/.tiup/components/cluster/v1.16/cluster display <cluster-name>
 
 TiDB Cluster: <cluster-name>
 
-TiDB Version: v8.2.0
+TiDB Version: v8.3.0
 
 ID       Role         Host    Ports                            Status  Data Dir        Deploy Dir
 

@@ -29,8 +29,8 @@ ColumnType
 ColumnOption
          ::= 'NOT'? 'NULL'
            | 'AUTO_INCREMENT'
-           | 'PRIMARY'? 'KEY' ( 'CLUSTERED' | 'NONCLUSTERED' )?
-           | 'UNIQUE' 'KEY'?
+           | 'PRIMARY'? 'KEY' ( 'CLUSTERED' | 'NONCLUSTERED' )? ( 'GLOBAL' | 'LOCAL' )?
+           | 'UNIQUE' 'KEY'? ( 'GLOBAL' | 'LOCAL' )?
            | 'DEFAULT' ( NowSymOptionFraction | SignedLiteral | NextValueForSequence )
            | 'SERIAL' 'DEFAULT' 'VALUE'
            | 'ON' 'UPDATE' NowSymOptionFraction
@@ -136,6 +136,7 @@ SELECT * FROM t1;
 * 不支持将新添加的列设为 `PRIMARY KEY`。
 * 不支持将新添加的列设为 `AUTO_INCREMENT`。
 * 对添加生成列有局限性，具体可参考：[生成列局限性](/generated-columns.md#生成列的局限性)。
+* TiDB 对[分区表](/partitioned-table.md)进行了扩展，你可以在添加新列时通过将 `PRIMARY KEY` 或 `UNIQUE INDEX` 设置为 `GLOBAL` 来设置[全局索引](/partitioned-table.md#全局索引)。该扩展与 MySQL 不兼容。
 
 ## 另请参阅
 

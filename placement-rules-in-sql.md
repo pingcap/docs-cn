@@ -280,14 +280,16 @@ ALTER TABLE t PLACEMENT POLICY=default; -- 删除表 t 已绑定的放置策略 
 你还可以给表分区指定放置策略。示例如下：
 
 ```sql
-CREATE PLACEMENT POLICY storageforhisotrydata CONSTRAINTS="[+node=history]";
+CREATE PLACEMENT POLICY storageforhistorydata CONSTRAINTS="[+node=history]";
 CREATE PLACEMENT POLICY storagefornewdata CONSTRAINTS="[+node=new]";
 CREATE PLACEMENT POLICY companystandardpolicy CONSTRAINTS="";
 
-CREATE TABLE t1 (id INT, name VARCHAR(50), purchased DATE)
+SET tidb_enable_global_index = ON;
+
+CREATE TABLE t1 (id INT, name VARCHAR(50), purchased DATE, UNIQUE INDEX idx(id) GLOBAL)
 PLACEMENT POLICY=companystandardpolicy
 PARTITION BY RANGE( YEAR(purchased) ) (
-  PARTITION p0 VALUES LESS THAN (2000) PLACEMENT POLICY=storageforhisotrydata,
+  PARTITION p0 VALUES LESS THAN (2000) PLACEMENT POLICY=storageforhistorydata,
   PARTITION p1 VALUES LESS THAN (2005),
   PARTITION p2 VALUES LESS THAN (2010),
   PARTITION p3 VALUES LESS THAN (2015),
@@ -295,17 +297,18 @@ PARTITION BY RANGE( YEAR(purchased) ) (
 );
 ```
 
-如果没有为表中的某个分区指定任何放置策略，该分区将尝试继承表上可能存在的策略。在上面示例中：
+如果没有为表中的某个分区指定任何放置策略，该分区将尝试继承表上可能存在的策略。如果该表有[全局索引](/partitioned-table.md#全局索引)，索引将应用与该表相同的放置策略。在上面示例中：
 
-- `p0` 分区将会应用 `storageforhisotrydata` 策略
+- `p0` 分区将会应用 `storageforhistorydata` 策略
 - `p4` 分区将会应用 `storagefornewdata` 策略
 - `p1`、`p2`、`p3` 分区将会应用表 `t1` 的放置策略 `companystandardpolicy`
-- 如果 `t1` 没有绑定任何策略，`p1`、`p2`、`p3` 会继承数据库或全局的默认策略
+- 全局索引 `idx` 将应用与表 `t1` 相同的 `companystandardpolicy` 放置策略
+- 如果没有为表 `t1` 指定放置策略，`p1`、`p2` 和 `p3` 分区以及全局索引 `idx` 将继承数据库默认策略或全局默认策略
 
 给分区绑定放置策略后，你可以更改指定分区的放置策略。示例如下：
 
 ```sql
-ALTER TABLE t1 PARTITION p1 PLACEMENT POLICY=storageforhisotrydata;
+ALTER TABLE t1 PARTITION p1 PLACEMENT POLICY=storageforhistorydata;
 ```
 
 ## 高可用场景示例

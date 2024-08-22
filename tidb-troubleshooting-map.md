@@ -359,7 +359,7 @@ TiDB 支持完整的分布式事务，自 v3.0 版本起，提供乐观事务与
 
 ### 6.1 TiDB Binlog 问题
 
-- 6.1.1 TiDB Binlog 是将 TiDB 的修改同步给下游 TiDB 或者 MySQL 的工具，见 [TiDB Binlog on GitHub](https://github.com/pingcap/tidb-binlog)。
+- 6.1.1 [TiDB Binlog](/tidb-binlog/tidb-binlog-overview.md)（已废弃）是将 TiDB 的修改同步给下游 TiDB 或者 MySQL 的工具，见 [TiDB Binlog on GitHub](https://github.com/pingcap/tidb-binlog)。
 
 - 6.1.2 Pump/Drainer Status 中 Update Time 正常更新，日志中也没有异常，但下游没有数据写入。
 
