@@ -3493,6 +3493,24 @@ Query OK, 0 rows affected, 1 warning (0.00 sec)
 - 单位：字节
 - 这个变量用于控制 TiDB 向 TiKV 发送的事务提交请求的批量大小。如果业务负载的大部分事务都有大量的写操作，适当调大该变量可以提高批处理的效果。但需要注意的是，设置过大将会超过 TiKV 的 [`raft-entry-max-size`](/tikv-configuration-file.md#raft-entry-max-size) 限制，导致提交失败。
 
+<<<<<<< HEAD
+=======
+### `tidb_txn_entry_size_limit` <span class="version-mark">从 v7.6.0 版本开始引入</span>
+
+- 作用域：GLOBAL | SESSION
+- 是否持久化到集群：是
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：否
+- 类型：整数型
+- 默认值：`0`
+- 范围：`[0, 125829120]`
+- 单位：字节
+- 这个变量用于动态修改 TiDB 配置项 [`performance.txn-entry-size-limit`](/tidb-configuration-file.md#txn-entry-size-limit-从-v4010-和-v500-版本开始引入)，其含义与对应配置项相同，即用于限制 TiDB 单行数据的大小。该变量默认值为 `0`，表示默认使用配置项的值。当设置为非 `0` 值时，优先使用该变量的值作为 `txn-entry-size-limit` 的值。
+
+> **注意：**
+>
+> 使用 SESSION 作用域修改该变量时仅影响当前用户会话，不会影响 TiDB 的内部会话。这可能导致 TiDB 内部事务的单行数据大小超过配置项的限制，从而导致事务失败。如需在线调高限制，建议优先使用 GLOBAL 作用域修改该变量。
+
+>>>>>>> 25797efe03 (Make the introduced version clear for "txn-entry-size-limit" (#18422))
 ### `tidb_txn_mode`
 
 - 作用域：SESSION | GLOBAL
