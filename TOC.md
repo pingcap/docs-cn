@@ -1078,6 +1078,8 @@
   - [版本发布时间线](/releases/release-timeline.md)
   - [TiDB 版本规则](/releases/versioning.md)
   - [TiDB 离线包](/binary-package.md)
+  - v8.3
+    - [8.3.0-DMR](/releases/release-8.3.0.md)
   - v8.2
     - [8.2.0-DMR](/releases/release-8.2.0.md)
   - v8.1
