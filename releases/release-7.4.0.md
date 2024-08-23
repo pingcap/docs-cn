@@ -185,7 +185,7 @@ TiDB 版本：7.4.0
 
     更多信息，请参考[用户文档](/tidb-resource-control.md#管理后台任务)。
 
-* 锁定统计信息成为正式功能 (GA) [#46351](https://github.com/pingcap/tidb/issues/46351) @[hi-rustin](https://github.com/hi-rustin)
+* 锁定统计信息成为正式功能 (GA) [#46351](https://github.com/pingcap/tidb/issues/46351) @[hi-rustin](https://github.com/Rustin170506)
 
     在 v7.4.0 中，TiDB [锁定统计信息](/statistics.md#锁定统计信息)成为正式功能 (GA)。现在，锁定和解锁统计信息需要与收集统计信息 (`ANALYZE TABLE`) 相同的权限，以确保操作的安全性。此外，还新增了对特定分区的统计信息进行锁定和解锁操作的支持，提高了功能灵活性。当用户对数据库中的查询和执行计划有把握，并且不希望发生变化时，可以使用锁定统计信息来提升统计信息的稳定性。
 

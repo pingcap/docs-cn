@@ -411,9 +411,9 @@ TiDB 版本：7.0.0
 
         - 支持在 redo applier 中拆分事务以提升 apply 吞吐，降低灾难场景的 RTO [#8318](https://github.com/pingcap/tiflow/issues/8318) @[CharlesCheung96](https://github.com/CharlesCheung96)
         - 改进表的调度策略，可以将单个表更均匀地拆分到各个 TiCDC 节点上 [#8247](https://github.com/pingcap/tiflow/issues/8247) @[overvenus](https://github.com/overvenus)
-        - 在 MQ sink 中添加了 Large Row 监控指标 [#8286](https://github.com/pingcap/tiflow/issues/8286) @[hi-rustin](https://github.com/hi-rustin)
+        - 在 MQ sink 中添加了 Large Row 监控指标 [#8286](https://github.com/pingcap/tiflow/issues/8286) @[hi-rustin](https://github.com/Rustin170506)
         - 在一个 Region 包含多个表的数据的场景下，减少了 TiKV 与 TiCDC 节点间的网络流量 [#6346](https://github.com/pingcap/tiflow/issues/6346) @[overvenus](https://github.com/overvenus)
-        - 将 Checkpoint TS 和 Resolved TS 的 P99 指标的面板移动到 Lag analyze 面板 [#8524](https://github.com/pingcap/tiflow/issues/8524) @[hi-rustin](https://github.com/hi-rustin)
+        - 将 Checkpoint TS 和 Resolved TS 的 P99 指标的面板移动到 Lag analyze 面板 [#8524](https://github.com/pingcap/tiflow/issues/8524) @[hi-rustin](https://github.com/Rustin170506)
         - 支持在 redo log 里 apply DDL 事件 [#8361](https://github.com/pingcap/tiflow/issues/8361) @[CharlesCheung96](https://github.com/CharlesCheung96)
         - 支持根据上游写入吞吐来拆分调度表到 TiCDC 节点 [#7720](https://github.com/pingcap/tiflow/issues/7720) @[overvenus](https://github.com/overvenus)
 

@@ -461,7 +461,7 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
 + 默认值：0
 + 默认值为 0 表示无内存限制。
 
-### `txn-entry-size-limit` <span class="version-mark">从 v5.0 版本开始引入</span>
+### `txn-entry-size-limit` <span class="version-mark">从 v4.0.10 和 v5.0.0 版本开始引入</span>
 
 + TiDB 单行数据的大小限制
 + 默认值：6291456
