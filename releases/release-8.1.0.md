@@ -204,7 +204,7 @@ TiDB 8.1.0 为长期支持版本 (Long-Term Support Release, LTS)。
     - 优化表达式默认值在 `SHOW CREATE TABLE` 结果中的 MySQL 兼容性 [#52939](https://github.com/pingcap/tidb/issues/52939) @[CbcWestwolf](https://github.com/CbcWestwolf)
     - 允许使用 ingest 模式并发添加多个索引 [#52596](https://github.com/pingcap/tidb/issues/52596) @[lance6716](https://github.com/lance6716)
     - 允许将系统变量 `tidb_service_scope` 设置为不同的值，以更好地利用分布式框架功能 [#52441](https://github.com/pingcap/tidb/issues/52441) @[ywqzzy](https://github.com/ywqzzy)
-    - 增强 TiDB 对始终为 `false` 的 DNF 项的处理能力，直接忽略这种过滤条件，以避免不必要的全表扫描 [#40997](https://github.com/pingcap/tidb/issues/40997) @[hi-rustin](https://github.com/hi-rustin)
+    - 增强 TiDB 对始终为 `false` 的 DNF 项的处理能力，直接忽略这种过滤条件，以避免不必要的全表扫描 [#40997](https://github.com/pingcap/tidb/issues/40997) @[hi-rustin](https://github.com/Rustin170506)
     - 当查询可以选择除全表扫描以外的单索引扫描方式时，支持以 Optimizer Fix Controls 的方式解除优化器不会自动选择索引合并的限制 [#52869](https://github.com/pingcap/tidb/issues/52869) @[time-and-fate](https://github.com/time-and-fate)
     - 在 Coprocessor 算子的实际执行信息 `execution info` 中添加 `total_kv_read_wall_time` 指标 [#28937](https://github.com/pingcap/tidb/issues/28937) @[cfzjywxk](https://github.com/cfzjywxk)
     - 在 Resource Control 面板中添加 `RU (max)` 监控指标 [#49318](https://github.com/pingcap/tidb/issues/49318) @[nolouch](https://github.com/nolouch)
@@ -243,10 +243,10 @@ TiDB 8.1.0 为长期支持版本 (Long-Term Support Release, LTS)。
 + TiDB
 
     - 修复当 SQL 语句涉及包含多值索引的表时，执行可能报错 `Can't find a proper physical plan for this query` 的问题 [#49438](https://github.com/pingcap/tidb/issues/49438) @[qw4990](https://github.com/qw4990)
-    - 修复自动统计信息收集在 OOM 后卡住的问题 [#51993](https://github.com/pingcap/tidb/issues/51993) @[hi-rustin](https://github.com/hi-rustin)
+    - 修复自动统计信息收集在 OOM 后卡住的问题 [#51993](https://github.com/pingcap/tidb/issues/51993) @[hi-rustin](https://github.com/Rustin170506)
     - 修复使用 BR 恢复一张表后，即使该表没有统计信息，统计信息健康度仍然显示为 100% 的问题 [#29769](https://github.com/pingcap/tidb/issues/29769) @[winoros](https://github.com/winoros)
-    - 修复 TiDB 在升级过程中会为系统表创建统计信息的问题 [#52040](https://github.com/pingcap/tidb/issues/52040) @[hi-rustin](https://github.com/hi-rustin)
-    - 修复 TiDB 在统计信息初始化完成前就开始自动收集的问题 [#52346](https://github.com/pingcap/tidb/issues/52346) @[hi-rustin](https://github.com/hi-rustin)
+    - 修复 TiDB 在升级过程中会为系统表创建统计信息的问题 [#52040](https://github.com/pingcap/tidb/issues/52040) @[hi-rustin](https://github.com/Rustin170506)
+    - 修复 TiDB 在统计信息初始化完成前就开始自动收集的问题 [#52346](https://github.com/pingcap/tidb/issues/52346) @[hi-rustin](https://github.com/Rustin170506)
     - 修复启用 `tidb_mem_quota_analyze` 时，更新统计信息使用的内存超过限制可能导致 TiDB crash 的问题 [#52601](https://github.com/pingcap/tidb/issues/52601) @[hawkingrei](https://github.com/hawkingrei)
     - 修复 TiDB 统计信息同步加载机制无限重试加载空统计信息并打印 `fail to get stats version for this histogram` 日志的问题 [#52657](https://github.com/pingcap/tidb/issues/52657) @[hawkingrei](https://github.com/hawkingrei)
     - 修复关闭新排序规则框架时，涉及不同排序规则的表达式可能导致查询 panic 的问题 [#52772](https://github.com/pingcap/tidb/issues/52772) @[wjhuang2016](https://github.com/wjhuang2016)
