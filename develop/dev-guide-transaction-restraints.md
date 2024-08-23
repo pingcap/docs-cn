@@ -14,7 +14,7 @@ TiDB 支持的隔离级别是 RC（Read Committed）与 SI（Snapshot Isolation�
 
 ![隔离级别](/media/develop/transaction_isolation_level.png)
 
-## SI 可以克服幻读txn-entry-size-limit
+## SI 可以克服幻读
 
 TiDB 的 SI 隔离级别可以克服幻读异常 (Phantom Reads)，但 ANSI/ISO SQL 标准中的 RR 不能。
 
