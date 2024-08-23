@@ -365,6 +365,7 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
 + 默认值：0
 + 默认值为 0 表示无内存限制。
 
+<<<<<<< HEAD
 ### `memory-usage-alarm-ratio` <span class="version-mark">从 v4.0.9 版本开始引入</span>
 
 + tidb-server 实例内存使用占总内存的比例超过一定阈值时会报警。该配置项的有效范围为 `0` 到 `1`。如果配置该选项为 `0` 或 `1`，则表示关闭内存阈值报警功能。
@@ -374,6 +375,9 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
 + 该值作为系统变量 [`tidb_memory_usage_alarm_ratio`](/system-variables.md#tidb_memory_usage_alarm_ratio) 的初始值。
 
 ### `txn-entry-size-limit` <span class="version-mark">从 v5.0 版本开始引入</span>
+=======
+### `txn-entry-size-limit` <span class="version-mark">从 v4.0.10 和 v5.0.0 版本开始引入</span>
+>>>>>>> 25797efe03 (Make the introduced version clear for "txn-entry-size-limit" (#18422))
 
 + TiDB 单行数据的大小限制
 + 默认值：6291456
