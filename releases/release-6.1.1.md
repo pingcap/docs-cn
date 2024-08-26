@@ -152,16 +152,16 @@ TiDB 版本：6.1.1
 
     + TiCDC
 
-        - 修复最大兼容版本错误的问题 [#6039](https://github.com/pingcap/tiflow/issues/6039) @[hi-rustin](https://github.com/hi-rustin)
+        - 修复最大兼容版本错误的问题 [#6039](https://github.com/pingcap/tiflow/issues/6039) @[hi-rustin](https://github.com/Rustin170506)
         - 修复 cdc server 启动未完成接受请求时出现 panic 的问题 [#5639](https://github.com/pingcap/tiflow/issues/5639) @[asddongmen](https://github.com/asddongmen)
         - 修复打开 sync-point 时 ddl sink 可能出现 panic 的问题 [#4934](https://github.com/pingcap/tiflow/issues/4934) @[asddongmen](https://github.com/asddongmen)
         - 修复打开 sync-point 功能在某些特殊场景下出现卡住 changefeed 的问题 [#6827](https://github.com/pingcap/tiflow/issues/6827) @[hicqu](https://github.com/hicqu)
         - 修复 cdc server 重启时 API 工作不正常的问题 [#5837](https://github.com/pingcap/tiflow/issues/5837) @[asddongmen](https://github.com/asddongmen)
         - 修复 black hole sink 场景下出现 data race 问题 [#6206](https://github.com/pingcap/tiflow/issues/6206) @[asddongmen](https://github.com/asddongmen)
-        - 修复 `enable-old-value = false` 时可能出现的 cdc panic 问题 [#6198](https://github.com/pingcap/tiflow/issues/6198) @[hi-rustin](https://github.com/hi-rustin)
+        - 修复 `enable-old-value = false` 时可能出现的 cdc panic 问题 [#6198](https://github.com/pingcap/tiflow/issues/6198) @[hi-rustin](https://github.com/Rustin170506)
         - 修复在开启 redo 功能时可能出现数据不一致问题 [#6189](https://github.com/pingcap/tiflow/issues/6189) [#6368](https://github.com/pingcap/tiflow/issues/6368) [#6277](https://github.com/pingcap/tiflow/issues/6277) [#6456](https://github.com/pingcap/tiflow/issues/6456) [#6695](https://github.com/pingcap/tiflow/issues/6695) [#6764](https://github.com/pingcap/tiflow/issues/6764) [#6859](https://github.com/pingcap/tiflow/issues/6859) @[asddongmen](https://github.com/asddongmen)
         - 修复了 redo log 的性能问题，采取异步写的方式提升 redo 吞吐 [#6011](https://github.com/pingcap/tiflow/issues/6011) @[CharlesCheung96](https://github.com/CharlesCheung96)
-        - 修复 MySQL sink 无法连接 IPv6 地址的问题 [#6135](https://github.com/pingcap/tiflow/issues/6135) @[hi-rustin](https://github.com/hi-rustin)
+        - 修复 MySQL sink 无法连接 IPv6 地址的问题 [#6135](https://github.com/pingcap/tiflow/issues/6135) @[hi-rustin](https://github.com/Rustin170506)
 
     + Backup & Restore (BR)
 
