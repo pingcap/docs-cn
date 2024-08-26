@@ -126,7 +126,7 @@ SELECT TABLE_NAME FROM information_schema.tables where TABLE_SCHEMA = "<db_name>
     ```sql
     -- 这两个参数默认值都为 100MiB，即用于副本同步的快照最大占用的磁盘带宽不超过 100MiB/s。
     SET CONFIG tikv `server.snap-io-max-bytes-per-sec` = '300MiB';
-    SET CONFIG tiflash `raftstore-proxy.server.snap-max-write-bytes-per-sec` = '300MiB';
+    SET CONFIG tiflash `raftstore-proxy.server.snap-io-max-bytes-per-sec` = '300MiB';
     ```
 
     以上 SQL 语句执行后，配置修改立即生效，无需重启集群。但由于副本同步速度还受到 PD 副本速度控制，因此当前你还无法观察到副本同步速度提升。
@@ -139,10 +139,10 @@ SELECT TABLE_NAME FROM information_schema.tables where TABLE_SCHEMA = "<db_name>
     tiup ctl:v<CLUSTER_VERSION> pd -u http://<PD_ADDRESS>:2379 store limit all engine tiflash 60 add-peer
     ```
 
-    > 上述命令中，需要将 `v<CLUSTER_VERSION>` 替换为该集群版本，例如 `v8.2.0`，`<PD_ADDRESS>:2379` 替换为任一 PD 节点的地址。替换后样例为：
+    > 上述命令中，需要将 `v<CLUSTER_VERSION>` 替换为该集群版本，例如 `v8.3.0`，`<PD_ADDRESS>:2379` 替换为任一 PD 节点的地址。替换后样例为：
     >
     > ```shell
-    > tiup ctl:v8.2.0 pd -u http://192.168.1.4:2379 store limit all engine tiflash 60 add-peer
+    > tiup ctl:v8.3.0 pd -u http://192.168.1.4:2379 store limit all engine tiflash 60 add-peer
     > ```
 
     执行完毕后，几分钟内，你将观察到 TiFlash 节点的 CPU 及磁盘 IO 资源占用显著提升，TiFlash 将更快地创建副本。同时，TiKV 节点的 CPU 及磁盘 IO 资源占用也将有所上升。
@@ -165,7 +165,7 @@ SELECT TABLE_NAME FROM information_schema.tables where TABLE_SCHEMA = "<db_name>
 
     ```sql
     SET CONFIG tikv `server.snap-io-max-bytes-per-sec` = '100MiB';
-    SET CONFIG tiflash `raftstore-proxy.server.snap-max-write-bytes-per-sec` = '100MiB';
+    SET CONFIG tiflash `raftstore-proxy.server.snap-io-max-bytes-per-sec` = '100MiB';
     ```
 
 ## 设置可用区
