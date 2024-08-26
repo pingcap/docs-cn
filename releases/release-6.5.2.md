@@ -95,7 +95,7 @@ TiDB 版本：6.5.2
 
     + TiCDC
 
-        - 修复同步到对象存储时，partition 分隔符不生效问题 [#8581](https://github.com/pingcap/tiflow/issues/8581) @[CharlesCheung96](https://github.com/CharlesCheung96) @[hi-rustin](https://github.com/hi-rustin)
+        - 修复同步到对象存储时，partition 分隔符不生效问题 [#8581](https://github.com/pingcap/tiflow/issues/8581) @[CharlesCheung96](https://github.com/CharlesCheung96) @[hi-rustin](https://github.com/Rustin170506)
         - 修复同步到对象存储时，表调度可能导致数据丢失的问题 [#8256](https://github.com/pingcap/tiflow/issues/8256) @[zhaoxinyu](https://github.com/zhaoxinyu)
         - 修复不可重入的 DDL 导致同步卡住的问题 [#8662](https://github.com/pingcap/tiflow/issues/8662) @[hicqu](https://github.com/hicqu)
         - 修复同步到对象存储时，TiCDC 扩缩容可能导致数据丢失的问题 [#8666](https://github.com/pingcap/tiflow/issues/8666) @[CharlesCheung96](https://github.com/CharlesCheung96)
