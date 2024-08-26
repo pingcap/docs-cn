@@ -37,19 +37,19 @@ title: TiDB 使用限制
 | 类型       | 最大限制（默认值）              |
 |:----------|:------------------------------|
 | Columns   | 默认为 1017，最大可调至 4096     |
-| Indexs    | 默认为 64，最大可调至 512        |
+| Indexes    | 默认为 64，最大可调至 512        |
 | Rows      | 无限制                         |
 | Size      | 无限制                         |
 | Partitions| 8192                          |
 
 * Columns 的最大限制可通过 [`table-column-count-limit`](/tidb-configuration-file.md#table-column-count-limit-从-v50-版本开始引入) 修改。
-* Indexs 的最大限制可通过 [`index-limit`](/tidb-configuration-file.md#index-limit-从-v50-版本开始引入) 修改。
+* Indexes 的最大限制可通过 [`index-limit`](/tidb-configuration-file.md#index-limit-从-v50-版本开始引入) 修改。
 
 ## 单行的限制
 
 | 类型       | 最大限制   |
 |:----------|:----------|
-| Size       | 默认为 6MB，可通过 [`txn-entry-size-limit`](/tidb-configuration-file.md#txn-entry-size-limit-从-v50-版本开始引入) 配置项调整 |
+| Size       | 默认为 6MB，可通过 [`txn-entry-size-limit`](/tidb-configuration-file.md#txn-entry-size-limit-从-v4010-和-v500-版本开始引入) 配置项调整 |
 
 ## 字符串类型限制
 
