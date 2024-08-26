@@ -329,7 +329,7 @@ tidb-lightning-ctl --config conf/tidb-lightning.toml --checkpoint-error-destroy=
 
 **解决办法**:
 
-同时修改 TiDB 配置项 [`txn-entry-size-limit`](/tidb-configuration-file.md#txn-entry-size-limit-从-v50-版本开始引入) 和 TiKV 配置项 [`raft-entry-max-size`](/tikv-configuration-file.md#raft-entry-max-size)，将取值设置为大于需要导入的数据大小并重试后即可绕过该限制。
+同时修改 TiDB 配置项 [`txn-entry-size-limit`](/tidb-configuration-file.md#txn-entry-size-limit-从-v4010-和-v500-版本开始引入) 和 TiKV 配置项 [`raft-entry-max-size`](/tikv-configuration-file.md#raft-entry-max-size)，将取值设置为大于需要导入的数据大小并重试后即可绕过该限制。
 
 ## switch-mode 时遇到 `rpc error: code = Unimplemented ...`
 
