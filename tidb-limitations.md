@@ -49,7 +49,7 @@ title: TiDB 使用限制
 
 | 类型       | 最大限制（默认值）   |
 |:----------|:----------|
-| Size       | 默认为 6 MiB，可通过 [`txn-entry-size-limit`](/tidb-configuration-file.md#txn-entry-size-limit-从-v50-版本开始引入) 配置项调至 120 MiB |
+| Size       | 默认为 6 MiB，可通过 [`txn-entry-size-limit`](/tidb-configuration-file.md#txn-entry-size-limit-从-v4010-和-v500-版本开始引入) 配置项调至 120 MiB |
 
 ## 数据类型限制
 
