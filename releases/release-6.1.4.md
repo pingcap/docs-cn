@@ -77,7 +77,7 @@ TiDB 版本：6.1.4
         - 修复不能通过配置文件修改 `transaction_atomicity` 和 `protocol` 参数的问题 [#7935](https://github.com/pingcap/tiflow/issues/7935) @[CharlesCheung96](https://github.com/CharlesCheung96)
         - 修复当 TiFlash 的版本高于 TiCDC 时，TiCDC 会误报错的问题 [#7744](https://github.com/pingcap/tiflow/issues/7744) @[overvenus](https://github.com/overvenus)
         - 修复同步大事务时会出现 OOM 的问题 [#7913](https://github.com/pingcap/tiflow/issues/7913) @[overvenus](https://github.com/overvenus)
-        - 修复没有配置大事务拆分时，同步数据超过 context deadline 的问题 [#7982](https://github.com/pingcap/tiflow/issues/7982) @[hi-rustin](https://github.com/hi-rustin)
+        - 修复没有配置大事务拆分时，同步数据超过 context deadline 的问题 [#7982](https://github.com/pingcap/tiflow/issues/7982) @[hi-rustin](https://github.com/Rustin170506)
         - 修复 `changefeed query` 的输出中 `sasl-password` 显示为明文的问题 [#7182](https://github.com/pingcap/tiflow/issues/7182) @[dveeden](https://github.com/dveeden)
         - 修复用户快速删除、创建同名同步任务可能导致的数据丢失问题 [#7657](https://github.com/pingcap/tiflow/issues/7657) @[overvenus](https://github.com/overvenus)
 
