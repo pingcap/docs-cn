@@ -626,7 +626,7 @@ mysql> SELECT * FROM t1;
 
 > **注意：**
 >
-> - `max_execution_time` 目前只用于控制只读语句的最大执行时长，实际精度在 100ms 级别，而非更准确的毫秒级别。
+> - 在 v6.4.0 之前，`max_execution_time` 对所有类型的语句生效。从 v6.4.0 开始，该变量只用于控制只读语句的最大执行时长。实际精度在 100ms 级别，而非更准确的毫秒级别。
 > - 对于使用了 [`MAX_EXECUTION_TIME`](/optimizer-hints.md#max_execution_timen) Hint 的 SQL 语句，这些语句的最长执行时间将不受该变量限制，而是由该 Hint 进行限制。你也可以使用该 Hint 来创建 SQL 绑定，详情请参考 [SQL 操作常见问题](/faq/sql-faq.md#如何阻止特定的-sql-语句执行或者将某个-sql-语句加入黑名单)。
 
 ### `max_prepared_stmt_count`
