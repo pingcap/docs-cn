@@ -64,7 +64,6 @@ TiDB 提供了 amd64 和 arm64 两种架构的离线包。对于每种架构，T
 | binlogctl | 从 v6.0.0 起新增 |
 | sync_diff_inspector |  |
 | reparo |  |
-| arbiter |  |
 | server-{version}-linux-{arch}.tar.gz | 从 v6.2.0 起新增 |
 | grafana-{version}-linux-{arch}.tar.gz | 从 v6.2.0 起新增 |
 | alertmanager-{version}-linux-{arch}.tar.gz | 从 v6.2.0 起新增 |
