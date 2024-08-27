@@ -97,9 +97,9 @@ summary: TiDB 支持 MySQL 8.0 中提供的大部分 JSON 函数。
         "license": "Apache-2.0 license",
         "versions": [
             {
-                "version": "v8.1.0",
+                "version": "v8.1.1",
                 "type": "lts",
-                "release_date": "2024-05-24"
+                "release_date": "2024-08-27"
             },
             {
                 "version": "v8.0.0",
@@ -128,9 +128,9 @@ summary: TiDB 支持 MySQL 8.0 中提供的大部分 JSON 函数。
 | `$.database.features[0]`              | `database` 的 `features` 中的第一个值            | `"distributed"`               |
 | `$.database.features[2]`              | `database` 的 `features` 中的第三个值           | `"relational"`                |
 | `$.database.versions[0].type`         | `database` 的 `versions` 中第一个元素的 `type` 值 | `"lts"`                       |
-| `$.database.versions[*].release_date` | `versions` 中所有的 `release_date` 值     | `["2024-05-24","2024-03-29"]` |
+| `$.database.versions[*].release_date` | `versions` 中所有的 `release_date` 值     | `["2024-08-27","2024-03-29"]` |
 | `$.*.features`                        | 由所有的 `features` 值组成的两个数组             | `[["distributed", "scalable", "relational", "cloud native"], ["MySQL compatible", "Shard merging"]]`                              |
-| `$**.version`                         | 包含用通配符匹配到所有的 `version` 值     | `["v8.1.0","v8.0.0"]`         |
+| `$**.version`                         | 包含用通配符匹配到所有的 `version` 值     | `["v8.1.1","v8.0.0"]`         |
 | `$.database.features[0 to 2]`         | `database` 中指定范围的 `features` 值，`features[0 to 2]` 代表从 `features` 的第一个值到第三个值            | `["scalable","relational"]`   |
 
 更多信息，请参考 [JSONPath -- XPath for JSON](https://www.ietf.org/archive/id/draft-goessner-dispatch-jsonpath-00.html)。
