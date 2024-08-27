@@ -246,7 +246,7 @@ TiDB 7.5.0 为长期支持版本 (Long-Term Support Release, LTS)。
     - 修复长时间下线的 TiFlash 节点重新加入集群后造成的负载不均衡的问题 [#35418](https://github.com/pingcap/tidb/issues/35418) @[windtalker](https://github.com/windtalker)
     - 修复 HashJoin 算子 Probe 时无法复用 chunk 的问题 [#48082](https://github.com/pingcap/tidb/issues/48082) @[wshwsh12](https://github.com/wshwsh12)
     - 修复 `COALESCE()` 函数对于 `DATE` 类型参数返回结果类型不正确的问题 [#46475](https://github.com/pingcap/tidb/issues/46475) @[xzhangxian1008](https://github.com/xzhangxian1008)
-    - 修复带子查询的 `UPDATE` 语句被错误地转成 PointGet 的问题 [#48171](https://github.com/pingcap/tidb/issues/48171) @[hi-rustin](https://github.com/hi-rustin)
+    - 修复带子查询的 `UPDATE` 语句被错误地转成 PointGet 的问题 [#48171](https://github.com/pingcap/tidb/issues/48171) @[hi-rustin](https://github.com/Rustin170506)
     - 修复当被缓存的执行计划包含日期类型和 `unix_timestamp` 的比较时，结果出现错误的问题 [#48165](https://github.com/pingcap/tidb/issues/48165) @[qw4990](https://github.com/qw4990)
     - 修复默认内联且带聚合函数或窗口函数的公共表表达式 (CTE) 被递归的 CTE 引用时会报错的问题 [#47881](https://github.com/pingcap/tidb/issues/47881) @[elsa0520](https://github.com/elsa0520)
     - 修复优化器为减少窗口函数引入的 sort 而错误地选择了 `IndexFullScan` 的问题 [#46177](https://github.com/pingcap/tidb/issues/46177) @[qw4990](https://github.com/qw4990)
