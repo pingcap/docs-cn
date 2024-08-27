@@ -1083,6 +1083,7 @@
   - v8.2
     - [8.2.0-DMR](/releases/release-8.2.0.md)
   - v8.1
+    - [8.1.1](/releases/release-8.1.1.md)
     - [8.1.0](/releases/release-8.1.0.md)
   - v8.0
     - [8.0.0-DMR](/releases/release-8.0.0.md)
