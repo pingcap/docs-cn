@@ -8,12 +8,16 @@ aliases: ['/zh/tidb/dev/ticdc-behavior-change']
 
 ## MySQL Sink 拆分 `UPDATE` 事件行为说明
 
-在 v8.1.0 中，当使用 MySQL Sink 时，TiCDC 在启动时会从 PD 获取当前的时间戳 `thresholdTS`，并根据时间戳的值决定是否拆分 `UPDATE` 事件：
+从 v6.5.10、v7.5.2、v8.1.1 开始，当使用 MySQL Sink 时，TiCDC 的任意节点每次收到某张表的同步任务请求并开始向下游同步数据之前，会从 PD 获取当前的时间戳 `thresholdTS`，并根据时间戳的值决定是否拆分对应表的 `UPDATE` 事件：
 
 - 对于含有单条或多条 `UPDATE` 变更的事务，如果该事务的 `commitTS` 小于 `thresholdTS`，在写入 Sorter 模块之前 TiCDC 会将每条 `UPDATE` 事件拆分为 `DELETE` 和 `INSERT` 两条事件。
 - 对于事务的 `commitTS` 大于或等于 `thresholdTS` 的 `UPDATE` 事件，TiCDC 不会对其进行拆分。详情见 GitHub issue [#10918](https://github.com/pingcap/tiflow/issues/10918)。
 
-该行为变更解决了由于 TiCDC 接收到的 `UPDATE` 事件顺序可能不正确，导致拆分后的 `DELETE` 和 `INSERT` 事件顺序也可能不正确，从而引发下游数据不一致的问题。
+> **注意：**
+>
+> 在 v8.1.0 中，当使用 MySQL Sink 时，TiCDC 同样会根据 `thresholdTS` 决定是否拆分 `UPDATE` 事件，但是 `thresholdTS` 的获取方式不同。具体来说，在 v8.1.0 中，`thresholdTS` 是 TiCDC 在启动时从 PD 获取的当前时间戳。这种方式在多节点场景下可能会造成数据不一致问题，详情见 GitHub issue [#11219](https://github.com/pingcap/tiflow/issues/11219)。
+
+该行为变更（即根据 `thresholdTS` 决定是否拆分 `UPDATE` 事件）解决了由于 TiCDC 接收到的 `UPDATE` 事件顺序可能不正确，导致拆分后的 `DELETE` 和 `INSERT` 事件顺序也可能不正确，从而引发下游数据不一致的问题。
 
 以如下 SQL 为例：
 
@@ -50,7 +54,7 @@ UPDATE t SET a = 3 WHERE a = 2;
 
     下游执行完该事务后，数据库内的记录为 `(3, 2)`，与上游数据库的记录（即 `(2, 1)` 和 `(3, 2)`）不同，即发生了数据不一致问题。
 
-- 在引入该行为变更之后，如果该事务的 `commitTS` 小于 TiCDC 在启动时获取的 `thresholdTS`，TiCDC 会在这些 `UPDATE` 事件写入 Sorter 模块之前将其拆分为 `DELETE` 和 `INSERT` 事件，经过 Sorter 排序后下游实际执行的事件顺序如下：
+- 在引入该行为变更之后，如果该事务的 `commitTS` 小于对应表开始向下游同步数据时 TiCDC 获取的 `thresholdTS`，TiCDC 会在这些 `UPDATE` 事件写入 Sorter 模块之前将其拆分为 `DELETE` 和 `INSERT` 事件，经过 Sorter 排序后下游实际执行的事件顺序如下：
 
     ```sql
     BEGIN;
@@ -142,11 +146,11 @@ COMMIT;
 | 版本 | 协议 | 拆分主键或唯一键 `UPDATE` 事件 | 不拆分主键或唯一键 `UPDATE` 事件 | 备注 |
 | -- | -- | -- | -- | -- |
 | <= v7.5.2 | 所有协议 | ✓ | ✗ | |
-| \>= v7.5.3（待发布） | 所有协议 | ✓  (默认值：`output-raw-change-event = false`) | ✓ (可选配置项：`output-raw-change-event = true`) | |
+| \>= v7.5.3 | 所有协议 | ✓  (默认值：`output-raw-change-event = false`) | ✓ (可选配置项：`output-raw-change-event = true`) | |
 
 #### Release 8.1 的兼容性
 
 | 版本 | 协议 | 拆分主键或唯一键 `UPDATE` 事件 | 不拆分主键或唯一键 `UPDATE` 事件 | 备注 |
 | -- | -- | -- | -- | -- |
 | v8.1.0 | 所有协议 | ✓ | ✗ | |
-| \>= v8.1.1（待发布） | 所有协议 | ✓ (默认值：`output-raw-change-event = false`) | ✓ (可选配置项：`output-raw-change-event = true`) | |
+| \>= v8.1.1 | 所有协议 | ✓ (默认值：`output-raw-change-event = false`) | ✓ (可选配置项：`output-raw-change-event = true`) | |
