@@ -675,11 +675,7 @@ raftstore 相关的配置项。
 
 ### `right-derive-when-split`
 
-<<<<<<< HEAD
-+ 为 true 时，以最大分裂 key 为起点的 region 复用原 region 的 key；否则以原 region 起点 key 作为起点的 region 复用原 region 的 key。
-=======
 + 指定 Region 分裂时新 Region 的起始 key。当此配置项设置为 `true` 时，起始 key 为最大分裂 key；当此配置项设置为 `false` 时，起始 key 为原 Region 的起始 key。
->>>>>>> ec230d7498 (Make "right-derive-when-split" description more clear (#18465))
 + 默认值：true
 
 ### `allow-remove-leader`
