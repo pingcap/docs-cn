@@ -344,6 +344,7 @@ TiDB 版本：8.0.0
 | TiDB Lightning  | [`logical-import-batch-rows`](/tidb-lightning/tidb-lightning-configuration.md#tidb-lightning-任务配置) | 新增 | 在逻辑导入模式下，用于限制每个事务中可插入的最大行数，默认值为 `65536`。 |
 | TiDB Lightning  | [`logical-import-batch-size`](/tidb-lightning/tidb-lightning-configuration.md#tidb-lightning-任务配置) | 新增 | 在逻辑导入模式下，用于设置下游 TiDB 服务器上执行的每条 SQL 语句的最大值。默认值为 `"96KiB"`，单位可以为 KB、KiB、MB、MiB 等存储单位。 |
 | Data Migration  | [`secret-key-path`](/dm/dm-master-configuration-file.md) | 新增 | 用于指定加解密上下游密码的密钥文件所在的路径。该文件内容必须是长度为 64 个字符的十六进制的 AES-256 密钥。 |
+| TiCDC | [`debezium-disable-schema`](/ticdc/ticdc-changefeed-config.md) | 新增 | 用于控制是否关闭 schema 信息的输出。该参数只有当 sink 类型为 MQ 且输出协议为 Debezium 时才生效。 |
 | TiCDC | [`tls-certificate-file`](/ticdc/ticdc-sink-to-pulsar.md) | 新增 | 用于指定 Pulsar 启用 TLS 加密传输时，客户端的加密证书文件路径。 |
 | TiCDC | [`tls-key-file-path`](/ticdc/ticdc-sink-to-pulsar.md) | 新增 | 用于指定 Pulsar 启用 TLS 加密传输时，客户端的加密私钥路径。 |
 
