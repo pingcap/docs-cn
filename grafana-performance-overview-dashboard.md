@@ -61,10 +61,10 @@ CPS By Type：按照类型统计所有 TiDB 实例每秒处理的命令数（Com
 
 - kv request total: 所有 TiDB 实例每秒总的 KV 请求数量
 - kv request by type: 按 `Get`、`Prewrite`、 `Commit` 等类型统计在所有 TiDB 实例每秒的请求数据
-- tso - cmd：在所有 TiDB 实例每秒 tso cmd 的请求数量
-- tso - request：在所有 TiDB 实例每秒 tso request 的请求数量
+- tso - cmd：所有 TiDB 实例每秒发送的 gRPC 请求的数量，每个 gRPC 请求包含一批 (batch) TSO 请求
+- tso - request：所有 TiDB 实例每秒的 TSO 请求数量
 
-通常 tso - cmd 除以 tso - request 等于平均请求的 batch 大小。
+通常 tso - request 除以 tso - cmd 等于 TSO 请求 batch 的平均大小。
 
 ### KV Request Time By Source
 
@@ -133,9 +133,9 @@ Connection Idle Duration 指空闲连接的持续时间。
 ### PD TSO Wait/RPC Duration
 
 - wait - avg：所有 TiDB 实例等待从 PD 返回 TSO 的平均时间
-- rpc - avg：所有 TiDB 实例从向 PD 发送获取 TSO 的请求到接收到 TSO 的平均耗时
+- rpc - avg：所有 TiDB 实例从向 PD 发送获取 TSO 的 gRPC 请求到接收到 TSO 的平均耗时
 - wait - 99：所有 TiDB 实例等待从 PD 返回 TSO 的 P99 时间
-- rpc - 99：所有 TiDB 实例从向 PD 发送获取 TSO 的请求到接收到 TSO 的 P99 耗时
+- rpc - 99：所有 TiDB 实例从向 PD 发送获取 TSO 的 gRPC 请求到接收到 TSO 的 P99 耗时
 
 ### Storage Async Write Duration、Store Duration 和 Apply Duration
 
