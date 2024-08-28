@@ -130,10 +130,10 @@ summary: 了解 Grafana Dashboard 中展示的关键指标。
 - PD Client CMD OPS：PD Client 每秒执行命令的数量
 - PD Client CMD Duration：PD Client 执行命令耗时
 - PD Client CMD Fail OPS：PD Client 每秒执行命令失败的数量
-- PD TSO OPS：TiDB 每秒从 PD 获取 TSO 的数量
+- PD TSO OPS：TiDB 每秒向 PD 发送获取 TSO 的 gRPC 请求的数量 (cmd) 和实际的 TSO 请求数量 (request)；每个 gRPC 请求包含一批 TSO 请求
 - PD TSO Wait Duration：TiDB 等待从 PD 返回 TSO 的时间
-- PD TSO RPC Duration：TiDB 从向 PD 发送获取 TSO 的请求到接收到 TSO 的耗时
-- Start TSO Wait Duration：TiDB 从向 PD 发送获取 start tso 请求开始到开始等待 tso 返回的时间
+- PD TSO RPC Duration：TiDB 从向 PD 发送获取 TSO 的 gRPC 请求到接收到 TSO gRPC 请求响应的耗时
+- Async TSO Duration：TiDB 从准备获取 TSO 到实际开始等待 TSO 返回的时间
 
 ### Schema Load
 
