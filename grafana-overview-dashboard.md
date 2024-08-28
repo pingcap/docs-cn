@@ -46,7 +46,7 @@ title: Overview 面板重要监控指标详解
 - Transaction Duration：事务执行的时间
 - KV Cmd OPS：KV 命令执行数量统计
 - KV Cmd Duration 99：KV 命令执行的时间
-- PD TSO OPS：TiDB 每秒从 PD 获取 TSO 的数量
+- PD TSO OPS：TiDB 每秒向 PD 发送获取 TSO 的 gRPC 请求的数量 (cmd) 和实际的 TSO 请求数量 (request)；每个 gRPC 请求包含一批 TSO 请求
 - PD TSO Wait Duration：TiDB 等待从 PD 获取 TS 的时间
 - TiClient Region Error OPS：TiKV 返回 Region 相关错误信息的数量
 - Lock Resolve OPS：TiDB 清理锁操作的数量。当 TiDB 的读写请求遇到锁时，会尝试进行锁清理
