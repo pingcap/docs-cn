@@ -61,10 +61,10 @@ CPS By Type：按照类型统计所有 TiDB 实例每秒处理的命令数（Com
 
 - kv request total: 所有 TiDB 实例每秒总的 KV 请求数量
 - kv request by type: 按 `Get`、`Prewrite`、 `Commit` 等类型统计在所有 TiDB 实例每秒的请求数据
-- tso - cmd：在所有 TiDB 实例每秒 tso cmd 的请求数量
-- tso - request：在所有 TiDB 实例每秒 tso request 的请求数量
+- tso - cmd：在所有 TiDB 实例每秒实际发送 TSO 的 gRPC 请求数量
+- tso - request：在所有 TiDB 实例每秒 TSO 的请求数量
 
-通常 tso - cmd 除以 tso - request 等于平均请求的 batch 大小。
+通常 tso - request 除以 tso - cmd 等于平均请求的 batch 大小。
 
 ### KV Request Time By Source
 
