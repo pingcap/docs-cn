@@ -64,7 +64,7 @@ Queries Using Plan Cache OPS：所有 TiDB 实例每秒使用 Plan Cache 的查�
 - kv request total: 所有 TiDB 实例每秒总的 KV 请求数量
 - kv request by type: 按 `Get`、`Prewrite`、 `Commit` 等类型统计在所有 TiDB 实例每秒的请求数据
 - tso - cmd：所有 TiDB 实例每秒发送的 gRPC 请求的数量，每个 gRPC 请求包含一批 (batch) TSO 请求
-- tso - request：所有 TiDB 实例每秒 TSO 的请求数量
+- tso - request：所有 TiDB 实例每秒的 TSO 请求数量
 
 通常 tso - request 除以 tso - cmd 等于 TSO 请求 batch 的平均大小。
 
