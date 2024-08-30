@@ -23,14 +23,12 @@ For details, see [tips for choosing the affected versions (in Chinese)](https://
 - [ ] v8.3 (TiDB 8.3 versions)
 - [ ] v8.2 (TiDB 8.2 versions)
 - [ ] v8.1 (TiDB 8.1 versions)
-- [ ] v8.0 (TiDB 8.0 versions)
 - [ ] v7.5 (TiDB 7.5 versions)
 - [ ] v7.1 (TiDB 7.1 versions)
 - [ ] v6.5 (TiDB 6.5 versions)
 - [ ] v6.1 (TiDB 6.1 versions)
 - [ ] v5.4 (TiDB 5.4 versions)
-- [ ] v5.3 (TiDB 5.3 versions)
-- [ ] v5.2 (TiDB 5.2 versions)
+- [ ] v5.3 (TiDB 5.3 versions))
 
 ### What is the related PR or file link(s)?
 
