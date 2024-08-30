@@ -219,6 +219,7 @@ TiDB 版本：8.3.0
 | [`tidb_enable_lazy_cursor_fetch`](/system-variables.md#tidb_enable_lazy_cursor_fetch-从-v830-版本开始引入) | 新增 | 这个变量用于控制 [Cursor Fetch](/develop/dev-guide-connection-parameters.md#使用-streamingresult-流式获取执行结果) 功能的行为。|
 | [`tidb_enable_shared_lock_promotion`](/system-variables.md#tidb_enable_shared_lock_promotion-从-v830-版本开始引入)      | 新增  | 控制是否启用共享锁升级为排他锁的功能。默认值为 `OFF`，表示不启用共享锁升级为排他锁的功能。  |
 | [`tiflash_hashagg_preaggregation_mode`](/system-variables.md#tiflash_hashagg_preaggregation_mode-从-v830-版本开始引入) | 新增 | 控制下推到 TiFlash 的两阶段或三阶段 HashAgg 在第一阶段采用哪种预聚合策略。 |
+| [`tidb_schema_cache_size`](/system-variables#tidb_schema_cache_size-从-v800-版本开始引入)    | 修改   | 取值范围修改为 0 或 [536870912,9223372036854775807] |
 
 ### 配置文件参数
 
