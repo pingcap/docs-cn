@@ -12,21 +12,21 @@ summary: 本文介绍 TiDB 的向量相关函数和操作。
 
 **向量距离函数:**
 
-| Function Name                                             | Description                                                      |
-| --------------------------------------------------------- | ---------------------------------------------------------------- |
-| [VEC_L2_DISTANCE](#vec_l2_distance)                       | Calculates L2 distance (Euclidean distance) between two vectors  |
-| [VEC_COSINE_DISTANCE](#vec_cosine_distance)               | Calculates the cosine distance between two vectors               |
-| [VEC_NEGATIVE_INNER_PRODUCT](#vec_negative_inner_product) | Calculates the negative of the inner product between two vectors |
-| [VEC_L1_DISTANCE](#vec_l1_distance)                       | Calculates L1 distance (Manhattan distance) between two vectors  |
+| Function Name              |              Description          |
+| --------------------------------------------------------- | ----------------------------------------------------------- |
+| [VEC_L2_DISTANCE](#vec_l2_distance)             | 计算两个向量之间的 L2 距离（欧氏距离）  |
+| [VEC_COSINE_DISTANCE](#vec_cosine_distance)     | 计算两个向量之间的余弦距离               |
+| [VEC_NEGATIVE_INNER_PRODUCT](#vec_negative_inner_product) | 计算两个向量内积的负数 |
+| [VEC_L1_DISTANCE](#vec_l1_distance)             | 计算两个向量之间的 L1 距离（曼哈顿距离）  |
 
 **其他向量函数:**
 
 | Function Name                   | Description                                         |
 | ------------------------------- | --------------------------------------------------- |
-| [VEC_DIMS](#vec_dims)           | Returns the dimension of a vector                   |
-| [VEC_L2_NORM](#vec_l2_norm)     | Calculates the L2 norm (Euclidean norm) of a vector |
-| [VEC_FROM_TEXT](#vec_from_text) | Converts a string into a vector                     |
-| [VEC_AS_TEXT](#vec_as_text)     | Converts a vector into a string                     |
+| [VEC_DIMS](#vec_dims)           | 返回一个 vector                   |
+| [VEC_L2_NORM](#vec_l2_norm)     | 计算向量的 L2 规范（欧氏规范 |
+| [VEC_FROM_TEXT](#vec_from_text) | 将字符串转换为向量                     |
+| [VEC_AS_TEXT](#vec_as_text)     | 将向量转换为字符串                     |
 
 ## 扩展内置函数和运算符
 
@@ -36,8 +36,8 @@ summary: 本文介绍 TiDB 的向量相关函数和操作。
 
 | Name                                                                                    | Description                              |
 | :-------------------------------------------------------------------------------------- | :--------------------------------------- |
-| [`+`](https://dev.mysql.com/doc/refman/8.0/en/arithmetic-functions.html#operator_plus)  | Vector element-wise addition operator    |
-| [`-`](https://dev.mysql.com/doc/refman/8.0/en/arithmetic-functions.html#operator_minus) | Vector element-wise subtraction operator |
+| [`+`](https://dev.mysql.com/doc/refman/8.0/en/arithmetic-functions.html#operator_plus)  | 向量元素加法运算符    |
+| [`-`](https://dev.mysql.com/doc/refman/8.0/en/arithmetic-functions.html#operator_minus) | 向量元素相减运算符 |
 
 有关向量运算工作原理的更多信息，请参阅 [向量数据类型 | 运算](/vector-search-data-types.md#运算)。
 
@@ -45,33 +45,33 @@ summary: 本文介绍 TiDB 的向量相关函数和操作。
 
 | Name                                                                                                          | Description                                      |
 | :------------------------------------------------------------------------------------------------------------ | :----------------------------------------------- |
-| [`COUNT()`](https://dev.mysql.com/doc/refman/8.0/en/aggregate-functions.html#function_count)                  | Return a count of the number of rows returned    |
-| [`COUNT(DISTINCT)`](https://dev.mysql.com/doc/refman/8.0/en/aggregate-functions.html#function_count-distinct) | Return the count of a number of different values |
-| [`MAX()`](https://dev.mysql.com/doc/refman/8.0/en/aggregate-functions.html#function_max)                      | Return the maximum value                         |
-| [`MIN()`](https://dev.mysql.com/doc/refman/8.0/en/aggregate-functions.html#function_min)                      | Return the minimum value                         |
+| [`COUNT()`](https://dev.mysql.com/doc/refman/8.0/en/aggregate-functions.html#function_count)                  | 返回行数计数     |
+| [`COUNT(DISTINCT)`](https://dev.mysql.com/doc/refman/8.0/en/aggregate-functions.html#function_count-distinct) | 返回不同数值的计数 |
+| [`MAX()`](https://dev.mysql.com/doc/refman/8.0/en/aggregate-functions.html#function_max)                      | 返回最大值                         |
+| [`MIN()`](https://dev.mysql.com/doc/refman/8.0/en/aggregate-functions.html#function_min)                      | 返回最小值                  |
 
 **比较函数与操作符:**
 
 | Name                                                                                                                | Description                                           |
 | ------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------- |
-| [`BETWEEN ... AND ...`](https://dev.mysql.com/doc/refman/8.0/en/comparison-operators.html#operator_between)         | Check whether a value is within a range of values     |
-| [`COALESCE()`](https://dev.mysql.com/doc/refman/8.0/en/comparison-operators.html#function_coalesce)                 | Return the first non-NULL argument                    |
-| [`=`](https://dev.mysql.com/doc/refman/8.0/en/comparison-operators.html#operator_equal)                             | Equal operator                                        |
-| [`<=>`](https://dev.mysql.com/doc/refman/8.0/en/comparison-operators.html#operator_equal-to)                        | NULL-safe equal to operator                           |
-| [`>`](https://dev.mysql.com/doc/refman/8.0/en/comparison-operators.html#operator_greater-than)                      | Greater than operator                                 |
-| [`>=`](https://dev.mysql.com/doc/refman/8.0/en/comparison-operators.html#operator_greater-than-or-equal)            | Greater than or equal operator                        |
-| [`GREATEST()`](https://dev.mysql.com/doc/refman/8.0/en/comparison-operators.html#function_greatest)                 | Return the largest argument                           |
-| [`IN()`](https://dev.mysql.com/doc/refman/8.0/en/comparison-operators.html#operator_in)                             | Check whether a value is within a set of values       |
-| [`IS NULL`](https://dev.mysql.com/doc/refman/8.0/en/comparison-operators.html#operator_is-null)                     | NULL value test                                       |
-| [`ISNULL()`](https://dev.mysql.com/doc/refman/8.0/en/comparison-operators.html#function_isnull)                     | Test whether the argument is NULL                     |
-| [`LEAST()`](https://dev.mysql.com/doc/refman/8.0/en/comparison-operators.html#function_least)                       | Return the smallest argument                          |
-| [`<`](https://dev.mysql.com/doc/refman/8.0/en/comparison-operators.html#operator_less-than)                         | Less than operator                                    |
-| [`<=`](https://dev.mysql.com/doc/refman/8.0/en/comparison-operators.html#operator_less-than-or-equal)               | Less than or equal operator                           |
-| [`NOT BETWEEN ... AND ...`](https://dev.mysql.com/doc/refman/8.0/en/comparison-operators.html#operator_not-between) | Check whether a value is not within a range of values |
-| [`!=`, `<>`](https://dev.mysql.com/doc/refman/8.0/en/comparison-operators.html#operator_not-equal)                  | Not equal operator                                    |
-| [`NOT IN()`](https://dev.mysql.com/doc/refman/8.0/en/comparison-operators.html#operator_not-in)                     | Check whether a value is not within a set of values   |
+| [`BETWEEN ... AND ...`](https://dev.mysql.com/doc/refman/8.0/en/comparison-operators.html#operator_between)         | 检查某个值是否在某个取值范围内     |
+| [`COALESCE()`](https://dev.mysql.com/doc/refman/8.0/en/comparison-operators.html#function_coalesce)                 | 返回第一个非空参数                    |
+| [`=`](https://dev.mysql.com/doc/refman/8.0/en/comparison-operators.html#operator_equal)                    | 等式运算符                       |
+| [`<=>`](https://dev.mysql.com/doc/refman/8.0/en/comparison-operators.html#operator_equal-to)             | 安全的等于运算符                           |
+| [`>`](https://dev.mysql.com/doc/refman/8.0/en/comparison-operators.html#operator_greater-than)         | 大于运算符                                 |
+| [`>=`](https://dev.mysql.com/doc/refman/8.0/en/comparison-operators.html#operator_greater-than-or-equal)            | 大于或等于运算符                        |
+| [`GREATEST()`](https://dev.mysql.com/doc/refman/8.0/en/comparison-operators.html#function_greatest)                 | 返回最大参数                           |
+| [`IN()`](https://dev.mysql.com/doc/refman/8.0/en/comparison-operators.html#operator_in)                             | 检查某一数值是否在一组数值之内       |
+| [`IS NULL`](https://dev.mysql.com/doc/refman/8.0/en/comparison-operators.html#operator_is-null)                     | NULL 值测试                                       |
+| [`ISNULL()`](https://dev.mysql.com/doc/refman/8.0/en/comparison-operators.html#function_isnull)                     | 测试参数是否为 NULL                     |
+| [`LEAST()`](https://dev.mysql.com/doc/refman/8.0/en/comparison-operators.html#function_least)                       | 返回最小参数                          |
+| [`<`](https://dev.mysql.com/doc/refman/8.0/en/comparison-operators.html#operator_less-than)                         | 小于运算符                                    |
+| [`<=`](https://dev.mysql.com/doc/refman/8.0/en/comparison-operators.html#operator_less-than-or-equal)               | 小于或等于运算符                           |
+| [`NOT BETWEEN ... AND ...`](https://dev.mysql.com/doc/refman/8.0/en/comparison-operators.html#operator_not-between) | 检查某个值是否不在某个取值范围内 |
+| [`!=`, `<>`](https://dev.mysql.com/doc/refman/8.0/en/comparison-operators.html#operator_not-equal)                  | 不等运算符                                    |
+| [`NOT IN()`](https://dev.mysql.com/doc/refman/8.0/en/comparison-operators.html#operator_not-in)                     | 检查数值是否不在一组数值之内   |
 
-For more information about how vectors are compared, see [Vector Data Type | Comparison](/tidb-cloud/vector-search-data-types.md#comparison).
+有关如何比较向量的更多信息，请参阅 [向量数据类型 | 比较](/vector-search-data-types.md#comparison)。
 
 **控制流函数:**
 
@@ -86,8 +86,8 @@ For more information about how vectors are compared, see [Vector Data Type | Com
 
 | Name                                                                                        | Description                    |
 | :------------------------------------------------------------------------------------------ | :----------------------------- |
-| [`CAST()`](https://dev.mysql.com/doc/refman/8.0/en/cast-functions.html#function_cast)       | Cast a value as a certain type |
-| [`CONVERT()`](https://dev.mysql.com/doc/refman/8.0/en/cast-functions.html#function_convert) | Cast a value as a certain type |
+| [`CAST()`](https://dev.mysql.com/doc/refman/8.0/en/cast-functions.html#function_cast)       | 将数值转换为某种类型 |
+| [`CONVERT()`](https://dev.mysql.com/doc/refman/8.0/en/cast-functions.html#function_convert) | 将数值转换为某种类型 |
 
 有关如何使用 `CAST()` 的更多信息，请参阅 [向量数据类型 | 类型转换](/vector-search-data-types.md#类型转换)。
 
@@ -274,6 +274,6 @@ VEC_AS_TEXT(vector)
 
 向量函数以及内置函数和向量数据类型运算符的扩展用法是 TiDB 特有的，MySQL 不支持。
 
-## 参考
+## 另请参阅
 
 - [向量数据类型](/vector-search-data-types.md)

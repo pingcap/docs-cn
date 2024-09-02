@@ -5,7 +5,7 @@ summary: 了解如何将 TiDB 向量搜索与 peewee 集成，以存储嵌入信
 
 # TiDB 向量搜索与 peewee 结合
 
-本教程将展示如何使用 [peewee](https://docs.peewee-orm.com/)与TiDB向量搜索交互、存储嵌入和执行向量搜索查询。
+本教程将展示如何使用 [peewee](https://docs.peewee-orm.com/) 与 TiDB 向量搜索交互、存储嵌入和执行向量搜索查询。
 
 ## 准备
 
@@ -13,7 +13,7 @@ summary: 了解如何将 TiDB 向量搜索与 peewee 集成，以存储嵌入信
 
 - [Python 3.8 or higher](https://www.python.org/downloads/) installed.
 - [Git](https://git-scm.com/downloads) installed.
-- TiDB serverless集群。如果没有，请按照[使用 TiDB Serverless 构建 TiDB 集群](/develop/dev-guide-build-cluster-in-cloud.md)创建自己的 TiDB 集群。
+- TiDB 集群。如果没有，请按照[使用 TiUP 部署 TiDB 集群](/production-deployment-using-tiup.md)创建自己的 TiDB 集群。
 
 ## 运行示例应用程序
 
@@ -53,28 +53,7 @@ pip install peewee pymysql python-dotenv tidb-vector
 
 ### 步骤 4. 配置环境变量
 
-1. 导航至 [** 群集**](https://tidbcloud.com/console/clusters) 页面，然后单击目标群集的名称进入其概览页面。
-
-2. 单击右上角的**连接**。此时将显示连接对话框。
-
-3. 确保连接对话框中的配置符合您的运行环境。
-
-    - **Endpoint Type** 设置为 `Public`.
-    - **Branch** 设置为 `main`.
-    - **Connect With** 设置为 `General`.
-    - **Operating System** 与环境相匹配.
-
-    > **Tip:**
-    >
-    > 如果程序在 Windows Subsystem for Linux (WSL) 中运行，请切换到相应的 Linux 发行版。
-
-4. 从连接对话框中复制连接参数。
-
-    > **Tip:**
-    >
-    > 如果尚未设置密码，请单击**生成密码**生成一个随机密码。
-
-5. In the root directory of your Python project, create a `.env` file and paste the connection parameters to the corresponding environment variables.
+在 Python 项目的根目录下创建一个 `.env` 文件，并根据启动的集群参数修改相应的环境变量中。
 
     - `TIDB_HOST`: TiDB 集群的主机。
     - `TIDB_PORT`: TiDB 集群的端口。
@@ -86,7 +65,7 @@ pip install peewee pymysql python-dotenv tidb-vector
     以下是 MacOS 的示例：
 
     ```dotenv
-    TIDB_HOST=gateway01.****.prod.aws.tidbcloud.com
+    TIDB_HOST=127.0.0.1
     TIDB_PORT=4000
     TIDB_USERNAME=********.root
     TIDB_PASSWORD=********
@@ -94,7 +73,7 @@ pip install peewee pymysql python-dotenv tidb-vector
     TIDB_CA_PATH=/etc/ssl/cert.pem
     ```
 
-### 步骤 5. 运行demo
+### 步骤 5. 运行 demo
 
 ```bash
 python peewee-quickstart.py
@@ -162,7 +141,7 @@ db = MySQLDatabase(
 
 #### 定义向量列
 
-创建一个表格，其中有一列名为 “peewee_demo_documents”，用于存储一个三维向量。
+创建一个表格，其中有一列名为 `peewee_demo_documents`，用于存储一个三维向量。
 
 ```python
 class Document(Model):
@@ -184,7 +163,7 @@ Document.create(content='tree', embedding=[1, 0, 0])
 
 ### 搜索近邻向量
 
-根据余弦距离函数，搜索与查询向量“[1, 2, 3]”语义最接近的前 3 个向量。
+根据余弦距离函数，搜索与查询向量 `[1, 2, 3]` 语义最接近的前 3 个向量。
 
 ```python
 distance = Document.embedding.cosine_distance([1, 2, 3]).alias('distance')
@@ -193,7 +172,7 @@ results = Document.select(Document, distance).order_by(distance).limit(3)
 
 ### 搜索一定距离内的向量
 
-搜索与查询向量`“`[1, 2, 3]`的余弦距离小于 0.2 的文档。
+搜索与查询向量 `[1, 2, 3]` 的余弦距离小于 0.2 的文档。
 
 ```python
 distance_expression = Document.embedding.cosine_distance([1, 2, 3])
@@ -201,6 +180,6 @@ distance = distance_expression.alias('distance')
 results = Document.select(Document, distance).where(distance_expression < 0.2).order_by(distance).limit(3)
 ```
 
-## See also
+## 另请参阅
 
 - [向量数据类型](/vector-search-data-types.md)

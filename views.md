@@ -239,7 +239,7 @@ Query OK, 0 rows affected (0.02 sec)
 - TiDB 中视图为只读视图，不支持对视图进行 `UPDATE`、`INSERT`、`DELETE`、`TRUNCATE` 等写入操作。
 - 对已创建的视图仅支持 `DROP` 的 DDL 操作，即 `DROP [VIEW | TABLE]`。
 
-## 扩展阅读
+## 另请参阅
 
 - [创建视图](/sql-statements/sql-statement-create-view.md)
 - [删除视图](/sql-statements/sql-statement-drop-view.md)

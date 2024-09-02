@@ -1,6 +1,6 @@
 ---
-title: TiDB 向量搜索与 Django ORM 相集成
-summary: 了解如何将 TiDB 向量搜索与 Django ORM 集成，以存储嵌入并执行语义搜索。
+title: TiDB 向量搜索与 Django ORM 结合
+summary: 了解如何将 TiDB 向量搜索与 Django ORM 结合，以存储嵌入并执行语义搜索。
 ---
 
 # TiDB 向量搜索与 Django ORM 结合
@@ -13,13 +13,13 @@ summary: 了解如何将 TiDB 向量搜索与 Django ORM 集成，以存储嵌�
 
 - [Python 3.8 or higher](https://www.python.org/downloads/)
 - [Git](https://git-scm.com/downloads) 
-- TiDB serverless集群。如果没有，请按照[使用 TiDB Serverless 构建 TiDB 集群](/develop/dev-guide-build-cluster-in-cloud.md)创建自己的 TiDB 集群。
+- TiDB 集群。如果没有，请按照[使用 TiUP 部署 TiDB 集群](/production-deployment-using-tiup.md)创建自己的 TiDB 集群。
 
 ## 运行示例应用程序
 
 您可以通过以下步骤快速了解如何将 TiDB 向量搜索与 Django ORM 集成。
 
-### 步骤 1. clone仓库
+### 步骤 1. 克隆仓库
 
 将 `tidb-vector-python` 仓库克隆到本地：
 
@@ -55,36 +55,15 @@ pip install Django django-tidb mysqlclient numpy python-dotenv
 
 #### 什么是 `django-tidb`?
 
-`django-tidb`使用django框架提供了与tidb交互的示例，它实现了 Django ORM 以支持 TiDB 特有的功能（例如，向量搜索），并解决了 TiDB 和 Django 之间的兼容性问题。
+`django-tidb`使用django框架提供了与tidb交互的示例，它实现了 Django ORM 以支持 TiDB 的向量搜索，并解决了 TiDB 和 Django 之间的兼容性问题。
 
-要安装 `django-tidb`，请选择与 Django 版本相匹配的版本。例如，如果使用的是 `django==4.2.*`, 则安装 `django-tidb===4.2.*`。次版本号不必相同。建议使用最新的次版本。
+要安装 `django-tidb`，请选择与 Django 版本相匹配的版本。例如，如果使用的是 `django==4.2.*`, 则安装 `django-tidb===4.2.*`。次版本号不必相同，但建议使用最新的次版本。
 
 更多信息，请参阅 [django-tidb repository](https://github.com/pingcap/django-tidb)。
 
 ### 步骤 4. 配置环境变量
 
-1. 导航至 [** 群集**](https://tidbcloud.com/console/clusters) 页面，然后单击目标群集的名称进入其概览页面。
-
-2. 单击右上角的**连接**。此时将显示连接对话框。
-
-3. 确保连接对话框中的配置符合您的运行环境。
-
-    - **Endpoint Type** 设置为 `Public`
-    - **Branch** 设置为 `main`
-    - **Connect With** 设置为 `General`
-    - **Operating System** 与环境相匹配
-
-    > **Tip:**
-    >
-    > 如果程序在 Windows Subsystem for Linux (WSL) 中运行，请切换到相应的 Linux 发行版。
-
-4. 从连接对话框中复制连接参数。
-
-    > **Tip:**
-    >
-    > 如果尚未设置密码，请单击**生成密码**生成一个随机密码。
-
-5. 在 Python 项目的根目录下创建一个 `.env` 文件，并将连接参数粘贴到相应的环境变量中。
+在 Python 项目的根目录下创建一个 `.env` 文件，并根据启动的集群参数修改相应的环境变量中。
 
     - `TIDB_HOST`: TiDB 集群的主机。
     - `TIDB_PORT`: TiDB 集群的端口。
@@ -96,7 +75,7 @@ pip install Django django-tidb mysqlclient numpy python-dotenv
     以下是 MacOS 的示例：
 
     ```dotenv
-    TIDB_HOST=gateway01.****.prod.aws.tidbcloud.com
+    TIDB_HOST=127.0.0.1
     TIDB_PORT=4000
     TIDB_USERNAME=********.root
     TIDB_PASSWORD=********
@@ -104,7 +83,7 @@ pip install Django django-tidb mysqlclient numpy python-dotenv
     TIDB_CA_PATH=/etc/ssl/cert.pem
     ```
 
-### Step 5. 运行demo
+### Step 5. 运行 demo
 
 迁移数据库模式：
 
@@ -168,7 +147,7 @@ if TIDB_CA_PATH:
 
 `tidb-django` 提供了一个 `VectorField` 来在表中存储向量嵌入。
 
-创建一个表格，其中有一列名为 `embedding`，用于存储三维向量。
+创建一个表格，其中有一列名为 `embedding` ，用于存储三维向量。
 
 ```python
 class Document(models.Model):
@@ -193,7 +172,7 @@ TiDB 向量支持以下距离函数：
 - `CosineDistance`
 - `NegativeInnerProduct`
 
-根据余弦距离函数，搜索与查询向量“[1, 2, 3]”语义最接近的前 3 个内容。
+根据余弦距离函数，搜索与查询向量 `[1, 2, 3]` 语义最接近的前 3 个内容。
 
 ```python
 results = Document.objects.annotate(
@@ -203,7 +182,7 @@ results = Document.objects.annotate(
 
 ### 搜索一定距离内的向量
 
-搜索与查询向量“[1, 2, 3]”的余弦距离小于 0.2 的向量。
+搜索与查询向量 `[1, 2, 3]` 的余弦距离小于 0.2 的向量。
 
 ```python
 results = Document.objects.annotate(
@@ -211,6 +190,6 @@ results = Document.objects.annotate(
 ).filter(distance__lt=0.2).order_by('distance')[:3]
 ```
 
-## See also
+## 另请参阅
 
 - [向量数据类型](/tidb-cloud/vector-search-data-types.md)

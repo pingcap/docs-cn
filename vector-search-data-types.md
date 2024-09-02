@@ -5,19 +5,19 @@ summary: 本文介绍 TiDB 的向量数据类型。
 
 # 向量数据类型(Vector)
 
-TiDB 提供的矢量数据类型专门针对AI向量嵌入用例进行了优化。通过使用向量数据类型，可以高效地存储和查询浮点数序列，例如 `[0.3, 0.5, -0.1, ...]`.
+TiDB 提供的向量数据类型专门针对AI向量嵌入用例进行了优化。通过使用向量数据类型，可以高效地存储和查询浮点数序列，例如 `[0.3, 0.5, -0.1, ...]`.
 
 目前可用的向量数据类型如下：
 
 - `VECTOR`: 单精度浮点数序列。每一行的维度可以不同。
 - `VECTOR(D)`: 具有固定维度 `D` 的单精度浮点数序列。
 
-与存储在`JSON`列中相比，向量数据类型具有这些优势：
+与存储在 `JSON` 列中相比，向量数据类型具有这些优势：
 
-- 指定维度。可以指定一个维度，禁止插入不同维度的向量。
-- 优化存储格式。向量数据类型的存储空间效率甚至比`JSON`数据类型更高。
+- 可指定维度。可以指定一个维度，禁止插入不同维度的向量。
+- 更优的存储格式。向量数据类型的存储效率比 `JSON` 数据类型的更高。
 
-## Value syntax
+## 语法
 
 向量值包含任意数量的浮点数，可以使用以下语法中的字符串来表示向量值：
 
@@ -45,7 +45,7 @@ INSERT INTO vector_table VALUES (2, NULL);
 ERROR 1105 (HY000): Invalid vector text: [5, ]
 ```
 
-在上例中，`embedding`列的维度为 3，因此插入不同维度的向量会导致错误：
+在上例中，`embedding` 列的维度为 3，因此插入不同维度的向量会导致错误：
 
 ```sql
 [tidb]> INSERT INTO vector_table VALUES (4, '[0.3, 0.5]');
@@ -82,7 +82,7 @@ INSERT INTO vector_table VALUES (2, '[0.3, 0.5]');       -- 2 dimensions vector,
 
 不同维度的向量采用字典序比较，具有一下特性：
 
-- 两个矢量逐个元素进行比较，每个元素都以数值形式进行比较。
+- 两个向量逐个元素进行比较，每个元素都以数值形式进行比较。
 - 第一个不匹配的元素决定哪一个向量在字典序上 _less_ 或 _greater_。
 - 如果一个向量是另一个向量的前缀，那么较短的向量为 _less_ 。
 - 长度相同、元素相同的两个向量为 _equal_ 。
@@ -97,7 +97,7 @@ INSERT INTO vector_table VALUES (2, '[0.3, 0.5]');       -- 2 dimensions vector,
 在比较向量常量时，需要考虑执行从字符串到向量的 [显式转换](#cast)，以避免基于字符串值的比较：
 
 ```sql
--- Because string is given, TiDB is comparing strings:
+-- 因为给出了字符串，所以 TiDB 会比较字符串
 [tidb]> SELECT '[12.0]' < '[4.0]';
 +--------------------+
 | '[12.0]' < '[4.0]' |
@@ -106,7 +106,7 @@ INSERT INTO vector_table VALUES (2, '[0.3, 0.5]');       -- 2 dimensions vector,
 +--------------------+
 1 row in set (0.01 sec)
 
--- Cast to vector explicitly to compare by vectors:
+-- 显式转换为向量，以便通过向量进行比较：
 [tidb]> SELECT VEC_FROM_TEXT('[12.0]') < VEC_FROM_TEXT('[4.0]');
 +--------------------------------------------------+
 | VEC_FROM_TEXT('[12.0]') < VEC_FROM_TEXT('[4.0]') |
@@ -157,7 +157,7 @@ ERROR 1105 (HY000): vectors have different dimensions: 1 and 3
 在调用接收向量数据类型的函数时，存在隐式转换：
 
 ```sql
--- There is an implicit cast here, since VEC_DIMS only accepts VECTOR arguments:
+-- 由于 VEC_DIMS 只接受 VECTOR 参数，因此这里有一个隐式转换：
 [tidb]> SELECT VEC_DIMS('[0.3, 0.5, -0.1]');
 +------------------------------+
 | VEC_DIMS('[0.3, 0.5, -0.1]') |
@@ -166,7 +166,7 @@ ERROR 1105 (HY000): vectors have different dimensions: 1 and 3
 +------------------------------+
 1 row in set (0.01 sec)
 
--- Cast explicitly using VEC_FROM_TEXT:
+-- 使用 VEC_FROM_TEXT 进行显式转存：
 [tidb]> SELECT VEC_DIMS(VEC_FROM_TEXT('[0.3, 0.5, -0.1]'));
 +---------------------------------------------+
 | VEC_DIMS(VEC_FROM_TEXT('[0.3, 0.5, -0.1]')) |
@@ -175,7 +175,7 @@ ERROR 1105 (HY000): vectors have different dimensions: 1 and 3
 +---------------------------------------------+
 1 row in set (0.01 sec)
 
--- Cast explicitly using CAST(... AS VECTOR):
+-- 使用 CAST(... AS VECTOR) 进行显式转存：
 [tidb]> SELECT VEC_DIMS(CAST('[0.3, 0.5, -0.1]' AS VECTOR));
 +----------------------------------------------+
 | VEC_DIMS(CAST('[0.3, 0.5, -0.1]' AS VECTOR)) |
@@ -188,7 +188,7 @@ ERROR 1105 (HY000): vectors have different dimensions: 1 and 3
 当运算符或函数接受多种数据类型时，请使用显式转换。例如，在比较中，使用显式转换来比较向量数值而不是字符串数值：
 
 ```sql
--- Because string is given, TiDB is comparing strings:
+-- 因为给出了字符串，所以 TiDB 会比较字符串：
 [tidb]> SELECT '[12.0]' < '[4.0]';
 +--------------------+
 | '[12.0]' < '[4.0]' |
@@ -197,7 +197,7 @@ ERROR 1105 (HY000): vectors have different dimensions: 1 and 3
 +--------------------+
 1 row in set (0.01 sec)
 
--- Cast to vector explicitly to compare by vectors:
+-- 显式转换为向量，以便通过向量进行比较：
 [tidb]> SELECT VEC_FROM_TEXT('[12.0]') < VEC_FROM_TEXT('[4.0]');
 +--------------------------------------------------+
 | VEC_FROM_TEXT('[12.0]') < VEC_FROM_TEXT('[4.0]') |
@@ -207,10 +207,10 @@ ERROR 1105 (HY000): vectors have different dimensions: 1 and 3
 1 row in set (0.01 sec)
 ```
 
-要显式地将向量转换为字符串表示，请使用`VEC_AS_TEXT()`函数：
+要显式地将向量转换为字符串表示，请使用 `VEC_AS_TEXT()` 函数：
 
 ```sql
--- String representation is normalized:
+-- 规范化表示字符串：
 [tidb]> SELECT VEC_AS_TEXT('[0.3,     0.5,  -0.1]');
 +--------------------------------------+
 | VEC_AS_TEXT('[0.3,     0.5,  -0.1]') |
@@ -234,10 +234,10 @@ ERROR 1105 (HY000): vectors have different dimensions: 1 and 3
 
 有关其他限制，请参阅[向量搜索限制](/vector-search-limitations.md)。
 
-## MySQL兼容性
+## MySQL 兼容性
 
 向量数据类型只在 TiDB 中支持，MySQL 不支持。
 
-## 其他信息
+## 另请参阅
 
 - [向量函数和操作](/tidb-cloud/vector-search-functions-and-operators.md)

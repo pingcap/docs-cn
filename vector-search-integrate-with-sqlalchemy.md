@@ -5,16 +5,16 @@ summary: 了解如何将 TiDB 向量搜索与 SQLAlchemy 结合，以存储embed
 
 # TiDB 向量搜索与 SQLAlchemy 结合
 
-本教程将展示如何使用 [SQLAlchemy](https://www.sqlalchemy.org/)与 [TiDB 向量搜索](/tidb-cloud/vector-search-overview.md)交互、存储嵌入和执行向量搜索查询。
+本教程将展示如何使用 [SQLAlchemy](https://www.sqlalchemy.org/) 与 [TiDB 向量搜索](/tidb-cloud/vector-search-overview.md) 交互、存储嵌入和执行向量搜索查询。
 
 
-## Prerequisites
+## 准备
 
 要实现本部分的内容，需要确保安装以下内容：
 
-- [Python 3.8 or higher](https://www.python.org/downloads/) installed.
-- [Git](https://git-scm.com/downloads) installed.
-- TiDB serverless集群。如果没有，请按照[使用 TiDB Serverless 构建 TiDB 集群](/develop/dev-guide-build-cluster-in-cloud.md)创建自己的 TiDB 集群。
+- [Python 3.8 or higher](https://www.python.org/downloads/) 
+- [Git](https://git-scm.com/downloads)
+- TiDB 集群。如果没有，请按照[使用 TiUP 部署 TiDB 集群](/production-deployment-using-tiup.md)创建自己的 TiDB 集群。
 
 ## 运行示例应用程序
 
@@ -54,33 +54,19 @@ pip install pymysql python-dotenv sqlalchemy tidb-vector
 
 ### 步骤 4. 配置环境变量
 
-1. 导航至 [** 群集**](https://tidbcloud.com/console/clusters) 页面，然后单击目标群集的名称进入其概览页面。
+在 Python 项目的根目录下创建一个 `.env` 文件，并根据启动的集群参数修改相应的环境变量中。
 
-2. 单击右上角的**连接**。此时将显示连接对话框。
-
-3. 确保连接对话框中的配置符合您的运行环境。
-
-    - **Endpoint Type** 设置为 `Public`.
-    - **Branch** 设置为 `main`.
-    - **Connect With** 设置为 `SQLAlchemy`.
-    - **Operating System** 与环境相匹配.
-
-    > **Tip:**
-    >
-    > 如果程序在 Windows Subsystem for Linux (WSL) 中运行，请切换到相应的 Linux 发行版。
-
-4. 单击 **PyMySQL** 标签，复制连接字符串。
-
-    > **Tip:**
-    >
-    > 如果尚未设置密码，请单击**生成密码**生成一个随机密码。
-
-5. 在 Python 项目的根目录下创建一个 `.env` 文件，并将连接字符串粘贴到其中。
+    - `HOST`: TiDB 集群的主机。
+    - `PORT`: TiDB 集群的端口。
+    - `USERNAME`: 连接 TiDB 集群的用户名。
+    - `PASSWORD`: 连接 TiDB 集群的密码。
+    - `DATABASE`: 要连接的数据库名称。
+    - `CA`: 根证书文件的路径。
 
     以下是 MacOS 的示例：
 
     ```dotenv
-    TIDB_DATABASE_URL="mysql+pymysql://<prefix>.root:<password>@gateway01.<region>.prod.aws.tidbcloud.com:4000/test?ssl_ca=/etc/ssl/cert.pem&ssl_verify_cert=true&ssl_verify_identity=true"
+    TIDB_DATABASE_URL="mysql+pymysql://<prefix>.root:<password>@127.0.0.1:4000/test?ssl_ca=/etc/ssl/cert.pem&ssl_verify_cert=true&ssl_verify_identity=true"
     ```
 
 ### 步骤 5. 运行demo
@@ -176,6 +162,6 @@ with Session(engine) as session:
     ).filter(distance < 0.2).order_by(distance).limit(3).all()
 ```
 
-## See also
+## 另请参阅
 
 - [向量数据类型](/vector-search-data-types.md)
