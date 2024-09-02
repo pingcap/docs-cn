@@ -627,7 +627,7 @@ mysql> SELECT * FROM t1;
 
 > **注意：**
 >
-> - `max_execution_time` 目前只用于控制只读语句的最大执行时长，实际精度在 100ms 级别，而非更准确的毫秒级别。
+> - 在 v6.4.0 之前，`max_execution_time` 对所有类型的语句生效。从 v6.4.0 开始，该变量只用于控制只读语句的最大执行时长。实际精度在 100ms 级别，而非更准确的毫秒级别。
 > - 对于使用了 [`MAX_EXECUTION_TIME`](/optimizer-hints.md#max_execution_timen) Hint 的 SQL 语句，这些语句的最长执行时间将不受该变量限制，而是由该 Hint 进行限制。你也可以使用该 Hint 来创建 SQL 绑定，详情请参考 [SQL 操作常见问题](/faq/sql-faq.md#如何阻止特定的-sql-语句执行或者将某个-sql-语句加入黑名单)。
 
 ### `max_prepared_stmt_count`
@@ -1512,8 +1512,8 @@ mysql> SELECT job_info FROM mysql.analyze_jobs ORDER BY end_time DESC LIMIT 1;
 - 单位：行
 - 这个变量用来设置 DDL 操作 `re-organize` 阶段的 batch size。比如 `ADD INDEX` 操作，需要回填索引数据，通过并发 `tidb_ddl_reorg_worker_cnt` 个 worker 一起回填数据，每个 worker 以 batch 为单位进行回填。
 
-    - 如果 `ADD INDEX` 操作时有较多 `UPDATE` 操作或者 `REPLACE` 等更新操作，batch size 越大，事务冲突的概率也会越大，此时建议调小 batch size 的值，最小值是 32。
-    - 在没有事务冲突的情况下，batch size 可设为较大值（需要参考 worker 数量，见[线上负载与 `ADD INDEX` 相互影响测试](/benchmark/online-workloads-and-add-index-operations.md)），这样回填数据的速度更快，但是 TiKV 的写入压力也会变大。
+    - 当设置 `tidb_ddl_enable_fast_reorg` 为 `OFF` 时，`ADD INDEX` 会通过事务的方式执行，执行时如果 `ADD INDEX` 的目标列有较多 `UPDATE` 或者 `REPLACE` 等更新操作，batch size 设置的值越大，事务冲突的概率也会越大。此时建议调小 batch size 的值，最小值是 32。
+    - 在没有事务冲突的情况下，或者当 `tidb_ddl_enable_fast_reorg` 为 `ON` 时，batch size 可设为较大值，这样回填数据的速度更快，但是 TiKV 的写入压力也会变大。设置 batch size 时需要参考 `tidb_ddl_reorg_worker_cnt` 的设置值，详情见[线上负载与 `ADD INDEX` 相互影响测试](/benchmark/online-workloads-and-add-index-operations.md)。
 
 ### `tidb_ddl_reorg_priority`
 
