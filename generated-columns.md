@@ -158,5 +158,5 @@ desc select a+1 from t where a+1=3;
 - 不能通过 `ALTER TABLE` 将存储生成列转换为普通列，也不能将普通列转换成存储生成列；
 - 不能通过 `ALTER TABLE` 修改存储生成列的生成列表达式；
 - 并未支持所有的 [JSON 函数](/functions-and-operators/json-functions.md)；
-- 不支持使用 [`NULLIF()` 函数](/functions-and-operators/control-flow-functions.md#nullif)。可以使用 [`CASE` 函数]((/functions-and-operators/control-flow-functions.md#case)代替。
+- 不支持使用 [`NULLIF()` 函数](/functions-and-operators/control-flow-functions.md#nullif)，可以使用 [`CASE` 函数](/functions-and-operators/control-flow-functions.md#case)代替；
 - 目前仅当生成列是虚拟生成列时索引生成列替换规则有效，暂不支持将表达式替换为存储生成列，但仍然可以通过直接使用该生成列本身来使用索引。
