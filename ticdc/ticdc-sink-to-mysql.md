@@ -70,6 +70,11 @@ URI 中可配置的参数如下：
 | `ssl-key`      | 连接下游 MySQL 实例所需的证书密钥文件路径（可选）。 |
 | `time-zone`    | 连接下游 MySQL 实例时使用的时区名称，从 v4.0.8 开始生效。（可选。如果不指定该参数，使用 TiCDC 服务进程的时区；如果指定该参数但使用空值，例如：`time-zone=""`，则表示连接 MySQL 时不指定时区，使用下游默认时区）。 |
 | `transaction-atomicity`      | 指定事务的原子性级别（可选，默认值为 `none`）。当该值为 `table` 时 TiCDC 保证单表事务的原子性，当该值为 `none` 时 TiCDC 会拆分单表事务。 |
+| `batch-dml-enable` | 开启 batch-dml 批量写入特性（可选，默认值为 `true`）|
+| `read-timeout` | I/O 读取超时（可选，默认值为`2m`）|
+| `write-timeout` | I/O 写入超时（可选，默认值为`2m`）|
+| `timeout` | 建立连接的超时时间，即拨号超时（可选，默认值为`2m`）|
+| `safe-mode` | 将所有的 `INSERT` 和 `UPDATE` 语句转成 `REPLACE INTO` 语句（可选，默认值为`false`）|
 
 若需要对 Sink URI 中的数据库密码使用 Base64 进行编码，可以参考如下命令：
 
