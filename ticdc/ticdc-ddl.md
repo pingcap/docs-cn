@@ -50,7 +50,7 @@ summary: 了解 TiCDC 支持同步的 DDL 和一些特殊情况
 
 为了减小对 Changefeed 同步延迟的影响，如果下游是 TiDB，TiCDC 会异步执行创建和添加索引的 DDL 操作，即 TiCDC 将 `ADD INDEX` 和 `CREATE INDEX` DDL 同步到下游执行后，会立刻返回，而不会等待 DDL 操作完成。这样可以避免阻塞后续的 DML 执行。
 
-当 `ADD INDEX` 和 `CREATE INDEX` DDL 在下游执行期间，TiCDC 执行同一张表的下一条 DDL 时，这条 DDL 可能长期被阻塞在 queueing 状态，导致其被 TiCDC 重复执行多次，重试时间过长时还会导致同步任务失败。从 v8.3.0 开始，如果 TiCDC 拥有下游数据库的 `SUPER` 权限，TiCDC 可以通过 `ADMIN SHOW DDL JOBS` 查询异步执行的 DDL 任务的状态，直到索引创建完成后再继续同步，这期间同步任务的延迟会上升，但避免了同步任务失败。
+当 `ADD INDEX` 和 `CREATE INDEX` DDL 在下游执行期间，TiCDC 执行同一张表的下一条 DDL 时，这条 DDL 可能长期被阻塞在 queueing 状态，导致其被 TiCDC 重复执行多次，重试时间过长时还会导致同步任务失败。从 v8.4.0 开始，如果 TiCDC 拥有下游数据库的 `SUPER` 权限，TiCDC 可以通过 `ADMIN SHOW DDL JOBS` 查询异步执行的 DDL 任务的状态，直到索引创建完成后再继续同步，这期间同步任务的延迟会上升，但避免了同步任务失败。
 
 > **注意：**
 >
