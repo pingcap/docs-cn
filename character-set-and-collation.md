@@ -9,7 +9,7 @@ summary: TiDB 支持的字符集包括 ascii、binary、gbk、latin1、utf8 和 
 
 ## 字符集和排序规则的概念
 
-字符集 (character set) 是符号与编码的集合。TiDB 中的默认字符集是 utf8mb4，与 MySQL 8.0 及更高版本中的默认字符集匹配。
+字符集 (character set) 是符号与编码的集合。TiDB 中的默认字符集是 `utf8mb4`，与 MySQL 8.0 及更高版本中的默认字符集匹配。
 
 排序规则 (collation) 是在字符集中比较字符以及字符排序顺序的规则。例如，在二进制排序规则中，比较 `A` 和 `a` 的结果是不一样的：
 
