@@ -244,6 +244,15 @@ delta_index_cache_size = 0
     ## 从 v7.4.0 引入，表示是否开启 TiFlash 资源管控功能。当设置为 true 时，TiFlash 会使用 Pipeline Model 执行模型。
     enable_resource_control = true
 
+    ## 从 v6.0.0 引入，表示当前 resource group 能够使用的最多线程数。如果超出，当前 query 会被放入等待队列。
+    task_scheduler_thread_soft_limit = 5000
+
+    ## 从 v6.0.0 引入，表示全局线程数的最大值。如果超出，当前 query 会被放入等待队列，直至下一次的调度。
+    task_scheduler_thread_hard_limit = 10000
+
+    ## 从 v6.4.0 引入，表示当前 tiflash 节点最多可以同时运行多少个 query。在 v6.5 和 v7.1 版本中，该参数的默认值是 vcpu 数量的一半。用户在设置时，该参数的范围在 0 到五十倍 vcpu 之间，如果参数值超过这个范围，那么会被自动调整为 vcpu 数量的一半。在 v7.5 版本中，该参数的默认值是两倍的 vcpu 数量。在 v8.1 版本中，该参数的默认值是 vcpu 数量。用户在设置时，该参数的范围在 0 到五倍的 vcpu 数量之间，如果超出范围，那么会被自动调整为 vcpu 的数量。
+    task_scheduler_active_set_soft_limit = 0
+
 ## 安全相关配置，从 v4.0.5 开始生效
 [security]
     ## 从 v5.0 引入，控制是否开启日志脱敏。可选值为 `true`、`false`、`"on"`、`"off"` 和 `"marker"`。其中，`"on"`、`"off"` 和 `"marker"` 从 v8.2.0 开始支持。
