@@ -121,7 +121,7 @@ Get documents within a certain distance:
 
 您可以参考以下示例代码片段来开发您的应用程序。
 
-### 创建矢量表
+### 创建向量表
 
 #### 连接至 TiDB 集群
 
@@ -174,23 +174,7 @@ class Document(Model):
     embedding = VectorField(3)
 ```
 
-#### 用索引定义优化的矢量列
-
-定义三维矢量列，并使用[向量搜索索引](/vector-search-index.md) （HNSW 索引）对其进行优化。
-
-```python
-class DocumentWithIndex(Model):
-    class Meta:
-        database = db
-        table_name = 'peewee_demo_documents_with_index'
-
-    content = TextField()
-    embedding = VectorField(3, constraints=[SQL("COMMENT 'hnsw(distance=cosine)'")])
-```
-
-TiDB 将使用该索引来加速基于余弦距离函数的矢量搜索查询。
-
-### 存储向量
+### 存储带有向量的文档
 
 ```python
 Document.create(content='dog', embedding=[1, 2, 1])
@@ -220,4 +204,3 @@ results = Document.select(Document, distance).where(distance_expression < 0.2).o
 ## See also
 
 - [向量数据类型](/vector-search-data-types.md)
-- [向量搜索索引](/vector-search-index.md)

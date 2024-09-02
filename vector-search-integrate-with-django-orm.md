@@ -5,7 +5,7 @@ summary: 了解如何将 TiDB 向量搜索与 Django ORM 集成，以存储嵌�
 
 # TiDB 向量搜索与 Django ORM 结合
 
-本教程将指导您如何使用 [Django](https://www.djangoproject.com/) ORM 与 TiDB 向量搜索进行交互、存储嵌入和执行向量搜索查询。
+本教程将展示如何使用 [Django](https://www.djangoproject.com/) ORM 与 TiDB 向量搜索进行交互、存储嵌入和执行向量搜索查询。
 
 ## 准备
 
@@ -176,23 +176,7 @@ class Document(models.Model):
    embedding = VectorField(dimensions=3)
 ```
 
-#### 用索引定义优化的向量列
-
-定义三维向量列，并使用[向量搜索索引](/vector-search-index.md) （HNSW 索引）对其进行优化。
-
-```python
-class DocumentWithIndex(models.Model):
-   content = models.TextField()
-   # Note:
-   #   - Using comment to add hnsw index is a temporary solution. In the future it will use `CREATE INDEX` syntax.
-   #   - Currently the HNSW index cannot be changed after the table has been created.
-   #   - Only Django >= 4.2 supports `db_comment`.
-   embedding = VectorField(dimensions=3, db_comment="hnsw(distance=cosine)")
-```
-
-TiDB 将使用该索引来加速基于余弦距离函数的向量搜索查询。
-
-### 存储向量
+### 存储带有向量的文档
 
 ```python
 Document.objects.create(content="dog", embedding=[1, 2, 1])
@@ -230,4 +214,3 @@ results = Document.objects.annotate(
 ## See also
 
 - [向量数据类型](/tidb-cloud/vector-search-data-types.md)
-- [向量搜索索引](/tidb-cloud/vector-search-index.md)

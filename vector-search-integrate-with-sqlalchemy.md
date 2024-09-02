@@ -110,7 +110,7 @@ Get documents within a certain distance:
 
 您可以参考以下示例代码片段来开发您的应用程序。
 
-### 创建矢量表
+### 创建向量表
 
 #### 连接至 TiDB 集群
 
@@ -141,20 +141,6 @@ class Document(Base):
     content = Column(Text)
     embedding = Column(VectorType(3))
 ```
-
-#### 用索引定义优化的矢量列
-
-定义三维矢量列，并使用[矢量搜索索引](/vector-search-index.md) （HNSW 索引）对其进行优化。
-
-```python
-class DocumentWithIndex(Base):
-    __tablename__ = 'sqlalchemy_demo_documents_with_index'
-    id = Column(Integer, primary_key=True)
-    content = Column(Text)
-    embedding = Column(VectorType(3), comment="hnsw(distance=cosine)")
-```
-
-TiDB 将使用该索引来加速基于余弦距离函数的矢量搜索查询。
 
 ### 存储带有向量的文档
 
@@ -193,4 +179,3 @@ with Session(engine) as session:
 ## See also
 
 - [向量数据类型](/vector-search-data-types.md)
-- [向量搜索索引](/vector-search-index.md)

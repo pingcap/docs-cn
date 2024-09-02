@@ -11,7 +11,6 @@ summary: 本文介绍 TiDB 的向量搜索限制。
 
 - 向量数据仅支持单精度浮点数 (Float32)。
 
-- 创建[向量索引](/vector-search-index.md)时只支持余弦距离和L2距离。
 
 ## 反馈
 

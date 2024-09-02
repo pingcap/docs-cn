@@ -14,7 +14,6 @@ TiDB 提供的矢量数据类型专门针对AI向量嵌入用例进行了优化�
 
 与存储在`JSON`列中相比，向量数据类型具有这些优势：
 
-- 支持向量索引。 可以通过构建[向量搜索索引]()加速查询。
 - 指定维度。可以指定一个维度，禁止插入不同维度的向量。
 - 优化存储格式。向量数据类型的存储空间效率甚至比`JSON`数据类型更高。
 
@@ -55,7 +54,6 @@ ERROR 1105 (HY000): vector has 2 dimensions, does not fit VECTOR(3)
 
 有关向量数据类型的可用函数和操作，参阅[向量函数与操作](/vector-search-functions-and-operators.md)
 
-有关向量搜索索引的信息，参阅[向量搜索索引](/vector-search-index.md)
 
 ## 不同维度的向量
 
@@ -70,8 +68,6 @@ CREATE TABLE vector_table (
 INSERT INTO vector_table VALUES (1, '[0.3, 0.5, -0.1]'); -- 3 dimensions vector, OK
 INSERT INTO vector_table VALUES (2, '[0.3, 0.5]');       -- 2 dimensions vector, OK
 ```
-
-但是，我们不能为此列构建[向量搜索索引](/vector-search-index.md)，因为向量距离只能在具有相同维度的向量之间计算。
 
 ## 对比
 
@@ -245,4 +241,3 @@ ERROR 1105 (HY000): vectors have different dimensions: 1 and 3
 ## 其他信息
 
 - [向量函数和操作](/tidb-cloud/vector-search-functions-and-operators.md)
-- [向量搜索索引](/tidb-cloud/vector-search-index.md)
