@@ -215,6 +215,7 @@ TiDB 版本：8.3.0
 | [`tidb_gc_concurrency`](/system-variables.md#tidb_gc_concurrency-从-v50-版本开始引入) | 修改 | 从 v8.3.0 起，该变量可以控制[垃圾回收 (GC)](/garbage-collection-overview.md) 过程中 [Resolve Locks（清理锁）](/garbage-collection-overview.md#resolve-locks清理锁)和 [Delete Range（删除区间）](/garbage-collection-overview.md#delete-ranges删除区间)的并发线程数。在 v8.3.0 之前，该变量只能控制 Resolve Locks（清理锁）的线程数。|
 | [`tidb_low_resolution_tso`](/system-variables.md#tidb_low_resolution_tso) | 修改 | 增加 GLOBAL 作用域。|
 | [`tidb_opt_projection_push_down`](/system-variables.md#tidb_opt_projection_push_down-从-v610-版本开始引入) | 修改 | 增加 GLOBAL 作用域，变量值可以持久化到集群。经进一步的测试，默认值从 `OFF` 修改为 `ON`，即默认允许优化器将 `Projection` 算子下推到 TiKV。|
+| [`tidb_schema_cache_size`](/system-variables.md#tidb_schema_cache_size-从-v800-版本开始引入)  | 修改 | 取值范围修改为 `0` 或 `[536870912, 9223372036854775807]`，其中最小值为 `536870912` bytes（即 512 MiB），避免设置了过小的 cache size 导致性能下降。|
 | [`tidb_analyze_column_options`](/system-variables.md#tidb_analyze_column_options-从-v830-版本开始引入) | 新增 | 控制 `ANALYZE TABLE` 语句的行为。将其设置为默认值 `PREDICATE` 表示仅收集 [predicate columns](/statistics.md#收集部分列的统计信息) 的统计信息；将其设置为 `ALL` 表示收集所有列的统计信息。 |
 | [`tidb_enable_lazy_cursor_fetch`](/system-variables.md#tidb_enable_lazy_cursor_fetch-从-v830-版本开始引入) | 新增 | 这个变量用于控制 [Cursor Fetch](/develop/dev-guide-connection-parameters.md#使用-streamingresult-流式获取执行结果) 功能的行为。|
 | [`tidb_enable_shared_lock_promotion`](/system-variables.md#tidb_enable_shared_lock_promotion-从-v830-版本开始引入)      | 新增  | 控制是否启用共享锁升级为排他锁的功能。默认值为 `OFF`，表示不启用共享锁升级为排他锁的功能。  |
