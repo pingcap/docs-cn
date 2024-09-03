@@ -29,6 +29,18 @@ summary: 了解 TiProxy 的命令行参数。
 
 本节介绍 TiProxy 客户端程序 `tiproxyctl` 的语法、选项和命令。
 
+### 获取 TiProxy Control
+
+#### 通过 TiUP 安装
+
+在安装了 TiUP v1.16.1 及以后的版本之后，可以使用 tiup ctl:v<TIPROXY_VERSION> tiproxy 命令来获取 TiProxy Control 的二进制程序以及运行 TiProxy Control。
+
+#### 从源代码编译安装
+
+编译环境要求：Go 1.21 或以上版本
+
+编译步骤：在 [TiProxy 项目](https://github.com/pingcap/tiproxy)根目录，使用 make 命令进行编译，生成 tiproxyctl。
+
 > **注意：**
 >
 > TiProxy Control 主要用于诊断调试，不保证和 TiProxy 未来引入的新特性完全兼容。因此不推荐在应用程序开发或工具开发中利用 TiProxy Control 获取结果。
@@ -120,4 +132,49 @@ level = 'warning'
 
 ```json
 {"config_checksum":3006078629}
+```
+
+#### `traffic capture`
+
+`tiproxyctl traffic capture` 用于捕获流量。
+
+选项：
+
+- `--output`: 必须指定，指定流量文件存放的目录。
+- `--duration`: 必须指定，指定捕获的时长，可选单位为 `m` (分钟)、`h` (小时)、`d` (天)。例如 `--duration=1h` 指定捕获一小时的流量。
+
+例如，以下命令连接到 TiProxy 实例 `10.0.1.10:3080`，捕获一个小时的流量，并保存到 TiProxy 实例的 `/tmp/traffic` 目录下：
+    
+```shell
+tiproxyctl traffic capture --curls 10.0.1.10:3080 --output="/tmp/traffic" --duration=1h
+```
+
+#### `traffic replay`
+
+`tiproxyctl traffic replay` 用于回放流量。
+
+选项：
+
+- `--username`: 必须指定，指定回放时使用的数据库用户名。
+- `--password`: 指定以上用户名的密码，默认为 `""`。
+- `--input`: 必须指定，指定流量文件存放的目录。
+
+例如，如下命令通过用户名 `u1` 和密码 `123456` 连接到 TiProxy 实例 `10.0.1.10:3080`，并从 TiProxy 实例的 `/tmp/traffic` 目录下读取流量文件，并回放流量：
+
+```shell
+tiproxyctl traffic replay --curls 10.0.1.10:3080 --username="u1" --password="123456" --input="/tmp/traffic"
+```
+
+#### `traffic cancel`
+
+`tiproxyctl traffic cancel` 用于取消当前的捕获任务或回放任务。
+
+#### `traffic show`
+
+`tiproxyctl traffic show` 用于显示历史的捕获和回放任务。
+
+输出示例：
+
+```json
+[{"type":"capture","start_time":"2024-09-01T10:09:58.220643+08:00","duration":"2h","progress":"100%","status":"done"},{"type":"capture","start_time":"2024-09-02T14:09:58.220644+08:00","duration":"2h","progress":"15%","status":"canceled","error":"manually canceled"},{"type":"capture","start_time":"2024-09-03T09:10:58.220644+08:00","duration":"2h","progress":"45%","status":"running"}]
 ```
