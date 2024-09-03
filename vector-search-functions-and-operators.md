@@ -8,36 +8,36 @@ summary: 本文介绍 TiDB 的向量相关函数和操作。
 
 ## 向量函数
 
-[向量数据类型](/vector-search-data-types.md)有以下几种函数：
+TiDB 为 [向量数据类型](/vector-search-data-types.md) 设计了以下函数：
 
 **向量距离函数:**
 
 | Function Name              |              Description          |
 | --------------------------------------------------------- | ----------------------------------------------------------- |
-| [VEC_L2_DISTANCE](#vec_l2_distance)             | 计算两个向量之间的 L2 距离 (欧氏距离)  |
-| [VEC_COSINE_DISTANCE](#vec_cosine_distance)     | 计算两个向量之间的余弦距离               |
-| [VEC_NEGATIVE_INNER_PRODUCT](#vec_negative_inner_product) | 计算两个向量内积的负数 |
-| [VEC_L1_DISTANCE](#vec_l1_distance)             | 计算两个向量之间的 L1 距离 (曼哈顿距离)  |
+| [VEC_L2_DISTANCE](#vec_l2_distance)             | 返回两个向量之间的 L2 距离 (欧氏距离)  |
+| [VEC_COSINE_DISTANCE](#vec_cosine_distance)     | 返回两个向量之间的余弦距离               |
+| [VEC_NEGATIVE_INNER_PRODUCT](#vec_negative_inner_product) | 返回两个向量内积的负数 |
+| [VEC_L1_DISTANCE](#vec_l1_distance)             | 返回两个向量之间的 L1 距离 (曼哈顿距离)  |
 
 **其他向量函数:**
 
 | Function Name                   | Description                                         |
 | ------------------------------- | --------------------------------------------------- |
-| [VEC_DIMS](#vec_dims)           | 计算一个向量的维度                   |
-| [VEC_L2_NORM](#vec_l2_norm)     | 计算向量的 L2 范数 (欧氏规范) |
+| [VEC_DIMS](#vec_dims)           | 返回向量的维度                   |
+| [VEC_L2_NORM](#vec_l2_norm)     | 返回向量的 L2 范数 (欧氏规范) |
 | [VEC_FROM_TEXT](#vec_from_text) | 将字符串类型转换为向量类型                  |
 | [VEC_AS_TEXT](#vec_as_text)     | 将向量类型转换为字符串类型                     |
 
 ## 扩展的内置函数和运算符
 
-为了支持对 [向量数据类型](/vector-search-data-types.md) 进行操作，TiDB 扩展了以下内置函数和运算符。
+TiDB 扩展了以下内置函数和运算符，它们额外也支持[向量数据类型](/vector-search-data-types.md)。
 
 **算术运算符:**
 
 | Name                                                                                    | Description                              |
 | :-------------------------------------------------------------------------------------- | :--------------------------------------- |
 | [`+`](https://dev.mysql.com/doc/refman/8.0/en/arithmetic-functions.html#operator_plus)  | 向量类型的加法运算符    |
-| [`-`](https://dev.mysql.com/doc/refman/8.0/en/arithmetic-functions.html#operator_minus) | 向量类型的相减运算符 |
+| [`-`](https://dev.mysql.com/doc/refman/8.0/en/arithmetic-functions.html#operator_minus) | 向量类型的减法运算符 |
 
 若要了解更多有关向量运算工作原理的信息，请参阅 [向量数据类型 | 运算](/vector-search-data-types.md#运算)。
 
@@ -45,10 +45,10 @@ summary: 本文介绍 TiDB 的向量相关函数和操作。
 
 | Name                                                                                                          | Description                                      |
 | :------------------------------------------------------------------------------------------------------------ | :----------------------------------------------- |
-| [`COUNT()`](https://dev.mysql.com/doc/refman/8.0/en/aggregate-functions.html#function_count)                  | 计算行数     |
-| [`COUNT(DISTINCT)`](https://dev.mysql.com/doc/refman/8.0/en/aggregate-functions.html#function_count-distinct) | 计算不同数值的行数 |
-| [`MAX()`](https://dev.mysql.com/doc/refman/8.0/en/aggregate-functions.html#function_max)                      | 计算最大值                         |
-| [`MIN()`](https://dev.mysql.com/doc/refman/8.0/en/aggregate-functions.html#function_min)                      | 计算最小值                  |
+| [`COUNT()`](https://dev.mysql.com/doc/refman/8.0/en/aggregate-functions.html#function_count)                  | 返回行数     |
+| [`COUNT(DISTINCT)`](https://dev.mysql.com/doc/refman/8.0/en/aggregate-functions.html#function_count-distinct) | 返回不同数值的行数 |
+| [`MAX()`](https://dev.mysql.com/doc/refman/8.0/en/aggregate-functions.html#function_max)                      | 返回最大值                         |
+| [`MIN()`](https://dev.mysql.com/doc/refman/8.0/en/aggregate-functions.html#function_min)                      | 返回最小值                  |
 
 **比较函数与操作符:**
 

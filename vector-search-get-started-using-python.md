@@ -5,37 +5,27 @@ summary: 了解如何使用 Python 和 TiDB 向量搜索快速开发可执行语
 
 # 使用 Python 开始向量搜索
 
-本文展示如何开发一个简单的人工智能应用程序，并实现简单的**语义搜索**功能。不同于传统的关键字搜索，语义搜索可以获得与你输入的查询更加相关的结果。比如，你有标题为 “狗”、“鱼 ”和 “树 ”的文档，而你想搜索 “一种会游泳的动物”，那么语义搜索会将 “鱼 ”识别为最相关的结果。
+本文展示如何开发一个简单的 AI 应用，这个 AI 应用实现了简单的**语义搜索**功能。不同于传统的关键字搜索，语义搜索可以智能地“理解”你的输入，返回更相关的结果。例如，在“狗”、“鱼”和“树”这三个内容中搜索“一种会游泳的动物”时，语义搜索会将“鱼”作为最相关的结果。
 
-在本文中，你将使用 [TiDB 向量搜索](/vector-search-overview.md)、Python、[TiDB Vector SDK for Python](https://github.com/pingcap/tidb-vector-python) 和人工智能模型构建人工智能应用程序。
+在本文中，你将使用 [TiDB 向量搜索](/vector-search-overview.md)、Python、[TiDB Vector SDK for Python](https://github.com/pingcap/tidb-vector-python) 和 AI 大模型构建 AI 应用。
 
 
 ## 准备
-1. 在开始之前，你需要确定 TiDB 集群的部署方式以及以下内容被正确安装，
+在开始之前，你需要确定 TiDB 集群的部署方式以及以下内容被正确安装，
+- TiDB Serverless 集群
+  - [Python 3.8 or higher](https://www.python.org/downloads/)
+  - [Git](https://git-scm.com/downloads) 
+  - TiDB Serverless集群。如果没有 TiDB Cloud 集群，请按照[创建 TiDB Serverless集群](https://dev.mysql.com/doc/refman/8.4/en/mysql.html)创建自己的 TiDB Cloud 集群。
 
-    <SimpleTab>
+- 本地部署的 TiDB 集群
+  - [Python 3.8 or higher](https://www.python.org/downloads/)
+  - [Git](https://git-scm.com/downloads) 
+  - TiDB 集群。如果没有集群，请按照[使用 TiUP 部署 TiDB 集群](/production-deployment-using-tiup.md)创建自己的 TiDB 集群。
 
-    <div label="TiDB Serverless 集群部署">
-
-    - [Python 3.8 or higher](https://www.python.org/downloads/)
-    - [Git](https://git-scm.com/downloads) 
-    - TiDB Serverless集群。如果没有 TiDB Cloud 集群，请按照[创建 TiDB Serverless集群](https://dev.mysql.com/doc/refman/8.4/en/mysql.html)创建自己的 TiDB Cloud 集群。
-
-    </div>
-
-    <div label="TiDB Self-hosted 集群部署">
-
-    - [Python 3.8 or higher](https://www.python.org/downloads/)
-    - [Git](https://git-scm.com/downloads) 
-    - TiDB 集群。如果没有集群，请按照[使用 TiUP 部署 TiDB 集群](/production-deployment-using-tiup.md)创建自己的 TiDB 集群。
-
-    </div>
-
-    </SimpleTab>
 
 ## 开始
 
-如果你想要查看完整的代码，可以参考 [pingcap/tidb-vector-python](https://github.com/pingcap/tidb-vector-python/blob/main/examples/python-client-quickstart) 代码库。
+以下是从零构建这个应用的详细步骤，你也可以从 [pingcap/tidb-vector-python](https://github.com/pingcap/tidb-vector-python/blob/main/examples/python-client-quickstart) 开源代码库获取到完整代码，直接运行示例。
 
 ### 步骤 1. 创建一个新的 Python 项目
 
@@ -55,18 +45,18 @@ touch example.py
 pip install sqlalchemy pymysql sentence-transformers tidb-vector python-dotenv
 ```
 
-- `tidb-vector`：用于与 TiDB 中的向量搜索交互的 Python 客户端。
+- `tidb-vector`：用于与 TiDB 向量搜索交互的 Python 客户端。
 - [`sentence-transformers`](https://sbert.net): 一个提供预训练模型的 Python 库，用于从文本生成 [向量嵌入](/vector-search-overview.md#vector-embedding)。
 
-### 步骤 3. 配置 TiDB 群集的连接字符串
+### 步骤 3. 配置 TiDB 集群的连接字符串
 1. 根据不同的 TiDB 集群部署方式，配置集群的连接字符串
     <SimpleTab>
 
     <div label="TiDB Serverless 集群部署">
 
-    1. 在 [**群集**](https://tidbcloud.com/console/clusters) 页面，单击目标群集的名称进入其概览页面。
+    1. 在 [**Clusters**](https://tidbcloud.com/console/clusters) 页面，单击目标群集的名称进入其概览页面。
 
-    2. 单击右上角的**连接**。此时将显示连接对话框。
+    2. 单击右上角的**Connect**。此时将显示连接对话框。
 
     3. 检查连接对话框中的配置，根据你的运行环境为其设置相应的值。
 

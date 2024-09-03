@@ -1,11 +1,11 @@
 ---
 title: 向量搜索概述
-summary: 介绍 TiDB 中的向量搜索。该功能提供了一种高效的搜索解决方案，可跨文档、图像、音频和视频等各种数据类型执行语义相似性搜索。
+summary: 介绍 TiDB 向量搜索功能。TiDB 向量搜索可以对文档、图像、音频和视频等各种数据类型进行语义搜索。
 ---
 
 # 向量搜索概述
 
-TiDB 向量搜索提供了一种高效的搜索解决方案，它可以在各种数据类型 (文档、图像、音频、视频) 中进行语义搜索。 熟悉 MySQL 的开发人员可以方便、轻松的使用 TiDB 向量搜索构建自己的 AI 程序。
+TiDB 向量搜索 (beta) 提供了在多种数据类型之间进行语义搜索的高级搜索方案，可以对文档、图像、音频、视频等不同数据类型进行语义上的相似度搜索。TiDB 向量搜索以 MySQL 兼容的 SQL 语法提供，熟悉 MySQL 的开发人员可轻松地基于此构建例如生成式人工智能 (GAI) 应用。
 
 
 ## 概念
@@ -34,7 +34,7 @@ TiDB 引入了[向量数据类型](/vector-search-data-types.md)，旨在优化�
 
 在将原始数据转换为向量并存储在 TiDB 中后，你的应用程序就可以开始执行向量搜索查询，找到与用户查询语义或上下文最相关的数据。
 
-TiDB 中的向量搜索 (Vector Search) 通过使用 [距离函数](/vector-search-functions-and-operators.md) 来计算给定向量与数据库中存储的向量之间的距离，从而识别前 k 个近邻（KNN）向量。与给定向量的距离最小的向量代表最相似的数据。
+TiDB 向量搜索 (Vector Search) 通过使用 [距离函数](/vector-search-functions-and-operators.md) 来计算给定向量与数据库中存储的向量之间的距离，从而识别前 k 个近邻（KNN）向量。与给定向量的距离最小的向量代表最相似的数据。
 
 ![The Schematic TiDB Vector Search](/media/vector-search/embedding-search.png)
 
