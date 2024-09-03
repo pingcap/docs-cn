@@ -73,9 +73,9 @@ URI 中可配置的参数如下：
 | `time-zone`    | 连接下游 MySQL 实例时使用的时区名称，从 v4.0.8 开始生效。（可选。如果不指定该参数，使用 TiCDC 服务进程的时区；如果指定该参数但使用空值，例如：`time-zone=""`，则表示连接 MySQL 时不指定时区，使用下游默认时区）。 |
 | `transaction-atomicity`      | 指定事务的原子性级别（可选，默认值为 `none`）。当该值为 `table` 时 TiCDC 保证单表事务的原子性，当该值为 `none` 时 TiCDC 会拆分单表事务。 |
 | `batch-dml-enable` | 开启 batch-dml 批量写入特性（可选，默认值为 `true`）|
-| `read-timeout` | I/O 读取超时（可选，默认值为 `2m`）|
-| `write-timeout` | I/O 写入超时（可选，默认值为 `2m`）|
-| `timeout` | 建立连接的超时时间，即拨号超时（可选，默认值为 `2m`）|
+| `read-timeout` | go-sql-driver 参数，[I/O 读取超时](https://pkg.go.dev/github.com/go-sql-driver/mysql#readme-readtimeout)（可选，默认值为 `2m`）|
+| `write-timeout` | go-sql-driver 参数，[I/O 写入超时](https://pkg.go.dev/github.com/go-sql-driver/mysql#readme-writetimeout)（可选，默认值为 `2m`）|
+| `timeout` | go-sql-driver 参数，[建立连接的超时时间](https://pkg.go.dev/github.com/go-sql-driver/mysql#readme-timeout)，即拨号超时（可选，默认值为 `2m`）|
 | `safe-mode` | 将所有的 `INSERT` 和 `UPDATE` 语句转成 `REPLACE INTO` 语句（可选，默认值为 `false`）|
 | `tidb-txn-mode` | 设置环境变量[tidb_txn_mode](https://docs.pingcap.com/zh/tidb/stable/system-variables#tidb_txn_mode)（可选，默认值为 `optimistic`） |
 
