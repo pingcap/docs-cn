@@ -5,7 +5,7 @@ summary: 了解如何在 SQLAlchemy 中 TiDB 使用向量搜索，，以存储�
 
 # TiDB 向量搜索在 SQLAlchemy 中的使用
 
-本文档将展示如何使用 [SQLAlchemy](https://www.sqlalchemy.org/) 与 [TiDB 向量搜索](/tidb-cloud/vector-search-overview.md)进行交互、存储向量和执行向量搜索查询。
+本文档将展示如何使用 [SQLAlchemy](https://www.sqlalchemy.org/) 与 [TiDB 向量搜索](/vector-search-overview.md)进行交互、存储向量和执行向量搜索查询。
 
 
 ## 准备

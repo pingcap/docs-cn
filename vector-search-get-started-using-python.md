@@ -219,4 +219,4 @@ Search result ("a swimming animal"):
 
 ## 另请参阅
 
-- [Vector Data Types](/tidb-cloud/vector-search-data-types.md)
+- [Vector Data Types](/vector-search-data-types.md)

@@ -262,4 +262,4 @@ results = Document.objects.annotate(
 
 ## 另请参阅
 
-- [向量数据类型](/tidb-cloud/vector-search-data-types.md)
+- [向量数据类型](/vector-search-data-types.md)
