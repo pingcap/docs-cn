@@ -62,19 +62,22 @@ URI 中可配置的参数如下：
 | `123456`       | 下游数据库密码。（可采用 Base64 进行编码）                                     |
 | `127.0.0.1`    | 下游数据库的 IP。                                |
 | `3306`         | 下游数据的连接端口。                                 |
-| `worker-count` | 向下游执行 SQL 的并发度（可选，默认值为 `16`）。       |
+| `worker-count` | 向下游执行 SQL 的并发度（可选，默认值为 `16`，最大值为 `1024`）。       |
 | `cache-prep-stmts` | 向下游执行 SQL 时是否使用 prepared statement 并且开启客户端的 prepared statement 缓存（可选，默认值为 `true`）。 |
-| `max-txn-row`  | 向下游执行 SQL 的 batch 大小（可选，默认值为 `256`）。 |
+| `max-txn-row`  | 向下游执行 SQL 的 batch 大小（可选，默认值为 `256`，最大值为 `2048`）。 |
+| `max-multi-update-row`  | 开启批量写入时，向下游执行 update rows SQL 的 batch 大小，总是小于 `max-txn-row`（可选，默认值为 `40`，最大值为 `256`）。|
+| `max-multi-update-row-size` | 开启批量写入时，向下游执行 update rows SQL 的 size 大小，如果超过这个 size，每个 row 会作为独立的SQL（可选，默认值为 `1024`，最大值为 `8192`）|
 | `ssl-ca`       | 连接下游 MySQL 实例所需的 CA 证书文件路径（可选）。 |
 | `ssl-cert`     | 连接下游 MySQL 实例所需的证书文件路径（可选）。 |
 | `ssl-key`      | 连接下游 MySQL 实例所需的证书密钥文件路径（可选）。 |
 | `time-zone`    | 连接下游 MySQL 实例时使用的时区名称，从 v4.0.8 开始生效。（可选。如果不指定该参数，使用 TiCDC 服务进程的时区；如果指定该参数但使用空值，例如：`time-zone=""`，则表示连接 MySQL 时不指定时区，使用下游默认时区）。 |
 | `transaction-atomicity`      | 指定事务的原子性级别（可选，默认值为 `none`）。当该值为 `table` 时 TiCDC 保证单表事务的原子性，当该值为 `none` 时 TiCDC 会拆分单表事务。 |
 | `batch-dml-enable` | 开启 batch-dml 批量写入特性（可选，默认值为 `true`）|
-| `read-timeout` | I/O 读取超时（可选，默认值为`2m`）|
-| `write-timeout` | I/O 写入超时（可选，默认值为`2m`）|
-| `timeout` | 建立连接的超时时间，即拨号超时（可选，默认值为`2m`）|
-| `safe-mode` | 将所有的 `INSERT` 和 `UPDATE` 语句转成 `REPLACE INTO` 语句（可选，默认值为`false`）|
+| `read-timeout` | I/O 读取超时（可选，默认值为 `2m`）|
+| `write-timeout` | I/O 写入超时（可选，默认值为 `2m`）|
+| `timeout` | 建立连接的超时时间，即拨号超时（可选，默认值为 `2m`）|
+| `safe-mode` | 将所有的 `INSERT` 和 `UPDATE` 语句转成 `REPLACE INTO` 语句（可选，默认值为 `false`）|
+| `tidb-txn-mode` | 设置环境变量[tidb_txn_mode](https://docs.pingcap.com/zh/tidb/stable/system-variables#tidb_txn_mode)（可选，默认值为 `optimistic`） |
 
 若需要对 Sink URI 中的数据库密码使用 Base64 进行编码，可以参考如下命令：
 
