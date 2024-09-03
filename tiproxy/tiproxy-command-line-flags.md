@@ -33,7 +33,16 @@ summary: 了解 TiProxy 的命令行参数。
 
 #### 通过 TiUP 安装
 
-在安装了 TiUP 之后，可以使用 `tiup install tiproxy` 命令来获取 TiProxy Control 的二进制程序，TiProxy Control 的路径可通过 `tiup --binary tiproxy` 查看。
+在安装了 TiUP 之后，可以使用 `tiup install tiproxy` 命令来获取 TiProxy 和 TiProxy Control 的二进制程序。TiProxy 的路径可通过 `tiup --binary tiproxy` 查看，TiProxy Control 与 TiProxy 在同一个目录下。
+
+例如：
+
+```shell
+> tiup install tiproxy
+download https://tiup-mirrors.pingcap.com/tiproxy-v1.3.0-linux-amd64.tar.gz 22.51 MiB / 22.51 MiB 100.00% 13.99 MiB/s
+> ls `tiup --binary tiproxy`ctl
+/root/.tiup/components/tiproxy/v1.3.0/tiproxyctl
+```
 
 #### 从源代码编译安装
 
