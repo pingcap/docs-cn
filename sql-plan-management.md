@@ -31,8 +31,8 @@ CREATE [GLOBAL | SESSION] BINDING [FOR BindableStmt] USING BindableStmt;
 该语句可以在 GLOBAL 或者 SESSION 作用域内为 SQL 绑定执行计划。目前，可创建执行计划绑定的 SQL 语句类型 (BindableStmt) 包括：`SELECT`、`DELETE`、`UPDATE` 和带有 `SELECT` 子查询的 `INSERT`/`REPLACE`。使用示例如下：
 
 ```sql
-CREATE GLOBAL BINDING USING SELECT * /*+ use_index(t1, a) */ FROM t1;
-CREATE GLOBAL BINDING FOR SELECT * FROM t1 USING SELECT * /*+ use_index(t1, a) */ FROM t1;
+CREATE GLOBAL BINDING USING SELECT /*+ use_index(t1, a) */ * FROM t1;
+CREATE GLOBAL BINDING FOR SELECT * FROM t1 USING SELECT /*+ use_index(t1, a) */ * FROM t1;
 ```
 
 > **注意：**
