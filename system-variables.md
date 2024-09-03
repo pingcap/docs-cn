@@ -4134,7 +4134,7 @@ SHOW WARNINGS;
 - 类型：枚举型
 - 默认值：`dynamic`
 - 可选值：`static`、`dynamic`、`static-only`、`dynamic-only`
-- 这个变量用来设置是否开启分区表动态裁剪模式。默认值为 `dynamic`。但是注意，`dynamic` 模式仅在表级别汇总统计信息（即 GlobalStats）收集完成的情况下生效。如果选择了 `dynamic` 但 GlobalStats 未收集完成，TiDB 会仍采用 `static` 模式。关于 GlobalStats 更多信息，请参考[动态裁剪模式下的分区表统计信息](/statistics.md#收集动态裁剪模式下的分区表统计信息)。关于动态裁剪模式更多信息，请参考[分区表动态裁剪模式](/partitioned-table.md#动态裁剪模式)。
+- 这个变量用来设置是否开启分区表动态裁剪模式。默认值为 `dynamic`。但是注意，`dynamic` 模式仅在表级别汇总统计信息（即分区表的全局统计信息 GlobalStats）收集完成的情况下生效。如果选择了 `dynamic` 但全局统计信息未收集完成，TiDB 会仍采用 `static` 模式。关于全局统计信息更多信息，请参考[动态裁剪模式下的分区表统计信息](/statistics.md#收集动态裁剪模式下的分区表统计信息)。关于动态裁剪模式更多信息，请参考[分区表动态裁剪模式](/partitioned-table.md#动态裁剪模式)。
 
 ### `tidb_persist_analyze_options` <span class="version-mark">从 v5.4.0 版本开始引入</span>
 
@@ -4647,10 +4647,10 @@ Query OK, 0 rows affected, 1 warning (0.00 sec)
 - 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：否
 - 类型：布尔型
 - 默认值：`ON`
-- 分区表在开启[动态裁剪模式](/partitioned-table.md#动态裁剪模式)时，TiDB 会汇总各个分区的统计信息生成 GlobalStats。这个变量用于控制当分区统计信息缺失时生成 GlobalStats 的行为。
+- 分区表在开启[动态裁剪模式](/partitioned-table.md#动态裁剪模式)时，TiDB 会汇总各个分区的统计信息生成全局统计信息。这个变量用于控制当分区统计信息缺失时生成全局统计信息的行为。
 
-    - 当开启该变量时，TiDB 生成 GlobalStats 时会跳过缺失的分区统计信息，不影响 GlobalStats 生成。
-    - 当关闭该变量时，遇到缺失的分区统计信息，TiDB 会停止生成 GlobalStats。
+    - 当开启该变量时，TiDB 生成全局统计信息时会跳过缺失的分区统计信息，不影响全局统计信息的生成。
+    - 当关闭该变量时，遇到缺失的分区统计信息，TiDB 会停止生成全局统计信息。
 
 ### `tidb_skip_utf8_check`
 
