@@ -33,7 +33,7 @@ summary: 了解 TiProxy 的命令行参数。
 
 #### 通过 TiUP 安装
 
-在安装了 TiUP v1.16.1 及以后的版本之后，可以使用 `tiup ctl:v<TIPROXY_VERSION> tiproxy` 命令来获取 TiProxy Control 的二进制程序以及运行 TiProxy Control。
+在安装了 TiUP v1.16.1 及以后的版本之后，可以使用 `tiup tiproxy tiproxyctl` 命令来获取 TiProxy Control 的二进制程序以及运行 TiProxy Control。
 
 #### 从源代码编译安装
 
@@ -173,8 +173,14 @@ tiproxyctl traffic replay --curls 10.0.1.10:3080 --username="u1" --password="123
 
 `tiproxyctl traffic show` 用于显示历史的捕获和回放任务。
 
+输出中的 `status` 字段表示任务的状态，它有下列值：
+
+- `done`: 代表任务正常运行完成。
+- `canceled`: 代表任务被取消，`error` 字段描述了被取消的原因。
+- `running`: 代表任务正在运行，`progress` 字段描述了运行的进度。
+
 输出示例：
 
 ```json
-[{"type":"capture","start_time":"2024-09-01T10:09:58.220643+08:00","duration":"2h","progress":"100%","status":"done"},{"type":"capture","start_time":"2024-09-02T14:09:58.220644+08:00","duration":"2h","progress":"15%","status":"canceled","error":"manually canceled"},{"type":"capture","start_time":"2024-09-03T09:10:58.220644+08:00","duration":"2h","progress":"45%","status":"running"}]
+[{"type":"capture","start_time":"2024-09-01T14:30:40.99096+08:00","end_time":"2024-09-01T16:30:40.99096+08:00","duration":"2h","output":"/tmp/triffic","progress":"100%","status":"done"},{"type":"capture","start_time":"2024-09-02T18:30:40.99096+08:00","end_time":"2024-09-02T19:00:40.99096+08:00","duration":"2h","output":"/tmp/triffic","progress":"25%","status":"canceled","error":"canceled manually"},{"type":"capture","start_time":"2024-09-03T13:31:40.99096+08:00","duration":"2h","output":"/tmp/triffic","progress":"45%","status":"running"}]
 ```
