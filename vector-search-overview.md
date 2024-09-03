@@ -24,7 +24,7 @@ TiDB 引入了[向量数据类型](/vector-search-data-types.md)，旨在优化�
 
 ### 嵌入模型
 
-嵌入模型是将数据转换为[向量嵌入](#vector-embedding)的算法。
+嵌入模型是将数据转换为[向量嵌入](#向量嵌入)的算法。
 
 选择合适的嵌入模型对于确保语义搜索结果的准确性和相关性至关重要。对于非结构化文本数据，你可以在 [Massive Text Embedding Benchmark (MTEB) Leaderboard](https://huggingface.co/spaces/mteb/leaderboard) 上找到性能最佳的文本嵌入模型。
 

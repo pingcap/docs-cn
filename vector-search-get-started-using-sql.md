@@ -47,7 +47,7 @@ TiDB 扩展了 MySQL 语法以支持 [向量搜索](/vector-search-overview.md)�
 
 ### 步骤 2. 创建向量表
 
-TiDB 支持了向量搜索，允许用户在创建表时使用 `VECTOR` 声明 [向量](/vector-search-overview.md#vector-embedding) 列。
+TiDB 支持了向量搜索，允许用户在创建表时使用 `VECTOR` 声明 [向量](/vector-search-overview.md#向量嵌入) 列。
 
 要创建带有三维 `VECTOR` 列的表，你可以使用 MySQL CLI 执行以下 SQL 语句：
 
@@ -70,7 +70,7 @@ Query OK, 0 rows affected (0.27 sec)
 
 ### 步骤 3. 向表中插入向量
 
-将三行附带 [向量](/vector-search-overview.md#vector-embedding) 的数据及其  插入 `embedded_documents` 表：
+将三行附带 [向量](/vector-search-overview.md#向量嵌入) 的数据及其  插入 `embedded_documents` 表：
 
 ```sql
 INSERT INTO embedded_documents
@@ -91,7 +91,7 @@ Records: 3  Duplicates: 0  Warnings: 0
 >
 > 为了方便展示，本示例简化了向量的维数，仅使用三维向量。
 >
-> 在实际应用中，[嵌入模型](/vector-search-overview.md#embedding-model) 通常会产生数百或数千维的向量。
+> 在实际应用中，[嵌入模型](/vector-search-overview.md#嵌入模型) 通常会产生数百或数千维的向量。
 
 ### 步骤 4. 查询向量表
 

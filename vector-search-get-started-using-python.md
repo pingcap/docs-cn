@@ -46,7 +46,7 @@ pip install sqlalchemy pymysql sentence-transformers tidb-vector python-dotenv
 ```
 
 - `tidb-vector`：用于与 TiDB 向量搜索交互的 Python 客户端。
-- [`sentence-transformers`](https://sbert.net): 一个提供预训练模型的 Python 库，用于从文本生成 [向量嵌入](/vector-search-overview.md#vector-embedding)。
+- [`sentence-transformers`](https://sbert.net): 一个提供预训练模型的 Python 库，用于从文本生成 [向量嵌入](/vector-search-overview.md#向量嵌入)。
 
 ### 步骤 3. 配置 TiDB 集群的连接字符串
 1. 根据不同的 TiDB 集群部署方式，配置集群的连接字符串
@@ -107,7 +107,7 @@ pip install sqlalchemy pymysql sentence-transformers tidb-vector python-dotenv
 
 ### 步骤 4. 初始化嵌入模型
 
-[嵌入模型](/vector-search-overview.md#embedding-model) 将数据转换为[向量嵌入](/vector-search-overview.md#vector-embedding)。本示例使用预训练模型 [**msmarco-MiniLM-L12-cos-v5**](https://huggingface.co/sentence-transformers/msmarco-MiniLM-L12-cos-v5) 将文本数据转换为向量嵌入。这个轻量级模型由 `sentence-transformers` 库提供，可将文本数据转换为 384 维向量嵌入。
+[嵌入模型](/vector-search-overview.md#嵌入模型) 将数据转换为[向量嵌入](/vector-search-overview.md#向量嵌入)。本示例使用预训练模型 [**msmarco-MiniLM-L12-cos-v5**](https://huggingface.co/sentence-transformers/msmarco-MiniLM-L12-cos-v5) 将文本数据转换为向量嵌入。这个轻量级模型由 `sentence-transformers` 库提供，可将文本数据转换为 384 维向量嵌入。
 
 将以下代码复制到 `example.py` 文件中，完成模型的设置。这段代码初始化了一个 `SentenceTransformer` 实例，并定义了一个 `text_too_embedding()` 函数用于将文本数据转换为向量数据。
 

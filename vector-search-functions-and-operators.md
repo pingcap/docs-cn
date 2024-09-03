@@ -71,7 +71,7 @@ TiDB 扩展了以下内置函数和运算符，它们额外也支持[向量数�
 | [`!=`, `<>`](https://dev.mysql.com/doc/refman/8.0/en/comparison-operators.html#operator_not-equal)                  | 不等运算符                                    |
 | [`NOT IN()`](https://dev.mysql.com/doc/refman/8.0/en/comparison-operators.html#operator_not-in)                     | 检查数值是否不在一组数值之内   |
 
-有关如何比较向量的更多信息，请参阅 [向量数据类型 | 比较](/vector-search-data-types.md#comparison)。
+有关如何比较向量的更多信息，请参阅 [向量数据类型 | 比较](/vector-search-data-types.md#比较)。
 
 **控制流函数:**
 
