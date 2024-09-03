@@ -34,6 +34,8 @@ summary: 介绍 TiProxy 的流量回放的方法。
     meta    traffic-2024-08-29T17-37-12.477.log.gz  traffic-2024-08-29T17-43-11.166.log.gz traffic.log
     ```
     
+    更多详细信息请参考 [`tiproxyctl traffic capture`](/tiproxy/tiproxy-command-line-flags.md#traffic-capture) 的使用文档。
+
 4. 将流量文件目录复制到测试集群的 TiProxy 实例上。
 5. 使用 `tiproxyctl traffic replay` 连接到测试集群的 TiProxy 实例，开始回放流量。SQL 的执行频率与生产集群相同，以模拟生产集群的负载，并保证事务的执行顺序一致。
 
@@ -44,6 +46,8 @@ summary: 介绍 TiProxy 的流量回放的方法。
     ```
 
     由于所有流量在用户 `u1` 下运行，请确保 `u1` 能访问所有数据库和表。如果没有这样的用户，则需要创建一个。
+
+    更多详细信息请参考 [`tiproxyctl traffic replay`](/tiproxy/tiproxy-command-line-flags.md#traffic-replay) 的使用文档。
 
 6. 在捕获和回放过程中，如果遇到未知错误会自动停止任务。通过 `tiproxyctl traffic show` 命令可查看当前的任务进度或上次任务的错误信息：
 
@@ -57,13 +61,15 @@ summary: 介绍 TiProxy 的流量回放的方法。
     [{"type":"capture","start_time":"2024-09-03T09:10:58.220644+08:00","duration":"2h","progress":"45%","status":"running"}]
     ```
 
+    更多详细信息请参考 [`tiproxyctl traffic show`](/tiproxy/tiproxy-command-line-flags.md#traffic-show) 的使用文档。
+
     如果需要取消当前的捕获或回放任务，可使用 `tiproxyctl traffic cancel` 命令：
 
     ```shell
     tiproxyctl traffic cancel --curls 10.0.1.10:3080
     ```
 
-    关于更多参数，请参考 `tiproxyctl` 的使用文档。
+    更多详细信息请参考 [`tiproxyctl traffic cancel`](/tiproxy/tiproxy-command-line-flags.md#traffic-cancel) 的使用文档。
 
 7. 回放完成之后，报告存储在测试集群的 `tiproxy_traffic_report` 数据库下。该数据库下有两个表，`fail` 和 `other_errors`。
 
