@@ -33,11 +33,11 @@ summary: 了解 TiProxy 的命令行参数。
 
 #### 通过 TiUP 安装
 
-在安装了 TiUP v1.16.1 及以后的版本之后，可以使用 `tiup tiproxy tiproxyctl` 命令来获取 TiProxy Control 的二进制程序以及运行 TiProxy Control。
+在安装了 TiUP 之后，可以使用 `tiup install tiproxy` 命令来获取 TiProxy Control 的二进制程序，TiProxy Control 的路径可通过 `tiup --binary tiproxy` 查看。
 
 #### 从源代码编译安装
 
-编译环境要求：[Go](https://golang.org/) 1.21 或以上版本
+编译环境要求：[Go](https://golang.org/) 1.21 或以上版本。
 
 编译步骤：在 [TiProxy 项目](https://github.com/pingcap/tiproxy)根目录，使用 `make` 命令进行编译，生成 tiproxyctl。
 
