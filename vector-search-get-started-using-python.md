@@ -19,7 +19,7 @@ summary: 了解如何使用 Python 和 TiDB 向量搜索快速开发可执行语
 
     - [Python 3.8 or higher](https://www.python.org/downloads/)
     - [Git](https://git-scm.com/downloads) 
-    - TiDB Serverless集群。如果没有 TiDB Cloud 集群，请按照[创建 TiDB Serverless集群]([/create-tidb-cluster-serverless.md](https://dev.mysql.com/doc/refman/8.4/en/mysql.html))创建自己的 TiDB Cloud 集群。
+    - TiDB Serverless集群。如果没有 TiDB Cloud 集群，请按照[创建 TiDB Serverless集群](https://dev.mysql.com/doc/refman/8.4/en/mysql.html)创建自己的 TiDB Cloud 集群。
 
     </div>
 
@@ -99,7 +99,7 @@ pip install sqlalchemy pymysql sentence-transformers tidb-vector python-dotenv
     
     在 Python 项目的根目录下创建一个 `.env` 文件，并根据启动的集群参数修改相应的环境变量中。
 
-    - `HOST`: TiDB 集群的主机。
+    - `HOST`: TiDB 集群的主机号。
     - `PORT`: TiDB 集群的端口。
     - `USERNAME`: 连接 TiDB 集群的用户名。
     - `PASSWORD`: 连接 TiDB 集群的密码。
