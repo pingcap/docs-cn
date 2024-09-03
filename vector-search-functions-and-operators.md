@@ -1,73 +1,73 @@
 ---
-title: 向量函数和操作
+title: 向量函数和操作符
 summary: 本文介绍 TiDB 的向量相关函数和操作。
 ---
 
-# 向量函数和操作
+# 向量函数和操作符
 
 
 ## 向量函数
 
-[向量数据类型](/vector-search-data-types.md)具有以下函数：
+[向量数据类型](/vector-search-data-types.md)有以下几种函数：
 
 **向量距离函数:**
 
 | Function Name              |              Description          |
 | --------------------------------------------------------- | ----------------------------------------------------------- |
-| [VEC_L2_DISTANCE](#vec_l2_distance)             | 计算两个向量之间的 L2 距离（欧氏距离）  |
+| [VEC_L2_DISTANCE](#vec_l2_distance)             | 计算两个向量之间的 L2 距离 (欧氏距离)  |
 | [VEC_COSINE_DISTANCE](#vec_cosine_distance)     | 计算两个向量之间的余弦距离               |
 | [VEC_NEGATIVE_INNER_PRODUCT](#vec_negative_inner_product) | 计算两个向量内积的负数 |
-| [VEC_L1_DISTANCE](#vec_l1_distance)             | 计算两个向量之间的 L1 距离（曼哈顿距离）  |
+| [VEC_L1_DISTANCE](#vec_l1_distance)             | 计算两个向量之间的 L1 距离 (曼哈顿距离)  |
 
 **其他向量函数:**
 
 | Function Name                   | Description                                         |
 | ------------------------------- | --------------------------------------------------- |
-| [VEC_DIMS](#vec_dims)           | 返回一个 vector                   |
-| [VEC_L2_NORM](#vec_l2_norm)     | 计算向量的 L2 规范（欧氏规范 |
-| [VEC_FROM_TEXT](#vec_from_text) | 将字符串转换为向量                     |
-| [VEC_AS_TEXT](#vec_as_text)     | 将向量转换为字符串                     |
+| [VEC_DIMS](#vec_dims)           | 计算一个向量的维度                   |
+| [VEC_L2_NORM](#vec_l2_norm)     | 计算向量的 L2 范数 (欧氏规范) |
+| [VEC_FROM_TEXT](#vec_from_text) | 将字符串类型转换为向量类型                  |
+| [VEC_AS_TEXT](#vec_as_text)     | 将向量类型转换为字符串类型                     |
 
-## 扩展内置函数和运算符
+## 扩展的内置函数和运算符
 
-扩展了以下内置函数和操作符，支持对[向量数据类型](/vector-search-data-types.md)进行操作。
+为了支持对 [向量数据类型](/vector-search-data-types.md) 进行操作，TiDB 扩展了以下内置函数和运算符。
 
 **算术运算符:**
 
 | Name                                                                                    | Description                              |
 | :-------------------------------------------------------------------------------------- | :--------------------------------------- |
-| [`+`](https://dev.mysql.com/doc/refman/8.0/en/arithmetic-functions.html#operator_plus)  | 向量元素加法运算符    |
-| [`-`](https://dev.mysql.com/doc/refman/8.0/en/arithmetic-functions.html#operator_minus) | 向量元素相减运算符 |
+| [`+`](https://dev.mysql.com/doc/refman/8.0/en/arithmetic-functions.html#operator_plus)  | 向量类型的加法运算符    |
+| [`-`](https://dev.mysql.com/doc/refman/8.0/en/arithmetic-functions.html#operator_minus) | 向量类型的相减运算符 |
 
-有关向量运算工作原理的更多信息，请参阅 [向量数据类型 | 运算](/vector-search-data-types.md#运算)。
+若要了解更多有关向量运算工作原理的信息，请参阅 [向量数据类型 | 运算](/vector-search-data-types.md#运算)。
 
-**聚合函数(GROUP BY):**
+**聚合函数 (GROUP BY) :**
 
 | Name                                                                                                          | Description                                      |
 | :------------------------------------------------------------------------------------------------------------ | :----------------------------------------------- |
-| [`COUNT()`](https://dev.mysql.com/doc/refman/8.0/en/aggregate-functions.html#function_count)                  | 返回行数计数     |
-| [`COUNT(DISTINCT)`](https://dev.mysql.com/doc/refman/8.0/en/aggregate-functions.html#function_count-distinct) | 返回不同数值的计数 |
-| [`MAX()`](https://dev.mysql.com/doc/refman/8.0/en/aggregate-functions.html#function_max)                      | 返回最大值                         |
-| [`MIN()`](https://dev.mysql.com/doc/refman/8.0/en/aggregate-functions.html#function_min)                      | 返回最小值                  |
+| [`COUNT()`](https://dev.mysql.com/doc/refman/8.0/en/aggregate-functions.html#function_count)                  | 计算行数     |
+| [`COUNT(DISTINCT)`](https://dev.mysql.com/doc/refman/8.0/en/aggregate-functions.html#function_count-distinct) | 计算不同数值的行数 |
+| [`MAX()`](https://dev.mysql.com/doc/refman/8.0/en/aggregate-functions.html#function_max)                      | 计算最大值                         |
+| [`MIN()`](https://dev.mysql.com/doc/refman/8.0/en/aggregate-functions.html#function_min)                      | 计算最小值                  |
 
 **比较函数与操作符:**
 
 | Name                                                                                                                | Description                                           |
 | ------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------- |
-| [`BETWEEN ... AND ...`](https://dev.mysql.com/doc/refman/8.0/en/comparison-operators.html#operator_between)         | 检查某个值是否在某个取值范围内     |
-| [`COALESCE()`](https://dev.mysql.com/doc/refman/8.0/en/comparison-operators.html#function_coalesce)                 | 返回第一个非空参数                    |
+| [`BETWEEN ... AND ...`](https://dev.mysql.com/doc/refman/8.0/en/comparison-operators.html#operator_between)         | 检查值是否在某个取值范围内     |
+| [`COALESCE()`](https://dev.mysql.com/doc/refman/8.0/en/comparison-operators.html#function_coalesce)                 | 获得第一个非空参数                    |
 | [`=`](https://dev.mysql.com/doc/refman/8.0/en/comparison-operators.html#operator_equal)                    | 等式运算符                       |
 | [`<=>`](https://dev.mysql.com/doc/refman/8.0/en/comparison-operators.html#operator_equal-to)             | 安全的等于运算符                           |
 | [`>`](https://dev.mysql.com/doc/refman/8.0/en/comparison-operators.html#operator_greater-than)         | 大于运算符                                 |
 | [`>=`](https://dev.mysql.com/doc/refman/8.0/en/comparison-operators.html#operator_greater-than-or-equal)            | 大于或等于运算符                        |
-| [`GREATEST()`](https://dev.mysql.com/doc/refman/8.0/en/comparison-operators.html#function_greatest)                 | 返回最大参数                           |
-| [`IN()`](https://dev.mysql.com/doc/refman/8.0/en/comparison-operators.html#operator_in)                             | 检查某一数值是否在一组数值之内       |
-| [`IS NULL`](https://dev.mysql.com/doc/refman/8.0/en/comparison-operators.html#operator_is-null)                     | NULL 值测试                                       |
-| [`ISNULL()`](https://dev.mysql.com/doc/refman/8.0/en/comparison-operators.html#function_isnull)                     | 测试参数是否为 NULL                     |
-| [`LEAST()`](https://dev.mysql.com/doc/refman/8.0/en/comparison-operators.html#function_least)                       | 返回最小参数                          |
+| [`GREATEST()`](https://dev.mysql.com/doc/refman/8.0/en/comparison-operators.html#function_greatest)                 | 获得最大参数                           |
+| [`IN()`](https://dev.mysql.com/doc/refman/8.0/en/comparison-operators.html#operator_in)                             | 检查数值是否在一组数值之内       |
+| [`IS NULL`](https://dev.mysql.com/doc/refman/8.0/en/comparison-operators.html#operator_is-null)                     | 判断是否为 NULL 值试                                       |
+| [`ISNULL()`](https://dev.mysql.com/doc/refman/8.0/en/comparison-operators.html#function_isnull)                     | 判断测试参数是否为 NULL                     |
+| [`LEAST()`](https://dev.mysql.com/doc/refman/8.0/en/comparison-operators.html#function_least)                       | 获得最小参数                          |
 | [`<`](https://dev.mysql.com/doc/refman/8.0/en/comparison-operators.html#operator_less-than)                         | 小于运算符                                    |
 | [`<=`](https://dev.mysql.com/doc/refman/8.0/en/comparison-operators.html#operator_less-than-or-equal)               | 小于或等于运算符                           |
-| [`NOT BETWEEN ... AND ...`](https://dev.mysql.com/doc/refman/8.0/en/comparison-operators.html#operator_not-between) | 检查某个值是否不在某个取值范围内 |
+| [`NOT BETWEEN ... AND ...`](https://dev.mysql.com/doc/refman/8.0/en/comparison-operators.html#operator_not-between) | 检查值是否不在某个取值范围内 |
 | [`!=`, `<>`](https://dev.mysql.com/doc/refman/8.0/en/comparison-operators.html#operator_not-equal)                  | 不等运算符                                    |
 | [`NOT IN()`](https://dev.mysql.com/doc/refman/8.0/en/comparison-operators.html#operator_not-in)                     | 检查数值是否不在一组数值之内   |
 
@@ -77,21 +77,21 @@ summary: 本文介绍 TiDB 的向量相关函数和操作。
 
 | Name                                                                                              | Description                  |
 | :------------------------------------------------------------------------------------------------ | :--------------------------- |
-| [`CASE`](https://dev.mysql.com/doc/refman/8.0/en/flow-control-functions.html#operator_case)       | Case operator                |
-| [`IF()`](https://dev.mysql.com/doc/refman/8.0/en/flow-control-functions.html#function_if)         | If/else construct            |
-| [`IFNULL()`](https://dev.mysql.com/doc/refman/8.0/en/flow-control-functions.html#function_ifnull) | Null if/else construct       |
-| [`NULLIF()`](https://dev.mysql.com/doc/refman/8.0/en/flow-control-functions.html#function_nullif) | Return NULL if expr1 = expr2 |
+| [`CASE`](https://dev.mysql.com/doc/refman/8.0/en/flow-control-functions.html#operator_case)       | Case 操作符                |
+| [`IF()`](https://dev.mysql.com/doc/refman/8.0/en/flow-control-functions.html#function_if)         | If/else 结构            |
+| [`IFNULL()`](https://dev.mysql.com/doc/refman/8.0/en/flow-control-functions.html#function_ifnull) | Null if/else 结构       |
+| [`NULLIF()`](https://dev.mysql.com/doc/refman/8.0/en/flow-control-functions.html#function_nullif) | 如果 expr1 = expr2, 返回 NULL |
 
 **转换函数:**
 
 | Name                                                                                        | Description                    |
 | :------------------------------------------------------------------------------------------ | :----------------------------- |
-| [`CAST()`](https://dev.mysql.com/doc/refman/8.0/en/cast-functions.html#function_cast)       | 将数值转换为某种类型 |
-| [`CONVERT()`](https://dev.mysql.com/doc/refman/8.0/en/cast-functions.html#function_convert) | 将数值转换为某种类型 |
+| [`CAST()`](https://dev.mysql.com/doc/refman/8.0/en/cast-functions.html#function_cast)       | 将数值转换为字符串或向量类型 |
+| [`CONVERT()`](https://dev.mysql.com/doc/refman/8.0/en/cast-functions.html#function_convert) | 将数值转换为字符串类型 |
 
-有关如何使用 `CAST()` 的更多信息，请参阅 [向量数据类型 | 类型转换](/vector-search-data-types.md#类型转换)。
+有关如何使用 `CAST()` 的更多信息，请参阅 [向量数据类型 | 类型转换](/vector-search-data-types.md#类型转换-cast)。
 
-## 参考
+## 函数使用样例
 
 ### VEC_L2_DISTANCE
 
@@ -99,11 +99,11 @@ summary: 本文介绍 TiDB 的向量相关函数和操作。
 VEC_L2_DISTANCE(vector1, vector2)
 ```
 
-使用以下公式计算两个向量之间的 L2 距离（欧氏距离）：
+要计算两个向量之间的 [L2 (欧式距离)](https://zh.wikipedia.org/wiki/%E6%AC%A7%E5%87%A0%E9%87%8C%E5%BE%97%E8%B7%9D%E7%A6%BB) 距离，你可以使用以下公式:
 
 $DISTANCE(p,q)=\sqrt {\sum \limits _{i=1}^{n}{(p_{i}-q_{i})^{2}}}$
 
-两个向量的维度必须相同。否则将返回错误信息。
+在计算的过程中，两个向量的维度必须相同。当两个向量的维度不相等时，语句将会输出错误信息。
 
 例如:
 
@@ -122,11 +122,11 @@ $DISTANCE(p,q)=\sqrt {\sum \limits _{i=1}^{n}{(p_{i}-q_{i})^{2}}}$
 VEC_COSINE_DISTANCE(vector1, vector2)
 ```
 
-使用以下公式计算两个向量之间的余弦距离：
+要计算两个向量之间的 [余弦 (cosine)](https://zh.wikipedia.org/wiki/%E4%BD%99%E5%BC%A6%E7%9B%B8%E4%BC%BC%E6%80%A7) 距离，你可以使用以下公式：
 
 $DISTANCE(p,q)=1.0 - {\frac {\sum \limits _{i=1}^{n}{p_{i}q_{i}}}{{\sqrt {\sum \limits _{i=1}^{n}{p_{i}^{2}}}}\cdot {\sqrt {\sum \limits _{i=1}^{n}{q_{i}^{2}}}}}}$
 
-两个向量的维度必须相同。否则将返回错误信息。
+在计算的过程中，两个向量的维度必须相同。当两个向量的维度不相等时，语句将会输出错误信息。
 
 例如:
 
@@ -145,11 +145,11 @@ $DISTANCE(p,q)=1.0 - {\frac {\sum \limits _{i=1}^{n}{p_{i}q_{i}}}{{\sqrt {\sum \
 VEC_NEGATIVE_INNER_PRODUCT(vector1, vector2)
 ```
 
-利用两个向量间内积的负值计算距离，公式如下：
+要计算两个向量之间的 [内积](https://zh.wikipedia.org/wiki/%E7%82%B9%E7%A7%AF) 的负值，你可以使用以下公式：
 
 $DISTANCE(p,q)=- INNER\_PROD(p,q)=-\sum \limits _{i=1}^{n}{p_{i}q_{i}}$
 
-两个向量的维度必须相同。否则将返回错误信息。
+在计算的过程中，两个向量的维度必须相同。当两个向量的维度不相等时，语句将会输出错误信息。
 
 例如:
 
@@ -168,11 +168,11 @@ $DISTANCE(p,q)=- INNER\_PROD(p,q)=-\sum \limits _{i=1}^{n}{p_{i}q_{i}}$
 VEC_L1_DISTANCE(vector1, vector2)
 ```
 
-使用以下公式计算两个向量之间的 L1 距离（曼哈顿距离）：
+要计算两个向量之间的 [L1 距离](https://zh.wikipedia.org/wiki/%E6%9B%BC%E5%93%88%E9%A0%93%E8%B7%9D%E9%9B%A2) (曼哈顿距离)，你可以使用以下公式：
 
 $DISTANCE(p,q)=\sum \limits _{i=1}^{n}{|p_{i}-q_{i}|}$
 
-两个向量的维度必须相同。否则将返回错误信息。
+在计算的过程中，两个向量的维度必须相同。当两个向量的维度不相等时，语句将会输出错误信息。
 
 例如:
 
@@ -191,7 +191,7 @@ $DISTANCE(p,q)=\sum \limits _{i=1}^{n}{|p_{i}-q_{i}|}$
 VEC_DIMS(vector)
 ```
 
-返回向量的维度。
+要计算给定向量的维度，你可以使用以下语句：
 
 例如:
 
@@ -217,7 +217,7 @@ VEC_DIMS(vector)
 VEC_L2_NORM(vector)
 ```
 
-使用以下公式计算向量的 L2 范数（欧几里得范数）：
+要计算给定向量的 [L2 范数](https://zh.wikipedia.org/wiki/%E8%8C%83%E6%95%B0) (欧几里得范数)，可以使用以下公式：
 
 $NORM(p)=\sqrt {\sum \limits _{i=1}^{n}{p_{i}^{2}}}$
 
@@ -238,7 +238,7 @@ $NORM(p)=\sqrt {\sum \limits _{i=1}^{n}{p_{i}^{2}}}$
 VEC_FROM_TEXT(string)
 ```
 
-将字符串转换为向量。
+要将字符串类型转换为向量类型，可以使用以下语句：
 
 例如:
 
@@ -257,7 +257,7 @@ VEC_FROM_TEXT(string)
 VEC_AS_TEXT(vector)
 ```
 
-将向量转换为字符串
+要将向量类型转换为字符串类型，可以使用以下语句：
 
 例如:
 
@@ -272,7 +272,7 @@ VEC_AS_TEXT(vector)
 
 ## MySQL 兼容性
 
-向量函数以及内置函数和向量数据类型运算符的扩展用法是 TiDB 特有的，MySQL 不支持。
+向量数据类型只在 TiDB 中支持，MySQL 不支持。
 
 ## 另请参阅
 

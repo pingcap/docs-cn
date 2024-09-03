@@ -3,23 +3,23 @@ title: 向量数据类型
 summary: 本文介绍 TiDB 的向量数据类型。
 ---
 
-# 向量数据类型(Vector)
+# 向量数据类型 (Vector)
 
-TiDB 提供的向量数据类型专门针对AI向量嵌入用例进行了优化。通过使用向量数据类型，可以高效地存储和查询浮点数序列，例如 `[0.3, 0.5, -0.1, ...]`.
+“向量”指的是一组浮点数序列，例如 `[0.3, 0.5, -0.1, ...]`。针对 AI 应用中大量使用到的嵌入向量 (Vector Embedding) 数据，TiDB 专门提供了向量类型用于进行高效的存储和访问。
 
-目前可用的向量数据类型如下：
+目前有以下几种向量类型：
 
-- `VECTOR`: 单精度浮点数序列。每一行的维度可以不同。
-- `VECTOR(D)`: 具有固定维度 `D` 的单精度浮点数序列。
+- `VECTOR`: 存储一组单精度浮点数 (Float) 向量。向量可以是任意维度。
+- `VECTOR(D)`: 存储一组单精度浮点数 (Float) 向量，向量维度固定为 `D`。
 
-与存储在 `JSON` 列中相比，向量数据类型具有这些优势：
+相比使用 [`JSON`](/data-type-json.md) 类型，使用向量类型具有以下额外优势：
 
-- 可指定维度。可以指定一个维度，禁止插入不同维度的向量。
-- 更优的存储格式。向量数据类型的存储效率比 `JSON` 数据类型的更高。
+- 可指定维度。指定一个固定维度后，不符合维度的数据将被阻止写入到表中。
+- 存储格式更优。向量类型针对向量数据进行了特别优化，具有比 `JSON` 类型更高的空间和性能效率。
 
 ## 语法
 
-向量值包含任意数量的浮点数，可以使用以下语法中的字符串来表示向量值：
+可以使用以下格式的字符串来表示一个类型为向量的值：
 
 ```sql
 '[<float>, <float>, ...]'
@@ -38,26 +38,26 @@ INSERT INTO vector_table VALUES (1, '[0.3, 0.5, -0.1]');
 INSERT INTO vector_table VALUES (2, NULL);
 ```
 
-插入语法无效的向量值将导致错误：
+将不符合语法的字符串作为向量数据插入时会产生错误：
 
 ```sql
 [tidb]> INSERT INTO vector_table VALUES (3, '[5, ]');
 ERROR 1105 (HY000): Invalid vector text: [5, ]
 ```
 
-在上例中，`embedding` 列的维度为 3，因此插入不同维度的向量会导致错误：
+在下方例子中，`embedding` 向量列指定了维度为 3，因此插入不同其他维度的向量数据会引发错误：
 
 ```sql
 [tidb]> INSERT INTO vector_table VALUES (4, '[0.3, 0.5]');
 ERROR 1105 (HY000): vector has 2 dimensions, does not fit VECTOR(3)
 ```
 
-有关向量数据类型的可用函数和操作，参阅[向量函数与操作](/vector-search-functions-and-operators.md)
+可参阅[向量函数与操作符](/vector-search-functions-and-operators.md)了解支持在向量类型上进行运算的所有函数和操作符。
 
 
-## 不同维度的向量
+## 混合存储不同维度的向量
 
-通过省略 `VECTOR` 类型中的维度参数，可以在同一列中存储不同维度的向量：
+省略 `VECTOR` 类型中的维度参数后，就可以在同一列中存储不同维度的向量：
 
 ```sql
 CREATE TABLE vector_table (
@@ -69,35 +69,35 @@ INSERT INTO vector_table VALUES (1, '[0.3, 0.5, -0.1]'); -- 3 dimensions vector,
 INSERT INTO vector_table VALUES (2, '[0.3, 0.5]');       -- 2 dimensions vector, OK
 ```
 
-## 对比
+## 比较
 
-我们可以使用[比较运算符](/vector-search-functions-and-operators.md)来比较两个向量，如：`=`, `!=`, `<`, `>`, `<=`, and `>=`。有关向量数据类型的比较运算符和函数的完整列表，参阅[向量函数与操作](/vector-search-functions-and-operators.md)。
+[比较运算符](/vector-search-functions-and-operators.md) 如 `=`, `!=`, `<`, `>`, `<=` 和 `>=` 等都能正常对向量数据进行比较。可参阅[向量函数与操作符](/vector-search-functions-and-operators.md)了解所有支持向量类型的函数和操作符。
 
-向量数据类型以元素为单位进行比较，例如：
+比较向量类型时，TiDB 以向量内的各个元素为单位进行依次比较，如：
 
 - `[1] < [12]`
 - `[1,2,3] < [1,2,5]`
 - `[1,2,3] = [1,2,3]`
 - `[2,2,3] > [1,2,3]`
 
-不同维度的向量采用字典序比较，具有一下特性：
+当两个向量维度不一样时，TiDB 采用字典序 (Lexicographical Order) 进行比较，具体规则如下：
 
-- 两个向量逐个元素进行比较，每个元素都以数值形式进行比较。
-- 第一个不匹配的元素决定哪一个向量在字典序上 _less_ 或 _greater_。
-- 如果一个向量是另一个向量的前缀，那么较短的向量为 _less_ 。
-- 长度相同、元素相同的两个向量为 _equal_ 。
-- 空向量是小于任何非空向量。
-- 两个空向量为 _equal_ 。
+- 两个向量内各个元素逐一进行数值比较。
+- 遇到第一个不一样的元素时，它们之间的数值比较结果即是两个向量之间的比较结果。
+- 如果一个向量是另一个向量的前缀，那么维度小的向量 _小于_ 维度大的向量。
+- 长度相同且各个元素相同的两个向量 _相等_ 。
+- 空向量 _小于_ 任何非空向量。
+- 两个空向量 _相等_ 。
 
 例如:
 
 - `[] < [1]`
 - `[1,2,3] < [1,2,3,0]`
 
-在比较向量常量时，需要考虑执行从字符串到向量的 [显式转换](#cast)，以避免基于字符串值的比较：
+在进行向量比较时，可以使用 [显式转换](#类型转换-cast) 将向量数据从字符串转换为向量类型，以避免 TiDB 直接基于字符串进行比较：
 
 ```sql
--- 因为给出了字符串，所以 TiDB 会比较字符串
+-- 因为给出的实际上是字符串，因此 TiDB 会按字符串进行比较
 [tidb]> SELECT '[12.0]' < '[4.0]';
 +--------------------+
 | '[12.0]' < '[4.0]' |
@@ -106,7 +106,7 @@ INSERT INTO vector_table VALUES (2, '[0.3, 0.5]');       -- 2 dimensions vector,
 +--------------------+
 1 row in set (0.01 sec)
 
--- 显式转换为向量，以便通过向量进行比较：
+-- 显式转换为向量类型，从而按照向量的比较规则进行正确的比较：
 [tidb]> SELECT VEC_FROM_TEXT('[12.0]') < VEC_FROM_TEXT('[4.0]');
 +--------------------------------------------------+
 | VEC_FROM_TEXT('[12.0]') < VEC_FROM_TEXT('[4.0]') |
@@ -118,9 +118,9 @@ INSERT INTO vector_table VALUES (2, '[0.3, 0.5]');       -- 2 dimensions vector,
 
 ## 运算
 
-向量数据类型支持以元素为单位的算术运算 `+` 和 `-` 。但是，在不同维度的向量之间执行算术运算会导致错误。
+向量类型支持算术运算 `+` 和 `-`，对应的是两个向量进行以元素为单位的加法和减法。不支持对不同维度向量进行算术运算，这类运算会产生错误。
 
-例如:
+以下是一些示例：
 
 ```sql
 [tidb]> SELECT VEC_FROM_TEXT('[4]') + VEC_FROM_TEXT('[5]');
@@ -143,21 +143,21 @@ mysql> SELECT VEC_FROM_TEXT('[2,3,4]') - VEC_FROM_TEXT('[1,2,3]');
 ERROR 1105 (HY000): vectors have different dimensions: 1 and 3
 ```
 
-## 类型转换
+## 类型转换 (Cast)
 
 ### 向量与字符串之间的转换
 
-向量和字符串之间进行转换，可以使用以下函数：
+可以使用以下函数在向量和字符串之间进行转换：
 
 - `CAST(... AS VECTOR)`: String ⇒ Vector
 - `CAST(... AS CHAR)`: Vector ⇒ String
 - `VEC_FROM_TEXT`: String ⇒ Vector
 - `VEC_AS_TEXT`: Vector ⇒ String
 
-在调用接收向量数据类型的函数时，存在隐式转换：
+出于易用性考虑，若函数只支持向量数据类型（如向量相关距离函数），那么你也可以直接传入符合格式要求的字符串数据，TiDB 会进行隐式转换：
 
 ```sql
--- 由于 VEC_DIMS 只接受 VECTOR 参数，因此这里有一个隐式转换：
+-- VEC_DIMS 只接受向量类型，因此你可以直接传入字符串类型，TiDB 会隐式转换为向量类型：
 [tidb]> SELECT VEC_DIMS('[0.3, 0.5, -0.1]');
 +------------------------------+
 | VEC_DIMS('[0.3, 0.5, -0.1]') |
@@ -166,7 +166,7 @@ ERROR 1105 (HY000): vectors have different dimensions: 1 and 3
 +------------------------------+
 1 row in set (0.01 sec)
 
--- 使用 VEC_FROM_TEXT 进行显式转存：
+-- 也可以使用 VEC_FROM_TEXT 显式地将字符串转换为向量类型后传递给 VEC_DIMS 函数：
 [tidb]> SELECT VEC_DIMS(VEC_FROM_TEXT('[0.3, 0.5, -0.1]'));
 +---------------------------------------------+
 | VEC_DIMS(VEC_FROM_TEXT('[0.3, 0.5, -0.1]')) |
@@ -175,7 +175,7 @@ ERROR 1105 (HY000): vectors have different dimensions: 1 and 3
 +---------------------------------------------+
 1 row in set (0.01 sec)
 
--- 使用 CAST(... AS VECTOR) 进行显式转存：
+-- 也可以使用 CAST(... AS VECTOR) 进行显式转换：
 [tidb]> SELECT VEC_DIMS(CAST('[0.3, 0.5, -0.1]' AS VECTOR));
 +----------------------------------------------+
 | VEC_DIMS(CAST('[0.3, 0.5, -0.1]' AS VECTOR)) |
@@ -185,10 +185,10 @@ ERROR 1105 (HY000): vectors have different dimensions: 1 and 3
 1 row in set (0.01 sec)
 ```
 
-当运算符或函数接受多种数据类型时，请使用显式转换。例如，在比较中，使用显式转换来比较向量数值而不是字符串数值：
+当运算符或函数接受多种数据类型时，隐式转换不会发生，请先显式地将字符串类型转换为向量类型后，再传递给这些运算符或函数。例如，进行比较运算前，需要显式地转换字符串为向量类型，否则将会按照字符串类型进行比较，而非按照向量类型进行比较：
 
 ```sql
--- 因为给出了字符串，所以 TiDB 会比较字符串：
+-- 传入的类型是字符串，因此 TiDB 会按字符串进行比较：
 [tidb]> SELECT '[12.0]' < '[4.0]';
 +--------------------+
 | '[12.0]' < '[4.0]' |
@@ -197,7 +197,7 @@ ERROR 1105 (HY000): vectors have different dimensions: 1 and 3
 +--------------------+
 1 row in set (0.01 sec)
 
--- 显式转换为向量，以便通过向量进行比较：
+-- 转换为向量类型，以便使用向量类型的比较规则：
 [tidb]> SELECT VEC_FROM_TEXT('[12.0]') < VEC_FROM_TEXT('[4.0]');
 +--------------------------------------------------+
 | VEC_FROM_TEXT('[12.0]') < VEC_FROM_TEXT('[4.0]') |
@@ -207,10 +207,10 @@ ERROR 1105 (HY000): vectors have different dimensions: 1 and 3
 1 row in set (0.01 sec)
 ```
 
-要显式地将向量转换为字符串表示，请使用 `VEC_AS_TEXT()` 函数：
+向量也可以显式地转换为字符串。可使用 `VEC_AS_TEXT()` 函数：
 
 ```sql
--- 规范化表示字符串：
+-- 字符串首先被隐式地转换成向量，然后被显示地转为字符串，因而获得了一个规范化的格式：
 [tidb]> SELECT VEC_AS_TEXT('[0.3,     0.5,  -0.1]');
 +--------------------------------------+
 | VEC_AS_TEXT('[0.3,     0.5,  -0.1]') |
@@ -220,19 +220,19 @@ ERROR 1105 (HY000): vectors have different dimensions: 1 and 3
 1 row in set (0.01 sec)
 ```
 
-有关其他转换函数，请参阅 [向量函数和操作](/vector-search-functions-and-operators.md)。
+若要了解其他转换函数，请参阅[向量函数和操作符](/vector-search-functions-and-operators.md)。
 
 ### 向量与其他数据类型之间的转换
 
-目前无法直接在向量和其他数据类型（如 `JSON`）之间进行转换。您需要使用字符串作为中间类型。
+目前无法直接在向量和其他数据类型（如 `JSON`）之间进行转换，但你可以使用字符串作为中间类型进行转换。
 
 ## 约束
 
-- 支持的最大向量维数为 16383。
-- 不能在向量数据类型中存储 `NaN`、`Infinity` 或 `Infinity` 值。
-- 目前，向量数据类型不能存储双精度浮点数。未来版本将支持这一功能。
+- 向量最大支持 16383 维。
+- 向量数据中不支持 `NaN`、`Infinity` 和 `-Infinity` 浮点数。
+- 目前向量类型只支持单精度浮点数，不支持双精度浮点数。未来版本将支持这一功能。
 
-有关其他限制，请参阅[向量搜索限制](/vector-search-limitations.md)。
+有关其他限制，请参阅 [向量搜索限制](/vector-search-limitations.md)。
 
 ## MySQL 兼容性
 
@@ -240,4 +240,4 @@ ERROR 1105 (HY000): vectors have different dimensions: 1 and 3
 
 ## 另请参阅
 
-- [向量函数和操作](/tidb-cloud/vector-search-functions-and-operators.md)
+- [向量函数和操作符](/vector-search-functions-and-operators.md)

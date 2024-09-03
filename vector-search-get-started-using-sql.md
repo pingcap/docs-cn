@@ -1,0 +1,149 @@
+---
+title: 使用SQL开始向量搜索
+summary: 了解如何使用 SQL 语句快速开始使用 TiDB Cloud 中的向量搜索，并为生成式人工智能应用提供动力。
+---
+
+# 使用SQL开始向量搜索
+
+TiDB 扩展了 MySQL 语法以支持 [向量搜索](/vector-search-overview.md)，并引入了新的 [向量数据类型](/vector-search-data-types.md) 和多个 [向量函数](/vector-search-functions-and-operators.md)。
+
+本文档展示如何使用 SQL 语句开始 TiDB 向量搜索。你将了解如何使用 [MySQL 命令行客户端](https://dev.mysql.com/doc/refman/8.4/en/mysql.html)：
+
+- 连接到 TiDB 集群。
+- 创建向量表
+- 存储向量嵌入
+- 执行向量搜索查询
+
+## 准备
+1. 在开始之前，你需要确定 TiDB 集群的部署方式以及以下内容被正确安装，
+
+    <SimpleTab>
+
+    <div label="TiDB Serverless 集群部署">
+
+    - 安装了[MySQL 命令行客户端](https://dev.mysql.com/doc/refman/8.4/en/mysql.html) (MySQL CLI)。
+    - TiDB Serveless 群集。如果没有 TiDB Cloud 集群，请按照[创建 TiDB Serverless集群](https://docs.pingcap.com/tidbcloud/create-tidb-cluster-serverless)创建自己的 TiDB Cloud 集群。
+
+    </div>
+
+    <div label="TiDB Self-hosted 集群部署">
+
+    - 安装了 [MySQL 命令行客户端](https://dev.mysql.com/doc/refman/8.4/en/mysql.html) (MySQL CLI)。
+    - TiDB 集群。如果没有，请按照[使用 TiUP 部署 TiDB 集群](/production-deployment-using-tiup.md)创建自己的 TiDB 集群。
+
+    </div>
+
+    </SimpleTab>
+
+## 开始
+
+### 步骤 1. 连接到 TiDB 集群
+
+将连接命令输入至终端。以下是 macOS 的示例：
+
+    ```bash
+    mysql -u '<prefix>.root' -h '<host>' -P 4000 -D 'test' --ssl-mode=VERIFY_IDENTITY --ssl-ca=/etc/ssl/cert.pem -p'<password>'
+    ```
+
+### 步骤 2. 创建向量表
+
+TiDB 支持了向量搜索，允许用户在创建表时使用 `VECTOR` 声明 [向量](/vector-search-overview.md#vector-embedding) 列。
+
+要创建带有三维 `VECTOR` 列的表，你可以使用 MySQL CLI 执行以下 SQL 语句：
+
+```sql
+USE test;
+CREATE TABLE embedded_documents (
+    id        INT       PRIMARY KEY,
+    -- 存储文档的原始内容。
+    document  TEXT,
+    -- 存储文档的向量表示。
+    embedding VECTOR(3)
+);
+```
+
+预期输出如下
+
+```text
+Query OK, 0 rows affected (0.27 sec)
+```
+
+### 步骤 3. 向表中插入向量
+
+将三行附带 [向量](/vector-search-overview.md#vector-embedding) 的数据及其  插入 `embedded_documents` 表：
+
+```sql
+INSERT INTO embedded_documents
+VALUES
+    (1, 'dog', '[1,2,1]'),
+    (2, 'fish', '[1,2,4]'),
+    (3, 'tree', '[1,0,0]');
+```
+
+预期输出如下
+
+```
+Query OK, 3 rows affected (0.15 sec)
+Records: 3  Duplicates: 0  Warnings: 0
+```
+
+> **Note**
+>
+> 为了方便展示，本示例简化了向量的维数，仅使用三维向量。
+>
+> 在实际应用中，[嵌入模型](/vector-search-overview.md#embedding-model) 通常会产生数百或数千维的向量。
+
+### 步骤 4. 查询向量表
+
+要验证文件是否已正确插入，你可以查询 `embedded_documents` 表：
+
+```sql
+SELECT * FROM embedded_documents;
+```
+
+预期输出如下
+
+```sql
++----+----------+-----------+
+| id | document | embedding |
++----+----------+-----------+
+|  1 | dog      | [1,2,1]   |
+|  2 | fish     | [1,2,4]   |
+|  3 | tree     | [1,0,0]   |
++----+----------+-----------+
+3 rows in set (0.15 sec)
+```
+
+### 步骤 5. 执行向量搜索查询
+
+与全文搜索类似，在使用向量搜索时，你需要指定搜索词。
+
+在本例中，搜索词是 “一种会游泳的动物”，其对应的向量是 `[1,2,3]`。在实际应用中，需要使用嵌入模型将用户的搜索词转换为向量。
+
+在以下执行的 SQL 语句中，TiDB 会计算 `[1,2,3]` 与表中向量的余弦距离 (`vec_cosine_distance`)，然后进行排序输出表中最接近搜索向量 (余弦距离最小) 的前三个向量。
+
+```sql
+SELECT id, document, vec_cosine_distance(embedding, '[1,2,3]') AS distance
+FROM embedded_documents
+ORDER BY distance
+LIMIT 3;
+```
+
+预期输出如下
+
+```plain
++----+----------+---------------------+
+| id | document | distance            |
++----+----------+---------------------+
+|  2 | fish     | 0.00853986601633272 |
+|  1 | dog      | 0.12712843905603044 |
+|  3 | tree     |  0.7327387580875756 |
++----+----------+---------------------+
+3 rows in set (0.15 sec)
+```
+
+从输出结果来看，会游泳的动物很可能是 “一条鱼” ，或者是一只 “有游泳天赋的狗”。
+
+## 另请参阅
+
+- [向量数据类型](/vector-search-data-types.md)

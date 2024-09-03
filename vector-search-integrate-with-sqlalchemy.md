@@ -1,24 +1,39 @@
 ---
-title: TiDB 向量搜索与 SQLAlchemy 结合
-summary: 了解如何将 TiDB 向量搜索与 SQLAlchemy 结合，以存储embedding并执行语义搜索。
+title: TiDB 向量搜索在 SQLAlchemy 中的使用
+summary: 了解如何在 SQLAlchemy 中 TiDB 使用向量搜索，，以存储向量并执行语义搜索。
 ---
 
-# TiDB 向量搜索与 SQLAlchemy 结合
+# TiDB 向量搜索在 SQLAlchemy 中的使用
 
-本教程将展示如何使用 [SQLAlchemy](https://www.sqlalchemy.org/) 与 [TiDB 向量搜索](/tidb-cloud/vector-search-overview.md) 交互、存储嵌入和执行向量搜索查询。
+本文档将展示如何使用 [SQLAlchemy](https://www.sqlalchemy.org/) 与 [TiDB 向量搜索](/tidb-cloud/vector-search-overview.md)进行交互、存储向量和执行向量搜索查询。
 
 
 ## 准备
 
-要实现本部分的内容，需要确保安装以下内容：
+1. 在开始之前，你需要确定 TiDB 集群的部署方式以及以下内容被正确安装，
+    <SimpleTab>
 
-- [Python 3.8 or higher](https://www.python.org/downloads/) 
-- [Git](https://git-scm.com/downloads)
-- TiDB 集群。如果没有，请按照[使用 TiUP 部署 TiDB 集群](/production-deployment-using-tiup.md)创建自己的 TiDB 集群。
+    <div label="TiDB Serverless 集群部署">
+
+    - [Python 3.8 or higher](https://www.python.org/downloads/)
+    - [Git](https://git-scm.com/downloads) 
+    - TiDB Serveless 群集。如果没有 TiDB Cloud 集群，请按照[创建 TiDB Serverless集群](https://docs.pingcap.com/tidbcloud/create-tidb-cluster-serverless)创建自己的 TiDB Cloud 集群。
+
+    </div>
+
+    <div label="TiDB Self-hosted 集群部署">
+
+    - [Python 3.8 or higher](https://www.python.org/downloads/)
+    - [Git](https://git-scm.com/downloads) 
+    - TiDB 集群。如果没有，请按照[使用 TiUP 部署 TiDB 集群](/production-deployment-using-tiup.md)创建自己的 TiDB 集群。
+
+    </div>
+
+    </SimpleTab>
 
 ## 运行示例应用程序
 
-您可以通过以下步骤快速了解如何将 TiDB 向量搜索与 SQLAlchemy 结合。
+你可以通过以下步骤快速了解如何在 SQLAlchemy 中使用 TiDB 向量搜索。
 
 ### 步骤 1. 克隆仓库
 
@@ -46,15 +61,53 @@ source .venv/bin/activate
 pip install -r requirements.txt
 ```
 
-您可以为现有项目安装以下软件包：
+你也可以直接为项目安装以下依赖项：
 
 ```bash
 pip install pymysql python-dotenv sqlalchemy tidb-vector
 ```
 
 ### 步骤 4. 配置环境变量
+1. 根据 TiDB 集群的部署方式不同，选择对应的环境变量配置方式。
 
-在 Python 项目的根目录下创建一个 `.env` 文件，并根据启动的集群参数修改相应的环境变量中。
+    <SimpleTab>
+
+    <div label="TiDB Serverless 集群部署">
+
+    1. 在 [**群集**](https://tidbcloud.com/console/clusters) 页面，单击目标群集的名称进入其概览页面。
+
+    2. 单击右上角的**连接**。此时将显示连接对话框。
+
+    3. 确保连接对话框中的配置符合你的运行环境。
+
+    - **Endpoint Type** 设置为 `Public`
+    - **Branch** 设置为 `main`
+    - **Connect With** 设置为 `General`
+    - **Operating System** 与你的机器环境相匹配
+
+    > **Tip:**
+    >
+    > 如果程序在 Windows Subsystem for Linux (WSL) 中运行，请切换到相应的 Linux 发行版。
+
+    4. 单击 **PyMySQL** 标签，复制连接字符串。
+
+    > **Tip:**
+    >
+    > 如果尚未设置密码，单击**生成密码**生成一个随机密码。
+
+    5. 在 Python 项目的根目录下创建一个 `.env` 文件，并将连接字符串粘贴到其中。
+
+    以下是 MacOS 的示例：
+
+    ```dotenv
+    TIDB_DATABASE_URL="mysql+pymysql://<prefix>.root:<password>@gateway01.<region>.prod.aws.tidbcloud.com:4000/test?ssl_ca=/etc/ssl/cert.pem&ssl_verify_cert=true&ssl_verify_identity=true"
+    ```
+
+    </div>
+
+    <div label="TiDB Self-hosted 集群部署">
+
+    在 Python 项目的根目录下创建一个 `.env` 文件，并根据启动的集群参数修改相应的环境变量中。
 
     - `HOST`: TiDB 集群的主机。
     - `PORT`: TiDB 集群的端口。
@@ -68,6 +121,10 @@ pip install pymysql python-dotenv sqlalchemy tidb-vector
     ```dotenv
     TIDB_DATABASE_URL="mysql+pymysql://<prefix>.root:<password>@127.0.0.1:4000/test?ssl_ca=/etc/ssl/cert.pem&ssl_verify_cert=true&ssl_verify_identity=true"
     ```
+
+    </div>
+
+    </SimpleTab>
 
 ### 步骤 5. 运行demo
 
@@ -94,7 +151,7 @@ Get documents within a certain distance:
 
 ## 示例代码片段
 
-您可以参考以下示例代码片段来开发您的应用程序。
+你可以参考以下示例代码片段来完成自己的程序开发。
 
 ### 创建向量表
 
@@ -116,7 +173,7 @@ engine = create_engine(tidb_connection_string)
 
 #### 定义向量列
 
-创建一个表格，其中有一列名为 `embedding`，用于存储三维向量。
+创建一个表格，其中有一列向量类型的 `embedding` ，用于存储三维向量。
 
 ```python
 Base = declarative_base()
@@ -140,7 +197,7 @@ with Session(engine) as session:
 
 ### 搜索近邻向量
 
-根据余弦距离函数，搜索与查询向量`[1, 2, 3]`”`语义最接近的前 3 篇向量。
+我们可以选择使用余弦距离 (`CosineDistance`) 函数，查询与向量 `[1, 2, 3]` 语义最接近的前 3 个内容。
 
 ```python
 with Session(engine) as session:
@@ -152,7 +209,7 @@ with Session(engine) as session:
 
 ### 搜索一定距离内的向量
 
-搜索与查询向量`[1, 2, 3]`的余弦距离小于 0.2 的文档。
+我们可以选择使用余弦距离 (`CosineDistance`) 函数，查询与向量 `[1, 2, 3]` 的余弦距离小于 0.2 的向量。
 
 ```python
 with Session(engine) as session:

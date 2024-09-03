@@ -1,23 +1,38 @@
 ---
-title: TiDB 向量搜索与 peewee 相结合
-summary: 了解如何将 TiDB 向量搜索与 peewee 集成，以存储嵌入信息并执行语义搜索。
+title: TiDB 向量搜索在 peewee 中的使用
+summary: 了解如何在 peewee 中 TiDB 使用向量搜索，，以存储向量并执行语义搜索。
 ---
 
-# TiDB 向量搜索与 peewee 结合
+# TiDB 向量搜索在 peewee 中的使用
 
-本教程将展示如何使用 [peewee](https://docs.peewee-orm.com/) 与 TiDB 向量搜索交互、存储嵌入和执行向量搜索查询。
+本文档将展示如何使用 [peewee](https://docs.peewee-orm.com/) 与 TiDB 向量搜索进行交互、存储向量和执行向量搜索查询。
 
 ## 准备
+1. 在开始之前，你需要确定 TiDB 集群的部署方式以及以下内容被正确安装，
 
-要实现本部分的内容，需要确保安装以下内容：
+    <SimpleTab>
 
-- [Python 3.8 or higher](https://www.python.org/downloads/) installed.
-- [Git](https://git-scm.com/downloads) installed.
-- TiDB 集群。如果没有，请按照[使用 TiUP 部署 TiDB 集群](/production-deployment-using-tiup.md)创建自己的 TiDB 集群。
+    <div label="TiDB Serverless 集群部署">
+
+    - [Python 3.8 or higher](https://www.python.org/downloads/)
+    - [Git](https://git-scm.com/downloads) 
+    - TiDB Serveless 群集。如果没有 TiDB Cloud 集群，请按照[创建 TiDB Serverless集群](https://docs.pingcap.com/tidbcloud/create-tidb-cluster-serverless)创建自己的 TiDB Cloud 集群。
+
+    </div>
+
+    <div label="TiDB Self-hosted 集群部署">
+
+    - [Python 3.8 or higher](https://www.python.org/downloads/)
+    - [Git](https://git-scm.com/downloads) 
+    - TiDB 集群。如果没有，请按照[使用 TiUP 部署 TiDB 集群](/production-deployment-using-tiup.md)创建自己的 TiDB 集群。
+
+    </div>
+
+    </SimpleTab>
 
 ## 运行示例应用程序
 
-通过以下步骤，您可以快速了解如何将 TiDB 向量搜索与 peewee 结合。
+你可以通过以下步骤快速了解如何在 peewee 中使用 TiDB 向量搜索。
 
 ### Step 1. 克隆仓库
 
@@ -45,7 +60,7 @@ source .venv/bin/activate
 pip install -r requirements.txt
 ```
 
-您可以为现有项目安装以下软件包：
+你也可以直接为项目安装以下依赖项：
 
 ```bash
 pip install peewee pymysql python-dotenv tidb-vector
@@ -53,10 +68,61 @@ pip install peewee pymysql python-dotenv tidb-vector
 
 ### 步骤 4. 配置环境变量
 
-在 Python 项目的根目录下创建一个 `.env` 文件，并根据启动的集群参数修改相应的环境变量中。
+1. 根据 TiDB 集群的部署方式不同，选择对应的环境变量配置方式。
 
-    - `TIDB_HOST`: TiDB 集群的主机。
-    - `TIDB_PORT`: TiDB 集群的端口。
+    <SimpleTab>
+
+    <div label="TiDB Serverless 集群部署">
+
+    1. 在 [**群集**](https://tidbcloud.com/console/clusters) 页面，单击目标群集的名称进入其概览页面。
+
+    2. 单击右上角的**连接**。此时将显示连接对话框。
+
+    3. 确保连接对话框中的配置符合你的运行环境。
+
+    - **Endpoint Type** 设置为 `Public`
+    - **Branch** 设置为 `main`
+    - **Connect With** 设置为 `General`
+    - **Operating System** 与你的机器环境相匹配
+
+    > **Tip:**
+    >
+    > 如果程序在 Windows Subsystem for Linux (WSL) 中运行，请切换到相应的 Linux 发行版。
+
+    4. 从连接对话框中复制连接参数。
+
+    > **Tip:**
+    >
+    > 如果尚未设置密码，单击**生成密码**生成一个随机密码。
+
+    5. 在 Python 项目的根目录下创建一个 `.env` 文件，并将连接参数粘贴到相应的环境变量中。
+
+    - `TIDB_HOST`: TiDB 集群的主机号。
+    - `TIDB_PORT`: TiDB 集群的端口号。
+    - `TIDB_USERNAME`: 连接 TiDB 集群的用户名。
+    - `TIDB_PASSWORD`: 连接 TiDB 集群的密码。
+    - `TIDB_DATABASE`: 要连接的数据库名称。
+    - `TIDB_CA_PATH`: 根证书文件的路径。
+
+    以下是 MacOS 的示例：
+
+    ```dotenv
+    TIDB_HOST=gateway01.****.prod.aws.tidbcloud.com
+    TIDB_PORT=4000
+    TIDB_USERNAME=********.root
+    TIDB_PASSWORD=********
+    TIDB_DATABASE=test
+    TIDB_CA_PATH=/etc/ssl/cert.pem
+    ```
+
+    </div>
+
+    <div label="TiDB Self-hosted 集群部署">
+
+    在 Python 项目的根目录下创建一个 `.env` 文件，并根据启动的集群参数修改相应的环境变量中。
+
+    - `TIDB_HOST`: TiDB 集群的主机号。
+    - `TIDB_PORT`: TiDB 集群的端口号。
     - `TIDB_USERNAME`: 连接 TiDB 集群的用户名。
     - `TIDB_PASSWORD`: 连接 TiDB 集群的密码。
     - `TIDB_DATABASE`: 要连接的数据库名称。
@@ -72,6 +138,10 @@ pip install peewee pymysql python-dotenv tidb-vector
     TIDB_DATABASE=test
     TIDB_CA_PATH=/etc/ssl/cert.pem
     ```
+
+    </div>
+
+    </SimpleTab>
 
 ### 步骤 5. 运行 demo
 
@@ -98,7 +168,7 @@ Get documents within a certain distance:
 
 ## 示例代码片段
 
-您可以参考以下示例代码片段来开发您的应用程序。
+你可以参考以下示例代码片段来完成自己的程序开发。
 
 ### 创建向量表
 
@@ -141,7 +211,7 @@ db = MySQLDatabase(
 
 #### 定义向量列
 
-创建一个表格，其中有一列名为 `peewee_demo_documents`，用于存储一个三维向量。
+创建一个表格，其中有一列向量类型的 `embedding` ，用于存储三维向量。
 
 ```python
 class Document(Model):
@@ -163,7 +233,7 @@ Document.create(content='tree', embedding=[1, 0, 0])
 
 ### 搜索近邻向量
 
-根据余弦距离函数，搜索与查询向量 `[1, 2, 3]` 语义最接近的前 3 个向量。
+我们可以选择使用余弦距离 (`CosineDistance`) 函数，查询与向量 `[1, 2, 3]` 语义最接近的前 3 个内容。
 
 ```python
 distance = Document.embedding.cosine_distance([1, 2, 3]).alias('distance')
@@ -172,7 +242,7 @@ results = Document.select(Document, distance).order_by(distance).limit(3)
 
 ### 搜索一定距离内的向量
 
-搜索与查询向量 `[1, 2, 3]` 的余弦距离小于 0.2 的文档。
+我们可以选择使用余弦距离 (`CosineDistance`) 函数，查询与向量 `[1, 2, 3]` 的余弦距离小于 0.2 的向量。
 
 ```python
 distance_expression = Document.embedding.cosine_distance([1, 2, 3])
