@@ -94,7 +94,6 @@ RESOURCE_GROUP: default
 * `TIDB_CPU` 列：显示语句当前占用 `TIDB` 服务器 CPU 时间，单位是秒。
 * `TIKV_CPU` 列：显示语句当前占用 `TIKV` 服务器 CPU 时间，单位是秒。
 
-
 ## CLUSTER_PROCESSLIST
 
 `CLUSTER_PROCESSLIST` 是 `PROCESSLIST` 对应的集群系统表，用于查询集群中所有 TiDB 节点的 `PROCESSLIST` 信息。`CLUSTER_PROCESSLIST` 表结构上比 `PROCESSLIST` 多一列 `INSTANCE`，表示该行数据来自的 TiDB 节点地址。
