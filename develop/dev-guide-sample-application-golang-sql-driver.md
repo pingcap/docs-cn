@@ -53,7 +53,7 @@ cd tidb-golang-sql-driver-quickstart
 
 3. 确认对话框中的配置和你的运行环境一致。
 
-    - **Endpoint Type** 为 `Public`。
+    - **Connection Type** 为 `Public`。
     - **Branch** 选择 `main`。
     - **Connect With** 选择 `General`。
     - **Operating System** 为你的运行环境。

@@ -43,7 +43,7 @@ TiDB 是一个兼容 MySQL 的数据库。[MySQL Workbench](https://www.mysql.co
 
 3. 确认对话框中的配置和你的运行环境一致。
 
-    - **Endpoint Type** 选择 `Public`。
+    - **Connection Type** 选择 `Public`。
     - **Branch** 选择 `main`。
     - **Connect With** 选择 `MySQL Workbench`。
     - **Operating System** 为你的运行环境。
