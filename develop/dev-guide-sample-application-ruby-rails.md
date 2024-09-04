@@ -74,7 +74,7 @@ bundle add mysql2 dotenv
 
 2. 点击右上角的 **Connect** 按钮，将会弹出连接对话框。
 
-3. 在连接对话框中，从 **Connect With** 下拉列表中选择 `Rails`，并保持 **Endpoint Type** 的默认设置为 `Public`。
+3. 在连接对话框中，从 **Connect With** 下拉列表中选择 `Rails`，并保持 **Connection Type** 的默认设置为 `Public`。
 
 4. 如果你还没有设置密码，点击 **Generate Password** 生成一个随机密码。
 
