@@ -15,34 +15,30 @@ TiDB 扩展了 MySQL 语法以支持 [向量搜索](/vector-search-overview.md)�
 - 执行向量搜索查询
 
 ## 准备
-1. 在开始之前，你需要确定 TiDB 集群的部署方式以及以下内容被正确安装，
+在开始之前，你需要确定 TiDB 集群的部署方式以及以下内容被正确安装，
+- TiDB Serverless 集群
+  - [Python 3.8 or higher](https://www.python.org/downloads/)
+  - [Git](https://git-scm.com/downloads) 
+  - TiDB Serverless集群。如果没有 TiDB Cloud 集群，请按照[创建 TiDB Serverless集群](https://dev.mysql.com/doc/refman/8.4/en/mysql.html)创建自己的 TiDB Cloud 集群。
 
-    <SimpleTab>
-
-    <div label="TiDB Serverless 集群部署">
-
-    - 安装了[MySQL 命令行客户端](https://dev.mysql.com/doc/refman/8.4/en/mysql.html) (MySQL CLI)。
-    - TiDB Serveless 群集。如果没有 TiDB Cloud 集群，请按照[创建 TiDB Serverless集群](https://docs.pingcap.com/tidbcloud/create-tidb-cluster-serverless)创建自己的 TiDB Cloud 集群。
-
-    </div>
-
-    <div label="TiDB Self-hosted 集群部署">
-
-    - 安装了 [MySQL 命令行客户端](https://dev.mysql.com/doc/refman/8.4/en/mysql.html) (MySQL CLI)。
-    - TiDB 集群。如果没有，请按照[使用 TiUP 部署 TiDB 集群](/production-deployment-using-tiup.md)创建自己的 TiDB 集群。
-
-    </div>
-
-    </SimpleTab>
+- 本地部署的 TiDB 集群
+  - [Python 3.8 or higher](https://www.python.org/downloads/)
+  - [Git](https://git-scm.com/downloads) 
+  - TiDB 集群。如果没有集群，请按照[使用 TiUP 部署 TiDB 集群](/production-deployment-using-tiup.md)创建自己的 TiDB 集群。
 
 ## 开始
 
 ### 步骤 1. 连接到 TiDB 集群
 
 将连接命令输入至终端。以下是 macOS 的示例：
-
-    ```bash
+- TiDB Serverless 集群
+   ```bash
     mysql -u '<prefix>.root' -h '<host>' -P 4000 -D 'test' --ssl-mode=VERIFY_IDENTITY --ssl-ca=/etc/ssl/cert.pem -p'<password>'
+    ```
+
+- 本地部署的 TiDB 集群
+   ```bash
+    mysql --comments --host 127.0.0.1 --port 4000 -u root
     ```
 
 ### 步骤 2. 创建向量表

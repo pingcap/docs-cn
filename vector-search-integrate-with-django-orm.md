@@ -8,27 +8,16 @@ summary: 了解如何在 Django ORM 中 TiDB 使用向量搜索，，以存储�
 本文档将展示如何使用 [Django](https://www.djangoproject.com/) ORM 与 TiDB 向量搜索进行交互、存储向量和执行向量搜索查询。
 
 ## 准备
-1. 在开始之前，你需要确定 TiDB 集群的部署方式以及以下内容被正确安装，
+在开始之前，你需要确定 TiDB 集群的部署方式以及以下内容被正确安装，
+- TiDB Serverless 集群
+  - [Python 3.8 or higher](https://www.python.org/downloads/)
+  - [Git](https://git-scm.com/downloads) 
+  - TiDB Serverless集群。如果没有 TiDB Cloud 集群，请按照[创建 TiDB Serverless集群](https://dev.mysql.com/doc/refman/8.4/en/mysql.html)创建自己的 TiDB Cloud 集群。
 
-    <SimpleTab>
-
-    <div label="TiDB Serverless 集群部署">
-
-    - [Python 3.8 or higher](https://www.python.org/downloads/)
-    - [Git](https://git-scm.com/downloads) 
-    - TiDB Serveless 群集。如果没有 TiDB Cloud 集群，请按照[创建 TiDB Serverless集群](https://docs.pingcap.com/tidbcloud/create-tidb-cluster-serverless)创建自己的 TiDB Cloud 集群。
-
-    </div>
-
-    <div label="TiDB Self-hosted 集群部署">
-
-    - [Python 3.8 or higher](https://www.python.org/downloads/)
-    - [Git](https://git-scm.com/downloads) 
-    - TiDB 集群。如果没有，请按照[使用 TiUP 部署 TiDB 集群](/production-deployment-using-tiup.md)创建自己的 TiDB 集群。
-
-    </div>
-
-    </SimpleTab>
+- 本地部署的 TiDB 集群
+  - [Python 3.8 or higher](https://www.python.org/downloads/)
+  - [Git](https://git-scm.com/downloads) 
+  - TiDB 集群。如果没有集群，请按照[使用 TiUP 部署 TiDB 集群](/production-deployment-using-tiup.md)创建自己的 TiDB 集群。
 
 
 ## 运行示例应用程序
@@ -84,9 +73,9 @@ pip install Django django-tidb mysqlclient numpy python-dotenv
 
     <div label="TiDB Serverless 集群部署">
 
-    1. 在 [**群集**](https://tidbcloud.com/console/clusters) 页面，单击目标群集的名称进入其概览页面。
+    1. 在 [**Cluster**](https://tidbcloud.com/console/clusters) 页面，单击目标群集的名称进入其概览页面。
 
-    2. 单击右上角的**连接**。此时将显示连接对话框。
+    2. 单击右上角的**Connect**。此时将显示连接对话框。
 
     3. 确保连接对话框中的配置符合你的运行环境。
 
