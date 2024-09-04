@@ -429,7 +429,7 @@ pd-server 相关配置项。
 
 ## label-property
 
-标签相关的配置项。
+标签相关的配置项，目前只支持 `reject-leader` 类型，后续会逐渐下掉该配置项，建议使用 [Placement Rule](https://docs.pingcap.com/zh/tidb/stable/configure-placement-rules#%E5%9C%BA%E6%99%AF%E4%BA%8C5-%E5%89%AF%E6%9C%AC%E6%8C%89-2-2-1-%E7%9A%84%E6%AF%94%E4%BE%8B%E6%94%BE%E7%BD%AE%E5%9C%A8-3-%E4%B8%AA%E6%95%B0%E6%8D%AE%E4%B8%AD%E5%BF%83%E4%B8%94%E7%AC%AC-3-%E4%B8%AA%E4%B8%AD%E5%BF%83%E4%B8%8D%E4%BA%A7%E7%94%9F-leader)。
 
 ### `key`
 
