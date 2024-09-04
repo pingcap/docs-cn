@@ -58,13 +58,8 @@ USING
 可以通过等价的 SQL 改写绕过这个语法冲突的问题。例如，上述两个例子可以改写为：
 
 ```sql
--- 类型一的第一种改写：为 `JOIN` 关键字添加 `USING` 子句
-CREATE GLOBAL BINDING for
-    SELECT * FROM t t1 JOIN t t2 USING (a)
-USING
-    SELECT * FROM t t1 JOIN t t2 USING (a);
 
--- 类型一的第二种改写：去掉 `JOIN` 关键字
+-- 类型一的改写：去掉 `JOIN` 关键字
 CREATE GLOBAL BINDING for
     SELECT * FROM t t1, t t2
 USING
