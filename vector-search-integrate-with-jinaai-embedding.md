@@ -9,8 +9,6 @@ summary: 了解如何结合 Jina AI 嵌入模型 API 使用 TiDB 向量搜索，
 
 ## 前置需求
 
-To complete this tutorial, you need:
-
 - 推荐 [Python 3.8](https://www.python.org/downloads/) 及以上版本。
 - [Git](https://git-scm.com/downloads)。
 - TiDB 集群，如果你还没有 TiDB 集群，可以按照以下方式创建：
