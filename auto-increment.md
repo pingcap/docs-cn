@@ -283,7 +283,7 @@ TiDB 自增 ID 的缓存大小在早期版本中是对用户透明的。从 v3.1
 CREATE TABLE t(a int AUTO_INCREMENT key) AUTO_ID_CACHE 100;
 Query OK, 0 rows affected (0.02 sec)
 
-INSERT INTO t1 VALUES();
+INSERT INTO t VALUES();
 Query OK, 1 row affected (0.00 sec)
 
 SELECT * FROM t;
@@ -312,7 +312,7 @@ SHOW CREATE TABLE t;
 INSERT INTO t VALUES();
 Query OK, 1 row affected (0.00 sec)
 
-select * from t;
+SELECT * FROM t;
 +-----+
 | a   |
 +-----+
