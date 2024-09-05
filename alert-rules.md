@@ -561,11 +561,12 @@ aliases: ['/docs-cn/dev/alert-rules/','/docs-cn/dev/reference/alert-rules/']
 
 * 报警规则：
 
-    `sum(rate(tikv_thread_cpu_seconds_total{name=~"raftstore_.*"}[1m])) by (instance, name) > 1.6`
+    `sum(rate(tikv_thread_cpu_seconds_total{name=~"raftstore_.*"}[1m])) by (instance) > 1.6`
 
 * 规则描述：
 
-    Raftstore 线程压力太大。
+    代表的是 raftstore CPU 消耗, 如果高代表 Raftstore 线程压力太大。
+    阈值取值为 raftstore.store-pool-size 的 80%, 默认 raftstore.store-pool-size=2, 所以这里设置为 1.6。 
 
 * 处理方法：
 
