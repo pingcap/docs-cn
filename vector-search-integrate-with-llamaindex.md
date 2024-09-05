@@ -117,6 +117,7 @@ import os
 tidb_connection_string = getpass.getpass("TiDB Connection String:")
 os.environ["OPENAI_API_KEY"] = getpass.getpass("OpenAI API Key:")
 ```
+
 例如，macOS 上的连接字符串如下所示：
 
 ```dotenv
