@@ -17,8 +17,8 @@ aliases: ['/docs-cn/dev/information-schema/information-schema-processlist/']
 * `RESOURCE_GROUP` 列：显示对应的资源组名称。
 * `SESSION_ALIAS` 列：显示当前连接的别名。
 * `ROWS_AFFECTED` 列：显示语句当前影响的行数。
-* `TIDB_CPU` 列：显示语句当前占用 `TIDB` 服务器 CPU 时间，单位是秒。
-* `TIKV_CPU` 列：显示语句当前占用 `TIKV` 服务器 CPU 时间，单位是秒。
+* `TIDB_CPU` 列：显示语句当前占用 TiDB 服务器 CPU 时间，单位是秒。
+* `TIKV_CPU` 列：显示语句当前占用 TiKV 服务器 CPU 时间，单位是秒。
 
 ```sql
 USE information_schema;
@@ -91,8 +91,8 @@ RESOURCE_GROUP: default
 * `RESOURCE_GROUP` 列：显示对应的资源组名称。
 * `SESSION_ALIAS` 列：显示当前连接的别名。
 * `ROWS_AFFECTED` 列：显示语句当前影响的行数。
-* `TIDB_CPU` 列：显示语句当前占用 `TIDB` 服务器 CPU 时间，单位是秒。
-* `TIKV_CPU` 列：显示语句当前占用 `TIKV` 服务器 CPU 时间，单位是秒。
+* `TIDB_CPU` 列：显示语句当前占用 TiDB 服务器 CPU 时间，单位是秒。
+* `TIKV_CPU` 列：显示语句当前占用 TiKV 服务器 CPU 时间，单位是秒。
 
 ## CLUSTER_PROCESSLIST
 
