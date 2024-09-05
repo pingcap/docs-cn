@@ -1,72 +1,77 @@
 ---
-title: 使用SQL开始向量搜索
+title: 使用 SQL 开始向量搜索
 summary: 了解如何使用 SQL 语句快速开始使用 TiDB Cloud 中的向量搜索，并为生成式人工智能应用提供动力。
 ---
 
-# 使用SQL开始向量搜索
+# 使用 SQL 开始向量搜索
 
-TiDB 扩展了 MySQL 语法以支持 [向量搜索](/vector-search-overview.md)，并引入了新的 [向量数据类型](/vector-search-data-types.md) 和多个 [向量函数](/vector-search-functions-and-operators.md)。
+TiDB 扩展了 MySQL 语法以支持[向量搜索](/vector-search-overview.md)，并引入了[向量数据类型](/vector-search-data-types.md)和多个[向量函数](/vector-search-functions-and-operators.md)。
 
-本文档展示如何使用 SQL 语句开始 TiDB 向量搜索。你将了解如何使用 [MySQL 命令行客户端](https://dev.mysql.com/doc/refman/8.4/en/mysql.html)：
+本文将展示如何使用 SQL 语句在 TiDB 中进行向量搜索。在本文中，你将使用 [MySQL 命令行客户端](https://dev.mysql.com/doc/refman/8.4/en/mysql.html)完成以下任务：
 
-- 连接到 TiDB 集群。
+- 连接到 TiDB 集群
 - 创建向量表
 - 存储向量嵌入
 - 执行向量搜索查询
 
-## 准备
-在开始之前，你需要确定 TiDB 集群的部署方式以及以下内容被正确安装，
-- TiDB Serverless 集群
-  - [Python 3.8 or higher](https://www.python.org/downloads/)
-  - [Git](https://git-scm.com/downloads) 
-  - TiDB Serverless集群。如果没有 TiDB Cloud 集群，请按照[创建 TiDB Serverless集群](https://dev.mysql.com/doc/refman/8.4/en/mysql.html)创建自己的 TiDB Cloud 集群。
+## 前置需求
 
-- 本地部署的 TiDB 集群
-  - [Python 3.8 or higher](https://www.python.org/downloads/)
-  - [Git](https://git-scm.com/downloads) 
-  - TiDB 集群。如果没有集群，请按照[使用 TiUP 部署 TiDB 集群](/production-deployment-using-tiup.md)创建自己的 TiDB 集群。
+为了能够顺利完成本文中的操作，你需要提前：
 
-## 开始
+- 在你的机器上安装 [MySQL 命令行客户端](https://dev.mysql.com/doc/refman/8.4/en/mysql.html) (MySQL CLI)
+- 准备一个 TiDB 集群
 
-### 步骤 1. 连接到 TiDB 集群
+如果你还没有 TiDB 集群，可以按照以下任一种方式创建：
+
+- 参考[创建 TiDB Serverless 集群](/develop/dev-guide-build-cluster-in-cloud.md#第-1-步创建-tidb-serverless-集群)，创建 TiDB Cloud 集群。
+- 参考[部署本地测试 TiDB 集群](/quick-start-with-tidb.md#部署本地测试集群)或[部署正式 TiDB 集群](/production-deployment-using-tiup.md)，创建本地集群。
+
+## 快速开始
+
+### 第 1 步：连接到 TiDB 集群
+
+根据不同的 TiDB 部署方式，使用不同的方法连接到 TiDB 集群。
 
 将连接命令输入至终端。以下是 macOS 的示例：
+
 - TiDB Serverless 集群
+
    ```bash
     mysql -u '<prefix>.root' -h '<host>' -P 4000 -D 'test' --ssl-mode=VERIFY_IDENTITY --ssl-ca=/etc/ssl/cert.pem -p'<password>'
     ```
 
 - 本地部署的 TiDB 集群
+
    ```bash
     mysql --comments --host 127.0.0.1 --port 4000 -u root
     ```
 
-### 步骤 2. 创建向量表
+### 第 2 步：创建向量表
 
-TiDB 支持了向量搜索，允许用户在创建表时使用 `VECTOR` 声明 [向量](/vector-search-overview.md#向量嵌入) 列。
+在建表时，你可以使用 `VECTOR` 数据类型声明指定列为[向量](/vector-search-overview.md#向量嵌入)列。
 
-要创建带有三维 `VECTOR` 列的表，你可以使用 MySQL CLI 执行以下 SQL 语句：
+例如，如需创建一张带有三维 `VECTOR` 列的 `embedded_documents` 表，可以在 MySQL CLI 中执行以下 SQL 语句：
 
 ```sql
 USE test;
 CREATE TABLE embedded_documents (
     id        INT       PRIMARY KEY,
-    -- 存储文档的原始内容。
+    -- document 列存储 document 的原始内容
     document  TEXT,
-    -- 存储文档的向量表示。
+    -- embedding 列存储 document 的向量表示
     embedding VECTOR(3)
 );
 ```
 
-预期输出如下
+预期输出如下：
 
 ```text
 Query OK, 0 rows affected (0.27 sec)
 ```
 
-### 步骤 3. 向表中插入向量
+### 第 3 步：向表中插入向量
 
-将三行附带 [向量](/vector-search-overview.md#向量嵌入) 的数据及其  插入 `embedded_documents` 表：
+向 `embedded_documents` 表中插入三行包含[向量](/vector-search-overview.md#向量嵌入)的数据：
 
 ```sql
 INSERT INTO embedded_documents
@@ -76,7 +81,7 @@ VALUES
     (3, 'tree', '[1,0,0]');
 ```
 
-预期输出如下
+预期输出如下：
 
 ```
 Query OK, 3 rows affected (0.15 sec)
@@ -87,17 +92,17 @@ Records: 3  Duplicates: 0  Warnings: 0
 >
 > 为了方便展示，本示例简化了向量的维数，仅使用三维向量。
 >
-> 在实际应用中，[嵌入模型](/vector-search-overview.md#嵌入模型) 通常会产生数百或数千维的向量。
+> 在实际应用中，[嵌入模型](/vector-search-overview.md#嵌入模型)通常会生成数百或数千维的向量。
 
-### 步骤 4. 查询向量表
+### 第 4 步：查询向量表
 
-要验证文件是否已正确插入，你可以查询 `embedded_documents` 表：
+要验证上一步中的三行数据是否已正确插入，可以查询 `embedded_documents` 表：
 
 ```sql
 SELECT * FROM embedded_documents;
 ```
 
-预期输出如下
+预期输出如下：
 
 ```sql
 +----+----------+-----------+
@@ -110,13 +115,13 @@ SELECT * FROM embedded_documents;
 3 rows in set (0.15 sec)
 ```
 
-### 步骤 5. 执行向量搜索查询
+### 第 5 步：执行向量搜索查询
 
 与全文搜索类似，在使用向量搜索时，你需要指定搜索词。
 
-在本例中，搜索词是 “一种会游泳的动物”，其对应的向量是 `[1,2,3]`。在实际应用中，需要使用嵌入模型将用户的搜索词转换为向量。
+在本例中，搜索词是“一种会游泳的动物”，假设其对应的向量是 `[1,2,3]`。在实际应用中，你需要使用嵌入模型将用户的搜索词转换为向量。
 
-在以下执行的 SQL 语句中，TiDB 会计算 `[1,2,3]` 与表中向量的余弦距离 (`vec_cosine_distance`)，然后进行排序输出表中最接近搜索向量 (余弦距离最小) 的前三个向量。
+执行以下 SQL 语句后，TiDB 会计算 `[1,2,3]` 与表中各向量之间的余弦距离 (`vec_cosine_distance`)，然后对这些距离进行排序并输出表中最接近搜索向量 (余弦距离最小) 的前三个向量。
 
 ```sql
 SELECT id, document, vec_cosine_distance(embedding, '[1,2,3]') AS distance
@@ -125,7 +130,7 @@ ORDER BY distance
 LIMIT 3;
 ```
 
-预期输出如下
+预期输出如下：
 
 ```plain
 +----+----------+---------------------+
@@ -138,7 +143,9 @@ LIMIT 3;
 3 rows in set (0.15 sec)
 ```
 
-从输出结果来看，会游泳的动物很可能是 “一条鱼” ，或者是一只 “有游泳天赋的狗”。
+搜索结果中的 3 个词会按向量的远近排列：距离越小，对应的 `document` 越相关。
+
+因此，从输出结果来看，会游泳的动物很可能是一条鱼 (`fish`)，或者是一只有游泳天赋的狗 (`dog`)。
 
 ## 另请参阅
 

@@ -5,31 +5,30 @@ summary: 了解如何使用 Python 和 TiDB 向量搜索快速开发可执行语
 
 # 使用 Python 开始向量搜索
 
-本文展示如何开发一个简单的 AI 应用，这个 AI 应用实现了简单的**语义搜索**功能。不同于传统的关键字搜索，语义搜索可以智能地“理解”你的输入，返回更相关的结果。例如，在“狗”、“鱼”和“树”这三个内容中搜索“一种会游泳的动物”时，语义搜索会将“鱼”作为最相关的结果。
+本文将展示如何开发一个简单的 AI 应用，这个 AI 应用实现了简单的**语义搜索**功能。不同于传统的关键字搜索，语义搜索可以智能地理解你的输入，返回更相关的结果。例如，在“狗”、“鱼”和“树”这三条内容中搜索“一种会游泳的动物”时，语义搜索会将“鱼”作为最相关的结果返回。
 
-在本文中，你将使用 [TiDB 向量搜索](/vector-search-overview.md)、Python、[TiDB Vector SDK for Python](https://github.com/pingcap/tidb-vector-python) 和 AI 大模型构建 AI 应用。
+在本文中，你将使用 [TiDB 向量搜索](/vector-search-overview.md)、Python、[TiDB Vector SDK for Python](https://github.com/pingcap/tidb-vector-python) 和 AI 大模型完成这个 AI 应用的开发。
 
+## 前置需求
 
-## 准备
-在开始之前，你需要确定 TiDB 集群的部署方式以及以下内容被正确安装，
-- TiDB Serverless 集群
-  - [Python 3.8 or higher](https://www.python.org/downloads/)
-  - [Git](https://git-scm.com/downloads) 
-  - TiDB Serverless集群。如果没有 TiDB Cloud 集群，请按照[创建 TiDB Serverless集群](https://dev.mysql.com/doc/refman/8.4/en/mysql.html)创建自己的 TiDB Cloud 集群。
+为了能够顺利完成本文中的操作，你需要提前：
 
-- 本地部署的 TiDB 集群
-  - [Python 3.8 or higher](https://www.python.org/downloads/)
-  - [Git](https://git-scm.com/downloads) 
-  - TiDB 集群。如果没有集群，请按照[使用 TiUP 部署 TiDB 集群](/production-deployment-using-tiup.md)创建自己的 TiDB 集群。
+- 在你的机器上安装 [Python 3.8](https://www.python.org/downloads/) 或更高版本
+- 在你的机器上安装 [Git](https://git-scm.com/downloads)
+- 准备一个 TiDB 集群
 
+如果你还没有 TiDB 集群，可以按照以下任一种方式创建：
 
-## 开始
+- 参考[创建 TiDB Serverless 集群](/develop/dev-guide-build-cluster-in-cloud.md#第-1-步创建-tidb-serverless-集群)，创建 TiDB Cloud 集群。
+- 参考[部署本地测试 TiDB 集群](/quick-start-with-tidb.md#部署本地测试集群)或[部署正式 TiDB 集群](/production-deployment-using-tiup.md)，创建本地集群。
 
-以下是从零构建这个应用的详细步骤，你也可以从 [pingcap/tidb-vector-python](https://github.com/pingcap/tidb-vector-python/blob/main/examples/python-client-quickstart) 开源代码库获取到完整代码，直接运行示例。
+## 快速开始
 
-### 步骤 1. 创建一个新的 Python 项目
+以下为从零开始构建这个应用的详细步骤，你也可以从 [pingcap/tidb-vector-python](https://github.com/pingcap/tidb-vector-python/blob/main/examples/python-client-quickstart) 开源代码库获取到完整代码，直接运行示例。
 
-创建一个新 Python 项目和一个名为 `example.py` 的文件：
+### 第 1 步：新建一个 Python 项目
+
+在你的本地目录中，新建一个 Python 项目和一个名为 `example.py` 的文件：
 
 ```shell
 mkdir python-client-quickstart
@@ -37,77 +36,79 @@ cd python-client-quickstart
 touch example.py
 ```
 
-### 步骤 2. 安装所需的依赖项
+### 第 2 步：安装所需的依赖
 
-在项目目录下，运行以下命令安装所需的软件包：
+在该项目的目录下，运行以下命令安装所需的软件包：
 
 ```shell
 pip install sqlalchemy pymysql sentence-transformers tidb-vector python-dotenv
 ```
 
 - `tidb-vector`：用于与 TiDB 向量搜索交互的 Python 客户端。
-- [`sentence-transformers`](https://sbert.net): 一个提供预训练模型的 Python 库，用于从文本生成 [向量嵌入](/vector-search-overview.md#向量嵌入)。
+- [`sentence-transformers`](https://sbert.net): 一个提供预训练模型的 Python 库，用于从文本生成[向量嵌入](/vector-search-overview.md#向量嵌入)。
 
-### 步骤 3. 配置 TiDB 集群的连接字符串
-1. 根据不同的 TiDB 集群部署方式，配置集群的连接字符串
-    <SimpleTab>
+### 第 3 步：配置 TiDB 集群的连接字符串
 
-    <div label="TiDB Serverless 集群部署">
+根据不同的 TiDB 集群部署方式，配置集群的连接字符串
 
-    1. 在 [**Clusters**](https://tidbcloud.com/console/clusters) 页面，单击目标群集的名称进入其概览页面。
+<SimpleTab>
 
-    2. 单击右上角的**Connect**。此时将显示连接对话框。
+<div label="TiDB Serverless">
 
-    3. 检查连接对话框中的配置，根据你的运行环境为其设置相应的值。
+1. 在 TiDB Cloud 的 [**Clusters**](https://tidbcloud.com/console/clusters) 页面，单击你的 TiDB Serverless 集群名，进入集群的 **Overview** 页面。
 
-        - **Endpoint Type** 设置为 `Public`.
-        - **Branch** 设置为 `main`.
-        - **Connect With** 设置为 `SQLAlchemy`.
-        - **Operating System** 与机器环境相匹配.
+2. 点击右上角的 **Connect** 按钮，将会弹出连接对话框。
 
-        > **Tip:**
-        >
-        > 如果程序在 Windows Subsystem for Linux (WSL) 中运行，请切换到相应的 Linux 发行版。
+3. 确认对话框中的配置和你的运行环境一致。
 
-    4. 单击 **PyMySQL** 标签，复制连接字符串。
+    - **Endpoint Type** 为 `Public`。
+    - **Branch** 选择 `main`。
+    - **Connect With** 选择 `SQLAlchemy`。
+    - **Operating System** 为你的运行环境。
 
-        > **Tip:**
-        >
-        > 如果尚未设置密码，单击**生成密码**生成一个随机密码。
+    > **Tip:**
+    >
+    > 如果你的项目在 Windows Subsystem for Linux (WSL) 中运行，请切换为对应的 Linux 发行版。
 
-    5. 在 Python 项目的根目录下创建一个 `.env` 文件，将连接字符串粘贴到其中。
+4. 单击 **PyMySQL** 选项卡，复制连接字符串。
 
-        以下是 MacOS 的示例：
+    > **Tip:**
+    >
+    > 如果你还没有设置密码，点击 **Generate Password** 生成一个随机密码。
 
-        ```dotenv
-        TIDB_DATABASE_URL="mysql+pymysql://<prefix>.root:<password>@gateway01.<region>.prod.aws.tidbcloud.com:4000/test?ssl_ca=/etc/ssl/cert.pem&ssl_verify_cert=true&ssl_verify_identity=true"
-        ```
+5. 在 Python 项目的根目录下新建一个 `.env` 文件，将连接字符串粘贴到其中。
 
-    </div>
-
-    <div label="TiDB Self-hosted 集群部署">
-    
-    在 Python 项目的根目录下创建一个 `.env` 文件，并根据启动的集群参数修改相应的环境变量中。
-
-    - `HOST`: TiDB 集群的主机号。
-    - `PORT`: TiDB 集群的端口。
-    - `USERNAME`: 连接 TiDB 集群的用户名。
-    - `PASSWORD`: 连接 TiDB 集群的密码。
-    - `DATABASE`: 要连接的数据库名称。
-    - `CA_PATH`: 根证书文件的路径。
-  
-    以下是 MacOS 的示例：
+    以下为 MacOS 的示例：
 
     ```dotenv
-    TIDB_DATABASE_URL="mysql+pymysql://<prefix>.root:<password>@<host>:4000/test?ssl_ca=/etc/ssl/cert.pem&ssl_verify_cert=true&ssl_verify_identity=true"
+    TIDB_DATABASE_URL="mysql+pymysql://<prefix>.root:<password>@gateway01.<region>.prod.aws.tidbcloud.com:4000/test?ssl_ca=/etc/ssl/cert.pem&ssl_verify_cert=true&ssl_verify_identity=true"
     ```
 
-    </div>
-    </SimpleTab>
+</div>
 
-### 步骤 4. 初始化嵌入模型
+<div label="本地部署 TiDB">
 
-[嵌入模型](/vector-search-overview.md#嵌入模型) 将数据转换为[向量嵌入](/vector-search-overview.md#向量嵌入)。本示例使用预训练模型 [**msmarco-MiniLM-L12-cos-v5**](https://huggingface.co/sentence-transformers/msmarco-MiniLM-L12-cos-v5) 将文本数据转换为向量嵌入。这个轻量级模型由 `sentence-transformers` 库提供，可将文本数据转换为 384 维向量嵌入。
+在 Python 项目的根目录下新建一个 `.env` 文件，并根据集群的启动参数修改相应的环境变量。
+
+- `HOST`：TiDB 集群的主机号。
+- `PORT`：TiDB 集群的端口。
+- `USERNAME`：连接 TiDB 集群的用户名。
+- `PASSWORD`：连接 TiDB 集群的密码。
+- `DATABASE`：要连接的数据库名称。
+- `CA_PATH`：根证书文件的路径。
+
+以下是 MacOS 的示例：
+
+```dotenv
+TIDB_DATABASE_URL="mysql+pymysql://<prefix>.root:<password>@<host>:4000/test?ssl_ca=/etc/ssl/cert.pem&ssl_verify_cert=true&ssl_verify_identity=true"
+```
+
+</div>
+</SimpleTab>
+
+### 第 4 步：初始化嵌入模型
+
+[嵌入模型](/vector-search-overview.md#嵌入模型)用于将数据转换为[向量嵌入](/vector-search-overview.md#向量嵌入)。本示例将使用预训练模型 [**msmarco-MiniLM-L12-cos-v5**](https://huggingface.co/sentence-transformers/msmarco-MiniLM-L12-cos-v5) 将文本数据转换为向量嵌入。该模型为一个轻量级模型，由 `sentence-transformers` 库提供，可将文本数据转换为 384 维的向量嵌入。
 
 将以下代码复制到 `example.py` 文件中，完成模型的设置。这段代码初始化了一个 `SentenceTransformer` 实例，并定义了一个 `text_too_embedding()` 函数用于将文本数据转换为向量数据。
 
@@ -124,13 +125,13 @@ def text_to_embedding(text):
     return embedding.tolist()
 ```
 
-### 步骤 5. 连接到 TiDB 集群
+### 第 5 步：连接到 TiDB 集群
 
-使用 `TiDBVectorClient` 类连接到 TiDB 集群，并创建一个带有向量列的表 `embedded_documents` 。
+使用 `TiDBVectorClient` 类连接到 TiDB 集群，并创建一个包含向量列的表 `embedded_documents`。
 
 > **Note**
 >
-> 创建的表中，向量列的维度需要与嵌入模型生成的向量维度一致。如，**msmarco-MiniLM-L12-cos-v5** 模型生成的向量有 384 个维度， `embedded_documents` 的向量列维度也为384。
+> 请确保你创建的表中向量列的维度与嵌入模型生成的向量维度一致。例如，**msmarco-MiniLM-L12-cos-v5** 模型生成的向量有 384 个维度， `embedded_documents` 的向量列维度也应为 384。
 
 ```python
 import os
@@ -141,20 +142,20 @@ from dotenv import load_dotenv
 load_dotenv()
 
 vector_store = TiDBVectorClient(
-   # embedded_documents表存储向量数据
+   # embedded_documents 表将用于存储向量数据
    table_name='embedded_documents',
-   # TiDB 集群的连接字符串。
+   # 指定 TiDB 集群的连接字符串
    connection_string=os.environ.get('TIDB_DATABASE_URL'),
-   # 嵌入模型生成的向量的维度。
+   # 指定嵌入模型生成的向量的维度
    vector_dimension=embed_model_dims,
-   # 如果表已经存在，则重新创建该表。
+   # 如果表已经存在，则重新创建该表
    drop_existing_table=True,
 )
 ```
 
-### 步骤 6. 向 **embedded_documents** 表中插入数据
+### 第 6 步：将文本数据转换为向量嵌入，并向表中插入数据
 
-你需要准备好文本数据，比如 “狗”、“鱼 ”和 “树”。 以下代码使用 `text_to_embedding()` 函数将这些文本数据转换为向量嵌入，然后将向量嵌入插入到 `embedded_documents` 表中。
+准备一些文本数据，比如 `"dog"`、`"fish"` 和 `"tree"`。以下代码将使用 `text_to_embedding()` 函数将这些文本数据转换为向量嵌入，然后将向量嵌入插入到 `embedded_documents` 表中：
 
 ```python
 documents = [
@@ -186,9 +187,9 @@ vector_store.insert(
 )
 ```
 
-### 步骤 7. 执行语义搜索
+### 第 7 步：执行语义搜索
 
-在这一步中，假如你查询与现有文档中的任何单词都不匹配的内容，比如： “一种会游泳的动物”。
+查询一个与 `documents` 中的任何单词都不匹配的关键词，比如 "a swimming animal"。
 
 以下的代码会再次使用 `text_to_embedding()` 函数将查询文本转换为向量嵌入，然后使用该嵌入进行查询，找出最匹配的前三个词。
 
@@ -213,9 +214,9 @@ Search result ("a swimming animal"):
 - text: "tree", distance: 0.798545178640937
 ```
 
-从输出结果来看，会游泳的动物很可能是一条鱼，或者是一只有游泳天赋的狗。
+搜索结果中的 3 个词会按向量的远近排列：距离越小，对应的 `document` 越相关。
 
-本文展示了向量搜索如何高效地找到最相关的文档，搜索结果按向量的远近排列：距离越小，文档越相关。
+因此，从输出结果来看，会游泳的动物很可能是一条鱼 (`fish`)，或者是一只有游泳天赋的狗 (`dog`)。
 
 ## 另请参阅
 
