@@ -169,7 +169,7 @@ tiproxyctl traffic capture --curls 10.0.1.10:3080 --output="/tmp/traffic" --dura
 - `--input`: 必须指定，指定流量文件存放的目录。
 - `--speed`: 回放速率的倍数，范围为 0.1 到 10，默认为 1，代表原速回放。
 
-例如，如下命令通过用户名 `u1` 和密码 `123456` 连接到 TiProxy 实例 `10.0.1.10:3080`，并从 TiProxy 实例的 `/tmp/traffic` 目录下读取流量文件，按 2 倍数回放流量：
+例如，如下命令通过用户名 `u1` 和密码 `123456` 连接到 TiProxy 实例 `10.0.1.10:3080`，并从 TiProxy 实例的 `/tmp/traffic` 目录下读取流量文件，按 2 倍速率回放流量：
 
 ```shell
 tiproxyctl traffic replay --curls 10.0.1.10:3080 --username="u1" --password="123456" --input="/tmp/traffic" --speed=2
