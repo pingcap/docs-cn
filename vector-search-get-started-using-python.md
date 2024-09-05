@@ -1,5 +1,5 @@
 ---
-title: 使用Python开始向量搜索
+title: 使用 Python 开始向量搜索
 summary: 了解如何使用 Python 和 TiDB 向量搜索快速开发可执行语义搜索的人工智能应用程序。
 ---
 
