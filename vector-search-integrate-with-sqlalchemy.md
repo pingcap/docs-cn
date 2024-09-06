@@ -1,30 +1,30 @@
 ---
-title: TiDB 向量搜索在 SQLAlchemy 中的使用
-summary: 了解如何在 SQLAlchemy 中 TiDB 使用向量搜索，，以存储向量并执行语义搜索。
+title: 在 SQLAlchemy 中使用 TiDB 向量搜索
+summary: 了解如何在 SQLAlchemy 中通过 TiDB 向量搜索功能存储向量并执行语义搜索。
 ---
 
-# TiDB 向量搜索在 SQLAlchemy 中的使用
+# 在 SQLAlchemy 中使用 TiDB 向量搜索
 
-本文档将展示如何使用 [SQLAlchemy](https://www.sqlalchemy.org/) 与 [TiDB 向量搜索](/vector-search-overview.md)进行交互、存储向量和执行向量搜索查询。
+本文档将展示如何使用 [SQLAlchemy](https://www.sqlalchemy.org/) 与 [TiDB 向量搜索](/vector-search-overview.md)进行交互，以及如何存储向量和执行向量搜索查询。
 
+## 前置需求
 
-## 准备
-在开始之前，你需要确定 TiDB 集群的部署方式以及以下内容被正确安装，
-- TiDB Serverless 集群
-  - [Python 3.8 or higher](https://www.python.org/downloads/)
-  - [Git](https://git-scm.com/downloads) 
-  - TiDB Serverless集群。如果没有 TiDB Cloud 集群，请按照[创建 TiDB Serverless集群](https://dev.mysql.com/doc/refman/8.4/en/mysql.html)创建自己的 TiDB Cloud 集群。
+为了能够顺利完成本文中的操作，你需要提前：
 
-- 本地部署的 TiDB 集群
-  - [Python 3.8 or higher](https://www.python.org/downloads/)
-  - [Git](https://git-scm.com/downloads) 
-  - TiDB 集群。如果没有集群，请按照[使用 TiUP 部署 TiDB 集群](/production-deployment-using-tiup.md)创建自己的 TiDB 集群。
+- 在你的机器上安装 [Python 3.8](https://www.python.org/downloads/) 或更高版本
+- 在你的机器上安装 [Git](https://git-scm.com/downloads)
+- 准备一个 TiDB 集群
+
+如果你还没有 TiDB 集群，可以按照以下任一种方式创建：
+
+- 参考[部署本地测试 TiDB 集群](/quick-start-with-tidb.md#部署本地测试集群)或[部署正式 TiDB 集群](/production-deployment-using-tiup.md)，创建本地集群。
+- 参考[创建 TiDB Serverless 集群](/develop/dev-guide-build-cluster-in-cloud.md#第-1-步创建-tidb-serverless-集群)，创建 TiDB Cloud 集群。
 
 ## 运行示例应用程序
 
 你可以通过以下步骤快速了解如何在 SQLAlchemy 中使用 TiDB 向量搜索。
 
-### 步骤 1. 克隆仓库
+### 第 1 步：克隆示例代码仓库
 
 将 `tidb-vector-python` 仓库克隆到本地：
 
@@ -32,9 +32,9 @@ summary: 了解如何在 SQLAlchemy 中 TiDB 使用向量搜索，，以存储�
 git clone https://github.com/pingcap/tidb-vector-python.git
 ```
 
-### 步骤 2. 创建虚拟环境
+### 第 2 步：创建虚拟环境
 
-为项目创建虚拟环境：
+为你的项目创建虚拟环境：
 
 ```bash
 cd tidb-vector-python/examples/orm-sqlalchemy-quickstart
@@ -42,9 +42,9 @@ python3 -m venv .venv
 source .venv/bin/activate
 ```
 
-### 步骤 3. 安装所需的依赖项
+### 第 3 步：安装所需的依赖
 
-安装示例项目所需的依赖项：
+安装示例项目所需的依赖：
 
 ```bash
 pip install -r requirements.txt
@@ -56,72 +56,72 @@ pip install -r requirements.txt
 pip install pymysql python-dotenv sqlalchemy tidb-vector
 ```
 
-### 步骤 4. 配置环境变量
-1. 根据 TiDB 集群的部署方式不同，选择对应的环境变量配置方式。
+### 第 4 步：配置环境变量
 
-    <SimpleTab>
+根据 TiDB 集群的部署方式不同，选择对应的环境变量配置方式。
 
-    <div label="TiDB Serverless 集群部署">
+<SimpleTab>
 
-    1. 在 [**Cluster**](https://tidbcloud.com/console/clusters) 页面，单击目标群集的名称进入其概览页面。
+<div label="TiDB 本地部署">
 
-    2. 单击右上角的**Connect**。此时将显示连接对话框。
+在 Python 项目的根目录下新建一个 `.env` 文件，并根据集群的启动参数修改相应的环境变量。
 
-    3. 确保连接对话框中的配置符合你的运行环境。
+- `HOST`：TiDB 集群的主机。
+- `PORT`：TiDB 集群的端口。
+- `USERNAME`：连接 TiDB 集群的用户名。
+- `PASSWORD`：连接 TiDB 集群的密码。
+- `DATABASE`：要连接的数据库名称。
+- `CA`：根证书文件的路径。
 
-    - **Endpoint Type** 设置为 `Public`
-    - **Branch** 设置为 `main`
-    - **Connect With** 设置为 `General`
-    - **Operating System** 与你的机器环境相匹配
+以下为 MacOS 的示例：
+
+```dotenv
+TIDB_DATABASE_URL="mysql+pymysql://<prefix>.root:<password>@127.0.0.1:4000/test?ssl_ca=/etc/ssl/cert.pem&ssl_verify_cert=true&ssl_verify_identity=true"
+```
+
+</div>
+
+<div label="TiDB Serverless 集群部署">
+
+1. 在 TiDB Cloud 的 [**Clusters**](https://tidbcloud.com/console/clusters) 页面，单击你的 TiDB Serverless 集群名，进入集群的 **Overview** 页面。
+
+2. 点击右上角的 **Connect** 按钮，将会弹出连接对话框。
+
+3. 确认对话框中的配置和你的运行环境一致。
+
+    - **Endpoint Type** 为 `Public`。
+    - **Branch** 选择 `main`。
+    - **Connect With** 选择 `General`。
+    - **Operating System** 为你的运行环境。
 
     > **Tip:**
     >
-    > 如果程序在 Windows Subsystem for Linux (WSL) 中运行，请切换到相应的 Linux 发行版。
+    > 如果你的程序在 Windows Subsystem for Linux (WSL) 中运行，请切换到相应的 Linux 发行版。
 
-    4. 单击 **PyMySQL** 标签，复制连接字符串。
+4. 单击 **PyMySQL** 选项卡，复制连接字符串。
 
     > **Tip:**
     >
-    > 如果尚未设置密码，单击**生成密码**生成一个随机密码。
+    > 如果你还没有设置密码，点击 **Generate Password** 生成一个随机密码。
 
-    5. 在 Python 项目的根目录下创建一个 `.env` 文件，并将连接字符串粘贴到其中。
+5. 在 Python 项目的根目录下新建一个 `.env` 文件，并将连接字符串粘贴到其中。
 
-    以下是 MacOS 的示例：
+    以下为 MacOS 的示例：
 
     ```dotenv
     TIDB_DATABASE_URL="mysql+pymysql://<prefix>.root:<password>@gateway01.<region>.prod.aws.tidbcloud.com:4000/test?ssl_ca=/etc/ssl/cert.pem&ssl_verify_cert=true&ssl_verify_identity=true"
     ```
 
-    </div>
+</div>
+</SimpleTab>
 
-    <div label="TiDB Self-hosted 集群部署">
-
-    在 Python 项目的根目录下创建一个 `.env` 文件，并根据启动的集群参数修改相应的环境变量中。
-
-    - `HOST`: TiDB 集群的主机。
-    - `PORT`: TiDB 集群的端口。
-    - `USERNAME`: 连接 TiDB 集群的用户名。
-    - `PASSWORD`: 连接 TiDB 集群的密码。
-    - `DATABASE`: 要连接的数据库名称。
-    - `CA`: 根证书文件的路径。
-
-    以下是 MacOS 的示例：
-
-    ```dotenv
-    TIDB_DATABASE_URL="mysql+pymysql://<prefix>.root:<password>@127.0.0.1:4000/test?ssl_ca=/etc/ssl/cert.pem&ssl_verify_cert=true&ssl_verify_identity=true"
-    ```
-
-    </div>
-
-    </SimpleTab>
-
-### 步骤 5. 运行demo
+### 第 5 步：运行示例应用程序
 
 ```bash
 python sqlalchemy-quickstart.py
 ```
 
-输出示例:
+输出示例：
 
 ```text
 Get 3-nearest neighbor documents:
@@ -140,11 +140,11 @@ Get documents within a certain distance:
 
 ## 示例代码片段
 
-你可以参考以下示例代码片段来完成自己的程序开发。
+你可以参考以下示例代码片段来完成自己的应用程序开发。
 
 ### 创建向量表
 
-#### 连接至 TiDB 集群
+#### 连接到 TiDB 集群
 
 ```python
 import os
@@ -162,7 +162,7 @@ engine = create_engine(tidb_connection_string)
 
 #### 定义向量列
 
-创建一个表格，其中有一列向量类型的 `embedding` ，用于存储三维向量。
+创建一个表格，其中包含一个向量数据类型的 `embedding` 列，用于存储三维向量。
 
 ```python
 Base = declarative_base()
@@ -174,7 +174,7 @@ class Document(Base):
     embedding = Column(VectorType(3))
 ```
 
-### 存储带有向量的文档
+### 存储包含向量的 `document`
 
 ```python
 with Session(engine) as session:
@@ -186,7 +186,7 @@ with Session(engine) as session:
 
 ### 搜索近邻向量
 
-我们可以选择使用余弦距离 (`CosineDistance`) 函数，查询与向量 `[1, 2, 3]` 语义最接近的前 3 个内容。
+可以选择使用余弦距离 (`CosineDistance`) 函数，查询与向量 `[1, 2, 3]` 语义最接近的前 3 个 `document`。
 
 ```python
 with Session(engine) as session:
@@ -198,7 +198,7 @@ with Session(engine) as session:
 
 ### 搜索一定距离内的向量
 
-我们可以选择使用余弦距离 (`CosineDistance`) 函数，查询与向量 `[1, 2, 3]` 的余弦距离小于 0.2 的向量。
+可以选择使用余弦距离 (`CosineDistance`) 函数，查询与向量 `[1, 2, 3]` 的余弦距离小于 0.2 的向量。
 
 ```python
 with Session(engine) as session:

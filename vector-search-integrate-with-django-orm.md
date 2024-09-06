@@ -1,11 +1,11 @@
 ---
-title: TiDB 向量搜索在 Django ORM 中的使用
+title: 在 Django ORM 中使用 TiDB 向量搜索
 summary: 了解如何在 Django ORM 中通过 TiDB 向量搜索功能存储向量并执行语义搜索。
 ---
 
-# TiDB 向量搜索在 Django ORM 中的使用
+# 在 Django ORM 中使用 TiDB 向量搜索
 
-本文档将展示如何使用 [Django](https://www.djangoproject.com/) ORM 与 TiDB 向量搜索进行交互、存储向量和执行向量搜索查询。
+本文档将展示如何使用 [Django](https://www.djangoproject.com/) ORM 与 [TiDB 向量搜索](/vector-search-overview.md)进行交互，以及如何存储向量和执行向量搜索查询。
 
 ## 前置需求
 
@@ -143,7 +143,7 @@ TIDB_CA_PATH=/etc/ssl/cert.pem
 
 </SimpleTab>
 
-### Step 5. 运行示例应用程序
+### 第 5 步：运行示例应用程序
 
 迁移数据库模式：
 
