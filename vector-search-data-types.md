@@ -45,14 +45,14 @@ INSERT INTO vector_table VALUES (2, NULL);
 ERROR 1105 (HY000): Invalid vector text: [5, ]
 ```
 
-前面的示例中 `embedding` 向量列的维度在建表时已经定义为 `3`，因此当插入其他维度的向量数据时，TiDB 会进行报错：
+下面的示例中 `embedding` 向量列的维度在建表时已经定义为 `3`，因此当插入其他维度的向量数据时，TiDB 会进行报错：
 
 ```sql
 [tidb]> INSERT INTO vector_table VALUES (4, '[0.3, 0.5]');
 ERROR 1105 (HY000): vector has 2 dimensions, does not fit VECTOR(3)
 ```
 
-你可以通过参阅[向量函数与操作符](/vector-search-functions-and-operators.md)了解向量数据类型支持的所有函数和操作符。
+可参阅[向量函数与操作符](/vector-search-functions-and-operators.md)了解向量数据类型支持的所有函数和操作符。
 
 ## 混合存储不同维度的向量
 
@@ -70,7 +70,7 @@ INSERT INTO vector_table VALUES (2, '[0.3, 0.5]');       -- 2 dimensions vector,
 
 ## 比较
 
-[比较运算符](/vector-search-functions-and-operators.md) 如 `=`, `!=`, `<`, `>`, `<=` 和 `>=` 等都能正常对向量数据进行比较。可参阅[向量函数与操作符](/vector-search-functions-and-operators.md)了解向量数据类型支持的所有函数和操作符。
+[比较运算符](/vector-search-functions-and-operators.md#扩展的内置函数和运算符) 如 `=`, `!=`, `<`, `>`, `<=` 和 `>=` 等都能正常对向量数据进行比较。可参阅[向量函数与操作符](/vector-search-functions-and-operators.md#扩展的内置函数和运算符)了解向量数据类型支持的所有函数和操作符。
 
 比较向量数据类型时，TiDB 会以向量中的各个元素为单位进行依次比较，如：
 
@@ -148,10 +148,10 @@ ERROR 1105 (HY000): vectors have different dimensions: 1 and 3
 
 可以使用以下函数在向量和字符串之间进行转换：
 
-- `CAST(... AS VECTOR)`: 将 String 类型转换为 Vector 类型
-- `CAST(... AS CHAR)`: 将 Vector 类型转换为 String 类型
-- `VEC_FROM_TEXT`: 将 String 类型转换为 Vector 类型
-- `VEC_AS_TEXT`: 将 Vector 类型转换为 String 类型
+- `CAST(... AS VECTOR)`: 将字符串类型转换为向量类型
+- `CAST(... AS CHAR)`: 将向量类型转换为字符串类型
+- `VEC_FROM_TEXT`: 将字符串类型转换为向量类型
+- `VEC_AS_TEXT`: 将向量类型转换为字符串类型
 
 出于易用性考虑，如果你使用的函数只支持向量数据类型（例如，向量相关距离函数），那么你也可以直接传入符合格式要求的字符串数据，TiDB 会进行隐式转换：
 
@@ -229,7 +229,7 @@ ERROR 1105 (HY000): vectors have different dimensions: 1 and 3
 
 - 向量最大支持 16383 维。
 - 向量数据中不支持 `NaN`、`Infinity` 和 `-Infinity` 浮点数。
-- 目前向量类型只支持单精度浮点数，不支持双精度浮点数。未来版本将支持这一功能。
+- 目前，向量类型不能存储双精度浮点数。计划在未来的版本中支持这一功能。在此期间，如果为向量类型导入双精度浮点数，它们将被转换为单精度数。
 
 有关其他限制，请参阅[向量搜索限制](/vector-search-limitations.md)。
 
