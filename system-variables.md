@@ -2990,7 +2990,7 @@ v5.0 后，用户仍可以单独修改以上系统变量（会有废弃警告）
 - 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：否
 - 类型：整数型
 - 默认值：`104857600`（100 MiB）
-- TiDB 后台定期对 Instance Plan Cache 进行逐出，这个变量控制 Cache 的目标内存，也就是说 TiDB 每次逐出都会尝试把 Plan Cache 逐出到这个变量的内存大小。
+- TiDB 后台定期对 Instance Plan Cache 进行清理，这个变量控制 Cache 的目标内存，也就是说 TiDB 每次会把 Plan Cache 清理到这个变量的内存大小。
 
 ### tidb_instance_plan_cache_max_mem_size <span class="version-mark">New in v8.4</span>
 
