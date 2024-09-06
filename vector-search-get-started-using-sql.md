@@ -23,8 +23,8 @@ TiDB 扩展了 MySQL 语法以支持[向量搜索](/vector-search-overview.md)�
 
 如果你还没有 TiDB 集群，可以按照以下任一种方式创建：
 
-- 参考[创建 TiDB Serverless 集群](/develop/dev-guide-build-cluster-in-cloud.md#第-1-步创建-tidb-serverless-集群)，创建 TiDB Cloud 集群。
 - 参考[部署本地测试 TiDB 集群](/quick-start-with-tidb.md#部署本地测试集群)或[部署正式 TiDB 集群](/production-deployment-using-tiup.md)，创建本地集群。
+- 参考[创建 TiDB Serverless 集群](/develop/dev-guide-build-cluster-in-cloud.md#第-1-步创建-tidb-serverless-集群)，创建 TiDB Cloud 集群。
 
 ## 快速开始
 
@@ -32,19 +32,56 @@ TiDB 扩展了 MySQL 语法以支持[向量搜索](/vector-search-overview.md)�
 
 根据不同的 TiDB 部署方式，使用不同的方法连接到 TiDB 集群。
 
-将连接命令输入至终端。以下是 macOS 的示例：
+<SimpleTab>
 
-- TiDB Serverless 集群
+<div label="本地部署 TiDB">
+
+在本地部署的集群启动后，将你的集群连接命令输入至终端：
+
+以下为 MacOS 的示例：
+
+```bash
+ mysql --comments --host 127.0.0.1 --port 4000 -u root
+```
+
+</div>
+
+<div label="TiDB Serverless">
+
+1. 在 TiDB Cloud 的 [**Clusters**](https://tidbcloud.com/console/clusters) 页面，单击你的 TiDB Serverless 集群名，进入集群的 **Overview** 页面。
+
+2. 点击右上角的 **Connect** 按钮，将会弹出连接对话框。
+
+3. 确认对话框中的配置和你的运行环境一致。
+
+    - **Endpoint Type** 为 `Public`。
+    - **Branch** 选择 `main`。
+    - **Connect With** 选择 `MySQL CLI`。
+    - **Operating System** 为你的运行环境。
+
+    > **Tip:**
+    >
+    > 如果你的程序在 Windows Subsystem for Linux (WSL) 中运行，请切换为对应的 Linux 发行版。
+
+4. 点击 **Connection String**，然后复制连接字符串。
+
+    > **Tip:**
+    >
+    > 如果你还没有设置密码，点击 **Generate Password** 生成一个随机密码。
+
+5. 在终端中执行连接字符串命令：
+
+    以下为 macOS 上的连接字符串示例：
 
    ```bash
     mysql -u '<prefix>.root' -h '<host>' -P 4000 -D 'test' --ssl-mode=VERIFY_IDENTITY --ssl-ca=/etc/ssl/cert.pem -p'<password>'
     ```
 
-- 本地部署的 TiDB 集群
+    注意替换 `<>` 中的占位符为你的集群实际对应的值。
 
-   ```bash
-    mysql --comments --host 127.0.0.1 --port 4000 -u root
-    ```
+</div>
+
+</SimpleTab>
 
 ### 第 2 步：创建向量表
 
