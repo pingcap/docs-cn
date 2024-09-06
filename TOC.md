@@ -633,7 +633,6 @@
     - [pd-ctl](/pd-control.md)
     - [tidb-ctl](/tidb-control.md)
     - [pd-recover](/pd-recover.md)
-    - [binlog-ctl](/tidb-binlog/binlog-control.md)
   - 命令行参数
     - [tidb-server](/command-line-flags-for-tidb-configuration.md)
     - [tikv-server](/command-line-flags-for-tikv-configuration.md)
