@@ -36,9 +36,9 @@ TiDB 扩展了 MySQL 语法以支持[向量搜索](/vector-search-overview.md)�
 
 <div label="本地部署 TiDB">
 
-在本地部署的集群启动后，将你的集群连接命令输入至终端：
+在本地部署的集群启动后，在终端中执行你的集群连接命令：
 
-以下为 MacOS 的示例：
+以下为 MacOS 上的连接命令示例：
 
 ```bash
  mysql --comments --host 127.0.0.1 --port 4000 -u root
@@ -52,32 +52,15 @@ TiDB 扩展了 MySQL 语法以支持[向量搜索](/vector-search-overview.md)�
 
 2. 点击右上角的 **Connect** 按钮，将会弹出连接对话框。
 
-3. 确认对话框中的配置和你的运行环境一致。
+3. 在连接对话框中，选择 **Connect With** 下拉列表中的 **MySQL CLI**，并保留 **Endpoint Type** 的默认值为 **Public**。
 
-    - **Endpoint Type** 为 `Public`。
-    - **Branch** 选择 `main`。
-    - **Connect With** 选择 `MySQL CLI`。
-    - **Operating System** 为你的运行环境。
+4. 如果你还没有设置密码，点击 **Generate Password** 生成一个随机密码。
 
-    > **Tip:**
-    >
-    > 如果你的程序在 Windows Subsystem for Linux (WSL) 中运行，请切换为对应的 Linux 发行版。
-
-4. 点击 **Connection String**，然后复制连接字符串。
-
-    > **Tip:**
-    >
-    > 如果你还没有设置密码，点击 **Generate Password** 生成一个随机密码。
-
-5. 在终端中执行连接字符串命令：
-
-    以下为 macOS 上的连接字符串示例：
+5. 复制对话框中的连接命令，并粘贴到终端中执行。以下为 macOS 上的连接命令示例：
 
    ```bash
     mysql -u '<prefix>.root' -h '<host>' -P 4000 -D 'test' --ssl-mode=VERIFY_IDENTITY --ssl-ca=/etc/ssl/cert.pem -p'<password>'
     ```
-
-    注意替换 `<>` 中的占位符为你的集群实际对应的值。
 
 </div>
 
@@ -156,7 +139,7 @@ SELECT * FROM embedded_documents;
 
 与全文搜索类似，在使用向量搜索时，你需要指定搜索词。
 
-在本例中，搜索词是“一种会游泳的动物”，假设其对应的向量是 `[1,2,3]`。在实际应用中，你需要使用嵌入模型将用户的搜索词转换为向量。
+在本例中，搜索词是“一种会游泳的动物”，假设其对应的向量是 `[1,2,3]`。在实际应用中，你需要使用[嵌入模型](/vector-search-overview.md#嵌入模型)将用户的搜索词转换为向量。
 
 执行以下 SQL 语句后，TiDB 会计算 `[1,2,3]` 与表中各向量之间的余弦距离 (`vec_cosine_distance`)，然后对这些距离进行排序并输出表中最接近搜索向量 (余弦距离最小) 的前三个向量。
 
@@ -180,7 +163,7 @@ LIMIT 3;
 3 rows in set (0.15 sec)
 ```
 
-搜索结果中的 3 个词会按向量的远近排列：距离越小，对应的 `document` 越相关。
+搜索结果中的 3 个词会按向量的距离排列：距离越小，对应的 `document` 越相关。
 
 因此，从输出结果来看，会游泳的动物很可能是一条鱼 (`fish`)，或者是一只有游泳天赋的狗 (`dog`)。
 
