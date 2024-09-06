@@ -195,6 +195,8 @@ delta_index_cache_size = 0
 
     ## `max_threads`: 默认值为系统的 CPU 核数，TiFlash 执行最大线程数，
     ## 此参数只会在系统变量 `tidb_max_tiflash_threads` 设置为 -1 的时候生效
+    ## 例如，如果 CPU 核数为 32，则该参数设置如下：
+    max_threads = 32
 
     ## 单次查询过程中，节点对中间数据的内存限制
     ## 设置为整数时，单位为 byte，比如 34359738368 表示 32 GiB 的内存限制，0 表示无限制
