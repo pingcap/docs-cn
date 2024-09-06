@@ -130,7 +130,7 @@ INSERT INTO vector_table VALUES (2, '[0.3, 0.5]');       -- 2 dimensions vector,
 +---------------------------------------------+
 1 row in set (0.01 sec)
 
-mysql> SELECT VEC_FROM_TEXT('[2,3,4]') - VEC_FROM_TEXT('[1,2,3]');
+[tidb]> SELECT VEC_FROM_TEXT('[2,3,4]') - VEC_FROM_TEXT('[1,2,3]');
 +-----------------------------------------------------+
 | VEC_FROM_TEXT('[2,3,4]') - VEC_FROM_TEXT('[1,2,3]') |
 +-----------------------------------------------------+
