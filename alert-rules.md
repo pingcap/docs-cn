@@ -6,7 +6,7 @@ aliases: ['/docs-cn/dev/alert-rules/','/docs-cn/dev/reference/alert-rules/']
 
 # TiDB 集群报警规则
 
-本文介绍了 TiDB 集群中各组件的报警规则，包括 TiDB、TiKV、PD、TiFlash、TiDB Binlog、TiCDC、Node_exporter 和 Blackbox_exporter 的各报警项的规则描述及处理方法。
+本文介绍了 TiDB 集群中各组件的报警规则，包括 TiDB、TiKV、PD、TiFlash、TiCDC、Node_exporter 和 Blackbox_exporter 的各报警项的规则描述及处理方法。
 
 按照严重程度由高到低，报警项可分为紧急级别 \> 严重级别 \> 警告级别三类。该分级适用于以下各组件的报警项。
 
@@ -136,12 +136,11 @@ aliases: ['/docs-cn/dev/alert-rules/','/docs-cn/dev/reference/alert-rules/']
     TiDB 服务中发生的事件数量。当出现以下事件的时候会报警：
 
     1. start：TiDB 服务启动。
-    2. hang：当发生了 Critical 级别的事件时（目前只有 Binlog 写不进去一种情况），TiDB 进入 `hang` 模式，并等待人工 Kill。
+    2. hang：当发生了 Critical 级别的事件时，TiDB 进入 `hang` 模式，并等待人工 Kill。
 
 * 处理方法：
 
     * 重启 TiDB 以恢复服务。
-    * 检查 TiDB Binlog 服务是否正常。
 
 #### `TiDB_tikvclient_backoff_seconds_count`
 
@@ -785,10 +784,6 @@ aliases: ['/docs-cn/dev/alert-rules/','/docs-cn/dev/reference/alert-rules/']
 ## TiFlash 报警规则
 
 关于 TiFlash 报警规则的详细描述，参见 [TiFlash 报警规则](/tiflash/tiflash-alert-rules.md)。
-
-## TiDB Binlog 报警规则
-
-关于 TiDB Binlog 报警规则的详细描述，参见 [TiDB Binlog 集群监控报警文档](/tidb-binlog/monitor-tidb-binlog-cluster.md#监控报警规则)。
 
 ## TiCDC 报警规则
 

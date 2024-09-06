@@ -739,36 +739,7 @@ opentracing.reporter 相关的设置。
 + 单位：MB
 + 类型：Float
 
-## binlog
 
-TiDB Binlog 相关配置。
-
-### `enable`
-
-+ binlog 开关。
-+ 默认值：false
-
-### `write-timeout`
-
-+ 写 binlog 的超时时间，推荐不修改该值。
-+ 默认值：15s
-+ 单位：秒
-
-### `ignore-error`
-
-+ 忽略写 binlog 发生的错误时处理开关，推荐不修改该值。
-+ 默认值：false
-+ 如果设置为 `true`，发生错误时，TiDB 会停止写入 binlog，并且在监控项 `tidb_server_critical_error_total` 上计数加 1；如果设置为 `false`，写入 binlog 失败，会停止整个 TiDB 的服务。
-
-### `binlog-socket`
-
-+ binlog 输出网络地址。
-+ 默认值：""
-
-### `strategy`
-
-+ binlog 输出时选择 pump 的策略，仅支持 hash，range 方法。
-+ 默认值："range"
 
 ## status
 

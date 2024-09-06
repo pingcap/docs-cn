@@ -231,11 +231,11 @@ Status 列用 `Up` 或者 `Down` 表示该服务是否正常。对于 PD 组件�
 
 缩容即下线服务，最终会将指定的节点从集群中移除，并删除遗留的相关文件。
 
-由于 TiKV、TiFlash 和 TiDB Binlog 组件的下线是异步的（需要先通过 API 执行移除操作）并且下线过程耗时较长（需要持续观察节点是否已经下线成功），所以对 TiKV、TiFlash 和 TiDB Binlog 组件做了特殊处理：
+由于 TiKV 和 TiFlash 组件的下线是异步的（需要先通过 API 执行移除操作）并且下线过程耗时较长（需要持续观察节点是否已经下线成功），所以对 TiKV 和 TiFlash 组件做了特殊处理：
 
-- 对 TiKV、TiFlash 及 Binlog 组件的操作
+- 对 TiKV 和 TiFlash组件的操作
     - TiUP cluster 通过 API 将其下线后直接退出而不等待下线完成
-    - 等之后再执行集群操作相关的命令时，会检查是否存在已经下线完成的 TiKV、TiFlash 或者 Binlog 节点。如果不存在，则继续执行指定的操作；如果存在，则执行如下操作：
+    - 等之后再执行集群操作相关的命令时，会检查是否存在已经下线完成的 TiKV 或者 TiFlash 节点。如果不存在，则继续执行指定的操作；如果存在，则执行如下操作：
         1. 停止已经下线掉的节点的服务
         2. 清理已经下线掉的节点的相关数据文件
         3. 更新集群的拓扑，移除已经下线掉的节点
@@ -600,7 +600,7 @@ tiup cluster exec test-cluster --command='ls /tmp'
 
 ```bash
 Usage:
-  tiup ctl:v<CLUSTER_VERSION> {tidb/pd/tikv/binlog/etcd} [flags]
+  tiup ctl:v<CLUSTER_VERSION> {tidb/pd/tikv/etcd} [flags]
 
 Flags:
   -h, --help   help for tiup
@@ -612,7 +612,6 @@ Flags:
 tidb-ctl [args] = tiup ctl tidb [args]
 pd-ctl [args] = tiup ctl pd [args]
 tikv-ctl [args] = tiup ctl tikv [args]
-binlogctl [args] = tiup ctl bindlog [args]
 etcdctl [args] = tiup ctl etcd [args]
 ```
 

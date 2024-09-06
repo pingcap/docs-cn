@@ -40,11 +40,6 @@ aliases: ['/docs-cn/dev/command-line-flags-for-tidb-configuration/','/docs-cn/de
 + 用于设置 TiDB HTTP 状态服务的 Access-Control-Allow-Origin
 + 默认：""
 
-## `--enable-binlog`
-
-+ 开启或关闭 TiDB 中 binlog 的生成
-+ 默认：false
-
 ## `--host`
 
 + TiDB 服务监听的 host
