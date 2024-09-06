@@ -192,10 +192,9 @@ delta_index_cache_size = 0
     ## 在 v6.2.0 以及后续版本，强烈建议保留默认值 `false`，不要将其修改为 `true`。具体请参考已知问题 [#5576](https://github.com/pingcap/tiflash/issues/5576)。
     # dt_enable_logical_split = false
 
-    ## `max_threads`: 默认值为系统的 CPU 核数，TiFlash 执行最大线程数，
-    ## 此参数只会在系统变量 `tidb_max_tiflash_threads` 设置为 -1 的时候生效
-    ## 例如，如果 CPU 核数为 32，则该参数设置如下：
-    max_threads = 32
+    ## `max_threads`: 执行一个 MMP Task 的线程并发度，默认值为 0，当值为 0 时，该值被设置为 CPU 核数。
+    ## 此参数只会在系统变量 `tidb_max_tiflash_threads` 设置为 -1 的时候生效。
+    max_threads = 0
 
     ## 单次查询过程中，节点对中间数据的内存限制
     ## 设置为整数时，单位为 byte，比如 34359738368 表示 32 GiB 的内存限制，0 表示无限制
