@@ -217,10 +217,10 @@ dispatchers = [
 
 Topic 分发器用 topic = "xxx" 来指定，并使用 topic 表达式来实现灵活的 topic 分发策略。topic 的总数建议小于 1000。
 
-Topic 表达式的基本规则为 `[prefix][{schema}][middle][{table}][suffix]`，详细解释如下：
+Topic 表达式的基本规则为 `[prefix]{schema}[middle][{table}][suffix]`，详细解释如下：
 
 - `prefix`：可选项，代表 Topic Name 的前缀。
-- `{schema}`：可选项，用于匹配库名。
+- `{schema}`：必选项，用于匹配库名。从 v7.1.4 开始，该参数为可选项。
 - `middle`：可选项，代表库表名之间的分隔符。
 - `{table}`：可选项，用于匹配表名。
 - `suffix`：可选项，代表 Topic Name 的后缀。
