@@ -100,7 +100,7 @@ TiDB 扩展了以下内置函数和运算符的功能，因此这些函数和运
 VEC_L2_DISTANCE(vector1, vector2)
 ```
 
-该函数用于计算两个向量之间的 [L2 (欧式距离)](https://zh.wikipedia.org/wiki/%E6%AC%A7%E5%87%A0%E9%87%8C%E5%BE%97%E8%B7%9D%E7%A6%BB)，使用的公式为：
+计算两个向量之间的 [L2 (欧式距离)](https://zh.wikipedia.org/wiki/%E6%AC%A7%E5%87%A0%E9%87%8C%E5%BE%97%E8%B7%9D%E7%A6%BB)，使用的公式为：
 
 $DISTANCE(p,q)=\sqrt {\sum \limits _{i=1}^{n}{(p_{i}-q_{i})^{2}}}$
 
@@ -123,7 +123,7 @@ $DISTANCE(p,q)=\sqrt {\sum \limits _{i=1}^{n}{(p_{i}-q_{i})^{2}}}$
 VEC_COSINE_DISTANCE(vector1, vector2)
 ```
 
-该函数用于计算两个向量之间的[余弦 (cosine)](https://zh.wikipedia.org/wiki/%E4%BD%99%E5%BC%A6%E7%9B%B8%E4%BC%BC%E6%80%A7) 距离，使用的公式为：
+计算两个向量之间的[余弦 (cosine)](https://zh.wikipedia.org/wiki/%E4%BD%99%E5%BC%A6%E7%9B%B8%E4%BC%BC%E6%80%A7) 距离，使用的公式为：
 
 $DISTANCE(p,q)=1.0 - {\frac {\sum \limits _{i=1}^{n}{p_{i}q_{i}}}{{\sqrt {\sum \limits _{i=1}^{n}{p_{i}^{2}}}}\cdot {\sqrt {\sum \limits _{i=1}^{n}{q_{i}^{2}}}}}}$
 
@@ -146,7 +146,7 @@ $DISTANCE(p,q)=1.0 - {\frac {\sum \limits _{i=1}^{n}{p_{i}q_{i}}}{{\sqrt {\sum \
 VEC_NEGATIVE_INNER_PRODUCT(vector1, vector2)
 ```
 
-该函数用于计算两个向量之间[内积](https://zh.wikipedia.org/wiki/%E7%82%B9%E7%A7%AF)的负值，使用的公式为：
+计算两个向量之间[内积](https://zh.wikipedia.org/wiki/%E7%82%B9%E7%A7%AF)的负值，使用的公式为：
 
 $DISTANCE(p,q)=- INNER\_PROD(p,q)=-\sum \limits _{i=1}^{n}{p_{i}q_{i}}$
 
@@ -169,7 +169,7 @@ $DISTANCE(p,q)=- INNER\_PROD(p,q)=-\sum \limits _{i=1}^{n}{p_{i}q_{i}}$
 VEC_L1_DISTANCE(vector1, vector2)
 ```
 
-该函数用于计算两个向量之间的 [L1 距离](https://zh.wikipedia.org/wiki/%E6%9B%BC%E5%93%88%E9%A0%93%E8%B7%9D%E9%9B%A2) (曼哈顿距离)，使用的公式为：
+计算两个向量之间的 [L1 距离](https://zh.wikipedia.org/wiki/%E6%9B%BC%E5%93%88%E9%A0%93%E8%B7%9D%E9%9B%A2) (曼哈顿距离)，使用的公式为：
 
 $DISTANCE(p,q)=\sum \limits _{i=1}^{n}{|p_{i}-q_{i}|}$
 
@@ -192,7 +192,7 @@ $DISTANCE(p,q)=\sum \limits _{i=1}^{n}{|p_{i}-q_{i}|}$
 VEC_DIMS(vector)
 ```
 
-该函数返回给定向量的维度。
+返回向量的维度。
 
 示例：
 
@@ -218,7 +218,7 @@ VEC_DIMS(vector)
 VEC_L2_NORM(vector)
 ```
 
-该函数用于计算给定向量的 [L2 范数](https://zh.wikipedia.org/wiki/%E8%8C%83%E6%95%B0)（欧几里得范数），使用的公式为：
+计算向量的 [L2 范数](https://zh.wikipedia.org/wiki/%E8%8C%83%E6%95%B0)（欧几里得范数），使用的公式为：
 
 $NORM(p)=\sqrt {\sum \limits _{i=1}^{n}{p_{i}^{2}}}$
 
@@ -239,7 +239,7 @@ $NORM(p)=\sqrt {\sum \limits _{i=1}^{n}{p_{i}^{2}}}$
 VEC_FROM_TEXT(string)
 ```
 
-该函数用于将字符串类型转换为向量类型。
+将字符串类型转换为向量类型。
 
 示例：
 
@@ -258,7 +258,7 @@ VEC_FROM_TEXT(string)
 VEC_AS_TEXT(vector)
 ```
 
-该函数用于将向量类型转换为字符串类型。
+将向量类型转换为字符串类型。
 
 示例：
 
