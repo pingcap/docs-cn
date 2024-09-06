@@ -63,10 +63,22 @@ tiproxyctl [flags] [command]
 示例：
 
 ```
-tiproxyctl --curls 127.0.0.1:3080 config get
+tiproxyctl --host 127.0.0.1 --port 3080 config get
 ```
 
 ### 选项
+
+#### `--host`
+
++ 指定 TiProxy 服务器地址。
++ 类型：`string`
++ 默认值：`localhost`
+
+#### `--port`
+
++ 指定 TiProxy API 网关地址的端口号。
++ 类型：`int`
++ 默认值：`3080`
 
 #### `--log_encoder`
 
@@ -84,13 +96,6 @@ tiproxyctl --curls 127.0.0.1:3080 config get
 + 类型：`string`
 + 默认值：`"warn"`
 + 可以指定以下日志级别之一：`debug`、`info`、`warn`、`error`、`panic`。
-
-#### `--curls`
-
-+ 指定服务器地址。可以添加多个监听地址。
-+ 类型：逗号分隔的 ip:port 列表
-+ 默认值：`localhost:3080`
-+ 服务器 API 网关地址。
 
 #### `-k, --insecure`
 
@@ -155,7 +160,7 @@ level = 'warning'
 例如，以下命令连接到 TiProxy 实例 `10.0.1.10:3080`，捕获一个小时的流量，并保存到 TiProxy 实例的 `/tmp/traffic` 目录下：
     
 ```shell
-tiproxyctl traffic capture --curls 10.0.1.10:3080 --output="/tmp/traffic" --duration=1h
+tiproxyctl traffic capture --host 10.0.1.10 --port 3080 --output="/tmp/traffic" --duration=1h
 ```
 
 #### `traffic replay`
@@ -172,7 +177,7 @@ tiproxyctl traffic capture --curls 10.0.1.10:3080 --output="/tmp/traffic" --dura
 例如，如下命令通过用户名 `u1` 和密码 `123456` 连接到 TiProxy 实例 `10.0.1.10:3080`，并从 TiProxy 实例的 `/tmp/traffic` 目录下读取流量文件，按 2 倍速率回放流量：
 
 ```shell
-tiproxyctl traffic replay --curls 10.0.1.10:3080 --username="u1" --password="123456" --input="/tmp/traffic" --speed=2
+tiproxyctl traffic replay --host 10.0.1.10 --port 3080 --username="u1" --password="123456" --input="/tmp/traffic" --speed=2
 ```
 
 #### `traffic cancel`
