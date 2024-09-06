@@ -68,7 +68,7 @@ pip install sqlalchemy pymysql sentence-transformers tidb-vector python-dotenv
 
     > **Tip:**
     >
-    > 如果你的项目在 Windows Subsystem for Linux (WSL) 中运行，请切换为对应的 Linux 发行版。
+    > 如果你的程序在 Windows Subsystem for Linux (WSL) 中运行，请切换为对应的 Linux 发行版。
 
 4. 单击 **PyMySQL** 选项卡，复制连接字符串。
 
@@ -97,7 +97,7 @@ pip install sqlalchemy pymysql sentence-transformers tidb-vector python-dotenv
 - `DATABASE`：要连接的数据库名称。
 - `CA_PATH`：根证书文件的路径。
 
-以下是 MacOS 的示例：
+以下为 MacOS 的示例：
 
 ```dotenv
 TIDB_DATABASE_URL="mysql+pymysql://<prefix>.root:<password>@<host>:4000/test?ssl_ca=/etc/ssl/cert.pem&ssl_verify_cert=true&ssl_verify_identity=true"
