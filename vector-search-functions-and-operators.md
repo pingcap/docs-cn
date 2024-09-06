@@ -192,7 +192,7 @@ $DISTANCE(p,q)=\sum \limits _{i=1}^{n}{|p_{i}-q_{i}|}$
 VEC_DIMS(vector)
 ```
 
-该函数返回给定向量的维度。
+返回向量的维度。
 
 示例：
 
@@ -218,7 +218,7 @@ VEC_DIMS(vector)
 VEC_L2_NORM(vector)
 ```
 
-计算给定向量的 [L2 范数](https://zh.wikipedia.org/wiki/%E8%8C%83%E6%95%B0)（欧几里得范数），使用的公式为：
+计算向量的 [L2 范数](https://zh.wikipedia.org/wiki/%E8%8C%83%E6%95%B0)（欧几里得范数），使用的公式为：
 
 $NORM(p)=\sqrt {\sum \limits _{i=1}^{n}{p_{i}^{2}}}$
 
