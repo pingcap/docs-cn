@@ -99,6 +99,7 @@ summary: 介绍 TiProxy 的流量回放的使用场景和使用步骤。
     - `digest`: 执行失败的 SQL 语句的指纹。
     - `sample_stmt`: 该 SQL 语句首次执行失败时的 SQL 文本。
     - `sample_err_msg`: 以上 SQL 语句执行失败的报错信息。
+    - `sample_conn_id`: 以上 SQL 语句在流量文件中记录的连接 ID，可用于在流量文件中查看 SQL 语句的执行上下文。
     - `sample_capture_time`: 以上 SQL 语句在流量文件中记录的执行时间，可用于在流量文件中查看 SQL 语句的执行上下文。
     - `sample_replay_time`: 以上 SQL 语句在回放时执行失败的时间，可用于在 TiDB 日志文件中查看错误信息。
     - `count`: 该 SQL 语句执行失败的次数。
@@ -109,6 +110,10 @@ summary: 介绍 TiProxy 的流量回放的使用场景和使用步骤。
     - `sample_err_msg`: 该错误首次出现时的完整错误信息。
     - `sample_replay_time`: 该错误在回放时执行失败的时间，可用于在 TiDB 日志文件中查看错误信息。
     - `count`: 该错误出现的次数。
+
+    > **注意：**
+    >
+    > `tiproxy_traffic_report` 中的表结构在后续版本中可能会改变，因此不推荐在应用程序开发或工具开发中读取 `tiproxy_traffic_report` 中的数据。
 
 ## 使用限制
 
