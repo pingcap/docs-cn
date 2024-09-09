@@ -5,36 +5,41 @@ summary: 展示如何在 LangChain 中使用 TiDB 向量搜索
 
 # 在 LangChain 中使用 TiDB 向量搜索
 
-本文档展示如何在 [LangChain](https://python.langchain.com/) 中使用 [TiDB 向量搜索](/vector-search-overview.md)。
+本文档将展示如何在 [LangChain](https://python.langchain.com/) 中使用 [TiDB 向量搜索](/vector-search-overview.md)。
 
 > **Note**
 >
-> - 您可以在 Jupyter Notebook 上查看完整的 [示例代码](https://github.com/langchain-ai/langchain/blob/master/docs/docs/integrations/vectorstores/tidb_vector.ipynb)，也可以直接在 [Colab](https://colab.research.google.com/github/langchain-ai/langchain/blob/master/docs/docs/integrations/vectorstores/tidb_vector.ipynb) 在线环境中运行示例代码。
+> 你可以在 Jupyter Notebook 上查看完整的[示例代码](https://github.com/langchain-ai/langchain/blob/master/docs/docs/integrations/vectorstores/tidb_vector.ipynb)，也可以直接在 [Colab](https://colab.research.google.com/github/langchain-ai/langchain/blob/master/docs/docs/integrations/vectorstores/tidb_vector.ipynb) 在线环境中运行示例代码。
 
 ## 前置需求
 
-- 推荐 [Python 3.8](https://www.python.org/downloads/) 及以上版本。
-- [Jupyter Notebook](https://jupyter.org/install)。
-- [Git](https://git-scm.com/downloads)。
-- TiDB 集群，如果你还没有 TiDB 集群，可以按照以下方式创建：
-  - TiDB Serverless 集群。如果没有 TiDB Cloud 集群，请按照 [创建 TiDB Serverless集群](https://dev.mysql.com/doc/refman/8.4/en/mysql.html) 创建自己的 TiDB Cloud 集群。
-  - 本地部署的 TiDB 集群。如果没有集群，请按照 [使用 TiUP 部署 TiDB 集群](/production-deployment-using-tiup.md) 创建自己的 TiDB 集群。
+为了能够顺利完成本文中的操作，你需要提前：
 
-## 开始
+- 在你的机器上安装 [Python 3.8](https://www.python.org/downloads/) 或更高版本
+- 在你的机器上安装 [Jupyter Notebook](https://jupyter.org/install)
+- 在你的机器上安装 [Git](https://git-scm.com/downloads)
+- 准备一个 TiDB 集群
 
-本节将逐步说明如何在 LangChain 中使用 TiDB 向量搜索进行语义搜索。
+如果你还没有 TiDB 集群，可以按照以下任一种方式创建：
 
-### 步骤 1. 创建新的 Jupyter Notebook 文件
+- 参考[部署本地测试 TiDB 集群](/quick-start-with-tidb.md#部署本地测试集群)或[部署正式 TiDB 集群](/production-deployment-using-tiup.md)，创建本地集群。
+- 参考[创建 TiDB Serverless 集群](/develop/dev-guide-build-cluster-in-cloud.md#第-1-步创建-tidb-serverless-集群)，创建 TiDB Cloud 集群。
 
-在根目录下新建一个名为 `integrate_with_langchain.ipynb` 的 Jupyter Notebook 文件：
+## 快速开始
+
+本节将详细介绍如何将 TiDB 的向量搜索功能与 LangChain 结合使用，以实现语义搜索。
+
+### 第 1 步：新建 Jupyter Notebook 文件
+
+在根目录下，新建一个名为 `integrate_with_langchain.ipynb` 的 Jupyter Notebook 文件：
 
 ```shell
 touch integrate_with_langchain.ipynb
 ```
 
-### 步骤 2. 安装所需的依赖项
+### 第 2 步：安装所需的依赖
 
-在项目目录下运行以下命令安装所需的软件包：
+在你的项目目录下，运行以下命令安装所需的软件包：
 
 ```shell
 !pip install langchain langchain-community
@@ -52,58 +57,13 @@ from langchain_openai import OpenAIEmbeddings
 from langchain_text_splitters import CharacterTextSplitter
 ```
 
-### 步骤 3. 设置环境
+### 第 3 步：配置环境变量
+
 <SimpleTab>
-
-<div label="TiDB Serverless 集群部署">
-
-#### 步骤 3.1 获取 TiDB 群集的连接字符串
-
-  1. 在 [**Cluster**](https://tidbcloud.com/console/clusters) 界面，单击目标群集的名称进入其概览页面。
-
-  2. 单击右上角的**Connect**。此时将显示连接对话框。
-
-  3. 确保连接对话框中的配置符合您的运行环境。
-
-     - **Connection Type** 设置为 `Public`.
-     - **Branch** 设置为 `main`.
-     - **Connect With** 设置为 `SQLAlchemy`.
-     - **Operating System** 与你的系统环境相匹配.
-
-  4. 点击 **PyMySQL** 标签，复制连接字符串。
-
-     > **Tip:**
-     >
-     > 如果尚未设置密码，请单击**Generate Password**生成一个随机密码。
-
-#### 步骤 3.2 配置环境变量
-
-要建立安全高效的数据库连接，请使用 TiDB 提供的标准连接方法。
-
-本文档使用 [OpenAI](https://platform.openai.com/docs/introduction) 作为嵌入模型生成向量嵌入。在此步骤中，你需要提供从步骤 3.1 中获取的连接字符串和 [OpenAI API 密钥](https://platform.openai.com/docs/quickstart/step-2-set-up-your-api-key)。
-
-运行以下代码，配置环境变量。代码运行后，系统会提示输入连接字符串和 OpenAI API 密钥：
-
-```python
-# Use getpass to securely prompt for environment variables in your terminal.
-import getpass
-import os
-
-# Copy your connection string from the TiDB Cloud console.
-# Connection string format: "mysql+pymysql://<USER>:<PASSWORD>@<HOST>:4000/<DB>?ssl_ca=/etc/ssl/cert.pem&ssl_verify_cert=true&ssl_verify_identity=true"
-tidb_connection_string = getpass.getpass("TiDB Connection String:")
-os.environ["OPENAI_API_KEY"] = getpass.getpass("OpenAI API Key:")
-```
-
-</div>
 
 <div label="本地部署 TiDB">
 
-#### 步骤 3.1 配置环境变量
-
-要建立安全高效的数据库连接，请使用 TiDB 提供的标准连接方法。
-
-本文档使用 [OpenAI](https://platform.openai.com/docs/introduction) 作为嵌入模型生成向量嵌入。在此步骤中，你需要提供从步骤 3.1 中获取的连接字符串和 [OpenAI API 密钥](https://platform.openai.com/docs/quickstart/step-2-set-up-your-api-key)。
+本文档使用 [OpenAI](https://platform.openai.com/docs/introduction) 作为嵌入模型生成向量嵌入。在此步骤中，你需要提供从集群的连接字符串和 [OpenAI API 密钥](https://platform.openai.com/docs/quickstart/step-2-set-up-your-api-key)。
 
 运行以下代码，配置环境变量。代码运行后，系统会提示输入连接字符串和 OpenAI API 密钥：
 
@@ -117,29 +77,71 @@ import os
 tidb_connection_string = getpass.getpass("TiDB Connection String:")
 os.environ["OPENAI_API_KEY"] = getpass.getpass("OpenAI API Key:")
 ```
+
 例如，macOS 上的连接字符串如下所示：
 
 ```dotenv
 TIDB_DATABASE_URL="mysql+pymysql://<prefix>.root:<password>@gateway01.<region>.prod.aws.tidbcloud.com:4000/test?ssl_ca=/etc/ssl/cert.pem&ssl_verify_cert=true&ssl_verify_identity=true"
 ```
+
 注意替换为你的 TiDB 实际对应的值。
+
+</div>
+
+<div label="TiDB Serverless 集群部署">
+
+对于 TiDB Serverless 集群，请按照以下步骤获取 TiDB 群集的连接字符串，然后配置环境变量：
+
+1. 在 TiDB Cloud 的 [**Clusters**](https://tidbcloud.com/console/clusters) 页面，单击你的 TiDB Serverless 集群名，进入集群的 **Overview** 页面。
+
+2. 点击右上角的 **Connect** 按钮，将会弹出连接对话框。
+
+3. 确认对话框中的配置和你的运行环境一致。
+
+     - **Connection Type** 为 `Public`。
+     - **Branch** 选择 `main`.
+     - **Connect With** 选择 `SQLAlchemy`.
+     - **Operating System** 为你的运行环境。
+
+4. 点击 **PyMySQL** 选项卡，复制连接字符串。
+
+     > **Tip:**
+     >
+     > 如果你还没有设置密码，点击 **Generate Password** 生成一个随机密码。
+
+5. 配置环境变量。
+
+    本文档使用 [OpenAI](https://platform.openai.com/docs/introduction) 作为嵌入模型生成向量嵌入。在此步骤中，你需要提供从上一步中获取的连接字符串和 [OpenAI API 密钥](https://platform.openai.com/docs/quickstart/step-2-set-up-your-api-key)。
+
+    运行以下代码，配置环境变量。代码运行后，系统会提示输入连接字符串和 OpenAI API 密钥：
+
+    ```python
+    # Use getpass to securely prompt for environment variables in your terminal.
+    import getpass
+    import os
+
+    # Copy your connection string from the TiDB Cloud console.
+    # Connection string format: "mysql+pymysql://<USER>:<PASSWORD>@<HOST>:4000/<DB>?ssl_ca=/etc/ssl/cert.pem&ssl_verify_cert=true&ssl_verify_identity=true"
+    tidb_connection_string = getpass.getpass("TiDB Connection String:")
+    os.environ["OPENAI_API_KEY"] = getpass.getpass("OpenAI API Key:")
+    ```
 
 </div>
 
 </SimpleTab>
 
-### 步骤 4. 加载样本文件
+### 第 4 步：加载样本文档
 
-#### 步骤 4.1 下载样本文件
+#### 4.1 下载样本文档
 
-在项目目录中创建名为 `data/how_to/` 的目录，并从 [langchain-ai/langchain](https://github.com/langchain-ai/langchain) 代码库中下载示例文档 [`state_of_the_union.txt`](https://github.com/langchain-ai/langchain/blob/master/docs/docs/how_to/state_of_the_union.txt) 。
+在你的项目目录中创建一个名为 `data/how_to/` 的目录，然后从 [langchain-ai/langchain](https://github.com/langchain-ai/langchain) 代码库中下载样本文档 [`state_of_the_union.txt`](https://github.com/langchain-ai/langchain/blob/master/docs/docs/how_to/state_of_the_union.txt) 。
 
 ```shell
 !mkdir -p 'data/how_to/'
 !wget 'https://raw.githubusercontent.com/langchain-ai/langchain/master/docs/docs/how_to/state_of_the_union.txt' -O 'data/how_to/state_of_the_union.txt'
 ```
 
-#### 步骤 4.2 加载和分割文件
+#### 4.2 加载并分割文档
 
 从 `data/how_to/state_of_the_union.txt` 中加载示例文档，并使用 `CharacterTextSplitter` 将其分割成每块约 1000 个字符的文本块。
 
@@ -150,11 +152,11 @@ text_splitter = CharacterTextSplitter(chunk_size=1000, chunk_overlap=0)
 docs = text_splitter.split_documents(documents)
 ```
 
-### 步骤 5. 向量的生成和存储
+### 第 5 步：生成并存储文档向量
 
 TiDB 支持使用余弦距离 (`cosine`) 和欧式距离 (`L2`) 来评估向量之间的相似性。在存储向量时，默认使用余弦距离。
 
-以下代码在 TiDB 中创建了表 `embedded_documents`，该表针针对向量搜索进行了优化。
+以下代码将在 TiDB 中创建一个 `embedded_documents` 表，该表针对向量搜索进行了优化。
 
 ```python
 embeddings = OpenAIEmbeddings()
@@ -169,17 +171,17 @@ vector_store = TiDBVectorStore.from_documents(
 
 成功执行后，你可以直接查看和访问 TiDB 数据库中的 `embedded_documents` 表。
 
-### 步骤 6. 执行向量搜索
+### 第 6 步：执行向量搜索
 
-本节展示如何在文档 `state_of_the_union.txt` 中查询 "What did the president say about Ketanji Brown Jackson"。
+本节将展示如何在 `state_of_the_union.txt` 文档中查询 "What did the president say about Ketanji Brown Jackson"。
 
 ```python
 query = "What did the president say about Ketanji Brown Jackson"
 ```
 
-#### 选项 1：使用 `similarity_search_with_score()`
+#### 方式一：使用 `similarity_search_with_score()`
 
-`similarity_search_with_score()` 方法计算文档内容与查询语句之间的向量距离。该距离可作为相似性得分，距离的计算方式可由所选的 `distance_strategy` 决定。该方法会返回得分最低的前 `k` 个文档。得分越低，说明文档与查询之间的相似度越高。
+`similarity_search_with_score()` 方法用于计算文档内容与查询语句之间的向量距离。该距离是一个相似度的得分，其计算方式由所选的 `distance_strategy` 决定。该方法会返回得分最低的前 `k` 个文档。得分越低，说明文档与你的查询语句之间的相似度越高。
 
 ```python
 docs_with_score = vector_store.similarity_search_with_score(query, k=3)
@@ -191,7 +193,7 @@ for doc, score in docs_with_score:
 ```
 
 <details>
-   <summary><b>Expected output</b></summary>
+   <summary><b>预期输出</b></summary>
 
 ```plain
 --------------------------------------------------------------------------------
@@ -236,7 +238,7 @@ First, beat the opioid epidemic.
 
 </details>
 
-#### 选项 2：使用 `similarity_search_with_relevance_scores()` 方法
+#### 方式二：使用 `similarity_search_with_relevance_scores()` 方法
 
 `similarity_search_with_relevance_scores()` 方法会返回相关性得分最高的前`k`个文档。分数越高，说明文档内容与你的查询语句之间的相似度越高。
 
@@ -250,7 +252,7 @@ for doc, score in docs_with_relevance_score:
 ```
 
 <details>
-   <summary><b>Expected output</b></summary>
+   <summary><b>预期输出</b></summary>
 
 ```plain
 --------------------------------------------------------------------------------
@@ -283,8 +285,7 @@ We’re securing commitments and supporting partners in South and Central Americ
 
 ### 检索器
 
-在 Langchain 中，[检索器](https://python.langchain.com/v0.2/docs/concepts/#retrievers) 是一种接口，用于响应非结构化查询检索，并提供比向量存储更多的功能。以下代码演示了如何将 TiDB 向量存储用作检索器。
-
+在 Langchain 中，[检索器](https://python.langchain.com/v0.2/docs/concepts/#retrievers)是一个接口，用于响应非结构化查询，检索相关文档。相比于向量存储，检索器可以为你提供更多的功能。以下代码演示了如何将 TiDB 向量存储用作检索器。
 
 ```python
 retriever = vector_store.as_retriever(
@@ -320,19 +321,17 @@ And I did that 4 days ago, when I nominated Circuit Court of Appeals Judge Ketan
 vector_store.drop_vectorstore()
 ```
 
-## 使用元数据过滤器搜索
+## 使用元数据过滤器进行搜索
 
-To refine your searches, you can use metadata filters to retrieve specific nearest-neighbor results that match the applied filters.
-
-你可以使用元数据过滤器来检索与所应用的过滤器相匹配的特定近邻结果，以进一步改进搜索。
+为了优化搜索，你可以使用元数据过滤器来筛选出符合特定条件的近邻结果。
 
 ### 支持的元数据类型
 
-TiDB 向量存储中的每个文档都可以与元数据配对，元数据的结构是 JSON 对象中的键值对。键的类型一般是字符串，而值可以是以下任何类型：
+在 TiDB 向量存储中，每个文档都可以与元数据配对。元数据的结构是 JSON 对象中的键值对 (key-value pairs) 形式。键 (key) 的类型是字符串，而值 (value) 可以是以下任何类型：
 
 - 字符串
-- 数值: integer 或 floating point
-- Boolean: `true` 或 `false`
+- 数值：整数或浮点数
+- Boolean：`true` 或 `false`
 
 例如，下面是一个有效的元数据格式：
 
@@ -345,20 +344,20 @@ TiDB 向量存储中的每个文档都可以与元数据配对，元数据的结
 
 ### 元数据过滤器语法
 
-可用的过滤器包括:
+可用的过滤器包括：
 
-- `$or`: 选择符合任意一个指定条件的向量。
-- `$and`: 选择符合所有指定条件的向量。
-- `$eq`: 等于指定值。
-- `$ne`: 不等于指定值。
-- `$gt`: 大于指定值。
-- `$gte`: 大于或等于指定值。
-- `$lt`: 小于指定值。
-- `$lte`: 小于或等于指定值。
-- `$in`: 在指定的值数组中。
-- `$nin`: 不在指定值数组中。
+- `$or`：选择符合任意一个指定条件的向量。
+- `$and`：选择符合所有指定条件的向量。
+- `$eq`：等于指定值。
+- `$ne`：不等于指定值。
+- `$gt`：大于指定值。
+- `$gte`：大于或等于指定值。
+- `$lt`：小于指定值。
+- `$lte`：小于或等于指定值。
+- `$in`：在指定的值数组中。
+- `$nin`：不在指定值数组中。
 
-如果文档的元数据如下：
+假如一个文档的元数据如下：
 
 ```json
 {
@@ -367,7 +366,7 @@ TiDB 向量存储中的每个文档都可以与元数据配对，元数据的结
 }
 ```
 
-以下元数据筛选器可与本文档匹配：
+以下元数据筛选器均可匹配到该文档：
 
 ```json
 { "page": 12 }
@@ -400,11 +399,11 @@ TiDB 向量存储中的每个文档都可以与元数据配对，元数据的结
 }
 ```
 
-元数据过滤器中的每个键值对都被视为一个单独的过滤器子句，这些子句使用 `AND` 逻辑操作符进行组合。
+TiDB 会将元数据过滤器中的每个键值对视为一个独立的过滤条件，并使用 `AND` 逻辑操作符将这些条件组合起来。
 
-### 例子
+### 示例
 
-下面的示例向 `TiDBVectorStore` 添加了两个文档，并为每个文档添加了一个 `title` 字段作为元数据：
+以下示例代码向 `TiDBVectorStore` 添加了两个文档，并为每个文档添加了一个 `title` 字段作为元数据：
 
 ```python
 vector_store.add_texts(
@@ -448,21 +447,21 @@ TiDB Vector offers advanced, high-speed vector processing capabilities, enhancin
 --------------------------------------------------------------------------------
 ```
 
-## 高级用法案例: 旅行代理
+## 进阶用法示例：旅行代理
 
-本节演示了在旅行代理的场景下，在 Langchain 中使用 TiDB 向量搜索的案例。在案例中，我们的目的是为寻找具有特定设施 (如干净的休息室和素食选择) 的机场的客户创建个性化的旅行报告。
+本节演示如何将 Langchain 和 TiDB 向量搜索相结合，应用于旅行代理的场景。该场景的目标是为客户创建个性化的旅行报告，帮助他们找到具备特定设施（例如干净的休息室和素食选项）的机场。
 
-该过程包括两个主要步骤：
+该示例包括两个主要步骤：
 
-1. 在机场介绍中进行语义搜索，找出与所需设施相匹配的机场代码。
-2. 执行 SQL 查询，将这些代码与航线信息合并，突出显示符合用户偏好的航空公司和目的地。
+1. 对机场介绍中进行语义搜索，以找出符合所需设施的机场代码。
+2. 执行 SQL 查询，将这些代码与航线信息相结合，以便突出显示符合用户偏好的航空公司和目的地。
 
 ### 准备数据
 
 首先，创建一个表来存储机场航线数据：
 
 ```python
-# 创建表格以存储飞机数据。
+# 创建表格以存储飞行计划数据。
 vector_store.tidb_vector_client.execute(
     """CREATE TABLE airplan_routes (
         id INT AUTO_INCREMENT PRIMARY KEY,
@@ -520,7 +519,7 @@ vector_store.add_texts(
 
 ### 执行语义搜索
 
-下面的代码可以搜索到有清洁设施和素食选择的机场：
+以下代码可以搜索到有清洁设施和素食选择的机场：
 
 ```python
 retriever = vector_store.as_retriever(
@@ -603,7 +602,7 @@ airport_details.get("result")
  (0.19840519342700513, 3, 'EFGH', 'UA', 'SEA', 'Daily flights from SFO to SEA.', datetime.timedelta(seconds=9000), 7, 'Boeing 737', Decimal('129.99'), 'None', 'Small airport with basic facilities.')]
 ```
 
-### 清理
+### 清理数据
 
 最后，删除创建的表，清理资源：
 
