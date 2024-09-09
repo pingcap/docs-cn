@@ -188,6 +188,10 @@ delta_index_cache_size = 0
     ## 在 v6.2.0 以及后续版本，强烈建议保留默认值 `false`，不要将其修改为 `true`。具体请参考已知问题 [#5576](https://github.com/pingcap/tiflash/issues/5576)。
     # dt_enable_logical_split = false
 
+    ## `max_threads` 指的是执行一个 MMP Task 的内部线程并发度，默认值为 0。当值为 0 时，TiFlash 执行 MMP Task 的线程并发度为 CPU 核数。
+    ## 该参数只有在系统变量 `tidb_max_tiflash_threads` 设置为 -1 时才会生效。
+    max_threads = 0
+
     ## 单次查询过程中，节点对中间数据的内存限制
     ## 设置为整数时，单位为 byte，比如 34359738368 表示 32 GiB 的内存限制，0 表示无限制
     ## 设置为 [0.0, 1.0) 之间的浮点数时，指节点总内存的比值，比如 0.8 表示总内存的 80%，0.0 表示无限制
