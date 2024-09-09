@@ -429,7 +429,7 @@ pd-server 相关配置项。
 
 ## label-property
 
-标签相关的配置项，目前只支持 `reject-leader` 类型，后续会逐渐下掉该配置项，建议使用 [Placement Rules](/configure-placement-rules.md#场景二5-副本按-2-2-1-的比例放置在-3-个数据中心且第-3-个中心不产生-leader)。
+标签相关的配置项，目前只支持 `reject-leader` 类型，该配置项已经从 v5.2 版本开始废弃，建议使用 [Placement Rules](/configure-placement-rules.md#场景二5-副本按-2-2-1-的比例放置在-3-个数据中心且第-3-个中心不产生-leader) 设置副本策略。
 
 ### `key`
 
