@@ -601,7 +601,7 @@ mysql> SELECT * FROM t1;
 - 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：否
 - 类型：布尔型
 - 默认值：`OFF`
-- 该变量表示是否使用 [TiDB Binlog](/tidb-binlog/tidb-binlog-overview.md)。从 v8.4 开始，TiDB Binlog 已移除，该变量无效。
+- 该变量表示是否使用 [TiDB Binlog](https://docs.pingcap.com/zh/tidb/v8.3/tidb-binlog-overview)。从 v8.4 开始，TiDB Binlog 已移除，该变量无效。
 
 ### `max_connections`
 

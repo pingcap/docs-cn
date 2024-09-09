@@ -62,4 +62,4 @@ summary: TiDB 2.1 RC5 版本发布，对系统稳定性、优化器、统计信�
 
 ## Tools
 
-- TiDB 支持 TiDB Binlog cluster，不兼容旧版本 TiDB Binlog [#8093](https://github.com/pingcap/tidb/pull/8093)，[使用文档](/tidb-binlog/tidb-binlog-overview.md)
+- TiDB 支持 TiDB Binlog cluster，不兼容旧版本 TiDB Binlog [#8093](https://github.com/pingcap/tidb/pull/8093)，[使用文档](https://docs-archive.pingcap.com/zh/tidb/v2.1/tidb-binlog-overview)
