@@ -193,7 +193,7 @@ delta_index_cache_size = 0
     # dt_enable_logical_split = false
 
     ## `max_threads`: 执行一个 MMP Task 的线程并发度，默认值为 0，当值为 0 时，该值被设置为 CPU 核数。
-    ## 此参数只会在系统变量 `tidb_max_tiflash_threads` 设置为 -1 的时候生效。
+    ## 该参数只有在系统变量 `tidb_max_tiflash_threads` 设置为 -1 时才会生效。
     max_threads = 0
 
     ## 单次查询过程中，节点对中间数据的内存限制
