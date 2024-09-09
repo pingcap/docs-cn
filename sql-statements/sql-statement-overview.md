@@ -213,7 +213,7 @@ TiDB 使用的 SQL 语句旨在遵循 ISO/IEC SQL 标准，并在必要时对 My
 | [`SHOW GRANTS`](/sql-statements/sql-statement-show-grants.md) | 显示与用户关联的权限。 |
 | [`SHOW PRIVILEGES`](/sql-statements/sql-statement-show-privileges.md) | 显示可用的权限。 |
 
-## TiCDC 与 TiDB Binlog
+## TiCDC
 
 | SQL 语句 | 描述 |
 |----------|------|
