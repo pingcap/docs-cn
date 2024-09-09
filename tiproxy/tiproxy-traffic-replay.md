@@ -18,6 +18,7 @@ summary: 介绍 TiProxy 的流量回放的使用场景和使用步骤。
 流量回放适用于以下场景：
 
 - 升级 TiDB 版本之前，在新版本的测试集群上回放生产流量，验证新版本 TiDB 能成功执行所有 SQL 语句。
+- 在执行变更之前，在测试集群上用生产流量模拟，验证对集群的影响。例如变更配置项或系统变量、变更表结构、使用 TiDB 的新功能之前，先在测试集群验证效果。
 - 扩缩容 TiDB 之前，在新规模的测试集群上按对应速率回放流量，验证新规模集群的性能是否满足要求。例如，为了节省成本要将集群规模缩容到 1/2，则按 1/2 速率回放流量，验证缩容后 SQL 延迟是否满足要求。
 - 在相同规模的测试集群上多次回放流量，每次调大回放速率，测试该规模集群的吞吐量上限，以判断性能是否满足未来的业务增长。
 
@@ -61,37 +62,9 @@ summary: 介绍 TiProxy 的流量回放的使用场景和使用步骤。
 
     由于所有流量在用户 `u1` 下运行，请确保 `u1` 能访问所有数据库和表。如果没有这样的用户，则需要创建一个。
 
-    如果需要测试集群的吞吐量，可以调整回放的速率。例如，加上选项 `--speed=2` 后，SQL 语句的执行间隔缩短，以 2 倍速率执行，总的回放时间缩短一半：
-
-    ```shell
-    tiproxyctl traffic replay --host 10.0.1.10 --port 3080 --username="u1" --password="123456" --input="/tmp/traffic" --speed=2
-    ```
-
     更多详细信息请参考 [`tiproxyctl traffic replay`](/tiproxy/tiproxy-command-line-flags.md#traffic-replay) 的使用文档。
 
-5. 在捕获和回放过程中，如果遇到未知错误会自动停止任务。通过 `tiproxyctl traffic show` 命令可查看当前的任务进度或上次任务的错误信息：
-
-    ```shell
-    tiproxyctl traffic show --host 10.0.1.10 --port 3080
-    ```
-
-    例如，如下输出代表捕获任务正在运行：
-
-    ```json
-    [{"type":"capture","start_time":"2024-09-03T09:10:58.220644+08:00","duration":"2h","progress":"45%","status":"running"}]
-    ```
-
-    更多详细信息请参考 [`tiproxyctl traffic show`](/tiproxy/tiproxy-command-line-flags.md#traffic-show) 的使用文档。
-
-    如果需要取消当前的捕获或回放任务，可使用 `tiproxyctl traffic cancel` 命令：
-
-    ```shell
-    tiproxyctl traffic cancel --host 10.0.1.10 --port 3080
-    ```
-
-    更多详细信息请参考 [`tiproxyctl traffic cancel`](/tiproxy/tiproxy-command-line-flags.md#traffic-cancel) 的使用文档。
-
-6. 回放完成之后，报告存储在测试集群的 `tiproxy_traffic_report` 数据库下。该数据库下有两个表，`fail` 和 `other_errors`。
+5. 回放完成之后，报告存储在测试集群的 `tiproxy_traffic_report` 数据库下。该数据库下有两个表，`fail` 和 `other_errors`。
 
     表 `fail` 存储运行失败的 SQL 语句。它的字段如下：
 
@@ -114,6 +87,42 @@ summary: 介绍 TiProxy 的流量回放的使用场景和使用步骤。
     > **注意：**
     >
     > `tiproxy_traffic_report` 中的表结构在后续版本中可能会改变，因此不推荐在应用程序开发或工具开发中读取 `tiproxy_traffic_report` 中的数据。
+
+## 测试吞吐量
+
+如果需要测试集群的吞吐量，可以加上 `--speed` 选项调整回放的速率。
+
+例如，加上 `--speed=2` 后，SQL 语句的执行间隔缩短，以 2 倍速率执行，总的回放时间缩短一半：
+
+```shell
+tiproxyctl traffic replay --host 10.0.1.10 --port 3080 --username="u1" --password="123456" --input="/tmp/traffic" --speed=2
+```
+
+调大回放速率只缩短会话的空闲时间，不增加连接数。因此当会话的空闲时间本身就较短时，调大倍速无法加大吞吐量。这时需要部署更多 TiProxy 实例，让它们同时回放相同的流量文件，通过增加并发度来加大吞吐量。
+
+## 任务查看与管理
+
+在捕获和回放过程中，如果遇到未知错误会自动停止任务。通过 `tiproxyctl traffic show` 命令可查看当前的任务进度或上次任务的错误信息：
+
+```shell
+tiproxyctl traffic show --host 10.0.1.10 --port 3080
+```
+
+例如，如下输出代表捕获任务正在运行：
+
+```json
+[{"type":"capture","start_time":"2024-09-03T09:10:58.220644+08:00","duration":"2h","progress":"45%","status":"running"}]
+```
+
+更多详细信息请参考 [`tiproxyctl traffic show`](/tiproxy/tiproxy-command-line-flags.md#traffic-show) 的使用文档。
+
+如果需要取消当前的捕获或回放任务，可使用 `tiproxyctl traffic cancel` 命令：
+
+```shell
+tiproxyctl traffic cancel --host 10.0.1.10 --port 3080
+```
+
+更多详细信息请参考 [`tiproxyctl traffic cancel`](/tiproxy/tiproxy-command-line-flags.md#traffic-cancel) 的使用文档。
 
 ## 使用限制
 
