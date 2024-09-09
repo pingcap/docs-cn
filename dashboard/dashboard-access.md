@@ -36,7 +36,7 @@ TiDB Dashboard 可在常见的、更新及时的桌面浏览器中使用，具�
 访问 TiDB Dashboard 将会显示用户登录界面。 
 
 - 可使用 TiDB 的 root 用户登录。
-- 也可以使用单点登录 (Single Sign-On, SSO)。请参见[配置 TiDB Dashboard 使用 SSO 登录](/dashboard/dashboard-session-sso.md)。
+- 也可以使用单点登录 (Single Sign-On, SSO)。详情参见[配置 TiDB Dashboard 使用 SSO 登录](/dashboard/dashboard-session-sso.md)。
 - 如果创建了[自定义 SQL 用户](/dashboard/dashboard-user.md)，也可以使用自定义的 SQL 用户和密码登录。
 
 如果存在以下情况，则可能会登录失败：
