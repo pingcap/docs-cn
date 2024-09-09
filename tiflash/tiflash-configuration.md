@@ -193,7 +193,7 @@ delta_index_cache_size = 0
     ## 在 v6.2.0 以及后续版本，强烈建议保留默认值 `false`，不要将其修改为 `true`。具体请参考已知问题 [#5576](https://github.com/pingcap/tiflash/issues/5576)。
     # dt_enable_logical_split = false
 
-    ## `max_threads`: 执行一个 MMP Task 的线程并发度，默认值为 0，当值为 0 时，该值被设置为 CPU 核数。
+    ## `max_threads`: 执行一个 MMP Task 的内部线程并发度，默认值为 0，当值为 0 时，该值被设置为 CPU 核数。
     ## 该参数只有在系统变量 `tidb_max_tiflash_threads` 设置为 -1 时才会生效。
     max_threads = 0
 
