@@ -15,7 +15,7 @@ TiDB 是一个兼容 MySQL 的数据库，[mysql2](https://github.com/sidorares/
 
 > **Note**
 >
-> 本文档适用于 TiDB Serverless 和本地部署的 TiDB。
+> 本文档适用于 TiDB Cloud Serverless 和本地部署的 TiDB。
 
 ## 前置需求
 
@@ -27,7 +27,7 @@ TiDB 是一个兼容 MySQL 的数据库，[mysql2](https://github.com/sidorares/
 
 如果你还没有 TiDB 集群，可以按照以下方式创建：
 
-- （推荐方式）参考[创建 TiDB Serverless 集群](/develop/dev-guide-build-cluster-in-cloud.md#第-1-步创建-tidb-serverless-集群)，创建你自己的 TiDB Cloud 集群。
+- （推荐方式）参考[创建 TiDB Cloud Serverless 集群](/develop/dev-guide-build-cluster-in-cloud.md#第-1-步创建-tidb-cloud-serverless-集群)，创建你自己的 TiDB Cloud 集群。
 - 参考[部署本地测试 TiDB 集群](/quick-start-with-tidb.md#部署本地测试集群)或[部署正式 TiDB 集群](/production-deployment-using-tiup.md)，创建本地集群。
 
 ## 运行代码并连接到 TiDB
@@ -61,9 +61,9 @@ npm install
 
 <SimpleTab>
 
-<div label="TiDB Serverless">
+<div label="TiDB Cloud Serverless">
 
-1. 在 TiDB Cloud 的 [**Clusters**](https://tidbcloud.com/console/clusters) 页面中，选择你的 TiDB Serverless 集群，进入集群的 **Overview** 页面。
+1. 在 TiDB Cloud 的 [**Clusters**](https://tidbcloud.com/console/clusters) 页面中，选择你的 TiDB Cloud Serverless 集群，进入集群的 **Overview** 页面。
 
 2. 点击右上角的 **Connect** 按钮，将会弹出连接对话框。
 
