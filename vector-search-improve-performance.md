@@ -1,0 +1,37 @@
+---
+title: 优化向量搜索性能
+summary: 了解提高 TiDB 向量搜索性能的最佳实践。
+---
+
+# 优化向量搜索性能
+
+TiDB 向量搜索允许你执行 ANN 查询，搜索与图像、文档等相似的结果。要提高查询性能，请参考以下最佳实践。
+
+## 为向量列添加向量搜索索引
+
+[向量搜索索引](/vector-search-index.md) 可显著提高向量搜索查询的性能，通常提高 10 倍或更多，而召回率仅略有下降。
+
+## 确保向量索引的完全构建
+
+向量索引是异步建立的。在所有向量数据都编入索引之前，向量搜索性能不会达到最佳。要查看索引构建进度，可参阅 [查看索引构建进度](/vector-search-index.md#view-index-build-progress)。
+
+## 减少向量维数或缩短嵌入时间
+
+向量搜索索引和查询的计算复杂度会随着向量大小的增加而显著提高，从而需要进行更多的浮点比较。
+
+To optimize performance, consider reducing the vector dimensions whenever feasible. This usually needs switching to another embedding model. Make sure to measure the impact of changing embedding models on the accuracy of your vector queries.
+为了优化性能，在可行的情况下应考虑减少向量维度，这通常需要切换到另一种嵌入模型。你需要确保改变嵌入模型对向量查询准确性的影响。
+
+某些嵌入模型，如 OpenAI `text-embedding-3-large` 支持[缩短向量嵌入](https://openai.com/index/new-embedding-models-and-api-updates/)，即在不丢失嵌入的概念表示特性的情况下，从向量序列末尾删除一些数字。你也可以使用这种嵌入模型来减少向量维数。
+
+## 在结果输出中排除向量列
+
+向量嵌入数据通常很大，而且只在搜索过程中使用。通过从查询结果中排除向量列，可以大大减少在 TiDB 服务器和 SQL 客户端之间传输的数据量，从而提高查询性能。
+
+要排除向量列，请在 `SELECT` 语句中明确列出要检索的列，而不是使用 `SELECT *`。
+
+## 预热索引
+
+当索引被冷访问时，从 S3 加载整个索引或从磁盘（而不是内存）加载索引都需要时间。这些过程通常会导致较高的尾部延迟。此外，如果集群上长时间（如数小时）没有 SQL 查询，计算资源就会被回收，下次就会出现冷访问。
+
+要避免这种尾部延迟，可在实际工作负载前使用类似的向量搜索查询对向量索引进行热身。
