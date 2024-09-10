@@ -427,16 +427,20 @@ pd-server 相关配置项。
     + v1：在 v1 模式下，你可以手动修改 `store limit` 以限制单个 TiKV 调度速度。
     + v2：（实验特性）在 v2 模式下，你无需关注 `store limit` 值，PD 将根据 TiKV Snapshot 执行情况动态调整 TiKV 调度速度。详情请参考 [Store Limit v2 原理](/configure-store-limit.md#store-limit-v2-原理)。
 
-## label-property
+## label-property（已废弃）
 
-标签相关的配置项。
+标签相关的配置项，只支持 `reject-leader` 类型。
 
-### `key`
+> **注意：**
+>
+> 标签相关的配置项已从 v5.2 开始废弃，建议使用 [Placement Rules](/configure-placement-rules.md#场景二5-副本按-2-2-1-的比例放置在-3-个数据中心且第-3-个中心不产生-leader) 设置副本策略。
+
+### `key`（已废弃）
 
 + 拒绝 leader 的 store 带有的 label key。
 + 默认值：""
 
-### `value`
+### `value`（已废弃）
 
 + 拒绝 leader 的 store 带有的 label value。
 + 默认值：""
