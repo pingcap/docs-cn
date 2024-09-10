@@ -55,20 +55,23 @@ pip install sqlalchemy pymysql sentence-transformers tidb-vector python-dotenv
 
 <div label="本地部署 TiDB">
 
-在 Python 项目的根目录下新建一个 `.env` 文件，并根据集群的启动参数修改相应的环境变量。
+在 Python 项目的根目录下新建一个 `.env` 文件，并根据集群的启动参数修改相应的环境变量，以下是各个变量的含义：
 
-- `HOST`：TiDB 集群的主机号。
-- `PORT`：TiDB 集群的端口。
-- `USERNAME`：连接 TiDB 集群的用户名。
-- `PASSWORD`：连接 TiDB 集群的密码。
-- `DATABASE`：要连接的数据库名称。
-- `CA_PATH`：根证书文件的路径。
+- `<HOST>`：TiDB 集群的主机号。
+- `<PORT>`：TiDB 集群的端口。
+- `<USER>`：连接 TiDB 集群的用户名。
+- `<PASSWORD>`：连接 TiDB 集群的密码。
+- `<DATABASE>`：要连接的数据库名称。
+- `<CA_PATH>`：根证书文件的路径。
 
 以下为 MacOS 的示例：
 
 ```dotenv
-TIDB_DATABASE_URL="mysql+pymysql://<prefix>.root:<password>@<host>:4000/test?ssl_ca=/etc/ssl/cert.pem&ssl_verify_cert=true&ssl_verify_identity=true"
+TIDB_DATABASE_URL="mysql+pymysql://<USER>:<PASSWORD>@<HOST>:<PORT>/<DATABASE>?ssl_ca=<CA_PATH>&ssl_verify_cert=true&ssl_verify_identity=true"
 ```
+> **Tip:**
+    >
+    > `ssl_ca` 可以无需指定，这样可以匹配到 Linux 和 Windows 上，即 Python SDK 解决 SSL 证书问题。
 
 </div>
 
