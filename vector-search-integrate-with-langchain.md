@@ -42,10 +42,10 @@ touch integrate_with_langchain.ipynb
 在你的项目目录下，运行以下命令安装所需的软件包：
 
 ```shell
-!pip install langchain langchain-community
-!pip install langchain-openai
-!pip install pymysql
-!pip install tidb-vector
+pip install langchain langchain-community
+pip install langchain-openai
+pip install pymysql
+pip install tidb-vector
 ```
 
 在 Jupyter Notebook 中打开 `integrate_with_langchain.ipynb` 文件，添加以下代码以导入所需的软件包：
@@ -85,6 +85,10 @@ TIDB_DATABASE_URL="mysql+pymysql://<prefix>.root:<password>@gateway01.<region>.p
 ```
 
 注意替换为你的 TiDB 实际对应的值。
+
+> **Tip:**
+>
+> `ssl_ca` 可以无需指定，这样可以匹配到 Linux 和 Windows 上，即 Python SDK 解决 SSL 证书问题。
 
 </div>
 
@@ -137,8 +141,8 @@ TIDB_DATABASE_URL="mysql+pymysql://<prefix>.root:<password>@gateway01.<region>.p
 在你的项目目录中创建一个名为 `data/how_to/` 的目录，然后从 [langchain-ai/langchain](https://github.com/langchain-ai/langchain) 代码库中下载样本文档 [`state_of_the_union.txt`](https://github.com/langchain-ai/langchain/blob/master/docs/docs/how_to/state_of_the_union.txt) 。
 
 ```shell
-!mkdir -p 'data/how_to/'
-!wget 'https://raw.githubusercontent.com/langchain-ai/langchain/master/docs/docs/how_to/state_of_the_union.txt' -O 'data/how_to/state_of_the_union.txt'
+mkdir -p 'data/how_to/'
+wget 'https://raw.githubusercontent.com/langchain-ai/langchain/master/docs/docs/how_to/state_of_the_union.txt' -O 'data/how_to/state_of_the_union.txt'
 ```
 
 #### 4.2 加载并分割文档

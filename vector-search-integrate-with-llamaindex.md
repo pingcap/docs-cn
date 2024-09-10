@@ -85,6 +85,10 @@ TIDB_DATABASE_URL="mysql+pymysql://<prefix>.root:<password>@gateway01.<region>.p
 
 注意替换为你的 TiDB 实际对应的值。
 
+> **Tip:**
+>
+> `ssl_ca` 可以无需指定，这样可以匹配到 Linux 和 Windows 上，即 Python SDK 解决 SSL 证书问题。
+
 </div>
 
 <div label="TiDB Serverless 集群部署">
@@ -136,8 +140,8 @@ TIDB_DATABASE_URL="mysql+pymysql://<prefix>.root:<password>@gateway01.<region>.p
 在你的项目目录中创建一个名为 `data/paul_graham/` 的目录，然后从 [run-llama/llama_index](https://github.com/run-llama/llama_index) 代码库中下载样本文档 [`paul_graham_essay.txt`](https://github.com/run-llama/llama_index/blob/main/docs/docs/examples/data/paul_graham/paul_graham_essay.txt)：
 
 ```shell
-!mkdir -p 'data/paul_graham/'
-!wget 'https://raw.githubusercontent.com/run-llama/llama_index/main/docs/docs/examples/data/paul_graham/paul_graham_essay.txt' -O 'data/paul_graham/paul_graham_essay.txt'
+mkdir -p 'data/paul_graham/'
+wget 'https://raw.githubusercontent.com/run-llama/llama_index/main/docs/docs/examples/data/paul_graham/paul_graham_essay.txt' -O 'data/paul_graham/paul_graham_essay.txt'
 ```
 
 #### 4.2 加载文档

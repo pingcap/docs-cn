@@ -62,32 +62,41 @@ pip install -r requirements.txt
 
 <div label="本地部署 TiDB">
 
-1. 在项目的根目录下新建一个 `.env` 文件：
+1. 在项目的根目录下新建一个 `.env` 文件，将以下内容复制进去：
 
     ```dotenv
-    - TIDB_HOST='{host}'
-    - TIDB_PORT='4000'
-    - TIDB_USER='root'
-    - TIDB_PASSWORD='{password}'
-    - TIDB_DB_NAME='test'
+    export TIDB_DATABASE_URL="mysql+pymysql://<USERNAME>:<PASSWORD>@<HOST>:4000/<DATABASE>?ssl_ca=<CA>&ssl_verify_cert=true&ssl_verify_identity=true"
     ```
 
-    注意替换 `{}` 中的占位符为你的 TiDB 实际对应的值，并删除 CA_PATH 这行。如果你在本机运行 TiDB，默认 Host 地址为 `127.0.0.1`，密码为空。
+    注意替换参数为你的 TiDB 实际对应的值，并删除 `CA` 这行。如果你在本机运行 TiDB，默认 Host 地址为 `127.0.0.1`，密码为空。以下是各个参数的解释：
 
-2. 在终端中设置环境变量：
+   - `HOST`：TiDB 集群的主机号。
+   - `PORT`：TiDB 集群的端口号。
+   - `USERNAME`：连接 TiDB 集群的用户名。
+   - `PASSWORD`：连接 TiDB 集群的密码。
+   - `DATABASE`：要连接的数据库名称。
+   - `CA`：根证书文件的路径。
 
-    ```dotenv
-    JINAAI_API_KEY="****"
-    TIDB_DATABASE_URL="{tidb_connection_string}"
+
+2. 或者，你也可以通过在终端中直接设置环境变量以连接 TiDB 集群：
+
+    ```shell
+   export JINA_API_KEY="****"
+   export TIDB_DATABASE_URL="mysql+pymysql://<USERNAME>:<PASSWORD>@<HOST>:4000/<DATABASE>?ssl_ca=<CA>&ssl_verify_cert=true&ssl_verify_identity=true"
     ```
+   注意替换参数为你的 TiDB 实际对应的值，并删除 `CA` 这行。如果你在本机运行 TiDB，默认 Host 地址为 `127.0.0.1`，密码为空。以下是各个参数的解释：
 
-    以下为 MacOS 的示例：
+   - `HOST`：TiDB 集群的主机号。
+   - `PORT`：TiDB 集群的端口号。
+   - `USERNAME`：连接 TiDB 集群的用户名。
+   - `PASSWORD`：连接 TiDB 集群的密码。
+   - `DATABASE`：要连接的数据库名称。
+   - `CA`：根证书文件的路径。
 
-    ```dotenv
-    TIDB_DATABASE_URL="mysql+pymysql://<prefix>.root:<password>@gateway01.<region>.prod.aws.tidbcloud.com:4000/test?ssl_ca=/etc/ssl/cert.pem&ssl_verify_cert=true&ssl_verify_identity=true"
-    ```
+> **Tip:**
+>
+> `CA` 可以无需指定，这样可以匹配到 Linux 和 Windows 上，即 Python SDK 解决 SSL 证书问题。
 
-    注意替换其中的占位符为你的 TiDB 实际对应的值。
 
 </div>
 

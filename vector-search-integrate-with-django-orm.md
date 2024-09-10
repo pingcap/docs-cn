@@ -93,6 +93,9 @@ TIDB_PASSWORD=********
 TIDB_DATABASE=test
 TIDB_CA_PATH=/etc/ssl/cert.pem
 ```
+> **Tip:**
+>
+> `TIDB_CA_PATH` 可以无需指定，这样可以匹配到 Linux 和 Windows 上，即 Python SDK 解决 SSL 证书问题。
 
 </div>
 

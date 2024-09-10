@@ -55,7 +55,7 @@ pip install sqlalchemy pymysql sentence-transformers tidb-vector python-dotenv
 
 <div label="本地部署 TiDB">
 
-在 Python 项目的根目录下新建一个 `.env` 文件，并根据集群的启动参数修改相应的环境变量，以下是各个变量的含义：
+在 Python 项目的根目录下新建一个 `.env` 文件，并根据集群的启动参数修改相应的环境变量，将连接字符串复制到 `.env` 文件中。以下是各个变量的含义：
 
 - `<HOST>`：TiDB 集群的主机号。
 - `<PORT>`：TiDB 集群的端口。
@@ -70,8 +70,8 @@ pip install sqlalchemy pymysql sentence-transformers tidb-vector python-dotenv
 TIDB_DATABASE_URL="mysql+pymysql://<USER>:<PASSWORD>@<HOST>:<PORT>/<DATABASE>?ssl_ca=<CA_PATH>&ssl_verify_cert=true&ssl_verify_identity=true"
 ```
 > **Tip:**
-    >
-    > `ssl_ca` 可以无需指定，这样可以匹配到 Linux 和 Windows 上，即 Python SDK 解决 SSL 证书问题。
+>
+> `ssl_ca` 可以无需指定，这样可以匹配到 Linux 和 Windows 上，即 Python SDK 解决 SSL 证书问题。
 
 </div>
 

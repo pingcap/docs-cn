@@ -64,20 +64,22 @@ pip install pymysql python-dotenv sqlalchemy tidb-vector
 
 <div label="TiDB 本地部署">
 
-在 Python 项目的根目录下新建一个 `.env` 文件，并根据集群的启动参数修改相应的环境变量。
+在 Python 项目的根目录下新建一个 `.env` 文件，将一下内容复制到 `.env` 文件中，并根据集群的启动参数修改相应的环境变量。
 
-- `HOST`：TiDB 集群的主机。
-- `PORT`：TiDB 集群的端口。
-- `USERNAME`：连接 TiDB 集群的用户名。
-- `PASSWORD`：连接 TiDB 集群的密码。
-- `DATABASE`：要连接的数据库名称。
-- `CA`：根证书文件的路径。
-
-以下为 MacOS 的示例：
-
-```dotenv
-TIDB_DATABASE_URL="mysql+pymysql://<prefix>.root:<password>@127.0.0.1:4000/test?ssl_ca=/etc/ssl/cert.pem&ssl_verify_cert=true&ssl_verify_identity=true"
+```shell
+TIDB_DATABASE_URL=mysql+pymysql://<USERNAME>:<PASSWORD>@<HOST>:<PORT>/<DATABASE>?ssl_ca=<CA>&ssl_verify_cert=true&ssl_verify_identity=true
 ```
+
+- `<HOST>`：TiDB 集群的主机。
+- `<PORT>`：TiDB 集群的端口。
+- `<USERNAME>`：连接 TiDB 集群的用户名。
+- `<PASSWORD>`：连接 TiDB 集群的密码。
+- `<DATABASE>`：要连接的数据库名称。
+- `<CA>`：根证书文件的路径。
+
+> **Tip:**
+>
+> `ssl_ca` 可以无需指定，这样可以匹配到 Linux 和 Windows 上，即 Python SDK 解决 SSL 证书问题。
 
 </div>
 
