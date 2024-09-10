@@ -70,7 +70,7 @@ SQLAlchemy 是一个支持多种数据库的 ORM 库。它是对数据库的高�
 
 3. 确认对话框中的配置和你的运行环境一致。
 
-    - **Endpoint Type** 为 `Public`。
+    - **Connection Type** 为 `Public`。
     - **Branch** 选择 `main`。
     - **Connect With** 选择 `General`。
     - **Operating System** 为你的运行环境。
@@ -114,9 +114,11 @@ SQLAlchemy 是一个支持多种数据库的 ORM 库。它是对数据库的高�
 
 2. 点击右上角的 **Connect** 按钮，将会出现连接对话框。
 
-3. 在对话框中点击 **Allow Access from Anywhere**，然后点击 **Download CA cert** 下载 TiDB Cloud 提供的 CA 证书。
+3. 在连接对话框中，从 **Connection Type** 下拉列表中选择 **Public**，并点击 **CA cert** 下载 CA 文件。
 
-    更多配置细节，可参考 [TiDB Dedicated 标准连接教程（英文）](https://docs.pingcap.com/tidbcloud/connect-via-standard-connection)。
+    如果你尚未配置 IP 访问列表，请在首次连接前点击 **Configure IP Access List** 或按照[配置 IP 访问列表（英文）](https://docs.pingcap.com/tidbcloud/configure-ip-access-list)中的步骤进行配置。
+
+    除 **Public** 连接类型外，TiDB Dedicated 还支持 **Private Endpoint** 和 **VPC Peering** 连接类型。详情请参阅[连接 TiDB Dedicated 集群（英文）](https://docs.pingcap.com/tidbcloud/connect-to-tidb-cluster)。
 
 4. 运行以下命令，将 `.env.example` 复制并重命名为 `.env`：
 
