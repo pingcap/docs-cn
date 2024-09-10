@@ -15,7 +15,7 @@ TiDB 是一个兼容 MySQL 的数据库，[Rails](https://github.com/rails/rails
 
 > **注意：**
 >
-> 本文档适用于 TiDB Serverless、TiDB Dedicated 以及本地部署的 TiDB。
+> 本文档适用于 TiDB Cloud Serverless、TiDB Cloud Dedicated 以及本地部署的 TiDB。
 
 ## 前置需求
 
@@ -28,7 +28,7 @@ TiDB 是一个兼容 MySQL 的数据库，[Rails](https://github.com/rails/rails
 
 如果你还没有 TiDB 集群，可以按照以下方式创建：
 
-- （推荐方式）参考[创建 TiDB Serverless 集群](/develop/dev-guide-build-cluster-in-cloud.md#第-1-步创建-tidb-serverless-集群)，创建你自己的 TiDB Cloud 集群。
+- （推荐方式）参考[创建 TiDB Cloud Serverless 集群](/develop/dev-guide-build-cluster-in-cloud.md#第-1-步创建-tidb-cloud-serverless-集群)，创建你自己的 TiDB Cloud 集群。
 - 参考[部署本地测试 TiDB 集群](/quick-start-with-tidb.md#部署本地测试集群)或[部署正式 TiDB 集群](/production-deployment-using-tiup.md)，创建本地集群。
 
 ## 运行示例应用程序并连接到 TiDB
@@ -68,7 +68,7 @@ bundle add mysql2 dotenv
 根据不同的 TiDB 部署方式，使用不同的方法连接到 TiDB 集群。
 
 <SimpleTab>
-<div label="TiDB Serverless">
+<div label="TiDB Cloud Serverless">
 
 1. 在 TiDB Cloud 的 [**Clusters**](https://tidbcloud.com/console/clusters) 页面中，点击你的目标集群的名称，进入集群的 **Overview** 页面。
 
@@ -92,12 +92,12 @@ bundle add mysql2 dotenv
 
    > **注意**
    >
-   > 对于 TiDB Serverless，当使用 Public Endpoint 时，必须使用 `ssl_mode=verify_identity` 查询参数启用 TLS 连接。
+   > 对于 TiDB Cloud Serverless，当使用 Public Endpoint 时，必须使用 `ssl_mode=verify_identity` 查询参数启用 TLS 连接。
 
 7. 保存 `.env` 文件。
 
 </div>
-<div label="TiDB Dedicated">
+<div label="TiDB Cloud Dedicated">
 
 1. 在 TiDB Cloud 的 [**Clusters**](https://tidbcloud.com/console/clusters) 页面中，点击你的目标集群的名称，进入集群的 **Overview** 页面。
 
@@ -123,7 +123,7 @@ bundle add mysql2 dotenv
 
    > **注意**
    >
-   > 当使用 Public Endpoint 连接到 TiDB Dedicated 集群时，建议启用 TLS 连接。
+   > 当使用 Public Endpoint 连接到 TiDB Cloud Dedicated 集群时，建议启用 TLS 连接。
    >
    > 要启用 TLS 连接，请将 `ssl_mode` 查询参数的值修改为 `verify_identity`，并将 `sslca` 的值设置为从连接对话框下载的 CA 证书的文件路径。
 
@@ -215,7 +215,7 @@ production:
 
 > **注意**
 >
-> 对于 TiDB Serverless，当使用 Public Endpoint 时，**必须**通过在 `DATABASE_URL` 中设置 `ssl_mode` 查询参数为 `verify_identity` 来启用 TLS 连接，但是你**不需要**通过 `DATABASE_URL` 指定 SSL CA 证书，因为 mysql2 gem 会按照特定的顺序搜索现有的 CA 证书，直到找到相应的文件。
+> 对于 TiDB Cloud Serverless，当使用 Public Endpoint 时，**必须**通过在 `DATABASE_URL` 中设置 `ssl_mode` 查询参数为 `verify_identity` 来启用 TLS 连接，但是你**不需要**通过 `DATABASE_URL` 指定 SSL CA 证书，因为 mysql2 gem 会按照特定的顺序搜索现有的 CA 证书，直到找到相应的文件。
 
 ### 插入数据
 
