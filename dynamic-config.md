@@ -219,10 +219,10 @@ show warnings;
 | server.concurrent-recv-snap-limit | 同时接受 snapshot 的最大个数 |
 | storage.block-cache.capacity | 共享 block cache 的大小（自 v4.0.3 起支持） |
 | storage.flow-control.enable | 是否开启流量控制机制 |
-| storage.flow-control.memtables-threshold | KvDB 的 memtable 的个数触发流量控制的阈值 |
-| storage.flow-control.l0-files-threshold | KvDB 的 L0 文件个数触发流量控制的阈值 |
-| storage.flow-control.soft-pending-compaction-bytes-limit | KvDB 的 pending compaction bytes 触发流量控制的阈值 |
-| storage.flow-control.hard-pending-compaction-bytes-limit | KvDB 的 pending compaction bytes 触发流量控制拒绝新写入的阈值 |
+| storage.flow-control.memtables-threshold | 触发流量控制的 KvDB memtable 数量阈值 |
+| storage.flow-control.l0-files-threshold | 触发流量控制的 KvDB L0 文件数量阈值 |
+| storage.flow-control.soft-pending-compaction-bytes-limit | 触发流量控制的 KvDB pending compaction bytes 阈值 |
+| storage.flow-control.hard-pending-compaction-bytes-limit | 流量控制拒绝新写入的 KvDB pending compaction bytes 阈值 |
 | storage.scheduler-worker-pool-size | Scheduler 线程池中线程的数量 |
 | backup.num-threads | backup 线程的数量（自 v4.0.3 起支持） |
 | split.qps-threshold | 对 Region 执行 load-base-split 的阈值。如果连续 10s 内，某个 Region 的读请求的 QPS 超过 qps-threshold，则尝试切分该 Region |
