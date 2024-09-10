@@ -259,7 +259,7 @@ DETAILS   | the cluster has 2 different tidb versions, execute the sql to see mo
     |  ----  | ----  |  ----  |  ----  |
     | TiDB | panic-count | tidb_panic_count_total_count | TiDB 出现 panic 错误 |
     | TiDB | binlog-error | tidb_binlog_error_total_count | TiDB 写 binlog 时出现的错误 |
-    | TiKV | critical-error | tikv_critical_error_total_coun | TiKV 的 critical error |
+    | TiKV | critical-error | tikv_critical_error_total_count | TiKV 的 critical error |
     | TiKV | scheduler-is-busy       | tikv_scheduler_is_busy_total_count | TiKV 的 scheduler 太忙，会导致 TiKV 临时不可用 |
     | TiKV | coprocessor-is-busy | tikv_coprocessor_is_busy_total_count | TiKV 的 coprocessor 太忙 |
     | TiKV | channel-is-full | tikv_channel_full_total_count | TiKV 出现 channel full 的错误 |
