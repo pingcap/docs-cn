@@ -26,6 +26,7 @@ summary: TiDB 数据库中 IMPORT INTO 的使用概况。
 - TiDB 集群升级期间不支持使用该语句。
 - 所需导入的数据不能存在主键或非空唯一索引冲突的记录，否则会导致任务失败。
 - 已知问题：在 TiDB 节点配置文件中的 PD 地址与当前集群 PD 拓扑不一致时（如曾经缩容过 PD，但没有对应更新 TiDB 配置文件或者更新该文件后未重启 TiDB 节点），执行 `IMPORT INTO` 会失败。
+- 不支持导入到[临时表](/temporary-tables.md)或者[缓存表](/cached-tables.md)。
 
 ### `IMPORT INTO ... FROM FILE` 使用限制
 
