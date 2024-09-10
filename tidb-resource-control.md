@@ -217,11 +217,11 @@ Runaway Query 是指执行时间或消耗资源超出预期的查询（仅指 `S
 
 #### `QUERY_LIMIT` 参数说明
 
-超过以下任一条件限制时，查询会被识别为 Runaway Query：
+如果查询超过以下任一限制，就会被识别为 Runaway Query：
 
-- `EXEC_ELAPSED`: 检测查询执行的时间是否超限
-- `PROCESSED_KEYS`: 检测 Coprocessor 处理的 key 的数量是否超限
-- `REQUEST_UNIT`: 检测执行语句消耗的总读写 RU 是否超限
+- `EXEC_ELAPSED`：检测查询执行的时间是否超限
+- `PROCESSED_KEYS`：检测 Coprocessor 处理的 key 的数量是否超限
+- `REQUEST_UNIT`：检测执行语句消耗的总读写 RU 是否超限
 
 支持的应对操作 (`ACTION`)：
 
@@ -245,9 +245,9 @@ Runaway Query 是指执行时间或消耗资源超出预期的查询（仅指 `S
 
 | 参数            | 含义           | 备注                                   |
 |---------------|--------------|--------------------------------------|
-| `EXEC_ELAPSED`  | 当查询执行时间超过该值后被识别为 Runaway Query | EXEC_ELAPSED =`60s` 表示查询的执行时间超过 60 秒则被认为是 Runaway Query。 |
-| `PROCESSED_KEYS` | 当 Coprocessor 处理的 key 的数量超过该值后被识别为 Runaway Query | PROCESSED_KEYS = `1000` 表示 Coprocessor 处理的 key 的数量超过 1000 则被认为是 Runaway Query。 |
-| `REQUEST_UNIT`  | 当查询消耗的总读写 RU 超过该值后被识别为 Runaway Query | REQUEST_UNIT = `1000` 表示查询消耗的总读写 RU 超过 1000 则被认为是 Runaway Query。 |
+| `EXEC_ELAPSED`  | 当查询执行时间超过该值时，会被识别为 Runaway Query | `EXEC_ELAPSED = 60s` 表示查询的执行时间超过 60 秒则被认为是 Runaway Query。 |
+| `PROCESSED_KEYS` | 当 Coprocessor 处理的 key 的数量超过该值时，查询会被识别为 Runaway Query | `PROCESSED_KEYS = 1000` 表示 Coprocessor 处理的 key 的数量超过 1000 则被认为是 Runaway Query。 |
+| `REQUEST_UNIT`  | 当查询消耗的总读写 RU 超过该值时，查询会被识别为 Runaway Query | `REQUEST_UNIT = 1000` 表示查询消耗的总读写 RU 超过 1000 则被认为是 Runaway Query。 |
 | `ACTION`    | 当识别到 Runaway Query 时进行的动作 | 可选值有 `DRYRUN`，`COOLDOWN`，`KILL`。 |
 | `WATCH`   | 快速匹配已经识别到的 Runaway Query，即在一定时间内再碰到相同或相似查询直接进行相应动作 | 可选项，配置例如 `WATCH=SIMILAR DURATION '60s'`、`WATCH=EXACT DURATION '1m'`、`WATCH=PLAN`。 |
 

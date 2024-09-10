@@ -124,4 +124,4 @@ RESOURCE_GROUP_NAME: default
     - `Exact` 表示按照 SQL 文本匹配，此时列 `WATCH_TEXT` 显示 SQL 文本。
 * `SOURCE`：识别项来源，如果是被 `QUERY_LIMIT` 规则识别，则显示识别到的 TiDB IP；如果是手动添加，则显示 `manual`。
 * `ACTION`：识别后的对应操作。
-* `RULE`：识别规则。目前包括 `ElapsedTime`, `ProcessedKeys` 和 `RequestUnit` 三种规则。格式 `ProcessedKeys = 666(10)`，其中 `666` 为实际值，`10` 为阈值。
+* `RULE`：识别规则。目前包括 `ElapsedTime`、`ProcessedKeys` 和 `RequestUnit` 这三种规则。格式为 `ProcessedKeys = 666(10)`，其中 `666` 为实际值，`10` 为阈值。
