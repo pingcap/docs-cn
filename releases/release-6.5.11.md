@@ -48,7 +48,7 @@ TiDB 版本：6.5.11
 
     + TiCDC
 
-        - 当下游为 TiDB 且拥有 Super 权限时，TiCDC 支持从下游数据库查询 ADD INDEX DDL 的执行状态，以避免某些情况下因重试执行 DDL 超时而导致的同步失败。 [#10682](https://github.com/pingcap/tiflow/issues/10682) @[CharlesCheung96](https://github.com/CharlesCheung96)
+        - 当下游为 TiDB 且授予 Super 权限时，TiCDC 支持从下游数据库查询 ADD INDEX DDL 的执行状态，以避免某些情况下因重试执行 DDL 超时而导致的同步失败。 [#10682](https://github.com/pingcap/tiflow/issues/10682) @[CharlesCheung96](https://github.com/CharlesCheung96)
         - note [#issue](https://github.com/pingcap/tiflow/issues/${issue-id}) @[贡献者 GitHub ID](https://github.com/${github-id})
 
     + TiDB Data Migration (DM)
