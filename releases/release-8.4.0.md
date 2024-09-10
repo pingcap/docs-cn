@@ -31,6 +31,19 @@ TiDB 版本：8.4.0
 
     更多信息，请参考[用户文档](链接)。
 
+* 增加获取 TSO 的 RPC 模式，降低获取 TSO 的延迟 [#54960](https://github.com/pingcap/tidb/issues/54960) @[MyonKeminta](https://github.com/MyonKeminta) **tw@qiancai** <!--1893-->
+
+    TiDB 在向 PD 请求 TSO 时，会将一段时间内的请求汇总起来并以同步的方式进行批处理，以减少 RPC (Remote Procedure Call) 请求数量从而降低 PD 负载。对于延迟敏感的场景，这种模式的性能并不理想。在 v8.4.0 中，TiDB 新增 TSO 请求的异步批处理模式，并提供不同的并发能力。异步模式可以降低获取 TSO 的延迟，但可能会增加 PD 的负载。你可以通过 [tidb_tso_client_rpc_mode](/system-variables.md#tidb_tso_client_rpc_mode-从-v840-版本开始引入) 变量设定获取 TSO 的 RPC 模式。
+
+    更多信息，请参考[用户文档](/system-variables.md#tidb_tso_client_rpc_mode-从-v840-版本开始引入)。
+
+* 支持下推以下字符串函数到 TiKV [#](https://github.com/pingcap/tidb/issues/) @[gengliqi](https://github.com/gengliqi) **tw@qiancai** <!--1716-->
+
+    * `DATE_ADD()`
+    * `DATE_SUB()`
+
+  更多信息，请参考[用户文档](/functions-and-operators/expressions-pushed-down.md)。
+
 ### 稳定性
 
 * 功能标题 [#issue号](链接) @[贡献者 GitHub ID](链接) **tw@xxx** <!--1234-->
@@ -55,6 +68,15 @@ TiDB 版本：8.4.0
 
     更多信息，请参考[用户文档](链接)。
 
+* 支持向量搜索功能（实验特性） [#issue号](链接) @[贡献者 GitHub ID](链接) **tw@qiancai** <!--1898-->
+
+    向量搜索是一种优先考虑数据语义以提供相关结果的搜索方法，是 AI 和语言大模型的重要基础功能之一。通过向量索引，加速向量搜索的性能，数据库能够针对不同的距离函数快速查询相似向量，从而支撑 检索增强生成 (Retrieval-Augmented Generation, RAG)、语义搜索、推荐引擎等多种场景。
+    TiDB 从 v8.4 版本开始，支持向量数据类型和向量索引，提供强大的向量搜索能力。TiDB 的向量数据类型支持最大 16383 维度，支持的距离函数包括：L2 距离（欧式距离）、余弦距离、负内积、L1 距离（曼哈顿距离）。
+    使用时，创建包含向量类型的表并写入数据后，就可以进行向量搜索查询，或向量和传统关系数据的混合查询。
+    TiDB 的向量索引依赖于 TiFlash。因此，使用向量索引前，需要先为你的 TiDB 集群增加 TiFlash 节点。
+
+    更多信息，请参考[用户文档](/vector-search-overview.md)。
+    
 ### 数据库管理
 
 * 功能标题 [#issue号](链接) @[贡献者 GitHub ID](链接) **tw@xxx** <!--1234-->
@@ -140,7 +162,10 @@ TiDB 版本：8.4.0
 ## 改进提升
 
 + TiDB
-
+  - 优化扫描大量 region 场景下的执行效率 [#issue号](链接) @[贡献者 GitHub ID](链接) **tw@xxx** <!--1902-->
+  - 优化 MEMDB 实现，降低事务中的写操作延时 [#issue号](链接) @[贡献者 GitHub ID](链接) **tw@xxx** <!--1892-->
+  - 优化处理大量数据的 DML 性能 [#50215](https://github.com/pingcap/tidb/issues/50215) @[ekexium](https://github.com/ekexium) **tw@qiancai** <!--1860-->
+  
 + TiKV
 
 + PD
