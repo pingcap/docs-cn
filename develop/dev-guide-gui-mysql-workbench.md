@@ -16,7 +16,7 @@ TiDB 是一个兼容 MySQL 的数据库。[MySQL Workbench](https://www.mysql.co
 
 > **注意**
 >
-> 本文档适用于 TiDB Serverless、TiDB Dedicated 和本地部署的 TiDB。
+> 本文档适用于 TiDB Cloud Serverless、TiDB Cloud Dedicated 和本地部署的 TiDB。
 
 ## 前置需求
 
@@ -27,7 +27,7 @@ TiDB 是一个兼容 MySQL 的数据库。[MySQL Workbench](https://www.mysql.co
 
 **如果你还没有 TiDB 集群，可以按如下方式创建一个：**
 
-- （推荐方式）参考[创建 TiDB Serverless 集群](/develop/dev-guide-build-cluster-in-cloud.md)，创建一个 TiDB Cloud 集群。
+- （推荐方式）参考[创建 TiDB Cloud Serverless 集群](/develop/dev-guide-build-cluster-in-cloud.md)，创建一个 TiDB Cloud 集群。
 - 参考[部署本地测试 TiDB 集群](/quick-start-with-tidb.md#部署本地测试集群)或[部署正式 TiDB 集群](/production-deployment-using-tiup.md)，创建一个本地集群。
 
 ## 连接到 TiDB
@@ -35,7 +35,7 @@ TiDB 是一个兼容 MySQL 的数据库。[MySQL Workbench](https://www.mysql.co
 根据你选择的 TiDB 部署方式连接到 TiDB 集群。
 
 <SimpleTab>
-<div label="TiDB Serverless">
+<div label="TiDB Cloud Serverless">
 
 1. 在 TiDB Cloud 的 [**Clusters**](https://tidbcloud.com/console/clusters) 页面中，点击你目标集群的名字，进入集群的 **Overview** 页面。
 
@@ -64,20 +64,20 @@ TiDB 是一个兼容 MySQL 的数据库。[MySQL Workbench](https://www.mysql.co
     - **Hostname**：输入从 TiDB Cloud 连接对话框中的得到的 `HOST` 参数。
     - **Port**：输入从 TiDB Cloud 连接对话框中的得到的 `PORT` 参数。
     - **Username**：输入从 TiDB Cloud 连接对话框中的得到的 `USERNAME` 参数。
-    - **Password**：点击 **Store in Keychain ...**  或 **Store in Vault**，输入 TiDB Serverless 集群的密码，然后点击 **OK** 保存密码。
+    - **Password**：点击 **Store in Keychain ...**  或 **Store in Vault**，输入 TiDB Cloud Serverless 集群的密码，然后点击 **OK** 保存密码。
 
-        ![MySQL Workbench: store the password of TiDB Serverless in keychain](/media/develop/mysql-workbench-store-password-in-keychain.png)
+        ![MySQL Workbench: store the password of TiDB Cloud Serverless in keychain](/media/develop/mysql-workbench-store-password-in-keychain.png)
 
     下图显示了连接参数的示例：
 
-    ![MySQL Workbench: configure connection settings for TiDB Serverless](/media/develop/mysql-workbench-connection-config-serverless-parameters.png)
+    ![MySQL Workbench: configure connection settings for TiDB Cloud Serverless](/media/develop/mysql-workbench-connection-config-serverless-parameters.png)
 
-7. 点击 **Test Connection** 以验证与 TiDB Serverless 集群的连接。
+7. 点击 **Test Connection** 以验证与 TiDB Cloud Serverless 集群的连接。
 
 8. 如果连接测试成功，你可以看到 **Successfully made the MySQL connection** 信息。点击 **OK** 保存连接配置。
 
 </div>
-<div label="TiDB Dedicated">
+<div label="TiDB Cloud Dedicated">
 
 1. 在 TiDB Cloud 的 [**Clusters**](https://tidbcloud.com/console/clusters) 页面中，点击你目标集群的名字，进入集群的 **Overview** 页面。
 
@@ -85,7 +85,7 @@ TiDB 是一个兼容 MySQL 的数据库。[MySQL Workbench](https://www.mysql.co
 
 3. 点击 **Allow Access from Anywhere**。
 
-    有关如何获取连接字符串的更多详细信息，参考 [TiDB Dedicated 标准连接（英文）](https://docs.pingcap.com/tidbcloud/connect-via-standard-connection)。
+    有关如何获取连接字符串的更多详细信息，参考 [TiDB Cloud Dedicated 标准连接（英文）](https://docs.pingcap.com/tidbcloud/connect-via-standard-connection)。
 
 4. 启动 MySQL Workbench，并点击 **MySQL Connections** 标题旁边的 **+**。
 
@@ -97,20 +97,20 @@ TiDB 是一个兼容 MySQL 的数据库。[MySQL Workbench](https://www.mysql.co
     - **Hostname**: 输入从 TiDB Cloud 连接对话框中的得到的 `HOST` 参数。
     - **Port**：输入从 TiDB Cloud 连接对话框中的得到的 `PORT` 参数。
     - **Username**：输入从 TiDB Cloud 连接对话框中的得到的 `USERNAME` 参数。
-    - **Password**：点击 **Store in Keychain ...**，输入 TiDB Dedicated 集群的密码，然后点击 **OK** 保存密码。
+    - **Password**：点击 **Store in Keychain ...**，输入 TiDB Cloud Dedicated 集群的密码，然后点击 **OK** 保存密码。
 
-        ![MySQL Workbench: store the password of TiDB Dedicated in keychain](/media/develop/mysql-workbench-store-dedicated-password-in-keychain.png)
+        ![MySQL Workbench: store the password of TiDB Cloud Dedicated in keychain](/media/develop/mysql-workbench-store-dedicated-password-in-keychain.png)
 
     下图显示了连接参数的示例：
 
-    ![MySQL Workbench: configure connection settings for TiDB Dedicated](/media/develop/mysql-workbench-connection-config-dedicated-parameters.png)
+    ![MySQL Workbench: configure connection settings for TiDB Cloud Dedicated](/media/develop/mysql-workbench-connection-config-dedicated-parameters.png)
 
-6. 点击 **Test Connection** 以验证与 TiDB Dedicated 集群的连接。
+6. 点击 **Test Connection** 以验证与 TiDB Cloud Dedicated 集群的连接。
 
 7. 如果连接测试成功，你可以看到 **Successfully made the MySQL connection** 信息。点击 **OK** 保存连接配置。
 
 </div>
-<div label="TiDB Self-Hosted">
+<div label="TiDB Self-Managed">
 
 1. 启动 MySQL Workbench，并点击 **MySQL Connections** 标题旁边的 **+**。
 
@@ -124,11 +124,11 @@ TiDB 是一个兼容 MySQL 的数据库。[MySQL Workbench](https://www.mysql.co
     - **Username**：输入用于连接到 TiDB 的用户名。
     - **Password**：点击 **Store in Keychain ...**，输入用于连接 TiDB 集群的密码，然后点击 **OK** 保存密码。
 
-        ![MySQL Workbench: store the password of TiDB Self-Hosted in keychain](/media/develop/mysql-workbench-store-self-hosted-password-in-keychain.png)
+        ![MySQL Workbench: store the password of TiDB Self-Managed in keychain](/media/develop/mysql-workbench-store-self-hosted-password-in-keychain.png)
 
     下图显示了连接参数的示例：
 
-    ![MySQL Workbench: configure connection settings for TiDB Self-Hosted](/media/develop/mysql-workbench-connection-config-self-hosted-parameters.png)
+    ![MySQL Workbench: configure connection settings for TiDB Self-Managed](/media/develop/mysql-workbench-connection-config-self-hosted-parameters.png)
 
 3. 点击 **Test Connection** 以验证与本地部署 TiDB 集群的连接。
 
