@@ -302,7 +302,7 @@ SHOW CREATE TABLE t;
 1 row in set (0.00 sec)
 ```
 
-此时如果重启 TiDB，自增 ID 缓存将会丢失。新的插入操作将从一个之前缓存范围外的更高的 ID 值开始分配。
+此时如果重启 TiDB，自增 ID 缓存将会丢失，新的插入操作将从一个之前缓存范围外的更高的 ID 值开始分配。
 
 ```sql
 INSERT INTO t VALUES();
