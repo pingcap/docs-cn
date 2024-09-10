@@ -16,7 +16,7 @@ TiDB 是一个兼容 MySQL 的数据库。[AWS Lambda 函数](https://aws.amazon
 
 > **Note**
 >
-> 本文档适用于 TiDB Serverless 和本地部署的 TiDB。
+> 本文档适用于 TiDB Cloud Serverless 和本地部署的 TiDB。
 
 ## 前置需求
 
@@ -31,7 +31,7 @@ TiDB 是一个兼容 MySQL 的数据库。[AWS Lambda 函数](https://aws.amazon
 
 如果你还没有 TiDB 集群，可以按照以下方式创建：
 
-- （推荐方式）参考[创建 TiDB Serverless 集群](/develop/dev-guide-build-cluster-in-cloud.md#第-1-步创建-tidb-serverless-集群)，创建你自己的 TiDB Cloud 集群。
+- （推荐方式）参考[创建 TiDB Cloud Serverless 集群](/develop/dev-guide-build-cluster-in-cloud.md#第-1-步创建-tidb-cloud-serverless-集群)，创建你自己的 TiDB Cloud 集群。
 - 参考[部署本地测试 TiDB 集群](/quick-start-with-tidb.md#部署本地测试集群)或[部署正式 TiDB 集群](/production-deployment-using-tiup.md)，创建本地集群。
 
 如果你还没有 AWS 账户或用户，可以按照 [Lambda 入门](https://docs.aws.amazon.com/zh_cn/lambda/latest/dg/getting-started.html)文档中的步骤来创建它们。
@@ -67,9 +67,9 @@ npm install
 
 <SimpleTab>
 
-<div label="TiDB Serverless">
+<div label="TiDB Cloud Serverless">
 
-1. 在 TiDB Cloud 的 [**Clusters**](https://tidbcloud.com/console/clusters) 页面中，选择你的 TiDB Serverless 集群，进入集群的 **Overview** 页面。
+1. 在 TiDB Cloud 的 [**Clusters**](https://tidbcloud.com/console/clusters) 页面中，选择你的 TiDB Cloud Serverless 集群，进入集群的 **Overview** 页面。
 
 2. 点击右上角的 **Connect** 按钮，将会弹出连接对话框。
 
@@ -340,7 +340,7 @@ console.log(rsh.affectedRows);
 - 为了避免 SQL 注入的风险，推荐使用[预处理语句](https://github.com/sidorares/node-mysql2#using-prepared-statements)执行 SQL。
 - 在不涉及大量复杂 SQL 语句的场景下，推荐使用 ORM 框架（例如：[Sequelize](https://sequelize.org/)、[TypeORM](https://typeorm.io/) 或 [Prisma](https://www.prisma.io/)）来提升你的开发效率。
 - 如需为你的应用程序构建一个 RESTful API，建议[将 AWS Lambda 与 Amazon API Gateway 结合使用](https://docs.aws.amazon.com/zh_cn/lambda/latest/dg/services-apigateway.html)。
-- 关于使用 TiDB Serverless 和 AWS Lambda 设计高性能应用程序的更多信息，可以参考[这篇博客](https://aws.amazon.com/blogs/apn/designing-high-performance-applications-using-serverless-tidb-cloud-and-aws-lambda/)。
+- 关于使用 TiDB Cloud Serverless 和 AWS Lambda 设计高性能应用程序的更多信息，可以参考[这篇博客](https://aws.amazon.com/blogs/apn/designing-high-performance-applications-using-serverless-tidb-cloud-and-aws-lambda/)。
 
 ## 下一步
 

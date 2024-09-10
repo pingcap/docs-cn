@@ -9,7 +9,7 @@ summary: 简单介绍 TiDB 的增删改查 SQL。
 
 ## 在开始之前
 
-请确保你已经连接到 TiDB 集群，若未连接，请参考[使用 TiDB Serverless 构建 TiDB 集群](/develop/dev-guide-build-cluster-in-cloud.md#第-1-步创建-tidb-serverless-集群)来创建一个 TiDB Serverless 集群。
+请确保你已经连接到 TiDB 集群，若未连接，请参考[使用 TiDB Cloud Serverless 构建 TiDB 集群](/develop/dev-guide-build-cluster-in-cloud.md#第-1-步创建-tidb-cloud-serverless-集群)来创建一个 TiDB Cloud Serverless 集群。
 
 ## 基本 SQL 操作
 

@@ -15,7 +15,7 @@ summary: 创建数据库的方法、规范及例子。
 
 在阅读本页面之前，你需要准备以下事项：
 
-- [使用 TiDB Serverless 构建 TiDB 集群](/develop/dev-guide-build-cluster-in-cloud.md)。
+- [使用 TiDB Cloud Serverless 构建 TiDB 集群](/develop/dev-guide-build-cluster-in-cloud.md)。
 - 阅读[数据库模式概览](/develop/dev-guide-schema-design-overview.md)。
 
 ## 什么是数据库
