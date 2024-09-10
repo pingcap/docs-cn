@@ -34,7 +34,7 @@ aliases: ['/zh/tidb/dev/build-cluster-in-cloud']
 
     > **注意：**
     >
-    > 在连接到 [TiDB Cloud Serverless](https://docs.pingcap.com/tidbcloud/select-cluster-tier#tidb-serverless-beta) 集群时，你需要给用户名加上前缀并使用单引号包裹用户名。你可以在 [TiDB Cloud 用户名前缀](https://docs.pingcap.com/tidbcloud/select-cluster-tier#user-name-prefix) 中获得更多信息。
+    > 在连接到 [TiDB Cloud Serverless](https://docs.pingcap.com/tidbcloud/select-cluster-tier#tidb-cloud-serverless) 集群时，你需要给用户名加上前缀并使用单引号包裹用户名。你可以在 [TiDB Cloud Serverless 用户名前缀](https://docs.pingcap.com/tidbcloud/select-cluster-tier#user-name-prefix) 中获得更多信息。
 
 ## 第 2 步：连接到集群
 

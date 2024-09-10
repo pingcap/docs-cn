@@ -113,7 +113,7 @@ TiDB 是一个兼容 MySQL 的数据库。[Navicat](https://www.navicat.com) 是
 9. 如果连接测试成功，你可以看到 **Connection Successful** 信息。点击 **Save** 完成连接配置。
 
 </div>
-<div label="TiDB Self-Managed">
+<div label="本地部署 TiDB">
 
 1. 启动 Navicat for MySQL，点击左上角的 **Connection**，并从下拉列表中选择 **MySQL**。
 

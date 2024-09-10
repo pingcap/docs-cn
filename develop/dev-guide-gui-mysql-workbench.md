@@ -110,7 +110,7 @@ TiDB 是一个兼容 MySQL 的数据库。[MySQL Workbench](https://www.mysql.co
 7. 如果连接测试成功，你可以看到 **Successfully made the MySQL connection** 信息。点击 **OK** 保存连接配置。
 
 </div>
-<div label="TiDB Self-Managed">
+<div label="本地部署 TiDB">
 
 1. 启动 MySQL Workbench，并点击 **MySQL Connections** 标题旁边的 **+**。
 
