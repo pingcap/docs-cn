@@ -46,7 +46,7 @@ TiDB 高度兼容 MySQL 协议，以及 MySQL 5.7 和 MySQL 8.0 常用的功能�
 
 <DocHomeCard href="/zh/tidb/dev/tidb-roadmap" label="TiDB 路线图" icon="oss-roadmap-blue">
 
-通过路线图，你可以预先了解 TiDB 的未来规划，以便你关注进度，了解关键里程碑，并对开发工作提出反馈
+提前了解 TiDB 的未来规划，关注开发进展，了解关键里程碑，并对开发工作提出反馈
 
 </DocHomeCard>
 
