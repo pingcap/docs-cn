@@ -182,7 +182,7 @@ TiDB 版本：8.4.0
   - 优化 MEMDB 实现，降低事务中的写操作延时 [#issue号](链接) @[贡献者 GitHub ID](链接) **tw@xxx** <!--1892-->
   - 优化处理大量数据的 DML 性能 [#50215](https://github.com/pingcap/tidb/issues/50215) @[ekexium](https://github.com/ekexium) **tw@qiancai** <!--1860-->
   - 优化器估行的最小值为`1`，与其他数据库行为一致 [#47400](https://github.com/pingcap/tidb/issues/47400) @[terry1purcell](https://github.com/terry1purcell) **tw@Oreoxmt** <!--1929-->
-  - 为日志表 [`mysql.tidb_runaway_queries`] 增加写入控制，降低并发大量写入引发的开销 [#issue号](链接) @[HuSharp](https://github.com/HuSharp) <!--1908--> **tw@lilin90** 
+  - 为日志表 [`mysql.tidb_runaway_queries`](/mysql-schema/mysql-schema.md#runaway-queries-相关系统表) 增加写入控制，降低并发大量写入引发的开销 [#issue号](链接) @[HuSharp](https://github.com/HuSharp) <!--1908--> **tw@lilin90** 
   
 + TiKV
 
