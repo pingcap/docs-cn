@@ -46,10 +46,10 @@ ALTER TABLE t ADD VECTOR INDEX IF NOT EXISTS ((VEC_COSINE_DISTANCE(a))) USING HN
 >
 > 创建向量索引的语法可能在今后的版本中发生变化。
 
-创建向量索引时，需要通过 `distance=<metric>` 配置指定距离度量：
+创建向量索引时，需要通过 `HNSW ((distance_metric(cols_name)))` 配置指定距离度量：
 
-- 余弦距离: `COMMENT "hnsw(distance=cosine)"`
-- L2 距离: `COMMENT "hnsw(distance=l2)"`
+- 余弦距离: `HNSW ((VEC_COSINE_DISTANCE(cols_name)))`
+- L2 距离: `HNSW ((VEC_L2_DISTANCE(cols_name)))`
 
 只能为固定维度的向量列 (如 `VECTOR(3)` ) 创建向量索引。它不能为混合维度的向量列 (如 `VECTOR` ) 创建，因为向量距离只能在具有相同维度的向量之间计算。
 
