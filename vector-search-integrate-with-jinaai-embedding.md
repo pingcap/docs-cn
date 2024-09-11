@@ -65,7 +65,7 @@ pip install -r requirements.txt
 1. 在项目的根目录下新建一个 `.env` 文件，将以下内容复制进去：
 
     ```dotenv
-    export TIDB_DATABASE_URL="mysql+pymysql://<USERNAME>:<PASSWORD>@<HOST>:4000/<DATABASE>"
+    export TIDB_DATABASE_URL="mysql+pymysql://<USERNAME>:<PASSWORD>@<HOST>:<PORT>/<DATABASE>"
     ```
 
     注意替换参数为你的 TiDB 实际对应的值。如果你在本机运行 TiDB，默认 Host 地址为 `127.0.0.1`，密码为空。以下是各个参数的解释：
@@ -84,7 +84,7 @@ pip install -r requirements.txt
 
     ```shell
    export JINA_API_KEY="****"
-   export TIDB_DATABASE_URL="mysql+pymysql://<USERNAME>:<PASSWORD>@<HOST>:4000/<DATABASE>"
+   export TIDB_DATABASE_URL="mysql+pymysql://<USERNAME>:<PASSWORD>@<HOST>:<PORT>/<DATABASE>"
     ```
    注意替换参数为你的 TiDB 实际对应的值，并删除 `CA` 这行。如果你在本机运行 TiDB，默认 Host 地址为 `127.0.0.1`，密码为空。以下是各个参数的解释：
 

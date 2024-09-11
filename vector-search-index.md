@@ -18,13 +18,28 @@ TiDB 目前支持以下向量搜索索引算法：
 
 [HNSW](https://en.wikipedia.org/wiki/Hierarchical_navigable_small_world) 是最流行的向量搜索索引算法。HNSW 索引的性能良好，且准确率相对较高 (特定情况下可达 98%),
 
-要创建 HNSW 向量搜索索引，你可以在创建表格时，在 [向量数据类型](/vector-search-data-types.md) 列的注释中指定索引定义：
+要创建 HNSW 向量搜索索引，你可以在创建表格时，使用以下语法指定为哪一列的[向量数据类型](/vector-search-data-types.md)构建索引：
 
 ```sql
-CREATE TABLE vector_table_with_index (
-    id INT PRIMARY KEY, doc TEXT,
-    embedding VECTOR(3) COMMENT "hnsw(distance=cosine)"
+CREATE TABLE foo (
+    id       INT PRIMARY KEY,
+    data     VECTOR(5),
+    data64   VECTOR64(10),
+    VECTOR INDEX data USING HNSW ((VEC_COSINE_DISTANCE(data)))
 );
+```
+
+如果已经创建了带有向量数据类型的表格，你可以通过 `ALTER TABLE` 的语法为向量数据创建索引，示例如下：
+
+```sql
+CREATE VECTOR INDEX idx ON t ((VEC_COSINE_DISTANCE(a))) USING HNSW;
+CREATE VECTOR INDEX IF NOT EXISTS idx ON t ((VEC_COSINE_DISTANCE(a))) TYPE HNSW;
+CREATE VECTOR INDEX ident ON db.t (ident, ident ASC ) TYPE HNSW;
+
+ALTER TABLE t ADD VECTOR ((VEC_COSINE_DISTANCE(a))) USING HNSW COMMENT 'a';
+ALTER TABLE t ADD VECTOR KEY ((VEC_COSINE_DISTANCE(a))) USING HNSW COMMENT 'a';
+ALTER TABLE t ADD VECTOR INDEX ((VEC_COSINE_DISTANCE(a))) USING HNSW COMMENT 'a';
+ALTER TABLE t ADD VECTOR INDEX IF NOT EXISTS ((VEC_COSINE_DISTANCE(a))) USING HNSW COMMENT 'a';
 ```
 
 > **Note:**
@@ -36,7 +51,6 @@ CREATE TABLE vector_table_with_index (
 - 余弦距离: `COMMENT "hnsw(distance=cosine)"`
 - L2 距离: `COMMENT "hnsw(distance=l2)"`
 
-The vector index can only be created for fixed-dimensional vector columns like `VECTOR(3)`. It cannot be created for mixed-dimensional vector columns like `VECTOR` because vector distances can only be calculated between vectors with the same dimensions.
 只能为固定维度的向量列 (如 `VECTOR(3)` ) 创建向量索引。它不能为混合维度的向量列 (如 `VECTOR` ) 创建，因为向量距离只能在具有相同维度的向量之间计算。
 
 如果你使用的是编程语言 SDK 或 ORM，请参阅以下文档以创建向量索引：
@@ -266,6 +280,15 @@ LIMIT 10;
 - `vector_index.search.discarded_nodes`: 在搜索过程中已访问但被丢弃的向量行数。搜索结果不会考虑这些被丢弃的向量。如果数值较大，通常表示有很多由 UPDATE 或 DELETE 语句引起的陈旧行。
 
 请参阅 [`EXPLAIN`](/sql-statements/sql-statement-explain.md)、[`EXPLAIN ANALYZE`](/sql-statements/sql-statement-explain-analyze.md)，以及 [EXPLAIN Walkthrough](/explain-walkthrough.md) 来解释输出结果。
+
+## 向量搜索索引的约束
+
+- TiDB 集群需要创建 TiFlash 的副本
+- 不能是主键索引
+- 不能是复合索引
+- 不可以为同一列创建多个向量索引
+- 向量索引需要指定距离函数（目前只支持 `余弦距离` 和 `L2 距离`）
+- 不支持删除具有向量索引的列，也不支持同时创建多个索引。
 
 ## See also
 
