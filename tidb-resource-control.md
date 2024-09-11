@@ -330,19 +330,25 @@ Runaway Query 是指执行时间或消耗资源超出预期的查询（仅指 `S
     ```sql
     MySQL [(none)]> SELECT * FROM mysql.tidb_runaway_queries LIMIT 1\G
     *************************** 1. row ***************************
-    resource_group_name: rg1
-                   time: 2023-06-16 17:40:22
-             match_type: identify
-                 action: kill
-           original_sql: select * from sbtest.sbtest1
-            plan_digest: 5b7d445c5756a16f910192ad449c02348656a5e9d2aa61615e6049afbc4a82e
-            tidb_server: 127.0.0.1:4000
+    resource_group_name: default
+         start_time: 2024-09-09 17:43:42
+            repeats: 2
+         match_type: watch
+             action: kill
+         sample_sql: select sleep(2) from t
+         sql_digest: 4adbc838b86c573265d4b39a3979d0a362b5f0336c91c26930c83ab187701a55
+        plan_digest: 5d094f78efbce44b2923733b74e1d09233cb446318293492901c5e5d92e27dbc
+        tidb_server: 127.0.0.1:4000
     ```
 
-    其中，`match_type` 为该 Runaway Query 的来源，其值如下：
+    字段解释：
 
+    `match_type` 为该 Runaway Query 的来源，其值如下：
     - `identify` 表示命中条件。
     - `watch` 表示被快速识别机制命中。
+
+    `start_time` 为该 Runaway Query 被识别的时间
+    `repeats` 为该 Runaway Query 从 `start_time` 开始后被识别的次数。
 
 + `information_schema.runaway_watches` 表中包含了 Runaway Queries 的快速识别规则记录。详见 [`RUNAWAY_WATCHES`](/information-schema/information-schema-runaway-watches.md)。
 
