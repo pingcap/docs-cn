@@ -81,7 +81,6 @@ pip install Django django-tidb mysqlclient numpy python-dotenv
 - `TIDB_USERNAME`：连接 TiDB 集群的用户名。
 - `TIDB_PASSWORD`：连接 TiDB 集群的密码。
 - `TIDB_DATABASE`：要连接的数据库名称。
-- `TIDB_CA_PATH`：根证书文件的路径。
 
 以下为 MacOS 的示例：
 
@@ -91,11 +90,10 @@ TIDB_PORT=4000
 TIDB_USERNAME=********.root
 TIDB_PASSWORD=********
 TIDB_DATABASE=test
-TIDB_CA_PATH=/etc/ssl/cert.pem
 ```
 > **Tip:**
 >
-> `TIDB_CA_PATH` 可以无需指定，这样可以匹配到 Linux 和 Windows 上，即 Python SDK 解决 SSL 证书问题。
+> `TIDB_PASSWORD` 初始密码为空，若你是第一次启动集群，则不需要带上此字段。
 
 </div>
 

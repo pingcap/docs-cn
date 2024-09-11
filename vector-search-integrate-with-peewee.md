@@ -64,7 +64,7 @@ pip install peewee pymysql python-dotenv tidb-vector
 
 <div label="TiDB 本地部署">
 
-在 Python 项目的根目录下新建一个 `.env` 文件，将一下内容复制进 `.env` 文件中，并根据集群的启动参数修改相应的环境变量。
+在 Python 项目的根目录下新建一个 `.env` 文件，将以下内容复制进 `.env` 文件中，并根据集群的启动参数修改相应的环境变量。
 
 ```shell
 TIDB_HOST=gateway01.****.prod.aws.tidbcloud.com
@@ -72,7 +72,6 @@ TIDB_PORT=4000
 TIDB_USERNAME=******.root
 TIDB_PASSWORD=********
 TIDB_DATABASE=test
-TIDB_CA_PATH=/etc/ssl/cert.pem
 ```
 
 - `TIDB_HOST`: TiDB 集群的主机号。
@@ -80,12 +79,11 @@ TIDB_CA_PATH=/etc/ssl/cert.pem
 - `TIDB_USERNAME`: 连接 TiDB 集群的用户名。
 - `TIDB_PASSWORD`: 连接 TiDB 集群的密码。
 - `TIDB_DATABASE`: 要连接的数据库名称。
-- `TIDB_CA_PATH`: 根证书文件的路径。
 
 
 > **Tip:**
 >
-> `TIDB_CA_PATH` 可以无需指定，这样可以匹配到 Linux 和 Windows 上，即 Python SDK 解决 SSL 证书问题。
+> 注意替换为你的 TiDB 实际对应的值。`TIDB_PASSWORD` 初始密码为空，若你是第一次启动集群，则不需要带上此字段。
 
 </div>
 

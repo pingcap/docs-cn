@@ -62,16 +62,15 @@ pip install sqlalchemy pymysql sentence-transformers tidb-vector python-dotenv
 - `<USER>`：连接 TiDB 集群的用户名。
 - `<PASSWORD>`：连接 TiDB 集群的密码。
 - `<DATABASE>`：要连接的数据库名称。
-- `<CA_PATH>`：根证书文件的路径。
 
 以下为 MacOS 的示例：
 
 ```dotenv
-TIDB_DATABASE_URL="mysql+pymysql://<USER>:<PASSWORD>@<HOST>:<PORT>/<DATABASE>?ssl_ca=<CA_PATH>&ssl_verify_cert=true&ssl_verify_identity=true"
+TIDB_DATABASE_URL="mysql+pymysql://<USER>:<PASSWORD>@<HOST>:<PORT>/<DATABASE>"
 ```
 > **Tip:**
 >
-> `ssl_ca` 可以无需指定，这样可以匹配到 Linux 和 Windows 上，即 Python SDK 解决 SSL 证书问题。
+> `<PASSWORD>` 初始密码为空，若你是第一次启动集群，则不需要带上此字段。
 
 </div>
 

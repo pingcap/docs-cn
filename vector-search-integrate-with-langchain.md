@@ -81,14 +81,14 @@ os.environ["OPENAI_API_KEY"] = getpass.getpass("OpenAI API Key:")
 例如，macOS 上的连接字符串如下所示：
 
 ```dotenv
-TIDB_DATABASE_URL="mysql+pymysql://<prefix>.root:<password>@gateway01.<region>.prod.aws.tidbcloud.com:4000/test?ssl_ca=/etc/ssl/cert.pem&ssl_verify_cert=true&ssl_verify_identity=true"
+TIDB_DATABASE_URL="mysql+pymysql://<USERNAME>:<PASSWORD>@<HOST>:<PORT>/<DATABASE_NAME>"
 ```
-
-注意替换为你的 TiDB 实际对应的值。
 
 > **Tip:**
 >
-> `ssl_ca` 可以无需指定，这样可以匹配到 Linux 和 Windows 上，即 Python SDK 解决 SSL 证书问题。
+> 注意替换为你的 TiDB 实际对应的值。`PASSWORD` 初始密码为空，若你是第一次启动集群，则不需要带上此字段。
+
+
 
 </div>
 
