@@ -62,13 +62,14 @@ pip install -r requirements.txt
 
 <div label="本地部署 TiDB">
 
-1. 在项目的根目录下新建一个 `.env` 文件，将以下内容复制进去：
+你可以通过在终端中直接设置环境变量以连接 TiDB 集群：
 
-    ```dotenv
+   ```shell
+    export JINA_API_KEY="****"
     export TIDB_DATABASE_URL="mysql+pymysql://<USERNAME>:<PASSWORD>@<HOST>:<PORT>/<DATABASE>"
-    ```
-
-    注意替换参数为你的 TiDB 实际对应的值。如果你在本机运行 TiDB，默认 Host 地址为 `127.0.0.1`，密码为空。以下是各个参数的解释：
+   ```
+    
+   注意替换参数为你的 TiDB 实际对应的值。如果你在本机运行 TiDB，默认 Host 地址为 `127.0.0.1`，密码为空。以下是各个参数的解释：
 
    - `HOST`：TiDB 集群的主机号。
    - `PORT`：TiDB 集群的端口号。
@@ -78,21 +79,6 @@ pip install -r requirements.txt
 > **Tip:**
 >
 > `PASSWORD` 初始密码为空，若你是第一次启动集群，则不需要带上此字段。
-
-
-2. 或者，你也可以通过在终端中直接设置环境变量以连接 TiDB 集群：
-
-    ```shell
-   export JINA_API_KEY="****"
-   export TIDB_DATABASE_URL="mysql+pymysql://<USERNAME>:<PASSWORD>@<HOST>:<PORT>/<DATABASE>"
-    ```
-   注意替换参数为你的 TiDB 实际对应的值，并删除 `CA` 这行。如果你在本机运行 TiDB，默认 Host 地址为 `127.0.0.1`，密码为空。以下是各个参数的解释：
-
-   - `HOST`：TiDB 集群的主机号。
-   - `PORT`：TiDB 集群的端口号。
-   - `USERNAME`：连接 TiDB 集群的用户名。
-   - `PASSWORD`：连接 TiDB 集群的密码。
-   - `DATABASE`：要连接的数据库名称。
 
 
 </div>
