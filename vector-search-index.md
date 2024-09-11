@@ -55,12 +55,7 @@ ALTER TABLE foo ADD VECTOR INDEX idx_name USING HNSW ((VEC_COSINE_DISTANCE(data)
 - Python: [Peewee](/vector-search-integrate-with-peewee.md)
 - Python: [Django](/vector-search-integrate-with-django-orm.md)
 
-创建向量索引时请注意以下限制。这些限制可能会在今后的版本中取消：
-
-- 向量索引暂不支持 L1 距离和内积。
-
-- 只有在创建表时才能定义和创建矢量索引。创建表后，不能使用 DDL 语句创建矢量索引。也不能使用 DDL 语句删除矢量索引。
-
+有关向量搜索索引的相关约束和限制，请参阅 [向量搜索索引的约束](/vector-search-index.md#向量搜索索引的约束)
 
 ## 使用向量搜索索引
 
@@ -267,11 +262,11 @@ LIMIT 10;
 
 一些重要字段的解释：
 
-- `vector_index.load.total`: 加载索引的总持续时间。该字段可能大于实际查询时间，因为可能会并行加载多个矢量索引。
+- `vector_index.load.total`: 加载索引的总持续时间。该字段可能大于实际查询时间，因为可能会并行加载多个向量索引。
 - `vector_index.load.from_s3`: 从 S3 加载的索引数量。
 - `vector_index.load.from_disk`: 从磁盘加载的索引数量。索引之前已从 S3 下载。
 - `vector_index.load.from_cache`: 从缓存中加载的索引数量。索引之前已从 S3 下载。
-- `vector_index.search.total`: 在索引中搜索的总持续时间。延迟大通常意味着索引是冷索引（以前从未被访问过，或很久以前被访问过），因此在索引中搜索时会产生大量 IO。这个字段可能大于实际查询时间，因为可能会并行搜索多个矢量索引。
+- `vector_index.search.total`: 在索引中搜索的总持续时间。延迟大通常意味着索引是冷索引（以前从未被访问过，或很久以前被访问过），因此在索引中搜索时会产生大量 IO。这个字段可能大于实际查询时间，因为可能会并行搜索多个向量索引。
 - `vector_index.search.discarded_nodes`: 在搜索过程中已访问但被丢弃的向量行数。搜索结果不会考虑这些被丢弃的向量。如果数值较大，通常表示有很多由 UPDATE 或 DELETE 语句引起的陈旧行。
 
 请参阅 [`EXPLAIN`](/sql-statements/sql-statement-explain.md)、[`EXPLAIN ANALYZE`](/sql-statements/sql-statement-explain-analyze.md)，以及 [EXPLAIN Walkthrough](/explain-walkthrough.md) 来解释输出结果。
@@ -284,6 +279,7 @@ LIMIT 10;
 - 不可以为同一列创建多个向量索引
 - 向量索引需要指定距离函数（目前只支持 `余弦距离` 和 `L2 距离`）
 - 不支持删除具有向量索引的列，也不支持同时创建多个索引。
+- 不支持对向量索引设置 `invisible` 操作。
 
 ## See also
 
