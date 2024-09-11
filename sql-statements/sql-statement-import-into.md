@@ -20,6 +20,7 @@ summary: TiDB 数据库中 IMPORT INTO 的使用概况。
 
 - 目前该语句支持导入 10 TiB 以内的数据。
 - 只支持导入数据到数据库中已有的空表。
+- 不支持导入到[临时表](/temporary-tables.md)或者[缓存表](/cached-tables.md)。
 - 不支持事务，也无法回滚。在显式事务 (`BEGIN`/`END`) 中执行会报错。
 - 在导入完成前会阻塞当前连接，如果需要异步执行，可以添加 `DETACHED` 选项。
 - 不支持和 [Backup & Restore](/br/backup-and-restore-overview.md)、[`FLASHBACK CLUSTER`](/sql-statements/sql-statement-flashback-cluster.md)、[创建索引加速](/system-variables.md#tidb_ddl_enable_fast_reorg-从-v630-版本开始引入)、TiDB Lightning 导入、TiCDC 数据同步、[Point-in-time recovery (PITR)](/br/br-log-architecture.md) 等功能同时工作。
