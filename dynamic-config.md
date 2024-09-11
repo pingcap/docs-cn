@@ -220,8 +220,8 @@ show warnings;
 | storage.flow-control.enable | 是否开启流量控制机制 |
 | storage.flow-control.memtables-threshold | 触发流量控制的 KvDB memtable 数量阈值 |
 | storage.flow-control.l0-files-threshold | 触发流量控制的 KvDB L0 文件数量阈值 |
-| storage.flow-control.soft-pending-compaction-bytes-limit | 触发流量控制的 KvDB pending compaction bytes 阈值 |
-| storage.flow-control.hard-pending-compaction-bytes-limit | 流量控制拒绝新写入的 KvDB pending compaction bytes 阈值 |
+| storage.flow-control.soft-pending-compaction-bytes-limit | 触发流控机制开始拒绝部分写入请求的 KvDB pending compaction bytes 阈值 |
+| storage.flow-control.hard-pending-compaction-bytes-limit | 触发流控机制拒绝所有新写入请求的 KvDB pending compaction bytes 阈值 |
 | storage.scheduler-worker-pool-size | Scheduler 线程池中线程的数量 |
 | import.num-threads | 处理恢复或导入 RPC 请求的线程数量（自 v8.1.2 起支持在线修改） |
 | backup.num-threads | backup 线程的数量（自 v4.0.3 起支持） |
