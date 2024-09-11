@@ -52,6 +52,22 @@ TiDB 版本：8.4.0
 
     更多信息，请参考[用户文档](链接)。
 
+* 超出预期的查询 (Runaway Queries) 新增 "处理行数" 和 RU 作为阈值 [#issue号](链接) @[HuSharp](https://github.com/HuSharp) **tw@lilin90** <!--1800-->
+
+    TiDB 在 v8.4.0 可以依据 "处理行数 (`PROCESSED_KEYS`)" 和 "Request Unit (`RU`)" 定义超出预期的查询。和"执行时间(`EXEC_ELAPSED`)"相比，新增阈值能够更准确的定义查询的资源消耗，避免整体性能下降时发生识别偏差。
+    
+    支持同时设置多个条件，满足任意条件即识别为 `Runaway Queries`。
+
+    用户可以观测 [`Statement Summary Tables`](/statement-summary-tables.md) 中的几个对应字段 (`RESOURCE_GROUP`、`MAX_REQUEST_UNIT_WRITE`、`MAX_REQUEST_UNIT_READ`、`MAX_PROCESSED_KEYS`)，根据历史执行情况决定条件值的大小。
+
+    更多信息，请参考[用户文档](/tidb-resource-control.md#管理资源消耗超出预期的查询-runaway-queries)。
+
+* 超出预期的查询 (Runaway Queries) 支持切换资源组 [#issue号](链接) @[JmPotato](https://github.com/JmPotato) **tw@hfxsd** <!--1832-->
+
+    v8.4.0 新增支持将 `Runaway Queries` 切换到指定资源组。在降低优先级 (COOLDOWN) 仍旧无法有效降低资源消耗的情况下，用户可以创建一个资源组 [`RESOURCE GROUP`](/tidb-resource-control.md#管理资源组)，并指定将识别到的查询切换到该资源组中，会话的后续查询仍旧会遵循原资源组。切换资源组的行为能够更精确地限制资源使用，对 `Runaway Queries` 的资源消耗做更加严格的控制。
+
+    更多信息，请参考[用户文档](/tidb-resource-control.md#管理资源消耗超出预期的查询-runaway-queries)。
+
 ### 高可用
 
 * 功能标题 [#issue号](链接) @[贡献者 GitHub ID](链接) **tw@xxx** <!--1234-->
@@ -166,6 +182,7 @@ TiDB 版本：8.4.0
   - 优化 MEMDB 实现，降低事务中的写操作延时 [#issue号](链接) @[贡献者 GitHub ID](链接) **tw@xxx** <!--1892-->
   - 优化处理大量数据的 DML 性能 [#50215](https://github.com/pingcap/tidb/issues/50215) @[ekexium](https://github.com/ekexium) **tw@qiancai** <!--1860-->
   - 优化器估行的最小值为`1`，与其他数据库行为一致 [#47400](https://github.com/pingcap/tidb/issues/47400) @[terry1purcell](https://github.com/terry1purcell) **tw@Oreoxmt** <!--1929-->
+  - 为日志表 [`mysql.tidb_runaway_queries`] 增加写入控制，降低并发大量写入引发的开销 [#issue号](链接) @[HuSharp](https://github.com/HuSharp) <!--1908--> **tw@lilin90** 
   
 + TiKV
 
