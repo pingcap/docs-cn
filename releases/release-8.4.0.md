@@ -165,6 +165,7 @@ TiDB 版本：8.4.0
   - 优化扫描大量 region 场景下的执行效率 [#issue号](链接) @[贡献者 GitHub ID](链接) **tw@xxx** <!--1902-->
   - 优化 MEMDB 实现，降低事务中的写操作延时 [#issue号](链接) @[贡献者 GitHub ID](链接) **tw@xxx** <!--1892-->
   - 优化处理大量数据的 DML 性能 [#50215](https://github.com/pingcap/tidb/issues/50215) @[ekexium](https://github.com/ekexium) **tw@qiancai** <!--1860-->
+  - 优化器估行的最小值为`1`，与其他数据库行为一致 [#47400](https://github.com/pingcap/tidb/issues/47400) @[terry1purcell](https://github.com/terry1purcell) **tw@Oreoxmt** <!--1929-->
   
 + TiKV
 
