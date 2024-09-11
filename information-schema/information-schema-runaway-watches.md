@@ -44,23 +44,33 @@ mysql> SELECT * FROM INFORMATION_SCHEMA.RUNAWAY_WATCHES ORDER BY id\G
 *************************** 1. row ***************************
                  ID: 1
 RESOURCE_GROUP_NAME: default
-         START_TIME: 2024-09-09 03:35:31
-           END_TIME: 2024-09-09 03:45:31
+         START_TIME: 2024-09-11 07:20:48
+           END_TIME: 2024-09-11 07:30:48
               WATCH: Exact
-         WATCH_TEXT: SELECT variable_name, variable_value FROM mysql.global_variables
+         WATCH_TEXT: select count(*) from `tpch1`.`supplier`
              SOURCE: 127.0.0.1:4000
              ACTION: Kill
-               RULE: ProcessedKeys = 666(10)
+               RULE: ProcessedKeys = 10000(100)
 *************************** 2. row ***************************
                  ID: 2
 RESOURCE_GROUP_NAME: default
-         START_TIME: 2024-09-09 03:36:22
-           END_TIME: 2024-09-09 03:46:22
+         START_TIME: 2024-09-11 07:20:51
+           END_TIME: 2024-09-11 07:30:51
               WATCH: Exact
-         WATCH_TEXT: select table_id, is_index, hist_id, distinct_count, version, null_count, tot_col_size, stats_ver, flag, correlation, last_analyze_pos from mysql.stats_histograms where table_id = 124
+         WATCH_TEXT: select count(*) from `tpch1`.`partsupp`
              SOURCE: 127.0.0.1:4000
              ACTION: Kill
-               RULE: ProcessedKeys = 17(10)
+               RULE: RequestUnit = RRU:143.369959, WRU:0.000000, WaitDuration:0s(10)
+*************************** 3. row ***************************
+                 ID: 3
+RESOURCE_GROUP_NAME: default
+         START_TIME: 2024-09-11 07:21:16
+           END_TIME: 2024-09-11 07:31:16
+              WATCH: Exact
+         WATCH_TEXT: select sleep(2) from t
+             SOURCE: 127.0.0.1:4000
+             ACTION: Kill
+               RULE: ElapsedTime = 2024-09-11T15:21:16+08:00(2024-09-11T15:21:16+08:00)
 3 rows in set (0.00 sec)
 ```
 
@@ -73,7 +83,7 @@ QUERY WATCH ADD RESOURCE GROUP rg1 SQL TEXT EXACT TO 'select * from sbtest.sbtes
 再次查询 Runaway Queries 识别名单：
 
 ```sql
-SELECT * FROM INFORMATION_SCHEMA.RUNAWAY_WATCHES\G
+SELECT * FROM INFORMATION_SCHEMA.RUNAWAY_WATCHES\G;
 ```
 
 输出结果如下：
@@ -82,27 +92,37 @@ SELECT * FROM INFORMATION_SCHEMA.RUNAWAY_WATCHES\G
 *************************** 1. row ***************************
                  ID: 1
 RESOURCE_GROUP_NAME: default
-         START_TIME: 2024-09-09 03:35:31
-           END_TIME: 2024-09-09 03:45:31
+         START_TIME: 2024-09-11 07:20:48
+           END_TIME: 2024-09-11 07:30:48
               WATCH: Exact
-         WATCH_TEXT: SELECT variable_name, variable_value FROM mysql.global_variables
+         WATCH_TEXT: select count(*) from `tpch1`.`supplier`
              SOURCE: 127.0.0.1:4000
              ACTION: Kill
-               RULE: ProcessedKeys = 666(10)
+               RULE: ProcessedKeys = 10000(100)
 *************************** 2. row ***************************
                  ID: 2
 RESOURCE_GROUP_NAME: default
-         START_TIME: 2024-09-09 03:36:22
-           END_TIME: 2024-09-09 03:46:22
+         START_TIME: 2024-09-11 07:20:51
+           END_TIME: 2024-09-11 07:30:51
               WATCH: Exact
-         WATCH_TEXT: select table_id, is_index, hist_id, distinct_count, version, null_count, tot_col_size, stats_ver, flag, correlation, last_analyze_pos from mysql.stats_histograms where table_id = 124
+         WATCH_TEXT: select count(*) from `tpch1`.`partsupp`
              SOURCE: 127.0.0.1:4000
              ACTION: Kill
-               RULE: ProcessedKeys = 17(10)
-*************************** 7. row ***************************
-                 ID: 7
+               RULE: RequestUnit = RRU:143.369959, WRU:0.000000, WaitDuration:0s(10)
+*************************** 3. row ***************************
+                 ID: 3
 RESOURCE_GROUP_NAME: default
-         START_TIME: 2024-09-09 11:41:21
+         START_TIME: 2024-09-11 07:21:16
+           END_TIME: 2024-09-11 07:31:16
+              WATCH: Exact
+         WATCH_TEXT: select sleep(2) from t
+             SOURCE: 127.0.0.1:4000
+             ACTION: Kill
+               RULE: ElapsedTime = 2024-09-11T15:21:16+08:00(2024-09-11T15:21:16+08:00)
+*************************** 4. row ***************************
+                 ID: 4
+RESOURCE_GROUP_NAME: default
+         START_TIME: 2024-09-11 07:23:10
            END_TIME: UNLIMITED
               WATCH: Exact
          WATCH_TEXT: select * from sbtest.sbtest1
