@@ -34,7 +34,7 @@ TiDB 简介，核心特性与应用场景
 
 <DocHomeCard href="/zh/tidb/stable/dev-guide-overview" label="开发者指南" icon="oss-developer-blue">
 
-为应用程序开发者所编写的开发者手册
+为应用程序开发者编写的开发者手册
 
 </DocHomeCard>
 
