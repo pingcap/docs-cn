@@ -24,7 +24,7 @@ DESC RUNAWAY_WATCHES;
 | WATCH_TEXT          | text         | NO   |      | NULL    |       |
 | SOURCE              | varchar(128) | NO   |      | NULL    |       |
 | ACTION              | varchar(12)  | NO   |      | NULL    |       |
-| RULE                | varchar(128)  | NO   |      | NULL    |       |
+| RULE                | varchar(128) | NO   |      | NULL    |       |
 +---------------------+--------------+------+------+---------+-------+
 8 rows in set (0.00 sec)
 ```
