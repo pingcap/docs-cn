@@ -38,6 +38,7 @@ TiDB的安全性是确保数据完整性和保护机密性的关键要素。本�
 ### 解决方案
 
 建议在部署 TiDB 时，立即修改 Grafana 的默认凭据，采用强密码，并定期更新密码以确保系统安全。
+
 1. 在Grafana 在首次登录后根据提示完成新密码的修改
    ![Grafana Password Reset Guide](/media/grafana-password-reset1.png)
 2. 进入个人配置中心完成新密码的修改
@@ -49,7 +50,7 @@ TiDB的安全性是确保数据完整性和保护机密性的关键要素。本�
 
 TiDB Dashboard 的账号体系与 TiDB SQL 用户一致，并基于 TiDB SQL 用户的权限进行 TiDB Dashboard 授权验证。TiDB Dashboard 所需的权限较少，甚至可以只有只读权限。建议为访问TiDB Dashboard创建一个最小权限的SQL用户，避免使用高权限用户，从而提高系统的安全性。
 
-### 解决方案
+### 权限最小化解决方案
 
 为访问 TiDB Dashboard 创建一个 [最小权限的 SQL 用户](/dashboard/dashboard-user.md)，并用该用户登录 TiDB Dashboard，避免使用高权限用户，提升安全性。 
 
@@ -57,7 +58,7 @@ TiDB Dashboard 的账号体系与 TiDB SQL 用户一致，并基于 TiDB SQL 用
 
 尽管访问 TiDB Dashboard 需要登录，但它被设计为默认供受信任的用户实体访问。默认端口将包含除 TiDB Dashboard 外的其他 API 接口。如果你希望让外部网络用户或不受信任的用户访问 TiDB Dashboard，需要采取适当的措施以避免安全漏洞的出现。
 
-### 解决方案
+### 访问控制限制解决方案
 
 1. 应当利用防火墙等手段将默认的2379端口放置在可信域内，禁止外部用户进行访问。 注意，TiDB、TiKV 等组件需要通过 PD Client 端口与 PD 组件进行通信，因此请勿对组件内部网络阻止访问，这将导致集群不可用。
 2. 通过[配置反向代理](/dashboard/dashboard-ops-reverse-proxy.md#通过反向代理使用-tidb-dashboard)的方式将 TiDB Dashboard 服务在另一个端口上安全地提供给外部
@@ -104,10 +105,10 @@ TiDB 的默认安装中存在许多用于组件间通信的特权接口。这些
 | Blackbox Exporter | 9115        | HTTP       |
 | NG Monitoring     | 12020        | HTTP       |
 
-
 ### 解决方案
 
 建议只向普通用户公开数据库的 4000 端口和 Grafana 面板的 9000 端口。其他端口应该通过网络安全策略组或防火墙进行限制。此外，如果额外需要访问 TiDB Dashboard，建议通过配置[反向代理的方式](/dashboard/dashboard-ops-reverse-proxy.md#通过反向代理使用-tidb-dashboard)将 TiDB Dashboard 服务安全地提供给外部网络，并将其部署在另外的端口上。
+
 ```
 # 允许来自各组件白名单IP地址范围的内部端口通讯
 sudo iptables -A INPUT -s 内网IP地址范围 -j ACCEPT
@@ -131,4 +132,5 @@ sudo iptables -P INPUT DROP
 通过[修改服务器版本号](/faq/high-reliability-faq.md#我们的安全漏洞扫描工具对-mysql-version-有要求tidb-是否支持修改-server-版本号呢)，可避免漏洞扫描器产生误报。server-version 的值会被 TiDB 节点用于验证当前 TiDB 的版本。因此在进行 TiDB 集群升级前，请将 server-version 的值设置为空或者当前 TiDB 真实的版本值，避免出现非预期行为。
 
 # 免责声明
+
 本指南提供关于TiDB安全配置的一般建议。PingCAP不保证信息的完整性或准确性，对使用本指南所产生的任何问题不承担责任。用户应根据自身需求评估这些建议，并咨询专业人士以获得具体的建议。
