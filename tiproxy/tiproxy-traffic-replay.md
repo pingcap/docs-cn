@@ -29,10 +29,19 @@ summary: 介绍 TiProxy 的流量回放的使用场景和使用步骤。
 
 ## 使用步骤
 
-1. 创建测试集群，将生产集群的数据同步到测试集群，并在测试集群中运行 `ANALYZE` 更新统计信息。
-2. 使用 `tiproxyctl traffic capture` 命令连接到生产集群的 TiProxy 实例，开始捕获流量。TiProxy 会捕获所有连接上的流量，包括已创建的新创建的连接。
+1. 准备测试环境：
 
-    在 TiProxy 主备模式下，请确保连接到 TiProxy 主实例。如果集群使用了虚拟 IP，建议连接到虚拟 IP 地址。
+    1. 创建测试集群，详情参考[使用 TiUP 部署 TiDB 集群](/production-deployment-using-tiup.md)。
+    2. 同步生产集群的数据到测试集群，详情参考[数据迁移概述](/migration-overview.md)。
+    3. 在测试集群中运行 [`ANALYZE`](/sql-statements/sql-statement-analyze-table.md) 更新统计信息
+
+2. 使用 [`tiproxyctl traffic capture`](/tiproxy/tiproxy-command-line-flags.md#traffic-capture) 命令连接到生产集群的 TiProxy 实例，开始捕获流量。
+
+    > **注意：**
+    >
+    > - TiProxy 会捕获所有连接上的流量，包括已创建的和新创建的连接。
+    > - 在 TiProxy 主备模式下，请确保连接到 TiProxy 主实例。
+    > - 如果集群使用了虚拟 IP，建议连接到虚拟 IP 地址。
 
     例如，以下命令连接到 TiProxy 实例 `10.0.1.10:3080`，捕获一个小时的流量，并将流量保存到 TiProxy 实例的 `/tmp/traffic` 目录下：
     
@@ -40,21 +49,21 @@ summary: 介绍 TiProxy 的流量回放的使用场景和使用步骤。
     tiproxyctl traffic capture --host 10.0.1.10 --port 3080 --output="/tmp/traffic" --duration=1h
     ```
 
-    流量文件会自动转轮和压缩。`/tmp/traffic` 目录下的文件样例：
+    流量文件会自动转轮和压缩。`/tmp/traffic` 目录下的文件示例如下：
 
     ```shell
-    $ ls /tmp/traffic
-    meta    traffic-2024-08-29T17-37-12.477.log.gz  traffic-2024-08-29T17-43-11.166.log.gz traffic.log
+    ls /tmp/traffic
+    # meta    traffic-2024-08-29T17-37-12.477.log.gz  traffic-2024-08-29T17-43-11.166.log.gz traffic.log
     ```
-    
-    更多详细信息请参考 [`tiproxyctl traffic capture`](/tiproxy/tiproxy-command-line-flags.md#traffic-capture) 的使用文档。
+
+    更多信息，请参考 [`tiproxyctl traffic capture`](/tiproxy/tiproxy-command-line-flags.md#traffic-capture)。
 
 3. 将流量文件目录复制到测试集群的 TiProxy 实例上。
-4. 使用 `tiproxyctl traffic replay` 连接到测试集群的 TiProxy 实例，开始回放流量。
+4. 使用 [`tiproxyctl traffic replay`](/tiproxy/tiproxy-command-line-flags.md#traffic-replay) 连接到测试集群的 TiProxy 实例，开始回放流量。
 
     默认配置下，SQL 语句的执行速率与生产集群相同，数据库连接也与生产集群一一对应，以模拟生产集群的负载，并保证事务的执行顺序一致。
 
-    例如，如下命令通过用户名 `u1` 和密码 `123456` 连接到 TiProxy 实例 `10.0.1.10:3080`，并从 TiProxy 实例的 `/tmp/traffic` 目录下读取流量文件，并回放流量：
+    例如，如下命令通过用户名 `u1` 和密码 `123456` 连接到 TiProxy 实例 `10.0.1.10:3080`，从 TiProxy 实例的 `/tmp/traffic` 目录下读取流量文件并回放流量：
 
     ```shell
     tiproxyctl traffic replay --host 10.0.1.10 --port 3080 --username="u1" --password="123456" --input="/tmp/traffic"
@@ -62,31 +71,33 @@ summary: 介绍 TiProxy 的流量回放的使用场景和使用步骤。
 
     由于所有流量在用户 `u1` 下运行，请确保 `u1` 能访问所有数据库和表。如果没有这样的用户，则需要创建一个。
 
-    更多详细信息请参考 [`tiproxyctl traffic replay`](/tiproxy/tiproxy-command-line-flags.md#traffic-replay) 的使用文档。
+    更多信息，请参考 [`tiproxyctl traffic replay`](/tiproxy/tiproxy-command-line-flags.md#traffic-replay)。
 
-5. 回放完成之后，报告存储在测试集群的 `tiproxy_traffic_report` 数据库下。该数据库下有两个表，`fail` 和 `other_errors`。
+5. 查看回放报告。
 
-    表 `fail` 存储运行失败的 SQL 语句。它的字段如下：
+    回放完成后，报告存储在测试集群的 `tiproxy_traffic_report` 数据库下。该数据库包含两个表 `fail` 和 `other_errors`。
 
-    - `cmd_type`: 运行错误的命令类型，常见的有 `Query`(执行普通语句)、`Prepare`(预处理语句)、`Execute`(执行预处理语句)。
-    - `digest`: 执行失败的 SQL 语句的指纹。
-    - `sample_stmt`: 该 SQL 语句首次执行失败时的 SQL 文本。
-    - `sample_err_msg`: 以上 SQL 语句执行失败的报错信息。
-    - `sample_conn_id`: 以上 SQL 语句在流量文件中记录的连接 ID，可用于在流量文件中查看 SQL 语句的执行上下文。
-    - `sample_capture_time`: 以上 SQL 语句在流量文件中记录的执行时间，可用于在流量文件中查看 SQL 语句的执行上下文。
-    - `sample_replay_time`: 以上 SQL 语句在回放时执行失败的时间，可用于在 TiDB 日志文件中查看错误信息。
-    - `count`: 该 SQL 语句执行失败的次数。
+    `fail` 表存储运行失败的 SQL 语句，字段说明如下：
 
-    表 `other_errors` 存储其他未预期错误，例如网络错误、连接数据库错误。它的字段如下：
+    - `cmd_type`：运行错误的命令类型，例如 `Query`（执行普通语句）、`Prepare`（预处理语句）、`Execute`（执行预处理语句）。
+    - `digest`：执行失败的 SQL 语句的指纹。
+    - `sample_stmt`：SQL 语句首次执行失败时的 SQL 文本。
+    - `sample_err_msg`：SQL 语句执行失败的报错信息。
+    - `sample_conn_id`：SQL 语句在流量文件中记录的连接 ID，可用于在流量文件中查看 SQL 语句的执行上下文。
+    - `sample_capture_time`：SQL 语句在流量文件中记录的执行时间，可用于在流量文件中查看 SQL 语句的执行上下文。
+    - `sample_replay_time`：SQL 语句在回放时执行失败的时间，可用于在 TiDB 日志文件中查看错误信息。
+    - `count`：SQL 语句执行失败的次数。
 
-    - `err_type`: 该错误的类型，是一个简短的错误信息，例如 `i/o timeout`。
-    - `sample_err_msg`: 该错误首次出现时的完整错误信息。
-    - `sample_replay_time`: 该错误在回放时执行失败的时间，可用于在 TiDB 日志文件中查看错误信息。
-    - `count`: 该错误出现的次数。
+    `other_errors` 表存储其他未预期错误，例如网络错误、连接数据库错误。字段说明如下：
+
+    - `err_type`：错误的类型，是一个简短的错误信息，例如 `i/o timeout`。
+    - `sample_err_msg`：错误首次出现时的完整错误信息。
+    - `sample_replay_time`：错误在回放时执行失败的时间，可用于在 TiDB 日志文件中查看错误信息。
+    - `count`：错误出现的次数。
 
     > **注意：**
     >
-    > `tiproxy_traffic_report` 中的表结构在后续版本中可能会改变，因此不推荐在应用程序开发或工具开发中读取 `tiproxy_traffic_report` 中的数据。
+    > `tiproxy_traffic_report` 中的表结构在未来版本中可能会改变。不推荐在应用程序开发或工具开发中读取 `tiproxy_traffic_report` 中的数据。
 
 ## 测试吞吐量
 
