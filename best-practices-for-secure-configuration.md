@@ -107,7 +107,7 @@ TiDB 的默认安装中存在许多用于组件间通信的特权接口。这些
 
 ### 解决方案
 
-建议只向普通用户公开数据库的 4000 端口和 Grafana 面板的 9000 端口。其他端口应该通过网络安全策略组或防火墙进行限制。此外，如果额外需要访问 TiDB Dashboard，建议通过配置[反向代理的方式]((/dashboard-ops-reverse-proxy.md#通过反向代理使用-tidb-dashboard))将 TiDB Dashboard 服务安全地提供给外部网络，并将其部署在另外的端口上。
+建议只向普通用户公开数据库的 4000 端口和 Grafana 面板的 9000 端口。其他端口应该通过网络安全策略组或防火墙进行限制。此外，如果额外需要访问 TiDB Dashboard，建议通过配置[反向代理的方式](/dashboard/dashboard-ops-reverse-proxy.md#通过反向代理使用-tidb-dashboard)将 TiDB Dashboard 服务安全地提供给外部网络，并将其部署在另外的端口上。
 ```
 # 允许来自各组件白名单IP地址范围的内部端口通讯
 sudo iptables -A INPUT -s 内网IP地址范围 -j ACCEPT
@@ -128,9 +128,7 @@ sudo iptables -P INPUT DROP
 
 ### 解决方案
 
-通过[修改服务器版本号](/faq/high-reliability-faq.md#我们的安全漏洞扫描工具对-mysql-version-有要求tidb-是否支持修改-server-版本号呢)，可避免漏洞扫描器产生误报。
-server-version 的值会被 TiDB 节点用于验证当前 TiDB 的版本。因此在进行 TiDB 集群升级前，请将 server-version 的值设置为空或者当前 TiDB 真实的版本值，避免出现非预期行为。
+通过[修改服务器版本号](/faq/high-reliability-faq.md#我们的安全漏洞扫描工具对-mysql-version-有要求tidb-是否支持修改-server-版本号呢)，可避免漏洞扫描器产生误报。server-version 的值会被 TiDB 节点用于验证当前 TiDB 的版本。因此在进行 TiDB 集群升级前，请将 server-version 的值设置为空或者当前 TiDB 真实的版本值，避免出现非预期行为。
 
 # 免责声明
 本指南提供关于TiDB安全配置的一般建议。PingCAP不保证信息的完整性或准确性，对使用本指南所产生的任何问题不承担责任。用户应根据自身需求评估这些建议，并咨询专业人士以获得具体的建议。
-
