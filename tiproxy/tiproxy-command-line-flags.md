@@ -27,28 +27,36 @@ summary: 了解 TiProxy 的命令行参数。
 
 ## TiProxy Control
 
-本节介绍 TiProxy 客户端程序 `tiproxyctl` 的语法、选项和命令。
+本节介绍 TiProxy 客户端程序 `tiproxyctl` 的安装方式、语法、选项和命令。
 
-### 获取 TiProxy Control
+### 安装 TiProxy Control
 
-#### 通过 TiUP 安装
+本节提供两种方式安装 TiProxy Control。
 
-在安装了 TiUP 之后，可以使用 `tiup install tiproxy` 命令来获取 TiProxy 和 TiProxy Control 的二进制程序。TiProxy 的路径可通过 `tiup --binary tiproxy` 查看，TiProxy Control 与 TiProxy 在同一个目录下。
+#### 使用 TiUP 安装
+
+在安装 [TiUP](/tiup/tiup-overview.md) 之后，可以使用 `tiup install tiproxy` 命令获取 TiProxy 和 TiProxy Control 的二进制程序。你可以通过 `tiup --binary tiproxy` 查看 TiProxy 的安装路径，TiProxy Control 与 TiProxy 位于同一目录。
 
 例如：
 
 ```shell
-> tiup install tiproxy
-download https://tiup-mirrors.pingcap.com/tiproxy-v1.3.0-linux-amd64.tar.gz 22.51 MiB / 22.51 MiB 100.00% 13.99 MiB/s
-> ls `tiup --binary tiproxy`ctl
-/root/.tiup/components/tiproxy/v1.3.0/tiproxyctl
+tiup install tiproxy
+# download https://tiup-mirrors.pingcap.com/tiproxy-v1.3.0-linux-amd64.tar.gz 22.51 MiB / 22.51 MiB 100.00% 13.99 MiB/s
+ls `tiup --binary tiproxy`ctl
+# /root/.tiup/components/tiproxy/v1.3.0/tiproxyctl
 ```
 
 #### 从源代码编译安装
 
 编译环境要求：[Go](https://golang.org/) 1.21 或以上版本。
 
-编译步骤：在 [TiProxy 项目](https://github.com/pingcap/tiproxy)根目录，使用 `make` 命令进行编译，生成 tiproxyctl。
+编译步骤：在 [TiProxy 项目](https://github.com/pingcap/tiproxy)根目录，使用 `make` 命令进行编译，生成 `tiproxyctl`。
+
+```shell
+git clone https://github.com/pingcap/tiproxy.git
+cd tiproxy
+make
+```
 
 > **注意：**
 >
@@ -154,10 +162,10 @@ level = 'warning'
 
 选项：
 
-- `--output`: 必须指定，指定流量文件存放的目录。
-- `--duration`: 必须指定，指定捕获的时长，可选单位为 `m` (分钟)、`h` (小时)、`d` (天)。例如 `--duration=1h` 指定捕获一小时的流量。
+- `--output`：（必填）指定流量文件存放的目录。
+- `--duration`：（必填）指定捕获的时长。可选单位为 `m`（分钟）、`h`（小时）或 `d`（天）。例如 `--duration=1h` 指定捕获一小时的流量。
 
-例如，以下命令连接到 TiProxy 实例 `10.0.1.10:3080`，捕获一个小时的流量，并保存到 TiProxy 实例的 `/tmp/traffic` 目录下：
+例如，以下命令连接到 TiProxy 实例 `10.0.1.10:3080`，捕获一小时的流量，并保存到 TiProxy 实例的 `/tmp/traffic` 目录下：
     
 ```shell
 tiproxyctl traffic capture --host 10.0.1.10 --port 3080 --output="/tmp/traffic" --duration=1h
@@ -169,12 +177,12 @@ tiproxyctl traffic capture --host 10.0.1.10 --port 3080 --output="/tmp/traffic" 
 
 选项：
 
-- `--username`: 必须指定，指定回放时使用的数据库用户名。
-- `--password`: 指定以上用户名的密码，默认为 `""`。
-- `--input`: 必须指定，指定流量文件存放的目录。
-- `--speed`: 回放速率的倍数，范围为 0.1 到 10，默认为 1，代表原速回放。
+- `--username`：（必填）指定回放时使用的数据库用户名。
+- `--password`：（可选）指定以上用户名的密码，默认为空字符串 `""`。
+- `--input`：（必填）指定流量文件存放的目录。
+- `--speed`：（可选）指定回放速率的倍数，范围为 `[0.1, 10]`，默认为 1，表示原速回放。
 
-例如，如下命令通过用户名 `u1` 和密码 `123456` 连接到 TiProxy 实例 `10.0.1.10:3080`，并从 TiProxy 实例的 `/tmp/traffic` 目录下读取流量文件，按 2 倍速率回放流量：
+例如，如下命令通过用户名 `u1` 和密码 `123456` 连接到 TiProxy 实例 `10.0.1.10:3080`，并从 TiProxy 实例的 `/tmp/traffic` 目录下读取流量文件，以 2 倍速率回放流量：
 
 ```shell
 tiproxyctl traffic replay --host 10.0.1.10 --port 3080 --username="u1" --password="123456" --input="/tmp/traffic" --speed=2
@@ -188,14 +196,42 @@ tiproxyctl traffic replay --host 10.0.1.10 --port 3080 --username="u1" --passwor
 
 `tiproxyctl traffic show` 用于显示历史的捕获和回放任务。
 
-输出中的 `status` 字段表示任务的状态，它有下列值：
+输出中的 `status` 字段表示任务的状态，其可能的值包括：
 
-- `done`: 代表任务正常运行完成。
-- `canceled`: 代表任务被取消，`error` 字段描述了被取消的原因。
-- `running`: 代表任务正在运行，`progress` 字段描述了运行的进度。
+- `done`：任务正常完成。
+- `canceled`：任务被取消，查看 `error` 字段了解原因。
+- `running`：任务正在运行，查看 `progress` 字段了解进度。
 
 输出示例：
 
 ```json
-[{"type":"capture","start_time":"2024-09-01T14:30:40.99096+08:00","end_time":"2024-09-01T16:30:40.99096+08:00","duration":"2h","output":"/tmp/triffic","progress":"100%","status":"done"},{"type":"capture","start_time":"2024-09-02T18:30:40.99096+08:00","end_time":"2024-09-02T19:00:40.99096+08:00","duration":"2h","output":"/tmp/triffic","progress":"25%","status":"canceled","error":"canceled manually"},{"type":"capture","start_time":"2024-09-03T13:31:40.99096+08:00","duration":"2h","output":"/tmp/triffic","progress":"45%","status":"running"}]
+[
+  {
+    "type": "capture",
+    "start_time": "2024-09-01T14:30:40.99096+08:00",
+    "end_time": "2024-09-01T16:30:40.99096+08:00",
+    "duration": "2h",
+    "output": "/tmp/traffic",
+    "progress": "100%",
+    "status": "done"
+  },
+  {
+    "type": "capture",
+    "start_time": "2024-09-02T18:30:40.99096+08:00",
+    "end_time": "2024-09-02T19:00:40.99096+08:00",
+    "duration": "2h",
+    "output": "/tmp/traffic",
+    "progress": "25%",
+    "status": "canceled",
+    "error": "canceled manually"
+  },
+  {
+    "type": "capture",
+    "start_time": "2024-09-03T13:31:40.99096+08:00",
+    "duration": "2h",
+    "output": "/tmp/traffic",
+    "progress": "45%",
+    "status": "running"
+  }
+]
 ```
