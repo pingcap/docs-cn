@@ -122,7 +122,15 @@ tiproxyctl traffic show --host 10.0.1.10 --port 3080
 例如，如下输出代表捕获任务正在运行：
 
 ```json
-[{"type":"capture","start_time":"2024-09-03T09:10:58.220644+08:00","duration":"2h","progress":"45%","status":"running"}]
+[
+   {
+      "type": "capture",
+      "start_time": "2024-09-03T09:10:58.220644+08:00",
+      "duration": "2h",
+      "progress": "45%",
+      "status": "running"
+   }
+]
 ```
 
 更多详细信息请参考 [`tiproxyctl traffic show`](/tiproxy/tiproxy-command-line-flags.md#traffic-show) 的使用文档。
