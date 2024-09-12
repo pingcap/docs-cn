@@ -24,8 +24,6 @@ summary: 介绍通过 TiUP 部署或扩容 TiDB 集群时提供的拓扑文件�
 - [tikv_servers](/tiup/tiup-cluster-topology-reference.md#tikv_servers)：TiKV 实例的配置，用来指定 TiKV 组件部署到哪些机器上
 - [tiflash_servers](/tiup/tiup-cluster-topology-reference.md#tiflash_servers)：TiFlash 实例的配置，用来指定 TiFlash 组件部署到哪些机器上
 - [tiproxy_servers](#tiproxy_servers)：TiProxy 实例的配置，用来指定 TiProxy 组件部署到哪些机器上
-- [pump_servers](/tiup/tiup-cluster-topology-reference.md#pump_servers)：Pump 实例的配置，用来指定 Pump 组件部署到哪些机器上
-- [drainer_servers](/tiup/tiup-cluster-topology-reference.md#drainer_servers)：Drainer 实例的配置，用来指定 Drainer 组件部署到哪些机器上
 - [cdc_servers](/tiup/tiup-cluster-topology-reference.md#cdc_servers)：CDC 实例的配置，用来指定 CDC 组件部署到哪些机器上
 - [tispark_masters](/tiup/tiup-cluster-topology-reference.md#tispark_masters)：TiSpark Master 实例的配置，用来指定 TiSpark Master 组件部署到哪台机器上，仅允许部署一个 TiSpark Master 节点
 - [tispark_workers](/tiup/tiup-cluster-topology-reference.md#tispark_workers)：TiSpark Worker 实例的配置，用来指定 TiSpark Worker 组件部署到哪些机器上
