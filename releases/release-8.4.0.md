@@ -119,6 +119,12 @@ TiDB 版本：8.4.0
 
     其中，TiKV 的 CPU 时间默认显示；采集 TiDB 的 CPU 时间会引入额外开销（大概在8%），因此仅在开启 [Top SQL 特性](/dashboard/top-sql.md)时，TiDB 的 CPU 时间才会显示为实际值，否则始终显示为 `0`。
 
+* TOP SQL 可按 `Schema` 或 `Table` 维度聚合 [#issue号](链接) @[nolouch](https://github.com/nolouch) **tw@lilin90** <!--1878-->
+
+    当前的 [TOP SQL](/dashboard/top-sql.md) 以 SQL 为单位来聚合 CPU 时间。如果 CPU 时间不是由少数几个 SQL 贡献，按 SQL 聚合并不能有效发现问题。从 v8.4.0 开始，用户可以选择按照 `Schema` 或 `Table` 聚合 CPU 时间。在多系统融合的场景下，新的聚合方式能够更有效地识别来自某个特定系统的负载变化，提升问题诊断的效率。
+
+    更多信息，请参考[用户文档](/dashboard/top-sql.md)。
+
 ### 安全
 
 * 功能标题 [#issue号](链接) @[贡献者 GitHub ID](链接) **tw@xxx** <!--1234-->
