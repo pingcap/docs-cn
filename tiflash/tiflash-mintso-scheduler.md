@@ -16,7 +16,7 @@ summary: 介绍 TiFlash MinTSO 调度器。
 
 如背景所述，TiFlash task scheudler 引入的初衷是控制运行时使用的线程数。一个简单的想法是指定 TiFlash 可以申请的最大线程数，对于每个 MPPTask，调度器根据当前系统已经使用的线程数以及该 MPPTask 预期使用的线程数，决定该 MPPTask 是否能够被调度：
 
-<img src="media/tiflash/tiflash_mintso_v1.png" width="600" height="400"></img>
+<img src="/media/tiflash/tiflash_mintso_v1.png" width="600" height="400"></img>
 
 尽管上述调度策略能有效控制系统的线程数，但是 MPPTask 并不是一个最小的独立执行单元，不同 MPPTask 之间会有依赖关系:
 ```
@@ -49,7 +49,7 @@ mysql> explain select count(*) from t0 a join t0 b on a.id = b.id;
 
 MinTSO Scheduler 的目标就是在控制系统线程数的同时，确保系统中始终有一个特殊的 query，其所有的 MPPTask 都可以被调度到。 MinTSO Scheduler 是一个完全分布式的调度器，每个 TiFlash 仅根据自身信息对 MPPTask 进行调度，这样每个 TiFlash 的 MinTSO Scheduler 需要找到同一个“特殊”的 query。在 TiDB 中，每个 query 都会带有一个读的时间戳(TiDB 中称之为 start_ts)，MinTSO Scheduler 定义“特殊” query 的标准即为当前 TiFlash 节点上 start_ts 最小的 query，根据全局最小一定是局部最小的原理，所有的 TiFlash 选出的“特殊” query 必然是同一个。我们称之为 MinTSO query。MinTSO scheduler 的调度流程如下：
 
-<img src="media/tiflash/tiflash_mintso_v2.png" width="600" height="400"></img>
+<img src="/media/tiflash/tiflash_mintso_v2.png" width="600" height="400"></img>
 
 
 线程调度模型存在两个缺陷：
