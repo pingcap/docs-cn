@@ -16,7 +16,7 @@ summary: 介绍 TiFlash MinTSO 调度器。
 
 如背景所述，TiFlash task scheudler 引入的初衷是控制运行时使用的线程数。一个简单的想法是指定 TiFlash 可以申请的最大线程数，对于每个 MPPTask，调度器根据当前系统已经使用的线程数以及该 MPPTask 预期使用的线程数，决定该 MPPTask 是否能够被调度：
 
-<img src="/media/tiflash/tiflash_mintso_v1.png" width="600" height="400"></img>
+<img src="/media/tiflash/tiflash_mintso_v1.png" width=60%></img>
 
 尽管上述调度策略能有效控制系统的线程数，但是 MPPTask 并不是一个最小的独立执行单元，不同 MPPTask 之间会有依赖关系:
 ```
