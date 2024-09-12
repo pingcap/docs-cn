@@ -15,12 +15,9 @@ summary: 介绍 TiFlash MinTSO 调度器。
 ## 设计实现
 
 如背景所述，TiFlash task scheudler 引入的初衷是控制运行时使用的线程数。一个简单的想法是指定 TiFlash 可以申请的最大线程数，对于每个 MPPTask，调度器根据当前系统已经使用的线程数以及该 MPPTask 预期使用的线程数，决定该 MPPTask 是否能够被调度：
-```
-if (used_threads + mpptask.estimate_threads >= threads_limit)
-    // task need to wait
-else
-    // task can run
-```
+
+![scheduler-v1](/media/tiflash/tiflash_mintso_v1.png)
+
 尽管上述调度策略能有效控制系统的线程数，但是 MPPTask 并不是一个最小的独立执行单元，不同 MPPTask 之间会有依赖关系:
 ```
 mysql> explain select count(*) from t0 a join t0 b on a.id = b.id;
@@ -48,9 +45,12 @@ mysql> explain select count(*) from t0 a join t0 b on a.id = b.id;
 * threads_hard_limit
 其中 soft limit 主要用来限制系统使用的线程数，但是对于特定的 MPPTask，为了避免死锁可以打破这个限制，而 hard limit 则是为了保护系统，一旦超过 hard limit，TiFlash 可以通过报错来避免系统陷入死锁状态。
 
-有了 soft limit 和 hard limit 之后，我们需要约定允许 MPPTask 突破 soft limit 的条件。突破 soft limit 主要是为了
-.如果调度器不考虑 MPPTask 之间的依赖关系的话，可能会导致系统出现死锁的状态。
-TiFlash 原有执行模型 Stream Model 是线程调度执行模型，每一个查询会独立申请若干条线程协同执行。
+利用 soft limit 来避免死锁的思想很简单，系统中存在一个特殊的 query，该 query 的所有 MPPTask 在调度时都可以突破 soft limit 的限制，这样只要系统的 thread 不超过 hard limit，系统中就必定存在一个 query 的所有 MPPTask 都可以正常执行，这样系统就不会出现死锁。
+
+MinTSO Scheduler 的目标就是在控制系统线程数的同时，确保系统中始终有一个特殊的 query，其所有的 MPPTask 都可以被调度到。 MinTSO Scheduler 是一个完全分布式的调度器，每个 TiFlash 仅根据自身信息对 MPPTask 进行调度，这样每个 TiFlash 的 MinTSO Scheduler 需要找到同一个“特殊”的 query。在 TiDB 中，每个 query 都会带有一个读的时间戳(TiDB 中称之为 start_ts)，MinTSO Scheduler 定义“特殊” query 的标准即为当前 TiFlash 节点上 start_ts 最小的 query，根据全局最小一定是局部最小的原理，所有的 TiFlash 选出的“特殊” query 必然是同一个。我们称之为 MinTSO query。MinTSO scheduler 的调度流程如下：
+
+![scheduler-v1](/media/tiflash/tiflash_mintso_v1.png)
+
 
 线程调度模型存在两个缺陷：
 
