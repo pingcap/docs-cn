@@ -101,19 +101,19 @@ summary: 介绍 TiProxy 的流量回放的使用场景和使用步骤。
 
 ## 测试吞吐量
 
-如果需要测试集群的吞吐量，可以加上 `--speed` 选项调整回放的速率。
+如果需要测试集群的吞吐量，可以使用 `--speed` 选项调整回放的速率。
 
-例如，加上 `--speed=2` 后，SQL 语句的执行间隔缩短，以 2 倍速率执行，总的回放时间缩短一半：
+使用 `--speed` 选项可以加快 SQL 语句的执行速度。例如，`--speed=2` 会使 SQL 语句以 2 倍速率执行，总回放时间缩短一半：
 
 ```shell
 tiproxyctl traffic replay --host 10.0.1.10 --port 3080 --username="u1" --password="123456" --input="/tmp/traffic" --speed=2
 ```
 
-调大回放速率只缩短会话的空闲时间，不增加连接数。因此当会话的空闲时间本身就较短时，调大倍速无法加大吞吐量。这时需要部署更多 TiProxy 实例，让它们同时回放相同的流量文件，通过增加并发度来加大吞吐量。
+调大回放速率只会缩短会话的空闲时间，不会增加连接数。因此当会话的空闲时间本身较短时，仅调大倍速可能无法有效提升吞吐量。在这种情况下，可以部署多个 TiProxy 实例，让它们同时回放相同的流量文件，通过增加并发度来提高吞吐量。
 
 ## 任务查看与管理
 
-在捕获和回放过程中，如果遇到未知错误会自动停止任务。通过 `tiproxyctl traffic show` 命令可查看当前的任务进度或上次任务的错误信息：
+在捕获和回放过程中，如果遇到未知错误会自动停止任务。使用 [`tiproxyctl traffic show`](/tiproxy/tiproxy-command-line-flags.md#traffic-show) 命令可查看当前的任务进度或上次任务的错误信息：
 
 ```shell
 tiproxyctl traffic show --host 10.0.1.10 --port 3080
@@ -133,19 +133,19 @@ tiproxyctl traffic show --host 10.0.1.10 --port 3080
 ]
 ```
 
-更多详细信息请参考 [`tiproxyctl traffic show`](/tiproxy/tiproxy-command-line-flags.md#traffic-show) 的使用文档。
+更多信息，请参考 [`tiproxyctl traffic show`](/tiproxy/tiproxy-command-line-flags.md#traffic-show)。
 
-如果需要取消当前的捕获或回放任务，可使用 `tiproxyctl traffic cancel` 命令：
+如果需要取消当前的捕获或回放任务，可使用 [`tiproxyctl traffic cancel`](/tiproxy/tiproxy-command-line-flags.md#traffic-cancel) 命令：
 
 ```shell
 tiproxyctl traffic cancel --host 10.0.1.10 --port 3080
 ```
 
-更多详细信息请参考 [`tiproxyctl traffic cancel`](/tiproxy/tiproxy-command-line-flags.md#traffic-cancel) 的使用文档。
+更多信息，请参考 [`tiproxyctl traffic cancel`](/tiproxy/tiproxy-command-line-flags.md#traffic-cancel)。
 
 ## 使用限制
 
-- TiProxy 仅支持回放 TiProxy 捕获的流量文件，不支持其他文件格式，因此生产集群使用了 TiProxy 之后才能捕获和回放流量。
-- TiProxy 不支持过滤 SQL 类型，DML 或 DDL 语句也会回放，因此重新回放前需要恢复集群数据到回放之前的状态。
-- 由于 TiProxy 使用同一个用户名回放流量，因此不能测试[资源管控](/tidb-resource-control.md)和[权限管理](/privilege-management.md)。
+- TiProxy 仅支持回放 TiProxy 捕获的流量文件，不支持其他文件格式，因此生产集群必须先使用 TiProxy 才能捕获和回放流量。
+- TiProxy 不支持过滤 SQL 类型，DML 和 DDL 语句也会被回放，因此重新回放前需要将集群数据恢复到回放前的状态。
+- 由于 TiProxy 使用同一个用户名回放流量，因此无法测试[资源管控](/tidb-resource-control.md)和[权限管理](/privilege-management.md)。
 - 不支持回放 [`LOAD DATA`](/sql-statements/sql-statement-load-data.md) 语句。
