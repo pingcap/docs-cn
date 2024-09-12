@@ -34,13 +34,12 @@ DESC RUNAWAY_WATCHES;
 查询 Runaway Queries 识别名单：
 
 ```sql
-SELECT * FROM INFORMATION_SCHEMA.RUNAWAY_WATCHES\G
+SELECT * FROM INFORMATION_SCHEMA.RUNAWAY_WATCHES ORDER BY id\G
 ```
 
 输出结果如下：
 
 ```sql
-mysql> SELECT * FROM INFORMATION_SCHEMA.RUNAWAY_WATCHES ORDER BY id\G
 *************************** 1. row ***************************
                  ID: 1
 RESOURCE_GROUP_NAME: default
@@ -83,7 +82,7 @@ QUERY WATCH ADD RESOURCE GROUP rg1 SQL TEXT EXACT TO 'select * from sbtest.sbtes
 再次查询 Runaway Queries 识别名单：
 
 ```sql
-SELECT * FROM INFORMATION_SCHEMA.RUNAWAY_WATCHES\G;
+SELECT * FROM INFORMATION_SCHEMA.RUNAWAY_WATCHES\G
 ```
 
 输出结果如下：
