@@ -84,14 +84,15 @@ TiDB 版本：8.4.0
 
 * TiProxy 支持流量回放功能（实验特性） [#642](https://github.com/pingcap/tiproxy/issues/642) @[djshow832](https://github.com/djshow832) **tw@Oreoxmt** <!--1942-->
 
-    从 TiProxy v1.3.0 版本开始，TiProxy 将支持流量捕获回放功能。该功能可以从一个 TiDB 集群中捕获所有的访问流量，并在另外的集群中按照指定的速率进行回放，验证所有 SQL 的执行结果和性能。
+    从 TiProxy v1.3.0 版本开始，TiProxy 将支持流量捕获回放功能。该功能可以从一个 TiDB 集群中捕获所有的访问流量，并在另外的集群中按照指定的速率进行回放，验证所有 SQL 的执行结果和性能表现。
     
     该功能适用于以下场景：
     - TiDB 版本升级验证
-    - 配置变更验证
+    - 集群变更效果评估
     - 扩缩容性能验证
     - 测试集群性能上限
-    在 v8.4.0 版本，你可以连接 TiProxy 实例，通过 `tiproxyctrl` 命令进行流量捕获、回放。
+    
+    你可以连接 TiProxy 实例，通过 `tiproxyctrl` 命令进行流量捕获、回放。
 
     更多信息，请参考[用户文档](/tiproxy/tiproxy-traffic-replay.md)。
 
