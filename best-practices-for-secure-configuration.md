@@ -53,7 +53,6 @@ TiDB Dashboard 的账号体系与 TiDB SQL 用户一致，并基于 TiDB SQL 用
 
 为访问 TiDB Dashboard 创建一个 [最小权限的 SQL 用户](/dashboard/dashboard-user.md)，并用该用户登录 TiDB Dashboard，避免使用高权限用户，提升安全性。 
 
-
 ### 示例2 访问控制限制
 
 尽管访问 TiDB Dashboard 需要登录，但它被设计为默认供受信任的用户实体访问。默认端口将包含除 TiDB Dashboard 外的其他 API 接口。如果你希望让外部网络用户或不受信任的用户访问 TiDB Dashboard，需要采取适当的措施以避免安全漏洞的出现。
@@ -62,7 +61,6 @@ TiDB Dashboard 的账号体系与 TiDB SQL 用户一致，并基于 TiDB SQL 用
 
 1. 应当利用防火墙等手段将默认的2379端口放置在可信域内，禁止外部用户进行访问。 注意，TiDB、TiKV 等组件需要通过 PD Client 端口与 PD 组件进行通信，因此请勿对组件内部网络阻止访问，这将导致集群不可用。
 2. 通过[配置反向代理](/dashboard/dashboard-ops-reverse-proxy.md#通过反向代理使用-tidb-dashboard)的方式将 TiDB Dashboard 服务在另一个端口上安全地提供给外部
-
 
 ## 如何对内部端口进行安全保护?
 
@@ -121,8 +119,6 @@ sudo iptables -A INPUT -p tcp --dport 9000 -j ACCEPT
 # 默认拒绝所有其他流量
 sudo iptables -P INPUT DROP
 ```
-
-
 
 ## 如何解决三方扫描器 mysql漏洞误报问题?
 
