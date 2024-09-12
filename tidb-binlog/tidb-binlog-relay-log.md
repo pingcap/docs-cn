@@ -1,6 +1,7 @@
 ---
 title: TiDB Binlog Relay Log
 summary: TiDB Binlog Relay Log 是用于确保下游集群与上游集群数据一致的工具。Drainer 同步时会拆分上游事务并并发同步到下游，使用 relay log 来恢复下游集群到一致状态。Drainer 会将 binlog event 写入磁盘并同步给下游，同时会清理已完成同步的 relay log 文件。配置中需指定保存 relay log 的目录和单个文件大小限制。
+aliases: ['/zh/tidb/dev/tidb-binlog-relay-log/','/docs-cn/dev/tidb-binlog/tidb-binlog-relay-log/','/docs-cn/dev/reference/tidb-binlog/relay-log/','/docs-cn/dev/reference/tools/tidb-binlog/relay-log/']
 ---
 
 # TiDB Binlog Relay Log

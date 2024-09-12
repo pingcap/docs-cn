@@ -1,6 +1,7 @@
 ---
 title: TiDB Binlog 术语表
 summary: 学习 TiDB Binlog 相关术语
+aliases: ['/zh/tidb/dev/tidb-binlog-glossary/','/docs-cn/dev/tidb-binlog/tidb-binlog-glossary/','/docs-cn/dev/reference/tidb-binlog/glossary/']
 ---
 
 # TiDB Binlog 术语表

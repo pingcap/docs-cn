@@ -1,6 +1,7 @@
 ---
 title: TiDB Binlog 教程
 summary: TiDB Binlog 是用于将数据从 TiDB 推送到 MariaDB 实例的工具。它包含 Pump 和 Drainer 两个组件，用于实时数据备份和同步。用户需要对 TiDB 架构有一定了解，并在现代 Linux 发行版本中的 x86-64上使用。安装和配置过程需要按照指导进行，以确保成功启动各个组件。使用 binlogctl 可以查询和修改集群中 Pump 和 Drainer 的状态信息。
+aliases: ['/zh/tidb/dev/get-started-with-tidb-binlog/','/docs-cn/dev/tidb-binlog/get-started-with-tidb-binlog/','/docs-cn/dev/how-to/get-started/tidb-binlog/','/docs-cn/dev/get-started-with-tidb-binlog/']
 ---
 
 # TiDB Binlog 教程

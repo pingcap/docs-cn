@@ -1,6 +1,7 @@
 ---
 title: TiDB Binlog 版本升级方法
 summary: TiDB Binlog 版本升级方法介绍了手动部署的步骤，包括升级 Pump 和 Drainer。同时，还介绍了从 Kafka/Local 版本升级到 Cluster 版本的流程，以及如何确认数据同步完成后启动新版本的 Drainer。从 v8.3.0 开始，TiDB Binlog 被完全废弃。
+aliases: ['/zh/tidb/dev/upgrade-tidb-binlog/','/docs-cn/dev/tidb-binlog/upgrade-tidb-binlog/','/docs-cn/dev/reference/tidb-binlog/upgrade/','/docs-cn/dev/how-to/upgrade/tidb-binlog/','/docs-cn/dev/reference/tools/tidb-binlog/upgrade/']
 ---
 
 # TiDB Binlog 版本升级方法

@@ -1,6 +1,7 @@
 ---
 title: 集群间双向同步
 summary: 本文介绍了如何使用 TiDB Binlog 实现集群间双向同步，包括使用场景、实现原理、标识表、同步 DDL 和配置开启双向同步。双向同步需保证数据写入两个集群不会发生冲突，且 DDL 操作采用单向同步。配置上需要设置相同的 channel-id，并在下游配置 sync-ddl 为 false。从 v8.3.0 开始，TiDB Binlog 被完全废弃。
+aliases: ['/zh/tidb/dev/bidirectional-replication-between-tidb-clusters/','/docs-cn/dev/tidb-binlog/bidirectional-replication-between-tidb-clusters/','/docs-cn/dev/reference/tidb-binlog/bidirectional-replication/','/docs-cn/dev/reference/tidb-binlog/bi-repl/']
 ---
 
 # 集群间双向同步
