@@ -37,7 +37,13 @@ TiDB 版本：8.4.0
 
     更多信息，请参考[用户文档](/system-variables.md#tidb_tso_client_rpc_mode-从-v840-版本开始引入)。
 
-* 支持下推以下字符串函数到 TiKV [#](https://github.com/pingcap/tidb/issues/) @[gengliqi](https://github.com/gengliqi) **tw@qiancai** <!--1716-->
+* 优化 TiDB 的 Hash Join 算子实现效率（实验特性） [#55153](https://github.com/pingcap/tidb/issues/55153) [#53127](https://github.com/pingcap/tidb/issues/53127) @[windtalker](https://github.com/windtalker) @[xzhangxian1008](https://github.com/xzhangxian1008) @[XuHuaiyu](https://github.com/XuHuaiyu) @[wshwsh12](https://github.com/wshwsh12) **tw@qiancai** <!--1633-->
+
+    在 v8.4.0 版本之前，TiDB 的 Hash Join 算子实现效率不高。从 v8.4.0 开始，TiDB 将对 Hash Join 算子进行重构优化，提升执行效率。在 v8.4.0 版本，该功能为实验特性，只有 INNER JOIN 和 OUTER JOIN 可以使用重构后的高性能 Hash Join 算子。当该功能启用时，执行器会根据高性能 Hash Join 算子对关联操作的支持情况，自动选择是否使用高性能 Hash Join 算子。你可以通过 [tidb_hash_join_use_new_impl](/system-variables.md#tidb_hash_join_use_new_impl-从-v840-版本开始引入) 变量控制是否启用高性能 Hash Join 算子。
+
+    更多信息，请参考[用户文档](/system-variables.md#tidb_hash_join_use_new_impl-从-v840-版本开始引入)。
+
+* 支持下推以下字符串函数到 TiKV [#17529](https://github.com/tikv/tikv/issues/17529) @[gengliqi](https://github.com/gengliqi) **tw@qiancai** <!--1716-->
 
     * `DATE_ADD()`
     * `DATE_SUB()`
@@ -84,7 +90,7 @@ TiDB 版本：8.4.0
 
     更多信息，请参考[用户文档](链接)。
 
-* 支持向量搜索功能（实验特性） [#issue号](链接) @[贡献者 GitHub ID](链接) **tw@qiancai** <!--1898-->
+* 支持向量搜索功能（实验特性） [#54245](https://github.com/pingcap/tidb/issues/54245) [#9032](https://github.com/pingcap/tiflash/issues/9032) @[贡献者 GitHub ID](链接) **tw@qiancai** <!--1898-->
 
     向量搜索是一种优先考虑数据语义以提供相关结果的搜索方法，是 AI 和语言大模型的重要基础功能之一。通过向量索引，加速向量搜索的性能，数据库能够针对不同的距离函数快速查询相似向量，从而支撑 检索增强生成 (Retrieval-Augmented Generation, RAG)、语义搜索、推荐引擎等多种场景。
     TiDB 从 v8.4 版本开始，支持向量数据类型和向量索引，提供强大的向量搜索能力。TiDB 的向量数据类型支持最大 16383 维度，支持的距离函数包括：L2 距离（欧式距离）、余弦距离、负内积、L1 距离（曼哈顿距离）。
@@ -194,9 +200,9 @@ TiDB 版本：8.4.0
 ## 改进提升
 
 + TiDB
-  - 优化扫描大量 region 场景下的执行效率 [#issue号](链接) @[贡献者 GitHub ID](链接) **tw@xxx** <!--1902-->
-  - 优化 MEMDB 实现，降低事务中的写操作延时 [#issue号](链接) @[贡献者 GitHub ID](链接) **tw@xxx** <!--1892-->
-  - 优化处理大量数据的 DML 性能 [#50215](https://github.com/pingcap/tidb/issues/50215) @[ekexium](https://github.com/ekexium) **tw@qiancai** <!--1860-->
+  - 优化扫描大量数据时构造 Batch Cop Task 的效率 [#55915](https://github.com/pingcap/tidb/issues/55915) [#55413](https://github.com/pingcap/tidb/issues/55413) @[wshwsh12](https://github.com/wshwsh12) **tw@caiqian** <!--1902-->
+  - 优化 MEMDB 实现，降低事务中的写操作延时与 TiDB CPU 使用 [#55287](https://github.com/pingcap/tidb/issues/55287) @[you06](https://github.com/you06) **tw@hfxsd** <!--1892-->
+  - 优化处理大量数据 DML 的性能 [#50215](https://github.com/pingcap/tidb/issues/50215) @[ekexium](https://github.com/ekexium) **tw@qiancai** <!--1860-->
   - 优化器估行的最小值为`1`，与其他数据库行为一致 [#47400](https://github.com/pingcap/tidb/issues/47400) @[terry1purcell](https://github.com/terry1purcell) **tw@Oreoxmt** <!--1929-->
   - 为日志表 [`mysql.tidb_runaway_queries`](/mysql-schema/mysql-schema.md#runaway-queries-相关系统表) 增加写入控制，降低并发大量写入引发的开销 [#issue号](链接) @[HuSharp](https://github.com/HuSharp) <!--1908--> **tw@lilin90** 
   - 当内表上有 `Selection` 或 `Projection` 算子时默认支持 Index Join [#issue号](链接) @[winoros](https://github.com/winoros) **tw@qiancai** <!--1860-->
