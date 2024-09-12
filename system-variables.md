@@ -2180,11 +2180,11 @@ mysql> SELECT job_info FROM mysql.analyze_jobs ORDER BY end_time DESC LIMIT 1;
 - 默认值：`OFF`
 - 该变量用于控制当内表上有 `Selection`/`Projection` 算子时是否支持 Index Join。`OFF` 表示不支持。
 
-### tidb_enable_instance_plan_cache <span class="version-mark">New in v8.4.0</span>
+### `tidb_enable_instance_plan_cache` <span class="version-mark">从 v8.4.0 版本开始引入</span>
 
 > **警告：**
 >
-> Instance Plan Cache 目前是实验性功能，不建议在生产环境中使用。
+> Instance Plan Cache 目前为实验特性，不建议在生产环境中使用。该功能可能会在未事先通知的情况下发生变化或删除。如果发现 bug，请在 GitHub 上提 [issue](https://github.com/pingcap/tidb/issues) 反馈。
 
 - 作用域：GLOBAL
 - 是否持久化到集群：是
@@ -2979,31 +2979,31 @@ v5.0 后，用户仍可以单独修改以上系统变量（会有废弃警告）
 - 单位：行
 - 这个变量用来设置执行过程中初始 chunk 的行数。默认值是 32，可设置的范围是 1～32。chunk 行数直接影响单个查询所需的内存。可以按照查询中所有的列的总宽度和 chunk 行数来粗略估算单个 chunk 所需内存，并结合执行器的并发数来粗略估算单个查询所需内存总量。建议单个 chunk 内存总量不要超过 16 MiB。
 
-### tidb_instance_plan_cache_target_mem_size <span class="version-mark">New in v8.4</span>
+### `tidb_instance_plan_cache_target_mem_size` <span class="version-mark">从 v8.4.0 版本开始引入</span>
 
 > **警告：**
 >
-> Instance Plan Cache 目前是实验性功能，不建议在生产环境中使用。
+> Instance Plan Cache 目前为实验特性，不建议在生产环境中使用。该功能可能会在未事先通知的情况下发生变化或删除。如果发现 bug，请在 GitHub 上提 [issue](https://github.com/pingcap/tidb/issues) 反馈。
 
 - 作用域：GLOBAL
 - 是否持久化到集群：是
 - 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：否
 - 类型：整数型
-- 默认值：`104857600`（100 MiB）
+- 默认值：`104857600`（即 100 MiB）
 - TiDB 后台定期对 Instance Plan Cache 进行清理，这个变量控制 Cache 的目标内存，也就是说 TiDB 每次会把 Plan Cache 清理到这个变量的内存大小。
 
-### tidb_instance_plan_cache_max_mem_size <span class="version-mark">New in v8.4</span>
+### `tidb_instance_plan_cache_max_mem_size` <span class="version-mark">从 v8.4.0 版本开始引入</span>
 
 > **警告：**
 >
-> Instance Plan Cache 目前是实验性功能，不建议在生产环境中使用。
+> Instance Plan Cache 目前为实验特性，不建议在生产环境中使用。该功能可能会在未事先通知的情况下发生变化或删除。如果发现 bug，请在 GitHub 上提 [issue](https://github.com/pingcap/tidb/issues) 反馈。
 
 - 作用域：GLOBAL
 - 是否持久化到集群：是
 - 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：否
 - 类型：整数型
-- 默认值：`125829120`（120 MiB）
-- 这个变量控制 Instance Plan Cache 能使用的最大内存。这个变量必须大于 `tidb_instance_plan_cache_target_mem_size`。
+- 默认值：`125829120`（即 120 MiB）
+- 这个变量用于设置 Instance Plan Cache 的最大内存使用量。该值必须大于 [`tidb_instance_plan_cache_target_mem_size`](#tidb_instance_plan_cache_target_mem_size-span-classversion-mark从-v840-版本开始引入span)。
 
 ### `tidb_isolation_read_engines` <span class="version-mark">从 v4.0 版本开始引入</span>
 
