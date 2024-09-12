@@ -3554,6 +3554,19 @@ mysql> desc select count(distinct a) from test.t;
 - 控制优化器是否会选择表的哈希连接。默认打开 (`ON`)。设置为 `OFF` 时，优化器在生成执行计划时会避免选择表的哈希连接，除非没有其他连接方式可用。
 - 如果同时使用了 `tidb_opt_enable_hash_join` 和 `HASH_JOIN` Hint，则 `HASH_JOIN` Hint 优先级更高。即使 `tidb_opt_enable_hash_join` 被设置为 `OFF`，如果在查询中指定了 `HASH_JOIN` Hint，TiDB 优化器仍然会强制执行哈希连接计划。
 
+### `tidb_hash_join_use_impl_v2` <span class="version-mark">从 v8.4.0 版本开始引入</span>
+
+- 作用域：SESSION | GLOBAL
+- 是否持久化到集群：是
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：是
+- 类型：布尔型
+- 默认值：`ON`
+- 控制 TiDB hash join 是否使用 v2 版本的实现。默认关闭 (`OFF`)。设置为 `ON` 时，TiDB 的 hash join 会用 v2 版本的实现，能提升 hash join 的性能。
+- 目前仅 inner join 和 outer join 支持 v2 版本实现, 对于其他类型的 join，即使该变量设成 `ON`，也不会用 v2 版本的实现。
+> **警告：**
+>
+> 该变量控制的功能为实验特性，不建议在生产环境中使用。该功能可能会在未事先通知的情况下发生变化或删除。如果发现 bug，请在 GitHub 上提 [issue](https://github.com/pingcap/tidb/issues) 反馈。
+
 ### `tidb_opt_enable_non_eval_scalar_subquery` <span class="version-mark">从 v7.3.0 版本开始引入</span>
 
 - 作用域：SESSION | GLOBAL
