@@ -82,6 +82,19 @@ TiDB 版本：8.4.0
 
     更多信息，请参考[用户文档](链接)。
 
+* TiProxy 支持流量回放功能（实验特性） [#642](https://github.com/pingcap/tiproxy/issues/642) @[djshow832](https://github.com/djshow832) **tw@Oreoxmt** <!--1942-->
+
+    从 TiProxy v1.3.0 版本开始，TiProxy 将支持流量捕获回放功能。该功能可以从一个 TiDB 集群中捕获所有的访问流量，并在另外的集群中按照指定的速率进行回放，验证所有 SQL 的执行结果和性能。
+    
+    该功能适用于以下场景：
+    - TiDB 版本升级验证
+    - 配置变更验证
+    - 扩缩容性能验证
+    - 测试集群性能上限
+    在 v8.4.0 版本，你可以连接 TiProxy 实例，通过 `tiproxyctrl` 命令进行流量捕获、回放。
+
+    更多信息，请参考[用户文档](/tiproxy/tiproxy-traffic-replay.md)。
+
 ### SQL 功能
 
 * 功能标题 [#issue号](链接) @[贡献者 GitHub ID](链接) **tw@xxx** <!--1234-->
@@ -92,10 +105,12 @@ TiDB 版本：8.4.0
 
 * 支持向量搜索功能（实验特性） [#54245](https://github.com/pingcap/tidb/issues/54245) [#9032](https://github.com/pingcap/tiflash/issues/9032) @[breezewish](https://github.com/breezewish) @[Lloyd-Pottiger](https://github.com/Lloyd-Pottiger) @[EricZequan](https://github.com/EricZequan) @[zimulala](https://github.com/zimulala) @[JaySon-Huang](https://github.com/JaySon-Huang) **tw@qiancai** <!--1898-->
 
-    向量搜索是一种优先考虑数据语义以提供相关结果的搜索方法，是 AI 和语言大模型的重要基础功能之一。通过向量索引，加速向量搜索的性能，数据库能够针对不同的距离函数快速查询相似向量，从而支撑 检索增强生成 (Retrieval-Augmented Generation, RAG)、语义搜索、推荐引擎等多种场景。
-    TiDB 从 v8.4 版本开始，支持向量数据类型和向量索引，提供强大的向量搜索能力。TiDB 的向量数据类型支持最大 16383 维度，支持的距离函数包括：L2 距离（欧式距离）、余弦距离、负内积、L1 距离（曼哈顿距离）。
-    使用时，创建包含向量类型的表并写入数据后，就可以进行向量搜索查询，或向量和传统关系数据的混合查询。
-    TiDB 的向量索引依赖于 TiFlash。因此，使用向量索引前，需要先为你的 TiDB 集群增加 TiFlash 节点。
+    向量搜索是一种基于数据语义的搜索方法，旨在提供更相关的搜索结果，是 AI 和大语言模型（LLM）的关键功能之一。通过使用向量索引，数据库能够加速向量搜索的性能，快速基于不同的距离函数查询相似向量，从而支持检索增强生成（Retrieval-Augmented Generation, RAG）、语义搜索、推荐系统等多种应用场景。
+    
+    从 v8.4 版本开始，TiDB 支持向量数据类型和向量索引，具备强大的向量搜索能力。TiDB 的向量数据类型最多可支持 16383 维度，并提供多种距离函数支持，包括 L2 距离（欧式距离）、余弦距离、负内积和 L1 距离（曼哈顿距离）。
+    
+    在使用时，用户只需创建包含向量类型的表并插入数据，即可执行向量搜索查询，也可进行向量数据与传统关系数据的混合查询。
+    值得注意的是，TiDB 的向量索引依赖于 TiFlash，因此，在使用向量索引之前，需要确保 TiDB 集群中已添加 TiFlash 节点。
 
     更多信息，请参考[用户文档](/vector-search-overview.md)。
     
@@ -202,7 +217,7 @@ TiDB 版本：8.4.0
 + TiDB
   - 优化扫描大量数据时构造 BatchCop Task 的效率 [#55915](https://github.com/pingcap/tidb/issues/55915) [#55413](https://github.com/pingcap/tidb/issues/55413) @[wshwsh12](https://github.com/wshwsh12) **tw@caiqian** <!--1902-->
   - 优化 MEMDB 实现，降低事务中的写操作延时与 TiDB CPU 使用 [#55287](https://github.com/pingcap/tidb/issues/55287) @[you06](https://github.com/you06) **tw@hfxsd** <!--1892-->
-  - 优化处理大量数据 DML 的性能 [#50215](https://github.com/pingcap/tidb/issues/50215) @[ekexium](https://github.com/ekexium) **tw@qiancai** <!--1860-->
+  - 优化 BULK 模式 DML 的执行性能 [#50215](https://github.com/pingcap/tidb/issues/50215) @[ekexium](https://github.com/ekexium) **tw@qiancai** <!--1860-->
   - 优化器估行的最小值为`1`，与其他数据库行为一致 [#47400](https://github.com/pingcap/tidb/issues/47400) @[terry1purcell](https://github.com/terry1purcell) **tw@Oreoxmt** <!--1929-->
   - 为日志表 [`mysql.tidb_runaway_queries`](/mysql-schema/mysql-schema.md#runaway-queries-相关系统表) 增加写入控制，降低并发大量写入引发的开销 [#issue号](链接) @[HuSharp](https://github.com/HuSharp) <!--1908--> **tw@lilin90** 
   - 当内表上有 `Selection` 或 `Projection` 算子时默认支持 Index Join [#issue号](链接) @[winoros](https://github.com/winoros) **tw@qiancai** <!--1860-->
