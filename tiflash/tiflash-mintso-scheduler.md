@@ -44,6 +44,7 @@ mysql> explain select count(*) from t0 a join t0 b on a.id = b.id;
 上面的 query 会在每个 TiFlash 节点中生成 2 个 MPPTask，其中 `ExchangeSender_21` 所在的 MPPTask 依赖于 `ExchangeSender_45` 所在的 MPPTask。假设这个 query 高并发的情况下，调度器调度了每个 query 中 `ExchangeSender_45` 所在的 MPPTask，则系统就会进入死锁的状态。
 
 为了避免系统陷入死锁的状态，我们引入了两层 thread 的限制：
+
 * threads_soft_limit
 * threads_hard_limit
 
