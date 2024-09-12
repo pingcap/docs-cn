@@ -56,6 +56,7 @@ ls `tiup --binary tiproxy`ctl
 git clone https://github.com/pingcap/tiproxy.git
 cd tiproxy
 make
+ls bin/tiproxyctl
 ```
 
 > **注意：**
