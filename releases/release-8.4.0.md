@@ -109,6 +109,16 @@ TiDB 版本：8.4.0
 
     更多信息，请参考[用户文档](链接)。
 
+* 在系统表中显示 TiDB 和 TiKV 的 CPU 时间 [#55542](https://github.com/pingcap/tidb/issues/55542) @[yibin87](https://github.com/yibin87) **tw@hfxsd** <!--1877-->
+
+    [TiDB Dashboard](/dashboard/dashboard-intro.md) 的 [TOP SQL 页面](/dashboard/top-sql.md)能够展示 CPU 消耗高的 SQL 语句。v8.4.0 开始，TiDB 将 CPU 时间消耗信息加入系统表展示，与会话或 SQL 的其他指标并列，方便客户从多角度对高 CPU 消耗的操作进行观测。在实例 CPU 飙升 或集群读写热点的场景下，这些信息能够协助客户快速发现问题的原因。
+
+    - [`STATEMENTS_SUMMARY`](/statement-summary-tables.md) 增加 `AVG_TIDB_CPU_TIME` 和 `AVG_TIKV_CPU_TIME`，显示单个 SQL 语句在历史上消耗的平均 CPU 时间。
+    - [`INFORMATION_SCHEMA.PROCESSLIST`](/information-schema/information-schema-processlist.md) 增加 `TIDB_CPU` 和 `TIKV_CPU`，显示会话当前正在执行 SQL 的累计 CPU 消耗。
+    - [慢日志](/analyze-slow-queries.md)中增加字段 `Tidb_cpu_time` 和 `Tikv_cpu_time`，显示被捕捉到的 SQL 语句的 CPU 时间。
+
+    其中，TiKV 的 CPU 时间默认显示；采集 TiDB 的 CPU 时间会引入额外开销（大概在8%），因此仅在开启 [Top SQL 特性](/dashboard/top-sql.md)时，TiDB 的 CPU 时间才会显示为实际值，否则始终显示为 `0`。
+
 ### 安全
 
 * 功能标题 [#issue号](链接) @[贡献者 GitHub ID](链接) **tw@xxx** <!--1234-->
