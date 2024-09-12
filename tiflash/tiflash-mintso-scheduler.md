@@ -52,46 +52,4 @@ MinTSO Scheduler 的目标就是在控制系统线程数的同时，确保系统
 <img src="/media/tiflash/tiflash_mintso_v2.png" width=50%></img>
 
 
-线程调度模型存在两个缺陷：
-
-- 在高并发场景下，过多的线程会引起较多上下文切换，导致较高的线程调度代价。
-
-- 线程调度模型无法精准计量查询的资源使用量以及做细粒度的资源管控。
-
-在新的执行模型 Pipeline Model 中进行了以下优化：
-
-- 查询会被划分为多个 pipeline 并依次执行。在每个 pipeline 中，数据块会被尽可能保留在缓存中，从而实现更好的时间局部性，从而提高整个执行过程的效率。
-
-- 为了摆脱操作系统原生的线程调度模型，实现更加精细的调度机制，每个 pipeline 会被实例化成若干个 task，使用 task 调度模型，同时使用固定线程池，减少了操作系统申请和调度线程的开销。
-
-TiFlash Pipeline Model 的架构如下：
-
-![TiFlash Pipeline Model Design](/media/tiflash/tiflash-pipeline-model.png)
-
-如上图所示，Pipeline Model 中有两个主要组成部分：Pipeline Query Executor 和 Task Scheduler。
-
-- Pipeline Query Executor
-
-    负责将从 TiDB 节点发过来的查询请求转换为 pipeline dag。
-
-    它会找到查询中的 pipeline breaker 算子，以 pipeline breaker 为边界将查询切分成若干个 pipeline，根据 pipeline 之间的依赖关系，将 pipeline 组装成一个有向无环图。
-
-    pipeline breaker 用于指代存在停顿/阻塞逻辑的算子，这一类算子会持续接收上游算子传来的数据块，直到所有数据块都被接收后，才会将处理结果返回给下游算子。这类算子会破坏数据处理流水线，所以被称为 pipeline breaker。pipeline breaker 的代表有 Aggregation，它会将上游算子的数据都写入到哈希表后，才对哈希表中的数据做计算返回给下游算子。
-
-    在查询被转换为 pipeline dag 后，Pipeline Query Executor 会按照依赖关系依次执行每个 pipeline。pipeline 会根据查询并发度被实例化成若干个 task 提交给 Task Scheduler 执行。
-
-- Task Scheduler
-
-    负责执行由 Pipeline Query Executor 提交过来的 task。task 会根据执行的逻辑的不同，在 Task Scheduler 里的不同组件中动态切换执行。
-
-    - CPU Task Thread Pool
-
-      执行 task 中 CPU 密集型的计算逻辑，比如数据过滤、函数计算等。
-
-    - IO Task Thread Pool
-
-      执行 task 中 IO 密集型的计算逻辑，比如计算中间结果落盘等。
-
-    - Wait Reactor
-
-      执行 task 中的等待逻辑，比如等待网络层将数据包传输给计算层等。
+通过引入 soft limit 与 hard limit，MinTSO 能保证系统线程数的同时有效地避免了系统死锁。不过对于高并发场景，可能会出现大部份 query 都只有部分 MPPTask 被调度的情况，对于只有部分 MPPTask 被调度的 query，它们实际上无法正常执行，从而导致系统执行效率低下。为了避免这种情况，我们给 MinTSO Scheduler 在 query 层面引入了一个限制，即 active_query_soft_limit，该限制的意思是系统最多只有 active_query_soft_limit 个 query 的 MPPTask 可以参与调度，对于其他的 query，其 MPPTask 不参与调度，只有等当前 query 结束之后，新的 query 才能参与调度。当然这个限制只是一个 soft limit，因为对于 MinTSO query 来说，其所有 MPPTask 在系统线程数不超过 hard limit 的时候都可以直接被调度。
