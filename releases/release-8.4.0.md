@@ -50,6 +50,17 @@ TiDB 版本：8.4.0
 
   更多信息，请参考[用户文档](/functions-and-operators/expressions-pushed-down.md)。
 
+* 实例中的会话共享执行计划缓存 (实验特性) [#issue号](链接) @[qw4990](https://github.com/qw4990) **tw@Oreoxmt** <!--1569-->
+
+    相比会话级执行计划缓存，执行计划缓存在会话间共享有明显的优势：
+
+    - 消除冗余，相同的内存消耗下能缓存更多的执行计划。
+    - 在实例上开辟固定大小的内存区域，能更有效的对内存进行限制。
+
+    在 v8.4.0 中，实例级执行计划缓存作为实验特性，只支持对查询的执行计划进行缓存，默认关闭，通过设置系统变量 [`tidb_enable_instance_plan_cache`](/system-variables.md#tidb_enable_instance_plan_cache-从-v840-版本开始引入) 开启，缓存最大值通过变量 [`tidb_instance_plan_cache_max_mem_size`](/system-variables.md#tidb_instance_plan_cache_max_mem_size-从-v840-版本开始引入) 设置，当缓存大小超过变量 [`tidb_instance_plan_cache_target_mem_size`](/system-variables.md#tidb_instance_plan_cache_target_mem_size-从-v840-版本开始引入) 设置的值时开始清理。会话执行计划缓存需要保持关闭状态，具体参见 [Prepare 语句执行计划缓存](/sql-prepared-plan-cache.md) 和 [非 Prepare 语句执行计划缓存](/sql-non-prepared-plan-cache.md)。
+
+    实例级执行计划缓存能够大幅降低 TiDB 的时延，提升集群吞吐，并能够减少执行计划突变的机会，保持集群性能的稳定，是 TiDB 改善性能和稳定性的重要改进。
+
 ### 稳定性
 
 * 功能标题 [#issue号](链接) @[贡献者 GitHub ID](链接) **tw@xxx** <!--1234-->
@@ -184,9 +195,9 @@ TiDB 版本：8.4.0
 | 变量名  | 修改类型（包括新增/修改/删除）    | 描述 |
 |--------|------------------------------|------|
 | [`tidb_enable_inl_join_inner_multi_pattern`](/system-variables.md#tidb_enable_inl_join_inner_multi_pattern-从-v700-版本开始引入) |   修改  |   默认值改为 `ON`。当内表上有 `Selection` 或 `Projection` 算子时默认支持 Index Join  |
-|        |                              |      |
-|        |                              |      |
-|        |                              |      |
+| [`tidb_enable_instance_plan_cache`](/system-variables.md#tidb_enable_instance_plan_cache-从-v840-版本开始引入)| 新增 | 这个变量控制是否开启 Instance Plan Cache 功能。 |
+| [`tidb_instance_plan_cache_max_mem_size`](/system-variables.md#tidb_instance_plan_cache_max_mem_size-从-v840-版本开始引入) | 新增 | 这个变量控制 Instance Plan Cache 的目标内存大小，超过这个大小则触发清理。|
+| [`tidb_instance_plan_cache_target_mem_size`](/system-variables.md#tidb_instance_plan_cache_target_mem_size-从-v840-版本开始引入) | 新增 | 这个变量控制 Instance Plan Cache 的最大内存使用量。 |
 
 ### 配置文件参数
 
