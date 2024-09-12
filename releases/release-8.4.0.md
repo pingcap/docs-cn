@@ -90,7 +90,7 @@ TiDB 版本：8.4.0
 
     更多信息，请参考[用户文档](链接)。
 
-* 支持向量搜索功能（实验特性） [#54245](https://github.com/pingcap/tidb/issues/54245) [#9032](https://github.com/pingcap/tiflash/issues/9032) @[贡献者 GitHub ID](链接) **tw@qiancai** <!--1898-->
+* 支持向量搜索功能（实验特性） [#54245](https://github.com/pingcap/tidb/issues/54245) [#9032](https://github.com/pingcap/tiflash/issues/9032) @[breezewish](https://github.com/breezewish) @[Lloyd-Pottiger](https://github.com/Lloyd-Pottiger) @[EricZequan](https://github.com/EricZequan) @[zimulala](https://github.com/zimulala) @[JaySon-Huang](https://github.com/JaySon-Huang) **tw@qiancai** <!--1898-->
 
     向量搜索是一种优先考虑数据语义以提供相关结果的搜索方法，是 AI 和语言大模型的重要基础功能之一。通过向量索引，加速向量搜索的性能，数据库能够针对不同的距离函数快速查询相似向量，从而支撑 检索增强生成 (Retrieval-Augmented Generation, RAG)、语义搜索、推荐引擎等多种场景。
     TiDB 从 v8.4 版本开始，支持向量数据类型和向量索引，提供强大的向量搜索能力。TiDB 的向量数据类型支持最大 16383 维度，支持的距离函数包括：L2 距离（欧式距离）、余弦距离、负内积、L1 距离（曼哈顿距离）。
@@ -200,7 +200,7 @@ TiDB 版本：8.4.0
 ## 改进提升
 
 + TiDB
-  - 优化扫描大量数据时构造 Batch Cop Task 的效率 [#55915](https://github.com/pingcap/tidb/issues/55915) [#55413](https://github.com/pingcap/tidb/issues/55413) @[wshwsh12](https://github.com/wshwsh12) **tw@caiqian** <!--1902-->
+  - 优化扫描大量数据时构造 BatchCop Task 的效率 [#55915](https://github.com/pingcap/tidb/issues/55915) [#55413](https://github.com/pingcap/tidb/issues/55413) @[wshwsh12](https://github.com/wshwsh12) **tw@caiqian** <!--1902-->
   - 优化 MEMDB 实现，降低事务中的写操作延时与 TiDB CPU 使用 [#55287](https://github.com/pingcap/tidb/issues/55287) @[you06](https://github.com/you06) **tw@hfxsd** <!--1892-->
   - 优化处理大量数据 DML 的性能 [#50215](https://github.com/pingcap/tidb/issues/50215) @[ekexium](https://github.com/ekexium) **tw@qiancai** <!--1860-->
   - 优化器估行的最小值为`1`，与其他数据库行为一致 [#47400](https://github.com/pingcap/tidb/issues/47400) @[terry1purcell](https://github.com/terry1purcell) **tw@Oreoxmt** <!--1929-->
