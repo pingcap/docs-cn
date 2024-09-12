@@ -305,7 +305,7 @@ Runaway Query 是指执行时间或消耗资源超出预期的查询（仅指 `S
 - 通过查询 `INFORMATION_SCHEMA.RUNAWAY_WATCHES` 获取监控项 ID，删除该监控项。
 
     ```sql
-    SELECT * FROM INFORMATION_SCHEMA.RUNAWAY_WATCHES ORDER BY id\G;
+    SELECT * FROM INFORMATION_SCHEMA.RUNAWAY_WATCHES ORDER BY id\G
     ```
 
     ```sql
