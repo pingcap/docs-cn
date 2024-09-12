@@ -67,10 +67,10 @@ pip install peewee pymysql python-dotenv tidb-vector
 在 Python 项目的根目录下新建一个 `.env` 文件，将以下内容复制进 `.env` 文件中，并根据集群的启动参数修改相应的环境变量。
 
 ```shell
-TIDB_HOST=gateway01.****.prod.aws.tidbcloud.com
+TIDB_HOST=127.0.0.1
 TIDB_PORT=4000
-TIDB_USERNAME=******.root
-TIDB_PASSWORD=********
+TIDB_USERNAME=root
+TIDB_PASSWORD=
 TIDB_DATABASE=test
 ```
 

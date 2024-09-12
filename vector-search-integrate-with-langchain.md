@@ -81,6 +81,7 @@ os.environ["OPENAI_API_KEY"] = getpass.getpass("OpenAI API Key:")
 例如，macOS 上的连接字符串如下所示：
 
 ```dotenv
+# 例如： TIDB_DATABASE_URL="mysql+pymysql://root@127.0.0.1:4000/test"
 TIDB_DATABASE_URL="mysql+pymysql://<USERNAME>:<PASSWORD>@<HOST>:<PORT>/<DATABASE_NAME>"
 ```
 

@@ -66,6 +66,7 @@ pip install sqlalchemy pymysql sentence-transformers tidb-vector python-dotenv
 以下为 MacOS 的示例：
 
 ```dotenv
+# 例如： TIDB_DATABASE_URL="mysql+pymysql://root@127.0.0.1:4000/test"
 TIDB_DATABASE_URL="mysql+pymysql://<USER>:<PASSWORD>@<HOST>:<PORT>/<DATABASE>"
 ```
 > **Tip:**

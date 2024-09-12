@@ -67,6 +67,7 @@ pip install pymysql python-dotenv sqlalchemy tidb-vector
 在 Python 项目的根目录下新建一个 `.env` 文件，将一下内容复制到 `.env` 文件中，并根据集群的启动参数修改相应的环境变量。
 
 ```shell
+# 例如： TIDB_DATABASE_URL="mysql+pymysql://root@127.0.0.1:4000/test"
 TIDB_DATABASE_URL=mysql+pymysql://<USERNAME>:<PASSWORD>@<HOST>:<PORT>/<DATABASE>
 ```
 

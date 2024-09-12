@@ -87,8 +87,8 @@ pip install Django django-tidb mysqlclient numpy python-dotenv
 ```dotenv
 TIDB_HOST=127.0.0.1
 TIDB_PORT=4000
-TIDB_USERNAME=********.root
-TIDB_PASSWORD=********
+TIDB_USERNAME=root
+TIDB_PASSWORD=
 TIDB_DATABASE=test
 ```
 > **Tip:**

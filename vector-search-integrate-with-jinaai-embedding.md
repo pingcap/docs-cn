@@ -66,6 +66,7 @@ pip install -r requirements.txt
 
    ```shell
     export JINA_API_KEY="****"
+    # 例如： TIDB_DATABASE_URL="mysql+pymysql://root@127.0.0.1:4000/test"
     export TIDB_DATABASE_URL="mysql+pymysql://<USERNAME>:<PASSWORD>@<HOST>:<PORT>/<DATABASE>"
    ```
     
