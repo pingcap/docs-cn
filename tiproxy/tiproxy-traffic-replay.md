@@ -103,7 +103,7 @@ summary: 介绍 TiProxy 的流量回放的使用场景和使用步骤。
 
 如果需要测试集群的吞吐量，可以使用 `--speed` 选项调整回放的速率。
 
-使用 `--speed` 选项可以调整 SQL 语句的执行速度。例如，`--speed=2` 会使 SQL 语句以 2 倍速率执行，总回放时间缩短一半：
+例如，`--speed=2` 会使 SQL 语句以 2 倍速率执行，总回放时间缩短一半：
 
 ```shell
 tiproxyctl traffic replay --host 10.0.1.10 --port 3080 --username="u1" --password="123456" --input="/tmp/traffic" --speed=2
