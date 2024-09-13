@@ -102,6 +102,9 @@ TiDB 版本：6.5.11
     - (dup): release-8.1.1.md > 错误修复> TiDB - 修复递归 CTE 查询可能导致无效指针的问题 [#54449](https://github.com/pingcap/tidb/issues/54449) @[hawkingrei](https://github.com/hawkingrei)
     - (dup): release-8.3.0.md > 错误修复> TiDB - 修复 `mysql.stats_histograms` 表的 `tot_col_size` 列可能为负数的潜在风险 [#55126](https://github.com/pingcap/tidb/issues/55126) @[qw4990](https://github.com/qw4990)
     - (dup): release-8.1.1.md > 错误修复> TiDB - 修复当视图定义中使用子查询作为列定义时，通过 `information_schema.columns` 获取列信息返回告警 Warning 1356 的问题 [#54343](https://github.com/pingcap/tidb/issues/54343) @[lance6716](https://github.com/lance6716)
+    - 修复 TiDB 关闭连接时，在某些情况下会在日志中报错的问题 [#53689](https://github.com/pingcap/tidb/issues/53689) @[jackysp](https://github.com/jackysp
+    - 修复 `SELECT ... WHERE ... ORDER BY ...` 语句在某些情况下执行效率低的性能问题 [#54969](https://github.com/pingcap/tidb/issues/54969) @[tiancaiamao](https://github.com/tiancaiamao)
+    - 修复 `information_schema`.`statistics` 表中 `SUB_PART` 值为空的问题 [#55812](https://github.com/pingcap/tidb/issues/55812) @[Defined2014](https://github.com/Defined2014)
     - 修复 query 被 kill 之后有概率返回错误结果而非报错的问题 [#50089](https://github.com/pingcap/tidb/issues/50089) @[D3Hunter](https://github.com/D3Hunter)
     - 修复查询 information_schema.CLUSTER_SLOW_QUERY 可能导致 TiDB panic 的问题 [#54324](https://github.com/pingcap/tidb/issues/54324) @[tiancaiamao](https://github.com/tiancaiamao)
     - 修复 `StreamAggExec` 中可能会 panic 报错的问题 [#53867](https://github.com/pingcap/tidb/issues/53867) @[xzhangxian1008](https://github.com/xzhangxian1008)
