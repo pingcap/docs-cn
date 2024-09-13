@@ -148,6 +148,35 @@ TiDB 版本：8.4.0
 
     更多信息，请参考[用户文档](链接)。
 
+* 持久化部分内存表的快照 (实验特性) [#issue号](链接) @[xhebox](https://github.com/xhebox)  **tw@lilin90** <!--1823-->
+
+    TiDB 的内存表中会保存很多运行时状态信息，比如会话状态、锁状态、SQL 运行状态等，用户可以据此了解数据库运行情况，这些信息被大量用在故障诊断和性能调优的场景。实际使用中会遇到几个问题：
+
+    - 内存表中的信息会随 TiDB 实例的关闭而消失
+    - 用户无法追溯过去某个时间的状态信息
+
+    为了解决上述问题，受流行商业数据库的启发，TiDB 新增对内存表持久化的能力，为 TiDB 构建 `Workload Repository`。通过设置变量 [`tidb_workload_repository_dest`]() 为 `SCHEMA`, TiDB 将内存表中的信息阶段性写入特定数据库 (`WORKLOAD_SCHEMA`)，持久化到 TiKV 中。持久化的数据大体有两类用途：
+
+    - **故障定位**：获取过去某一段时间的数据库运行情况，分析故障可能的原因。
+    - **自动运维**：对数据库的历史负载进行分析，发现潜在的优化点，并得出优化建议。比如索引推荐，SQL 调优推荐等。
+    
+    被持久化的内存表大体分为两类：
+
+    一类是保存累计运行指标的内存表，通常体积较大，快照一次有明显开销。这类内存表默认每 60 分钟记录一次快照，通过系统变量 [`tidb_workload_repository_snapshot_interval`]() 修改快照间隔。包括：
+
+    - SQL 语句运行指标
+    - 索引运行指标
+
+    另一类内存表显示实时状态信息，会被快速刷新。这类内存记录默认每秒采样一次，通过系统变量 [`tidb_workload_repository_active_sampling_interval`]() 修改采样间隔。这类表包括：
+
+    - 活动会话的状态
+    - 锁状态
+    - 活动事务状态
+
+    TiDB `Workload Repository` 的引入，极大地提升了数据库的可观测性，并为未来的自动化运维工作提供了数据基础。在接下来的版本，TiDB 会加入更多的内存观测指标，并持久化到 `Workload Repository`，通过提供丰富的工具、报告、建议，协助用户的管理工作，提升运维 TiDB 集群的效率。
+
+    更多信息，请参考[用户文档](链接)。
+
 * 在系统表中显示 TiDB 和 TiKV 的 CPU 时间 [#55542](https://github.com/pingcap/tidb/issues/55542) @[yibin87](https://github.com/yibin87) **tw@hfxsd** <!--1877-->
 
     [TiDB Dashboard](/dashboard/dashboard-intro.md) 的 [TOP SQL 页面](/dashboard/top-sql.md)能够展示 CPU 消耗高的 SQL 语句。v8.4.0 开始，TiDB 将 CPU 时间消耗信息加入系统表展示，与会话或 SQL 的其他指标并列，方便客户从多角度对高 CPU 消耗的操作进行观测。在实例 CPU 飙升 或集群读写热点的场景下，这些信息能够协助客户快速发现问题的原因。
