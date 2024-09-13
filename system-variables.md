@@ -4153,8 +4153,8 @@ EXPLAIN FORMAT='brief' SELECT COUNT(1) FROM t WHERE a = 1 AND b IS NOT NULL;
 - 是否持久化到集群：是
 - 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：否
 - 类型：枚举型
-- 默认值: ``
-- 可选值: ``, `TABLE`, `GLOBAL'
+- 默认值：``
+- 可选值：``, `TABLE`, `GLOBAL'
 - TiDB 默认会在建表时为新表分裂 Region，使用该变量控制表分裂打散策略，TiDB 会根据选择的打散策略进行 Region 打散。适用于批量建表后紧接着批量写入数据，能让刚分裂出的 Region 先在 TiKV 分散而不用等待 PD 进行调度。为了保证后续批量写入数据的稳定性，建表语句会等待打散 Region 完成后再返回建表成功，建表语句执行时间会是该变量关闭时的数倍。可选值包括：
     - 默认值为 ``，表示对于表 Region 不进行打散。
     - `TABLE` 表示 TiDB 会按照表数据分布情况对于表数据进行打散。
