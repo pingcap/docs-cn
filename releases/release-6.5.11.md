@@ -124,5 +124,5 @@ TiDB 版本：6.5.11
     + TiDB Lightning <!--tw@lilin90: 2 notes-->
 
         - (dup): release-8.3.0.md > 错误修复> Tools> TiDB Lightning - 修复使用 TiDB Lightning 导入数据时报事务冲突的问题 [#49826](https://github.com/pingcap/tidb/issues/49826) @[lance6716](https://github.com/lance6716)
-        - 修复使用 `IMPORT INTO` 语句导入时删除 sst 文件导致的 TiKV panic 的问题 [#15003](https://github.com/tikv/tikv/issues/15003) [#47694](https://github.com/pingcap/tidb/issues/47694) @[lance6716](https://github.com/lance6716)
+        - 修复在关闭了 TiDB Lightning 的 import mode 后进行导入时，TiKV 数据可能损坏的问题 [#15003](https://github.com/tikv/tikv/issues/15003) [#47694](https://github.com/pingcap/tidb/issues/47694) @[lance6716](https://github.com/lance6716)
         - 修复使用 TiDB Lightning 导入时 TiKV 重启报错的问题 [#15912](https://github.com/tikv/tikv/issues/15912) @[lance6716](https://github.com/lance6716)
