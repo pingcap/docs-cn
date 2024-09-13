@@ -1,76 +1,68 @@
 ---
 title: TiDB 安全配置最佳实践
-summary: 介绍 TiDB 最佳安全配置，有效降低潜在的安全风险
-aliases: ['/docs-cn/dev/faq/security-faq/']
+summary: 介绍 TiDB 安全配置的最佳实践，帮助你降低潜在的安全风险。
 ---
 
 # TiDB 安全配置最佳实践
 
-TiDB 的安全性是确保数据完整性和保护机密性的关键要素。本文档旨在为 TiDB 用户在部署 TiDB 集群时提供指导，以采取适当的安全措施。通过遵循这些安全最佳实践，您可以有效降低潜在的安全风险，防范数据泄露，并确保 TiDB 数据库系统能够持续稳定、可靠地运行。
+TiDB 的安全性对于保护数据完整性和机密性至关重要。本文提供了 TiDB 集群部署时的安全配置指南。遵循这些最佳实践可以有效降低潜在安全风险、防范数据泄露，并确保 TiDB 数据库系统能够持续稳定、可靠地运行。
 
-## 如何为 root 账号设置初始密码？
+> **注意：**
+> 
+> 本文提供关于 TiDB 安全配置的一般建议。PingCAP 不保证信息的完整性或准确性，对使用本指南所产生的任何问题不承担责任。用户应根据自身需求评估这些建议，并咨询专业人士以获得具体的建议。
 
-### 问题描述
+## 设置 root 用户初始密码
 
-默认情况下，在创建群集时，root 密码为空，这可能导致潜在的安全风险。这意味着任何人都可以尝试使用 root 账户登录到 TiDB 数据库，因为没有密码限制。这种情况下，未经授权的用户或攻击者可以轻易地访问和修改数据库中的数据，给数据库的安全性带来了严重威胁。因此，建议在部署过程中立即设置 root 密码，以加强数据库的安全性
+默认情况下，新创建的 TiDB 集群中 root 用户的密码为空，这可能导致潜在的安全风险。任何人都可以尝试使用 root 用户登录 TiDB 数据库，从而可能访问和修改数据。
 
-### 解决方案
+为避免此风险，建议在部署过程中设置 root 密码：
 
-- TiUP 部署时，[为 root 账户生成随机密码](/production-deployment-using-tiup.md#第-7-步启动集群)。
-- TiDB Operator 部署时，[设置 root 账户密码](https://docs.pingcap.com/zh/tidb-in-kubernetes/stable/initialize-a-cluster#初始化账号和密码设置)。
+- 使用 TiUP 部署时，参考[使用 TiUP 部署 TiDB 集群](/production-deployment-using-tiup.md#第-7-步启动集群)为 root 用户生成随机密码。
+- 使用 TiDB Operator 部署时，参考[初始化账号和密码设置](https://docs.pingcap.com/zh/tidb-in-kubernetes/stable/initialize-a-cluster#初始化账号和密码设置)为 root 用户设置密码。
 
-## 如何启用密码复杂性检查?
+## 启用密码复杂性检查
 
-### 问题描述
+默认情况下，TiDB 未启用密码复杂性策略，这可能导致使用弱密码或空密码，增加安全风险。
 
-默认情况下，TiDB 未启用密码复杂性策略，这可能导致出现弱密码和空密码，从而增加了安全风险。为确保数据库用户创建强密码，建议配置适当的密码复杂性策略，要求密码包含大写字母、小写字母、数字和特殊字符的组合。这有助于提高数据库的安全性，防止´暴力破解攻击，减少内部威胁，遵守法规和合规性要求，降低数据泄露风险，并提高整体安全水平。
+为确保数据库用户创建强密码，建议配置合理的[密码复杂度策略](/password-management.md#密码复杂度策略)。例如，要求密码包含大写字母、小写字母、数字和特殊字符的组合。启用密码复杂性检查可以提高数据库的安全性、防止暴力破解攻击、减少内部威胁、遵守法规和合规性要求、降低数据泄露风险，并提高整体安全水平。
 
-### 解决方案
+## 修改 Grafana 默认密码
 
-配置合理的[密码复杂度策略](/password-management.md#密码复杂度策略)，避免出现弱密码、空密码问题造成的账户安全风险
+TiDB 安装时默认包含 Grafana 组件，其默认的用户名密码通常为 `admin/admin`。如不及时修改，可能被攻击者利用获取系统控制权。
 
-## 如何修改 Grafana 默认密码?
+建议在部署 TiDB 时立即修改 Grafana 的密码为强密码，并定期更新密码以确保系统安全。修改 Grafana 密码的方式如下：
 
-### 问题描述
-
-在 TiDB 安装部署过程中，Grafana 组件是默认包含在内的。而默认情况下，Grafana 的凭据通常是 admin/admin。然而，若未及时修改这些默认凭据，可能会导致系统面临安全风险。攻击者可以利用这些默认凭据轻易地获取对系统的控制权，进而执行恶意操作，窃取敏感数据。
-
-### 解决方案
-
-建议在部署 TiDB 时，立即修改 Grafana 的默认凭据，采用强密码，并定期更新密码以确保系统安全。
-
-1. 在 Grafana 在首次登录后根据提示完成新密码的修改
+- 首次登录 Grafana 时，根据提示完成新密码的修改。
 
     ![Grafana Password Reset Guide](/media/grafana-password-reset1.png)
 
-2. 进入个人配置中心完成新密码的修改
+- 进入 Grafana 个人配置中心完成新密码的修改。
 
     ![Grafana Password Reset Guide](/media/grafana-password-reset2.png)
 
-## 如何提高 TiDB Dashboard 安全性
+## 提高 TiDB Dashboard 安全性
 
-### 示例 1 权限最小化
+### 使用最小权限用户
 
-TiDB Dashboard 的账号体系与 TiDB SQL 用户一致，并基于 TiDB SQL 用户的权限进行 TiDB Dashboard 授权验证。TiDB Dashboard 所需的权限较少，甚至可以只有只读权限。建议为访问 TiDB Dashboard 创建一个最小权限的 SQL 用户，避免使用高权限用户，从而提高系统的安全性。
+TiDB Dashboard 的账号体系与 TiDB SQL 用户一致，并基于 TiDB SQL 用户的权限进行 TiDB Dashboard 授权验证。TiDB Dashboard 所需的权限较少，甚至可以只有只读权限。
 
-### 权限最小化解决方案
+为提高系统安全性，建议为访问 TiDB Dashboard 创建一个[最小权限的 SQL 用户](/dashboard/dashboard-user.md)，并用该用户登录 TiDB Dashboard，避免使用高权限用户，提升安全性。
 
-为访问 TiDB Dashboard 创建一个[最小权限的 SQL 用户](/dashboard/dashboard-user.md)，并用该用户登录 TiDB Dashboard，避免使用高权限用户，提升安全性。 
+### 限制访问控制
 
-### 示例 2 访问控制限制
+默认情况下，TiDB Dashboard 设计为供受信任的用户访问。默认端口将包含除 TiDB Dashboard 外的其他 API 接口。如果你希望让外部网络用户或不受信任的用户访问 TiDB Dashboard，需要采取以下的措施以避免安全漏洞的出现：
 
-尽管访问 TiDB Dashboard 需要登录，但它被设计为默认供受信任的用户实体访问。默认端口将包含除 TiDB Dashboard 外的其他 API 接口。如果你希望让外部网络用户或不受信任的用户访问 TiDB Dashboard，需要采取适当的措施以避免安全漏洞的出现。
+- 使用防火墙等手段将默认的 `2379` 端口限制在可信域内，禁止外部用户进行访问。
 
-### 访问控制限制解决方案
+    > **注意：**
+    >
+    > TiDB、TiKV 等组件需要通过 PD Client 端口与 PD 组件进行通信。请勿对组件内部网络阻止访问，这将导致集群不可用。
 
-1. 应当利用防火墙等手段将默认的 2379 端口放置在可信域内，禁止外部用户进行访问。 注意，TiDB、TiKV 等组件需要通过 PD Client 端口与 PD 组件进行通信，因此请勿对组件内部网络阻止访问，这将导致集群不可用。
-2. 通过[配置反向代理](/dashboard/dashboard-ops-reverse-proxy.md#通过反向代理使用-tidb-dashboard) 的方式将 TiDB Dashboard 服务在另一个端口上安全地提供给外部
+- [配置反向代理](/dashboard/dashboard-ops-reverse-proxy.md#通过反向代理使用-tidb-dashboard)，将 TiDB Dashboard 服务在另一个端口上安全地提供给外部。
 
-## 如何对内部端口进行安全保护?
+## 保护内部端口
 
-### 问题描述
-
-TiDB 的默认安装中存在许多用于组件间通信的特权接口。这些端口通常不需要向用户端开放，因为它们主要设计用于内部通信。当这些端口直接暴露在公共网络上时，会增加潜在的攻击面，违反了安全最小化原则，增加了安全风险的产生，以下为 TiDB 集群默认监听端口的全部详细情况:
+TiDB 的默认安装中存在许多用于组件间通信的特权接口。这些端口通常不需要向用户端开放，因为它们主要用于内部通信。当这些端口直接暴露在公共网络上时，会增加潜在的攻击面，违反了安全最小化原则，增加了安全风险的产生。下表列出了 TiDB 集群默认监听端口的详细情况：
 
 | 组件                | 默认监听端口  | 协议       |
 |-------------------|--------------|------------|
@@ -108,9 +100,7 @@ TiDB 的默认安装中存在许多用于组件间通信的特权接口。这些
 | Blackbox Exporter | 9115        | HTTP       |
 | NG Monitoring     | 12020        | HTTP       |
 
-### 解决方案
-
-建议只向普通用户公开数据库的 4000 端口和 Grafana 面板的 9000 端口。其他端口应该通过网络安全策略组或防火墙进行限制。此外，如果额外需要访问 TiDB Dashboard，建议通过配置[反向代理的方式](/dashboard/dashboard-ops-reverse-proxy.md#通过反向代理使用-tidb-dashboard)将 TiDB Dashboard 服务安全地提供给外部网络，并将其部署在另外的端口上。
+建议只向普通用户公开数据库的 `4000` 端口和 Grafana 面板的 `9000` 端口，并通过网络安全策略组或防火墙限制其他端口。以下是使用 `iptables` 限制端口访问的示例：
 
 ```shell
 # 允许来自各组件白名单 IP 地址范围的内部端口通讯
@@ -124,16 +114,10 @@ sudo iptables -A INPUT -p tcp --dport 9000 -j ACCEPT
 sudo iptables -P INPUT DROP
 ```
 
-## 如何解决三方扫描器 mysql 漏洞误报问题?
+如果需要访问 TiDB Dashboard，建议通过[配置反向代理](/dashboard/dashboard-ops-reverse-proxy.md#通过反向代理使用-tidb-dashboard)的方式将 TiDB Dashboard 服务安全地提供给外部网络，并将其部署在另外的端口上。
 
-### 问题描述
+## 解决第三方扫描器 MySQL 漏洞误报
 
-大多数漏洞扫描器在检测 MySQL 漏洞时，通常会根据版本信息来匹配 CVE 漏洞。然而，我们的 TiDB 产品并非 MySQL，而是仅兼容 MySQL 协议。因此，仅依赖简单的 MySQL 版本扫描可能会导致误报。我们建议漏洞扫描应以原理扫描为主。当客户的合规漏洞扫描工具要求 MySQL 版本时，TiDB 支持修改服务器版本号，以满足其要求。
+大多数漏洞扫描器在检测 MySQL 漏洞时，会根据版本信息来匹配 CVE 漏洞。由于 TiDB 仅兼容 MySQL 协议而非 MySQL 本身，基于版本信息的漏洞扫描可能导致误报。建议漏洞扫描应以原理扫描为主。当合规漏洞扫描工具要求 MySQL 版本时，你可以[修改服务器版本号](/faq/high-reliability-faq.md#我们的安全漏洞扫描工具对-mysql-version-有要求tidb-是否支持修改-server-版本号呢)，以满足其要求。
 
-### 解决方案
-
-通过[修改服务器版本号](/faq/high-reliability-faq.md#我们的安全漏洞扫描工具对-mysql-version-有要求tidb-是否支持修改-server-版本号呢)，可避免漏洞扫描器产生误报。server-version 的值会被 TiDB 节点用于验证当前 TiDB 的版本。因此在进行 TiDB 集群升级前，请将 server-version 的值设置为空或者当前 TiDB 真实的版本值，避免出现非预期行为。
-
-# 免责声明
-
-本指南提供关于 TiDB 安全配置的一般建议。PingCAP 不保证信息的完整性或准确性，对使用本指南所产生的任何问题不承担责任。用户应根据自身需求评估这些建议，并咨询专业人士以获得具体的建议。
+通过修改服务器版本号，可避免漏洞扫描器产生误报。[`server-version`](/tidb-configuration-file.md#server-version) 的值会被 TiDB 节点用于验证当前 TiDB 的版本。在进行 TiDB 集群升级前，请将 `server-version` 的值设置为空或者当前 TiDB 真实的版本值，避免出现非预期行为。
