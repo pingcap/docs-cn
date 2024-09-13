@@ -44,8 +44,8 @@ DESC processlist;
 | RESOURCE_GROUP | varchar(32)         | NO   |      |         |       |
 | SESSION_ALIAS  | varchar(64)         | NO   |      |         |       |
 | ROWS_AFFECTED  | bigint(21) unsigned | YES  |      | NULL    |       |
-| TIDB_CPU       | double              | NO   |      | 0       |       |
-| TIKV_CPU       | double              | NO   |      | 0       |       |
+| TIDB_CPU       | bigint(21)          | NO   |      | 0       |       |
+| TIKV_CPU       | bigint(21)          | NO   |      | 0       |       |
 +----------------+---------------------+------+------+---------+-------+
 ```
 
