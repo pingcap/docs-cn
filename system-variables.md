@@ -2979,7 +2979,7 @@ v5.0 后，用户仍可以单独修改以上系统变量（会有废弃警告）
 - 单位：行
 - 这个变量用来设置执行过程中初始 chunk 的行数。默认值是 32，可设置的范围是 1～32。chunk 行数直接影响单个查询所需的内存。可以按照查询中所有的列的总宽度和 chunk 行数来粗略估算单个 chunk 所需内存，并结合执行器的并发数来粗略估算单个查询所需内存总量。建议单个 chunk 内存总量不要超过 16 MiB。
 
-### `tidb_instance_plan_cache_target_mem_size` <span class="version-mark">从 v8.4.0 版本开始引入</span>
+### tidb_instance_plan_cache_reserved_percentage  <span class="version-mark">从 v8.4.0 版本开始引入</span>
 
 > **警告：**
 >
@@ -2988,9 +2988,10 @@ v5.0 后，用户仍可以单独修改以上系统变量（会有废弃警告）
 - 作用域：GLOBAL
 - 是否持久化到集群：是
 - 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：否
-- 类型：整数型
-- 默认值：`104857600`（即 100 MiB）
-- 这个变量用于设置 Instance Plan Cache 的目标内存大小。TiDB 后台定期清理 Instance Plan Cache，以确保其内存占用不超过该变量设置的值。
+- 类型：浮点型
+- 默认值：`0.1`
+- 范围：`[0, 1]`
+- 这个变量控制每次逐出的内存大小。TiDB 会在 Plan Cache 满后，也就是内存达到 `tidb_instance_plan_cache_max_size` 开始逐出。每次逐出 `tidb_instance_plan_cache_max_size * tidb_instance_plan_cache_reserved_percentage` 数量的内存。
 
 ### `tidb_instance_plan_cache_max_size` <span class="version-mark">从 v8.4.0 版本开始引入</span>
 
