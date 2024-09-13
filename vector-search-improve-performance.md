@@ -19,7 +19,6 @@ TiDB 向量搜索允许你执行 ANN 查询，搜索与图像、文档等相似�
 
 向量搜索索引和查询的计算复杂度会随着向量大小的增加而显著提高，从而需要进行更多的浮点比较。
 
-To optimize performance, consider reducing the vector dimensions whenever feasible. This usually needs switching to another embedding model. Make sure to measure the impact of changing embedding models on the accuracy of your vector queries.
 为了优化性能，在可行的情况下应考虑减少向量维度，这通常需要切换到另一种嵌入模型。你需要确保改变嵌入模型对向量查询准确性的影响。
 
 某些嵌入模型，如 OpenAI `text-embedding-3-large` 支持[缩短向量嵌入](https://openai.com/index/new-embedding-models-and-api-updates/)，即在不丢失嵌入的概念表示特性的情况下，从向量序列末尾删除一些数字。你也可以使用这种嵌入模型来减少向量维数。
