@@ -2992,7 +2992,7 @@ v5.0 后，用户仍可以单独修改以上系统变量（会有废弃警告）
 - 默认值：`104857600`（即 100 MiB）
 - 这个变量用于设置 Instance Plan Cache 的目标内存大小。TiDB 后台定期清理 Instance Plan Cache，以确保其内存占用不超过该变量设置的值。
 
-### `tidb_instance_plan_cache_max_mem_size` <span class="version-mark">从 v8.4.0 版本开始引入</span>
+### `tidb_instance_plan_cache_max_size` <span class="version-mark">从 v8.4.0 版本开始引入</span>
 
 > **警告：**
 >
@@ -3003,7 +3003,7 @@ v5.0 后，用户仍可以单独修改以上系统变量（会有废弃警告）
 - 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：否
 - 类型：整数型
 - 默认值：`125829120`（即 120 MiB）
-- 这个变量用于设置 Instance Plan Cache 的最大内存使用量。该值必须大于 [`tidb_instance_plan_cache_target_mem_size`](#tidb_instance_plan_cache_target_mem_size-v840-版本开始引入)。
+- 这个变量用于设置 Instance Plan Cache 的最大内存使用量。
 
 ### `tidb_isolation_read_engines` <span class="version-mark">从 v4.0 版本开始引入</span>
 
