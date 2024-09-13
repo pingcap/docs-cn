@@ -288,6 +288,8 @@ TiDB 版本：8.4.0
   
 + TiKV
 
+  - 默认 Region 大小由 96 MB 提升到 256 MB，避免 Region 数量过多带来的额外开销 [#17309](https://github.com/tikv/tikv/issues/17309) [LykxSassinator](https://github.com/LykxSassinator)  <!--1925-->
+
 + PD
 
 + TiFlash
