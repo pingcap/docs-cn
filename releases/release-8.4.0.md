@@ -57,7 +57,7 @@ TiDB 版本：8.4.0
     - 消除冗余，相同的内存消耗下能缓存更多的执行计划。
     - 在实例上开辟固定大小的内存区域，能更有效的对内存进行限制。
 
-    在 v8.4.0 中，实例级执行计划缓存作为实验特性，只支持对查询的执行计划进行缓存，默认关闭，通过设置系统变量 [`tidb_enable_instance_plan_cache`](/system-variables.md#tidb_enable_instance_plan_cache-从-v840-版本开始引入) 开启，缓存最大值通过变量 [`tidb_instance_plan_cache_max_mem_size`](/system-variables.md#tidb_instance_plan_cache_max_mem_size-从-v840-版本开始引入) 设置，当缓存大小超过变量 [`tidb_instance_plan_cache_target_mem_size`](/system-variables.md#tidb_instance_plan_cache_target_mem_size-从-v840-版本开始引入) 设置的值时开始清理。会话执行计划缓存需要保持关闭状态，具体参见 [Prepare 语句执行计划缓存](/sql-prepared-plan-cache.md) 和 [非 Prepare 语句执行计划缓存](/sql-non-prepared-plan-cache.md)。
+    在 v8.4.0 中，实例级执行计划缓存作为实验特性，只支持对查询的执行计划进行缓存，默认关闭，通过设置系统变量 [`tidb_enable_instance_plan_cache`](/system-variables.md#tidb_enable_instance_plan_cache-从-v840-版本开始引入) 开启，缓存最大值通过变量 [`tidb_instance_plan_cache_max_size`](/system-variables.md#tidb_instance_plan_cache_max_size-从-v840-版本开始引入) 设置。同时，会话执行计划缓存需要保持关闭状态，具体参见 [Prepare 语句执行计划缓存](/sql-prepared-plan-cache.md) 和 [非 Prepare 语句执行计划缓存](/sql-non-prepared-plan-cache.md)。
 
     实例级执行计划缓存能够大幅降低 TiDB 的时延，提升集群吞吐，并能够减少执行计划突变的机会，保持集群性能的稳定，是 TiDB 改善性能和稳定性的重要改进。
 
@@ -225,8 +225,8 @@ TiDB 版本：8.4.0
 |--------|------------------------------|------|
 | [`tidb_enable_inl_join_inner_multi_pattern`](/system-variables.md#tidb_enable_inl_join_inner_multi_pattern-从-v700-版本开始引入) |   修改  |   默认值改为 `ON`。当内表上有 `Selection` 或 `Projection` 算子时默认支持 Index Join  |
 | [`tidb_enable_instance_plan_cache`](/system-variables.md#tidb_enable_instance_plan_cache-从-v840-版本开始引入)| 新增 | 这个变量控制是否开启 Instance Plan Cache 功能。 |
-| [`tidb_instance_plan_cache_max_mem_size`](/system-variables.md#tidb_instance_plan_cache_max_mem_size-从-v840-版本开始引入) | 新增 | 这个变量控制 Instance Plan Cache 的目标内存大小，超过这个大小则触发清理。|
-| [`tidb_instance_plan_cache_target_mem_size`](/system-variables.md#tidb_instance_plan_cache_target_mem_size-从-v840-版本开始引入) | 新增 | 这个变量控制 Instance Plan Cache 的最大内存使用量。 |
+| [`tidb_instance_plan_cache_max_size`](/system-variables.md#tidb_instance_plan_cache_max_size-从-v840-版本开始引入) | 新增 | 这个变量控制 Instance Plan Cache 的目标内存大小，超过这个大小则触发清理。|
+
 
 ### 配置文件参数
 
