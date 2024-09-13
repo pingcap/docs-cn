@@ -120,7 +120,8 @@ CREATE TABLE docs (
     id INT,
     ver VARCHAR(10),
     doc TEXT,
-    embedding VECTOR(3) COMMENT "hnsw(distance=cosine)"
+    embedding VECTOR(3),
+    VECTOR INDEX embedding USING HNSW ((VEC_COSINE_DISTANCE(embedding)))
 ) PARTITION BY LIST COLUMNS (ver) (
     PARTITION p_v1_0 VALUES IN ('v1.0'),
     PARTITION p_v1_1 VALUES IN ('v1.1'),
