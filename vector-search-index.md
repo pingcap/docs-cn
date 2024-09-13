@@ -121,7 +121,8 @@ CREATE TABLE docs (
     id INT,
     ver VARCHAR(10),
     doc TEXT,
-    embedding VECTOR(3) COMMENT "hnsw(distance=cosine)"
+    embedding VECTOR(3),
+    VECTOR INDEX embedding USING HNSW ((VEC_COSINE_DISTANCE(embedding)))
 ) PARTITION BY LIST COLUMNS (ver) (
     PARTITION p_v1_0 VALUES IN ('v1.0'),
     PARTITION p_v1_1 VALUES IN ('v1.1'),
@@ -278,7 +279,7 @@ LIMIT 10;
 - 向量搜索索引不能作为主键索引。
 - 向量搜索索引只能基于单一的向量列创建，不能与其他列（如整数列或字符串列）组合形成复合索引。
 - 创建和使用搜索向量索引时需要指定距离函数（目前只支持余弦距离函数 `VEC_COSINE_DISTANCE()` 和 L2 距离函数 `VEC_L2_DISTANCE()`）。
-- 不支持在同一列上创建多个向量搜索索引。
+- 不支持在同一列上创建多个使用了相同距离函数的向量搜索索引。
 - 不支持删除具有向量搜索索引的列，也不支持同时创建多个索引。
 - 不支持将向量搜索索引[设置为不可见](/sql-statements/sql-statement-alter-index.md)。
 
