@@ -1,65 +1,66 @@
 ---
 title: 向量搜索索引
-summary: 了解如何在 TiDB 中构建并使用向量搜索索引加速 K 近邻 (KNN) 查询
+summary: 了解如何在 TiDB 中构建并使用向量搜索索引加速 K 近邻 (KNN) 查询。
 ---
 
 # 向量搜索索引
 
-K 近邻 (KNN) 搜索是在向量空间中找到距离给定向量最近的 K 个向量的查询。要找到最近的 K 个向量，最直接的方法就是暴力搜索，即计算向量空间中所有点与给定向量之间的距离。这种方法拥有最好的精确度，但在实际的搜索中，往往搜索速度太慢。因此，近邻搜索问题通常采用近似算法来解决。
+K 近邻（K-Nearest Neighbors，简称 KNN）搜索是一种在向量空间中找到距离给定向量最近的 K 个向量的查询。实现 K 近邻搜索最直接的方法是暴力搜索（即计算向量空间中所有点与给定向量之间的距离），这种方法可以达到最高的精确度，但在实际应用中其搜索速度往往过于缓慢。因此，K 近邻搜索通常会采用近似算法来提高搜索效率。
 
-在 TiDB 中，你可以创建并利用向量搜索索引来对 [向量类型](/vector-search-data-types.md) 的列进行近似近邻 (ANN) 搜索。通过使用向量搜索索引，整个查询可在几毫秒内完成。
+在 TiDB 中，你可以创建并利用向量搜索索引来对[向量数据类型](/vector-search-data-types.md)的列进行近似近邻（Approximate Nearest Neighbor，简称 ANN）搜索。通过使用向量搜索索引，整个查询可在几毫秒内完成。
 
 TiDB 目前支持以下向量搜索索引算法：
 
 - HNSW
 
-
 ## 创建 HNSW 向量搜索索引
 
-[HNSW](https://en.wikipedia.org/wiki/Hierarchical_navigable_small_world) 是最流行的向量搜索索引算法。HNSW 索引的性能良好，且准确率相对较高 (特定情况下可达 98%),
+[HNSW](https://en.wikipedia.org/wiki/Hierarchical_navigable_small_world) 是当前最流行的向量搜索索引算法之一。它性能良好，而且准确率相对较高 (特定情况下可达 98%)。
 
-要创建 HNSW 向量搜索索引，你可以在创建表格时，使用以下语法指定为哪一列的[向量数据类型](/vector-search-data-types.md)构建索引：
+在 TiDB 中，你可以通过以下任一种方式为[向量数据类型](/vector-search-data-types.md)的列创建 HNSW 索引。
 
-```sql
-CREATE TABLE foo (
-    id       INT PRIMARY KEY,
-    data     VECTOR(5),
-    data64   VECTOR64(10),
-    VECTOR INDEX data USING HNSW ((VEC_COSINE_DISTANCE(data)))
-);
-```
+- 在建表时，使用以下语法来指定为哪一个向量列创建 HNSW 索引：
 
-如果已经创建了带有向量数据类型的表格，你可以通过 `ALTER TABLE` 的语法为向量数据创建索引，示例如下：
+    ```sql
+    CREATE TABLE foo (
+        id       INT PRIMARY KEY,
+        data     VECTOR(5),
+        data64   VECTOR64(10),
+        VECTOR INDEX data USING HNSW ((VEC_COSINE_DISTANCE(data)))
+    );
+    ```
 
-```sql
-CREATE VECTOR INDEX idx_name USING HNSW ON foo ((VEC_COSINE_DISTANCE(data)))
+- 对于现有的表，如果该表已包含向量列，通过 `ALTER TABLE` 语法为向量列创建 HNSW 索引：
 
-ALTER TABLE foo ADD VECTOR INDEX idx_name USING HNSW ((VEC_COSINE_DISTANCE(data))) 
-```
+    ```sql
+    CREATE VECTOR INDEX idx_name USING HNSW ON foo ((VEC_COSINE_DISTANCE(data)))
+
+    ALTER TABLE foo ADD VECTOR INDEX idx_name USING HNSW ((VEC_COSINE_DISTANCE(data)))
+    ```
 
 > **Note:**
 >
-> 创建向量索引的语法可能在今后的版本中发生变化。
+> 创建向量索引目前为实验特性，其语法可能会在 GA 前发生变化。
 
-创建向量索引时，需要通过 `HNSW ((distance_metric(cols_name)))` 配置指定距离度量：
+在创建 HNSW 向量索引时，你需要在 `HNSW ()` 中指定向量的距离函数：
 
-- 余弦距离: `HNSW ((VEC_COSINE_DISTANCE(cols_name)))`
-- L2 距离: `HNSW ((VEC_L2_DISTANCE(cols_name)))`
+- 余弦距离：`HNSW ((VEC_COSINE_DISTANCE(cols_name)))`
+- L2 距离：`HNSW ((VEC_L2_DISTANCE(cols_name)))`
 
-只能为固定维度的向量列 (如 `VECTOR(3)` ) 创建向量索引。它不能为混合维度的向量列 (如 `VECTOR` ) 创建，因为向量距离只能在具有相同维度的向量之间计算。
+你只能为固定维度的向量列 (如 `VECTOR(3)` ) 创建向量索引，不能为混合维度的向量列 (如 `VECTOR` ) 创建向量索引，因为只有维度相同的向量之间才能计算向量距离。
 
-如果你使用的是编程语言 SDK 或 ORM，请参阅以下文档以创建向量索引：
+如果你使用的是编程语言 SDK 或 ORM，可以参阅以下文档创建向量索引：
 
-- Python: [TiDB Vector SDK for Python](https://github.com/pingcap/tidb-vector-python)
-- Python: [SQLAlchemy](/vector-search-integrate-with-sqlalchemy.md)
-- Python: [Peewee](/vector-search-integrate-with-peewee.md)
-- Python: [Django](/vector-search-integrate-with-django-orm.md)
+- Python：[TiDB Vector SDK for Python](https://github.com/pingcap/tidb-vector-python)
+- Python：[SQLAlchemy](/vector-search-integrate-with-sqlalchemy.md)
+- Python：[Peewee](/vector-search-integrate-with-peewee.md)
+- Python：[Django](/vector-search-integrate-with-django-orm.md)
 
-有关向量搜索索引的相关约束和限制，请参阅 [向量搜索索引的约束](/vector-search-index.md#向量搜索索引的约束)
+有关向量搜索索引的约束和限制，请参阅[向量搜索索引的约束](/vector-search-index.md#向量搜索索引的约束)。
 
 ## 使用向量搜索索引
 
-在 K 近邻搜索查询中，可以使用 `ORDER BY ... LIMIT` 形式来使用向量搜索索引，如下所示：
+在 K 近邻搜索查询中，可以通过 `ORDER BY ... LIMIT` 子句来使用向量搜索索引，如下所示：
 
 ```sql
 SELECT *
@@ -68,14 +69,14 @@ ORDER BY Vec_Cosine_Distance(embedding, '[1, 2, 3]')
 LIMIT 10
 ```
 
-如果要在向量搜索中使用索引，则必须使用与创建向量索引时所定义的相同的距离度量。
+要在向量搜索中使用索引，请确保 `ORDER BY ... LIMIT` 子句中使用的距离函数与创建向量索引时 `HNSW ()` 中指定的距离函数相同。
 
-## 使用带过滤器的向量搜索索引
+## 使用带过滤条件的向量搜索索引
 
-包含预过滤 (使用 `WHERE` 子句) 的查询不能使用向量搜索索引，因为它们不是根据 SQL 语义查询的 K 近邻。例如
+包含预过滤条件 (使用 `WHERE` 子句) 的查询无法使用向量搜索索引，因为这样的查询并没有严格按照 SQL 语义来查询 K 近邻。
 
 ```sql
--- 过滤器在 kNN 之前执行，因此不能使用向量搜索索引：
+-- 对于以下查询，`WHERE` 过滤条件在 KNN 之前执行，因此不能使用向量搜索索引：
 
 SELECT * FROM vec_table
 WHERE category = "document"
@@ -83,12 +84,12 @@ ORDER BY Vec_Cosine_distance(embedding, '[1, 2, 3]')
 LIMIT 5;
 ```
 
-以下是几种变通方法：
+如需使用带过滤条件的向量搜索索引，可以采用以下几种方法：
 
-**向量搜索后的后置过滤器:** 首先查询 K 个最近的邻居，然后过滤掉不需要的结果：
+**向量搜索后再过滤:** 先查询 K 个最近的邻居，再过滤掉不需要的结果：
 
 ```sql
--- 对于这些查询，过滤器是在 kNN 之后执行的，因此可以使用向量索引：
+-- 对于以下查询，过滤条件是在 KNN 之后执行的，因此可以使用向量索引：
 
 SELECT * FROM
 (
@@ -101,19 +102,19 @@ WHERE category = "document";
 -- 请注意，如果过滤掉一些结果，此查询返回的结果可能少于 5 个。
 ```
 
-**使用表格分区**: [表分区](/partitioned-table.md)内的查询可以充分利用向量索引。如果要执行相等条件的过滤器，这将非常有效，因为相等条件的过滤器可以转化为访问指定分区。
+**对表进行分区**: 在[分区](/partitioned-table.md)内的查询可以充分利用向量索引。如果你需要进行等值过滤，这会非常有用，因为等值过滤可以转化为访问指定的分区。
 
-举例说明： 假设您想查找与特定产品版本最接近的文档。
+例如，假设你需要查找与特定产品版本最接近的文档：
 
 ```sql
--- 过滤器在 kNN 之前执行，因此不能使用向量索引：
+-- 对于以下查询，`WHERE` 过滤条件在 KNN 之前执行，因此不能使用向量搜索索引：
 SELECT * FROM docs
 WHERE ver = "v2.0"
 ORDER BY Vec_Cosine_distance(embedding, '[1, 2, 3]')
 LIMIT 5;
 ```
 
-与其使用 `WHERE` 子句编写查询，不如对表进行分区，然后使用 [`PARTITION` 关键字](/partitioned-table.md#partition-selection) 在分区内进行查询：
+如需使用向量搜索索引，你可以先对表进行分区，然后使用 [`PARTITION` 关键字](/partitioned-table.md#partition-selection) 在特定分区内进行查询，而不是使用 `WHERE` 子句。
 
 ```sql
 CREATE TABLE docs (
@@ -134,11 +135,11 @@ ORDER BY Vec_Cosine_distance(embedding, '[1, 2, 3]')
 LIMIT 5;
 ```
 
-更多信息，请参阅 [表分区](/partitioned-table.md)。
+更多信息，请参阅[分区表](/partitioned-table.md)。
 
 ## 查看索引构建进度
 
-与其他索引不同，向量搜索索引是异步建立的。因此，在批量数据插入后，向量索引可能无法立即使用。这不会影响数据的正确性或一致性，你可以随时执行向量搜索并获得完整的结果。不过，在向量搜索索引完全建立之前，性能将不会达到最佳。
+与其他索引不同，向量搜索索引是通过异步方式构建的。这意味着，在完成大批量数据插入后，向量索引可能不会立即构建完成以供查询使用，但这并不会影响数据的准确性和一致性。你仍然可以随时进行向量搜索，并获得完整的结果，但需要注意的是，查询性能只有在向量搜索索引完全构建好之后才会达到最佳水平。
 
 要查看索引构建进度，可以按如下方式查询 `INFORMATION_SCHEMA.TIFLASH_INDEXES` 表：
 
@@ -152,13 +153,13 @@ SELECT * FROM INFORMATION_SCHEMA.TIFLASH_INDEXES;
 +---------------+------------+----------------+----------+--------------------+-------------+-----------+------------+---------------------+-------------------------+--------------------+------------------------+------------------+
 ```
 
-- `ROWS_STABLE_INDEXED` 和 `ROWS_STABLE_NOT_INDEXED` 列显示索引构建进度。当 `ROWS_STABLE_NOT_INDEXED` 变为 0 时，索引构建完成。
+- 可以通过 `ROWS_STABLE_INDEXED` 和 `ROWS_STABLE_NOT_INDEXED` 列查看索引构建进度。当 `ROWS_STABLE_NOT_INDEXED` 变为 0 时，表示索引构建完成。
 
-    作为参考，500 MiB 的向量数据集构建索引的过程可能需要 20 分钟。索引构建器可以在多个表中并行构建向量搜索索引。目前不支持调整索引构建器的优先级或速度。
+    作为参考，对于一个 500 MiB 的向量数据集，构建索引的过程可能需要 20 分钟。索引构建器能够并行地在多个表中构建向量搜索索引。目前不支持调整索引构建器的优先级或速度。
 
-- `ROWS_DELTA_NOT_INDEXED` 列显示 Delta 层中的行数。Delta 层存储 _最近_ 插入或更新的行，并根据写入工作量定期合并到稳定层。这个合并过程称为 “压缩”。
+- 可以通过 `ROWS_DELTA_NOT_INDEXED` 列查看 Delta 层中的行数。Delta 层存储最近插入或更新的行，并根据写入工作量定期将这些行合并到稳定层。这个合并过程称为“压缩”。
 
-    Delta 层始终没有索引。为了达到最佳性能，可以强制将 Delta 层合并到稳定层，这样所有数据都能被索引：
+    Delta 层本身是不包含索引的。为了达到最佳性能，你可以强制将 Delta 层合并到稳定层，以确保所有的数据都能够被索引：
 
     ```sql
     ALTER TABLE <TABLE_NAME> COMPACT;
@@ -166,11 +167,11 @@ SELECT * FROM INFORMATION_SCHEMA.TIFLASH_INDEXES;
 
     更多信息，请参阅 [`ALTER TABLE ... COMPACT`](/sql-statements/sql-statement-alter-table-compact.md)。
 
-## 检查是否使用了向量搜索索引
+## 查看是否使用了向量搜索索引
 
-使用 [`EXPLAIN`](/sql-statements/sql-statement-explain.md) 或 [`EXPLAIN ANALYZE`](/sql-statements/sql-statement-explain-analyze.md) 语句检查该查询是否使用了向量搜索索引。当 `annIndex:` 出现在 `TableFullScan` 执行计划的 `operator info` 列中时，表示该表扫描使用了向量搜索索引。
+你可以使用 [`EXPLAIN`](/sql-statements/sql-statement-explain.md) 或 [`EXPLAIN ANALYZE`](/sql-statements/sql-statement-explain-analyze.md) 语句查看一个查询是否使用了向量搜索索引。如果 `TableFullScan` 执行计划的 `operator info` 列中出现了 `annIndex:`，表示 TiDB 在扫描该表时使用了向量搜索索引。
 
-**示例：使用向量索引**
+**示例：使用了向量索引的查询**
 
 ```sql
 [tidb]> EXPLAIN SELECT * FROM vector_table_with_index
@@ -192,7 +193,7 @@ LIMIT 10;
 9 rows in set (0.01 sec)
 ```
 
-**示例：由于未指定 Top K，因此未使用向量搜索索引**
+**示例：由于未指定 Top K，导致未使用向量搜索索引的查询**
 
 ```sql
 [tidb]> EXPLAIN SELECT * FROM vector_table_with_index
@@ -210,10 +211,10 @@ LIMIT 10;
 6 rows in set, 1 warning (0.01 sec)
 ```
 
-当无法使用向量搜索索引时，在某些情况下会出现警告，以帮助你了解原因：
+在某些情况下，如果无法使用向量搜索索引，TiDB 会生成警告信息，以帮助你了解背后的原因：
 
 ```sql
--- 使用了错误的距离度量：
+-- 使用了错误的距离函数：
 [tidb]> EXPLAIN SELECT * FROM vector_table_with_index
 ORDER BY Vec_l2_Distance(embedding, '[1, 2, 3]')
 LIMIT 10;
@@ -221,7 +222,7 @@ LIMIT 10;
 [tidb]> SHOW WARNINGS;
 ANN index not used: not ordering by COSINE distance
 
--- 使用错误的顺序：
+-- 使用了错误的排序方式：
 [tidb]> EXPLAIN SELECT * FROM vector_table_with_index
 ORDER BY Vec_Cosine_Distance(embedding, '[1, 2, 3]') DESC
 LIMIT 10;
@@ -232,7 +233,7 @@ ANN index not used: index can be used only when ordering by vec_cosine_distance(
 
 ## 分析向量搜索性能
 
-[`EXPLAIN ANALYZE`](/sql-statements/sql-statement-explain-analyze.md) 语句包含关于如何在 `execution info` 列中使用向量索引的详细信息：
+你可以执行 [`EXPLAIN ANALYZE`](/sql-statements/sql-statement-explain-analyze.md) 语句，然后查看输出中的 `execution info` 列了解向量索引使用情况的详细信息：
 
 ```sql
 [tidb]> EXPLAIN ANALYZE SELECT * FROM vector_table_with_index
@@ -258,30 +259,30 @@ LIMIT 10;
 
 > **Note:**
 >
-> 执行信息为内部信息。字段和格式如有更改，恕不另行通知。请勿依赖。
+> 执行信息为 TiDB 内部信息。字段和格式如有更改，恕不另行通知。请勿依赖。
 
-一些重要字段的解释：
+以下为一些重要字段的解释：
 
-- `vector_index.load.total`: 加载索引的总持续时间。该字段可能大于实际查询时间，因为可能会并行加载多个向量索引。
-- `vector_index.load.from_s3`: 从 S3 加载的索引数量。
-- `vector_index.load.from_disk`: 从磁盘加载的索引数量。索引之前已从 S3 下载。
-- `vector_index.load.from_cache`: 从缓存中加载的索引数量。索引之前已从 S3 下载。
-- `vector_index.search.total`: 在索引中搜索的总持续时间。延迟大通常意味着索引是冷索引（以前从未被访问过，或很久以前被访问过），因此在索引中搜索时会产生大量 IO。这个字段可能大于实际查询时间，因为可能会并行搜索多个向量索引。
-- `vector_index.search.discarded_nodes`: 在搜索过程中已访问但被丢弃的向量行数。搜索结果不会考虑这些被丢弃的向量。如果数值较大，通常表示有很多由 UPDATE 或 DELETE 语句引起的陈旧行。
+- `vector_index.load.total`：加载索引的总时长。该字段的值可能会超过查询实际耗时，因为 TiDB 可能会并行加载多个向量索引。
+- `vector_index.load.from_s3`：从 S3 加载的索引数量。
+- `vector_index.load.from_disk`：从磁盘加载的索引数量。这些索引之前已经从 S3 下载到磁盘上
+- `vector_index.load.from_cache`：从缓存中加载的索引数量。这些索引之前已经从 S3 下载并存储在缓存中。
+- `vector_index.search.total`：在索引中搜索的总时长。如果该时间存在较大的延迟，通常意味着该索引为冷索引（以前从未被访问过，或很久以前被访问过），因此在索引中搜索时会产生较多的 I/O 操作。该字段的值可能会超过查询实际耗时，因为 TiDB 可能会并行搜索多个向量索引。
+- `vector_index.search.discarded_nodes`：在搜索过程中已访问但被丢弃的向量行数。这些被丢弃的行不会包含在搜索结果中。如果该字段的值较大，通常表示表中有很多由于 `UPDATE` 或 `DELETE` 操作导致的数据过时的行。
 
-请参阅 [`EXPLAIN`](/sql-statements/sql-statement-explain.md)、[`EXPLAIN ANALYZE`](/sql-statements/sql-statement-explain-analyze.md)，以及 [EXPLAIN Walkthrough](/explain-walkthrough.md) 来解释输出结果。
+关于执行信息输出的更多信息，请参阅 [`EXPLAIN`](/sql-statements/sql-statement-explain.md)、[`EXPLAIN ANALYZE`](/sql-statements/sql-statement-explain-analyze.md)，以及 [使用 `EXPLAIN` 解读执行计划](/explain-walkthrough.md)。
 
-## 向量搜索索引的约束
+## 使用限制
 
-- TiDB 集群需要创建 TiFlash 的副本
-- 不能是主键索引
-- 不能是复合索引
-- 不可以为同一列创建多个向量索引
-- 向量索引需要指定距离函数（目前只支持 `余弦距离` 和 `L2 距离`）
-- 不支持删除具有向量索引的列，也不支持同时创建多个索引。
-- 不支持对向量索引设置 `invisible` 操作。
+- 集群需要提前部署 TiFlash 并为表创建 TiFlash 副本。
+- 向量搜索索引不能作为主键索引。
+- 向量搜索索引只能基于单一的向量列创建，不能与其他列（如整数列或字符串列）组合形成复合索引。
+- 创建和使用搜索向量索引时需要指定距离函数（目前只支持余弦距离函数 `VEC_COSINE_DISTANCE()` 和 L2 距离函数 `VEC_L2_DISTANCE()`）。
+- 不支持在同一列上创建多个向量搜索索引。
+- 不支持删除具有向量搜索索引的列，也不支持同时创建多个索引。
+- 不支持将向量搜索索引[设置为不可见](/sql-statements/sql-statement-alter-index.md)。
 
-## See also
+## 另请参阅
 
 - [优化向量搜索性能](/vector-search-improve-performance.md)
 - [向量数据类型](/vector-search-data-types.md)
