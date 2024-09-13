@@ -61,7 +61,7 @@ TiDB 版本：8.4.0
 
     实例级执行计划缓存能够大幅降低 TiDB 的时延，提升集群吞吐，并能够减少执行计划突变的机会，保持集群性能的稳定，是 TiDB 改善性能和稳定性的重要改进。
 
-* `Lightning` 的逻辑导入支持 prepare 接口 [#issue号](链接) @[qw4990](https://github.com/qw4990) **tw@lilin90** <!--1922-->
+* `Lightning` 的逻辑导入支持 prepare 接口 [#54850](https://github.com/pingcap/tidb/issues/54850) @[dbsid](https://github.com/dbsid) @[qw4990](https://github.com/qw4990) **tw@lilin90** <!--1922-->
 
     通过开启配置 [`logical-import-prep-stmt`]()，`Lightning` 逻辑导入产生的 SQL 语句将会通过 prepare 接口执行，提升 SQL 执行效率，并有更大机会命中执行计划缓存，提升逻辑导入的速度。
 
