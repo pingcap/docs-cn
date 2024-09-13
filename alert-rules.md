@@ -125,7 +125,7 @@ aliases: ['/docs-cn/dev/alert-rules/','/docs-cn/dev/reference/alert-rules/']
 
 * 处理方法：
 
-    * 重启 TiDB 以恢复服务。
+    重启 TiDB 以恢复服务。
 
 #### `TiDB_tikvclient_backoff_seconds_count`
 
