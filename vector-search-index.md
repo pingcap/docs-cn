@@ -26,7 +26,7 @@ TiDB 目前支持以下向量搜索索引算法：
         id       INT PRIMARY KEY,
         data     VECTOR(5),
         data64   VECTOR64(10),
-        VECTOR INDEX data USING HNSW ((VEC_COSINE_DISTANCE(data)))
+        VECTOR INDEX idx_data USING HNSW ((VEC_COSINE_DISTANCE(data)))
     );
     ```
 
@@ -122,7 +122,7 @@ CREATE TABLE docs (
     ver VARCHAR(10),
     doc TEXT,
     embedding VECTOR(3),
-    VECTOR INDEX embedding USING HNSW ((VEC_COSINE_DISTANCE(embedding)))
+    VECTOR INDEX idx_embedding USING HNSW ((VEC_COSINE_DISTANCE(embedding)))
 ) PARTITION BY LIST COLUMNS (ver) (
     PARTITION p_v1_0 VALUES IN ('v1.0'),
     PARTITION p_v1_1 VALUES IN ('v1.1'),

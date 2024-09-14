@@ -223,6 +223,22 @@ Document.create(content='fish', embedding=[1, 2, 4])
 Document.create(content='tree', embedding=[1, 0, 0])
 ```
 
+#### 用索引定义优化的向量列
+
+定义三维矢量列，并使用 [向量搜索索引](/vector-search-index.md) (HNSW 索引) 对其进行优化。
+
+```python
+class DocumentWithIndex(Model):
+    class Meta:
+        database = db
+        table_name = 'peewee_demo_documents_with_index'
+
+    content = TextField()
+    embedding = VectorField(3, constraints=[SQL("VECTOR INDEX idx_embedding USING HNSW ((VEC_COSINE_DISTANCE(embedding)))")])
+```
+
+TiDB 将使用该索引来加速基于余弦距离函数的向量搜索查询。
+
 ### 搜索近邻向量
 
 可以选择使用余弦距离 (`CosineDistance`) 函数，查询与向量 `[1, 2, 3]` 语义最接近的前 3 个 `document`。
@@ -245,3 +261,4 @@ results = Document.select(Document, distance).where(distance_expression < 0.2).o
 ## 另请参阅
 
 - [向量数据类型](/vector-search-data-types.md)
+- [向量搜索索引](/vector-search-index.md)
