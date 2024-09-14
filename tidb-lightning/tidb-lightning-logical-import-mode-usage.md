@@ -49,12 +49,21 @@ TiDB Lightning 的完整配置文件可参考[完整配置及命令行参数](/t
 
 冲突数据是指两条或两条以上记录中存在主键或唯一键列数据重复。TiDB Lightning 的逻辑导入模式通过 [`conflict.strategy`](/tidb-lightning/tidb-lightning-configuration.md#tidb-lightning-任务配置) 配置冲突数据的处理行为，使用不同的 SQL 语句进行导入。
 
+<<<<<<< HEAD
 | 策略 | 冲突时默认行为 | 对应 SQL 语句 |
 |:---|:---|:---|
 | `"replace"` | 新数据替代旧数据 | `REPLACE INTO ...` |
 | `"ignore"` | 保留旧数据，忽略新数据 | `INSERT IGNORE INTO ...` |
 | `"error"` | 终止导入 | `INSERT INTO ...` |
 | `""` | 不进行冲突检查和处理，但如果存在有主键和唯一键冲突的数据，会在后续步骤报错  | 无 |
+=======
+| 策略 | 冲突时默认行为                     | 对应 SQL 语句 |
+|:---|:----------------------------|:---|
+| `"replace"` | 新数据替代旧数据                    | `REPLACE INTO ...` |
+| `"ignore"` | 保留旧数据，忽略新数据                 | 如果 `conflict.threshold` 大于 `0`，则为 `INSERT INTO ...`；如果 `conflict.threshold` 为 `0`，则为 `INSERT IGNORE INTO ...` |
+| `"error"` | 遇到冲突数据时终止导入                        | `INSERT INTO ...` |
+| `""` | 会被转换为 `"error"`，遇到冲突数据时终止导入 | 无 |
+>>>>>>> b7f5e9dc38 (change lightning conflict resolution `ignore` (#18641))
 
 配置为 `"error"` 时，由冲突数据引发的错误将直接导致导入任务终止。配置为 `"replace"` 或 `"ignore"` 时，可以通过进一步配置 [`conflict.threshold`](/tidb-lightning/tidb-lightning-configuration.md#tidb-lightning-任务配置) 控制冲突数据的上限。默认值为 `9223372036854775807`，意味着几乎能容忍全部错误。
 
