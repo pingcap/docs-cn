@@ -25,12 +25,6 @@ TiDB 版本：8.4.0
 
 ### 性能
 
-* 功能标题 [#issue号](链接) @[贡献者 GitHub ID](链接) **tw@xxx** <!--1234-->
-
-    功能描述（需要包含这个功能是什么、在什么场景下对用户有什么价值、怎么用）
-
-    更多信息，请参考[用户文档](链接)。
-
 * 增加获取 TSO 的 RPC 模式，降低获取 TSO 的延迟 [#54960](https://github.com/pingcap/tidb/issues/54960) @[MyonKeminta](https://github.com/MyonKeminta) **tw@qiancai** <!--1893-->
 
     TiDB 在向 PD 请求 TSO 时，会将一段时间内的请求汇总起来并以同步的方式进行批处理，以减少 RPC (Remote Procedure Call) 请求数量从而降低 PD 负载。对于延迟敏感的场景，这种模式的性能并不理想。在 v8.4.0 中，TiDB 新增 TSO 请求的异步批处理模式，并提供不同的并发能力。异步模式可以降低获取 TSO 的延迟，但可能会增加 PD 的负载。你可以通过 [tidb_tso_client_rpc_mode](/system-variables.md#tidb_tso_client_rpc_mode-从-v840-版本开始引入) 变量设定获取 TSO 的 RPC 模式。
@@ -49,11 +43,13 @@ TiDB 版本：8.4.0
     * `DATE_SUB()`
 
   更多信息，请参考[用户文档](/functions-and-operators/expressions-pushed-down.md)。
+
 * 提升批量创建用户和修改用户密码操作的性能，提升达数百倍 [#55604](https://github.com/pingcap/tidb/pull/55604) @[wjhuang2016](https://github.com/wjhuang2016) **tw@xxx** <!--1941-->
 
     在 SaaS 场景下，存在批量创建大量用户，以及定期轮换所有用户密码的需求，且需要在指定时间窗口内完成，从 V8.3.0 开始，对批量创建用户，批量修改用户密码的性能做了提升，且用户可以通过增加 session 连接数来提升并发，提升性能，大大缩短了该场景下的执行时间。
 
     更多信息，请参考[用户文档](链接)。
+
 * 实例中的会话共享执行计划缓存 (实验特性) [#issue号](链接) @[qw4990](https://github.com/qw4990) **tw@Oreoxmt** <!--1569-->
 
     相比会话级执行计划缓存，执行计划缓存在会话间共享有明显的优势：
@@ -72,12 +68,6 @@ TiDB 版本：8.4.0
     更多信息，请参考[用户文档]()
 
 ### 稳定性
-
-* 功能标题 [#issue号](链接) @[贡献者 GitHub ID](链接) **tw@xxx** <!--1234-->
-
-    功能描述（需要包含这个功能是什么、在什么场景下对用户有什么价值、怎么用）
-
-    更多信息，请参考[用户文档](链接)。
 
 * 超出预期的查询 (Runaway Queries) 新增 "处理行数" 和 RU 作为阈值 [#issue号](链接) @[HuSharp](https://github.com/HuSharp) **tw@lilin90** <!--1800-->
 
@@ -116,12 +106,6 @@ TiDB 版本：8.4.0
 
 ### 高可用
 
-* 功能标题 [#issue号](链接) @[贡献者 GitHub ID](链接) **tw@xxx** <!--1234-->
-
-    功能描述（需要包含这个功能是什么、在什么场景下对用户有什么价值、怎么用）
-
-    更多信息，请参考[用户文档](链接)。
-
 * TiProxy 支持流量回放功能（实验特性） [#642](https://github.com/pingcap/tiproxy/issues/642) @[djshow832](https://github.com/djshow832) **tw@Oreoxmt** <!--1942-->
 
     从 TiProxy v1.3.0 版本开始，TiProxy 将支持流量捕获回放功能。该功能可以从 TiDB 生产集群中捕获所有的访问流量，并在测试集群中按照指定的速率进行回放，验证所有 SQL 的执行结果和性能表现。
@@ -138,12 +122,6 @@ TiDB 版本：8.4.0
 
 ### SQL 功能
 
-* 功能标题 [#issue号](链接) @[贡献者 GitHub ID](链接) **tw@xxx** <!--1234-->
-
-    功能描述（需要包含这个功能是什么、在什么场景下对用户有什么价值、怎么用）
-
-    更多信息，请参考[用户文档](链接)。
-
 * 支持向量搜索功能（实验特性） [#54245](https://github.com/pingcap/tidb/issues/54245) [#9032](https://github.com/pingcap/tiflash/issues/9032) @[breezewish](https://github.com/breezewish) @[Lloyd-Pottiger](https://github.com/Lloyd-Pottiger) @[EricZequan](https://github.com/EricZequan) @[zimulala](https://github.com/zimulala) @[JaySon-Huang](https://github.com/JaySon-Huang) **tw@qiancai** <!--1898-->
 
     向量搜索是一种基于数据语义的搜索方法，旨在提供更相关的搜索结果，是 AI 和大语言模型（LLM）的关键功能之一。通过使用向量索引，数据库能够加速向量搜索的性能，快速基于不同的距离函数查询相似向量，从而支持检索增强生成（Retrieval-Augmented Generation, RAG）、语义搜索、推荐系统等多种应用场景。
@@ -154,11 +132,13 @@ TiDB 版本：8.4.0
     值得注意的是，TiDB 的向量索引依赖于 TiFlash，因此，在使用向量索引之前，需要确保 TiDB 集群中已添加 TiFlash 节点。
 
     更多信息，请参考[用户文档](/vector-search-overview.md)。
+
 * TiDB 外键约束检查功能成为正式功能（GA） [#issue号](链接) @[贡献者 GitHub ID](链接) **tw@lilin90** <!--1894-->
 
     TiDB 从 v6.6.0 版本开始，可通过变量 foreign_key_checks 做外键约束检查，但是其一直为实验特性。v8.3.0 对外键特性在更多场景做了覆盖测试，稳定性和性能方面也有一些提升，因此从 v8.3.0 开始外键功能成为正式功能（GA）
 
     更多信息，请参考[用户文档](链接)。
+
 ### 数据库管理
 
 * 功能标题 [#issue号](链接) @[贡献者 GitHub ID](链接) **tw@xxx** <!--1234-->
@@ -168,12 +148,6 @@ TiDB 版本：8.4.0
     更多信息，请参考[用户文档](链接)。
 
 ### 可观测性
-
-* 功能标题 [#issue号](链接) @[贡献者 GitHub ID](链接) **tw@xxx** <!--1234-->
-
-    功能描述（需要包含这个功能是什么、在什么场景下对用户有什么价值、怎么用）
-
-    更多信息，请参考[用户文档](链接)。
 
 * 持久化部分内存表的快照 (实验特性) [#issue号](链接) @[xhebox](https://github.com/xhebox)  **tw@lilin90** <!--1823-->
 
@@ -299,12 +273,12 @@ TiDB 版本：8.4.0
   - 为日志表 [`mysql.tidb_runaway_queries`](/mysql-schema/mysql-schema.md#runaway-queries-相关系统表) 增加写入控制，降低并发大量写入引发的开销 [#issue号](链接) @[HuSharp](https://github.com/HuSharp) <!--1908--> **tw@lilin90** 
   - 当内表上有 `Selection` 或 `Projection` 算子时默认支持 Index Join [#issue号](链接) @[winoros](https://github.com/winoros) **tw@qiancai** <!--1709-->
   - 减少部分场景的 DELETE 操作从 TiKV 获取的列信息数量，降低 DELETE 操作的资源开销。[#issue号](链接) [winoros](https://github.com/winoros) **tw@Oreoxmt** <!--1798-->
-  - 优化 Priority Queue 基于 Meta Cache V2 的运行效率 [#49972](https://github.com/pingcap/tidb/issues/49972) [Rustin170506](https://github.com/Rustin170506)  <!--1935-->
+  - 优化 Priority Queue 基于 Meta Cache V2 的运行效率 [#49972](https://github.com/pingcap/tidb/issues/49972) [Rustin170506](https://github.com/Rustin170506) **tw@Oreoxmt** <!--1935-->
   - 自动统计信息收集根据部署规模和硬件规格决定执行和扫描的并发度 [#issue号](链接) @[hawkingrei](https://github.com/hawkingrei) **tw@Oreoxmt** <!--1739-->
   - ‘tidb_enable_fast_create_table’ 开启后，支持了批量快速创建外键表的场景。 [#issue号](链接) @[D3Hunter](https://github.com/D3Hunter) **tw@hfxsd** <!--1896-->
 + TiKV
 
-  - 默认 Region 大小由 96 MB 提升到 256 MB，避免 Region 数量过多带来的额外开销 [#17309](https://github.com/tikv/tikv/issues/17309) [LykxSassinator](https://github.com/LykxSassinator)  <!--1925-->
+  - 默认 Region 大小由 96 MB 提升到 256 MB，避免 Region 数量过多带来的额外开销 [#17309](https://github.com/tikv/tikv/issues/17309) [LykxSassinator](https://github.com/LykxSassinator) **tw@hfxsd** <!--1925-->
 
 + PD
 
