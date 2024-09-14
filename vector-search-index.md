@@ -30,22 +30,22 @@ TiDB 目前支持以下向量搜索索引算法：
     );
     ```
 
-- 对于现有的表，如果该表已包含向量列，通过 `ALTER TABLE` 语法为向量列创建 HNSW 索引：
+- 对于现有的表，如果该表已包含向量列，可以通过以下语法为向量列创建 HNSW 索引：
 
     ```sql
-    CREATE VECTOR INDEX idx_name USING HNSW ON foo ((VEC_COSINE_DISTANCE(data)))
+    CREATE VECTOR INDEX idx_name ON foo ((VEC_COSINE_DISTANCE(data))) USING HNSW;
 
-    ALTER TABLE foo ADD VECTOR INDEX idx_name USING HNSW ((VEC_COSINE_DISTANCE(data)))
+    ALTER TABLE foo ADD VECTOR INDEX idx_name ((VEC_COSINE_DISTANCE(data))) USING HNSW;
     ```
 
 > **Note:**
 >
 > 创建向量索引目前为实验特性，其语法可能会在 GA 前发生变化。
 
-在创建 HNSW 向量索引时，你需要在 `HNSW ()` 中指定向量的距离函数：
+在创建 HNSW 向量索引时，你需要指定向量的距离函数：
 
-- 余弦距离：`HNSW ((VEC_COSINE_DISTANCE(cols_name)))`
-- L2 距离：`HNSW ((VEC_L2_DISTANCE(cols_name)))`
+- 余弦距离：`((VEC_COSINE_DISTANCE(cols_name))) USING HNSW`
+- L2 距离：`((VEC_L2_DISTANCE(cols_name))) USING HNSW`
 
 你只能为固定维度的向量列 (如 `VECTOR(3)` ) 创建向量索引，不能为混合维度的向量列 (如 `VECTOR` ) 创建向量索引，因为只有维度相同的向量之间才能计算向量距离。
 
@@ -168,6 +168,8 @@ SELECT * FROM INFORMATION_SCHEMA.TIFLASH_INDEXES;
 
     更多信息，请参阅 [`ALTER TABLE ... COMPACT`](/sql-statements/sql-statement-alter-table-compact.md)。
 
+同时，你也可以通过 `ADMIN SHOW DDL JOBS;` 查看 `DDL job` 执行进度，观察其 `row count`。 不过这种方式并不准确，`row count` 的值是从 `TIFLASH_INDEXES` 里的 `rows_stable_indexed` 获取的。此方式也可作为你查看索引构建进度的一种参考方式。
+
 ## 查看是否使用了向量搜索索引
 
 你可以使用 [`EXPLAIN`](/sql-statements/sql-statement-explain.md) 或 [`EXPLAIN ANALYZE`](/sql-statements/sql-statement-explain-analyze.md) 语句查看一个查询是否使用了向量搜索索引。如果 `TableFullScan` 执行计划的 `operator info` 列中出现了 `annIndex:`，表示 TiDB 在扫描该表时使用了向量搜索索引。
@@ -276,7 +278,7 @@ LIMIT 10;
 ## 使用限制
 
 - 集群需要提前部署 TiFlash 并为表创建 TiFlash 副本。
-- 向量搜索索引不能作为主键索引。
+- 向量搜索索引不能作为主键或者唯一索引。
 - 向量搜索索引只能基于单一的向量列创建，不能与其他列（如整数列或字符串列）组合形成复合索引。
 - 创建和使用搜索向量索引时需要指定距离函数（目前只支持余弦距离函数 `VEC_COSINE_DISTANCE()` 和 L2 距离函数 `VEC_L2_DISTANCE()`）。
 - 不支持在同一列上创建多个使用了相同距离函数的向量搜索索引。
