@@ -50,9 +50,9 @@ mysql> explain select count(*) from t0 a join t0 b on a.id = b.id;
 
 其中 soft limit 主要用来限制系统使用的线程数，但是对于特定的 MPPTask，为了避免死锁可以打破这个限制，而 hard limit 则是为了保护系统，一旦超过 hard limit，TiFlash 可以通过报错来避免系统陷入死锁状态。
 
-利用 soft limit 来避免死锁的思想很简单，系统中存在一个特殊的 query，该 query 的所有 MPPTask 在调度时都可以突破 soft limit 的限制，这样只要系统的 thread 不超过 hard limit，系统中就必定存在一个 query 的所有 MPPTask 都可以正常执行，这样系统就不会出现死锁。
+使用 soft limit 和 hard limit 避免死锁的思想是：通过 soft limit 限制所有 query 使用的线程资源总量，充分利用资源的基础上，避免线程资源耗尽；通过 hard limit 确保在任何情况下，系统中至少存在一个 query 可以突破 soft limit 的限制，继续获取线程资源并继续运行，避免死锁。只要线程数不超过 hard limit，系统中就必定存在一个 query 的所有 MPPTask 都可以正常执行，这样系统就不会出现死锁。
 
-MinTSO Scheduler 的目标就是在控制系统线程数的同时，确保系统中始终有一个特殊的 query，其所有的 MPPTask 都可以被调度到。 MinTSO Scheduler 是一个完全分布式的调度器，每个 TiFlash 仅根据自身信息对 MPPTask 进行调度，这样每个 TiFlash 的 MinTSO Scheduler 需要找到同一个“特殊”的 query。在 TiDB 中，每个 query 都会带有一个读的时间戳(TiDB 中称之为 start_ts)，MinTSO Scheduler 定义“特殊” query 的标准即为当前 TiFlash 节点上 start_ts 最小的 query，根据全局最小一定是局部最小的原理，所有的 TiFlash 选出的“特殊” query 必然是同一个。我们称之为 MinTSO query。MinTSO scheduler 的调度流程如下：
+MinTSO Scheduler 的目标就是在控制系统线程数的同时，确保系统中始终有且只有一个特殊的 query，其所有的 MPPTask 都可以被调度到。 MinTSO Scheduler 是一个完全分布式的调度器，每个 TiFlash 仅根据自身信息对 MPPTask 进行调度，因此，所有 TiFlash 的 MinTSO Scheduler 需要找到同一个“特殊”的 query。在 TiDB 中，每个 query 都会带有一个读的时间戳(TiDB 中称之为 start_ts)，MinTSO Scheduler 定义“特殊” query 的标准即为当前 TiFlash 节点上 start_ts 最小的 query，根据全局最小一定是局部最小的原理，所有的 TiFlash 选出的“特殊” query 必然是同一个。我们称之为 MinTSO query。MinTSO scheduler 的调度流程如下：
 
 <img src="/media/tiflash/tiflash_mintso_v2.png" width=50%></img>
 
