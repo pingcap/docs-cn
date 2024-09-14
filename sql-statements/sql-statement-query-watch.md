@@ -24,6 +24,11 @@ QueryWatchOption ::=
 ResourceGroupName ::=
     Identifier
 |   "DEFAULT"
+ResourceGroupRunawayActionOption ::=
+    DRYRUN
+|   COOLDOWN
+|   KILL
+|   "SWITCH_GROUP" '(' ResourceGroupName ')'
 QueryWatchTextOption ::=
     "SQL" "DIGEST" SimpleExpr
 |   "PLAN" "DIGEST" SimpleExpr

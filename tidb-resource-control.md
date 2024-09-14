@@ -250,7 +250,7 @@ Runaway Query 是指执行时间或消耗资源超出预期的查询（仅指 `S
 
 > **注意：**
 >
-> 推荐通过 [`QUERY WATCH`](/tidb-resource-control.md#query-watch-语句说明) 语句来搭配 `SWITCH_GROUP` 进行使用。因为 `QUERY_LIMIT` 只有在查询执行时间超过所配置 `EXEC_ELAPSED` 时才会触发对应 `ACTION` 操作，所以 `SWITCH_GROUP` 在此类场景下可能会出现无法及时将查询切换到目标资源组的情况。
+> 推荐将 `SWITCH_GROUP` 和 [`QUERY WATCH`](/tidb-resource-control.md#query-watch-语句说明) 语句一起搭配使用。因为 `QUERY_LIMIT` 只有在查询执行时间超过所配置的 `EXEC_ELAPSED` 时才会触发对应 `ACTION` 操作，所以 `SWITCH_GROUP` 在此类场景下可能会出现无法及时将查询切换到目标资源组的情况。
 
 #### 示例
 
