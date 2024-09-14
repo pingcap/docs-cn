@@ -18,7 +18,7 @@ summary: 了解如何结合 Jina AI 嵌入模型 API 使用 TiDB 向量搜索，
 如果你还没有 TiDB 集群，可以按照以下任一种方式创建：
 
 - 参考[部署本地测试 TiDB 集群](/quick-start-with-tidb.md#部署本地测试集群)或[部署正式 TiDB 集群](/production-deployment-using-tiup.md)，创建本地集群。
-- 参考[创建 TiDB Serverless 集群](/develop/dev-guide-build-cluster-in-cloud.md#第-1-步创建-tidb-serverless-集群)，创建 TiDB Cloud 集群。
+- 参考[创建 TiDB Cloud Serverless 集群](/develop/dev-guide-build-cluster-in-cloud.md#第-1-步创建-tidb-serverless-集群)，创建 TiDB Cloud 集群。
 
 ## 运行示例应用程序
 
@@ -82,11 +82,11 @@ export TIDB_DATABASE_URL="mysql+pymysql://<USERNAME>:<PASSWORD>@<HOST>:<PORT>/<D
 
 </div>
 
-<div label="TiDB Serverless 集群部署">
+<div label="TiDB Cloud Serverless">
 
-对于 TiDB Serverless 集群，请按照以下步骤配置 TiDB 连接参数：
+对于 TiDB Cloud Serverless 集群，请按照以下步骤配置 TiDB 连接参数：
 
-1. 在 TiDB Cloud 的 [**Clusters**](https://tidbcloud.com/console/clusters) 页面，单击你的 TiDB Serverless 集群名，进入集群的 **Overview** 页面。
+1. 在 TiDB Cloud 的 [**Clusters**](https://tidbcloud.com/console/clusters) 页面，单击你的 TiDB Cloud Serverless 集群名，进入集群的 **Overview** 页面。
 
 2. 点击右上角的 **Connect** 按钮，将会弹出连接对话框。
 
