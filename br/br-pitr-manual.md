@@ -8,15 +8,15 @@ aliases: ['/zh/tidb/dev/br-log-command-line/']
 
 目录：
 - [日志备份命令行介绍](#日志备份命令行介绍)
-  - [启动日志备份](#启动日志备份)
-  - [备份数据加密](#备份数据加密)
-  - [查询日志备份任务](#查询日志备份任务)
-  - [暂停和恢复日志备份任务](#暂停和恢复日志备份任务)
-  - [停止和重启日志备份任务](#停止和重启日志备份任务)
-  - [清理日志备份数据](#清理日志备份数据)
-  - [查看备份数据元信息](#查看备份数据元信息)
+    - [启动日志备份](#启动日志备份)
+    - [日志数据备份加密](#日志数据备份加密)
+    - [查询日志备份任务](#查询日志备份任务)
+    - [暂停和恢复日志备份任务](#暂停和恢复日志备份任务)
+    - [停止和重启日志备份任务](#停止和重启日志备份任务)
+    - [清理日志备份数据](#清理日志备份数据)
+    - [查看备份数据元信息](#查看备份数据元信息)
 - [恢复到指定时间点 PITR](#恢复到指定时间点-pitr)
-  - [恢复加密的快照备份数据](#恢复加密的快照备份数据)
+    - [恢复加密的日志备份数据](#恢复加密的日志备份数据)
 
 本文介绍 TiDB 日志备份和 PITR (Point-in-time recovery) 命令行。
 
@@ -130,6 +130,7 @@ tiup br log start \
 --master-key：主密钥配置。可以是基于本地磁盘的主密钥或基于云 KMS 的主密钥。
 
 使用本地磁盘主密钥加密：
+
 ```shell
 tiup br log start \
     --task-name=pitr-with-encryption \
@@ -138,15 +139,19 @@ tiup br log start \
     --master-key-crypter-method aes128-ctr \
     --master-key "local:///path/to/master.key"
 ```
+
 或者使用云 KMS 加密：
+
 ```shell
 ...
     --master-key "aws-kms:///${AWS_KMS_KEY_ID}?AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY}&AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}&REGION=${AWS_REGION}"
 ```
+
 ```shell
 ...
     --master-key "gcp-kms:///projects/$GCP_PROJECT_ID/locations/$GCP_LOCATION/keyRings/$GCP_KEY_RING/cryptoKeys/$GCP_KEY_NAME?AUTH=specified&CREDENTIALS=$GCP_CREDENTIALS_PATH"
 ```
+
 > **注意：**
 >
 > - 密钥丢失，备份的数据将无法恢复到集群中。
@@ -482,7 +487,9 @@ tiup br restore point --pd="${PD_IP}:2379"
 --log.crypter.method aes128-ctr
 --log.crypter.key 0123456789abcdef0123456789abcdef
 ```
+
 如果你使用主密钥加密进行日志备份，则可以使用以下命令：
+
 ```shell
 tiup br restore point --pd="${PD_IP}:2379"
 --storage='s3://backup-101/logbackup?access-key=${ACCESS-KEY}&secret-access-key=${SECRET-ACCESS-KEY}"'
