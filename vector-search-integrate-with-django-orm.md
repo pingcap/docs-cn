@@ -235,7 +235,7 @@ class DocumentWithIndex(models.Model):
    #   - Using comment to add hnsw index is a temporary solution. In the future it will use `CREATE INDEX` syntax.
    #   - Currently the HNSW index cannot be changed after the table has been created.
    #   - Only Django >= 4.2 supports `db_comment`.
-   embedding = VectorField(dimensions=3, db_comment="VECTOR INDEX embedding USING HNSW ((VEC_COSINE_DISTANCE(embedding)))")
+   embedding = VectorField(dimensions=3, db_comment="VECTOR INDEX idx_embedding USING HNSW ((VEC_COSINE_DISTANCE(embedding)))")
 ```
 
 TiDB 将使用该索引来加速基于余弦距离函数的向量搜索查询。

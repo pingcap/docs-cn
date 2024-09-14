@@ -234,7 +234,7 @@ class DocumentWithIndex(Model):
         table_name = 'peewee_demo_documents_with_index'
 
     content = TextField()
-    embedding = VectorField(3, constraints=[SQL("VECTOR INDEX embedding USING HNSW ((VEC_COSINE_DISTANCE(embedding)))")])
+    embedding = VectorField(3, constraints=[SQL("VECTOR INDEX idx_embedding USING HNSW ((VEC_COSINE_DISTANCE(embedding)))")])
 ```
 
 TiDB 将使用该索引来加速基于余弦距离函数的向量搜索查询。

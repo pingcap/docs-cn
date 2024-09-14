@@ -195,7 +195,7 @@ class DocumentWithIndex(Base):
     __tablename__ = 'sqlalchemy_demo_documents_with_index'
     id = Column(Integer, primary_key=True)
     content = Column(Text)
-    embedding = Column(VectorType(3), comment="VECTOR INDEX embedding USING HNSW ((VEC_COSINE_DISTANCE(embedding)))")
+    embedding = Column(VectorType(3), comment="VECTOR INDEX idx_embedding USING HNSW ((VEC_COSINE_DISTANCE(embedding)))")
 ```
 
 TiDB 将使用该索引来加速基于余弦距离函数的矢量搜索查询。
