@@ -210,8 +210,8 @@ class Document(Base):
     content_vec = Column(
         # DIMENSIONS is determined by the embedding model,
         # for Jina AI's jina-embeddings-v2-base-en model it's 768.
-        VectorType(dim=768),
-        comment="hnsw(distance=cosine)"
+        VectorType(dim=768)
+    )
 ```
 
 > **Note:**
@@ -273,3 +273,4 @@ with Session(engine) as session:
 ## 另请参阅
 
 - [向量数据类型](/vector-search-data-types.md)
+- [向量搜索索引](/vector-search-index.md)

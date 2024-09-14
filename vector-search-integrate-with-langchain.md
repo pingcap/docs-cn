@@ -628,3 +628,4 @@ vector_store.tidb_vector_client.execute("DROP TABLE airplan_routes")
 ## 另请参阅
 
 - [向量数据类型](/vector-search-data-types.md)
+- [向量搜索索引](/vector-search-index.md)
