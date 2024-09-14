@@ -253,6 +253,9 @@ TiDB 版本：8.4.0
 | [`tidb_enable_inl_join_inner_multi_pattern`](/system-variables.md#tidb_enable_inl_join_inner_multi_pattern-从-v700-版本开始引入) |   修改  |   默认值改为 `ON`。当内表上有 `Selection` 或 `Projection` 算子时默认支持 Index Join  |
 | [`tidb_enable_instance_plan_cache`](/system-variables.md#tidb_enable_instance_plan_cache-从-v840-版本开始引入)| 新增 | 这个变量控制是否开启 Instance Plan Cache 功能。 |
 | [`tidb_instance_plan_cache_max_size`](/system-variables.md#tidb_instance_plan_cache_max_size-从-v840-版本开始引入) | 新增 | 这个变量控制 Instance Plan Cache 的目标内存大小，超过这个大小则触发清理。|
+| tidb_scatter_region       |          修改                    | 原先为布尔型，仅支持开启或关闭，且开启后新建的表的 region 只支持表级别打散，v8.3.0 开始改成字符串型，并新增支持集群级别的打算策略，避免快速批量建表时由于 region 分布不均匀导致 TiKV OOM 的问题     |
+| tidb_shard_row_id_bits       |         新增                     |   原先 ‘shard_row_id_bits’ 需要在每个 Create Table 或 Alter Table 的 SQL 语句里声明，一旦需要同样配置的表数量较多，操作复杂，因此引入该变量，可在 Global 或 Session 级别设置该系统变量，提升易用性  |
+| tidb_pre_split_regions       |         新增                     |   原先 ‘pre_split_regions’ 需要在每个 Create Table SQL 语句里声明，一旦需要同样配置的表数量较多，操作复杂，因此引入该变量，可在 Global 或 Session 级别设置该系统变量，提升易用性  |
 
 
 ### 配置文件参数
