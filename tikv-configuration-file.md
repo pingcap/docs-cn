@@ -2310,13 +2310,11 @@ Raft Engine 相关的配置项。
 + 默认值：true
 + 注意：`in-memory` 仅在 `pipelined` 为 true 时生效。
 
-
 ### `in-memory-peer-size-limit` <span class="version-mark">从 v8.4.0 版本开始引入</span>
 
 + 控制单 region 内存悲观锁内存使用上限。当使用超过限制时，悲观锁将 fallback 到持久化方式写入。
 + 默认值：512KiB
 + 单位：KiB|MiB|GiB
-
 
 ### `in-memory-global-size-limit` <span class="version-mark">从 v8.4.0 版本开始引入</span>
 
