@@ -49,13 +49,22 @@ pip install sqlalchemy pymysql sentence-transformers tidb-vector python-dotenv
 
 ### 第 3 步：配置 TiDB 集群的连接字符串
 
-根据不同的 TiDB 集群部署方式，配置集群的连接字符串
+根据不同的 TiDB 集群部署方式，配置集群的连接字符串。
 
 <SimpleTab>
 
 <div label="本地部署 TiDB">
 
-在 Python 项目的根目录下新建一个 `.env` 文件，并根据集群的启动参数修改相应的环境变量，将连接字符串复制到 `.env` 文件中。以下是各个变量的含义：
+对于本地部署的 TiDB，请在 Python 项目的根目录下新建一个 `.env` 文件，将以下内容复制到 `.env` 文件中，并根据集群的启动参数修改环境变量值为 TiDB 实际对应的值：
+
+```dotenv
+TIDB_DATABASE_URL="mysql+pymysql://<USER>:<PASSWORD>@<HOST>:<PORT>/<DATABASE>"
+# 例如：TIDB_DATABASE_URL="mysql+pymysql://root@127.0.0.1:4000/test"
+```
+
+如果你在本机运行 TiDB，`HOST` 默认为 `127.0.0.1`。`PASSWORD` 初始密码为空，若你是第一次启动集群，则无需带上此字段。
+
+以下为各参数的解释：
 
 - `<HOST>`：TiDB 集群的主机号。
 - `<PORT>`：TiDB 集群的端口。
@@ -63,19 +72,11 @@ pip install sqlalchemy pymysql sentence-transformers tidb-vector python-dotenv
 - `<PASSWORD>`：连接 TiDB 集群的密码。
 - `<DATABASE>`：要连接的数据库名称。
 
-以下为 MacOS 的示例：
-
-```dotenv
-# 例如： TIDB_DATABASE_URL="mysql+pymysql://root@127.0.0.1:4000/test"
-TIDB_DATABASE_URL="mysql+pymysql://<USER>:<PASSWORD>@<HOST>:<PORT>/<DATABASE>"
-```
-> **Tip:**
->
-> `<PASSWORD>` 初始密码为空，若你是第一次启动集群，则不需要带上此字段。
-
 </div>
 
 <div label="TiDB Serverless">
+
+对于 TiDB Serverless 集群，请按照以下步骤获取集群的连接字符串，然后配置环境变量：
 
 1. 在 TiDB Cloud 的 [**Clusters**](https://tidbcloud.com/console/clusters) 页面，单击你的 TiDB Serverless 集群名，进入集群的 **Overview** 页面。
 

@@ -77,20 +77,28 @@ tidb_connection_string = getpass.getpass("TiDB Connection String:")
 os.environ["OPENAI_API_KEY"] = getpass.getpass("OpenAI API Key:")
 ```
 
-例如，macOS 上的连接字符串如下所示：
+以 macOS 为例，集群的连接字符串如下所示：
 
 ```dotenv
-# 例如： TIDB_DATABASE_URL="mysql+pymysql://root@127.0.0.1:4000/test"
 TIDB_DATABASE_URL="mysql+pymysql://<USERNAME>:<PASSWORD>@<HOST>:<PORT>/<DATABASE_NAME>"
+# 例如： TIDB_DATABASE_URL="mysql+pymysql://root@127.0.0.1:4000/test"
 ```
 
-注意替换为你的 TiDB 实际对应的值。`PASSWORD` 初始密码为空，若你是第一次启动集群，则不需要带上此字段。
+请替换连接字符串中的参数为你的 TiDB 实际对应的值。如果你在本机运行 TiDB，默认 `HOST` 地址为 `127.0.0.1`。`PASSWORD` 初始密码为空，若你是第一次启动集群，则无需带上此字段。
+
+以下为各参数的解释：
+
+- `HOST`：TiDB 集群的主机地址。
+- `PORT`：TiDB 集群的端口号。
+- `USERNAME`：连接 TiDB 集群的用户名。
+- `PASSWORD`：连接 TiDB 集群的密码。
+- `DATABASE`：要连接的数据库名称。
 
 </div>
 
 <div label="TiDB Serverless 集群部署">
 
-对于 TiDB Serverless 集群，请按照以下步骤获取 TiDB 群集的连接字符串，然后配置环境变量：
+对于 TiDB Serverless 集群，请按照以下步骤获取 TiDB 集群的连接字符串，然后配置环境变量：
 
 1. 在 TiDB Cloud 的 [**Clusters**](https://tidbcloud.com/console/clusters) 页面，单击你的 TiDB Serverless 集群名，进入集群的 **Overview** 页面。
 
