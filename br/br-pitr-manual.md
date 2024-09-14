@@ -50,7 +50,7 @@ Available Commands:
 各个子命令的作用如下：
 
 - `tiup br log start`：启动一个日志备份任务
-- `tiup br log status`：查询日志备份任务��态
+- `tiup br log status`：查询日志备份任务状态
 - `tiup br log pause`：暂停日志备份任务
 - `tiup br log resume`：重启暂停的备份任务
 - `tiup br log stop`：停止备份任务，并删除任务元信息
