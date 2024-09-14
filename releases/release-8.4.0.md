@@ -97,7 +97,7 @@ TiDB 版本：8.4.0
 
 * ‘tidb_scatter_region’ 支持设置集群级别的 region 打算策略 [#issue号](链接) @[D3Hunter](https://github.com/D3Hunter) **tw@hfxsd** <!--1927-->
 
-     ‘tidb_scatter_region’  在之前的版本仅支持设置为开启或者关闭，开启后，建表时会使用表级别打算策略。在批量快速建表，且表的数量达到几十万张后，该策略会导致 Region 集中分布在其中几个 TiKV 节点，导致这些 TiKV 节点 OOM。因此，从 V8.3.0 版本开始，将该系统变量改为字符串类型，且新增支持集群级别的打算策略，避免上述场景下导致 TiKV OOM 的问题。
+     ‘tidb_scatter_region’  在之前的版本仅支持设置为开启或者关闭，开启后，建表时会使用表级别打算策略。在批量快速建表，且表的数量达到几十万张后，该策略会导致 Region 集中分布在其中几个 TiKV 节点，导致这些 TiKV 节点 OOM。因此，从 V8.3.0 版本开始，将该系统变量改为字符串类型，且新增支持集群级别的打散策略，避免上述场景下导致 TiKV OOM 的问题。
 
     更多信息，请参考[用户文档](链接)。
 * 资源管控为后台任务设置资源上限 [#issue号](链接) @[glorv](https://github.com/glorv) **tw@hfxsd** <!--1909-->
