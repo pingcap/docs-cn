@@ -49,7 +49,11 @@ TiDB 版本：8.4.0
     * `DATE_SUB()`
 
   更多信息，请参考[用户文档](/functions-and-operators/expressions-pushed-down.md)。
+* 提升批量创建用户和修改用户密码操作的性能，提升达数百倍 [#55604](https://github.com/pingcap/tidb/pull/55604) @[wjhuang2016](https://github.com/wjhuang2016) **tw@xxx** <!--1941-->
 
+    在 SaaS 场景下，存在批量创建大量用户，以及定期轮换所有用户密码的需求，且需要在指定时间窗口内完成，从 V8.3.0 开始，对批量创建用户，批量修改用户密码的性能做了提升，且用户可以通过增加 session 连接数来提升并发，提升性能，大大缩短了该场景下的执行时间。
+
+    更多信息，请参考[用户文档](链接)。
 * 实例中的会话共享执行计划缓存 (实验特性) [#issue号](链接) @[qw4990](https://github.com/qw4990) **tw@Oreoxmt** <!--1569-->
 
     相比会话级执行计划缓存，执行计划缓存在会话间共享有明显的优势：
@@ -91,6 +95,11 @@ TiDB 版本：8.4.0
 
     更多信息，请参考[用户文档](/tidb-resource-control.md#管理资源消耗超出预期的查询-runaway-queries)。
 
+* ‘tidb_scatter_region’ 支持设置集群级别的 region 打算策略 [#issue号](链接) @[D3Hunter](https://github.com/D3Hunter) **tw@hfxsd** <!--1927-->
+
+     ‘tidb_scatter_region’  在之前的版本仅支持设置为开启或者关闭，开启后，建表时会使用表级别打算策略。在批量快速建表，且表的数量达到几十万张后，该策略会导致 Region 集中分布在其中几个 TiKV 节点，导致这些 TiKV 节点 OOM。因此，从 V8.3.0 版本开始，将该系统变量改为字符串类型，且新增支持集群级别的打算策略，避免上述场景下导致 TiKV OOM 的问题。
+
+    更多信息，请参考[用户文档](链接)。
 * 资源管控为后台任务设置资源上限 [#issue号](链接) @[glorv](https://github.com/glorv) **tw@hfxsd** <!--1909-->
 
     TiDB 资源管控能够识别并降低后台任务的运行优先级。在部分场景下，即使有空闲资源，客户希望后台任务消耗能够控制在很低的水平。在新版本中，资源管控可以通过 `UTILIZATION_LIMIT` 指令为后台任务设置资源百分比，每个节点把所有后台任务的使用量控制在这个百分比以下。精细控制后台任务的资源占用，进一步提升集群稳定性。
@@ -145,7 +154,11 @@ TiDB 版本：8.4.0
     值得注意的是，TiDB 的向量索引依赖于 TiFlash，因此，在使用向量索引之前，需要确保 TiDB 集群中已添加 TiFlash 节点。
 
     更多信息，请参考[用户文档](/vector-search-overview.md)。
-    
+* TiDB 外键约束检查功能成为正式功能（GA） [#issue号](链接) @[贡献者 GitHub ID](链接) **tw@lilin90** <!--1894-->
+
+    TiDB 从 v6.6.0 版本开始，可通过变量 foreign_key_checks 做外键约束检查，但是其一直为实验特性。v8.3.0 对外键特性在更多场景做了覆盖测试，稳定性和性能方面也有一些提升，因此从 v8.3.0 开始外键功能成为正式功能（GA）
+
+    更多信息，请参考[用户文档](链接)。
 ### 数据库管理
 
 * 功能标题 [#issue号](链接) @[贡献者 GitHub ID](链接) **tw@xxx** <!--1234-->
@@ -246,7 +259,7 @@ TiDB 版本：8.4.0
 
 | 配置文件 | 配置项 | 修改类型 | 描述 |
 | -------- | -------- | -------- | -------- |
-|          |          |          |          |
+|  TiKV        |   grpc-keepalive-timeout       |    修改      |  该配置文件参数原先为 int 类型，且最小值仅支持设置为 1，从 v8.3.0 开始，数据类型修改为 float64 ，且最小值支持设置为 0.05，可以在网络抖动比较频繁的场景，适当调小该值，通过减少重试间隔，来减少网络抖动带来的性能影响。       |
 |          |          |          |          |
 |          |          |          |          |
 |          |          |          |          |
@@ -285,7 +298,7 @@ TiDB 版本：8.4.0
   - 减少部分场景的 DELETE 操作从 TiKV 获取的列信息数量，降低 DELETE 操作的资源开销。[#issue号](链接) [winoros](https://github.com/winoros) **tw@Oreoxmt** <!--1798-->
   - 优化 Priority Queue 基于 Meta Cache V2 的运行效率 [#49972](https://github.com/pingcap/tidb/issues/49972) [Rustin170506](https://github.com/Rustin170506)  <!--1935-->
   - 自动统计信息收集根据部署规模和硬件规格决定执行和扫描的并发度 [#issue号](链接) @[hawkingrei](https://github.com/hawkingrei) **tw@Oreoxmt** <!--1739-->
-  
+  - ‘tidb_enable_fast_create_table’ 开启后，支持了批量快速创建外键表的场景。 [#issue号](链接) @[D3Hunter](https://github.com/D3Hunter) **tw@hfxsd** <!--1896-->
 + TiKV
 
   - 默认 Region 大小由 96 MB 提升到 256 MB，避免 Region 数量过多带来的额外开销 [#17309](https://github.com/tikv/tikv/issues/17309) [LykxSassinator](https://github.com/LykxSassinator)  <!--1925-->
