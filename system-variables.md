@@ -2807,7 +2807,7 @@ v5.0 后，用户仍可以单独修改以上系统变量（会有废弃警告）
 - 这个变量用来设置 hash join 算法的并发度。
 - 默认值 `-1` 表示使用 `tidb_executor_concurrency` 的值。
 
-### `tidb_hash_join_use_impl_v2` <span class="version-mark">从 v8.4.0 版本开始引入</span>
+### `tidb_hash_join_version` <span class="version-mark">从 v8.4.0 版本开始引入</span>
 
 > **警告：**
 >
@@ -2816,10 +2816,11 @@ v5.0 后，用户仍可以单独修改以上系统变量（会有废弃警告）
 - 作用域：SESSION | GLOBAL
 - 是否持久化到集群：是
 - 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：是
-- 类型：布尔型
-- 默认值：`ON`
-- 控制 TiDB hash join 是否使用 v2 版本的实现。默认关闭 (`OFF`)。设置为 `ON` 时，TiDB 的 hash join 会用 v2 版本的实现，能提升 hash join 的性能。
-- 目前仅 inner join 和 outer join 支持 v2 版本实现, 对于其他类型的 join，即使该变量设成 `ON`，也不会用 v2 版本的实现。
+- 类型：枚举型
+- 默认值：`legacy`
+- 可选值：`legacy`, `optimized`
+- 控制 TiDB hash join 是否使用优化的版本。默认不使用 (`legacy`)。设置为 `optimized` 时，TiDB 的 hash join 会用优化的版本，能提升 hash join 的性能。
+- 目前仅 inner join 和 outer join 支持优化的版本, 对于其他类型的 join，即使该变量设成 `optimized`，也不会用优化的版本。
 
 ### `tidb_hashagg_final_concurrency`
 
