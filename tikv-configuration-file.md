@@ -2430,6 +2430,15 @@ Raft Engine 相关的配置项。
 + 在 TiDB 侧开启 [`tidb_enable_resource_control`](/system-variables.md#tidb_enable_resource_control-从-v660-版本开始引入) 全局变量的情况下，开启这个配置项才有意义。此配置参数开启后，TiKV 会使用优先级队列对排队的用户前台读写请求做调度，调度的优先级和请求所在资源组已经消费的资源量反相关，和对应资源组的配额正相关。
 + 默认值：true（即开启按照资源组配额调度）
 
+### `priority-ctl-strategy` <span class="version-mark">从 v8.4.0 版本开始引入</span>
+
++ 配置低优先级任务的管控策略。TiKV 通过对低优先级的任务添加流量控制来确保优先执行更高优先级的任务。此管控策略用户配置对低优先级任务的流量控制阈值的计算策略。
++ 可选值：
+    + `aggressive`。采用此策略，流控策略会优先保证高优先级任务的性能，确保高优先的任务的吞吐和延迟基本不受影响，但低优先级的任务会执行的比较慢。
+    + `moderate`。采用此策略，TiKV 会为低优先任务施加较平衡的流控限制，确保低优先级任务能使用更多的系统可用资源，并对高优先级任务有较低影响。
+    + `conservative`。采用此策略，流控策略会优先确保系统的资源被充分使用，低优先级任务会尽量使用系统可用的资源，因而对高优先级任务的性能影响更大。
++ 默认值：`moderate`（默认值）。
+
 ## split
 
 [Load Base Split](/configure-load-base-split.md) 相关的配置项。
