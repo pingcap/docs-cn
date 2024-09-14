@@ -595,14 +595,6 @@ mysql> SELECT * FROM t1;
 - 默认值：`Apache License 2.0`
 - 这个变量表示 TiDB 服务器的安装许可证。
 
-### `log_bin`
-
-- 作用域：NONE
-- 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：否
-- 类型：布尔型
-- 默认值：`OFF`
-- 该变量表示是否使用 [TiDB Binlog](https://docs.pingcap.com/zh/tidb/v8.3/tidb-binlog-overview)。从 v8.4 开始，TiDB Binlog 已移除，该变量无效。
-
 ### `max_connections`
 
 - 作用域：GLOBAL
@@ -820,19 +812,6 @@ mysql> SHOW GLOBAL VARIABLES LIKE 'max_prepared_stmt_count';
 - 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：否
 - 默认值：""
 - 使用 MySQL 协议时，tidb-server 所监听的本地 unix 套接字文件。
-
-### `sql_log_bin`
-
-- 作用域：SESSION | GLOBAL
-- 是否持久化到集群：是
-- 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：否
-- 类型：布尔型
-- 默认值：`ON`
-- 表示是否将更改写入 TiDB Binlog。从 v8.4 开始，TiDB Binlog 已移除，该变量无效。
-
-> **注意：**
->
-> 不建议将 `sql_log_bin` 设置为全局变量，因为 TiDB 的未来版本可能只允许将其设置为会话变量。
 
 ### `sql_mode`
 
