@@ -317,8 +317,8 @@ TiDB 版本：8.4.0
 | 配置文件 | 配置项 | 修改类型 | 描述 |
 | -------- | -------- | -------- | -------- |
 |  TiKV        |   grpc-keepalive-timeout       |    修改      |  该配置文件参数原先为 int 类型，且最小值仅支持设置为 1，从 v8.3.0 开始，数据类型修改为 float64 ，且最小值支持设置为 0.05，可以在网络抖动比较频繁的场景，适当调小该值，通过减少重试间隔，来减少网络抖动带来的性能影响。       |
-|  TiKV        |   in_memory_peer_size_limit       |    新增      |    该配置文件参数用于指定单 region 的 内存上限      |
-|  TiKV        |   in_memory_global_size_limit      |   新增       |   该配置文件参数用于指定 TiKV 实例的 内存上限       |
+|  TiKV        |   in_memory_peer_size_limit       |    新增      |    该配置文件参数用于指定单 region 的内存悲观锁的内存上限      |
+|  TiKV        |   in_memory_global_size_limit      |   新增       |   该配置文件参数用于指定 TiKV 实例的内存悲观锁的内存上限      |
 |          |          |          |          |
 
 ### 系统表
@@ -359,8 +359,7 @@ TiDB 版本：8.4.0
 + TiKV
 
   - 默认 Region 大小由 96 MB 提升到 256 MB，避免 Region 数量过多带来的额外开销 [#17309](https://github.com/tikv/tikv/issues/17309) [LykxSassinator](https://github.com/LykxSassinator) **tw@hfxsd** <!--1925-->
-
-  - 增加配置项指定单 region 和实例的内存用量，在热点写时通过增加内存避免落盘带来的额外 CPU/IO 消耗 [#17542](https://github.com/tikv/tikv/issues/17542) @[cfzjywxk](https://github.com/cfzjywxk) **tw@qiancai** <!--1967-->
+  - 增加配置项指定单 region 和 TiKV 实例的内存悲观锁的内存上限，在热点写悲观锁加锁较多情况，可修改配置提升内存上限避免悲观锁落盘相关 CPU/IO 开销 [#17542](https://github.com/tikv/tikv/issues/17542) @[cfzjywxk](https://github.com/cfzjywxk) **tw@qiancai** <!--1967-->
 
 
 + PD
