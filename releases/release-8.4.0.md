@@ -368,9 +368,10 @@ TiDB 版本：8.4.0
 
     + Backup & Restore (BR)
 
-      - 集群恢复时同时设置 `split-table=false` 和 `split-region-on-table=false`，优化 region 的分配策略 [#issue号](链接) @[Leavrth](https://github.com/Leavrth) 
+      - 集群恢复时同时设置 `split-table=false` 和 `split-region-on-table=false`，优化 region 的分配策略 [#53532](https://github.com/pingcap/tidb/issues/53532) @[Leavrth](https://github.com/Leavrth) 
       **tw@qiancai** <!--1914-->
       - 默认不允许使用 SQL 全量恢复数据到非空集群 [#55087](https://github.com/pingcap/tidb/issues/55087) @[BornChanger](https://github.com/BornChanger) **tw@Oreoxmt** <!--1711-->
+      - 快照恢复和日志恢复产生的断点数据将存储在恢复集群的临时库表中，日志恢复产生的上下游 ID 映射存储到系统表 `mysql.tidb_pitr_id_map` 中 [#55870](https://github.com/pingcap/tidb/issues/55870) @[Leavrth](https://github.com/Leavrth) **tw@Oreoxmt** <!--1943-->
 
     + TiCDC
 
