@@ -49,13 +49,6 @@ TiDB 目前支持以下向量搜索索引算法：
 
 你只能为固定维度的向量列 (如 `VECTOR(3)` ) 创建向量索引，不能为混合维度的向量列 (如 `VECTOR` ) 创建向量索引，因为只有维度相同的向量之间才能计算向量距离。
 
-如果你使用的是编程语言 SDK 或 ORM，可以参阅以下文档创建向量索引：
-
-- Python：[TiDB Vector SDK for Python](https://github.com/pingcap/tidb-vector-python)
-- Python：[SQLAlchemy](/vector-search-integrate-with-sqlalchemy.md)
-- Python：[Peewee](/vector-search-integrate-with-peewee.md)
-- Python：[Django](/vector-search-integrate-with-django-orm.md)
-
 有关向量搜索索引的约束和限制，请参阅[向量搜索索引的约束](/vector-search-index.md#向量搜索索引的约束)。
 
 ## 使用向量搜索索引
