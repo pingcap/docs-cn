@@ -20,12 +20,6 @@ TiDB 的安全性对于保护数据完整性和机密性至关重要。本文提
 - 使用 TiUP 部署时，参考[使用 TiUP 部署 TiDB 集群](/production-deployment-using-tiup.md#第-7-步启动集群)为 root 用户生成随机密码。
 - 使用 TiDB Operator 部署时，参考[初始化账号和密码设置](https://docs.pingcap.com/zh/tidb-in-kubernetes/stable/initialize-a-cluster#初始化账号和密码设置)为 root 用户设置密码。
 
-## 启用密码复杂性检查
-
-默认情况下，TiDB 未启用密码复杂性策略，这可能导致使用弱密码或空密码，增加安全风险。
-
-为确保数据库用户创建强密码，建议配置合理的[密码复杂度策略](/password-management.md#密码复杂度策略)。例如，要求密码包含大写字母、小写字母、数字和特殊字符的组合。启用密码复杂性检查可以提高数据库的安全性、防止暴力破解攻击、减少内部威胁、遵守法规和合规性要求、降低数据泄露风险，并提高整体安全水平。
-
 ## 修改 Grafana 默认密码
 
 TiDB 安装时默认包含 Grafana 组件，其默认的用户名密码通常为 `admin/admin`。如不及时修改，可能被攻击者利用获取系统控制权。
