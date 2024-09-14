@@ -14,6 +14,7 @@ summary: 本文介绍 TiDB 的向量数据类型。
 
 与使用 [`JSON`](/data-type-json.md) 类型相比，使用向量类型具有以下优势：
 
+- 支持向量索引。 可以通过构建[向量搜索索引](/vector-search-index.md)加速查询。
 - 可指定维度。指定一个固定维度后，不符合维度的数据将被阻止写入到表中。
 - 存储格式更优。向量数据类型针对向量数据进行了特别优化，在空间利用和性能效率上都优于 `JSON` 类型。
 
@@ -52,7 +53,8 @@ ERROR 1105 (HY000): Invalid vector text: [5, ]
 ERROR 1105 (HY000): vector has 2 dimensions, does not fit VECTOR(3)
 ```
 
-可参阅[向量函数与操作符](/vector-search-functions-and-operators.md)了解向量数据类型支持的所有函数和操作符。
+可参阅 [向量函数与操作符](/vector-search-functions-and-operators.md) 了解向量数据类型支持的所有函数和操作符。
+可参阅 [向量搜索索引](/vector-search-index.md) 了解向量搜索索引的信息。
 
 ## 混合存储不同维度的向量
 
@@ -67,6 +69,8 @@ CREATE TABLE vector_table (
 INSERT INTO vector_table VALUES (1, '[0.3, 0.5, -0.1]'); -- 3 dimensions vector, OK
 INSERT INTO vector_table VALUES (2, '[0.3, 0.5]');       -- 2 dimensions vector, OK
 ```
+
+但是，我们不能为存储了不同维度的向量列构建 [向量搜索索引](/vector-search-index.md)，因为向量距离只能在具有相同维度的向量之间计算。
 
 ## 比较
 
@@ -240,3 +244,4 @@ ERROR 1105 (HY000): vectors have different dimensions: 1 and 3
 ## 另请参阅
 
 - [向量函数和操作符](/vector-search-functions-and-operators.md)
+- [向量搜索索引](/vector-search-index.md)

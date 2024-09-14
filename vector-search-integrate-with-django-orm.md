@@ -224,6 +224,22 @@ Document.objects.create(content="fish", embedding=[1, 2, 4])
 Document.objects.create(content="tree", embedding=[1, 0, 0])
 ```
 
+#### 用索引定义优化的向量列
+
+定义三维向量列，并使用 [向量搜索索引 (HNSW 索引)](/vector-search-index.md) 对其进行优化。
+
+```python
+class DocumentWithIndex(models.Model):
+   content = models.TextField()
+   # Note:
+   #   - Using comment to add hnsw index is a temporary solution. In the future it will use `CREATE INDEX` syntax.
+   #   - Currently the HNSW index cannot be changed after the table has been created.
+   #   - Only Django >= 4.2 supports `db_comment`.
+   embedding = VectorField(dimensions=3, db_comment="VECTOR INDEX embedding USING HNSW ((VEC_COSINE_DISTANCE(embedding)))")
+```
+
+TiDB 将使用该索引来加速基于余弦距离函数的向量搜索查询。
+
 ### 搜索近邻向量
 
 TiDB 向量支持以下距离函数：
@@ -254,3 +270,4 @@ results = Document.objects.annotate(
 ## 另请参阅
 
 - [向量数据类型](/vector-search-data-types.md)
+- [向量搜索索引](/vector-search-index.md)
