@@ -127,6 +127,14 @@
     - [与 Confluent Cloud 和 Snowflake 进行数据集成](/ticdc/integrate-confluent-using-ticdc.md)
     - [与 Apache Kafka 和 Apache Flink 进行数据集成](/replicate-data-to-kafka.md)
 - 运维操作
+  - 安全加固
+    - [TiDB 安全配置最佳实践](/best-practices-for-security-configuration.md)
+    - [为 TiDB 客户端服务端间通信开启加密传输](/enable-tls-between-clients-and-servers.md)
+    - [为 TiDB 组件间通信开启加密传输](/enable-tls-between-components.md)
+    - [生成自签名证书](/generate-self-signed-certificates.md)
+    - [静态加密](/encryption-at-rest.md)
+    - [为 TiDB 落盘文件开启加密](/enable-disk-spill-encrypt.md)
+    - [日志脱敏](/log-redaction.md)
   - 升级 TiDB 版本
     - [使用 TiUP 升级](/upgrade-tidb-using-tiup.md)
     - [使用 TiDB Operator](https://docs.pingcap.com/zh/tidb-in-kubernetes/stable/upgrade-a-tidb-cluster)
@@ -608,13 +616,6 @@
     - [TiKV 面板](/grafana-tikv-dashboard.md)
     - [TiFlash 监控指标](/tiflash/monitor-tiflash.md)
     - [TiCDC 监控指标](/ticdc/monitor-ticdc.md)
-  - 安全加固
-    - [为 TiDB 客户端服务端间通信开启加密传输](/enable-tls-between-clients-and-servers.md)
-    - [为 TiDB 组件间通信开启加密传输](/enable-tls-between-components.md)
-    - [生成自签名证书](/generate-self-signed-certificates.md)
-    - [静态加密](/encryption-at-rest.md)
-    - [为 TiDB 落盘文件开启加密](/enable-disk-spill-encrypt.md)
-    - [日志脱敏](/log-redaction.md)
   - 权限
     - [与 MySQL 安全特性差异](/security-compatibility-with-mysql.md)
     - [权限管理](/privilege-management.md)
