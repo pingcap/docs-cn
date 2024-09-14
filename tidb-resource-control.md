@@ -343,12 +343,11 @@ Runaway Query 是指执行时间或消耗资源超出预期的查询（仅指 `S
 
     字段解释：
 
-    `match_type` 为该 Runaway Query 的来源，其值如下：
-    - `identify` 表示命中条件。
-    - `watch` 表示被快速识别机制命中。
-
-    `start_time` 为该 Runaway Query 被识别的时间
-    `repeats` 为该 Runaway Query 从 `start_time` 开始后被识别的次数。
+    - `match_type` 为该 Runaway Query 的来源，其值如下：
+        - `identify` 表示命中条件。
+        - `watch` 表示被快速识别机制命中。
+    - `start_time` 为该 Runaway Query 被识别的时间。
+    - `repeats` 为该 Runaway Query 从 `start_time` 开始后被识别的次数。
 
 + `information_schema.runaway_watches` 表中包含了 Runaway Queries 的快速识别规则记录。详见 [`RUNAWAY_WATCHES`](/information-schema/information-schema-runaway-watches.md)。
 
