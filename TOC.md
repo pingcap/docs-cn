@@ -149,7 +149,7 @@
     - [与 Confluent Cloud 和 Snowflake 进行数据集成](/ticdc/integrate-confluent-using-ticdc.md)
     - [与 Apache Kafka 和 Apache Flink 进行数据集成](/replicate-data-to-kafka.md)
 - 运维操作
-  - 安全加固
+    - 安全加固
     - [TiDB 安全配置最佳实践](/best-practices-for-security-configuration.md)
     - [为 TiDB 客户端服务端间通信开启加密传输](/enable-tls-between-clients-and-servers.md)
     - [为 TiDB 组件间通信开启加密传输](/enable-tls-between-components.md)
