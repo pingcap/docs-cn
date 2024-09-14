@@ -52,9 +52,9 @@ tiup install dm dmctl
 
     - DM 不会将视图的 DDL 语句同步到下游的 TiDB 集群，也不会将针对视图的 DML 语句同步到下游。在该场景下，建议用户在下游 TiDB 集群中自行创建视图。
 
-+ GBK 字符集兼容性限制
++ GBK/GB18030 字符集兼容性限制
 
-    - DM 在 v5.4.0 之前不支持将 `charset=GBK` 的表迁移到 TiDB。
+    - DM 在 v5.4.0 之前不支持将 `charset=GBK` 的表迁移到 TiDB；在 v8.4.0 之前不支持将 `charset=GB18030` 的表迁移到 TiDB。
 
 + Binlog 兼容性限制
 

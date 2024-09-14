@@ -22,16 +22,13 @@ SHOW CHARACTER SET WHERE CHARSET = 'gbk';
 
 ```sql
 SHOW COLLATION WHERE CHARSET = 'gbk';
-```
-
-```
 +----------------+---------+----+---------+----------+---------+---------------+
 | Collation      | Charset | Id | Default | Compiled | Sortlen | Pad_attribute |
 +----------------+---------+----+---------+----------+---------+---------------+
 | gbk_bin        | gbk     | 87 |         | Yes      |       1 | PAD SPACE     |
 | gbk_chinese_ci | gbk     | 28 | Yes     | Yes      |       1 | PAD SPACE     |
 +----------------+---------+----+---------+----------+---------+---------------+
-2 rows in set (0.00 sec)
+2 rows in set (0.001 sec)
 ```
 
 ## 与 MySQL 的兼容性
@@ -61,16 +58,13 @@ SHOW CHARACTER SET WHERE CHARSET = 'gbk';
 
 ```sql
 SHOW COLLATION WHERE CHARSET = 'gbk';
-```
-
-```
 +----------------+---------+----+---------+----------+---------+---------------+
 | Collation      | Charset | Id | Default | Compiled | Sortlen | Pad_attribute |
 +----------------+---------+----+---------+----------+---------+---------------+
 | gbk_bin        | gbk     | 87 |         | Yes      |       1 | PAD SPACE     |
 | gbk_chinese_ci | gbk     | 28 | Yes     | Yes      |       1 | PAD SPACE     |
 +----------------+---------+----+---------+----------+---------+---------------+
-2 rows in set (0.00 sec)
+2 rows in set (0.001 sec)
 ```
 
 ### 非法字符兼容性
