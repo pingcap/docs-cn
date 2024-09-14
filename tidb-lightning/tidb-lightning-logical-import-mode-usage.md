@@ -52,7 +52,7 @@ TiDB Lightning 的完整配置文件可参考[完整配置及命令行参数](/t
 | 策略 | 冲突时默认行为 | 对应 SQL 语句 |
 |:---|:---|:---|
 | `"replace"` | 新数据替代旧数据 | `REPLACE INTO ...` |
-| `"ignore"` | 保留旧数据，忽略新数据 | `INSERT IGNORE INTO ...` |
+| `"ignore"` | 保留旧数据，忽略新数据                 | 如果 `conflict.max-record-rows` 大于 `0`，则为 `INSERT INTO ...`；如果 `conflict.max-record-rows` 为 `0`，则为 `INSERT IGNORE INTO ...` |
 | `"error"` | 终止导入 | `INSERT INTO ...` |
 | `""` | 不进行冲突检查和处理，但如果存在有主键和唯一键冲突的数据，会在后续步骤报错  | 无 |
 
