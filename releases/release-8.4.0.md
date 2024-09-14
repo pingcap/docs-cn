@@ -110,9 +110,9 @@ TiDB 版本：8.4.0
 
 * 优化 TiDB 的 Hash Join 算子实现效率（实验特性） [#55153](https://github.com/pingcap/tidb/issues/55153) [#53127](https://github.com/pingcap/tidb/issues/53127) @[windtalker](https://github.com/windtalker) @[xzhangxian1008](https://github.com/xzhangxian1008) @[XuHuaiyu](https://github.com/XuHuaiyu) @[wshwsh12](https://github.com/wshwsh12) **tw@qiancai** <!--1633-->
 
-    在 v8.4.0 版本之前，TiDB 的 Hash Join 算子实现效率不高。从 v8.4.0 开始，TiDB 将对 Hash Join 算子进行重构优化，提升执行效率。在 v8.4.0 版本，该功能为实验特性，只有 INNER JOIN 和 OUTER JOIN 可以使用重构后的高性能 Hash Join 算子。当该功能启用时，执行器会根据高性能 Hash Join 算子对关联操作的支持情况，自动选择是否使用高性能 Hash Join 算子。你可以通过 [tidb_hash_join_use_new_impl](/system-variables.md#tidb_hash_join_use_new_impl-从-v840-版本开始引入) 变量控制是否启用高性能 Hash Join 算子。
+    在 v8.4.0 版本之前，TiDB 的 Hash Join 算子实现效率不高。从 v8.4.0 开始，TiDB 将对 Hash Join 算子进行重构优化，提升执行效率。在 v8.4.0 版本，该功能为实验特性，只有 INNER JOIN 和 OUTER JOIN 可以使用重构后的高性能 Hash Join 算子。当该功能启用时，执行器会根据高性能 Hash Join 算子对关联操作的支持情况，自动选择是否使用高性能 Hash Join 算子。你可以通过 [tidb_hash_join_version](/system-variables.md#tidb_hash_join_version-从-v840-版本开始引入) 变量控制是否启用高性能 Hash Join 算子。
 
-    更多信息，请参考[用户文档](/system-variables.md#tidb_hash_join_use_new_impl-从-v840-版本开始引入)。
+    更多信息，请参考[用户文档](/system-variables.md#tidb_hash_join_version-从-v840-版本开始引入)。
 
 * 支持下推以下字符串函数到 TiKV [#17529](https://github.com/tikv/tikv/issues/17529) @[gengliqi](https://github.com/gengliqi) **tw@qiancai** <!--1716-->
 
@@ -308,6 +308,8 @@ TiDB 版本：8.4.0
 | tidb_scatter_region       |          修改                    | 原先为布尔型，仅支持开启或关闭，且开启后新建的表的 region 只支持表级别打散，v8.3.0 开始改成字符串型，并新增支持集群级别的打算策略，避免快速批量建表时由于 region 分布不均匀导致 TiKV OOM 的问题     |
 | tidb_shard_row_id_bits       |         新增                     |   原先 ‘shard_row_id_bits’ 需要在每个 Create Table 或 Alter Table 的 SQL 语句里声明，一旦需要同样配置的表数量较多，操作复杂，因此引入该变量，可在 Global 或 Session 级别设置该系统变量，提升易用性  |
 | tidb_pre_split_regions       |         新增                     |   原先 ‘pre_split_regions’ 需要在每个 Create Table SQL 语句里声明，一旦需要同样配置的表数量较多，操作复杂，因此引入该变量，可在 Global 或 Session 级别设置该系统变量，提升易用性  |
+|  [tidb_tso_client_rpc_mode](/system-variables.md#tidb_tso_client_rpc_mode-从-v840-版本开始引入)      |         新增                     |   原有的 TSO 请求为同步模式。现在引入 TSO 请求的异步批处理模式，并提供不同的并发能力。异步模式可以降低获取 TSO 的延迟，但可能会增加 PD 的负载。  |
+|  [tidb_hash_join_version](/system-variables.md#tidb_hash_join_version-从-v840-版本开始引入)     |         新增                     |   原有的 TiDB Hash Join 算法效率不佳，引入新的 HashJoin 版本，实现更加高效的计算  |
 
 
 ### 配置文件参数
@@ -315,8 +317,8 @@ TiDB 版本：8.4.0
 | 配置文件 | 配置项 | 修改类型 | 描述 |
 | -------- | -------- | -------- | -------- |
 |  TiKV        |   grpc-keepalive-timeout       |    修改      |  该配置文件参数原先为 int 类型，且最小值仅支持设置为 1，从 v8.3.0 开始，数据类型修改为 float64 ，且最小值支持设置为 0.05，可以在网络抖动比较频繁的场景，适当调小该值，通过减少重试间隔，来减少网络抖动带来的性能影响。       |
-|          |          |          |          |
-|          |          |          |          |
+|  TiKV        |   in_memory_peer_size_limit       |    新增      |    该配置文件参数用于指定单 region 的 内存上限      |
+|  TiKV        |   in_memory_global_size_limit      |   新增       |   该配置文件参数用于指定 TiKV 实例的 内存上限       |
 |          |          |          |          |
 
 ### 系统表
@@ -357,6 +359,9 @@ TiDB 版本：8.4.0
 + TiKV
 
   - 默认 Region 大小由 96 MB 提升到 256 MB，避免 Region 数量过多带来的额外开销 [#17309](https://github.com/tikv/tikv/issues/17309) [LykxSassinator](https://github.com/LykxSassinator) **tw@hfxsd** <!--1925-->
+
+  - 增加配置项指定单 region 和实例的内存用量，在热点写时通过增加内存避免落盘带来的额外 CPU/IO 消耗 [#17542](https://github.com/tikv/tikv/issues/17542) @[cfzjywxk](https://github.com/cfzjywxk) **tw@qiancai** <!--1967-->
+
 
 + PD
 
