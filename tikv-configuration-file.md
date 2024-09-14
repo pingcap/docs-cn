@@ -2313,14 +2313,14 @@ Raft Engine 相关的配置项。
 
 ### `in-memory-peer-size-limit` <span class="version-mark">从 v8.4.0 版本开始引入</span>
 
-+ 控制单 region 内存悲观锁内存使用上限。
++ 控制单 region 内存悲观锁内存使用上限。当使用超过限制时，悲观锁将 fallback 到持久化方式写入。
 + 默认值：512KiB
 + 单位：KiB|MiB|GiB
 
 
 ### `in-memory-global-size-limit` <span class="version-mark">从 v8.4.0 版本开始引入</span>
 
-+ 控制单 tikv 实例内存悲观锁使用总上限。
++ 控制单 tikv 实例内存悲观锁使用总上限。当使用超过限制时，悲观锁将 fallback 到持久化方式写入。
 + 默认值：100MiB
 + 单位：KiB|MiB|GiB
 
