@@ -49,7 +49,6 @@ TiDB Lightning 的完整配置文件可参考[完整配置及命令行参数](/t
 
 冲突数据是指两条或两条以上记录中存在主键或唯一键列数据重复。TiDB Lightning 的逻辑导入模式通过 [`conflict.strategy`](/tidb-lightning/tidb-lightning-configuration.md#tidb-lightning-任务配置) 配置冲突数据的处理行为，使用不同的 SQL 语句进行导入。
 
-<<<<<<< HEAD
 | 策略 | 冲突时默认行为 | 对应 SQL 语句 |
 |:---|:---|:---|
 | `"replace"` | 新数据替代旧数据 | `REPLACE INTO ...` |
