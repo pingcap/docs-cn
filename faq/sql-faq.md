@@ -133,7 +133,7 @@ MySQL 中，返回结果的顺序可能较为固定，因为查询是通过单�
 
 ## TiDB 的 codec 能保证 UTF8 的字符串是 memcomparable 的吗？我们的 key 需要支持 UTF8，有什么编码建议吗？
 
-TiDB 字符集默认就是 UTF8 而且目前只支持 UTF8，字符串就是 memcomparable 格式的。
+TiDB 的默认字符集是 `utf8mb4`，字符串是 memcomparable 格式。关于字符集的更多信息，参见[字符集和排序规则](/character-set-and-collation.md)。
 
 ## 一个事务中的语句数量最大是多少？
 
