@@ -188,9 +188,9 @@ with Session(engine) as session:
    session.commit()
 ```
 
-#### 用索引定义优化的矢量列
+#### 定义带索引优化的向量列
 
-定义三维矢量列，并使用 [向量量搜索索引](/vector-search-index.md) (HNSW 索引)对其进行优化。
+定义一个三维向量列，并使用[向量搜索索引](/vector-search-index.md)（HNSW 索引）对其进行优化。
 
 ```python
 class DocumentWithIndex(Base):
@@ -200,7 +200,7 @@ class DocumentWithIndex(Base):
     embedding = Column(VectorType(3), comment="VECTOR INDEX idx_embedding USING HNSW ((VEC_COSINE_DISTANCE(embedding)))")
 ```
 
-TiDB 将使用该索引来加速基于余弦距离函数的矢量搜索查询。
+TiDB 将使用该索引来加速基于余弦距离函数的向量搜索查询。
 
 ### 搜索近邻向量
 

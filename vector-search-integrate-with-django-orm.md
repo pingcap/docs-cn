@@ -225,9 +225,9 @@ Document.objects.create(content="fish", embedding=[1, 2, 4])
 Document.objects.create(content="tree", embedding=[1, 0, 0])
 ```
 
-#### 用索引定义优化的向量列
+#### 定义带索引优化的向量列
 
-定义三维向量列，并使用 [向量搜索索引 (HNSW 索引)](/vector-search-index.md) 对其进行优化。
+定义一个三维向量列，并使用[向量搜索索引](/vector-search-index.md)（HNSW 索引）对其进行优化。
 
 ```python
 class DocumentWithIndex(models.Model):
