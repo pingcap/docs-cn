@@ -4305,6 +4305,16 @@ EXPLAIN FORMAT='brief' SELECT COUNT(1) FROM t WHERE a = 1 AND b IS NOT NULL;
 - 这个变量用来控制单个 `SESSION` 的 Prepared Plan Cache 最多能够缓存的计划数量，具体可见 [Prepared Plan Cache 的内存管理](/sql-prepared-plan-cache.md#prepared-plan-cache-的内存管理)。
 - 在 v6.1.0 之前这个开关通过 TiDB 配置文件 (`prepared-plan-cache.capacity`) 进行配置，升级到 v6.1.0 时会自动继承原有设置。
 
+### `tidb_pre_split_regions` <span class="version-mark">从 v8.4.0 版本开始引入</span>
+
+- 作用域：SESSION | GLOBAL
+- 是否持久化到集群：是
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：否
+- 类型：整数型
+- 默认值：`0`
+- 范围：`[0, 15]`
+- 该变量用于设置新建表的默认行分裂分片数。当设置了该变量为非 0 值后，执行 CRATE TABLE 语句时，TiDB 会将为允许使用 `pre_split_regions` 的表 (如，NONCLUSTERED 表) 自动设定该属性。详细说明见 [pre_split_regions](/sql-statement-split-region.md)。该变量通常与 `tidb_shard_row_id_bits` 配合使用，用于为新建表进行分片以及 region 预分裂。
+
 ### `tidb_projection_concurrency`
 
 > **警告：**
@@ -4601,6 +4611,16 @@ EXPLAIN FORMAT='brief' SELECT COUNT(1) FROM t WHERE a = 1 AND b IS NOT NULL;
 - 默认值：`9223372036854775807`
 - 范围：`[1, 9223372036854775807]`
 - 该变量设置为 [`AUTO_RANDOM`](/auto-random.md) 或 [`SHARD_ROW_ID_BITS`](/shard-row-id-bits.md) 属性列分配的最大连续 ID 数。通常，`AUTO_RANDOM` ID 或带有 `SHARD_ROW_ID_BITS` 属性的行 ID 在一个事务中是增量和连续的。你可以使用该变量来解决大事务场景下的热点问题。
+
+### `tidb_shard_row_id_bits` <span class="version-mark">从 v8.4.0 版本开始引入</span>
+
+- 作用域：SESSION | GLOBAL
+- 是否持久化到集群：是
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：否
+- 类型：整数型
+- 默认值：`0`
+- 范围：`[0, 15]`
+- 该变量用于设置新建表的默认行 ID 的分片位数。当设置了该变量为非 0 值后，执行 CRATE TABLE 语句时，TiDB 会将为允许使用 `shard_row_id_bits` 的表 (如，NONCLUSTERED 表) 自动设定该属性。详细说明见 [SHARD_ROW_ID_BITS](/shard-row-id-bits.md)。
 
 ### `tidb_simplified_metrics`
 
