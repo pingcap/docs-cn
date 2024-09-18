@@ -7,6 +7,10 @@ summary: 了解如何在 Django ORM 中通过 TiDB 向量搜索功能存储向�
 
 本文档将展示如何使用 [Django](https://www.djangoproject.com/) ORM 与 [TiDB 向量搜索](/vector-search-overview.md)进行交互，以及如何存储向量和执行向量搜索查询。
 
+> **警告：**
+>
+> 向量搜索目前为实验特性，不建议在生产环境中使用。该功能可能会在未事先通知的情况下发生变化或删除。如果发现 bug，请在 GitHub 上提 [issue](https://github.com/pingcap/tidb/issues) 反馈。
+
 ## 前置需求
 
 为了能够顺利完成本文中的操作，你需要提前：

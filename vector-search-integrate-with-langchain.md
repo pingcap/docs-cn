@@ -7,6 +7,10 @@ summary: 展示如何在 LangChain 中使用 TiDB 向量搜索
 
 本文档将展示如何在 [LangChain](https://python.langchain.com/) 中使用 [TiDB 向量搜索](/vector-search-overview.md)。
 
+> **警告：**
+>
+> 向量搜索目前为实验特性，不建议在生产环境中使用。该功能可能会在未事先通知的情况下发生变化或删除。如果发现 bug，请在 GitHub 上提 [issue](https://github.com/pingcap/tidb/issues) 反馈。
+
 > **Note**
 >
 > 你可以在 Jupyter Notebook 上查看完整的[示例代码](https://github.com/langchain-ai/langchain/blob/master/docs/docs/integrations/vectorstores/tidb_vector.ipynb)，也可以直接在 [Colab](https://colab.research.google.com/github/langchain-ai/langchain/blob/master/docs/docs/integrations/vectorstores/tidb_vector.ipynb) 在线环境中运行示例代码。

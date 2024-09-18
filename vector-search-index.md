@@ -9,6 +9,10 @@ K 近邻（K-Nearest Neighbors，简称 KNN）搜索是一种在向量空间中�
 
 在 TiDB 中，你可以创建并利用向量搜索索引来对[向量数据类型](/vector-search-data-types.md)的列进行近似近邻（Approximate Nearest Neighbor，简称 ANN）搜索。通过使用向量搜索索引，整个查询可在几毫秒内完成。
 
+> **警告：**
+>
+> 向量搜索索引目前为实验特性，不建议在生产环境中使用。该功能可能会在未事先通知的情况下发生变化或删除。如果发现 bug，请在 GitHub 上提 [issue](https://github.com/pingcap/tidb/issues) 反馈。
+
 TiDB 目前支持以下向量搜索索引算法：
 
 - HNSW

@@ -7,6 +7,10 @@ summary: 本文介绍 TiDB 的向量相关函数和操作。
 
 本文介绍 TiDB 支持的向量函数和操作符。
 
+> **警告：**
+>
+> 该功能目前为实验特性，不建议在生产环境中使用。该功能可能会在未事先通知的情况下发生变化或删除。如果发现 bug，请在 GitHub 上提 [issue](https://github.com/pingcap/tidb/issues) 反馈。
+
 ## 向量函数
 
 TiDB 为[向量数据类型](/vector-search-data-types.md)引入了以下向量函数：

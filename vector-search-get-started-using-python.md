@@ -9,6 +9,10 @@ summary: 了解如何使用 Python 和 TiDB 向量搜索快速开发可执行语
 
 在本文中，你将使用 [TiDB 向量搜索](/vector-search-overview.md)、Python、[TiDB Vector SDK for Python](https://github.com/pingcap/tidb-vector-python) 和 AI 大模型完成这个 AI 应用的开发。
 
+> **警告：**
+>
+> 向量搜索目前为实验特性，不建议在生产环境中使用。该功能可能会在未事先通知的情况下发生变化或删除。如果发现 bug，请在 GitHub 上提 [issue](https://github.com/pingcap/tidb/issues) 反馈。
+
 ## 前置需求
 
 为了能够顺利完成本文中的操作，你需要提前：

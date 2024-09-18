@@ -7,6 +7,10 @@ summary: 介绍 TiDB 向量搜索支持的 AI 框架、嵌入模型和 ORM 库�
 
 本文档介绍了 TiDB 向量搜索支持的 AI 框架、嵌入模型和对象关系映射 (ORM) 库。
 
+> **警告：**
+>
+> 向量搜索目前为实验特性，不建议在生产环境中使用。该功能可能会在未事先通知的情况下发生变化或删除。如果发现 bug，请在 GitHub 上提 [issue](https://github.com/pingcap/tidb/issues) 反馈。
+
 ## AI 框架
 
 TiDB 目前支持以下 AI 框架。在这些 AI 框架下，你可以使用 TiDB 向量搜索构建 AI 应用程序。

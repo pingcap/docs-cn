@@ -7,6 +7,10 @@ summary: 了解优化 TiDB 向量搜索性能的最佳实践。
 
 在 TiDB 中，你可以通过向量搜索功能进行近似近邻（Approximate Nearest Neighbor，简称 ANN）搜索，查找与给定的图像、文档等相似的结果。为了提升查询性能，请参考以下最佳实践。
 
+> **警告：**
+>
+> 向量搜索目前为实验特性，不建议在生产环境中使用。该功能可能会在未事先通知的情况下发生变化或删除。如果发现 bug，请在 GitHub 上提 [issue](https://github.com/pingcap/tidb/issues) 反馈。
+
 ## 为向量列添加向量搜索索引
 
 [向量搜索索引](/vector-search-index.md)可显著提高向量搜索查询的性能，通常能提高 10 倍或更多，而召回率仅略有下降。
