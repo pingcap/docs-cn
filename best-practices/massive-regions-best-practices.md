@@ -138,7 +138,7 @@ Region 默认的大小约为 256 MiB，将其调大也可以减少 Region 个数
 
 > **注意：**
 >
-> 从 TiDB v8.3.0 开始，Region 的默认大小从 96 MiB 调整为 256 MiB。
+> 从 TiDB v8.4.0 开始，Region 的默认大小从 96 MiB 调整为 256 MiB。
 
 > **警告：**
 >
