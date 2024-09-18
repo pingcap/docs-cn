@@ -2191,7 +2191,7 @@ mysql> SELECT job_info FROM mysql.analyze_jobs ORDER BY end_time DESC LIMIT 1;
 - 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：否
 - 类型：布尔型
 - 默认值：`OFF`
-- 这个变量用于控制是否开启 Instance Plan Cache 功能。该功能实现实例级执行计划缓存，允许同一个 TiDB 实例的所有会话共享执行计划缓存，从而提升内存利用率。 在开启此功能之前，建议关闭实例级执行计划缓存，具体方法参见 [Prepare 语句执行计划缓存](/sql-prepared-plan-cache.md) 和 [非 Prepare 语句执行计划缓存](/sql-non-prepared-plan-cache.md)。
+- 这个变量用于控制是否开启 Instance Plan Cache 功能。该功能实现实例级执行计划缓存，允许同一个 TiDB 实例的所有会话共享执行计划缓存，从而提升内存利用率。开启该功能之前，建议关闭会话级别的 [Prepare 语句执行计划缓存](/sql-prepared-plan-cache.md)和[非 Prepare 语句执行计划缓存](/sql-non-prepared-plan-cache.md)。
 
 ### `tidb_enable_ordered_result_mode`
 
