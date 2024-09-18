@@ -3004,7 +3004,8 @@ v5.0 后，用户仍可以单独修改以上系统变量（会有废弃警告）
 - 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：否
 - 类型：整数型
 - 默认值：`125829120`（即 120 MiB）
-- 这个变量用于设置 Instance Plan Cache 的最大内存使用量，单位是字节。
+- 单位：字节
+- 这个变量用于设置 Instance Plan Cache 的最大内存使用量。
 
 ### `tidb_isolation_read_engines` <span class="version-mark">从 v4.0 版本开始引入</span>
 
