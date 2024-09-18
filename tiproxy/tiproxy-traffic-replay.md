@@ -32,8 +32,9 @@ summary: 介绍 TiProxy 的流量回放的使用场景和使用步骤。
 1. 准备测试环境：
 
     1. 创建测试集群，详情参考[使用 TiUP 部署 TiDB 集群](/production-deployment-using-tiup.md)。
-    2. 同步生产集群的数据到测试集群，详情参考[数据迁移概述](/migration-overview.md)。
-    3. 在测试集群中运行 [`ANALYZE`](/sql-statements/sql-statement-analyze-table.md) 更新统计信息。
+    2. 安装 `tiproxyctl`，确保安装 `tiproxyctl` 的主机能连接到生产集群和测试集群的 TiProxy 实例。详情参考[安装 TiProxy Control](/tiproxy/tiproxy-command-line-flags.md#安装-tiproxy-control)。
+    3. 同步生产集群的数据到测试集群，详情参考[数据迁移概述](/migration-overview.md)。
+    4. 在测试集群中运行 [`ANALYZE`](/sql-statements/sql-statement-analyze-table.md) 更新统计信息。
 
 2. 使用 [`tiproxyctl traffic capture`](/tiproxy/tiproxy-command-line-flags.md#traffic-capture) 命令连接到生产集群的 TiProxy 实例，开始捕获流量。
 
