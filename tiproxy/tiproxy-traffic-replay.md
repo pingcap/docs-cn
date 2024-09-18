@@ -9,7 +9,7 @@ summary: 介绍 TiProxy 的流量回放的使用场景和使用步骤。
 >
 > TiProxy 流量回放目前为实验特性，不建议在生产环境中使用。该功能可能会在未事先通知的情况下发生变化或删除。如果发现 bug，请在 GitHub 上提 [issue](https://github.com/pingcap/tiproxy/issues) 反馈。
 
-从 TiProxy v1.3.0 开始，TiProxy 支持捕获生产集群的流量，并将流量回放到测试集群。
+从 TiProxy v1.3.0 开始，你可以使用 TiProxy 捕获 TiDB 生产集群中的访问流量，并在测试集群中按照指定的速率回放这些流量。通过该功能，你可以在测试环境中重现生产集群的实际工作负载，从而验证所有 SQL 的执行结果和性能表现。
 
 <img src="https://download.pingcap.com/images/docs-cn/tiproxy/tiproxy-traffic-replay.png" alt="TiProxy 流量回放" width="800" />
 
@@ -41,7 +41,7 @@ summary: 介绍 TiProxy 的流量回放的使用场景和使用步骤。
     >
     > - TiProxy 会捕获所有连接上的流量，包括已创建的和新创建的连接。
     > - 在 TiProxy 主备模式下，请确保连接到 TiProxy 主实例。
-    > - 如果集群使用了虚拟 IP，建议连接到虚拟 IP 地址。
+    > - 如果 TiProxy 配置了虚拟 IP，建议连接到虚拟 IP 地址。
 
     例如，以下命令连接到 TiProxy 实例 `10.0.1.10:3080`，捕获一个小时的流量，并将流量保存到 TiProxy 实例的 `/tmp/traffic` 目录下：
     
@@ -146,7 +146,7 @@ tiproxyctl traffic cancel --host 10.0.1.10 --port 3080
 
 ## 使用限制
 
-- TiProxy 仅支持回放 TiProxy 捕获的流量文件，不支持其他文件格式，因此生产集群必须先使用 TiProxy 才能捕获和回放流量。
+- TiProxy 仅支持回放 TiProxy 捕获的流量文件，不支持其他文件格式，因此生产集群必须先使用 TiProxy 捕获流量。
 - TiProxy 不支持过滤 SQL 类型，DML 和 DDL 语句也会被回放，因此重新回放前需要将集群数据恢复到回放前的状态。
 - 由于 TiProxy 使用同一个用户名回放流量，因此无法测试[资源管控](/tidb-resource-control.md)和[权限管理](/privilege-management.md)。
 - 不支持回放 [`LOAD DATA`](/sql-statements/sql-statement-load-data.md) 语句。
