@@ -145,8 +145,6 @@ server_configs:
 - `tiflash`：TiFlash 组件的版本
 - `pd`：PD 组件的版本
 - `tidb_dashboard`：独立部署的 TiDB Dashboard 组件的版本
-- `pump`：Pump 组件的版本
-- `drainer`：Drainer 组件的版本
 - `cdc`：CDC 组件的版本
 - `kvcdc`：TiKV-CDC 组件的版本
 - `tiproxy`：TiProxy 组件的版本

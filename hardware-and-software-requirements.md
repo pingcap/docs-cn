@@ -153,8 +153,6 @@ TiDB 作为开源一栈式实时 HTAP 数据库，其正常运行需要网络环
 |TiFlash|20170|TiFlash Proxy 服务端口|
 |TiFlash|20292|Prometheus 拉取 TiFlash Proxy metrics 端口|
 |TiFlash|8234|Prometheus 拉取 TiFlash metrics 端口|
-| Pump | 8250 | Pump 通信端口 |
-| Drainer | 8249 | Drainer 通信端口 |
 | CDC | 8300 | CDC 通信接口 |
 | Monitoring | 9090 | Prometheus 服务通信端口 |
 | Monitoring | 12020 | NgMonitoring 服务通信端口 |
