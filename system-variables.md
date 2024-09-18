@@ -1052,6 +1052,16 @@ mysql> SELECT job_info FROM mysql.analyze_jobs ORDER BY end_time DESC LIMIT 1;
 1 row in set (0.00 sec)
 ```
 
+### tidb_auto_analyze_concurrency
+
+- 作用域：GLOBAL
+- 是否持久化到集群：是
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：否
+- 类型：整数型
+- 默认值：`2`
+- 范围：`[1, 2147483647]`
+- 这个变量用来设置执行自动 ANALYZE 时的并发度。
+
 ### `tidb_auto_analyze_end_time`
 
 - 作用域：GLOBAL
