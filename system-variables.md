@@ -2991,7 +2991,7 @@ v5.0 后，用户仍可以单独修改以上系统变量（会有废弃警告）
 - 类型：浮点型
 - 默认值：`0.1`
 - 范围：`[0, 1]`
-- 这个变量控制每次逐出的内存大小。TiDB 会在 Plan Cache 满后，也就是内存达到 `tidb_instance_plan_cache_max_size` 开始逐出。每次逐出 `tidb_instance_plan_cache_max_size * tidb_instance_plan_cache_reserved_percentage` 数量的内存。
+- 这个变量控制发生内存驱逐动作后，空闲内存的百分比。TiDB 会在 Plan Cache 使用的内存达到 `tidb_instance_plan_cache_max_size` 时，依据 LRU 开始驱逐内存中的执行计划，直到空闲内存比例超过 `tidb_instance_plan_cache_reserved_percentage` 的定义为止。
 
 ### `tidb_instance_plan_cache_max_size` <span class="version-mark">从 v8.4.0 版本开始引入</span>
 
