@@ -241,11 +241,17 @@ TiDB 版本：8.4.0
 
 ### 数据库管理
 
-* 功能标题 [#issue号](链接) @[贡献者 GitHub ID](链接) **tw@xxx** <!--1234-->
+* PITR adds client-side log backup data encryption support (experimental) [#55834](https://github.com/pingcap/tidb/issues/55834) @[Tristan1900](https://github.com/Tristan1900) **tw@qiancai** <!--1920-->
 
-    功能描述（需要包含这个功能是什么、在什么场景下对用户有什么价值、怎么用）
+    Previously only the data from a snapshot based backup could be encrypted (on the client side) with a data key provided by the user. With this feature, log backups may now also be encrypted, ensuring that the confidentiality of information within the backup data is secured.
 
-    更多信息，请参考[用户文档](链接)。
+    For more information, see [documentation](doc-link).
+
+* BR reduces requires storage permissions for restores [#55870](https://github.com/pingcap/tidb/issues/55870) @[Leavrth](https://github.com/Leavrth) **tw@Oreoxmt** <!--1943-->
+
+    Previously, when BR was restoring data, checkpoint information about the progress of the restore was recorded in the location hosting the backup data. These restore checkpoints enabled restoration to be quickly resumed if it was interrupted. With this feature, the restore checkpoints are now stored in the target TiDB cluster. This means that BR only requires read access to the backup dataset location for restores.
+
+    For more information, see [documentation](doc-link).
 
 ### 可观测性
 
@@ -296,11 +302,11 @@ TiDB 版本：8.4.0
 
 ### 安全
 
-* 功能标题 [#issue号](链接) @[贡献者 GitHub ID](链接) **tw@xxx** <!--1234-->
+* TiDB BR Supports AWS IMDSv2 [#16443](https://github.com/tikv/tikv/issues/16443) @[pingyu](https://github.com/pingyu) **tw@hfxsd** <!--1945-->
 
-    功能描述（需要包含这个功能是什么、在什么场景下对用户有什么价值、怎么用）
+    TiDB BR now supports AWS's Instance Metadata Service Version 2 (IMDSv2) when deployed on AWS EC2. This enables users to configure the newer session-oriented method on their EC2 instances, and for BR to be able to successfully use the IAM Role associated with the instance to access AWS S3 with the appropriate privileges.
 
-    更多信息，请参考[用户文档](链接)。
+    For more information, see [documentation](/backup-and-restore-storages#authentication).
 
 ### 数据迁移
 
@@ -396,8 +402,7 @@ TiDB 版本：8.4.0
       - 集群恢复时同时设置 `split-table=false` 和 `split-region-on-table=false`，优化 region 的分配策略 [#53532](https://github.com/pingcap/tidb/issues/53532) @[Leavrth](https://github.com/Leavrth) 
       **tw@qiancai** <!--1914-->
       - 默认不允许使用 SQL 全量恢复数据到非空集群 [#55087](https://github.com/pingcap/tidb/issues/55087) @[BornChanger](https://github.com/BornChanger) **tw@Oreoxmt** <!--1711-->
-      - 快照恢复和日志恢复产生的断点数据将存储在恢复集群的临时库表中，日志恢复产生的上下游 ID 映射存储到系统表 `mysql.tidb_pitr_id_map` 中 [#55870](https://github.com/pingcap/tidb/issues/55870) @[Leavrth](https://github.com/Leavrth) **tw@Oreoxmt** <!--1943-->
-    - 日志备份与恢复现在支持本地加密，包括直接使用密钥，基于本地磁盘的主密钥和基于KMS的主密钥的加密方式。[55834](https://github.com/pingcap/tidb/issues/55834) @[Tristan1900](https://github.com/Tristan1900) **tw@qiancai** <!--1920-->
+
     + TiCDC
 
     + TiDB Data Migration (DM)
