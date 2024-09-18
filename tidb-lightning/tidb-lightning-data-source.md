@@ -9,7 +9,7 @@ TiDB Lightning 支持从多种类型的文件导入数据到 TiDB 集群。通�
 
 ```toml
 [mydumper]
-# 本地源数据目录或 S3 等外部存储 URI。关于外部存储 URI 详情可参考 https://docs.pingcap.com/zh/tidb/v6.6/backup-and-restore-storages#uri-%E6%A0%BC%E5%BC%8F。
+# 本地源数据目录或 S3 等外部存储 URI。关于外部存储 URI 详情可参考 https://docs.pingcap.com/zh/tidb/v8.1/backup-and-restore-storages#uri-格式。
 data-source-dir = "/data/my_database"
 ```
 
