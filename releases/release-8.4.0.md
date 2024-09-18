@@ -229,7 +229,7 @@ TiDB 版本：8.4.0
     TiDB 从 v6.6.0 版本开始，可通过变量 foreign_key_checks 做外键约束检查，但是其一直为实验特性。v8.3.0 对外键特性在更多场景做了覆盖测试，稳定性和性能方面也有一些提升，因此从 v8.3.0 开始外键功能成为正式功能（GA）
 
     更多信息，请参考[用户文档](链接)。
-* 支持字符集  GB18030 和排序规则 gb18030_bin 和 gb18030_general_ci  [#issue号](链接) @[cbcwestwolf](https://github.com/cbcwestwolf) **tw@hfxsd** <!--1962-->
+* 支持字符集  GB18030 和排序规则 gb18030_bin 和 gb18030_general_ci  [#issue号](链接) @[cbcwestwolf](https://github.com/cbcwestwolf) **tw@lilin90** <!--1962-->
 
 新增字符集支持：TiDB v8.4 新增了对 GB18030 字符集的支持，这是一个广泛用于中文字符编码的标准，确保 TiDB 能够更好地处理中文相关的数据存储和查询需求。
 
