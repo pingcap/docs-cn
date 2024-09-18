@@ -111,7 +111,7 @@ TiDB 版本：6.5.11
 
     + TiCDC <!--tw@hfxsd: 1 note-->
 
-        - 修复 Sorter 模块读取磁盘数据时可能 Panic 的问题 [#10853](https://github.com/pingcap/tiflow/issues/10853) @[hicqu](https://github.com/hicqu)
+        - 修复 Sorter 模块读取磁盘数据时 TiCDC 可能 Panic 的问题 [#10853](https://github.com/pingcap/tiflow/issues/10853) @[hicqu](https://github.com/hicqu)
         - (dup): release-8.1.1.md > 错误修复> Tools> TiCDC - 修复当下游 Kafka 无法访问时，Processor 模块可能卡住的问题 [#11340](https://github.com/pingcap/tiflow/issues/11340) @[asddongmen](https://github.com/asddongmen)
 
     + TiDB Data Migration (DM) <!--tw@qiancai: 2 notes-->
