@@ -91,7 +91,7 @@ RESOURCE_GROUP: default
 * `RESOURCE_GROUP` 列：显示对应的资源组名称。
 * `SESSION_ALIAS` 列：显示当前连接的别名。
 * `ROWS_AFFECTED` 列：显示语句当前影响的行数。
-* `TIDB_CPU` 列：显示语句当前占用 TiDB 服务器 CPU 时间，单位是纳秒。
+* `TIDB_CPU` 列：显示语句当前占用 TiDB 服务器 CPU 时间，单位是纳秒。该列仅在开启 [Top SQL 特性](/dashboard/top-sql.md)时显示实际值，否则始终显示为 `0`。
 * `TIKV_CPU` 列：显示语句当前占用 TiKV 服务器 CPU 时间，单位是纳秒。
 
 ## CLUSTER_PROCESSLIST
