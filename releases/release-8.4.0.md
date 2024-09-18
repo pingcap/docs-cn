@@ -143,7 +143,20 @@ TiDB 版本：8.4.0
     通过开启配置 [`logical-import-prep-stmt`]()，`Lightning` 逻辑导入产生的 SQL 语句将会通过 prepare 接口执行，提升 SQL 执行效率，并有更大机会命中执行计划缓存，提升逻辑导入的速度。
 
     更多信息，请参考[用户文档]()
+* 分区表的全局索引成为正式功能（GA） [#45133](https://github.com/pingcap/tidb/issues/45133) @[mjonss](https://github.com/mjonss)@[Defined2014](https://github.com/Defined2014) **tw@hfxsd** <!--1961-->
+#
+   之前版本的分区表，因为不支持全局索引有较多的限制，比如唯一键必须包含分区表达式中用到的所有列，如果查询条件不带分区键，查询时会扫描所有分区，导致性能较差。从 v7.6.0 开始，引入了系统变量 [tidb_enable_global_index](https://docs.pingcap.com/zh/tidb/dev/system-variables#tidb_enable_global_index-%E4%BB%8E-v760-%E7%89%88%E6%9C%AC%E5%BC%80%E5%A7%8B%E5%BC%95%E5%85%A5) 用于开启全局索引特性，但该功能当时处于开发中，不够完善，不建议开启。
 
+从 v8.4.0 开始，全局索引作为正式功能发布（GA）。你可通过关键字 Global 为分区表显式创建一个全局索引，从而去除分区表唯一键必须包含分区表达式中用到的所有列的限制，满足灵活的业务需求。同时基于全局索引也提升了非分区列的查询性能。
+
+    更多信息，请参考[用户文档](链接)。
+ 
+* 优化了缓存表在部分场景下的查询性能 [#issue号](链接)  @[tiancaiamao](https://github.com/tiancaiamao) **tw@hfxsd** <!--1965-->
+
+优化了缓存表的查询性能，在使用 index lookup 执行 SELECT ... LIMIT 1 时，性能最高提升 5.4 倍。同时，提升了 indexLookupReader 在全表扫描和主键查询场景下的性能。
+
+    **更多信息，请参考[用户文档](链接)。**       
+    
 ### 稳定性
 
 * 超出预期的查询 (Runaway Queries) 新增 "处理行数" 和 RU 作为阈值 [#issue号](链接) @[HuSharp](https://github.com/HuSharp) **tw@lilin90** <!--1800-->
@@ -214,6 +227,15 @@ TiDB 版本：8.4.0
 * TiDB 外键约束检查功能成为正式功能（GA） [#issue号](链接) @[贡献者 GitHub ID](链接) **tw@lilin90** <!--1894-->
 
     TiDB 从 v6.6.0 版本开始，可通过变量 foreign_key_checks 做外键约束检查，但是其一直为实验特性。v8.3.0 对外键特性在更多场景做了覆盖测试，稳定性和性能方面也有一些提升，因此从 v8.3.0 开始外键功能成为正式功能（GA）
+
+    更多信息，请参考[用户文档](链接)。
+* 支持字符集  GB18030 和排序规则 gb18030_bin 和 gb18030_general_ci  [#issue号](链接) @[cbcwestwolf](https://github.com/cbcwestwolf) **tw@hfxsd** <!--1962-->
+
+新增字符集支持：TiDB v8.4 新增了对 GB18030 字符集的支持，这是一个广泛用于中文字符编码的标准，确保 TiDB 能够更好地处理中文相关的数据存储和查询需求。
+
+新增排序规则：引入了 gb18030_bin 和 gb18030_general_ci 两种排序规则。gb18030_bin 提供了基于二进制的精准排序，而 gb18030_general_ci 则支持大小写不敏感的通用排序规则。这两种排序规则使得对 GB18030 编码文本的排序和比较更加灵活高效。
+
+通过支持 GB18030 字符集及其排序规则，TiDB v8.4 增强了与中文应用场景的兼容性，特别是在涉及多种语言和字符编码的场景下，用户能够更方便地进行字符集的选择和操作，提升了数据库的使用体验。
 
     更多信息，请参考[用户文档](链接)。
 
@@ -355,7 +377,6 @@ TiDB 版本：8.4.0
   - 减少部分场景的 DELETE 操作从 TiKV 获取的列信息数量，降低 DELETE 操作的资源开销。[#issue号](链接) [winoros](https://github.com/winoros) **tw@Oreoxmt** <!--1798-->
   - 优化 Priority Queue 基于 Meta Cache V2 的运行效率 [#49972](https://github.com/pingcap/tidb/issues/49972) [Rustin170506](https://github.com/Rustin170506) **tw@Oreoxmt** <!--1935-->
   - 自动统计信息收集根据部署规模和硬件规格决定执行和扫描的并发度 [#issue号](链接) @[hawkingrei](https://github.com/hawkingrei) **tw@Oreoxmt** <!--1739-->
-  - ‘tidb_enable_fast_create_table’ 开启后，支持了批量快速创建外键表的场景。 [#issue号](链接) @[D3Hunter](https://github.com/D3Hunter) **tw@hfxsd** <!--1896-->
 + TiKV
 
   - 默认 Region 大小由 96 MB 提升到 256 MB，避免 Region 数量过多带来的额外开销 [#17309](https://github.com/tikv/tikv/issues/17309) [LykxSassinator](https://github.com/LykxSassinator) **tw@hfxsd** <!--1925-->
@@ -376,7 +397,7 @@ TiDB 版本：8.4.0
       **tw@qiancai** <!--1914-->
       - 默认不允许使用 SQL 全量恢复数据到非空集群 [#55087](https://github.com/pingcap/tidb/issues/55087) @[BornChanger](https://github.com/BornChanger) **tw@Oreoxmt** <!--1711-->
       - 快照恢复和日志恢复产生的断点数据将存储在恢复集群的临时库表中，日志恢复产生的上下游 ID 映射存储到系统表 `mysql.tidb_pitr_id_map` 中 [#55870](https://github.com/pingcap/tidb/issues/55870) @[Leavrth](https://github.com/Leavrth) **tw@Oreoxmt** <!--1943-->
-
+    - 日志备份与恢复现在支持本地加密，包括直接使用密钥，基于本地磁盘的主密钥和基于KMS的主密钥的加密方式。[55834](https://github.com/pingcap/tidb/issues/55834) @[Tristan1900](https://github.com/Tristan1900) **tw@qiancai** <!--1920-->
     + TiCDC
 
     + TiDB Data Migration (DM)
