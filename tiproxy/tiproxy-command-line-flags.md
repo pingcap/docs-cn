@@ -166,7 +166,9 @@ level = 'warning'
 - `--output`：（必填）指定流量文件存放的目录。
 - `--duration`：（必填）指定捕获的时长。可选单位为 `m`（分钟）、`h`（小时）或 `d`（天）。例如 `--duration=1h` 指定捕获一小时的流量。
 
-例如，以下命令连接到 TiProxy 实例 `10.0.1.10:3080`，捕获一小时的流量，并保存到 TiProxy 实例的 `/tmp/traffic` 目录下：
+示例：
+
+以下命令连接到 TiProxy 实例 `10.0.1.10:3080`，捕获一小时的流量，并保存到 TiProxy 实例的 `/tmp/traffic` 目录下：
     
 ```shell
 tiproxyctl traffic capture --host 10.0.1.10 --port 3080 --output="/tmp/traffic" --duration=1h
@@ -183,7 +185,9 @@ tiproxyctl traffic capture --host 10.0.1.10 --port 3080 --output="/tmp/traffic" 
 - `--input`：（必填）指定流量文件存放的目录。
 - `--speed`：（可选）指定回放速率的倍数，范围为 `[0.1, 10]`，默认为 1，表示原速回放。
 
-例如，如下命令通过用户名 `u1` 和密码 `123456` 连接到 TiProxy 实例 `10.0.1.10:3080`，并从 TiProxy 实例的 `/tmp/traffic` 目录下读取流量文件，以 2 倍速率回放流量：
+示例：
+
+以下命令通过用户名 `u1` 和密码 `123456` 连接到 TiProxy 实例 `10.0.1.10:3080`，并从 TiProxy 实例的 `/tmp/traffic` 目录下读取流量文件，以 2 倍速率回放流量：
 
 ```shell
 tiproxyctl traffic replay --host 10.0.1.10 --port 3080 --username="u1" --password="123456" --input="/tmp/traffic" --speed=2
