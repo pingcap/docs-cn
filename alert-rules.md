@@ -956,38 +956,6 @@ aliases: ['/docs-cn/dev/alert-rules/','/docs-cn/dev/reference/alert-rules/']
     * 检查 TiFlash 进程是否存在。
     * 检查监控机与 TiFlash 服务所在机器之间网络是否正常。
 
-#### `Pump_server_is_down`
-
-* 报警规则：
-
-    `probe_success{group="pump"} == 0`
-
-* 规则描述：
-
-    Pump 服务端口探测失败。
-
-* 处理方法：
-
-    * 检查 Pump 服务所在机器是否宕机。
-    * 检查 Pump 进程是否存在。
-    * 检查监控机与 Pump 服务所在机器之间网络是否正常。
-
-#### `Drainer_server_is_down`
-
-* 报警规则：
-
-    `probe_success{group="drainer"} == 0`
-
-* 规则描述：
-
-    Drainer 服务端口探测失败。
-
-* 处理方法：
-
-    * 检查 Drainer 服务所在机器是否宕机。
-    * 检查 Drainer 进程是否存在。
-    * 检查监控机与 Drainer 服务所在机器之间网络是否正常。
-
 #### `TiKV_server_is_down`
 
 * 报警规则：
