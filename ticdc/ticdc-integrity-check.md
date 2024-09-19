@@ -61,8 +61,6 @@ TiCDC 默认关闭单行数据的 Checksum 校验功能。若要在开启此功�
 
 ## Checksum 算法
 
-TiCDC 支持两种 Checksum 算法：[Checksum V1](#checksum-v1) 和 [Checksum V2](#checksum-v2)。
-
 ### Checksum V1
 
 在 v8.4.0 之前，TiDB 和 TiCDC 采用 Checksum v1 进行 Checksum 计算和校验。
