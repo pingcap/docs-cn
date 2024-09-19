@@ -539,7 +539,13 @@ Kafka 消费者会收到一条含有大消息在外部存储服务中的地址�
 
 ### 只发送 `value` 部分到外部存储
 
-从 v8.4.0 开始，支持 `claim-check-raw-value` 参数，该参数默认为 false。当使用非 Open-Protocol 协议时，可以设置为 true，反之则报错。
+从 v8.4.0 开始，TiCDC 支持仅将 Kafka 消息的 `value` 部分发送到外部存储，该功能仅适用于非 Open Protocol 协议。你可以通过设置 `claim-check-raw-value` 参数控制是否开启该功能，该参数默认值为 `false`。
+
+> **注意：**
+>
+> 当使用 Open Protocol 协议时，将 `claim-check-raw-value` 参数设置为 `true` 会报错。
+
+当 `claim-check-raw-value` 设置为 `true` 时，changefeed 直接将 Kafka 消息的 `value` 部分发送到外部存储，而无需对 `key` 和 `value` 进行额外的 JSON 序列化。这样可以降低 CPU 开销。此外，消费端可以直接从外部存储读取可直接消费的数据，减少了反序列化过程的开销。
 
 配置样例如下所示：
 
