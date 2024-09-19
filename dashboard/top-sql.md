@@ -27,8 +27,6 @@ Top SQL 不能用于解答与性能无关的问题，例如数据正确性或异
 
 当前 Top SQL 仍然处于早期阶段，功能正在持续加强。以下列举了一些目前暂不支持的场景，供参考：
 
-* 暂时不支持分析 Top 5 以外 SQL 语句的开销情况（如多业务混合时）。
-* 暂时不支持按 User、Database 等不同维度分析 Top N SQL 语句的开销情况。
 * 暂时不支持分析并非由于 CPU 负载高导致的数据库性能问题，例如锁冲突。
 
 ## 访问页面
@@ -96,6 +94,16 @@ SET GLOBAL tidb_enable_top_sql = 1;
 * 如果图表中显示的数据已过时，你可以点击**刷新** (Refresh) 按钮，或在**刷新** (Refresh) 下拉列表中选择自动刷新。
 
   ![刷新](/media/dashboard/top-sql-usage-refresh.png)
+
+6. 查看 TiKV 按表或者数据库维度的 CPU 资源使用，快速定位更高粒度的资源使用情况 （8.4 引入）
+
+* 首先选择一个 TiKV 实力你可以在选择器里面选择 By TABLE 或者 By SCHEMA.
+
+  ![选择聚合维度](/media/dashboard/top-sql-usage-select-agg-by.png)
+
+* 看高纬度的聚合结果
+
+  ![按 DB 维度聚合结果页面](/media/dashboard/top-sql-usage-agg-by-db-detail.png)
 
 ## 停用 Top SQL
 
