@@ -4157,7 +4157,7 @@ EXPLAIN FORMAT='brief' SELECT COUNT(1) FROM t WHERE a = 1 AND b IS NOT NULL;
 - 可选值：``，`TABLE`，`GLOBAL`
 - TiDB 默认会在建表时为新表分裂 Region，使用该变量控制表分裂打散策略，TiDB 会根据选择的打散策略进行 Region 打散。适用于批量建表后紧接着批量写入数据，能让刚分裂出的 Region 先在 TiKV 分散而不用等待 PD 进行调度。为了保证后续批量写入数据的稳定性，建表语句会等待打散 Region 完成后再返回建表成功，建表语句执行时间会是该变量关闭时的数倍。可选值包括：
     - 默认值为 ``，表示对于表 Region 不进行打散。
-    -   `TABLE`：表示当你建表时，如果设置了 `PRE_SPLIT_REGIONS` 或者 `SHARD_ROW_ID_BITS`，预分裂多个 Region 的场景下，会按表的粒度对这些表的 Region 进行打散。但是如果你这建表时没有设置上述属性，在快速创建大量表的场景，会导致这些表的 Region 集中在其中几个 TiKV 节点上，造成 Region 分布不均匀。
+    - `TABLE`：表示当你在建表时，如果设置了 `PRE_SPLIT_REGIONS` 或者 `SHARD_ROW_ID_BITS`，预分裂多个 Region 的场景下，会按表的粒度对这些表的 Region 进行打散。但是如果你在建表时没有设置上述属性，在快速创建大量表的场景，会导致这些表的 Region 集中在其中几个 TiKV 节点上，造成 Region 分布不均匀。
     - `GLOBAL`：表示 TiDB 会根据整个集群的数据分布情况来打散新建表的 Region。特别是快速创建大量表的时候，使用 `GLOBAL` 可以有效避免 Region 过度集中在少数几个 TiKV 节点上，确保 Region 分布均匀。
 - 如果建表时设置了 `SHARD_ROW_ID_BITS` 和 `PRE_SPLIT_REGIONS`，建表成功后会均匀切分出指定数量的 Region。
 
