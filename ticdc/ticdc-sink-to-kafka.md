@@ -557,5 +557,3 @@ large-message-handle-option = "claim-check"
 claim-check-storage-uri = "s3://claim-check-bucket"
 claim-check-raw-value = true
 ```
-
-该参数为 true 时，changefeed 直接发送 Kafka 消息的 Value 部分到外部存储，避免了将 Key 和 Value 进一步执行 JSON 序列化的过程，减少了 CPU 开销。在消费端，可以直接从外部存储读取到可以被直接消费的数据，减少了反序列化过程的开销。
