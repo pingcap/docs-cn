@@ -537,7 +537,7 @@ Kafka 消费者会收到一条含有大消息在外部存储服务中的地址�
 
 `key` 和 `value` 分别对应于 Kafka 消息中的同名字段。消费者可以通过解析这两部分的数据，还原大消息的内容。目前，只有 Open-Protocol 编码的 Kafka 消息，有 Key 字段，通过将 Key 和 Value 编码进同一个 JSON 对象，一次性发送完整的消息。对于其余协议，Key 字段总是为空。
 
-#### 只发送 Kafka 消息的 Value 部分到外部存储
+### 只发送 `value` 部分到外部存储
 
 从 v8.4.0 开始，支持 `claim-check-raw-value` 参数，该参数默认为 false。当使用非 Open-Protocol 协议时，可以设置为 true，反之则报错。
 
