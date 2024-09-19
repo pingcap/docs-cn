@@ -17,6 +17,16 @@ TiDB 目前支持以下向量搜索索引算法：
 
 - HNSW
 
+## 使用限制
+
+- 集群需要提前部署 TiFlash 节点。
+- 向量搜索索引不能作为主键或者唯一索引。
+- 向量搜索索引只能基于单一的向量列创建，不能与其他列（如整数列或字符串列）组合形成复合索引。
+- 创建和使用搜索向量索引时需要指定距离函数（目前只支持余弦距离函数 `VEC_COSINE_DISTANCE()` 和 L2 距离函数 `VEC_L2_DISTANCE()`）。
+- 不支持在同一列上创建多个使用了相同距离函数的向量搜索索引。
+- 不支持删除具有向量搜索索引的列，也不支持同时创建多个索引。
+- 不支持将向量搜索索引[设置为不可见](/sql-statements/sql-statement-alter-index.md)。
+
 ## 创建 HNSW 向量搜索索引
 
 [HNSW](https://en.wikipedia.org/wiki/Hierarchical_navigable_small_world) 是当前最流行的向量搜索索引算法之一。它性能良好，而且准确率相对较高 (特定情况下可达 98%)。
@@ -271,16 +281,6 @@ LIMIT 10;
 - `vector_index.search.discarded_nodes`：在搜索过程中已访问但被丢弃的向量行数。这些被丢弃的行不会包含在搜索结果中。如果该字段的值较大，通常表示表中有很多由于 `UPDATE` 或 `DELETE` 操作导致的数据过时的行。
 
 关于执行信息输出的更多信息，请参阅 [`EXPLAIN`](/sql-statements/sql-statement-explain.md)、[`EXPLAIN ANALYZE`](/sql-statements/sql-statement-explain-analyze.md)，以及 [使用 `EXPLAIN` 解读执行计划](/explain-walkthrough.md)。
-
-## 使用限制
-
-- 集群需要提前部署 TiFlash 并为表创建 TiFlash 副本。
-- 向量搜索索引不能作为主键或者唯一索引。
-- 向量搜索索引只能基于单一的向量列创建，不能与其他列（如整数列或字符串列）组合形成复合索引。
-- 创建和使用搜索向量索引时需要指定距离函数（目前只支持余弦距离函数 `VEC_COSINE_DISTANCE()` 和 L2 距离函数 `VEC_L2_DISTANCE()`）。
-- 不支持在同一列上创建多个使用了相同距离函数的向量搜索索引。
-- 不支持删除具有向量搜索索引的列，也不支持同时创建多个索引。
-- 不支持将向量搜索索引[设置为不可见](/sql-statements/sql-statement-alter-index.md)。
 
 ## 另请参阅
 
