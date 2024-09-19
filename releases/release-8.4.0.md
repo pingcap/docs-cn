@@ -143,19 +143,18 @@ TiDB 版本：8.4.0
     通过开启配置 [`logical-import-prep-stmt`]()，`Lightning` 逻辑导入产生的 SQL 语句将会通过 prepare 接口执行，提升 SQL 执行效率，并有更大机会命中执行计划缓存，提升逻辑导入的速度。
 
     更多信息，请参考[用户文档]()
-* 分区表的全局索引成为正式功能（GA） [#45133](https://github.com/pingcap/tidb/issues/45133) @[mjonss](https://github.com/mjonss)@[Defined2014](https://github.com/Defined2014) **tw@hfxsd** <!--1961-->
+
+* 分区表的全局索引成为正式功能 (GA) [#45133](https://github.com/pingcap/tidb/issues/45133) @[mjonss](https://github.com/mjonss)@[Defined2014](https://github.com/Defined2014) **tw@hfxsd** <!--1961-->
 #
-   之前版本的分区表，因为不支持全局索引有较多的限制，比如唯一键必须包含分区表达式中用到的所有列，如果查询条件不带分区键，查询时会扫描所有分区，导致性能较差。从 v7.6.0 开始，引入了系统变量 [tidb_enable_global_index](https://docs.pingcap.com/zh/tidb/dev/system-variables#tidb_enable_global_index-%E4%BB%8E-v760-%E7%89%88%E6%9C%AC%E5%BC%80%E5%A7%8B%E5%BC%95%E5%85%A5) 用于开启全局索引特性，但该功能当时处于开发中，不够完善，不建议开启。
+    之前版本的分区表，因为不支持全局索引有较多的限制，比如唯一键必须包含分区表达式中用到的所有列，如果查询条件不带分区键，查询时会扫描所有分区，导致性能较差。从 v7.6.0 开始，引入了系统变量 [`tidb_enable_global_index`](/system-variables.md#tidb_enable_global_index-从-v760-版本开始引入) 用于开启全局索引特性，但该功能当时处于开发中，不够完善，不建议开启。
 
-从 v8.4.0 开始，全局索引作为正式功能发布（GA）。你可通过关键字 Global 为分区表显式创建一个全局索引，从而去除分区表唯一键必须包含分区表达式中用到的所有列的限制，满足灵活的业务需求。同时基于全局索引也提升了非分区列的查询性能。
+    从 v8.4.0 开始，全局索引作为正式功能发布 (GA)。你可通过关键字 `GLOBAL` 为分区表显式创建一个全局索引，从而去除分区表唯一键必须包含分区表达式中用到的所有列的限制，满足灵活的业务需求。同时基于全局索引也提升了非分区列的查询性能。
 
-    更多信息，请参考[用户文档](链接)。
+    更多信息，请参考[用户文档](/partitioned-table.md#全局索引)。
  
-* 优化了缓存表在部分场景下的查询性能 [#issue号](链接)  @[tiancaiamao](https://github.com/tiancaiamao) **tw@hfxsd** <!--1965-->
+* 优化了缓存表在部分场景下的查询性能 [#43249](https://github.com/pingcap/tidb/issues/43249) @[tiancaiamao](https://github.com/tiancaiamao) **tw@hfxsd** <!--1965-->
 
-优化了缓存表的查询性能，在使用 index lookup 执行 SELECT ... LIMIT 1 时，性能最高提升 5.4 倍。同时，提升了 indexLookupReader 在全表扫描和主键查询场景下的性能。
-
-    **更多信息，请参考[用户文档](链接)。**       
+    优化了缓存表的查询性能，在使用 `IndexLookup` 执行 `SELECT ... LIMIT 1` 时，性能最高提升 5.4 倍。同时，提升了 `IndexLookupReader` 在全表扫描和主键查询场景下的性能。
     
 ### 稳定性
 
@@ -169,25 +168,27 @@ TiDB 版本：8.4.0
 
     更多信息，请参考[用户文档](/tidb-resource-control.md#管理资源消耗超出预期的查询-runaway-queries)。
 
-* 超出预期的查询 (Runaway Queries) 支持切换资源组 [#issue号](链接) @[JmPotato](https://github.com/JmPotato) **tw@hfxsd** <!--1832-->
+* 超出预期的查询 (Runaway Queries) 支持切换资源组 [#54434](https://github.com/pingcap/tidb/issues/54434) @[JmPotato](https://github.com/JmPotato) **tw@hfxsd** <!--1832-->
 
-    v8.4.0 新增支持将 `Runaway Queries` 切换到指定资源组。在降低优先级 (COOLDOWN) 仍旧无法有效降低资源消耗的情况下，用户可以创建一个资源组 [`RESOURCE GROUP`](/tidb-resource-control.md#管理资源组)，并指定将识别到的查询切换到该资源组中，会话的后续查询仍旧会遵循原资源组。切换资源组的行为能够更精确地限制资源使用，对 `Runaway Queries` 的资源消耗做更加严格的控制。
+    v8.4.0 新增支持将 `Runaway Queries` 切换到指定资源组。在降低优先级 (COOLDOWN) 仍旧无法有效降低资源消耗的情况下，你可以创建一个[资源组 (Resource Group)](/tidb-resource-control.md#管理资源组)，并通过配置参数 `SWITCH_GROUP` 指定将识别到的查询切换到该资源组中，会话的后续查询仍在原资源组中执行。切换资源组的行为能够更精确地限制资源使用，对 `Runaway Queries` 的资源消耗做更加严格的控制。
 
-    更多信息，请参考[用户文档](/tidb-resource-control.md#管理资源消耗超出预期的查询-runaway-queries)。
+    更多信息，请参考[用户文档](/tidb-resource-control.md#query_limit-参数说明)。
 
-* ‘tidb_scatter_region’ 支持设置集群级别的 region 打算策略 [#issue号](链接) @[D3Hunter](https://github.com/D3Hunter) **tw@hfxsd** <!--1927-->
+* 系统变量 `tidb_scatter_region` 支持设置集群级别的 Region 打算策略 [#issue号](链接) @[D3Hunter](https://github.com/D3Hunter) **tw@hfxsd** <!--1927-->
 
-     ‘tidb_scatter_region’  在之前的版本仅支持设置为开启或者关闭，开启后，建表时会使用表级别打算策略。在批量快速建表，且表的数量达到几十万张后，该策略会导致 Region 集中分布在其中几个 TiKV 节点，导致这些 TiKV 节点 OOM。因此，从 V8.3.0 版本开始，将该系统变量改为字符串类型，且新增支持集群级别的打散策略，避免上述场景下导致 TiKV OOM 的问题。
+    系统变了 `tidb_scatter_region`  在之前的版本仅支持设置为开启或者关闭，开启后，建表时会使用表级别打算策略。在批量快速建表，且表的数量达到几十万张后，该策略会导致 Region 集中分布在其中几个 TiKV 节点，导致这些 TiKV 节点 OOM。
+     
+    为解决上述问题，从 v8.4.0 版本开始，将该系统变量改为字符串类型，且新增支持集群级别的打散策略，避免上述场景下导致 TiKV OOM 的问题。
 
-    更多信息，请参考[用户文档](链接)。
+    更多信息，请参考[用户文档](/system-variables.md#tidb_scatter_region-从-v840-版本开始引入)。
 
-* 资源管控为后台任务设置资源上限 [#issue号](链接) @[glorv](https://github.com/glorv) **tw@hfxsd** <!--1909-->
+* 资源管控为后台任务设置资源上限 [#56019](https://github.com/pingcap/tidb/issues/56019) @[glorv](https://github.com/glorv) **tw@hfxsd** <!--1909-->
 
-    TiDB 资源管控能够识别并降低后台任务的运行优先级。在部分场景下，即使有空闲资源，客户希望后台任务消耗能够控制在很低的水平。在新版本中，资源管控可以通过 `UTILIZATION_LIMIT` 指令为后台任务设置资源百分比，每个节点把所有后台任务的使用量控制在这个百分比以下。精细控制后台任务的资源占用，进一步提升集群稳定性。
+    TiDB 资源管控能够识别并降低后台任务的运行优先级。在部分场景下，即使有空闲资源，用户也希望后台任务消耗能够控制在很低的水平。从 v8.4.0 开始，你可以通过 `UTILIZATION_LIMIT` 指令为资源管控的后台任务设置资源百分比，每个节点把所有后台任务的使用量控制在这个百分比以下。该功能可以让你精细控制后台任务的资源占用，进一步提升集群稳定性。
 
     更多信息，请参考[用户文档](/tidb-resource-control.md#管理后台任务)。
 
-* 优化资源组资源分配策略 [#issue号](链接) @[nolouch](https://github.com/nolouch) **tw@hfxsd** <!--1833--> <!--1940-->
+* 优化资源组资源分配策略 [#issue号](链接) @[nolouch](https://github.com/nolouch) **tw@lilin90** <!--1833--> <!--1940-->
 
     TiDB 在 v8.4.0 部分调整了资源分配策略，更好的满足客户对资源管控的预期。
 
@@ -286,13 +287,15 @@ TiDB 版本：8.4.0
 
 * 在系统表中显示 TiDB 和 TiKV 的 CPU 时间 [#55542](https://github.com/pingcap/tidb/issues/55542) @[yibin87](https://github.com/yibin87) **tw@hfxsd** <!--1877-->
 
-    [TiDB Dashboard](/dashboard/dashboard-intro.md) 的 [TOP SQL 页面](/dashboard/top-sql.md)能够展示 CPU 消耗高的 SQL 语句。v8.4.0 开始，TiDB 将 CPU 时间消耗信息加入系统表展示，与会话或 SQL 的其他指标并列，方便客户从多角度对高 CPU 消耗的操作进行观测。在实例 CPU 飙升 或集群读写热点的场景下，这些信息能够协助客户快速发现问题的原因。
+    [TiDB Dashboard](/dashboard/dashboard-intro.md) 的 [TOP SQL 页面](/dashboard/top-sql.md)能够展示 CPU 消耗高的 SQL 语句。从 v8.4.0 开始，TiDB 将 CPU 时间消耗信息加入系统表展示，与会话或 SQL 的其他指标并列，方便你从多角度对高 CPU 消耗的操作进行观测。在实例 CPU 飙升或集群读写热点的场景下，这些信息能够协助你快速发现问题的原因。
 
-    - [`STATEMENTS_SUMMARY`](/statement-summary-tables.md) 增加 `AVG_TIDB_CPU_TIME` 和 `AVG_TIKV_CPU_TIME`，显示单个 SQL 语句在历史上消耗的平均 CPU 时间。
+    - [`STATEMENTS_SUMMARY`](/statement-summary-tables.md) 增加 `AVG_TIDB_CPU_TIME` 和 `AVG_TIKV_CPU_TIME`，显示单个 SQL 语句在历史上消耗的平均 CPU 的时间。
     - [`INFORMATION_SCHEMA.PROCESSLIST`](/information-schema/information-schema-processlist.md) 增加 `TIDB_CPU` 和 `TIKV_CPU`，显示会话当前正在执行 SQL 的累计 CPU 消耗。
-    - [慢日志](/analyze-slow-queries.md)中增加字段 `Tidb_cpu_time` 和 `Tikv_cpu_time`，显示被捕捉到的 SQL 语句的 CPU 时间。
+    - [慢日志](/analyze-slow-queries.md)中增加字段 `Tidb_cpu_time` 和 `Tikv_cpu_time`，显示被捕捉到的 SQL 语句的 CPU 的时间。
 
-    其中，TiKV 的 CPU 时间默认显示；采集 TiDB 的 CPU 时间会引入额外开销（大概在8%），因此仅在开启 [Top SQL 特性](/dashboard/top-sql.md)时，TiDB 的 CPU 时间才会显示为实际值，否则始终显示为 `0`。
+    其中，TiKV 的 CPU 时间默认显示。采集 TiDB 的 CPU 时间会引入额外开销（约 8%），因此仅在开启 [Top SQL 特性](/dashboard/top-sql.md)时，TiDB 的 CPU 时间才会显示为实际值，否则始终显示为 `0`。
+    
+    更多信息，请参考[用户文档](/information-schema/information-schema-processlist.md)和[用户文档](information-schema/information-schema-slow-query.md)。
 
 * TOP SQL 可按 `Schema` 或 `Table` 维度聚合 [#issue号](链接) @[nolouch](https://github.com/nolouch) **tw@lilin90** <!--1878-->
 
@@ -302,11 +305,12 @@ TiDB 版本：8.4.0
 
 ### 安全
 
-* TiDB BR Supports AWS IMDSv2 [#16443](https://github.com/tikv/tikv/issues/16443) @[pingyu](https://github.com/pingyu) **tw@hfxsd** <!--1945-->
+* BR 支持 AWS IMDSv2 [#16443](https://github.com/tikv/tikv/issues/16443) @[pingyu](https://github.com/pingyu) **tw@hfxsd** <!--1945-->
 
     TiDB BR now supports AWS's Instance Metadata Service Version 2 (IMDSv2) when deployed on AWS EC2. This enables users to configure the newer session-oriented method on their EC2 instances, and for BR to be able to successfully use the IAM Role associated with the instance to access AWS S3 with the appropriate privileges.
+    在 AWS EC2 上部署时，TiDB BR 支持 AWS 的 Instance Metadata Service Version 2 (IMDSv2)。你可以在 EC2 实例上配置较新的面向会话的方法，BR 也可以使用与实例关联的 IAM 角色以适当的权限访问 AWS S3。
 
-    For more information, see [documentation](/backup-and-restore-storages#authentication).
+    更多信息，请参考[用户文档](/backup-and-restore-storages#authentication)。
 
 ### 数据迁移
 
