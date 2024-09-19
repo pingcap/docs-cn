@@ -71,8 +71,8 @@ CREATE TABLE vector_table (
     embedding VECTOR
 );
 
-INSERT INTO vector_table VALUES (1, '[0.3, 0.5, -0.1]'); -- 3 dimensions vector, OK
-INSERT INTO vector_table VALUES (2, '[0.3, 0.5]');       -- 2 dimensions vector, OK
+INSERT INTO vector_table VALUES (1, '[0.3, 0.5, -0.1]'); -- 插入一个 3 维向量
+INSERT INTO vector_table VALUES (2, '[0.3, 0.5]');       -- 插入一个 2 维向量
 ```
 
 需要注意的是，存储了不同维度向量的列不支持构建[向量搜索索引](/vector-search-index.md)，因为只有维度相同的向量之间才能计算向量距离。
