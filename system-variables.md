@@ -4620,7 +4620,7 @@ EXPLAIN FORMAT='brief' SELECT COUNT(1) FROM t WHERE a = 1 AND b IS NOT NULL;
 - 类型：整数型
 - 默认值：`0`
 - 范围：`[0, 15]`
-- 该变量用于设置新建表的默认行 ID 的分片位数。当设置了该变量为非 0 值后，执行 `CREATE TABLE` 语句时，TiDB 会将为允许使用 `SHARD_ROW_ID_BITS` 的表（如，NONCLUSTERED 表）自动设定该属性。详细说明见 [`SHARD_ROW_ID_BITS`](/shard-row-id-bits.md)。
+- 该变量用于设置新建表的默认行 ID 的分片位数。当设置了该变量为非 0 值后，执行 `CREATE TABLE` 语句时，TiDB 会将为允许使用 `SHARD_ROW_ID_BITS` 的表（如 NONCLUSTERED 表）自动设定该属性。详细说明见 [`SHARD_ROW_ID_BITS`](/shard-row-id-bits.md)。
 
 ### `tidb_simplified_metrics`
 
