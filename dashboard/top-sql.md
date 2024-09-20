@@ -93,13 +93,13 @@ SET GLOBAL tidb_enable_top_sql = 1;
 
 6. 查看 TiKV 按表或者数据库维度的 CPU 资源使用情况，快速定位更高维度的资源使用情况。
 
-    * 选择一个 TiKV 实例，然后选择 **By TABLE** 或者 **By DB**：
+    选择一个 TiKV 实例，然后选择 **By TABLE** 或者 **By DB**：
 
-        ![选择聚合维度](/media/dashboard/top-sql-usage-select-agg-by.png)
+    ![选择聚合维度](/media/dashboard/top-sql-usage-select-agg-by.png)
 
-    * 查看高维度的聚合结果：
+    查看高维度的聚合结果：
 
-        ![按 DB 维度聚合结果页面](/media/dashboard/top-sql-usage-agg-by-db-detail.png)
+    ![按 DB 维度聚合结果页面](/media/dashboard/top-sql-usage-agg-by-db-detail.png)
 
 ## 停用 Top SQL
 
