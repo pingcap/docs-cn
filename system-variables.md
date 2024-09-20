@@ -2991,7 +2991,7 @@ v5.0 后，用户仍可以单独修改以上系统变量（会有废弃警告）
 - 类型：浮点型
 - 默认值：`0.1`
 - 范围：`[0, 1]`
-- 这个变量用于控制内存驱逐后 Instance Plan Cache 的空闲内存百分比。当 Instance Plan Cache 使用的内存达到 [`tidb_instance_plan_cache_max_size`](#tidb_instance_plan_cache_max_size-从-v840-版本开始引入) 设置的上限时，TiDB 会按照 Least Recently Used (LRU) 算法开始驱逐内存中的执行计划，直到空闲内存比例超过 [`tidb_instance_plan_cache_reserved_percentage`](#tidb_instance_plan_cache_reserved_percentage-从-v840-版本开始引入) 设定的值。
+- 这个变量用于控制内存驱逐后 [Instance Plan Cache](/system-variables.md#tidb_enable_instance_plan_cache-从-v840-版本开始引入) 的空闲内存百分比。当 Instance Plan Cache 使用的内存达到 [`tidb_instance_plan_cache_max_size`](#tidb_instance_plan_cache_max_size-从-v840-版本开始引入) 设置的上限时，TiDB 会按照 Least Recently Used (LRU) 算法开始驱逐内存中的执行计划，直到空闲内存比例超过 [`tidb_instance_plan_cache_reserved_percentage`](#tidb_instance_plan_cache_reserved_percentage-从-v840-版本开始引入) 设定的值。
 
 ### `tidb_instance_plan_cache_max_size` <span class="version-mark">从 v8.4.0 版本开始引入</span>
 
@@ -3005,7 +3005,7 @@ v5.0 后，用户仍可以单独修改以上系统变量（会有废弃警告）
 - 类型：整数型
 - 默认值：`125829120`（即 120 MiB）
 - 单位：字节
-- 这个变量用于设置 Instance Plan Cache 的最大内存使用量。
+- 这个变量用于设置 [Instance Plan Cache](/system-variables.md#tidb_enable_instance_plan_cache-从-v840-版本开始引入) 的最大内存使用量。
 
 ### `tidb_isolation_read_engines` <span class="version-mark">从 v4.0 版本开始引入</span>
 
