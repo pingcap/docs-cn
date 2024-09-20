@@ -1879,12 +1879,12 @@ Raft Engine 相关的配置项。
 
 > **注意：**
 >
-> - 该配置仅在 Raft Engine 的 `dir` 和 `spill-dir` 各自指定为**不同盘符**的情况下有效。
+> - 该配置仅在 Raft Engine 的 `dir` 和 `spill-dir` 分别指定为**不同盘符**时才有效。
 > - 在配置该功能后，若想要关闭该功能，你需要在重启 TiKV **之前**执行如下操作：
->     1. 关闭 TiKV；
->     2. 将该目录下的所有 Raft Log 拷贝至 [`dir`](/tikv-configuration-file.md#dir) 目录下；
->     3. 从 TiKV 配置文件中删除该配置；
->     4. 重启 TiKV；
+>     1. 关闭 TiKV。
+>     2. 将该目录下的所有 Raft Log 复制到 [`dir`](/tikv-configuration-file.md#dir) 目录下。
+>     3. 从 TiKV 配置文件中删除该配置。
+>     4. 重启 TiKV。
 
 ### `batch-compression-threshold`
 
