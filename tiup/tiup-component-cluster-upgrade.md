@@ -13,7 +13,7 @@ tiup cluster upgrade <cluster-name> <version> [flags]
 ```
 
 - `<cluster-name>` 为要操作的集群名字，如果忘记集群名字可通过[集群列表](/tiup/tiup-component-cluster-list.md)查看。
-- `<version>` 为要升级到的目标版本，例如 `v6.5.10`。目前仅允许升级到比当前集群更高的版本，不允许升级到比当前集群更低的版本，即不允许降级。同时也不允许升级成 nightly 版本
+- `<version>` 为要升级到的目标版本，例如 `v6.5.11`。目前仅允许升级到比当前集群更高的版本，不允许升级到比当前集群更低的版本，即不允许降级。同时也不允许升级成 nightly 版本
 
 ## 选项
 
