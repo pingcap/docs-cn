@@ -5,7 +5,7 @@ summary: 了解 INFORMATION_SCHEMA 表 `TIDB_CHECK_CONSTRAINTS`。
 
 # TIDB\_CHECK\_CONSTRAINTS
 
-`TIDB_CHECK_CONSTRAINTS` 表提供关于表上 [`CHECK` 约束](/constraints.md#check-约束)的信息。除了包含 [`CHECK_CONSTRAINTS`](/information-schema/information-schema-check-constraints.md) 中的信息，`TIDB_CHECK_CONSTRAINTS` 还提供了定义 `CHECK` 约束的表名和表 ID。
+`TIDB_CHECK_CONSTRAINTS` 表提供关于表上 [`CHECK` 约束](/constraints.md#check-约束)的信息。除了包含 [`CHECK_CONSTRAINTS`](/information-schema/information-schema-check-constraints.md) 表中的信息之外，`TIDB_CHECK_CONSTRAINTS` 还提供了定义 `CHECK` 约束的表名和表 ID。
 
 ```sql
 USE INFORMATION_SCHEMA;
@@ -55,5 +55,5 @@ CONSTRAINT_CATALOG: def
 * `CONSTRAINT_SCHEMA`：约束的库名。
 * `CONSTRAINT_NAME`：约束的名字。
 * `CHECK_CLAUSE`：检查约束的子句。
-* `TABLE_NAME`：约束所在的表名。
-* `TABLE_ID`：约束所在的表 ID。
+* `TABLE_NAME`：约束所在表的名字。
+* `TABLE_ID`：约束所在表的 ID。
