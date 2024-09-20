@@ -2232,7 +2232,11 @@ Raft Engine 相关的配置项。
 ### `min-ts-interval`
 
 + 定期推进 Resolved TS 的时间间隔。
-+ 默认值：200ms
++ 默认值：`"1s"`
+
+> **注意：**
+>
+> 在 v6.5.0 中，`min-ts-interval` 的默认值从 `"1s"` 更改为 `"200ms"`，以减少 CDC 的延迟。从 v6.5.1 开始，该默认值更改回 `"1s"`，以减少网络流量。
 
 ### `old-value-cache-memory-quota`
 
