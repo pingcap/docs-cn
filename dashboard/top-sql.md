@@ -25,9 +25,7 @@ Top SQL 适用于分析性能问题。以下列举了一些典型的 Top SQL 适
 
 Top SQL 不能用于解答与性能无关的问题，例如数据正确性或异常崩溃问题。
 
-当前 Top SQL 仍然处于早期阶段，功能正在持续加强。以下列举了一些目前暂不支持的场景，供参考：
-
-* 暂时不支持分析并非由于 CPU 负载高导致的数据库性能问题，例如锁冲突。
+Top SQL 暂不支持分析并非由于 CPU 负载高导致的数据库性能问题，例如锁冲突。
 
 ## 访问页面
 
@@ -69,41 +67,39 @@ SET GLOBAL tidb_enable_top_sql = 1;
 
 2. 选择一个你想要观察负载的具体 TiDB 或 TiKV 实例。
 
-   ![选择实例](/media/dashboard/top-sql-usage-select-instance.png)
+    ![选择实例](/media/dashboard/top-sql-usage-select-instance.png)
 
-   如果你不知道要观察哪一个 TiDB 或 TiKV 实例，可以选择任意一个实例。在集群 CPU 开销非常不均衡的情况下，你可以首先通过 Grafana 中的 CPU 监控来确定具体期望观察的实例。
+    如果你不知道要观察哪一个 TiDB 或 TiKV 实例，可以选择任意一个实例。在集群 CPU 开销非常不均衡的情况下，你可以首先通过 Grafana 中的 CPU 监控来确定具体期望观察的实例。
 
 3. 观察 Top SQL 呈现的 Top 5 图表及表格。
 
-   ![图表表格](/media/dashboard/top-sql-usage-chart.png)
+    ![图表表格](/media/dashboard/top-sql-usage-chart.png)
 
-   柱状图中色块的大小代表了 SQL 语句在该时刻消耗的 CPU 资源的多少，不同颜色区分了不同类型的 SQL 语句。大多数情况下，你都应该关注图表中相应时间范围内 CPU 资源开销较大的 SQL 语句。
+    柱状图中色块的大小代表了 SQL 语句在该时刻消耗的 CPU 资源的多少，不同颜色区分了不同类型的 SQL 语句。大多数情况下，你都应该关注图表中相应时间范围内 CPU 资源开销较大的 SQL 语句。
 
 4. 点击表格中的某一个 SQL 语句后，可以展开查看该语句不同执行计划的执行情况，例如 Call/sec（平均每秒请求数）、Scan Indexes/sec（平均每秒扫描索引数）等。
 
-   ![详情](/media/dashboard/top-sql-details.png)
+    ![详情](/media/dashboard/top-sql-details.png)
 
 5. 基于这些初步线索，进一步在 [SQL 语句分析](/dashboard/dashboard-statement-list.md)或[慢查询](/dashboard/dashboard-slow-query.md)界面中了解该 SQL 语句开销大量 CPU 资源、或扫大量数据的详细原因。
 
-除此以外：
+    你可以在时间选择器中调整时间范围，或在图表中框选一个时间范围，来更精确、细致地观察问题。更小的时间范围将能提供细节更丰富的数据，数据最高精度可达 1 秒。
 
-* 你可以在时间选择器中调整时间范围，或在图表中框选一个时间范围，来更精确、细致地观察问题。更小的时间范围将能提供细节更丰富的数据，数据最高精度可达 1 秒。
+    ![修改时间范围](/media/dashboard/top-sql-usage-change-timerange.png)
 
-  ![修改时间范围](/media/dashboard/top-sql-usage-change-timerange.png)
+    如果图表中显示的数据已过时，你可以点击**刷新** (Refresh) 按钮，或在**刷新** (Refresh) 下拉列表中选择自动刷新。
 
-* 如果图表中显示的数据已过时，你可以点击**刷新** (Refresh) 按钮，或在**刷新** (Refresh) 下拉列表中选择自动刷新。
+    ![刷新](/media/dashboard/top-sql-usage-refresh.png)
 
-  ![刷新](/media/dashboard/top-sql-usage-refresh.png)
+6. 查看 TiKV 按表或者数据库维度的 CPU 资源使用情况，快速定位更高维度的资源使用情况。
 
-6. 查看 TiKV 按表或者数据库维度的 CPU 资源使用，快速定位更高粒度的资源使用情况 （8.4 引入）
+    * 选择一个 TiKV 实例，然后选择 **By TABLE** 或者 **By DB**：
 
-* 首先选择一个 TiKV 实力你可以在选择器里面选择 By TABLE 或者 By SCHEMA.
+        ![选择聚合维度](/media/dashboard/top-sql-usage-select-agg-by.png)
 
-  ![选择聚合维度](/media/dashboard/top-sql-usage-select-agg-by.png)
+    * 查看高维度的聚合结果：
 
-* 看高纬度的聚合结果
-
-  ![按 DB 维度聚合结果页面](/media/dashboard/top-sql-usage-agg-by-db-detail.png)
+        ![按 DB 维度聚合结果页面](/media/dashboard/top-sql-usage-agg-by-db-detail.png)
 
 ## 停用 Top SQL
 
