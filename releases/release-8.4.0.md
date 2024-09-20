@@ -123,9 +123,7 @@ TiDB 版本：8.4.0
 
 * 提升批量创建用户和修改用户密码操作的性能，提升达数百倍 [#55604](https://github.com/pingcap/tidb/pull/55604) @[wjhuang2016](https://github.com/wjhuang2016) **tw@hfxsd** <!--1941-->
 
-    在 SaaS 场景下，存在批量创建大量用户，以及定期轮换所有用户密码的需求，且需要在指定时间窗口内完成，从 V8.3.0 开始，对批量创建用户，批量修改用户密码的性能做了提升，且用户可以通过增加 session 连接数来提升并发，提升性能，大大缩短了该场景下的执行时间。
-
-    更多信息，请参考[用户文档](链接)。
+    在 SaaS 场景下，你可能需要在指定时间内批量创建大量用户、以及定期轮换所有用户密码。从 v8.4.0 开始，提升了批量创建用户、批量修改用户密码的性能，而且你可以通过增加会话连接数来提升并发，提升性能，从而大幅缩短该场景下的执行时间。
 
 * 实例中的会话共享执行计划缓存 (实验特性) [#issue号](链接) @[qw4990](https://github.com/qw4990) **tw@Oreoxmt** <!--1569-->
 
@@ -148,7 +146,9 @@ TiDB 版本：8.4.0
 #
     之前版本的分区表，因为不支持全局索引有较多的限制，比如唯一键必须包含分区表达式中用到的所有列，如果查询条件不带分区键，查询时会扫描所有分区，导致性能较差。从 v7.6.0 开始，引入了系统变量 [`tidb_enable_global_index`](/system-variables.md#tidb_enable_global_index-从-v760-版本开始引入) 用于开启全局索引特性，但该功能当时处于开发中，不够完善，不建议开启。
 
-    从 v8.4.0 开始，全局索引作为正式功能发布 (GA)。你可通过关键字 `GLOBAL` 为分区表显式创建一个全局索引，从而去除分区表唯一键必须包含分区表达式中用到的所有列的限制，满足灵活的业务需求。同时基于全局索引也提升了非分区列的查询性能。
+    从 v8.3.0 开始，全局索引作为实验特性正式发布。你可通过关键字 `GLOBAL` 为分区表显式创建一个全局索引，从而去除分区表唯一键必须包含分区表达式中用到的所有列的限制，满足灵活的业务需求。同时基于全局索引也提升了非分区列的查询性能。
+
+    在 v8.4.0 中，全局索引成为正式功能 (GA)。
 
     更多信息，请参考[用户文档](/partitioned-table.md#全局索引)。
  
@@ -170,21 +170,21 @@ TiDB 版本：8.4.0
 
 * 超出预期的查询 (Runaway Queries) 支持切换资源组 [#54434](https://github.com/pingcap/tidb/issues/54434) @[JmPotato](https://github.com/JmPotato) **tw@hfxsd** <!--1832-->
 
-    v8.4.0 新增支持将 `Runaway Queries` 切换到指定资源组。在降低优先级 (COOLDOWN) 仍旧无法有效降低资源消耗的情况下，你可以创建一个[资源组 (Resource Group)](/tidb-resource-control.md#管理资源组)，并通过配置参数 `SWITCH_GROUP` 指定将识别到的查询切换到该资源组中，会话的后续查询仍在原资源组中执行。切换资源组的行为能够更精确地限制资源使用，对 `Runaway Queries` 的资源消耗做更加严格的控制。
+    v8.4.0 新增支持将 Runaway Queries 切换到指定资源组。在降低优先级 (COOLDOWN) 仍旧无法有效降低资源消耗的情况下，你可以创建一个[资源组 (Resource Group)](/tidb-resource-control.md#创建资源组)，并通过配置参数 `SWITCH_GROUP` 指定将识别到的查询切换到该资源组中，会话的后续查询仍在原资源组中执行。切换资源组的行为能够更精确地限制资源使用，对 Runaway Queries 的资源消耗做更加严格的控制。
 
     更多信息，请参考[用户文档](/tidb-resource-control.md#query_limit-参数说明)。
 
-* 系统变量 `tidb_scatter_region` 支持设置集群级别的 Region 打算策略 [#55184](https://github.com/pingcap/tidb/issues/55184) @[D3Hunter](https://github.com/D3Hunter) **tw@hfxsd** <!--1927-->
+* 系统变量 `tidb_scatter_region` 支持设置集群级别的 Region 打散策略 [#55184](https://github.com/pingcap/tidb/issues/55184) @[D3Hunter](https://github.com/D3Hunter) **tw@hfxsd** <!--1927-->
 
-    系统变了 `tidb_scatter_region`  在之前的版本仅支持设置为开启或者关闭，开启后，建表时会使用表级别打算策略。在批量快速建表，且表的数量达到几十万张后，该策略会导致 Region 集中分布在其中几个 TiKV 节点，导致这些 TiKV 节点 OOM。
+    系统变量 `tidb_scatter_region`  在之前的版本仅支持设置为开启或者关闭，开启后，建表时会使用表级别打散策略。在批量快速建表，且表的数量达到几十万张后，该策略会导致 Region 集中分布在其中几个 TiKV 节点，导致这些 TiKV 节点 OOM。
      
     为解决上述问题，从 v8.4.0 版本开始，将该系统变量改为字符串类型，且新增支持集群级别的打散策略，避免上述场景下导致 TiKV OOM 的问题。
 
-    更多信息，请参考[用户文档](/system-variables.md#tidb_scatter_region-从-v840-版本开始引入)。
+    更多信息，请参考[用户文档](/system-variables.md#tidb_scatter_region)。
 
-* 资源管控为后台任务设置资源上限 [#56019](https://github.com/pingcap/tidb/issues/56019) @[glorv](https://github.com/glorv) **tw@hfxsd** <!--1909-->
+* 支持为资源管控的后台任务设置资源上限 [#56019](https://github.com/pingcap/tidb/issues/56019) @[glorv](https://github.com/glorv) **tw@hfxsd** <!--1909-->
 
-    TiDB 资源管控能够识别并降低后台任务的运行优先级。在部分场景下，即使有空闲资源，用户也希望后台任务消耗能够控制在很低的水平。从 v8.4.0 开始，你可以通过 `UTILIZATION_LIMIT` 指令为资源管控的后台任务设置资源百分比，每个节点把所有后台任务的使用量控制在这个百分比以下。该功能可以让你精细控制后台任务的资源占用，进一步提升集群稳定性。
+    TiDB 资源管控能够识别并降低后台任务的运行优先级。在部分场景下，即使有空闲资源，用户也希望后台任务消耗能够控制在很低的水平。从 v8.4.0 开始，你可以使用参数 `UTILIZATION_LIMIT` 为资源管控的后台任务设置最大可以使用的资源百分比，每个节点把所有后台任务的使用量控制在这个百分比以下。该功能可以让你精细控制后台任务的资源占用，进一步提升集群稳定性。
 
     更多信息，请参考[用户文档](/tidb-resource-control.md#管理后台任务)。
 
@@ -285,15 +285,15 @@ TiDB 版本：8.4.0
 
     更多信息，请参考[用户文档](链接)。
 
-* 在系统表中显示 TiDB 和 TiKV 的 CPU 时间 [#55542](https://github.com/pingcap/tidb/issues/55542) @[yibin87](https://github.com/yibin87) **tw@hfxsd** <!--1877-->
+* 在系统表中显示 TiDB 和 TiKV 的 CPU 的时间 [#55542](https://github.com/pingcap/tidb/issues/55542) @[yibin87](https://github.com/yibin87) **tw@hfxsd** <!--1877-->
 
-    [TiDB Dashboard](/dashboard/dashboard-intro.md) 的 [TOP SQL 页面](/dashboard/top-sql.md)能够展示 CPU 消耗高的 SQL 语句。从 v8.4.0 开始，TiDB 将 CPU 时间消耗信息加入系统表展示，与会话或 SQL 的其他指标并列，方便你从多角度对高 CPU 消耗的操作进行观测。在实例 CPU 飙升或集群读写热点的场景下，这些信息能够协助你快速发现问题的原因。
+    [TiDB Dashboard](/dashboard/dashboard-intro.md) 的 [Top SQL 页面](/dashboard/top-sql.md)能够展示 CPU 消耗高的 SQL 语句。从 v8.4.0 开始，TiDB 将 CPU 时间消耗信息加入系统表展示，与会话或 SQL 的其他指标并列，方便你从多角度对高 CPU 消耗的操作进行观测。在实例 CPU 飙升或集群读写热点的场景下，这些信息能够协助你快速发现问题的原因。
 
     - [`STATEMENTS_SUMMARY`](/statement-summary-tables.md) 增加 `AVG_TIDB_CPU_TIME` 和 `AVG_TIKV_CPU_TIME`，显示单个 SQL 语句在历史上消耗的平均 CPU 的时间。
     - [`INFORMATION_SCHEMA.PROCESSLIST`](/information-schema/information-schema-processlist.md) 增加 `TIDB_CPU` 和 `TIKV_CPU`，显示会话当前正在执行 SQL 的累计 CPU 消耗。
     - [慢日志](/analyze-slow-queries.md)中增加字段 `Tidb_cpu_time` 和 `Tikv_cpu_time`，显示被捕捉到的 SQL 语句的 CPU 的时间。
 
-    其中，TiKV 的 CPU 时间默认显示。采集 TiDB 的 CPU 时间会引入额外开销（约 8%），因此仅在开启 [Top SQL 特性](/dashboard/top-sql.md)时，TiDB 的 CPU 时间才会显示为实际值，否则始终显示为 `0`。
+  其中，TiKV 的 CPU 时间默认显示。采集 TiDB 的 CPU 时间会引入额外开销（约 8%），因此仅在开启 [Top SQL 特性](/dashboard/top-sql.md)时，TiDB 的 CPU 时间才会显示为实际值，否则始终显示为 `0`。
     
     更多信息，请参考[用户文档](/information-schema/information-schema-processlist.md)和[用户文档](information-schema/information-schema-slow-query.md)。
 
@@ -307,10 +307,9 @@ TiDB 版本：8.4.0
 
 * BR 支持 AWS IMDSv2 [#16443](https://github.com/tikv/tikv/issues/16443) @[pingyu](https://github.com/pingyu) **tw@hfxsd** <!--1945-->
 
-    TiDB BR now supports AWS's Instance Metadata Service Version 2 (IMDSv2) when deployed on AWS EC2. This enables users to configure the newer session-oriented method on their EC2 instances, and for BR to be able to successfully use the IAM Role associated with the instance to access AWS S3 with the appropriate privileges.
-    在 AWS EC2 上部署时，TiDB BR 支持 AWS 的 Instance Metadata Service Version 2 (IMDSv2)。你可以在 EC2 实例上配置较新的面向会话的方法，BR 也可以使用与实例关联的 IAM 角色以适当的权限访问 AWS S3。
+    在 AWS EC2 上部署 TiDB 时，BR 支持 AWS 的 Instance Metadata Service Version 2 (IMDSv2)。你可以在 EC2 实例上进行相关配置，使 BR 可以使用与实例关联的 IAM 角色以适当的权限访问 AWS S3。
 
-    更多信息，请参考[用户文档](/backup-and-restore-storages#authentication)。
+    更多信息，请参考[用户文档](/br/backup-and-restore-storages.md#鉴权)。
 
 ### 数据迁移
 
@@ -389,7 +388,7 @@ TiDB 版本：8.4.0
   - 自动统计信息收集根据部署规模和硬件规格决定执行和扫描的并发度 [#issue号](链接) @[hawkingrei](https://github.com/hawkingrei) **tw@Oreoxmt** <!--1739-->
 + TiKV
 
-  - 默认 Region 大小由 96 MB 提升到 256 MB，避免 Region 数量过多带来的额外开销 [#17309](https://github.com/tikv/tikv/issues/17309) [LykxSassinator](https://github.com/LykxSassinator) **tw@hfxsd** <!--1925-->
+  - Region 的默认值由 96 MiB 提升到 256 MiB，避免 Region 数量过多导致额外开销 [#17309](https://github.com/tikv/tikv/issues/17309) [LykxSassinator](https://github.com/LykxSassinator) **tw@hfxsd** <!--1925-->
   - 增加配置项指定单 region 和 TiKV 实例的内存悲观锁的内存上限，在热点写悲观锁加锁较多情况，可修改配置提升内存上限避免悲观锁落盘相关 CPU/IO 开销 [#17542](https://github.com/tikv/tikv/issues/17542) @[cfzjywxk](https://github.com/cfzjywxk) **tw@qiancai** <!--1967-->
 
 
