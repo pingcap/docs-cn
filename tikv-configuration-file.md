@@ -1872,6 +1872,21 @@ Raft Engine 相关的配置项。
 + 如果你的机器上有多个磁盘，建议将 Raft Engine 的数据存储在单独的磁盘上，以提高 TiKV 性能。
 + 默认值：`""`
 
+### `spill-dir` <span class="version-mark">从 v8.4.0 版本开始引入</span>
+
++ 存储 Raft 日志文件的辅助目录，当 `dir` 目录所在盘数据写满后，新的 Raft 日志将存储在该目录下。
++ 如果该目录不存在，则在启动 TiKV 时创建该目录。
++ 如果未设置此配置，则表示该目录不存在。
+
+> **注意：**
+>
+> - 该配置仅在 Raft Engine 的 `dir` 和 `spill-dir` 各自指定为**不同盘符**的情况下有效。
+> - 在配置该功能后，若想要关闭该功能，你需要在重启 TiKV **之前**执行如下操作：
+>     1. 关闭 TiKV；
+>     2. 将该目录下的所有 Raft Log 拷贝至 [`dir`](/tikv-configuration-file.md#dir) 目录下；
+>     3. 从 TiKV 配置文件中删除该配置；
+>     4. 重启 TiKV；
+
 ### `batch-compression-threshold`
 
 + 指定日志批处理的阈值大小。大于此配置的日志批次将被压缩。如果将此配置项设置为 `0`，则禁用压缩。
