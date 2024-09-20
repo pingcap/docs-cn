@@ -25,6 +25,8 @@ TiDB 版本：6.5.1
 
 - TiKV 配置项 [`advance-ts-interval`](/tikv-configuration-file.md#advance-ts-interval) 默认值由 `1s` 修改为 `20s`。你可以通过调整该配置项提高 Stale Read 数据的时效性（即减少延时），详情参见[减少 Stale Read 延时](/stale-read.md#减少-stale-read-延时)。
 
+- TiKV 配置项 [`cdc.min-ts-interval`](/tikv-configuration-file.md#min-ts-interval) 的默认值由 `"200ms"` 修改为 `"1s"`，以减少网络流量。
+
 ## 改进提升
 
 + TiDB
