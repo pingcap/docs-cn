@@ -1939,9 +1939,9 @@ mysql> SELECT job_info FROM mysql.analyze_jobs ORDER BY end_time DESC LIMIT 1;
 - 是否持久化到集群：是
 - 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：否
 - 类型：布尔型
-- 默认值：`OFF`
-- 可选值：`OFF`，`ON`
+- 默认值：`ON`
 - 该变量控制是否支持为分区表创建[全局索引](/partitioned-table.md#全局索引)。启用此变量后，你可以通过在索引定义中添加 `GLOBAL` 选项创建不包含分区表达式中所有列的唯一索引。
+- 从 v8.4.0 开始，该变量被废弃。其值将固定为默认值 `ON`，即默认启用[全局索引](/partitioned-table.md#全局索引)。
 
 ### `tidb_enable_lazy_cursor_fetch` <span class="version-mark">从 v8.3.0 版本开始引入</span>
 
@@ -2061,6 +2061,7 @@ mysql> SELECT job_info FROM mysql.analyze_jobs ORDER BY end_time DESC LIMIT 1;
 - 类型：布尔型
 - 默认值：`ON`
 - 这个变量用来设置是否开启 `LIST (COLUMNS) TABLE PARTITION` 特性。
+- 从v8.4.0 开始，该变量被废弃。其值将固定为默认值 `ON`，即默认启用 [List 分区](/partitioned-table.md#list-分区)。
 
 ### `tidb_enable_local_txn`
 
@@ -2388,11 +2389,7 @@ Query OK, 0 rows affected (0.09 sec)
 - 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：否
 - 默认值：`ON`
 - 类型：枚举型
-- 可选值：`OFF`，`ON`，`AUTO`
-- 这个变量用来设置是否开启 `TABLE PARTITION` 特性。目前变量支持以下三种值：
-    - 默认值 `ON` 表示开启 TiDB 当前已实现了的分区表类型，目前 Range partition、Hash partition 以及 Range column 单列的场景会生效。
-    - `AUTO` 目前作用和 `ON` 一样。
-    - `OFF` 表示关闭 `TABLE PARTITION` 特性，此时语法还是保持兼容，只是创建的表并不是真正的分区表，而是普通的表。
+- 从 v8.4.0 开始，该变量被废弃。其值将固定为默认值 `ON`，即默认启用 [`TABLE PARTITION`](/partitioned-table)。
 
 ### `tidb_enable_telemetry` <span class="version-mark">从 v4.0.2 版本开始引入</span>
 
