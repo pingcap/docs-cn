@@ -45,8 +45,8 @@ TiDB 版本：8.4.0
   </tr>
   <tr>
     <td rowspan="4">稳定性与高可用</td>
-    <td> Runaway Queries 支持更多触发条件，并能够切换资源组<!-- tw@hfxsd 1832 --></td>
-    <td>Runaway Queries 为用户提供了有效的手段，降低突发的 SQL 性能问题对系统产生的影响。新版本中新增<CODE> Coprocessor 处理的 Key 的数量</CODE>和 <CODE>Request Unit</CODE> 作为识别条件，并可以将识别到的查询置入指定资源组，对 Runaway Queries 做更精确的识别与控制。</td>
+    <td> Runaway Queries 支持更多触发条件，并能够切换资源组<!-- tw@hfxsd 1832 --><!-- tw@lilin90 1800 --></td>
+    <td>Runaway Queries 为用户提供了有效的手段，降低突发的 SQL 性能问题对系统产生的影响。新版本中新增 Coprocessor 处理的 Key 的数量 (<code>PROCESSED_KEYS</code>) 和 Request Unit (<code>RU</code>) 作为识别条件，并可以将识别到的查询置入指定资源组，对 Runaway Queries 做更精确的识别与控制。</td>
   </tr>
   <tr>
     <td> 支持为资源管控的后台任务设置资源使用上限<!-- tw@hfxsd 1909 --></td>
