@@ -2389,7 +2389,7 @@ Query OK, 0 rows affected (0.09 sec)
 - 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：否
 - 默认值：`ON`
 - 类型：枚举型
-- 从 v8.4.0 开始，该变量被废弃。其值将固定为默认值 `ON`，即默认启用 [`TABLE PARTITION`](/partitioned-table)。
+- 从 v8.4.0 开始，该变量被废弃。其值将固定为默认值 `ON`，即默认启用[分区表](/partitioned-table.md)。
 
 ### `tidb_enable_telemetry` <span class="version-mark">从 v4.0.2 版本开始引入</span>
 
