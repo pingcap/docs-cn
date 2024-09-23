@@ -40,16 +40,16 @@ TiDB 版本：8.4.0
     <td>在一部分 SaaS 系统中，存在批量创建大量用户，以及定期轮换所有用户密码的需求。TiDB 提升了创建和修改数据库用户的性能，保证操作能在期望的时间窗口。</td>
   </tr>
   <tr>
-    <td> 缓存表的查询性能提升<!-- tw@hfxsd 1965 --></td>
+    <td> 提升缓存表的查询性能<!-- tw@hfxsd 1965 --></td>
     <td>优化了缓存表索引扫描的查询性能，部分场景可提升 5.4 倍。在需要对小表进行高速查询的场景下，利用缓存表可大幅提升整体性能。</td>
   </tr>
   <tr>
     <td rowspan="4">稳定性与高可用</td>
-    <td> Runaway Queries 支持更多触发条件，并能够切换资源组<!-- tw@hfxsd 1832 --><!-- tw@lilin90 1800 --></td>
+    <td>Runaway Queries 支持更多触发条件，并能够切换资源组<!-- tw@hfxsd 1832 --><!-- tw@lilin90 1800 --></td>
     <td>Runaway Queries 为用户提供了有效的手段，降低突发的 SQL 性能问题对系统产生的影响。新版本中新增 Coprocessor 处理的 Key 的数量 (<code>PROCESSED_KEYS</code>) 和 Request Unit (<code>RU</code>) 作为识别条件，并可以将识别到的查询置入指定资源组，对 Runaway Queries 做更精确的识别与控制。</td>
   </tr>
   <tr>
-    <td> 支持为资源管控的后台任务设置资源使用上限<!-- tw@hfxsd 1909 --></td>
+    <td>支持为资源管控的后台任务设置资源使用上限<!-- tw@hfxsd 1909 --></td>
     <td>为资源管控的后台任务设置百分比上限，针对不同业务系统的需求，控制后台任务的消耗，从而将后台任务的消耗限制在一个很低的水平，保证在线业务的服务质量。</td>
   </tr>
   <tr>
@@ -62,7 +62,7 @@ TiDB 版本：8.4.0
   </tr>
   <tr>
     <td rowspan="2">SQL</td>
-    <td> 外键成为正式功能<!-- tw@lilin90 1894 --></td>
+    <td>外键成为正式功能<!-- tw@lilin90 1894 --></td>
     <td>支持 MySQL 兼容的外键约束，维护数据一致性，进一步提升了 TiDB 对 MySQL 的兼容能力。</td>
   </tr>
   <tr>
@@ -71,8 +71,8 @@ TiDB 版本：8.4.0
   </tr>
   <tr>
     <td rowspan="3">数据库管理和可观测性</td>
-    <td> 持久化内存表到 Workload Repository（实验特性）<!-- tw@lilin90 1823 --></td>
-    <td> 持久化内存表中的运行指标和状态信息，是观测性的重要增强，能极大提升过往问题诊断和追溯的效率，并为未来的自动化运维，提供了数据集支持。 围绕 Workload Repository 构建报告、诊断、推荐一体化的能力，会成为未来提升 TiDB 易用性的重要组成。</td>
+    <td>持久化内存表到 Workload Repository（实验特性）<!-- tw@lilin90 1823 --></td>
+    <td>持久化内存表中的运行指标和状态信息，是观测性的重要增强，能极大提升过往问题诊断和追溯的效率，并为未来的自动化运维，提供了数据集支持。 围绕 Workload Repository 构建报告、诊断、推荐一体化的能力，会成为未来提升 TiDB 易用性的重要组成。</td>
   </tr>
   <tr>
     <td> 在内存表中显示 TiKV 和 TiDB 的 CPU 时间<!-- tw@hfxsd 1877 --></td>
