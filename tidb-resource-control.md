@@ -226,7 +226,7 @@ Runaway Query 是指执行时间或消耗资源超出预期的查询（仅指 `S
 - `DRYRUN`：对执行 Query 不做任何操作，仅记录识别的 Runaway Query。主要用于观测设置条件是否合理。
 - `COOLDOWN`：将查询的执行优先级降到最低，查询仍旧会以低优先级继续执行，不占用其他操作的资源。
 - `KILL`：识别到的查询将被自动终止，报错 `Query execution was interrupted, identified as runaway query`。
-- `SWITCH_GROUP`: 自 v8.4.0 起引入，将识别到的查询切换到指定的资源组继续执行。
+- `SWITCH_GROUP`: 自 v8.4.0 起引入，将识别到的查询切换到指定的资源组继续执行。该查询执行结束后，后续 SQL 仍保持在原资源组中执行。如果指定的资源组不存在，则不做任何动作。
 
 为了避免并发的 Runaway Query 过多导致系统资源耗尽，资源管控引入了 Runaway Query 监控机制，能够快速识别并隔离 Runaway Query。该功能通过 `WATCH` 子句实现，当某一个查询被识别为 Runaway Query 之后，会提取这个查询的匹配特征（由 `WATCH` 后的匹配方式参数决定），在接下来的一段时间里（由 `DURATION` 定义），这个 Runaway Query 的匹配特征会被加入到监控列表，TiDB 实例会将查询和监控列表进行匹配，匹配到的查询直接标记为 Runaway Query，而不再等待其被条件识别，并按照当前应对操作进行隔离。其中 `KILL` 会终止该查询，并报错 `Quarantined and interrupted because of being in runaway watch list`。
 
@@ -250,7 +250,7 @@ Runaway Query 是指执行时间或消耗资源超出预期的查询（仅指 `S
 
 > **注意：**
 >
-> 推荐将 `SWITCH_GROUP` 和 [`QUERY WATCH`](/tidb-resource-control.md#query-watch-语句说明) 语句一起搭配使用。因为 `QUERY_LIMIT` 只有在查询执行时间超过所配置的 `EXEC_ELAPSED` 时才会触发对应 `ACTION` 操作，所以 `SWITCH_GROUP` 在此类场景下可能会出现无法及时将查询切换到目标资源组的情况。
+> 如果你想把 Runaway Queries 严格限制在一个资源组内，推荐将 `SWITCH_GROUP` 和 [`QUERY WATCH`](/tidb-resource-control.md#query-watch-语句说明) 语句一起搭配使用。因为 `QUERY_LIMIT` 只有在查询达到预设条件时才会触发，所以 `SWITCH_GROUP` 在此类场景下可能会出现无法及时将查询切换到目标资源组的情况。
 
 #### 示例
 
