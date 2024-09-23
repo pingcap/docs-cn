@@ -4498,7 +4498,7 @@ EXPLAIN FORMAT='brief' SELECT COUNT(1) FROM t WHERE a = 1 AND b IS NOT NULL;
 ### `tidb_service_scope` <span class="version-mark">从 v7.4.0 版本开始引入</span>
 
 - 作用域：GLOBAL
-- 是否持久化到集群：否
+- 是否持久化到集群：否，仅作用于当前连接的 TiDB 实例
 - 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：否
 - 类型：字符串
 - 默认值：""
