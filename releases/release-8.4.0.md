@@ -350,6 +350,7 @@ TiDB 版本：8.4.0
 |  TiKV        |   grpc-keepalive-timeout       |    修改      |  该配置文件参数原先为 int 类型，且最小值仅支持设置为 1，从 v8.3.0 开始，数据类型修改为 float64 ，且最小值支持设置为 0.05，可以在网络抖动比较频繁的场景，适当调小该值，通过减少重试间隔，来减少网络抖动带来的性能影响。       |
 |  TiKV        |   in_memory_peer_size_limit       |    新增      |    该配置文件参数用于指定单 region 的内存悲观锁的内存上限      |
 |  TiKV        |   in_memory_global_size_limit      |   新增       |   该配置文件参数用于指定 TiKV 实例的内存悲观锁的内存上限      |
+|  TiKV        |   [`raft-engine.spill-dir`](/tikv-configuration-file.md#spill-dir-从-v840-版本开始引入)      |   新增       |   该配置文件参数用于指定 TiKV 实例存储 Raft 日志文件的辅助目录，用于支持多盘存储 Raft 日志文件      |
 |          |          |          |          |
 
 ### 系统表
@@ -390,7 +391,7 @@ TiDB 版本：8.4.0
 
   - Region 的默认值由 96 MiB 提升到 256 MiB，避免 Region 数量过多导致额外开销 [#17309](https://github.com/tikv/tikv/issues/17309) [LykxSassinator](https://github.com/LykxSassinator) **tw@hfxsd** <!--1925-->
   - 增加配置项指定单 region 和 TiKV 实例的内存悲观锁的内存上限，在热点写悲观锁加锁较多情况，可修改配置提升内存上限避免悲观锁落盘相关 CPU/IO 开销 [#17542](https://github.com/tikv/tikv/issues/17542) @[cfzjywxk](https://github.com/cfzjywxk) **tw@qiancai** <!--1967-->
-
+- Raft Engine 新增 `spill-dir` 配置，支持 Raft 日志的多磁盘存储。当主目录 `dir `所在磁盘的容量不足时，Raft Engine 会自动将新日志写入 `spill-dir`，从而确保系统的持续运行。[LykxSassinator](https://github.com/LykxSassinator) **tw@hfxsd** <!--1970-->
 
 + PD
 
