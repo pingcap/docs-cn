@@ -41,16 +41,16 @@ TiDB 版本：8.4.0
   </tr>
   <tr>
     <td> 缓存表的查询性能提升<!-- tw@hfxsd 1965 --></td>
-    <td>优化了缓存表索引扫描的查询性能，部分场景可提升5倍。在需要对小表进行高速查询的场景下，利用缓存表可大幅提升整体性能。</td>
+    <td>优化了缓存表索引扫描的查询性能，部分场景可提升 5.4 倍。在需要对小表进行高速查询的场景下，利用缓存表可大幅提升整体性能。</td>
   </tr>
   <tr>
     <td rowspan="4">稳定性与高可用</td>
     <td> Runaway Queries 支持更多触发条件，并能够切换资源组<!-- tw@hfxsd 1832 --></td>
-    <td>Runaway Queries 为用户提供了有效的手段，降低突发的 SQL 性能问题对系统产生的影响。新版本中新增<CODE>处理行数</CODE>和 <CODE>Request Unit</CODE> 作为识别条件，并可以将识别到的查询置入指定资源组，对 Runaway Queries 做更精确的识别与控制。</td>
+    <td>Runaway Queries 为用户提供了有效的手段，降低突发的 SQL 性能问题对系统产生的影响。新版本中新增<CODE> Coprocessor 处理的 Key 的数量</CODE>和 <CODE>Request Unit</CODE> 作为识别条件，并可以将识别到的查询置入指定资源组，对 Runaway Queries 做更精确的识别与控制。</td>
   </tr>
   <tr>
-    <td> 支持为后台任务设置资源使用上限<!-- tw@hfxsd 1909 --></td>
-    <td>为后台任务设置百分比上线，针对不同业务系统的需求控制后台任务的消耗，可以按需将后台任务的消耗限制在一个很低的水平，保证在线业务的服务质量。</td>
+    <td> 支持为资源管控的后台任务设置资源使用上限<!-- tw@hfxsd 1909 --></td>
+    <td>为资源管控的后台任务设置百分比上限，针对不同业务系统的需求，控制后台任务的消耗，从而将后台任务的消耗限制在一个很低的水平，保证在线业务的服务质量。</td>
   </tr>
   <tr>
     <td> TiProxy 流量捕捉和回放<!-- tw@Oreoxmt 1942 --></td>
@@ -76,11 +76,11 @@ TiDB 版本：8.4.0
   </tr>
   <tr>
     <td> 在内存表中显示 TiKV 和 TiDB 的 CPU 时间<!-- tw@hfxsd 1877 --></td>
-    <td>将 CPU 时间合入系统表中展示，与会话或 SQL 的其他指标并列，方便用户从多角度对高 CPU 消耗的操作进行观测，提升诊断效率。尤其适用于诊断实例 CPU 飙升或集群读写热点等场景。</td>
+    <td>将 CPU 时间合入系统表中展示，与会话或 SQL 的其他指标并列，方便你从多角度对高 CPU 消耗的操作进行观测，提升诊断效率。尤其适用于诊断实例 CPU 飙升或集群读写热点等场景。</td>
   </tr>
   <tr>
     <td> 支持对开启了 IMDSv2 服务的 TiKV 实例做备份<!-- tw@hfxsd 1945 --></td>
-    <td><a href="https://aws.amazon.com/cn/blogs/security/get-the-full-benefits-of-imdsv2-and-disable-imdsv1-across-your-aws-infrastructure/">IMDSv2 目前是 AWS EC2 的默认元数据服务</a>。TiDB 支持从开启了 IMDSv2 的 TiKV 实例中备份数据，协助客户更好地在公有云服务中运行 TiDB 集群。</td>
+    <td><a href="https://aws.amazon.com/cn/blogs/security/get-the-full-benefits-of-imdsv2-and-disable-imdsv1-across-your-aws-infrastructure/">目前 AWS EC2 的默认元数据服务是 IMDSv2</a>。TiDB 支持从开启了 IMDSv2 的 TiKV 实例中备份数据，协助你更好地在公有云服务中运行 TiDB 集群。</td>
   </tr>
   <tr>
     <td rowspan="1">安全</td>
