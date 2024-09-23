@@ -14,7 +14,9 @@ summary: TiDB 对于 schema 信息采用缓存机制，在大量数据库和表�
 
 ## 最佳实践
 
-- 在大量数据库和表的场景下，建议打开 schema 缓存特性。
+- 在大量数据库和表的场景下（例如10万以上的数据库和表数量）或者当数据库和表的数量大到影响系统性能时，建议打开 schema 缓存特性。
+- 可以通过观测 TiDB 监控中 Schema load 下的子面板 Infoschema v2 Cache Operation 来查看 schema 缓存的命中率。如果命中率较低，可以调大 [`tidb_schema_cache_size`](/system-variables.md#tidb_schema_cache_size-从-v800-版本开始引入)。
+- 可以通过观测 TiDB 监控中 Schema load 下的子面板 Infoschema v2 Cache Size 来查看当前使用的 schema 缓存的大小。
 - 建议关闭 [`performance.force-init-stats`](/tidb-configuration-file.md#force-init-stats-从-v657-和-v710-版本开始引入) 以减少 TiDB 的启动时间。
 - 建议关闭 [`split-table`](/tidb-configuration-file.md#split-table) 以减少 region 数量，从而降低 TiKV 的内存。
 
@@ -24,3 +26,7 @@ summary: TiDB 对于 schema 信息采用缓存机制，在大量数据库和表�
 - 在大量数据库和表的场景下，一些元数据信息的访问会变慢。
 - 在大量数据库和表的场景下，TiDB 的启动时间会变长。开启 schema 缓冲能够缓解这个问题。
 - 在大量数据库和表的场景下，切换 schema 缓存开关需要等待一段时间。
+- 在大量数据库和表的场景下，全量列举所有元数据信息的相关操作会变慢，如：
+    - `SHOW FULL TABLES`
+    - `FLASHBACK`
+    - `ALTER TABLE ... SET TIFLASH MODE ...`
