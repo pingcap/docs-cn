@@ -42,7 +42,7 @@ ResourceGroupPriorityOption ::=
 |   MEDIUM
 |   HIGH
 
-ResourceGroupRunawayOptionList ::= 
+ResourceGroupRunawayOptionList ::=
     DirectResourceGroupRunawayOption
 |   ResourceGroupRunawayOptionList DirectResourceGroupRunawayOption
 |   ResourceGroupRunawayOptionList ',' DirectResourceGroupRunawayOption
@@ -62,12 +62,12 @@ ResourceGroupRunawayActionOption ::=
 |   KILL
 |   "SWITCH_GROUP" '(' ResourceGroupName ')'
 
-BackgroundOptionList ::= 
+BackgroundOptionList ::=
     DirectBackgroundOption
 |   BackgroundOptionList DirectBackgroundOption
 |   BackgroundOptionList ',' DirectBackgroundOption
 
-DirectBackgroundOption ::= 
+DirectBackgroundOption ::=
     "TASK_TYPES" EqOpt stringLit
 ```
 
