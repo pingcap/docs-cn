@@ -148,7 +148,7 @@ TiDB 版本：8.4.0
 
     从 v8.3.0 开始，全局索引作为实验特性正式发布。你可通过关键字 `GLOBAL` 为分区表显式创建一个全局索引，从而去除分区表唯一键必须包含分区表达式中用到的所有列的限制，满足灵活的业务需求。同时基于全局索引也提升了非分区列的查询性能。
 
-    在 v8.4.0 中，全局索引成为正式功能 (GA)。
+    在 v8.4.0 中，全局索引成为正式功能 (GA)。你无需再设置系统变量 [`tidb_enable_global_index`](/system-variables.md#tidb_enable_global_index-从-v760-版本开始引入) 开启全局索引特性，可以直接使用关键字 `GLOBAL` 创建全局索引。
 
     更多信息，请参考[用户文档](/partitioned-table.md#全局索引)。
  
@@ -341,7 +341,7 @@ TiDB 版本：8.4.0
 | tidb_pre_split_regions       |         新增                     |   原先 ‘pre_split_regions’ 需要在每个 Create Table SQL 语句里声明，一旦需要同样配置的表数量较多，操作复杂，因此引入该变量，可在 Global 或 Session 级别设置该系统变量，提升易用性  |
 |  [tidb_tso_client_rpc_mode](/system-variables.md#tidb_tso_client_rpc_mode-从-v840-版本开始引入)      |         新增                     |   原有的 TSO 请求为同步模式。现在引入 TSO 请求的异步批处理模式，并提供不同的并发能力。异步模式可以降低获取 TSO 的延迟，但可能会增加 PD 的负载。  |
 |  [tidb_hash_join_version](/system-variables.md#tidb_hash_join_version-从-v840-版本开始引入)     |         新增                     |   原有的 TiDB Hash Join 算法效率不佳，引入新的 HashJoin 版本，实现更加高效的计算  |
-
+| `tidb_enable_global_index` | 废弃 | 从 v8.4.0 开始，全局索引功能成为正式功能（GA），你无需通过该系统变量来开启全局索引，只需在执行 `CREATE TABLE` 或 `ALTER TABLE` 时在对应的列加上 `GLOBAL` 关键字即可创建全局索引。 |
 
 ### 配置文件参数
 
