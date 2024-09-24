@@ -1060,7 +1060,7 @@ mysql> SELECT job_info FROM mysql.analyze_jobs ORDER BY end_time DESC LIMIT 1;
 - 类型：整数型
 - 默认值：`1`
 - 范围：`[1, 2147483647]`
-- 这个变量用来设置执行自动 ANALYZE 时的并发度。
+- 这个变量用来设置执行自动统计信息收集时的并发度。在 v8.4.0 以前的版本，自动统计信息收集的并发度为`1`。如果集群资源允许，提升自动统计信息收集的并发度能够加快统计信息收集任务的执行速度。
 
 ### `tidb_auto_analyze_end_time`
 
