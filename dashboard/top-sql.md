@@ -92,7 +92,7 @@ SET GLOBAL tidb_enable_top_sql = 1;
 
     ![刷新](/media/dashboard/top-sql-usage-refresh.png)
 
-6. 查看 TiKV 按表或者数据库维度的 CPU 资源使用情况，快速定位更高维度的资源使用情况。
+6. 查看按表或者数据库维度的 CPU 资源使用情况，快速定位更高维度的资源使用情况。目前只支持查看 TiKV 实例。
 
     选择一个 TiKV 实例，然后选择 **By TABLE** 或者 **By DB**：
 
