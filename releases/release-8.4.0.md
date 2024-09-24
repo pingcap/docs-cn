@@ -314,11 +314,17 @@ TiDB 版本：8.4.0
 
 ### 数据迁移
 
-* 功能标题 [#issue号](链接) @[贡献者 GitHub ID](链接) **tw@xxx** <!--1234-->
+* TiCDC claim check nows supports raw value format [#11396](https://github.com/pingcap/tiflow/issues/11396) @[3AceShowHand](https://github.com/3AceShowHand) **tw@Oreoxmt** <!--1919-->
 
-    功能描述（需要包含这个功能是什么、在什么场景下对用户有什么价值、怎么用）
+    When TiCDC used the claim check capability to handle large messages it included both the Key and the Value are encoded and stored in the external storage system. With the new raw value option, TiCDC can now be configured to store the value format only in the external storage system, using the protocol encoding.
 
-    更多信息，请参考[用户文档](链接)。
+    For more information, see [documentation](ticdc-sink-to-kafka.md#send-large-messages-to-external-storage).
+
+* TiCDC introduces new row checksum to verify old values after Add and Drop Column operations [#10969](https://github.com/pingcap/tiflow/issues/10969) @[3AceShowHand](https://github.com/3AceShowHand) **tw@Oreoxmt** <!--1917-->
+
+    Starting from v8.4.0, TiDB and TiCDC introduce Checksum V2 to address issues with Checksum V1 in verifying old values in Update or Delete events after Add Column or Drop Column operations. For new clusters created in v8.4.0 or later, or clusters upgraded to v8.4.0, TiDB uses Checksum V2 by default when single-row data checksum verification is enabled. TiCDC supports handling both Checksum V1 and V2. This change only affects TiDB and TiCDC internal implementation and does not impact checksum calculation methods for downstream Kafka consumers.
+  
+    For more information, see [documentation](/ticdc-integrity-check.md).
 
 ## 兼容性变更
 
@@ -369,6 +375,10 @@ TiDB 版本：8.4.0
 ## 离线包变更
 
 ## 废弃功能
+
+* 以下为从 v8.4.0 开始已移除的功能：
+
+    * TiDB Binlog replication is now removed from this version. Starting from v8.3.0, TiDB Binlog was fully deprecated. For incremental data replication, use [TiCDC](/ticdc-overview.md) instead. For point-in-time recovery (PITR), use [PITR](/br-pitr-guide.md). **tw@lilin90** <!--1946-->
 
 * 以下为从 v8.4.0 开始已废弃的功能：
 
