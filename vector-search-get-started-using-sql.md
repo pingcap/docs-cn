@@ -58,7 +58,7 @@ TiDB 扩展了 MySQL 语法以支持[向量搜索](/vector-search-overview.md)�
 
 2. 点击右上角的 **Connect** 按钮，将会弹出连接对话框。
 
-3. 在连接对话框中，选择 **Connect With** 下拉列表中的 **MySQL CLI**，并保留 **Endpoint Type** 的默认值为 **Public**。
+3. 在连接对话框中，选择 **Connect With** 下拉列表中的 **MySQL CLI**，并保留 **Connection Type** 的默认值为 **Public**。
 
 4. 如果你还没有设置密码，点击 **Generate Password** 生成一个随机密码。
 

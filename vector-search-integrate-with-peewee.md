@@ -100,7 +100,7 @@ TIDB_DATABASE=test
 
 3. 确认对话框中的配置和你的运行环境一致。
 
-    - **Endpoint Type** 设置为 `Public`
+    - **Connection Type** 设置为 `Public`
     - **Branch** 设置为 `main`
     - **Connect With** 设置为 `General`
     - **Operating System** 与你的机器环境相匹配
