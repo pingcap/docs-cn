@@ -1058,7 +1058,7 @@ mysql> SELECT job_info FROM mysql.analyze_jobs ORDER BY end_time DESC LIMIT 1;
 - 是否持久化到集群：是
 - 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：否
 - 类型：整数型
-- 默认值：`2`
+- 默认值：`1`
 - 范围：`[1, 2147483647]`
 - 这个变量用来设置执行自动 ANALYZE 时的并发度。
 
