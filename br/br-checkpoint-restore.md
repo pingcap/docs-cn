@@ -61,24 +61,24 @@ br 工具暂停 GC 的原理是通过执行 `SET config tikv gc.ratio-threshold 
 
 在恢复失败后，请避免向集群写入或删除数据、删除或创建表。由于备份数据中可能包含重命名表的 DDL 操作，断点恢复无法确认被删除的表或已存在的表是否是外部操作引起的，这会影响下次重试恢复的准确性。
 
-## 具体操作细节
+## 实现细节
 
 断点恢复的具体操作细节分为快照恢复和 PITR 恢复两部分。
 
 ### 快照恢复
 
-在第一次执行恢复时，br 工具会在恢复集群中创建名为 `__TiDB_BR_Temporary_Snapshot_Restore_Checkpoint` 的库，用于存放断点数据。并且 br 工具还记录了这次恢复的上游集群的 ID 和备份的 BackupTS。
+在第一次执行恢复时，br 工具会在恢复集群中创建 `__TiDB_BR_Temporary_Snapshot_Restore_Checkpoint` 数据库，用于存放断点数据，并且 br 工具会记录这次恢复的上游集群 ID 和备份的 BackupTS。
 
-当恢复执行失败后，你可以用相同的命令再次执行恢复，br 工具会从库 `__TiDB_BR_Temporary_Snapshot_Restore_Checkpoint` 的断点信息自动继续上一次的恢复。
+如果恢复执行失败，你可以使用相同的命令再次执行恢复，br 工具自动从 `__TiDB_BR_Temporary_Snapshot_Restore_Checkpoint` 数据库中读取断点信息，并从上次中断的位置继续恢复。
 
-当恢复执行失败后，如果你尝试使用其他备份数据恢复到同一集群，那么 br 工具会报告错误，提示这一次恢复指定的备份数据来源的上游集群的 ID 与断点中记录的不同，或者这一次恢复指定的备份数据的 BackupTS 与断点中记录的不同。如果你确认已经清理了集群，那么可以手动删除库 `__TiDB_BR_Temporary_Snapshot_Restore_Checkpoint`，然后重新尝试使用其他备份数据恢复到这个集群。
+当恢复执行失败后，如果你尝试使用与断点记录不同的备份数据恢复到同一集群，br 工具会报错，并提示上游集群 ID 或 BackupTS 与断点记录不同。如果恢复集群已被清理，你可以手动删除 `__TiDB_BR_Temporary_Snapshot_Restore_Checkpoint` 数据库，然后使用其他备份重试。
 
 ### PITR 恢复
 
-PITR 恢复分为快照恢复和日志恢复两个阶段。
+[PITR (Point-in-time recovery)](/br/br-pitr-guide.md) 恢复分为快照恢复和日志恢复两个阶段。
 
-在第一次执行恢复时，br 工具会首先进入快照恢复阶段，这与上述只进行快照恢复操作相同。当 br 工具进入到快照恢复阶段，备份数据的上游集群的 ID 和备份数据的 BackupTS （等于日志恢复的起始时间点 `start-ts`）已经被记录于断点中。这意味着当恢复在快照恢复阶段执行失败时，尝试断点恢复继续时无法再调整快照备份路径（等于日志恢复的启示时间点 `restored-ts`）.
+在第一次执行恢复时，br 工具首先进入快照恢复阶段。该阶段与上述只进行快照恢复操作相同。当 br 工具进入快照恢复阶段，备份数据的上游集群的 ID 和备份数据的 BackupTS（即日志恢复的起始时间点 `start-ts`）已经被记录到断点中。如果在此阶段恢复失败，尝试继续断点恢复时无法再调整快照备份路径（等于日志恢复的起始时间点 `restored-ts`）。
 
-在第一次执行恢复并且 br 工具进入日志恢复阶段时，br 工具会在恢复集群中创建名为 `__TiDB_BR_Temporary_Log_Restore_Checkpoint` 的库，用于存放断点数据。并且 br 工具还记录了这次恢复的上游集群 ID 和恢复的时间范围 `start-ts` 与 `restored-ts`。这意味着当恢复在日志恢复阶段执行失败时，尝试断点恢复继续时需要指定与断点记录中相同的快照备份路径和参数 `restored-ts`。否则，br 工具会报告错误，提示这一次恢复指定的恢复时间范围与断点中记录的不同，或者这一次恢复指定的备份数据来源的上游集群的 ID 与断点记录的不同。如果你确认已经清理了集群，那么可以手动删除库 `__TiDB_BR_Temporary_Log_Restore_Checkpoint`，然后重新尝试其他备份数据恢复到这个集群。
+在第一次执行恢复并且进入日志恢复阶段时，br 工具会在恢复集群中创建 `__TiDB_BR_Temporary_Log_Restore_Checkpoint` 数据库，用于存放断点数据，，并且 br 工具会记录这次恢复的上游集群 ID 和恢复的时间范围 `start-ts` 与 `restored-ts`。如果在此阶段恢复失败，你需要指定与断点记录相同的快照备份路径和 `restored-ts` 参数，否则 br 工具会报错，并提示上游集群 ID 或恢复的时间范围与断点记录不同。如果恢复集群已被清理，你可以手动删除 `__TiDB_BR_Temporary_Log_Restore_Checkpoint` 数据库，然后使用其他备份重试。
 
-在第一次执行恢复并且 br 工具进入日志恢复阶段中的库表数据恢复前，会构造出在时间点 `restored-ts` 的上下游集群库表 ID 的映射，并持久记录在系统表 `mysql.tidb_pitr_id_map` 中，用于断点恢复重试时避免库表 ID 被重复分配。
+在第一次执行恢复并且进入日志恢复阶段恢复库表数据之前，br 工具会构造出在 `restored-ts` 时间点的上下游集群库表 ID 映射关系，并将其持久化到系统表 `mysql.tidb_pitr_id_map` 中，以避免库表 ID 被重复分配。
