@@ -172,8 +172,8 @@ show warnings;
 | pessimistic-txn.wake-up-delay-duration | 悲观事务被重新唤醒的时间 |
 | pessimistic-txn.pipelined | 是否开启流水线式加悲观锁流程 |
 | pessimistic-txn.in-memory | 是否开启内存悲观锁功能 |
-| pessimistic-txn.in-memory-peer-size-limit | 控制单 region 内存悲观锁内存使用上限 |
-| pessimistic-txn.in-memory-instance-size-limit | 控制单 TiKV 实例内存悲观锁内存使用上限 |
+| pessimistic-txn.in-memory-peer-size-limit | 控制单个 Region 内存悲观锁的内存使用上限 |
+| pessimistic-txn.in-memory-instance-size-limit | 控制单个 TiKV 实例内存悲观锁的内存使用上限 |
 | quota.foreground-cpu-time | 限制处理 TiKV 前台读写请求所使用的 CPU 资源使用量，软限制 |
 | quota.foreground-write-bandwidth | 限制前台事务写入的带宽，软限制 |
 | quota.foreground-read-bandwidth | 限制前台事务读取数据和 Coprocessor 读取数据的带宽，软限制 |
