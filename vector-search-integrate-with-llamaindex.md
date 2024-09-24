@@ -11,7 +11,7 @@ summary: 了解如何在 LlamaIndex 中使用 TiDB 向量搜索。
 >
 > 向量搜索目前为实验特性，不建议在生产环境中使用。该功能可能会在未事先通知的情况下发生变化或删除。如果发现 bug，请在 GitHub 上提 [issue](https://github.com/pingcap/tidb/issues) 反馈。
 
-> **Note**
+> **Tip**
 >
 > 你可以在 Jupyter Notebook 上查看完整的[示例代码](https://github.com/run-llama/llama_index/blob/main/docs/docs/examples/vector_stores/TiDBVector.ipynb)，或直接在 [Colab](https://colab.research.google.com/github/run-llama/llama_index/blob/main/docs/docs/examples/vector_stores/TiDBVector.ipynb) 在线环境中运行示例代码。
 
@@ -92,11 +92,11 @@ TIDB_DATABASE_URL="mysql+pymysql://<USERNAME>:<PASSWORD>@<HOST>:<PORT>/<DATABASE
 
 以下为各参数的解释：
 
-- `HOST`：TiDB 集群的主机地址。
-- `PORT`：TiDB 集群的端口号。
-- `USERNAME`：连接 TiDB 集群的用户名。
-- `PASSWORD`：连接 TiDB 集群的密码。
-- `DATABASE`：要连接的数据库名称。
+- `<HOST>`：TiDB 集群的主机地址。
+- `<PORT>`：TiDB 集群的端口号。
+- `<USERNAME>`：连接 TiDB 集群的用户名。
+- `<PASSWORD>`：连接 TiDB 集群的密码。
+- `<DATABASE>`：要连接的数据库名称。
 
 </div>
 
@@ -146,7 +146,7 @@ TIDB_DATABASE_URL="mysql+pymysql://<USERNAME>:<PASSWORD>@<HOST>:<PORT>/<DATABASE
 
 #### 4.1 下载样本文档
 
-在你的项目目录中创建一个名为 `data/paul_graham/` 的目录，然后从 [run-llama/llama_index](https://github.com/run-llama/llama_index) 代码库中下载样本文档 [`paul_graham_essay.txt`](https://github.com/run-llama/llama_index/blob/main/docs/docs/examples/data/paul_graham/paul_graham_essay.txt)：
+在你的项目目录中创建一个名为 `data/paul_graham/` 的目录，然后从 [run-llama/llama_index](https://github.com/run-llama/llama_index) GitHub 代码库中下载样本文档 [`paul_graham_essay.txt`](https://github.com/run-llama/llama_index/blob/main/docs/docs/examples/data/paul_graham/paul_graham_essay.txt)：
 
 ```shell
 mkdir -p 'data/paul_graham/'

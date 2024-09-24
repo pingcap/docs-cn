@@ -56,11 +56,7 @@ pip install -r requirements.txt
 
 ### 第 4 步：配置环境变量
 
-#### 4.1 获取 Jina AI API 密钥
-
-从 [Jina AI Embeddings API](https://jina.ai/embeddings/) 页面获取 Jina AI API 密钥。
-
-#### 4.2 配置 TiDB 连接参数
+从 [Jina AI Embeddings API](https://jina.ai/embeddings/) 页面获取 Jina AI API 密钥，然后根据 TiDB 集群的部署方式不同，选择对应的环境变量配置方式。
 
 <SimpleTab>
 
@@ -74,15 +70,15 @@ export TIDB_DATABASE_URL="mysql+pymysql://<USERNAME>:<PASSWORD>@<HOST>:<PORT>/<D
 # 例如：export TIDB_DATABASE_URL="mysql+pymysql://root@127.0.0.1:4000/test"
 ```
 
-请替换命令中的参数为你的 TiDB 实际对应的值。如果你在本机运行 TiDB，`TIDB_HOST` 默认为 `127.0.0.1`。`TIDB_PASSWORD` 初始密码为空，若你是第一次启动集群，则无需带上此字段。
+请替换命令中的参数为你的 TiDB 实际对应的值。如果你在本机运行 TiDB，`HOST` 默认为 `127.0.0.1`。`PASSWORD` 初始密码为空，若你是第一次启动集群，则无需带上此字段。
 
 以下为各参数的解释：
 
-- `HOST`：TiDB 集群的主机地址。
-- `PORT`：TiDB 集群的端口号。
-- `USERNAME`：连接 TiDB 集群的用户名。
-- `PASSWORD`：连接 TiDB 集群的密码。
-- `DATABASE`：要连接的数据库名称。
+- `<HOST>`：TiDB 集群的主机地址。
+- `<PORT>`：TiDB 集群的端口号。
+- `<USERNAME>`：连接 TiDB 集群的用户名。
+- `<PASSWORD>`：连接 TiDB 集群的密码。
+- `<DATABASE>`：要连接的数据库名称。
 
 </div>
 

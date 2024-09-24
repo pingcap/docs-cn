@@ -59,7 +59,7 @@ pip install sqlalchemy pymysql sentence-transformers tidb-vector python-dotenv
 
 <div label="本地部署 TiDB">
 
-对于本地部署的 TiDB，请在 Python 项目的根目录下新建一个 `.env` 文件，将以下内容复制到 `.env` 文件中，并根据集群的启动参数修改环境变量值为 TiDB 实际对应的值：
+对于本地部署的 TiDB，请在 Python 项目的根目录下新建一个 `.env` 文件，将以下内容复制到 `.env` 文件中，并根据集群的连接参数修改环境变量值为 TiDB 实际对应的值：
 
 ```dotenv
 TIDB_DATABASE_URL="mysql+pymysql://<USER>:<PASSWORD>@<HOST>:<PORT>/<DATABASE>"

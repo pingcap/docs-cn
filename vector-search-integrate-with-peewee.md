@@ -68,7 +68,7 @@ pip install peewee pymysql python-dotenv tidb-vector
 
 <div label="TiDB 本地部署">
 
-对于本地部署的 TiDB，请在 Python 项目的根目录下新建一个 `.env` 文件，将以下内容复制到 `.env` 文件中，并根据集群的启动参数修改环境变量值为 TiDB 实际对应的值：
+对于本地部署的 TiDB，请在 Python 项目的根目录下新建一个 `.env` 文件，将以下内容复制到 `.env` 文件中，并根据集群的连接参数修改环境变量值为 TiDB 实际对应的值：
 
 ```dotenv
 TIDB_HOST=127.0.0.1
@@ -85,7 +85,7 @@ TIDB_DATABASE=test
 - `TIDB_HOST`：TiDB 集群的主机号。
 - `TIDB_PORT`：TiDB 集群的端口号。
 - `TIDB_USERNAME`：连接 TiDB 集群的用户名。
-- `TIDB_PASSWORD`：连接 TiDB 集群的密码。集群初始密码为空，第一次启动集群时无需带上此字段。
+- `TIDB_PASSWORD`：连接 TiDB 集群的密码。
 - `TIDB_DATABASE`：要连接的数据库名称。
 
 </div>

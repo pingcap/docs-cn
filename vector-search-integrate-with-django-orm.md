@@ -78,7 +78,7 @@ pip install Django django-tidb mysqlclient numpy python-dotenv
 
 <div label="本地部署 TiDB">
 
-对于本地部署的 TiDB，请在 Python 项目的根目录下新建一个 `.env` 文件，将以下内容复制到 `.env` 文件中，并根据集群的启动参数修改环境变量值为 TiDB 实际对应的值：
+对于本地部署的 TiDB，请在 Python 项目的根目录下新建一个 `.env` 文件，将以下内容复制到 `.env` 文件中，并根据集群的连接参数修改环境变量值为 TiDB 实际对应的值：
 
 ```dotenv
 TIDB_HOST=127.0.0.1
@@ -211,7 +211,7 @@ if TIDB_CA_PATH:
 
 #### 定义向量列
 
-`tidb-django` 提供了一个 `VectorField` ，可以在表中用来表示和存储向量类型。
+`tidb-django` 提供了一个 `VectorField`，可以在表中用来表示和存储向量类型。
 
 创建一个表格，其中包含一个向量数据类型的 `embedding` 列，用于存储三维向量。
 

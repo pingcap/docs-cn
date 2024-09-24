@@ -13,14 +13,14 @@ summary: 介绍 TiDB 向量搜索支持的 AI 框架、嵌入模型和 ORM 库�
 
 ## AI 框架
 
-TiDB 目前支持以下 AI 框架。在这些 AI 框架下，你可以使用 TiDB 向量搜索构建 AI 应用程序。
+TiDB 目前支持以下 AI 框架。基于这些 AI 框架，你可以使用 TiDB 向量搜索轻松构建 AI 应用程序。
 
 | AI 框架 | 教程                                                                                          |
 |---------------|---------------------------------------------------------------------------------------------------|
 | Langchain     | [在 LangChain 中使用 TiDB 向量搜索](/vector-search-integrate-with-langchain.md)   |
 | LlamaIndex    | [在 LlamaIndex 中使用 TiDB 向量搜索](/vector-search-integrate-with-llamaindex.md) |
 
-此外，你还可以使用 TiDB 完成其它需求，例如将 TiDB 用于 AI 应用程序的文档存储和知识图谱存储等。
+此外，你还可以使用 TiDB 完成多种其它需求，例如将 TiDB 用于 AI 应用程序的文档存储和知识图谱存储等。
 
 ## 嵌入模型和服务
 
@@ -32,11 +32,11 @@ TiDB 向量搜索支持存储高达 16383 维的向量，可适应大多数嵌�
 
 | 嵌入模型服务提供商 | 教程                                                                                                            |
 |-----------------------------|---------------------------------------------------------------------------------------------------------------------|
-| Jina AI                     | [通过Jina AI 嵌入 API 使用向量搜索](/vector-search-integrate-with-jinaai-embedding.md) |
+| Jina AI                     | [结合 Jina AI 嵌入模型 API 使用 TiDB 向量搜索](/vector-search-integrate-with-jinaai-embedding.md) |
 
 ## 对象关系映射 (ORM) 库
 
-你可以通过结合 ORM 库使用 TiDB 向量搜索，以便与 TiDB 数据库交互。
+你可以将 TiDB 向量搜索功能与 ORM 库结合使用，以便与 TiDB 数据库交互。
 
 下表列出了支持的 ORM 库和相应的使用教程：
 
@@ -56,16 +56,16 @@ TiDB 向量搜索支持存储高达 16383 维的向量，可适应大多数嵌�
   <tr>
     <td>SQLAlchemy</td>
     <td><code>pip install tidb-vector</code></td>
-    <td><a href="/vector-search-integrate-with-sqlalchemy.md">TiDB 向量搜索在 SQLAlchemy 中的使用</a></td>
+    <td><a href="/vector-search-integrate-with-sqlalchemy.md">在 SQLAlchemy 中使用 TiDB 向量搜索</a></td>
   </tr>
   <tr>
     <td>peewee</td>
     <td><code>pip install tidb-vector</code></td>
-    <td><a href="/vector-search-integrate-with-peewee.md">TiDB 向量搜索在 peewee 中的使用</a></td>
+    <td><a href="/vector-search-integrate-with-peewee.md">在 peewee 中使用 TiDB 向量搜索</a></td>
   </tr>
   <tr>
     <td>Django</td>
     <td><code>pip install django-tidb[vector]</code></td>
-    <td><a href="/vector-search-integrate-with-django-orm.md">TiDB 向量搜索在 Django 中的使用</a></td>
+    <td><a href="/vector-search-integrate-with-django-orm.md">在 Django 中使用 TiDB 向量搜索</a></td>
   </tr>
 </table>

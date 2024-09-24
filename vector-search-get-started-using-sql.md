@@ -1,6 +1,6 @@
 ---
 title: 使用 SQL 开始向量搜索
-summary: 了解如何使用 SQL 语句快速开始使用 TiDB Cloud 中的向量搜索，并为生成式人工智能应用提供动力。
+summary: 了解如何在 TiDB 中使用 SQL 语句快速开始向量搜索，从而为你的生成式 AI 应用提供支持。
 ---
 
 # 使用 SQL 开始向量搜索
@@ -52,6 +52,8 @@ TiDB 扩展了 MySQL 语法以支持[向量搜索](/vector-search-overview.md)�
 
 <div label="TiDB Cloud Serverless">
 
+对于 TiDB Cloud Serverless 集群，可以按照以下步骤连接到集群：
+
 1. 在 TiDB Cloud 的 [**Clusters**](https://tidbcloud.com/console/clusters) 页面，单击你的 TiDB Cloud Serverless 集群名，进入集群的 **Overview** 页面。
 
 2. 点击右上角的 **Connect** 按钮，将会弹出连接对话框。
@@ -62,7 +64,7 @@ TiDB 扩展了 MySQL 语法以支持[向量搜索](/vector-search-overview.md)�
 
 5. 复制对话框中的连接命令，并粘贴到终端中执行。以下为 macOS 上的连接命令示例：
 
-   ```bash
+    ```bash
     mysql -u '<prefix>.root' -h '<host>' -P 4000 -D 'test' --ssl-mode=VERIFY_IDENTITY --ssl-ca=/etc/ssl/cert.pem -p'<password>'
     ```
 
@@ -95,7 +97,7 @@ Query OK, 0 rows affected (0.27 sec)
 
 ### 第 3 步：向表中插入向量
 
-向 `embedded_documents` 表中插入三行包含[向量](/vector-search-overview.md#向量嵌入)的数据：
+向 `embedded_documents` 表中插入三行，每一行包含数据和数据的[向量嵌入](/vector-search-overview.md#向量嵌入)：
 
 ```sql
 INSERT INTO embedded_documents
@@ -145,7 +147,7 @@ SELECT * FROM embedded_documents;
 
 在本例中，搜索词是“一种会游泳的动物”，假设其对应的向量是 `[1,2,3]`。在实际应用中，你需要使用[嵌入模型](/vector-search-overview.md#嵌入模型)将用户的搜索词转换为向量。
 
-执行以下 SQL 语句后，TiDB 会计算 `[1,2,3]` 与表中各向量之间的余弦距离 (`vec_cosine_distance`)，然后对这些距离进行排序并输出表中最接近搜索向量 (余弦距离最小) 的前三个向量。
+执行以下 SQL 语句后，TiDB 会计算 `[1,2,3]` 与表中各向量之间的余弦距离 (`vec_cosine_distance`)，然后对这些距离进行排序并输出表中最接近搜索向量（余弦距离最小）的前三个向量。
 
 ```sql
 SELECT id, document, vec_cosine_distance(embedding, '[1,2,3]') AS distance

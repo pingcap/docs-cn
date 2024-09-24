@@ -11,7 +11,7 @@ summary: 展示如何在 LangChain 中使用 TiDB 向量搜索
 >
 > 向量搜索目前为实验特性，不建议在生产环境中使用。该功能可能会在未事先通知的情况下发生变化或删除。如果发现 bug，请在 GitHub 上提 [issue](https://github.com/pingcap/tidb/issues) 反馈。
 
-> **Note**
+> **Tip**
 >
 > 你可以在 Jupyter Notebook 上查看完整的[示例代码](https://github.com/langchain-ai/langchain/blob/master/docs/docs/integrations/vectorstores/tidb_vector.ipynb)，也可以直接在 [Colab](https://colab.research.google.com/github/langchain-ai/langchain/blob/master/docs/docs/integrations/vectorstores/tidb_vector.ipynb) 在线环境中运行示例代码。
 
@@ -63,6 +63,8 @@ from langchain_text_splitters import CharacterTextSplitter
 
 ### 第 3 步：配置环境变量
 
+根据 TiDB 集群的部署方式不同，选择对应的环境变量配置方式。
+
 <SimpleTab>
 
 <div label="本地部署 TiDB">
@@ -93,11 +95,11 @@ TIDB_DATABASE_URL="mysql+pymysql://<USERNAME>:<PASSWORD>@<HOST>:<PORT>/<DATABASE
 
 以下为各参数的解释：
 
-- `HOST`：TiDB 集群的主机地址。
-- `PORT`：TiDB 集群的端口号。
-- `USERNAME`：连接 TiDB 集群的用户名。
-- `PASSWORD`：连接 TiDB 集群的密码。
-- `DATABASE`：要连接的数据库名称。
+- `<HOST>`：TiDB 集群的主机地址。
+- `<PORT>`：TiDB 集群的端口号。
+- `<USERNAME>`：连接 TiDB 集群的用户名。
+- `<PASSWORD>`：连接 TiDB 集群的密码。
+- `<DATABASE>`：要连接的数据库名称。
 
 </div>
 
@@ -147,7 +149,7 @@ TIDB_DATABASE_URL="mysql+pymysql://<USERNAME>:<PASSWORD>@<HOST>:<PORT>/<DATABASE
 
 #### 4.1 下载样本文档
 
-在你的项目目录中创建一个名为 `data/how_to/` 的目录，然后从 [langchain-ai/langchain](https://github.com/langchain-ai/langchain) 代码库中下载样本文档 [`state_of_the_union.txt`](https://github.com/langchain-ai/langchain/blob/master/docs/docs/how_to/state_of_the_union.txt) 。
+在你的项目目录中创建一个名为 `data/how_to/` 的目录，然后从 [langchain-ai/langchain](https://github.com/langchain-ai/langchain) 代码库中下载样本文档 [`state_of_the_union.txt`](https://github.com/langchain-ai/langchain/blob/master/docs/docs/how_to/state_of_the_union.txt)。
 
 ```shell
 mkdir -p 'data/how_to/'
@@ -296,7 +298,7 @@ We’re securing commitments and supporting partners in South and Central Americ
 
 </details>
 
-### 检索器
+### 用作检索器
 
 在 Langchain 中，[检索器](https://python.langchain.com/v0.2/docs/concepts/#retrievers)是一个接口，用于响应非结构化查询，检索相关文档。相比于向量存储，检索器可以为你提供更多的功能。以下代码演示了如何将 TiDB 向量存储用作检索器。
 

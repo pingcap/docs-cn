@@ -54,7 +54,7 @@ TiDB 目前支持以下向量搜索索引算法：
 
 > **Note:**
 >
-> 创建向量索引目前为实验特性，其语法可能会在 GA 前发生变化。
+> 向量索引目前为实验特性，其语法可能会在 GA 前发生变化。
 
 在创建 HNSW 向量索引时，你需要指定向量的距离函数：
 
@@ -76,11 +76,11 @@ ORDER BY Vec_Cosine_Distance(embedding, '[1, 2, 3]')
 LIMIT 10
 ```
 
-要在向量搜索中使用索引，请确保 `ORDER BY ... LIMIT` 子句中使用的距离函数与创建向量索引时 `HNSW ()` 中指定的距离函数相同。
+要在向量搜索中使用索引，请确保 `ORDER BY ... LIMIT` 子句中使用的距离函数与创建向量索引时指定的距离函数相同。
 
 ## 使用带过滤条件的向量搜索索引
 
-包含预过滤条件 (使用 `WHERE` 子句) 的查询无法使用向量搜索索引，因为这样的查询并没有严格按照 SQL 语义来查询 K 近邻。
+包含预过滤条件（使用 `WHERE` 子句）的查询无法使用向量搜索索引，因为这样的查询并没有严格按照 SQL 语义来查询 K 近邻。例如：
 
 ```sql
 -- 对于以下查询，`WHERE` 过滤条件在 KNN 之前执行，因此不能使用向量搜索索引：
@@ -175,7 +175,7 @@ SELECT * FROM INFORMATION_SCHEMA.TIFLASH_INDEXES;
 
     更多信息，请参阅 [`ALTER TABLE ... COMPACT`](/sql-statements/sql-statement-alter-table-compact.md)。
 
-同时，你也可以通过 `ADMIN SHOW DDL JOBS;` 查看 `DDL job` 执行进度，观察其 `row count`。 不过这种方式并不准确，`row count` 的值是从 `TIFLASH_INDEXES` 里的 `rows_stable_indexed` 获取的。此方式也可作为你查看索引构建进度的一种参考方式。
+此外，你也可以通过 `ADMIN SHOW DDL JOBS;` 查看 DDL 任务的执行进度，观察其 `row count`。 不过这种方式并不准确，`row count` 的值是从 `TIFLASH_INDEXES` 里的 `rows_stable_indexed` 获取的。此方式也可作为你查看索引构建进度的一种参考方式。
 
 ## 查看是否使用了向量搜索索引
 

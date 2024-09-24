@@ -104,7 +104,7 @@ TiDB 扩展了以下内置函数和运算符的功能，它们也额外支持了
 VEC_L2_DISTANCE(vector1, vector2)
 ```
 
-计算两个向量之间的 [L2 (欧式距离)](https://zh.wikipedia.org/wiki/%E6%AC%A7%E5%87%A0%E9%87%8C%E5%BE%97%E8%B7%9D%E7%A6%BB)，使用的公式为：
+计算两个向量之间的 [L2 距离](https://zh.wikipedia.org/wiki/%E6%AC%A7%E5%87%A0%E9%87%8C%E5%BE%97%E8%B7%9D%E7%A6%BB) (欧式距离)，使用的公式为：
 
 $DISTANCE(p,q)=\sqrt {\sum \limits _{i=1}^{n}{(p_{i}-q_{i})^{2}}}$
 
