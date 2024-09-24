@@ -177,7 +177,7 @@ TiDB 版本：8.4.0
 * 系统变量 `tidb_scatter_region` 支持设置集群级别的 Region 打散策略 [#55184](https://github.com/pingcap/tidb/issues/55184) @[D3Hunter](https://github.com/D3Hunter) **tw@hfxsd** <!--1927-->
 
     系统变量 `tidb_scatter_region`  在之前的版本仅支持设置为开启或者关闭，开启后，建表时会使用表级别打散策略。在批量快速建表，且表的数量达到几十万张后，该策略会导致 Region 集中分布在其中几个 TiKV 节点，导致这些 TiKV 节点 OOM。
-     
+
     为解决上述问题，从 v8.4.0 版本开始，将该系统变量改为字符串类型，且新增支持集群级别的打散策略，避免上述场景下导致 TiKV OOM 的问题。
 
     更多信息，请参考[用户文档](/system-variables.md#tidb_scatter_region)。
