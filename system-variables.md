@@ -2177,8 +2177,9 @@ mysql> SELECT job_info FROM mysql.analyze_jobs ORDER BY end_time DESC LIMIT 1;
 - 是否持久化到集群：是
 - 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：是
 - 类型：布尔型
-- 默认值：`OFF`
-- 该变量用于控制当内表上有 `Selection`/`Projection` 算子时是否支持 Index Join。`OFF` 表示不支持。
+- 默认值：在 v8.4.0 之前版本中为 `OFF`，即默认关闭。在 v8.4.0 及之后的版本中为 `ON`，即默认开启。
+- 该变量用于控制当内表上有 `Selection`/`Projection`/`Aggregation` 算子时是否支持 Index Join。`OFF` 表示不支持。
+- 如果从 v7.0.0 之前版本的集群升级至 v8.4.0 及之后的版本，该变量默认值会为 `OFF`，默认不开启。
 
 ### `tidb_enable_ordered_result_mode`
 
