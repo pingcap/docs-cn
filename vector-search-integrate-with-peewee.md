@@ -189,7 +189,9 @@ connect_kwargs = {
 # connect_kwargs = {
 #     'ssl_mode': 'VERIFY_IDENTITY',
 #     'ssl': {
-#         # Root certificate default path
+#         # Root certificate default path.
+#         # If you are using a tidb serverless cluster, 
+#         # you can refer to the following link to configure "TIDB_CA_PATH".
 #         # https://docs.pingcap.com/tidbcloud/secure-connections-to-serverless-clusters/#root-certificate-default-path
 #         'ca': os.environ.get('TIDB_CA_PATH', '/path/to/ca.pem'),
 #     },
