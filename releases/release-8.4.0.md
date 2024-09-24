@@ -136,11 +136,11 @@ TiDB 版本：8.4.0
 
     更多信息，请参考[用户文档](/system-variables.md#tidb_enable_instance_plan_cache-从-v840-版本开始引入)。
 
-* `Lightning` 的逻辑导入支持 prepare 接口 [#54850](https://github.com/pingcap/tidb/issues/54850) @[dbsid](https://github.com/dbsid) @[qw4990](https://github.com/qw4990) **tw@lilin90** <!--1922-->
+* TiDB Lightning 的逻辑导入支持 prepare 接口 [#54850](https://github.com/pingcap/tidb/issues/54850) @[dbsid](https://github.com/dbsid) @[qw4990](https://github.com/qw4990) **tw@lilin90** <!--1922-->
 
-    通过开启配置 [`logical-import-prep-stmt`]()，`Lightning` 逻辑导入产生的 SQL 语句将会通过 prepare 接口执行，提升 SQL 执行效率，并有更大机会命中执行计划缓存，提升逻辑导入的速度。
+    通过开启配置 `logical-import-prep-stmt`，TiDB Lightning 逻辑导入产生的 SQL 语句将通过 prepare 接口执行，可提升 SQL 执行效率，并有更大机会命中执行计划缓存，提升逻辑导入的速度。
 
-    更多信息，请参考[用户文档]()
+    更多信息，请参考[用户文档](tidb-lightning/tidb-lightning-configuration.md)。
 
 * 分区表的全局索引成为正式功能 (GA) [#45133](https://github.com/pingcap/tidb/issues/45133) @[mjonss](https://github.com/mjonss)@[Defined2014](https://github.com/Defined2014) **tw@hfxsd** <!--1961-->
 #
@@ -151,17 +151,17 @@ TiDB 版本：8.4.0
     在 v8.4.0 中，全局索引成为正式功能 (GA)。你无需再设置系统变量 [`tidb_enable_global_index`](/system-variables.md#tidb_enable_global_index-从-v760-版本开始引入) 开启全局索引特性，可以直接使用关键字 `GLOBAL` 创建全局索引。
 
     更多信息，请参考[用户文档](/partitioned-table.md#全局索引)。
- 
+
 * 优化了缓存表在部分场景下的查询性能 [#43249](https://github.com/pingcap/tidb/issues/43249) @[tiancaiamao](https://github.com/tiancaiamao) **tw@hfxsd** <!--1965-->
 
     优化了缓存表的查询性能，在使用 `IndexLookup` 执行 `SELECT ... LIMIT 1` 时，性能最高提升 5.4 倍。同时，提升了 `IndexLookupReader` 在全表扫描和主键查询场景下的性能。
-    
+
 ### 稳定性
 
 * 超出预期的查询 (Runaway Queries) 新增 "处理行数" 和 RU 作为阈值 [#issue号](链接) @[HuSharp](https://github.com/HuSharp) **tw@lilin90** <!--1800-->
 
     TiDB 在 v8.4.0 可以依据 "处理行数 (`PROCESSED_KEYS`)" 和 "Request Unit (`RU`)" 定义超出预期的查询。和"执行时间(`EXEC_ELAPSED`)"相比，新增阈值能够更准确的定义查询的资源消耗，避免整体性能下降时发生识别偏差。
-    
+
     支持同时设置多个条件，满足任意条件即识别为 `Runaway Queries`。
 
     用户可以观测 [`Statement Summary Tables`](/statement-summary-tables.md) 中的几个对应字段 (`RESOURCE_GROUP`、`MAX_REQUEST_UNIT_WRITE`、`MAX_REQUEST_UNIT_READ`、`MAX_PROCESSED_KEYS`)，根据历史执行情况决定条件值的大小。
