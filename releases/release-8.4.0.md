@@ -158,13 +158,13 @@ TiDB 版本：8.4.0
 
 ### 稳定性
 
-* 超出预期的查询 (Runaway Queries) 新增 "处理行数" 和 RU 作为阈值 [#issue号](链接) @[HuSharp](https://github.com/HuSharp) **tw@lilin90** <!--1800-->
+* 超出预期的查询 (Runaway Queries) 新增处理行数 和 RU 作为阈值 [#54434](https://github.com/pingcap/tidb/issues/54434) @[HuSharp](https://github.com/HuSharp) **tw@lilin90** <!--1800-->
 
-    TiDB 在 v8.4.0 可以依据 "处理行数 (`PROCESSED_KEYS`)" 和 "Request Unit (`RU`)" 定义超出预期的查询。和"执行时间(`EXEC_ELAPSED`)"相比，新增阈值能够更准确的定义查询的资源消耗，避免整体性能下降时发生识别偏差。
+    从 v8.4.0 开始， TiDB 可以依据处理行数 (`PROCESSED_KEYS`) 和 Request Unit (`RU`) 定义超出预期的查询。和执行时间 (`EXEC_ELAPSED`) 相比，新增阈值能够更准确地定义查询的资源消耗，避免整体性能下降时发生识别偏差。
 
     支持同时设置多个条件，满足任意条件即识别为 `Runaway Queries`。
 
-    用户可以观测 [`Statement Summary Tables`](/statement-summary-tables.md) 中的几个对应字段 (`RESOURCE_GROUP`、`MAX_REQUEST_UNIT_WRITE`、`MAX_REQUEST_UNIT_READ`、`MAX_PROCESSED_KEYS`)，根据历史执行情况决定条件值的大小。
+    可以观测 [Statement Summary Tables](/statement-summary-tables.md) 中的几个对应字段 (`RESOURCE_GROUP`、`MAX_REQUEST_UNIT_WRITE`、`MAX_REQUEST_UNIT_READ`、`MAX_PROCESSED_KEYS`)，根据历史执行情况决定条件值的大小。
 
     更多信息，请参考[用户文档](/tidb-resource-control.md#管理资源消耗超出预期的查询-runaway-queries)。
 
@@ -226,12 +226,13 @@ TiDB 版本：8.4.0
 
     更多信息，请参考[用户文档](/vector-search-overview.md)。
 
-* TiDB 外键约束检查功能成为正式功能（GA） [#issue号](链接) @[贡献者 GitHub ID](链接) **tw@lilin90** <!--1894-->
+* TiDB 外键约束检查功能成为正式功能 (GA) [#55861](链接) @[GitHub ID-TBD](https://github.com/pingcap/tidb/issues/55861) **tw@lilin90** <!--1894-->
 
-    TiDB 从 v6.6.0 版本开始，可通过变量 foreign_key_checks 做外键约束检查，但是其一直为实验特性。v8.3.0 对外键特性在更多场景做了覆盖测试，稳定性和性能方面也有一些提升，因此从 v8.3.0 开始外键功能成为正式功能（GA）
+    从 v6.6.0 开始，TiDB 支持通过系统变量 [`foreign_key_checks`](/system-variables.md#foreign_key_checks) 做外键约束检查，但一直为实验特性。v8.4.0 对外键特性在更多场景做了覆盖测试，提升了稳定性和性能，因此从 v8.4.0 开始，外键功能成为正式功能 (GA)。
 
-    更多信息，请参考[用户文档](链接)。
-* 支持字符集  GB18030 和排序规则 gb18030_bin 和 gb18030_general_ci  [#issue号](链接) @[cbcwestwolf](https://github.com/cbcwestwolf) **tw@lilin90** <!--1962-->
+    更多信息，请参考[用户文档](/foreign-key.md)。
+
+* 支持字符集 `gb18030` 和排序规则 `gb18030_bin` 和 `gb18030_general_ci` [#issue号](链接) @[cbcwestwolf](https://github.com/cbcwestwolf) **tw@lilin90** <!--1962-->
 
 新增字符集支持：TiDB v8.4 新增了对 GB18030 字符集的支持，这是一个广泛用于中文字符编码的标准，确保 TiDB 能够更好地处理中文相关的数据存储和查询需求。
 
