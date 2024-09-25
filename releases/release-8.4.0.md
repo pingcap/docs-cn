@@ -138,12 +138,13 @@ TiDB 版本：8.4.0
 
     更多信息，请参考[用户文档](/tidb-lightning/tidb-lightning-configuration.md)。
 
-* 分区表的全局索引成为正式功能 (GA) [#45133](https://github.com/pingcap/tidb/issues/45133) @[mjonss](https://github.com/mjonss)@[Defined2014](https://github.com/Defined2014) **tw@hfxsd** <!--1961-->
+* 分区表的全局索引成为正式功能 (GA) [#45133](https://github.com/pingcap/tidb/issues/45133) @[mjonss](https://github.com/mjonss) @[Defined2014](https://github.com/Defined2014) @[jiyfhust](https://github.com/jiyfhust) @[L-maple](https://github.com/L-maple) **tw@hfxsd** <!--1961-->
+
     之前版本的分区表，因为不支持全局索引有较多的限制，比如唯一键必须包含分区表达式中用到的所有列，如果查询条件不带分区键，查询时会扫描所有分区，导致性能较差。从 v7.6.0 开始，引入了系统变量 [`tidb_enable_global_index`](/system-variables.md#tidb_enable_global_index-从-v760-版本开始引入) 用于开启全局索引特性，但该功能当时处于开发中，不够完善，不建议开启。
 
     从 v8.3.0 开始，全局索引作为实验特性正式发布。你可通过关键字 `GLOBAL` 为分区表显式创建一个全局索引，从而去除分区表唯一键必须包含分区表达式中用到的所有列的限制，满足灵活的业务需求。同时基于全局索引也提升了非分区列的查询性能。
 
-    在 v8.4.0 中，全局索引成为正式功能 (GA)。你无需再设置系统变量 [`tidb_enable_global_index`](/system-variables.md#tidb_enable_global_index-从-v760-版本开始引入) 开启全局索引特性，可以直接使用关键字 `GLOBAL` 创建全局索引。
+    在 v8.4.0 中，全局索引成为正式功能 (GA)。你无需再设置系统变量 [`tidb_enable_global_index`](/system-variables.md#tidb_enable_global_index-从-v760-版本开始引入) 开启全局索引特性，可以直接使用关键字 `GLOBAL` 创建全局索引。从 v8.4.0 开始，该系统变量被废弃，并总是设置为 `ON`。
 
     更多信息，请参考[用户文档](/partitioned-table.md#全局索引)。
 
