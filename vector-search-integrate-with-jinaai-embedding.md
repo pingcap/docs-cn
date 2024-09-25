@@ -92,9 +92,9 @@ export TIDB_DATABASE_URL="mysql+pymysql://<USERNAME>:<PASSWORD>@<HOST>:<PORT>/<D
 
 3. 确认对话框中的配置和你的运行环境一致。
 
-   - **Connection Type** 为 `Public`.
-   - **Branch** 选择 `main`.
-   - **Connect With** 选择 `SQLAlchemy`.
+   - **Connection Type** 为 `Public`。
+   - **Branch** 选择 `main`。
+   - **Connect With** 选择 `SQLAlchemy`。
    - **Operating System** 为你的运行环境。
 
    > **Tip:**
@@ -214,7 +214,7 @@ class Document(Base):
     )
 ```
 
-> **Note:**
+> **注意：**
 >
 > - 向量列的维度必须与嵌入模型生成的向量嵌入维度相同。
 > - 在本例中，`jina-embeddings-v2-base-en` 模型生成的向量嵌入维度为 `768`。
