@@ -104,9 +104,9 @@ TiDB 版本：8.4.0
 
     更多信息，请参考[用户文档](/system-variables.md#tidb_tso_client_rpc_mode-从-v840-版本开始引入)。
 
-* 优化 TiDB 的 Hash Join 算子实现效率（实验特性） [#55153](https://github.com/pingcap/tidb/issues/55153) [#53127](https://github.com/pingcap/tidb/issues/53127) @[windtalker](https://github.com/windtalker) @[xzhangxian1008](https://github.com/xzhangxian1008) @[XuHuaiyu](https://github.com/XuHuaiyu) @[wshwsh12](https://github.com/wshwsh12) **tw@qiancai** <!--1633-->
+* 优化 TiDB Hash Join 算子的执行效率（实验特性） [#55153](https://github.com/pingcap/tidb/issues/55153) [#53127](https://github.com/pingcap/tidb/issues/53127) @[windtalker](https://github.com/windtalker) @[xzhangxian1008](https://github.com/xzhangxian1008) @[XuHuaiyu](https://github.com/XuHuaiyu) @[wshwsh12](https://github.com/wshwsh12) **tw@qiancai** <!--1633-->
 
-    在 v8.4.0 版本之前，TiDB 的 Hash Join 算子实现效率不高。从 v8.4.0 开始，TiDB 将对 Hash Join 算子进行重构优化，提升执行效率。在 v8.4.0 版本，该功能为实验特性，只有 INNER JOIN 和 OUTER JOIN 可以使用重构后的高性能 Hash Join 算子。当该功能启用时，执行器会根据高性能 Hash Join 算子对关联操作的支持情况，自动选择是否使用高性能 Hash Join 算子。你可以通过 [tidb_hash_join_version](/system-variables.md#tidb_hash_join_version-从-v840-版本开始引入) 变量控制是否启用高性能 Hash Join 算子。
+    在 v8.4.0 中，TiDB 对 Hash Join 算子的实现方法进行了优化，以提升其执行效率。目前，优化后的 Hash Join 实现方法为实验特性，仅对 Inner Join 和 Outer Join 类型的 Hash Join 生效，且默认关闭。你可以将变量 [tidb_hash_join_version](/system-variables.md#tidb_hash_join_version-从-v840-版本开始引入) 设置为 `optimized` 开启该优化实现方法。开启后，TiDB 在执行 Inner Join 和 Outer Join 类型的 Hash Join 时，将使用优化后的实现方法。
 
     更多信息，请参考[用户文档](/system-variables.md#tidb_hash_join_version-从-v840-版本开始引入)。
 
