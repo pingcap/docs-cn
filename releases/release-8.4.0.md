@@ -70,11 +70,7 @@ TiDB 版本：8.4.0
     <td>加速向量搜索的性能，适用于检索增强生成（RAG）、语义搜索、推荐系统等应用类型。把 TiDB 应用场景扩展到 AI 和 大语言模型（LLM）领域。</td>
   </tr>
   <tr>
-    <td rowspan="3">数据库管理和可观测性</td>
-    <td>持久化内存表到 Workload Repository（实验特性）<!-- tw@lilin90 1823 --></td>
-    <td>持久化内存表中的运行指标和状态信息，是观测性的重要增强，能极大提升过往问题诊断和追溯的效率，并为未来的自动化运维，提供了数据集支持。 围绕 Workload Repository 构建报告、诊断、推荐一体化的能力，会成为未来提升 TiDB 易用性的重要组成。</td>
-  </tr>
-  <tr>
+    <td rowspan="2">数据库管理和可观测性</td>
     <td> 在内存表中显示 TiKV 和 TiDB 的 CPU 时间<!-- tw@hfxsd 1877 --></td>
     <td>将 CPU 时间合入系统表中展示，与会话或 SQL 的其他指标并列，方便你从多角度对高 CPU 消耗的操作进行观测，提升诊断效率。尤其适用于诊断实例 CPU 飙升或集群读写热点等场景。</td>
   </tr>
@@ -188,7 +184,7 @@ TiDB 版本：8.4.0
 
     更多信息，请参考[用户文档](/tidb-resource-control.md#管理后台任务)。
 
-* 优化资源组资源分配策略 [#issue号](链接) @[nolouch](https://github.com/nolouch) **tw@lilin90** <!--1833--> <!--1940-->
+* 优化资源组资源分配策略 [#50831](https://github.com/pingcap/tidb/issues/50831) @[nolouch](https://github.com/nolouch) **tw@lilin90** <!--1833-->
 
     TiDB 在 v8.4.0 部分调整了资源分配策略，更好的满足客户对资源管控的预期。
 
@@ -258,35 +254,6 @@ TiDB 版本：8.4.0
 
 ### 可观测性
 
-* 持久化部分内存表的快照 (实验特性) [#issue号](链接) @[xhebox](https://github.com/xhebox)  **tw@lilin90** <!--1823-->
-
-    TiDB 的内存表中会保存很多运行时状态信息，比如会话状态、锁状态、SQL 运行状态等，用户可以据此了解数据库运行情况，这些信息被大量用在故障诊断和性能调优的场景。实际使用中会遇到几个问题：
-
-    - 内存表中的信息会随 TiDB 实例的关闭而消失
-    - 用户无法追溯过去某个时间的状态信息
-
-    为了解决上述问题，受流行商业数据库的启发，TiDB 新增对内存表持久化的能力，为 TiDB 构建 `Workload Repository`。通过设置变量 [`tidb_workload_repository_dest`]() 为 `SCHEMA`, TiDB 将内存表中的信息阶段性写入特定数据库 (`WORKLOAD_SCHEMA`)，持久化到 TiKV 中。持久化的数据大体有两类用途：
-
-    - **故障定位**：获取过去某一段时间的数据库运行情况，分析故障可能的原因。
-    - **自动运维**：对数据库的历史负载进行分析，发现潜在的优化点，并得出优化建议。比如索引推荐，SQL 调优推荐等。
-    
-    被持久化的内存表大体分为两类：
-
-    一类是保存累计运行指标的内存表，通常体积较大，快照一次有明显开销。这类内存表默认每 60 分钟记录一次快照，通过系统变量 [`tidb_workload_repository_snapshot_interval`]() 修改快照间隔。包括：
-
-    - SQL 语句运行指标
-    - 索引运行指标
-
-    另一类内存表显示实时状态信息，会被快速刷新。这类内存记录默认每秒采样一次，通过系统变量 [`tidb_workload_repository_active_sampling_interval`]() 修改采样间隔。这类表包括：
-
-    - 活动会话的状态
-    - 锁状态
-    - 活动事务状态
-
-    TiDB `Workload Repository` 的引入，极大地提升了数据库的可观测性，并为未来的自动化运维工作提供了数据基础。在接下来的版本，TiDB 会加入更多的内存观测指标，并持久化到 `Workload Repository`，通过提供丰富的工具、报告、建议，协助用户的管理工作，提升运维 TiDB 集群的效率。
-
-    更多信息，请参考[用户文档](链接)。
-
 * 在系统表中显示 TiDB 和 TiKV 的 CPU 的时间 [#55542](https://github.com/pingcap/tidb/issues/55542) @[yibin87](https://github.com/yibin87) **tw@hfxsd** <!--1877-->
 
     [TiDB Dashboard](/dashboard/dashboard-intro.md) 的 [Top SQL 页面](/dashboard/top-sql.md)能够展示 CPU 消耗高的 SQL 语句。从 v8.4.0 开始，TiDB 将 CPU 时间消耗信息加入系统表展示，与会话或 SQL 的其他指标并列，方便你从多角度对高 CPU 消耗的操作进行观测。在实例 CPU 飙升或集群读写热点的场景下，这些信息能够协助你快速发现问题的原因。
@@ -299,9 +266,9 @@ TiDB 版本：8.4.0
     
     更多信息，请参考[用户文档](/information-schema/information-schema-processlist.md)和[用户文档](information-schema/information-schema-slow-query.md)。
 
-* TOP SQL 可按 `Schema` 或 `Table` 维度聚合 [#issue号](链接) @[nolouch](https://github.com/nolouch) **tw@lilin90** <!--1878-->
+* TOP SQL 支持按表或数据库维度查看聚合结果 [#55540](https://github.com/pingcap/tidb/issues/55540) @[nolouch](https://github.com/nolouch) **tw@lilin90** <!--1878-->
 
-    当前的 [TOP SQL](/dashboard/top-sql.md) 以 SQL 为单位来聚合 CPU 时间。如果 CPU 时间不是由少数几个 SQL 贡献，按 SQL 聚合并不能有效发现问题。从 v8.4.0 开始，用户可以选择按照 `Schema` 或 `Table` 聚合 CPU 时间。在多系统融合的场景下，新的聚合方式能够更有效地识别来自某个特定系统的负载变化，提升问题诊断的效率。
+    在 v8.4.0 之前，[TOP SQL](/dashboard/top-sql.md) 以 SQL 为单位来聚合 CPU 时间。如果 CPU 时间不是由少数几个 SQL 贡献，按 SQL 聚合并不能有效发现问题。从 v8.4.0 开始，你可以选择 **By TABLE** 或者 **By DB** 聚合 CPU 时间。在多系统融合的场景下，新的聚合方式能够更有效地识别来自某个特定系统的负载变化，提升问题诊断的效率。
 
     更多信息，请参考[用户文档](/dashboard/top-sql.md)。
 
