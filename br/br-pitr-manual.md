@@ -87,7 +87,7 @@ tiup br log start --task-name=pitr --pd="${PD_IP}:2379" \
 --storage='s3://backup-101/logbackup?access-key=${access-key}&secret-access-key=${secret-access-key}"'
 ```
 
-### 日志数据备份加密
+### 加密日志备份数据
 
 > **警告：**
 >
