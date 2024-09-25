@@ -545,7 +545,7 @@ Kafka 消费者会收到一条含有大消息在外部存储服务中的地址�
 >
 > 当使用 Open Protocol 协议时，将 `claim-check-raw-value` 参数设置为 `true` 会报错。
 
-当 `claim-check-raw-value` 设置为 `true` 时，changefeed 直接将 Kafka 消息的 `value` 部分发送到外部存储，而无需对 `key` 和 `value` 进行额外的 JSON 序列化。这样可以降低 CPU 开销。此外，消费端可以直接从外部存储读取可直接消费的数据，减少了反序列化过程的开销。
+当 `claim-check-raw-value` 设置为 `true` 时，changefeed 会直接将 Kafka 消息的 `value` 部分发送到外部存储，而无需对 `key` 和 `value` 进行额外的 JSON 序列化。这样可以降低 CPU 开销。此外，消费端可以从外部存储读取可直接消费的数据，减少了反序列化过程的开销。
 
 配置样例如下所示：
 
