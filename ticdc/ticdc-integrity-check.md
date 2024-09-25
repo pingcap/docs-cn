@@ -65,7 +65,7 @@ TiCDC 默认关闭单行数据的 Checksum 校验功能。若要在开启此功�
 
 在 v8.4.0 之前，TiDB 和 TiCDC 采用 Checksum v1 算法进行 Checksum 计算和校验。
 
-在启用单行数据 Checksum 正确性校验功能后，TiDB 使用 CRC32 算法计算该行数据的 Checksum 值，并将其一并写入 TiKV。TiCDC 从 TiKV 读取数据，根据相同的算法重新计算 Checksum，如果该值与 TiDB 写入的值相同，则可以证明数据在 TiDB 至 TiCDC 的传输过程中是正确的。
+在启用单行数据 Checksum 正确性校验功能后，TiDB 会使用 CRC32 算法计算该行数据的 Checksum 值，并将这个值与该行数据一并存储在 TiKV 中。随后，TiCDC 从 TiKV 读取这些数据，并使用相同的算法重新计算 Checksum，如果得到的 Checksum 值与 TiDB 写入的 Checksum 值相同，则表明数据在从 TiDB 到 TiCDC 的传输过程中是正确的。
 
 TiCDC 将数据编码成特定格式并发送至 Kafka。Kafka Consumer 读取数据后，可以使用与 TiDB 相同的算法计算得到新的 Checksum，将此值与数据中携带的 Checksum 值进行比较，若二者一致，则可证明从 TiCDC 至 Kafka Consumer 的传输链路上的数据是正确的。
 
