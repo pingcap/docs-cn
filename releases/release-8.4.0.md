@@ -249,11 +249,11 @@ TiDB 版本：8.4.0
 
     更多信息，请参考[用户文档](/br/br-pitr-manual.md#加密日志备份数据)。
 
-* BR reduces requires storage permissions for restores [#55870](https://github.com/pingcap/tidb/issues/55870) @[Leavrth](https://github.com/Leavrth) **tw@Oreoxmt** <!--1943-->
+* BR 降低了从云存储服务系统恢复数据的权限要求 [#55870](https://github.com/pingcap/tidb/issues/55870) @[Leavrth](https://github.com/Leavrth) **tw@Oreoxmt** <!--1943-->
 
-    Previously, when BR was restoring data, checkpoint information about the progress of the restore was recorded in the location hosting the backup data. These restore checkpoints enabled restoration to be quickly resumed if it was interrupted. With this feature, the restore checkpoints are now stored in the target TiDB cluster. This means that BR only requires read access to the backup dataset location for restores.
+    在 v8.4.0 之前，BR 在恢复过程中将恢复进度的检查点信息存储在备份数据位置。这些检查点使中断的恢复操作能够快速恢复。从 v8.4.0 开始，BR 将恢复检查点信息存储在目标 TiDB 集群中。这意味着 BR 在恢复时只需要对备份目录的读取权限。
 
-    For more information, see [documentation](doc-link).
+    更多信息，请参考[用户文档](/br/backup-and-restore-storages.md#鉴权)。
 
 ### 可观测性
 
@@ -285,17 +285,19 @@ TiDB 版本：8.4.0
 
 ### 数据迁移
 
-* TiCDC claim check nows supports raw value format [#11396](https://github.com/pingcap/tiflow/issues/11396) @[3AceShowHand](https://github.com/3AceShowHand) **tw@Oreoxmt** <!--1919-->
+* TiCDC Claim-Check 支持仅发送Kafka 消息的 `value` 部分到外部存储 [#11396](https://github.com/pingcap/tiflow/issues/11396) @[3AceShowHand](https://github.com/3AceShowHand) **tw@Oreoxmt** <!--1919-->
 
-    When TiCDC used the claim check capability to handle large messages it included both the Key and the Value are encoded and stored in the external storage system. With the new raw value option, TiCDC can now be configured to store the value format only in the external storage system, using the protocol encoding.
+    在 v8.4.0 之前，使用 Claim-Check 功能处理大型消息时（将 `large-message-handle-option` 设置为 `claim-check`），TiCDC 会将 `key` 和 `value` 都编码并存储在外部存储系统中。
 
-    For more information, see [documentation](ticdc-sink-to-kafka.md#send-large-messages-to-external-storage).
+    从 v8.4.0 开始，TiCDC 支持仅将 Kafka 消息的 `value` 部分发送到外部存储，该功能仅适用于非 Open Protocol 协议。你可以通过设置 `claim-check-raw-value` 参数控制是否开启该功能。
 
-* TiCDC introduces new row checksum to verify old values after Add and Drop Column operations [#10969](https://github.com/pingcap/tiflow/issues/10969) @[3AceShowHand](https://github.com/3AceShowHand) **tw@Oreoxmt** <!--1917-->
+    更多信息，请参考[用户文档](/ticdc/ticdc-sink-to-kafka.md#只发送-value-部分到外部存储)。
 
-    Starting from v8.4.0, TiDB and TiCDC introduce Checksum V2 to address issues with Checksum V1 in verifying old values in Update or Delete events after Add Column or Drop Column operations. For new clusters created in v8.4.0 or later, or clusters upgraded to v8.4.0, TiDB uses Checksum V2 by default when single-row data checksum verification is enabled. TiCDC supports handling both Checksum V1 and V2. This change only affects TiDB and TiCDC internal implementation and does not impact checksum calculation methods for downstream Kafka consumers.
+* TiCDC 引入 Checksum V2 算法校验 Update 或 Delete 事件中 Old Value 数据 [#10969](https://github.com/pingcap/tiflow/issues/10969) @[3AceShowHand](https://github.com/3AceShowHand) **tw@Oreoxmt** <!--1917-->
+
+    从 v8.4.0 开始，TiDB 和 TiCDC 引入 Checksum V2 算法，解决了 Checksum V1 在执行 Add Column 或 Drop Column 后无法正确校验 Update 或 Delete 事件中 Old Value 数据的问题。对于 v8.4.0 及之后新创建的集群，或从之前版本升级到 v8.4.0 的集群，启用单行数据 Checksum 正确性校验功能后，TiDB 默认使用 Checksum V2 算法进行 Checksum 计算和校验。TiCDC 支持同时处理 V1 和 V2 两种 Checksum。该变更仅影响 TiDB 和 TiCDC 内部实现，不影响下游 Kafka consumer 的 Checksum 计算校验方法。
   
-    For more information, see [documentation](/ticdc-integrity-check.md).
+    更多信息，请参考[用户文档](/ticdc/ticdc-integrity-check.md)。
 
 ## 兼容性变更
 
