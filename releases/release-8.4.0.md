@@ -24,64 +24,64 @@ TiDB 版本：8.4.0
 <tbody>
   <tr>
     <td rowspan="5">可扩展性和性能</td>
-    <td><a href="https://docs.pingcap.com/zh/tidb/v8.4/system-variables#tidb_enable_instance_plan_cache-从-v840-版本开始引入">实例级执行计划缓存</a>（实验特性）<!-- tw@Oreoxmt 1569 --></td>
+    <td><a href="https://docs.pingcap.com/zh/tidb/v8.4/system-variables#tidb_enable_instance_plan_cache-从-v840-版本开始引入">实例级执行计划缓存</a>（实验特性）**tw@Oreoxmt 1569**</td>
     <td>实例级执行计划缓存允许同一个 TiDB 实例的所有会话共享执行计划缓存，通过在内存中缓存更多执行计划，消除 SQL 编译时间，从而减少 SQL 运行时间，提升 OLTP 系统的性能和吞吐，同时更好地控制内存使用，提升数据库稳定性。</td>
   </tr>
   <tr>
-    <td>分区表全局索引成为正式功能<!-- tw@hfxsd 1961 --></td>
+    <td>分区表全局索引成为正式功能**tw@hfxsd 1961**</td>
     <td>全局索引可以有效提高检索非分区列的效率，并且消除了唯一键必须包含分区键的限制。该功能扩展了 TiDB 分区表的使用场景，避免了数据迁移过程中的一些应用修改工作。</td>
   </tr>
   <tr>
-    <td> TiDB 并行获取 TSO<!-- tw@qiancai 1893 --></td>
+    <td>TiDB 并行获取 TSO**tw@qiancai 1893**</td>
     <td>在高并发场景下，并行获取 TSO 能够有效降低等待获取 TSO 的时间，提升集群的吞吐。</td>
   </tr>
   <tr>
-    <td> 提升管理类 SQL 的执行效率<!-- tw@hfxsd 1941 --></td>
+    <td>提升管理类 SQL 的执行效率**tw@hfxsd 1941**</td>
     <td>在一部分 SaaS 系统中，存在批量创建大量用户，以及定期轮换所有用户密码的需求。TiDB 提升了创建和修改数据库用户的性能，保证操作能在期望的时间窗口。</td>
   </tr>
   <tr>
-    <td> 提升缓存表的查询性能<!-- tw@hfxsd 1965 --></td>
+    <td>提升缓存表的查询性能**tw@hfxsd 1965**</td>
     <td>优化了缓存表索引扫描的查询性能，部分场景可提升 5.4 倍。在需要对小表进行高速查询的场景下，利用缓存表可大幅提升整体性能。</td>
   </tr>
   <tr>
     <td rowspan="4">稳定性与高可用</td>
-    <td>Runaway Queries 支持更多触发条件，并能够切换资源组<!-- tw@hfxsd 1832 --><!-- tw@lilin90 1800 --></td>
+    <td>Runaway Queries 支持更多触发条件，并能够切换资源组**tw@hfxsd 1832 tw@lilin90 1800**</td>
     <td>Runaway Queries 提供了有效的手段来降低突发的 SQL 性能问题对系统产生的影响。v8.4.0 中新增 Coprocessor 处理的 Key 的数量 (<code>PROCESSED_KEYS</code>) 和 Request Unit (<code>RU</code>) 作为识别条件，并可以将识别到的查询置入指定资源组，对 Runaway Queries 做更精确的识别与控制。</td>
   </tr>
   <tr>
-    <td>支持为资源管控的后台任务设置资源使用上限<!-- tw@hfxsd 1909 --></td>
+    <td>支持为资源管控的后台任务设置资源使用上限**tw@hfxsd 1909**</td>
     <td>为资源管控的后台任务设置百分比上限，针对不同业务系统的需求，控制后台任务的消耗，从而将后台任务的消耗限制在一个很低的水平，保证在线业务的服务质量。</td>
   </tr>
   <tr>
-    <td><a href="https://docs.pingcap.com/zh/tidb/v8.4/tiproxy-traffic-replay">TiProxy 流量捕获和回放</a>（实验特性）<!-- tw@Oreoxmt 1942 --></td>
+    <td><a href="https://docs.pingcap.com/zh/tidb/v8.4/tiproxy-traffic-replay">TiProxy 流量捕获和回放</a>（实验特性）**tw@Oreoxmt 1942**</td>
     <td>在进行集群升级、迁移或部署变更等重要操作之前，使用 TiProxy 捕获 TiDB 生产集群的真实负载，并在测试的目标集群中重现该工作负载，从而验证性能，确保变更成功。</td>
   </tr>
   <tr>
-    <td><a href="https://docs.pingcap.com/zh/tidb/v8.4/system-variables#tidb_auto_analyze_concurrency-从-v840-版本开始引入">统计信息收集自适应并发度</a><!-- tw@Oreoxmt 1739 --></td>
+    <td><a href="https://docs.pingcap.com/zh/tidb/v8.4/system-variables#tidb_auto_analyze_concurrency-从-v840-版本开始引入">统计信息收集自适应并发度</a>**tw@Oreoxmt 1739**</td>
     <td>自动统计信息收集会根据节点规模和硬件规格自动确定收集并发度，提高统计信息收集效率，减少手动调优，确保集群性能稳定。</td>
   </tr>
   <tr>
     <td rowspan="2">SQL</td>
-    <td>外键成为正式功能<!-- tw@lilin90 1894 --></td>
+    <td>外键成为正式功能**tw@lilin90 1894**</td>
     <td>支持 MySQL 兼容的外键约束，维护数据一致性，进一步提升了 TiDB 对 MySQL 的兼容能力。</td>
   </tr>
   <tr>
-    <td> 向量搜索功能（实验特性）<!-- tw@qiancai 1898 --></td>
+    <td>向量搜索功能（实验特性）**tw@qiancai 1898**</td>
     <td>向量搜索是一种基于数据语义的搜索方法，可以提供更相关的搜索结果。作为 AI 和大语言模型（LLM）的核心功能之一，向量搜索可用于检索增强生成（Retrieval-Augmented Generation, RAG）、语义搜索、推荐系统等多种场景。</td>
   </tr>
   <tr>
     <td rowspan="2">数据库管理和可观测性</td>
-    <td> 在内存表中显示 TiKV 和 TiDB 的 CPU 时间<!-- tw@hfxsd 1877 --></td>
+    <td>在内存表中显示 TiKV 和 TiDB 的 CPU 时间**tw@hfxsd 1877**</td>
     <td>将 CPU 时间合入系统表中展示，与会话或 SQL 的其他指标并列，方便你从多角度对高 CPU 消耗的操作进行观测，提升诊断效率。尤其适用于诊断实例 CPU 飙升或集群读写热点等场景。</td>
   </tr>
   <tr>
-    <td> 支持对开启了 IMDSv2 服务的 TiKV 实例做备份<!-- tw@hfxsd 1945 --></td>
+    <td>支持对开启了 IMDSv2 服务的 TiKV 实例做备份**tw@hfxsd 1945**</td>
     <td><a href="https://aws.amazon.com/cn/blogs/security/get-the-full-benefits-of-imdsv2-and-disable-imdsv1-across-your-aws-infrastructure/">目前 AWS EC2 的默认元数据服务是 IMDSv2</a>。TiDB 支持从开启了 IMDSv2 的 TiKV 实例中备份数据，协助你更好地在公有云服务中运行 TiDB 集群。</td>
   </tr>
   <tr>
     <td rowspan="1">安全</td>
-    <td> 日志备份数据支持客户端加密（实验特性）<!-- tw@qiancai 1920 --></td>
-    <td> 在上传日志备份到备份存储之前，你可以对日志备份数据进行加密，确保数据在存储和传输过程中的安全性。</td>
+    <td>日志备份数据支持客户端加密（实验特性）**tw@qiancai 1920**</td>
+    <td>在上传日志备份到备份存储之前，你可以对日志备份数据进行加密，确保数据在存储和传输过程中的安全性。</td>
   </tr>
 </tbody>
 </table>
