@@ -390,7 +390,7 @@ TiDB 版本：8.4.0
 
 + PD
 
-  - `Lightning` 导入过程中，允许 PD 做 `evict-leader` 调度来避免阻断 TiKV 的 offline 进程 [#issue号](链接) @[okJiang](https://github.com/okJiang) **tw@qiancai**  <!--1852-->  
+  -  支持 TiKV 节点在 TiDB Lightning 导入数据期间优雅下线 (graceful offline) [#7853](https://github.com/tikv/pd/issues/7853) @[okJiang](https://github.com/okJiang) **tw@qiancai**  <!--1852-->  
 
 + TiFlash
 
