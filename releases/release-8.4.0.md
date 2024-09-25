@@ -186,7 +186,7 @@ TiDB 版本：8.4.0
 
 * 优化资源组资源分配策略 [#50831](https://github.com/pingcap/tidb/issues/50831) @[nolouch](https://github.com/nolouch) **tw@lilin90** <!--1833-->
 
-    TiDB 在 v8.4.0 部分调整了资源分配策略，更好的满足客户对资源管控的预期。
+    TiDB 在 v8.4.0 部分调整了资源分配策略，更好地满足用户对资源管控的预期。
 
     - 控制大查询在运行时的资源分配，避免超出资源组限额。配合 Runaway Queries 的 `COOLDOWN` 动作，识别并降低大查询并发度，降低瞬时资源消耗。
     - 调整默认的优先级调度策略。当不同优先级的任务同时运行时，高优先级的任务获得更多资源。
@@ -221,7 +221,7 @@ TiDB 版本：8.4.0
 
     更多信息，请参考[用户文档](/vector-search-overview.md)。
 
-* TiDB 外键约束检查功能成为正式功能 (GA) [#55861](链接) @[GitHub ID-TBD](https://github.com/pingcap/tidb/issues/55861) **tw@lilin90** <!--1894-->
+* TiDB 外键约束检查成为正式功能 (GA) [#55861](https://github.com/pingcap/tidb/issues/55861) @[YangKeao](https://github.com/YangKeao) **tw@lilin90** <!--1894-->
 
     从 v6.6.0 开始，TiDB 支持通过系统变量 [`foreign_key_checks`](/system-variables.md#foreign_key_checks) 做外键约束检查，但一直为实验特性。v8.4.0 对外键特性在更多场景做了覆盖测试，提升了稳定性和性能，因此从 v8.4.0 开始，外键功能成为正式功能 (GA)。
 
@@ -370,7 +370,7 @@ TiDB 版本：8.4.0
   - 优化 MEMDB 实现，降低事务中的写操作延时与 TiDB CPU 使用 [#55287](https://github.com/pingcap/tidb/issues/55287) @[you06](https://github.com/you06) **tw@hfxsd** <!--1892-->
   - 优化 BULK 模式 DML 的执行性能 [#50215](https://github.com/pingcap/tidb/issues/50215) @[ekexium](https://github.com/ekexium) **tw@qiancai** <!--1860-->
   - 支持使用 [Optimizer Fix Control 47400](/optimizer-fix-controls.md#47400-从-v840-版本开始引入) 控制是否将优化器为 `estRows` 估算的最小值限制为 `1`，与 Oracle 和 DB2 等数据库的行为保持一致 [#47400](https://github.com/pingcap/tidb/issues/47400) @[terry1purcell](https://github.com/terry1purcell) **tw@Oreoxmt** <!--1929-->
-  - 为日志表 [`mysql.tidb_runaway_queries`](/mysql-schema/mysql-schema.md#runaway-queries-相关系统表) 增加写入控制，降低并发大量写入引发的开销 [#issue号](链接) @[HuSharp](https://github.com/HuSharp) <!--1908--> **tw@lilin90** 
+  - 为日志表 [`mysql.tidb_runaway_queries`](/mysql-schema/mysql-schema.md#runaway-queries-相关系统表) 增加写入控制，降低大量并发写入引发的开销 [#54434](https://github.com/pingcap/tidb/issues/54434) @[HuSharp](https://github.com/HuSharp) <!--1908--> **tw@lilin90** 
   - 当内表上有 `Selection` 或 `Projection` 算子时默认支持 Index Join [#issue号](链接) @[winoros](https://github.com/winoros) **tw@Oreoxmt** <!--1709-->
   - 在某些场景下减少 `DELETE` 操作从 TiKV 获取的列信息数量，降低 `DELETE` 操作的资源开销 [#38911](https://github.com/pingcap/tidb/issues/38911) @[winoros](https://github.com/winoros) **tw@Oreoxmt** <!--1798-->
   - 优化自动收集统计信息任务优先级队列的运行效率 [#49972](https://github.com/pingcap/tidb/issues/49972) @[Rustin170506](https://github.com/Rustin170506) **tw@Oreoxmt** <!--1935-->
