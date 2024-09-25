@@ -80,8 +80,8 @@ TiDB 版本：8.4.0
   </tr>
   <tr>
     <td rowspan="1">安全</td>
-    <td> 备份数据加密成为正式功能<!-- tw@qiancai 1920 --></td>
-    <td> 加密数据库备份是一种增强数据安全性的重要措施，既可以保护数据备份中敏感信息，又有助于合规，确保数据在存储和传输中的安全。</td>
+    <td> 日志备份数据支持客户端加密（实验特性）<!-- tw@qiancai 1920 --></td>
+    <td> 在上传日志备份到备份存储之前，你可以对日志备份数据进行加密，确保数据在存储和传输过程中的安全性。</td>
   </tr>
 </tbody>
 </table>
@@ -238,11 +238,15 @@ TiDB 版本：8.4.0
 
 ### 数据库管理
 
-* PITR adds client-side log backup data encryption support (experimental) [#55834](https://github.com/pingcap/tidb/issues/55834) @[Tristan1900](https://github.com/Tristan1900) **tw@qiancai** <!--1920-->
+* 日志备份数据支持客户端加密（实验特性）[#55834](https://github.com/pingcap/tidb/issues/55834) @[Tristan1900](https://github.com/Tristan1900) **tw@qiancai** <!--1920-->
 
-    Previously only the data from a snapshot based backup could be encrypted (on the client side) with a data key provided by the user. With this feature, log backups may now also be encrypted, ensuring that the confidentiality of information within the backup data is secured.
+    在之前的版本中，仅快照备份数据支持客户端加密。从 v8.4.0 起，日志备份数据也支持客户端加密。在上传日志备份到备份存储之前，你可以选择以下方式之一对日志备份数据进行加密，从而提高备份数据的安全性：
+    
+    - 使用自定义的固定密钥加密
+    - 使用本地磁盘的主密钥加密
+    - 使用 KMS（密钥管理服务）的主密钥加密
 
-    For more information, see [documentation](doc-link).
+    更多信息，请参考[用户文档](/br/br-pitr-manual.md#加密日志备份数据)。
 
 * BR reduces requires storage permissions for restores [#55870](https://github.com/pingcap/tidb/issues/55870) @[Leavrth](https://github.com/Leavrth) **tw@Oreoxmt** <!--1943-->
 
@@ -390,8 +394,7 @@ TiDB 版本：8.4.0
 
     + Backup & Restore (BR)
 
-      - 集群恢复时同时设置 `split-table=false` 和 `split-region-on-table=false`，优化 region 的分配策略 [#53532](https://github.com/pingcap/tidb/issues/53532) @[Leavrth](https://github.com/Leavrth) 
-      **tw@qiancai** <!--1914-->
+      - 当集群的 `split-table` 和 `split-region-on-table` 配置项为默认值 `false` 时，BR 在恢复数据到该集群的过程中不会按照 table 分裂 Region，以提升恢复速度 [#53532](https://github.com/pingcap/tidb/issues/53532) @[Leavrth](https://github.com/Leavrth) **tw@qiancai** <!--1914-->
       - 默认不支持使用 SQL 语句 `RESTORE` 全量恢复数据到非空集群 [#55087](https://github.com/pingcap/tidb/issues/55087) @[BornChanger](https://github.com/BornChanger) **tw@Oreoxmt** <!--1711-->
 
     + TiCDC
