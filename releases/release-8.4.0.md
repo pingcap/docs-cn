@@ -136,7 +136,7 @@ TiDB 版本：8.4.0
 
     通过开启配置项 `logical-import-prep-stmt`，TiDB Lightning 逻辑导入产生的 SQL 语句将通过 prepare 接口执行，可提升 SQL 执行效率，并有更大机会命中执行计划缓存，提升逻辑导入的速度。
 
-    更多信息，请参考[用户文档](tidb-lightning/tidb-lightning-configuration.md)。
+    更多信息，请参考[用户文档](/tidb-lightning/tidb-lightning-configuration.md)。
 
 * 分区表的全局索引成为正式功能 (GA) [#45133](https://github.com/pingcap/tidb/issues/45133) @[mjonss](https://github.com/mjonss)@[Defined2014](https://github.com/Defined2014) **tw@hfxsd** <!--1961-->
 #
