@@ -132,9 +132,9 @@ TiDB 版本：8.4.0
 
     更多信息，请参考[用户文档](/system-variables.md#tidb_enable_instance_plan_cache-从-v840-版本开始引入)。
 
-* TiDB Lightning 的逻辑导入支持 prepare 接口 [#54850](https://github.com/pingcap/tidb/issues/54850) @[dbsid](https://github.com/dbsid) **tw@lilin90** <!--1922-->
+* TiDB Lightning 的逻辑导入支持预处理语句和客户端语句缓存 [#54850](https://github.com/pingcap/tidb/issues/54850) @[dbsid](https://github.com/dbsid) **tw@lilin90** <!--1922-->
 
-    通过开启配置项 `logical-import-prep-stmt`，TiDB Lightning 逻辑导入产生的 SQL 语句将通过 prepare 接口执行，可提升 SQL 执行效率，并有更大机会命中执行计划缓存，提升逻辑导入的速度。
+    通过开启配置项 `logical-import-prep-stmt`，TiDB Lightning 逻辑导入产生的 SQL 语句将通过使用预处理语句和客户端语句缓存，降低 TiDB SQL 解析和编译的成本，提升 SQL 执行效率，并有更大机会命中执行计划缓存，提升逻辑导入的速度。
 
     更多信息，请参考[用户文档](/tidb-lightning/tidb-lightning-configuration.md)。
 
