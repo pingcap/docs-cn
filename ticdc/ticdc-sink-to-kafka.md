@@ -535,7 +535,7 @@ Kafka 消费者会收到一条含有大消息在外部存储服务中的地址�
 }
 ```
 
-`key` 和 `value` 分别对应 Kafka 消息中的同名字段。消费者可以通过解析这两部分的数据，还原大消息的内容。只有 Open Protocol 编码的 Kafka 消息包含 `key` 字段，TiCDC 将 `key` 和 `value` 编码到同一个 JSON 对象中，一次性发送完整的消息。对于其他协议，`key` 字段始终为空。
+`key` 和 `value` 分别对应 Kafka 消息中的同名字段。消费者可以通过解析这两部分的数据，还原大消息的内容。只有 Open Protocol 编码的 Kafka 消息的 `key` 字段包含有效内容，TiCDC 将 `key` 和 `value` 编码到同一个 JSON 对象中，一次性发送完整的消息。对于其他协议，`key` 字段始终为空。
 
 ### 只发送 `value` 部分到外部存储
 
