@@ -31,9 +31,9 @@ SHOW COLLATION WHERE CHARSET = 'gb18030';
 
 ### 排序规则兼容性
 
-MySQL 的字符集默认排序规则是 `gb18030_chinese_ci`。与 MySQL 不同，TiDB GB18030 字符集的默认排序规则为 `gb18030_bin`。另外，TiDB 支持的 `gb18030_bin` 与 MySQL 支持的 `gb18030_bin` 排序规则也不一致，TiDB 是将 GB18030 转换成 UTF8MB4 然后做二进制排序。
+MySQL `gb18030` 字符集的默认排序规则是 `gb18030_chinese_ci`；而 TiDB `gb18030` 字符集的默认排序规则为 `gb18030_bin`。此外，TiDB 支持的 `gb18030_bin` 与 MySQL 支持的 `gb18030_bin` 排序规则也不一致，TiDB 是将 `gb18030` 字符集转换成 `utf8mb4` 然后做二进制排序。
 
-如果要使 TiDB 兼容 MySQL 的 GB18030 字符集排序规则，你需要在初次初始化 TiDB 集群时设置 TiDB 配置项 [`new_collations_enabled_on_first_bootstrap`](/tidb-configuration-file.md#new_collations_enabled_on_first_bootstrap) 为 `true` 来开启[新的排序规则框架](/character-set-and-collation.md#新框架下的排序规则支持)。
+如果要使 TiDB 兼容 MySQL GB18030 字符集的排序规则，你需要在首次初始化 TiDB 集群时将 TiDB 配置项 [`new_collations_enabled_on_first_bootstrap`](/tidb-configuration-file.md#new_collations_enabled_on_first_bootstrap) 设置为 `true` 来开启[新的排序规则框架](/character-set-and-collation.md#新框架下的排序规则支持)。
 
 开启新的排序规则框架后，查看 GB18030 字符集对应的排序规则，可以看到 TiDB GB18030 默认排序规则已经切换为 `gb18030_chinese_ci`。
 
