@@ -24,7 +24,7 @@ TiDB 版本：8.4.0
 <tbody>
   <tr>
     <td rowspan="5">可扩展性和性能</td>
-    <td>实例级执行计划缓存（实验特性）<!-- tw@Oreoxmt 1569 --></td>
+    <td><a href="https://docs.pingcap.com/zh/tidb/v8.4/system-variables#tidb_enable_instance_plan_cache-从-v840-版本开始引入">实例级执行计划缓存</a>（实验特性）<!-- tw@Oreoxmt 1569 --></td>
     <td>实例级执行计划缓存允许同一个 TiDB 实例的所有会话共享执行计划缓存，通过在内存中缓存更多执行计划，消除 SQL 编译时间，从而减少 SQL 运行时间，提升 OLTP 系统的性能和吞吐，同时更好地控制内存使用，提升数据库稳定性。</td>
   </tr>
   <tr>
@@ -53,11 +53,11 @@ TiDB 版本：8.4.0
     <td>为资源管控的后台任务设置百分比上限，针对不同业务系统的需求，控制后台任务的消耗，从而将后台任务的消耗限制在一个很低的水平，保证在线业务的服务质量。</td>
   </tr>
   <tr>
-    <td>TiProxy 流量捕获和回放<!-- tw@Oreoxmt 1942 --></td>
+    <td><a href="https://docs.pingcap.com/zh/tidb/v8.4/tiproxy-traffic-replay">TiProxy 流量捕获和回放</a>（实验特性）<!-- tw@Oreoxmt 1942 --></td>
     <td>在进行集群升级、迁移或部署变更等重要操作之前，使用 TiProxy 捕获 TiDB 生产集群的真实负载，并在测试的目标集群中重现该工作负载，从而验证性能，确保变更成功。</td>
   </tr>
   <tr>
-    <td>统计信息收集自适应并发度<!-- tw@Oreoxmt 1739 --></td>
+    <td><a href="https://docs.pingcap.com/zh/tidb/v8.4/system-variables#tidb_auto_analyze_concurrency-从-v840-版本开始引入">统计信息收集自适应并发度</a><!-- tw@Oreoxmt 1739 --></td>
     <td>自动统计信息收集会根据节点规模和硬件规格自动确定收集并发度，提高统计信息收集效率，减少手动调优，确保集群性能稳定。</td>
   </tr>
   <tr>
@@ -381,6 +381,7 @@ TiDB 版本：8.4.0
   - 在某些场景下减少 `DELETE` 操作从 TiKV 获取的列信息数量，降低 `DELETE` 操作的资源开销 [#38911](https://github.com/pingcap/tidb/issues/38911) @[winoros](https://github.com/winoros) **tw@Oreoxmt** <!--1798-->
   - 优化自动收集统计信息任务优先级队列的运行效率 [#49972](https://github.com/pingcap/tidb/issues/49972) @[Rustin170506](https://github.com/Rustin170506) **tw@Oreoxmt** <!--1935-->
   - 自动统计信息收集根据部署规模和硬件规格决定执行和扫描的并发度 [#issue号](链接) @[hawkingrei](https://github.com/hawkingrei) **tw@Oreoxmt** <!--1739-->
+
 + TiKV
 
   - Region 的默认值由 96 MiB 提升到 256 MiB，避免 Region 数量过多导致额外开销 [#17309](https://github.com/tikv/tikv/issues/17309) [LykxSassinator](https://github.com/LykxSassinator) **tw@hfxsd** <!--1925-->
