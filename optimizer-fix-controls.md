@@ -30,7 +30,7 @@ SET SESSION tidb_opt_fix_control = '44262:ON,44389:ON';
 
 - 默认值：`OFF`
 - 可选值：`ON`、`OFF`
-- 此变量控制是否允许 FastPlan 计划。如果设置为 `ON`，优化器将回退到 Coprocessor，Get 和 BatchGet 都将被禁用。只有当 FastPlan 比 Coprocessor 更昂贵时才应设置为 `ON`。 FastPlan 不支持列投影，以下是需要列投影且 FastPlan 被禁用的常见情况：
+- 控制是否允许通过 Get 或 BatchGet 获取数据。如果设置为 `ON`，优化器会强制选择 Coprocessor，而 Get 和 BatchGet 都将被禁用。 Get 和 BatchGet 不支持列投影，在部分场景中执行代价比 Coprocessor 请求高，设置为 `ON` 会获得更好的性能。以下是推荐强制选择 Coprocessor 的常见情况：
 	- 具有多列的宽表，应用程序只查询少量列子集。
 	- 包含大型 JSON 值的 JSON 列的表，查询要么不检索 JSON 列，要么只提取 JSON 内容的小部分。
 
