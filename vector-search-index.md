@@ -38,7 +38,6 @@ TiDB 目前支持 [HNSW (Hierarchical Navigable Small World)](https://en.wikiped
     CREATE TABLE foo (
         id       INT PRIMARY KEY,
         data     VECTOR(5),
-        data64   VECTOR64(10),
         VECTOR INDEX idx_data USING HNSW ((VEC_COSINE_DISTANCE(data)))
     );
     ```
