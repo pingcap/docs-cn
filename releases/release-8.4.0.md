@@ -32,7 +32,7 @@ TiDB 版本：8.4.0
     <td>全局索引可以有效提高检索非分区列的效率，并且消除了唯一键必须包含分区键的限制。该功能扩展了 TiDB 分区表的使用场景，避免了数据迁移过程中的一些应用修改工作。</td>
   </tr>
   <tr>
-    <td>TiDB 并行获取 TSO**tw@qiancai 1893**</td>
+    <td><a href="https://docs.pingcap.com/zh/tidb/v8.4/system-variables#tidb_tso_client_rpc_mode-从-v840-版本开始引入">TiDB 并行获取 TSO</a>**tw@qiancai 1893**</td>
     <td>在高并发场景下，并行获取 TSO 能够有效降低等待获取 TSO 的时间，提升集群的吞吐。</td>
   </tr>
   <tr>
@@ -58,7 +58,7 @@ TiDB 版本：8.4.0
   </tr>
   <tr>
     <td rowspan="1">SQL</td>
-    <td>向量搜索功能（实验特性）**tw@qiancai 1898**</td>
+    <td>><a href="https://docs.pingcap.com/zh/tidb/v8.4/vector-search-overview">向量搜索功能（实验特性）</a>**tw@qiancai 1898**</td>
     <td>向量搜索是一种基于数据语义的搜索方法，可以提供更相关的搜索结果。作为 AI 和大语言模型（LLM）的核心功能之一，向量搜索可用于检索增强生成（Retrieval-Augmented Generation, RAG）、语义搜索、推荐系统等多种场景。</td>
   </tr>
   <tr>
@@ -72,7 +72,7 @@ TiDB 版本：8.4.0
   </tr>
   <tr>
     <td rowspan="1">安全</td>
-    <td>日志备份数据支持客户端加密（实验特性）**tw@qiancai 1920**</td>
+    <td><a href="https://docs.pingcap.com/zh/tidb/v8.4/br-pitr-manual#加密日志备份数据">日志备份数据支持客户端加密（实验特性）</a>**tw@qiancai 1920**</td>
     <td>在上传日志备份到备份存储之前，你可以对日志备份数据进行加密，确保数据在存储和传输过程中的安全性。</td>
   </tr>
 </tbody>
@@ -208,7 +208,7 @@ TiDB 版本：8.4.0
 
     在使用时，你只需要创建包含向量数据类型的表，并插入向量数据，即可执行向量搜索查询，也可进行向量数据与传统关系数据的混合查询。
 
-    此外，你可以创建并利用向量搜索索引来提升向量搜索的性能。需要注意的是，TiDB 的向量搜索索引依赖于 TiFlash。因此，在使用向量搜索索引之前，需要确保 TiDB 集群中已部署 TiFlash 节点。
+    此外，你可以创建并利用向量搜索索引来提升向量搜索的性能。需要注意的是，TiDB 的向量搜索索引依赖于 TiFlash。在使用向量搜索索引之前，需要确保 TiDB 集群中已部署 TiFlash 节点。
 
     更多信息，请参考[用户文档](/vector-search-overview.md)。
 
@@ -226,7 +226,7 @@ TiDB 版本：8.4.0
 
 * 日志备份数据支持客户端加密（实验特性）[#55834](https://github.com/pingcap/tidb/issues/55834) @[Tristan1900](https://github.com/Tristan1900) **tw@qiancai** <!--1920-->
 
-    在之前的版本中，仅快照备份数据支持客户端加密。从 v8.4.0 起，日志备份数据也支持客户端加密。在上传日志备份到备份存储之前，你可以选择以下方式之一对日志备份数据进行加密，从而提高备份数据的安全性：
+    在之前的版本中，仅快照备份数据支持客户端加密。从 v8.4.0 起，日志备份数据也支持客户端加密。在上传日志备份到备份存储之前，你可以选择以下方式之一对日志备份数据进行加密，从而确保备份数据的安全性：
     
     - 使用自定义的固定密钥加密
     - 使用本地磁盘的主密钥加密
@@ -309,7 +309,7 @@ TiDB 版本：8.4.0
 | [`tidb_pre_split_regions`](/system-variables.md#tidb_pre_split_regions-从-v840-版本开始引入)   | 新增 | 在 v8.4.0 之前，要设置新建表的默认行分裂分片数，需要在每个 `CREATE TABLE` SQL 语句里声明 `PRE_SPLIT_REGIONS`，一旦需要同样配置的表数量较多，操作复杂。为解决这些问题，引入了该变量。你可以在 `GLOBAL` 或 `SESSION` 级别设置该系统变量，提升易用性。  |
 | [`tidb_shard_row_id_bits`](/system-variables.md#tidb_shard_row_id_bits-从-v840-版本开始引入) | 新增 | 在 v8.4.0 之前，要设置新建表的默认行 ID 的分片位数，需要在每个 `CREATE TABLE` 或 `ALTER TABLE` 的 SQL 语句里声明 `SHARD_ROW_ID_BITS`，一旦需要同样配置的表数量较多，操作复杂。为解决这些问题，引入了该变量。你可以在 `GLOBAL` 或 `SESSION` 级别设置该系统变量，提升易用性。  |
 |  [tidb_tso_client_rpc_mode](/system-variables.md#tidb_tso_client_rpc_mode-从-v840-版本开始引入)      |         新增                     |   原有的 TSO 请求为同步模式。现在引入 TSO 请求的异步批处理模式，并提供不同的并发能力。异步模式可以降低获取 TSO 的延迟，但可能会增加 PD 的负载。  |
-|  [tidb_hash_join_version](/system-variables.md#tidb_hash_join_version-从-v840-版本开始引入)     |         新增                     |   原有的 TiDB Hash Join 算法效率不佳，引入新的 HashJoin 版本，实现更加高效的计算  |
+| [tidb_hash_join_version](/system-variables.md#tidb_hash_join_version-从-v840-版本开始引入) | 新增 | 控制 TiDB 在执行 Hash Join 算子时是否使用优化后的实现方法。默认值为 `legacy`，代表不使用优化后的实现方法。若设置为 `optimized`，TiDB 在执行 Hash Join 算子时将使用优化后的实现方法，以提升 Hash Join 性能。 |
 |tidb_schema_cache_size|修改|默认值从 0 修改为 536870912 即 512 MiB，表示默认开启该功能，且最小值允许设置为 67108864 即 64 MiB |
 
 ### 配置文件参数
