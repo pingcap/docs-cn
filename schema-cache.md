@@ -19,10 +19,10 @@ summary: TiDB 对于 schema 信息采用基于 LRU 的缓存机制，在大量�
 ## 最佳实践
 
 - 在大量数据库和表的场景下（例如 10 万以上的数据库和表数量）或者当数据库和表的数量大到影响系统性能时，建议打开 schema 缓存特性。
-- 可以通过观测 TiDB 监控中 Schema load 下的子面板 Infoschema v2 Cache Operation 来查看 schema 缓存的命中率。如果命中率较低，可以调大 [`tidb_schema_cache_size`](/system-variables.md#tidb_schema_cache_size-从-v800-版本开始引入)。
-- 可以通过观测 TiDB 监控中 Schema load 下的子面板 Infoschema v2 Cache Size 来查看当前使用的 schema 缓存的大小。
+- 可以通过观测 TiDB 监控中 **Schema load** 下的子面板 **Infoschema v2 Cache Operation** 来查看 schema 缓存的命中率。如果命中率较低，可以调大 [`tidb_schema_cache_size`](/system-variables.md#tidb_schema_cache_size-从-v800-版本开始引入)。
+- 可以通过观测 TiDB 监控中 **Schema load** 下的子面板 **Infoschema v2 Cache Size** 来查看当前使用的 schema 缓存的大小。
 - 建议关闭 [`performance.force-init-stats`](/tidb-configuration-file.md#force-init-stats-从-v657-和-v710-版本开始引入) 以减少 TiDB 的启动时间。
-- 如果需要创建大量的表（例如 10 万张以上），建议将此参数设置为 false [`split-table`](/tidb-configuration-file.md#split-table) 以减少 region 数量，从而降低 TiKV 的内存。
+- 如果需要创建大量的表（例如 10 万张以上），建议将参数 [`split-table`](/tidb-configuration-file.md#split-table) 设置为 `false` 以减少 Region 数量，从而降低 TiKV 的内存。
 
 ## 已知限制
 
