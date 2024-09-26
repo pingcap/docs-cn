@@ -254,6 +254,13 @@ pd-server 相关配置项。
 
 调度相关的配置项。
 
+> **注意：**
+> 
+> 要修改与调度相关的 PD 配置项，请根据集群的情况选择以下方法之一：
+>
+> - 对于新部署集群，你可以直接在 PD 配置文件中进行修改。
+> - 对于已有集群，请使用命令行工具 [PD Control](/pd-control.md) 进行修改。直接修改 PD 配置文件中与调度相关的配置项不会对已有集群生效。
+
 ### `max-merge-region-size`
 
 + 控制 Region Merge 的 size 上限，当 Region Size 大于指定值时 PD 不会将其与相邻的 Region 合并。
