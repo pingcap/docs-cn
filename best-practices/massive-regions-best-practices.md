@@ -134,11 +134,11 @@ config set merge-schedule-limit 8
 
 ### 方法六：调整 Region 大小
 
-Region 默认的大小约为 256 MiB，将其调大也可以减少 Region 个数，具体介绍可参考[使用更大的 Region](/tune-region-performance.md)。
+Region 的默认大小为 256 MiB，将其调大可以减少 Region 个数，详情参见 [Region 性能调优](/tune-region-performance.md)。
 
 > **注意：**
 >
-> 从 v8.4.0 开始，Region 的默认值从 96 MiB 调整为 256 MiB。如果并未主动调整过 Region 大小，TiKV 集群从 v8.4.0 之前升级至 v8.4.0 或更高的版本后，集群的 Region 的默认值将自动更新为 256 MiB。
+> 从 v8.4.0 开始，Region 的默认值从 96 MiB 调整为 256 MiB。如果你并未手动调整过 Region 大小，将 TiKV 集群从 v8.4.0 之前升级至 v8.4.0 或更高的版本后，集群 Region 的默认值将自动更新为 256 MiB。
 
 > **警告：**
 >
