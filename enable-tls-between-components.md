@@ -141,7 +141,11 @@ aliases: ['/docs-cn/dev/enable-tls-between-components/','/docs-cn/dev/how-to/sec
 
 > **注意：**
 >
-> 目前 PD 的 `cert-allowed-cn` 配置项只能设置一个值。因此所有认证对象的 `commonName` 都要设置成同一个值。
+> 8.3 及之前版本的 PD 的 `cert-allowed-cn` 配置项只能设置一个值。因此所有认证对象的 `Common Name` 都要设置成同一个值。
+> 8.4 及之后版本的 PD 支持多 `Common Name`，可以根据需要设置成多个值。
+> 需要额外注意的是，tiup 在查询组件状态的时候会使用独立的标识，比如集群名是 `test`，它会使用 `test-client`。
+
+8.3 及之前版本的例子：
 
 - TiDB
 
@@ -149,7 +153,7 @@ aliases: ['/docs-cn/dev/enable-tls-between-components/','/docs-cn/dev/how-to/sec
 
     ```toml
     [security]
-    cluster-verify-cn = ["TiDB"]
+    cluster-verify-cn = ["tidb"]
     ```
 
 - TiKV
@@ -158,7 +162,7 @@ aliases: ['/docs-cn/dev/enable-tls-between-components/','/docs-cn/dev/how-to/sec
 
     ```toml
     [security]
-    cert-allowed-cn = ["TiDB"]
+    cert-allowed-cn = ["tidb"]
     ```
 
 - PD
@@ -167,7 +171,7 @@ aliases: ['/docs-cn/dev/enable-tls-between-components/','/docs-cn/dev/how-to/sec
 
     ```toml
     [security]
-    cert-allowed-cn = ["TiDB"]
+    cert-allowed-cn = ["tidb"]
     ```
 
 - TiFlash（从 v4.0.5 版本开始引入）
@@ -176,14 +180,43 @@ aliases: ['/docs-cn/dev/enable-tls-between-components/','/docs-cn/dev/how-to/sec
 
     ```toml
     [security]
-    cert_allowed_cn = ["TiDB"]
+    cert_allowed_cn = ["tidb"]
     ```
 
     在 `tiflash-learner.toml` 文件中设置：
 
     ```toml
     [security]
-    cert-allowed-cn = ["TiDB"]
+    cert-allowed-cn = ["tidb"]
+    ```
+
+8.4 及之后版本的例子：
+
+- TiDB
+
+    在 `config` 文件或命令行参数中设置：
+
+    ```toml
+    [security]
+    cluster-verify-cn = ["tidb", "test-client"]
+    ```
+
+- TiKV
+
+    在 `config` 文件或命令行参数中设置：
+
+    ```toml
+    [security]
+    cert-allowed-cn = ["tidb", "pd", "tikv"]
+    ```
+
+- PD
+
+    在 `config` 文件或命令行参数中设置：
+
+    ```toml
+    [security]
+    cert-allowed-cn = ["tidb", "pd", "tikv", "test-client"]
     ```
 
 ## 证书重新加载
