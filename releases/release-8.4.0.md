@@ -134,9 +134,9 @@ TiDB 版本：8.4.0
 
     更多信息，请参考[用户文档](/system-variables.md#tidb_enable_instance_plan_cache-从-v840-版本开始引入)。
 
-* TiDB Lightning 的逻辑导入支持预处理语句和客户端语句缓存 [#54850](https://github.com/pingcap/tidb/issues/54850) @[dbsid](https://github.com/dbsid) **tw@lilin90** <!--1922-->
+* TiDB Lightning 的逻辑导入模式支持预处理语句和客户端语句缓存 [#54850](https://github.com/pingcap/tidb/issues/54850) @[dbsid](https://github.com/dbsid) **tw@lilin90** <!--1922-->
 
-    通过开启配置项 `logical-import-prep-stmt`，TiDB Lightning 逻辑导入产生的 SQL 语句将通过使用预处理语句和客户端语句缓存，降低 TiDB SQL 解析和编译的成本，提升 SQL 执行效率，并有更大机会命中执行计划缓存，提升逻辑导入的速度。
+    通过开启配置项 `logical-import-prep-stmt`，TiDB Lightning 逻辑导入模式中执行的 SQL 语句将通过使用预处理语句和客户端语句缓存，降低 TiDB SQL 解析和编译的成本，提升 SQL 执行效率，并有更大机会命中执行计划缓存，提升逻辑导入的速度。
 
     更多信息，请参考[用户文档](/tidb-lightning/tidb-lightning-configuration.md)。
 
@@ -156,7 +156,7 @@ TiDB 版本：8.4.0
 
 ### 稳定性
 
-* 超出预期的查询 (Runaway Queries) 新增处理行数 和 RU 作为阈值 [#54434](https://github.com/pingcap/tidb/issues/54434) @[HuSharp](https://github.com/HuSharp) **tw@lilin90** <!--1800-->
+* 超出预期的查询 (Runaway Queries) 新增处理行数和 Request Unit 作为阈值 [#54434](https://github.com/pingcap/tidb/issues/54434) @[HuSharp](https://github.com/HuSharp) **tw@lilin90** <!--1800-->
 
     从 v8.4.0 开始， TiDB 可以依据处理行数 (`PROCESSED_KEYS`) 和 Request Unit (`RU`) 定义超出预期的查询。和执行时间 (`EXEC_ELAPSED`) 相比，新增阈值能够更准确地定义查询的资源消耗，避免整体性能下降时发生识别偏差。
 
@@ -351,7 +351,7 @@ TiDB 版本：8.4.0
 
 ## 离线包变更
 
-## 废弃功能
+## 废弃和移除的功能
 
 * 以下为从 v8.4.0 开始已移除的功能：
 
