@@ -36,10 +36,6 @@ TiDB 版本：8.4.0
     <td>在高并发场景下，并行获取 TSO 能够有效降低等待获取 TSO 的时间，提升集群的吞吐。</td>
   </tr>
   <tr>
-    <td>提升管理类 SQL 的执行效率**tw@hfxsd 1941**</td>
-    <td>在一部分 SaaS 系统中，存在批量创建大量用户，以及定期轮换所有用户密码的需求。TiDB 提升了创建和修改数据库用户的性能，保证操作能在期望的时间窗口。</td>
-  </tr>
-  <tr>
     <td>提升缓存表的查询性能**tw@hfxsd 1965**</td>
     <td>优化了缓存表索引扫描的查询性能，部分场景可提升 5.4 倍。在需要对小表进行高速查询的场景下，利用缓存表可大幅提升整体性能。</td>
   </tr>
@@ -115,10 +111,6 @@ TiDB 版本：8.4.0
 
   更多信息，请参考[用户文档](/functions-and-operators/expressions-pushed-down.md)。
 
-* 提升批量创建用户和修改用户密码操作的性能，提升达数百倍 [#55604](https://github.com/pingcap/tidb/pull/55604) @[wjhuang2016](https://github.com/wjhuang2016) **tw@hfxsd** <!--1941-->
-
-    在 SaaS 场景下，你可能需要在指定时间内批量创建大量用户、以及定期轮换所有用户密码。从 v8.4.0 开始，提升了批量创建用户、批量修改用户密码的性能，而且你可以通过增加会话连接数来提升并发，提升性能，从而大幅缩短该场景下的执行时间。
-
 * 实例级执行计划缓存（实验特性）[#54057](https://github.com/pingcap/tidb/issues/54057) @[qw4990](https://github.com/qw4990) **tw@Oreoxmt** <!--1569-->
 
     TiDB v8.4.0 引入实例级执行计划缓存作为实验特性。该功能允许同一个 TiDB 实例的所有会话共享执行计划缓存，能够大幅降低 TiDB 的时延、提升集群吞吐、减少执行计划突变的可能性、保持集群性能的稳定，是 TiDB 改善性能和稳定性的重要改进。相比会话级执行计划缓存，实例级执行计划缓存具有以下优势：
@@ -146,9 +138,9 @@ TiDB 版本：8.4.0
 
     更多信息，请参考[用户文档](/partitioned-table.md#全局索引)。
 
-* 优化了缓存表在部分场景下的查询性能 [#43249](https://github.com/pingcap/tidb/issues/43249) @[tiancaiamao](https://github.com/tiancaiamao) **tw@hfxsd** <!--1965-->
+* 优化缓存表在部分场景下的查询性能 [#43249](https://github.com/pingcap/tidb/issues/43249) @[tiancaiamao](https://github.com/tiancaiamao) **tw@hfxsd** <!--1965-->
 
-    优化了缓存表的查询性能，在使用 `IndexLookup` 执行 `SELECT ... LIMIT 1` 时，性能最高提升 5.4 倍。同时，提升了 `IndexLookupReader` 在全表扫描和主键查询场景下的性能。
+    优化缓存表的查询性能，在使用 `IndexLookup` 执行 `SELECT ... LIMIT 1` 时，性能最高提升 5.4 倍。同时，提升 `IndexLookupReader` 在全表扫描和主键查询场景下的性能。
 
 ### 稳定性
 
@@ -310,7 +302,7 @@ TiDB 版本：8.4.0
 | [`tidb_enable_list_partition`](/system-variables.md#tidb_enable_list_partition-从-v50-版本开始引入) | 废弃 | 从 v8.4.0 开始，该变量被废弃。其值将固定为默认值 `ON`，即默认启用 [List 分区](/partitioned-table.md#list-分区)。 |
 | [`tidb_enable_table_partition`](/system-variables.md#tidb_enable_table_partition) | 废弃 |  从 v8.4.0 开始，该变量被废弃。其值将固定为默认值 `ON`，即默认启用[分区表](/partitioned-table.md)。|
 | [`tidb_opt_prefer_range_scan`](/system-variables.md#tidb_opt_prefer_range_scan-从-v50-版本开始引入) | 修改 |  从 v8.4.0 开始，此变量的默认值从 `OFF` 更改为 `ON`。对于没有统计信息的表（伪统计信息）或空表（零统计信息），优化器将优先选择区间扫描而不是全表扫描。|
-| [`tidb_scatter_region`](/system-variables.md#tidb_scatter_region) | 修改 |  原先为布尔型，仅支持开启或关闭，且开启后新建的表的 Region 只支持表级别打散。从 v8.4.0 开始，增加 `SESSION` 作用域，类型由布尔型变更为枚举型，默认值由原来的 `OFF` 变更为 ``，并增加了可选值 `TABLE` 和 `GLOBAL`。支持集群级别的打算策略，避免快速批量建表时由于 Region 分布不均匀导致 TiKV OOM 的问题。|
+| [`tidb_scatter_region`](/system-variables.md#tidb_scatter_region) | 修改 |  原先为布尔型，仅支持开启或关闭，且开启后新建的表的 Region 只支持表级别打散。从 v8.4.0 开始，增加 `SESSION` 作用域，类型由布尔型变更为枚举型，默认值由原来的 `OFF` 变更为空，并增加了可选值 `TABLE` 和 `GLOBAL`。支持集群级别的打算策略，避免快速批量建表时由于 Region 分布不均匀导致 TiKV OOM 的问题。|
 | [`tidb_enable_inl_join_inner_multi_pattern`](/system-variables.md#tidb_enable_inl_join_inner_multi_pattern-从-v700-版本开始引入) |   修改  |   默认值改为 `ON`。当内表上有 `Selection` 或 `Projection` 算子时默认支持 Index Join  |
 | [`tidb_enable_instance_plan_cache`](/system-variables.md#tidb_enable_instance_plan_cache-从-v840-版本开始引入)| 新增 | 这个变量控制是否开启 Instance Plan Cache 功能。 |
 | [`tidb_instance_plan_cache_max_size`](/system-variables.md#tidb_instance_plan_cache_max_size-从-v840-版本开始引入) | 新增 | 这个变量控制 Instance Plan Cache 的目标内存大小，超过这个大小则触发清理。|
