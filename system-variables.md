@@ -2819,12 +2819,12 @@ v5.0 后，用户仍可以单独修改以上系统变量（会有废弃警告）
 - 类型：枚举型
 - 默认值：`legacy`
 - 可选值：`legacy`, `optimized`
-- 控制 TiDB 在执行 Hash Join 算子时是否使用优化后的实现方法。默认值为 `legacy`，代表不使用优化后的实现方法。若设置为 `optimized`，TiDB 在执行 Hash Join 算子时将使用优化后的实现方法，以提升 Hash Join 性能。
+- 控制 TiDB 是否使用优化版本的 Hash Join 算子。默认值为 `legacy`，代表不使用优化版本。若设置为 `optimized`，TiDB 在执行 Hash Join 算子时将使用优化版本，以提升 Hash Join 性能。
 
 > **注意：**
 >
-> - 目前，仅 Inner Join 和 Outer Join 类型的连接操作支持 Hash Join 的优化实现方法。对于其他类型的连接操作，即使将该变量设成 `optimized`，TiDB 在执行 Hash Join 算子时也不会使用优化实现方法。
-> - 目前，优化的 Hash Join 不支持在内存超限的时候将内存数据进行落盘。
+> - 目前，仅 Inner Join 和 Outer Join 类型的连接操作支持优化版本的 Hash Join。对于其他类型的连接操作，即使将该变量设成 `optimized`，TiDB 在执行 Hash Join 算子时也不会使用优化版本。
+> - 目前，优化版本的 Hash Join 不支持在内存使用超限时落盘内存数据。
 
 
 ### `tidb_hashagg_final_concurrency`
