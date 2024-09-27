@@ -62,9 +62,13 @@ TiDB 版本：8.4.0
     <td>向量搜索是一种基于数据语义的搜索方法，可以提供更相关的搜索结果。作为 AI 和大语言模型（LLM）的核心功能之一，向量搜索可用于检索增强生成（Retrieval-Augmented Generation, RAG）、语义搜索、推荐系统等多种场景。</td>
   </tr>
   <tr>
-    <td rowspan="2">数据库管理和可观测性</td>
+    <td rowspan="3">数据库管理和可观测性</td>
     <td>在内存表中显示 TiKV 和 TiDB 的 CPU 时间**tw@hfxsd 1877**</td>
     <td>将 CPU 时间合入系统表中展示，与会话或 SQL 的其他指标并列，方便你从多角度对高 CPU 消耗的操作进行观测，提升诊断效率。尤其适用于诊断实例 CPU 飙升或集群读写热点等场景。</td>
+  </tr>
+  <tr>
+    <td>按表或数据库聚合 TiKV 的 CPU 时间**tw@lilin90 1878**</td>
+    <td>当热点问题不是由个别 SQL 语句引起时，利用 <a href="https://docs.pingcap.com/zh/tidb/v8.4/top-sql#tidb-dashboard-top-sql-%E9%A1%B5%E9%9D%A2"> TOP SQL </a> 中按表或者数据库聚合的 CPU 时间，能够协助用户快速发现造成热点的表或者应用程序。大大提升热点问题和 CPU 消耗问题的诊断效率。</td>
   </tr>
   <tr>
     <td>支持对开启了 IMDSv2 服务的 TiKV 实例做备份**tw@hfxsd 1945**</td>
