@@ -277,7 +277,6 @@ Query OK, 0 rows affected (0.02 sec)
 
 INSERT INTO t VALUES();
 Query OK, 1 row affected (0.00 sec)
-Records: 1  Duplicates: 0  Warnings: 0
 
 SELECT * FROM t;
 +---+
@@ -286,32 +285,93 @@ SELECT * FROM t;
 | 1 |
 +---+
 1 row in set (0.01 sec)
+
+SHOW CREATE TABLE t;
++-------+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| Table | Create Table                                                                                                                                                                                                                             |
++-------+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| t     | CREATE TABLE `t` (
+  `a` int(11) NOT NULL AUTO_INCREMENT,
+  PRIMARY KEY (`a`) /*T![clustered_index] CLUSTERED */
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin AUTO_INCREMENT=101 /*T![auto_id_cache] AUTO_ID_CACHE=100 */ |
++-------+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+1 row in set (0.00 sec)
 ```
 
-此时如果将该列的自增缓存无效化，重新进行隐式分配：
+此时如果重启 TiDB，自增 ID 缓存将会丢失，新的插入操作将从一个之前缓存范围外的更高的 ID 值开始分配。
 
 ```sql
-DELETE FROM t;
-Query OK, 1 row affected (0.01 sec)
-
-RENAME TABLE t to t1;
-Query OK, 0 rows affected (0.01 sec)
-
-INSERT INTO t1 VALUES()
+INSERT INTO t VALUES();
 Query OK, 1 row affected (0.00 sec)
 
 SELECT * FROM t;
 +-----+
 | a   |
 +-----+
+|   1 |
 | 101 |
 +-----+
-1 row in set (0.00 sec)
+2 rows in set (0.01 sec)
 ```
 
 可以看到再一次分配的值为 `101`，说明该表的自增 ID 分配缓存的大小为 `100`。
 
 此外如果在批量插入的 `INSERT` 语句中所需连续 ID 长度超过 `AUTO_ID_CACHE` 的长度时，TiDB 会适当调大缓存以便能够保证该语句的正常插入。
+
+### 清除自增 ID 缓存
+
+在一些场景中，你可能需要清除自增 ID 缓存，以保证数据一致性。例如：
+
+- 使用 [Data Migration (DM)](/dm/dm-overview.md) 进行增量同步，当同步结束后，下游 TiDB 的数据写入方式将从 DM 切换回正常的业务数据写入，此时自增列 ID 的写入模式通常由显式写入转换成隐式分配。
+- 当业务同时使用了显式写入和隐式分配时，需要清除自增 ID 缓存，以防止后续隐式分配的自增 ID 与已显式写入的 ID 发生冲突，导致主键冲突错误。具体场景参考[唯一性保证](/auto-increment.md#唯一性保证)。
+
+你可以执行 `ALTER TABLE` 语句设置 `AUTO_INCREMENT = 0` 来清除集群中所有 TiDB 节点的自增 ID 缓存。例如：
+
+```sql
+CREATE TABLE t(a int AUTO_INCREMENT key) AUTO_ID_CACHE 100;
+Query OK, 0 rows affected (0.02 sec)
+
+INSERT INTO t VALUES();
+Query OK, 1 row affected (0.02 sec)
+
+INSERT INTO t VALUES(50);
+Query OK, 1 row affected (0.00 sec)
+
+SELECT * FROM t;
++----+
+| a  |
++----+
+|  1 |
+| 50 |
++----+
+2 rows in set (0.01 sec)
+```
+
+```sql
+ALTER TABLE t AUTO_INCREMENT = 0;
+Query OK, 0 rows affected, 1 warning (0.07 sec)
+
+SHOW WARNINGS;
++---------+------+-------------------------------------------------------------------------+
+| Level   | Code | Message                                                                 |
++---------+------+-------------------------------------------------------------------------+
+| Warning | 1105 | Can't reset AUTO_INCREMENT to 0 without FORCE option, using 101 instead |
++---------+------+-------------------------------------------------------------------------+
+1 row in set (0.01 sec)
+
+INSERT INTO t VALUES();
+Query OK, 1 row affected (0.02 sec)
+
+SELECT * FROM t;
++-----+
+| a   |
++-----+
+|   1 |
+|  50 |
+| 101 |
++-----+
+3 rows in set (0.01 sec)
+```
 
 ### 自增步长和偏移量设置
 
