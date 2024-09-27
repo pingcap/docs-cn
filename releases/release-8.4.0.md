@@ -32,7 +32,7 @@ TiDB 版本：8.4.0
     <td>全局索引可以有效提高检索非分区列的效率，并且消除了唯一键必须包含分区键的限制。该功能扩展了 TiDB 分区表的使用场景，避免了数据迁移过程中的一些应用修改工作。</td>
   </tr>
   <tr>
-    <td>TiDB 并行获取 TSO**tw@qiancai 1893**</td>
+    <td><a href="https://docs.pingcap.com/zh/tidb/v8.4/system-variables#tidb_tso_client_rpc_mode-从-v840-版本开始引入">TiDB 并行获取 TSO</a>**tw@qiancai 1893**</td>
     <td>在高并发场景下，并行获取 TSO 能够有效降低等待获取 TSO 的时间，提升集群的吞吐。</td>
   </tr>
   <tr>
@@ -58,13 +58,17 @@ TiDB 版本：8.4.0
   </tr>
   <tr>
     <td rowspan="1">SQL</td>
-    <td>向量搜索功能（实验特性）**tw@qiancai 1898**</td>
+    <td>><a href="https://docs.pingcap.com/zh/tidb/v8.4/vector-search-overview">向量搜索功能（实验特性）</a>**tw@qiancai 1898**</td>
     <td>向量搜索是一种基于数据语义的搜索方法，可以提供更相关的搜索结果。作为 AI 和大语言模型（LLM）的核心功能之一，向量搜索可用于检索增强生成（Retrieval-Augmented Generation, RAG）、语义搜索、推荐系统等多种场景。</td>
   </tr>
   <tr>
-    <td rowspan="2">数据库管理和可观测性</td>
+    <td rowspan="3">数据库管理和可观测性</td>
     <td>在内存表中显示 TiKV 和 TiDB 的 CPU 时间**tw@hfxsd 1877**</td>
     <td>将 CPU 时间合入系统表中展示，与会话或 SQL 的其他指标并列，方便你从多角度对高 CPU 消耗的操作进行观测，提升诊断效率。尤其适用于诊断实例 CPU 飙升或集群读写热点等场景。</td>
+  </tr>
+  <tr>
+    <td>按表或数据库聚合 TiKV 的 CPU 时间**tw@lilin90 1878**</td>
+    <td>当热点问题不是由个别 SQL 语句引起时，利用 <a href="https://docs.pingcap.com/zh/tidb/v8.4/top-sql"> TOP SQL </a> 中按表或者数据库聚合的 CPU 时间，能够协助用户快速发现造成热点的表或者应用程序。大大提升热点问题和 CPU 消耗问题的诊断效率。</td>
   </tr>
   <tr>
     <td>支持对开启了 IMDSv2 服务的 TiKV 实例做备份**tw@hfxsd 1945**</td>
@@ -72,7 +76,7 @@ TiDB 版本：8.4.0
   </tr>
   <tr>
     <td rowspan="1">安全</td>
-    <td>日志备份数据支持客户端加密（实验特性）**tw@qiancai 1920**</td>
+    <td><a href="https://docs.pingcap.com/zh/tidb/v8.4/br-pitr-manual#加密日志备份数据">日志备份数据支持客户端加密（实验特性）</a>**tw@qiancai 1920**</td>
     <td>在上传日志备份到备份存储之前，你可以对日志备份数据进行加密，确保数据在存储和传输过程中的安全性。</td>
   </tr>
 </tbody>
@@ -100,7 +104,7 @@ TiDB 版本：8.4.0
 
 * 优化 TiDB Hash Join 算子的执行效率（实验特性） [#55153](https://github.com/pingcap/tidb/issues/55153) [#53127](https://github.com/pingcap/tidb/issues/53127) @[windtalker](https://github.com/windtalker) @[xzhangxian1008](https://github.com/xzhangxian1008) @[XuHuaiyu](https://github.com/XuHuaiyu) @[wshwsh12](https://github.com/wshwsh12) **tw@qiancai** <!--1633-->
 
-    在 v8.4.0 中，TiDB 对 Hash Join 算子的实现方法进行了优化，以提升其执行效率。目前，优化后的 Hash Join 实现方法且仅对 Inner Join 和 Outer Join 操作生效，且默认关闭。如需开启该优化实现方法，可以将系统变量 [tidb_hash_join_version](/system-variables.md#tidb_hash_join_version-从-v840-版本开始引入) 设置为 `optimized`。
+    在 v8.4.0 中，TiDB 对 Hash Join 算子的实现方法进行了优化，以提升其执行效率。目前，优化版的 Hash Join 且仅对 Inner Join 和 Outer Join 操作生效，且默认关闭。如需开启优化版的 Hash Join，可以将系统变量 [tidb_hash_join_version](/system-variables.md#tidb_hash_join_version-从-v840-版本开始引入) 设置为 `optimized`。
 
     更多信息，请参考[用户文档](/system-variables.md#tidb_hash_join_version-从-v840-版本开始引入)。
 
@@ -160,11 +164,11 @@ TiDB 版本：8.4.0
 
     更多信息，请参考[用户文档](/tidb-resource-control.md#query_limit-参数说明)。
 
-* 系统变量 `tidb_scatter_region` 支持设置集群级别的 Region 打散策略 [#55184](https://github.com/pingcap/tidb/issues/55184) @[D3Hunter](https://github.com/D3Hunter) **tw@hfxsd** <!--1927-->
+* 支持使用系统变量 `tidb_scatter_region` 设置集群级别的 Region 打散策略 [#55184](https://github.com/pingcap/tidb/issues/55184) @[D3Hunter](https://github.com/D3Hunter) **tw@hfxsd** <!--1927-->
 
-    系统变量 `tidb_scatter_region`  在之前的版本仅支持设置为开启或者关闭，开启后，建表时会使用表级别打散策略。在批量快速建表，且表的数量达到几十万张后，该策略会导致 Region 集中分布在其中几个 TiKV 节点，导致这些 TiKV 节点 OOM。
+    在 v8.4.0 之前，系统变量 `tidb_scatter_region` 仅支持设置为开启或者关闭。开启后，建表时会使用表级别打散策略。在批量快速建表，且表的数量达到几十万张后，该策略会导致 Region 集中分布在其中几个 TiKV 节点，导致这些 TiKV 节点 OOM。
 
-    为解决上述问题，从 v8.4.0 版本开始，将该系统变量改为字符串类型，且新增支持集群级别的打散策略，避免上述场景下导致 TiKV OOM 的问题。
+    从 v8.4.0 开始，该系统变量改为字符串类型，且新增支持集群级别的打散策略，避免上述场景下导致 TiKV OOM 的问题。
 
     更多信息，请参考[用户文档](/system-variables.md#tidb_scatter_region)。
 
@@ -200,7 +204,7 @@ TiDB 版本：8.4.0
 
 ### SQL 功能
 
-* 支持向量搜索功能（实验特性） [#54245](https://github.com/pingcap/tidb/issues/54245) [#9032](https://github.com/pingcap/tiflash/issues/9032) @[breezewish](https://github.com/breezewish) @[Lloyd-Pottiger](https://github.com/Lloyd-Pottiger) @[EricZequan](https://github.com/EricZequan) @[zimulala](https://github.com/zimulala) @[JaySon-Huang](https://github.com/JaySon-Huang) **tw@qiancai** <!--1898-->
+* 支持向量搜索功能（实验特性） [#54245](https://github.com/pingcap/tidb/issues/54245) [#9032](https://github.com/pingcap/tiflash/issues/9032) @[breezewish](https://github.com/breezewish) @[Lloyd-Pottiger](https://github.com/Lloyd-Pottiger) @[EricZequan](https://github.com/EricZequan) @[zimulala](https://github.com/zimulala) @[JaySon-Huang](https://github.com/JaySon-Huang) @[winoros](https://github.com/winoros) **tw@qiancai** <!--1898-->
 
     向量搜索是一种基于数据语义的搜索方法，可以提供更相关的搜索结果。作为 AI 和大语言模型（LLM）的核心功能之一，向量搜索可用于检索增强生成（Retrieval-Augmented Generation, RAG）、语义搜索、推荐系统等多种场景。
 
@@ -208,7 +212,7 @@ TiDB 版本：8.4.0
 
     在使用时，你只需要创建包含向量数据类型的表，并插入向量数据，即可执行向量搜索查询，也可进行向量数据与传统关系数据的混合查询。
 
-    此外，你可以创建并利用向量搜索索引来提升向量搜索的性能。需要注意的是，TiDB 的向量搜索索引依赖于 TiFlash。因此，在使用向量搜索索引之前，需要确保 TiDB 集群中已部署 TiFlash 节点。
+    此外，你可以创建并利用向量搜索索引来提升向量搜索的性能。需要注意的是，TiDB 的向量搜索索引依赖于 TiFlash。在使用向量搜索索引之前，需要确保 TiDB 集群中已部署 TiFlash 节点。
 
     更多信息，请参考[用户文档](/vector-search-overview.md)。
 
@@ -226,7 +230,7 @@ TiDB 版本：8.4.0
 
 * 日志备份数据支持客户端加密（实验特性）[#55834](https://github.com/pingcap/tidb/issues/55834) @[Tristan1900](https://github.com/Tristan1900) **tw@qiancai** <!--1920-->
 
-    在之前的版本中，仅快照备份数据支持客户端加密。从 v8.4.0 起，日志备份数据也支持客户端加密。在上传日志备份到备份存储之前，你可以选择以下方式之一对日志备份数据进行加密，从而提高备份数据的安全性：
+    在之前的版本中，仅快照备份数据支持客户端加密。从 v8.4.0 起，日志备份数据也支持客户端加密。在上传日志备份到备份存储之前，你可以选择以下方式之一对日志备份数据进行加密，从而确保备份数据的安全性：
     
     - 使用自定义的固定密钥加密
     - 使用本地磁盘的主密钥加密
@@ -242,7 +246,7 @@ TiDB 版本：8.4.0
 
 ### 可观测性
 
-* 在系统表中显示 TiDB 和 TiKV 的 CPU 的时间 [#55542](https://github.com/pingcap/tidb/issues/55542) @[yibin87](https://github.com/yibin87) **tw@hfxsd** <!--1877-->
+* 在系统表中显示 TiDB 和 TiKV 消耗的 CPU 时间 [#55542](https://github.com/pingcap/tidb/issues/55542) @[yibin87](https://github.com/yibin87) **tw@hfxsd** <!--1877-->
 
     [TiDB Dashboard](/dashboard/dashboard-intro.md) 的 [Top SQL 页面](/dashboard/top-sql.md)能够展示 CPU 消耗高的 SQL 语句。从 v8.4.0 开始，TiDB 将 CPU 时间消耗信息加入系统表展示，与会话或 SQL 的其他指标并列，方便你从多角度对高 CPU 消耗的操作进行观测。在实例 CPU 飙升或集群读写热点的场景下，这些信息能够协助你快速发现问题的原因。
 
@@ -254,7 +258,7 @@ TiDB 版本：8.4.0
     
     更多信息，请参考[用户文档](/information-schema/information-schema-processlist.md)和[用户文档](information-schema/information-schema-slow-query.md)。
 
-* Top SQL 支持按表或数据库维度查看聚合结果 [#55540](https://github.com/pingcap/tidb/issues/55540) @[nolouch](https://github.com/nolouch) **tw@lilin90** <!--1878-->
+* Top SQL 支持按表或数据库维度查看 CPU 时间的聚合结果 [#55540](https://github.com/pingcap/tidb/issues/55540) @[nolouch](https://github.com/nolouch) **tw@lilin90** <!--1878-->
 
     在 v8.4.0 之前，[Top SQL](/dashboard/top-sql.md) 以 SQL 为单位来聚合 CPU 时间。如果 CPU 时间不是由少数几个 SQL 贡献，按 SQL 聚合并不能有效发现问题。从 v8.4.0 开始，你可以选择 **By TABLE** 或者 **By DB** 聚合 CPU 时间。在多系统融合的场景下，新的聚合方式能够更有效地识别来自某个特定系统的负载变化，提升问题诊断的效率。
 
@@ -264,7 +268,7 @@ TiDB 版本：8.4.0
 
 * BR 支持 AWS IMDSv2 [#16443](https://github.com/tikv/tikv/issues/16443) @[pingyu](https://github.com/pingyu) **tw@hfxsd** <!--1945-->
 
-    在 AWS EC2 上部署 TiDB 时，BR 支持 AWS 的 Instance Metadata Service Version 2 (IMDSv2)。你可以在 EC2 实例上进行相关配置，使 BR 可以使用与实例关联的 IAM 角色以适当的权限访问 AWS S3。
+    在 Amazon EC2 上部署 TiDB 时，BR 支持 AWS 的 Instance Metadata Service Version 2 (IMDSv2)。你可以在 EC2 实例上进行相关配置，使 BR 可以使用与实例关联的 IAM 角色以适当的权限访问 Amazon S3。
 
     更多信息，请参考[用户文档](/br/backup-and-restore-storages.md#鉴权)。
 
@@ -309,7 +313,7 @@ TiDB 版本：8.4.0
 | [`tidb_pre_split_regions`](/system-variables.md#tidb_pre_split_regions-从-v840-版本开始引入)   | 新增 | 在 v8.4.0 之前，要设置新建表的默认行分裂分片数，需要在每个 `CREATE TABLE` SQL 语句里声明 `PRE_SPLIT_REGIONS`，一旦需要同样配置的表数量较多，操作复杂。为解决这些问题，引入了该变量。你可以在 `GLOBAL` 或 `SESSION` 级别设置该系统变量，提升易用性。  |
 | [`tidb_shard_row_id_bits`](/system-variables.md#tidb_shard_row_id_bits-从-v840-版本开始引入) | 新增 | 在 v8.4.0 之前，要设置新建表的默认行 ID 的分片位数，需要在每个 `CREATE TABLE` 或 `ALTER TABLE` 的 SQL 语句里声明 `SHARD_ROW_ID_BITS`，一旦需要同样配置的表数量较多，操作复杂。为解决这些问题，引入了该变量。你可以在 `GLOBAL` 或 `SESSION` 级别设置该系统变量，提升易用性。  |
 |  [tidb_tso_client_rpc_mode](/system-variables.md#tidb_tso_client_rpc_mode-从-v840-版本开始引入)      |         新增                     |   原有的 TSO 请求为同步模式。现在引入 TSO 请求的异步批处理模式，并提供不同的并发能力。异步模式可以降低获取 TSO 的延迟，但可能会增加 PD 的负载。  |
-|  [tidb_hash_join_version](/system-variables.md#tidb_hash_join_version-从-v840-版本开始引入)     |         新增                     |   原有的 TiDB Hash Join 算法效率不佳，引入新的 HashJoin 版本，实现更加高效的计算  |
+| [tidb_hash_join_version](/system-variables.md#tidb_hash_join_version-从-v840-版本开始引入) | 新增 | 控制 TiDB 是否使用 Hash Join 算子的优化版。默认值为 `legacy`，代表不使用优化版。若设置为 `optimized`，TiDB 在执行 Hash Join 算子时将使用其优化版，以提升 Hash Join 性能。 |
 |tidb_schema_cache_size|修改|默认值从 0 修改为 536870912 即 512 MiB，表示默认开启该功能，且最小值允许设置为 67108864 即 64 MiB |
 
 ### 配置文件参数
@@ -358,72 +362,123 @@ TiDB 版本：8.4.0
 ## 改进提升
 
 + TiDB
-  - 优化扫描大量数据时构造 BatchCop Task 的效率 [#55915](https://github.com/pingcap/tidb/issues/55915) [#55413](https://github.com/pingcap/tidb/issues/55413) @[wshwsh12](https://github.com/wshwsh12) **tw@caiqian** <!--1902-->
-  - 优化 MEMDB 实现，降低事务中的写操作延时与 TiDB CPU 使用 [#55287](https://github.com/pingcap/tidb/issues/55287) @[you06](https://github.com/you06) **tw@hfxsd** <!--1892-->
-  - 优化系统变量 `tidb_dml_type` 为 `"bulk"` 时 DML 语句的执行性能 [#50215](https://github.com/pingcap/tidb/issues/50215) @[ekexium](https://github.com/ekexium) **tw@qiancai** <!--1860-->
-  - 支持使用 [Optimizer Fix Control 47400](/optimizer-fix-controls.md#47400-从-v840-版本开始引入) 控制是否将优化器为 `estRows` 估算的最小值限制为 `1`，与 Oracle 和 DB2 等数据库的行为保持一致 [#47400](https://github.com/pingcap/tidb/issues/47400) @[terry1purcell](https://github.com/terry1purcell) **tw@Oreoxmt** <!--1929-->
-  - 为日志表 [`mysql.tidb_runaway_queries`](/mysql-schema/mysql-schema.md#runaway-queries-相关系统表) 增加写入控制，降低大量并发写入引发的开销 [#54434](https://github.com/pingcap/tidb/issues/54434) @[HuSharp](https://github.com/HuSharp) <!--1908--> **tw@lilin90** 
-  - 当内表上有 `Selection` 或 `Projection` 算子时默认支持 Index Join [#issue号](链接) @[winoros](https://github.com/winoros) **tw@Oreoxmt** <!--1709-->
-  - 在某些场景下减少 `DELETE` 操作从 TiKV 获取的列信息数量，降低 `DELETE` 操作的资源开销 [#38911](https://github.com/pingcap/tidb/issues/38911) @[winoros](https://github.com/winoros) **tw@Oreoxmt** <!--1798-->
-  - 优化自动收集统计信息任务优先级队列的运行效率 [#49972](https://github.com/pingcap/tidb/issues/49972) @[Rustin170506](https://github.com/Rustin170506) **tw@Oreoxmt** <!--1935-->
-  - 自动统计信息收集根据节点规模和硬件规格自动确定执行和扫描的并发度 [#53460](https://github.com/pingcap/tidb/issues/53460) @[hawkingrei](https://github.com/hawkingrei) **tw@Oreoxmt** <!--1739-->
+
+    - 优化扫描大量数据时构造 BatchCop Task 的效率 [#55915](https://github.com/pingcap/tidb/issues/55915) [#55413](https://github.com/pingcap/tidb/issues/55413) @[wshwsh12](https://github.com/wshwsh12) **tw@caiqian** <!--1902-->
+    - 优化 MEMDB 实现，降低事务中的写操作延时与 TiDB CPU 使用 [#55287](https://github.com/pingcap/tidb/issues/55287) @[you06](https://github.com/you06) **tw@hfxsd** <!--1892-->
+    - 优化系统变量 `tidb_dml_type` 为 `"bulk"` 时 DML 语句的执行性能 [#50215](https://github.com/pingcap/tidb/issues/50215) @[ekexium](https://github.com/ekexium) **tw@qiancai** <!--1860-->
+    - 支持使用 [Optimizer Fix Control 47400](/optimizer-fix-controls.md#47400-从-v840-版本开始引入) 控制是否将优化器为 `estRows` 估算的最小值限制为 `1`，与 Oracle 和 DB2 等数据库的行为保持一致 [#47400](https://github.com/pingcap/tidb/issues/47400) @[terry1purcell](https://github.com/terry1purcell) **tw@Oreoxmt** <!--1929-->
+    - 为日志表 [`mysql.tidb_runaway_queries`](/mysql-schema/mysql-schema.md#runaway-queries-相关系统表) 增加写入控制，降低大量并发写入引发的开销 [#54434](https://github.com/pingcap/tidb/issues/54434) @[HuSharp](https://github.com/HuSharp) <!--1908--> **tw@lilin90** 
+    - 当内表上有 `Selection` 或 `Projection` 算子时默认支持 Index Join [#issue号](链接) @[winoros](https://github.com/winoros) **tw@Oreoxmt** <!--1709-->
+    - 在某些场景下减少 `DELETE` 操作从 TiKV 获取的列信息数量，降低 `DELETE` 操作的资源开销 [#38911](https://github.com/pingcap/tidb/issues/38911) @[winoros](https://github.com/winoros) **tw@Oreoxmt** <!--1798-->
+    - 优化自动收集统计信息任务优先级队列的运行效率 [#49972](https://github.com/pingcap/tidb/issues/49972) @[Rustin170506](https://github.com/Rustin170506) **tw@Oreoxmt** <!--1935-->
+    - 自动统计信息收集根据节点规模和硬件规格自动确定执行和扫描的并发度 [#53460](https://github.com/pingcap/tidb/issues/53460) @[hawkingrei](https://github.com/hawkingrei) **tw@Oreoxmt** <!--1739-->
 
 + TiKV
 
-  - Region 的默认值由 96 MiB 提升到 256 MiB，避免 Region 数量过多导致额外开销 [#17309](https://github.com/tikv/tikv/issues/17309) [LykxSassinator](https://github.com/LykxSassinator) **tw@hfxsd** <!--1925-->
-  - 支持指定单个 Region 或 TiKV 实例的内存悲观锁的内存上限，在热点写悲观锁加锁较多的情况下，可以通过修改配置提高内存上限，避免悲观锁落盘导致的 CPU/IO 开销 [#17542](https://github.com/tikv/tikv/issues/17542) @[cfzjywxk](https://github.com/cfzjywxk) **tw@Oreoxmt** <!--1967-->
-- Raft Engine 新增 `spill-dir` 配置，支持 Raft 日志的多磁盘存储。当主目录 `dir `所在磁盘的容量不足时，Raft Engine 会自动将新日志写入 `spill-dir`，从而确保系统的持续运行。[LykxSassinator](https://github.com/LykxSassinator) **tw@hfxsd** <!--1970-->
+    - note [#issue](https://github.com/pingcap/tidb/issues/${issue-id}) @[贡献者 GitHub ID](https://github.com/${github-id})
+    - Region 的默认值由 96 MiB 提升到 256 MiB，避免 Region 数量过多导致额外开销 [#17309](https://github.com/tikv/tikv/issues/17309) [LykxSassinator](https://github.com/LykxSassinator) **tw@hfxsd** <!--1925-->
+    - 支持指定单个 Region 或 TiKV 实例的内存悲观锁的内存上限，在热点写悲观锁加锁较多的情况下，可以通过修改配置提高内存上限，避免悲观锁落盘导致的 CPU/IO 开销 [#17542](https://github.com/tikv/tikv/issues/17542) @[cfzjywxk](https://github.com/cfzjywxk) **tw@Oreoxmt** <!--1967-->
+    - Raft Engine 新增 `spill-dir` 配置，支持 Raft 日志的多磁盘存储。当主目录 `dir` 所在磁盘的容量不足时，Raft Engine 会自动将新日志写入 `spill-dir`，从而确保系统的持续运行。[LykxSassinator](https://github.com/LykxSassinator) **tw@hfxsd** <!--1970-->
+    - (dup): release-6.5.11.md > 改进提升> TiKV - 优化存在大量 DELETE 版本时 RocksDB 的 compaction 触发机制，以加快磁盘空间回收 [#17269](https://github.com/tikv/tikv/issues/17269) @[AndreMouche](https://github.com/AndreMouche)
 
 + PD
 
-  -  支持 TiKV 节点在 TiDB Lightning 导入数据期间优雅下线 (graceful offline) [#7853](https://github.com/tikv/pd/issues/7853) @[okJiang](https://github.com/okJiang) **tw@qiancai**  <!--1852-->  
+    - note [#issue](https://github.com/pingcap/tidb/issues/${issue-id}) @[贡献者 GitHub ID](https://github.com/${github-id})
+    -  支持 TiKV 节点在 TiDB Lightning 导入数据期间优雅下线 (graceful offline) [#7853](https://github.com/tikv/pd/issues/7853) @[okJiang](https://github.com/okJiang) **tw@qiancai**  <!--1852-->  
 
 + TiFlash
+
+    - note [#issue](https://github.com/pingcap/tidb/issues/${issue-id}) @[贡献者 GitHub ID](https://github.com/${github-id})
+    - (dup): release-6.5.11.md > 改进提升> TiFlash - 优化 `LENGTH()` 和 `ASCII()` 函数执行效率 [#9344](https://github.com/pingcap/tiflash/issues/9344) @[xzhangxian1008](https://github.com/xzhangxian1008)
 
 + Tools
 
     + Backup & Restore (BR)
 
-      - 当集群的 `split-table` 和 `split-region-on-table` 配置项为默认值 `false` 时，BR 在恢复数据到该集群的过程中不会按照 table 分裂 Region，以提升恢复速度 [#53532](https://github.com/pingcap/tidb/issues/53532) @[Leavrth](https://github.com/Leavrth) **tw@qiancai** <!--1914-->
-      - 默认不支持使用 SQL 语句 `RESTORE` 全量恢复数据到非空集群 [#55087](https://github.com/pingcap/tidb/issues/55087) @[BornChanger](https://github.com/BornChanger) **tw@Oreoxmt** <!--1711-->
+        - note [#issue](https://github.com/pingcap/tidb/issues/${issue-id}) @[贡献者 GitHub ID](https://github.com/${github-id})
+        - 当集群的 `split-table` 和 `split-region-on-table` 配置项为默认值 `false` 时，BR 在恢复数据到该集群的过程中不会按照 table 分裂 Region，以提升恢复速度 [#53532](https://github.com/pingcap/tidb/issues/53532) @[Leavrth](https://github.com/Leavrth) **tw@qiancai** <!--1914-->
+        - 默认不支持使用 SQL 语句 `RESTORE` 全量恢复数据到非空集群 [#55087](https://github.com/pingcap/tidb/issues/55087) @[BornChanger](https://github.com/BornChanger) **tw@Oreoxmt** <!--1711-->
 
     + TiCDC
 
+        - note [#issue](https://github.com/pingcap/tiflow/issues/${issue-id}) @[贡献者 GitHub ID](https://github.com/${github-id})
+        - note [#issue](https://github.com/pingcap/tiflow/issues/${issue-id}) @[贡献者 GitHub ID](https://github.com/${github-id})
+
     + TiDB Data Migration (DM)
+
+        - note [#issue](https://github.com/pingcap/tiflow/issues/${issue-id}) @[贡献者 GitHub ID](https://github.com/${github-id})
+        - note [#issue](https://github.com/pingcap/tiflow/issues/${issue-id}) @[贡献者 GitHub ID](https://github.com/${github-id})
 
     + TiDB Lightning
 
+        - note [#issue](https://github.com/pingcap/tidb/issues/${issue-id}) @[贡献者 GitHub ID](https://github.com/${github-id})
+        - note [#issue](https://github.com/pingcap/tidb/issues/${issue-id}) @[贡献者 GitHub ID](https://github.com/${github-id})
+
     + Dumpling
+
+        - note [#issue](https://github.com/pingcap/tidb/issues/${issue-id}) @[贡献者 GitHub ID](https://github.com/${github-id})
+        - note [#issue](https://github.com/pingcap/tidb/issues/${issue-id}) @[贡献者 GitHub ID](https://github.com/${github-id})
 
     + TiUP
 
-    + TiDB Binlog
+        - note [#issue](https://github.com/pingcap/tiup/issues/${issue-id}) @[贡献者 GitHub ID](https://github.com/${github-id})
+        - note [#issue](https://github.com/pingcap/tiup/issues/${issue-id}) @[贡献者 GitHub ID](https://github.com/${github-id})
 
 ## 错误修复
 
 + TiDB
 
+    - note [#issue](https://github.com/pingcap/tidb/issues/${issue-id}) @[贡献者 GitHub ID](https://github.com/${github-id})
+    - (dup): release-6.5.11.md > 错误修复> TiDB - 修复 `IndexNestedLoopHashJoin` 中存在数据竞争的问题 [#49692](https://github.com/pingcap/tidb/issues/49692) @[solotzg](https://github.com/solotzg)
+    - (dup): release-6.5.11.md > 错误修复> TiDB - 修复 `INFORMATION_SCHEMA.STATISTICS` 表中 `SUB_PART` 值为空的问题 [#55812](https://github.com/pingcap/tidb/issues/55812) @[Defined2014](https://github.com/Defined2014)
+    - (dup): release-6.5.11.md > 错误修复> TiDB - 修复 DML 语句中包含嵌套的生成列时报错的问题 [#53967](https://github.com/pingcap/tidb/issues/53967) @[wjhuang2016](https://github.com/wjhuang2016)
+
 + TiKV
+
+    - note [#issue](https://github.com/tikv/tikv/issues/${issue-id}) @[贡献者 GitHub ID](https://github.com/${github-id})
+    - (dup): release-6.5.11.md > 错误修复> TiKV - 修复当主密钥存储于 KMS (Key Management Service) 时无法轮换主密钥的问题 [#17410](https://github.com/tikv/tikv/issues/17410) @[hhwyt](https://github.com/hhwyt)
+    - (dup): release-6.5.11.md > 错误修复> TiKV - 修复删除大表或分区后可能导致的流量控制问题 [#17304](https://github.com/tikv/tikv/issues/17304) @[Connor1996](https://github.com/Connor1996)
+    - (dup): release-6.5.11.md > 错误修复> TiKV - 修复过期副本处理 Raft 快照时，由于分裂操作过慢并且随后立即删除新副本，可能导致 TiKV panic 的问题 [#17469](https://github.com/tikv/tikv/issues/17469) @[hbisheng](https://github.com/hbisheng)
 
 + PD
 
+    - note [#issue](https://github.com/tikv/pd/issues/${issue-id}) @[贡献者 GitHub ID](https://github.com/${github-id})
+    - (dup): release-8.1.1.md > 错误修复> PD - 修复 `INFORMATION_SCHEMA.RUNAWAY_WATCHES` 表中时间类型不正确的问题 [#54770](https://github.com/pingcap/tidb/issues/54770) @[HuSharp](https://github.com/HuSharp)
+
 + TiFlash
+
+    - note [#issue](https://github.com/pingcap/tiflash/issues/${issue-id}) @[贡献者 GitHub ID](https://github.com/${github-id})
+    - note [#issue](https://github.com/pingcap/tiflash/issues/${issue-id}) @[贡献者 GitHub ID](https://github.com/${github-id})
 
 + Tools
 
     + Backup & Restore (BR)
 
+        - note [#issue](https://github.com/pingcap/tidb/issues/${issue-id}) @[贡献者 GitHub ID](https://github.com/${github-id})
+        - (dup): release-6.5.11.md > 错误修复> Tools> Backup & Restore (BR) - 修复备份过程中由于 TiKV 没有响应导致备份任务无法结束的问题 [#53480](https://github.com/pingcap/tidb/issues/53480) @[Leavrth](https://github.com/Leavrth)
+        - (dup): release-6.5.11.md > 错误修复> Tools> Backup & Restore (BR) - 修复开启日志备份时，BR 日志可能打印权限凭证敏感信息的问题 [#55273](https://github.com/pingcap/tidb/issues/55273) @[RidRisR](https://github.com/RidRisR)
+        - (dup): release-6.5.11.md > 错误修复> Tools> Backup & Restore (BR) - 修复当 PITR 日志备份任务失败时，用户停止了该任务后，PD 中与该任务相关的 safepoint 未被正确清除的问题 [#17316](https://github.com/tikv/tikv/issues/17316) @[Leavrth](https://github.com/Leavrth)
+
     + TiCDC
+
+        - note [#issue](https://github.com/pingcap/tiflow/issues/${issue-id}) @[贡献者 GitHub ID](https://github.com/${github-id})
 
     + TiDB Data Migration (DM)
 
+        - note [#issue](https://github.com/pingcap/tiflow/issues/${issue-id}) @[贡献者 GitHub ID](https://github.com/${github-id})
+        - (dup): release-6.5.11.md > 错误修复> Tools> TiDB Data Migration (DM) - 修复 DM 在处理 `ALTER DATABASE` 语句时未设置默认数据库导致同步报错的问题 [#11503](https://github.com/pingcap/tiflow/issues/11503) @[lance6716](https://github.com/lance6716)
+
     + TiDB Lightning
+
+        - note [#issue](https://github.com/pingcap/tidb/issues/${issue-id}) @[贡献者 GitHub ID](https://github.com/${github-id})
 
     + Dumpling
 
+        - note [#issue](https://github.com/pingcap/tidb/issues/${issue-id}) @[贡献者 GitHub ID](https://github.com/${github-id})
+
     + TiUP
 
-    + TiDB Binlog
+        - note [#issue](https://github.com/pingcap/tiup/issues/${issue-id}) @[贡献者 GitHub ID](https://github.com/${github-id})
 
 ## 贡献者
 
