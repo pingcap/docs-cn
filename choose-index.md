@@ -74,7 +74,7 @@ mysql> SHOW WARNINGS;
 
 #### Skyline-Pruning
 
-Skyline-Pruning 是一个针对索引的启发式过滤规则，能降低错误估算导致选错索引的概率。Skyline-Pruning 从以下四个维度衡量一个索引的优劣：
+Skyline-Pruning 是一个针对索引的启发式过滤规则，能降低错误估算导致选错索引的概率。Skyline-Pruning 从以下维度衡量一个索引的优劣：
 
 + 索引的列涵盖了多少访问条件。“访问条件”指的是可以转化为某列范围的 `where` 条件，如果某个索引的列集合涵盖的访问条件越多，那么它在这个维度上更优。
 
@@ -84,7 +84,7 @@ Skyline-Pruning 是一个针对索引的启发式过滤规则，能降低错误�
 
 + 该索引是否为[全局索引](/partitioned-table.md#全局索引)。在分区表中，全局索引相比普通索引能有效的降低一个 SQL 的 cop task 数量，从而降低网络开销。
 
-对于以上四种维度，如果索引 `idx_a` 在这四个维度上都不比 `idx_b` 差，且有一个维度比 `idx_b` 好，那么 TiDB 会优先选择 `idx_a`。在执行 `EXPLAIN FORMAT = 'verbose' ...` 语句时，如果 Skyline-Pruning 排除了某些索引，TiDB 会输出一条 NOTE 级别的 warning 提示哪些索引在 Skyline-Pruning 排除之后保留下来。
+对于上述维度，如果索引 `idx_a` 在这四个维度上都不比 `idx_b` 差，且有一个维度比 `idx_b` 好，那么 TiDB 会优先选择 `idx_a`。在执行 `EXPLAIN FORMAT = 'verbose' ...` 语句时，如果 Skyline-Pruning 排除了某些索引，TiDB 会输出一条 NOTE 级别的 warning 提示哪些索引在 Skyline-Pruning 排除之后保留下来。
 
 在以下示例中，索引 `idx_b` 和 `idx_e` 均劣于 `idx_b_c`，因而被 Skyline-Pruning 排除，`SHOW WARNING` 的返回结果显示了经过 Skyline-Pruning 后剩余的索引。
 
