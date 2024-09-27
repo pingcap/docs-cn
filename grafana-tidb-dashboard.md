@@ -51,7 +51,7 @@ aliases: ['/docs-cn/dev/grafana-tidb-dashboard/','/docs-cn/dev/reference/key-mon
 - Panic And Critical Error：TiDB 中出现的 Panic、Critical Error 数量。
 - Time Jump Back OPS：每个 TiDB 实例上每秒操作系统时间回跳的次数。
 - Get Token Duration：每个连接获取 Token 的耗时。
-- Skip Binlog Count：TiDB 写入 Binlog 失败的数量。
+- Skip Binlog Count：TiDB 写入 Binlog 失败的数量。从 v8.4.0 开始，TiDB Binlog 已移除，该指标不再有计数。
 - Client Data Traffic：TiDB 和客户端的数据流量。
 
 ### Transaction
