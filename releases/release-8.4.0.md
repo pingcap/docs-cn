@@ -67,8 +67,8 @@ TiDB 版本：8.4.0
     <td>将 CPU 时间合入系统表中展示，与会话或 SQL 的其他指标并列，方便你从多角度对高 CPU 消耗的操作进行观测，提升诊断效率。尤其适用于诊断实例 CPU 飙升或集群读写热点等场景。</td>
   </tr>
   <tr>
-    <td>按表或数据库聚合 TiKV 的 CPU 时间**tw@lilin90 1878**</td>
-    <td>当热点问题不是由个别 SQL 语句引起时，利用 <a href="https://docs.pingcap.com/zh/tidb/v8.4/top-sql"> TOP SQL </a> 中按表或者数据库聚合的 CPU 时间，能够协助用户快速发现造成热点的表或者应用程序。大大提升热点问题和 CPU 消耗问题的诊断效率。</td>
+    <td>按表或数据库维度聚合 TiKV 消耗的 CPU 时间**tw@lilin90 1878**</td>
+    <td>当热点问题不是由个别 SQL 语句引起时，利用 <a href="https://docs.pingcap.com/zh/tidb/v8.4/top-sql"> TOP SQL </a> 中按表或者数据库聚合的 CPU 时间，能够协助用户快速发现造成热点的表或者应用程序，从而大大提升热点问题和 CPU 消耗问题的诊断效率。</td>
   </tr>
   <tr>
     <td>支持对开启了 IMDSv2 服务的 TiKV 实例做备份**tw@hfxsd 1945**</td>
