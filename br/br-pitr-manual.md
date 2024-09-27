@@ -93,8 +93,7 @@ tiup br log start \
 
 > **警告：**
 >
-> 当前该功能为实验特性，不建议在生产环境中使用。该功能可能会在未事先通知的情况下发生变化或删除。如果发现 bug，
-> 请在 GitHub 上提 [issue](https://github.com/pingcap/tidb/issues) 反馈。
+> 当前该功能为实验特性，不建议在生产环境中使用。如果发现 bug，请在 GitHub 上提 [issue](https://github.com/pingcap/tidb/issues) 反馈。
 
 BR 支持在上传到备份存储之前对日志备份数据进行加密。
 
@@ -465,8 +464,7 @@ Restore KV Files <--------------------------------------------------------------
 
 > **警告：**
 >
-> 当前该功能为实验特性，不建议在生产环境中使用。该功能可能会在未事先通知的情况下发生变化或删除。如果发现 bug，
-> 请在 GitHub 上提 [issue](https://github.com/pingcap/tidb/issues) 反馈。
+> 当前该功能为实验特性，不建议在生产环境中使用。如果发现 bug，请在 GitHub 上提 [issue](https://github.com/pingcap/tidb/issues) 反馈。
 
 
 要恢复加密的日志备份数据，你需要在恢复命令中传入相应的解密参数。解密参数需要与加密时使用的参数一致。如果解密算法或密钥不正确，则无法恢复数据。
