@@ -23,7 +23,7 @@ TiDB 版本：8.4.0
 </thead>
 <tbody>
   <tr>
-    <td rowspan="5">可扩展性和性能</td>
+    <td rowspan="4">可扩展性和性能</td>
     <td><a href="https://docs.pingcap.com/zh/tidb/v8.4/system-variables#tidb_enable_instance_plan_cache-从-v840-版本开始引入">实例级执行计划缓存</a>（实验特性）**tw@Oreoxmt 1569**</td>
     <td>实例级执行计划缓存允许同一个 TiDB 实例的所有会话共享执行计划缓存，通过在内存中缓存更多执行计划，消除 SQL 编译时间，从而减少 SQL 运行时间，提升 OLTP 系统的性能和吞吐，同时更好地控制内存使用，提升数据库稳定性。</td>
   </tr>
