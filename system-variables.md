@@ -2453,7 +2453,8 @@ Query OK, 0 rows affected (0.09 sec)
 
 > **注意：**
 >
-> 如果 PD leader 的 TSO RPC 延迟升高，但其现象并非由 CPU 使用率达到瓶颈而导致（可能存在网络等问题），此时，打开 TSO Follower Proxy 可能会导致 TiDB 的语句执行延迟上升，从而影响集群的 QPS 表现。
+> - 如果 PD leader 的 TSO RPC 延迟升高，但其现象并非由 CPU 使用率达到瓶颈而导致（可能存在网络等问题），此时，打开 TSO Follower Proxy 可能会导致 TiDB 的语句执行延迟上升，从而影响集群的 QPS 表现。
+> - 该功能与 [`tidb_tso_client_rpc_mode`](#tidb_tso_client_rpc_mode-从-v840-版本开始引入) 不兼容。启用该功能将导致 [`tidb_tso_client_rpc_mode`](#tidb_tso_client_rpc_mode-从-v840-版本开始引入) 不生效。
 
 ### `tidb_enable_unsafe_substitute` <span class="version-mark">从 v6.3.0 版本开始引入</span>
 
@@ -4989,7 +4990,37 @@ Query OK, 0 rows affected, 1 warning (0.00 sec)
 
 > **注意：**
 >
-> 如果 PD leader 的 TSO RPC 延迟升高，但其现象并非由 CPU 使用率达到瓶颈而导致（可能存在网络等问题），此时，调高 `tidb_tso_client_batch_max_wait_time` 可能会导致 TiDB 的语句执行延迟上升，影响集群的 QPS 表现。
+> - 如果 PD leader 的 TSO RPC 延迟升高，但其现象并非由 CPU 使用率达到瓶颈而导致（可能存在网络等问题），此时，调高 `tidb_tso_client_batch_max_wait_time` 可能会导致 TiDB 的语句执行延迟上升，影响集群的 QPS 表现。
+> - 该功能与 [`tidb_tso_client_rpc_mode`](#tidb_tso_client_rpc_mode-从-v840-版本开始引入) 不兼容。该变量设为非零值，则将导致 [`tidb_tso_client_rpc_mode`](#tidb_tso_client_rpc_mode-从-v840-版本开始引入) 不生效。
+
+### `tidb_tso_client_rpc_mode` <span class="version-mark">从 v8.4.0 版本开始引入</span>
+
+- 作用域：GLOBAL
+- 是否持久化到集群：是
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：否
+- 类型：枚举型
+- 默认值：`DEFAULT`
+- 可选值：`DEFAULT`，`PARALLEL`，`PARALLEL-FAST`
+- 这个变量用来设置 TiDB 向 PD 发送 TSO 请求时使用的模式。这里的模式将用于控制 TSO 请求是否并行。可用于调节获取 TS 时消耗在请求攒批阶段的时间，从而在一些场景下降低执行查询时花费在等待 TS 阶段的时间。
+
+    - `DEFAULT`: 默认的模式。该模式下，TiDB 将当前节点上的所有取 TS 的操作 batch 之后，会串行地对每个 batch 进行发送请求、等待响应的过程。这种模式下，每个取 TS 的操作的平均理论耗时大约是实际 TSO RPC 耗时的 1.5 倍左右。
+    - `PARALLEL`: 此模式下，TiDB 将尝试将每次攒批的时间缩短到默认模式的大约一半、并尽可能保持两个 TSO RPC 请求在同时进行。在这种模式下，理论上最高可以将每个取 TS 的操作的平均耗时缩短到实际 TSO RPC 耗时的大约 1.25 倍，即默认模式的 83% 左右。但是，batch 的效果会降低，TSO RPC 请求的数量会上升到默认模式的大约两倍左右。
+    - `PARALLEL-FAST`: 与 `PARALLEL` 模式类似，此模式下，TiDB 将尝试将每次攒批的时间缩短到默认模式的大约 1/4、并尽可能保持 4 个 TSO RPC 请求在同时进行。在这种模式下，理论上最高可以将每个取 TS 的操作的平均耗时缩短到实际 TSO RPC 耗时的大约 1.125 倍，即默认模式的 75% 左右。但是，batch 的效果会降低，TSO RPC 请求的数量会上升到默认模式的大约 4 倍左右。
+
+- 在满足以下条件的情况下，可以考虑将该参数修改到 `PARALLEL` 或 `PARALLEL-FAST` 来获得一定的性能提升：
+
+    - 在 SQL 的耗时组成中，TSO wait duration 占比显著。
+    - PD 的 TSO 分配未达到瓶颈。
+    - PD 和 TiDB 节点的 CPU 资源比较充足。
+    - TiDB 到 PD 的网络延迟显著大于 PD 进行 TS 分配的耗时，即 TiDB 往 PD 发起的 TSO 请求的耗时主要由网络延迟构成。
+        - TiDB 发往 PD 的 TSO 请求的总耗时可以通过 Grafana 的 TiDB 页面中的 PD Client 分类下的 PD TSO RPC Duration 指标进行观察；PD 进行 TS 分配的耗时可以在 Grafana 的 PD 页面中的 TiDB 分类下的 PD server TSO handle duration 进行观察。
+    - 如果 TiDB 到 PD 的 TSO 请求的数量增加 2 倍（对于 `PARALLEL` 模式）或 4 倍（对于 `PARALLEL-FAST`），所带来的额外网络流量可以接受。
+
+> **注意：**
+>
+> - `PARALLEL`、`PARALLEL-FAST` 模式与 [`tidb_tso_client_batch_max_wait_time`](#tidb_tso_client_batch_max_wait_time-从-v530-版本开始引入) 和 [`tidb_enable_tso_follower_proxy`](#tidb_enable_tso_follower_proxy-从-v530-版本开始引入) 不兼容。如果 [`tidb_tso_client_batch_max_wait_time`](#tidb_tso_client_batch_max_wait_time-从-v530-版本开始引入) 被设为非 0 值或者 [`tidb_enable_tso_follower_proxy`](#tidb_enable_tso_follower_proxy-从-v530-版本开始引入) 被启用，则该变量不生效，并按照 `DEFAULT` 模式工作。
+> - `PARALLEL`、`PARALLEL-FAST` 模式针对 TiDB 的取 TS 操作的整体平均耗时进行优化。对于长尾、尖刺问题，启用该优化可能不能带来显著提升。
+
 
 ### `tidb_ttl_delete_rate_limit` <span class="version-mark">从 v6.5.0 版本开始引入</span>
 
