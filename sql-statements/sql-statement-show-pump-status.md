@@ -1,6 +1,7 @@
 ---
 title: SHOW PUMP STATUS
 summary: TiDB 数据库中 SHOW PUMP STATUS 的使用概况。
+aliases: ['/docs-cn/dev/sql-statements/sql-statement-show-pump-status/','/zh/tidb/dev/sql-statement-show-pump-status/']
 ---
 
 # SHOW PUMP STATUS

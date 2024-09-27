@@ -1,6 +1,7 @@
 ---
 title: TiDB Binlog 常见问题
 summary: TiDB Binlog 常见问题解决方案：性能影响、同步延迟、Drainer 权限、Pump 磁盘处理、同步中断处理、同步慢处理、Pump crash 处理、checkpoint 作用、Drainer 故障处理、全量+binlog 备份恢复、ignore-error 处理、DDL 执行错误处理、Pump/Drainer 暂停和下线处理。
+aliases: ['/zh/tidb/dev/tidb-binlog-faq/','/docs-cn/dev/tidb-binlog/tidb-binlog-faq/','/docs-cn/dev/reference/tidb-binlog/faq/','/docs-cn/dev/faq/tidb-binlog/','/docs-cn/dev/reference/tools/tidb-binlog/faq/']
 ---
 
 # TiDB Binlog 常见问题
