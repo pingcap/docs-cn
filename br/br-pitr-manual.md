@@ -83,8 +83,10 @@ Global Flags:
 使用示例：
 
 ```shell
-tiup br log start --task-name=pitr --pd="${PD_IP}:2379" \
---storage='s3://backup-101/logbackup?access-key=${access-key}&secret-access-key=${secret-access-key}"'
+tiup br log start \
+  --task-name=pitr \
+  --pd="${PD_IP}:2379" \
+  --storage='s3://backup-101/logbackup?access-key=${access-key}&secret-access-key=${secret-access-key}'
 ```
 
 ### 加密日志备份数据
@@ -115,8 +117,8 @@ tiup br log start \
 
 然而，在一些对安全性要求更高的场景中，你可能不希望在命令行中直接传入固定的加密密钥。为了进一步提高安全性，你可以使用基于主密钥的加密系统来管理加密密钥。该系统会使用不同的数据密钥来加密不同的日志备份文件，并且支持主密钥轮换。
 
-`--master-key-crypter-method`：基于主密钥的加密算法，支持 `aes128-ctr`、`aes192-ctr` 和 `aes256-ctr` 三种算法，缺省值为 `plaintext`，表示不加密
-`--master-key`：主密钥配置，可以是基于本地磁盘的主密钥或基于云 KMS 的主密钥
+- `--master-key-crypter-method`：基于主密钥的加密算法，支持 `aes128-ctr`、`aes192-ctr` 和 `aes256-ctr` 三种算法，缺省值为 `plaintext`，表示不加密
+- `--master-key`：主密钥配置，可以是基于本地磁盘的主密钥或基于云 KMS 的主密钥
 
 使用本地磁盘主密钥加密：
 
