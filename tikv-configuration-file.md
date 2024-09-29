@@ -2318,7 +2318,7 @@ Raft Engine 相关的配置项。
 
 ### `in-memory-instance-size-limit` <span class="version-mark">从 v8.4.0 版本开始引入</span>
 
-+ 控制单个 TiKV 实例[内存悲观锁](/pessimistic-transaction.md#内存悲观锁)的内存使用上限。超过此限制时，悲观锁将回退到持久化方式写入。
++ 控制单个 TiKV 实例[内存悲观锁](/pessimistic-transaction.md#内存悲观锁)的内存使用上限。超过此限制时，悲观锁将回退到持久化方式写入磁盘。
 + 默认值：100MiB
 + 单位：KiB|MiB|GiB
 
