@@ -395,6 +395,7 @@ TiDB 版本：8.4.0
     - 支持在线更改流控（flow-control）相关配置 [#17395](https://github.com/tikv/tikv/issues/17395) @[glorv](https://github.com/glorv)
     - 优化空表和小 region 场景下的 Region Merge 的速度 [#17376](https://github.com/tikv/tikv/issues/17376) @[LykxSassinator](https://github.com/LykxSassinator)
     - 支持 gb18030 字符集和 gb18030_bin、gb18030_chinese_ci 排序规则 [#17470](https://github.com/tikv/tikv/issues/17470) @[CbcWestwolf](https://github.com/CbcWestwolf)
+    - Pipelined DML 不会长时间阻塞 resolved-ts。 [#17459](https://github.com/tikv/tikv/issues/17459)@[ekexium](https://github.com/ekexium)
 
 + PD
 
