@@ -2826,7 +2826,6 @@ v5.0 后，用户仍可以单独修改以上系统变量（会有废弃警告）
 > - 目前，仅 Inner Join 和 Outer Join 类型的连接操作支持优化版的 Hash Join。对于其他类型的连接操作，即使将该变量设成 `optimized`，TiDB 也不会使用优化版的 Hash Join。
 > - 目前，优化版的 Hash Join 不支持在内存使用超限时落盘内存数据。
 
-
 ### `tidb_hashagg_final_concurrency`
 
 > **警告：**
