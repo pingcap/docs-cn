@@ -366,12 +366,11 @@ TiDB 版本：8.4.0
     - 优化系统变量 `tidb_dml_type` 为 `"bulk"` 时 DML 语句的执行性能 [#50215](https://github.com/pingcap/tidb/issues/50215) @[ekexium](https://github.com/ekexium) **tw@qiancai** <!--1860-->
     - 支持使用 [Optimizer Fix Control 47400](/optimizer-fix-controls.md#47400-从-v840-版本开始引入) 控制优化器是否将 `estRows` 的最小值限制为 `1`，与 Oracle 和 DB2 等数据库的行为保持一致 [#47400](https://github.com/pingcap/tidb/issues/47400) @[terry1purcell](https://github.com/terry1purcell) **tw@Oreoxmt** <!--1929-->
     - 为日志表 [`mysql.tidb_runaway_queries`](/mysql-schema/mysql-schema.md#runaway-queries-相关系统表) 增加写入控制，降低大量并发写入引发的开销 [#54434](https://github.com/pingcap/tidb/issues/54434) @[HuSharp](https://github.com/HuSharp) <!--1908--> **tw@lilin90** 
-    - 当内表上有 `Selection` 或 `Projection` 算子时默认支持 Index Join [#issue号](链接) @[winoros](https://github.com/winoros) **tw@Oreoxmt** <!--1709-->
+    - 当内表上有 `Selection`、`Projection` 或 `Aggregation` 算子时默认支持 Index Join [#47233](https://github.com/pingcap/tidb/issues/47233) @[winoros](https://github.com/winoros) **tw@Oreoxmt** <!--1709-->
     - 在某些场景下减少 `DELETE` 操作从 TiKV 获取的列信息数量，降低 `DELETE` 操作的资源开销 [#38911](https://github.com/pingcap/tidb/issues/38911) @[winoros](https://github.com/winoros) **tw@Oreoxmt** <!--1798-->
     - 优化自动收集统计信息任务优先级队列的运行效率 [#49972](https://github.com/pingcap/tidb/issues/49972) @[Rustin170506](https://github.com/Rustin170506) **tw@Oreoxmt** <!--1935-->
     - 自动统计信息收集根据节点规模和硬件规格自动确定执行和扫描的并发度 [#53460](https://github.com/pingcap/tidb/issues/53460) @[hawkingrei](https://github.com/hawkingrei) **tw@Oreoxmt** <!--1739-->
     - 优化一处内部函数逻辑，提升查询列数特别多的表时的性能 [#52112](https://github.com/pingcap/tidb/issues/52112) @[Rustin170506](https://github.com/Rustin170506)
-    - 默认开启 `tidb_enable_inl_join_inner_multi_pattern`，扩展 TiDB Index Join 的能力 [#47233](https://github.com/pingcap/tidb/issues/47233) @[winoros](https://github.com/winoros)
     - 支持将形如 `a = 1 AND (a > 1 OR (a = 1 AND b = 2))` 的过滤条件简化为 `a = 1 AND b = 2` [#56005](https://github.com/pingcap/tidb/issues/56005) @[ghazalfamilyusa](https://github.com/ghazalfamilyusa)
     - 在部分选中不优执行计划风险较高的场景中，提高代价模型中 Table Scan 的代价，使得优化器更倾向于使用索引 [#56012](https://github.com/pingcap/tidb/issues/56012) @[terry1purcell](https://github.com/terry1purcell)
     - `MID` 函数支持两个参数的形式 [#52420](https://github.com/pingcap/tidb/issues/52420) @[dveeden](https://github.com/dveeden)
