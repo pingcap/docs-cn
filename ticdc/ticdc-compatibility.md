@@ -65,3 +65,11 @@ TiCDC 从 v5.3.0 开始支持[全局临时表](/temporary-tables.md#全局临时
 你需要使用 TiCDC v5.3.0 及以上版本同步全局临时表到下游。低于该版本，会导致表定义错误。
 
 如果 TiCDC 的上游集群包含全局临时表，下游集群也必须是 TiDB 5.3.0 及以上版本，否则同步报错。
+
+### 向量搜索功能兼容性说明（实验特性）
+
+TiCDC 从 v8.4.0 开始支持[向量搜索功能](/vector-search-overview.md)。
+
+写入下游为 Kafka 或者存储服务（如：Amazon S3、GCS、Azure Blob Storage 和 NFS）时，会将向量类型转为字符串类型。
+
+写入到不支持向量类型的 MySQL 兼容数据库时, 涉及向量类型的 DDL 事件无法成功写入。在`sink-url`中添加配置参数`has-vector-type=true`后，会将向量类型转为 `LONGTEXT` 类型进行写入。
