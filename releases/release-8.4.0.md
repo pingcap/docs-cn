@@ -25,7 +25,7 @@ TiDB 版本：8.4.0
   <tr>
     <td rowspan="4">可扩展性和性能</td>
     <td><a href="https://docs.pingcap.com/zh/tidb/v8.4/system-variables#tidb_enable_instance_plan_cache-从-v840-版本开始引入">实例级执行计划缓存</a>（实验特性）**tw@Oreoxmt 1569**</td>
-    <td>实例级执行计划缓存允许同一个 TiDB 实例的所有会话共享执行计划缓存，通过在内存中缓存更多执行计划，消除 SQL 编译时间，从而减少 SQL 运行时间，提升 OLTP 系统的性能和吞吐，同时更好地控制内存使用，提升数据库稳定性。</td>
+    <td>实例级执行计划缓存允许同一个 TiDB 实例的所有会话共享执行计划缓存。该特性通过在内存中缓存更多执行计划，减少 SQL 编译时间，从而降低 SQL 整体运行时间，提升 OLTP 系统的性能和吞吐，同时更好地控制内存使用，提升数据库稳定性。</td>
   </tr>
   <tr>
     <td>分区表全局索引成为正式功能**tw@hfxsd 1961**</td>
@@ -115,14 +115,14 @@ TiDB 版本：8.4.0
 
   更多信息，请参考[用户文档](/functions-and-operators/expressions-pushed-down.md)。
 
-* 实例级执行计划缓存（实验特性）[#54057](https://github.com/pingcap/tidb/issues/54057) @[qw4990](https://github.com/qw4990) **tw@Oreoxmt** <!--1569-->
+* 支持实例级执行计划缓存（实验特性）[#54057](https://github.com/pingcap/tidb/issues/54057) @[qw4990](https://github.com/qw4990) **tw@Oreoxmt** <!--1569-->
 
-    TiDB v8.4.0 引入实例级执行计划缓存作为实验特性。该功能允许同一个 TiDB 实例的所有会话共享执行计划缓存，能够大幅降低 TiDB 的时延、提升集群吞吐、减少执行计划突变的可能性、保持集群性能的稳定，是 TiDB 改善性能和稳定性的重要改进。相比会话级执行计划缓存，实例级执行计划缓存具有以下优势：
+    实例级执行计划缓存允许同一个 TiDB 实例上的所有会话共享执行计划缓存。该功能可以大幅降低 TiDB 的查询响应时间，提升集群吞吐，减少执行计划突变的可能性，并保持集群性能的稳定。相比会话级执行计划缓存，实例级执行计划缓存具有以下优势：
 
     - 消除冗余，在相同的内存消耗下缓存更多执行计划。
     - 在实例上分配固定大小的内存区域，更有效地限制内存使用。
 
-    在 v8.4.0 中，实例级执行计划缓存仅支持对查询的执行计划进行缓存，默认关闭。你可以通过系统变量 [`tidb_enable_instance_plan_cache`](/system-variables.md#tidb_enable_instance_plan_cache-从-v840-版本开始引入) 开启该功能，并通过系统变量 [`tidb_instance_plan_cache_max_size`](/system-variables.md#tidb_instance_plan_cache_max_size-从-v840-版本开始引入) 设置其最大内存使用量。开启该功能之前，请关闭关闭会话级别的 [Prepare 语句执行计划缓存](/sql-prepared-plan-cache.md)和[非 Prepare 语句执行计划缓存](/sql-non-prepared-plan-cache.md)。
+    在 v8.4.0 中，实例级执行计划缓存仅支持对查询的执行计划进行缓存，且默认关闭。你可以通过系统变量 [`tidb_enable_instance_plan_cache`](/system-variables.md#tidb_enable_instance_plan_cache-从-v840-版本开始引入) 开启该功能，并通过系统变量 [`tidb_instance_plan_cache_max_size`](/system-variables.md#tidb_instance_plan_cache_max_size-从-v840-版本开始引入) 设置其最大内存使用量。开启该功能之前，请关闭会话级别的 [Prepare 语句执行计划缓存](/sql-prepared-plan-cache.md)和[非 Prepare 语句执行计划缓存](/sql-non-prepared-plan-cache.md)。
 
     更多信息，请参考[用户文档](/system-variables.md#tidb_enable_instance_plan_cache-从-v840-版本开始引入)。
 
@@ -189,7 +189,7 @@ TiDB 版本：8.4.0
 
 * TiProxy 支持流量回放功能（实验特性）[#642](https://github.com/pingcap/tiproxy/issues/642) @[djshow832](https://github.com/djshow832) **tw@Oreoxmt** <!--1942-->
 
-    从 TiProxy v1.3.0 开始，你可以使用 TiProxy 捕获 TiDB 生产集群中的访问流量，并在测试集群中按照指定的速率回放这些流量。通过该功能，你可以在测试环境中重现生产集群的实际工作负载，从而验证所有 SQL 的执行结果和性能表现。
+    从 TiProxy v1.3.0 开始，你可以使用 `tiproxyctrl` 连接 TiProxy 实例，捕获 TiDB 生产集群中的访问流量，并在测试集群中按照指定的速率回放这些流量。通过该功能，你可以在测试环境中重现生产集群的实际工作负载，从而验证所有 SQL 的执行结果和性能表现。
 
     流量回放适用于以下场景：
 
@@ -197,8 +197,6 @@ TiDB 版本：8.4.0
     - 执行变更前影响评估
     - TiDB 扩缩容前性能验证
     - 集群性能上限测试
-
-    你可以使用 `tiproxyctrl` 连接 TiProxy 实例，并进行流量捕获和回放。
 
     更多信息，请参考[用户文档](/tiproxy/tiproxy-traffic-replay.md)。
 
@@ -240,7 +238,7 @@ TiDB 版本：8.4.0
 
 * BR 降低了从云存储服务系统恢复数据的权限要求 [#55870](https://github.com/pingcap/tidb/issues/55870) @[Leavrth](https://github.com/Leavrth) **tw@Oreoxmt** <!--1943-->
 
-    在 v8.4.0 之前，BR 在恢复过程中将恢复进度的检查点信息存储在备份数据位置。这些检查点使中断的恢复操作能够快速恢复。从 v8.4.0 开始，BR 将恢复检查点信息存储在目标 TiDB 集群中。这意味着 BR 在恢复时只需要对备份目录的读取权限。
+    在 v8.4.0 之前，BR 在恢复过程中会将恢复进度的检查点信息写入到备份存储系统。当恢复过程出现中断时，这些检查点使中断的恢复操作能够快速恢复。从 v8.4.0 开始，BR 将恢复检查点信息写入到目标 TiDB 集群中。这意味着 BR 在恢复时只需要具备对备份目录的读取权限。
 
     更多信息，请参考[用户文档](/br/backup-and-restore-storages.md#鉴权)。
 
@@ -274,9 +272,9 @@ TiDB 版本：8.4.0
 
 ### 数据迁移
 
-* TiCDC Claim-Check 支持仅发送Kafka 消息的 `value` 部分到外部存储 [#11396](https://github.com/pingcap/tiflow/issues/11396) @[3AceShowHand](https://github.com/3AceShowHand) **tw@Oreoxmt** <!--1919-->
+* TiCDC Claim-Check 支持仅发送 Kafka 消息的 `value` 部分到外部存储 [#11396](https://github.com/pingcap/tiflow/issues/11396) @[3AceShowHand](https://github.com/3AceShowHand) **tw@Oreoxmt** <!--1919-->
 
-    在 v8.4.0 之前，使用 Claim-Check 功能处理大型消息时（将 `large-message-handle-option` 设置为 `claim-check`），TiCDC 会将 `key` 和 `value` 都编码并存储在外部存储系统中。
+    在 v8.4.0 之前，如果开启了 Claim-Check 功能 （将 `large-message-handle-option` 设置为 `claim-check`），TiCDC 在处理大型消息时会将 `key` 和 `value` 都进行编码并存储在外部存储系统中。
 
     从 v8.4.0 开始，TiCDC 支持仅将 Kafka 消息的 `value` 部分发送到外部存储，该功能仅适用于非 Open Protocol 协议。你可以通过设置 `claim-check-raw-value` 参数控制是否开启该功能。
 
@@ -284,7 +282,7 @@ TiDB 版本：8.4.0
 
 * TiCDC 引入 Checksum V2 算法校验 Update 或 Delete 事件中 Old Value 数据 [#10969](https://github.com/pingcap/tiflow/issues/10969) @[3AceShowHand](https://github.com/3AceShowHand) **tw@Oreoxmt** <!--1917-->
 
-    从 v8.4.0 开始，TiDB 和 TiCDC 引入 Checksum V2 算法，解决了 Checksum V1 在执行 Add Column 或 Drop Column 后无法正确校验 Update 或 Delete 事件中 Old Value 数据的问题。对于 v8.4.0 及之后新创建的集群，或从之前版本升级到 v8.4.0 的集群，启用单行数据 Checksum 正确性校验功能后，TiDB 默认使用 Checksum V2 算法进行 Checksum 计算和校验。TiCDC 支持同时处理 V1 和 V2 两种 Checksum。该变更仅影响 TiDB 和 TiCDC 内部实现，不影响下游 Kafka consumer 的 Checksum 计算校验方法。
+    从 v8.4.0 开始，TiDB 和 TiCDC 引入 Checksum V2 算法，解决了 Checksum V1 在执行 `ADD COLUMN` 或 `DROP COLUMN` 后无法正确校验 Update 或 Delete 事件中 Old Value 数据的问题。对于 v8.4.0 及之后新创建的集群，或从之前版本升级到 v8.4.0 的集群，启用单行数据 Checksum 正确性校验功能后，TiDB 默认使用 Checksum V2 算法进行 Checksum 计算和校验。TiCDC 支持同时处理 V1 和 V2 两种 Checksum。该变更仅影响 TiDB 和 TiCDC 内部实现，不影响下游 Kafka consumer 的 Checksum 计算校验方法。
   
     更多信息，请参考[用户文档](/ticdc/ticdc-integrity-check.md)。
 
@@ -366,7 +364,7 @@ TiDB 版本：8.4.0
     - 优化扫描大量数据时构造 BatchCop Task 的效率 [#55915](https://github.com/pingcap/tidb/issues/55915) [#55413](https://github.com/pingcap/tidb/issues/55413) @[wshwsh12](https://github.com/wshwsh12) **tw@caiqian** <!--1902-->
     - 优化 MEMDB 实现，降低事务中的写操作延时与 TiDB CPU 使用 [#55287](https://github.com/pingcap/tidb/issues/55287) @[you06](https://github.com/you06) **tw@hfxsd** <!--1892-->
     - 优化系统变量 `tidb_dml_type` 为 `"bulk"` 时 DML 语句的执行性能 [#50215](https://github.com/pingcap/tidb/issues/50215) @[ekexium](https://github.com/ekexium) **tw@qiancai** <!--1860-->
-    - 支持使用 [Optimizer Fix Control 47400](/optimizer-fix-controls.md#47400-从-v840-版本开始引入) 控制是否将优化器为 `estRows` 估算的最小值限制为 `1`，与 Oracle 和 DB2 等数据库的行为保持一致 [#47400](https://github.com/pingcap/tidb/issues/47400) @[terry1purcell](https://github.com/terry1purcell) **tw@Oreoxmt** <!--1929-->
+    - 支持使用 [Optimizer Fix Control 47400](/optimizer-fix-controls.md#47400-从-v840-版本开始引入) 控制优化器是否将 `estRows` 的最小值限制为 `1`，与 Oracle 和 DB2 等数据库的行为保持一致 [#47400](https://github.com/pingcap/tidb/issues/47400) @[terry1purcell](https://github.com/terry1purcell) **tw@Oreoxmt** <!--1929-->
     - 为日志表 [`mysql.tidb_runaway_queries`](/mysql-schema/mysql-schema.md#runaway-queries-相关系统表) 增加写入控制，降低大量并发写入引发的开销 [#54434](https://github.com/pingcap/tidb/issues/54434) @[HuSharp](https://github.com/HuSharp) <!--1908--> **tw@lilin90** 
     - 当内表上有 `Selection` 或 `Projection` 算子时默认支持 Index Join [#issue号](链接) @[winoros](https://github.com/winoros) **tw@Oreoxmt** <!--1709-->
     - 在某些场景下减少 `DELETE` 操作从 TiKV 获取的列信息数量，降低 `DELETE` 操作的资源开销 [#38911](https://github.com/pingcap/tidb/issues/38911) @[winoros](https://github.com/winoros) **tw@Oreoxmt** <!--1798-->
@@ -391,7 +389,7 @@ TiDB 版本：8.4.0
 
     - note [#issue](https://github.com/pingcap/tidb/issues/${issue-id}) @[贡献者 GitHub ID](https://github.com/${github-id})
     - Region 的默认值由 96 MiB 提升到 256 MiB，避免 Region 数量过多导致额外开销 [#17309](https://github.com/tikv/tikv/issues/17309) [LykxSassinator](https://github.com/LykxSassinator) **tw@hfxsd** <!--1925-->
-    - 支持指定单个 Region 或 TiKV 实例的内存悲观锁的内存上限，在热点写悲观锁加锁较多的情况下，可以通过修改配置提高内存上限，避免悲观锁落盘导致的 CPU/IO 开销 [#17542](https://github.com/tikv/tikv/issues/17542) @[cfzjywxk](https://github.com/cfzjywxk) **tw@Oreoxmt** <!--1967-->
+    - 支持指定单个 Region 或 TiKV 实例的内存悲观锁的内存上限，在热点写导致大量悲观锁加锁时，可以通过修改配置提高内存上限，避免悲观锁落盘导致的 CPU/IO 开销 [#17542](https://github.com/tikv/tikv/issues/17542) @[cfzjywxk](https://github.com/cfzjywxk) **tw@Oreoxmt** <!--1967-->
     - Raft Engine 新增 `spill-dir` 配置，支持 Raft 日志的多磁盘存储。当主目录 `dir` 所在磁盘的容量不足时，Raft Engine 会自动将新日志写入 `spill-dir`，从而确保系统的持续运行。[LykxSassinator](https://github.com/LykxSassinator) **tw@hfxsd** <!--1970-->
     - (dup): release-6.5.11.md > 改进提升> TiKV - 优化存在大量 DELETE 版本时 RocksDB 的 compaction 触发机制，以加快磁盘空间回收 [#17269](https://github.com/tikv/tikv/issues/17269) @[AndreMouche](https://github.com/AndreMouche)
     - 支持向量数据类型（VECTOR）及其相关函数的计算下推 [#17290]https://github.com/tikv/tikv/issues/17290 @[breezewish](https://github.com/breezewish)
