@@ -372,6 +372,12 @@ TiDB 版本：8.4.0
     - 在某些场景下减少 `DELETE` 操作从 TiKV 获取的列信息数量，降低 `DELETE` 操作的资源开销 [#38911](https://github.com/pingcap/tidb/issues/38911) @[winoros](https://github.com/winoros) **tw@Oreoxmt** <!--1798-->
     - 优化自动收集统计信息任务优先级队列的运行效率 [#49972](https://github.com/pingcap/tidb/issues/49972) @[Rustin170506](https://github.com/Rustin170506) **tw@Oreoxmt** <!--1935-->
     - 自动统计信息收集根据节点规模和硬件规格自动确定执行和扫描的并发度 [#53460](https://github.com/pingcap/tidb/issues/53460) @[hawkingrei](https://github.com/hawkingrei) **tw@Oreoxmt** <!--1739-->
+    - 优化一处内部函数逻辑，提升查询列数特别多的表时的性能 [#52112](https://github.com/pingcap/tidb/issues/52112) @[Rustin170506](https://github.com/Rustin170506)
+    - 默认开启 `tidb_enable_inl_join_inner_multi_pattern`，扩展 TiDB Index Join 的能力 [#47233](https://github.com/pingcap/tidb/issues/47233) @[winoros](https://github.com/winoros)
+    - 支持将形如 `a = 1 AND (a > 1 OR (a = 1 AND b = 2))` 的过滤条件简化为 `a = 1 AND b = 2` [#56005](https://github.com/pingcap/tidb/issues/56005) @[ghazalfamilyusa](https://github.com/ghazalfamilyusa)
+    - 在部分选中不优执行计划风险较高的场景中，提高代价模型中 Table Scan 的代价，使得优化器更倾向于使用索引 [#56012](https://github.com/pingcap/tidb/issues/56012) @[terry1purcell](https://github.com/terry1purcell)
+    - `MID` 函数支持两个参数的形式 [#52420](https://github.com/pingcap/tidb/issues/52420) @[dveeden](https://github.com/dveeden)
+    - 支持 `date_add`, `date_sub` 函数下推给 TiKV [#56297](https://github.com/pingcap/tidb/issues/56297) @[gengliqi](https://github.com/gengliqi)
 
 + TiKV
 
@@ -390,6 +396,9 @@ TiDB 版本：8.4.0
 
     - note [#issue](https://github.com/pingcap/tidb/issues/${issue-id}) @[贡献者 GitHub ID](https://github.com/${github-id})
     - (dup): release-6.5.11.md > 改进提升> TiFlash - 优化 `LENGTH()` 和 `ASCII()` 函数执行效率 [#9344](https://github.com/pingcap/tiflash/issues/9344) @[xzhangxian1008](https://github.com/xzhangxian1008)
+    - 减少处理存算分离请求创建的线程数 [#9334](https://github.com/pingcap/tiflash/issues/9334) @[JinheLin](https://github.com/JinheLin)
+    - 改进 pipeline 执行模型下 task 等待机制 [#8869](https://github.com/pingcap/tiflash/issues/8869) @[SeaRise](https://github.com/SeaRise)
+    - 改进 join 算子的 cancel 机制，使得 join 算子内部能及时响应 cancel 请求 [#9430](https://github.com/pingcap/tiflash/issues/9430) @[windtalker](https://github.com/windtalker)
 
 + Tools
 
