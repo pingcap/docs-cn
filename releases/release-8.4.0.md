@@ -467,7 +467,7 @@ TiDB 版本：8.4.0
     - 修复带有最小显示宽度的 integer 数据类型参与除法时，可能导致除法结果溢出的问题 [#55837](https://github.com/pingcap/tidb/issues/55837) @[windtalker](https://github.com/windtalker)
     - 修复 TopN 算子之后的算子无法在内存超限时触发数据落盘的问题 [#56185](https://github.com/pingcap/tidb/issues/56185) @[xzhangxian1008](https://github.com/xzhangxian1008)
     - 修复 sort 算子中 order by 列如果包含常量列会 hang 住的问题 [#55344](https://github.com/pingcap/tidb/issues/55344) @[xzhangxian1008](https://github.com/xzhangxian1008)
-    - 修复在添加索引期间，kill pd  leader 后出现“错误 8223 (HY000)，且表中的数据不一致的问题 [#55488](https://github.com/pingcap/tidb/issues/55488) @[tangenta](https://github.com/tangenta)
+    - 修复在添加索引期间，kill pd leader 后出现`8223 (HY000)`错误 ，且表中的数据不一致的问题 [#55488](https://github.com/pingcap/tidb/issues/55488) @[tangenta](https://github.com/tangenta)
     - 修复当用户请求历史 DDL 任务信息时，DDL 历史任务过多导致 OOM 的问题 [#55711](https://github.com/pingcap/tidb/issues/55711)) @[joccau](https://github.com/joccau)
     - 修复当 Region 大小超过 96M 时，全局有序 IMPORT INTO 卡住的问题 [#55374](https://github.com/pingcap/tidb/issues/55374) @[lance6716](https://github.com/lance6716)
     - 修复在临时表上使用 `import into` 会导致 tidb crash 的问题 [#55970](https://github.com/pingcap/tidb/issues/55970) @[D3Hunter](https://github.com/D3Hunter)
