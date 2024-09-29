@@ -2179,7 +2179,7 @@ mysql> SELECT job_info FROM mysql.analyze_jobs ORDER BY end_time DESC LIMIT 1;
 - 类型：布尔型
 - 默认值：`ON`。TiDB v8.3.0 及之前版本默认值为 `OFF`。
 - 该变量用于控制当内表上有 `Selection`、`Projection` 或 `Aggregation` 算子时是否支持 Index Join。`OFF` 表示不支持。
-- 如果从 v7.0.0 之前版本的集群升级至 v8.4.0 及之后的版本，该变量默认值为 `OFF`，即默认不支持 Index Join。
+- 如果将集群从 v7.0.0 之前版本升级至 v8.4.0 或之后的版本，该变量默认值为 `OFF`，即默认不支持 Index Join。
 
 ### `tidb_enable_ordered_result_mode`
 
