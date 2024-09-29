@@ -58,8 +58,8 @@ TiDB 版本：8.4.0
   </tr>
   <tr>
     <td rowspan="1">SQL</td>
-    <td>><a href="https://docs.pingcap.com/zh/tidb/v8.4/vector-search-overview">向量搜索功能（实验特性）</a>**tw@qiancai 1898**</td>
-    <td>向量搜索是一种基于数据语义的搜索方法，可以提供更相关的搜索结果。作为 AI 和大语言模型（LLM）的核心功能之一，向量搜索可用于检索增强生成（Retrieval-Augmented Generation, RAG）、语义搜索、推荐系统等多种场景。</td>
+    <td>支持<a href="https://docs.pingcap.com/zh/tidb/v8.4/vector-search-overview">向量搜索功能</a>（实验特性）**tw@qiancai 1898**</td>
+    <td>向量搜索是一种基于数据语义的搜索方法，可以提供更相关的搜索结果。作为 AI 和大语言模型 (LLM) 的核心功能之一，向量搜索可用于检索增强生成 (Retrieval-Augmented Generation, RAG)、语义搜索、推荐系统等多种场景。</td>
   </tr>
   <tr>
     <td rowspan="3">数据库管理和可观测性</td>
@@ -76,7 +76,7 @@ TiDB 版本：8.4.0
   </tr>
   <tr>
     <td rowspan="1">安全</td>
-    <td><a href="https://docs.pingcap.com/zh/tidb/v8.4/br-pitr-manual#加密日志备份数据">日志备份数据支持客户端加密（实验特性）</a>**tw@qiancai 1920**</td>
+    <td><a href="https://docs.pingcap.com/zh/tidb/v8.4/br-pitr-manual#加密日志备份数据">日志备份数据支持客户端加密</a>（实验特性）**tw@qiancai 1920**</td>
     <td>在上传日志备份到备份存储之前，你可以对日志备份数据进行加密，确保数据在存储和传输过程中的安全性。</td>
   </tr>
 </tbody>
@@ -102,16 +102,18 @@ TiDB 版本：8.4.0
 
     更多信息，请参考[用户文档](/system-variables.md#tidb_tso_client_rpc_mode-从-v840-版本开始引入)。
 
-* 优化 TiDB Hash Join 算子的执行效率（实验特性） [#55153](https://github.com/pingcap/tidb/issues/55153) [#53127](https://github.com/pingcap/tidb/issues/53127) @[windtalker](https://github.com/windtalker) @[xzhangxian1008](https://github.com/xzhangxian1008) @[XuHuaiyu](https://github.com/XuHuaiyu) @[wshwsh12](https://github.com/wshwsh12) **tw@qiancai** <!--1633-->
+* 优化 TiDB Hash Join 算子的执行效率（实验特性）[#55153](https://github.com/pingcap/tidb/issues/55153) [#53127](https://github.com/pingcap/tidb/issues/53127) @[windtalker](https://github.com/windtalker) @[xzhangxian1008](https://github.com/xzhangxian1008) @[XuHuaiyu](https://github.com/XuHuaiyu) @[wshwsh12](https://github.com/wshwsh12) **tw@qiancai** <!--1633-->
 
-    在 v8.4.0 中，TiDB 对 Hash Join 算子的实现方法进行了优化，以提升其执行效率。目前，优化版的 Hash Join 且仅对 Inner Join 和 Outer Join 操作生效，且默认关闭。如需开启优化版的 Hash Join，可以将系统变量 [tidb_hash_join_version](/system-variables.md#tidb_hash_join_version-从-v840-版本开始引入) 设置为 `optimized`。
+    在 v8.4.0 中，TiDB 对 Hash Join 算子的实现方法进行了优化，以提升其执行效率。目前，优化版的 Hash Join 仅对 Inner Join 和 Outer Join 操作生效，且默认关闭。如需开启优化版的 Hash Join，可以将系统变量 [`tidb_hash_join_version`](/system-variables.md#tidb_hash_join_version-从-v840-版本开始引入) 设置为 `optimized`。
 
     更多信息，请参考[用户文档](/system-variables.md#tidb_hash_join_version-从-v840-版本开始引入)。
 
-* 支持下推以下字符串函数到 TiKV [#17529](https://github.com/tikv/tikv/issues/17529) @[gengliqi](https://github.com/gengliqi) **tw@qiancai** <!--1716-->
+* 支持下推以下日期函数到 TiKV [#17529](https://github.com/tikv/tikv/issues/17529) @[gengliqi](https://github.com/gengliqi) **tw@qiancai** <!--1716-->
 
     * `DATE_ADD()`
     * `DATE_SUB()`
+    * `ADDDATE()`
+    * `SUBDATE()`
 
   更多信息，请参考[用户文档](/functions-and-operators/expressions-pushed-down.md)。
 
@@ -202,9 +204,9 @@ TiDB 版本：8.4.0
 
 ### SQL 功能
 
-* 支持向量搜索功能（实验特性） [#54245](https://github.com/pingcap/tidb/issues/54245) [#9032](https://github.com/pingcap/tiflash/issues/9032) @[breezewish](https://github.com/breezewish) @[Lloyd-Pottiger](https://github.com/Lloyd-Pottiger) @[EricZequan](https://github.com/EricZequan) @[zimulala](https://github.com/zimulala) @[JaySon-Huang](https://github.com/JaySon-Huang) @[winoros](https://github.com/winoros) @[wk989898](https://github.com/wk989898) **tw@qiancai** <!--1898-->
+* 支持向量搜索功能（实验特性）[#54245](https://github.com/pingcap/tidb/issues/54245) [#9032](https://github.com/pingcap/tiflash/issues/9032) @[breezewish](https://github.com/breezewish) @[Lloyd-Pottiger](https://github.com/Lloyd-Pottiger) @[EricZequan](https://github.com/EricZequan) @[zimulala](https://github.com/zimulala) @[JaySon-Huang](https://github.com/JaySon-Huang) @[winoros](https://github.com/winoros) @[wk989898](https://github.com/wk989898) **tw@qiancai** <!--1898-->
 
-    向量搜索是一种基于数据语义的搜索方法，可以提供更相关的搜索结果。作为 AI 和大语言模型（LLM）的核心功能之一，向量搜索可用于检索增强生成（Retrieval-Augmented Generation, RAG）、语义搜索、推荐系统等多种场景。
+    向量搜索是一种基于数据语义的搜索方法，可以提供更相关的搜索结果。作为 AI 和大语言模型 (LLM) 的核心功能之一，向量搜索可用于检索增强生成 (Retrieval-Augmented Generation, RAG)、语义搜索、推荐系统等多种场景。
 
     从 v8.4.0 开始，TiDB 支持[向量数据类型](vector-search-data-types.md)和[向量搜索索引](vector-search-index.md)，具备强大的向量搜索能力。TiDB 的向量数据类型最多可支持 16383 维度，并支持多种[距离函数](/vector-search-functions-and-operators.md#向量函数)，包括 L2 距离（欧式距离）、余弦距离、负内积和 L1 距离（曼哈顿距离）。
 
