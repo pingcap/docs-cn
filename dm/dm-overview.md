@@ -60,6 +60,10 @@ tiup install dm dmctl
 
     - DM 不支持 MySQL 8.0 的新特性 binlog 事务压缩 [Transaction_payload_event](https://dev.mysql.com/doc/refman/8.0/en/binary-log-transaction-compression.html)。使用 binlog 事务压缩有导致上下游数据不一致的风险。
 
++ 向量类型数据同步
+
+    - DM 不支持 MySQL 9.0 的向量数据类型同步。
+
 ## Contributing
 
 欢迎参与 DM 开源项目并万分感谢您的贡献，可以查看 [CONTRIBUTING.md](https://github.com/pingcap/tiflow/blob/master/dm/CONTRIBUTING.md) 了解更多信息。
