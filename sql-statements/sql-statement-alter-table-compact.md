@@ -200,9 +200,9 @@ SELECT PARTITION_NAME, TOTAL_DELTA_ROWS, TOTAL_STABLE_ROWS
 
 `ALTER TABLE ... COMPACT` 语法是 TiDB 引入的对标准 SQL 语法的扩展。尽管没有对应的 MySQL 语法，但你仍然可通过 MySQL 各版本客户端，或各个遵循 MySQL 协议的数据库驱动执行该语句。
 
-### TiDB Binlog 及 TiCDC 兼容性
+### TiCDC 兼容性
 
-`ALTER TABLE ... COMPACT` 语句不会导致逻辑数据变化，因而不会被 TiDB Binlog 及 TiCDC 同步到下游。
+`ALTER TABLE ... COMPACT` 语句不会导致逻辑数据变化，因而不会被 TiCDC 同步到下游。
 
 ## 另请参阅
 

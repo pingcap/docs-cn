@@ -18,7 +18,6 @@ TiDB 开发者为 TiDB 的新功能开发、性能优化、稳定性保障做出
 - [pingcap/tiflash](https://github.com/pingcap/tiflash/graphs/contributors)
 - [pingcap/tidb-operator](https://github.com/pingcap/tidb-operator/graphs/contributors)
 - [pingcap/tiup](https://github.com/pingcap/tiup/graphs/contributors)
-- [pingcap/tidb-binlog](https://github.com/pingcap/tidb-binlog/graphs/contributors)
 - [pingcap/tidb-dashboard](https://github.com/pingcap/tidb-dashboard/graphs/contributors)
 - [pingcap/tiflow](https://github.com/pingcap/tiflow/graphs/contributors)
 - [pingcap/tidb-tools](https://github.com/pingcap/tidb-tools/graphs/contributors)
