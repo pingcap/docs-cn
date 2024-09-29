@@ -207,7 +207,7 @@ in-memory = false
 set config tikv pessimistic-txn.in-memory='false';
 ```
 
-从 v8.4.0 版本开始，Region 和 TiKV 节点内存悲观锁使用上限配置可通过配置修改：
+从 v8.4.0 开始，你可以通过 [`pessimistic-txn.in-memory-peer-size-limit`](/tikv-configuration-file.md#in-memory-peer-size-limit-从-v840-版本开始引入) 或 [`pessimistic-txn.in-memory-instance-size-limit`](/tikv-configuration-file.md#in-memory-instance-size-limit-从-v840-版本开始引入) 配置项修改 Region 或 TiKV 节点内存悲观锁的内存使用上限：
 
 ```toml
 [pessimistic-txn]
@@ -217,9 +217,7 @@ in-memory-instance-size-limit = "100MiB"
 
 也可通过[在线修改 TiKV 配置](/dynamic-config.md#在线修改-tikv-配置)功能动态调整：
 
-{{< copyable "sql" >}}
-
 ```sql
-set config tikv `pessimistic-txn.in-memory-peer-size-limit`="512KiB";
-set config tikv `pessimistic-txn.in-memory-instance-size-limit`="100MiB";
+SET CONFIG tikv `pessimistic-txn.in-memory-peer-size-limit`="512KiB";
+SET CONFIG tikv `pessimistic-txn.in-memory-instance-size-limit`="100MiB";
 ```
