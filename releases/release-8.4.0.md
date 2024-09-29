@@ -385,6 +385,7 @@ TiDB 版本：8.4.0
     - 优化与系统元数据相关的语句性能  [#50305](https://github.com/pingcap/tidb/issues/50305) @[ywqzzy](https://github.com/ywqzzy) @[tangenta](https://github.com/tangenta) @[joechenrh](https://github.com/joechenrh) @[CbcWestwolf](https://github.com/CbcWestwolf)
     - 实现新的优先级队列以提高性能并减少重建自动分析操作队列的开销 [#55906](https://github.com/pingcap/tidb/issues/55906) @[Rustin170506](https://github.com/Rustin170506)
     - 引入 DDL 通知程序，以允许统计模块订阅 DDL 事件 [#55722](https://github.com/pingcap/tidb/issues/55722) @[fzzf678](https://github.com/fzzf678) @[lance6716](https://github.com/lance6716) @[Rustin170506](https://github.com/Rustin170506)
+    - TiDB 升级期间强制新版 TiDB 本节点接管 DDL Owner，避免旧版本 TiDB 节点接管而引发的一些兼容性问题 [#51285](https://github.com/pingcap/tidb/pull/51285) @[wjhuang2016](https://github.com/wjhuang2016)
 
 + TiKV
 
