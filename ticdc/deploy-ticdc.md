@@ -128,8 +128,6 @@ tiup cluster upgrade <cluster-name> <version> --transfer-timeout 600
       pd: {}
       tiflash: {}
       tiflash-learner: {}
-      pump: {}
-      drainer: {}
       cdc:
         gc-ttl: 172800
     ```
