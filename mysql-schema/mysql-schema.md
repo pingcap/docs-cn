@@ -86,7 +86,7 @@ summary: 了解 TiDB 系统表。
 ## DDL 相关系统表
 
 * `tidb_ddl_history` 记录了 DDL 语句的历史记录
-* `tidb_ddl_jobs` TiDB 内部存放的正在执行的 DDL 的元数据，用于执行 DDL
+* `tidb_ddl_job` TiDB 内部存放的正在执行的 DDL 的元数据，用于执行 DDL
 * `tidb_ddl_reorg` TiDB 内部存放的正在执行的物理 DDL（例如加索引）的元数据，用于执行物理 DDL
 
 ## 分布式执行框架相关系统表
