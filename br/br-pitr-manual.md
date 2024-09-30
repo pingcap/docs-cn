@@ -114,10 +114,10 @@ tiup br log start \
     --log.crypter.key 0123456789abcdef0123456789abcdef
 ```
 
-然而，在一些对安全性要求更高的场景中，你可能不希望在命令行中直接传入固定的加密密钥。为了进一步提高安全性，你可以使用基于主密钥的加密系统来管理加密密钥。该系统会使用不同的数据密钥来加密不同的日志备份文件，并且支持主密钥轮换。
+然而，在一些对安全性要求更高的场景中，你可能不希望在命令行中直接传入固定的加密密钥。为了进一步提高安全性，你可以使用基于主密钥的加密系统来管理加密密钥。该系统会使用不同的数据密钥来加密不同的日志备份文件，并且支持主密钥轮换。你可以在日志备份命令中传入以下参数来配置基于主密钥的加密：
 
 - `--master-key-crypter-method`：基于主密钥的加密算法，支持 `aes128-ctr`、`aes192-ctr` 和 `aes256-ctr` 三种算法，缺省值为 `plaintext`，表示不加密
-- `--master-key`：主密钥配置，可以是基于本地磁盘的主密钥或基于云 KMS 的主密钥
+- `--master-key`：主密钥配置，可以是基于本地磁盘的主密钥或基于云 KMS (Key Management Service) 的主密钥
 
 使用本地磁盘主密钥加密：
 
@@ -130,12 +130,14 @@ tiup br log start \
     --master-key "local:///path/to/master.key"
 ```
 
-或者使用云 KMS 加密：
+使用 AWS KMS 加密：
 
 ```shell
 ...
     --master-key "aws-kms:///${AWS_KMS_KEY_ID}?AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY}&AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}&REGION=${AWS_REGION}"
 ```
+
+使用 Google Cloud KMS 加密：
 
 ```shell
 ...
@@ -465,7 +467,6 @@ Restore KV Files <--------------------------------------------------------------
 > **警告：**
 >
 > 当前该功能为实验特性，不建议在生产环境中使用。如果发现 bug，请在 GitHub 上提 [issue](https://github.com/pingcap/tidb/issues) 反馈。
-
 
 要恢复加密的日志备份数据，你需要在恢复命令中传入相应的解密参数。解密参数需要与加密时使用的参数一致。如果解密算法或密钥不正确，则无法恢复数据。
 
