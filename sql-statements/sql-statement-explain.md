@@ -10,7 +10,7 @@ aliases: ['/docs-cn/dev/sql-statements/sql-statement-explain/','/docs-cn/dev/ref
 
 > **注意：**
 >
-> 某些子查询会在优化阶段被提前执行以生成可能更优的执行计划，即使是在 `EXPLAIN` 语句中。更详细的说明以及禁用这个行为的方法请参见 [`tidb_opt_enable_non_eval_scalar_subquery`](/system-variables.md#tidb_opt_enable_non_eval_scalar_subquery-从-v730-版本开始引入) 和[禁止子查询提前展开](/explain-walkthrough.md#禁止子查询提前执行)。
+> 某些子查询会在优化阶段被提前执行以生成可能更优的执行计划，即使是在 `EXPLAIN` 语句中。更详细的说明以及禁用此行为的方法请参见 [`tidb_opt_enable_non_eval_scalar_subquery`](/system-variables.md#tidb_opt_enable_non_eval_scalar_subquery-从-v730-版本开始引入) 和[禁止子查询提前展开](/explain-walkthrough.md#禁止子查询提前执行)。
 
 语句 `DESC` 和 `DESCRIBE` 是 `EXPLAIN` 的别名。`EXPLAIN <tableName>` 的替代用法记录在 [`SHOW [FULL] COLUMNS FROM`](/sql-statements/sql-statement-show-columns-from.md) 下。
 
