@@ -1,6 +1,6 @@
 ---
 title: 向量搜索索引
-summary: 了解如何在 TiDB 中构建并使用向量搜索索引加速 K 近邻 (KNN) 查询。
+summary: 了解如何在 TiDB 中构建并使用向量搜索索引加速 K 近邻 (K-Nearest Neighbors, KNN) 查询。
 ---
 
 # 向量搜索索引
