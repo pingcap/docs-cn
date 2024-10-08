@@ -5000,7 +5000,7 @@ Query OK, 0 rows affected, 1 warning (0.00 sec)
 - 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：否
 - 类型：枚举型
 - 默认值：`DEFAULT`
-- 可选值：`DEFAULT`，`PARALLEL`，`PARALLEL-FAST`
+- 可选值：`DEFAULT`、`PARALLEL`、`PARALLEL-FAST`
 - 这个变量用来设置 TiDB 向 PD 发送 TSO RPC 请求时使用的模式。这里的模式将用于控制 TSO RPC 请求是否并行，调节获取 TS 时消耗在请求攒批阶段的时间，从而在一些场景下降低执行查询时花费在等待 TS 阶段的时间。
 
     - `DEFAULT`：默认模式。TiDB 会将一段时间内当前节点的所有取 TS 操作攒批到一个 TSO RPC 请求中发送给 PD 批量获取 TS，因而每次取 TS 操作的耗时由等待攒批的时间和进行 RPC 请求的时间组成。在默认模式下，不同的 TSO RPC 请求之间是串行进行的，每个取 TS 操作的平均耗时是实际 TSO RPC 耗时的 1.5 倍左右。
