@@ -22,9 +22,9 @@ TiDB 目前支持 [HNSW (Hierarchical Navigable Small World)](https://en.wikiped
 - 向量搜索索引只能基于单一的向量列创建，不能与其他列（如整数列或字符串列）组合形成复合索引。
 - 创建和使用搜索向量索引时需要指定距离函数。目前只支持余弦距离函数 `VEC_COSINE_DISTANCE()` 和 L2 距离函数 `VEC_L2_DISTANCE()`。
 - 不支持在同一列上创建多个使用了相同距离函数的向量搜索索引。
-- 不支持删除具有向量搜索索引的列，也不支持在同一个 SQL 语句中创建多个索引。
+- 不支持直接删除具有向量搜索索引的列。可以通过先删除列上的向量搜索索引，再删除列的方式完成删除。
 - 不支持修改带有向量索引的列的类型（有损变更，即修改了列数据）。
-- 不支持将向量搜索索引[设置为不可见](/sql-statements/sql-statement-alter-index.md)。
+- 不支持将向量搜索索引[设置为不可见](/sql-statements/sql-statement-alter-index.md)（该功能计划在未来的版本中支持）。
 
 ## 创建 HNSW 向量搜索索引
 
@@ -50,9 +50,6 @@ TiDB 目前支持 [HNSW (Hierarchical Navigable Small World)](https://en.wikiped
     ALTER TABLE foo ADD VECTOR INDEX idx_name ((VEC_COSINE_DISTANCE(data))) USING HNSW;
     ```
 
-> **注意：**
->
-> 向量搜索索引目前为实验特性，其语法可能会在 GA 前发生变化。
 
 在创建 HNSW 向量索引时，你需要指定向量的距离函数：
 
@@ -173,7 +170,7 @@ SELECT * FROM INFORMATION_SCHEMA.TIFLASH_INDEXES;
 
     更多信息，请参阅 [`ALTER TABLE ... COMPACT`](/sql-statements/sql-statement-alter-table-compact.md)。
 
-此外，你也可以通过 `ADMIN SHOW DDL JOBS;` 查看 DDL 任务的执行进度，观察其 `row count`。不过这种方式并不准确，`row count` 的值是从 `TIFLASH_INDEXES` 里的 `rows_stable_indexed` 获取的。此方式也可作为你查看索引构建进度的一种参考方式。
+此外，你也可以通过 `ADMIN SHOW DDL JOBS;` 查看 DDL 任务的执行进度，观察其 `row count`。不过这种方式并不准确，`row count` 的值是从 `TIFLASH_INDEXES` 里的 `rows_stable_indexed` 获取的。你也可以使用此方式查看索引构建进度。
 
 ## 查看是否使用了向量搜索索引
 
