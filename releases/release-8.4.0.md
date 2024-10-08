@@ -313,7 +313,7 @@ TiDB 版本：8.4.0
 
 ### 配置参数
 
-| 配置文件 | 配置项 | 修改类型 | 描述 |
+| 配置文件或组件 | 配置项 | 修改类型 | 描述 |
 | -------- | -------- | -------- | -------- |
 | TiDB Binlog | [`--enable-binlog`](/command-line-flags-for-tidb-configuration.md#--enable-binlog) | 删除 | 从 v8.4.0 开始，[TiDB Binlog](https://docs.pingcap.com/zh/tidb/v8.3/tidb-binlog-overview) 被移除。该参数用于开启或关闭 TiDB 中 binlog 的生成，从 v8.4.0 开始被删除。 |
 | TiDB | [`grpc-keepalive-time`](/tidb-configuration-file.md#grpc-keepalive-time) | 修改 | 增加最小值 `1`。 |
