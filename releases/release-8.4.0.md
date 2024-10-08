@@ -315,7 +315,6 @@ TiDB 版本：8.4.0
 
 | 配置文件或组件 | 配置项 | 修改类型 | 描述 |
 | -------- | -------- | -------- | -------- |
-| TiDB Binlog | [`--enable-binlog`](/command-line-flags-for-tidb-configuration.md#--enable-binlog) | 删除 | 从 v8.4.0 开始，[TiDB Binlog](https://docs.pingcap.com/zh/tidb/v8.3/tidb-binlog-overview) 被移除。该参数用于开启或关闭 TiDB 中 binlog 的生成，从 v8.4.0 开始被删除。 |
 | TiDB | [`grpc-keepalive-time`](/tidb-configuration-file.md#grpc-keepalive-time) | 修改 | 增加最小值 `1`。 |
 | TiDB | [`grpc-keepalive-timeout`](/tidb-configuration-file.md#grpc-keepalive-timeout) | 修改 | 该配置文件参数原先为 INT 类型，且最小值仅支持设置为 `1`。从 v8.4.0 开始，数据类型修改为 FLOAT64，且最小值支持设置为 `0.05`，可以在网络抖动比较频繁的场景，适当调小该值，通过减少重试间隔，来减少网络抖动带来的性能影响。   |
 | TiKV | [`region-split-keys`](/tikv-configuration-file.md#region-split-keys) | 修改 | 从 v8.4.0 开始，默认值修改为 `"2560000"`。在 v8.4.0 之前，默认值为 `"960000"`。 |
@@ -328,7 +327,9 @@ TiDB 版本：8.4.0
 | PD | [`max-merge-region-keys`](/pd-configuration-file.md#max-merge-region-keys) | 修改 | 从 v8.4.0 开始，默认值修改为 `540000`。在 v8.4.0 之前，默认值为 `200000`。 |
 | PD | [`max-merge-region-size`](/pd-configuration-file.md#max-merge-region-size) | 修改 | 从 v8.4.0 开始，默认值修改为 `54`。在 v8.4.0 之前，默认值为 `20`。 |
 | TiFlash | [`storage.format_version`](/tiflash/tiflash-configuration.md) | 修改 | 默认值从 `5` 修改为 `7`，该格式可以支持向量索引的构建与存储。 |
+| TiDB Lightning | [`logical-import-prep-stmt`](/tidb-lightning/tidb-lightning-configuration.md) | 新增 | 在逻辑导入模式下，该参数控制是否使用预处理语句和语句缓存来提高性能。默认值为 `false`。 |
 | TiCDC | [`claim-check-raw-value`](/ticdc/ticdc-sink-to-kafka.md#只发送-value-部分到外部存储) | 新增 | 控制 TiCDC 是否仅将 Kafka 消息的 `value` 部分发送到外部存储，该功能仅适用于非 Open Protocol 协议。 |
+| TiDB Binlog | [`--enable-binlog`](/command-line-flags-for-tidb-configuration.md#--enable-binlog) | 删除 | 从 v8.4.0 开始，[TiDB Binlog](https://docs.pingcap.com/zh/tidb/v8.3/tidb-binlog-overview) 被移除。该参数用于开启或关闭 TiDB 中 binlog 的生成，从 v8.4.0 开始被删除。 |
 
 ### 系统表
 
