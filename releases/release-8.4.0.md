@@ -216,16 +216,6 @@ TiDB 版本：8.4.0
 
     更多信息，请参考[用户文档](/vector-search-overview.md)。
 
-* 支持字符集 `gb18030` 和排序规则 `gb18030_bin` 和 `gb18030_chinese_ci` [#17470](https://github.com/tikv/tikv/issues/17470) [#55791](https://github.com/pingcap/tidb/issues/55791) @[cbcwestwolf](https://github.com/cbcwestwolf) **tw@lilin90** <!--1962-->
-
-    从 v8.4.0 开始，TiDB 支持 `gb18030` 字符集，以确保 TiDB 能够更好地处理中文相关的数据存储和查询需求。该字符集是一个广泛用于中文字符编码的标准。
-
-    从 v8.4.0 开始，TiDB 支持 `gb18030_bin` 和 `gb18030_chinese_ci` 排序规则。`gb18030_bin` 提供了基于二进制的精准排序，而 `gb18030_chinese_ci` 则支持大小写不敏感的通用排序规则。这两种排序规则使得对 `gb18030` 编码文本的排序和比较更加灵活高效。
-
-    通过支持 `gb18030` 字符集及其排序规则，TiDB v8.4.0 增强了与中文应用场景的兼容性，特别是在涉及多种语言和字符编码的场景下，可以更方便地进行字符集的选择和操作，提升了数据库的使用体验。
-
-    更多信息，请参考[用户文档](/character-set-gb18030.md)。
-
 ### 数据库管理
 
 * 日志备份数据支持客户端加密（实验特性）[#55834](https://github.com/pingcap/tidb/issues/55834) @[Tristan1900](https://github.com/Tristan1900) **tw@qiancai** <!--1920-->
@@ -397,7 +387,6 @@ TiDB 版本：8.4.0
     - 支持 `date_add`/`date_sub` 函数的计算下推 [#17529](https://github.com/tikv/tikv/issues/17529) @[gengliqi](https://github.com/gengliqi)
     - 支持在线更改流控（flow-control）相关配置 [#17395](https://github.com/tikv/tikv/issues/17395) @[glorv](https://github.com/glorv)
     - 优化空表和小 region 场景下的 Region Merge 的速度 [#17376](https://github.com/tikv/tikv/issues/17376) @[LykxSassinator](https://github.com/LykxSassinator)
-    - 支持 gb18030 字符集和 gb18030_bin、gb18030_chinese_ci 排序规则 [#17470](https://github.com/tikv/tikv/issues/17470) @[CbcWestwolf](https://github.com/CbcWestwolf)
     - Pipelined DML 不会长时间阻塞 resolved-ts。 [#17459](https://github.com/tikv/tikv/issues/17459)@[ekexium](https://github.com/ekexium)
 
 + PD
