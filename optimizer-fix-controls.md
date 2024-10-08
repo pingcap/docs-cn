@@ -75,9 +75,11 @@ SET SESSION tidb_opt_fix_control = '44262:ON,44389:ON';
 
 - 默认值：`OFF`
 - 可选值：`ON`、`OFF`
-- 控制是否允许通过 Get 或 BatchGet 获取数据。如果设置为 `ON`，优化器会强制选择 Coprocessor，而 Get 和 BatchGet 都将被禁用。 Get 和 BatchGet 不支持列投影，在部分场景中执行代价比 Coprocessor 请求高，设置为 `ON` 会获得更好的性能。以下是推荐强制选择 Coprocessor 的常见情况：
-    - 具有多列的宽表，应用程序只查询少量列子集。
-	- 包含大型 JSON 值的 JSON 列的表，查询要么不检索 JSON 列，要么只提取 JSON 内容的小部分。
+- 此开关控制是否禁用 `Point Get` 和 `Batch Point Get` 算子执行查询。默认值 `OFF` 代表允许通过 `Point Get` 和 `Batch Point Get` 执行查询。 如果设置为 `ON`，优化器会禁用 `Point Get` 和 `Batch Point Get`，强制选择 Coprocessor 执行查询。
+- `Point Get` 和 `Batch Point Get` 不支持列投影（即无法只返回部分列的数据），这意味着在某些场景中其执行效率可能低于 Coprocessor，此时设置为 `ON` 可以提高查询性能。以下是推荐设置为 `ON` 的场景：
+
+    - 查询具有多列的宽表，且仅涉及表中的少量列。
+    - 查询包含大型 JSON 值的表，且不需要检索整个 JSON 列，或仅需提取 JSON 列中的小部分数据。
 
 ### [`52869`](https://github.com/pingcap/tidb/issues/52869) <span class="version-mark">从 v8.1.0 版本开始引入</span>
 
