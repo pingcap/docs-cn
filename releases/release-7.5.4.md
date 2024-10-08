@@ -22,6 +22,7 @@ TiDB 版本：7.5.4
     - note [#issue](https://github.com/pingcap/tidb/issues/${issue-id}) @[贡献者 GitHub ID](https://github.com/${github-id})
     - note [#issue](https://github.com/pingcap/tidb/issues/${issue-id}) @[贡献者 GitHub ID](https://github.com/${github-id})
     - (dup): release-8.1.1.md > 改进提升> TiDB - `EXPLAIN` 语句支持应用 `tidb_redact_log`，并进一步优化了日志记录的处理逻辑 [#54565](https://github.com/pingcap/tidb/issues/54565) @[hawkingrei](https://github.com/hawkingrei)
+    - 优化了 TiDB slow query 查询的速度 [#54630](https://github.com/pingcap/tidb/pull/54630) @[yibin87](https://github.com/yibin87)
 
 + TiKV
 
@@ -29,6 +30,7 @@ TiDB 版本：7.5.4
     - note [#issue](https://github.com/tikv/tikv/issues/${issue-id}) @[贡献者 GitHub ID](https://github.com/${github-id})
     - (dup): release-6.5.11.md > 改进提升> TiKV - 优化存在大量 DELETE 版本时 RocksDB 的 compaction 触发机制，以加快磁盘空间回收 [#17269](https://github.com/tikv/tikv/issues/17269) @[AndreMouche](https://github.com/AndreMouche)
     - (dup): release-8.3.0.md > 改进提升> TiKV - 减少 peer message channel 的内存使用 [#16229](https://github.com/tikv/tikv/issues/16229) @[Connor1996](https://github.com/Connor1996)
+    - 修复了当大量事务在等待某个 key 上的锁、而该 key 被频繁更新时，有时可能因死锁检测压力过大而导致 TiKV OOM 的问题 [#17394](https://github.com/tikv/tikv/issues/17394) @[MyonKeminta](https://github.com/MyonKeminta)
 
 + PD
 
@@ -41,6 +43,8 @@ TiDB 版本：7.5.4
     - note [#issue](https://github.com/pingcap/tiflash/issues/${issue-id}) @[贡献者 GitHub ID](https://github.com/${github-id})
     - (dup): release-6.5.11.md > 改进提升> TiFlash - 优化 `LENGTH()` 和 `ASCII()` 函数执行效率 [#9344](https://github.com/pingcap/tiflash/issues/9344) @[xzhangxian1008](https://github.com/xzhangxian1008)
     - (dup): release-8.1.0.md > 改进提升> TiFlash - 降低 TiFlash 在开启 TLS 后因更新证书而导致 panic 的概率 [#8535](https://github.com/pingcap/tiflash/issues/8535) @[windtalker](https://github.com/windtalker)
+    - 改进 join 算子的 cancel 机制，使得 join 算子内部能及时响应 cancel 请求 [#9430](https://github.com/pingcap/tiflash/issues/9430) @[windtalker](https://github.com/windtalker)
+    - 修复在一些极端情况下，将数据类型转换为 `DECIMAL` 类型可能导致查询结果出错的问题 [#53892](https://github.com/pingcap/tidb/issues/53892) @[guo-shaoge](https://github.com/guo-shaoge)
 
 + Tools
 
@@ -99,6 +103,8 @@ TiDB 版本：7.5.4
     - (dup): release-8.3.0.md > 错误修复> TiDB - 修复 `columnEvaluator` 无法识别输入 chunk 中的列引用，导致执行 SQL 报错 `runtime error: index out of range` 的问题 [#53713](https://github.com/pingcap/tidb/issues/53713) @[AilinKid](https://github.com/AilinKid)
     - (dup): release-6.5.11.md > 错误修复> TiDB - 修复 `SELECT ... WHERE ... ORDER BY ...` 语句在某些情况下执行效率低的性能问题 [#54969](https://github.com/pingcap/tidb/issues/54969) @[tiancaiamao](https://github.com/tiancaiamao)
     - (dup): release-6.5.11.md > 错误修复> TiDB - 修复 `StreamAggExec` 中的空 `groupOffset` 可能会导致 panic 的问题 [#53867](https://github.com/pingcap/tidb/issues/53867) @[xzhangxian1008](https://github.com/xzhangxian1008)
+    - 修复 TiDB 查询在构造 cop task 期间无法被 cancel 的问题 [#55957](https://github.com/pingcap/tidb/issues/55957) @[yibin87](https://github.com/yibin87)
+    - 修复了整数类型在指定了一个较小的显示宽度时，除法运算可能会遇到“out of range” 的问题 [#55837](https://github.com/pingcap/tidb/issues/55837) @[windtalker](https://github.com/windtalker)
 
 + TiKV
 
