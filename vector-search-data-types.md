@@ -153,10 +153,10 @@ ERROR 1105 (HY000): vectors have different dimensions: 1 and 3
 
 可以使用以下函数在向量和字符串之间进行转换：
 
-- `CAST(... AS VECTOR)`: 将字符串类型转换为向量类型
-- `CAST(... AS CHAR)`: 将向量类型转换为字符串类型
-- `VEC_FROM_TEXT`: 将字符串类型转换为向量类型
-- `VEC_AS_TEXT`: 将向量类型转换为字符串类型
+- `CAST(... AS VECTOR)`：将字符串类型转换为向量类型
+- `CAST(... AS CHAR)`：将向量类型转换为字符串类型
+- `VEC_FROM_TEXT`：将字符串类型转换为向量类型
+- `VEC_AS_TEXT`：将向量类型转换为字符串类型
 
 出于易用性考虑，如果你使用的函数只支持向量数据类型（例如，向量相关距离函数），那么你也可以直接传入符合格式要求的字符串数据，TiDB 会进行隐式转换：
 
