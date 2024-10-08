@@ -469,6 +469,11 @@ TiDB 版本：8.4.0
     - 修复在临时表上使用 `import into` 会导致 tidb crash 的问题 [#55970](https://github.com/pingcap/tidb/issues/55970) @[D3Hunter](https://github.com/D3Hunter)
     - 修复添加唯一索引意外地报告 duplicate entry 错误的问题 [#56161](https://github.com/pingcap/tidb/issues/56161) @[tangenta](https://github.com/tangenta)
     - 修复当 TiKV 停机超过 810 秒后时，Lightning 未摄取所有 KV 对导致表中数据不一致的问题 [#55808](https://github.com/pingcap/tidb/issues/55808) @[lance6716](https://github.com/lance6716)
+    - 修复了无法对 Cache Table 使用 `CREATE TABLE LIKE` 语句的问题 [#56134](https://github.com/pingcap/tidb/issues/56134) @[tiancaiamao](https://github.com/tiancaiamao)
+    - 修复了 CTE 中 `FORMAT()` 表达式的警告信息混乱的问题 [#56198](https://github.com/pingcap/tidb/pull/56198) @[dveeden](https://github.com/dveeden)
+    - 修复了 `CREATE TABLE` 与 `ALTER TABLE` 建立分区表时对列的类型限制不一致的问题 [#56094](https://github.com/pingcap/tidb/issues/56094) @[mjonss](https://github.com/mjonss)
+    - 修复 `INFORMATION_SCHEMA.RUNAWAY_WATCHES` 表中时间类型不正确的问题 [#54770](https://github.com/pingcap/tidb/issues/54770) @[HuSharp](https://github.com/HuSharp)
+    - 支持集群级别的 Scatter Region 打散 [#8424](https://github.com/tikv/pd/issues/8424) @[River2000i](https://github.com/River2000i)
 
 + TiKV
 
@@ -479,8 +484,9 @@ TiDB 版本：8.4.0
 
 + PD
 
-    - note [#issue](https://github.com/tikv/pd/issues/${issue-id}) @[贡献者 GitHub ID](https://github.com/${github-id})
-    - (dup): release-8.1.1.md > 错误修复> PD - 修复 `INFORMATION_SCHEMA.RUNAWAY_WATCHES` 表中时间类型不正确的问题 [#54770](https://github.com/pingcap/tidb/issues/54770) @[HuSharp](https://github.com/HuSharp)
+    - 在 pd-ctl 命令中将 `scatter-range` 重命名为 `scatter-range-scheduler` [#8379](https://github.com/tikv/pd/issues/8379) @[okJiang](https://github.com/okJiang)
+    - 为 `grant-hot-leader-scheduler` 添加冲突检测 [#4903](https://github.com/tikv/pd/issues/4903) @[lhy1024](https://github.com/lhy1024)
+    - TSO Client 支持并行发送和接受多个 TSO gRPC 请求 [#8432](https://github.com/tikv/pd/issues/8432) @[MyonKeminta](https://github.com/MyonKeminta)
 
 + TiFlash
 
