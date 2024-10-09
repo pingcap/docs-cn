@@ -151,7 +151,7 @@ aliases: ['/docs-cn/dev/enable-tls-between-components/','/docs-cn/dev/how-to/sec
 
   ```toml
   [security]
-  cluster-verify-cn = ["tidb", "test-client"]
+  cluster-verify-cn = ["tidb", "test-client", "prometheus"]
   ```
 - TiKV
 
@@ -159,7 +159,7 @@ aliases: ['/docs-cn/dev/enable-tls-between-components/','/docs-cn/dev/how-to/sec
 
   ```toml
   [security]
-  cert-allowed-cn = ["tidb", "pd", "tikv"]
+  cert-allowed-cn = ["tidb", "pd", "tikv", "tiflash", "prometheus"]
   ```
 - PD
 
@@ -167,7 +167,22 @@ aliases: ['/docs-cn/dev/enable-tls-between-components/','/docs-cn/dev/how-to/sec
 
   ```toml
   [security]
-  cert-allowed-cn = ["tidb", "pd", "tikv", "test-client"]
+  cert-allowed-cn = ["tidb", "pd", "tikv", "tiflash", "test-client", "prometheus"]
+  ```
+- TiFlash（从 v4.0.5 版本开始引入）
+
+  在 `tiflash.toml` 文件中设置：
+
+  ```toml
+  [security]
+  cert_allowed_cn = ["tidb", "tikv", "prometheus"]
+  ```
+
+  在 `tiflash-learner.toml` 文件中设置：
+
+  ```toml
+  [security]
+  cert-allowed-cn = ["tidb", "tikv", "tiflash", "prometheus"]
   ```
 
 ## 证书重新加载
