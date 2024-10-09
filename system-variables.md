@@ -4511,6 +4511,10 @@ EXPLAIN FORMAT='brief' SELECT COUNT(1) FROM t WHERE a = 1 AND b IS NOT NULL;
 
 ### `tidb_schema_cache_size` <span class="version-mark">从 v8.0.0 版本开始引入</span>
 
+> **警告：**
+>
+> 在当前的 TiDB 版本中，该变量所控制的功能还不是正式功能。请谨慎评估，风险自担。
+
 - 作用域：GLOBAL
 - 是否持久化到集群：是
 - 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：否
