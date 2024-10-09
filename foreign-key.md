@@ -302,7 +302,6 @@ Create Table | CREATE TABLE `child` (
 
 ### 与 TiDB 工具的兼容性
 
-- [TiDB Binlog](/tidb-binlog/tidb-binlog-overview.md) 不支持外键功能。
 - [DM](/dm/dm-overview.md) 不兼容外键功能。DM 在同步数据到下游 TiDB 时，会显式关闭下游 TiDB 的 [`foreign_key_checks`](/system-variables.md#foreign_key_checks)，所以由外键产生的级联操作不会从上游同步到下游，这会导致上下游数据不一致。
 - [TiCDC](/ticdc/ticdc-overview.md) v6.6.0 兼容外键功能。旧版本的 TiCDC 在同步带外键的表时，可能会报错，建议使用 v6.6.0 之前版本 TiCDC 时先关闭下游 TiDB 集群的 `foreign_key_checks`。
 - [BR](/br/backup-and-restore-overview.md) v6.6.0 兼容外键功能。之前版本的 BR 在恢复带外键的表到 v6.6.0 及之后版本的集群时，可能会报错，建议先关闭下游 TiDB 集群的 `foreign_key_checks` 后再恢复集群。

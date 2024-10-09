@@ -110,12 +110,12 @@ Error: failed to check gc safePoint, checkpoint ts 433177834291200000: GC safepo
 
 ## 功能兼容性问题
 
-### 为什么 BR 恢复的数据无法同步到 TiCDC / Drainer 的上游集群？
+### 为什么 BR 恢复的数据无法同步到 TiCDC 的上游集群？
 
 - **BR 恢复的数据无法被同步到下游**，因为恢复时 BR 直接导入 SST 文件，而下游集群目前没有办法获得上游的 SST 文件。
-- 在 4.0.3 版本之前，恢复时产生的 DDL jobs 还可能会让 TiCDC / Drainer 执行异常的 DDL。所以，如果一定要在 TiCDC / Drainer 的上游集群执行恢复，请将 BR 恢复的所有表加入 TiCDC / Drainer 的阻止名单。
+- 在 4.0.3 版本之前，恢复时产生的 DDL jobs 还可能会让 TiCDC 执行异常的 DDL。所以，如果一定要在 TiCDC 的上游集群执行恢复，请将 BR 恢复的所有表加入 TiCDC 的阻止名单。
 
-TiCDC 可以通过配置项中的 [`filter.rules`](https://github.com/pingcap/tiflow/blob/7c3c2336f98153326912f3cf6ea2fbb7bcc4a20c/cmd/changefeed.toml#L16) 项完成，Drainer 则可以通过 [`syncer.ignore-table`](/tidb-binlog/tidb-binlog-configuration-file.md#ignore-table) 完成。
+TiCDC 可以通过配置项中的 [`filter.rules`](https://github.com/pingcap/tiflow/blob/7c3c2336f98153326912f3cf6ea2fbb7bcc4a20c/cmd/changefeed.toml#L16) 项完成。
 
 ### 恢复时为什么会报 `new_collation_enabled` 不匹配？
 
