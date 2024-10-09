@@ -227,6 +227,9 @@ strategy = ""
 # 你可以减小该值以减轻大事务对集群的压力。
 # logical-import-batch-rows = 65536
 
+# 在逻辑导入模式下，该参数控制是否使用预处理语句和语句缓存来提高性能。默认值为 `false`。
+logical-import-prep-stmt = false
+
 [mydumper]
 # 设置文件读取的区块大小，确保该值比数据源的最长字符串长。
 read-block-size = "64KiB" # 默认值
