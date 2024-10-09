@@ -412,7 +412,7 @@ SELECT _utf8mb4'string' COLLATE utf8mb4_general_ci;
     ```sql
     SET character_set_client = charset_name;
     SET character_set_results = charset_name;
-    SET charset_connection = @@charset_database;
+    SET character_set_connection=@@character_set_database;
     SET collation_connection = @@collation_database;
     ```
 
