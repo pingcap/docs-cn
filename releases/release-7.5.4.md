@@ -108,7 +108,7 @@ TiDB 版本：7.5.4
     - 修复了整数类型在指定了一个较小的显示宽度时，除法运算可能会遇到“out of range” 的问题 [#55837](https://github.com/pingcap/tidb/issues/55837) @[windtalker](https://github.com/windtalker)
     - 修复添加唯一索引时可能遇到“duplicate entry”的问题 [#56161](https://github.com/pingcap/tidb/issues/56161) @[tangenta](https://github.com/tangenta)
     - 修复使用 `import into` 语句导入临时表导致崩溃的问题 [#55970](https://github.com/pingcap/tidb/issues/55970) @[D3Hunter](https://github.com/D3Hunter)
-    - 修复加索引时 tikv 滚动重启导致数据不一致的问题 [#55808](https://github.com/pingcap/tidb/issues/55808) @[lance6716](https://github.com/lance6716)
+    - 修复加索引时重试导致数据索引不一致的问题 [#55808](https://github.com/pingcap/tidb/issues/55808) @[lance6716](https://github.com/lance6716)
 
 + TiKV
 
