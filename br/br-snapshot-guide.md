@@ -161,7 +161,6 @@ tiup br restore full \
 | gc_delete_range                                     |
 | gc_delete_range_done                                |
 | global_variables                                    |
-| schema_index_usage                                  |
 | stats_buckets                                       |
 | stats_extended                                      |
 | stats_feedback                                      |
