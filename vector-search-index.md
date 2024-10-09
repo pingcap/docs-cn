@@ -1,6 +1,6 @@
 ---
 title: 向量搜索索引
-summary: 了解如何在 TiDB 中构建并使用向量搜索索引加速 K 近邻 (KNN) 查询。
+summary: 了解如何在 TiDB 中构建并使用向量搜索索引加速 K 近邻 (K-Nearest Neighbors, KNN) 查询。
 ---
 
 # 向量搜索索引
@@ -13,23 +13,22 @@ K 近邻（K-Nearest Neighbors，简称 KNN）搜索是一种在向量空间中�
 >
 > 向量搜索索引目前为实验特性，不建议在生产环境中使用。该功能可能会在未事先通知的情况下发生变化或删除。如果发现 bug，请在 GitHub 上提 [issue](https://github.com/pingcap/tidb/issues) 反馈。
 
-TiDB 目前支持以下向量搜索索引算法：
-
-- HNSW
+TiDB 目前支持 [HNSW (Hierarchical Navigable Small World)](https://en.wikipedia.org/wiki/Hierarchical_navigable_small_world) 向量搜索索引算法。
 
 ## 使用限制
 
 - 集群需要提前部署 TiFlash 节点。
 - 向量搜索索引不能作为主键或者唯一索引。
 - 向量搜索索引只能基于单一的向量列创建，不能与其他列（如整数列或字符串列）组合形成复合索引。
-- 创建和使用搜索向量索引时需要指定距离函数（目前只支持余弦距离函数 `VEC_COSINE_DISTANCE()` 和 L2 距离函数 `VEC_L2_DISTANCE()`）。
+- 创建和使用搜索向量索引时需要指定距离函数。目前只支持余弦距离函数 `VEC_COSINE_DISTANCE()` 和 L2 距离函数 `VEC_L2_DISTANCE()`。
 - 不支持在同一列上创建多个使用了相同距离函数的向量搜索索引。
-- 不支持删除具有向量搜索索引的列，也不支持同时创建多个索引。
-- 不支持将向量搜索索引[设置为不可见](/sql-statements/sql-statement-alter-index.md)。
+- 不支持直接删除具有向量搜索索引的列。可以通过先删除列上的向量搜索索引，再删除列的方式完成删除。
+- 不支持修改带有向量索引的列的类型（有损变更，即修改了列数据）。
+- 不支持将向量搜索索引[设置为不可见](/sql-statements/sql-statement-alter-index.md)（该功能计划在未来的版本中支持）。
 
 ## 创建 HNSW 向量搜索索引
 
-[HNSW](https://en.wikipedia.org/wiki/Hierarchical_navigable_small_world) 是当前最流行的向量搜索索引算法之一。它性能良好，而且准确率相对较高 (特定情况下可达 98%)。
+[HNSW](https://en.wikipedia.org/wiki/Hierarchical_navigable_small_world) 是当前最流行的向量搜索索引算法之一。它性能良好，而且准确率相对较高，特定情况下可达 98%。
 
 在 TiDB 中，你可以通过以下任一种方式为[向量数据类型](/vector-search-data-types.md)的列创建 HNSW 索引。
 
@@ -39,7 +38,6 @@ TiDB 目前支持以下向量搜索索引算法：
     CREATE TABLE foo (
         id       INT PRIMARY KEY,
         data     VECTOR(5),
-        data64   VECTOR64(10),
         VECTOR INDEX idx_data USING HNSW ((VEC_COSINE_DISTANCE(data)))
     );
     ```
@@ -52,9 +50,6 @@ TiDB 目前支持以下向量搜索索引算法：
     ALTER TABLE foo ADD VECTOR INDEX idx_name ((VEC_COSINE_DISTANCE(data))) USING HNSW;
     ```
 
-> **Note:**
->
-> 向量索引目前为实验特性，其语法可能会在 GA 前发生变化。
 
 在创建 HNSW 向量索引时，你需要指定向量的距离函数：
 
@@ -93,7 +88,7 @@ LIMIT 5;
 
 如需使用带过滤条件的向量搜索索引，可以采用以下几种方法：
 
-**向量搜索后再过滤:** 先查询 K 个最近的邻居，再过滤掉不需要的结果：
+**向量搜索后再过滤：** 先查询 K 个最近的邻居，再过滤掉不需要的结果：
 
 ```sql
 -- 对于以下查询，过滤条件是在 KNN 之后执行的，因此可以使用向量索引：
@@ -109,7 +104,7 @@ WHERE category = "document";
 -- 请注意，如果过滤掉一些结果，此查询返回的结果可能少于 5 个。
 ```
 
-**对表进行分区**: 在[分区](/partitioned-table.md)内的查询可以充分利用向量索引。如果你需要进行等值过滤，这会非常有用，因为等值过滤可以转化为访问指定的分区。
+**对表进行分区：**在[分区表](/partitioned-table.md)内的查询可以充分利用向量索引。如果你需要进行等值过滤，会非常有用，因为等值过滤可以转化为访问指定的分区。
 
 例如，假设你需要查找与特定产品版本最接近的文档：
 
@@ -175,7 +170,7 @@ SELECT * FROM INFORMATION_SCHEMA.TIFLASH_INDEXES;
 
     更多信息，请参阅 [`ALTER TABLE ... COMPACT`](/sql-statements/sql-statement-alter-table-compact.md)。
 
-此外，你也可以通过 `ADMIN SHOW DDL JOBS;` 查看 DDL 任务的执行进度，观察其 `row count`。 不过这种方式并不准确，`row count` 的值是从 `TIFLASH_INDEXES` 里的 `rows_stable_indexed` 获取的。此方式也可作为你查看索引构建进度的一种参考方式。
+此外，你也可以通过 `ADMIN SHOW DDL JOBS;` 查看 DDL 任务的执行进度，观察其 `row count`。不过这种方式并不准确，`row count` 的值是从 `TIFLASH_INDEXES` 里的 `rows_stable_indexed` 获取的。你也可以使用此方式查看索引构建进度。
 
 ## 查看是否使用了向量搜索索引
 
@@ -267,7 +262,7 @@ LIMIT 10;
 +-----+--------------------------------------------------------+-----+
 ```
 
-> **Note:**
+> **注意：**
 >
 > 执行信息为 TiDB 内部信息。字段和格式如有更改，恕不另行通知。请勿依赖。
 
@@ -275,12 +270,12 @@ LIMIT 10;
 
 - `vector_index.load.total`：加载索引的总时长。该字段的值可能会超过查询实际耗时，因为 TiDB 可能会并行加载多个向量索引。
 - `vector_index.load.from_s3`：从 S3 加载的索引数量。
-- `vector_index.load.from_disk`：从磁盘加载的索引数量。这些索引之前已经从 S3 下载到磁盘上
+- `vector_index.load.from_disk`：从磁盘加载的索引数量。这些索引之前已经从 S3 下载到磁盘上。
 - `vector_index.load.from_cache`：从缓存中加载的索引数量。这些索引之前已经从 S3 下载并存储在缓存中。
 - `vector_index.search.total`：在索引中搜索的总时长。如果该时间存在较大的延迟，通常意味着该索引为冷索引（以前从未被访问过，或很久以前被访问过），因此在索引中搜索时会产生较多的 I/O 操作。该字段的值可能会超过查询实际耗时，因为 TiDB 可能会并行搜索多个向量索引。
 - `vector_index.search.discarded_nodes`：在搜索过程中已访问但被丢弃的向量行数。这些被丢弃的行不会包含在搜索结果中。如果该字段的值较大，通常表示表中有很多由于 `UPDATE` 或 `DELETE` 操作导致的数据过时的行。
 
-关于执行信息输出的更多信息，请参阅 [`EXPLAIN`](/sql-statements/sql-statement-explain.md)、[`EXPLAIN ANALYZE`](/sql-statements/sql-statement-explain-analyze.md)，以及 [使用 `EXPLAIN` 解读执行计划](/explain-walkthrough.md)。
+关于执行信息输出的更多信息，请参阅 [`EXPLAIN`](/sql-statements/sql-statement-explain.md)、[`EXPLAIN ANALYZE`](/sql-statements/sql-statement-explain-analyze.md)，以及[使用 `EXPLAIN` 解读执行计划](/explain-walkthrough.md)。
 
 ## 另请参阅
 

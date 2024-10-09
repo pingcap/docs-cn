@@ -111,8 +111,8 @@ TIDB_DATABASE_URL="mysql+pymysql://<USERNAME>:<PASSWORD>@<HOST>:<PORT>/<DATABASE
 3. 确认对话框中的配置和你的运行环境一致。
 
      - **Connection Type** 为 `Public`。
-     - **Branch** 选择 `main`.
-     - **Connect With** 选择 `SQLAlchemy`.
+     - **Branch** 选择 `main`。
+     - **Connect With** 选择 `SQLAlchemy`。
      - **Operating System** 为你的运行环境。
 
 4. 点击 **PyMySQL** 选项卡，复制连接字符串。
@@ -211,7 +211,7 @@ response = query_engine.query("What did the author do?")
 print(textwrap.fill(str(response), 100))
 ```
 
-> **Note**
+> **注意：**
 >
 > `TiDBVectorStore` 只支持 [`default`](https://docs.llamaindex.ai/en/stable/api_reference/storage/vector_store/?h=vectorstorequerymode#llama_index.core.vector_stores.types.VectorStoreQueryMode) 查询模式。
 

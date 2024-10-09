@@ -114,8 +114,8 @@ TIDB_DATABASE_URL="mysql+pymysql://<USERNAME>:<PASSWORD>@<HOST>:<PORT>/<DATABASE
 3. 确认对话框中的配置和你的运行环境一致。
 
      - **Connection Type** 为 `Public`。
-     - **Branch** 选择 `main`.
-     - **Connect With** 选择 `SQLAlchemy`.
+     - **Branch** 选择 `main`。
+     - **Connect With** 选择 `SQLAlchemy`。
      - **Operating System** 为你的运行环境。
 
 4. 点击 **PyMySQL** 选项卡，复制连接字符串。
@@ -255,7 +255,7 @@ First, beat the opioid epidemic.
 
 #### 方式二：使用 `similarity_search_with_relevance_scores()` 方法
 
-`similarity_search_with_relevance_scores()` 方法会返回相关性得分最高的前`k`个文档。分数越高，说明文档内容与你的查询语句之间的相似度越高。
+`similarity_search_with_relevance_scores()` 方法会返回相关性得分最高的前 `k`个文档。分数越高，说明文档内容与你的查询语句之间的相似度越高。
 
 ```python
 docs_with_relevance_score = vector_store.similarity_search_with_relevance_scores(query, k=2)

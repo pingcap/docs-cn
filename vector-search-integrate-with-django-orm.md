@@ -205,7 +205,7 @@ if TIDB_CA_PATH:
     }
 ```
 
-你可以在项目的根目录下创建一个 `.env` 文件，在文件中添加环境变量 `TIDB_HOST`、`TIDB_PORT`、`TIDB_USERNAME`、`TIDB_PASSWORD`、`TIDB_DATABASE` 和 `TIDB_CA_PATH`，并根据你的TiDB 集群的实际值来设置这些变量的值。
+你可以在项目的根目录下创建一个 `.env` 文件，在文件中添加环境变量 `TIDB_HOST`、`TIDB_PORT`、`TIDB_USERNAME`、`TIDB_PASSWORD`、`TIDB_DATABASE` 和 `TIDB_CA_PATH`，并根据你的 TiDB 集群的实际值来设置这些变量的值。
 
 ### 创建向量表
 
