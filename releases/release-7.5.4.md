@@ -13,7 +13,7 @@ TiDB 版本：7.5.4
 
 ## 兼容性变更 **tw@qiancai 1**
 
-- 在获取 ddl 历史任务时添加对获取任务数量的限制 [#55711](https://github.com/pingcap/tidb/issues/55711) @[joccau](https://github.com/joccau)
+- 通过 [TiDB HTTP API](https://github.com/pingcap/tidb/blob/release-7.5/docs/tidb_http_api.md) 获取 DDL 历史任务时，默认获取任务数量的上限为 2048，以避免历史任务数量过多导致 OOM 的问题 [#55711](https://github.com/pingcap/tidb/issues/55711) @[joccau](https://github.com/joccau)
 
 ## 改进提升 **tw@hfxsd 6**
 
