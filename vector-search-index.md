@@ -23,8 +23,8 @@ TiDB 目前支持 [HNSW (Hierarchical Navigable Small World)](https://en.wikiped
 - 创建和使用搜索向量索引时需要指定距离函数。目前只支持余弦距离函数 `VEC_COSINE_DISTANCE()` 和 L2 距离函数 `VEC_L2_DISTANCE()`。
 - 不支持在同一列上创建多个使用了相同距离函数的向量搜索索引。
 - 不支持直接删除具有向量搜索索引的列。可以通过先删除列上的向量搜索索引，再删除列的方式完成删除。
-- 不支持修改带有向量索引的列的类型（有损变更，即修改了列数据）。
-- 不支持将向量搜索索引[设置为不可见](/sql-statements/sql-statement-alter-index.md)（该功能计划在未来的版本中支持）。
+- 不支持修改带有向量索引的列的类型。
+- 不支持将向量搜索索引[设置为不可见](/sql-statements/sql-statement-alter-index.md)。
 
 ## 创建 HNSW 向量搜索索引
 
@@ -53,10 +53,10 @@ TiDB 目前支持 [HNSW (Hierarchical Navigable Small World)](https://en.wikiped
 
 在创建 HNSW 向量索引时，你需要指定向量的距离函数：
 
-- 余弦距离：`((VEC_COSINE_DISTANCE(cols_name))) USING HNSW`
-- L2 距离：`((VEC_L2_DISTANCE(cols_name))) USING HNSW`
+- 余弦距离：`((VEC_COSINE_DISTANCE(col_name))) USING HNSW`
+- L2 距离：`((VEC_L2_DISTANCE(col_name))) USING HNSW`
 
-你只能为固定维度的向量列 (如 `VECTOR(3)` ) 创建向量索引，不能为混合维度的向量列 (如 `VECTOR` ) 创建向量索引，因为只有维度相同的向量之间才能计算向量距离。
+你只能为固定维度的向量列 (如定义为 `VECTOR(3)` 类型) 创建向量索引，不能为混合维度的向量列 (如定义为 `VECTOR` 类型) 创建向量索引，因为只有维度相同的向量之间才能计算向量距离。
 
 有关向量搜索索引的约束和限制，请参阅[向量搜索索引的约束](/vector-search-index.md#向量搜索索引的约束)。
 
