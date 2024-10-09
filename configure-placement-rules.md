@@ -193,7 +193,9 @@ cat > rules.json <<EOF
     }
 ]
 EOF
-pd-ctl config placement save --in=rules.json
+
+» ./pd-ctl -u 127.0.0.1:2379 config placement-rules save --in=rules.json
+Success!
 ```
 
 以上操作会将 rule1、rule2 两条规则写入 PD，如果系统中已经存在 GroupID+ID 相同的规则，则会覆盖该规则。
@@ -211,7 +213,9 @@ cat > rules.json <<EOF
     }
 ]
 EOF
-pd-ctl config placement save --in=rules.json
+
+» ./pd-ctl -u 127.0.0.1:2379 config placement-rules save --in=a.json
+Success!
 ```
 
 ### 使用 pd-ctl 设置规则分组
