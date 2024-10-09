@@ -50,7 +50,6 @@ aliases: ['/docs-cn/dev/system-tables/system-table-overview/','/docs-cn/dev/refe
 * `stats_fm_sketch` 统计信息列的直方图 FMSketch 分布
 * `analyze_options` 各个表默认的 `analyze` 参数
 * `column_stats_usage` 列统计信息的使用情况
-* `schema_index_usage` 索引的使用情况
 * `analyze_jobs` 正在执行的统计信息收集任务以及过去 7 天内的历史任务记录
 
 ## 执行计划相关系统表
