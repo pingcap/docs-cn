@@ -25,6 +25,7 @@ TiDB 目前支持 [HNSW (Hierarchical Navigable Small World)](https://en.wikiped
 - 不支持直接删除具有向量搜索索引的列。可以通过先删除列上的向量搜索索引，再删除列的方式完成删除。
 - 不支持修改带有向量索引的列的类型。
 - 不支持将向量搜索索引[设置为不可见](/sql-statements/sql-statement-alter-index.md)。
+- 不支持在开启了[静态加密](/encryption-at-rest.md)的 TiFlash 节点上构建向量搜索索引。
 
 ## 创建 HNSW 向量搜索索引
 
