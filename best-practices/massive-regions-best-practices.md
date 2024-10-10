@@ -136,7 +136,7 @@ config set merge-schedule-limit 8
 
 Region 默认的大小约为 96 MiB，将其调大也可以减少 Region 个数，具体介绍可参考[使用更大的 Region](/tune-region-performance.md)。
 
-> **警告：**
+> **注意：**
 >
 > 自定义 Region 大小在 TiDB v6.5.0 之前为实验特性，如需调整，建议升级至 v6.5.0 及之后版本再进行操作。
 
