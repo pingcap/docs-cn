@@ -62,7 +62,7 @@ TiDB 目前支持 [HNSW (Hierarchical Navigable Small World)](https://en.wikiped
 
 你只能为固定维度的向量列 (如定义为 `VECTOR(3)` 类型) 创建向量索引，不能为混合维度的向量列 (如定义为 `VECTOR` 类型) 创建向量索引，因为只有维度相同的向量之间才能计算向量距离。
 
-有关向量搜索索引的约束和限制，请参阅[向量搜索索引的约束](/vector-search-index.md#向量搜索索引的约束)。
+有关向量搜索索引的约束和限制，请参阅[向量搜索索引 - 使用限制](/vector-search-index.md#使用限制)。
 
 ## 使用向量搜索索引
 
