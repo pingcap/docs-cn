@@ -87,7 +87,7 @@ aliases: ['/zh/tidb/dev/build-cluster-in-cloud']
 
     <div label="Linux">
 
-    对于 Linux 操作系统，下面以 CentOS 7 为例：
+    对于 Linux 操作系统，下面以 CentOS 7 为例：<!--TODO-->
 
     ```shell
     yum install mysql
