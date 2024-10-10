@@ -33,7 +33,7 @@ PD Control 是 PD 的命令行工具，用于获取集群状态信息和调整�
 
 ### 源码编译
 
-1. [Go](https://golang.org/) 1.21 或以上版本
+1. [Go](https://golang.org/) 1.23 或以上版本
 2. 在 PD 项目根目录使用 `make` 或者 `make pd-ctl` 命令进行编译，生成 bin/pd-ctl
 
 ## 简单例子
