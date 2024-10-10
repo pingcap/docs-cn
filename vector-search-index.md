@@ -38,24 +38,27 @@ TiDB 目前支持 [HNSW (Hierarchical Navigable Small World)](https://en.wikiped
     ```sql
     CREATE TABLE foo (
         id       INT PRIMARY KEY,
-        data     VECTOR(5),
-        VECTOR INDEX idx_data USING HNSW ((VEC_COSINE_DISTANCE(data)))
+        embedding     VECTOR(5),
+        VECTOR INDEX idx_embedding ((VEC_COSINE_DISTANCE(embedding)))
     );
     ```
 
 - 对于现有的表，如果该表已包含向量列，可以通过以下语法为向量列创建 HNSW 索引：
 
     ```sql
+    CREATE VECTOR INDEX idx_embedding ON foo ((VEC_COSINE_DISTANCE(embedding)));
+    ALTER TABLE foo ADD VECTOR INDEX idx_embedding ((VEC_COSINE_DISTANCE(embedding)));
+    
+    -- 你也可以显式指定使用 HNSW 构建向量搜索索引
     CREATE VECTOR INDEX idx_name ON foo ((VEC_COSINE_DISTANCE(data))) USING HNSW;
-
     ALTER TABLE foo ADD VECTOR INDEX idx_name ((VEC_COSINE_DISTANCE(data))) USING HNSW;
     ```
 
 
 在创建 HNSW 向量索引时，你需要指定向量的距离函数：
 
-- 余弦距离：`((VEC_COSINE_DISTANCE(col_name))) USING HNSW`
-- L2 距离：`((VEC_L2_DISTANCE(col_name))) USING HNSW`
+- 余弦距离：`((VEC_COSINE_DISTANCE(embedding)))`
+- L2 距离：`((VEC_L2_DISTANCE(embedding)))`
 
 你只能为固定维度的向量列 (如定义为 `VECTOR(3)` 类型) 创建向量索引，不能为混合维度的向量列 (如定义为 `VECTOR` 类型) 创建向量索引，因为只有维度相同的向量之间才能计算向量距离。
 
