@@ -136,6 +136,10 @@ trim-last-separator = false
 
 另外，设置 `separator = '\n'` 表示使用两个字符 `\` + `n` 作为字符串定界符，而不是转义后的换行符 `\n`。
 
+> **注意：**
+>
+> 如果 CSV 格式配置错误，TiDB Lightning 错误退出并提示 `encode kv error in file db.table.serialno.csv:0 at offset 2529671`。用 vim 打开 csv 文件，命令模式下 `:goto 2529671` 可以定位到编码错误的位置。
+
 更多详细的内容请参考 [TOML v1.0.0 标准](https://toml.io/cn/v1.0.0#%E5%AD%97%E7%AC%A6%E4%B8%B2)。
 
 #### `separator`
@@ -146,7 +150,7 @@ trim-last-separator = false
 
     * CSV 用 `','`
     * TSV 用 `"\t"`
-    * "\u0001" 表示使用 ASCII 字符 0x01
+    * "\u0001" 表示使用 ASCII 字符 0x01，即 SOH 控制字符，常用于 HIVE 表的导出时的分隔符。 
 
 - 对应 LOAD DATA 语句中的 `FIELDS TERMINATED BY` 项。
 
