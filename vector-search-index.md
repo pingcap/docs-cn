@@ -67,8 +67,8 @@ TiDB 目前支持 [HNSW (Hierarchical Navigable Small World)](https://en.wikiped
 
 ```sql
 SELECT *
-FROM vector_table_with_index
-ORDER BY Vec_Cosine_Distance(embedding, '[1, 2, 3]')
+FROM foo
+ORDER BY VEC_COSINE_DISTANCE(embedding, '[1, 2, 3, 4, 5]')
 LIMIT 10
 ```
 
@@ -83,7 +83,7 @@ LIMIT 10
 
 SELECT * FROM vec_table
 WHERE category = "document"
-ORDER BY Vec_Cosine_distance(embedding, '[1, 2, 3]')
+ORDER BY VEC_COSINE_DISTANCE(embedding, '[1, 2, 3]')
 LIMIT 5;
 ```
 
@@ -97,7 +97,7 @@ LIMIT 5;
 SELECT * FROM
 (
   SELECT * FROM vec_table
-  ORDER BY Vec_Cosine_distance(embedding, '[1, 2, 3]')
+  ORDER BY VEC_COSINE_DISTANCE(embedding, '[1, 2, 3]')
   LIMIT 5
 ) t
 WHERE category = "document";
@@ -113,7 +113,7 @@ WHERE category = "document";
 -- 对于以下查询，`WHERE` 过滤条件在 KNN 之前执行，因此不能使用向量搜索索引：
 SELECT * FROM docs
 WHERE ver = "v2.0"
-ORDER BY Vec_Cosine_distance(embedding, '[1, 2, 3]')
+ORDER BY VEC_COSINE_DISTANCE(embedding, '[1, 2, 3]')
 LIMIT 5;
 ```
 
@@ -135,7 +135,7 @@ CREATE TABLE docs (
 
 SELECT * FROM docs
 PARTITION (p_v2_0)
-ORDER BY Vec_Cosine_distance(embedding, '[1, 2, 3]')
+ORDER BY VEC_COSINE_DISTANCE(embedding, '[1, 2, 3]')
 LIMIT 5;
 ```
 
@@ -181,7 +181,7 @@ SELECT * FROM INFORMATION_SCHEMA.TIFLASH_INDEXES;
 
 ```sql
 [tidb]> EXPLAIN SELECT * FROM vector_table_with_index
-ORDER BY Vec_Cosine_Distance(embedding, '[1, 2, 3]')
+ORDER BY VEC_COSINE_DISTANCE(embedding, '[1, 2, 3]')
 LIMIT 10;
 +-----+-------------------------------------------------------------------------------------+
 | ... | operator info                                                                       |
@@ -222,7 +222,7 @@ LIMIT 10;
 ```sql
 -- 使用了错误的距离函数：
 [tidb]> EXPLAIN SELECT * FROM vector_table_with_index
-ORDER BY Vec_l2_Distance(embedding, '[1, 2, 3]')
+ORDER BY VEC_L2_DISTANCE(embedding, '[1, 2, 3]')
 LIMIT 10;
 
 [tidb]> SHOW WARNINGS;
@@ -230,7 +230,7 @@ ANN index not used: not ordering by COSINE distance
 
 -- 使用了错误的排序方式：
 [tidb]> EXPLAIN SELECT * FROM vector_table_with_index
-ORDER BY Vec_Cosine_Distance(embedding, '[1, 2, 3]') DESC
+ORDER BY VEC_COSINE_DISTANCE(embedding, '[1, 2, 3]') DESC
 LIMIT 10;
 
 [tidb]> SHOW WARNINGS;
@@ -243,7 +243,7 @@ ANN index not used: index can be used only when ordering by vec_cosine_distance(
 
 ```sql
 [tidb]> EXPLAIN ANALYZE SELECT * FROM vector_table_with_index
-ORDER BY Vec_Cosine_Distance(embedding, '[1, 2, 3]')
+ORDER BY VEC_COSINE_DISTANCE(embedding, '[1, 2, 3]')
 LIMIT 10;
 +-----+--------------------------------------------------------+-----+
 |     | execution info                                         |     |
