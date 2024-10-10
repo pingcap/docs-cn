@@ -40,7 +40,7 @@ DROP STATS TableName PARTITION PartitionNameList;
 Query OK, 0 rows affected (0.00 sec)
 ```
 
-以下语句只删除指定表在动态裁剪模式下生成的 GlobalStats 统计信息：
+以下语句只删除指定表在动态裁剪模式下生成的全局统计信息：
 
 ```sql
 DROP STATS TableName GLOBAL;
