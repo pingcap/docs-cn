@@ -1,7 +1,7 @@
 ---
 title: 字符集和排序规则
 aliases: ['/docs-cn/dev/character-set-and-collation/','/docs-cn/dev/reference/sql/characterset-and-collation/','/docs-cn/dev/reference/sql/character-set/']
-summary: TiDB 支持的字符集包括 ascii、binary、gbk、latin1、utf8 和 utf8mb4。排序规则包括 ascii_bin、binary、gbk_bin、gbk_chinese_ci、latin1_bin、utf8_bin、utf8_general_ci、utf8_unicode_ci、utf8mb4_0900_ai_ci、utf8mb4_0900_bin、utf8mb4_bin、utf8mb4_general_ci 和 utf8mb4_unicode_ci。TiDB 强烈建议使用 utf8mb4 字符集，因为它支持更多字符。在 TiDB 中，默认的排序规则受到客户端的连接排序规则设置的影响。如果客户端使用 utf8mb4_0900_ai_ci 作为连接排序规则，TiDB 将遵循客户端的配置。TiDB 还支持新的排序规则框架，用于在语义上支持不同的排序规则。
+summary: TiDB 支持的字符集包括 ascii、binary、gbk、gb18030、latin1、utf8 和 utf8mb4。排序规则包括 ascii_bin、binary、gbk_bin、gbk_chinese_ci、gb18030_bin、gb18030_chinese_ci、latin1_bin、utf8_bin、utf8_general_ci、utf8_unicode_ci、utf8mb4_0900_ai_ci、utf8mb4_0900_bin、utf8mb4_bin、utf8mb4_general_ci 和 utf8mb4_unicode_ci。TiDB 强烈建议使用 utf8mb4 字符集，因为它支持更多字符。在 TiDB 中，默认的排序规则受到客户端的连接排序规则设置的影响。如果客户端使用 utf8mb4_0900_ai_ci 作为连接排序规则，TiDB 将遵循客户端的配置。TiDB 还支持新的排序规则框架，用于在语义上支持不同的排序规则。
 ---
 
 # 字符集和排序规则
@@ -68,17 +68,18 @@ SHOW CHARACTER SET;
 ```
 
 ```sql
-+---------+-------------------------------------+-------------------+--------+
-| Charset | Description                         | Default collation | Maxlen |
-+---------+-------------------------------------+-------------------+--------+
-| ascii   | US ASCII                            | ascii_bin         |      1 |
-| binary  | binary                              | binary            |      1 |
-| gbk     | Chinese Internal Code Specification | gbk_bin           |      2 |
-| latin1  | Latin1                              | latin1_bin        |      1 |
-| utf8    | UTF-8 Unicode                       | utf8_bin          |      3 |
-| utf8mb4 | UTF-8 Unicode                       | utf8mb4_bin       |      4 |
-+---------+-------------------------------------+-------------------+--------+
-6 rows in set (0.00 sec)
++---------+-------------------------------------+--------------------+--------+
+| Charset | Description                         | Default collation  | Maxlen |
++---------+-------------------------------------+--------------------+--------+
+| ascii   | US ASCII                            | ascii_bin          |      1 |
+| binary  | binary                              | binary             |      1 |
+| gb18030 | China National Standard GB18030     | gb18030_chinese_ci |      4 |
+| gbk     | Chinese Internal Code Specification | gbk_chinese_ci     |      2 |
+| latin1  | Latin1                              | latin1_bin         |      1 |
+| utf8    | UTF-8 Unicode                       | utf8_bin           |      3 |
+| utf8mb4 | UTF-8 Unicode                       | utf8mb4_bin        |      4 |
++---------+-------------------------------------+--------------------+--------+
+7 rows in set (0.00 sec)
 ```
 
 TiDB 支持以下排序规则：
@@ -88,24 +89,26 @@ SHOW COLLATION;
 ```
 
 ```sql
-+--------------------+---------+------+---------+----------+---------+
-| Collation          | Charset | Id   | Default | Compiled | Sortlen |
-+--------------------+---------+------+---------+----------+---------+
-| ascii_bin          | ascii   |   65 | Yes     | Yes      |       1 |
-| binary             | binary  |   63 | Yes     | Yes      |       1 |
-| gbk_bin            | gbk     |   87 |         | Yes      |       1 |
-| gbk_chinese_ci     | gbk     |   28 | Yes     | Yes      |       1 |
-| latin1_bin         | latin1  |   47 | Yes     | Yes      |       1 |
-| utf8_bin           | utf8    |   83 | Yes     | Yes      |       1 |
-| utf8_general_ci    | utf8    |   33 |         | Yes      |       1 |
-| utf8_unicode_ci    | utf8    |  192 |         | Yes      |       1 |
-| utf8mb4_0900_ai_ci | utf8mb4 |  255 |         | Yes      |       1 |
-| utf8mb4_0900_bin   | utf8mb4 |  309 |         | Yes      |       1 |
-| utf8mb4_bin        | utf8mb4 |   46 | Yes     | Yes      |       1 |
-| utf8mb4_general_ci | utf8mb4 |   45 |         | Yes      |       1 |
-| utf8mb4_unicode_ci | utf8mb4 |  224 |         | Yes      |       1 |
-+--------------------+---------+------+---------+----------+---------+
-13 rows in set (0.00 sec)
++--------------------+---------+-----+---------+----------+---------+---------------+
+| Collation          | Charset | Id  | Default | Compiled | Sortlen | Pad_attribute |
++--------------------+---------+-----+---------+----------+---------+---------------+
+| ascii_bin          | ascii   |  65 | Yes     | Yes      |       1 | PAD SPACE     |
+| binary             | binary  |  63 | Yes     | Yes      |       1 | NO PAD        |
+| gb18030_bin        | gb18030 | 249 |         | Yes      |       1 | PAD SPACE     |
+| gb18030_chinese_ci | gb18030 | 248 | Yes     | Yes      |       1 | PAD SPACE     |
+| gbk_bin            | gbk     |  87 |         | Yes      |       1 | PAD SPACE     |
+| gbk_chinese_ci     | gbk     |  28 | Yes     | Yes      |       1 | PAD SPACE     |
+| latin1_bin         | latin1  |  47 | Yes     | Yes      |       1 | PAD SPACE     |
+| utf8_bin           | utf8    |  83 | Yes     | Yes      |       1 | PAD SPACE     |
+| utf8_general_ci    | utf8    |  33 |         | Yes      |       1 | PAD SPACE     |
+| utf8_unicode_ci    | utf8    | 192 |         | Yes      |       8 | PAD SPACE     |
+| utf8mb4_0900_ai_ci | utf8mb4 | 255 |         | Yes      |       0 | NO PAD        |
+| utf8mb4_0900_bin   | utf8mb4 | 309 |         | Yes      |       1 | NO PAD        |
+| utf8mb4_bin        | utf8mb4 |  46 | Yes     | Yes      |       1 | PAD SPACE     |
+| utf8mb4_general_ci | utf8mb4 |  45 |         | Yes      |       1 | PAD SPACE     |
+| utf8mb4_unicode_ci | utf8mb4 | 224 |         | Yes      |       8 | PAD SPACE     |
++--------------------+---------+-----+---------+----------+---------+---------------+
+15 rows in set (0.02 sec)
 ```
 
 > **警告：**
@@ -141,7 +144,7 @@ SHOW COLLATION WHERE Charset = 'utf8mb4';
 5 rows in set (0.00 sec)
 ```
 
-TiDB 对 GBK 字符集的支持详情见 [GBK](/character-set-gbk.md)。
+TiDB 对 GBK 字符集的支持详情见 [GBK](/character-set-gbk.md)，对 GB18030 字符集的支持详情见 [GB18030](/character-set-gb18030.md)。
 
 ## TiDB 中的 `utf8` 和 `utf8mb4`
 
@@ -514,9 +517,9 @@ SELECT VARIABLE_VALUE FROM mysql.tidb WHERE VARIABLE_NAME='new_collation_enabled
 1 row in set (0.00 sec)
 ```
 
-在新的排序规则框架下，TiDB 能够支持 `utf8_general_ci`、`utf8mb4_general_ci`、`utf8_unicode_ci`、`utf8mb4_unicode_ci`、`utf8mb4_0900_bin`、`utf8mb4_0900_ai_ci`、`gbk_chinese_ci` 和 `gbk_bin` 这几种排序规则，与 MySQL 兼容。
+在新的排序规则框架下，TiDB 能够支持 `utf8_general_ci`、`utf8mb4_general_ci`、`utf8_unicode_ci`、`utf8mb4_unicode_ci`、`utf8mb4_0900_bin`、`utf8mb4_0900_ai_ci`、`gbk_chinese_ci`、`gbk_bin`、`gb18030_chinese_ci` 和 `gb18030_bin` 这几种排序规则，与 MySQL 兼容。
 
-使用 `utf8_general_ci`、`utf8mb4_general_ci`、`utf8_unicode_ci`、`utf8mb4_unicode_ci`、`utf8mb4_0900_ai_ci` 和 `gbk_chinese_ci` 中任一种时，字符串之间的比较是大小写不敏感 (case-insensitive) 和口音不敏感 (accent-insensitive) 的。同时，TiDB 还修正了排序规则的 `PADDING` 行为：
+使用 `utf8_general_ci`、`utf8mb4_general_ci`、`utf8_unicode_ci`、`utf8mb4_unicode_ci`、`utf8mb4_0900_ai_ci`、`gbk_chinese_ci` 和 `gb18030_chinese_ci` 中任一种时，字符串之间的比较是大小写不敏感 (case-insensitive) 和口音不敏感 (accent-insensitive) 的。同时，TiDB 还修正了排序规则的 `PADDING` 行为：
 
 {{< copyable "sql" >}}
 
