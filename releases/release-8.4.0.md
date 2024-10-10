@@ -359,7 +359,7 @@ TiDB 版本：8.4.0
 
 ## 改进提升
 
-+ TiDB
++ TiDB <!--tw@Oreoxmt: 11 notes-->
 
     - 优化扫描大量数据时构造 BatchCop Task 的效率 [#55915](https://github.com/pingcap/tidb/issues/55915) [#55413](https://github.com/pingcap/tidb/issues/55413) @[wshwsh12](https://github.com/wshwsh12) **tw@caiqian** <!--1902-->
     - 优化 MEMDB 实现，降低事务中的写操作延时与 TiDB CPU 使用 [#55287](https://github.com/pingcap/tidb/issues/55287) @[you06](https://github.com/you06) **tw@hfxsd** <!--1892-->
@@ -381,7 +381,7 @@ TiDB 版本：8.4.0
     - TiDB 升级期间强制新版 TiDB 本节点接管 DDL Owner，避免旧版本 TiDB 节点接管而引发的一些兼容性问题 [#51285](https://github.com/pingcap/tidb/pull/51285) @[wjhuang2016](https://github.com/wjhuang2016)
     - 支持集群级别的 Scatter Region 打散 [#8424](https://github.com/tikv/pd/issues/8424) @[River2000i](https://github.com/River2000i)
 
-+ TiKV
++ TiKV <!--tw@qiancai: 5 notes-->
 
     - note [#issue](https://github.com/pingcap/tidb/issues/${issue-id}) @[贡献者 GitHub ID](https://github.com/${github-id})
     - Region 的默认值由 96 MiB 提升到 256 MiB，避免 Region 数量过多导致额外开销 [#17309](https://github.com/tikv/tikv/issues/17309) [LykxSassinator](https://github.com/LykxSassinator) **tw@hfxsd** <!--1925-->
@@ -394,7 +394,7 @@ TiDB 版本：8.4.0
     - 优化空表和小 region 场景下的 Region Merge 的速度 [#17376](https://github.com/tikv/tikv/issues/17376) @[LykxSassinator](https://github.com/LykxSassinator)
     - Pipelined DML 不会长时间阻塞 resolved-ts。 [#17459](https://github.com/tikv/tikv/issues/17459)@[ekexium](https://github.com/ekexium)
 
-+ PD
++ PD <!--tw@qiancai: 3 notes-->
 
     - note [#issue](https://github.com/pingcap/tidb/issues/${issue-id}) @[贡献者 GitHub ID](https://github.com/${github-id})
     - 支持 TiKV 节点在 TiDB Lightning 导入数据期间优雅下线 (graceful offline) [#7853](https://github.com/tikv/pd/issues/7853) @[okJiang](https://github.com/okJiang) **tw@qiancai**  <!--1852-->
@@ -403,7 +403,7 @@ TiDB 版本：8.4.0
     - TSO Client 支持并行发送和接受多个 TSO gRPC 请求 [#8432](https://github.com/tikv/pd/issues/8432) @[MyonKeminta](https://github.com/MyonKeminta)
 
 
-+ TiFlash
++ TiFlash <!--tw@qiancai: 2 notes-->
 
     - note [#issue](https://github.com/pingcap/tidb/issues/${issue-id}) @[贡献者 GitHub ID](https://github.com/${github-id})
     - (dup): release-6.5.11.md > 改进提升> TiFlash - 优化 `LENGTH()` 和 `ASCII()` 函数执行效率 [#9344](https://github.com/pingcap/tiflash/issues/9344) @[xzhangxian1008](https://github.com/xzhangxian1008)
@@ -446,7 +446,7 @@ TiDB 版本：8.4.0
 
 ## 错误修复
 
-+ TiDB
++ TiDB <!--tw@lilin90: the following 13 notes-->
 
     - 修复在设置 `tidb_restricted_read_only` 变量为 `true` 的时候有概率死锁的问题 [#53822](https://github.com/pingcap/tidb/issues/53822) [#55373](https://github.com/pingcap/tidb/issues/55373) @[Defined2014](https://github.com/Defined2014)
     - 修复 TiDB graceful shutdown 时不等待 auto commit 事务完成的问题 [#55464](https://github.com/pingcap/tidb/issues/55464) @[YangKeao](https://github.com/YangKeao)
@@ -461,6 +461,7 @@ TiDB 版本：8.4.0
     - 修复查询条件为 `column IS NULL` 访问唯一索引的时候，优化器将行数错误地估算为 1 的问题 [#56116](https://github.com/pingcap/tidb/issues/56116) @[hawkingrei](https://github.com/hawkingrei)
     - 修复了当查询包含形如 `(... AND ...) OR (... AND ...) ...` 的过滤条件时，优化器没有使用最优的多列统计信息进行行数估算的问题。 [#54323](https://github.com/pingcap/tidb/issues/54323) @[time-and-fate](https://github.com/time-and-fate)
     - 修复当一个查询有 Index Merge 执行计划可用时，`read_from_storage` hint 可能不生效的问题 [#56217](https://github.com/pingcap/tidb/issues/56217) @[AilinKid](https://github.com/AilinKid)
+    <!--tw@hfxsd: the following 13 notes-->
     - (dup): release-6.5.11.md > 错误修复> TiDB - 修复 `IndexNestedLoopHashJoin` 中存在数据竞争的问题 [#49692](https://github.com/pingcap/tidb/issues/49692) @[solotzg](https://github.com/solotzg)
     - (dup): release-6.5.11.md > 错误修复> TiDB - 修复 `INFORMATION_SCHEMA.STATISTICS` 表中 `SUB_PART` 值为空的问题 [#55812](https://github.com/pingcap/tidb/issues/55812) @[Defined2014](https://github.com/Defined2014)
     - (dup): release-6.5.11.md > 错误修复> TiDB - 修复 DML 语句中包含嵌套的生成列时报错的问题 [#53967](https://github.com/pingcap/tidb/issues/53967) @[wjhuang2016](https://github.com/wjhuang2016)
@@ -487,7 +488,7 @@ TiDB 版本：8.4.0
 
 + PD
 
-+ TiFlash
++ TiFlash <!--tw@qiancai: 2 notes-->
 
     - note [#issue](https://github.com/pingcap/tiflash/issues/${issue-id}) @[贡献者 GitHub ID](https://github.com/${github-id})
     - (dup): release-7.5.4.md > 错误修复 > TiFlash - 修复当表里含 Bit 类型列并且带有表示非法字符的默认值时 TiFlash 无法解析表 schema 的问题 [#9461](https://github.com/pingcap/tiflash/issues/9461) @[Lloyd-Pottiger](https://github.com/Lloyd-Pottiger)
@@ -496,7 +497,7 @@ TiDB 版本：8.4.0
 
 + Tools
 
-    + Backup & Restore (BR)
+    + Backup & Restore (BR) <!--tw@Oreoxmt: 1 note-->
 
         - 修复当 TiDB 节点停止时，监控中 PITR checkpoint 间隔大幅增量但与实际情况不符合的问题 [#42419](https://github.com/pingcap/tidb/issues/42419) @[YuJuncen](https://github.com/YuJuncen)
         - (dup): release-6.5.11.md > 错误修复> Tools> Backup & Restore (BR) - 修复备份过程中由于 TiKV 没有响应导致备份任务无法结束的问题 [#53480](https://github.com/pingcap/tidb/issues/53480) @[Leavrth](https://github.com/Leavrth)
@@ -512,7 +513,7 @@ TiDB 版本：8.4.0
         - (dup): release-7.5.4.md > 错误修复 > TiDB Data Migration (DM) - 修复多个 dm-master 同时成为 Leader 的问题 [#11602](https://github.com/pingcap/tiflow/issues/11602) @[GMHDBJD](https://github.com/GMHDBJD)
         - (dup): release-6.5.11.md > 错误修复> Tools> TiDB Data Migration (DM) - 修复 DM 在处理 `ALTER DATABASE` 语句时未设置默认数据库导致同步报错的问题 [#11503](https://github.com/pingcap/tiflow/issues/11503) @[lance6716](https://github.com/lance6716)
 
-    + TiDB Lightning
+    + TiDB Lightning <!--tw@Oreoxmt: 1 note-->
 
         - 修复使用并行导入并且具有相同的任务 ID 时，lightning 会报告 `verify allocator base failed` 错误的问题 [#55384](https://github.com/pingcap/tidb/issues/55384) @[ei-sugimoto](https://github.com/ei-sugimoto)
 
