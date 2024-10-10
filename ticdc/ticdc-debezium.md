@@ -16,7 +16,7 @@ summary: 了解 TiCDC Debezium Protocol 的概念和使用方法。
 使用 Debezium 消息格式时的配置样例如下所示：
 
 ```shell
-cdc cli changefeed create --server=http://127.0.0.1:8300 --changefeed-id="kafka-debezium" --sink-uri="kafka://127.0.0.1:9092/topic-name?kafka-version=2.4.0&protocol=debezium"
+cdc cli changefeed create --server=http://127.0.0.1:8300 --changefeed-id="kafka-debezium" --sink-uri="kafka://127.0.0.1:9092/topic-name?kafka-version=${kafka_version}&protocol=debezium"
 ```
 
 Debezium 输出格式中包含当前行的 Schema 信息，以便下游消费者更好地理解当前行的数据结构。对于不需要输出 Schema 信息的场景，也可以通过在 changefeed 的配置文件或者 `sink-uri` 中将 `debezium-disable-schema` 参数设置为 `true` 来关闭 Schema 信息的输出。
