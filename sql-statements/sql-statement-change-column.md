@@ -9,7 +9,7 @@ summary: TiDB 数据库中 CHANGE COLUMN 的使用概况。
 
 从 v5.1.0 版本起，TiDB 开始支持 Reorg 数据的类型变更，包括但不限于：
 
-- 从 varchar 转换为 bigint 
+- 从 varchar 转换为 bigint
 - decimal 精度修改
 - 从 varchar(10) 到 varchar(5) 的长度压缩
 
@@ -151,7 +151,7 @@ ERROR 8200 (HY000): Unsupported modify column: change from original type decimal
 * 不支持主键列上 [Reorg-Data](/sql-statements/sql-statement-modify-column.md#reorg-data-change) 类型的变更。
 * 不支持分区表上的列类型变更。
 * 不支持生成列上的列类型变更。
-* 不支持部分数据类型（例如，部分时间类型、Bit、Set、Enum、JSON 等）的变更，因为 TiDB 中 `CAST` 函数与 MySQL 的行为存在兼容性问题。
+* 不支持部分数据类型（例如，部分时间类型、Bit、Set、Enum、JSON 等）向某些类型的变更，因为 TiDB 中 `CAST` 函数与 MySQL 的行为存在兼容性问题。
 
 ## 另请参阅
 
