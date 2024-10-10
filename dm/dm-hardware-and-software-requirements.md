@@ -10,7 +10,7 @@ TiDB Data Migration (DM) 支持主流的 Linux 操作系统，具体版本要求
 | Linux 操作系统       | 版本         |
 | :----------------------- | :----------: |
 | Red Hat Enterprise Linux | 7.3 及以上   |
-| CentOS                   | 7.3 及以上   |
+| CentOS                   | 7.3 及以上  <!--TODO--> |
 | Oracle Enterprise Linux  | 7.3 及以上   |
 | Ubuntu LTS               | 16.04 及以上 |
 

@@ -5,7 +5,7 @@ summary: 了解如何进行 CentOS 7 系统的性能调优。
 
 # 操作系统性能参数调优
 
-本文档仅用于描述如何优化 CentOS 7 的各个子系统。
+本文档仅用于描述如何优化 CentOS 7 的各个子系统。<!--TODO: review this document and confirm whether it's suitable for TiDB v8.4-->
 
 > **注意：**
 >
