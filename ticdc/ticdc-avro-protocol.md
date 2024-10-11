@@ -9,8 +9,6 @@ TiCDC Avro 协议，是对 [Confluent Platform](https://docs.confluent.io/platfo
 
 通过本文，你可以了解 TiCDC 对 Avro 数据格式的实现，以及和 [Confluent Schema Registry](https://docs.confluent.io/platform/current/schema-registry/index.html) 的交互。
 
-<!-- 包括 TiDB 扩展字段、Avro 数据格式定义 -->
-
 > **警告：**
 >
 > 从 v7.3.0 起，如果开启了[同步没有有效索引的表](/ticdc/ticdc-manage-changefeed.md#同步没有有效索引的表)，创建使用 Avro 协议的 changefeed 时会报错。
