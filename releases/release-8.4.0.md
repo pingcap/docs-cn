@@ -324,6 +324,7 @@ TiDB 版本：8.4.0
 | TiKV | [`pessimistic-txn.in-memory-instance-size-limit`](/tikv-configuration-file.md#in-memory-instance-size-limit-从-v840-版本开始引入) | 新增 | 控制单个 TiKV 实例内存悲观锁的内存使用上限。超过此限制时，悲观锁将回退到持久化方式写入磁盘。|
 |  TiKV        |   [`raft-engine.spill-dir`](/tikv-configuration-file.md#spill-dir-从-v840-版本开始引入)      |   新增       |   该配置文件参数用于指定 TiKV 实例存储 Raft 日志文件的辅助目录，用于支持多盘存储 Raft 日志文件      |
 | TiKV         |    [`resource-control.priority-ctl-strategy`](/tikv-configuration-file.md#priority-ctl-strategy-从-v840-版本开始引入)      |  新增      |   该配置文件参数用于配置低优先级任务的管控策略。TiKV 通过对低优先级的任务添加流量控制来确保优先执行更高优先级的任务。     |
+| PD | [`cert-allowed-cn`](/enable-tls-between-components.md#认证组件调用者身份) | 修改 | 从 v8.4.0 开始，支持设置多个 `Common Name`。在 v8.4.0 之前，只能设置一个 `Common Name`。 |
 | PD | [`max-merge-region-keys`](/pd-configuration-file.md#max-merge-region-keys) | 修改 | 从 v8.4.0 开始，默认值修改为 `540000`。在 v8.4.0 之前，默认值为 `200000`。 |
 | PD | [`max-merge-region-size`](/pd-configuration-file.md#max-merge-region-size) | 修改 | 从 v8.4.0 开始，默认值修改为 `54`。在 v8.4.0 之前，默认值为 `20`。 |
 | TiFlash | [`storage.format_version`](/tiflash/tiflash-configuration.md) | 修改 | TiFlash 底层存储格式的默认版本从 `5` 修改为 `7`，以支持向量索引的构建与存储。由于该格式修改，升级 TiFlash 到 v8.4.0 或以上版本后，不支持原地降级到之前的版本。 |
