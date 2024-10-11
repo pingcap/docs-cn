@@ -75,6 +75,9 @@ Key 中的 `fields` 只包含主键或唯一索引列。
 
 Value 数据格式默认与 Key 数据格式相同，但是 Value 的 `fields` 中包含了所有的列。
 
+> **注意：**
+> Avro 协议在编码 DML 事件时，对 Delete 事件，只编码 Key 部分，Value 部分为空。对于 Insert 和 Update 事件，编码所有列数据到 Value 部分。对于 Update 事件，只编码更新后的所有列数据。
+
 ## TiDB 扩展字段
 
 默认情况下，Avro 只编码在 DML 事件中发生数据变更的行的所有列数据信息，不收集数据变更的类型和 TiDB 专有的 CommitTS 事务唯一标识信息。为了解决这个问题，TiCDC 在 Avro 协议格式中附加了 TiDB 扩展字段。当 `sink-uri` 中设置 `enable-tidb-extension` 为 `true` （默认为 `false`）后，TiCDC 生成 Avro 消息时，会在 Value 部分新增三个字段：
@@ -278,6 +281,19 @@ Avro 协议并不会向下游发送 DDL 事件和 Watermark 事件。Avro 会在
 比如，Confluent Schema Registry 默认的[兼容性策略](https://docs.confluent.io/platform/current/schema-registry/fundamentals/schema-evolution.html#compatibility-types)是 BACKWARD，在这种策略下，如果你在源表增加一个非空列，Avro 在生成新 schema 向 Schema Registry 注册时将会因为兼容性问题失败，这个时候 changefeed 将会进入 error 状态。
 
 如需了解更多 schema 相关信息，请参阅 [Schema Registry 的相关文档](https://docs.confluent.io/platform/current/schema-registry/avro.html)。
+
+## 消费者实现
+
+TiCDC Avro 协议，支持被 [io.confluent.kafka.serializers.KafkaAvroDeserializer](https://docs.confluent.io/platform/current/schema-registry/fundamentals/serdes-develop/serdes-avro.html#avro-deserializer) 反序列化。
+
+消费者程序可以通过 [Schema Registry API](https://docs.confluent.io/platform/current/schema-registry/develop/api.html) 获取到最新的 schema，然后对数据进行反序列化。
+
+### 区分事件类型
+
+消费者程序可以按照如下规则区分 DML 事件类型：
+
+* 只有 Key 部分，则是 Delete 事件。
+* 含有 Value 部分，则是 Insert 或 Update 事件。如果用户开启了 TiDB 扩展字段功能，可以根据其中的 `_tidb_op` 字段，判断该条事件变更是 Insert 或 Update。反之用户收到的都是变更后最新的数据。
 
 ## Topic 分发
 
