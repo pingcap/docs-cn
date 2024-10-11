@@ -94,7 +94,7 @@ TiDB 版本：8.4.0
 
 ### 性能
 
-* 增加获取 TSO 的 RPC 模式，降低获取 TSO 的延迟 [#54960](https://github.com/pingcap/tidb/issues/54960) @[MyonKeminta](https://github.com/MyonKeminta) **tw@qiancai** <!--1893-->
+* 新增 TSO 请求的并行批处理模式，降低获取 TSO 的延迟 [#54960](https://github.com/pingcap/tidb/issues/54960) @[MyonKeminta](https://github.com/MyonKeminta) **tw@qiancai** <!--1893-->
 
     TiDB 在向 PD 请求 TSO 时，会将一段时间内的请求汇总起来并以串行的方式进行批处理，以减少 RPC (Remote Procedure Call) 请求数量从而降低 PD 负载。对于延迟敏感的场景，这种串行模式的性能并不理想。
 
