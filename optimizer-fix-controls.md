@@ -75,7 +75,7 @@ SET SESSION tidb_opt_fix_control = '44262:ON,44389:ON';
 
 - 默认值：`OFF`
 - 可选值：`ON`、`OFF`
-- 此开关控制是否禁用 `Point Get` 和 `Batch Point Get` 算子执行查询。默认值 `OFF` 代表允许通过 `Point Get` 和 `Batch Point Get` 执行查询。 如果设置为 `ON`，优化器会禁用 `Point Get` 和 `Batch Point Get`，强制选择 Coprocessor 执行查询。
+- 此开关控制是否禁用 `Point Get` 和 `Batch Point Get` 算子执行查询。默认值 `OFF` 代表允许通过 `Point Get` 和 `Batch Point Get` 执行查询。如果设置为 `ON`，优化器会禁用 `Point Get` 和 `Batch Point Get`，强制选择 Coprocessor 执行查询。
 - `Point Get` 和 `Batch Point Get` 不支持列投影（即无法只返回部分列的数据），这意味着在某些场景中其执行效率可能低于 Coprocessor，此时设置为 `ON` 可以提高查询性能。以下是推荐设置为 `ON` 的场景：
 
     - 查询具有多列的宽表，且仅涉及表中的少量列。
