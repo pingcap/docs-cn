@@ -274,9 +274,9 @@ DECIMAL(10, 4)
 
 Avro 协议并不会向下游发送 DDL 事件和 Watermark 事件。Avro 会在每次 DML 事件发生时检测是否发生 schema 变更，如果发生了 schema 变更，Avro 会生成新的 schema，并尝试向 Schema Registry 注册。注册时，Schema Registry 会做兼容性检测，如果此次 schema 变更没有通过兼容性检测，注册将会失败，TiCDC 并不会尝试解决 schema 的兼容性问题。
 
-同时，即使 schema 变更通过兼容性检测并成功注册新版本，数据的生产者和消费者可能仍然需要获取到新版本的 schema，才能对数据进行正确解码。
-
 比如，Confluent Schema Registry 默认的[兼容性策略](https://docs.confluent.io/platform/current/schema-registry/fundamentals/schema-evolution.html#compatibility-types)是 BACKWARD，在这种策略下，如果你在源表增加一个非空列，Avro 在生成新 schema 向 Schema Registry 注册时将会因为兼容性问题失败，这个时候 changefeed 将会进入 error 状态。
+
+同时，即使 schema 变更通过兼容性检测并成功注册新版本，数据的生产者和消费者可能仍然需要获取到新版本的 schema，才能对数据进行正确编解码。
 
 如需了解更多 schema 相关信息，请参阅 [Schema Registry 的相关文档](https://docs.confluent.io/platform/current/schema-registry/avro.html)。
 
@@ -291,7 +291,7 @@ TiCDC Avro 协议，支持被 [io.confluent.kafka.serializers.KafkaAvroDeseriali
 消费者程序可以按照如下规则区分 DML 事件类型：
 
 * 只有 Key 部分，则是 Delete 事件。
-* 含有 Value 部分，则是 Insert 或 Update 事件。如果用户开启了 TiDB 扩展字段功能，可以根据其中的 `_tidb_op` 字段，判断该条事件变更是 Insert 或 Update。反之用户收到的都是变更后最新的数据。
+* 含有 Value 部分，则是 Insert 或 Update 事件。如果用户开启了 TiDB 扩展字段功能，可以根据其中的 `_tidb_op` 字段，判断该条事件变更是 Insert 或 Update。反之无法区分。
 
 ## Topic 分发
 
