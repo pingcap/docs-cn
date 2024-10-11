@@ -137,7 +137,7 @@ aliases: ['/docs-cn/dev/enable-tls-between-components/','/docs-cn/dev/how-to/sec
 
 通常被调用者除了校验调用者提供的密钥、证书和 CA 有效性外，还需要校验调用方身份以防止拥有有效证书的非法访问者进行访问（例如：TiKV 只能被 TiDB 访问，需阻止拥有合法证书但非 TiDB 的其他访问者访问 TiKV）。
 
-如希望对组件调用方进行身份认证，需要在生成证书时通过 `Common Name` 标识证书调用方身份，并在被调用者的配置文件中配置`cluster-verify-cn` (TiDB 组件） 或 `cert-allowed-cn` （其它组件） 来检查调用方身份。
+如希望对组件调用方进行身份认证，需要在生成证书时通过 `Common Name` 标识证书调用方身份，并在被调用者的配置文件中配置 `cluster-verify-cn` (TiDB 组件）或 `cert-allowed-cn`（其它组件）来检查调用方身份。
 
 > **注意：**
 >
