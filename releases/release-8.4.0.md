@@ -340,6 +340,13 @@ TiDB 版本：8.4.0
 
 ## 离线包变更
 
+从 v8.4.0 开始，`TiDB-community-toolkit` [二进制软件包](/binary-package.md)中移除了以下内容：
+
+- `pump-{version}-linux-{arch}.tar.gz`
+- `drainer-{version}-linux-{arch}.tar.gz`
+- `binlogctl`
+- `arbiter`
+
 ## 移除功能
 
 * 以下为从 v8.4.0 开始已移除的功能：
