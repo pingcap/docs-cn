@@ -147,46 +147,46 @@ aliases: ['/docs-cn/dev/enable-tls-between-components/','/docs-cn/dev/how-to/sec
 
 - TiDB
 
-  在 `config` 文件或命令行参数中设置：
+    在 `config` 文件或命令行参数中设置：
 
-  ```toml
-  [security]
-  cluster-verify-cn = ["tidb", "test-client", "prometheus"]
-  ```
+    ```toml
+    [security]
+    cluster-verify-cn = ["tidb", "test-client", "prometheus"]
+    ```
 
 - TiKV
 
-  在 `config` 文件或命令行参数中设置：
+    在 `config` 文件或命令行参数中设置：
 
-  ```toml
-  [security]
-  cert-allowed-cn = ["tidb", "pd", "tikv", "tiflash", "prometheus"]
-  ```
+    ```toml
+    [security]
+    cert-allowed-cn = ["tidb", "pd", "tikv", "tiflash", "prometheus"]
+    ```
 
 - PD
 
-  在 `config` 文件或命令行参数中设置：
+    在 `config` 文件或命令行参数中设置：
 
-  ```toml
-  [security]
-  cert-allowed-cn = ["tidb", "pd", "tikv", "tiflash", "test-client", "prometheus"]
-  ```
+    ```toml
+    [security]
+    cert-allowed-cn = ["tidb", "pd", "tikv", "tiflash", "test-client", "prometheus"]
+    ```
 
 - TiFlash（从 v4.0.5 版本开始引入）
 
-  在 `tiflash.toml` 文件中设置：
+    在 `tiflash.toml` 文件中设置：
 
-  ```toml
-  [security]
-  cert_allowed_cn = ["tidb", "tikv", "prometheus"]
-  ```
+    ```toml
+    [security]
+    cert_allowed_cn = ["tidb", "tikv", "prometheus"]
+    ```
 
-  在 `tiflash-learner.toml` 文件中设置：
+    在 `tiflash-learner.toml` 文件中设置：
 
-  ```toml
-  [security]
-  cert-allowed-cn = ["tidb", "tikv", "tiflash", "prometheus"]
-  ```
+    ```toml
+    [security]
+    cert-allowed-cn = ["tidb", "tikv", "tiflash", "prometheus"]
+    ```
 
 ## 证书重新加载
 
