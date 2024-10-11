@@ -109,12 +109,13 @@ URI 中可配置的的参数如下：
 ### 最佳实践
 
 * TiCDC 推荐用户自行创建 Kafka Topic，你至少需要设置该 Topic 每次向 Kafka broker 发送消息的最大数据量和下游 Kafka partition 的数量。在创建 changefeed 的时候，这两项设置分别对应 `max-message-bytes` 和 `partition-num` 参数。
-* 如果你在创建 changefeed 时，使用了尚未存在的 Topic，那么 TiCDC 会尝试使用 `partition-num` 和 `replication-factor` 参数自行创建 Topic。建议明确指定这两个参数。
+* 如果你在创建 changefeed 时，使用了尚未存在的 Topic，那么 TiCDC 会尝试使用 `partition-num` 和 `replication-factor` 参数自行创建 Topic，建议明确指定这两个参数。
 * 在大多数情况下，建议使用 `canal-json` 协议。
 
 > **注意：**
 >
-> 当 `protocol` 为 `open-protocol` 时，TiCDC 会尽量避免产生长度超过 `max-message-bytes` 的消息。但如果单条数据变更记录需要超过 `max-message-bytes` 个字节来表示，为了避免静默失败，TiCDC 会试图输出这条消息并在日志中输出 Warning。
+> 当 `protocol` 为 `open-protocol` 时，TiCDC 会将多个事件编码到同一个 Kafka 消息中，此过程中尽量避免产生长度超过 `max-message-bytes` 的消息。
+> 如果单条数据变更编码得到的消息大小超过了 `max-message-bytes` 个字节，changefeed 会报错，打印错误日志。
 
 ### TiCDC 使用 Kafka 的认证与授权
 
@@ -161,7 +162,7 @@ URI 中可配置的的参数如下：
 
 ### TiCDC 集成 Kafka Connect (Confluent Platform)
 
-如要使用 Confluent 提供的 [data connectors](https://docs.confluent.io/current/connect/managing/connectors.html) 向关系型或非关系型数据库传输数据，请选择 `avro` 协议，并在 `schema-registry` 中提供 [Confluent Schema Registry](https://www.confluent.io/product/confluent-platform/data-compatibility/) 的 URL。
+如要使用 Confluent 提供的 [data connectors](https://docs.confluent.io/current/connect/managing/connectors.html) 向关系型或非关系型数据库传输数据，请选择 [Avro 协议](/ticdc/ticdc-avro-protocol.md) 协议，并在 `schema-registry` 中提供 [Confluent Schema Registry](https://www.confluent.io/product/confluent-platform/data-compatibility/) 的 URL。
 
 配置样例如下所示：
 
@@ -180,7 +181,7 @@ dispatchers = [
 
 ### TiCDC 集成 AWS Glue Schema Registry
 
-从 v7.4.0 开始，TiCDC 支持在用户选择 Avro 协议同步数据时使用 [AWS Glue Schema Registry](https://docs.aws.amazon.com/glue/latest/dg/schema-registry.html) 作为 Schema Registry。配置样例如下所示：
+从 v7.4.0 开始，TiCDC 支持在用户选择  [Avro 协议](/ticdc/ticdc-avro-protocol.md) 同步数据时使用 [AWS Glue Schema Registry](https://docs.aws.amazon.com/glue/latest/dg/schema-registry.html) 作为 Schema Registry。配置样例如下所示：
 
 ```shell
 ./cdc cli changefeed create --server=127.0.0.1:8300 --changefeed-id="kafka-glue-test" --sink-uri="kafka://127.0.0.1:9092/topic-name?&protocol=avro&replication-factor=3" --config changefeed_glue.toml
