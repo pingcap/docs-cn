@@ -11,7 +11,7 @@ summary: 了解如何通过调整 Region 大小等方法对 Region 进行性能�
 
 TiKV 自动将底层数据进行[分片](/best-practices/tidb-best-practices.md#数据分片)，所有数据按照 key 的范围划分为若干个 Region。当某个 Region 的大小超过一定限制后，TiKV 会将它分裂为多个 Region。
 
-在大量数据的场景下，如果 Region 较小，可能会出现 Region 数量过多的情况，从而带来更多的资源开销和导致[性能回退](/best-practices/massive-regions-best-practices.md#性能问题)的问题。从 v6.1.0 开始，TiDB 支持设置自定义的 Region 大小，该特性在 v7.5.0 正式发布。同时，从 v8.4.0 开始，Region 默认的大小从 96 MiB 调整为 256 MiB，将其调大可以减少 Region 个数。
+在大量数据的场景下，如果 Region 较小，可能会出现 Region 数量过多的情况，从而带来更多的资源开销和导致[性能回退](/best-practices/massive-regions-best-practices.md#性能问题)的问题。从 v6.1.0 开始，TiDB 支持设置自定义的 Region 大小，该特性在 v6.5.0 正式发布；同时，从 v8.4.0 开始，Region 默认的大小从 96 MiB 调整为 256 MiB，将其调大可以减少 Region 个数。
 
 开启 [Hibernate Region](/best-practices/massive-regions-best-practices.md#方法四开启-hibernate-region-功能) 或 [`Region Merge`](/best-practices/massive-regions-best-practices.md#方法五开启-region-merge) 也可以减少过多 Region 带来的性能开销。
 
