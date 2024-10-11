@@ -273,8 +273,9 @@ dispatchers = [
 
 Topic 分发器用 `topic = "xxx"` 来指定，并使用 topic 表达式来实现灵活的 topic 分发策略。topic 的总数建议小于 1000。
 
-Topic 表达式的基本规则为 `[prefix]{schema}[middle][{table}][suffix]`，详细解释如下：
+Topic 表达式的基本规则为 `[tenant_and_namespace][prefix]{schema}[middle][{table}][suffix]`，详细解释如下：
 
+- `tenant_and_namespace`：可选项，代表 Topic 所在的租户和命名空间，比如 `persistent://abc/def/`。如果不配置，则代表 Topic 在 Pulsar 的默认租户 `public` 下的默认命名空间 `default` 中。
 - `prefix`：可选项，代表 Topic Name 的前缀。
 - `{schema}`：可选项，用于匹配库名。
 - `middle`：可选项，代表库表名之间的分隔符。
