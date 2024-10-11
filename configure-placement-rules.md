@@ -213,7 +213,7 @@ cat > rules.json <<EOF
 ]
 EOF
 
-» ./pd-ctl -u 127.0.0.1:2379 config placement-rules save --in=a.json
+» ./pd-ctl -u 127.0.0.1:2379 config placement-rules save --in=rules.json
 Success!
 ```
 
