@@ -74,7 +74,7 @@ Key 中的 `fields` 只包含主键或唯一索引列。
 Value 数据格式默认与 Key 数据格式相同，但是 Value 的 `fields` 中包含了所有的列。
 
 > **注意：**
-> Avro 协议在编码 DML 事件时，对 Delete 事件，只编码 Key 部分，Value 部分为空。对于 Insert 和 Update 事件，编码所有列数据到 Value 部分。对于 Update 事件，只编码更新后的所有列数据。
+> Avro 协议在编码 DML 事件时，对 Delete 事件，只编码 Key 部分，Value 部分为空。对于 Insert 事件，编码所有列数据到 Value 部分。对于 Update 事件，只编码更新后的所有列数据。
 
 ## TiDB 扩展字段
 
