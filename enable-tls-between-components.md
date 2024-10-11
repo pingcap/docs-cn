@@ -153,6 +153,7 @@ aliases: ['/docs-cn/dev/enable-tls-between-components/','/docs-cn/dev/how-to/sec
   [security]
   cluster-verify-cn = ["tidb", "test-client", "prometheus"]
   ```
+
 - TiKV
 
   在 `config` 文件或命令行参数中设置：
@@ -161,6 +162,7 @@ aliases: ['/docs-cn/dev/enable-tls-between-components/','/docs-cn/dev/how-to/sec
   [security]
   cert-allowed-cn = ["tidb", "pd", "tikv", "tiflash", "prometheus"]
   ```
+
 - PD
 
   在 `config` 文件或命令行参数中设置：
@@ -169,6 +171,7 @@ aliases: ['/docs-cn/dev/enable-tls-between-components/','/docs-cn/dev/how-to/sec
   [security]
   cert-allowed-cn = ["tidb", "pd", "tikv", "tiflash", "test-client", "prometheus"]
   ```
+
 - TiFlash（从 v4.0.5 版本开始引入）
 
   在 `tiflash.toml` 文件中设置：
