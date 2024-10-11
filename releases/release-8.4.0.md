@@ -326,7 +326,7 @@ TiDB 版本：8.4.0
 | TiKV         |    [`resource-control.priority-ctl-strategy`](/tikv-configuration-file.md#priority-ctl-strategy-从-v840-版本开始引入)      |  新增      |   该配置文件参数用于配置低优先级任务的管控策略。TiKV 通过对低优先级的任务添加流量控制来确保优先执行更高优先级的任务。     |
 | PD | [`max-merge-region-keys`](/pd-configuration-file.md#max-merge-region-keys) | 修改 | 从 v8.4.0 开始，默认值修改为 `540000`。在 v8.4.0 之前，默认值为 `200000`。 |
 | PD | [`max-merge-region-size`](/pd-configuration-file.md#max-merge-region-size) | 修改 | 从 v8.4.0 开始，默认值修改为 `54`。在 v8.4.0 之前，默认值为 `20`。 |
-| TiFlash | [`storage.format_version`](/tiflash/tiflash-configuration.md) | 修改 | 默认值从 `5` 修改为 `7`，该格式可以支持向量索引的构建与存储。 |
+| TiFlash | [`storage.format_version`](/tiflash/tiflash-configuration.md) | 修改 | TiFlash 底层存储格式的默认版本从 `5` 修改为 `7`，以支持向量索引的构建与存储。由于该格式修改，升级 TiFlash 到 v8.4.0 或以上版本后，不支持原地降级到之前的版本。 |
 | TiDB Lightning | [`logical-import-prep-stmt`](/tidb-lightning/tidb-lightning-configuration.md) | 新增 | 在逻辑导入模式下，该参数控制是否使用预处理语句和语句缓存来提高性能。默认值为 `false`。 |
 | TiCDC | [`claim-check-raw-value`](/ticdc/ticdc-sink-to-kafka.md#只发送-value-部分到外部存储) | 新增 | 控制 TiCDC 是否仅将 Kafka 消息的 `value` 部分发送到外部存储，该功能仅适用于非 Open Protocol 协议。 |
 | TiDB Binlog | [`--enable-binlog`](/command-line-flags-for-tidb-configuration.md#--enable-binlog) | 删除 | 从 v8.4.0 开始，[TiDB Binlog](https://docs.pingcap.com/zh/tidb/v8.3/tidb-binlog-overview) 被移除。该参数用于开启或关闭 TiDB 中 binlog 的生成，从 v8.4.0 开始被删除。 |
