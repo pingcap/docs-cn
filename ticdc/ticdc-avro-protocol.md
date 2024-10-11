@@ -163,7 +163,7 @@ Column 数据格式即 Key/Value 数据格式中的 `{{ColumnValueBlock}}` 部�
 
 - `{{ColumnName}}` 表示列名。
 - `{{TIDB_TYPE}}` 表示对应到 TiDB 中的类型，与原始的 SQL Type 不是一一对应关系。
-- `{{AVRO_TYPE}}` 表示 [avro spec](https://avro.apache.org/docs/current/spec.html) 中的类型。
+- `{{AVRO_TYPE}}` 表示 [avro spec](https://avro.apache.org/docs/++version++/specification) 中的类型。
 
 | SQL TYPE   | TIDB_TYPE | AVRO_TYPE | 说明                                                                                                               |
 |------------|-----------|-----------|---------------------------------------------------------------------------------------------------------------------------|
