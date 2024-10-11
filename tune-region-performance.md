@@ -16,7 +16,7 @@ TiKV 自动将底层数据进行[分片](/best-practices/tidb-best-practices.md#
 > **说明：**
 >
 > - 在 v6.1.0 中，TiDB 支持设置自定义的 Region 大小，该特性为实验特性。
-> - 该特性在 v6.5.0 正式发布（GA）。
+> - 从 v6.5.0 开始，该特性成为正式功能（GA）。
 > - 从 v8.4.0 开始，Region 默认的大小从 96 MiB 调整为 256 MiB，将其调大可以减少 Region 个数。
 
 开启 [Hibernate Region](/best-practices/massive-regions-best-practices.md#方法四开启-hibernate-region-功能) 或 [`Region Merge`](/best-practices/massive-regions-best-practices.md#方法五开启-region-merge) 也可以减少过多 Region 带来的性能开销。
