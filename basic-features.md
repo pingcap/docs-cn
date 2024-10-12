@@ -140,7 +140,7 @@ summary: 了解 TiDB 的功能概览。
 |---|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|
 | [Async commit](/system-variables.md#tidb_enable_async_commit-从-v50-版本开始引入) |  Y |  Y  |  Y  |  Y  | Y | Y | Y | Y | Y | Y | Y |
 | [1PC](/system-variables.md#tidb_enable_1pc-从-v50-版本开始引入) |  Y |  Y  |  Y  |  Y  | Y | Y | Y | Y | Y | Y | Y |
-| [大事务 (10 GB)](/transaction-overview.md#事务限制) |  Y |  Y  |  Y  |  Y  | Y | Y | Y | Y | Y | Y | Y |
+| [大事务 (1 TiB)](/transaction-overview.md#事务限制) |  Y |  Y  |  Y  |  Y  | Y | Y | Y | Y | Y | Y | Y |
 | [悲观事务](/pessimistic-transaction.md) |  Y |  Y  |  Y  |  Y  | Y | Y | Y | Y | Y | Y | Y |
 | [乐观事务](/optimistic-transaction.md) |  Y |  Y  |  Y  |  Y  | Y | Y | Y | Y | Y | Y | Y |
 | [可重复读隔离（快照隔离）](/transaction-isolation-levels.md) |  Y |  Y  |  Y  |  Y  | Y | Y | Y | Y | Y | Y | Y |
