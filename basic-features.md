@@ -141,12 +141,13 @@ aliases: ['/docs-cn/dev/basic-features/','/docs-cn/dev/experimental-features-4.0
 |---|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|
 | [Async commit](/system-variables.md#tidb_enable_async_commit-从-v50-版本开始引入) |  Y |  Y  |  Y  |  Y  | Y | Y | Y | Y | Y | Y | Y |
 | [1PC](/system-variables.md#tidb_enable_1pc-从-v50-版本开始引入) |  Y |  Y  |  Y  |  Y  | Y | Y | Y | Y | Y | Y | Y |
-| [大事务 (10 GB)](/transaction-overview.md#事务限制) |  Y |  Y  |  Y  |  Y  | Y | Y | Y | Y | Y | Y | Y |
+| [大事务 (1 TiB)](/transaction-overview.md#事务限制) |  Y |  Y  |  Y  |  Y  | Y | Y | Y | Y | Y | Y | Y |
 | [悲观事务](/pessimistic-transaction.md) |  Y |  Y  |  Y  |  Y  | Y | Y | Y | Y | Y | Y | Y |
 | [乐观事务](/optimistic-transaction.md) |  Y |  Y  |  Y  |  Y  | Y | Y | Y | Y | Y | Y | Y |
 | [可重复读隔离（快照隔离）](/transaction-isolation-levels.md) |  Y |  Y  |  Y  |  Y  | Y | Y | Y | Y | Y | Y | Y |
 | [读已提交隔离](/transaction-isolation-levels.md) |  Y |  Y  |  Y  |  Y  | Y | Y | Y | Y | Y | Y | Y |
 | [自动终止长时间未提交的空闲事务](/system-variables.md#tidb_idle_transaction_timeout-从-v760-版本开始引入) |  Y |  Y  |  Y  | N | N | N | N | N | N | N | N |
+| [批量 DML 语句的执行方式 (`tidb_dml_type = "bulk"`)](/system-variables.md#tidb_dml_type-从-v800-版本开始引入) | E |  E | E |  N | N | N | N | N | N | N | N |
 
 ## 分区
 

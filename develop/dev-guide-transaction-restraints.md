@@ -712,8 +712,15 @@ mysql> SELECT * FROM T2;
 
 基本原则是要限制事务的大小。TiDB 对单个事务的大小有限制，这层限制是在 KV 层面。反映在 SQL 层面的话，简单来说一行数据会映射为一个 KV entry，每多一个索引，也会增加一个 KV entry。所以这个限制反映在 SQL 层面是：
 
-- 最大单行记录容量为 120MB（TiDB v4.0.10 及更高的 v4.0.x 版本、v5.0.0 及更高的版本可通过 tidb-server 配置项 [`performance.txn-entry-size-limit`](/tidb-configuration-file.md#txn-entry-size-limit-从-v4010-和-v500-版本开始引入) 调整，低于 TiDB v4.0.10 的版本支持的单行容量为 6MB）。
-- 支持的最大单个事务容量为 10GB（TiDB v4.0 及更高版本可通过 tidb-server 配置项 `performance.txn-total-size-limit` 调整，低于 TiDB v4.0 的版本支持的最大单个事务容量为 100MB）。
+- 最大单行记录容量为 120 MiB。
+
+    - TiDB v4.0.10 及更高的 v4.0.x 版本、v5.0.0 及更高的版本可通过 tidb-server 配置项 [`performance.txn-entry-size-limit`](/tidb-configuration-file.md#txn-entry-size-limit-从-v4010-和-v500-版本开始引入) 调整，低于 TiDB v4.0.10 的版本支持的单行容量为 6 MiB。
+    - 从 v7.6.0 开始，你可以使用 [`tidb_txn_entry_size_limit`](/system-variables.md#tidb_txn_entry_size_limit-从-v760-版本开始引入) 系统变量动态修改该配置项的值。
+
+- 支持的最大单个事务容量为 1 TiB。
+
+    - TiDB v4.0 及更高版本可通过 tidb-server 配置项 [`performance.txn-total-size-limit`](/tidb-configuration-file.md#txn-total-size-limit) 调整，低于 TiDB v4.0 的版本支持的最大单个事务容量为 100 MiB。
+    - 在 v6.5.0 及之后的版本中，不再推荐使用配置项 [`performance.txn-total-size-limit`](/tidb-configuration-file.md#txn-total-size-limit)。更多详情请参考 [`performance.txn-total-size-limit`](/tidb-configuration-file.md#txn-total-size-limit)。
 
 另外注意，无论是大小限制还是行数限制，还要考虑事务执行过程中，TiDB 做编码以及事务额外 Key 的开销。在使用的时候，为了使性能达到最优，建议每 100 ～ 500 行写入一个事务。
 
