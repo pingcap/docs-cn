@@ -14,7 +14,7 @@ TiDB 版本：4.0.0-rc.2
 
 + TiDB
 
-    - 去掉了特别为开启 Binlog 时定义的事务容量上限 (100 MB)，现在事务的容量上限统一为 1 TiB，但若开启 Binlog 且下游是 Kafka，由于 Kafka 消息大小的限制是 1 GiB，请根据情况调整 `txn-total-size-limit` 配置参数 [#16941](https://github.com/pingcap/tidb/pull/16941)
+    - 去掉了特别为开启 Binlog 时定义的事务容量上限 (100 MB)，现在事务的容量上限统一为 10 GB，但若开启 Binlog 且下游是 Kafka，由于 Kafka 消息大小的限制是 1 GB，请根据情况调整 `txn-total-size-limit` 配置参数 [#16941](https://github.com/pingcap/tidb/pull/16941)
     - 查询 `CLUSTER_LOG` 表时，如果未指定时间范围，由默认时间范围变更为返回错误且用户必须指定时间范围 [#17003](https://github.com/pingcap/tidb/pull/17003)
     - `CREATE TABLE` 创建分区表时指定未支持的 sub-partition 或 linear hash 选项，将会创建非分区普通表，而不是选项未生效的分区表 [#17197](https://github.com/pingcap/tidb/pull/17197)
 
