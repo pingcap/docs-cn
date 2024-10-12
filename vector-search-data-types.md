@@ -226,17 +226,10 @@ ERROR 1105 (HY000): vectors have different dimensions: 1 and 3
 
 如需了解其他转换函数，请参阅[向量函数和操作符](/vector-search-functions-and-operators.md)。
 
-### 向量与其他数据类型之间的转换
-
-目前 TiDB 无法直接在向量和其他数据类型（如 `JSON`）之间进行转换，但你可以使用字符串作为中间类型进行转换。
 
 ## 使用限制
 
-- 向量最大支持 16383 维。
-- 向量数据中不支持 `NaN`、`Infinity` 和 `-Infinity` 浮点数。
-- 目前，向量类型不能存储双精度浮点数。计划在未来的版本中支持这一功能。在此期间，如果为向量类型导入双精度浮点数，它们将被转换为单精度数。
-
-有关其他限制，请参阅[向量搜索限制](/vector-search-limitations.md)。
+有关向量类型的限制，请参阅[向量搜索限制](/vector-search-limitations.md)以及[向量搜索索引 - 使用限制](/vector-search-index.md#使用限制)。
 
 ## MySQL 兼容性
 
