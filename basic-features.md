@@ -87,7 +87,6 @@ summary: 了解 TiDB 的功能概览。
 | [`ALTER TABLE ... COMPACT`](/sql-statements/sql-statement-alter-table-compact.md) | Y |  Y |  Y |  Y  | Y | Y | E | N | N | N | N |
 | [表级锁 (Table Lock)](/sql-statements/sql-statement-lock-tables-and-unlock-tables.md) | E |  E  |  E  |  E  | E | E | E | E | E | E | E |
 | [物化列式存储的查询结果](/tiflash/tiflash-results-materialization.md) | Y |  Y |  Y |  Y  | Y | E | N | N | N | N | N |
-| [批量 DML 语句的执行方式 (`tidb_dml_type = "bulk"`)](/system-variables.md#tidb_dml_type-从-v800-版本开始引入) | E |  E | E |  N | N | N | N | N | N | N | N |
 
 ## 高级 SQL 功能
 
@@ -147,6 +146,7 @@ summary: 了解 TiDB 的功能概览。
 | [可重复读隔离（快照隔离）](/transaction-isolation-levels.md) |  Y |  Y  |  Y  |  Y  | Y | Y | Y | Y | Y | Y | Y |
 | [读已提交隔离](/transaction-isolation-levels.md) |  Y |  Y  |  Y  |  Y  | Y | Y | Y | Y | Y | Y | Y |
 | [自动终止长时间未提交的空闲事务](/system-variables.md#tidb_idle_transaction_timeout-从-v760-版本开始引入) |  Y |  Y  |  Y  | N | N | N | N | N | N | N | N |
+| [批量 DML 语句的执行方式 (`tidb_dml_type = "bulk"`)](/system-variables.md#tidb_dml_type-从-v800-版本开始引入) | E |  E | E |  N | N | N | N | N | N | N | N |
 
 ## 分区
 
