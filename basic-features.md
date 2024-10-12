@@ -144,6 +144,7 @@ summary: 了解 TiDB 的功能概览。
 | [可重复读隔离（快照隔离）](/transaction-isolation-levels.md) |  Y  |  Y  | Y | Y | Y | Y | Y | Y | Y |
 | [读已提交隔离](/transaction-isolation-levels.md) |  Y  |  Y  | Y | Y | Y | Y | Y | Y | Y |
 | [自动终止长时间未提交的空闲事务](/system-variables.md#tidb_idle_transaction_timeout-从-v760-版本开始引入) |  Y  | N | N | N | N | N | N | N | N |
+| [批量 DML 语句的执行方式 (`tidb_dml_type = "bulk"`)](/system-variables.md#tidb_dml_type-从-v800-版本开始引入) | E | N | N | N | N | N | N | N | N |
 
 ## 分区
 
