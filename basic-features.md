@@ -88,6 +88,8 @@ aliases: ['/docs-cn/dev/basic-features/','/docs-cn/dev/experimental-features-4.0
 | [`ALTER TABLE ... COMPACT`](/sql-statements/sql-statement-alter-table-compact.md) | Y |  Y |  Y |  Y  | Y | Y | E | N | N | N | N |
 | [表级锁 (Table Lock)](/sql-statements/sql-statement-lock-tables-and-unlock-tables.md) | E |  E  |  E  |  E  | E | E | E | E | E | E | E |
 | [物化列式存储的查询结果](/tiflash/tiflash-results-materialization.md) | Y |  Y |  Y |  Y  | Y | E | N | N | N | N | N |
+| [标准 DML 语句的执行方式 (`tidb_dml_type = "standard"`)](/system-variables.md#tidb_dml_type-从-v800-版本开始引入) | Y |  Y | Y |  N | N | N | N | N | N | N | N |
+| [批量 DML 语句的执行方式 (`tidb_dml_type = "bulk"`)](/system-variables.md#tidb_dml_type-从-v800-版本开始引入) | E |  E | E |  N | N | N | N | N | N | N | N |
 
 ## 高级 SQL 功能
 
