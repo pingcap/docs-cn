@@ -292,7 +292,7 @@ TiCDC Avro 协议，支持被 [`io.confluent.kafka.serializers.KafkaAvroDeserial
 消费者程序可以按照如下规则区分 DML 事件类型：
 
 * 只有 Key 部分，则是 Delete 事件。
-* 含有 Value 部分，则是 Insert 或 Update 事件。如果用户开启了 TiDB 扩展字段功能，可以根据其中的 `_tidb_op` 字段，判断该条事件变更是 Insert 或 Update。反之无法区分。
+* 含有 Value 部分，则是 Insert 或 Update 事件。如果用户开启了 [TiDB 扩展字段功能](#tidb-扩展字段)，可以根据其中的 `_tidb_op` 字段，判断该条事件变更是 Insert 或 Update。如果未开启 TiDB 扩展字段功能，则无法区分。
 
 ## Topic 分发
 
