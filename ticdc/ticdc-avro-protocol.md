@@ -24,6 +24,7 @@ cdc cli changefeed create --server=http://127.0.0.1:8300 --changefeed-id="kafka-
 `--schema-registry` 的值支持 https 协议和 username:password 认证，比如`--schema-registry=https://username:password@schema-registry-uri.com`，username 和 password 必须经过 URL 编码。
 
 > **注意：**
+> 
 > 使用 Avro 协议时，一个 Kafka Topic 必须只能有一张表的数据，需要在 config 文件中配置 [Topic 分发器](/ticdc/ticdc-sink-to-kafka.md#topic-分发器)。 
 
 ```shell
