@@ -42,10 +42,10 @@ TiDB 扩展了 MySQL 语法以支持[向量搜索](/vector-search-overview.md)�
 
 在本地部署的集群启动后，在终端中执行你的集群连接命令：
 
-以下为 MacOS 上的连接命令示例：
+以下为 macOS 上的连接命令示例：
 
 ```bash
- mysql --comments --host 127.0.0.1 --port 4000 -u root
+mysql --comments --host 127.0.0.1 --port 4000 -u root
 ```
 
 </div>

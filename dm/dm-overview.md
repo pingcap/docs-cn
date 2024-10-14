@@ -62,7 +62,7 @@ tiup install dm dmctl
 
 + 向量类型数据同步
 
-    - DM 不支持 MySQL 9.0 的向量数据类型同步。
+    - DM 不支持迁移或同步 MySQL 9.0 的向量数据类型到 TiDB。
 
 ## Contributing
 
