@@ -162,7 +162,7 @@ URI 中可配置的的参数如下：
 
 ### TiCDC 集成 Kafka Connect (Confluent Platform)
 
-如要使用 Confluent 提供的 [data connectors](https://docs.confluent.io/current/connect/managing/connectors.html) 向关系型或非关系型数据库传输数据，请选择 [Avro 协议](/ticdc/ticdc-avro-protocol.md) 协议，并在 `schema-registry` 中提供 [Confluent Schema Registry](https://www.confluent.io/product/confluent-platform/data-compatibility/) 的 URL。
+如要使用 Confluent 提供的 [data connectors](https://docs.confluent.io/current/connect/managing/connectors.html) 向关系型或非关系型数据库传输数据，请选择 [Avro 协议](/ticdc/ticdc-avro-protocol.md)协议，并在 `schema-registry` 中提供 [Confluent Schema Registry](https://www.confluent.io/product/confluent-platform/data-compatibility/) 的 URL。
 
 配置样例如下所示：
 
