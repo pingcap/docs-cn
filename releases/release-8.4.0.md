@@ -290,24 +290,24 @@ TiDB 版本：8.4.0
 
 ### 系统变量
 
-| 变量名  | 修改类型（包括新增/修改/删除）    | 描述 |
+| 变量名 | 修改类型 | 描述 |
 |--------|------------------------------|------|
-| [`log_bin`](/system-variables.md#log_bin) | 删除 | 从 v8.4.0 开始，[TiDB Binlog](https://docs.pingcap.com/zh/tidb/v8.3/tidb-binlog-overview) 被移除。该变量表示是否使用 TiDB Binlog，从 v8.4.0 开始被删除。 |
-| [`sql_log_bin`](/system-variables.md#sql_log_bin) | 删除 | 从 v8.4.0 开始，[TiDB Binlog](https://docs.pingcap.com/zh/tidb/v8.3/tidb-binlog-overview) 被移除。该变量表示是否将更改写入 TiDB Binlog，从 v8.4.0 开始被删除。 |
-| [`tidb_enable_global_index`](/system-variables.md#tidb_enable_global_index-从-v760-版本开始引入) | 废弃 | 从 v8.4.0 开始，该变量被废弃。其值将固定为默认值 `ON`，即默认启用[全局索引](/partitioned-table.md#全局索引)。你只需在执行 `CREATE TABLE` 或 `ALTER TABLE` 时在对应的列加上关键字 `GLOBAL` 即可创建全局索引。 |
-| [`tidb_enable_list_partition`](/system-variables.md#tidb_enable_list_partition-从-v50-版本开始引入) | 废弃 | 从 v8.4.0 开始，该变量被废弃。其值将固定为默认值 `ON`，即默认启用 [List 分区](/partitioned-table.md#list-分区)。 |
+| [`log_bin`](/system-variables.md#log_bin) | 删除 | 从 v8.4.0 开始，[TiDB Binlog](https://docs.pingcap.com/zh/tidb/v8.3/tidb-binlog-overview) 被移除。该变量表示是否使用 TiDB Binlog，从 v8.4.0 开始被删除。|
+| [`sql_log_bin`](/system-variables.md#sql_log_bin) | 删除 | 从 v8.4.0 开始，[TiDB Binlog](https://docs.pingcap.com/zh/tidb/v8.3/tidb-binlog-overview) 被移除。该变量表示是否将更改写入 TiDB Binlog，从 v8.4.0 开始被删除。|
+| [`tidb_enable_global_index`](/system-variables.md#tidb_enable_global_index-从-v760-版本开始引入) | 废弃 | 从 v8.4.0 开始，该变量被废弃。其值将固定为默认值 `ON`，即默认启用[全局索引](/partitioned-table.md#全局索引)。你只需在执行 `CREATE TABLE` 或 `ALTER TABLE` 时在对应的列加上关键字 `GLOBAL` 即可创建全局索引。|
+| [`tidb_enable_list_partition`](/system-variables.md#tidb_enable_list_partition-从-v50-版本开始引入) | 废弃 | 从 v8.4.0 开始，该变量被废弃。其值将固定为默认值 `ON`，即默认启用 [List 分区](/partitioned-table.md#list-分区)。|
 | [`tidb_enable_table_partition`](/system-variables.md#tidb_enable_table_partition) | 废弃 |  从 v8.4.0 开始，该变量被废弃。其值将固定为默认值 `ON`，即默认启用[分区表](/partitioned-table.md)。|
-| [`tidb_scatter_region`](/system-variables.md#tidb_scatter_region) | 修改 |  原先为布尔型，仅支持开启或关闭，且开启后新建的表的 Region 只支持表级别打散。从 v8.4.0 开始，增加 `SESSION` 作用域，类型由布尔型变更为枚举型，默认值由原来的 `OFF` 变更为空，并增加了可选值 `TABLE` 和 `GLOBAL`。支持集群级别的打散策略，避免快速批量建表时由于 Region 分布不均匀导致 TiKV OOM 的问题。|
-| [`tidb_schema_cache_size`](/system-variables.md#tidb_schema_cache_size-从-v800-版本开始引入) | 修改 | 默认值从 `0` 修改为 `536870912` 即 512 MiB，表示默认开启该功能，且最小值允许设置为 `67108864` 即 64 MiB。 |
-| [`tidb_opt_prefer_range_scan`](/system-variables.md#tidb_opt_prefer_range_scan-从-v50-版本开始引入) | 修改 |  从 v8.4.0 开始，此变量的默认值从 `OFF` 更改为 `ON`。对于没有统计信息的表（伪统计信息）或空表（零统计信息），优化器将优先选择区间扫描而不是全表扫描。|
-| [`tidb_enable_inl_join_inner_multi_pattern`](/system-variables.md#tidb_enable_inl_join_inner_multi_pattern-从-v700-版本开始引入) | 修改 | 默认值从 `OFF` 修改为 `ON`。从 v8.4.0 开始，当内表上有 `Selection`、`Projection` 或 `Aggregation` 算子时默认支持 Index Join。 |
 | [`tidb_analyze_partition_concurrency`](/system-variables.md#tidb_analyze_partition_concurrency) | 修改 | 取值范围从 `[1, 18446744073709551615]` 修改为 `[1, 128]`。|
-| [`tidb_auto_analyze_concurrency`](/system-variables.md#tidb_auto_analyze_concurrency-从-v840-版本开始引入)| 新增 | 设置单个自动统计信息收集任务内部的并发度。在 v8.4.0 之前的版本中，该并发度固定为 `1`。你可以根据集群资源情况提高该并发度，从而加快统计信息收集任务的执行速度。 |
-| [`tidb_enable_instance_plan_cache`](/system-variables.md#tidb_enable_instance_plan_cache-从-v840-版本开始引入)| 新增 | 控制是否开启 Instance Plan Cache 功能。 |
-| [`tidb_hash_join_version`](/system-variables.md#tidb_hash_join_version-从-v840-版本开始引入) | 新增 | 控制 TiDB 是否使用 Hash Join 算子的优化版。默认值为 `legacy`，代表不使用优化版。若设置为 `optimized`，TiDB 在执行 Hash Join 算子时将使用其优化版，以提升 Hash Join 性能。 |
+| [`tidb_enable_inl_join_inner_multi_pattern`](/system-variables.md#tidb_enable_inl_join_inner_multi_pattern-从-v700-版本开始引入) | 修改 | 默认值从 `OFF` 修改为 `ON`。从 v8.4.0 开始，当内表上有 `Selection`、`Projection` 或 `Aggregation` 算子时默认支持 Index Join。 |
+| [`tidb_opt_prefer_range_scan`](/system-variables.md#tidb_opt_prefer_range_scan-从-v50-版本开始引入) | 修改 | 默认值从 `OFF` 修改为 `ON`。对于没有统计信息的表（伪统计信息）或空表（零统计信息），优化器将优先选择区间扫描而不是全表扫描。|
+| [`tidb_scatter_region`](/system-variables.md#tidb_scatter_region) | 修改 | 在 v8.4.0 之前版本中为布尔型，仅支持开启或关闭，且开启后新建的表的 Region 只支持表级别打散。从 v8.4.0 开始，增加 `SESSION` 作用域，类型由布尔型变更为枚举型，默认值由原来的 `OFF` 变更为空，并增加了可选值 `TABLE` 和 `GLOBAL`。支持集群级别的打散策略，避免快速批量建表时由于 Region 分布不均匀导致 TiKV OOM 的问题。|
+| [`tidb_schema_cache_size`](/system-variables.md#tidb_schema_cache_size-从-v800-版本开始引入) | 修改 | 默认值从 `0` 修改为 `536870912`（即 512 MiB），表示默认开启该功能，且最小值允许设置为 `67108864`（即 64 MiB）。|
+| [`tidb_auto_analyze_concurrency`](/system-variables.md#tidb_auto_analyze_concurrency-从-v840-版本开始引入)| 新增 | 设置单个自动统计信息收集任务内部的并发度。在 v8.4.0 之前的版本中，该并发度固定为 `1`。你可以根据集群资源情况提高该并发度，从而加快统计信息收集任务的执行速度。|
+| [`tidb_enable_instance_plan_cache`](/system-variables.md#tidb_enable_instance_plan_cache-从-v840-版本开始引入)| 新增 | 控制是否开启 Instance Plan Cache 功能。|
+| [`tidb_hash_join_version`](/system-variables.md#tidb_hash_join_version-从-v840-版本开始引入) | 新增 | 控制 TiDB 是否使用 Hash Join 算子的优化版。默认值为 `legacy`，代表不使用优化版。若设置为 `optimized`，TiDB 在执行 Hash Join 算子时将使用其优化版，以提升 Hash Join 性能。|
 | [`tidb_instance_plan_cache_max_size`](/system-variables.md#tidb_instance_plan_cache_max_size-从-v840-版本开始引入) | 新增 | 设置 Instance Plan Cache 的最大内存使用量。|
 | [`tidb_instance_plan_cache_reserved_percentage`](/system-variables.md#tidb_instance_plan_cache_reserved_percentage-从-v840-版本开始引入) | 新增 | 控制内存驱逐后 Instance Plan Cache 的空闲内存百分比。|
-| [`tidb_pre_split_regions`](/system-variables.md#tidb_pre_split_regions-从-v840-版本开始引入)   | 新增 | 在 v8.4.0 之前，要设置新建表默认的行分裂分片数，需要在每个 `CREATE TABLE` SQL 语句里声明 `PRE_SPLIT_REGIONS`，一旦需要同样配置的表数量较多，操作复杂。为解决这些问题，引入了该变量。你可以在 `GLOBAL` 或 `SESSION` 级别设置该系统变量，提升易用性。  |
+| [`tidb_pre_split_regions`](/system-variables.md#tidb_pre_split_regions-从-v840-版本开始引入) | 新增 | 在 v8.4.0 之前，要设置新建表默认的行分裂分片数，需要在每个 `CREATE TABLE` SQL 语句里声明 `PRE_SPLIT_REGIONS`，一旦需要同样配置的表数量较多，操作复杂。为解决这些问题，引入了该变量。你可以在 `GLOBAL` 或 `SESSION` 级别设置该系统变量，提升易用性。  |
 | [`tidb_shard_row_id_bits`](/system-variables.md#tidb_shard_row_id_bits-从-v840-版本开始引入) | 新增 | 在 v8.4.0 之前，要设置新建表默认的行 ID 的分片数，需要在每个 `CREATE TABLE` 或 `ALTER TABLE` 的 SQL 语句里声明 `SHARD_ROW_ID_BITS`，一旦需要同样配置的表数量较多，操作复杂。为解决这些问题，引入了该变量。你可以在 `GLOBAL` 或 `SESSION` 级别设置该系统变量，提升易用性。  |
 | [`tidb_tso_client_rpc_mode`](/system-variables.md#tidb_tso_client_rpc_mode-从-v840-版本开始引入) | 新增 | 设置 TiDB 向 PD 发送 TSO RPC 请求时使用的模式。这里的模式将用于控制 TSO RPC 请求是否并行，调节获取 TS 时消耗在请求攒批阶段的时间，从而在某些场景中减少执行查询时等待 TS 阶段的时间。 |
 
@@ -315,27 +315,27 @@ TiDB 版本：8.4.0
 
 | 配置文件或组件 | 配置项 | 修改类型 | 描述 |
 | -------- | -------- | -------- | -------- |
-| TiDB | [`grpc-keepalive-time`](/tidb-configuration-file.md#grpc-keepalive-time) | 修改 | 增加最小值 `1`。 |
-| TiDB | [`grpc-keepalive-timeout`](/tidb-configuration-file.md#grpc-keepalive-timeout) | 修改 | 该配置文件参数原先为 INT 类型，且最小值仅支持设置为 `1`。从 v8.4.0 开始，数据类型修改为 FLOAT64，且最小值支持设置为 `0.05`，可以在网络抖动比较频繁的场景，适当调小该值，通过减少重试间隔，来减少网络抖动带来的性能影响。   |
-| TiKV | [`region-split-keys`](/tikv-configuration-file.md#region-split-keys) | 修改 | 从 v8.4.0 开始，默认值修改为 `"2560000"`。在 v8.4.0 之前，默认值为 `"960000"`。 |
-| TiKV | [`region-split-size`](/tikv-configuration-file.md#region-split-size) | 修改 | 从 v8.4.0 开始，默认值修改为 `"256MiB"`。在 v8.4.0 之前，默认值为 `"96MiB"`。 |
-| TiKV | [`sst-max-size`](/tikv-configuration-file.md#sst-max-size) | 修改 | 从 v8.4.0 开始，默认值修改为 `"384MiB"`。在 v8.4.0 之前，默认值为 `"144MiB"`。 |
-| TiKV | [`pessimistic-txn.in-memory-peer-size-limit`](/tikv-configuration-file.md#in-memory-peer-size-limit-从-v840-版本开始引入) | 新增 | 控制单个 Region 内存悲观锁的内存使用上限。超过此限制时，悲观锁将回退到持久化方式写入磁盘。|
+| TiDB | [`grpc-keepalive-time`](/tidb-configuration-file.md#grpc-keepalive-time) | 修改 | 增加最小值 `1`。|
+| TiDB | [`grpc-keepalive-timeout`](/tidb-configuration-file.md#grpc-keepalive-timeout) | 修改 | 在 v8.4.0 之前版本中为 INT 类型，且最小值仅支持设置为 `1`。从 v8.4.0 开始，数据类型修改为 FLOAT64，且最小值支持设置为 `0.05`，可以在网络抖动比较频繁的场景，适当调小该值，通过减少重试间隔，来减少网络抖动带来的性能影响。|
+| TiKV | [`region-split-keys`](/tikv-configuration-file.md#region-split-keys) | 修改 | 默认值从 `"960000"` 修改为 `"2560000"`。|
+| TiKV | [`region-split-size`](/tikv-configuration-file.md#region-split-size) | 修改 | 默认值从 `"96MiB"` 修改为 `"256MiB"`。|
+| TiKV | [`sst-max-size`](/tikv-configuration-file.md#sst-max-size) | 修改 | 默认值从 `"144MiB"` 修改为 `"384MiB"`。|
 | TiKV | [`pessimistic-txn.in-memory-instance-size-limit`](/tikv-configuration-file.md#in-memory-instance-size-limit-从-v840-版本开始引入) | 新增 | 控制单个 TiKV 实例内存悲观锁的内存使用上限。超过此限制时，悲观锁将回退到持久化方式写入磁盘。|
-| TiKV | [`raft-engine.spill-dir`](/tikv-configuration-file.md#spill-dir-从-v840-版本开始引入) | 新增 | 该配置文件参数用于指定 TiKV 实例存储 Raft 日志文件的辅助目录，用于支持多盘存储 Raft 日志文件。|
-| TiKV | [`resource-control.priority-ctl-strategy`](/tikv-configuration-file.md#priority-ctl-strategy-从-v840-版本开始引入) | 新增 | 该配置文件参数用于配置低优先级任务的管控策略。TiKV 通过对低优先级的任务添加流量控制来确保优先执行更高优先级的任务。|
+| TiKV | [`pessimistic-txn.in-memory-peer-size-limit`](/tikv-configuration-file.md#in-memory-peer-size-limit-从-v840-版本开始引入) | 新增 | 控制单个 Region 内存悲观锁的内存使用上限。超过此限制时，悲观锁将回退到持久化方式写入磁盘。|
+| TiKV | [`raft-engine.spill-dir`](/tikv-configuration-file.md#spill-dir-从-v840-版本开始引入) | 新增 | 指定 TiKV 实例存储 Raft 日志文件的辅助目录，用于支持多盘存储 Raft 日志文件。|
+| TiKV | [`resource-control.priority-ctl-strategy`](/tikv-configuration-file.md#priority-ctl-strategy-从-v840-版本开始引入) | 新增 | 配置低优先级任务的管控策略。TiKV 通过对低优先级的任务添加流量控制来确保优先执行更高优先级的任务。|
 | PD | [`cert-allowed-cn`](/enable-tls-between-components.md#认证组件调用者身份) | 修改 | 从 v8.4.0 开始，支持设置多个 `Common Name`。在 v8.4.0 之前，只能设置一个 `Common Name`。 |
-| PD | [`max-merge-region-keys`](/pd-configuration-file.md#max-merge-region-keys) | 修改 | 从 v8.4.0 开始，默认值修改为 `540000`。在 v8.4.0 之前，默认值为 `200000`。 |
-| PD | [`max-merge-region-size`](/pd-configuration-file.md#max-merge-region-size) | 修改 | 从 v8.4.0 开始，默认值修改为 `54`。在 v8.4.0 之前，默认值为 `20`。 |
-| TiFlash | [`storage.format_version`](/tiflash/tiflash-configuration.md) | 修改 | TiFlash 底层存储格式的默认版本从 `5` 修改为 `7`，以支持向量索引的构建与存储。由于该格式修改，升级 TiFlash 到 v8.4.0 或以上版本后，不支持原地降级到之前的版本。 |
-| TiDB Lightning | [`logical-import-prep-stmt`](/tidb-lightning/tidb-lightning-configuration.md) | 新增 | 在逻辑导入模式下，该参数控制是否使用预处理语句和语句缓存来提高性能。默认值为 `false`。 |
-| TiCDC | [`claim-check-raw-value`](/ticdc/ticdc-sink-to-kafka.md#只发送-value-部分到外部存储) | 新增 | 控制 TiCDC 是否仅将 Kafka 消息的 `value` 部分发送到外部存储，该功能仅适用于非 Open Protocol 协议。 |
-| TiDB Binlog | [`--enable-binlog`](/command-line-flags-for-tidb-configuration.md#--enable-binlog) | 删除 | 从 v8.4.0 开始，[TiDB Binlog](https://docs.pingcap.com/zh/tidb/v8.3/tidb-binlog-overview) 被移除。该参数用于开启或关闭 TiDB 中 binlog 的生成，从 v8.4.0 开始被删除。 |
-| BR | [`--log.crypter.method`](/br/br-pitr-manual.md#加密日志备份数据) | 新增 | 设置日志备份数据的加密算法，支持 `aes128-ctr`、`aes192-ctr` 和 `aes256-ctr` 三种算法，缺省值为 `plaintext`，表示不加密。 |
-| BR | [`--log.crypter.key`](/br/br-pitr-manual.md#加密日志备份数据) | 新增 | 设置日志备份数据的加密密钥，十六进制字符串格式，`aes128-ctr` 对应 128 位（16 字节）密钥长度，`aes192-ctr` 为 24 字节，`aes256-ctr` 为 32 字节。 |
+| PD | [`max-merge-region-keys`](/pd-configuration-file.md#max-merge-region-keys) | 修改 | 默认值从 `200000` 修改为 `540000`。|
+| PD | [`max-merge-region-size`](/pd-configuration-file.md#max-merge-region-size) | 修改 | 默认值从 `20` 修改为 `54。|
+| TiFlash | [`storage.format_version`](/tiflash/tiflash-configuration.md) | 修改 | TiFlash 底层存储格式的默认版本从 `5` 修改为 `7`，以支持向量索引的构建与存储。由于该格式修改，升级 TiFlash 到 v8.4.0 或以上版本后，不支持原地降级到之前的版本。|
+| TiDB Lightning | [`logical-import-prep-stmt`](/tidb-lightning/tidb-lightning-configuration.md) | 新增 | 在逻辑导入模式下，该参数控制是否使用预处理语句和语句缓存来提高性能。默认值为 `false`。|
+| TiCDC | [`claim-check-raw-value`](/ticdc/ticdc-sink-to-kafka.md#只发送-value-部分到外部存储) | 新增 | 控制 TiCDC 是否仅将 Kafka 消息的 `value` 部分发送到外部存储，该功能仅适用于非 Open Protocol 协议。|
+| TiDB Binlog | [`--enable-binlog`](/command-line-flags-for-tidb-configuration.md#--enable-binlog) | 删除 | 从 v8.4.0 开始，[TiDB Binlog](https://docs.pingcap.com/zh/tidb/v8.3/tidb-binlog-overview) 被移除。该参数用于开启或关闭 TiDB 中 binlog 的生成，从 v8.4.0 开始被删除。|
 | BR | [`--log.crypter.key-file`](/br/br-pitr-manual.md#加密日志备份数据) | 新增 | 设置日志备份数据的密钥文件，可直接将存放密钥的文件路径作为参数传入，此时 `log.crypter.key` 不需要配置。 |
+| BR | [`--log.crypter.key`](/br/br-pitr-manual.md#加密日志备份数据) | 新增 | 设置日志备份数据的加密密钥，十六进制字符串格式，`aes128-ctr` 对应 128 位（16 字节）密钥长度，`aes192-ctr` 为 24 字节，`aes256-ctr` 为 32 字节。|
+| BR | [`--log.crypter.method`](/br/br-pitr-manual.md#加密日志备份数据) | 新增 | 设置日志备份数据的加密算法，支持 `aes128-ctr`、`aes192-ctr` 和 `aes256-ctr` 三种算法，缺省值为 `plaintext`，表示不加密。|
 | BR | [`--master-key-crypter-method`](/br/br-pitr-manual.md#加密日志备份数据) | 新增 | 设置日志备份数据基于主密钥的加密算法，支持 `aes128-ctr`、`aes192-ctr` 和 `aes256-ctr` 三种算法，缺省值为 `plaintext`，表示不加密。 |
-| BR | [`--master-key`](/br/br-pitr-manual.md#加密日志备份数据) | 新增 | 设置日志备份数据的主密钥，可以是基于本地磁盘的主密钥或基于云 KMS (Key Management Service) 的主密钥。 |
+| BR | [`--master-key`](/br/br-pitr-manual.md#加密日志备份数据) | 新增 | 设置日志备份数据的主密钥，可以是基于本地磁盘的主密钥或基于云 KMS (Key Management Service) 的主密钥。|
 
 ### 系统表
 
