@@ -11,7 +11,7 @@ summary: TiDB 对于 schema 信息采用基于 LRU 的缓存机制，在大量�
 >
 > 该功能目前为实验特性，不建议在生产环境中使用。该功能可能会在未事先通知的情况下发生变化或删除。如果发现 bug，请在 GitHub 上提 [issue](https://github.com/pingcap/tidb/issues) 反馈。
 
-## 配置
+## 配置 schema 缓存
 
 可以通过配置系统变量 [`tidb_schema_cache_size`](/system-variables.md#tidb_schema_cache_size-从-v800-版本开始引入) 来打开 schema 缓存特性。
 
@@ -27,7 +27,7 @@ summary: TiDB 对于 schema 信息采用基于 LRU 的缓存机制，在大量�
 
 在大量数据库和表的场景下，有以下已知问题：
 
-- 当需要被访问的表是没有规律的，如 time1 访问一批表，time2 访问另外一批表，而且设置的 `tidb_schema cache size` 较小时，会导这些 schema 信息被频繁地被逐出，频繁地被缓存，造成性能抖动。该特性比较适合被频繁访问的库和表是相对固定的场景。
+- 当需要被访问的表是没有规律的，如 time1 访问一批表，time2 访问另外一批表，而且设置的 `tidb_schema_cache_size` 较小时，会导这些 schema 信息被频繁地被逐出，频繁地被缓存，造成性能抖动。该特性比较适合被频繁访问的库和表是相对固定的场景。
 - 统计信息不一定能够及时收集。
 - 一些元数据信息的访问会变慢。
 - 切换 schema 缓存开关需要等待一段时间。
