@@ -403,23 +403,22 @@ TiDB 版本：8.4.0
     - Raft Engine 新增 `spill-dir` 配置，支持 Raft 日志的多磁盘存储。当主目录 `dir` 所在磁盘的容量不足时，Raft Engine 会自动将新日志写入 `spill-dir`，从而确保系统的持续运行。[LykxSassinator](https://github.com/LykxSassinator) **tw@hfxsd** <!--1970-->
     - (dup): release-6.5.11.md > 改进提升> TiKV - 优化存在大量 DELETE 版本时 RocksDB 的 compaction 触发机制，以加快磁盘空间回收 [#17269](https://github.com/tikv/tikv/issues/17269) @[AndreMouche](https://github.com/AndreMouche)
     - 支持向量数据类型（VECTOR）及其相关函数的计算下推 [#17290]https://github.com/tikv/tikv/issues/17290 @[breezewish](https://github.com/breezewish)
-    - 支持 `date_add`/`date_sub` 函数的计算下推 [#17529](https://github.com/tikv/tikv/issues/17529) @[gengliqi](https://github.com/gengliqi)
-    - 支持在线更改流控（flow-control）相关配置 [#17395](https://github.com/tikv/tikv/issues/17395) @[glorv](https://github.com/glorv)
-    - 优化空表和小 region 场景下的 Region Merge 的速度 [#17376](https://github.com/tikv/tikv/issues/17376) @[LykxSassinator](https://github.com/LykxSassinator)
-    - Pipelined DML 不会长时间阻塞 resolved-ts。 [#17459](https://github.com/tikv/tikv/issues/17459)@[ekexium](https://github.com/ekexium)
+    - 支持在线更改写入流量控制（flow-control）的相关配置 [#17395](https://github.com/tikv/tikv/issues/17395) @[glorv](https://github.com/glorv)
+    - 优化空表和小 Region 场景下的 Region Merge 的速度 [#17376](https://github.com/tikv/tikv/issues/17376) @[LykxSassinator](https://github.com/LykxSassinator)
+    - [Pipelined DML](https://github.com/pingcap/tidb/blob/master/docs/design/2024-01-09-pipelined-DML.md) 不会长时间阻塞 resolved-ts [#17459](https://github.com/tikv/tikv/issues/17459)@[ekexium](https://github.com/ekexium)
 
 + PD <!--tw@qiancai: 3 notes-->
 
     - 支持 TiKV 节点在 TiDB Lightning 导入数据期间优雅下线 (graceful offline) [#7853](https://github.com/tikv/pd/issues/7853) @[okJiang](https://github.com/okJiang) **tw@qiancai**  <!--1852-->
-    - 在 pd-ctl 命令中将 `scatter-range` 重命名为 `scatter-range-scheduler` [#8379](https://github.com/tikv/pd/issues/8379) @[okJiang](https://github.com/okJiang)
+    - 在 `pd-ctl` 命令中将 `scatter-range` 重命名为 `scatter-range-scheduler` [#8379](https://github.com/tikv/pd/issues/8379) @[okJiang](https://github.com/okJiang)
     - 为 `grant-hot-leader-scheduler` 添加冲突检测 [#4903](https://github.com/tikv/pd/issues/4903) @[lhy1024](https://github.com/lhy1024)
-    - TSO Client 支持并行发送和接受多个 TSO gRPC 请求 [#8432](https://github.com/tikv/pd/issues/8432) @[MyonKeminta](https://github.com/MyonKeminta)
+    - TSO client 支持并行发送和接受多个 TSO gRPC 请求 [#8432](https://github.com/tikv/pd/issues/8432) @[MyonKeminta](https://github.com/MyonKeminta)
 
 + TiFlash <!--tw@qiancai: 2 notes-->
 
     - (dup): release-6.5.11.md > 改进提升> TiFlash - 优化 `LENGTH()` 和 `ASCII()` 函数执行效率 [#9344](https://github.com/pingcap/tiflash/issues/9344) @[xzhangxian1008](https://github.com/xzhangxian1008)
-    - 减少处理存算分离请求创建的线程数 [#9334](https://github.com/pingcap/tiflash/issues/9334) @[JinheLin](https://github.com/JinheLin)
-    - 改进 pipeline 执行模型下 task 等待机制 [#8869](https://github.com/pingcap/tiflash/issues/8869) @[SeaRise](https://github.com/SeaRise)
+    - 减少处理存算分离请求时创建的线程数，避免 TiFlash 计算节点在处理大量请求时崩溃 [#9334](https://github.com/pingcap/tiflash/issues/9334) @[JinheLin](https://github.com/JinheLin)
+    - 改进 pipeline 执行模型下任务的等待机制 [#8869](https://github.com/pingcap/tiflash/issues/8869) @[SeaRise](https://github.com/SeaRise)
     - (dup): release-7.5.4.md > 改进提升> TiFlash - 改进 join 算子的 cancel 机制，使得 join 算子内部能及时响应 cancel 请求 [#9430](https://github.com/pingcap/tiflash/issues/9430) @[windtalker](https://github.com/windtalker)
 
 + Tools
@@ -500,8 +499,8 @@ TiDB 版本：8.4.0
 + TiFlash <!--tw@qiancai: 2 notes-->
 
     - (dup): release-7.5.4.md > 错误修复 > TiFlash - 修复当表里含 Bit 类型列并且带有表示非法字符的默认值时 TiFlash 无法解析表 schema 的问题 [#9461](https://github.com/pingcap/tiflash/issues/9461) @[Lloyd-Pottiger](https://github.com/Lloyd-Pottiger)
-    - 修复当多个 Region 在并发进行副本同步时，可能错误地触发 Region overlap 检查失败引起的 panic 问题 [#9329](https://github.com/pingcap/tiflash/issues/9329) @[CalvinNeo](https://github.com/CalvinNeo)
-    - 修复一些 TiFlash 不支持的 json 函数下推给 TiFlash 的问题 [#9444](https://github.com/pingcap/tiflash/issues/9444) @[windtalker](https://github.com/windtalker)
+    - 修复当多个 Region 并发进行副本同步时，可能错误触发 Region overlap 检查失败而导致 TiFlash panic 的问题 [#9329](https://github.com/pingcap/tiflash/issues/9329) @[CalvinNeo](https://github.com/CalvinNeo)
+    - 修复一些 TiFlash 不支持的 JSON 函数会被下推给 TiFlash 的问题 [#9444](https://github.com/pingcap/tiflash/issues/9444) @[windtalker](https://github.com/windtalker)
 
 + Tools
 
