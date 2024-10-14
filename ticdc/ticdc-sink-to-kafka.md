@@ -73,7 +73,7 @@ URI 中可配置的的参数如下：
 | `127.0.0.1`          | 下游 Kafka 对外提供服务的 IP。                                 |
 | `9092`               | 下游 Kafka 的连接端口。                                          |
 | `topic-name`         | 变量，使用的 Kafka topic 名字。                                      |
-| `protocol`           | 输出到 Kafka 的消息协议。可选值有 [canal-json](/ticdc/ticdc-canal-json.md)、[open-protocol](/ticdc/ticdc-open-protocol.md)、[avro](/ticdc/ticdc-avro-protocol.md)、[debezium](/ticdc/ticdc-debezium.md) 和 [simple](/ticdc/ticdc-simple-protocol.md)。 |
+| `protocol`           | 输出到 Kafka 的消息协议。可选值有 [`canal-json`](/ticdc/ticdc-canal-json.md)、[`open-protocol`](/ticdc/ticdc-open-protocol.md)、[`avro`](/ticdc/ticdc-avro-protocol.md)、[`debezium`](/ticdc/ticdc-debezium.md) 和 [`simple`](/ticdc/ticdc-simple-protocol.md)。 |
 | `kafka-version`      | 下游 Kafka 版本号。该值需要与下游 Kafka 的实际版本保持一致。 |
 | `kafka-client-id`    | 指定同步任务的 Kafka 客户端的 ID（可选，默认值为 `TiCDC_sarama_producer_同步任务的 ID`）。 |
 | `partition-num`      | 下游 Kafka partition 数量（可选，不能大于实际 partition 数量，否则创建同步任务会失败，默认值 `3`）。|
