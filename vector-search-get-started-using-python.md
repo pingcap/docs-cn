@@ -66,14 +66,14 @@ TIDB_DATABASE_URL="mysql+pymysql://<USER>:<PASSWORD>@<HOST>:<PORT>/<DATABASE>"
 # 例如：TIDB_DATABASE_URL="mysql+pymysql://root@127.0.0.1:4000/test"
 ```
 
-如果你在本机运行 TiDB，`HOST` 默认为 `127.0.0.1`。`PASSWORD` 初始密码为空，若你是第一次启动集群，则无需带上此字段。
+如果你在本机运行 TiDB，`<HOST>` 默认为 `127.0.0.1`。`<PASSWORD>` 初始密码为空，若你是第一次启动集群，则无需带上此字段。
 
 以下为各参数的解释：
 
-- `<HOST>`：TiDB 集群的主机号。
-- `<PORT>`：TiDB 集群的端口。
 - `<USER>`：连接 TiDB 集群的用户名。
 - `<PASSWORD>`：连接 TiDB 集群的密码。
+- `<HOST>`：TiDB 集群的主机号。
+- `<PORT>`：TiDB 集群的端口。
 - `<DATABASE>`：要连接的数据库名称。
 
 </div>
