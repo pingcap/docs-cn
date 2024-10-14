@@ -283,7 +283,7 @@ Avro 协议并不会向下游发送 DDL 事件和 Watermark 事件。Avro 会在
 
 ## 消费者实现
 
-TiCDC Avro 协议，支持被 [io.confluent.kafka.serializers.KafkaAvroDeserializer](https://docs.confluent.io/platform/current/schema-registry/fundamentals/serdes-develop/serdes-avro.html#avro-deserializer) 反序列化。
+TiCDC Avro 协议，支持被 [`io.confluent.kafka.serializers.KafkaAvroDeserializer`](https://docs.confluent.io/platform/current/schema-registry/fundamentals/serdes-develop/serdes-avro.html#avro-deserializer) 反序列化。
 
 消费者程序可以通过 [Schema Registry API](https://docs.confluent.io/platform/current/schema-registry/develop/api.html) 获取到最新的 schema，然后对数据进行反序列化。
 
