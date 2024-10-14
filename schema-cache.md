@@ -1,10 +1,10 @@
 ---
-title: schema 缓存
+title: Schema 缓存
 aliases: ['/docs-cn/dev/information-schema-cache']
 summary: TiDB 对于 schema 信息采用基于 LRU 的缓存机制，在大量数据库和表的场景下能够显著减少 schema 信息的内存占用以及提高性能。
 ---
 
-# schema 缓存
+# Schema 缓存
 
 在一些多租户的场景下，可能会存在几十万甚至上百万个数据库和表。这些数据库和表的 schema 信息如果全部加载到内存中，一方面会占用大量的内存，另一方面会导致相关的访问性能变差。为了解决这个问题，TiDB 引入了类似于 LRU 的 schema 缓存机制。只将最近用到的数据库和表的 schema 信息缓存到内存中。
 
