@@ -8,6 +8,10 @@ aliases: ['/docs-cn/dev/sql-statements/sql-statement-explain/','/docs-cn/dev/ref
 
 `EXPLAIN` 语句仅用于显示查询的执行计划，而不执行查询。该语句为 `EXPLAIN ANALYZE` 语句的补充，后者会执行查询。如果 `EXPLAIN` 的输出与预期结果不匹配，可考虑在查询的每个表上执行 `ANALYZE TABLE`，以确保表统计信息是最新的。
 
+> **注意：**
+>
+> 某些子查询会在优化阶段被提前执行以生成可能更优的执行计划，即使是在 `EXPLAIN` 语句中。更详细的说明以及禁用此行为的方法请参见 [`tidb_opt_enable_non_eval_scalar_subquery`](/system-variables.md#tidb_opt_enable_non_eval_scalar_subquery-从-v730-版本开始引入) 和[禁止子查询提前展开](/explain-walkthrough.md#禁止子查询提前执行)。
+
 语句 `DESC` 和 `DESCRIBE` 是 `EXPLAIN` 的别名。`EXPLAIN <tableName>` 的替代用法记录在 [`SHOW [FULL] COLUMNS FROM`](/sql-statements/sql-statement-show-columns-from.md) 下。
 
 TiDB 支持 `EXPLAIN [options] FOR CONNECTION connection_id`，但与 MySQL 的 `EXPLAIN FOR` 有一些区别，请参见 [`EXPLAIN FOR CONNECTION`](#explain-for-connection)。
