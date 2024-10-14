@@ -141,7 +141,7 @@ aliases: ['/docs-cn/dev/enable-tls-between-components/','/docs-cn/dev/how-to/sec
 
 > **注意：**
 >
-> -  从 v8.4.0 起，PD `cert-allowed-cn` 配置项支持设置多个值。你可以根据需要在 TiDB 的 `cluster-verify-cn` 配置项以及其它组件的 `cert-allowed-cn` 配置项中设置多个 `Common Name`。需要额外注意的是，TiUP 在查询组件状态的时候会使用独立的标识，比如集群名是 `test`，它会使用 `test-client` 作为 `Common Name`。
+> -  从 v8.4.0 起，PD 的 `cert-allowed-cn` 配置项支持设置多个值。你可以根据需要在 TiDB 的 `cluster-verify-cn` 配置项以及其它组件的 `cert-allowed-cn` 配置项中设置多个 `Common Name`。需要额外注意的是，TiUP 在查询组件状态的时候会使用独立的标识，比如集群名是 `test`，它会使用 `test-client` 作为 `Common Name`。
 > - 对于 v8.3.0 及之前版本，PD 的 `cert-allowed-cn` 配置项只能设置一个值。因此，所有认证对象的 `Common Name` 都要设置成同一个值。相关配置示例可参见 [v8.3.0 文档](https://docs.pingcap.com/zh/tidb/v8.3/enable-tls-between-components)。
 
 - TiDB
