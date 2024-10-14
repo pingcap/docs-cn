@@ -181,7 +181,7 @@ dispatchers = [
 
 ### TiCDC 集成 AWS Glue Schema Registry
 
-从 v7.4.0 开始，TiCDC 支持在用户选择  [Avro 协议](/ticdc/ticdc-avro-protocol.md) 同步数据时使用 [AWS Glue Schema Registry](https://docs.aws.amazon.com/glue/latest/dg/schema-registry.html) 作为 Schema Registry。配置样例如下所示：
+从 v7.4.0 开始，TiCDC 支持在用户选择  [Avro 协议](/ticdc/ticdc-avro-protocol.md)同步数据时使用 [AWS Glue Schema Registry](https://docs.aws.amazon.com/glue/latest/dg/schema-registry.html) 作为 Schema Registry。配置样例如下所示：
 
 ```shell
 ./cdc cli changefeed create --server=127.0.0.1:8300 --changefeed-id="kafka-glue-test" --sink-uri="kafka://127.0.0.1:9092/topic-name?&protocol=avro&replication-factor=3" --config changefeed_glue.toml
