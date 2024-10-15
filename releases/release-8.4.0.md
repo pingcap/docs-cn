@@ -474,7 +474,7 @@ TiDB 版本：8.4.0
     - (dup): release-6.5.11.md > 错误修复> TiDB - 修复 `IndexNestedLoopHashJoin` 中存在数据竞争的问题 [#49692](https://github.com/pingcap/tidb/issues/49692) @[solotzg](https://github.com/solotzg)
     - (dup): release-6.5.11.md > 错误修复> TiDB - 修复 `INFORMATION_SCHEMA.STATISTICS` 表中 `SUB_PART` 值为空的问题 [#55812](https://github.com/pingcap/tidb/issues/55812) @[Defined2014](https://github.com/Defined2014)
     - (dup): release-6.5.11.md > 错误修复> TiDB - 修复 DML 语句中包含嵌套的生成列时报错的问题 [#53967](https://github.com/pingcap/tidb/issues/53967) @[wjhuang2016](https://github.com/wjhuang2016)
-    - 修复带有最小显示宽度的 `INTEGER` 类型的数据参与除法运算时，可能导致除法结果溢出的问题 [#55837](https://github.com/pingcap/tidb/issues/55837) @[windtalker](https://github.com/windtalker)
+    - 修复带有最小显示宽度的 integer 类型的数据参与除法运算时，可能导致除法结果溢出的问题 [#55837](https://github.com/pingcap/tidb/issues/55837) @[windtalker](https://github.com/windtalker)
     - 修复 TopN 算子之后的算子无法在内存超限时触发回退操作的问题 [#56185](https://github.com/pingcap/tidb/issues/56185) @[xzhangxian1008](https://github.com/xzhangxian1008)
     - 修复 Sort 算子中的 `ORDER BY` 列如果包含常量会卡住的问题 [#55344](https://github.com/pingcap/tidb/issues/55344) @[xzhangxian1008](https://github.com/xzhangxian1008)
     - 修复在添加索引期间，kill PD leader 后出现 `8223 (HY000)` 报错，且表中数据不一致的问题 [#55488](https://github.com/pingcap/tidb/issues/55488) @[tangenta](https://github.com/tangenta)
