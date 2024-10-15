@@ -1081,7 +1081,7 @@ Coprocessor 相关的配置项。
 ### `region-split-size`
 
 + 分裂后新 Region 的大小，此值属于估算值。
-+ 默认值：96MiB
++ 默认值：`"256MiB"`。在 v8.4.0 之前，默认值为 `"96MiB"`。
 + 单位：KiB|MiB|GiB
 
 ### `region-max-keys`
@@ -1092,7 +1092,7 @@ Coprocessor 相关的配置项。
 ### `region-split-keys`
 
 + 分裂后新 Region 的 key 的个数，此值属于估算值。
-+ 默认值：960000
++ 默认值：`2560000`。在 v8.4.0 之前，默认值为 `960000`。
 
 ### `consistency-check-method`
 
@@ -2154,7 +2154,7 @@ Raft Engine 相关的配置项。
 
 + 备份 SST 文件大小的阈值。如果 TiKV Region 中备份文件的大小超过该阈值，则将该文件备份到 Region 分割的多个 Region 文件中，每个分割 Region 中的文件大小均为 `sst-max-size`（或略大）。
 + 例如，当 Region `[a,e)` 中备份文件大小超过 `sst-max-size` 时，该文件会被备份到多个 Region 范围中，分别为 Region `[a,b)`、`[b,c)`、`[c,d)` 和 `[d,e)`，并且 `[a,b)`、`[b,c)` 和 `[c,d)` 的大小均为 `sst-max-size`（或略大）。
-+ 默认值：`"144MiB"`
++ 默认值：`"384MiB"`。在 v8.4.0 之前，默认值为 `"144MiB"`。
 
 ### `enable-auto-tune` <span class="version-mark">从 v5.4 版本开始引入</span>
 
