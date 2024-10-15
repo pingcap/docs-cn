@@ -2233,7 +2233,11 @@ Raft Engine 相关的配置项。
 ### `min-ts-interval`
 
 + 定期推进 Resolved TS 的时间间隔。
-+ 默认值：200ms
++ 默认值：`"1s"`
+
+> **注意：**
+>
+> 在 v6.5.0 中，`min-ts-interval` 的默认值从 `"1s"` 更改为 `"200ms"`，以减少 CDC 的延迟。从 v6.5.1 开始，该默认值更改回 `"1s"`，以减少网络流量。
 
 ### `old-value-cache-memory-quota`
 
@@ -2429,6 +2433,15 @@ Raft Engine 相关的配置项。
 + 是否支持对用户前台的读写请求按照对应的资源组配额做优先级调度。有关 TiDB 资源组和资源管控的信息，请参考 [TiDB 资源管控](/tidb-resource-control.md)
 + 在 TiDB 侧开启 [`tidb_enable_resource_control`](/system-variables.md#tidb_enable_resource_control-从-v660-版本开始引入) 全局变量的情况下，开启这个配置项才有意义。此配置参数开启后，TiKV 会使用优先级队列对排队的用户前台读写请求做调度，调度的优先级和请求所在资源组已经消费的资源量反相关，和对应资源组的配额正相关。
 + 默认值：true（即开启按照资源组配额调度）
+
+### `priority-ctl-strategy` <span class="version-mark">从 v8.4.0 版本开始引入</span>
+
++ 配置低优先级任务的流量管控策略。TiKV 通过对低优先级的任务进行流量控制来确保优先执行高优先级任务。
++ 可选值：
+    + `aggressive`：此策略会优先保证高优先级任务的性能，确保高优先级任务的吞吐和延迟基本不受影响，但低优先级任务的执行会较慢。
+    + `moderate`：此策略会为低优先级任务施加较平衡的流控限制，并对高优先级任务有较低影响。
+    + `conservative`：此策略会优先确保系统资源被充分利用，允许低优先级任务根据需要充分使用系统可用资源，因此对高优先级任务的性能影响更大。
++ 默认值：`moderate`
 
 ## split
 

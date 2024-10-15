@@ -213,16 +213,12 @@ TiDB 使用的 SQL 语句旨在遵循 ISO/IEC SQL 标准，并在必要时对 My
 | [`SHOW GRANTS`](/sql-statements/sql-statement-show-grants.md) | 显示与用户关联的权限。 |
 | [`SHOW PRIVILEGES`](/sql-statements/sql-statement-show-privileges.md) | 显示可用的权限。 |
 
-## TiCDC 与 TiDB Binlog
+## TiCDC
 
 | SQL 语句 | 描述 |
 |----------|------|
 | [`ADMIN [SET\|SHOW\|UNSET] BDR ROLE`](/sql-statements/sql-statement-admin-bdr-role.md) | 管理 BDR 角色。 |
-| [`CHANGE DRAINER`](/sql-statements/sql-statement-change-drainer.md) | 修改集群中 Drainer 的状态信息。 |
-| [`CHANGE PUMP`](/sql-statements/sql-statement-change-pump.md) | 修改集群中 Pump 的状态信息。 |
-| [`SHOW DRAINER STATUS`](/sql-statements/sql-statement-show-drainer-status.md) | 显示集群中所有 Drainer 节点的状态。 |
 | [`SHOW MASTER STATUS`](/sql-statements/sql-statement-show-master-status.md) | 显示集群中当前最新的 TSO。 |
-| [`SHOW PUMP STATUS`](/sql-statements/sql-statement-show-pump-status.md) | 显示集群中所有 Pump 节点的状态信息。 |
 
 ## 统计信息和执行计划管理
 
