@@ -3868,12 +3868,16 @@ mysql> desc select count(distinct a) from test.t;
 
 ### `tidb_opt_prefer_range_scan` <span class="version-mark">从 v5.0 版本开始引入</span>
 
+> **注意：**
+>
+> 从 v8.4.0 开始，此变量的默认值从 `OFF` 更改为 `ON`。
+
 - 作用域：SESSION | GLOBAL
 - 是否持久化到集群：是
 - 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：是
 - 类型：布尔型
-- 默认值：`OFF`
-- 将该变量值设为 `ON` 后，优化器总是偏好区间扫描而不是全表扫描。
+- 默认值：`ON`
+- 该变量值为 `ON` 时，对于没有统计信息的表（伪统计信息）或空表（零统计信息），优化器将优先选择区间扫描而不是全表扫描。
 - 在以下示例中，`tidb_opt_prefer_range_scan` 开启前，TiDB 优化器需要执行全表扫描。`tidb_opt_prefer_range_scan` 开启后，优化器选择了索引区间扫描。
 
 ```sql
