@@ -1429,15 +1429,15 @@ SELECT MAKE_SET(b'111','foo','bar','baz');
 
 ### [`MID()`](https://dev.mysql.com/doc/refman/8.0/en/string-functions.html#function_mid)
 
-`MID(str,pos,len)` 函数返回从指定的 `pos` 位置开始的长度为 `len` 的子字符串。
+`MID(str, pos[, len])` 函数返回从指定的 `pos` 位置开始的长度为 `len` 的子字符串。
+
+从 v8.4.0 开始，TiDB 支持该函数的两参数版本，即 `MID(str, pos)`。如果未指定 `len`，则返回从指定的 `pos` 位置到字符串末尾的所有字符。
 
 如果任一参数为 `NULL`，该函数将返回 `NULL`。
 
-TiDB 不支持该函数的两参数版本。更多信息，请参见 [#52420](https://github.com/pingcap/tidb/issues/52420)。
-
 示例：
 
-在以下示例中，`MID()` 返回给定的字符串中从第二个字符 (`b`) 开始的长度为 `3` 个字符的的子字符串。
+在以下示例中，`MID()` 返回给定的字符串中从第二个字符 (`b`) 开始的长度为 `3` 个字符的子字符串。
 
 ```sql
 SELECT MID('abcdef',2,3);
@@ -1448,6 +1448,21 @@ SELECT MID('abcdef',2,3);
 | MID('abcdef',2,3) |
 +-------------------+
 | bcd               |
++-------------------+
+1 row in set (0.00 sec)
+```
+
+在以下示例中，`MID()` 返回给定的字符串中从第二个字符 (`b`) 开始到字符串末尾的子字符串。
+
+```sql
+SELECT MID('abcdef',2);
+```
+
+```
++-------------------+
+| MID('abcdef',2)   |
++-------------------+
+| bcdef             |
 +-------------------+
 1 row in set (0.00 sec)
 ```
