@@ -1001,6 +1001,7 @@
         - [`schema_unused_indexes`](/sys-schema/sys-schema-unused-indexes.md)
     - [元数据锁](/metadata-lock.md)
     - [TiDB 加速建表](/accelerated-table-creation.md)
+    - [Schema 缓存](/schema-cache.md)
   - UI
     - TiDB Dashboard
       - [简介](/dashboard/dashboard-intro.md)
