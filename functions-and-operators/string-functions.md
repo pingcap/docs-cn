@@ -636,7 +636,7 @@ mysql> SELECT FROM_BASE64('MTIzNDU2');
 
 > **注意：**
 >
-> 在 MySQL 客户端中，[`--binary-as-hex`](https://dev.mysql.com/doc/refman/8.0/en/mysql-command-options.html#option_mysql_binary-as-hex) 选项在交互模式下默认启用，这会导致客户端将无法识别字符集的数据显示为[十六进制字面值 (Hexadecimal literal)`](https://dev.mysql.com/doc/refman/8.0/en/hexadecimal-literals.html)。你可以使用 `--skip-binary-as-hex` 选项来禁用此行为。
+> 在 MySQL 客户端中，[`--binary-as-hex`](https://dev.mysql.com/doc/refman/8.0/en/mysql-command-options.html#option_mysql_binary-as-hex) 选项在交互模式下默认启用，这会导致客户端将无法识别字符集的数据显示为[十六进制字面量 (Hexadecimal literal)](https://dev.mysql.com/doc/refman/8.0/en/hexadecimal-literals.html)。你可以使用 `--skip-binary-as-hex` 选项来禁用此行为。
 
 示例（使用 `mysql --skip-binary-as-hex`）：
 
@@ -2225,7 +2225,7 @@ SELECT UCASE('bigdata') AS result_upper, UCASE(null) AS result_null;
 > **注意：**
 >
 > - 传入的字符串必须是合法的十六进制数值，包含 `0~9`、`A~F`、`a~f`，如果为 `NULL` 或超出该范围，则返回 `NULL`。
-> - 在 MySQL 客户端中，[`--binary-as-hex`](https://dev.mysql.com/doc/refman/8.0/en/mysql-command-options.html#option_mysql_binary-as-hex) 选项在交互模式下默认启用，这会导致客户端将无法识别字符集的数据显示为[十六进制字面值 (Hexadecimal literal)`](https://dev.mysql.com/doc/refman/8.0/en/hexadecimal-literals.html)。你可以使用 `--skip-binary-as-hex` 选项来禁用此行为。
+> - 在 MySQL 客户端中，[`--binary-as-hex`](https://dev.mysql.com/doc/refman/8.0/en/mysql-command-options.html#option_mysql_binary-as-hex) 选项在交互模式下默认启用，这会导致客户端将无法识别字符集的数据显示为[十六进制字面量 (Hexadecimal literal)](https://dev.mysql.com/doc/refman/8.0/en/hexadecimal-literals.html)。你可以使用 `--skip-binary-as-hex` 选项来禁用此行为。
 
 查询示例：
 
