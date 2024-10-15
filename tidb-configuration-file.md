@@ -707,12 +707,14 @@ opentracing.reporter 相关的设置。
 
 + TiDB 与 TiKV 节点之间 rpc 连接 keepalive 时间间隔，如果超过该值没有网络包，grpc client 会 ping 一下 TiKV 查看是否存活。
 + 默认值：10
++ 最小值：1
 + 单位：秒
 
 ### `grpc-keepalive-timeout`
 
 + TiDB 与 TiKV 节点 rpc keepalive 检查的超时时间
 + 默认值：3
++ 最小值：0.05
 + 单位：秒
 
 ### `grpc-compression-type`
