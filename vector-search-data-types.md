@@ -149,9 +149,6 @@ ERROR 1105 (HY000): vectors have different dimensions: 1 and 3
 
 ## 类型转换 (Cast)
 
-目前 TiDB 无法直接在向量和其他数据类型 (如 `JSON`) 之间进行转换，但你可以使用字符串作为中间数据类型进行转换。
-
-
 ### 向量与字符串之间的转换
 
 可以使用以下函数在向量和字符串之间进行转换：
@@ -229,6 +226,11 @@ ERROR 1105 (HY000): vectors have different dimensions: 1 and 3
 
 如需了解其他转换函数，请参阅[向量函数和操作符](/vector-search-functions-and-operators.md)。
 
+### 向量与其他数据类型之间的转换
+
+目前 TiDB 无法直接在向量和其他数据类型（如 `JSON`）之间进行转换，但你可以在执行的 SQL 语句中使用字符串作为中间类型进行转换。
+
+需要注意的是，对于存储在表中的向量数据类型列，无法通过 `ALTER TABLE ... MODIFY COLUMN ...` 转换为其他数据类型。
 
 ## 使用限制
 
