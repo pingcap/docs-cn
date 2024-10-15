@@ -96,7 +96,7 @@ TiDB 版本：8.4.0
 
 * 新增 TSO 请求的并行批处理模式，降低获取 TSO 的延迟 [#54960](https://github.com/pingcap/tidb/issues/54960) @[MyonKeminta](https://github.com/MyonKeminta) **tw@qiancai** <!--1893-->
 
-    TiDB 在向 PD 请求 TSO 时，会将一段时间内的请求汇总起来并以串行的方式进行批处理，以减少 RPC (Remote Procedure Call) 请求数量从而降低 PD 负载。对于延迟敏感的场景，这种串行模式的性能并不理想。
+    在之前的版本中，TiDB 向 PD 请求 [TSO](/tso.md) 时会将一段时间内的请求汇总起来并以串行的方式进行批处理，以减少 RPC (Remote Procedure Call) 请求数量，从而降低 PD 负载。对于延迟敏感的场景，这种串行模式的性能并不理想。
 
     在 v8.4.0 中，TiDB 新增 TSO 请求的并行批处理模式，并提供不同的并发能力。并行模式可以降低获取 TSO 的延迟，但可能会增加 PD 的负载。你可以通过 [`tidb_tso_client_rpc_mode`](/system-variables.md#tidb_tso_client_rpc_mode-从-v840-版本开始引入) 变量设定获取 TSO 的 RPC 模式。
 
@@ -402,9 +402,9 @@ TiDB 版本：8.4.0
     - 支持指定单个 Region 或 TiKV 实例的内存悲观锁的内存上限，在热点写导致大量悲观锁加锁时，可以通过修改配置提高内存上限，避免悲观锁落盘导致的 CPU/IO 开销 [#17542](https://github.com/tikv/tikv/issues/17542) @[cfzjywxk](https://github.com/cfzjywxk) **tw@Oreoxmt** <!--1967-->
     - Raft Engine 新增 `spill-dir` 配置，支持 Raft 日志的多磁盘存储。当主目录 `dir` 所在磁盘的容量不足时，Raft Engine 会自动将新日志写入 `spill-dir`，从而确保系统的持续运行。[LykxSassinator](https://github.com/LykxSassinator) **tw@hfxsd** <!--1970-->
     - (dup): release-6.5.11.md > 改进提升> TiKV - 优化存在大量 DELETE 版本时 RocksDB 的 compaction 触发机制，以加快磁盘空间回收 [#17269](https://github.com/tikv/tikv/issues/17269) @[AndreMouche](https://github.com/AndreMouche)
-    - 支持向量数据类型（VECTOR）及其相关函数的计算下推 [#17290]https://github.com/tikv/tikv/issues/17290 @[breezewish](https://github.com/breezewish)
-    - 支持在线更改写入流量控制（flow-control）的相关配置 [#17395](https://github.com/tikv/tikv/issues/17395) @[glorv](https://github.com/glorv)
-    - 优化空表和小 Region 场景下的 Region Merge 的速度 [#17376](https://github.com/tikv/tikv/issues/17376) @[LykxSassinator](https://github.com/LykxSassinator)
+    - 支持向量数据类型 (VECTOR) 及其相关函数的计算下推 [#17290]https://github.com/tikv/tikv/issues/17290 @[breezewish](https://github.com/breezewish)
+    - 支持在线更改写入流量控制 (flow-control) 的相关配置 [#17395](https://github.com/tikv/tikv/issues/17395) @[glorv](https://github.com/glorv)
+    - 优化空表和小 Region 场景下 Region Merge 的速度 [#17376](https://github.com/tikv/tikv/issues/17376) @[LykxSassinator](https://github.com/LykxSassinator)
     - [Pipelined DML](https://github.com/pingcap/tidb/blob/master/docs/design/2024-01-09-pipelined-DML.md) 不会长时间阻塞 resolved-ts [#17459](https://github.com/tikv/tikv/issues/17459)@[ekexium](https://github.com/ekexium)
 
 + PD <!--tw@qiancai: 3 notes-->
@@ -418,7 +418,7 @@ TiDB 版本：8.4.0
 
     - (dup): release-6.5.11.md > 改进提升> TiFlash - 优化 `LENGTH()` 和 `ASCII()` 函数执行效率 [#9344](https://github.com/pingcap/tiflash/issues/9344) @[xzhangxian1008](https://github.com/xzhangxian1008)
     - 减少处理存算分离请求时创建的线程数，避免 TiFlash 计算节点在处理大量请求时崩溃 [#9334](https://github.com/pingcap/tiflash/issues/9334) @[JinheLin](https://github.com/JinheLin)
-    - 改进 pipeline 执行模型下任务的等待机制 [#8869](https://github.com/pingcap/tiflash/issues/8869) @[SeaRise](https://github.com/SeaRise)
+    - 改进 Pipeline Model 执行模型下任务的等待机制 [#8869](https://github.com/pingcap/tiflash/issues/8869) @[SeaRise](https://github.com/SeaRise)
     - (dup): release-7.5.4.md > 改进提升> TiFlash - 改进 join 算子的 cancel 机制，使得 join 算子内部能及时响应 cancel 请求 [#9430](https://github.com/pingcap/tiflash/issues/9430) @[windtalker](https://github.com/windtalker)
 
 + Tools
@@ -500,7 +500,7 @@ TiDB 版本：8.4.0
 
     - (dup): release-7.5.4.md > 错误修复 > TiFlash - 修复当表里含 Bit 类型列并且带有表示非法字符的默认值时 TiFlash 无法解析表 schema 的问题 [#9461](https://github.com/pingcap/tiflash/issues/9461) @[Lloyd-Pottiger](https://github.com/Lloyd-Pottiger)
     - 修复当多个 Region 并发进行副本同步时，可能错误触发 Region overlap 检查失败而导致 TiFlash panic 的问题 [#9329](https://github.com/pingcap/tiflash/issues/9329) @[CalvinNeo](https://github.com/CalvinNeo)
-    - 修复一些 TiFlash 不支持的 JSON 函数会被下推给 TiFlash 的问题 [#9444](https://github.com/pingcap/tiflash/issues/9444) @[windtalker](https://github.com/windtalker)
+    - 修复一些 TiFlash 不支持的 JSON 函数被错误地下推到 TiFlash 的问题 [#9444](https://github.com/pingcap/tiflash/issues/9444) @[windtalker](https://github.com/windtalker)
 
 + Tools
 
