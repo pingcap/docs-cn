@@ -460,7 +460,7 @@ TiDB 版本：8.4.0
     - 修复当 `tidb_restricted_read_only` 变量设置为 `true` 时可能死锁的问题 [#53822](https://github.com/pingcap/tidb/issues/53822) [#55373](https://github.com/pingcap/tidb/issues/55373) @[Defined2014](https://github.com/Defined2014)
     - 修复 TiDB 优雅关闭时不等待 auto commit 事务完成的问题 [#55464](https://github.com/pingcap/tidb/issues/55464) @[YangKeao](https://github.com/YangKeao)
     - 修复在 TTL 任务执行过程中，减小 `tidb_ttl_delete_worker_count` 的值导致任务无法完成的问题 [#55561](https://github.com/pingcap/tidb/issues/55561) @[lcwangchao](https://github.com/lcwangchao)
-    - 修复当一张表的索引中包含生成列时，`ANALYZE` 这张表可能报错 `Unknown column 'column_name' in 'expression'` 的问题 [#55438](https://github.com/pingcap/tidb/issues/55438) @[hawkingrei](https://github.com/hawkingrei)
+    - 修复当一张表的索引中包含生成列时，通过 `ANALYZE` 语句收集这张表的统计信息时可能报错 `Unknown column 'column_name' in 'expression'` 的问题 [#55438](https://github.com/pingcap/tidb/issues/55438) @[hawkingrei](https://github.com/hawkingrei)
     - 废弃统计信息相关的无用配置，减少冗余代码 [#55043](https://github.com/pingcap/tidb/issues/55043) @[Rustin170506](https://github.com/Rustin170506)
     - 修复执行一条包含关联子查询和 CTE 的查询时，TiDB 可能卡住或返回错误结果的问题 [#55551](https://github.com/pingcap/tidb/issues/55551) @[guo-shaoge](https://github.com/guo-shaoge)
     - 修复禁用 `lite-init-stats` 可能导致统计信息同步加载失败的问题 [#54532](https://github.com/pingcap/tidb/issues/54532) @[hawkingrei](https://github.com/hawkingrei)
