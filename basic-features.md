@@ -98,6 +98,7 @@ aliases: ['/docs-cn/dev/basic-features/','/docs-cn/dev/experimental-features-4.0
 |---|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|
 | [向量搜索](/vector-search-overview.md) |  E |  N |  N |  N |  N  | N | N | N | N | N | N | N |
 | [Prepare 语句执行计划缓存](/sql-prepared-plan-cache.md) | Y | Y | Y |  Y  |  Y  | Y | Y | Y | Y | Y | E | E |
+| [实例级执行计划缓存](/system-variables.md#tidb_enable_instance_plan_cache-从-v840-版本开始引入) | E | N | N |  N  |  N  | N | N | N | N | N | N | N |
 | [非 Prepare 语句执行计划缓存](/sql-non-prepared-plan-cache.md) | Y | Y |  Y  |  Y  |  Y  | E | N | N | N | N | N | N |
 | [执行计划绑定 (SQL Binding)](/sql-plan-management.md#执行计划绑定-sql-binding) | Y | Y |  Y  |  Y  |  Y  | Y | Y | Y | Y | Y | Y | Y |
 | [跨数据库执行计划绑定 (Cross-DB Binding)](/sql-plan-management.md#跨数据库绑定执行计划-cross-db-binding) | Y | Y |  Y  |  Y  |  N  | N | N | N | N | N | N | N |
