@@ -162,6 +162,7 @@ show warnings;
 | readpool.unified.max-thread-count | 统一处理读请求的线程池最多的线程数量，即 UnifyReadPool 线程池大小 |
 | readpool.unified.max-tasks-per-worker | 统一处理读请求的线程池中单个线程允许积压的最大任务数量，超出后会返回 Server Is Busy。 |
 | readpool.unified.auto-adjust-pool-size | 是否开启自适应调整 UnifyReadPool 的大小 |
+| resource-control.priority-ctl-strategy | 配置低优先级任务的流量管控策略。 |
 | coprocessor.split-region-on-table | 开启按 table 分裂 Region 的开关 |
 | coprocessor.batch-split-limit | 批量分裂 Region 的阈值 |
 | coprocessor.region-max-size | Region 容量空间的最大值 |

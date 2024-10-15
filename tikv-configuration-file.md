@@ -1081,7 +1081,7 @@ Coprocessor 相关的配置项。
 ### `region-split-size`
 
 + 分裂后新 Region 的大小，此值属于估算值。
-+ 默认值：96MiB
++ 默认值：`"256MiB"`。在 v8.4.0 之前，默认值为 `"96MiB"`。
 + 单位：KiB|MiB|GiB
 
 ### `region-max-keys`
@@ -1092,7 +1092,7 @@ Coprocessor 相关的配置项。
 ### `region-split-keys`
 
 + 分裂后新 Region 的 key 的个数，此值属于估算值。
-+ 默认值：960000
++ 默认值：`2560000`。在 v8.4.0 之前，默认值为 `960000`。
 
 ### `consistency-check-method`
 
@@ -1936,6 +1936,20 @@ Raft Engine 相关的配置项。
 + 如果你的机器上有多个磁盘，建议将 Raft Engine 的数据存储在单独的磁盘上，以提高 TiKV 性能。
 + 默认值：`""`
 
+### `spill-dir` <span class="version-mark">从 v8.4.0 版本开始引入</span>
+
++ 存储 Raft 日志文件的辅助目录，当 `dir` 目录所在盘数据写满后，新的 Raft 日志将存储在该目录下。如果该目录配置后不存在，则在 TiKV 启动时自动创建该目录。
++ 如果未设置此配置，则表示不启用辅助目录。
+
+> **注意：**
+>
+> - 该配置仅在 Raft Engine 的 `dir` 和 `spill-dir` 分别指定为**不同盘符**时才有效。
+> - 在配置该功能后，若想要关闭该功能，你需要在重启 TiKV **之前**执行如下操作，否则将**无法启动** TiKV：
+>     1. 关闭 TiKV。
+>     2. 将 `spill-dir` 目录下的所有 Raft Log 复制到 [`dir`](/tikv-configuration-file.md#dir) 目录下。
+>     3. 从 TiKV 配置文件中删除该配置。
+>     4. 重启 TiKV。
+
 ### `batch-compression-threshold`
 
 + 指定日志批处理的阈值大小。大于此配置的日志批次将被压缩。如果将此配置项设置为 `0`，则禁用压缩。
@@ -2154,7 +2168,7 @@ Raft Engine 相关的配置项。
 
 + 备份 SST 文件大小的阈值。如果 TiKV Region 中备份文件的大小超过该阈值，则将该文件备份到 Region 分割的多个 Region 文件中，每个分割 Region 中的文件大小均为 `sst-max-size`（或略大）。
 + 例如，当 Region `[a,e)` 中备份文件大小超过 `sst-max-size` 时，该文件会被备份到多个 Region 范围中，分别为 Region `[a,b)`、`[b,c)`、`[c,d)` 和 `[d,e)`，并且 `[a,b)`、`[b,c)` 和 `[c,d)` 的大小均为 `sst-max-size`（或略大）。
-+ 默认值：`"144MiB"`
++ 默认值：`"384MiB"`。在 v8.4.0 之前，默认值为 `"144MiB"`。
 
 ### `enable-auto-tune` <span class="version-mark">从 v5.4 版本开始引入</span>
 
@@ -2433,6 +2447,15 @@ Raft Engine 相关的配置项。
 + 是否支持对用户前台的读写请求按照对应的资源组配额做优先级调度。有关 TiDB 资源组和资源管控的信息，请参考 [TiDB 资源管控](/tidb-resource-control.md)
 + 在 TiDB 侧开启 [`tidb_enable_resource_control`](/system-variables.md#tidb_enable_resource_control-从-v660-版本开始引入) 全局变量的情况下，开启这个配置项才有意义。此配置参数开启后，TiKV 会使用优先级队列对排队的用户前台读写请求做调度，调度的优先级和请求所在资源组已经消费的资源量反相关，和对应资源组的配额正相关。
 + 默认值：true（即开启按照资源组配额调度）
+
+### `priority-ctl-strategy` <span class="version-mark">从 v8.4.0 版本开始引入</span>
+
++ 配置低优先级任务的流量管控策略。TiKV 通过对低优先级的任务进行流量控制来确保优先执行高优先级任务。
++ 可选值：
+    + `aggressive`：此策略会优先保证高优先级任务的性能，确保高优先级任务的吞吐和延迟基本不受影响，但低优先级任务的执行会较慢。
+    + `moderate`：此策略会为低优先级任务施加较平衡的流控限制，并对高优先级任务有较低影响。
+    + `conservative`：此策略会优先确保系统资源被充分利用，允许低优先级任务根据需要充分使用系统可用资源，因此对高优先级任务的性能影响更大。
++ 默认值：`moderate`
 
 ## split
 
