@@ -52,7 +52,7 @@ TiDB Lightning 的完整配置文件可参考[完整配置及命令行参数](/t
 | 策略 | 冲突时默认行为                     | 对应 SQL 语句 |
 |:---|:----------------------------|:---|
 | `"replace"` | 新数据替代旧数据                    | `REPLACE INTO ...` |
-| `"ignore"` | 保留旧数据，忽略新数据                 | `INSERT IGNORE INTO ...` |
+| `"ignore"` | 保留旧数据，忽略新数据                 | 如果 `conflict.threshold` 大于 `0`，则为 `INSERT INTO ...`；如果 `conflict.threshold` 为 `0`，则为 `INSERT IGNORE INTO ...` |
 | `"error"` | 遇到冲突数据时终止导入                        | `INSERT INTO ...` |
 | `""` | 会被转换为 `"error"`，遇到冲突数据时终止导入 | 无 |
 
