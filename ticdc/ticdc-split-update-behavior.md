@@ -114,7 +114,7 @@ COMMIT;
 从 v6.5.10、v7.1.6 开始，使用非 MySQL Sink 时，TiCDC 支持通过 `output-raw-change-event` 参数控制是否拆分主键或唯一键 `UPDATE` 事件，详情见 GitHub issue [#11211](https://github.com/pingcap/tiflow/issues/11211)。这个参数的具体行为是：
 
 - 当 `output-raw-change-event = false` 时，如果 `UPDATE` 事件的主键或者非空唯一索引的列值发生改变，TiCDC 会将该其拆分为 `DELETE` 和 `INSERT` 两条事件，并确保所有事件按照 `DELETE` 事件在 `INSERT` 事件之前的顺序进行排序。
-- 当 `output-raw-change-event = true` 时，TiCDC 不拆分 `UPDATE` 事件。注意，当表的主键为聚簇索引时，对主键的更新会在 TiDB 中拆分为 `DELETE` 和 `INSERT` 两个事件，该行为不受 `output-raw-change-event` 参数的影响。
+- 当 `output-raw-change-event = true` 时，TiCDC 不拆分 `UPDATE` 事件，消费侧需负责处理[非 MySQL Sink 拆分主键或唯一键 `UPDATE` 事件](/ticdc/ticdc-split-update-behavior.md#非-mysql-sink-拆分主键或唯一键-update-事件)中说明的问题，否则可能出现数据不一致的风险。注意，当表的主键为聚簇索引时，对主键的更新会在 TiDB 中拆分为 `DELETE` 和 `INSERT` 两个事件，该行为不受 `output-raw-change-event` 参数的影响。
 
 #### Release 6.5 的兼容性
 
