@@ -63,6 +63,9 @@ TiDB 目前支持 [HNSW (Hierarchical Navigable Small World)](https://en.wikiped
 你只能为固定维度的向量列 (如定义为 `VECTOR(3)` 类型) 创建向量索引，不能为混合维度的向量列 (如定义为 `VECTOR` 类型) 创建向量索引，因为只有维度相同的向量之间才能计算向量距离。
 
 有关向量搜索索引的约束和限制，请参阅[向量搜索索引 - 使用限制](/vector-search-index.md#使用限制)。
+> **注意：**
+>
+> 在创建表时声明向量搜索索引时，TiDB 会自动为该表设置 TiFlash 副本数为 1。若建表时未声明，后续为表新增向量搜索索引时，需要手动为表创建 TiFlash 副本，例如：`ALTER TABLE 'table_name' SET TIFLASH REPLICA 1;`
 
 ## 使用向量搜索索引
 
@@ -108,56 +111,20 @@ WHERE category = "document";
 -- 请注意，如果过滤掉一些结果，此查询返回的结果可能少于 5 个。
 ```
 
-**对表进行分区：**在[分区表](/partitioned-table.md)内的查询可以充分利用向量索引。如果你需要进行等值过滤，会非常有用，因为等值过滤可以转化为访问指定的分区。
-
-例如，假设你需要查找与特定产品版本最接近的文档：
-
-```sql
--- 对于以下查询，`WHERE` 过滤条件在 KNN 之前执行，因此不能使用向量搜索索引：
-SELECT * FROM docs
-WHERE ver = "v2.0"
-ORDER BY VEC_COSINE_DISTANCE(embedding, '[1, 2, 3]')
-LIMIT 5;
-```
-
-如需使用向量搜索索引，你可以先对表进行分区，然后使用 [`PARTITION` 关键字](/partitioned-table.md#partition-selection) 在特定分区内进行查询，而不是使用 `WHERE` 子句。
-
-```sql
-CREATE TABLE docs (
-    id INT,
-    ver VARCHAR(10),
-    doc TEXT,
-    embedding VECTOR(3),
-    VECTOR INDEX idx_embedding USING HNSW ((VEC_COSINE_DISTANCE(embedding)))
-) PARTITION BY LIST COLUMNS (ver) (
-    PARTITION p_v1_0 VALUES IN ('v1.0'),
-    PARTITION p_v1_1 VALUES IN ('v1.1'),
-    PARTITION p_v1_2 VALUES IN ('v1.2'),
-    PARTITION p_v2_0 VALUES IN ('v2.0')
-);
-
-SELECT * FROM docs
-PARTITION (p_v2_0)
-ORDER BY VEC_COSINE_DISTANCE(embedding, '[1, 2, 3]')
-LIMIT 5;
-```
-
-更多信息，请参阅[分区表](/partitioned-table.md)。
-
 ## 查看索引构建进度
 
-与其他索引不同，向量搜索索引是通过异步方式构建的。这意味着，在完成大批量数据插入后，向量索引可能不会立即构建完成以供查询使用，但这并不会影响数据的准确性和一致性。你仍然可以随时进行向量搜索，并获得完整的结果，但需要注意的是，查询性能只有在向量搜索索引完全构建好之后才会达到最佳水平。
+在大批量数据插入后，部分数据可能会处于 delta 层等待后续的持久化。对于已经持久化后的向量数据，向量搜索索引的构建是通过同步的方式构建的，处于 delta 层的数据会在完成持久化再开始构建，但这并不会影响数据的准确性和一致性。你仍然可以随时进行向量搜索，并获得完整的结果，但需要注意的是，查询性能只有在向量搜索索引完全构建好之后才会达到最佳水平。
 
 要查看索引构建进度，可以按如下方式查询 `INFORMATION_SCHEMA.TIFLASH_INDEXES` 表：
 
 ```sql
 SELECT * FROM INFORMATION_SCHEMA.TIFLASH_INDEXES;
-+---------------+------------+----------------+----------+--------------------+-------------+-----------+------------+---------------------+-------------------------+--------------------+------------------------+------------------+
-| TIDB_DATABASE | TIDB_TABLE | TIDB_PARTITION | TABLE_ID | BELONGING_TABLE_ID | COLUMN_NAME | COLUMN_ID | INDEX_KIND | ROWS_STABLE_INDEXED | ROWS_STABLE_NOT_INDEXED | ROWS_DELTA_INDEXED | ROWS_DELTA_NOT_INDEXED | TIFLASH_INSTANCE |
-+---------------+------------+----------------+----------+--------------------+-------------+-----------+------------+---------------------+-------------------------+--------------------+------------------------+------------------+
-| test          | sample     | NULL           |      106 |                 -1 | vec         |         2 | HNSW       |                   0 |                   13000 |                  0 |                   2000 | store-6ba728d2   |
-| test          | sample     | NULL           |      106 |                 -1 | vec         |         2 | HNSW       |               10500 |                       0 |                  0 |                   4500 | store-7000164f   |
-+---------------+------------+----------------+----------+--------------------+-------------+-----------+------------+---------------------+-------------------------+--------------------+------------------------+------------------+
++---------------+------------+----------+-------------+---------------+-----------+----------+------------+---------------------+-------------------------+--------------------+------------------------+---------------+------------------+
+| TIDB_DATABASE | TIDB_TABLE | TABLE_ID | COLUMN_NAME | INDEX_NAME    | COLUMN_ID | INDEX_ID | INDEX_KIND | ROWS_STABLE_INDEXED | ROWS_STABLE_NOT_INDEXED | ROWS_DELTA_INDEXED | ROWS_DELTA_NOT_INDEXED | ERROR_MESSAGE | TIFLASH_INSTANCE |
++---------------+------------+----------+-------------+---------------+-----------+----------+------------+---------------------+-------------------------+--------------------+------------------------+---------------+------------------+
+| test          | tcff1d827  |      219 | col1fff     | 0a452311      |         7 |        1 | HNSW       |               29646 |                       0 |                  0 |                      0 |               | 127.0.0.1:3930   |
+| test          | foo        |      717 | embedding   | idx_embedding |         2 |        1 | HNSW       |                   0 |                       0 |                  0 |                      3 |               | 127.0.0.1:3930   |
++---------------+------------+----------+-------------+---------------+-----------+----------+------------+---------------------+-------------------------+--------------------+------------------------+---------------+------------------+
 ```
 
 - 可以通过 `ROWS_STABLE_INDEXED` 和 `ROWS_STABLE_NOT_INDEXED` 列查看索引构建进度。当 `ROWS_STABLE_NOT_INDEXED` 变为 0 时，表示索引构建完成。
