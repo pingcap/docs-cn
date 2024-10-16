@@ -2324,6 +2324,18 @@ Raft Engine 相关的配置项。
 + 默认值：true
 + 注意：`in-memory` 仅在 `pipelined` 为 true 时生效。
 
+### `in-memory-peer-size-limit` <span class="version-mark">从 v8.4.0 版本开始引入</span>
+
++ 控制单个 Region [内存悲观锁](/pessimistic-transaction.md#内存悲观锁)的内存使用上限。超过此限制时，悲观锁将回退到持久化方式写入磁盘。
++ 默认值：512KiB
++ 单位：KiB|MiB|GiB
+
+### `in-memory-instance-size-limit` <span class="version-mark">从 v8.4.0 版本开始引入</span>
+
++ 控制单个 TiKV 实例[内存悲观锁](/pessimistic-transaction.md#内存悲观锁)的内存使用上限。超过此限制时，悲观锁将回退到持久化方式写入磁盘。
++ 默认值：100MiB
++ 单位：KiB|MiB|GiB
+
 ## quota
 
 用于请求限流 (Quota Limiter) 相关的配置项。
