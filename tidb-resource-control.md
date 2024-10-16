@@ -217,9 +217,11 @@ Runaway Query 是指执行时间或消耗资源超出预期的查询（仅指 `S
 
 #### `QUERY_LIMIT` 参数说明
 
-支持的条件设置：
+如果查询超过以下任一限制，就会被识别为 Runaway Query：
 
-- `EXEC_ELAPSED`: 当查询执行的时间超限时，识别为 Runaway Query。
+- `EXEC_ELAPSED`：检测查询执行的时间是否超限
+- `PROCESSED_KEYS`：检测 Coprocessor 处理的 key 的数量是否超限
+- `RU`：检测执行语句消耗的总读写 RU 是否超限
 
 支持的应对操作 (`ACTION`)：
 
@@ -244,7 +246,9 @@ Runaway Query 是指执行时间或消耗资源超出预期的查询（仅指 `S
 
 | 参数            | 含义           | 备注                                   |
 |---------------|--------------|--------------------------------------|
-| `EXEC_ELAPSED`  | 当查询执行时间超过该值后被识别为 Runaway Query | EXEC_ELAPSED =`60s` 表示查询的执行时间超过 60 秒则被认为是 Runaway Query。 |
+| `EXEC_ELAPSED`  | 当查询执行时间超过该值时，会被识别为 Runaway Query | `EXEC_ELAPSED = 60s` 表示查询的执行时间超过 60 秒则被认为是 Runaway Query。 |
+| `PROCESSED_KEYS` | 当 Coprocessor 处理的 key 的数量超过该值时，查询会被识别为 Runaway Query | `PROCESSED_KEYS = 1000` 表示 Coprocessor 处理的 key 的数量超过 1000 则被认为是 Runaway Query。 |
+| `RU`  | 当查询消耗的总读写 RU 超过该值时，查询会被识别为 Runaway Query | `RU = 1000` 表示查询消耗的总读写 RU 超过 1000 则被认为是 Runaway Query。 |
 | `ACTION`    | 当识别到 Runaway Query 时进行的动作 | 可选值有 `DRYRUN`，`COOLDOWN`，`KILL`，`SWITCH_GROUP`。 |
 | `WATCH`   | 快速匹配已经识别到的 Runaway Query，即在一定时间内再碰到相同或相似查询直接进行相应动作 | 可选项，配置例如 `WATCH=SIMILAR DURATION '60s'`、`WATCH=EXACT DURATION '1m'`、`WATCH=PLAN`。 |
 
@@ -312,24 +316,25 @@ Runaway Query 是指执行时间或消耗资源超出预期的查询（仅指 `S
 - 通过查询 `INFORMATION_SCHEMA.RUNAWAY_WATCHES` 获取监控项 ID，删除该监控项。
 
     ```sql
-    SELECT * FROM INFORMATION_SCHEMA.RUNAWAY_WATCHES ORDER BY id;
+    SELECT * FROM INFORMATION_SCHEMA.RUNAWAY_WATCHES ORDER BY id\G
     ```
 
     ```sql
     *************************** 1. row ***************************
-                    ID: 20003
-    RESOURCE_GROUP_NAME: rg2
-            START_TIME: 2023-07-28 13:06:08
-            END_TIME: UNLIMITED
-                WATCH: Similar
-            WATCH_TEXT: 5b7fd445c5756a16f910192ad449c02348656a5e9d2aa61615e6049afbc4a82e
-                SOURCE: 127.0.0.1:4000
+                     ID: 1
+    RESOURCE_GROUP_NAME: default
+             START_TIME: 2024-09-09 03:35:31
+               END_TIME: 2024-09-09 03:45:31
+                  WATCH: Exact
+            WATCH_TEXT: SELECT variable_name, variable_value FROM mysql.global_variables
+                 SOURCE: 127.0.0.1:4000
                 ACTION: Kill
+                RULE: ProcessedKeys = 666(10)
     1 row in set (0.00 sec)
     ```
 
     ```sql
-    QUERY WATCH REMOVE 20003;
+    QUERY WATCH REMOVE 1;
     ```
 
 #### 可观测性
@@ -341,13 +346,14 @@ Runaway Query 是指执行时间或消耗资源超出预期的查询（仅指 `S
     ```sql
     MySQL [(none)]> SELECT * FROM mysql.tidb_runaway_queries LIMIT 1\G
     *************************** 1. row ***************************
-    resource_group_name: rg1
-                   time: 2023-06-16 17:40:22
+    resource_group_name: default
+                   time: 2024-09-06 17:43:09
              match_type: identify
                  action: kill
            original_sql: select * from sbtest.sbtest1
-            plan_digest: 5b7d445c5756a16f910192ad449c02348656a5e9d2aa61615e6049afbc4a82e
+            plan_digest: cef718bcf4137307a8167e595941a92a260deb7dd9e1c9735bfba3ce3542de0f
             tidb_server: 127.0.0.1:4000
+                   rule: RequestUnit = RRU:10.838106, WRU:0.000000, WaitDuration:0s(10)
     ```
 
     其中，`match_type` 为该 Runaway Query 的来源，其值如下：
