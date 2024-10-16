@@ -48,12 +48,18 @@ TiDB 目前支持 [HNSW (Hierarchical Navigable Small World)](https://en.wikiped
     ```sql
     CREATE VECTOR INDEX idx_embedding ON foo ((VEC_COSINE_DISTANCE(embedding)));
     ALTER TABLE foo ADD VECTOR INDEX idx_embedding ((VEC_COSINE_DISTANCE(embedding)));
-    
+
     -- 你也可以显式指定使用 HNSW 构建向量搜索索引
     CREATE VECTOR INDEX idx_name ON foo ((VEC_COSINE_DISTANCE(data))) USING HNSW;
     ALTER TABLE foo ADD VECTOR INDEX idx_name ((VEC_COSINE_DISTANCE(data))) USING HNSW;
     ```
 
+> **注意：**
+>
+> 向量搜索索引功能的实现需要基于表的 TiFlash 副本。
+>
+> - 在建表时如果定义了向量搜索索引，TiDB 将自动为该表创建一个 TiFlash 副本。
+> - 如果建表时未定义向量搜索索引，并且该表当前没有 TiFlash 副本，那么为该表添加向量搜索索引时，你需要先手动为该表创建 TiFlash 副本，例如：`ALTER TABLE 'table_name' SET TIFLASH REPLICA 1;`。
 
 在创建 HNSW 向量索引时，你需要指定向量的距离函数：
 
@@ -63,9 +69,6 @@ TiDB 目前支持 [HNSW (Hierarchical Navigable Small World)](https://en.wikiped
 你只能为固定维度的向量列 (如定义为 `VECTOR(3)` 类型) 创建向量索引，不能为混合维度的向量列 (如定义为 `VECTOR` 类型) 创建向量索引，因为只有维度相同的向量之间才能计算向量距离。
 
 有关向量搜索索引的约束和限制，请参阅[向量搜索索引 - 使用限制](/vector-search-index.md#使用限制)。
-> **注意：**
->
-> 在创建表时声明向量搜索索引时，TiDB 会自动为该表设置 TiFlash 副本数为 1。若建表时未声明，后续为表新增向量搜索索引时，需要手动为表创建 TiFlash 副本，例如：`ALTER TABLE 'table_name' SET TIFLASH REPLICA 1;`
 
 ## 使用向量搜索索引
 
@@ -113,7 +116,7 @@ WHERE category = "document";
 
 ## 查看索引构建进度
 
-在大批量数据插入后，部分数据可能会处于 delta 层等待后续的持久化。对于已经持久化后的向量数据，向量搜索索引的构建是通过同步的方式构建的，处于 delta 层的数据会在完成持久化再开始构建，但这并不会影响数据的准确性和一致性。你仍然可以随时进行向量搜索，并获得完整的结果，但需要注意的是，查询性能只有在向量搜索索引完全构建好之后才会达到最佳水平。
+当插入大批量数据后，部分数据可能没有立即持久化到 TiFlash 中。对于已经持久化的向量数据，向量搜索索引是通过同步的方式构建的；对于尚未未持久化的数据，向量搜索索引会在数据持久化后才开始构建，但这并不会影响数据的准确性和一致性。你仍然可以随时进行向量搜索，并获得完整的结果，但需要注意的是，查询性能只有在向量搜索索引完全构建好之后才会达到最佳水平。
 
 要查看索引构建进度，可以按如下方式查询 `INFORMATION_SCHEMA.TIFLASH_INDEXES` 表：
 
@@ -131,9 +134,9 @@ SELECT * FROM INFORMATION_SCHEMA.TIFLASH_INDEXES;
 
     作为参考，对于一个 500 MiB 的向量数据集，构建索引的过程可能需要 20 分钟。索引构建器能够并行地在多个表中构建向量搜索索引。目前不支持调整索引构建器的优先级或速度。
 
-- 可以通过 `ROWS_DELTA_NOT_INDEXED` 列查看 Delta 层中的行数。Delta 层存储最近插入或更新的行，并根据写入工作量定期将这些行合并到稳定层。这个合并过程称为“压缩”。
+- 可以通过 `ROWS_DELTA_NOT_INDEXED` 列查看 Delta 层中的行数。TiFlash 存储层的数据主要存放在 Delta 层和 Stable 层。Delta 层存储最近插入或更新的行，并根据写入工作量定期将这些行合并到稳定层。这个合并过程称为“压缩”。
 
-    Delta 层本身是不包含索引的。为了达到最佳性能，你可以强制将 Delta 层合并到稳定层，以确保所有的数据都能够被索引：
+    Delta 层本身是不包含索引的。为了达到最佳性能，你可以强制将 Delta 层合并到 Stable 层，以确保所有的数据都能够被索引：
 
     ```sql
     ALTER TABLE <TABLE_NAME> COMPACT;
