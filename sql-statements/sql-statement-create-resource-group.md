@@ -66,6 +66,7 @@ ResourceGroupRunawayActionOption ::=
     DRYRUN
 |   COOLDOWN
 |   KILL
+|   "SWITCH_GROUP" '(' ResourceGroupName ')'
 ```
 
 资源组的 `ResourceGroupName` 是全局唯一的，不允许重复。

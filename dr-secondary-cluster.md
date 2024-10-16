@@ -296,13 +296,20 @@ TiDB 目前还没有提供 DR Dashboard，你可以通过以下 Dashboard 了解
 2. 业务写入完全停止后，查询 TiDB 集群当前最新的 TSO (`Position`)：
 
     ```sql
-    mysql> show master status;
-    +-------------+--------------------+--------------+------------------+-------------------+
-    | File        | Position           | Binlog_Do_DB | Binlog_Ignore_DB | Executed_Gtid_Set |
-    +-------------+--------------------+--------------+------------------+-------------------+
-    | tidb-binlog | 438223974697009153 |              |                  |                   |
-    +-------------+--------------------+--------------+------------------+-------------------+
-    1 row in set (0.33 sec)
+    BEGIN; SELECT TIDB_CURRENT_TSO(); ROLLBACK;
+    ```
+
+    ```sql
+    Query OK, 0 rows affected (0.00 sec)
+
+    +--------------------+
+    | TIDB_CURRENT_TSO() |
+    +--------------------+
+    | 452654700157468673 |
+    +--------------------+
+    1 row in set (0.00 sec)
+
+    Query OK, 0 rows affected (0.00 sec)
     ```
 
 3. 轮询 Changefeed `dr-primary-to-secondary` 的同步位置时间点 TSO 直到满足 `TSO >= Position`。

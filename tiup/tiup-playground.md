@@ -34,9 +34,6 @@ Flags:
       --db.binpath string          指定 TiDB 二进制文件的位置（开发调试用，可忽略）
       --db.config string           指定 TiDB 的配置文件（开发调试用，可忽略）
       --db.timeout int             指定 TiDB 最长等待超时时间，单位为秒。若配置为 0，则永不超时。
-      --drainer int                设置集群中 Drainer 数据
-      --drainer.binpath string     指定 Drainer 二进制文件的位置（开发调试用，可忽略）
-      --drainer.config string      指定 Drainer 的配置文件
   -h, --help                       打印帮助信息
       --host string                设置每个组件的监听地址（默认为 127.0.0.1），如果要提供给别的电脑访问，可设置为 0.0.0.0
       --kv int                     设置集群中 TiKV 节点的数量（默认为1）
@@ -48,9 +45,6 @@ Flags:
       --pd.binpath string          指定 PD 二进制文件的位置（开发调试用，可忽略）
       --pd.config string           指定 PD 的配置文件（开发调试用，可忽略）
       --pd.mode string             指定 PD 的工作模式，取值选项为 'ms'。指定该参数代表启用 PD 微服务模式。
-      --pump int                   设置集群中 Pump 节点的数量（非 0 的时候 TiDB 会开启 TiDB Binlog）
-      --pump.binpath string        指定 Pump 二进制文件的位置（开发调试用，可忽略）
-      --pump.config string         指定 Pump 的配置文件（开发调试用，可忽略）
       --scheduling int             设置集群中 Scheduling 节点的数量（默认为 1），只能在 pd.mode 为 'ms' 的时候设置
       --scheduling.host host       指定 Scheduling 节点的监听地址
       --scheduling.binpath string  指定 Scheduling 节点上二进制文件的位置（开发调试用，可忽略）
@@ -175,10 +169,8 @@ Pid    Role     Uptime
 ---    ----     ------
 84518  pd       35m22.929404512s
 84519  tikv     35m22.927757153s
-84520  pump     35m22.92618275s
 86189  tidb     exited
 86526  tidb     34m28.293148663s
-86190  drainer  35m19.91349249s
 ```
 
 ## 扩容集群

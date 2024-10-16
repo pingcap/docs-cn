@@ -49,7 +49,7 @@ TiDB 作为一款开源一栈式实时 HTAP 数据库，可以很好地部署和
 
 |  编译和构建 TiDB 所需的依赖库   |  版本   |
 |   :---   |   :---   |
-|   Golang  |  1.21 及以上版本  |
+|   Golang  |  1.23 及以上版本  |
 |   Rust    |   nightly-2023-12-28 及以上版本  |
 |  GCC      |   7.x      |
 |  LLVM     |  17.0 及以上版本  |
@@ -153,8 +153,6 @@ TiDB 作为开源一栈式实时 HTAP 数据库，其正常运行需要网络环
 |TiFlash|20170|TiFlash Proxy 服务端口|
 |TiFlash|20292|Prometheus 拉取 TiFlash Proxy metrics 端口|
 |TiFlash|8234|Prometheus 拉取 TiFlash metrics 端口|
-| Pump | 8250 | Pump 通信端口 |
-| Drainer | 8249 | Drainer 通信端口 |
 | CDC | 8300 | CDC 通信接口 |
 | Monitoring | 9090 | Prometheus 服务通信端口 |
 | Monitoring | 12020 | NgMonitoring 服务通信端口 |

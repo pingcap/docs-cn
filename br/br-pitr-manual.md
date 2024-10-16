@@ -83,9 +83,79 @@ Global Flags:
 使用示例：
 
 ```shell
-tiup br log start --task-name=pitr --pd="${PD_IP}:2379" \
---storage='s3://backup-101/logbackup?access-key=${access-key}&secret-access-key=${secret-access-key}"'
+tiup br log start \
+  --task-name=pitr \
+  --pd="${PD_IP}:2379" \
+  --storage='s3://backup-101/logbackup?access-key=${access-key}&secret-access-key=${secret-access-key}'
 ```
+
+### 加密日志备份数据
+
+> **警告：**
+>
+> 当前该功能为实验特性，不建议在生产环境中使用。如果发现 bug，请在 GitHub 上提 [issue](https://github.com/pingcap/tidb/issues) 反馈。
+
+BR 支持在上传到备份存储之前对日志备份数据进行加密。
+
+自 TiDB v8.4.0 起，你可以在日志备份命令中传入以下参数来加密日志备份数据，类似于[快照备份加密](/br/br-snapshot-manual.md#备份数据加密)：
+
+- `--log.crypter.method`：加密算法，支持 `aes128-ctr`、`aes192-ctr` 和 `aes256-ctr` 三种算法，缺省值为 `plaintext`，表示不加密
+- `--log.crypter.key`：加密密钥，十六进制字符串格式，`aes128-ctr` 对应 128 位（16 字节）密钥长度，`aes192-ctr` 为 24 字节，`aes256-ctr` 为 32 字节
+- `--log.crypter.key-file`：密钥文件，可直接将存放密钥的文件路径作为参数传入，此时 `log.crypter.key` 不需要配置
+
+示例如下：
+
+```shell
+tiup br log start \
+    --task-name=pitr-with-encryption
+    --pd ${PD_IP}:2379 \
+    --storage "s3://${BACKUP_COLLECTION_ADDR}/snapshot-${DATE}?access-key=${AWS_ACCESS_KEY}&secret-access-key=${AWS_SECRET_ACCESS_KEY}" \
+    --log.crypter.method aes128-ctr \
+    --log.crypter.key 0123456789abcdef0123456789abcdef
+```
+
+然而，在一些对安全性要求更高的场景中，你可能不希望在命令行中直接传入固定的加密密钥。为了进一步提高安全性，你可以使用基于主密钥的加密系统来管理加密密钥。该系统会使用不同的数据密钥来加密不同的日志备份文件，并且支持主密钥轮换。你可以在日志备份命令中传入以下参数来配置基于主密钥的加密：
+
+- `--master-key-crypter-method`：基于主密钥的加密算法，支持 `aes128-ctr`、`aes192-ctr` 和 `aes256-ctr` 三种算法，缺省值为 `plaintext`，表示不加密
+- `--master-key`：主密钥配置，可以是基于本地磁盘的主密钥或基于云 KMS (Key Management Service) 的主密钥
+
+使用本地磁盘主密钥加密：
+
+```shell
+tiup br log start \
+    --task-name=pitr-with-encryption \
+    --pd ${PD_IP}:2379 \
+    --storage "s3://${BACKUP_COLLECTION_ADDR}/snapshot-${DATE}?access-key=${AWS_ACCESS_KEY}&secret-access-key=${AWS_SECRET_ACCESS_KEY}" \
+    --master-key-crypter-method aes128-ctr \
+    --master-key "local:///path/to/master.key"
+```
+
+使用 AWS KMS 加密：
+
+```shell
+tiup br log start \
+    --task-name=pitr-with-encryption \
+    --pd ${PD_IP}:2379 \
+    --storage "s3://${BACKUP_COLLECTION_ADDR}/snapshot-${DATE}?access-key=${AWS_ACCESS_KEY}&secret-access-key=${AWS_SECRET_ACCESS_KEY}" \
+    --master-key-crypter-method aes128-ctr \
+    --master-key "aws-kms:///${AWS_KMS_KEY_ID}?AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY}&AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}&REGION=${AWS_REGION}"
+```
+
+使用 Google Cloud KMS 加密：
+
+```shell
+tiup br log start \
+    --task-name=pitr-with-encryption \
+    --pd ${PD_IP}:2379 \
+    --storage "s3://${BACKUP_COLLECTION_ADDR}/snapshot-${DATE}?access-key=${AWS_ACCESS_KEY}&secret-access-key=${AWS_SECRET_ACCESS_KEY}" \
+    --master-key-crypter-method aes128-ctr \
+    --master-key "gcp-kms:///projects/$GCP_PROJECT_ID/locations/$GCP_LOCATION/keyRings/$GCP_KEY_RING/cryptoKeys/$GCP_KEY_NAME?AUTH=specified&CREDENTIALS=$GCP_CREDENTIALS_PATH"
+```
+
+> **注意：**
+>
+> - 密钥丢失，备份的数据将无法恢复到集群中。
+> - 加密功能需在 br 工具和 TiDB 集群都不低于 v8.4.0 的版本上使用，且加密日志备份得到的数据无法在低于 v8.4.0 版本的集群上恢复。
 
 ### 查询日志备份任务
 
@@ -399,3 +469,35 @@ Restore KV Files <--------------------------------------------------------------
 > - 第一次恢复集群时，必须指定全量快照数据，否则可能因为 Table ID 重写规则，导致部分新创建的表数据不正确。详情可见此 GitHub issue [#54418](https://github.com/pingcap/tidb/issues/54418)。
 > - 不支持重复恢复某段时间区间的日志，如多次重复恢复 `[t1=10, t2=20)` 区间的日志数据，可能会造成恢复后的数据不正确。
 > - 多次恢复不同时间区间的日志时，需保证恢复日志的连续性。如先后恢复 `[t1, t2)`、`[t2, t3)` 和 `[t3, t4)` 三个区间的日志可以保证正确性，而在恢复 `[t1, t2)` 后跳过 `[t2, t3)` 直接恢复 `[t3, t4)` 的区间可能导致恢复之后的数据不正确。
+
+### 恢复加密的日志备份数据
+
+> **警告：**
+>
+> 当前该功能为实验特性，不建议在生产环境中使用。如果发现 bug，请在 GitHub 上提 [issue](https://github.com/pingcap/tidb/issues) 反馈。
+
+要恢复加密的日志备份数据，你需要在恢复命令中传入相应的解密参数。解密参数需要与加密时使用的参数一致。如果解密算法或密钥不正确，则无法恢复数据。
+
+示例如下：
+
+```shell
+tiup br restore point --pd="${PD_IP}:2379"
+--storage='s3://backup-101/logbackup?access-key=${ACCESS-KEY}&secret-access-key=${SECRET-ACCESS-KEY}"'
+--full-backup-storage='s3://backup-101/snapshot-202205120000?access-key=${ACCESS-KEY}&secret-access-key=${SECRET-ACCESS-KEY}"'
+--crypter.method aes128-ctr
+--crypter.key 0123456789abcdef0123456789abcdef
+--log.crypter.method aes128-ctr
+--log.crypter.key 0123456789abcdef0123456789abcdef
+```
+
+如果日志备份是通过主密钥加密的，则可以使用以下命令进行解密恢复：
+
+```shell
+tiup br restore point --pd="${PD_IP}:2379"
+--storage='s3://backup-101/logbackup?access-key=${ACCESS-KEY}&secret-access-key=${SECRET-ACCESS-KEY}"'
+--full-backup-storage='s3://backup-101/snapshot-202205120000?access-key=${ACCESS-KEY}&secret-access-key=${SECRET-ACCESS-KEY}"'
+--crypter.method aes128-ctr
+--crypter.key 0123456789abcdef0123456789abcdef
+--master-key-crypter-method aes128-ctr
+--master-key "local:///path/to/master.key"
+```

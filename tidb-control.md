@@ -26,7 +26,7 @@ TiDB Control 是 TiDB 的命令行工具，用于获取 TiDB 状态信息，多�
 
 ### 从源代码编译安装
 
-编译环境要求：[Go](https://golang.org/) 1.21 或以上版本
+编译环境要求：[Go](https://golang.org/) 1.23 或以上版本
 
 编译步骤：在 [TiDB Control 项目](https://github.com/pingcap/tidb-ctl)根目录，使用 `make` 命令进行编译，生成 tidb-ctl。
 

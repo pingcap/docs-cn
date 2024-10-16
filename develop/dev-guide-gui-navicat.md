@@ -16,7 +16,7 @@ TiDB 是一个兼容 MySQL 的数据库。[Navicat](https://www.navicat.com) 是
 
 > **注意**
 >
-> 本文档适用于 TiDB Serverless、TiDB Dedicated 和本地部署的 TiDB。
+> 本文档适用于 TiDB Cloud Serverless、TiDB Cloud Dedicated 和本地部署的 TiDB。
 
 ## 前置需求
 
@@ -28,7 +28,7 @@ TiDB 是一个兼容 MySQL 的数据库。[Navicat](https://www.navicat.com) 是
 
 **如果你还没有 TiDB 集群，可以按如下方式创建一个：**
 
-- （推荐方式）参考[创建 TiDB Serverless 集群](/develop/dev-guide-build-cluster-in-cloud.md)，创建一个 TiDB Cloud 集群。
+- （推荐方式）参考[创建 TiDB Cloud Serverless 集群](/develop/dev-guide-build-cluster-in-cloud.md)，创建一个 TiDB Cloud 集群。
 - 参考[部署本地测试 TiDB 集群](/quick-start-with-tidb.md#部署本地测试集群)或[部署正式 TiDB 集群](/production-deployment-using-tiup.md)，创建一个本地集群。
 
 ## 连接到 TiDB
@@ -36,7 +36,7 @@ TiDB 是一个兼容 MySQL 的数据库。[Navicat](https://www.navicat.com) 是
 根据你选择的 TiDB 部署方式连接到 TiDB 集群。
 
 <SimpleTab>
-<div label="TiDB Serverless">
+<div label="TiDB Cloud Serverless">
 
 1. 在 TiDB Cloud 的 [**Clusters**](https://tidbcloud.com/console/clusters) 页面中，点击你目标集群的名字，进入集群的 **Overview** 页面。
 
@@ -44,7 +44,7 @@ TiDB 是一个兼容 MySQL 的数据库。[Navicat](https://www.navicat.com) 是
 
 3. 确认对话框中的配置和你的运行环境一致。
 
-    - **Endpoint Type** 选择 `Public`。
+    - **Connection Type** 选择 `Public`。
     - **Branch** 选择 `main`。
     - **Connect With** 选择 `Navicat`。
     - **Operating System** 为你的运行环境。
@@ -65,30 +65,32 @@ TiDB 是一个兼容 MySQL 的数据库。[Navicat](https://www.navicat.com) 是
     - **Host**：输入从 TiDB Cloud 连接对话框中的得到的 `HOST` 参数。
     - **Port**：输入从 TiDB Cloud 连接对话框中的得到的 `PORT` 参数。
     - **User Name**：输入从 TiDB Cloud 连接对话框中的得到的 `USERNAME` 参数。
-    - **Password**：输入 TiDB Serverless 集群的密码。
+    - **Password**：输入 TiDB Cloud Serverless 集群的密码。
 
-    ![Navicat: configure connection general panel for TiDB Serverless](/media/develop/navicat-connection-config-serverless-general.png)
+    ![Navicat: configure connection general panel for TiDB Cloud Serverless](/media/develop/navicat-connection-config-serverless-general.png)
 
 7. 点击 **SSL** 选项卡，选择 **Use SSL**，**Use authentication** 以及 **Verify server certificate against CA** 复选框。并在 **CA Certificate** 字段中填入从 TiDB Cloud 连接对话框中获取的 `CA` 文件路径。
 
-    ![Navicat: configure connection SSL panel for TiDB Serverless](/media/develop/navicat-connection-config-serverless-ssl.png)
+    ![Navicat: configure connection SSL panel for TiDB Cloud Serverless](/media/develop/navicat-connection-config-serverless-ssl.png)
 
-8. 点击 **Test Connection** 以验证与 TiDB Serverless 集群的连接。
+8. 点击 **Test Connection** 以验证与 TiDB Cloud Serverless 集群的连接。
 
 9. 如果连接测试成功，你可以看到 **Connection Successful** 信息。点击 **Save** 完成连接配置。
 
 </div>
-<div label="TiDB Dedicated">
+<div label="TiDB Cloud Dedicated">
 
 1. 在 TiDB Cloud 的 [**Clusters**](https://tidbcloud.com/console/clusters) 页面中，点击你目标集群的名字，进入集群的 **Overview** 页面。
 
 2. 点击右上角的 **Connect** 按钮，将会弹出连接对话框。
 
-3. 点击 **Allow Access from Anywhere**。
+3. 在连接对话框中，从 **Connection Type** 下拉列表中选择 **Public**。
 
-    有关如何获取连接字符串的更多详细信息，参考 [TiDB Dedicated 标准连接（英文）](https://docs.pingcap.com/tidbcloud/connect-via-standard-connection)。
+    如果你尚未配置 IP 访问列表，请在首次连接前点击 **Configure IP Access List** 或按照[配置 IP 访问列表（英文）](https://docs.pingcap.com/tidbcloud/configure-ip-access-list)中的步骤进行配置。
 
-4. 点击 **Download CA cert** 下载 CA 文件。
+    除 **Public** 连接类型外，TiDB Cloud Dedicated 还支持 **Private Endpoint** 和 **VPC Peering** 连接类型。详情请参阅[连接 TiDB Cloud Dedicated 集群（英文）](https://docs.pingcap.com/tidbcloud/connect-to-tidb-cluster)。
+
+4. 点击 **CA cert** 下载 CA 文件。
 
 5. 启动 Navicat for MySQL，点击左上角的 **Connection**，并从下拉列表中选择 **MySQL**。
 
@@ -100,20 +102,20 @@ TiDB 是一个兼容 MySQL 的数据库。[Navicat](https://www.navicat.com) 是
     - **Host**: 输入从 TiDB Cloud 连接对话框中的得到的 `HOST` 参数。
     - **Port**：输入从 TiDB Cloud 连接对话框中的得到的 `PORT` 参数。
     - **User Name**: 输入从 TiDB Cloud 连接对话框中的得到的 `USERNAME` 参数。
-    - **Password**：输入 TiDB Dedicated 集群的密码。
+    - **Password**：输入 TiDB Cloud Dedicated 集群的密码。
 
-    ![Navicat: configure connection general panel for TiDB Dedicated](/media/develop/navicat-connection-config-dedicated-general.png)
+    ![Navicat: configure connection general panel for TiDB Cloud Dedicated](/media/develop/navicat-connection-config-dedicated-general.png)
 
 7. 点击 **SSL** 选项卡，选择 **Use SSL**，**Use authentication** 以及 **Verify server certificate against CA** 复选框。然后，在 **CA Certificate** 字段中选择第 4 步下载的 CA 文件。
 
-    ![Navicat: configure connection SSL panel for TiDB Dedicated](/media/develop/navicat-connection-config-dedicated-ssl.jpg)
+    ![Navicat: configure connection SSL panel for TiDB Cloud Dedicated](/media/develop/navicat-connection-config-dedicated-ssl.jpg)
 
-8. 点击 **Test Connection** 以验证与 TiDB Dedicated 集群的连接。
+8. 点击 **Test Connection** 以验证与 TiDB Cloud Dedicated 集群的连接。
 
 9. 如果连接测试成功，你可以看到 **Connection Successful** 信息。点击 **Save** 完成连接配置。
 
 </div>
-<div label="TiDB Self-Hosted">
+<div label="本地部署 TiDB">
 
 1. 启动 Navicat for MySQL，点击左上角的 **Connection**，并从下拉列表中选择 **MySQL**。
 
