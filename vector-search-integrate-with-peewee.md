@@ -124,7 +124,7 @@ TIDB_DATABASE=test
     - `TIDB_DATABASE`：要连接的数据库名称。
     - `TIDB_CA_PATH`：根证书文件的路径。
 
-    以下为 MacOS 的示例：
+    以下为 macOS 的示例：
 
     ```dotenv
     TIDB_HOST=gateway01.****.prod.aws.tidbcloud.com

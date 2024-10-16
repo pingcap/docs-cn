@@ -13,8 +13,8 @@ summary: 本文介绍 TiDB 的向量数据类型。
 
 目前支持的向量数据类型包括：
 
-- `VECTOR`: 存储一组单精度浮点数 (Float) 向量，向量维度可以是任意的。
-- `VECTOR(D)`: 存储一组单精度浮点数 (Float) 向量，向量维度固定为 `D`。
+- `VECTOR`：存储一组单精度浮点数 (Float) 向量，向量维度可以是任意的。
+- `VECTOR(D)`：存储一组单精度浮点数 (Float) 向量，向量维度固定为 `D`。
 
 与使用 [`JSON`](/data-type-json.md) 类型相比，使用向量类型具有以下优势：
 
@@ -43,23 +43,23 @@ INSERT INTO vector_table VALUES (1, '[0.3, 0.5, -0.1]');
 INSERT INTO vector_table VALUES (2, NULL);
 ```
 
-当将不符合语法的字符串作为向量数据插入时，TiDB 会进行报错：
+插入不符合语法的字符串作为向量数据时，TiDB 会报错：
 
 ```sql
 [tidb]> INSERT INTO vector_table VALUES (3, '[5, ]');
 ERROR 1105 (HY000): Invalid vector text: [5, ]
 ```
 
-下面的示例中 `embedding` 向量列的维度在建表时已经定义为 `3`，因此当插入其他维度的向量数据时，TiDB 会进行报错：
+下面的示例中 `embedding` 向量列的维度在建表时已经定义为 `3`，因此当插入其他维度的向量数据时，TiDB 会报错：
 
 ```sql
 [tidb]> INSERT INTO vector_table VALUES (4, '[0.3, 0.5]');
 ERROR 1105 (HY000): vector has 2 dimensions, does not fit VECTOR(3)
 ```
 
-可参阅[向量函数与操作符](/vector-search-functions-and-operators.md)了解向量数据类型支持的所有函数和操作符。
+关于向量数据类型支持的所有函数和操作符，可参阅[向量函数与操作符](/vector-search-functions-and-operators.md)。
 
-可参阅[向量搜索索引](/vector-search-index.md)了解向量搜索索引的信息。
+关于向量搜索索引的更多信息，可参阅[向量搜索索引](/vector-search-index.md)。
 
 ## 混合存储不同维度的向量
 
@@ -79,7 +79,7 @@ INSERT INTO vector_table VALUES (2, '[0.3, 0.5]');       -- 插入一个 2 维�
 
 ## 比较
 
-[比较运算符](/vector-search-functions-and-operators.md#扩展的内置函数和运算符) 如 `=`, `!=`, `<`, `>`, `<=` 和 `>=` 等都能正常对向量数据进行比较。可参阅[向量函数与操作符](/vector-search-functions-and-operators.md#扩展的内置函数和运算符)了解向量数据类型支持的所有函数和操作符。
+向量数据支持[比较运算符](/vector-search-functions-and-operators.md#扩展的内置函数和运算符)，例如 `=`、`!=`、`<`、`>`、`<=` 和 `>=` 等。关于向量数据类型支持的所有函数和操作符，可参阅[向量函数与操作符](/vector-search-functions-and-operators.md)。
 
 比较向量数据类型时，TiDB 会以向量中的各个元素为单位进行依次比较，如：
 
@@ -92,11 +92,10 @@ INSERT INTO vector_table VALUES (2, '[0.3, 0.5]');       -- 插入一个 2 维�
 
 - 两个向量中的各个元素逐一进行数值比较。
 - 当遇到第一个不同的元素时，它们之间的数值比较结果即为两个向量之间的比较结果。
-- 如果一个向量是另一个向量的前缀，那么维度小的向量 _小于_ 维度大的向量。例如，`[1,2,3] < [1,2,3,0]`。
-- 长度相同且各个元素相同的两个向量 _相等_ 。
-- 空向量 _小于_ 任何非空向量。例如，`[] < [1]`。
-- 两个空向量 _相等_ 。
-
+- 如果一个向量是另一个向量的前缀，那么维度小的向量**小于**维度大的向量。例如，`[1,2,3] < [1,2,3,0]`。
+- 长度相同且各个元素相同的两个向量**相等**。
+- 空向量**小于**任何非空向量。例如，`[] < [1]`。
+- 两个空向量**相等**。
 
 在进行向量比较时，请使用[显式转换](#类型转换-cast)将向量数据从字符串转换为向量类型，以避免 TiDB 直接基于字符串进行比较：
 
@@ -234,7 +233,7 @@ ERROR 1105 (HY000): vectors have different dimensions: 1 and 3
 
 ## 使用限制
 
-有关向量类型的限制，请参阅[向量搜索限制](/vector-search-limitations.md)以及[向量搜索索引 - 使用限制](/vector-search-index.md#使用限制)。
+有关向量类型的限制，请参阅[向量搜索限制](/vector-search-limitations.md)以及[向量搜索索引的使用限制](/vector-search-index.md#使用限制)。
 
 ## MySQL 兼容性
 

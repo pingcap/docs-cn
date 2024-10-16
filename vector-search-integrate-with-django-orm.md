@@ -66,7 +66,7 @@ pip install Django django-tidb mysqlclient numpy python-dotenv
 
 `django-tidb` 是一个为 Django 提供的 TiDB 适配器。通过该适配器，Django ORM 实现了对 TiDB 特有的功能（如，向量搜索）的支持，并解决了 TiDB 和 Django 之间的兼容性问题。
 
-安装 `django-tidb` 时，请选择与你的 Django 版本相匹配的版本。例如，如果你使用的是 `django==4.2.*`, 则应安装 `django-tidb===4.2.*`，其中 minor 版本号不需要完全相同。建议使用最新的 minor 版本。
+安装 `django-tidb` 时，选择与你的 Django 版本匹配的版本。例如，如果你使用的是 `django==4.2.*`，则应安装 `django-tidb==4.2.*`，其中 minor 版本号不需要完全相同。建议使用最新的 minor 版本。
 
 更多信息，请参考 [django-tidb 仓库](https://github.com/pingcap/django-tidb)。
 
@@ -134,7 +134,7 @@ TIDB_DATABASE=test
     - `TIDB_DATABASE`：要连接的数据库名称。
     - `TIDB_CA_PATH`：根证书文件的路径。
 
-    以下为 MacOS 的示例：
+    以下为 macOS 的示例：
 
     ```dotenv
     TIDB_HOST=gateway01.****.prod.aws.tidbcloud.com
@@ -213,7 +213,7 @@ if TIDB_CA_PATH:
 
 `tidb-django` 提供了一个 `VectorField`，可以在表中用来表示和存储向量类型。
 
-创建一个表格，其中包含一个向量数据类型的 `embedding` 列，用于存储三维向量。
+创建一个表，其中包含一个向量数据类型的 `embedding` 列，用于存储三维向量。
 
 ```python
 class Document(models.Model):

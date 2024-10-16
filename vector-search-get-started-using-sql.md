@@ -74,17 +74,17 @@ mysql --comments --host 127.0.0.1 --port 4000 -u root
 
 ### 第 2 步：创建向量表
 
-在建表时，你可以使用 `VECTOR` 数据类型声明指定列为[向量](/vector-search-overview.md#向量嵌入)列。
+创建表时，你可以使用 `VECTOR` 数据类型声明指定列为[向量](/vector-search-overview.md#向量嵌入)列。
 
-例如，如需创建一张带有三维 `VECTOR` 列的 `embedded_documents` 表，可以在 MySQL CLI 中执行以下 SQL 语句：
+例如，要创建一个带有三维 `VECTOR` 列的 `embedded_documents` 表，可以使用 MySQL CLI 执行以下 SQL 语句：
 
 ```sql
 USE test;
 CREATE TABLE embedded_documents (
     id        INT       PRIMARY KEY,
-    -- document 列存储 document 的原始内容
+    -- document 列存储文档的原始内容
     document  TEXT,
-    -- embedding 列存储 document 的向量表示
+    -- embedding 列存储文档的向量表示
     embedding VECTOR(3)
 );
 ```
@@ -143,11 +143,11 @@ SELECT * FROM embedded_documents;
 
 ### 第 5 步：执行向量搜索查询
 
-与全文搜索类似，在使用向量搜索时，你需要指定搜索词。
+与全文搜索类似，在使用向量搜索时，你需要提供搜索词。
 
 在本例中，搜索词是“一种会游泳的动物”，假设其对应的向量是 `[1,2,3]`。在实际应用中，你需要使用[嵌入模型](/vector-search-overview.md#嵌入模型)将用户的搜索词转换为向量。
 
-执行以下 SQL 语句后，TiDB 会计算 `[1,2,3]` 与表中各向量之间的余弦距离 (`vec_cosine_distance`)，然后对这些距离进行排序并输出表中最接近搜索向量（余弦距离最小）的前三个向量。
+执行以下 SQL 语句后，TiDB 会计算 `[1,2,3]` 与表中各向量之间的余弦距离 (`vec_cosine_distance`)，然后对这些距离进行排序并输出表中最接近搜索向量（余弦距离最小）的前三个文档。
 
 ```sql
 SELECT id, document, vec_cosine_distance(embedding, '[1,2,3]') AS distance
@@ -169,10 +169,11 @@ LIMIT 3;
 3 rows in set (0.15 sec)
 ```
 
-搜索结果中的 3 个词会按向量的距离排列：距离越小，对应的 `document` 越相关。
+搜索结果中的三个词按它们与查询向量的距离排序：距离越小，对应的 `document` 越相关。
 
 因此，从输出结果来看，会游泳的动物很可能是一条鱼 (`fish`)，或者是一只有游泳天赋的狗 (`dog`)。
 
 ## 另请参阅
 
 - [向量数据类型](/vector-search-data-types.md)
+- [向量搜索索引](/vector-search-index.md)

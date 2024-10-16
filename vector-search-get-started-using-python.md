@@ -7,7 +7,7 @@ summary: 了解如何使用 Python 和 TiDB 向量搜索快速开发可执行语
 
 本文将展示如何开发一个简单的 AI 应用，这个 AI 应用实现了简单的**语义搜索**功能。不同于传统的关键字搜索，语义搜索可以智能地理解你的输入，返回更相关的结果。例如，在“狗”、“鱼”和“树”这三条内容中搜索“一种会游泳的动物”时，语义搜索会将“鱼”作为最相关的结果返回。
 
-在本文中，你将使用 [TiDB 向量搜索](/vector-search-overview.md)、Python、[TiDB Vector SDK for Python](https://github.com/pingcap/tidb-vector-python) 和 AI 大模型完成这个 AI 应用的开发。
+在本文中，你将使用 [TiDB 向量搜索](/vector-search-overview.md)、Python、[TiDB Vector Python SDK](https://github.com/pingcap/tidb-vector-python) 和 AI 大模型完成这个 AI 应用的开发。
 
 > **警告：**
 >
@@ -49,7 +49,7 @@ pip install sqlalchemy pymysql sentence-transformers tidb-vector python-dotenv
 ```
 
 - `tidb-vector`：用于与 TiDB 向量搜索交互的 Python 客户端。
-- [`sentence-transformers`](https://sbert.net): 一个提供预训练模型的 Python 库，用于从文本生成[向量嵌入](/vector-search-overview.md#向量嵌入)。
+- [`sentence-transformers`](https://sbert.net)：提供预训练模型的 Python 库，用于从文本生成[向量嵌入](/vector-search-overview.md#向量嵌入)。
 
 ### 第 3 步：配置 TiDB 集群的连接字符串
 
@@ -105,7 +105,7 @@ TIDB_DATABASE_URL="mysql+pymysql://<USER>:<PASSWORD>@<HOST>:<PORT>/<DATABASE>"
 
 5. 在 Python 项目的根目录下新建一个 `.env` 文件，将连接字符串粘贴到其中。
 
-    以下为 MacOS 的示例：
+    以下为 macOS 的示例：
 
     ```dotenv
     TIDB_DATABASE_URL="mysql+pymysql://<prefix>.root:<password>@gateway01.<region>.prod.aws.tidbcloud.com:4000/test?ssl_ca=/etc/ssl/cert.pem&ssl_verify_cert=true&ssl_verify_identity=true"
@@ -140,7 +140,7 @@ def text_to_embedding(text):
 
 > **Note**
 >
-> 请确保你创建的表中向量列的维度与嵌入模型生成的向量维度一致。例如，**msmarco-MiniLM-L12-cos-v5** 模型生成的向量有 384 个维度， `embedded_documents` 的向量列维度也应为 384。
+> 请确保你创建的表中向量列的维度与嵌入模型生成的向量维度一致。例如，**msmarco-MiniLM-L12-cos-v5** 模型生成的向量有 384 个维度，`embedded_documents` 的向量列维度也应为 384。
 
 ```python
 import os
@@ -198,7 +198,7 @@ vector_store.insert(
 
 ### 第 7 步：执行语义搜索
 
-查询一个与 `documents` 中的任何单词都不匹配的关键词，比如 "a swimming animal"。
+查询一个与已有文档 `documents` 中任何单词都不匹配的关键词，比如 "a swimming animal"。
 
 以下的代码会再次使用 `text_to_embedding()` 函数将查询文本转换为向量嵌入，然后使用该嵌入进行查询，找出最匹配的前三个词。
 
@@ -223,10 +223,11 @@ Search result ("a swimming animal"):
 - text: "tree", distance: 0.798545178640937
 ```
 
-搜索结果中的 3 个词会按向量的远近排列：距离越小，对应的 `document` 越相关。
+搜索结果中的三个词按它们与查询向量的距离排序：距离越小，对应的 `document` 越相关。
 
 因此，从输出结果来看，会游泳的动物很可能是一条鱼 (`fish`)，或者是一只有游泳天赋的狗 (`dog`)。
 
 ## 另请参阅
 
-- [Vector Data Types](/vector-search-data-types.md)
+- [向量数据类型](/vector-search-data-types.md)
+- [向量搜索索引](/vector-search-index.md)

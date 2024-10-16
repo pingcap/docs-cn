@@ -114,7 +114,7 @@ TIDB_DATABASE_URL=mysql+pymysql://<USERNAME>:<PASSWORD>@<HOST>:<PORT>/<DATABASE>
 
 5. 在 Python 项目的根目录下新建一个 `.env` 文件，并将连接字符串粘贴到其中。
 
-    以下为 MacOS 的示例：
+    以下为 macOS 的示例：
 
     ```dotenv
     TIDB_DATABASE_URL="mysql+pymysql://<prefix>.root:<password>@gateway01.<region>.prod.aws.tidbcloud.com:4000/test?ssl_ca=/etc/ssl/cert.pem&ssl_verify_cert=true&ssl_verify_identity=true"
