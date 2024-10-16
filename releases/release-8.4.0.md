@@ -387,12 +387,12 @@ TiDB 版本：8.4.0
     - 支持通过系统变量 `tidb_auto_analyze_concurrency` 设置单个自动统计信息收集任务内部的并发度 [#53460](https://github.com/pingcap/tidb/issues/53460) @[hawkingrei](https://github.com/hawkingrei) **tw@Oreoxmt** <!--1739-->
     - 优化内部函数逻辑，提升查询大量列的表时的性能 [#52112](https://github.com/pingcap/tidb/issues/52112) @[Rustin170506](https://github.com/Rustin170506)
     - 支持将形如 `a = 1 AND (a > 1 OR (a = 1 AND b = 2))` 的过滤条件简化为 `a = 1 AND b = 2` [#56005](https://github.com/pingcap/tidb/issues/56005) @[ghazalfamilyusa](https://github.com/ghazalfamilyusa)
-    - 在部分选中不优执行计划风险较高的场景中，提高代价模型中 Table Scan 的代价，使得优化器更倾向于使用索引 [#56012](https://github.com/pingcap/tidb/issues/56012) @[terry1purcell](https://github.com/terry1purcell)
+    - 在选中不优执行计划风险较高的场景中，提高代价模型中全表扫描的代价，使得优化器更倾向于使用索引 [#56012](https://github.com/pingcap/tidb/issues/56012) @[terry1purcell](https://github.com/terry1purcell)
     - TiDB 支持 `MID()` 函数的两参数版本，即 `MID(str, pos)` [#52420](https://github.com/pingcap/tidb/issues/52420) @[dveeden](https://github.com/dveeden)
     - 支持对主键为非 binary 类型的表拆分 TTL 任务 [#55660](https://github.com/pingcap/tidb/issues/55660) @[lcwangchao](https://github.com/lcwangchao)
     - 优化系统元数据相关语句性能 [#50305](https://github.com/pingcap/tidb/issues/50305) @[ywqzzy](https://github.com/ywqzzy) @[tangenta](https://github.com/tangenta) @[joechenrh](https://github.com/joechenrh) @[CbcWestwolf](https://github.com/CbcWestwolf)
-    - 实现新的优先级队列以提高性能并减少重建自动分析操作队列的开销 [#55906](https://github.com/pingcap/tidb/issues/55906) @[Rustin170506](https://github.com/Rustin170506)
-    - 引入 DDL 通知程序，允许统计模块订阅 DDL 事件 [#55722](https://github.com/pingcap/tidb/issues/55722) @[fzzf678](https://github.com/fzzf678) @[lance6716](https://github.com/lance6716) @[Rustin170506](https://github.com/Rustin170506)
+    - 采用新的优先级队列处理自动收集统计信息操作，以提高收集性能并减少重建队列的开销 [#55906](https://github.com/pingcap/tidb/issues/55906) @[Rustin170506](https://github.com/Rustin170506)
+    - 引入 DDL 通知程序，允许统计信息模块订阅 DDL 事件 [#55722](https://github.com/pingcap/tidb/issues/55722) @[fzzf678](https://github.com/fzzf678) @[lance6716](https://github.com/lance6716) @[Rustin170506](https://github.com/Rustin170506)
     - TiDB 升级期间强制新版 TiDB 节点接管 DDL Owner，避免旧版本 TiDB 节点接管引发的兼容性问题 [#51285](https://github.com/pingcap/tidb/pull/51285) @[wjhuang2016](https://github.com/wjhuang2016)
     - 支持集群级别的 Scatter Region 打散 [#8424](https://github.com/tikv/pd/issues/8424) @[River2000i](https://github.com/River2000i)
 
@@ -522,7 +522,7 @@ TiDB 版本：8.4.0
 
     + TiDB Lightning <!--tw@Oreoxmt: 1 note-->
 
-        - 修复使用并行导入模式时，如果任务 ID 相同，TiDB Lightning 报 `verify allocator base failed` 错误的问题 [#55384](https://github.com/pingcap/tidb/issues/55384) @[ei-sugimoto](https://github.com/ei-sugimoto)
+        - 修复两个实例同时并行开始导入任务时，由于分配到的任务 ID 相同导致 TiDB Lightning 报 `verify allocator base failed` 错误的问题 [#55384](https://github.com/pingcap/tidb/issues/55384) @[ei-sugimoto](https://github.com/ei-sugimoto)
 
     + Dumpling
 
