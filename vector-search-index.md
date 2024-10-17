@@ -50,8 +50,8 @@ TiDB 目前支持 [HNSW (Hierarchical Navigable Small World)](https://en.wikiped
     ALTER TABLE foo ADD VECTOR INDEX idx_embedding ((VEC_COSINE_DISTANCE(embedding)));
 
     -- 你也可以显式指定使用 HNSW 构建向量搜索索引
-    CREATE VECTOR INDEX idx_name ON foo ((VEC_COSINE_DISTANCE(data))) USING HNSW;
-    ALTER TABLE foo ADD VECTOR INDEX idx_name ((VEC_COSINE_DISTANCE(data))) USING HNSW;
+    CREATE VECTOR INDEX idx_embedding ON foo ((VEC_COSINE_DISTANCE(embedding))) USING HNSW;
+    ALTER TABLE foo ADD VECTOR INDEX idx_embedding ((VEC_COSINE_DISTANCE(embedding))) USING HNSW;
     ```
 
 > **注意：**
