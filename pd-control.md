@@ -707,12 +707,17 @@ member leader transfer pd3
 
 指定 PD leader 的优先级:
 
-```shell
+{{< copyable "" >}}
+
+```bash
 member leader_priority  pd-1 4
 member leader_priority  pd-2 3
 member leader_priority  pd-3 2
 member leader_priority  pd-4 1
 member leader_priority  pd-5 0
+```
+```
+......
 ```
 
 > **注意：**
