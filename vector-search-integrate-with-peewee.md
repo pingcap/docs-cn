@@ -22,7 +22,7 @@ summary: 了解如何在 peewee 中通过 TiDB 向量搜索功能存储向量并
 如果你还没有 TiDB 集群，可以按照以下任一种方式创建：
 
 - 参考[部署本地测试 TiDB 集群](/quick-start-with-tidb.md#部署本地测试集群)或[部署正式 TiDB 集群](/production-deployment-using-tiup.md)，创建本地集群。
-- 参考[创建 TiDB Cloud Serverless 集群](/develop/dev-guide-build-cluster-in-cloud.md#第-1-步创建-tidb-serverless-集群)，创建 TiDB Cloud 集群。
+- 参考[创建 TiDB Cloud Serverless 集群](/develop/dev-guide-build-cluster-in-cloud.md#第-1-步创建-tidb-cloud-serverless-集群)，创建 TiDB Cloud 集群。
 
 ## 运行示例应用程序
 
