@@ -62,6 +62,8 @@ from llama_index.vector_stores.tidbvector import TiDBVectorStore
 
 ### 第 3 步：配置环境变量
 
+根据 TiDB 集群的部署方式不同，选择对应的环境变量配置方式。
+
 <SimpleTab>
 
 <div label="本地部署 TiDB">
