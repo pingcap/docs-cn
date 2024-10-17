@@ -705,6 +705,20 @@ member leader transfer pd3
 ......
 ```
 
+指定 PD leader 的优先级:
+
+```shell
+member leader_priority  pd-1 4
+member leader_priority  pd-2 3
+member leader_priority  pd-3 2
+member leader_priority  pd-4 1
+member leader_priority  pd-5 0
+```
+
+> **注意：**
+>
+> 优先级数值越大的节点成为 leader 的可能性越高。
+
 ### `operator [check | show | add | remove]`
 
 用于显示和控制调度操作。
