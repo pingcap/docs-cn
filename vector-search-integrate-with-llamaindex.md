@@ -215,7 +215,7 @@ print(textwrap.fill(str(response), 100))
 >
 > `TiDBVectorStore` 只支持 [`default`](https://docs.llamaindex.ai/en/stable/api_reference/storage/vector_store/?h=vectorstorequerymode#llama_index.core.vector_stores.types.VectorStoreQueryMode) 查询模式。
 
-预期输出如下:
+预期输出如下：
 
 ```plain
 The author worked on writing, programming, building microcomputers, giving talks at conferences,
