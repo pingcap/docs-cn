@@ -9,18 +9,13 @@ summary: 了解 TiCDC 软硬件环境要求以及如何安装部署和运维 TiC
 
 ## 软件和硬件环境推荐配置
 
-在生产环境中，TiCDC 的软件和硬件配置推荐如下：
-
-| Linux 操作系统       | 版本         |
-| :----------------------- | :----------: |
-| Red Hat Enterprise Linux | 7.3 及以上   |
-| CentOS                   | 7.3 及以上   |
+在生产环境中，TiCDC 硬件配置推荐如下：
 
 | CPU | 内存 | 硬盘               | 网络 | TiCDC 集群实例数量（生产环境最低要求） |
 | --- | --- |------------------| --- | --- |
 | 16 核+ | 64 GB+ | 500 GB+ SSD 类型硬盘 | 万兆网卡（2 块最佳） | 2 |
 
-更多信息参见 [TiDB 软件和硬件环境建议配置](/hardware-and-software-requirements.md)。
+软件配置推荐及更多信息参见 [TiDB 软件和硬件环境建议配置](/hardware-and-software-requirements.md)。
 
 ## 使用 TiUP 部署包含 TiCDC 组件的全新 TiDB 集群
 
