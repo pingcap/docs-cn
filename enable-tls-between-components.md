@@ -135,13 +135,14 @@ aliases: ['/docs-cn/dev/enable-tls-between-components/','/docs-cn/dev/how-to/sec
 
 ## 认证组件调用者身份
 
-通常被调用者除了校验调用者提供的密钥、证书和 CA 有效性外，还需要校验调用方身份以防止拥有有效证书的非法访问者进行访问（例如：TiKV 只能被 TiDB 访问，需阻止拥有合法证书但非 TiDB 的其他访问者访问 TiKV）。
+通常被调用者除了校验调用者提供的密钥、证书和 CA 有效性外，还需要通过 `Common Name` 校验调用方身份以防止拥有有效证书的非法访问者进行访问（例如：TiKV 只能被 TiDB 访问，需阻止拥有合法证书但非 TiDB 的其他访问者访问 TiKV）。
 
-如希望进行组件调用者身份认证，需要在生证书时通过 `Common Name` 标识证书使用者身份，并在被调用者配置检查证书 `Common Name` 列表来检查调用者身份。
+如希望对组件调用方进行身份认证，需要在生成证书时通过 `Common Name` 标识证书调用方身份，并在被调用者的配置文件中配置 `cluster-verify-cn` (TiDB 组件）或 `cert-allowed-cn`（其它组件）来检查调用方身份。
 
 > **注意：**
 >
-> 目前 PD 的 `cert-allowed-cn` 配置项只能设置一个值。因此所有认证对象的 `commonName` 都要设置成同一个值。
+> - 从 v8.4.0 起，PD 的 `cert-allowed-cn` 配置项支持设置多个值。你可以根据需要在 TiDB 的 `cluster-verify-cn` 配置项以及其它组件的 `cert-allowed-cn` 配置项中设置多个 `Common Name`。需要额外注意的是，TiUP 在查询组件状态的时候会使用独立的标识，比如集群名是 `test`，它会使用 `test-client` 作为 `Common Name`。
+> - 对于 v8.3.0 及之前版本，PD 的 `cert-allowed-cn` 配置项只能设置一个值。因此，所有认证对象的 `Common Name` 必须设置成同一个值。相关配置示例可参见 [v8.3.0 文档](https://docs.pingcap.com/zh/tidb/v8.3/enable-tls-between-components)。
 
 - TiDB
 
@@ -149,7 +150,7 @@ aliases: ['/docs-cn/dev/enable-tls-between-components/','/docs-cn/dev/how-to/sec
 
     ```toml
     [security]
-    cluster-verify-cn = ["TiDB"]
+    cluster-verify-cn = ["tidb", "test-client", "prometheus"]
     ```
 
 - TiKV
@@ -158,7 +159,7 @@ aliases: ['/docs-cn/dev/enable-tls-between-components/','/docs-cn/dev/how-to/sec
 
     ```toml
     [security]
-    cert-allowed-cn = ["TiDB"]
+    cert-allowed-cn = ["tidb", "pd", "tikv", "tiflash", "prometheus"]
     ```
 
 - PD
@@ -167,7 +168,7 @@ aliases: ['/docs-cn/dev/enable-tls-between-components/','/docs-cn/dev/how-to/sec
 
     ```toml
     [security]
-    cert-allowed-cn = ["TiDB"]
+    cert-allowed-cn = ["tidb", "pd", "tikv", "tiflash", "test-client", "prometheus"]
     ```
 
 - TiFlash（从 v4.0.5 版本开始引入）
@@ -176,14 +177,14 @@ aliases: ['/docs-cn/dev/enable-tls-between-components/','/docs-cn/dev/how-to/sec
 
     ```toml
     [security]
-    cert_allowed_cn = ["TiDB"]
+    cert_allowed_cn = ["tidb", "tikv", "prometheus"]
     ```
 
     在 `tiflash-learner.toml` 文件中设置：
 
     ```toml
     [security]
-    cert-allowed-cn = ["TiDB"]
+    cert-allowed-cn = ["tidb", "tikv", "tiflash", "prometheus"]
     ```
 
 ## 证书重新加载
