@@ -71,7 +71,7 @@ aliases: ['/docs-cn/dev/br/backup-and-restore-use-cases/','/docs-cn/dev/referenc
 2. 配置 br 命令行工具和 TiKV 访问 S3 中的备份目录的权限。本文推荐使用最安全的 IAM 访问方式，配置过程可以参考[控制存储桶访问](https://docs.aws.amazon.com/zh_cn/AmazonS3/latest/userguide/walkthrough1.html)。权限要求如下：
 
     - 备份集群的 TiKV 和 br 命令行工具需要的 `s3://tidb-pitr-bucket/backup-data` 权限：`s3:ListBucket`、`s3:GetObject`、`s3:DeleteObject`、`s3:PutObject` 和 `s3:AbortMultipartUpload`。
-    - 恢复集群的 TiKV 和 br 命令行工具需要 `s3://tidb-pitr-bucket/backup-data` 的最小权限：`s3:ListBucket`、`s3:GetObject`、`s3:DeleteObject` 和 `s3:PutObject`。
+    - 恢复集群的 TiKV 和 br 命令行工具需要 `s3://tidb-pitr-bucket/backup-data` 的最小权限：`s3:ListBucket` 和 `s3:GetObject`。
 
 3. 规划备份数据保存的目录结构，以及快照（全量）备份和日志备份的目录。
 
