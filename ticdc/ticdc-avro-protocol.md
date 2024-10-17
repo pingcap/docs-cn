@@ -7,7 +7,7 @@ summary: 了解 TiCDC Avro Protocol 的概念和使用方法。
 
 TiCDC Avro 协议，是对 [Confluent Platform](https://docs.confluent.io/platform/current/platform.html) 定义的 [Confluent Avro](https://docs.confluent.io/platform/current/schema-registry/fundamentals/serdes-develop/serdes-avro.html) 数据传输格式的第三方实现。Avro 是由 [Apache Avro™](https://avro.apache.org/) 定义的一种数据交换格式。
 
-通过本文，你可以了解 TiCDC 对 Avro 数据格式的实现，以及和 [Confluent Schema Registry](https://docs.confluent.io/platform/current/schema-registry/index.html) 的交互。
+通过本文，你可以了解 TiCDC Avro 数据协议的实现，以及和 [Confluent Schema Registry](https://docs.confluent.io/platform/current/schema-registry/index.html) 的交互。
 
 > **警告：**
 >
