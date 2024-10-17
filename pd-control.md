@@ -722,7 +722,7 @@ member leader_priority  pd-5 0
 
 > **注意：**
 >
-> 优先级数值越大的节点成为 leader 的可能性越高。
+> 在可用的节点中，数值最大的节点会直接当选 leader
 
 ### `operator [check | show | add | remove]`
 
