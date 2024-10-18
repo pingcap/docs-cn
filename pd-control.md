@@ -705,7 +705,7 @@ member leader transfer pd3
 ......
 ```
 
-指定 PD leader 的优先级:
+指定 PD leader 的优先级：
 
 ```bash
 member leader_priority  pd-1 4
