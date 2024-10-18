@@ -73,5 +73,5 @@ stop-task test
 >
 > 同步任务 stop 后，使用 query-status 不能被查询到，但是任务状态仍保存在元数据库中。
 >
-> + 对于需要重建的任务，在使用 start-task 时，需要添加 --remove-meta 参数。
-> + 对于需要彻底删除的任务，需要手工删除元数据库 dm_meta 中以表名起始是任务名的四张表。
+> + 对于要重新启动的迁移任务，在使用 [`start-task`](/dm/dm-create-task.md) 时，你需要添加 `--remove-meta` 参数。
+> + 对于要彻底删除的迁移任务，你需要在元数据库 `dm_meta` 中删除以该任务名为表名前缀的四张表。
