@@ -49,7 +49,7 @@ TiDB 目前支持 [HNSW (Hierarchical Navigable Small World)](https://en.wikiped
     CREATE VECTOR INDEX idx_embedding ON foo ((VEC_COSINE_DISTANCE(embedding)));
     ALTER TABLE foo ADD VECTOR INDEX idx_embedding ((VEC_COSINE_DISTANCE(embedding)));
 
-    -- 你也可以显式指定使用 HNSW 构建向量搜索索引
+    -- 你也可以显式指定 "USING HNSW" 使用 HNSW 构建向量搜索索引
     CREATE VECTOR INDEX idx_embedding ON foo ((VEC_COSINE_DISTANCE(embedding))) USING HNSW;
     ALTER TABLE foo ADD VECTOR INDEX idx_embedding ((VEC_COSINE_DISTANCE(embedding))) USING HNSW;
     ```
@@ -68,7 +68,7 @@ TiDB 目前支持 [HNSW (Hierarchical Navigable Small World)](https://en.wikiped
 
 你只能为固定维度的向量列 (如定义为 `VECTOR(3)` 类型) 创建向量索引，不能为混合维度的向量列 (如定义为 `VECTOR` 类型) 创建向量索引，因为只有维度相同的向量之间才能计算向量距离。
 
-有关向量搜索索引的约束和限制，请参阅[向量搜索索引 - 使用限制](/vector-search-index.md#使用限制)。
+有关向量搜索索引的约束和限制，请参阅[向量搜索索引 - 使用限制](#使用限制)。
 
 ## 使用向量搜索索引
 
@@ -132,7 +132,7 @@ SELECT * FROM INFORMATION_SCHEMA.TIFLASH_INDEXES;
 
     作为参考，对于一个 500 MiB 的向量数据集，构建索引的过程可能需要 20 分钟。索引构建器能够并行地在多个表中构建向量搜索索引。目前不支持调整索引构建器的优先级或速度。
 
-- 可以通过 `ROWS_DELTA_NOT_INDEXED` 列查看 Delta 层中的行数。TiFlash 存储层的数据主要存放在 Delta 层和 Stable 层。Delta 层存储最近插入或更新的行，并根据写入工作量定期将这些行合并到稳定层。这个合并过程称为“压缩”。
+- 可以通过 `ROWS_DELTA_NOT_INDEXED` 列查看 Delta 层中的行数。TiFlash 存储层的数据主要存放在 Delta 层和 Stable 层。Delta 层存储最近插入或更新的行，并根据写入工作量定期将这些行合并到 Stable 层。这个合并过程称为“压缩”。
 
     Delta 层本身是不包含索引的。为了达到最佳性能，你可以强制将 Delta 层合并到 Stable 层，以确保所有的数据都能够被索引：
 
