@@ -312,7 +312,6 @@ tikv_servers:
 
 - `host`
 - `tcp_port`
-- `http_port`
 - `flash_service_port`
 - `flash_proxy_port`
 - `flash_proxy_status_port`
