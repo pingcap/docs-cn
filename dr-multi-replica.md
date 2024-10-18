@@ -107,7 +107,7 @@ summary: 了解 TiDB 提供的基于多副本的单集群容灾方案。
     tiup bench tpcc  prepare -H 127.0.0.1 -P 4000 -D tpcc --warehouses 1
     ```
 
-    指定 PD leader 的优先级:
+    指定 PD leader 的优先级：
 
     ```shell
     tiup ctl:v6.4.0 pd member leader_priority  pd-1 4
