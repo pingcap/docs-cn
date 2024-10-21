@@ -174,7 +174,7 @@ tiup update cluster
 
 - 集群 DDL 情况：
 
-    - 如果你采用的是[平滑升级](/smooth-upgrade-tidb.md)，则不需要检查集群的 DDL 情况，无需等待 DDL job 完成或取消正在进行的 DDL job。
+    - 如果你采用的是[平滑升级](/smooth-upgrade-tidb.md)，则不需要检查集群的 DDL 情况，无需等待 DDL job 完成或取消正在进行的 DDL job。但如果是升级到 v8.1.0 或之后的版本且开启了[分布式执行框架](/tidb-distributed-execution-framework)，建议关闭分布式执行框架后，再升级，否则升级期间添加的索引可能会存在和数据不一致的问题。 
     - 如果你没有采用[平滑升级](/smooth-upgrade-tidb.md)，则建议使用 [`ADMIN SHOW DDL`](/sql-statements/sql-statement-admin-show-ddl.md) 语句查看集群中是否存在正在进行的 DDL job。如果存在，请等待 DDL job 执行完成或使用 [`ADMIN CANCEL DDL`](/sql-statements/sql-statement-admin-cancel-ddl.md) 语句取消该 DDL job 后再进行升级。
 
 - 集群 Backup 情况：建议使用 [`SHOW [BACKUPS|RESTORES]`](/sql-statements/sql-statement-show-backups.md) 命令查看集群中是否有正在进行的 Backup 或者 Restore 任务。如需升级，请等待 Backup 执行完成后，得到一个有效的备份后再执行升级。
