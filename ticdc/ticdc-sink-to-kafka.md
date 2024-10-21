@@ -115,7 +115,7 @@ URI 中可配置的的参数如下：
 > **注意：**
 >
 > 当 `protocol` 为 `open-protocol` 时，TiCDC 会将多个事件编码到同一个 Kafka 消息中，此过程中尽量避免产生长度超过 `max-message-bytes` 的消息。
-> 如果单条数据变更编码得到的消息大小超过了 `max-message-bytes` 个字节，changefeed 会报错，打印错误日志。
+> 如果单条数据变更编码得到的消息大小超过了 `max-message-bytes` 个字节，changefeed 会报错，并打印错误日志。
 
 ### TiCDC 使用 Kafka 的认证与授权
 
