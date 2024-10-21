@@ -89,6 +89,10 @@
         - [Langchain](/vector-search-integrate-with-langchain.md)
       - 嵌入模型/服务
         - [Jina AI](/vector-search-integrate-with-jinaai-embedding.md)
+      - ORM 库
+        - [SQLAlchemy](/vector-search-integrate-with-sqlalchemy.md)
+        - [peewee](/vector-search-integrate-with-peewee.md)
+        - [Django](/vector-search-integrate-with-django-orm.md)
     - [优化搜索性能](/vector-search-improve-performance.md)
     - [使用限制](/vector-search-limitations.md)
   - 事务
