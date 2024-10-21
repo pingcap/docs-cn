@@ -31,7 +31,7 @@ TiDB 兼容 MySQL 的协议，但存在部分与 MySQL 不兼容或有差异的�
 
 > **警告：**
 >
-> 在 8.0.32 之前的 MySQL Connector/J 8.0 版本中存在一个 [bug](https://bugs.mysql.com/bug.php?id=106252)，当与 TiDB v6.3.0 之前的版本一起使用时，可能会导致线程卡死。为了避免此问题，请**勿**使用 MySQL Connector/J 8.0.32 或更低版本。
+> 在 8.0.32 之前的 MySQL Connector/J 8.0 版本中存在一个 [bug](https://bugs.mysql.com/bug.php?id=106252)（详见 [MySQL JDBC Bug](/develop/dev-guide-third-party-tools-compatibility.md#mysql-jdbc-bug)），当与 TiDB v6.3.0 之前的版本一起使用时，可能会导致线程卡死。为了避免此问题，请**勿**使用 MySQL Connector/J 8.0.32 或更低版本。
 
 有关一个完整的实例应用程序，可参阅 [TiDB 和 JDBC 的简单 CRUD 应用程序](/develop/dev-guide-sample-application-java-jdbc.md)。
 
