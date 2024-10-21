@@ -28,7 +28,7 @@ TiDB 版本：8.4.0
     <td>实例级执行计划缓存允许同一个 TiDB 实例的所有会话共享执行计划缓存。该特性通过在内存中缓存更多执行计划，减少 SQL 编译时间，从而降低 SQL 整体运行时间，提升 OLTP 的性能和吞吐，同时更好地控制内存使用，提升数据库稳定性。</td>
   </tr>
   <tr>
-    <td>分区表全局索引成为正式功能**tw@hfxsd 1961**</td>
+    <td><a href="https://docs.pingcap.com/zh/tidb/v8.4/partitioned-table#全局索引">分区表全局索引成为正式功能</a>**tw@hfxsd 1961**</td>
     <td>全局索引可以有效提高检索非分区列的效率，并且消除了唯一键必须包含分区键的限制。该功能扩展了 TiDB 分区表的使用场景，避免了数据迁移过程中的一些应用修改工作。</td>
   </tr>
   <tr>
@@ -41,11 +41,11 @@ TiDB 版本：8.4.0
   </tr>
   <tr>
     <td rowspan="4">稳定性与高可用</td>
-    <td>Runaway Queries 支持更多触发条件，并能够切换资源组**tw@hfxsd 1832 tw@lilin90 1800**</td>
+    <td><a href="https://docs.pingcap.com/zh/tidb/v8.4/tidb-resource-control#query_limit-参数说明">Runaway Queries 支持更多触发条件，并能够切换资源组</a>**tw@hfxsd 1832 tw@lilin90 1800**</td>
     <td>Runaway Queries 提供了有效的手段来降低突发的 SQL 性能问题对系统产生的影响。v8.4.0 中新增 Coprocessor 处理的 Key 的数量 (<code>PROCESSED_KEYS</code>) 和 Request Unit (<code>RU</code>) 作为识别条件，并可以将识别到的查询置入指定资源组，对 Runaway Queries 做更精确的识别与控制。</td>
   </tr>
   <tr>
-    <td>支持为资源管控的后台任务设置资源使用上限**tw@hfxsd 1909**</td>
+    <td><a href="https://docs.pingcap.com/zh/tidb/v8.4/tidb-resource-control#background-参数说明">支持为资源管控的后台任务设置资源使用上限</a>**tw@hfxsd 1909**</td>
     <td>为资源管控的后台任务设置百分比上限，针对不同业务系统的需求，控制后台任务的消耗，从而将后台任务的消耗限制在一个很低的水平，保证在线业务的服务质量。</td>
   </tr>
   <tr>
@@ -63,7 +63,7 @@ TiDB 版本：8.4.0
   </tr>
   <tr>
     <td rowspan="3">数据库管理和可观测性</td>
-    <td>在内存表中显示 TiKV 和 TiDB 的 CPU 时间**tw@hfxsd 1877**</td>
+    <td><a href="https://docs.pingcap.com/zh/tidb/v8.4/information-schema-processlist">在内存表中显示 TiKV 和 TiDB 的 CPU 时间</a>**tw@hfxsd 1877**</td>
     <td>将 CPU 时间合入系统表中展示，与会话或 SQL 的其他指标并列，方便你从多角度对高 CPU 消耗的操作进行观测，提升诊断效率。尤其适用于诊断实例 CPU 飙升或集群读写热点等场景。</td>
   </tr>
   <tr>
@@ -71,7 +71,7 @@ TiDB 版本：8.4.0
     <td>当热点问题不是由个别 SQL 语句引起时，利用 <a href="https://docs.pingcap.com/zh/tidb/v8.4/top-sql"> TOP SQL </a> 中按表或者数据库聚合的 CPU 时间，能够协助用户快速发现造成热点的表或者应用程序，从而大大提升热点问题和 CPU 消耗问题的诊断效率。</td>
   </tr>
   <tr>
-    <td>支持对开启了 IMDSv2 服务的 TiKV 实例做备份**tw@hfxsd 1945**</td>
+    <td><a href="https://docs.pingcap.com/zh/tidb/v8.4/backup-and-restore-storages#鉴权">支持对开启了 IMDSv2 服务的 TiKV 实例做备份</a>**tw@hfxsd 1945**</td>
     <td><a href="https://aws.amazon.com/cn/blogs/security/get-the-full-benefits-of-imdsv2-and-disable-imdsv1-across-your-aws-infrastructure/">目前 AWS EC2 的默认元数据服务是 IMDSv2</a>。TiDB 支持从开启了 IMDSv2 的 TiKV 实例中备份数据，协助你更好地在公有云服务中运行 TiDB 集群。</td>
   </tr>
   <tr>
