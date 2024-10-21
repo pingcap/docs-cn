@@ -276,10 +276,6 @@ TiDB 版本：8.4.0
 >
 > 以下为从 v8.3.0 升级至当前版本 (v8.4.0) 所需兼容性变更信息。如果从 v8.2.0 或之前版本升级到当前版本，可能也需要考虑和查看中间版本 Release Notes 中提到的兼容性变更信息。
 
-### 行为变更
-
-* 行为变更 1
-
 ### 系统变量
 
 | 变量名 | 修改类型 | 描述 |
@@ -351,10 +347,6 @@ TiDB 版本：8.4.0
     * 从 v8.0.0 开始，TiDB Lightning 废弃了物理导入模式下的[旧版冲突检测](/tidb-lightning/tidb-lightning-physical-import-mode-usage.md#旧版冲突检测从-v800-开始已被废弃)策略，支持通过 [`conflict.strategy`](/tidb-lightning/tidb-lightning-configuration.md#tidb-lightning-任务配置) 参数统一控制逻辑导入和物理导入模式的冲突检测策略。旧版冲突检测的参数 [`duplicate-resolution`](/tidb-lightning/tidb-lightning-configuration.md) 将在未来版本中被移除。
 
 ## 废弃功能
-
-* 以下为从 v8.4.0 开始已废弃的功能：
-
-    * 废弃功能 1
 
 * 以下为计划将在未来版本中废弃的功能：
 
