@@ -5,15 +5,7 @@ summary: 介绍 TiCDC 数据正确性校验功能的实现原理和使用方法�
 
 # TiCDC 单行数据正确性校验
 
-从 v7.1.0 开始，TiCDC 引入了单行数据正确性校验功能。该功能基于 Checksum 算法，校验一行数据从 TiDB 写入、通过 TiCDC 同步，到写入 Kafka 集群的过程中数据内容是否发生错误。TiCDC 数据正确性校验功能仅支持下游是 Kafka 的 Changefeed，目前支持 Avro 协议。
-
-## 实现原理
-
-在启用单行数据 Checksum 正确性校验功能后，TiDB 使用 CRC32 算法计算该行数据的 Checksum 值，并将其一并写入 TiKV。TiCDC 从 TiKV 读取数据，根据相同的算法重新计算 Checksum，如果该值与 TiDB 写入的值相同，则可以证明数据在 TiDB 至 TiCDC 的传输过程中是正确的。
-
-TiCDC 将数据编码成特定格式并发送至 Kafka。Kafka Consumer 读取数据后，可以使用与 TiDB 相同的算法计算得到新的 Checksum，将此值与数据中携带的 Checksum 值进行比较，若二者一致，则可证明从 TiCDC 至 Kafka Consumer 的传输链路上的数据是正确的。
-
-关于 Checksum 值的计算规则，请参考 [Checksum 计算规则](#checksum-计算规则)。
+从 v7.1.0 开始，TiCDC 引入了单行数据正确性校验功能。该功能基于 [Checksum 算法](#checksum-算法)，校验一行数据从 TiDB 写入、通过 TiCDC 同步，到写入 Kafka 集群的过程中数据内容是否发生错误。目前，仅下游为 Kafka 且协议为 Simple 或 Avro 的 Changefeed 支持该功能。关于 Checksum 值的计算规则，请参考 [Checksum 计算规则](#checksum-计算规则)。
 
 ## 启用功能
 
@@ -66,6 +58,22 @@ TiCDC 默认关闭单行数据的 Checksum 校验功能。若要在开启此功�
     ```
 
     上述配置仅对新创建的会话生效。在所有写入 TiDB 的客户端都完成数据库连接重建后，Changefeed 写入 Kafka 的消息中将不再携带该条消息对应数据的 Checksum 值。
+
+## Checksum 算法
+
+### Checksum V1
+
+在 v8.4.0 之前，TiDB 和 TiCDC 采用 Checksum v1 算法进行 Checksum 计算和校验。
+
+在启用单行数据 Checksum 正确性校验功能后，TiDB 会使用 CRC32 算法计算每行数据的 Checksum 值，并将这个值与该行数据一并存储在 TiKV 中。随后，TiCDC 从 TiKV 读取这些数据，并使用相同的算法重新计算 Checksum，如果得到的 Checksum 值与 TiDB 写入的 Checksum 值相同，则表明数据在从 TiDB 到 TiCDC 的传输过程中是正确的。
+
+TiCDC 将数据编码成特定格式并发送至 Kafka。Kafka Consumer 读取数据后，可以使用与 TiDB 相同的 CRC32 算法计算得到新的 Checksum，将此值与数据中携带的 Checksum 值进行比较，若二者一致，则表明从 TiCDC 到 Kafka Consumer 的传输链路上的数据是正确的。
+
+### Checksum V2
+
+从 v8.4.0 开始，TiDB 和 TiCDC 引入 Checksum V2 算法，解决了 Checksum V1 在执行 `ADD COLUMN` 或 `DROP COLUMN` 后无法正确校验 Update 或 Delete 事件中 Old Value 数据的问题。
+
+对于 v8.4.0 及之后新创建的集群，或从之前版本升级到 v8.4.0 的集群，启用单行数据 Checksum 正确性校验功能后，TiDB 默认使用 Checksum V2 算法进行 Checksum 计算和校验。TiCDC 支持同时处理 V1 和 V2 两种 Checksum。该变更仅影响 TiDB 和 TiCDC 内部实现，不影响下游 Kafka consumer 的 Checksum 计算校验方法。
 
 ## Checksum 计算规则
 

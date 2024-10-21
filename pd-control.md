@@ -33,7 +33,7 @@ PD Control 是 PD 的命令行工具，用于获取集群状态信息和调整�
 
 ### 源码编译
 
-1. [Go](https://golang.org/) 1.21 或以上版本
+1. [Go](https://golang.org/) 1.23 或以上版本
 2. 在 PD 项目根目录使用 `make` 或者 `make pd-ctl` 命令进行编译，生成 bin/pd-ctl
 
 ## 简单例子
@@ -164,8 +164,8 @@ config show
     "leader-schedule-limit": 4,
     "leader-schedule-policy": "count",
     "low-space-ratio": 0.8,
-    "max-merge-region-keys": 200000,
-    "max-merge-region-size": 20,
+    "max-merge-region-keys": 540000,
+    "max-merge-region-size": 54,
     "max-pending-peer-count": 64,
     "max-snapshot-count": 64,
     "max-store-down-time": "30m0s",
@@ -705,6 +705,20 @@ member leader transfer pd3
 ......
 ```
 
+指定 PD leader 的优先级：
+
+```bash
+member leader_priority  pd-1 4
+member leader_priority  pd-2 3
+member leader_priority  pd-3 2
+member leader_priority  pd-4 1
+member leader_priority  pd-5 0
+```
+
+> **注意：**
+>
+> 在可用的 PD 节点中，优先级数值最大的节点会直接当选 leader。
+
 ### `operator [check | show | add | remove]`
 
 用于显示和控制调度操作。
@@ -1149,8 +1163,6 @@ pd-ctl resource-manager config controller set ltb-max-wait-duration 30m
 >> scheduler config evict-leader-scheduler                // v4.0.0 起，展示该调度器具体在哪些 store 上
 >> scheduler config evict-leader-scheduler add-store 2    // 为 store 2 添加 leader 驱逐调度
 >> scheduler config evict-leader-scheduler delete-store 2 // 为 store 2 移除 leader 驱逐调度
->> scheduler add shuffle-leader-scheduler                 // 随机交换不同 store 上的 leader
->> scheduler add shuffle-region-scheduler                 // 随机调度不同 store 上的 Region
 >> scheduler add evict-slow-store-scheduler               // 当有且仅有一个 slow store 时将该 store 上的所有 Region 的 leader 驱逐出去
 >> scheduler remove grant-leader-scheduler-1              // 把对应的调度器删掉，`-1` 对应 store ID
 >> scheduler pause balance-region-scheduler 10            // 暂停运行 balance-region 调度器 10 秒

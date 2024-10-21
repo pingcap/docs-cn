@@ -123,8 +123,8 @@ Hibernate Region 在 [TiKV master](https://github.com/tikv/tikv/tree/master) 分
 {{< copyable "" >}}
 
 ```
-config set max-merge-region-size 20
-config set max-merge-region-keys 200000
+config set max-merge-region-size 54
+config set max-merge-region-keys 540000
 config set merge-schedule-limit 8
 ```
 
@@ -134,15 +134,15 @@ config set merge-schedule-limit 8
 
 ### 方法六：调整 Region 大小
 
-Region 默认的大小约为 96 MiB，将其调大也可以减少 Region 个数，具体介绍可参考[使用更大的 Region](/tune-region-performance.md)。
+Region 的默认大小为 256 MiB，将其调大可以减少 Region 个数，详情参见 [Region 性能调优](/tune-region-performance.md)。
 
-> **警告：**
+> **注意：**
 >
-> 自定义 Region 大小是在 TiDB v6.1.0 引入的实验特性，不建议在生产环境中配置。使用此特性的风险包括：
+> 从 v8.4.0 开始，Region 的默认值从 96 MiB 调整为 256 MiB。如果你并未手动调整过 Region 大小，将 TiKV 集群从 v8.4.0 之前升级至 v8.4.0 或更高的版本后，集群 Region 的默认值将自动更新为 256 MiB。
+
+> **注意：**
 >
-> + 更容易发生性能抖动。
-> + 查询性能回退，尤其是大范围数据查询的性能会有回退。
-> + 调度变慢。
+> 自定义 Region 大小在 TiDB v6.5.0 之前为实验特性。如需调整 Region 大小，建议升级至 v6.5.0 或更高版本。
 
 ### 方法七：提高 Raft 通信的的最大连接数
 

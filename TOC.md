@@ -18,7 +18,7 @@
 - 应用开发
   - [概览](/develop/dev-guide-overview.md)
   - 快速开始
-    - [使用 TiDB Serverless 构建 TiDB 集群](/develop/dev-guide-build-cluster-in-cloud.md)
+    - [使用 TiDB Cloud Serverless 构建 TiDB 集群](/develop/dev-guide-build-cluster-in-cloud.md)
     - [使用 TiDB 的增删改查 SQL](/develop/dev-guide-tidb-crud-sql.md)
   - 示例程序
     - Java
@@ -114,7 +114,6 @@
     - [PD 微服务部署拓扑](/pd-microservices-deployment-topology.md)
     - [TiProxy 部署拓扑](/tiproxy/tiproxy-deployment-topology.md)
     - [TiCDC 部署拓扑](/ticdc-deployment-topology.md)
-    - [TiDB Binlog 部署拓扑](/tidb-binlog-deployment-topology.md)
     - [TiSpark 部署拓扑](/tispark-deployment-topology.md)
     - [跨机房部署拓扑结构](/geo-distributed-deployment-topology.md)
     - [混合部署拓扑结构](/hybrid-deployment-topology.md)
@@ -153,6 +152,14 @@
     - [与 Confluent Cloud 和 Snowflake 进行数据集成](/ticdc/integrate-confluent-using-ticdc.md)
     - [与 Apache Kafka 和 Apache Flink 进行数据集成](/replicate-data-to-kafka.md)
 - 运维操作
+  - 安全加固
+    - [TiDB 安全配置最佳实践](/best-practices-for-security-configuration.md)
+    - [为 TiDB 客户端服务端间通信开启加密传输](/enable-tls-between-clients-and-servers.md)
+    - [为 TiDB 组件间通信开启加密传输](/enable-tls-between-components.md)
+    - [生成自签名证书](/generate-self-signed-certificates.md)
+    - [静态加密](/encryption-at-rest.md)
+    - [为 TiDB 落盘文件开启加密](/enable-disk-spill-encrypt.md)
+    - [日志脱敏](/log-redaction.md)
   - 升级 TiDB 版本
     - [使用 TiUP 升级](/upgrade-tidb-using-tiup.md)
     - [使用 TiDB Operator](https://docs.pingcap.com/zh/tidb-in-kubernetes/stable/upgrade-a-tidb-cluster)
@@ -607,26 +614,6 @@
     - [故障处理](/ticdc/troubleshoot-ticdc.md)
     - [常见问题解答](/ticdc/ticdc-faq.md)
     - [术语表](/ticdc/ticdc-glossary.md)
-  - TiDB Binlog（已废弃）
-    - [概述](/tidb-binlog/tidb-binlog-overview.md)
-    - [快速上手](/tidb-binlog/get-started-with-tidb-binlog.md)
-    - [部署使用](/tidb-binlog/deploy-tidb-binlog.md)
-    - [运维管理](/tidb-binlog/maintain-tidb-binlog-cluster.md)
-    - [配置说明](/tidb-binlog/tidb-binlog-configuration-file.md)
-      - [Pump](/tidb-binlog/tidb-binlog-configuration-file.md#pump)
-      - [Drainer](/tidb-binlog/tidb-binlog-configuration-file.md#drainer)
-    - [版本升级](/tidb-binlog/upgrade-tidb-binlog.md)
-    - [监控告警](/tidb-binlog/monitor-tidb-binlog-cluster.md)
-    - [增量恢复](/tidb-binlog/tidb-binlog-reparo.md)
-    - [binlogctl 工具](/tidb-binlog/binlog-control.md)
-    - [Kafka 自定义开发](/tidb-binlog/binlog-consumer-client.md)
-    - [TiDB Binlog Relay Log](/tidb-binlog/tidb-binlog-relay-log.md)
-    - [集群间双向同步](/tidb-binlog/bidirectional-replication-between-tidb-clusters.md)
-    - [术语表](/tidb-binlog/tidb-binlog-glossary.md)
-    - 故障诊断
-      - [故障诊断](/tidb-binlog/troubleshoot-tidb-binlog.md)
-      - [常见错误修复](/tidb-binlog/handle-tidb-binlog-errors.md)
-    - [FAQ](/tidb-binlog/tidb-binlog-faq.md)
   - PingCAP Clinic 诊断服务
     - [概述](/clinic/clinic-introduction.md)
     - [快速上手](/clinic/quick-start-with-clinic.md)
@@ -644,6 +631,7 @@
   - TiProxy
     - [概述](/tiproxy/tiproxy-overview.md)
     - [负载均衡策略](/tiproxy/tiproxy-load-balance.md)
+    - [流量回放](/tiproxy/tiproxy-traffic-replay.md)
     - [配置文件](/tiproxy/tiproxy-configuration.md)
     - [命令行参数](/tiproxy/tiproxy-command-line-flags.md)
     - [监控指标](/tiproxy/tiproxy-grafana.md)
@@ -693,7 +681,6 @@
     - [pd-ctl](/pd-control.md)
     - [tidb-ctl](/tidb-control.md)
     - [pd-recover](/pd-recover.md)
-    - [binlog-ctl](/tidb-binlog/binlog-control.md)
   - 命令行参数
     - [tidb-server](/command-line-flags-for-tidb-configuration.md)
     - [tikv-server](/command-line-flags-for-tikv-configuration.md)
@@ -708,13 +695,6 @@
     - [TiFlash 监控指标](/tiflash/monitor-tiflash.md)
     - [TiCDC 监控指标](/ticdc/monitor-ticdc.md)
     - [Resource Control 监控指标](/grafana-resource-control-dashboard.md)
-  - 安全加固
-    - [为 TiDB 客户端服务端间通信开启加密传输](/enable-tls-between-clients-and-servers.md)
-    - [为 TiDB 组件间通信开启加密传输](/enable-tls-between-components.md)
-    - [生成自签名证书](/generate-self-signed-certificates.md)
-    - [静态加密](/encryption-at-rest.md)
-    - [为 TiDB 落盘文件开启加密](/enable-disk-spill-encrypt.md)
-    - [日志脱敏](/log-redaction.md)
   - 权限
     - [与 MySQL 安全特性差异](/security-compatibility-with-mysql.md)
     - [权限管理](/privilege-management.md)
@@ -772,8 +752,6 @@
       - [`CALIBRATE RESOURCE`](/sql-statements/sql-statement-calibrate-resource.md)
       - [`CANCEL IMPORT JOB`](/sql-statements/sql-statement-cancel-import-job.md)
       - [`COMMIT`](/sql-statements/sql-statement-commit.md)
-      - [`CHANGE DRAINER`](/sql-statements/sql-statement-change-drainer.md)
-      - [`CHANGE PUMP`](/sql-statements/sql-statement-change-pump.md)
       - [`CREATE BINDING`](/sql-statements/sql-statement-create-binding.md)
       - [`CREATE DATABASE`](/sql-statements/sql-statement-create-database.md)
       - [`CREATE INDEX`](/sql-statements/sql-statement-create-index.md)
@@ -853,7 +831,6 @@
       - [`SHOW CREATE DATABASE`](/sql-statements/sql-statement-show-create-database.md)
       - [`SHOW CREATE USER`](/sql-statements/sql-statement-show-create-user.md)
       - [`SHOW DATABASES`](/sql-statements/sql-statement-show-databases.md)
-      - [`SHOW DRAINER STATUS`](/sql-statements/sql-statement-show-drainer-status.md)
       - [`SHOW ENGINES`](/sql-statements/sql-statement-show-engines.md)
       - [`SHOW ERRORS`](/sql-statements/sql-statement-show-errors.md)
       - [`SHOW FIELDS FROM`](/sql-statements/sql-statement-show-fields-from.md)
@@ -868,7 +845,6 @@
       - [`SHOW PRIVILEGES`](/sql-statements/sql-statement-show-privileges.md)
       - [`SHOW PROCESSLIST`](/sql-statements/sql-statement-show-processlist.md)
       - [`SHOW PROFILES`](/sql-statements/sql-statement-show-profiles.md)
-      - [`SHOW PUMP STATUS`](/sql-statements/sql-statement-show-pump-status.md)
       - [`SHOW SCHEMAS`](/sql-statements/sql-statement-show-schemas.md)
       - [`SHOW STATS_BUCKETS`](/sql-statements/sql-statement-show-stats-buckets.md)
       - [`SHOW STATS_HEALTHY`](/sql-statements/sql-statement-show-stats-healthy.md)
@@ -1000,6 +976,7 @@
         - [`TABLES`](/information-schema/information-schema-tables.md)
         - [`TABLE_CONSTRAINTS`](/information-schema/information-schema-table-constraints.md)
         - [`TABLE_STORAGE_STATS`](/information-schema/information-schema-table-storage-stats.md)
+        - [`TIDB_CHECK_CONSTRAINTS`](/information-schema/information-schema-tidb-check-constraints.md)
         - [`TIDB_HOT_REGIONS`](/information-schema/information-schema-tidb-hot-regions.md)
         - [`TIDB_HOT_REGIONS_HISTORY`](/information-schema/information-schema-tidb-hot-regions-history.md)
         - [`TIDB_INDEXES`](/information-schema/information-schema-tidb-indexes.md)
@@ -1025,6 +1002,7 @@
         - [`schema_unused_indexes`](/sys-schema/sys-schema-unused-indexes.md)
     - [元数据锁](/metadata-lock.md)
     - [TiDB 加速建表](/accelerated-table-creation.md)
+    - [Schema 缓存](/schema-cache.md)
   - UI
     - TiDB Dashboard
       - [简介](/dashboard/dashboard-intro.md)
@@ -1090,6 +1068,7 @@
   - v7.6
     - [7.6.0-DMR](/releases/release-7.6.0.md)
   - v7.5
+    - [7.5.4](/releases/release-7.5.4.md)
     - [7.5.3](/releases/release-7.5.3.md)
     - [7.5.2](/releases/release-7.5.2.md)
     - [7.5.1](/releases/release-7.5.1.md)
@@ -1112,6 +1091,7 @@
   - v6.6
     - [6.6.0-DMR](/releases/release-6.6.0.md)
   - v6.5
+    - [6.5.11](/releases/release-6.5.11.md)
     - [6.5.10](/releases/release-6.5.10.md)
     - [6.5.9](/releases/release-6.5.9.md)
     - [6.5.8](/releases/release-6.5.8.md)
