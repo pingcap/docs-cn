@@ -50,7 +50,7 @@ summary: TiDB 支持 MySQL 8.0 中提供的大部分 JSON 函数。
 | 函数        | 功能描述 |
 | --------------------------------- | ----------- |
 | [JSON_DEPTH()](/functions-and-operators/json-functions/json-functions-return.md#json_depth) | 返回 JSON 文档的最大深度 |
-| [JSON_DEPTH()](/functions-and-operators/json-functions/json-functions-return.md#json_depth) | 返回 JSON 文档的长度；如果路径参数已定，则返回该路径下值的长度 |
+| [JSON_LENGTH()](/functions-and-operators/json-functions/json-functions-return.md#json_length) | 返回 JSON 文档的长度；如果路径参数已定，则返回该路径下值的长度 |
 | [JSON_TYPE()](/functions-and-operators/json-functions/json-functions-return.md#json_type)  | 检查某 JSON 文档内部内容的类型 |
 | [JSON_VALID()](/functions-and-operators/json-functions/json-functions-return.md#json_valid)  | 检查 json\_doc 是否为有效的 JSON 文档  |
 
