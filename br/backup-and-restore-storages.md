@@ -108,7 +108,7 @@ tiup br restore db --db test -u "${PD_IP}:2379" \
 在备份之前，需要为 br 命令行工具访问 Amazon S3 中的备份目录设置相应的访问权限：
 
 - 备份时 TiKV 和 br 命令行工具需要的访问备份数据目录的最小权限：`s3:ListBucket`、`s3:GetObject`、`s3:DeleteObject`、`s3:PutObject` 和 `s3:AbortMultipartUpload`。
-- 恢复时 TiKV 和 br 命令行工具需要的访问备份数据目录的最小权限：`s3:ListBucket`、`s3:GetObject`、`s3:DeleteObject` 和 `s3:PutObject`。br 命令行工具会将断点信息写到备份数据目录下的 `./checkpoints` 子目录。在恢复日志备份数据时，br 命令行工具会将备份恢复集群的表 ID 映射关系写到备份数据目录下的 `./pitr_id_maps` 子目录。
+- 恢复时 TiKV 和 br 命令行工具需要的访问备份数据目录的最小权限：`s3:ListBucket` 和 `s3:GetObject`。
 
 如果你还没有创建备份数据保存目录，可以参考[创建存储桶](https://docs.aws.amazon.com/zh_cn/AmazonS3/latest/user-guide/create-bucket.html)在指定的区域中创建一个 S3 存储桶。如果需要使用文件夹，可以参考[使用文件夹在 Amazon S3 控制台中组织对象](https://docs.aws.amazon.com/zh_cn/AmazonS3/latest/user-guide/create-folder.html)在存储桶中创建一个文件夹。
 
