@@ -480,9 +480,8 @@ PD 中内置的 [TiDB Dashboard](/dashboard/dashboard-intro.md) 相关配置项�
 
 ### `enable-telemetry`
 
-+ 是否启用 TiDB Dashboard 遥测功能。
++ 是否启用 TiDB Dashboard 遥测功能。 <!--ToDo：确认该配置项是否也废弃了-->
 + 默认值：false
-+ 参阅[遥测](/telemetry.md)了解该功能详情。
 
 ## `replication-mode`
 

@@ -248,7 +248,7 @@ TiDB 版本：5.3.0
 
 TiDB 在遥测中新增收集 TEMPORARY TABLE 功能的开启情况。收集的数据中不包含任何实际业务的表名或表数据。
 
-关于所收集的信息详情及如何禁用该行为，参见[遥测](/telemetry.md)文档。
+关于所收集的信息详情及如何禁用该行为，参见[遥测](https://docs.pingcap.com/zh/tidb/v5.3/telemetry)文档。
 
 ## 移除功能
 

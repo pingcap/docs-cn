@@ -25,7 +25,7 @@ TiDB 版本：4.0.2
 
 ## 新更改
 
-- TiDB 及 TiDB Dashboard 默认收集使用情况信息，并将这些信息分享给 PingCAP 用于改善产品 [#18180](https://github.com/pingcap/tidb/pull/18180)。若要了解所收集的信息详情及如何禁用该行为，请参见[遥测](/telemetry.md)文档。
+- TiDB 及 TiDB Dashboard 默认收集使用情况信息，并将这些信息分享给 PingCAP 用于改善产品 [#18180](https://github.com/pingcap/tidb/pull/18180)。若要了解所收集的信息详情及如何禁用该行为，请参见[遥测](https://docs-archive.pingcap.com/zh/tidb/v4.0/telemetry)文档。
 
 ## 新功能
 
