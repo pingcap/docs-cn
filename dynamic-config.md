@@ -173,6 +173,8 @@ show warnings;
 | pessimistic-txn.wake-up-delay-duration | 悲观事务被重新唤醒的时间 |
 | pessimistic-txn.pipelined | 是否开启流水线式加悲观锁流程 |
 | pessimistic-txn.in-memory | 是否开启内存悲观锁功能 |
+| pessimistic-txn.in-memory-peer-size-limit | 控制单个 Region 内存悲观锁的内存使用上限 |
+| pessimistic-txn.in-memory-instance-size-limit | 控制单个 TiKV 实例内存悲观锁的内存使用上限 |
 | quota.foreground-cpu-time | 限制处理 TiKV 前台读写请求所使用的 CPU 资源使用量，软限制 |
 | quota.foreground-write-bandwidth | 限制前台事务写入的带宽，软限制 |
 | quota.foreground-read-bandwidth | 限制前台事务读取数据和 Coprocessor 读取数据的带宽，软限制 |
@@ -219,6 +221,11 @@ show warnings;
 | server.concurrent-send-snap-limit | 同时发送 snapshot 的最大个数 |
 | server.concurrent-recv-snap-limit | 同时接受 snapshot 的最大个数 |
 | storage.block-cache.capacity | 共享 block cache 的大小（自 v4.0.3 起支持） |
+| storage.flow-control.enable | 是否开启流量控制机制 |
+| storage.flow-control.memtables-threshold | 触发流量控制的 KvDB memtable 数量阈值 |
+| storage.flow-control.l0-files-threshold | 触发流量控制的 KvDB L0 文件数量阈值 |
+| storage.flow-control.soft-pending-compaction-bytes-limit | 触发流控机制开始拒绝部分写入请求的 KvDB pending compaction bytes 阈值 |
+| storage.flow-control.hard-pending-compaction-bytes-limit | 触发流控机制拒绝所有新写入请求的 KvDB pending compaction bytes 阈值 |
 | storage.scheduler-worker-pool-size | Scheduler 线程池中线程的数量 |
 | backup.num-threads | backup 线程的数量（自 v4.0.3 起支持） |
 | split.qps-threshold | 对 Region 执行 load-base-split 的阈值。如果连续 10s 内，某个 Region 的读请求的 QPS 超过 qps-threshold，则尝试切分该 Region |
