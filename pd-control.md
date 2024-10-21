@@ -714,9 +714,6 @@ member leader_priority  pd-3 2
 member leader_priority  pd-4 1
 member leader_priority  pd-5 0
 ```
-```
-......
-```
 
 > **注意：**
 >
