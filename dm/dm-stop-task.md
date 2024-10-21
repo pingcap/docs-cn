@@ -67,3 +67,10 @@ stop-task test
     ]
 }
 ```
+
+> **注意：**
+>
+> 通过 `stop-task` 停止迁移任务后，执行 [`query-status`](/dm/dm-query-status.md) 将无法查询到该任务，但该任务的 checkpoint 等信息仍然保留在元数据库 `dm_meta` 中。
+>
+> + 要重新创建该迁移任务，你需要在 [`start-task`](/dm/dm-create-task.md) 中添加 `--remove-meta` 参数。
+> + 要彻底删除该迁移任务，你需要在元数据库 `dm_meta` 中删除以该任务名为表名前缀的四张表。
