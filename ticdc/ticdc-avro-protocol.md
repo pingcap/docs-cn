@@ -25,7 +25,7 @@ cdc cli changefeed create --server=http://127.0.0.1:8300 --changefeed-id="kafka-
 
 > **注意：**
 > 
-> 使用 Avro 协议时，一个 Kafka Topic 必须只能有一张表的数据，需要在 config 文件中配置 [Topic 分发器](/ticdc/ticdc-sink-to-kafka.md#topic-分发器)。 
+> 使用 Avro 协议时，一个 Kafka Topic 必须只能有一张表的数据。你需要在配置文件中配置 [Topic 分发器](/ticdc/ticdc-sink-to-kafka.md#topic-分发器)。 
 
 ```shell
 [sink]
@@ -75,7 +75,11 @@ Key 中的 `fields` 只包含主键或唯一索引列。
 Value 数据格式默认与 Key 数据格式相同，但是 Value 的 `fields` 中包含了所有的列。
 
 > **注意：**
-> Avro 协议在编码 DML 事件时，对 Delete 事件，只编码 Key 部分，Value 部分为空。对于 Insert 事件，编码所有列数据到 Value 部分。对于 Update 事件，只编码更新后的所有列数据。
+> 
+> Avro 协议在编码 DML 事件时，操作方式如下：
+> - 对于 Delete 事件，只编码 Key 部分，Value 部分为空。
+> - 对于 Insert 事件，编码所有列数据到 Value 部分。
+> - 对于 Update 事件，只编码更新后的所有列数据。
 
 ## TiDB 扩展字段
 
@@ -162,7 +166,7 @@ Column 数据格式即 Key/Value 数据格式中的 `{{ColumnValueBlock}}` 部�
 
 - `{{ColumnName}}` 表示列名。
 - `{{TIDB_TYPE}}` 表示对应到 TiDB 中的类型，与原始的 SQL Type 不是一一对应关系。
-- `{{AVRO_TYPE}}` 表示 [avro spec](https://avro.apache.org/docs/++version++/specification) 中的类型。
+- `{{AVRO_TYPE}}` 表示 [Avro Specification](https://avro.apache.org/docs/++version++/specification) 中的类型。
 
 | SQL TYPE   | TIDB_TYPE | AVRO_TYPE | 说明                                                                                                               |
 |------------|-----------|-----------|---------------------------------------------------------------------------------------------------------------------------|
@@ -275,7 +279,7 @@ DECIMAL(10, 4)
 
 Avro 协议并不会向下游发送 DDL 事件和 Watermark 事件。Avro 会在每次 DML 事件发生时检测是否发生 schema 变更，如果发生了 schema 变更，Avro 会生成新的 schema，并尝试向 Schema Registry 注册。注册时，Schema Registry 会做兼容性检测，如果此次 schema 变更没有通过兼容性检测，注册将会失败，TiCDC 并不会尝试解决 schema 的兼容性问题。
 
-比如，Confluent Schema Registry 默认的[兼容性策略](https://docs.confluent.io/platform/current/schema-registry/fundamentals/schema-evolution.html#compatibility-types)是 BACKWARD，在这种策略下，如果你在源表增加一个非空列，Avro 在生成新 schema 向 Schema Registry 注册时将会因为兼容性问题失败，这个时候 changefeed 将会进入 error 状态。
+比如，Confluent Schema Registry 默认的[兼容性策略](https://docs.confluent.io/platform/current/schema-registry/fundamentals/schema-evolution.html#compatibility-types)是 `BACKWARD`，在这种策略下，如果你在源表增加一个非空列，Avro 在生成新 schema 向 Schema Registry 注册时将会因为兼容性问题失败，这个时候 changefeed 将会进入 error 状态。
 
 同时，即使 schema 变更通过兼容性检测并成功注册新版本，数据的生产者和消费者可能仍然需要获取到新版本的 schema，才能对数据进行正确编解码。
 
@@ -283,7 +287,7 @@ Avro 协议并不会向下游发送 DDL 事件和 Watermark 事件。Avro 会在
 
 ## 消费者实现
 
-TiCDC Avro 协议，支持被 [`io.confluent.kafka.serializers.KafkaAvroDeserializer`](https://docs.confluent.io/platform/current/schema-registry/fundamentals/serdes-develop/serdes-avro.html#avro-deserializer) 反序列化。
+TiCDC Avro 协议支持被 [`io.confluent.kafka.serializers.KafkaAvroDeserializer`](https://docs.confluent.io/platform/current/schema-registry/fundamentals/serdes-develop/serdes-avro.html#avro-deserializer) 反序列化。
 
 消费者程序可以通过 [Schema Registry API](https://docs.confluent.io/platform/current/schema-registry/develop/api.html) 获取到最新的 schema，然后对数据进行反序列化。
 
