@@ -27,12 +27,18 @@ TiDB 兼容 MySQL 的协议，但存在部分与 MySQL 不兼容或有差异的�
 
 支持等级：**Full**
 
-按照 [MySQL 文档](https://dev.mysql.com/doc/connector-j/en/)中的说明下载并配置 Java JDBC 驱动程序即可使用。对于 TiDB v6.3.0 及以上版本，建议使用 MySQL Connector/J 8.0.33 及以上版本。
+按照 [MySQL 文档](https://dev.mysql.com/doc/connector-j/en/)中的说明下载并配置 Java JDBC 驱动程序即可使用。对于 TiDB v6.3.0 及以上版本，建议使用 MySQL Connector/J 最新 GA 版本。
 
+<<<<<<< HEAD
 > **注意：**
 >
 > - 在 8.0.32 之前的 MySQL Connector/J 8.0 版本中存在一个 [bug](https://bugs.mysql.com/bug.php?id=106252)，当与 TiDB v6.3.0 之前的版本一起使用时，可能会导致线程卡死。为了避免此问题，建议使用 MySQL Connector/J 8.0.32 或更高版本，或者使用 TiDB JDBC（见 *TiDB-JDBC* 标签）。
 > - MySQL Connector/J 8.0 与 TiDB v7.5.2 或之前版本一起使用时，建议将 TiDB 配置项 [`server-version`](/tidb-configuration-file.md#server-version) 设置为 `"5.7.25-TiDB-v7.5.x"`。这是因为，当 TiDB 服务器报告版本为 MySQL 8.0.11 或更高版本时，MySQL Connector/J 会尝试访问 TiDB 的 [`information_schema.KEYWORDS`](/information-schema/information-schema-keywords.md) 表，但该表是从 v7.5.3 开始引入的，在 v7.5.2 及之前版本中不存在。
+=======
+> **警告：**
+>
+> 在 8.0.31 及之前的 MySQL Connector/J 8.0 版本中存在一个 [bug](https://bugs.mysql.com/bug.php?id=106252)（详见 [MySQL JDBC Bug](/develop/dev-guide-third-party-tools-compatibility.md#mysql-jdbc-bug)），当与 TiDB v6.3.0 之前的版本一起使用时，可能会导致线程卡死。为了避免此问题，请**勿**使用 MySQL Connector/J 8.0.31 或更低版本。
+>>>>>>> 49c750b816 (fix: typo of jdbc v8.0.32 (#18871))
 
 有关一个完整的实例应用程序，可参阅 [TiDB 和 JDBC 的简单 CRUD 应用程序](/develop/dev-guide-sample-application-java-jdbc.md)。
 
