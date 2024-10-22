@@ -184,7 +184,7 @@ TiDB 8.1.0 为长期支持版本 (Long-Term Support Release, LTS)。
 |----------------|--------------------|------|------------------------------------|
 | TiDB| [`enable-telemetry`](/tidb-configuration-file.md#enable-telemetry-从-v402-版本开始引入从-v810-版本开始废弃) | 废弃 | 从 v8.1.0 开始，TiDB 移除了遥测功能，该配置项已不再生效。保留该配置项仅用于与之前版本兼容。 |
 | TiDB| [`concurrently-init-stats`](/tidb-configuration-file.md#concurrently-init-stats-从-v810-和-v752-版本开始引入) | 新增 | 用于控制 TiDB 启动时是否并发初始化统计信息。默认值为 `false`。 |
-| PD| [`enable-telemetry`](/pd-configuration-file.md#enable-telemetry) | 废弃 | 从 TiDB v8.1.0 开始，TiDB Dashboard 移除了遥测功能，该配置项已不再生效。保留该配置项仅用于与之前版本兼容。 |
+| PD | [`enable-telemetry`](/pd-configuration-file.md#enable-telemetry) | 废弃 | 从 TiDB v8.1.0 开始，TiDB Dashboard 移除了遥测功能，该配置项已不再生效。保留该配置项仅用于与之前版本兼容。 |
 | TiDB Lightning | [`conflict.max-record-rows`](/tidb-lightning/tidb-lightning-configuration.md#tidb-lightning-任务配置) | 修改 | 从 v8.1.0 开始，TiDB Lightning 会自动将 `conflict.max-record-rows` 的值设置为 `conflict.threshold` 的值，并忽略用户输入，因此无需再单独配置 `conflict.max-record-rows`。`conflict.max-record-rows` 将在未来版本中废弃。 |
 | TiDB Lightning | [`conflict.threshold`](/tidb-lightning/tidb-lightning-configuration.md#tidb-lightning-任务配置) | 修改 | 默认值从 `9223372036854775807` 修改为 `10000`，从而迅速中断异常任务，以便用户尽快进行相应调整。这避免了在导入完成后，才发现是因为数据源异常或表结构定义错误导致导入了大量冲突数据，从而节省时间和计算资源。 |
 | TiCDC | [`security.client-allowed-user`](/ticdc/ticdc-server-config.md#cdc-server-配置文件说明) | 新增 | 指定可用于客户端鉴权的用户名，列表中不存在的用户的鉴权请求将被直接拒绝。默认值为 null。|
