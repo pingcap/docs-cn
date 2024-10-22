@@ -173,7 +173,7 @@ $DISTANCE(p,q)=- INNER\_PROD(p,q)=-\sum \limits _{i=1}^{n}{p_{i}q_{i}}$
 VEC_L1_DISTANCE(vector1, vector2)
 ```
 
-计算两个向量之间的 [L1 距离](https://zh.wikipedia.org/wiki/%E6%9B%BC%E5%93%88%E9%A0%93%E8%B7%9D%E9%9B%A2) (曼哈顿距离)，使用的公式为：
+计算两个向量之间的 [L1 距离](https://zh.wikipedia.org/wiki/%E6%9B%BC%E5%93%88%E9%A0%93%E8%B7%9D%E9%9B%A2)（曼哈顿距离），使用的公式为：
 
 $DISTANCE(p,q)=\sum \limits _{i=1}^{n}{|p_{i}-q_{i}|}$
 
