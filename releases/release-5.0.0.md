@@ -458,4 +458,4 @@ TiUP v1.4.0 版本以前，DBA 使用 tiup-cluster 升级 TiDB 集群时，如�
 
 TiDB 在遥测中新增收集集群的使用指标，包括数据表数量、查询次数、新特性是否启用等。
 
-若要了解所收集的信息详情及如何禁用该行为，请参见[遥测](https://docs-archive.pingcap.com/zh/tidb/v5.0/telemetry)文档。
+若要了解所收集的信息详情及如何禁用该行为，请参见[遥测](/telemetry.md)文档。
