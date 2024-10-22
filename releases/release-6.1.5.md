@@ -13,7 +13,7 @@ TiDB 版本：6.1.5
 
 ## 兼容性变更
 
-- 自 2023 年 2 月 20 日起，新发布的 TiDB 和 TiDB Dashboard 版本（包含 6.1.5），默认关闭[遥测功能](https://docs.pingcap.com/zh/tidb/v6.1/telemetry)，即默认不再收集使用情况信息分享给 PingCAP。如果升级至这些版本前使用默认的遥测配置，则升级后遥测功能处于关闭状态。具体的版本可参考 [TiDB 版本发布时间线](/releases/release-timeline.md)。
+- 自 2023 年 2 月 20 日起，新发布的 TiDB 和 TiDB Dashboard 版本（包含 6.1.5），默认关闭[遥测功能](/telemetry.md)，即默认不再收集使用情况信息分享给 PingCAP。如果升级至这些版本前使用默认的遥测配置，则升级后遥测功能处于关闭状态。具体的版本可参考 [TiDB 版本发布时间线](/releases/release-timeline.md)。
 
     - 系统变量 [`tidb_enable_telemetry`](/system-variables.md#tidb_enable_telemetry-从-v402-版本开始引入) 默认值由 `ON` 修改为 `OFF`。
     - TiDB 配置项 [`enable-telemetry`](/tidb-configuration-file.md#enable-telemetry-从-v402-版本开始引入) 默认值由 `true` 改为 `false`。
