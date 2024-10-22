@@ -40,15 +40,15 @@ TiCDC 会将一个 DML 事件转换为一个 kafka 事件，其中事件的 key 
     },
     "schema": {
         "fields": [
-			{
-				"field":"a",
-				"optional":true,
-				"type":"int32"
-			}
-			],
+            {
+                "field": "a",
+                "optional": true,
+                "type": "int32"
+            }
+        ],
         "name": "default.test.t2.Key",
         "optional": false,
-        "type":"struct"
+        "type": "struct"
     }
 }
 ```
