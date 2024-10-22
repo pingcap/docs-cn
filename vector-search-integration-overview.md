@@ -42,10 +42,10 @@ TiDB 向量搜索支持存储高达 16383 维的向量，可适应大多数嵌�
 
 <table>
   <tr>
-    <th>Language</th>
-    <th>ORM/Client</th>
-    <th>How to install</th>
-    <th>Tutorial</th>
+    <th>语言</th>
+    <th>ORM/客户端</th>
+    <th>安装说明</th>
+    <th>教程</th>
   </tr>
   <tr>
     <td rowspan="4">Python</td>

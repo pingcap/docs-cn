@@ -130,7 +130,7 @@ SELECT * FROM INFORMATION_SCHEMA.TIFLASH_INDEXES;
 
 - 可以通过 `ROWS_STABLE_INDEXED` 和 `ROWS_STABLE_NOT_INDEXED` 列查看索引构建进度。当 `ROWS_STABLE_NOT_INDEXED` 变为 0 时，表示索引构建完成。
 
-    作为参考，对于一个 500 MiB 的向量数据集，构建索引的过程可能需要 20 分钟。索引构建器能够并行地在多个表中构建向量搜索索引。目前不支持调整索引构建器的优先级或速度。
+    作为参考，对于一个 500 MiB 的 768 维向量数据集，构建索引的过程可能需要 20 分钟。索引构建器能够并行地在多个表中构建向量搜索索引。目前不支持调整索引构建器的优先级或速度。
 
 - 可以通过 `ROWS_DELTA_NOT_INDEXED` 列查看 Delta 层中的行数。TiFlash 存储层的数据主要存放在 Delta 层和 Stable 层。Delta 层存储最近插入或更新的行，并根据写入工作量定期将这些行合并到 Stable 层。这个合并过程称为“压缩”。
 

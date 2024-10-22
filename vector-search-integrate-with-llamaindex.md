@@ -77,7 +77,6 @@ from llama_index.vector_stores.tidbvector import TiDBVectorStore
 import getpass
 import os
 
-# Copy your connection string from the TiDB Cloud console.
 # Connection string format: "mysql+pymysql://<USER>:<PASSWORD>@<HOST>:4000/<DB>?ssl_ca=/etc/ssl/cert.pem&ssl_verify_cert=true&ssl_verify_identity=true"
 tidb_connection_string = getpass.getpass("TiDB Connection String:")
 os.environ["OPENAI_API_KEY"] = getpass.getpass("OpenAI API Key:")
