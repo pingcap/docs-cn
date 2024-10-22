@@ -29,7 +29,39 @@ Debezium 输出格式中包含当前行的 Schema 信息，以便下游消费者
 
 ### DML Event
 
-TiCDC 会把一个 DML Event 编码成如下格式：
+TiCDC 会将一个 DML 事件转换为一个 kafka 事件，其中事件的 key 和 value 都按照 Debezium 协议进行编码。
+
+#### Key 数据格式
+
+```json
+{
+    "payload": {
+        "a": 4
+    },
+    "schema": {
+        "fields": [
+			{
+				"field":"a",
+				"optional":true,
+				"type":"int32"
+			}
+			],
+        "name": "default.test.t2.Key",
+        "optional": false,
+        "type":"struct"
+    }
+}
+```
+Key 中的 fields 只包含主键或唯一索引列。
+字段解释如下：
+
+| 字段      | 类型   | 说明                                                                      |
+|:----------|:-------|:-------------------------------------------------------------------------|
+| payload   | JSON | 主键或唯一索引列的信息。每个 field 的 key 和 value 分别为列名和当前值  |
+| schema.fields     | JSON   |  payload 中各个字段的类型信息，包括对应行数据变更前后 schema 的信息等      |
+
+
+#### Value 数据格式
 
 ```json
 {
