@@ -60,7 +60,6 @@ Key 中的 fields 只包含主键或唯一索引列。
 | payload   | JSON | 主键或唯一索引列的信息。每个 field 的 key 和 value 分别为列名和当前值  |
 | schema.fields     | JSON   |  payload 中各个字段的类型信息，包括对应行数据变更前后 schema 的信息等      |
 
-
 #### Value 数据格式
 
 ```json
