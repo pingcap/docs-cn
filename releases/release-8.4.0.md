@@ -238,7 +238,7 @@ TiDB 版本：8.4.0
 
   其中，TiKV 的 CPU 时间默认显示。采集 TiDB 的 CPU 时间会引入额外开销（约 8%），因此仅在开启 [Top SQL 特性](/dashboard/top-sql.md)时，TiDB 的 CPU 时间才会显示为实际值，否则始终显示为 `0`。
 
-    更多信息，请参考[用户文档](/information-schema/information-schema-processlist.md)和[用户文档](information-schema/information-schema-slow-query.md)。
+    更多信息，请参考[用户文档](/information-schema/information-schema-processlist.md)和[用户文档](/information-schema/information-schema-slow-query.md)。
 
 * Top SQL 支持按表或数据库维度查看 CPU 时间的聚合结果 [#55540](https://github.com/pingcap/tidb/issues/55540) @[nolouch](https://github.com/nolouch) **tw@lilin90** <!--1878-->
 
