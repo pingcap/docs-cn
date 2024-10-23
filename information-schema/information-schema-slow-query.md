@@ -233,7 +233,7 @@ SELECT /*+ AGG_TO_COP() */ COUNT(*) FROM CLUSTER_SLOW_QUERY GROUP BY user;
 
 ## 查看执行信息
 
-在 `SLOW_QUERY` 表上执行 [`EXPLAIN ANALYZE`](/sql-statements/sql-statement-explain-analyze.md)，TiDB 将会返回数据库读取慢查询信息的详情。注意，在 `CLUSTER_SLOW_QUERY` 表上执行 `EXPLAIN ANALYZE` 不会返回该信息。
+通过对 `SLOW_QUERY` 表执行 [`EXPLAIN ANALYZE`](/sql-statements/sql-statement-explain-analyze.md)，你可以获取数据库如何检索慢查询信息的详情。然而，如果对 `CLUSTER_SLOW_QUERY` 表执行 `EXPLAIN ANALYZE`，将无法获取这些信息。
 
 示例：
 
@@ -265,7 +265,7 @@ execution info: time:3.45ms, loops:1, initialize: 55.5µs, read_file: 1.21ms, pa
 2 rows in set (0.01 sec)
 ```
 
-在输出中，查看 `execution info` 中的以下字段（为便于阅读，这些字段格式已优化）：
+在输出中，查看 `execution info` 中的以下字段（为便于阅读，这些字段的格式已优化）：
 
 ```
 initialize: 55.5µs,
@@ -284,7 +284,7 @@ read_size: 4.06 MB
 | `initialize` | 用于初始化的时间 |
 | `read_file` | 用于读取慢日志文件的时间 |
 | `parse_log.time` | 用于解析慢日志文件的时间 |
-| `parse_log.concurrency` | 解析慢日志文件的并发度（由 [`tidb_distsql_scan_concurrency`](/system-variables.md#tidb_distsql_scan_concurrency) 设置） |
+| `parse_log.concurrency` | 解析慢日志文件的并发度（由 [`tidb_distsql_scan_concurrency`](/system-variables.md#tidb_distsql_scan_concurrency) 控制） |
 | `total_file` | 慢日志文件的总数 |
 | `read_file` | 已读取的慢日志文件数 |
 | `read_size` | 从日志文件中读取的字节数 |
