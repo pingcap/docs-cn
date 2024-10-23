@@ -1,7 +1,6 @@
 ---
 title: 常规统计信息
 summary: 介绍 TiDB 中常规统计信息的收集和使用。
-aliases: ['/docs-cn/dev/statistics/','/docs-cn/dev/reference/performance/statistics/']
 ---
 
 # 常规统计信息

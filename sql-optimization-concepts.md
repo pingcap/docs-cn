@@ -1,6 +1,5 @@
 ---
 title: SQL 优化流程简介
-aliases: ['/docs-cn/dev/sql-optimization-concepts/','/docs-cn/dev/reference/performance/sql-optimizer-overview/']
 summary: TiDB 中的 SQL 优化流程包括查询文本解析、逻辑等价变化和最终执行计划生成。经过 parser 解析和合法性验证后，TiDB 会对查询进行逻辑上的等价变化，使得查询在逻辑执行计划上更易处理。之后根据数据分布和执行开销生成最终执行计划。同时，TiDB 在执行 PREPARE 语句时可以选择开启缓存来降低执行计划生成的开销。
 ---
 

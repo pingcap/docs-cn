@@ -1,6 +1,5 @@
 ---
 title: Split Region 使用文档
-aliases: ['/docs-cn/dev/sql-statements/sql-statement-split-region/','/docs-cn/dev/reference/sql/statements/split-region/']
 summary: TiDB 中的 Split Region 功能可以解决表数据超过默认 Region 大小限制后的热点问题。预切分 Region 可以根据指定的参数，预先为某个表切分出多个 Region，并打散到各个 TiKV 上去。使用 `SPLIT` 语句可以实现均匀切分和不均匀切分，返回结果包括新增预切分的 Region 数量和打散完成的比率。需要注意 `tidb_wait_split_region_finish` 和 `tidb_wait_split_region_timeout` 会影响 `SPLIT` 语句的行为。
 ---
 

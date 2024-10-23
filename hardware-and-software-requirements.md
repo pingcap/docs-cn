@@ -1,6 +1,5 @@
 ---
 title: TiDB 软件和硬件环境建议配置
-aliases: ['/docs-cn/dev/hardware-and-software-requirements/','/docs-cn/dev/how-to/deploy/hardware-recommendations/']
 summary: TiDB 是一款开源的一站式实时 HTAP 数据库，支持部署在多种硬件环境和操作系统上。软件和硬件环境建议配置包括操作系统要求、编译和运行依赖库、Docker 镜像依赖、软件配置要求、服务器建议配置、网络要求、磁盘空间要求、客户端 Web 浏览器要求以及 TiFlash 存算分离架构的软硬件要求。
 ---
 

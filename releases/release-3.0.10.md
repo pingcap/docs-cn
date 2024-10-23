@@ -1,6 +1,5 @@
 ---
 title: TiDB 3.0.10 Release Notes
-aliases: ['/docs-cn/dev/releases/release-3.0.10/','/docs-cn/dev/releases/3.0.10/']
 summary: TiDB 3.0.10 发布，修复了多个 bug 和性能问题。TiKV 修复了 Region merge 失败导致系统 Panic 的问题。PD 自动更新 Region 缓存信息，解决缓存失效问题。TiDB Binlog 支持 relay log。TiDB Lightning 优化配置项和修复 web 界面无法打开的问题。TiDB Ansible 修复获取不到 PD Leader 导致命令执行失败的问题，并新增多个监控项。
 ---
 

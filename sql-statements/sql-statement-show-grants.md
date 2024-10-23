@@ -1,7 +1,6 @@
 ---
 title: SHOW GRANTS
 summary: TiDB 数据库中 SHOW GRANTS 的使用概况。
-aliases: ['/docs-cn/dev/sql-statements/sql-statement-show-grants/','/docs-cn/dev/reference/sql/statements/show-grants/']
 ---
 
 # SHOW GRANTS
