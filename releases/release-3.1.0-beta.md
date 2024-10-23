@@ -1,6 +1,5 @@
 ---
 title: TiDB 3.1 Beta Release Notes
-aliases: ['/docs-cn/dev/releases/release-3.1.0-beta/','/docs-cn/dev/releases/3.1.0-beta/']
 summary: TiDB 3.1 Beta 发布说明：发版日期为 2019 年 12 月 20 日，TiDB 版本为 3.1.0-beta，TiDB Ansible 版本为 3.1.0-beta。TiDB 新增 SQL 优化器和丰富的 SQL hint 功能。另外，TiDB 还支持 Follower Read 功能。TiKV 新增支持分布式备份恢复功能和 Follower Read 功能。PD 也新增支持分布式备份恢复功能。
 ---
 

@@ -1,7 +1,6 @@
 ---
 title:  性能优化概述
 summary: 本文介绍性能优化的基本概念，比如用户响应时间、吞吐和数据库时间，以及性能优化的通用流程。
-aliases: ['/zh/tidb/v6.0/performance-tuning-overview']
 ---
 
 # TiDB 性能优化概述

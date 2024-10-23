@@ -1,6 +1,5 @@
 ---
 title: TiDB 2.0.6 release notes
-aliases: ['/docs-cn/dev/releases/release-2.0.6/','/docs-cn/dev/releases/206/']
 summary: TiDB 2.0.6 版本在系统兼容性和稳定性方面有所改进。包括日志长度精简、记录 ADD INDEX 执行过程中的慢操作、减少更新统计信息操作中的事务冲突等。此外，修复了多个 bug，包括 DROP USER 语句和 MySQL 行为不兼容、tidb_batch_insert 打开后 INSERT/LOAD DATA 语句在某些场景下 OOM 的问题等。TiKV 方面扩大了默认 scheduler slots 值以减少假冲突现象，修复了字符串转 Decimal 时出现的 crash。
 ---
 

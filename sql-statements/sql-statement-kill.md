@@ -1,7 +1,6 @@
 ---
 title: KILL
 summary: TiDB 数据库中 KILL 的使用概况。
-aliases: ['/docs-cn/dev/sql-statements/sql-statement-kill/','/docs-cn/dev/reference/sql/statements/kill/']
 ---
 
 # KILL

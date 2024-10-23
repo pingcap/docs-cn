@@ -1,6 +1,5 @@
 ---
 title: TiDB 1.1 Beta Release Notes
-aliases: ['/docs-cn/dev/releases/release-1.1-beta/','/docs-cn/dev/releases/11beta/']
 summary: TiDB 1.1 Beta 版本在 MySQL 兼容性和系统稳定性方面有多项改进。TiDB 新增监控项和优化日志，兼容更多 MySQL 语法，支持显示建表时间，加快查询速度，控制 Join 产生的中间结果集大小，修复多项问题，优化 SQL 引擎查询性能。PD 新增调试接口和 metrics，提高 TiKV 宕机时数据恢复优先级和恢复速度，优化 Region heartbeat 性能，修复热点调度问题。TiKV 消除潜在的 GC 问题，支持批量 resolve lock 和并行 GC，使用 RocksDB compaction listener 更新 Region Size，设置 Raft snapshot max size，支持更多修复操作，优化有序流式聚合操作，完善 metrics，修复 bug。
 ---
 

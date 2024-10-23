@@ -1,6 +1,5 @@
 ---
 title: 约束
-aliases: ['/docs-cn/dev/constraints/','/docs-cn/dev/reference/sql/constraints/']
 summary: TiDB 支持的约束与 MySQL 基本相同，包括非空约束和 CHECK 约束。非空约束规则与 MySQL 相同，而 CHECK 约束需要在 tidb_enable_check_constraint 设置为 ON 后才能开启。可以通过 CREATE TABLE 或 ALTER TABLE 语句添加 CHECK 约束。唯一约束和主键约束也与 MySQL 相似，但 TiDB 目前仅支持对 NONCLUSTERED 的主键进行添加和删除操作。外键约束从 v6.6.0 开始支持，可以使用 CREATE TABLE 和 ALTER TABLE 命令来添加和删除外键。
 ---
 

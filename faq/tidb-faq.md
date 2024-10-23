@@ -1,6 +1,5 @@
 ---
 title: TiDB 产品常见问题
-aliases: ['/docs-cn/dev/faq/tidb-faq/','/docs-cn/dev/faq/tidb/']
 summary: TiDB 是 PingCAP 公司自主设计、研发的开源分布式关系型数据库，支持在线事务处理与在线分析处理，具备水平扩容、高可用、实时 HTAP、云原生的特性。TiDB 不是基于 MySQL 开发的，而是由 PingCAP 团队完全自主开发的产品。TiDB 易用性很高，支持绝大部分 MySQL 8.0 的语法，但不支持触发器、存储过程、自定义函数等。TiDB 支持分布式事务，兼容 MySQL Client/Driver 的编程语言，支持其他存储引擎，如 TiKV、UniStore 和 MockTiKV。获取 TiDB 知识的途径包括官方文档、官方博客、AskTUG 社区论坛和 PingCAP Education。用户名长度限制为 32 个字符，最大列数为 1017，单行大小不超过 6MB。TiDB 不支持 XA，但支持对列存储引擎的高并发 INSERT 或 UPDATE 操作。
 ---
 
