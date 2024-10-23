@@ -42,13 +42,15 @@ ResourceGroupPriorityOption ::=
 |   MEDIUM
 |   HIGH
 
-ResourceGroupRunawayOptionList ::= 
+ResourceGroupRunawayOptionList ::=
     DirectResourceGroupRunawayOption
 |   ResourceGroupRunawayOptionList DirectResourceGroupRunawayOption
 |   ResourceGroupRunawayOptionList ',' DirectResourceGroupRunawayOption
 
 DirectResourceGroupRunawayOption ::=
     "EXEC_ELAPSED" EqOpt stringLit
+|   "PROCESSED_KEYS" EqOpt intLit
+|   "RU" EqOpt intLit
 |   "ACTION" EqOpt ResourceGroupRunawayActionOption
 |   "WATCH" EqOpt ResourceGroupRunawayWatchOption "DURATION" EqOpt stringLit
 
@@ -60,13 +62,14 @@ ResourceGroupRunawayActionOption ::=
     DRYRUN
 |   COOLDOWN
 |   KILL
+|   "SWITCH_GROUP" '(' ResourceGroupName ')'
 
-BackgroundOptionList ::= 
+BackgroundOptionList ::=
     DirectBackgroundOption
 |   BackgroundOptionList DirectBackgroundOption
 |   BackgroundOptionList ',' DirectBackgroundOption
 
-DirectBackgroundOption ::= 
+DirectBackgroundOption ::=
     "TASK_TYPES" EqOpt stringLit
 |   "UTILIZATION_LIMIT" EqOpt LengthNum
 ```

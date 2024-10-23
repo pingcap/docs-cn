@@ -48,7 +48,7 @@ TiKV 利用 Raft 来做数据复制，每个数据变更都会落地为一条 Ra
 * Hash：按照 Key 做 Hash，根据 Hash 值选择对应的存储节点。
 * Range：按照 Key 分 Range，某一段连续的 Key 都保存在一个存储节点上。
 
-TiKV 选择了第二种方式，将整个 Key-Value 空间分成很多段，每一段是一系列连续的 Key，将每一段叫做一个 Region，可以用 [StartKey，EndKey) 这样一个左闭右开区间来描述。每个 Region 中保存的数据量默认维持在 96 MiB 左右（可以通过配置修改）。
+TiKV 选择了第二种方式，将整个 Key-Value 空间分成很多段，每一段是一系列连续的 Key，将每一段叫做一个 Region，可以用 [StartKey，EndKey) 这样一个左闭右开区间来描述。每个 Region 中保存的数据量默认维持在 256 MiB 左右（可以通过配置修改）。
 
 ![Region in TiDB](/media/tidb-storage-2.png)
 

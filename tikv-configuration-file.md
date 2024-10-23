@@ -1081,7 +1081,7 @@ Coprocessor 相关的配置项。
 ### `region-split-size`
 
 + 分裂后新 Region 的大小，此值属于估算值。
-+ 默认值：96MiB
++ 默认值：`"256MiB"`。在 v8.4.0 之前，默认值为 `"96MiB"`。
 + 单位：KiB|MiB|GiB
 
 ### `region-max-keys`
@@ -1092,7 +1092,7 @@ Coprocessor 相关的配置项。
 ### `region-split-keys`
 
 + 分裂后新 Region 的 key 的个数，此值属于估算值。
-+ 默认值：960000
++ 默认值：`2560000`。在 v8.4.0 之前，默认值为 `960000`。
 
 ### `consistency-check-method`
 
@@ -1936,6 +1936,20 @@ Raft Engine 相关的配置项。
 + 如果你的机器上有多个磁盘，建议将 Raft Engine 的数据存储在单独的磁盘上，以提高 TiKV 性能。
 + 默认值：`""`
 
+### `spill-dir` <span class="version-mark">从 v8.4.0 版本开始引入</span>
+
++ 存储 Raft 日志文件的辅助目录，当 `dir` 目录所在盘数据写满后，新的 Raft 日志将存储在该目录下。如果该目录配置后不存在，则在 TiKV 启动时自动创建该目录。
++ 如果未设置此配置，则表示不启用辅助目录。
+
+> **注意：**
+>
+> - 该配置仅在 Raft Engine 的 `dir` 和 `spill-dir` 分别指定为**不同盘符**时才有效。
+> - 在配置该功能后，若想要关闭该功能，你需要在重启 TiKV **之前**执行如下操作，否则将**无法启动** TiKV：
+>     1. 关闭 TiKV。
+>     2. 将 `spill-dir` 目录下的所有 Raft Log 复制到 [`dir`](/tikv-configuration-file.md#dir) 目录下。
+>     3. 从 TiKV 配置文件中删除该配置。
+>     4. 重启 TiKV。
+
 ### `batch-compression-threshold`
 
 + 指定日志批处理的阈值大小。大于此配置的日志批次将被压缩。如果将此配置项设置为 `0`，则禁用压缩。
@@ -2154,7 +2168,7 @@ Raft Engine 相关的配置项。
 
 + 备份 SST 文件大小的阈值。如果 TiKV Region 中备份文件的大小超过该阈值，则将该文件备份到 Region 分割的多个 Region 文件中，每个分割 Region 中的文件大小均为 `sst-max-size`（或略大）。
 + 例如，当 Region `[a,e)` 中备份文件大小超过 `sst-max-size` 时，该文件会被备份到多个 Region 范围中，分别为 Region `[a,b)`、`[b,c)`、`[c,d)` 和 `[d,e)`，并且 `[a,b)`、`[b,c)` 和 `[c,d)` 的大小均为 `sst-max-size`（或略大）。
-+ 默认值：`"144MiB"`
++ 默认值：`"384MiB"`。在 v8.4.0 之前，默认值为 `"144MiB"`。
 
 ### `enable-auto-tune` <span class="version-mark">从 v5.4 版本开始引入</span>
 
@@ -2309,6 +2323,18 @@ Raft Engine 相关的配置项。
 + 开启内存悲观锁功能。开启该功能后，悲观事务会尽可能在 TiKV 内存中存储悲观锁，而不将悲观锁写入磁盘，也不将悲观锁同步给其他副本，从而提升悲观事务的性能。但有较低概率出现悲观锁丢失的情况，可能会导致悲观事务提交失败。
 + 默认值：true
 + 注意：`in-memory` 仅在 `pipelined` 为 true 时生效。
+
+### `in-memory-peer-size-limit` <span class="version-mark">从 v8.4.0 版本开始引入</span>
+
++ 控制单个 Region [内存悲观锁](/pessimistic-transaction.md#内存悲观锁)的内存使用上限。超过此限制时，悲观锁将回退到持久化方式写入磁盘。
++ 默认值：512KiB
++ 单位：KiB|MiB|GiB
+
+### `in-memory-instance-size-limit` <span class="version-mark">从 v8.4.0 版本开始引入</span>
+
++ 控制单个 TiKV 实例[内存悲观锁](/pessimistic-transaction.md#内存悲观锁)的内存使用上限。超过此限制时，悲观锁将回退到持久化方式写入磁盘。
++ 默认值：100MiB
++ 单位：KiB|MiB|GiB
 
 ## quota
 
