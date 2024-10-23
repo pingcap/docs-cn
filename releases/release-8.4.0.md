@@ -482,3 +482,14 @@ TiDB 版本：8.4.0
 ## 贡献者
 
 感谢来自 TiDB 社区的贡献者们：
+
+- [ei-sugimoto](https://github.com/ei-sugimoto)
+- [eltociear](https://github.com/eltociear)
+- [guoshouyan](https://github.com/guoshouyan)（首次贡献者）
+- [JackL9u](https://github.com/JackL9u)
+- [kafka1991](https://github.com/kafka1991)（首次贡献者）
+- [qingfeng777](https://github.com/qingfeng777)
+- [samba-rgb](https://github.com/samba-rgb)（首次贡献者）
+- [SeaRise](https://github.com/SeaRise)
+- [tuziemon](https://github.com/tuziemon)（首次贡献者）
+- [xyproto](https://github.com/xyproto)（首次贡献者）
