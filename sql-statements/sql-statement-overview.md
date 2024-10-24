@@ -91,7 +91,6 @@ TiDB 使用的 SQL 语句旨在遵循 ISO/IEC SQL 标准，并在必要时对 My
 | [`ADMIN PAUSE DDL`](/sql-statements/sql-statement-admin-pause-ddl.md) | 暂停 DDL 作业。 |
 | [`ADMIN RESUME DDL`](/sql-statements/sql-statement-admin-resume-ddl.md) | 恢复 DDL 作业。 |
 | [`ADMIN SHOW DDL [JOBS\|JOB QUERIES]`](/sql-statements/sql-statement-admin-show-ddl.md) | 显示 DDL 作业信息或 DDL 对应的查询语句。 |
-| [`ADMIN SHOW TELEMETRY`](/sql-statements/sql-statement-admin-show-telemetry.md) | 显示遥测数据。 |
 | [`ADMIN`](/sql-statements/sql-statement-admin.md) | 执行各种管理任务。 |
 | [`FLUSH TABLES`](/sql-statements/sql-statement-flush-tables.md) | 用于提供 [MySQL 兼容性](/mysql-compatibility.md)，在 TiDB 中没有实际用途。 |
 | [`SET <variable>`](/sql-statements/sql-statement-set-variable.md) | 修改系统变量或用户变量。 |
