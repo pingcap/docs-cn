@@ -162,7 +162,7 @@ TiDB 的部分操作需要向服务器写入临时文件，因此需要确保运
 
 本段介绍如何关闭目标主机防火墙配置，因为在 TiDB 集群中，需要将节点间的访问端口打通才可以保证读写请求、数据心跳等信息的正常的传输。在普遍线上场景中，数据库到业务服务和数据库节点的网络联通都是在安全域内完成数据交互。如果没有特殊安全的要求，建议将目标节点的防火墙进行关闭。否则建议[按照端口使用规则](/hardware-and-software-requirements.md#网络要求)，将端口信息配置到防火墙服务的白名单中。
 
-1. 检查防火墙状态（以 CentOS Linux release 7.7.1908 (Core) 为例）
+1. 检查防火墙状态（以 CentOS Linux release 7.7.1908 (Core) 为例） <!--TODO: update the description and command-->
 
     {{< copyable "shell-regular" >}}
 
@@ -317,7 +317,7 @@ sudo ntpdate pool.ntp.org && \
 sudo systemctl start ntpd.service
 ```
 
-如果要在 CentOS 7 系统上手动安装 NTP 服务，可执行以下命令：
+如果要在 CentOS 7 系统上手动安装 NTP 服务，可执行以下命令：<!--TODO: update the description and command-->
 
 {{< copyable "shell-regular" >}}
 
@@ -719,7 +719,7 @@ sudo systemctl enable ntpd.service
 
 安装 NUMA 工具有两种方法：
 
-方法 1：登录到目标节点进行安装（以 CentOS Linux release 7.7.1908 (Core) 为例）。
+方法 1：登录到目标节点进行安装（以 CentOS Linux release 7.7.1908 (Core) 为例）。 <!--TODO: update the description and command-->
 
 ```bash
 sudo yum -y install numactl

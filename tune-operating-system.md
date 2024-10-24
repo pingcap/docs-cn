@@ -6,7 +6,7 @@ aliases: ['/docs-cn/dev/tune-operating-system/']
 
 # 操作系统性能参数调优
 
-本文档仅用于描述如何优化 CentOS 7 的各个子系统。
+本文档仅用于描述如何优化 CentOS 7 的各个子系统。<!--TODO: review this document and confirm whether it's suitable for TiDB v8.4-->
 
 > **注意：**
 >
