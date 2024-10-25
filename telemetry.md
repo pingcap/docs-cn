@@ -1,7 +1,7 @@
 ---
 title: 遥测
 summary: 介绍遥测的场景，如何禁用功能和查看遥测状态。
-aliases: ['/docs-cn/dev/telemetry/']
+aliases: ['/docs-cn/dev/telemetry/','/zh/tidb/dev/sql-statement-admin-show-telemetry']
 ---
 
 # 遥测
