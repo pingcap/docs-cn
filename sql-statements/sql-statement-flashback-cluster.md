@@ -13,7 +13,7 @@ TiDB v6.5.6、v7.1.3、v7.5.1、v7.6.0 开始引入了 `FLASHBACK CLUSTER TO TSO
 > **警告：**
 >
 > 在指定恢复时间点时，请务必检查 TIMESTAMP 或 TSO 的有效性，避免指定可能超过 PD 当前分配的最大 TSO（参考 Grafana PD 面板上 `Current TSO`）的未来时间。否则，可能破坏并发处理线性一致性以及事务隔离级别，导致严重的数据正确性的问题。
-> 在执行 FLASHBACK 时，数据不会通过事务进行清理。请确保在 FLASHBACK 完成后，未来使用 TiDB 的任何历史版本读取功能（如 Stale Read 或 Set Snapshot）时，选择的时间点不要落在 FLASHBACK 运行的时间范围内。如果读取的历史版本包含未完成的 FLASHBACK 数据，可能破坏并发处理线性一致性以及事务隔离级别，导致严重的数据正确性的问题。
+> 在执行 FLASHBACK 时，数据清理过程中不能保证事务的一致性。请确保在 FLASHBACK 完成后，未来使用 TiDB 的任何历史版本读取功能（如 Stale Read 或 Set Snapshot）时，选择的时间点不要落在 FLASHBACK 运行的时间范围内。如果读取的历史版本包含未完成的 FLASHBACK 数据，可能破坏并发处理线性一致性以及事务隔离级别，导致严重的数据正确性的问题。
 
 > **警告：**
 >
