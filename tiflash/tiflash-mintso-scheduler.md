@@ -5,7 +5,7 @@ summary: 介绍 TiFlash MinTSO 调度器。
 
 # TiFlash MinTSO Scheduler
 
-本文介绍 TiFlash MinTSO scheduler 的原理与实现。
+TiFlash MinTSO 调度器是 TiFlash 中一个分布式的基于 MPP Task 的调度器，本文介绍 TiFlash MinTSO scheduler 的原理与实现。
 
 ## 背景
 
