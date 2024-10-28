@@ -292,6 +292,7 @@ TiDB 版本：8.4.0
 | [`tidb_schema_cache_size`](/system-variables.md#tidb_schema_cache_size-从-v800-版本开始引入) | 修改 | 默认值从 `0` 修改为 `536870912`（即 512 MiB），表示默认开启该功能，且最小值允许设置为 `67108864`（即 64 MiB）。|
 | [`tidb_auto_analyze_concurrency`](/system-variables.md#tidb_auto_analyze_concurrency-从-v840-版本开始引入)| 新增 | 设置单个自动统计信息收集任务内部的并发度。在 v8.4.0 之前，该并发度固定为 `1`。你可以根据集群资源情况提高该并发度，从而加快统计信息收集任务的执行速度。|
 | [`tidb_enable_instance_plan_cache`](/system-variables.md#tidb_enable_instance_plan_cache-从-v840-版本开始引入)| 新增 | 控制是否开启 Instance Plan Cache 功能。|
+| [`tidb_enable_stats_owner `](/system-variables.md#tidb_enable_stats_owner-从-v840-版本开始引入)| 新增 | 设置该 TiDB 实例是否可以运行统计信息自动更新任务。|
 | [`tidb_hash_join_version`](/system-variables.md#tidb_hash_join_version-从-v840-版本开始引入) | 新增 | 控制 TiDB 是否使用 Hash Join 算子的优化版。默认值为 `legacy`，表示不使用优化版。如果设置为 `optimized`，TiDB 在执行 Hash Join 算子时将使用其优化版，以提升 Hash Join 性能。|
 | [`tidb_instance_plan_cache_max_size`](/system-variables.md#tidb_instance_plan_cache_max_size-从-v840-版本开始引入) | 新增 | 设置 Instance Plan Cache 的最大内存使用量。|
 | [`tidb_instance_plan_cache_reserved_percentage`](/system-variables.md#tidb_instance_plan_cache_reserved_percentage-从-v840-版本开始引入) | 新增 | 控制内存驱逐后 Instance Plan Cache 的空闲内存百分比。|
