@@ -440,7 +440,7 @@ tiup cluster display <cluster-name>
     tiup cluster scale-in <cluster-name> --node 10.0.1.4:9000
     ```
 
-3. 等待该 TiFlash 节点对应的 store state_name 变成 Tombstone 后，从 TiUP 拓扑信息中删除已经下线的 TiFlash 节点信息。TiUP 会自动清理 TiFlash 相关的数据文件：
+3. 等待该 TiFlash 节点对应的 `store state_name` 变成 `Tombstone` 后，从 TiUP 拓扑信息中删除已经下线的 TiFlash 节点信息（TiUP 会自动清理 TiFlash 相关的数据文件）：
 
     {{< copyable "shell-regular" >}}
 
