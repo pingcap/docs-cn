@@ -306,6 +306,7 @@ TiDB 版本：8.4.0
 | -------- | -------- | -------- | -------- |
 | TiDB | [`grpc-keepalive-time`](/tidb-configuration-file.md#grpc-keepalive-time) | 修改 | 增加最小值 `1`。|
 | TiDB | [`grpc-keepalive-timeout`](/tidb-configuration-file.md#grpc-keepalive-timeout) | 修改 | 在 v8.4.0 之前，该参数为 INT 类型，且最小值仅支持设置为 `1`。从 v8.4.0 开始，数据类型修改为 FLOAT64，且最小值支持设置为 `0.05`。在网络抖动比较频繁的场景中可以适当调小该值，通过减少重试间隔，来减少网络抖动带来的性能影响。|
+| TiDB | [`tidb_enable_stats_owner `](/tidb-configuration-file.md#tidb_enable_stats_owner-从-v840-版本开始引入) | 新增 | 表示该 tidb-server 是否可以运行统计信息自动更新任务。|
 | TiKV | [`region-split-keys`](/tikv-configuration-file.md#region-split-keys) | 修改 | 默认值从 `"960000"` 修改为 `"2560000"`。|
 | TiKV | [`region-split-size`](/tikv-configuration-file.md#region-split-size) | 修改 | 默认值从 `"96MiB"` 修改为 `"256MiB"`。|
 | TiKV | [`sst-max-size`](/tikv-configuration-file.md#sst-max-size) | 修改 | 默认值从 `"144MiB"` 修改为 `"384MiB"`。|
