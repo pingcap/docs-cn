@@ -171,12 +171,14 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
 + 默认值：64
 + 目前的合法值范围 `[64, 512]`。
 
-### `enable-telemetry` <span class="version-mark">从 v4.0.2 版本开始引入</span>
+### `enable-telemetry` <span class="version-mark">从 v4.0.2 版本开始引入，从 v8.1.0 版本开始废弃</span>
 
-+ 是否开启 TiDB 遥测功能。
+> **警告：**
+>
+> 从 TiDB v8.1.0 开始，TiDB 已移除遥测功能，该配置项已不再生效。保留该配置项仅用于与之前版本兼容。
+
++ 在 v8.1.0 之前，用于控制是否在 TiDB 实例上开启遥测功能。
 + 默认值：false
-+ 如果在 TiDB 实例上该配置项设为 `true`，该 TiDB 实例上将开启遥测功能，且 [`tidb_enable_telemetry`](/system-variables.md#tidb_enable_telemetry-从-v402-版本开始引入) 系统变量生效。
-+ 如果所有 TiDB 实例上该选项都设置为 `false`，那么将完全禁用 TiDB 遥测功能，且忽略 `tidb_enable_telemetry` 系统变量。参阅[遥测](/telemetry.md)了解该功能详情。
 
 ### `deprecate-integer-display-length`
 

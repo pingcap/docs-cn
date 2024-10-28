@@ -741,7 +741,6 @@
       - [`ADMIN RESUME DDL`](/sql-statements/sql-statement-admin-resume-ddl.md)
       - [`ADMIN [SET|SHOW|UNSET] BDR ROLE`](/sql-statements/sql-statement-admin-bdr-role.md)
       - [`ADMIN SHOW DDL [JOBS|QUERIES]`](/sql-statements/sql-statement-admin-show-ddl.md)
-      - [`ADMIN SHOW TELEMETRY`](/sql-statements/sql-statement-admin-show-telemetry.md)
       - [`ALTER DATABASE`](/sql-statements/sql-statement-alter-database.md)
       - [`ALTER INDEX`](/sql-statements/sql-statement-alter-index.md)
       - [`ALTER INSTANCE`](/sql-statements/sql-statement-alter-instance.md)
