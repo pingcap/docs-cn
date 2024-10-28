@@ -10,11 +10,12 @@ summary: 介绍 TiProxy 的负载均衡策略及其适用场景。
 TiProxy 默认启用所有策略，优先级从高到低依次为：
 
 1. 基于状态的负载均衡：当某个 TiDB server 正在关闭时，TiProxy 将连接从该 TiDB server 迁移到在线的 TiDB server。
-2. 基于健康度的负载均衡：当某个 TiDB server 的健康度异常时，TiProxy 将连接从该 TiDB server 迁移到健康度正常的 TiDB server。
-3. 基于内存的负载均衡：当某个 TiDB server 存在 Out of Memory (OOM) 风险时，TiProxy 将连接从该 TiDB server 迁移到内存使用量较低的 TiDB server。
-4. 基于 CPU 的负载均衡：当某个 TiDB server 的 CPU 使用率远高于其他 TiDB server 时，TiProxy 将连接从该 TiDB server 迁移到 CPU 使用率较低的 TiDB server。
-5. 基于地理位置的负载均衡：优先将请求路由到地理位置上距离 TiProxy 较近的 TiDB server。
-6. 基于连接数的负载均衡：当某个 TiDB server 的连接数远高于其他 TiDB server 时，TiProxy 将连接从该 TiDB server 迁移到连接数较少的 TiDB server。
+2. 基于标签的负载均衡：优先将请求路由到与 TiProxy 实例自身有相同标签的 TiDB server，以实现计算层的资源隔离。
+3. 基于健康度的负载均衡：当某个 TiDB server 的健康度异常时，TiProxy 将连接从该 TiDB server 迁移到健康度正常的 TiDB server。
+4. 基于内存的负载均衡：当某个 TiDB server 存在 Out of Memory (OOM) 风险时，TiProxy 将连接从该 TiDB server 迁移到内存使用量较低的 TiDB server。
+5. 基于 CPU 的负载均衡：当某个 TiDB server 的 CPU 使用率远高于其他 TiDB server 时，TiProxy 将连接从该 TiDB server 迁移到 CPU 使用率较低的 TiDB server。
+6. 基于地理位置的负载均衡：优先将请求路由到地理位置上距离 TiProxy 较近的 TiDB server。
+7. 基于连接数的负载均衡：当某个 TiDB server 的连接数远高于其他 TiDB server 时，TiProxy 将连接从该 TiDB server 迁移到连接数较少的 TiDB server。
 
 > **注意：**
 >
@@ -24,6 +25,73 @@ TiProxy 默认启用所有策略，优先级从高到低依次为：
 ## 基于状态的负载均衡
 
 TiProxy 定时通过 SQL 端口和状态端口检查 TiDB 是否已下线或正在关闭。
+
+## 基于标签的负载均衡
+
+给 TiProxy 设置 [`balance.label-name`](/tiproxy/tiproxy-configuration.md#label-name) 后，TiProxy 将启用基于标签的负载均衡。TiProxy 通过 `balance.label-name` 指定的标签名匹配 TiDB server 上的标签，并优先将连接路由到与 TiProxy 自身有相同标签值的 TiDB server 上，以实现计算层的资源隔离。
+
+例如，业务有 OLTP 和 OLAP 两类负载，同时有大量后台任务。为了避免相互影响，可以如下配置集群：
+
+- TiProxy 上配置 [`balance.label-name`](/tiproxy/tiproxy-configuration.md#label-name) 为 `workload`，表示将按照标签名 `workload` 匹配 TiDB server，并将连接路由到相同标签值的 TiDB server 上。
+- 将 TiProxy 实例分为 2 组，配置项 [`labels`](/tiproxy/tiproxy-configuration.md#labels) 分别加上 `"workload"="TP"` 和 `"workload"="AP"`。
+- 如果需要保证 TiProxy 的高可用，每组 TiProxy 部署 2 台实例，并配置[虚拟 IP](/tiproxy/tiproxy-configuration.md#virtual-ip) 。2 组使用不同的虚拟 IP，同组的 TiProxy 实例配置相同的虚拟 IP。
+- 将 TiDB 实例分为 3 组，其中 2 组的配置项 [`labels`](/tidb-configuration-file.md#labels) 分别加上 `"workload"="TP"` 和 `"workload"="AP"`，第 3 组设置 `tidb_service_scope="background"`，表示仅执行[后台任务](/tidb-distributed-execution-framework.md#任务调度)。 
+- 配置 [Placement Rules](/configure-placement-rules.md) 或[资源管控](/tidb-resource-control.md) 以实现存储层的资源隔离。
+- OLTP 和 OLAP 负载的客户端分别连接到两组 TiProxy 的虚拟 IP 地址。
+
+<img src="https://download.pingcap.com/images/docs-cn/tiproxy/tiproxy-balance-label.png" alt="基于标签的负载均衡" width="800" />
+
+如上拓扑图的配置示例如下：
+
+```yaml
+component_versions:
+  tiproxy: "v1.3.0"
+server_configs:
+  tiproxy:
+    balance.label-name: "workload"
+    ha.interface: "eth0"
+  tidb:
+    graceful-wait-before-shutdown: 15
+tiproxy_servers:
+  - host: tiproxy-host-1
+    config:
+      labels: {workload: "TP"}
+      ha.virtual-ip: "10.0.1.10/24"
+  - host: tiproxy-host-2
+    config:
+      labels: {workload: "TP"}
+      ha.virtual-ip: "10.0.1.10/24"
+  - host: tiproxy-host-3
+    config:
+      labels: {workload: "AP"}
+      ha.virtual-ip: "10.0.1.11/24"
+  - host: tiproxy-host-4
+    config:
+      labels: {workload: "AP"}
+      ha.virtual-ip: "10.0.1.11/24"
+tidb_servers:
+  - host: tidb-host-1
+    config:
+      labels: {workload: "TP"}
+  - host: tidb-host-2
+    config:
+      labels: {workload: "TP"}
+  - host: tidb-host-3
+    config:
+      labels: {workload: "AP"}
+  - host: tidb-host-4
+    config:
+      labels: {workload: "AP"}
+  - host: tidb-host-5
+    config:
+      tidb_service_scope: "background"
+tikv_servers:
+  - host: tikv-host-1
+  - host: tikv-host-2
+  - host: tikv-host-3
+  - host: tikv-host-4
+  - host: tikv-host-5
+```
 
 ## 基于健康度的负载均衡
 
@@ -124,9 +192,9 @@ TiProxy 通常根据 CPU 使用率来识别 TiDB server 的负载。该策略通
 
 TiProxy 支持通过配置项 [`policy`](/tiproxy/tiproxy-configuration.md#policy) 配置上述负载均衡策略的组合和优先级。
 
-- `resource`：资源优先策略，优先级顺序依次为基于状态、健康度、内存、CPU、地理位置、连接数的负载均衡。
-- `location`：地理优先策略，优先级顺序依次为基于状态、地理位置、健康度、内存、CPU、连接数的负载均衡。
-- `connection`：最小连接数策略，优先级顺序依次为基于状态、连接数的负载均衡。
+- `resource`：资源优先策略，优先级顺序依次为基于状态、标签、健康度、内存、CPU、地理位置、连接数的负载均衡。
+- `location`：地理优先策略，优先级顺序依次为基于状态、标签、地理位置、健康度、内存、CPU、连接数的负载均衡。
+- `connection`：最小连接数策略，优先级顺序依次为基于状态、标签、连接数的负载均衡。
 
 ## 资源
 
