@@ -24,7 +24,6 @@ summary: TiDB的 `ADMIN` 语句是用于查看TiDB状态和对表数据进行校
 | [`ADMIN CHECKSUM TABLE`](/sql-statements/sql-statement-admin-checksum-table.md)          | 计算表中所有行和索引的 CRC64 校验和 |
 | [<code>ADMIN CHECK [TABLE\|INDEX]</code>](/sql-statements/sql-statement-admin-check-table-index.md) | 校验表中数据和对应索引的一致性 |
 | [<code>ADMIN SHOW DDL [JOBS\|QUERIES]</code>](/sql-statements/sql-statement-admin-show-ddl.md)      | 显示有关当前正在运行或最近完成的 DDL 作业的详细信息|
-| [<code>ADMIN SHOW TELEMETRY</code>](/sql-statements/sql-statement-admin-show-telemetry.md) | 显示通过[遥测](/telemetry.md)功能收集到并分享给 PingCAP 的使用信息。 |
 
 ## `ADMIN RELOAD` 语句
 
