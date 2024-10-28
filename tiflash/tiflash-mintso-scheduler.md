@@ -1,11 +1,11 @@
 ---
 title: TiFlash MinTSO 调度器
-summary: 了解 TiFlash MinTSO 调度器的原理与实现。
+summary: 了解 TiFlash MinTSO 调度器的实现原理。
 ---
 
 # TiFlash MinTSO 调度器
 
-TiFlash MinTSO 调度器是 TiFlash 中一个分布式的基于 MPP Task 的调度器。本文介绍 TiFlash MinTSO 调度器的原理与实现。
+TiFlash MinTSO 调度器是 TiFlash 中一个分布式的基于 MPP Task 的调度器。本文介绍 TiFlash MinTSO 调度器的实现原理。
 
 ## 背景
 
@@ -13,7 +13,7 @@ TiFlash MinTSO 调度器是 TiFlash 中一个分布式的基于 MPP Task 的调�
 
 为了提升 TiFlash 在高并发场景下的处理能力，需要在 TiFlash 中引入一个 Task 调度器。
 
-## 设计实现
+## 实现原理
 
 如背景所述，TiFlash Task 调度器引入的初衷是控制运行时使用的线程数。一个简单的想法是指定 TiFlash 可以申请的最大线程数，对于每个 MPP Task，调度器根据当前系统已经使用的线程数以及该 MPP Task 预期使用的线程数，决定该 MPP Task 是否能够被调度：
 
