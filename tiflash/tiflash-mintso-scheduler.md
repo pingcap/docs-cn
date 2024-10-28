@@ -9,7 +9,9 @@ TiFlash MinTSO 调度器是 TiFlash 中一个分布式的基于 MPP Task 的调�
 
 ## 背景
 
-对于 MPP 查询，TiDB 会将查询拆成一个或多个 MPP Task，并将 MPP Task 发送给对应的 TiFlash 节点。在 TiFlash 节点内部，对每个 MPP Task 进行编译与执行。在 TiFlash 使用 [pipeline 执行模型](/tiflash/tiflash-pipeline-model.md)之前，对于每个 MPP Task，TiFlash 都需要使用若干个线程来执行，具体线程数取决于 MPP Task 的复杂度以及 TiFlash 并发参数的设置。在高并发场景中，TiFlash 节点会同时接收到多个 MPP Task，如果 TiFlash 不对 MPP Task 的执行有所控制，则 TiFlash 需要向系统申请的线程数会随着 MPP Task 数量的增加而线性增加。过多的线程一方面会影响 TiFlash 的执行效率，另一方面操作系统本身支持的线程数有限，当 TiFlash 申请的线程数超过操作系统的限制时，TiFlash 就会遇到无法申请线程的错误。
+对于 MPP 查询，TiDB 会将查询拆成一个或多个 MPP Task，并将 MPP Task 发送给对应的 TiFlash 节点。在 TiFlash 节点内部，对每个 MPP Task 进行编译与执行。在 TiFlash 使用 [pipeline 执行模型](/tiflash/tiflash-pipeline-model.md)之前，对于每个 MPP Task，TiFlash 都需要使用若干个线程来执行，具体线程数取决于 MPP Task 的复杂度以及 TiFlash 并发参数的设置。
+
+在高并发场景中，TiFlash 节点会同时接收到多个 MPP Task，如果 TiFlash 不对 MPP Task 的执行有所控制，则 TiFlash 需要向系统申请的线程数会随着 MPP Task 数量的增加而线性增加。过多的线程一方面会影响 TiFlash 的执行效率，另一方面操作系统本身支持的线程数有限，当 TiFlash 申请的线程数超过操作系统的限制时，TiFlash 就会遇到无法申请线程的错误。
 
 为了提升 TiFlash 在高并发场景下的处理能力，需要在 TiFlash 中引入一个 Task 调度器。
 
@@ -57,4 +59,4 @@ MinTSO 调度器的目标是在控制系统线程数的同时，确保系统中�
 
 ![TiFlash MinTSO Scheduler v2](/media/tiflash/tiflash_mintso_v2.png)
 
-通过引入 soft limit 与 hard limit，MinTSO 调度器在控制系统线程数的同时，有效地避免了系统死锁。不过对于高并发场景，可能会出现大部份查询都只有部分 MPP Task 被调度的情况。只有部分 MPP Task 被调度的查询实际上无法正常执行，从而导致系统执行效率低下。为了避免这种情况，TiFlash 给 MinTSO Scheduler 在查询层面引入了一个限制，即 active_query_soft_limit，该限制的意思是系统最多只有 active_query_soft_limit 个查询的 MPP Task 可以参与调度；对于其它的查询，其 MPP Task 不参与调度，只有等当前查询结束之后，新的查询才能参与调度。当然该限制只是一个 soft limit，因为对于 MinTSO 查询来说，其所有 MPP Task 在系统线程数不超过 hard limit 时都可以直接被调度。
+通过引入 soft limit 与 hard limit，MinTSO 调度器在控制系统线程数的同时，有效地避免了系统死锁。不过对于高并发场景，可能会出现大部份查询都只有部分 MPP Task 被调度的情况。只有部分 MPP Task 被调度的查询实际上无法正常执行，从而导致系统执行效率低下。为了避免这种情况，TiFlash 给 MinTSO 调度器在查询层面引入了一个限制，即 active_query_soft_limit，该限制的意思是系统最多只有 active_query_soft_limit 个查询的 MPP Task 可以参与调度；对于其它的查询，其 MPP Task 不参与调度，只有等当前查询结束之后，新的查询才能参与调度。当然该限制只是一个 soft limit，因为对于 MinTSO 查询来说，其所有 MPP Task 在系统线程数不超过 hard limit 时都可以直接被调度。
