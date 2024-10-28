@@ -102,6 +102,10 @@ rules = ['test.t*']
 | `RENAME TABLE test.t1 TO ignore.t1, test.t2 TO test.t22;` | 报错 | 新的库名 ignore 不符合 filter 规则 |
 | `RENAME TABLE test.t1 TO test.t4, test.t3 TO test.t1, test.t4 TO test.t3;` | 报错 | 在一条 DDL 中交换 test.t1 和 test.t3 两个表的名字，TiCDC 无法正确处理。请参考错误提示提示信息处理。 |
 
+### DDL 语句注意事项
+
+当在上游执行跨数据库的 DDL 语句（如 `CREATE TABLE db1.t1 LIKE t2`）时，建议在 DDL 语句中显式地指定所有相关的库名（如 `CREATE TABLE db1.t1 LIKE db2.t2`）。否则，由于缺少库名信息，跨数据库的 DDL 语句可能无法正确地在下游执行。
+
 ### SQL 模式
 
 TiCDC 默认采用 TiDB 的默认 SQL 模式来解析 DDL 语句。如果你的上游 TiDB 集群使用了非默认的 SQL 模式，你需要在 TiCDC 的配置文件中指定 SQL 模式，否则 TiCDC 可能无法正确解析 DDL。关于 TiDB SQL 模式的更多信息，请参考 [SQL 模式](/sql-mode.md)。
