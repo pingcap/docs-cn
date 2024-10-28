@@ -2346,14 +2346,18 @@ Query OK, 0 rows affected (0.09 sec)
     - `AUTO` 目前作用和 `ON` 一样。
     - `OFF` 表示关闭 `TABLE PARTITION` 特性，此时语法还是保持兼容，只是创建的表并不是真正的分区表，而是普通的表。
 
-### `tidb_enable_telemetry` <span class="version-mark">从 v4.0.2 版本开始引入</span>
+### `tidb_enable_telemetry` <span class="version-mark">从 v4.0.2 版本开始引入，从 v8.1.0 版本开始废弃</span>
+
+> **警告：**
+>
+> 从 TiDB v8.1.0 开始，TiDB 已移除遥测功能，该变量已不再生效。保留该变量仅用于与之前版本兼容。
 
 - 作用域：GLOBAL
 - 是否持久化到集群：是
 - 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：否
 - 类型：布尔型
 - 默认值：`OFF`
-- 这个变量用于动态地控制 TiDB 遥测功能是否开启，当前版本默认关闭 TiDB 的遥测功能。当所有 TiDB 实例都设置配置项 [`enable-telemetry`](/tidb-configuration-file.md#enable-telemetry-从-v402-版本开始引入) 为 `false` 时，将忽略该系统变量，并总是关闭 TiDB 遥测功能。参阅[遥测](/telemetry.md)了解该功能详情。
+- 在 v8.1.0 之前，这个变量用于动态地控制 TiDB 遥测功能是否开启。
 
 ### `tidb_enable_tiflash_read_for_write_stmt` <span class="version-mark">从 v6.3.0 版本开始引入</span>
 
