@@ -50,8 +50,8 @@ EXPLAIN SELECT count(*) FROM t0 a JOIN t0 b ON a.id = b.id;
 
 为了避免系统陷入死锁状态，TiFlash 引入了以下两层线程的限制：
 
-* threads_soft_limit：主要用来限制系统使用的线程数。对于特定的 MPP Task，为了避免死锁，可以打破该限制。
-* threads_hard_limit：主要为了保护系统，一旦系统使用的线程数超过 hard limit，TiFlash 会通过报错来避免系统陷入死锁状态。
+* thread_soft_limit：主要用来限制系统使用的线程数。对于特定的 MPP Task，为了避免死锁，可以打破该限制。
+* thread_hard_limit：主要为了保护系统，一旦系统使用的线程数超过 hard limit，TiFlash 会通过报错来避免系统陷入死锁状态。
 
 使用 soft limit 和 hard limit 避免死锁的原理是：通过 soft limit 限制所有查询使用的线程资源总量，在充分利用资源的基础上，避免线程资源耗尽。通过 hard limit 确保在任何情况下，系统中至少存在一个查询可以突破 soft limit 的限制，继续获取线程资源并运行，避免死锁。只要线程数不超过 hard limit，系统中就必定存在一个查询，该查询所有的 MPP Task 都可以正常执行，这样系统就不会出现死锁。
 
@@ -59,4 +59,4 @@ MinTSO 调度器的目标是在控制系统线程数的同时，确保系统中�
 
 ![TiFlash MinTSO Scheduler v2](/media/tiflash/tiflash_mintso_v2.png)
 
-通过引入 soft limit 与 hard limit，MinTSO 调度器在控制系统线程数的同时，有效地避免了系统死锁。不过对于高并发场景，可能会出现大多数查询都只有部分 MPP Task 被调度的情况。只有部分 MPP Task 被调度的查询无法正常执行，从而导致系统执行效率低下。为了避免这种情况，TiFlash 在查询层面为 MinTSO 调度器引入了一个限制，即 active_query_soft_limit，该限制要求系统最多只有 active_query_soft_limit 个查询的 MPP Task 可以参与调度；对于其它的查询，其 MPP Task 不参与调度，只有等当前查询结束之后，新的查询才能参与调度。该限制只是一个 soft limit，因为对于 MinTSO 查询来说，其所有 MPP Task 在系统线程数不超过 hard limit 时都可以直接被调度。
+通过引入 soft limit 与 hard limit，MinTSO 调度器在控制系统线程数的同时，有效地避免了系统死锁。不过对于高并发场景，可能会出现大多数查询都只有部分 MPP Task 被调度的情况。只有部分 MPP Task 被调度的查询无法正常执行，从而导致系统执行效率低下。为了避免这种情况，TiFlash 在查询层面为 MinTSO 调度器引入了一个限制，即 active_set_soft_limit，该限制要求系统最多只有 active_set_soft_limit 个查询的 MPP Task 可以参与调度；对于其它的查询，其 MPP Task 不参与调度，只有等当前查询结束之后，新的查询才能参与调度。该限制只是一个 soft limit，因为对于 MinTSO 查询来说，其所有 MPP Task 在系统线程数不超过 hard limit 时都可以直接被调度。
