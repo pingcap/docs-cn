@@ -949,7 +949,7 @@ TiDB 服务状态相关配置。
 
 ### `tidb_enable_stats_owner` <span class="version-mark">从 v8.4.0 版本开始引入</span>
 
-+ 用于表示该 tidb-server 是否可以成为 stats owner。
++ 用于表示该 tidb-server 是否可以运行[统计信息自动更新](/statistics.md#自动更新)任务。
 + 默认值：true
 + 该值作为系统变量 [`tidb_enable_stats_owner`](/system-variables.md#tidb_enable_stats_owner-从-v840-版本开始引入) 的初始值。
 
