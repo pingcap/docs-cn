@@ -5,7 +5,7 @@ summary: 了解 TiDB 8.4.0 版本的新功能、兼容性变更、改进提升�
 
 # TiDB 8.4.0 Release Notes
 
-发版日期：2024 年 xx 月 xx 日
+发版日期：2024 年 10 月 30 日
 
 TiDB 版本：8.4.0
 
@@ -116,7 +116,7 @@ TiDB 版本：8.4.0
     - 消除冗余，在相同的内存消耗下缓存更多执行计划。
     - 在实例上分配固定大小的内存区域，更有效地限制内存使用。
 
-    在 v8.4.0 中，实例级执行计划缓存仅支持对查询的执行计划进行缓存，且默认关闭。你可以通过系统变量 [`tidb_enable_instance_plan_cache`](/system-variables.md#tidb_enable_instance_plan_cache-从-v840-版本开始引入) 开启该功能，并通过系统变量 [`tidb_instance_plan_cache_max_size`](/system-variables.md#tidb_instance_plan_cache_max_size-从-v840-版本开始引入) 设置其最大内存使用量。开启该功能之前，请关闭会话级别的 [Prepare 语句执行计划缓存](/sql-prepared-plan-cache.md)和[非 Prepare 语句执行计划缓存](/sql-non-prepared-plan-cache.md)。
+  在 v8.4.0 中，实例级执行计划缓存仅支持对查询的执行计划进行缓存，且默认关闭。你可以通过系统变量 [`tidb_enable_instance_plan_cache`](/system-variables.md#tidb_enable_instance_plan_cache-从-v840-版本开始引入) 开启该功能，并通过系统变量 [`tidb_instance_plan_cache_max_size`](/system-variables.md#tidb_instance_plan_cache_max_size-从-v840-版本开始引入) 设置其最大内存使用量。开启该功能之前，请关闭会话级别的 [Prepare 语句执行计划缓存](/sql-prepared-plan-cache.md)和[非 Prepare 语句执行计划缓存](/sql-non-prepared-plan-cache.md)。
 
     更多信息，请参考[用户文档](/system-variables.md#tidb_enable_instance_plan_cache-从-v840-版本开始引入)。
 
@@ -192,7 +192,7 @@ TiDB 版本：8.4.0
     - TiDB 扩缩容前性能验证
     - 集群性能上限测试
 
-    更多信息，请参考[用户文档](/tiproxy/tiproxy-traffic-replay.md)。
+  更多信息，请参考[用户文档](/tiproxy/tiproxy-traffic-replay.md)。
 
 ### SQL 功能
 
@@ -327,8 +327,6 @@ TiDB 版本：8.4.0
 | BR | [`--master-key`](/br/br-pitr-manual.md#加密日志备份数据) | 新增 | 设置日志备份数据的主密钥，可以是基于本地磁盘的主密钥或基于云 KMS (Key Management Service) 的主密钥。|
 | BR | [`--master-key-crypter-method`](/br/br-pitr-manual.md#加密日志备份数据) | 新增 | 设置日志备份数据基于主密钥的加密算法，支持 `aes128-ctr`、`aes192-ctr` 和 `aes256-ctr` 三种算法，缺省值为 `plaintext`，表示不加密。 |
 
-### 系统表
-
 ## 离线包变更
 
 从 v8.4.0 开始，`TiDB-community-toolkit` [二进制软件包](/binary-package.md)中移除了以下内容：
@@ -386,11 +384,11 @@ TiDB 版本：8.4.0
 
     - Region 的默认值由 96 MiB 提升到 256 MiB，避免 Region 数量过多导致额外开销 [#17309](https://github.com/tikv/tikv/issues/17309) [LykxSassinator](https://github.com/LykxSassinator) **tw@hfxsd** <!--1925-->
     - 支持指定单个 Region 或 TiKV 实例的内存悲观锁的内存上限，在热点写导致大量悲观锁加锁时，可以通过修改配置提高内存上限，避免悲观锁落盘导致的 CPU/IO 开销 [#17542](https://github.com/tikv/tikv/issues/17542) @[cfzjywxk](https://github.com/cfzjywxk) **tw@Oreoxmt** <!--1967-->
-    - Raft Engine 新增 `spill-dir` 配置，支持 Raft 日志的多磁盘存储。当主目录 `dir` 所在磁盘的容量不足时，Raft Engine 会自动将新日志写入 `spill-dir`，从而确保系统的持续运行。[LykxSassinator](https://github.com/LykxSassinator) **tw@hfxsd** <!--1970-->
+    - Raft Engine 新增 `spill-dir` 配置，支持 Raft 日志的多磁盘存储。当主目录 `dir` 所在磁盘的容量不足时，Raft Engine 会自动将新日志写入 `spill-dir`，从而确保系统的持续运行 [#17356](https://github.com/tikv/tikv/issues/17356) @[LykxSassinator](https://github.com/LykxSassinator) **tw@hfxsd** <!--1970-->
     - (dup): release-6.5.11.md > 改进提升> TiKV - 优化存在大量 DELETE 版本时 RocksDB 的 compaction 触发机制，以加快磁盘空间回收 [#17269](https://github.com/tikv/tikv/issues/17269) @[AndreMouche](https://github.com/AndreMouche)
     - 支持在线更改写入流量控制 (flow-control) 的相关配置 [#17395](https://github.com/tikv/tikv/issues/17395) @[glorv](https://github.com/glorv)
     - 优化空表和小 Region 场景下 Region Merge 的速度 [#17376](https://github.com/tikv/tikv/issues/17376) @[LykxSassinator](https://github.com/LykxSassinator)
-    - [Pipelined DML](https://github.com/pingcap/tidb/blob/master/docs/design/2024-01-09-pipelined-DML.md) 不会长时间阻塞 resolved-ts [#17459](https://github.com/tikv/tikv/issues/17459)@[ekexium](https://github.com/ekexium)
+    - [Pipelined DML](https://github.com/pingcap/tidb/blob/master/docs/design/2024-01-09-pipelined-DML.md) 不会长时间阻塞 resolved-ts [#17459](https://github.com/tikv/tikv/issues/17459) @[ekexium](https://github.com/ekexium)
 
 + PD <!--tw@qiancai: 3 notes-->
 
