@@ -17,7 +17,7 @@ Changefeed 是 TiCDC 中的单个同步任务。Changefeed 将一个 TiDB 集群
 
 - Normal：同步任务正常进行，checkpoint-ts 正常推进。
 - Stopped：同步任务停止，由于用户手动暂停 (pause) changefeed。处于这个状态的 changefeed 会阻挡 GC 推进。
-- Warning：同步任务报错，由于某些可恢复的错误导致同步无法继续进行。处于这个状态的 changefeed 会不断尝试继续推进，直到状态转为 Normal。最大重试时间为 30 分钟，超过该时间，changefeed 会进入 failed 状态。 处于这个状态的 changefeed 会阻挡 GC 推进。
+- Warning：同步任务报错，由于某些可恢复的错误导致同步无法继续进行。处于这个状态的 changefeed 会不断重试，试图继续推进，直到状态转为 Normal。默认重试时间为 30 分钟（可以通过 [`changefeed-error-stuck-duration`](/ticdc/ticdc-changefeed-config.md) 调整），超过该时间，changefeed 会进入 Failed 状态。处于这个状态的 changefeed 会阻挡 GC 推进。
 - Finished：同步任务完成，同步任务进度已经达到预设的 TargetTs。处于这个状态的 changefeed 不会阻挡 GC 推进。
 - Failed：同步任务失败。处于这个状态的 changefeed 不会自动尝试恢复。为了让用户有足够的时间处理故障，处于这个状态的 changefeed 会阻塞 GC 推进，阻塞时长为 `gc-ttl` 所设置的值，其默认值为 24 小时。对于 v6.5.6 或更高的 v6.5 补丁版本，如果在此期间导致任务失败的问题被修复，用户可以手动恢复 changefeed。超过了 `gc-ttl` 时长后，如果 changefeed 仍然处于 Failed 状态，则同步任务无法恢复。
 
