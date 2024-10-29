@@ -77,6 +77,7 @@ Value 数据格式默认与 Key 数据格式相同，但是 Value 的 `fields` �
 > **注意：**
 > 
 > Avro 协议在编码 DML 事件时，操作方式如下：
+> 
 > - 对于 Delete 事件，只编码 Key 部分，Value 部分为空。
 > - 对于 Insert 事件，编码所有列数据到 Value 部分。
 > - 对于 Update 事件，只编码更新后的所有列数据。
