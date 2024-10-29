@@ -5,7 +5,7 @@ summary: 介绍 TiProxy 的负载均衡策略及其适用场景。
 
 # TiProxy 负载均衡策略
 
-在 TiProxy v1.0.0 中，TiProxy 仅支持基于 TiDB server 状态和连接数的负载均衡策略。从 v1.1.0 开始，TiProxy 新增了四种可独立配置的负载均衡策略：基于健康度、内存、CPU 和地理位置。
+在 TiProxy v1.0.0 中，TiProxy 仅支持基于 TiDB server 状态和连接数的负载均衡策略。从 v1.1.0 开始，TiProxy 新增了 5 种负载均衡策略：基于标签、健康度、内存、CPU 和地理位置。
 
 TiProxy 默认启用所有策略，优先级从高到低依次为：
 
@@ -28,69 +28,56 @@ TiProxy 定时通过 SQL 端口和状态端口检查 TiDB 是否已下线或正�
 
 ## 基于标签的负载均衡
 
-给 TiProxy 设置 [`balance.label-name`](/tiproxy/tiproxy-configuration.md#label-name) 后，TiProxy 将启用基于标签的负载均衡。TiProxy 通过 `balance.label-name` 指定的标签名匹配 TiDB server 上的标签，并优先将连接路由到与 TiProxy 自身有相同标签值的 TiDB server 上，以实现计算层的资源隔离。
+基于标签的负载均衡优先将连接路由到与 TiProxy 自身有相同标签的 TiDB server 上，以实现计算层的资源隔离。要启用基于标签的负载均衡，需要通过 [`balance.label-name`](/tiproxy/tiproxy-configuration.md#label-name) 指定用于匹配的标签名，TiProxy 通过该标签名查找 TiProxy 的 [`labels`](/tiproxy/tiproxy-configuration.md#labels) 配置和 TiDB server 上的 [`labels`](/tidb-configuration-file.md#labels) 配置，并优先将连接路由到与自身的标签值相同的 TiDB server 上。
 
-例如，业务有 OLTP 和 OLAP 两类负载，同时有大量后台任务。为了避免相互影响，可以如下配置集群：
+例如，应用有交易和 BI 两类业务，为了避免相互影响，可以如下配置集群：
 
-- TiProxy 上配置 [`balance.label-name`](/tiproxy/tiproxy-configuration.md#label-name) 为 `workload`，表示将按照标签名 `workload` 匹配 TiDB server，并将连接路由到相同标签值的 TiDB server 上。
-- 将 TiProxy 实例分为 2 组，配置项 [`labels`](/tiproxy/tiproxy-configuration.md#labels) 分别加上 `"workload"="TP"` 和 `"workload"="AP"`。
-- 如果需要保证 TiProxy 的高可用，每组 TiProxy 部署 2 台实例，并配置[虚拟 IP](/tiproxy/tiproxy-configuration.md#virtual-ip) 。2 组使用不同的虚拟 IP，同组的 TiProxy 实例配置相同的虚拟 IP。
-- 将 TiDB 实例分为 3 组，其中 2 组的配置项 [`labels`](/tidb-configuration-file.md#labels) 分别加上 `"workload"="TP"` 和 `"workload"="AP"`，第 3 组设置 `tidb_service_scope="background"`，表示仅执行[后台任务](/tidb-distributed-execution-framework.md#任务调度)。 
+- TiProxy 上配置 [`balance.label-name`](/tiproxy/tiproxy-configuration.md#label-name) 为 `app`，表示将按照标签名 `app` 匹配 TiDB server，并将连接路由到相同标签值的 TiDB server 上。
+- 配置 2 台 TiProxy 实例，配置项 [`labels`](/tiproxy/tiproxy-configuration.md#labels) 分别加上 `"app"="Order"` 和 `"app"="BI"`。
+- 将 TiDB 实例分为 2 组，配置项 [`labels`](/tidb-configuration-file.md#labels) 分别加上 `"app"="Order"` 和 `"app"="BI"`。 
 - 配置 [Placement Rules](/configure-placement-rules.md) 或[资源管控](/tidb-resource-control.md) 以实现存储层的资源隔离。
-- OLTP 和 OLAP 负载的客户端分别连接到两组 TiProxy 的虚拟 IP 地址。
+- 交易和 BI 业务的客户端分别连接到 2 台 TiProxy 的地址。
 
-<img src="https://download.pingcap.com/images/docs-cn/tiproxy/tiproxy-balance-label.png" alt="基于标签的负载均衡" width="800" />
+<img src="https://download.pingcap.com/images/docs-cn/tiproxy/tiproxy-balance-label.png" alt="基于标签的负载均衡" width="600" />
 
 如上拓扑图的配置示例如下：
 
 ```yaml
 component_versions:
-  tiproxy: "v1.3.0"
+  tiproxy: "v1.1.0"
 server_configs:
   tiproxy:
-    balance.label-name: "workload"
-    ha.interface: "eth0"
+    balance.label-name: "app"
   tidb:
     graceful-wait-before-shutdown: 15
 tiproxy_servers:
   - host: tiproxy-host-1
     config:
-      labels: {workload: "TP"}
-      ha.virtual-ip: "10.0.1.10/24"
+      labels: {app: "Order"}
   - host: tiproxy-host-2
     config:
-      labels: {workload: "TP"}
-      ha.virtual-ip: "10.0.1.10/24"
-  - host: tiproxy-host-3
-    config:
-      labels: {workload: "AP"}
-      ha.virtual-ip: "10.0.1.11/24"
-  - host: tiproxy-host-4
-    config:
-      labels: {workload: "AP"}
-      ha.virtual-ip: "10.0.1.11/24"
+      labels: {app: "BI"}
 tidb_servers:
   - host: tidb-host-1
     config:
-      labels: {workload: "TP"}
+      labels: {app: "Order"}
   - host: tidb-host-2
     config:
-      labels: {workload: "TP"}
+      labels: {app: "Order"}
   - host: tidb-host-3
     config:
-      labels: {workload: "AP"}
+      labels: {app: "BI"}
   - host: tidb-host-4
     config:
-      labels: {workload: "AP"}
-  - host: tidb-host-5
-    config:
-      tidb_service_scope: "background"
+      labels: {app: "BI"}
 tikv_servers:
   - host: tikv-host-1
   - host: tikv-host-2
   - host: tikv-host-3
-  - host: tikv-host-4
-  - host: tikv-host-5
+pd_servers:
+  - host: pd-host-1
+  - host: pd-host-2
+  - host: pd-host-3
 ```
 
 ## 基于健康度的负载均衡
@@ -170,11 +157,12 @@ tidb_servers:
         zone: west
 tikv_servers:
   - host: tikv-host-1
-    port: 20160
   - host: tikv-host-2
-    port: 20160
   - host: tikv-host-3
-    port: 20160
+pd_servers:
+  - host: pd-host-1
+  - host: pd-host-2
+  - host: pd-host-3
 ```
 
 在以上配置中，`tiproxy-host-1` 与 `tidb-host-1` 的 `zone` 配置相同，因此 `tiproxy-host-1` 上的 TiProxy 会优先将请求路由到 `tidb-host-1` 上的 TiDB server。同理，`tiproxy-host-2` 上的 TiProxy 会优先将请求路由到 `tidb-host-2` 上的 TiDB server。
