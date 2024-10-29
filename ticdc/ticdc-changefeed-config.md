@@ -74,10 +74,10 @@ enable-old-value = true
 # 详情请参考：https://docs.pingcap.com/zh/tidb/stable/ticdc-bidirectional-replication#ticdc-双向复制
 # bdr-mode = false
 
-# changefeed 发生内部错误或异常时允许自动重试的时间，默认值为 30 分钟。
+# 从 v6.5.6 开始引入。changefeed 发生内部错误或异常时允许自动重试的时间，默认值为 30 分钟。
 # 若 changefeed 发生内部错误或异常，且持续时间超过该参数设置的时间，changefeed 会进入 Failed 状态。
 # 当 changefeed 处于 failed 状态时，需要手动重启 changefeed 才能恢复。
-# 配置格式为 "h m s"，例如 "1h30m30s"。该参数从 v6.5.6 开始引入。
+# 配置格式为 "h m s"，例如 "1h30m30s"。
 changefeed-error-stuck-duration = "30m"
 
 [mounter]
