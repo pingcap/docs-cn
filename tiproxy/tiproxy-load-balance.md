@@ -25,7 +25,9 @@ TiProxy 定时通过 SQL 端口和状态端口检查 TiDB 是否已下线或正�
 
 ## 基于标签的负载均衡
 
-基于标签的负载均衡优先将连接路由到与 TiProxy 自身有相同标签的 TiDB server 上，以实现计算层的资源隔离。要启用基于标签的负载均衡，需要通过 [`balance.label-name`](/tiproxy/tiproxy-configuration.md#label-name) 指定用于匹配的标签名，TiProxy 通过该标签名查找 TiProxy 的 [`labels`](/tiproxy/tiproxy-configuration.md#labels) 配置和 TiDB server 上的 [`labels`](/tidb-configuration-file.md#labels) 配置，并优先将连接路由到与自身的标签值相同的 TiDB server 上。
+基于标签的负载均衡优先将连接路由到与 TiProxy 自身有相同标签的 TiDB server 上，以实现计算层的资源隔离。该策略默认不启用，仅当你的业务需要隔离计算层的资源时才需要启用。
+
+要启用基于标签的负载均衡，需要通过 [`balance.label-name`](/tiproxy/tiproxy-configuration.md#label-name) 指定用于匹配的标签名，TiProxy 通过该标签名查找 TiProxy 的 [`labels`](/tiproxy/tiproxy-configuration.md#labels) 配置和 TiDB server 上的 [`labels`](/tidb-configuration-file.md#labels) 配置，并优先将连接路由到与自身的标签值相同的 TiDB server 上。
 
 例如，应用有交易和 BI 两类业务，为了避免相互影响，可以如下配置集群：
 
