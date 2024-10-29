@@ -24,6 +24,7 @@ summary: 介绍通过 TiUP 部署或扩容 TiDB 集群时提供的拓扑文件�
 - [tikv_servers](/tiup/tiup-cluster-topology-reference.md#tikv_servers)：TiKV 实例的配置，用来指定 TiKV 组件部署到哪些机器上
 - [tiflash_servers](/tiup/tiup-cluster-topology-reference.md#tiflash_servers)：TiFlash 实例的配置，用来指定 TiFlash 组件部署到哪些机器上
 - [tiproxy_servers](#tiproxy_servers)：TiProxy 实例的配置，用来指定 TiProxy 组件部署到哪些机器上
+- [kvcdc_servers](/tiup/tiup-cluster-topology-reference.md#kvcdc_servers)：[TiKV-CDC](https://tikv.org/docs/latest/concepts/explore-tikv-features/cdc/cdc-cn/) 实例的配置，用来指定 TiKV-CDC 组件部署到哪些机器上
 - [cdc_servers](/tiup/tiup-cluster-topology-reference.md#cdc_servers)：CDC 实例的配置，用来指定 CDC 组件部署到哪些机器上
 - [tispark_masters](/tiup/tiup-cluster-topology-reference.md#tispark_masters)：TiSpark Master 实例的配置，用来指定 TiSpark Master 组件部署到哪台机器上，仅允许部署一个 TiSpark Master 节点
 - [tispark_workers](/tiup/tiup-cluster-topology-reference.md#tispark_workers)：TiSpark Worker 实例的配置，用来指定 TiSpark Worker 组件部署到哪些机器上
@@ -361,6 +362,39 @@ tiflash_servers:
 
 ```yaml
 tiproxy_servers:
+  - host: 10.0.1.21
+  - host: 10.0.1.22
+```
+
+### `kvcdc_servers`
+
+`kvcdc_servers` 约定了将 [TiKV-CDC](https://tikv.org/docs/latest/concepts/explore-tikv-features/cdc/cdc-cn/) 服务部署到哪些机器上，同时可以指定每台机器上的服务配置，`kvcdc_servers` 是一个数组，每个数组元素包含以下字段：
+
+- `addr`：TiKV-CDC 的监听地址，用于提供 HTTP API 和 Prometheus 查询，默认为 `127.0.0.1:8600`。
+- `advertise-addr`：TiKV-CDC 供客户端访问的外部开放地址。如果未设置，默认与 `addr` 值相同。
+- `pd`：TiKV-CDC 监听的 PD 节点地址，多个地址之间用英文逗号（`,`）分隔。
+- `config`：可选项，指定 TiKV-CDC 使用的配置文件路径。
+- `data-dir`：可选项，指定 TiKV-CDC 存储运行时数据的目录，主要用于外部排序。建议确保该目录所在磁盘的可用空间大于等于 500 GiB。
+- `gc-ttl`：可选项，TiKV-CDC 在 PD 设置服务级别 GC safepoint 的 TTL (Time to Live) 时长。同时也是 TiKV-CDC 同步任务暂停的最大时长。单位为秒，默认值为 86400，即 24 小时。注意：TiKV-CDC 同步任务的暂停会影响集群 GC safepoint 的推进。`gc-ttl` 越大，同步任务可以暂停的时间越长，但同时会保留更多的过期数据，并占用更多的存储空间。反之亦然。
+- `log-file`：可选项，TiKV-CDC 进程运行时日志的输出路径，未设置时默认为标准输出 (stdout)。
+- `log-level`：可选项，TiKV-CDC 进程运行时的日志路径，默认为 `"info"`。
+- `ca`：可选项，指定用于 TLS 连接的 CA 证书文件路径。仅支持 PEM 格式。
+- `cert`：可选项，指定用于 TLS 连接的证书文件路径。仅支持 PEM 格式。
+- `key`：可选项，指定用于 TLS 连接的私钥文件路径。仅支持 PEM 格式。
+- `cert-allowed-cn`：可选项，指定允许的调用者身份（即证书 Common Name，CN）。多个 CN 之间用英文逗号（`,`）分隔。
+
+以上所有字段中，部分字段部署完成之后不能再修改。如下所示：
+
+- `host`
+- `port`
+- `deploy_dir`
+- `data_dir`
+- `log_dir`
+
+`kvcdc_servers` 配置示例：
+
+```yaml
+kvcdc_servers:
   - host: 10.0.1.21
   - host: 10.0.1.22
 ```
