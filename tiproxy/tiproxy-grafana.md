@@ -56,6 +56,7 @@ TiProxy 有四个面板组。这些面板上的指标表示 TiProxy 的当前状
 - Session Migration Duration：会话迁移的平均、P95、P99 时长。
 - Session Migration Reasons：每分钟发生的会话迁移数，以及迁移的原因。原因包括：
     - `status`：TiProxy 进行了[基于状态的负载均衡](/tiproxy/tiproxy-load-balance.md#基于状态的负载均衡)
+    - `label`：TiProxy 进行了[基于标签的负载均衡](/tiproxy/tiproxy-load-balance.md#基于标签的负载均衡)
     - `health`：TiProxy 进行了[基于健康度的负载均衡](/tiproxy/tiproxy-load-balance.md#基于健康度的负载均衡)
     - `memory`：TiProxy 进行了[基于内存的负载均衡](/tiproxy/tiproxy-load-balance.md#基于内存的负载均衡)
     - `cpu`：TiProxy 进行了[基于 CPU 的负载均衡](/tiproxy/tiproxy-load-balance.md#基于-cpu-的负载均衡)
