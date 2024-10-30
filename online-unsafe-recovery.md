@@ -38,7 +38,7 @@ Online Unsafe Recovery 功能适用于以下场景：
 
 ### 第 1 步：指定无法恢复的节点
 
-使用 PD Control 执行 [`unsafe remove-failed-stores <store_id>[,<store_id>,...]`](/pd-control.md#unsafe-remove-failed-stores-store-ids--show) 命令，指定已确定无法恢复的**所有** TiKV 节点，并用逗号隔开，以触发自动恢复。
+使用 PD Control 执行 [`unsafe remove-failed-stores <store_id>[,<store_id>,...]`](/pd-control.md#unsafe-remove-failed-stores-store-ids--show) 命令，指定已确定无法恢复的**所有** TiKV 和 TiFlash 节点，并用逗号隔开，以触发自动恢复。
 
 {{< copyable "shell-regular" >}}
 
@@ -58,7 +58,7 @@ pd-ctl -u <pd_addr> unsafe remove-failed-stores <store_id1,store_id2,...>
 
 > **注意：**
 >
-> 请确保一次性输入 **所有** 失败的 TiKV 节点和 TiFlash 节点，如果有部分失败节点遗漏，恢复可能会被阻塞。如果在短时间内 (如一天时间内)，已经运行过一次 Online Unsafe Recovery ，请仍确保后续的执行仍然带有之前已经处理过的失败 TiKV 节点。如果无法确定所有的失败节点，可以使用 --auto-detect 模式，由 PD 将所有不在当前 store 列表中的副本删除。
+> 请确保一次性输入 **所有** 失败的 TiKV 节点和 TiFlash 节点，如果有部分失败节点遗漏，恢复可能会被阻塞。如果在短时间内 (如一天时间内)，已经运行过一次 Online Unsafe Recovery ，请仍确保后续的执行仍然带有之前已经处理过的失败 TiKV 和 TiFlash 节点。如果无法确定所有的失败节点，可以使用 --auto-detect 模式，由 PD 将所有不在当前 store 列表中的副本删除。
 
 > **注意：**
 >
