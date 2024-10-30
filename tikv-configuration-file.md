@@ -1846,11 +1846,7 @@ Raft Engine 相关的配置项。
 
 + 指定缓存写入的最大累积大小。当超过此配置值时，缓存的写入将被刷写到磁盘。
 + 如果将此配置项设置为 `0`，则禁用增量同步。
-<<<<<<< HEAD
-+ 默认值：`"4MB"`
-=======
 + 在 v6.5.0 之前的版本中，默认值为 `"4MiB"`。
->>>>>>> 15d2cce783 (tikv-configuration: mark raft-engine.bytes-per-sync as deprecated (#18919))
 
 ### `target-file-size`
 
