@@ -12,7 +12,7 @@ TiDB 历史版本发布声明如下：
 
 ## 8.4
 
-- [8.4.0-DMR](/releases/release-8.4.0.md): 2024-10-30
+- [8.4.0-DMR](/releases/release-8.4.0.md): 2024-11-11
 
 ## 8.3
 
