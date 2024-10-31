@@ -10,7 +10,7 @@ summary: 介绍 TiProxy 的负载均衡策略及其适用场景。
 TiProxy 默认启用所有策略，优先级从高到低依次为：
 
 1. 基于状态的负载均衡：当某个 TiDB server 正在关闭时，TiProxy 将连接从该 TiDB server 迁移到在线的 TiDB server。
-2. 基于标签的负载均衡：优先将请求路由到与 TiProxy 实例自身有相同标签的 TiDB server，以实现计算层的资源隔离。
+2. 基于标签的负载均衡：优先将请求路由到与 TiProxy 实例自身具有相同标签的 TiDB server，以实现计算层的资源隔离。
 3. 基于健康度的负载均衡：当某个 TiDB server 的健康度异常时，TiProxy 将连接从该 TiDB server 迁移到健康度正常的 TiDB server。
 4. 基于内存的负载均衡：当某个 TiDB server 存在 Out of Memory (OOM) 风险时，TiProxy 将连接从该 TiDB server 迁移到内存使用量较低的 TiDB server。
 5. 基于 CPU 的负载均衡：当某个 TiDB server 的 CPU 使用率远高于其他 TiDB server 时，TiProxy 将连接从该 TiDB server 迁移到 CPU 使用率较低的 TiDB server。
@@ -25,21 +25,27 @@ TiProxy 定时通过 SQL 端口和状态端口检查 TiDB 是否已下线或正�
 
 ## 基于标签的负载均衡
 
-基于标签的负载均衡优先将连接路由到与 TiProxy 自身有相同标签的 TiDB server 上，以实现计算层的资源隔离。该策略默认不启用，仅当你的业务需要隔离计算层的资源时才需要启用。
+基于标签的负载均衡优先将连接路由到与 TiProxy 自身具有相同标签的 TiDB server 上，从而实现计算层的资源隔离。该策略默认关闭，仅当你的业务需要隔离计算层的资源时才需要启用。
 
-要启用基于标签的负载均衡，需要通过 [`balance.label-name`](/tiproxy/tiproxy-configuration.md#label-name) 指定用于匹配的标签名，TiProxy 通过该标签名查找 TiProxy 的 [`labels`](/tiproxy/tiproxy-configuration.md#labels) 配置和 TiDB server 上的 [`labels`](/tidb-configuration-file.md#labels) 配置，并优先将连接路由到与自身的标签值相同的 TiDB server 上。
+要启用基于标签的负载均衡，你需要：
 
-例如，应用有交易和 BI 两类业务，为了避免相互影响，可以如下配置集群：
+- 通过 [`balance.label-name`](/tiproxy/tiproxy-configuration.md#label-name) 指定用于匹配的标签名
+- 配置 TiProxy 配置项 [`labels`](/tiproxy/tiproxy-configuration.md#labels)
+- 配置和 TiDB server 配置项 [`labels`](/tidb-configuration-file.md#labels)
 
-- TiProxy 上配置 [`balance.label-name`](/tiproxy/tiproxy-configuration.md#label-name) 为 `app`，表示将按照标签名 `app` 匹配 TiDB server，并将连接路由到相同标签值的 TiDB server 上。
-- 配置 2 台 TiProxy 实例，配置项 [`labels`](/tiproxy/tiproxy-configuration.md#labels) 分别加上 `"app"="Order"` 和 `"app"="BI"`。
-- 将 TiDB 实例分为 2 组，配置项 [`labels`](/tidb-configuration-file.md#labels) 分别加上 `"app"="Order"` 和 `"app"="BI"`。 
-- 如果需要同时隔离存储层的资源，可配置 [Placement Rules](/configure-placement-rules.md) 或[资源管控](/tidb-resource-control.md) 。
+配置完成后，TiProxy 会根据 `balance.label-name` 指定的标签名查找相应的配置，并将连接路由到标签值相同的 TiDB server。
+
+例如，若应用包含交易和 BI 两类业务，为了避免相互影响，可以按照如下方式配置集群：
+
+- 在 TiProxy 上配置 [`balance.label-name`](/tiproxy/tiproxy-configuration.md#label-name) 为 `"app"`，表示将按照标签名 `"app"` 匹配 TiDB server，并将连接路由到相同标签值的 TiDB server 上。
+- 配置 2 台 TiProxy 实例，分别为配置项 [`labels`](/tiproxy/tiproxy-configuration.md#labels) 加上 `"app"="Order"` 和 `"app"="BI"`。
+- 将 TiDB 实例分为 2 组，分别为配置项 [`labels`](/tidb-configuration-file.md#labels) 加上 `"app"="Order"` 和 `"app"="BI"`。 
+- 如果需要同时隔离存储层的资源，可配置 [Placement Rules](/configure-placement-rules.md) 或[资源管控](/tidb-resource-control.md)。
 - 交易和 BI 业务的客户端分别连接到 2 台 TiProxy 的地址。
 
 <img src="https://download.pingcap.com/images/docs-cn/tiproxy/tiproxy-balance-label.png" alt="基于标签的负载均衡" width="600" />
 
-如上拓扑图的配置示例如下：
+上述拓扑图的配置示例如下：
 
 ```yaml
 component_versions:
