@@ -77,8 +77,6 @@ TiCDC 只能同步至少存在一个**有效索引**的表，**有效索引**的
     - 索引中每一列在表结构中明确定义非空 (`NOT NULL`)。
     - 索引中不存在虚拟生成列 (`VIRTUAL GENERATED COLUMNS`)。
 
-TiCDC 从 4.0.8 版本开始，可通过修改任务配置来同步**没有有效索引**的表，但在数据一致性的保证上有所减弱。具体使用方法和注意事项参考[同步没有有效索引的表](/ticdc/manage-ticdc.md#同步没有有效索引的表)。
-
 ### 暂不支持的场景
 
 目前 TiCDC 暂不支持的场景如下：
@@ -149,4 +147,9 @@ TiCDC 从 v5.3.0 开始支持[全局临时表](/temporary-tables.md#全局临时
 
 ## TiCDC 常见问题
 
+<<<<<<< HEAD
 在使用 TiCDC 过程中经常遇到的问题以及相对应的解决方案请参考 [TiCDC 常见问题](/ticdc/troubleshoot-ticdc.md)。
+=======
+- 使用 TiCDC 过程中经常遇到的问题，请参考 [TiCDC 常见问题](/ticdc/ticdc-faq.md)。
+- 使用 TiCDC 过程中遇到的故障及解决，请参考 [TiCDC 故障处理](/ticdc/troubleshoot-ticdc.md)。
+>>>>>>> 1425c64755 (cdc: remove mention about force-replicate (#18936) (#18949))
