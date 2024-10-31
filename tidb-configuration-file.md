@@ -950,6 +950,13 @@ TiDB 服务状态相关配置。
 + 该值作为系统变量 [`tidb_enable_ddl`](/system-variables.md#tidb_enable_ddl-从-v630-版本开始引入) 的初始值。
 + 在 v6.3.0 之前，该功能由配置项 `run-ddl` 进行设置。
 
+### `tidb_enable_stats_owner` <span class="version-mark">从 v8.4.0 版本开始引入</span>
+
++ 用于表示该 tidb-server 是否可以运行[统计信息自动更新](/statistics.md#自动更新)任务。
++ 默认值：`true`
++ 可选值：`true`、`false`
++ 该值作为系统变量 [`tidb_enable_stats_owner`](/system-variables.md#tidb_enable_stats_owner-从-v840-版本开始引入) 的初始值。
+
 ### `tidb_stmt_summary_enable_persistent` <span class="version-mark">从 v6.6.0 版本开始引入</span>
 
 > **警告：**
