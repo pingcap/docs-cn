@@ -2353,6 +2353,15 @@ mysql> SELECT job_info FROM mysql.analyze_jobs ORDER BY end_time DESC LIMIT 1;
 - 默认值：`ON`
 - 这个变量用于控制是否开启 slow log 功能。
 
+### `tidb_enable_stats_owner` <span class="version-mark">从 v8.4.0 版本开始引入</span>
+
+- 作用域：GLOBAL
+- 是否持久化到集群：否，仅作用于当前连接的 TiDB 实例
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：否
+- 默认值：`ON`
+- 可选值：`OFF`、`ON`
+- 用于设置该 TiDB 实例是否可以运行[统计信息自动更新](/statistics.md#自动更新)任务。若当前 TiDB 集群中只有一台 TiDB 实例，则不能禁止该实例运行统计信息自动更新，即不能设置为 `OFF`。
+
 ### `tidb_enable_stmt_summary` <span class="version-mark">从 v3.0.4 版本开始引入</span>
 
 - 作用域：GLOBAL
