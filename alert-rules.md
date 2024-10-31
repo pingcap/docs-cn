@@ -560,11 +560,13 @@ summary: TiDB 集群中各组件的报警规则详解。
 
 * 报警规则：
 
-    `sum(rate(tikv_thread_cpu_seconds_total{name=~"raftstore_.*"}[1m])) by (instance, name) > 1.6`
+    `sum(rate(tikv_thread_cpu_seconds_total{name=~"raftstore_.*"}[1m])) by (instance) > 1.6`
 
 * 规则描述：
 
-    Raftstore 线程压力太大。
+    监测 raftstore 的 CPU 消耗。如果该值偏大，表明 Raftstore 线程压力很大。
+
+    该报警项的阈值为 [`raftstore.store-pool-size`](/tikv-configuration-file.md#store-pool-size) 的 80%。`raftstore.store-pool-size` 默认为 2，所以该阈值为 1.6。 
 
 * 处理方法：
 
