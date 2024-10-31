@@ -230,3 +230,61 @@ DESC SELECT COUNT(*) FROM CLUSTER_SLOW_QUERY WHERE user = 'u1';
 ```sql
 SELECT /*+ AGG_TO_COP() */ COUNT(*) FROM CLUSTER_SLOW_QUERY GROUP BY user;
 ```
+
+## 查看执行信息
+
+通过对 `SLOW_QUERY` 表执行 [`EXPLAIN ANALYZE`](/sql-statements/sql-statement-explain-analyze.md)，你可以获取数据库如何检索慢查询信息的详情。然而，如果对 `CLUSTER_SLOW_QUERY` 表执行 `EXPLAIN ANALYZE`，将无法获取这些信息。
+
+示例：
+
+```sql
+EXPLAIN ANALYZE SELECT * FROM INFORMATION_SCHEMA.SLOW_QUERY LIMIT 1\G
+```
+
+```
+*************************** 1. row ***************************
+            id: Limit_7
+       estRows: 1.00
+       actRows: 1
+          task: root
+ access object:
+execution info: time:3.46ms, loops:2, RU:0.000000
+ operator info: offset:0, count:1
+        memory: N/A
+          disk: N/A
+*************************** 2. row ***************************
+            id: └─MemTableScan_10
+       estRows: 10000.00
+       actRows: 64
+          task: root
+ access object: table:SLOW_QUERY
+execution info: time:3.45ms, loops:1, initialize: 55.5µs, read_file: 1.21ms, parse_log: {time:4.11ms, concurrency:15}, total_file: 1, read_file: 1, read_size: 4.06 MB
+ operator info: only search in the current 'tidb-slow.log' file
+        memory: 1.26 MB
+          disk: N/A
+2 rows in set (0.01 sec)
+```
+
+在输出中，查看 `execution info` 中的以下字段（为便于阅读，这些字段的格式已优化）：
+
+```
+initialize: 55.5µs,
+read_file: 1.21ms,
+parse_log: {
+  time:4.11ms,
+  concurrency:15
+},
+total_file: 1,
+read_file: 1,
+read_size: 4.06 MB
+```
+
+| 字段 | 描述 |
+|---|---|
+| `initialize` | 用于初始化的时间 |
+| `read_file` | 用于读取慢日志文件的时间 |
+| `parse_log.time` | 用于解析慢日志文件的时间 |
+| `parse_log.concurrency` | 解析慢日志文件的并发度（由 [`tidb_distsql_scan_concurrency`](/system-variables.md#tidb_distsql_scan_concurrency) 控制） |
+| `total_file` | 慢日志文件的总数 |
+| `read_file` | 已读取的慢日志文件数 |
+| `read_size` | 从日志文件中读取的字节数 |
