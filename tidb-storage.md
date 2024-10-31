@@ -12,14 +12,14 @@ aliases: ['/docs-cn/dev/tidb-storage/']
 
 ## Key-Value Pairs（键值对）
 
-作为保存数据的系统，首先要决定的是数据的存储模型，也就是数据以什么样的形式保存下来。TiKV 的选择是 Key-Value 模型，并且提供有序遍历方法。
+作为数据保存系统，首先要决定数据的存储模型，即数据的保存形式。TiKV 选择使用 Key-Value 模型，并提供有序遍历方法。
 
 TiKV 数据存储的两个关键点：
 
-1. 这是一个巨大的 Map（可以类比一下 C++ 的 std::map），也就是存储的是 Key-Value Pairs（键值对）
-2. 这个 Map 中的 Key-Value pair 按照 Key 的二进制顺序有序，也就是可以 Seek 到某一个 Key 的位置，然后不断地调用 Next 方法以递增的顺序获取比这个 Key 大的 Key-Value。
+- TiKV 实现了一个巨大的 Map（类似于 C++ 的 std::map），用于存储 Key-Value Pairs（键值对）。
+- Map 中的键值对按照键的二进制顺序有序，可以通过 Seek 方法定位某个键，然后使用 Next 方法以递增顺序获取更大的键值对。
 
-注意，本文所说的 **TiKV 的 KV 存储模型和 SQL 中的 Table 无关**。本文不讨论 SQL 中的任何概念，专注于讨论如何实现 TiKV 这样一个高性能、高可靠性、分布式的 Key-Value 存储。
+注意，TiKV 的 KV 存储模型与 SQL 中的表无关。本文不讨论 SQL 概念，专注于 TiKV 的高性能、高可靠性和分布式键值存储的实现。
 
 ## 本地存储 (RocksDB)
 
