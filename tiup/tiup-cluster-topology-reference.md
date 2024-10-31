@@ -368,7 +368,7 @@ tiproxy_servers:
 
 ### `kvcdc_servers`
 
-`kvcdc_servers` 约定了将 [TiKV-CDC](https://tikv.org/docs/latest/concepts/explore-tikv-features/cdc/cdc-cn/) 服务部署到哪些机器上，同时可以指定每台机器上的服务配置，`kvcdc_servers` 是一个数组，每个数组元素包含以下字段：
+`kvcdc_servers` 约定了将 [TiKV-CDC](https://tikv.org/docs/latest/concepts/explore-tikv-features/cdc/cdc-cn/) 服务部署到哪些机器上，同时可以指定每台机器上的服务配置。`kvcdc_servers` 是一个数组，每个数组元素包含以下字段：
 
 - `addr`：TiKV-CDC 的监听地址，用于提供 HTTP API 和 Prometheus 查询，默认为 `127.0.0.1:8600`。
 - `advertise-addr`：TiKV-CDC 供客户端访问的外部开放地址。如果未设置，默认与 `addr` 值相同。
