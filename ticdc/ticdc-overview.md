@@ -63,15 +63,11 @@ TiCDC 的系统架构如下图所示：
     - TiCDC 以表为单位拆分跨表事务，**不保证**跨表事务的原子性。
     - TiCDC **保证**单行的更新与上游更新顺序一致。
 
-<<<<<<< HEAD
 > **注意：**
 >
 > 从 v6.1.1 版本起，你可以通过配置 sink uri 参数 [`transaction-atomicity`](/ticdc/manage-ticdc.md#sink-uri-配置-mysqltidb) 来控制 TiCDC 是否拆分单表事务。拆分事务可以大幅降低 MySQL sink 同步大事务的延时和内存消耗。
 
 - Kafka sink
-=======
-## TiCDC 处理数据变更的实现原理
->>>>>>> ae39a8efba (cdc: remove mention about force-replicate (#18936))
 
     - TiCDC 提供不同的数据分发策略，可以按照表、主键或 ts 等策略分发数据到不同 Kafka partition。
     - 不同分发策略下 consumer 的不同实现方式，可以实现不同级别的一致性，包括行级别有序、最终一致性或跨表事务一致性。
@@ -89,8 +85,6 @@ TiCDC 只能同步至少存在一个**有效索引**的表，**有效索引**的
 - 同时满足下列条件的唯一索引 (`UNIQUE INDEX`) 为有效索引：
     - 索引中每一列在表结构中明确定义非空 (`NOT NULL`)。
     - 索引中不存在虚拟生成列 (`VIRTUAL GENERATED COLUMNS`)。
-
-TiCDC 从 4.0.8 版本开始，可通过修改任务配置来同步**没有有效索引**的表，但在数据一致性的保证上有所减弱。具体使用方法和注意事项参考[同步没有有效索引的表](/ticdc/manage-ticdc.md#同步没有有效索引的表)。
 
 ### 暂不支持的场景
 
