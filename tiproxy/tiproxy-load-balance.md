@@ -7,7 +7,7 @@ summary: 介绍 TiProxy 的负载均衡策略及其适用场景。
 
 在 TiProxy v1.0.0 中，TiProxy 仅支持基于 TiDB server 状态和连接数的负载均衡策略。从 v1.1.0 开始，TiProxy 新增了 5 种负载均衡策略：基于标签、健康度、内存、CPU 和地理位置。
 
-TiProxy 默认启用所有策略，优先级从高到低依次为：
+默认配置下，这些策略的优先级从高到低依次为：
 
 1. 基于状态的负载均衡：当某个 TiDB server 正在关闭时，TiProxy 将连接从该 TiDB server 迁移到在线的 TiDB server。
 2. 基于标签的负载均衡：优先将请求路由到与 TiProxy 实例自身具有相同标签的 TiDB server，以实现计算层的资源隔离。
