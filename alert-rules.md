@@ -579,8 +579,9 @@ summary: TiDB 集群中各组件的报警规则详解。
 
 * 规则描述：
 
-    代表的是 raftstore CPU 消耗, 如果高代表 Raftstore 线程压力太大。
-    阈值取值为 raftstore.store-pool-size 的 80%, 默认 raftstore.store-pool-size=2, 所以这里设置为 1.6。 
+    监测 raftstore 的 CPU 消耗。如果该值偏大，表明 Raftstore 线程压力很大。
+
+    该报警项的阈值为 [`raftstore.store-pool-size`](/tikv-configuration-file.md#store-pool-size) 的 80%。`raftstore.store-pool-size` 默认为 2，所以该阈值为 1.6。 
 
 * 处理方法：
 
