@@ -34,17 +34,17 @@ TiProxy 定时通过 SQL 端口和状态端口检查 TiDB 是否已下线或正�
 
 - 通过 [`balance.label-name`](/tiproxy/tiproxy-configuration.md#label-name) 指定用于匹配的标签名
 - 配置 TiProxy 配置项 [`labels`](/tiproxy/tiproxy-configuration.md#labels)
-- 配置和 TiDB server 配置项 [`labels`](/tidb-configuration-file.md#labels)
+- 配置 TiDB server 配置项 [`labels`](/tidb-configuration-file.md#labels)
 
 配置完成后，TiProxy 会根据 `balance.label-name` 指定的标签名查找相应的配置，并将连接路由到标签值相同的 TiDB server。
 
 例如，若应用包含交易和 BI 两类业务，为了避免相互影响，可以按照如下方式配置集群：
 
-- 在 TiProxy 上配置 [`balance.label-name`](/tiproxy/tiproxy-configuration.md#label-name) 为 `"app"`，表示将按照标签名 `"app"` 匹配 TiDB server，并将连接路由到相同标签值的 TiDB server 上。
-- 配置 2 台 TiProxy 实例，分别为配置项 [`labels`](/tiproxy/tiproxy-configuration.md#labels) 加上 `"app"="Order"` 和 `"app"="BI"`。
-- 将 TiDB 实例分为 2 组，分别为配置项 [`labels`](/tidb-configuration-file.md#labels) 加上 `"app"="Order"` 和 `"app"="BI"`。 
-- 如果需要同时隔离存储层的资源，可配置 [Placement Rules](/configure-placement-rules.md) 或[资源管控](/tidb-resource-control.md)。
-- 交易和 BI 业务的客户端分别连接到 2 台 TiProxy 的地址。
+1. 在 TiProxy 上配置 [`balance.label-name`](/tiproxy/tiproxy-configuration.md#label-name) 为 `"app"`，表示将按照标签名 `"app"` 匹配 TiDB server，并将连接路由到相同标签值的 TiDB server 上。
+2. 配置 2 台 TiProxy 实例，分别为配置项 [`labels`](/tiproxy/tiproxy-configuration.md#labels) 加上 `"app"="Order"` 和 `"app"="BI"`。
+3. 将 TiDB 实例分为 2 组，分别为配置项 [`labels`](/tidb-configuration-file.md#labels) 加上 `"app"="Order"` 和 `"app"="BI"`。 
+4. 如果需要同时隔离存储层的资源，可配置 [Placement Rules](/configure-placement-rules.md) 或[资源管控](/tidb-resource-control.md)。
+5. 交易和 BI 业务的客户端分别连接到 2 台 TiProxy 的地址。
 
 <img src="https://download.pingcap.com/images/docs-cn/tiproxy/tiproxy-balance-label.png" alt="基于标签的负载均衡" width="600" />
 
