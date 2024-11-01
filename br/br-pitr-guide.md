@@ -105,7 +105,7 @@ Restore KV Files <--------------------------------------------------------------
 
 ## PITR 的性能指标
 
-- PITR 恢复速度，平均到单台 TiKV 节点：全量恢复 (Full Restore) 为 280 GB/h，日志恢复（Restore Meta Files 和 Restore KV Files）为 30 GB/h
+- PITR 恢复速度，平均到单台 TiKV 节点：全量恢复 (Full Restore) 为 2 TB/h，日志恢复（Restore Meta Files 和 Restore KV Files）为 30 GB/h
 - 使用 `tiup br log truncate` 清理过期的日志备份数据速度为 600 GB/h
 
 > **注意：**
