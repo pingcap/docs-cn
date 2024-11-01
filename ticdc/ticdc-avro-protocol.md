@@ -21,7 +21,7 @@ TiCDC Avro 协议，是对 [Confluent Platform](https://docs.confluent.io/platfo
 cdc cli changefeed create --server=http://127.0.0.1:8300 --changefeed-id="kafka-avro" --sink-uri="kafka://127.0.0.1:9092/topic-name?protocol=avro" --schema-registry=http://127.0.0.1:8081 --config changefeed_config.toml
 ```
 
-`--schema-registry` 的值支持 https 协议和 username:password 认证，比如`--schema-registry=https://username:password@schema-registry-uri.com`，username 和 password 必须经过 URL 编码。
+`--schema-registry` 的值支持 `https` 协议和 `username:password` 认证，username 和 password 必须经过 URL 编码。例如，`--schema-registry=https://username:password@schema-registry-uri.com`。
 
 > **注意：**
 > 
@@ -80,7 +80,7 @@ Value 数据格式默认与 Key 数据格式相同，但是 Value 的 `fields` �
 > 
 > - 对于 Delete 事件，只编码 Key 部分，Value 部分为空。
 > - 对于 Insert 事件，编码所有列数据到 Value 部分。
-> - 对于 Update 事件，只编码更新后的所有列数据。
+> - 对于 Update 事件，只编码更新后的所有列数据到 Value 部分。
 
 ## TiDB 扩展字段
 
