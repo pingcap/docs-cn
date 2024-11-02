@@ -77,7 +77,7 @@ summary: 介绍 TiProxy 的流量回放的使用场景和使用步骤。
 
 5. 查看回放报告。
 
-    回放完成后，报告存储在测试集群的 `tiproxy_traffic_report` 数据库下。该数据库包含两个表 `fail` 和 `other_errors`。
+    回放完成后，报告存储在测试集群的 `tiproxy_traffic_replay` 数据库下。该数据库包含两个表 `fail` 和 `other_errors`。
 
     `fail` 表存储运行失败的 SQL 语句，字段说明如下：
 
@@ -90,6 +90,24 @@ summary: 介绍 TiProxy 的流量回放的使用场景和使用步骤。
     - `sample_replay_time`：SQL 语句在回放时执行失败的时间，可用于在 TiDB 日志文件中查看错误信息。
     - `count`：SQL 语句执行失败的次数。
 
+    以下是 `fail` 表的输出示例：
+
+    ```sql
+    SELECT * FROM tiproxy_traffic_replay.fail LIMIT 1\G
+    ```
+
+    ```
+    *************************** 1. row ***************************
+           cmd_type: StmtExecute
+             digest: 89c5c505772b8b7e8d5d1eb49f4d47ed914daa2663ed24a85f762daa3cdff43c
+        sample_stmt: INSERT INTO new_order (no_o_id, no_d_id, no_w_id) VALUES (?, ?, ?) params=[3077 6 1]
+     sample_err_msg: ERROR 1062 (23000): Duplicate entry '1-6-3077' for key 'new_order.PRIMARY'
+     sample_conn_id: 1356
+sample_capture_time: 2024-10-17 12:59:15
+ sample_replay_time: 2024-10-17 13:00:05
+              count: 4
+    ```
+
     `other_errors` 表存储其他未预期错误，例如网络错误、连接数据库错误。字段说明如下：
 
     - `err_type`：错误的类型，是一个简短的错误信息，例如 `i/o timeout`。
@@ -99,7 +117,8 @@ summary: 介绍 TiProxy 的流量回放的使用场景和使用步骤。
 
     > **注意：**
     >
-    > `tiproxy_traffic_report` 中的表结构在未来版本中可能会改变。不推荐在应用程序开发或工具开发中读取 `tiproxy_traffic_report` 中的数据。
+    > - `tiproxy_traffic_replay` 中的表结构在未来版本中可能会改变。不推荐在应用程序开发或工具开发中读取 `tiproxy_traffic_replay` 中的数据。
+    > - 回放不保证连接之间的事务执行顺序与捕获时完全一致，因此可能会产生误报。
 
 ## 测试吞吐量
 
