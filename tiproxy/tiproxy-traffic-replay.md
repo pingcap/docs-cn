@@ -98,14 +98,14 @@ summary: 介绍 TiProxy 的流量回放的使用场景和使用步骤。
 
     ```
     *************************** 1. row ***************************
-           cmd_type: StmtExecute
-             digest: 89c5c505772b8b7e8d5d1eb49f4d47ed914daa2663ed24a85f762daa3cdff43c
-        sample_stmt: INSERT INTO new_order (no_o_id, no_d_id, no_w_id) VALUES (?, ?, ?) params=[3077 6 1]
-     sample_err_msg: ERROR 1062 (23000): Duplicate entry '1-6-3077' for key 'new_order.PRIMARY'
-     sample_conn_id: 1356
-sample_capture_time: 2024-10-17 12:59:15
- sample_replay_time: 2024-10-17 13:00:05
-              count: 4
+               cmd_type: StmtExecute
+                 digest: 89c5c505772b8b7e8d5d1eb49f4d47ed914daa2663ed24a85f762daa3cdff43c
+            sample_stmt: INSERT INTO new_order (no_o_id, no_d_id, no_w_id) VALUES (?, ?, ?) params=[3077 6 1]
+         sample_err_msg: ERROR 1062 (23000): Duplicate entry '1-6-3077' for key 'new_order.PRIMARY'
+         sample_conn_id: 1356
+    sample_capture_time: 2024-10-17 12:59:15
+     sample_replay_time: 2024-10-17 13:05:05
+                  count: 4
     ```
 
     `other_errors` 表存储其他未预期错误，例如网络错误、连接数据库错误。字段说明如下：
@@ -114,6 +114,20 @@ sample_capture_time: 2024-10-17 12:59:15
     - `sample_err_msg`：错误首次出现时的完整错误信息。
     - `sample_replay_time`：错误在回放时执行失败的时间，可用于在 TiDB 日志文件中查看错误信息。
     - `count`：错误出现的次数。
+
+    以下是 `other_errors` 表的输出示例：
+
+    ```sql
+    SELECT * FROM tiproxy_traffic_replay.other_errors LIMIT 1\G
+    ```
+
+    ```
+    *************************** 1. row ***************************
+              err_type: failed to read the connection: EOF
+        sample_err_msg: this is an error from the backend connection: failed to read the connection: EOF
+    sample_replay_time: 2024-10-17 12:57:39
+                 count: 1
+    ```
 
     > **注意：**
     >
