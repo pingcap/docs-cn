@@ -9,7 +9,7 @@ TiFlash MinTSO 调度器是 TiFlash 中针对 [MPP](/glossary.md#mpp) Task 的�
 
 ## 背景
 
-在处理 MPP 查询时，TiDB 会将查询拆分成一个或多个 MPP Task，并将这些 MPP Task 发送给对应的 TiFlash 节点进行编译与执行。在 TiFlash 使用 [pipeline 执行模型](/tiflash/tiflash-pipeline-model.md)之前，对于每个 MPP Task，TiFlash 都需要使用若干个线程来执行，具体线程数取决于 MPP Task 的复杂度以及 TiFlash 并发参数的设置。
+在处理 MPP 查询时，TiDB 会将查询拆分成一个或多个 MPP Task，并将这些 MPP Task 发送给对应的 TiFlash 节点进行编译与执行。对于每个 MPP Task，TiFlash 都需要使用若干个线程来执行，具体线程数取决于 MPP Task 的复杂度以及 TiFlash 并发参数的设置。
 
 在高并发场景中，TiFlash 节点会同时接收到多个 MPP Task，如果不对 MPP Task 的执行进行控制，TiFlash 需要向系统申请的线程数会随着 MPP Task 数量的增加而线性增加。过多的线程一方面会影响 TiFlash 的执行效率，另一方面由于操作系统本身支持的线程数有限，当 TiFlash 申请的线程数超过操作系统的限制时，TiFlash 就会遇到无法申请线程的错误。
 
