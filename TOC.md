@@ -659,6 +659,7 @@
     - [TiFlash 延迟物化](/tiflash/tiflash-late-materialization.md)
     - [TiFlash 数据落盘](/tiflash/tiflash-spill-disk.md)
     - [TiFlash 数据校验](/tiflash/tiflash-data-validation.md)
+    - [TiFlash MinTSO 调度器](/tiflash/tiflash-mintso-scheduler.md)
     - [TiFlash 兼容性说明](/tiflash/tiflash-compatibility.md)
     - [TiFlash Pipeline Model 执行模型](/tiflash/tiflash-pipeline-model.md)
   - TiDB 分布式执行框架
