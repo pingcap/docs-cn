@@ -6,13 +6,7 @@ summary: TiUP 可用于 TiDB 升级。升级过程中需注意不支持 TiFlash 
 
 # 使用 TiUP 升级 TiDB
 
-本文档适用于以下升级路径：
-
-- 使用 TiUP 从 TiDB 4.0 版本升级至 TiDB 8.4。
-- 使用 TiUP 从 TiDB 5.0-5.4 版本升级至 TiDB 8.4。
-- 使用 TiUP 从 TiDB 6.0-6.6 版本升级至 TiDB 8.4。
-- 使用 TiUP 从 TiDB 7.0-7.6 版本升级至 TiDB 8.4。
-- 使用 TiUP 从 TiDB 8.0-8.3 版本升级至 TiDB 8.4。
+本文档适用于从以下版本升级到 TiDB 8.4.0：v6.1.x、v6.5.x、v7.1.x、v7.5.x、v8.1.x、v8.2.0、v8.3.0
 
 > **警告：**
 >
@@ -24,7 +18,6 @@ summary: TiUP 可用于 TiDB 升级。升级过程中需注意不支持 TiFlash 
 
 > **注意：**
 >
-> - 如果原集群是 3.0 或 3.1 或更早的版本，不支持直接升级到 v8.4.0 及后续修订版本。你需要先从早期版本升级到 4.0 后，再从 4.0 升级到 v8.4.0 及后续修订版本。
 > - 如果原集群是 6.2 之前的版本，升级到 6.2 及以上版本时，部分场景会遇到升级卡住的情况，你可以参考[如何解决升级卡住的问题](#42-升级到-v620-及以上版本时如何解决升级卡住的问题)。
 > - 配置参数 [`server-version`](/tidb-configuration-file.md#server-version) 的值会被 TiDB 节点用于验证当前 TiDB 的版本。因此在进行 TiDB 集群升级前，请将 `server-version` 的值设置为空或者当前 TiDB 真实的版本值，避免出现非预期行为。
 > - 配置项 [`performance.force-init-stats`](/tidb-configuration-file.md#force-init-stats-从-v657-和-v710-版本开始引入) 设置为 `ON` 会延长 TiDB 的启动时间，这可能会造成启动超时，升级失败。为避免这种情况，建议为 TiUP 设置更长的等待超时。
@@ -55,11 +48,6 @@ summary: TiUP 可用于 TiDB 升级。升级过程中需注意不支持 TiFlash 
 ## 1. 升级兼容性说明
 
 - TiDB 目前暂不支持版本降级或升级后回退。
-- 使用 TiDB Ansible 管理的 4.0 版本集群，需要先按照 [4.0 版本文档的说明](https://docs.pingcap.com/zh/tidb/v4.0/upgrade-tidb-using-tiup)将集群导入到 TiUP (`tiup cluster`) 管理后，再按本文档说明升级到 v8.4.0 版本。
-- 若要将 v3.0 之前的版本升级至 v8.4.0 版本：
-    1. 首先[通过 TiDB Ansible 升级到 3.0 版本](https://docs.pingcap.com/zh/tidb/v3.0/upgrade-tidb-using-ansible)。
-    2. 然后按照 [4.0 版本文档的说明](https://docs.pingcap.com/zh/tidb/v4.0/upgrade-tidb-using-tiup)，使用 TiUP (`tiup cluster`) 将 TiDB Ansible 配置导入。
-    3. 将集群升级至 v4.0 版本。
 - 支持 TiCDC，TiFlash 等组件版本的升级。
 - 将 v6.3.0 之前的 TiFlash 升级至 v6.3.0 及之后的版本时，需要特别注意：在 Linux AMD64 架构的硬件平台部署 TiFlash 时，CPU 必须支持 AVX2 指令集。而在 Linux ARM64 架构的硬件平台部署 TiFlash 时，CPU 必须支持 ARMv8 架构。具体请参考 [6.3.0 版本 Release Notes](/releases/release-6.3.0.md#其他) 中的描述。
 - 具体不同版本的兼容性说明，请查看各个版本的 [Release Note](/releases/release-notes.md)。请根据各个版本的 Release Note 的兼容性更改调整集群的配置。
@@ -161,10 +149,6 @@ tiup update cluster
 2. 参考 [topology](https://github.com/pingcap/tiup/blob/master/embed/examples/cluster/topology.example.yaml) 配置模板的格式，将希望修改的参数填到拓扑文件的 `server_configs` 下面。
 
 修改完成后 `:wq` 保存并退出编辑模式，输入 `Y` 确认变更。
-
-> **注意：**
->
-> 升级到 v8.4.0 版本前，请确认已在 4.0 修改的参数在 v8.4.0 版本中是兼容的，可参考 [TiKV 配置文件描述](/tikv-configuration-file.md)。
 
 ### 2.4 检查当前集群的 DDL 和 Backup 情况
 
