@@ -255,7 +255,7 @@ delta_index_cache_size = 0
     ## 从 v6.0.0 引入，表示全局最多可使用的线程数量，默认值为 10000
     task_scheduler_thread_hard_limit = 10000
 
-    ## 从 v6.4.0 引入，表示 TiFlash 实例同时运行的 query 数量，默认值为 0，即两倍 vcpu 数量
+    ## 从 v6.4.0 引入，用于 [MinTSO 调度器](/tiflash/tiflash-mintso-scheduler.md)，表示 TiFlash 实例最多同时运行的 query 数量，默认值为 0，即两倍 vcpu 数量
     task_scheduler_active_set_soft_limit = 0
 
 ## 安全相关配置，从 v4.0.5 开始生效
