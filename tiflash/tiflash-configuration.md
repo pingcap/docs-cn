@@ -247,7 +247,7 @@ delta_index_cache_size = 0
     ## 从 v7.4.0 引入，表示是否开启 TiFlash 资源管控功能。当设置为 true 时，TiFlash 会使用 Pipeline Model 执行模型。
     enable_resource_control = true
 
-    ## 从 v6.0.0 引入，表示一个 resource group 中最多可使用的线程数量，默认值为 5000
+    ## 从 v6.0.0 引入，用于 [MinTSO 调度器](/tiflash/tiflash-mintso-scheduler.md)，表示一个 resource group 中最多可使用的线程数量，默认值为 5000
     task_scheduler_thread_soft_limit = 5000
 
     ## 从 v6.0.0 引入，表示全局最多可使用的线程数量，默认值为 10000
