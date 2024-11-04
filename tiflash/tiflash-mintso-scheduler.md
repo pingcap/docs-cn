@@ -46,7 +46,7 @@ EXPLAIN SELECT count(*) FROM t0 a JOIN t0 b ON a.id = b.id;
 +--------------------------------------------+----------+--------------+---------------+----------------------------------------------------------+
 ```
 
-例如，以上查询会在每个 TiFlash 节点中生成 2 个 MPP Task，其中 `ExchangeSender_45` 所在的 MPP Task 依赖于 `ExchangeSender_21` 所在的 MPP Task。在该查询高并发的情况下，如果调度器调度了每个查询中 `ExchangeSender_45` 所在的 MPP Task，系统就会进入死锁状态。
+例如，以上查询会在每个 TiFlash 节点中生成 2 个 MPP Task，其中执行器 `ExchangeSender_45` 所在的 MPP Task 依赖于 `ExchangeSender_21` 所在的 MPP Task。在该查询高并发的情况下，如果调度器调度了每个查询中 `ExchangeSender_45` 所在的 MPP Task，系统就会进入死锁状态。
 
 为了避免系统陷入死锁状态，TiFlash 引入了以下两层线程的限制：
 
