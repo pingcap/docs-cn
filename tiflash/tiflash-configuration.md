@@ -198,7 +198,7 @@ delta_index_cache_size = 0
     dt_compression_level = 1
 
 
-    ## 从 v6.0.0 引入，表示一个 resource group 中最多可使用的线程数量，默认值为 5000
+    ## 从 v6.0.0 引入，用于 [MinTSO 调度器](/tiflash/tiflash-mintso-scheduler.md)，表示一个 resource group 中最多可使用的线程数量，默认值为 5000
     task_scheduler_thread_soft_limit = 5000
 
     ## 从 v6.0.0 引入，表示全局最多可使用的线程数量，默认值为 10000
