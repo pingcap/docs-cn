@@ -14,7 +14,7 @@ summary: TiProxy 的性能测试报告、与 HAProxy 的性能对比。
 - 查询结果集的行数对 TiProxy 的 QPS 有显著影响，且影响程度与 HAProxy 相同
 - TiProxy 的性能随 vCPU 的数量接近线性增长，因此增加 vCPU 的数量可以有效提高 QPS 上限
 - 长连接的数量、短连接的创建频率对 TiProxy 的 QPS 影响很小
-- TiProxy 的 CPU 使用率越高，开启捕获流量功能对 QPS 的影响越大。当 TiProxy 的 CPU 使用率约为 70% 时，开启流量捕获会导致平均 QPS 下降约 3%，最低 QPS 下降约 7%，后者的下降是由压缩流量文件导致的 QPS 周期性下降。
+- TiProxy 的 CPU 使用率越高，开启[捕获流量](/tiproxy/tiproxy-traffic-replay.md)功能对 QPS 的影响越大。当 TiProxy 的 CPU 使用率约为 70% 时，开启流量捕获会导致平均 QPS 下降约 3%，最低 QPS 下降约 7%，后者的下降是由压缩流量文件导致的 QPS 周期性下降。
 
 ## 测试环境
 
@@ -318,7 +318,7 @@ sysbench oltp_point_select \
 
 ### 测试方案
 
-该测试的目的是测试[捕获流量](/tiproxy/tiproxy-traffic-replay.md)对 TiProxy 性能的影响。该测试使用 TiProxy v1.3.0 版本，在执行 `sysbench` 之前分别关闭和开启流量捕获，同时调整并发度，以对比 QPS 和 TiProxy 的 CPU 使用率。由于周期性的压缩文件会引起 QPS 的波动，因此本测试除了对比平均 QPS，还对比最低 QPS。
+该测试的目的是测试[捕获流量](/tiproxy/tiproxy-traffic-replay.md)对 TiProxy 性能的影响。该测试使用 TiProxy v1.3.0 版本，在执行 `sysbench` 之前分别关闭和开启流量捕获，同时调整并发度，以对比 QPS 和 TiProxy 的 CPU 使用率。由于周期性的压缩流量文件会引起 QPS 波动，本测试除了对比平均 QPS，也对比了最低 QPS。
 
 执行的测试命令：
 
