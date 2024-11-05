@@ -204,7 +204,7 @@ TiDB 版本：8.4.0
 
     在使用时，你只需要创建包含向量数据类型的表，并插入向量数据，即可执行向量搜索查询，也可进行向量数据与传统关系数据的混合查询。
 
-    此外，你可以创建并利用向量搜索索引来提升向量搜索的性能。需要注意的是，TiDB 的向量搜索索引依赖于 TiFlash。在使用向量搜索索引之前，需要确保 TiDB 集群中已部署 TiFlash 节点。
+    此外，你可以创建并利用[向量搜索索引](/vector-search-index.md)来提升向量搜索的性能。需要注意的是，TiDB 的向量搜索索引依赖于 TiFlash。在使用向量搜索索引之前，需要确保 TiDB 集群中已部署 TiFlash 节点。
 
     更多信息，请参考[用户文档](/vector-search-overview.md)。
 
@@ -218,7 +218,7 @@ TiDB 版本：8.4.0
     - 使用本地磁盘的主密钥加密
     - 使用 KMS（密钥管理服务）的主密钥加密
 
-    更多信息，请参考[用户文档](/br/br-pitr-manual.md#加密日志备份数据)。
+  更多信息，请参考[用户文档](/br/br-pitr-manual.md#加密日志备份数据)。
 
 * BR 降低了从云存储服务系统恢复数据的权限要求 [#55870](https://github.com/pingcap/tidb/issues/55870) @[Leavrth](https://github.com/Leavrth)
 
