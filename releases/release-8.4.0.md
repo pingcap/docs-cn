@@ -36,7 +36,7 @@ TiDB 版本：8.4.0
     <td>在高并发场景下，并行获取 TSO 能够有效降低等待获取 TSO 的时间，提升集群的吞吐。</td>
   </tr>
   <tr>
-    <td>提升缓存表的查询性能</td>
+    <td>提升<a href="https://docs.pingcap.com/zh/tidb/v8.4/cached-tables#缓存表">缓存表</a>的查询性能</td>
     <td>优化了缓存表索引扫描的查询性能，部分场景可提升 5.4 倍。在需要对小表进行高速查询的场景下，利用缓存表可大幅提升整体性能。</td>
   </tr>
   <tr>
@@ -238,7 +238,7 @@ TiDB 版本：8.4.0
 
   其中，TiKV 的 CPU 时间默认显示。采集 TiDB 的 CPU 时间会引入额外开销（约 8%），因此仅在开启 [Top SQL 特性](/dashboard/top-sql.md)时，TiDB 的 CPU 时间才会显示为实际值，否则始终显示为 `0`。
 
-    更多信息，请参考[用户文档](/information-schema/information-schema-processlist.md)和[用户文档](/information-schema/information-schema-slow-query.md)。
+    更多信息，请参考 [`INFORMATION_SCHEMA.PROCESSLIST`](/information-schema/information-schema-processlist.md) 和 [`INFORMATION_SCHEMA.SLOW_QUERY`](/information-schema/information-schema-slow-query.md)。
 
 * Top SQL 支持按表或数据库维度查看 CPU 时间的聚合结果 [#55540](https://github.com/pingcap/tidb/issues/55540) @[nolouch](https://github.com/nolouch)
 
@@ -382,7 +382,7 @@ TiDB 版本：8.4.0
 
 + TiKV
 
-    - Region 的默认值由 96 MiB 提升到 256 MiB，避免 Region 数量过多导致额外开销 [#17309](https://github.com/tikv/tikv/issues/17309) [LykxSassinator](https://github.com/LykxSassinator)
+    - Region 的默认值由 96 MiB 提升到 256 MiB，避免 Region 数量过多导致额外开销 [#17309](https://github.com/tikv/tikv/issues/17309) @[LykxSassinator](https://github.com/LykxSassinator)
     - 支持指定单个 Region 或 TiKV 实例的内存悲观锁的内存上限，在热点写导致大量悲观锁加锁时，可以通过修改配置提高内存上限，避免悲观锁落盘导致的 CPU/IO 开销 [#17542](https://github.com/tikv/tikv/issues/17542) @[cfzjywxk](https://github.com/cfzjywxk)
     - Raft Engine 新增 `spill-dir` 配置，支持 Raft 日志的多磁盘存储。当主目录 `dir` 所在磁盘的容量不足时，Raft Engine 会自动将新日志写入 `spill-dir`，从而确保系统的持续运行 [#17356](https://github.com/tikv/tikv/issues/17356) @[LykxSassinator](https://github.com/LykxSassinator)
     - 优化存在大量 DELETE 版本时 RocksDB 的 compaction 触发机制，以加快磁盘空间回收 [#17269](https://github.com/tikv/tikv/issues/17269) @[AndreMouche](https://github.com/AndreMouche)
