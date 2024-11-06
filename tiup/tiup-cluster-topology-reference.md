@@ -370,18 +370,18 @@ tiproxy_servers:
 
 `kvcdc_servers` 约定了将 [TiKV-CDC](https://tikv.org/docs/latest/concepts/explore-tikv-features/cdc/cdc-cn/) 服务部署到哪些机器上，同时可以指定每台机器上的服务配置。`kvcdc_servers` 是一个数组，每个数组元素包含以下字段：
 
-- `addr`：TiKV-CDC 的监听地址，用于提供 HTTP API 和 Prometheus 查询，默认为 `127.0.0.1:8600`。
-- `advertise-addr`：TiKV-CDC 供客户端访问的外部开放地址。如果未设置，默认与 `addr` 值相同。
-- `pd`：TiKV-CDC 监听的 PD 节点地址，多个地址之间用英文逗号（`,`）分隔。
-- `config`：可选项，指定 TiKV-CDC 使用的配置文件路径。
+- `host`：指定 TiKV-CDC 部署到哪台机器，字段值填 IP 地址，不可省略。
+- `ssh_port`：指定连接目标机器进行操作时使用的 SSH 端口，若不指定，则使用 `global` 区块中的 `ssh_port`。
+- `port`：TiKV-CDC 服务的监听端口，默认 8600。
+- `deploy_dir`：指定部署目录，若不指定，或指定为相对目录，则按照 `global` 中配置的 `deploy_dir` 生成。
 - `data-dir`：可选项，指定 TiKV-CDC 存储临时文件的目录，主要用于排序。建议确保该目录所在磁盘的可用空间大于等于 500 GiB。
 - `gc-ttl`：可选项，TiKV-CDC 在 PD 设置服务级别 GC safepoint 的 TTL (Time to Live) 时长。同时也是 TiKV-CDC 同步任务暂停的最大时长。单位为秒，默认值为 `86400`，即 24 小时。注意：TiKV-CDC 同步任务的暂停会影响集群 GC safepoint 的推进。`gc-ttl` 越大，同步任务可以暂停的时间越长，但同时会保留更多的过期数据，并占用更多的存储空间。反之亦然。
-- `log-file`：可选项，TiKV-CDC 进程运行时日志的输出路径，未设置时默认为标准输出 (stdout)。
-- `log-level`：可选项，TiKV-CDC 进程运行时的日志路径，默认为 `"info"`。
-- `ca`：可选项，指定用于 TLS 连接的 CA 证书文件路径。仅支持 PEM 格式。
-- `cert`：可选项，指定用于 TLS 连接的证书文件路径。仅支持 PEM 格式。
-- `key`：可选项，指定用于 TLS 连接的私钥文件路径。仅支持 PEM 格式。
-- `cert-allowed-cn`：可选项，指定允许的调用者身份（即证书 Common Name，CN）。多个 CN 之间用英文逗号（`,`）分隔。
+- `tz`：TiKV-CDC 服务使用的时区。TiKV-CDC 在内部转换 timestamp 等时间数据类型和向下游同步数据时使用该时区，默认为进程运行本地时区。
+- `numa_node`：为该实例分配 NUMA 策略，如果指定了该参数，需要确保目标机装了 [numactl](https://linux.die.net/man/8/numactl)，在指定该参数的情况下会通过 [numactl](https://linux.die.net/man/8/numactl) 分配 cpubind 和 membind 策略。该字段参数为 string 类型，字段值填 NUMA 节点的 ID，例如 "0,1"
+- `config`：可选项，指定 TiKV-CDC 使用的配置文件路径。
+- `os`：`host` 字段所指定的机器的操作系统，若不指定该字段，则默认为 `global` 中的 `os`。
+- `arch`：`host` 字段所指定的机器的架构，若不指定该字段，则默认为 `global` 中的 `arch`。
+- `resource_control`：针对该服务的资源控制，如果配置了该字段，会将该字段和 `global` 中的 `resource_control` 内容合并（若字段重叠，以本字段内容为准），然后生成 systemd 配置文件并下发到 `host` 指定机器。`resource_control` 的配置规则同 `global` 中的 `resource_control`。
 
 以上所有字段中，部分字段部署完成之后不能再修改。如下所示：
 
@@ -390,6 +390,8 @@ tiproxy_servers:
 - `deploy_dir`
 - `data_dir`
 - `log_dir`
+- `arch`
+- `os`
 
 `kvcdc_servers` 配置示例：
 
