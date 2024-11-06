@@ -467,6 +467,19 @@ drainer_servers:
 - `arch`：`host` 字段所指定的机器的架构，若不指定该字段，则默认为 `global` 中的 `arch`。
 - `resource_control`：针对该服务的资源控制，如果配置了该字段，会将该字段和 `global` 中的 `resource_control` 内容合并（若字段重叠，以本字段内容为准），然后生成 systemd 配置文件并下发到 `host` 指定机器。`resource_control` 的配置规则同 `global` 中的 `resource_control`。
 
+以上所有字段中，部分字段部署完成之后不能再修改。如下所示：
+
+- `host`
+- `listen_host`
+- `name`
+- `client_port`
+- `peer_port`
+- `deploy_dir`
+- `data_dir`
+- `log_dir`
+- `arch`
+- `os`
+
 `kvcdc_servers` 配置示例：
 
 ```yaml
