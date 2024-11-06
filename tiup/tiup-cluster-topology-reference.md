@@ -470,10 +470,7 @@ drainer_servers:
 以上所有字段中，部分字段部署完成之后不能再修改。如下所示：
 
 - `host`
-- `listen_host`
-- `name`
-- `client_port`
-- `peer_port`
+- `port`
 - `deploy_dir`
 - `data_dir`
 - `log_dir`
