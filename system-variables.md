@@ -699,7 +699,7 @@ mysql> SHOW GLOBAL VARIABLES LIKE 'max_prepared_stmt_count';
     - `UNSPECIFIED`：表示未指定，此时 TiDB 自动选择最新版本 `2`。
     - `0`：兼容所有 TiDB 集群版本，MPP 版本大于 `0` 的新特性均不会生效。
     - `1`：从 v6.6.0 版本开始引入，用于开启 TiFlash 带压缩的数据交换，详情参见 [MPP Version 和 Exchange 数据压缩](/explain-mpp.md#mpp-version-和-exchange-数据压缩)。
-    - `2`：从 v7.3.0 版本开始引入，用于确保在 TiFlash 执行出错的情况下，拿到准确的报错信息。
+    - `2`：从 v7.3.0 版本开始引入，用于确保在 TiFlash 执行出错的情况下，获取到准确的报错信息。
 
 ### `password_history` <span class="version-mark">从 v6.5.0 版本开始引入</span>
 
