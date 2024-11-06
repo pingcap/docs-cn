@@ -493,6 +493,44 @@ summary: TiKV 监控指标详解：TiUP 部署 TiDB 集群时，一键部署监�
 - Get Region Operation Count：协调器向 PD 请求 Region 信息的次数。
 - Try Advance Trigger Time：协调器尝试推进 Checkpoint 的耗时。
 
+### Backup & Import
+
+- Import CPU Utilization：SST Importer 的总 CPU 使用率。
+- Import Thread Count：当前用于 SST Importer 的线程数。
+- Import Errors：SST 导入过程中遇到的错误数量。
+- Import RPC Duration：SST Importer 中各类 RPC 调用的耗时。
+- Import RPC Ops：SST Importer 的 RPC 调用总次数。
+- Import RPC Count：SST Importer 正在处理的 RPC 调用数量。
+- Import Write/Download RPC Duration：SST Importer 写入或下载操作的 RPC 耗时。
+- Import Wait Duration：下载任务在执行队列中的等待时间。
+- Import Read SST Duration：从外部存储读取并下载 SST 文件到 TiKV 的耗时。
+- Import Rewrite SST Duration：执行 SST 文件重写规则的耗时。
+- Import Ingest RPC Duration：TiKV 处理写入 RPC 请求的耗时。
+- Import Ingest SST Duration：将 SST 文件写入 RocksDB 的耗时。
+- Import Ingest SST Bytes：已写入的数据量（字节）。
+- Import Download SST Throughput：SST 下载速率（字节/秒）。
+- cloud request：向云服务提供商发起的请求次数。
+
+### Point In Time Restore
+
+- CPU Usage：恢复到指定时间点 (Point-in-time recovery, PITR) 的 CPU 使用率。
+- P99 RPC Duration：RPC 请求耗时的 P99 值。
+- Import RPC Ops：SST Importer 的 RPC 调用总次数。
+- Import RPC Count：SST Importer 正在处理的 RPC 调用数量。
+- Cache Events：SST 导入过程中文件缓存事件的次数。
+- Overall RPC Duration：RPC 调用的总耗时。
+- Read File into Memory Duration：从外部存储下载并加载文件到内存的耗时。
+- Queuing Time：线程调度的等待时长。
+- Apply Request Throughput：Apply 请求的速率（字节）。
+- Downloaded File Size：下载文件的大小（字节）。
+- Apply Batch Size：单批次 Apply 到 Raftstore 的数据量（字节）。
+- Blocked by Concurrency Time：因并发限制导致的等待时长。
+- Apply Request Speed：向 Raftstore Apply 请求的速度。
+- Cached File in Memory：SST Importer Apply 请求缓存的文件。
+- Engine Requests Unfinished：向 Raftstore 发起的待处理请求数量。
+- Apply Time：向 Raftstore 写入数据的耗时。
+- Raft Store Memory Usage：Raftstore 的内存使用量。
+
 ### 面板常见参数的解释
 
 #### gRPC 消息类型
