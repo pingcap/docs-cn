@@ -43,6 +43,8 @@ summary: 介绍 TiProxy 的流量回放的使用场景和使用步骤。
     > - TiProxy 会捕获所有连接上的流量，包括已创建的和新创建的连接。
     > - 在 TiProxy 主备模式下，请确保连接到 TiProxy 主实例。
     > - 如果 TiProxy 配置了虚拟 IP，建议连接到虚拟 IP 地址。
+    > - TiProxy 的 CPU 使用率越高，捕获流量对 QPS 的影响越大。为减少对生产集群的影响，建议预留至少 30% 的 CPU，此时平均 QPS 下降约 3%。有关详细性能数据，请参阅[捕获流量测试](/tiproxy/tiproxy-performance-test.md#捕获流量测试)。
+    > - 再次捕获流量时，上次的流量文件不会自动删除，需要手动删除。
 
     例如，以下命令连接到 TiProxy 实例 `10.0.1.10:3080`，捕获一个小时的流量，并将流量保存到 TiProxy 实例的 `/tmp/traffic` 目录下：
     
@@ -76,7 +78,7 @@ summary: 介绍 TiProxy 的流量回放的使用场景和使用步骤。
 
 5. 查看回放报告。
 
-    回放完成后，报告存储在测试集群的 `tiproxy_traffic_report` 数据库下。该数据库包含两个表 `fail` 和 `other_errors`。
+    回放完成后，报告存储在测试集群的 `tiproxy_traffic_replay` 数据库下。该数据库包含两个表 `fail` 和 `other_errors`。
 
     `fail` 表存储运行失败的 SQL 语句，字段说明如下：
 
@@ -89,6 +91,24 @@ summary: 介绍 TiProxy 的流量回放的使用场景和使用步骤。
     - `sample_replay_time`：SQL 语句在回放时执行失败的时间，可用于在 TiDB 日志文件中查看错误信息。
     - `count`：SQL 语句执行失败的次数。
 
+    以下是 `fail` 表的输出示例：
+
+    ```sql
+    SELECT * FROM tiproxy_traffic_replay.fail LIMIT 1\G
+    ```
+
+    ```
+    *************************** 1. row ***************************
+               cmd_type: StmtExecute
+                 digest: 89c5c505772b8b7e8d5d1eb49f4d47ed914daa2663ed24a85f762daa3cdff43c
+            sample_stmt: INSERT INTO new_order (no_o_id, no_d_id, no_w_id) VALUES (?, ?, ?) params=[3077 6 1]
+         sample_err_msg: ERROR 1062 (23000): Duplicate entry '1-6-3077' for key 'new_order.PRIMARY'
+         sample_conn_id: 1356
+    sample_capture_time: 2024-10-17 12:59:15
+     sample_replay_time: 2024-10-17 13:05:05
+                  count: 4
+    ```
+
     `other_errors` 表存储其他未预期错误，例如网络错误、连接数据库错误。字段说明如下：
 
     - `err_type`：错误的类型，是一个简短的错误信息，例如 `i/o timeout`。
@@ -96,9 +116,25 @@ summary: 介绍 TiProxy 的流量回放的使用场景和使用步骤。
     - `sample_replay_time`：错误在回放时执行失败的时间，可用于在 TiDB 日志文件中查看错误信息。
     - `count`：错误出现的次数。
 
+    以下是 `other_errors` 表的输出示例：
+
+    ```sql
+    SELECT * FROM tiproxy_traffic_replay.other_errors LIMIT 1\G
+    ```
+
+    ```
+    *************************** 1. row ***************************
+              err_type: failed to read the connection: EOF
+        sample_err_msg: this is an error from the backend connection: failed to read the connection: EOF
+    sample_replay_time: 2024-10-17 12:57:39
+                 count: 1
+    ```
+
     > **注意：**
     >
-    > `tiproxy_traffic_report` 中的表结构在未来版本中可能会改变。不推荐在应用程序开发或工具开发中读取 `tiproxy_traffic_report` 中的数据。
+    > - `tiproxy_traffic_replay` 中的表结构在未来版本中可能会改变。不推荐在应用程序开发或工具开发中读取 `tiproxy_traffic_replay` 中的数据。
+    > - 回放不保证连接之间的事务执行顺序与捕获时完全一致，因此可能会误报错误。
+    > - 再次回放时，上一次的回放报告不会自动删除，需要手动删除。
 
 ## 测试吞吐量
 
@@ -151,3 +187,7 @@ tiproxyctl traffic cancel --host 10.0.1.10 --port 3080
 - TiProxy 不支持过滤 SQL 类型，DML 和 DDL 语句也会被回放，因此重新回放前需要将集群数据恢复到回放前的状态。
 - 由于 TiProxy 使用同一个用户名回放流量，因此无法测试[资源管控](/tidb-resource-control.md)和[权限管理](/privilege-management.md)。
 - 不支持回放 [`LOAD DATA`](/sql-statements/sql-statement-load-data.md) 语句。
+
+## 资源
+
+关于 TiProxy 流量回放更详细的信息，请参阅[设计文档](https://github.com/pingcap/tiproxy/blob/main/docs/design/2024-08-27-traffic-replay.md)。
