@@ -470,6 +470,46 @@ config show cluster-version
     config set flow-round-by-digit 4
     ```
 
+显示 service-middleware 的相关 config 信息：
+
+{{< copyable "" >}}
+
+```bash
+config show service-middleware
+```
+
+```
+{
+  "audit": {
+    "enable-audit": "true"
+  },
+  "rate-limit": {
+    "enable-rate-limit": "true",
+    "limiter-config": {}
+  },
+  "grpc-rate-limit": {
+    "enable-grpc-rate-limit": "true",
+    "grpc-limiter-config": {}
+  }
+}
+```
+
+控制某个调用的 rate limit，以 GetRegion 调用为例：
+```bash
+config set service-middleware grpc-rate-limit GetRegion qps 100
+```
+
+控制某个调用的并发，以 GetRegion 调用为例：
+```bash
+config set service-middleware grpc-rate-limit GetRegion concurrency 10
+```
+
+重置上述设置
+```bash
+config set service-middleware grpc-rate-limit GetRegion qps 0
+config set service-middleware grpc-rate-limit GetRegion concurrency 0
+```
+
 ### `config placement-rules [disable | enable | load | save | show | rule-group]`
 
 关于 `config placement-rules` 的具体用法，参考 [Placement Rules 使用文档](/configure-placement-rules.md#配置规则操作步骤)。
