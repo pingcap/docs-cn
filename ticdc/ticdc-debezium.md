@@ -59,9 +59,9 @@ Key 中的 fields 只包含主键或唯一索引列。字段解释如下：
 |:----------|:-------|:-------------------------------------------------------------------------|
 | payload   | JSON | 主键或唯一索引列的信息。每个 field 的 key 和 value 分别为列名和当前值  |
 | schema.fields     | JSON   |  payload 中各个字段的类型信息，包括对应行数据变更前后 schema 的信息等      |
-| schema.name     | 字符串   |  schema 的名称，格式为"{cluster}.{schema}.{table}.Key"     |
-| schema.optional     | 布尔值   |  optional 为 true 时表示该 field 为选填项   |
-| schema.type     | 字符串   |  表示该 field 的类型   |
+| schema.name     | 字符串   |  schema 的名称，格式为 `"{cluster-name}.{schema-name}.{table-name}.Key"`     |
+| schema.optional     | 布尔值   |  optional 为 `true` 时表示该 field 为选填项   |
+| schema.type     | 字符串   |  表示该 field 的数据类型   |
 
 #### Value 数据格式
 
