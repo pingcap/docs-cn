@@ -68,7 +68,7 @@ aliases: ['/docs-cn/dev/enable-tls-between-components/','/docs-cn/dev/how-to/sec
 
     - TiFlash（从 v4.0.5 版本开始引入）
 
-        在 `tiflash.toml` 文件中设置,
+        在 `tiflash.toml` 文件中设置：
 
         ```toml
         [security]
