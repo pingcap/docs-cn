@@ -6,6 +6,14 @@ aliases: ['/docs-cn/dev/glossary/']
 
 # 术语表
 
+本术语表提供了 TiDB 相关的关键术语定义。
+
+此外，你还可以参考以下术语表：
+
+- [TiDB Data Migration 术语表](/dm/dm-glossary.md)
+- [TiCDC 术语表](/ticdc/ticdc-glossary.md)
+- [TiDB Lightning 术语表](/tidb-lightning/tidb-lightning-glossary.md)
+
 ## A
 
 ### ACID
@@ -19,14 +27,11 @@ ACID 是指数据库管理系统在写入或更新资料的过程中，为保证
 
 ## B
 
-### BR
+### Backup & Restore (BR)
 
-[TiDB 备份恢复功能](/br/backup-and-restore-overview.md)用户文档中的名词 **BR** 根据上下文不同有不同的解释，比较常见的指代用法：
+**Backup & Restore** 或 **BR** 指代 [TiDB 备份恢复功能](/br/backup-and-restore-overview.md)。
 
-* TiDB 备份恢复功能，包含 br CLI、TiDB Operator、TiDB Cloud 提供的备份和恢复功能集合。
-* 架构中的 BR 功能组件。
-
-名词 **br** 一般用来指代 br CLI 工具。
+`br` 指代进行 TiDB 备份或恢复时使用的 [br 命令行工具](/br/use-br-command-line-tool.md)。
 
 ### Batch Create Table
 
@@ -50,31 +55,101 @@ ACID 是指数据库管理系统在写入或更新资料的过程中，为保证
 
 Coalesce Partition 是一种减少 Hash 分区表或 Key 分区表中分区数量的方法。详情参见[管理 Hash 分区和 Key 分区](/partitioned-table.md#管理-hash-分区和-key-分区)。
 
+### Column Family (CF)
+
+在 RocksDB 和 TiKV 中，Column Family (CF，列族) 表示数据库中键值对的逻辑分组。
+
+### 公共表表达式 (CTE)
+
+公共表表达式（Common Table Expression, CTE）用于定义一个临时结果集，能够在 SQL 语句中通过 [`WITH`](/sql-statements/sql-statement-with.md) 子句多次引用。更多信息，请参见[公共表表达式](/develop/dev-guide-use-common-table-expression.md)。
+
 ### Continuous Profiling
 
 持续性能分析 (Continuous Profiling) 是从 TiDB v5.3 起引入的一种从系统调用层面解读资源开销的方法。引入该方法后，TiDB 可提供数据库源码级性能观测，通过火焰图的形式帮助研发、运维人员定位性能问题的根因。详情参见 [TiDB Dashboard 实例性能分析 - 持续分析页面](/dashboard/continuous-profiling.md)。
 
 ## D
 
+### 数据定义语言 (DDL)
+
+数据定义语言（Data Definition Language, DDL）是 SQL 标准的一部分，用于创建、修改和删除表及其他对象。更多信息，请参见 [DDL 语句的执行原理及最佳实践](/ddl-introduction.md)。
+
+### Data Migration (DM)
+
+Data Migration (DM) 是 TiDB 提供的一款数据迁移工具，用于将数据从 MySQL 兼容的数据库迁移到 TiDB。DM 会从 MySQL 兼容的数据库实例读取数据，然后将其应用到 TiDB 目标实例中。更多信息，请参见 [TiDB Data Migration 简介](/dm/dm-overview.md)。
+
+### 数据操作语言 (DML)
+
+数据操作语言（Data Modification Language, DML）是 SQL 标准的一部分，用于插入、更新和删除表中的行数据。
+
+### 开发里程碑版本 (DMR)
+
+TiDB 会在开发里程碑版本（Development Milestone Release, DMR）中引入新的功能，但 DMR 不提供长期支持。更多信息,请参见 [TiDB 版本规则](/releases/versioning.md)。
+
+### 容灾 (DR)
+
+容灾（Disaster Recovery, DR）是在未来灾难发生时恢复数据和服务的解决方案。TiDB 提供了多种容灾方案，例如备份和复制数据到备用集群。更多信息，请参见 [TiDB 容灾方案概述](/dr-solution-introduction.md)。
+
+### 分布式执行框架 (DXF)
+
+分布式执行框架（Distributed eXecution Framework, DXF）允许 TiDB 在执行特定任务（例如创建索引或导入数据）时统一调度集群中各 TiDB 节点的资源，并分布式执行这些任务。该框架可以帮助你高效利用集群资源执行任务，控制资源使用，以减少对核心业务事务的影响。更多信息，请参见 [TiDB 分布式执行框架](/tidb-distributed-execution-framework.md)。
+
 ### Dynamic Pruning
 
 动态裁剪 (Dynamic Pruning) 是 TiDB 访问分区表的两种模式之一。在动态裁剪模式下，TiDB 的每个算子都支持直接访问多个分区，省略 Union 操作，提高执行效率，还避免了 Union 并发管理的问题。
 
+## G
+
+### 垃圾回收 (GC)
+
+垃圾回收（Garbage Collection, GC）指清理不再需要的旧数据以释放资源的过程。关于 TiKV 垃圾回收过程的详情，请参见 [垃圾回收概述](/garbage-collection-overview.md)。
+
+### GA
+
+一个功能 GA (General Availability) 意味着该功能已进行充分测试并可在生产环境中使用。根据每个功能的开发情况不同，TiDB 中的新功能可能会在 [开发里程碑版本 (DMR)](#development-milestone-release-dmr) 中 GA，也可能会在 [长期支持版本 (LTS)](#long-term-support-lts) 中 GA 。由于 TiDB 不提供基于 DMR 的补丁版本，在生产环境中建议使用 LTS 版本。
+
+### 全局事务标识符 (GTID)
+
+全局事务标识符（Global Transaction Identifiers, GTIDs）是在 MySQL 二进制日志中跟踪已复制事务的唯一标识符。[Data Migration (DM)](/dm/dm-overview.md) 在迁移数据时会使用这些标识符确保复制的一致性。
+
+## H
+
+### 混合事务和分析处理 (HTAP)
+
+混合型在线事务与在线分析处理 （Hybrid Transactional and Analytical Processing, HTAP）功能支持在同一数据库中同时处理 OLTP（联机事务处理）和 OLAP（联机分析处理）工作负载。在 TiDB 中，HTAP 是通过使用 TiKV 进行行存以及使用进行 TiFlash 进行列存来实现的。更多信息，请参见 [Gartner 网站上的 HTAP 定义](https://www.gartner.com/en/information-technology/glossary/htap-enabling-memory-computing-technologies)。
+
 ## I
+
+### In-Memory Pessimistic Lock
+
+内存悲观锁 (In-Memory Pessimistic Lock) 是在 TiDB v6.0.0 中引入的新功能。开启内存悲观锁功能后，悲观锁通常只会被存储在 Region leader 的内存中，而不会将锁持久化到磁盘，也不会通过 Raft 协议将锁同步到其他副本，因此可以大大降低悲观事务加锁的开销，提升悲观事务的吞吐并降低延迟。
 
 ### Index Merge
 
 索引合并 (Index Merge) 是在 TiDB v4.0 版本中作为实验特性引入的一种查询执行方式的优化，可以大幅提高查询在扫描多列数据时条件过滤的效率。自 v5.4 版本起，Index Merge 成为正式功能，详情参见[用 EXPLAIN 查看索引合并的 SQL 执行计划](/explain-index-merge.md)。
 
-### In-Memory Pessimistic Lock
+## K
 
-内存悲观锁 (In-Memory Pessimistic Lock) 是在 TiDB v6.0.0 中引入的新功能。开启内存悲观锁功能后，悲观锁通常只会被存储在 Region leader 的内存中，而不会将锁持久化到磁盘，也不会通过 Raft 协议将锁同步到其他副本，因此可以大大降低悲观事务加锁的开销，提升悲观事务的吞吐并降低延迟。
+### 密钥管理服务 (KMS)
+
+密钥管理服务（Key Management Service, KMS）提供了一种存储和检索密钥的安全方式。常见的 KMS 包括 AWS KMS、Google Cloud KMS 和 HashiCorp Vault。TiDB 中的多个组件都支持使用 KMS 管理用于存储加密和相关服务的密钥。
+
+### 键值 (KV)
+
+键值（Key-Value, KV）是一种通过唯一键来关联值并存储信息的数据结构，它能够实现快速的数据检索。TiDB 通过 TiKV 将表和索引映射为键值对，从而实现数据库中的高效数据存储和访问。
 
 ## L
 
 ### Leader/Follower/Learner
 
 它们分别对应 [Peer](#regionpeerraft-group) 的三种角色。其中 Leader 负责响应客户端的读写请求；Follower 被动地从 Leader 同步数据，当 Leader 失效时会进行选举产生新的 Leader；Learner 是一种特殊的角色，它只参与同步 raft log 而不参与投票，在目前的实现中只短暂存在于添加副本的中间步骤。
+
+### 轻量级目录访问协议 (LDAP)
+
+轻量级目录访问协议（Lightweight Directory Access Protocol, LDAP）是一种标准化的目录信息访问方式，通常用于账户和用户数据的管理。通过 [LDAP 身份验证插件](/security-compatibility-with-mysql.md#authentication-plugin-status)，TiDB 支持 LDAP。
+
+### 长期支持 (LTS)
+
+长期支持（Long Term Support, LTS）指经过充分测试并在较长时间内维护的软件版本。更多信息请参见 [TiDB 版本规则](/releases/versioning.md)。
 
 ## M
 
