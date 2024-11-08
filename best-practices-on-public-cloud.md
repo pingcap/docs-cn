@@ -197,7 +197,7 @@ set global tidb_tso_client_batch_max_wait_time = 2; # 默认值为 0
 
 ```
 [coprocessor]
-  region-split-size = "300MB"
+  region-split-size = "288MiB"
 ```
 
 ### 调整后的效果
