@@ -54,15 +54,21 @@ pd-ctl -u <pd_addr> unsafe remove-failed-stores <store_id1,store_id2,...>
 
 可通过 `--timeout <seconds>` 指定可允许执行恢复的最长时间。若未指定，默认为 5 分钟。当超时后，恢复中断报错。
 
-若 PD 进行过灾难性恢复 [`pd-recover`](/pd-recover.md) 操作，丢失了无法恢复的 TiKV 节点的 store 信息，因此无法确定要传的 store ID 时，可指定 `--auto-detect` 参数允许传入一个空的 store ID 列表。在该模式下，所有未在 PD store 列表中的 store ID 均被认为无法恢复，进行移除。
+> **注意：**
+>
+> 手动输入失败节点时，请确保一次性输入 **所有** 失败的 TiKV 节点和 TiFlash 节点，如果有部分失败节点遗漏，恢复可能会被阻塞。如果在短时间内 (如一天时间内)，已经运行过一次 Online Unsafe Recovery ，请仍确保后续的执行仍然带有之前已经处理过的失败 TiKV 和 TiFlash 节点。
+
+若 PD 进行过灾难性恢复 [`pd-recover`](/pd-recover.md) 等类似操作，丢失了无法恢复的 TiKV 节点的 store 信息，因此无法确定要传的 store ID 时，可使用 `--auto-detect` 模式。在该模式下，PD 会将所有存在于未注册 stores （或曾经注册过，但已被强行删除） 上的副本进行移除。
+
+{{< copyable "shell-regular" >}}
+
+```bash
+pd-ctl -u <pd_addr> unsafe remove-failed-stores --auto-detect
+```
 
 > **注意：**
 >
-> 请确保一次性输入 **所有** 失败的 TiKV 节点和 TiFlash 节点，如果有部分失败节点遗漏，恢复可能会被阻塞。如果在短时间内 (如一天时间内)，已经运行过一次 Online Unsafe Recovery ，请仍确保后续的执行仍然带有之前已经处理过的失败 TiKV 和 TiFlash 节点。如果无法确定所有的失败节点，可以使用 --auto-detect 模式，由 PD 将所有不在当前 store 列表中的副本删除。
-
-> **注意：**
->
-> - 由于此命令需要收集来自所有 Peer 的信息，可能会造成 PD 短时间内有明显的内存使用量上涨（10 万个 Peer 预计使用约 500 MiB 内存）。
+> - Unsafe Recovery 需要收集来自所有 Peer 的信息，可能会造成 PD 短时间内有明显的内存使用量上涨（10 万个 Peer 预计使用约 500 MiB 内存）。
 > - 若执行过程中 PD 发生重启，则恢复中断，需重新触发命令。
 > - 一旦执行，所指定的节点将被设为 Tombstone 状态，不再允许启动。
 > - 执行过程中，所有调度以及 split/merge 都会被暂停，待恢复成功或失败后自动恢复。
