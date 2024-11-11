@@ -53,8 +53,8 @@ TiDB 版本：8.4.0
     <td>在进行集群升级、迁移或部署变更等重要操作之前，使用 TiProxy 捕获 TiDB 生产集群的真实负载，并在测试的目标集群中重现该工作负载，从而验证性能，确保变更成功。</td>
   </tr>
   <tr>
-    <td><a href="https://docs.pingcap.com/zh/tidb/v8.4/system-variables#tidb_auto_analyze_concurrency-从-v840-版本开始引入">自动统计信息任务支持并发</a></td>
-    <td>系统变量 <code>tidb_auto_analyze_concurrency</code> 控制单个自动统计信息收集任务内部的并发度，TiDB 会根据节点规模和硬件规格自动确定扫描任务的并发度。该功能通过充分利用系统资源，提高统计信息收集效率，从而减少手动调优，并确保集群性能稳定。</td>
+    <td><a href="https://docs.pingcap.com/zh/tidb/v8.4/system-variables#tidb_auto_analyze_concurrency-从-v840-版本开始引入">自动统计信息收集任务支持并发</a></td>
+    <td>使用系统变量 <code>tidb_auto_analyze_concurrency</code> 控制单个自动统计信息收集任务内部的并发度，TiDB 会根据节点规模和硬件规格自动确定扫描任务的并发度。该功能通过充分利用系统资源，提高统计信息收集效率，从而减少手动调优，并确保集群性能稳定。</td>
   </tr>
   <tr>
     <td rowspan="1">SQL</td>
