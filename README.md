@@ -15,6 +15,7 @@
 | 文档仓库 branch | 对应 TiDB 文档版本 |
 |:---------|:----------|
 | [`master`](https://github.com/pingcap/docs-cn/tree/master) | dev 最新开发版 |
+| [`release-8.4`](https://github.com/pingcap/docs-cn/tree/release-8.4) | 8.4 开发里程碑版 (DMR) |
 | [`release-8.3`](https://github.com/pingcap/docs-cn/tree/release-8.3) | 8.3 开发里程碑版 (DMR) |
 | [`release-8.2`](https://github.com/pingcap/docs-cn/tree/release-8.2) | 8.2 开发里程碑版 (DMR) |
 | [`release-8.1`](https://github.com/pingcap/docs-cn/tree/release-8.1) | 8.1 长期支持版 (LTS) |
