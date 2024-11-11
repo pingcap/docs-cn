@@ -4,7 +4,7 @@
 - [文档中心](https://docs.pingcap.com/zh)
 - 关于 TiDB
   - [TiDB 简介](/overview.md)
-  - [TiDB 8.3 Release Notes](/releases/release-8.3.0.md)
+  - [TiDB 8.4 Release Notes](/releases/release-8.4.0.md)
   - [功能概览](/basic-features.md)
   - [与 MySQL 的兼容性](/mysql-compatibility.md)
   - [使用限制](/tidb-limitations.md)
@@ -77,6 +77,24 @@
       - [Follower Read](/develop/dev-guide-use-follower-read.md)
       - [Stale Read](/develop/dev-guide-use-stale-read.md)
     - [HTAP 查询](/develop/dev-guide-hybrid-oltp-and-olap-queries.md)
+  - 向量搜索
+    - [概述](/vector-search-overview.md)
+    - 快速入门
+      - [使用 SQL 开始向量搜索](/vector-search-get-started-using-sql.md)
+      - [使用 Python 开始向量搜索](/vector-search-get-started-using-python.md)
+    - 集成
+      - [集成概览](/vector-search-integration-overview.md)
+      - AI 框架
+        - [LlamaIndex](/vector-search-integrate-with-llamaindex.md)
+        - [Langchain](/vector-search-integrate-with-langchain.md)
+      - 嵌入模型/服务
+        - [Jina AI](/vector-search-integrate-with-jinaai-embedding.md)
+      - ORM 库
+        - [SQLAlchemy](/vector-search-integrate-with-sqlalchemy.md)
+        - [peewee](/vector-search-integrate-with-peewee.md)
+        - [Django](/vector-search-integrate-with-django-orm.md)
+    - [优化搜索性能](/vector-search-improve-performance.md)
+    - [使用限制](/vector-search-limitations.md)
   - 事务
     - [概览](/develop/dev-guide-transaction-overview.md)
     - [乐观事务和悲观事务](/develop/dev-guide-optimistic-and-pessimistic-transaction.md)
@@ -664,6 +682,7 @@
     - [TiFlash 延迟物化](/tiflash/tiflash-late-materialization.md)
     - [TiFlash 数据落盘](/tiflash/tiflash-spill-disk.md)
     - [TiFlash 数据校验](/tiflash/tiflash-data-validation.md)
+    - [TiFlash MinTSO 调度器](/tiflash/tiflash-mintso-scheduler.md)
     - [TiFlash 兼容性说明](/tiflash/tiflash-compatibility.md)
     - [TiFlash Pipeline Model 执行模型](/tiflash/tiflash-pipeline-model.md)
   - TiDB 分布式执行框架
@@ -726,7 +745,6 @@
       - [`ADMIN RESUME DDL`](/sql-statements/sql-statement-admin-resume-ddl.md)
       - [`ADMIN [SET|SHOW|UNSET] BDR ROLE`](/sql-statements/sql-statement-admin-bdr-role.md)
       - [`ADMIN SHOW DDL [JOBS|JOB QUERIES]`](/sql-statements/sql-statement-admin-show-ddl.md)
-      - [`ADMIN SHOW TELEMETRY`](/sql-statements/sql-statement-admin-show-telemetry.md)
       - [`ALTER DATABASE`](/sql-statements/sql-statement-alter-database.md)
       - [`ALTER INSTANCE`](/sql-statements/sql-statement-alter-instance.md)
       - [`ALTER PLACEMENT POLICY`](/sql-statements/sql-statement-alter-placement-policy.md)
@@ -876,6 +894,7 @@
       - [日期和时间类型](/data-type-date-and-time.md)
       - [字符串类型](/data-type-string.md)
       - [JSON 类型](/data-type-json.md)
+      - [向量数据类型](/vector-search-data-types.md)
     - 函数与操作符
       - [函数与操作符概述](/functions-and-operators/functions-and-operators-overview.md)
       - [表达式求值的类型转换](/functions-and-operators/type-conversion-in-expression-evaluation.md)
@@ -889,6 +908,7 @@
       - [加密和压缩函数](/functions-and-operators/encryption-and-compression-functions.md)
       - [锁函数](/functions-and-operators/locking-functions.md)
       - [信息函数](/functions-and-operators/information-functions.md)
+      - [向量函数和操作符](/vector-search-functions-and-operators.md)
       - JSON 函数
         - [概览](/functions-and-operators/json-functions.md)
         - [创建 JSON 的函数](/functions-and-operators/json-functions/json-functions-create.md)
@@ -909,6 +929,7 @@
       - [TiDB 特有的函数](/functions-and-operators/tidb-functions.md)
       - [Oracle 与 TiDB 函数和语法差异对照](/oracle-functions-to-tidb.md)
     - [聚簇索引](/clustered-indexes.md)
+    - [向量索引](/vector-search-index.md)
     - [约束](/constraints.md)
     - [生成列](/generated-columns.md)
     - [SQL 模式](/sql-mode.md)
@@ -1056,6 +1077,8 @@
   - [版本发布时间线](/releases/release-timeline.md)
   - [TiDB 版本规则](/releases/versioning.md)
   - [TiDB 离线包](/binary-package.md)
+  - v8.4
+    - [8.4.0-DMR](/releases/release-8.4.0.md)
   - v8.3
     - [8.3.0-DMR](/releases/release-8.3.0.md)
   - v8.2
