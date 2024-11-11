@@ -4,7 +4,7 @@
 - [文档中心](https://docs.pingcap.com/zh)
 - 关于 TiDB
   - [TiDB 简介](/overview.md)
-  - [TiDB 8.3 Release Notes](/releases/release-8.3.0.md)
+  - [TiDB 8.4 Release Notes](/releases/release-8.4.0.md)
   - [功能概览](/basic-features.md)
   - [与 MySQL 的兼容性](/mysql-compatibility.md)
   - [使用限制](/tidb-limitations.md)
@@ -1077,6 +1077,8 @@
   - [版本发布时间线](/releases/release-timeline.md)
   - [TiDB 版本规则](/releases/versioning.md)
   - [TiDB 离线包](/binary-package.md)
+  - v8.4
+    - [8.4.0-DMR](/releases/release-8.4.0.md)
   - v8.3
     - [8.3.0-DMR](/releases/release-8.3.0.md)
   - v8.2
