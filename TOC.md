@@ -135,9 +135,8 @@
     - [TiSpark 部署拓扑](/tispark-deployment-topology.md)
     - [跨机房部署拓扑结构](/geo-distributed-deployment-topology.md)
     - [混合部署拓扑结构](/hybrid-deployment-topology.md)
-  - 安装与启动
-    - [使用 TiUP 部署](/production-deployment-using-tiup.md)
-    - [在 Kubernetes 上部署](/tidb-in-kubernetes.md)
+  - [使用 TiUP 部署](/production-deployment-using-tiup.md)
+  - [在 Kubernetes 上部署](/tidb-in-kubernetes.md)
   - [验证集群状态](/post-installation-check.md)
   - 测试集群性能
     - [用 Sysbench 测试 TiDB](/benchmark/benchmark-tidb-using-sysbench.md)
