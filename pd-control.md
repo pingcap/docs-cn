@@ -478,7 +478,7 @@ config show cluster-version
 config show service-middleware
 ```
 
-```
+```bash
 {
   "audit": {
     "enable-audit": "true"
@@ -512,7 +512,7 @@ config set service-middleware grpc-rate-limit GetRegion concurrency 10
 config show service-middleware
 ```
 
-```
+```bash
 {
   "audit": {
     "enable-audit": "true"
