@@ -1155,7 +1155,7 @@ ALTER TABLE members REMOVE PARTITIONING
 要对现有的非分区表进行分区或修改现有分区表的分区类型，你可以使用以下语句。该语句在执行时，将根据新的分区定义复制表中的所有行，并在线重新创建索引：
 
 ```sql
-ALTER TABLE <table_name> PARTITION BY <new partition type and definitions>
+ALTER TABLE <table_name> PARTITION BY <new partition type and definitions> [UPDATE INDEXES (<index name> {GLOBAL|LOCAL}[ , <index name> {GLOBAL|LOCAL}...])]
 ```
 
 示例：
@@ -1174,6 +1174,21 @@ ALTER TABLE member_level PARTITION BY RANGE(level)
  PARTITION pMid VALUES LESS THAN (3),
  PARTITION pHigh VALUES LESS THAN (7)
  PARTITION pMax VALUES LESS THAN (MAXVALUE));
+```
+
+对普通表进行分区或者对分区表进行重新分区时，可以根据需要将索引更新为全局索引或普通索引：
+
+```sql
+CREATE TABLE t1 (
+    col1 INT NOT NULL,
+    col2 DATE NOT NULL,
+    col3 INT NOT NULL,
+    col4 INT NOT NULL,
+    UNIQUE KEY uidx12(col1, col2),
+    UNIQUE KEY uidx3(col3)
+);
+
+ALTER TABLE t1 PARTITION BY HASH (col1) PARTITIONS 3 UPDATE INDEXES (uidx12 LOCAL, uidx3 GLOBAL);
 ```
 
 ## 分区裁剪
@@ -1676,7 +1691,7 @@ ERROR 8264 (HY000): Global Index is needed for index 'a', since the unique index
 
 为解决这些问题，TiDB 从 v8.3.0 开始引入全局索引。全局索引能覆盖整个表的数据，使得主键和唯一键在不包含分区键的情况下仍能保持全局唯一性。同时，全局索引可以在一次操作中访问多个分区的数据，显著提升了针对非分区键的查询性能。
 
-如果你需要创建的唯一索引**不包含分区表达式中使用的所有列**，可以通过在索引定义中添加 `GLOBAL` 关键字来实现。
+如果你需要创建全局索引可以通过在索引定义中添加 `GLOBAL` 关键字来实现。
 
 > **注意：**
 >
