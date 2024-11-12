@@ -36,4 +36,4 @@ summary: TiDB 对于 schema 信息采用基于 LRU 的缓存机制，在大量�
     - `SHOW FULL TABLES`
     - `FLASHBACK`
     - `ALTER TABLE ... SET TIFLASH MODE ...`
-- 一些使用 "AUTO_INCREMENT" 或 "AUTO_RANDOM" 的表，在使用 Schema 缓存时，如果缓存设置较小，这些表可能会频繁被缓存和淘汰（可通过监控面板中的 Schema 缓存命中率和大小来判断）。这种情况可能导致已分配的 ID 段未用完便失效，从而引发 ID 段跳变。在写入量较大的场景中，甚至可能导致 ID 段耗尽。因此，建议增大 Schema 缓存的大小，避免频繁淘汰；或者设置 AUTO_ID_CACHE=1，以防止 ID 跳变。同时，避免设置过小的 AUTO_RANDOM 范围，建议使用默认值。
+- 一些使用 "AUTO_INCREMENT" 或 "AUTO_RANDOM" 的表，在使用 Schema 缓存时，如果缓存设置较小，这些表可能会频繁被缓存和淘汰（可通过监控面板中的 Schema 缓存命中率和大小来判断）。这种情况可能导致已分配的 ID 段未用完便失效，从而引发 ID 段跳变。在写入量较大的场景中，甚至可能导致 ID 段耗尽。因此，建议增大 Schema 缓存的大小，避免频繁淘汰；或者设置 AUTO_ID_CACHE=1，以防止 ID 跳变。同时，建议合理设置 AUTO_RANDOM 分片位和保留位，避免可分配 ID 范围过小。
