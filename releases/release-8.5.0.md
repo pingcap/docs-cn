@@ -23,17 +23,19 @@ TiDB 8.5.0 为长期支持版本 (Long-Term Support Release, LTS)。
 
 ### 可扩展性
 
-* 功能标题 [#issue号](链接) @[贡献者 GitHub ID](链接) **tw@xxx** <!--1234-->
-
-    功能描述（需要包含这个功能是什么、在什么场景下对用户有什么价值、怎么用）
-
-    更多信息，请参考[用户文档](链接)。
-
 * Schema 缓存内存上限功能成为正式功能（GA），减少了大规模数据场景的内存占用 [#50959](https://github.com/pingcap/tidb/issues/50959) @[tiancaiamao](https://github.com/tiancaiamao) @[wjhuang2016](https://github.com/wjhuang2016) @[gmhdbjd](https://github.com/gmhdbjd) @[tangenta](https://github.com/tangenta) tw@hfxsd <!--1976-->
 
     在一些 SaaS 场景下，当表的数据量达到几十万甚至上百万时，schema meta 会占用较多的内存。开启该功能后，系统将使用 LRU 算法缓存和淘汰相应 schema meta 信息，有效减少内存占用。从 v8.4 开始，该功能默认开启，默认值为 512MiB，用户可通过参数 [tidb_schema_cache_size](/system-variables#tidb_schema_cache_size-new-in-v800)，按需调整。
 
     更多信息，请参考[用户文档](链接)。
+
+* Use the Active PD Follower feature to enhance the scalability of PD's Region information query service (General Availability) [#7431](https://github.com/tikv/pd/issues/7431) @[okJiang](https://github.com/okJiang)
+
+    In a TiDB cluster with a large number of Regions, the PD leader might experience high CPU load due to the increased overhead of handling heartbeats and scheduling tasks. If the cluster has many TiDB instances, and there is a high concurrency of requests for Region information, the CPU pressure on the PD leader increases further and might cause PD services to become unavailable.
+
+    To ensure high availability and also enhance the scalability of PD's Region information query service. You can enable the Active PD Follower feature by setting the system variable [`pd_enable_follower_handle_region`](/system-variables.md#pd_enable_follower_handle_region-new-in-v760) to `ON`. After this feature is enabled, TiDB evenly distributes Region information requests to all PD servers, and PD followers can also handle Region requests, thereby reducing the CPU pressure on the PD leader.
+
+    For more information, see [documentation](/tune-region-performance.md#use-the-active-pd-follower-feature-to-enhance-the-scalability-of-pds-region-information-query-service)
 
 ### 性能
 
@@ -51,11 +53,11 @@ TiDB 8.5.0 为长期支持版本 (Long-Term Support Release, LTS)。
 
 ### 稳定性
 
-* 功能标题 [#issue号](链接) @[贡献者 GitHub ID](链接) **tw@xxx** <!--1234-->
+* Enabling rate limiter can protect PD from being crash under a large number of sudden requests and improve the stability of PD [#5739](https://github.com/tikv/pd/issues/5739) @[rleungx](https://github.com/rleungx)
 
-    功能描述（需要包含这个功能是什么、在什么场景下对用户有什么价值、怎么用）
+    You can adjust the rate limiter configuration through pd-ctl.
 
-    更多信息，请参考[用户文档](链接)。
+    For more information, see [Documentation](/stable/pd-control.md).
 
 ### 高可用
 
@@ -141,7 +143,7 @@ TiDB 8.5.0 为长期支持版本 (Long-Term Support Release, LTS)。
 
 | 变量名  | 修改类型（包括新增/修改/删除）    | 描述 |
 |--------|------------------------------|------|
-|        |                              |      |
+|tidb_ddl_reorg_max_write_speed | Newly added |Used to control the speed at which TiDB writes index data to a single TiKV node. For example, setting the value to 200 MiB limits the maximum write speed to 200 MiB/s. |
 |        |                              |      |
 |        |                              |      |
 |        |                              |      |
