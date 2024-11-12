@@ -504,6 +504,36 @@ config set service-middleware grpc-rate-limit GetRegion qps 100
 config set service-middleware grpc-rate-limit GetRegion concurrency 10
 ```
 
+查看修改后的配置
+
+{{< copyable "" >}}
+
+```bash
+config show service-middleware
+```
+
+```
+{
+  "audit": {
+    "enable-audit": "true"
+  },
+  "rate-limit": {
+    "enable-rate-limit": "true",
+    "limiter-config": {}
+  },
+  "grpc-rate-limit": {
+    "enable-grpc-rate-limit": "true",
+    "grpc-limiter-config": {
+      "GetRegion": {
+        "QPS": 100,
+        "QPSBurst": 100,
+        "ConcurrencyLimit": 10
+      }
+    }
+  }
+}
+```
+
 重置上述设置
 ```bash
 config set service-middleware grpc-rate-limit GetRegion qps 0
