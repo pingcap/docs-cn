@@ -153,7 +153,7 @@ TiDB 会在开发里程碑版本（Development Milestone Release, DMR）中引�
 
 ## M
 
-### MPP
+### Massively Parallel Processing (MPP)
 
 从 v5.0 起，TiDB 通过 TiFlash 节点引入了 Massively Parallel Processing (MPP) 架构。这使得大型表连接类查询可以由不同 TiFlash 节点共同分担完成。当 MPP 模式开启后，TiDB 将会根据代价决定是否应该交由 MPP 框架进行计算。MPP 模式下，表连接将通过对 JOIN Key 进行数据计算时重分布（Exchange 操作）的方式把计算压力分摊到各个 TiFlash 执行节点，从而达到加速计算的目的。更多信息请参见[使用 MPP 模式](/tiflash/use-tiflash-mpp-mode.md)。
 
@@ -162,6 +162,18 @@ TiDB 会在开发里程碑版本（Development Milestone Release, DMR）中引�
 ### Old value
 
 Old value 特指在 TiCDC 输出的增量变更日志中的“原始值”。可以通过配置来指定 TiCDC 输出的增量变更日志是否包含“原始值”。
+
+### Online Analytical Processing (OLAP)
+
+在线分析处理（Online Analytical Processing, OLAP）指的是以分析任务为主的数据库工作负载，例如数据报告和复杂查询。OLAP 的特点是涉及大量行数据的读密集型查询。
+
+### Online Transaction Processing (OLTP)
+
+在线事务处理（Online Transaction Processing, OLTP）指的是以事务性任务为主的数据库工作负载，例如选择、插入、更新和删除少量记录。
+
+### Out of Memory (OOM)
+
+内存不足（Out of Memory, OOM）指的是系统由于内存不足而引起失败的情况。有关更多信息，请参见 [TiDB OOM 问题排查](/troubleshoot-tidb-oom.md)。
 
 ### Operator
 
@@ -192,15 +204,27 @@ Operator Step 是 Operator 执行过程的一个步骤，一个 Operator 常常�
 
 Pending 和 Down 是 Peer 可能出现的两种特殊状态。其中 Pending 表示 Follower 或 Learner 的 raft log 与 Leader 有较大差距，Pending 状态的 Follower 无法被选举成 Leader。Down 是指 Leader 长时间没有收到对应 Peer 的消息，通常意味着对应节点发生了宕机或者网络隔离。
 
+### Placement Driver（PD）
+
+PD 是 [TiDB 架构](/tidb-architecture.md#placement-driver-pd-server) 中的核心组件之一，负责存储元数据，为事务时间戳分配[时间戳服务（TSO）](/tso.md)，协调 TiKV 上的数据分布，并运行 [TiDB Dashboard](/dashboard/dashboard-overview.md)。更多信息，请参见 [TiDB 调度](/tidb-scheduling.md)。
+
 ### Point get
 
 点查 (point get) 是指通过主键或唯一索引直接读取一行的查询方式。点查的返回结果最多是一行数据。
+
+### Point in Time Recovery（PITR）
+
+PITR 用于将数据恢复到特定时间点（例如，在执行意外的 `DELETE` 语句之前的时间点）。更多信息，请参见 [TiDB 日志备份与 PITR 功能架构](/br/br-log-architecture.md)。
 
 ### Predicate columns
 
 执行 SQL 语句时，优化器在大多数情况下只会用到部分列（例如，`WHERE`、`JOIN`、`ORDER BY`、`GROUP BY` 子句中出现的列）的统计信息，这些用到的列称为 `PREDICATE COLUMNS`。详情参见[收集部分列的统计信息](/statistics.md#收集部分列的统计信息)。
 
 ## Q
+
+### Queries Per Second（QPS）
+
+QPS 指的是数据库服务每秒处理的查询数，是衡量数据库吞吐量的重要性能指标。
 
 ### Quota Limiter
 
@@ -212,15 +236,23 @@ Pending 和 Down 是 Peer 可能出现的两种特殊状态。其中 Pending 表
 
 一种内置的持久化存储引擎，有着日志结构的设计，为 TiKV 提供 multi-Raft 日志存储。从 v5.4 起，TiDB 支持使用 Raft Engine 作为 TiKV 的日志存储引擎。详情参见 [Raft Engine](/tikv-configuration-file.md#raft-engine)。
 
-### Region/Peer/Raft Group
-
-每个 Region 负责维护集群的一段连续数据（默认配置下平均约 256 MiB），每份数据会在不同的 Store 存储多个副本（默认配置是 3 副本），每个副本称为 Peer。同一个 Region 的多个 Peer 通过 raft 协议进行数据同步，所以 Peer 也用来指代 raft 实例中的成员。TiKV 使用 multi-raft 模式来管理数据，即每个 Region 都对应一个独立运行的 raft 实例，我们也把这样的一个 raft 实例叫做一个 Raft Group。
-
 ### Region Split
 
 TiKV 集群中的 Region 不是一开始就划分好的，而是随着数据写入逐渐分裂生成的，分裂的过程被称为 Region Split。
 
 其机制是集群初始化时构建一个初始 Region 覆盖整个 key space，随后在运行过程中每当 Region 数据达到一定量之后就通过 Split 产生新的 Region。
+
+### Region/Peer/Raft Group
+
+每个 Region 负责维护集群的一段连续数据（默认配置下平均约 256 MiB），每份数据会在不同的 Store 存储多个副本（默认配置是 3 副本），每个副本称为 Peer。同一个 Region 的多个 Peer 通过 raft 协议进行数据同步，所以 Peer 也用来指代 raft 实例中的成员。TiKV 使用 multi-raft 模式来管理数据，即每个 Region 都对应一个独立运行的 raft 实例，我们也把这样的一个 raft 实例叫做一个 Raft Group。
+
+### Remote Procedure Call（RPC）
+
+RPC（远程过程调用）是一种软件组件之间的通信方式。在 TiDB 集群中，不同组件（例如 TiDB、TiKV 和 TiFlash）之间使用 gRPC 标准进行通信。
+
+### Request Unit（RU）
+
+RU 是 TiDB 中用于表示资源使用的统一抽象单位，用于在[资源管控](/tidb-resource-control.md)中管理资源使用情况。
 
 ### Restore
 
@@ -237,16 +269,34 @@ Scheduler（调度器）是 PD 中生成调度的组件。PD 中每个调度器�
 - `hot-region-scheduler`：保持不同节点的读写热点 Region 均衡。
 - `evict-leader-{store-id}`：驱逐某个节点的所有 Leader。（常用于滚动升级）
 
+### Static Sorted Table / Sorted String Table (SST)
+
+SST 是 RocksDB 使用的文件存储格式。RocksDB 是 [TiKV](/storage-engine/rocksdb-overview.md) 的一种存储引擎。
+
 ### Store
 
 PD 中的 Store 指的是集群中的存储节点，也就是 tikv-server 实例。Store 与 TiKV 实例是严格一一对应的，即使在同一主机甚至同一块磁盘部署多个 TiKV 实例，这些实例也对会对应不同的 Store。
 
 ## T
 
+### Timestamp Oracle (TSO)
+
+因为 TiKV 是一个分布式的储存系统，它需要一个全球性的授时服务 TSO (Timestamp Oracle)，来分配一个单调递增的时间戳。这样的功能在 TiKV 中是由 PD 提供的，在 Google 的 [Spanner](http://static.googleusercontent.com/media/research.google.com/en//archive/spanner-osdi2012.pdf) 中是由多个原子钟和 GPS 来提供的。详见 [TSO 文档](/tso.md)。
+
 ### Top SQL
 
 Top SQL 用于找到一段时间内对某个 TiDB 或 TiKV 节点消耗负载较大的 SQL 查询。详见 [Top SQL 文档](/dashboard/top-sql.md)。
 
-### TSO
+### Transactions Per Second (TPS)
 
-因为 TiKV 是一个分布式的储存系统，它需要一个全球性的授时服务 TSO (Timestamp Oracle)，来分配一个单调递增的时间戳。这样的功能在 TiKV 中是由 PD 提供的，在 Google 的 [Spanner](http://static.googleusercontent.com/media/research.google.com/en//archive/spanner-osdi2012.pdf) 中是由多个原子钟和 GPS 来提供的。详见 [TSO 文档](/tso.md)。
+每秒事务数（Transactions Per Second, TPS）指的是数据库每秒处理的事务数量。它是衡量数据库性能和吞吐量的关键指标。
+
+## U
+
+### Uniform Resource Identifier (URI)
+
+统一资源标识符（Uniform Resource Identifier, URI）是一种用于标识资源的标准化格式。更多信息，请参见维基百科的[统一资源标识符](https://en.wikipedia.org/wiki/Uniform_Resource_Identifier)页面。
+
+### Universally Unique Identifier (UUID)
+
+通用唯一标识符（Universally Unique Identifier, UUID）是一种 128 位（16 字节）生成的 ID，用于唯一标识数据库中的记录。更多信息，请参见 [UUID](/best-practices/uuid.md)。
