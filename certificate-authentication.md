@@ -351,7 +351,7 @@ mysql -utest -h0.0.0.0 -P4000 --ssl-cert /path/to/client-cert.new.pem --ssl-key 
 
 ```
 --------------
-mysql  Ver 8.3.0 for Linux on x86_64 (MySQL Community Server - GPL)
+mysql  Ver 8.4.0 for Linux on x86_64 (MySQL Community Server - GPL)
 
 Connection id:       1
 Current database:    test
