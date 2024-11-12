@@ -7,14 +7,12 @@ summary: 了解 information_schema 表 `DATA_LOCK_WAITS`。
 
 `DATA_LOCK_WAITS` 表展示了集群中所有 TiKV 节点上当前正在发生的等锁情况，包括悲观锁的等锁情况和乐观事务被阻塞的信息。
 
-{{< copyable "sql" >}}
-
 ```sql
 USE information_schema;
 DESC data_lock_waits;
 ```
 
-```sql
+```
 +------------------------+---------------------+------+------+---------+-------+
 | Field                  | Type                | Null | Key  | Default | Extra |
 +------------------------+---------------------+------+------+---------+-------+
@@ -39,7 +37,7 @@ DESC data_lock_waits;
 > **警告：**
 >
 > * 仅拥有 [PROCESS](https://dev.mysql.com/doc/refman/8.0/en/privileges-provided.html#priv_process) 权限的用户可以查询该表。
-> * 由于实现限制，目前对于乐观事务被阻塞情况的 `SQL_DIGEST` 和 `SQL_DIGEST_TEXT` 字段为 `null`。如果需要知道导致阻塞的 SQL 语句，可以将此表与 [`CLUSTER_TIDB_TRX`](/information-schema/information-schema-tidb-trx.md) 进行 `JOIN` 来获得对应事务的所有 SQL 语句。 
+> * 由于实现限制，目前对于乐观事务被阻塞情况的 `SQL_DIGEST` 和 `SQL_DIGEST_TEXT` 字段为 `null`。如果需要知道导致阻塞的 SQL 语句，可以将此表与 [`CLUSTER_TIDB_TRX`](/information-schema/information-schema-tidb-trx.md) 进行 `JOIN` 来获得对应事务的所有 SQL 语句。
 > * `DATA_LOCK_WAITS` 表中的信息是在查询时，从所有 TiKV 节点实时获取的。目前，即使加上了 `WHERE` 查询条件，也无法避免对所有 TiKV 节点都进行信息收集。如果集群规模很大、负载很高，查询该表有造成性能抖动的潜在风险，因此请根据实际情况使用。
 > * 来自不同 TiKV 节点的信息不能保证是同一时间点的快照。
 > * `SQL_DIGEST` 列中的信息（SQL Digest）为 SQL 语句进行归一化后计算得到的哈希值。`SQL_DIGEST_TEXT` 列中的信息为内部从 Statements Summary 系列表中查询得到，因而存在内部查询不到对应语句的可能性。关于 SQL Digest 和 Statements Summary 相关表的详细说明，请参阅[Statement Summary Tables](/statement-summary-tables.md)。
@@ -71,13 +69,11 @@ DESC data_lock_waits;
 
 ## 示例
 
-{{< copyable "sql" >}}
-
 ```sql
 select * from information_schema.data_lock_waits\G
 ```
 
-```sql
+```
 *************************** 1. row ***************************
                    KEY: 7480000000000000355F728000000000000001
               KEY_INFO: {"db_id":1,"db_name":"test","table_id":53,"table_name":"t","handle_type":"int","handle_value":"1"}
@@ -89,3 +85,7 @@ CURRENT_HOLDING_TRX_ID: 426790590082449409
 ```
 
 以上查询结果显示，ID 为 `426790594290122753` 的事务在执行 Digest 为 `"38b03afa5debbdf0326a014dbe5012a62c51957f1982b3093e748460f8b00821"`、形如 ``update `t` set `v` = `v` + ? where `id` = ?`` 的语句的过程中，试图在 `"7480000000000000355F728000000000000001"` 这个 key 上获取悲观锁，但是该 key 上的锁目前被 ID 为 `426790590082449409` 的事务持有。
+
+## 另请参阅
+
+- [TiDB 锁冲突问题处理](/troubleshoot-lock-conflicts.md)
