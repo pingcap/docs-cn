@@ -7,10 +7,31 @@ summary: 了解 TiCDC 兼容性相关限制和问题处理。
 
 本文介绍了与 TiCDC 有关的一系列兼容性问题及其处理方案。
 
-<!--
-## 组件兼容性矩阵
+## TiCDC 和其他 TiDB 组件的兼容性
 
-TODO
+### TiCDC 和 Lightning 的兼容性
+
+Lightning 支持逻辑模式和物理模式两种模式。
+
+逻辑模式以向 TiDB 执行 SQL 语句的方式导入数据。这部分数据可以正常被 TiCDC 同步。操作步骤如下：
+
+1. 创建 changefeed
+2. 启动 Lightning，以逻辑模式模式导入数据
+
+物理模式以向 TiKV 插入 SST 文件的方式导入数据。当前阶段，TiCDC 和 Lightning 并不能完全兼容，因为物理模式导入的数据不会生成 raft log，TiCDC 仅能通过增量扫的方式获取到这部分数据。
+
+如果下游集群是 TiDB，操作步骤如下：
+
+1. 分别向上下游 TiDB 集群导入数据，保证上下游集群的数据一致性
+2. 创建 changefeed，同步上游集群正常写入的数据到下游
+
+如果下游是其他类型数据系统，操作步骤如下：
+
+1. 创建 changefeed，暂停该 changefeed
+2. 向上游 TiDB 集群导入数据
+3. 恢复 changefeed。
+
+步骤 3 执行之后，因为 changefeed 的 checkpoint-ts 是小于由 Lightning 物理模式导入的数据的 commit-ts，因此可以通过增量扫的方式扫描到这部分的数据变化，然后就可以同步到下游集群。
 
 ## 特性兼容性矩阵
 
