@@ -53,6 +53,99 @@ cdc cli changefeed list --server=http://127.0.0.1:8300
 >
 > 该功能在 TiCDC 4.0.3 版本引入。
 
+## 上游停止更新后，如何判断 TiCDC 是否已将所有更新同步到下游？
+
+可以通过对比时间戳的方式查看。
+
+1. 在上游 TiDB 停止所有更新后，获取上游 TiDB 集群的最新 TSO 对应的时间。
+
+> 注意：
+>
+> 不要直接使用 `NOW()` 等查看时间的方式，要用 TSO，这里是为了方便后面的时间对比所以将 TSO 转成时间格式。
+
+```sql
+BEGIN; SELECT TIDB_PARSE_TSO(TIDB_CURRENT_TSO()); ROLLBACK;
+```
+
+```sql
++------------------------------------+
+| TIDB_PARSE_TSO(TIDB_CURRENT_TSO()) |
++------------------------------------+
+| 2024-11-12 20:35:34.848000         |
++------------------------------------+
+```
+
+2. 获取 TiCDC 当前的同步进度，如果进度大于等于刚刚获得的上游 TSO，就表示已经同步了所有更新。获取当前同步进度有两种方式：
+
+    * **方法一**：通过 `cdc` 查看所有同步任务的 Checkpoint。
+
+      ```shell
+      cdc cli changefeed list --server=http://127.0.0.1:8300
+      ```
+
+        在输出中可以看到所有同步任务的 `checkpoint` 字段：
+
+      ```json
+      [
+        {
+          "id": "syncpoint",
+          "namespace": "default",
+          "summary": {
+            "state": "normal",
+            "tso": 453880043653562372,
+            "checkpoint": "2024-11-12 20:36:01.447",
+            "error": null
+          }
+        }
+      ]
+      ```
+
+      `"checkpoint": "2024-11-12 20:36:01.447"` 表示 TiCDC 当前的同步进度已达到 `2024-11-12 20:36:01.447`，上游 TiDB 集群在这个时间之前的所有变更已同步完。所以当 checkpoint 大于等于刚刚获取的上游 TiDB 的 TSO 时间就说明所有更新已同步到下游。
+
+    * **方法二**：若下游为 TiDB，且开启了 TiCDC Syncpoint 功能，那么可以通过查看 Syncpoint 信息来获取当前同步进度。
+
+      在下游 TiDB 中执行下面的 SQL 语句：
+
+      ```sql
+      select * from tidb_cdc.syncpoint_v1;
+      ```
+
+      从结果中可以看到上游 TSO (primary_ts) 信息：
+
+      ```sql
+      +------------------+------------+--------------------+--------------------+---------------------+
+      | ticdc_cluster_id | changefeed | primary_ts         | secondary_ts       | created_at          |
+      +------------------+------------+--------------------+--------------------+---------------------+
+      | default          | syncpoint  | 453879870259200000 | 453879870545461257 | 2024-11-12 20:25:01 |
+      | default          | syncpoint  | 453879948902400000 | 453879949214351361 | 2024-11-12 20:30:01 |
+      | default          | syncpoint  | 453880027545600000 | 453880027751907329 | 2024-11-12 20:35:00 |
+      +------------------+------------+--------------------+--------------------+---------------------+
+      ```
+
+      表格中 primary_ts 和 secondary_ts 表示的是上游 TiDB 在 primary_ts 时刻的 snapshot 与下游 TiDB 在 secondary_ts 时刻的 snapshot 是相同的。
+
+      将最新的那条 primary_ts 转换成人类易读的时间格式：
+
+      ```sql
+      select TIDB_PARSE_TSO(453880027545600000);
+      ```
+
+      即可得到 primary_ts 对应的时间格式：
+
+      ```sql
+      +------------------------------------+
+      | TIDB_PARSE_TSO(453880027545600000) |
+      +------------------------------------+
+      | 2024-11-12 20:35:00                |
+      +------------------------------------+
+      ```
+
+      当 primary_ts 所对应的时间超过了步骤 1 中刚获取的上游 TiDB 集群的 TSO 时，则说明 TiCDC 已同步完所有更新。
+
+      > 注意：
+      >
+      > Syncpoint 信息每隔 [`sync-point-interval`](/ticdc/ticdc-upstream-downstream-check.md#启用-syncpoint) 时间才更新一次，想要及时查看当前同步进度建议通过方法一的 Checkpoint 信息来判断。
+
 ## TiCDC 的 `gc-ttl` 是什么？
 
 从 TiDB v4.0.0-rc.1 版本起，PD 支持外部服务设置服务级别 GC safepoint。任何一个服务可以注册更新自己服务的 GC safepoint。PD 会保证任何晚于该 GC safepoint 的 KV 数据不会在 TiKV 中被 GC 清理掉。
