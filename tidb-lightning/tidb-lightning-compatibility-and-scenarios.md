@@ -19,7 +19,7 @@ summary: 了解 IMPORT INTO 和 TiDB Lightning 与日志备份和 TiCDC 的兼�
 
 - `IMPORT INTO` 与日志备份以及 TiCDC 均不兼容。原因是 `IMPORT INTO` 的导入过程也是将源数据编码后的 KV Pairs 直接 Ingest 到 TiKV。
 
-Lightning 和 TiCDC 共同工作时的操作步骤，参考 [TiCDC 和 Lightning 的兼容性](/ticdc/ticdc-compatibility.md#ticdc-和-lightning-的兼容性)
+- 如果你需要在同一个集群上同时使用 TiDB Lightning 和 TiCDC，请参考 [TiCDC 与 TiDB Lightning 的兼容性](/ticdc/ticdc-compatibility.md#ticdc-与-tidb-lightning-的兼容性)。
 
 ## TiDB Lightning 逻辑导入模式的使用场景
 
