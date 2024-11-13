@@ -33,10 +33,6 @@ ACID 是指数据库管理系统在写入或更新资料的过程中，为保证
 
 `br` 指代进行 TiDB 备份或恢复时使用的 [br 命令行工具](/br/use-br-command-line-tool.md)。
 
-### Batch Create Table
-
-批量建表 (Batch Create Table) 是在 TiDB v6.0.0 中引入的新功能，此功能默认开启。当需要恢复的数据中带有大量的表（约 50000 张）时，批量建表功能显著提升数据恢复的速度。详情参见[批量建表](/br/br-batch-create-table.md)。
-
 ### Baseline Capturing
 
 自动捕获绑定 (Baseline Capturing) 会对符合捕获条件的查询进行捕获，为符合条件的查询生成相应的绑定。通常用于升级时的[计划回退防护](/sql-plan-management.md#升级时的计划回退防护)。
@@ -69,7 +65,7 @@ Coalesce Partition 是一种减少 Hash 分区表或 Key 分区表中分区数�
 
 ## D
 
-### 数据定义语言 (DDL)
+### Data Definition Language (DDL)
 
 数据定义语言（Data Definition Language, DDL）是 SQL 标准的一部分，用于创建、修改和删除表及其他对象。更多信息，请参见 [DDL 语句的执行原理及最佳实践](/ddl-introduction.md)。
 
@@ -77,13 +73,13 @@ Coalesce Partition 是一种减少 Hash 分区表或 Key 分区表中分区数�
 
 Data Migration (DM) 是 TiDB 提供的一款数据迁移工具，用于将数据从 MySQL 兼容的数据库迁移到 TiDB。DM 会从 MySQL 兼容的数据库实例读取数据，然后将其应用到 TiDB 目标实例中。更多信息，请参见 [TiDB Data Migration 简介](/dm/dm-overview.md)。
 
-### 数据操作语言 (DML)
+### Data Modification Language (DML)
 
 数据操作语言（Data Modification Language, DML）是 SQL 标准的一部分，用于插入、更新和删除表中的行数据。
 
 ### 开发里程碑版本 (DMR)
 
-TiDB 会在开发里程碑版本（Development Milestone Release, DMR）中引入新的功能，但 DMR 不提供长期支持。更多信息,请参见 [TiDB 版本规则](/releases/versioning.md)。
+TiDB 会在开发里程碑版本（Development Milestone Release, DMR）中引入新的功能，但 DMR 不提供长期支持。更多信息，请参见 [TiDB 版本规则](/releases/versioning.md)。
 
 ### 容灾 (DR)
 
@@ -91,7 +87,7 @@ TiDB 会在开发里程碑版本（Development Milestone Release, DMR）中引�
 
 ### 分布式执行框架 (DXF)
 
-分布式执行框架（Distributed eXecution Framework, DXF）允许 TiDB 在执行特定任务（例如创建索引或导入数据）时统一调度集群中各 TiDB 节点的资源，并分布式执行这些任务。该框架可以帮助你高效利用集群资源执行任务，控制资源使用，以减少对核心业务事务的影响。更多信息，请参见 [TiDB 分布式执行框架](/tidb-distributed-execution-framework.md)。
+分布式执行框架（Distributed eXecution Framework, DXF）允许 TiDB 在处理特定任务（例如创建索引或导入数据）时对这些任务进行统一调度和分布式执行。该框架旨在高效利用集群资源执行任务，控制资源使用，以减少对核心业务事务的影响。更多信息，请参见 [TiDB 分布式执行框架](/tidb-distributed-execution-framework.md)。
 
 ### Dynamic Pruning
 
@@ -99,21 +95,21 @@ TiDB 会在开发里程碑版本（Development Milestone Release, DMR）中引�
 
 ## G
 
-### 垃圾回收 (GC)
+### Garbage Collection (GC)
 
 垃圾回收（Garbage Collection, GC）指清理不再需要的旧数据以释放资源的过程。关于 TiKV 垃圾回收过程的详情，请参见 [垃圾回收概述](/garbage-collection-overview.md)。
 
-### GA
+### General Availability (GA)
 
 一个功能 GA (General Availability) 意味着该功能已进行充分测试并可在生产环境中使用。根据每个功能的开发情况不同，TiDB 中的新功能可能会在 [开发里程碑版本 (DMR)](#development-milestone-release-dmr) 中 GA，也可能会在 [长期支持版本 (LTS)](#long-term-support-lts) 中 GA 。由于 TiDB 不提供基于 DMR 的补丁版本，在生产环境中建议使用 LTS 版本。
 
-### 全局事务标识符 (GTID)
+### Global Transaction Identifiers (GTIDs)
 
 全局事务标识符（Global Transaction Identifiers, GTIDs）是在 MySQL 二进制日志中跟踪已复制事务的唯一标识符。[Data Migration (DM)](/dm/dm-overview.md) 在迁移数据时会使用这些标识符确保复制的一致性。
 
 ## H
 
-### 混合事务和分析处理 (HTAP)
+### Hybrid Transactional and Analytical Processing (HTAP)
 
 混合型在线事务与在线分析处理 （Hybrid Transactional and Analytical Processing, HTAP）功能支持在同一数据库中同时处理 OLTP（联机事务处理）和 OLAP（联机分析处理）工作负载。在 TiDB 中，HTAP 是通过使用 TiKV 进行行存以及使用进行 TiFlash 进行列存来实现的。更多信息，请参见 [Gartner 网站上的 HTAP 定义](https://www.gartner.com/en/information-technology/glossary/htap-enabling-memory-computing-technologies)。
 
@@ -129,11 +125,11 @@ TiDB 会在开发里程碑版本（Development Milestone Release, DMR）中引�
 
 ## K
 
-### 密钥管理服务 (KMS)
+### Key Management Service (KMS)
 
-密钥管理服务（Key Management Service, KMS）提供了一种存储和检索密钥的安全方式。常见的 KMS 包括 AWS KMS、Google Cloud KMS 和 HashiCorp Vault。TiDB 中的多个组件都支持使用 KMS 管理用于存储加密和相关服务的密钥。
+密钥管理服务（Key Management Service, KMS）提供了一种存储和检索密钥的安全方式。常见的 KMS 包括 AWS KMS、Google Cloud KMS 和 HashiCorp Vault。TiDB 中的多个组件都支持通过 KMS 管理用于存储加密和相关服务的密钥。
 
-### 键值 (KV)
+### Key-Value (KV)
 
 键值（Key-Value, KV）是一种通过唯一键来关联值并存储信息的数据结构，它能够实现快速的数据检索。TiDB 通过 TiKV 将表和索引映射为键值对，从而实现数据库中的高效数据存储和访问。
 
@@ -143,13 +139,13 @@ TiDB 会在开发里程碑版本（Development Milestone Release, DMR）中引�
 
 它们分别对应 [Peer](#regionpeerraft-group) 的三种角色。其中 Leader 负责响应客户端的读写请求；Follower 被动地从 Leader 同步数据，当 Leader 失效时会进行选举产生新的 Leader；Learner 是一种特殊的角色，它只参与同步 raft log 而不参与投票，在目前的实现中只短暂存在于添加副本的中间步骤。
 
-### 轻量级目录访问协议 (LDAP)
+### Lightweight Directory Access Protocol (LDAP)
 
-轻量级目录访问协议（Lightweight Directory Access Protocol, LDAP）是一种标准化的目录信息访问方式，通常用于账户和用户数据的管理。通过 [LDAP 身份验证插件](/security-compatibility-with-mysql.md#authentication-plugin-status)，TiDB 支持 LDAP。
+轻量级目录访问协议（Lightweight Directory Access Protocol, LDAP）是一种标准化的目录信息访问方式，通常用于账户和用户数据的管理。TiDB 对 LDAP 的支持是通过 [LDAP 身份验证插件](/security-compatibility-with-mysql.md#authentication-plugin-status)实现的。
 
-### 长期支持 (LTS)
+### Long Term Support (LTS)
 
-长期支持（Long Term Support, LTS）指经过充分测试并在较长时间内维护的软件版本。更多信息请参见 [TiDB 版本规则](/releases/versioning.md)。
+长期支持（Long Term Support, LTS）版本指经过充分测试并在较长时间内维护的软件版本。更多信息，请参见 [TiDB 版本规则](/releases/versioning.md)。
 
 ## M
 
@@ -169,11 +165,11 @@ Old value 特指在 TiCDC 输出的增量变更日志中的“原始值”。可
 
 ### Online Transaction Processing (OLTP)
 
-在线事务处理（Online Transaction Processing, OLTP）指的是以事务性任务为主的数据库工作负载，例如选择、插入、更新和删除少量记录。
+在线事务处理（Online Transaction Processing, OLTP）指的是以事务性任务为主的数据库工作负载，例如读取、插入、更新和删除少量记录。
 
 ### Out of Memory (OOM)
 
-内存不足（Out of Memory, OOM）指的是系统由于内存不足而引起失败的情况。有关更多信息，请参见 [TiDB OOM 问题排查](/troubleshoot-tidb-oom.md)。
+内存不足（Out of Memory, OOM）指的是系统由于内存不足而引起失败的情况。更多信息，请参见 [TiDB OOM 故障排查](/troubleshoot-tidb-oom.md)。
 
 ### Operator
 
@@ -214,7 +210,7 @@ PD 是 [TiDB 架构](/tidb-architecture.md#placement-driver-pd-server) 中的核
 
 ### Point in Time Recovery（PITR）
 
-PITR 用于将数据恢复到特定时间点（例如，在执行意外的 `DELETE` 语句之前的时间点）。更多信息，请参见 [TiDB 日志备份与 PITR 功能架构](/br/br-log-architecture.md)。
+PITR 用于将数据恢复到特定时间点（例如，在意外执行了 `DELETE` 语句之前的时间点）。更多信息，请参见 [TiDB 日志备份与 PITR 功能架构](/br/br-log-architecture.md)。
 
 ### Predicate columns
 
@@ -224,7 +220,7 @@ PITR 用于将数据恢复到特定时间点（例如，在执行意外的 `DELE
 
 ### Queries Per Second（QPS）
 
-QPS 指的是数据库服务每秒处理的查询数，是衡量数据库吞吐量的重要性能指标。
+每秒查询数(Queries Per Second, QPS) 指的是数据库服务每秒处理的查询数量。它是衡量数据库吞吐量的重要性能指标。
 
 ### Quota Limiter
 
@@ -248,11 +244,11 @@ TiKV 集群中的 Region 不是一开始就划分好的，而是随着数据写�
 
 ### Remote Procedure Call（RPC）
 
-RPC（远程过程调用）是一种软件组件之间的通信方式。在 TiDB 集群中，不同组件（例如 TiDB、TiKV 和 TiFlash）之间使用 gRPC 标准进行通信。
+RPC（远程过程调用）是软件组件之间的一种通信方式。在 TiDB 集群中，不同组件（例如 TiDB、TiKV 和 TiFlash）之间使用 gRPC 标准进行通信。
 
 ### Request Unit（RU）
 
-RU 是 TiDB 中用于表示资源使用的统一抽象单位，用于在[资源管控](/tidb-resource-control.md)中管理资源使用情况。
+RU 是 TiDB 中资源使用的统一抽象单位，用于在[资源管控](/tidb-resource-control.md)功能中衡量资源的使用情况。
 
 ### Restore
 
@@ -295,8 +291,8 @@ Top SQL 用于找到一段时间内对某个 TiDB 或 TiKV 节点消耗负载较
 
 ### Uniform Resource Identifier (URI)
 
-统一资源标识符（Uniform Resource Identifier, URI）是一种用于标识资源的标准化格式。更多信息，请参见维基百科的[统一资源标识符](https://en.wikipedia.org/wiki/Uniform_Resource_Identifier)页面。
+统一资源标识符（Uniform Resource Identifier, URI）是用于标识资源的一种标准化格式。更多信息，请参见维基百科的[统一资源标识符](https://zh.wikipedia.org/wiki/统一资源标识符)页面。
 
 ### Universally Unique Identifier (UUID)
 
-通用唯一标识符（Universally Unique Identifier, UUID）是一种 128 位（16 字节）生成的 ID，用于唯一标识数据库中的记录。更多信息，请参见 [UUID](/best-practices/uuid.md)。
+通用唯一标识符（Universally Unique Identifier, UUID）是一种 128 位（16 字节）的生成 ID，用于在数据库中唯一地标识记录。更多信息，请参见 [UUID](/best-practices/uuid.md)。
