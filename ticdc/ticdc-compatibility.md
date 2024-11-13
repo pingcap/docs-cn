@@ -7,7 +7,7 @@ summary: 了解 TiCDC 兼容性相关限制和问题处理。
 
 本文介绍了与 TiCDC 有关的一系列兼容性问题及其处理方案。
 
-## TiCDC 和 TiDB Lightning 的兼容性
+## TiCDC 与 TiDB Lightning 的兼容性
 
 [TiDB Lightning](/tidb-lightning/tidb-lightning-overview.md) 支持[逻辑导入模式](/tidb-lightning/tidb-lightning-logical-import-mode.md)和[物理导入模式](/tidb-lightning/tidb-lightning-physical-import-mode.md)两种数据导入模式。本章节介绍这两种模式与 TiCDC 的兼容性，以及同时使用 TiDB Lightning 和 TiCDC 时的操作步骤。
 
