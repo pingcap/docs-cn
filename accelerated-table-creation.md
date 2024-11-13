@@ -24,7 +24,7 @@ TiDB 加速建表目前仅适用于 [`CREATE TABLE`](/sql-statements/sql-stateme
 
 你可以通过设置系统变量 [`tidb_enable_fast_create_table`](/system-variables.md#tidb_enable_fast_create_table-从-v800-版本开始引入) 的值来开启或关闭加速建表的功能。
 
-从 TiDB v8.5.0 版本开始，新建集群 `tidb_enable_fast_create_table` 默认开启，如果是从老版本升级上来，`tidb_enable_fast_create_table` 维持原值。
+从 TiDB v8.5.0 开始，新创建的集群默认开启 TiDB 加速建表功能，即 `tidb_enable_fast_create_table` 默认值为 `ON`。如果从 v8.4.0 及之前版本的集群升级至 v8.5.0 及之后的版本，`tidb_enable_fast_create_table` 的默认值不发生变化。
 
 要开启该功能，将该变量的值设置为 `ON`：
 
