@@ -1516,6 +1516,16 @@ mysql> SELECT job_info FROM mysql.analyze_jobs ORDER BY end_time DESC LIMIT 1;
 - 可选值：`PRIORITY_LOW`、`PRIORITY_NORMAL`、`PRIORITY_HIGH`
 - 这个变量用来设置 `ADD INDEX` 操作 `re-organize` 阶段的执行优先级，可设置为 `PRIORITY_LOW`/`PRIORITY_NORMAL`/`PRIORITY_HIGH`。
 
+### `tidb_ddl_reorg_max_write_speed` <span class="version-mark">从 v8.5.0 版本开始引入</span>
+
+- 作用域：GLOBAL
+- 是否持久化到集群：是
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：否
+- 类型：整数型
+- 默认值：`0`
+- 范围：`[0, 1125899906842624]`（1 PiB）
+- 添加索引加速功能开启（由变量 `tidb_ddl_enable_fast_reorg` 控制）时，这个变量用于限制向每个 TiKV 节点写入的带宽大小，单位为字节。 默认值 `0` 表示不限制写入带宽。可以通过 `'1GiB'`、`256MiB` 等方式设置该变量。
+
 ### `tidb_ddl_reorg_worker_cnt`
 
 - 作用域：SESSION | GLOBAL
