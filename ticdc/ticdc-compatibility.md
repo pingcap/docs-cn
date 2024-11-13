@@ -7,15 +7,26 @@ summary: 了解 TiCDC 兼容性相关限制和问题处理。
 
 本文介绍了与 TiCDC 有关的一系列兼容性问题及其处理方案。
 
-<!--
-## 组件兼容性矩阵
+## TiCDC 与 TiDB Lightning 的兼容性
 
-TODO
+[TiDB Lightning](/tidb-lightning/tidb-lightning-overview.md) 支持[逻辑导入模式](/tidb-lightning/tidb-lightning-logical-import-mode.md)和[物理导入模式](/tidb-lightning/tidb-lightning-physical-import-mode.md)两种数据导入模式。本章节介绍这两种模式与 TiCDC 的兼容性，以及同时使用 TiDB Lightning 和 TiCDC 时的操作步骤。
 
-## 特性兼容性矩阵
+在逻辑导入模式下，TiDB Lightning 通过执行 SQL 语句导入数据。此模式与 TiCDC 兼容。你可以按照以下步骤同时使用 TiDB Lightning 逻辑导入模式和 TiCDC 进行数据同步：
 
-TODO
--->
+1. 创建 changefeed，详情参考[创建同步任务](/ticdc/ticdc-manage-changefeed.md#创建同步任务)。
+2. 启动 TiDB Lightning 并使用逻辑模式模式导入数据，详情参考[使用逻辑导入模式](/tidb-lightning/tidb-lightning-logical-import-mode-usage.md)。
+
+在物理导入模式下，TiDB Lightning 通过向 TiKV 插入 SST 文件的方式导入数据。TiCDC 与此模式不兼容，不支持同步通过物理模式导入的数据。如果你需要同时使用 TiDB Lightning 物理导入模式和 TiCDC，可以根据 TiCDC 下游系统的类型选择以下解决方案：
+
+- 下游系统是 TiDB 集群：
+
+    1. 使用 TiDB Lightning 分别向上下游 TiDB 集群导入数据，以确保两个集群的数据一致性。
+    2. 创建 changefeed，用于同步后续通过 SQL 写入的增量数据。详情参考[创建同步任务](/ticdc/ticdc-manage-changefeed.md#创建同步任务)。
+
+- 下游系统不是 TiDB 集群：
+
+    1. 使用下游系统提供的离线导入工具，将 TiDB Lightning 的输入文件导入到下游系统。
+    2. 创建 changefeed，用于同步后续通过 SQL 写入的增量数据。详情参考[创建同步任务](/ticdc/ticdc-manage-changefeed.md#创建同步任务)。
 
 ## 命令行参数和配置文件兼容性
 
