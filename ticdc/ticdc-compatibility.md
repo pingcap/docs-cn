@@ -11,14 +11,14 @@ summary: 了解 TiCDC 兼容性相关限制和问题处理。
 
 ### TiCDC 和 Lightning 的兼容性
 
-Lightning 支持逻辑模式和物理模式两种模式。
+Lightning 支持[逻辑导入模式](/tidb-lightning/tidb-lightning-logical-import-mode.md)和[物理导入模式](/tidb-lightning/tidb-lightning-physical-import-mode.md)。
 
-逻辑模式以向 TiDB 执行 SQL 语句的方式导入数据。这部分数据可以正常被 TiCDC 同步。操作步骤如下：
+逻辑导入模式以向 TiDB 执行 SQL 语句的方式导入数据。这部分数据可以正常被 TiCDC 同步。操作步骤如下：
 
 1. 创建 changefeed
 2. 启动 Lightning，以逻辑模式模式导入数据
 
-物理模式以向 TiKV 插入 SST 文件的方式导入数据。当前阶段，TiCDC 和 Lightning 物理模式并不兼容，不同步由该模式导入的数据。
+物理导入模式以向 TiKV 插入 SST 文件的方式导入数据。当前阶段，TiCDC 和 Lightning 物理模式并不兼容，不同步由该模式导入的数据。
 
 如果下游集群是 TiDB，操作步骤如下：
 
