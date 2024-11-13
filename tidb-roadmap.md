@@ -26,7 +26,7 @@ TiDB 路线图展示了 TiDB 未来的计划。随着我们发布长期稳定版
       <th>未来版本</th>
     </tr>
   </thead>
-  <tbody>
+  <tbody valign="top">
     <tr>
       <td>
         <b>可扩展性与性能</b>
