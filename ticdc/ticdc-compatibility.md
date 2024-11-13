@@ -19,10 +19,12 @@ summary: 了解 TiCDC 兼容性相关限制和问题处理。
 在物理导入模式下，TiDB Lightning 通过向 TiKV 插入 SST 文件的方式导入数据。TiCDC 与此模式不兼容，不支持同步通过物理模式导入的数据。如果你需要同时使用 TiDB Lightning 物理导入模式和 TiCDC，可以根据 TiCDC 下游系统的类型选择以下解决方案：
 
 - 下游系统是 TiDB 集群：
+
     1. 使用 TiDB Lightning 分别向上下游 TiDB 集群导入数据，以确保两个集群的数据一致性。
     2. 创建 changefeed，用于同步后续通过 SQL 写入的增量数据。详情参考[创建同步任务](/ticdc/ticdc-manage-changefeed.md#创建同步任务)。
 
 - 下游系统不是 TiDB 集群：
+
     1. 使用下游系统提供的离线导入工具，将 TiDB Lightning 的输入文件导入到下游系统。
     2. 创建 changefeed，用于同步后续通过 SQL 写入的增量数据。详情参考[创建同步任务](/ticdc/ticdc-manage-changefeed.md#创建同步任务)。
 
