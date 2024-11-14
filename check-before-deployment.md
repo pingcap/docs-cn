@@ -357,7 +357,7 @@ sudo systemctl enable ntpd.service
     >
     > `[always] madvise never` 表示透明大页处于启用状态，需要关闭。
 
-2. 执行以下命令查看数据目录所在磁盘的 I/O 调度器。假设在 sdb、sdc 两块磁盘上创建了数据目录。
+2. 执行以下命令查看数据目录所在磁盘的 I/O 调度器。假设是 RHEL 7 的版本并且数据目录使用 nvme 设备。
 
     {{< copyable "shell-regular" >}}
 
@@ -374,7 +374,7 @@ sudo systemctl enable ntpd.service
     >
     > `noop [deadline] cfq` 表示磁盘的 I/O 调度器使用 `deadline`，需要进行修改。
     
-    假设在 nvme0、nvme1 两块 nvme 设备上创建了数据目录。
+    假设使用 RHEL 8 以上的版本，或者数据目录使用 nvme 设备。
    
     {{< copyable "shell-regular" >}}
 
@@ -407,7 +407,7 @@ sudo systemctl enable ntpd.service
     > **注意：**
     >
     > 如果多个磁盘都分配了数据目录，需要多次执行以上命令，记录所有磁盘各自的唯一标识。
-    > nvme 设备不需要记录标识，无需配置 udev 规则和 tuned 策略中的相关内容。
+    > 已经使用 `noop` 或者 `none` 调度器的设备不需要记录标识，无需配置 udev 规则和 tuned 策略中的相关内容。
 
 4. 执行以下命令查看 cpufreq 模块选用的节能策略。
 
@@ -483,7 +483,7 @@ sudo systemctl enable ntpd.service
         > **注意：**
         >
         > `include=balanced` 表示在现有的 balanced 策略基础上添加操作系统优化配置。
-        > nvme 设备不需要 tuned 策略中的 I/O 调度器的内容。
+        > 已经使用 `noop` 或者 `none` I/O 调度器就不需要 tuned 策略中调度器的内容。
 
         3. 应用新的 tuned 策略。
 
@@ -569,7 +569,7 @@ sudo systemctl enable ntpd.service
             
         > **注意：**
         >
-        > nvme 设备无需配置 udev 规则。
+        > 已经使用 `noop` 或者 `none` I/O 调度器无需配置 udev 规则。
 
         6. 应用 udev 脚本。
 
