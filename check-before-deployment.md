@@ -377,7 +377,7 @@ sudo systemctl enable ntpd.service
     >
     > `noop [deadline] cfq` 表示磁盘的 I/O 调度器使用 `deadline`，需要进行修改。
     
-    假设使用 RHEL 8 以上的版本，或者数据目录使用 nvme 设备。
+    对于 Red Hat Enterprise Linux 8 或更高版本，或者如果数据目录使用 NVMe 设备，可以执行以下命令查看 I/O 调度器：
    
     {{< copyable "shell-regular" >}}
 
