@@ -357,7 +357,7 @@ sudo systemctl enable ntpd.service
     >
     > `[always] madvise never` 表示透明大页处于启用状态，需要关闭。
 
-2. 执行以下命令查看数据目录所在磁盘的 I/O 调度器。假设是 RHEL 7 的版本并且数据目录使用 nvme 设备。
+2. 执行以下命令查看数据目录所在磁盘的 I/O 调度器。假设是 RHEL 7 的版本并且数据目录使用 sd 设备或者 vd 设备。
 
     {{< copyable "shell-regular" >}}
 
