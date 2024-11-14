@@ -57,7 +57,7 @@ Coalesce Partition 是一种减少 Hash 分区表或 Key 分区表中分区数�
 
 ### 公共表表达式 (CTE)
 
-公共表表达式（Common Table Expression, CTE）用于定义一个临时结果集，能够在 SQL 语句中通过 [`WITH`](/sql-statements/sql-statement-with.md) 子句多次引用。更多信息，请参见[公共表表达式](/develop/dev-guide-use-common-table-expression.md)。
+公共表表达式 (Common Table Expression, CTE) 用于定义一个临时结果集，能够在 SQL 语句中通过 [`WITH`](/sql-statements/sql-statement-with.md) 子句多次引用。更多信息，请参见[公共表表达式](/develop/dev-guide-use-common-table-expression.md)。
 
 ### Continuous Profiling
 
@@ -67,7 +67,7 @@ Coalesce Partition 是一种减少 Hash 分区表或 Key 分区表中分区数�
 
 ### Data Definition Language (DDL)
 
-数据定义语言（Data Definition Language, DDL）是 SQL 标准的一部分，用于创建、修改和删除表及其他对象。更多信息，请参见 [DDL 语句的执行原理及最佳实践](/ddl-introduction.md)。
+数据定义语言 (Data Definition Language, DDL) 是 SQL 标准的一部分，用于创建、修改和删除表及其他对象。更多信息，请参见 [DDL 语句的执行原理及最佳实践](/ddl-introduction.md)。
 
 ### Data Migration (DM)
 
@@ -75,19 +75,19 @@ Data Migration (DM) 是 TiDB 提供的一款数据迁移工具，用于将数据
 
 ### Data Modification Language (DML)
 
-数据操作语言（Data Modification Language, DML）是 SQL 标准的一部分，用于插入、更新和删除表中的行数据。
+数据操作语言 (Data Modification Language, DML) 是 SQL 标准的一部分，用于插入、更新和删除表中的行数据。
 
 ### 开发里程碑版本 (DMR)
 
-TiDB 会在开发里程碑版本（Development Milestone Release, DMR）中引入新的功能，但 DMR 不提供长期支持。更多信息，请参见 [TiDB 版本规则](/releases/versioning.md)。
+TiDB 会在开发里程碑版本 (Development Milestone Release, DMR) 中引入新的功能，但 DMR 不提供长期支持。更多信息，请参见 [TiDB 版本规则](/releases/versioning.md)。
 
 ### 容灾 (DR)
 
-容灾（Disaster Recovery, DR）是在未来灾难发生时恢复数据和服务的解决方案。TiDB 提供了多种容灾方案，例如备份和复制数据到备用集群。更多信息，请参见 [TiDB 容灾方案概述](/dr-solution-introduction.md)。
+容灾 (Disaster Recovery, DR) 是在未来灾难发生时恢复数据和服务的解决方案。TiDB 提供了多种容灾方案，例如备份和复制数据到备用集群。更多信息，请参见 [TiDB 容灾方案概述](/dr-solution-introduction.md)。
 
 ### 分布式执行框架 (DXF)
 
-分布式执行框架（Distributed eXecution Framework, DXF）允许 TiDB 在处理特定任务（例如创建索引或导入数据）时对这些任务进行统一调度和分布式执行。该框架旨在高效利用集群资源执行任务，控制资源使用，以减少对核心业务事务的影响。更多信息，请参见 [TiDB 分布式执行框架](/tidb-distributed-execution-framework.md)。
+分布式执行框架 (Distributed eXecution Framework, DXF) 允许 TiDB 在处理特定任务（例如创建索引或导入数据）时对这些任务进行统一调度和分布式执行。该框架旨在高效利用集群资源执行任务，控制资源使用，以减少对核心业务事务的影响。更多信息，请参见 [TiDB 分布式执行框架](/tidb-distributed-execution-framework.md)。
 
 ### Dynamic Pruning
 
@@ -97,21 +97,21 @@ TiDB 会在开发里程碑版本（Development Milestone Release, DMR）中引�
 
 ### Garbage Collection (GC)
 
-垃圾回收（Garbage Collection, GC）指清理不再需要的旧数据以释放资源的过程。关于 TiKV 垃圾回收过程的详情，请参见 [垃圾回收概述](/garbage-collection-overview.md)。
+垃圾回收 (Garbage Collection, GC) 指清理不再需要的旧数据以释放资源的过程。关于 TiKV 垃圾回收过程的详情，请参见[垃圾回收概述](/garbage-collection-overview.md)。
 
 ### General Availability (GA)
 
-一个功能 GA (General Availability) 意味着该功能已进行充分测试并可在生产环境中使用。根据每个功能的开发情况不同，TiDB 中的新功能可能会在 [开发里程碑版本 (DMR)](#development-milestone-release-dmr) 中 GA，也可能会在 [长期支持版本 (LTS)](#long-term-support-lts) 中 GA 。由于 TiDB 不提供基于 DMR 的补丁版本，在生产环境中建议使用 LTS 版本。
+一个功能 GA (General Availability) 意味着该功能已进行充分测试并可在生产环境中使用。根据每个功能的开发情况不同，TiDB 中的新功能可能会在[开发里程碑版本 (DMR)](#development-milestone-release-dmr) 中 GA，也可能会在[长期支持版本 (LTS)](#long-term-support-lts) 中 GA 。由于 TiDB 不提供基于 DMR 的补丁版本，在生产环境中建议使用 LTS 版本。
 
 ### Global Transaction Identifiers (GTIDs)
 
-全局事务标识符（Global Transaction Identifiers, GTIDs）是在 MySQL 二进制日志中跟踪已复制事务的唯一标识符。[Data Migration (DM)](/dm/dm-overview.md) 在迁移数据时会使用这些标识符确保复制的一致性。
+全局事务标识符 (Global Transaction Identifiers, GTIDs) 是在 MySQL 二进制日志中跟踪已复制事务的唯一标识符。[Data Migration (DM)](/dm/dm-overview.md) 在迁移数据时会使用这些标识符确保复制的一致性。
 
 ## H
 
 ### Hybrid Transactional and Analytical Processing (HTAP)
 
-混合型在线事务与在线分析处理 （Hybrid Transactional and Analytical Processing, HTAP）功能支持在同一数据库中同时处理 OLTP（联机事务处理）和 OLAP（联机分析处理）工作负载。在 TiDB 中，HTAP 是通过使用 TiKV 进行行存以及使用进行 TiFlash 进行列存来实现的。更多信息，请参见 [Gartner 网站上的 HTAP 定义](https://www.gartner.com/en/information-technology/glossary/htap-enabling-memory-computing-technologies)。
+混合型在线事务与在线分析处理 (Hybrid Transactional and Analytical Processing, HTAP) 功能支持在同一数据库中同时处理 OLTP（联机事务处理）和 OLAP（联机分析处理）工作负载。在 TiDB 中，HTAP 是通过使用 TiKV 进行行存以及使用进行 TiFlash 进行列存来实现的。更多信息，请参见 [Gartner 网站上的 HTAP 定义](https://www.gartner.com/en/information-technology/glossary/htap-enabling-memory-computing-technologies)。
 
 ## I
 
@@ -127,7 +127,7 @@ TiDB 会在开发里程碑版本（Development Milestone Release, DMR）中引�
 
 ### Key Management Service (KMS)
 
-密钥管理服务（Key Management Service, KMS）提供了一种存储和检索密钥的安全方式。常见的 KMS 包括 AWS KMS、Google Cloud KMS 和 HashiCorp Vault。TiDB 中的多个组件都支持通过 KMS 管理用于存储加密和相关服务的密钥。
+密钥管理服务 (Key Management Service, KMS) 提供了一种存储和检索密钥的安全方式。常见的 KMS 包括 AWS KMS、Google Cloud KMS 和 HashiCorp Vault。TiDB 中的多个组件都支持通过 KMS 管理用于存储加密和相关服务的密钥。
 
 ### Key-Value (KV)
 
