@@ -160,7 +160,7 @@ TiDB 的部分操作需要向服务器写入临时文件，因此需要确保运
 
     > **注意：**
     >
-    > 如果目录不存在，TiDB 在启动时会自动创建该目录。如果目录创建失败，或者 TiDB 对该目录没有读写权限，[Fast Online DDL](/system-variables.md#tidb_ddl_enable_fast_reorg-从-v630-版本开始引入) 在运行时 Fast Online DDL 会被禁用。
+    > 如果目录不存在，TiDB 在启动时会自动创建该目录。如果目录创建失败，或者 TiDB 对该目录没有读写权限，[Fast Online DDL](/system-variables.md#tidb_ddl_enable_fast_reorg-从-v630-版本开始引入) 在运行时会被禁用。
 
 ## 检测及关闭目标部署机器的防火墙
 
