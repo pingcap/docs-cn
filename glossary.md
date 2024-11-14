@@ -240,7 +240,7 @@ PITR 用于将数据恢复到特定时间点（例如，在意外执行了 `DELE
 
 TiKV 集群中的 Region 不是一开始就划分好的，而是随着数据写入逐渐分裂生成的，分裂的过程被称为 Region Split。
 
-其机制是集群初始化时构建一个初始 Region 覆盖整个 key space，随后在运行过程中每当 Region 数据达到一定量之后就通过 Split 产生新的 Region。
+其机制是集群初始化时构建一个初始 Region 覆盖整个 key space，随后在运行过程中每当 Region 大小或 Key 数量达到阈值之后就通过 Split 产生新的 Region。
 
 ### Region/Peer/Raft Group
 
