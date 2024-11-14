@@ -55,17 +55,23 @@ cdc cli changefeed list --server=http://127.0.0.1:8300
 
 ## 上游停止更新后，如何判断 TiCDC 是否已将所有更新同步到下游？
 
-可以通过对比时间戳的方式查看。
+在上游 TiDB 集群停止更新后，可以通过比较上游 TiDB 集群的最新 [TSO](/glossary.md#tso) 时间戳与 TiCDC 当前的同步进度判断同步是否完成。如果 TiCDC 的同步进度时间大于或等于上游 TiDB 集群的 TSO，则说明 TiCDC 已同步所有更新。具体操作步骤如下：
 
-1. 在上游 TiDB 停止所有更新后，获取上游 TiDB 集群的最新 TSO 对应的时间。
+1. 获取上游 TiDB 集群的最新 TSO 时间戳。
 
-    > 注意：
+    > **注意：**
     >
-    > 不要直接使用 `NOW()` 等查看时间的方式，要用 TSO，这里是为了方便后面的时间对比所以将 TSO 转成时间格式。
+    > 请使用 [`TIDB_CURRENT_TSO()`](/functions-and-operators/tidb-functions.md#tidb_current_tso) 函数获取 TSO，而不是 `NOW()` 等查询当前时间的函数。
+
+    以下示例使用 [`TIDB_PARSE_TSO()`](/functions-and-operators/tidb-functions.md#tidb_parse_tso) 将 TSO 转换为可读的时间格式，便于后续比较：
 
     ```sql
-    BEGIN; SELECT TIDB_PARSE_TSO(TIDB_CURRENT_TSO()); ROLLBACK;
+    BEGIN;
+    SELECT TIDB_PARSE_TSO(TIDB_CURRENT_TSO());
+    ROLLBACK;
     ```
+
+    输出结果示例如下：
 
     ```sql
     +------------------------------------+
@@ -75,76 +81,82 @@ cdc cli changefeed list --server=http://127.0.0.1:8300
     +------------------------------------+
     ```
 
-2. 获取 TiCDC 当前的同步进度，如果进度大于等于刚刚获得的上游 TSO，就表示已经同步了所有更新。获取当前同步进度有两种方式：
+2. 获取 TiCDC 当前的同步进度。
 
-    * **方法一**：通过 `cdc` 查看所有同步任务的 Checkpoint。
+    你可以通过以下两种方法之一检查当前的同步进度：
 
-      ```shell
-      cdc cli changefeed list --server=http://127.0.0.1:8300
-      ```
+    * **方法一**：查询同步任务的 Checkpoint（推荐）
 
-        在输出中可以看到所有同步任务的 `checkpoint` 字段：
+        使用 [TiCDC 命令行工具](/ticdc/ticdc-manage-changefeed.md) `cdc cli` 查看所有同步任务的 Checkpoint：
 
-      ```json
-      [
-        {
-          "id": "syncpoint",
-          "namespace": "default",
-          "summary": {
-            "state": "normal",
-            "tso": 453880043653562372,
-            "checkpoint": "2024-11-12 20:36:01.447",
-            "error": null
+        ```shell
+        cdc cli changefeed list --server=http://127.0.0.1:8300
+        ```
+
+        输出结果示例如下：
+
+        ```json
+        [
+          {
+            "id": "syncpoint",
+            "namespace": "default",
+            "summary": {
+              "state": "normal",
+              "tso": 453880043653562372,
+              "checkpoint": "2024-11-12 20:36:01.447",
+              "error": null
+            }
           }
-        }
-      ]
-      ```
+        ]
+        ```
 
-      `"checkpoint": "2024-11-12 20:36:01.447"` 表示 TiCDC 当前的同步进度已达到 `2024-11-12 20:36:01.447`，上游 TiDB 集群在这个时间之前的所有变更已同步完。所以当 checkpoint 大于等于刚刚获取的上游 TiDB 的 TSO 时间就说明所有更新已同步到下游。
+        在输出结果中，`"checkpoint": "2024-11-12 20:36:01.447"` 表示 TiCDC 当前的同步进度为 `2024-11-12 20:36:01.447`，即所有在该时间之前的上游 TiDB 变更已同步完成。如果该时间戳大于或等于步骤 1 中获取的上游 TiDB TSO 时间，则表示所有更新已经同步到下游。
 
-    * **方法二**：若下游为 TiDB，且开启了 TiCDC Syncpoint 功能，那么可以通过查看 Syncpoint 信息来获取当前同步进度。
+    * **方法二**：查询下游 TiDB 的 Syncpoint 信息
 
-      在下游 TiDB 中执行下面的 SQL 语句：
+        如果下游是 TiDB，并且已启用 [TiCDC Syncpoint 功能](/ticdc/ticdc-upstream-downstream-check.md)，可以通过查询下游 TiDB 的 Syncpoint 信息获取同步进度。
 
-      ```sql
-      select * from tidb_cdc.syncpoint_v1;
-      ```
+        > **注意：**
+        >
+        > Syncpoint 信息的更新间隔由 [`sync-point-interval`](/ticdc/ticdc-upstream-downstream-check.md#启用-syncpoint) 参数控制。如需获取最新同步进度，建议使用方法一。
 
-      从结果中可以看到上游 TSO (primary_ts) 信息：
+        在下游 TiDB 中执行以下 SQL 语句，获取上游 TSO (`primary_ts`) 和下游 TSO (`secondary_ts`) 信息。
 
-      ```sql
-      +------------------+------------+--------------------+--------------------+---------------------+
-      | ticdc_cluster_id | changefeed | primary_ts         | secondary_ts       | created_at          |
-      +------------------+------------+--------------------+--------------------+---------------------+
-      | default          | syncpoint  | 453879870259200000 | 453879870545461257 | 2024-11-12 20:25:01 |
-      | default          | syncpoint  | 453879948902400000 | 453879949214351361 | 2024-11-12 20:30:01 |
-      | default          | syncpoint  | 453880027545600000 | 453880027751907329 | 2024-11-12 20:35:00 |
-      +------------------+------------+--------------------+--------------------+---------------------+
-      ```
+        ```sql
+        SELECT * FROM tidb_cdc.syncpoint_v1;
+        ```
 
-      表格中 primary_ts 和 secondary_ts 表示的是上游 TiDB 在 primary_ts 时刻的 snapshot 与下游 TiDB 在 secondary_ts 时刻的 snapshot 是相同的。
+        输出结果示例如下：
 
-      将最新的那条 primary_ts 转换成人类易读的时间格式：
+        ```sql
+        +------------------+------------+--------------------+--------------------+---------------------+
+        | ticdc_cluster_id | changefeed | primary_ts         | secondary_ts       | created_at          |
+        +------------------+------------+--------------------+--------------------+---------------------+
+        | default          | syncpoint  | 453879870259200000 | 453879870545461257 | 2024-11-12 20:25:01 |
+        | default          | syncpoint  | 453879948902400000 | 453879949214351361 | 2024-11-12 20:30:01 |
+        | default          | syncpoint  | 453880027545600000 | 453880027751907329 | 2024-11-12 20:35:00 |
+        +------------------+------------+--------------------+--------------------+---------------------+
+        ```
 
-      ```sql
-      select TIDB_PARSE_TSO(453880027545600000);
-      ```
+        在输出结果中，每一行表示上游 TiDB 在 `primary_ts` 时刻的 snapshot 与下游 TiDB 在 `secondary_ts` 时刻的 snapshot 一致。
 
-      即可得到 primary_ts 对应的时间格式：
+        要查看同步进度，可以将最新的 `primary_ts` 转换为可读的时间格式：
 
-      ```sql
-      +------------------------------------+
-      | TIDB_PARSE_TSO(453880027545600000) |
-      +------------------------------------+
-      | 2024-11-12 20:35:00                |
-      +------------------------------------+
-      ```
+        ```sql
+        SELECT TIDB_PARSE_TSO(453880027545600000);
+        ```
 
-      当 primary_ts 所对应的时间超过了步骤 1 中刚获取的上游 TiDB 集群的 TSO 时，则说明 TiCDC 已同步完所有更新。
+        转换结果示例如下：
 
-      > 注意：
-      >
-      > Syncpoint 信息每隔 [`sync-point-interval`](/ticdc/ticdc-upstream-downstream-check.md#启用-syncpoint) 时间才更新一次，想要及时查看当前同步进度建议通过方法一的 Checkpoint 信息来判断。
+        ```sql
+        +------------------------------------+
+        | TIDB_PARSE_TSO(453880027545600000) |
+        +------------------------------------+
+        | 2024-11-12 20:35:00                |
+        +------------------------------------+
+        ```
+
+        如果 `primary_ts` 对应的时间大于或等于步骤 1 中获取的上游 TiDB 集群的 TSO 时间戳，说明 TiCDC 已经将所有更新同步到下游。
 
 ## TiCDC 的 `gc-ttl` 是什么？
 
