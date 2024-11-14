@@ -49,7 +49,7 @@ aliases: ['/docs-cn/dev/check-before-deployment/']
 
     > **注意：**
     >
-    > 使用 `lsblk` 命令查看分区的设备号：对于 nvme 磁盘，生成的分区设备号一般为 `nvme0n1p1`；对于普通磁盘（例如 `/dev/sdb`），生成的分区设备号一般为 `sdb1`。
+    > 使用 `lsblk` 命令查看分区的设备号：对于 NVMe 磁盘，生成的分区设备号一般为 `nvme0n1p1`；对于普通磁盘（例如 `/dev/sdb`），生成的分区设备号一般为 `sdb1`。
 
 3. 格式化文件系统。
 
