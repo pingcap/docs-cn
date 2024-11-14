@@ -175,18 +175,14 @@
       - [同步数据到 Pulsar](/ticdc/ticdc-sink-to-pulsar.md)
       - [同步数据到存储服务](/ticdc/ticdc-sink-to-cloud-storage.md)
     - [管理 Changefeed](/ticdc/ticdc-manage-changefeed.md)
-    - [TiCDC 客户端鉴权](/ticdc/ticdc-client-authentication.md)
     - [日志过滤器](/ticdc/ticdc-filter.md)
     - [DDL 同步](/ticdc/ticdc-ddl.md)
     - [双向复制](/ticdc/ticdc-bidirectional-replication.md)
-    - [单行数据正确性校验](/ticdc/ticdc-integrity-check.md)
-    - [主从集群一致性读和数据校验](/ticdc/ticdc-upstream-downstream-check.md)
-    - [拆分 UPDATE 事件行为说明](/ticdc/ticdc-split-update-behavior.md)
   - 监控告警
     - [基本监控指标](/ticdc/ticdc-summary-monitor.md)
     - [详细监控指标](/ticdc/monitor-ticdc.md)
     - [报警规则](/ticdc/ticdc-alert-rules.md)
-  - 数据集成
+  - 数据集成场景
     - [数据集成概述](/integration-overview.md)
     - [与 Confluent Cloud 和 Snowflake 进行数据集成](/ticdc/integrate-confluent-using-ticdc.md)
     - [与 Apache Kafka 和 Apache Flink 进行数据集成](/replicate-data-to-kafka.md)
@@ -194,6 +190,10 @@
     - [TiCDC 架构设计与原理](/ticdc/ticdc-architecture.md)
     - [TiCDC Server 配置参数](/ticdc/ticdc-server-config.md)
     - [TiCDC Changefeed 配置参数](/ticdc/ticdc-changefeed-config.md)
+    - [TiCDC 客户端鉴权](/ticdc/ticdc-client-authentication.md)
+    - [单行数据正确性校验](/ticdc/ticdc-integrity-check.md)
+    - [主从集群数据校验和快照读](/ticdc/ticdc-upstream-downstream-check.md)
+    - [拆分 UPDATE 事件行为说明](/ticdc/ticdc-split-update-behavior.md)
     - 输出数据协议
       - [TiCDC Avro Protocol](/ticdc/ticdc-avro-protocol.md)
       - [TiCDC Canal-JSON Protocol](/ticdc/ticdc-canal-json.md)
