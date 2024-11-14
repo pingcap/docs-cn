@@ -98,7 +98,7 @@ aliases: ['/docs-cn/dev/check-before-deployment/']
 
     ```bash
     mkdir /data1 && \
-    systemctl daemon-reload
+    systemctl daemon-reload && \
     mount -a
     ```
 
@@ -395,7 +395,7 @@ sudo systemctl enable ntpd.service
     >
     > `[none] mq-deadline kyber bfq` 表示 nvme 设备的 I/O 调度器使用 `none`，不需要进行修改。
     
-4. 执行以下命令查看磁盘的唯一标识 `ID_SERIAL`。
+3. 执行以下命令查看磁盘的唯一标识 `ID_SERIAL`。
 
     {{< copyable "shell-regular" >}}
 
@@ -413,7 +413,7 @@ sudo systemctl enable ntpd.service
     > 如果多个磁盘都分配了数据目录，需要多次执行以上命令，记录所有磁盘各自的唯一标识。
     > nvme 设备不需要记录标识，无需配置 udev 规则和 tuned 策略中的相关内容。
 
-5. 执行以下命令查看 cpufreq 模块选用的节能策略。
+4. 执行以下命令查看 cpufreq 模块选用的节能策略。
 
     {{< copyable "shell-regular" >}}
 
@@ -431,7 +431,7 @@ sudo systemctl enable ntpd.service
     >
     > `The governor "powersave"` 表示 cpufreq 的节能策略使用 powersave，需要调整为 performance 策略。如果是虚拟机或者云主机，则不需要调整，命令输出通常为 `Unable to determine current policy`。
 
-6. 配置系统优化参数
+5. 配置系统优化参数
 
     + 方法一：使用 tuned（推荐）
 
@@ -484,7 +484,10 @@ sudo systemctl enable ntpd.service
             elevator=noop
             ```
 
-            `include=balanced` 表示在现有的 balanced 策略基础上添加操作系统优化配置。
+        > **注意：**
+        >
+        > `include=balanced` 表示在现有的 balanced 策略基础上添加操作系统优化配置。
+        > nvme 设备不需要 tuned 策略中的 I/O 调度器的内容。
 
         3. 应用新的 tuned 策略。
 
@@ -567,6 +570,10 @@ sudo systemctl enable ntpd.service
             ACTION=="add|change", SUBSYSTEM=="block", ENV{ID_SERIAL}=="36d0946606d79f90025f3e09a0c1f9e81", ATTR{queue/scheduler}="noop"
 
             ```
+            
+        > **注意：**
+        >
+        > nvme 设备无需配置 udev 规则。
 
         6. 应用 udev 脚本。
 
@@ -603,7 +610,7 @@ sudo systemctl enable ntpd.service
             systemctl start cpupower.service
             ```
 
-7. 执行以下命令验证透明大页的状态。
+6. 执行以下命令验证透明大页的状态。
 
     {{< copyable "shell-regular" >}}
 
@@ -615,7 +622,7 @@ sudo systemctl enable ntpd.service
     always madvise [never]
     ```
 
-8. 执行以下命令验证数据目录所在磁盘的 I/O 调度器。
+7. 执行以下命令验证数据目录所在磁盘的 I/O 调度器。
 
     {{< copyable "shell-regular" >}}
 
@@ -628,7 +635,7 @@ sudo systemctl enable ntpd.service
     [noop] deadline cfq
     ```
 
-9. 执行以下命令查看 cpufreq 模块选用的节能策略。
+8. 执行以下命令查看 cpufreq 模块选用的节能策略。
 
     {{< copyable "shell-regular" >}}
 
@@ -642,7 +649,7 @@ sudo systemctl enable ntpd.service
                   The governor "performance" may decide which speed to use within this range.
     ```
 
-10. 执行以下命令修改 sysctl 参数。
+9. 执行以下命令修改 sysctl 参数。
 
     {{< copyable "shell-regular" >}}
 
@@ -664,7 +671,7 @@ sudo systemctl enable ntpd.service
     > - 对于内存小于 16 GiB 的小规格服务器，保持 `vm.min_free_kbytes` 的默认值即可。
     > - `tcp_tw_recycle` 从 4.12 内核版本开始不再使用，使用高版本内核时不需要配置。
 
-11. 执行以下命令配置用户的 limits.conf 文件。
+10. 执行以下命令配置用户的 limits.conf 文件。
 
     {{< copyable "shell-regular" >}}
 
