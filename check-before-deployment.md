@@ -39,6 +39,13 @@ summary: 了解部署 TiDB 前的环境检查操作。
     parted -s -a optimal /dev/nvme0n1 mklabel gpt -- mkpart primary ext4 1 -1
     ```
 
+    如果 nvme 设备容量较大，可以分为多个分区。
+
+    ```bash
+    parted -s -a optimal /dev/nvme0n1 mklabel gpt -- mkpart primary ext4 1 2000GB
+    parted -s -a optimal /dev/nvme0n1 -- mkpart primary ext4 2000GB -1
+    ```
+
     > **注意：**
     >
     > 使用 `lsblk` 命令查看分区的设备号：对于 nvme 磁盘，生成的分区设备号一般为 `nvme0n1p1`；对于普通磁盘（例如 `/dev/sdb`），生成的分区设备号一般为 `sdb1`。
@@ -90,6 +97,7 @@ summary: 了解部署 TiDB 前的环境检查操作。
 
     ```bash
     mkdir /data1 && \
+    systemctl daemon-reload
     mount -a
     ```
 
@@ -137,25 +145,25 @@ TiDB 的部分操作需要向服务器写入临时文件，因此需要确保运
 
 - Fast Online DDL 工作区
 
-    当变量 [`tidb_ddl_enable_fast_reorg`](/system-variables.md#tidb_ddl_enable_fast_reorg-从-v630-版本开始引入) 被设置为 `ON`（v6.5.0 及以上版本中默认值为 `ON`）时，会激活 Fast Online DDL，这时部分 DDL 要对临时文件进行读写。临时文件位置由配置 [`temp-dir`](/tidb-configuration-file.md#temp-dir-从-v630-版本开始引入) 定义，需要确保运行 TiDB 的用户对操作系统中该目录有读写权限。以默认目录 `/tmp/tidb` 为例：
+    当变量 [`tidb_ddl_enable_fast_reorg`](/system-variables.md#tidb_ddl_enable_fast_reorg-从-v630-版本开始引入) 被设置为 `ON`（v6.5.0 及以上版本中默认值为 `ON`）时，会激活 Fast Online DDL，这时部分 DDL 要对临时文件进行读写。临时文件位置由配置 [`temp-dir`](/tidb-configuration-file.md#temp-dir-从-v630-版本开始引入) 定义，需要确保运行 TiDB 的用户对操作系统中该目录有读写权限。默认目录 `/tmp/tidb` 使用 tmpfs，建议显式指定为磁盘上的目录，以 `/data/tidb-deploy/tempdir` 为例：
 
     > **注意：**
     >
     > 如果业务中可能存在针对大对象的 DDL 操作，推荐为 [`temp-dir`](/tidb-configuration-file.md#temp-dir-从-v630-版本开始引入) 配置独立文件系统及更大的临时空间。
 
     ```shell
-    sudo mkdir /tmp/tidb
+    sudo mkdir -p /data/tidb-deploy/tempdir
     ```
 
     如果目录 `/tmp/tidb` 已经存在，需确保有写入权限。
 
     ```shell
-    sudo chmod -R 777 /tmp/tidb
+    sudo chmod -R 777 /data/tidb-deploy/tempdir
     ```
 
     > **注意：**
     >
-    > 如果目录不存在，TiDB 在启动时会自动创建该目录。如果目录创建失败，或者 TiDB 对该目录没有读写权限，[Fast Online DDL](/system-variables.md#tidb_ddl_enable_fast_reorg-从-v630-版本开始引入) 在运行时可能产生不可预知的问题。
+    > 如果目录不存在，TiDB 在启动时会自动创建该目录。如果目录创建失败，或者 TiDB 对该目录没有读写权限，[Fast Online DDL](/system-variables.md#tidb_ddl_enable_fast_reorg-从-v630-版本开始引入) 在运行时 Fast Online DDL 会被禁用。
 
 ## 检测及关闭目标部署机器的防火墙
 
@@ -331,7 +339,7 @@ sudo systemctl enable ntpd.service
 在生产系统的 TiDB 中，建议对操作系统进行如下的配置优化：
 
 1. 关闭透明大页（即 Transparent Huge Pages，缩写为 THP）。数据库的内存访问模式往往是稀疏的而非连续的。当高阶内存碎片化比较严重时，分配 THP 页面会出现较高的延迟。
-2. 将存储介质的 I/O 调度器设置为 noop。对于高速 SSD 存储介质，内核的 I/O 调度操作会导致性能损失。将调度器设置为 noop 后，内核不做任何操作，直接将 I/O 请求下发给硬件，以获取更好的性能。同时，noop 调度器也有较好的普适性。
+2. 设置存储介质的 I/O 调度器。对于高速 SSD 存储介质，内核的 I/O 调度操作会导致性能损失。将 SSD 的 I/O 调度器设置为 noop 后，内核不做任何操作，直接将 I/O 请求下发给硬件，以获取更好的性能。NVMe 介质的默认 I/O 调度器使用 none，不需要做调整。
 3. 为调整 CPU 频率的 cpufreq 模块选用 performance 模式。将 CPU 频率固定在其支持的最高运行频率上，不进行动态调节，可获取最佳的性能。
 
 采用如下步骤检查操作系统的当前配置，并配置系统优化参数：
@@ -352,7 +360,7 @@ sudo systemctl enable ntpd.service
     >
     > `[always] madvise never` 表示透明大页处于启用状态，需要关闭。
 
-2. 执行以下命令查看数据目录所在磁盘的 I/O 调度器。假设在 sdb、sdc 两个磁盘上创建了数据目录。
+2. 执行以下命令查看数据目录所在磁盘的 I/O 调度器。假设在 sdb、sdc 两块磁盘上创建了数据目录。
 
     {{< copyable "shell-regular" >}}
 
@@ -368,8 +376,25 @@ sudo systemctl enable ntpd.service
     > **注意：**
     >
     > `noop [deadline] cfq` 表示磁盘的 I/O 调度器使用 `deadline`，需要进行修改。
+    
+    假设在 nvme0、nvme1 两块 nvme 设备上创建了数据目录。
+   
+    {{< copyable "shell-regular" >}}
 
-3. 执行以下命令查看磁盘的唯一标识 `ID_SERIAL`。
+    ```bash
+    cat /sys/block/nvme[01]*/queue/scheduler
+    ```
+
+    ```
+    [none] mq-deadline kyber bfq
+    [none] mq-deadline kyber bfq
+    ```
+    
+    > **注意：**
+    >
+    > `[none] mq-deadline kyber bfq` 表示 nvme 设备的 I/O 调度器使用 `none`，不需要进行修改。
+    
+4. 执行以下命令查看磁盘的唯一标识 `ID_SERIAL`。
 
     {{< copyable "shell-regular" >}}
 
@@ -385,8 +410,9 @@ sudo systemctl enable ntpd.service
     > **注意：**
     >
     > 如果多个磁盘都分配了数据目录，需要多次执行以上命令，记录所有磁盘各自的唯一标识。
+    > nvme 设备不需要记录标识，无需配置 udev 规则和 tuned 策略中的相关内容。
 
-4. 执行以下命令查看 cpufreq 模块选用的节能策略。
+5. 执行以下命令查看 cpufreq 模块选用的节能策略。
 
     {{< copyable "shell-regular" >}}
 
@@ -404,7 +430,7 @@ sudo systemctl enable ntpd.service
     >
     > `The governor "powersave"` 表示 cpufreq 的节能策略使用 powersave，需要调整为 performance 策略。如果是虚拟机或者云主机，则不需要调整，命令输出通常为 `Unable to determine current policy`。
 
-5. 配置系统优化参数
+6. 配置系统优化参数
 
     + 方法一：使用 tuned（推荐）
 
@@ -490,13 +516,13 @@ sudo systemctl enable ntpd.service
             {{< copyable "shell-regular" >}}
 
             ```bash
-            grubby --args="transparent_hugepage=never" --update-kernel /boot/vmlinuz-3.10.0-957.el7.x86_64
+            grubby --args="transparent_hugepage=never" --update-kernel `grubby --default-kernel`
             ```
 
             > **注意：**
             >
-            > `--update-kernel` 后需要使用实际的默认内核版本。
-
+            > `--update-kernel` 后也可以使用实际的版本号，如 `--update-kernel /boot/vmlinuz-3.10.0-957.el7.x86_64`。
+            
         3. 执行 `grubby --info` 命令查看修改后的默认内核配置。
 
             {{< copyable "shell-regular" >}}
@@ -576,7 +602,7 @@ sudo systemctl enable ntpd.service
             systemctl start cpupower.service
             ```
 
-6. 执行以下命令验证透明大页的状态。
+7. 执行以下命令验证透明大页的状态。
 
     {{< copyable "shell-regular" >}}
 
@@ -588,7 +614,7 @@ sudo systemctl enable ntpd.service
     always madvise [never]
     ```
 
-7. 执行以下命令验证数据目录所在磁盘的 I/O 调度器。
+8. 执行以下命令验证数据目录所在磁盘的 I/O 调度器。
 
     {{< copyable "shell-regular" >}}
 
@@ -601,7 +627,7 @@ sudo systemctl enable ntpd.service
     [noop] deadline cfq
     ```
 
-8. 执行以下命令查看 cpufreq 模块选用的节能策略。
+9. 执行以下命令查看 cpufreq 模块选用的节能策略。
 
     {{< copyable "shell-regular" >}}
 
@@ -615,7 +641,7 @@ sudo systemctl enable ntpd.service
                   The governor "performance" may decide which speed to use within this range.
     ```
 
-9. 执行以下命令修改 sysctl 参数。
+10. 执行以下命令修改 sysctl 参数。
 
     {{< copyable "shell-regular" >}}
 
@@ -635,8 +661,9 @@ sudo systemctl enable ntpd.service
     > - `vm.min_free_kbytes` 的设置会影响内存回收机制。设置得过大，会导致可用内存变少，设置得过小，可能会导致内存的申请速度超过后台的回收速度，进而导致内存回收并引起内存分配延迟。
     > - 建议将 `vm.min_free_kbytes` 最小设置为 `1048576` KiB（即 1 GiB）。如果[安装了 NUMA](/check-before-deployment.md#安装-numactl-工具)，建议设置为 `NUMA 节点个数 * 1048576` KiB。
     > - 对于内存小于 16 GiB 的小规格服务器，保持 `vm.min_free_kbytes` 的默认值即可。
+    > - `tcp_tw_recycle` 从 4.12 内核版本开始不再使用，使用高版本内核时不需要配置。
 
-10. 执行以下命令配置用户的 limits.conf 文件。
+11. 执行以下命令配置用户的 limits.conf 文件。
 
     {{< copyable "shell-regular" >}}
 
