@@ -131,7 +131,7 @@ TiDB 会在开发里程碑版本 (Development Milestone Release, DMR) 中引入�
 
 ### Key-Value (KV)
 
-键值（Key-Value, KV）是一种通过唯一键来关联值并存储信息的数据结构，它能够实现快速的数据检索。TiDB 通过 TiKV 将表和索引映射为键值对，从而实现数据库中的高效数据存储和访问。
+键值 (Key-Value, KV) 是一种通过唯一键来关联值并存储信息的数据结构，它能够实现快速的数据检索。TiDB 通过 TiKV 将表和索引映射为键值对，从而实现数据库中的高效数据存储和访问。
 
 ## L
 
@@ -141,11 +141,11 @@ TiDB 会在开发里程碑版本 (Development Milestone Release, DMR) 中引入�
 
 ### Lightweight Directory Access Protocol (LDAP)
 
-轻量级目录访问协议（Lightweight Directory Access Protocol, LDAP）是一种标准化的目录信息访问方式，通常用于账户和用户数据的管理。TiDB 对 LDAP 的支持是通过 [LDAP 身份验证插件](/security-compatibility-with-mysql.md#authentication-plugin-status)实现的。
+轻量级目录访问协议 (Lightweight Directory Access Protocol, LDAP) 是一种标准化的目录信息访问方式，通常用于账户和用户数据的管理。TiDB 对 LDAP 的支持是通过 [LDAP 身份验证插件](/security-compatibility-with-mysql.md#authentication-plugin-status)实现的。
 
 ### Long Term Support (LTS)
 
-长期支持（Long Term Support, LTS）版本指经过充分测试并在较长时间内维护的软件版本。更多信息，请参见 [TiDB 版本规则](/releases/versioning.md)。
+长期支持 (Long Term Support, LTS) 版本指经过充分测试并在较长时间内维护的软件版本。更多信息，请参见 [TiDB 版本规则](/releases/versioning.md)。
 
 ## M
 
@@ -161,15 +161,15 @@ Old value 特指在 TiCDC 输出的增量变更日志中的“原始值”。可
 
 ### Online Analytical Processing (OLAP)
 
-在线分析处理（Online Analytical Processing, OLAP）指的是以分析任务为主的数据库工作负载，例如数据报告和复杂查询。OLAP 的特点是涉及大量行数据的读密集型查询。
+在线分析处理 (Online Analytical Processing, OLAP) 指的是以分析任务为主的数据库工作负载，例如数据报告和复杂查询。OLAP 的特点是涉及大量行数据的读密集型查询。
 
 ### Online Transaction Processing (OLTP)
 
-在线事务处理（Online Transaction Processing, OLTP）指的是以事务性任务为主的数据库工作负载，例如读取、插入、更新和删除少量记录。
+在线事务处理 (Online Transaction Processing, OLTP) 指的是以事务性任务为主的数据库工作负载，例如读取、插入、更新和删除少量记录。
 
 ### Out of Memory (OOM)
 
-内存不足（Out of Memory, OOM）指的是系统由于内存不足而引起失败的情况。更多信息，请参见 [TiDB OOM 故障排查](/troubleshoot-tidb-oom.md)。
+内存不足 (Out of Memory, OOM) 指的是系统由于内存不足而引起失败的情况。更多信息，请参见 [TiDB OOM 故障排查](/troubleshoot-tidb-oom.md)。
 
 ### Operator
 
@@ -200,15 +200,15 @@ Operator Step 是 Operator 执行过程的一个步骤，一个 Operator 常常�
 
 Pending 和 Down 是 Peer 可能出现的两种特殊状态。其中 Pending 表示 Follower 或 Learner 的 raft log 与 Leader 有较大差距，Pending 状态的 Follower 无法被选举成 Leader。Down 是指 Leader 长时间没有收到对应 Peer 的消息，通常意味着对应节点发生了宕机或者网络隔离。
 
-### Placement Driver（PD）
+### Placement Driver (PD)
 
-PD 是 [TiDB 架构](/tidb-architecture.md#placement-driver-pd-server) 中的核心组件之一，负责存储元数据，为事务时间戳分配[时间戳服务（TSO）](/tso.md)，协调 TiKV 上的数据分布，并运行 [TiDB Dashboard](/dashboard/dashboard-overview.md)。更多信息，请参见 [TiDB 调度](/tidb-scheduling.md)。
+PD 是 [TiDB 架构](/tidb-architecture.md#placement-driver-pd-server) 中的核心组件之一，负责存储元数据，为事务时间戳分配[时间戳服务 (TSO)](/tso.md)，协调 TiKV 上的数据分布，并运行 [TiDB Dashboard](/dashboard/dashboard-overview.md)。更多信息，请参见 [TiDB 调度](/tidb-scheduling.md)。
 
 ### Point get
 
 点查 (point get) 是指通过主键或唯一索引直接读取一行的查询方式。点查的返回结果最多是一行数据。
 
-### Point in Time Recovery（PITR）
+### Point in Time Recovery (PITR)
 
 PITR 用于将数据恢复到特定时间点（例如，在意外执行了 `DELETE` 语句之前的时间点）。更多信息，请参见 [TiDB 日志备份与 PITR 功能架构](/br/br-log-architecture.md)。
 
@@ -218,7 +218,7 @@ PITR 用于将数据恢复到特定时间点（例如，在意外执行了 `DELE
 
 ## Q
 
-### Queries Per Second（QPS）
+### Queries Per Second (QPS)
 
 每秒查询数(Queries Per Second, QPS) 指的是数据库服务每秒处理的查询数量。它是衡量数据库吞吐量的重要性能指标。
 
@@ -242,11 +242,11 @@ TiKV 集群中的 Region 不是一开始就划分好的，而是随着数据写�
 
 每个 Region 负责维护集群的一段连续数据（默认配置下平均约 256 MiB），每份数据会在不同的 Store 存储多个副本（默认配置是 3 副本），每个副本称为 Peer。同一个 Region 的多个 Peer 通过 raft 协议进行数据同步，所以 Peer 也用来指代 raft 实例中的成员。TiKV 使用 multi-raft 模式来管理数据，即每个 Region 都对应一个独立运行的 raft 实例，我们也把这样的一个 raft 实例叫做一个 Raft Group。
 
-### Remote Procedure Call（RPC）
+### Remote Procedure Call (RPC)
 
 RPC（远程过程调用）是软件组件之间的一种通信方式。在 TiDB 集群中，不同组件（例如 TiDB、TiKV 和 TiFlash）之间使用 gRPC 标准进行通信。
 
-### Request Unit（RU）
+### Request Unit (RU)
 
 RU 是 TiDB 中资源使用的统一抽象单位，用于在[资源管控](/tidb-resource-control.md)功能中衡量资源的使用情况。
 
@@ -285,14 +285,14 @@ Top SQL 用于找到一段时间内对某个 TiDB 或 TiKV 节点消耗负载较
 
 ### Transactions Per Second (TPS)
 
-每秒事务数（Transactions Per Second, TPS）指的是数据库每秒处理的事务数量。它是衡量数据库性能和吞吐量的关键指标。
+每秒事务数 (Transactions Per Second, TPS) 指的是数据库每秒处理的事务数量。它是衡量数据库性能和吞吐量的关键指标。
 
 ## U
 
 ### Uniform Resource Identifier (URI)
 
-统一资源标识符（Uniform Resource Identifier, URI）是用于标识资源的一种标准化格式。更多信息，请参见维基百科的[统一资源标识符](https://zh.wikipedia.org/wiki/统一资源标识符)页面。
+统一资源标识符 (Uniform Resource Identifier, URI) 是用于标识资源的一种标准化格式。更多信息，请参见维基百科的[统一资源标识符](https://zh.wikipedia.org/wiki/统一资源标识符)页面。
 
 ### Universally Unique Identifier (UUID)
 
-通用唯一标识符（Universally Unique Identifier, UUID）是一种 128 位（16 字节）的生成 ID，用于在数据库中唯一地标识记录。更多信息，请参见 [UUID](/best-practices/uuid.md)。
+通用唯一标识符 (Universally Unique Identifier, UUID) 是一种 128 位（16 字节）的生成 ID，用于在数据库中唯一地标识记录。更多信息，请参见 [UUID](/best-practices/uuid.md)。
