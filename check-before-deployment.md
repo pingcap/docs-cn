@@ -40,7 +40,7 @@ aliases: ['/docs-cn/dev/check-before-deployment/']
     parted -s -a optimal /dev/nvme0n1 mklabel gpt -- mkpart primary ext4 1 -1
     ```
 
-    如果 nvme 设备容量较大，可以分为多个分区。
+    如果 NVMe 设备容量较大，可以创建多个分区。
 
     ```bash
     parted -s -a optimal /dev/nvme0n1 mklabel gpt -- mkpart primary ext4 1 2000GB
