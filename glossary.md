@@ -33,6 +33,10 @@ ACID 是指数据库管理系统在写入或更新资料的过程中，为保证
 
 `br` 指代进行 TiDB 备份或恢复时使用的 [br 命令行工具](/br/use-br-command-line-tool.md)。
 
+### Batch Create Table
+
+批量建表 (Batch Create Table) 是在 TiDB v6.0.0 中引入的新功能，此功能默认开启。当需要恢复的数据中带有大量的表（约 50000 张）时，批量建表功能显著提升数据恢复的速度。详情参见[批量建表](/br/br-batch-create-table.md)。
+
 ### Baseline Capturing
 
 自动捕获绑定 (Baseline Capturing) 会对符合捕获条件的查询进行捕获，为符合条件的查询生成相应的绑定。通常用于升级时的[计划回退防护](/sql-plan-management.md#升级时的计划回退防护)。
