@@ -40,13 +40,13 @@ TiDB 路线图展示了 TiDB 未来的计划。随着我们发布长期稳定版
           </li>
           <br />
           <li>
-            <b>自动配置统计信息收集的并行度(GA)</b>
+            <b>自动配置统计信息收集的并行度 (GA)</b>
             <br />TiDB 根据部署的节点数以及硬件规格自动设置统计信息收集的任务并行度和扫描并发度，提升收集速度。
           </li>
           <br />
           <li>
             <b>加速数据库恢复</b>
-            <br />缩短全量数据库恢复和 Point-in-time recovery (PITR) 所需的时间。
+            <br />缩短全量数据库恢复和 Point in Time Recovery (PITR) 所需的时间。
           </li>
           <br />
           <li>
