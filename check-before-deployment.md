@@ -39,7 +39,7 @@ summary: 了解部署 TiDB 前的环境检查操作。
     parted -s -a optimal /dev/nvme0n1 mklabel gpt -- mkpart primary ext4 1 -1
     ```
 
-    如果 nvme 设备容量较大，可以分为多个分区。
+    如果 NVMe 设备容量较大，可以创建多个分区。
 
     ```bash
     parted -s -a optimal /dev/nvme0n1 mklabel gpt -- mkpart primary ext4 1 2000GB
