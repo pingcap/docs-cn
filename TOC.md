@@ -206,7 +206,7 @@
     - TiCDC 数据消费
       - [基于 Avro 的 TiCDC 行数据 Checksum 校验](/ticdc/ticdc-avro-checksum-verification.md)
       - [Storage sink 消费程序编写指引](/ticdc/ticdc-storage-consumer-dev-guide.md)
-    - [兼容性](/ticdc/ticdc-compatibility.md)
+    - [TiCDC 兼容性](/ticdc/ticdc-compatibility.md)
   - [故障处理](/ticdc/troubleshoot-ticdc.md)
   - [常见问题解答](/ticdc/ticdc-faq.md)
   - [术语表](/ticdc/ticdc-glossary.md)
