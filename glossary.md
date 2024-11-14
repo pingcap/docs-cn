@@ -220,7 +220,7 @@ PITR 用于将数据恢复到特定时间点（例如，在意外执行了 `DELE
 
 ### Queries Per Second (QPS)
 
-每秒查询数(Queries Per Second, QPS) 指的是数据库服务每秒处理的查询数量。它是衡量数据库吞吐量的重要性能指标。
+每秒查询数 (Queries Per Second, QPS) 指的是数据库服务每秒处理的查询数量。它是衡量数据库吞吐量的重要性能指标。
 
 ### Quota Limiter
 
