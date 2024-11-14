@@ -61,7 +61,7 @@ cdc cli changefeed list --server=http://127.0.0.1:8300
 
     > **注意：**
     >
-    > 请使用 [`TIDB_CURRENT_TSO()`](/functions-and-operators/tidb-functions.md#tidb_current_tso) 函数获取 TSO，而不是 `NOW()` 等查询当前时间的函数。
+    > 请使用 `TIDB_CURRENT_TSO()` 函数获取 TSO，而不是 `NOW()` 等查询当前时间的函数。
 
     以下示例使用 [`TIDB_PARSE_TSO()`](/functions-and-operators/tidb-functions.md#tidb_parse_tso) 将 TSO 转换为可读的时间格式，便于后续比较：
 
