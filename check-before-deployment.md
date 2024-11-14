@@ -567,11 +567,11 @@ sudo systemctl enable ntpd.service
 
             ```
             
-        > **注意：**
-        >
-        > 已经使用 `noop` 或者 `none` I/O 调度器无需配置 udev 规则。
-
         6. 应用 udev 脚本。
+
+            > **注意：**
+            >
+            > 对于已经使用 `noop` 或 `none` I/O 调度器的设备，无需配置 udev 规则，可以跳过此步骤。
 
             {{< copyable "shell-regular" >}}
 
