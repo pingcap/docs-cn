@@ -11,7 +11,7 @@ summary: 介绍从 Vitess 迁移数据到 TiDB 所使用的工具。
 
 除了以上工具，你还可以使用 [Debezium 的 Vitess 连接器](https://debezium.io/documentation/reference/connectors/vitess.html)。该连接器可以通过 [Kafka Connect](https://kafka.apache.org/documentation/#connect) 或 [Apache Flink](https://nightlies.apache.org/flink/flink-docs-stable/) 将 Vitess 的数据变更同步到 TiDB 中。
 
-由于 Vitess 和 TiDB 都支持 MySQL 协议和 SQL 方言，应用层的代码预计只涉及较少的更改就可以运行在 TiDB 上。但对于一些直接管理分片或实现特定业务逻辑的任务，对应的代码可能涉及较大的更改。为了方便从 Vitess 向 TiDB 迁移数据，TiDB 引入了 [`VITESS_HASH()`](/functions-and-operators/tidb-functions.md) 函数，该函数返回的字符串哈希值与 Vitess 的 HASH 函数兼容。
+由于 Vitess 和 TiDB 都支持 MySQL 协议和 SQL 方言，应用层预计只涉及较少的更改。但对于一些直接管理分片或实现特定业务逻辑的任务，可能涉及较大的更改。为了方便从 Vitess 向 TiDB 迁移数据，TiDB 引入了 [`VITESS_HASH()`](/functions-and-operators/tidb-functions.md) 函数，该函数返回的字符串哈希值与 Vitess 的 HASH 函数兼容。
 
 ## 示例
 
