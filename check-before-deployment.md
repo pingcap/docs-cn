@@ -484,7 +484,7 @@ sudo systemctl enable ntpd.service
             elevator=noop
             ```
 
-        `include=balanced` 表示在现有的 balanced 策略基础上添加操作系统优化配置。
+            `include=balanced` 表示在现有的 balanced 策略基础上添加操作系统优化配置。
 
         3. 应用新的 tuned 策略。
 
