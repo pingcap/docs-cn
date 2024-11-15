@@ -52,6 +52,7 @@ TiDB 版本：7.1.6
     - (dup): release-7.5.2.md > 改进提升> TiFlash - 降低 TiFlash 在开启 TLS 后因更新证书而导致 panic 的概率 [#8535](https://github.com/pingcap/tiflash/issues/8535) @[windtalker](https://github.com/windtalker)
     - (dup): release-7.5.4.md > 改进提升> TiFlash - 改进 JOIN 算子的取消机制，使得 JOIN 算子内部能及时响应取消请求 [#9430](https://github.com/pingcap/tiflash/issues/9430) @[windtalker](https://github.com/windtalker)
     - (dup): release-6.5.11.md > 改进提升> TiFlash - 减少数据高并发读取下的锁冲突，优化短查询性能 [#9125](https://github.com/pingcap/tiflash/issues/9125) @[JinheLin](https://github.com/JinheLin)
+    - 提升聚簇索引的表后台回收过期数据的速度 [#9529](https://github.com/pingcap/tiflash/issues/9529) @[JaySon-Huang](https://github.com/JaySon-Huang)
 
 + Tools
 
@@ -66,6 +67,7 @@ TiDB 版本：7.1.6
         - (dup): release-7.5.3.md > 改进提升> Tools> Backup & Restore (BR) - 去掉除了 `br log restore` 子命令之外其它 `br log` 子命令对 TiDB `domain` 数据结构的载入，降低内存消耗 [#52088](https://github.com/pingcap/tidb/issues/52088) @[Leavrth](https://github.com/Leavrth)
         - (dup): release-7.5.4.md > 改进提升> Tools> Backup & Restore (BR) - 在 TiKV 下载每个 SST 文件之前，新增对 TiKV 是否有足够磁盘空间的检查；如果空间不足，BR 会终止恢复并返回错误 [#17224](https://github.com/tikv/tikv/issues/17224) @[RidRisR](https://github.com/RidRisR)
         - (dup): release-7.5.3.md > 改进提升> Tools> Backup & Restore (BR) - 支持通过环境变量设置阿里云访问身份 [#45551](https://github.com/pingcap/tidb/issues/45551) @[RidRisR](https://github.com/RidRisR)
+        - 减少备份过程中无效日志的打印 None [#55902](https://github.com/pingcap/tidb/issues/55902) @[Leavrth](https://github.com/Leavrth)
 
     + TiCDC
 
@@ -77,7 +79,7 @@ TiDB 版本：7.1.6
 
     + TiDB Data Migration (DM)
 
-        - note [#issue](https://github.com/pingcap/tiflow/issues/${issue-id}) @[贡献者 GitHub ID](https://github.com/${github-id})
+- 升级 go-mysql 以支持更长的密码 [[#11603](https://github.com/pingcap/tiflow/pull/11603)](https://github.com/pingcap/tiflow/pull/11603) @[[fishiu](https://github.com/fishiu)](https://github.com/fishiu)
         - note [#issue](https://github.com/pingcap/tiflow/issues/${issue-id}) @[贡献者 GitHub ID](https://github.com/${github-id})
 
     + TiDB Lightning
@@ -184,10 +186,23 @@ TiDB 版本：7.1.6
     - (dup): release-7.5.4.md > 错误修复> TiDB - 修复添加索引时重试导致数据索引不一致的问题 [#55808](https://github.com/pingcap/tidb/issues/55808) @[lance6716](https://github.com/lance6716)
     - (dup): release-6.5.10.md > 错误修复> TiDB - 修复 `UPDATE` 语句可能因为列的唯一 ID 不稳定导致查询报错的问题 [#53236](https://github.com/pingcap/tidb/issues/53236) @[winoros](https://github.com/winoros)
     - (dup): release-7.5.3.md > 错误修复> TiDB - 修复在事务内的语句被 OOM 终止之后，如果在当前事务内继续执行下一条语句，可能报错 `Trying to start aggressive locking while it's already started` 并发生 panic 的问题 [#53540](https://github.com/pingcap/tidb/issues/53540) @[MyonKeminta](https://github.com/MyonKeminta)
-
+    - 修复基于任务 ID `RECOVER TABLE` 可能导致的 panic 问题 [[#55113](https://github.com/pingcap/tidb/issues/55113)](https://github.com/pingcap/tidb/issues/55113) @[[crazycs520](https://github.com/crazycs520)](https://github.com/crazycs520)
+    - 修复分布式执行框架下 `ADD INDEX` 可能在 PD 修改成员后失败 [[#55937](https://github.com/pingcap/tidb/issues/55937)](https://github.com/pingcap/tidb/issues/55937) @[[lance6716](https://github.com/lance6716)](https://github.com/lance6716)
+    - 修复可能同时存在两个 ddl owner 的问题 [[#54689](https://github.com/pingcap/tidb/issues/54689)](https://github.com/pingcap/tidb/issues/54689) @[[joccau](https://github.com/joccau)](https://github.com/joccau)
+    - 修复 `ADD INDEX` 过程中 TiDB 重启导致的添加索引失败问题 [[#52805](https://github.com/pingcap/tidb/issues/52805)](https://github.com/pingcap/tidb/issues/52805) @[[tangenta](https://github.com/tangenta)](https://github.com/tangenta)
+    - 修复 `LOAD DATA ... REPLACE INTO` 导致的数据不一致问题 [[#56408](https://github.com/pingcap/tidb/issues/56408)](https://github.com/pingcap/tidb/issues/56408) @[[fzzf678](https://github.com/fzzf678)](https://github.com/fzzf678)
+    - 修复 `IMPORT INTO` 后 AUTO_INCREMENT 字段没有正确设置的问题 [[#56476](https://github.com/pingcap/tidb/issues/56476)](https://github.com/pingcap/tidb/issues/56476) @[[D3Hunter](https://github.com/D3Hunter)](https://github.com/D3Hunter)
+    - 增加在从检查点恢复前的本地文件存在性校验 [[#53009](https://github.com/pingcap/tidb/issues/53009)](https://github.com/pingcap/tidb/issues/53009) @[[lance6716](https://github.com/lance6716)](https://github.com/lance6716)
+    - 修复 DM schema tracker 无法创建超过默认长度索引的错误 [[#55138](https://github.com/pingcap/tidb/issues/55138)](https://github.com/pingcap/tidb/issues/55138) @[[lance6716](https://github.com/lance6716)](https://github.com/lance6716)
+    - 修复 `ALTER TABLE` 没有正确处理 AUTO_INCREMENT 字段的问题 [[#47899](https://github.com/pingcap/tidb/issues/47899)](https://github.com/pingcap/tidb/issues/47899) @[[D3Hunter](https://github.com/D3Hunter)](https://github.com/D3Hunter)
+    - 修复未释放的 session 资源可能导致的内存泄漏问题 [[#56271](https://github.com/pingcap/tidb/issues/56271)](https://github.com/pingcap/tidb/issues/56271) @[[lance6716](https://github.com/lance6716)](https://github.com/lance6716)
+    - 修复浮点数/整数溢出，导致影响 plan cache 问题 [#46538](https://github.com/pingcap/tidb/issues/46538) @[hawkingrei](https://github.com/hawkingrei)
+    - 修复 `IndexLookUp` 算子部分内存不被追踪的问题 [#56440](https://github.com/pingcap/tidb/issues/56440) @[wshwsh12](https://github.com/wshwsh12)
+    - 修复 stale read 中未对读操作的 ts 进行严格的校验，导致 TSO 和真实物理时间存在偏移时有小概率影响事务一致性的问题 [#56809](https://github.com/pingcap/tidb/issues/56809) @[MyonKeminta](https://github.com/MyonKeminta)
 + TiKV
 
-    - note [#issue](https://github.com/tikv/tikv/issues/${issue-id}) @[贡献者 GitHub ID](https://github.com/${github-id})
+- 修复 TiKV 重启后 TiDB Lightning 导入的 SST 文件丢失问题 [#15912](https://github.com/tikv/tikv/issues/15912) @[lance6716](https://github.com/lance6716)
+- 修复取消 `IMPORT INTO` 任务可能导致的 TiKV 崩溃问题 [#15053](https://github.com/tikv/tikv/issues/15053) @[lance6716](https://github.com/lance6716)
     - note [#issue](https://github.com/tikv/tikv/issues/${issue-id}) @[贡献者 GitHub ID](https://github.com/${github-id})
     - (dup): release-7.5.4.md > 错误修复> TiKV - 修复早期版本（早于 v7.1）和之后的版本的 bloom filter 无法兼容的问题 [#17272](https://github.com/tikv/tikv/issues/17272) @[v01dstar](https://github.com/v01dstar)
     - (dup): release-6.5.11.md > 错误修复> TiKV - 修复设置 gRPC 消息的压缩算法 (`grpc-compression-type`) 对 TiKV 发送到 TiDB 的消息不起作用的问题 [#17176](https://github.com/tikv/tikv/issues/17176) @[ekexium](https://github.com/ekexium)
@@ -204,7 +219,12 @@ TiDB 版本：7.1.6
 
 + PD
 
-    - note [#issue](https://github.com/tikv/pd/issues/${issue-id}) @[贡献者 GitHub ID](https://github.com/${github-id})
+    - 修复 label 统计中内存泄露的问题 [#8700](https://github.com/tikv/pd/issues/8700) @[lhy1024](https://github.com/lhy1024)
+    - 修复 resource group 日志打印过多的问题 [#8159](https://github.com/tikv/pd/issues/8159) @[nolouch](https://github.com/nolouch)
+    - 修复频繁创建随机数生成器导致的性能抖动问题 [#8674](https://github.com/tikv/pd/issues/8674) @[rleungx](https://github.com/rleungx)
+    - 修复 Region 统计中的内存泄露问题 [#8710](https://github.com/tikv/pd/issues/8710) @[rleungx](https://github.com/rleungx)
+    - 修复热点缓存中可能存在的内存泄露问题 [#8698](https://github.com/tikv/pd/issues/8698) @[lhy1024](https://github.com/lhy1024)
+    - 修复 evict leader 调度器在使用相同 Store ID 创建两次后无法正常工作的问题 [#8756](https://github.com/tikv/pd/issues/8756) @[okJiang](https://github.com/okJiang)
     - note [#issue](https://github.com/tikv/pd/issues/${issue-id}) @[贡献者 GitHub ID](https://github.com/${github-id})
     - (dup): release-6.5.11.md > 错误修复> PD - 修复设置 `replication.strictly-match-label` 为 `true` 导致 TiFlash 启动失败的问题 [#8480](https://github.com/tikv/pd/issues/8480) @[rleungx](https://github.com/rleungx)
     - (dup): release-7.5.2.md > 错误修复> PD - 修复通过配置文件更改日志级别不生效的问题 [#8117](https://github.com/tikv/pd/issues/8117) @[rleungx](https://github.com/rleungx)
@@ -243,6 +263,9 @@ TiDB 版本：7.1.6
     - (dup): release-6.5.10.md > 错误修复> TiFlash - 修复函数 `SUBSTRING_INDEX()` 可能导致 TiFlash Crash 的问题 [#9116](https://github.com/pingcap/tiflash/issues/9116) @[wshwsh12](https://github.com/wshwsh12)
     - (dup): release-6.5.11.md > 错误修复> TiFlash - 修复当集群中长时间频繁执行 `EXCHANGE PARTITION` 和 `DROP TABLE` 操作时，可能导致 TiFlash 表元信息同步缓慢以及查询性能下降的问题 [#9227](https://github.com/pingcap/tiflash/issues/9227) @[JaySon-Huang](https://github.com/JaySon-Huang)
     - (dup): release-6.5.10.md > 错误修复> TiFlash - 修复 key range 为空的查询导致 TiFlash 上没有正确生成读取任务，从而可能阻塞 TiFlash 查询的问题 [#9108](https://github.com/pingcap/tiflash/issues/9108) @[JinheLin](https://github.com/JinheLin)
+    - 修复特定情况下使用 `CAST AS DECIMAL` 函数，结果正负号错误的问题 [#9301](https://github.com/pingcap/tiflash/issues/9301) @[guo-shaoge](https://github.com/guo-shaoge)
+    - 修复 `SUBSTRING` 函数 不支持部分整数类型的 `POS`，`LENGTH` 参数问题 [#9473](https://github.com/pingcap/tiflash/issues/9473) @[gengliqi](https://github.com/gengliqi)
+    - 修复对存在大量数据的表执行 `DROP TABLE` 之后，可能导致 TiFlash OOM 的问题 [#9437](https://github.com/pingcap/tiflash/issues/9437) @[JaySon-Huang](https://github.com/JaySon-Huang)
 
 + Tools
 
@@ -264,6 +287,7 @@ TiDB 版本：7.1.6
         - (dup): release-6.5.10.md > 错误修复> Tools> Backup & Restore (BR) - 修复在 BR 恢复数据或 TiDB Lightning 物理导入模式下导入数据时，从 PD 获取到的 Region 没有 Leader 的问题 [#51124](https://github.com/pingcap/tidb/issues/51124) [#50501](https://github.com/pingcap/tidb/issues/50501) @[Leavrth](https://github.com/Leavrth)
         - (dup): release-6.5.10.md > 错误修复> Tools> Backup & Restore (BR) - 修复 PD leader 发生迁移可能导致恢复数据时 panic 的问题 [#53724](https://github.com/pingcap/tidb/issues/53724) @[Leavrth](https://github.com/Leavrth)
         - (dup): release-6.5.10.md > 错误修复> Tools> Backup & Restore (BR) - 修复日志备份在暂停、停止、再重建任务操作后，虽然任务状态显示正常，但 Checkpoint 不推进的问题 [#53047](https://github.com/pingcap/tidb/issues/53047) @[RidRisR](https://github.com/RidRisR)
+        - 修复日志备份因为不能及时解决锁卡住 Checkpoint 推进的问题 [#57134]([https://github.com/pingcap/tidb/issues/57134] @[3pointer]([https://github.com/3pointer)
 
     + TiCDC
 
@@ -289,7 +313,8 @@ TiDB 版本：7.1.6
 
     + TiDB Lightning
 
-        - note [#issue](https://github.com/pingcap/tidb/issues/${issue-id}) @[贡献者 GitHub ID](https://github.com/${github-id})
+        - 修改对于写入 RPC 请求错误的处理逻辑 [#47694](https://github.com/pingcap/tidb/issues/47694) @[lance6716](https://github.com/lance6716)
+        - 优化 TiDB Lightning 消息接收大小限制，解决因 TiKV 发送的消息过大而接收失败 [#56114](https://github.com/pingcap/tidb/issues/56114) @[fishiu](https://github.com/fishiu)
         - note [#issue](https://github.com/pingcap/tidb/issues/${issue-id}) @[贡献者 GitHub ID](https://github.com/${github-id})
         - (dup): release-6.5.11.md > 错误修复> Tools> TiDB Lightning - 修复在关闭 TiDB Lightning 的导入模式后进行数据导入时，TiKV 数据可能损坏的问题 [#15003](https://github.com/tikv/tikv/issues/15003) [#47694](https://github.com/pingcap/tidb/issues/47694) @[lance6716](https://github.com/lance6716)
         - (dup): release-6.5.11.md > 错误修复> Tools> TiDB Lightning - 修复使用 TiDB Lightning 导入数据时报事务冲突的问题 [#49826](https://github.com/pingcap/tidb/issues/49826) @[lance6716](https://github.com/lance6716)
