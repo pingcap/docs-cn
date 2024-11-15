@@ -383,8 +383,6 @@ sudo systemctl enable ntpd.service
     > `noop [deadline] cfq` 表示磁盘的 I/O 调度器使用 `deadline`，需要进行修改。
     
     如果数据目录使用 NVMe 设备，可以执行以下命令查看 I/O 调度器：
-   
-    {{< copyable "shell-regular" >}}
 
     ```bash
     cat /sys/block/nvme[01]*/queue/scheduler
@@ -414,7 +412,7 @@ sudo systemctl enable ntpd.service
 
     > **注意：**
     >
-    > - 如果多个磁盘都分配了数据目录，需要多次执行以上命令，记录所有磁盘各自的唯一标识。
+    > - 如果多个磁盘都分配了数据目录，需要为每个磁盘都执行以上命令，记录所有磁盘各自的唯一标识。
     > - 已经使用 `noop` 或者 `none` 调度器的设备不需要记录标识，无需配置 udev 规则和 tuned 策略中的相关内容。
 
 4. 执行以下命令查看 cpufreq 模块选用的节能策略。
