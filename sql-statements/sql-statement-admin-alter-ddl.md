@@ -1,31 +1,34 @@
 ---
 title: ADMIN ALTER DDL JOBS
-summary: TiDB 数据库中 ADMIN ALTER DDL JOBS 的使用概况。
+summary: TiDB 数据库中 `ADMIN ALTER DDL JOBS` 的使用概况。
 ---
 
 # ADMIN ALTER DDL JOBS
 
-`ADMIN ALTER DDL JOBS` 语句可用于修改单个当前正在运行的 DDL 作业相关的参数。例如：
+`ADMIN ALTER DDL JOBS` 语句可用于修改单个正在运行的 DDL 作业相关的参数。例如：
 
 ```sql
 ADMIN ALTER DDL JOBS 101 THREAD = 8;
 ```
 
-其中 `101` 表示 DDL 作业 ID，该 ID 可以通过查询 [`ADMIN SHOW DDL JOBS`](/sql-statements/sql-statement-admin-show-ddl.md) 获得。`THREAD` 表示当前 DDL 作业的并发度，其初始值由系统变量 [`tidb_ddl_reorg_worker_cnt`](/system-variables.md#tidb_ddl_reorg_worker_cnt) 设置。
+其中 `101` 表示 DDL 作业的 ID，该 ID 可以通过查询 [`ADMIN SHOW DDL JOBS`](/sql-statements/sql-statement-admin-show-ddl.md) 获得。`THREAD` 表示当前 DDL 作业的并发度，其初始值由系统变量 [`tidb_ddl_reorg_worker_cnt`](/system-variables.md#tidb_ddl_reorg_worker_cnt) 设置。
 
 目前支持 `ADMIN ALTER DDL JOBS` 的 DDL 作业类型包括：`ADD INDEX`、`MODIFY COLUMN` 和 `REORGANIZE PARTITION`。对于其他 DDL 作业类型，执行 `ADMIN ALTER DDL JOBS` 会报 `unsupported admin alter ddl jobs config` 的错误。
 
 以下是不同 DDL 作业类型支持的各项参数，以及它们对应的系统变量：
+
 - `ADD INDEX`: 
-  - `THREAD`: 并发度，初始值由系统变量 `tidb_ddl_reorg_worker_cnt` 设置。
-  - `BATCH_SIZE`: 批大小，初始值由系统变量 [`tidb_ddl_reorg_batch_size`](/system-variables.md#tidb_ddl_reorg_batch_size) 设置。
-  - `MAX_WRITE_SPEED`: 向每个 TiKV 导入索引记录时的最大带宽限制，初始值由系统变量  [`tidb_ddl_reorg_max_write_speed`](/system-variables.md#tidb_ddl_reorg_max_write_speed) 设置。
+    - `THREAD`: 并发度，初始值由系统变量 `tidb_ddl_reorg_worker_cnt` 设置。
+    - `BATCH_SIZE`: 批大小，初始值由系统变量 [`tidb_ddl_reorg_batch_size`](/system-variables.md#tidb_ddl_reorg_batch_size) 设置。
+    - `MAX_WRITE_SPEED`: 向每个 TiKV 导入索引记录时的最大带宽限制，初始值由系统变量 [`tidb_ddl_reorg_max_write_speed`](/system-variables.md#tidb_ddl_reorg_max_write_speed) 设置。
+
 - `MODIFY COLUMN`:
-  - `THREAD`: 并发度，初始值由系统变量 `tidb_ddl_reorg_worker_cnt` 设置。
-  - `BATCH_SIZE`: 批大小，初始值由系统变量 `tidb_ddl_reorg_batch_size` 设置。
+    - `THREAD`: 并发度，初始值由系统变量 `tidb_ddl_reorg_worker_cnt` 设置。
+    - `BATCH_SIZE`: 批大小，初始值由系统变量 `tidb_ddl_reorg_batch_size` 设置。
+
 - `REORGANIZE PARTITION`:
-  - `THREAD`: 并发度，初始值由系统变量 `tidb_ddl_reorg_worker_cnt` 设置。
-  - `BATCH_SIZE`: 批大小，初始值由系统变量 `tidb_ddl_reorg_batch_size` 设置。
+    - `THREAD`: 并发度，初始值由系统变量 `tidb_ddl_reorg_worker_cnt` 设置。
+    - `BATCH_SIZE`: 批大小，初始值由系统变量 `tidb_ddl_reorg_batch_size` 设置。
 
 `ADMIN ALTER DDL JOBS` 仅对正在运行的 DDL 作业生效。如果 DDL 作业不存在或者已经结束，执行该语句会报 `ddl job ? is not running` 的错误。
 
