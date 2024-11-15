@@ -30,6 +30,8 @@ ADMIN ALTER DDL JOBS 101 THREAD = 8;
     - `THREAD`: 并发度，初始值由系统变量 `tidb_ddl_reorg_worker_cnt` 设置。
     - `BATCH_SIZE`: 批大小，初始值由系统变量 `tidb_ddl_reorg_batch_size` 设置。
 
+参数的取值范围和系统变量的保持一致。
+
 `ADMIN ALTER DDL JOBS` 仅对正在运行的 DDL 作业生效。如果 DDL 作业不存在或者已经结束，执行该语句会报 `ddl job ? is not running` 的错误。
 
 以下是部分语句示例：
