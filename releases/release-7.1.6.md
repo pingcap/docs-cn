@@ -189,8 +189,11 @@ TiDB 版本：7.1.6
     - 修复从 6.5 升级的集群中已有 TTL 任务执行意外频繁的问题 [#56539](https://github.com/pingcap/tidb/issues/56539) @[lcwangchao](https://github.com/lcwangchao)
     - cast 函数支持显式设置字符集 [#55724](https://github.com/pingcap/tidb/issues/55724) @[Defined2014](https://github.com/Defined2014)
 
-+ TiKV <!--tw@qiancai: 2 notes-->
-
++ TiKV <!--tw@qiancai: 6 notes-->
+    - 添加 RawKvMaxTimestampNotSynced 错误，并将信息设置为 errorpb.Error.max_ts_not_synced 以提供更多信息。针对 must_raw_put 的 max_ts_not_synced 错误重试 [#16789](https://github.com/tikv/tikv/issues/16789) @[pingyu](https://github.com/pingyu)
+    - 修复 drop 大型表或分区后可能出现的流量控制问题 [#17304](https://github.com/tikv/tikv/issues/17304) @[SpadeA-Tang](https://github.com/SpadeA-Tang)
+    - 解决读线程在从 raft-engine 中的 “Memtable” 读取陈旧索引时遇到 panic 的问题 [#17383](https://github.com/tikv/tikv/issues/17383) @[LykxSassinator](https://github.com/LykxSassinator)
+    - 修正 CDC 和日志备份没有使用 advance-ts-interval 来限制 check_leader 超时的问题[#17107](https://github.com/tikv/tikv/issues/17107) @[SpadeA-Tang](https://github.com/SpadeA-Tang)
     - 修复 TiKV 重启后 TiDB Lightning 导入的 SST 文件丢失问题 [#15912](https://github.com/tikv/tikv/issues/15912) @[lance6716](https://github.com/lance6716)
     - 修复取消 `IMPORT INTO` 任务可能导致的 TiKV 崩溃问题 [#15053](https://github.com/tikv/tikv/issues/15053) @[lance6716](https://github.com/lance6716)
     - (dup): release-7.5.4.md > 错误修复> TiKV - 修复早期版本（早于 v7.1）和之后的版本的 bloom filter 无法兼容的问题 [#17272](https://github.com/tikv/tikv/issues/17272) @[v01dstar](https://github.com/v01dstar)
