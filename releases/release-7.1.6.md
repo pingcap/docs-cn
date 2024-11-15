@@ -28,7 +28,6 @@ TiDB 版本：7.1.6
     - (dup): release-7.5.2.md > 改进提升> TiDB - 改进 sync load 的性能，减少加载统计信息的延时 [#52994](https://github.com/pingcap/tidb/issues/52294) [hawkingrei](https://github.com/hawkingrei)
 
 + TiKV <!--tw@hfxsd: 1 note>
-- 当一个 TiKV 实例中有大量 Region 时，可减少大量内存使用量 [#16229](https://github.com/tikv/tikv/issues/16229) @[SpadeA-Tang](https://github.com/SpadeA-Tang)
     - (dup): release-6.5.9.md > 改进提升> TiKV - 增加 peer 和 store 消息的 slow log [#16600](https://github.com/tikv/tikv/issues/16600) @[Connor1996](https://github.com/Connor1996)
     - (dup): release-6.5.11.md > 改进提升> TiKV - 优化存在大量 DELETE 版本时 RocksDB 的 compaction 触发机制，以加快磁盘空间回收 [#17269](https://github.com/tikv/tikv/issues/17269) @[AndreMouche](https://github.com/AndreMouche)
     - (dup): release-7.5.4.md > 改进提升> TiKV - 优化 TiKV 重启时由于需要等待应用之前的日志而造成访问延时抖动的情况，提升了 TiKV 的稳定性 [#15874](https://github.com/tikv/tikv/issues/15874) @[LykxSassinator](https://github.com/LykxSassinator)
@@ -172,22 +171,22 @@ TiDB 版本：7.1.6
     - 修复可能同时存在两个 ddl owner 的问题 [[#54689](https://github.com/pingcap/tidb/issues/54689)](https://github.com/pingcap/tidb/issues/54689) @[[joccau](https://github.com/joccau)](https://github.com/joccau)
     - 修复 `ADD INDEX` 过程中 TiDB 重启导致的添加索引失败问题 [[#52805](https://github.com/pingcap/tidb/issues/52805)](https://github.com/pingcap/tidb/issues/52805) @[[tangenta](https://github.com/tangenta)](https://github.com/tangenta)
     - 修复 `LOAD DATA ... REPLACE INTO` 导致的数据不一致问题 [[#56408](https://github.com/pingcap/tidb/issues/56408)](https://github.com/pingcap/tidb/issues/56408) @[[fzzf678](https://github.com/fzzf678)](https://github.com/fzzf678)
-    - 修复 `IMPORT INTO` 后 AUTO_INCREMENT 字段没有正确设置的问题 [[#56476](https://github.com/pingcap/tidb/issues/56476)](https://github.com/pingcap/tidb/issues/56476) @[[D3Hunter](https://github.com/D3Hunter)](https://github.com/D3Hunter) <!--tw@hfxsd: the following 7 notes-->
-    - 增加在从检查点恢复前的本地文件存在性校验 [[#53009](https://github.com/pingcap/tidb/issues/53009)](https://github.com/pingcap/tidb/issues/53009) @[[lance6716](https://github.com/lance6716)](https://github.com/lance6716)
-    - 修复 DM schema tracker 无法创建超过默认长度索引的错误 [[#55138](https://github.com/pingcap/tidb/issues/55138)](https://github.com/pingcap/tidb/issues/55138) @[[lance6716](https://github.com/lance6716)](https://github.com/lance6716)
-    - 修复 `ALTER TABLE` 没有正确处理 AUTO_INCREMENT 字段的问题 [[#47899](https://github.com/pingcap/tidb/issues/47899)](https://github.com/pingcap/tidb/issues/47899) @[[D3Hunter](https://github.com/D3Hunter)](https://github.com/D3Hunter)
-    - 修复未释放的 session 资源可能导致的内存泄漏问题 [[#56271](https://github.com/pingcap/tidb/issues/56271)](https://github.com/pingcap/tidb/issues/56271) @[[lance6716](https://github.com/lance6716)](https://github.com/lance6716)
-    - 修复浮点数/整数溢出，导致影响 plan cache 问题 [#46538](https://github.com/pingcap/tidb/issues/46538) @[hawkingrei](https://github.com/hawkingrei)
-    - 修复 `IndexLookUp` 算子部分内存不被追踪的问题 [#56440](https://github.com/pingcap/tidb/issues/56440) @[wshwsh12](https://github.com/wshwsh12)
-    - 修复 stale read 中未对读操作的 ts 进行严格的校验，导致 TSO 和真实物理时间存在偏移时有小概率影响事务一致性的问题 [#56809](https://github.com/pingcap/tidb/issues/56809) @[MyonKeminta](https://github.com/MyonKeminta)
+    - 修复通过 `IMPORT INTO` 导入数据后，`AUTO_INCREMENT` 字段没有正确设置的问题 [#56476](https://github.com/pingcap/tidb/issues/56476) @[D3Hunter](https://github.com/D3Hunter) <!--tw@hfxsd: the following 15 notes-->
+    - 修复从检查点恢复之前，没有检查是否存在本地文件的问题 [#53009](https://github.com/pingcap/tidb/issues/53009) @[lance6716](https://github.com/lance6716)
+    - 修复 DM schema tracker 无法创建超过默认长度索引的错误 [#55138](https://github.com/pingcap/tidb/issues/55138) @[lance6716](https://github.com/lance6716)
+    - 修复 `ALTER TABLE` 没有正确处理 `AUTO_INCREMENT` 字段的问题 [#47899](https://github.com/pingcap/tidb/issues/47899) @[D3Hunter](https://github.com/D3Hunter)
+    - 修复未释放的会话资源可能导致的内存泄漏问题 [#56271](https://github.com/pingcap/tidb/issues/56271) @[lance6716](https://github.com/lance6716)
+    - 修复浮点数或整数溢出影响计划缓存的问题 [#46538](https://github.com/pingcap/tidb/issues/46538) @[hawkingrei](https://github.com/hawkingrei)
+    - 修复 `IndexLookUp` 算子部分内存未被追踪的问题 [#56440](https://github.com/pingcap/tidb/issues/56440) @[wshwsh12](https://github.com/wshwsh12)
+    - 修复 stale read 中未对读操作的 ts 进行严格校验，导致 TSO 和真实物理时间存在偏移时，有小概率影响事务一致性的问题 [#56809](https://github.com/pingcap/tidb/issues/56809) @[MyonKeminta](https://github.com/MyonKeminta)
     - 修复 TTL 在未选用 TiKV 作为存储引擎时可能失败的问题 [#56402](https://github.com/pingcap/tidb/issues/56402) @[YangKeao](https://github.com/YangKeao)
     - 修复写冲突时 TTL 任务可能无法取消的问题 [#56422](https://github.com/pingcap/tidb/issues/56422) @[YangKeao](https://github.com/YangKeao)
-    - 插入科学计数法形式的超大数字时报错，与 MySQL 统一 [#47787](https://github.com/pingcap/tidb/issues/47787) @[lcwangchao](https://github.com/lcwangchao)
-    - 取消 TTL 任务时强制杀死对应 SQL [#56511](https://github.com/pingcap/tidb/issues/56511) @[lcwangchao](https://github.com/lcwangchao)
-    - 修复 INSERT .. ON DUPLICATE KEY 语句 mysql_insert_id 错误 [#55965](https://github.com/pingcap/tidb/issues/55965) @[tiancaiamao](https://github.com/tiancaiamao)
-    - 修复 SQL 无法构建执行计划时，审计日志过滤不生效的错误 [#50988](https://github.com/pingcap/tidb/issues/50988) @[CbcWestwolf](https://github.com/CbcWestwolf)
-    - 修复从 6.5 升级的集群中已有 TTL 任务执行意外频繁的问题 [#56539](https://github.com/pingcap/tidb/issues/56539) @[lcwangchao](https://github.com/lcwangchao)
-    - cast 函数支持显式设置字符集 [#55724](https://github.com/pingcap/tidb/issues/55724) @[Defined2014](https://github.com/Defined2014)
+    - 修复插入科学计数法形式的超大数字时报错 `ERROR 1264 (22003) `的问题，使其与 MySQL 保持一致 [#47787](https://github.com/pingcap/tidb/issues/47787) @[lcwangchao](https://github.com/lcwangchao)
+    - 修复取消 TTL 任务时，没有强制 Kill 对应 SQL 的问题 [#56511](https://github.com/pingcap/tidb/issues/56511) @[lcwangchao](https://github.com/lcwangchao)
+    - 修复 `INSERT .. ON DUPLICATE KEY` 语句不兼容 `mysql_insert_id` 的问题 [#55965](https://github.com/pingcap/tidb/issues/55965) @[tiancaiamao](https://github.com/tiancaiamao)
+    - 修复 SQL 无法构建执行计划时，审计日志过滤不生效的问题 [#50988](https://github.com/pingcap/tidb/issues/50988) @[CbcWestwolf](https://github.com/CbcWestwolf)
+    - 修复从 v6.5 升级到 v7.5 或更高版本的集群中已有 TTL 任务执行意外频繁的问题 [#56539](https://github.com/pingcap/tidb/issues/56539) @[lcwangchao](https://github.com/lcwangchao)
+    - 修复由于 `CAST` 函数不支持显式设置字符集导致报错的问题 [#55677](https://github.com/pingcap/tidb/issues/55677) @[Defined2014](https://github.com/Defined2014)
 
 + TiKV <!--tw@qiancai: 6 notes-->
     - 添加 RawKvMaxTimestampNotSynced 错误，并将信息设置为 errorpb.Error.max_ts_not_synced 以提供更多信息。针对 must_raw_put 的 max_ts_not_synced 错误重试 [#16789](https://github.com/tikv/tikv/issues/16789) @[pingyu](https://github.com/pingyu)
@@ -275,7 +274,7 @@ TiDB 版本：7.1.6
         - (dup): release-6.5.10.md > 错误修复> Tools> Backup & Restore (BR) - 修复在 BR 恢复数据或 TiDB Lightning 物理导入模式下导入数据时，从 PD 获取到的 Region 没有 Leader 的问题 [#51124](https://github.com/pingcap/tidb/issues/51124) [#50501](https://github.com/pingcap/tidb/issues/50501) @[Leavrth](https://github.com/Leavrth)
         - (dup): release-6.5.10.md > 错误修复> Tools> Backup & Restore (BR) - 修复 PD leader 发生迁移可能导致恢复数据时 panic 的问题 [#53724](https://github.com/pingcap/tidb/issues/53724) @[Leavrth](https://github.com/Leavrth)
         - (dup): release-6.5.10.md > 错误修复> Tools> Backup & Restore (BR) - 修复日志备份在暂停、停止、再重建任务操作后，虽然任务状态显示正常，但 Checkpoint 不推进的问题 [#53047](https://github.com/pingcap/tidb/issues/53047) @[RidRisR](https://github.com/RidRisR)
-        - 修复日志备份因为不能及时解决锁卡住 Checkpoint 推进的问题 [#57134]([https://github.com/pingcap/tidb/issues/57134] @[3pointer]([https://github.com/3pointer)
+        - 修复日志备份不能及时解决残留锁导致 Checkpoint 无法推进的问题 [#57134](https://github.com/pingcap/tidb/issues/57134) @[3pointer](https://github.com/3pointer)
 
     + TiCDC
 
