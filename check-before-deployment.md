@@ -381,7 +381,7 @@ sudo systemctl enable ntpd.service
     > **注意：**
     >
     > `noop [deadline] cfq` 表示磁盘的 I/O 调度器使用 `deadline`，需要进行修改。
-    
+
     如果数据目录使用 NVMe 设备，可以执行以下命令查看 I/O 调度器：
 
     ```bash
@@ -392,11 +392,11 @@ sudo systemctl enable ntpd.service
     [none] mq-deadline kyber bfq
     [none] mq-deadline kyber bfq
     ```
-    
+
     > **注意：**
     >
     > `[none] mq-deadline kyber bfq` 表示 NVMe 设备的 I/O 调度器使用 `none`，不需要进行修改。
-    
+
 3. 执行以下命令查看磁盘的唯一标识 `ID_SERIAL`。
 
     {{< copyable "shell-regular" >}}
@@ -529,7 +529,7 @@ sudo systemctl enable ntpd.service
             > **注意：**
             >
             > 你也可以在 `--update-kernel` 后指定实际的版本号，例如：`--update-kernel /boot/vmlinuz-3.10.0-957.el7.x86_64`。
-            
+
         3. 执行 `grubby --info` 命令查看修改后的默认内核配置。
 
             {{< copyable "shell-regular" >}}
@@ -573,7 +573,7 @@ sudo systemctl enable ntpd.service
             ACTION=="add|change", SUBSYSTEM=="block", ENV{ID_SERIAL}=="36d0946606d79f90025f3e09a0c1f9e81", ATTR{queue/scheduler}="noop"
 
             ```
-            
+
         6. 应用 udev 脚本。
 
             > **注意：**
