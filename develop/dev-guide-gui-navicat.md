@@ -5,12 +5,7 @@ summary: 了解如何使用 Navicat 连接到 TiDB。
 
 # 使用 Navicat 连接到 TiDB
 
-TiDB 是一个兼容 MySQL 的数据库。[Navicat](https://www.navicat.com) 是为数据库用户提供的 GUI 工具集。本教程使用 [Navicat for MySQL](https://www.navicat.com/en/products/navicat-for-mysql) 工具连接 TiDB。
-
-> **警告**
->
-> - 尽管由于 Navicat 兼容 MySQL，你可以使用 Navicat 连接到 TiDB，但 Navicat 并不完全支持 TiDB。由于 Navicat 将 TiDB 视为 MySQL，因此在使用过程中可能会遇到一些问题。[Navicat 用户管理兼容性](https://github.com/pingcap/tidb/issues/45154) 为一个已知的问题。更多 Navicat 和 TiDB 之间的兼容性问题，参考 [TiDB GitHub issue 页面](https://github.com/pingcap/tidb/issues?q=is%3Aissue+navicat+is%3Aopen)。
-> - 建议使用其它 TiDB 完全支持的 GUI 工具进行连接，例如 DataGrip，DBeaver 以及 VS Code SQLTools。TiDB 完全支持的 GUI 工具的完整列表，参考 [TiDB 支持的第三方工具](/develop/dev-guide-third-party-support.md#gui)。
+TiDB 是一个兼容 MySQL 的数据库。[Navicat](https://www.navicat.com) 是为数据库用户提供的 GUI 工具集。本教程使用 [Navicat Premium](https://www.navicat.com/en/products/navicat-premium) 工具连接 TiDB。
 
 在本文档中，你可以学习如何使用 Navicat 连接到 TiDB 集群。
 
@@ -22,8 +17,8 @@ TiDB 是一个兼容 MySQL 的数据库。[Navicat](https://www.navicat.com) 是
 
 为了能够顺利完成本文中的操作，你需要：
 
-- [Navicat for MySQL](https://www.navicat.com/en/download/navicat-for-mysql) **16.3.2** 或以上版本。
-- 一个 Navicat for MySQL 的付费账号。
+- [Navicat Premium](https://www.navicat.com/en/products/navicat-premium) **17.1.6** 或以上版本。
+- 一个 Navicat Premium 的付费账号。
 - 准备一个 TiDB 集群。
 
 **如果你还没有 TiDB 集群，可以按如下方式创建一个：**
@@ -55,11 +50,11 @@ TiDB 是一个兼容 MySQL 的数据库。[Navicat](https://www.navicat.com) 是
     >
     > 如果你之前已经生成过密码，可以直接使用原密码，或点击 **Reset Password** 重新生成密码。
 
-5. 启动 Navicat for MySQL，点击左上角的 **Connection**，并从下拉列表中选择 **MySQL**。
+5. 启动 Navicat Premium，点击左上角的 **Connection**，在 **Vendor Filter** 中勾选 **PingCAP**，并双击右侧面板中的 **TiDB**。
 
-    ![Navicat: add new connection](/media/develop/navicat-add-new-connection.jpg)
+    ![Navicat: add new connection](/media/develop/navicat-premium-add-new-connection.png)
 
-6. 在 **New Connection (MySQL)** 对话框中，配置以下连接参数：
+6. 在 **New Connection (TiDB)** 对话框中，配置以下连接参数：
 
     - **Connection Name**：为该连接指定一个有意义的名称。
     - **Host**：输入从 TiDB Cloud 连接对话框中的得到的 `HOST` 参数。
@@ -67,15 +62,15 @@ TiDB 是一个兼容 MySQL 的数据库。[Navicat](https://www.navicat.com) 是
     - **User Name**：输入从 TiDB Cloud 连接对话框中的得到的 `USERNAME` 参数。
     - **Password**：输入 TiDB Serverless 集群的密码。
 
-    ![Navicat: configure connection general panel for TiDB Serverless](/media/develop/navicat-connection-config-serverless-general.png)
+    ![Navicat: configure connection general panel for TiDB Serverless](/media/develop/navicat-premium-connection-config-serverless-general.png)
 
 7. 点击 **SSL** 选项卡，选择 **Use SSL**，**Use authentication** 以及 **Verify server certificate against CA** 复选框。并在 **CA Certificate** 字段中填入从 TiDB Cloud 连接对话框中获取的 `CA` 文件路径。
 
-    ![Navicat: configure connection SSL panel for TiDB Serverless](/media/develop/navicat-connection-config-serverless-ssl.png)
+    ![Navicat: configure connection SSL panel for TiDB Serverless](/media/develop/navicat-premium-connection-config-serverless-ssl.png)
 
 8. 点击 **Test Connection** 以验证与 TiDB Serverless 集群的连接。
 
-9. 如果连接测试成功，你可以看到 **Connection Successful** 信息。点击 **Save** 完成连接配置。
+9. 如果连接测试成功，你可以看到 **Connection Successful** 信息。点击 **OK** 完成连接配置。
 
 </div>
 <div label="TiDB Dedicated">
@@ -90,11 +85,11 @@ TiDB 是一个兼容 MySQL 的数据库。[Navicat](https://www.navicat.com) 是
 
 4. 点击 **Download CA cert** 下载 CA 文件。
 
-5. 启动 Navicat for MySQL，点击左上角的 **Connection**，并从下拉列表中选择 **MySQL**。
+5. 启动 Navicat Premium，点击左上角的 **Connection**，在 **Vendor Filter** 中勾选 **PingCAP**，并双击右侧面板中的 **TiDB**。
 
-    ![Navicat: add new connection](/media/develop/navicat-add-new-connection.jpg)
+    ![Navicat: add new connection](/media/develop/navicat-premium-add-new-connection.png)
 
-6. 在 **New Connection (MySQL)** 对话框中，配置以下连接参数：
+6. 在 **New Connection (TiDB)** 对话框中，配置以下连接参数：
 
     - **Connection Name**：为该连接指定一个有意义的名称。
     - **Host**: 输入从 TiDB Cloud 连接对话框中的得到的 `HOST` 参数。
@@ -102,24 +97,24 @@ TiDB 是一个兼容 MySQL 的数据库。[Navicat](https://www.navicat.com) 是
     - **User Name**: 输入从 TiDB Cloud 连接对话框中的得到的 `USERNAME` 参数。
     - **Password**：输入 TiDB Dedicated 集群的密码。
 
-    ![Navicat: configure connection general panel for TiDB Dedicated](/media/develop/navicat-connection-config-dedicated-general.png)
+    ![Navicat: configure connection general panel for TiDB Dedicated](/media/develop/navicat-premium-connection-config-dedicated-general.png)
 
 7. 点击 **SSL** 选项卡，选择 **Use SSL**，**Use authentication** 以及 **Verify server certificate against CA** 复选框。然后，在 **CA Certificate** 字段中选择第 4 步下载的 CA 文件。
 
-    ![Navicat: configure connection SSL panel for TiDB Dedicated](/media/develop/navicat-connection-config-dedicated-ssl.jpg)
+    ![Navicat: configure connection SSL panel for TiDB Dedicated](/media/develop/navicat-premium-connection-config-dedicated-ssl.png)
 
 8. 点击 **Test Connection** 以验证与 TiDB Dedicated 集群的连接。
 
-9. 如果连接测试成功，你可以看到 **Connection Successful** 信息。点击 **Save** 完成连接配置。
+9. 如果连接测试成功，你可以看到 **Connection Successful** 信息。点击 **OK** 完成连接配置。
 
 </div>
 <div label="TiDB Self-Hosted">
 
-1. 启动 Navicat for MySQL，点击左上角的 **Connection**，并从下拉列表中选择 **MySQL**。
+1. 启动 Navicat Premium，点击左上角的 **Connection**，在 **Vendor Filter** 中勾选 **PingCAP**，并双击右侧面板中的 **TiDB**。
 
-    ![Navicat: add new connection](/media/develop/navicat-add-new-connection.jpg)
+    ![Navicat: add new connection](/media/develop/navicat-premium-add-new-connection.png)
 
-2. 在 **New Connection (MySQL)** 对话框中，配置以下连接参数：
+2. 在 **New Connection (TiDB)** 对话框中，配置以下连接参数：
 
     - **Connection Name**：为该连接指定一个有意义的名称。
     - **Host**：输入本地部署 TiDB 集群的 IP 地址或域名。
@@ -127,11 +122,11 @@ TiDB 是一个兼容 MySQL 的数据库。[Navicat](https://www.navicat.com) 是
     - **User Name**：输入用于连接到 TiDB 的用户名。
     - **Password**：输入用于连接到 TiDB 的密码。
 
-    ![Navicat: configure connection general panel for self-hosted TiDB](/media/develop/navicat-connection-config-self-hosted-general.png)
+    ![Navicat: configure connection general panel for self-hosted TiDB](/media/develop/navicat-premium-connection-config-self-hosted-general.png)
 
 3. 点击 **Test Connection** 以验证与本地部署 TiDB 集群的连接。
 
-4. 如果连接测试成功，你可以看到 **Connection Successful** 信息。点击 **Save** 完成连接配置。
+4. 如果连接测试成功，你可以看到 **Connection Successful** 信息。点击 **OK** 完成连接配置。
 
 </div>
 </SimpleTab>
