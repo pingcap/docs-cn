@@ -357,9 +357,9 @@ sudo systemctl enable ntpd.service
     >
     > `[always] madvise never` 表示透明大页处于启用状态，需要关闭。
 
-2. 执行以下命令查看数据目录所在磁盘的 I/O 调度器。假设是 RHEL 7 的版本并且数据目录使用 sd 设备或者 vd 设备。
+2. 执行以下命令查看数据目录所在磁盘的 I/O 调度器。
 
-    {{< copyable "shell-regular" >}}
+    如果数据目录所在磁盘使用的是 SD 或 VD 设备，可以执行以下命令查看当前 I/O 调度器的配置：
 
     ```bash
     cat /sys/block/sd[bc]/queue/scheduler
@@ -374,7 +374,7 @@ sudo systemctl enable ntpd.service
     >
     > `noop [deadline] cfq` 表示磁盘的 I/O 调度器使用 `deadline`，需要进行修改。
     
-    对于 Red Hat Enterprise Linux 8 或更高版本，或者如果数据目录使用 NVMe 设备，可以执行以下命令查看 I/O 调度器：
+    如果数据目录使用 NVMe 设备，可以执行以下命令查看 I/O 调度器：
    
     {{< copyable "shell-regular" >}}
 
@@ -389,7 +389,7 @@ sudo systemctl enable ntpd.service
     
     > **注意：**
     >
-    > `[none] mq-deadline kyber bfq` 表示 nvme 设备的 I/O 调度器使用 `none`，不需要进行修改。
+    > `[none] mq-deadline kyber bfq` 表示 NVMe 设备的 I/O 调度器使用 `none`，不需要进行修改。
     
 3. 执行以下命令查看磁盘的唯一标识 `ID_SERIAL`。
 
