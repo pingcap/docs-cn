@@ -180,6 +180,14 @@ TiDB 版本：7.1.6
     - 修复浮点数/整数溢出，导致影响 plan cache 问题 [#46538](https://github.com/pingcap/tidb/issues/46538) @[hawkingrei](https://github.com/hawkingrei)
     - 修复 `IndexLookUp` 算子部分内存不被追踪的问题 [#56440](https://github.com/pingcap/tidb/issues/56440) @[wshwsh12](https://github.com/wshwsh12)
     - 修复 stale read 中未对读操作的 ts 进行严格的校验，导致 TSO 和真实物理时间存在偏移时有小概率影响事务一致性的问题 [#56809](https://github.com/pingcap/tidb/issues/56809) @[MyonKeminta](https://github.com/MyonKeminta)
+    - 修复 TTL 在未选用 TiKV 作为存储引擎时可能失败的问题 [#56402](https://github.com/pingcap/tidb/issues/56402) @[YangKeao](https://github.com/YangKeao)
+    - 修复写冲突时 TTL 任务可能无法取消的问题 [#56422](https://github.com/pingcap/tidb/issues/56422) @[YangKeao](https://github.com/YangKeao)
+    - 插入科学计数法形式的超大数字时报错，与 MySQL 统一 [#47787](https://github.com/pingcap/tidb/issues/47787) @[lcwangchao](https://github.com/lcwangchao)
+    - 取消 TTL 任务时强制杀死对应 SQL [#56511](https://github.com/pingcap/tidb/issues/56511) @[lcwangchao](https://github.com/lcwangchao)
+    - 修复 INSERT .. ON DUPLICATE KEY 语句 mysql_insert_id 错误 [#55965](https://github.com/pingcap/tidb/issues/55965) @[tiancaiamao](https://github.com/tiancaiamao)
+    - 修复 SQL 无法构建执行计划时，审计日志过滤不生效的错误 [#50988](https://github.com/pingcap/tidb/issues/50988) @[CbcWestwolf](https://github.com/CbcWestwolf)
+    - 修复从 6.5 升级的集群中已有 TTL 任务执行意外频繁的问题 [#56539](https://github.com/pingcap/tidb/issues/56539) @[lcwangchao](https://github.com/lcwangchao)
+    - cast 函数支持显式设置字符集 [#55724](https://github.com/pingcap/tidb/issues/55724) @[Defined2014](https://github.com/Defined2014)
 
 + TiKV <!--tw@qiancai: 2 notes-->
 
