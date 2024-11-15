@@ -121,11 +121,16 @@ TiDB 支持部署和运行在 Intel x86-64 架构的 64 位通用硬件服务器
 > - 生产环境中的 TiDB 和 PD 可以部署和运行在同一台服务器上，如对性能和可靠性有更高的要求，应尽可能分开部署。
 > - 强烈建议分别为生产环境中的 TiDB、TiKV 和 TiFlash 配置至少 8 核的 CPU。强烈推荐使用更高的配置，以获得更好的性能。
 > - TiKV 硬盘大小配置建议 PCIe SSD 不超过 4 TB，普通 SSD 不超过 1.5 TB。
-> - TiFlash 支持[多盘部署](/tiflash/tiflash-configuration.md#多盘部署)。
-> - TiFlash 数据目录的第一块磁盘推荐用高性能 SSD 来缓冲 TiKV 同步数据的实时写入，该盘性能应不低于 TiKV 所使用的磁盘，比如 PCIe SSD。并且该磁盘容量建议不小于总容量的 10%，否则它可能成为这个节点的能承载的数据量的瓶颈。而其他磁盘可以根据需求部署多块普通 SSD，当然更好的 PCIe SSD 硬盘会带来更好的性能。
-> - TiFlash 推荐与 TiKV 部署在不同节点，如果条件所限必须将 TiFlash 与 TiKV 部署在相同节点，则需要适当增加 CPU 核数和内存，且尽量将 TiFlash 与 TiKV 部署在不同的磁盘，以免互相干扰。
-> - TiFlash 硬盘总容量大致为：`整个 TiKV 集群的需同步数据容量 / TiKV 副本数 * TiFlash 副本数`。例如整体 TiKV 的规划容量为 1 TB、TiKV 副本数为 3、TiFlash 副本数为 2，则 TiFlash 的推荐总容量为 `1024 GB / 3 * 2`。用户可以选择同步部分表数据而非全部，具体容量可以根据需要同步的表的数据量具体分析。
-> - TiCDC 硬盘配置建议 500 GB+ PCIe SSD。
+> - 如果你在云服务商（如 AWS、Google Cloud 或 Azure）上部署 TiDB 集群，建议 TiKV 节点使用云盘。在云环境中，TiKV 实例崩溃时，本地磁盘上的数据可能会丢失。
+
+在部署 TiFlash 之前，请注意以下事项：
+
+- TiFlash 支持[多盘部署](/tiflash/tiflash-configuration.md#多盘部署)。
+- TiFlash 数据目录的第一块磁盘推荐用高性能 SSD 来缓冲 TiKV 同步数据的实时写入，该盘性能应不低于 TiKV 所使用的磁盘，比如 PCIe SSD。并且该磁盘容量建议不小于总容量的 10%，否则它可能成为这个节点的能承载的数据量的瓶颈。而其他磁盘可以根据需求部署多块普通 SSD，当然更好的 PCIe SSD 硬盘会带来更好的性能。
+- TiFlash 推荐与 TiKV 部署在不同节点，如果条件所限必须将 TiFlash 与 TiKV 部署在相同节点，则需要适当增加 CPU 核数和内存，且尽量将 TiFlash 与 TiKV 部署在不同的磁盘，以免互相干扰。
+- TiFlash 硬盘总容量大致为：`整个 TiKV 集群的需同步数据容量 / TiKV 副本数 * TiFlash 副本数`。例如整体 TiKV 的规划容量为 1 TB、TiKV 副本数为 3、TiFlash 副本数为 2，则 TiFlash 的推荐总容量为 `1024 GB / 3 * 2`。用户可以选择同步部分表数据而非全部，具体容量可以根据需要同步的表的数据量具体分析。
+
+在部署 TiCDC 时，建议在大于 500 GB 的 PCIe SSD 磁盘上部署。
 
 ## 网络要求
 
