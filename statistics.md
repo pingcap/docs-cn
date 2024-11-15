@@ -179,7 +179,7 @@ ANALYZE TABLE TableName INDEX [IndexNameList] [WITH NUM BUCKETS|TOPN|CMSKETCH DE
 
 #### 收集动态裁剪模式下的分区表统计信息
 
-在分区表开启[动态裁剪模式](/partitioned-table.md#动态裁剪模式)（从 v6.3.0 开始，默认开启）的情况下，TiDB 将收集表级别的汇总统计信息，即分区表的全局统计信息 (GlobalStats)。分区表的全局统计信息合并汇总了所有分区的统计信息。在动态裁剪模式下，任何分区表的统计信息更新都可能触发全局统计信息更新。
+在分区表开启[动态裁剪模式](/partitioned-table.md#动态裁剪模式)（从 v6.3.0 开始，默认开启）的情况下，TiDB 将收集表级别的汇总统计信息，即分区表的全局统计信息。分区表的全局统计信息合并汇总了所有分区的统计信息。在动态裁剪模式下，任何分区表的统计信息更新都可能触发全局统计信息更新。
 
 如果分区为空，或者某些分区上的列缺失，那么统计信息收集行为将受 [`tidb_skip_missing_partition_stats`](/system-variables.md#tidb_skip_missing_partition_stats-从-v730-版本开始引入) 变量的控制：
 
