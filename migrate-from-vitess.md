@@ -9,7 +9,7 @@ summary: 介绍从 Vitess 迁移数据到 TiDB 所使用的工具。
 
 由于 Vitess 的后端基于 MySQL，当从 Vitess 迁移数据到 TiDB 时，你可以直接使用 MySQL 适用的迁移数据工具，如 [Dumpling](/dumpling-overview.md)、[TiDB Lightning](/tidb-lightning/tidb-lightning-overview.md) 和 [TiDB Data Migration (DM)](/dm/dm-overview.md)。需要注意的是，针对 Vitess 中的每个分片，你都需要进行相应的迁移工具配置以完成数据迁移。
 
-通常情况下，推荐使用 DM 进行数据迁移。迁移前，需要将 DM 的 `task-mode` 设为 `all`，`import-mode` 设为 `physical`。更多信息，请参考[完整配置文件示例](/dm/task-configuration-file-full.md#完整配置文件示例)。
+通常情况下，推荐使用 DM 进行数据迁移。迁移前，需要将 DM 任务的 `task-mode` 设为 `all`，`import-mode` 设为 `physical`。更多信息，请参考[完整配置文件示例](/dm/task-configuration-file-full.md#完整配置文件示例)。
 
 如果数据量超过 10 TiB，建议分两步导入：
 
