@@ -23,11 +23,13 @@ TiDB 8.5.0 为长期支持版本 (Long-Term Support Release, LTS)。
 
 ### 可扩展性
 
-* Schema 缓存内存上限功能成为正式功能（GA），减少了大规模数据场景的内存占用 [#50959](https://github.com/pingcap/tidb/issues/50959) @[tiancaiamao](https://github.com/tiancaiamao) @[wjhuang2016](https://github.com/wjhuang2016) @[gmhdbjd](https://github.com/gmhdbjd) @[tangenta](https://github.com/tangenta) tw@hfxsd <!--1976-->
+* Schema 缓存内存上限功能成为正式功能 (GA)，减少了大规模数据场景的内存占用 [#50959](https://github.com/pingcap/tidb/issues/50959) @[tiancaiamao](https://github.com/tiancaiamao) @[wjhuang2016](https://github.com/wjhuang2016) @[gmhdbjd](https://github.com/gmhdbjd) @[tangenta](https://github.com/tangenta) tw@hfxsd <!--1976-->
 
-    在一些 SaaS 场景下，当表的数据量达到几十万甚至上百万时，schema meta 会占用较多的内存。开启该功能后，系统将使用 LRU 算法缓存和淘汰相应 schema meta 信息，有效减少内存占用。从 v8.4 开始，该功能默认开启，默认值为 512MiB，用户可通过参数 [tidb_schema_cache_size](/system-variables#tidb_schema_cache_size-new-in-v800)，按需调整。
+    在一些 SaaS 场景下，当表的数据量达到几十万甚至上百万时，Schema meta 会占用较多的内存。开启该功能后，系统将使用 LRU 算法缓存和淘汰相应 schema meta 信息，有效减少内存占用。
+    
+    从 v8.4.0 开始，该功能默认开启，默认值为 `536870912`（即 512 MiB），你可通过配置系统变量 [`tidb_schema_cache_size`](/system-variables.md#tidb_schema_cache_size-new-in-v800)，按需调整。
 
-    更多信息，请参考[用户文档](链接)。
+    更多信息，请参考[用户文档](/schema-cache.md)。
 
 * Use the Active PD Follower feature to enhance the scalability of PD's Region information query service (General Availability) [#7431](https://github.com/tikv/pd/issues/7431) @[okJiang](https://github.com/okJiang)
 
@@ -81,17 +83,17 @@ TiDB 8.5.0 为长期支持版本 (Long-Term Support Release, LTS)。
 
     更多信息，请参考[用户文档](链接)。
 
-* 引入 ADMIN ALTER DDL JOBS 的语法，支持在线修改 DDL 任务参数 [#57229](hhttps://github.com/pingcap/tidb/issues/57229) @[fzzf678](https://github.com/fzzf678) @[tangenta](https://github.com/tangenta) tw@hfxsd <!--2016-->
+* 引入 `ADMIN ALTER DDL JOBS` 的语法，支持在线修改 DDL 任务参数 [#57229](hhttps://github.com/pingcap/tidb/issues/57229) @[fzzf678](https://github.com/fzzf678) @[tangenta](https://github.com/tangenta) tw@hfxsd <!--2016-->
 
-    从 V8.3 版本开始，支持在 Session 级别设置变量 [tidb_ddl_reorg_batch_size](/system-variables#tidb_ddl_reorg_batch_size) 和  [tidb_ddl_reorg_worker_cnt](/system-variables#tidb_ddl_reorg_worker_cnt) ，因此通过 Global 设置这 2 个变量已不再影响所有运行中的 DDL 任务。如需更改这些变量的值，需要先取消 DDL 任务，调整变量取值后再重新提交。
+    从 v8.3.0 版本开始，支持在会话级别设置变量 [`tidb_ddl_reorg_batch_size`](/system-variables.md#tidb_ddl_reorg_batch_size) 和  [`tidb_ddl_reorg_worker_cnt`](/system-variables.md#tidb_ddl_reorg_worker_cnt)，因此通过 Global 设置这两个变量已不再影响所有运行中的 DDL 任务。如需更改这些变量的值，需要先取消 DDL 任务，调整变量取值后再重新提交。
 
-    因此，从 V8.5 版本起，引入了 `ADMIN ALTER DDL JOBS` 语法，允许对指定的 DDL 任务在线调整变量值，以便灵活平衡资源消耗与性能，并将变更限定于单个任务，使影响范围更加可控。例如：
+    从 8.5.0 版本开始，引入了 `ADMIN ALTER DDL JOBS` 语句，你可以在线调整指定的 DDL 任务的变量值，以便灵活平衡资源消耗与性能，并将变更限定于单个任务，使影响范围更加可控。例如：
 
-    - `ADMIN ALTER DDL JOBS job_id THREAD = 8;` — 在线调整该 DDL 任务的 `tidb_ddl_reorg_worker_cnt`
-    - `ADMIN ALTER DDL JOBS job_id BATCH_SIZE = 256;` — 在线调整该 DDL 任务的 `tidb_ddl_reorg_batch_size`
-    - `ADMIN ALTER DDL JOBS job_id MAX_WRITE_SPEED = '200MiB';` — 在线调整写入每个 TiKV 节点的索引数据流量大小
+    - `ADMIN ALTER DDL JOBS job_id THREAD = 8;`：在线调整该 DDL 任务的 `tidb_ddl_reorg_worker_cnt`
+    - `ADMIN ALTER DDL JOBS job_id BATCH_SIZE = 256;`：在线调整该 DDL 任务的 `tidb_ddl_reorg_batch_size`
+    - `ADMIN ALTER DDL JOBS job_id MAX_WRITE_SPEED = '200MiB';`：在线调整写入每个 TiKV 节点的索引数据流量大小
 
-  更多信息，请参考[用户文档](链接)。
+  更多信息，请参考[用户文档](/sql-statements/sql-statement-admin-alter-ddl.md)。
 
 ### 数据库管理
 
