@@ -7,7 +7,14 @@ summary: 介绍从 Vitess 迁移数据到 TiDB 所使用的工具。
 
 本文档介绍了将数据从 [Vitess](https://vitess.io/) 迁移到 TiDB 时可以采用的工具。
 
-由于 Vitess 的后端基于 MySQL，当从 Vitess 迁移数据到 TiDB 时，你可以直接使用 MySQL 适用的迁移数据工具，如 [Dumpling](/dumpling-overview.md)、[TiDB Lightning](/tidb-lightning/tidb-lightning-overview.md) 和 [TiDB Data Migration (DM)](/dm/dm-overview.md)。需要注意的是，针对 Vitess 中的每个分片，你都需要进行相应的迁移工具配置以完成数据迁移。通常情况下，推荐使用 DM 进行数据迁移（将 DM 的 `task-mode` 设为 `all`，`import-mode` 设为 `physical`）。如果数据量超过 10 TiB，建议分两步导入：第一步使用 Dumpling 和 TiDB Lightning 导入已有数据，第二步使用 DM 导入增量数据。
+由于 Vitess 的后端基于 MySQL，当从 Vitess 迁移数据到 TiDB 时，你可以直接使用 MySQL 适用的迁移数据工具，如 [Dumpling](/dumpling-overview.md)、[TiDB Lightning](/tidb-lightning/tidb-lightning-overview.md) 和 [TiDB Data Migration (DM)](/dm/dm-overview.md)。需要注意的是，针对 Vitess 中的每个分片，你都需要进行相应的迁移工具配置以完成数据迁移。
+
+通常情况下，推荐使用 DM 进行数据迁移。迁移前，需要将 DM 的 `task-mode` 设为 `all`，`import-mode` 设为 `physical`。更多信息，请参考[完整配置文件示例](/dm/task-configuration-file-full.md#完整配置文件示例)。
+
+如果数据量超过 10 TiB，建议分两步导入：
+
+1. 使用 Dumpling 和 TiDB Lightning 导入已有数据。
+2. 使用 DM 导入增量数据。
 
 除了以上工具，你还可以使用 [Debezium 的 Vitess 连接器](https://debezium.io/documentation/reference/connectors/vitess.html)。该连接器可以通过 [Kafka Connect](https://kafka.apache.org/documentation/#connect) 或 [Apache Flink](https://nightlies.apache.org/flink/flink-docs-stable/) 将 Vitess 的数据变更同步到 TiDB 中。
 
