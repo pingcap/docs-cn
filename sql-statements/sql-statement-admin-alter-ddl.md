@@ -13,7 +13,7 @@ ADMIN ALTER DDL JOBS 101 THREAD = 8;
 
 其中 `101` 表示 DDL 作业的 ID，该 ID 可以通过查询 [`ADMIN SHOW DDL JOBS`](/sql-statements/sql-statement-admin-show-ddl.md) 获得。`THREAD` 表示当前 DDL 作业的并发度，其初始值由系统变量 [`tidb_ddl_reorg_worker_cnt`](/system-variables.md#tidb_ddl_reorg_worker_cnt) 设置。
 
-目前支持 `ADMIN ALTER DDL JOBS` 的 DDL 作业类型包括：`ADD INDEX`、`MODIFY COLUMN` 和 `REORGANIZE PARTITION`。对于其他 DDL 作业类型，执行 `ADMIN ALTER DDL JOBS` 会报 `unsupported admin alter ddl jobs config` 的错误。
+目前支持 `ADMIN ALTER DDL JOBS` 的 DDL 作业类型包括：`ADD INDEX`、`MODIFY COLUMN` 和 `REORGANIZE PARTITION`。对于其他 DDL 作业类型，执行 `ADMIN ALTER DDL JOBS` 会报 `unsupported DDL operation` 的错误。
 
 以下是不同 DDL 作业类型支持的各项参数，以及它们对应的系统变量：
 
