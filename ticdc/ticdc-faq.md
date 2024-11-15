@@ -55,7 +55,7 @@ cdc cli changefeed list --server=http://127.0.0.1:8300
 
 ## 上游停止更新后，如何判断 TiCDC 是否已将所有更新同步到下游？
 
-在上游 TiDB 集群停止更新后，可以通过比较上游 TiDB 集群的最新 [TSO](/glossary.md#tso) 时间戳与 TiCDC 当前的同步进度判断同步是否完成。如果 TiCDC 的同步进度时间大于或等于上游 TiDB 集群的 TSO，则说明 TiCDC 已同步所有更新。具体操作步骤如下：
+在上游 TiDB 集群停止更新后，可以通过比较上游 TiDB 集群的最新 [TSO](/tso.md) 时间戳与 TiCDC 当前的同步进度判断同步是否完成。如果 TiCDC 的同步进度时间大于或等于上游 TiDB 集群的 TSO，则说明 TiCDC 已同步所有更新。具体操作步骤如下：
 
 1. 获取上游 TiDB 集群的最新 TSO 时间戳。
 

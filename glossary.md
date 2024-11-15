@@ -81,7 +81,7 @@ Data Migration (DM) 是 TiDB 提供的一款数据迁移工具，用于将数据
 
 数据操作语言 (Data Modification Language, DML) 是 SQL 标准的一部分，用于插入、更新和删除表中的行数据。
 
-### 开发里程碑版本 (DMR)
+### Development Milestone Release (DMR)
 
 TiDB 会在开发里程碑版本 (Development Milestone Release, DMR) 中引入新的功能，但 DMR 不提供长期支持。更多信息，请参见 [TiDB 版本规则](/releases/versioning.md)。
 
@@ -145,7 +145,7 @@ TiDB 会在开发里程碑版本 (Development Milestone Release, DMR) 中引入�
 
 ### Lightweight Directory Access Protocol (LDAP)
 
-轻量级目录访问协议 (Lightweight Directory Access Protocol, LDAP) 是一种标准化的目录信息访问方式，通常用于账户和用户数据的管理。TiDB 对 LDAP 的支持是通过 [LDAP 身份验证插件](/security-compatibility-with-mysql.md#authentication-plugin-status)实现的。
+轻量级目录访问协议 (Lightweight Directory Access Protocol, LDAP) 是一种标准化的目录信息访问方式，通常用于账户和用户数据的管理。TiDB 对 LDAP 的支持是通过 [LDAP 身份验证插件](/security-compatibility-with-mysql.md#可用的身份验证插件)实现的。
 
 ### Long Term Support (LTS)
 
@@ -206,7 +206,7 @@ Pending 和 Down 是 Peer 可能出现的两种特殊状态。其中 Pending 表
 
 ### Placement Driver (PD)
 
-PD 是 [TiDB 架构](/tidb-architecture.md#placement-driver-pd-server) 中的核心组件之一，负责存储元数据，为事务时间戳分配[时间戳服务 (TSO)](/tso.md)，协调 TiKV 上的数据分布，并运行 [TiDB Dashboard](/dashboard/dashboard-overview.md)。更多信息，请参见 [TiDB 调度](/tidb-scheduling.md)。
+PD 是 [TiDB 架构](/tidb-architecture.md) 中的核心组件之一，负责存储元数据，为事务时间戳分配[时间戳服务 (TSO)](/tso.md)，协调 TiKV 上的数据分布，并运行 [TiDB Dashboard](/dashboard/dashboard-overview.md)。更多信息，请参见 [TiDB 调度](/tidb-scheduling.md)。
 
 ### Point get
 
