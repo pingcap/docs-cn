@@ -62,7 +62,7 @@ Flags:
 tiup cluster deploy <cluster-name> <version> <topology.yaml> [flags]
 ```
 
-该命令需要提供集群的名字、集群使用的 TiDB 版本（例如 `v8.3.0`），以及一个集群的拓扑文件。
+该命令需要提供集群的名字、集群使用的 TiDB 版本（例如 `v8.4.0`），以及一个集群的拓扑文件。
 
 拓扑文件的编写可参考[示例](https://github.com/pingcap/tiup/blob/master/embed/examples/cluster/topology.example.yaml)。以一个最简单的拓扑为例，将下列文件保存为 `/tmp/topology.yaml`：
 
@@ -122,12 +122,12 @@ tidb_servers:
 ...
 ```
 
-假如我们想要使用 TiDB 的 v8.3.0 版本，集群名字为 `prod-cluster`，则执行以下命令：
+假如我们想要使用 TiDB 的 v8.4.0 版本，集群名字为 `prod-cluster`，则执行以下命令：
 
 {{< copyable "shell-regular" >}}
 
 ```shell
-tiup cluster deploy -p prod-cluster v8.3.0 /tmp/topology.yaml
+tiup cluster deploy -p prod-cluster v8.4.0 /tmp/topology.yaml
 ```
 
 执行过程中会再次确认拓扑结构并提示输入目标机器上的 root 密码（-p 表示使用密码）：
@@ -135,7 +135,7 @@ tiup cluster deploy -p prod-cluster v8.3.0 /tmp/topology.yaml
 ```bash
 Please confirm your topology:
 TiDB Cluster: prod-cluster
-TiDB Version: v8.3.0
+TiDB Version: v8.4.0
 Type        Host          Ports                            OS/Arch       Directories
 ----        ----          -----                            -------       -----------
 pd          172.16.5.134  2379/2380                        linux/x86_64  deploy/pd-2379,data/pd-2379
@@ -179,7 +179,7 @@ tiup cluster list
 Starting /root/.tiup/components/cluster/v1.12.3/cluster list
 Name          User  Version    Path                                               PrivateKey
 ----          ----  -------    ----                                               ----------
-prod-cluster  tidb  v8.3.0    /root/.tiup/storage/cluster/clusters/prod-cluster  /root/.tiup/storage/cluster/clusters/prod-cluster/ssh/id_rsa
+prod-cluster  tidb  v8.4.0    /root/.tiup/storage/cluster/clusters/prod-cluster  /root/.tiup/storage/cluster/clusters/prod-cluster/ssh/id_rsa
 ```
 
 ## 启动集群
@@ -207,7 +207,7 @@ tiup cluster display prod-cluster
 ```
 Starting /root/.tiup/components/cluster/v1.12.3/cluster display prod-cluster
 TiDB Cluster: prod-cluster
-TiDB Version: v8.3.0
+TiDB Version: v8.4.0
 ID                  Role        Host          Ports                            OS/Arch       Status  Data Dir              Deploy Dir
 --                  ----        ----          -----                            -------       ------  --------              ----------
 172.16.5.134:3000   grafana     172.16.5.134  3000                             linux/x86_64  Up      -                     deploy/grafana-3000
@@ -237,11 +237,11 @@ Status 列用 `Up` 或者 `Down` 表示该服务是否正常。对于 PD 组件�
 
 缩容即下线服务，最终会将指定的节点从集群中移除，并删除遗留的相关文件。
 
-由于 TiKV、TiFlash 和 TiDB Binlog 组件的下线是异步的（需要先通过 API 执行移除操作）并且下线过程耗时较长（需要持续观察节点是否已经下线成功），所以对 TiKV、TiFlash 和 TiDB Binlog 组件做了特殊处理：
+由于 TiKV 和 TiFlash 组件的下线是异步的（需要先通过 API 执行移除操作）并且下线过程耗时较长（需要持续观察节点是否已经下线成功），所以对 TiKV 和 TiFlash 组件做了特殊处理：
 
-- 对 TiKV、TiFlash 及 Binlog 组件的操作
+- 对 TiKV 和 TiFlash 组件的操作
     - TiUP cluster 通过 API 将其下线后直接退出而不等待下线完成
-    - 等之后再执行集群操作相关的命令时，会检查是否存在已经下线完成的 TiKV、TiFlash 或者 Binlog 节点。如果不存在，则继续执行指定的操作；如果存在，则执行如下操作：
+    - 等之后再执行集群操作相关的命令时，会检查是否存在已经下线完成的 TiKV 或者 TiFlash 节点。如果不存在，则继续执行指定的操作；如果存在，则执行如下操作：
         1. 停止已经下线掉的节点的服务
         2. 清理已经下线掉的节点的相关数据文件
         3. 更新集群的拓扑，移除已经下线掉的节点
@@ -276,7 +276,7 @@ tiup cluster display prod-cluster
 ```
 Starting /root/.tiup/components/cluster/v1.12.3/cluster display prod-cluster
 TiDB Cluster: prod-cluster
-TiDB Version: v8.3.0
+TiDB Version: v8.4.0
 ID                  Role        Host          Ports                            OS/Arch       Status   Data Dir              Deploy Dir
 --                  ----        ----          -----                            -------       ------   --------              ----------
 172.16.5.134:3000   grafana     172.16.5.134  3000                             linux/x86_64  Up       -                     deploy/grafana-3000
@@ -377,12 +377,12 @@ Global Flags:
   -y, --yes               跳过所有的确认步骤
 ```
 
-例如，把集群升级到 v8.3.0 的命令为：
+例如，把集群升级到 v8.4.0 的命令为：
 
 {{< copyable "shell-regular" >}}
 
 ```bash
-tiup cluster upgrade tidb-test v8.3.0
+tiup cluster upgrade tidb-test v8.4.0
 ```
 
 ## 更新配置
@@ -562,11 +562,11 @@ tiup cluster audit
 Starting component `cluster`: /home/tidb/.tiup/components/cluster/v1.12.3/cluster audit
 ID      Time                       Command
 --      ----                       -------
-4BLhr0  2024-08-22T23:55:09+08:00  /home/tidb/.tiup/components/cluster/v1.12.3/cluster deploy test v8.3.0 /tmp/topology.yaml
-4BKWjF  2024-08-22T23:36:57+08:00  /home/tidb/.tiup/components/cluster/v1.12.3/cluster deploy test v8.3.0 /tmp/topology.yaml
-4BKVwH  2024-08-22T23:02:08+08:00  /home/tidb/.tiup/components/cluster/v1.12.3/cluster deploy test v8.3.0 /tmp/topology.yaml
-4BKKH1  2024-08-22T16:39:04+08:00  /home/tidb/.tiup/components/cluster/v1.12.3/cluster destroy test
-4BKKDx  2024-08-22T16:36:57+08:00  /home/tidb/.tiup/components/cluster/v1.12.3/cluster deploy test v8.3.0 /tmp/topology.yaml
+4BLhr0  2024-11-11T23:55:09+08:00  /home/tidb/.tiup/components/cluster/v1.12.3/cluster deploy test v8.4.0 /tmp/topology.yaml
+4BKWjF  2024-11-11T23:36:57+08:00  /home/tidb/.tiup/components/cluster/v1.12.3/cluster deploy test v8.4.0 /tmp/topology.yaml
+4BKVwH  2024-11-11T23:02:08+08:00  /home/tidb/.tiup/components/cluster/v1.12.3/cluster deploy test v8.4.0 /tmp/topology.yaml
+4BKKH1  2024-11-11T16:39:04+08:00  /home/tidb/.tiup/components/cluster/v1.12.3/cluster destroy test
+4BKKDx  2024-11-11T16:36:57+08:00  /home/tidb/.tiup/components/cluster/v1.12.3/cluster deploy test v8.4.0 /tmp/topology.yaml
 ```
 
 第一列为 audit-id，如果想看某个命令的执行日志，则传入这个 audit-id：
@@ -607,7 +607,7 @@ tiup cluster exec test-cluster --command='ls /tmp'
 
 ```bash
 Usage:
-  tiup ctl:v<CLUSTER_VERSION> {tidb/pd/tikv/binlog/etcd} [flags]
+  tiup ctl:v<CLUSTER_VERSION> {tidb/pd/tikv/etcd} [flags]
 
 Flags:
   -h, --help   help for tiup
@@ -619,7 +619,6 @@ Flags:
 tidb-ctl [args] = tiup ctl tidb [args]
 pd-ctl [args] = tiup ctl pd [args]
 tikv-ctl [args] = tiup ctl tikv [args]
-binlogctl [args] = tiup ctl bindlog [args]
 etcdctl [args] = tiup ctl etcd [args]
 ```
 
@@ -680,7 +679,7 @@ tiup cluster check <cluster-name> --cluster
 
 此时可以通过命令行参数 `--ssh=system` 启用系统自带命令行：
 
-- 部署集群：`tiup cluster deploy <cluster-name> <version> <topo> --ssh=system`，其中 `<cluster-name>` 为集群名称，`<version>` 为 TiDB 集群版本（例如 `v8.3.0`），`<topo>` 为拓扑文件路径
+- 部署集群：`tiup cluster deploy <cluster-name> <version> <topo> --ssh=system`，其中 `<cluster-name>` 为集群名称，`<version>` 为 TiDB 集群版本（例如 `v8.4.0`），`<topo>` 为拓扑文件路径
 - 启动集群：`tiup cluster start <cluster-name> --ssh=system`
 - 升级集群：`tiup cluster upgrade ... --ssh=system`
 

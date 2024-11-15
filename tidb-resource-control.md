@@ -78,7 +78,7 @@ Request Unit (RU) 是 TiDB 对 CPU、IO 等系统资源的统一抽象的计量�
 > **注意：**
 >
 > - 每个写操作最终都被会复制到所有副本（TiKV 默认 3 个数据副本），并且每次复制都被认为是一个不同的写操作。
-> - 上表只列举了本地部署的 TiDB 计算 RU 时涉及的相关资源，其中不包括网络和存储部分。TiDB Serverless 的 RU 可参考 [TiDB Serverless Pricing Details](https://www.pingcap.com/tidb-cloud-serverless-pricing-details/)。
+> - 上表只列举了本地部署的 TiDB 计算 RU 时涉及的相关资源，其中不包括网络和存储部分。TiDB Cloud Serverless 的 RU 可参考 [TiDB Cloud Serverless Pricing Details](https://www.pingcap.com/tidb-cloud-serverless-pricing-details/)。
 > - 目前 TiFlash 资源管控仅考虑 SQL CPU（即查询的 pipeline task 运行所占用的 CPU 时间）以及 read request payload。
 
 ## 相关参数
@@ -217,15 +217,18 @@ Runaway Query 是指执行时间或消耗资源超出预期的查询（仅指 `S
 
 #### `QUERY_LIMIT` 参数说明
 
-支持的条件设置：
+如果查询超过以下任一限制，就会被识别为 Runaway Query：
 
-- `EXEC_ELAPSED`: 当查询执行的时间超限时，识别为 Runaway Query。
+- `EXEC_ELAPSED`：检测查询执行的时间是否超限
+- `PROCESSED_KEYS`：检测 Coprocessor 处理的 key 的数量是否超限
+- `RU`：检测执行语句消耗的总读写 RU 是否超限
 
 支持的应对操作 (`ACTION`)：
 
 - `DRYRUN`：对执行 Query 不做任何操作，仅记录识别的 Runaway Query。主要用于观测设置条件是否合理。
 - `COOLDOWN`：将查询的执行优先级降到最低，查询仍旧会以低优先级继续执行，不占用其他操作的资源。
 - `KILL`：识别到的查询将被自动终止，报错 `Query execution was interrupted, identified as runaway query`。
+- `SWITCH_GROUP`：从 v8.4.0 开始引入，将识别到的查询切换到指定的资源组继续执行。该查询执行结束后，后续 SQL 仍保持在原资源组中执行。如果指定的资源组不存在，则不做任何动作。
 
 为了避免并发的 Runaway Query 过多导致系统资源耗尽，资源管控引入了 Runaway Query 监控机制，能够快速识别并隔离 Runaway Query。该功能通过 `WATCH` 子句实现，当某一个查询被识别为 Runaway Query 之后，会提取这个查询的匹配特征（由 `WATCH` 后的匹配方式参数决定），在接下来的一段时间里（由 `DURATION` 定义），这个 Runaway Query 的匹配特征会被加入到监控列表，TiDB 实例会将查询和监控列表进行匹配，匹配到的查询直接标记为 Runaway Query，而不再等待其被条件识别，并按照当前应对操作进行隔离。其中 `KILL` 会终止该查询，并报错 `Quarantined and interrupted because of being in runaway watch list`。
 
@@ -243,9 +246,15 @@ Runaway Query 是指执行时间或消耗资源超出预期的查询（仅指 `S
 
 | 参数            | 含义           | 备注                                   |
 |---------------|--------------|--------------------------------------|
-| `EXEC_ELAPSED`  | 当查询执行时间超过该值后被识别为 Runaway Query | EXEC_ELAPSED =`60s` 表示查询的执行时间超过 60 秒则被认为是 Runaway Query。 |
-| `ACTION`    | 当识别到 Runaway Query 时进行的动作 | 可选值有 `DRYRUN`，`COOLDOWN`，`KILL`。 |
+| `EXEC_ELAPSED`  | 当查询执行时间超过该值时，会被识别为 Runaway Query | `EXEC_ELAPSED = 60s` 表示查询的执行时间超过 60 秒则被认为是 Runaway Query。 |
+| `PROCESSED_KEYS` | 当 Coprocessor 处理的 key 的数量超过该值时，查询会被识别为 Runaway Query | `PROCESSED_KEYS = 1000` 表示 Coprocessor 处理的 key 的数量超过 1000 则被认为是 Runaway Query。 |
+| `RU`  | 当查询消耗的总读写 RU 超过该值时，查询会被识别为 Runaway Query | `RU = 1000` 表示查询消耗的总读写 RU 超过 1000 则被认为是 Runaway Query。 |
+| `ACTION`    | 当识别到 Runaway Query 时进行的动作 | 可选值有 `DRYRUN`，`COOLDOWN`，`KILL`，`SWITCH_GROUP`。 |
 | `WATCH`   | 快速匹配已经识别到的 Runaway Query，即在一定时间内再碰到相同或相似查询直接进行相应动作 | 可选项，配置例如 `WATCH=SIMILAR DURATION '60s'`、`WATCH=EXACT DURATION '1m'`、`WATCH=PLAN`。 |
+
+> **注意：**
+>
+> 如果你想把 Runaway Queries 严格限制在一个资源组内，推荐将 `SWITCH_GROUP` 和 [`QUERY WATCH`](/tidb-resource-control.md#query-watch-语句说明) 语句一起搭配使用。因为 `QUERY_LIMIT` 只有在查询达到预设条件时才会触发，所以 `SWITCH_GROUP` 在此类场景下可能会出现无法及时将查询切换到目标资源组的情况。
 
 #### 示例
 
@@ -292,7 +301,13 @@ Runaway Query 是指执行时间或消耗资源超出预期的查询（仅指 `S
     QUERY WATCH ADD RESOURCE GROUP rg1 SQL TEXT SIMILAR TO 'select * from test.t2';
     ```
 
-- 通过 PLAN Digest 为 `rg1` 资源组的 Runaway Queries 监控列表添加监控匹配特征。
+- 通过将 SQL 解析成 SQL Digest，为 `rg1` 资源组的 Runaway Queries 监控列表添加监控匹配特征，并指定 `ACTION` 为 `SWITCH_GROUP(rg2)`。
+
+    ```sql
+    QUERY WATCH ADD RESOURCE GROUP rg1 ACTION SWITCH_GROUP(rg2) SQL TEXT SIMILAR TO 'select * from test.t2';
+    ```
+
+- 通过 PLAN Digest 为 `rg1` 资源组的 Runaway Queries 监控列表添加监控匹配特征，并指定 `ACTION` 为 `KILL`。
 
     ```sql
     QUERY WATCH ADD RESOURCE GROUP rg1 ACTION KILL PLAN DIGEST 'd08bc323a934c39dc41948b0a073725be3398479b6fa4f6dd1db2a9b115f7f57';
@@ -301,24 +316,25 @@ Runaway Query 是指执行时间或消耗资源超出预期的查询（仅指 `S
 - 通过查询 `INFORMATION_SCHEMA.RUNAWAY_WATCHES` 获取监控项 ID，删除该监控项。
 
     ```sql
-    SELECT * FROM INFORMATION_SCHEMA.RUNAWAY_WATCHES ORDER BY id;
+    SELECT * FROM INFORMATION_SCHEMA.RUNAWAY_WATCHES ORDER BY id\G
     ```
 
     ```sql
     *************************** 1. row ***************************
-                    ID: 20003
-    RESOURCE_GROUP_NAME: rg2
-            START_TIME: 2023-07-28 13:06:08
-            END_TIME: UNLIMITED
-                WATCH: Similar
-            WATCH_TEXT: 5b7fd445c5756a16f910192ad449c02348656a5e9d2aa61615e6049afbc4a82e
-                SOURCE: 127.0.0.1:4000
+                     ID: 1
+    RESOURCE_GROUP_NAME: default
+             START_TIME: 2024-09-09 03:35:31
+               END_TIME: 2024-09-09 03:45:31
+                  WATCH: Exact
+            WATCH_TEXT: SELECT variable_name, variable_value FROM mysql.global_variables
+                 SOURCE: 127.0.0.1:4000
                 ACTION: Kill
+                RULE: ProcessedKeys = 666(10)
     1 row in set (0.00 sec)
     ```
 
     ```sql
-    QUERY WATCH REMOVE 20003;
+    QUERY WATCH REMOVE 1;
     ```
 
 #### 可观测性
@@ -330,19 +346,24 @@ Runaway Query 是指执行时间或消耗资源超出预期的查询（仅指 `S
     ```sql
     MySQL [(none)]> SELECT * FROM mysql.tidb_runaway_queries LIMIT 1\G
     *************************** 1. row ***************************
-    resource_group_name: rg1
-                   time: 2023-06-16 17:40:22
-             match_type: identify
-                 action: kill
-           original_sql: select * from sbtest.sbtest1
-            plan_digest: 5b7d445c5756a16f910192ad449c02348656a5e9d2aa61615e6049afbc4a82e
-            tidb_server: 127.0.0.1:4000
+    resource_group_name: default
+         start_time: 2024-09-09 17:43:42
+            repeats: 2
+         match_type: watch
+             action: kill
+         sample_sql: select sleep(2) from t
+         sql_digest: 4adbc838b86c573265d4b39a3979d0a362b5f0336c91c26930c83ab187701a55
+        plan_digest: 5d094f78efbce44b2923733b74e1d09233cb446318293492901c5e5d92e27dbc
+        tidb_server: 127.0.0.1:4000
     ```
 
-    其中，`match_type` 为该 Runaway Query 的来源，其值如下：
+    字段解释：
 
-    - `identify` 表示命中条件。
-    - `watch` 表示被快速识别机制命中。
+    - `start_time` 为该 Runaway Query 被识别的时间。
+    - `repeats` 为该 Runaway Query 从 `start_time` 开始后被识别的次数。
+    - `match_type` 为该 Runaway Query 的来源，其值如下：
+        - `identify` 表示命中条件。
+        - `watch` 表示被快速识别机制命中。
 
 + `information_schema.runaway_watches` 表中包含了 Runaway Queries 的快速识别规则记录。详见 [`RUNAWAY_WATCHES`](/information-schema/information-schema-runaway-watches.md)。
 
@@ -351,7 +372,7 @@ Runaway Query 是指执行时间或消耗资源超出预期的查询（仅指 `S
 > **警告：**
 >
 > 该功能目前为实验特性，不建议在生产环境中使用。该功能可能会在未事先通知的情况下发生变化或删除。如果发现 bug，请[提交 issue](/support.md) 反馈。
-> 
+>
 > 资源管控的后台任务管理是基于 TiKV 的 CPU/IO 的资源利用率动态调整资源配额的，因此它依赖各个实例可用资源上限 (Quota)。如果在单个服务器混合部署多个组件或实例，需要通过 cgroup 为各个实例设置合适的资源上限 (Quota)。TiUP Playground 这类共享资源的配置很难表现出预期效果。
 
 后台任务是指那些优先级不高但是需要消耗大量资源的任务，如数据备份和自动统计信息收集等。这些任务通常定期或不定期触发，在执行的时候会消耗大量资源，从而影响在线的高优先级任务的性能。
@@ -360,7 +381,8 @@ Runaway Query 是指执行时间或消耗资源超出预期的查询（仅指 `S
 
 #### `BACKGROUND` 参数说明
 
-`TASK_TYPES`：设置需要作为后台任务管理的任务类型，多个任务类型以 `,` 分隔。
+- `TASK_TYPES`：设置需要作为后台任务管理的任务类型，多个任务类型以 `,` 分隔。
+- `UTILIZATION_LIMIT`：限制每个 TiKV 节点上后台任务最大可以使用的资源百分比 (0-100)。默认情况下，TiKV 会根据节点的总资源以及当前前台任务所占用的资源，来计算后台任务的可用资源。如果设置此限制，则实际分配给后台任务的资源不会超过此限制的比例。
 
 目前 TiDB 支持如下几种后台任务的类型：
 
@@ -378,10 +400,10 @@ Runaway Query 是指执行时间或消耗资源超出预期的查询（仅指 `S
 
 #### 示例
 
-1. 修改 `default` 资源组，将 `br` 和 `ddl` 标记为后台任务。
+1. 修改 `default` 资源组，将 `br` 和 `ddl` 标记为后台任务，并配置后台任务最多可使用 TiKV 节点总资源的 30%。
 
     ```sql
-    ALTER RESOURCE GROUP `default` BACKGROUND=(TASK_TYPES='br,ddl');
+    ALTER RESOURCE GROUP `default` BACKGROUND=(TASK_TYPES='br,ddl', UTILIZATION_LIMIT=30);
     ```
 
 2. 修改 `default` 资源组，将后台任务的类型还原为默认值。
@@ -405,11 +427,11 @@ Runaway Query 是指执行时间或消耗资源超出预期的查询（仅指 `S
     输出结果如下：
 
     ```
-    +---------+------------+----------+-----------+-------------+---------------------+
-    | NAME    | RU_PER_SEC | PRIORITY | BURSTABLE | QUERY_LIMIT | BACKGROUND          |
-    +---------+------------+----------+-----------+-------------+---------------------+
-    | default | UNLIMITED  | MEDIUM   | YES       | NULL        | TASK_TYPES='br,ddl' |
-    +---------+------------+----------+-----------+-------------+---------------------+
+    +---------+------------+----------+-----------+-------------+-------------------------------------------+
+    | NAME    | RU_PER_SEC | PRIORITY | BURSTABLE | QUERY_LIMIT | BACKGROUND                                |
+    +---------+------------+----------+-----------+-------------+-------------------------------------------+
+    | default | UNLIMITED  | MEDIUM   | YES       | NULL        | TASK_TYPES='br,ddl', UTILIZATION_LIMIT=30 |
+    +---------+------------+----------+-----------+-------------+-------------------------------------------+
     ```
 
 5. 如果希望将当前会话里的任务显式标记为后台类型，你可以使用 `tidb_request_source_type` 显式指定任务类型，如：

@@ -71,6 +71,24 @@ SET SESSION tidb_opt_fix_control = '44262:ON,44389:ON';
 - 此开关控制优化器进行启发式访问路径选择的阈值。当某个访问路径（如 `Index_A`）的估算行数远小于其他访问路径时（默认为 `1000` 倍），优化器会跳过代价比较直接选择 `Index_A`。
 - `0` 表示关闭此启发式访问路径选择策略。
 
+### [`47400`](https://github.com/pingcap/tidb/issues/47400) <span class="version-mark">从 v8.4.0 版本开始引入</span>
+
+- 默认值：`ON`
+- 可选值：`ON`、`OFF`
+- 由于查询计划中每个步骤符合条件的行数难以精确估算，优化器有可能会为 `estRows` 估算出一个较小的值。此开关控制是否限制 `estRows` 的最小值。
+- `ON`：将 `estRows` 的最小值限制为 1。这是 v8.4.0 中引入的新行为，与 Oracle 和 DB2 等数据库一致。
+- `OFF`：不限制 `estRows` 的最小值，与 v8.4.0 之前版本的行为保持一致。此时，`estRows` 可能为 0。
+
+### [`52592`](https://github.com/pingcap/tidb/issues/52592) <span class="version-mark">从 v8.4.0 版本开始引入</span>
+
+- 默认值：`OFF`
+- 可选值：`ON`、`OFF`
+- 此开关控制是否禁用 `Point Get` 和 `Batch Point Get` 算子执行查询。默认值 `OFF` 代表允许通过 `Point Get` 和 `Batch Point Get` 执行查询。如果设置为 `ON`，优化器会禁用 `Point Get` 和 `Batch Point Get`，强制选择 Coprocessor 执行查询。
+- `Point Get` 和 `Batch Point Get` 不支持列投影（即无法只返回部分列的数据），这意味着在某些场景中其执行效率可能低于 Coprocessor，此时设置为 `ON` 可以提高查询性能。以下是推荐设置为 `ON` 的场景：
+
+    - 查询具有多列的宽表，且仅涉及表中的少量列。
+    - 查询包含大型 JSON 值的表，且不需要检索整个 JSON 列，或仅需提取 JSON 列中的小部分数据。
+
 ### [`52869`](https://github.com/pingcap/tidb/issues/52869) <span class="version-mark">从 v8.1.0 版本开始引入</span>
 
 - 默认值：`OFF`

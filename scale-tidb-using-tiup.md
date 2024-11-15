@@ -284,11 +284,8 @@ tiup cluster display <cluster-name>
 > **注意：**
 >
 > - 移除 TiDB、PD 节点和移除 TiKV 节点的步骤类似。
-> - 由于 TiKV、TiFlash 和 TiDB Binlog 组件是异步下线的，且下线过程耗时较长，所以 TiUP 对 TiKV、TiFlash 和 TiDB Binlog 组件做了特殊处理，详情参考[下线特殊处理](/tiup/tiup-component-cluster-scale-in.md#下线特殊处理)。
-
-> **注意：**
->
-> TiKV 中的 PD Client 会缓存 PD 节点的列表。当前版本的 TiKV 有定期自动更新 PD 节点的机制，可以降低 TiKV 缓存的 PD 节点列表过旧这一问题出现的概率。但你应尽量避免在扩容新 PD 后直接一次性缩容所有扩容前就已经存在的 PD 节点。如果需要，请确保在下线所有之前存在的 PD 节点前将 PD 的 leader 切换至新扩容的 PD 节点。
+> - 由于 TiKV 和 TiFlash 组件是异步下线的，且下线过程耗时较长，所以 TiUP 对 TiKV 和 TiFlash 组件做了特殊处理，详情参考[下线特殊处理](/tiup/tiup-component-cluster-scale-in.md#下线特殊处理)。
+> - TiKV 中的 PD Client 会缓存 PD 节点的列表。当前版本的 TiKV 有定期自动更新 PD 节点的机制，可以降低 TiKV 缓存的 PD 节点列表过旧这一问题出现的概率。但你应尽量避免在扩容新 PD 后直接一次性缩容所有扩容前就已经存在的 PD 节点。如果需要，请确保在下线所有之前存在的 PD 节点前将 PD 的 leader 切换至新扩容的 PD 节点。
 
 ### 1. 查看节点 ID 信息
 
@@ -303,7 +300,7 @@ Starting /root/.tiup/components/cluster/v1.12.3/cluster display <cluster-name>
 
 TiDB Cluster: <cluster-name>
 
-TiDB Version: v8.3.0
+TiDB Version: v8.4.0
 
 ID       Role         Host    Ports                            Status  Data Dir        Deploy Dir
 

@@ -254,16 +254,23 @@ pd-server 相关配置项。
 
 调度相关的配置项。
 
+> **注意：**
+> 
+> 要修改与调度相关的 PD 配置项，请根据集群的情况选择以下方法之一：
+>
+> - 对于新部署集群，你可以直接在 PD 配置文件中进行修改。
+> - 对于已有集群，请使用命令行工具 [PD Control](/pd-control.md) 进行修改。直接修改 PD 配置文件中与调度相关的配置项不会对已有集群生效。
+
 ### `max-merge-region-size`
 
 + 控制 Region Merge 的 size 上限，当 Region Size 大于指定值时 PD 不会将其与相邻的 Region 合并。
-+ 默认：20
++ 默认：54。在 v8.4.0 之前，默认值为 20；从 v8.4.0 开始，默认值为 54。
 + 单位：MiB
 
 ### `max-merge-region-keys`
 
 + 控制 Region Merge 的 key 上限，当 Region key 大于指定值时 PD 不会将其与相邻的 Region 合并。
-+ 默认：200000
++ 默认：540000。在 v8.4.0 之前，默认值为 200000；从 v8.4.0 开始，默认值为 540000。
 
 ### `patrol-region-interval`
 
@@ -428,16 +435,20 @@ pd-server 相关配置项。
     + v1：在 v1 模式下，你可以手动修改 `store limit` 以限制单个 TiKV 调度速度。
     + v2：（实验特性）在 v2 模式下，你无需关注 `store limit` 值，PD 将根据 TiKV Snapshot 执行情况动态调整 TiKV 调度速度。详情请参考 [Store Limit v2 原理](/configure-store-limit.md#store-limit-v2-原理)。
 
-## label-property
+## label-property（已废弃）
 
-标签相关的配置项。
+标签相关的配置项，只支持 `reject-leader` 类型。
 
-### `key`
+> **注意：**
+>
+> 标签相关的配置项已从 v5.2 开始废弃，建议使用 [Placement Rules](/configure-placement-rules.md#场景二5-副本按-2-2-1-的比例放置在-3-个数据中心且第-3-个中心不产生-leader) 设置副本策略。
+
+### `key`（已废弃）
 
 + 拒绝 leader 的 store 带有的 label key。
 + 默认值：""
 
-### `value`
+### `value`（已废弃）
 
 + 拒绝 leader 的 store 带有的 label value。
 + 默认值：""
@@ -469,9 +480,12 @@ PD 中内置的 [TiDB Dashboard](/dashboard/dashboard-intro.md) 相关配置项�
 
 ### `enable-telemetry`
 
-+ 是否启用 TiDB Dashboard 遥测功能。
+> **警告：**
+>
+> 从 TiDB v8.1.0 开始，TiDB Dashboard 已移除遥测功能，该配置项已不再生效。保留该配置项仅用于与之前版本兼容。
+
++ 在 v8.1.0 之前，用于控制是否启用 TiDB Dashboard 遥测功能。
 + 默认值：false
-+ 参阅[遥测](/telemetry.md)了解该功能详情。
 
 ## `replication-mode`
 

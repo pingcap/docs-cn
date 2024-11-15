@@ -5,7 +5,7 @@ summary: 了解如何使用 MPP 模式。
 
 # 使用 MPP 模式
 
-本文档介绍 TiFlash 的 [Massively Parallel Processing (MPP)](/glossary.md#mpp) 模式及其使用方法。
+本文档介绍 TiFlash 的 [Massively Parallel Processing (MPP)](/glossary.md#massively-parallel-processing-mpp) 模式及其使用方法。
 
 TiFlash 支持 MPP 模式的查询执行，即在计算中引入跨节点的数据交换（data shuffle 过程）。TiDB 默认由优化器自动选择是否使用 MPP 模式，你可以通过修改变量 [`tidb_allow_mpp`](/system-variables.md#tidb_allow_mpp-从-v50-版本开始引入) 和 [`tidb_enforce_mpp`](/system-variables.md#tidb_enforce_mpp-从-v51-版本开始引入) 的值来更改选择策略。
 

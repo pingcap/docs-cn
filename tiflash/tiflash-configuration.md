@@ -68,9 +68,11 @@ delta_index_cache_size = 0
     ## DTFile 储存文件格式
     ## * format_version = 2 v6.0.0 以前版本的默认文件格式
     ## * format_version = 3 v6.0.0 及 v6.1.x 版本的默认文件格式，具有更完善的检验功能
-    ## * format_version = 4 v7.3.0 及以前版本的默认文件格式，优化了写放大问题，同时减少了后台线程消耗。
-    ## * format_version = 5 v7.4.0 及以后版本的默认文件格式（从 v7.3.0 开始引入），该格式可以合并小文件从而减少了物理文件数量。
-    # format_version = 5
+    ## * format_version = 4 v6.2.0 ~ v7.3.0 的默认文件格式，优化了写放大问题，同时减少了后台线程消耗。
+    ## * format_version = 5 v7.4.0 ~ v8.3.0 的默认文件格式（从 v7.3.0 开始引入），该格式可以合并小文件从而减少了物理文件数量。
+    ## * format_version = 6 从 v8.4.0 开始引入，部分支持了向量索引的构建与存储。
+    ## * format_version = 7 v8.4.0 及以后版本的默认文件格式 (从 v8.4.0 开始引入)，该格式用于支持向量索引的构建与存储。
+    # format_version = 7
 
     [storage.main]
     ## 用于存储主要的数据，该目录列表中的数据占总数据的 90% 以上。
@@ -192,6 +194,10 @@ delta_index_cache_size = 0
     ## 存储引擎的 segment 分裂是否使用逻辑分裂。使用逻辑分裂可以减小写放大，但是会造成一定程度的硬盘空间回收不及时。默认为 false。
     ## 在 v6.2.0 以及后续版本，强烈建议保留默认值 `false`，不要将其修改为 `true`。具体请参考已知问题 [#5576](https://github.com/pingcap/tiflash/issues/5576)。
     # dt_enable_logical_split = false
+
+    ## `max_threads` 指的是执行一个 MMP Task 的内部线程并发度，默认值为 0。当值为 0 时，TiFlash 执行 MMP Task 的线程并发度为 CPU 核数。
+    ## 该参数只有在系统变量 `tidb_max_tiflash_threads` 设置为 -1 时才会生效。
+    max_threads = 0
 
     ## 单次查询过程中，节点对中间数据的内存限制
     ## 设置为整数时，单位为 byte，比如 34359738368 表示 32 GiB 的内存限制，0 表示无限制

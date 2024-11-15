@@ -20,7 +20,7 @@ tiup playground ${version} [flags]
 
 - 因为该命令没有指定 playground 的版本，TiUP 会先查找已安装的 playground 的最新版本，假设已安装的 playground 最新版为 v1.12.3，则该命令相当于 tiup playground:v1.12.3
 - 如果 playground 从未安装过任何版本的 TiDB/TiKV/PD 组件，TiUP 会先安装这些组件的最新稳定版，然后再启动运行这些组件的实例
-- 因为该命令没有指定 TiDB/PD/TiKV 各组件的版本，默认情况下，它会使用各组件的最新发布版本，假设当前为 v8.3.0，则该命令相当于 tiup playground:1.12.3 v8.3.0
+- 因为该命令没有指定 TiDB/PD/TiKV 各组件的版本，默认情况下，它会使用各组件的最新发布版本，假设当前为 v8.4.0，则该命令相当于 tiup playground:1.12.3 v8.4.0
 - 因为该命令也没有指定各组件的个数，默认情况下，它会启动由 1 个 TiDB、1 个 TiKV、1 个 PD 和 1 个 TiFlash 实例构成的最小化集群
 - 在依次启动完各个 TiDB 组件后，playground 会提醒集群启动成功，并告诉你一些有用的信息，譬如如何通过 MySQL 客户端连接集群、如何访问 [TiDB Dashboard](/dashboard/dashboard-intro.md) 等
 
@@ -34,9 +34,6 @@ Flags:
       --db.binpath string          指定 TiDB 二进制文件的位置（开发调试用，可忽略）
       --db.config string           指定 TiDB 的配置文件（开发调试用，可忽略）
       --db.timeout int             指定 TiDB 最长等待超时时间，单位为秒。若配置为 0，则永不超时。
-      --drainer int                设置集群中 Drainer 数据
-      --drainer.binpath string     指定 Drainer 二进制文件的位置（开发调试用，可忽略）
-      --drainer.config string      指定 Drainer 的配置文件
   -h, --help                       打印帮助信息
       --host string                设置每个组件的监听地址（默认为 127.0.0.1），如果要提供给别的电脑访问，可设置为 0.0.0.0
       --kv int                     设置集群中 TiKV 节点的数量（默认为1）
@@ -48,9 +45,6 @@ Flags:
       --pd.binpath string          指定 PD 二进制文件的位置（开发调试用，可忽略）
       --pd.config string           指定 PD 的配置文件（开发调试用，可忽略）
       --pd.mode string             指定 PD 的工作模式，取值选项为 'ms'。指定该参数代表启用 PD 微服务模式。
-      --pump int                   设置集群中 Pump 节点的数量（非 0 的时候 TiDB 会开启 TiDB Binlog）
-      --pump.binpath string        指定 Pump 二进制文件的位置（开发调试用，可忽略）
-      --pump.config string         指定 Pump 的配置文件（开发调试用，可忽略）
       --scheduling int             设置集群中 Scheduling 节点的数量（默认为 1），只能在 pd.mode 为 'ms' 的时候设置
       --scheduling.host host       指定 Scheduling 节点的监听地址
       --scheduling.binpath string  指定 Scheduling 节点上二进制文件的位置（开发调试用，可忽略）
@@ -175,10 +169,8 @@ Pid    Role     Uptime
 ---    ----     ------
 84518  pd       35m22.929404512s
 84519  tikv     35m22.927757153s
-84520  pump     35m22.92618275s
 86189  tidb     exited
 86526  tidb     34m28.293148663s
-86190  drainer  35m19.91349249s
 ```
 
 ## 扩容集群
@@ -206,7 +198,7 @@ tiup playground scale-in --pid 86526
 从 v8.2.0 起，[PD 微服务](/pd-microservices.md)（实验特性）支持通过 TiUP 部署。你可以通过 TiUP Playground 为集群部署 `tso` 微服务和 `scheduling` 微服务。
 
 ```shell
-tiup playground v8.3.0 --pd.mode ms --pd 3 --tso 2 --scheduling 2
+tiup playground v8.4.0 --pd.mode ms --pd 3 --tso 2 --scheduling 2
 ```
 
 - `--pd.mode`：当指定 `--pd.mode` 为 `ms` 时，代表启用 PD 微服务模式。

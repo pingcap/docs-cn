@@ -8,7 +8,7 @@ summary: tiup cluster patch 命令用于在集群运行过程中动态替换某�
 在集群运行过程中，如果需要动态替换某个服务的二进制文件（即替换过程中保持集群可用），那么可以使用 `tiup cluster patch` 命令，它会完成以下几件事情：
 
 - 将用于替换的二进制包上传到目标机器
-- 如果目标服务是 TiKV、TiFlash 或者 TiDB Binlog 之类的存储服务，则先通过 API 下线节点
+- 如果目标服务是 TiKV 或者 TiFlash 之类的存储服务，则先通过 API 下线节点
 - 停止目标服务
 - 解压二进制包，替换服务
 - 启动目标服务
@@ -29,7 +29,7 @@ tiup cluster patch <cluster-name> <package-path> [flags]
 1. 确定以下变量的值：
 
     - `${component}`：需要替换的组件名（例如 `tidb`、`tikv`、`pd`）。
-    - `${version}`：组件的版本（例如 `v8.3.0`、`v7.5.3`）。
+    - `${version}`：组件的版本（例如 `v8.4.0`、`v7.5.4`）。
     - `${os}`：操作系统 (`linux`)。
     - `${arch}`：组件运行的平台 (`amd64`、`arm64`)。
 2. 下载当前的组件包：

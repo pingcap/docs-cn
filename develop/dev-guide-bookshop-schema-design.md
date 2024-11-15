@@ -64,30 +64,32 @@ tiup demo bookshop prepare --users=200000 --books=500000 --authors=100000 --rati
 
 ### 方法二：通过 TiDB Cloud Import 功能
 
-在 TiDB Cloud 的集群详情页面，你可以通过切换到 **Import** 标签页，点击 **Import Data** 按钮进入到 **Data Import** 页面。在该页面当中，按照以下步骤将 Bookshop 示例数据从 AWS S3 中导入到你的 TiDB Cloud 集群：
+1. 打开目标集群的 **Import** 页面。
 
-1. 选择 **Data Format** 为 **SQL File**。
-2. 将以下 **Bucket URI** 和 **Role ARN** 复制到页面上对应的输入框当中：
+    1. 登录 [TiDB Cloud](https://tidbcloud.com/)，导航至 [**Clusters**](https://tidbcloud.com/console/clusters) 页面。
 
-    **Bucket URI**:
+        > **Tip:**
+        >
+        > 如果你有多个 TiDB Cloud 项目，可以点击左下角的 <MDSvgIcon name="icon-left-projects" /> 切换项目。
 
-    ```
-    s3://developer.pingcap.com/bookshop/
-    ```
+    2. 点击目标集群的名称，进入集群的 **Overview** 页面，然后在左侧导航栏中点击 **Import**。
 
-    **Role ARN**:
+2. 选择 **Import data from S3**。
 
-    ```
-    arn:aws:iam::494090988690:role/s3-tidb-cloud-developer-access
-    ```
+    如果这是你第一次使用 TiDB Cloud 的导入功能，选择 **Import From Amazon S3**。
 
-3. 点击 **Next** 按钮切换到 **Choose the tables to be imported** 步骤确认将要导入的文件的信息。
+3. 在 **Import Data from Amazon S3** 页面，配置以下源数据信息：
 
-4. 点击 **Next** 按钮切换到 **Preview** 步骤确认将要导入的示例数据是否正确。
+    - **Import File Count**：选择 **Multiple files**
+    - **Included Schema Files**：选择 **Yes**
+    - **Data Format**：选择 **SQL**
+    - **Folder URI**：输入 `s3://developer.pingcap.com/bookshop/`
+    - **Bucket Access**：选择 **AWS Role ARN**
+    - **Role ARN**：输入 `arn:aws:iam::494090988690:role/s3-tidb-cloud-developer-access`
 
     在这个示例数据当中，预先生成了 20 万的用户信息、50 万条书籍信息、10 万条作者信息、100 万条评分记录以及 100 万条订单信息。
 
-5. 点击 **Start Import** 按钮开始导入数据，等待 TiDB Cloud 完成数据导入。
+4. 点击 **Connect** > **Start Import** 开始导入数据，等待 TiDB Cloud 完成数据导入。
 
 你可以通过 [TiDB Cloud Migration Overview](https://docs.pingcap.com/tidbcloud/tidb-cloud-migration-overview) 文档获取更多有关 TiDB Cloud 数据导入和迁移的信息。
 

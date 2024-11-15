@@ -284,8 +284,6 @@ CREATE PLACEMENT POLICY storageforhistorydata CONSTRAINTS="[+node=history]";
 CREATE PLACEMENT POLICY storagefornewdata CONSTRAINTS="[+node=new]";
 CREATE PLACEMENT POLICY companystandardpolicy CONSTRAINTS="";
 
-SET tidb_enable_global_index = ON;
-
 CREATE TABLE t1 (id INT, name VARCHAR(50), purchased DATE, UNIQUE INDEX idx(id) GLOBAL)
 PLACEMENT POLICY=companystandardpolicy
 PARTITION BY RANGE( YEAR(purchased) ) (
@@ -382,7 +380,7 @@ SHOW PLACEMENT;
 如果你对 Raft Leader 的分布节点有要求，可以使用如下语句指定：
 
 ```sql
-CREATE PLACEMENT POLICY deploy221_primary_east1 LEADER_CONSTRAINTS="[+region=us-east-1]" FOLLOWER_CONSTRAINTS='{"+region=us-east-1": 1, "+region=us-east-2": 2, "+region=us-west-1: 1}';
+CREATE PLACEMENT POLICY deploy221_primary_east1 LEADER_CONSTRAINTS="[+region=us-east-1]" FOLLOWER_CONSTRAINTS='{"+region=us-east-1": 1, "+region=us-east-2": 2, "+region=us-west-1": 1}';
 ```
 
 该放置策略创建好并绑定到所需的数据后，这些数据的 Raft Leader 副本将会放置在 `LEADER_CONSTRAINTS` 选项指定的 `us-east-1` 区域中，其他副本将会放置在`FOLLOWER_CONSTRAINTS` 选项指定的区域。需要注意的是，如果集群发生故障，比如 Leader 所在区域 `us-east-1` 的节点宕机，这时候即使其他区域设置的都是 `FOLLOWER_CONSTRAINTS`, 也会从中选举出一个新的 Leader，也就是说保证服务可用的优先级是最高的。
@@ -440,4 +438,3 @@ PLACEMENT POLICY=app_list
 | Backup & Restore (BR) | 6.0 | BR 在 v6.0 之前不支持放置策略的备份与恢复，请参见[恢复 Placement Rule 到集群时为什么会报错？](/faq/backup-and-restore-faq.md#恢复-placement-rule-到集群时为什么会报错) |
 | TiDB Lightning | 暂时不兼容 | 导入包含放置策略的数据时会报错 |
 | TiCDC | 6.0 | 忽略放置策略，不同步策略到下游集群 |
-| TiDB Binlog | 6.0 | 忽略放置策略，不同步策略到下游集群 |

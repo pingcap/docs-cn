@@ -101,7 +101,7 @@ Slow Query 基础信息：
 * `Write_keys`：表示该事务向 TiKV 的 Write CF 写入 Key 的数量。
 * `Write_size`：表示事务提交时写 key 或 value 的总大小。
 * `Prewrite_region`：表示事务两阶段提交中第一阶段（prewrite 阶段）涉及的 TiKV Region 数量。每个 Region 会触发一次远程过程调用。
-* `Wait_prewrite_binlog_time`：表示事务提交时用于写 binlog 的时间。
+* `Wait_prewrite_binlog_time`：表示事务提交时用于写 binlog 的时间。从 v8.4.0 开始，TiDB Binlog 已移除，不再有相关时间。
 * `Resolve_lock_time`：表示事务提交时遇到锁后，清理锁或者等待锁过期的时间。
 
 和内存使用相关的字段：

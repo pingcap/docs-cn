@@ -171,12 +171,14 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
 + 默认值：64
 + 目前的合法值范围 `[64, 512]`。
 
-### `enable-telemetry` <span class="version-mark">从 v4.0.2 版本开始引入</span>
+### `enable-telemetry` <span class="version-mark">从 v4.0.2 版本开始引入，从 v8.1.0 版本开始废弃</span>
 
-+ 是否开启 TiDB 遥测功能。
+> **警告：**
+>
+> 从 TiDB v8.1.0 开始，TiDB 已移除遥测功能，该配置项已不再生效。保留该配置项仅用于与之前版本兼容。
+
++ 在 v8.1.0 之前，用于控制是否在 TiDB 实例上开启遥测功能。
 + 默认值：false
-+ 如果在 TiDB 实例上该配置项设为 `true`，该 TiDB 实例上将开启遥测功能，且 [`tidb_enable_telemetry`](/system-variables.md#tidb_enable_telemetry-从-v402-版本开始引入) 系统变量生效。
-+ 如果所有 TiDB 实例上该选项都设置为 `false`，那么将完全禁用 TiDB 遥测功能，且忽略 `tidb_enable_telemetry` 系统变量。参阅[遥测](/telemetry.md)了解该功能详情。
 
 ### `deprecate-integer-display-length`
 
@@ -504,10 +506,11 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
 + TiDB 单个事务大小限制
 + 默认值：104857600
 + 单位：Byte
-+ 单个事务中，所有 key-value 记录的总大小不能超过该限制。该配置项的最大值不超过 `1099511627776`（表示 1TB）。注意，如果使用了以 `Kafka` 为下游消费者的 `binlog`，如：`arbiter` 集群，该配置项的值不能超过 `1073741824`（表示 1GB），因为这是 `Kafka` 的处理单条消息的最大限制，超过该限制 `Kafka` 将会报错。
++ 单个事务中，所有 key-value 记录的总大小不能超过该限制。该配置项的最大值不超过 `1099511627776`（表示 1TB）。
 + 在 v6.5.0 及之后的版本中，不再推荐使用该配置项，事务的内存大小会被累计计入所在会话的内存使用量中，并由 [`tidb_mem_quota_query`](/system-variables.md#tidb_mem_quota_query) 变量在单个会话内存超阈值时采取控制行为。为了向前兼容，由低版本升级至 v6.5.0 及更高版本时，该配置项的行为如下所述:
     + 若该配置项未设置，或设置为默认值 (`104857600`)，升级后事务内存大小将会计入所在会话的内存使用中，由 `tidb_mem_quota_query` 变量控制。
     + 若该配置项未设为默认值 (`104857600`)，升级前后该配置项仍生效，对单个事务大小的限制行为不会发生变化，事务内存大小不由 `tidb_mem_quota_query` 控制。
++ 从 v8.0.0 开始，如果系统变量 [`tidb_dml_type`](/system-variables.md#tidb_dml_type-从-v800-版本开始引入) 以 `"bulk"` 方式执行事务时，事务的大小不受 TiDB 配置项 `txn-total-size-limit` 的限制。
 
 ### `max-txn-ttl`
 
@@ -537,6 +540,10 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
 
 + 默认值：true
 + 默认可以执行在做 join 时两边表没有任何条件（where 字段）的语句；如果设置为 false，则有这样的 join 语句出现时，server 会拒绝执行
+
+> **注意：**
+>
+> 在创建集群时，不要将 `cross-join` 设置为 false，否则会导致集群启动失败。
 
 ### `stats-lease`
 
@@ -702,12 +709,14 @@ opentracing.reporter 相关的设置。
 
 + TiDB 与 TiKV 节点之间 rpc 连接 keepalive 时间间隔，如果超过该值没有网络包，grpc client 会 ping 一下 TiKV 查看是否存活。
 + 默认值：10
++ 最小值：1
 + 单位：秒
 
 ### `grpc-keepalive-timeout`
 
 + TiDB 与 TiKV 节点 rpc keepalive 检查的超时时间
 + 默认值：3
++ 最小值：0.05
 + 单位：秒
 
 ### `grpc-compression-type`
@@ -801,37 +810,6 @@ opentracing.reporter 相关的设置。
 
 - Hash 对应的 slot 数量，自动向上调整为 2 的指数倍。每个 slot 占用 32 字节内存。如果设置过小，在数据写入范围较大的场景（如导入数据），可能会导致运行速度变慢，性能变差。
 - 默认值：`2048000`
-
-## binlog
-
-TiDB Binlog 相关配置。
-
-### `enable`
-
-+ binlog 开关。
-+ 默认值：false
-
-### `write-timeout`
-
-+ 写 binlog 的超时时间，推荐不修改该值。
-+ 默认值：15s
-+ 单位：秒
-
-### `ignore-error`
-
-+ 忽略写 binlog 发生的错误时处理开关，推荐不修改该值。
-+ 默认值：false
-+ 如果设置为 `true`，发生错误时，TiDB 会停止写入 binlog，并且在监控项 `tidb_server_critical_error_total` 上计数加 1；如果设置为 `false`，写入 binlog 失败，会停止整个 TiDB 的服务。
-
-### `binlog-socket`
-
-+ binlog 输出网络地址。
-+ 默认值：""
-
-### `strategy`
-
-+ binlog 输出时选择 pump 的策略，仅支持 hash，range 方法。
-+ 默认值："range"
 
 ## status
 
@@ -972,6 +950,13 @@ TiDB 服务状态相关配置。
 + 默认值：true
 + 该值作为系统变量 [`tidb_enable_ddl`](/system-variables.md#tidb_enable_ddl-从-v630-版本开始引入) 的初始值。
 + 在 v6.3.0 之前，该功能由配置项 `run-ddl` 进行设置。
+
+### `tidb_enable_stats_owner` <span class="version-mark">从 v8.4.0 版本开始引入</span>
+
++ 用于表示该 tidb-server 是否可以运行[统计信息自动更新](/statistics.md#自动更新)任务。
++ 默认值：`true`
++ 可选值：`true`、`false`
++ 该值作为系统变量 [`tidb_enable_stats_owner`](/system-variables.md#tidb_enable_stats_owner-从-v840-版本开始引入) 的初始值。
 
 ### `tidb_stmt_summary_enable_persistent` <span class="version-mark">从 v6.6.0 版本开始引入</span>
 
