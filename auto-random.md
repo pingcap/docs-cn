@@ -159,11 +159,11 @@ SHOW WARNINGS;
 
 `AUTO_RANDOM` 列隐式分配的值和自增列类似，也遵循 session 变量 [`auto_increment_increment`](/system-variables.md#auto_increment_increment) 和 [`auto_increment_offset`](/system-variables.md#auto_increment_offset) 的控制，其中隐式分配值的自增位 (ID) 满足等式 `(ID - auto_increment_offset) % auto_increment_increment == 0`。
 
-## 手动调整初始值
+## 清除自增 ID 缓存
 
-显式插入 `AUTO_RANDOM` 列的行为与 `AUTO_INCREMENT` 列一致，你也需要手动调整初始值，详细信息请参阅[手动调整初始值](/auto-increment.md#手动调整初始值)。
+显式插入 `AUTO_RANDOM` 列的行为与 `AUTO_INCREMENT` 列一致，你也需要清除自增 ID 缓存，详细信息请参阅[清除自增 ID 缓存](/auto-increment.md#清除自增-id-缓存)。
 
-调整初始值时，需要设置表的 `AUTO_RANDOM_BASE` 值：
+你可以执行 `ALTER TABLE` 语句设置 `AUTO_RANDOM_BASE = 0` 来清除集群中所有 TiDB 节点的自增 ID 缓存。例如：
 
 ```sql
 ALTER TABLE t AUTO_RANDOM_BASE=0;
