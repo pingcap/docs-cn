@@ -189,10 +189,10 @@ TiDB 版本：7.1.6
     - 修复由于 `CAST` 函数不支持显式设置字符集导致报错的问题 [#55677](https://github.com/pingcap/tidb/issues/55677) @[Defined2014](https://github.com/Defined2014)
 
 + TiKV <!--tw@qiancai: 6 notes-->
-    - 添加 RawKvMaxTimestampNotSynced 错误，并将信息设置为 errorpb.Error.max_ts_not_synced 以提供更多信息。针对 must_raw_put 的 max_ts_not_synced 错误重试 [#16789](https://github.com/tikv/tikv/issues/16789) @[pingyu](https://github.com/pingyu)
-    - 修复 drop 大型表或分区后可能出现的流量控制问题 [#17304](https://github.com/tikv/tikv/issues/17304) @[SpadeA-Tang](https://github.com/SpadeA-Tang)
-    - 解决读线程在从 raft-engine 中的 “Memtable” 读取陈旧索引时遇到 panic 的问题 [#17383](https://github.com/tikv/tikv/issues/17383) @[LykxSassinator](https://github.com/LykxSassinator)
-    - 修正 CDC 和日志备份没有使用 advance-ts-interval 来限制 check_leader 超时的问题[#17107](https://github.com/tikv/tikv/issues/17107) @[SpadeA-Tang](https://github.com/SpadeA-Tang)
+    - 新增 `RawKvMaxTimestampNotSynced` 报错，并在 `errorpb.Error.max_ts_not_synced` 中记录该报错的详细信息。针对 `must_raw_put` 操作，在遇到该错误时增加了重试机制 [#16789](https://github.com/tikv/tikv/issues/16789) @[pingyu](https://github.com/pingyu)
+    - (dup): release-6.5.11.md > 错误修复> TiKV - 修复删除大表或分区后可能导致的流量控制问题 [#17304](https://github.com/tikv/tikv/issues/17304) @[SpadeA-Tang](https://github.com/SpadeA-Tang)
+    - 修复读线程在从 Raft Engine 中的 MemTable 读取过时索引时出现的 panic 问题 [#17383](https://github.com/tikv/tikv/issues/17383) @[LykxSassinator](https://github.com/LykxSassinator)
+    - (dup): release-6.5.11.md > 错误修复> TiKV - 修复 `advance-ts-interval` 配置未被用于限制 CDC 和 log-backup 模块中 `check_leader` 操作的 timeout，导致在某些情况下 TiKV 正常重启时 `resolved_ts` lag 过大的问题 [#17107](https://github.com/tikv/tikv/issues/17107) @[SpadeA-Tang](https://github.com/SpadeA-Tang)
     - 修复重启 TiKV 后由 TiDB Lightning 导入的 SST 文件丢失的问题 [#15912](https://github.com/tikv/tikv/issues/15912) @[lance6716](https://github.com/lance6716)
     - (dup): release-6.5.11.md > 错误修复> TiKV - 修复 ingest 已被删除的 sst_importer SST 文件导致 TiKV panic 的问题 [#15053](https://github.com/tikv/tikv/issues/15053) @[lance6716](https://github.com/lance6716)
     - 修复当 TiKV 实例中有大量 Region 时，数据导入过程中可能出现 OOM 的问题 [#16229](https://github.com/tikv/tikv/issues/16229) @[SpadeA-Tang](https://github.com/SpadeA-Tang)
