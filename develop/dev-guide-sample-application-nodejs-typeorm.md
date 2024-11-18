@@ -340,7 +340,7 @@ console.log(rows[0]['tidb_version']);
 
 ### 外键约束
 
-使用[外键约束](/foreign-key.md)（实验特性）可以通过在数据库层面添加检查来确保数据的[引用完整性](https://zh.wikipedia.org/wiki/参照完整性)。但是，在大数据量的场景下，这可能会导致严重的性能问题。
+使用[外键约束](/foreign-key.md)可以通过在数据库层面添加检查来确保数据的[引用完整性](https://zh.wikipedia.org/wiki/参照完整性)。但是，在大数据量的场景下，这可能会导致严重的性能问题。
 
 你可以通过使用 `createForeignKeyConstraints` 选项来控制在构建实体之间的关系时是否创建外键约束（默认值为 `true`）。
 
