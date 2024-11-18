@@ -159,6 +159,25 @@ SHOW WARNINGS;
 
 `AUTO_RANDOM` 列隐式分配的值和自增列类似，也遵循 session 变量 [`auto_increment_increment`](/system-variables.md#auto_increment_increment) 和 [`auto_increment_offset`](/system-variables.md#auto_increment_offset) 的控制，其中隐式分配值的自增位 (ID) 满足等式 `(ID - auto_increment_offset) % auto_increment_increment == 0`。
 
+## 手动调整初始值
+
+显式插入 `AUTO_RANDOM` 列的行为与 `AUTO_INCREMENT` 列一致，你也需要手动调整初始值，详细信息请参阅[手动调整初始值](/auto-increment.md#手动调整初始值)。
+
+调整初始值时，需要设置表的 `AUTO_RANDOM_BASE` 值：
+
+```sql
+ALTER TABLE t AUTO_RANDOM_BASE=0;
+Query OK, 0 rows affected, 1 warning (0.52 sec)
+
+SHOW WARNINGS;
++---------+------+-----------------------------------------------------------------------+
+| Level   | Code | Message                                                               |
++---------+------+-----------------------------------------------------------------------+
+| Warning | 1105 | Can't reset AUTO_INCREMENT to 0 without FORCE option, using 1 instead |
++---------+------+-----------------------------------------------------------------------+
+1 row in set (0.00 sec)
+```
+
 ## 使用限制
 
 目前在 TiDB 中使用 `AUTO_RANDOM` 有以下限制：
