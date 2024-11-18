@@ -148,7 +148,6 @@ TiDB 版本：4.0.8
 
         - 修复 owner 因更新 GC safepoint 失败而非预期退出的问题 [#979](https://github.com/pingcap/tiflow/pull/979)
         - 修复非预期的任务信息更新 [#1017](https://github.com/pingcap/tiflow/pull/1017)
-        - 修复非预期的空 Maxwell 消息 [#978](https://github.com/pingcap/tiflow/pull/978)
 
     + TiDB Lightning
 

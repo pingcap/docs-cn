@@ -96,7 +96,7 @@ rules = ['*.*', '!test.*']
 # 第二个事件过滤器规则
 # [[filter.event-filters]]
 # matcher = ["test.fruit"] # 该事件过滤器只应用于 test.fruit 表
-# ignore-event = ["drop table", "delete"] # 忽略 drop table 的 DDL 事件和 delete 类型的 DML 事件
+# ignore-event = ["drop table", "delete"] # 忽略 drop table 的 DDL 事件和 delete 类型的 DML 事件。需要注意的是，在更新 TiDB 中聚簇索引的列值时，TiCDC 会将一个 UPDATE 事件拆分成为 DELETE 和 INSERT 事件，TiCDC 无法将该类事件识别为 UPDATE 事件，因此无法正确地进行过滤。
 # ignore-sql = ["^drop table", "alter table"] # 忽略以 drop table 开头的，或者包含 alter table 的 DDL 语句
 # ignore-insert-value-expr = "price > 1000 and origin = 'no where'" # 忽略包含 price > 1000 和 origin = 'no where' 条件的 insert DML
 
@@ -223,6 +223,9 @@ sasl-oauth-grant-type = "client_credentials"
 # Kafka SASL OAUTHBEARER 认证机制中的 audience。默认值为空。在使用该认证机制时，该参数可选填。
 sasl-oauth-audience = "kafka"
 
+# 控制是否输出原始的数据变更事件，默认值为 false。更多信息，请参考 https://docs.pingcap.com/zh/tidb/v7.1/ticdc-split-update-behavior#控制是否拆分主键或唯一键-update-事件
+# output-raw-change-event = false
+
 [sink.cloud-storage-config]
 # 向下游存储服务保存数据变更记录的并发度，默认值为 16。
 worker-count = 16
@@ -236,4 +239,6 @@ file-expiration-days = 0
 file-cleanup-cron-spec = "0 0 2 * * *"
 # 上传单个文件的并发数，默认值为 1，表示禁用并发。
 flush-concurrency = 1
+# 控制是否输出原始的数据变更事件，默认值为 false。更多信息，请参考 https://docs.pingcap.com/zh/tidb/v7.1/ticdc-split-update-behavior#控制是否拆分主键或唯一键-update-事件
+output-raw-change-event = false
 ```

@@ -685,6 +685,10 @@ mysql> SELECT * FROM doctors;
 
 ## 对 savepoint 和嵌套事务的支持
 
+> **注意：**
+>
+> TiDB 从 v6.2.0 版本开始支持 [savepoint](/sql-statements/sql-statement-savepoint.md) 特性。因此低于 v6.2.0 版本的 TiDB 不支持 `PROPAGATION_NESTED` 传播行为。建议升级至 v6.2.0 及之后版本。如无法升级 TiDB 版本，且基于 Java Spring 框架的应用使用了 `PROPAGATION_NESTED` 传播行为，需要在应用端做出调整，将嵌套事务的逻辑移除。
+
 Spring 支持的 PROPAGATION_NESTED 传播行为会启动一个嵌套的事务，它是当前事务之上独立启动的一个子事务。嵌套事务开始时会记录一个 savepoint，如果嵌套事务执行失败，事务将会回滚到 savepoint 的状态。嵌套事务是外层事务的一部分，它将会在外层事务提交时一起被提交。下面案例展示了 savepoint 机制：
 
 ```sql
@@ -703,16 +707,16 @@ mysql> SELECT * FROM T2;
 +------+
 ```
 
-> **注意：**
->
-> TiDB 从 v6.2.0 版本开始支持 [savepoint](/sql-statements/sql-statement-savepoint.md) 特性。因此低于 v6.2.0 版本的 TiDB 不支持 `PROPAGATION_NESTED` 传播行为。基于 Java Spring 框架的应用如果使用了 `PROPAGATION_NESTED` 传播行为，需要在应用端做出调整，将嵌套事务的逻辑移除。
-
 ## 大事务限制
 
 基本原则是要限制事务的大小。TiDB 对单个事务的大小有限制，这层限制是在 KV 层面。反映在 SQL 层面的话，简单来说一行数据会映射为一个 KV entry，每多一个索引，也会增加一个 KV entry。所以这个限制反映在 SQL 层面是：
 
-- 最大单行记录容量为 120MB（TiDB v5.0 及更高的版本可通过 tidb-server 配置项 `performance.txn-entry-size-limit` 调整，低于 TiDB v5.0 的版本支持的单行容量为 6MB）。
-- 支持的最大单个事务容量为 10GB（TiDB v4.0 及更高版本可通过 tidb-server 配置项 `performance.txn-total-size-limit` 调整，低于 TiDB v4.0 的版本支持的最大单个事务容量为 100MB）。
+- 最大单行记录容量为 120 MiB。TiDB v4.0.10 及更高的 v4.0.x 版本、v5.0.0 及更高的版本可通过 tidb-server 配置项 [`performance.txn-entry-size-limit`](/tidb-configuration-file.md#txn-entry-size-limit-从-v4010-和-v500-版本开始引入) 调整，低于 TiDB v4.0.10 的版本支持的单行容量为 6 MiB。
+
+- 支持的最大单个事务容量为 1 TiB。
+
+    - TiDB v4.0 及更高版本可通过 tidb-server 配置项 [`performance.txn-total-size-limit`](/tidb-configuration-file.md#txn-total-size-limit) 调整，低于 TiDB v4.0 的版本支持的最大单个事务容量为 100 MiB。
+    - 在 v6.5.0 及之后的版本中，不再推荐使用配置项 [`performance.txn-total-size-limit`](/tidb-configuration-file.md#txn-total-size-limit)。更多详情请参考 [`performance.txn-total-size-limit`](/tidb-configuration-file.md#txn-total-size-limit)。
 
 另外注意，无论是大小限制还是行数限制，还要考虑事务执行过程中，TiDB 做编码以及事务额外 Key 的开销。在使用的时候，为了使性能达到最优，建议每 100 ～ 500 行写入一个事务。
 

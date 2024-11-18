@@ -18,7 +18,7 @@ title: TiDB RC1 Release Notes
 
 + PD 调度策略框架优化，策略更加灵活合理
 + 添加 label 支持，支持跨 DC 调度
-+ 提供 PD Controler，方便操作 PD 集群
++ 提供 PD Control，方便操作 PD 集群
 
 ## TiDB
 

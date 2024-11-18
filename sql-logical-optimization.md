@@ -16,3 +16,4 @@ title: 逻辑优化
 - [分区裁剪](/partition-pruning.md)
 - [TopN 和 Limit 下推](/topn-limit-push-down.md)
 - [Join Reorder](/join-reorder.md)
+- [从窗口函数中推导 TopN 或 Limit](/derive-topn-from-window.md)

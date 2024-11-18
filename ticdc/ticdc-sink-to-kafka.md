@@ -31,6 +31,19 @@ Info: {"sink-uri":"kafka://127.0.0.1:9092/topic-name?protocol=canal-json&kafka-v
 - `--target-ts`：指定 changefeed 的目标 TSO。TiCDC 集群拉取数据直到这个 TSO 停止。默认为空，即 TiCDC 不会自动停止。
 - `--config`：指定 changefeed 配置文件，详见：[TiCDC Changefeed 配置参数](/ticdc/ticdc-changefeed-config.md)。
 
+## 支持的 Kafka 版本
+
+TiCDC 与支持的 Kafka 最低版本对应关系如下：
+
+| TiCDC 版本               | 支持的 Kafka 最低版本 |
+| :-----------------------| :------------------ |
+| TiCDC >= v8.1.0          | 2.1.0              |
+| v7.6.0 <= TiCDC < v8.1.0 | 2.4.0              |
+| v7.5.2 <= TiCDC < v8.0.0 | 2.1.0              |
+| v7.5.0 <= TiCDC < v7.5.2 | 2.4.0              |
+| v6.5.0 <= TiCDC < v7.5.0 | 2.1.0              |
+| v6.1.0 <= TiCDC < v6.5.0 | 2.0.0              |
+
 ## Sink URI 配置 `kafka`
 
 Sink URI 用于指定 TiCDC 目标系统的连接信息，遵循以下格式：
@@ -51,15 +64,15 @@ URI 中可配置的的参数如下：
 | :------------------ | :------------------------------------------------------------ |
 | `127.0.0.1`          | 下游 Kafka 对外提供服务的 IP。                                 |
 | `9092`               | 下游 Kafka 的连接端口。                                          |
-| `topic-name`           | 变量，使用的 Kafka topic 名字。                                      |
-| `kafka-version`      | 下游 Kafka 版本号（可选，默认值 `2.4.0`，目前支持的最低版本为 `0.11.0.2`，最高版本为 `3.2.0`。该值需要与下游 Kafka 的实际版本保持一致）。 |
+| `topic-name`         | 变量，使用的 Kafka topic 名字。                                      |
+| `kafka-version`      | 下游 Kafka 版本号。该值需要与下游 Kafka 的实际版本保持一致。 |
 | `kafka-client-id`    | 指定同步任务的 Kafka 客户端的 ID（可选，默认值为 `TiCDC_sarama_producer_同步任务的 ID`）。 |
 | `partition-num`      | 下游 Kafka partition 数量（可选，不能大于实际 partition 数量，否则创建同步任务会失败，默认值 `3`）。|
 | `max-message-bytes`  | 每次向 Kafka broker 发送消息的最大数据量（可选，默认值 `10MB`）。从 v5.0.6 和 v4.0.6 开始，默认值分别从 64MB 和 256MB 调整至 10 MB。|
 | `replication-factor` | Kafka 消息保存副本数（可选，默认值 `1`），需要大于等于 Kafka 中 [`min.insync.replicas`](https://kafka.apache.org/33/documentation.html#brokerconfigs_min.insync.replicas) 的值。 |
 | `required-acks`      | 在 `Produce` 请求中使用的配置项，用于告知 broker 需要收到多少副本确认后才进行响应。可选值有：`0`（`NoResponse`：不发送任何响应，只有 TCP ACK），`1`（`WaitForLocal`：仅等待本地提交成功后再响应）和 `-1`（`WaitForAll`：等待所有同步副本提交后再响应。最小同步副本数量可通过 broker 的 [`min.insync.replicas`](https://kafka.apache.org/33/documentation.html#brokerconfigs_min.insync.replicas) 配置项进行配置）。（可选，默认值为 `-1`）。                      |
 | `compression`        | 设置发送消息时使用的压缩算法（可选值为 `none`、`lz4`、`gzip`、`snappy` 和 `zstd`，默认值为 `none`）。注意 Snappy 压缩文件必须遵循[官方 Snappy 格式](https://github.com/google/snappy)。不支持其他非官方压缩格式。|
-| `protocol` | 输出到 Kafka 的消息协议，可选值有 `canal-json`、`open-protocol`、`avro`、`maxwell`。 |
+| `protocol` | 输出到 Kafka 的消息协议，可选值有 `canal-json`、`open-protocol` 和 `avro`。 |
 | `auto-create-topic` | 当传入的 `topic-name` 在 Kafka 集群不存在时，TiCDC 是否要自动创建该 topic（可选，默认值 `true`）。 |
 | `enable-tidb-extension` | 可选，默认值是 `false`。当输出协议为 `canal-json` 时，如果该值为 `true`，TiCDC 会发送 [WATERMARK 事件](/ticdc/ticdc-canal-json.md#watermark-event)，并在 Kafka 消息中添加 TiDB 扩展字段。从 6.1.0 开始，该参数也可以和输出协议 `avro` 一起使用。如果该值为 `true`，TiCDC 会在 Kafka 消息中添加[三个 TiDB 扩展字段](/ticdc/ticdc-avro-protocol.md#tidb-扩展字段)。|
 | `max-batch-size` |  从 v4.0.9 开始引入。当消息协议支持把多条变更记录输出至一条 Kafka 消息时，该参数用于指定这一条 Kafka 消息中变更记录的最多数量。目前，仅当 Kafka 消息的 `protocol` 为 `open-protocol` 时有效（可选，默认值 `16`）。|
@@ -136,7 +149,18 @@ URI 中可配置的的参数如下：
   TiCDC 能够正常工作所需的最小权限集合如下：
 
     - 对 Topic [资源类型](https://docs.confluent.io/platform/current/kafka/authorization.html#resources)的 `Create` 、`Write` 和 `Describe` 权限。
-    - 对 Cluster 资源类型的 `DescribeConfigs` 权限。
+    - 对 Cluster 资源类型的 `DescribeConfig` 权限。
+
+  各权限的使用场景如下：
+  
+    | 资源类型 | 操作类型      |  使用场景                            |
+    | :-------------| :------------- | :--------------------------------|
+    | Cluster      | `DescribeConfig` | Changefeed 运行过程中，获取集群元数据 |
+    | Topic         | `Describe`           | Changefeed 启动时，尝试创建 Topic   |                
+    | Topic         | `Create`              | Changefeed 启动时，尝试创建 Topic   |
+    | Topic         | `Write`                | 发送数据到 Topic                   | 
+
+    创建或启动 Changefeed 时，如果指定的 Kafka Topic 已存在，可以不用开启 `Describe` 和 `Create` 权限。
 
 ### TiCDC 集成 Kafka Connect (Confluent Platform)
 
@@ -182,10 +206,10 @@ dispatchers = [
 
 Topic 分发器用 topic = "xxx" 来指定，并使用 topic 表达式来实现灵活的 topic 分发策略。topic 的总数建议小于 1000。
 
-Topic 表达式的基本规则为 `[prefix][{schema}][middle][{table}][suffix]`，详细解释如下：
+Topic 表达式的基本规则为 `[prefix]{schema}[middle][{table}][suffix]`，详细解释如下：
 
 - `prefix`：可选项，代表 Topic Name 的前缀。
-- `{schema}`：可选项，用于匹配库名。
+- `{schema}`：必选项，用于匹配库名。从 v7.1.4 开始，该参数为可选项。
 - `middle`：可选项，代表库表名之间的分隔符。
 - `{table}`：可选项，用于匹配表名。
 - `suffix`：可选项，代表 Topic Name 的后缀。
@@ -345,7 +369,7 @@ large-message-handle-option = "handle-key-only"
     ],
     "old": null,
     "_tidb": {     // TiDB 的扩展字段
-        "commitTs": 163963314122145239,
+        "commitTs": 429918007904436226,  // TiDB TSO 时间戳
         "onlyHandleKey": true
     }
 }

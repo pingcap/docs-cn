@@ -157,6 +157,23 @@ Range 分区在下列条件之一或者多个都满足时，尤其有效：
 
 Range COLUMNS 分区是 Range 分区的一种变体。你可以使用一个或者多个列作为分区键，分区列的数据类型可以是整数 (integer)、字符串（`CHAR`/`VARCHAR`），`DATE` 和 `DATETIME`。不支持使用任何表达式。
 
+和 Range 分区一样，Range COLUMNS 分区同样需要分区的范围是严格递增的。不支持下面示例中的分区定义：
+
+```sql
+CREATE TABLE t(
+    a int,
+    b datetime,
+    c varchar(8)
+) PARTITION BY RANGE COLUMNS(`c`,`b`)
+(PARTITION `p20240520A` VALUES LESS THAN ('A','2024-05-20 00:00:00'),
+ PARTITION `p20240520Z` VALUES LESS THAN ('Z','2024-05-20 00:00:00'),
+ PARTITION `p20240521A` VALUES LESS THAN ('A','2024-05-21 00:00:00'));
+```
+
+```
+Error 1493 (HY000): VALUES LESS THAN value must be strictly increasing for each partition
+```
+
 假设你想要按名字进行分区，并且能够轻松地删除旧的无效数据，那么你可以创建一个表格，如下所示：
 
 ```sql
@@ -1325,11 +1342,15 @@ SELECT store_id, COUNT(department_id) AS c
 
 本节介绍当前 TiDB 分区表的一些约束和限制。
 
+- 不支持使用 [`ALTER TABLE ... CHANGE COLUMN`](/sql-statements/sql-statement-change-column.md) 语句更改分区表的列类型。
+- 不支持使用 [`ALTER TABLE ... CACHE`](/cached-tables.md) 语句将分区表设为缓存表。
+- 与 TiDB 的[临时表](/temporary-tables.md)功能不兼容。
+- 不支持在分区表上创建[外键](/foreign-key.md)。
+- [`ORDER_INDEX(t1_name, idx1_name [, idx2_name ...])`](/optimizer-hints.md#order_indext1_name-idx1_name--idx2_name-) Hint 对分区表及其相关索引不生效，因为分区表上的索引不支持按顺序读取。
+
 ### 分区键，主键和唯一键
 
 本节讨论分区键，主键和唯一键之间的关系。一句话总结它们之间的关系要满足的规则：**分区表的每个唯一键，必须包含分区表达式中用到的所有列**。
-
-> every unique key on the table must use every column in the table's partitioning expression.
 
 这里所指的唯一也包含了主键，因为根据主键的定义，主键必须是唯一的。例如，下面这些建表语句就是无效的：
 

@@ -6,6 +6,10 @@ title: TiDB 使用限制
 
 本文会将详细描述 TiDB 中常见的使用限制，包括：标识符长度，最大支持的数据库、表、索引、分区表、序列等的个数。
 
+> **注意：**
+>
+> TiDB 高度兼容 MySQL 协议，也兼容了很多 MySQL 本身的限制，比如单个索引最多可包含 16 列。详细请参考[与 MySQL 兼容性对比](/mysql-compatibility.md) 和 MySQL 官方文档。
+
 ## 标识符长度限制
 
 | 标识符类型 | 最大长度（字符）|
@@ -49,7 +53,7 @@ title: TiDB 使用限制
 
 | 类型       | 最大限制（默认值）   |
 |:----------|:----------|
-| Size       | 默认为 6 MiB，可通过 [`txn-entry-size-limit`](/tidb-configuration-file.md#txn-entry-size-limit-从-v50-版本开始引入) 配置项调至 120 MiB |
+| Size       | 默认为 6 MiB，可通过 [`txn-entry-size-limit`](/tidb-configuration-file.md#txn-entry-size-limit-从-v4010-和-v500-版本开始引入) 配置项调至 120 MiB |
 
 ## 数据类型限制
 

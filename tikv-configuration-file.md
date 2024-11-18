@@ -164,7 +164,7 @@ TiKV 配置文件比命令行参数支持更多的选项。你可以在 [etc/con
 
 ### `grpc-raft-conn-num`
 
-+ TiKV 节点之间用于 Raft 通讯的链接最大数量。
++ TiKV 节点之间用于 Raft 通信的连接最大数量。
 + 默认值：1
 + 最小值：1
 
@@ -659,10 +659,6 @@ raftstore 相关的配置项。
 
 ### `raft-max-size-per-msg`
 
-> **注意：**
->
-> 该配置项不支持通过 SQL 语句查询，但支持在配置文件中进行配置。
-
 + 产生的单个消息包的大小限制，软限制。
 + 默认值：1MB
 + 最小值：大于 0
@@ -670,10 +666,6 @@ raftstore 相关的配置项。
 + 单位：KB|MB|GB
 
 ### `raft-max-inflight-msgs`
-
-> **注意：**
->
-> 该配置项不支持通过 SQL 语句查询，但支持在配置文件中进行配置。
 
 + 待确认的日志个数，如果超过这个数量，Raft 状态机会减缓发送日志的速度。
 + 默认值：256
@@ -916,7 +908,7 @@ raftstore 相关的配置项。
 
 ### `right-derive-when-split`
 
-+ 为 true 时，以最大分裂 key 为起点的 Region 复用原 Region 的 key；否则以原 Region 起点 key 作为起点的 Region 复用原 Region 的 key。
++ 指定 Region 分裂时新 Region 的起始 key。当此配置项设置为 `true` 时，起始 key 为最大分裂 key；当此配置项设置为 `false` 时，起始 key 为原 Region 的起始 key。
 + 默认值：true
 
 ### `merge-max-log-gap`
@@ -1237,6 +1229,10 @@ RocksDB 相关的配置项。
 
 ### `info-log-max-size`
 
+> **警告：**
+>
+> 自 v5.4.0 起，RocksDB 的日志改为由 TiKV 的日志模块进行管理，因此该配置项被废弃，其功能由配置参数 [`log.file.max-size`](#max-size-从-v540-版本开始引入) 代替。
+
 + Info 日志的最大大小。
 + 默认值：1GB
 + 最小值：0
@@ -1244,10 +1240,18 @@ RocksDB 相关的配置项。
 
 ### `info-log-roll-time`
 
+> **警告：**
+>
+> 自 v5.4.0 起，RocksDB 的日志改为由 TiKV 的日志模块进行管理，因此该配置项被废弃。TiKV 不再支持按照时间自动切分日志，请使用配置参数 [`log.file.max-size`](#max-size-从-v540-版本开始引入) 配置按照文件大小自动切分日志的阈值。
+
 + 日志截断间隔时间，如果为 0s 则不截断。
 + 默认值：0s
 
 ### `info-log-keep-log-file-num`
+
+> **警告：**
+>
+> 自 v5.4.0 起，RocksDB 的日志改为由 TiKV 的日志模块进行管理，因此该配置项被废弃，其功能由配置参数 [`log.file.max-backups`](#max-backups-从-v540-版本开始引入) 代替。
 
 + 保留日志文件最大个数。
 + 默认值：10
@@ -1259,6 +1263,10 @@ RocksDB 相关的配置项。
 + 默认值：""
 
 ### `info-log-level`
+
+> **警告：**
+>
+> 自 v5.4.0 起，RocksDB 的日志改为由 TiKV 的日志模块进行管理，因此该配置项被废弃，其功能由配置参数 [`log.level`](#level-从-v540-版本开始引入) 代替。
 
 + RocksDB 的日志级别。
 + 默认值：`"info"`
@@ -1288,7 +1296,7 @@ RocksDB 相关的配置项。
 ### `track-and-verify-wals-in-manifest` <span class="version-mark">从 v6.5.9 和 v7.1.5 版本开始引入</span>
 
 + 控制是否在 RocksDB 的 MANIFEST 文件中记录 WAL (Write Ahead Log) 文件的信息，以及在启动时是否验证 WAL 文件的完整性。详情请参考 RocksDB [Track WAL in MANIFEST](https://github.com/facebook/rocksdb/wiki/Track-WAL-in-MANIFEST)。
-+ 默认值：`true`
++ 默认值：`false`
 + 可选值：
     + `true`：在 MANIFEST 文件中记录 WAL 文件的信息，并在启动时验证 WAL 文件的完整性。
     + `false`：不在 MANIFEST 文件中记录 WAL 文件的信息，而且不在启动时验证 WAL 文件的完整性。
@@ -1754,6 +1762,10 @@ raftdb 相关配置项。
 
 ### `info-log-max-size`
 
+> **警告：**
+>
+> 自 v5.4.0 起，RocksDB 的日志改为由 TiKV 的日志模块进行管理，因此该配置项被废弃，其功能由配置参数 [`log.file.max-size`](#max-size-从-v540-版本开始引入) 代替。
+
 + Info 日志的最大大小。
 + 默认值：`"1GB"`
 + 最小值：`0`
@@ -1761,10 +1773,18 @@ raftdb 相关配置项。
 
 ### `info-log-roll-time`
 
+> **警告：**
+>
+> 自 v5.4.0 起，RocksDB 的日志改为由 TiKV 的日志模块进行管理，因此该配置项被废弃。TiKV 不再支持按照时间自动切分日志，请使用配置参数 [`log.file.max-size`](#max-size-从-v540-版本开始引入) 配置按照文件大小自动切分日志的阈值。
+
 + Info 日志截断间隔时间，如果为 `"0s"` 则不截断。
 + 默认值：`"0s"`
 
 ### `info-log-keep-log-file-num`
+
+> **警告：**
+>
+> 自 v5.4.0 起，RocksDB 的日志改为由 TiKV 的日志模块进行管理，因此该配置项被废弃，其功能由配置参数 [`log.file.max-backups`](#max-backups-从-v540-版本开始引入) 代替。
 
 + RaftDB 中保存的 Info 日志文件的最大数量。
 + 默认值：`10`
@@ -1776,6 +1796,10 @@ raftdb 相关配置项。
 + 默认值：`""`
 
 ### `info-log-level`
+
+> **警告：**
+>
+> 自 v5.4.0 起，RocksDB 的日志改为由 TiKV 的日志模块进行管理，因此该配置项被废弃，其功能由配置参数 [`log.level`](#level-从-v540-版本开始引入) 代替。
 
 + RaftDB 的日志级别。
 + 默认值：`"info"`
@@ -1808,9 +1832,13 @@ Raft Engine 相关的配置项。
 
 ### `bytes-per-sync`
 
+> **警告：**
+>
+> 从 v6.5.0 起，Raft Engine 在写入日志时不会缓存而是直接落盘，因此该配置项被废弃，且不再生效。
+
 + 指定缓存写入的最大累积大小。当超过此配置值时，缓存的写入将被刷写到磁盘。
 + 如果将此配置项设置为 `0`，则禁用增量同步。
-+ 默认值：`"4MB"`
++ 在 v6.5.0 之前的版本中，默认值为 `"4MiB"`。
 
 ### `target-file-size`
 
@@ -2091,7 +2119,11 @@ Raft Engine 相关的配置项。
 ### `min-ts-interval`
 
 + 定期推进 Resolved TS 的时间间隔。
-+ 默认值：200ms
++ 默认值：`"1s"`
+
+> **注意：**
+>
+> 在 v6.5.0 中，`min-ts-interval` 的默认值从 `"1s"` 更改为 `"200ms"`，以减少 CDC 的延迟。从 v6.5.1 开始，该默认值更改回 `"1s"`，以减少网络流量。
 
 ### `old-value-cache-memory-quota`
 

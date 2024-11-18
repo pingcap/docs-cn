@@ -50,7 +50,7 @@ summary: 介绍如何升级 TiDB 集群监控组件 Prometheus、Grafana 和 Ale
 执行以下命令升级 Prometheus。
 
 ```bash
-tiup cluster patch <cluster-name> prometheus-v{new-version}.tar.gz -R prometheus
+tiup cluster patch <cluster-name> prometheus-v{new-version}.tar.gz -R prometheus --overwrite
 ```
 
 升级完成后，可以打开 Prometheus 主页（地址通常是 `http://<Prometheus-server-host-name>:9090`），点击顶部导航菜单中的 **Status**，然后打开 **Runtime & Build Information** 页面，查看 Prometheus 的版本信息，确认升级成功。
@@ -90,7 +90,7 @@ tiup cluster patch <cluster-name> prometheus-v{new-version}.tar.gz -R prometheus
 执行以下命令升级 Grafana。
 
 ```bash
-tiup cluster patch <cluster-name> grafana-v{new-version}.tar.gz -R grafana
+tiup cluster patch <cluster-name> grafana-v{new-version}.tar.gz -R grafana --overwrite
 ```
 
 升级完成后，可以打开 Grafana 主页（地址通常是 `http://<Grafana-server-host-name>:3000`），查看 Grafana 的版本信息，确认升级成功。
@@ -108,7 +108,7 @@ TiDB 安装包中直接使用了 Alertmanager 官方组件包，因此升级 Ale
 执行以下命令升级 Alertmanager：
 
 ```bash
-tiup cluster patch <cluster-name> alertmanager-v{new-version}-linux-amd64.tar.gz -R alertmanager
+tiup cluster patch <cluster-name> alertmanager-v{new-version}-linux-amd64.tar.gz -R alertmanager --overwrite
 ```
 
 升级完成后，可以打开 Alertmanager 主页（地址通常是 `http://<Alertmanager-server-host-name>:9093`），点击顶部导航菜单中的 **Status**，然后查看 Alertmanager 的版本信息，确认升级成功。

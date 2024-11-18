@@ -278,7 +278,7 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
 + 输出慢日志的耗时阈值。
 + 默认值：300
 + 单位：毫秒
-+ 当查询大于这个值，就会当做是一个慢查询，输出到慢查询日志。
++ 如果查询耗时大于这个值，会视作一个慢查询，并记录到慢查询日志。注意，当日志的输出级别 [`log.level`](#level) 是 `"debug"` 时，所有查询都会记录到慢日志，不受该参数的限制。
 + 自 v6.1.0 起，已改用配置项 `instance.tidb_slow_log_threshold` 或系统变量 `tidb_slow_log_threshold` 来设置输出慢日志的耗时阈值。`slow-threshold` 仍可使用，但如果同时设置了 `slow-threshold` 与 `instance.tidb_slow_log_threshold`，TiDB 将采用 `instance.tidb_slow_log_threshold` 的值。
 
 ### `record-plan-in-slow-log`
@@ -443,7 +443,7 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
 + 默认值：0
 + 默认值为 0 表示无内存限制。
 
-### `txn-entry-size-limit` <span class="version-mark">从 v5.0 版本开始引入</span>
+### `txn-entry-size-limit` <span class="version-mark">从 v4.0.10 和 v5.0.0 版本开始引入</span>
 
 + TiDB 单行数据的大小限制
 + 默认值：6291456
@@ -490,6 +490,10 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
 
 + 默认值：true
 + 默认可以执行在做 join 时两边表没有任何条件（where 字段）的语句；如果设置为 false，则有这样的 join 语句出现时，server 会拒绝执行
+
+> **注意：**
+>
+> 在创建集群时，不要将 `cross-join` 设置为 false，否则会导致集群启动失败。
 
 ### `stats-lease`
 
@@ -829,7 +833,7 @@ TiDB 服务状态相关配置。
 + 默认值：300
 + 范围：`[-1, 9223372036854775807]`
 + 单位：毫秒
-+ 当查询大于这个值，就会当做是一个慢查询，输出到慢查询日志。
++ 如果查询耗时大于这个值，会视作一个慢查询，并记录到慢查询日志。注意，当日志的输出级别 [`log.level`](#level) 是 `"debug"` 时，所有查询都会记录到慢日志，不受该参数的限制。
 + 在 v6.1.0 之前，该功能通过配置项 `slow-threshold` 进行设置。
 
 ### `tidb_expensive_query_time_threshold`

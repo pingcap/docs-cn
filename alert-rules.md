@@ -63,21 +63,6 @@ summary: TiDB 集群中各组件的报警规则详解。
 
     参考 [`TiDB_schema_error`](#tidb_schema_error) 的处理方法。
 
-#### `TiDB_monitor_keep_alive`
-
-* 报警规则：
-
-    `increase(tidb_monitor_keep_alive_total[10m]) < 100`
-
-* 规则描述：
-
-    表示 TiDB 的进程是否仍然存在。如果在 10 分钟之内 `tidb_monitor_keep_alive_total` 增加次数少于 100，则 TiDB 的进程可能已经退出，此时会报警。
-
-* 处理方法：
-
-    * 检查 TiDB 进程是否 OOM。
-    * 检查机器是否发生了重启。
-
 ### 严重级别报警项
 
 #### `TiDB_server_panic_total`
@@ -118,7 +103,7 @@ summary: TiDB 集群中各组件的报警规则详解。
 
 * 规则描述：
 
-    TiDB 处理请求的延时。如果延迟大于 1 秒的概率超过 99%，则报警。
+    TiDB 处理请求的延时。99% 的请求的响应时间都应在 1 秒之内，否则报警。
 
 * 处理方法：
 
@@ -575,11 +560,13 @@ summary: TiDB 集群中各组件的报警规则详解。
 
 * 报警规则：
 
-    `sum(rate(tikv_thread_cpu_seconds_total{name=~"raftstore_.*"}[1m])) by (instance, name) > 1.6`
+    `sum(rate(tikv_thread_cpu_seconds_total{name=~"raftstore_.*"}[1m])) by (instance) > 1.6`
 
 * 规则描述：
 
-    Raftstore 线程压力太大。
+    监测 raftstore 的 CPU 消耗。如果该值偏大，表明 Raftstore 线程压力很大。
+
+    该报警项的阈值为 [`raftstore.store-pool-size`](/tikv-configuration-file.md#store-pool-size) 的 80%。`raftstore.store-pool-size` 默认为 2，所以该阈值为 1.6。 
 
 * 处理方法：
 

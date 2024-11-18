@@ -238,7 +238,6 @@ TTL 功能能够与 TiDB 的迁移、备份、恢复工具一同使用。
 * 具有 TTL 属性的表不支持作为外键约束的主表被其他表引用。
 * 不保证所有过期数据立即被删除，过期数据被删除的时间取决于后台清理任务的调度周期和调度窗口。
 * 对于使用[聚簇索引](/clustered-indexes.md)的表，如果主键的类型不是整数类型或二进制字符串类型，TTL 任务将无法被拆分成多个子任务。这将导致 TTL 任务只能在一个 TiDB 节点上按顺序执行。如果表中的数据量较大，TTL 任务的执行可能会变得缓慢。
-* TTL 无法在 [TiDB Serverless](https://docs.pingcap.com/tidbcloud/select-cluster-tier#tidb-serverless-beta) 集群上使用。
 
 ## 常见问题
 

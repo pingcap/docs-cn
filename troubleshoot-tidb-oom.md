@@ -183,7 +183,7 @@ TiDB 节点启动后需要加载统计信息到内存中。统计信息的收集
 - 执行以下命令收集内存使用率高的时候 TiDB 的 Profile 信息：
 
     ```shell
-    curl -G http://{TiDBIP}:10080/debug/zip?seconds=10" > profile.zip
+    curl -G "http://{TiDBIP}:10080/debug/zip?seconds=10" > profile.zip
     ```
 
 - 执行 `grep "tidb-server has the risk of OOM" tidb.log` 查看 TiDB Server 收集的告警文件路径，例如：
