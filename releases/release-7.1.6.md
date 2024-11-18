@@ -253,7 +253,7 @@ TiDB 版本：7.1.6
     - (dup): release-6.5.11.md > 错误修复> TiFlash - 修复当集群中长时间频繁执行 `EXCHANGE PARTITION` 和 `DROP TABLE` 操作时，可能导致 TiFlash 表元信息同步缓慢以及查询性能下降的问题 [#9227](https://github.com/pingcap/tiflash/issues/9227) @[JaySon-Huang](https://github.com/JaySon-Huang)
     - (dup): release-6.5.10.md > 错误修复> TiFlash - 修复 key range 为空的查询导致 TiFlash 上没有正确生成读取任务，从而可能阻塞 TiFlash 查询的问题 [#9108](https://github.com/pingcap/tiflash/issues/9108) @[JinheLin](https://github.com/JinheLin)
     - 修复在特定情况下 `CAST AS DECIMAL` 函数的返回结果存在正负号错误的问题 [#9301](https://github.com/pingcap/tiflash/issues/9301) @[guo-shaoge](https://github.com/guo-shaoge)
-    - 修复 `SUBSTRING` 函数不支持部分整数类型的 `POS` 和 `LENGTH` 参数导致查询报错的问题 [#9473](https://github.com/pingcap/tiflash/issues/9473) @[gengliqi](https://github.com/gengliqi)
+    - 修复 `SUBSTRING()` 函数不支持部分整数类型的 `pos` 和 `len` 参数导致查询报错的问题 [#9473](https://github.com/pingcap/tiflash/issues/9473) @[gengliqi](https://github.com/gengliqi)
     - 修复对大表执行 `DROP TABLE` 可能导致 TiFlash OOM 的问题 [#9437](https://github.com/pingcap/tiflash/issues/9437) @[JaySon-Huang](https://github.com/JaySon-Huang)
 
 + Tools
