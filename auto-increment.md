@@ -384,7 +384,7 @@ SELECT * FROM t;
 3 rows in set (0.01 sec)
 ```
 
-BR、DM、Lightning 在恢复或同步完数据之后，会自动调整 `AUTO_INCREMENT` 值。但 TiCDC 在同步数据之后不会自动调整，因此需要在停止 TiCDC 之后、进行主备切换之前，手动调整下游集群中表的 `AUTO_INCREMENT`。
+DM、Lightning 在同步完数据之后，会自动清除自增 ID 缓存。但 TiCDC 在同步数据之后不会自动消除，因此需要在停止 TiCDC 之后、进行主备切换之前，手动清除下游集群的自增 ID 缓存。
 
 ### 自增步长和偏移量设置
 
