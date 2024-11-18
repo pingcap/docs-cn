@@ -39,7 +39,7 @@ TiDB 版本：7.1.6
     - (dup): release-7.5.2.md > 改进提升> TiFlash - 降低 TiFlash 在开启 TLS 后因更新证书而导致 panic 的概率 [#8535](https://github.com/pingcap/tiflash/issues/8535) @[windtalker](https://github.com/windtalker)
     - (dup): release-7.5.4.md > 改进提升> TiFlash - 改进 JOIN 算子的取消机制，使得 JOIN 算子内部能及时响应取消请求 [#9430](https://github.com/pingcap/tiflash/issues/9430) @[windtalker](https://github.com/windtalker)
     - (dup): release-6.5.11.md > 改进提升> TiFlash - 减少数据高并发读取下的锁冲突，优化短查询性能 [#9125](https://github.com/pingcap/tiflash/issues/9125) @[JinheLin](https://github.com/JinheLin)
-    - 提升聚簇索引的表后台回收过期数据的速度 [#9529](https://github.com/pingcap/tiflash/issues/9529) @[JaySon-Huang](https://github.com/JaySon-Huang)
+    - 提升聚簇索引表在后台回收过期数据的速度 [#9529](https://github.com/pingcap/tiflash/issues/9529) @[JaySon-Huang](https://github.com/JaySon-Huang)
 
 + Tools
 
@@ -62,7 +62,7 @@ TiDB 版本：7.1.6
 
     + TiDB Data Migration (DM) <!--tw@lilin90: 1 note-->
 
-        - 升级 go-mysql 以支持更长的密码 [[#11603](https://github.com/pingcap/tiflow/pull/11603)](https://github.com/pingcap/tiflow/pull/11603) @[[fishiu](https://github.com/fishiu)](https://github.com/fishiu)
+        - 升级 `go-mysql` 以支持使用 19 个字符以上的密码连接到 MySQL server 8.0 [#11603](https://github.com/pingcap/tiflow/pull/11603) @[fishiu](https://github.com/fishiu)
 
     + TiDB Lightning
 
@@ -166,11 +166,11 @@ TiDB 版本：7.1.6
     - (dup): release-7.5.4.md > 错误修复> TiDB - 修复添加索引时重试导致数据索引不一致的问题 [#55808](https://github.com/pingcap/tidb/issues/55808) @[lance6716](https://github.com/lance6716)
     - (dup): release-6.5.10.md > 错误修复> TiDB - 修复 `UPDATE` 语句可能因为列的唯一 ID 不稳定导致查询报错的问题 [#53236](https://github.com/pingcap/tidb/issues/53236) @[winoros](https://github.com/winoros)
     - (dup): release-7.5.3.md > 错误修复> TiDB - 修复在事务内的语句被 OOM 终止之后，如果在当前事务内继续执行下一条语句，可能报错 `Trying to start aggressive locking while it's already started` 并发生 panic 的问题 [#53540](https://github.com/pingcap/tidb/issues/53540) @[MyonKeminta](https://github.com/MyonKeminta)
-    - 修复基于任务 ID `RECOVER TABLE` 可能导致的 panic 问题 [[#55113](https://github.com/pingcap/tidb/issues/55113)](https://github.com/pingcap/tidb/issues/55113) @[[crazycs520](https://github.com/crazycs520)](https://github.com/crazycs520)
-    - 修复分布式执行框架下 `ADD INDEX` 可能在 PD 修改成员后失败 [[#55937](https://github.com/pingcap/tidb/issues/55937)](https://github.com/pingcap/tidb/issues/55937) @[[lance6716](https://github.com/lance6716)](https://github.com/lance6716)
-    - 修复可能同时存在两个 ddl owner 的问题 [[#54689](https://github.com/pingcap/tidb/issues/54689)](https://github.com/pingcap/tidb/issues/54689) @[[joccau](https://github.com/joccau)](https://github.com/joccau)
-    - 修复 `ADD INDEX` 过程中 TiDB 重启导致的添加索引失败问题 [[#52805](https://github.com/pingcap/tidb/issues/52805)](https://github.com/pingcap/tidb/issues/52805) @[[tangenta](https://github.com/tangenta)](https://github.com/tangenta)
-    - 修复 `LOAD DATA ... REPLACE INTO` 导致的数据不一致问题 [[#56408](https://github.com/pingcap/tidb/issues/56408)](https://github.com/pingcap/tidb/issues/56408) @[[fzzf678](https://github.com/fzzf678)](https://github.com/fzzf678)
+    - 修复基于任务 ID `RECOVER TABLE` 可能导致 panic 的问题 [#55113](https://github.com/pingcap/tidb/issues/55113) @[crazycs520](https://github.com/crazycs520)
+    - 修复分布式执行框架下，在 PD 修改成员后 `ADD INDEX` 可能失败的问题 [#48680](https://github.com/pingcap/tidb/issues/48680) @[lance6716](https://github.com/lance6716)
+    - 修复可能同时存在两个 DDL Owner 的问题 [#54689](https://github.com/pingcap/tidb/issues/54689) @[joccau](https://github.com/joccau)
+    - 修复 `ADD INDEX` 过程中 TiDB 重启导致索引添加失败的问题 [#52805](https://github.com/pingcap/tidb/issues/52805) @[tangenta](https://github.com/tangenta)
+    - 修复 `LOAD DATA ... REPLACE INTO` 导致的数据不一致问题 [#56408](https://github.com/pingcap/tidb/issues/56408) @[fzzf678](https://github.com/fzzf678)
     - 修复通过 `IMPORT INTO` 导入数据后，`AUTO_INCREMENT` 字段没有正确设置的问题 [#56476](https://github.com/pingcap/tidb/issues/56476) @[D3Hunter](https://github.com/D3Hunter) <!--tw@hfxsd: the following 15 notes-->
     - 修复从检查点恢复之前，没有检查是否存在本地文件的问题 [#53009](https://github.com/pingcap/tidb/issues/53009) @[lance6716](https://github.com/lance6716)
     - 修复 DM schema tracker 无法创建超过默认长度索引的错误 [#55138](https://github.com/pingcap/tidb/issues/55138) @[lance6716](https://github.com/lance6716)
