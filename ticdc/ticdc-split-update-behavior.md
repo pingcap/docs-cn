@@ -135,4 +135,4 @@ COMMIT;
 | v7.1.1 | Canal/Open | ✗ | ✓ |  |
 | v7.1.1 | CSV/Avro | ✗ | ✗ | 拆分但是不排序, 详见 [#9086](https://github.com/pingcap/tiflow/issues/9658) |
 | v7.1.2  ~ v7.1.5 | 所有协议 | ✓ | ✗ |  |
-| \>= v7.1.6（待发布）| 所有协议 | ✓ (默认值：`output-raw-change-event = false`) | ✓ (可选配置项：`output-raw-change-event = true`) | |
+| \>= v7.1.6 | 所有协议 | ✓ (默认值：`output-raw-change-event = false`) | ✓ (可选配置项：`output-raw-change-event = true`) | |
