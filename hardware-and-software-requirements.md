@@ -33,8 +33,7 @@ TiDB 作为一款开源一栈式实时 HTAP 数据库，可以很好地部署和
 
     > **注意：**
     >
-    > - 根据 [CentOS Linux EOL](https://blog.centos.org/2023/04/end-dates-are-coming-for-centos-stream-8-and-centos-linux-7/)，CentOS Linux 7 的上游支持于 2024 年 6 月 30 日终止。TiDB 将在 8.5 LTS 版本结束对 CentOS 7 的支持，建议使用 Rocky Linux 9.1 及以上的版本。
-    > - 根据 [CentOS Linux EOL](https://www.centos.org/centos-linux-eol/)，CentOS Linux 8 的上游支持已于 2021 年 12 月 31 日终止。[CentOS Stream 8 的上游支持](https://blog.centos.org/2023/04/end-dates-are-coming-for-centos-stream-8-and-centos-linux-7/)已于 2024 年 5 月 31 日终止。CentOS 将继续提供对 CentOS Stream 9 的支持。
+    > 根据 [CentOS Linux EOL](https://blog.centos.org/2023/04/end-dates-are-coming-for-centos-stream-8-and-centos-linux-7/)，CentOS Linux 7 的上游支持于 2024 年 6 月 30 日终止。TiDB 将在 8.5 LTS 版本结束对 CentOS 7 的支持，建议使用 Rocky Linux 9.1 及以上的版本。
 
 + 在以下操作系统以及对应的 CPU 架构组合上，你可以编译、构建和部署 TiDB，可使用 OLTP 和 OLAP 以及数据工具的基本功能。但是 TiDB **不保障企业级生产质量要求**：
 
@@ -43,7 +42,7 @@ TiDB 作为一款开源一栈式实时 HTAP 数据库，可以很好地部署和
     | macOS 12 (Monterey) 及以上的版本 |  <ul><li>x86_64</li><li>ARM 64</li></ul>  |
     |  Oracle Enterprise Linux 7.3 及以上的 7.x 版本  |  x86_64           |
     |   Ubuntu LTS 18.04 及以上的版本  |  x86_64           |
-    | CentOS 8 Stream | <ul><li>x86_64</li><li>ARM 64</li></ul> |
+    | CentOS Stream 8 | <ul><li>x86_64</li><li>ARM 64</li></ul> |
     |  Debian 9 (Stretch) 及以上的版本  |  x86_64           |
     |  Fedora 35 及以上的版本   |  x86_64           |
     |  openSUSE Leap 15.3 以上的版本（不包含 Tumbleweed） |  x86_64           |
@@ -53,6 +52,7 @@ TiDB 作为一款开源一栈式实时 HTAP 数据库，可以很好地部署和
     >
     > - TiDB 只支持 Red Hat 兼容内核 (RHCK) 的 Oracle Enterprise Linux，不支持 Oracle Enterprise Linux 提供的 Unbreakable Enterprise Kernel。
     > - TiDB 将不再支持 Ubuntu 16.04。强烈建议升级到 Ubuntu 18.04 或更高版本。
+    > - CentOS Stream 8 已于 2024 年 5 月 31 日 [End of Builds](https://blog.centos.org/2023/04/end-dates-are-coming-for-centos-stream-8-and-centos-linux-7/)。
 
 + 对于以上两个表格中所列操作系统的 32 位版本，TiDB 在这些 32 位操作系统以及对应的 CPU 架构上**不保障**可编译、可构建以及可部署，或 TiDB 不主动适配这些 32 位的操作系统。
 
