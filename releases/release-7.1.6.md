@@ -52,7 +52,7 @@ TiDB 版本：7.1.6
         - (dup): release-7.5.3.md > 改进提升> Tools> Backup & Restore (BR) - 去掉除了 `br log restore` 子命令之外其它 `br log` 子命令对 TiDB `domain` 数据结构的载入，降低内存消耗 [#52088](https://github.com/pingcap/tidb/issues/52088) @[Leavrth](https://github.com/Leavrth)
         - (dup): release-7.5.4.md > 改进提升> Tools> Backup & Restore (BR) - 在 TiKV 下载每个 SST 文件之前，新增对 TiKV 是否有足够磁盘空间的检查；如果空间不足，BR 会终止恢复并返回错误 [#17224](https://github.com/tikv/tikv/issues/17224) @[RidRisR](https://github.com/RidRisR)
         - (dup): release-7.5.3.md > 改进提升> Tools> Backup & Restore (BR) - 支持通过环境变量设置阿里云访问身份 [#45551](https://github.com/pingcap/tidb/issues/45551) @[RidRisR](https://github.com/RidRisR)
-        - 减少备份过程中无效日志的打印 None [#55902](https://github.com/pingcap/tidb/issues/55902) @[Leavrth](https://github.com/Leavrth)
+        - 减少备份过程中无效日志的打印 [#55902](https://github.com/pingcap/tidb/issues/55902) @[Leavrth](https://github.com/Leavrth)
 
     + TiCDC
 
@@ -189,10 +189,10 @@ TiDB 版本：7.1.6
     - 修复由于 `CAST` 函数不支持显式设置字符集导致报错的问题 [#55677](https://github.com/pingcap/tidb/issues/55677) @[Defined2014](https://github.com/Defined2014)
 
 + TiKV <!--tw@qiancai: 6 notes-->
-    - 添加 RawKvMaxTimestampNotSynced 错误，并将信息设置为 errorpb.Error.max_ts_not_synced 以提供更多信息。针对 must_raw_put 的 max_ts_not_synced 错误重试 [#16789](https://github.com/tikv/tikv/issues/16789) @[pingyu](https://github.com/pingyu)
-    - 修复 drop 大型表或分区后可能出现的流量控制问题 [#17304](https://github.com/tikv/tikv/issues/17304) @[SpadeA-Tang](https://github.com/SpadeA-Tang)
-    - 解决读线程在从 raft-engine 中的 “Memtable” 读取陈旧索引时遇到 panic 的问题 [#17383](https://github.com/tikv/tikv/issues/17383) @[LykxSassinator](https://github.com/LykxSassinator)
-    - 修正 CDC 和日志备份没有使用 advance-ts-interval 来限制 check_leader 超时的问题[#17107](https://github.com/tikv/tikv/issues/17107) @[SpadeA-Tang](https://github.com/SpadeA-Tang)
+    - 新增 `RawKvMaxTimestampNotSynced` 报错，并在 `errorpb.Error.max_ts_not_synced` 中记录该报错的详细信息。针对 `must_raw_put` 操作，在遇到该错误时增加了重试机制 [#16789](https://github.com/tikv/tikv/issues/16789) @[pingyu](https://github.com/pingyu)
+    - (dup): release-6.5.11.md > 错误修复> TiKV - 修复删除大表或分区后可能导致的流量控制问题 [#17304](https://github.com/tikv/tikv/issues/17304) @[SpadeA-Tang](https://github.com/SpadeA-Tang)
+    - 修复读线程在从 Raft Engine 中的 MemTable 读取过时索引时出现的 panic 问题 [#17383](https://github.com/tikv/tikv/issues/17383) @[LykxSassinator](https://github.com/LykxSassinator)
+    - (dup): release-6.5.11.md > 错误修复> TiKV - 修复 `advance-ts-interval` 配置未被用于限制 CDC 和 log-backup 模块中 `check_leader` 操作的 timeout，导致在某些情况下 TiKV 正常重启时 `resolved_ts` lag 过大的问题 [#17107](https://github.com/tikv/tikv/issues/17107) @[SpadeA-Tang](https://github.com/SpadeA-Tang)
     - 修复重启 TiKV 后由 TiDB Lightning 导入的 SST 文件丢失的问题 [#15912](https://github.com/tikv/tikv/issues/15912) @[lance6716](https://github.com/lance6716)
     - (dup): release-6.5.11.md > 错误修复> TiKV - 修复 ingest 已被删除的 sst_importer SST 文件导致 TiKV panic 的问题 [#15053](https://github.com/tikv/tikv/issues/15053) @[lance6716](https://github.com/lance6716)
     - 修复当 TiKV 实例中有大量 Region 时，数据导入过程中可能出现 OOM 的问题 [#16229](https://github.com/tikv/tikv/issues/16229) @[SpadeA-Tang](https://github.com/SpadeA-Tang)
@@ -211,12 +211,12 @@ TiDB 版本：7.1.6
 
 + PD <!--tw@Oreoxmt: 6 notes-->
 
-    - 修复 label 统计中内存泄露的问题 [#8700](https://github.com/tikv/pd/issues/8700) @[lhy1024](https://github.com/lhy1024)
-    - 修复 resource group 日志打印过多的问题 [#8159](https://github.com/tikv/pd/issues/8159) @[nolouch](https://github.com/nolouch)
-    - 修复频繁创建随机数生成器导致的性能抖动问题 [#8674](https://github.com/tikv/pd/issues/8674) @[rleungx](https://github.com/rleungx)
+    - 修复 label 统计中的内存泄露问题 [#8700](https://github.com/tikv/pd/issues/8700) @[lhy1024](https://github.com/lhy1024)
+    - 修复资源组 (Resource Group) 打印过多日志的问题 [#8159](https://github.com/tikv/pd/issues/8159) @[nolouch](https://github.com/nolouch)
+    - 修复频繁创建随机数生成器导致性能抖动的问题 [#8674](https://github.com/tikv/pd/issues/8674) @[rleungx](https://github.com/rleungx)
     - 修复 Region 统计中的内存泄露问题 [#8710](https://github.com/tikv/pd/issues/8710) @[rleungx](https://github.com/rleungx)
     - 修复热点缓存中可能存在的内存泄露问题 [#8698](https://github.com/tikv/pd/issues/8698) @[lhy1024](https://github.com/lhy1024)
-    - 修复 evict leader 调度器在使用相同 Store ID 创建两次后无法正常工作的问题 [#8756](https://github.com/tikv/pd/issues/8756) @[okJiang](https://github.com/okJiang)
+    - 修复 evict leader 调度器在使用相同 Store ID 重复创建后无法正常工作的问题 [#8756](https://github.com/tikv/pd/issues/8756) @[okJiang](https://github.com/okJiang)
     - (dup): release-6.5.11.md > 错误修复> PD - 修复设置 `replication.strictly-match-label` 为 `true` 导致 TiFlash 启动失败的问题 [#8480](https://github.com/tikv/pd/issues/8480) @[rleungx](https://github.com/rleungx)
     - (dup): release-7.5.2.md > 错误修复> PD - 修复通过配置文件更改日志级别不生效的问题 [#8117](https://github.com/tikv/pd/issues/8117) @[rleungx](https://github.com/rleungx)
     - (dup): release-8.1.1.md > 错误修复> PD - 修复资源组 (Resource Group) 在高并发场景下无法有效限制资源使用的问题 [#8435](https://github.com/tikv/pd/issues/8435) @[nolouch](https://github.com/nolouch)
