@@ -40,21 +40,12 @@ TiDB 作为一款开源一栈式实时 HTAP 数据库，可以很好地部署和
     |  操作系统   |   支持的 CPU 架构   |
     |   :---   |   :---   |
     | macOS 12 (Monterey) 及以上的版本 |  <ul><li>x86_64</li><li>ARM 64</li></ul>  |
-<<<<<<< HEAD
     |  Oracle Enterprise Linux 7.3 及以上的 7.x 版本  |  x86_64           |
     |   Ubuntu LTS 18.04 及以上的版本  |  x86_64           |
     | CentOS 8 Stream | <ul><li>x86_64</li><li>ARM 64</li></ul> |
     |  Debian 9 (Stretch) 及以上的版本  |  x86_64           |
     |  Fedora 35 及以上的版本   |  x86_64           |
     |  openSUSE Leap 15.3 以上的版本（不包含 Tumbleweed） |  x86_64           |
-=======
-    |  Oracle Enterprise Linux 8 及以上的版本  |  x86_64           |
-    |   Ubuntu LTS 20.04 及以上的版本  |  x86_64           |
-    | CentOS Stream 8 | <ul><li>x86_64</li><li>ARM 64</li></ul> |
-    |  Debian 10 (Buster) 及以上的版本  |  x86_64           |
-    |  Fedora 38 及以上的版本   |  x86_64           |
-    |  openSUSE Leap 15.5 以上的版本（不包含 Tumbleweed） |  x86_64           |
->>>>>>> 71ada78e0d (Update CentOS Stream 8 End of Builds (#17828))
     |  SUSE Linux Enterprise Server 15  |  x86_64                        |
 
     > **注意：**
