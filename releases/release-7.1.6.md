@@ -62,7 +62,7 @@ TiDB 版本：7.1.6
 
     + TiDB Data Migration (DM) <!--tw@lilin90: 1 note-->
 
-        - 升级 `go-mysql` 以支持使用 19 个字符以上的密码连接到 MySQL server 8.0 [#11603](https://github.com/pingcap/tiflow/pull/11603) @[fishiu](https://github.com/fishiu)
+        - 升级 `go-mysql` 到 1.9.1 以支持使用 19 个字符以上的密码连接到 MySQL server 8.0 [#11603](https://github.com/pingcap/tiflow/pull/11603) @[fishiu](https://github.com/fishiu)
 
     + TiDB Lightning
 
@@ -166,7 +166,7 @@ TiDB 版本：7.1.6
     - (dup): release-7.5.4.md > 错误修复> TiDB - 修复添加索引时重试导致数据索引不一致的问题 [#55808](https://github.com/pingcap/tidb/issues/55808) @[lance6716](https://github.com/lance6716)
     - (dup): release-6.5.10.md > 错误修复> TiDB - 修复 `UPDATE` 语句可能因为列的唯一 ID 不稳定导致查询报错的问题 [#53236](https://github.com/pingcap/tidb/issues/53236) @[winoros](https://github.com/winoros)
     - (dup): release-7.5.3.md > 错误修复> TiDB - 修复在事务内的语句被 OOM 终止之后，如果在当前事务内继续执行下一条语句，可能报错 `Trying to start aggressive locking while it's already started` 并发生 panic 的问题 [#53540](https://github.com/pingcap/tidb/issues/53540) @[MyonKeminta](https://github.com/MyonKeminta)
-    - 修复基于任务 ID `RECOVER TABLE` 可能导致 panic 的问题 [#55113](https://github.com/pingcap/tidb/issues/55113) @[crazycs520](https://github.com/crazycs520)
+    - 修复执行 `RECOVER TABLE BY JOB JOB_ID;` 可能导致 panic 的问题 [#55113](https://github.com/pingcap/tidb/issues/55113) @[crazycs520](https://github.com/crazycs520)
     - 修复分布式执行框架下，在 PD 修改成员后 `ADD INDEX` 可能失败的问题 [#48680](https://github.com/pingcap/tidb/issues/48680) @[lance6716](https://github.com/lance6716)
     - 修复可能同时存在两个 DDL Owner 的问题 [#54689](https://github.com/pingcap/tidb/issues/54689) @[joccau](https://github.com/joccau)
     - 修复 `ADD INDEX` 过程中 TiDB 滚动重启导致索引添加失败的问题 [#52805](https://github.com/pingcap/tidb/issues/52805) @[tangenta](https://github.com/tangenta)
