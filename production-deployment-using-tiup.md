@@ -82,7 +82,7 @@ aliases: ['/docs-cn/dev/production-offline-deployment-using-tiup/', '/zh/tidb/de
 
 #### 准备 TiUP 离线组件包
 
-方式一：在[官方下载页面](https://pingcap.com/zh/product#SelectProduct)选择对应版本的 TiDB server 离线镜像包（包含 TiUP 离线组件包）。需要同时下载 TiDB-community-server 软件包和 TiDB-community-toolkit 软件包。
+方式一：在[官方下载页面](https://cn.pingcap.com/product-community/)选择对应版本的 TiDB server 离线镜像包（包含 TiUP 离线组件包）。需要同时下载 TiDB-community-server 软件包和 TiDB-community-toolkit 软件包。
 
 方式二：使用 `tiup mirror clone` 命令手动打包离线组件包。步骤如下：
 
@@ -196,7 +196,7 @@ source /home/tidb/.bash_profile
 
 #### 合并离线包
 
-如果是通过[官方下载页面](https://pingcap.com/zh/product#SelectProduct)下载的离线软件包，需要将 TiDB-community-server 软件包和 TiDB-community-toolkit 软件包合并到离线镜像中。如果是通过 `tiup mirror clone` 命令手动打包的离线组件包，不需要执行此步骤。
+如果是通过[官方下载页面](https://cn.pingcap.com/product-community/)下载的离线软件包，需要将 TiDB-community-server 软件包和 TiDB-community-toolkit 软件包合并到离线镜像中。如果是通过 `tiup mirror clone` 命令手动打包的离线组件包，不需要执行此步骤。
 
 执行以下命令合并离线组件到 server 目录下。
 
