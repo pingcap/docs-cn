@@ -216,7 +216,7 @@ TiDB 版本：7.1.6
     - 修复频繁创建随机数生成器导致性能抖动的问题 [#8674](https://github.com/tikv/pd/issues/8674) @[rleungx](https://github.com/rleungx)
     - 修复 Region 统计中的内存泄露问题 [#8710](https://github.com/tikv/pd/issues/8710) @[rleungx](https://github.com/rleungx)
     - 修复热点缓存中可能存在的内存泄露问题 [#8698](https://github.com/tikv/pd/issues/8698) @[lhy1024](https://github.com/lhy1024)
-    - 修复 evict leader 调度器在使用相同 Store ID 重复创建后无法正常工作的问题 [#8756](https://github.com/tikv/pd/issues/8756) @[okJiang](https://github.com/okJiang)
+    - 修复 `evict-leader-scheduler` 在使用相同 Store ID 重复创建后无法正常工作的问题 [#8756](https://github.com/tikv/pd/issues/8756) @[okJiang](https://github.com/okJiang)
     - (dup): release-6.5.11.md > 错误修复> PD - 修复设置 `replication.strictly-match-label` 为 `true` 导致 TiFlash 启动失败的问题 [#8480](https://github.com/tikv/pd/issues/8480) @[rleungx](https://github.com/rleungx)
     - (dup): release-7.5.2.md > 错误修复> PD - 修复通过配置文件更改日志级别不生效的问题 [#8117](https://github.com/tikv/pd/issues/8117) @[rleungx](https://github.com/rleungx)
     - (dup): release-8.1.1.md > 错误修复> PD - 修复资源组 (Resource Group) 在高并发场景下无法有效限制资源使用的问题 [#8435](https://github.com/tikv/pd/issues/8435) @[nolouch](https://github.com/nolouch)
