@@ -47,7 +47,7 @@ TiDB 8.5.0 为长期支持版本 (Long-Term Support Release, LTS)。
 
     更多信息，请参考[用户文档](链接)。
 
-* 建库，建表加速功能成为正式功能（GA），大大节省了数据迁移，集群初始化的时间 [#50052](https://github.com/pingcap/tidb/issues/50052) @[D3Hunter](https://github.com/D3Hunter) @[gmhdbjd](https://github.com/gmhdbjd) tw@Oreoxmt <!--1977-->
+* 建表加速功能成为正式功能（GA），大大节省了数据迁移，集群初始化的时间 [#50052](https://github.com/pingcap/tidb/issues/50052) @[D3Hunter](https://github.com/D3Hunter) @[gmhdbjd](https://github.com/gmhdbjd) tw@Oreoxmt <!--1977-->
 
     v8.0.0 引入了系统变量 [tidb_enable_fast_create_table](/system-variables#tidb_enable_fast_create_table-new-in-v800)，用于提升批量建库、建表的性能。在数据迁移，初始化集群环境时，可快速创建百万规模的表，大大减少耗时。
 
