@@ -18,8 +18,7 @@ TiKV In-memory Engine （以下简称 IME）主要用于加速需要访问大量
 
 TiKV In-memory Engine 在内存中缓存了最近写入的 MVCC 版本，并实现了独立于 TiDB 的 MVCC GC 机制，使其可快速 GC 缓存中的 MVCC 记录，从而减少查询时访问的记录的个数，以达到降低请求延时和减少 CPU 开销的效果。
 
-<div style="text-align: center;"><img src="./media/tikv-in-memory-engine-data-organization.png" alt="IME 通过缓存近期的版本以减少 CPU 开销" width="400" /></div>
-
+<div style="text-align: center;"><img src="./media/tikv-ime-data-organization.png" alt="IME 通过缓存近期的版本以减少 CPU 开销" width="400" /></div>
 
 上图为 TiKV 如何组织 MVCC 版本的示意图，图中共有 2 行记录，每行记录各有 9 个 MVCC 版本。左侧为没开 IME 的情况，表中记录按主键升序保存在 RocksDB 中，相同行的 MVCC 版本紧邻在一起。右侧为开 IME 的情况，RocksDB 中的数据有左侧一致，同时 IME 缓存了 2 行记录的最新两个 MVCC 版本。当 TiKV 处理一个范围为 [k1, k2]，start ts 为 8 的扫描请求时，左侧未开启 IME 时需要处理 11 个 MVCC 版本，而右侧开启 IME 时只需处理 4 个 MVCC 版本，因此减少了请求延时和 CPU 消耗。当 TiKV 处理一个范围为 [k1, k2]，start ts 为 7 的扫描请求时，由于右侧缺少需要读取的历史版本，因此 IME 缓存失效，回退到读取 RocksDB 中的数据。
 
@@ -60,7 +59,6 @@ enable = true
 >
 > + 出于性能考虑，IME 默认关闭，并且从关闭状态到开启状态需要重启 TiKV。
 > + 除 `enable` 之外，其他配置都可以动态调整。
-
 
 ### 自动加载
 
