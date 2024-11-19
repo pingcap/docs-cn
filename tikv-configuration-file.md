@@ -250,7 +250,7 @@ TiKV 配置文件比命令行参数支持更多的选项。你可以在 [etc/con
 ### `raft-client-queue-size`
 
 + 该配置项指定 TiKV 中发送 Raft 消息的缓冲区大小。如果存在消息发送不及时导致缓冲区满、消息被丢弃的情况，可以适当调大该配置项值以提升系统运行的稳定性。
-+ 默认值：8192
++ 默认值：16384
 
 ### `simplify-metrics` <span class="version-mark">从 v6.2.0 版本开始引入</span>
 
