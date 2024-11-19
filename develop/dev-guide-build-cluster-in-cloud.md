@@ -87,10 +87,10 @@ aliases: ['/zh/tidb/dev/build-cluster-in-cloud']
 
     <div label="Linux">
 
-    对于 Linux 操作系统，下面以 CentOS 7 为例：
+    对于 Linux 操作系统，下面以 Ubuntu 为例：
 
     ```shell
-    yum install mysql
+    apt-get install mysql-client
     ```
 
     完成后，请验证 MySQL 客户端是否安装成功：
