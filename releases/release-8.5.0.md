@@ -148,11 +148,13 @@ TiDB 8.5.0 为长期支持版本 (Long-Term Support Release, LTS)。
 
     更多信息，请参考[用户文档](链接)。
 
-* 建表加速功能成为正式功能（GA），大大节省了数据迁移，集群初始化的时间 [#50052](https://github.com/pingcap/tidb/issues/50052) @[D3Hunter](https://github.com/D3Hunter) @[gmhdbjd](https://github.com/gmhdbjd) tw@Oreoxmt <!--1977-->
+* TiDB 加速建表成为正式功能 (GA)，显著缩短数据迁移和集群初始化时间 [#50052](https://github.com/pingcap/tidb/issues/50052) @[D3Hunter](https://github.com/D3Hunter) @[gmhdbjd](https://github.com/gmhdbjd) tw@Oreoxmt <!--1977-->
 
-    v8.0.0 引入了系统变量 [tidb_enable_fast_create_table](/system-variables#tidb_enable_fast_create_table-new-in-v800)，用于提升批量建库、建表的性能。在数据迁移，初始化集群环境时，可快速创建百万规模的表，大大减少耗时。
+    TiDB v7.6.0 引入加速建表功能作为实验特性，并通过系统变量 [`tidb_ddl_version`](https://docs.pingcap.com/zh/tidb/v7.6/system-variables#tidb_ddl_version-从-v760-版本开始引入) 控制。从 v8.0.0 开始，该系统变量更名为 [`tidb_enable_fast_create_table`](/system-variables.md#tidb_enable_fast_create_table-从-v800-版本开始引入)。
 
-    更多信息，请参考[用户文档](链接)。
+    在 v8.5.0 中，TiDB 加速建表功能成为正式功能 (GA) 并默认开启。在数据迁移或集群初始化时，该功能支持快速创建百万级规模的表，从而显著减少相关操作的耗时。
+
+    更多信息，请参考[用户文档](/accelerated-table-creation.md)。
 
 ### 稳定性
 
