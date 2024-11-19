@@ -15,6 +15,7 @@
 | 文档仓库 branch | 对应 TiDB 文档版本 |
 |:---------|:----------|
 | [`master`](https://github.com/pingcap/docs-cn/tree/master) | dev 最新开发版 |
+| [`release-8.4`](https://github.com/pingcap/docs-cn/tree/release-8.4) | 8.4 开发里程碑版 (DMR) |
 | [`release-8.3`](https://github.com/pingcap/docs-cn/tree/release-8.3) | 8.3 开发里程碑版 (DMR) |
 | [`release-8.2`](https://github.com/pingcap/docs-cn/tree/release-8.2) | 8.2 开发里程碑版 (DMR) |
 | [`release-8.1`](https://github.com/pingcap/docs-cn/tree/release-8.1) | 8.1 长期支持版 (LTS) |
@@ -49,9 +50,12 @@
 
 你提交的第一个 [Pull Request](https://help.github.com/en/github/getting-started-with-github/github-glossary#pull-request) (PR) 合并以后，即可成为 TiDB 文档的 Contributor。查看 [TiDB 中文文档贡献指南](/CONTRIBUTING.md)，开始你的贡献吧！
 
-## 贡献者数量增长图
-
-[![Contributor over time](https://contributor-graph-api.apiseven.com/contributors-svg?chart=contributorOverTime&repo=pingcap/docs-cn)](https://www.apiseven.com/en/contributor-graph?chart=contributorOverTime&repo=pingcap/docs-cn)
+<a href="https://next.ossinsight.io/widgets/official/compose-recent-active-contributors?repo_id=64188788&limit=30" target="_blank" style="display: block;" align="center">
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="https://next.ossinsight.io/widgets/official/compose-recent-active-contributors/thumbnail.png?repo_id=64188788&limit=30&image_size=auto&color_scheme=dark" width="655" height="auto" />
+    <img alt="Active Contributors of pingcap/docs-cn - Last 28 days" src="https://next.ossinsight.io/widgets/official/compose-recent-active-contributors/thumbnail.png?repo_id=64188788&limit=30&image_size=auto&color_scheme=light" width="655" height="auto" />
+  </picture>
+</a>
 
 ## License
 
