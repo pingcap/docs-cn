@@ -2515,7 +2515,7 @@ Raft Engine 相关的配置项。
 >
 > 该配置项不支持通过 SQL 语句查询，但支持在配置文件中进行配置。
 
-+ 是否开启内存引擎以加速多版本查询。有关内存引擎的信息，请参考 [TiKV 内存引擎（in](/tikv-in-memory-engine.md)
++ 是否开启内存引擎以加速多版本查询。有关内存引擎的信息，请参考 [TiKV 内存引擎](/tikv-in-memory-engine.md)
 + 默认值：false（即关闭内存引擎）
 
 ### `capacity` <span class="version-mark">从 v8.5.0 版本开始引入</span>
