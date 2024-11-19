@@ -248,7 +248,7 @@ TiDB 8.5.0 为长期支持版本 (Long-Term Support Release, LTS)。
 | 变量名  | 修改类型（包括新增/修改/删除）    | 描述 |
 |--------|------------------------------|------|
 |tidb_ddl_reorg_max_write_speed | Newly added |Used to control the speed at which TiDB writes index data to a single TiKV node. For example, setting the value to 200 MiB limits the maximum write speed to 200 MiB/s. |
-|        |                              |      |
+| [`tidb_enable_fast_create_table`](/system-variables.md#tidb_enable_fast_create_table-从-v800-版本开始引入) | 修改 | 经进一步的测试后，默认值从 `OFF` 修改为 `ON`，即默认开启 [TiDB 加速建表](/accelerated-table-creation.md)。|
 |        |                              |      |
 |        |                              |      |
 
