@@ -42,8 +42,8 @@ aliases: ['/docs-cn/tidb-data-migration/dev/shard-merge-best-practices/']
 
 ```sql
 CREATE TABLE `tbl_no_pk` (
-  `auto_pk_c1` bigint(20) NOT NULL,
-  `uk_c2` bigint(20) NOT NULL,
+  `auto_pk_c1` bigint NOT NULL,
+  `uk_c2` bigint NOT NULL,
   `content_c3` text,
   PRIMARY KEY (`auto_pk_c1`),
   UNIQUE KEY `uk_c2` (`uk_c2`)
@@ -61,8 +61,8 @@ CREATE TABLE `tbl_no_pk` (
 
     ```sql
     CREATE TABLE `tbl_no_pk_2` (
-      `auto_pk_c1` bigint(20) NOT NULL,
-      `uk_c2` bigint(20) NOT NULL,
+      `auto_pk_c1` bigint NOT NULL,
+      `uk_c2` bigint NOT NULL,
       `content_c3` text,
       INDEX (`auto_pk_c1`),
       UNIQUE KEY `uk_c2` (`uk_c2`)
@@ -85,8 +85,8 @@ CREATE TABLE `tbl_no_pk` (
 
 ```sql
 CREATE TABLE `tbl_multi_pk` (
-  `auto_pk_c1` bigint(20) NOT NULL,
-  `uuid_c2` bigint(20) NOT NULL,
+  `auto_pk_c1` bigint NOT NULL,
+  `uuid_c2` bigint NOT NULL,
   `content_c3` text,
   PRIMARY KEY (`auto_pk_c1`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1
@@ -104,8 +104,8 @@ CREATE TABLE `tbl_multi_pk` (
 
     ```sql
     CREATE TABLE `tbl_multi_pk_c2` (
-      `auto_pk_c1` bigint(20) NOT NULL,
-      `uuid_c2` bigint(20) NOT NULL,
+      `auto_pk_c1` bigint NOT NULL,
+      `uuid_c2` bigint NOT NULL,
       `content_c3` text,
       PRIMARY KEY (`auto_pk_c1`,`uuid_c2`)
     ) ENGINE=InnoDB DEFAULT CHARSET=latin1

@@ -101,9 +101,9 @@ SHOW CREATE TABLE t;
 | Table | Create Table                                                                                                                                                                                                                                                                                                     |
 +-------+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
 | t     | CREATE TABLE `t` (
-  `a` int(11) DEFAULT NULL,
-  `b` int(11) DEFAULT NULL,
-  `c` int(11) DEFAULT NULL,
+  `a` int DEFAULT NULL,
+  `b` int DEFAULT NULL,
+  `c` int DEFAULT NULL,
 CONSTRAINT `c1` CHECK ((`b` > `c`)),
 CONSTRAINT `t_chk_1` CHECK ((`a` > 10)) /*!80016 NOT ENFORCED */,
 CONSTRAINT `t_chk_2` CHECK ((1 < `c`))

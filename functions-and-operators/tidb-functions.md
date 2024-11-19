@@ -166,7 +166,7 @@ SHOW CREATE TABLE t2\G
        Table: t2
 Create Table: CREATE TABLE `t2` (
   `id` binary(36) NOT NULL,
-  `a` tinyint(3) unsigned NOT NULL,
+  `a` tinyint unsigned NOT NULL,
   `v` varchar(512) DEFAULT NULL,
   PRIMARY KEY (`a`,`id`) /*T![clustered_index] CLUSTERED */
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin

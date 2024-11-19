@@ -40,8 +40,8 @@ SHOW CREATE TABLE t1;
 *************************** 1. row ***************************
        Table: t1
 Create Table: CREATE TABLE `t1` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `c1` int(11) NOT NULL,
+  `id` int NOT NULL AUTO_INCREMENT,
+  `c1` int NOT NULL,
   PRIMARY KEY (`id`),
   KEY `col1` (`c1`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin
@@ -68,8 +68,8 @@ SHOW CREATE TABLE t1;
 *************************** 1. row ***************************
        Table: t1
 Create Table: CREATE TABLE `t1` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `c1` int(11) NOT NULL,
+  `id` int NOT NULL AUTO_INCREMENT,
+  `c1` int NOT NULL,
   PRIMARY KEY (`id`),
   KEY `c1` (`c1`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin

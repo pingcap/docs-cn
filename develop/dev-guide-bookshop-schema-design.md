@@ -135,10 +135,10 @@ WHERE table_schema LIKE 'bookshop';
 
 | 字段名        | 类型          | 含义                                  |
 |--------------|---------------|---------------------------------------|
-| id           | bigint(20)    | 书籍的唯一标识                        |
+| id           | bigint    | 书籍的唯一标识                        |
 | title        | varchar(100)  | 书籍名称                              |
 | type         | enum          | 书籍类型（如：杂志、动漫、教辅等）    |
-| stock        | bigint(20)    | 库存                                  |
+| stock        | bigint    | 库存                                  |
 | price        | decimal(15,2) | 价格                                  |
 | published_at | datetime      | 出版时间                              |
 
@@ -148,11 +148,11 @@ WHERE table_schema LIKE 'bookshop';
 
 | 字段名      | 类型         | 含义                                |
 |------------|--------------|-------------------------------------|
-| id         | bigint(20)   | 作者的唯一标识                       |
+| id         | bigint   | 作者的唯一标识                       |
 | name       | varchar(100) | 姓名                                |
-| gender     | tinyint(1)   | 生理性别 (0: 女, 1: 男，NULL: 未知)   |
-| birth_year | smallint(6)  | 生年                                |
-| death_year | smallint(6)  | 卒年                                |
+| gender     | tinyint   | 生理性别 (0: 女, 1: 男，NULL: 未知)   |
+| birth_year | smallint  | 生年                                |
+| death_year | smallint  | 卒年                                |
 
 ### `users` 表
 
@@ -160,7 +160,7 @@ WHERE table_schema LIKE 'bookshop';
 
 | 字段名    | 类型          | 含义            |
 |----------|---------------|----------------|
-| id       | bigint(20)    | 用户的唯一标识   |
+| id       | bigint    | 用户的唯一标识   |
 | balance  | decimal(15,2) | 余额           |
 | nickname | varchar(100)  | 昵称           |
 
@@ -181,8 +181,8 @@ WHERE table_schema LIKE 'bookshop';
 
 | 字段名     | 类型       | 含义                                        |
 |-----------|------------|--------------------------------------------|
-| book_id   | bigint(20) | 书籍的唯一标识（关联至 [books](#books-表)）     |
-| author_id | bigint(20) | 作者的唯一标识（关联至 [authors](#authors-表)） |
+| book_id   | bigint | 书籍的唯一标识（关联至 [books](#books-表)）     |
+| author_id | bigint | 作者的唯一标识（关联至 [authors](#authors-表)） |
 
 ### `orders` 表
 
@@ -190,10 +190,10 @@ WHERE table_schema LIKE 'bookshop';
 
 | 字段名      | 类型       | 含义                                        |
 |------------|------------|--------------------------------------------|
-| id         | bigint(20) | 订单的唯一标识                               |
-| book_id    | bigint(20) | 书籍的唯一标识（关联至 [books](#books-表)）    |
-| user_id    | bigint(20) | 用户唯一标识（关联至 [users](#users-表)）      |
-| quantity   | tinyint(4) | 购买数量                                    |
+| id         | bigint | 订单的唯一标识                               |
+| book_id    | bigint | 书籍的唯一标识（关联至 [books](#books-表)）    |
+| user_id    | bigint | 用户唯一标识（关联至 [users](#users-表)）      |
+| quantity   | tinyint | 购买数量                                    |
 | ordered_at | datetime   | 购买时间                                    |
 
 ## 数据库初始化 `dbinit.sql` 脚本
@@ -205,29 +205,29 @@ CREATE DATABASE IF NOT EXISTS `bookshop`;
 
 DROP TABLE IF EXISTS `bookshop`.`books`;
 CREATE TABLE `bookshop`.`books` (
-  `id` bigint(20) AUTO_RANDOM NOT NULL,
+  `id` bigint AUTO_RANDOM NOT NULL,
   `title` varchar(100) NOT NULL,
   `type` enum('Magazine', 'Novel', 'Life', 'Arts', 'Comics', 'Education & Reference', 'Humanities & Social Sciences', 'Science & Technology', 'Kids', 'Sports') NOT NULL,
   `published_at` datetime NOT NULL,
-  `stock` int(11) DEFAULT '0',
+  `stock` int DEFAULT '0',
   `price` decimal(15,2) DEFAULT '0.0',
   PRIMARY KEY (`id`) CLUSTERED
 ) DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
 
 DROP TABLE IF EXISTS `bookshop`.`authors`;
 CREATE TABLE `bookshop`.`authors` (
-  `id` bigint(20) AUTO_RANDOM NOT NULL,
+  `id` bigint AUTO_RANDOM NOT NULL,
   `name` varchar(100) NOT NULL,
-  `gender` tinyint(1) DEFAULT NULL,
-  `birth_year` smallint(6) DEFAULT NULL,
-  `death_year` smallint(6) DEFAULT NULL,
+  `gender` tinyint DEFAULT NULL,
+  `birth_year` smallint DEFAULT NULL,
+  `death_year` smallint DEFAULT NULL,
   PRIMARY KEY (`id`) CLUSTERED
 ) DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
 
 DROP TABLE IF EXISTS `bookshop`.`book_authors`;
 CREATE TABLE `bookshop`.`book_authors` (
-  `book_id` bigint(20) NOT NULL,
-  `author_id` bigint(20) NOT NULL,
+  `book_id` bigint NOT NULL,
+  `author_id` bigint NOT NULL,
   PRIMARY KEY (`book_id`,`author_id`) CLUSTERED
 ) DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
 
@@ -252,10 +252,10 @@ CREATE TABLE `bookshop`.`users` (
 
 DROP TABLE IF EXISTS `bookshop`.`orders`;
 CREATE TABLE `bookshop`.`orders` (
-  `id` bigint(20) AUTO_RANDOM NOT NULL,
-  `book_id` bigint(20) NOT NULL,
-  `user_id` bigint(20) NOT NULL,
-  `quality` tinyint(4) NOT NULL,
+  `id` bigint AUTO_RANDOM NOT NULL,
+  `book_id` bigint NOT NULL,
+  `user_id` bigint NOT NULL,
+  `quality` tinyint NOT NULL,
   `ordered_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`) CLUSTERED,
   KEY `orders_book_id_idx` (`book_id`)

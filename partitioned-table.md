@@ -262,7 +262,7 @@ INTERVAL (1 MONTH) FIRST PARTITION LESS THAN ('2000-01-01') LAST PARTITION LESS 
 
 ```sql
 CREATE TABLE `monthly_report_status` (
-  `report_id` int(11) NOT NULL,
+  `report_id` int NOT NULL,
   `report_status` varchar(20) NOT NULL,
   `report_date` date NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin
@@ -1112,7 +1112,7 @@ SHOW CREATE TABLE\G
 *************************** 1. row ***************************
        Table: example
 Create Table: CREATE TABLE `example` (
-  `id` int(11) NOT NULL,
+  `id` int NOT NULL,
   `data` varchar(1024) DEFAULT NULL,
   PRIMARY KEY (`id`) /*T![clustered_index] CLUSTERED */
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin
@@ -1722,10 +1722,10 @@ SHOW CREATE TABLE t1\G
 ```
        Table: t1
 Create Table: CREATE TABLE `t1` (
-  `col1` int(11) NOT NULL,
+  `col1` int NOT NULL,
   `col2` date NOT NULL,
-  `col3` int(11) NOT NULL,
-  `col4` int(11) NOT NULL,
+  `col3` int NOT NULL,
+  `col4` int NOT NULL,
   UNIQUE KEY `uidx12` (`col1`,`col2`) /*T![global_index] GLOBAL */,
   UNIQUE KEY `uidx3` (`col3`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin

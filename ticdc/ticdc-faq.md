@@ -330,7 +330,7 @@ mysql root@127.0.0.1:test> show create table test;
 | Table | Create Table                                                                     |
 +-------+----------------------------------------------------------------------------------+
 | test  | CREATE TABLE `test` (                                                            |
-|       |   `id` int(11) NOT NULL,                                                         |
+|       |   `id` int NOT NULL,                                                         |
 |       |   `ts` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP, |
 |       |   PRIMARY KEY (`id`)                                                             |
 |       | ) ENGINE=InnoDB DEFAULT CHARSET=latin1                                           |

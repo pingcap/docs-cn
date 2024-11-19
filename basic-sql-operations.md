@@ -94,7 +94,7 @@ CREATE TABLE table_name column_name data_type constraint;
 
 ```sql
 CREATE TABLE person (
-    id INT(11),
+    id int,
     name VARCHAR(255),
     birthday DATE
     );
