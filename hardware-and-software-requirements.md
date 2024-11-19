@@ -24,7 +24,7 @@ TiDB 作为一款开源一栈式实时 HTAP 数据库，可以很好地部署和
     |  操作系统   |   支持的 CPU 架构   |
     |   :---   |   :---   |
     | Red Hat Enterprise Linux 8.4 及以上的 8.x 版本  |  <ul><li>x86_64</li><li>ARM 64</li></ul>  |
-    | <ul><li>Red Hat Enterprise Linux 7.3 及以上的 7.x 版本</li><li>CentOS 7.3 及以上的 7.x 版本（将在 TiDB 8.5 LTS 版本结束支持）</li></ul>  |  <ul><li>x86_64</li><li>ARM 64</li></ul>   |
+    | <ul><li>Red Hat Enterprise Linux 7.3 及以上的 7.x 版本</li><li>CentOS 7.3 及以上的 7.x 版本（从 TiDB 8.4 DMR 版本开始，已结束支持）</li></ul>  |  <ul><li>x86_64</li><li>ARM 64</li></ul>   |
     |  Amazon Linux 2         |  <ul><li>x86_64</li><li>ARM 64</li></ul>   |
     | Amazon Linux 2023       |  <ul><li>x86_64</li><li>ARM 64</li></ul>   |
     | Rocky Linux 9.1 及以上的版本 |  <ul><li>x86_64</li><li>ARM 64</li></ul> |
@@ -34,7 +34,7 @@ TiDB 作为一款开源一栈式实时 HTAP 数据库，可以很好地部署和
 
     > **注意：**
     >
-    > 根据 [CentOS Linux EOL](https://blog.centos.org/2023/04/end-dates-are-coming-for-centos-stream-8-and-centos-linux-7/)，CentOS Linux 7 的上游支持于 2024 年 6 月 30 日终止。TiDB 将在 8.5 LTS 版本结束对 CentOS 7 的支持，建议使用 Rocky Linux 9.1 及以上的版本。
+    > 根据 [CentOS Linux EOL](https://blog.centos.org/2023/04/end-dates-are-coming-for-centos-stream-8-and-centos-linux-7/)，CentOS Linux 7 的上游支持于 2024 年 6 月 30 日终止。从 8.4 DMR 版本开始，TiDB 已结束对 CentOS 7 的支持，建议使用 Rocky Linux 9.1 及以上的版本。
 
 + 在以下操作系统以及对应的 CPU 架构组合上，你可以编译、构建和部署 TiDB，可使用 OLTP 和 OLAP 以及数据工具的基本功能。但是 TiDB **不保障企业级生产质量要求**：
 
