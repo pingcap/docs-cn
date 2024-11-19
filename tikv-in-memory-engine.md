@@ -7,7 +7,7 @@ summary: 了解内存引擎的适用场景和工作原理，使用内存引擎�
 
 ## 适用场景
 
-TiKV In-memory Engine （以下简称 IME）主要用于加速需要访问大量 MVCC 历史版本的查询，即[查询访问的总共版本数量（total_keys）远大于处理的版本数量（processed_keys）](/analyze-slow-queries.md#过期-key-多)
+TiKV In-memory Engine 主要用于加速需要扫描大量 MVCC 历史版本的查询，即[查询扫描的总共版本数量（total_keys）远大于处理的版本数量（processed_keys）](/analyze-slow-queries.md#过期-key-多)
 
 例如以下场景：
 
@@ -16,7 +16,7 @@ TiKV In-memory Engine （以下简称 IME）主要用于加速需要访问大量
 
 ## 原理解释
 
-TiKV In-memory Engine 在内存中缓存了最近写入的 MVCC 版本，并实现了独立于 TiDB 的 MVCC GC 机制，使其可快速 GC 缓存中的 MVCC 记录，从而减少查询时访问的记录的个数，以达到降低请求延时和减少 CPU 开销的效果。
+TiKV In-memory Engine 在内存中缓存了最近写入的 MVCC 版本，并实现了独立于 TiDB 的 MVCC GC 机制，使其可快速 GC 缓存中的 MVCC 记录，从而减少查询时扫描版本的个数，以达到降低请求延时和减少 CPU 开销的效果。
 
 <div style="text-align: center;"><img src="./media/tikv-ime-data-organization.png" alt="IME 通过缓存近期的版本以减少 CPU 开销" width="400" /></div>
 
@@ -57,12 +57,12 @@ enable = true
 
 > **注意：**
 >
-> + 出于性能考虑，IME 默认关闭，并且从关闭状态到开启状态需要重启 TiKV。
+> + In-memory Engine 默认关闭，并且从关闭状态到开启状态需要重启 TiKV。
 > + 除 `enable` 之外，其他配置都可以动态调整。
 
 ### 自动加载
 
-在开启 In-memory Engine 之后，自动加载即生效。自动加载会根据 Region 的读流量和 MVCC 放大程度进行 Region 的选择。具体而言，首先 Region 按照最近时间段的 next + prev 次数进行排序，然后我们使用 mvcc-amplification-threshold （默认为 10，mvcc amplification 衡量读放大程度，计算公式为 (next + prev) / processed_keys）对 Region 进行过滤，然后载入前 N 个 MVCC 放大严重的 Region，N 基于内存估算而来。
+在开启 In-memory Engine 之后，它自动加载会根据 Region 的读流量和 MVCC 放大程度选择要加载的 Region。具体而言，首先 Region 按照最近时间段的 next （RocksDB Iterator next API）和 prev （（RocksDB Iterator next API）次数进行排序，然后我们使用 mvcc-amplification-threshold （默认为 10，mvcc amplification 衡量读放大程度，计算公式为 (next + prev) / processed_keys）对 Region 进行过滤，然后载入前 N 个 MVCC 放大严重的 Region，其中 N 基于内存估算而来。
 
 IME 也会定期进行 Region 的驱逐工作。首先，IME 会驱逐那些读流量过小或者 MVCC 放大程度过低的 Region。如果内存使用达到了 capacity 的 90%，并且有新的 Region 需要被载入，那么 IME 会根据读取流量来筛选 Region 进行驱逐。
 
@@ -77,7 +77,7 @@ IME 也会定期进行 Region 的驱逐工作。首先，IME 会驱逐那些读�
 
 **1. In-memory Engine 能否减少写入延时，提高写入吞吐？**
 
-不能，In-memory Engine 只能加速多 MVCC 版本常见中读请求。
+不能，In-memory Engine 只能加速扫描了大量 MVCC 版本的读请求。
 
 **2. 如何判断 In-memory Engine 能否改善我的场景？**
 
