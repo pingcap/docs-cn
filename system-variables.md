@@ -1524,7 +1524,7 @@ mysql> SELECT job_info FROM mysql.analyze_jobs ORDER BY end_time DESC LIMIT 1;
 - 类型：整数型
 - 默认值：`0`
 - 范围：`[0, 1125899906842624]`（即最大可设置为 1 PiB）
-- 该变量仅在添加索引加速功能开启（由变量 [`tidb_ddl_enable_fast_reorg`](#tidb_ddl_enable_fast_reorg-从-v630-版本开始引入) 控制）时生效，用于限制每个 TiKV 节点写入的带宽。 默认值 `0` 表示不限制写入带宽。默认单位为字节每秒，也可以通过 `'1GiB'`、`256MiB` 等格式设置该变量。
+- 该变量仅在添加索引加速功能开启（由变量 [`tidb_ddl_enable_fast_reorg`](#tidb_ddl_enable_fast_reorg-从-v630-版本开始引入) 控制）时生效，用于限制每个 TiKV 节点写入的带宽。默认值 `0` 表示不限制写入带宽。默认单位为字节每秒，也可以通过 `'1GiB'`、`256MiB` 等格式设置该变量。
 
 ### `tidb_ddl_reorg_worker_cnt`
 
