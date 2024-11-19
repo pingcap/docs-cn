@@ -14,7 +14,7 @@ TiDB v7.6.0 引入了系统变量 [`tidb_ddl_version`](https://docs.pingcap.com/
 
 ## 与 TiDB 工具的兼容性
 
-- TiDB v8.3.0 版本之前 [TiCDC](/ticdc/ticdc-overview.md) 暂不支持同步通过 TiDB 加速创建的表。TiDB v8.3.0 版本之后可以正常同步。
+- 在 TiDB v8.3.0 之前的版本中，[TiCDC](/ticdc/ticdc-overview.md) 不支持同步通过 TiDB 加速创建的表。从 v8.3.0 开始，TiCDC 可以正常同步这类表。
 
 ## 限制
 
