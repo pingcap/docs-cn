@@ -50,9 +50,12 @@
 
 你提交的第一个 [Pull Request](https://help.github.com/en/github/getting-started-with-github/github-glossary#pull-request) (PR) 合并以后，即可成为 TiDB 文档的 Contributor。查看 [TiDB 中文文档贡献指南](/CONTRIBUTING.md)，开始你的贡献吧！
 
-## 贡献者数量增长图
-
-[![Contributor over time](https://contributor-graph-api.apiseven.com/contributors-svg?chart=contributorOverTime&repo=pingcap/docs-cn)](https://www.apiseven.com/en/contributor-graph?chart=contributorOverTime&repo=pingcap/docs-cn)
+<a href="https://next.ossinsight.io/widgets/official/compose-recent-active-contributors?repo_id=64188788&limit=30" target="_blank" style="display: block;" align="center">
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="https://next.ossinsight.io/widgets/official/compose-recent-active-contributors/thumbnail.png?repo_id=64188788&limit=30&image_size=auto&color_scheme=dark" width="655" height="auto" />
+    <img alt="Active Contributors of pingcap/docs-cn - Last 28 days" src="https://next.ossinsight.io/widgets/official/compose-recent-active-contributors/thumbnail.png?repo_id=64188788&limit=30&image_size=auto&color_scheme=light" width="655" height="auto" />
+  </picture>
+</a>
 
 ## License
 

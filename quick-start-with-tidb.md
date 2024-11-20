@@ -500,7 +500,7 @@ TiDB 是一个分布式系统。最基础的 TiDB 测试集群通常由 2 个 Ti
 如果你准备好在生产环境部署 TiDB，你可以继续：
 
 - [使用 TiUP 部署 TiDB 集群](/production-deployment-using-tiup.md)
-- [使用 TiDB Operator 在 Kubernetes 上部署 TiDB](https://docs.pingcap.com/zh/tidb-in-kubernetes/stable)
+- [使用 TiDB Operator 在 Kubernetes 上部署 TiDB 集群](https://docs.pingcap.com/zh/tidb-in-kubernetes/stable)
 
 如果你想使用 TiFlash 作为数据分析的解决方案，可参阅以下文档：
 
