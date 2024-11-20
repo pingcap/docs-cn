@@ -470,15 +470,15 @@ config show cluster-version
     config set flow-round-by-digit 4
     ```
 
-service-middleware 是 PD 中间件服务配置模块，通常用于管理和控制服务的中间件功能，如审计、请求速率限制等。请求速率限制目前支持限制如下 gRPC API 请求：
+#### `config [show | set service-middleware <option>  <value>]`
 
-- GetRegion：获取指定 Region 的信息
-- GetStore：获取指定 Store 的信息
-- GetMembers：获取 PD 集群成员的信息
+`service-middleware` 是 PD 中的一个配置模块，主要用于管理和控制 PD 服务的中间件功能，如审计和请求速率限制等。从 v8.5.0 起，你可以通过 `service-middleware` 控制以下 gRPC API 请求的速率和并发度：
 
-显示 service-middleware 的相关 config 信息：
+- `GetRegion`：获取指定 Region 的信息
+- `GetStore`：获取指定 Store 的信息
+- `GetMembers`：获取 PD 集群成员的信息
 
-{{< copyable "" >}}
+显示 `service-middleware` 的相关 config 信息：
 
 ```bash
 config show service-middleware
@@ -501,16 +501,19 @@ config show service-middleware
 ```
 
 控制某个 gRPC API 请求的速率，以 `GetRegion` API 请求为例：
+
 ```bash
 config set service-middleware grpc-rate-limit GetRegion qps 100
 ```
 
-控制某个 gRPC API 请求的并发，以 `GetRegion` API 请求为例：
+控制某个 gRPC API 请求的并发度，以 `GetRegion` API 请求为例：
+
 ```bash
 config set service-middleware grpc-rate-limit GetRegion concurrency 10
 ```
 
 查看修改后的配置：
+
 ```bash
 config show service-middleware
 ```
@@ -538,6 +541,7 @@ config show service-middleware
 ```
 
 重置上述设置：
+
 ```bash
 config set service-middleware grpc-rate-limit GetRegion qps 0
 config set service-middleware grpc-rate-limit GetRegion concurrency 0
