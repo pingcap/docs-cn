@@ -9,7 +9,7 @@ summary: 了解部署 TiDB 前的环境检查操作。
 
 ## 在 TiKV 部署目标机器上添加数据盘 EXT4 文件系统挂载参数
 
-生产环境部署，建议使用 EXT4 类型文件系统的 NVME 类型的 SSD 磁盘存储 TiKV 数据文件。这个配置方案为最佳实施方案，其可靠性、安全性、稳定性已经在大量线上场景中得到证实。
+生产环境部署，建议使用 EXT4 类型文件系统的 NVMe 类型的 SSD 磁盘存储 TiKV 数据文件。这个配置方案为最佳实施方案，其可靠性、安全性、稳定性已经在大量线上场景中得到证实。
 
 使用 `root` 用户登录目标机器，将部署目标机器数据盘格式化成 ext4 文件系统，挂载时添加 `nodelalloc` 和 `noatime` 挂载参数。`nodelalloc` 是必选参数，否则 TiUP 安装时检测无法通过；`noatime` 是可选建议参数。
 
@@ -39,9 +39,16 @@ summary: 了解部署 TiDB 前的环境检查操作。
     parted -s -a optimal /dev/nvme0n1 mklabel gpt -- mkpart primary ext4 1 -1
     ```
 
+    如果 NVMe 设备容量较大，可以创建多个分区。
+
+    ```bash
+    parted -s -a optimal /dev/nvme0n1 mklabel gpt -- mkpart primary ext4 1 2000GB
+    parted -s -a optimal /dev/nvme0n1 -- mkpart primary ext4 2000GB -1
+    ```
+
     > **注意：**
     >
-    > 使用 `lsblk` 命令查看分区的设备号：对于 nvme 磁盘，生成的分区设备号一般为 `nvme0n1p1`；对于普通磁盘（例如 `/dev/sdb`），生成的分区设备号一般为 `sdb1`。
+    > 使用 `lsblk` 命令查看分区的设备号：对于 NVMe 磁盘，生成的分区设备号一般为 `nvme0n1p1`；对于普通磁盘（例如 `/dev/sdb`），生成的分区设备号一般为 `sdb1`。
 
 3. 格式化文件系统。
 
@@ -90,6 +97,7 @@ summary: 了解部署 TiDB 前的环境检查操作。
 
     ```bash
     mkdir /data1 && \
+    systemctl daemon-reload && \
     mount -a
     ```
 
@@ -137,25 +145,25 @@ TiDB 的部分操作需要向服务器写入临时文件，因此需要确保运
 
 - Fast Online DDL 工作区
 
-    当变量 [`tidb_ddl_enable_fast_reorg`](/system-variables.md#tidb_ddl_enable_fast_reorg-从-v630-版本开始引入) 被设置为 `ON`（v6.5.0 及以上版本中默认值为 `ON`）时，会激活 Fast Online DDL，这时部分 DDL 要对临时文件进行读写。临时文件位置由配置 [`temp-dir`](/tidb-configuration-file.md#temp-dir-从-v630-版本开始引入) 定义，需要确保运行 TiDB 的用户对操作系统中该目录有读写权限。以默认目录 `/tmp/tidb` 为例：
+    当变量 [`tidb_ddl_enable_fast_reorg`](/system-variables.md#tidb_ddl_enable_fast_reorg-从-v630-版本开始引入) 被设置为 `ON`（v6.5.0 及以上版本中默认值为 `ON`）时，会激活 Fast Online DDL，这时部分 DDL 要对临时文件进行读写。临时文件位置由配置 [`temp-dir`](/tidb-configuration-file.md#temp-dir-从-v630-版本开始引入) 定义，需要确保运行 TiDB 的用户对操作系统中该目录有读写权限。默认目录 `/tmp/tidb` 使用 tmpfs (temporary file system)，建议显式指定为磁盘上的目录，以 `/data/tidb-deploy/tempdir` 为例：
 
     > **注意：**
     >
     > 如果业务中可能存在针对大对象的 DDL 操作，推荐为 [`temp-dir`](/tidb-configuration-file.md#temp-dir-从-v630-版本开始引入) 配置独立文件系统及更大的临时空间。
 
     ```shell
-    sudo mkdir /tmp/tidb
+    sudo mkdir -p /data/tidb-deploy/tempdir
     ```
 
-    如果目录 `/tmp/tidb` 已经存在，需确保有写入权限。
+    如果目录 `/data/tidb-deploy/tempdir` 已经存在，需确保有写入权限。
 
     ```shell
-    sudo chmod -R 777 /tmp/tidb
+    sudo chmod -R 777 /data/tidb-deploy/tempdir
     ```
 
     > **注意：**
     >
-    > 如果目录不存在，TiDB 在启动时会自动创建该目录。如果目录创建失败，或者 TiDB 对该目录没有读写权限，[Fast Online DDL](/system-variables.md#tidb_ddl_enable_fast_reorg-从-v630-版本开始引入) 在运行时可能产生不可预知的问题。
+    > 如果目录不存在，TiDB 在启动时会自动创建该目录。如果目录创建失败，或者 TiDB 对该目录没有读写权限，[Fast Online DDL](/system-variables.md#tidb_ddl_enable_fast_reorg-从-v630-版本开始引入) 在运行时会被禁用。
 
 ## 检测及关闭目标部署机器的防火墙
 
@@ -331,7 +339,11 @@ sudo systemctl enable ntpd.service
 在生产系统的 TiDB 中，建议对操作系统进行如下的配置优化：
 
 1. 关闭透明大页（即 Transparent Huge Pages，缩写为 THP）。数据库的内存访问模式往往是稀疏的而非连续的。当高阶内存碎片化比较严重时，分配 THP 页面会出现较高的延迟。
-2. 将存储介质的 I/O 调度器设置为 noop。对于高速 SSD 存储介质，内核的 I/O 调度操作会导致性能损失。将调度器设置为 noop 后，内核不做任何操作，直接将 I/O 请求下发给硬件，以获取更好的性能。同时，noop 调度器也有较好的普适性。
+2. 设置存储介质的 I/O 调度器。
+
+    - 对于高速 SSD 存储介质，内核默认的 I/O 调度器可能会导致性能损失。建议将闪存存储的 I/O 调度器设置为先入先出 (First-in-first-out, FIFO) 的调度器，如 `noop` 或 `none`，这样内核将不做调度操作，直接将 I/O 请求传递给硬件，从而提升性能。
+    - 对于 NVMe 存储介质，默认的 I/O 调度器为 `none`，无需进行调整。
+
 3. 为调整 CPU 频率的 cpufreq 模块选用 performance 模式。将 CPU 频率固定在其支持的最高运行频率上，不进行动态调节，可获取最佳的性能。
 
 采用如下步骤检查操作系统的当前配置，并配置系统优化参数：
@@ -352,9 +364,9 @@ sudo systemctl enable ntpd.service
     >
     > `[always] madvise never` 表示透明大页处于启用状态，需要关闭。
 
-2. 执行以下命令查看数据目录所在磁盘的 I/O 调度器。假设在 sdb、sdc 两个磁盘上创建了数据目录。
+2. 执行以下命令查看数据目录所在磁盘的 I/O 调度器。
 
-    {{< copyable "shell-regular" >}}
+    如果数据目录所在磁盘使用的是 SD 或 VD 设备，可以执行以下命令查看当前 I/O 调度器的配置：
 
     ```bash
     cat /sys/block/sd[bc]/queue/scheduler
@@ -368,6 +380,21 @@ sudo systemctl enable ntpd.service
     > **注意：**
     >
     > `noop [deadline] cfq` 表示磁盘的 I/O 调度器使用 `deadline`，需要进行修改。
+
+    如果数据目录使用 NVMe 设备，可以执行以下命令查看 I/O 调度器：
+
+    ```bash
+    cat /sys/block/nvme[01]*/queue/scheduler
+    ```
+
+    ```
+    [none] mq-deadline kyber bfq
+    [none] mq-deadline kyber bfq
+    ```
+
+    > **注意：**
+    >
+    > `[none] mq-deadline kyber bfq` 表示 NVMe 设备的 I/O 调度器使用 `none`，不需要进行修改。
 
 3. 执行以下命令查看磁盘的唯一标识 `ID_SERIAL`。
 
@@ -384,7 +411,8 @@ sudo systemctl enable ntpd.service
 
     > **注意：**
     >
-    > 如果多个磁盘都分配了数据目录，需要多次执行以上命令，记录所有磁盘各自的唯一标识。
+    > - 如果多个磁盘都分配了数据目录，需要为每个磁盘都执行以上命令，记录所有磁盘各自的唯一标识。
+    > - 已经使用 `noop` 或者 `none` 调度器的设备不需要记录标识，无需配置 udev 规则和 tuned 策略中的相关内容。
 
 4. 执行以下命令查看 cpufreq 模块选用的节能策略。
 
@@ -461,6 +489,10 @@ sudo systemctl enable ntpd.service
 
         3. 应用新的 tuned 策略。
 
+            > **注意：**
+            >
+            > 如果已经使用 `noop` 或 `none` I/O 调度器，则无需在 tuned 策略中配置调度器相关的内容，可以跳过此步骤。
+
             {{< copyable "shell-regular" >}}
 
             ```bash
@@ -490,12 +522,12 @@ sudo systemctl enable ntpd.service
             {{< copyable "shell-regular" >}}
 
             ```bash
-            grubby --args="transparent_hugepage=never" --update-kernel /boot/vmlinuz-3.10.0-957.el7.x86_64
+            grubby --args="transparent_hugepage=never" --update-kernel `grubby --default-kernel`
             ```
 
             > **注意：**
             >
-            > `--update-kernel` 后需要使用实际的默认内核版本。
+            > 你也可以在 `--update-kernel` 后指定实际的版本号，例如：`--update-kernel /boot/vmlinuz-3.10.0-957.el7.x86_64`。
 
         3. 执行 `grubby --info` 命令查看修改后的默认内核配置。
 
@@ -542,6 +574,10 @@ sudo systemctl enable ntpd.service
             ```
 
         6. 应用 udev 脚本。
+
+            > **注意：**
+            >
+            > 对于已经使用 `noop` 或 `none` I/O 调度器的设备，无需配置 udev 规则，可以跳过此步骤。
 
             {{< copyable "shell-regular" >}}
 
@@ -635,6 +671,7 @@ sudo systemctl enable ntpd.service
     > - `vm.min_free_kbytes` 的设置会影响内存回收机制。设置得过大，会导致可用内存变少，设置得过小，可能会导致内存的申请速度超过后台的回收速度，进而导致内存回收并引起内存分配延迟。
     > - 建议将 `vm.min_free_kbytes` 最小设置为 `1048576` KiB（即 1 GiB）。如果[安装了 NUMA](/check-before-deployment.md#安装-numactl-工具)，建议设置为 `NUMA 节点个数 * 1048576` KiB。
     > - 对于内存小于 16 GiB 的小规格服务器，保持 `vm.min_free_kbytes` 的默认值即可。
+    > - `tcp_tw_recycle` 从 Linux 4.12 内核版本开始移除，在使用高版本内核时无需配置该项。
 
 10. 执行以下命令配置用户的 limits.conf 文件。
 
