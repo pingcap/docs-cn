@@ -470,7 +470,7 @@ config show cluster-version
     config set flow-round-by-digit 4
     ```
 
-#### `config [show | set service-middleware <option>  <value>]`
+#### `config [show | set service-middleware <option> <value>]`
 
 `service-middleware` 是 PD 中的一个配置模块，主要用于管理和控制 PD 服务的中间件功能，如审计和请求速率限制等。从 v8.5.0 起，你可以通过 `service-middleware` 控制以下 gRPC API 请求的速率和并发度：
 
