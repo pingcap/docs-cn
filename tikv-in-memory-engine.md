@@ -1,13 +1,13 @@
 ---
-title: TiKV 内存引擎
+title: MVCC 内存引擎
 summary: 了解内存引擎的适用场景和工作原理，使用内存引擎加速多版本记录查询。
 ---
 
-# TiKV 内存引擎
+# MVCC 内存引擎
 
 ## 适用场景
 
-TiKV 内存引擎（In-memory Engine，以下简称 IME）主要用于加速需要扫描大量 MVCC 历史版本的查询，即[查询扫描的总共版本数量（total_keys）远大于处理的版本数量（processed_keys）](/analyze-slow-queries.md#过期-key-多)
+MVCC 内存引擎（In-memory Engine，以下简称 IME）主要用于加速需要扫描大量 MVCC 历史版本的查询，即[查询扫描的总共版本数量（total_keys）远大于处理的版本数量（processed_keys）](/analyze-slow-queries.md#过期-key-多)
 
 例如以下场景：
 
@@ -16,7 +16,7 @@ TiKV 内存引擎（In-memory Engine，以下简称 IME）主要用于加速需�
 
 ## 原理解释
 
-TiKV In-memory Engine 在内存中缓存了最近写入的 MVCC 版本，并实现了独立于 TiDB 的 MVCC GC 机制，使其可快速 GC 缓存中的 MVCC 记录，从而减少查询时扫描版本的个数，以达到降低请求延时和减少 CPU 开销的效果。
+MVCC 内存引擎在内存中缓存了最近写入的 MVCC 版本，并实现了独立于 TiDB 的 MVCC GC 机制，使其可快速 GC 内存中的 MVCC 记录，从而减少查询时扫描版本的个数，以达到降低请求延时和减少 CPU 开销的效果。
 
 <div style="text-align: center;"><img src="./media/tikv-ime-data-organization.png" alt="IME 通过缓存近期的版本以减少 CPU 开销" width="400" /></div>
 
