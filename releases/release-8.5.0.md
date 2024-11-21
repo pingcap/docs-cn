@@ -301,14 +301,14 @@ TiDB 8.5.0 为长期支持版本 (Long-Term Support Release, LTS)。
 + TiFlash
 
     - note [#Issue-number](issue-link) @[Contributor-GitHub-ID](id-link)
-    - note [#Issue-number](issue-link) @[Contributor-GitHub-ID](id-link)
+    - (dup): release-7.1.6.md > 改进提升> TiFlash - 提升聚簇索引表在后台回收过期数据的速度 [#9529](https://github.com/pingcap/tiflash/issues/9529) @[JaySon-Huang](https://github.com/JaySon-Huang)
 
 + Tools
 
     + Backup & Restore (BR)
 
         - note [#Issue-number](issue-link) @[Contributor-GitHub-ID](id-link)
-        - note [#Issue-number](issue-link) @[Contributor-GitHub-ID](id-link)
+        - (dup): release-7.1.6.md > 改进提升> Tools> Backup & Restore (BR) - 减少备份过程中无效日志的打印 [#55902](https://github.com/pingcap/tidb/issues/55902) @[Leavrth](https://github.com/Leavrth)
 
     + TiCDC
 
@@ -335,29 +335,38 @@ TiDB 8.5.0 为长期支持版本 (Long-Term Support Release, LTS)。
 + TiDB
 
     - note [#Issue-number](issue-link) @[Contributor-GitHub-ID](id-link)
-    - note [#Issue-number](issue-link) @[Contributor-GitHub-ID](id-link)
+    - (dup): release-7.1.6.md > 错误修复> TiDB - 修复写冲突时 TTL 任务可能无法取消的问题 [#56422](https://github.com/pingcap/tidb/issues/56422) @[YangKeao](https://github.com/YangKeao)
+    - (dup): release-7.1.6.md > 错误修复> TiDB - 修复取消 TTL 任务时，没有强制 Kill 对应 SQL 的问题 [#56511](https://github.com/pingcap/tidb/issues/56511) @[lcwangchao](https://github.com/lcwangchao)
+    - (dup): release-7.1.6.md > 错误修复> TiDB - 修复集群从 v6.5 升级到 v7.5 或更高版本后，已有 TTL 任务执行意外频繁的问题 [#56539](https://github.com/pingcap/tidb/issues/56539) @[lcwangchao](https://github.com/lcwangchao)
+    - (dup): release-7.1.6.md > 错误修复> TiDB - 修复 `INSERT ... ON DUPLICATE KEY` 语句不兼容 `mysql_insert_id` 的问题 [#55965](https://github.com/pingcap/tidb/issues/55965) @[tiancaiamao](https://github.com/tiancaiamao)
+    - (dup): release-7.1.6.md > 错误修复> TiDB - 修复 TTL 在未选用 TiKV 作为存储引擎时可能失败的问题 [#56402](https://github.com/pingcap/tidb/issues/56402) @[YangKeao](https://github.com/YangKeao)
+    - (dup): release-7.1.6.md > 错误修复> TiDB - 修复通过 `IMPORT INTO` 导入数据后，`AUTO_INCREMENT` 字段没有正确设置的问题 [#56476](https://github.com/pingcap/tidb/issues/56476) @[D3Hunter](https://github.com/D3Hunter)
+    - (dup): release-7.1.6.md > 错误修复> TiDB - 修复执行 `ADD INDEX` 时，未检查索引长度限制的问题 [#56930](https://github.com/pingcap/tidb/issues/56930) @[fzzf678](https://github.com/fzzf678)
+    - (dup): release-7.1.6.md > 错误修复> TiDB - 修复执行 `RECOVER TABLE BY JOB JOB_ID;` 可能导致 panic 的问题 [#55113](https://github.com/pingcap/tidb/issues/55113) @[crazycs520](https://github.com/crazycs520)
+    - (dup): release-7.1.6.md > 错误修复> TiDB - 修复由于 stale read 未对读操作的时间戳进行严格校验，导致 TSO 和真实物理时间存在偏移，有小概率影响事务一致性的问题 [#56809](https://github.com/pingcap/tidb/issues/56809) @[MyonKeminta](https://github.com/MyonKeminta)
 
 + TiKV
 
     - note [#Issue-number](issue-link) @[Contributor-GitHub-ID](id-link)
-    - note [#Issue-number](issue-link) @[Contributor-GitHub-ID](id-link)
+    - (dup): release-7.1.6.md > 错误修复> TiKV - 修复读线程在从 Raft Engine 中的 MemTable 读取过时索引时出现的 panic 问题 [#17383](https://github.com/tikv/tikv/issues/17383) @[LykxSassinator](https://github.com/LykxSassinator)
+    - (dup): release-7.5.4.md > 错误修复> TiKV - 修复当大量事务在排队等待同一个 key 上的锁被释放且该 key 被频繁更新时，TiKV 可能因死锁检测压力过大而出现 OOM 的问题 [#17394](https://github.com/tikv/tikv/issues/17394) @[MyonKeminta](https://github.com/MyonKeminta)
 
 + PD
 
     - note [#Issue-number](issue-link) @[Contributor-GitHub-ID](id-link)
-    - note [#Issue-number](issue-link) @[Contributor-GitHub-ID](id-link)
+    - (dup): release-7.1.6.md > 错误修复> PD - 修复热点缓存中可能存在的内存泄露问题 [#8698](https://github.com/tikv/pd/issues/8698) @[lhy1024](https://github.com/lhy1024)
 
 + TiFlash
 
     - note [#Issue-number](issue-link) @[Contributor-GitHub-ID](id-link)
-    - note [#Issue-number](issue-link) @[Contributor-GitHub-ID](id-link)
+    - (dup): release-7.1.6.md > 错误修复> TiFlash - 修复 `SUBSTRING()` 函数不支持部分整数类型的 `pos` 和 `len` 参数导致查询报错的问题 [#9473](https://github.com/pingcap/tiflash/issues/9473) @[gengliqi](https://github.com/gengliqi)
 
 + Tools
 
     + Backup & Restore (BR)
 
         - note [#Issue-number](issue-link) @[Contributor-GitHub-ID](id-link)
-        - note [#Issue-number](issue-link) @[Contributor-GitHub-ID](id-link)
+        - (dup): release-7.5.4.md > 错误修复> Tools> Backup & Restore (BR) - 修复 BR 集成测试用例不稳定的问题，并新增用于模拟快照或者日志备份文件损坏的测试用例 [#53835](https://github.com/pingcap/tidb/issues/53835) @[Leavrth](https://github.com/Leavrth)
 
     + TiCDC
 
@@ -372,7 +381,7 @@ TiDB 8.5.0 为长期支持版本 (Long-Term Support Release, LTS)。
     + TiDB Lightning
 
         - note [#Issue-number](issue-link) @[Contributor-GitHub-ID](id-link)
-        - note [#Issue-number](issue-link) @[Contributor-GitHub-ID](id-link)
+        - (dup): release-7.1.6.md > 错误修复> Tools> TiDB Lightning - 修复 TiDB Lightning 因 TiKV 发送的消息过大而接收失败的问题 [#56114](https://github.com/pingcap/tidb/issues/56114) @[fishiu](https://github.com/fishiu)
 
     + TiUP
 
