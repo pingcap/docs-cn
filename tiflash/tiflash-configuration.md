@@ -202,6 +202,15 @@ delta_index_cache_size = 0
     ## 从 v6.2.0 引入，表示 PageStorage 单个数据文件中有效数据的最低比例。当某个数据文件的有效数据比例低于该值时，会触发 GC 对该文件的数据进行整理。默认为 0.5。
     dt_page_gc_threshold = 0.5
 
+    ## 从 v6.0.0 引入，用于 MinTSO 调度器，表示一个资源组中最多可使用的线程数量，默认值为 5000。关于 MinTSO 调度器，详见 https://docs.pingcap.com/zh/tidb/v6.5/tiflash-mintso-scheduler
+    task_scheduler_thread_soft_limit = 5000
+
+    ## 从 v6.0.0 引入，用于 MinTSO 调度器，表示全局最多可使用的线程数量，默认值为 10000。关于 MinTSO 调度器，详见 https://docs.pingcap.com/zh/tidb/v6.5/tiflash-mintso-scheduler
+    task_scheduler_thread_hard_limit = 10000
+
+    ## 从 v6.4.0 引入，用于 MinTSO 调度器，表示一个 TiFlash 实例中最多可同时运行的查询数量，默认值为 0，即两倍的 vCPU 数量。关于 MinTSO 调度器，详见 https://docs.pingcap.com/zh/tidb/v6.5/tiflash-mintso-scheduler
+    task_scheduler_active_set_soft_limit = 0
+
 ## 安全相关配置，从 v4.0.5 开始生效
 [security]
     ## 从 v5.0 引入，控制是否开启日志脱敏
