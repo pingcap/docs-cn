@@ -470,13 +470,17 @@ config show cluster-version
     config set flow-round-by-digit 4
     ```
 
-#### `config [show | set service-middleware <option> <value>]`
+#### `config [show | set service-middleware <option> [<key> <value> | <label> <qps|concurrency> <value>]]`
 
-`service-middleware` 是 PD 中的一个配置模块，主要用于管理和控制 PD 服务的中间件功能，如审计和请求速率限制等。从 v8.5.0 起，你可以通过 `service-middleware` 控制以下 gRPC API 请求的速率和并发度：
+> **注意：**
+>
+> 通常不建议用户对请求速率限制和并发限制进行修改，此类配置可能会引起业务报错。
 
-- `GetRegion`：获取指定 Region 的信息
-- `GetStore`：获取指定 Store 的信息
-- `GetMembers`：获取 PD 集群成员的信息
+`service-middleware` 是 PD 中的一个配置模块，主要用于管理和控制 PD 服务的中间件功能，如审计和请求速率限制等。从 v8.5.0 起，支持通过 pd-ctl 修改 `service-middleware` 配置, `option` 支持如下几种类型：
+
+- audit: 审计功能
+- rate-limit: HTTP API 请求速率限制功能
+- grpc-rate-limit: gRPC API 请求速率限制功能
 
 显示 `service-middleware` 的相关 config 信息：
 
@@ -499,6 +503,20 @@ config show service-middleware
   }
 }
 ```
+
+你可以通过 `service-middleware audit` 控制审计功能：
+
+开启审计功能
+
+```bash
+config set service-middleware audit enable-audit true
+```
+
+你可以通过 `service-middleware grpc-rate-limit` 控制以下 gRPC API 请求的速率和并发度：
+
+- `GetRegion`：获取指定 Region 的信息
+- `GetStore`：获取指定 Store 的信息
+- `GetMembers`：获取 PD 集群成员的信息
 
 控制某个 gRPC API 请求的速率，以 `GetRegion` API 请求为例：
 
@@ -545,6 +563,30 @@ config show service-middleware
 ```bash
 config set service-middleware grpc-rate-limit GetRegion qps 0
 config set service-middleware grpc-rate-limit GetRegion concurrency 0
+```
+
+同理，你可以通过 `service-middleware rate-limit` 控制以下 HTTP API 请求的速率和并发度：
+
+- `GetRegion`：获取指定 Region 的信息
+- `GetStore`：获取指定 Store 的信息
+
+控制某个 HTTP API 请求的速率，以 `GetRegion` API 请求为例：
+
+```bash
+config set service-middleware rate-limit GetRegion qps 100
+```
+
+控制某个 HTTP API 请求的并发度，以 `GetRegion` API 请求为例：
+
+```bash
+config set service-middleware rate-limit GetRegion concurrency 10
+```
+
+重置上述设置：
+
+```bash
+config set service-middleware rate-limit GetRegion qps 0
+config set service-middleware rate-limit GetRegion concurrency 0
 ```
 
 ### `config placement-rules [disable | enable | load | save | show | rule-group]`
