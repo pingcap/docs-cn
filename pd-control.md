@@ -476,7 +476,7 @@ config show cluster-version
 >
 > 通常不建议用户对请求速率限制和并发限制进行修改，此类配置可能会引起业务报错。
 
-`service-middleware` 是 PD 中的一个配置模块，主要用于管理和控制 PD 服务的中间件功能，如审计和请求速率和并发限制等。从 v8.5.0 起，支持通过 pd-ctl 修改 `service-middleware` 配置, `option` 支持如下几种类型：
+`service-middleware` 是 PD 中的一个配置模块，主要用于管理和控制 PD 服务的中间件功能，如审计，请求速率和并发限制等。从 v8.5.0 起，支持通过 pd-ctl 修改 `service-middleware` 配置, `option` 支持如下几种类型：
 
 - audit: 审计功能
 - rate-limit: 用于限制 HTTP API 请求的最大速率和最大并发
@@ -550,7 +550,7 @@ config show service-middleware
     "grpc-limiter-config": {
       "GetRegion": {
         "QPS": 100,
-        "QPSBurst": 100,
+        "QPSBurst": 100, // 根据 QPS 设置自动调整
         "ConcurrencyLimit": 10
       }
     }
