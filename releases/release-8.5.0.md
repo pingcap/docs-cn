@@ -219,9 +219,11 @@ TiDB 8.5.0 为长期支持版本 (Long-Term Support Release, LTS)。
 
   For more information, see [documentation](/br/br-pitr-manual.md#encrypt-the-log-backup-data).
 
-* TiKV 静态加密支持 Google [Key Management Service (Cloud KMS)](https://cloud.google.com/docs/security/key-management-deep-dive?hl=zh-cn)（GA）[#8906](https://github.com/tikv/tikv/issues/8906) @[glorv](https://github.com/glorv)
+* TiKV 静态加密支持 Google [Key Management Service (Cloud KMS)](https://cloud.google.com/docs/security/key-management-deep-dive?hl=zh-cn) (GA) [#8906](https://github.com/tikv/tikv/issues/8906) @[glorv](https://github.com/glorv) tw@qiancai <!--1876-->
 
-  在 v8.0.0 中，TiKV以实验特性的形式支持静态加密配置基于 Google Cloud KMS 的主密钥。从 v8.5.0起，这个功能已经GA。要启用基于 Google Cloud KMS 的静态加密，你需要在 Google Cloud 上创建一个密钥，然后在 TiKV 配置文件中添加 `[security.encryption.master-key]` 部分的配置。
+      TiKV 通过静态加密功能对存储的数据进行加密，以确保数据的安全性。静态加密的安全核心点在于密钥管理。在 v8.0.0 中，TiKV 静态加密以实验特性的形式支持了基于 Google Cloud KMS 的主密钥管理。
+      
+    从 v8.5.0 起，基于 Google Cloud KMS 的静态加密成为正式功能 (GA）。要启用该功能，你需要在 Google Cloud 上创建一个密钥，然后在 TiKV 配置文件中添加 `[security.encryption.master-key]` 部分的配置。
 
   更多信息，请参考[用户文档](/encryption-at-rest.md#tikv-静态加密)。
 
