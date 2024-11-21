@@ -1010,6 +1010,7 @@
   - [TiDB 版本规则](/releases/versioning.md)
   - [TiDB 离线包](/binary-package.md)
   - v7.1
+    - [7.1.6](/releases/release-7.1.6.md)
     - [7.1.5](/releases/release-7.1.5.md)
     - [7.1.4](/releases/release-7.1.4.md)
     - [7.1.3](/releases/release-7.1.3.md)
