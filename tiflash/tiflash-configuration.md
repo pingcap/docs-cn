@@ -225,6 +225,15 @@ delta_index_cache_size = 0
     ## 从 v7.0.0 引入，表示带等值 join 条件的 HashJoin 算子在触发 spill 之前的最大可用内存，超过该阈值之后 HashJoin 算子会采用 spill to disk 的方式来减小内存使用。默认值为 0，表示内存使用无限制，即不会触发 spill。
     max_bytes_before_external_join = 0
 
+    ## 从 v6.0.0 引入，用于 MinTSO 调度器，表示一个资源组中最多可使用的线程数量，默认值为 5000。关于 MinTSO 调度器，详见 https://docs.pingcap.com/zh/tidb/v7.1/tiflash-mintso-scheduler
+    task_scheduler_thread_soft_limit = 5000
+
+    ## 从 v6.0.0 引入，用于 MinTSO 调度器，表示全局最多可使用的线程数量，默认值为 10000。关于 MinTSO 调度器，详见 https://docs.pingcap.com/zh/tidb/v7.1/tiflash-mintso-scheduler
+    task_scheduler_thread_hard_limit = 10000
+
+    ## 从 v6.4.0 引入，用于 MinTSO 调度器，表示一个 TiFlash 实例中最多可同时运行的查询数量，默认值为 0，即两倍的 vCPU 数量。关于 MinTSO 调度器，详见 https://docs.pingcap.com/zh/tidb/v7.1/tiflash-mintso-scheduler
+    task_scheduler_active_set_soft_limit = 0
+
 ## 安全相关配置，从 v4.0.5 开始生效
 [security]
     ## 从 v5.0 引入，控制是否开启日志脱敏
