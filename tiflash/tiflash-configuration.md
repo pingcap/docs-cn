@@ -197,6 +197,11 @@ delta_index_cache_size = 0
     ## 如果 dt_compression_method 设置为 LZ4HC，推荐将该值设为 9。
     dt_compression_level = 1
 
+    ## 从 v6.0.0 引入，用于 MinTSO 调度器，表示一个资源组中最多可使用的线程数量，默认值为 5000。关于 MinTSO 调度器，详见 https://docs.pingcap.com/zh/tidb/v6.1/tiflash-mintso-scheduler
+    task_scheduler_thread_soft_limit = 5000
+
+    ## 从 v6.0.0 引入，用于 MinTSO 调度器，表示全局最多可使用的线程数量，默认值为 10000。关于 MinTSO 调度器，详见 https://docs.pingcap.com/zh/tidb/v6.1/tiflash-mintso-scheduler
+    task_scheduler_thread_hard_limit = 10000
 
 ## 安全相关配置，从 v4.0.5 开始生效
 [security]
