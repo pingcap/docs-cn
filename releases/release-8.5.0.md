@@ -325,7 +325,7 @@ TiDB 8.5.0 为长期支持版本 (Long-Term Support Release, LTS)。
 
     + TiDB Data Migration (DM)
 
-        - note [#Issue-number](issue-link) @[Contributor-GitHub-ID](id-link)
+        - 在 DM 集群启动时，增加 dm-worker 连接到 dm-master 的重试 [#4287](https://github.com/pingcap/tiflow/issues/4287) @[GMHDBJD](https://github.com/GMHDBJD)
         - note [#Issue-number](issue-link) @[Contributor-GitHub-ID](id-link)
 
     + TiDB Lightning
