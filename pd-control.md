@@ -472,17 +472,15 @@ config show cluster-version
 
 #### `config [show | set service-middleware <option> [<key> <value> | <label> <qps|concurrency> <value>]]`
 
+`service-middleware` 是 PD 中的一个配置模块，主要用于管理和控制 PD 服务的中间件功能，如审计日志、请求速率限制和并发限制等。从 v8.5.0 起，PD 支持通过 `pd-ctl` 修改 `service-middleware` 的以下配置：
 
-
-`service-middleware` 是 PD 中的一个配置模块，主要用于管理和控制 PD 服务的中间件功能，如审计，请求速率和并发限制等。从 v8.5.0 起，支持通过 pd-ctl 修改 `service-middleware` 配置, `option` 支持如下几种类型：
-
-- audit: 控制是否开启 HTTP 请求的审计日志。开启后，会在 PD 日志中记录 HTTP 请求的相关信息，默认开启
-- rate-limit: 用于限制 HTTP API 请求的最大速率和最大并发
-- grpc-rate-limit: 用于限制 gRPC API 请求的最大速率和最大并发
+- `audit`：控制是否开启 PD 处理 HTTP 请求的审计日志（默认开启）。开启时，`service-middleware` 会在 PD 日志中记录 HTTP 请求的相关信息。
+- `rate-limit`：用于限制 PD 处理 HTTP API 请求的最大速率和最大并发。
+- `grpc-rate-limit`：用于限制 PD 处理 gRPC API 请求的最大速率和最大并发。
 
 > **注意：**
 >
-> 通常不建议用户对 service-middleware 中的配置进行修改。
+> 为了避免请求速率限制和并发限制对 PD 性能的影响，通常不建议用户对 `service-middleware` 中的配置进行修改。
 
 显示 `service-middleware` 的相关 config 信息：
 
@@ -506,15 +504,13 @@ config show service-middleware
 }
 ```
 
-你可以通过 `service-middleware audit` 控制审计功能：
-
-关闭审计功能
+`service-middleware audit` 用于开启或关闭 HTTP 请求的日志审计功能。以关闭该功能为例：
 
 ```bash
 config set service-middleware audit enable-audit false
 ```
 
-你可以通过 `service-middleware grpc-rate-limit` 控制以下 gRPC API 请求的速率和并发度：
+`service-middleware grpc-rate-limit` 用于控制以下 gRPC API 请求的最大速率和并发度：
 
 - `GetRegion`：获取指定 Region 的信息
 - `GetStore`：获取指定 Store 的信息
@@ -567,7 +563,7 @@ config set service-middleware grpc-rate-limit GetRegion qps 0
 config set service-middleware grpc-rate-limit GetRegion concurrency 0
 ```
 
-同理，你可以通过 `service-middleware rate-limit` 控制以下 HTTP API 请求的速率和并发度：
+`service-middleware rate-limit` 用于控制以下 HTTP API 请求的最大速率和并发度：
 
 - `GetRegion`：获取指定 Region 的信息
 - `GetStore`：获取指定 Store 的信息
