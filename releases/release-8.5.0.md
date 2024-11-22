@@ -151,11 +151,11 @@ TiDB 8.5.0 为长期支持版本 (Long-Term Support Release, LTS)。
 
 ### 稳定性
 
-* Enabling rate limiter can protect PD from being crash under a large number of sudden requests and improve the stability of PD [#5739](https://github.com/tikv/pd/issues/5739) @[rleungx](https://github.com/rleungx)
+* 支持对发送到 PD 的 gRPC API 请求进行速率限制和并发度配置 [#5739](https://github.com/tikv/pd/issues/5739) @[rleungx](https://github.com/rleungx) **tw@qiancai** <!--2018-->
 
-    You can adjust the rate limiter configuration through pd-ctl.
+    当突然有大量请求发送到 PD 时，这些请求可能导致 PD 高工作负载，进行影响 PD 性能表现。从 v8.5.0 开始，你可以使用 [`pd-ctl`](/pd-control.md) 来配置发送到 PD 的 gRPC API 请求的速率限制和并发度，提升 PD 的稳定性。
 
-    For more information, see [Documentation](/stable/pd-control.md).
+    更多信息，请参考[用户文档](/pd-control.md)。
 
 ### 高可用
 
@@ -209,15 +209,19 @@ TiDB 8.5.0 为长期支持版本 (Long-Term Support Release, LTS)。
 
 ### 安全
 
-* BR supports client-side encryption of log backup data (GA) [#56433](https://github.com/pingcap/tidb/issues/56433) @[Tristan1900](https://github.com/Tristan1900) tw@qiancai <!--1998-->
+* BR 支持在客户端进行快照备份数据和日志备份数据加密 (GA) [#28640](https://github.com/pingcap/tidb/issues/28640) [#56433](https://github.com/pingcap/tidb/issues/56433) @[joccau](https://github.com/joccau) @[Tristan1900](https://github.com/Tristan1900) **tw@qiancai** <!--1998-->
 
-    TiDB v8.4.0 introduced an experimental feature to encrypt, on the client side, log backup data. Starting from v8.5.0, this feature is now Generally Avaialble. Before uploading log backup data to your backup storage, you can encrypt the backup data to ensure its security via one of the following methods:
+    * 通过快照备份数据的客户端加密功能（在 TiDB v5.3.0 中以实验特性引入），你可以使用自定义的固定密钥在客户端加密备份数据。
 
-    - Encrypt using a custom fixed key
-    - Encrypt using a master key stored on a local disk
-    - Encrypt using a master key managed by a Key Management Service (KMS)
+    * 通过日志备份数据的客户端加密功能（在 TiDB v8.4.0 中以实验特性引入），你使用以下方式之一在客户端加密日志备份数据：
 
-  For more information, see [documentation](/br/br-pitr-manual.md#encrypt-the-log-backup-data).
+        * 使用自定义的固定密钥加密
+        * 使用本地磁盘的主密钥加密
+        * 使用 KMS（密钥管理服务）的主密钥加密
+
+  从 v8.5.0 开始，这两个加密功能都成为了正式功能 (GA)，进一步增强了客户端数据的安全性。
+
+  更多信息，请参考 [加密备份数据](/br/br-snapshot-manual.md#encrypt-the-backup-data) 和 [加密日志备份数据](/br/br-pitr-manual.md#encrypt-the-log-backup-data)。
 
 * TiKV 静态加密支持 Google [Key Management Service (Cloud KMS)](https://cloud.google.com/docs/security/key-management-deep-dive?hl=zh-cn) (GA) [#8906](https://github.com/tikv/tikv/issues/8906) @[glorv](https://github.com/glorv) tw@qiancai <!--1876-->
 
