@@ -7,10 +7,6 @@ summary: TiDB 对于 schema 信息采用基于 LRU 的缓存机制，在大量�
 
 在一些多租户的场景下，可能会存在几十万甚至上百万个数据库和表。这些数据库和表的 schema 信息如果全部加载到内存中，一方面会占用大量的内存，另一方面会导致相关的访问性能变差。为了解决这个问题，TiDB 引入了类似于 LRU 的 schema 缓存机制。只将最近用到的数据库和表的 schema 信息缓存到内存中。
 
-> **警告：**
->
-> 该功能目前为实验特性，不建议在生产环境中使用。该功能可能会在未事先通知的情况下发生变化或删除。如果发现 bug，请在 GitHub 上提 [issue](https://github.com/pingcap/tidb/issues) 反馈。
-
 ## 配置 schema 缓存
 
 可以通过配置系统变量 [`tidb_schema_cache_size`](/system-variables.md#tidb_schema_cache_size-从-v800-版本开始引入) 来打开 schema 缓存特性。
