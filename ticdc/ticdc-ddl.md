@@ -20,7 +20,7 @@ summary: 了解 TiCDC 支持同步的 DDL 和一些特殊情况
 - add column 
 - drop column
 - create index / add index 
-- drop index [*注意]
+- drop index [***注意**]
 - truncate table 
 - modify column 
 - rename table 
@@ -36,7 +36,7 @@ summary: 了解 TiCDC 支持同步的 DDL 和一些特殊情况
 - alter database character set
 - recover table 
 - add primary key 
-- drop primary key [*注意]
+- drop primary key [***注意**]
 - rebase auto id
 - alter table index visibility 
 - exchange partition 
