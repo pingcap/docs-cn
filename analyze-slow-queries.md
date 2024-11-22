@@ -108,7 +108,7 @@ summary: 学习如何定位和分析慢查询。
 ...
 ```
 
-TiDB v8.5.0 引入了内存引擎功能，可以加速这类慢查询。请参考 [TiKV 内存引擎](/tikv-in-memory-engine.md)。
+TiDB v8.5.0 引入了内存引擎功能，可以加速这类慢查询。请参考 [TiKV MVCC 内存引擎](/tikv-in-memory-engine.md)。
 
 ### 其他关键阶段慢
 
