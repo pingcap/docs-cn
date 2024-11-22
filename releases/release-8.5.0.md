@@ -39,8 +39,8 @@ TiDB 8.5.0 为长期支持版本 (Long-Term Support Release, LTS)。
     </td>
   </tr>
   <tr>
-    <td>Active PD Follower 成为正式功能  **tw@Oreoxmt 2015**</td>
-    <td>TiDB v7.6.0 引入了 Active PD Follower 特性，允许 PD follower 提供 Region 信息查询服务。在 TiDB 节点数量较多和 Region 数量较多的集群中，该特性可以提升 PD 集群处理 <code>GetRegion</code>、<code>ScanRegions</code> 请求的能力，减轻 PD leader 的 CPU 压力。在 v8.5.0，Active PD Follower 成为正式功能。</td>
+    <td><a href="https://docs.pingcap.com/zh/tidb/v8.5/tune-region-performance#通过-active-pd-follower-提升-pd-region-信息查询服务的扩展能力">通过 Active PD Follower 提升 PD Region 信息查询服务的扩展能力</a>（从 v8.5.0 开始 GA）**tw@Oreoxmt 2015**</td>
+    <td>TiDB v7.6.0 实验性地引入了 Active PD Follower 特性，允许 PD follower 提供 Region 信息查询服务。在 TiDB 节点数量较多和 Region 数量较多的集群中，该特性可以提升 PD 集群处理 <code>GetRegion</code>、<code>ScanRegions</code> 请求的能力，减轻 PD leader 的 CPU 压力。在 v8.5.0，Active PD Follower 成为正式功能。</td>
   </tr>
   <tr>
     <td><a href="https://docs.pingcap.com/zh/tidb/v8.5/system-variables#tidb_enable_instance_plan_cache-从-v840-版本开始引入">实例级执行计划缓存</a>（实验特性）（v8.4.0 引入）</td>
@@ -73,10 +73,10 @@ TiDB 8.5.0 为长期支持版本 (Long-Term Support Release, LTS)。
   </tr>
   <tr>
     <td>增强并扩展 TiProxy 的使用场景 **tw@Oreoxmt**</td>
-    <td>作为 TiDB 高可用的重要组成，TiProxy 在做好 SQL 流量接入和转发的同时，开始尝试对集群变更进行评估。主要包括：
-    <li> TiProxy 流量捕获和回放（实验特性）（v8.4.0 引入）</li>
-    <li> TiProxy 内置虚拟 IP 管理（v8.3.0 引入）</li>
-    <li> TiProxy 支持多种负载均衡策略 （v8.2.0 引入）</li>
+    <td>作为 TiDB 高可用的重要组成，<a href="https://docs.pingcap.com/zh/tidb/v8.5/tiproxy-overview">TiProxy</a> 除了提供 SQL 流量接入和转发功能外，扩展支持评估集群变更的能力。主要包括：
+    <li><a href="https://docs.pingcap.com/zh/tidb/v8.5/tiproxy-traffic-replay">TiProxy 流量捕获和回放</a>（实验特性，从 v8.4.0 开始引入）</li>
+    <li><a href="https://docs.pingcap.com/zh/tidb/v8.5/tiproxy-overview">TiProxy 内置虚拟 IP 管理</a>（从 v8.3.0 引入）</li>
+    <li><a href="https://docs.pingcap.com/zh/tidb/v8.5/tiproxy-load-balance">TiProxy 支持多种负载均衡策略</a>（从 v8.2.0 引入）</li>
     </td>
   </tr>
   <tr>
