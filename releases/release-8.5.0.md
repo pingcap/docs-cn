@@ -394,6 +394,7 @@ TiDB 8.5.0 为长期支持版本 (Long-Term Support Release, LTS)。
 
         - note [#Issue-number](issue-link) @[Contributor-GitHub-ID](id-link)
         - (dup): release-7.1.6.md > 错误修复> Tools> TiDB Lightning - 修复 TiDB Lightning 因 TiKV 发送的消息过大而接收失败的问题 [#56114](https://github.com/pingcap/tidb/issues/56114) @[fishiu](https://github.com/fishiu)
+        - 修复物理导入后 AUTO INCREMENT 值设置过大的问题 [#56814](https://github.com/pingcap/tidb/issues/56814) @[D3Hunter](https://github.com/D3Hunter)
 
     + TiUP
 
