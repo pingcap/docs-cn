@@ -20,7 +20,7 @@ summary: 了解 TiCDC 支持同步的 DDL 和一些特殊情况
 - add column 
 - drop column
 - create index / add index 
-- drop index *
+- drop index [*注意]
 - truncate table 
 - modify column 
 - rename table 
