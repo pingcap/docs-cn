@@ -1,20 +1,20 @@
 ---
-title: MVCC 内存引擎
+title: TiKV MVCC 内存引擎
 summary: 了解内存引擎的适用场景和工作原理，使用内存引擎加速多版本记录查询。
 ---
 
-# MVCC 内存引擎
+# TiKV MVCC 内存引擎
 
-MVCC 内存引擎 (In-memory Engine, IME) 主要用于加速需要扫描大量 MVCC 历史版本的查询，即[查询扫描的总共版本数量（total_keys）远大于处理的版本数量（processed_keys）](/analyze-slow-queries.md#过期-key-多)。
+TiKV MVCC 内存引擎 (In-memory Engine, IME) 主要用于加速需要扫描大量 MVCC 历史版本的查询，即[查询扫描的总共版本数量（total_keys）远大于处理的版本数量（processed_keys）](/analyze-slow-queries.md#过期-MVCC-版本和-key-过多)。
 
-MVCC 内存引擎适用于以下场景：
+TiKV MVCC 内存引擎适用于以下场景：
 
 - 业务需要查询频繁更新或删除的记录。
-- 业务需要调整 [`tidb_gc_life_time`](/garbage-collection-configuration.md#GC-配置)，使 TiDB 保留较长时间的历史版本（比如 24 小时）。
+- 业务需要调整 [`tidb_gc_life_time`](/garbage-collection-configuration.md#gc-配置)，使 TiDB 保留较长时间的历史版本（比如 24 小时）。
 
 ## 工作原理
 
-MVCC 内存引擎在内存中缓存最近写入的 MVCC 版本，并实现独立于 TiDB 的 MVCC GC 机制，使其可快速 GC 内存中的 MVCC 记录，从而减少查询时扫描版本的个数，以达到降低请求延时和减少 CPU 开销的效果。
+TiKV MVCC 内存引擎在内存中缓存最近写入的 MVCC 版本，并实现独立于 TiDB 的 MVCC GC 机制，使其可快速 GC 内存中的 MVCC 记录，从而减少查询时扫描版本的个数，以达到降低请求延时和减少 CPU 开销的效果。
 
 下图为 TiKV 如何组织 MVCC 版本的示意图。
 
@@ -29,20 +29,12 @@ MVCC 内存引擎在内存中缓存最近写入的 MVCC 版本，并实现独立
 
 ## 使用方式
 
-开启 IME 功能需要调整 TiKV 配置并重启。下面是最简配置：
+开启 IME 功能需要调整 TiKV 配置并重启。下面是配置说明：
 
 ```toml
 [in-memory-engine]
 # 该参数为 In-memory Engine 功能的开关，默认为 false，调整为 true 即可开启。
-enable = true
-```
-
-下面是配置说明：
-
-```toml
-[in-memory-engine]
-# 该参数为 In-memory Engine 功能的开关，默认为 false，调整为 true 即可开启。
-enable = true
+enable = false
 #
 # 该参数控制 In-memory Engine 可使用的内存大小。默认值为系统内存的 10%，同时最大值为 5 GiB，
 # 可通过手动配置使用更多内存。
