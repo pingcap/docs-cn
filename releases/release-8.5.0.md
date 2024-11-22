@@ -290,7 +290,9 @@ TiDB 8.5.0 为长期支持版本 (Long-Term Support Release, LTS)。
 + TiDB
 
     - note [#Issue-number](issue-link) @[Contributor-GitHub-ID](id-link)
-    - note [#Issue-number](issue-link) @[Contributor-GitHub-ID](id-link)
+    - 修复 DDL owner 节点切换时，reorg 类型的 DDL 任务无法从切换前的进度继续的问题 [#56506](https://github.com/pingcap/tidb/issues/56506) @[tangenta](https://github.com/tangenta)
+    - 提升关闭分布式框架的 fast reorg 加索引任务对任务取消的响应速度 [#56017](https://github.com/pingcap/tidb/issues/56017) @[lance6716](https://github.com/lance6716)
+    - 提升小表加索引的速度 [#54230](https://github.com/pingcap/tidb/issues/54230) @[tangenta](https://github.com/tangenta)
 
 + TiKV
 
