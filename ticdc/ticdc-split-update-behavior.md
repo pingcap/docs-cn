@@ -8,7 +8,7 @@ aliases: ['/zh/tidb/dev/ticdc-behavior-change']
 
 ## MySQL Sink 拆分 `UPDATE` 事件行为说明
 
-从 v6.5.10、v7.5.2、v8.1.1、v8.2.0 开始，当使用 MySQL Sink 时，TiCDC 的任意节点每次收到某张表的同步任务请求并开始向下游同步数据之前，会从 PD 获取当前的时间戳 `thresholdTS`，并根据时间戳的值决定是否拆分对应表的 `UPDATE` 事件：
+从 v6.5.10、v7.1.6、v7.5.2、v8.1.1、v8.2.0 开始，当使用 MySQL Sink 时，TiCDC 的任意节点每次收到某张表的同步任务请求并开始向下游同步数据之前，会从 PD 获取当前的时间戳 `thresholdTS`，并根据时间戳的值决定是否拆分对应表的 `UPDATE` 事件：
 
 - 对于含有单条或多条 `UPDATE` 变更的事务，如果该事务的 `commitTS` 小于 `thresholdTS`，在写入 Sorter 模块之前 TiCDC 会将每条 `UPDATE` 事件拆分为 `DELETE` 和 `INSERT` 两条事件。
 - 对于事务的 `commitTS` 大于或等于 `thresholdTS` 的 `UPDATE` 事件，TiCDC 不会对其进行拆分。详情见 GitHub issue [#10918](https://github.com/pingcap/tiflow/issues/10918)。
@@ -139,7 +139,7 @@ COMMIT;
 | v7.1.1 | Canal/Open | ✗ | ✓ |  |
 | v7.1.1 | CSV/Avro | ✗ | ✗ | 拆分但是不排序, 详见 [#9086](https://github.com/pingcap/tiflow/issues/9658) |
 | v7.1.2  ~ v7.1.5 | 所有协议 | ✓ | ✗ |  |
-| \>= v7.1.6（待发布）| 所有协议 | ✓ (默认值：`output-raw-change-event = false`) | ✓ (可选配置项：`output-raw-change-event = true`) | |
+| \>= v7.1.6 | 所有协议 | ✓ (默认值：`output-raw-change-event = false`) | ✓ (可选配置项：`output-raw-change-event = true`) | |
 
 #### Release 7.5 的兼容性
 
