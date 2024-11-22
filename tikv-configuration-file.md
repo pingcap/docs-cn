@@ -2524,7 +2524,7 @@ Raft Engine 相关的配置项。
 > + 当 in-memory-engine 开启后，block-cache.capacity 会自动减少 10%。
 > + 手动配置 `capacity` 时，block-cache.capacity 不会自动减少，需手动调整合适的值以避免 OOM。
 
-+ 配置 TiKV 内存引擎可使用的内存大小。最大值为 5GB，可通过手动配置使用更多内存
++ 配置 TiKV 内存引擎可使用的内存大小。最大值为 5 GiB。你可以手动配置使用更多内存
 + 默认值：系统内存的 10%。
 
 ### `gc-run-interval` <span class="version-mark">从 v8.5.0 版本开始引入</span>
@@ -2534,5 +2534,5 @@ Raft Engine 相关的配置项。
 
 ### `mvcc-amplification-threshold` <span class="version-mark">从 v8.5.0 版本开始引入</span>
 
-+ 控制 In-memory Engine 选取加载 Region 时 MVCC 读放大的阈值。默认为 10，代表在某个 Region 中读一行记录需要处理的 MVCC 版本数量超过 10 个时将有可能会被加载到In-memory Engine 中。
++ 控制 In-memory Engine 选取加载 Region 时 MVCC 读放大的阈值。默认为 `10`，表示在某个 Region 中读一行记录需要处理的 MVCC 版本数量超过 10 个时，有可能会被加载到 In-memory Engine 中。
 + 默认值：10
