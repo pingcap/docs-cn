@@ -61,7 +61,7 @@ TiDB 8.5.0 为长期支持版本 (Long-Term Support Release, LTS)。
   <tr>
     <td rowspan="5">稳定性与高可用</td>
     <td>提升超大规模集群的稳定性 **tw@hfxsd 1976**</td>
-    <td>对于使用 TiDB 运行多租户应用或者 SaaS 应用的公司，经常需要存储大量的表，TiDB 在 v8.5.0 着力增强了大规模集群的稳定性。 <a href="https://docs.pingcap.com/zh/tidb/v8.5/schema-cache">Schema 缓存控制</a>以及<a href="https://docs.pingcap.com/zh/tidb/v8.5/system-variables#tidb_stats_cache_mem_quota-从-v610-版本开始引入">Stats 缓存控制</a>已经成为正式功能，减少了内存过度消耗带来的稳定性问题。 PD 通过 <a href="https://docs.pingcap.com/zh/tidb/v8.5/tune-region-performance#通过-active-pd-follower-提升-pd-region-信息查询服务的扩展能力">Active Follower</a> 应对大量 Region 带来的压力，并<a href="https://docs.pingcap.com/zh/tidb/v8.5/pd-microservices">将 PD 所承担的服务逐步解耦</a>，独立部署。通过<a href="https://docs.pingcap.com/zh/tidb/v8.5/system-variables#tidb_auto_analyze_concurrency-从-v840-版本开始引入">增加并发度</a>，以及<a href="https://docs.pingcap.com/zh/tidb/v8.5/statistics#收集部分列的统计信息">减少收集对象的数量</a>，统计信息收集和加载效率得到提升，保证了大集群执行计划的稳定性。</td>
+    <td>对于使用 TiDB 运行多租户应用或者 SaaS 应用的公司，经常需要存储大量的表，TiDB 在 v8.5.0 着力增强了大规模集群的稳定性。<a href="https://docs.pingcap.com/zh/tidb/v8.5/schema-cache">Schema 缓存控制</a>以及 <a href="https://docs.pingcap.com/zh/tidb/v8.5/system-variables#tidb_stats_cache_mem_quota-从-v610-版本开始引入">Stats 缓存控制</a>已经成为正式功能，减少了内存过度消耗带来的稳定性问题。PD 通过 <a href="https://docs.pingcap.com/zh/tidb/v8.5/tune-region-performance#通过-active-pd-follower-提升-pd-region-信息查询服务的扩展能力">Active Follower</a> 应对大量 Region 带来的压力，并<a href="https://docs.pingcap.com/zh/tidb/v8.5/pd-microservices">将 PD 所承担的服务逐步解耦</a>，独立部署。通过<a href="https://docs.pingcap.com/zh/tidb/v8.5/system-variables#tidb_auto_analyze_concurrency-从-v840-版本开始引入">增加并发度</a>，以及<a href="https://docs.pingcap.com/zh/tidb/v8.5/statistics#收集部分列的统计信息">减少收集对象的数量</a>，统计信息收集和加载效率得到提升，保证了大集群执行计划的稳定性。</td>
   </tr>
   <tr>
     <td><a href="https://docs.pingcap.com/zh/tidb/v8.5/tidb-resource-control#query_limit-参数说明">Runaway Queries 支持更多触发条件，并能够切换资源组</a> （v8.4.0 引入）</td>
@@ -221,13 +221,13 @@ TiDB 8.5.0 为长期支持版本 (Long-Term Support Release, LTS)。
 
   从 v8.5.0 开始，这两个加密功能都成为了正式功能 (GA)，进一步增强了客户端数据的安全性。
 
-  更多信息，请参考 [加密备份数据](/br/br-snapshot-manual.md#encrypt-the-backup-data) 和 [加密日志备份数据](/br/br-pitr-manual.md#encrypt-the-log-backup-data)。
+  更多信息，请参考[加密备份数据](/br/br-snapshot-manual.md#encrypt-the-backup-data)和[加密日志备份数据](/br/br-pitr-manual.md#encrypt-the-log-backup-data)。
 
 * TiKV 静态加密支持 Google [Key Management Service (Cloud KMS)](https://cloud.google.com/docs/security/key-management-deep-dive?hl=zh-cn) (GA) [#8906](https://github.com/tikv/tikv/issues/8906) @[glorv](https://github.com/glorv) tw@qiancai <!--1876-->
 
       TiKV 通过静态加密功能对存储的数据进行加密，以确保数据的安全性。静态加密的安全核心点在于密钥管理。在 v8.0.0 中，TiKV 静态加密以实验特性的形式支持了基于 Google Cloud KMS 的主密钥管理。
       
-    从 v8.5.0 起，基于 Google Cloud KMS 的静态加密成为正式功能 (GA）。要启用该功能，你需要在 Google Cloud 上创建一个密钥，然后在 TiKV 配置文件中添加 `[security.encryption.master-key]` 部分的配置。
+    从 v8.5.0 起，基于 Google Cloud KMS 的静态加密成为正式功能 (GA）。要使用该功能，你需要在 Google Cloud 上创建一个密钥，然后在 TiKV 配置文件中添加 `[security.encryption.master-key]` 部分的配置。
 
   更多信息，请参考[用户文档](/encryption-at-rest.md#tikv-静态加密)。
 
