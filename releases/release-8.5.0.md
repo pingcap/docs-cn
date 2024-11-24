@@ -372,6 +372,8 @@ TiDB 8.5.0 为长期支持版本 (Long-Term Support Release, LTS)。
 
     - note [#Issue-number](issue-link) @[Contributor-GitHub-ID](id-link)
     - (dup): release-7.1.6.md > 错误修复> TiFlash - 修复 `SUBSTRING()` 函数不支持部分整数类型的 `pos` 和 `len` 参数导致查询报错的问题 [#9473](https://github.com/pingcap/tiflash/issues/9473) @[gengliqi](https://github.com/gengliqi)
+    - 修复在存算分离架构下，Vector Search 查询性能在 TiFlash write node 扩容之后，可能出现性能下降的问题 [#9637](https://github.com/pingcap/tiflash/issues/9637) @[kolafish](https://github.com/kolafish)
+    - 修复当 `SUBSTRING` 函数的第二个参数为负数时，可能产生错误结果的问题 [#9604](https://github.com/pingcap/tiflash/issues/9604) @[guo-shaoge](https://github.com/guo-shaoge)
 
 + Tools
 
