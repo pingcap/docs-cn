@@ -107,8 +107,8 @@ TiDB 8.5.0 为长期支持版本 (Long-Term Support Release, LTS)。
   </tr>
   <tr>
     <td rowspan="1">安全</td>
-    <td><a href="https://docs.pingcap.com/zh/tidb/v8.5/br-pitr-manual#加密日志备份数据">日志备份数据支持客户端加密</a></td>
-    <td>在上传日志备份到备份存储之前，你可以对日志备份数据进行加密，确保数据在存储和传输过程中的安全性。</td>
+    <td><a href="https://docs.pingcap.com/zh/tidb/v8.5/br-snapshot-manual#备份数据加密">快照备份数据</a>和<a href="https://docs.pingcap.com/zh/tidb/v8.5/br-pitr-manual#加密日志备份数据">日志备份数据</a>支持客户端加密 （v8.5.0 起成为正式功能）**tw@qiancai 1998**</td>
+    <td>在上传快照备份和日志备份到备份存储之前，你可以对备份数据进行加密，确保数据在存储和传输过程中的安全性。</td>
   </tr>
 </tbody>
 </table>
