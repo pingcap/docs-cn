@@ -29,13 +29,13 @@ TiDB 8.5.0 为长期支持版本 (Long-Term Support Release, LTS)。
   <tr>
     <td rowspan="6">可扩展性与性能</td>
     <td> 多维度降低数据处理延迟 **tw@qiancai**</td>
-    <td>通过不断挖掘数据处理的细节，TiDB 持续提升自身性能，力求满足金融场景对 SQL 处理时延的要求。 包括以下关键更新：
-    <li> 并行排序 (v8.2.0 引入) </li>
-    <li> 优化 KV 请求批处理策略 (v8.3.0 引入) </li>
-    <li> 并行获取 TSO (v8.4.0 引入) </li>
-    <li> 删除语句只获取必要的列 (v8.4.0 引入) </li>
-    <li> 优化缓存表场景性能 (v8.4.0 引入) </li>
-    <li> Hash Join 算法演进 (v8.4.0 引入) </li>
+    <td>TiDB 不断优化数据处理细节，持续提升性能，以更好地满足金融领域对 SQL 处理低延迟的高要求。 关键更新包括：
+    <li> <a href="https://docs.pingcap.com/zh/tidb/v8.5/system-variables#tidb_executor_concurrency-从-v50-版本开始引入">并行排序</a> (v8.2.0 引入) </li>
+    <li>  <a href="https://docs.pingcap.com/zh/tidb/v8.5/tidb-configuration-file#batch-policy-从-v830-版本开始引入">优化 KV 请求批处理策略</a> (v8.3.0 引入) </li>
+    <li>  <a href="https://docs.pingcap.com/zh/tidb/v8.5/system-variables#tidb_tso_client_rpc_mode-从-v840-版本开始引入">并行获取 TSO</a> (v8.4.0 引入) </li>
+    <li>  <a href="https://docs.pingcap.com/zh/tidb/v8.5/">删除语句只获取必要的列</a> (v8.4.0 引入) </li>
+    <li>  优化<a href="https://docs.pingcap.com/zh/tidb/v8.4/cached-tables#缓存表">缓存表</a>场景性能</a> (v8.4.0 引入) </li>
+    <li>  <a href="https://docs.pingcap.com/zh/tidb/v8.5/system-variables#tidb_hash_join_version-从-v840-版本开始引入">Hash Join 算法演进</a> (v8.4.0 引入) </li>
     </td>
   </tr>
   <tr>
@@ -151,9 +151,9 @@ TiDB 8.5.0 为长期支持版本 (Long-Term Support Release, LTS)。
 
 ### 稳定性
 
-* 支持对发送到 PD 的 gRPC API 请求进行速率限制和并发度配置 [#5739](https://github.com/tikv/pd/issues/5739) @[rleungx](https://github.com/rleungx) **tw@qiancai** <!--2018-->
+* 支持限制 PD 处理请求的最大速率和并发度 [#5739](https://github.com/tikv/pd/issues/5739) @[rleungx](https://github.com/rleungx) **tw@qiancai** <!--2018-->
 
-    当突然有大量请求发送到 PD 时，这些请求可能导致 PD 高工作负载，进行影响 PD 性能表现。从 v8.5.0 开始，你可以使用 [`pd-ctl`](/pd-control.md) 来配置发送到 PD 的 gRPC API 请求的速率限制和并发度，提升 PD 的稳定性。
+    当突然有大量请求发送到 PD 时，这些请求可能导致 PD 高工作负载，进行影响 PD 性能表现。从 v8.5.0 开始，你可以使用 [`pd-ctl`](/pd-control.md) 来限制 PD 处理请求的最大速率和并发度，提升 PD 的稳定性。
 
     更多信息，请参考[用户文档](/pd-control.md)。
 
