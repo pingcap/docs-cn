@@ -61,7 +61,7 @@ TiDB 8.5.0 为长期支持版本 (Long-Term Support Release, LTS)。
   <tr>
     <td rowspan="5">稳定性与高可用</td>
     <td>提升超大规模集群的稳定性 **tw@hfxsd 1976**</td>
-    <td>对于使用 TiDB 运行多租户应用或者 SaaS 应用的公司，经常需要存储大量的表，TiDB 在 v8.5.0 着力增强了大规模集群的稳定性。<a href="https://docs.pingcap.com/zh/tidb/v8.5/schema-cache">Schema 缓存控制</a>以及 <a href="https://docs.pingcap.com/zh/tidb/v8.5/system-variables#tidb_stats_cache_mem_quota-从-v610-版本开始引入">Stats 缓存控制</a>已经成为正式功能，减少了内存过度消耗带来的稳定性问题。PD 通过 <a href="https://docs.pingcap.com/zh/tidb/v8.5/tune-region-performance#通过-active-pd-follower-提升-pd-region-信息查询服务的扩展能力">Active Follower</a> 应对大量 Region 带来的压力，并<a href="https://docs.pingcap.com/zh/tidb/v8.5/pd-microservices">将 PD 所承担的服务逐步解耦</a>，独立部署。通过<a href="https://docs.pingcap.com/zh/tidb/v8.5/system-variables#tidb_auto_analyze_concurrency-从-v840-版本开始引入">增加并发度</a>，以及<a href="https://docs.pingcap.com/zh/tidb/v8.5/statistics#收集部分列的统计信息">减少收集对象的数量</a>，统计信息收集和加载效率得到提升，保证了大集群执行计划的稳定性。</td>
+    <td>对于使用 TiDB 运行多租户应用或者 SaaS 应用的公司，经常需要存储大量的表，TiDB 在 v8.5.0 着力增强了大规模集群的稳定性。<a href="https://docs.pingcap.com/zh/tidb/v8.5/schema-cache">Schema 缓存控制</a>以及<a href="https://docs.pingcap.com/zh/tidb/v8.5/system-variables#tidb_stats_cache_mem_quota-从-v610-版本开始引入">内部统计信息缓存控制</a>成为正式功能，减少了内存过度消耗带来的稳定性问题。PD 通过 <a href="https://docs.pingcap.com/zh/tidb/v8.5/tune-region-performance#通过-active-pd-follower-提升-pd-region-信息查询服务的扩展能力">Active Follower</a> 可应对大量 Region 带来的压力，并<a href="https://docs.pingcap.com/zh/tidb/v8.5/pd-microservices">将 PD 所承担的服务逐步解耦</a>，独立部署。通过<a href="https://docs.pingcap.com/zh/tidb/v8.5/system-variables#tidb_auto_analyze_concurrency-从-v840-版本开始引入">增加并发度</a>，以及<a href="https://docs.pingcap.com/zh/tidb/v8.5/statistics#收集部分列的统计信息">减少收集对象的数量</a>，统计信息收集和加载效率得到提升，保证了大集群执行计划的稳定性。</td>
   </tr>
   <tr>
     <td><a href="https://docs.pingcap.com/zh/tidb/v8.5/tidb-resource-control#query_limit-参数说明">Runaway Queries 支持更多触发条件，并能够切换资源组</a>（从 v8.4.0 开始引入）</td>
@@ -117,11 +117,11 @@ TiDB 8.5.0 为长期支持版本 (Long-Term Support Release, LTS)。
 
 ### 可扩展性
 
-* Schema 缓存内存上限功能成为正式功能 (GA)，减少了大规模数据场景的内存占用 [#50959](https://github.com/pingcap/tidb/issues/50959) @[tiancaiamao](https://github.com/tiancaiamao) @[wjhuang2016](https://github.com/wjhuang2016) @[gmhdbjd](https://github.com/gmhdbjd) @[tangenta](https://github.com/tangenta) tw@hfxsd <!--1976-->
+* Schema 缓存可用的内存上限成为正式功能 (GA)，减少了大规模数据场景的内存占用 [#50959](https://github.com/pingcap/tidb/issues/50959) @[tiancaiamao](https://github.com/tiancaiamao) @[wjhuang2016](https://github.com/wjhuang2016) @[gmhdbjd](https://github.com/gmhdbjd) @[tangenta](https://github.com/tangenta) tw@hfxsd <!--1976-->
 
-    在一些 SaaS 场景下，当表的数据量达到几十万甚至上百万时，Schema meta 会占用较多的内存。开启该功能后，系统将使用 LRU 算法缓存和淘汰相应 schema meta 信息，有效减少内存占用。
+    在一些 SaaS 场景下，当表的数量达到几十万甚至上百万时，schema meta 会占用较多的内存。开启该功能后，系统将使用 Least Recently Used (LRU) 算法缓存和淘汰相应的 schema meta 信息，有效减少内存占用。
     
-    从 v8.4.0 开始，该功能默认开启，默认值为 `536870912`（即 512 MiB），你可通过配置系统变量 [`tidb_schema_cache_size`](/system-variables.md#tidb_schema_cache_size-new-in-v800)，按需调整。
+    从 v8.4.0 开始，该功能默认开启，默认值为 `536870912`（即 512 MiB），你可以通过系统变量 [`tidb_schema_cache_size`](/system-variables.md#tidb_schema_cache_size-new-in-v800) 按需调整。
 
     更多信息，请参考[用户文档](/schema-cache.md)。
 
@@ -151,7 +151,7 @@ TiDB 8.5.0 为长期支持版本 (Long-Term Support Release, LTS)。
 
 * TiKV 支持 MVCC 内存引擎 (In-memory Engine, IME)，可加速需要扫描大量 MVCC 历史版本的查询 [#16141](https://github.com/tikv/tikv/issues/16141) [@SpadeA-Tang](https://github.com/SpadeA-Tang) [@glorv](https://github.com/glorv) [@overvenus](https://github.com/overvenus) tw@hfxsd <!--1706-->
 
-    在频繁更新记录或者需要 TiDB 保留较长时间的历史版本（比如 24 小时）的场景中，堆积的 MVCC 版本会导致扫描性能下降。TiKV MVCC 内存引擎可以通过将最新的 MVCC 版本缓存在内存中，并通过快速的 GC 机制删除内存中历史版本，提升扫描性能。
+    当频繁更新记录或者需要 TiDB 保留较长时间的历史版本（例如 24 小时）数据时，堆积的 MVCC 版本会导致扫描性能下降。TiKV 的 MVCC 内存引擎可以将最新的 MVCC 版本缓存在内存中，并通过快速的 GC 机制删除内存中的历史版本，从而提升扫描性能。
 
     从 v8.5.0 开始，TiKV 引入 MVCC 内存引擎。当 TiKV 集群中的 MVCC 版本堆积导致扫描性能下降时，你可以通过设置 TiKV 参数 [`in-memory-engine.enable`](/tikv-in-memory-engine.md#使用方式) 来开启 TiKV MVCC 内存引擎，提升扫描性能。
 
@@ -187,11 +187,11 @@ TiDB 8.5.0 为长期支持版本 (Long-Term Support Release, LTS)。
 
     更多信息，请参考[用户文档](/foreign-key.md)。
 
-* 引入 `ADMIN ALTER DDL JOBS` 的语法，支持在线修改 DDL 任务参数 [#57229](hhttps://github.com/pingcap/tidb/issues/57229) @[fzzf678](https://github.com/fzzf678) @[tangenta](https://github.com/tangenta) tw@hfxsd <!--2016-->
+* 引入 `ADMIN ALTER DDL JOBS` 语法，支持在线修改 DDL 任务参数 [#57229](hhttps://github.com/pingcap/tidb/issues/57229) @[fzzf678](https://github.com/fzzf678) @[tangenta](https://github.com/tangenta) tw@hfxsd <!--2016-->
 
-    从 v8.3.0 版本开始，支持在会话级别设置变量 [`tidb_ddl_reorg_batch_size`](/system-variables.md#tidb_ddl_reorg_batch_size) 和  [`tidb_ddl_reorg_worker_cnt`](/system-variables.md#tidb_ddl_reorg_worker_cnt)，因此通过 Global 设置这两个变量已不再影响所有运行中的 DDL 任务。如需更改这些变量的值，需要先取消 DDL 任务，调整变量取值后再重新提交。
+    从 v8.3.0 开始，TiDB 支持在会话级别设置变量 [`tidb_ddl_reorg_batch_size`](/system-variables.md#tidb_ddl_reorg_batch_size) 和  [`tidb_ddl_reorg_worker_cnt`](/system-variables.md#tidb_ddl_reorg_worker_cnt)，因此通过 Global 设置这两个变量已不再影响所有运行中的 DDL 任务。如需更改这些变量的值，需要先取消 DDL 任务，调整变量取值后再重新提交。
 
-    从 8.5.0 版本开始，引入了 `ADMIN ALTER DDL JOBS` 语句，你可以在线调整指定的 DDL 任务的变量值，以便灵活平衡资源消耗与性能，并将变更限定于单个任务，使影响范围更加可控。例如：
+    从 v8.5.0 开始，引入了 `ADMIN ALTER DDL JOBS` 语句。你可以在线调整指定的 DDL 任务的变量值，以便灵活平衡资源消耗与性能，并将变更限定于单个任务，使影响范围更加可控。例如：
 
     - `ADMIN ALTER DDL JOBS job_id THREAD = 8;`：在线调整该 DDL 任务的 `tidb_ddl_reorg_worker_cnt`
     - `ADMIN ALTER DDL JOBS job_id BATCH_SIZE = 256;`：在线调整该 DDL 任务的 `tidb_ddl_reorg_batch_size`
