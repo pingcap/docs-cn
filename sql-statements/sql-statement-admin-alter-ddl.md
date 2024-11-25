@@ -16,6 +16,7 @@ ADMIN ALTER DDL JOBS 101 THREAD = 8;
 目前支持 `ADMIN ALTER DDL JOBS` 的 DDL 作业类型包括：`ADD INDEX`、`MODIFY COLUMN` 和 `REORGANIZE PARTITION`。对于其他 DDL 作业类型，执行 `ADMIN ALTER DDL JOBS` 会报 `unsupported DDL operation` 的错误。
 
 目前在一条 `ADMIN ALTER DDL JOBS` 中仅支持对单个 DDL 作业的参数进行调整，不支持同时调整多个 ID 对应的参数。
+
 以下是不同 DDL 作业类型支持的各项参数，以及它们对应的系统变量：
 
 - `ADD INDEX`: 
@@ -33,7 +34,7 @@ ADMIN ALTER DDL JOBS 101 THREAD = 8;
 
 参数的取值范围和系统变量的保持一致。
 
-`ADMIN ALTER DDL JOBS` 仅对正在运行的 DDL 作业生效。如果 DDL 作业不存在或者已经结束，执行该语句会报 `ddl job ? is not running` 的错误。
+`ADMIN ALTER DDL JOBS` 仅对正在运行的 DDL 作业生效。如果 DDL 作业不存在或者已经结束，执行该语句会报 `ddl job is not running` 的错误。
 
 以下是部分语句示例：
 

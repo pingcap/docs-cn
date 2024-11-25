@@ -93,8 +93,8 @@ OWNER_ADDRESS: 0.0.0.0:4000
     - `txn-merge`：在回填完成时，将临时索引与原始索引合并的事务性回填。
     - `DXF`：通过 [`tidb_enable_dist_task`](/system-variables.md#tidb_enable_dist_task-从-v710-版本开始引入) 配置的用分布式框架执行的任务。
     - `service_scope`：通过 [`tidb_service_scope`](/system-variables.md#tidb_service_scope-从-v740-版本开始引入) 配置的 TiDB 节点的服务范围。
-    - `thread`：回填型任务的并发度，可通过 `tidb_ddl_reorg_worker_cnt` 设置初始值。支持 `ADMIN ALTER DDL JOBS` 动态修改。
-    - `batch_size`：回填性任务的批大小，可通过 `tidb_ddl_reorg_batch_size` 设置初始值。支持 `ADMIN ALTER DDL JOBS` 动态修改。
+    - `thread`：回填任务的并发度，可通过 `tidb_ddl_reorg_worker_cnt` 设置初始值。支持 [`ADMIN ALTER DDL JOBS`](sql-statements/sql-statement-admin-alter-ddl.md) 动态修改。
+    - `batch_size`：回填任务的批大小，可通过 `tidb_ddl_reorg_batch_size` 设置初始值。支持 `ADMIN ALTER DDL JOBS` 动态修改。
     - `max_write_speed`：ingest 任务导入过程中的流量控制，可通过 `tidb_ddl_reorg_max_write_speed` 设置初始值。支持 `ADMIN ALTER DDL JOBS` 动态修改。
 
 示例如下：
