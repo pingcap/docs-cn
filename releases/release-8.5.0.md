@@ -30,32 +30,32 @@ TiDB 8.5.0 为长期支持版本 (Long-Term Support Release, LTS)。
     <td rowspan="6">可扩展性与性能</td>
     <td> 多维度降低数据处理延迟 **tw@qiancai**</td>
     <td>TiDB 不断优化数据处理细节，持续提升性能，以更好地满足金融领域对 SQL 处理低延迟的高要求。 关键更新包括：
-    <li> <a href="https://docs.pingcap.com/zh/tidb/v8.5/system-variables#tidb_executor_concurrency-从-v50-版本开始引入">并行排序</a> (v8.2.0 引入) </li>
-    <li>  <a href="https://docs.pingcap.com/zh/tidb/v8.5/tidb-configuration-file#batch-policy-从-v830-版本开始引入">优化 KV 请求批处理策略</a> (v8.3.0 引入) </li>
-    <li>  <a href="https://docs.pingcap.com/zh/tidb/v8.5/system-variables#tidb_tso_client_rpc_mode-从-v840-版本开始引入">并行获取 TSO</a> (v8.4.0 引入) </li>
-    <li>  <a href="https://docs.pingcap.com/zh/tidb/v8.5/">删除语句只获取必要的列</a> (v8.4.0 引入) </li>
+    <li> <a href="https://docs.pingcap.com/zh/tidb/v8.5/system-variables#tidb_executor_concurrency-从-v50-版本开始引入">并行排序</a> (从 v8.2.0 开始引入) </li>
+    <li>  <a href="https://docs.pingcap.com/zh/tidb/v8.5/tidb-configuration-file#batch-policy-从-v830-版本开始引入">优化 KV 请求批处理策略</a> (从 v8.3.0 开始引入) </li>
+    <li>  <a href="https://docs.pingcap.com/zh/tidb/v8.5/system-variables#tidb_tso_client_rpc_mode-从-v840-版本开始引入">并行获取 TSO</a> (从 v8.4.0 开始引入) </li>
+    <li>降低<a href="https://docs.pingcap.com/tidb/v8.5/sql-statement-delete">DELETE</a> 操作的资源开销 (从 v8.4.0 开始引入) </li>
     <li>  优化<a href="https://docs.pingcap.com/zh/tidb/v8.4/cached-tables#缓存表">缓存表</a>场景性能</a> (v8.4.0 引入) </li>
-    <li>  <a href="https://docs.pingcap.com/zh/tidb/v8.5/system-variables#tidb_hash_join_version-从-v840-版本开始引入">Hash Join 算法演进</a> (v8.4.0 引入) </li>
+    <li>  <a href="https://docs.pingcap.com/zh/tidb/v8.5/system-variables#tidb_hash_join_version-从-v840-版本开始引入">Hash Join 算法优化</a> (实验特性，从 v8.4.0 开始引入) </li>
     </td>
   </tr>
   <tr>
-    <td><a href="https://docs.pingcap.com/zh/tidb/v8.5/tune-region-performance#通过-active-pd-follower-提升-pd-region-信息查询服务的扩展能力">通过 Active PD Follower 提升 PD Region 信息查询服务的扩展能力</a>（从 v8.5.0 开始 GA）**tw@Oreoxmt 2015**</td>
+    <td><a href="https://docs.pingcap.com/zh/tidb/v8.5/tune-region-performance#通过-active-pd-follower-提升-pd-region-信息查询服务的扩展能力">通过 Active PD Follower 提升 PD Region 信息查询服务的扩展能力</a>（从 v8.5.0 开始成为正式功能）**tw@Oreoxmt 2015**</td>
     <td>TiDB v7.6.0 实验性地引入了 Active PD Follower 特性，允许 PD follower 提供 Region 信息查询服务。在 TiDB 节点数量较多和 Region 数量较多的集群中，该特性可以提升 PD 集群处理 <code>GetRegion</code>、<code>ScanRegions</code> 请求的能力，减轻 PD leader 的 CPU 压力。在 v8.5.0，Active PD Follower 成为正式功能。</td>
   </tr>
   <tr>
-    <td><a href="https://docs.pingcap.com/zh/tidb/v8.5/system-variables#tidb_enable_instance_plan_cache-从-v840-版本开始引入">实例级执行计划缓存</a>（实验特性）（v8.4.0 引入）</td>
+    <td><a href="https://docs.pingcap.com/zh/tidb/v8.5/system-variables#tidb_enable_instance_plan_cache-从-v840-版本开始引入">实例级执行计划缓存</a>（实验特性，从 v8.4.0 开始引入）</td>
     <td>实例级执行计划缓存允许同一个 TiDB 实例的所有会话共享执行计划缓存。与现有的会话级执行计划缓存相比，实例级执行计划缓存能够在内存中缓存更多执行计划，减少 SQL 编译时间，从而降低 SQL 整体运行时间，提升 OLTP 的性能和吞吐，同时更好地控制内存使用，提升数据库稳定性。</td>
   </tr>
   <tr>
-    <td><a href="https://docs.pingcap.com/zh/tidb/v8.5/partitioned-table#全局索引">分区表全局索引</a>（v8.4.0  起成为正式功能）</td>
+    <td><a href="https://docs.pingcap.com/zh/tidb/v8.5/partitioned-table#全局索引">分区表全局索引</a>（从 v8.4.0 开始成为正式功能）</td>
     <td>全局索引可以有效提高检索非分区列的效率，并且消除了唯一键必须包含分区键的限制。该功能扩展了 TiDB 分区表的使用场景，避免了数据迁移过程中的一些应用修改工作。</td>
   </tr>
   <tr>
-    <td><a href="https://docs.pingcap.com/zh/tidb/v8.5/system-variables#tidb_opt_projection_push_down-从-v610-版本开始引入">默认允许将 <code>Projection</code> 算子下推到存储引擎</a>（v8.3.0 引入）</td>
+    <td><a href="https://docs.pingcap.com/zh/tidb/v8.5/system-variables#tidb_opt_projection_push_down-从-v610-版本开始引入">默认允许将 <code>Projection</code> 算子下推到存储引擎</a>（从 v8.3.0 开始引入）</td>
     <td> <code>Projection</code> 算子下推可以将负载分散到存储节点，同时减少节点间的数据传输。这有助于降低部分 SQL 的执行时间，提升数据库的整体性能。</td>
   </tr>
   <tr>
-    <td><a href="https://docs.pingcap.com/zh/tidb/v8.5/statistics#收集部分列的统计信息">统计信息收集忽略不必要的列</a>（v8.3.0 引入）</td>
+    <td><a href="https://docs.pingcap.com/zh/tidb/v8.5/statistics#收集部分列的统计信息">统计信息收集忽略不必要的列</a>（从 v8.3.0 开始引入）</td>
     <td> 在保证优化器能够获取到必要信息的前提下，加快了统计信息收集的速度，提升统计信息的时效性，进而保证选择最优的执行计划，提升集群性能。同时也降低了系统开销，改善了资源利用率。</td>
   </tr>
   <tr>
@@ -64,50 +64,50 @@ TiDB 8.5.0 为长期支持版本 (Long-Term Support Release, LTS)。
     <td>对于使用 TiDB 运行多租户应用或者 SaaS 应用的公司，经常需要存储大量的表，TiDB 在 v8.5.0 着力增强了大规模集群的稳定性。<a href="https://docs.pingcap.com/zh/tidb/v8.5/schema-cache">Schema 缓存控制</a>以及 <a href="https://docs.pingcap.com/zh/tidb/v8.5/system-variables#tidb_stats_cache_mem_quota-从-v610-版本开始引入">Stats 缓存控制</a>已经成为正式功能，减少了内存过度消耗带来的稳定性问题。PD 通过 <a href="https://docs.pingcap.com/zh/tidb/v8.5/tune-region-performance#通过-active-pd-follower-提升-pd-region-信息查询服务的扩展能力">Active Follower</a> 应对大量 Region 带来的压力，并<a href="https://docs.pingcap.com/zh/tidb/v8.5/pd-microservices">将 PD 所承担的服务逐步解耦</a>，独立部署。通过<a href="https://docs.pingcap.com/zh/tidb/v8.5/system-variables#tidb_auto_analyze_concurrency-从-v840-版本开始引入">增加并发度</a>，以及<a href="https://docs.pingcap.com/zh/tidb/v8.5/statistics#收集部分列的统计信息">减少收集对象的数量</a>，统计信息收集和加载效率得到提升，保证了大集群执行计划的稳定性。</td>
   </tr>
   <tr>
-    <td><a href="https://docs.pingcap.com/zh/tidb/v8.5/tidb-resource-control#query_limit-参数说明">Runaway Queries 支持更多触发条件，并能够切换资源组</a> （v8.4.0 引入）</td>
+    <td><a href="https://docs.pingcap.com/zh/tidb/v8.5/tidb-resource-control#query_limit-参数说明">Runaway Queries 支持更多触发条件，并能够切换资源组</a> （从 v8.4.0 开始引入）</td>
     <td>Runaway Queries 提供了有效的手段来降低突发的 SQL 性能问题对系统产生的影响。v8.4.0 中新增 Coprocessor 处理的 Key 的数量 (PROCESSED_KEYS) 和 Request Unit (RU) 作为识别条件，并可以将识别到的查询置入指定资源组，对 Runaway Queries 进行更精确的识别与控制。</td>
   </tr>
   <tr>
-    <td><a href="https://docs.pingcap.com/zh/tidb/v8.5/tidb-resource-control#background-参数说明">支持为资源管控的后台任务设置资源使用上限</a> (实验特性)（v8.4.0 引入）</td>
+    <td><a href="https://docs.pingcap.com/zh/tidb/v8.5/tidb-resource-control#background-参数说明">支持为资源管控的后台任务设置资源使用上限</a> (实验特性，从 v8.4.0 开始引入）</td>
     <td>为资源管控的后台任务设置百分比上限，针对不同业务系统的需求，控制后台任务的消耗，从而将后台任务的消耗限制在一个很低的水平，保证在线业务的服务质量。</td>
   </tr>
   <tr>
     <td>增强并扩展 TiProxy 的使用场景 **tw@Oreoxmt**</td>
     <td>作为 TiDB 高可用的重要组成，<a href="https://docs.pingcap.com/zh/tidb/v8.5/tiproxy-overview">TiProxy</a> 除了提供 SQL 流量接入和转发功能外，扩展支持评估集群变更的能力。主要包括：
     <li><a href="https://docs.pingcap.com/zh/tidb/v8.5/tiproxy-traffic-replay">TiProxy 流量捕获和回放</a>（实验特性，从 v8.4.0 开始引入）</li>
-    <li><a href="https://docs.pingcap.com/zh/tidb/v8.5/tiproxy-overview">TiProxy 内置虚拟 IP 管理</a>（从 v8.3.0 引入）</li>
-    <li><a href="https://docs.pingcap.com/zh/tidb/v8.5/tiproxy-load-balance">TiProxy 支持多种负载均衡策略</a>（从 v8.2.0 引入）</li>
+    <li><a href="https://docs.pingcap.com/zh/tidb/v8.5/tiproxy-overview">TiProxy 内置虚拟 IP 管理</a>（从 v8.3.0 开始引入）</li>
+    <li><a href="https://docs.pingcap.com/zh/tidb/v8.5/tiproxy-load-balance">TiProxy 支持多种负载均衡策略</a>（从 v8.2.0 开始引入）</li>
     </td>
   </tr>
   <tr>
-    <td><a href="https://docs.pingcap.com/zh/tidb/v8.5/system-variables#tidb_enable_parallel_hashagg_spill-从-v800-版本开始引入">并行 HashAgg 算法支持数据落盘</a> （v8.2.0 起成为正式功能）</td>
+    <td><a href="https://docs.pingcap.com/zh/tidb/v8.5/system-variables#tidb_enable_parallel_hashagg_spill-从-v800-版本开始引入">并行 HashAgg 算法支持数据落盘</a> （从 v8.2.0 开始成为正式功能）</td>
     <td>HashAgg 是 TiDB 中常用的聚合算子，用于快速聚合具有相同字段值的行。TiDB v8.0.0 引入并行 HashAgg 作为实验特性，以进一步提升处理速度。当内存资源不足时，并行 HashAgg 可以将临时排序数据落盘，避免因内存使用过度而导致的 OOM 风险，从而提升查询性能和节点稳定性。该功能在 v8.2.0 成为正式功能，并默认开启，用户可以通过 <code>tidb_executor_concurrency</code> 安全地设置并行 HashAgg 的并发度。</td>
   </tr>
   <tr>
     <td rowspan="2"> SQL </td>
-    <td>外键约束成为正式功能 **tw@lilin90 1894**</td>
+    <td>外键约束（从 v8.5.0 开始成为正式功能）**tw@lilin90 1894**</td>
     <td>外键（Foreign Key）是数据库中的一种约束，用于建立表与表之间的关联关系，确保数据一致性和完整性。它可以限制子表中引用的数据必须存在于主表中，防止无效数据插入。同时，外键支持级联操作（如删除或更新时自动同步），简化了业务逻辑的实现，减少了手动维护数据关联的复杂性。</td>
   </tr>
   <tr>
-    <td>支持<a href="https://docs.pingcap.com/zh/tidb/v8.5/vector-search-overview">向量搜索功能</a>（实验特性）(v8.4.0 引入）</td>
+    <td>支持<a href="https://docs.pingcap.com/zh/tidb/v8.5/vector-search-overview">向量搜索功能</a>（实验特性，从 v8.4.0 开始引入）</td>
     <td>向量搜索是一种基于数据语义的搜索方法，可以提供更相关的搜索结果。作为 AI 和大语言模型 (LLM) 的核心功能之一，向量搜索可用于检索增强生成 (Retrieval-Augmented Generation, RAG)、语义搜索、推荐系统等多种场景。</td>
   </tr>
   <tr>
     <td rowspan="3">数据库管理与可观测性</td>
-    <td><a href="https://docs.pingcap.com/zh/tidb/v8.5/information-schema-processlist">在内存表中显示 TiKV 和 TiDB 的 CPU 时间</a> （v8.4.0 引入）</td>
+    <td><a href="https://docs.pingcap.com/zh/tidb/v8.5/information-schema-processlist">在内存表中显示 TiKV 和 TiDB 的 CPU 时间</a> （从 v8.4.0 开始引入）</td>
     <td>将 CPU 时间合入系统表中展示，与会话或 SQL 的其他指标并列，方便你从多角度对高 CPU 消耗的操作进行观测，提升诊断效率。尤其适用于诊断实例 CPU 飙升或集群读写热点等场景。</td>
   </tr>
   <tr>
-    <td><a href="https://docs.pingcap.com/zh/tidb/v8.5/top-sql#使用-top-sql">按表或数据库维度聚合 TiKV 消耗的 CPU 时间</a>（v8.4.0 引入）</td>
+    <td><a href="https://docs.pingcap.com/zh/tidb/v8.5/top-sql#使用-top-sql">按表或数据库维度聚合 TiKV 消耗的 CPU 时间</a>（从 v8.4.0 开始引入）</td>
     <td>当热点问题不是由个别 SQL 语句引起时，利用 Top SQL 中按表或者数据库聚合的 CPU 时间，能够协助用户快速发现造成热点的表或者应用程序，从而大大提升热点问题和 CPU 消耗问题的诊断效率。</td>
   </tr>
   <tr>
-    <td><a href="https://docs.pingcap.com/zh/tidb/v8.5/backup-and-restore-storages#鉴权">支持对开启了 IMDSv2 服务的 TiKV 实例做备份</a> （v8.4.0 引入）</td>
+    <td><a href="https://docs.pingcap.com/zh/tidb/v8.5/backup-and-restore-storages#鉴权">支持对开启了 IMDSv2 服务的 TiKV 实例做备份</a> （从 v8.4.0 开始引入）</td>
     <td><a href="https://aws.amazon.com/cn/blogs/security/get-the-full-benefits-of-imdsv2-and-disable-imdsv1-across-your-aws-infrastructure/">目前 AWS EC2 的默认元数据服务是 IMDSv2</a>。TiDB 支持从开启了 IMDSv2 的 TiKV 实例中备份数据，协助你更好地在公有云服务中运行 TiDB 集群。</td>
   </tr>
   <tr>
     <td rowspan="1">安全</td>
-    <td><a href="https://docs.pingcap.com/zh/tidb/v8.5/br-snapshot-manual#备份数据加密">快照备份数据</a>和<a href="https://docs.pingcap.com/zh/tidb/v8.5/br-pitr-manual#加密日志备份数据">日志备份数据</a>支持客户端加密 （v8.5.0 起成为正式功能）**tw@qiancai 1998**</td>
+    <td><a href="https://docs.pingcap.com/zh/tidb/v8.5/br-snapshot-manual#备份数据加密">快照备份数据</a>和<a href="https://docs.pingcap.com/zh/tidb/v8.5/br-pitr-manual#加密日志备份数据">日志备份数据</a>支持客户端加密 （从 v8.5.0 开始成为正式功能）**tw@qiancai 1998**</td>
     <td>在上传快照备份和日志备份到备份存储之前，你可以对备份数据进行加密，确保数据在存储和传输过程中的安全性。</td>
   </tr>
 </tbody>
