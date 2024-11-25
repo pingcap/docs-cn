@@ -149,6 +149,14 @@ TiDB 8.5.0 为长期支持版本 (Long-Term Support Release, LTS)。
 
     更多信息，请参考[用户文档](/accelerated-table-creation.md)。
 
+* TiKV 支持 MVCC 内存引擎 (In-memory Engine, IME)，可加速需要扫描大量 MVCC 历史版本的查询 [#16141](https://github.com/tikv/tikv/issues/16141) [@SpadeA-Tang](https://github.com/SpadeA-Tang) [@glorv](https://github.com/glorv) [@overvenus](https://github.com/overvenus) tw@hfxsd <!--1706-->
+
+    在频繁更新记录或者需要 TiDB 保留较长时间的历史版本（比如 24 小时）的场景中，堆积的 MVCC 版本会导致扫描性能下降。TiKV MVCC 内存引擎可以通过将最新的 MVCC 版本缓存在内存中，并通过快速的 GC 机制删除内存中历史版本，提升扫描性能。
+
+    从 v8.5.0 开始，TiKV 引入 MVCC 内存引擎。当 TiKV 集群中的 MVCC 版本堆积导致扫描性能下降时，你可以通过设置 TiKV 参数 [`in-memory-engine.enable`](/tikv-in-memory-engine.md#使用方式) 来开启 TiKV MVCC 内存引擎，提升扫描性能。
+
+    更多信息，请参考[用户文档](/tikv-in-memory-engine.md)。
+
 ### 稳定性
 
 * 支持限制 PD 处理请求的最大速率和并发度 [#5739](https://github.com/tikv/pd/issues/5739) @[rleungx](https://github.com/rleungx) **tw@qiancai** <!--2018-->
