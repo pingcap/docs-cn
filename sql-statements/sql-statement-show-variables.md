@@ -120,7 +120,7 @@ SHOW GLOBAL VARIABLES LIKE 'tidb%';
 | tidb_replica_read                   | leader              |
 | tidb_retry_limit                    | 10                  |
 | tidb_row_format_version             | 2                   |
-| tidb_scatter_region                 | 0                   |
+| tidb_scatter_region                 |                     |
 | tidb_skip_isolation_level_check     | 0                   |
 | tidb_skip_utf8_check                | 0                   |
 | tidb_slow_log_threshold             | 300                 |
