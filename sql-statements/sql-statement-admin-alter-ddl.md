@@ -63,7 +63,7 @@ mysql> admin show ddl jobs 1;
 ## 语法图
 
 ```ebnf+diagram
-AdminPauseDDLStmt ::=
+AdminAlterDDLStmt ::=
     'ADMIN' 'ALTER' 'DDL' 'JOBS' Int64Num AlterJobOptionList
 
 AlterJobOptionList ::=
