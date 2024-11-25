@@ -254,6 +254,8 @@ TiDB 8.5.0 为长期支持版本 (Long-Term Support Release, LTS)。
 > 以下为从 v8.4.0 升级至当前版本 (v8.5.0) 所需兼容性变更信息。如果从 v8.3.0 或之前版本升级到当前版本，可能也需要考虑和查看中间版本 Release Notes 中提到的兼容性变更信息。
 
 ### 行为变更
+    - 为了与 MySQL 兼容，在非严格模式下向非 `NULL` 列插入 `NULL` 值会报错 [#55457](https://github.com/pingcap/tidb/issues/55457) @[joechenrh](https://github.com/joechenrh)
+    - 不再支持 `ALTER TABLE ... DROP FOREIGN KEY IF EXISTS ... ` 语句 [#56703](https://github.com/pingcap/tidb/pull/56703) @[YangKeao](https://github.com/YangKeao)
 
 ### MySQL 兼容性
 
