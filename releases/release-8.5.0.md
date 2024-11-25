@@ -306,6 +306,7 @@ TiDB 8.5.0 为长期支持版本 (Long-Term Support Release, LTS)。
     - 增加系统变量 tidb_ddl_reorg_max_write_speed 来限制加索引时 ingest 阶段速度上限 [#57156](https://github.com/pingcap/tidb/issues/57156) @[CbcWestwolf](https://github.com/CbcWestwolf)
     - 提升某些情况下查询 information_schema.tables 的性能 [#57295](https://github.com/pingcap/tidb/issues/57295) @[tangenta](https://github.com/tangenta)
     - 支持动态调整更多 DDL 任务参数 [#57526](https://github.com/pingcap/tidb/issues/57526) @[fzzf678](https://github.com/fzzf678)
+    - 允许全局索引包含分区表达式中的所有列 [#56230](https://github.com/pingcap/tidb/issues/56230) @[Defined2014](https://github.com/Defined2014)
 
 + TiKV
 
