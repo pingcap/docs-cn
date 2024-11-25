@@ -310,7 +310,7 @@ TiDB 8.5.0 为长期支持版本 (Long-Term Support Release, LTS)。
 
     - note [#Issue-number](issue-link) @[Contributor-GitHub-ID](id-link)
     - (dup): release-7.1.6.md > 改进提升> TiFlash - 提升聚簇索引表在后台回收过期数据的速度 [#9529](https://github.com/pingcap/tiflash/issues/9529) @[JaySon-Huang](https://github.com/JaySon-Huang)
-    - 更新带有更新数据场景下 Vector Search 的查询性能 [#9599](https://github.com/pingcap/tiflash/issues/9599) @[Lloyd-Pottiger](https://github.com/Lloyd-Pottiger)
+    - 提升带有更新数据场景下 Vector Search 的查询性能 [#9599](https://github.com/pingcap/tiflash/issues/9599) @[Lloyd-Pottiger](https://github.com/Lloyd-Pottiger)
     - 添加关于构建 Vector Index CPU 使用率的监控指标 [#9032](https://github.com/pingcap/tiflash/issues/9032) @[JaySon-Huang](https://github.com/JaySon-Huang)
     - 优化逻辑运算符的执行速度 [#9146](https://github.com/pingcap/tiflash/issues/9146) @[windtalker](https://github.com/windtalker)
 
