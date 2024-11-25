@@ -375,7 +375,17 @@ TiDB 8.5.0 为长期支持版本 (Long-Term Support Release, LTS)。
     -  修复类型推导错误导致的字符串被截断问题 [#56587](https://github.com/pingcap/tidb/issues/56587) @[joechenrh](https://github.com/joechenrh)  
     -  修复 `ADDTIME` 和 `SUBTIME` 函数第一个参数是日期类型时结果错误问题 [#57569](https://github.com/pingcap/tidb/issues/57569) @[xzhangxian1008](https://github.com/xzhangxian1008)
     -  修复在非严格模式下 (sql_mode = '')，非法空值被插入的问题 [#56381](https://github.com/pingcap/tidb/issues/56381) @[joechenrh](https://github.com/joechenrh)         
-
+    - 修复 `UPDATE` 语句中 `ENUM` 类型的值更新错误的问题 [#56832](https://github.com/pingcap/tidb/issues/56832) @[xhebox](https://github.com/xhebox)
+    - 修复开启 `tidb_low_resolution_tso` 后 `SELECT FOR UPDATE` 语句有资源泄漏的问题 [#55468](https://github.com/pingcap/tidb/issues/55468) @[tiancaiamao](https://github.com/tiancaiamao)
+    - 修复 JSON 函数没有检查参数类型的问题 [#54029](https://github.com/pingcap/tidb/issues/54029) @[YangKeao](https://github.com/YangKeao)
+    - 修复当 `PREPARE` 命令中包含 JSON 函数时可能失败的问题 [#54044](https://github.com/pingcap/tidb/issues/54044) @[YangKeao](https://github.com/YangKeao)
+    - 修复当执行 `bool like cast(bit as char)` 时 TiKV 崩溃的问题 [#56494](https://github.com/pingcap/tidb/issues/56494) @[lcwangchao](https://github.com/lcwangchao)
+    - 修复 `CREATE VIEW` 语句中带有变量或参数时不报错的问题 [#53176](https://github.com/pingcap/tidb/issues/53176) @[mjonss](https://github.com/mjonss)
+    - 修复 `JSON_VALID()` 函数执行结果错误的问题 [#56293](https://github.com/pingcap/tidb/issues/56293) @[YangKeao](https://github.com/YangKeao)
+    - 修复 BR 备份分区表会丢失全局索引的问题 [#57469](https://github.com/pingcap/tidb/issues/57469) @[Defined2014](https://github.com/Defined2014)
+    - 修复关闭 `tidb_ttl_job_enable` 后 TTL 任务没有被取消的问题 [#57404](https://github.com/pingcap/tidb/issues/57404) @[YangKeao](https://github.com/YangKeao)
+    - 修复同时使用 `RANGE COLUMNS` 分区函数和 `utf8mb4_0900_ai_ci` 排序规则时，查询结果错误的问题 [#57261](https://github.com/pingcap/tidb/issues/57261) @[Defined2014](https://github.com/Defined2014)
+    - 允许全局索引包含分区表达式中的所有列 [#56230](https://github.com/pingcap/tidb/issues/56230) @[Defined2014](https://github.com/Defined2014)
 + TiKV
 
     - note [#Issue-number](issue-link) @[Contributor-GitHub-ID](id-link)
