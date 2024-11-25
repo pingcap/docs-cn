@@ -46,7 +46,7 @@ summary: 了解 TiCDC 支持同步的 DDL 和一些特殊情况
 
 > ***注意：**
 >
-> - 删除[有效索引](/ticdc/ticdc-overview.md#%E6%9C%80%E4%BD%B3%E5%AE%9E%E8%B7%B5)的 DDL (*号) 可能不会被同步，并且导致后续数据同步失败。
+> - 删除最后一个[有效索引](/ticdc/ticdc-overview.md#%E6%9C%80%E4%BD%B3%E5%AE%9E%E8%B7%B5)的 DDL (*号) 不会被同步，并且导致后续数据同步失败。
 
 ## DDL 同步注意事项
 
