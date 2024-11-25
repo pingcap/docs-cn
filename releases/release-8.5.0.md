@@ -173,11 +173,11 @@ TiDB 8.5.0 为长期支持版本 (Long-Term Support Release, LTS)。
 
     更多信息，请参考[用户文档](链接)。
 
-* 外键的功能成为正式功能（GA） [#36982](https://github.com/pingcap/tidb/issues/36982) @[YangKeao](https://github.com/YangKeao) @[crazycs520](https://github.com/crazycs520) tw@lilin90 <!--1894-->
+* 外键成为正式功能 (GA) [#36982](https://github.com/pingcap/tidb/issues/36982) @[YangKeao](https://github.com/YangKeao) @[crazycs520](https://github.com/crazycs520) tw@lilin90 <!--1894-->
 
-    TiDB 的外键功能现已 GA，支持通过使用外键约束提升数据一致性和完整性保障。用户可以轻松创建表间的外键关联，实现级联更新和删除操作，使得数据管理更加便捷。这一功能为复杂数据关联的应用场景提供了更好的支持。
+    在 v8.5.0 中，TiDB 的外键功能成为正式功能 (GA)，支持使用外键约束提升数据一致性和保障完整性。你可以轻松创建表间的外键关联，实现级联更新和删除操作，使得数据管理更加便捷。这一功能为复杂数据关联的应用场景提供了更好的支持。
 
-    更多信息，请参考[用户文档](链接)。
+    更多信息，请参考[用户文档](/foreign-key.md)。
 
 * 引入 `ADMIN ALTER DDL JOBS` 的语法，支持在线修改 DDL 任务参数 [#57229](hhttps://github.com/pingcap/tidb/issues/57229) @[fzzf678](https://github.com/fzzf678) @[tangenta](https://github.com/tangenta) tw@hfxsd <!--2016-->
 
