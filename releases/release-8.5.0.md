@@ -359,6 +359,13 @@ TiDB 8.5.0 为长期支持版本 (Long-Term Support Release, LTS)。
     - 修复分布式执行框架监控面板不准确的问题 [#57172](https://github.com/pingcap/tidb/issues/57172) @[fzzf678](https://github.com/fzzf678) [#56942](https://github.com/pingcap/tidb/issues/56942) @[fzzf678](https://github.com/fzzf678)
     - 修复某些情况下 REORGANIZE PARTITION 无法展示报错原因的问题 [#56634](https://github.com/pingcap/tidb/issues/56634) @[mjonss](https://github.com/mjonss)
     - 修复查询 information_schema.tables 大小写敏感的问题 [#56987](https://github.com/pingcap/tidb/issues/56987) @[joechenrh](https://github.com/joechenrh)
+    - 修复 `CTE` 有多个数据消费者，且某个消费者在没有读取任何数据情况下退出可能导致的非法内存访问问题 [#57294](https://github.com/pingcap/tidb/issues/57294) @[windtalker](https://github.com/windtalker)
+    - 修复 `IndexHashJoin` 在非正常退出情况下可能卡住问题 [#54055](https://github.com/pingcap/tidb/issues/54055) @[wshwsh12](https://github.com/wshwsh12)
+    - 修复 `TRUNCATE` 处理 `NULL` 值不正确的问题 [#53546](https://github.com/pingcap/tidb/issues/53546) @[tuziemon](https://github.com/tuziemon)    
+    - 修复类型推导错误导致的 `CAST AS CHAR` 函数结果问题 [#56640](https://github.com/pingcap/tidb/issues/56640) @[zimulala](https://github.com/zimulala)
+    -  修复类型推导错误导致的字符串被截断问题 [#56587](https://github.com/pingcap/tidb/issues/56587) @[joechenrh](https://github.com/joechenrh)  
+    -  修复 `ADDTIME` 和 `SUBTIME` 函数第一个参数是日期类型时结果错误问题 [#57569](https://github.com/pingcap/tidb/issues/57569) @[xzhangxian1008](https://github.com/xzhangxian1008)
+    -  修复在非严格模式下 (sql_mode = '')，非法空值被插入的问题 [#56381](https://github.com/pingcap/tidb/issues/56381) @[joechenrh](https://github.com/joechenrh)         
 
 + TiKV
 
