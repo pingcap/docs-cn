@@ -299,7 +299,8 @@ REPLACE INTO `sbtest`.`sbtest99`(`id`,`k`,`c`,`pad`) VALUES (3700000,2501808,'he
 ## 注意事项
 
 * sync-diff-inspector 在校验数据时会消耗一定的服务器资源，需要避免在业务高峰期间校验。
-* 在数据对比前，需要注意表中的 collation 设置。如果表的主键或唯一键为 varchar 类型，且上下游数据库中 collation 设置不同，可能会因为排序问题导致最终校验结果不正确，需要在 sync-diff-inspector 的配置文件中增加 collation 设置。
+* 在数据对比前，需要注意表中字符集和 `collation` 设置。特别是当表的主键或唯一键为 varchar 类型时，如果上下游数据库的排序规则不同，可能会导致排序问题，从而影响校验结果。例如，MySQL 默认的排序规则不区分大小写，而 TiDB 默认的排序规则区分大小写，这种不一致可能导致修复 SQL 中的删除记录和插入记录完全一致。为避免此问题，建议使用 `index-fields` 配置指定不受大小写影响的其他索引列。如果在 sync-diff-inspector 的配置文件中配置 `collation` 并显式指定上下游使用相同的排序规则进行分段比对，需要注意：由于索引字段的顺序依赖于表定义的排序规则，若排序规则不一致，某一方可能无法使用索引。此外，如果上下游的字符集不一致，例如 MySQL 使用 UTF-8 而 TiDB 使用 UTF-8MB4，则无法统一配置排序规则。
+* 如果上下游表的主键不一致，例如在 MySQL 中进行分表后合并到 TiDB，并使用原主键和分片键组成复合主键的场景，sync-diff-inspector 将不会使用原主键列来划分 chunk。此时，你需要通过 `index-fields` 配置原主键列，并将 `check-data-only` 设置为 `true`。
 * sync-diff-inspector 会优先使用 TiDB 的统计信息来划分 chunk，需要尽量保证统计信息精确，可以在**业务空闲期**手动执行 `analyze table {table_name}`。
 * table-rule 的规则需要特殊注意，例如设置了 `schema-pattern="test1"`，`table-pattern = "t_1"`，`target-schema="test2"`，`target-table = "t_2"`，会对比 source 中的表 `test1`.`t_1` 和 target 中的表 `test2`.`t_2`。sync-diff-inspector 默认开启 sharding，如果 source 中还有表 `test2`.`t_2`，则会把 source 端的表 `test1`.`t_1` 和表 `test2`.`t_2` 作为 sharding 与 target 中的表 `test2`.`t_2` 进行一致性校验。
 * 生成的 SQL 文件仅作为修复数据的参考，需要确认后再执行这些 SQL 修复数据。
