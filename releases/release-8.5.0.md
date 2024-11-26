@@ -403,6 +403,20 @@ TiDB 8.5.0 为长期支持版本 (Long-Term Support Release, LTS)。
     - 修正了查询 slow_query 表时，如果不加时间过滤条件则只会查询最新的慢日志文件的行为 [#56100](https://github.com/pingcap/tidb/issues/56100) @[crazycs520](https://github.com/crazycs520)
     - 修复了 TTL 表的内存泄漏问题 [#56934](https://github.com/pingcap/tidb/issues/56934) @[lcwangchao](https://github.com/lcwangchao)
     - 避免使用 non-public 状态的表，该改动可以修复 write_only 状态的表外键约束未生效的一处问题 [#55813](https://github.com/pingcap/tidb/issues/55813) @[YangKeao](https://github.com/YangKeao)
+    - 修复使用 NATURAL JOIN 或者 USING CLAUSE 之后再使用子查询可能会报错的问题 [#53766](https://github.com/pingcap/tidb/issues/53766) @[dash12653](https://github.com/dash12653)
+    - 修复如果 CTE 包含 orderby/limit/distinct 子句并且被另外一个 CTE 的 recursive part 所引用时，可能被错误的 INLINE 导致执行报错的问题 [#56603](https://github.com/pingcap/tidb/issues/56603) @[elsa0520](https://github.com/elsa0520)
+    - 修复 VIEW 中定义的 CTE 被错误 INLINE 的问题 [#56582](https://github.com/pingcap/tidb/issues/56582) @[elsa0520](https://github.com/elsa0520)
+    - 修复 Plan Replayer 导入含有外键的表结构时可能报错的问题 [#56456](https://github.com/pingcap/tidb/issues/56456) @[hawkingrei](https://github.com/hawkingrei)
+    - 修复 Plan Replayer 导入含有 Placement Rule 的表结构时可能报错的问题 [#54961](https://github.com/pingcap/tidb/issues/54961) @[hawkingrei](https://github.com/hawkingrei)
+    - 修复使用 ANALYZE 收集含有引用了虚拟生成列的表达式索引的表的统计信息时执行会报错的问题 [#57079](https://github.com/pingcap/tidb/issues/57079) @[hawkingrei](https://github.com/hawkingrei)
+    - 修复 DROP DATABASE 语句没有正确触发统计信息对应变更的问题 [#57227](https://github.com/pingcap/tidb/issues/57227) @[Rustin170506](https://github.com/Rustin170506)
+    - 修复在 CTE 中解析数据库名时，得到错误的数据库名的问题 [#54582](https://github.com/pingcap/tidb/issues/54582) @[hawkingrei](https://github.com/hawkingrei)
+    - 修复在 DUMP STATS 生成 json 的过程中导致直方图上下界数据受损的问题 [#56083](https://github.com/pingcap/tidb/issues/56083) @[hawkingrei](https://github.com/hawkingrei)
+    - 修复 EXISTS 子查询的结果继续参与代数运算时，结果和 MySQL 不一致的问题 [#56641](https://github.com/pingcap/tidb/issues/56641) @[windtalker](https://github.com/windtalker)
+    - 修复无法为带别名的多表删除创建计划绑定的问题 [#56726](https://github.com/pingcap/tidb/issues/56726) @[hawkingrei](https://github.com/hawkingrei)
+    - 修复优化器在简化复杂谓词时没有考虑字符集及排序规则导致执行可能报错的问题 [#56479](https://github.com/pingcap/tidb/issues/56479) @[dash12653](https://github.com/dash12653)
+    - 修复 Grafana 中 STATS_HEALTHY 图标可能统计出错的问题 [#57176](https://github.com/pingcap/tidb/issues/57176) @[hawkingrei](https://github.com/hawkingrei)
+
 + TiKV
 
     - note [#Issue-number](issue-link) @[Contributor-GitHub-ID](id-link)
