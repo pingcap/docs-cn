@@ -456,7 +456,10 @@ TiDB 8.5.0 为长期支持版本 (Long-Term Support Release, LTS)。
     + Backup & Restore (BR)
 
         - note [#Issue-number](issue-link) @[Contributor-GitHub-ID](id-link)
-        - (dup): release-7.5.4.md > 错误修复> Tools> Backup & Restore (BR) - 修复 BR 集成测试用例不稳定的问题，并新增用于模拟快照或者日志备份文件损坏的测试用例 [#53835](https://github.com/pingcap/tidb/issues/53835) @[Leavrth](https://github.com/Leavrth)
+        - 减少了预先分配的内存从而避免当 incomplete range 过多时的 OOM [#53529](https://github.com/pingcap/tidb/issues/53529) @[Leavrth](https://github.com/Leavrth)
+        - 修复了备份时无法备份 global index 的错误 [#57469](https://github.com/pingcap/tidb/issues/57469) @[Defined2014](https://github.com/Defined2014)]
+        - 修复了日志可能打印出加密信息的错误 [#57585](https://github.com/pingcap/tidb/issues/57585) @[kennytm](https://github.com/kennytm)
+        - 修复了 advancer 无法处理锁冲突的情形 [#57134](https://github.com/pingcap/tidb/issues/57134) @[3pointer](https://github.com/3pointer)
 
     + TiCDC
 
