@@ -11,42 +11,48 @@ summary: 了解 TiCDC 支持同步的 DDL 和一些特殊情况
 
 目前 TiCDC 在同步 DDL 时使用白名单策略，只有在白名单中的 DDL 操作才会被同步到下游系统，不在白名单中的 DDL 操作将不会被 TiCDC 同步。
 
-以下为 TiCDC 支持同步的 DDL 的列表。
+以下为 TiCDC 支持同步的 DDL 的列表。这些 DDL 会根据是否具有有效索引以及是否设置 force-replicate = true 会有不同的行为。
+下表中出现的缩写字母含义如下：
+- Y：在该条件下可以同步到下游。
+- N：在该条件下不会同步到下游。
 
-- create database
-- drop database
-- create table 
-- drop table 
-- add column 
-- drop column
-- create index / add index 
-- drop index [***注意**]
-- truncate table 
-- modify column 
-- rename table 
-- alter column default value
-- alter table comment 
-- rename index 
-- add partition
-- drop partition 
-- truncate partition 
-- create view 
-- drop view 
-- alter table character set 
-- alter database character set
-- recover table 
-- add primary key 
-- drop primary key [***注意**]
-- rebase auto id
-- alter table index visibility 
-- exchange partition 
-- reorganize partition 
-- alter table ttl 
-- alter table remove ttl
+| DDL| 存在有效索引 | 没有有效索引 | force-replicate = true |
+|---|:---:|:---:| :---: |
+| create database | Y | Y | Y | 
+| drop database | Y | Y | Y |
+| create table  | Y | N | Y |
+| drop table  | Y | N | Y |
+| add column  | Y | N | Y |
+| drop column | Y | N | Y |
+| create index / add index | Y | Y | Y | 
+| drop index | Y | N | Y |
+| truncate table  | Y | N | Y |
+| modify column  | Y | N | Y |
+| rename table  | Y | N | Y |
+| alter column default value | Y | N | Y |
+| alter table comment  | Y | N | Y |
+| rename index  | Y | N | Y |
+| add partition | Y | N | Y |
+| drop partition | Y | N | Y |
+| truncate partition | Y | N | Y |
+| create view | Y | N | Y |
+| drop view | Y | N | Y |
+| alter table character set | Y | N | Y |
+| alter database character set | Y | Y | Y |
+| recover table | Y | N | Y |
+| add primary key | Y | Y | Y |
+| drop primary key | Y | N | Y |
+| rebase auto id | Y | N | Y |
+| alter table index visibility | Y | N | Y |
+| exchange partition | Y | N | Y |
+| reorganize partition | Y | N | Y |
+| alter table ttl | Y | N | Y |
+| alter table remove ttl | Y | N | Y |
 
-> ***注意：**
+> ** 注意：**
 >
 > - 删除最后一个[有效索引](/ticdc/ticdc-overview.md#最佳实践)的 DDL (*号) 不会被同步，并且导致后续数据同步失败。
+> - 创建第一个[有效索引](/ticdc/ticdc-overview.md#最佳实践)的 DDL (*号) 会被同步，并且导致后续数据同步失败。
 > - 当 changefeed 的配置文件设置 `force_replicate=true` 时，同步任务会尝试强制[同步没有有效索引的表](/ticdc/ticdc-manage-changefeed.md#同步没有有效索引的表)。
 
 ## DDL 同步注意事项
