@@ -427,7 +427,9 @@ TiDB 8.5.0 为长期支持版本 (Long-Term Support Release, LTS)。
 
     + TiCDC
 
-        - note [#Issue-number](issue-link) @[Contributor-GitHub-ID](id-link)
+        - 修复 Debezium 协议下 Kafka 消息中未填写 Key 的问题。 [#1799](https://github.com/pingcap/tiflow/issues/1799) @[wk989898](https://github.com/wk989898)
+        - 修复 Redo 模块无法正确上报错误的问题。 [#11744](https://github.com/pingcap/tiflow/issues/11744) @[CharlesCheung96](https://github.com/CharlesCheung96)
+        - 修复 TiDB Owner 变更导致 DDL Jobs 的 schema version 出现非递增场景下 TiCDC 错误丢弃 DDL 任务的问题。 [#11714](https://github.com/pingcap/tiflow/issues/11714) @[wlwilliamx](https://github.com/wlwilliamx)
         - note [#Issue-number](issue-link) @[Contributor-GitHub-ID](id-link)
 
     + TiDB Data Migration (DM)
