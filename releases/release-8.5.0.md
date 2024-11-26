@@ -320,7 +320,8 @@ TiDB 8.5.0 为长期支持版本 (Long-Term Support Release, LTS)。
 
 + PD
 
-    - note [#Issue-number](issue-link) @[Contributor-GitHub-ID](id-link)
+    - 支持 tso 微服务模式和非微服务模式间动态切换 [#8477](https://github.com/tikv/pd/issues/8477) @[rleungx](https://github.com/rleungx)
+    - 改进 pd-ctl config 的输出 [#8694](https://github.com/tikv/pd/issues/8694) @[lhy1024](https://github.com/lhy1024)
     - note [#Issue-number](issue-link) @[Contributor-GitHub-ID](id-link)
 
 + TiFlash
@@ -426,8 +427,11 @@ TiDB 8.5.0 为长期支持版本 (Long-Term Support Release, LTS)。
 
 + PD
 
-    - note [#Issue-number](issue-link) @[Contributor-GitHub-ID](id-link)
     - (dup): release-7.1.6.md > 错误修复> PD - 修复热点缓存中可能存在的内存泄露问题 [#8698](https://github.com/tikv/pd/issues/8698) @[lhy1024](https://github.com/lhy1024)
+    - 使得 resource group 选择器对所有面板生效 [#56572](https://github.com/pingcap/tidb/issues/56572) @[[glorv](https://github.com/glorv)](https://github.com/glorv)
+    - 修复 syncer 加载过程中日志不清晰的问题 [#8717](https://github.com/tikv/pd/issues/8717) @[lhy1024](https://github.com/lhy1024)
+    - 修复已删除的 resource group 仍然出现在监控面板中的问题  [#8716](https://github.com/tikv/pd/issues/8716) @[AndreMouche](https://github.com/AndreMouche)
+    - 
 
 + TiFlash
 
