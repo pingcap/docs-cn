@@ -480,7 +480,7 @@ config show cluster-version
 
 > **注意：**
 >
-> 为了避免请求速率限制和并发限制对 PD 性能的影响，通常不建议用户对 `service-middleware` 中的配置进行修改。
+> 为了避免请求速率限制和并发限制对 PD 性能的影响，不建议修改 `service-middleware` 中的配置。
 
 显示 `service-middleware` 的相关 config 信息：
 
