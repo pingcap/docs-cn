@@ -20,12 +20,15 @@ summary: 了解 TiCDC 支持同步的 DDL 和一些特殊情况
 |---|:---:|:---:| :---: |
 | create database | Y | Y | Y | 
 | drop database | Y | Y | Y |
+| alter database character set | Y | Y | Y |
+| create index / add index | Y | Y* | Y | 
+| drop index | Y* | N | Y |
+| add primary key | Y | Y* | Y |
+| drop primary key | Y* | N | Y |
 | create table  | Y | N | Y |
 | drop table  | Y | N | Y |
 | add column  | Y | N | Y |
 | drop column | Y | N | Y |
-| create index / add index | Y | Y | Y | 
-| drop index | Y | N | Y |
 | truncate table  | Y | N | Y |
 | modify column  | Y | N | Y |
 | rename table  | Y | N | Y |
@@ -38,10 +41,7 @@ summary: 了解 TiCDC 支持同步的 DDL 和一些特殊情况
 | create view | Y | N | Y |
 | drop view | Y | N | Y |
 | alter table character set | Y | N | Y |
-| alter database character set | Y | Y | Y |
 | recover table | Y | N | Y |
-| add primary key | Y | Y | Y |
-| drop primary key | Y | N | Y |
 | rebase auto id | Y | N | Y |
 | alter table index visibility | Y | N | Y |
 | exchange partition | Y | N | Y |
