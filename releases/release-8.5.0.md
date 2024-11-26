@@ -28,14 +28,14 @@ TiDB 8.5.0 为长期支持版本 (Long-Term Support Release, LTS)。
 <tbody>
   <tr>
     <td rowspan="6">可扩展性与性能</td>
-    <td> 多维度降低数据处理延迟 **tw@qiancai**</td>
-    <td>TiDB 不断优化数据处理细节，持续提升性能，以更好地满足金融领域对 SQL 处理低延迟的高要求。 关键更新包括：
-    <li> <a href="https://docs.pingcap.com/zh/tidb/v8.5/system-variables#tidb_executor_concurrency-从-v50-版本开始引入">并行排序</a> (从 v8.2.0 开始引入) </li>
-    <li>  <a href="https://docs.pingcap.com/zh/tidb/v8.5/tidb-configuration-file#batch-policy-从-v830-版本开始引入">优化 KV 请求批处理策略</a> (从 v8.3.0 开始引入) </li>
-    <li>  <a href="https://docs.pingcap.com/zh/tidb/v8.5/system-variables#tidb_tso_client_rpc_mode-从-v840-版本开始引入">并行获取 TSO</a> (从 v8.4.0 开始引入) </li>
-    <li>降低<a href="https://docs.pingcap.com/tidb/v8.5/sql-statement-delete">DELETE</a> 操作的资源开销 (从 v8.4.0 开始引入) </li>
-    <li>  优化<a href="https://docs.pingcap.com/zh/tidb/v8.4/cached-tables#缓存表">缓存表</a>场景性能</a> (v8.4.0 引入) </li>
-    <li>  <a href="https://docs.pingcap.com/zh/tidb/v8.5/system-variables#tidb_hash_join_version-从-v840-版本开始引入">Hash Join 算法优化</a> (实验特性，从 v8.4.0 开始引入) </li>
+    <td>多维度降低数据处理延迟 **tw@qiancai**</td>
+    <td>TiDB 不断优化数据处理细节，持续提升性能，以更好地满足金融领域对 SQL 处理低延迟的高要求。关键更新包括：
+    <li><a href="https://docs.pingcap.com/zh/tidb/v8.5/system-variables#tidb_executor_concurrency-从-v50-版本开始引入">并行排序</a>（从 v8.2.0 开始引入）</li>
+    <li><a href="https://docs.pingcap.com/zh/tidb/v8.5/tidb-configuration-file#batch-policy-从-v830-版本开始引入">优化 KV 请求批处理策略</a>（从 v8.3.0 开始引入）</li>
+    <li><a href="https://docs.pingcap.com/zh/tidb/v8.5/system-variables#tidb_tso_client_rpc_mode-从-v840-版本开始引入">并行获取 TSO</a>（从 v8.4.0 开始引入）</li>
+    <li>降低 <a href="https://docs.pingcap.com/tidb/v8.5/sql-statement-delete">DELETE</a> 操作的资源开销（从 v8.4.0 开始引入）</li>
+    <li>优化<a href="https://docs.pingcap.com/zh/tidb/v8.5/cached-tables#缓存表">缓存表</a>场景性能</a>（从 v8.4.0 开始引入）</li>
+    <li><a href="https://docs.pingcap.com/zh/tidb/v8.5/system-variables#tidb_hash_join_version-从-v840-版本开始引入">Hash Join 算法优化</a>（实验特性，从 v8.4.0 开始引入）</li>
     </td>
   </tr>
   <tr>
@@ -161,7 +161,7 @@ TiDB 8.5.0 为长期支持版本 (Long-Term Support Release, LTS)。
 
 * 支持限制 PD 处理请求的最大速率和并发度 [#5739](https://github.com/tikv/pd/issues/5739) @[rleungx](https://github.com/rleungx) **tw@qiancai** <!--2018-->
 
-    当突然有大量请求发送到 PD 时，这些请求可能导致 PD 高工作负载，进行影响 PD 性能表现。从 v8.5.0 开始，你可以使用 [`pd-ctl`](/pd-control.md) 来限制 PD 处理请求的最大速率和并发度，提升 PD 的稳定性。
+    当突然有大量请求发送到 PD 时，这些请求可能导致 PD 工作负载过高，进行影响 PD 性能表现。从 v8.5.0 开始，你可以使用 [`pd-ctl`](/pd-control.md) 来限制 PD 处理请求的最大速率和并发度，提升 PD 的稳定性。
 
     更多信息，请参考[用户文档](/pd-control.md)。
 
@@ -231,13 +231,13 @@ TiDB 8.5.0 为长期支持版本 (Long-Term Support Release, LTS)。
 
   更多信息，请参考[加密备份数据](/br/br-snapshot-manual.md#encrypt-the-backup-data)和[加密日志备份数据](/br/br-pitr-manual.md#encrypt-the-log-backup-data)。
 
-* TiKV 静态加密支持 Google [Key Management Service (Cloud KMS)](https://cloud.google.com/docs/security/key-management-deep-dive?hl=zh-cn) (GA) [#8906](https://github.com/tikv/tikv/issues/8906) @[glorv](https://github.com/glorv) tw@qiancai <!--1876-->
+* TiKV 静态加密支持 [Google Cloud Key Management Service (Google Cloud KMS)](https://cloud.google.com/docs/security/key-management-deep-dive?hl=zh-cn) (GA) [#8906](https://github.com/tikv/tikv/issues/8906) @[glorv](https://github.com/glorv) tw@qiancai <!--1876-->
 
-      TiKV 通过静态加密功能对存储的数据进行加密，以确保数据的安全性。静态加密的安全核心点在于密钥管理。在 v8.0.0 中，TiKV 静态加密以实验特性的形式支持了基于 Google Cloud KMS 的主密钥管理。
-      
-    从 v8.5.0 起，基于 Google Cloud KMS 的静态加密成为正式功能 (GA）。要使用该功能，你需要在 Google Cloud 上创建一个密钥，然后在 TiKV 配置文件中添加 `[security.encryption.master-key]` 部分的配置。
+    TiKV 通过静态加密功能对存储的数据进行加密，以确保数据的安全性。静态加密的安全核心点在于密钥管理。在 v8.0.0 中，TiKV 静态加密以实验特性的形式支持了基于 Google Cloud KMS 的主密钥管理。
 
-  更多信息，请参考[用户文档](/encryption-at-rest.md#tikv-静态加密)。
+    从 v8.5.0 起，基于 Google Cloud KMS 的静态加密成为正式功能 (GA)。要使用该功能，你需要在 Google Cloud 上创建一个密钥，然后在 TiKV 配置文件中添加 `[security.encryption.master-key]` 部分的配置。
+
+    更多信息，请参考[用户文档](/encryption-at-rest.md#tikv-静态加密)。
 
 ### 数据迁移
 
