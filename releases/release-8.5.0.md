@@ -332,6 +332,10 @@ TiDB 8.5.0 为长期支持版本 (Long-Term Support Release, LTS)。
 
         - note [#Issue-number](issue-link) @[Contributor-GitHub-ID](id-link)
         - (dup): release-7.1.6.md > 改进提升> Tools> Backup & Restore (BR) - 减少备份过程中无效日志的打印 [#55902](https://github.com/pingcap/tidb/issues/55902) @[Leavrth](https://github.com/Leavrth)
+        - 改善 crypter key 错误时的错误信息 [#56388](https://github.com/pingcap/tidb/issues/56388) @[Tristan1900](https://github.com/Tristan1900)
+        - 增大了 BR 创建 DB 时的并发性，改善了恢复时的性能 [#56866](https://github.com/pingcap/tidb/issues/56866) @[Leavrth](https://github.com/Leavrth)
+        - 关闭了全量备份时默认开启的 checksum 以提高生产坏境的性能，只在测试环境中继续开启。此 checksum 只是用来内部验证 BR 的内部逻辑，而对验证备份数据完整性的 checksum 依然开启。[#56373](https://github.com/pingcap/tidb/issues/56373) @[Tristan1900](https://github.com/Tristan1900)
+        - 将重制超时从 gRPC 层面细化到 store 层面 [#55526](https://github.com/pingcap/tidb/pull/55526) @[3pointer](https://github.com/3pointer)
 
     + TiCDC
 
