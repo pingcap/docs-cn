@@ -73,7 +73,7 @@ TiDB 8.5.0 为长期支持版本 (Long-Term Support Release, LTS)。
   </tr>
   <tr>
     <td>增强并扩展 TiProxy 的使用场景 **tw@Oreoxmt**</td>
-    <td>作为 TiDB 高可用的重要组成，<a href="https://docs.pingcap.com/zh/tidb/v8.5/tiproxy-overview">TiProxy</a> 除了提供 SQL 流量接入和转发功能外，扩展支持评估集群变更的能力。主要包括：
+    <td>作为 TiDB 高可用的重要组件，<a href="https://docs.pingcap.com/zh/tidb/v8.5/tiproxy-overview">TiProxy</a> 除了提供 SQL 流量接入和转发功能外，新增了对集群变更的评估能力。主要包括：
     <li><a href="https://docs.pingcap.com/zh/tidb/v8.5/tiproxy-traffic-replay">TiProxy 流量捕获和回放</a>（实验特性，从 v8.4.0 开始引入）</li>
     <li><a href="https://docs.pingcap.com/zh/tidb/v8.5/tiproxy-overview">TiProxy 内置虚拟 IP 管理</a>（从 v8.3.0 开始引入）</li>
     <li><a href="https://docs.pingcap.com/zh/tidb/v8.5/tiproxy-load-balance">TiProxy 支持多种负载均衡策略</a>（从 v8.2.0 开始引入）</li>
@@ -125,7 +125,7 @@ TiDB 8.5.0 为长期支持版本 (Long-Term Support Release, LTS)。
 
     更多信息，请参考[用户文档](/schema-cache.md)。
 
-* 通过 Active PD Follower 提升 PD 上 Region 信息查询服务的扩展能力成为正式功能 (GA) [#7431](https://github.com/tikv/pd/issues/7431) @[okJiang](https://github.com/okJiang) tw@Oreoxmt <!--2015-->
+* 通过 Active PD Follower 提升 PD 上 Region 信息查询服务的扩展能力 (GA) [#7431](https://github.com/tikv/pd/issues/7431) @[okJiang](https://github.com/okJiang) tw@Oreoxmt <!--2015-->
 
     当集群的 Region 数量较多时，PD leader 处理心跳和调度任务的开销也较大，可能导致 CPU 资源紧张。如果同时集群中的 TiDB 实例数量较多，查询 Region 信息请求并发量较大，PD leader CPU 压力将变得更大，可能会造成 PD 服务不可用。
 
@@ -145,7 +145,7 @@ TiDB 8.5.0 为长期支持版本 (Long-Term Support Release, LTS)。
 
     TiDB v7.6.0 引入加速建表功能作为实验特性，并通过系统变量 [`tidb_ddl_version`](https://docs.pingcap.com/zh/tidb/v7.6/system-variables#tidb_ddl_version-从-v760-版本开始引入) 控制。从 v8.0.0 开始，该系统变量更名为 [`tidb_enable_fast_create_table`](/system-variables.md#tidb_enable_fast_create_table-从-v800-版本开始引入)。
 
-    在 v8.5.0 中，TiDB 加速建表功能成为正式功能 (GA) 并默认开启。在数据迁移或集群初始化时，该功能支持快速创建百万级规模的表，从而显著减少相关操作的耗时。
+    在 v8.5.0 中，TiDB 加速建表功能成为正式功能 (GA) 并默认开启。在数据迁移或集群初始化时，该功能支持快速创建百万级规模的表，从而显著缩短相关操作的耗时。
 
     更多信息，请参考[用户文档](/accelerated-table-creation.md)。
 
