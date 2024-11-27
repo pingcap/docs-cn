@@ -317,7 +317,7 @@ TiDB 8.5.0 为长期支持版本 (Long-Term Support Release, LTS)。
 + TiKV <!--tw@hfxsd: 2 notes-->
 
     - 利用单独的线程来进行副本清理工作，保证 Raft 读写关键路径的延迟稳定 [#16001](https://github.com/tikv/tikv/issues/16001) @[hbisheng](https://github.com/hbisheng)
-    - 提升向量距离函数性能，为向量距离函数添加 SIMD 支持 [#17290](https://github.com/tikv/tikv/issues/17290) @[EricZequan](https://github.com/EricZequan)
+    - 向量距离函数支持 SIMD，从而提升向量距离函数性能 [#17290](https://github.com/tikv/tikv/issues/17290) @[EricZequan](https://github.com/EricZequan)
 
 + PD <!--tw@qiancai: 2 notes-->
 
