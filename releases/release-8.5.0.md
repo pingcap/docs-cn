@@ -377,7 +377,6 @@ TiDB 8.5.0 为长期支持版本 (Long-Term Support Release, LTS)。
     - 修复当执行 `bool like cast(bit as char)` 时 TiKV 崩溃的问题 [#56494](https://github.com/pingcap/tidb/issues/56494) @[lcwangchao](https://github.com/lcwangchao)
     - 修复 `CREATE VIEW` 语句中带有变量或参数时不报错的问题 [#53176](https://github.com/pingcap/tidb/issues/53176) @[mjonss](https://github.com/mjonss)
     - 修复 `JSON_VALID()` 函数执行结果错误的问题 [#56293](https://github.com/pingcap/tidb/issues/56293) @[YangKeao](https://github.com/YangKeao)
-    - 修复 BR 备份分区表会丢失全局索引的问题 [#57469](https://github.com/pingcap/tidb/issues/57469) @[Defined2014](https://github.com/Defined2014)
     - 修复关闭 `tidb_ttl_job_enable` 后 TTL 任务没有被取消的问题 [#57404](https://github.com/pingcap/tidb/issues/57404) @[YangKeao](https://github.com/YangKeao)
     - 修复同时使用 `RANGE COLUMNS` 分区函数和 `utf8mb4_0900_ai_ci` 排序规则时，查询结果错误的问题 [#57261](https://github.com/pingcap/tidb/issues/57261) @[Defined2014](https://github.com/Defined2014)
     - 修复了执行以换行符开头的 prepared statement 会导致数组越界的运行时错误 [#54283](https://github.com/pingcap/tidb/issues/54283) @[Defined2014](https://github.com/Defined2014)
@@ -404,7 +403,6 @@ TiDB 8.5.0 为长期支持版本 (Long-Term Support Release, LTS)。
 
     - (dup): release-7.1.6.md > 错误修复> TiKV - 修复读线程在从 Raft Engine 中的 MemTable 读取过时索引时出现的 panic 问题 [#17383](https://github.com/tikv/tikv/issues/17383) @[LykxSassinator](https://github.com/LykxSassinator)
     - (dup): release-7.5.4.md > 错误修复> TiKV - 修复当大量事务在排队等待同一个 key 上的锁被释放且该 key 被频繁更新时，TiKV 可能因死锁检测压力过大而出现 OOM 的问题 [#17394](https://github.com/tikv/tikv/issues/17394) @[MyonKeminta](https://github.com/MyonKeminta)
-    - 修复读取 raft 日志时使用已失效索引导致 panic 的问题 [#17383](https://github.com/tikv/tikv/issues/17383) @[LykxSassinator](https://github.com/LykxSassinator)
     - 修复资源管控后台任务 CPU 可能被重复统计的错误 [#17603](https://github.com/tikv/tikv/issues/17603) @[glorv](https://github.com/glorv)
     - 修复 CDC 过多内部未完成任务堆积导致 TiKV OOM 的问题 [#17696](https://github.com/tikv/tikv/issues/17696) @[3AceShowHand](https://github.com/3AceShowHand)
     - 修复设置 raft entry max size 过大时写入 batch 可能过大引起抖动的问题 [#17701](https://github.com/tikv/tikv/issues/17701) @[SpadeA-Tang](https://github.com/SpadeA-Tang)
