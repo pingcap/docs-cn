@@ -40,7 +40,7 @@ TiDB 8.5.0 为长期支持版本 (Long-Term Support Release, LTS)。
   </tr>
   <tr>
     <td><a href="https://docs.pingcap.com/zh/tidb/v8.5/tune-region-performance#通过-active-pd-follower-提升-pd-region-信息查询服务的扩展能力">通过 Active PD Follower 提升 PD Region 信息查询服务的扩展能力</a>（从 v8.5.0 开始成为正式功能）**tw@Oreoxmt 2015**</td>
-    <td>TiDB v7.6.0 实验性地引入了 Active PD Follower 特性，允许 PD follower 提供 Region 信息查询服务。在 TiDB 节点数量较多和 Region 数量较多的集群中，该特性可以提升 PD 集群处理 <code>GetRegion</code>、<code>ScanRegions</code> 请求的能力，减轻 PD leader 的 CPU 压力。在 v8.5.0，Active PD Follower 成为正式功能。</td>
+    <td>TiDB v7.6.0 实验性地引入了 Active PD Follower 特性，允许 PD follower 提供 Region 信息查询服务。在 TiDB 节点数较多和 Region 数较多的集群中，该特性可以提升 PD 集群处理 <code>GetRegion</code> 和 <code>ScanRegions</code> 请求的能力，减轻 PD leader 的 CPU 压力。在 v8.5.0，Active PD Follower 成为正式功能。</td>
   </tr>
   <tr>
     <td><a href="https://docs.pingcap.com/zh/tidb/v8.5/system-variables#tidb_enable_instance_plan_cache-从-v840-版本开始引入">实例级执行计划缓存</a>（实验特性，从 v8.4.0 开始引入）</td>
@@ -339,7 +339,7 @@ TiDB 8.5.0 为长期支持版本 (Long-Term Support Release, LTS)。
         - 改善 crypter key 错误时的错误信息 [#56388](https://github.com/pingcap/tidb/issues/56388) @[Tristan1900](https://github.com/Tristan1900)
         - 增大了 BR 创建 DB 时的并发性，改善了恢复时的性能 [#56866](https://github.com/pingcap/tidb/issues/56866) @[Leavrth](https://github.com/Leavrth)
         - 关闭了全量备份时默认开启的 checksum 以提高生产坏境的性能，只在测试环境中继续开启。此 checksum 只是用来内部验证 BR 的内部逻辑，而对验证备份数据完整性的 checksum 依然开启。[#56373](https://github.com/pingcap/tidb/issues/56373) @[Tristan1900](https://github.com/Tristan1900)
-        - 将重制超时从 gRPC 层面细化到 store 层面 [#55526](https://github.com/pingcap/tidb/pull/55526) @[3pointer](https://github.com/3pointer)
+        - 新增针对每个存储节点的连接超时单独追踪和重置机制，提升了对慢节点的处理能力从而避免备份卡住的现象 [#55526](https://github.com/pingcap/tidb/pull/55526) @[3pointer](https://github.com/3pointer)
 
     + TiDB Data Migration (DM) <!--tw@lilin90: 1 note-->
 
