@@ -321,8 +321,8 @@ TiDB 8.5.0 为长期支持版本 (Long-Term Support Release, LTS)。
 
 + PD <!--tw@qiancai: 2 notes-->
 
-    - 支持 tso 微服务模式和非微服务模式间动态切换 [#8477](https://github.com/tikv/pd/issues/8477) @[rleungx](https://github.com/rleungx)
-    - 改进 pd-ctl config 的输出 [#8694](https://github.com/tikv/pd/issues/8694) @[lhy1024](https://github.com/lhy1024)
+    - 支持 `tso` 服务在微服务模式和非微服务模式之间动态切换 [#8477](https://github.com/tikv/pd/issues/8477) @[rleungx](https://github.com/rleungx)
+    - 优化 `pd-ctl config` 输出中部分字段的大小写 [#8694](https://github.com/tikv/pd/issues/8694) @[lhy1024](https://github.com/lhy1024)
 
 + TiFlash <!--tw@Oreoxmt: 3 notes-->
 
