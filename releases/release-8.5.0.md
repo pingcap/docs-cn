@@ -398,6 +398,7 @@ TiDB 8.5.0 为长期支持版本 (Long-Term Support Release, LTS)。
     - 修复无法为带别名的多表删除语句 `DELETE` 创建执行计划绑定的问题 [#56726](https://github.com/pingcap/tidb/issues/56726) @[hawkingrei](https://github.com/hawkingrei)
     - 修复优化器在简化复杂谓词时，由于没有考虑字符集及排序规则，可能导致执行报错的问题 [#56479](https://github.com/pingcap/tidb/issues/56479) @[dash12653](https://github.com/dash12653)
     - 修复 Grafana 中 **Stats Healthy Distribution** 面板的数据可能错误的问题 [#57176](https://github.com/pingcap/tidb/issues/57176) @[hawkingrei](https://github.com/hawkingrei)
+    - 修复在包含聚簇索引的表上执行向量搜索查询时，结果可能错误的问题 [#57627](https://github.com/pingcap/tidb/issues/57627) @[winoros](https://github.com/winoros)
 
 + TiKV <!--tw@Oreoxmt: 6 notes-->
 
