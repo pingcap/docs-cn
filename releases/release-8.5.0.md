@@ -343,7 +343,7 @@ TiDB 8.5.0 为长期支持版本 (Long-Term Support Release, LTS)。
 
     + TiDB Data Migration (DM) <!--tw@lilin90: 1 note-->
 
-        - 在 DM 集群启动时，增加 dm-worker 连接到 dm-master 的重试 [#4287](https://github.com/pingcap/tiflow/issues/4287) @[GMHDBJD](https://github.com/GMHDBJD)
+        - 在 DM 集群启动时，增加 DM-worker 连接到 DM-master 的重试 [#4287](https://github.com/pingcap/tiflow/issues/4287) @[GMHDBJD](https://github.com/GMHDBJD)
 
 ## 错误修复
 
@@ -379,25 +379,25 @@ TiDB 8.5.0 为长期支持版本 (Long-Term Support Release, LTS)。
     - 修复 `JSON_VALID()` 函数返回结果错误的问题 [#56293](https://github.com/pingcap/tidb/issues/56293) @[YangKeao](https://github.com/YangKeao)
     - 修复关闭 `tidb_ttl_job_enable` 变量后 TTL 任务未被取消的问题 [#57404](https://github.com/pingcap/tidb/issues/57404) @[YangKeao](https://github.com/YangKeao) <!--tw@lilin90: the following 20 notes-->
     - 修复同时使用 `RANGE COLUMNS` 分区函数和 `utf8mb4_0900_ai_ci` 排序规则时，查询结果错误的问题 [#57261](https://github.com/pingcap/tidb/issues/57261) @[Defined2014](https://github.com/Defined2014)
-    - 修复了执行以换行符开头的 prepared statement 会导致数组越界的运行时错误 [#54283](https://github.com/pingcap/tidb/issues/54283) @[Defined2014](https://github.com/Defined2014)
-    - 修复了时间/日期函数中设置无效精度的一些问题，比如精度设置得太大 [#56451](https://github.com/pingcap/tidb/issues/56451) @[chagelo](https://github.com/chagelo)
-    - 在 `UPDATE/INSERT/DELETE IGNORE` statement 中忽略掉一些外键错误 [#56678](https://github.com/pingcap/tidb/issues/56678) @[YangKeao](https://github.com/YangKeao)
-    - 修正了查询 slow_query 表时，如果不加时间过滤条件则只会查询最新的慢日志文件的行为 [#56100](https://github.com/pingcap/tidb/issues/56100) @[crazycs520](https://github.com/crazycs520)
-    - 修复了 TTL 表的内存泄漏问题 [#56934](https://github.com/pingcap/tidb/issues/56934) @[lcwangchao](https://github.com/lcwangchao)
-    - 避免使用 non-public 状态的表，该改动可以修复 write_only 状态的表外键约束未生效的一处问题 [#55813](https://github.com/pingcap/tidb/issues/55813) @[YangKeao](https://github.com/YangKeao)
-    - 修复使用 NATURAL JOIN 或者 USING CLAUSE 之后再使用子查询可能会报错的问题 [#53766](https://github.com/pingcap/tidb/issues/53766) @[dash12653](https://github.com/dash12653)
-    - 修复如果 CTE 包含 orderby/limit/distinct 子句并且被另外一个 CTE 的 recursive part 所引用时，可能被错误的 INLINE 导致执行报错的问题 [#56603](https://github.com/pingcap/tidb/issues/56603) @[elsa0520](https://github.com/elsa0520)
-    - 修复 VIEW 中定义的 CTE 被错误 INLINE 的问题 [#56582](https://github.com/pingcap/tidb/issues/56582) @[elsa0520](https://github.com/elsa0520)
+    - 修复执行以换行符开头的 Prepared Statement 会导致数组越界的运行错误 [#54283](https://github.com/pingcap/tidb/issues/54283) @[Defined2014](https://github.com/Defined2014)
+    - 修复 `UTC_TIMESTAMP()` 函数中精度相关的问题，比如精度设置得太大 [#56451](https://github.com/pingcap/tidb/issues/56451) @[chagelo](https://github.com/chagelo)
+    - 修复 `UPDATE`、`INSERT`、`DELETE IGNORE` 语句中没有忽略外键错误的问题 [#56678](https://github.com/pingcap/tidb/issues/56678) @[YangKeao](https://github.com/YangKeao)
+    - 修复查询 `information_schema.cluster_slow_query` 表时，如果不加时间过滤条件，则只会查询最新的慢日志文件的问题 [#56100](https://github.com/pingcap/tidb/issues/56100) @[crazycs520](https://github.com/crazycs520)
+    - 修复 TTL 表的内存泄漏问题 [#56934](https://github.com/pingcap/tidb/issues/56934) @[lcwangchao](https://github.com/lcwangchao)
+    - 修复 `write_only` 状态的表外键约束未生效的问题，避免使用 `non-public` 状态的表 [#55813](https://github.com/pingcap/tidb/issues/55813) @[YangKeao](https://github.com/YangKeao)
+    - 修复使用 `NATURAL JOIN` 或者 `USING CLAUSE` 之后再使用子查询可能会报错的问题 [#53766](https://github.com/pingcap/tidb/issues/53766) @[dash12653](https://github.com/dash12653)
+    - 修复如果 CTE 包含 `ORDER BY`、`LIMIT`、`SELECT DISTINCT` 子句，并且被另外一个 CTE 的 recursive part 所引用时，可能被错误的 INLINE 导致执行报错的问题 [#56603](https://github.com/pingcap/tidb/issues/56603) @[elsa0520](https://github.com/elsa0520)
+    - 修复 `VIEW` 中定义的 CTE 被错误 INLINE 的问题 [#56582](https://github.com/pingcap/tidb/issues/56582) @[elsa0520](https://github.com/elsa0520)
     - 修复 Plan Replayer 导入含有外键的表结构时可能报错的问题 [#56456](https://github.com/pingcap/tidb/issues/56456) @[hawkingrei](https://github.com/hawkingrei)
     - 修复 Plan Replayer 导入含有 Placement Rule 的表结构时可能报错的问题 [#54961](https://github.com/pingcap/tidb/issues/54961) @[hawkingrei](https://github.com/hawkingrei)
-    - 修复使用 ANALYZE 收集含有引用了虚拟生成列的表达式索引的表的统计信息时执行会报错的问题 [#57079](https://github.com/pingcap/tidb/issues/57079) @[hawkingrei](https://github.com/hawkingrei)
-    - 修复 DROP DATABASE 语句没有正确触发统计信息对应变更的问题 [#57227](https://github.com/pingcap/tidb/issues/57227) @[Rustin170506](https://github.com/Rustin170506)
-    - 修复在 CTE 中解析数据库名时，得到错误的数据库名的问题 [#54582](https://github.com/pingcap/tidb/issues/54582) @[hawkingrei](https://github.com/hawkingrei)
-    - 修复在 DUMP STATS 生成 json 的过程中导致直方图上下界数据受损的问题 [#56083](https://github.com/pingcap/tidb/issues/56083) @[hawkingrei](https://github.com/hawkingrei)
+    - 修复使用 `ANALYZE` 收集表的统计信息时，如果该表包含虚拟生成列的表达式索引，执行会报错的问题 [#57079](https://github.com/pingcap/tidb/issues/57079) @[hawkingrei](https://github.com/hawkingrei)
+    - 修复 `DROP DATABASE` 语句没有正确触发统计信息对应变更的问题 [#57227](https://github.com/pingcap/tidb/issues/57227) @[Rustin170506](https://github.com/Rustin170506)
+    - 修复在 CTE 中解析数据库名时，返回错误的数据库名的问题 [#54582](https://github.com/pingcap/tidb/issues/54582) @[hawkingrei](https://github.com/hawkingrei)
+    - 修复在 `DUMP STATS` 生成 JSON 的过程中，直方图上下界数据受损的问题 [#56083](https://github.com/pingcap/tidb/issues/56083) @[hawkingrei](https://github.com/hawkingrei)
     - 修复 EXISTS 子查询的结果继续参与代数运算时，结果和 MySQL 不一致的问题 [#56641](https://github.com/pingcap/tidb/issues/56641) @[windtalker](https://github.com/windtalker)
-    - 修复无法为带别名的多表删除创建计划绑定的问题 [#56726](https://github.com/pingcap/tidb/issues/56726) @[hawkingrei](https://github.com/hawkingrei)
-    - 修复优化器在简化复杂谓词时没有考虑字符集及排序规则导致执行可能报错的问题 [#56479](https://github.com/pingcap/tidb/issues/56479) @[dash12653](https://github.com/dash12653)
-    - 修复 Grafana 中 STATS_HEALTHY 图标可能统计出错的问题 [#57176](https://github.com/pingcap/tidb/issues/57176) @[hawkingrei](https://github.com/hawkingrei)
+    - 修复无法为带别名的多表删除语句 `DELETE` 创建计划绑定的问题 [#56726](https://github.com/pingcap/tidb/issues/56726) @[hawkingrei](https://github.com/hawkingrei)
+    - 修复优化器在简化复杂谓词时，没有考虑字符集及排序规则，导致执行可能报错的问题 [#56479](https://github.com/pingcap/tidb/issues/56479) @[dash12653](https://github.com/dash12653)
+    - 修复 Grafana 中 Stats Healthy Distribution 的数据可能错误的问题 [#57176](https://github.com/pingcap/tidb/issues/57176) @[hawkingrei](https://github.com/hawkingrei)
 
 + TiKV <!--tw@Oreoxmt: 6 notes-->
 
