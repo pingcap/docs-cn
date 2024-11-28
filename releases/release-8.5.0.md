@@ -303,11 +303,11 @@ TiDB 8.5.0 为长期支持版本 (Long-Term Support Release, LTS)。
 
     - 提升关闭分布式执行框架时，`ADD INDEX` 加速功能对任务取消的响应速度 [#56017](https://github.com/pingcap/tidb/issues/56017) @[lance6716](https://github.com/lance6716)
     - 提升小表加索引的速度 [#54230](https://github.com/pingcap/tidb/issues/54230) @[tangenta](https://github.com/tangenta)
-    - 增加系统变量 `tidb_ddl_reorg_max_write_speed` 来限制加索引时 ingest 阶段速度上限 [#57156](https://github.com/pingcap/tidb/issues/57156) @[CbcWestwolf](https://github.com/CbcWestwolf)
+    - 新增系统变量 `tidb_ddl_reorg_max_write_speed`，用于限制加索引时 ingest 阶段速度的上限 [#57156](https://github.com/pingcap/tidb/issues/57156) @[CbcWestwolf](https://github.com/CbcWestwolf)
     - 提升某些情况下查询 `information_schema.tables` 的性能 [#57295](https://github.com/pingcap/tidb/issues/57295) @[tangenta](https://github.com/tangenta)
     - 支持动态调整更多 DDL 任务参数 [#57526](https://github.com/pingcap/tidb/issues/57526) @[fzzf678](https://github.com/fzzf678)
     - 支持全局索引包含分区表达式中的所有列 [#56230](https://github.com/pingcap/tidb/issues/56230) @[Defined2014](https://github.com/Defined2014)
-    - 支持 List 分区表在 Range 查询的场景下进行分区裁剪 [#56673](https://github.com/pingcap/tidb/issues/56673) @[Defined2014](https://github.com/Defined2014)
+    - 支持 List 分区表在 Range 查询的场景中进行分区裁剪 [#56673](https://github.com/pingcap/tidb/issues/56673) @[Defined2014](https://github.com/Defined2014)
     - 默认开启 FixControl#46177，修复在某些情况下错误地选择了全表扫描，而没有选择索引范围扫描的问题 [#46177](https://github.com/pingcap/tidb/issues/46177) @[terry1purcell](https://github.com/terry1purcell)
     - 改进内部估算逻辑，使其能够更充分地利用多列多值索引的统计信息，提升某些涉及多值索引的查询的估算精度 [#56915](https://github.com/pingcap/tidb/issues/56915) @[time-and-fate](https://github.com/time-and-fate)
     - 提高特定情况下全表扫描的代价估算，减少错误的选择全表扫描的概率 [#57085](https://github.com/pingcap/tidb/issues/57085) @[terry1purcell](https://github.com/terry1purcell)
@@ -316,8 +316,8 @@ TiDB 8.5.0 为长期支持版本 (Long-Term Support Release, LTS)。
 
 + TiKV <!--tw@hfxsd: 2 notes-->
 
-    - 利用单独的线程来进行副本清理工作，保证 Raft 读写关键路径的延迟稳定 [#16001](https://github.com/tikv/tikv/issues/16001) @[hbisheng](https://github.com/hbisheng)
-    - 向量距离函数支持 SIMD，从而提升向量距离函数性能 [#17290](https://github.com/tikv/tikv/issues/17290) @[EricZequan](https://github.com/EricZequan)
+    - 利用单独的线程清理副本，保证 Raft 读写关键路径的延迟稳定 [#16001](https://github.com/tikv/tikv/issues/16001) @[hbisheng](https://github.com/hbisheng)
+    - 向量距离函数支持 SIMD 以提升性能 [#17290](https://github.com/tikv/tikv/issues/17290) @[EricZequan](https://github.com/EricZequan)
 
 + PD <!--tw@qiancai: 2 notes-->
 
@@ -431,7 +431,7 @@ TiDB 8.5.0 为长期支持版本 (Long-Term Support Release, LTS)。
 
         - 修复备份过程中还未备份完成的 range 空洞过多时出现 OOM 的问题，减少了预先分配的内存 [#53529](https://github.com/pingcap/tidb/issues/53529) @[Leavrth](https://github.com/Leavrth)
         - 修复备份时无法备份全局索引的问题 [#57469](https://github.com/pingcap/tidb/issues/57469) @[Defined2014](https://github.com/Defined2014)]
-        - 修复日志可能打印出加密信息的问题 [#57585](https://github.com/pingcap/tidb/issues/57585) @[kennytm](https://github.com/kennytm)
+        - 修复日志可能打印加密信息的问题 [#57585](https://github.com/pingcap/tidb/issues/57585) @[kennytm](https://github.com/kennytm)
         - 修复 Advancer 无法处理锁冲突的问题 [#57134](https://github.com/pingcap/tidb/issues/57134) @[3pointer](https://github.com/3pointer)
 
     + TiCDC <!--tw@Oreoxmt: 3 notes-->
