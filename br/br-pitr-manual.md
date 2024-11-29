@@ -394,34 +394,3 @@ Restore KV Files <--------------------------------------------------------------
 > - 第一次恢复集群时，必须指定全量快照数据，否则可能因为 Table ID 重写规则，导致部分新创建的表数据不正确。
 > - 不支持重复恢复某段时间区间的日志，如多次重复恢复 `[t1=10, t2=20)` 区间的日志数据，可能会造成恢复后的数据不正确。
 > - 多次恢复不同时间区间的日志时，需保证恢复日志的连续性。如先后恢复 `[t1, t2)`、`[t2, t3)` 和 `[t3, t4)` 三个区间的日志可以保证正确性，而在恢复 `[t1, t2)` 后跳过 `[t2, t3)` 直接恢复 `[t3, t4)` 的区间可能导致恢复之后的数据不正确。
-<<<<<<< HEAD
-=======
-
-### 恢复加密的日志备份数据
-
-要恢复加密的日志备份数据，你需要在恢复命令中传入相应的解密参数。解密参数需要与加密时使用的参数一致。如果解密算法或密钥不正确，则无法恢复数据。
-
-示例如下：
-
-```shell
-tiup br restore point --pd="${PD_IP}:2379"
---storage='s3://backup-101/logbackup?access-key=${ACCESS-KEY}&secret-access-key=${SECRET-ACCESS-KEY}'
---full-backup-storage='s3://backup-101/snapshot-202205120000?access-key=${ACCESS-KEY}&secret-access-key=${SECRET-ACCESS-KEY}'
---crypter.method aes128-ctr
---crypter.key 0123456789abcdef0123456789abcdef
---log.crypter.method aes128-ctr
---log.crypter.key 0123456789abcdef0123456789abcdef
-```
-
-如果日志备份是通过主密钥加密的，则可以使用以下命令进行解密恢复：
-
-```shell
-tiup br restore point --pd="${PD_IP}:2379"
---storage='s3://backup-101/logbackup?access-key=${ACCESS-KEY}&secret-access-key=${SECRET-ACCESS-KEY}'
---full-backup-storage='s3://backup-101/snapshot-202205120000?access-key=${ACCESS-KEY}&secret-access-key=${SECRET-ACCESS-KEY}'
---crypter.method aes128-ctr
---crypter.key 0123456789abcdef0123456789abcdef
---master-key-crypter-method aes128-ctr
---master-key "local:///path/to/master.key"
-```
->>>>>>> 86270f9b44 (br-pitr-manual: remove an unnecessary quotation mark (#19175))
