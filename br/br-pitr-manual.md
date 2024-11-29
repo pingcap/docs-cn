@@ -356,7 +356,7 @@ Global Flags:
 
 ```shell
 tiup br log truncate --until='2022-07-26 21:20:00+0800' \
-–-storage='s3://backup-101/logbackup?access-key=${access-key}&secret-access-key=${secret-access-key}'
+  –-storage='s3://backup-101/logbackup?access-key=${access-key}&secret-access-key=${secret-access-key}'
 ```
 
 该子命令运行后输出以下信息：
