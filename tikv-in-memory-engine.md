@@ -5,7 +5,7 @@ summary: 了解内存引擎的适用场景和工作原理，使用内存引擎�
 
 # TiKV MVCC 内存引擎
 
-TiKV MVCC 内存引擎 (In-memory Engine, IME) 主要用于加速需要扫描大量 MVCC 历史版本的查询，即[查询扫描的总共版本数量（total_keys）远大于处理的版本数量（processed_keys）](/analyze-slow-queries.md#过期-MVCC-版本和-key-过多)。
+TiKV MVCC 内存引擎 (In-memory Engine, IME) 主要用于加速需要扫描大量 MVCC 历史版本的查询，即[查询扫描的总共版本数量（total_keys）远大于处理的版本数量（processed_keys）](/analyze-slow-queries.md#过期-mvcc-版本和-key-过多)。
 
 TiKV MVCC 内存引擎适用于以下场景：
 
