@@ -274,7 +274,7 @@ TiDB 8.5.0 为长期支持版本 (Long-Term Support Release, LTS)。
 | 配置文件或组件 | 配置项 | 修改类型 | 描述 |
 | -------- | -------- | -------- | -------- |
 | TiKV | [`raft-client-queue-size`](/tikv-configuration-file.md#raft-client-queue-size) | 修改 | 默认值从 `8192` 修改为 `16384`。|
-| TiDB | [`deprecate-integer-display-length`](tidb-configuration-file.md#deprecate-integer-display-length) | 修改 | 默认值从 `false` 修改为 `true`。 |
+| TiDB | [`deprecate-integer-display-length`](/tidb-configuration-file.md#deprecate-integer-display-length) | 修改 | 默认值从 `false` 修改为 `true`。 |
 |  |  |  |  |
 
 ### 系统表
