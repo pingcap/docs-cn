@@ -5,7 +5,7 @@ summary: 了解内存引擎的适用场景和工作原理，使用内存引擎�
 
 # TiKV MVCC 内存引擎
 
-TiKV MVCC 内存引擎 (In-memory Engine, IME) 主要用于加速需要扫描大量 MVCC 历史版本的查询，即[查询扫描的总共版本数量（total_keys）远大于处理的版本数量（processed_keys）](/analyze-slow-queries.md#过期-mvcc-版本和-key-过多)。
+TiKV MVCC 内存引擎 (In-Memory Engine, IME) 主要用于加速需要扫描大量 MVCC 历史版本的查询，即[查询扫描的总共版本数量 (`total_keys`) 远大于处理的版本数量 (`processed_keys`)](/analyze-slow-queries.md#过期-mvcc-版本和-key-过多)。
 
 TiKV MVCC 内存引擎适用于以下场景：
 
@@ -33,7 +33,7 @@ TiKV MVCC 内存引擎在内存中缓存最近写入的 MVCC 版本，并实现�
 
 ```toml
 [in-memory-engine]
-# 该参数为 In-memory Engine 功能的开关，默认为 false，调整为 true 即可开启。
+# 该参数为 In-Memory Engine 功能的开关，默认为 false，调整为 true 即可开启。
 enable = false
 #
 # 该参数控制 In-Memory Engine 可使用的内存大小。默认值为系统内存的 10%，同时最大值为 5 GiB，
@@ -41,24 +41,24 @@ enable = false
 # 注意：当 In-Memory Engine 开启后，block-cache.capacity 会减少 10%。
 #capacity = "5GiB"
 #
-# 该参数控制 In-memory Engine GC 缓存 MVCC 的版本的时间间隔。
+# 该参数控制 In-Memory Engine GC 缓存 MVCC 的版本的时间间隔。
 # 默认为 3 分钟，代表每 3 分钟 GC 一次缓存的 MVCC 版本。
-# 调小该参数可加快 GC 频率，减少 MVCC 记录，但会增加 GC CPU 的消耗和增加 In-memory Engine 失效的概率。
+# 调小该参数可加快 GC 频率，减少 MVCC 记录，但会增加 GC CPU 的消耗和增加 In-Memory Engine 失效的概率。
 #gc-run-interval = "3m"
 #
-# 该参数控制 In-memory Engine 选取加载 Region 时 MVCC 读放大的阈值。
-# 默认为 10，表示在某个 Region 中读一行记录需要处理的 MVCC 版本数量超过 10 个时，将有可能会被加载到 In-memory Engine 中。
+# 该参数控制 In-Memory Engine 选取加载 Region 时 MVCC 读放大的阈值。
+# 默认为 10，表示在某个 Region 中读一行记录需要处理的 MVCC 版本数量超过 10 个时，将有可能会被加载到 In-Memory Engine 中。
 #mvcc-amplification-threshold = 10
 ```
 
 > **注意：**
 >
-> + In-memory Engine 默认关闭，并且从关闭状态修改为开启状态后，需要重启 TiKV。
+> + In-Memory Engine 默认关闭，并且从关闭状态修改为开启状态后，需要重启 TiKV。
 > + 除 `enable` 之外，其他配置都可以动态调整。
 
 ### 自动加载
 
-在开启 In-memory Engine 之后，会根据 Region 的读流量和 MVCC 放大程度，选择要自动加载的 Region。具体流程如下：
+在开启 In-Memory Engine 之后，会根据 Region 的读流量和 MVCC 放大程度，选择要自动加载的 Region。具体流程如下：
 
 1. Region 按照最近时间段的 next  (RocksDB Iterator next API) 和 prev (RocksDB Iterator next API) 次数进行排序
 2. 使用 `mvcc-amplification-threshold` （默认为 `10`，mvcc amplification 衡量读放大程度，计算公式为 (next + prev) / processed_keys）对 Region 进行过滤。
@@ -78,11 +78,11 @@ IME 也会定期进行 Region 的驱逐工作。具体流程如下：
 
 ## FAQ
 
-### In-memory Engine 能否减少写入延时，提高写入吞吐？
+### In-Memory Engine 能否减少写入延时，提高写入吞吐？
 
-不能，In-memory Engine 只能加速扫描了大量 MVCC 版本的读请求。
+不能，In-Memory Engine 只能加速扫描了大量 MVCC 版本的读请求。
 
-### 如何判断 In-memory Engine 能否改善我的场景？
+### 如何判断 In-Memory Engine 能否改善我的场景？
 
 可以通过执行以下 SQL 语句查看是否存在 `Total_keys` 远大于 `Process_keys` 的慢查询。
 
