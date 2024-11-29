@@ -2521,10 +2521,10 @@ TiKV MVCC 内存引擎 (In-memory Engine) 在 TiKV 存储层相关的配置项�
 
 > **注意：**
 >
-> + 当 in-memory-engine 开启后，block-cache.capacity 会自动减少 10%。
-> + 手动配置 `capacity` 时，block-cache.capacity 不会自动减少，需手动调整合适的值以避免 OOM。
+> + 当 in-memory-engine 开启后，`block-cache.capacity` 会自动减少 10%。
+> + 手动配置 `capacity` 时，`block-cache.capacity` 不会自动减少，需手动调整合适的值以避免 OOM。
 
-+ 配置内存引擎可使用的内存大小。最大值为 5 GiB。你可以手动配置使用更多内存
++ 配置内存引擎可使用的内存大小。最大值为 5 GiB。你可以手动配置使用更多内存。
 + 默认值：系统内存的 10%。
 
 ### `gc-run-interval` <span class="version-mark">从 v8.5.0 版本开始引入</span>
