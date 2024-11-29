@@ -36,9 +36,9 @@ TiKV MVCC 内存引擎在内存中缓存最近写入的 MVCC 版本，并实现�
 # 该参数为 In-memory Engine 功能的开关，默认为 false，调整为 true 即可开启。
 enable = false
 #
-# 该参数控制 In-memory Engine 可使用的内存大小。默认值为系统内存的 10%，同时最大值为 5 GiB，
+# 该参数控制 In-Memory Engine 可使用的内存大小。默认值为系统内存的 10%，同时最大值为 5 GiB，
 # 可通过手动配置使用更多内存。
-# 注意：当 in-memory-engine 开启后，block-cache.capacity 会减少 10%。
+# 注意：当 In-Memory Engine 开启后，block-cache.capacity 会减少 10%。
 #capacity = "5GiB"
 #
 # 该参数控制 In-memory Engine GC 缓存 MVCC 的版本的时间间隔。
