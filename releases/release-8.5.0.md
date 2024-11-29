@@ -339,7 +339,7 @@ TiDB 8.5.0 为长期支持版本 (Long-Term Support Release, LTS)。
         - 优化加密密钥 `--crypter.key` 的错误提示信息 [#56388](https://github.com/pingcap/tidb/issues/56388) @[Tristan1900](https://github.com/Tristan1900)
         - 增加 BR 创建数据库时的并发度，以提升数据恢复性能 [#56866](https://github.com/pingcap/tidb/issues/56866) @[Leavrth](https://github.com/Leavrth)
         - 在进行全量备份时，默认关闭用于 BR 内部验证逻辑的 checksum (`—-checksum=false`) 以提升备份性能，验证备份数据完整性的 checksum 仍然保持开启 [#56373](https://github.com/pingcap/tidb/issues/56373) @[Tristan1900](https://github.com/Tristan1900)
-        - 新增针对每个存储节点的连接超时独立追踪和重置机制，增强了对慢节点的处理能力，从而避免备份卡住的问题 [#57666](https://github.com/pingcap/tidb/issues/57666) @[3pointer](https://github.com/3pointer)
+        - 新增对每个存储节点的连接超时进行独立追踪和重置的机制，增强了对慢节点的处理能力，从而避免备份卡住的问题 [#57666](https://github.com/pingcap/tidb/issues/57666) @[3pointer](https://github.com/3pointer)
 
     + TiDB Data Migration (DM) <!--tw@lilin90: 1 note-->
 
@@ -406,7 +406,7 @@ TiDB 8.5.0 为长期支持版本 (Long-Term Support Release, LTS)。
     - (dup): release-7.5.4.md > 错误修复> TiKV - 修复当大量事务在排队等待同一个 key 上的锁被释放且该 key 被频繁更新时，TiKV 可能因死锁检测压力过大而出现 OOM 的问题 [#17394](https://github.com/tikv/tikv/issues/17394) @[MyonKeminta](https://github.com/MyonKeminta)
     - 修复资源管控后台任务 CPU 使用率可能被重复统计的问题 [#17603](https://github.com/tikv/tikv/issues/17603) @[glorv](https://github.com/glorv)
     - 修复由于 CDC 内部任务堆积过多导致 TiKV OOM 的问题 [#17696](https://github.com/tikv/tikv/issues/17696) @[3AceShowHand](https://github.com/3AceShowHand)
-    - 修复 `raft-entry-max-size` 设置过高时，写入 batch 可能过大引起抖动的问题 [#17701](https://github.com/tikv/tikv/issues/17701) @[SpadeA-Tang](https://github.com/SpadeA-Tang)
+    - 修复 `raft-entry-max-size` 设置过高时，写入 batch 可能过大引起性能抖动的问题 [#17701](https://github.com/tikv/tikv/issues/17701) @[SpadeA-Tang](https://github.com/SpadeA-Tang)
     - 修复 Region Split 后可能无法快速选出 Leader 的问题 [#17602](https://github.com/tikv/tikv/issues/17602) @[LykxSassinator](https://github.com/LykxSassinator)
     - 修复使用 `RADIANS()` 或 `DEGREES()` 函数时可能导致 TiKV panic 的问题 [#17852](https://github.com/tikv/tikv/issues/17852) @[gengliqi](https://github.com/gengliqi)
     - 修复所有休眠的 Region 被集中唤醒时，可能导致写入抖动的问题 [#17101](https://github.com/tikv/tikv/issues/17101) @[hhwyt](https://github.com/hhwyt)
@@ -439,7 +439,7 @@ TiDB 8.5.0 为长期支持版本 (Long-Term Support Release, LTS)。
 
         - 修复使用 Debezium 协议时 Kafka 消息中缺少 Key 的问题 [#1799](https://github.com/pingcap/tiflow/issues/1799) @[wk989898](https://github.com/wk989898)
         - 修复 redo 模块无法正确上报错误的问题 [#11744](https://github.com/pingcap/tiflow/issues/11744) @[CharlesCheung96](https://github.com/CharlesCheung96)
-        - 修复 TiDB Owner 变更导致 DDL 任务的 schema 版本出现非递增时，TiCDC 错误丢弃 DDL 任务的问题 [#11714](https://github.com/pingcap/tiflow/issues/11714) @[wlwilliamx](https://github.com/wlwilliamx)
+        - 修复 TiDB DDL owner 变更导致 DDL 任务的 schema 版本出现非递增时，TiCDC 错误丢弃 DDL 任务的问题 [#11714](https://github.com/pingcap/tiflow/issues/11714) @[wlwilliamx](https://github.com/wlwilliamx)
 
     + TiDB Lightning <!--tw@Oreoxmt: 1 note-->
 
