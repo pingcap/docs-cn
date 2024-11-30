@@ -7,7 +7,7 @@ summary: 了解 TiDB 8.5.0 版本的新功能、兼容性变更、改进提升�
 
 <EmailSubscriptionWrapper />
 
-发版日期：2024 年 5 月 24 日
+发版日期：2024 年 x 月 x 日
 
 TiDB 版本：8.5.0
 
@@ -135,12 +135,6 @@ TiDB 8.5.0 为长期支持版本 (Long-Term Support Release, LTS)。
 
 ### 性能
 
-* 功能标题 [#issue号](链接) @[贡献者 GitHub ID](链接) **tw@xxx** <!--1234-->
-
-    功能描述（需要包含这个功能是什么、在什么场景下对用户有什么价值、怎么用）
-
-    更多信息，请参考[用户文档](链接)。
-
 * TiDB 加速建表成为正式功能 (GA)，显著缩短数据迁移和集群初始化时间 [#50052](https://github.com/pingcap/tidb/issues/50052) @[D3Hunter](https://github.com/D3Hunter) @[gmhdbjd](https://github.com/gmhdbjd) tw@Oreoxmt <!--1977-->
 
     TiDB v7.6.0 引入加速建表功能作为实验特性，并通过系统变量 [`tidb_ddl_version`](https://docs.pingcap.com/zh/tidb/v7.6/system-variables#tidb_ddl_version-从-v760-版本开始引入) 控制。从 v8.0.0 开始，该系统变量更名为 [`tidb_enable_fast_create_table`](/system-variables.md#tidb_enable_fast_create_table-从-v800-版本开始引入)。
@@ -165,21 +159,7 @@ TiDB 8.5.0 为长期支持版本 (Long-Term Support Release, LTS)。
 
     更多信息，请参考[用户文档](/pd-control.md)。
 
-### 高可用
-
-* 功能标题 [#issue号](链接) @[贡献者 GitHub ID](链接) **tw@xxx** <!--1234-->
-
-    功能描述（需要包含这个功能是什么、在什么场景下对用户有什么价值、怎么用）
-
-    更多信息，请参考[用户文档](链接)。
-
 ### SQL 功能
-
-* 功能标题 [#issue号](链接) @[贡献者 GitHub ID](链接) **tw@xxx** <!--1234-->
-
-    功能描述（需要包含这个功能是什么、在什么场景下对用户有什么价值、怎么用）
-
-    更多信息，请参考[用户文档](链接)。
 
 * 外键成为正式功能 (GA) [#36982](https://github.com/pingcap/tidb/issues/36982) @[YangKeao](https://github.com/YangKeao) @[crazycs520](https://github.com/crazycs520) tw@lilin90 <!--1894-->
 
@@ -198,22 +178,6 @@ TiDB 8.5.0 为长期支持版本 (Long-Term Support Release, LTS)。
     - `ADMIN ALTER DDL JOBS job_id MAX_WRITE_SPEED = '200MiB';`：在线调整写入每个 TiKV 节点的索引数据流量大小
 
   更多信息，请参考[用户文档](/sql-statements/sql-statement-admin-alter-ddl.md)。
-
-### 数据库管理
-
-* 功能标题 [#issue号](链接) @[贡献者 GitHub ID](链接) **tw@xxx** <!--1234-->
-
-    功能描述（需要包含这个功能是什么、在什么场景下对用户有什么价值、怎么用）
-
-    更多信息，请参考[用户文档](链接)。
-
-### 可观测性
-
-* 功能标题 [#issue号](链接) @[贡献者 GitHub ID](链接) **tw@xxx** <!--1234-->
-
-    功能描述（需要包含这个功能是什么、在什么场景下对用户有什么价值、怎么用）
-
-    更多信息，请参考[用户文档](链接)。
 
 ### 安全
 
@@ -239,14 +203,6 @@ TiDB 8.5.0 为长期支持版本 (Long-Term Support Release, LTS)。
 
     更多信息，请参考[用户文档](/encryption-at-rest.md#tikv-静态加密)。
 
-### 数据迁移
-
-* 功能标题 [#issue号](链接) @[贡献者 GitHub ID](链接) **tw@xxx** <!--1234-->
-
-    功能描述（需要包含这个功能是什么、在什么场景下对用户有什么价值、怎么用）
-
-    更多信息，请参考[用户文档](链接)。
-
 ## 兼容性变更
 
 > **注意：**
@@ -258,32 +214,19 @@ TiDB 8.5.0 为长期支持版本 (Long-Term Support Release, LTS)。
 - 为了与 MySQL 兼容，在非严格模式下向非 `NULL` 列插入 `NULL` 值会报错 [#55457](https://github.com/pingcap/tidb/issues/55457) @[joechenrh](https://github.com/joechenrh)
 - 不再支持 `ALTER TABLE ... DROP FOREIGN KEY IF EXISTS ...` 语句 [#56703](https://github.com/pingcap/tidb/pull/56703) @[YangKeao](https://github.com/YangKeao)
 
-### MySQL 兼容性
-
 ### 系统变量
 
-| 变量名  | 修改类型（包括新增/修改/删除）    | 描述 |
+| 变量名  | 修改类型    | 描述 |
 |--------|------------------------------|------|
-|tidb_ddl_reorg_max_write_speed | Newly added |Used to control the speed at which TiDB writes index data to a single TiKV node. For example, setting the value to 200 MiB limits the maximum write speed to 200 MiB/s. |
+| [`tidb_ddl_reorg_max_write_speed`](/system-variables.md#tidb_ddl_reorg_max_write_speed-从-v850-版本开始引入) | 新增 | 限制每个 TiKV 节点写入的带宽，仅在开启添加索引加速功能时生效（由变量 [`tidb_ddl_enable_fast_reorg`](#tidb_ddl_enable_fast_reorg-从-v630-版本开始引入) 控制）。例如，当该值设置为 `200MiB` 时，最大写入速度限制为 200 MiB/s。 |
 | [`tidb_enable_fast_create_table`](/system-variables.md#tidb_enable_fast_create_table-从-v800-版本开始引入) | 修改 | 经进一步的测试后，默认值从 `OFF` 修改为 `ON`，即默认开启 [TiDB 加速建表](/accelerated-table-creation.md)。|
-|        |                              |      |
-|        |                              |      |
 
 ### 配置参数
 
 | 配置文件或组件 | 配置项 | 修改类型 | 描述 |
 | -------- | -------- | -------- | -------- |
 | TiKV | [`raft-client-queue-size`](/tikv-configuration-file.md#raft-client-queue-size) | 修改 | 默认值从 `8192` 修改为 `16384`。|
-| TiDB | [`deprecate-integer-display-length`](/tidb-configuration-file.md#deprecate-integer-display-length) | 修改 | 默认值从 `false` 修改为 `true`。 |
-|  |  |  |  |
-
-### 系统表
-
-### 其他
-
-## 离线包变更
-
-## 移除功能
+| TiDB | [`deprecate-integer-display-length`](/tidb-configuration-file.md#deprecate-integer-display-length) | 修改 | 从 v8.5.0 开始，整数显示宽度功能已废弃，该配置项的默认值从 `false` 修改为 `true`。 |
 
 ## 废弃功能
 
@@ -450,4 +393,8 @@ TiDB 8.5.0 为长期支持版本 (Long-Term Support Release, LTS)。
 
 感谢来自 TiDB 社区的贡献者们：
 
-- [Contributor-GitHub-ID](id-link)
+- [dash12653](https://github.com/dash12653)（首次贡献者）
+- [chagelo](https://github.com/chagelo)（首次贡献者）
+- [LindaSummer](https://github.com/LindaSummer)
+- [songzhibin97](https://github.com/songzhibin97)
+- [Hexilee](https://github.com/Hexilee)
