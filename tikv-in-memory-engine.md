@@ -78,11 +78,11 @@ mvcc-amplification-threshold = 10
 
 ## FAQ
 
-### In-Memory Engine 能否减少写入延时，提高写入吞吐？
+### 内存引擎能否减少写入延时，提高写入吞吐？
 
-不能，In-Memory Engine 只能加速扫描了大量 MVCC 版本的读请求。
+不能，内存引擎只能加速扫描了大量 MVCC 版本的读请求。
 
-### 如何判断 In-Memory Engine 能否改善我的场景？
+### 如何判断内存引擎能否改善我的场景？
 
 可以通过执行以下 SQL 语句查看是否存在 `Total_keys` 远大于 `Process_keys` 的慢查询。
 
