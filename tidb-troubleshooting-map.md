@@ -408,7 +408,7 @@ TiDB 支持完整的分布式事务，自 v3.0 版本起，提供乐观事务与
 
 ### 6.2 TiDB Lightning 问题
 
-- 6.2.1 TiDB Lightning 是快速的全量数据导入工具，见 [TiDB Lightning on GitHub](https://github.com/pingcap/tidb/tree/master/lightning)。
+- 6.2.1 TiDB Lightning 是快速的全量数据导入工具，见 [TiDB Lightning on GitHub](https://github.com/pingcap/tidb/tree/release-8.5/lightning)。
 
 - 6.2.2 导入速度太慢。
 

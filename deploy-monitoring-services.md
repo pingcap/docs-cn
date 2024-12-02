@@ -120,12 +120,12 @@ scrape_configs:
 
 如需开启 TiDB、PD 和 TiKV 等组件的报警规则，请单独下载组件对应的报警规则文件，并在 Prometheus 的配置文件中添加报警规则文件的配置。
 
-- TiDB：[`tidb.rules.yml`](https://github.com/pingcap/tidb/blob/master/pkg/metrics/alertmanager/tidb.rules.yml)
-- PD：[`pd.rules.yml`](https://github.com/tikv/pd/blob/master/metrics/alertmanager/pd.rules.yml)
-- TiKV：[`tikv.rules.yml`](https://github.com/tikv/tikv/blob/master/metrics/alertmanager/tikv.rules.yml)
-- TiFlash：[`tiflash.rules.yml`](https://github.com/pingcap/tiflash/blob/master/metrics/alertmanager/tiflash.rules.yml)
-- TiCDC：[`ticdc.rules.yml`](https://github.com/pingcap/tiflow/blob/master/metrics/alertmanager/ticdc.rules.yml)
-- TiDB Lightning：[`lightning.rules.yml`](https://github.com/pingcap/tidb/blob/master/br/metrics/alertmanager/lightning.rules.yml)
+- TiDB：[`tidb.rules.yml`](https://github.com/pingcap/tidb/blob/release-8.5/pkg/metrics/alertmanager/tidb.rules.yml)
+- PD：[`pd.rules.yml`](https://github.com/tikv/pd/blob/release-8.5/metrics/alertmanager/pd.rules.yml)
+- TiKV：[`tikv.rules.yml`](https://github.com/tikv/tikv/blob/release-8.5/metrics/alertmanager/tikv.rules.yml)
+- TiFlash：[`tiflash.rules.yml`](https://github.com/pingcap/tiflash/blob/release-8.5/metrics/alertmanager/tiflash.rules.yml)
+- TiCDC：[`ticdc.rules.yml`](https://github.com/pingcap/tiflow/blob/release-8.5/metrics/alertmanager/ticdc.rules.yml)
+- TiDB Lightning：[`lightning.rules.yml`](https://github.com/pingcap/tidb/blob/release-8.5/br/metrics/alertmanager/lightning.rules.yml)
 
 ```ini
 rule_files:
@@ -250,7 +250,7 @@ url = https://grafana.net
 
 2. 在侧边栏菜单中，依次点击 **Dashboards** > **Import** 打开 **Import Dashboard** 窗口。
 
-3. 点击 **Upload .json File** 上传对应的 JSON 文件（从 [pingcap/tidb](https://github.com/pingcap/tidb/tree/master/pkg/metrics/grafana)、[tikv/tikv](https://github.com/tikv/tikv/tree/master/metrics/grafana) 和 [tikv/pd](https://github.com/tikv/pd/tree/master/metrics/grafana) 下载 TiDB Grafana 配置文件）。
+3. 点击 **Upload .json File** 上传对应的 JSON 文件（从 [pingcap/tidb](https://github.com/pingcap/tidb/tree/release-8.5/pkg/metrics/grafana)、[tikv/tikv](https://github.com/tikv/tikv/tree/release-8.5/metrics/grafana) 和 [tikv/pd](https://github.com/tikv/pd/tree/release-8.5/metrics/grafana) 下载 TiDB Grafana 配置文件）。
 
     > **注意：**
     >
