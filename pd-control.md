@@ -470,6 +470,123 @@ config show cluster-version
     config set flow-round-by-digit 4
     ```
 
+#### `config [show | set service-middleware <option> [<key> <value> | <label> <qps|concurrency> <value>]]`
+
+`service-middleware` 是 PD 中的一个配置模块，主要用于管理和控制 PD 服务的中间件功能，如审计日志、请求速率限制和并发限制等。从 v8.5.0 起，PD 支持通过 `pd-ctl` 修改 `service-middleware` 的以下配置：
+
+- `audit`：控制是否开启 PD 处理 HTTP 请求的审计日志（默认开启）。开启时，`service-middleware` 会在 PD 日志中记录 HTTP 请求的相关信息。
+- `rate-limit`：用于限制 PD 处理 HTTP API 请求的最大速率和最大并发。
+- `grpc-rate-limit`：用于限制 PD 处理 gRPC API 请求的最大速率和最大并发。
+
+> **注意：**
+>
+> 为了避免请求速率限制和并发限制对 PD 性能的影响，不建议修改 `service-middleware` 中的配置。
+
+显示 `service-middleware` 的相关 config 信息：
+
+```bash
+config show service-middleware
+```
+
+```bash
+{
+  "audit": {
+    "enable-audit": "true"
+  },
+  "rate-limit": {
+    "enable-rate-limit": "true",
+    "limiter-config": {}
+  },
+  "grpc-rate-limit": {
+    "enable-grpc-rate-limit": "true",
+    "grpc-limiter-config": {}
+  }
+}
+```
+
+`service-middleware audit` 用于开启或关闭 HTTP 请求的日志审计功能。以关闭该功能为例：
+
+```bash
+config set service-middleware audit enable-audit false
+```
+
+`service-middleware grpc-rate-limit` 用于控制以下 gRPC API 请求的最大速率和并发度：
+
+- `GetRegion`：获取指定 Region 的信息
+- `GetStore`：获取指定 Store 的信息
+- `GetMembers`：获取 PD 集群成员的信息
+
+控制某个 gRPC API 请求的最大速率，以 `GetRegion` API 请求为例：
+
+```bash
+config set service-middleware grpc-rate-limit GetRegion qps 100
+```
+
+控制某个 gRPC API 请求的最大并发度，以 `GetRegion` API 请求为例：
+
+```bash
+config set service-middleware grpc-rate-limit GetRegion concurrency 10
+```
+
+查看修改后的配置：
+
+```bash
+config show service-middleware
+```
+
+```bash
+{
+  "audit": {
+    "enable-audit": "true"
+  },
+  "rate-limit": {
+    "enable-rate-limit": "true",
+    "limiter-config": {}
+  },
+  "grpc-rate-limit": {
+    "enable-grpc-rate-limit": "true",
+    "grpc-limiter-config": {
+      "GetRegion": {
+        "QPS": 100,
+        "QPSBurst": 100, // 根据 QPS 设置自动调整，仅作展示
+        "ConcurrencyLimit": 10
+      }
+    }
+  }
+}
+```
+
+重置上述设置：
+
+```bash
+config set service-middleware grpc-rate-limit GetRegion qps 0
+config set service-middleware grpc-rate-limit GetRegion concurrency 0
+```
+
+`service-middleware rate-limit` 用于控制以下 HTTP API 请求的最大速率和并发度：
+
+- `GetRegion`：获取指定 Region 的信息
+- `GetStore`：获取指定 Store 的信息
+
+控制某个 HTTP API 请求的最大速率，以 `GetRegion` API 请求为例：
+
+```bash
+config set service-middleware rate-limit GetRegion qps 100
+```
+
+控制某个 HTTP API 请求的最大并发度，以 `GetRegion` API 请求为例：
+
+```bash
+config set service-middleware rate-limit GetRegion concurrency 10
+```
+
+重置上述设置：
+
+```bash
+config set service-middleware rate-limit GetRegion qps 0
+config set service-middleware rate-limit GetRegion concurrency 0
+```
+
 ### `config placement-rules [disable | enable | load | save | show | rule-group]`
 
 关于 `config placement-rules` 的具体用法，参考 [Placement Rules 使用文档](/configure-placement-rules.md#配置规则操作步骤)。
