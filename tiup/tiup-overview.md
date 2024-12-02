@@ -1,6 +1,5 @@
 ---
 title: TiUP 简介
-aliases: ['/docs-cn/dev/tiup/tiup-overview/','/docs-cn/dev/reference/tools/tiup/overview/']
 summary: TiUP 是 TiDB 生态中的包管理工具，简化了软件的安装和升级维护工作。安装 TiUP 十分简洁，只需执行一行命令即可完成。TiUP 的愿景是降低 TiDB 生态中所有工具的使用门槛，通过命令和组件来实现包管理和操作。
 ---
 

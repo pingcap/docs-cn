@@ -1,6 +1,5 @@
 ---
 title: TiDB 4.0.1 Release Notes
-aliases: ['/docs-cn/dev/releases/release-4.0.1/']
 summary: TiDB 4.0.1 发布日期为 2020 年 6 月 12 日。新功能包括 TiKV 添加 `--advertise-status-addr` 启动参数，PD 支持内部代理和客户端自定义超时设置，TiFlash 支持新的排序规则框架和函数下推，以及 BR 增加集群版本检查。Bug 修复方面，TiKV 修复了多个问题，PD 修复了错误配置和 panic 问题，TiFlash 修复了默认值解析和时区计算错误的问题。
 ---
 

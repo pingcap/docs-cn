@@ -1,7 +1,6 @@
 ---
 title: TiKV 配置文件描述
 summary: 了解 TiKV 的配置文件参数。
-aliases: ['/docs-cn/dev/tikv-configuration-file/','/docs-cn/dev/reference/configuration/tikv-server/configuration-file/']
 ---
 
 # TiKV 配置文件描述

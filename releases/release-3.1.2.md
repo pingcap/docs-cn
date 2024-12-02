@@ -1,6 +1,5 @@
 ---
 title: TiDB 3.1.2 Release Notes
-aliases: ['/docs-cn/dev/releases/release-3.1.2/']
 summary: TiDB 3.1.2 发布日期为 2020 年 6 月 4 日。此版本修复了 TiKV 和 Tools 中的一些错误，包括 S3 和 GCS 备份恢复时的错误处理问题，备份过程中的 DefaultNotFound 错误，以及 BR 在备份恢复到 S3 和 GCS 存储时的稳定性提升等问题。同时还修复了 BR 在恢复数据时出现的一些错误，并增加了备份恢复 S3 时的 AWS KMS 服务端加密支持。
 ---
 

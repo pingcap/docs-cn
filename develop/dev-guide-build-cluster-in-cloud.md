@@ -1,7 +1,6 @@
 ---
 title: 使用 TiDB Cloud Serverless 构建 TiDB 集群
 summary: 使用 TiDB Cloud Serverless 构建 TiDB 集群，并连接 TiDB Cloud Serverless 集群。
-aliases: ['/zh/tidb/dev/build-cluster-in-cloud']
 ---
 
 <!-- markdownlint-disable MD029 -->

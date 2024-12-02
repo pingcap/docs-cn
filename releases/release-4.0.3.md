@@ -1,6 +1,5 @@
 ---
 title: TiDB 4.0.3 Release Notes
-aliases: ['/docs-cn/dev/releases/release-4.0.3/']
 summary: TiDB 4.0.3 发布了新版本，包括 TiDB Dashboard、TiFlash、Tools 和改进提升等多个方面的更新和修复。新增功能包括 TiDB Dashboard 显示详细信息、TiFlash 支持文件加密、Tools 支持多种算法压缩备份文件等。改进提升方面包括增加全局变量控制日志记录、加速执行速度、默认打开执行信息收集等。此外，还修复了多个 Bug，包括 gRPC transportReader 异常、数据不完整、无法正确设置 safepoint 等问题。
 ---
 

@@ -1,6 +1,5 @@
 ---
 title: TiDB 3.0.9 Release Notes
-aliases: ['/docs-cn/dev/releases/release-3.0.9/','/docs-cn/dev/releases/3.0.9/']
 summary: TiDB 3.0.9 发布日期为 2020 年 1 月 14 日。该版本修复了一些已知问题，并提升了性能。包括 Executor 修复了聚合函数作用于枚举和集合列时结果不正确的问题，Server 支持了系统变量 `auto_increment_increment` 和 `auto_increment_offset`，新增了监控项等。TiKV 提升了 Raft 成员变更的速度，新增了监控项用于监控 `waiter` 的生命周期等。PD 新增了一些功能和修复了一些问题。Tools 方面也有一些新增和优化。TiDB Ansible 优化了 Lightning 部署。
 ---
 
