@@ -12,9 +12,9 @@ summary: TiDB 数据库中 ADMIN SHOW DDL [JOBS|JOB QUERIES] 的使用概况。
 ```ebnf+diagram
 AdminShowDDLStmt ::=
     'ADMIN' 'SHOW' 'DDL'
-    ( 
-        'JOBS' Int64Num? WhereClauseOptional 
-    |   'JOB' 'QUERIES' NumList 
+    (
+        'JOBS' Int64Num? WhereClauseOptional
+    |   'JOB' 'QUERIES' NumList
     |   'JOB' 'QUERIES' 'LIMIT' m ( ('OFFSET' | ',') n )?
     )?
 
@@ -47,9 +47,9 @@ ADMIN SHOW DDL\G;
    SCHEMA_VER: 26
      OWNER_ID: 2d1982af-fa63-43ad-a3d5-73710683cc63
 OWNER_ADDRESS: 0.0.0.0:4000
- RUNNING_JOBS: 
+ RUNNING_JOBS:
       SELF_ID: 2d1982af-fa63-43ad-a3d5-73710683cc63
-        QUERY: 
+        QUERY:
 1 row in set (0.00 sec)
 ```
 
@@ -178,11 +178,11 @@ ADMIN SHOW DDL JOB QUERIES LIMIT m OFFSET n;  # -- 取出第 n+1 到 n+m 行
 ```sql
 ADMIN SHOW DDL JOB QUERIES LIMIT 3;  # Retrieve first 3 rows
 +--------+--------------------------------------------------------------+
-| JOB_ID | QUERY                                                        | 
+| JOB_ID | QUERY                                                        |
 +--------+--------------------------------------------------------------+
-|     59 | ALTER TABLE t1 ADD INDEX index2 (col2)                       | 
-|     60 | ALTER TABLE t2 ADD INDEX index1 (col1)                       | 
-|     58 | CREATE TABLE t2 (id INT NOT NULL PRIMARY KEY auto_increment) | 
+|     59 | ALTER TABLE t1 ADD INDEX index2 (col2)                       |
+|     60 | ALTER TABLE t2 ADD INDEX index1 (col1)                       |
+|     58 | CREATE TABLE t2 (id INT NOT NULL PRIMARY KEY auto_increment) |
 +--------+--------------------------------------------------------------+
 3 rows in set (0.00 sec)
 ```
@@ -190,10 +190,10 @@ ADMIN SHOW DDL JOB QUERIES LIMIT 3;  # Retrieve first 3 rows
 ```sql
 ADMIN SHOW DDL JOB QUERIES LIMIT 6, 2;  # Retrieve rows 7-8
 +--------+----------------------------------------------------------------------------+
-| JOB_ID | QUERY                                                                      | 
+| JOB_ID | QUERY                                                                      |
 +--------+----------------------------------------------------------------------------+
-|     52 | ALTER TABLE t1 ADD INDEX index1 (col1)                                     | 
-|     51 | CREATE TABLE IF NOT EXISTS t1 (id INT NOT NULL PRIMARY KEY auto_increment) | 
+|     52 | ALTER TABLE t1 ADD INDEX index1 (col1)                                     |
+|     51 | CREATE TABLE IF NOT EXISTS t1 (id INT NOT NULL PRIMARY KEY auto_increment) |
 +--------+----------------------------------------------------------------------------+
 3 rows in set (0.00 sec)
 ```
@@ -201,11 +201,11 @@ ADMIN SHOW DDL JOB QUERIES LIMIT 6, 2;  # Retrieve rows 7-8
 ```sql
 ADMIN SHOW DDL JOB QUERIES LIMIT 3 OFFSET 4;  # Retrieve rows 5-7
 +--------+----------------------------------------+
-| JOB_ID | QUERY                                  | 
+| JOB_ID | QUERY                                  |
 +--------+----------------------------------------+
 |     54 | DROP TABLE IF EXISTS t3                |
 |     53 | ALTER TABLE t1 DROP INDEX index1       |
-|     52 | ALTER TABLE t1 ADD INDEX index1 (col1) | 
+|     52 | ALTER TABLE t1 ADD INDEX index1 (col1) |
 +--------+----------------------------------------+
 3 rows in set (0.00 sec)
 ```

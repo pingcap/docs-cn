@@ -26,7 +26,7 @@ ADMIN ALTER DDL JOBS 101 THREAD = 8;
     - `THREAD`：并发度，初始值由系统变量 `tidb_ddl_reorg_worker_cnt` 设置。
     - `BATCH_SIZE`：批大小，初始值由系统变量 [`tidb_ddl_reorg_batch_size`](/system-variables.md#tidb_ddl_reorg_batch_size) 设置。
     - `MAX_WRITE_SPEED`：向每个 TiKV 导入索引记录时的最大带宽限制，初始值由系统变量 [`tidb_ddl_reorg_max_write_speed`](/system-variables.md#tidb_ddl_reorg_max_write_speed-从-v850-版本开始引入) 设置。
-  以上设置，当前仅对关闭 [`tidb_enable_dist_task`](/system-variables.md#tidb_enable_dist_task-从-v710-版本开始引入) 后，提交并运行中的 `ADD INDEX` 的作业生效。  
+  以上设置，当前仅对关闭 [`tidb_enable_dist_task`](/system-variables.md#tidb_enable_dist_task-从-v710-版本开始引入) 后，提交并运行中的 `ADD INDEX` 的作业生效。
 
 - `MODIFY COLUMN`：
     - `THREAD`：并发度，初始值由系统变量 `tidb_ddl_reorg_worker_cnt` 设置。
@@ -52,7 +52,10 @@ ADMIN ALTER DDL JOBS 101 THREAD = 8, BATCH_SIZE = 256;
 要查看某个 DDL 作业当前的参数值，可以执行 `ADMIN SHOW DDL JOBS`，结果显示在 `COMMENTS` 列：
 
 ```sql
-mysql> admin show ddl jobs 1;
+admin show ddl jobs 1;
+```
+
+```
 +--------+---------+------------+-----------+--------------+-----------+----------+-----------+----------------------------+----------------------------+----------------------------+--------+-----------------------+
 | JOB_ID | DB_NAME | TABLE_NAME | JOB_TYPE  | SCHEMA_STATE | SCHEMA_ID | TABLE_ID | ROW_COUNT | CREATE_TIME                | START_TIME                 | END_TIME                   | STATE  | COMMENTS              |
 +--------+---------+------------+-----------+--------------+-----------+----------+-----------+----------------------------+----------------------------+----------------------------+--------+-----------------------+
