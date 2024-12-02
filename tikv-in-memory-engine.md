@@ -16,58 +16,58 @@ TiKV MVCC 内存引擎适用于以下场景：
 
 TiKV MVCC 内存引擎在内存中缓存最近写入的 MVCC 版本，并实现独立于 TiDB 的 MVCC GC 机制，使其可快速 GC 内存中的 MVCC 记录，从而减少查询时扫描版本的个数，以达到降低请求延时和减少 CPU 开销的效果。
 
-下图为 TiKV 如何组织 MVCC 版本的示意图。
+下图为 TiKV 如何组织 MVCC 版本的示意图：
 
-<div style="text-align: center;"><img src="./media/tikv-ime-data-organization.png" alt="IME 通过缓存近期的版本以减少 CPU 开销" width="400" /></div>
+![IME 通过缓存近期的版本以减少 CPU 开销](/media/tikv-ime-data-organization.png)
 
-图中共有 2 行记录，每行记录各有 9 个 MVCC 版本。在开启 IME 和未开启 IME 的情况下，行为对比如下：
+以上示意图中共有 2 行记录，每行记录各有 9 个 MVCC 版本。在开启 IME 和未开启 IME 的情况下，行为对比如下：
 
 - 左侧为没有开启 IME 的情况，表中记录按主键升序保存在 RocksDB 中，相同行的 MVCC 版本紧邻在一起。
-- 右侧为开启了 IME 的情况，RocksDB 中的数据有左侧一致，同时 IME 缓存了 2 行记录的最新 2 个 MVCC 版本。
-- 当 TiKV 处理一个范围为 `[k1, k2]`，start ts 为 `8` 的扫描请求时，左侧未开启 IME 时需要处理 11 个 MVCC 版本，而右侧开启 IME 时只需处理 4 个 MVCC 版本，因此减少了请求延时和 CPU 消耗。
-- 当 TiKV 处理一个范围为 `[k1, k2]`，start ts 为 `7` 的扫描请求时，由于右侧缺少需要读取的历史版本，因此 IME 缓存失效，回退到读取 RocksDB 中的数据。
+- 右侧为开启了 IME 的情况，RocksDB 中的数据与左侧一致，同时 IME 缓存了 2 行记录最新的 2 个 MVCC 版本。
+- 当 TiKV 处理一个范围为 `[k1, k2]`，开始时间戳为 `8` 的扫描请求时，左侧未开启 IME 时需要处理 11 个 MVCC 版本，而右侧开启 IME 时只需处理 4 个 MVCC 版本，因此减少了请求延时和 CPU 消耗。
+- 当 TiKV 处理一个范围为 `[k1, k2]`，开始时间戳为 `7` 的扫描请求时，由于右侧缺少需要读取的历史版本，因此 IME 缓存失效，回退到读取 RocksDB 中的数据。
 
 ## 使用方式
 
-开启 IME 功能需要调整 TiKV 配置并重启。下面是配置说明：
+如果要开启 TiKV MVCC 内存引擎 (IME) 功能，需要调整 TiKV 配置并重启 TiKV。以下是配置说明：
 
 ```toml
 [in-memory-engine]
 # 该参数为 In-Memory Engine 功能的开关，默认为 false，调整为 true 即可开启。
 enable = false
-#
+
 # 该参数控制 In-Memory Engine 可使用的内存大小。默认值为系统内存的 10%，同时最大值为 5 GiB，
-# 可通过手动配置使用更多内存。
+# 可通过手动调整配置以使用更多内存。
 # 注意：当 In-Memory Engine 开启后，block-cache.capacity 会减少 10%。
-#capacity = "5GiB"
-#
+capacity = "5GiB"
+
 # 该参数控制 In-Memory Engine GC 缓存 MVCC 的版本的时间间隔。
 # 默认为 3 分钟，代表每 3 分钟 GC 一次缓存的 MVCC 版本。
 # 调小该参数可加快 GC 频率，减少 MVCC 记录，但会增加 GC CPU 的消耗和增加 In-Memory Engine 失效的概率。
-#gc-run-interval = "3m"
-#
+gc-run-interval = "3m"
+
 # 该参数控制 In-Memory Engine 选取加载 Region 时 MVCC 读放大的阈值。
 # 默认为 10，表示在某个 Region 中读一行记录需要处理的 MVCC 版本数量超过 10 个时，将有可能会被加载到 In-Memory Engine 中。
-#mvcc-amplification-threshold = 10
+mvcc-amplification-threshold = 10
 ```
 
 > **注意：**
 >
-> + In-Memory Engine 默认关闭，并且从关闭状态修改为开启状态后，需要重启 TiKV。
+> + 内存引擎默认关闭，并且从关闭状态修改为开启状态后，需要重启 TiKV。
 > + 除 `enable` 之外，其他配置都可以动态调整。
 
 ### 自动加载
 
-在开启 In-Memory Engine 之后，会根据 Region 的读流量和 MVCC 放大程度，选择要自动加载的 Region。具体流程如下：
+开启内存引擎之后，TiKV 会根据 Region 的读流量和 MVCC 放大程度，选择要自动加载的 Region。具体流程如下：
 
-1. Region 按照最近时间段的 next  (RocksDB Iterator next API) 和 prev (RocksDB Iterator next API) 次数进行排序
-2. 使用 `mvcc-amplification-threshold` （默认为 `10`，mvcc amplification 衡量读放大程度，计算公式为 (next + prev) / processed_keys）对 Region 进行过滤。
+1. Region 按照最近时间段的 next (RocksDB Iterator next API) 和 prev (RocksDB Iterator next API) 次数进行排序。
+2. 使用 `mvcc-amplification-threshold`（默认为 `10`，mvcc amplification 衡量读放大程度，计算公式为 (next + prev) / processed_keys）对 Region 进行过滤。
 3. 载入前 N 个 MVCC 放大严重的 Region，其中 N 基于内存估算而来。
 
-IME 也会定期进行 Region 的驱逐工作。具体流程如下：
+内存引擎也会定期驱逐 Region。具体流程如下：
 
-1. IME 会驱逐那些读流量过小或者 MVCC 放大程度过低的 Region。
-2. 如果内存使用达到了 `capacity` 的 90%，并且有新的 Region 需要被载入，那么 IME 会根据读取流量来筛选 Region 并进行驱逐。
+1. 内存引擎会驱逐那些读流量过小或者 MVCC 放大程度过低的 Region。
+2. 如果内存使用达到了 `capacity` 的 90%，并且有新的 Region 需要被载入，那么内存引擎会根据读取流量来筛选 Region 并进行驱逐。
 
 ## 兼容性
 
