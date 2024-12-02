@@ -89,7 +89,7 @@ OWNER_ADDRESS: 0.0.0.0:4000
     - `done`：表示该操作在 TiDB owner 节点已经执行成功，但其他 TiDB 节点还没有同步该 DDL 任务所执行的变更。
 - `COMMENTS`：包含其他辅助诊断用的信息。
     - `ingest`：通过 [`tidb_ddl_enable_fast_reorg`](/system-variables.md#tidb_ddl_enable_fast_reorg-从-v630-版本开始引入) 配置的加速索引回填的 ingest 任务。
-    - `txn`：关闭[`tidb_ddl_enable_fast_reorg`](/system-variables.md#tidb_ddl_enable_fast_reorg-从-v630-版本开始引入) 后，基于事务方式的索引回填。
+    - `txn`：关闭 [`tidb_ddl_enable_fast_reorg`](/system-variables.md#tidb_ddl_enable_fast_reorg-从-v630-版本开始引入) 后，基于事务方式的索引回填。
     - `txn-merge`：在回填完成时，将临时索引与原始索引合并的事务性回填。
     - `DXF`：通过 [`tidb_enable_dist_task`](/system-variables.md#tidb_enable_dist_task-从-v710-版本开始引入) 配置的用分布式执行框架 (Distributed eXecution Framework, DXF) 执行的任务。
     - `service_scope`：通过 [`tidb_service_scope`](/system-variables.md#tidb_service_scope-从-v740-版本开始引入) 配置的 TiDB 节点的服务范围。
