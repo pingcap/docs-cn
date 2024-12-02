@@ -98,7 +98,7 @@ summary: 学习如何定位和分析慢查询。
 
 #### 过期 MVCC 版本和 key 过多
 
-如果 TiKV 上过期 MVCC 版本过多，或 GC 时间长，导致累积了过多 MVCC。由于需要处理这些不必要的 MVCC 版本，所以会影响扫描速度。
+如果 TiKV 上过期 MVCC 版本过多，或 GC 历史版本数据的保留时间长，导致累积了过多 MVCC。处理这些不必要的 MVCC 版本会影响扫描速度。
 
 这可以通过 `Total_keys` 和 `Processed_keys` 判断，如果两者相差较大，则说明旧版本的 key 太多：
 
@@ -108,7 +108,7 @@ summary: 学习如何定位和分析慢查询。
 ...
 ```
 
-TiDB v8.5.0 引入了内存引擎功能，可以加速这类慢查询。请参考 [TiKV MVCC 内存引擎](/tikv-in-memory-engine.md)。
+TiDB v8.5.0 引入了内存引擎功能，可以加速这类慢查询。详见 [TiKV MVCC 内存引擎](/tikv-in-memory-engine.md)。
 
 ### 其他关键阶段慢
 
