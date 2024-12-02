@@ -5,7 +5,7 @@ summary: TiDB 数据库中 `ADMIN ALTER DDL JOBS` 的使用概况。
 
 # ADMIN ALTER DDL JOBS
 
-`ADMIN ALTER DDL JOBS` 语句可用于修改单个正在运行的 DDL 作业相关的参数。例如：
+`ADMIN ALTER DDL JOBS` 语句用于修改单个正在运行的 DDL 作业的相关参数。例如：
 
 ```sql
 ADMIN ALTER DDL JOBS 101 THREAD = 8;
@@ -20,23 +20,23 @@ ADMIN ALTER DDL JOBS 101 THREAD = 8;
 
 目前在一条 `ADMIN ALTER DDL JOBS` 中仅支持对单个 DDL 作业的参数进行调整，不支持同时调整多个 ID 对应的参数。
 
-以下是不同 DDL 作业类型支持的各项参数，以及它们对应的系统变量：
+以下是不同 DDL 作业类型支持的各项参数，及其对应的系统变量：
 
-- `ADD INDEX`: 
-    - `THREAD`: 并发度，初始值由系统变量 `tidb_ddl_reorg_worker_cnt` 设置。
-    - `BATCH_SIZE`: 批大小，初始值由系统变量 [`tidb_ddl_reorg_batch_size`](/system-variables.md#tidb_ddl_reorg_batch_size) 设置。
-    - `MAX_WRITE_SPEED`: 向每个 TiKV 导入索引记录时的最大带宽限制，初始值由系统变量 [`tidb_ddl_reorg_max_write_speed`](/system-variables.md#tidb_ddl_reorg_max_write_speed-从-v850-版本开始引入) 设置。
+- `ADD INDEX`：
+    - `THREAD`：并发度，初始值由系统变量 `tidb_ddl_reorg_worker_cnt` 设置。
+    - `BATCH_SIZE`：批大小，初始值由系统变量 [`tidb_ddl_reorg_batch_size`](/system-variables.md#tidb_ddl_reorg_batch_size) 设置。
+    - `MAX_WRITE_SPEED`：向每个 TiKV 导入索引记录时的最大带宽限制，初始值由系统变量 [`tidb_ddl_reorg_max_write_speed`](/system-variables.md#tidb_ddl_reorg_max_write_speed-从-v850-版本开始引入) 设置。
   以上设置，当前仅对关闭 [`tidb_enable_dist_task`](/system-variables.md#tidb_enable_dist_task-从-v710-版本开始引入) 后，提交并运行中的 `ADD INDEX` 的作业生效。  
 
-- `MODIFY COLUMN`:
-    - `THREAD`: 并发度，初始值由系统变量 `tidb_ddl_reorg_worker_cnt` 设置。
-    - `BATCH_SIZE`: 批大小，初始值由系统变量 `tidb_ddl_reorg_batch_size` 设置。
+- `MODIFY COLUMN`：
+    - `THREAD`：并发度，初始值由系统变量 `tidb_ddl_reorg_worker_cnt` 设置。
+    - `BATCH_SIZE`：批大小，初始值由系统变量 `tidb_ddl_reorg_batch_size` 设置。
 
-- `REORGANIZE PARTITION`:
-    - `THREAD`: 并发度，初始值由系统变量 `tidb_ddl_reorg_worker_cnt` 设置。
-    - `BATCH_SIZE`: 批大小，初始值由系统变量 `tidb_ddl_reorg_batch_size` 设置。
+- `REORGANIZE PARTITION`：
+    - `THREAD`：并发度，初始值由系统变量 `tidb_ddl_reorg_worker_cnt` 设置。
+    - `BATCH_SIZE`：批大小，初始值由系统变量 `tidb_ddl_reorg_batch_size` 设置。
 
-参数的取值范围和系统变量的保持一致。
+参数的取值范围和对应系统变量的取值范围保持一致。
 
 `ADMIN ALTER DDL JOBS` 仅对正在运行的 DDL 作业生效。如果 DDL 作业不存在或者已经结束，执行该语句会报 `ddl job is not running` 的错误。
 
