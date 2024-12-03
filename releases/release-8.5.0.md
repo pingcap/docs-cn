@@ -360,6 +360,8 @@ TiDB 8.5.0 为长期支持版本 (Long-Term Support Release, LTS)。
     - 修复资源组 (Resource Group) 选择器对所有面板都未生效的问题 [#56572](https://github.com/pingcap/tidb/issues/56572) @[glorv](https://github.com/glorv)
     - 修复已删除的资源组仍然出现在监控面板中的问题 [#8716](https://github.com/tikv/pd/issues/8716) @[AndreMouche](https://github.com/AndreMouche)
     - 修复 Region syncer 加载过程中日志描述不清晰的问题 [#8717](https://github.com/tikv/pd/issues/8717) @[lhy1024](https://github.com/lhy1024)
+    - (dup): release-7.1.6.md > 错误修复> PD - 修复 label 统计中的内存泄露问题 [#8700](https://github.com/tikv/pd/issues/8700) @[lhy1024](https://github.com/lhy1024)
+    - 修复配置 `tidb_enable_tso_follower_proxy` 为 `0` 或 `OFF` 时无法关闭 TSO Follower Proxy 特性的问题 [#8709](https://github.com/tikv/pd/issues/8709) @[JmPotato](https://github.com/JmPotato)
 
 + TiFlash <!--tw@Oreoxmt: 4 notes-->
 
@@ -377,6 +379,7 @@ TiDB 8.5.0 为长期支持版本 (Long-Term Support Release, LTS)。
         - 修复备份时无法备份全局索引的问题 [#57469](https://github.com/pingcap/tidb/issues/57469) @[Defined2014](https://github.com/Defined2014)
         - 修复日志可能打印加密信息的问题 [#57585](https://github.com/pingcap/tidb/issues/57585) @[kennytm](https://github.com/kennytm)
         - 修复 advancer 无法处理锁冲突的问题 [#57134](https://github.com/pingcap/tidb/issues/57134) @[3pointer](https://github.com/3pointer)
+        - 修复针对百万行级别表的 PITR 数据恢复任务可能失败的问题 [#57743](https://github.com/pingcap/tidb/issues/57743) @[Tristan1900](https://github.com/Tristan1900)
 
     + TiCDC <!--tw@Oreoxmt: 3 notes-->
 
