@@ -425,15 +425,11 @@ pd-server 相关配置项。
 
 ### `store-limit-version` <span class="version-mark">从 v7.1.0 版本开始引入</span>
 
-> **警告：**
->
-> 在当前版本中，将该配置项设置为 `"v2"` 为实验特性，不建议在生产环境中使用。
-
 + 设置 `store limit` 工作模式
 + 默认值：v1
 + 可选值：
     + v1：在 v1 模式下，你可以手动修改 `store limit` 以限制单个 TiKV 调度速度。
-    + v2：（实验特性）在 v2 模式下，你无需关注 `store limit` 值，PD 将根据 TiKV Snapshot 执行情况动态调整 TiKV 调度速度。详情请参考 [Store Limit v2 原理](/configure-store-limit.md#store-limit-v2-原理)。
+    + v2：在 v2 模式下，你无需关注 `store limit` 值，PD 将根据 TiKV Snapshot 执行情况动态调整 TiKV 调度速度。详情请参考 [Store Limit v2 原理](/configure-store-limit.md#store-limit-v2-原理)。
 
 ## label-property（已废弃）
 
