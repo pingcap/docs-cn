@@ -179,4 +179,4 @@ TiDB 的 Coprocessor Cache 功能支持下推计算结果缓存。开启该功�
 
 ## 使用 TiKV MVCC 内存引擎缓解因多版本导致的读热点
 
-在 GC 时间过长或频繁更新删除时，可能会因扫描大量 MVCC 版本而导致读热点。针对这类热点，可通过开启内存引擎功能缓解，详见 [TiKV MVCC 内存引擎](/tikv-in-memory-engine.md)。
+在 GC 历史版本数据的保留时间过长、频繁更新或删除时，可能会因扫描大量 MVCC 版本而导致读热点。针对这类热点，可通过开启内存引擎功能缓解，详见 [TiKV MVCC 内存引擎](/tikv-in-memory-engine.md)。
