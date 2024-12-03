@@ -20,12 +20,12 @@ TiKV MVCC 内存引擎在内存中缓存最近写入的 MVCC 版本，并实现�
 
 ![IME 通过缓存近期的版本以减少 CPU 开销](/media/tikv-ime-data-organization.png)
 
-以上示意图中共有 2 行记录，每行记录各有 9 个 MVCC 版本。在开启 IME 和未开启 IME 的情况下，行为对比如下：
+以上示意图中共有 2 行记录，每行记录各有 9 个 MVCC 版本。在开启内存引擎和未开启内存引擎的情况下，行为对比如下：
 
-- 左侧为没有开启 IME 的情况，表中记录按主键升序保存在 RocksDB 中，相同行的 MVCC 版本紧邻在一起。
-- 右侧为开启了 IME 的情况，RocksDB 中的数据与左侧一致，同时 IME 缓存了 2 行记录最新的 2 个 MVCC 版本。
-- 当 TiKV 处理一个范围为 `[k1, k2]`，开始时间戳为 `8` 的扫描请求时，左侧未开启 IME 时需要处理 11 个 MVCC 版本，而右侧开启 IME 时只需处理 4 个 MVCC 版本，因此减少了请求延时和 CPU 消耗。
-- 当 TiKV 处理一个范围为 `[k1, k2]`，开始时间戳为 `7` 的扫描请求时，由于右侧缺少需要读取的历史版本，因此 IME 缓存失效，回退到读取 RocksDB 中的数据。
+- 左侧为没有开启内存引擎的情况，表中记录按主键升序保存在 RocksDB 中，相同行的 MVCC 版本紧邻在一起。
+- 右侧为开启了内存引擎的情况，RocksDB 中的数据与左侧一致，同时内存引擎缓存了 2 行记录最新的 2 个 MVCC 版本。
+- 当 TiKV 处理一个范围为 `[k1, k2]`，开始时间戳为 `8` 的扫描请求时，左侧未开启内存引擎时需要处理 11 个 MVCC 版本，而右侧开启内存引擎时只需处理 4 个 MVCC 版本，因此减少了请求延时和 CPU 消耗。
+- 当 TiKV 处理一个范围为 `[k1, k2]`，开始时间戳为 `7` 的扫描请求时，由于右侧缺少需要读取的历史版本，因此内存引擎缓存失效，回退到读取 RocksDB 中的数据。
 
 ## 使用方式
 
@@ -33,21 +33,21 @@ TiKV MVCC 内存引擎在内存中缓存最近写入的 MVCC 版本，并实现�
 
 ```toml
 [in-memory-engine]
-# 该参数为 In-Memory Engine 功能的开关，默认为 false，调整为 true 即可开启。
+# 该参数为内存引擎功能的开关，默认为 false，调整为 true 即可开启。
 enable = false
 
-# 该参数控制 In-Memory Engine 可使用的内存大小。默认值为系统内存的 10%，同时最大值为 5 GiB，
+# 该参数控制内存引擎可使用的内存大小。默认值为系统内存的 10%，同时最大值为 5 GiB，
 # 可通过手动调整配置以使用更多内存。
-# 注意：当 In-Memory Engine 开启后，block-cache.capacity 会减少 10%。
+# 注意：当内存引擎开启后，block-cache.capacity 会减少 10%。
 capacity = "5GiB"
 
-# 该参数控制 In-Memory Engine GC 缓存 MVCC 的版本的时间间隔。
+# 该参数控制内存引擎 GC 缓存 MVCC 的版本的时间间隔。
 # 默认为 3 分钟，代表每 3 分钟 GC 一次缓存的 MVCC 版本。
-# 调小该参数可加快 GC 频率，减少 MVCC 记录，但会增加 GC CPU 的消耗和增加 In-Memory Engine 失效的概率。
+# 调小该参数可加快 GC 频率，减少 MVCC 记录，但会增加 GC CPU 的消耗和增加内存引擎失效的概率。
 gc-run-interval = "3m"
 
-# 该参数控制 In-Memory Engine 选取加载 Region 时 MVCC 读放大的阈值。
-# 默认为 10，表示在某个 Region 中读一行记录需要处理的 MVCC 版本数量超过 10 个时，将有可能会被加载到 In-Memory Engine 中。
+# 该参数控制内存引擎选取加载 Region 时 MVCC 读放大的阈值。
+# 默认为 10，表示在某个 Region 中读一行记录需要处理的 MVCC 版本数量超过 10 个时，将有可能会被加载到内存引擎中。
 mvcc-amplification-threshold = 10
 ```
 
@@ -71,20 +71,20 @@ mvcc-amplification-threshold = 10
 
 ## 兼容性
 
-+ [BR](/br/br-use-overview.md)：IME 与 BR 可同时使用，但 BR restore 会驱逐 IME 中涉及恢复的 Region，BR restore 完成后，如果对应 Region 还是热点，则会被 IME 自动加载。
-+ [TiDB Lightning](/tidb-lightning/tidb-lightning-overview.md)：IME 与 TiDB Lightning 可同时使用，但 TiDB Lightning 的物理导入模式会驱逐 IME 中涉及恢复的 Region，TiDB Lightning 使用物理导入模式完成导入数据后，如果对应 Region 还是热点，则会被 IME 自动加载。
-+ [Follower Read](/develop/dev-guide-use-follower-read.md) 与 [Stale Read](/develop/dev-guide-use-stale-read.md)：IME 可与这两个特性同时开启，但 IME 只能加速 Leader 上的 coprocessor 请求，无法加速 Follower Read 和 Stale Read。
-+ [`FLASHBACK CLUSTER`](/sql-statements/sql-statement-flashback-cluster.md)：IME 与 Flashback 同时使用时，Flashback 会导致 IME 缓存失效。Flashback 完成后，IME 会自动加载热点 Region。
++ [BR](/br/br-use-overview.md)：内存引擎与 BR 可同时使用，但 BR restore 会驱逐内存引擎中涉及恢复的 Region，BR restore 完成后，如果对应 Region 还是热点，则会被内存引擎自动加载。
++ [TiDB Lightning](/tidb-lightning/tidb-lightning-overview.md)：内存引擎与 TiDB Lightning 可同时使用，但 TiDB Lightning 的物理导入模式会驱逐内存引擎中涉及恢复的 Region，TiDB Lightning 使用物理导入模式完成导入数据后，如果对应 Region 还是热点，则会被内存引擎自动加载。
++ [Follower Read](/develop/dev-guide-use-follower-read.md) 与 [Stale Read](/develop/dev-guide-use-stale-read.md)：内存引擎可与这两个特性同时开启，但内存引擎只能加速 Leader 上的 coprocessor 请求，无法加速 Follower Read 和 Stale Read。
++ [`FLASHBACK CLUSTER`](/sql-statements/sql-statement-flashback-cluster.md)：内存引擎与 Flashback 同时使用时，Flashback 会导致内存引擎缓存失效。Flashback 完成后，内存引擎会自动加载热点 Region。
 
 ## FAQ
 
 ### 内存引擎能否减少写入延时，提高写入吞吐？
 
-不能，内存引擎只能加速扫描了大量 MVCC 版本的读请求。
+不能。内存引擎只能加速扫描了大量 MVCC 版本的读请求。
 
-### 如何判断内存引擎能否改善我的场景？
+### 如何判断内存引擎是否能改善我的场景？
 
-可以通过执行以下 SQL 语句查看是否存在 `Total_keys` 远大于 `Process_keys` 的慢查询。
+可以通过执行以下 SQL 语句查看是否存在 `Total_keys` 远大于 `Process_keys` 的慢查询：
 
 ```sql
 SELECT
@@ -115,7 +115,7 @@ LIMIT 5;
 
 示例：
 
-下述结果显示 `db1.tbl1` 表上存在 MVCC 放大严重的查询，TiKV 在处理 1358517 个 MVCC 版本后，仅返回了 2 个版本。
+以下结果显示 `db1.tbl1` 表上存在 MVCC 放大严重的查询，TiKV 在处理 1358517 个 MVCC 版本后，仅返回了 2 个版本。
 
 ```
 +----------------------------+-----+-------------------+--------------+------------+-----------------------------------+--------------------+--------------------+--------------------+
