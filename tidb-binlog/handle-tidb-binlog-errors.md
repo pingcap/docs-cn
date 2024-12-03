@@ -1,7 +1,7 @@
 ---
 title: TiDB Binlog 常见错误修复
 summary: TiDB Binlog 常见错误修复：介绍了 Drainer 同步数据到 Kafka 时报错的解决方法，Pump 报错 "no space left on device" 的原因和解决方法，以及 Drainer 输出 file 格式的增量数据的清理机制。需要确认 TiDB 实例是否开启了 TiDB Binlog 并且状态正常，以及调整 Pump 的 gRPC message 最大大小。
-aliases: ['/zh/tidb/dev/handle-tidb-binlog-errors/','/docs-cn/dev/tidb-binlog/handle-tidb-binlog-errors/','/docs-cn/dev/reference/tidb-binlog/troubleshoot/error-handling/']
+aliases: ['/zh/tidb/dev/handle-tidb-binlog-errors/','/zh/tidb/stable/handle-tidb-binlog-errors/','/docs-cn/dev/tidb-binlog/handle-tidb-binlog-errors/','/docs-cn/dev/reference/tidb-binlog/troubleshoot/error-handling/']
 ---
 
 # TiDB Binlog 常见错误修复

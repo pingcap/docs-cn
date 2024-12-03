@@ -1,7 +1,7 @@
 ---
 title: binlogctl 工具
 summary: 介绍 binlogctl 的使用方法。
-aliases: ['/zh/tidb/dev/binlog-control/','/docs-cn/dev/tidb-binlog/binlog-control/']
+aliases: ['/zh/tidb/dev/binlog-control/','/zh/tidb/stable/binlog-control/','/docs-cn/dev/tidb-binlog/binlog-control/']
 ---
 
 # binlogctl 工具
