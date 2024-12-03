@@ -1,7 +1,7 @@
 ---
 title: TiDB Binlog 部署拓扑
 summary: 介绍如何在部署最小拓扑集群的基础上，同时部署 TiDB Binlog。
-aliases: ['/zh/tidb/dev/tidb-binlog-deployment-topology/','/docs-cn/dev/tidb-binlog-deployment-topology/']
+aliases: ['/zh/tidb/dev/tidb-binlog-deployment-topology/','/docs-cn/dev/tidb-binlog-deployment-topology/','/zh/tidb/stable/tidb-binlog-deployment-topology/']
 ---
 
 # TiDB Binlog 部署拓扑
