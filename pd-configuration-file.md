@@ -273,8 +273,13 @@ pd-server 相关配置项。
 
 ### `patrol-region-interval`
 
-+ 控制 replicaChecker 检查 Region 健康状态的运行频率，越短则运行越快，通常状况不需要调整
++ 控制 checker 检查 Region 健康状态的运行频率，越短则运行越快，通常状况不需要调整
 + 默认：10ms
+
+### `patrol-region-worker-count`
+
++ 控制 checker 检查 Region 健康状态时，创建 operator 的并发数，通常状况不需要调整
++ 默认：1
 
 ### `split-merge-interval`
 
