@@ -60,7 +60,7 @@ mvcc-amplification-threshold = 10
 
 开启内存引擎之后，TiKV 会根据 Region 的读流量和 MVCC 放大程度，选择要自动加载的 Region。具体流程如下：
 
-1. Region 按照最近时间段的 next (RocksDB Iterator next API) 和 prev (RocksDB Iterator next API) 次数进行排序。
+1. Region 按照最近时间段的 next (RocksDB Iterator next API) 和 prev (RocksDB Iterator prev API) 次数进行排序。
 2. 使用 `mvcc-amplification-threshold`（默认为 `10`，mvcc amplification 衡量读放大程度，计算公式为 (next + prev) / processed_keys）对 Region 进行过滤。
 3. 载入前 N 个 MVCC 放大严重的 Region，其中 N 基于内存估算而来。
 
