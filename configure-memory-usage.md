@@ -1,6 +1,5 @@
 ---
 title: TiDB 内存控制文档
-aliases: ['/docs-cn/dev/configure-memory-usage/','/docs-cn/dev/how-to/configure/memory-control/']
 summary: TiDB 内存控制文档介绍了如何追踪和控制 SQL 查询过程中的内存使用情况，以及配置内存使用阈值和 tidb-server 实例的内存使用阈值。还介绍了使用 INFORMATION_SCHEMA 系统表查看内存使用情况，以及降低写入事务内存使用的方法。另外还介绍了流量控制和数据落盘的内存控制策略，以及通过设置环境变量 GOMEMLIMIT 缓解 OOM 问题。
 ---
 

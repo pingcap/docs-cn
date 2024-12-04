@@ -1,7 +1,6 @@
 ---
 title: Load Base Split
 summary: 介绍 Load Base Split 功能。
-aliases: ['/docs-cn/dev/configure-load-base-split/']
 ---
 
 # Load Base Split 

@@ -1,7 +1,6 @@
 ---
 title: 使用 TiUP 部署 TiDB 集群
 summary: 了解如何使用 TiUP 部署 TiDB 集群。
-aliases: ['/docs-cn/dev/production-offline-deployment-using-tiup/', '/zh/tidb/dev/production-offline-deployment-using-tiup','/docs-cn/dev/production-deployment-using-tiup/','/docs-cn/dev/how-to/deploy/orchestrated/tiup/','/docs-cn/dev/tiflash/deploy-tiflash/','/docs-cn/dev/reference/tiflash/deploy/','/zh/tidb/dev/deploy-test-cluster-using-docker-compose','/zh/tidb/dev/test-deployment-using-docker']
 ---
 
 # 使用 TiUP 部署 TiDB 集群
@@ -294,10 +293,10 @@ alertmanager_servers:
 
 更多参数说明，请参考：
 
-- [TiDB `config.toml.example`](https://github.com/pingcap/tidb/blob/master/pkg/config/config.toml.example)
-- [TiKV `config.toml.example`](https://github.com/tikv/tikv/blob/master/etc/config-template.toml)
-- [PD `config.toml.example`](https://github.com/pingcap/pd/blob/master/conf/config.toml)
-- [TiFlash `config.toml.example`](https://github.com/pingcap/tiflash/blob/master/etc/config-template.toml)
+- [TiDB `config.toml.example`](https://github.com/pingcap/tidb/blob/release-8.5/pkg/config/config.toml.example)
+- [TiKV `config.toml.example`](https://github.com/tikv/tikv/blob/release-8.5/etc/config-template.toml)
+- [PD `config.toml.example`](https://github.com/tikv/pd/blob/release-8.5/conf/config.toml)
+- [TiFlash `config.toml.example`](https://github.com/pingcap/tiflash/blob/release-8.5/etc/config-template.toml)
 
 ## 第 4 步：执行部署命令
 

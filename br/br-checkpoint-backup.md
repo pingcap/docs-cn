@@ -1,7 +1,6 @@
 ---
 title: 断点备份
 summary: 了解断点备份功能，包括它的使用场景、实现原理以及使用方法。
-aliases: ["/zh/tidb/dev/br-checkpoint"]
 ---
 
 # 断点备份

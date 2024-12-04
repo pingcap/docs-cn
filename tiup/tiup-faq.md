@@ -1,6 +1,5 @@
 ---
 title: TiUP FAQ
-aliases: ['/docs-cn/dev/tiup/tiup-faq/']
 summary: TiUP 支持自定义镜像源，可以使用环境变量 TIUP_MIRRORS 指定镜像源地址。开发者可以通过 tiup-publish 组件将自己编写的组件发布到 TiUP 的官方镜像仓库。TiUP Playground 用于快速搭建开发环境，而 TiUP Cluster 用于部署生产环境集群。拓扑文件样例包括两地三中心、最小部署和完整拓扑文件。同一主机可以部署多个实例，但需要配置不同的端口和目录信息。集群部署期间可能出现 ssh 连接错误，可尝试加大 ssh 默认连接数并重启 sshd 服务解决。
 ---
 

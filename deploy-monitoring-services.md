@@ -1,6 +1,5 @@
 ---
 title: 集群监控部署
-aliases: ['/docs-cn/dev/deploy-monitoring-services/','/docs-cn/dev/monitor-a-tidb-cluster/','/docs-cn/dev/how-to/monitor/monitor-a-cluster/']
 summary: 本文适用于手动部署 TiDB 监控报警系统的用户。假设 TiDB 的拓扑结构如下：Node1 主机 IP 为 192.168.199.113，服务包括 PD1、TiDB、node_export、Prometheus、Grafana；Node2 主机 IP 为 192.168.199.114，服务包括 PD2、node_export；Node3 主机 IP 为 192.168.199.115，服务包括 PD3、node_export；Node4 主机 IP 为 192.168.199.116，服务包括 TiKV1、node_export；Node5 主机 IP 为 192.168.199.117，服务包括 TiKV2、node_export；Node6 主机 IP 为 192.168.199.118，服务包括 TiKV3、node_export。具体部署步骤包括下载二进制包、启动 node_exporter 服务、启动 Prometheus 服务、启动 Grafana 服务、配置 Grafana 数据源和导入 Grafana 面板。可查看 TiDB Server、PD Server 和 TiKV Server 的监控信息。
 ---
 
@@ -121,12 +120,12 @@ scrape_configs:
 
 如需开启 TiDB、PD 和 TiKV 等组件的报警规则，请单独下载组件对应的报警规则文件，并在 Prometheus 的配置文件中添加报警规则文件的配置。
 
-- TiDB：[`tidb.rules.yml`](https://github.com/pingcap/tidb/blob/master/pkg/metrics/alertmanager/tidb.rules.yml)
-- PD：[`pd.rules.yml`](https://github.com/tikv/pd/blob/master/metrics/alertmanager/pd.rules.yml)
-- TiKV：[`tikv.rules.yml`](https://github.com/tikv/tikv/blob/master/metrics/alertmanager/tikv.rules.yml)
-- TiFlash：[`tiflash.rules.yml`](https://github.com/pingcap/tiflash/blob/master/metrics/alertmanager/tiflash.rules.yml)
-- TiCDC：[`ticdc.rules.yml`](https://github.com/pingcap/tiflow/blob/master/metrics/alertmanager/ticdc.rules.yml)
-- TiDB Lightning：[`lightning.rules.yml`](https://github.com/pingcap/tidb/blob/master/br/metrics/alertmanager/lightning.rules.yml)
+- TiDB：[`tidb.rules.yml`](https://github.com/pingcap/tidb/blob/release-8.5/pkg/metrics/alertmanager/tidb.rules.yml)
+- PD：[`pd.rules.yml`](https://github.com/tikv/pd/blob/release-8.5/metrics/alertmanager/pd.rules.yml)
+- TiKV：[`tikv.rules.yml`](https://github.com/tikv/tikv/blob/release-8.5/metrics/alertmanager/tikv.rules.yml)
+- TiFlash：[`tiflash.rules.yml`](https://github.com/pingcap/tiflash/blob/release-8.5/metrics/alertmanager/tiflash.rules.yml)
+- TiCDC：[`ticdc.rules.yml`](https://github.com/pingcap/tiflow/blob/release-8.5/metrics/alertmanager/ticdc.rules.yml)
+- TiDB Lightning：[`lightning.rules.yml`](https://github.com/pingcap/tidb/blob/release-8.5/br/metrics/alertmanager/lightning.rules.yml)
 
 ```ini
 rule_files:
@@ -251,7 +250,7 @@ url = https://grafana.net
 
 2. 在侧边栏菜单中，依次点击 **Dashboards** > **Import** 打开 **Import Dashboard** 窗口。
 
-3. 点击 **Upload .json File** 上传对应的 JSON 文件（从 [pingcap/tidb](https://github.com/pingcap/tidb/tree/master/pkg/metrics/grafana)、[tikv/tikv](https://github.com/tikv/tikv/tree/master/metrics/grafana) 和 [tikv/pd](https://github.com/tikv/pd/tree/master/metrics/grafana) 下载 TiDB Grafana 配置文件）。
+3. 点击 **Upload .json File** 上传对应的 JSON 文件（从 [pingcap/tidb](https://github.com/pingcap/tidb/tree/release-8.5/pkg/metrics/grafana)、[tikv/tikv](https://github.com/tikv/tikv/tree/release-8.5/metrics/grafana) 和 [tikv/pd](https://github.com/tikv/pd/tree/release-8.5/metrics/grafana) 下载 TiDB Grafana 配置文件）。
 
     > **注意：**
     >

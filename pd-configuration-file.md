@@ -1,6 +1,5 @@
 ---
 title: PD 配置文件描述
-aliases: ['/docs-cn/dev/pd-configuration-file/','/docs-cn/dev/reference/configuration/pd-server/configuration-file/']
 summary: PD 配置文件包含了许多参数，如节点名称、数据路径、客户端 URL、广告客户端 URL、节点 URL 等。还包括了一些实验性特性的配置项，如内存限制、GC 触发阈值、GOGC Tuner 等。此外，还有监控、调度、副本、标签、Dashboard、同步模式和资源控制等相关配置项。
 ---
 
@@ -8,7 +7,7 @@ summary: PD 配置文件包含了许多参数，如节点名称、数据路径�
 
 <!-- markdownlint-disable MD001 -->
 
-PD 配置文件比命令行参数支持更多的选项。你可以在 [conf/config.toml](https://github.com/pingcap/pd/blob/master/conf/config.toml) 找到默认的配置文件。
+PD 配置文件比命令行参数支持更多的选项。你可以在 [conf/config.toml](https://github.com/tikv/pd/blob/release-8.5/conf/config.toml) 找到默认的配置文件。
 
 本文档只阐述未包含在命令行参数中的参数，命令行参数参见 [PD 配置参数](/command-line-flags-for-pd-configuration.md)。
 

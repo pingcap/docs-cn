@@ -1,6 +1,5 @@
 ---
 title: 字符集和排序规则
-aliases: ['/docs-cn/dev/character-set-and-collation/','/docs-cn/dev/reference/sql/characterset-and-collation/','/docs-cn/dev/reference/sql/character-set/']
 summary: TiDB 支持的字符集包括 ascii、binary、gbk、latin1、utf8 和 utf8mb4。排序规则包括 ascii_bin、binary、gbk_bin、gbk_chinese_ci、latin1_bin、utf8_bin、utf8_general_ci、utf8_unicode_ci、utf8mb4_0900_ai_ci、utf8mb4_0900_bin、utf8mb4_bin、utf8mb4_general_ci 和 utf8mb4_unicode_ci。TiDB 强烈建议使用 utf8mb4 字符集，因为它支持更多字符。在 TiDB 中，默认的排序规则受到客户端的连接排序规则设置的影响。如果客户端使用 utf8mb4_0900_ai_ci 作为连接排序规则，TiDB 将遵循客户端的配置。TiDB 还支持新的排序规则框架，用于在语义上支持不同的排序规则。
 ---
 

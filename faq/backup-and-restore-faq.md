@@ -1,7 +1,6 @@
 ---
 title: 备份与恢复常见问题
 summary: 了解备份恢复相关的常见问题以及解决方法。
-aliases: ['/docs-cn/dev/br/backup-and-restore-faq/','/zh/tidb/dev/pitr-troubleshoot/','/zh/tidb/dev/pitr-known-issues/']
 ---
 
 # 备份与恢复常见问题
@@ -279,7 +278,7 @@ br restore full -f 'mysql.usertable' -s $external_storage_url --with-sys-table
 
 - 统计信息表（`mysql.stat_*`）(但可以恢复统计信息，详细参考[备份统计信息](/br/br-snapshot-manual.md#备份统计信息))
 - 系统变量表（`mysql.tidb`、`mysql.global_variables`）
-- [其他系统表](https://github.com/pingcap/tidb/blob/master/br/pkg/restore/snap_client/systable_restore.go#L31)
+- [其他系统表](https://github.com/pingcap/tidb/blob/release-8.5/br/pkg/restore/snap_client/systable_restore.go#L31)
 
 ### 恢复的时候，报错 `cannot file rewrite rule`，该如何处理？
 

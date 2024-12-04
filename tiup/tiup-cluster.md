@@ -1,6 +1,5 @@
 ---
 title: 使用 TiUP 部署运维 TiDB 线上集群
-aliases: ['/docs-cn/dev/tiup/tiup-cluster/','/docs-cn/dev/reference/tools/tiup/cluster/']
 summary: 使用 TiUP 的 cluster 组件可以快速部署生产集群，并提供强大的生产集群管理功能，包括升级、缩容、扩容、操作、审计等。部署集群的命令为 tiup cluster deploy，部署完成后可以通过 tiup cluster list 查看集群列表。启动集群的命令为 tiup cluster start，查看集群状态的命令为 tiup cluster display。可以使用 tiup cluster scale-in 进行集群缩容，tiup cluster scale-out 进行集群扩容。另外，还可以使用 tiup cluster upgrade 进行滚动升级，使用 tiup cluster edit-config 进行配置更新。最后，可以使用 tiup cluster exec 在集群节点机器上执行命令。
 ---
 
