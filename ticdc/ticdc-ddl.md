@@ -11,7 +11,7 @@ summary: 了解 TiCDC 支持同步的 DDL 和一些特殊情况
 
 目前 TiCDC 在同步 DDL 时使用白名单策略，只有在白名单中的 DDL 操作才会被同步到下游系统，不在白名单中的 DDL 操作将不会被 TiCDC 同步。
 
-以下为 TiCDC 支持同步的 DDL 的列表。这些 DDL 会根据是否具有有效索引以及是否设置 force-replicate = true 会有不同的行为。
+以下为 TiCDC 支持同步的 DDL 的列表。这些 DDL 会根据是否具有[有效索引](/ticdc/ticdc-overview.md#有效索引)以及是否设置 force-replicate = true 会有不同的行为。
 下表中出现的缩写字母含义如下：
 - Y：在该条件下可以同步到下游。
 - N：在该条件下不会同步到下游。
@@ -51,9 +51,9 @@ summary: 了解 TiCDC 支持同步的 DDL 和一些特殊情况
 
 > ** 注意：**
 >
-> - 删除最后一个[有效索引](/ticdc/ticdc-overview.md#有效索引)的 DDL (*号) 不会被同步，并且导致后续数据同步失败。
-> - 之前不存在有效索引，创建第一个[有效索引](/ticdc/ticdc-overview.md#有效索引)的 DDL (*号) 会被同步，并且导致后续数据同步失败。
-> - 当 changefeed 的配置文件设置 `force_replicate=true` 时，同步任务会尝试强制[同步不存在有效索引的表](/ticdc/ticdc-manage-changefeed.md#同步没有有效索引的表)。
+> - 删除最后一个**有效索引**的 DDL (*号) 不会被同步，并且导致后续数据同步失败。
+> - 之前不存在有效索引，创建第一个**有效索引**的 DDL (*号) 会被同步，并且导致后续数据同步失败。
+> - 当 changefeed 的配置文件设置 `force_replicate=true` 时，同步任务会尝试强制[同步没有有效索引的表](/ticdc/ticdc-manage-changefeed.md#同步没有有效索引的表)。
 
 ## DDL 同步注意事项
 
