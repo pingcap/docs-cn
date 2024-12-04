@@ -12,7 +12,7 @@ TiDB 使用的时区由 [`time_zone`](/system-variables.md#time_zone) 系统变�
 - 如果 `TZ` 环境变量不可用，TiDB 会从 `/etc/localtime` 的软链接中读取时区信息。
 - 如果上述方法均失败，TiDB 将使用 `UTC` 作为系统时区。
 
-## 查看时区设置
+## 查看时区
 
 要查看当前全局时区、客户端时区或系统时区的值，可以执行以下语句：
 
@@ -56,7 +56,7 @@ SELECT @@global.time_zone, @@session.time_zone, @@global.system_time_zone;
 
 ## 受时区设置影响的函数和数据类型
 
-对于时区敏感的时间值，例如由 [`NOW()`](/functions-and-operators/date-and-time-functions.md) 和 `CURTIME()` 函数返回的值，它们的显示和解释会受到当前会话时区设置的影响。如需进行时区转换，可以使用 `CONVERT_TZ()` 函数。若要获取基于 UTC 的时间戳以避免时区相关问题，可以使用 `UTC_TIMESTAMP()` 函数。
+对于时区敏感的时间值，例如由 [`NOW()`](/functions-and-operators/date-and-time-functions.md) 和 `CURTIME()` 函数返回的值，它们的显示和处理会受到当前会话时区设置的影响。如需进行时区转换，可以使用 `CONVERT_TZ()` 函数。若要获取基于 UTC 的时间戳以避免时区相关问题，可以使用 `UTC_TIMESTAMP()` 函数。
 
 在 TiDB 中，`TIMESTAMP` 数据类型会记录时间戳的具体数值和时区信息，因此它的显示值会受到时区设置的影响。其他数据类型（如 `DATETIME`、`DATE` 和 `TIME`） 不记录时区信息，因此它们的值不会受到时区变化的影响。
 
