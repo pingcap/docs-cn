@@ -75,7 +75,7 @@ TiCDC一般情况下只会同步存在有效索引的表，有效索引的定义
 
 > **注意：**
 >
-> 在设置 force-replicate=true 后，TiCDC会强制同步不存在有效索引的表。
+> 在设置 force-replicate=true 后，TiCDC会强制[同步没有有效索引的表](/ticdc/ticdc-manage-changefeed.md#同步没有有效索引的表)。
 
 ## 最佳实践
 
