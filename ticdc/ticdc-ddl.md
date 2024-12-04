@@ -51,9 +51,9 @@ summary: 了解 TiCDC 支持同步的 DDL 和一些特殊情况
 
 > ** 注意：**
 >
-> - 删除最后一个[有效索引](/ticdc/ticdc-overview.md#最佳实践)的 DDL (*号) 不会被同步，并且导致后续数据同步失败。
-> - 创建第一个[有效索引](/ticdc/ticdc-overview.md#最佳实践)的 DDL (*号) 会被同步，并且导致后续数据同步失败。
-> - 当 changefeed 的配置文件设置 `force_replicate=true` 时，同步任务会尝试强制[同步没有有效索引的表](/ticdc/ticdc-manage-changefeed.md#同步没有有效索引的表)。
+> - 删除最后一个[有效索引](/ticdc/ticdc-overview.md#有效索引)的 DDL (*号) 不会被同步，并且导致后续数据同步失败。
+> - 之前不存在有效索引，创建第一个[有效索引](/ticdc/ticdc-overview.md#有效索引)的 DDL (*号) 会被同步，并且导致后续数据同步失败。
+> - 当 changefeed 的配置文件设置 `force_replicate=true` 时，同步任务会尝试强制[同步不存在有效索引的表](/ticdc/ticdc-manage-changefeed.md#同步没有有效索引的表)。
 
 ## DDL 同步注意事项
 
