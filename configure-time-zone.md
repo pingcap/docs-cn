@@ -14,7 +14,7 @@ TiDB 使用的时区由 [`time_zone`](/system-variables.md#time_zone) 系统变�
 
 ## 查看时区设置
 
-要查看当前全局时区、客户端特时区或系统时区的值，可以执行以下语句：
+要查看当前全局时区、客户端时区或系统时区的值，可以执行以下语句：
 
 ```sql
 SELECT @@global.time_zone, @@session.time_zone, @@global.system_time_zone;
