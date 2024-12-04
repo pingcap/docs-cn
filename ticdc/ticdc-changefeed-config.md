@@ -45,6 +45,9 @@ Info: {"upstream_id":7178706266519722477,"namespace":"default","id":"simple-repl
 # 该配置会同时影响 filter 和 sink 相关配置。自 v6.5.6、v7.1.3 和 v7.5.0 起，默认值由 true 改为 false
 case-sensitive = false
 
+# 指定是否强制同步不存在有效索引的表，默认值为 false
+force-replicate=false
+
 # 是否开启 Syncpoint 功能，从 v6.3.0 开始支持，该功能默认关闭。
 # 从 v6.4.0 开始，使用 Syncpoint 功能需要同步任务拥有下游集群的 SYSTEM_VARIABLES_ADMIN 或者 SUPER 权限。
 # 注意：该参数只有当下游为 TiDB 时，才会生效。
