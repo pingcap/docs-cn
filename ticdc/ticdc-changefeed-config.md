@@ -46,6 +46,7 @@ Info: {"upstream_id":7178706266519722477,"namespace":"default","id":"simple-repl
 case-sensitive = false
 
 # 指定是否强制同步不存在有效索引的表，默认值为 false
+# 详情请参考：https://docs.pingcap.com/zh/tidb/stable/ticdc-manage-changefeed#同步没有有效索引的表
 force-replicate=false
 
 # 是否开启 Syncpoint 功能，从 v6.3.0 开始支持，该功能默认关闭。
