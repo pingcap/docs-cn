@@ -1,7 +1,6 @@
 ---
 title: 从 TiDB 集群迁移数据至另一 TiDB 集群
 summary: 了解如何将数据从一个 TiDB 集群迁移至另一 TiDB 集群。
-aliases: ['/zh/tidb/dev/incremental-replication-between-clusters/']
 ---
 
 # 从 TiDB 集群迁移数据至另一 TiDB 集群
@@ -107,7 +106,7 @@ aliases: ['/zh/tidb/dev/incremental-replication-between-clusters/']
 
 ## 第 2 步：迁移全量数据
 
-搭建好测试环境后，可以使用 [BR](https://github.com/pingcap/tidb/tree/master/br) 工具的备份和恢复功能迁移全量数据。BR 工具有多种[使用方式](/br/br-use-overview.md#部署和使用-br)，本文中使用 SQL 语句 [`BACKUP`](/sql-statements/sql-statement-backup.md) 和 [`RESTORE`](/sql-statements/sql-statement-restore.md) 进行备份恢复。
+搭建好测试环境后，可以使用 [BR](https://github.com/pingcap/tidb/tree/release-8.5/br) 工具的备份和恢复功能迁移全量数据。BR 工具有多种[使用方式](/br/br-use-overview.md#部署和使用-br)，本文中使用 SQL 语句 [`BACKUP`](/sql-statements/sql-statement-backup.md) 和 [`RESTORE`](/sql-statements/sql-statement-restore.md) 进行备份恢复。
 
 > **注意：**
 >

@@ -1,6 +1,5 @@
 ---
 title: TiDB Control 使用说明
-aliases: ['/docs-cn/dev/tidb-control/','/docs-cn/dev/reference/tools/tidb-control/','/docs-cn/tools/tidb-controller/']
 summary: TiDB Control 是 TiDB 的命令行工具，用于获取 TiDB 状态信息和调试。可通过 TiUP 安装或从源代码编译安装。使用介绍包括命令、选项和参数组成，以及全局参数和各子命令的功能。其中包括获取帮助信息、解码 base64 数据、解码 row key 和 value、操作 etcd、格式化日志文件，以及查询关键 key range 信息。注意：TiDB Control 主要用于诊断调试，不保证和 TiDB 未来引入的新特性完全兼容。
 ---
 

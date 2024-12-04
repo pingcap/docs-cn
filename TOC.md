@@ -9,7 +9,7 @@
   - [与 MySQL 的兼容性](/mysql-compatibility.md)
   - [使用限制](/tidb-limitations.md)
   - [荣誉列表](/credits.md)
-  - [路线图](/tidb-roadmap.md)
+  - [路线图](https://docs.pingcap.com/zh/tidb/dev/tidb-roadmap)
 - 快速上手
   - [快速上手 TiDB](/quick-start-with-tidb.md)
   - [快速上手 HTAP](/quick-start-with-htap.md)
@@ -735,6 +735,7 @@
     - SQL 语句
       - [概览](/sql-statements/sql-statement-overview.md)
       - [`ADMIN`](/sql-statements/sql-statement-admin.md)
+      - [`ADMIN ALTER DDL JOBS`](/sql-statements/sql-statement-admin-alter-ddl.md)
       - [`ADMIN CANCEL DDL`](/sql-statements/sql-statement-admin-cancel-ddl.md)
       - [`ADMIN CHECKSUM TABLE`](/sql-statements/sql-statement-admin-checksum-table.md)
       - [`ADMIN CHECK [TABLE|INDEX]`](/sql-statements/sql-statement-admin-check-table-index.md)
@@ -1075,6 +1076,7 @@
   - [发布版本汇总](/releases/release-notes.md)
   - [版本发布时间线](/releases/release-timeline.md)
   - [TiDB 版本规则](/releases/versioning.md)
+  - [版本周期支持策略](https://cn.pingcap.com/tidb-release-support-policy/)
   - [TiDB 离线包](/binary-package.md)
   - v8.4
     - [8.4.0-DMR](/releases/release-8.4.0.md)

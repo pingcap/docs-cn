@@ -1,7 +1,6 @@
 ---
 title: 表达式语法
 summary: 本文列出 TiDB 的表达式语法。
-aliases: ['/docs-cn/dev/expression-syntax/','/docs-cn/dev/reference/sql/language-structure/expression-syntax/']
 ---
 
 # 表达式语法 (Expression Syntax)
@@ -15,7 +14,7 @@ aliases: ['/docs-cn/dev/expression-syntax/','/docs-cn/dev/reference/sql/language
 + 函数调用，窗口函数等。可参考[函数和操作符概述](/functions-and-operators/functions-and-operators-overview.md)和[窗口函数](/functions-and-operators/window-functions.md)。
 + 其他，包括 paramMarker（即 `?`）、系统变量和用户变量、CASE 表达式等。
 
-以下规则是表达式的语法，该语法基于 TiDB parser 的 [`parser.y`](https://github.com/pingcap/tidb/blob/master/pkg/parser/parser.y) 文件中所定义的规则。
+以下规则是表达式的语法，该语法基于 TiDB parser 的 [`parser.y`](https://github.com/pingcap/tidb/blob/release-8.5/pkg/parser/parser.y) 文件中所定义的规则。
 
 ```ebnf+diagram
 Expression ::=

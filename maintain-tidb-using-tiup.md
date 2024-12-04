@@ -1,6 +1,5 @@
 ---
 title: TiUP 常见运维操作
-aliases: ['/docs-cn/dev/maintain-tidb-using-tiup/','/docs-cn/dev/how-to/maintain/tiup-operations/']
 summary: TiUP 是用于管理 TiDB 集群的工具，可以进行查看集群列表、启动、关闭、修改配置参数、查看状态等常见运维操作。操作简单方便，适合用于 TiDB 集群的管理。
 ---
 
@@ -102,7 +101,7 @@ tiup cluster display ${cluster-name}
 
     **配置项层次结构使用 `.` 表示**。
 
-    关于组件的更多配置参数说明，可参考 [tidb `config.toml.example`](https://github.com/pingcap/tidb/blob/master/pkg/config/config.toml.example)、[tikv `config.toml.example`](https://github.com/tikv/tikv/blob/master/etc/config-template.toml) 和 [pd `config.toml.example`](https://github.com/tikv/pd/blob/master/conf/config.toml)。
+    关于组件的更多配置参数说明，可参考 [tidb `config.toml.example`](https://github.com/pingcap/tidb/blob/release-8.5/pkg/config/config.toml.example)、[tikv `config.toml.example`](https://github.com/tikv/tikv/blob/release-8.5/etc/config-template.toml) 和 [pd `config.toml.example`](https://github.com/tikv/pd/blob/release-8.5/conf/config.toml)。
 
 3. 执行 `reload` 命令滚动分发配置、重启相应组件：
 
@@ -114,7 +113,7 @@ tiup cluster display ${cluster-name}
 
 ### 示例
 
-如果要调整 tidb-server 中事务大小限制参数 `txn-total-size-limit` 为 `1G`，该参数位于 [performance](https://github.com/pingcap/tidb/blob/master/pkg/config/config.toml.example) 模块下，调整后的配置如下：
+如果要调整 tidb-server 中事务大小限制参数 `txn-total-size-limit` 为 `1G`，该参数位于 [performance](https://github.com/pingcap/tidb/blob/release-8.5/pkg/config/config.toml.example) 模块下，调整后的配置如下：
 
 ```
 server_configs:

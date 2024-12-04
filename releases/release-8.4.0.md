@@ -336,6 +336,13 @@ TiDB 版本：8.4.0
 - `binlogctl`
 - `arbiter`
 
+## 操作系统支持变更
+
+- 根据 [CentOS Linux EOL](https://www.centos.org/centos-linux-eol/)，CentOS Linux 7 的上游支持已于 2024 年 6 月 30 日终止。从 v8.4.0 版本开始，TiDB 已结束对 CentOS 7 的支持，建议使用 Rocky Linux 9.1 及以上的版本。
+- 根据 [Red Hat Enterprise Linux Life Cycle](https://access.redhat.com/support/policy/updates/errata/#Life_Cycle_Dates)，Red Hat Enterprise Linux 7 的 Maintenance Support 已于 2024 年 6 月 30 日终止。从 v8.4.0 版本开始，TiDB 已结束对 Red Hat Enterprise Linux 7 的支持，建议使用 Rocky Linux 9.1 及以上的版本。
+
+关于 TiDB 支持的操作系统和平台，请参考 [TiDB 软件和硬件环境建议配置](/hardware-and-software-requirements.md#操作系统及平台要求)。
+
 ## 移除功能
 
 * 以下为从 v8.4.0 开始已移除的功能：
@@ -388,7 +395,7 @@ TiDB 版本：8.4.0
     - 优化存在大量 DELETE 版本时 RocksDB 的 compaction 触发机制，以加快磁盘空间回收 [#17269](https://github.com/tikv/tikv/issues/17269) @[AndreMouche](https://github.com/AndreMouche)
     - 支持在线更改写入流量控制 (flow-control) 的相关配置 [#17395](https://github.com/tikv/tikv/issues/17395) @[glorv](https://github.com/glorv)
     - 优化空表和小 Region 场景下 Region Merge 的速度 [#17376](https://github.com/tikv/tikv/issues/17376) @[LykxSassinator](https://github.com/LykxSassinator)
-    - [Pipelined DML](https://github.com/pingcap/tidb/blob/master/docs/design/2024-01-09-pipelined-DML.md) 不会长时间阻塞 resolved-ts [#17459](https://github.com/tikv/tikv/issues/17459) @[ekexium](https://github.com/ekexium)
+    - [Pipelined DML](https://github.com/pingcap/tidb/blob/release-8.4/docs/design/2024-01-09-pipelined-DML.md) 不会长时间阻塞 resolved-ts [#17459](https://github.com/tikv/tikv/issues/17459) @[ekexium](https://github.com/ekexium)
 
 + PD
 

@@ -1,6 +1,5 @@
 ---
 title: 本地快速部署 TiDB 集群
-aliases: ['/docs-cn/dev/tiup/tiup-playground/','/docs-cn/dev/reference/tools/tiup/playground/']
 summary: TiDB 集群是分布式系统，由多个组件构成。想要快速体验 TiDB，可以使用 TiUP 中的 playground 组件快速搭建本地测试环境。通过命令行参数可以设置各组件的数量和配置，也可以启动多个组件实例。使用 `tiup client` 可以快速连接到本地启动的 TiDB 集群。还可以查看已启动集群的信息，扩容或缩容集群。
 ---
 
@@ -104,7 +103,7 @@ nightly 就是这个集群的版本号，这里指定为每日构建版本。
 
 ### 覆盖 PD 的默认配置
 
-首先，你需要复制 PD 的[配置模版](https://github.com/tikv/pd/blob/master/conf/config.toml)。假设你将复制的配置文件放置在 `~/config/pd.toml`，按需修改一些内容后，执行以下命令可以覆盖 PD 的默认配置：
+首先，你需要复制 PD 的[配置模版](https://github.com/tikv/pd/blob/release-8.5/conf/config.toml)。假设你将复制的配置文件放置在 `~/config/pd.toml`，按需修改一些内容后，执行以下命令可以覆盖 PD 的默认配置：
 
 {{< copyable "shell-regular" >}}
 

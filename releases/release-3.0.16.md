@@ -1,6 +1,5 @@
 ---
 title: TiDB 3.0.16 Release Notes
-aliases: ['/docs-cn/dev/releases/release-3.0.16/']
 summary: TiDB 3.0.16 发布，优化了 hash partition pruning 和 Region 设置，修复了多个 Bug，包括锁住的 primary key 造成的结果不一致问题和 JSON 数据中 int 和 float 类型比较的问题。TiKV 也进行了稳定性优化和 Bug 修复。PD 修复了查询 Region 报 404 错误的问题。
 ---
 

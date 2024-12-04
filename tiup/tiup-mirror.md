@@ -1,6 +1,5 @@
 ---
 title: 搭建私有镜像
-aliases: ['/docs-cn/dev/tiup/tiup-mirror/','/docs-cn/dev/tiup/tiup-mirrors/','/docs-cn/dev/reference/tools/tiup/mirror/','/docs-cn/dev/reference/tools/tiup/mirrors/']
 summary: TiUP 提供了构建私有镜像的方案，使用 mirror 指令来实现，可用于离线部署。执行 `tiup mirror clone` 命令，可构建本地地镜像。克隆完成后，可以通过 SCP、NFS、HTTP 或 HTTPS 共享仓库。使用 `TIUP_MIRRORS` 环境变量来使用镜像。重新运行 `tiup mirror clone` 命令会创建新的 manifest，并下载可用的最新版本的组件。可以创建自定义仓库，并使用自己构建的 TiDB 组件。
 ---
 

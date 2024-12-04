@@ -1,7 +1,6 @@
 ---
 title: TiDB 锁冲突问题处理
 summary: 了解 TiDB 锁冲突问题以及处理方式。
-aliases: ['/docs-cn/dev/troubleshoot-lock-conflicts/']
 ---
 
 # TiDB 锁冲突问题处理
@@ -335,7 +334,7 @@ ERROR 1205 (HY000): Lock wait timeout exceeded; try restarting transaction
 
 ### TTL manager has timed out
 
-除了有不能超出 GC 时间的限制外，悲观锁的 TTL 有上限，默认为 1 小时，所以执行时间超过 1 小时的悲观事务有可能提交失败。这个超时时间由 TiDB 参数 [`performance.max-txn-ttl`](https://github.com/pingcap/tidb/blob/master/pkg/config/config.toml.example) 指定。
+除了有不能超出 GC 时间的限制外，悲观锁的 TTL 有上限，默认为 1 小时，所以执行时间超过 1 小时的悲观事务有可能提交失败。这个超时时间由 TiDB 参数 [`performance.max-txn-ttl`](https://github.com/pingcap/tidb/blob/release-8.5/pkg/config/config.toml.example) 指定。
 
 可通过查看 TiDB 日志查看报错信息：
 

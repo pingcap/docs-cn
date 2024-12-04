@@ -1,6 +1,5 @@
 ---
 title: SQL 模式
-aliases: ['/docs-cn/dev/sql-mode/','/docs-cn/dev/reference/sql/sql-mode/']
 summary: TiDB 服务器采用不同 SQL 模式来操作，可以使用 `SET [SESSION | GLOBAL] sql_mode='modes'` 语句设置 SQL 模式。`GLOBAL` 级别的 SQL 模式需要 `SUPER` 权限，影响新连接；`SESSION` 级别的 SQL 模式只影响当前客户端。重要的 sql_mode 值包括 `ANSI`、`STRICT_TRANS_TABLES` 和 `TRADITIONAL`。SQL mode 列表包括 `PIPES_AS_CONCAT`、`ANSI_QUOTES`、`IGNORE_SPACE`、`ONLY_FULL_GROUP_BY` 等。
 ---
 

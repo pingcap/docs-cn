@@ -1,6 +1,5 @@
 ---
 title: 使用 TiDB Dashboard 诊断报告定位问题
-aliases: ['/docs-cn/dev/dashboard/dashboard-diagnostics-usage/']
 summary: 本文介绍了使用 TiDB Dashboard 诊断报告定位问题的方法。通过对比两个时间段的监控项差异来帮助 DBA 定位问题。示例中展示了大查询/写入导致 QPS 抖动或延迟上升的诊断方法，以及如何用对比报告定位问题。对比报告可以帮助 DBA 更快速地定位问题，例如通过查看监控项的差异大小排序来发现异常。通过对比报告定位问题，可以更准确地诊断可能的慢查询和影响查询执行的负载。
 ---
 

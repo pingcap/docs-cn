@@ -1,7 +1,6 @@
 ---
 title: TiCDC 拆分 UPDATE 事件行为说明
 summary: 介绍 TiCDC changefeed 拆分 UPDATE 事件的行为变更，说明变更原因以及影响范围。
-aliases: ['/zh/tidb/dev/ticdc-behavior-change']
 ---
 
 # TiCDC 拆分 UPDATE 事件行为说明

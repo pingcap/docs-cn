@@ -1,7 +1,6 @@
 ---
 title: TiDB 快照备份与恢复使用指南
 summary: 了解如何使用 br 命令行工具进行 TiDB 快照备份与恢复。
-aliases: ['/zh/tidb/dev/br-usage-backup/','/zh/tidb/dev/br-usage-restore/','/zh/tidb/dev/br-usage-restore-for-maintain/', '/zh/tidb/dev/br-usage-backup-for-maintain/']
 ---
 
 # TiDB 快照备份与恢复使用指南
@@ -153,7 +152,7 @@ tiup br restore full \
 
 - 统计信息表 (`mysql.stat_*`) (但可以恢复统计信息，详细参考[备份统计信息](/br/br-snapshot-manual.md#备份统计信息))
 - 系统变量表 (`mysql.tidb`、`mysql.global_variables`)
-- [其他系统表](https://github.com/pingcap/tidb/blob/master/br/pkg/restore/snap_client/systable_restore.go#L31)
+- [其他系统表](https://github.com/pingcap/tidb/blob/release-8.5/br/pkg/restore/snap_client/systable_restore.go#L31)
 
 ```
 +-----------------------------------------------------+
