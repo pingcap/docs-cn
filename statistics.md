@@ -179,18 +179,18 @@ ANALYZE TABLE TableName INDEX [IndexNameList] [WITH NUM BUCKETS|TOPN|CMSKETCH DE
 
 #### 收集动态裁剪模式下的分区表统计信息
 
-在分区表开启[动态裁剪模式](/partitioned-table.md#动态裁剪模式)（从 v6.3.0 开始，默认开启）的情况下，TiDB 将收集表级别的汇总统计信息，以下称 GlobalStats。目前 GlobalStats 由分区统计信息合并汇总得到。在动态裁剪模式下，任何分区表的统计信息更新都可能触发 GlobalStats 更新。
+在分区表开启[动态裁剪模式](/partitioned-table.md#动态裁剪模式)（从 v6.3.0 开始，默认开启）的情况下，TiDB 将收集表级别的汇总统计信息，即分区表的全局统计信息。分区表的全局统计信息合并汇总了所有分区的统计信息。在动态裁剪模式下，表中任何分区的统计信息更新都可能触发该表全局统计信息的更新。
 
-如果分区为空，或者某些分区上的列缺失，那么统计信息收集行为将受 [`tidb_skip_missing_partition_stats`](/system-variables.md#tidb_skip_missing_partition_stats-从-v730-版本开始引入) 变量的控制：
+如果某些分区的统计信息为空，或者某些分区中列的统计信息有缺失，那么统计信息收集行为将受 [`tidb_skip_missing_partition_stats`](/system-variables.md#tidb_skip_missing_partition_stats-从-v730-版本开始引入) 变量的控制：
 
-- 当触发 GlobalStats 更新且 [`tidb_skip_missing_partition_stats`](/system-variables.md#tidb_skip_missing_partition_stats-从-v730-版本开始引入) 为 `OFF` 时：
+- 当触发全局统计信息更新且 [`tidb_skip_missing_partition_stats`](/system-variables.md#tidb_skip_missing_partition_stats-从-v730-版本开始引入) 为 `OFF` 时：
 
-    - 如果某些分区缺失统计信息（例如从未进行过 analyze 的新分区），GlobalStats 生成会中断，并显示 warning 信息提示这些分区没有可用的统计信息。
-    - 如果某些分区中缺失某些列的统计信息（这些分区中指定了不同的列进行 analyze），当这些列的统计信息被合并汇总时，GlobalStats 生成会中断，并显示 warning 信息提示某些分区中缺少某些列的统计信息。
+    - 如果某些分区缺失统计信息（例如从未进行过 analyze 的新分区），全局统计信息生成会中断，并显示 warning 信息提示这些分区没有可用的统计信息。
+    - 如果某些分区中缺失某些列的统计信息（这些分区中指定了不同的列进行 analyze），当这些列的统计信息被合并汇总时，全局统计信息生成会中断，并显示 warning 信息提示某些分区中缺少某些列的统计信息。
 
-- 当触发 GlobalStats 更新且 [`tidb_skip_missing_partition_stats`](/system-variables.md#tidb_skip_missing_partition_stats-从-v730-版本开始引入) 为 `ON` 时：
+- 当触发全局统计信息更新且 [`tidb_skip_missing_partition_stats`](/system-variables.md#tidb_skip_missing_partition_stats-从-v730-版本开始引入) 为 `ON` 时：
 
-    - 如果某些分区缺失全部列或部分列的统计信息，TiDB 在生成 GlobalStats 时会跳过这些缺失的分区统计信息，不影响 GlobalStats 生成。
+    - 如果某些分区缺失全部列或部分列的统计信息，TiDB 在生成全局统计信息时会跳过这些缺失的分区统计信息，不影响全局统计信息的生成。
 
 在动态裁剪模式下，分区和分区表的 `ANALYZE` 配置应保持一致。因此，如果在 `ANALYZE TABLE TableName PARTITION PartitionNameList` 语句后指定了 `COLUMNS` 配置或在 `WITH` 后指定了 `OPTIONS` 配置，TiDB 将忽略这些配置并返回 warning 信息提示。
 

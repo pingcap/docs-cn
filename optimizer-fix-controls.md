@@ -36,7 +36,7 @@ SET SESSION tidb_opt_fix_control = '44262:ON,44389:ON';
 
 - 默认值：`OFF`
 - 可选值：`ON`、`OFF`
-- 是否允许在缺少 [GlobalStats](/statistics.md#收集动态裁剪模式下的分区表统计信息) 的情况下使用[动态裁剪模式](/partitioned-table.md#动态裁剪模式)访问分区表。
+- 在分区表缺少[全局统计信息](/statistics.md#收集动态裁剪模式下的分区表统计信息)的情况下，是否允许使用[动态裁剪模式](/partitioned-table.md#动态裁剪模式)访问该表。
 
 ### [`44389`](https://github.com/pingcap/tidb/issues/44389) <span class="version-mark">从 v6.5.3 和 v7.2.0 版本开始引入</span>
 
