@@ -22,10 +22,13 @@ TiKV MVCC 内存引擎在内存中缓存最近写入的 MVCC 版本，并实现�
 
 以上示意图中共有 2 行记录，每行记录各有 9 个 MVCC 版本。在开启内存引擎和未开启内存引擎的情况下，行为对比如下：
 
-- 左侧为没有开启内存引擎的情况，表中记录按主键升序保存在 RocksDB 中，相同行的 MVCC 版本紧邻在一起。
-- 右侧为开启了内存引擎的情况，RocksDB 中的数据与左侧一致，同时内存引擎缓存了 2 行记录最新的 2 个 MVCC 版本。
-- 当 TiKV 处理一个范围为 `[k1, k2]`，开始时间戳为 `8` 的扫描请求时，左侧未开启内存引擎时需要处理 11 个 MVCC 版本，而右侧开启内存引擎时只需处理 4 个 MVCC 版本，因此减少了请求延时和 CPU 消耗。
-- 当 TiKV 处理一个范围为 `[k1, k2]`，开始时间戳为 `7` 的扫描请求时，由于右侧缺少需要读取的历史版本，因此内存引擎缓存失效，回退到读取 RocksDB 中的数据。
+- 左侧（未开启内存引擎）：表中记录按主键升序保存在 RocksDB 中，相同行的 MVCC 版本紧邻在一起。
+- 右侧（开启了内存引擎）：RocksDB 中的数据与左侧一致，同时内存引擎缓存了 2 行记录最新的 2 个 MVCC 版本。
+- 当 TiKV 处理一个范围为 `[k1, k2]`，开始时间戳为 `8` 的扫描请求时：
+    - 左侧未开启内存引擎时需要处理 11 个 MVCC 版本。
+    - 右侧开启内存引擎时只需处理 4 个 MVCC 版本，因此减少了请求延时和 CPU 消耗。
+- 当 TiKV 处理一个范围为 `[k1, k2]`，开始时间戳为 `7` 的扫描请求时：
+    - 由于右侧缺少需要读取的历史版本，因此内存引擎缓存失效，回退到读取 RocksDB 中的数据。
 
 ## 使用方式
 
@@ -60,8 +63,8 @@ mvcc-amplification-threshold = 10
 
 开启内存引擎之后，TiKV 会根据 Region 的读流量和 MVCC 放大程度，选择要自动加载的 Region。具体流程如下：
 
-1. Region 按照最近时间段的 next (RocksDB Iterator next API) 和 prev (RocksDB Iterator prev API) 次数进行排序。
-2. 使用 `mvcc-amplification-threshold`（默认为 `10`，mvcc amplification 衡量读放大程度，计算公式为 (next + prev) / processed_keys）对 Region 进行过滤。
+1. Region 按照最近时间段的 `next` (RocksDB Iterator next API) 和 `prev` (RocksDB Iterator prev API) 次数进行排序。
+2. 使用 `mvcc-amplification-threshold` 配置项对 Region 进行过滤，该配置项的默认值为 `10`。MVCC amplification 衡量读放大程度，计算公式为 (`next` + `prev`) / `processed_keys`）。
 3. 载入前 N 个 MVCC 放大严重的 Region，其中 N 基于内存估算而来。
 
 内存引擎也会定期驱逐 Region。具体流程如下：
@@ -74,7 +77,7 @@ mvcc-amplification-threshold = 10
 + [BR](/br/br-use-overview.md)：内存引擎与 BR 可同时使用，但 BR restore 会驱逐内存引擎中涉及恢复的 Region，BR restore 完成后，如果对应 Region 还是热点，则会被内存引擎自动加载。
 + [TiDB Lightning](/tidb-lightning/tidb-lightning-overview.md)：内存引擎与 TiDB Lightning 可同时使用，但 TiDB Lightning 的物理导入模式会驱逐内存引擎中涉及恢复的 Region，TiDB Lightning 使用物理导入模式完成导入数据后，如果对应 Region 还是热点，则会被内存引擎自动加载。
 + [Follower Read](/develop/dev-guide-use-follower-read.md) 与 [Stale Read](/develop/dev-guide-use-stale-read.md)：内存引擎可与这两个特性同时开启，但内存引擎只能加速 Leader 上的 coprocessor 请求，无法加速 Follower Read 和 Stale Read。
-+ [`FLASHBACK CLUSTER`](/sql-statements/sql-statement-flashback-cluster.md)：内存引擎与 Flashback 同时使用时，Flashback 会导致内存引擎缓存失效。Flashback 完成后，内存引擎会自动加载热点 Region。
++ [`FLASHBACK CLUSTER`](/sql-statements/sql-statement-flashback-cluster.md)：内存引擎与 Flashback 可同时使用，但 Flashback 会导致内存引擎缓存失效。Flashback 完成后，内存引擎会自动加载热点 Region。
 
 ## FAQ
 
