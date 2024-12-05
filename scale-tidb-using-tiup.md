@@ -414,6 +414,8 @@ tiup cluster display <cluster-name>
     ALTER TABLE <db-name>.<table-name> SET tiflash replica 'new_replica_num';
     ```
 
+    在执行该语句之后，TiDB 会相应地修改或删除 PD 的 [Placement Rules](/configure-placement-rules.md)，PD 再根据 Placement Rules 进行数据调度。
+
 3. 重新执行步骤 1，确保没有数据表的 TiFlash 副本数大于缩容后的 TiFlash 节点数。
 
 ### 2. 执行缩容操作
@@ -484,50 +486,6 @@ tiup cluster display <cluster-name>
 
     ```shell
     tiup cluster prune <cluster-name>
-    ```
-
-> **注意：**
->
-> 在执行 `ALTER TABLE <db-name>.<table-name> SET tiflash replica '0'` 后，PD 的同步规则会自动清除。
-> 但是如果在表带有 TiFlash 副本的情况下，直接执行 `DROP TABLE <db-nam>.<table-name>` 或 `DROP DATABASE <db-name>`，则相关的表会在满足垃圾回收（GC）条件后才清除同步规则。
-> 在同步规则未清理之前，TiFlash 节点上的数据以及 TiFlash 节点不会进入 Tombstone 状态。
-> 如果希望在未满足垃圾回收条件前清除同步规则，可以按照以下步骤手动清除。
-
-手动在 PD 中清除同步规则的步骤如下：
-
-1. 查询当前 PD 实例中所有与 TiFlash 相关的数据同步规则。
-
-    ```shell
-    curl http://<pd_ip>:<pd_port>/pd/api/v1/config/rules/group/tiflash
-    ```
-
-    ```
-    [
-      {
-        "group_id": "tiflash",
-        "id": "table-45-r",
-        "override": true,
-        "start_key": "7480000000000000FF2D5F720000000000FA",
-        "end_key": "7480000000000000FF2E00000000000000F8",
-        "role": "learner",
-        "count": 1,
-        "label_constraints": [
-          {
-            "key": "engine",
-            "op": "in",
-            "values": [
-              "tiflash"
-            ]
-          }
-        ]
-      }
-    ]
-    ```
-
-2. 删除所有与 TiFlash 相关的数据同步规则。以 `id` 为 `table-45-r` 的规则为例，通过以下命令可以删除该规则。
-
-    ```shell
-    curl -v -X DELETE http://<pd_ip>:<pd_port>/pd/api/v1/config/rule/tiflash/table-45-r
     ```
 
 ### 3. 查看集群状态
