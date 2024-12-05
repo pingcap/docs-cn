@@ -97,7 +97,7 @@ SELECT @@tidb_last_txn_info;
     - 开启外键约束检查时 (`foreign_key_checks = ON`) ，不可包含外键相关表操作
 
 特殊行为：
-  - `INSERT IGNORE ... ON DUPLICATE UPDATE` 语句可能会在更新造成冲突时报出 `Duplicate entry` 的错误。
+  - `INSERT IGNORE ... ON DUPLICATE KEY UPDATE` 语句可能会在更新造成冲突时报出 `Duplicate entry` 的错误。
 
 ## 最佳实践
 
