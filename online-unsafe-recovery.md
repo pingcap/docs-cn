@@ -46,7 +46,8 @@ pd-ctl -u <pd_addr> unsafe remove-failed-stores <store_id1,store_id2,...>
 
 > **注意：**
 >
-> 请确保在该命令中一次性指定**所有**已确定无法恢复的 TiKV 节点和 TiFlash 节点，如果有部分无法恢复的节点被遗漏，恢复可能会被阻塞。如果在短时间内 (如一天时间内)，已经运行过一次 Online Unsafe Recovery，请仍确保该命令后续的执行仍然带有之前已经处理过的 TiKV 和 TiFlash 节点。
+> - 请确保在该命令中一次性指定**所有**已确定无法恢复的 TiKV 节点和 TiFlash 节点，如果有部分无法恢复的节点被遗漏，恢复可能会被阻塞。
+> - 如果在短时间内 (如一天时间内)，已经运行过一次 Online Unsafe Recovery，请仍确保该命令后续的执行仍然带有之前已经处理过的 TiKV 和 TiFlash 节点。
 
 可通过 `--timeout <seconds>` 指定可允许执行恢复的最长时间。若未指定，默认为 5 分钟。当超时后，恢复中断报错。
 
