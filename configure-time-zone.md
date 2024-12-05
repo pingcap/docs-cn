@@ -1,11 +1,6 @@
 ---
 title: 时区支持
-<<<<<<< HEAD
-summary: TiDB 使用的时区由全局变量和 session 变量决定。全局变量的默认值是 System，实际时区在集群初始化时设置。可以通过设置全局时区和 session 变量来修改时区。Timestamp 数据类型受时区影响，而 Datetime/Date/Time 不受影响。在导数据时需注意主从库的时区设定是否一致。
-=======
-aliases: ['/docs-cn/dev/configure-time-zone/','/docs-cn/dev/how-to/configure/time-zone/']
 summary: TiDB 的时区设置由 `time_zone` 系统变量控制，可以在会话级别或全局级别进行设置。`TIMESTAMP` 数据类型的的显示值受时区设置影响，但 `DATETIME`、`DATE` 或 `TIME` 数据类型不受影响。在数据迁移时，需要特别注意主库和从库的时区设置是否一致。
->>>>>>> 7e92cfdd39 (Update timezone docs (#19204))
 ---
 
 # 时区支持
