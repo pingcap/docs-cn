@@ -60,8 +60,6 @@ pd-ctl -u <pd_addr> unsafe remove-failed-stores <store_id1,store_id2,...>
 
 若 PD 进行过灾难性恢复 [`pd-recover`](/pd-recover.md) 等类似操作，丢失了无法恢复的 TiKV 节点的 store 信息，因此无法确定要传入的 store ID 时，可使用 `--auto-detect` 模式。在该模式下，PD 会自动清理那些没有注册过的 TiKV 节点（或曾经注册过但已经被强制删除的 TiKV 节点）上的副本。
 
-{{< copyable "shell-regular" >}}
-
 ```bash
 pd-ctl -u <pd_addr> unsafe remove-failed-stores --auto-detect
 ```
