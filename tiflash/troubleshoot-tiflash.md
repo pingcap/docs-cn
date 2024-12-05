@@ -89,6 +89,56 @@ summary: 介绍 TiFlash 的常见问题、原因及解决办法。
 2. 清除该 TiFlash 节点的相关数据。
 3. 重新在集群中部署 TiFlash 节点。
 
+## 缩容 TiFlash 节点慢
+
+1. 先确保是否有数据表的 TiFlash 副本数大于缩容后的 TiFlash 节点数。如果存在该情况，PD 不会将 Region peer 从待缩容的 TiFlash 节点上移走，导致 TiFlash 节点无法缩容。
+    
+    ```sql
+    SELECT * FROM information_schema.tiflash_replica WHERE REPLICA_COUNT >  'tobe_left_nodes';
+    ```
+
+    `tobe_left_nodes` 表示缩容后的 TiFlash 节点数。如果查询结果不为空，则需要修改相关表的 TiFlash 副本数。
+
+2. 特别地，如果想从集群中缩容所有 TiFlash 节点至 0 个，而且 `information_schema.tiflash_replica` 表中已经不存在 TiFlash 副本了，但是 TiFlash 节点仍然无法缩容成功。
+   可能是在表带有 TiFlash 副本的情况下，直接执行 `DROP TABLE <db-nam>.<table-name>` 或 `DROP DATABASE <db-name>`。这种情况下，相关的表会在满足垃圾回收（GC）条件后，TiDB 才会到 PD 处清除同步规则。在垃圾回收完成后，TiFlash 节点就可以缩容成功。
+   如果希望在未满足垃圾回收条件前清除同步规则，可以按照以下步骤手动清除。但注意手动清除同步规则后，如果对相关的表执行 `RECOVER TABLE`/`FLASHBACK TABLE`/`FLASHBACK DATABASE` 操作，表的 TiFlash 副本不会恢复。
+
+   2.1. 查询当前 PD 实例中所有与 TiFlash 相关的数据同步规则。
+
+    ```shell
+    curl http://<pd_ip>:<pd_port>/pd/api/v1/config/rules/group/tiflash
+    ```
+
+    ```
+    [
+      {
+        "group_id": "tiflash",
+        "id": "table-45-r",
+        "override": true,
+        "start_key": "7480000000000000FF2D5F720000000000FA",
+        "end_key": "7480000000000000FF2E00000000000000F8",
+        "role": "learner",
+        "count": 1,
+        "label_constraints": [
+          {
+            "key": "engine",
+            "op": "in",
+            "values": [
+              "tiflash"
+            ]
+          }
+        ]
+      }
+    ]
+    ```
+
+   2.2. 删除所有与 TiFlash 相关的数据同步规则。以 `id` 为 `table-45-r` 的规则为例，通过以下命令可以删除该规则。
+
+    ```shell
+    curl -v -X DELETE http://<pd_ip>:<pd_port>/pd/api/v1/config/rule/tiflash/table-45-r
+    ```
+
+
 ## TiFlash 分析慢
 
 如果语句中含有 MPP 模式不支持的算子或函数等，TiDB 不会选择 MPP 模式，可能导致分析慢。此时，可以执行 `EXPLAIN` 语句检查 SQL 中是否含有 TiFlash 不支持的函数或算子。
