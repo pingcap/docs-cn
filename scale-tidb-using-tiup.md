@@ -496,8 +496,10 @@ tiup cluster display <cluster-name>
 
 > **注意：**
 >
-> 从 v6.1.0 起，在执行 `ALTER TABLE <db-name>.<table-name> SET tiflash replica '0'` 后，PD 的同步规则会自动清除。
-> 如果在低于 v6.0.0 的集群，在所有的 TiFlash 节点停止运行之前，没有取消所有同步到 TiFlash 的表，则需要按照以下步骤手动在 PD 中清除同步规则，否则无法成功完成 TiFlash 节点的下线。
+> 在执行 `ALTER TABLE <db-name>.<table-name> SET tiflash replica '0'` 后，PD 的同步规则会自动清除。
+> 但是如果在表带有 TiFlash 副本的情况下，直接执行 `DROP TABLE <db-nam>.<table-name>` 或 `DROP DATABASE <db-name>`，则相关的表会在满足垃圾回收（GC）条件后才清除同步规则。
+> 在同步规则未清理之前，TiFlash 节点上的数据以及 TiFlash 节点不会进入 Tombstone 状态。
+> 如果希望在未满足垃圾回收条件前清楚同步规则，可以按照以下步骤手动清除。
 
 手动在 PD 中清除同步规则的步骤如下：
 
