@@ -267,7 +267,7 @@ TiDB 8.5.0 为长期支持版本 (Long-Term Support Release, LTS)。
     - 支持 `tso` 服务在微服务模式和非微服务模式之间动态切换 [#8477](https://github.com/tikv/pd/issues/8477) @[rleungx](https://github.com/rleungx)
     - 优化 `pd-ctl config` 输出中部分字段的大小写 [#8694](https://github.com/tikv/pd/issues/8694) @[lhy1024](https://github.com/lhy1024)
     - [Store limit v2](/configure-store-limit.md#store-limit-v2-原理) 成为正式功能 (GA) [#8865](https://github.com/tikv/pd/issues/8865) @[lhy1024](https://github.com/lhy1024)
-    - 支持配置 Region 巡检的并行度 [#8866](https://github.com/tikv/pd/issues/8866) @[lhy1024](https://github.com/lhy1024)
+    - 支持配置 Region 巡检的并行度（实验特性）[#8866](https://github.com/tikv/pd/issues/8866) @[lhy1024](https://github.com/lhy1024)
 
 + TiFlash <!--tw@Oreoxmt: 3 notes-->
 
