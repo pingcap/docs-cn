@@ -13,6 +13,7 @@ summary: 了解 TiCDC 支持同步的 DDL 和一些特殊情况
 
 以下为 TiCDC 支持同步的 DDL 的列表。这些 DDL 会根据是否具有[有效索引](/ticdc/ticdc-overview.md#有效索引)以及是否设置 force-replicate = true 会有不同的行为。
 下表中出现的缩写字母含义如下：
+
 - Y：在该条件下可以同步到下游。
 - N：在该条件下不会同步到下游。
 
