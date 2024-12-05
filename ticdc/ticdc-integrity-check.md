@@ -73,11 +73,11 @@ TiCDC 将数据编码成特定格式并发送至 Kafka。Kafka Consumer 读取�
 
 ### Checksum V2
 
-在 v8.3.0 版本 TiDB 和 TiCDC 使用 Checksum V2 算法，解决了 Checksum V1 在执行 `ADD COLUMN` 或 `DROP COLUMN` 后无法正确校验 Update 或 Delete 事件中 Old Value 数据的问题。
+在 v8.3.0 版本 TiDB 和 TiCDC 使用 Checksum V2 算法，解决了 Checksum V1 在执行 `ADD COLUMN` 或 `DROP COLUMN` 后无法正确校验 Update 或 Delete 事件中 Old Value 数据的问题。Checksum V2 算法基于 Key-Value 对计算 Bytes 级别的 Checksum 值。Key 由表 ID 和行 ID 两部分组成。
 
 ### Checksum V3
 
-从 v8.4.0 版本之后，TiDB 和 TiCDC 使用 Checksum V3 算法。该算法解决了 Checksum V2 算法中，由于包含 Table ID 信息，在 BR 恢复场景下由于改写 Table ID 导致的 Old Value 部分 Checksum 无法被校验的问题。
+从 v8.4.0 版本之后，TiDB 和 TiCDC 使用 Checksum V3 算法。该算法解决了 Checksum V2 算法中，由于包含 Table ID 信息，在 BR 恢复场景下由于改写 Table ID 导致的 Old Value 部分 Checksum 无法被校验的问题。Checksum V3 基于表 ID 和 Value 部分计算 Bytes 级别的 Checksum 值。
 
 ## Checksum 计算规则
 
@@ -124,4 +124,4 @@ fn checksum(columns) {
 ### BR 恢复场景兼容性
 v8.3.0 和 v8.4.0 的 Checksum 功能有如下兼容性问题：
 
-使用 BR 工具备份 v8.3.0 的数据，恢复到其他版本的 TiDB 集群，在 Changefeed 同步过程中如果遇到了 Update 和 Delete 事件，在 TiCDC 内部可能发生校验 Old Value 的 Checksum 失败的情况。如果存在上述使用场景，需要关闭 changefeed 的 checksum 校验功能。
+使用 BR 工具备份 v8.3.0 的数据，恢复到 v8.3.0 及更高版本的 TiDB 集群。在 Changefeed 同步过程中如果遇到了 Update 和 Delete 事件，在 TiCDC 内部可能发生校验 Old Value 的 Checksum 失败的情况。具体原因是，在 BR 恢复数据的时候，如果发现当前被恢复的表的 ID 已经在下游目标集群上被占用，就会改写表 ID，但是没有改写 Checksum，从而导致 Changefeed 内部校验数据的时候使用的表 ID 和数据在老集群上被写入时候的表 ID 不一致，最终导致校验失败。如果存在上述使用场景，需要关闭 changefeed 的 checksum 校验功能。
