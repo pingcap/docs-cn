@@ -60,9 +60,7 @@ summary: 介绍 TiFlash 的常见问题、原因及解决办法。
 
     store.labels 中含有 `{"key": "engine", "value": "tiflash"}` 信息的为 TiFlash proxy。
 
-4. 检查配置的副本数是否小于等于集群 TiKV 节点数。若配置的副本数超过 TiKV 节点数，则 PD 不会向 TiFlash 同步数据；
-
-    {{< copyable "shell-regular" >}}
+4. 检查 TiFlash 配置的副本数是否小于等于集群 TiKV 节点数。若配置的副本数超过 TiKV 节点数，则 PD 不会向 TiFlash 同步数据：
 
     ```shell
     tiup ctl:nightly pd -u http://${pd-ip}:${pd-port} config placement-rules show | grep -C 10 default
