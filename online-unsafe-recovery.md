@@ -38,25 +38,25 @@ Online Unsafe Recovery 功能适用于以下场景：
 
 ### 第 1 步：指定无法恢复的节点
 
-使用 PD Control 执行 [`unsafe remove-failed-stores <store_id>[,<store_id>,...]`](/pd-control.md#unsafe-remove-failed-stores-store-ids--show) 命令，指定已确定无法恢复的**所有** TiKV 和 TiFlash 节点，并用逗号隔开，以触发自动恢复。
-
-{{< copyable "shell-regular" >}}
+使用 PD Control 执行 [`unsafe remove-failed-stores <store_id>[,<store_id>,...]`](/pd-control.md#unsafe-remove-failed-stores-store-ids--show) 命令，指定**所有**已确定无法恢复的 TiKV 和 TiFlash 节点，并用逗号隔开，以触发自动恢复。
 
 ```bash
 pd-ctl -u <pd_addr> unsafe remove-failed-stores <store_id1,store_id2,...>
 ```
 
-命令输出 `Success` 表示向 PD 注册任务成功。但仅表示请求已被接受，并不代表恢复成功。恢复任务在后台进行，具体进度使用 [`show`](#第-2-步查看进度等待结束) 查看。命令输出 `Failed` 表示注册任务失败，可能的错误有：
+> **注意：**
+>
+> 请确保在该命令中一次性指定**所有**已确定无法恢复的 TiKV 节点和 TiFlash 节点，如果有部分无法恢复的节点被遗漏，恢复可能会被阻塞。如果在短时间内 (如一天时间内)，已经运行过一次 Online Unsafe Recovery，请仍确保该命令后续的执行仍然带有之前已经处理过的 TiKV 和 TiFlash 节点。
+
+可通过 `--timeout <seconds>` 指定可允许执行恢复的最长时间。若未指定，默认为 5 分钟。当超时后，恢复中断报错。
+
+该命令输出 `Success` 表示向 PD 注册任务成功。但仅表示请求已被接受，并不代表恢复成功。恢复任务在后台进行，具体进度使用 [`show`](#第-2-步查看进度等待结束) 查看。
+
+该命令输出 `Failed` 表示注册任务失败，可能的错误有：
 
 - `unsafe recovery is running`：已经有正在进行的恢复任务
 - `invalid input store x doesn't exist`：指定的 store ID 不存在
 - `invalid input store x is up and connected`：指定的 store ID 仍然是健康的状态，不应该进行恢复
-
-可通过 `--timeout <seconds>` 指定可允许执行恢复的最长时间。若未指定，默认为 5 分钟。当超时后，恢复中断报错。
-
-> **注意：**
->
-> 手动输入失败节点时，请确保一次性输入**所有**失败的 TiKV 节点和 TiFlash 节点，如果有部分失败节点遗漏，恢复可能会被阻塞。如果在短时间内 (如一天时间内)，已经运行过一次 Online Unsafe Recovery ，请仍确保后续的执行仍然带有之前已经处理过的失败 TiKV 和 TiFlash 节点。
 
 若 PD 进行过灾难性恢复 [`pd-recover`](/pd-recover.md) 等类似操作，丢失了无法恢复的 TiKV 节点的 store 信息，因此无法确定要传入的 store ID 时，可使用 `--auto-detect` 模式。在该模式下，PD 会自动清理那些没有注册过的 TiKV 节点（或曾经注册过但已经被强制删除的 TiKV 节点）上的副本。
 
