@@ -115,4 +115,4 @@ fn checksum(columns) {
 
 v8.3.0 和 v8.4.0 的 Checksum 功能有如下兼容性问题：
 
-使用 BR 工具备份 v8.3.0 的数据，恢复到 v8.4.0 的 TiDB 集群，在 Changefeed 同步过程中如果遇到了 Update 和 Delete 事件，在 TiCDC 内部可能发生校验 Old Value 的 Checksum 失败的情况。如果存在上述使用场景，需要关闭 changefeed 的 checksum 校验功能。
+使用 BR 工具备份 v8.3.0 的数据，恢复到其他版本的 TiDB 集群，在 Changefeed 同步过程中如果遇到了 Update 和 Delete 事件，在 TiCDC 内部可能发生校验 Old Value 的 Checksum 失败的情况。如果存在上述使用场景，需要关闭 changefeed 的 checksum 校验功能。
