@@ -110,3 +110,9 @@ fn checksum(columns) {
 >
 > - 开启 Checksum 校验功能后，DECIMAL 和 UNSIGNED BIGINT 类型的数据会被转换为字符串类型。因此在下游消费者代码中需要将其转换为对应的数值类型，然后进行 Checksum 相关计算。
 > - Delete 事件只含有 Handle Key 列的内容，而 Checksum 是基于所有列计算的，所以 Delete 事件不参与到 Checksum 的校验中。
+
+## 兼容性问题
+
+v8.3.0 和 v8.4.0 的 Checksum 功能有如下兼容性问题：
+
+使用 BR 工具备份 v8.3.0 的数据，恢复到 v8.4.0 的 TiDB 集群，在 Changefeed 同步过程中如果遇到了 Update 和 Delete 事件，在 TiCDC 内部可能发生校验 Old Value 的 Checksum 失败的情况，主要原因是 BR 在恢复数据的时候如果发现被恢复的表 ID 已经在目标集群上被占用，会改写表 ID，但是没有同时改写 Checksum。
