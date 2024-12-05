@@ -409,8 +409,6 @@ tiup cluster display <cluster-name>
 
 2. 对所有 TiFlash 副本数大于缩容后的 TiFlash 节点数的表执行以下语句，`new_replica_num` 必须小于等于 `tobe_left_nodes`：
 
-    {{< copyable "sql" >}}
-
     ```sql
     ALTER TABLE <db-name>.<table-name> SET tiflash replica 'new_replica_num';
     ```
@@ -425,15 +423,11 @@ tiup cluster display <cluster-name>
 
 1. 通过以下命令确定需要下线的节点名称：
 
-    {{< copyable "shell-regular" >}}
-
     ```shell
     tiup cluster display <cluster-name>
     ```
 
 2. 执行 scale-in 命令来下线节点，假设步骤 1 中获得该节点名为 `10.0.1.4:9000`
-
-    {{< copyable "shell-regular" >}}
 
     ```shell
     tiup cluster scale-in <cluster-name> --node 10.0.1.4:9000
@@ -461,8 +455,6 @@ tiup cluster display <cluster-name>
 
     * 若使用 TiUP 部署，可以调用以下命令代替 `pd-ctl`：
 
-        {{< copyable "shell-regular" >}}
-
         ```shell
         tiup ctl:v<CLUSTER_VERSION> pd -u http://<pd_ip>:<pd_port> store
         ```
@@ -477,8 +469,6 @@ tiup cluster display <cluster-name>
 
     * 若通过 TiUP 部署，可以调用以下命令代替 `pd-ctl`：
 
-        {{< copyable "shell-regular" >}}
-
         ```shell
         tiup ctl:v<CLUSTER_VERSION> pd -u http://<pd_ip>:<pd_port> store delete <store_id>
         ```
@@ -490,8 +480,6 @@ tiup cluster display <cluster-name>
 3. 等待该 TiFlash 节点对应的 store 消失或者 state_name 变成 Tombstone 再关闭 TiFlash 进程。
 
 4. 删除 TiUP 拓扑信息中已下线节点的信息（TiUP 会自动清理 `Tombstone` 状态节点的相关数据文件）：
-
-    {{< copyable "shell-regular" >}}
 
     ```shell
     tiup cluster prune <cluster-name>
@@ -507,8 +495,6 @@ tiup cluster display <cluster-name>
 手动在 PD 中清除同步规则的步骤如下：
 
 1. 查询当前 PD 实例中所有与 TiFlash 相关的数据同步规则。
-
-    {{< copyable "shell-regular" >}}
 
     ```shell
     curl http://<pd_ip>:<pd_port>/pd/api/v1/config/rules/group/tiflash
@@ -538,8 +524,6 @@ tiup cluster display <cluster-name>
     ```
 
 2. 删除所有与 TiFlash 相关的数据同步规则。以 `id` 为 `table-45-r` 的规则为例，通过以下命令可以删除该规则。
-
-    {{< copyable "shell-regular" >}}
 
     ```shell
     curl -v -X DELETE http://<pd_ip>:<pd_port>/pd/api/v1/config/rule/tiflash/table-45-r
