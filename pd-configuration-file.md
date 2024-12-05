@@ -279,6 +279,10 @@ pd-server 相关配置项。
 
 ### `patrol-region-worker-count`
 
+> **警告：**
+>
+> 在当前版本中，将该配置项设置大于 1 时开启并发，为实验特性，不建议在生产环境中使用。
+
 + 控制 checker 检查 Region 健康状态时，创建 operator 的并发数，通常状况不需要调整
 + 默认：1
 
