@@ -11,8 +11,7 @@ summary: 了解 TiCDC 支持同步的 DDL 和一些特殊情况
 
 目前 TiCDC 在同步 DDL 时使用白名单策略，只有在白名单中的 DDL 操作才会被同步到下游系统，不在白名单中的 DDL 操作将不会被 TiCDC 同步。
 
-以下为 TiCDC 支持同步的 DDL 的列表。这些 DDL 会根据是否具有[有效索引](/ticdc/ticdc-overview.md#有效索引)以及是否设置 force-replicate = true 会有不同的行为。
-下表中出现的缩写字母含义如下：
+以下为 TiCDC 支持同步的 DDL 的列表。这些 DDL 会根据是否具有[有效索引](/ticdc/ticdc-overview.md#有效索引)以及是否设置 force-replicate = true 会有不同的行为。下表中出现的缩写字母含义如下：
 
 - Y：在该条件下可以同步到下游。
 - N：在该条件下不会同步到下游。
@@ -50,7 +49,7 @@ summary: 了解 TiCDC 支持同步的 DDL 和一些特殊情况
 | alter table ttl | Y | N | Y |
 | alter table remove ttl | Y | N | Y |
 
-> ** 注意：**
+> **注意**
 >
 > - 删除最后一个**有效索引**的 DDL (*号) 不会被同步，并且导致后续数据同步失败。
 > - 当上游表不存在有效索引，且不开启 `force-replicate=true`时，该表不会被同步，但是之后在该表上创建**有效索引**的 DDL (*号) 会被同步，并且下游表和上游表结构可能产生不一致从而导致后续数据同步失败。
