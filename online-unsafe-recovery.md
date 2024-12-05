@@ -58,7 +58,7 @@ pd-ctl -u <pd_addr> unsafe remove-failed-stores <store_id1,store_id2,...>
 >
 > 手动输入失败节点时，请确保一次性输入 **所有** 失败的 TiKV 节点和 TiFlash 节点，如果有部分失败节点遗漏，恢复可能会被阻塞。如果在短时间内 (如一天时间内)，已经运行过一次 Online Unsafe Recovery ，请仍确保后续的执行仍然带有之前已经处理过的失败 TiKV 和 TiFlash 节点。
 
-若 PD 进行过灾难性恢复 [`pd-recover`](/pd-recover.md) 等类似操作，丢失了无法恢复的 TiKV 节点的 store 信息，因此无法确定要传的 store ID 时，可使用 `--auto-detect` 模式。在该模式下，PD 会将所有存在于未注册 stores （或曾经注册过，但已被强行删除） 上的副本进行移除。
+若 PD 进行过灾难性恢复 [`pd-recover`](/pd-recover.md) 等类似操作，丢失了无法恢复的 TiKV 节点的 store 信息，因此无法确定要传入的 store ID 时，可使用 `--auto-detect` 模式。在该模式下，PD 会自动清理那些没有注册过的 TiKV 节点（或曾经注册过但已经被强制删除的 TiKV 节点）上的副本。
 
 {{< copyable "shell-regular" >}}
 
