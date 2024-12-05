@@ -61,7 +61,7 @@ TiCDC 默认关闭单行数据的 Checksum 校验功能。若要在开启此功�
 
 ## Checksum 算法
 
-+Checksum 算法演进，只影响 TiCDC 内部对 Checksum 的校验过程，不影响下游 Kafka Consumer 校验 Checksum 的规则。
+Checksum 算法演进，只影响 TiCDC 内部对 Checksum 的校验过程，不影响下游 Kafka Consumer 校验 Checksum 的规则。
 
 ### Checksum V1
 
