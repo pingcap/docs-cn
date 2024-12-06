@@ -277,7 +277,7 @@ pd-server 相关配置项。
 + 控制 checker 检查 Region 健康状态的运行频率，越短则运行越快，通常状况不需要调整
 + 默认：10ms
 
-### `patrol-region-worker-count`
+### `patrol-region-worker-count` <span class="version-mark">从 v8.5.0 版本开始引入</span>
 
 > **警告：**
 >
