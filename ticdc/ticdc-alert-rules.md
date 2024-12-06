@@ -92,6 +92,7 @@ summary: 了解 TiCDC 集群监控报警规则以及处理方法。
     `(max_over_time(ticdc_owner_status[1m]) == 1 or max_over_time(ticdc_owner_status[1m]) == 6) > 0`
 
 * 规则描述：
+
     TiCDC 某个同步任务遇到错误。
 
 * 处理方法：
