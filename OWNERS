@@ -1,31 +1,32 @@
 # See the OWNERS docs at https://go.k8s.io/owners
 approvers:
   - breezewish
-  - CaitinChen
-  - CharLotteiu
-  - cofyc
   - csuzhangxc
-  - DanielZhangQD
-  - dcalvin
-  - dragonly
-  - en-jin19
   - hfxsd
   - Icemap
   - jackysp
   - kissmydb
   - lance6716
-  - lichunzhu
   - lilin90
-  - Liuxiaozhen12
-  - morgo
   - Oreoxmt
   - overvenus
   - qiancai
+  - tangenta
+emeritus_approvers:
+  - CaitinChen
+  - CharLotteiu
+  - cofyc
+  - DanielZhangQD
+  - dcalvin
+  - dragonly
+  - en-jin19
+  - lichunzhu
+  - Liuxiaozhen12
+  - morgo
   - queenypingcap
   - ran-huang
   - shichun-0415
   - SunRunAway
-  - tangenta
   - TomShawn
   - toutdesuite
   - WangXiangUSTC
