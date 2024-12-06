@@ -92,21 +92,29 @@ aliases: ['/docs-cn/dev/tiflash/troubleshoot-tiflash/','/docs-cn/dev/tiflash/tif
 
 ## 缩容 TiFlash 节点慢
 
-1. 先确保是否有数据表的 TiFlash 副本数大于缩容后的 TiFlash 节点数。如果存在该情况，PD 不会将 Region peer 从待缩容的 TiFlash 节点上移走，导致 TiFlash 节点无法缩容。
+可依照如下步骤进行处理：
+
+1. 检查是否有某些数据表的 TiFlash 副本数大于缩容后的 TiFlash 节点数：
     
     ```sql
     SELECT * FROM information_schema.tiflash_replica WHERE REPLICA_COUNT >  'tobe_left_nodes';
     ```
 
-    `tobe_left_nodes` 表示缩容后的 TiFlash 节点数。如果查询结果不为空，则需要修改相关表的 TiFlash 副本数。
+    `tobe_left_nodes` 表示缩容后的 TiFlash 节点数。
+    
+    如果查询结果不为空，则需要修改对应表的 TiFlash 副本数。这是因为，当 TiFlash 副本数大于缩容后的 TiFlash 节点数时，PD 不会将 Region peer 从待缩容的 TiFlash 节点上移走，导致 TiFlash 节点无法缩容。
 
-2. 特别地，如果想从集群中缩容所有 TiFlash 节点至 0 个，而且 `information_schema.tiflash_replica` 表中已经不存在 TiFlash 副本了，但是 TiFlash 节点仍然无法缩容成功。
+2. 针对需要移除集群中所有 TiFlash 节点的场景，如果 `INFORMATION_SCHEMA.TIFLASH_REPLICA` 表显示集群已经不存在 TiFlash 副本了，但 TiFlash 节点缩容仍然无法成功，请检查最近是否执行过 `DROP TABLE <db-nam>.<table-name>` 或 `DROP DATABASE <db-name>` 操作。
 
-   可能是在表带有 TiFlash 副本的情况下，直接执行 `DROP TABLE <db-nam>.<table-name>` 或 `DROP DATABASE <db-name>`。这种情况下，相关的表会在满足垃圾回收（GC）条件后，TiDB 才会到 PD 处清除同步规则。在垃圾回收完成后，TiFlash 节点就可以缩容成功。
+    对于带有 TiFlash 副本的表或数据库，直接执行 `DROP TABLE <db-nam>.<table-name>` 或 `DROP DATABASE <db-name>` 后，TiDB 不会立即清除 PD 上相应的表的 TiFlash 同步规则，而是会等到相应的表满足垃圾回收（GC）条件后才清除这些同步规则。在垃圾回收完成后，TiFlash 节点就可以缩容成功。
 
-   如果希望在未满足垃圾回收条件前清除同步规则，可以按照以下步骤手动清除。但注意手动清除同步规则后，如果对相关的表执行 `RECOVER TABLE`/`FLASHBACK TABLE`/`FLASHBACK DATABASE` 操作，表的 TiFlash 副本不会恢复。
+    如需在满足垃圾回收条件之前清除 TiFlash 的数据同步规则，可以参考以下步骤手动清除。
+    
+    > **注意：**
+    >
+    > 手动清除数据表的 TiFlash 同步规则后，如果对这些表执行 `RECOVER TABLE`、`FLASHBACK TABLE` 或 `FLASHBACK DATABASE` 操作，表的 TiFlash 副本不会恢复。
 
-   2.1. 查询当前 PD 实例中所有与 TiFlash 相关的数据同步规则。
+   1. 查询当前 PD 实例中所有与 TiFlash 相关的数据同步规则。
 
     ```shell
     curl http://<pd_ip>:<pd_port>/pd/api/v1/config/rules/group/tiflash
@@ -135,7 +143,7 @@ aliases: ['/docs-cn/dev/tiflash/troubleshoot-tiflash/','/docs-cn/dev/tiflash/tif
     ]
     ```
 
-   2.2. 删除所有与 TiFlash 相关的数据同步规则。以 `id` 为 `table-45-r` 的规则为例，通过以下命令可以删除该规则。
+   2. 删除所有与 TiFlash 相关的数据同步规则。以 `id` 为 `table-45-r` 的规则为例，通过以下命令可以删除该规则。
 
     ```shell
     curl -v -X DELETE http://<pd_ip>:<pd_port>/pd/api/v1/config/rule/tiflash/table-45-r
