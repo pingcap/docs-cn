@@ -100,7 +100,9 @@ summary: 介绍 TiFlash 的常见问题、原因及解决办法。
     `tobe_left_nodes` 表示缩容后的 TiFlash 节点数。如果查询结果不为空，则需要修改相关表的 TiFlash 副本数。
 
 2. 特别地，如果想从集群中缩容所有 TiFlash 节点至 0 个，而且 `information_schema.tiflash_replica` 表中已经不存在 TiFlash 副本了，但是 TiFlash 节点仍然无法缩容成功。
+
    可能是在表带有 TiFlash 副本的情况下，直接执行 `DROP TABLE <db-nam>.<table-name>` 或 `DROP DATABASE <db-name>`。这种情况下，相关的表会在满足垃圾回收（GC）条件后，TiDB 才会到 PD 处清除同步规则。在垃圾回收完成后，TiFlash 节点就可以缩容成功。
+
    如果希望在未满足垃圾回收条件前清除同步规则，可以按照以下步骤手动清除。但注意手动清除同步规则后，如果对相关的表执行 `RECOVER TABLE`/`FLASHBACK TABLE`/`FLASHBACK DATABASE` 操作，表的 TiFlash 副本不会恢复。
 
    2.1. 查询当前 PD 实例中所有与 TiFlash 相关的数据同步规则。
@@ -137,7 +139,6 @@ summary: 介绍 TiFlash 的常见问题、原因及解决办法。
     ```shell
     curl -v -X DELETE http://<pd_ip>:<pd_port>/pd/api/v1/config/rule/tiflash/table-45-r
     ```
-
 
 ## TiFlash 分析慢
 
