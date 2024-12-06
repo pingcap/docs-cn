@@ -326,8 +326,6 @@ config show cluster-version
 
     设置 checker 的并发数为 2：
 
-    {{< copyable "" >}}
-
     ```bash
     config set patrol-region-worker-count 2
     ```
