@@ -199,6 +199,12 @@ TiDB 版本：7.4.0
 
     更多信息，请参考[用户文档](/system-variables.md#tidb_opt_enable_hash_join-从-v656v712-和-v740-版本开始引入)。
 
+* 控制统计信息缓存成为正式功能 [#46695](https://github.com/pingcap/tidb/issues/46695) @[hawkingrei](https://github.com/hawkingrei)
+
+    TiDB 实例会缓存表的统计信息，加速执行计划的生成，提升性能。自 v6.1.0 开始，通过设置 [`tidb_stats_cache_mem_quota`](/system-variables.md#tidb_stats_cache_mem_quota-从-v610-版本开始引入)，TiDB 能够控制统计信息缓存的大小。当统计信息缓存达到上限时，TiDB 自动驱逐不活跃的缓存，从而提升稳定性。
+
+    更多信息，请参考[用户文档](/system-variables.md#tidb_stats_cache_mem_quota-从-v610-版本开始引入)。
+
 ### SQL 功能
 
 * TiDB 支持完整的分区类型管理功能 [#42728](https://github.com/pingcap/tidb/issues/42728) @[mjonss](https://github.com/mjonss)
