@@ -33,7 +33,9 @@ TiDB 包含一个基于成本的优化器。在大多数情况下，优化器会
 
 ## 如何阻止特定的 SQL 语句执行（或者将某个 SQL 语句加入黑名单）？
 
-你可以使用 [`MAX_EXECUTION_TIME`](/optimizer-hints.md#max_execution_timen) Hint 来创建 [SQL 绑定](/sql-plan-management.md#执行计划绑定-sql-binding)，将特定语句的执行时间限制为一个较小的值（例如 1ms）。这样，语句就会在超过限制时自动终止。
+v7.5 及以上版本，利用命令 [`QUERY WATCH`](/sql-statements/sql-statement-query-watch.md) 可以将特定查询加入黑名单。具体用法参见 [Runaway Queries 资源管理](/tidb-resource-control.md#query-watch-语句说明)。
+
+低于 v7.5 的版本，可以使用 [`MAX_EXECUTION_TIME`](/optimizer-hints.md#max_execution_timen) Hint 来创建 [SQL 绑定](/sql-plan-management.md#执行计划绑定-sql-binding)，将特定语句的执行时间限制为一个较小的值（例如 1ms）。这样，语句就会在超过限制时自动终止。
 
 例如，要阻止执行 `SELECT * FROM t1, t2 WHERE t1.id = t2.id`，可以使用以下 SQL 绑定将语句的执行时间限制为 1ms：
 
