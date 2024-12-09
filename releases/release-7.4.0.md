@@ -201,7 +201,7 @@ TiDB 版本：7.4.0
 
 * 控制统计信息缓存成为正式功能 (GA) [#45367](https://github.com/pingcap/tidb/issues/45367) @[hawkingrei](https://github.com/hawkingrei)
 
-    从 v6.1.0 开始，引入了系统变量 [`tidb_stats_cache_mem_quota`](/system-variables.md#tidb_stats_cache_mem_quota-从-v610-版本开始引入)，用于控制 TiDB 实例缓存表的统计信息，加速执行计划的生成，提升 SQL 执行性能。你可以通过设置该变量，控制统计信息缓存占用的内存上限。当统计信息缓存达到限额时，TiDB 会自动驱逐不活跃的缓存，从而控制实例内存使用，提升稳定性。
+    TiDB 实例可以缓存表的统计信息，加速执行计划的生成，提升 SQL 执行性能。从 v6.1.0 开始，引入了系统变量 [`tidb_stats_cache_mem_quota`](/system-variables.md#tidb_stats_cache_mem_quota-从-v610-版本开始引入)，你可以通过设置该变量，控制统计信息缓存占用的内存上限。当统计信息缓存达到限额时，TiDB 会自动驱逐不活跃的缓存，从而控制实例内存使用，提升稳定性。
 
     从 v7.4.0 开始，该功能成为正式功能 (GA)。
 
