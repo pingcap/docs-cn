@@ -111,6 +111,10 @@ TableSampleOpt ::=
 |`LOCK IN SHARE MODE` | TiDB 出于兼容性解析这个语法，但是不做任何处理|
 |`TABLESAMPLE`| 从表中获取一些行的样本数据。|
 
+> **注意：**
+>
+> TiDB 从 v6.6.0 版本开始支持[使用资源管控 (Resource Control) 实现资源隔离](/tidb-resource-control.md)功能。该功能可以将不同优先级的语句放在不同的资源组中执行，并为这些资源组分配不同的配额和优先级，可以达到更好的资源管控效果。在开启资源管控功能后，语句的调度主要受资源组的控制，`HIGH_PRIORITY` 将不再生效。建议在支持资源管控的版本优先使用资源管控功能。
+
 ## 示例
 
 ### SELECT
