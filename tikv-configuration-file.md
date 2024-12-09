@@ -1024,7 +1024,7 @@ raftstore 相关的配置项。
 + 最小值：0
 + 单位：秒
 
-### `evict-cache-on-memory-ratio` <span class="version-mark">从 v7.5.0 版本开始引入</span> 
+### `evict-cache-on-memory-ratio` <span class="version-mark">从 v7.5.0 版本开始引入</span>
 
 + 当 TiKV 的内存使用超过系统可用内存的 90%，并且 Raft 缓存条目占用的内存超过已使用内存 * `evict-cache-on-memory-ratio` 时，TiKV 会逐出 Raft 缓存条目。
 + 设置为 `0` 表示禁用该功能。
@@ -1681,7 +1681,7 @@ rocksdb defaultcf titan 相关的配置项。
 + 指定 zstd 字典大小，默认为 `"0KiB"`，表示关闭 zstd 字典压缩，也就是说 Titan 中压缩的是单个 value 值，而 RocksDB 压缩以 Block（默认值为 `32KiB`）为单位。因此当关闭字典压缩、且 value 平均小于 `32KiB` 时，Titan 的压缩率低于 RocksDB。以 JSON 内容为例，Titan 的 Store Size 可能比 RocksDB 高 30% 至 50%。实际压缩率还取决于 value 内容是否适合压缩，以及不同 value 之间的相似性。你可以通过设置 `zstd-dict-size`（比如 `16KiB`）启用 zstd 字典以大幅提高压缩率（实际 Store Size 可以低于 RocksDB），但 zstd 字典压缩在有些负载下会有 10% 左右的性能损失。
 + 默认值：`"0KiB"`
 + 单位：KiB|MiB|GiB
-   
+
 ### `blob-cache-size`
 
 + Blob 文件的 cache 大小。
@@ -2503,3 +2503,36 @@ Raft Engine 相关的配置项。
 
 + 设置 TiKV 堆内存分析每次采样的数据量，以 2 的指数次幂向上取整。
 + 默认值：512KiB
+
+## in-memory-engine <span class="version-mark">从 v8.5.0 版本开始引入</span>
+
+TiKV MVCC 内存引擎 (In-Memory Engine) 在 TiKV 存储层相关的配置项。
+
+### `enable` <span class="version-mark">从 v8.5.0 版本开始引入</span>
+
+> **注意：**
+>
+> 该配置项支持在配置文件中进行配置，但不支持通过 SQL 语句查询。
+
++ 是否开启内存引擎以加速多版本查询。关于内存引擎的详细信息，参见 [TiKV MVCC 内存引擎](/tikv-in-memory-engine.md)。
++ 默认值：false（即关闭内存引擎）
+
+### `capacity` <span class="version-mark">从 v8.5.0 版本开始引入</span>
+
+> **注意：**
+>
+> + 开启内存引擎后，`block-cache.capacity` 会自动减少 10%。
+> + 手动配置 `capacity` 时，`block-cache.capacity` 不会自动减少，需手动调整为合适的值以避免 OOM。
+
++ 配置内存引擎可使用的内存大小。最大值为 5 GiB。你可以手动调整配置以使用更多内存。
++ 默认值：系统内存的 10%。
+
+### `gc-run-interval` <span class="version-mark">从 v8.5.0 版本开始引入</span>
+
++ 控制内存引擎 GC 缓存 MVCC 版本的时间间隔。调小该参数可加快 GC 频率，减少 MVCC 记录，但会增加 GC 的 CPU 消耗，以及增加内存引擎失效的概率。
++ 默认值：3m
+
+### `mvcc-amplification-threshold` <span class="version-mark">从 v8.5.0 版本开始引入</span>
+
++ 控制内存引擎选取加载 Region 时 MVCC 读放大的阈值。默认为 `10`，表示在某个 Region 中读一行记录需要处理的 MVCC 版本数量超过 10 个时，有可能会被加载到内存引擎中。
++ 默认值：10
