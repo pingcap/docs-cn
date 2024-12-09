@@ -117,9 +117,9 @@ TiDB 8.5.0 为长期支持版本 (Long-Term Support Release, LTS)。
 
 ### 可扩展性
 
-* Schema 缓存可用的内存上限成为正式功能 (GA)，减少了大规模数据场景的内存占用 [#50959](https://github.com/pingcap/tidb/issues/50959) @[tiancaiamao](https://github.com/tiancaiamao) @[wjhuang2016](https://github.com/wjhuang2016) @[gmhdbjd](https://github.com/gmhdbjd) @[tangenta](https://github.com/tangenta) tw@hfxsd <!--1976-->
+* Schema 缓存可用的内存上限成为正式功能 (GA)，当表的数量达到几十万甚至上百万时，可以显示减少 Schema 元数据的内存占用 [#50959](https://github.com/pingcap/tidb/issues/50959) @[tiancaiamao](https://github.com/tiancaiamao) @[wjhuang2016](https://github.com/wjhuang2016) @[gmhdbjd](https://github.com/gmhdbjd) @[tangenta](https://github.com/tangenta) tw@hfxsd <!--1976-->
 
-    在一些 SaaS 场景下，当表的数量达到几十万甚至上百万时，schema meta 会占用较多的内存。开启该功能后，系统将使用 Least Recently Used (LRU) 算法缓存和淘汰相应的 schema meta 信息，有效减少内存占用。
+    在一些 SaaS 场景下，当表的数量达到几十万甚至上百万时，Schema 元数据会占用较多的内存。开启该功能后，系统将使用 Least Recently Used (LRU) 算法缓存和淘汰相应的 Schema 元数据信息，有效减少内存占用。
 
     从 v8.4.0 开始，该功能默认开启，默认值为 `536870912`（即 512 MiB），你可以通过系统变量 [`tidb_schema_cache_size`](/system-variables.md#tidb_schema_cache_size-new-in-v800) 按需调整。
 
