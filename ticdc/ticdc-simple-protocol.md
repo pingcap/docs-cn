@@ -5,7 +5,7 @@ summary: 本文介绍了 TiCDC Simple Protocol 的使用方法和数据格式实
 
 # TiCDC Simple Protocol
 
-TiCDC Simple Protocol 是一种行级别的数据变更通知协议，为监控、缓存、全文索引、分析引擎、异构数据库的主从复制等提供数据源。本文将介绍 TiCDC Simple Protocol 的使用方法和数据格式实现。
+TiCDC 从 v8.0.0 开始支持 Simple Protocol 编码协议。本文将介绍 TiCDC Simple Protocol 的使用方法和数据格式实现。
 
 ## 使用方式
 
