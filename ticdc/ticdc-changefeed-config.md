@@ -315,7 +315,7 @@ Info: {"upstream_id":7178706266519722477,"namespace":"default","id":"simple-repl
 
 [//]: # (- 示例值 `true`)
 
-#### sink.kafka-config.codec-config`
+#### sink.kafka-config.codec-config
 
 ##### `encoding-format`
 
@@ -476,7 +476,7 @@ token="xxxx"
 
 - 使用 token 进行 Pulsar 服务端的认证，此处为 token 的值。
 
-#### `token-from-file=`
+#### `token-from-file`
 
 - 指定使用 token 进行 Pulsar 服务端的认证，此处为 token 所在文件的路径。
 
