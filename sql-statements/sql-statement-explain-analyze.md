@@ -339,6 +339,18 @@ after key/value request is processed:
 
 对于 writes 和 batch gets，计算方法相似，只是基础成本不同。
 
+### tiflash_wait 信息
+
+当查询涉及到 MPP task 时候时，执行时间还受到各类 tiflash_wait 时间的影响，示例如下：
+
+```
+tiflash_wait: {minTSO_wait: 425ms, pipeline_breaker_wait: 133ms, pipeline_queue_wait: 512ms}
+```
+
+- `minTSO_wait`：当前 MPP Task 等待被[TiFlash MinTSO 调度器](/tiflash-mintso-scheduler)调度花费的时间。
+- `pipeline_breaker_wait`：在采用[ Pipeline 执行模型](/tiflash-pipeline-model)时，包含 pipeline breaker 算子的 pipeline 等待上游 pipeline 所有数据花费的时间。目前仅用来展示包含 `Join` 算子的 pipeline 等待所有哈希表 build 完成花费的时间。
+- `pipeline_queue_wait`：在采用[ Pipeline 执行模型](/tiflash-pipeline-model)时，当前 pipeline 在 CPU Task Thread Pool 和 IO Task Thread Pool 中等待的时间之和。
+
 ### 其它常见执行信息
 
 Coprocessor 算子通常包含 `cop_task` 和 `tikv_task` 两部分执行时间信息。前者是 TiDB 端记录的时间，从发出请求到接收回复；后者是 TiKV Coprocessor 算子自己记录的时间。两者相差较大可能说明在等待、gRPC 或网络上耗时较长。
