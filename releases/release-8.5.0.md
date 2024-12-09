@@ -102,8 +102,8 @@ TiDB 8.5.0 为长期支持版本 (Long-Term Support Release, LTS)。
     <td>当热点问题不是由个别 SQL 语句引起时，利用 Top SQL 中按表或者数据库聚合的 CPU 时间，能够协助用户快速发现造成热点的表或者应用程序，从而大大提升热点问题和 CPU 消耗问题的诊断效率。</td>
   </tr>
   <tr>
-    <td><a href="https://docs.pingcap.com/zh/tidb/v8.5/backup-and-restore-storages#鉴权">支持对开启了 IMDSv2 服务的 TiKV 实例做备份</a>（从 v8.4.0 开始引入）</td>
-    <td><a href="https://aws.amazon.com/cn/blogs/security/get-the-full-benefits-of-imdsv2-and-disable-imdsv1-across-your-aws-infrastructure/">目前 AWS EC2 的默认元数据服务是 IMDSv2</a>。TiDB 支持从开启了 IMDSv2 的 TiKV 实例中备份数据，协助你更好地在公有云服务中运行 TiDB 集群。</td>
+    <td>启用 AWS rust sdk（从 v8.5.0 开始引入）</td>
+    <td>TiDB 用 AWS rust sdk 替换掉原有的 rusoto 库，从 TiKV 访问 AWS S3 等外部存储，以更好地兼容 IMDSv2 以及 Pod Identity 等新特性。</td>
   </tr>
   <tr>
     <td rowspan="1">安全</td>
