@@ -103,7 +103,7 @@ TiDB 8.5.0 为长期支持版本 (Long-Term Support Release, LTS)。
   </tr>
   <tr>
     <td><a href="https://docs.pingcap.com/zh/tidb/v8.5/backup-and-restore-overview">Backup & Restore (BR)</a> 启用 <a href="https://aws.amazon.com/sdk-for-rust/">AWS SDK for Rust</a> 访问外部存储（从 v8.5.0 开始引入）</td>
-    <td>BR 使用 <a href="https://aws.amazon.com/cn/sdk-for-rust/">AWS Rust SDK</a> 替换掉原有的 Rusoto 库，从 TiKV 访问 Amazon S3 等外部存储，以更好地兼容 AWS 的 <a href="https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/configuring-instance-metadata-service.html">IMDSv2</a> 以及 <a href="https://docs.aws.amazon.com/eks/latest/userguide/pod-identities.html">EKS Pod Identity</a> 等新特性。</td>
+    <td>BR 使用 <a href="https://aws.amazon.com/cn/sdk-for-rust/">AWS Rust SDK</a> 替换掉原有的 Rusoto 库，从 TiKV 访问 Amazon S3 等外部存储，以更好地兼容 AWS 的 <a href="https://docs.aws.amazon.com/zh_cn/AWSEC2/latest/UserGuide/configuring-instance-metadata-service.html">IMDSv2</a> 以及 <a href="https://docs.aws.amazon.com/zh_cn/eks/latest/userguide/pod-identities.html">EKS Pod Identity</a> 等新特性。</td>
   </tr>
   <tr>
     <td rowspan="1">安全</td>
