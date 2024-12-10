@@ -267,7 +267,7 @@ aliases: ['/docs-cn/dev/basic-features/','/docs-cn/dev/experimental-features-4.0
 | [TiDB 分布式执行框架](/tidb-distributed-execution-framework.md) | Y | Y | Y | E | N | N | N | N | N | N |
 | [全局排序](/tidb-global-sort.md) | Y | Y | E | N | N | N | N | N | N | N |
 | [TiProxy](/tiproxy/tiproxy-overview.md) | Y | Y | N | N | N | N | N | N | N | N |
-
+| [Schema 缓存](/schema-cache.md) | Y | N | N | N | N | N | N | N | N | N |
 [^1]: TiDB 误将 latin1 处理为 utf8 的子集。见 [TiDB #18955](https://github.com/pingcap/tidb/issues/18955)。
 
 [^2]: 从 v6.5.0 起，系统变量 [`tidb_allow_function_for_expression_index`](/system-variables.md#tidb_allow_function_for_expression_index-从-v520-版本开始引入) 所列出的函数已通过表达式索引的测试，可以在生产环境中创建并使用，未来版本会持续增加。对于没有列出的函数，则不建议在生产环境中使用相应的表达式索引。详情请参考[表达式索引](/sql-statements/sql-statement-create-index.md#表达式索引)。
