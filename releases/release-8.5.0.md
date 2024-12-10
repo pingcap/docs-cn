@@ -121,7 +121,7 @@ TiDB 8.5.0 为长期支持版本 (Long-Term Support Release, LTS)。
 
     在一些 SaaS 场景下，当表的数量达到几十万甚至上百万时，Schema 元数据会占用较多的内存。开启该功能后，系统将使用 Least Recently Used (LRU) 算法缓存和淘汰相应的 Schema 元数据信息，有效减少内存占用。
 
-    从 v8.4.0 开始，该功能默认开启，默认值为 `536870912`（即 512 MiB），你可以通过系统变量 [`tidb_schema_cache_size`](/system-variables.md#tidb_schema_cache_size-new-in-v800) 按需调整。
+    从 v8.4.0 开始，该功能默认开启，默认值为 `536870912`（即 512 MiB），你可以通过系统变量 [`tidb_schema_cache_size`](/system-variables.md#tidb_schema_cache_size-从-v800-版本开始引入) 按需调整。
 
     更多信息，请参考[用户文档](/schema-cache.md)。
 
@@ -193,7 +193,7 @@ TiDB 8.5.0 为长期支持版本 (Long-Term Support Release, LTS)。
 
   从 v8.5.0 开始，这两个加密功能都成为了正式功能 (GA)，进一步增强了客户端数据的安全性。
 
-  更多信息，请参考[加密备份数据](/br/br-snapshot-manual.md#encrypt-the-backup-data)和[加密日志备份数据](/br/br-pitr-manual.md#encrypt-the-log-backup-data)。
+  更多信息，请参考[加密备份数据](/br/br-snapshot-manual.md#备份数据加密)和[加密日志备份数据](/br/br-pitr-manual.md#加密日志备份数据)。
 
 * TiKV 静态加密支持 [Google Cloud Key Management Service (Google Cloud KMS)](https://cloud.google.com/docs/security/key-management-deep-dive?hl=zh-cn) (GA) [#8906](https://github.com/tikv/tikv/issues/8906) @[glorv](https://github.com/glorv) tw@qiancai <!--1876-->
 
@@ -219,7 +219,7 @@ TiDB 8.5.0 为长期支持版本 (Long-Term Support Release, LTS)。
 | 变量名  | 修改类型    | 描述 |
 |--------|------------------------------|------|
 | [`tidb_enable_fast_create_table`](/system-variables.md#tidb_enable_fast_create_table-从-v800-版本开始引入) | 修改 | 经进一步的测试后，默认值从 `OFF` 修改为 `ON`，即默认开启 [TiDB 加速建表](/accelerated-table-creation.md)。|
-| [`tidb_ddl_reorg_max_write_speed`](/system-variables.md#tidb_ddl_reorg_max_write_speed-从-v850-版本开始引入) | 新增 | 限制每个 TiKV 节点写入的带宽，仅在开启添加索引加速功能时生效（由变量 [`tidb_ddl_enable_fast_reorg`](#tidb_ddl_enable_fast_reorg-从-v630-版本开始引入) 控制）。例如，当该值设置为 `200MiB` 时，最大写入速度限制为 200 MiB/s。 |
+| [`tidb_ddl_reorg_max_write_speed`](/system-variables.md#tidb_ddl_reorg_max_write_speed-从-v850-版本开始引入) | 新增 | 限制每个 TiKV 节点写入的带宽，仅在开启添加索引加速功能时生效（由变量 [`tidb_ddl_enable_fast_reorg`](/system-variables.md#tidb_ddl_enable_fast_reorg-从-v630-版本开始引入) 控制）。例如，当该值设置为 `200MiB` 时，最大写入速度限制为 200 MiB/s。 |
 
 ### 配置参数
 
