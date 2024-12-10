@@ -347,9 +347,9 @@ after key/value request is processed:
 tiflash_wait: {minTSO_wait: 425ms, pipeline_breaker_wait: 133ms, pipeline_queue_wait: 512ms}
 ```
 
-- `minTSO_wait`：记录 MPP Task 等待被 [TiFlash MinTSO 调度器](/tiflash-mintso-scheduler)调度花费的时间。
-- `pipeline_breaker_wait`：当 TiFlash 采用 [Pipeline 执行模型](/tiflash-pipeline-model)时，记录包含 pipeline breaker 算子的 pipeline 等待上游 pipeline 所有数据花费的时间。目前仅用来展示包含 `Join` 算子的 pipeline 等待所有哈希表 build 完成花费的时间。
-- `pipeline_queue_wait`：当 TiFlash 采用 [Pipeline 执行模型](/tiflash-pipeline-model)时，记录 pipeline 执行过程中，在 CPU Task Thread Pool 和 IO Task Thread Pool 中等待的时间。
+- `minTSO_wait`：记录 MPP Task 等待被 [TiFlash MinTSO 调度器](/tiflash-mintso-scheduler.md)调度花费的时间。
+- `pipeline_breaker_wait`：当 TiFlash 采用 [Pipeline 执行模型](/tiflash-pipeline-model.md)时，记录包含 pipeline breaker 算子的 pipeline 等待上游 pipeline 所有数据花费的时间。目前仅用来展示包含 `Join` 算子的 pipeline 等待所有哈希表 build 完成花费的时间。
+- `pipeline_queue_wait`：当 TiFlash 采用 [Pipeline 执行模型](/tiflash-pipeline-model.md)时，记录 pipeline 执行过程中，在 CPU Task Thread Pool 和 IO Task Thread Pool 中等待的时间。
 
 ### 其它常见执行信息
 
