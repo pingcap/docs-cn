@@ -1,0 +1,22 @@
+figure > figcaption {
+  text-align: center;
+}
+
+table {
+  table-layout: fixed;
+}
+
+td {
+  word-break: break-all;
+  overflow-wrap: break-word;
+}
+
+pre > code.sourceCode {
+  white-space: pre-wrap;
+}
+
+.h7 {
+  font-weight: normal;
+  font-size: 1em;
+  font-style: italic;
+}

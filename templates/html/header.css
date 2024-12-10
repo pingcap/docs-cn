@@ -1,0 +1,23 @@
+figure > figcaption {
+  text-align: center;
+}
+
+.h7 {
+  font-weight: normal;
+  font-size: 1em;
+  font-style: italic;
+}
+
+.doc-outer-container {
+  display: flex;
+}
+
+.toc-container {
+  width: 15em;
+  padding: 1em 1.5em;
+  border-right: 1px solid #e5e5e5;
+  height: 100vh;
+  max-height: 100vh;
+  overflow-y: auto;
+  flex-shrink: 0;
+}
