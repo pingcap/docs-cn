@@ -407,11 +407,11 @@ tiup cluster display <cluster-name>
 
 2. 对所有 TiFlash 副本数大于缩容后的 TiFlash 节点数的表执行以下语句，`new_replica_num` 必须小于等于 `tobe_left_nodes`：
 
-    {{< copyable "sql" >}}
-
     ```sql
     ALTER TABLE <db-name>.<table-name> SET tiflash replica 'new_replica_num';
     ```
+
+    在执行该语句之后，TiDB 会相应地修改或删除 PD 的 [Placement Rules](/configure-placement-rules.md)，PD 再根据 Placement Rules 进行数据调度。
 
 3. 重新执行步骤 1，确保没有数据表的 TiFlash 副本数大于缩容后的 TiFlash 节点数。
 
@@ -423,18 +423,26 @@ tiup cluster display <cluster-name>
 
 1. 通过以下命令确定需要下线的节点名称：
 
-    {{< copyable "shell-regular" >}}
-
     ```shell
     tiup cluster display <cluster-name>
     ```
 
 2. 执行 scale-in 命令来下线节点，假设步骤 1 中获得该节点名为 `10.0.1.4:9000`
 
-    {{< copyable "shell-regular" >}}
-
     ```shell
     tiup cluster scale-in <cluster-name> --node 10.0.1.4:9000
+    ```
+
+3. 查看下线 TiFlash 节点的状态：
+
+    ```shell
+    tiup cluster display <cluster-name>
+    ```
+
+4. 等待下线 TiFlash 节点的状态变为 `Tombstone` 后，删除 TiUP 拓扑信息中已下线节点的信息（TiUP 会自动清理 `Tombstone` 状态节点的相关数据文件）：
+
+    ```shell
+    tiup cluster prune <cluster-name>
     ```
 
 #### 方案二：手动缩容 TiFlash 节点
@@ -446,8 +454,6 @@ tiup cluster display <cluster-name>
     * 在 [pd-ctl](/pd-control.md)（tidb-ansible 目录下的 `resources/bin` 包含对应的二进制文件）中输入 store 命令。
 
     * 若使用 TiUP 部署，可以调用以下命令代替 `pd-ctl`：
-
-        {{< copyable "shell-regular" >}}
 
         ```shell
         tiup ctl:v<CLUSTER_VERSION> pd -u http://<pd_ip>:<pd_port> store
@@ -463,8 +469,6 @@ tiup cluster display <cluster-name>
 
     * 若通过 TiUP 部署，可以调用以下命令代替 `pd-ctl`：
 
-        {{< copyable "shell-regular" >}}
-
         ```shell
         tiup ctl:v<CLUSTER_VERSION> pd -u http://<pd_ip>:<pd_port> store delete <store_id>
         ```
@@ -475,59 +479,10 @@ tiup cluster display <cluster-name>
 
 3. 等待该 TiFlash 节点对应的 store 消失或者 state_name 变成 Tombstone 再关闭 TiFlash 进程。
 
-4. 手动删除 TiFlash 的数据文件，具体位置可查看在集群拓扑配置文件中 TiFlash 配置部分下的 data_dir 目录。
-
-5. 从 TiUP 拓扑信息中删除已经下线的 TiFlash 节点信息：
-
-    {{< copyable "shell-regular" >}}
+4. 删除 TiUP 拓扑信息中已下线节点的信息（TiUP 会自动清理 `Tombstone` 状态节点的相关数据文件）：
 
     ```shell
-    tiup cluster scale-in <cluster-name> --node <pd_ip>:<pd_port> --force
-    ```
-
-> **注意：**
->
-> 如果在集群中所有的 TiFlash 节点停止运行之前，没有取消所有同步到 TiFlash 的表，则需要手动在 PD 中清除同步规则，否则无法成功完成 TiFlash 节点的下线。
-
-手动在 PD 中清除同步规则的步骤如下：
-
-1. 查询当前 PD 实例中所有与 TiFlash 相关的数据同步规则。
-
-    {{< copyable "shell-regular" >}}
-
-    ```shell
-    curl http://<pd_ip>:<pd_port>/pd/api/v1/config/rules/group/tiflash
-    ```
-
-    ```
-    [
-      {
-        "group_id": "tiflash",
-        "id": "table-45-r",
-        "override": true,
-        "start_key": "7480000000000000FF2D5F720000000000FA",
-        "end_key": "7480000000000000FF2E00000000000000F8",
-        "role": "learner",
-        "count": 1,
-        "label_constraints": [
-          {
-            "key": "engine",
-            "op": "in",
-            "values": [
-              "tiflash"
-            ]
-          }
-        ]
-      }
-    ]
-    ```
-
-2. 删除所有与 TiFlash 相关的数据同步规则。以 `id` 为 `table-45-r` 的规则为例，通过以下命令可以删除该规则。
-
-    {{< copyable "shell-regular" >}}
-
-    ```shell
-    curl -v -X DELETE http://<pd_ip>:<pd_port>/pd/api/v1/config/rule/tiflash/table-45-r
+    tiup cluster prune <cluster-name>
     ```
 
 ### 3. 查看集群状态
