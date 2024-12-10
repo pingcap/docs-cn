@@ -39,7 +39,7 @@ Info: {"upstream_id":7178706266519722477,"namespace":"default","id":"simple-repl
 ### `memory-quota`
 
 - 指定该 Changefeed 在 Capture Server 中内存配额的上限。对于超额使用部分，会在运行中被 Go runtime 优先回收。
-- 默认值：`1073741824`，即 1 GB
+- 默认值：`1073741824`，即 1 GiB
 
 ### `case-sensitive`
 
@@ -76,14 +76,14 @@ Info: {"upstream_id":7178706266519722477,"namespace":"default","id":"simple-repl
 
 ### `bdr-mode`
 
-- 如果要使用 TiCDC 搭建 BDR 集群，需要将该参数设置为 true，同时要将 TiDB 集群设置为 BDR 模式。详情请参考 [TiCDC 双向复制](/ticdc/ticdc-bidirectional-replication.md#ticdc-双向复制)
+- 如果要使用 TiCDC 搭建 BDR (Bidirectional replication) 集群，需要将该参数设置为 `true`，同时要将 TiDB 集群设置为 BDR 模式。详情请参考 [TiCDC 双向复制](/ticdc/ticdc-bidirectional-replication.md#ticdc-双向复制)
 - 默认值：`false`，表示不处于 BDR 模式
 
 ### `changefeed-error-stuck-duration`
 
-- changefeed 发生内部错误或异常时允许自动重试的时间。
-- 若 changefeed 发生内部错误或异常，且持续时间超过该参数设置的时间，changefeed 会进入 Failed 状态。
-- 当 changefeed 处于 failed 状态时，需要手动重启 changefeed 才能恢复。
+- Changefeed 发生内部错误或异常时允许自动重试的时间。
+- 若 Changefeed 发生内部错误或异常，且持续时间超过该参数设置的时间，Changefeed 会进入 Failed 状态。
+- 当 Changefeed 处于 Failed 状态时，需要手动重启 Changefeed 才能恢复。
 - 配置格式为 `"h m s"`，例如 `"1h30m30s"`
 - 默认值：`"30m"`
 
@@ -116,28 +116,28 @@ Info: {"upstream_id":7178706266519722477,"namespace":"default","id":"simple-repl
 
 ##### `ignore-event`
 
-- `ignore-event = ["insert"]` 表示过滤掉 insert 事件。
-- `ignore-event = ["drop table", "delete"]` 表示忽略 drop table 的 DDL 事件和 delete 类型的 DML 事件。需要注意的是，在更新 TiDB 中聚簇索引的列值时，TiCDC 会将一个 UPDATE 事件拆分成为 DELETE 和 INSERT 事件，TiCDC 无法将该类事件识别为 UPDATE 事件，因此无法正确地进行过滤。
+- `ignore-event = ["insert"]` 表示过滤掉 `INSERT` 事件。
+- `ignore-event = ["drop table", "delete"]` 表示忽略 `DROP TABLE` 的 DDL 事件和 `DELETE` 类型的 DML 事件。需要注意的是，在更新 TiDB 中聚簇索引的列值时，TiCDC 会将一个 `UPDATE` 事件拆分成为 `DELETE` 和 `INSERT` 事件，TiCDC 无法将该类事件识别为 `UPDATE` 事件，因此无法正确地进行过滤。
 
 ##### `ignore-sql`
 
-- `ignore-sql = ["^drop", "add column"]` 表示过滤掉以 `drop` 开头或者包含 `add column` 的 DDL。
+- `ignore-sql = ["^drop", "add column"]` 表示过滤掉以 `DROP` 开头或者包含 `ADD COLUMN` 的 DDL。
 
 ##### `ignore-delete-value-expr`
 
-- `ignore-delete-value-expr = "name = 'john'"` 表示过滤掉包含 `name = 'john'` 条件的 delete DML。
+- `ignore-delete-value-expr = "name = 'john'"` 表示过滤掉包含 `name = 'john'` 条件的 `DELETE` DML。
 
 ##### `ignore-insert-value-expr`
 
-- `ignore-insert-value-expr = "id >= 100"` 表示过滤掉包含 id >= 100 条件的 insert DML。
+- `ignore-insert-value-expr = "id >= 100"` 表示过滤掉包含 id >= 100 条件的 `INSERT` DML。
 
 ##### `ignore-update-old-value-expr`
 
-- `ignore-update-old-value-expr = "age < 18"` 表示过滤掉旧值 `age < 18` 的 update DML。
+- `ignore-update-old-value-expr = "age < 18"` 表示过滤掉旧值 `age < 18` 的 `UPDATE` DML。
 
 ##### `ignore-update-new-value-expr`
 
-- `ignore-update-new-value-expr = "gender = 'male'"` 表示过滤掉新值 `gender = 'male'` 的 update DML。
+- `ignore-update-new-value-expr = "gender = 'male'"` 表示过滤掉新值 `gender = 'male'` 的 `UPDATE` DML。
 
 ### scheduler
 
@@ -147,8 +147,8 @@ Info: {"upstream_id":7178706266519722477,"namespace":"default","id":"simple-repl
 - 该功能只在 Kafka changefeed 上生效，暂不支持 MySQL changefeed。
 - `enable-table-across-nodes` 开启后，有两种分配模式：
 
-    1. 按 Region 的数量分配，即每个 CDC 节点处理 region 的个数基本相等。当某个表 Region 个数大于 `region-threshold` 值时，会将表分配到多个节点处理。`region-threshold` 默认值为 10000。
-    2. 按写入的流量分配，即每个 CDC 节点处理 region 总修改行数基本相当。只有当表中每分钟修改行数超过 `write-key-threshold` 值时，该表才会生效。
+    1. 按 Region 的数量分配，即每个 TiCDC 节点处理 Region 的个数基本相等。当某个表 Region 个数大于 `region-threshold` 值时，会将表分配到多个节点处理。`region-threshold` 默认值为 `10000`。
+    2. 按写入的流量分配，即每个 TiCDC 节点处理 Region 总修改行数基本相当。只有当表中每分钟修改行数超过 `write-key-threshold` 值时，该表才会生效。
 
   两种方式配置一种即可生效，当 `region-threshold` 和 `write-key-threshold` 同时配置时，TiCDC 将优先采用按流量分配的模式，即 `write-key-threshold`。
 
@@ -173,7 +173,7 @@ Info: {"upstream_id":7178706266519722477,"namespace":"default","id":"simple-repl
 - 支持 partition 及 topic（从 v6.1 开始支持）两种 event 分发器。二者的详细说明见下一节。
 - matcher 的匹配语法和过滤器规则语法相同，matcher 匹配规则的详细说明见下一节。
 - 该参数只有当下游为消息队列时，才会生效。
-- 当下游 MQ 为 Pulsar 时，如果 partition 的路由规则未指定为 `ts`、`index-value`、`table`、`default` 中的任意一个，那么将会使用你设置的字符串作为每一条 Pulsar message 的 key 进行路由。例如，如果你指定的路由规则为 'code' 字符串，那么符合该 matcher 的所有 Pulsar message 都将会以 'code' 作为 key 进行路由。
+- 当下游 MQ 为 Pulsar 时，如果 partition 的路由规则未指定为 `ts`、`index-value`、`table`、`default` 中的任意一个，那么将会使用你设置的字符串作为每一条 Pulsar message 的 key 进行路由。例如，如果你指定的路由规则为 `'code'` 字符串，那么符合该 matcher 的所有 Pulsar message 都将会以 `'code'` 作为 key 进行路由。
 
 #### `column-selectors` <span class="version-mark">从 v7.5.0 版本开始引入</span>
 
@@ -306,7 +306,7 @@ Info: {"upstream_id":7178706266519722477,"namespace":"default","id":"simple-repl
 
 - 控制发送 bootstrap 的消息间隔，单位为消息数。
 - 默认值：`10000`，即每张表每发送 10000 条行变更消息就发送一次 bootstrap 消息
-- 如果要关闭 bootstrap 消息的发送，则将 `send-bootstrap-interval-in-sec` 和 `send-bootstrap-in-msg-count` 均设置为 0。
+- 如果要关闭 bootstrap 消息的发送，则将 `send-bootstrap-interval-in-sec` 和 `send-bootstrap-in-msg-count` 均设置为 `0`。
 
 #### `send-bootstrap-to-all-partition`
 
@@ -319,7 +319,7 @@ Info: {"upstream_id":7178706266519722477,"namespace":"default","id":"simple-repl
 
 ##### `encoding-format`
 
-- 用来控制 simple protocol 的消息的编码格式，目前支持 "json" 和 "avro" 两种格式。
+- 用来控制 simple protocol 的消息的编码格式，目前支持 `json` 和 `avro` 两种格式。
 - 默认值：`json`
 - 可选值：`json`、`avro`
 
@@ -327,14 +327,14 @@ Info: {"upstream_id":7178706266519722477,"namespace":"default","id":"simple-repl
 
 ##### `output-old-value`
 
-- 是否输出行数据更改前的值。关闭后，Update 事件不会输出 "p" 字段的数据。
+- 是否输出行数据更改前的值。关闭后，UPDATE 事件不会输出 "p" 字段的数据。
 - 默认值：`true`
 
 #### sink.debezium
 
 ##### `output-old-value`
 
-- 是否输出行数据更改前的值。关闭后，Update 事件不会输出 "before" 字段的数据。
+- 是否输出行数据更改前的值。关闭后，UPDATE 事件不会输出 "before" 字段的数据。
 - 默认值：`true`
 
 ### consistent
@@ -439,7 +439,7 @@ consistent 中的字段用于配置 Changefeed 的数据一致性。详细信息
 
 #### `sasl-oauth-grant-type`
 
-- Kafka SASL OAUTHBEARER 认证机制中的 grant-type。默认值为 "client_credentials"。在使用该认证机制时，该参数可选填。
+- Kafka SASL OAUTHBEARER 认证机制中的 grant-type。默认值为 `"client_credentials"`。在使用该认证机制时，该参数可选填。
 - 默认值：`"client_credentials"`
 
 #### `sasl-oauth-audience`
