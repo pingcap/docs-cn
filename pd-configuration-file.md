@@ -274,8 +274,17 @@ pd-server 相关配置项。
 
 ### `patrol-region-interval`
 
-+ 控制 replicaChecker 检查 Region 健康状态的运行频率，越短则运行越快，通常状况不需要调整
++ 控制 checker 检查 Region 健康状态的运行频率，越短则运行越快，通常状况不需要调整
 + 默认：10ms
+
+### `patrol-region-worker-count` <span class="version-mark">从 v8.5.0 版本开始引入</span>
+
+> **警告：**
+>
+> 将该配置项设置为大于 1 将启用并发检查。目前该功能为实验特性，不建议在生产环境中使用。该功能可能会在未事先通知的情况下发生变化或删除。如果发现 bug，请在 GitHub 上提 [issue](https://github.com/tikv/pd/issues)反馈。
+
++ 控制 checker 检查 Region 健康状态时，创建 [operator](/glossary.md#operator) 的并发数。通常情况下，无需调整此配置项。
++ 默认：1
 
 ### `split-merge-interval`
 
