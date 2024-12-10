@@ -42,7 +42,7 @@ tiup br backup full --pd "${PD_IP}:2379" \
 
 `tiup br debug` 包含以下子命令：
 
-* `checksum`：（隐藏参数）离线校验表级别备份数据的完整性，确保全部备份文件跟记录的 [`ADMIN CHECKSUM TABLE`](/sql-statements/sql-statement-admin-checksum-table.md) 计算的 CRC64 校验结果一致。从 v8.5.0 起，该参数默认值从 `true` 修改为 `false` 以提高备份性能。
+* `checksum`：（隐藏参数）离线校验备份数据完整性，确保全部备份文件跟记录的 [`ADMIN CHECKSUM TABLE`](/sql-statements/sql-statement-admin-checksum-table.md) 计算的 CRC64 校验结果一致。
 * `backupmeta`：检查备份数据文件是否有交集。正常情况下备份数据没有交集。
 * `decode`：将全量备份的元信息文件 `backupmeta` 解析成 JSON 格式，并且支持通过 `--field` 参数解析特定的字段。
 * `encode`：将全量备份的元信息文件 `backupmeta.json` 编码成恢复数据时使用的 protobuf 格式。
