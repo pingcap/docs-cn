@@ -322,7 +322,7 @@ config show cluster-version
     config set patrol-region-interval 10ms
     ```
 
-- `patrol-region-worker-count` 控制 checker 检查 Region 健康状态时，创建 operator 的并发数。通常情况下，无需调整此配置项。将该配置项设置为大于 1 将启用并发检查。目前该功能为实验特性，不建议在生产环境中使用。
+- `patrol-region-worker-count` 控制 checker 检查 Region 健康状态时，创建 [operator](/glossary.md#operator) 的并发数。通常情况下，无需调整此配置项。将该配置项设置为大于 1 将启用并发检查。目前该功能为实验特性，不建议在生产环境中使用。
 
     设置 checker 的并发数为 2：
 
