@@ -37,7 +37,7 @@ SHOW CREATE TABLE t1\G
 *************************** 1. row ***************************
        Table: t1
 Create Table: CREATE TABLE `t1` (
-  `a` int(11) DEFAULT NULL
+  `a` int DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin
 1 row in set (0.00 sec)
 ```

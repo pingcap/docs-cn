@@ -271,7 +271,8 @@ Query OK, 0 rows affected (0.01 sec)
 | cluster-version | 集群的版本 |
 | schedule.max-merge-region-size |  控制 Region Merge 的 size 上限（单位是 MiB） |
 | schedule.max-merge-region-keys | 控制 Region Merge 的 key 数量上限 |
-| schedule.patrol-region-interval | 控制 replicaChecker 检查 Region 健康状态的运行频率 |
+| schedule.patrol-region-interval | 控制 checker 检查 Region 健康状态的运行频率 |
+| scheduler.patrol-region-worker-count| 控制 checker 检查 Region 健康状态时，创建 operator 的并发数 |
 | schedule.split-merge-interval | 控制对同一个 Region 做 split 和 merge 操作的间隔 |
 | schedule.max-snapshot-count | 控制单个 store 最多同时接收或发送的 snapshot 数量 |
 | schedule.max-pending-peer-count | 控制单个 store 的 pending peer 上限 |

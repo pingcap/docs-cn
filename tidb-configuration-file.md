@@ -183,7 +183,7 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
 ### `deprecate-integer-display-length`
 
 + 当此配置项设置为 `true` 时，弃用整数类型的显示宽度。
-+ 默认值：`false`
++ 默认值：`true`。在 v8.5.0 之前，默认值为 `false`。
 
 ### `enable-tcp4-only` <span class="version-mark">从 v5.0 版本开始引入</span>
 

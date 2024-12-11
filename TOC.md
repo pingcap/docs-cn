@@ -314,6 +314,7 @@
       - [TiKV 线程调优](/tune-tikv-thread-performance.md)
       - [TiKV 内存调优](/tune-tikv-memory-performance.md)
       - [TiKV Follower Read](/follower-read.md)
+      - [TiKV MVCC 内存引擎](/tikv-in-memory-engine.md)
       - [Region 性能调优](/tune-region-performance.md)
       - [TiFlash 调优](/tiflash/tune-tiflash-performance.md)
       - [下推计算结果缓存](/coprocessor-cache.md)
@@ -735,6 +736,7 @@
     - SQL 语句
       - [概览](/sql-statements/sql-statement-overview.md)
       - [`ADMIN`](/sql-statements/sql-statement-admin.md)
+      - [`ADMIN ALTER DDL JOBS`](/sql-statements/sql-statement-admin-alter-ddl.md)
       - [`ADMIN CANCEL DDL`](/sql-statements/sql-statement-admin-cancel-ddl.md)
       - [`ADMIN CHECKSUM TABLE`](/sql-statements/sql-statement-admin-checksum-table.md)
       - [`ADMIN CHECK [TABLE|INDEX]`](/sql-statements/sql-statement-admin-check-table-index.md)
