@@ -288,8 +288,8 @@ Info: {"upstream_id":7178706266519722477,"namespace":"default","id":"simple-repl
 ##### `output-old-value`
 
 - 是否输出行数据更改前的值。
-- 开启后，Update 事件会输出两行数据：第一行为 Delete 事件，输出更改前的数据；第二行为 Insert 事件，输出更改后的数据。
-- 开启后，即当该参数设为 true 时，会在变更数据列前增加 "is-update" 列。该列用来标识当前行的变更数据是来自 Update 事件，还是原始的 Insert/Delete 事件。如果当前行的变更数据来自 Update 事件，则 "is-update" 列为 true，否则为 false。
+- 开启后，UPDATE 事件会输出两行数据：第一行为 DELETE 事件，输出更改前的数据；第二行为 INSERT 事件，输出更改后的数据。
+- 开启后，即当该参数设为 `true` 时，会在变更数据列前增加 `"is-update"` 列。该列用来标识当前行的变更数据是来自 Update 事件，还是原始的 INSERT/DELETE 事件。如果当前行的变更数据来自 UPDATE 事件，则 `"is-update"` 列为 `true`，否则为 `false`。
 - 默认值：`false`
 
 从 v8.0.0 开始，TiCDC 新增了 Simple Protocol 消息编码协议，以下为该协议的配置参数。关于该协议的详情，请参考 [TiCDC Simple Protocol](/ticdc/ticdc-simple-protocol.md)。
