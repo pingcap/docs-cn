@@ -77,7 +77,7 @@ TiCDC 将数据编码成特定格式并发送至 Kafka。Kafka Consumer 读取�
 
 ### Checksum V3
 
-从 v8.4.0 版本之后，TiDB 和 TiCDC 使用 Checksum V3 算法。该算法解决了 Checksum V2 算法中，由于包含 Table ID 信息，在 BR 恢复场景下由于改写 Table ID 导致的 Old Value 部分 Checksum 无法被校验的问题。Checksum V3 基于表 ID 和 Value 部分计算 Bytes 级别的 Checksum 值。
+从 v8.4.0 开始，TiDB 和 TiCDC 使用 Checksum V3 算法。该算法解决了 Checksum V2 算法在 [BR](/br/backup-and-restore-overview.md) 恢复场景下，由于 Table ID 改写导致 Old Value Checksum 校验失败的问题。Checksum V3 算法基于表 ID 和 Value 部分计算字节级别的 Checksum 值。
 
 ## Checksum 计算规则
 
