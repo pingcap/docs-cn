@@ -67,7 +67,7 @@ summary: 了解 TiCDC 详细的命令行参数和配置文件定义。
 ### `gc-tuner-memory-threshold`
 
 - 控制 GOGC Tuner 自动调节的最大内存阈值。设置较小的阈值会提高 GC 频率；设置较大的阈值会降低 GC 频率并使 TiCDC 进程占用更多的内存资源；超过阈值后 GOGC Tuner 会停止工作。
-- 默认值：`0`，表示禁用 GOGC Tuner。
+- 默认值：`0`，表示禁用 GOGC Tuner
 - 单位：Byte
 
 ### security
