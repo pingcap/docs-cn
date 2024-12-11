@@ -73,7 +73,7 @@ TiCDC 将数据编码成特定格式并发送至 Kafka。Kafka Consumer 读取�
 
 ### Checksum V2
 
-在 v8.3.0 版本 TiDB 和 TiCDC 使用 Checksum V2 算法，解决了 Checksum V1 在执行 `ADD COLUMN` 或 `DROP COLUMN` 后无法正确校验 Update 或 Delete 事件中 Old Value 数据的问题。Checksum V2 算法基于 Key-Value 对计算 Bytes 级别的 Checksum 值。Key 由表 ID 和行 ID 两部分组成。
+在 v8.3.0 中，TiDB 和 TiCDC 使用 Checksum V2 算法，解决了 Checksum V1 在执行 `ADD COLUMN` 或 `DROP COLUMN` 后无法正确校验 Update 或 Delete 事件中 Old Value 数据的问题。Checksum V2 算法基于 Key-Value 对计算字节级别的 Checksum 值，其中 Key 由表 ID 和行 ID 组成。
 
 ### Checksum V3
 
