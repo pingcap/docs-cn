@@ -65,7 +65,7 @@ TiCDC 默认关闭单行数据的 Checksum 校验功能。若要在开启此功�
 
 ### Checksum V1
 
-从 v7.1.0 到 v8.2.0，TiDB 和 TiCDC 采用 Checksum v1 算法进行 Checksum 计算和校验。
+在 v7.1.0 到 v8.2.0 及其之间的版本中，TiDB 和 TiCDC 采用 Checksum v1 算法进行 Checksum 计算和校验。
 
 在启用单行数据 Checksum 正确性校验功能后，TiDB 会使用 CRC32 算法计算每行数据的 Checksum 值，并将这个值与该行数据一并存储在 TiKV 中。随后，TiCDC 从 TiKV 读取这些数据，并使用相同的算法重新计算 Checksum，如果得到的 Checksum 值与 TiDB 写入的 Checksum 值相同，则表明数据在从 TiDB 到 TiCDC 的传输过程中是正确的。
 
