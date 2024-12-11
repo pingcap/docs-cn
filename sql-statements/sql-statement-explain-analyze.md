@@ -38,10 +38,10 @@ ExplainableStmt ::=
 
 | 属性名          | 含义 |
 |:----------------|:---------------------------------|
-| actRows       | 算子实际输出的数据条数。 |
-| execution info  | 算子的实际执行信息。time 表示从进入算子到离开算子的全部 wall time，包括所有子算子操作的全部执行时间。如果该算子被父算子多次调用 (loops)，这个时间就是累积的时间。open 表示算子初始化所花费的时间。close 表示从算子处理完所有数据到算子结束的时间。其中 time 统计的时间是包含 open 和 close 的时间。当算子存在多并发执行情况时，执行信息中显示的会是各个并发使用的 wall time 加总求和的结果，此时 time, open 和 close 会被替换为 total_time, total_open 和 total_close。loops 是当前算子被父算子调用的次数。 |
-| memory  | 算子占用的最大内存空间。 |
-| disk  | 算子占用的最大磁盘空间大小。 |
+| `actRows`       | 算子实际输出的数据条数。 |
+| `execution info`  | 算子的实际执行信息。`time` 表示从进入算子到离开算子的全部 `wall time`，包括所有子算子操作的全部执行时间。如果该算子被父算子多次调用 (`loops`)，这个时间就是累积的时间。`loops` 是当前算子被父算子调用的次数。`open` 表示算子初始化所需的时间。`close` 表示从算子处理完所有数据到算子结束的时间。其中 `time` 统计的时间是包含 `open` 和 `close` 的时间。当算子存在多并发执行情况时，执行信息中显示的会是各个并发使用的 `wall time` 加总求和的结果，此时 `time`、`open` 和 `close` 会被替换为 `total_time`, `total_open` 和 `total_close`。|
+| `memory`  | 算子占用的最大内存空间。 |
+| `disk`  | 算子占用的最大磁盘空间。 |
 
 ## 示例
 
@@ -341,7 +341,7 @@ after key/value request is processed:
 
 ### tiflash_wait 信息
 
-当查询涉及到 MPP task 时候时，执行时间还受到各类 tiflash_wait 时间的影响，示例如下：
+当查询涉及到 mpp task 时候时，执行时间还受到各类 `tiflash_wait` 时间的影响，示例如下：
 
 ```
 tiflash_wait: {minTSO_wait: 425ms, pipeline_breaker_wait: 133ms, pipeline_queue_wait: 512ms}
