@@ -177,7 +177,7 @@ Build 总是先于 Probe 执行，并且 Build 总是出现在 Probe 前面。�
 目前 TiDB 的计算任务分为四种不同的 task：root task, cop task, batchCop task 和 mpp task。
 
 - root task 是指在 TiDB 中执行的计算任务；
-- cop task 是指使用 TiKV 和 TiFlash 中的 Coprocessor 执行的计算任务；
+- cop task 是指使用 TiKV 或 TiFlash 中的 Coprocessor 执行的计算任务；
 - batchCop task 是对 TiFlash cop task 的一种优化，可以在一个任务中执行对多个 Region 的查询；
 - mpp task 是指利用 TiFlash 的 [MPP 模式](/explain-mpp.md)执行查询。
 
