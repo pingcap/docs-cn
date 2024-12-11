@@ -72,7 +72,7 @@ Info: {"upstream_id":7178706266519722477,"namespace":"default","id":"simple-repl
 ### `sql-mode` <span class="version-mark">从 v6.5.6、v7.1.3 和 v7.5.0 版本开始引入</span>
 
 - 用于设置解析 DDL 时使用的 [SQL 模式](/sql-mode.md)，多个模式之间用逗号分隔。
-- 默认值：`ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION`，与 TiDB 的默认 SQL 模式一致
+- 默认值：`"ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION"`，与 TiDB 的默认 SQL 模式一致
 
 ### `bdr-mode`
 
@@ -100,13 +100,13 @@ Info: {"upstream_id":7178706266519722477,"namespace":"default","id":"simple-repl
 
 - 忽略指定 start_ts 的事务。
 
-[//]: # (- 示例值：`[1, 2]`)
+<!-- 示例值：`[1, 2]` -->
 
 #### `rules`
 
 - 过滤器规则，过滤规则语法参考[表库过滤语法](/table-filter.md#表库过滤语法)。
 
-[//]: # (- 示例值：`['*.*', '!test.*']`)
+<!-- 示例值：`['*.*', '!test.*']` -->
 
 #### filter.event-filters
 
@@ -129,7 +129,7 @@ Info: {"upstream_id":7178706266519722477,"namespace":"default","id":"simple-repl
 
 ##### `ignore-insert-value-expr`
 
-- `ignore-insert-value-expr = "id >= 100"` 表示过滤掉包含 id >= 100 条件的 `INSERT` DML。
+- `ignore-insert-value-expr = "id >= 100"` 表示过滤掉包含 `id >= 100` 条件的 `INSERT` DML。
 
 ##### `ignore-update-old-value-expr`
 
@@ -165,7 +165,7 @@ Info: {"upstream_id":7178706266519722477,"namespace":"default","id":"simple-repl
 
 ### sink
 
-[//]: # (以下是 MQ 类型 sink 配置)
+<!-- 以下是 MQ 类型 sink 配置 -->
 
 #### `dispatchers`
 
@@ -187,7 +187,7 @@ Info: {"upstream_id":7178706266519722477,"namespace":"default","id":"simple-repl
 - 当下游类型是存储服务时，目前仅支持 canal-json、csv 两种协议。
 - 注意：该参数只有当下游为 Kafka、Pulsar，或存储服务时，才会生效。
 
-[//]: # (- 示例值：`"canal-json"`)
+<!-- 示例值：`"canal-json"` -->
 
 #### `delete-only-output-handle-key-columns` <span class="version-mark">从 v7.2.0 版本开始引入</span>
 
@@ -202,7 +202,8 @@ Info: {"upstream_id":7178706266519722477,"namespace":"default","id":"simple-repl
 
 - Schema 注册表的 URL。
 - 该参数只有当下游为消息队列时，才会生效。
-- 示例值：`"http://localhost:80801/subjects/{subject-name}/versions/{version-number}/schema"`
+
+<!-- 示例值：`"http://localhost:80801/subjects/{subject-name}/versions/{version-number}/schema"` -->
 
 #### `encoder-concurrency`
 
@@ -213,7 +214,7 @@ Info: {"upstream_id":7178706266519722477,"namespace":"default","id":"simple-repl
 #### `enable-kafka-sink-v2`
 
 - 是否开启 Kafka Sink V2。Kafka Sink V2 内部使用 kafka-go 实现。
-- 注意：该参数是一个实验特性，并且只有当下游为消息队列时才会生效。
+- 该参数是一个实验特性，并且只有当下游为消息队列时才会生效。
 - 默认值：`false`
 
 #### `only-output-updated-columns` <span class="version-mark">从 v7.1.0 版本开始引入</span>
@@ -288,8 +289,8 @@ Info: {"upstream_id":7178706266519722477,"namespace":"default","id":"simple-repl
 ##### `output-old-value`
 
 - 是否输出行数据更改前的值。
-- 开启后，UPDATE 事件会输出两行数据：第一行为 DELETE 事件，输出更改前的数据；第二行为 INSERT 事件，输出更改后的数据。
-- 开启后，即当该参数设为 `true` 时，会在变更数据列前增加 `"is-update"` 列。该列用来标识当前行的变更数据是来自 Update 事件，还是原始的 INSERT/DELETE 事件。如果当前行的变更数据来自 UPDATE 事件，则 `"is-update"` 列为 `true`，否则为 `false`。
+- 开启后，即当该参数设为 `true` 时，UPDATE 事件会输出两行数据：第一行为 DELETE 事件，输出更改前的数据；第二行为 INSERT 事件，输出更改后的数据。
+- 开启后，会在变更数据列前增加 `"is-update"` 列。该列用来标识当前行的变更数据是来自 Update 事件，还是原始的 INSERT/DELETE 事件。如果当前行的变更数据来自 UPDATE 事件，则 `"is-update"` 列为 `true`，否则为 `false`。
 - 默认值：`false`
 
 从 v8.0.0 开始，TiCDC 新增了 Simple Protocol 消息编码协议，以下为该协议的配置参数。关于该协议的详情，请参考 [TiCDC Simple Protocol](/ticdc/ticdc-simple-protocol.md)。
@@ -312,8 +313,7 @@ Info: {"upstream_id":7178706266519722477,"namespace":"default","id":"simple-repl
 
 - 控制是否发送 bootstrap 消息到所有的 partition。
 - 如果设置为 `false`，则只发送 bootstrap 消息到对应表 topic 的第一个 partition。
-
-[//]: # (- 示例值 `true`)
+- 默认值：`true`
 
 #### sink.kafka-config.codec-config
 
@@ -385,7 +385,7 @@ consistent 中的字段用于配置 Changefeed 的数据一致性。详细信息
 
 - redo log 文件的压缩行为。
 - 默认值：`""`，表示不进行压缩
-- 可选值：`""`、`lz4`
+- 可选值：`""`、`"lz4"`
 
 #### `flush-concurrency`
 
@@ -415,7 +415,7 @@ consistent 中的字段用于配置 Changefeed 的数据一致性。详细信息
 - Kafka SASL 认证机制。
 - 默认值：`""`，表示不使用 SASL 认证
 
-[//]: # (- 示例值：`OAUTHBEARER`)
+<!-- 示例值：`OAUTHBEARER` -->
 
 #### `sasl-oauth-client-id`
 
@@ -439,7 +439,7 @@ consistent 中的字段用于配置 Changefeed 的数据一致性。详细信息
 
 #### `sasl-oauth-grant-type`
 
-- Kafka SASL OAUTHBEARER 认证机制中的 grant-type。默认值为 `"client_credentials"`。在使用该认证机制时，该参数可选填。
+- Kafka SASL OAUTHBEARER 认证机制中的 grant-type。在使用该认证机制时，该参数可选填。
 - 默认值：`"client_credentials"`
 
 #### `sasl-oauth-audience`
@@ -447,7 +447,7 @@ consistent 中的字段用于配置 Changefeed 的数据一致性。详细信息
 - Kafka SASL OAUTHBEARER 认证机制中的 audience。在使用该认证机制时，该参数可选填。
 - 默认值：`""`
 
-[//]: # (- 示例值：`"kafka"`)
+<!-- 示例值：`"kafka"` -->
 
 #### `output-raw-change-event`
 
@@ -527,7 +527,8 @@ token="xxxx"
 
 #### `pulsar-producer-cache-size`
 
-- TiCDC 中缓存 Pulsar Producer 的个数，默认上限为 `10240` 个。每个 Pulsar Producer 对应一个 topic，如果你需要同步的 topic 数量大于默认值，则需要调大该数量。
+- TiCDC 中缓存 Pulsar Producer 的个数。每个 Pulsar Producer 对应一个 topic，如果你需要同步的 topic 数量大于默认值，则需要调大该数量。
+- 默认值：`10240`
 
 #### `compression-type`
 

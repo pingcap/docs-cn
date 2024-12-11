@@ -30,7 +30,7 @@ summary: 了解 TiCDC 详细的命令行参数和配置文件定义。
 
 对于 `cdc server` 命令中 `config` 参数指定的配置文件说明如下。你可以在 [`pkg/cmd/util/ticdc.toml`](https://github.com/pingcap/tiflow/blob/master/pkg/cmd/util/ticdc.toml) 找到默认值的配置文件。
 
-[//]: # (下面的字段的配置含义与命令行参数相同，但是命令行参数优先级更高)
+<!-- 下面的字段的配置含义与命令行参数相同，但是命令行参数优先级更高 -->
 
 ### `addr`
 
@@ -99,7 +99,7 @@ summary: 了解 TiCDC 详细的命令行参数和配置文件定义。
 - 指定可用于客户端鉴权的用户名，列表中不存在的用户的鉴权请求将被直接拒绝。
 - 默认值：`null`
 
-[//]: # (- 示例值：`["username_1", "username_2"]`)
+<!-- 示例值：`["username_1", "username_2"]` -->
 
 ### `capture-session-ttl`
 
