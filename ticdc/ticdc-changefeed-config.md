@@ -353,7 +353,7 @@ consistent 中的字段用于配置 Changefeed 的数据一致性。详细信息
 
 - redo log 的最大日志大小。
 - 默认值：`64`
-- 单位：MB
+- 单位：MiB
 
 #### `flush-interval`
 
