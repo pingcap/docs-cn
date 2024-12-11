@@ -123,6 +123,6 @@ fn checksum(columns) {
 
 ### BR 恢复场景兼容性
 
-v8.3.0 和 v8.4.0 的 Checksum 功能有如下兼容性问题：
+在 v8.3.0 和 v8.4.0 中，Checksum 功能存在以下兼容性问题：
 
 使用 BR 工具备份 v8.3.0 的数据，恢复到 v8.3.0 及更高版本的 TiDB 集群。在 Changefeed 同步过程中如果遇到了 Update 和 Delete 事件，在 TiCDC 内部可能发生校验 Old Value 的 Checksum 失败的情况。具体原因是，在 BR 恢复数据的时候，如果发现当前被恢复的表的 ID 已经在下游目标集群上被占用，就会改写表 ID，但是没有改写 Checksum，从而导致 Changefeed 内部校验数据的时候使用的表 ID 和数据在老集群上被写入时候的表 ID 不一致，最终导致校验失败。如果存在上述使用场景，需要关闭 changefeed 的 checksum 校验功能。
