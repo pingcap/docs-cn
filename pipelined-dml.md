@@ -42,21 +42,25 @@ INSERT INTO sales_archive SELECT * FROM sales WHERE sale_date < '2023-01-01';
 
 ### 批量数据更新场景
 
-当需要对大量数据进行更新操作时，例如批量调整商品价格或更新用户状态，Pipelined DML 可以高效完成操作：
+当需要对大量数据进行更新操作时，例如批量调整商品价格或更新用户状态：
 
 ```sql
-UPDATE /*+ SET_VAR(tidb_dml_type='bulk') */ products
+UPDATE products
 SET price = price * 1.1
 WHERE category = 'electronics';
 ```
 
+使用 Pipelined DML 可以高效完成更新操作。
+
 ### 批量删除场景
 
-当需要删除大量数据时，例如删除历史数据或清理过期数据，Pipelined DML 可以高效完成操作：
+当需要删除大量数据时，例如删除历史数据或清理过期数据：
 
 ```sql
-DELETE /*+ SET_VAR(tidb_dml_type='bulk') */ FROM logs WHERE log_time < '2023-01-01';
+DELETE FROM logs WHERE log_time < '2023-01-01';
 ```
+
+使用 Pipelined DML 可以高效完成删除操作。
 
 ## 使用限制
 
@@ -86,11 +90,27 @@ DELETE /*+ SET_VAR(tidb_dml_type='bulk') */ FROM logs WHERE log_time < '2023-01-
     SET tidb_dml_type = "bulk";
     ```
 
-- 如需为某一条 DML 语句启用 Pipelined DML，请在该语句中添加 SET_VAR hint，例如：
+- 如需为某一条 DML 语句启用 Pipelined DML，请在该语句中添加 SET_VAR hint。
 
-    ```sql
-    INSERT /*+ SET_VAR(tidb_dml_type='bulk') */ INTO target_table SELECT * FROM source_table;
-    ```
+    - 数据归档示例：
+
+        ```sql
+        INSERT /*+ SET_VAR(tidb_dml_type='bulk') */ INTO target_table SELECT * FROM source_table;
+        ```
+
+    - 批量数据更新示例：
+
+        ```sql
+        UPDATE /*+ SET_VAR(tidb_dml_type='bulk') */ products
+        SET price = price * 1.1
+        WHERE category = 'electronics';
+        ```
+
+    - 批量删除示例：
+
+        ```sql
+        DELETE /*+ SET_VAR(tidb_dml_type='bulk') */ FROM logs WHERE log_time < '2023-01-01';
+        ```
 
 ### 验证是否生效
 
