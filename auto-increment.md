@@ -384,6 +384,8 @@ SELECT * FROM t;
 3 rows in set (0.01 sec)
 ```
 
+Lightning 在导入完数据之后，会自动清除自增 ID 缓存。但 DM 和 TiCDC 在增量同步数据之后不会自动清除，因此需要在停止 DM 和 TiCDC 之后、进行主备切换之前，手动清除下游集群的自增 ID 缓存。
+
 ### 自增步长和偏移量设置
 
 从 v3.0.9 和 v4.0.rc-1 开始，和 MySQL 的行为类似，自增列隐式分配的值遵循 session 变量 `@@auto_increment_increment` 和 `@@auto_increment_offset` 的控制，其中自增列隐式分配的值 (ID) 将满足式子 `(ID - auto_increment_offset) % auto_increment_increment == 0`。
