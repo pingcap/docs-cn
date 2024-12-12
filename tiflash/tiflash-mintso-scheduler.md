@@ -60,3 +60,7 @@ MinTSO 调度器的目标是在控制系统线程数的同时，确保系统中�
 ![TiFlash MinTSO Scheduler v2](/media/tiflash/tiflash_mintso_v2.png)
 
 通过引入 soft limit 与 hard limit，MinTSO 调度器在控制系统线程数的同时，有效地避免了系统死锁。不过对于高并发场景，可能会出现大多数查询都只有部分 MPP Task 被调度的情况。只有部分 MPP Task 被调度的查询无法正常执行，从而导致系统执行效率低下。为了避免这种情况，TiFlash 在查询层面为 MinTSO 调度器引入了一个限制，即 active_set_soft_limit，该限制要求系统最多只有 active_set_soft_limit 个查询的 MPP Task 可以参与调度；对于其它的查询，其 MPP Task 不参与调度，只有等当前查询结束之后，新的查询才能参与调度。该限制只是一个 soft limit，因为对于 MinTSO 查询来说，其所有 MPP Task 在系统线程数不超过 hard limit 时都可以直接被调度。
+
+## 另请参阅
+
+- [TiFlash 配置参数](/tiflash/tiflash-configuration.md)：了解 MinTSO 调度器的相关配置。
