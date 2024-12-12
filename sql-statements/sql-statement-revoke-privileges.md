@@ -10,8 +10,8 @@ summary: TiDB 数据库中 REVOKE <privileges> 的使用概况。
 ## 语法图
 
 ```ebnf+diagram
-GrantStmt ::=
-    'GRANT' PrivElemList 'ON' ObjectType PrivLevel 'TO' UserSpecList RequireClauseOpt WithGrantOptionOpt
+RevokeStmt ::=
+    'REVOKE' PrivElemList 'ON' ObjectType PrivLevel 'FROM' UserSpecList
 
 PrivElemList ::=
     PrivElem ( ',' PrivElem )*
