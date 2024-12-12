@@ -10,8 +10,8 @@ summary: TiDB 数据库中 REVOKE <privileges> 的使用概况。
 ## 语法图
 
 ```ebnf+diagram
-GrantStmt ::=
-    'GRANT' PrivElemList 'ON' ObjectType PrivLevel 'TO' UserSpecList RequireClauseOpt WithGrantOptionOpt
+RevokeStmt ::=
+    'REVOKE' PrivElemList 'ON' ObjectType PrivLevel 'FROM' UserSpecList
 
 PrivElemList ::=
     PrivElem ( ',' PrivElem )*
@@ -54,10 +54,6 @@ PrivLevel ::=
 
 UserSpecList ::=
     UserSpec ( ',' UserSpec )*
-
-RequireClauseOpt ::= ('REQUIRE' ('NONE' | 'SSL' | 'X509' | RequireListElement ('AND'? RequireListElement)*))?
-
-RequireListElement ::= 'ISSUER' Issuer | 'SUBJECT' Subject | 'CIPHER' Cipher | 'SAN' SAN | 'TOKEN_ISSUER' TokenIssuer
 ```
 
 ## 示例
