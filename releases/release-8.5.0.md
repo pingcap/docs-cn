@@ -33,7 +33,7 @@ TiDB 8.5.0 为长期支持版本 (Long-Term Support Release, LTS)。
     <li><a href="https://docs.pingcap.com/zh/tidb/v8.5/system-variables#tidb_executor_concurrency-从-v50-版本开始引入">并行排序</a>（从 v8.2.0 开始引入）</li>
     <li><a href="https://docs.pingcap.com/zh/tidb/v8.5/tidb-configuration-file#batch-policy-从-v830-版本开始引入">优化 KV 请求批处理策略</a>（从 v8.3.0 开始引入）</li>
     <li><a href="https://docs.pingcap.com/zh/tidb/v8.5/system-variables#tidb_tso_client_rpc_mode-从-v840-版本开始引入">并行获取 TSO</a>（从 v8.4.0 开始引入）</li>
-    <li>降低 <a href="https://docs.pingcap.com/tidb/v8.5/sql-statement-delete">DELETE</a> 操作的资源开销（从 v8.4.0 开始引入）</li>
+    <li>降低 <a href="https://docs.pingcap.com/zh/tidb/v8.5/sql-statement-delete">DELETE</a> 操作的资源开销（从 v8.4.0 开始引入）</li>
     <li>优化<a href="https://docs.pingcap.com/zh/tidb/v8.5/cached-tables#缓存表">缓存表</a>场景性能（从 v8.4.0 开始引入）</li>
     <li><a href="https://docs.pingcap.com/zh/tidb/v8.5/system-variables#tidb_hash_join_version-从-v840-版本开始引入">Hash Join 算法优化</a>（实验特性，从 v8.4.0 开始引入）</li>
     </td>
