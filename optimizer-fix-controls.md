@@ -51,3 +51,9 @@ SET SESSION tidb_opt_fix_control = '44262:ON,44389:ON';
 - 在某些场景下，当 `IndexJoin` 算子的 `Probe` 端包含 `Selection` 算子时，TiDB 会严重高估 `IndexScan` 的行数，导致在 `IndexJoin` 更好的时候选择了其它的执行计划。
 - TiDB 已经引入了缓解这类问题的改进逻辑。但是由于潜在的计划回退风险，该改进并没有被默认启用。
 - 此开关控制是否启用这个改进。
+
+### [`46177`](https://github.com/pingcap/tidb/issues/46177) <span class="version-mark">从 v6.5.6 版本开始引入</span>
+
+- 默认值：`ON`
+- 可选值：`ON`、`OFF`
+- 此开关控制优化器在查询优化的过程中，找到非强制执行计划后，是否继续查找强制执行计划进行查询优化。
