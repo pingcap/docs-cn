@@ -23,7 +23,7 @@ tiup playground ${version} [flags]
 - 因为该命令也没有指定各组件的个数，默认情况下，它会启动由 1 个 TiDB、1 个 TiKV、1 个 PD 和 1 个 TiFlash 实例构成的最小化集群
 - 在依次启动完各个 TiDB 组件后，playground 会提醒集群启动成功，并告诉你一些有用的信息，譬如如何通过 MySQL 客户端连接集群、如何访问 [TiDB Dashboard](/dashboard/dashboard-intro.md) 等
 
-可以使用下面命令查看 playground 的命令行参数说明：
+可以使用以下命令查看 playground 的命令行参数说明：
 
 ```shell
 tiup playground --help
