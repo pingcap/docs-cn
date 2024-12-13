@@ -55,7 +55,7 @@ Pipelined DML 是 TiDB 从 v8.0.0 开始引入的实验特性，用于优化大�
 
 根据需要，你可以选择以下方式之一启用 Pipelined DML：
 
-- 如需在会话级别启用 Pipelined DML，请将 [`tidb_dml_type`](system-variables.md#tidb_dml_type-从-v800-版本开始引入) 变量设置为 `"bulk"`：
+- 如需在会话级别启用 Pipelined DML，请将 [`tidb_dml_type`](/system-variables.md#tidb_dml_type-从-v800-版本开始引入) 变量设置为 `"bulk"`：
 
     ```sql
     SET tidb_dml_type = "bulk";
