@@ -23,6 +23,7 @@ tiup playground ${version} [flags]
 - 因为该命令也没有指定各组件的个数，默认情况下，它会启动由 1 个 TiDB、1 个 TiKV、1 个 PD 和 1 个 TiFlash 实例构成的最小化集群
 - 在依次启动完各个 TiDB 组件后，playground 会提醒集群启动成功，并告诉你一些有用的信息，譬如如何通过 MySQL 客户端连接集群、如何访问 [TiDB Dashboard](/dashboard/dashboard-intro.md) 等
 
+<<<<<<< HEAD
 playground 的命令行参数说明：
 
 ```bash
@@ -74,7 +75,12 @@ Flags:
       --tso.config string          指定 TSO 节点的配置文件（开发调试用，可忽略）
   -v, --version                    显示 playground 的版本号
       --without-monitor            设置不使用 Prometheus 和 Grafana 的监控功能。若不添加此参数，则默认开启监控功能。
+=======
+可以使用以下命令查看 playground 的命令行参数说明：
+>>>>>>> 1dae862a31 (tiup: refine description about `tiup playground --tag` (#19283))
 
+```shell
+tiup playground --help
 ```
 
 ## 使用示例
@@ -137,12 +143,12 @@ tiup playground --db.binpath /xx/tidb-server
 tiup playground --db 3 --pd 3 --kv 3
 ```
 
-### 启动集群时指定 tag
+### 启动集群时指定 `tag` 以保留数据
 
 Playground 集群在命令行退出时，会默认清空所有的集群数据。如果想要启动一个数据不被自动删除的 Playground 集群，需要在启动时指定集群 tag，指定后可以在 `~/.tiup/data` 路径下找到该集群的数据。在集群启动时指定 tag 的方法如下：
 
 ```shell
-tiup playground --tag <tagname>
+tiup playground --tag ${tag_name}
 ```
 
 以这种方式启动的集群，在集群关闭以后，数据文件会保留。下一次可以继续使用该 tag 启动集群，从而使用从上一次集群关闭时的数据。
