@@ -47,7 +47,7 @@ summary: 了解如何处理错误索引问题。
 
 ## 引擎选择
 
-默认情况下，TiDB 会基于成本估算选择使用 TiKV 或 TiFlash 访问数据表。你可以通过配置 Engine 隔离的方式，尝试对同一查询使用不同的存储引擎。
+默认情况下，TiDB 会基于成本估算选择使用 TiKV 或 TiFlash 访问数据表。你可以通过配置 Engine 隔离的方式，尝试使用不同的存储引擎执行同一查询。
 
 更多信息，请参考 [Engine 隔离](/tiflash/use-tidb-to-read-tiflash.md#engine-隔离)。
 
