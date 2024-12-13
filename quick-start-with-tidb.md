@@ -67,10 +67,10 @@ TiDB 是一个分布式系统。最基础的 TiDB 测试集群通常由 2 个 Ti
 
 3. 在当前 session 执行以下命令启动集群。
 
-        > **注意：**
-        >
-        > + 以这种方式执行的 playground，在结束部署测试后 TiUP 会清理掉原集群数据，重新执行该命令后会得到一个全新的集群。
-        > + 若希望持久化数据，可以执行 TiUP 的 `--tag` 参数：`tiup --tag <your-tag> playground ...`，详情参考[启动集群时指定 `tag` 以保留数据](/tiup/tiup-playground.md#启动集群时指定-tag-以保留数据)。
+    > **注意：**
+    >
+    > + 以这种方式执行的 playground，在结束部署测试后 TiUP 会清理掉原集群数据，重新执行该命令后会得到一个全新的集群。
+    > + 若希望持久化数据，可以执行 TiUP 的 `--tag` 参数：`tiup --tag <your-tag> playground ...`，详情参考[启动集群时指定 `tag` 以保留数据](/tiup/tiup-playground.md#启动集群时指定-tag-以保留数据)。
 
     - 直接执行 `tiup playground` 命令会运行最新版本的 TiDB 集群，其中 TiDB、TiKV、PD 和 TiFlash 实例各 1 个：
 
@@ -187,10 +187,10 @@ TiDB 是一个分布式系统。最基础的 TiDB 测试集群通常由 2 个 Ti
 
 3. 在当前 session 执行以下命令启动集群。
 
-        > **注意：**
-        >
-        > + 以这种方式执行的 playground，在结束部署测试后 TiUP 会清理掉原集群数据，重新执行该命令后会得到一个全新的集群。
-        > + 若希望持久化数据，可以执行 TiUP 的 `--tag` 参数：`tiup --tag <your-tag> playground ...`，详情参考[启动集群时指定 `tag` 以保留数据](/tiup/tiup-playground.md#启动集群时指定-tag-以保留数据)。
+    > **注意：**
+    >
+    > + 以这种方式执行的 playground，在结束部署测试后 TiUP 会清理掉原集群数据，重新执行该命令后会得到一个全新的集群。
+    > + 若希望持久化数据，可以执行 TiUP 的 `--tag` 参数：`tiup --tag <your-tag> playground ...`，详情参考[启动集群时指定 `tag` 以保留数据](/tiup/tiup-playground.md#启动集群时指定-tag-以保留数据)。
 
     - 直接运行 `tiup playground` 命令会运行最新版本的 TiDB 集群，其中 TiDB、TiKV、PD 和 TiFlash 实例各 1 个：
 
