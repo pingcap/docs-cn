@@ -71,6 +71,18 @@ SET SESSION tidb_opt_fix_control = '44262:ON,44389:ON';
 - 此开关控制优化器进行启发式访问路径选择的阈值。当某个访问路径（如 `Index_A`）的估算行数远小于其他访问路径时（默认为 `1000` 倍），优化器会跳过代价比较直接选择 `Index_A`。
 - `0` 表示关闭此启发式访问路径选择策略。
 
+### [`45798`](https://github.com/pingcap/tidb/issues/45798) <span class="version-mark">从 v7.5.0 版本开始引入</span>
+
+- 默认值：`ON`
+- 可选值：`ON`、`OFF`
+- 此开关控制是否允许 Plan Cache 缓存访问[生成列](/generated-columns.md)的执行计划。
+
+### [`46177`](https://github.com/pingcap/tidb/issues/46177) <span class="version-mark">从 v6.5.6、v7.1.3 和 v7.5.0 版本开始引入</span>
+
+- 默认值：`ON`
+- 可选值：`ON`、`OFF`
+- 此开关控制优化器在查询优化的过程中，找到非强制执行计划后，是否继续查找强制执行计划进行查询优化。
+
 ### [`47400`](https://github.com/pingcap/tidb/issues/47400) <span class="version-mark">从 v8.4.0 版本开始引入</span>
 
 - 默认值：`ON`
