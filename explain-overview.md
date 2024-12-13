@@ -174,14 +174,14 @@ Build 总是先于 Probe 执行，并且 Build 总是出现在 Probe 前面。�
 
 ### Task 简介
 
-目前 TiDB 的计算任务分为四种不同的 task：root task, cop task, batchCop task 和 mpp task。
+目前 TiDB 的计算任务分为四种不同的 task：root task, cop task, batchCop task 和 MPP task。
 
-- root task 是指在 TiDB 中执行的计算任务；
-- cop task 是指使用 TiKV 或 TiFlash 中的 Coprocessor 执行的计算任务；
-- batchCop task 是对 TiFlash cop task 的一种优化，可以在一个任务中执行对多个 Region 的查询；
-- mpp task 是指利用 TiFlash 的 [MPP 模式](/explain-mpp.md)执行查询。
+- root task 是指在 TiDB 中执行的计算任务。
+- cop task 是指使用 TiKV 或 TiFlash 中的 Coprocessor 执行的计算任务。
+- batchCop task 是对 TiFlash cop task 的一种优化，可以在一个任务中执行对多个 Region 的查询。
+- MPP task 是指利用 TiFlash 的 [MPP 模式](/explain-mpp.md)执行查询。
 
-SQL 优化的目标之一是将计算尽可能地下推到 TiKV 或 TiFlash 中执行。TiKV 中的 Coprocessor 能支持大部分 SQL 内建函数（包括聚合函数和标量函数）、SQL `LIMIT` 操作、索引扫描和表扫描。TiFlash 中的 Coprocessor 与 TiKV 功能类似，但是不支持索引扫描。
+SQL 优化的目标之一是将计算尽可能地下推到 TiKV 或 TiFlash 中执行，以提高查询效率。TiKV 中的 Coprocessor 支持大部分 SQL 内建函数（包括聚合函数和标量函数）、`LIMIT` 操作、索引扫描和表扫描。TiFlash 中的 Coprocessor 与 TiKV 功能类似，但不支持索引扫描。
 
 ### `operator info` 结果
 
