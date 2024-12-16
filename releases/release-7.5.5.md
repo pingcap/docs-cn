@@ -25,6 +25,8 @@ TiDB 版本：7.5.5
 
 + TiKV
 
+    - 提升在 raft log 部署在独立磁盘情况下，磁盘出现故障时 TiKV 服务的 SLA [#17884](https://github.com/tikv/tikv/issues/17884) @[LykxSassinator](https://github.com/LykxSassinator)
+
     - note [#issue](https://github.com/tikv/tikv/issues/${issue-id}) @[贡献者 GitHub ID](https://github.com/${github-id})
     - note [#issue](https://github.com/tikv/tikv/issues/${issue-id}) @[贡献者 GitHub ID](https://github.com/${github-id})
     - (dup): release-6.5.9.md > 改进提升> TiKV - 增加 peer 和 store 消息的 slow log [#16600](https://github.com/tikv/tikv/issues/16600) @[Connor1996](https://github.com/Connor1996)
@@ -117,6 +119,11 @@ TiDB 版本：7.5.5
     - (dup): release-8.5.0.md > 错误修复> TiDB - 修复 `INDEX_HASH_JOIN` 在异常退出时可能卡住的问题 [#54055](https://github.com/pingcap/tidb/issues/54055) @[wshwsh12](https://github.com/wshwsh12)
 
 + TiKV
+
+    - 修复 TiKV 处理 destroyed peer 时可能遇到的 panic 的问题 [#17840](https://github.com/tikv/tikv/issues/17840) @[glorv](https://github.com/glorv))
+    - 提升在 raft log 部署在独立磁盘情况下，磁盘出现故障时 TiKV 服务的 SLA [#17884](https://github.com/tikv/tikv/issues/17884) @[LykxSassinator](https://github.com/LykxSassinator)
+    - 纠正当 log-file 参数没有指定的时候 jprof 的输出内容 [#17607](https://github.com/tikv/tikv/issues/17607) @[Hexilee](https://github.com/Hexilee)
+    - 修复在唤醒休眠 region 时可能出现的延迟上升的问题 [#17101](https://github.com/tikv/tikv/issues/17101) @[Connor1996](https://github.com/Connor1996)
 
     - note [#issue](https://github.com/tikv/tikv/issues/${issue-id}) @[贡献者 GitHub ID](https://github.com/${github-id})
     - note [#issue](https://github.com/tikv/tikv/issues/${issue-id}) @[贡献者 GitHub ID](https://github.com/${github-id})
