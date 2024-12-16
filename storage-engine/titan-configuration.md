@@ -110,7 +110,7 @@ Titan 对 RocksDB 兼容，也就是说，使用 RocksDB 存储引擎的现有 T
 
 ### `shared-blob-cache`（从 v8.0.0 版本开始引入）
 
-你可以通过 [`shared-blob-cache`](/tikv-configuration-file.md#shared-blob-cache从-v800-版本开始引入) 控制是否启用 Titan Blob 文件和 RocksDB Block 文件的共享缓存，默认值为 `true`。当开启共享缓存时，Block 文件具有更高的优先级，TiKV 将优先满足 Block 文件的缓存需求，然后将剩余的缓存用于 Blob 文件。
+你可以通过 [`shared-blob-cache`](/tikv-configuration-file.md#shared-blob-cache-从-v800-版本开始引入) 控制是否启用 Titan Blob 文件和 RocksDB Block 文件的共享缓存，默认值为 `true`。当开启共享缓存时，Block 文件具有更高的优先级，TiKV 将优先满足 Block 文件的缓存需求，然后将剩余的缓存用于 Blob 文件。
 
 ### Titan 配置文件示例
 
