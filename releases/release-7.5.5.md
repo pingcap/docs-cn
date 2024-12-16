@@ -192,6 +192,9 @@ TiDB 版本：7.5.5
 
         - note [#issue](https://github.com/pingcap/tiflow/issues/${issue-id}) @[贡献者 GitHub ID](https://github.com/${github-id})
         - note [#issue](https://github.com/pingcap/tiflow/issues/${issue-id}) @[贡献者 GitHub ID](https://github.com/${github-id})
+        - 修复物理导入后 auto id 可能会有大范围的跳变的问题 [#11768](https://github.com/pingcap/tiflow/issues/11768) @[D3Hunter](https://github.com/D3Hunter)"
+        - 修复当同时配置 TLS 和 shard-mode 时，start-task 检查报错的问题 [#11842](https://github.com/pingcap/tiflow/issues/11842) @[sunxiaoguang](https://github.com/sunxiaoguang)
+        - 修复当密码长度超过 19 个字符时无法连接 MySQL 8.0 的问题 [#11603](https://github.com/pingcap/tiflow/issues/11603) @[fishiu](https://github.com/fishiu)
 
     + TiDB Lightning
 
