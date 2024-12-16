@@ -1690,7 +1690,7 @@ rocksdb defaultcf titan 相关的配置项。
 + 推荐值：0。从 v8.0.0 开始，TiKV 引入了 `shared-blob-cache` 配置项并默认开启，因此无需再单独设置 `blob-cache-size`。只有当 `shared-blob-cache` 设置为 `false` 时，`blob-cache-size` 的设置才生效。
 + 单位：KiB|MiB|GiB
 
-### `shared-blob-cache`（从 v8.0.0 版本开始引入）
+### `shared-blob-cache` <span class="version-mark">从 v8.0.0 版本开始引入</span>
 
 + 是否启用 Titan Blob 文件和 RocksDB Block 文件的共享缓存
 + 默认值：`true`。当开启共享缓存时，Block 文件具有更高的优先级，TiKV 将优先满足 Block 文件的缓存需求，然后将剩余的缓存用于 Blob 文件。
