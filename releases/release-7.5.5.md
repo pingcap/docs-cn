@@ -135,6 +135,7 @@ TiDB 版本：7.5.5
     - (dup): release-7.1.3.md > 错误修复> TiKV - 修复 Online Unsafe Recovery 时无法处理 merge abort 的问题 [#15580](https://github.com/tikv/tikv/issues/15580) @[v01dstar](https://github.com/v01dstar)
     - (dup): release-8.3.0.md > 错误修复> TiKV - 修复 CPU profiling flag 在出现错误时没有正确重置的问题 [#17234](https://github.com/tikv/tikv/issues/17234) @[Connor1996](https://github.com/Connor1996)
     - (dup): release-8.5.0.md > 错误修复> TiKV - 修复 `raft-entry-max-size` 设置过高时，写入 batch 可能过大引起性能抖动的问题 [#17701](https://github.com/tikv/tikv/issues/17701) @[SpadeA-Tang](https://github.com/SpadeA-Tang)
+    - 修复 import 冲突检测接口可能会导致 panic 的问题 [#17830](https://github.com/tikv/tikv/issues/17830) @[joccau](https://github.com/joccau)
 
 + PD
 
