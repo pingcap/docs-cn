@@ -198,6 +198,10 @@ TiDB 版本：7.5.5
         - note [#issue](https://github.com/pingcap/tidb/issues/${issue-id}) @[贡献者 GitHub ID](https://github.com/${github-id})
         - (dup): release-7.1.6.md > 错误修复> Tools> TiDB Lightning - 修复 TiDB Lightning 因 TiKV 发送的消息过大而接收失败的问题 [#56114](https://github.com/pingcap/tidb/issues/56114) @[fishiu](https://github.com/fishiu)
         - (dup): release-8.5.0.md > 错误修复> Tools> TiDB Lightning - 修复使用物理导入模式导入数据后，`AUTO_INCREMENT` 值设置过大的问题 [#56814](https://github.com/pingcap/tidb/issues/56814) @[D3Hunter](https://github.com/D3Hunter)
+        - 修复更新 meta 表遇到 Lock wait timeout 未重试的问题 [#53042](https://github.com/pingcap/tidb/issues/53042) @[guoshouyan](https://github.com/guoshouyan)
+        - 修复高并发场景下 IO workers 会导致性能下降的问题 [#57413](https://github.com/pingcap/tidb/issues/57413) @[xuanyu66](https://github.com/xuanyu66)
+        - 修复导入大量 parquet 文件时会在导入开始前卡主很长时间的问题 [#56104](https://github.com/pingcap/tidb/issues/56104) @[zeminzhou](https://github.com/zeminzhou)
+        - 修复 error summary 输出被截断的问题 [#58085](https://github.com/pingcap/tidb/issues/58085) @[lance6716](https://github.com/lance6716)
 
     + TiDB Binlog
 
