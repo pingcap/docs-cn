@@ -117,6 +117,13 @@ TiDB 版本：7.5.5
     - (dup): release-7.1.6.md > 错误修复> TiDB - 修复执行 `RECOVER TABLE BY JOB JOB_ID;` 可能导致 panic 的问题 [#55113](https://github.com/pingcap/tidb/issues/55113) @[crazycs520](https://github.com/crazycs520)
     - (dup): release-7.1.6.md > 错误修复> TiDB - 修复当一个查询有索引合并 (Index Merge) 执行计划可用时，`read_from_storage` hint 可能不生效的问题 [#56217](https://github.com/pingcap/tidb/issues/56217) @[AilinKid](https://github.com/AilinKid)
     - (dup): release-8.5.0.md > 错误修复> TiDB - 修复 `INDEX_HASH_JOIN` 在异常退出时可能卡住的问题 [#54055](https://github.com/pingcap/tidb/issues/54055) @[wshwsh12](https://github.com/wshwsh12)
+    - 修复 DXF 相关系统表查询可能导致升级异常的问题 [#49263](https://github.com/pingcap/tidb/issues/49263) @[D3Hunter](https://github.com/D3Hunter)
+    - 修复 DDL 内部事务因 "GC life time is shorter than transaction duration" 导致添加索引失败的问题 [#57043](https://github.com/pingcap/tidb/issues/57043) @[tangenta](https://github.com/tangenta)
+    - 修复当 exchange partition 遇到不合法的行时导致 info schema 全量加载的问题 [#56685](https://github.com/pingcap/tidb/issues/56685) @[D3Hunter](https://github.com/D3Hunter)
+    - 修复当 tidb_ddl_enable_fast_reorg 以及 new collation 开启时，未正确处理 collation 导致数据索引不一致的问题 [#58036](https://github.com/pingcap/tidb/issues/58036) @[djshow832](https://github.com/djshow832)
+    - 修复添加索引期间 plan cache 使用了错误的 schema 导致数据索引不一致的问题 [#56733](https://github.com/pingcap/tidb/issues/56733) @[wjhuang2016](https://github.com/wjhuang2016)
+    - 修复在升级期间执行 alter table tiflash replica 导致 TiDB 节点挂掉的问题 [#57863](https://github.com/pingcap/tidb/issues/57863) @[tangenta](https://github.com/tangenta)
+    - 修复 INFORMATION_SCHEMA.columns 查询性能回退的问题 [#58184](https://github.com/pingcap/tidb/issues/58184) @[lance6716](https://github.com/lance6716)
 
 + TiKV
 
