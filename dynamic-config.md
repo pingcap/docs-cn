@@ -218,6 +218,7 @@ show warnings;
 | server.concurrent-recv-snap-limit | 同时接受 snapshot 的最大个数 |
 | storage.block-cache.capacity | 共享 block cache 的大小（自 v4.0.3 起支持） |
 | storage.scheduler-worker-pool-size | Scheduler 线程池中线程的数量 |
+| import.num-threads | 处理 RPC 请求的线程数量（自 v8.1.2 起支持） |
 | backup.num-threads | backup 线程的数量（自 v4.0.3 起支持） |
 | split.qps-threshold | 对 Region 执行 load-base-split 的阈值。如果连续 10s 内，某个 Region 的读请求的 QPS 超过 qps-threshold，则尝试切分该 Region |
 | split.byte-threshold | 对 Region 执行 load-base-split 的阈值。如果连续 10s 内，某个 Region 的读请求的流量超过 byte-threshold，则尝试切分该 Region |
