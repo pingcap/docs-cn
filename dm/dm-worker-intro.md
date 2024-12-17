@@ -77,6 +77,8 @@ GRANT SELECT ON db1.* TO 'your_user'@'your_wildcard_of_host';
 | `DROP` | Databases，tables |
 | `ALTER` | Tables |
 | `INDEX` | Tables |
+| `ALL` | dm_meta |
+| `ALL` | lightning_task_info |
 
 对要执行迁移操作的数据库或表执行下面的 `GRANT` 语句：
 
@@ -85,6 +87,7 @@ GRANT SELECT ON db1.* TO 'your_user'@'your_wildcard_of_host';
 ```sql
 GRANT SELECT,INSERT,UPDATE,DELETE,CREATE,DROP,ALTER,INDEX  ON db.table TO 'your_user'@'your_wildcard_of_host';
 GRANT ALL ON dm_meta.* TO 'your_user'@'your_wildcard_of_host';
+GRANT ALL ON lightning_task_info.* TO 'your_user'@'your_wildcard_of_host';
 ```
 
 ### 处理单元所需的最小权限
