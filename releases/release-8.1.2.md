@@ -30,6 +30,7 @@ TiDB 版本：8.1.2
     - (dup): release-8.4.0.md > 改进提升> TiKV - 优化空表和小 Region 场景下 Region Merge 的速度 [#17376](https://github.com/tikv/tikv/issues/17376) @[LykxSassinator](https://github.com/LykxSassinator)
     - (dup): release-7.5.4.md > 改进提升> TiKV - 优化 TiKV 的 `DiskFull` 检测使之与 RaftEngine 的配置项 `spill-dir` 兼容，确保该特性能够稳定运行 [#17356](https://github.com/tikv/tikv/issues/17356) @[LykxSassinator](https://github.com/LykxSassinator)
     - (dup): release-7.5.4.md > 改进提升> TiKV - 优化存在大量 DELETE 版本时 RocksDB 的 compaction 触发机制，以加快磁盘空间回收 [#17269](https://github.com/tikv/tikv/issues/17269) @[AndreMouche](https://github.com/AndreMouche)
+    - 新增对配置项 `import.num-threads` 的在线修改支持 [#17807](https://github.com/tikv/tikv/issues/17807) @[RidRisR](https://github.com/RidRisR)
 
 + PD
 
@@ -173,6 +174,8 @@ TiDB 版本：8.1.2
         - note [#issue](https://github.com/pingcap/tidb/issues/${issue-id}) @[贡献者 GitHub ID](https://github.com/${github-id})
         - note [#issue](https://github.com/pingcap/tidb/issues/${issue-id}) @[贡献者 GitHub ID](https://github.com/${github-id})
         - (dup): release-8.5.0.md > 错误修复> Tools> Backup & Restore (BR) - 修复日志可能打印加密信息的问题 [#57585](https://github.com/pingcap/tidb/issues/57585) @[kennytm](https://github.com/kennytm)
+        - 修复了在 EBS 快照备份准备阶段失败导致备份卡住的问题。[#52049](https://github.com/pingcap/tidb/issues/52049 ) @[YuJuncen](https://github.com/YuJuncen)
+        - 修复了在 FineGrained 阶段的备份中因为 BR 永久连不上 TiKV 的无限重试问题。 [#57449](https://github.com/pingcap/tidb/issues/57449) @[RidRisR](https://github.com/RidRisR)
         - (dup): release-7.5.4.md > 错误修复> Tools> Backup & Restore (BR) - 修复备份恢复的断点路径在一些外部存储中不兼容的问题 [#55265](https://github.com/pingcap/tidb/issues/55265) @[Leavrth](https://github.com/Leavrth)
         - (dup): release-8.5.0.md > 错误修复> Tools> Backup & Restore (BR) - 升级 `k8s.io/api` 库的版本以修复潜在的安全漏洞 [#57790](https://github.com/pingcap/tidb/issues/57790) @[BornChanger](https://github.com/BornChanger)
         - (dup): release-8.5.0.md > 错误修复> Tools> Backup & Restore (BR) - 修复当集群存在大量表但实际数据量较小时，PITR 数据恢复任务可能出现 `Information schema is out of date` 报错的问题 [#57743](https://github.com/pingcap/tidb/issues/57743) @[Tristan1900](https://github.com/Tristan1900)
