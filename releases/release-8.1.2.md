@@ -120,6 +120,8 @@ TiDB 版本：8.1.2
     - (dup): release-7.1.6.md > 错误修复> TiDB - 修复当 `UPDATE` 或 `DELETE` 语句包含递归的 CTE 时，语句可能报错或不生效的问题 [#55666](https://github.com/pingcap/tidb/issues/55666) @[time-and-fate](https://github.com/time-and-fate)
     - (dup): release-7.5.4.md > 错误修复> TiDB - 修复 `INFORMATION_SCHEMA.STATISTICS` 表中 `SUB_PART` 值为空的问题 [#55812](https://github.com/pingcap/tidb/issues/55812) @[Defined2014](https://github.com/Defined2014)
     - 修复查询 TiFlash 系统表中默认超时时间过短的问题 [#57816](https://github.com/pingcap/tidb/issues/57816) @[JaySon-Huang](https://github.com/JaySon-Huang)
+    - 修复 `default_collation_for_utf8mb4` 变量的值没有对 `SET NAMES` 语法生效的问题 [#56439](https://github.com/pingcap/tidb/issues/56439) @[Defined2014](https://github.com/Defined2014)
+    - 修复手动删除 `mysql`.`timer` 表中的定时器时，TTL 内部协程可能 panic 的问题 [#57112](https://github.com/pingcap/tidb/issues/57112) @[lcwangchao](https://github.com/lcwangchao)
 
 + TiKV
 
