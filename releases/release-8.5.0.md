@@ -27,7 +27,7 @@ TiDB 8.5.0 为长期支持版本 (Long-Term Support Release, LTS)。
 </thead>
 <tbody>
   <tr>
-    <td rowspan="6">可扩展性与性能</td>
+    <td rowspan="7">可扩展性与性能</td>
     <td>多维度降低数据处理延迟</td>
     <td>TiDB 不断优化数据处理细节，持续提升性能，以更好地满足金融领域对 SQL 处理低延迟的高要求。关键更新包括：
     <li><a href="https://docs.pingcap.com/zh/tidb/v8.5/system-variables#tidb_executor_concurrency-从-v50-版本开始引入">并行排序</a>（从 v8.2.0 开始引入）</li>
@@ -37,6 +37,10 @@ TiDB 8.5.0 为长期支持版本 (Long-Term Support Release, LTS)。
     <li>优化<a href="https://docs.pingcap.com/zh/tidb/v8.5/cached-tables#缓存表">缓存表</a>场景性能（从 v8.4.0 开始引入）</li>
     <li><a href="https://docs.pingcap.com/zh/tidb/v8.5/system-variables#tidb_hash_join_version-从-v840-版本开始引入">Hash Join 算法优化</a>（实验特性，从 v8.4.0 开始引入）</li>
     </td>
+  </tr>
+  <tr>
+    <td><a href="https://docs.pingcap.com/zh/tidb/v8.5/tikv-in-memory-engine">TiKV MVCC 内存引擎</a> （从 v8.5.0 开始引入）</td>
+    <td> MVCC 内存引擎 (In-memory Engine, IME) 将最新版本的数据缓存于内存中，协助 TiKV 快速略过旧版本，检索到最新的数据。在数据记录被频繁更新的场景下，有效提升数据扫描性能。</td>
   </tr>
   <tr>
     <td><a href="https://docs.pingcap.com/zh/tidb/v8.5/tune-region-performance#通过-active-pd-follower-提升-pd-region-信息查询服务的扩展能力">通过 Active PD Follower 提升 PD Region 信息查询服务的扩展能力</a>（从 v8.5.0 开始成为正式功能）</td>
