@@ -122,6 +122,8 @@ TiDB 版本：8.1.2
     - 修复查询 TiFlash 系统表中默认超时时间过短的问题 [#57816](https://github.com/pingcap/tidb/issues/57816) @[JaySon-Huang](https://github.com/JaySon-Huang)
     - 修复 `default_collation_for_utf8mb4` 变量的值没有对 `SET NAMES` 语法生效的问题 [#56439](https://github.com/pingcap/tidb/issues/56439) @[Defined2014](https://github.com/Defined2014)
     - 修复手动删除 `mysql`.`timer` 表中的定时器时，TTL 内部协程可能 panic 的问题 [#57112](https://github.com/pingcap/tidb/issues/57112) @[lcwangchao](https://github.com/lcwangchao)
+    - 修复 fast reorg 快速加索引可能导致 duplicate entry 错误的问题 [#49233](https://github.com/pingcap/tidb/issues/49233) @[lance6716](https://github.com/lance6716)
+    - 修复大表非分布式加索引导致索引时间戳为 0 的问题 [#57980](https://github.com/pingcap/tidb/issues/57980) @[lance6716](https://github.com/lance6716)
 
 + TiKV
 
