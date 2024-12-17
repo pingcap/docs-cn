@@ -127,6 +127,13 @@ TiDB 版本：7.5.5
     - 修复在升级期间执行 alter table tiflash replica 导致 TiDB 节点挂掉的问题 [#57863](https://github.com/pingcap/tidb/issues/57863) @[tangenta](https://github.com/tangenta)
     - 修复 INFORMATION_SCHEMA.columns 查询性能回退的问题 [#58184](https://github.com/pingcap/tidb/issues/58184) @[lance6716](https://github.com/lance6716)
     - 修复查询 TiFlash 系统表中默认超时时间过短的问题 [#57816](https://github.com/pingcap/tidb/issues/57816) @[JaySon-Huang](https://github.com/JaySon-Huang)
+    - 修复 `default_collation_for_utf8mb4` 变量的值没有对 `SET NAMES` 语法生效的问题 [#56439](https://github.com/pingcap/tidb/issues/56439) @[Defined2014](https://github.com/Defined2014)
+    - 修复手动删除 `mysql`.`timer` 表中的定时器时，TTL 内部协程可能 panic 的问题 [#57112](https://github.com/pingcap/tidb/issues/57112) @[lcwangchao](https://github.com/lcwangchao)
+    - 修复在一些情况下，使用 `ALTER TABLE` 语法将普通表转换为分区表时，因为检查不充分导致数据出现错误的问题 [#55721](https://github.com/pingcap/tidb/issues/55721) @[mjonss](https://github.com/mjonss)
+    - 修复 tidb_gogc_tuner_max_value/tidb_gogc_tuner_min_value 因为空的 max value 导致错误的 warning 信息 [#57889](https://github.com/pingcap/tidb/issues/57889) @[hawkingrei](https://github.com/hawkingrei)
+    - 修复一些情况下，TiDB 内部协程会出现 Data Race 错误的问题 [#57798](https://github.com/pingcap/tidb/issues/57798) [#56053](https://github.com/pingcap/tidb/issues/56053) @[fishiu](https://github.com/fishiu) @[tiancaiamao](https://github.com/tiancaiamao)
+    - 更新 golang-jwt/jwt 来规避潜在的安全风险 [#57135](https://github.com/pingcap/tidb/issues/57135) @[hawkingrei](https://github.com/hawkingrei)
+    - 修复在一些情况下，使用 `ALTER TABLE` 语法将聚簇索引表转换为分区表时，并发写入会造成重复数据的问题 [#57510](https://github.com/pingcap/tidb/issues/57510) @[mjonss](https://github.com/mjonss)
 
 + TiKV
 
