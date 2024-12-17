@@ -57,7 +57,7 @@ summary: 了解如何使用 TiCDC 构建主备集群进行容灾。
 
 关于服务器配置信息，可以参考如下文档：
 
-- [TiDB 软件和硬件环境建议配置](/hardware-and-software-requirements.md)
+- [TiDB 软件和硬件环境需求](/hardware-and-software-requirements.md)
 - [TiCDC 软件和硬件环境推荐配置](/ticdc/deploy-ticdc.md#软件和硬件环境推荐配置)
 
 部署 TiDB 主集群和备用集群的详细过程，可以参考[部署 TiDB 集群](/production-deployment-using-tiup.md)。
