@@ -5,15 +5,20 @@ summary: 了解如何使用 TiUP 部署 TiDB 集群。
 
 # 使用 TiUP 部署 TiDB 集群
 
-[TiUP](https://github.com/pingcap/tiup) 是 TiDB 4.0 版本引入的集群运维工具，[TiUP cluster](https://github.com/pingcap/tiup/tree/master/components/cluster) 是 TiUP 提供的使用 Golang 编写的集群管理组件，通过 TiUP cluster 组件就可以进行日常的运维工作，包括部署、启动、关闭、销毁、弹性扩缩容、升级 TiDB 集群，以及管理 TiDB 集群参数。
+本指南介绍如何在生产环境中使用 [TiUP](https://github.com/pingcap/tiup) 部署 TiDB 集群。
 
-目前 TiUP 可以支持部署 TiDB、TiFlash、TiCDC 以及监控系统。本文将介绍不同集群拓扑的具体部署步骤。
+TiUP 是在 TiDB v4.0 中引入的集群运维工具，提供了使用 Golang 编写的集群管理组件 [TiUP cluster](https://github.com/pingcap/tiup/tree/master/components/cluster)。通过使用 TiUP cluster 组件，你可以轻松执行日常的数据库运维操作，包括部署、启动、关闭、销毁、弹性扩缩容、升级 TiDB 集群，以及管理 TiDB 集群参数。
+
+TiUP 还支持部署 TiDB、TiFlash、TiCDC 以及监控系统。本指南介绍了如何部署不同拓扑的 TiDB 集群。
 
 ## 第 1 步：软硬件环境需求及前置检查
 
-[软硬件环境需求](/hardware-and-software-requirements.md)
+务必阅读以下文档：
 
-[环境与系统配置检查](/check-before-deployment.md)
+- [软硬件环境需求](/hardware-and-software-requirements.md)
+- [环境与系统配置检查](/check-before-deployment.md)
+
+此外，建议阅读了解 [TiDB 安全配置最佳实践](/best-practices-for-security-configuration.md)。
 
 ## 第 2 步：在中控机上部署 TiUP 组件
 
@@ -441,3 +446,5 @@ tiup cluster display tidb-test
 - [管理 Changefeed](/ticdc/ticdc-manage-changefeed.md)
 - [TiCDC 故障处理](/ticdc/troubleshoot-ticdc.md)
 - [TiCDC 常见问题](/ticdc/ticdc-faq.md)
+
+如果你想在不中断线上服务的情况下扩容或缩容 TiDB 集群，请参阅[使用 TiUP 扩容缩容 TiDB 集群](/scale-tidb-using-tiup.md)。
