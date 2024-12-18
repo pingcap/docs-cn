@@ -40,7 +40,7 @@ TiDB 8.5.0 为长期支持版本 (Long-Term Support Release, LTS)。
   </tr>
   <tr>
     <td><a href="https://docs.pingcap.com/zh/tidb/v8.5/tikv-in-memory-engine">TiKV MVCC 内存引擎</a> （从 v8.5.0 开始引入）</td>
-    <td> TiKV MVCC 内存引擎 (In-memory Engine, IME) 将最新版本的数据缓存到内存中，帮助 TiKV 快速跳过旧版本，直接检索最新数据。在数据记录频繁更新或历史版本保留时间较长的场景下，该特性能显著提升数据扫描性能。</td>
+    <td> TiKV MVCC 内存引擎 (In-Memory Engine, IME) 将最新版本的数据缓存到内存中，帮助 TiKV 快速跳过旧版本，直接检索最新数据。在数据记录频繁更新或历史版本保留时间较长的场景下，该特性可以显著提升数据扫描性能。</td>
   </tr>
   <tr>
     <td><a href="https://docs.pingcap.com/zh/tidb/v8.5/tune-region-performance#通过-active-pd-follower-提升-pd-region-信息查询服务的扩展能力">通过 Active PD Follower 提升 PD Region 信息查询服务的扩展能力</a>（从 v8.5.0 开始成为正式功能）</td>
