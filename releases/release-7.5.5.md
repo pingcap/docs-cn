@@ -192,7 +192,8 @@ TiDB 版本：7.5.5
 
     + TiCDC
 
-        - note [#issue](https://github.com/pingcap/tiflow/issues/${issue-id}) @[贡献者 GitHub ID](https://github.com/${github-id})
+        - 修复遇到 truncate table 并且该表不具有有效索引时可能会发生错误的问题 [#11765](https://github.com/pingcap/tiflow/issues/11765) @[asddongmen](https://github.com/asddongmen)
+        - 修复 simple protocol 消息中分区表的 tableID 没有被正确设置的问题 [#11846]([https://github.com/pingcap/tiflow/issues/11846] @[3AceShowHand]([https://github.com/3AceShowHand]
         - note [#issue](https://github.com/pingcap/tiflow/issues/${issue-id}) @[贡献者 GitHub ID](https://github.com/${github-id})
         - (dup): release-8.5.0.md > 错误修复> Tools> TiCDC - 修复 redo 模块无法正确上报错误的问题 [#11744](https://github.com/pingcap/tiflow/issues/11744) @[CharlesCheung96](https://github.com/CharlesCheung96)
         - (dup): release-6.5.8.md > 错误修复> Tools> TiCDC - 修复在 `ignore-event` 中设置了过滤掉 `add table partition` 事件后，TiCDC 未将相关分区的其它类型 DML 变更事件同步到下游的问题 [#10524](https://github.com/pingcap/tiflow/issues/10524) @[CharlesCheung96](https://github.com/CharlesCheung96)
