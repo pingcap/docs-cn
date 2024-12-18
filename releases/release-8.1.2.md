@@ -23,7 +23,7 @@ TiDB 版本：8.1.2
     - note [#issue](https://github.com/pingcap/tidb/issues/${issue-id}) @[贡献者 GitHub ID](https://github.com/${github-id})
     - (dup): release-8.3.0.md > # 可观测性 * 添加 Request Unit (RU) 配置监控指标 [#8444](https://github.com/tikv/pd/issues/8444) @[nolouch](https://github.com/nolouch)
 
-+ TiKV
++ TiKV <!--tw@qiancai: 2 notes-->
 
     - note [#issue](https://github.com/tikv/tikv/issues/${issue-id}) @[贡献者 GitHub ID](https://github.com/${github-id})
     - note [#issue](https://github.com/tikv/tikv/issues/${issue-id}) @[贡献者 GitHub ID](https://github.com/${github-id})
@@ -38,7 +38,7 @@ TiDB 版本：8.1.2
     - note [#issue](https://github.com/tikv/pd/issues/${issue-id}) @[贡献者 GitHub ID](https://github.com/${github-id})
     - note [#issue](https://github.com/tikv/pd/issues/${issue-id}) @[贡献者 GitHub ID](https://github.com/${github-id})
 
-+ TiFlash
++ TiFlash <!--tw@qiancai: 1 note-->
 
     - note [#issue](https://github.com/pingcap/tiflash/issues/${issue-id}) @[贡献者 GitHub ID](https://github.com/${github-id})
     - note [#issue](https://github.com/pingcap/tiflash/issues/${issue-id}) @[贡献者 GitHub ID](https://github.com/${github-id})
@@ -57,7 +57,7 @@ TiDB 版本：8.1.2
         - note [#issue](https://github.com/pingcap/tidb/issues/${issue-id}) @[贡献者 GitHub ID](https://github.com/${github-id})
         - (dup): release-7.1.6.md > 改进提升> Tools> Backup & Restore (BR) - 减少备份过程中无效日志的打印 [#55902](https://github.com/pingcap/tidb/issues/55902) @[Leavrth](https://github.com/Leavrth)
 
-    + TiCDC
+    + TiCDC <!--tw@lilin90: 1 note-->
 
         - note [#issue](https://github.com/pingcap/tiflow/issues/${issue-id}) @[贡献者 GitHub ID](https://github.com/${github-id})
         - TiCDC 支持用户授予 SUPER 权限后查询异步执行的 DDL 任务状态，避免因在同一张表上重复执行 DDL 任务而导致执行错误 [#11521](https://github.com/pingcap/tiflow/issues/11521) @[CharlesCheung96](https://github.com/CharlesCheung96)
@@ -85,7 +85,7 @@ TiDB 版本：8.1.2
 
 ## 错误修复
 
-+ TiDB
++ TiDB <!--tw@lilin90: 5 notes-->
 
     - note [#issue](https://github.com/pingcap/tidb/issues/${issue-id}) @[贡献者 GitHub ID](https://github.com/${github-id})
     - note [#issue](https://github.com/pingcap/tidb/issues/${issue-id}) @[贡献者 GitHub ID](https://github.com/${github-id})
@@ -125,7 +125,7 @@ TiDB 版本：8.1.2
     - 修复 fast reorg 快速加索引可能导致 duplicate entry 错误的问题 [#49233](https://github.com/pingcap/tidb/issues/49233) @[lance6716](https://github.com/lance6716)
     - 修复大表非分布式加索引导致索引时间戳为 0 的问题 [#57980](https://github.com/pingcap/tidb/issues/57980) @[lance6716](https://github.com/lance6716)
 
-+ TiKV
++ TiKV <!--tw@hfxsd: 5 notes-->
 
     - 修复了配置 `resolved-ts.advance-ts-interval` 无法生效，导致在 TiKV 重启时，CDC 和 PiTR 的同步延迟大幅上升的问题 [#17107](https://github.com/tikv/tikv/issues/17107) @[MyonKeminta](https://github.com/MyonKeminta)
     - 修复了在触发资源管控时，部分任务等待时间的问题 [#17589](https://github.com/tikv/tikv/issues/17589) @[glorv](https://github.com/glorv)
@@ -139,7 +139,7 @@ TiDB 版本：8.1.2
     - (dup): release-7.1.6.md > 错误修复> TiKV - 修复读线程在从 Raft Engine 中的 MemTable 读取过时索引时出现的 panic 问题 [#17383](https://github.com/tikv/tikv/issues/17383) @[LykxSassinator](https://github.com/LykxSassinator)
     - (dup): release-7.5.4.md > 错误修复> TiKV - 修复删除大表或分区后可能导致的流量控制问题 [#17304](https://github.com/tikv/tikv/issues/17304) @[Connor1996](https://github.com/Connor1996)
 
-+ PD
++ PD <!--tw@Oreoxmt: 3 notes-->
 
     - 修复 PD HTTP client 重试逻辑可能无效的问题 [#8499](https://github.com/tikv/pd/issues/8499) @[JmPotato](https://github.com/JmPotato)
     - 升级 Gin 版本修复潜在的框架安全问题 [#8643](https://github.com/tikv/pd/issues/8643) @[JmPotato](https://github.com/JmPotato)
@@ -156,7 +156,7 @@ TiDB 版本：8.1.2
     - (dup): release-7.5.4.md > 错误修复> PD - 修复在 `evict-leader-scheduler` 中使用了错误的参数后，PD 不能正确报错且导致部分 scheduler 不可用的问题 [#8619](https://github.com/tikv/pd/issues/8619) @[rleungx](https://github.com/rleungx)
     - (dup): release-8.5.0.md > 错误修复> PD - 修复资源组 (Resource Group) 选择器对所有面板都未生效的问题 [#56572](https://github.com/pingcap/tidb/issues/56572) @[glorv](https://github.com/glorv)
 
-+ TiFlash
++ TiFlash <!--tw@hfxsd: 1 note-->
 
     - note [#issue](https://github.com/pingcap/tiflash/issues/${issue-id}) @[贡献者 GitHub ID](https://github.com/${github-id})
     - note [#issue](https://github.com/pingcap/tiflash/issues/${issue-id}) @[贡献者 GitHub ID](https://github.com/${github-id})
@@ -174,7 +174,7 @@ TiDB 版本：8.1.2
 
 + Tools
 
-    + Backup & Restore (BR)
+    + Backup & Restore (BR) <!--tw@qiancai: 2 notes-->
 
         - note [#issue](https://github.com/pingcap/tidb/issues/${issue-id}) @[贡献者 GitHub ID](https://github.com/${github-id})
         - note [#issue](https://github.com/pingcap/tidb/issues/${issue-id}) @[贡献者 GitHub ID](https://github.com/${github-id})
@@ -185,7 +185,7 @@ TiDB 版本：8.1.2
         - (dup): release-8.5.0.md > 错误修复> Tools> Backup & Restore (BR) - 升级 `k8s.io/api` 库的版本以修复潜在的安全漏洞 [#57790](https://github.com/pingcap/tidb/issues/57790) @[BornChanger](https://github.com/BornChanger)
         - (dup): release-8.5.0.md > 错误修复> Tools> Backup & Restore (BR) - 修复当集群存在大量表但实际数据量较小时，PITR 数据恢复任务可能出现 `Information schema is out of date` 报错的问题 [#57743](https://github.com/pingcap/tidb/issues/57743) @[Tristan1900](https://github.com/Tristan1900)
 
-    + TiCDC
+    + TiCDC <!--tw@Oreoxmt: 2 notes-->
 
         - note [#issue](https://github.com/pingcap/tiflow/issues/${issue-id}) @[贡献者 GitHub ID](https://github.com/${github-id})
         - 修复 Puller 模块 Resolved Ts 延迟监控显示不正确的问题 [#11561](https://github.com/pingcap/tiflow/issues/11561) @[wlwilliamx](https://github.com/wlwilliamx)
