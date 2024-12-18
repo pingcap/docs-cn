@@ -60,7 +60,7 @@ TiDB 版本：8.1.2
     + TiCDC <!--tw@lilin90: 1 note-->
 
         - note [#issue](https://github.com/pingcap/tiflow/issues/${issue-id}) @[贡献者 GitHub ID](https://github.com/${github-id})
-        - TiCDC 支持用户授予 `SUPER` 权限后查询异步执行的 DDL 任务状态，避免因在同一张表上重复执行 DDL 任务而导致执行错误 [#11521](https://github.com/pingcap/tiflow/issues/11521) @[CharlesCheung96](https://github.com/CharlesCheung96)
+        - 在给 TiCDC 授予 `SUPER` 权限后，TiCDC 支持查询异步执行的 DDL 任务状态，避免因在同一张表上重复执行 DDL 任务而导致执行错误 [#11521](https://github.com/pingcap/tiflow/issues/11521) @[CharlesCheung96](https://github.com/CharlesCheung96)
         - (dup): release-7.5.4.md > 改进提升> Tools> TiCDC - 当下游为 TiDB 且授予 `SUPER` 权限时，TiCDC 支持从下游数据库查询 `ADD INDEX DDL` 的执行状态，以避免某些情况下因重试执行 DDL 语句超时而导致数据同步失败 [#10682](https://github.com/pingcap/tiflow/issues/10682) @[CharlesCheung96](https://github.com/CharlesCheung96)
 
     + TiDB Data Migration (DM)
@@ -119,19 +119,19 @@ TiDB 版本：8.1.2
     - (dup): release-8.5.0.md > 错误修复> TiDB - 修复关闭 `tidb_ttl_job_enable` 变量后 TTL 任务未被取消的问题 [#57404](https://github.com/pingcap/tidb/issues/57404) @[YangKeao](https://github.com/YangKeao)
     - (dup): release-7.1.6.md > 错误修复> TiDB - 修复当 `UPDATE` 或 `DELETE` 语句包含递归的 CTE 时，语句可能报错或不生效的问题 [#55666](https://github.com/pingcap/tidb/issues/55666) @[time-and-fate](https://github.com/time-and-fate)
     - (dup): release-7.5.4.md > 错误修复> TiDB - 修复 `INFORMATION_SCHEMA.STATISTICS` 表中 `SUB_PART` 值为空的问题 [#55812](https://github.com/pingcap/tidb/issues/55812) @[Defined2014](https://github.com/Defined2014)
-    - 修复查询 TiFlash 系统表中默认超时时间过短的问题 [#57816](https://github.com/pingcap/tidb/issues/57816) @[JaySon-Huang](https://github.com/JaySon-Huang)
+    - 修复查询 TiFlash 系统表的默认超时时间过短的问题 [#57816](https://github.com/pingcap/tidb/issues/57816) @[JaySon-Huang](https://github.com/JaySon-Huang)
     - 修复 `default_collation_for_utf8mb4` 变量的值对 `SET NAMES` 语句不生效的问题 [#56439](https://github.com/pingcap/tidb/issues/56439) @[Defined2014](https://github.com/Defined2014)
     - 修复手动删除 `mysql.tidb_timer` 表中的定时器时，TTL 内部协程可能 panic 的问题 [#57112](https://github.com/pingcap/tidb/issues/57112) @[lcwangchao](https://github.com/lcwangchao)
-    - 修复启用 `tidb_ddl_enable_fast_reorg` 添加索引加速功能引可能导致 duplicate entry 错误的问题 [#49233](https://github.com/pingcap/tidb/issues/49233) @[lance6716](https://github.com/lance6716)
+    - 修复通过 `tidb_ddl_enable_fast_reorg` 开启添加索引加速功能引可能导致 `Duplicate entry` 报错的问题 [#49233](https://github.com/pingcap/tidb/issues/49233) @[lance6716](https://github.com/lance6716)
     - 修复大表非分布式加索引导致索引时间戳为 `0` 的问题 [#57980](https://github.com/pingcap/tidb/issues/57980) @[lance6716](https://github.com/lance6716)
 
 + TiKV <!--tw@hfxsd: 5 notes-->
 
-    - 修复配置 `resolved-ts.advance-ts-interval` 无法生效，导致在 TiKV 重启时，TiCDC 和 Point-in-time recovery (PITR) 的同步延迟大幅上升的问题 [#17107](https://github.com/tikv/tikv/issues/17107) @[MyonKeminta](https://github.com/MyonKeminta)
+    - 修复 `resolved-ts.advance-ts-interval` 配置未生效导致 TiKV 重启时，TiCDC 和 Point-in-time recovery (PITR) 的同步延迟大幅上升的问题 [#17107](https://github.com/tikv/tikv/issues/17107) @[MyonKeminta](https://github.com/MyonKeminta)
     - 修复在触发资源管控时，部分任务等待时间过长的问题 [#17589](https://github.com/tikv/tikv/issues/17589) @[glorv](https://github.com/glorv)
     - 修复 Region 合并后，有极小概率导致 TiKV panic 的问题 [#17840](https://github.com/tikv/tikv/issues/17840) @[glorv](https://github.com/glorv)
     - 修复磁盘卡住时，TiKV 无法向 PD 上报心跳的问题 [#17939](https://github.com/tikv/tikv/issues/17939) @[LykxSassinator](https://github.com/LykxSassinator)
-    - 修复当 Raft 和 Rocksdb 部署在不同磁盘时，慢磁盘检测无法对 Rocksdb 所在磁盘生效的问题 [#17884](https://github.com/tikv/tikv/issues/17884) @[LykxSassinator](https://github.com/LykxSassinator)
+    - 修复当 Raft 和 RocksDB 部署在不同磁盘时，慢磁盘检测对 RocksDB 所在磁盘不生效的问题 [#17884](https://github.com/tikv/tikv/issues/17884) @[LykxSassinator](https://github.com/LykxSassinator)
     - (dup): release-7.5.4.md > 错误修复> TiKV - 修复过期副本处理 Raft 快照时，由于分裂操作过慢并且随后立即删除新副本，可能导致 TiKV panic 的问题 [#17469](https://github.com/tikv/tikv/issues/17469) @[hbisheng](https://github.com/hbisheng)
     - (dup): release-8.5.0.md > 错误修复> TiKV - 修复使用 `RADIANS()` 或 `DEGREES()` 函数时可能导致 TiKV panic 的问题 [#17852](https://github.com/tikv/tikv/issues/17852) @[gengliqi](https://github.com/gengliqi)
     - (dup): release-7.5.4.md > 错误修复> TiKV - 修复当大量事务在排队等待同一个 key 上的锁被释放且该 key 被频繁更新时，TiKV 可能因死锁检测压力过大而出现 OOM 的问题 [#17394](https://github.com/tikv/tikv/issues/17394) @[MyonKeminta](https://github.com/MyonKeminta)
