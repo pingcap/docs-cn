@@ -512,6 +512,12 @@ TiDB 是一个分布式系统。最基础的 TiDB 测试集群通常由 2 个 Ti
 - [使用 TiUP 部署 TiDB 集群](/production-deployment-using-tiup.md)
 - [使用 TiDB Operator 在 Kubernetes 上部署 TiDB 集群](https://docs.pingcap.com/zh/tidb-in-kubernetes/stable)
 
+如果你是应用开发者，想要快速使用 TiDB 构建应用，可参阅以下文档：
+
+- [开发者手册概览](/develop/dev-guide-overview.md)
+- [使用 TiDB Cloud Serverless 构建 TiDB 集群](/develop/dev-guide-build-cluster-in-cloud.md)
+- [示例程序](/develop/dev-guide-sample-application-java-jdbc.md)
+
 如果你想使用 TiFlash 作为数据分析的解决方案，可参阅以下文档：
 
 - [使用 TiFlash](/tiflash/tiflash-overview.md#使用-tiflash)
