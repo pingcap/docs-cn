@@ -179,7 +179,7 @@ TiDB 版本：8.1.2
         - note [#issue](https://github.com/pingcap/tidb/issues/${issue-id}) @[贡献者 GitHub ID](https://github.com/${github-id})
         - note [#issue](https://github.com/pingcap/tidb/issues/${issue-id}) @[贡献者 GitHub ID](https://github.com/${github-id})
         - (dup): release-8.5.0.md > 错误修复> Tools> Backup & Restore (BR) - 修复日志可能打印加密信息的问题 [#57585](https://github.com/pingcap/tidb/issues/57585) @[kennytm](https://github.com/kennytm)
-        - 修复基于 AWS EBS 的快照备份在准备阶段失败导致备份卡住的问题 [#52049](https://github.com/pingcap/tidb/issues/52049 ) @[YuJuncen](https://github.com/YuJuncen)
+        - 修复基于 AWS EBS 的快照备份在准备阶段可能失败导致备份卡住的问题 [#52049](https://github.com/pingcap/tidb/issues/52049 ) @[YuJuncen](https://github.com/YuJuncen)
         - 修复了 BR 在快照备份的 Fine Grained 阶段如果一直连接不上 TiKV 会出现无限重试的问题 [#57449](https://github.com/pingcap/tidb/issues/57449) @[RidRisR](https://github.com/RidRisR)
         - (dup): release-7.5.4.md > 错误修复> Tools> Backup & Restore (BR) - 修复备份恢复的断点路径在一些外部存储中不兼容的问题 [#55265](https://github.com/pingcap/tidb/issues/55265) @[Leavrth](https://github.com/Leavrth)
         - (dup): release-8.5.0.md > 错误修复> Tools> Backup & Restore (BR) - 升级 `k8s.io/api` 库的版本以修复潜在的安全漏洞 [#57790](https://github.com/pingcap/tidb/issues/57790) @[BornChanger](https://github.com/BornChanger)
