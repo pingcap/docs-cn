@@ -138,8 +138,8 @@ TiDB 版本：7.5.5
 
     - (dup): release-8.1.2.md > 错误修复> TiKV - 修复 TiKV 处理 destroyed peer 时可能遇到的 panic 的问题 [#17840](https://github.com/tikv/tikv/issues/17840) @[glorv](https://github.com/glorv))
     - (dup): release-8.1.2.md > 错误修复> TiKV - 提升在 raft log 部署在独立磁盘情况下，磁盘出现故障时 TiKV 服务的 SLA [#17884](https://github.com/tikv/tikv/issues/17884) @[LykxSassinator](https://github.com/LykxSassinator)
-    - 纠正当 log-file 参数没有指定的时候 jprof 的输出内容 [#17607](https://github.com/tikv/tikv/issues/17607) @[Hexilee](https://github.com/Hexilee)
-    - 修复在唤醒休眠 region 时可能出现的延迟上升的问题 [#17101](https://github.com/tikv/tikv/issues/17101) @[Connor1996](https://github.com/Connor1996)
+    - 修复当 `log-file` 参数未指定时 jprof 的输出内容没有被正确捕获和处理的问题 [#17607](https://github.com/tikv/tikv/issues/17607) @[Hexilee](https://github.com/Hexilee)
+    - 修复在唤醒休眠 Region 时可能出现延迟上升的问题 [#17101](https://github.com/tikv/tikv/issues/17101) @[Connor1996](https://github.com/Connor1996)
     - note [#issue](https://github.com/tikv/tikv/issues/${issue-id}) @[贡献者 GitHub ID](https://github.com/${github-id})
     - note [#issue](https://github.com/tikv/tikv/issues/${issue-id}) @[贡献者 GitHub ID](https://github.com/${github-id})
     - (dup): release-8.5.0.md > 错误修复> TiKV - 修复使用 `RADIANS()` 或 `DEGREES()` 函数时可能导致 TiKV panic 的问题 [#17852](https://github.com/tikv/tikv/issues/17852) @[gengliqi](https://github.com/gengliqi)
@@ -150,7 +150,7 @@ TiDB 版本：7.5.5
     - (dup): release-7.1.3.md > 错误修复> TiKV - 修复 Online Unsafe Recovery 时无法处理 merge abort 的问题 [#15580](https://github.com/tikv/tikv/issues/15580) @[v01dstar](https://github.com/v01dstar)
     - (dup): release-8.3.0.md > 错误修复> TiKV - 修复 CPU profiling flag 在出现错误时没有正确重置的问题 [#17234](https://github.com/tikv/tikv/issues/17234) @[Connor1996](https://github.com/Connor1996)
     - (dup): release-8.5.0.md > 错误修复> TiKV - 修复 `raft-entry-max-size` 设置过高时，写入 batch 可能过大引起性能抖动的问题 [#17701](https://github.com/tikv/tikv/issues/17701) @[SpadeA-Tang](https://github.com/SpadeA-Tang)
-    - 修复 import 冲突检测接口可能会导致 panic 的问题 [#17830](https://github.com/tikv/tikv/issues/17830) @[joccau](https://github.com/joccau)
+    - 修复 import 模块的冲突检测接口由于错误处理不当可能导致 TiKV panic 的问题 [#17830](https://github.com/tikv/tikv/issues/17830) @[joccau](https://github.com/joccau)
 
 + PD <!--tw@hfxsd: 1 note-->
 
@@ -201,8 +201,8 @@ TiDB 版本：7.5.5
 
         - note [#issue](https://github.com/pingcap/tiflow/issues/${issue-id}) @[贡献者 GitHub ID](https://github.com/${github-id})
         - note [#issue](https://github.com/pingcap/tiflow/issues/${issue-id}) @[贡献者 GitHub ID](https://github.com/${github-id})
-        - 修复物理导入后 auto id 可能会有大范围的跳变的问题 [#11768](https://github.com/pingcap/tiflow/issues/11768) @[D3Hunter](https://github.com/D3Hunter)"
-        - 修复当同时配置 TLS 和 shard-mode 时，start-task 检查报错的问题 [#11842](https://github.com/pingcap/tiflow/issues/11842) @[sunxiaoguang](https://github.com/sunxiaoguang)
+        - 修复通过物理导入模式导入数据后，表中自动生成的 ID 可能会出现大范围的跳变的问题 [#11768](https://github.com/pingcap/tiflow/issues/11768) @[D3Hunter](https://github.com/D3Hunter)"
+        - 修复当同时配置 TLS 和 `shard-mode` 时，`start-task` 会在前置检查中报错的问题 [#11842](https://github.com/pingcap/tiflow/issues/11842) @[sunxiaoguang](https://github.com/sunxiaoguang)
         - 修复当密码长度超过 19 个字符时无法连接 MySQL 8.0 的问题 [#11603](https://github.com/pingcap/tiflow/issues/11603) @[fishiu](https://github.com/fishiu)
 
     + TiDB Lightning <!--tw@Oreoxmt: 4 notes-->
