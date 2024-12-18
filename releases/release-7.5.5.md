@@ -61,7 +61,7 @@ TiDB 版本：7.5.5
 
         - note [#issue](https://github.com/pingcap/tiflow/issues/${issue-id}) @[贡献者 GitHub ID](https://github.com/${github-id})
         - note [#issue](https://github.com/pingcap/tiflow/issues/${issue-id}) @[贡献者 GitHub ID](https://github.com/${github-id})
-        - 调整输出不识别的 MariaDB binlog 事件时的日志级别 [#10204](https://github.com/pingcap/tiflow/issues/10204) @[dveeden](https://github.com/dveeden)
+        - 调低输出无法识别的 MariaDB binlog 事件时的日志级别 [#10204](https://github.com/pingcap/tiflow/issues/10204) @[dveeden](https://github.com/dveeden)
 
     + TiDB Lightning
 
@@ -118,21 +118,21 @@ TiDB 版本：7.5.5
     - (dup): release-7.1.6.md > 错误修复> TiDB - 修复执行 `RECOVER TABLE BY JOB JOB_ID;` 可能导致 panic 的问题 [#55113](https://github.com/pingcap/tidb/issues/55113) @[crazycs520](https://github.com/crazycs520)
     - (dup): release-7.1.6.md > 错误修复> TiDB - 修复当一个查询有索引合并 (Index Merge) 执行计划可用时，`read_from_storage` hint 可能不生效的问题 [#56217](https://github.com/pingcap/tidb/issues/56217) @[AilinKid](https://github.com/AilinKid)
     - (dup): release-8.5.0.md > 错误修复> TiDB - 修复 `INDEX_HASH_JOIN` 在异常退出时可能卡住的问题 [#54055](https://github.com/pingcap/tidb/issues/54055) @[wshwsh12](https://github.com/wshwsh12)
-    - 修复 DXF 相关系统表查询可能导致升级异常的问题 [#49263](https://github.com/pingcap/tidb/issues/49263) @[D3Hunter](https://github.com/D3Hunter)
-    - 修复 DDL 内部事务因 "GC life time is shorter than transaction duration" 导致添加索引失败的问题 [#57043](https://github.com/pingcap/tidb/issues/57043) @[tangenta](https://github.com/tangenta)
-    - 修复当 exchange partition 遇到不合法的行时导致 info schema 全量加载的问题 [#56685](https://github.com/pingcap/tidb/issues/56685) @[D3Hunter](https://github.com/D3Hunter)
-    - 修复当 tidb_ddl_enable_fast_reorg 以及 new collation 开启时，未正确处理 collation 导致数据索引不一致的问题 [#58036](https://github.com/pingcap/tidb/issues/58036) @[djshow832](https://github.com/djshow832)
-    - 修复添加索引期间 plan cache 使用了错误的 schema 导致数据索引不一致的问题 [#56733](https://github.com/pingcap/tidb/issues/56733) @[wjhuang2016](https://github.com/wjhuang2016)
-    - 修复在升级期间执行 alter table tiflash replica 导致 TiDB 节点挂掉的问题 [#57863](https://github.com/pingcap/tidb/issues/57863) @[tangenta](https://github.com/tangenta) <!--tw@hfxsd: the following 6 notes-->
-    - 修复 INFORMATION_SCHEMA.columns 查询性能回退的问题 [#58184](https://github.com/pingcap/tidb/issues/58184) @[lance6716](https://github.com/lance6716)
+    - 修复查询分布式执行框架相关的系统表可能导致升级异常的问题 [#49263](https://github.com/pingcap/tidb/issues/49263) @[D3Hunter](https://github.com/D3Hunter)
+    - 修复 DDL 内部事务报错 `GC life time is shorter than transaction duration`，导致添加索引失败的问题 [#57043](https://github.com/pingcap/tidb/issues/57043) @[tangenta](https://github.com/tangenta)
+    - 修复当执行 `EXCHANGE PARTITION` 遇到不合法的行时，导致 InfoSchema 全量加载并报错 `failed to load schema diff` 的问题 [#56685](https://github.com/pingcap/tidb/issues/56685) @[D3Hunter](https://github.com/D3Hunter)
+    - 修复当 `tidb_ddl_enable_fast_reorg` 和 `new_collations_enabled_on_first_bootstrap` 开启时，未正确处理排序规则，导致数据索引不一致的问题 [#58036](https://github.com/pingcap/tidb/issues/58036) @[djshow832](https://github.com/djshow832)
+    - 修复添加索引期间计划缓存使用了错误的 schema 导致数据索引不一致的问题 [#56733](https://github.com/pingcap/tidb/issues/56733) @[wjhuang2016](https://github.com/wjhuang2016)
+    - 修复在升级期间执行 `ALTER TABLE TIFLASH REPLICA` 导致 TiDB 节点宕机的问题 [#57863](https://github.com/pingcap/tidb/issues/57863) @[tangenta](https://github.com/tangenta) <!--tw@hfxsd: the following 6 notes-->
+    - 修复 `INFORMATION_SCHEMA.columns` 查询性能下降的问题 [#58184](https://github.com/pingcap/tidb/issues/58184) @[lance6716](https://github.com/lance6716)
     - (dup): release-8.1.2.md > 错误修复> TiDB - 修复查询 TiFlash 系统表中默认超时时间过短的问题 [#57816](https://github.com/pingcap/tidb/issues/57816) @[JaySon-Huang](https://github.com/JaySon-Huang)
     - (dup): release-8.1.2.md > 错误修复> TiDB - 修复 `default_collation_for_utf8mb4` 变量的值没有对 `SET NAMES` 语法生效的问题 [#56439](https://github.com/pingcap/tidb/issues/56439) @[Defined2014](https://github.com/Defined2014)
     - (dup): release-8.1.2.md > 错误修复> TiDB - 修复手动删除 `mysql`.`timer` 表中的定时器时，TTL 内部协程可能 panic 的问题 [#57112](https://github.com/pingcap/tidb/issues/57112) @[lcwangchao](https://github.com/lcwangchao)
-    - 修复在一些情况下，使用 `ALTER TABLE` 语法将普通表转换为分区表时，因为检查不充分导致数据出现错误的问题 [#55721](https://github.com/pingcap/tidb/issues/55721) @[mjonss](https://github.com/mjonss)
-    - 修复 tidb_gogc_tuner_max_value/tidb_gogc_tuner_min_value 因为空的 max value 导致错误的 warning 信息 [#57889](https://github.com/pingcap/tidb/issues/57889) @[hawkingrei](https://github.com/hawkingrei)
-    - 修复一些情况下，TiDB 内部协程会出现 Data Race 错误的问题 [#57798](https://github.com/pingcap/tidb/issues/57798) [#56053](https://github.com/pingcap/tidb/issues/56053) @[fishiu](https://github.com/fishiu) @[tiancaiamao](https://github.com/tiancaiamao)
-    - 更新 golang-jwt/jwt 来规避潜在的安全风险 [#57135](https://github.com/pingcap/tidb/issues/57135) @[hawkingrei](https://github.com/hawkingrei)
-    - 修复在一些情况下，使用 `ALTER TABLE` 语法将聚簇索引表转换为分区表时，并发写入会造成重复数据的问题 [#57510](https://github.com/pingcap/tidb/issues/57510) @[mjonss](https://github.com/mjonss)
+    - 修复在某些情况下，使用 `ALTER TABLE` 语句将普通表转换为分区表时，由于检查不充分导致数据出现错误的问题 [#55721](https://github.com/pingcap/tidb/issues/55721) @[mjonss](https://github.com/mjonss)
+    - 修复设置 `tidb_gogc_tuner_max_value` 和 `tidb_gogc_tuner_min_value` 时，由于最大值为空导致出现错误的 warning 信息的问题 [#57889](https://github.com/pingcap/tidb/issues/57889) @[hawkingrei](https://github.com/hawkingrei)
+    - 修复某些情况下，TiDB 内部协程会出现数据竞争的问题 [#57798](https://github.com/pingcap/tidb/issues/57798) [#56053](https://github.com/pingcap/tidb/issues/56053) @[fishiu](https://github.com/fishiu) @[tiancaiamao](https://github.com/tiancaiamao)
+    - 更新 `golang-jwt` 和 `jwt` 以规避潜在的安全风险 [#57135](https://github.com/pingcap/tidb/issues/57135) @[hawkingrei](https://github.com/hawkingrei)
+    - 修复在某些情况下，使用 `ALTER TABLE` 语句将聚簇索引表转换为分区表时，并发写入会导致重复数据的问题 [#57510](https://github.com/pingcap/tidb/issues/57510) @[mjonss](https://github.com/mjonss)
 
 + TiKV <!--tw@qiancai: 3 notes-->
 
@@ -154,7 +154,7 @@ TiDB 版本：7.5.5
 
 + PD <!--tw@hfxsd: 1 note-->
 
-    - 修复创建 grant/evict leader scheduler 遇到错误时不能将错误信息返回到 pd-ctl 的问题 [#8759](https://github.com/tikv/pd/issues/8759) @[okJiang](https://github.com/okJiang)
+    - 修复创建 `evict-leader-scheduler` 或 `grant-leader-scheduler` 遇到错误时，不能将错误信息返回到 pd-ctl 的问题 [#8759](https://github.com/tikv/pd/issues/8759) @[okJiang](https://github.com/okJiang)
     - (dup): release-8.1.2.md > 错误修复> PD - 修复 etcd Leader 切换时 PD 不能快速重新选举的问题 [#8823](https://github.com/tikv/pd/issues/8823) @[rleungx](https://github.com/rleungx)
     - note [#issue](https://github.com/tikv/pd/issues/${issue-id}) @[贡献者 GitHub ID](https://github.com/${github-id})
     - note [#issue](https://github.com/tikv/pd/issues/${issue-id}) @[贡献者 GitHub ID](https://github.com/${github-id})
