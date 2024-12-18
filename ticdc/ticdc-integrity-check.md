@@ -61,9 +61,11 @@ TiCDC 默认关闭单行数据的 Checksum 校验功能。若要在开启此功�
 
 ## Checksum 算法
 
+本节介绍 TiCDC 中 Checksum 算法的演进。不同的 Checksum 算法版本会影响 TiCDC 内部的 Checksum 校验过程，但不会影响下游 Kafka Consumer 对 Checksum 的校验规则。
+
 ### Checksum V1
 
-在 v8.4.0 之前，TiDB 和 TiCDC 采用 Checksum v1 算法进行 Checksum 计算和校验。
+在 v7.1.0 到 v8.2.0 及其之间的版本中，TiDB 和 TiCDC 采用 Checksum v1 算法进行 Checksum 计算和校验。
 
 在启用单行数据 Checksum 正确性校验功能后，TiDB 会使用 CRC32 算法计算每行数据的 Checksum 值，并将这个值与该行数据一并存储在 TiKV 中。随后，TiCDC 从 TiKV 读取这些数据，并使用相同的算法重新计算 Checksum，如果得到的 Checksum 值与 TiDB 写入的 Checksum 值相同，则表明数据在从 TiDB 到 TiCDC 的传输过程中是正确的。
 
@@ -71,9 +73,11 @@ TiCDC 将数据编码成特定格式并发送至 Kafka。Kafka Consumer 读取�
 
 ### Checksum V2
 
-从 v8.4.0 开始，TiDB 和 TiCDC 引入 Checksum V2 算法，解决了 Checksum V1 在执行 `ADD COLUMN` 或 `DROP COLUMN` 后无法正确校验 Update 或 Delete 事件中 Old Value 数据的问题。
+在 v8.3.0 中，TiDB 和 TiCDC 使用 Checksum V2 算法，解决了 Checksum V1 在执行 `ADD COLUMN` 或 `DROP COLUMN` 后无法正确校验 Update 或 Delete 事件中 Old Value 数据的问题。Checksum V2 算法基于 Key-Value 对计算字节级别的 Checksum 值，其中 Key 由表 ID 和行 ID 组成。
 
-对于 v8.4.0 及之后新创建的集群，或从之前版本升级到 v8.4.0 的集群，启用单行数据 Checksum 正确性校验功能后，TiDB 默认使用 Checksum V2 算法进行 Checksum 计算和校验。TiCDC 支持同时处理 V1 和 V2 两种 Checksum。该变更仅影响 TiDB 和 TiCDC 内部实现，不影响下游 Kafka consumer 的 Checksum 计算校验方法。
+### Checksum V3
+
+从 v8.4.0 开始，TiDB 和 TiCDC 使用 Checksum V3 算法。该算法解决了 Checksum V2 算法在 [BR](/br/backup-and-restore-overview.md) 恢复场景下，由于 Table ID 改写导致 Old Value Checksum 校验失败的问题。Checksum V3 算法基于表 ID 和 Value 部分计算字节级别的 Checksum 值。
 
 ## Checksum 计算规则
 
@@ -110,3 +114,17 @@ fn checksum(columns) {
 >
 > - 开启 Checksum 校验功能后，DECIMAL 和 UNSIGNED BIGINT 类型的数据会被转换为字符串类型。因此在下游消费者代码中需要将其转换为对应的数值类型，然后进行 Checksum 相关计算。
 > - Delete 事件只含有 Handle Key 列的内容，而 Checksum 是基于所有列计算的，所以 Delete 事件不参与到 Checksum 的校验中。
+
+## 兼容性问题
+
+### 升级场景兼容性
+
+升级集群时，需要先升级 TiCDC，后升级 TiDB。升级过程中，TiCDC 处于高版本，TiDB 处于低版本时，支持处理由低版本 TiDB 写入的 Checksum。升级完成后，应该保证 TiDB 和 TiCDC 使用相同的版本的 Checksum 校验算法。
+
+### BR 恢复场景兼容性
+
+在 v8.3.0 和 v8.4.0 中，Checksum 功能存在以下兼容性问题：
+
+当使用 BR 工具备份 v8.3.0 数据并恢复到 v8.3.0 或之后版本的 TiDB 集群时，如果在 Changefeed 同步过程中遇到 Update 或 Delete 事件，TiCDC 可能会在校验 Old Value 时失败。原因是在 BR 恢复数据时，如果恢复的表的 ID 已在目标集群中被占用，BR 会重新分配表 ID，但 Checksum 值不会更新。这导致 TiCDC 在校验数据时，使用的表 ID 与数据在源集群中写入时的表 ID 不一致，最终导致校验失败。
+
+如果遇到此问题，建议[关闭 Changefeed 的 Checksum 校验功能](#关闭功能)。
