@@ -29,7 +29,7 @@ tiup cluster patch <cluster-name> <package-path> [flags]
 1. 确定以下变量的值：
 
     - `${component}`：需要替换的组件名（例如 `tidb`、`tikv`、`pd`）。
-    - `${version}`：组件的版本（例如 `v7.5.3`、`v6.5.10`）。
+    - `${version}`：组件的版本（例如 `v7.5.5`、`v6.5.10`）。
     - `${os}`：操作系统 (`linux`)。
     - `${arch}`：组件运行的平台 (`amd64`、`arm64`)。
 2. 下载当前的组件包：
