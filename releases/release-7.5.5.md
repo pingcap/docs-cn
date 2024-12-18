@@ -128,11 +128,11 @@ TiDB 版本：7.5.5
     - (dup): release-8.1.2.md > 错误修复> TiDB - 修复查询 TiFlash 系统表中默认超时时间过短的问题 [#57816](https://github.com/pingcap/tidb/issues/57816) @[JaySon-Huang](https://github.com/JaySon-Huang)
     - (dup): release-8.1.2.md > 错误修复> TiDB - 修复 `default_collation_for_utf8mb4` 变量的值没有对 `SET NAMES` 语法生效的问题 [#56439](https://github.com/pingcap/tidb/issues/56439) @[Defined2014](https://github.com/Defined2014)
     - (dup): release-8.1.2.md > 错误修复> TiDB - 修复手动删除 `mysql`.`timer` 表中的定时器时，TTL 内部协程可能 panic 的问题 [#57112](https://github.com/pingcap/tidb/issues/57112) @[lcwangchao](https://github.com/lcwangchao)
-    - 修复在某些情况下，使用 `ALTER TABLE` 语句将普通表转换为分区表时，由于检查不充分导致数据出现错误的问题 [#55721](https://github.com/pingcap/tidb/issues/55721) @[mjonss](https://github.com/mjonss)
+    - 修复使用 `ALTER TABLE` 语句将普通表转换为分区表时，由于检查不充分可能导致数据出现错误的问题 [#55721](https://github.com/pingcap/tidb/issues/55721) @[mjonss](https://github.com/mjonss)
     - 修复设置 `tidb_gogc_tuner_max_value` 和 `tidb_gogc_tuner_min_value` 时，由于最大值为空导致出现错误的 warning 信息的问题 [#57889](https://github.com/pingcap/tidb/issues/57889) @[hawkingrei](https://github.com/hawkingrei)
-    - 修复某些情况下，TiDB 内部协程会出现数据竞争的问题 [#57798](https://github.com/pingcap/tidb/issues/57798) [#56053](https://github.com/pingcap/tidb/issues/56053) @[fishiu](https://github.com/fishiu) @[tiancaiamao](https://github.com/tiancaiamao)
+    - 修复 TiDB 内部协程可能出现数据竞争的问题 [#57798](https://github.com/pingcap/tidb/issues/57798) [#56053](https://github.com/pingcap/tidb/issues/56053) @[fishiu](https://github.com/fishiu) @[tiancaiamao](https://github.com/tiancaiamao)
     - 更新 `golang-jwt` 和 `jwt` 以规避潜在的安全风险 [#57135](https://github.com/pingcap/tidb/issues/57135) @[hawkingrei](https://github.com/hawkingrei)
-    - 修复在某些情况下，使用 `ALTER TABLE` 语句将聚簇索引表转换为分区表时，并发写入会导致重复数据的问题 [#57510](https://github.com/pingcap/tidb/issues/57510) @[mjonss](https://github.com/mjonss)
+    - 修复使用 `ALTER TABLE` 语句将聚簇索引表转换为分区表时，并发写入可能会导致重复数据的问题 [#57510](https://github.com/pingcap/tidb/issues/57510) @[mjonss](https://github.com/mjonss)
 
 + TiKV <!--tw@qiancai: 3 notes-->
 
