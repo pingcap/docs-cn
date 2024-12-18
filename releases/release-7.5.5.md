@@ -57,7 +57,7 @@ TiDB 版本：7.5.5
         - note [#issue](https://github.com/pingcap/tiflow/issues/${issue-id}) @[贡献者 GitHub ID](https://github.com/${github-id})
         - note [#issue](https://github.com/pingcap/tiflow/issues/${issue-id}) @[贡献者 GitHub ID](https://github.com/${github-id})
 
-    + TiDB Data Migration (DM)
+    + TiDB Data Migration (DM) <!--tw@lilin90: 1 note-->
 
         - note [#issue](https://github.com/pingcap/tiflow/issues/${issue-id}) @[贡献者 GitHub ID](https://github.com/${github-id})
         - note [#issue](https://github.com/pingcap/tiflow/issues/${issue-id}) @[贡献者 GitHub ID](https://github.com/${github-id})
@@ -85,7 +85,7 @@ TiDB 版本：7.5.5
 
 ## 错误修复
 
-+ TiDB
++ TiDB <!--tw@lilin90: the following 6 notes-->
 
     - note [#issue](https://github.com/pingcap/tidb/issues/${issue-id}) @[贡献者 GitHub ID](https://github.com/${github-id})
     - note [#issue](https://github.com/pingcap/tidb/issues/${issue-id}) @[贡献者 GitHub ID](https://github.com/${github-id})
@@ -123,7 +123,7 @@ TiDB 版本：7.5.5
     - 修复当 exchange partition 遇到不合法的行时导致 info schema 全量加载的问题 [#56685](https://github.com/pingcap/tidb/issues/56685) @[D3Hunter](https://github.com/D3Hunter)
     - 修复当 tidb_ddl_enable_fast_reorg 以及 new collation 开启时，未正确处理 collation 导致数据索引不一致的问题 [#58036](https://github.com/pingcap/tidb/issues/58036) @[djshow832](https://github.com/djshow832)
     - 修复添加索引期间 plan cache 使用了错误的 schema 导致数据索引不一致的问题 [#56733](https://github.com/pingcap/tidb/issues/56733) @[wjhuang2016](https://github.com/wjhuang2016)
-    - 修复在升级期间执行 alter table tiflash replica 导致 TiDB 节点挂掉的问题 [#57863](https://github.com/pingcap/tidb/issues/57863) @[tangenta](https://github.com/tangenta)
+    - 修复在升级期间执行 alter table tiflash replica 导致 TiDB 节点挂掉的问题 [#57863](https://github.com/pingcap/tidb/issues/57863) @[tangenta](https://github.com/tangenta) <!--tw@hfxsd: the following 6 notes-->
     - 修复 INFORMATION_SCHEMA.columns 查询性能回退的问题 [#58184](https://github.com/pingcap/tidb/issues/58184) @[lance6716](https://github.com/lance6716)
     - (dup): release-8.1.2.md > 错误修复> TiDB - 修复查询 TiFlash 系统表中默认超时时间过短的问题 [#57816](https://github.com/pingcap/tidb/issues/57816) @[JaySon-Huang](https://github.com/JaySon-Huang)
     - (dup): release-8.1.2.md > 错误修复> TiDB - 修复 `default_collation_for_utf8mb4` 变量的值没有对 `SET NAMES` 语法生效的问题 [#56439](https://github.com/pingcap/tidb/issues/56439) @[Defined2014](https://github.com/Defined2014)
@@ -134,7 +134,7 @@ TiDB 版本：7.5.5
     - 更新 golang-jwt/jwt 来规避潜在的安全风险 [#57135](https://github.com/pingcap/tidb/issues/57135) @[hawkingrei](https://github.com/hawkingrei)
     - 修复在一些情况下，使用 `ALTER TABLE` 语法将聚簇索引表转换为分区表时，并发写入会造成重复数据的问题 [#57510](https://github.com/pingcap/tidb/issues/57510) @[mjonss](https://github.com/mjonss)
 
-+ TiKV
++ TiKV <!--tw@qiancai: 3 notes-->
 
     - (dup): release-8.1.2.md > 错误修复> TiKV - 修复 TiKV 处理 destroyed peer 时可能遇到的 panic 的问题 [#17840](https://github.com/tikv/tikv/issues/17840) @[glorv](https://github.com/glorv))
     - (dup): release-8.1.2.md > 错误修复> TiKV - 提升在 raft log 部署在独立磁盘情况下，磁盘出现故障时 TiKV 服务的 SLA [#17884](https://github.com/tikv/tikv/issues/17884) @[LykxSassinator](https://github.com/LykxSassinator)
@@ -152,7 +152,7 @@ TiDB 版本：7.5.5
     - (dup): release-8.5.0.md > 错误修复> TiKV - 修复 `raft-entry-max-size` 设置过高时，写入 batch 可能过大引起性能抖动的问题 [#17701](https://github.com/tikv/tikv/issues/17701) @[SpadeA-Tang](https://github.com/SpadeA-Tang)
     - 修复 import 冲突检测接口可能会导致 panic 的问题 [#17830](https://github.com/tikv/tikv/issues/17830) @[joccau](https://github.com/joccau)
 
-+ PD
++ PD <!--tw@hfxsd: 1 note-->
 
     - 修复创建 grant/evict leader scheduler 遇到错误时不能将错误信息返回到 pd-ctl 的问题 [#8759](https://github.com/tikv/pd/issues/8759) @[okJiang](https://github.com/okJiang)
     - (dup): release-8.1.2.md > 错误修复> PD - 修复 etcd Leader 切换时 PD 不能快速重新选举的问题 [#8823](https://github.com/tikv/pd/issues/8823) @[rleungx](https://github.com/rleungx)
@@ -188,7 +188,7 @@ TiDB 版本：7.5.5
         - (dup): release-8.5.0.md > 错误修复> Tools> Backup & Restore (BR) - 升级 `k8s.io/api` 库的版本以修复潜在的安全漏洞 [#57790](https://github.com/pingcap/tidb/issues/57790) @[BornChanger](https://github.com/BornChanger)
         - (dup): release-8.5.0.md > 错误修复> Tools> Backup & Restore (BR) - 修复当集群存在大量表但实际数据量较小时，PITR 数据恢复任务可能出现 `Information schema is out of date` 报错的问题 [#57743](https://github.com/pingcap/tidb/issues/57743) @[Tristan1900](https://github.com/Tristan1900)
 
-    + TiCDC
+    + TiCDC <!--tw@Oreoxmt: 2 notes-->
 
         - 修复遇到 truncate table 并且该表不具有有效索引时可能会发生错误的问题 [#11765](https://github.com/pingcap/tiflow/issues/11765) @[asddongmen](https://github.com/asddongmen)
         - 修复 simple protocol 消息中分区表的 tableID 没有被正确设置的问题 [#11846](https://github.com/pingcap/tiflow/issues/11846) @[3AceShowHand](https://github.com/3AceShowHand)
@@ -197,7 +197,7 @@ TiDB 版本：7.5.5
         - (dup): release-6.5.8.md > 错误修复> Tools> TiCDC - 修复在 `ignore-event` 中设置了过滤掉 `add table partition` 事件后，TiCDC 未将相关分区的其它类型 DML 变更事件同步到下游的问题 [#10524](https://github.com/pingcap/tiflow/issues/10524) @[CharlesCheung96](https://github.com/CharlesCheung96)
         - (dup): release-8.5.0.md > 错误修复> Tools> TiCDC - 修复 TiDB DDL owner 变更导致 DDL 任务的 schema 版本出现非递增时，TiCDC 错误丢弃 DDL 任务的问题 [#11714](https://github.com/pingcap/tiflow/issues/11714) @[wlwilliamx](https://github.com/wlwilliamx)
 
-    + TiDB Data Migration (DM)
+    + TiDB Data Migration (DM) <!--tw@qiancai: 3 notes-->
 
         - note [#issue](https://github.com/pingcap/tiflow/issues/${issue-id}) @[贡献者 GitHub ID](https://github.com/${github-id})
         - note [#issue](https://github.com/pingcap/tiflow/issues/${issue-id}) @[贡献者 GitHub ID](https://github.com/${github-id})
@@ -205,7 +205,7 @@ TiDB 版本：7.5.5
         - 修复当同时配置 TLS 和 shard-mode 时，start-task 检查报错的问题 [#11842](https://github.com/pingcap/tiflow/issues/11842) @[sunxiaoguang](https://github.com/sunxiaoguang)
         - 修复当密码长度超过 19 个字符时无法连接 MySQL 8.0 的问题 [#11603](https://github.com/pingcap/tiflow/issues/11603) @[fishiu](https://github.com/fishiu)
 
-    + TiDB Lightning
+    + TiDB Lightning <!--tw@Oreoxmt: 4 notes-->
 
         - note [#issue](https://github.com/pingcap/tidb/issues/${issue-id}) @[贡献者 GitHub ID](https://github.com/${github-id})
         - note [#issue](https://github.com/pingcap/tidb/issues/${issue-id}) @[贡献者 GitHub ID](https://github.com/${github-id})
@@ -221,7 +221,7 @@ TiDB 版本：7.5.5
         - note [#issue](https://github.com/pingcap/tidb/issues/${issue-id}) @[贡献者 GitHub ID](https://github.com/${github-id})
         - note [#issue](https://github.com/pingcap/tidb/issues/${issue-id}) @[贡献者 GitHub ID](https://github.com/${github-id})
 
-    + Dumpling
+    + Dumpling <!--tw@Oreoxmt: 1 note-->
 
         - note [#issue](https://github.com/pingcap/tidb/issues/${issue-id}) @[贡献者 GitHub ID](https://github.com/${github-id})
         - note [#issue](https://github.com/pingcap/tidb/issues/${issue-id}) @[贡献者 GitHub ID](https://github.com/${github-id})
