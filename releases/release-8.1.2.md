@@ -127,11 +127,11 @@ TiDB 版本：8.1.2
 
 + TiKV <!--tw@hfxsd: 5 notes-->
 
-    - 修复了配置 `resolved-ts.advance-ts-interval` 无法生效，导致在 TiKV 重启时，CDC 和 PiTR 的同步延迟大幅上升的问题 [#17107](https://github.com/tikv/tikv/issues/17107) @[MyonKeminta](https://github.com/MyonKeminta)
-    - 修复了在触发资源管控时，部分任务等待时间的问题 [#17589](https://github.com/tikv/tikv/issues/17589) @[glorv](https://github.com/glorv)
-    - 修复了 Region Merge 后，极小概率导致 TiKV panic 的问题 [#17840](https://github.com/tikv/tikv/issues/17840) @[glorv](https://github.com/glorv)
-    - 修复了在磁盘卡住时，TiKV 无法正常向 PD 上报心跳的问题 [#17939](https://github.com/tikv/tikv/issues/17939) @[LykxSassinator](https://github.com/LykxSassinator)
-    - 修复了当 Raft 和 Rocksdb 部署在不同磁盘时，慢磁盘检测无法对 Rocksdb 所在磁盘生效的问题 [#17884](https://github.com/tikv/tikv/issues/17884) @[LykxSassinator](https://github.com/LykxSassinator)
+    - 修复配置 `resolved-ts.advance-ts-interval` 无法生效，导致在 TiKV 重启时，TiCDC 和 Point-in-time recovery (PITR) 的同步延迟大幅上升的问题 [#17107](https://github.com/tikv/tikv/issues/17107) @[MyonKeminta](https://github.com/MyonKeminta)
+    - 修复在触发资源管控时，部分任务等待时间过长的问题 [#17589](https://github.com/tikv/tikv/issues/17589) @[glorv](https://github.com/glorv)
+    - 修复 Region 合并后，有极小概率导致 TiKV panic 的问题 [#17840](https://github.com/tikv/tikv/issues/17840) @[glorv](https://github.com/glorv)
+    - 修复磁盘卡住时，TiKV 无法向 PD 上报心跳的问题 [#17939](https://github.com/tikv/tikv/issues/17939) @[LykxSassinator](https://github.com/LykxSassinator)
+    - 修复当 Raft 和 Rocksdb 部署在不同磁盘时，慢磁盘检测无法对 Rocksdb 所在磁盘生效的问题 [#17884](https://github.com/tikv/tikv/issues/17884) @[LykxSassinator](https://github.com/LykxSassinator)
     - (dup): release-7.5.4.md > 错误修复> TiKV - 修复过期副本处理 Raft 快照时，由于分裂操作过慢并且随后立即删除新副本，可能导致 TiKV panic 的问题 [#17469](https://github.com/tikv/tikv/issues/17469) @[hbisheng](https://github.com/hbisheng)
     - (dup): release-8.5.0.md > 错误修复> TiKV - 修复使用 `RADIANS()` 或 `DEGREES()` 函数时可能导致 TiKV panic 的问题 [#17852](https://github.com/tikv/tikv/issues/17852) @[gengliqi](https://github.com/gengliqi)
     - (dup): release-7.5.4.md > 错误修复> TiKV - 修复当大量事务在排队等待同一个 key 上的锁被释放且该 key 被频繁更新时，TiKV 可能因死锁检测压力过大而出现 OOM 的问题 [#17394](https://github.com/tikv/tikv/issues/17394) @[MyonKeminta](https://github.com/MyonKeminta)
@@ -170,7 +170,7 @@ TiDB 版本：8.1.2
     - (dup): release-7.1.6.md > 错误修复> TiFlash - 修复 `SUBSTRING()` 函数不支持部分整数类型的 `pos` 和 `len` 参数导致查询报错的问题 [#9473](https://github.com/pingcap/tiflash/issues/9473) @[gengliqi](https://github.com/gengliqi)
     - (dup): release-7.5.4.md > 错误修复> TiFlash - 修复使用 `CAST()` 函数将字符串转换为带时区或非法字符的日期时间时，结果错误的问题 [#8754](https://github.com/pingcap/tiflash/issues/8754) @[solotzg](https://github.com/solotzg)
     - (dup): release-8.5.0.md > 错误修复> TiFlash - 修复当 `LPAD()` 和 `RPAD()` 函数在某些情况下返回错误结果的问题 [#9465](https://github.com/pingcap/tiflash/issues/9465) @[guo-shaoge](https://github.com/guo-shaoge)
-    - 修复在存算分离架构下，对新增的列进行查询可能返回错误结果的问题 [#9665](https://github.com/pingcap/tiflash/issues/9665) @[zimulala](https://github.com/zimulala)
+    - 修复在存算分离架构下，查询新增列可能返回错误结果的问题 [#9665](https://github.com/pingcap/tiflash/issues/9665) @[zimulala](https://github.com/zimulala)
 
 + Tools
 
