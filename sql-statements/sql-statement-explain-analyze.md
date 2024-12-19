@@ -38,10 +38,10 @@ ExplainableStmt ::=
 
 | 属性名          | 含义 |
 |:----------------|:---------------------------------|
-| actRows       | 算子实际输出的数据条数。 |
-| execution info  | 算子的实际执行信息。time 表示从进入算子到离开算子的全部 wall time，包括所有子算子操作的全部执行时间。如果该算子被父算子多次调用 (loops)，这个时间就是累积的时间。loops 是当前算子被父算子调用的次数。 |
-| memory  | 算子占用内存空间的大小。 |
-| disk  | 算子占用磁盘空间的大小。 |
+| `actRows`       | 算子实际输出的数据条数。 |
+| `execution info`  | 算子的实际执行信息。`time` 表示从进入算子到离开算子的全部 `wall time`，包括所有子算子操作的全部执行时间。如果该算子被父算子多次调用 (`loops`)，这个时间就是累积的时间。`loops` 是当前算子被父算子调用的次数。`open` 表示算子初始化所需的时间。`close` 表示从算子处理完所有数据到算子结束执行的时间。其中 `time` 统计的时间包含 `open` 和 `close` 的时间。当算子存在多并发执行情况时，`execution info` 中显示的是各个并发使用的 `wall time` 求和后的结果，此时 `time`、`open` 和 `close` 会被替换为 `total_time`, `total_open` 和 `total_close`。|
+| `memory`  | 算子占用的最大内存空间。 |
+| `disk`  | 算子占用的最大磁盘空间。 |
 
 ## 示例
 
@@ -99,7 +99,7 @@ EXPLAIN ANALYZE SELECT * FROM t1;
 
 ## 算子执行信息介绍
 
-`execution info` 信息除了基本的 `time` 和 `loop` 信息外，还包含算子特有的执行信息，主要包含了该算子发送 RPC 请求的耗时信息以及其他步骤的耗时。
+`execution info` 信息除了基本的 `time`、`open`、`close` 和 `loop` 信息外，还包含算子特有的执行信息，主要包含了该算子发送 RPC 请求的耗时信息以及其他步骤的耗时。
 
 ### Point_Get
 
@@ -338,6 +338,18 @@ after key/value request is processed:
 ```
 
 对于 writes 和 batch gets，计算方法相似，只是基础成本不同。
+
+### tiflash_wait 信息
+
+当查询涉及到 MPP task 时，执行时间将受到各类 `tiflash_wait` 时间的影响，示例如下：
+
+```
+tiflash_wait: {minTSO_wait: 425ms, pipeline_breaker_wait: 133ms, pipeline_queue_wait: 512ms}
+```
+
+- `minTSO_wait`：记录 MPP Task 等待被 [TiFlash MinTSO 调度器](/tiflash/tiflash-mintso-scheduler.md)调度花费的时间。
+- `pipeline_breaker_wait`：当 TiFlash 采用 [Pipeline 执行模型](/tiflash/tiflash-pipeline-model.md)时，记录包含 pipeline breaker 算子的 pipeline 等待上游 pipeline 所有数据花费的时间。目前仅用来展示包含 `Join` 算子的 pipeline 等待所有哈希表 build 完成花费的时间。
+- `pipeline_queue_wait`：当 TiFlash 采用 [Pipeline 执行模型](/tiflash/tiflash-pipeline-model.md)时，记录 pipeline 执行过程中，在 CPU Task Thread Pool 和 IO Task Thread Pool 中等待的时间。
 
 ### 其它常见执行信息
 
