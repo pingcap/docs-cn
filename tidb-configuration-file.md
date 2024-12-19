@@ -502,7 +502,7 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
 
 > **注意：**
 >
-> 当表的一行记录较大时，除了修改上述配置外，还需要同时调整 TiKV 的两个配置项，以保证 TiKV 之间的通信不受影响。
+> 当表的一行记录较大时，除了修改上述配置外，还需要同时调整 TiKV 的以下两个配置项，以保证 TiKV 之间的通信不受影响：
 >
 > - [`raft-entry-max-size`](/tikv-configuration-file.md#raft-entry-max-size)，默认为 `8MiB`。若单个写入请求的数据量大小超出该限制，TiKV 会拒绝处理该请求。
 > - [`max-grpc-send-msg-len`](/tikv-configuration-file.md#max-grpc-send-msg-len)，默认为 `10485760`。
