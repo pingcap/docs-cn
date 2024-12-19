@@ -7,7 +7,7 @@ summary: 了解 TiDB 8.5.0 版本的新功能、兼容性变更、改进提升�
 
 <EmailSubscriptionWrapper />
 
-发版日期：2024 年 12 月 xx 日
+发版日期：2024 年 12 月 19 日
 
 TiDB 版本：8.5.0
 
@@ -418,10 +418,6 @@ TiDB 8.5.0 为长期支持版本 (Long-Term Support Release, LTS)。
 
         - 修复 TiDB Lightning 因 TiKV 发送的消息过大而接收失败的问题 [#56114](https://github.com/pingcap/tidb/issues/56114) @[fishiu](https://github.com/fishiu)
         - 修复使用物理导入模式导入数据后，`AUTO_INCREMENT` 值设置过大的问题 [#56814](https://github.com/pingcap/tidb/issues/56814) @[D3Hunter](https://github.com/D3Hunter)
-
-## 性能测试
-
-如需了解 TiDB v8.5.0 的性能表现，你可以参考 TiDB Cloud Dedicated 集群的 [TPC-C 性能测试报告](https://docs.pingcap.com/tidbcloud/v8.5-performance-benchmarking-with-tpcc)和 [Sysbench 性能测试报告](https://docs.pingcap.com/tidbcloud/v8.5-performance-benchmarking-with-sysbench)（英文版）。
 
 ## 贡献者
 
