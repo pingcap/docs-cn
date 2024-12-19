@@ -1,5 +1,6 @@
 ---
 title: TiDB 4.0.15 Release Notes
+summary: TiDB 4.0.15 发布，修复了执行 `SHOW VARIABLES` 速度慢的问题，以及多个 Bug 和兼容性变化。TiKV 支持动态修改 TiCDC 配置。TiDB 基于直方图的 row count 来触发 auto-analyze。TiKV 分离处理读写的 ready 状态以减少读延迟。PD 提升了同步 Region 信息的性能。BR 支持并发执行分裂和打散 Region 的操作。Dumpling 提升了 `SHOW TABLE STATUS` 的过滤效率。TiCDC 支持导入数据到带有表达式索引或带有基于虚拟生成列的索引的表中。修复了多个 Bug 和问题。
 ---
 
 # TiDB 4.0.15 Release Notes

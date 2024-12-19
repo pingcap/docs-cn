@@ -9,11 +9,22 @@ summary: 以事务的原子性和隔离性为代价，将 DML 语句拆成多个
 
 非事务 DML 语句是将一个普通 DML 语句拆成多个 SQL 语句（即多个 batch）执行，以牺牲事务的原子性和隔离性为代价，增强批量数据处理场景下的性能和易用性。
 
-非事务 DML 语句包括 `INSERT`、`UPDATE` 和 `DELETE`，TiDB 目前只支持非事务 `DELETE` 语句，详细的语法介绍见 [`BATCH`](/sql-statements/sql-statement-batch.md)。
+通常，对于消耗内存过多的大事务，你需要在应用中拆分 SQL 语句以绕过事务大小限制。非事务 DML 语句将这一过程集成到 TiDB 内核中，实现等价的效果。非事务 DML 语句的执行效果可以通过拆分 SQL 语句的结果来理解，`DRY RUN` 语法提供了预览拆分后语句的功能。
+
+非事务 DML 语句包括：
+
+- `INSERT INTO ... SELECT`
+- `REPLACE INTO .. SELECT`
+- `UPDATE`
+- `DELETE`
+
+详细的语法介绍见 [`BATCH`](/sql-statements/sql-statement-batch.md)。
 
 > **注意：**
 >
-> 非事务 DML 语句不保证该语句的原子性和隔离性，不能认为它和原始 DML 语句等价。
+> - 非事务 DML 语句不保证该语句的原子性和隔离性，不能认为它和原始 DML 语句等价。
+> - 在任意 DML 语句改写为非事务 DML 语句后，不应假设其行为与原来一致。
+> - 使用非事务 DML 前需要分析其拆分后的语句是否会互相影响。
 
 ## 使用场景
 
@@ -31,8 +42,27 @@ summary: 以事务的原子性和隔离性为代价，将 DML 语句拆成多个
 
 - 确保该语句不需要原子性，即允许执行结果中，一部分行被修改，而一部分行没有被修改。
 - 确保该语句具有幂等性，或是做好准备根据错误信息对部分数据重试。如果系统变量 `tidb_redact_log = 1` 且 `tidb_nontransactional_ignore_error = 1`，则该语句必须是幂等的。否则语句部分失败时，无法准确定位失败的部分。
-- 确保该语句将要操作的数据没有其它并发的写入，即不被其它语句同时更新。否则可能出现漏删、多删等非预期的现象。
+- 确保该语句将要操作的数据没有其它并发的写入，即不被其它语句同时更新。否则可能出现漏写、多写、重复修改同一行等非预期的现象。
 - 确保该语句不会修改语句自身会读取的内容，否则后续的 batch 读到之前 batch 写入的内容，容易引起非预期的情况。
+    - 在使用非事务 `INSERT INTO ... SELECT` 处理同一张表时，尽量不要在插入时修改拆分列，否则可能因为多个 batch 读取到同一行，导致重复插入：
+        - 不推荐使用 `BATCH ON test.t.id LIMIT 10000 INSERT INTO t SELECT id+1, value FROM t;`
+        - 推荐使用 `BATCH ON test.t.id LIMIT 10000 INSERT INTO t SELECT id, value FROM t;`
+        - 当 `id` 列具有 `AUTO_INCREMENT` 属性时，推荐使用 `BATCH ON test.t.id LIMIT 10000 INSERT INTO t(value) SELECT value FROM t;`
+    - 在使用非事务 `UPDATE`、`INSERT ... ON DUPLICATE KEY UPDATE`、`REPLACE INTO` 时，拆分列不应该在语句中更新：
+        - 例如，对于一条非事务 `UPDATE` 语句，拆分后的 SQL 依次执行，前一 batch 的修改提交后被后一 batch 读到，导致同一行数据被多次修改。
+        - 这类语句不支持 `BATCH ON test.t.id LIMIT 10000 UPDATE t SET test.t.id = test.t.id-1;`
+        - 不推荐使用 `BATCH ON test.t.id LIMIT 1 INSERT INTO t SELECT id+1, value FROM t ON DUPLICATE KEY UPDATE id = id + 1;`
+    - 拆分列也不应该用于 Join key。例如，下面示例将拆分列 `test.t.id` 作为 Join key，导致一个非事务 `UPDATE` 语句多次更新同一行：
+
+        ```sql
+        CREATE TABLE t(id int, v int, key(id));
+        CREATE TABLE t2(id int, v int, key(id));
+        INSERT INTO t VALUES (1, 1), (2, 2), (3, 3);
+        INSERT INTO t2 VALUES (1, 1), (2, 2), (4, 4);
+        BATCH ON test.t.id LIMIT 1 UPDATE t JOIN t2 ON t.id = t2.id SET t2.id = t2.id+1;
+        SELECT * FROM t2; -- (4, 1) (4, 2) (4, 4)
+        ```
+
 - 确认该语句满足[使用限制](#使用限制)。
 - 不建议在该 DML 语句将要读写的表上同时进行并发的 DDL 操作。
 
@@ -104,6 +134,35 @@ SELECT * FROM t;
 1 row in set
 ```
 
+以下示例说明多表 join 的使用方法。首先创建表 `t2` 并插入数据。
+
+```sql
+CREATE TABLE t2(id int, v int, key(id));
+INSERT INTO t2 VALUES (1,1), (3,3), (5,5);
+```
+
+然后进行涉及多表 join 的更新（表 `t` 和 `t2`）。需要注意的是，指定拆分列时需要完整的数据库名、表名和列名（`test.t._tidb_rowid`)。
+
+```sql
+BATCH ON test.t._tidb_rowid LIMIT 1 UPDATE t JOIN t2 ON t.id = t2.id SET t2.id = t2.id+1;
+```
+
+查看更新后表的数据：
+
+```sql
+SELECT * FROM t2;
+```
+
+```sql
++----+---+
+| id | v |
++----+---+
+| 1  | 1 |
+| 3  | 3 |
+| 6  | 5 |
++----+---+
+```
+
 ### 查看非事务 DML 语句的执行进度
 
 非事务 DML 语句执行过程中，可以通过 `SHOW PROCESSLIST` 查看执行进度，返回结果中的 `Time` 表示当前 batch 执行的耗时。日志、慢日志等也会记录每个拆分后的语句在整个非事务 DML 语句中的进度。例如：
@@ -125,7 +184,9 @@ show processlist;
 
 ### 终止一个非事务 DML 语句
 
-通过 `KILL TIDB` 终止一个非事务语句时，TiDB 会取消当前正在执行的 batch 之后的所有 batch。执行结果信息需要从日志里获得。
+通过 `KILL TIDB <processlist_id>` 终止一个非事务语句时，TiDB 会取消当前正在执行的 batch 之后的所有 batch。执行结果信息需要从日志里获得。
+
+关于 `KILL TiDB` 的更多信息，参见 [`KILL`](/sql-statements/sql-statement-kill.md)。
 
 ### 查询非事务 DML 语句中划分 batch 的语句
 
@@ -183,8 +244,13 @@ BATCH ON id LIMIT 2 DELETE /*+ USE_INDEX(t)*/ FROM t where v < 6;
 建议按照以下步骤执行非事务 DML 语句：
 
 1. 选择合适的[划分列](#参数说明)。建议使用整数或字符串类型。
-2. （可选）在非事务 DML 语句中添加 `DRY RUN QUERY`，手动执行查询，确认 DML 语句影响的数据范围是否大体正确。
-3. （可选）在非事务 DML 语句中添加 `DRY RUN`，手动执行查询，检查拆分后的语句和执行计划。需要关注索引选择效率。
+2. 在非事务 DML 语句中添加 `DRY RUN QUERY`，手动执行查询，确认 DML 语句影响的数据范围是否大体正确。
+3. 在非事务 DML 语句中添加 `DRY RUN`，手动执行查询，检查拆分后的语句和执行计划。需要关注：
+
+    - 一条拆分后的语句是否有可能读到之前的语句执行写入的结果，否则容易造成异常现象。
+    - 索引选择效率。
+    - 由 TiDB 自动选择的拆分列是否可能会被修改。
+
 4. 执行非事务 DML 语句。
 5. 如果报错，从报错信息或日志中获取具体失败的数据范围，进行重试或手动处理。
 
@@ -192,7 +258,7 @@ BATCH ON id LIMIT 2 DELETE /*+ USE_INDEX(t)*/ FROM t where v < 6;
 
 | 参数 | 说明 | 默认值 | 是否必填 | 建议值 |
 | :-- | :-- | :-- | :-- | :-- |
-| 划分列 | 用于划分 batch 的列，例如以上非事务 DML 语句 `BATCH ON id LIMIT 2 DELETE FROM t WHERE v < 6` 中的 `id` 列  | TiDB 尝试自动选择 | 否 | 选择可以最高效地满足 `WHERE` 条件的列 |
+| 划分列 | 用于划分 batch 的列，例如以上非事务 DML 语句 `BATCH ON id LIMIT 2 DELETE FROM t WHERE v < 6` 中的 `id` 列  | TiDB 尝试自动选择（不建议） | 否 | 选择可以最高效地满足 `WHERE` 条件的列 |
 | Batch size | 用于控制每个 batch 的大小，batch 即 DML 操作拆分成的 SQL 语句个数，例如以上非事务 DML 语句 `BATCH ON id LIMIT 2 DELETE FROM t WHERE v < 6` 中的 `LIMIT 2`。batch 数量越多，batch size 越小 | N/A | 是 | 1000～1000000，过小和过大都会导致性能下降 |
 
 ### 划分列的选择
@@ -217,8 +283,8 @@ BATCH ON id LIMIT 2 DELETE /*+ USE_INDEX(t)*/ FROM t where v < 6;
 
 非事务 DML 语句的硬性限制，不满足这些条件时 TiDB 会报错。
 
-- 只可对单表进行操作，暂不支持多表连接。
 - DML 语句不能包含 `ORDER BY` 或 `LIMIT` 字句。
+- 不支持子查询或集合操作。
 - 用于拆分的列必须被索引。该索引可以是单列的索引，或是一个联合索引的第一列。
 - 必须在 [`autocommit`](/system-variables.md#autocommit) 模式中使用。
 - 不能在开启了 batch-dml 时使用。
@@ -226,7 +292,7 @@ BATCH ON id LIMIT 2 DELETE /*+ USE_INDEX(t)*/ FROM t where v < 6;
 - 不能与 `prepare` 语句一起使用。
 - 划分列不支持 `ENUM`，`BIT`，`SET`，`JSON` 类型。
 - 不支持用在[临时表](/temporary-tables.md)上。
-- 不支持[公共表表达式](/develop/dev-guide-use-common-table-expression.md）。
+- 不支持[公共表表达式](/develop/dev-guide-use-common-table-expression.md)。
 
 ## 控制 batch 执行失败
 
@@ -251,7 +317,7 @@ batch-dml 是一种在 DML 语句执行期间将一个事务拆成多个事务�
 
 > **注意：**
 >
-> batch-dml 功能使用不当时，存在数据索引不一致风险。该功能将在 TiDB 后续版本中被废弃，因此不建议使用。
+> batch-dml 功能使用不当时，存在数据索引不一致风险。该功能已被废弃，因此不建议使用。
 
 非事务 DML 语句尚不能替代所有的 batch-dml 使用场景。它们的主要区别有：
 
@@ -260,6 +326,44 @@ batch-dml 是一种在 DML 语句执行期间将一个事务拆成多个事务�
 - 稳定性：batch-dml 极易因为使用不当导致数据索引不一致问题。而非事务 DML 语句不会导致数据索引不一致问题。但使用不当时，非事务 DML 语句与原始语句不等价，应用可能观察到和预期不符的现象。详见[常见问题](#常见问题)。
 
 ## 常见问题
+
+### 执行多表 join 语句后，遇到 `Unknown column xxx in 'where clause'` 错误
+
+当拼接查询语句时，如果 `WHERE` 子句中的条件涉及到了[划分列](#参数说明)所在表以外的其它表，就会出现该错误。例如，以下 SQL 语句中，划分列为 `t2.id`，划分列所在的表为 `t2`，但 `WHERE` 子句中的条件涉及到了 `t2` 和 `t3`。
+
+```sql
+BATCH ON test.t2.id LIMIT 1 
+INSERT INTO t 
+SELECT t2.id, t2.v, t3.id FROM t2, t3 WHERE t2.id = t3.id
+```
+
+```sql
+(1054, "Unknown column 't3.id' in 'where clause'")
+```
+
+当遇到此错误时，你可以通过 `DRY RUN QUERY` 打印出查询语句来确认。例如：
+
+```sql
+BATCH ON test.t2.id LIMIT 1 
+DRY RUN QUERY INSERT INTO t 
+SELECT t2.id, t2.v, t3.id FROM t2, t3 WHERE t2.id = t3.id
+```
+
+要避免该错误，可以尝试将 `WHERE` 子句中涉及其它表的条件移动到 `JOIN` 的 `ON` 条件中。例如：
+
+```sql
+BATCH ON test.t2.id LIMIT 1 
+INSERT INTO t 
+SELECT t2.id, t2.v, t3.id FROM t2 JOIN t3 ON t2.id = t3.id
+```
+
+```
++----------------+---------------+
+| number of jobs | job status    |
++----------------+---------------+
+| 0              | all succeeded |
++----------------+---------------+
+```
 
 ### 实际的 batch 大小和指定的 batch size 不一样
 
@@ -271,7 +375,7 @@ batch-dml 是一种在 DML 语句执行期间将一个事务拆成多个事务�
 
 ### 执行时出现报错 `Failed to restore the delete statement, probably because of unsupported type of the shard column`
 
-划分列的类型暂时不支持 `ENUM`、`BIT`、`SET`、`JSON` 类型，请尝试重新指定一个划分列。推荐使用整数或字符串类型的列。如果划分列不是这些类型，请联系 PingCAP 技术支持。
+划分列的类型暂时不支持 `ENUM`、`BIT`、`SET`、`JSON` 类型，请尝试重新指定一个划分列。推荐使用整数或字符串类型的列。如果划分列不是这些类型，请从 PingCAP 官方或 TiDB 社区[获取支持](/support.md)。
 
 ### 非事务 `DELETE` 出现和普通的 `DELETE` 不等价的“异常”行为
 

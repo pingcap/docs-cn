@@ -9,13 +9,14 @@ summary: 详细说明 PingCAP Clinic 诊断服务在使用 TiUP 部署的 TiDB �
 
 通过 PingCAP Clinic 在使用 TiUP 部署的集群中采集的数据**仅**用于诊断和分析集群问题。
 
-Clinic Server 是部署在云端的云服务，位于 PingCAP 内网（中国境内）。如果你把采集的数据上传到了 Clinic Server 供 PingCAP 技术人员远程定位集群问题，这些数据将存储于 PingCAP 设立在 AWS S3 中国区（北京）的服务器。PingCAP 对数据访问权限进行了严格的访问控制，只有经授权的内部技术人员可以访问该数据。
+Clinic Server 是部署在云端的云服务，根据数据存储的位置不同，分为以下两个独立的服务：
 
-在对应的技术支持 Case 关闭后，PingCAP 会在 90 天内对相关数据进行永久删除或匿名化处理。
+- [Clinic Server 中国区](https://clinic.pingcap.com.cn)：如果你把采集的数据上传到了 Clinic Server 中国区，这些数据将存储于 PingCAP 设立在 AWS 中国区（北京）的 S3 服务。PingCAP 对数据访问权限进行了严格的访问控制，只有经授权的内部技术人员可以访问该数据。
+- [Clinic Server 美国区](https://clinic.pingcap.com)：如果你把采集的数据上传到了 Clinic Server 美国区，这些数据将存储于 PingCAP 设立在 AWS 美国区的 S3 服务。PingCAP 对数据访问权限进行了严格的访问控制，只有经授权的内部技术人员可以访问该数据。
 
 ## TiDB 集群
 
-本节列出了 Diag 在使用 TiUP 部署的 TiDB 集群中能够采集的诊断数据类型。
+本节列出了 [Diag](https://github.com/pingcap/diag) 在使用 TiUP 部署的 TiDB 集群中能够采集的诊断数据类型。
 
 ### TiDB 集群信息
 
@@ -51,8 +52,8 @@ Clinic Server 是部署在云端的云服务，位于 PingCAP 内网（中国境
 | Error 日志 | `pd_stderr.log` | `--include=log` |
 | 配置文件 | `pd.toml` | `--include=config` |
 | 实时配置 | `config.json` | `--include=config` |
-| `tiup ctl pd -u http://${pd IP}:${PORT} store` 的输出结果 | `store.json` | `--include=config` |
-| `tiup ctl pd -u http://${pd IP}:${PORT} config placement-rules show` 的输出结果 | `placement-rule.json` | `--include=config` |
+| `tiup ctl:v<CLUSTER_VERSION> pd -u http://${pd IP}:${PORT} store` 的输出结果 | `store.json` | `--include=config` |
+| `tiup ctl:v<CLUSTER_VERSION> pd -u http://${pd IP}:${PORT} config placement-rules show` 的输出结果 | `placement-rule.json` | `--include=config` |
 
 ### TiFlash 诊断数据
 
@@ -83,7 +84,7 @@ Clinic Server 是部署在云端的云服务，位于 PingCAP 内网（中国境
 
 | 诊断数据类型 | 输出文件 | PingCAP Clinic 采集参数 |
 | :------ | :------ |:-------- |
-| 获取 TiDB 系统变量（默认不采集，采集需要额外提供数据库帐号） | `mysql.tidb.csv` | `--include=db_vars`（默认不采集） |
+| 获取 TiDB 系统变量（默认不采集，采集需要额外提供数据库账号） | `mysql.tidb.csv` | `--include=db_vars`（默认不采集） |
 | | `global_variables.csv` | `--include=db_vars`（默认不采集）|
 
 ### 集群节点的系统信息
@@ -111,7 +112,7 @@ Clinic Server 是部署在云端的云服务，位于 PingCAP 内网（中国境
 
 | 诊断数据类型 | 输出文件 | PingCAP Clinic 采集参数 |
 | :------ | :------ |:-------- |
-| 日志 | `m-master.log` | `--include=log` |
+| 日志 | `dm-master.log` | `--include=log` |
 | Error 日志 | `dm-master_stderr.log` | `--include=log` |
 | 配置文件 | `dm-master.toml` | `--include=config` |
 

@@ -1,6 +1,6 @@
 ---
 title: HTAP 深入探索指南
-summary: 本文介绍如何深入探索并使用 TiDB 的 HTAP 功能。 
+summary: 本文介绍如何深入探索并使用 TiDB 的 HTAP 功能。
 ---
 
 # HTAP 深入探索指南
@@ -13,7 +13,7 @@ summary: 本文介绍如何深入探索并使用 TiDB 的 HTAP 功能。
 
 要快速了解 TiDB 在 HTAP 场景下的体系架构与 HTAP 的适用场景，建议先观看下面的培训视频（时长 15 分钟）。注意本视频只作为学习参考，如需了解详细的 HTAP 相关内容，请参阅下方的文档内容。
 
-<video src="https://tidb-docs.s3.us-east-2.amazonaws.com/compressed+-+Lesson+04.mp4" width="600px" height="450px" controls="controls" poster="https://tidb-docs.s3.us-east-2.amazonaws.com/thumbnail+-+lesson+4.png"></video>
+<video src="https://download.pingcap.com/docs-cn%2FLesson04_htap.mp4" width="100%" height="100%" controls="controls" poster="https://download.pingcap.com/docs-cn/poster_lesson4.png"></video>
 
 ## HTAP 适用场景
 
@@ -34,6 +34,24 @@ TiDB HTAP 可以满足企业海量数据的增产需求、降低运维的风险�
     当将 TiDB 应用于数据中枢场景时，TiDB 作为数据中枢可以无缝连接数据业务层和数据仓库层，满足不同业务的需求。
 
 如果想了解更多关于 TiDB HTAP 场景信息，请参阅 [PingCAP 官网中关于 HTAP 的博客](https://pingcap.com/zh/blog/?tag=HTAP)。
+
+当遇到以下技术场景时，建议使用 TiDB HTAP 提升 TiDB 数据库整体表现：
+
+- 提升分析性能
+
+    你的业务中存在某些复杂的分析查询，如聚合、关联等操作。当这些分析查询涉及大量数据（超过 1000 万行）时，如果查询涉及的表无法有效利用索引或者索引的选择性较差，而行存储引擎 [TiKV](/tikv-overview.md) 难以满足查询的性能需求。
+
+- 混合负载隔离
+
+    在高并发的 OLTP 业务同时，你可能需要处理一些 OLAP 业务，同时还需要避免 OLAP 查询影响 OLTP 业务性能，确保系统的整体稳定性。
+
+- 简化 ETL 技术栈
+
+    当需要加工的数据量为中等规模（100 TB 以内）、数据加工调度流程相对简单、并发度不高（10 以内）时，你可能希望简化技术栈，替换原本需要使用多个不同技术栈的 OLTP、ETL 和 OLAP 系统，使用一个数据库同时满足交易系统以及分析系统的需求，降低技术门槛和运维人员需求。
+
+- 强一致性分析
+
+    如果需要对业务数据进行实时、强一致的分析计算，并且要求数据分析结果和业务数据完全一致，避免数据延迟和不一致的问题。
 
 ## HTAP 架构
 
@@ -67,7 +85,7 @@ TiDB HTAP 可以满足企业海量数据的增产需求、降低运维的风险�
 TiFlash 部署完成后并不会自动同步数据，你需要指定需要同步到 TiFlash 的数据表。指定后，TiDB 将创建对应的 TiFlash 副本。
 
 - 如果 TiDB 集群中还没有数据，请先迁移数据到 TiDB。详情请参阅[数据迁移](/migration-overview.md)。
-- 如果 TiDB 集群中已经有从上游同步过来的数据，TiFlash 部署完成后并不会自动同步数据，而需要手动指定需要同步的表，详情请参阅[使用 TiFlash](/tiflash/use-tiflash.md)。
+- 如果 TiDB 集群中已经有从上游同步过来的数据，TiFlash 部署完成后并不会自动同步数据，而需要手动指定需要同步的表，详情请参阅[使用 TiFlash](/tiflash/tiflash-overview.md#使用-tiflash)。
 
 ## HTAP 数据处理
 

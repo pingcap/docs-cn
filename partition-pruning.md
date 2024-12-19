@@ -230,10 +230,9 @@ explain select * from t where x between 7 and 14;
 
 关于 `fn` 函数，对于任意 `x` `y`，如果 `x > y`，则 `fn(x) > fn(y)`，那么这种是严格递增的单调函数。非严格递增的单调函数也可以符合分区裁剪要求，只要函数 `fn` 满足：对于任意 `x` `y`，如果 `x > y`，则 `fn(x) >= fn(y)`。理论上，所有满足单调条件（严格或者非严格）的函数都支持分区裁剪。目前，TiDB 支持的单调函数如下：
 
-```sql
-unix_timestamp
-to_days
-```
+* [`UNIX_TIMESTAMP()`](/functions-and-operators/date-and-time-functions.md)
+* [`TO_DAYS()`](/functions-and-operators/date-and-time-functions.md)
+* [`EXTRACT(<time unit> FROM <DATETIME/DATE/TIME column>)`](/functions-and-operators/date-and-time-functions.md)。对于 `DATE` 和 `DATETIME` 列，`YEAR` 和 `YEAR_MONTH` 时间单位被视为单调函数。对于 `TIME` 列，`HOUR`、`HOUR_MINUTE`、`HOUR_SECOND` 和 `HOUR_MICROSECOND` 被视为单调函数。请注意，`EXTRACT` 中不支持将 `WEEK` 作为分区裁剪的时间单位。
 
 例如，分区表达式是 `fn(col)` 形式，`fn` 为我们支持的单调函数 `to_days`，就可以使用分区裁剪：
 

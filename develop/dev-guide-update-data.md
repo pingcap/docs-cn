@@ -15,7 +15,7 @@ aliases: ['/zh/tidb/dev/update-data']
 
 在阅读本页面之前，你需要准备以下事项：
 
-- [使用 TiDB Cloud (DevTier) 构建 TiDB 集群](/develop/dev-guide-build-cluster-in-cloud.md)
+- [使用 TiDB Cloud Serverless 构建 TiDB 集群](/develop/dev-guide-build-cluster-in-cloud.md)
 - 阅读[数据库模式概览](/develop/dev-guide-schema-design-overview.md)，并[创建数据库](/develop/dev-guide-create-database.md)、[创建表](/develop/dev-guide-create-table.md)、[创建二级索引](/develop/dev-guide-create-secondary-indexes.md)
 - 若需使用 `UPDATE` 语句更新数据，需先[插入数据](/develop/dev-guide-insert-data.md)
 
@@ -31,8 +31,6 @@ aliases: ['/zh/tidb/dev/update-data']
 ### SQL 语法
 
 在 SQL 中，`UPDATE` 语句一般为以下形式：
-
-{{< copyable "sql" >}}
 
 ```sql
 UPDATE {table} SET {update_column} = {update_value} WHERE {filter_column} = {filter_value}
@@ -59,10 +57,10 @@ UPDATE {table} SET {update_column} = {update_value} WHERE {filter_column} = {fil
 
 假设某位作者改名为 Helen Haruki，需要更改 [authors](/develop/dev-guide-bookshop-schema-design.md#authors-表) 表。假设他的唯一标识 `id` 为 1，即过滤器应为：`id = 1`。
 
-<SimpleTab>
-<div label="SQL" href="update-sql">
+<SimpleTab groupId="language">
+<div label="SQL" value="sql">
 
-{{< copyable "sql" >}}
+在 SQL 中更改作者姓名的示例为：
 
 ```sql
 UPDATE `authors` SET `name` = "Helen Haruki" WHERE `id` = 1;
@@ -70,9 +68,9 @@ UPDATE `authors` SET `name` = "Helen Haruki" WHERE `id` = 1;
 
 </div>
 
-<div label="Java" href="update-java">
+<div label="Java" value="java">
 
-{{< copyable "" >}}
+在 Java 中更改作者姓名的示例为：
 
 ```java
 // ds is an entity of com.mysql.cj.jdbc.MysqlDataSource
@@ -97,8 +95,6 @@ try (Connection connection = ds.getConnection()) {
 
 在 SQL 中，`INSERT ... ON DUPLICATE KEY UPDATE ...` 语句一般为以下形式：
 
-{{< copyable "sql" >}}
-
 ```sql
 INSERT INTO {table} ({columns}) VALUES ({values})
     ON DUPLICATE KEY UPDATE {update_column} = {update_value};
@@ -114,7 +110,7 @@ INSERT INTO {table} ({columns}) VALUES ({values})
 
 ### `INSERT ON DUPLICATE KEY UPDATE` 最佳实践
 
-- 在仅有一个唯一键的表上使用 `INSERT ON DUPLICATE KEY UPDATE`。此语句在检测到任何 **_唯一键_** (包括主键) 冲突时，将更新数据。在不止匹配到一行冲突时，将只会一行数据。因此，除非能保证仅有一行冲突，否则不建议在有多个唯一键的表中使用 `INSERT ON DUPLICATE KEY UPDATE` 语句。
+- 在仅有一个唯一键的表上使用 `INSERT ON DUPLICATE KEY UPDATE`。此语句在检测到任何 **_唯一键_** (包括主键) 冲突时，将更新数据。在不止匹配到一行冲突时，将只会更新一行数据。因此，除非能保证仅有一行冲突，否则不建议在有多个唯一键的表中使用 `INSERT ON DUPLICATE KEY UPDATE` 语句。
 - 在创建或更新的场景中使用此语句。
 
 ### `INSERT ON DUPLICATE KEY UPDATE` 例子
@@ -123,10 +119,10 @@ INSERT INTO {table} ({columns}) VALUES ({values})
 
 此处主键为 `book_id` 和 `user_id` 的联合主键。`user_id` 为 1 的用户，给 `book_id` 为 1000 的书籍，打出的 5 分的评价。
 
-<SimpleTab>
-<div label="SQL" href="upsert-sql">
+<SimpleTab groupId="language">
+<div label="SQL" value="sql">
 
-{{< copyable "sql" >}}
+在 SQL 中更新书籍评价的示例为：
 
 ```sql
 INSERT INTO `ratings`
@@ -138,9 +134,9 @@ ON DUPLICATE KEY UPDATE `score` = 5, `rated_at` = NOW();
 
 </div>
 
-<div label="Java" href="upsert-java">
+<div label="Java" value="java">
 
-{{< copyable "" >}}
+在 Java 中更新书籍评价的示例为：
 
 ```java
 // ds is an entity of com.mysql.cj.jdbc.MysqlDataSource
@@ -163,7 +159,7 @@ VALUES (?, ?, ?, NOW()) ON DUPLICATE KEY UPDATE `score` = ?, `rated_at` = NOW()"
 
 ## 批量更新
 
-需要更新表中多行的数据，可选择 [使用 `UPDATE`](#使用-update)，并使用 `WHERE` 子句过滤需要更新的数据。
+需要更新表中多行的数据，可选择[使用 `UPDATE`](#使用-update)，并使用 `WHERE` 子句过滤需要更新的数据。
 
 但如果你需要更新大量行(数万或更多)的时候，建议使用一个迭代，每次都只更新一部分数据，直到更新全部完成。这是因为 TiDB 单个事务大小限制为 [txn-total-size-limit](/tidb-configuration-file.md#txn-total-size-limit)（默认为 100MB），且一次性过多的数据更新，将导致持有锁时间过长（[悲观事务](/pessimistic-transaction.md)），或产生大量冲突（[乐观事务](/optimistic-transaction.md)）。你可以在程序或脚本中使用循环来完成操作。
 
@@ -181,8 +177,6 @@ VALUES (?, ?, ?, NOW()) ON DUPLICATE KEY UPDATE `score` = ?, `rated_at` = NOW()"
 
 例如，你可以创建一个名为 `ten_point`，数据类型为 [BOOL](/data-type-numeric.md#boolean-类型) 的列作为是否为 10 分制的标识：
 
-{{< copyable "sql" >}}
-
 ```sql
 ALTER TABLE `bookshop`.`ratings` ADD COLUMN `ten_point` BOOL NOT NULL DEFAULT FALSE;
 ```
@@ -191,8 +185,8 @@ ALTER TABLE `bookshop`.`ratings` ADD COLUMN `ten_point` BOOL NOT NULL DEFAULT FA
 >
 > 此批量更新程序将使用 **DDL** 语句将进行数据表的模式更改。TiDB 的所有 DDL 变更操作全部都是在线进行的，可查看此处，了解此处使用的 [ADD COLUMN](/sql-statements/sql-statement-add-column.md) 语句。
 
-<SimpleTab>
-<div label="Golang">
+<SimpleTab groupId="language">
+<div label="Golang" value="golang">
 
 在 Golang 中，批量更新程序类似于以下内容：
 
@@ -274,13 +268,11 @@ func placeHolder(n int) string {
 
 </div>
 
-<div label="Java (JDBC)">
+<div label="Java (JDBC)" value="java">
 
 在 Java (JDBC) 中，批量更新程序类似于以下内容：
 
 **Java 代码部分：**
-
-{{< copyable "" >}}
 
 ```java
 package com.pingcap.bulkUpdate;
@@ -413,8 +405,6 @@ public class BatchUpdateExample {
 ```
 
 **`hibernate.cfg.xml` 配置部分：**
-
-{{< copyable "" >}}
 
 ```xml
 <?xml version='1.0' encoding='utf-8'?>

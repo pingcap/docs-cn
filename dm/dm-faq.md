@@ -1,6 +1,7 @@
 ---
 title: Data Migration 常见问题
 aliases: ['/docs-cn/tidb-data-migration/dev/faq/']
+summary: 数据迁移常见问题包括：DM 是否支持迁移阿里 RDS 和其他云数据库的数据、task 配置中的黑白名单的正则表达式是否支持非获取匹配、处理不兼容的 DDL 语句、重置数据迁移任务、全量导入过程中遇到报错等。
 ---
 
 # Data Migration 常见问题
@@ -14,7 +15,7 @@ DM 仅支持解析标准版本的 MySQL/MariaDB 的 binlog，对于阿里云 RDS
 - 阿里云 RDS
     - 即使上游表没有主键，阿里云 RDS 的 binlog 中也会包含隐藏的主键列，与上游表结构不一致。
 - 华为云 RDS
-    - 不支持，详见：[华为云数据库 RDS 是否支持直接读取 Binlog 备份文件](https://support.huaweicloud.com/rds_faq/rds_faq_0210.html)。
+    - 不支持，详见：[华为云数据库 RDS 是否支持直接读取 Binlog 备份文件](https://support.huaweicloud.com/en-us/rds_faq/rds_faq_0210.html)。
 
 ## task 配置中的黑白名单的正则表达式是否支持`非获取匹配`（?!）？
 
@@ -22,7 +23,7 @@ DM 仅支持解析标准版本的 MySQL/MariaDB 的 binlog，对于阿里云 RDS
 
 ## 如果在上游执行的一个 statement 包含多个 DDL 操作，DM 是否支持迁移？
 
-DM 会尝试将包含多个 DDL 变更操作的单条语句拆分成只包含一个 DDL 操作的多条语句，但是可能没有覆盖所有的场景。建议在上游执行的一条 statement 中只包含一个 DDL 操作，或者在测试环境中验证一下，如果不支持，可以给 DM 提 [issue](https://github.com/pingcap/dm/issues)。
+DM 会尝试将包含多个 DDL 变更操作的单条语句拆分成只包含一个 DDL 操作的多条语句，但是可能没有覆盖所有的场景。建议在上游执行的一条 statement 中只包含一个 DDL 操作，或者在测试环境中验证一下，如果不支持，可以给 `pingcap/tiflow` 提 [issue](https://github.com/pingcap/tiflow/issues)。
 
 ## 如何处理不兼容的 DDL 语句？
 
@@ -31,6 +32,10 @@ DM 会尝试将包含多个 DDL 变更操作的单条语句拆分成只包含一
 > **注意：**
 >
 > TiDB 目前并不兼容 MySQL 支持的所有 DDL 语句。
+
+## DM 是否会将视图的 DDL 语句和对视图的 DML 语句同步到下游的 TiDB 中？
+
+目前 DM 不会将视图的 DDL 语句同步到下游的 TiDB 集群，也不会将针对视图的 DML 语句同步到下游。
 
 ## 如何重置数据迁移任务？
 
@@ -45,10 +50,10 @@ DM 会尝试将包含多个 DDL 变更操作的单条语句拆分成只包含一
     - 修改任务配置文件以指定新的任务名，然后使用 `start-task {task-config-file}` 重启迁移任务。
     - 使用 `start-task --remove-meta {task-config-file}` 重启数据迁移任务。
 
-## 设置了 `online-ddl-scheme: "gh-ost"`， gh-ost 表相关的 DDL 报错该如何处理？
+## 设置了 `online-ddl: true`，gh-ost 表相关的 DDL 报错该如何处理？
 
 ```
-[unit=Sync] ["error information"="{\"msg\":\"[code=36046:class=sync-unit:scope=internal:level=high] online ddls on ghost table `xxx`.`_xxxx_gho`\\ngithub.com/pingcap/dm/pkg/terror.(*Error).Generate ......
+[unit=Sync] ["error information"="{\"msg\":\"[code=36046:class=sync-unit:scope=internal:level=high] online ddls on ghost table `xxx`.`_xxxx_gho`\\ngithub.com/pingcap/tiflow/pkg/terror.(*Error).Generate ......
 ```
 
 出现上述错误可能有以下原因：
@@ -59,13 +64,13 @@ DM 在最后 `rename ghost_table to origin table` 的步骤会把内存的 DDL �
 
 可以通过以下方式绕过这个问题：
 
-1. 取消 task 的 `online-ddl-schema` 的配置。
+1. 取消 task 的 `online-ddl-schema` 或 `online-ddl` 的配置。
 
 2. 把 `_{table_name}_gho`、`_{table_name}_ghc`、`_{table_name}_del` 配置到 `block-allow-list.ignore-tables` 中。
 
 3. 手工在下游的 TiDB 执行上游的 DDL。
 
-4. 待 Pos 复制到 gh-ost 整体流程后的位置，再重新启用 `online-ddl-schema` 以及注释掉 `block-allow-list.ignore-tables`。
+4. 待 Pos 复制到 gh-ost 整体流程后的位置，再重新启用 `online-ddl-schema` 或 `online-ddl` 以及注释掉 `block-allow-list.ignore-tables`。
 
 ## 如何为已有迁移任务增加需要迁移的表？
 
@@ -122,7 +127,7 @@ DM 在最后 `rename ghost_table to origin table` 的步骤会把内存的 DDL �
 
 在 DM 2.0 之后，为 checkpoint 等元信息表引入了更多的字段。如果通过 `start-task` 直接使用 1.0 集群的任务配置文件从增量复制阶段继续运行，则会出现 `Error 1054: Unknown column 'binlog_gtid' in 'field list'` 错误。
 
-对于此错误，可 [手动将 DM 1.0 的数据迁移任务导入到 2.0+ 集群](/dm/manually-upgrade-dm-1.0-to-2.0.md)。
+对于此错误，可[手动将 DM 1.0 的数据迁移任务导入到 2.0+ 集群](/dm/manually-upgrade-dm-1.0-to-2.0.md)。
 
 ## TiUP 无法部署 DM 的某个版本（如 v2.0.0-hotfix）
 
@@ -176,7 +181,7 @@ curl -X POST -d "tidb_general_log=0" http://{TiDBIP}:10080/settings
 if the DDL is not needed, you can use a filter rule with \"*\" schema-pattern to ignore it.\n\t : parse statement: line 1 column 11 near \"EVENT `event_del_big_table` \r\nDISABLE\" %!!(MISSING)(EXTRA string=ALTER EVENT `event_del_big_table` \r\nDISABLE
 ```
 
-出现报错的原因是 TiDB parser 无法解析上游的 DDL，例如 `ALTER EVENT`，所以 `sql-skip` 不会按预期生效。可以在任务配置文件中添加 [Binlog 过滤规则](/dm/dm-key-features.md#binlog-event-filter)进行过滤，并设置 `schema-pattern: "*"`。从 DM 2.0.1 版本开始，已预设过滤了 `EVENT` 相关语句。
+出现报错的原因是 TiDB parser 无法解析上游的 DDL，例如 `ALTER EVENT`，所以 `sql-skip` 不会按预期生效。可以在任务配置文件中添加 [Binlog 过滤规则](/dm/dm-binlog-event-filter.md)进行过滤，并设置 `schema-pattern: "*"`。从 DM 2.0.1 版本开始，已预设过滤了 `EVENT` 相关语句。
 
 在 DM v6.0 版本之后 `sql-skip`、`handle-error` 均已经被 `binlog` 替代，使用 `binlog` 命令可以跳过该类错误。
 
@@ -363,3 +368,7 @@ flush local meta, Rawcause: open relay-dir/xxx.000001/relay.metayyyy: no such fi
     ```
 
 - 升级 DM 至 v2.0.7 或之后版本。
+
+## Load 单元报错 `Unknown character set`
+
+由于 TiDB 只支持部分 MySQL 字符集，因此，在全量导入中，如果创建表结构时使用了 TiDB 不支持的字符集，DM 会报这个错误。你可以结合数据内容选择 [TiDB 支持的字符集](/character-set-and-collation.md)，预先在下游创建表结构以绕过这个错误。

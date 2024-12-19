@@ -19,8 +19,6 @@ aliases: ['/zh/tidb/dev/prepared-statement']
 
 ### 创建预处理语句
 
-{{< copyable "sql" >}}
-
 ```sql
 PREPARE {prepared_statement_name} FROM '{prepared_statement_sql}';
 ```
@@ -36,8 +34,6 @@ PREPARE {prepared_statement_name} FROM '{prepared_statement_sql}';
 
 预处理语句仅可使用用户变量作为参数，因此，需先使用 [SET 语句](/sql-statements/sql-statement-set-variable.md) 设置变量后，供 [EXECUTE 语句](/sql-statements/sql-statement-execute.md) 调用预处理语句。
 
-{{< copyable "sql" >}}
-
 ```sql
 SET @{parameter_name} = {parameter_value};
 EXECUTE {prepared_statement_name} USING @{parameter_name};
@@ -52,8 +48,6 @@ EXECUTE {prepared_statement_name} USING @{parameter_name};
 你可查看 [EXECUTE 语句](/sql-statements/sql-statement-execute.md) 获得更多信息。
 
 ### 删除预处理语句
-
-{{< copyable "sql" >}}
 
 ```sql
 DEALLOCATE PREPARE {prepared_statement_name};
@@ -73,11 +67,11 @@ DEALLOCATE PREPARE {prepared_statement_name};
 
 例如，需要查询 [Bookshop 应用](/develop/dev-guide-bookshop-schema-design.md#books-表) 中，`id` 为 1 的书籍信息。
 
-<SimpleTab>
+<SimpleTab groupId="language">
 
-<div label="SQL" href="read-sql">
+<div label="SQL" value="sql">
 
-{{< copyable "sql" >}}
+使用 SQL 查询示例：
 
 ```sql
 PREPARE `books_query` FROM 'SELECT * FROM `books` WHERE `id` = ?';
@@ -89,8 +83,6 @@ PREPARE `books_query` FROM 'SELECT * FROM `books` WHERE `id` = ?';
 Query OK, 0 rows affected (0.01 sec)
 ```
 
-{{< copyable "sql" >}}
-
 ```sql
 SET @id = 1;
 ```
@@ -100,8 +92,6 @@ SET @id = 1;
 ```
 Query OK, 0 rows affected (0.04 sec)
 ```
-
-{{< copyable "sql" >}}
 
 ```sql
 EXECUTE `books_query` USING @id;
@@ -120,9 +110,9 @@ EXECUTE `books_query` USING @id;
 
 </div>
 
-<div label="Java" href="read-java">
+<div label="Java" value="java">
 
-{{< copyable "" >}}
+使用 Java 查询示例：
 
 ```java
 // ds is an entity of com.mysql.cj.jdbc.MysqlDataSource
@@ -152,11 +142,11 @@ try (Connection connection = ds.getConnection()) {
 
 还是使用 [books 表](/develop/dev-guide-bookshop-schema-design.md#books-表) 为例，需要插入一个 `title` 为 `TiDB Developer Guide`, `type` 为 `Science & Technology`, `stock` 为 `100`, `price` 为 `0.0`, `published_at` 为 `插入的当前时间` 的书籍信息。需要注意的是，`books` 表的主键包含 `AUTO_RANDOM` 属性，无需指定它。如果你对插入数据还不了解，可以在[插入数据](/develop/dev-guide-insert-data.md)一节了解更多数据插入的相关信息。
 
-<SimpleTab>
+<SimpleTab groupId="language">
 
-<div label="SQL" href="write-sql">
+<div label="SQL" value="sql">
 
-{{< copyable "sql" >}}
+使用 SQL 插入数据示例如下：
 
 ```sql
 PREPARE `books_insert` FROM 'INSERT INTO `books` (`title`, `type`, `stock`, `price`, `published_at`) VALUES (?, ?, ?, ?, ?);';
@@ -167,8 +157,6 @@ PREPARE `books_insert` FROM 'INSERT INTO `books` (`title`, `type`, `stock`, `pri
 ```
 Query OK, 0 rows affected (0.03 sec)
 ```
-
-{{< copyable "sql" >}}
 
 ```sql
 SET @title = 'TiDB Developer Guide';
@@ -184,8 +172,6 @@ SET @published_at = NOW();
 Query OK, 0 rows affected (0.04 sec)
 ```
 
-{{< copyable "sql" >}}
-
 ```sql
 EXECUTE `books_insert` USING @title, @type, @stock, @price, @published_at;
 ```
@@ -198,9 +184,9 @@ Query OK, 1 row affected (0.03 sec)
 
 </div>
 
-<div label="Java" href="write-java">
+<div label="Java" value="java">
 
-{{< copyable "" >}}
+使用 Java 插入数据示例如下：
 
 ```java
 try (Connection connection = ds.getConnection()) {
@@ -228,7 +214,7 @@ try (Connection connection = ds.getConnection()) {
 | `prepStmtCacheSqlLimit` |  预处理语句最大大小（默认 256 字符）  |  预处理语句大于 256 字符时   | 按实际预处理语句大小配置 |
 |   `prepStmtCacheSize`   | 预处理语句最大缓存数量 （默认 25 条） |  预处理语句数量大于 25 条时  | 按实际预处理语句数量配置 |
 
-在此处给出一个较为的通用场景的 JDBC 连接字符串配置，以 Host: `127.0.0.1`，Port: `4000`，用户: `root`，密码: 空 ，默认数据库: `test`为例：
+在此处给出一个较为的通用场景的 JDBC 连接字符串配置，以 Host: `127.0.0.1`，Port: `4000`，用户: `root`，密码: 空，默认数据库: `test`为例：
 
 ```
 jdbc:mysql://127.0.0.1:4000/test?user=root&useConfigs=maxPerformance&useServerPrepStmts=true&prepStmtCacheSqlLimit=2048&prepStmtCacheSize=256&rewriteBatchedStatements=true&allowMultiQueries=true
@@ -238,9 +224,9 @@ jdbc:mysql://127.0.0.1:4000/test?user=root&useConfigs=maxPerformance&useServerPr
 
 有关 Java 的完整示例，可参阅：
 
-- [TiDB 和 Java 的简单 CRUD 应用程序 - 使用 JDBC](/develop/dev-guide-sample-application-java.md#第-2-步获取代码)。
-- [TiDB 和 Java 的简单 CRUD 应用程序 - 使用 Hibernate](/develop/dev-guide-sample-application-java.md#第-2-步获取代码)。
-- [Build the TiDB Application using Spring Boot](/develop/dev-guide-sample-application-spring-boot.md)。
+- [TiDB 和 JDBC 的简单 CRUD 应用程序](/develop/dev-guide-sample-application-java-jdbc.md)
+- [TiDB 和 Hibernate 的简单 CRUD 应用程序](/develop/dev-guide-sample-application-java-hibernate.md)
+- [使用 Spring Boot 构建 TiDB 应用程序](/develop/dev-guide-sample-application-java-spring-boot.md)
 
 </div>
 

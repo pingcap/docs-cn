@@ -1,6 +1,7 @@
 ---
 title: TiUP 文档地图
 aliases: ['/docs-cn/dev/tiup/tiup-documentation-guide/']
+summary: TiUP 文档地图包括使用文档和资源两部分。使用文档包括 TiUP 概览、TiUP 术语、TiUP 组件管理、TiUP FAQ、TiUP 故障排查和 TiUP 参考手册。资源包括 TiUP 版本发布说明、AskTUG TiUP 主题和 TiUP Issues。
 ---
 
 # TiUP 文档地图
@@ -16,5 +17,6 @@ aliases: ['/docs-cn/dev/tiup/tiup-documentation-guide/']
 
 ## 资源
 
+- [TiUP 版本发布说明](https://github.com/pingcap/tiup/releases)
 - [AskTUG TiUP 主题](https://asktug.com/tags/tiup)
 - [TiUP Issues](https://github.com/pingcap/tiup/issues)：TiUP Github Issues 列表

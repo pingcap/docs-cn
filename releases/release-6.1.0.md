@@ -1,12 +1,15 @@
 ---
 title: TiDB 6.1.0 Release Notes
+summary: 了解 TiDB 6.1.0 版本的新功能、兼容性变更、改进提升，以及错误修复。
 ---
 
-# TiDB v6.1.0 Release Notes
+# TiDB 6.1.0 Release Notes
 
 发版日期：2022 年 6 月 13 日
 
 TiDB 版本：6.1.0
+
+试用链接：[快速体验](https://docs.pingcap.com/zh/tidb/v6.1/quick-start-with-tidb) | [生产部署](https://docs.pingcap.com/zh/tidb/v6.1/production-deployment-using-tiup) | [下载离线包](https://cn.pingcap.com/product-community/?version=v6.1.0#version-list)
 
 在 6.1.0 版本中，你可以获得以下关键特性：
 
@@ -17,6 +20,7 @@ TiDB 版本：6.1.0
 - TiFlash 支持按需触发物理数据整理（Compaction）
 - MPP 实现窗口函数框架
 - TiCDC 支持将 changelogs 以 Avro 协议输出到 Kafka
+- TiCDC 支持在数据复制过程中拆分大事务，能够有效降低大事务带来的复制延迟
 - DM 合库合表迁移场景的乐观 DDL 协调模式 GA
 
 ## 新功能
@@ -39,7 +43,7 @@ TiDB 版本：6.1.0
     * `DENSE_RANK()`
     * `ROW_NUMBER()`
 
-  [用户文档](/tiflash/use-tiflash.md#tiflash-支持的计算下推)，[#33072](https://github.com/pingcap/tidb/issues/33072)
+  [用户文档](/tiflash/tiflash-supported-pushdown-calculations.md)，[#33072](https://github.com/pingcap/tidb/issues/33072)
 
 ### 可观测性
 
@@ -55,11 +59,17 @@ TiDB 版本：6.1.0
 
 ### 性能
 
-* 支持自定义 Region 大小（实验特性）
+* 支持自定义 Region 大小
 
-    设置更大的 Region 可以有效减少 Region 数量，降低 Region 管理成本，提升集群性能和稳定性。该特性引入 bucket 概念，即将每个 Region 划分为更小的区间 bucket。使用 bucket 作为并发查询单位能够优化 Region 调大时的查询性能，动态调整热点 Region 的大小来保证热点调度效率和负载均衡。该特性目前属于实验特性，不建议在生产环境使用。
+    从 v6.1.0 起，你可以通过 [`coprocessor.region-split-size`](/tikv-configuration-file.md#region-split-size) 设置更大的 Region 从而有效减少 Region 数量，降低 Region 管理成本，提升集群性能和稳定性。
 
-    [用户文档](/tune-region-performance.md)，[#11515](https://github.com/tikv/tikv/issues/11515)
+    [用户文档](/tune-region-performance.md#使用-region-split-size-调整-region-大小)，[#11515](https://github.com/tikv/tikv/issues/11515)
+
+* 支持使用 bucket 增加并发（实验特性）
+
+    当 Region 调大以后，为了进一步提高查询的并发度，TiDB 引入 bucket 概念，即将每个 Region 划分为更小的区间 bucket。使用 bucket 作为并发查询单位能够优化 Region 调大时的查询性能，动态调整热点 Region 的大小来保证热点调度效率和负载均衡。该特性目前属于实验特性，不建议在生产环境使用。
+
+    [用户文档](/tune-region-performance.md#使用-region-split-size-调整-region-大小)，[#11515](https://github.com/tikv/tikv/issues/11515)
 
 * Raft Engine 存储引擎 GA
 
@@ -83,13 +93,13 @@ TiDB 版本：6.1.0
     * `TO_SECONDS`
     * `WEEKOFYEAR`
 
-  [用户文档](/tiflash/use-tiflash.md#tiflash-支持的计算下推)，[#4679](https://github.com/pingcap/tiflash/issues/4679)，[#4678](https://github.com/pingcap/tiflash/issues/4678)，[#4677](https://github.com/pingcap/tiflash/issues/4677)
+  [用户文档](/tiflash/tiflash-supported-pushdown-calculations.md)，[#4679](https://github.com/pingcap/tiflash/issues/4679)，[#4678](https://github.com/pingcap/tiflash/issues/4678)，[#4677](https://github.com/pingcap/tiflash/issues/4677)
 
 * 支持分区表动态裁剪
 
     支持分区表动态裁剪功能，以提升数据分析场景下的性能。v6.0.0 以前版本的用户升级完成后建议及时手动刷新既存分区表的统计信息，以达到最好的性能表现（全新安装，或在 v6.1.0 升级完成后新创建的分区表无需此动作）。
 
-    用户文档：[MPP 模式访问分区表](/tiflash/use-tiflash.md#mpp-模式访问分区表)，[动态裁剪模式](/partitioned-table.md#动态裁剪模式)，[#3873](https://github.com/pingcap/tiflash/issues/3873)
+    用户文档：[MPP 模式访问分区表](/tiflash/use-tiflash-mpp-mode.md#mpp-模式访问分区表)，[动态裁剪模式](/partitioned-table.md#动态裁剪模式)，[#3873](https://github.com/pingcap/tiflash/issues/3873)
 
 ### 稳定性
 
@@ -152,7 +162,7 @@ TiDB 版本：6.1.0
 
     支持通过 `enable-global-kill` 配置项（默认开启）设置全局 kill 开关。
 
-    在 TiDB v6.1.0 之前，当某个特定操作占用大量资源引发集群稳定性问题时，你需要先登陆到对应的 TiDB 节点，然后运行 `kill [TiDB] id` 命令终止对应的连接及操作。在 TiDB 节点多的情况下，这种方式使用不便，并且容易误操作。从 v6.1.0 起，当开启 `enable-global-kill` 配置项时，你可以在任意 TiDB 节点运行 kill 命令终止指定的连接及操作，而无需担心客户端和 TiDB 中间有代理时错误地终止其他查询或会话。目前 TiDB 暂时不支持用 Ctrl+C 终止查询或会话。
+    在 TiDB v6.1.0 之前，当某个特定操作占用大量资源引发集群稳定性问题时，你需要先登录到对应的 TiDB 节点，然后运行 `kill [TiDB] id` 命令终止对应的连接及操作。在 TiDB 节点多的情况下，这种方式使用不便，并且容易误操作。从 v6.1.0 起，当开启 `enable-global-kill` 配置项时，你可以在任意 TiDB 节点运行 kill 命令终止指定的连接及操作，而无需担心客户端和 TiDB 中间有代理时错误地终止其他查询或会话。目前 TiDB 暂时不支持用 Ctrl+C 终止查询或会话。
 
     [用户文档](/tidb-configuration-file.md#enable-global-kill-从-v610-版本开始引入)，[#8854](https://github.com/pingcap/tidb/issues/8854)
 
@@ -203,11 +213,11 @@ TiDB 版本：6.1.0
 
     * TiCDC 支持将 TiDB 数据库的增量数据按表分发到不同的 Kafka Topic 中，结合 Canal-json 格式可以将数据直接与 Flink 共享。
 
-        [用户文档](/ticdc/manage-ticdc.md#自定义-kafka-sink-的-topic-和-partition-的分发规则)，[#4423](https://github.com/pingcap/tiflow/issues/4423)
+        [用户文档](//ticdc/ticdc-sink-to-kafka.md#自定义-kafka-sink-的-topic-和-partition-的分发规则)，[#4423](https://github.com/pingcap/tiflow/issues/4423)
 
     * TiCDC 支持 SASL GSSAPI 认证类型。增加了使用 Kafka 的 SASL 认证示例。
 
-        [用户文档](/ticdc/manage-ticdc.md#ticdc-使用-kafka-的认证与授权)，[#4423](https://github.com/pingcap/tiflow/issues/4423)
+        [用户文档](/ticdc/ticdc-sink-to-kafka.md#ticdc-使用-kafka-的认证与授权)，[#4423](https://github.com/pingcap/tiflow/issues/4423)
 
 * TiCDC 支持同步使用 GBK 编码的上游表。
 
@@ -265,12 +275,12 @@ TiDB 版本：6.1.0
 | TiKV | [`storage.background-error-recovery-window`](/tikv-configuration-file.md#background-error-recovery-window-从-v610-版本开始引入) | 新增 | RocksDB 检测到可恢复的后台错误后，所允许的最长恢复时间。 |
 | TiKV | [`storage.api-version`](/tikv-configuration-file.md#api-version-从-v610-版本开始引入) | 新增 | TiKV 作为 Raw Key Value 存储数据时使用的存储格式与接口版本。 |
 | PD | [`schedule.max-store-preparing-time`](/pd-configuration-file.md#max-store-preparing-time-从-v610-版本开始引入) | 新增 | 控制 store 上线阶段的最长等待时间。 |
-| TiCDC | [`enable-tls`](/ticdc/manage-ticdc.md#sink-uri-配置-kafka) | 新增 | 控制是否使用 TLS 连接 Kafka。 |
-| TiCDC | `sasl-gssapi-user`<br/>`sasl-gssapi-password`<br/>`sasl-gssapi-auth-type`<br/>`sasl-gssapi-service-name`<br/>`sasl-gssapi-realm`<br/>`sasl-gssapi-key-tab-path`<br/>`sasl-gssapi-kerberos-config-path` | 新增 | 支持 Kafka SASL/GSSAPI 认证所需要的参数。详情见 [Sink URI 配置 `kafka`](/ticdc/manage-ticdc.md#sink-uri-配置-kafka)。 |
-| TiCDC | [`avro-decimal-handling-mode`](/ticdc/manage-ticdc.md#sink-uri-配置-kafka)<br/>[`avro-bigint-unsigned-handling-mode`](/ticdc/manage-ticdc.md#sink-uri-配置-kafka) | 新增 | 控制 Avro 格式的输出细节。 |
-| TiCDC | [`dispatchers.topic`](/ticdc/manage-ticdc.md#同步任务配置文件描述) | 新增 | 控制 TiCDC 将增量数据分发到不同 Kafka Topic 的策略 |
-| TiCDC | [`dispatchers.partition`](/ticdc/manage-ticdc.md#同步任务配置文件描述) | 新增 | `dispatchers.partition` 是原 `dispatchers.dispatcher` 配置项的别名，用于控制增量数据的 Kafka Partition 分发策略。 |
-| TiCDC | [`schema-registry`](/ticdc/manage-ticdc.md#ticdc-集成-kafka-connect-confluent-platform) | 新增 | 用于指定存储 Avro Schema 的 Schema Registry Endpoint。 |
+| TiCDC | [`enable-tls`](/ticdc/ticdc-sink-to-kafka.md#sink-uri-配置-kafka) | 新增 | 控制是否使用 TLS 连接 Kafka。 |
+| TiCDC | `sasl-gssapi-user`<br/>`sasl-gssapi-password`<br/>`sasl-gssapi-auth-type`<br/>`sasl-gssapi-service-name`<br/>`sasl-gssapi-realm`<br/>`sasl-gssapi-key-tab-path`<br/>`sasl-gssapi-kerberos-config-path` | 新增 | 支持 Kafka SASL/GSSAPI 认证所需要的参数。详情见 [Sink URI 配置 `kafka`](/ticdc/ticdc-sink-to-kafka.md#sink-uri-配置-kafka)。 |
+| TiCDC | [`avro-decimal-handling-mode`](/ticdc/ticdc-sink-to-kafka.md#sink-uri-配置-kafka)<br/>[`avro-bigint-unsigned-handling-mode`](/ticdc/ticdc-sink-to-kafka.md#sink-uri-配置-kafka) | 新增 | 控制 Avro 格式的输出细节。 |
+| TiCDC | [`dispatchers.topic`](/ticdc/ticdc-changefeed-config.md) | 新增 | 控制 TiCDC 将增量数据分发到不同 Kafka Topic 的策略 |
+| TiCDC | [`dispatchers.partition`](/ticdc/ticdc-changefeed-config.md) | 新增 | `dispatchers.partition` 是原 `dispatchers.dispatcher` 配置项的别名，用于控制增量数据的 Kafka Partition 分发策略。 |
+| TiCDC | [`schema-registry`](/ticdc/ticdc-sink-to-kafka.md#ticdc-集成-kafka-connect-confluent-platform) | 新增 | 用于指定存储 Avro Schema 的 Schema Registry Endpoint。 |
 | DM | `dmctl start-relay` 命令中的 worker 参数 | 删除 | 不推荐使用的方式，将通过更为简单的实现替代。 |
 | DM | source 配置中的 `relay-dir` | 删除 | 由 worker 配置文件中的同名配置项替代。 |
 | DM | task 配置中的 `is-sharding` | 删除 | 由 `shard-mode` 配置项替代。 |
@@ -351,6 +361,10 @@ TiDB 版本：6.1.0
 
         - 优化 Scatter Region 为批量模式，提升 Scatter Region 过程的稳定性 [#33618](https://github.com/pingcap/tidb/issues/33618)
 
+    + TiCDC
+
+        - TiCDC 支持在数据复制过程中拆分大事务，能够有效降低大事务带来的复制延迟 [#5280](https://github.com/pingcap/tiflow/issues/5280)
+
 ## 错误修复
 
 + TiDB
@@ -382,7 +396,7 @@ TiDB 版本：6.1.0
     - 修复 `not leader` 的 status code 有误的问题 [#4797](https://github.com/tikv/pd/issues/4797)
     - 修复在某些特殊情况下 TSO fallback 的问题 [#4884](https://github.com/tikv/pd/issues/4884)
     - 修复已清除的 `tombstone store` 信息在切换 PD leader 后再次出现的问题 [#4941](https://github.com/tikv/pd/issues/4941)
-    - 修复 PD leader 转移后调度不能立即启动的问题 [4769](https://github.com/tikv/pd/issues/4769)
+    - 修复 PD leader 转移后调度不能立即启动的问题 [#4769](https://github.com/tikv/pd/issues/4769)
 
 + TiDB Dashboard
 
@@ -390,14 +404,13 @@ TiDB 版本：6.1.0
 
 + TiFlash
 
-    - 修复大量 INSERT 和 DELETE 操作后可能导致 TiFlash 数据不一致的问题 [#4956](https://github.com/pingcap/tiflash/issues/4956</span>)
+    - 修复大量 INSERT 和 DELETE 操作后可能导致 TiFlash 数据不一致的问题 [#4956](https://github.com/pingcap/tiflash/issues/4956)
 
 + Tools
 
     + TiCDC
 
         - 优化了 ddl schema 缓存方式，降低了内存消耗 [#1386](https://github.com/pingcap/tiflow/issues/1386)
-        - 避免大事务导致的 OOM 问题 [#5280](https://github.com/pingcap/tiflow/issues/5280)
         - 修复了增量扫描特殊场景下的数据丢失问题 [#5468](https://github.com/pingcap/tiflow/issues/5468)
 
     + TiDB Data Migration (DM)
@@ -418,5 +431,5 @@ TiDB 版本：6.1.0
         - 修复前置检查中没有检查本地磁盘空间以及集群是否可用的问题 [#34213](https://github.com/pingcap/tidb/issues/34213)
         - 修复 schema 路由错误的问题 [#33381](https://github.com/pingcap/tidb/issues/33381)
         - 修复 TiDB Lightning panic 时 PD 配置未正确恢复的问题 [#31733](https://github.com/pingcap/tidb/issues/31733)
-        - 修复由 `auto_increment` 列的数据越界导致 local 模式导入失败的问题 [#29737](https://github.com/pingcap/tidb/issues/27937)
+        - 修复由 `auto_increment` 列的数据越界导致 local 模式导入失败的问题 [#27937](https://github.com/pingcap/tidb/issues/27937)
         - 修复 `auto_random`、`auto_increment` 列为空时 local 模式导入失败的问题 [#34208](https://github.com/pingcap/tidb/issues/34208)

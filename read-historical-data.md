@@ -1,6 +1,7 @@
 ---
 title: 通过系统变量 tidb_snapshot 读取历史数据
 aliases: ['/docs-cn/dev/read-historical-data/','/docs-cn/dev/how-to/get-started/read-historical-data/']
+summary: 本文介绍了通过系统变量 `tidb_snapshot` 读取历史数据的操作流程和历史数据的保留策略。TiDB 实现了通过标准 SQL 接口读取历史数据功能，无需特殊的 client 或者 driver。当数据被更新、删除后，依然可以通过 SQL 接口将更新 / 删除前的数据读取出来。历史数据保留策略使用 MVCC 管理版本，超过一定时间的历史数据会被彻底删除，以减小空间占用以及避免历史版本过多引入的性能开销。
 ---
 
 # 通过系统变量 tidb_snapshot 读取历史数据
@@ -219,6 +220,6 @@ SET GLOBAL tidb_gc_life_time="60m";
 
 如果想要恢复历史版本的数据，可以使用以下任意一种方法进行设置：
 
-- 对于简单场景，在设置 `tidb_snapshot` 变量后使用 `SELECT` 语句并复制粘贴输出结果，或者使用 `SELECT ... INTO LOCAL OUTFLE` 语句并使用 `LOAD DATA` 语句来导入数据。
+- 对于简单场景，在设置 `tidb_snapshot` 变量后使用 [`SELECT`](/sql-statements/sql-statement-select.md) 语句并复制粘贴输出结果，或者使用 `SELECT ... INTO OUTFILE` 语句并使用 [`LOAD DATA`](/sql-statements/sql-statement-load-data.md) 语句来导入数据。
 
 - 使用 [Dumpling](/dumpling-overview.md#导出-tidb-的历史数据快照) 导出 TiDB 的历史数据快照。Dumpling 在导出较大的数据集时有较好的性能。

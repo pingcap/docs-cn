@@ -1,5 +1,6 @@
 ---
 title: tiup cluster check
+summary: TiUP Cluster 提供了 `check` 子命令，用于检查集群的硬件和软件环境是否满足正常运行条件。检查包括操作系统版本、CPU 支持、系统时间、内核参数、磁盘挂载参数等。用户可以通过指定选项来启用 CPU 核心数、内存大小和磁盘性能测试的检查。检查结果将以表格形式输出，包括目标节点、检查项、检查结果和结果描述。
 ---
 
 # tiup cluster check
@@ -121,7 +122,9 @@ title: tiup cluster check
 tiup cluster check <topology.yml | cluster-name> [flags]
 ```
 
-若集群尚未部署，需要传递将用于部署集群的 [topology.yml](/tiup/tiup-cluster-topology-reference.md) 文件，tiup-cluster 会根据该文件的内容连接到对应机器去检查。若集群已经部署，则可以使用集群的名字 `<cluster-name>` 作为检查对象。
+- 若集群尚未部署，需要传递将用于部署集群的 [topology.yml](/tiup/tiup-cluster-topology-reference.md) 文件，tiup-cluster 会根据该文件的内容连接到对应机器去检查。
+- 若集群已经部署，则可以使用集群的名字 `<cluster-name>` 作为检查对象。
+- 如果需要检查已部署集群的扩容拓扑文件，可以将 `<scale-out.yml>` 和 `<cluster-name>` 作为检查对象。
 
 > **注意：**
 >
@@ -143,17 +146,34 @@ tiup cluster check <topology.yml | cluster-name> [flags]
 - 数据类型：`BOOLEAN`
 - 该选项默认关闭，默认值为 `false`。在命令中添加该选项，并传入 `true` 值或不传值，均可开启此功能。
 
+> **注意：**
+>
+> `tiup cluster check` 也支持修复已部署集群的扩容拓扑文件，命令格式：
+>
+>```shell
+> tiup cluster check <cluster-name> scale-out.yml --cluster --apply --user root [-p] [-i /home/root/.ssh/gcp_rsa]
+>```
+
 ### --cluster
 
-tiup-cluster 支持对未部署的集群进行检查，也支持对已部署的集群进行检查，命令格式：
+- 对已部署的集群进行检查。
+- 数据类型：`BOOLEAN`
+- 默认值：`false`
+- 在命令中添加该选项，并传入 `true` 值或不传值，均可开启此功能。
+- 命令格式：
 
-```shell
-tiup cluster check <topology.yml | cluster-name> [flags]
-```
+    ```shell
+    tiup cluster check <topology.yml | cluster-name> --cluster [flags]
+    ```
 
-若选择的格式为 `tiup cluster check <cluster-name>` 则必须加上该选项：`tiup cluster check <cluster-name> --cluster`。
-
-该选项的数据类型为 `BOOLEAN`。该选项默认关闭，默认值为 `false`。在命令中添加该选项，并传入 `true` 值或不传值，均可开启此功能。
+> **注意：**
+>
+> - 若选择的格式为 `tiup cluster check <cluster-name>`，则必须加上该选项：`tiup cluster check <cluster-name> --cluster`。
+> - `tiup cluster check` 也支持检查已部署集群的扩容拓扑文件，命令格式：
+>
+>    ```shell
+>     tiup cluster check <cluster-name> scale-out.yml --cluster --user root [-p] [-i /home/root/.ssh/gcp_rsa]
+>    ```
 
 ### -N, --node
 

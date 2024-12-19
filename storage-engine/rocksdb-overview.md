@@ -1,6 +1,7 @@
 ---
 title: RocksDB 简介
 aliases: ['/docs-cn/dev/storage-engine/rocksdb-overview/','/docs-cn/dev/rocksdb/rocksdb-overview/']
+summary: RocksDB 是 Facebook 基于 LevelDB 开发的 LSM-tree 架构引擎，提供键值存储与读写功能。数据先写入磁盘上的 WAL，再写入内存中的跳表。内存数据达到阈值后刷到磁盘生成 SST 文件，分为多层，90% 数据存储在最后一层。RocksDB 允许创建多个 ColumnFamily，共享同一个 WAL 文件。为提高读取性能，文件按大小切分成 block，存在 BlockCache 中。后台线程执行 MemTable 转化为 SST 文件和合并操作。L0 文件数量过多会触发 WriteStall 阻塞写入。
 ---
 
 # RocksDB 简介
@@ -9,7 +10,7 @@ aliases: ['/docs-cn/dev/storage-engine/rocksdb-overview/','/docs-cn/dev/rocksdb/
 
 内存中的数据达到一定阈值后，会刷到磁盘上生成 SST 文件 (Sorted String Table)，SST 又分为多层（默认至多 6 层），每一层的数据达到一定阈值后会挑选一部分 SST 合并到下一层，每一层的数据是上一层的 10 倍（因此 90% 的数据存储在最后一层）。
 
-RocksDB 允许用户创建多个 ColumnFamily ，这些 ColumnFamily 各自拥有独立的内存跳表以及 SST 文件，但是共享同一个 WAL 文件，这样的好处是可以根据应用特点为不同的 ColumnFamily 选择不同的配置，但是又没有增加对 WAL 的写次数。
+RocksDB 允许用户创建多个 ColumnFamily，这些 ColumnFamily 各自拥有独立的内存跳表以及 SST 文件，但是共享同一个 WAL 文件，这样的好处是可以根据应用特点为不同的 ColumnFamily 选择不同的配置，但是又没有增加对 WAL 的写次数。
 
 ## TiKV 架构
 
@@ -46,7 +47,7 @@ RocksDB 中，将内存中的 MemTable 转化为磁盘上的 SST 文件，以及
 
 RocksDB 的 L0 与其他层不同，L0 的各个 SST 是按照生成顺序排列，各个 SST 之间的 key 范围存在重叠，因此查询的时候必须依次查询 L0 中的每一个 SST。为了不影响查询性能，当 L0 中的文件数量过多时，会触发 WriteStall 阻塞写入。
 
-如果用户遇到了写延迟突然大幅度上涨，可以先查看 Grafana RocksDB KV 面板 WriteStall Reason 指标，如果是 L0 文件数量过多引起的 WriteStall，可以调整下面几个配置到 64，详细见 [《TiDB in Action》](https://github.com/pingcap-incubator/tidb-in-action/blob/master/session4/chapter8/threadpool-optimize.md#5-rocksdb)。
+如果用户遇到了写延迟突然大幅度上涨，可以先查看 Grafana RocksDB KV 面板 WriteStall Reason 指标，如果是 L0 文件数量过多引起的 WriteStall，可以调整下面几个配置到 64，详细见[《TiDB in Action》](https://github.com/pingcap-incubator/tidb-in-action/blob/master/session4/chapter8/threadpool-optimize.md#5-rocksdb)。
 
 ```
 rocksdb.defaultcf.level0-slowdown-writes-trigger

@@ -26,7 +26,7 @@ TiDB 集群包含一个名为 `test` 的数据库。但建议你自行创建数�
 
 TiDB 语境中的 Table 或者说表，从属于某个[数据库](#数据库-database)。
 
-表包含数据**行**。每行数据中的每个值都属于一个特定的**列**。每列都只允许单一数据类型的数据值。列可添加[约束](/constraints.md)来进一步限定。你还可以添加[生成列（实验特性）](/generated-columns.md)用于计算。
+表包含数据**行**。每行数据中的每个值都属于一个特定的**列**。每列都只允许单一数据类型的数据值。列可添加[约束](/constraints.md)来进一步限定。你还可以添加[生成列](/generated-columns.md)用于计算。
 
 ## 索引 Index
 
@@ -39,25 +39,13 @@ TiDB 语境中的 Table 或者说表，从属于某个[数据库](#数据库-dat
 
 > **注意：**
 >
-> TiDB 中，关于 **Primary Key** 的默认定义与 MySQL 常用存储引擎 [InnoDB](https://mariadb.com/kb/en/innodb/) 不一致。**InnoDB** 中，**Primary Key** 的语义为：唯一，不为空，**且为聚簇索引**。
+> TiDB 中，关于 **Primary Key** 的默认定义与 MySQL 常用存储引擎 [InnoDB](https://dev.mysql.com/doc/refman/8.0/en/innodb-storage-engine.html) 不一致。**InnoDB** 中，**Primary Key** 的语义为：唯一，不为空，**且为聚簇索引**。
 >
 > 而在 TiDB 中，**Primary Key** 的定义为：唯一，不为空。但主键不保证为**聚簇索引**。而是由另一组关键字 `CLUSTERED`、`NONCLUSTERED` 额外控制 **Primary Key** 是否为聚簇索引，若不指定，则由系统变量 `@@global.tidb_enable_clustered_index` 影响，具体说明请看[聚簇索引](/clustered-indexes.md)。
 
 ### 专用索引
 
-TiDB 支持一些特殊场景专用的索引，用以提高特定用例中的查询性能。有关这些专用索引的介绍，请参阅以下页面：
-
-|                                                           索引和约束                                                           |   5.4    |   5.3    |   5.2    |   5.1    |   5.0    |   4.0    |
-| :----------------------------------------------------------------------------------------------------------------------------: | :------: | :------: | :------: | :------: | :------: | :------: |
-| [表达式索引](/sql-statements/sql-statement-create-index.md#表达式索引) | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 |
-|                         [列式存储 (TiFlash)](/tiflash/tiflash-overview.md)                         |    Y     |    Y     |    Y     |    Y     |    Y     |    Y     |
-|                            [RocksDB 引擎](/storage-engine/rocksdb-overview.md)                            |    Y     |    Y     |    Y     |    Y     |    Y     |    Y     |
-|                              [Titan 插件](/storage-engine/titan-overview.md)                              |    Y     |    Y     |    Y     |    Y     |    Y     |    Y     |
-|                         [不可见索引](/sql-statements/sql-statement-add-index.md)                          |    Y     |    Y     |    Y     |    Y     |    Y     |    N     |
-|              [复合主键](/constraints.md#主键约束)              |    Y     |    Y     |    Y     |    Y     |    Y     |    Y     |
-|              [唯一约束](/constraints.md#唯一约束)              |    Y     |    Y     |    Y     |    Y     |    Y     |    Y     |
-|                          [整型主键上的聚簇索引](/constraints.md)                           |    Y     |    Y     |    Y     |    Y     |    Y     |    Y     |
-|                      [复合或非整型主键上的聚簇索引](/constraints.md)                       |    Y     |    Y     |    Y     |    Y     |    Y     |    N     |
+TiDB 支持一些特殊场景专用的索引，用以提高特定用例中的查询性能。具体请参考[索引和约束](/basic-features.md#索引和约束)。
 
 ## 其他对象
 
@@ -69,7 +57,7 @@ TiDB 支持一些和**表**同级的对象：
 
 ## 访问控制
 
-TiDB 支持基于用户或角色的访问控制。你可以通过[角色](/role-based-access-control.md)或直接指向[用户](/user-account-management.md)，从而授予**用户**查看、修改或删除 数据对象和数据模式的[权限](/privilege-management.md)。
+TiDB 支持基于用户或角色的访问控制。你可以通过[角色](/role-based-access-control.md)或直接指向[用户](/user-account-management.md)，从而授予**用户**查看、修改或删除数据对象和数据模式的[权限](/privilege-management.md)。
 
 ## 执行数据库模式更改
 
@@ -77,40 +65,4 @@ TiDB 支持基于用户或角色的访问控制。你可以通过[角色](/role-
 
 ## 对象大小限制
 
-此处摘录一些常见的对象大小限制，详细使用限制请查阅[此文档](/tidb-limitations.md)。
-
-### 标识符长度限制
-
-|    对象    |  限制   |
-| :--------: | :-----: |
-| 数据库名称 | 64 字符 |
-|   表名称   | 64 字符 |
-|   列名称   | 64 字符 |
-|  索引名称  | 64 字符 |
-|  视图名称  | 64 字符 |
-|  序列名称  | 64 字符 |
-
-### 单个表内限制
-
-|      对象      |                                                                                                                   限制                                                                                                                    |
-| :------------: | :---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------: |
-|      列数      |                                                                                                       默认为 1017，最大可调至 4096                                                                                                        |
-|     索引数     |                                                                                                         默认为 64，最大可调至 512                                                                                                         |
-|     分区数     |                                                                                                                   8192                                                                                                                    |
-|    单行大小    | 默认为 6MB，可通过 [txn-entry-size-limit](/tidb-configuration-file.md#txn-entry-size-limit-从-v50-版本开始引入) 配置项调整 |
-| 单行内单列大小 |                                                                                                                    6MB                                                                                                                    |
-
-### 字符串类型限制
-
-|   对象    |    限制    |
-| :-------: | :--------: |
-|   CHAR    |  256 字符  |
-|  BINARY   |  256 字节  |
-| VARBINARY | 65535 字节 |
-|  VARCHAR  | 16383 字符 |
-|   TEXT    |    6MB     |
-|   BLOB    |    6MB     |
-
-### 行数
-
-TiDB 可通过增加集群的节点数来支持任意数量的行，原理可阅读 [TiDB 最佳实践](/best-practices/tidb-best-practices.md)
+具体限制请参考 [TiDB 使用限制](/tidb-limitations.md)。

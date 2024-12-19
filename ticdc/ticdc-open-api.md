@@ -1,11 +1,15 @@
 ---
-title: TiCDC OpenAPI
+title: TiCDC OpenAPI v1
 summary: 了解如何使用 OpenAPI 接口来管理集群状态和数据同步。
 ---
 
-# TiCDC OpenAPI
+# TiCDC OpenAPI v1
 
-TiCDC 提供 OpenAPI 功能，用户可通过 OpenAPI 对 TiCDC 集群进行查询和运维操作。OpenAPI 的总体功能和 [`cdc cli` 工具](/ticdc/manage-ticdc.md#使用-cdc-cli-工具来管理集群状态和数据同步)类似。
+> **注意：**
+>
+> TiCDC OpenAPI v1 将在未来版本中被删除。推荐使用 [TiCDC OpenAPI v2](/ticdc/ticdc-open-api-v2.md)。
+
+TiCDC 提供 OpenAPI 功能，你可以通过 OpenAPI 对 TiCDC 集群进行查询和运维操作。OpenAPI 的总体功能和 [`cdc cli` 工具](/ticdc/ticdc-manage-changefeed.md)类似。
 
 你可以通过 OpenAPI 完成 TiCDC 集群的如下运维操作：
 
@@ -55,8 +59,6 @@ TiCDC 提供 OpenAPI 功能，用户可通过 OpenAPI 对 TiCDC 集群进行查�
 
 以下请求会获取 IP 地址为 `127.0.0.1`，端口号为 `8300` 的 TiCDC 节点的状态信息。
 
-{{< copyable "shell-regular" >}}
-
 ```shell
 curl -X GET http://127.0.0.1:8300/api/v1/status
 ```
@@ -73,11 +75,11 @@ curl -X GET http://127.0.0.1:8300/api/v1/status
 
 以上返回信息的字段解释如下：
 
-- version：当前 TiCDC 版本号。
-- git_hash：Git 哈希值。
-- id：该节点的 capture ID。
-- pid：该节点 capture 进程的 PID。
-- is_owner：表示该节点是否是 owner。
+- `version`：当前 TiCDC 版本号。
+- `git_hash`：Git 哈希值。
+- `id`：该节点的 capture ID。
+- `pid`：该节点 capture 进程的 PID。
+- `is_owner`：表示该节点是否是 owner。
 
 ## 检查 TiCDC 集群的健康状态
 
@@ -88,8 +90,6 @@ curl -X GET http://127.0.0.1:8300/api/v1/status
 `GET /api/v1/health`
 
 ### 使用样例
-
-{{< copyable "shell-regular" >}}
 
 ```shell
 curl -X GET http://127.0.0.1:8300/api/v1/health
@@ -119,10 +119,10 @@ curl -X GET http://127.0.0.1:8300/api/v1/health
 | `ignore_ineligible_table` | `BOOLEAN` 类型，是否忽略无法进行同步的表。（非必选）        |
 | `filter_rules`            | `STRING` 类型数组，表库过滤的规则。（非必选）            |
 | `ignore_txn_start_ts`     | `UINT64` 类型数组，忽略指定 start_ts 的事务。 （非必选） |
-| `mounter_worker_num`      | `INT` 类型，mounter 线程数。（非必选）                   |
+| `mounter_worker_num`      | `INT` 类型，Mounter 线程数。（非必选）                   |
 | `sink_config`             | sink 的配置参数。（非必选）                            |
 
-`changefeed_id`、`start_ts`、`target_ts`、`sink_uri` 的含义和格式与 [使用 cli 创建同步任务](/ticdc/manage-ticdc.md#创建同步任务)中所作的解释相同，具体解释请参见该文档。需要注意，当在 `sink_uri` 中指定证书的路径时，须确保已将对应证书上传到对应的 TiCDC server 上。
+`changefeed_id`、`start_ts`、`target_ts`、`sink_uri` 的含义和格式与[使用 cli 创建同步任务](/ticdc/ticdc-manage-changefeed.md#创建同步任务)中所作的解释相同，具体解释请参见该文档。需要注意，当在 `sink_uri` 中指定证书的路径时，须确保已将对应证书上传到对应的 TiCDC server 上。
 
 下面会对一些需要补充说明的参数进行进一步阐述。
 
@@ -134,7 +134,7 @@ curl -X GET http://127.0.0.1:8300/api/v1/health
 
 `ignore_txn_start_ts`：指定之后会忽略指定 start_ts 的事务，如 `ignore-txn-start-ts = [1, 2]`。
 
-`mounter_worker_num`： mounter 线程数，mounter 用于解码 TiKV 输出的数据，默认值为 16 。
+`mounter_worker_num`： Mounter 线程数，Mounter 用于解码 TiKV 输出的数据，默认值为 16。
 
 `sink_config`：sink 的配置参数，如下
 
@@ -142,28 +142,26 @@ curl -X GET http://127.0.0.1:8300/api/v1/health
 {
   "dispatchers":[
     {"matcher":["test1.*", "test2.*"], "dispatcher":"ts"},
-    {"matcher":["test3.*", "test4.*"], "dispatcher":"rowid"}
+    {"matcher":["test3.*", "test4.*"], "dispatcher":"index-value"}
   ],
   "protocol":"canal-json"
 }
 ```
 
-`dispatchers`：对于 MQ 类的 Sink，可以通过 dispatchers 配置 event 分发器，支持 default、ts、rowid、table 四种分发器，分发规则如下：
+`dispatchers`：对于 MQ 类的 Sink，可以通过 dispatchers 配置 event 分发器，支持 default、ts、index-value、table 四种分发器，分发规则如下：
 
-- default：有多个唯一索引（包括主键）时按照 table 模式分发；只有一个唯一索引（或主键）按照 rowid 模式分发；如果开启了 old value 特性，按照 table 分发。
+- default：按照 table 分发。
 - ts：以行变更的 commitTs 做 Hash 计算并进行 event 分发。
-- rowid：以所选的 HandleKey 列名和列值做 Hash 计算并进行 event 分发。
+- index-value：以所选的 HandleKey 列名和列值做 Hash 计算并进行 event 分发。
 - table：以表的 schema 名和 table 名做 Hash 计算并进行 event 分发。
 
 `matcher`：匹配语法和过滤器规则语法相同。
 
-`protocol`：对于 MQ 类的 Sink，可以指定消息的协议格式。目前支持 `canal-json`、`open-protocol`、`canal`、`avro` 和 `maxwell` 五种协议。
+`protocol`：对于 MQ 类的 Sink，可以指定消息的协议格式。目前支持 `canal-json`、`open-protocol`、`avro`、`debezium` 和 `simple` 协议。
 
 ### 使用样例
 
-以下请求会创建一个 ID 为 `test5`，sink_uri 为 `blackhome://` 的同步任务。
-
-{{< copyable "shell-regular" >}}
+以下请求会创建一个 ID 为 `test5`，sink_uri 为 `blackhole://` 的同步任务。
 
 ```shell
 curl -X POST -H "'Content-type':'application/json'" http://127.0.0.1:8300/api/v1/changefeeds -d '{"changefeed_id":"test5","sink_uri":"blackhole://"}'
@@ -190,8 +188,6 @@ curl -X POST -H "'Content-type':'application/json'" http://127.0.0.1:8300/api/v1
 ### 使用样例
 
 以下请求会删除 ID 为 `test1` 的同步任务。
-
-{{< copyable "shell-regular" >}}
 
 ```shell
 curl -X DELETE http://127.0.0.1:8300/api/v1/changefeeds/test1
@@ -236,8 +232,6 @@ curl -X DELETE http://127.0.0.1:8300/api/v1/changefeeds/test1
 
 以下请求会更新 ID 为 `test1` 的同步任务的 `mounter_worker_num` 为 `32`。
 
-{{< copyable "shell-regular" >}}
-
 ```shell
  curl -X PUT -H "'Content-type':'application/json'" http://127.0.0.1:8300/api/v1/changefeeds/test1 -d '{"mounter_worker_num":32}'
 ```
@@ -268,8 +262,6 @@ curl -X DELETE http://127.0.0.1:8300/api/v1/changefeeds/test1
 
 以下请求查询所有状态 (state) 为 normal 的同步任务的基本信息。
 
-{{< copyable "shell-regular" >}}
-
 ```shell
 curl -X GET http://127.0.0.1:8300/api/v1/changefeeds?state=normal
 ```
@@ -295,11 +287,11 @@ curl -X GET http://127.0.0.1:8300/api/v1/changefeeds?state=normal
 
 此处对以上返回的信息做进一步阐述：
 
-- id：同步任务的 ID
-- state：同步任务当前所处的[状态](/ticdc/manage-ticdc.md#同步任务状态流转)。
-- checkpoint_tso：同步任务当前 checkpoint 的 TSO 表示。
-- checkpoint_tso：同步任务当前checkpoint 的格式化时间表示。
-- error：同步任务的错误信息。
+- `id`：同步任务的 ID
+- `state`：同步任务当前所处的[状态](/ticdc/ticdc-changefeed-overview.md#changefeed-状态流转)。
+- `checkpoint_tso`：同步任务当前 checkpoint 的 TSO 表示。
+- `checkpoint_time`：同步任务当前 checkpoint 的格式化时间表示。
+- `error`：同步任务的错误信息。
 
 ## 查询特定同步任务
 
@@ -320,8 +312,6 @@ curl -X GET http://127.0.0.1:8300/api/v1/changefeeds?state=normal
 ### 使用样例
 
 以下请求会查询 ID 为 `test1` 的同步任务的详细信息。
-
-{{< copyable "shell-regular" >}}
 
 ```shell
 curl -X GET http://127.0.0.1:8300/api/v1/changefeeds/test1
@@ -374,8 +364,6 @@ curl -X GET http://127.0.0.1:8300/api/v1/changefeeds/test1
 
 以下请求会暂停 ID 为 `test1` 的同步任务。
 
-{{< copyable "shell-regular" >}}
-
 ```shell
 curl -X POST http://127.0.0.1:8300/api/v1/changefeeds/test1/pause
 ```
@@ -402,8 +390,6 @@ curl -X POST http://127.0.0.1:8300/api/v1/changefeeds/test1/pause
 
 以下请求会恢复 ID 为 `test1` 的同步任务。
 
-{{< copyable "shell-regular" >}}
-
 ```shell
 curl -X POST http://127.0.0.1:8300/api/v1/changefeeds/test1/resume
 ```
@@ -419,8 +405,6 @@ curl -X POST http://127.0.0.1:8300/api/v1/changefeeds/test1/resume
 `GET /api/v1/processors`
 
 ### 使用样例
-
-{{< copyable "shell-regular" >}}
 
 ```shell
 curl -X GET http://127.0.0.1:8300/api/v1/processors
@@ -456,8 +440,6 @@ curl -X GET http://127.0.0.1:8300/api/v1/processors
 
 以下请求查询 `changefeed_id` 为 `test`、`capture_id` 为 `561c3784-77f0-4863-ad52-65a3436db6af` 的同步子任务。一个同步子任务通过 `changefeed_id` 和 `capture_id` 来标识。
 
-{{< copyable "shell-regular" >}}
-
 ```shell
 curl -X GET http://127.0.0.1:8300/api/v1/processors/test1/561c3784-77f0-4863-ad52-65a3436db6af
 
@@ -485,8 +467,6 @@ curl -X GET http://127.0.0.1:8300/api/v1/processors/test1/561c3784-77f0-4863-ad5
 
 ### 使用样例
 
-{{< copyable "shell-regular" >}}
-
 ```shell
 curl -X GET http://127.0.0.1:8300/api/v1/captures
 ```
@@ -513,8 +493,6 @@ curl -X GET http://127.0.0.1:8300/api/v1/captures
 
 以下请求会驱逐 TiCDC 当前的 owner 节点，并会触发新一轮的选举，产生新的 owner 节点。
 
-{{< copyable "shell-regular" >}}
-
 ```shell
 curl -X POST http://127.0.0.1:8300/api/v1/owner/resign
 ```
@@ -540,8 +518,6 @@ curl -X POST http://127.0.0.1:8300/api/v1/owner/resign
 ### 使用样例
 
 以下请求会触发 ID 为 `test1` 的 changefeed 表的负载均衡。
-
-{{< copyable "shell-regular" >}}
 
 ```shell
  curl -X POST http://127.0.0.1:8300/api/v1/changefeeds/test1/tables/rebalance_table
@@ -576,8 +552,6 @@ curl -X POST http://127.0.0.1:8300/api/v1/owner/resign
 
 以下请求会将 ID 为 `test1` 的 changefeed 中 ID 为 `49` 的 table 调度到 ID 为 `6f19a6d9-0f8c-4dc9-b299-3ba7c0f216f5` 的 capture 上去。
 
-{{< copyable "shell-regular" >}}
-
 ```shell
 curl -X POST -H "'Content-type':'application/json'" http://127.0.0.1:8300/api/v1/changefeeds/changefeed-test1/tables/move_table -d '{"capture_id":"6f19a6d9-0f8c-4dc9-b299-3ba7c0f216f5","table_id":49}'
 
@@ -604,8 +578,6 @@ curl -X POST -H "'Content-type':'application/json'" http://127.0.0.1:8300/api/v1
 `log_level` 支持 [zap 提供的日志级别](https://godoc.org/go.uber.org/zap#UnmarshalText)："debug"、"info"、"warn"、"error"、"dpanic"、"panic"、"fatal"。
 
 ### 使用样例
-
-{{< copyable "shell-regular" >}}
 
 ```shell
 curl -X POST -H "'Content-type':'application/json'" http://127.0.0.1:8300/api/v1/log -d '{"log_level":"debug"}'

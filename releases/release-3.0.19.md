@@ -1,5 +1,6 @@
 ---
 title: TiDB 3.0.19 Release Notes
+summary: TiDB 3.0.19 发布，兼容性变化包括更改 PD 的导入路径和版权信息。提升改进方面，缓解故障恢复对 QPS 的影响，支持调整 `union` 运算符的并发数。Bug 修复包括解决 `slow-log` 文件不存在导致查询出错的问题，添加权限检查命令，修复类型转换问题等。TiKV 修复了 status server 解析响应出错导致 panic 的问题。TiDB Lightning 修复了严格模式下 CSV 中遇到不合法 UTF 字符集没有及时退出进程的问题。
 ---
 
 # TiDB 3.0.19 Release Notes

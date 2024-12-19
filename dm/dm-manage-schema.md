@@ -1,11 +1,11 @@
 ---
-title: 管理迁移表的表结构
+title: 管理 TiDB Data Migration 迁移表的表结构
 summary: 了解如何管理待迁移表在 DM 内部的表结构。
 ---
 
-# 管理迁移表的表结构
+# 管理 TiDB Data Migration 迁移表的表结构
 
-本文介绍如何使用 [dmctl](/dm/dmctl-introduction.md) 组件来管理通过 DM 迁移的表在 DM 内部的表结构。
+[dmctl](/dm/dmctl-introduction.md) 是运维 TiDB Data Migration (DM) 集群的命令行工具，本文介绍如何使用 dmctl 组件来管理通过 DM 迁移的表在 DM 内部的表结构。
 
 DM 执行增量迁移时，首先读取上游的 binlog，然后生成 SQL 语句执行到下游。但是，上游的 binlog 中并不记录表的完整结构信息，为了生成 SQL 语句，DM 内部维护了待迁移的表的 schema 信息，即表结构信息。
 
@@ -122,7 +122,7 @@ binlog-schema list -s mysql-replica-01 task_single db_single t1
     "sources": [
         {
             "result": true,
-            "msg": "CREATE TABLE `t1` ( `c1` int(11) NOT NULL, `c2` int(11) DEFAULT NULL, PRIMARY KEY (`c1`)) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_bin",
+            "msg": "CREATE TABLE `t1` ( `c1` int NOT NULL, `c2` int DEFAULT NULL, PRIMARY KEY (`c1`)) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_bin",
             "source": "mysql-replica-01",
             "worker": "127.0.0.1:8262"
         }
@@ -159,8 +159,8 @@ Global Flags:
 
 ```sql
 CREATE TABLE `t1` (
-    `c1` int(11) NOT NULL,
-    `c2` bigint(11) DEFAULT NULL,
+    `c1` int NOT NULL,
+    `c2` bigint DEFAULT NULL,
     PRIMARY KEY (`c1`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_bin
 ```

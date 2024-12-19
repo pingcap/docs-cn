@@ -1,5 +1,6 @@
 ---
 title: tiup mirror modify
+summary: tiup mirror modify 命令用于修改已发布的组件。只有合法的组件管理员才能修改组件，且只能修改自己发布的组件。命令语法为 tiup mirror modify <component>[version]。选项包括 -k, --key, --yank, --hide。成功时无输出，无权限时会有相应错误提示。
 ---
 
 # tiup mirror modify

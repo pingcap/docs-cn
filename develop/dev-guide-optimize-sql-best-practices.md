@@ -16,8 +16,6 @@ aliases: ['/zh/tidb/dev/optimize-sql-best-practices']
 
 当需要修改多行数据时，推荐使用单个 SQL 多行数据的语句：
 
-{{< copyable "sql" >}}
-
 ```sql
 INSERT INTO t VALUES (1, 'a'), (2, 'b'), (3, 'c');
 
@@ -25,8 +23,6 @@ DELETE FROM t WHERE id IN (1, 2, 3);
 ```
 
 不推荐使用多个 SQL 单行数据的语句：
-
-{{< copyable "sql" >}}
 
 ```sql
 INSERT INTO t VALUES (1, 'a');
@@ -45,7 +41,7 @@ DELETE FROM t WHERE id = 3;
 <SimpleTab>
 <div label="Golang">
 
-{{< copyable "" >}}
+在 Golang 中使用 `PREPARE` 语句：
 
 ```go
 func BatchInsert(db *sql.DB) error {
@@ -68,7 +64,7 @@ func BatchInsert(db *sql.DB) error {
 
 <div label="Java">
 
-{{< copyable "" >}}
+在 Java 中使用 `PREPARE` 语句：
 
 ```java
 public void batchInsert(Connection connection) throws SQLException {
@@ -85,6 +81,12 @@ public void batchInsert(Connection connection) throws SQLException {
 ```
 
 </div>
+
+<div label="Python">
+
+在 Python 中使用 `PREPARE` 语句时，并不需要显式指定。在你使用参数化查询时，mysqlclient 等 Driver 将自动转用执行计划。
+
+</div>
 </SimpleTab>
 
 注意不要重复执行 `PREPARE` 语句，否则并不能提高执行效率。
@@ -93,15 +95,11 @@ public void batchInsert(Connection connection) throws SQLException {
 
 如非必要，不要总是用 `SELECT *` 返回所以列的数据，下面查询是低效的：
 
-{{< copyable "sql" >}}
-
 ```sql
 SELECT * FROM books WHERE title = 'Marian Yost';
 ```
 
 应该仅查询需要的列信息，例如：
-
-{{< copyable "sql" >}}
 
 ```sql
 SELECT title, price FROM books WHERE title = 'Marian Yost';
@@ -119,15 +117,11 @@ SELECT title, price FROM books WHERE title = 'Marian Yost';
 
 当需要删除一个表的所有数据时，推荐使用 `TRUNCATE` 语句：
 
-{{< copyable "sql" >}}
-
 ```sql
 TRUNCATE TABLE t;
 ```
 
 不推荐使用 `DELETE` 全表数据：
-
-{{< copyable "sql" >}}
 
 ```sql
 DELETE FROM t;
@@ -145,25 +139,21 @@ DELETE FROM t;
 
 见[索引的最佳实践](/develop/dev-guide-index-best-practice.md)。
 
-### ADD INDEX 性能最佳实践
+### 添加索引性能最佳实践
 
-TiDB 支持在线 `ADD INDEX` 操作，不会阻塞表中的数据读写。`ADD INDEX` 的速度可以通过修改下面的系统变量来调整：
+TiDB 支持在线添加索引操作，可通过 [`ADD INDEX`](/sql-statements/sql-statement-add-index.md) 或 [`CREATE INDEX`](/sql-statements/sql-statement-create-index.md) 完成索引添加操作。添加索引不会阻塞表中的数据读写。可以通过修改下面的系统变量来调整 DDL 操作 `re-organize` 阶段的并行度与回填索引的单批数量大小：
 
 - [tidb_ddl_reorg_worker_cnt](/system-variables.md#tidb_ddl_reorg_worker_cnt)
 - [tidb_ddl_reorg_batch_size](/system-variables.md#tidb_ddl_reorg_batch_size)
 
-为了减少对在线业务的影响，`ADD INDEX` 的默认速度会比较保守。当 `ADD INDEX` 的目标列仅涉及查询负载，或者与线上负载不直接相关时，可以适当调大上述变量来加速 `ADD INDEX`：
-
-{{< copyable "sql" >}}
+为了减少对在线业务的影响，添加索引的默认速度会比较保守。当添加索引的目标列仅涉及查询负载，或者与线上负载不直接相关时，可以适当调大上述变量来加速添加索引：
 
 ```sql
 SET @@global.tidb_ddl_reorg_worker_cnt = 16;
 SET @@global.tidb_ddl_reorg_batch_size = 4096;
 ```
 
-当 `ADD INDEX` 的目标列被频繁更新（包含 `UPDATE`、`INSERT` 和 `DELETE`）时，调大上述配置会造成较为频繁的写冲突，使得在线负载较大；同时 `ADD INDEX` 也可能由于不断地重试，需要很长的时间才能完成。此时建议调小上述配置来避免和在线业务的写冲突：
-
-{{< copyable "sql" >}}
+当添加索引操作的目标列被频繁更新（包含 `UPDATE`、`INSERT` 和 `DELETE`）时，调大上述配置会造成较为频繁的写冲突，使得在线负载较大；同时添加索引操作也可能由于不断地重试，需要很长的时间才能完成。此时建议调小上述配置来避免和在线业务的写冲突：
 
 ```sql
 SET @@global.tidb_ddl_reorg_worker_cnt = 4;

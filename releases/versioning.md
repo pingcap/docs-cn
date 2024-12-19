@@ -14,6 +14,8 @@ TiDB 提供两个版本系列：
 - 长期支持版本
 - 开发里程碑版本（自 TiDB v6.0.0 起引入）
 
+关于对 TiDB 版本提供支持服务的标准和规则，参见 [TiDB 版本周期支持策略](https://pingcap.com/zh/tidb-release-support-policy)。
+
 ## 版本命名
 
 TiDB 版本的命名方式为 `X.Y.Z`。`X.Y` 代表一个版本系列。

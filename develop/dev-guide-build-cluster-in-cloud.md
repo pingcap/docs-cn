@@ -1,32 +1,40 @@
 ---
-title: 使用 TiDB Cloud (DevTier) 构建 TiDB 集群
-summary: 使用 TiDB Cloud (DevTier) 构建 TiDB 集群，并连接 TiDB Cloud 集群。
+title: 使用 TiDB Cloud Serverless 构建 TiDB 集群
+summary: 使用 TiDB Cloud Serverless 构建 TiDB 集群，并连接 TiDB Cloud Serverless 集群。
 aliases: ['/zh/tidb/dev/build-cluster-in-cloud']
 ---
 
 <!-- markdownlint-disable MD029 -->
 
-# 使用 TiDB Cloud (DevTier) 构建 TiDB 集群
+# 使用 TiDB Cloud Serverless 构建 TiDB 集群
 
-本章节将介绍以最快的方式开始使用 TiDB。你将使用 [TiDB Cloud](https://en.pingcap.com/tidb-cloud) 创建并启动一个免费的 TiDB 集群，使用 TiDB SQL 客户端，插入数据。随后将从示例程序读取出数据。
+本文将介绍如何以最快的方式开始使用 TiDB。你将创建并启动一个 [TiDB Cloud Serverless](https://www.pingcap.com/tidb-serverless/) 集群，使用 TiDB SQL 客户端，插入数据。随后将从示例程序读取出数据。
 
 若你需要在本地计算机上启动 TiDB，请参阅[本地启动 TiDB](/quick-start-with-tidb.md)。
 
-## 第 1 步：创建免费集群
+## 第 1 步：创建 TiDB Cloud Serverless 集群
 
-1. 如果你还未拥有 TiDB Cloud 帐号，请先在此[注册](https://tidbcloud.com/free-trial)。
-2. 使用你的 TiDB Cloud 帐号[登录](https://tidbcloud.com/)。
-3. 在[方案](https://tidbcloud.com/console/plans)内选择一年内免费的 Developer Tier 方案，或直接点击[创建 Dev Tier 集群](https://tidbcloud.com/console/create-cluster?tier=dev)，进入 **Create a Cluster (Dev Tier)** 页面。
-4. 请在 **Create a Cluster (Dev Tier)** 页面填写集群名称/密码/云服务商（暂时仅可选择 AWS）/ 可用区（建议就近选择）后，点击 **Create** 按钮创建集群。
-5. 稍作等待，在 5~15 分钟后，将创建完毕，可在 [Active Clusters](https://tidbcloud.com/console/clusters) 查看创建进度。
-6. 创建完毕后，在 **Active Clusters** 页面，点击集群名称，进入该集群控制面板。
-    ![active clusters](/media/develop/IMG_20220331-232643794.png)
-7. 点击 **Connect**，创建流量过滤器（允许连接的客户端 IP 列表）。
-    ![connect](/media/develop/IMG_20220331-232726165.png)
-8. 在弹出框内点击 **Add Your Current IP Address**，此项将由 TiDB Cloud 解析你当前的网络 IP 填入。点击 **Create Filter**，进行流量过滤器的创建。
-9. 复制弹出框 **Step 2: Connect with a SQL client** 中的连接字符串，供后续步骤使用。
+1. 如果你还未拥有 TiDB Cloud 账号，请先在此[注册](https://tidbcloud.com/free-trial)。
+2. 使用你的 TiDB Cloud 账号[登录](https://tidbcloud.com/)。
 
-![SQL string](/media/develop/IMG_20220331-232800929.png)
+    登录后，默认进入 [**Clusters**](https://tidbcloud.com/console/clusters) 页面。
+
+3. 对于新注册的用户，TiDB Cloud 会自动为你创建一个 TiDB Cloud Serverless 集群 `Cluster0`。你可以使用这个默认集群进行后续操作，也可以自行创建一个新的 TiDB Cloud Serverless 集群。
+
+    如果你想创建一个新的 TiDB Cloud Serverless 集群，请进行以下操作：
+
+    1. 点击 **Create Cluster**。
+    2. **Create Cluster** 页面默认选择 **Serverless**。你可以根据需要修改集群名称、选择可用区，然后点击 **Create**。你的 TiDB Cloud Serverless 集群将于 30 秒后创建完毕。
+
+4. 点击目标集群名称，进入集群概览页面，然后点击右上角的 **Connect** 按钮，弹出连接对话框。
+
+5. 在对话框中，选择你需要的连接方式和操作系统并保存对应的连接字符串。下面连接到集群的步骤将以 MySQL 客户端为例。
+
+6. 点击 **Generate Password** 生成随机密码。生成的密码不会再次显示，因此请将密码妥善保存。如果没有设置 root 密码，你将无法连接到集群。
+
+    > **注意：**
+    >
+    > 在连接到 [TiDB Cloud Serverless](https://docs.pingcap.com/tidbcloud/select-cluster-tier#tidb-cloud-serverless) 集群时，你需要给用户名加上前缀并使用单引号包裹用户名。你可以在 [TiDB Cloud Serverless 用户名前缀](https://docs.pingcap.com/tidbcloud/select-cluster-tier#user-name-prefix) 中获得更多信息。
 
 ## 第 2 步：连接到集群
 
@@ -36,9 +44,7 @@ aliases: ['/zh/tidb/dev/build-cluster-in-cloud']
 
     <div label="macOS">
 
-    如果你没有安装 Homebrew，请移步 [Homebrew 官网](https://brew.sh/index_zh-cn)进行安装。
-
-    {{< copyable "shell-regular" >}}
+    对于 macOS 操作系统，如果你没有安装 Homebrew，请参考 [Homebrew 官网](https://brew.sh/zh-cn/)进行安装。
 
     ```shell
     brew install mysql-client
@@ -60,15 +66,11 @@ aliases: ['/zh/tidb/dev/build-cluster-in-cloud']
 
     请运行其中的此行（命令行输出若与此处文档不一致，请以命令行输出为准）：
 
-    {{< copyable "shell-regular" >}}
-
     ```shell
     echo 'export PATH="/opt/homebrew/opt/mysql-client/bin:$PATH"' >> ~/.zshrc
     ```
 
     完成后，生效该配置文件（例如 `~/.zshrc`），并验证 MySQL 客户端是否安装成功：
-
-    {{< copyable "shell-regular" >}}
 
     ```shell
     source ~/.zshrc
@@ -85,17 +87,13 @@ aliases: ['/zh/tidb/dev/build-cluster-in-cloud']
 
     <div label="Linux">
 
-    以 CentOS 7 为例：
-
-    {{< copyable "shell-root" >}}
+    对于 Linux 操作系统，下面以 Ubuntu 为例：
 
     ```shell
-    yum install mysql
+    apt-get install mysql-client
     ```
 
     完成后，请验证 MySQL 客户端是否安装成功：
-
-    {{< copyable "shell-regular" >}}
 
     ```shell
     mysql --version
@@ -113,72 +111,33 @@ aliases: ['/zh/tidb/dev/build-cluster-in-cloud']
 
 2. 运行第 1 步中得到的连接字符串。
 
-    {{< copyable "shell-regular" >}}
-
     ```shell
-    mysql --connect-timeout 15 -u root -h <host> -P 4000 -p
+    mysql --connect-timeout 15 -u '<prefix>.root' -h <host> -P 4000 -D test --ssl-mode=VERIFY_IDENTITY --ssl-ca=/etc/ssl/cert.pem -p
     ```
+
+> **注意：**
+>
+> - 在连接 TiDB Cloud Serverless 集群时，[必须使用 TLS 连接](https://docs.pingcap.com/tidbcloud/secure-connections-to-serverless-tier-clusters)。
+> - 如果你在连接时遇到问题，可阅读 [TiDB Cloud Serverless 集群安全连接](https://docs.pingcap.com/tidbcloud/secure-connections-to-serverless-tier-clusters) 来获得更多信息。
 
 3. 填写密码，完成登录。
 
-## 第 3 步：运行示例应用程序
+## 第 3 步：运行 SQL
 
-1. 克隆 tidb-example-java 项目。
+尝试运行一下你在 TiDB Cloud 上的的第一个 SQL 吧：
 
-    {{< copyable "shell-regular" >}}
+```sql
+SELECT 'Hello TiDB Cloud!';
+```
 
-    ```shell
-    git clone https://github.com/pingcap-inc/tidb-example-java.git
-    ```
+你将看到这样的输出：
 
-2. 更改连接参数。
+```sql
++-------------------+
+| Hello TiDB Cloud! |
++-------------------+
+| Hello TiDB Cloud! |
++-------------------+
+```
 
-    <SimpleTab>
-
-    <div label="本地默认集群">
-
-    无需更改。
-
-    </div>
-
-    <div label="非本地默认集群、TiDB Cloud 或其他远程集群">
-
-    更改 `plain-java-jdbc/src/main/java/com/pingcap/JDBCExample.java` 内关于 Host、Port、User、Password 的参数：
-
-    {{< copyable "" >}}
-
-    ```java
-    mysqlDataSource.setServerName("localhost");
-    mysqlDataSource.setPortNumber(4000);
-    mysqlDataSource.setDatabaseName("test");
-    mysqlDataSource.setUser("root");
-    mysqlDataSource.setPassword("");
-    ```
-
-    若你设定的密码为 `123456`，而且从 TiDB Cloud 得到的连接字符串为：
-
-    {{< copyable "shell-regular" >}}
-
-    ```shell
-    mysql --connect-timeout 15 -u root -h tidb.e049234d.d40d1f8b.us-east-1.prod.aws.tidbcloud.com -P 4000 -p
-    ```
-
-    那么此处应将参数更改为：
-
-    {{< copyable "" >}}
-
-    ```java
-    mysqlDataSource.setServerName("tidb.e049234d.d40d1f8b.us-east-1.prod.aws.tidbcloud.com");
-    mysqlDataSource.setPortNumber(4000);
-    mysqlDataSource.setDatabaseName("test");
-    mysqlDataSource.setUser("root");
-    mysqlDataSource.setPassword("123456");
-    ```
-
-    </div>
-
-    </SimpleTab>
-
-3. 运行 `make plain-java-jdbc`。
-
-    输出应如[预期](https://github.com/pingcap-inc/tidb-example-java/blob/main/Expected-Output.md#plain-java-jdbc)所示
+如果你的实际输出与预期输出一致，表示你已经在 TiDB Cloud 上成功地运行了 SQL 语句。

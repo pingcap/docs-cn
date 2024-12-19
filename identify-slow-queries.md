@@ -1,13 +1,14 @@
 ---
 title: 慢查询日志
 aliases: ['/docs-cn/dev/identify-slow-queries/','/docs-cn/dev/how-to/maintain/identify-abnormal-queries/identify-slow-queries/','/docs-cn/sql/slow-query/','/docs-cn/dev/how-to/maintain/identify-slow-queries/']
+summary: TiDB 会将执行时间超过 300 毫秒的语句输出到慢查询日志中，用于帮助用户定位慢查询语句。可以通过修改系统变量来启用或禁用慢查询日志。日志示例包括执行时间、用户信息、执行计划等字段。用户可通过查询 SLOW_QUERY 表来查询慢查询日志中的内容。还可以使用 pt-query-digest 工具分析 TiDB 慢日志。ADMIN SHOW SLOW 命令可以显示最近的慢查询记录或最慢的查询记录。
 ---
 
 # 慢查询日志
 
-TiDB 会将执行时间超过 [slow-threshold](/tidb-configuration-file.md#slow-threshold)（默认值为 300 毫秒）的语句输出到 [slow-query-file](/tidb-configuration-file.md#slow-query-file)（默认值："tidb-slow.log"）日志文件中，用于帮助用户定位慢查询语句，分析和解决 SQL 执行的性能问题。
+TiDB 会将执行时间超过 [`tidb_slow_log_threshold`](/system-variables.md#tidb_slow_log_threshold)（默认值为 300 毫秒）的语句输出到 [slow-query-file](/tidb-configuration-file.md#slow-query-file)（默认值为 "tidb-slow.log"）日志文件中，用于帮助用户定位慢查询语句，分析和解决 SQL 执行的性能问题。
 
-TiDB 默认启用慢查询日志，可以修改配置 [`enable-slow-log`](/tidb-configuration-file.md#enable-slow-log) 来启用或禁用它。
+TiDB 默认启用慢查询日志，可以修改系统变量 [`tidb_enable_slow_log`](/system-variables.md#tidb_enable_slow_log) 来启用或禁用它。
 
 ## 日志示例
 
@@ -63,10 +64,17 @@ Slow Query 基础信息：
 * `Txn_start_ts`：表示事务的开始时间戳，也是事务的唯一 ID，可以用这个值在 TiDB 日志中查找事务相关的其他日志。
 * `Is_internal`：表示是否为 TiDB 内部的 SQL 语句。`true` 表示 TiDB 系统内部执行的 SQL 语句，`false` 表示用户执行的 SQL 语句。
 * `Index_names`：表示这个语句执行用到的索引。
-* `Stats`：表示这个语句涉及表的统计信息健康状态，`pseudo` 状态表示统计信息状态不健康。
+* `Stats`：表示这个语句使用到的统计信息的健康状态、内部版本号、总行数、修改行数以及加载状态。`pseudo` 状态表示统计信息不健康。如果有尝试使用但没有完全加载的统计信息，会在之后输出其内部状态。例如，`t1:439478225786634241[105000;5000][col1:allEvicted][idx1:allEvicted]` 的含义如下：
+    - `t1`：本次查询优化过程中使用了 `t1` 表上的统计信息
+    - `439478225786634241`：其内部版本号
+    - `105000`：统计信息中维护的总行数
+    - `5000`：自上次收集统计信息以来记录的修改的行数
+    - `col1:allEvicted`：`col1` 列对应的统计信息没有完全加载
+    - `idx1:allEvicted`：`idx1` 索引对应的统计信息没有完全加载
 * `Succ`：表示语句是否执行成功。
 * `Backoff_time`：表示语句遇到需要重试的错误时在重试前等待的时间。常见的需要重试的错误有以下几种：遇到了 lock、Region 分裂、`tikv server is busy`。
 * `Plan`：表示语句的执行计划，用 `select tidb_decode_plan('xxx...')` SQL 语句可以解析出具体的执行计划。
+* `Binary_plan`：表示以二进制格式编码后的语句的执行计划，用 [`SELECT tidb_decode_binary_plan('xxx...')`](/functions-and-operators/tidb-functions.md#tidb_decode_binary_plan) SQL 语句可以解析出具体的执行计划。传递的信息和 `Plan` 字段基本相同，但是解析出的执行计划的格式会和 `Plan` 字段不同。
 * `Prepared`：表示这个语句是否是 `Prepare` 或 `Execute` 的请求。
 * `Plan_from_cache`：表示这个语句是否命中了执行计划缓存。
 * `Plan_from_binding`：表示这个语句是否用的绑定的执行计划。
@@ -81,6 +89,7 @@ Slow Query 基础信息：
 * `Backoff_total`：表示这个语句在执行过程中所有 backoff 花费的时间。
 * `Write_sql_response_total`：表示这个语句把结果发送回客户端花费的时间。
 * `Result_rows`：表示这个语句查询结果的行数。
+* `Warnings`：表示这个语句执行过程中产生的警告，采用 JSON 格式。通常和 [`SHOW WARNINGS`](/sql-statements/sql-statement-show-warnings.md) 语句的输出结果一致，但是可能会包含 [`SHOW WARNINGS`](/sql-statements/sql-statement-show-warnings.md) 中没有的警告，因而可以提供更多诊断信息。这类警告将被标记为 `IsExtra: true`。
 * `IsExplicitTxn`：表示这个语句是否在一个明确声明的事务中。如果是 `false`，表示这个语句的事务是 `autocommit=1`，即语句执行完成后就自动提交的事务。
 
 和事务执行相关的字段：
@@ -92,6 +101,8 @@ Slow Query 基础信息：
 * `Write_keys`：表示该事务向 TiKV 的 Write CF 写入 Key 的数量。
 * `Write_size`：表示事务提交时写 key 或 value 的总大小。
 * `Prewrite_region`：表示事务两阶段提交中第一阶段（prewrite 阶段）涉及的 TiKV Region 数量。每个 Region 会触发一次远程过程调用。
+* `Wait_prewrite_binlog_time`：表示事务提交时用于写 binlog 的时间。从 v8.4.0 开始，TiDB Binlog 已移除，不再有相关时间。
+* `Resolve_lock_time`：表示事务提交时遇到锁后，清理锁或者等待锁过期的时间。
 
 和内存使用相关的字段：
 
@@ -124,6 +135,12 @@ Slow Query 基础信息：
 * `Cop_wait_p90`：cop-task 的 P90 分位等待时间。
 * `Cop_wait_max`：cop-task 的最大等待时间。
 * `Cop_wait_addr`：等待时间最长的 cop-task 所在地址。
+* `Rocksdb_delete_skipped_count`：RocksDB 读数据过程中已删除 Key 的扫描数。
+* `Rocksdb_key_skipped_count`：RocksDB 扫数据时遇到的已删除 (tombstone) Key 数量。
+* `Rocksdb_block_cache_hit_count`：RocksDB 从 Block Cache 缓存中读数据的次数。
+* `Rocksdb_block_read_count`：RocksDB 从文件系统中读数据的次数。
+* `Rocksdb_block_read_byte`：RocksDB 从文件系统中读数据的数据量。
+* `Rocksdb_block_read_time`：RocksDB 从文件系统中读数据的时间。
 * `Cop_backoff_{backoff-type}_total_times`：因某种错误造成的 backoff 总次数。
 * `Cop_backoff_{backoff-type}_total_time`：因某种错误造成的 backoff 总时间。
 * `Cop_backoff_{backoff-type}_max_time`：因某种错误造成的最大 backoff 时间。
@@ -131,11 +148,31 @@ Slow Query 基础信息：
 * `Cop_backoff_{backoff-type}_avg_time`：因某种错误造成的平均 backoff 时间。
 * `Cop_backoff_{backoff-type}_p90_time`：因某种错误造成的 P90 分位 backoff 时间。
 
+`backoff-type` 一般有以下几种：
+
+* `tikvRPC`：给 TiKV 发送 RPC 请求失败而产生的 backoff。
+* `tiflashRPC`：给 TiFlash 发送 RPC 请求失败而产生的 backoff。
+* `pdRPC`：给 PD 发送 RPC 请求失败而产生的 backoff。
+* `txnLock`：遇到锁冲突后产生的 backoff。
+* `regionMiss`：Region 发生分裂或者合并后，TiDB 的 Region 缓存信息过期导致请求失败而产生的 backoff。
+* `regionScheduling`：Region 还在调度中，尚未选出 Leader 导致无法处理请求而产生的 backoff。
+* `tikvServerBusy`：因为 TiKV 负载太高无法处理新请求而产生的 backoff。
+* `tiflashServerBusy`：因为 TiFlash 负载太高无法处理新请求而产生的 backoff。
+* `tikvDiskFull`：因为 TiKV 的磁盘满了而产生的 backoff。
+* `txnLockFast`：因为读数据时遇到了锁而产生的 backoff。
+
+和资源管控相关的字段：
+
+* `Resource_group`：语句执行所绑定的资源组。
+* `Request_unit_read`：执行语句消耗的总读 RU。
+* `Request_unit_write`：执行语句消耗的总写 RU。
+* `Time_queued_by_rc`：执行语句过程中等待可用资源的总耗时。
+
 ## 相关系统变量
 
 * [tidb_slow_log_threshold](/system-variables.md#tidb_slow_log_threshold)：设置慢日志的阈值，执行时间超过阈值的 SQL 语句将被记录到慢日志中。默认值是 300 ms。
 * [tidb_query_log_max_len](/system-variables.md#tidb_query_log_max_len)：设置慢日志记录 SQL 语句的最大长度。默认值是 4096 byte。
-* [tidb_redact_log](/system-variables.md#tidb_redact_log)：设置慢日志记录 SQL 时是否将用户数据脱敏用 `?` 代替。默认值是 0 ，即关闭该功能。
+* [tidb_redact_log](/system-variables.md#tidb_redact_log)：设置慢日志记录 SQL 时是否将用户数据脱敏用 `?` 代替。默认值是 `0`，即关闭该功能。
 * [tidb_enable_collect_execution_info](/system-variables.md#tidb_enable_collect_execution_info)：设置是否记录执行计划中各个算子的物理执行信息，默认值是 `1`。该功能对性能的影响约为 3%。开启该项后查看 `Plan` 的示例如下：
 
 ```sql
@@ -535,20 +572,20 @@ pt-query-digest --report tidb-slow.log
 
 并不是所有 SLOW_QUERY 的语句都是有问题的。会造成集群整体压力增大的，是那些 process_time 很大的语句。wait_time 很大，但 process_time 很小的语句通常不是问题语句，是因为被问题语句阻塞，在执行队列等待造成的响应时间过长。
 
-## `admin show slow` 命令
+## `ADMIN SHOW SLOW` 命令
 
-除了获取 TiDB 日志，还有一种定位慢查询的方式是通过 `admin show slow` SQL 命令：
+除了获取 TiDB 日志，还有一种定位慢查询的方式是通过 `ADMIN SHOW SLOW` SQL 命令：
 
 {{< copyable "sql" >}}
 
 ```sql
-admin show slow recent N;
+ADMIN SHOW SLOW recent N;
 ```
 
 {{< copyable "sql" >}}
 
 ```sql
-admin show slow top [internal | all] N;
+ADMIN SHOW SLOW TOP [internal | all] N;
 ```
 
 `recent N` 会显示最近的 N 条慢查询记录，例如：
@@ -556,7 +593,7 @@ admin show slow top [internal | all] N;
 {{< copyable "sql" >}}
 
 ```sql
-admin show slow recent 10;
+ADMIN SHOW SLOW recent 10;
 ```
 
 `top N` 则显示最近一段时间（大约几天）内，最慢的查询记录。如果指定 `internal` 选项，则返回查询系统内部 SQL 的慢查询记录；如果指定 `all` 选项，返回系统内部和用户 SQL 汇总以后的慢查询记录；默认只返回用户 SQL 中的慢查询记录。
@@ -564,9 +601,9 @@ admin show slow recent 10;
 {{< copyable "sql" >}}
 
 ```sql
-admin show slow top 3;
-admin show slow top internal 3;
-admin show slow top all 5;
+ADMIN SHOW SLOW TOP 3;
+ADMIN SHOW SLOW TOP internal 3;
+ADMIN SHOW SLOW TOP all 5;
 ```
 
 由于内存限制，保留的慢查询记录的条数是有限的。当命令查询的 `N` 大于记录条数时，返回的结果记录条数会小于 `N`。
@@ -580,7 +617,7 @@ admin show slow top all 5;
 | details | 执行语句的详细信息 |
 | succ | SQL 语句执行是否成功，1：成功，0：失败 |
 | conn_id | session 连接 ID |
-| transaction_ts | 事务提交的 commit ts |
+| transaction_ts | 事务的 start ts |
 | user | 执行该语句的用户名 |
 | db | 执行该 SQL 涉及到 database |
 | table_ids | 执行该 SQL 涉及到表的 ID |

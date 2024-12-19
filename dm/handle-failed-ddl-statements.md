@@ -1,12 +1,12 @@
 ---
-title: 处理出错的 DDL 语句
+title: 使用 TiDB Data Migration 处理出错的 DDL 语句
 summary: 了解在使用 TiDB Data Migration 迁移数据时，如何处理出错的 DDL 语句。
 aliases: ['/docs-cn/tidb-data-migration/dev/skip-or-replace-abnormal-sql-statements/']
 ---
 
-# 处理出错的 DDL 语句
+# 使用 TiDB Data Migration 处理出错的 DDL 语句
 
-本文介绍了如何使用 DM 来处理出错的 DDL 语句。
+本文介绍了如何使用 TiDB Data Migration (DM) 来处理出错的 DDL 语句。
 
 目前，TiDB 并不完全兼容所有的 MySQL 语法（详见 [DDL 的限制](/mysql-compatibility.md#ddl-的限制)）。当使用 DM 从 MySQL 迁移数据到 TiDB 时，如果 TiDB 不支持对应的 DDL 语句，可能会造成错误并中断迁移任务。在这种情况下，DM 提供 `binlog` 命令来恢复迁移。
 
@@ -34,7 +34,7 @@ aliases: ['/docs-cn/tidb-data-migration/dev/skip-or-replace-abnormal-sql-stateme
 
 ### binlog
 
-`binlog` 命令管理和查看binlog操作。命令仅在 DM v6.0 及其以后版本支持, 之前版本可使用 `handle-error` 命令。
+`binlog` 命令管理和查看 binlog 操作。命令仅在 DM v6.0 及其以后版本支持，之前版本可使用 `handle-error` 命令。
 
 `binlog` 命令用法如下：
 
@@ -79,7 +79,7 @@ Use "dmctl binlog [command] --help" for more information about a command.
     - 类型：string。
     - 指定 binlog 位置，表示操作将在 `binlog-pos` 与 binlog event 的 position 匹配时生效。若不指定，DM 会默认置为当前出错的 DDL 语句的 binlog 位置。
     - 格式：`binlog-filename:binlog-pos`，例如 `mysql-bin|000001.000003:3270`。
-    - 在迁移执行出错后，binlog position 可直接从 `query-status` 返回的 `startLocation` 中的 `position` 获得；在迁移执行出错前，binlog position 可在上游 MySQL 中使用 [`SHOW BINLOG EVENTS`](https://dev.mysql.com/doc/refman/5.7/en/show-binlog-events.html) 获得。
+    - 在迁移执行出错后，binlog position 可直接从 `query-status` 返回的 `startLocation` 中的 `position` 获得；在迁移执行出错前，binlog position 可在上游 MySQL 中使用 [`SHOW BINLOG EVENTS`](https://dev.mysql.com/doc/refman/8.0/en/show-binlog-events.html) 获得。
 
 + `-s, --source strings`：
     - 类型：string。
@@ -126,7 +126,7 @@ SHOW CREATE TABLE db1.tbl1;
 | Table | Create Table                                     |
 +-------+--------------------------------------------------+
 | tbl1  | CREATE TABLE `tbl1` (
-  `c1` int(11) NOT NULL,
+  `c1` int NOT NULL,
   `c2` decimal(11,3) DEFAULT NULL,
   PRIMARY KEY (`c1`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 |
@@ -204,9 +204,6 @@ ERROR 8200 (HY000): Unsupported modify column: can't change decimal column preci
                         "result": null,
                         "unresolvedDDLLockID": "",
                         "sync": {
-                            "totalEvents": "4",
-                            "totalTps": "0",
-                            "recentTps": "0",
                             "masterBinlog": "(DESKTOP-T561TSO-bin.000001, 2388)",
                             "masterBinlogGtid": "143bdef3-dd4a-11ea-8b00-00155de45f57:1-10",
                             "syncerBinlog": "(DESKTOP-T561TSO-bin.000001, 2388)",
@@ -216,7 +213,10 @@ ERROR 8200 (HY000): Unsupported modify column: can't change decimal column preci
                             "unresolvedGroups": [
                             ],
                             "synced": true,
-                            "binlogType": "remote"
+                            "binlogType": "remote",
+                            "totalRows": "4",
+                            "totalRps": "0",
+                            "recentRps": "0"
                         }
                     }
                 ]
@@ -249,7 +249,7 @@ SHOW CREATE TABLE shard_db.shard_table;
 | Table | Create Table                                                                                              |
 +-------+-----------------------------------------------------------------------------------------------------------+
 | tb    | CREATE TABLE `shard_table` (
-  `id` int(11) DEFAULT NULL,
+  `id` int DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_bin |
 +-------+-----------------------------------------------------------------------------------------------------------+
@@ -387,9 +387,6 @@ ALTER TABLE `shard_db_*`.`shard_table_*` CHARACTER SET LATIN1 COLLATE LATIN1_DAN
                         "result": null,
                         "unresolvedDDLLockID": "",
                         "sync": {
-                            "totalEvents": "4",
-                            "totalTps": "0",
-                            "recentTps": "0",
                             "masterBinlog": "(DESKTOP-T561TSO-bin.000001, 2388)",
                             "masterBinlogGtid": "143bdef3-dd4a-11ea-8b00-00155de45f57:1-10",
                             "syncerBinlog": "(DESKTOP-T561TSO-bin.000001, 2388)",
@@ -399,7 +396,10 @@ ALTER TABLE `shard_db_*`.`shard_table_*` CHARACTER SET LATIN1 COLLATE LATIN1_DAN
                             "unresolvedGroups": [
                             ],
                             "synced": true,
-                            "binlogType": "remote"
+                            "binlogType": "remote",
+                            "totalRows": "4",
+                            "totalRps": "0",
+                            "recentRps": "0"
                         }
                     }
                 ]
@@ -421,9 +421,6 @@ ALTER TABLE `shard_db_*`.`shard_table_*` CHARACTER SET LATIN1 COLLATE LATIN1_DAN
                         "result": null,
                         "unresolvedDDLLockID": "",
                         "sync": {
-                            "totalEvents": "4",
-                            "totalTps": "0",
-                            "recentTps": "0",
                             "masterBinlog": "(DESKTOP-T561TSO-bin.000001, 2388)",
                             "masterBinlogGtid": "143bdef3-dd4a-11ea-8b00-00155de45f57:1-10",
                             "syncerBinlog": "(DESKTOP-T561TSO-bin.000001, 2388)",
@@ -433,7 +430,10 @@ ALTER TABLE `shard_db_*`.`shard_table_*` CHARACTER SET LATIN1 COLLATE LATIN1_DAN
                             "unresolvedGroups": [
                             ],
                             "synced": true,
-                            "binlogType": "remote"
+                            "binlogType": "remote",
+                            "totalRows": "4",
+                            "totalRps": "0",
+                            "recentRps": "0"
                         }
                     }
                 ]
@@ -483,7 +483,7 @@ SHOW CREATE TABLE db1.tbl1;
 | Table | Create Table                                                                                              |
 +-------+-----------------------------------------------------------------------------------------------------------+
 | tb    | CREATE TABLE `tbl1` (
-  `id` int(11) DEFAULT NULL,
+  `id` int DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_bin |
 +-------+-----------------------------------------------------------------------------------------------------------+
@@ -563,9 +563,6 @@ ALTER TABLE `db1`.`tbl1` ADD COLUMN new_col INT UNIQUE;
                         "result": null,
                         "unresolvedDDLLockID": "",
                         "sync": {
-                            "totalEvents": "4",
-                            "totalTps": "0",
-                            "recentTps": "0",
                             "masterBinlog": "(DESKTOP-T561TSO-bin.000001, 2388)",
                             "masterBinlogGtid": "143bdef3-dd4a-11ea-8b00-00155de45f57:1-10",
                             "syncerBinlog": "(DESKTOP-T561TSO-bin.000001, 2388)",
@@ -575,7 +572,10 @@ ALTER TABLE `db1`.`tbl1` ADD COLUMN new_col INT UNIQUE;
                             "unresolvedGroups": [
                             ],
                             "synced": true,
-                            "binlogType": "remote"
+                            "binlogType": "remote",
+                            "totalRows": "4",
+                            "totalRps": "0",
+                            "recentRps": "0"
                         }
                     }
                 ]
@@ -608,7 +608,7 @@ SHOW CREATE TABLE shard_db.shard_table;
 | Table | Create Table                                                                                              |
 +-------+-----------------------------------------------------------------------------------------------------------+
 | tb    | CREATE TABLE `shard_table` (
-  `id` int(11) DEFAULT NULL,
+  `id` int DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_bin |
 +-------+-----------------------------------------------------------------------------------------------------------+
@@ -774,9 +774,6 @@ ALTER TABLE `shard_db_*`.`shard_table_*` ADD COLUMN new_col INT UNIQUE;
                         "result": null,
                         "unresolvedDDLLockID": "",
                         "sync": {
-                            "totalEvents": "4",
-                            "totalTps": "0",
-                            "recentTps": "0",
                             "masterBinlog": "(DESKTOP-T561TSO-bin.000001, 2388)",
                             "masterBinlogGtid": "143bdef3-dd4a-11ea-8b00-00155de45f57:1-10",
                             "syncerBinlog": "(DESKTOP-T561TSO-bin.000001, 2388)",
@@ -788,7 +785,10 @@ ALTER TABLE `shard_db_*`.`shard_table_*` ADD COLUMN new_col INT UNIQUE;
                             "unresolvedGroups": [
                             ],
                             "synced": true,
-                            "binlogType": "remote"
+                            "binlogType": "remote",
+                            "totalRows": "4",
+                            "totalRps": "0",
+                            "recentRps": "0"
                         }
                     }
                 ]
@@ -810,9 +810,6 @@ ALTER TABLE `shard_db_*`.`shard_table_*` ADD COLUMN new_col INT UNIQUE;
                         "result": null,
                         "unresolvedDDLLockID": "",
                         "sync": {
-                            "totalEvents": "4",
-                            "totalTps": "0",
-                            "recentTps": "0",
                             "masterBinlog": "(DESKTOP-T561TSO-bin.000001, 2388)",
                             "masterBinlogGtid": "143bdef3-dd4a-11ea-8b00-00155de45f57:1-10",
                             "syncerBinlog": "(DESKTOP-T561TSO-bin.000001, 2388)",
@@ -824,7 +821,10 @@ ALTER TABLE `shard_db_*`.`shard_table_*` ADD COLUMN new_col INT UNIQUE;
                             "unresolvedGroups": [
                             ],
                             "synced": try,
-                            "binlogType": "remote"
+                            "binlogType": "remote",
+                            "totalRows": "4",
+                            "totalRps": "0",
+                            "recentRps": "0"
                         }
                     }
                 ]

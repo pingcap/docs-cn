@@ -1,47 +1,23 @@
 ---
-title: BR 设计原理
-summary: 了解 BR 的设计细节。
+title: TiDB 备份与恢复功能架构概述
+summary: 了解 TiDB 的备份与恢复功能的架构设计。
 ---
 
-# BR 设计原理
+# TiDB 备份与恢复功能架构概述
 
-本文介绍了 Backup & Restore (BR) 的设计原理，包括架构、设计原理及备份文件。
+正如 [TiDB 备份与恢复概述](/br/backup-and-restore-overview.md)所介绍，TiDB 备份恢复功能包含了多种不同类型的集群数据对象的备份与恢复实现。这些功能都以 Backup & Restore (BR) 和 TiDB Operator 为使用入口，创建相应的任务从 TiKV 节点上备份数据，或者恢复数据到 TiKV 节点。
 
-## BR 架构
+关于各种备份恢复功能的实现架构，请参考以下链接：
 
-BR 将备份或恢复操作命令下发到各个 TiKV 节点。TiKV 收到命令后执行相应的备份或恢复操作。
+- 全量数据备份与恢复
 
-在一次备份或恢复中，各个 TiKV 节点都会有一个对应的备份路径，TiKV 备份时产生的备份文件将会保存在该路径下，恢复时也会从该路径读取相应的备份文件。
+    - [备份集群快照数据](/br/br-snapshot-architecture.md#备份流程)
+    - [恢复快照备份数据](/br/br-snapshot-architecture.md#恢复流程)
 
-![br-arch](/media/br-arch.png)
+- 数据变更日志备份
 
-## BR 设计
+    - [日志备份 - 备份 kv 数据变更](/br/br-log-architecture.md#日志备份)
 
-备份恢复流程的详细设计可以参考[备份恢复设计方案](https://github.com/pingcap/br/blob/980627aa90e5d6f0349b423127e0221b4fa09ba0/docs/cn/2019-08-05-new-design-of-backup-restore.md)。
+- Point-in-time recovery (PITR)
 
-## 备份文件
-
-本小节介绍 BR 生成的备份文件格式设计。
-
-### 备份文件的类型
-
-备份路径下会生成以下几种类型文件：
-
-- `SST` 文件：存储 TiKV 备份下来的数据信息
-- `backupmeta` 文件：存储本次备份的元信息，包括备份文件数、备份文件的 Key 区间、备份文件大小和备份文件 Hash (sha256) 值
-- `backup.lock` 文件：用于防止多次备份到同一目录
-
-### SST 文件的命名格式
-
-SST 文件以 `storeID_regionID_regionEpoch_keyHash_cf` 的格式命名。格式名的解释如下：
-
-- storeID：TiKV 节点编号
-- regionID：Region 编号
-- regionEpoch：Region 版本号
-- keyHash：Range startKey 的 Hash (sha256) 值，确保唯一性
-- cf：RocksDB 的 ColumnFamily（只备份 cf 为 `default` 或 `write` 的数据）
-
-### SST 文件存储格式
-
-- 关于 SST 文件存储格式，可以参考 [RocksDB SST table 介绍](https://github.com/facebook/rocksdb/wiki/Rocksdb-BlockBasedTable-Format)。
-- 关于 SST 文件中存储的备份数据编码格式，可以参考 [TiDB 表数据与 Key-Value 的映射关系](/tidb-computing.md#表数据与-key-value-的映射关系)。
+    - [恢复到指定时间点](/br/br-log-architecture.md#pitr)

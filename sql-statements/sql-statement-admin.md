@@ -1,24 +1,32 @@
 ---
 title: ADMIN
 aliases: ['/docs-cn/dev/sql-statements/sql-statement-admin/','/docs-cn/dev/reference/sql/statements/admin/']
+summary: TiDB的 `ADMIN` 语句是用于查看TiDB状态和对表数据进行校验的扩展语法。其中包括 `ADMIN RELOAD`、`ADMIN PLUGIN`、`ADMIN ... BINDINGS`、`ADMIN REPAIR TABLE` 和 `ADMIN SHOW NEXT_ROW_ID` 等扩展语句。这些语句可以用于重新加载表达式下推的黑名单、启用或禁用插件、持久化 SQL Plan 绑定信息、修复表的元信息以及查看表中特殊列的详情。这些功能对于管理和维护 TiDB 数据库非常有用。
 ---
 
 # ADMIN
 
-`ADMIN` 语句是 TiDB 扩展语法，用于查看 TiDB 自身的状态，并对 TiDB 中的表数据进行校验。
+`ADMIN` 语句是 TiDB 扩展语法，用于查看 TiDB 自身的状态，并对 TiDB 中的表数据进行校验。本文介绍了下列与 ADMIN 相关的扩展语句：
+
+- [`ADMIN RELOAD`](#admin-reload-语句)
+- [`ADMIN PLUGIN`](#admin-plugin-语句)
+- [`ADMIN ... BINDINGS`](#admin--bindings-语句)
+- [`ADMIN REPAIR TABLE`](#admin-repair-table-语句)
+- [`ADMIN SHOW NEXT_ROW_ID`](#admin-show-next_row_id-语句)
+- [`ADMIN SHOW SLOW`](#admin-show-slow-语句)
 
 ## ADMIN 与 DDL 相关的扩展语句
 
 | 语句                                                                                | 功能描述                 |
 |------------------------------------------------------------------------------------------|-----------------------------|
 | [`ADMIN CANCEL DDL JOBS`](/sql-statements/sql-statement-admin-cancel-ddl.md)             | 取消当前正在运行的 DDL 作业 |
+| [`ADMIN PAUSE DDL JOBS`](/sql-statements/sql-statement-admin-pause-ddl.md)               | 暂停当前正在运行的 DDL 作业 |
+| [`ADMIN RESUME DDL JOBS`](/sql-statements/sql-statement-admin-resume-ddl.md)             | 恢复当前处于暂停中的 DDL 作业 |
 | [`ADMIN CHECKSUM TABLE`](/sql-statements/sql-statement-admin-checksum-table.md)          | 计算表中所有行和索引的 CRC64 校验和 |
 | [<code>ADMIN CHECK [TABLE\|INDEX]</code>](/sql-statements/sql-statement-admin-check-table-index.md) | 校验表中数据和对应索引的一致性 |
 | [<code>ADMIN SHOW DDL [JOBS\|QUERIES]</code>](/sql-statements/sql-statement-admin-show-ddl.md)      | 显示有关当前正在运行或最近完成的 DDL 作业的详细信息|
 
-## `admin reload` 语句
-
-{{< copyable "sql" >}}
+## `ADMIN RELOAD` 语句
 
 ```sql
 ADMIN RELOAD expr_pushdown_blacklist;
@@ -26,17 +34,13 @@ ADMIN RELOAD expr_pushdown_blacklist;
 
 以上语句用于重新加载表达式下推的黑名单。
 
-{{< copyable "sql" >}}
-
 ```sql
 ADMIN RELOAD opt_rule_blacklist;
 ```
 
 以上语句用于重新加载逻辑优化规则的黑名单。
 
-## `admin plugin` 语句
-
-{{< copyable "sql" >}}
+## `ADMIN PLUGIN` 语句
 
 ```sql
 ADMIN PLUGINS ENABLE plugin_name [, plugin_name] ...;
@@ -44,17 +48,13 @@ ADMIN PLUGINS ENABLE plugin_name [, plugin_name] ...;
 
 以上语句用于启用 `plugin_name` 插件。
 
-{{< copyable "sql" >}}
-
 ```sql
 ADMIN PLUGINS DISABLE plugin_name [, plugin_name] ...;
 ```
 
 以上语句用于禁用 `plugin_name` 插件。
 
-## `admin ... bindings` 语句
-
-{{< copyable "sql" >}}
+## `ADMIN ... BINDINGS` 语句
 
 ```sql
 ADMIN FLUSH bindings;
@@ -62,15 +62,11 @@ ADMIN FLUSH bindings;
 
 以上语句用于持久化 SQL Plan 绑定的信息。
 
-{{< copyable "sql" >}}
-
 ```sql
 ADMIN CAPTURE bindings;
 ```
 
 以上语句可以将出现超过一次的 `select`execution-plan 语句生成 SQL Plan 的绑定。
-
-{{< copyable "sql" >}}
 
 ```sql
 ADMIN EVOLVE bindings;
@@ -78,17 +74,13 @@ ADMIN EVOLVE bindings;
 
 开启自动绑定功能后，每隔 `bind-info-lease`（默认值为 `3s`）触发一次 SQL Plan 绑定信息的演进。以上语句用于主动触发此演进，SQL Plan 绑定详情可参考：[执行计划管理](/sql-plan-management.md)。
 
-{{< copyable "sql" >}}
-
 ```sql
 ADMIN RELOAD bindings;
 ```
 
 以上语句用于重新加载 SQL Plan 绑定的信息。
 
-## `admin repair table` 语句
-
-{{< copyable "sql" >}}
+## `ADMIN REPAIR TABLE` 语句
 
 ```sql
 ADMIN REPAIR TABLE tbl_name CREATE TABLE STATEMENT;
@@ -96,15 +88,19 @@ ADMIN REPAIR TABLE tbl_name CREATE TABLE STATEMENT;
 
 `ADMIN REPAIR TABLE tbl_name CREATE TABLE STATEMENT` 用于在极端情况下，对存储层中的表的元信息进行非可信的覆盖。“非可信”是指需要人为保证原表的元信息可以完全由 `CREATE TABLE STATEMENT` 提供。该语句需要打开配置文件项中的 [`repair-mode`](/tidb-configuration-file.md#repair-mode) 开关，并且需要确保所修复的表名在 [`repair-table-list`](/tidb-configuration-file.md#repair-table-list) 名单中。
 
-## `admin show slow` 语句
+## `ADMIN SHOW NEXT_ROW_ID` 语句
 
-{{< copyable "sql" >}}
+```sql
+ADMIN SHOW t NEXT_ROW_ID;
+```
+
+以上语句可以查看表中某些特殊列的详情。输出结果与 [SHOW TABLE NEXT_ROW_ID](/sql-statements/sql-statement-show-table-next-rowid.md) 相同。
+
+## `ADMIN SHOW SLOW` 语句
 
 ```sql
 ADMIN SHOW SLOW RECENT N;
 ```
-
-{{< copyable "sql" >}}
 
 ```sql
 ADMIN SHOW SLOW TOP [INTERNAL | ALL] N;
@@ -116,17 +112,59 @@ ADMIN SHOW SLOW TOP [INTERNAL | ALL] N;
 
 ```ebnf+diagram
 AdminStmt ::=
-    'ADMIN' ( 'SHOW' ( 'DDL' ( 'JOBS' Int64Num? WhereClauseOptional | 'JOB' 'QUERIES' NumList )? | TableName 'NEXT_ROW_ID' | 'SLOW' AdminShowSlow ) | 'CHECK' ( 'TABLE' TableNameList | 'INDEX' TableName Identifier ( HandleRange ( ',' HandleRange )* )? ) | 'RECOVER' 'INDEX' TableName Identifier | 'CLEANUP' ( 'INDEX' TableName Identifier | 'TABLE' 'LOCK' TableNameList ) | 'CHECKSUM' 'TABLE' TableNameList | 'CANCEL' 'DDL' 'JOBS' NumList | 'RELOAD' ( 'EXPR_PUSHDOWN_BLACKLIST' | 'OPT_RULE_BLACKLIST' | 'BINDINGS' ) | 'PLUGINS' ( 'ENABLE' | 'DISABLE' ) PluginNameList | 'REPAIR' 'TABLE' TableName CreateTableStmt | ( 'FLUSH' | 'CAPTURE' | 'EVOLVE' ) 'BINDINGS' )
+    'ADMIN' ( 
+        'SHOW' ( 
+            'DDL' ( 
+                'JOBS' Int64Num? WhereClauseOptional 
+                | 'JOB' 'QUERIES' (NumList | AdminStmtLimitOpt)
+            )? 
+            | TableName 'NEXT_ROW_ID' 
+            | 'SLOW' AdminShowSlow 
+            | 'BDR' 'ROLE'
+        ) 
+        | 'CHECK' ( 
+            'TABLE' TableNameList 
+            | 'INDEX' TableName Identifier ( HandleRange ( ',' HandleRange )* )? 
+        ) 
+        | 'RECOVER' 'INDEX' TableName Identifier 
+        | 'CLEANUP' ( 
+            'INDEX' TableName Identifier 
+            | 'TABLE' 'LOCK' TableNameList ) 
+        | 'CHECKSUM' 'TABLE' TableNameList | 'CANCEL' 'DDL' 'JOBS' NumList 
+        | ( 'CANCEL' | 'PAUSE' | 'RESUME' ) 'DDL' 'JOBS' NumList
+        | 'RELOAD' (
+            'EXPR_PUSHDOWN_BLACKLIST' 
+            | 'OPT_RULE_BLACKLIST' 
+            | 'BINDINGS'
+            | 'STATS_EXTENDED'
+            | 'STATISTICS'
+        ) 
+        | 'PLUGINS' ( 'ENABLE' | 'DISABLE' ) PluginNameList 
+        | 'REPAIR' 'TABLE' TableName CreateTableStmt 
+        | ( 'FLUSH' | 'CAPTURE' | 'EVOLVE' ) 'BINDINGS'
+        | 'FLUSH' ('SESSION' | 'INSTANCE') 'PLAN_CACHE'
+        | 'SET' 'BDR' 'ROLE' ( 'PRIMARY' | 'SECONDARY' )
+        | 'UNSET' 'BDR' 'ROLE'
+    )
+
+NumList ::=
+    Int64Num ( ',' Int64Num )*
+
+AdminStmtLimitOpt ::=
+    'LIMIT' LengthNum
+|    'LIMIT' LengthNum ',' LengthNum
+|    'LIMIT' LengthNum 'OFFSET' LengthNum
+
+TableNameList ::=
+    TableName ( ',' TableName )*
 ```
 
 ## 使用示例
 
 执行以下命令，可查看正在执行的 DDL 任务中最近 10 条已经完成的 DDL 任务。未指定 `NUM` 时，默认只显示最近 10 条已经执行完的 DDL 任务。
 
-{{< copyable "sql" >}}
-
 ```sql
-admin show ddl jobs;
+ADMIN SHOW DDL jobs;
 ```
 
 ```
@@ -149,10 +187,8 @@ admin show ddl jobs;
 
 执行以下命令，可查看正在执行的 DDL 任务中最近 5 条已经执行完的 DDL 任务：
 
-{{< copyable "sql" >}}
-
 ```sql
-admin show ddl jobs 5;
+ADMIN SHOW DDL JOBS 5;
 ```
 
 ```
@@ -168,12 +204,26 @@ admin show ddl jobs 5;
 +--------+---------+------------+---------------------+----------------+-----------+----------+-----------+-----------------------------------+-----------------------------------+---------------+
 ```
 
-执行以下命令，可查看 test 数据库中未执行完成的 DDL 任务，包括正在执行中以及最近 5 条已经执行完但是执行失败的 DDL 任务。
-
-{{< copyable "sql" >}}
+执行以下命令，查看表中某些特殊列的详情。输出结果与 [SHOW TABLE NEXT_ROW_ID](/sql-statements/sql-statement-show-table-next-rowid.md) 相同。
 
 ```sql
-admin show ddl jobs 5 where state!='synced' and db_name='test';
+ADMIN SHOW t NEXT_ROW_ID;
+```
+
+```sql
++---------+------------+-------------+--------------------+----------------+
+| DB_NAME | TABLE_NAME | COLUMN_NAME | NEXT_GLOBAL_ROW_ID | ID_TYPE        |
++---------+------------+-------------+--------------------+----------------+
+| test    | t          | _tidb_rowid |                101 | _TIDB_ROWID    |
+| test    | t          | _tidb_rowid |                  1 | AUTO_INCREMENT |
++---------+------------+-------------+--------------------+----------------+
+2 rows in set (0.01 sec)
+```
+
+执行以下命令，可查看 test 数据库中未执行完成的 DDL 任务，包括正在执行中以及最近 5 条已经执行完但是执行失败的 DDL 任务。
+
+```sql
+ADMIN SHOW DDL JOBS 5 WHERE state != 'synced' AND db_name = 'test';
 ```
 
 ```
@@ -204,7 +254,8 @@ admin show ddl jobs 5 where state!='synced' and db_name='test';
     * `synced`：表示该操作已经执行成功，且所有 TiDB 实例都已经同步该状态。
     * `rollback done`：表示该操作执行失败，回滚完成。
     * `rollingback`：表示该操作执行失败，正在回滚。
-    * `cancelling`：表示正在取消该操作。这个状态只有在用 `ADMIN CANCEL DDL JOBS` 命令取消 DDL 作业时才会出现。
+    * `cancelling`：表示正在取消该操作。这个状态只有在用 [`ADMIN CANCEL DDL JOBS`](/sql-statements/sql-statement-admin-cancel-ddl.md) 命令取消 DDL 作业时才会出现。
+    * `paused`：表示 DDL 已被暂停运行。这个状态只有在用 [`ADMIN PAUSED DDL JOBS`](/sql-statements/sql-statement-admin-pause-ddl.md) 命令暂停 DDL 任务时才会出现。可以通过 [`ADMIN RESUME DDL JOBS`](/sql-statements/sql-statement-admin-resume-ddl.md) 命令进行恢复运行。
 
 ## MySQL 兼容性
 

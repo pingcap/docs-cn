@@ -1,5 +1,6 @@
 ---
 title: TiDB 5.0.3 Release Notes
+summary: TiDB 5.0.3 发布日期为 2021 年 7 月 2 日。此版本包含兼容性更改、功能增强、提升改进和 Bug 修复。兼容性更改包括 `tidb_multi_statement_mode` 变量默认值变更和兼容 MySQL 5.7 的 noop 变量配置。功能增强方面，TiCDC 增加了 HTTP API 获取 changefeed 信息和节点健康信息。TiDB 提升了多个内置函数的支持和优化了聚合算子的代价常数。Bug 修复方面，修复了多个查询和函数使用时可能出现的问题。PD 升级了 TiDB Dashboard。TiFlash 支持了多个新功能和修复了多个问题。TiCDC、BR 和 TiDB Lightning 也进行了多项修复和优化。
 ---
 
 # TiDB 5.0.3 Release Notes
@@ -87,7 +88,7 @@ TiDB 版本：5.0.3
     - 修复了操作符 `<=>` 不能正确生效的问题 [#24477](https://github.com/pingcap/tidb/issues/24477)
     - 修复并行 `Apply` 算子的数据竞争问题 [#23280](https://github.com/pingcap/tidb/issues/23280)
     - 修复对 PartitionUnion 算子的 IndexMerge 结果排序时出现 `index out of range` 错误 [#23919](https://github.com/pingcap/tidb/issues/23919)
-    - 修复 `tidb_snapshot` 被允许设置为非预期的过大值，而可能造成事务隔离性被破坏的问题 [25680]( https://github.com/pingcap/tidb/issues/25680)
+    - 修复 `tidb_snapshot` 被允许设置为非预期的过大值，而可能造成事务隔离性被破坏的问题 [#25680]( https://github.com/pingcap/tidb/issues/25680)
     - 修复 ODBC 类常数（例如 `{d '2020-01-01'}`）不能被用作表达式的问题 [#25531](https://github.com/pingcap/tidb/issues/25531)
     - 修复 `SELECT DISTINCT` 被转化为 Batch Get 而导致结果不正确的问题 [#25320](https://github.com/pingcap/tidb/issues/25320)
     - 修复无法触发将查询从 TiFlash 回退到 TiKV 的问题 [#23665](https://github.com/pingcap/tidb/issues/23665) [#24421](https://github.com/pingcap/tidb/issues/24421)

@@ -6,7 +6,7 @@ aliases: ['/docs-cn/dev/best-practices/massive-regions-best-practices/','/docs-c
 
 # 海量 Region 集群调优最佳实践
 
-在 TiDB 的架构中，所有数据以一定 key range 被切分成若干 Region 分布在多个 TiKV 实例上。随着数据的写入，一个集群中会产生上百万个甚至千万个 Region。单个 TiKV 实例上产生过多的 Region 会给集群带来较大的负担，影响整个集群的性能表现。
+在 TiDB 的架构中，所有数据以一定 key range 被切分成若干 Region 分布在多个 TiKV 实例上。随着数据的写入，一个集群中会产生上百万个 Region。单个 TiKV 实例上产生过多的 Region 会给集群带来较大的负担，影响整个集群的性能表现。
 
 本文将介绍 TiKV 核心模块 Raftstore 的工作流程，海量 Region 导致性能问题的原因，以及优化性能的方法。
 
@@ -50,6 +50,18 @@ aliases: ['/docs-cn/dev/best-practices/massive-regions-best-practices/','/docs-c
     参考值：低于 50-100ms。
 
     ![图 3 查看 Propose wait duration](/media/best-practices/propose-wait-duration.png)
+
++ Raft IO 下的 `Commit log duration`
+
+    `Commit log duration` 是 Raftstore 将 Raft 日志提交到相应 Region 的多数成员所花费的时间。如果该指标的值较高且波动较大，可能的原因有：
+
+    - Raftstore 的负载较高
+    - append log 较慢
+    - Raft 日志由于网络阻塞无法及时提交
+
+  参考值：低于 200-500ms。
+
+    ![图 4 查看 Commit log duration](/media/best-practices/commit-log-duration.png)
 
 ## 性能优化方法
 
@@ -111,9 +123,9 @@ Hibernate Region 在 [TiKV master](https://github.com/tikv/tikv/tree/master) 分
 {{< copyable "" >}}
 
 ```
->> pd-ctl config set max-merge-region-size 20
->> pd-ctl config set max-merge-region-keys 200000
->> pd-ctl config set merge-schedule-limit 8
+config set max-merge-region-size 54
+config set max-merge-region-keys 540000
+config set merge-schedule-limit 8
 ```
 
 详情请参考[如何配置 Region Merge（英文）](https://tikv.org/docs/4.0/tasks/configure/region-merge/) 和 [PD 配置文件描述](/pd-configuration-file.md#schedule)。
@@ -122,15 +134,23 @@ Hibernate Region 在 [TiKV master](https://github.com/tikv/tikv/tree/master) 分
 
 ### 方法六：调整 Region 大小
 
-Region 默认的大小约为 96 MiB，将其调大也可以减少 Region 个数，具体介绍可参考[使用更大的 Region](/tune-region-performance.md)。
+Region 的默认大小为 256 MiB，将其调大可以减少 Region 个数，详情参见 [Region 性能调优](/tune-region-performance.md)。
 
-> **警告：**
+> **注意：**
 >
-> 自定义 Region 大小是在 TiDB v6.1.0 引入的实验特性，不建议在生产环境中配置。使用此特性的风险包括：
+> 从 v8.4.0 开始，Region 的默认值从 96 MiB 调整为 256 MiB。如果你并未手动调整过 Region 大小，将 TiKV 集群从 v8.4.0 之前升级至 v8.4.0 或更高的版本后，集群 Region 的默认值将自动更新为 256 MiB。
+
+> **注意：**
 >
-> + 更容易发生性能抖动。
-> + 查询性能回退，尤其是大范围数据查询的性能会有回退。
-> + 调度变慢。
+> 自定义 Region 大小在 TiDB v6.5.0 之前为实验特性。如需调整 Region 大小，建议升级至 v6.5.0 或更高版本。
+
+### 方法七：提高 Raft 通信的的最大连接数
+
+TiKV 节点间用于 Raft 通信的最大连接数默认为 1，将其调大可以减少因为海量 Region 通信量过大而导致的阻塞情况。具体的配置说明可以参考 [`grpc-raft-conn-num`](/tikv-configuration-file.md#grpc-raft-conn-num)。
+
+> **注意：**
+>
+> 为了减少不必要的线程切换开销，并避免批量处理效果不佳的影响，该连接数的建议范围为 `[1, 4]`。
 
 ## 其他问题和解决方案
 

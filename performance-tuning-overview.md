@@ -28,7 +28,7 @@ aliases: ['/zh/tidb/v6.0/performance-tuning-overview']
 
 - 方式一： 通过 QPS 乘以平均 query 延迟乘以 ΔT，即 `DB Time in ΔT = QPS × avg latency × ΔT`
 - 方式二： 通过平均活跃会话数乘以 ΔT，即 `DB Time in ΔT  = avg active connections × ΔT`
-- 方式三： 通过 TiDB 内部的 Prometheus 指标 TiDB_server_handle_query_duration_seconds_sum 计算，即 `ΔT DB Time = rate(TiDB_server_handle_query_duration_seconds_sum) × ΔT`
+- 方式三： 通过 TiDB 内部的 Prometheus 指标 tidb_server_tokens 计算，即 `ΔT DB Time = rate(tidb_server_tokens) × ΔT`
 
 ## 用户响应时间和系统吞吐的关系
 
@@ -99,7 +99,7 @@ User Response time = Service time + Queuing delay + Coherency delay
 
 通过性能分析确定系统瓶颈点之后，根据实际情况提出低成本、低风险、并能获得最大的收益的优化方案。
 
-根据 [阿姆达尔定律](https://zh.wikipedia.org/wiki/%E9%98%BF%E5%A7%86%E8%BE%BE%E5%B0%94%E5%AE%9A%E5%BE%8B)，性能优化的最大收益，取决于优化的部分在整个系统的占比。因此，你需要根据性能数据，确认系统瓶颈和相应的占比，预估瓶颈解决或者优化之后的收益。
+根据[阿姆达尔定律](https://zh.wikipedia.org/wiki/%E9%98%BF%E5%A7%86%E8%BE%BE%E5%B0%94%E5%AE%9A%E5%BE%8B)，性能优化的最大收益，取决于优化的部分在整个系统的占比。因此，你需要根据性能数据，确认系统瓶颈和相应的占比，预估瓶颈解决或者优化之后的收益。
 
 需要注意的是，即使某个方案针对最大瓶颈点的优化潜在收益最大，也需要同时评估该方案的风险和成本。例如：
 

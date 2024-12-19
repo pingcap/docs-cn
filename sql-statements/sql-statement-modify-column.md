@@ -88,15 +88,15 @@ Query OK, 0 rows affected (0.09 sec)
 {{< copyable "sql" >}}
 
 ```sql
-SHOW CREATE TABLE t1\G;
+SHOW CREATE TABLE t1\G
 ```
 
 ```sql
 *************************** 1. row ***************************
        Table: t1
 Create Table: CREATE TABLE `t1` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `col1` bigint(20) DEFAULT NULL,
+  `id` int NOT NULL AUTO_INCREMENT,
+  `col1` bigint DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin AUTO_INCREMENT=30001
 1 row in set (0.00 sec)
@@ -138,14 +138,14 @@ Query OK, 0 rows affected (2.52 sec)
 {{< copyable "sql" >}}
 
 ```sql
-SHOW CREATE TABLE t1\G;
+SHOW CREATE TABLE t1\G
 ```
 
 ```sql
 *************************** 1. row ***************************
        Table: t1
 CREATE TABLE `t1` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `id` int NOT NULL AUTO_INCREMENT,
   `col1` varchar(5) DEFAULT NULL,
   PRIMARY KEY (`id`) /*T![clustered_index] CLUSTERED */
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin AUTO_INCREMENT=30001
@@ -169,13 +169,6 @@ CREATE TABLE `t1` (
 
 ## MySQL 兼容性
 
-* 不支持使用单个 `ALTER TABLE` 语句修改多个列，例如：
-
-    ```sql
-    ALTER TABLE t1 MODIFY col1 BIGINT, MODIFY id BIGINT NOT NULL;
-    ERROR 1105 (HY000): Unsupported multi schema change
-    ```
-
 * 不支持修改主键列上需要 Reorg-Data 的类型，但是支持修改 Meta-Only 的类型。例如：
 
     ```sql
@@ -186,7 +179,7 @@ CREATE TABLE `t1` (
 
     ```sql
     CREATE TABLE t (a int primary key);
-    ALTER TABLE t MODIFY COLUMN a INT(10) UNSIGNED;
+    ALTER TABLE t MODIFY COLUMN a int UNSIGNED;
     ERROR 8200 (HY000): Unsupported modify column: column has primary key flag
     ```
 
@@ -212,7 +205,7 @@ CREATE TABLE `t1` (
     ERROR 8200 (HY000): Unsupported modify column: table is partition table
     ```
 
-* 不支持部分数据类型（例如，部分时间类型、Bit、Set、Enum、JSON 等）的变更，因为 TiDB cast 函数与 MySQL 的行为有一些兼容性问题。例如：
+* 不支持部分数据类型（例如，部分 TIME 类型、BIT、SET、ENUM、JSON 等）向某些类型的变更，因为 TiDB 的 `CAST` 函数与 MySQL 的行为有一些兼容性问题。例如：
 
     ```sql
     CREATE TABLE t (a DECIMAL(13, 7));

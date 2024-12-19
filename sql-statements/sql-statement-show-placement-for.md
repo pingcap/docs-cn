@@ -5,7 +5,7 @@ summary: TiDB 数据库中 SHOW PLACEMENT FOR 的使用概况。
 
 # SHOW PLACEMENT FOR
 
-`SHOW PLACEMENT FOR` 用于汇总所有放置策略 (placement policy) ，并用统一的形式呈现特定表、数据库或分区的信息。
+`SHOW PLACEMENT FOR` 用于汇总所有放置策略 (placement policy)，并用统一的形式呈现特定表、数据库或分区的信息。
 
 本语句返回结果中的 `Scheduling_State` 列标识了 Placement Driver (PD) 在当前对象上的调度进度，有以下可能的结果：
 
@@ -17,7 +17,7 @@ summary: TiDB 数据库中 SHOW PLACEMENT FOR 的使用概况。
 
 ```ebnf+diagram
 ShowStmt ::=
-    "PLACEMENT" "FOR" ShowPlacementTarget
+    "SHOW" "PLACEMENT" "FOR" ShowPlacementTarget
 
 ShowPlacementTarget ::=
     DatabaseSym DBName
@@ -27,8 +27,6 @@ ShowPlacementTarget ::=
 
 ## 示例
 
-{{< copyable "sql" >}}
-
 ```sql
 CREATE PLACEMENT POLICY p1 PRIMARY_REGION="us-east-1" REGIONS="us-east-1,us-west-1" FOLLOWERS=4;
 use test;
@@ -36,9 +34,9 @@ ALTER DATABASE test PLACEMENT POLICY=p1;
 CREATE TABLE t1 (a INT);
 SHOW PLACEMENT FOR DATABASE test;
 SHOW PLACEMENT FOR TABLE t1;
-SHOW CREATE TABLE t1\G;
+SHOW CREATE TABLE t1\G
 CREATE TABLE t3 (a INT) PARTITION BY RANGE (a) (PARTITION p1 VALUES LESS THAN (10), PARTITION p2 VALUES LESS THAN (20));
-SHOW PLACEMENT FOR TABLE t3 PARTITION p1\G;
+SHOW PLACEMENT FOR TABLE t3 PARTITION p1\G
 ```
 
 ```sql
@@ -65,7 +63,7 @@ Query OK, 0 rows affected (0.01 sec)
 ***************************[ 1. row ]***************************
 Table        | t1
 Create Table | CREATE TABLE `t1` (
-  `a` int(11) DEFAULT NULL
+  `a` int DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin /*T![placement] PLACEMENT POLICY=`p1` */
 1 row in set (0.00 sec)
 

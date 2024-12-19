@@ -1,10 +1,10 @@
 ---
-title: Table Selector
+title: DM Table Selector
 summary: 介绍 DM 的 Table Selector
 aliases: ['/docs-cn/tidb-data-migration/dev/table-selector/']
 ---
 
-# Table Selector
+# DM Table Selector
 
 Table Selector 提供了一种基于[通配符](https://zh.wikipedia.org/wiki/%E9%80%9A%E9%85%8D%E7%AC%A6) 来匹配指定 `schema/table` 的功能。
 
@@ -14,7 +14,7 @@ table selector 在 `schema-pattern`/`table-pattern` 中可以使用以下两个�
 
 + 星号(`*`)
 
-    - 匹配零个或者多个字符。例如， `doc*` 匹配 `doc` 和 `document`，但是不匹配 `dodo`。
+    - 匹配零个或者多个字符。例如，`doc*` 匹配 `doc` 和 `document`，但是不匹配 `dodo`。
     - `*` 只能放在 pattern 的最后一位，例如，支持 `doc*`，但是不支持 `do*c`。
 
 + 问号(`?`)

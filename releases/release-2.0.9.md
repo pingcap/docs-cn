@@ -1,6 +1,7 @@
 ---
 title: TiDB 2.0.9 Release Notes
 aliases: ['/docs-cn/dev/releases/release-2.0.9/','/docs-cn/dev/releases/209/']
+summary: TiDB 2.0.9 版本发布，改进了系统兼容性和稳定性。修复了多个问题，包括统计信息、DDL JOB、Commit 操作、Limit 值、字符集支持、内建函数、主键选择率估算、Session 变量、Union 语句、统计信息清除、事务运行时间、表创建语句、取消 DDL 任务、全局环境变量等。PD 修复了 etcd 启动失败和 pd-ctl 读取 Region key 的问题。TiKV 增加了 kv_scan 接口扫描上界的限制，废弃了 max-tasks-xxx 配置，并修复了 RocksDB CompactFiles 的问题。
 ---
 
 # TiDB 2.0.9 Release Notes
@@ -37,7 +38,7 @@ aliases: ['/docs-cn/dev/releases/release-2.0.9/','/docs-cn/dev/releases/209/']
 - 修复 etcd 启动失败导致的服务挂起问题 [#1267](https://github.com/pingcap/pd/pull/1267)
 - 修复 `pd-ctl` 读取 Region key 的相关问题 [#1298](https://github.com/pingcap/pd/pull/1298) [#1299](https://github.com/pingcap/pd/pull/1299) [#1308](https://github.com/pingcap/pd/pull/1308)
 - 修复 `regions/check` API 输出错误的问题 [#1311](https://github.com/pingcap/pd/pull/1311)
-- 修复 PD join 失败后无法重新 join 的问题 [1279](https://github.com/pingcap/pd/pull/1279)
+- 修复 PD join 失败后无法重新 join 的问题 [#1279](https://github.com/pingcap/pd/pull/1279)
 
 ## TiKV
 

@@ -103,10 +103,10 @@ Region 负载均衡调度主要依赖 `balance-leader` 和 `balance-region` 两�
 
 Region merge 指的是为了避免删除数据后大量小甚至空的 Region 消耗系统资源，通过调度把相邻的小 Region 合并的过程。Region merge 由 `mergeChecker` 负责，其过程与 `replicaChecker` 类似：PD 在后台遍历，发现连续的小 Region 后发起调度。
 
-具体来说，当某个新分裂出来的 Region 存在的时间超过配置项 [`split-merge-interval`](/pd-configuration-file.md#split-merge-interval) 的值（默认 1h）后，如果出现以下任意情况，该 Region 会触发 Region merge 调度：
+具体来说，当某个新分裂出来的 Region 存在的时间超过配置项 [`split-merge-interval`](/pd-configuration-file.md#split-merge-interval) 的值（默认 1h）后，如果同时满足以下情况，该 Region 会触发 Region merge 调度：
 
-- 该 Region 大小小于配置项 [`max-merge-region-size`](/pd-configuration-file.md#max-merge-region-size) 的值（默认 20MiB）
-- 该 Region 中 key 的数量小于配置项 [`max-merge-region-keys`](/pd-configuration-file.md#max-merge-region-keys) 的值（默认 200000）
+- 该 Region 大小小于配置项 [`max-merge-region-size`](/pd-configuration-file.md#max-merge-region-size) 的值。从 v8.4.0 开始，该配置项的默认值从 20 MiB 调整为 54 MiB。该变更仅对新集群生效，已有集群不受影响。
+- 该 Region 中 key 的数量小于配置项 [`max-merge-region-keys`](/pd-configuration-file.md#max-merge-region-keys) 的值。从 v8.4.0 开始，该配置项的默认值从 200000 调整为 540000。该变更仅对新集群生效，已有集群不受影响。
 
 ## 查询调度状态
 
@@ -206,7 +206,7 @@ PD 的打分机制决定了一般情况下，不同 Store 的 Leader Count 和 R
 
 - 存在热点导致负载不均衡。可以参考[热点分布不均匀](#热点分布不均匀)中的解决办法进行分析处理。
 - 存在大量空 Region 或小 Region，因此不同 Store 的 Leader 数量差别特别大，导致 Raftstore 负担过重。此时需要开启 [Region Merge](#region-merge) 并尽可能加速合并。
-- 不同 Store 的软硬件环境存在差异。可以酌情调整 `leader-weight` 和 `region-weight` 来控制 Leader/Region 的分布。
+- 不同 Store 的软硬件环境存在差异。可以参考[负载均衡](#负载均衡)一节视实际情况调整 `leader-weight` 和 `region-weight` 来控制 Leader/Region 的分布。
 - 其他不明原因。仍可以通过调整 `leader-weight` 和 `region-weight` 来控制 Leader/Region 的分布。
 
 如果不同 Store 的分数差异较大，需要进一步检查 Operator 的相关 Metrics，特别关注 Operator 的生成和执行情况，这时大体上又分两种情况：
@@ -297,4 +297,8 @@ Region Merge 速度慢也很有可能是受到 limit 配置的限制（`merge-sc
 
 实践中，如果能确定这个节点的故障是不可恢复的，可以立即做下线处理，这样 PD 能尽快补齐副本，降低数据丢失的风险。与之相对，如果确定这个节点是能恢复的，但可能半小时之内来不及，则可以把 `max-store-down-time` 临时调整为比较大的值，这样能避免超时之后产生不必要的副本补充，造成资源浪费。
 
-自 v5.2.0 起，TiKV 引入了慢节点检测机制。通过对 TiKV 中的请求进行采样，计算出一个范围在 1~100 的分数。当分数大于等于 80 时，该 TiKV 节点会被设置为 slow 状态。可以通过添加 [`evict-slow-store-scheduler`](/pd-control.md#scheduler-show--add--remove--pause--resume--config) 来针对慢节点进行对应的检测和调度。当检测到有且只有一个 TiKV 节点为慢节点，并且该 TiKV 的 slow score 到达上限（默认 100）时，将节点上的 leader 驱逐（其作用类似于 `evict-leader-scheduler`）。
+自 v5.2.0 起，TiKV 引入了慢节点检测机制。通过对 TiKV 中的请求进行采样，计算出一个范围在 1~100 的分数。当分数大于等于 80 时，该 TiKV 节点会被设置为 slow 状态。可以通过添加 [`evict-slow-store-scheduler`](/pd-control.md#scheduler-show--add--remove--pause--resume--config--describe) 来针对慢节点进行对应的检测和调度。当检测到有且只有一个 TiKV 节点为慢节点，并且该 TiKV 的 slow score 到达限定值（默认 80）时，将节点上的 Leader 驱逐（其作用类似于 `evict-leader-scheduler`）。
+
+> **注意：**
+>
+> **Leader 驱逐**是通过 PD 向 TiKV 慢节点发送调度请求，然后 TiKV 按时间顺序执行收到的调度请求来完成的。受 **I/O 慢**或者其他因素的影响，慢节点可能存在请求堆积的情况，使得部分 Leader 需要等待滞后的请求处理完后才能处理 **Leader 驱逐**的请求，造成 **Leader 驱逐**的整体时间过长。因此，在开启 `evict-slow-store-scheduler` 时，建议同步配置[`store-io-pool-size`](/tikv-configuration-file.md#store-io-pool-size-从-v530-版本开始引入) 以缓解该情况。

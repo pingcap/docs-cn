@@ -1,6 +1,7 @@
 ---
 title: 使用 TiDB Dashboard 诊断报告定位问题
 aliases: ['/docs-cn/dev/dashboard/dashboard-diagnostics-usage/']
+summary: 本文介绍了使用 TiDB Dashboard 诊断报告定位问题的方法。通过对比两个时间段的监控项差异来帮助 DBA 定位问题。示例中展示了大查询/写入导致 QPS 抖动或延迟上升的诊断方法，以及如何用对比报告定位问题。对比报告可以帮助 DBA 更快速地定位问题，例如通过查看监控项的差异大小排序来发现异常。通过对比报告定位问题，可以更准确地诊断可能的慢查询和影响查询执行的负载。
 ---
 
 # 使用 TiDB Dashboard 诊断报告定位问题
@@ -33,7 +34,7 @@ aliases: ['/docs-cn/dev/dashboard/dashboard-diagnostics-usage/']
 上面诊断结果显示，在诊断的时间内可能有大查询，下面的每一行的含义是：
 
 * `tidb_qps`：QPS 下降 0.93 倍。
-* `tidb_query_duration`：P999的查询延迟上升 1.54 倍。
+* `tidb_query_duration`：P999 的查询延迟上升 1.54 倍。
 * `tidb_cop_duration`：P999 的 COP 请求的处理延迟上升 2.48 倍。
 * `tidb_kv_write_num`：P999 的 tidb 的事务写入 kv 数量上升 7.61 倍。
 * `tikv_cop_scan_keys_total_nun`：TiKV 的 coprocessor 扫描 key/value 的数量分别在 3 台 TiKV 上有很大的提升。
@@ -60,7 +61,7 @@ digest             | 24bd6d8a9b238086c9b8c3d240ad4ef32f79ce94cf5a468c0b8fe1eb5f8
 
 可以发现，从 13:24:30 开始有一个批量删除的大写入，一共执行了 196 次，每次删除 5000 行数据，总共耗时 46.8 秒。
 
-#### 示例2
+#### 示例 2
 
 如果大查询一直没执行完，就不会记录慢日志，但仍可以进行诊断，示例如下：
 
@@ -98,7 +99,7 @@ MESSAGE  | [expensivequery.go:167] [expensive_query] [cost_time=60.085949605s] [
 
 上图中，也是在跑 go-ycsb 的压测，可以发现，在 `2020-05-22 22:14:00` 时，QPS 突然开始下降，大概在持续 3 分钟后恢复。
 
-生成以下2个时间范围的对比报告：
+生成以下 2 个时间范围的对比报告：
 
 - t1: 2020-05-22 22:11:00 - 2020-05-22 22:14:00，正常时间段。
 - t2: 2020-05-22 22:14:00 - 2020-05-22 22:17:00，QPS 开始下降的异常时间段。

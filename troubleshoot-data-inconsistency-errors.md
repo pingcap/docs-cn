@@ -1,13 +1,13 @@
 ---
 title: 数据索引一致性错误
-summary: 了解如何处理数据索引一致性检查的报错。
+summary: TiDB 在执行事务或执行 ADMIN CHECK 命令时会检查数据索引的一致性。如果发现不一致，会报错并记录相关错误日志。报错处理可通过改写 SQL 或关闭错误检查来绕过。对于特定错误代码，可通过设置 @@tidb_enable_mutation_checker=0 或 @@tidb_txn_assertion_level=OFF 来跳过检查。需注意关闭开关会关闭所有 SQL 语句的对应检查。
 ---
 
 # 数据索引一致性报错
 
 当执行事务或执行 [`ADMIN CHECK [TABLE|INDEX]`](/sql-statements/sql-statement-admin-check-table-index.md) 命令时，TiDB 会对数据索引的一致性进行检查。如果检查发现 record key-value 和 index key-value 不一致，即存储行数据的键值对和存储其对应索引的键值对之间不一致（例如多索引或缺索引），TiDB 会报数据索引一致性错误，并在日志文件中打印相关错误日志。
 
-本文对数据索引一致性的报错信息进行了说明，并提供了一些绕过检查的方法。遇到报错时，请联系 PingCAP 技术支持进行修复或排查。
+本文对数据索引一致性的报错信息进行了说明，并提供了一些绕过检查的方法。遇到报错时，你可以前往 [AskTUG 论坛](https://asktug.com/)，与社区用户交流；如果是订阅用户，请联系 [PingCAP 服务与支持](https://cn.pingcap.com/support/)。
 
 ## 错误样例解读
 
@@ -55,7 +55,7 @@ summary: 了解如何处理数据索引一致性检查的报错。
 
 `ERROR 8003 (HY000): table count 3 != index(idx) count 2`
 
-上述错误表明，在 `ADMIN CHECK` 语句所执行的表上有 3 个行键值对，但只有 2 个索引键值对。
+上述错误表明，在 [`ADMIN CHECK`](/sql-statements/sql-statement-admin-check-table-index.md) 语句所执行的表上有 3 个行键值对，但只有 2 个索引键值对。
 
 #### Error 8134
 
@@ -71,7 +71,7 @@ summary: 了解如何处理数据索引一致性检查的报错。
 
 ## 报错处理
 
-发生报错时，不要自行处理，请立即联系 PingCAP 技术支持进行修复或排查。如果业务急需跳过此类报错，可以使用以下方法绕过检查。
+发生报错时，不要自行处理，请从 PingCAP 官方或 TiDB 社区[获取支持](/support.md)。如果业务急需跳过此类报错，可以使用以下方法绕过检查。
 
 ### 改写 SQL
 
@@ -88,4 +88,4 @@ summary: 了解如何处理数据索引一致性检查的报错。
 >
 > 关闭 `tidb_enable_mutation_checker` 和 `tidb_txn_assertion_level` 开关会关闭对所有 SQL 语句的对应检查。
 
-对于其它错误代码，包括执行 `ADMIN CHECK [TABLE|INDEX]` 系列语句或执行事务中的报错，由于数据中已经存在不一致，无法跳过对应的检查。
+对于其它错误代码，包括执行 [`ADMIN CHECK [TABLE|INDEX]`](/sql-statements/sql-statement-admin-check-table-index.md) 系列语句或执行事务中的报错，由于数据中已经存在不一致，无法跳过对应的检查。

@@ -12,9 +12,14 @@ aliases: ['/docs-cn/dev/sql-statements/sql-statement-show-errors/','/docs-cn/dev
 
 ## 语法图
 
-**ShowErrorsStmt:**
+```ebnf+diagram
+ShowErrorsStmt ::=
+    "SHOW" "ERRORS" ShowLikeOrWhere?
 
-![ShowErrorsStmt](/media/sqlgram/ShowErrorsStmt.png)
+ShowLikeOrWhere ::=
+    "LIKE" SimpleExpr
+|   "WHERE" Expression
+```
 
 ## 示例
 
@@ -91,7 +96,7 @@ Empty set (0.00 sec)
 
 ## MySQL 兼容性
 
-`SHOW ERRORS` 语句与 MySQL 完全兼容。如发现任何兼容性差异，请在 GitHub 上提交 [issue](https://github.com/pingcap/tidb/issues/new/choose)。
+`SHOW ERRORS` 语句与 MySQL 完全兼容。如发现任何兼容性差异，请尝试 [TiDB 支持资源](/support.md)。
 
 ## 另请参阅
 

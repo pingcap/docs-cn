@@ -1,5 +1,6 @@
 ---
 title: tiup cluster edit-config
+summary: tiup cluster edit-config 命令用于调整部署集群后的配置。执行命令后会启动一个编辑器，允许用户修改指定集群的拓扑文件。注意不能增删机器，需执行 tiup cluster reload 命令来重新加载配置。语法为 tiup cluster edit-config <cluster-name>，选项包括 -h, --help。执行命令后正常情况下无输出，若修改了不能修改的字段则会报错并提示用户重新编辑。
 ---
 
 # tiup cluster edit-config

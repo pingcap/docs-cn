@@ -5,13 +5,17 @@ summary: TiDB 数据库中 ADMIN CHECKSUM TABLE 的使用概况。
 
 # ADMIN CHECKSUM TABLE
 
-`ADMIN CHECKSUM TABLE` 语句用于计算表中所有行和索引的 CRC64 校验和。在 TiDB Lightning 等程序中，可通过此语句来确保导入操作成功。
+`ADMIN CHECKSUM TABLE` 语句用于计算表中所有数据和索引的 CRC64 校验和。
+
+[校验和](/tidb-lightning/tidb-lightning-glossary.md#checksum)是通过表数据和 `table_id` 等属性进行计算得出的。这意味着两张 `table_id` 不同的表即使数据相同，校验和也不相同。
+
+当使用 [TiDB Lightning](/tidb-lightning/tidb-lightning-overview.md) 物理模式、[TiDB Data Migration](/dm/dm-overview.md) 或 [`IMPORT INTO`](/sql-statements/sql-statement-import-into.md) 导入完成一张表后，`ADMIN CHECKSUM TABLE <table>` 语句会默认执行以验证数据完整性。
 
 ## 语法图
 
 ```ebnf+diagram
-AdminStmt ::=
-    'ADMIN' ( 'SHOW' ( 'DDL' ( 'JOBS' Int64Num? WhereClauseOptional | 'JOB' 'QUERIES' NumList )? | TableName 'NEXT_ROW_ID' | 'SLOW' AdminShowSlow ) | 'CHECK' ( 'TABLE' TableNameList | 'INDEX' TableName Identifier ( HandleRange ( ',' HandleRange )* )? ) | 'RECOVER' 'INDEX' TableName Identifier | 'CLEANUP' ( 'INDEX' TableName Identifier | 'TABLE' 'LOCK' TableNameList ) | 'CHECKSUM' 'TABLE' TableNameList | 'CANCEL' 'DDL' 'JOBS' NumList | 'RELOAD' ( 'EXPR_PUSHDOWN_BLACKLIST' | 'OPT_RULE_BLACKLIST' | 'BINDINGS' ) | 'PLUGINS' ( 'ENABLE' | 'DISABLE' ) PluginNameList | 'REPAIR' 'TABLE' TableName CreateTableStmt | ( 'FLUSH' | 'CAPTURE' | 'EVOLVE' ) 'BINDINGS' )
+AdminChecksumTableStmt ::=
+    'ADMIN' 'CHECKSUM' 'TABLE' TableNameList
 
 TableNameList ::=
     TableName ( ',' TableName )*
@@ -19,25 +23,27 @@ TableNameList ::=
 
 ## 示例
 
-计算表 `t1` 的校验和：
-
-{{< copyable "sql" >}}
+创建表 `t1`：
 
 ```sql
-CREATE TABLE t1 (id INT NOT NULL PRIMARY KEY auto_increment);
+CREATE TABLE t1(id INT PRIMARY KEY);
+```
+
+插入一些数据：
+
+```sql
 INSERT INTO t1 VALUES (1),(2),(3);
+```
+
+计算表 `t1` 的校验和：
+
+```sql
 ADMIN CHECKSUM TABLE t1;
 ```
 
-```sql
-CREATE TABLE t1 (id INT NOT NULL PRIMARY KEY auto_increment);
-Query OK, 0 rows affected (0.11 sec)
+输出结果示例如下：
 
-INSERT INTO t1 VALUES (1),(2),(3);
-Query OK, 3 rows affected (0.02 sec)
-Records: 3  Duplicates: 0  Warnings: 0
-
-ADMIN CHECKSUM TABLE t1;
+```
 +---------+------------+----------------------+-----------+-------------+
 | Db_name | Table_name | Checksum_crc64_xor   | Total_kvs | Total_bytes |
 +---------+------------+----------------------+-----------+-------------+

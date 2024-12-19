@@ -12,16 +12,18 @@ TiDB Lightning 支持读取 CSV 格式的文件，以及其他定界符格式，
 ## 前提条件
 
 - [安装 TiDB Lightning](/migration-tools.md)。
-- [获取 Lightning 所需下游数据库权限](/tidb-lightning/tidb-lightning-faq.md#tidb-lightning-对下游数据库的账号权限要求是怎样的)。
+- [获取 Lightning 所需下游数据库权限](/tidb-lightning/tidb-lightning-requirements.md#目标数据库权限要求)。
 
-## 第 1 步： 准备 CSV 文件
+## 第 1 步：准备 CSV 文件
 
 将所有要导入的 CSV 文件放在同一目录下，若要 TiDB Lightning 识别所有 CSV 文件，文件名必须满足以下格式：
 
 - 包含整张表数据的 CSV 文件，需命名为 `${db_name}.${table_name}.csv`。
 - 如果一张表分布于多个 CSV 文件，这些 CSV 文件命名需加上文件编号的后缀，如 `${db_name}.${table_name}.003.csv`。数字部分不需要连续，但必须递增，并且需要用零填充数字部分，保证后缀为同样长度。
 
-## 第 2 步： 创建目标表结构
+TiDB Lightning 将递归地寻找该目录下及其子目录内的所有 `.csv` 文件。
+
+## 第 2 步：创建目标表结构
 
 CSV 文件自身未包含表结构信息。要将 CSV 数据导入 TiDB，就必须为数据提供表结构。可以通过以下任一方法创建表结构：
 
@@ -34,11 +36,9 @@ CSV 文件自身未包含表结构信息。要将 CSV 数据导入 TiDB，就必
 
 * **方法二**：手动在下游 TiDB 建库和表。
 
-## 第 3 步： 编写配置文件
+## 第 3 步：编写配置文件
 
 新建文件 `tidb-lightning.toml`，包含以下内容：
-
-{{< copyable "shell-regular" >}}
 
 ```toml
 [lightning]
@@ -48,14 +48,14 @@ file = "tidb-lightning.log"
 
 [tikv-importer]
 # "local"：默认使用该模式，适用于 TB 级以上大数据量，但导入期间下游 TiDB 无法对外提供服务。
-# "tidb"：TB 级以下数据量也可以采用`tidb`后端模式，下游 TiDB 可正常提供服务。关于后端模式更多信息请参阅：https://docs.pingcap.com/tidb/stable/tidb-lightning-backends
+# "tidb"：TB 级以下数据量也可以采用 `tidb` 后端模式，下游 TiDB 可正常提供服务。关于导入模式更多信息请参阅：https://docs.pingcap.com/zh/tidb/stable/tidb-lightning-overview#tidb-lightning-整体架构
 backend = "local"
 # 设置排序的键值对的临时存放地址，目标路径必须是一个空目录，目录空间须大于待导入数据集的大小，建议设为与 `data-source-dir` 不同的磁盘目录并使用闪存介质，独占 IO 会获得更好的导入性能
 sorted-kv-dir = "/mnt/ssd/sorted-kv-dir"
 
 [mydumper]
 # 源数据目录。
-data-source-dir = "${data-path}" # 本地或 S3 路径，例如：'s3://my-bucket/sql-backup?region=us-west-2'
+data-source-dir = "${data-path}" # 本地或 S3 路径，例如：'s3://my-bucket/sql-backup'
 
 # 定义 CSV 格式
 [mydumper.csv]
@@ -63,6 +63,8 @@ data-source-dir = "${data-path}" # 本地或 S3 路径，例如：'s3://my-bucke
 separator = ','
 # 引用定界符，可以为零或多个字符。
 delimiter = '"'
+# 行结束符。默认将 \r、\n、\r\n 都作为行结束符处理。
+# terminator = "\r\n"
 # CSV 文件是否包含表头。
 # 如果为 true，则 lightning 会使用首行内容解析字段的对应关系。
 header = true
@@ -89,7 +91,7 @@ pd-addr = "${ip}:${port}"     # 集群 PD 的地址，Lightning 通过 PD 获取
 
 关于配置文件更多信息，可参阅 [TiDB Lightning 配置参数](/tidb-lightning/tidb-lightning-configuration.md)。
 
-## 第 4 步： 导入性能优化（可选）
+## 第 4 步：导入性能优化（可选）
 
 导入文件的大小统一约为 256 MiB 时，TiDB Lightning 可达到最佳工作状态。如果导入单个 CSV 大文件，TiDB Lightning 在默认配置下只能使用一个线程来处理，这会降低导入速度。
 
@@ -104,6 +106,8 @@ pd-addr = "${ip}:${port}"     # 集群 PD 的地址，Lightning 通过 PD 获取
 - delimiter 为空；
 - 每个字段不包含 CR (\\r）或 LF（\\n）。
 
+严格格式 `strict-format` 的 CSV 文件需要显式指定行结束符 `terminator`。
+
 如果你确认满足条件，可按如下配置开启 `strict-format` 模式以加快导入速度。
 
 ```toml
@@ -111,7 +115,7 @@ pd-addr = "${ip}:${port}"     # 集群 PD 的地址，Lightning 通过 PD 获取
 strict-format = true
 ```
 
-## 第 5 步： 执行导入
+## 第 5 步：执行导入
 
 运行 `tidb-lightning`。如果直接在命令行中启动程序，可能会因为 `SIGHUP` 信号而退出，建议配合 `nohup` 或 `screen` 等工具，如：
 
@@ -127,11 +131,11 @@ nohup tiup tidb-lightning -config tidb-lightning.toml > nohup.out 2>&1 &
 - 通过监控面板查看进度，请参考 [TiDB Lightning 监控](/tidb-lightning/monitor-tidb-lightning.md)。
 - 通过 Web 页面查看进度，请参考 [Web 界面](/tidb-lightning/tidb-lightning-web-interface.md)。
 
-导入完毕后，TiDB Lightning 会自动退出。查看日志的最后 5 行中会有 `the whole procedure completed`，则表示导入成功。
+导入完毕后，TiDB Lightning 会自动退出。查看 `tidb-lightning.log` 日志末尾是否有 `the whole procedure completed` 信息，如果有，表示导入成功。如果没有，则表示导入遇到了问题，可根据日志中的 error 提示解决遇到的问题。
 
 > **注意：**
 >
-> 无论导入成功与否，最后一行都会显示 `tidb lightning exit`。它只是表示 TiDB Lightning  正常退出，不代表任务完成。
+> 无论导入成功与否，最后一行都会显示 `tidb lightning exit`。它只是表示 TiDB Lightning 正常退出，不代表任务完成。
 
 如果导入过程中遇到问题，请参见 [TiDB Lightning 常见问题](/tidb-lightning/tidb-lightning-faq.md)。
 
@@ -181,4 +185,4 @@ trim-last-separator = true
 
 ## 探索更多
 
-- [CSV 支持与限制](/tidb-lightning/migrate-from-csv-using-tidb-lightning.md)
+- [CSV 支持与限制](/tidb-lightning/tidb-lightning-data-source.md#csv)

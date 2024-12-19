@@ -1,5 +1,6 @@
 ---
 title: tiup clean
+summary: tiup clean 命令用于清除组件运行过程中产生的数据。可以使用 --all 选项清除所有运行记录。
 ---
 
 # tiup clean

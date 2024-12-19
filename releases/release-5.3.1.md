@@ -1,5 +1,6 @@
 ---
 title: TiDB 5.3.1 Release Notes
+summary: TiDB 5.3.1 发布日期为 2022 年 3 月 3 日。此版本包含兼容性更改、提升改进和 Bug 修复。兼容性更改包括 TiDB Lightning 工具的默认值调整。提升改进包括 TiDB、TiKV 和 PD 的优化。Bug 修复包括 TiDB、TiKV、PD、TiFlash、Backup & Restore (BR)、TiCDC、TiDB Data Migration (DM) 和 TiDB Lightning 工具的问题修复。
 ---
 
 # TiDB 5.3.1 Release Notes
@@ -20,7 +21,7 @@ TiDB 版本：5.3.1
 
 + TiDB
 
-    - 优化用户登录模式匹配的逻辑，增强与 MySQL 的兼容性 [#30450](https://github.com/pingcap/tidb/issues/32648)
+    - 优化用户登录模式匹配的逻辑，增强与 MySQL 的兼容性 [#32648](https://github.com/pingcap/tidb/issues/32648)
 
 + TiKV
 
@@ -44,7 +45,7 @@ TiDB 版本：5.3.1
         - 将 Kafka Sink `partition-num` 的默认值改为 3，使 TiCDC 更加平均地分发消息到各个 Kafka partition [#3337](https://github.com/pingcap/tiflow/issues/3337)
         - 减少 "EventFeed retry rate limited" 日志的数量 [#4006](https://github.com/pingcap/tiflow/issues/4006)
         - 将 `max-message-bytes` 默认值设置为 10M [#4041](https://github.com/pingcap/tiflow/issues/4041)
-        - 增加更多 Promethous 和 Grafana 监控告警参数，包括 `no owner alert`、`mounter row`、`table sink total row` 和 `buffer sink total row` [#4054](https://github.com/pingcap/tiflow/issues/4054) [#1606](https://github.com/pingcap/tiflow/issues/1606)
+        - 增加更多 Prometheus 和 Grafana 监控告警参数，包括 `no owner alert`、`mounter row`、`table sink total row` 和 `buffer sink total row` [#4054](https://github.com/pingcap/tiflow/issues/4054) [#1606](https://github.com/pingcap/tiflow/issues/1606)
         - 减少 TiKV 节点宕机后 KV client 恢复的时间 [#3191](https://github.com/pingcap/tiflow/issues/3191)
 
     - TiDB Lightning
@@ -121,12 +122,7 @@ TiDB 版本：5.3.1
         - 修复了 UPDATE 语句在安全模式下执行错误会导致 DM 进程挂掉的问题 [#4317](https://github.com/pingcap/tiflow/issues/4317)
         - 修复 `cached region` 监控指标为负数的问题 [#4300](https://github.com/pingcap/tiflow/issues/4300)
         - 修复了 HTTP API 在查询的组件不存在时导致 CDC 挂掉的问题 [#3840](https://github.com/pingcap/tiflow/issues/3840)
-        - 修复了 DM 的 master/worker 线程以特定顺序重启后中继状态错误的问题 [#3478](https://github.com/pingcap/tiflow/issues/3478)
-        - 修复了 DM worker 在重启后无法完成初始化的问题 [#3344](https://github.com/pingcap/tiflow/issues/3344)
-        - 修复了 DM 任务在分区表相关 DDL 执行时间过长时失败的问题 [#3854](https://github.com/pingcap/tiflow/issues/3854)
-        - 修复了 DM 在上游是 MySQL 8.0 时报错 "invalid sequence" 的问题 [#3847](https://github.com/pingcap/tiflow/issues/3847)
         - 修复了移除一个暂停的同步时，CDC Redo Log 无法被正确清理的问题 [#4740](https://github.com/pingcap/tiflow/issues/4740)
-        - 修复了 DM 采用细粒度失败重试策略导致数据丢失问题 [#3487](https://github.com/pingcap/tiflow/issues/3487)
         - 修复在容器环境中 OOM 的问题 [#1798](https://github.com/pingcap/tiflow/issues/1798)
         - 修复了停止加载中的任务会导致它被意外调度的问题 [#3771](https://github.com/pingcap/tiflow/issues/3771)
         - 纠正了在 Loader 上使用 `query-status` 命令查询到错误的进度的问题 [#3252](https://github.com/pingcap/tiflow/issues/3252)
@@ -137,8 +133,6 @@ TiDB 版本：5.3.1
         - 修复部分 syncer metrics 只有在查询状态时才得以更新的问题 [#4281](https://github.com/pingcap/tiflow/issues/4281)
         - 修复当 Kafka 为下游时 `txn_batch_size` 监控指标数据不准确的问题 [#3431](https://github.com/pingcap/tiflow/issues/3431)
         - 修复当 `min.insync.replicas` 小于 `replication-factor` 时不能同步的问题 [#3994](https://github.com/pingcap/tiflow/issues/3994)
-        - 修复 `CREATE VIEW` 语句中断复制任务的问题 [#4173](https://github.com/pingcap/tiflow/issues/4173)
-        - 修复 skip DDL 后需要重置 Schema 的问题 [#4177](https://github.com/pingcap/tiflow/issues/4177)
         - 修复当 Kafka 为下游时 `txn_batch_size` 监控指标数据不准确的问题 [#3431](https://github.com/pingcap/tiflow/issues/3431)
         - 修复在移除同步任务后潜在的 panic 问题 [#3128](https://github.com/pingcap/tiflow/issues/3128)
         - 修复潜在的同步流控死锁问题 [#4055](https://github.com/pingcap/tiflow/issues/4055)
@@ -149,9 +143,19 @@ TiDB 版本：5.3.1
         - 修复集群升级后 `stopped` 状态的 changefeed 自动恢复的问题 [#3473](https://github.com/pingcap/tiflow/issues/3473)
         - 修复不支持同步默认值的问题 [#3793](https://github.com/pingcap/tiflow/issues/3793)
         - 修复 MySQL sink 模块出现死锁时告警过于频繁的问题 [#2706](https://github.com/pingcap/tiflow/issues/2706)
-        - 修复 Canal 和 Maxwell 协议下 TiCDC 没有自动开启 `enable-old-value` 选项的问题 [#3676](https://github.com/pingcap/tiflow/issues/3676)
+        - 修复 Canal 协议下 TiCDC 没有自动开启 `enable-old-value` 选项的问题 [#3676](https://github.com/pingcap/tiflow/issues/3676)
         - 修复 Avro sink 模块不支持解析 JSON 类型列的问题 [#3624](https://github.com/pingcap/tiflow/issues/3624)
         - 修复监控 checkpoint lag 出现负值的问题 [#3010](https://github.com/pingcap/tiflow/issues/3010)
+
+    + TiDB Data Migration (DM)
+
+        - 修复了 DM 的 master/worker 线程以特定顺序重启后中继状态错误的问题 [#3478](https://github.com/pingcap/tiflow/issues/3478)
+        - 修复了 DM worker 在重启后无法完成初始化的问题 [#3344](https://github.com/pingcap/tiflow/issues/3344)
+        - 修复了 DM 任务在分区表相关 DDL 执行时间过长时失败的问题 [#3854](https://github.com/pingcap/tiflow/issues/3854)
+        - 修复了 DM 在上游是 MySQL 8.0 时报错 "invalid sequence" 的问题 [#3847](https://github.com/pingcap/tiflow/issues/3847)
+        - 修复了 DM 采用细粒度失败重试策略导致数据丢失问题 [#3487](https://github.com/pingcap/tiflow/issues/3487)
+        - 修复 `CREATE VIEW` 语句中断复制任务的问题 [#4173](https://github.com/pingcap/tiflow/issues/4173)
+        - 修复 skip DDL 后需要重置 Schema 的问题 [#4177](https://github.com/pingcap/tiflow/issues/4177)
 
     + TiDB Lightning
 

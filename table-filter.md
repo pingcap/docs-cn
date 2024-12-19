@@ -16,33 +16,26 @@ TiDB 数据迁移工具默认情况下作用于所有数据库，但实际使用
 
 在命令行中使用多个 `-f` 或 `--filter` 参数，即可在 TiDB 数据迁移工具中应用表库过滤规则。每个过滤规则均采用 `db.table` 形式，支持通配符（详情见[下一节](#使用通配符)）。以下为各个工具中的使用示例：
 
-* [BR](/br/backup-and-restore-overview.md)：
-
-    {{< copyable "shell-regular" >}}
+* [BR](/br/br-snapshot-manual.md#使用表库过滤功能备份多张表的数据)：
 
     ```shell
-    ./br backup full -f 'foo*.*' -f 'bar*.*' -s 'local:///tmp/backup'
-    #                ^~~~~~~~~~~~~~~~~~~~~~~
-    ./br restore full -f 'foo*.*' -f 'bar*.*' -s 'local:///tmp/backup'
-    #                 ^~~~~~~~~~~~~~~~~~~~~~~
+    tiup br backup full -f 'foo*.*' -f 'bar*.*' -s 'local:///tmp/backup'
+    ```
+
+    ```shell
+    tiup br restore full -f 'foo*.*' -f 'bar*.*' -s 'local:///tmp/backup'
     ```
 
 * [Dumpling](/dumpling-overview.md)：
 
-    {{< copyable "shell-regular" >}}
-
     ```shell
-    ./dumpling -f 'foo*.*' -f 'bar*.*' -P 3306 -o /tmp/data/
-    #          ^~~~~~~~~~~~~~~~~~~~~~~
+    tiup dumpling -f 'foo*.*' -f 'bar*.*' -P 3306 -o /tmp/data/
     ```
 
 * [TiDB Lightning](/tidb-lightning/tidb-lightning-overview.md)：
 
-    {{< copyable "shell-regular" >}}
-
     ```shell
-    ./tidb-lightning -f 'foo*.*' -f 'bar*.*' -d /tmp/data/ --backend tidb
-    #                ^~~~~~~~~~~~~~~~~~~~~~~
+    tiup tidb-lightning -f 'foo*.*' -f 'bar*.*' -d /tmp/data/ --backend tidb
     ```
 
 ### TOML 配置文件
@@ -124,8 +117,8 @@ employees.*
 以下两条表库过滤命令是等价的：
 
 ```bash
-./dumpling -f '@config/filter.txt'
-./dumpling -f 'employees.*' -f '*.WorkOrder'
+tiup dumpling -f '@config/filter.txt'
+tiup dumpling -f 'employees.*' -f '*.WorkOrder'
 ```
 
 导入的文件里不能使用过滤规则导入另一个文件。
@@ -212,10 +205,10 @@ foo\"bar.foo\`bar
 
 ```bash
 # 所有表均被过滤掉
-./dumpling -f '!*.Password'
+tiup dumpling -f '!*.Password'
 
 # 只有 “Password” 表被过滤掉，其余表仍保留
-./dumpling -f '*.*' -f '!*.Password'
+tiup dumpling -f '*.*' -f '!*.Password'
 ```
 
 如果一个表的名称与过滤列表中的多个规则匹配，则以最后匹配的规则为准。例如：

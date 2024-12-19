@@ -1,5 +1,6 @@
 ---
 title: tiup dm edit-config
+summary: tiup dm edit-config 命令用于调整部署集群服务的配置。使用命令后会启动一个编辑器，允许用户修改指定集群的拓扑文件。注意：修改配置时不能增删机器，需执行 tiup dm reload 命令来重新加载配置。语法：tiup dm edit-config <cluster-name>。选项：-h, --help 输出帮助信息。输出：正常情况无输出，若修改了不能修改的字段，则保存文件时报错并提示用户重新编辑。
 ---
 
 # tiup dm edit-config

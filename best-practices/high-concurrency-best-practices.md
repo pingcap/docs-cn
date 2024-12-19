@@ -57,7 +57,25 @@ CREATE TABLE IF NOT EXISTS TEST_HOTSPOT(
 {{< copyable "sql" >}}
 
 ```sql
-INSERT INTO TEST_HOTSPOT(id, age, user_name, email) values(%v, %v, '%v', '%v');
+SET SESSION cte_max_recursion_depth = 1000000;
+INSERT INTO TEST_HOTSPOT
+SELECT
+  n,                                       -- ID
+  RAND()*80,                               -- 0 到 80 之间的随机数
+  CONCAT('user-',n),
+  CONCAT(
+    CHAR(65 + (RAND() * 25) USING ascii),  -- 65 到 65+25 之间的随机数，转换为一个 A-Z 字符
+    '-user-',
+    n,
+    '@example.com'
+  )
+FROM
+  (WITH RECURSIVE nr(n) AS
+    (SELECT 1                              -- 从 1 开始 CTE
+      UNION ALL SELECT n + 1               -- 每次循环 n 增加 1
+      FROM nr WHERE n < 1000000            -- 当 n 为 1_000_000 时停止循环
+    ) SELECT n FROM nr
+  ) a;
 ```
 
 负载是短时间内密集地执行以上写入语句。
@@ -190,7 +208,7 @@ ORDER BY
 
 以下全局变量会影响 `PRE_SPLIT_REGIONS` 的行为，需要特别注意：
 
-+ `tidb_scatter_region`：该变量用于控制建表完成后是否等待预切分和打散 Region 完成后再返回结果。如果建表后有大批量写入，需要设置该变量值为 `1`，表示等待所有 Region 都切分和打散完成后再返回结果给客户端。否则未打散完成就进行写入会对写入性能影响有较大的影响。
++ [`tidb_scatter_region`](/system-variables.md#tidb_scatter_region)：该变量用于控制建表完成后是否等待预切分和打散 Region 完成后再返回结果。如果建表后有大批量写入，需要设置该变量值为 `global`，表示等待所有 Region 都切分和打散完成后再返回结果给客户端。否则未打散完成就进行写入会对写入性能影响有较大的影响。
 
 示例：
 

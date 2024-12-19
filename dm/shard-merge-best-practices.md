@@ -6,7 +6,7 @@ aliases: ['/docs-cn/tidb-data-migration/dev/shard-merge-best-practices/']
 
 # 分表合并数据迁移最佳实践
 
-本文阐述了使用 TiDB Data Migration（以下简称 DM）对分库分表进行合并迁移的场景中，DM 相关功能的支持和限制，旨在给出一个业务的最佳实践（使用默认的“悲观协调”模式）。
+本文阐述了使用 [TiDB Data Migration](/dm/dm-overview.md)（以下简称 DM）对分库分表进行合并迁移的场景中，DM 相关功能的支持和限制，旨在给出一个业务的最佳实践（使用默认的“悲观协调”模式）。
 
 ## 独立的数据迁移任务
 
@@ -42,8 +42,8 @@ aliases: ['/docs-cn/tidb-data-migration/dev/shard-merge-best-practices/']
 
 ```sql
 CREATE TABLE `tbl_no_pk` (
-  `auto_pk_c1` bigint(20) NOT NULL,
-  `uk_c2` bigint(20) NOT NULL,
+  `auto_pk_c1` bigint NOT NULL,
+  `uk_c2` bigint NOT NULL,
   `content_c3` text,
   PRIMARY KEY (`auto_pk_c1`),
   UNIQUE KEY `uk_c2` (`uk_c2`)
@@ -61,8 +61,8 @@ CREATE TABLE `tbl_no_pk` (
 
     ```sql
     CREATE TABLE `tbl_no_pk_2` (
-      `auto_pk_c1` bigint(20) NOT NULL,
-      `uk_c2` bigint(20) NOT NULL,
+      `auto_pk_c1` bigint NOT NULL,
+      `uk_c2` bigint NOT NULL,
       `content_c3` text,
       INDEX (`auto_pk_c1`),
       UNIQUE KEY `uk_c2` (`uk_c2`)
@@ -85,8 +85,8 @@ CREATE TABLE `tbl_no_pk` (
 
 ```sql
 CREATE TABLE `tbl_multi_pk` (
-  `auto_pk_c1` bigint(20) NOT NULL,
-  `uuid_c2` bigint(20) NOT NULL,
+  `auto_pk_c1` bigint NOT NULL,
+  `uuid_c2` bigint NOT NULL,
   `content_c3` text,
   PRIMARY KEY (`auto_pk_c1`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1
@@ -104,8 +104,8 @@ CREATE TABLE `tbl_multi_pk` (
 
     ```sql
     CREATE TABLE `tbl_multi_pk_c2` (
-      `auto_pk_c1` bigint(20) NOT NULL,
-      `uuid_c2` bigint(20) NOT NULL,
+      `auto_pk_c1` bigint NOT NULL,
+      `uuid_c2` bigint NOT NULL,
       `content_c3` text,
       PRIMARY KEY (`auto_pk_c1`,`uuid_c2`)
     ) ENGINE=InnoDB DEFAULT CHARSET=latin1
@@ -117,7 +117,7 @@ CREATE TABLE `tbl_multi_pk` (
 
 ## 上游 RDS 封装分库分表的处理
 
-上游数据源为 RDS 且使用了其分库分表功能的情况下，MySQL binlog 中的表名在 SQL client 连接时可能并不可见。例如在 UCloud 分布式数据库 [UDDB](https://docs.ucloud.cn/uddb/README) 中，其 binlog 表名可能会多出 `_0001` 的后缀。这需要根据 binlog 中的表名规律，而不是 SQL client 所见的表名，来配置 [table routing 规则](/dm/dm-key-features.md#table-routing)。
+上游数据源为 RDS 且使用了其分库分表功能的情况下，MySQL binlog 中的表名在 SQL client 连接时可能并不可见。例如在 UCloud 分布式数据库 [UDDB](https://docs.ucloud.cn/uddb/README) 中，其 binlog 表名可能会多出 `_0001` 的后缀。这需要根据 binlog 中的表名规律，而不是 SQL client 所见的表名，来配置 [table routing 规则](/dm/dm-table-routing.md)。
 
 ## 合表迁移过程中在上游增/删表
 
@@ -138,7 +138,7 @@ CREATE TABLE `tbl_multi_pk` (
 
 如果需要在上游删除原有的分表，推荐按以下顺序执行操作：
 
-1. 在上游删除原有的分表，并通过 [`SHOW BINLOG EVENTS`](https://dev.mysql.com/doc/refman/5.7/en/show-binlog-events.html) 获取该 `DROP TABLE` 语句在 binlog 中对应的 `End_log_pos`，记为 _Pos-M_。
+1. 在上游删除原有的分表，并通过 [`SHOW BINLOG EVENTS`](https://dev.mysql.com/doc/refman/8.0/en/show-binlog-events.html) 获取该 `DROP TABLE` 语句在 binlog 中对应的 `End_log_pos`，记为 _Pos-M_。
 2. 通过 `query-status` 获取当前 DM 已经处理完成的 binlog event 对应的 position（`syncerBinlog`），记为 _Pos-S_。
 3. 当 _Pos-S_ 比 _Pos-M_ 更大后，则说明 DM 已经处理完 `DROP TABLE` 语句，且该表在被删除前的数据都已经迁移到下游，可以进行后续操作；否则，继续等待 DM 进行数据迁移。
 4. 通过 `stop-task` 停止任务。

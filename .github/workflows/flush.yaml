@@ -1,0 +1,32 @@
+name: Flush All PDF
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "0 0 * * 0" # auto flush pdf on sunday
+
+jobs:
+  flush-pdf:
+    name: Flush PDF
+    runs-on: ubuntu-latest
+    steps:
+      - name: install qiniu qshell
+        uses: foxundermoon/setup-qshell@v5
+        with:
+          version: '2.6.2'
+
+      - name: Download PDF list
+        run: |
+          curl https://raw.githubusercontent.com/pingcap/docs-cn/master/resources/cdnfresh.txt --output cdnfresh.txt
+          cat cdnfresh.txt
+
+      - name: refresh url
+        run: |
+          qshell account ${{ secrets.QINIU_ACCESS_KEY }} ${{ secrets.QINIU_SECRET_KEY }} tidb
+          result=$(qshell cdnrefresh -i cdnfresh.txt)
+          if echo $result | grep -w '200'; then
+            echo 'CDN refresh success'
+          else
+            echo "CDN refresh failed: $result"
+            exit 1
+          fi

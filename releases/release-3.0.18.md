@@ -1,5 +1,6 @@
 ---
 title: TiDB 3.0.18 Release Notes
+summary: TiDB 3.0.18 发布，提升了 TiDB Binlog 工具的细粒度 Pump GC 时间支持。修复了 TiDB 中 Hash 函数对 Decimal 类型的错误处理问题，以及对 Set 和 Enum 类型的错误处理问题。还修复了 Duplicate Key 检测在悲观事务下失效的问题，以及其他执行结果错误的问题。TiKV 将 GC 的失败日志级别改为 Warning。TiDB Lightning 修复了多个命令行参数和使用 TiDB backend 时的问题。
 ---
 
 # TiDB 3.0.18 Release Notes

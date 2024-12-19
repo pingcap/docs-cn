@@ -1,5 +1,6 @@
 ---
 title: tiup cluster scale-out
+summary: tiup cluster scale-out 命令用于集群扩容，内部逻辑与部署类似。PD 节点的扩容通过 join 方式加入集群，并更新相关服务配置；其他服务直接启动加入集群。命令语法为 tiup cluster scale-out <cluster-name> <topology.yaml>。选项包括 -u, --user, -i, --identity_file, -p, --password, --no-labels, --skip-create-user, -h, --help。输出为扩容日志。
 ---
 
 # tiup cluster scale-out

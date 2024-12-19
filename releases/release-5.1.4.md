@@ -1,5 +1,6 @@
 ---
 title: TiDB 5.1.4 Release Notes
+summary: TiDB 5.1.4 发布日期为 2022 年 2 月 22 日。此版本包含兼容性更改、提升改进和 Bug 修复。兼容性更改包括系统变量 `tidb_analyze_version` 默认值修改为 `1`，以及 TiKV 在开启 `storage.enable-ttl` 后拒绝 TiDB 请求。提升改进方面，TiDB 支持在 Range 类型分区表中对 `IN` 表达式进行分区裁剪，TiKV 升级了 proc filesystem 版本。Bug 修复方面，修复了多个 TiDB 和 TiKV 的问题，包括内存泄露、配置项不生效、panic 等。Tools 方面也有多个修复和改进，包括 TiCDC、Backup & Restore、TiDB Binlog 和 TiDB Lightning。
 ---
 
 # TiDB 5.1.4 Release Notes
@@ -53,7 +54,7 @@ TiDB 版本：5.1.4
         - 降低在同步大量表时的同步延时 [#3900](https://github.com/pingcap/tiflow/issues/3900)
         - 增加观察 incremental scan 剩余时间的指标 [#2985](https://github.com/pingcap/tiflow/issues/2985)
         - 减少 "EventFeed retry rate limited" 日志的数量 [#4006](https://github.com/pingcap/tiflow/issues/4006)
-        - 增加更多 Promethous 和 Grafana 监控告警参数，包括 `no owner alert`、`mounter row`、`table sink total row` 和 `buffer sink total row` [#4054](https://github.com/pingcap/tiflow/issues/4054) [#1606](https://github.com/pingcap/tiflow/issues/1606)
+        - 增加更多 Prometheus 和 Grafana 监控告警参数，包括 `no owner alert`、`mounter row`、`table sink total row` 和 `buffer sink total row` [#4054](https://github.com/pingcap/tiflow/issues/4054) [#1606](https://github.com/pingcap/tiflow/issues/1606)
         - 优化 TiKV 重新加载时的速率限制控制，缓解 changefeed 初始化时 gPRC 的拥堵问题 [#3110](https://github.com/pingcap/tiflow/issues/3110)
         - 减少 TiKV 节点宕机后 KV client 恢复的时间 [#3191](https://github.com/pingcap/tiflow/issues/3191)
 
@@ -79,6 +80,7 @@ TiDB 版本：5.1.4
     - 修复删除空的 `dual table` 后 MPP 查询出现 `index out of range` 报错的问题 [#28250](https://github.com/pingcap/tidb/issues/28250)
     - 修复运行 MPP 查询时出现 `invalid cop task execution summaries length` 相关日志的问题 [#1791](https://github.com/pingcap/tics/issues/1791)
     - 修复 SET GLOBAL tidb_skip_isolation_level_check=1 无法在新会话中生效的问题 [#27897](https://github.com/pingcap/tidb/issues/27897)
+    - 修复 `tiup bench` 命令运行时间过长导致的 `index out of range` 问题 [#26832](https://github.com/pingcap/tidb/issues/26832)
 
 + TiKV
 
@@ -151,7 +153,7 @@ TiDB 版本：5.1.4
         - 修复人为删除 etcd 任务的状态时导致 TiCDC panic 的问题 [#2980](https://github.com/pingcap/tiflow/issues/2980)
         - 修复在某些 RHEL 发行版上因时区问题导致服务无法启动的问题 [#3584](https://github.com/pingcap/tiflow/issues/3584)
         - 修复 MySQL sink 模块出现死锁时告警过于频繁的问题 [#2706](https://github.com/pingcap/tiflow/issues/2706)
-        - 修复 Canal 和 Maxwell 协议下 TiCDC 没有自动开启 `enable-old-value` 选项的问题 [#3676](https://github.com/pingcap/tiflow/issues/3676)
+        - 修复 Canal 协议下 TiCDC 没有自动开启 `enable-old-value` 选项的问题 [#3676](https://github.com/pingcap/tiflow/issues/3676)
         - 修复 Avro sink 模块不支持解析 JSON 类型列的问题 [#3624](https://github.com/pingcap/tiflow/issues/3624)
         - 修复监控 checkpoint lag 出现负值的问题 [#3010](https://github.com/pingcap/tiflow/issues/3010)
         - 修复在容器环境中 OOM 的问题 [#1798](https://github.com/pingcap/tiflow/issues/1798)

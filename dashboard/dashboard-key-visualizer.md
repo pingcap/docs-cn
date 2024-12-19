@@ -1,6 +1,7 @@
 ---
 title: TiDB Dashboard 流量可视化页面
 aliases: ['/docs-cn/dev/dashboard/dashboard-key-visualizer/','/docs-cn/dev/how-to/monitor/key-visualizer/','/docs-cn/dev/key-visualizer-monitoring-tool/']
+summary: TiDB Dashboard 的流量可视化页面可用于分析 TiDB 集群的使用模式和排查流量热点。通过登录 TiDB Dashboard 或在浏览器中访问指定链接，可以查看流量可视化页面。页面展示了流量热力图，可观察到整体访问流量随时间的变化情况，以及热力图某个坐标的详细信息。流量可视化页面涉及的基本概念包括 Region、热点、热力图和 Region 压缩。使用介绍包括设置、观察时间段或 Region 范围、调整亮度、选择指标、刷新与自动刷新以及查看详情。常见热力图解读包括均衡结果、X 轴明暗交替、Y 轴明暗交替和明亮斜线。解决热点问题可参考 TiDB 高并发写入场景最佳实践。
 ---
 
 # TiDB Dashboard 流量可视化页面
@@ -11,9 +12,9 @@ aliases: ['/docs-cn/dev/dashboard/dashboard-key-visualizer/','/docs-cn/dev/how-t
 
 可以通过以下两种方法访问 Key Visualizer 流量可视化页面：
 
-* 登录 TiDB Dashboard 后，点击左侧导航条的 **Key Visualizer**（流量可视化）：
+* 登录 TiDB Dashboard 后，点击左侧导航条的**流量可视化** (Key Visualizer)：
 
-![访问](/media/dashboard/dashboard-keyviz-access.png)
+    ![访问](/media/dashboard/dashboard-keyviz-access-v650.png)
 
 * 在浏览器中访问 `http://127.0.0.1:2379/dashboard/#/keyviz`（将 `127.0.0.1:2379` 替换为实际 PD 实例地址和端口）。
 
@@ -47,7 +48,7 @@ aliases: ['/docs-cn/dev/dashboard/dashboard-key-visualizer/','/docs-cn/dev/how-t
 
 > **注意：**
 >
-> 热点问题详情请参阅 [TiDB 热点问题详解](https://asktug.com/t/topic/358)。
+> 热点问题详情请参阅 [TiDB 热点问题详解](https://tidb.net/blog/dffb428a)。
 
 ### 热力图
 
@@ -63,7 +64,7 @@ aliases: ['/docs-cn/dev/dashboard/dashboard-key-visualizer/','/docs-cn/dev/how-t
 
 ### 设置
 
-首次使用流量可视化页面需要先通过**设置**页面手动开启此功能。参考页面指引，点击 **Open Settings**（打开设置）即可打开设置页面：
+首次使用流量可视化页面需要先通过**设置**页面手动开启此功能。参考页面指引，点击**打开设置** (Open Settings) 即可打开设置页面：
 
 ![功能未开启](/media/dashboard/dashboard-keyviz-not-enabled.png)
 
@@ -75,7 +76,7 @@ aliases: ['/docs-cn/dev/dashboard/dashboard-key-visualizer/','/docs-cn/dev/how-t
 
 ![设置页面](/media/dashboard/dashboard-keyviz-settings.png)
 
-通过开关设定好是否开启收集，并点击 **Save**（保存）后生效。开启后，在界面上观察到工具栏已经可以使用：
+通过开关设定好是否开启收集，并点击**保存** (Save) 后生效。开启后，在界面上观察到工具栏已经可以使用：
 
 ![工具栏](/media/dashboard/dashboard-keyviz-toolbar.png)
 
@@ -86,12 +87,12 @@ aliases: ['/docs-cn/dev/dashboard/dashboard-key-visualizer/','/docs-cn/dev/how-t
 打开流量可视化页面时，默认会显示最近六小时整个数据库内的热力图。其中，越靠近右侧（当前时间）时，每列 Bucket 对应的时间间隔会越小。如果你想观察某个特定时间段或者特定的 Region 范围，则可以通过放大来获得更多细节。具体操作描述如下：
 
 * 在热力图中向上或向下滚动。
-* 点击 **Select & Zoom**（框选）按钮，然后点击并拖动以选择要放大的区域。
+* 点击**框选** (Select & Zoom) 按钮，然后点击并拖动以选择要放大的区域。
 
 ![框选](/media/dashboard/dashboard-keyviz-select-zoom.gif)
 
-* 点击 **Reset**（重置）按钮，将 Region 范围重置为整个数据库。
-* 点击「时间选择框」（界面的 **6 hours** 处），重新选择观察时间段。
+* 点击**重置** (Reset) 按钮，将 Region 范围重置为整个数据库。
+* 点击「时间选择框」（界面的 **6 hour** 处），重新选择观察时间段。
 
 ![时间选择](/media/dashboard/dashboard-keyviz-select-time.png)
 
@@ -101,7 +102,7 @@ aliases: ['/docs-cn/dev/dashboard/dashboard-key-visualizer/','/docs-cn/dev/how-t
 
 ### 调整亮度
 
-热力图使用颜色的明暗来表达一个 Bucket 的流量高低，颜色越暗 (cold) 表示该区域的 Region 在这个时间段上读写流量较低，颜色越亮 (hot) 表示读写流量越高，即越热。如果热力图中的颜色太亮或太暗，则可能很难观察到细节。此时，可以点击 **Brightness**（调整亮度）按钮，然后通过滑块来调节页面的亮度。
+热力图使用颜色的明暗来表达一个 Bucket 的流量高低，颜色越暗 (cold) 表示该区域的 Region 在这个时间段上读写流量较低，颜色越亮 (hot) 表示读写流量越高，即越热。如果热力图中的颜色太亮或太暗，则可能很难观察到细节。此时，可以点击**调整亮度** (Brightness) 按钮，然后通过滑块来调节页面的亮度。
 
 > **注意：**
 >
@@ -121,7 +122,7 @@ aliases: ['/docs-cn/dev/dashboard/dashboard-key-visualizer/','/docs-cn/dev/how-t
 
 ### 刷新与自动刷新
 
-可以通过点击 **Refresh**（刷新）按钮来重新获得基于当前时间的热力图。当需要实时观察数据库的流量分布情况时，可以点击按钮右侧的向下箭头，选择一个固定的时间间隔让热力图按此间隔自动刷新。
+可以通过点击**刷新** (Refresh) 按钮来重新获得基于当前时间的热力图。当需要实时观察数据库的流量分布情况时，可以点击按钮右侧的向下箭头，选择一个固定的时间间隔让热力图按此间隔自动刷新。
 
 > **注意：**
 >

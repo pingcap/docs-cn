@@ -1,5 +1,6 @@
 ---
 title: tiup cluster list
+summary: tiup-cluster 支持使用同一个中控机部署多套集群。命令 `tiup cluster list` 可以查看当前登录的用户使用该中控机部署了哪些集群。输出包含 Name、User、Version、Path、PrivateKey 字段的表格。注意：部署的集群数据默认放在 `~/.tiup/storage/cluster/clusters/` 目录下，当前登录用户无法查看其他用户部署的集群。
 ---
 
 # tiup cluster list

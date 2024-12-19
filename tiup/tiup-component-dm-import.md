@@ -1,8 +1,13 @@
 ---
 title: tiup dm import
+summary: TiUP DM 提供了 `import` 命令，用于将 DM v1.0 集群导入到全新的 v2.0 集群。在导入前，请先停止原集群，并确认升级 TiUP DM 组件到最新版本。导入过程中会生成日志信息，不支持导入 v1.0 集群中的 DM Portal 组件。对于需要升级到 v2.0 的数据迁移任务，请不要执行 `stop-task`。具体语法和选项可以使用 `tiup dm import [flags]` 命令查看。
 ---
 
-# tiup dm import
+# tiup dm import <span class="version-mark">仅适用于升级 DM v1.0</span>
+
+<Note>
+该命令仅适用于将 DM 集群从 v1.0 升级到 v2.0 或更高版本。
+</Note>
 
 在 DM 1.0 版本，集群基本是通过 TiDB Ansible 部署的，TiUP DM 提供了 `import` 命令导入 v1.0 的集群并重新部署 v2.0 的集群。
 
@@ -29,7 +34,7 @@ tiup dm import [flags]
 
 重新部署的版本号，必须指定 v2.0.0-rc.2 或更高版本。
 
-### -d, --dir string（string, 默认 当前目录）
+### -d, --dir string（string，默认 当前目录）
 
 指定 TiDB Ansible 所在目录。
 

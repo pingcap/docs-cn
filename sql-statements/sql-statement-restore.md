@@ -6,9 +6,13 @@ aliases: ['/docs-cn/dev/sql-statements/sql-statement-restore/']
 
 # RESTORE
 
+> **警告：**
+>
+> `RESTORE` 语句目前为实验特性，不建议在生产环境中使用。该功能可能会在未事先通知的情况下发生变化或删除。如果发现 bug，请在 GitHub 上提 [issue](https://github.com/pingcap/tidb/issues) 反馈。
+
 `RESTORE` 语句用于执行分布式恢复，把 [`BACKUP` 语句](/sql-statements/sql-statement-backup.md)生成的备份文件恢复到 TiDB 集群中。
 
-`RESTORE` 语句使用的引擎与 [BR](/br/backup-and-restore-use-cases.md) 相同，但恢复过程是由 TiDB 本身驱动，而非单独的 BR 工具。BR 工具的优势和警告也适用于 `RESTORE` 语句。需要注意的是，**`RESTORE` 语句目前不遵循 ACID 原则**。
+`RESTORE` 语句使用的引擎与 [BR](/br/backup-and-restore-overview.md) 相同，但恢复过程是由 TiDB 本身驱动，而非单独的 BR 工具。BR 工具的优势和警告也适用于 `RESTORE` 语句。需要注意的是，**`RESTORE` 语句目前不遵循 ACID 原则**。
 
 执行 `RESTORE` 语句前，确保集群已满足以下要求：
 
@@ -35,10 +39,14 @@ BRIETables ::=
 |   "TABLE" TableNameList
 
 RestoreOption ::=
-    "RATE_LIMIT" '='? LengthNum "MB" '/' "SECOND"
+    "CHECKSUM_CONCURRENCY" '='? LengthNum
 |   "CONCURRENCY" '='? LengthNum
 |   "CHECKSUM" '='? Boolean
+|   "LOAD_STATS" '='? Boolean
+|   "RATE_LIMIT" '='? LengthNum "MB" '/' "SECOND"
 |   "SEND_CREDENTIALS_TO_TIKV" '='? Boolean
+|   "WAIT_TIFLASH_READY" '='? Boolean
+|   "WITH_SYS_TABLE" '='? Boolean
 
 Boolean ::=
     NUM | "TRUE" | "FALSE"
@@ -98,17 +106,17 @@ BR 支持从 Amazon S3 或 Google Cloud Storage (GCS) 恢复数据：
 {{< copyable "sql" >}}
 
 ```sql
-RESTORE DATABASE * FROM 's3://example-bucket-2020/backup-05/?region=us-west-2';
+RESTORE DATABASE * FROM 's3://example-bucket-2020/backup-05/';
 ```
 
-有关详细的 URL 语法，见[外部存储](/br/backup-and-restore-storages.md)。
+有关详细的 URI 语法，见[外部存储服务的 URI 格式](/external-storage-uri.md)。
 
 当运行在云环境中时，不能分发凭证，可设置 `SEND_CREDENTIALS_TO_TIKV` 选项为 `FALSE`：
 
 {{< copyable "sql" >}}
 
 ```sql
-RESTORE DATABASE * FROM 's3://example-bucket-2020/backup-05/?region=us-west-2'
+RESTORE DATABASE * FROM 's3://example-bucket-2020/backup-05/'
     SEND_CREDENTIALS_TO_TIKV = FALSE;
 ```
 
@@ -116,9 +124,13 @@ RESTORE DATABASE * FROM 's3://example-bucket-2020/backup-05/?region=us-west-2'
 
 如果你需要减少网络带宽占用，可以通过 `RATE_LIMIT` 来限制每个 TiKV 节点的平均下载速度。
 
-默认情况下，每个 TiKV 节点上运行 128 个恢复线程。可以通过 `CONCURRENCY` 选项来调整这个值。
+在恢复完成之前，`RESTORE` 默认将对备份文件中的数据进行校验，以验证数据的正确性。对单张表做数据校验作业的并发度默认为 4，你可以通过 `CHECKSUM_CONCURRENCY` 参数调整该并发度。如果你确定数据无需进行校验，可以通过将 `CHECKSUM` 参数设置为 `FALSE` 来禁用该检查。
 
-在恢复完成之前，`RESTORE` 将对备份文件中的数据进行校验，以验证数据的正确性。如果你确信无需进行校验，可以通过 `CHECKSUM` 选项禁用这一步骤。
+统计信息已备份的前提下，恢复过程中默认会恢复统计信息，如果你确定不需要恢复统计信息，可以将 `LOAD_STATS` 参数设置为 `FALSE`。
+
+[系统权限表](/privilege-management.md#授权表)默认会恢复，如果你确定不需要恢复系统权限表，可以将 `WITH_SYS_TABLE` 参数设置为 `FALSE`。
+
+默认情况下，恢复任务不用等待 TiFlash 的副本全部创建完成才能结束。如果你确定要等待，可以将 `WAIT_TIFLASH_READY` 参数设置为 `TRUE`。
 
 {{< copyable "sql" >}}
 

@@ -19,7 +19,7 @@ DM 数据同步软件支持从不同类型的数据源迁移到 TiDB 集群。�
 |MySQL ≤ 5.5|未测试|
 |MySQL 5.6|正式支持||
 |MySQL 5.7|正式支持||
-|MySQL 8.0|实验支持||
+|MySQL 8.0|正式支持|不支持 binlog 事务压缩 [Transaction_payload_event](https://dev.mysql.com/doc/refman/8.0/en/binary-log-transaction-compression.html)|
 |MariaDB < 10.1.2|不兼容|时间类型的 binlog 不兼容|
 |MariaDB 10.1.2 ~ 10.5.10|实验支持||
 |MariaDB > 10.5.10|不兼容|检查环节存在权限报错|
@@ -30,9 +30,11 @@ DM 数据同步软件支持从不同类型的数据源迁移到 TiDB 集群。�
 >
 > 不建议使用 DM 5.3.0，因为当使用 GTID 同步且未开启 Relay log 的情况下，低概率会出现数据不同步。
 
-|数据源|级别|DM 版本|
+|目标数据库|级别|DM 版本|
 |-|-|-|
-|TiDB 6.0|正式支持|最低 5.3.1|
+|TiDB 8.x|正式支持|最低 5.3.1|
+|TiDB 7.x|正式支持|最低 5.3.1|
+|TiDB 6.x|正式支持|最低 5.3.1|
 |TiDB 5.4|正式支持|最低 5.3.1|
 |TiDB 5.3|正式支持|最低 5.3.1|
 |TiDB 5.2|正式支持|最低 2.0.7，建议 5.4 版本|

@@ -1,18 +1,18 @@
 ---
 title: USER_PRIVILEGES
-summary: 了解 information_schema 表 `USER_PRIVILEGES`。
+summary: 了解 INFORMATION_SCHEMA 表 `USER_PRIVILEGES`。
 ---
 
 # USER_PRIVILEGES
 
 `USER_PRIVILEGES` 表提供了关于全局权限的信息。该表的数据根据 `mysql.user` 系统表生成。
 
-{{< copyable "sql" >}}
-
 ```sql
-USE information_schema;
-DESC user_privileges;
+USE INFORMATION_SCHEMA;
+DESC USER_PRIVILEGES;
 ```
+
+输出结果如下：
 
 ```sql
 +----------------+--------------+------+------+---------+-------+
@@ -26,35 +26,38 @@ DESC user_privileges;
 4 rows in set (0.00 sec)
 ```
 
-{{< copyable "sql" >}}
+查看 `USER_PRIVILEGES` 表的信息：
 
 ```sql
-SELECT * FROM user_privileges;
+SELECT * FROM USER_PRIVILEGES;
 ```
+
+输出结果如下：
 
 ```sql
 +------------+---------------+-------------------------+--------------+
 | GRANTEE    | TABLE_CATALOG | PRIVILEGE_TYPE          | IS_GRANTABLE |
 +------------+---------------+-------------------------+--------------+
-| 'root'@'%' | def           | Select                  | YES          |
-| 'root'@'%' | def           | Insert                  | YES          |
-| 'root'@'%' | def           | Update                  | YES          |
-| 'root'@'%' | def           | Delete                  | YES          |
-| 'root'@'%' | def           | Create                  | YES          |
-| 'root'@'%' | def           | Drop                    | YES          |
-| 'root'@'%' | def           | Process                 | YES          |
-| 'root'@'%' | def           | References              | YES          |
-| 'root'@'%' | def           | Alter                   | YES          |
-| 'root'@'%' | def           | Show Databases          | YES          |
-| 'root'@'%' | def           | Super                   | YES          |
-| 'root'@'%' | def           | Execute                 | YES          |
-| 'root'@'%' | def           | Index                   | YES          |
-| 'root'@'%' | def           | Create User             | YES          |
-| 'root'@'%' | def           | Trigger                 | YES          |
-| 'root'@'%' | def           | Create View             | YES          |
-| 'root'@'%' | def           | Show View               | YES          |
-| 'root'@'%' | def           | Create Role             | YES          |
-| 'root'@'%' | def           | Drop Role               | YES          |
+| 'root'@'%' | def           | SELECT                  | YES          |
+| 'root'@'%' | def           | INSERT                  | YES          |
+| 'root'@'%' | def           | UPDATE                  | YES          |
+| 'root'@'%' | def           | DELETE                  | YES          |
+| 'root'@'%' | def           | CREATE                  | YES          |
+| 'root'@'%' | def           | DROP                    | YES          |
+| 'root'@'%' | def           | PROCESS                 | YES          |
+| 'root'@'%' | def           | REFERENCES              | YES          |
+| 'root'@'%' | def           | ALTER                   | YES          |
+| 'root'@'%' | def           | SHOW DATABASES          | YES          |
+| 'root'@'%' | def           | SUPER                   | YES          |
+| 'root'@'%' | def           | EXECUTE                 | YES          |
+| 'root'@'%' | def           | INDEX                   | YES          |
+| 'root'@'%' | def           | CREATE USER             | YES          |
+| 'root'@'%' | def           | CREATE TABLESPACE       | YES          |
+| 'root'@'%' | def           | TRIGGER                 | YES          |
+| 'root'@'%' | def           | CREATE VIEW             | YES          |
+| 'root'@'%' | def           | SHOW VIEW               | YES          |
+| 'root'@'%' | def           | CREATE ROLE             | YES          |
+| 'root'@'%' | def           | DROP ROLE               | YES          |
 | 'root'@'%' | def           | CREATE TEMPORARY TABLES | YES          |
 | 'root'@'%' | def           | LOCK TABLES             | YES          |
 | 'root'@'%' | def           | CREATE ROUTINE          | YES          |
@@ -64,8 +67,10 @@ SELECT * FROM user_privileges;
 | 'root'@'%' | def           | RELOAD                  | YES          |
 | 'root'@'%' | def           | FILE                    | YES          |
 | 'root'@'%' | def           | CONFIG                  | YES          |
+| 'root'@'%' | def           | REPLICATION CLIENT      | YES          |
+| 'root'@'%' | def           | REPLICATION SLAVE       | YES          |
 +------------+---------------+-------------------------+--------------+
-28 rows in set (0.00 sec)
+31 rows in set (0.00 sec)
 ```
 
 `USER_PRIVILEGES` 表中列的含义如下：
@@ -74,3 +79,7 @@ SELECT * FROM user_privileges;
 * `TABLE_CATALOG`：表所属的目录的名称。该值始终为 `def`。
 * `PRIVILEGE_TYPE`：被授权的权限类型，每行只列一个权限。
 * `IS_GRANTABLE`：如果用户有 `GRANT OPTION` 的权限，则为 `YES`，否则为 `NO`。
+
+## 另请参阅
+
+- [`SHOW GRANTS`](/sql-statements/sql-statement-show-grants.md)

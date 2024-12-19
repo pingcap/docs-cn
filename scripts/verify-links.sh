@@ -2,7 +2,7 @@
 #
 # This script is used to verify links in markdown docs.
 #
-# - External links are ignored in CI because these links may go down out of our contorl.
+# - External links are ignored in CI because these links may go down out of our control.
 # - Anchors are ignored
 # - Internal links conventions
 #   - Must be absolute and start from repo root

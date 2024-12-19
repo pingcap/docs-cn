@@ -76,7 +76,7 @@ SELECT _utf8'some text';
 
 如果要在 `'` 包围的字符串中表示 `"`，或者在 `"` 包围的字符串中表示 `'`，可以不使用转义字符。
 
-更多细节见 [MySQL 官方文档](https://dev.mysql.com/doc/refman/5.7/en/string-literals.html)。
+更多细节见 [MySQL 官方文档](https://dev.mysql.com/doc/refman/8.0/en/string-literals.html)。
 
 ## Numeric Literals
 
@@ -88,7 +88,7 @@ integer 可以包括 `.` 作为小数点分隔，数字前可以有 `-` 或者 `
 
 科学记数法也是被允许的，表示为如下格式：`1.2E3, 1.2E-3, -1.2E3, -1.2E-3`。
 
-更多细节见 [MySQL 官方文档](https://dev.mysql.com/doc/refman/5.7/en/number-literals.html)。
+更多细节见 [MySQL 官方文档](https://dev.mysql.com/doc/refman/8.0/en/number-literals.html)。
 
 ## Date and Time Literals
 
@@ -100,8 +100,8 @@ TiDB 的 Date 值有以下几种格式：
 
     Date 和 Time 部分可以被 'T' 分隔，它的作用跟空格符是一样的，例如 `2017-8-24 10:42:00` 跟 `2017-8-24T10:42:00` 是一样的。
 
-* `'YYYYMMDDHHMMSS'` 或者 `'YYMMDDHHMMSS'`，例如 `'20170824104520'` 和 `'170824104520'` 被当做是 `'2017-08-24 10:45:20'`，但是如果你提供了一个超过范围的值，例如`'170824304520'`，那这就不是一个有效的 Date 字面值。需要注意 `YYYYMMDD HHMMSS` ，`YYYYMMDD HH:MM:DD`，`YYYY-MM-DD HHMMSS` 等不正确的格式会插入失败。
-* `YYYYMMDDHHMMSS` 或者 `YYMMDDHHMMSS`，注意这里没有单引号或者双引号，是一个数字。例如 `20170824104520`表示为 `'2017-08-24 10:45:20'`。
+* `'YYYYMMDDHHMMSS'` 或者 `'YYMMDDHHMMSS'`，例如 `'20170824104520'` 和 `'170824104520'` 被当做是 `'2017-08-24 10:45:20'`，但是如果你提供了一个超过范围的值，例如`'170824304520'`，那这就不是一个有效的 Date 字面值。需要注意 `YYYYMMDD HHMMSS`、`YYYYMMDD HH:MM:DD` 和 `YYYY-MM-DD HHMMSS` 等不正确的格式会插入失败。
+* `YYYYMMDDHHMMSS` 或者 `YYMMDDHHMMSS`，注意这里没有单引号或者双引号，是一个数字。例如 `20170824104520` 表示 `'2017-08-24 10:45:20'`。
 
 DATETIME 或者 TIMESTAMP 值可以接一个小数部分，用来表示微秒（精度最多到小数点后 6 位），用小数点 `.` 分隔。
 
@@ -127,7 +127,7 @@ DATETIME 或者 TIMESTAMP 值可以接一个小数部分，用来表示微秒（
 
 Time 类型的小数点也是 `.`，精度最多小数点后 6 位。
 
-更多细节见 [MySQL 官方文档](https://dev.mysql.com/doc/refman/5.7/en/date-and-time-literals.html)。
+更多细节见 [MySQL 官方文档](https://dev.mysql.com/doc/refman/8.0/en/date-and-time-literals.html)。
 
 ## Boolean Literals
 

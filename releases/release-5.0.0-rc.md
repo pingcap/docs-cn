@@ -1,5 +1,6 @@
 ---
 title: TiDB 5.0 RC Release Notes
+summary: TiDB 5.0.0-rc 版本是 5.0 版本的前序版本。在 5.0 版本中，我们专注于帮助企业基于 TiDB 数据库快速构建应用程序，提升数据库性能、降低写入数据延迟、稳定性、可用性、容灾、SQL 语句效率等问题。新增聚簇索引、异步提交事务、Raft Joint Consensus 算法、不可见索引、`EXCEPT`/`INTERSECT` 操作符、悲观事务执行成功概率、字符集和排序规则优化、错误信息和日志信息脱敏、优化器选择索引稳定性、调度功能优化、备份与恢复、数据导入导出、`EXPLAIN` 功能优化、TiUP 增强功能等特性。
 ---
 
 # TiDB 5.0 RC Release Notes
@@ -64,7 +65,6 @@ DBA 通过 `ALTER INDEX` 语句来修改某个索引的可见性。修改后优�
 
 悲观事务模式下，如果事务所涉及到的表存在并发 DDL 操作和 `SCHEMA VERSION` 变更，系统会自动将该事务的 `SCHEMA VERSION` 更新到最新版本，确保事务会提交成功，避免事务因 DDL 操作而中断。事务中断时客户端会收到 `Information schema is changed` 的错误信息。
 
-+ [用户文档](/system-variables.md#tidb_enable_amend_pessimistic_txn-从-v407-版本开始引入)
 + 相关 issue：[#18005](https://github.com/pingcap/tidb/issues/18005)
 
 ## 字符集和排序规则
@@ -123,7 +123,7 @@ TiDB 调度过程中会占用 I/O、Network、CPU、Memory 等资源，若不对
 + 减少节点的容量总是在水位线附近波动引起的调度及 PD 的 `store-limit` 配置项设置过大引起的调度，引入一套新的调度算分公式并通过 `region-score-formula-version = v2` 配置项启用新的调度算分公式 [#3269](https://github.com/tikv/pd/pull/3269)
 + 通过修改 `enable-cross-table-merge = true` 开启跨 Region 合并功能，减少空 Region 的数量 [#3129](https://github.com/tikv/pd/pull/3129)
 + TiKV 后台压缩数据会占用大量 I/O 资源，系统通过自动调整压缩的速度来平衡后台任务与前端的数据读写对 I/O 资源的争抢，通过 `rate-limiter-auto-tuned` 配置项开启此功能后，延迟抖动比未开启此功能时的抖动大幅减少 [#18011](https://github.com/pingcap/tidb/issues/18011)
-+ TiKV 在进行垃圾数据回收和数据压缩时，分区会占用 CPU、I/O 资源，系统执行这两个任务过程中存在数据重叠。GC Compaction Filter 特性将这两个任务合二为一在同一个任务中完成，减 I/O 的占用。此特性为实验性特性，通过 `gc.enable-compaction-filter = ture` 开启 [#18009](https://github.com/pingcap/tidb/issues/18009)
++ TiKV 在进行垃圾数据回收和数据压缩时，分区会占用 CPU、I/O 资源，系统执行这两个任务过程中存在数据重叠。GC Compaction Filter 特性将这两个任务合二为一在同一个任务中完成，减 I/O 的占用。此特性为实验性特性，通过 `gc.enable-compaction-filter = true` 开启 [#18009](https://github.com/pingcap/tidb/issues/18009)
 + TiFlash 压缩或者整理数据会占用大量 I/O 资源，系统通过限制压缩或整理数据占用的 I/O 量缓解资源争抢。此特性为实验性特性，通过 `bg_task_io_rate_limit` 配置项开启限制压缩或整理数据 I/O 资源。
 
 相关 issue：[#18005](https://github.com/pingcap/tidb/issues/18005)
@@ -156,8 +156,8 @@ Region 在完成成员变更时，由于“添加”和“删除”成员操作�
 
 ## 备份与恢复
 
-+ BR 支持将数据备份到 AWS S3、Google Cloud GCS（[用户文档](/br/backup-storage-S3.md)）
-+ BR 支持从 AWS S3、Google Cloud GCS 恢复数据到 TiDB（[用户文档](/br/backup-storage-S3.md)）
++ BR 支持将数据备份到 AWS S3、Google Cloud GCS（[用户文档](/br/backup-and-restore-storages.md)）
++ BR 支持从 AWS S3、Google Cloud GCS 恢复数据到 TiDB（[用户文档](/br/backup-and-restore-storages.md)）
 + 相关 issue：[#89](https://github.com/pingcap/br/issues/89)
 
 ## 数据的导入和导出

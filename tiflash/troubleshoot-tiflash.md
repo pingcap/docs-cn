@@ -75,15 +75,10 @@ aliases: ['/docs-cn/dev/tiflash/troubleshoot-tiflash/','/docs-cn/dev/tiflash/tif
 
     > **注意：**
     >
-    > 开启 Placement Rules 后，原先的 `max-replicas` 及 `location-labels` 配置项将不再生效。如果需要调整副本策略，应当使用 Placement Rules 相关接口。
+    > - 开启 [Placement Rules](/configure-placement-rules.md) 且存在多条 rule 的情况下，原先的 [`max-replicas`](/pd-configuration-file.md#max-replicas)、[`location-labels`](/pd-configuration-file.md#location-labels) 及 [`isolation-level`](/pd-configuration-file.md#isolation-level) 配置项将不再生效。如果需要调整副本策略，应当使用 Placement Rules 相关接口。
+    > - 开启 [Placement Rules](/configure-placement-rules.md) 且只存在一条默认的 rule 的情况下，当改变 `max-replicas`、`location-labels` 或 `isolation-level` 配置项时，系统会自动更新这条默认的 rule。
 
 6. 检查 TiFlash 节点对应 store 所在机器剩余的磁盘空间是否充足。默认情况下当磁盘剩余空间小于该 store 的 capacity 的 20%（通过 low-space-ratio 参数控制）时，PD 不会向 TiFlash 调度数据。
-
-## TiFlash 查询时间不稳定，同时错误日志中打印出大量的 Lock Exception
-
-该问题是由于集群中存在大量写入，导致 TiFlash 查询时遇到锁并发生查询重试。
-
-可以在 TiDB 中将查询时间戳设置为 1 秒前（例如：假设当前时间为 '2020-04-08 20:15:01'，可以在执行 query 前执行 `set @@tidb_snapshot='2020-04-08 20:15:00';`），来减小 TiFlash 查询碰到锁的可能性，从而减轻查询时间不稳定的程度。
 
 ## 部分查询返回 Region Unavailable 的错误
 
@@ -140,7 +135,7 @@ show warnings;
     查看 `progress` 是否有变化:
 
     - 如果有变化，说明 TiFlash 同步正常，进入下一步。
-    - 如果没有变化，说明 TiFlash 同步异常，在 `tidb.log` 中，搜索 `Tiflash replica is not available` 相关日志。检查对应表的 `region have` 是否更新。如果无更新，请通过 `tiflash` 日志进一步排查。
+    - 如果没有变化，说明 TiFlash 同步异常，在 `tidb.log` 中，搜索 `Tiflash replica is not available` 相关日志。检查对应表的 `progress` 是否更新。如果无更新，请检查 `tiflash log` 来获取更多信息。例如，在 `tiflash log` 中搜索 `lag_region_info` 来判断同步落后的 Region。
 
 3. 使用 pd-ctl 检查 PD 的 [Placement Rules](/configure-placement-rules.md) 功能是否开启：
 
@@ -179,16 +174,16 @@ show warnings;
     }' <http://172.16.x.xxx:2379/pd/api/v1/config/rule>
     ```
 
-5. 检查 TiDB 是否为表创建 `placement-rule`。
+5. 检查 TiDB 是否为表创建 Placement rule。
 
-    搜索 TiDB DDL Owner 的日志，检查 TiDB 是否通知 PD 添加 `placement-rule`。对于非分区表搜索 `ConfigureTiFlashPDForTable`；对于分区表，搜索 `ConfigureTiFlashPDForPartitions`。
+    搜索 TiDB DDL Owner 的日志，检查 TiDB 是否通知 PD 添加  Placement rule。对于非分区表搜索 `ConfigureTiFlashPDForTable`；对于分区表，搜索 `ConfigureTiFlashPDForPartitions`。
 
     - 有关键字，进入下一步。
     - 没有关键字，收集相关组件的日志进行排查。
 
-6. 检查 PD 是否为表设置 `placement-rule`。
+6. 检查 PD 是否为表设置  Placement rule。
 
-    可以通过 `curl http://<pd-ip>:<pd-port>/pd/api/v1/config/rules/group/tiflash` 查询比较当前 PD 上的所有 TiFlash Placement Rule。如果观察到有 id 为 `table-<table_id>-r` 的 Rule ，则表示 PD Rule 设置成功。
+    可以通过 `curl http://<pd-ip>:<pd-port>/pd/api/v1/config/rules/group/tiflash` 查询比较当前 PD 上的所有 TiFlash 的 Placement rule。如果观察到有 id 为 `table-<table_id>-r` 的 Rule，则表示 PD rule 设置成功。
 
 7. 检查 PD 是否正常发起调度。
 
@@ -206,7 +201,7 @@ show warnings;
     检查磁盘使用空间比例是否高于 `low-space-ratio` 的值（默认值 0.8，即当节点的空间占用比例超过 80% 时，为避免磁盘空间被耗尽，PD 会尽可能避免往该节点迁移数据）。
 
     - 如果磁盘使用率大于等于 `low-space-ratio`，说明磁盘空间不足。此时，请删除不必要的文件，如 `${data}/flash/` 目录下的 `space_placeholder_file` 文件（必要时可在删除文件后将 `reserve-space` 设置为 0MB）。
-    - 如果磁盘使用率小于 `low-space-ratio` ，说明磁盘空间正常，进入下一步。
+    - 如果磁盘使用率小于 `low-space-ratio`，说明磁盘空间正常，进入下一步。
 
 2. 检查是否有 `down peer` （`down peer` 没有清理干净可能会导致同步卡住）。
 
@@ -217,9 +212,7 @@ show warnings;
 
 同步慢可能由多种原因引起，你可以按以下步骤进行排查。
 
-1. 调整调度参数取值。
-
-    - 调大 [`store limit`](/configure-store-limit.md#使用方法)，加快同步速度。
+1. 调大调度参数 [`store limit`](/configure-store-limit.md#使用方法)，加快同步速度。
 
 2. 调整 TiFlash 侧负载。
 

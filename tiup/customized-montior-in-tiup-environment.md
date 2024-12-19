@@ -7,8 +7,6 @@ summary: 了解如何自定义 TiUP 管理的监控组件的配置。
 
 使用 TiUP 部署 TiDB 集群时，TiUP 会同时自动部署 Prometheus、Grafana 和 Alertmanager 等监控组件，并且在集群扩容中自动为新增节点添加监控配置。
 
-需要注意的是，TiUP 会使用自己的配置参数覆盖监控组件的配置，如果你直接修改监控组件的配置文件，修改的配置文件可能在对集群进行 deploy/scale-out/scale-in/reload 等操作中被 TiUP 所覆盖，导致配置不生效。
-
 如果需要自定义 Prometheus、Grafana 和 Alertmanager 等监控组件的配置，请参考本文在 TiDB 集群的拓扑配置 topology.yaml 文件中添加对应的配置项。
 
 > **注意：**
@@ -39,7 +37,7 @@ monitoring_servers:
     rule_dir: /home/tidb/prometheus_rule   # prometheus rule dir on TiUP machine
 ```
 
-上述配置后，在集群进行 deploy/scale-out/scale-in/reload 操作时， TiUP 将读取**本机** /home/tidb/prometheus_rule 路径下的自定义 rule，然后将该配置发送到 Prometheus Server， 替换默认配置规则。
+上述配置后，在集群进行 deploy/scale-out/scale-in/reload 操作时，TiUP 将读取**本机** /home/tidb/prometheus_rule 路径下的自定义 rule，然后将该配置发送到 Prometheus Server，替换默认配置规则。
 
 ### 自定义 Prometheus scrape 配置
 
@@ -72,7 +70,7 @@ monitoring_servers:
         action: drop
 ```
 
-上述配置后，在集群进行 deploy/scale-out/scale-in/reload 操作时， TiUP 会将 additional_scrape_conf 字段的内容会添加到 Prometheus 配置文件的对应参数中。
+上述配置后，在集群进行 deploy/scale-out/scale-in/reload 操作时，TiUP 会将 additional_scrape_conf 字段的内容会添加到 Prometheus 配置文件的对应参数中。
 
 ## 自定义 Grafana 配置
 
@@ -94,7 +92,7 @@ grafana_servers:
     dashboard_dir: /home/tidb/dashboards   # grafana dashboard dir on TiUP machine
 ```
 
-上述配置后，在集群进行 deploy/scale-out/scale-in/reload 操作时， TiUP 将读取**本机** /home/tidb/dashboards 路径下的自定义 Dashboard ，然后将该配置发送到 Grafana Server， 替换默认配置规则。
+上述配置后，在集群进行 deploy/scale-out/scale-in/reload 操作时，TiUP 将读取**本机** /home/tidb/dashboards 路径下的自定义 Dashboard，然后将该配置发送到 Grafana Server，替换默认配置规则。
 
 ### 自定义 Grafana 其他配置
 
@@ -118,7 +116,7 @@ grafana_servers:
       smtp.skip_verify: true
 ```
 
-上述配置后，在集群进行 deploy/scale-out/scale-in/reload 操作时， TiUP 会将 config 字段的内容会添加到 grafana 的配置文件 grafana.ini 中。
+上述配置后，在集群进行 deploy/scale-out/scale-in/reload 操作时，TiUP 会将 config 字段的内容会添加到 grafana 的配置文件 grafana.ini 中。
 
 ## 自定义 Alertmanager 配置
 
@@ -137,4 +135,4 @@ alertmanager_servers:
     ssh_port: 22
 ```
 
-上述配置后，在集群进行 deploy/scale-out/scale-in/reload 操作时， TiUP 会将 listen_host 字段的内容会添加到 Alertmanager 启动参数的 '--web.listen-address' 中。
+上述配置后，在集群进行 deploy/scale-out/scale-in/reload 操作时，TiUP 会将 listen_host 字段的内容会添加到 Alertmanager 启动参数的 '--web.listen-address' 中。

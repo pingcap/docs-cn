@@ -52,7 +52,7 @@ Value:
 
 + **Key:**
 
-    ```
+    ```json
     {
         "ts":<TS>,
         "scm":<Schema Name>,
@@ -71,7 +71,7 @@ Value:
 
     `Insert` 事件，输出新增的行数据。
 
-    ```
+    ```json
     {
         "u":{
             <Column Name>:{
@@ -90,9 +90,9 @@ Value:
     }
     ```
 
-    `Update` 事件，输出新增的行数据 ("u") 以及修改前的行数据 ("p")，仅当 Old Value 特性开启时，才会输出修改前的行数据。
+    `Update` 事件，输出新增的行数据 ("u") 以及修改前的行数据 ("p")。
 
-    ```
+    ```json
     {
         "u":{
             <Column Name>:{
@@ -125,9 +125,9 @@ Value:
     }
     ```
 
-    `Delete` 事件，输出被删除的行数据。当 Old Value 特性开启时，`Delete` 事件中包含被删除的行数据中的所有列；当 Old Value 特性关闭时，`Delete` 事件中仅包含 [HandleKey](#列标志位) 列。
+    `Delete` 事件，输出被删除的行数据。
 
-    ```
+    ```json
     {
         "d":{
             <Column Name>:{
@@ -158,7 +158,7 @@ Value:
 
 + **Key:**
 
-    ```
+    ```json
     {
         "ts":<TS>,
         "scm":<Schema Name>,
@@ -175,7 +175,7 @@ Value:
 
 + **Value:**
 
-    ```
+    ```json
     {
         "q":<DDL Query>,
         "t":<DDL Type>
@@ -191,7 +191,7 @@ Value:
 
 + **Key:**
 
-    ```
+    ```json
     {
         "ts":<TS>,
         "t":3
@@ -210,8 +210,6 @@ Value:
 
 假设在上游执行以下 SQL 语句，MQ Partition 数量为 2：
 
-{{< copyable "sql" >}}
-
 ```sql
 CREATE TABLE test.t1(id int primary key, val varchar(16));
 ```
@@ -227,8 +225,6 @@ CREATE TABLE test.t1(id int primary key, val varchar(16));
 
 在上游执行以下 SQL 语句：
 
-{{< copyable "sql" >}}
-
 ```sql
 BEGIN;
 INSERT INTO test.t1(id, val) VALUES (1, 'aa');
@@ -238,20 +234,18 @@ INSERT INTO test.t1(id, val) VALUES (3, 'cc');
 COMMIT;
 ```
 
-+ 如以下执行日志中的 Log 5 和 Log 6 所示，同一张表内的 Row Changed Event 可能会根据主键被分派到不同的 Partition，但同一行的变更一定会分派到同一个 Partition，方便下游并发处理。
-+ 如 Log 6 所示，在一个事务内对同一行进行多次修改，只会发出一个 Row Changed Event。
-+ Log 8 是 Log 7 的重复 Event。Row Changed Event 可能重复，但每个版本的 Event 第一次发出的次序一定是有序的。
+- 如以下执行日志中的 Log 5 和 Log 6 所示，同一张表内的 Row Changed Event 可能会根据主键被分派到不同的 Partition，但同一行的变更一定会分派到同一个 Partition，方便下游并发处理。
+- 如 Log 6 所示，在一个事务内对同一行进行多次修改，只会发出一个 Row Changed Event。
+- Log 8 是 Log 7 的重复 Event。Row Changed Event 可能重复，但每个版本的 Event 第一次发出的次序一定是有序的。
 
 ```
-5. [partition=0] [key="{\"ts\":415508878783938562,\"scm\":\"test\",\"tbl\":\"t1\",\"t\":1}"] [value="{\"u\":{\"id\":{\"t\":3,\"h\":true,\"v\":1},\"val\":{\"t\":15,\"v\":\"YWE=\"}}}"]
-6. [partition=1] [key="{\"ts\":415508878783938562,\"scm\":\"test\",\"tbl\":\"t1\",\"t\":1}"] [value="{\"u\":{\"id\":{\"t\":3,\"h\":true,\"v\":2},\"val\":{\"t\":15,\"v\":\"YmI=\"}}}"]
-7. [partition=0] [key="{\"ts\":415508878783938562,\"scm\":\"test\",\"tbl\":\"t1\",\"t\":1}"] [value="{\"u\":{\"id\":{\"t\":3,\"h\":true,\"v\":3},\"val\":{\"t\":15,\"v\":\"Y2M=\"}}}"]
-8. [partition=0] [key="{\"ts\":415508878783938562,\"scm\":\"test\",\"tbl\":\"t1\",\"t\":1}"] [value="{\"u\":{\"id\":{\"t\":3,\"h\":true,\"v\":3},\"val\":{\"t\":15,\"v\":\"Y2M=\"}}}"]
+5. [partition=0] [key="{\"ts\":415508878783938562,\"scm\":\"test\",\"tbl\":\"t1\",\"t\":1}"] [value="{\"u\":{\"id\":{\"t\":3,\"h\":true,\"v\":1},\"val\":{\"t\":15,\"v\":\"aa\"}}}"]
+6. [partition=1] [key="{\"ts\":415508878783938562,\"scm\":\"test\",\"tbl\":\"t1\",\"t\":1}"] [value="{\"u\":{\"id\":{\"t\":3,\"h\":true,\"v\":2},\"val\":{\"t\":15,\"v\":\"bb\"}}}"]
+7. [partition=0] [key="{\"ts\":415508878783938562,\"scm\":\"test\",\"tbl\":\"t1\",\"t\":1}"] [value="{\"u\":{\"id\":{\"t\":3,\"h\":true,\"v\":3},\"val\":{\"t\":15,\"v\":\"cc\"}}}"]
+8. [partition=0] [key="{\"ts\":415508878783938562,\"scm\":\"test\",\"tbl\":\"t1\",\"t\":1}"] [value="{\"u\":{\"id\":{\"t\":3,\"h\":true,\"v\":3},\"val\":{\"t\":15,\"v\":\"cc\"}}}"]
 ```
 
 在上游执行以下 SQL 语句：
-
-{{< copyable "sql" >}}
 
 ```sql
 BEGIN;
@@ -389,4 +383,4 @@ DDL 的类型码用于标识 DDL Event 中的 DDL 语句的类型。
 > **注意：**
 >
 > + BinaryFlag 仅在列为 BLOB/TEXT（包括 TINYBLOB/TINYTEXT、BINARY/CHAR 等）类型时才有意义。当上游列为 BLOB 类型时，BinaryFlag 置 `1`；当上游列为 TEXT 类型时，BinaryFlag 置 `0`。
-> + 若要同步上游的一张表，TiCDC 会选择一个[有效索引](/ticdc/ticdc-overview.md#同步限制)作为 Handle Index。Handle Index 包含的列的 HandleKeyFlag 置 `1`。
+> + 若要同步上游的一张表，TiCDC 会选择一个[有效索引](/ticdc/ticdc-overview.md#最佳实践)作为 Handle Index。Handle Index 包含的列的 HandleKeyFlag 置 `1`。

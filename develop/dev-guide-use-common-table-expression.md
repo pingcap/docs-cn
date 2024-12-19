@@ -16,15 +16,13 @@ TiDB 从 5.1 版本开始支持 ANSI SQL 99 标准的 CTE 及其递归的写法�
 
 ## 基本使用
 
-公共表表达式 (CTE) 是一个临时的中间结果集，能够在 SQL 语句中引用多次，提高 SQL 语句的可读性与执行效率。在 TiDB 中可以通过 `WITH` 语句使用公共表表达式。
+公共表表达式 (CTE) 是一个临时的中间结果集，能够在 SQL 语句中引用多次，提高 SQL 语句的可读性与执行效率。在 TiDB 中可以通过 [`WITH`](/sql-statements/sql-statement-with.md) 语句使用公共表表达式。
 
 公共表表达式可以分为非递归和递归两种类型。
 
 ### 非递归的 CTE
 
 非递归的 CTE 使用如下语法进行定义：
-
-{{< copyable "sql" >}}
 
 ```sql
 WITH <query_name> AS (
@@ -38,9 +36,7 @@ SELECT ... FROM <query_name>;
 <SimpleTab>
 <div label="SQL">
 
-可以将[临时表](/develop/dev-guide-use-temporary-tables.md)小节当中的例子改为以下 SQL 语句：
-
-{{< copyable "sql" >}}
+在 SQL 中，可以将[临时表](/develop/dev-guide-use-temporary-tables.md)小节当中的例子改为以下 SQL 语句：
 
 ```sql
 WITH top_50_eldest_authors_cte AS (
@@ -77,7 +73,7 @@ GROUP BY ta.id;
 </div>
 <div label="Java">
 
-{{< copyable "" >}}
+在 Java 中的示例如下：
 
 ```java
 public List<Author> getTop50EldestAuthorInfoByCTE() throws SQLException {
@@ -102,10 +98,10 @@ public List<Author> getTop50EldestAuthorInfoByCTE() throws SQLException {
         """);
         while (rs.next()) {
             Author author = new Author();
-            author.id = rs.getLong("author_id");
-            author.name = rs.getString("author_name");
-            author.age = rs.getShort("author_age");
-            author.books = rs.getInt("books");
+            author.setId(rs.getLong("author_id"));
+            author.setName(rs.getString("author_name"));
+            author.setAge(rs.getShort("author_age"));
+            author.setBooks(rs.getInt("books"));
             authors.add(author);
         }
     }
@@ -117,8 +113,6 @@ public List<Author> getTop50EldestAuthorInfoByCTE() throws SQLException {
 </SimpleTab>
 
 这时，可以发现名为 “Ray Macejkovic” 的作者写了 4 本书，继续通过 CTE 查询来了解这 4 本书的销量和评分：
-
-{{< copyable "sql" >}}
 
 ```sql
 WITH books_authored_by_rm AS (
@@ -173,11 +167,13 @@ FROM
 
 值得注意的是，`books_authored_by_rm` 中的查询只会执行一次，TiDB 会开辟一块临时空间对查询的结果进行缓存，当 `books_with_average_ratings` 和 `books_with_orders` 引用时会直接从该临时空间当中获取数据。
 
+> **建议：**
+>
+> 当默认的 CTE 查询执行效率不高时，你可以使用 [`MERGE()`](/optimizer-hints.md#merge) hint，将 CTE 子查询拓展到外部查询，以此提高执行效率。
+
 ### 递归的 CTE
 
 递归的公共表表达式可以使用如下语法进行定义：
-
-{{< copyable "sql" >}}
 
 ```sql
 WITH RECURSIVE <query_name> AS (
@@ -187,8 +183,6 @@ SELECT ... FROM <query_name>;
 ```
 
 比较经典的例子是通过递归的 CTE 生成一组[斐波那契数](https://zh.wikipedia.org/wiki/%E6%96%90%E6%B3%A2%E9%82%A3%E5%A5%91%E6%95%B0)：
-
-{{< copyable "sql" >}}
 
 ```sql
 WITH RECURSIVE fibonacci (n, fib_n, next_fib_n) AS

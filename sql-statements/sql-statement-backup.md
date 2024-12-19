@@ -6,9 +6,13 @@ aliases: ['/docs-cn/dev/sql-statements/sql-statement-backup/']
 
 # BACKUP
 
+> **警告：**
+>
+> `BACKUP` 语句目前为实验特性，不建议在生产环境中使用。该功能可能会在未事先通知的情况下发生变化或删除。如果发现 bug，请在 GitHub 上提 [issue](https://github.com/pingcap/tidb/issues) 反馈。
+
 `BACKUP` 语句用于对 TiDB 集群执行分布式备份操作。
 
-`BACKUP` 语句使用的引擎与 [BR](/br/backup-and-restore-use-cases.md) 相同，但备份过程是由 TiDB 本身驱动，而非单独的 BR 工具。BR 工具的优势和警告也适用于 `BACKUP` 语句。
+`BACKUP` 语句使用的引擎与 [BR](/br/backup-and-restore-overview.md) 相同，但备份过程是由 TiDB 本身驱动，而非单独的 BR 工具。BR 工具的优势和警告也适用于 `BACKUP` 语句。
 
 执行 `BACKUP` 需要 `BACKUP_ADMIN` 或 `SUPER` 权限。此外，执行备份的 TiDB 节点和集群中的所有 TiKV 节点都必须有对目标存储的读或写权限。
 
@@ -27,11 +31,15 @@ BRIETables ::=
 |   "TABLE" TableNameList
 
 BackupOption ::=
-    "RATE_LIMIT" '='? LengthNum "MB" '/' "SECOND"
+    "CHECKSUM" '='? Boolean
+|   "CHECKSUM_CONCURRENCY" '='? LengthNum
+|   "COMPRESSION_LEVEL" '='? LengthNum
+|   "COMPRESSION_TYPE" '='? stringLit
 |   "CONCURRENCY" '='? LengthNum
-|   "CHECKSUM" '='? Boolean
-|   "SEND_CREDENTIALS_TO_TIKV" '='? Boolean
+|   "IGNORE_STATS" '='? Boolean
 |   "LAST_BACKUP" '='? BackupTSO
+|   "RATE_LIMIT" '='? LengthNum "MB" '/' "SECOND"
+|   "SEND_CREDENTIALS_TO_TIKV" '='? Boolean
 |   "SNAPSHOT" '='? ( BackupTSO | LengthNum TimestampUnit "AGO" )
 
 Boolean ::=
@@ -103,17 +111,17 @@ BR 支持备份数据到 Amazon S3 或 Google Cloud Storage (GCS)：
 {{< copyable "sql" >}}
 
 ```sql
-BACKUP DATABASE `test` TO 's3://example-bucket-2020/backup-05/?region=us-west-2&access-key={YOUR_ACCESS_KEY}&secret-access-key={YOUR_SECRET_KEY}';
+BACKUP DATABASE `test` TO 's3://example-bucket-2020/backup-05/?access-key={YOUR_ACCESS_KEY}&secret-access-key={YOUR_SECRET_KEY}';
 ```
 
-有关详细的 URL 语法，见[外部存储](/br/backup-and-restore-storages.md)。
+有关详细的 URL 语法，见[外部存储服务的 URI 格式](/external-storage-uri.md)。
 
 当运行在云环境中时，不能分发凭证，可设置 `SEND_CREDENTIALS_TO_TIKV` 选项为 `FALSE`：
 
 {{< copyable "sql" >}}
 
 ```sql
-BACKUP DATABASE `test` TO 's3://example-bucket-2020/backup-05/?region=us-west-2'
+BACKUP DATABASE `test` TO 's3://example-bucket-2020/backup-05/'
     SEND_CREDENTIALS_TO_TIKV = FALSE;
 ```
 
@@ -121,9 +129,13 @@ BACKUP DATABASE `test` TO 's3://example-bucket-2020/backup-05/?region=us-west-2'
 
 如果你需要减少网络带宽占用，可以通过 `RATE_LIMIT` 来限制每个 TiKV 节点的平均上传速度。
 
-默认情况下，每个 TiKV 节点上运行 4 个备份线程。可以通过 `CONCURRENCY` 选项来调整这个值。
+在备份完成之前，`BACKUP` 默认将对集群上的数据执行校验和计算，以验证数据正确性。对单张表做数据校验作业的并发度默认为 4，你可以通过 `CHECKSUM_CONCURRENCY` 参数调整该并发度。如果你确定数据无需进行校验，可以通过将 `CHECKSUM` 参数设置为 `FALSE` 来禁用该检查。
 
-在备份完成之前，`BACKUP` 将对集群上的数据进行校验，以验证数据的正确性。如果你确信无需进行校验，可以通过 `CHECKSUM` 选项禁用这一步骤。
+要指定 BR 可以同时执行的备份表和索引的任务数量，可使用 `CONCURRENCY`。该参数控制 BR 的线程池大小，可以优化备份操作的性能和效率。根据备份类型不同，一个任务代表一个表范围或一个索引范围。如果有一个表带有一个索引，则会有两个任务来备份这个表。参数 `CONCURRENCY` 的默认值为 `4`，如果你要备份许多表或索引，需调大该参数的值。
+
+统计信息默认不会备份，如果你确定需要备份统计信息，可以将 `IGNORE_STATS` 参数设置为 `FALSE`。
+
+备份生成的 SST 文件默认使用 `zstd` 压缩算法。你可以根据需求，通过 `COMPRESSION_TYPE` 参数指定压缩算法，可选的算法包括 `lz4`、`zstd` 和 `snappy`。你还可以通过 `COMPRESSION_LEVEL` 参数设置压缩级别。压缩级别越高，压缩比越高，但相应的 CPU 消耗也会增加。
 
 {{< copyable "sql" >}}
 

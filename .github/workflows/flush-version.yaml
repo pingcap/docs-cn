@@ -1,0 +1,62 @@
+name: Flush PDF by Version
+
+on:
+  # manual flush pdf for specified version
+  workflow_dispatch:
+    inputs:
+      type:
+        required: true
+        type: choice
+        options: ['tidb', 'tidb cloud', 'tidb operator']
+        default: 'tidb'
+        description: "the type"
+      version:
+        required: false
+        type: string
+        description: "the version, e.g. v6.5 or dev"
+      # lang:
+      #   required: false
+      #   type: choice
+      #   options: ['en', 'zh']
+      #   description: "The language"
+
+jobs:
+  flush-pdf:
+    name: Flush PDF by Version
+    runs-on: ubuntu-latest
+    steps:
+      - name: install qiniu qshell
+        uses: foxundermoon/setup-qshell@v5
+        with:
+          version: '2.6.2'
+
+      - name: print pdf to a file (tidb)
+        if: ${{ inputs.type == 'tidb' }}
+        run: |
+          echo "https://download.pingcap.org/tidb-${{inputs.version}}-en-manual.pdf" >> pdf.txt
+          echo "https://download.pingcap.org/tidb-${{inputs.version}}-zh-manual.pdf" >> pdf.txt
+          cat pdf.txt
+
+      - name: print pdf to a file (tidb cloud)
+        if: ${{ inputs.type == 'tidb cloud' }}
+        run: |
+          echo "https://download.pingcap.org/tidbcloud-en-manual.pdf" > pdf.txt
+          cat pdf.txt
+
+      - name: print pdf to a file (tidb operator)
+        if: ${{ inputs.type == 'tidb operator' }}
+        run: |
+          echo "https://download.pingcap.org/tidb-in-kubernetes-${{inputs.version}}-en-manual.pdf" >> pdf.txt
+          echo "https://download.pingcap.org/tidb-in-kubernetes-${{inputs.version}}-zh-manual.pdf" >> pdf.txt
+          cat pdf.txt
+
+      - name: refresh url
+        run: |
+          qshell account ${{ secrets.QINIU_ACCESS_KEY }} ${{ secrets.QINIU_SECRET_KEY }} tidb
+          result=$(qshell cdnrefresh -i pdf.txt)
+          if echo $result | grep -w '200'; then
+            echo 'CDN refresh success'
+          else
+            echo "CDN refresh failed: $result"
+            exit 1
+          fi

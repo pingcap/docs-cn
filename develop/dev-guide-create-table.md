@@ -16,7 +16,7 @@ aliases: ['/zh/tidb/dev/create-table']
 
 在阅读本页面之前，你需要准备以下事项：
 
-- [使用 TiDB Cloud (DevTier) 构建 TiDB 集群](/develop/dev-guide-build-cluster-in-cloud.md)。
+- [使用 TiDB Cloud Serverless 构建 TiDB 集群](/develop/dev-guide-build-cluster-in-cloud.md)。
 - 阅读[数据库模式概览](/develop/dev-guide-schema-design-overview.md)。
 - [创建一个数据库](/develop/dev-guide-create-database.md)。
 
@@ -30,8 +30,6 @@ aliases: ['/zh/tidb/dev/create-table']
 
 `CREATE TABLE` 语句通常采用以下形式：
 
-{{< copyable "sql" >}}
-
 ```sql
 CREATE TABLE {table_name} ( {elements} );
 ```
@@ -44,8 +42,6 @@ CREATE TABLE {table_name} ( {elements} );
 假设你需要创建一个表来存储 `bookshop` 库中的用户信息。
 
 注意，此时因为一个列都没被添加，所以下方这条 SQL 暂时还不能被运行：
-
-{{< copyable "sql" >}}
 
 ```sql
 CREATE TABLE `bookshop`.`users` (
@@ -64,13 +60,11 @@ CREATE TABLE `bookshop`.`users` (
 
 **参数描述**
 
-- `{column_name}`: 列名。
-- `{data_type}`: 列的[数据类型](/basic-features.md#数据类型函数和操作符)。
-- `{column_qualification}`: 列的限定条件，如**列级约束**或[生成列（实验功能）](/generated-columns.md)子句。
+- `{column_name}`：列名。
+- `{data_type}`：列的[数据类型](/basic-features.md#数据类型函数和操作符)。
+- `{column_qualification}`：列的限定条件，如**列级约束**或[生成列](/generated-columns.md)子句。
 
 可以为 `users` 表添加一些列，如他们的唯一标识 `id`，余额 `balance` 及昵称 `nickname`。
-
-{{< copyable "sql" >}}
 
 ```sql
 CREATE TABLE `bookshop`.`users` (
@@ -84,13 +78,11 @@ CREATE TABLE `bookshop`.`users` (
 
 而在其后，又定义了一个字段名为 `nickname`，类型为 [varchar](/data-type-string.md#varchar-类型)，且长度不得超过 100 字符的字段。用以表示用户的昵称。这意味着，所用用户的昵称都是 `varchar` 类型，且不超过 100 字符的。
 
-最后，又加入了一个字段名为 `balance` 用以表示用户的余额，类型为 [decimal](/data-type-numeric.md#decimal-类型)，且其精度为 15，比例为 2。简单的说明一下精度和比例代表的含义，精度代表字段数值的总位数，而比例代表小数点后有多少位。例如: `decimal(5,2)`，即精度为 5，比例为 2 时，其取值范围为 `-999.99` 到 `999.99`。`decimal(6,1)` ，即精度为 6，比例为 1 时，其取值范围为 `-99999.9` 到 `99999.9`。`decimal` 类型为定点数，可精确保存数字，在需要精确数字的场景（如用户财产相关）中，请确保使用[定点数](/data-type-numeric.md#定点类型)类型。
+最后，又加入了一个字段名为 `balance` 用以表示用户的余额，类型为 [decimal](/data-type-numeric.md#decimal-类型)，且其精度为 15，比例为 2。简单的说明一下精度和比例代表的含义，精度代表字段数值的总位数，而比例代表小数点后有多少位。例如: `decimal(5,2)`，即精度为 5，比例为 2 时，其取值范围为 `-999.99` 到 `999.99`。`decimal(6,1)`，即精度为 6，比例为 1 时，其取值范围为 `-99999.9` 到 `99999.9`。`decimal` 类型为定点数，可精确保存数字，在需要精确数字的场景（如用户财产相关）中，请确保使用[定点数](/data-type-numeric.md#定点类型)类型。
 
-TiDB 支持许多其他的列数据类型，包含 [整数](/data-type-numeric.md#整数类型)、[浮点数](/data-type-numeric.md#浮点类型)、[定点数](/data-type-numeric.md#定点类型)、[时间](/data-type-date-and-time.md#datetime-类型)、[枚举](/data-type-string.md#enum-类型) 等，可参考支持的列的[数据类型](/basic-features.md#数据类型函数和操作符)，并使用与你准备保存在数据库内的数据匹配的**数据类型**。
+TiDB 支持许多其他的列数据类型，包含[整数](/data-type-numeric.md#整数类型)、[浮点数](/data-type-numeric.md#浮点类型)、[定点数](/data-type-numeric.md#定点类型)、[时间](/data-type-date-and-time.md#datetime-类型)、[枚举](/data-type-string.md#enum-类型) 等，可参考支持的列的[数据类型](/basic-features.md#数据类型函数和操作符)，并使用与你准备保存在数据库内的数据匹配的**数据类型**。
 
-稍微提升一下复杂度，例如选择定义一张 `books` 表，这张表将是 `bookshop` 数据的核心。它包含书的 唯一标识、名称、书籍类型（如：杂志、动漫、教辅 等）、库存、价格、出版时间 字段。
-
-{{< copyable "sql" >}}
+稍微提升一下复杂度，例如选择定义一张 `books` 表，这张表将是 `bookshop` 数据的核心。它包含书的唯一标识、名称、书籍类型（如：杂志、动漫、教辅等）、库存、价格、出版时间等字段。
 
 ```sql
 CREATE TABLE `bookshop`.`books` (
@@ -115,7 +107,7 @@ CREATE TABLE `bookshop`.`books` (
 
 > **注意：**
 >
-> TiDB 中，关于 **Primary Key** 的默认定义与 MySQL 常用存储引擎 [InnoDB](https://mariadb.com/kb/en/innodb/) 不一致。**InnoDB** 中，**Primary Key** 的语义为：唯一，不为空，**且为聚簇索引**。
+> TiDB 中，关于 **Primary Key** 的默认定义与 MySQL 常用存储引擎 [InnoDB](https://dev.mysql.com/doc/refman/8.0/en/innodb-storage-engine.html) 不一致。**InnoDB** 中，**Primary Key** 的语义为：唯一，不为空，**且为聚簇索引**。
 >
 > 而在 TiDB 中，**Primary Key** 的定义为：唯一，不为空。但主键不保证为**聚簇索引**。而是由另一组关键字 `CLUSTERED`、`NONCLUSTERED` 额外控制 **Primary Key** 是否为聚簇索引，若不指定，则由系统变量 `@@global.tidb_enable_clustered_index` 影响，具体说明请看[此文档](/clustered-indexes.md)。
 
@@ -123,13 +115,11 @@ CREATE TABLE `bookshop`.`books` (
 
 一个表可以没有主键，主键也可以是非整数类型。但此时 TiDB 就会创建一个 `_tidb_rowid` 作为隐式主键。隐式主键 `_tidb_rowid` 因为其单调递增的特性，可能在大批量写入场景下会导致写入热点，如果你写入量密集，可考虑通过 [SHARD_ROW_ID_BITS](/shard-row-id-bits.md) 和 [PRE_SPLIT_REGIONS](/sql-statements/sql-statement-split-region.md#pre_split_regions) 两参数控制打散。但这可能导致读放大，请自行取舍。
 
-表的主键为 [整数类型](/data-type-numeric.md#整数类型) 且使用了 `AUTO_INCREMENT` 时，无法使用 `SHARD_ROW_ID_BITS` 消除热点。需解决此热点问题，且无需使用主键的连续和递增时，可使用 [AUTO_RANDOM](/auto-random.md) 替换 `AUTO_INCREMENT` 属性来消除行 ID 的连续性。
+表的主键为[整数类型](/data-type-numeric.md#整数类型)且使用了 `AUTO_INCREMENT` 时，无法使用 `SHARD_ROW_ID_BITS` 消除热点。需解决此热点问题，且无需使用主键的连续和递增时，可使用 [AUTO_RANDOM](/auto-random.md) 替换 `AUTO_INCREMENT` 属性来消除行 ID 的连续性。
 
 更多有关热点问题的处理办法，请参考[TiDB 热点问题处理](/troubleshoot-hot-spot-issues.md)。
 
 需遵循[选择主键时应遵守的规则](#选择主键时应遵守的规则)，举一个 `users` 表中定义 `AUTO_RANDOM` 主键的例子：
-
-{{< copyable "sql" >}}
 
 ```sql
 CREATE TABLE `bookshop`.`users` (
@@ -160,8 +150,6 @@ CREATE TABLE `bookshop`.`users` (
 
 需遵循[选择聚簇索引时应遵守的规则](#选择聚簇索引时应遵守的规则)，假设需要建立一张 `books` 和 `users` 之间关联的表，代表用户对某书籍的评分。使用表名 `ratings` 来创建该表，并使用 `book_id` 和 `user_id` 构建[复合主键](/constraints.md#主键约束)，并在该主键上建立聚簇索引：
 
-{{< copyable "sql" >}}
-
 ```sql
 CREATE TABLE `bookshop`.`ratings` (
   `book_id` bigint,
@@ -182,8 +170,6 @@ CREATE TABLE `bookshop`.`ratings` (
 
 你可以将 `DEFAULT` 与[支持的 SQL 函数](/basic-features.md#数据类型函数和操作符)结合使用，将默认值的计算移出应用层，从而节省应用层的资源（当然，计算所消耗的资源并不会凭空消失，只是被转移到了 TiDB 集群中）。常见的，希望实现数据插入时，可默认填充默认的时间。还是使用 `ratings` 作为示例，可使用以下语句：
 
-{{< copyable "sql" >}}
-
 ```sql
 CREATE TABLE `bookshop`.`ratings` (
   `book_id` bigint,
@@ -194,9 +180,7 @@ CREATE TABLE `bookshop`.`ratings` (
 );
 ```
 
-额外的，如果需更新时也默认填入当前时间，可使用以下语句（但 `ON UPDATE` 后仅可填入[当前时间相关语句](https://pingcap.github.io/sqlgram/#NowSymOptionFraction)，`DEFAULT` 后支持[更多选择](https://pingcap.github.io/sqlgram/#DefaultValueExpr)）：
-
-{{< copyable "sql" >}}
+此外，如需在数据更新时也默认填入当前时间，可使用以下语句（但 `ON UPDATE` 后仅可填入与当前时间相关的表达式）：
 
 ```sql
 CREATE TABLE `bookshop`.`ratings` (
@@ -208,13 +192,13 @@ CREATE TABLE `bookshop`.`ratings` (
 );
 ```
 
+关于不同数据类型默认值的更多信息，请参阅[数据类型的默认值](/data-type-default-values.md)。
+
 ### 防止重复
 
 如果你需要防止列中出现重复值，那你可以使用 `UNIQUE` 约束。
 
-例如，你需要确保用户的昵称唯一，可以这样改写 `user` 表的创建 SQL：
-
-{{< copyable "sql" >}}
+例如，你需要确保用户的昵称唯一，可以这样改写 `users` 表的创建 SQL：
 
 ```sql
 CREATE TABLE `bookshop`.`users` (
@@ -225,15 +209,13 @@ CREATE TABLE `bookshop`.`users` (
 );
 ```
 
-如果你在 `user` 表中尝试插入相同的 `nickname`，将返回错误。
+如果你在 `users` 表中尝试插入相同的 `nickname`，将返回错误。
 
 ### 防止空值
 
 如果你需要防止列中出现空值，那就可以使用 `NOT NULL` 约束。
 
-还是使用用户昵称来举例子，除了昵称唯一，还希望昵称不可为空，于是此处可以这样改写 `user` 表的创建 SQL：
-
-{{< copyable "sql" >}}
+还是使用用户昵称来举例子，除了昵称唯一，还希望昵称不可为空，于是此处可以这样改写 `users` 表的创建 SQL：
 
 ```sql
 CREATE TABLE `bookshop`.`users` (
@@ -256,13 +238,11 @@ CREATE TABLE `bookshop`.`users` (
 
 ### 同步列存数据
 
-当前，TiDB 支持两种数据分析引擎：**TiFlash** 和 **TiSpark**。大数据场景 (100 T) 下，推荐使用 TiFlash MPP 作为 HTAP 的主要方案，TiSpark 作为补充方案。希望了解更多关于 TiDB 的 HTAP 能力，可参考以下文章：[快速上手 HTAP](/quick-start-with-htap.md) 和 [深入探索 HTAP](/explore-htap.md)。
+当前，TiDB 支持两种数据分析引擎：**TiFlash** 和 **TiSpark**。大数据场景 (100 T) 下，推荐使用 TiFlash MPP 作为 HTAP 的主要方案，TiSpark 作为补充方案。希望了解更多关于 TiDB 的 HTAP 能力，可参考以下文章：[快速上手 HTAP](/quick-start-with-htap.md) 和[深入探索 HTAP](/explore-htap.md)。
 
 此处选用 [TiFlash](/tiflash/tiflash-overview.md) 为 `bookshop` 数据库的数据分析引擎。
 
 TiFlash 部署完成后并不会自动同步数据，而需要手动指定需要同步的表，开启同步副本仅需一行 SQL，如下所示：
-
-{{< copyable "sql" >}}
 
 ```sql
 ALTER TABLE {table_name} SET TIFLASH REPLICA {count};
@@ -273,13 +253,11 @@ ALTER TABLE {table_name} SET TIFLASH REPLICA {count};
 - `{table_name}`: 表名。
 - `{count}`: 同步副本数，若为 0，则表示删除同步副本。
 
-随后，TiFlash 将同步该表，查询时，TiDB 将会自动基于成本优化，考虑使用 **TiKV (行存)** 或 **TiFlash (列存)** 进行数据查询。当然，除了自动的方法，你也可以直接指定查询是否使用 TiFlash 副本，使用方法可查看[使用 TiDB 读取 TiFlash](/tiflash/use-tiflash.md#使用-tidb-读取-tiflash) 文档。
+随后，TiFlash 将同步该表，查询时，TiDB 将会自动基于成本优化，考虑使用 **TiKV (行存)** 或 **TiFlash (列存)** 进行数据查询。当然，除了自动的方法，你也可以直接指定查询是否使用 TiFlash 副本，使用方法可查看[使用 TiDB 读取 TiFlash](/tiflash/use-tidb-to-read-tiflash.md) 文档。
 
 ### 使用 HTAP 的示例
 
 `ratings` 表开启 1 个 TiFlash 副本：
-
-{{< copyable "sql" >}}
 
 ```sql
 ALTER TABLE `bookshop`.`ratings` SET TIFLASH REPLICA 1;
@@ -287,19 +265,15 @@ ALTER TABLE `bookshop`.`ratings` SET TIFLASH REPLICA 1;
 
 > **注意：**
 >
-> 如果你的集群，不包含 TiFlash 节点，此 SQL 语句将会报错：`1105 - the tiflash replica count: 1 should be less than the total tiflash server count: 0` 你可以[使用 TiDB Cloud (DevTier) 构建 TiDB 集群](/develop/dev-guide-build-cluster-in-cloud.md#第-1-步创建免费集群) 来创建一个含有 TiFlash 的免费集群。
+> 如果你的集群，不包含 TiFlash 节点，此 SQL 语句将会报错：`1105 - the tiflash replica count: 1 should be less than the total tiflash server count: 0` 你可以[使用 TiDB Cloud Serverless 构建 TiDB 集群](/develop/dev-guide-build-cluster-in-cloud.md#第-1-步创建-tidb-cloud-serverless-集群) 来创建一个含有 TiFlash 的集群。
 
 随后正常进行查询即可：
-
-{{< copyable "sql" >}}
 
 ```sql
 SELECT HOUR(`rated_at`), AVG(`score`) FROM `bookshop`.`ratings` GROUP BY HOUR(`rated_at`);
 ```
 
 也可使用 [EXPLAIN ANALYZE](/sql-statements/sql-statement-explain-analyze.md) 语句查看此语句是否使用了 TiFlash 引擎：
-
-{{< copyable "sql" >}}
 
 ```sql
 EXPLAIN ANALYZE SELECT HOUR(`rated_at`), AVG(`score`) FROM `bookshop`.`ratings` GROUP BY HOUR(`rated_at`);
@@ -315,7 +289,7 @@ EXPLAIN ANALYZE SELECT HOUR(`rated_at`), AVG(`score`) FROM `bookshop`.`ratings` 
 | └─HashAgg_5                 | 299821.99 | 24      | root         |               | time:60.7ms, loops:6, partial_worker:{wall_time:60.660079ms, concurrency:5, task_num:293, tot_wait:262.536669ms, tot_exec:40.171833ms, tot_time:302.827753ms, max:60.636886ms, p95:60.636886ms}, final_worker:{wall_time:60.701437ms, concurrency:5, task_num:25, tot_wait:303.114278ms, tot_exec:176.564µs, tot_time:303.297475ms, max:60.69326ms, p95:60.69326ms}  | group by:Column#10, funcs:avg(Column#8)->Column#5, funcs:firstrow(Column#9)->bookshop.ratings.rated_at                                         | 714.0 KB | N/A  |
 |   └─Projection_15           | 300000.00 | 300000  | root         |               | time:58.5ms, loops:294, Concurrency:5                                                                                                                                                                                                                                                                                                                                | cast(bookshop.ratings.score, decimal(8,4) BINARY)->Column#8, bookshop.ratings.rated_at, hour(cast(bookshop.ratings.rated_at, time))->Column#10 | 366.2 KB | N/A  |
 |     └─TableReader_10        | 300000.00 | 300000  | root         |               | time:43.5ms, loops:294, cop_task: {num: 1, max: 43.1ms, proc_keys: 0, rpc_num: 1, rpc_time: 43ms, copr_cache_hit_ratio: 0.00}                                                                                                                                                                                                                                        | data:TableFullScan_9                                                                                                                           | 4.58 MB  | N/A  |
-|       └─TableFullScan_9     | 300000.00 | 300000  | cop[tiflash] | table:ratings | tiflash_task:{time:5.98ms, loops:8, threads:1}                                                                                                                                                                                                                                                                                                                       | keep order:false                                                                                                                               | N/A      | N/A  |
+|       └─TableFullScan_9     | 300000.00 | 300000  | cop[tiflash] | table:ratings | tiflash_task:{time:5.98ms, loops:8, threads:1}, tiflash_scan:{dtfile:{total_scanned_packs:45, total_skipped_packs:1, total_scanned_rows:368640, total_skipped_rows:8192, total_rs_index_load_time: 1ms, total_read_time: 1ms},total_create_snapshot_time:1ms}                                                                                                        | keep order:false                                                                                                                               | N/A      | N/A  |
 +-----------------------------+-----------+---------+--------------+---------------+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+------------------------------------------------------------------------------------------------------------------------------------------------+----------+------+
 ```
 
@@ -327,8 +301,6 @@ EXPLAIN ANALYZE SELECT HOUR(`rated_at`), AVG(`score`) FROM `bookshop`.`ratings` 
 
 如果将数据库初始化脚本命名为 `init.sql` 并保存，可使用以下语句来执行数据库初始化：
 
-{{< copyable "shell-regular" >}}
-
 ```shell
 mysql
     -u root \
@@ -339,8 +311,6 @@ mysql
 ```
 
 需查看 `bookshop` 数据库下的所有表，可使用 [SHOW TABLES](/sql-statements/sql-statement-show-tables.md#show-full-tables) 语句：
-
-{{< copyable "sql" >}}
 
 ```sql
 SHOW TABLES IN `bookshop`;

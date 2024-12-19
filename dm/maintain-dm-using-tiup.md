@@ -117,7 +117,7 @@ ID                 Role          Host          Ports      OS/Arch       Status  
 172.19.0.101:9090  prometheus    172.19.0.101  9090       linux/x86_64  Up         /home/tidb/data/prometheus-9090    /home/tidb/deploy/prometheus-9090
 ```
 
-Status 列用 `Up` 或者 `Down` 表示该服务是否正常。对于 DM-master 组件，同时可能会带有 `|L` 表示该 DM-master 是 Leader, 对于 DM-worker 组件，Free 表示当前 DM-worker 没有与上游绑定。
+Status 列用 `Up` 或者 `Down` 表示该服务是否正常。对于 DM-master 组件，同时可能会带有 `|L` 表示该 DM-master 是 Leader，对于 DM-worker 组件，`Free` 表示当前 DM-worker 没有与上游绑定。
 
 ## 缩容节点
 
@@ -185,7 +185,7 @@ tiup dm scale-in prod-cluster -N 172.16.5.140:8262
 >
 > 升级前，可使用 `config export` 命令导出集群的配置文件，升级后如需降级回退到旧版本，可重建旧集群后，使用 `config import` 导入之前的配置。
 >
-> 对于 v2.0.5 之前版本的集群，可使用 v2.0.5 及之后版本的 dmctl 导出和导入集群配置。
+> 对于 v2.0.5 之前版本的集群，可使用 >= v2.0.5 且 < v8.0.0 的 dmctl 导出和导入集群配置。
 >
 > 对于 v2.0.2 之后的版本，导入集群配置时暂不支持自动恢复 relay worker 相关配置，可手动执行 `start-relay` 命令[开启 relay log](/dm/relay-log.md#开启关闭-relay-log)。
 
@@ -194,6 +194,10 @@ tiup dm scale-in prod-cluster -N 172.16.5.140:8262
 ### 升级操作
 
 可使用 `tiup dm upgrade` 命令来升级集群。例如，以下示例将集群升级到 `${version}`，执行命令前，将 `${version}` 替换为实际需要的版本：
+
+> **注意：**
+>
+> 从 v8.0.0 开始，DM 移除了固定的加解密 key，并支持设置自定义加解密 key。如果升级前[数据源配置](/dm/dm-source-configuration-file.md)和[迁移任务配置](/dm/task-configuration-file-full.md)里使用了加密密码，需参考 [DM 自定义加解密 key](/dm/dm-customized-secret-key.md) 里的升级步骤进行额外操作。
 
 {{< copyable "shell-regular" >}}
 
@@ -242,7 +246,7 @@ Flags:
   -N, --node strings           Specify the nodes
       --overwrite              Use this package in the future scale-out operations
   -R, --role strings           Specify the role
-      --transfer-timeout int   Timeout in seconds when transferring dm-master leaders (default 300)
+      --transfer-timeout int   Timeout in seconds when transferring dm-master leaders (default 600)
 
 Global Flags:
       --native-ssh         Use the native SSH client installed on local system instead of the build-in one.
@@ -278,7 +282,7 @@ tiup dm patch prod-cluster /tmp/dm--hotfix.tar.gz -N 172.16.4.5:8261
 > - `import` 命令用于将数据从 DM 1.0 集群导入到一个新的 DM 2.0 集群。如果你需要将 DM 迁移任务导入一个现有的 DM 2.0 集群，可以参考 [TiDB Data Migration 1.0.x 到 2.0+ 手动升级](/dm/manually-upgrade-dm-1.0-to-2.0.md)。
 > - 导入集群某些组件的部署目录与原始集群的部署目录不同，可以执行 `display` 命令来查看相关信息。
 > - 导入前，执行 `tiup update --self && tiup update dm`，以确保 DM 组件是最新版本。
-> - 导入后，集群中只存在一个 DM-master 节点。请参考 [扩容节点](#扩容节点) 来扩展 DM-master。
+> - 导入后，集群中只存在一个 DM-master 节点。请参考[扩容节点](#扩容节点) 来扩展 DM-master。
 
 引入 TiUP 前，DM-Ansible 用于部署 DM 集群。要使 TiUP 接管由 DM-Ansible 部署的 DM 1.0 集群，需要执行 `import` 命令：
 
@@ -390,9 +394,9 @@ tiup dmctl --master-addr master1:8261 operate-source create /tmp/source1.yml
 
 此时可以通过命令行参数 `--native-ssh` 启用系统自带命令行：
 
-- 部署集群: `tiup dm deploy <cluster-name> <version> <topo> --native-ssh`
-- 启动集群: `tiup dm start <cluster-name> --native-ssh`
-- 升级集群: `tiup dm upgrade ... --native-ssh`
+- 部署集群：`tiup dm deploy <cluster-name> <version> <topo> --native-ssh`，其中 `<cluster-name>` 为集群名称，`<version>` 为 DM 集群版本（例如 `v8.5.0`），`<topo>` 为拓扑文件路径
+- 启动集群：`tiup dm start <cluster-name> --native-ssh`
+- 升级集群：`tiup dm upgrade ... --native-ssh`
 
 所有涉及集群操作的步骤都可以加上 `--native-ssh` 来使用系统自带的客户端。
 

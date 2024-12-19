@@ -1,18 +1,18 @@
 ---
 title: REFERENTIAL_CONSTRAINTS
-summary: 了解 information_schema 表 `REFERENTIAL_CONSTRAINTS`。
+summary: 了解 INFORMATION_SCHEMA 表 `REFERENTIAL_CONSTRAINTS`。
 ---
 
 # REFERENTIAL_CONSTRAINTS
 
-`REFERENTIAL_CONSTRAINTS` 表提供 TiDB 表之间 `FOREIGN KEY` 关系的信息。请注意，目前 TiDB 不强制进行 `FOREIGN KEY` 约束，也不执行 `ON DELETE CASCADE` 等操作。
-
-{{< copyable "sql" >}}
+`REFERENTIAL_CONSTRAINTS` 表提供 TiDB 表之间 [`FOREIGN KEY`](/foreign-key.md) 关系的信息。
 
 ```sql
-USE information_schema;
-DESC referential_constraints;
+USE INFORMATION_SCHEMA;
+DESC REFERENTIAL_CONSTRAINTS;
 ```
+
+输出结果如下：
 
 ```sql
 +---------------------------+--------------+------+------+---------+-------+
@@ -33,26 +33,26 @@ DESC referential_constraints;
 11 rows in set (0.00 sec)
 ```
 
-{{< copyable "sql" >}}
-
 ```sql
 CREATE TABLE test.parent (
- id INT NOT NULL AUTO_INCREMENT,
- PRIMARY KEY (id)
+  id INT NOT NULL AUTO_INCREMENT,
+  PRIMARY KEY (id)
 );
 
 CREATE TABLE test.child (
- id INT NOT NULL AUTO_INCREMENT,
- name varchar(255) NOT NULL,
- parent_id INT DEFAULT NULL,
- PRIMARY KEY (id),
- CONSTRAINT fk_parent FOREIGN KEY (parent_id) REFERENCES parent (id) ON UPDATE CASCADE ON DELETE RESTRICT
+  id INT NOT NULL AUTO_INCREMENT,
+  name varchar(255) NOT NULL,
+  parent_id INT DEFAULT NULL,
+  PRIMARY KEY (id),
+  CONSTRAINT fk_parent FOREIGN KEY (parent_id) REFERENCES parent (id) ON UPDATE CASCADE ON DELETE RESTRICT
 );
 
-SELECT * FROM referential_constraints\G
+SELECT * FROM REFERENTIAL_CONSTRAINTS\G
 ```
 
-```
+输出结果如下：
+
+```sql
 *************************** 1. row ***************************
        CONSTRAINT_CATALOG: def
         CONSTRAINT_SCHEMA: test

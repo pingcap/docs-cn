@@ -1,11 +1,12 @@
 ---
 title: 精度数学
 aliases: ['/docs-cn/dev/functions-and-operators/precision-math/','/docs-cn/dev/reference/sql/functions-and-operators/precision-math/']
+summary: TiDB 中的精确数值运算与 MySQL 基本一致。精确数值运算包括整型和 DECIMAL 类型，以及精确值数字字面量。DECIMAL 数据类型是定点数类型，其运算是精确计算。在表达式计算中，TiDB 会尽可能不做任何修改的使用每个输入的数值。数值修约时，`round()` 函数将使用四舍五入的规则。向 DECIMAL 或整数类型列插入数据时，round 的规则将采用 round half away from zero 的方式。
 ---
 
 # 精度数学
 
-TiDB 中精度数学计算与 MySQL 中基本一致。详情请参见：[Precision Math](https://dev.mysql.com/doc/refman/5.7/en/precision-math.html)
+TiDB 中精度数学计算与 MySQL 中基本一致。详情请参见：[Precision Math](https://dev.mysql.com/doc/refman/8.0/en/precision-math.html)
 
 - 数值类型
 - DECIMAL 数据类型的特性
@@ -57,7 +58,7 @@ DECIMAL 列不存储前导的字符 `+` 或字符 `-` 或数字 `0`。如果将 
 
 DECIMAL 列不允许插入大于列定义的隐含范围的值。例如：DECIMAL(3, 0) 列范围为`-999` 到 `999`。DECIMAL(M, D) 列小数点左边部分最多支持 M-D 位数字。
 
-有关 DECIMAL 值的内部格式完整说明，请参阅 TiDB 源码文件 [types/mydecimal.go](https://github.com/pingcap/tidb/blob/master/types/mydecimal.go)。
+有关 DECIMAL 值的内部格式完整说明，请参阅 TiDB 源码文件 [`types/mydecimal.go`](https://github.com/pingcap/tidb/blob/master/pkg/types/mydecimal.go)。
 
 ## 表达式计算
 
@@ -67,7 +68,7 @@ DECIMAL 列不允许插入大于列定义的隐含范围的值。例如：DECIMA
 
 * 当表达式参数中包含近似值时，这个表达式的结果也是近似值，TiDB 会使用浮点数对应的计算逻辑返回一个浮点数的结果。
 * 当表达式参数中不包含任何近似值时（也就是说表达式的参数全部是精确值），如果某个精确值包含小数部分，TIDB 会对这个表达式使用 `DECIMAL` 对应的计算逻辑，返回一个 `DECIMAL` 的结果，精确到 65 位数字。
-* 其他情况下，表达式只会包含整数参数，这个表达式的结果也是精确的，TiDB 会使用整数对应的计算逻辑返回一个整数结果，精度和 `BIGINT` 保持一致（64位）。
+* 其他情况下，表达式只会包含整数参数，这个表达式的结果也是精确的，TiDB 会使用整数对应的计算逻辑返回一个整数结果，精度和 `BIGINT` 保持一致（64 位）。
 
 如果数值类型表达式中包含字符串参数，这些字符串参数将被转换成双精度浮点数，这个表达式的计算结果将是个近似值。
 
