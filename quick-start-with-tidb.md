@@ -68,6 +68,15 @@ TiDB 是一个分布式系统。最基础的 TiDB 测试集群通常由 2 个 Ti
 
 3. 在当前 session 执行以下命令启动集群。
 
+    > **注意：**
+    >
+    > - 如果按以下方式执行 playground，在结束部署测试后，TiUP 会自动清理掉原集群数据，重新执行命令会得到一个全新的集群。
+    > - 如果希望持久化数据，需要在启动集群时添加 TiUP 的 `--tag` 参数，详见[启动集群时指定 `tag` 以保留数据](/tiup/tiup-playground.md#启动集群时指定-tag-以保留数据)。
+    >
+    >     ```shell
+    >     tiup playground --tag ${tag_name}
+    >     ```
+
     - 直接执行 `tiup playground` 命令会运行最新版本的 TiDB 集群，其中 TiDB、TiKV、PD 和 TiFlash 实例各 1 个：
 
         {{< copyable "shell-regular" >}}
@@ -81,10 +90,10 @@ TiDB 是一个分布式系统。最基础的 TiDB 测试集群通常由 2 个 Ti
         {{< copyable "shell-regular" >}}
 
         ```shell
-        tiup playground v8.4.0 --db 2 --pd 3 --kv 3
+        tiup playground v8.5.0 --db 2 --pd 3 --kv 3
         ```
 
-        上述命令会在本地下载并启动某个版本的集群（例如 v8.4.0）。最新版本可以通过执行 `tiup list tidb` 来查看。运行结果将显示集群的访问方式：
+        上述命令会在本地下载并启动某个版本的集群（例如 v8.5.0）。最新版本可以通过执行 `tiup list tidb` 来查看。运行结果将显示集群的访问方式：
 
         ```log
         CLUSTER START SUCCESSFULLY, Enjoy it ^-^
@@ -98,9 +107,7 @@ TiDB 是一个分布式系统。最基础的 TiDB 测试集群通常由 2 个 Ti
 
         > **注意：**
         >
-        > + 支持 v5.2.0 及以上版本的 TiDB 在 Apple M1 芯片的机器上运行 `tiup playground`。
-        > + 以这种方式执行的 playground，在结束部署测试后 TiUP 会清理掉原集群数据，重新执行该命令后会得到一个全新的集群。
-        > + 若希望持久化数据，可以执行 TiUP 的 `--tag` 参数：`tiup --tag <your-tag> playground ...`，详情参考 [TiUP 参考手册](/tiup/tiup-reference.md#-t---tag-string)。
+        > v5.2.0 及以上版本的 TiDB 支持在 Apple M1 芯片的机器上运行 `tiup playground`。
 
 4. 新开启一个 session 以访问 TiDB 数据库。
 
@@ -185,6 +192,15 @@ TiDB 是一个分布式系统。最基础的 TiDB 测试集群通常由 2 个 Ti
 
 3. 在当前 session 执行以下命令启动集群。
 
+    > **注意：**
+    >
+    > - 如果按以下方式执行 playground，在结束部署测试后，TiUP 会自动清理掉原集群数据，重新执行命令会得到一个全新的集群。
+    > - 如果希望持久化数据，需要在启动集群时添加 TiUP 的 `--tag` 参数，详见[启动集群时指定 `tag` 以保留数据](/tiup/tiup-playground.md#启动集群时指定-tag-以保留数据)。
+    >
+    >     ```shell
+    >     tiup playground --tag ${tag_name}
+    >     ```
+
     - 直接运行 `tiup playground` 命令会运行最新版本的 TiDB 集群，其中 TiDB、TiKV、PD 和 TiFlash 实例各 1 个：
 
         {{< copyable "shell-regular" >}}
@@ -198,10 +214,10 @@ TiDB 是一个分布式系统。最基础的 TiDB 测试集群通常由 2 个 Ti
         {{< copyable "shell-regular" >}}
 
         ```shell
-        tiup playground v8.4.0 --db 2 --pd 3 --kv 3
+        tiup playground v8.5.0 --db 2 --pd 3 --kv 3
         ```
 
-        上述命令会在本地下载并启动某个版本的集群（例如 v8.4.0）。最新版本可以通过执行 `tiup list tidb` 来查看。运行结果将显示集群的访问方式：
+        上述命令会在本地下载并启动某个版本的集群（例如 v8.5.0）。最新版本可以通过执行 `tiup list tidb` 来查看。运行结果将显示集群的访问方式：
 
         ```log
         CLUSTER START SUCCESSFULLY, Enjoy it ^-^
@@ -211,11 +227,6 @@ TiDB 是一个分布式系统。最基础的 TiDB 测试集群通常由 2 个 Ti
         To view the Prometheus: http://127.0.0.1:9090
         To view the Grafana: http://127.0.0.1:3000
         ```
-
-        > **注意：**
-        >
-        > + 以这种方式执行的 playground，在结束部署测试后 TiUP 会清理掉原集群数据，重新执行该命令后会得到一个全新的集群。
-        > + 若希望持久化数据，可以执行 TiUP 的 `--tag` 参数：`tiup --tag <your-tag> playground ...`，详情参考 [TiUP 参考手册](/tiup/tiup-reference.md#-t---tag-string)。
 
 4. 新开启一个 session 以访问 TiDB 数据库。
 
@@ -432,7 +443,7 @@ TiDB 是一个分布式系统。最基础的 TiDB 测试集群通常由 2 个 Ti
     ```
 
     - 参数 `<cluster-name>` 表示设置集群名称
-    - 参数 `<version>` 表示设置集群版本，例如 `v8.4.0`。可以通过 `tiup list tidb` 命令来查看当前支持部署的 TiDB 版本
+    - 参数 `<version>` 表示设置集群版本，例如 `v8.5.0`。可以通过 `tiup list tidb` 命令来查看当前支持部署的 TiDB 版本
     - 参数 `-p` 表示在连接目标机器时使用密码登录
 
         > **注意：**
@@ -501,6 +512,12 @@ TiDB 是一个分布式系统。最基础的 TiDB 测试集群通常由 2 个 Ti
 
 - [使用 TiUP 部署 TiDB 集群](/production-deployment-using-tiup.md)
 - [使用 TiDB Operator 在 Kubernetes 上部署 TiDB 集群](https://docs.pingcap.com/zh/tidb-in-kubernetes/stable)
+
+如果你是应用开发者，想要快速使用 TiDB 构建应用，可参阅以下文档：
+
+- [开发者手册概览](/develop/dev-guide-overview.md)
+- [使用 TiDB Cloud Serverless 构建 TiDB 集群](/develop/dev-guide-build-cluster-in-cloud.md)
+- [示例程序](/develop/dev-guide-sample-application-java-jdbc.md)
 
 如果你想使用 TiFlash 作为数据分析的解决方案，可参阅以下文档：
 
