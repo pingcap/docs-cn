@@ -223,7 +223,7 @@ Info: {"upstream_id":7178706266519722477,"namespace":"default","id":"simple-repl
 - 注意：该参数只有当下游为消息队列，并且使用 Open Protocol 或 Canal-JSON 时，才会生效。
 - 默认值：`false`
 
-[//]: # (以下是存储服务类型 sink 配置)
+<!-- 以下是存储服务类型 sink 配置 -->
 
 #### `terminator`
 
