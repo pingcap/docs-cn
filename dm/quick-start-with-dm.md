@@ -7,6 +7,10 @@ summary: 了解如何快速上手部署试用 TiDB Data Migration 工具。
 
 本文介绍如何快速体验使用数据迁移工具 [TiDB Data Migration (DM)](/dm/dm-overview.md) 从 MySQL 迁移数据到 TiDB。此文档用于快速体验 DM 产品功能特性，并不建议适合在生产环境中使用。
 
+> **注意：**
+>
+> 如果目标服务器的操作系统支持 SELinux，请确保 SELinux 已禁用。
+
 ## 第 1 步：部署 DM 集群
 
 1. 安装 TiUP 工具并通过 TiUP 快速部署 [dmctl](/dm/dmctl-introduction.md)。

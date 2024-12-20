@@ -776,3 +776,7 @@ sudo yum -y install numactl
     ```
 
     你可以执行 `tiup cluster exec --help` 查看的 `tiup cluster exec` 命令的说明信息。
+
+## 关闭 SELinux
+
+使用 [getenforce(8)](https://linux.die.net/man/8/getenforce) 实用程序检查是否已禁用 SELinux 或设置为宽容模式 (Permissive)。处于强制模式 (Enforcing) 的 SELinux 可能会导致部署失败。有关禁用 SELinux 的说明，请参阅操作系统的文档。
