@@ -50,9 +50,9 @@ USING
 
 -- 类型二：包含了 `USING` 关键字的 `delete` 语句
 CREATE GLOBAL BINDING for
-    delete FROM users USING users JOIN orders ON users.id = orders.user_id
+    DELETE FROM users USING users JOIN orders ON users.id = orders.user_id
 USING
-    delete FROM users USING users JOIN orders ON users.id = orders.user_id;
+    DELETE FROM users USING users JOIN orders ON users.id = orders.user_id;
 ```
 
 可以通过等价的 SQL 改写绕过这个语法冲突的问题。例如，上述两个例子可以改写为：
@@ -65,11 +65,11 @@ CREATE GLOBAL BINDING for
 USING
     SELECT * FROM orders o1, orders o2;
 
--- 类型二的改写：去掉 `delete` 语句中的 `USING` 关键字
+-- 类型二的改写：去掉 `DELETE` 语句中的 `USING` 关键字
 CREATE GLOBAL BINDING for
-    delete users FROM users JOIN orders ON users.id = orders.user_id
+    DELETE users FROM users JOIN orders ON users.id = orders.user_id
 USING
-    delete users FROM users JOIN orders ON users.id = orders.user_id;
+    DELETE users FROM users JOIN orders ON users.id = orders.user_id;
 ```
 
 > **注意：**
@@ -90,7 +90,6 @@ CREATE GLOBAL BINDING for
     INSERT INTO orders SELECT * FROM pre_orders WHERE status = 'VALID' AND created <= (NOW() - INTERVAL 1 HOUR)
 USING
     INSERT /*+ use_index(@sel_1 pre_orders, idx_created) */ INTO orders SELECT * FROM pre_orders WHERE status = 'VALID' AND created <= (NOW() - INTERVAL 1 HOUR);
-    INSERT /*+ use_index(@sel_1 t2, idx_a) */ INTO t1 SELECT * FROM t2 WHERE a > 1 AND b = 1;
 ```
 
 如果在创建执行计划绑定时不指定作用域，隐式作用域 SESSION 会被使用。TiDB 优化器会将被绑定的 SQL 进行“标准化”处理，然后存储到系统表中。在处理 SQL 查询时，只要“标准化”后的 SQL 和系统表中某个被绑定的 SQL 语句一致，并且系统变量 [`tidb_use_plan_baselines`](/system-variables.md#tidb_use_plan_baselines-从-v40-版本开始引入) 的值为 `on`（其默认值为 `on`），即可使用相应的优化器 Hint。如果存在多个可匹配的执行计划，优化器会从中选择代价最小的一个进行绑定。
