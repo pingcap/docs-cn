@@ -29,7 +29,6 @@ Grafana 是一个开源的 metric 分析及可视化系统。TiDB 使用 Grafana
 ![Grafana monitored_groups](/media/grafana_monitored_groups.png)
 
 - {TiDB_Cluster_name}-Backup-Restore：备份恢复相关的监控项。
-- {TiDB_Cluster_name}-Binlog：TiDB Binlog 相关的监控项。
 - {TiDB_Cluster_name}-Blackbox_exporter：网络探活相关监控项。
 - {TiDB_Cluster_name}-Disk-Performance：磁盘性能相关监控项。
 - {TiDB_Cluster_name}-Kafka-Overview：Kafka 相关监控项。

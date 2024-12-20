@@ -15,7 +15,7 @@ RELEASE SAVEPOINT identifier
 
 > **警告：**
 >
-> `SAVEPOINT` 特性不支持与 TiDB Binlog 一起使用，也不支持在关闭 [`tidb_constraint_check_in_place_pessimistic`](/system-variables.md#tidb_constraint_check_in_place_pessimistic-从-v630-版本开始引入) 的悲观事务中使用。
+> `SAVEPOINT` 特性不支持在关闭 [`tidb_constraint_check_in_place_pessimistic`](/system-variables.md#tidb_constraint_check_in_place_pessimistic-从-v630-版本开始引入) 的悲观事务中使用。
 
 - `SAVEPOINT` 语句用于在当前事务中，设置一个指定名字保存点。如果已经存在相同名字的保存点，就删除已有的保存点并设置新的保存点。
 

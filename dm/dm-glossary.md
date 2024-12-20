@@ -8,6 +8,8 @@ aliases: ['/docs-cn/tidb-data-migration/dev/glossary/']
 
 本文档介绍 TiDB Data Migration (TiDB DM) 相关术语。
 
+关于 TiDB 相关的术语和定义，请参考 [TiDB 术语表](/glossary.md)。
+
 ## B
 
 ### Binlog

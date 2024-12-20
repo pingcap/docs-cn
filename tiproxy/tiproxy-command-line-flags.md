@@ -27,11 +27,41 @@ summary: 了解 TiProxy 的命令行参数。
 
 ## TiProxy Control
 
-本节介绍 TiProxy 客户端程序 `tiproxyctl` 的语法、选项和命令。
+本节介绍 TiProxy 客户端程序 `tiproxyctl` 的安装方式、语法、选项和命令。
+
+### 安装 TiProxy Control
+
+本节提供两种方式安装 TiProxy Control。
 
 > **注意：**
 >
 > TiProxy Control 主要用于诊断调试，不保证和 TiProxy 未来引入的新特性完全兼容。因此不推荐在应用程序开发或工具开发中利用 TiProxy Control 获取结果。
+
+#### 使用 TiUP 安装
+
+在安装 [TiUP](/tiup/tiup-overview.md) 之后，可以使用 `tiup install tiproxy` 命令下载并安装 TiProxy 和 TiProxy Control 的二进制程序。安装后，你可以通过 `tiup --binary tiproxy` 查看 TiProxy 的安装路径，TiProxy Control 与 TiProxy 位于同一目录。
+
+例如：
+
+```shell
+tiup install tiproxy
+# download https://tiup-mirrors.pingcap.com/tiproxy-v1.3.0-linux-amd64.tar.gz 22.51 MiB / 22.51 MiB 100.00% 13.99 MiB/s
+ls `tiup --binary tiproxy`ctl
+# /root/.tiup/components/tiproxy/v1.3.0/tiproxyctl
+```
+
+#### 从源代码编译安装
+
+编译环境要求：[Go](https://golang.org/) 1.21 或以上版本。
+
+编译步骤：在 [TiProxy 项目](https://github.com/pingcap/tiproxy)根目录，使用 `make` 命令进行编译，生成 `tiproxyctl`。
+
+```shell
+git clone https://github.com/pingcap/tiproxy.git
+cd tiproxy
+make
+ls bin/tiproxyctl
+```
 
 ### 语法
 
@@ -42,10 +72,22 @@ tiproxyctl [flags] [command]
 示例：
 
 ```
-tiproxyctl --curls 127.0.0.1:3080 config get
+tiproxyctl --host 127.0.0.1 --port 3080 config get
 ```
 
 ### 选项
+
+#### `--host`
+
++ 指定 TiProxy 服务器地址。
++ 类型：`string`
++ 默认值：`localhost`
+
+#### `--port`
+
++ 指定 TiProxy API 网关地址的端口号。
++ 类型：`int`
++ 默认值：`3080`
 
 #### `--log_encoder`
 
@@ -63,13 +105,6 @@ tiproxyctl --curls 127.0.0.1:3080 config get
 + 类型：`string`
 + 默认值：`"warn"`
 + 可以指定以下日志级别之一：`debug`、`info`、`warn`、`error`、`panic`。
-
-#### `--curls`
-
-+ 指定服务器地址。可以添加多个监听地址。
-+ 类型：逗号分隔的 ip:port 列表
-+ 默认值：`localhost:3080`
-+ 服务器 API 网关地址。
 
 #### `-k, --insecure`
 
@@ -120,4 +155,88 @@ level = 'warning'
 
 ```json
 {"config_checksum":3006078629}
+```
+
+#### `traffic capture`
+
+`tiproxyctl traffic capture` 用于捕获流量。
+
+选项：
+
+- `--output`：（必填）指定流量文件存放的目录。
+- `--duration`：（必填）指定捕获的时长。可选单位为 `m`（分钟）、`h`（小时）或 `d`（天）。例如 `--duration=1h` 指定捕获一小时的流量。
+
+示例：
+
+以下命令连接到 TiProxy 实例 `10.0.1.10:3080`，捕获一小时的流量，并保存到 TiProxy 实例的 `/tmp/traffic` 目录下：
+    
+```shell
+tiproxyctl traffic capture --host 10.0.1.10 --port 3080 --output="/tmp/traffic" --duration=1h
+```
+
+#### `traffic replay`
+
+`tiproxyctl traffic replay` 用于回放流量。
+
+选项：
+
+- `--username`：（必填）指定回放时使用的数据库用户名。
+- `--password`：（可选）指定以上用户名的密码，默认为空字符串 `""`。
+- `--input`：（必填）指定流量文件存放的目录。
+- `--speed`：（可选）指定回放速率的倍数，范围为 `[0.1, 10]`，默认为 1，表示原速回放。
+
+示例：
+
+以下命令通过用户名 `u1` 和密码 `123456` 连接到 TiProxy 实例 `10.0.1.10:3080`，并从 TiProxy 实例的 `/tmp/traffic` 目录下读取流量文件，以 2 倍速率回放流量：
+
+```shell
+tiproxyctl traffic replay --host 10.0.1.10 --port 3080 --username="u1" --password="123456" --input="/tmp/traffic" --speed=2
+```
+
+#### `traffic cancel`
+
+`tiproxyctl traffic cancel` 用于取消当前的捕获任务或回放任务。
+
+#### `traffic show`
+
+`tiproxyctl traffic show` 用于显示历史的捕获和回放任务。
+
+输出中的 `status` 字段表示任务的状态，其可能的值包括：
+
+- `done`：任务正常完成。
+- `canceled`：任务被取消，查看 `error` 字段了解原因。
+- `running`：任务正在运行，查看 `progress` 字段了解进度。
+
+输出示例：
+
+```json
+[
+  {
+    "type": "capture",
+    "start_time": "2024-09-01T14:30:40.99096+08:00",
+    "end_time": "2024-09-01T16:30:40.99096+08:00",
+    "duration": "2h",
+    "output": "/tmp/traffic",
+    "progress": "100%",
+    "status": "done"
+  },
+  {
+    "type": "capture",
+    "start_time": "2024-09-02T18:30:40.99096+08:00",
+    "end_time": "2024-09-02T19:00:40.99096+08:00",
+    "duration": "2h",
+    "output": "/tmp/traffic",
+    "progress": "25%",
+    "status": "canceled",
+    "error": "canceled manually"
+  },
+  {
+    "type": "capture",
+    "start_time": "2024-09-03T13:31:40.99096+08:00",
+    "duration": "2h",
+    "output": "/tmp/traffic",
+    "progress": "45%",
+    "status": "running"
+  }
+]
 ```

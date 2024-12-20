@@ -77,6 +77,31 @@ absent -> delete only -> write only -> write reorg -> public
 对于用户来说，新建的索引在 `public` 状态前都不可用。
 
 <SimpleTab>
+<div label="并发 DDL 框架（TiDB v6.2 及以上）">
+
+在 TiDB v6.2 之前，由于 Owner 每次只能执行一个同种类型（逻辑或物理）的 DDL 任务，这个约束较为严格，同时影响用户体验。
+
+当 DDL 任务之间不存在相关依赖时，并行执行并不会影响数据正确性和一致性。例如：用户 A 在 `T1` 表上增加一个索引，同时用户 B 从 `T2` 表删除一列。这两条 DDL 语句可以并行执行。
+
+为了提升 DDL 执行的用户体验，从 v6.2.0 起，TiDB 对原有的 DDL Owner 角色进行了升级，使得 Owner 能对 DDL 任务做相关性判断，判断逻辑如下：
+
++ 涉及同一张表的 DDL 相互阻塞。
++ `DROP DATABASE` 和数据库内所有对象的 DDL 互相阻塞。
++ 涉及不同表的加索引和列类型变更可以并发执行。
++ 逻辑 DDL 需要等待之前正在执行的逻辑 DDL 执行完才能执行。
++ 其他情况下 DDL 可以根据 Concurrent DDL 并行度可用情况确定是否可以执行。
+
+具体来说，TiDB 在 v6.2.0 中对 DDL 执行框架进行了如下升级：
+
++ DDL Owner 能够根据以上判断逻辑并行执行 DDL 任务。
++ 改善了 DDL Job 队列先入先出的问题。DDL Owner 不再选择当前队列最前面的 DDL Job，而是选择当前可以执行的 DDL Job。
++ 扩充了处理物理 DDL 的 worker 数量，使得能够并行地添加多个物理 DDL。
+
+    因为 TiDB 中所有支持的 DDL 任务都是以在线变更的方式来实现的，TiDB 通过 Owner 即可对新的 DDL Job 进行相关性判断，并根据相关性结果进行 DDL 任务的调度，从而使分布式数据库实现了和传统数据库中 DDL 并发相同的效果。
+
+并发 DDL 框架的实现进一步加强了 TiDB 中 DDL 语句的执行能力，并更符合商用数据库的使用习惯。
+
+</div>
 <div label="Online DDL 异步变更流程（TiDB v6.2.0 前）">
 
 在 v6.2.0 之前，TiDB SQL 层中处理异步 Schema 变更的基本流程如下：
@@ -102,31 +127,6 @@ absent -> delete only -> write only -> write reorg -> public
 - DDL Owner 每次只能执行一个同种类型（逻辑或物理）的 DDL 任务，这个约束较为严格。
 
 这些限制可能会导致一些“非预期”的 DDL 阻塞行为。具体可以参考 [SQL FAQ - DDL 执行](/faq/sql-faq.md#ddl-执行)。
-
-</div>
-<div label="并发 DDL 框架（TiDB v6.2 及以上）">
-
-在 TiDB v6.2 之前，由于 Owner 每次只能执行一个同种类型（逻辑或物理）的 DDL 任务，这个约束较为严格，同时影响用户体验。
-
-当 DDL 任务之间不存在相关依赖时，并行执行并不会影响数据正确性和一致性。例如：用户 A 在 `T1` 表上增加一个索引，同时用户 B 从 `T2` 表删除一列。这两条 DDL 语句可以并行执行。
-
-为了提升 DDL 执行的用户体验，从 v6.2.0 起，TiDB 对原有的 DDL Owner 角色进行了升级，使得 Owner 能对 DDL 任务做相关性判断，判断逻辑如下：
-
-+ 涉及同一张表的 DDL 相互阻塞。
-+ `DROP DATABASE` 和数据库内所有对象的 DDL 互相阻塞。
-+ 涉及不同表的加索引和列类型变更可以并发执行。
-+ 逻辑 DDL 需要等待之前正在执行的逻辑 DDL 执行完才能执行。
-+ 其他情况下 DDL 可以根据 Concurrent DDL 并行度可用情况确定是否可以执行。
-
-具体来说，TiDB 在 v6.2.0 中对 DDL 执行框架进行了如下升级：
-
-+ DDL Owner 能够根据以上判断逻辑并行执行 DDL 任务。
-+ 改善了 DDL Job 队列先入先出的问题。DDL Owner 不再选择当前队列最前面的 DDL Job，而是选择当前可以执行的 DDL Job。
-+ 扩充了处理物理 DDL 的 worker 数量，使得能够并行地添加多个物理 DDL。
-
-    因为 TiDB 中所有支持的 DDL 任务都是以在线变更的方式来实现的，TiDB 通过 Owner 即可对新的 DDL Job 进行相关性判断，并根据相关性结果进行 DDL 任务的调度，从而使分布式数据库实现了和传统数据库中 DDL 并发相同的效果。
-
-并发 DDL 框架的实现进一步加强了 TiDB 中 DDL 语句的执行能力，并更符合商用数据库的使用习惯。
 
 </div>
 </SimpleTab>

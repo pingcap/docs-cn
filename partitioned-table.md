@@ -262,7 +262,7 @@ INTERVAL (1 MONTH) FIRST PARTITION LESS THAN ('2000-01-01') LAST PARTITION LESS 
 
 ```sql
 CREATE TABLE `monthly_report_status` (
-  `report_id` int(11) NOT NULL,
+  `report_id` int NOT NULL,
   `report_status` varchar(20) NOT NULL,
   `report_date` date NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin
@@ -303,11 +303,6 @@ ALTER TABLE table_name LAST PARTITION LESS THAN (<expression>)
 - 如需使用 `INTERVAL` 语法进行 `RANGE COLUMNS` 分区，只能指定一个列为分区键，且该列的类型为整数 (`INTEGER`) 、日期 (`DATE`) 或日期时间 (`DATETIME`) 。
 
 ### List 分区
-
-在创建 List 分区表之前，请确保以下系统变量为其默认值 `ON`：
-
-- [`tidb_enable_list_partition`](/system-variables.md#tidb_enable_list_partition-从-v50-版本开始引入) 
-- [`tidb_enable_table_partition`](/system-variables.md#tidb_enable_table_partition) 
 
 List 分区和 Range 分区有很多相似的地方。不同之处主要在于 List 分区中，对于表的每个分区中包含的所有行，按分区表达式计算的值属于给定的数据集合。每个分区定义的数据集合有任意个值，但不能有重复的值，可通过 `PARTITION ... VALUES IN (...)` 子句对值进行定义。
 
@@ -1117,7 +1112,7 @@ SHOW CREATE TABLE\G
 *************************** 1. row ***************************
        Table: example
 Create Table: CREATE TABLE `example` (
-  `id` int(11) NOT NULL,
+  `id` int NOT NULL,
   `data` varchar(1024) DEFAULT NULL,
   PRIMARY KEY (`id`) /*T![clustered_index] CLUSTERED */
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin
@@ -1160,7 +1155,7 @@ ALTER TABLE members REMOVE PARTITIONING
 要对现有的非分区表进行分区或修改现有分区表的分区类型，你可以使用以下语句。该语句在执行时，将根据新的分区定义复制表中的所有行，并在线重新创建索引：
 
 ```sql
-ALTER TABLE <table_name> PARTITION BY <new partition type and definitions>
+ALTER TABLE <table_name> PARTITION BY <new partition type and definitions> [UPDATE INDEXES (<index name> {GLOBAL|LOCAL}[ , <index name> {GLOBAL|LOCAL}...])]
 ```
 
 示例：
@@ -1179,6 +1174,21 @@ ALTER TABLE member_level PARTITION BY RANGE(level)
  PARTITION pMid VALUES LESS THAN (3),
  PARTITION pHigh VALUES LESS THAN (7)
  PARTITION pMax VALUES LESS THAN (MAXVALUE));
+```
+
+对普通表进行分区或者对分区表进行重新分区时，可以根据需要将索引更新为全局索引或普通索引：
+
+```sql
+CREATE TABLE t1 (
+    col1 INT NOT NULL,
+    col2 DATE NOT NULL,
+    col3 INT NOT NULL,
+    col4 INT NOT NULL,
+    UNIQUE KEY uidx12(col1, col2),
+    UNIQUE KEY uidx3(col3)
+);
+
+ALTER TABLE t1 PARTITION BY HASH (col1) PARTITIONS 3 UPDATE INDEXES (uidx12 LOCAL, uidx3 GLOBAL);
 ```
 
 ## 分区裁剪
@@ -1293,6 +1303,7 @@ SELECT fname, lname, region_code, dob
 
     * [`UNIX_TIMESTAMP()`](/functions-and-operators/date-and-time-functions.md)
     * [`TO_DAYS()`](/functions-and-operators/date-and-time-functions.md)
+    * [`EXTRACT(<time unit> FROM <DATETIME/DATE/TIME column>)`](/functions-and-operators/date-and-time-functions.md)。对于 `DATE` 和 `DATETIME` 列，`YEAR` 和 `YEAR_MONTH` 时间单位被视为单调函数。对于 `TIME` 列，`HOUR`、`HOUR_MINUTE`、`HOUR_SECOND` 和 `HOUR_MICROSECOND` 被视为单调函数。请注意，`EXTRACT` 中不支持将 `WEEK` 作为分区裁剪的时间单位。
 
     例如，分区表达式是简单列的情况：
 
@@ -1463,7 +1474,7 @@ SELECT store_id, COUNT(department_id) AS c
 
 > **注意：**
 >
-> 该规则仅适用于系统变量 [`tidb_enable_global_index`](/system-variables.md#tidb_enable_global_index-从-v760-版本开始引入) 未开启的场景。当开启该变量时，分区表的唯一键可以不包含分区表达式中用到的所有列，详情参考[全局索引](#全局索引)。
+> 使用[全局索引](#全局索引)时，可以忽略该规则。
 
 这里所指的唯一也包含了主键，因为根据主键的定义，主键必须是唯一的。例如，下面这些建表语句就是无效的：
 
@@ -1543,7 +1554,7 @@ PARTITION BY HASH(col1 + col3)
 ```
 
 ```
-ERROR 1491 (HY000): A PRIMARY KEY must include all columns in the table's partitioning function
+ERROR 8264 (HY000): Global Index is needed for index 'col1', since the unique index is not including all partitioning columns, and GLOBAL is not given as IndexOption
 ```
 
 原因是 `col1` 和 `col3` 出现在分区键中，但是几个唯一键定义并没有完全包含它们，做如下修改后语句即为合法：
@@ -1671,28 +1682,22 @@ CREATE TABLE t (a varchar(20), b blob,
 ```
 
 ```sql
-ERROR 1503 (HY000): A UNIQUE INDEX must include all columns in the table's partitioning function
+ERROR 8264 (HY000): Global Index is needed for index 'a', since the unique index is not including all partitioning columns, and GLOBAL is not given as IndexOption
 ```
 
 #### 全局索引
 
 在引入全局索引 (Global Index) 之前，TiDB 会为每个分区创建一个局部索引 (Local Index)，即一个分区对应一个局部索引。这种索引方式存在一个[使用限制](#分区键主键和唯一键)：主键和唯一键必须包含所有的分区键，以确保数据的全局唯一性。此外，当查询的数据跨越多个分区时，TiDB 需要扫描各个分区的数据才能返回结果。
 
-为解决这些问题，TiDB 从 v8.3.0 开始引入全局索引。全局索引能覆盖整个表的数据，使得主键和唯一键在不包含分区键的情况下仍能保持全局唯一性。同时，全局索引可以在一次操作中访问多个分区的数据，显著提升了针对非分区键的查询性能。
+为解决这些问题，TiDB 从 v8.3.0 开始引入全局索引。全局索引能覆盖整个表的数据，使得主键和唯一键在不包含分区键的情况下仍能保持全局唯一性。此外，全局索引可以在一次操作中访问多个分区的索引数据，而无需对每个分区的本地索引逐一查找，显著提升了针对非分区键的查询性能。
 
-> **警告：**
->
-> 全局索引目前为实验特性，不建议在生产环境中使用。该功能可能会在未事先通知的情况下发生变化或删除。如果发现 bug，请在 GitHub 上提 [issue](https://github.com/pingcap/tidb/issues) 反馈。
-
-如果你需要创建的唯一索引**不包含分区表达式中使用的所有列**，可以通过启用 [`tidb_enable_global_index`](/system-variables.md#tidb_enable_global_index-从-v760-版本开始引入) 系统变量并在索引定义中添加 `GLOBAL` 关键字来实现。
+如果你需要为主键或唯一键创建全局索引，可以通过在索引定义中添加 `GLOBAL` 关键字来实现。
 
 > **注意：**
 >
 > 全局索引对分区管理有影响，执行 `DROP`、`TRUNCATE` 和 `REORGANIZE PARTITION` 操作也会触发表级别全局索引的更新，这意味着这些 DDL 操作只有在对应表的全局索引完全更新后才会返回结果。
 
 ```sql
-SET tidb_enable_global_index = ON;
-
 CREATE TABLE t1 (
     col1 INT NOT NULL,
     col2 DATE NOT NULL,
@@ -1710,8 +1715,6 @@ PARTITIONS 4;
 请注意，**聚簇索引**不能成为全局索引，如下例所示：
 
 ```sql
-SET tidb_enable_global_index = ON;
-
 CREATE TABLE t2 (
     col1 INT NOT NULL,
     col2 DATE NOT NULL,
@@ -1734,10 +1737,10 @@ SHOW CREATE TABLE t1\G
 ```
        Table: t1
 Create Table: CREATE TABLE `t1` (
-  `col1` int(11) NOT NULL,
+  `col1` int NOT NULL,
   `col2` date NOT NULL,
-  `col3` int(11) NOT NULL,
-  `col4` int(11) NOT NULL,
+  `col3` int NOT NULL,
+  `col4` int NOT NULL,
   UNIQUE KEY `uidx12` (`col1`,`col2`) /*T![global_index] GLOBAL */,
   UNIQUE KEY `uidx3` (`col3`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin
@@ -1774,6 +1777,7 @@ ALTER TABLE t1 PARTITION BY HASH (col1) PARTITIONS 3 UPDATE INDEXES (uidx12 LOCA
 - `GLOBAL` 和 `LOCAL` 关键字仅适用于分区表，对非分区表没有影响。即在非分区表中，全局索引和局部索引之间没有区别。
 - DDL 操作如 `ADD PARTITION`、`DROP PARTITION`、`TRUNCATE PARTITION`、`REORGANIZE PARTITION`、`SPLIT PARTITION` 和 `EXCHANGE PARTITION` 等也会触发对全局索引的更新，这些 DDL 的执行结果将在全局索引更新完成后才会返回。因此，这可能会延迟一些通常需要快速完成的 DDL 的操作，如数据归档操作（`EXCHANGE PARTITION`、`TRUNCATE PARTITION` 和 `DROP PARTITION`）。而如果没有全局索引，这些 DDL 操作可以立即执行完成。
 - 默认情况下，分区表的主键为聚簇索引，且必须包含分区键。如果要求主键不包含分区建，可以在建表时显式指定主键为非聚簇的全局索引，例如：`PRIMARY KEY(col1, col2) NONCLUSTERED GLOBAL`。
+- 如果在表达式列上添加了全局索引，或者一个全局索引同时也是前缀索引（如 `UNIQUE KEY idx_id_prefix (id(10)) GLOBAL`），你需要为该全局索引手动收集统计信息。
 
 ### 关于函数的分区限制
 
@@ -1905,13 +1909,9 @@ select * from t;
 5 rows in set (0.00 sec)
 ```
 
-环境变量 `tidb_enable_list_partition` 可以控制是否启用分区表功能。如果该变量设置为 `OFF`，则建表时会忽略分区信息，以普通表的方式建表。
-
-该变量仅作用于建表，已经建表之后再修改该变量无效。详见[系统变量和语法](/system-variables.md#tidb_enable_list_partition-从-v50-版本开始引入)。
-
 ### 动态裁剪模式
 
-TiDB 访问分区表有两种模式，`dynamic` 和 `static`。从 v6.3.0 开始，默认使用 `dynamic` 模式。但是注意，`dynamic` 模式仅在表级别汇总统计信息（即 GlobalStats）收集完成的情况下生效。如果选择了 `dynamic` 但 GlobalStats 未收集完成，TiDB 会仍采用 `static` 模式。关于 GlobalStats 更多信息，请参考[动态裁剪模式下的分区表统计信息](/statistics.md#收集动态裁剪模式下的分区表统计信息)。
+TiDB 访问分区表有两种模式，`dynamic` 和 `static`。从 v6.3.0 开始，默认使用 `dynamic` 模式。但是注意，`dynamic` 模式仅在表级别汇总统计信息（即分区表的全局统计信息）收集完成的情况下生效。如果在全局统计信息未收集完成的情况下启用 `dynamic` 动态裁剪模式，TiDB 仍然会维持 `static` 静态裁剪的状态，直到全局统计信息收集完成。关于全局统计信息的更多信息，请参考[动态裁剪模式下的分区表统计信息](/statistics.md#收集动态裁剪模式下的分区表统计信息)。
 
 {{< copyable "sql" >}}
 
@@ -2049,7 +2049,7 @@ mysql> create table t2 (id int, code int);
 Query OK, 0 rows affected (0.01 sec)
 
 mysql> set @@tidb_partition_prune_mode = 'static';
-Query OK, 0 rows affected (0.00 sec)
+Query OK, 0 rows affected, 1 warning (0.00 sec)
 
 mysql> explain select /*+ TIDB_INLJ(t1, t2) */ t1.* from t1, t2 where t2.code = 0 and t2.id = t1.id;
 +--------------------------------+----------+-----------+------------------------+------------------------------------------------+

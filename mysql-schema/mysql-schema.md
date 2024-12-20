@@ -50,7 +50,6 @@ aliases: ['/docs-cn/dev/system-tables/system-table-overview/','/docs-cn/dev/refe
 * `stats_fm_sketch` 统计信息列的直方图 FMSketch 分布
 * `analyze_options` 各个表默认的 `analyze` 参数
 * `column_stats_usage` 列统计信息的使用情况
-* `schema_index_usage` 索引的使用情况
 * `analyze_jobs` 正在执行的统计信息收集任务以及过去 7 天内的历史任务记录
 
 ## 执行计划相关系统表
@@ -81,13 +80,13 @@ aliases: ['/docs-cn/dev/system-tables/system-table-overview/','/docs-cn/dev/refe
 
 ## 元数据锁相关系统表
 
-* `tidb_mdl_view` 元数据锁的视图，可以用于查看当前阻塞的 DDL 的相关信息
+* `tidb_mdl_view` 元数据锁的视图，可以用于查看当前阻塞的 DDL 的相关信息，另请参阅[元数据锁](/metadata-lock.md)
 * `tidb_mdl_info` TiDB 内部用于同步各节点的元数据锁的相关信息
 
 ## DDL 相关系统表
 
 * `tidb_ddl_history` 记录了 DDL 语句的历史记录
-* `tidb_ddl_jobs` TiDB 内部存放的正在执行的 DDL 的元数据，用于执行 DDL
+* `tidb_ddl_job` TiDB 内部存放的正在执行的 DDL 的元数据，用于执行 DDL
 * `tidb_ddl_reorg` TiDB 内部存放的正在执行的物理 DDL（例如加索引）的元数据，用于执行物理 DDL
 
 ## 分布式执行框架相关系统表

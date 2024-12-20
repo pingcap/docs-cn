@@ -68,9 +68,11 @@ delta_index_cache_size = 0
     ## DTFile 储存文件格式
     ## * format_version = 2 v6.0.0 以前版本的默认文件格式
     ## * format_version = 3 v6.0.0 及 v6.1.x 版本的默认文件格式，具有更完善的检验功能
-    ## * format_version = 4 v7.3.0 及以前版本的默认文件格式，优化了写放大问题，同时减少了后台线程消耗。
-    ## * format_version = 5 v7.4.0 及以后版本的默认文件格式（从 v7.3.0 开始引入），该格式可以合并小文件从而减少了物理文件数量。
-    # format_version = 5
+    ## * format_version = 4 v6.2.0 ~ v7.3.0 的默认文件格式，优化了写放大问题，同时减少了后台线程消耗。
+    ## * format_version = 5 v7.4.0 ~ v8.3.0 的默认文件格式（从 v7.3.0 开始引入），该格式可以合并小文件从而减少了物理文件数量。
+    ## * format_version = 6 从 v8.4.0 开始引入，部分支持了向量索引的构建与存储。
+    ## * format_version = 7 v8.4.0 及以后版本的默认文件格式 (从 v8.4.0 开始引入)，该格式用于支持向量索引的构建与存储。
+    # format_version = 7
 
     [storage.main]
     ## 用于存储主要的数据，该目录列表中的数据占总数据的 90% 以上。
@@ -193,6 +195,10 @@ delta_index_cache_size = 0
     ## 在 v6.2.0 以及后续版本，强烈建议保留默认值 `false`，不要将其修改为 `true`。具体请参考已知问题 [#5576](https://github.com/pingcap/tiflash/issues/5576)。
     # dt_enable_logical_split = false
 
+    ## `max_threads` 指的是执行一个 MMP Task 的内部线程并发度，默认值为 0。当值为 0 时，TiFlash 执行 MMP Task 的线程并发度为 CPU 核数。
+    ## 该参数只有在系统变量 `tidb_max_tiflash_threads` 设置为 -1 时才会生效。
+    max_threads = 0
+
     ## 单次查询过程中，节点对中间数据的内存限制
     ## 设置为整数时，单位为 byte，比如 34359738368 表示 32 GiB 的内存限制，0 表示无限制
     ## 设置为 [0.0, 1.0) 之间的浮点数时，指节点总内存的比值，比如 0.8 表示总内存的 80%，0.0 表示无限制
@@ -243,6 +249,15 @@ delta_index_cache_size = 0
 
     ## 从 v7.4.0 引入，表示是否开启 TiFlash 资源管控功能。当设置为 true 时，TiFlash 会使用 Pipeline Model 执行模型。
     enable_resource_control = true
+
+    ## 从 v6.0.0 引入，用于 MinTSO 调度器，表示一个资源组中最多可使用的线程数量，默认值为 5000。关于 MinTSO 调度器，详见 https://docs.pingcap.com/zh/tidb/dev/tiflash-mintso-scheduler
+    task_scheduler_thread_soft_limit = 5000
+
+    ## 从 v6.0.0 引入，用于 MinTSO 调度器，表示全局最多可使用的线程数量，默认值为 10000。关于 MinTSO 调度器，详见 https://docs.pingcap.com/zh/tidb/dev/tiflash-mintso-scheduler
+    task_scheduler_thread_hard_limit = 10000
+
+    ## 从 v6.4.0 引入，用于 MinTSO 调度器，表示一个 TiFlash 实例中最多可同时运行的查询数量，默认值为 0，即两倍的 vCPU 数量。关于 MinTSO 调度器，详见 https://docs.pingcap.com/zh/tidb/dev/tiflash-mintso-scheduler
+    task_scheduler_active_set_soft_limit = 0
 
 ## 安全相关配置，从 v4.0.5 开始生效
 [security]

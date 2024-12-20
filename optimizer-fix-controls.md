@@ -36,7 +36,7 @@ SET SESSION tidb_opt_fix_control = '44262:ON,44389:ON';
 
 - 默认值：`OFF`
 - 可选值：`ON`、`OFF`
-- 是否允许在缺少 [GlobalStats](/statistics.md#收集动态裁剪模式下的分区表统计信息) 的情况下使用[动态裁剪模式](/partitioned-table.md#动态裁剪模式)访问分区表。
+- 在分区表缺少[全局统计信息](/statistics.md#收集动态裁剪模式下的分区表统计信息)的情况下，是否允许使用[动态裁剪模式](/partitioned-table.md#动态裁剪模式)访问该表。
 
 ### [`44389`](https://github.com/pingcap/tidb/issues/44389) <span class="version-mark">从 v6.5.3 和 v7.2.0 版本开始引入</span>
 
@@ -71,9 +71,46 @@ SET SESSION tidb_opt_fix_control = '44262:ON,44389:ON';
 - 此开关控制优化器进行启发式访问路径选择的阈值。当某个访问路径（如 `Index_A`）的估算行数远小于其他访问路径时（默认为 `1000` 倍），优化器会跳过代价比较直接选择 `Index_A`。
 - `0` 表示关闭此启发式访问路径选择策略。
 
+### [`45798`](https://github.com/pingcap/tidb/issues/45798) <span class="version-mark">从 v7.5.0 版本开始引入</span>
+
+- 默认值：`ON`
+- 可选值：`ON`、`OFF`
+- 此开关控制是否允许 Plan Cache 缓存访问[生成列](/generated-columns.md)的执行计划。
+
+### [`46177`](https://github.com/pingcap/tidb/issues/46177) <span class="version-mark">从 v6.5.6、v7.1.3 和 v7.5.0 版本开始引入</span>
+
+- 默认值：`ON`。在 v8.5.0 之前，默认值为 `OFF`。
+- 可选值：`ON`、`OFF`
+- 此开关控制优化器在查询优化的过程中，找到非强制执行计划后，是否继续查找强制执行计划进行查询优化。
+
+### [`47400`](https://github.com/pingcap/tidb/issues/47400) <span class="version-mark">从 v8.4.0 版本开始引入</span>
+
+- 默认值：`ON`
+- 可选值：`ON`、`OFF`
+- 由于查询计划中每个步骤符合条件的行数难以精确估算，优化器有可能会为 `estRows` 估算出一个较小的值。此开关控制是否限制 `estRows` 的最小值。
+- `ON`：将 `estRows` 的最小值限制为 1。这是 v8.4.0 中引入的新行为，与 Oracle 和 DB2 等数据库一致。
+- `OFF`：不限制 `estRows` 的最小值，与 v8.4.0 之前版本的行为保持一致。此时，`estRows` 可能为 0。
+
+### [`52592`](https://github.com/pingcap/tidb/issues/52592) <span class="version-mark">从 v8.4.0 版本开始引入</span>
+
+- 默认值：`OFF`
+- 可选值：`ON`、`OFF`
+- 此开关控制是否禁用 `Point Get` 和 `Batch Point Get` 算子执行查询。默认值 `OFF` 代表允许通过 `Point Get` 和 `Batch Point Get` 执行查询。如果设置为 `ON`，优化器会禁用 `Point Get` 和 `Batch Point Get`，强制选择 Coprocessor 执行查询。
+- `Point Get` 和 `Batch Point Get` 不支持列投影（即无法只返回部分列的数据），这意味着在某些场景中其执行效率可能低于 Coprocessor，此时设置为 `ON` 可以提高查询性能。以下是推荐设置为 `ON` 的场景：
+
+    - 查询具有多列的宽表，且仅涉及表中的少量列。
+    - 查询包含大型 JSON 值的表，且不需要检索整个 JSON 列，或仅需提取 JSON 列中的小部分数据。
+
 ### [`52869`](https://github.com/pingcap/tidb/issues/52869) <span class="version-mark">从 v8.1.0 版本开始引入</span>
 
 - 默认值：`OFF`
 - 可选值：`ON`、`OFF`
 - 如果查询有除了全表扫描以外的单索引扫描方式可以选择，优化器不会自动选择索引合并。详情请参考[用 EXPLAIN 查看索引合并的 SQL 执行计划](/explain-index-merge.md#示例)中的**注意**部分。
 - 打开此开关后，这个限制会被解除。解除此限制能让优化器在更多查询中自动选择索引合并，但也有可能忽略其他更好的执行计划，因此建议在解除此限制前针对实际场景进行充分测试，确保不会带来性能回退。
+
+### [`54337`](https://github.com/pingcap/tidb/issues/54337) <span class="version-mark">从 v8.2.0 版本开始引入</span>
+
+- 默认值：`OFF`
+- 可选值：`ON`、`OFF`
+- 目前，TiDB 优化器在处理每个子句包含范围列表的复杂连接条件时，推导索引范围存在一定限制。此问题可以通过应用通用范围交集来解决。
+- 打开此开关后，这个限制会被解除。解除此限制能让优化器处理复杂范围交集。然而，对于子句数量较多（超过 10 个）的条件，可能会有略微增加优化时间的风险。

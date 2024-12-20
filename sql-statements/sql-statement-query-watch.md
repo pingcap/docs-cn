@@ -12,18 +12,28 @@ summary: TiDB 数据库中 QUERY WATCH 的使用概况。
 ```ebnf+diagram
 AddQueryWatchStmt ::=
     "QUERY" "WATCH" "ADD" QueryWatchOptionList
+
 QueryWatchOptionList ::=
     QueryWatchOption
 |   QueryWatchOptionList QueryWatchOption
 |   QueryWatchOptionList ',' QueryWatchOption
+
 QueryWatchOption ::=
     "RESOURCE" "GROUP" ResourceGroupName
 |   "RESOURCE" "GROUP" UserVariable
 |   "ACTION" EqOpt ResourceGroupRunawayActionOption
 |   QueryWatchTextOption
+
 ResourceGroupName ::=
     Identifier
 |   "DEFAULT"
+
+ResourceGroupRunawayActionOption ::=
+    DRYRUN
+|   COOLDOWN
+|   KILL
+|   "SWITCH_GROUP" '(' ResourceGroupName ')'
+
 QueryWatchTextOption ::=
     "SQL" "DIGEST" SimpleExpr
 |   "PLAN" "DIGEST" SimpleExpr

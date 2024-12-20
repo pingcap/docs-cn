@@ -42,13 +42,14 @@ tiup br backup full \
 
 以上命令中：
 
-- `--backupts`：快照对应的物理时间点。如果该快照的数据已经被 GC，那么 `tiup br backup` 命令会报错退出；如果没有指定该参数，br 命令行工具会选取备份开始的时间点所对应的快照。
+- `--backupts`：快照对应的物理时间点，格式可以是 [TSO](/tso.md) 或者时间戳，例如 `400036290571534337` 或者 `2024-06-28 13:30:00 +08:00`。如果该快照的数据已经被 GC，那么 `tiup br backup` 命令会报错退出；如果没有指定该参数，br 命令行工具会选取备份开始的时间点所对应的快照。
 - `--ratelimit`：**每个 TiKV** 执行备份任务的速度上限（单位 MiB/s）。
 - `--log-file`：备份日志写入的目标文件。
 
 > **注意：**
 >
-> BR 工具已支持自适应 GC，会自动将 `backupTS`（默认是最新的 PD timestamp）注册到 PD 的 `safePoint`，保证 TiDB 的 GC Safe Point 在备份期间不会向前移动，即可避免手动设置 GC。
+> - 从 v8.5.0 起，在进行全量备份时，BR 工具默认不计算表级别的 checksum (`--checksum=false`) 以提升备份性能。
+> - BR 工具已支持自适应 GC，会自动将 `backupTS`（默认是最新的 PD timestamp）注册到 PD 的 `safePoint`，保证 TiDB 的 GC Safe Point 在备份期间不会向前移动，即可避免手动设置 GC。
 
 备份期间终端会显示进度条，效果如下。当进度条达到 100% 时，表示备份完成。
 
@@ -134,10 +135,6 @@ tiup br restore full \
 备份恢复功能在备份时，将统计信息通过 JSON 格式存储在 `backupmeta` 文件中。在恢复时，将 JSON 格式的统计信息导入到集群中。详情请参考 [LOAD STATS](/sql-statements/sql-statement-load-stats.md)。
 
 ## 备份数据加密
-
-> **警告：**
->
-> 当前该功能为实验特性，不建议在生产环境中使用。
 
 br 命令行工具支持在备份端，或备份到 Amazon S3 的时候在[存储服务端进行备份数据加密](/br/backup-and-restore-storages.md#amazon-s3-存储服务端加密备份数据)，你可以根据自己情况选择其中一种使用。
 
@@ -277,10 +274,6 @@ ADMIN RELOAD BINDINGS;
 ```
 
 ## 恢复加密的快照备份数据
-
-> **警告：**
->
-> 当前该功能为实验特性，不建议在生产环境中使用。
 
 在对数据做加密备份后，恢复操作需传入相应的解密参数，解密算法或密钥不正确则无法恢复，解密参数和加密参数一致即可。解密恢复的示例如下：
 

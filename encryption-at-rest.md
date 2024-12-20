@@ -92,10 +92,6 @@ data-key-rotation-period = "168h" # 7 days
 
 TiKV 支持 AWS、Google Cloud 和 Azure 这三个平台的 KMS 加密。你可以根据服务部署的平台，选择其中之一配置 KMS 加密。
 
-> **警告：**
->
-> 通过 Google Cloud KMS 指定主密钥目前为实验特性，不建议在生产环境中使用。该功能可能会在未事先通知的情况下发生变化或删除。如果发现 bug，请在 GitHub 上提 [issue](https://github.com/pingcap/tidb/issues) 反馈。
-
 <SimpleTab>
 
 <div label="AWS KMS">

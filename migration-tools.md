@@ -52,7 +52,7 @@ TiDB 提供了丰富的数据迁移相关的工具，用于全量迁移、增量
 | **上游** | TiDB |
 | **下游（输出文件）** | SST，backup.meta 文件，backup.lock 文件 |
 | **主要优势** | <ul><li>适用于向另一个 TiDB 迁移数据。</li><li>支持数据冷备份到外部存储，可以用于灾备恢复。</li></ul> |
-| **使用限制** | <ul><li>BR 恢复到 TiCDC / Drainer 的上游集群时，恢复数据无法由 TiCDC / Drainer 同步到下游。</li><li>BR 只支持在 `mysql.tidb` 表中 `new_collation_enabled` 开关值相同的集群之间进行操作。</li></ul> |
+| **使用限制** | <ul><li>BR 恢复到 TiCDC 的上游集群时，恢复数据无法由 TiCDC 同步到下游。</li><li>BR 只支持在 `mysql.tidb` 表中 `new_collation_enabled` 开关值相同的集群之间进行操作。</li></ul> |
 
 ## [sync-diff-inspector](/sync-diff-inspector/sync-diff-inspector-overview.md)
 

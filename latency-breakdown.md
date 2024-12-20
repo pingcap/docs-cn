@@ -104,7 +104,7 @@ tidb_session_execute_duration_seconds{type="general"} =
     read value duration
 ```
 
-`pd_client_cmd_handle_cmds_duration_seconds{type="wait"}` 代表从 PD 中读取 [TSO](/glossary.md#tso) 的耗时。在 auto-commit 事务模式下从聚簇索引主键或者快照中读取时，该数值为 0。
+`pd_client_cmd_handle_cmds_duration_seconds{type="wait"}` 代表从 PD 中读取 [TSO](/tso.md) 的耗时。在 auto-commit 事务模式下从聚簇索引主键或者快照中读取时，该数值为 0。
 
 `read handle duration` 和 `read value duration` 使用如下方式计算：
 

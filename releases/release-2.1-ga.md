@@ -1,7 +1,7 @@
 ---
 title: TiDB 2.1 GA Release Notes
 aliases: ['/docs-cn/dev/releases/release-2.1-ga/','/docs-cn/dev/releases/2.1ga/']
-summary: TiDB 2.1 GA 版本发布，对系统稳定性、性能、兼容性、易用性做了大量改进。包括 SQL 优化器、SQL 执行引擎、统计信息、表达式、Server、DDL、兼容性等方面的优化。PD (Placement Driver) 进行了可用性优化、调度器优化、API 及运维工具优化、监控和性能优化。TiKV 进行了 Coprocessor、Transaction、Raftstore、存储引擎和 tikv-ctl 方面的优化。同时支持全量数据快速导入工具 TiDB Lightning 和新版本 TiDB Binlog。升级兼容性说明包括存储引擎更新不支持回退至 2.0.x 或更旧版本，以及升级前需要确认集群中是否存在正在运行中的 DDL 操作。
+summary: TiDB 2.1 GA 版本发布，对系统稳定性、性能、兼容性、易用性做了大量改进。包括 SQL 优化器、SQL 执行引擎、统计信息、表达式、Server、DDL、兼容性等方面的优化。PD (Placement Driver) 进行了可用性优化、调度器优化、API 及运维工具优化、监控和性能优化。TiKV 进行了 Coprocessor、Transaction、Raftstore、存储引擎和 tikv-ctl 方面的优化。同时支持全量数据快速导入工具 TiDB Lightning。升级兼容性说明包括存储引擎更新不支持回退至 2.0.x 或更旧版本，以及升级前需要确认集群中是否存在正在运行中的 DDL 操作。
 ---
 
 # TiDB 2.1 GA Release Notes

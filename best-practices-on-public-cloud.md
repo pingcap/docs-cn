@@ -193,14 +193,14 @@ set global tidb_tso_client_batch_max_wait_time = 2; # 默认值为 0
 
 #### 调整 TiKV 配置
 
-为了减少 Region 数量并降低系统的心跳开销，建议将 TiKV 配置中的 Region 大小从 `96MB` 增加到 `256MB`。
+为了减少 Region 数量并降低系统的心跳开销，可以参考[调整 Region 大小](/best-practices/massive-regions-best-practices.md#方法六调整-region-大小)将 TiKV 配置中的 Region 大小适度调大
 
 ```
 [coprocessor]
-  region-split-size = "256MB"
+  region-split-size = "288MiB"
 ```
 
-## 调整后的效果
+### 调整后的效果
 
 调整后的效果如下：
 
