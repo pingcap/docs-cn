@@ -30,8 +30,8 @@ TiDB 版本：8.1.2
     - (dup): release-8.4.0.md > 改进提升> TiKV - 优化空表和小 Region 场景下 Region Merge 的速度 [#17376](https://github.com/tikv/tikv/issues/17376) @[LykxSassinator](https://github.com/LykxSassinator)
     - (dup): release-7.5.4.md > 改进提升> TiKV - 优化 TiKV 的 `DiskFull` 检测使之与 RaftEngine 的配置项 `spill-dir` 兼容，确保该特性能够稳定运行 [#17356](https://github.com/tikv/tikv/issues/17356) @[LykxSassinator](https://github.com/LykxSassinator)
     - (dup): release-7.5.4.md > 改进提升> TiKV - 优化存在大量 DELETE 版本时 RocksDB 的 compaction 触发机制，以加快磁盘空间回收 [#17269](https://github.com/tikv/tikv/issues/17269) @[AndreMouche](https://github.com/AndreMouche)
-    - 新增对配置项 `import.num-threads` 的在线修改支持 [#17807](https://github.com/tikv/tikv/issues/17807) @[RidRisR](https://github.com/RidRisR)
-    - 更新备份恢复侧的 aws 相关 sdk(rusoto) 到官方 sdk. [#12371](https://github.com/tikv/tikv/issues/12371)@[akoshchiy](https://github.com/akoshchiy)
+    - 支持在线修改 `import.num-threads` 配置项 [#17807](https://github.com/tikv/tikv/issues/17807) @[RidRisR](https://github.com/RidRisR)
+    - 将备份恢复侧用于访问 Amazon S3 等外部存储的 SDK 更新为 AWS Rust SDK，替换掉原有的 Rusoto 库，以更好地兼容 AWS 的 IMDSv2 以及 EKS Pod Identity 等新特性 [#12371](https://github.com/tikv/tikv/issues/12371)@[akoshchiy](https://github.com/akoshchiy)
 
 + PD
 
