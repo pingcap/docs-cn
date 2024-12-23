@@ -153,18 +153,24 @@ tiup playground scale-in --pid 86526
 
 ## 部署 TiProxy
 
-TiUP 从 v1.14.1 开始支持 [TiProxy](/tiproxy/tiproxy-overview.md)。TiProxy 是 PingCAP 的官方代理组件，它放置在客户端和 TiDB server 之间，为 TiDB 提供负载均衡、连接保持、服务发现等功能。
+[TiProxy](/tiproxy/tiproxy-overview.md) 是 PingCAP 的官方代理组件，位于客户端和 TiDB server 之间，为 TiDB 提供负载均衡、连接保持、服务发现等功能。
 
 `tiup playground` 命令行中与 TiProxy 相关的选项说明：
 
 ```bash
 Flags:
       --tiproxy int                设置集群中 TiProxy 节点的数量。如果未指定，不会部署 TiProxy。
-      --tiproxy.binpath string     指定 TiProxy 的二进制文件位置
-      --tiproxy.config string      指定 TiProxy 的配置文件
-      --tiproxy.host host          Playground 的 TiProxy host。如果没有提供，TiProxy 会使用 host 参数作为它的 host
-      --tiproxy.port int           Playground 的 TiProxy 端口。如果没有提供，TiProxy 会使用 6000 作为它的端口
-      --tiproxy.timeout int        TiProxy 最长等待超时时间，单位为秒，若配置为 0，则永不超时（默认为 60）。
+      --tiproxy.binpath string     指定 TiProxy 的二进制文件位置。
+      --tiproxy.config string      指定 TiProxy 的配置文件。
+      --tiproxy.host host          Playground 的 TiProxy host。如果没有提供，TiProxy 会使用 host 参数作为它的 host。
+      --tiproxy.port int           Playground 的 TiProxy 端口。如果没有提供，TiProxy 会使用 6000 作为它的端口。
+      --tiproxy.timeout int        TiProxy 最长等待超时时间，单位为秒。若配置为 0，则永不超时（默认为 60）。
+```
+
+从 TiUP v1.14.1 版本起，你可以通过 TiUP Playground 为集群部署 TiProxy。例如：
+
+```shell
+tiup playground v8.5.0 --tiproxy 1
 ```
 
 关于 TiProxy 的部署和使用详情，请参考 [TiProxy 文档](/tiproxy/tiproxy-overview.md#安装和使用)。
