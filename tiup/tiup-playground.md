@@ -151,6 +151,28 @@ tiup playground scale-out --db 2
 tiup playground scale-in --pid 86526
 ```
 
+## 部署 TiProxy
+
+[TiProxy](/tiproxy/tiproxy-overview.md) 是 PingCAP 的官方代理组件，它放置在客户端和 TiDB server 之间，为 TiDB 提供负载均衡、连接保持、服务发现等功能。你可以通过 TiUP Playground 为集群部署 TiProxy。
+
+```shell
+tiup playground v8.5.0 --tiproxy 1
+```
+
+命令行参数说明：
+
+```bash
+Flags:
+      --tiproxy int                设置集群中 TiProxy 节点的数量
+      --tiproxy.binpath string     指定 TiProxy 的二进制文件位置
+      --tiproxy.config string      指定 TiProxy 的配置文件
+      --tiproxy.host host          Playground 的 TiProxy host。如果没有提供，TiProxy 会使用 host 参数作为它的 host
+      --tiproxy.port int           Playground 的 TiProxy 端口。如果没有提供，TiProxy 会使用 6000 作为它的端口
+      --tiproxy.timeout int        TiProxy 最长等待超时时间，单位为秒，若配置为 0，则永不超时（默认为 60）。
+```
+
+关于 TiProxy 的更多信息，请参考 [TiProxy 文档](/tiproxy/tiproxy-overview.md)。
+
 ## 部署 PD 微服务
 
 从 v8.2.0 起，[PD 微服务](/pd-microservices.md)（实验特性）支持通过 TiUP 部署。你可以通过 TiUP Playground 为集群部署 `tso` 微服务和 `scheduling` 微服务。
