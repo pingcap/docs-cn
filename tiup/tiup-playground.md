@@ -159,8 +159,10 @@ tiup playground scale-in --pid 86526
 1. 创建 `tidb.toml` 文件，并添加如下配置：
 
     ```
-    graceful-wait-before-shutdown=15 # 该配置项的值要大于应用程序最长的事务的持续时间，否则 TiDB server 下线时客户端可能断连
+    graceful-wait-before-shutdown=15
     ```
+
+    该配置项用于控制关闭服务器时 TiDB 等待的秒数，避免缩容集群时客户端断连。
 
 2. 启动 TiDB 集群：
 
