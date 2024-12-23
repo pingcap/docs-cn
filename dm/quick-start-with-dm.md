@@ -31,7 +31,7 @@ summary: 了解如何快速上手部署试用 TiDB Data Migration 工具。
     {{< copyable "shell-regular" >}}
 
     ```shell
-    tiup dm deploy dm-test 8.5.0 topology.yaml -p
+    tiup dm deploy dm-test 7.1.6 topology.yaml -p
     ```
 
 ## 第 2 步：准备数据源
