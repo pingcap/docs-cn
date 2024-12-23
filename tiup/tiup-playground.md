@@ -161,7 +161,7 @@ tiup playground scale-in --pid 86526
 tiup playground v8.5.0 --tiproxy 1
 ```
 
-`tiup playground` 命令行中与 TiProxy 相关的说明：
+`tiup playground` 命令行中与 TiProxy 相关的选项说明：
 
 ```bash
 Flags:
