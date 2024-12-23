@@ -167,7 +167,7 @@ Flags:
       --tiproxy.timeout int        TiProxy 最长等待超时时间，单位为秒。若配置为 0，则永不超时（默认为 60）。
 ```
 
-从 TiUP v1.14.1 版本起，你可以通过 TiUP Playground 为集群部署 TiProxy。例如：
+从 TiUP v1.14.1 起，你可以通过 TiUP Playground 为集群部署 TiProxy。例如：
 
 ```shell
 tiup playground v8.5.0 --tiproxy 1
