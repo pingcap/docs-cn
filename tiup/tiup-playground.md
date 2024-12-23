@@ -165,7 +165,7 @@ tiup playground v8.5.0 --tiproxy 1
 
 ```bash
 Flags:
-      --tiproxy int                设置集群中 TiProxy 节点的数量
+      --tiproxy int                设置集群中 TiProxy 节点的数量。如果未指定，不会部署 TiProxy。
       --tiproxy.binpath string     指定 TiProxy 的二进制文件位置
       --tiproxy.config string      指定 TiProxy 的配置文件
       --tiproxy.host host          Playground 的 TiProxy host。如果没有提供，TiProxy 会使用 host 参数作为它的 host
