@@ -151,8 +151,6 @@ tiup playground scale-out --db 2
 ```shell
 tiup playground scale-in --pid 86526
 ```
-<<<<<<< HEAD
-=======
 
 ## 部署 TiProxy
 
@@ -177,17 +175,3 @@ Flags:
       --tiproxy.port int           Playground 的 TiProxy 端口。如果没有提供，TiProxy 会使用 6000 作为它的端口。
       --tiproxy.timeout int        TiProxy 最长等待超时时间，单位为秒。若配置为 0，则永不超时（默认为 60）。
 ```
-
-## 部署 PD 微服务
-
-从 v8.2.0 起，[PD 微服务](/pd-microservices.md)（实验特性）支持通过 TiUP 部署。你可以通过 TiUP Playground 为集群部署 `tso` 微服务和 `scheduling` 微服务。
-
-```shell
-tiup playground v8.5.0 --pd.mode ms --pd 3 --tso 2 --scheduling 2
-```
-
-- `--pd.mode`：当指定 `--pd.mode` 为 `ms` 时，代表启用 PD 微服务模式。
-- `--pd <num>`：指定 PD 微服务 API 的数量，需要大于等于 `1`。
-- `--tso <num>`：指定要部署的 `tso` 微服务的实例数量。
-- `--scheduling <num>`：指定要部署的 `scheduling` 微服务的实例数量。
->>>>>>> 0ba523fb46 (tiup-playground: add info about TiProxy (#19357))
