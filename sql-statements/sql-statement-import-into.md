@@ -31,10 +31,23 @@ summary: TiDB 数据库中 IMPORT INTO 的使用概况。
 - 一个导入任务只支持导入数据到一张目标表中。如需导入数据到多张目标表，需要在一张目标表导入完成后，再新建一个任务导入下一张目标表。
 - TiDB 集群升级期间不支持使用该语句。
 - 当使用[全局排序](/tidb-global-sort.md)导入数据时，单行数据的总长度不能超过 32 MiB。
+<<<<<<< HEAD
 - 当使用全局排序导入数据时，如果 TiDB 集群在导入任务尚未完成时被删除了，Amazon S3 上可能会残留用于全局排序的临时数据。该场景需要手动删除这些数据，以免增加 S3 存储成本。
 - 所需导入的数据不能存在主键或非空唯一索引冲突的记录，否则会导致任务失败。
 - 对于基于分布式执行框架调度的 `IMPORT INTO` 任务，如该任务已运行，不支持被调度到新的 TiDB 节点上执行。当前在执行导入任务的 TiDB 节点如果重启，该 TiDB 节点不会再执行该导入任务，而是被转移到其他 TiDB 节点继续执行。如果是导入 TiDB 节点本地的数据，任务异常后不会被 failover 到其他 TiDB 节点。
 - 已知问题：在 TiDB 节点配置文件中的 PD 地址与当前集群 PD 拓扑不一致时（如曾经缩容过 PD，但没有对应更新 TiDB 配置文件或者更新该文件后未重启 TiDB 节点），执行 `IMPORT INTO` 会失败。
+=======
+- 未开启 [TiDB 分布式执行框架](/tidb-distributed-execution-framework.md)时创建的所有 `IMPORT INTO` 任务会直接在提交任务的节点上运行，后续即使开启了分布式执行框架，这些任务也不会被调度到其它 TiDB 节点上执行。开启分布式执行框架后，新创建的 `IMPORT INTO` 任务如果导入的是 S3 或 GCS 中的数据，则会自动调度或者 failover 到其它 TiDB 节点执行。
+
+### `IMPORT INTO ... FROM SELECT` 使用限制
+
+- `IMPORT INTO ... FROM SELECT` 仅能在当前用户连接的 TiDB 节点执行，在导入完成前会阻塞当前连接。
+- `IMPORT INTO ... FROM SELECT` 仅支持配置 `THREAD` 和 `DISABLE_PRECHECK` 这两个[导入选项](#withoptions)。
+- `IMPORT INTO ... FROM SELECT` 不支持使用 `SHOW IMPORT JOB(s)` 和 `CANCEL IMPORT JOB <job-id>` 等任务管理语句。
+- TiDB [临时目录](/tidb-configuration-file.md#temp-dir-从-v630-版本开始引入)需要有足够的空间来存储整个 `SELECT` 语句查询结果（暂不支持设置 `DISK_QUOTA` 选项）。
+- 不支持使用 [`tidb_snapshot`](/read-historical-data.md) 导入历史数据。
+- 由于 `SELECT` 子句的语法较为复杂，`IMPORT INTO` 的 `WITH` 参数可能会与其冲突，导致解析时报错，例如 `GROUP BY ... [WITH ROLLUP]`。建议先对复杂的 `SELECT` 语句创建视图，然后使用 `IMPORT INTO ... FROM SELECT * FROM view_name` 进行导入。或者，可以通过括号明确 `SELECT` 子句的范围，例如 `IMPORT INTO ... FROM (SELECT ...) WITH ...`。
+>>>>>>> f0e7d9f145 (Improve usage of `IMPORT FROM SELECT` (#19261))
 
 ## 导入前准备
 
