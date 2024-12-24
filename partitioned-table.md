@@ -1774,9 +1774,14 @@ ALTER TABLE t1 PARTITION BY HASH (col1) PARTITIONS 3 UPDATE INDEXES (uidx12 LOCA
 
 - 如果索引定义中未显式指定 `GLOBAL` 关键字，TiDB 将默认创建局部索引 (Local Index)。
 - `GLOBAL` 和 `LOCAL` 关键字仅适用于分区表，对非分区表没有影响。即在非分区表中，全局索引和局部索引之间没有区别。
-- 当前仅支持创建唯一全局索引 (Unique Global Index)，如果需要对非唯一的列创建全局索引，该全局索引需要包含分区建形成复合索引，且非唯一的列排在前面。例如，非唯一的列为 `col3`，分区建为 `col1`，则可以通过执行 `ALTER TABLE ... ADD UNIQUE KEY(col3,col1) GLOBAL;` 为非唯一列 `col3` 创建全局索引。
-- DDL 操作如 `ADD PARTITION`、`DROP PARTITION`、`TRUNCATE PARTITION`、`REORGANIZE PARTITION`，`EXCHANGE PARTITION` 等也会触发对全局索引的更新，这些 DDL 的执行结果将在全局索引更新完成后才会返回。因此，这可能会延迟一些通常需要快速完成的 DDL 的操作，如数据归档操作（`TRUNCATE PARTITION` 和 `DROP PARTITION`）。而如果没有全局索引，这些 DDL 操作可以立即执行完成。
-- 创建了全局索引的表不支持 `EXCHANGE PARTITION`。
+- 当前仅支持为唯一列创建全局索引 (Unique Global Index)。如果需要对非唯一列创建全局索引，该索引必须包含分区键并形成复合索引，且非唯一列应位于分区键之前。例如，如果非唯一列是 `col3` 而分区键是 `col1`，可以通过执行以下SQL语句为 `col3` 创建全局索引：
+  
+    ```sql
+    ALTER TABLE ... ADD UNIQUE INDEX(col3, col1) GLOBAL;
+    ```
+
+- 以下 DDL 操作会触发全局索引的更新：`ADD PARTITION`、`DROP PARTITION`、`TRUNCATE PARTITION`、`REORGANIZE PARTITION` 和 `EXCHANGE PARTITION`。这些 DDL 操作将在全局索引更新完成后才返回结果。因此，这可能会延长通常需要快速完成的 DDL 操作的执行时间，例如数据归档操作（`TRUNCATE PARTITION` 和 `DROP PARTITION`）。如果没有全局索引，这些 DDL 操作可以立即执行完成。
+- 包含全局索引的表不支持 `EXCHANGE PARTITION`。
 - 默认情况下，分区表的主键为聚簇索引，且必须包含分区键。如果要求主键不包含分区建，可以在建表时显式指定主键为非聚簇的全局索引，例如：`PRIMARY KEY(col1, col2) NONCLUSTERED GLOBAL`。
 - 如果在表达式列上添加了全局索引，或者一个全局索引同时也是前缀索引（如 `UNIQUE KEY idx_id_prefix (id(10)) GLOBAL`），你需要为该全局索引手动收集统计信息。
 
