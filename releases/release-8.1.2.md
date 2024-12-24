@@ -134,7 +134,6 @@ TiDB 版本：8.1.2
 
         - 修复日志可能打印加密信息的问题 [#57585](https://github.com/pingcap/tidb/issues/57585) @[kennytm](https://github.com/kennytm)
         - 修复基于 AWS EBS 的快照备份在准备阶段可能失败导致备份卡住的问题 [#52049](https://github.com/pingcap/tidb/issues/52049) @[YuJuncen](https://github.com/YuJuncen)
-        - 修复 BR 在快照备份的 Fine Grained 阶段如果一直连接不上 TiKV 会出现无限重试的问题 [#57449](https://github.com/pingcap/tidb/issues/57449) @[RidRisR](https://github.com/RidRisR)
         - 修复备份恢复的断点路径在一些外部存储中不兼容的问题 [#55265](https://github.com/pingcap/tidb/issues/55265) @[Leavrth](https://github.com/Leavrth)
         - 升级 `k8s.io/api` 库的版本以修复潜在的安全漏洞 [#57790](https://github.com/pingcap/tidb/issues/57790) @[BornChanger](https://github.com/BornChanger)
         - 修复当集群存在大量表但实际数据量较小时，PITR 数据恢复任务可能出现 `Information schema is out of date` 报错的问题 [#57743](https://github.com/pingcap/tidb/issues/57743) @[Tristan1900](https://github.com/Tristan1900)
