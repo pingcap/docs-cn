@@ -82,7 +82,21 @@ TiCDC 会把一个 DDL Event 编码成如下 Canal-JSON 格式：
 | mysqlType | object | 当 isDdl 为 false 时，记录每一列数据类型在 MySQL 中的类型表示                |
 | data      | Object | 当 isDdl 为 false 时，记录每一列的名字及其数据值                             |
 | old       | Object | 仅当该条消息由 Update 类型事件产生时，记录每一列的名字，和 Update 之前的数据值  |
-| _tidb     | Object | TiDB 扩展字段，仅当 `enable-tidb-extension` 为 true 时才会存在。其中的 `commitTs` 值为造成 Row 变更的事务的 TSO  |
+| _tidb     | Object | TiDB 扩展字段，仅当 `enable-tidb-extension` 为 true 时才会存在。 |
+
+
+_tidb 即 TiDB 扩展字段中的子字段说明：
+
+| 字段                | 类型   | 说明                                                                      | 
+|:-------------------|:-------|:-------------------------------------------------------------------------|
+| commitTs           | Number | 产生事件变更的事务提交使用的 TSO。 设置于 DDL 和 DML 事件              |
+| watermarkTs        | Number | TiCDC 周期性发送的 watermark ts，其类型也是 TSO。设置于 Watermark 事件|
+| tableId            | Number | 事件所属表的 ID。设置于 DML 事件 |
+| partitionId        | Number | 事件如果来自于分区表，消息会携带该字段，表示所属分区的 ID。设置于 DML 事件 |
+| onlyHandleKey      | Bool   | 当前事件仅包含 handle key 部分内容。设置于 DML 事件 |
+| claimCheckLocation | String | 当前事件含有 claim check location。设置于 DML 事件 | 
+
+tableId 和 partitionId 字段从 xxx 版本开始引入，主要目的是为了应对分区表场景下，消费者可以通过 partitionId 得知当前事件所属的表分区，以及关联的分区表。
 
 ### DML Event
 
