@@ -186,5 +186,3 @@ tiup playground scale-in --pid 86526
     ```
 
 关于 TiProxy 的部署和使用详情，请参考[安装和使用 TiProxy](/tiproxy/tiproxy-overview.md#安装和使用)。
-
-如需使用 TiProxy 客户端程序 `tiproxyctl`，请参考[安装 TiProxy Control](/tiproxy/tiproxy-command-line-flags.md#安装-tiproxy-control)。
