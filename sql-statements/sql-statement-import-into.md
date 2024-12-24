@@ -44,6 +44,7 @@ summary: TiDB 数据库中 IMPORT INTO 的使用概况。
 - `IMPORT INTO ... FROM SELECT` 不支持使用 `SHOW IMPORT JOB(s)` 和 `CANCEL IMPORT JOB <job-id>` 等任务管理语句。
 - TiDB [临时目录](/tidb-configuration-file.md#temp-dir-从-v630-版本开始引入)需要有足够的空间来存储整个 `SELECT` 语句查询结果（暂不支持设置 `DISK_QUOTA` 选项）。
 - 不支持使用 [`tidb_snapshot`](/read-historical-data.md) 导入历史数据。
+- 由于 `SELECT` 子句的语法较为复杂，`IMPORT INTO` 的 `WITH` 参数可能会与其冲突，导致解析时报错，例如 `GROUP BY ... [WITH ROLLUP]`。建议先对复杂的 `SELECT` 语句创建视图，然后使用 `IMPORT INTO ... FROM SELECT * FROM view_name` 进行导入。或者，可以通过括号明确 `SELECT` 子句的范围，例如 `IMPORT INTO ... FROM (SELECT ...) WITH ...`。
 
 ## 导入前准备
 
