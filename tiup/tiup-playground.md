@@ -169,7 +169,7 @@ tiup playground scale-in --pid 86526
 2. 启动 TiDB 集群：
 
     ```shell
-    tiup playground v8.5.0 --tiproxy 1 --db.config tidb.toml
+    tiup playground v8.1.1 --tiproxy 1 --db.config tidb.toml
     ```
 
     `tiup playground` 命令行中与 TiProxy 相关的选项说明：
