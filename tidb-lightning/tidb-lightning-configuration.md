@@ -483,21 +483,35 @@ max-allowed-packet = 67_108_864
 #  * "preferred"   - 与 "skip-verify" 相同，但是如果服务器不支持 TLS，则会退回到未加密的连接
 # tls = ""
 # 指定证书和密钥用于 TLS 连接 MySQL。
-# 默认为 [security] 部分的副本。
-# [tidb.security]
-# CA 的公钥证书。设置为空字符串可禁用 SQL 的 TLS。
-# ca-path = "/path/to/ca.pem"
-# 该服务的公钥证书。默认为 `security.cert-path` 的副本
-# cert-path = "/path/to/lightning.pem"
-# 此服务的私钥。默认为 `security.key-path` 的副本
-# key-path = "/path/to/lightning.key"
 
-# 对于物理导入模式，数据导入完成后，TiDB Lightning 可以自动执行 Checksum 和 Analyze 操作。
-# 在生产环境中，建议总是开启 Checksum 和 Analyze。
-# 执行的顺序为：Checksum -> Analyze。
-# 注意：对于逻辑导入模式, 无须执行这两个阶段，因此在实际运行时总是会直接跳过。
+#### tidb.security
+
+默认为 [`security`](#security) 部分的副本。
+
+##### `ca-path`
+
+- CA 的公钥证书。设置为空字符串可禁用 SQL 的 TLS。
+
+<!-- 示例值：`"/path/to/ca.pem"` -->
+
+##### `cert-path`
+
+- 该服务的公钥证书。默认为 [`security.cert-path`](#cert-path) 的副本
+
+<!-- 示例值：`"/path/to/lightning.pem"` -->
+
+##### `key-path`
+
+- 此服务的私钥。默认为 [`security.key-path`](#key-path) 的副本
+
+<!-- 示例值：`"/path/to/lightning.key"` -->
 
 #### post-restore
+
+- 对于物理导入模式，数据导入完成后，TiDB Lightning 可以自动执行 Checksum 和 Analyze 操作。
+- 在生产环境中，建议总是开启 Checksum 和 Analyze。
+- 执行的顺序为：Checksum -> Analyze。
+- 注意：对于逻辑导入模式，无须执行这两个阶段，因此在实际运行时总是会直接跳过。
 
 ##### `checksum`
 
