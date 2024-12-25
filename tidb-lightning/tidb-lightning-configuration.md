@@ -346,62 +346,77 @@ TiDB Lightning 的配置文件分为“全局”和“任务”两种类别，�
 - 在逻辑导入模式下，该参数控制是否使用预处理语句和语句缓存来提高性能。
 - 默认值：`false`
 
-[mydumper]
-# 设置文件读取的区块大小，确保该值比数据源的最长字符串长。
-read-block-size = "64KiB" # 默认值
+#### mydumper
 
-# 引擎文件需按顺序导入。由于并行处理，多个数据引擎几乎在同时被导入，
-# 这样形成的处理队列会造成资源浪费。因此，为了合理分配资源，TiDB Lightning
-# 稍微增大了前几个区块的大小。该参数也决定了比例系数，即在完全并发下
-# “导入”和“写入”过程的持续时间比。这个值可以通过计算 1 GiB 大小的
-# 单张表的（导入时长/写入时长）得到。在日志文件中可以看到精确的时间。
-# 如果“导入”更快，区块大小的差异就会更小；比值为 0 时则说明区块大小一致。
-# 取值范围为（0 <= batch-import-ratio < 1）。
-batch-import-ratio = 0.75
+##### `read-block-size`
 
-# 本地源数据目录或外部存储 URI。关于外部存储 URI 详情可参考 https://docs.pingcap.com/zh/tidb/v6.6/backup-and-restore-storages#uri-%E6%A0%BC%E5%BC%8F。
-data-source-dir = "/data/my_database"
+- 设置文件读取的区块大小，确保该值比数据源的最长字符串长。
+- 默认值：`"64KiB"`
 
-# 指定包含 `CREATE TABLE` 语句的表结构文件的字符集。只支持下列选项：
-#  - utf8mb4：表结构文件必须使用 UTF-8 编码，否则会报错。
-#  - gb18030：表结构文件必须使用 GB-18030 编码，否则会报错。
-#  - auto：自动判断文件编码是 UTF-8 还是 GB-18030，两者皆非则会报错（默认）。
-#  - latin1：源数据文件使用 MySQL latin1 字符集编码（也被称为 Code Page 1252）。
-#  - binary：不尝试转换编码。
-character-set = "auto"
+##### `batch-import-ratio`
 
-# 指定源数据文件的字符集，Lightning 会在导入过程中将源文件从指定的字符集转换为 UTF-8 编码。
-# 该配置项目前仅用于指定 CSV 文件的字符集。只支持下列选项：
-#  - utf8mb4：源数据文件使用 UTF-8 编码。
-#  - GB18030：源数据文件使用 GB-18030 编码。
-#  - GBK：源数据文件使用 GBK 编码（GBK 编码是对 GB-2312 字符集的拓展，也被称为 Code Page 936）。
-#  - latin1：源数据文件使用 MySQL latin1 字符集编码（也被称为 Code Page 1252）。
-#  - binary：不尝试转换编码（默认）。
-# 留空此配置将默认使用 "binary"，即不尝试转换编码。
-# 需要注意的是，Lightning 不会对源数据文件的字符集做假定，仅会根据此配置对数据进行转码并导入。
-# 如果字符集设置与源数据文件的实际编码不符，可能会导致导入失败、导入缺失或导入数据乱码。
-data-character-set = "binary"
-# 指定在源数据文件的字符集转换过程中，出现不兼容字符时的替换字符。
-# 此项不可与字段分隔符、引用界定符和换行符号重复。
-# 默认值为 "\uFFFD"，即 UTF-8 编码中的 "error" Rune 或 Unicode replacement character。
-# 改变默认值可能会导致潜在的源数据文件解析性能下降。
-data-invalid-char-replace = "\uFFFD"
+- 引擎文件需按顺序导入。由于并行处理，多个数据引擎几乎在同时被导入，这样形成的处理队列会造成资源浪费。因此，为了合理分配资源，TiDB Lightning 稍微增大了前几个区块的大小。该参数也决定了比例系数，即在完全并发下“导入”和“写入”过程的持续时间比。这个值可以通过计算 1 GiB 大小的 单张表的（导入时长/写入时长）得到。在日志文件中可以看到精确的时间。
+- 如果“导入”更快，区块大小的差异就会更小；比值为 0 时则说明区块大小一致。
+- 取值范围：`[0, 1)`
 
-# “严格”格式的导入数据可加快处理速度。
-# strict-format = true 要求：
-# 在 CSV 文件的所有记录中，每条数据记录的值不可包含字符换行符（U+000A 和 U+000D，即 \r 和 \n）
-# 甚至被引号包裹的字符换行符都不可包含，即换行符只可用来分隔行。
-# 导入数据源为严格格式时，TiDB Lightning 会快速定位大文件的分割位置进行并行处理。
-# 但是如果输入数据为非严格格式，可能会将一条完整的数据分割成两部分，导致结果出错。
-# 为保证数据安全而非追求处理速度，默认值为 false。
-strict-format = false
+<!-- 示例值：`0.75` -->
 
-# 如果 strict-format = true，TiDB Lightning 会将 CSV 大文件分割为多个文件块进行并行处理。
-# max-region-size 是分割后每个文件块的最大大小。
-# max-region-size = "256MiB" # 默认值
+##### `data-source-dir`
 
-# 只导入与该通配符规则相匹配的表。详情见相应章节。
-filter = ['*.*', '!mysql.*', '!sys.*', '!INFORMATION_SCHEMA.*', '!PERFORMANCE_SCHEMA.*', '!METRICS_SCHEMA.*', '!INSPECTION_SCHEMA.*']
+- 本地源数据目录或外部存储 URI。关于外部存储 URI 详情可参考 [URI 格式](/br/backup-and-restore-storages.md#uri-格式)。
+
+<!-- 示例值：`"/data/my_database"` -->
+
+##### `character-set`
+
+- 指定包含 `CREATE TABLE` 语句的表结构文件的字符集。
+- 可选值：
+  - `"utf8mb4"`：表结构文件必须使用 UTF-8 编码，否则会报错
+  - `"gb18030"`：表结构文件必须使用 GB-18030 编码，否则会报错
+  - `"auto"`：自动判断文件编码是 UTF-8 还是 GB-18030，两者皆非则会报错
+  - `"latin1"`：源数据文件使用 MySQL latin1 字符集编码（也被称为 Code Page 1252）
+  - `"binary"`：不尝试转换编码
+- 默认值：`"auto"`
+
+##### `data-character-set`
+
+- 指定源数据文件的字符集，Lightning 会在导入过程中将源文件从指定的字符集转换为 UTF-8 编码。
+- 该配置项目前仅用于指定 CSV 文件的字符集。留空此配置将默认使用 `"binary"`，即不尝试转换编码。
+- Lightning 不会对源数据文件的字符集做假定，仅会根据此配置对数据进行转码并导入。
+- 如果字符集设置与源数据文件的实际编码不符，可能会导致导入失败、导入缺失或导入数据乱码。
+- 可选值：
+    - `"utf8mb4"`：源数据文件使用 UTF-8 编码
+    - `"GB18030"`：源数据文件使用 GB-18030 编码
+    - `"GBK"`：源数据文件使用 GBK 编码（GBK 编码是对 GB-2312 字符集的拓展，也被称为 Code Page 936）
+    - `"latin1"`：源数据文件使用 MySQL latin1 字符集编码（也被称为 Code Page 1252）
+    - `"binary"`：不尝试转换编码
+- 默认值：`"binary"`
+
+##### `data-invalid-char-replace`
+
+- 指定在源数据文件的字符集转换过程中，出现不兼容字符时的替换字符。
+- 此项不可与字段分隔符、引用界定符和换行符号重复。改变默认值可能会导致潜在的源数据文件解析性能下降。
+- 默认值：`"\uFFFD"`，即 UTF-8 编码中的 "error" Rune 或 Unicode replacement character
+
+##### `strict-format`
+
+- “严格”格式的导入数据可加快处理速度。为保证数据安全而非追求处理速度，默认值为 `false`。
+- 默认值：`false`
+- 当设置为 `true` 时的要求：
+    - 在 CSV 文件的所有记录中，每条数据记录的值不可包含字符换行符（`U+000A` 和 `U+000D`，即 `\r` 和 `\n`）甚至被引号包裹的字符换行符都不可包含，即换行符只可用来分隔行。
+    - 导入数据源为严格格式时，TiDB Lightning 会快速定位大文件的分割位置进行并行处理。
+    - 但是如果输入数据为非严格格式，可能会将一条完整的数据分割成两部分，导致结果出错。
+
+##### `max-region-size`
+
+- 如果 [`strict-format`](#strict-format) 设置为 `true`，TiDB Lightning 会将 CSV 大文件分割为多个文件块进行并行处理。`max-region-size` 是分割后每个文件块的最大大小。
+- 默认值：`"256MiB"`
+
+##### `filter`
+
+- 只导入与该通配符规则相匹配的表。
+
+<!-- 示例值：`['*.*', '!mysql.*', '!sys.*', '!INFORMATION_SCHEMA.*', '!PERFORMANCE_SCHEMA.*', '!METRICS_SCHEMA.*', '!INSPECTION_SCHEMA.*']` -->
 
 #### mydumper.csv
 
