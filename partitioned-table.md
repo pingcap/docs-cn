@@ -1774,7 +1774,7 @@ ALTER TABLE t1 PARTITION BY HASH (col1) PARTITIONS 3 UPDATE INDEXES (uidx12 LOCA
 
 - 如果索引定义中未显式指定 `GLOBAL` 关键字，TiDB 将默认创建局部索引 (Local Index)。
 - `GLOBAL` 和 `LOCAL` 关键字仅适用于分区表，对非分区表没有影响。即在非分区表中，全局索引和局部索引之间没有区别。
-- 当前仅支持为唯一列创建全局索引 (Unique Global Index)。如果需要对非唯一列创建全局索引，该索引必须包含分区键并形成复合索引，且非唯一列应位于分区键之前。例如，如果非唯一列是 `col3` 而分区键是 `col1`，可以通过执行以下 SQL 语句为 `col3` 创建全局索引：
+- 当前仅支持为唯一列创建全局索引 (Unique Global Index)。如果需要对非唯一列创建全局索引，可以通过包含主键形成复合索引。例如，如果非唯一列是 `col3` 而主键是 `col1`，可以通过执行以下 SQL 语句为 `col3` 创建全局索引：
   
     ```sql
     ALTER TABLE ... ADD UNIQUE INDEX(col3, col1) GLOBAL;
