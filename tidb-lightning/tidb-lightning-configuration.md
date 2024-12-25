@@ -109,14 +109,27 @@ TiDB Lightning 的配置文件分为“全局”和“任务”两种类别，�
 - TiDB Lightning 在导入完成后会删除此 schema，因此不要使用已存在的库名配置该参数。
 - 默认值：`"lightning_metadata"`
 
-[security]
-# 指定集群中用于 TLS 连接的证书和密钥。
-# CA 的公钥证书。如果留空，则禁用 TLS。
-# ca-path = "/path/to/ca.pem"
-# 此服务的公钥证书。
-# cert-path = "/path/to/lightning.pem"
-# 该服务的密钥。
-# key-path = "/path/to/lightning.key"
+#### security
+
+指定集群中用于 TLS 连接的证书和密钥。
+
+##### `ca-path`
+
+- CA 的公钥证书。如果留空，则禁用 TLS。
+
+<!-- 示例值：`"/path/to/ca.pem"` -->
+
+##### `cert-path`
+
+- 此服务的公钥证书。
+
+<!-- 示例值：`"/path/to/lightning.pem"` -->
+
+##### `key-path`
+
+- 该服务的密钥。
+
+<!-- 示例值：`"/path/to/lightning.key"` -->
 
 [checkpoint]
 # 是否启用断点续传。
