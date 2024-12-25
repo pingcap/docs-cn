@@ -503,6 +503,26 @@ TiKV 配置文件比命令行参数支持更多的选项。你可以在 [etc/con
 > - 由于 API V1 和 API V2 底层存储格式不同，因此**仅当** TiKV 中只有 TiDB 数据时，可以平滑启用或关闭 API V2。其他情况下，需要新建集群，并使用 [TiKV Backup & Restore](https://tikv.org/docs/latest/concepts/explore-tikv-features/backup-restore-cn/) 工具进行数据迁移。
 > - 启用 API V2 后，**不能**将 TiKV 集群回退到 v6.1.0 之前的版本，否则可能导致数据损坏。
 
+### `max-ts-drift-allowance`
+
++ 读写请求更新 max-ts 时允许超过 TiKV 缓存的 PD TSO 的最大值。
++ 如果尝试更新的 max-ts 超过 TiKV 缓存的 PD TSO + allowance，认为该请求的来源不合法，会执行 [`action-on-invalid-max-ts`](#action-on-invalid-max-ts) 规定的行为。
++ 默认值：60s
+
+### `max-ts-sync-interval`
+
++ TiKV 更新 PD TSO 缓存的时间间隔。该缓存用于检查 max-ts 更新的合法性。
++ 默认值：15s
+
+### `action-on-invalid-max-ts`
+
++ 当 TiKV 认为更新的 max-ts 不合法时，TiKV 会执行的操作。
++ 可选值：
+    + `"panic"`：TiKV 会 panic。
+    + `"error"`：TiKV 会将错误返回。
+    + `"log"`：TiKV 会打印 error 日志并继续执行。
++ 默认值：`"panic"`
+
 ## storage.block-cache
 
 RocksDB 多个 CF 之间共享 block cache 的配置选项。
