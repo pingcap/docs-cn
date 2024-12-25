@@ -435,12 +435,24 @@ backslash-escape = true
 # 如果有行以分隔符结尾，删除尾部分隔符。
 trim-last-separator = false
 
-# [[mydumper.files]]
-# 解析 AWS Aurora parquet 文件所需的表达式
-# pattern = '(?i)^(?:[^/]*/)*([a-z0-9_]+)\.([a-z0-9_]+)/(?:[^/]*/)*(?:[a-z0-9\-_.]+\.(parquet))$'
-# schema = '$1'
-# table = '$2'
-# type = '$3'
+#### mydumper.files
+
+##### `pattern`
+
+- 解析 AWS Aurora parquet 文件所需的表达式。
+- 示例值：`'(?i)^(?:[^/]*/)*([a-z0-9_]+)\.([a-z0-9_]+)/(?:[^/]*/)*(?:[a-z0-9\-_.]+\.(parquet))$'`
+
+##### `schema`
+
+- 示例值：`'$1'`
+
+##### `table`
+
+- 示例值：`'$2'`
+
+##### `type`
+
+- 示例值：`'$3'`
 
 #### tidb
 
