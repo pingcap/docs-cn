@@ -131,29 +131,46 @@ TiDB Lightning 的配置文件分为“全局”和“任务”两种类别，�
 
 <!-- 示例值：`"/path/to/lightning.key"` -->
 
-[checkpoint]
-# 是否启用断点续传。
-# 导入数据时，TiDB Lightning 会记录当前表导入的进度。
-# 所以即使 TiDB Lightning 或其他组件异常退出，在重启时也可以避免重复再导入已完成的数据。
-enable = true
-# 存储断点的数据库名称。
-schema = "tidb_lightning_checkpoint"
-# 存储断点的方式。
-#  - file：存放在本地文件系统。
-#  - mysql：存放在兼容 MySQL 的数据库服务器。
-driver = "file"
+#### checkpoint
 
-# dsn 是数据源名称 (data source name)，表示断点的存放位置。
-# 若 driver = "file"，则 dsn 为断点信息存放的文件路径。
-# 若不设置该路径，则默认存储路径为“/tmp/CHECKPOINT_SCHEMA.pb”。
-# 若 driver = "mysql"，则 dsn 为“用户:密码@tcp(地址:端口)/”格式的 URL。
-# 若不设置该 URL，则默认会使用 [tidb] 部分指定的 TiDB 服务器来存储断点。
-# 为减少目标 TiDB 集群的压力，建议指定另一台兼容 MySQL 的数据库服务器来存储断点。
-# dsn = "/tmp/tidb_lightning_checkpoint.pb"
+##### `enable`
 
-# 所有数据导入成功后是否保留断点。设置为 false 时为删除断点。
-# 保留断点有利于进行调试，但会泄漏关于数据源的元数据。
-# keep-after-success = false
+- 是否启用断点续传。
+- 导入数据时，TiDB Lightning 会记录当前表导入的进度，所以即使 TiDB Lightning 或其他组件异常退出，在重启时也可以避免重复再导入已完成的数据。
+
+<!-- 示例值：`true` -->
+
+##### `schema`
+
+- 存储断点的数据库名称。
+
+<!-- 示例值：`"tidb_lightning_checkpoint"` -->
+
+##### `driver`
+
+- 存储断点的方式。
+- 可选值：
+
+    - `"file"`：存放在本地文件系统
+    - `"mysql"`：存放在兼容 MySQL 的数据库服务器
+
+##### `dsn`
+
+- 数据源名称 (data source name)，表示断点的存放位置。
+- 若 `driver = "file"`，则 dsn 为断点信息存放的文件路径。
+- 若不设置该路径，则默认存储路径为 `/tmp/CHECKPOINT_SCHEMA.pb`。
+- 若 `driver = "mysql"`，则 dsn 为“用户:密码@tcp(地址:端口)/”格式的 URL。
+- 若不设置该 URL，则默认会使用 `[tidb]` 部分指定的 TiDB 服务器来存储断点。
+- 为减少目标 TiDB 集群的压力，建议指定另一台兼容 MySQL 的数据库服务器来存储断点。
+
+<!-- 示例值：`"/tmp/tidb_lightning_checkpoint.pb"` -->
+
+##### `keep-after-success`
+
+- 所有数据导入成功后是否保留断点。设置为 false 时为删除断点。
+- 保留断点有利于进行调试，但会泄漏关于数据源的元数据。
+
+<!-- 示例值：`false` -->
 
 [conflict]
 # 从 v7.3.0 开始引入的新版冲突数据处理策略。默认值为 ""。从 v8.0.0 开始，TiDB Lightning 优化了物理导入模式和逻辑导入模式的冲突策略。
