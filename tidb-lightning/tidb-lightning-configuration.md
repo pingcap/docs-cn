@@ -442,27 +442,67 @@ trim-last-separator = false
 # table = '$2'
 # type = '$3'
 
-[tidb]
-# 目标集群的信息。tidb-server 的地址，填一个即可。
-host = "172.16.31.1"
-port = 4000
-user = "root"
-# 设置连接 TiDB 的密码，可为明文或 Base64 编码。
-password = ""
-# 表结构信息从 TiDB 的“status-port”获取。
-status-port = 10080
-# pd-server 的地址，从 v7.6.0 开始支持设置多个地址。
-pd-addr = "172.16.31.4:2379,56.78.90.12:3456"
-# tidb-lightning 引用了 TiDB 库，并生成产生一些日志。
-# 设置 TiDB 库的日志等级。
-log-level = "error"
+#### tidb
 
-# 设置 TiDB 会话变量，提升 Checksum 和 Analyze 的速度。注意，如果将 checksum-via-sql 设置为 "true"，则会通过 TiDB 执行 ADMIN CHECKSUM TABLE <table> SQL 语句来进行 Checksum 操作。在这种情况下，以下参数设置 `distsql-scan-concurrency = 15` 和 `checksum-table-concurrency = 2` 将不会生效。
-# 各参数定义可参阅 “控制 Analyze 并发度文档” (https://docs.pingcap.com/zh/tidb/stable/statistics#%E6%8E%A7%E5%88%B6-analyze-%E5%B9%B6%E5%8F%91%E5%BA%A6)。
-build-stats-concurrency = 20
-distsql-scan-concurrency = 15
-index-serial-scan-concurrency = 20
-checksum-table-concurrency = 2
+##### `host`
+
+- 目标集群的信息。tidb-server 的地址，填一个即可。
+
+<!-- 示例值：`"172.16.31.1"` -->
+
+##### `port`
+
+- 示例值：`4000`
+
+##### `user`
+
+- 示例值：`"root"`
+
+##### `password`
+
+- 设置连接 TiDB 的密码，可为明文或 Base64 编码。
+
+##### `status-port`
+
+- 表结构信息从 TiDB 的 `status-port` 获取。
+
+<!-- 示例值：`10080` -->
+
+##### `pd-addr`
+
+- pd-server 的地址，从 v7.6.0 开始支持设置多个地址。
+
+<!-- 示例值：`"172.16.31.4:2379,56.78.90.12:3456"` -->
+
+##### `log-level`
+
+- 设置 TiDB 库的日志等级。tidb-lightning 引用了 TiDB 库，并生成产生一些日志。
+- 示例值：`"error"`
+
+##### `build-stats-concurrency`
+
+- 设置 TiDB 会话变量，提升 Checksum 和 Analyze 的速度。详情参考[控制 `ANALYZE` 并发度](/statistics.md#控制-analyze-并发度)。
+
+<!-- 示例值：`20` -->
+
+##### `distsql-scan-concurrency`
+
+- 设置 TiDB 会话变量，提升 Checksum 和 Analyze 的速度。详情参考[控制 `ANALYZE` 并发度](/statistics.md#控制-analyze-并发度)。
+- 如果将 [`checksum-via-sql`](#checksum-via-sql) 设置为 `"true"`，则会通过 TiDB 执行 `ADMIN CHECKSUM TABLE <table>` SQL 语句来进行 Checksum 操作。在这种情况下，`distsql-scan-concurrency` 参数设置不会生效
+
+<!-- 示例值：`15` -->
+
+##### `index-serial-scan-concurrency`
+
+- 设置 TiDB 会话变量，提升 Checksum 和 Analyze 的速度。详情参考[控制 `ANALYZE` 并发度](/statistics.md#控制-analyze-并发度)。
+- 示例值：`20`
+
+##### `checksum-table-concurrency`
+
+- 设置 TiDB 会话变量，提升 Checksum 和 Analyze 的速度。详情参考[控制 `ANALYZE` 并发度](/statistics.md#控制-analyze-并发度)。
+- 如果将 [`checksum-via-sql`](#checksum-via-sql) 设置为 `"true"`，则会通过 TiDB 执行 `ADMIN CHECKSUM TABLE <table>` SQL 语句来进行 Checksum 操作。在这种情况下，`checksum-table-concurrency` 参数设置不会生效
+
+<!-- 示例值：`2` -->
 
 #### tidb.session-vars
 
