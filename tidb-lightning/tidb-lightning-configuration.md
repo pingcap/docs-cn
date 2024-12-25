@@ -14,29 +14,44 @@ TiDB Lightning 的配置文件分为“全局”和“任务”两种类别，�
 
 ### TiDB Lightning 全局配置
 
-```toml
-### tidb-lightning 全局配置
+#### lightning
 
-[lightning]
-# 用于进度展示 web 界面、拉取 Prometheus 监控项、暴露调试数据和提交导入任务（服务器模式下）的 HTTP 端口。设置为 0 时为禁用状态。
-status-addr = ':8289'
+##### `status-addr`
 
-# 服务器模式，默认值为 false，命令启动后会开始导入任务。如果改为 true，命令启动后会等待用户在 web 界面上提交任务。
-# 详情参见“TiDB Lightning web 界面”文档
-server-mode = false
+- 用于进度展示 web 界面、拉取 Prometheus 监控项、暴露调试数据和提交导入任务（服务器模式下）的 HTTP 端口。设置为 `0` 时为禁用状态。
 
-# 日志
-level = "info"
-file = "tidb-lightning.log"
-max-size = 128 # MB
-max-days = 28
-max-backups = 14
+<!-- 示例值：`:8289` -->
 
-# 是否开启诊断日志。默认为 false，即只输出和导入有关的日志，不会输出依赖的其他组件的日志。
-# 设置为 true 后，既输出和导入相关的日志，也输出依赖的其他组件的日志，并开启 GRPC debug，可用于问题诊断。
-# 该参数自 v7.3.0 开始引入。
-enable-diagnose-logs = false
-```
+##### `server-mode`
+
+- 服务器模式，默认值为 `false`，命令启动后会开始导入任务。如果改为 `true`，命令启动后会等待用户在 web 界面上提交任务。详情参见 [TiDB Lightning Web 界面](/tidb-lightning/tidb-lightning-web-interface.md)。
+- 默认值：`false`
+
+##### `level`
+
+- 示例值：`"info"`
+
+##### `file`
+
+- 示例值：`"tidb-lightning.log"`
+
+##### `max-size`
+
+- 示例值：`128` <!-- MB -->
+
+##### `max-days`
+
+- 示例值：`28`
+
+##### `max-backups`
+
+- 示例值：`14`
+
+##### `enable-diagnose-logs` <span class="version-mark">从 v7.3.0 版本开始引入</span>
+
+- 是否开启诊断日志。默认为 `false`，即只输出和导入有关的日志，不会输出依赖的其他组件的日志。
+- 设置为 `true` 后，既输出和导入相关的日志，也输出依赖的其他组件的日志，并开启 GRPC debug，可用于问题诊断。
+- 默认值：`false`
 
 ### TiDB Lightning 任务配置
 
