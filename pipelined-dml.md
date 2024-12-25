@@ -1,6 +1,6 @@
 ---
 title: Pipelined DML
-summary: Pipelined DML 增强了 TiDB 批量处理的能力，使得事务大小不再受到 TiDB 内存限制。
+summary: 介绍 Pipelined DML 的使用场景、使用方法、使用限制和使用该功能的常见问题。Pipelined DML 增强了 TiDB 批量处理的能力，使得事务大小不再受到 TiDB 内存限制。
 ---
 
 # Pipelined DML

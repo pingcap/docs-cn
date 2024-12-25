@@ -1,6 +1,6 @@
 ---
 title: 数据批量处理
-summary: 介绍了 TiDB 为数据批量处理场景提供的功能，包括 Pipelined DML、非事务性 DML、IMPORT INTO 语句、被废弃的 batch dml。
+summary: 介绍了 TiDB 为数据批量处理场景提供的功能，包括 Pipelined DML、非事务性 DML、IMPORT INTO 语句以及已被废弃的 batch-dml。
 ---
 
 # 数据批量处理
@@ -16,7 +16,7 @@ summary: 介绍了 TiDB 为数据批量处理场景提供的功能，包括 Pipe
     - 非事务性 DML（从 TiDB v6.1.0 开始引入）
     - 已废弃的 batch-dml 功能
 
-本文将分别介绍这些功能的主要优势、限制、使用场景，帮助你根据实际需求选择合适的方案，更高效地完成批量数据处理任务。
+本文分别介绍这些功能的主要优势、限制和使用场景，帮助你根据实际需求选择合适的方案，从而更高效地完成批量数据处理任务。
 
 ## 数据导入
 
@@ -36,7 +36,7 @@ summary: 介绍了 TiDB 为数据批量处理场景提供的功能，包括 Pipe
 
 - 数据导入场景，例如数据迁移、数据恢复等。建议在合适的场景下，使用 IMPORT INTO 代替 TiDB Lightning。
 
-更多信息，请参考 [IMPORT INTO](/sql-statements/sql-statement-import-into.md)。
+更多信息，请参考 [`IMPORT INTO`](/sql-statements/sql-statement-import-into.md)。
 
 ## 数据增删改
 
@@ -84,7 +84,7 @@ Pipelined DML 是从 TiDB v8.0.0 开始引入的实验特性。在 v8.5.0 中，
 
 ### 已被废弃的 batch-dml
 
-在 TiDB v4.0 以前用于批量处理的 batch-dml 功能已被废弃，不再推荐使用。该功能由以下这些系统变量控制：
+TiDB 在 v4.0 之前提供了 batch-dml 功能，用于批量数据处理。该功能已被废弃，不再推荐使用。batch-dml 功能由以下这些系统变量控制：
 
 - `tidb_batch_insert`
 - `tidb_batch_delete`
