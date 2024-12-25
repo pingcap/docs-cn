@@ -464,29 +464,41 @@ distsql-scan-concurrency = 15
 index-serial-scan-concurrency = 20
 checksum-table-concurrency = 2
 
-# 设置其他 TiDB 会话变量
-# [tidb.session-vars]
-# tidb_enable_clustered_index = "OFF"
+#### tidb.session-vars
 
-# 解析和执行 SQL 语句的默认 SQL 模式。
-sql-mode = "ONLY_FULL_GROUP_BY,NO_AUTO_CREATE_USER"
-# `max-allowed-packet` 设置数据库连接允许的最大数据包大小，
-# 对应于系统参数中的 `max_allowed_packet`。 如果设置为 0，
-# 会使用下游数据库 global 级别的 `max_allowed_packet`。
-max-allowed-packet = 67_108_864
+设置其他 TiDB 会话变量。
 
-# SQL 连接是否使用 TLS。可选值为：
-#  * ""            - 如果填充了 [tidb.security] 部分，则强制使用 TLS（与 "cluster" 情况相同），否则与 "false" 情况相同
-#  * "false"       - 禁用 TLS
-#  * "cluster"     - 强制使用 TLS 并使用 [tidb.security] 部分中指定的 CA 验证服务器的证书
-#  * "skip-verify" - 强制使用 TLS，但不验证服务器的证书（不安全！）
-#  * "preferred"   - 与 "skip-verify" 相同，但是如果服务器不支持 TLS，则会退回到未加密的连接
-# tls = ""
-# 指定证书和密钥用于 TLS 连接 MySQL。
+##### `tidb_enable_clustered_index`
+
+- 示例值：`"OFF"`
+
+##### `sql-mode`
+
+- 解析和执行 SQL 语句的默认 SQL 模式。
+
+<!-- 示例值：`"ONLY_FULL_GROUP_BY,NO_AUTO_CREATE_USER"` -->
+
+##### `max-allowed-packet`
+
+- 设置数据库连接允许的最大数据包大小，对应于系统参数中的 `max_allowed_packet`。
+- 如果设置为 `0`，会使用下游数据库 global 级别的 `max_allowed_packet`。
+
+<!-- 示例值：`67_108_864` -->
+
+##### `tls`
+
+
+- SQL 连接是否使用 TLS。
+- 可选值：
+    * `""`：如果填充了 [`[tidb.security]`](#tidbsecurity) 部分，则强制使用 TLS（与 `"cluster"` 情况相同），否则与 `"false"` 情况相同
+    * `"false"`：禁用 TLS
+    * `"cluster"`：强制使用 TLS 并使用 [`[tidb.security]`](#tidbsecurity 部分中指定的 CA 验证服务器的证书
+    * `"skip-verify"`：强制使用 TLS，但不验证服务器的证书（不安全）
+    * `"preferred"`：与 `"skip-verify"` 相同，但是如果服务器不支持 TLS，则会退回到未加密的连接
 
 #### tidb.security
 
-默认为 [`security`](#security) 部分的副本。
+指定证书和密钥用于 TLS 连接 MySQL。默认为 [`security`](#security) 部分的副本。
 
 ##### `ca-path`
 
