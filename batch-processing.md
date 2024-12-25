@@ -10,7 +10,7 @@ summary: 介绍了 TiDB 为数据批量处理场景提供的功能，包括 Pipe
 为了提升批量处理性能，TiDB 随着版本的演进提供了多种数据批量处理功能：
 
 - 数据导入
-    - `IMPORT INTO` 语句（从 TiDB v7.2.0 开始引入、从 v7.5.0 开始 GA）
+    - `IMPORT INTO` 语句（从 TiDB v7.2.0 开始引入，在 v7.5.0 成为正式功能）
 - 数据增删改
     - Pipelined DML（从 TiDB v8.0.0 开始引入，实验特性）
     - 非事务性 DML（从 TiDB v6.1.0 开始引入）
@@ -20,7 +20,7 @@ summary: 介绍了 TiDB 为数据批量处理场景提供的功能，包括 Pipe
 
 ## 数据导入
 
-`IMPORT INTO` 语句专为数据导入设计，使你无需单独部署 TiDB Lightning，即可将 CSV、SQL 或 PARQUET 等格式的数据快速导入到 TiDB 的一张空表中。
+`IMPORT INTO` 语句专为数据导入设计，使你无需单独部署 [TiDB Lightning](/tidb-lightning/tidb-lightning-overview.md)，即可将 CSV、SQL 或 PARQUET 等格式的数据快速导入到 TiDB 的一张空表中。
 
 主要优势：
 
@@ -29,7 +29,7 @@ summary: 介绍了 TiDB 为数据批量处理场景提供的功能，包括 Pipe
 
 主要限制：
 
-- 不满足事务 ACID 性质。
+- 不满足事务 [ACID](/glossary.md#acid) 性质。
 - 使用限制较多。
 
 适用场景：

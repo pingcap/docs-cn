@@ -13,7 +13,7 @@ summary: Pipelined DML 增强了 TiDB 批量处理的能力，使得事务大小
 
 ## 功能概述
 
-Pipelined DML 是 TiDB 从 v8.0.0 开始引入的实验特性，用于优化大规模数据写入场景的性能。启用 Pipelined DML 后，当执行 DML 操作时，TiDB 会将相应的数据持续写入存储层，而不是全部缓存在内存中。这种方式就像流水线（Pipeline）一样，数据一边被读取（输入），一边被写入到存储层（输出），从而解决了大规模 DML 操作的以下常见问题：
+Pipelined DML 是 TiDB 从 v8.0.0 开始引入的实验特性，用于优化大规模数据写入场景的性能。启用 Pipelined DML 后，当执行 DML 操作时，TiDB 会将相应的数据持续写入存储层，而不是全部缓存在内存中。这种方式就像流水线 (Pipeline) 一样，数据一边被读取（输入），一边被写入到存储层（输出），从而解决了大规模 DML 操作的以下常见问题：
 
 - 内存限制：传统 DML 在处理大量数据时容易导致 OOM
 - 性能瓶颈：大事务执行效率低，容易引起系统负载波动
@@ -44,7 +44,7 @@ Pipelined DML 是 TiDB 从 v8.0.0 开始引入的实验特性，用于优化大�
     - 仅支持[自动提交](/transaction-overview.md#自动提交)的语句。
     - 仅支持 `INSERT`、`UPDATE`、`REPLACE` 和 `DELETE` 语句。
     - 操作的表不包含[临时表](/temporary-tables.md)或[缓存表](/cached-tables.md)。
-    - 当[外键约束](/foreign-key.md)检查开启 (`foreign_key_checks = ON`)时，操作的表不包含外键关系。
+    - 当[外键约束](/foreign-key.md)检查开启 (`foreign_key_checks = ON`) 时，操作的表不包含外键关系。
 - 当使用 Pipelined DML 执行 `INSERT IGNORE ... ON DUPLICATE KEY UPDATE` 语句时，如果更新操作发生冲突，可能会返回 `Duplicate entry` 错误。
 
 ## 使用方法
@@ -61,7 +61,7 @@ Pipelined DML 是 TiDB 从 v8.0.0 开始引入的实验特性，用于优化大�
     SET tidb_dml_type = "bulk";
     ```
 
-- 如需为某一条 DML 语句启用 Pipelined DML，请在该语句中添加 SET_VAR hint。
+- 如需为某一条 DML 语句启用 Pipelined DML，请在该语句中添加 [`SET_VAR`](/optimizer-hints.md#set_varvar_namevar_value) hint。
 
     - 数据归档示例：
 
@@ -85,7 +85,7 @@ Pipelined DML 是 TiDB 从 v8.0.0 开始引入的实验特性，用于优化大�
 
 ### 验证是否生效
 
-执行 DML 语句后，可以查看 [`tidb_last_txn_info`](#tidb_last_txn_info-从-v409-版本开始引入) 变量来确认该语句的执行是否使用了 Pipelined DML：
+执行 DML 语句后，可以查看 [`tidb_last_txn_info`](/system-variables.md#tidb_last_txn_info-从-v409-版本开始引入) 变量来确认该语句的执行是否使用了 Pipelined DML：
 
 ```sql
 SELECT @@tidb_last_txn_info;
@@ -96,7 +96,7 @@ SELECT @@tidb_last_txn_info;
 ## 最佳实践
 
 - 将 [`tidb_mem_quota_query`](/system-variables.md#tidb_mem_quota_query) 略微调大，以确保执行器等部分的内存使用不会超过限制。建议至少设置为 2 GiB。对于 TiDB 内存充足的情况，可以适当调大。
-- 在向新表插入数据的场景，Pipelined DML 易受到热点影响。为实现最佳性能，建议尽可能先打散热点。可以参考[TiDB 热点问题处理](/troubleshoot-hot-spot-issues.md#tidb-热点问题处理)。
+- 在向新表插入数据的场景，Pipelined DML 易受到热点影响。为实现最佳性能，建议尽可能先打散热点。可以参考 [TiDB 热点问题处理](/troubleshoot-hot-spot-issues.md#tidb-热点问题处理)。
 
 ## 相关配置
 
