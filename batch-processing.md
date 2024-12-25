@@ -25,7 +25,7 @@ summary: 介绍了 TiDB 为数据批量处理场景提供的功能，包括 Pipe
 主要优势：
 
 - 导入速度非常快。
-- 易用性比 TiDB Lightning 更高。
+- 比 TiDB Lightning 更易用。
 
 主要限制：
 
