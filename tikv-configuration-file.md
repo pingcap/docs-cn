@@ -506,8 +506,9 @@ TiKV 配置文件比命令行参数支持更多的选项。你可以在 [etc/con
 ### `max-ts-drift-allowance`
 
 + 读写请求更新 max-ts 时允许超过 TiKV 缓存的 PD TSO 的最大值。
-+ 如果尝试更新的 max-ts 超过 TiKV 缓存的 PD TSO + allowance，认为该请求的来源不合法，会执行 [`action-on-invalid-max-ts`](#action-on-invalid-max-ts) 规定的行为。
++ 如果尝试更新的 max-ts 超过 TiKV 缓存的 PD TSO + allowance，认为该请求的来源不合法，会执行 [`action-on-invalid-max-ts`](#action-on-invalid-max-ts) 规定的行为。如果 TiKV 的缓存 PD TSO 没有及时更新，会使用近似方法判断，此时被判定为非法的情况不会导致 panic。
 + 默认值：60s
++ 建议设置为[`max-ts-sync-interval`](#max-ts-sync-interval)的 3 倍以上。
 
 ### `max-ts-sync-interval`
 
