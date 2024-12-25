@@ -43,6 +43,8 @@ brew link mysql-client@8.0
 /opt/homebrew/opt/mysql-client@8.0/bin/mysql --comments --host ${YOUR_IP_ADDRESS} --port ${YOUR_PORT_NUMBER} -u ${your_user_name} -p
 ```
 
+请使用实际部署的 MySQL v8.0 客户端的安装路径替代上述命令中的 `/opt/homebrew/opt/mysql-client@8.0/bin/mysql`。
+
 </div>
 
 <div label="MySQL Shell">
