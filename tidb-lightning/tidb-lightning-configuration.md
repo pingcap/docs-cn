@@ -208,102 +208,143 @@ TiDB Lightning 的配置文件分为“全局”和“任务”两种类别，�
 - 在逻辑导入模式下，当 `strategy` 为 `"ignore"` 时会记录被忽略写入的冲突记录，当 `strategy` 为 `"replace"` 时，不会记录冲突记录。
 - 默认值：`10000`
 
-[tikv-importer]
-# "local"：物理导入模式（Physical Import Mode），默认使用。适用于 TB 级以上大数据量，但导入期间下游 TiDB 无法对外提供服务。
-# "tidb"：逻辑导入模式 (Logical Import Mode)。TB 级以下数据量可以采用，下游 TiDB 可正常提供服务。
-# backend = "local"
-# 是否允许启动多个 TiDB Lightning 实例（物理导入模式）并行导入数据到一个或多个目标表。默认取值为 false。
-# 注意，该参数仅限目标表为空的场景使用。
-# 多个 TiDB Lightning 实例（物理导入模式）同时导入一张表时，此开关必须设置为 true。
-# 但前提是目标表不能存在数据，即所有的数据都只能是由 TiDB Lightning 导入。
-# parallel-import = false
+#### tikv-importer
 
-# `duplicate-resolution` 参数从 v8.0.0 开始已被废弃，并将在未来版本中被移除。详情参考 <https://docs.pingcap.com/zh/tidb/stable/tidb-lightning-physical-import-mode-usage#旧版冲突检测从-v800-开始已被废弃>。
-# 物理导入模式设置是否检测和解决重复的记录（唯一键冲突）。
-# 目前支持两种解决方法：
-#  - 'none'：不检测重复记录。
-#          如果数据源存在重复记录，会导致 TiDB 中出现数据不一致的情况。
-#          如果 `duplicate-resolution` 设置为 'none' 且 `conflict.strategy` 未设置，TiDB Lightning 会自动将 `conflict.strategy` 赋值为 ""。
-#  - 'remove'：如果 `duplicate-resolution` 设置为 'remove' 且 `conflict.strategy` 未设置，TiDB Lightning 会自动将 `conflict.strategy` 赋值为 "replace" 开启新版冲突检测。
-# 默认值为 'none'。
-# duplicate-resolution = 'none'
-# 物理导入模式下，向 TiKV 发送数据时一次请求中最大 KV 数量。
-# 自 v7.2.0 开始，该参数废弃，设置后不再生效。如果希望调整一次请求中向 TiKV 发送的数据量，请使用 `send-kv-size` 参数。
-# send-kv-pairs = 32768
-# 物理导入模式下，向 TiKV 发送数据时一次请求的最大大小。
-# 默认值为 "16K"，一般情况下不建议调整该参数。
-# 该参数自 v7.2.0 开始引入。
-# send-kv-size = "16K"
-# 物理导入模式向 TiKV 发送 KV 时是否启用压缩。目前只支持 Gzip 压缩算法，可填写 "gzip" 或者 "gz"。默认不启用压缩。
-# compress-kv-pairs = ""
-# 物理导入模式本地进行 KV 排序的路径。如果磁盘性能较低（如使用机械盘），建议设置成与 `data-source-dir` 不同的磁盘，这样可有效提升导入性能。
-# sorted-kv-dir = ""
-# 物理导入模式TiKV 写入 KV 数据的并发度。当 TiDB Lightning 和 TiKV 直接网络传输速度超过万兆的时候，可以适当增加这个值。
-# range-concurrency = 16
-# 物理导入模式限制 TiDB Lightning 向每个 TiKV 节点写入的带宽大小，默认为 0，表示不限制。
-# store-write-bwlimit = "128MiB"
+##### `backend`
 
-# 使用物理导入模式时，配置 TiDB Lightning 本地临时文件使用的磁盘配额 (disk quota)。
-# 当磁盘配额不足时，TiDB Lightning 会暂停读取源数据以及写入临时文件的过程，
-# 优先将已经完成排序的 key-value 写入到 TiKV，TiDB Lightning 删除本地临时文件后，再继续导入过程。
-# 需要同时配合把 `backend` 设置为 `local` 模式才能生效。
-# 默认值为 MaxInt64 字节，即 9223372036854775807 字节。
-# disk-quota = "10GB"
+- 默认值：`"local"`
+- 可选值：
+    - `"local"`：物理导入模式 (Physical Import Mode)，默认使用。适用于 TB 级以上大数据量，但导入期间下游 TiDB 无法对外提供服务。
+    - `"tidb"`：逻辑导入模式 (Logical Import Mode)。TB 级以下数据量可以采用，下游 TiDB 可正常提供服务。
 
-# 物理导入模式是否通过 SQL 方式添加索引。
-# 默认为 `false`，表示 TiDB Lightning 会将行数据以及索引数据都编码成 KV pairs 后一同导入 TiKV，实现机制和历史版本保持一致。
-# 如果设置为 `true`，即 TiDB Lightning 会在导入数据完成后，使用 add index 的 SQL 来添加索引。
-# 通过 SQL 方式添加索引的优点是将导入数据与导入索引分开，可以快速导入数据，即使导入数据后，索引添加失败，也不会影响数据的一致性。
-# add-index-by-sql = false
+##### `parallel-import`
 
-# 在使用 TiDB Lightning 导入多租户的 TiDB cluster 的场景下，指定对应的 key space 名称。
-# 默认取值为空字符串，表示 TiDB Lightning 会自动获取导入对应租户的 key space 名称；
-# 如果指定了值，则使用指定的 key space 名称来导入。
-# keyspace-name = ""
+- 是否允许启动多个 TiDB Lightning 实例（物理导入模式）并行导入数据到一个或多个目标表。
+- 该参数仅限目标表为空的场景使用。
+- 多个 TiDB Lightning 实例（物理导入模式）同时导入一张表时，此开关必须设置为 true。但前提是目标表不能存在数据，即所有的数据都只能是由 TiDB Lightning 导入。
+- 默认值：`false`
 
-# 物理导入模式下，用于控制 TiDB Lightning 暂停 PD 调度的范围，可选值包括：
-# - "table"：仅暂停目标表数据所在 Region 的调度。默认值为 "table"。
-# - "global"：暂停全局调度。当导入数据到无业务流量的集群时，建议设置为 "global"，以避免其他调度的干扰。
-# 该参数自 v7.1.0 版本开始引入。注意："table" 选项仅适用于 TiDB v6.1.0 及以上版本的目标集群。
-# pause-pd-scheduler-scope = "table"
+##### `duplicate-resolution`
 
-# 物理导入模式下，用于控制批量 Split Region 时的 Region 个数。
-# 每个 TiDB Lightning 实例最多同时 Split Region 的个数为：
-# region-split-batch-size * region-split-concurrency * table-concurrency
-# 该参数自 v7.1.0 版本开始引入，默认值为 `4096`。
-# region-split-batch-size = 4096
+> **警告：**
+>
+> 从 v8.0.0 开始，`duplicate-resolution` 被废弃，并将在未来版本中被移除。详情参考[旧版冲突检测](/tidb-lightning/tidb-lightning-physical-import-mode-usage.md#旧版冲突检测从-v800-开始已被废弃)。
 
-# 物理导入模式下，用于控制 Split Region 时的并发度。默认值为 CPU 核数。
-# 该参数自 v7.1.0 版本开始引入。
-# region-split-concurrency =
+- 物理导入模式设置是否检测和解决重复的记录（唯一键冲突）。
+- 可选值：
+    - `'none'`：不检测重复记录。如果数据源存在重复记录，会导致 TiDB 中出现数据不一致的情况。如果 `duplicate-resolution` 设置为 `'none'` 且 `conflict.strategy` 未设置，TiDB Lightning 会自动将 `conflict.strategy` 赋值为 `""`。
+    - `'remove'`：如果 `duplicate-resolution` 设置为 `'remove'` 且 `conflict.strategy` 未设置，TiDB Lightning 会自动将 `conflict.strategy` 赋值为 `"replace"` 开启新版冲突检测。
+- 默认值：`'none'`
 
-# 物理导入模式下，用于控制 split 和 scatter 操作后等待 Region 上线的重试次数，默认值为 `1800`。
-# 重试符合指数回退策略，最大重试间隔为 2 秒。
-# 若两次重试之间有任何 Region 上线，该次操作不会被计为重试次数。
-# 该参数自 v7.1.0 版本开始引入。
-# region-check-backoff-limit = 1800
+##### `send-kv-pairs`
 
-# 物理导入模式下，用于控制本地文件排序的 I/O 区块大小。当 IOPS 成为瓶颈时，你可以调大该参数的值以缓解磁盘 IOPS，从而提升数据导入性能。
-# 该参数自 v7.6.0 版本开始引入。默认值为 "16KiB"。取值必须大于或等于 `1B`。注意，如果仅指定数字（如 `16`），则单位为 Byte 而不是 KiB。
-# block-size = "16KiB"
+> **警告：**
+>
+> 从 v7.2.0 开始，该参数废弃，设置后不再生效。如果希望调整一次请求中向 TiKV 发送的数据量，请使用 [`send-kv-size`](#send-kv-size) 参数。
 
-# 在逻辑导入模式下，用于设置下游 TiDB 服务器上执行的每条 SQL 语句的最大值。
-# 该参数自 v8.0.0 版本开始引入。
-# 该参数指定了单个事务中执行的每个 INSERT 或 REPLACE 语句的 VALUES 部分的期望最大大小。
-# 该参数不是一个严格限制。实际执行的 SQL 语句长度可能会根据导入数据的具体内容而有所不同。
-# 默认值为 "96KiB"，在 TiDB Lightning 是集群中唯一的客户端时，这是导入速度的最佳值。
-# 由于 TiDB Lightning 的实现细节，该参数最大值为 96 KiB。设置更大的值将不会生效。
-# 你可以减小该值以减轻大事务对集群的压力。
-# logical-import-batch-size = "96KiB"
+- 物理导入模式下，向 TiKV 发送数据时一次请求中最大 KV 数量。
 
-# 在逻辑导入模式下，限制每个事务中可插入的最大行数。
-# 该参数自 v8.0.0 版本开始引入。默认值为 65536 行。
-# 当同时指定 `logical-import-batch-size` 和 `logical-import-batch-rows` 时，首先达到阈值的参数将生效。
-# 你可以减小该值以减轻大事务对集群的压力。
-# logical-import-batch-rows = 65536
+<!-- 示例值：32768 -->
 
-# 在逻辑导入模式下，该参数控制是否使用预处理语句和语句缓存来提高性能。默认值为 `false`。
-logical-import-prep-stmt = false
+##### `send-kv-size` <span class="version-mark">从 v7.2.0 版本开始引入</span>
+
+- 物理导入模式下，向 TiKV 发送数据时一次请求的最大大小。一般情况下不建议调整该参数。
+- 默认值：`"16K"`
+
+##### `compress-kv-pairs`
+
+- 物理导入模式向 TiKV 发送 KV 时是否启用压缩。
+- 目前只支持 Gzip 压缩算法，可填写 `"gzip"` 或者 `"gz"`。默认不启用压缩。
+- 默认值：`""`
+- 可选值：`"gzip"`、`"gz"`
+
+##### `sorted-kv-dir`
+
+- 物理导入模式本地进行 KV 排序的路径。如果磁盘性能较低（如使用机械盘），建议设置成与 `data-source-dir` 不同的磁盘，这样可有效提升导入性能。
+
+##### `range-concurrency`
+
+- 物理导入模式TiKV 写入 KV 数据的并发度。
+- 当 TiDB Lightning 和 TiKV 直接网络传输速度超过万兆的时候，可以适当增加这个值。
+
+<!-- 示例值：`16` -->
+
+##### `store-write-bwlimit`
+
+- 物理导入模式限制 TiDB Lightning 向每个 TiKV 节点写入的带宽大小。
+- 默认值：`0`，表示不限制
+
+##### `disk-quota`
+
+- 使用物理导入模式时，配置 TiDB Lightning 本地临时文件使用的磁盘配额 (disk quota)。
+- 当磁盘配额不足时，TiDB Lightning 会暂停读取源数据以及写入临时文件的过程，优先将已经完成排序的 key-value 写入到 TiKV，TiDB Lightning 删除本地临时文件后，再继续导入过程。
+- 需要同时配合把 `backend` 设置为 `local` 模式才能生效。
+- 默认值：`MaxInt64` 字节（9223372036854775807 字节）
+
+##### `add-index-by-sql`
+
+- 物理导入模式是否通过 SQL 方式添加索引。
+- 默认为 `false`，表示 TiDB Lightning 会将行数据以及索引数据都编码成 KV pairs 后一同导入 TiKV，实现机制和历史版本保持一致。
+- 如果设置为 `true`，即 TiDB Lightning 会在导入数据完成后，使用 add index 的 SQL 来添加索引。
+- 通过 SQL 方式添加索引的优点是将导入数据与导入索引分开，可以快速导入数据，即使导入数据后，索引添加失败，也不会影响数据的一致性。
+- 默认值：`false`
+
+##### `keyspace-name`
+
+- 在使用 TiDB Lightning 导入多租户的 TiDB cluster 的场景下，指定对应的 key space 名称。
+- 默认取值为空字符串 `""`，表示 TiDB Lightning 会自动获取导入对应租户的 key space 名称。如果指定了值，则使用指定的 key space 名称来导入。
+- 默认值：`""`
+
+##### `pause-pd-scheduler-scope` <span class="version-mark">从 v7.1.0 版本开始引入</span>
+
+- 物理导入模式下，用于控制 TiDB Lightning 暂停 PD 调度的范围。
+- 默认值：`"table"`
+- 可选值：
+    - `"table"`：仅暂停目标表数据所在 Region 的调度。该选项仅适用于 TiDB v6.1.0 及以上版本的目标集群。
+    - `"global"`：暂停全局调度。当导入数据到无业务流量的集群时，建议设置为 `"global"`，以避免其他调度的干扰。
+
+##### `region-split-batch-size` <span class="version-mark">从 v7.1.0 版本开始引入</span>
+
+- 物理导入模式下，用于控制批量 Split Region 时的 Region 个数。
+- 每个 TiDB Lightning 实例最多同时 Split Region 的个数为：`region-split-batch-size * region-split-concurrency * table-concurrency`
+- 默认值：`4096`
+
+##### `region-split-concurrency` <span class="version-mark">从 v7.1.0 版本开始引入</span>
+
+- 物理导入模式下，用于控制 Split Region 时的并发度。
+- 默认值：CPU 核数
+
+##### `region-check-backoff-limit` <span class="version-mark">从 v7.1.0 版本开始引入</span>
+
+- 物理导入模式下，用于控制 split 和 scatter 操作后等待 Region 上线的重试次数。
+- 重试符合指数回退策略，最大重试间隔为 2 秒。若两次重试之间有任何 Region 上线，该次操作不会被计为重试次数。
+- 默认值：`1800`
+
+##### `block-size` <span class="version-mark">从 v7.6.0 版本开始引入</span>
+
+- 物理导入模式下，用于控制本地文件排序的 I/O 区块大小。当 IOPS 成为瓶颈时，你可以调大该参数的值以缓解磁盘 IOPS，从而提升数据导入性能。
+- 取值必须大于或等于 `1B`。注意，如果仅指定数字（如 `16`），则单位为 Byte 而不是 KiB。
+- 默认值：`"16KiB"`
+
+##### `logical-import-batch-size` <span class="version-mark">从 v8.0.0 版本开始引入</span>
+
+- 在逻辑导入模式下，用于设置下游 TiDB 服务器上执行的每条 SQL 语句的最大值。
+- 该参数指定了单个事务中执行的每个 `INSERT` 或 `REPLACE` 语句的 `VALUES` 部分的期望最大大小。
+- 该参数不是一个严格限制。实际执行的 SQL 语句长度可能会根据导入数据的具体内容而有所不同。
+- 默认值：`"96KiB"`，在 TiDB Lightning 是集群中唯一的客户端时，这是导入速度的最佳值
+- 由于 TiDB Lightning 的实现细节，该参数最大值为 96 KiB。设置更大的值将不会生效。你可以减小该值以减轻大事务对集群的压力。
+
+##### `logical-import-batch-rows` <span class="version-mark">从 v8.0.0 版本开始引入</span>
+
+- 在逻辑导入模式下，限制每个事务中可插入的最大行数。
+- 当同时指定 [`logical-import-batch-size`](#logical-import-batch-size-从-v800-版本开始引入) 和 `logical-import-batch-rows` 时，首先达到阈值的参数将生效。
+- 你可以减小该值以减轻大事务对集群的压力。
+- 默认值：`65536`
+
+##### `logical-import-prep-stmt`
+
+- 在逻辑导入模式下，该参数控制是否使用预处理语句和语句缓存来提高性能。
+- 默认值：`false`
 
 [mydumper]
 # 设置文件读取的区块大小，确保该值比数据源的最长字符串长。
