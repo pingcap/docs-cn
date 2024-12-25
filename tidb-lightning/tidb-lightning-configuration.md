@@ -517,14 +517,24 @@ checksum-via-sql = "false"
 # 此配置的可选配置项与 `checksum` 相同，但默认值为 "optional"。
 analyze = "optional"
 
-# 设置周期性后台操作。
-# 支持的单位：h（时）、m（分）、s（秒）。
-[cron]
-# TiDB Lightning 自动刷新导入模式状态的持续时间，该值应小于 TiKV 对应的设定值。
-switch-mode = "5m"
-# 在日志中打印导入进度的持续时间。
-log-progress = "5m"
+#### cron
 
-# 使用物理导入模式时，检查本地磁盘配额的时间间隔，默认为 60 秒。
-# check-disk-quota = "60s"
-```
+- 设置周期性后台操作
+- 支持的单位：h（时）、m（分）、s（秒）
+
+##### `switch-mode`
+
+- TiDB Lightning 自动刷新导入模式状态的持续时间，该值应小于 TiKV 对应的设定值。
+
+<!-- 示例值：`"5m"` -->
+
+##### `log-progress`
+
+- 在日志中打印导入进度的持续时间。
+
+<!-- 示例值：`"5m"` -->
+
+##### `check-disk-quota`
+
+- 使用物理导入模式时，检查本地磁盘配额的时间间隔。
+- 默认值：`"60s"`
