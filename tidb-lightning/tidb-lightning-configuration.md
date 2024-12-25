@@ -55,45 +55,59 @@ TiDB Lightning 的配置文件分为“全局”和“任务”两种类别，�
 
 ### TiDB Lightning 任务配置
 
-```toml
-### tidb-lightning 任务配置
+#### lightning
 
-[lightning]
-# 启动之前检查集群是否满足最低需求，以及运行过程中检查 TiKV 的可用存储空间是否大于 10%。
-# check-requirements = true
+##### `check-requirements`
 
-# 引擎文件的最大并行数。
-# 每张表被切分成一个用于存储索引的“索引引擎”和若干存储行数据的“数据引擎”。
-# 这两项设置控制两种引擎文件的最大并发数。通常情况下，你可以使用默认值。
-index-concurrency = 2
-table-concurrency = 6
+- 启动之前检查集群是否满足最低需求，以及运行过程中检查 TiKV 的可用存储空间是否大于 10%。
 
-# 数据的并发数。默认与逻辑 CPU 的数量相同。
-# 混合部署的情况下可以将其大小配置为逻辑 CPU 数的 75%，以限制 CPU 的使用。
-# region-concurrency =
+<!-- 示例值：`true` -->
 
-# I/O 最大并发数。I/O 并发量太高时，会因硬盘内部缓存频繁被刷新
-# 而增加 I/O 等待时间，导致缓存未命中和读取速度降低。
-# 对于不同的存储介质，此参数可能需要调整以达到最佳效率。
-io-concurrency = 5
+##### `index-concurrency`
 
-# TiDB Lightning 停止迁移任务之前能容忍的最大非严重 (non-fatal errors) 错误数。
-# 在忽略非严重错误所在的行数据之后，迁移任务可以继续执行。
-# 将该值设置为 N，表示 TiDB Lightning 会在遇到第 (N+1) 个错误时停止迁移任务。
-# 被忽略的行会被记录到位于目标集群的 "task info" 数据库中。最大错误数可以通过下面参数配置。
-# 默认值为 MaxInt64 字节，即 9223372036854775807 字节。
-max-error = 0
-# 参数 task-info-schema-name 指定用于存储 TiDB Lightning 执行结果的数据库。
-# 要关闭该功能，需要将该值设置为空字符串。
-# task-info-schema-name = 'lightning_task_info'
+- 引擎文件的最大并行数。每张表被切分成一个用于存储索引的“索引引擎”和若干存储行数据的“数据引擎”。`index-concurrency` 和 `table-concurrency` 这两项设置控制两种引擎文件的最大并发数。通常情况下，你可以使用默认值。
 
-# 在并行导入模式下，在目标集群保存各个 TiDB Lightning 实例元信息的 schema 名字，默认为 "lightning_metadata"。
-# 如果未开启并行导入模式，无须设置此配置项。
-# **注意：**
-# - 对于参与同一批并行导入的每个 TiDB Lightning 实例，该参数设置的值必须相同，否则将无法确保导入数据的正确性。
-# - 如果开启并行导入模式，需要确保导入使用的用户（对于 tidb.user 配置项）有权限创建和访问此配置对应的库。
-# - TiDB Lightning 在导入完成后会删除此 schema，因此不要使用已存在的库名配置该参数。
-meta-schema-name = "lightning_metadata"
+<!-- 示例值：`2` -->
+
+##### `table-concurrency`
+
+- 引擎文件的最大并行数。每张表被切分成一个用于存储索引的“索引引擎”和若干存储行数据的“数据引擎”。`index-concurrency` 和 `table-concurrency` 这两项设置控制两种引擎文件的最大并发数。通常情况下，你可以使用默认值。
+
+<!-- 示例值：`6` -->
+
+##### `region-concurrency`
+
+- 数据的并发数。混合部署的情况下可以将其大小配置为逻辑 CPU 数的 75%，以限制 CPU 的使用。
+- 默认值：与逻辑 CPU 的数量相同
+
+##### `io-concurrency`
+
+- I/O 最大并发数。I/O 并发量太高时，会因硬盘内部缓存频繁被刷新而增加 I/O 等待时间，导致缓存未命中和读取速度降低。 对于不同的存储介质，此参数可能需要调整以达到最佳效率。
+
+<!-- 示例值：`5` -->
+
+##### `max-error`
+
+- TiDB Lightning 停止迁移任务之前能容忍的最大非严重 (non-fatal errors) 错误数。
+- 在忽略非严重错误所在的行数据之后，迁移任务可以继续执行。
+- 将该值设置为 N，表示 TiDB Lightning 会在遇到第 (N+1) 个错误时停止迁移任务。
+- 被忽略的行会被记录到位于目标集群的 "task info" 数据库中。最大错误数可以通过 `max-error` 配置。
+- 默认值：MaxInt64 字节，即 `9223372036854775807` 字节
+
+##### `task-info-schema-name`
+
+- 指定用于存储 TiDB Lightning 执行结果的数据库。
+- 要关闭该功能，需要将该值设置为空字符串。
+
+<!-- 示例值：`'lightning_task_info'` -->
+
+##### `meta-schema-name`
+
+- 在并行导入模式下，在目标集群保存各个 TiDB Lightning 实例元信息的 schema 名字。如果未开启并行导入模式，无须设置此配置项。
+- 对于参与同一批并行导入的每个 TiDB Lightning 实例，该参数设置的值必须相同，否则将无法确保导入数据的正确性。
+- 如果开启并行导入模式，需要确保导入使用的用户（对于 `tidb.user` 配置项）有权限创建和访问此配置对应的库。
+- TiDB Lightning 在导入完成后会删除此 schema，因此不要使用已存在的库名配置该参数。
+- 默认值：`"lightning_metadata"`
 
 [security]
 # 指定集群中用于 TLS 连接的证书和密钥。
