@@ -110,7 +110,7 @@ SELECT @@tidb_last_txn_info;
 
 你可以通过以下方式观测 Pipelined DML 的执行过程：
 
-- 查看系统变量 [`tidb_last_txn_info`](#tidb_last_txn_info-从-v409-版本开始引入)，获取当前会话上一个事务的执行信息，包括是否使用了 Pipelined DML。
+- 查看系统变量 [`tidb_last_txn_info`](/system-variables.md#tidb_last_txn_info-从-v409-版本开始引入)，获取当前会话上一个事务的执行信息，包括是否使用了 Pipelined DML。
 - 查看 TiDB 日志中包含 `"[pipelined dml]"` 字样的行，了解 Pipelined DML 的执行过程和进度，包括当前阶段、已经写入的数据量等。
 - 查看 TiDB 日志中的 [`expensive query` 日志](/identify-expensive-queries.md#expensive-query-日志示例)的 `affected rows` 字段，获取耗时较长语句的当前进度。
 - 查看 [`INFORMATION_SCHEMA.PROCESSLIST`](/information-schema/information-schema-processlist.md) 表，了解事务的执行进度。Pipelined DML 通常用于大事务，执行耗时较长，可以通过该表查看事务的执行进度。
