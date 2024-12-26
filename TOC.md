@@ -1072,6 +1072,7 @@
   - [版本周期支持策略](https://cn.pingcap.com/tidb-release-support-policy/)
   - [TiDB 离线包](/binary-package.md)
   - v8.1
+    - [8.1.2](/releases/release-8.1.2.md)
     - [8.1.1](/releases/release-8.1.1.md)
     - [8.1.0](/releases/release-8.1.0.md)
   - v8.0
