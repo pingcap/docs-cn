@@ -104,17 +104,17 @@ Restore KV Files <--------------------------------------------------------------
 
 ## PITR 的性能指标
 
-- PITR 恢复速度，平均到单台 TiKV 节点：全量恢复 (Full Restore) 为 280 GB/h，日志恢复（Restore Meta Files 和 Restore KV Files）为 30 GB/h
+- PITR 恢复速度，平均到单台 TiKV 节点：全量恢复 (Full Restore) 为 2 TiB/h，日志恢复（Restore Meta Files 和 Restore KV Files）为 30 GiB/h
 - 使用 `tiup br log truncate` 清理过期的日志备份数据速度为 600 GB/h
 
 > **注意：**
 >
 > 以上功能指标是根据下述两个场景测试得出的结论，如有出入，建议以实际测试结果为准：
 >
-> - 全量恢复速度 = 全量恢复数据量 /（时间 * TiKV 数量）
-> - 日志恢复速度 = 日志恢复总量 /（时间 * TiKV 数量）
+> - 全量恢复速度 = 集群中所有 TiKV 节点恢复数据总量 /（时间 * TiKV 数量）
+> - 日志恢复速度 = 集群中所有 TiKV 节点日志恢复总量 /（时间 * TiKV 数量）
 >
-> 其中全量恢复数据量，是指单个副本中所有 KV 的逻辑大小，并不代表实际恢复的数据量。BR 恢复数据时会根据集群设置的副本数来恢复全部副本，当副本数越多时，实际恢复的数据量也就越多。
+> 外部存储中只存放单个副本中的 KV 数据，因此外部存储上的数据量并不代表集群实际恢复后的数据量。BR 恢复数据时会根据集群设置的副本数来恢复全部副本，当副本数越多时，实际恢复的数据量也就越多。
 > 所有测试集群默认设置 3 副本。
 > 如果想提升整体恢复的性能，可以通过根据实际情况调整 TiKV 配置文件中的 [`import.num-threads`](/tikv-configuration-file.md#import) 配置项以及 BR 命令的 [`concurrency`](/br/use-br-command-line-tool.md#常用选项) 参数。
 
