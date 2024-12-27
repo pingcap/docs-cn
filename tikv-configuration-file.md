@@ -517,7 +517,7 @@ TiKV 配置文件比命令行参数支持更多的选项。你可以在 [etc/con
 
 ### `action-on-invalid-max-ts`
 
-+ 当 TiKV 认为更新的 max-ts 不合法时，TiKV 会执行的操作。
++ 当 TiKV 认为更新的 max-ts 不合法时，TiKV 会执行的操作。非法的 `max-ts` 可能导致 TiDB 集群线性一致性和事务并发控制语义被破坏。
 + 可选值：
     + `"panic"`：TiKV 会 panic。
     + `"error"`：TiKV 会将错误返回。
