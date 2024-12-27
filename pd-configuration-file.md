@@ -485,7 +485,7 @@ PD 中内置的 [TiDB Dashboard](/dashboard/dashboard-intro.md) 相关配置项�
 
 Region 同步模式相关的配置项。更多详情，请参阅[启用自适应同步模式](/two-data-centers-in-one-city-deployment.md#启用自适应同步模式)。
 
-## Controller
+## controller
 
 PD 中内置的 [Resource Control](/tidb-resource-control.md) 相关的配置项。
 
