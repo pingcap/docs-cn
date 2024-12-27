@@ -96,7 +96,7 @@ SELECT @@tidb_last_txn_info;
 ## 最佳实践
 
 - 将 [`tidb_mem_quota_query`](/system-variables.md#tidb_mem_quota_query) 略微调大，以确保执行器等部分的内存使用不会超过限制。建议至少设置为 2 GiB。对于 TiDB 内存充足的情况，可以适当调大。
-- 在向新表插入数据的场景，Pipelined DML 易受到热点影响。为实现最佳性能，建议尽可能先打散热点。可以参考 [TiDB 热点问题处理](/troubleshoot-hot-spot-issues.md#tidb-热点问题处理)。
+- 在向新表插入数据的场景，Pipelined DML 性能易受到热点影响。为实现最佳性能，建议尽可能先打散热点。可以参考 [TiDB 热点问题处理](/troubleshoot-hot-spot-issues.md)。
 
 ## 相关配置
 
