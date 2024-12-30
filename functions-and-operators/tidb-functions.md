@@ -20,7 +20,7 @@ summary: 学习使用 TiDB 特有的函数。
 | [`TIDB_ENCODE_RECORD_KEY()`](#tidb_encode_record_key) | 对记录键进行编码。 |
 | [`TIDB_ENCODE_SQL_DIGEST()`](#tidb_encode_sql_digest) | 用于为查询字符串获取 digest。 |
 | [`TIDB_IS_DDL_OWNER()`](#tidb_is_ddl_owner) | 用于检查你连接的 TiDB 实例是否是 DDL Owner。DDL Owner 是代表集群中所有其他节点执行 DDL 语句的 TiDB 实例。 |
-| [`TIDB_MVCC_INFO()`](#tidb_mvcc_info) | 返回关于某个键的多版本并发控制 (Multi-Version Concurrency Control, MVCC) 信息。 |
+| [`TIDB_MVCC_INFO()`](#tidb_mvcc_info) | 返回关于某个键的多版本并发控制 ([Multi-Version Concurrency Control, MVCC](/glossary.md#multi-version-concurrency-control-mvcc)) 信息。 |
 | [`TIDB_PARSE_TSO()`](#tidb_parse_tso) | 用于从 TiDB TSO 时间戳中提取物理时间戳。参见 [`tidb_current_ts`](/system-variables.md#tidb_current_ts)。 |
 | [`TIDB_PARSE_TSO_LOGICAL()`](#tidb_parse_tso_logical) | 用于从 TiDB TSO 时间戳中提取逻辑时间戳。|
 | [`TIDB_ROW_CHECKSUM()`](#tidb_row_checksum) | 用于查询行数据的 Checksum 值。该函数只能用于 FastPlan 流程的 `SELECT` 语句，即你可通过类似 `SELECT TIDB_ROW_CHECKSUM() FROM t WHERE id = ?` 或 `SELECT TIDB_ROW_CHECKSUM() FROM t WHERE id IN (?, ?, ...)` 的语句进行查询。参见[数据正确性校验](/ticdc/ticdc-integrity-check.md)。 |
@@ -633,7 +633,7 @@ SELECT TIDB_DECODE_KEY('7480000000000000845f728000000000000001');
 
 ## TIDB_MVCC_INFO
 
-返回关于某个键的多版本并发控制 (Multi-Version Concurrency Control, MVCC) 信息。你可以使用 [`TIDB_ENCODE_INDEX_KEY`](#TIDB_ENCODE_INDEX_KEY) 函数获取键。
+返回关于某个键的多版本并发控制 ([Multi-Version Concurrency Control, MVCC](/glossary.md#multi-version-concurrency-control-mvcc)) 信息。你可以使用 [`TIDB_ENCODE_INDEX_KEY`](#TIDB_ENCODE_INDEX_KEY) 函数获取键。
 
 ```sql
 SELECT JSON_PRETTY(TIDB_MVCC_INFO('74800000000000007f5f698000000000000001038000000000000001038000000000000001')) AS info\G
