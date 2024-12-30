@@ -104,7 +104,7 @@ TiUniManager 不仅提供对 TiDB 集群的全生命周期的可视化管理，�
 - TiDB Lightning 的输入：
     - Dumpling 输出文件
     - 其他格式兼容的 CSV 文件
-    - 从 Aurora、 Hive 或者 Snowflake 导出的 Parquet 文件
+    - 从 Aurora、Hive 或 Snowflake 导出的 Parquet 文件
 - 适用 TiDB 版本：v2.1 及以上
 - Kubernetes 支持：[使用 TiDB Lightning 快速恢复 Kubernetes 上的 TiDB 集群数据](https://docs.pingcap.com/zh/tidb-in-kubernetes/stable/restore-data-using-tidb-lightning)
 
