@@ -15,7 +15,7 @@ TiDB Lightning 支持以下文件类型：
 
 - [Dumpling](/dumpling-overview.md) 生成的文件
 - CSV 文件
-- [Amazon Aurora 生成的 Apache Parquet 文件](/migrate-aurora-to-tidb.md)
+- [Amazon Aurora 生成的 Apache Parquet 文件](/migrate-aurora-to-tidb.md)、Apache Hive 生成的 Apache Parquet、Snowflake 生成的 Apache Parquet
 
 TiDB Lightning 支持从以下位置读取：
 
