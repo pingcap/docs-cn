@@ -29,7 +29,7 @@ PD Control 是 PD 的命令行工具，用于获取集群状态信息和调整�
 
 > **注意：**
 >
-> 下载链接中的 `{version}` 为 TiDB 的版本号。例如，amd64 架构的 `v8.4.0` 版本的下载链接为 `https://download.pingcap.org/tidb-community-server-v8.4.0-linux-amd64.tar.gz`。
+> 下载链接中的 `{version}` 为 TiDB 的版本号。例如，amd64 架构的 `v8.5.0` 版本的下载链接为 `https://download.pingcap.org/tidb-community-server-v8.5.0-linux-amd64.tar.gz`。
 
 ### 源码编译
 
@@ -478,7 +478,7 @@ config show cluster-version
     config set flow-round-by-digit 4
     ```
 
-#### `config [show | set service-middleware <option> [<key> <value> | <label> <qps|concurrency> <value>]]`
+### `config [show | set service-middleware <option> [<key> <value> | <label> <qps|concurrency> <value>]]`
 
 `service-middleware` 是 PD 中的一个配置模块，主要用于管理和控制 PD 服务的中间件功能，如审计日志、请求速率限制和并发限制等。从 v8.5.0 起，PD 支持通过 `pd-ctl` 修改 `service-middleware` 的以下配置：
 

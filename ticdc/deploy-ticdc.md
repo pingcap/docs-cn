@@ -15,7 +15,7 @@ summary: 了解 TiCDC 软硬件环境要求以及如何安装部署和运维 TiC
 | --- | --- |------------------| --- | --- |
 | 16 核+ | 64 GB+ | 500 GB+ SSD 类型硬盘 | 万兆网卡（2 块最佳） | 2 |
 
-软件配置推荐及更多信息参见 [TiDB 软件和硬件环境建议配置](/hardware-and-software-requirements.md)。
+软件配置推荐及更多信息，参见 [TiDB 软件和硬件环境需求](/hardware-and-software-requirements.md)。
 
 ## 使用 TiUP 部署包含 TiCDC 组件的全新 TiDB 集群
 
@@ -90,7 +90,7 @@ tiup cluster upgrade <cluster-name> <version> --transfer-timeout 600
 
 > **注意：**
 >
-> 命令中的 `<cluster-name>` 需要替换为集群名字，`<version>` 需要替换为目标版本号，例如 v8.4.0。
+> 命令中的 `<cluster-name>` 需要替换为集群名字，`<version>` 需要替换为目标版本号，例如 v8.5.0。
 
 ### 升级的注意事项
 
@@ -145,7 +145,7 @@ tiup cluster upgrade <cluster-name> <version> --transfer-timeout 600
 
 ## 使用 TiCDC 命令行工具来查看集群状态
 
-执行以下命令来查看 TiCDC 集群运行状态，注意需要将 `v<CLUSTER_VERSION>` 替换为 TiCDC 集群版本，例如 `v8.4.0`：
+执行以下命令来查看 TiCDC 集群运行状态，注意需要将 `v<CLUSTER_VERSION>` 替换为 TiCDC 集群版本，例如 `v8.5.0`：
 
 ```shell
 tiup cdc:v<CLUSTER_VERSION> cli capture list --server=http://10.0.10.25:8300

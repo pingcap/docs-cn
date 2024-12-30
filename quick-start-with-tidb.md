@@ -90,10 +90,10 @@ TiDB 是一个分布式系统。最基础的 TiDB 测试集群通常由 2 个 Ti
         {{< copyable "shell-regular" >}}
 
         ```shell
-        tiup playground v8.4.0 --db 2 --pd 3 --kv 3
+        tiup playground v8.5.0 --db 2 --pd 3 --kv 3
         ```
 
-        上述命令会在本地下载并启动某个版本的集群（例如 v8.4.0）。最新版本可以通过执行 `tiup list tidb` 来查看。运行结果将显示集群的访问方式：
+        上述命令会在本地下载并启动某个版本的集群（例如 v8.5.0）。最新版本可以通过执行 `tiup list tidb` 来查看。运行结果将显示集群的访问方式：
 
         ```log
         CLUSTER START SUCCESSFULLY, Enjoy it ^-^
@@ -214,10 +214,10 @@ TiDB 是一个分布式系统。最基础的 TiDB 测试集群通常由 2 个 Ti
         {{< copyable "shell-regular" >}}
 
         ```shell
-        tiup playground v8.4.0 --db 2 --pd 3 --kv 3
+        tiup playground v8.5.0 --db 2 --pd 3 --kv 3
         ```
 
-        上述命令会在本地下载并启动某个版本的集群（例如 v8.4.0）。最新版本可以通过执行 `tiup list tidb` 来查看。运行结果将显示集群的访问方式：
+        上述命令会在本地下载并启动某个版本的集群（例如 v8.5.0）。最新版本可以通过执行 `tiup list tidb` 来查看。运行结果将显示集群的访问方式：
 
         ```log
         CLUSTER START SUCCESSFULLY, Enjoy it ^-^
@@ -443,7 +443,7 @@ TiDB 是一个分布式系统。最基础的 TiDB 测试集群通常由 2 个 Ti
     ```
 
     - 参数 `<cluster-name>` 表示设置集群名称
-    - 参数 `<version>` 表示设置集群版本，例如 `v8.4.0`。可以通过 `tiup list tidb` 命令来查看当前支持部署的 TiDB 版本
+    - 参数 `<version>` 表示设置集群版本，例如 `v8.5.0`。可以通过 `tiup list tidb` 命令来查看当前支持部署的 TiDB 版本
     - 参数 `-p` 表示在连接目标机器时使用密码登录
 
         > **注意：**
@@ -512,6 +512,12 @@ TiDB 是一个分布式系统。最基础的 TiDB 测试集群通常由 2 个 Ti
 
 - [使用 TiUP 部署 TiDB 集群](/production-deployment-using-tiup.md)
 - [使用 TiDB Operator 在 Kubernetes 上部署 TiDB 集群](https://docs.pingcap.com/zh/tidb-in-kubernetes/stable)
+
+如果你是应用开发者，想要快速使用 TiDB 构建应用，可参阅以下文档：
+
+- [开发者手册概览](/develop/dev-guide-overview.md)
+- [使用 TiDB Cloud Serverless 构建 TiDB 集群](/develop/dev-guide-build-cluster-in-cloud.md)
+- [示例程序](/develop/dev-guide-sample-application-java-jdbc.md)
 
 如果你想使用 TiFlash 作为数据分析的解决方案，可参阅以下文档：
 

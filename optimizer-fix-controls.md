@@ -79,7 +79,7 @@ SET SESSION tidb_opt_fix_control = '44262:ON,44389:ON';
 
 ### [`46177`](https://github.com/pingcap/tidb/issues/46177) <span class="version-mark">从 v6.5.6、v7.1.3 和 v7.5.0 版本开始引入</span>
 
-- 默认值：`ON`
+- 默认值：`ON`。在 v8.5.0 之前，默认值为 `OFF`。
 - 可选值：`ON`、`OFF`
 - 此开关控制优化器在查询优化的过程中，找到非强制执行计划后，是否继续查找强制执行计划进行查询优化。
 
