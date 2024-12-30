@@ -29,7 +29,41 @@ Debezium 输出格式中包含当前行的 Schema 信息，以便下游消费者
 
 ### DML Event
 
-TiCDC 会把一个 DML Event 编码成如下格式：
+TiCDC 会将一个 DML 事件转换为一个 Kafka 事件，其中事件的 key 和 value 都按照 Debezium 协议进行编码。
+
+#### Key 数据格式
+
+```json
+{
+    "payload": {
+        "a": 4
+    },
+    "schema": {
+        "fields": [
+            {
+                "field": "a",
+                "optional": true,
+                "type": "int32"
+            }
+        ],
+        "name": "default.test.t2.Key",
+        "optional": false,
+        "type": "struct"
+    }
+}
+```
+
+Key 中的字段只包含主键或唯一索引列。字段解释如下：
+
+| 字段      | 类型   | 说明                                                                      |
+|:----------|:-------|:-------------------------------------------------------------------------|
+| payload   | JSON | 主键或唯一索引列的信息。每个字段的 key 和 value 分别为列名和当前值  |
+| schema.fields     | JSON   |  payload 中各个字段的类型信息，包括对应行数据变更前后 schema 的信息等      |
+| schema.name     | 字符串   |  schema 的名称，格式为 `"{cluster-name}.{schema-name}.{table-name}.Key"`     |
+| schema.optional     | 布尔值   |  optional 为 `true` 时表示该字段为选填项   |
+| schema.type     | 字符串   |  表示该字段的数据类型   |
+
+#### Value 数据格式
 
 ```json
 {
@@ -126,6 +160,9 @@ TiCDC 会把一个 DML Event 编码成如下格式：
 | payload.source.db     | 字符串   | 事件发生的数据库的名称                    |
 | payload.source.table     | 字符串  |  事件发生的数据表的名称                    |
 | schema.fields     | JSON   |  payload 中各个字段的类型信息，包括对应行数据变更前后 schema 的信息等      |
+| schema.name     | 字符串   |  schema 的名称，格式为 `"{cluster}.{schema}.{table}.Envelope"`     |
+| schema.optional     | 布尔值   |  optional 为 `true` 时表示该字段为选填项   |
+| schema.type     | 字符串   |  表示该字段的类型   |
 
 ### 数据类型映射
 

@@ -7,7 +7,7 @@ summary: 了解如何使用 TiCDC 将数据同步到 Kafka。
 
 本文介绍如何使用 TiCDC 创建一个将增量数据复制到 Kafka 的 Changefeed。
 
-## 创建同步任务，复制增量数据 Kafka
+## 创建同步任务，复制增量数据到 Kafka
 
 使用以下命令来创建同步任务：
 
@@ -73,6 +73,7 @@ URI 中可配置的的参数如下：
 | `127.0.0.1`          | 下游 Kafka 对外提供服务的 IP。                                 |
 | `9092`               | 下游 Kafka 的连接端口。                                          |
 | `topic-name`         | 变量，使用的 Kafka topic 名字。                                      |
+| `protocol`           | 输出到 Kafka 的消息协议。可选值有 [`canal-json`](/ticdc/ticdc-canal-json.md)、[`open-protocol`](/ticdc/ticdc-open-protocol.md)、[`avro`](/ticdc/ticdc-avro-protocol.md)、[`debezium`](/ticdc/ticdc-debezium.md) 和 [`simple`](/ticdc/ticdc-simple-protocol.md)。 |
 | `kafka-version`      | 下游 Kafka 版本号。该值需要与下游 Kafka 的实际版本保持一致。 |
 | `kafka-client-id`    | 指定同步任务的 Kafka 客户端的 ID（可选，默认值为 `TiCDC_sarama_producer_同步任务的 ID`）。 |
 | `partition-num`      | 下游 Kafka partition 数量（可选，不能大于实际 partition 数量，否则创建同步任务会失败，默认值 `3`）。|
@@ -80,7 +81,6 @@ URI 中可配置的的参数如下：
 | `replication-factor` | Kafka 消息保存副本数（可选，默认值 `1`），需要大于等于 Kafka 中 [`min.insync.replicas`](https://kafka.apache.org/33/documentation.html#brokerconfigs_min.insync.replicas) 的值。 |
 | `required-acks`      | 在 `Produce` 请求中使用的配置项，用于告知 broker 需要收到多少副本确认后才进行响应。可选值有：`0`（`NoResponse`：不发送任何响应，只有 TCP ACK），`1`（`WaitForLocal`：仅等待本地提交成功后再响应）和 `-1`（`WaitForAll`：等待所有同步副本提交后再响应。最小同步副本数量可通过 broker 的 [`min.insync.replicas`](https://kafka.apache.org/33/documentation.html#brokerconfigs_min.insync.replicas) 配置项进行配置）。（可选，默认值为 `-1`）。                      |
 | `compression`        | 设置发送消息时使用的压缩算法（可选值为 `none`、`lz4`、`gzip`、`snappy` 和 `zstd`，默认值为 `none`）。注意 Snappy 压缩文件必须遵循[官方 Snappy 格式](https://github.com/google/snappy)。不支持其他非官方压缩格式。|
-| `protocol` | 输出到 Kafka 的消息协议，可选值有 `canal-json`、`open-protocol`、`avro`、`debezium` 和 `simple`。 |
 | `auto-create-topic` | 当传入的 `topic-name` 在 Kafka 集群不存在时，TiCDC 是否要自动创建该 topic（可选，默认值 `true`）。 |
 | `enable-tidb-extension` | 可选，默认值是 `false`。当输出协议为 `canal-json` 时，如果该值为 `true`，TiCDC 会发送 [WATERMARK 事件](/ticdc/ticdc-canal-json.md#watermark-event)，并在 Kafka 消息中添加 TiDB 扩展字段。从 6.1.0 开始，该参数也可以和输出协议 `avro` 一起使用。如果该值为 `true`，TiCDC 会在 Kafka 消息中添加[三个 TiDB 扩展字段](/ticdc/ticdc-avro-protocol.md#tidb-扩展字段)。|
 | `max-batch-size` |  从 v4.0.9 开始引入。当消息协议支持把多条变更记录输出至一条 Kafka 消息时，该参数用于指定这一条 Kafka 消息中变更记录的最多数量。目前，仅当 Kafka 消息的 `protocol` 为 `open-protocol` 时有效（可选，默认值 `16`）。|
@@ -109,12 +109,13 @@ URI 中可配置的的参数如下：
 ### 最佳实践
 
 * TiCDC 推荐用户自行创建 Kafka Topic，你至少需要设置该 Topic 每次向 Kafka broker 发送消息的最大数据量和下游 Kafka partition 的数量。在创建 changefeed 的时候，这两项设置分别对应 `max-message-bytes` 和 `partition-num` 参数。
-* 如果你在创建 changefeed 时，使用了尚未存在的 Topic，那么 TiCDC 会尝试使用 `partition-num` 和 `replication-factor` 参数自行创建 Topic。建议明确指定这两个参数。
+* 如果你在创建 changefeed 时，使用了尚未存在的 Topic，那么 TiCDC 会尝试使用 `partition-num` 和 `replication-factor` 参数自行创建 Topic，建议明确指定这两个参数。
 * 在大多数情况下，建议使用 `canal-json` 协议。
 
 > **注意：**
 >
-> 当 `protocol` 为 `open-protocol` 时，TiCDC 会尽量避免产生长度超过 `max-message-bytes` 的消息。但如果单条数据变更记录需要超过 `max-message-bytes` 个字节来表示，为了避免静默失败，TiCDC 会试图输出这条消息并在日志中输出 Warning。
+> 当 `protocol` 为 `open-protocol` 时，TiCDC 会将多个事件编码到同一个 Kafka 消息中，并尽量避免在此过程中生成长度超过 `max-message-bytes` 的消息。
+> 如果单条数据变更编码得到的消息大小超过了 `max-message-bytes` 个字节，changefeed 会报错，并打印错误日志。
 
 ### TiCDC 使用 Kafka 的认证与授权
 
@@ -157,11 +158,22 @@ URI 中可配置的的参数如下：
   TiCDC 能够正常工作所需的最小权限集合如下：
 
     - 对 Topic [资源类型](https://docs.confluent.io/platform/current/kafka/authorization.html#resources)的 `Create` 、`Write` 和 `Describe` 权限。
-    - 对 Cluster 资源类型的 `DescribeConfigs` 权限。
+    - 对 Cluster 资源类型的 `DescribeConfig` 权限。
+
+  各权限的使用场景如下：
+  
+    | 资源类型 | 操作类型      |  使用场景                            |
+    | :-------------| :------------- | :--------------------------------|
+    | Cluster      | `DescribeConfig` | Changefeed 运行过程中，获取集群元数据 |
+    | Topic         | `Describe`           | Changefeed 启动时，尝试创建 Topic   |                
+    | Topic         | `Create`              | Changefeed 启动时，尝试创建 Topic   |
+    | Topic         | `Write`                | 发送数据到 Topic                   | 
+
+    创建或启动 Changefeed 时，如果指定的 Kafka Topic 已存在，可以不用开启 `Describe` 和 `Create` 权限。
 
 ### TiCDC 集成 Kafka Connect (Confluent Platform)
 
-如要使用 Confluent 提供的 [data connectors](https://docs.confluent.io/current/connect/managing/connectors.html) 向关系型或非关系型数据库传输数据，请选择 `avro` 协议，并在 `schema-registry` 中提供 [Confluent Schema Registry](https://www.confluent.io/product/confluent-platform/data-compatibility/) 的 URL。
+如要使用 Confluent 提供的 [data connectors](https://docs.confluent.io/current/connect/managing/connectors.html) 向关系型或非关系型数据库传输数据，请选择 [Avro 协议](/ticdc/ticdc-avro-protocol.md)协议，并在 `schema-registry` 中提供 [Confluent Schema Registry](https://www.confluent.io/product/confluent-platform/data-compatibility/) 的 URL。
 
 配置样例如下所示：
 
@@ -180,7 +192,7 @@ dispatchers = [
 
 ### TiCDC 集成 AWS Glue Schema Registry
 
-从 v7.4.0 开始，TiCDC 支持在用户选择 Avro 协议同步数据时使用 [AWS Glue Schema Registry](https://docs.aws.amazon.com/glue/latest/dg/schema-registry.html) 作为 Schema Registry。配置样例如下所示：
+从 v7.4.0 开始，TiCDC 支持在用户选择  [Avro 协议](/ticdc/ticdc-avro-protocol.md)同步数据时使用 [AWS Glue Schema Registry](https://docs.aws.amazon.com/glue/latest/dg/schema-registry.html) 作为 Schema Registry。配置样例如下所示：
 
 ```shell
 ./cdc cli changefeed create --server=127.0.0.1:8300 --changefeed-id="kafka-glue-test" --sink-uri="kafka://127.0.0.1:9092/topic-name?&protocol=avro&replication-factor=3" --config changefeed_glue.toml

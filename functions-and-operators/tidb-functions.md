@@ -166,7 +166,7 @@ SHOW CREATE TABLE t2\G
        Table: t2
 Create Table: CREATE TABLE `t2` (
   `id` binary(36) NOT NULL,
-  `a` tinyint(3) unsigned NOT NULL,
+  `a` tinyint unsigned NOT NULL,
   `v` varchar(512) DEFAULT NULL,
   PRIMARY KEY (`a`,`id`) /*T![clustered_index] CLUSTERED */
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin
@@ -518,7 +518,7 @@ SELECT TIDB_VERSION()\G
 
 ```sql
 *************************** 1. row ***************************
-TIDB_VERSION(): Release Version: v8.3.0
+TIDB_VERSION(): Release Version: v8.5.0
 Edition: Community
 Git Commit Hash: 821e491a20fbab36604b36b647b5bae26a2c1418
 Git Branch: HEAD

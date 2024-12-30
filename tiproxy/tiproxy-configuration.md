@@ -113,6 +113,13 @@ HTTP 网关的配置。
 
 TiProxy 负载均衡策略的配置。
 
+#### `label-name`
+
++ 默认值：`""`
++ 支持热加载：是
++ 指定用于[基于标签的负载均衡](/tiproxy/tiproxy-load-balance.md#基于标签的负载均衡)的标签名。TiProxy 根据该标签名匹配 TiDB server 的标签值，并优先将请求路由到与自身具有相同标签值的 TiDB server。
++ `label-name` 的默认值为空字符串，表示不使用基于标签的负载均衡。要启用该负载均衡策略，需要将此配置项设置为非空字符串，并配置 TiProxy 的 [`labels`](#labels) 和 TiDB 的 [`labels`](/tidb-configuration-file.md#labels) 配置项。有关详细信息，请参阅[基于标签的负载均衡](/tiproxy/tiproxy-load-balance.md#基于标签的负载均衡)。
+
 #### `policy`
 
 + 默认值：`resource`

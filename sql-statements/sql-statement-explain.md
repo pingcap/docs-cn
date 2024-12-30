@@ -52,7 +52,7 @@ ExplainableStmt ::=
 |:----------------|:----------------------------------------------------------------------------------------------------------|
 | id            | 算子的 ID，是算子在整个执行计划中唯一的标识。在 TiDB 2.1 中，ID 会格式化地显示算子的树状结构。数据从孩子结点流向父亲结点，每个算子的父亲结点有且仅有一个。|
 | estRows       | 算子预计将会输出的数据条数，基于统计信息以及算子的执行逻辑估算而来。在 4.0 之前叫 count。 |
-| task          | 算子属于的 task 种类。目前的执行计划分成为两种 task，一种叫 **root** task，在 tidb-server 上执行，一种叫 **cop** task，在 TiKV 或者 TiFlash 上并行执行。当前的执行计划在 task 级别的拓扑关系是一个 root task 后面可以跟许多 cop task，root task 使用 cop task 的输出结果作为输入。cop task 中执行的也即是 TiDB 下推到 TiKV 或者 TiFlash 上的任务，每个 cop task 分散在 TiKV 或者 TiFlash 集群中，由多个进程共同执行。 |
+| task          | 算子属于的 task 类型。目前的执行计划可以分为以下四种 task：**root** task，在 tidb-server 上执行；**cop** task，在 TiKV 或者 TiFlash 上并行执行；**batchCop** task，在 TiFlash 上并行执行；**MPP** task，在 TiFlash 上并行执行。当前的执行计划在 task 级别的拓扑关系是一个 root task 后面可以跟许多其他类型的 task，root task 使用其他类型 task 的输出结果作为输入。其他类型 task 中执行的也即是 TiDB 下推到 TiKV 或者 TiFlash 上的任务，每个 task 分散在 TiKV 或者 TiFlash 集群中，由多个进程共同执行。 |
 | access object | 算子所访问的数据项信息。包括表 `table`，表分区 `partition` 以及使用的索引 `index`（如果有）。只有直接访问数据的算子才拥有这些信息。 |
 | operator info | 算子的其它信息。各个算子的 operator info 各有不同，可参考下面的示例解读。 |
 

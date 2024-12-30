@@ -58,4 +58,4 @@ secret-key-path = "/path/to/secret/key"
 | `ssl-cert` | DM-master 组件用于与其它组件连接的 PEM 格式的 X509 证书所在的路径 |
 | `ssl-key` | DM-master 组件用于与其它组件连接的 PEM 格式的 X509 密钥所在的路径  |
 | `cert-allowed-cn` | 证书检查 Common Name 列表 |
-| `secret-key-path` | 用来加解密上下游密码的密钥所在的路径，该文件内容必须是长度为 64 个字符的十六进制的 AES-256 密钥 |
+| `secret-key-path` | 用来加解密上下游密码的密钥所在的路径，该文件内容必须是长度为 64 个字符的十六进制的 AES-256 密钥。一种生成该秘钥的方式是对随机内容计算 SHA256 校验和，比如 <code>head -n 256 /dev/urandom \| sha256sum</code>。更多信息，请参考 [DM 自定义加解密 key](/dm/dm-customized-secret-key.md)。|

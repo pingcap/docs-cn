@@ -20,7 +20,7 @@ TiDB 优化器对这两类查询的处理是一样的：`Prepare` 时将参数�
 在当前版本中，当 `Prepare` 语句符合以下条件任何一条，查询或者计划不会被缓存：
 
 - `SELECT`、`UPDATE`、`INSERT`、`DELETE`、`Union`、`Intersect`、`Except` 以外的 SQL 语句；
-- 访问分区表、临时表的查询；
+- 访问临时表、包含生成列的表的查询，或使用静态模式（即 [`tidb_partition_prune_mode`](/system-variables.md#tidb_partition_prune_mode-从-v51-版本开始引入) 设置为 `static`）访问分区表的查询；
 - 查询中包含非关联子查询，例如 `SELECT * FROM t1 WHERE t1.a > (SELECT 1 FROM t2 WHERE t2.b < 1)`；
 - 执行计划中带有 `PhysicalApply` 算子的关联子查询，例如 `SELECT * FROM t1 WHERE t1.a > (SELECT a FROM t2 WHERE t1.b > t2.b)`；
 - 包含 `ignore_plan_cache` 或 `set_var` 这两个 Hint 的查询，例如 `SELECT /*+ ignore_plan_cache() */ * FROM t` 或 `SELECT /*+ set_var(max_execution_time=1) */ * FROM t`；

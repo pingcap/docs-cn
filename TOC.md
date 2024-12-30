@@ -4,7 +4,7 @@
 - [文档中心](https://docs.pingcap.com/zh)
 - 关于 TiDB
   - [TiDB 简介](/overview.md)
-  - [TiDB 8.3 Release Notes](/releases/release-8.3.0.md)
+  - [TiDB 8.5 Release Notes](/releases/release-8.5.0.md)
   - [功能概览](/basic-features.md)
   - [与 MySQL 的兼容性](/mysql-compatibility.md)
   - [使用限制](/tidb-limitations.md)
@@ -135,9 +135,8 @@
     - [TiSpark 部署拓扑](/tispark-deployment-topology.md)
     - [跨机房部署拓扑结构](/geo-distributed-deployment-topology.md)
     - [混合部署拓扑结构](/hybrid-deployment-topology.md)
-  - 安装与启动
-    - [使用 TiUP 部署](/production-deployment-using-tiup.md)
-    - [在 Kubernetes 上部署](/tidb-in-kubernetes.md)
+  - [使用 TiUP 部署](/production-deployment-using-tiup.md)
+  - [在 Kubernetes 上部署](/tidb-in-kubernetes.md)
   - [验证集群状态](/post-installation-check.md)
   - 测试集群性能
     - [用 Sysbench 测试 TiDB](/benchmark/benchmark-tidb-using-sysbench.md)
@@ -153,6 +152,7 @@
     - [从大数据量 MySQL 迁移数据到 TiDB](/migrate-large-mysql-to-tidb.md)
     - [从小数据量分库分表 MySQL 合并迁移数据到 TiDB](/migrate-small-mysql-shards-to-tidb.md)
     - [从大数据量分库分表 MySQL 合并迁移数据到 TiDB](/migrate-large-mysql-shards-to-tidb.md)
+    - [从 Vitess 迁移数据到 TiDB](/migrate-from-vitess.md)
     - [从 MariaDB 迁移数据到 TiDB](/migrate-from-mariadb.md)
     - [从 CSV 文件迁移数据到 TiDB](/migrate-from-csv-files-to-tidb.md)
     - [从 SQL 文件迁移数据到 TiDB](/migrate-from-sql-files-to-tidb.md)
@@ -164,11 +164,52 @@
     - [下游存在更多列的迁移场景](/migrate-with-more-columns-downstream.md)
     - [如何根据类型或 DDL 内容过滤 binlog 事件](/filter-binlog-event.md)
     - [如何通过 SQL 表达式过滤 DML binlog 事件](/filter-dml-event.md)
-- 数据集成
-  - [数据集成概述](/integration-overview.md)
+- 数据同步
+  - [TiCDC 概述](/ticdc/ticdc-overview.md)
+  - [安装部署与集群运维](/ticdc/deploy-ticdc.md)
+  - Changefeed
+    - [Changefeed 概述](/ticdc/ticdc-changefeed-overview.md)
+    - 创建 Changefeed
+      - [同步数据到 MySQL 兼容的数据库](/ticdc/ticdc-sink-to-mysql.md)
+      - [同步数据到 Kafka](/ticdc/ticdc-sink-to-kafka.md)
+      - [同步数据到 Pulsar](/ticdc/ticdc-sink-to-pulsar.md)
+      - [同步数据到存储服务](/ticdc/ticdc-sink-to-cloud-storage.md)
+    - [管理 Changefeed](/ticdc/ticdc-manage-changefeed.md)
+    - [日志过滤器](/ticdc/ticdc-filter.md)
+    - [DDL 同步](/ticdc/ticdc-ddl.md)
+    - [双向复制](/ticdc/ticdc-bidirectional-replication.md)
+  - 监控告警
+    - [基本监控指标](/ticdc/ticdc-summary-monitor.md)
+    - [详细监控指标](/ticdc/monitor-ticdc.md)
+    - [报警规则](/ticdc/ticdc-alert-rules.md)
   - 数据集成场景
+    - [数据集成概述](/integration-overview.md)
     - [与 Confluent Cloud 和 Snowflake 进行数据集成](/ticdc/integrate-confluent-using-ticdc.md)
     - [与 Apache Kafka 和 Apache Flink 进行数据集成](/replicate-data-to-kafka.md)
+  - 参考指南
+    - [TiCDC 架构设计与原理](/ticdc/ticdc-architecture.md)
+    - [TiCDC Server 配置参数](/ticdc/ticdc-server-config.md)
+    - [TiCDC Changefeed 配置参数](/ticdc/ticdc-changefeed-config.md)
+    - [TiCDC 客户端鉴权](/ticdc/ticdc-client-authentication.md)
+    - [单行数据正确性校验](/ticdc/ticdc-integrity-check.md)
+    - [主从集群数据校验和快照读](/ticdc/ticdc-upstream-downstream-check.md)
+    - [拆分 UPDATE 事件行为说明](/ticdc/ticdc-split-update-behavior.md)
+    - 输出数据协议
+      - [TiCDC Avro Protocol](/ticdc/ticdc-avro-protocol.md)
+      - [TiCDC Canal-JSON Protocol](/ticdc/ticdc-canal-json.md)
+      - [TiCDC CSV Protocol](/ticdc/ticdc-csv.md)
+      - [TiCDC Debezium Protocol](/ticdc/ticdc-debezium.md)
+      - [TiCDC Open Protocol](/ticdc/ticdc-open-protocol.md)
+      - [TiCDC Simple Protocol](/ticdc/ticdc-simple-protocol.md)
+    - [TiCDC Open API v2](/ticdc/ticdc-open-api-v2.md)
+    - [TiCDC Open API v1](/ticdc/ticdc-open-api.md)
+    - TiCDC 数据消费
+      - [基于 Avro 的 TiCDC 行数据 Checksum 校验](/ticdc/ticdc-avro-checksum-verification.md)
+      - [Storage sink 消费程序编写指引](/ticdc/ticdc-storage-consumer-dev-guide.md)
+    - [TiCDC 兼容性](/ticdc/ticdc-compatibility.md)
+  - [故障处理](/ticdc/troubleshoot-ticdc.md)
+  - [常见问题解答](/ticdc/ticdc-faq.md)
+  - [术语表](/ticdc/ticdc-glossary.md)
 - 运维操作
   - 安全加固
     - [TiDB 安全配置最佳实践](/best-practices-for-security-configuration.md)
@@ -273,6 +314,7 @@
       - [TiKV 线程调优](/tune-tikv-thread-performance.md)
       - [TiKV 内存调优](/tune-tikv-memory-performance.md)
       - [TiKV Follower Read](/follower-read.md)
+      - [TiKV MVCC 内存引擎](/tikv-in-memory-engine.md)
       - [Region 性能调优](/tune-region-performance.md)
       - [TiFlash 调优](/tiflash/tune-tiflash-performance.md)
       - [下推计算结果缓存](/coprocessor-cache.md)
@@ -590,48 +632,6 @@
       - [FAQ](/tidb-lightning/tidb-lightning-faq.md)
       - [术语表](/tidb-lightning/tidb-lightning-glossary.md)
   - [Dumpling](/dumpling-overview.md)
-  - TiCDC
-    - [概述](/ticdc/ticdc-overview.md)
-    - [安装部署与集群运维](/ticdc/deploy-ticdc.md)
-    - Changefeed
-      - [Changefeed 概述](/ticdc/ticdc-changefeed-overview.md)
-      - 创建 Changefeed
-        - [同步数据到 MySQL 兼容的数据库](/ticdc/ticdc-sink-to-mysql.md)
-        - [同步数据到 Kafka](/ticdc/ticdc-sink-to-kafka.md)
-        - [同步数据到 Pulsar](/ticdc/ticdc-sink-to-pulsar.md)
-        - [同步数据到存储服务](/ticdc/ticdc-sink-to-cloud-storage.md)
-      - [管理 Changefeed](/ticdc/ticdc-manage-changefeed.md)
-      - [TiCDC 客户端鉴权](/ticdc/ticdc-client-authentication.md)
-      - [日志过滤器](/ticdc/ticdc-filter.md)
-      - [DDL 同步](/ticdc/ticdc-ddl.md)
-      - [双向复制](/ticdc/ticdc-bidirectional-replication.md)
-      - [单行数据正确性校验](/ticdc/ticdc-integrity-check.md)
-      - [主从集群一致性读和数据校验](/ticdc/ticdc-upstream-downstream-check.md)
-      - [拆分 UPDATE 事件行为说明](/ticdc/ticdc-split-update-behavior.md)
-    - 监控告警
-      - [基本监控指标](/ticdc/ticdc-summary-monitor.md)
-      - [详细监控指标](/ticdc/monitor-ticdc.md)
-      - [报警规则](/ticdc/ticdc-alert-rules.md)
-    - 参考指南
-      - [架构设计与原理](/ticdc/ticdc-architecture.md)
-      - [TiCDC Server 配置参数](/ticdc/ticdc-server-config.md)
-      - [TiCDC Changefeed 配置参数](/ticdc/ticdc-changefeed-config.md)
-      - 输出数据协议
-        - [TiCDC Avro Protocol](/ticdc/ticdc-avro-protocol.md)
-        - [TiCDC Canal-JSON Protocol](/ticdc/ticdc-canal-json.md)
-        - [TiCDC CSV Protocol](/ticdc/ticdc-csv.md)
-        - [TiCDC Debezium Protocol](/ticdc/ticdc-debezium.md)
-        - [TiCDC Open Protocol](/ticdc/ticdc-open-protocol.md)
-        - [TiCDC Simple Protocol](/ticdc/ticdc-simple-protocol.md)
-      - [TiCDC Open API v2](/ticdc/ticdc-open-api-v2.md)
-      - [TiCDC Open API v1](/ticdc/ticdc-open-api.md)
-      - TiCDC 数据消费
-        - [基于 Avro 的 TiCDC 行数据 Checksum 校验](/ticdc/ticdc-avro-checksum-verification.md)
-        - [Storage sink 消费程序编写指引](/ticdc/ticdc-storage-consumer-dev-guide.md)
-      - [兼容性](/ticdc/ticdc-compatibility.md)
-    - [故障处理](/ticdc/troubleshoot-ticdc.md)
-    - [常见问题解答](/ticdc/ticdc-faq.md)
-    - [术语表](/ticdc/ticdc-glossary.md)
   - PingCAP Clinic 诊断服务
     - [概述](/clinic/clinic-introduction.md)
     - [快速上手](/clinic/quick-start-with-clinic.md)
@@ -682,6 +682,7 @@
     - [TiFlash 延迟物化](/tiflash/tiflash-late-materialization.md)
     - [TiFlash 数据落盘](/tiflash/tiflash-spill-disk.md)
     - [TiFlash 数据校验](/tiflash/tiflash-data-validation.md)
+    - [TiFlash MinTSO 调度器](/tiflash/tiflash-mintso-scheduler.md)
     - [TiFlash 兼容性说明](/tiflash/tiflash-compatibility.md)
     - [TiFlash Pipeline Model 执行模型](/tiflash/tiflash-pipeline-model.md)
   - TiDB 分布式执行框架
@@ -735,6 +736,7 @@
     - SQL 语句
       - [概览](/sql-statements/sql-statement-overview.md)
       - [`ADMIN`](/sql-statements/sql-statement-admin.md)
+      - [`ADMIN ALTER DDL JOBS`](/sql-statements/sql-statement-admin-alter-ddl.md)
       - [`ADMIN CANCEL DDL`](/sql-statements/sql-statement-admin-cancel-ddl.md)
       - [`ADMIN CHECKSUM TABLE`](/sql-statements/sql-statement-admin-checksum-table.md)
       - [`ADMIN CHECK [TABLE|INDEX]`](/sql-statements/sql-statement-admin-check-table-index.md)
@@ -1076,11 +1078,16 @@
   - [版本发布时间线](/releases/release-timeline.md)
   - [TiDB 版本规则](/releases/versioning.md)
   - [TiDB 离线包](/binary-package.md)
+  - v8.5
+    - [8.5.0](/releases/release-8.5.0.md)
+  - v8.4
+    - [8.4.0-DMR](/releases/release-8.4.0.md)
   - v8.3
     - [8.3.0-DMR](/releases/release-8.3.0.md)
   - v8.2
     - [8.2.0-DMR](/releases/release-8.2.0.md)
   - v8.1
+    - [8.1.2](/releases/release-8.1.2.md)
     - [8.1.1](/releases/release-8.1.1.md)
     - [8.1.0](/releases/release-8.1.0.md)
   - v8.0
@@ -1100,6 +1107,7 @@
   - v7.2
     - [7.2.0-DMR](/releases/release-7.2.0.md)
   - v7.1
+    - [7.1.6](/releases/release-7.1.6.md)
     - [7.1.5](/releases/release-7.1.5.md)
     - [7.1.4](/releases/release-7.1.4.md)
     - [7.1.3](/releases/release-7.1.3.md)
