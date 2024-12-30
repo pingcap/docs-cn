@@ -53,7 +53,7 @@ ADMIN CHECKSUM TABLE `schema`.`table`;
 
 目前，TiDB Lightning 支持：
 
-- 导入 [Dumpling](/dumpling-overview.md)、CSV 或 [Amazon Aurora Parquet](/migrate-aurora-to-tidb.md) 输出格式的数据源。
+- 导入 [Dumpling](/dumpling-overview.md)、CSV、[Amazon Aurora Parquet](/migrate-aurora-to-tidb.md)、Apache Hive Parquet、Snowflake Parquet 输出格式的数据源。
 - 从本地盘或 Amazon S3 云盘读取数据。
 
 ## 我已经在下游创建好库和表了，TiDB Lightning 可以忽略建库建表操作吗？

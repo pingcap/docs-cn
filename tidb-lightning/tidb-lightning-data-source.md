@@ -334,7 +334,7 @@ TiDB Lightning 在处理 SQL 文件时，由于无法对单个文件进行快速
 
 ## Parquet
 
-TiDB Lightning 目前仅支持由 Amazon Aurora 或者 Hive 导出快照生成的 Parquet 文件。要识别其在 S3 的文件组织形式，需要使用如下配置匹配到所有的数据文件：
+TiDB Lightning 目前仅支持由 Amazon Aurora、Hive 或 Snowflake 导出快照生成的 Parquet 文件。要识别其在 S3 的文件组织形式，需要使用如下配置匹配到所有的数据文件：
 
 ```
 [[mydumper.files]]
