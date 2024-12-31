@@ -142,12 +142,10 @@ summary: TiDB Binlog 配置说明：介绍 Pump 和 Drainer 的配置项，包�
 
 ### load-schema-snapshot 
 
-* 默认值为 false
-* 当设置为 false 时：
-Drainer 会通过重播历史中的所有 DDL 操作来得出某个特定 schema version 时各张表的 table schema。这种方式意味着 drainer 需要处理从初始状态到目标 schema version 之间的所有 DDL 变更，可能会涉及大量的数据处理和重放。
-* 当设置为 true 时：
-Drainer 会直接读取 checkpoint ts 时的 table info 。由于直接读取特定时间点的表信息，这种方式通常更加高效。但是，它受到 GC 机制的限制。因为 GC 可能会删除旧的数据版本，所以如果 checkpoint ts 太旧，那么对应时间点的表信息可能已经被 GC 删除，导致无法直接读取。
-* 在配置drainer时，需要根据实际需求来选择是否直接读取 checkpoint ts 时的表信息。如果需要确保数据的完整性和一致性，且不介意处理大量的 DDL 变更，建议设置为 false。如果更注重效率和性能，且能够确保 checkpoint ts 在 GC 安全点之后，建议设置为 true。
+- 配置 Drainer 时，应根据实际需求选择是否直接读取 checkpoint TS 时的表信息。如果需要确保数据的完整性和一致性，且能接受处理大量 DDL 变更，建议设置为 `false`。如果更注重效率和性能，并能确保 checkpoint TS 在 GC 安全点之后，建议设置为 `true`。
+- 当设置为 `false` 时，Drainer 会通过重播历史中的所有 DDL 操作，推导出特定 schema version 时各张表的 table schema。这种方式需要处理从初始状态到目标 schema version 之间的所有 DDL 变更，可能涉及大量的数据处理和重放。
+- 当设置为 `true` 时，Drainer 会直接读取 checkpoint TS 时的表信息。由于直接读取特定时间点的表信息，这种方式通常更加高效。但它受到 GC 机制的限制，因为 GC 可能会删除旧的数据版本。如果 checkpoint TS 过旧，可能导致对应时间点的表信息已被 GC 删除，从而无法直接读取。
+- 默认值为 `false`。
 
 ### log-file
 
