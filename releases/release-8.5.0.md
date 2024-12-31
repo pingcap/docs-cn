@@ -228,7 +228,7 @@ TiDB 8.5.0 为长期支持版本 (Long-Term Support Release, LTS)。
 | 变量名  | 修改类型    | 描述 |
 |--------|------------------------------|------|
 | [`tidb_enable_fast_create_table`](/system-variables.md#tidb_enable_fast_create_table-从-v800-版本开始引入) | 修改 | 经进一步的测试后，默认值从 `OFF` 修改为 `ON`，即默认开启 [TiDB 加速建表](/accelerated-table-creation.md)。|
-| [`tidb_ddl_reorg_max_write_speed`](/system-variables.md#tidb_ddl_reorg_max_write_speed-从-v850-版本开始引入) | 新增 | 限制每个 TiKV 节点写入的带宽，仅在开启添加索引加速功能时生效（由变量 [`tidb_ddl_enable_fast_reorg`](/system-variables.md#tidb_ddl_enable_fast_reorg-从-v630-版本开始引入) 控制）。例如，当该值设置为 `200MiB` 时，最大写入速度限制为 200 MiB/s。 |
+| [`tidb_ddl_reorg_max_write_speed`](/system-variables.md#tidb_ddl_reorg_max_write_speed-从-v755-和-v850-版本开始引入) | 新增 | 限制每个 TiKV 节点写入的带宽，仅在开启添加索引加速功能时生效（由变量 [`tidb_ddl_enable_fast_reorg`](/system-variables.md#tidb_ddl_enable_fast_reorg-从-v630-版本开始引入) 控制）。例如，当该值设置为 `200MiB` 时，最大写入速度限制为 200 MiB/s。 |
 
 ### 配置参数
 
