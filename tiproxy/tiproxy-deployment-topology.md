@@ -7,11 +7,11 @@ summary: 了解在部署最小拓扑集群的基础上，部署 TiProxy 的拓�
 
 本文介绍在部署最小拓扑集群的基础上，部署 [TiProxy](/tiproxy/tiproxy-overview.md) 的拓扑结构。
 
-> **注意：**
->
-> 使用 TiDB Operator 部署的方式请参阅 [TiDB Operator](https://docs.pingcap.com/zh/tidb-in-kubernetes/stable/deploy-tiproxy) 文档。
-> 使用 TiUP 本地快速部署的方式请参阅 [部署 TiProxy](/tiup/tiup-playground.md#部署-tiproxy)。
-> 使用 TiUP 部署 TiProxy 的步骤见 [TiProxy 安装和使用](/tiproxy/tiproxy-overview.md#安装和使用)。
+其他部署方式，请参考以下文档：
+
+- 使用 TiDB Operator 部署 TiProxy，请参见 [TiDB Operator](https://docs.pingcap.com/zh/tidb-in-kubernetes/stable/deploy-tiproxy) 文档。
+- 使用 TiUP 本地快速部署 TiProxy，请参见[部署 TiProxy](/tiup/tiup-playground.md#部署-tiproxy)。
+- 使用 TiUP 部署 TiProxy，请参见 [TiProxy 安装和使用](/tiproxy/tiproxy-overview.md#安装和使用)。
 
 TiProxy 是 TiDB 的 L7 代理，可以平衡连接并迁移会话。
 
