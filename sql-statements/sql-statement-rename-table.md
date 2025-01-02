@@ -5,7 +5,7 @@ summary: TiDB 数据库中 RENAME TABLE 的使用概况。
 
 # RENAME TABLE
 
-`RENAME TABLE` 语句用于重命名现有表，支持同时重命名多个表及跨数据库重命名。
+`RENAME TABLE` 语句用于重命名现有表和视图，支持同时重命名多个表及跨数据库重命名。
 
 ## 语法图
 
