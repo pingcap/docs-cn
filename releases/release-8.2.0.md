@@ -119,7 +119,7 @@ TiDB 版本：8.2.0
 
     为了维持兼容性，从旧版本升级到 v8.2.0 及之后版本的集群维持原行为不变。通过设置新增变量 [`tidb_resource_control_strict_mode`](/system-variables.md#tidb_resource_control_strict_mode-从-v820-版本开始引入) 为 `ON`，来开启上述的增强权限控制。
 
-    更多信息，请参考[用户文档](/tidb-resource-control.md#绑定资源组)。
+    更多信息，请参考[用户文档](/tidb-resource-control-ru-groups.md#绑定资源组)。
 
 ### 可观测性
 
