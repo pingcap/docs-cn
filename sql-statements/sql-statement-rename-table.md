@@ -61,7 +61,7 @@ SHOW TABLES;
 1 row in set (0.00 sec)
 ```
 
-以下示例演示了如何跨数据库重命名多个表：
+以下示例演示了如何跨数据库重命名多个表（假设数据库 `db1`、`db2`、`db3` 和 `db4` 已存在，表 `db1.t1` 和 `db3.t3` 已存在）：
 
 ```sql
 RENAME TABLE db1.t1 To db2.t2, db3.t3 To db4.t4;
