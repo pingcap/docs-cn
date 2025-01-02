@@ -38,7 +38,7 @@ SHOW TABLES;
 +----------------+
 | t1             |
 +----------------+
-1 row in set (0.00 sec)77
+1 row in set (0.00 sec)
 ```
 
 ```sql
