@@ -62,8 +62,43 @@ SHOW TABLES;
 1 row in set (0.00 sec)
 ```
 
+以下示例跨数据库重命名多个表：
+
 ```sql
-RENAME TABLE db1.t1 To db2.t2, db3.t3 To db4.t4;
+mysql> RENAME TABLE db1.t1 To db2.t2, db3.t3 To db4.t4;
+Query OK, 0 rows affected (0.08 sec)
+
+mysql> USE db1; SHOW TABLES;
+Database changed
+Empty set (0.00 sec)
+
+mysql> USE db2; SHOW TABLES;
+Reading table information for completion of table and column names
+You can turn off this feature to get a quicker startup with -A
+
+Database changed
++---------------+
+| Tables_in_db2 |
++---------------+
+| t2            |
++---------------+
+1 row in set (0.00 sec)
+
+mysql> USE db3; SHOW TABLES;
+Database changed
+Empty set (0.00 sec)
+
+mysql> USE db4; SHOW TABLES;
+Reading table information for completion of table and column names
+You can turn off this feature to get a quicker startup with -A
+
+Database changed
++---------------+
+| Tables_in_db4 |
++---------------+
+| t4            |
++---------------+
+1 row in set (0.00 sec)
 ```
 
 ## MySQL 兼容性
