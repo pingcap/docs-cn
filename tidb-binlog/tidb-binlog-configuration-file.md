@@ -263,8 +263,7 @@ tbl-name = "audit"
 - 当设置为 `false` 时，Drainer 会通过重播历史中的所有 DDL 操作，推导出特定 schema version 时各张表的 table schema。这种方式需要处理从初始状态到目标 schema version 之间的所有 DDL 变更，可能涉及大量的数据处理和重放。
 - 当设置为 `true` 时，Drainer 会直接读取 checkpoint TS 时的表信息。由于直接读取特定时间点的表信息，这种方式通常更加高效。但它受到 GC 机制的限制，因为 GC 可能会删除旧的数据版本。如果 checkpoint TS 过旧，可能导致对应时间点的表信息已被 GC 删除，从而无法直接读取。
 - 配置 Drainer 时，应根据实际需求选择是否直接读取 checkpoint TS 时的表信息。如果需要确保数据的完整性和一致性，且能接受处理大量 DDL 变更，建议设置为 `false`。如果更注重效率和性能，并能确保 checkpoint TS 在 GC 安全点之后，建议设置为 `true`。
-- 默认值为 `false`。
-- 
+- 默认：`false`
 #### replicate-do-db
 
 * 指定要同步的数据库，例如 `[db1, db2]`。
