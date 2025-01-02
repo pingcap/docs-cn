@@ -5,7 +5,7 @@ summary: TiDB 数据库中 RENAME TABLE 的使用概况。
 
 # RENAME TABLE
 
-`RENAME TABLE` 语句用于对已有表进行重命名，支持同时重命名多个表并跨数据库进行重命名。
+`RENAME TABLE` 语句用于重命名现有表，支持同时重命名多个表及跨数据库重命名。
 
 ## 语法图
 
@@ -37,7 +37,7 @@ SHOW TABLES;
 +----------------+
 | t1             |
 +----------------+
-1 row in set (0.00 sec)
+1 row in set (0.00 sec)77
 ```
 
 ```sql
@@ -61,20 +61,30 @@ SHOW TABLES;
 1 row in set (0.00 sec)
 ```
 
-以下示例跨数据库重命名多个表：
+以下示例演示了如何跨数据库重命名多个表：
 
 ```sql
-mysql> RENAME TABLE db1.t1 To db2.t2, db3.t3 To db4.t4;
-Query OK, 0 rows affected (0.08 sec)
+RENAME TABLE db1.t1 To db2.t2, db3.t3 To db4.t4;
+```
 
-mysql> USE db1; SHOW TABLES;
+```
+Query OK, 0 rows affected (0.08 sec)
+```
+
+```sql
+USE db1; SHOW TABLES;
+```
+
+```
 Database changed
 Empty set (0.00 sec)
+```
 
-mysql> USE db2; SHOW TABLES;
-Reading table information for completion of table and column names
-You can turn off this feature to get a quicker startup with -A
+```sql
+USE db2; SHOW TABLES;
+```
 
+```
 Database changed
 +---------------+
 | Tables_in_db2 |
@@ -82,15 +92,22 @@ Database changed
 | t2            |
 +---------------+
 1 row in set (0.00 sec)
+```
 
-mysql> USE db3; SHOW TABLES;
+```sql
+USE db3; SHOW TABLES;
+```
+
+```
 Database changed
 Empty set (0.00 sec)
+```
 
-mysql> USE db4; SHOW TABLES;
-Reading table information for completion of table and column names
-You can turn off this feature to get a quicker startup with -A
+```sql
+USE db4; SHOW TABLES;
+```
 
+```
 Database changed
 +---------------+
 | Tables_in_db4 |
