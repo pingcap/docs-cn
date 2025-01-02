@@ -6,7 +6,7 @@ aliases: ['/docs-cn/dev/sql-statements/sql-statement-rename-table/','/docs-cn/de
 
 # RENAME TABLE
 
-`RENAME TABLE` 语句用于对已有表进行重命名。
+`RENAME TABLE` 语句用于对已有表进行重命名，支持同时重命名多个表并跨数据库进行重命名。
 
 ## 语法图
 
@@ -20,8 +20,6 @@ TableToTable ::=
 
 ## 示例
 
-{{< copyable "sql" >}}
-
 ```sql
 CREATE TABLE t1 (a int);
 ```
@@ -29,8 +27,6 @@ CREATE TABLE t1 (a int);
 ```
 Query OK, 0 rows affected (0.12 sec)
 ```
-
-{{< copyable "sql" >}}
 
 ```sql
 SHOW TABLES;
@@ -45,8 +41,6 @@ SHOW TABLES;
 1 row in set (0.00 sec)
 ```
 
-{{< copyable "sql" >}}
-
 ```sql
 RENAME TABLE t1 TO t2;
 ```
@@ -54,8 +48,6 @@ RENAME TABLE t1 TO t2;
 ```
 Query OK, 0 rows affected (0.08 sec)
 ```
-
-{{< copyable "sql" >}}
 
 ```sql
 SHOW TABLES;
@@ -68,6 +60,10 @@ SHOW TABLES;
 | t2             |
 +----------------+
 1 row in set (0.00 sec)
+```
+
+```sql
+RENAME TABLE db1.t1 To db2.t2, db3.t3 To db4.t4;
 ```
 
 ## MySQL 兼容性
