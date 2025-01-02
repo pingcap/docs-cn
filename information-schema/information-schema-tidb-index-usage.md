@@ -65,25 +65,25 @@ DESC CLUSTER_TIDB_INDEX_USAGE;
 输出结果如下：
 
 ```sql
-+-------------------------+-----------------------------------------------------------------+------+------+---------+-------+
-| Field                   | Type                                                            | Null | Key  | Default | Extra |
-+-------------------------+-----------------------------------------------------------------+------+------+---------+-------+
-| INSTANCE                | varchar(64)                                                     | YES  |      | NULL    |       |
-| ID                      | bigint(21) unsigned                                             | NO   | PRI  | NULL    |       |
-| START_TIME              | timestamp(6)                                                    | YES  |      | NULL    |       |
-| CURRENT_SQL_DIGEST      | varchar(64)                                                     | YES  |      | NULL    |       |
-| CURRENT_SQL_DIGEST_TEXT | text                                                            | YES  |      | NULL    |       |
-| STATE                   | enum('Idle','Running','LockWaiting','Committing','RollingBack') | YES  |      | NULL    |       |
-| WAITING_START_TIME      | timestamp(6)                                                    | YES  |      | NULL    |       |
-| MEM_BUFFER_KEYS         | bigint(64)                                                      | YES  |      | NULL    |       |
-| MEM_BUFFER_BYTES        | bigint(64)                                                      | YES  |      | NULL    |       |
-| SESSION_ID              | bigint(21) unsigned                                             | YES  |      | NULL    |       |
-| USER                    | varchar(16)                                                     | YES  |      | NULL    |       |
-| DB                      | varchar(64)                                                     | YES  |      | NULL    |       |
-| ALL_SQL_DIGESTS         | text                                                            | YES  |      | NULL    |       |
-| RELATED_TABLE_IDS       | text                                                            | YES  |      | NULL    |       |
-| WAITING_TIME            | double                                                          | YES  |      | NULL    |       |
-+-------------------------+-----------------------------------------------------------------+------+------+---------+-------+
++--------------------------+-------------+------+------+---------+-------+
+| Field                    | Type        | Null | Key  | Default | Extra |
++--------------------------+-------------+------+------+---------+-------+
+| INSTANCE                 | varchar(64) | YES  |      | NULL    |       |
+| TABLE_SCHEMA             | varchar(64) | YES  |      | NULL    |       |
+| TABLE_NAME               | varchar(64) | YES  |      | NULL    |       |
+| INDEX_NAME               | varchar(64) | YES  |      | NULL    |       |
+| QUERY_TOTAL              | bigint(21)  | YES  |      | NULL    |       |
+| KV_REQ_TOTAL             | bigint(21)  | YES  |      | NULL    |       |
+| ROWS_ACCESS_TOTAL        | bigint(21)  | YES  |      | NULL    |       |
+| PERCENTAGE_ACCESS_0      | bigint(21)  | YES  |      | NULL    |       |
+| PERCENTAGE_ACCESS_0_1    | bigint(21)  | YES  |      | NULL    |       |
+| PERCENTAGE_ACCESS_1_10   | bigint(21)  | YES  |      | NULL    |       |
+| PERCENTAGE_ACCESS_10_20  | bigint(21)  | YES  |      | NULL    |       |
+| PERCENTAGE_ACCESS_20_50  | bigint(21)  | YES  |      | NULL    |       |
+| PERCENTAGE_ACCESS_50_100 | bigint(21)  | YES  |      | NULL    |       |
+| PERCENTAGE_ACCESS_100    | bigint(21)  | YES  |      | NULL    |       |
+| LAST_ACCESS_TIME         | datetime    | YES  |      | NULL    |       |
++--------------------------+-------------+------+------+---------+-------+
 15 rows in set (0.00 sec)
 ```
 
