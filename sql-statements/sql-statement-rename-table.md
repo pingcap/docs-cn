@@ -118,6 +118,47 @@ Database changed
 1 row in set (0.00 sec)
 ```
 
+原子重命名可以确保在交换表时，表始终存在。
+
+```sql
+CREATE TABLE t1(id int PRIMARY KEY);
+```
+
+```
+Query OK, 0 rows affected (0.04 sec)
+```
+
+```sql
+CREATE TABLE t1_new(id int PRIMARY KEY, n CHAR(0));
+````
+
+```
+Query OK, 0 rows affected (0.04 sec)
+```
+
+```sql
+RENAME TABLE t1 TO t1_old, t1_new TO t1;
+```
+
+```
+Query OK, 0 rows affected (0.07 sec)
+```
+
+```sql
+SHOW CREATE TABLE t1\G
+```
+
+```
+*************************** 1. row ***************************
+       Table: t1
+Create Table: CREATE TABLE `t1` (
+  `id` int NOT NULL,
+  `n` char(0) DEFAULT NULL,
+  PRIMARY KEY (`id`) /*T![clustered_index] CLUSTERED */
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin
+1 row in set (0.00 sec)
+```
+
 ## MySQL 兼容性
 
 `RENAME TABLE` 语句与 MySQL 完全兼容。如发现任何兼容性差异，请尝试 [TiDB 支持资源](/support.md)。
