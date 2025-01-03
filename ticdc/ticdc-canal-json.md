@@ -85,18 +85,18 @@ TiCDC 会把一个 DDL Event 编码成如下 Canal-JSON 格式：
 | _tidb     | Object | TiDB 扩展字段，仅当 `enable-tidb-extension` 为 true 时才会存在。 |
 
 
-_tidb 即 TiDB 扩展字段中的子字段说明：
+_tidb 即 TiDB 扩展字段，其子字段说明如下：
 
 | 字段                | 类型   | 说明                                                                      | 
 |:-------------------|:-------|:-------------------------------------------------------------------------|
-| commitTs           | Number | 产生事件变更的事务提交使用的 TSO。 设置于 DDL 和 DML 事件              |
-| watermarkTs        | Number | TiCDC 周期性发送的 watermark ts，其类型也是 TSO。设置于 Watermark 事件|
+| commitTs           | Number | 产生事件变更的事务提交使用的 TSO。设置于 DDL 和 DML 事件              |
+| watermarkTs        | Number | TiCDC 周期性发送的 Watermark Ts，其类型也是 TSO。设置于 Watermark 事件|
 | tableId            | Number | 事件所属表的 ID。设置于 DML 事件 |
 | partitionId        | Number | 事件如果来自于分区表，消息会携带该字段，表示所属分区的 ID。设置于 DML 事件 |
 | onlyHandleKey      | Bool   | 当前事件仅包含 handle key 部分内容。设置于 DML 事件 |
 | claimCheckLocation | String | 当前事件含有 claim check location。设置于 DML 事件 | 
 
-tableId 和 partitionId 字段从 xxx 版本开始引入，主要目的是为了应对分区表场景下，消费者可以通过 partitionId 得知当前事件所属的表分区，以及关联的分区表。
+`tableId` 和 `partitionId` 字段从 xxx 版本开始引入，主要目的是为了应对分区表场景下，消费者可以通过 `partitionId` 得知当前事件所属的表分区，以及关联的分区表。
 
 ### DML Event
 
