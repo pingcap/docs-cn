@@ -44,7 +44,7 @@ TiDB 扩展了以下内置函数和运算符的功能，使其额外支持了[�
 | [`+`](https://dev.mysql.com/doc/refman/8.0/en/arithmetic-functions.html#operator_plus)  | 向量以元素为单位进行加法运算符    |
 | [`-`](https://dev.mysql.com/doc/refman/8.0/en/arithmetic-functions.html#operator_minus) | 向量以元素为单位进行减法运算符 |
 
-关于向量运算工作原理的更多信息，请参阅[向量数据类型的运算](/vector-search-data-types.md#运算)。
+关于向量运算工作原理的更多信息，请参阅[向量数据类型的运算](/vector-search/vector-search-data-types.md#运算)。
 
 **聚合函数 (GROUP BY)：**
 
@@ -76,7 +76,7 @@ TiDB 扩展了以下内置函数和运算符的功能，使其额外支持了[�
 | [`!=`, `<>`](https://dev.mysql.com/doc/refman/8.0/en/comparison-operators.html#operator_not-equal)                  | 不等运算符                                    |
 | [`NOT IN()`](https://dev.mysql.com/doc/refman/8.0/en/comparison-operators.html#operator_not-in)                     | 检查值是否不在一组数值之内   |
 
-关于如何比较向量的更多信息，请参阅[向量数据类型的比较](/vector-search-data-types.md#比较)。
+关于如何比较向量的更多信息，请参阅[向量数据类型的比较](/vector-search/vector-search-data-types.md#比较)。
 
 **控制流程函数：**
 
@@ -94,7 +94,7 @@ TiDB 扩展了以下内置函数和运算符的功能，使其额外支持了[�
 | [`CAST()`](https://dev.mysql.com/doc/refman/8.0/en/cast-functions.html#function_cast)       | 将值转换为字符串或向量类型 |
 | [`CONVERT()`](https://dev.mysql.com/doc/refman/8.0/en/cast-functions.html#function_convert) | 将值转换为字符串类型 |
 
-关于如何使用 `CAST()` 的更多信息，请参阅[向量数据类型的转换](/vector-search-data-types.md#类型转换-cast)。
+关于如何使用 `CAST()` 的更多信息，请参阅[向量数据类型的转换](/vector-search/vector-search-data-types.md#类型转换-cast)。
 
 ## 使用示例
 

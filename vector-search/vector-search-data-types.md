@@ -79,7 +79,7 @@ INSERT INTO vector_table VALUES (2, '[0.3, 0.5]');       -- 插入一个 2 维�
 
 ## 比较
 
-向量数据支持[比较运算符](/vector-search-functions-and-operators.md#扩展的内置函数和运算符)，例如 `=`、`!=`、`<`、`>`、`<=` 和 `>=` 等。关于向量数据类型支持的所有函数和操作符，可参阅[向量函数与操作符](/vector-search/vector-search-functions-and-operators.md)。
+向量数据支持[比较运算符](/vector-search/vector-search-functions-and-operators.md#扩展的内置函数和运算符)，例如 `=`、`!=`、`<`、`>`、`<=` 和 `>=` 等。关于向量数据类型支持的所有函数和操作符，可参阅[向量函数与操作符](/vector-search/vector-search-functions-and-operators.md)。
 
 比较向量数据类型时，TiDB 会以向量中的各个元素为单位进行依次比较，如：
 
@@ -233,7 +233,7 @@ ERROR 1105 (HY000): vectors have different dimensions: 1 and 3
 
 ## 使用限制
 
-有关向量类型的限制，请参阅[向量搜索限制](/vector-search/vector-search-limitations.md)以及[向量搜索索引的使用限制](/vector-search-index.md#使用限制)。
+有关向量类型的限制，请参阅[向量搜索限制](/vector-search/vector-search-limitations.md)以及[向量搜索索引的使用限制](/vector-search/vector-search-index.md#使用限制)。
 
 ## MySQL 兼容性
 
