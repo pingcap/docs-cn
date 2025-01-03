@@ -1097,12 +1097,12 @@ Coprocessor 相关的配置项。
 
 + 已编译 coprocessor 插件所在目录的路径。TiKV 会自动加载该目录下的插件。
 + 如果未设置该配置项，则 coprocessor 插件会被禁用。
-+ 默认值：`"./coprocessors"`
++ 默认值：无
 
 ### `enable-region-bucket` <span class="version-mark">从 v6.1.0 版本开始引入</span>
 
 + 是否将 Region 划分为更小的区间 bucket，并且以 bucket 作为并发查询单位，以提高扫描数据的并发度。bucket 的详细设计可见 [Dynamic size Region](https://github.com/tikv/rfcs/blob/master/text/0082-dynamic-size-region.md)。
-+ 默认值：false
++ 默认值：无，表示默认关闭。
 
 > **警告：**
 >
@@ -1335,7 +1335,7 @@ RocksDB 相关的配置项。
 + 设置单个 TiKV 中所有 RocksDB 实例使用的 memtable 的总内存上限。`0` 表示不设限制。
 + 默认值：
 
-    + 当 `storage.engine="raft-kv"` 时，默认值为 `0`，即不限制。
+    + 当 `storage.engine="raft-kv"` 时，无默认值，即不限制。
     + 当 `storage.engine="partitioned-raft-kv"` 时，默认值为本机内存的 20%。
 
 + 单位：KiB|MiB|GiB
@@ -1460,7 +1460,7 @@ rocksdb defaultcf、rocksdb writecf 和 rocksdb lockcf 相关的配置项。
 
 + 控制是否对于大于等于该值的 level 使用 Ribbon filter，对于小于该值的 level，使用非 block-based bloom filter。当该配置开启时，[`block-based-bloom-filter`](#block-based-bloom-filter) 将被忽略。
 + 只有当 [`format-version`](#format-version-从-v620-版本开始引入) >= 5 时，该配置项才生效。
-+ 默认值：`false`
++ 默认值：无，默认关闭。
 
 ### `read-amp-bytes-per-bit`
 
@@ -1518,7 +1518,7 @@ rocksdb defaultcf、rocksdb writecf 和 rocksdb lockcf 相关的配置项。
 ### `target-file-size-base`
 
 + base level 的目标文件大小。当 `enable-compaction-guard` 的值为 `true` 时，`compaction-guard-max-output-file-size` 会覆盖此配置。
-+ 默认值：8MiB
++ 默认值：无，表示默认 8MiB
 + 最小值：0
 + 单位：KiB|MiB|GiB
 
@@ -1604,7 +1604,7 @@ rocksdb defaultcf、rocksdb writecf 和 rocksdb lockcf 相关的配置项。
 + 设置 compaction guard 的启用状态。compaction guard 优化通过使用 TiKV Region 边界分割 SST 文件，帮助降低 compaction I/O，让 TiKV 能够输出较大的 SST 文件，并且在迁移 Region 时及时清理过期数据。
 + `defaultcf` 默认值：`true`
 + `writecf` 默认值：`true`
-+ `lockcf` 默认值：`false`
++ `lockcf` 默认值：无，表示默认关闭
 
 ### `compaction-guard-min-output-file-size`
 
@@ -1636,13 +1636,13 @@ rocksdb defaultcf、rocksdb writecf 和 rocksdb lockcf 相关的配置项。
 ### `ttl` <span class="version-mark">从 v7.2.0 版本开始引入</span>
 
 + 设置 SST 文件被自动选中执行 compaction 的 TTL 时间。更新时间超过此值的 SST 文件将被选中并进行 compaction。在执行 compaction 时，这些 SST 文件通常以级联的方式进行压缩，以便被压缩到最底层或最底层的文件中。
-+ 默认值：`"0s"`，表示默认不选择任何 SST 文件。
++ 默认值：无，表示默认不选择任何 SST 文件。
 + 单位：s(second)|h(hour)|d(day)
 
 ### `periodic-compaction-seconds` <span class="version-mark">从 v7.2.0 版本开始引入</span>
 
 + 设置周期性 compaction 的时间。更新时间超过此值的 SST 文件将被选中进行 compaction，并被重新写入这些 SST 文件所在的层级。
-+ 默认值：`"0s"`，表示默认不触发此 compaction。
++ 默认值：无，表示默认不触发此 compaction。
 + 单位：s(second)|h(hour)|d(day)
 
 ## rocksdb.defaultcf.titan
@@ -1662,7 +1662,7 @@ rocksdb defaultcf titan 相关的配置项。
 > - 当参数被设置为小于 `32KiB` 时，TiKV 大范围扫描性能会受到一些影响。然而，如果负载主要是写入和点查为主，你可以适当调小 `min-blob-size` 的值以获取更好的写入和点查性能。
 
 + 最小存储在 Blob 文件中 value 大小，低于该值的 value 还是存在 LSM-Tree 中。
-+ 默认值：32KiB
++ 默认值：无，表示默认 32KiB。
 + 最小值：0
 + 单位：KiB|MiB|GiB
 
