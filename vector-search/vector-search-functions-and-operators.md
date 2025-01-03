@@ -13,7 +13,7 @@ summary: 本文介绍 TiDB 的向量相关函数和操作。
 
 ## 向量函数
 
-TiDB 为[向量数据类型](/vector-search-data-types.md)引入了以下向量函数：
+TiDB 为[向量数据类型](/vector-search/vector-search-data-types.md)引入了以下向量函数：
 
 **向量距离函数：**
 
@@ -35,7 +35,7 @@ TiDB 为[向量数据类型](/vector-search-data-types.md)引入了以下向量�
 
 ## 扩展的内置函数和运算符
 
-TiDB 扩展了以下内置函数和运算符的功能，使其额外支持了[向量数据类型](/vector-search-data-types.md)。
+TiDB 扩展了以下内置函数和运算符的功能，使其额外支持了[向量数据类型](/vector-search/vector-search-data-types.md)。
 
 **算术运算符：**
 
@@ -281,4 +281,4 @@ VEC_AS_TEXT(vector)
 
 ## 另请参阅
 
-- [向量数据类型](/vector-search-data-types.md)
+- [向量数据类型](/vector-search/vector-search-data-types.md)

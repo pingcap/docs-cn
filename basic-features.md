@@ -25,7 +25,7 @@ summary: 了解 TiDB 的功能概览。
 | [日期和时间类型](/data-type-date-and-time.md) |  Y |  Y |  Y  | Y | Y | Y | Y | Y | Y | Y |
 | [字符串类型](/data-type-string.md) |  Y |  Y |  Y  | Y | Y | Y | Y | Y | Y | Y |
 | [JSON 类型](/data-type-json.md) |  Y |  Y |  Y  | Y | Y | E | E | E | E | E |
-| [向量数据类型](/vector-search-data-types.md) |  E |  N |  N  | N | N | N | N | N | N | N |
+| [向量数据类型](/vector-search/vector-search-data-types.md) |  E |  N |  N  | N | N | N | N | N | N | N |
 | [控制流程函数](/functions-and-operators/control-flow-functions.md) |  Y |  Y |  Y  | Y | Y | Y | Y | Y | Y | Y |
 | [字符串函数](/functions-and-operators/string-functions.md) |  Y |  Y |  Y  | Y | Y | Y | Y | Y | Y | Y |
 | [数值函数与操作符](/functions-and-operators/numeric-functions-and-operators.md) |  Y |  Y |  Y  | Y | Y | Y | Y | Y | Y | Y |
@@ -33,7 +33,7 @@ summary: 了解 TiDB 的功能概览。
 | [位函数和操作符](/functions-and-operators/bit-functions-and-operators.md) |  Y |  Y |  Y  | Y | Y | Y | Y | Y | Y | Y |
 | [Cast 函数和操作符](/functions-and-operators/cast-functions-and-operators.md) |  Y |  Y |  Y  | Y | Y | Y | Y | Y | Y | Y |
 | [加密和压缩函数](/functions-and-operators/encryption-and-compression-functions.md) |  Y |  Y |  Y  | Y | Y | Y | Y | Y | Y | Y |
-| [向量函数和操作符](/vector-search-functions-and-operators.md) |  E |  N |  N  | N | N | N | N | N | N | N |
+| [向量函数和操作符](/vector-search/vector-search-functions-and-operators.md) |  E |  N |  N  | N | N | N | N | N | N | N |
 | [信息函数](/functions-and-operators/information-functions.md) |  Y |  Y |  Y  | Y | Y | Y | Y | Y | Y | Y |
 | [JSON 函数](/functions-and-operators/json-functions.md) |  Y |  Y |  Y  | Y | Y | E | E | E | E | E |
 | [聚合函数](/functions-and-operators/aggregate-group-by-functions.md) |  Y |  Y |  Y  | Y | Y | Y | Y | Y | Y | Y |
@@ -64,7 +64,7 @@ summary: 了解 TiDB 的功能概览。
 | [外键约束](/foreign-key.md) | Y |  E |  E  | E | N | N | N | N | N | N |
 | [TiFlash 延迟物化](/tiflash/tiflash-late-materialization.md) | Y |  Y |  Y  | Y | N | N | N | N | N | N |
 | [全局索引 (Global Index)](/partitioned-table.md#全局索引) | Y |  N | N  | N | N | N | N | N | N | N |
-| [向量索引](/vector-search-index.md) |  E |  N |  N  | N | N | N | N | N | N | N |
+| [向量索引](/vector-search/vector-search-index.md) |  E |  N |  N  | N | N | N | N | N | N | N |
 
 ## SQL 语句
 
@@ -95,7 +95,7 @@ summary: 了解 TiDB 的功能概览。
 
 | 高级 SQL 功能 | 8.5 | 8.1 | 7.5 | 7.1 | 6.5 | 6.1 | 5.4 | 5.3 | 5.2 | 5.1 |
 |---|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|
-| [向量搜索](/vector-search-overview.md) |  E |  N |  N  | N | N | N | N | N | N | N |
+| [向量搜索](/vector-search/vector-search-overview.md) |  E |  N |  N  | N | N | N | N | N | N | N |
 | [Prepare 语句执行计划缓存](/sql-prepared-plan-cache.md) | Y |  Y  |  Y  | Y | Y | Y | Y | Y | E | E |
 | [非 Prepare 语句执行计划缓存](/sql-non-prepared-plan-cache.md) | Y |  Y  |  Y  | E | N | N | N | N | N | N |
 | [实例级执行计划缓存](/system-variables.md#tidb_enable_instance_plan_cache-从-v840-版本开始引入) | E |  N  |  N  | N | N | N | N | N | N | N |
