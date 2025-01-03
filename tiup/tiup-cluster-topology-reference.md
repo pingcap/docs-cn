@@ -342,6 +342,7 @@ tiflash_servers:
 - `host`：指定部署到哪台机器，字段值填 IP 地址，不可省略。
 - `ssh_port`：指定连接目标机器进行操作的时候使用的 SSH 端口，若不指定，则使用 `global` 区块中的 `ssh_port`。
 - `port`：TiProxy SQL 服务的监听端口，默认值：`6000`。
+- `status_port`：TiProxy 状态服务的监听端口，用于外部通过 HTTP 请求查看 TiProxy 服务的状态，默认值：`3080`。
 - `deploy_dir`：指定部署目录，若不指定，或指定为相对目录，则按照 `global` 中配置的 `deploy_dir` 生成。
 - `data_dir`：指定数据目录，若不指定，或指定为相对目录，则按照 `global` 中配置的 `data_dir` 生成。
 - `numa_node`：为该实例分配 NUMA 策略，如果指定了该参数，需要确保目标机装了 [numactl](https://linux.die.net/man/8/numactl)，在指定该参数的情况下会通过 [numactl](https://linux.die.net/man/8/numactl) 分配 cpubind 和 membind 策略。该字段参数为 string 类型，字段值填 NUMA 节点的 ID，例如 `"0,1"`。
@@ -363,8 +364,18 @@ tiflash_servers:
 ```yaml
 tiproxy_servers:
   - host: 10.0.1.21
+    port: 6000
+    status_port: 3080
+    config:
+      labels: { zone: "zone1" }
   - host: 10.0.1.22
+    port: 6000
+    status_port: 3080
+    config:
+      labels: { zone: "zone2" }
 ```
+
+关于更多配置示例，请参见 [TiProxy 部署拓扑](/tiproxy/tiproxy-deployment-topology.md)。
 
 ### `kvcdc_servers`
 

@@ -7,6 +7,12 @@ summary: 了解在部署最小拓扑集群的基础上，部署 TiProxy 的拓�
 
 本文介绍在部署最小拓扑集群的基础上，部署 [TiProxy](/tiproxy/tiproxy-overview.md) 的拓扑结构。
 
+其他部署方式，请参考以下文档：
+
+- 使用 TiDB Operator 部署 TiProxy，请参见 [TiDB Operator](https://docs.pingcap.com/zh/tidb-in-kubernetes/stable/deploy-tiproxy) 文档。
+- 使用 TiUP 本地快速部署 TiProxy，请参见[部署 TiProxy](/tiup/tiup-playground.md#部署-tiproxy)。
+- 使用 TiUP 部署 TiProxy，请参见 [TiProxy 安装和使用](/tiproxy/tiproxy-overview.md#安装和使用)。
+
 TiProxy 是 TiDB 的 L7 代理，可以平衡连接并迁移会话。
 
 ## 拓扑信息
@@ -35,9 +41,12 @@ global:
 component_versions:
   tiproxy: "v1.2.0"
 server_configs:
+  tidb:
+    graceful-wait-before-shutdown: 15
   tiproxy:
     ha.virtual-ip: "10.0.1.10/24"
     ha.interface: "eth0"
+    graceful-wait-before-shutdown: 15
 
 pd_servers:
   - host: 10.0.1.1
@@ -56,7 +65,19 @@ tikv_servers:
 
 tiproxy_servers:
   - host: 10.0.1.11
+    deploy_dir: "/tiproxy-deploy"
+    data_dir: "/tiproxy-data"
+    port: 6000
+    status_port: 3080
+    config:
+      labels: { zone: "east" }
   - host: 10.0.1.12
+    deploy_dir: "/tiproxy-deploy"
+    data_dir: "/tiproxy-data"
+    port: 6000
+    status_port: 3080
+    config:
+      labels: { zone: "west" }
 
 monitoring_servers:
   - host: 10.0.1.13
