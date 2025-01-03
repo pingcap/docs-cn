@@ -74,7 +74,7 @@ mysql --comments --host 127.0.0.1 --port 4000 -u root
 
 ### 第 2 步：创建向量表
 
-创建表时，你可以使用 `VECTOR` 数据类型声明指定列为[向量](/vector-search-overview.md#向量嵌入)列。
+创建表时，你可以使用 `VECTOR` 数据类型声明指定列为[向量](/vector-search/vector-search-overview.md#向量嵌入)列。
 
 例如，要创建一个带有三维 `VECTOR` 列的 `embedded_documents` 表，可以使用 MySQL CLI 执行以下 SQL 语句：
 
@@ -97,7 +97,7 @@ Query OK, 0 rows affected (0.27 sec)
 
 ### 第 3 步：向表中插入向量
 
-向 `embedded_documents` 表中插入三行，每一行包含数据和数据的[向量嵌入](/vector-search-overview.md#向量嵌入)：
+向 `embedded_documents` 表中插入三行，每一行包含数据和数据的[向量嵌入](/vector-search/vector-search-overview.md#向量嵌入)：
 
 ```sql
 INSERT INTO embedded_documents
@@ -118,7 +118,7 @@ Records: 3  Duplicates: 0  Warnings: 0
 >
 > 为了方便展示，本示例简化了向量的维数，仅使用三维向量。
 >
-> 在实际应用中，[嵌入模型](/vector-search-overview.md#嵌入模型)通常会生成数百或数千维的向量。
+> 在实际应用中，[嵌入模型](/vector-search/vector-search-overview.md#嵌入模型)通常会生成数百或数千维的向量。
 
 ### 第 4 步：查询向量表
 
@@ -145,7 +145,7 @@ SELECT * FROM embedded_documents;
 
 与全文搜索类似，在使用向量搜索时，你需要提供搜索词。
 
-在本例中，搜索词是“一种会游泳的动物”，假设其对应的向量是 `[1,2,3]`。在实际应用中，你需要使用[嵌入模型](/vector-search-overview.md#嵌入模型)将用户的搜索词转换为向量。
+在本例中，搜索词是“一种会游泳的动物”，假设其对应的向量是 `[1,2,3]`。在实际应用中，你需要使用[嵌入模型](/vector-search/vector-search-overview.md#嵌入模型)将用户的搜索词转换为向量。
 
 执行以下 SQL 语句后，TiDB 会计算 `[1,2,3]` 与表中各向量之间的余弦距离 (`vec_cosine_distance`)，然后对这些距离进行排序并输出表中最接近搜索向量（余弦距离最小）的前三个文档。
 
