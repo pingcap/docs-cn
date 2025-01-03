@@ -5,7 +5,7 @@ summary: 了解如何在 TiDB 中使用 SQL 语句快速开始向量搜索，从
 
 # 使用 SQL 开始向量搜索
 
-TiDB 扩展了 MySQL 语法以支持[向量搜索](/vector-search-overview.md)，并引入了[向量数据类型](/vector-search-data-types.md)和多个[向量函数](/vector-search-functions-and-operators.md)。
+TiDB 扩展了 MySQL 语法以支持[向量搜索](/vector-search/vector-search-overview.md)，并引入了[向量数据类型](/vector-search/vector-search-data-types.md)和多个[向量函数](/vector-search/vector-search-functions-and-operators.md)。
 
 本文将展示如何使用 SQL 语句在 TiDB 中进行向量搜索。在本文中，你将使用 [MySQL 命令行客户端](https://dev.mysql.com/doc/refman/8.4/en/mysql.html)完成以下任务：
 
@@ -175,5 +175,5 @@ LIMIT 3;
 
 ## 另请参阅
 
-- [向量数据类型](/vector-search-data-types.md)
-- [向量搜索索引](/vector-search-index.md)
+- [向量数据类型](/vector-search/vector-search-data-types.md)
+- [向量搜索索引](/vector-search/vector-search-index.md)

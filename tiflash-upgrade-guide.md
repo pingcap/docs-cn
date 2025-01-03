@@ -121,7 +121,7 @@ TiFlash 在 v6.2.0 将数据格式升级到 V3 版本，因此，从 v5.x 或 v6
 
 ## 从 v7.x 升级至 v8.4 或以上版本
 
-从 v8.4 开始，为了支持[向量搜索功能](/vector-search-index.md)，TiFlash 底层存储格式发生改动。因此，升级 TiFlash 到 v8.4 或以上版本后，不支持原地降级到之前的版本。
+从 v8.4 开始，为了支持[向量搜索功能](/vector-search/vector-search-index.md)，TiFlash 底层存储格式发生改动。因此，升级 TiFlash 到 v8.4 或以上版本后，不支持原地降级到之前的版本。
 
 **测试环境及特殊回退需求下的对策**
 

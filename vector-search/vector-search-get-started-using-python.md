@@ -7,7 +7,7 @@ summary: 了解如何使用 Python 和 TiDB 向量搜索快速开发可执行语
 
 本文将展示如何开发一个简单的 AI 应用，这个 AI 应用实现了简单的**语义搜索**功能。不同于传统的关键字搜索，语义搜索可以智能地理解你的输入，返回更相关的结果。例如，在“狗”、“鱼”和“树”这三条内容中搜索“一种会游泳的动物”时，语义搜索会将“鱼”作为最相关的结果返回。
 
-在本文中，你将使用 [TiDB 向量搜索](/vector-search-overview.md)、Python、[TiDB Vector Python SDK](https://github.com/pingcap/tidb-vector-python) 和 AI 大模型完成这个 AI 应用的开发。
+在本文中，你将使用 [TiDB 向量搜索](/vector-search/vector-search-overview.md)、Python、[TiDB Vector Python SDK](https://github.com/pingcap/tidb-vector-python) 和 AI 大模型完成这个 AI 应用的开发。
 
 > **警告：**
 >
@@ -229,5 +229,5 @@ Search result ("a swimming animal"):
 
 ## 另请参阅
 
-- [向量数据类型](/vector-search-data-types.md)
-- [向量搜索索引](/vector-search-index.md)
+- [向量数据类型](/vector-search/vector-search-data-types.md)
+- [向量搜索索引](/vector-search/vector-search-index.md)
