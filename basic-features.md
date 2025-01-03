@@ -19,6 +19,7 @@ summary: 了解 TiDB 的功能概览。
 
 ## 数据类型，函数和操作符
 
+<<<<<<< HEAD
 | 数据类型，函数，操作符 | 8.4 | 8.3 | 8.2 | 8.1 | 7.5 | 7.1 | 6.5 | 6.1 | 5.4 | 5.3 | 5.2 | 5.1 |
 |---|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|
 | [数值类型](/data-type-numeric.md) |  Y |  Y |  Y |  Y |  Y  | Y | Y | Y | Y | Y | Y | Y |
@@ -65,6 +66,54 @@ summary: 了解 TiDB 的功能概览。
 | [TiFlash 延迟物化](/tiflash/tiflash-late-materialization.md) | Y | Y |  Y |  Y |  Y  | Y | N | N | N | N | N | N |
 | [全局索引 (Global Index)](/partitioned-table.md#全局索引) | Y | E |  N |  N | N  | N | N | N | N | N | N | N |
 | [向量索引](/vector-search-index.md) |  E |  N |  N |  N |  N  | N | N | N | N | N | N | N |
+=======
+| 数据类型，函数，操作符 | 8.5 | 8.1 | 7.5 | 7.1 | 6.5 | 6.1 | 5.4 | 5.3 | 5.2 | 5.1 |
+|---|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|
+| [数值类型](/data-type-numeric.md) |  Y |  Y |  Y  | Y | Y | Y | Y | Y | Y | Y |
+| [日期和时间类型](/data-type-date-and-time.md) |  Y |  Y |  Y  | Y | Y | Y | Y | Y | Y | Y |
+| [字符串类型](/data-type-string.md) |  Y |  Y |  Y  | Y | Y | Y | Y | Y | Y | Y |
+| [JSON 类型](/data-type-json.md) |  Y |  Y |  Y  | Y | Y | E | E | E | E | E |
+| [向量数据类型](/vector-search/vector-search-data-types.md) |  E |  N |  N  | N | N | N | N | N | N | N |
+| [控制流程函数](/functions-and-operators/control-flow-functions.md) |  Y |  Y |  Y  | Y | Y | Y | Y | Y | Y | Y |
+| [字符串函数](/functions-and-operators/string-functions.md) |  Y |  Y |  Y  | Y | Y | Y | Y | Y | Y | Y |
+| [数值函数与操作符](/functions-and-operators/numeric-functions-and-operators.md) |  Y |  Y |  Y  | Y | Y | Y | Y | Y | Y | Y |
+| [日期和时间函数](/functions-and-operators/date-and-time-functions.md)|  Y  |  Y |  Y  | Y | Y | Y | Y | Y | Y | Y |
+| [位函数和操作符](/functions-and-operators/bit-functions-and-operators.md) |  Y |  Y |  Y  | Y | Y | Y | Y | Y | Y | Y |
+| [Cast 函数和操作符](/functions-and-operators/cast-functions-and-operators.md) |  Y |  Y |  Y  | Y | Y | Y | Y | Y | Y | Y |
+| [加密和压缩函数](/functions-and-operators/encryption-and-compression-functions.md) |  Y |  Y |  Y  | Y | Y | Y | Y | Y | Y | Y |
+| [向量函数和操作符](/vector-search/vector-search-functions-and-operators.md) |  E |  N |  N  | N | N | N | N | N | N | N |
+| [信息函数](/functions-and-operators/information-functions.md) |  Y |  Y |  Y  | Y | Y | Y | Y | Y | Y | Y |
+| [JSON 函数](/functions-and-operators/json-functions.md) |  Y |  Y |  Y  | Y | Y | E | E | E | E | E |
+| [聚合函数](/functions-and-operators/aggregate-group-by-functions.md) |  Y |  Y |  Y  | Y | Y | Y | Y | Y | Y | Y |
+| [窗口函数](/functions-and-operators/window-functions.md) |  Y |  Y |  Y  | Y | Y | Y | Y | Y | Y | Y |
+| [其他函数](/functions-and-operators/miscellaneous-functions.md) |  Y |  Y |  Y  | Y | Y | Y | Y | Y | Y | Y |
+| [操作符](/functions-and-operators/operators.md) |  Y |  Y |  Y  | Y | Y | Y | Y | Y | Y | Y |
+| [字符集和排序规则](/character-set-and-collation.md) [^1] |  Y |  Y |  Y  | Y | Y | Y | Y | Y | Y | Y |
+| [用户级别锁](/functions-and-operators/locking-functions.md) |  Y |  Y |  Y  | Y | Y | Y | N | N | N | N |
+
+## 索引和约束
+
+| 索引和约束 | 8.5 | 8.1 | 7.5 | 7.1 | 6.5 | 6.1 | 5.4 | 5.3 | 5.2 | 5.1 |
+|---|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|
+| [表达式索引](/sql-statements/sql-statement-create-index.md#表达式索引) [^2] | Y |  Y |  Y  | Y | Y | E | E | E | E | E |
+| [列式存储 (TiFlash)](/tiflash/tiflash-overview.md) | Y |  Y |  Y  | Y | Y | Y | Y | Y | Y | Y |
+| [使用 FastScan 加速 OLAP 场景下的查询](/tiflash/use-fastscan.md) | Y |  Y |  Y  | Y | E | N | N | N | N | N |
+| [RocksDB 引擎](/storage-engine/rocksdb-overview.md) | Y |  Y |  Y  | Y | Y | Y | Y | Y | Y | Y |
+| [Titan 插件](/storage-engine/titan-overview.md) | Y |  Y |  Y  | Y | Y | Y | Y | Y | Y | Y |
+| [Titan Level Merge](/storage-engine/titan-configuration.md#level-merge实验功能) | E |  E |  E  | E | E | E | E | E | E | E |
+| [使用 bucket 提高数据扫描并发度](/tune-region-performance.md#使用-bucket-增加并发) | E |  E |  E  | E | E | E | N | N | N | N |
+| [不可见索引](/sql-statements/sql-statement-create-index.md#不可见索引) | Y |  Y |  Y  | Y | Y | Y | Y | Y | Y | Y |
+| [复合主键](/constraints.md#主键约束) | Y |  Y |  Y  | Y | Y | Y | Y | Y | Y | Y |
+| [`CHECK` 约束](/constraints.md#check-约束) | Y |  Y |  Y  | N | N | N | N | N | N | N |
+| [唯一约束](/constraints.md#唯一约束) | Y |  Y |  Y  | Y | Y | Y | Y | Y | Y | Y |
+| [整型主键上的聚簇索引](/clustered-indexes.md) | Y |  Y |  Y  | Y | Y | Y | Y | Y | Y | Y |
+| [复合或非整型主键上的聚簇索引](/clustered-indexes.md) | Y |  Y |  Y  | Y | Y | Y | Y | Y | Y | Y |
+| [多值索引](/sql-statements/sql-statement-create-index.md#多值索引) | Y |  Y |  Y  | Y | N | N | N | N | N | N |
+| [外键约束](/foreign-key.md) | Y |  E |  E  | E | N | N | N | N | N | N |
+| [TiFlash 延迟物化](/tiflash/tiflash-late-materialization.md) | Y |  Y |  Y  | Y | N | N | N | N | N | N |
+| [全局索引 (Global Index)](/partitioned-table.md#全局索引) | Y |  N | N  | N | N | N | N | N | N | N |
+| [向量索引](/vector-search/vector-search-index.md) |  E |  N |  N  | N | N | N | N | N | N | N |
+>>>>>>> c5e85d83a5 (*: add a vector-search directory and update links (#19469))
 
 ## SQL 语句
 
@@ -93,6 +142,7 @@ summary: 了解 TiDB 的功能概览。
 
 ## 高级 SQL 功能
 
+<<<<<<< HEAD
 | 高级 SQL 功能 | 8.4 | 8.3 | 8.2 | 8.1 | 7.5 | 7.1 | 6.5 | 6.1 | 5.4 | 5.3 | 5.2 | 5.1 |
 |---|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|
 | [向量搜索](/vector-search-overview.md) |  E |  N |  N |  N |  N  | N | N | N | N | N | N | N |
@@ -115,6 +165,30 @@ summary: 了解 TiDB 的功能概览。
 | [基于 SQL 的数据放置规则](/placement-rules-in-sql.md) | Y | Y |  Y  |  Y  |  Y  | Y | Y | Y | E | E | N | N |
 | [Cascades Planner](/system-variables.md#tidb_enable_cascades_planner) |  E  |  E  |  E  |  E  |  E  | E | E | E | E | E | E | E |
 | [Runtime Filter](/runtime-filter.md) | Y | Y |  Y  |  Y  |  Y  | N | N | N | N | N | N | N |
+=======
+| 高级 SQL 功能 | 8.5 | 8.1 | 7.5 | 7.1 | 6.5 | 6.1 | 5.4 | 5.3 | 5.2 | 5.1 |
+|---|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|
+| [向量搜索](/vector-search/vector-search-overview.md) |  E |  N |  N  | N | N | N | N | N | N | N |
+| [Prepare 语句执行计划缓存](/sql-prepared-plan-cache.md) | Y |  Y  |  Y  | Y | Y | Y | Y | Y | E | E |
+| [非 Prepare 语句执行计划缓存](/sql-non-prepared-plan-cache.md) | Y |  Y  |  Y  | E | N | N | N | N | N | N |
+| [实例级执行计划缓存](/system-variables.md#tidb_enable_instance_plan_cache-从-v840-版本开始引入) | E |  N  |  N  | N | N | N | N | N | N | N |
+| [执行计划绑定 (SQL Binding)](/sql-plan-management.md#执行计划绑定-sql-binding) | Y |  Y  |  Y  | Y | Y | Y | Y | Y | Y | Y |
+| [跨数据库执行计划绑定 (Cross-DB Binding)](/sql-plan-management.md#跨数据库绑定执行计划-cross-db-binding) | Y |  Y  |  N  | N | N | N | N | N | N | N |
+| [根据历史执行计划创建绑定](/sql-plan-management.md#根据历史执行计划创建绑定) | Y |  Y  |  Y  | Y | E | N | N | N | N | N |
+| [下推计算结果缓存 (Coprocessor Cache)](/coprocessor-cache.md) | Y |  Y  |  Y  | Y | Y | Y | Y | Y | Y | Y |
+| [Stale Read](/stale-read.md) | Y |  Y  |  Y  | Y | Y | Y | Y | Y | Y | Y |
+| [Follower Read](/follower-read.md) | Y |  Y  |  Y  | Y | Y | Y | Y | Y | Y | Y |
+| [通过系统变量 `tidb_snapshot` 读取历史数据](/read-historical-data.md) | Y |  Y  |  Y  | Y | Y | Y | Y | Y | Y | Y |
+| [Optimizer hints](/optimizer-hints.md) | Y |  Y  |  Y  | Y | Y | Y | Y | Y | Y | Y |
+| [MPP 执行引擎](/explain-mpp.md) | Y |  Y  |  Y  | Y | Y | Y | Y | Y | Y | Y |
+| [MPP 执行引擎 - compression exchange](/explain-mpp.md#mpp-version-和-exchange-数据压缩) | Y |  Y  |  Y  | Y | N | N | N | N | N | N |
+| [TiFlash Pipeline 执行模型](/tiflash/tiflash-pipeline-model.md) | Y |  Y  |  Y  | N | N | N | N | N | N | N |
+| [TiFlash 副本选择策略](/system-variables.md#tiflash_replica_read-从-v730-版本开始引入) | Y |  Y  |  Y  | N | N | N | N | N | N | N |
+| [索引合并](/explain-index-merge.md) | Y |  Y  |  Y  | Y | Y | Y | Y | E | E | E |
+| [基于 SQL 的数据放置规则](/placement-rules-in-sql.md) | Y |  Y  |  Y  | Y | Y | Y | E | E | N | N |
+| [Cascades Planner](/system-variables.md#tidb_enable_cascades_planner) |  E  |  E  |  E  | E | E | E | E | E | E | E |
+| [Runtime Filter](/runtime-filter.md) | Y |  Y  |  Y  | N | N | N | N | N | N | N |
+>>>>>>> c5e85d83a5 (*: add a vector-search directory and update links (#19469))
 
 ## 数据定义语言 (DDL)
 
