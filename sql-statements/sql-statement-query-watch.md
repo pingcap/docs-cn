@@ -50,7 +50,7 @@ DropQueryWatchStmt ::=
 
 ## 参数说明
 
-详见 [`QUERY WATCH` 语句说明](/tidb-resource-control.md#query-watch-语句说明)。
+详见 [`QUERY WATCH` 语句说明](/tidb-resource-control-runaway-queries.md#query-watch-语句说明)。
 
 ## MySQL 兼容性
 
@@ -58,4 +58,4 @@ DropQueryWatchStmt ::=
 
 ## 另请参阅
 
-* [Runaway Queries](/tidb-resource-control.md#管理资源消耗超出预期的查询-runaway-queries)
+* [Runaway Queries](/tidb-resource-control-runaway-queries.md#管理资源消耗超出预期的查询-runaway-queries)

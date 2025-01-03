@@ -152,7 +152,7 @@ TiDB 7.1.0 为长期支持版本 (Long-Term Support Release, LTS)。
 
     为了更好的用户体验，TiDB Dashboard 增加了[资源管控的管理页面](/dashboard/dashboard-resource-manager.md)。你可以在该页面查看资源组配置，并通过可视化的方式进行容量预估，便于合理配置资源。
 
-    更多信息，请参考[用户文档](/tidb-resource-control.md)。
+    更多信息，请参考[用户文档](/tidb-resource-control-ru-groups.md)。
 
 * 支持 Fast Online DDL 的检查点机制，提升容错性和自动恢复能力 [#42164](https://github.com/pingcap/tidb/issues/42164) @[tangenta](https://github.com/tangenta)
 

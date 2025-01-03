@@ -149,7 +149,7 @@ TiDB 在数据库初始化时会生成一个 `'root'@'%'` 的默认账户。
 
 ## 设置资源限制
 
-TiDB 可以利用资源组对用户消耗的资源进行限制，详情参见[使用资源管控 (Resource Control) 实现资源隔离](/tidb-resource-control.md)。
+TiDB 可以利用资源组对用户消耗的资源进行限制，详情参见[使用资源管控 (Resource Control) 实现资源组限制和流控](/tidb-resource-control-ru-groups.md)。
 
 ## 设置密码
 

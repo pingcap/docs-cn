@@ -162,7 +162,7 @@ TiDB 版本：7.0.0
     - 会话级别。通过 [`SET RESOURCE GROUP`](/sql-statements/sql-statement-set-resource-group.md) 设置当前会话的资源组。
     - 语句级别。通过 [`RESOURCE_GROUP()`](/optimizer-hints.md#resource_groupresource_group_name) 设置当前语句的资源组。
 
-    更多信息，请参考[用户文档](/tidb-resource-control.md)。
+    更多信息，请参考[用户文档](/tidb-resource-control-ru-groups.md)。
 
 * 支持 Fast Online DDL 的检查点机制，提升容错性和自动恢复能力 [#42164](https://github.com/pingcap/tidb/issues/42164) @[tangenta](https://github.com/tangenta)
 
@@ -356,12 +356,12 @@ TiDB 版本：7.0.0
 | TiKV | [`resolved-ts.advance-ts-interval`](/tikv-configuration-file.md#advance-ts-interval) | 修改 | 默认值由 `"1s"` 变更为 `"20s"`。该修改可以延长定期推进 Resolved TS 的时间间隔，从而减少 TiKV 节点之间的流量消耗。 |
 | TiKV | [`resource-control.enabled`](/tikv-configuration-file.md#resource-control) | 修改 | 默认值由 `false` 变更为 `true`。 |
 | TiKV | [`raft-engine.prefill-for-recycle`](/tikv-configuration-file.md#prefill-for-recycle-从-v700-版本开始引入) | 新增 | 控制 Raft Engine 是否自动生成空的日志文件用于日志回收。默认值为 `false`。|
-| PD         | [`degraded-mode-wait-duration`](/pd-configuration-file.md#degraded-mode-wait-duration)         | 新增 | PD 中内置的 [Resource Control](/tidb-resource-control.md) 相关配置项。用于配置触发降级模式需要等待的时间。默认值为 `"0s"`。|
-| PD         |  [`read-base-cost`](/pd-configuration-file.md#read-base-cost)      | 新增         |  PD 中内置的 [Resource Control](/tidb-resource-control.md) 相关配置项。用于设置每次读请求转换成 RU 的基准系数。默认值为 `0.25`。 |
-| PD         |  [`read-cost-per-byte`](/pd-configuration-file.md#read-cost-per-byte)      | 新增         |  PD 中内置的 [Resource Control](/tidb-resource-control.md) 相关配置项。用于设置读流量转换成 RU 的基准系数。默认值为 `1/(64 * 1024)`。 |
-| PD         |  [`read-cpu-ms-cost`](/pd-configuration-file.md#read-cpu-ms-cost)      | 新增         |  PD 中内置的 [Resource Control](/tidb-resource-control.md) 相关配置项。用于设置 CPU 转换成 RU 的基准系数。默认值为 `1/3`。 |
-| PD         |  [`write-base-cost`](/pd-configuration-file.md#write-base-cost)      | 新增         |  PD 中内置的 [Resource Control](/tidb-resource-control.md) 相关配置项。用于设置每次写请求转换成 RU 的基准系数。默认值为 `1`。 |
-| PD         |  [`write-cost-per-byte`](/pd-configuration-file.md#write-cost-per-byte)      | 新增         |  PD 中内置的 [Resource Control](/tidb-resource-control.md) 相关配置项。用于设置写流量转换成 RU 的基准系数。默认值为 `1/1024`。 |
+| PD         | [`degraded-mode-wait-duration`](/pd-configuration-file.md#degraded-mode-wait-duration)         | 新增 | PD 中内置的 [Resource Control](/tidb-resource-control-ru-groups.md) 相关配置项。用于配置触发降级模式需要等待的时间。默认值为 `"0s"`。|
+| PD         |  [`read-base-cost`](/pd-configuration-file.md#read-base-cost)      | 新增         |  PD 中内置的 [Resource Control](/tidb-resource-control-ru-groups.md) 相关配置项。用于设置每次读请求转换成 RU 的基准系数。默认值为 `0.25`。 |
+| PD         |  [`read-cost-per-byte`](/pd-configuration-file.md#read-cost-per-byte)      | 新增         |  PD 中内置的 [Resource Control](/tidb-resource-control-ru-groups.md) 相关配置项。用于设置读流量转换成 RU 的基准系数。默认值为 `1/(64 * 1024)`。 |
+| PD         |  [`read-cpu-ms-cost`](/pd-configuration-file.md#read-cpu-ms-cost)      | 新增         |  PD 中内置的 [Resource Control](/tidb-resource-control-ru-groups.md) 相关配置项。用于设置 CPU 转换成 RU 的基准系数。默认值为 `1/3`。 |
+| PD         |  [`write-base-cost`](/pd-configuration-file.md#write-base-cost)      | 新增         |  PD 中内置的 [Resource Control](/tidb-resource-control-ru-groups.md) 相关配置项。用于设置每次写请求转换成 RU 的基准系数。默认值为 `1`。 |
+| PD         |  [`write-cost-per-byte`](/pd-configuration-file.md#write-cost-per-byte)      | 新增         |  PD 中内置的 [Resource Control](/tidb-resource-control-ru-groups.md) 相关配置项。用于设置写流量转换成 RU 的基准系数。默认值为 `1/1024`。 |
 | TiFlash | [`mark_cache_size`](/tiflash/tiflash-configuration.md) |  修改  | TiFlash 中数据块元信息的内存 cache 上限，默认值从 `5368709120` 修改为 `1073741824`，以减少不必要的内存占用 |
 | TiFlash | [`minmax_index_cache_size`](/tiflash/tiflash-configuration.md) |  修改  | TiFlash 中数据块 min-max 索引的内存 cache 上限，默认值从 `5368709120` 修改为 `1073741824`，以减少不必要的内存占用  |
 | TiFlash | [`flash.disaggregated_mode`](/tiflash/tiflash-disaggregated-and-s3.md) |  新增  | 在 TiFlash 的存算分离架构中，表示此 TiFlash 节点是 Write Node 还是 Compute Node。可选值为 `tiflash_write` 或者 `tiflash_compute`。 |

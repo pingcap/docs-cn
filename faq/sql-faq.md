@@ -33,7 +33,7 @@ TiDB 包含一个基于成本的优化器。在大多数情况下，优化器会
 
 ## 如何阻止特定的 SQL 语句执行（或者将某个 SQL 语句加入黑名单）？
 
-对于 v7.5.0 及以上版本，你可以使用 [`QUERY WATCH`](/sql-statements/sql-statement-query-watch.md) 语句将特定的 SQL 查询加入黑名单。具体使用方法参见[管理资源消耗超出预期的查询 (Runaway Queries)](/tidb-resource-control.md#query-watch-语句说明)。
+对于 v7.5.0 及以上版本，你可以使用 [`QUERY WATCH`](/sql-statements/sql-statement-query-watch.md) 语句将特定的 SQL 查询加入黑名单。具体使用方法参见[管理资源消耗超出预期的查询 (Runaway Queries)](/tidb-resource-control-runaway-queries.md#query-watch-语句说明)。
 
 对于 v7.5.0 之前版本，你可以使用 [`MAX_EXECUTION_TIME`](/optimizer-hints.md#max_execution_timen) Hint 来创建 [SQL 绑定](/sql-plan-management.md#执行计划绑定-sql-binding)，将特定语句的执行时间限制为一个较小的值（例如 1ms）。这样，语句就会在超过限制时自动终止。
 
@@ -209,7 +209,7 @@ TiDB 支持改变[全局](/system-variables.md#tidb_force_priority)或单个语�
 
 > **注意：**
 >
-> TiDB 从 v6.6.0 版本开始支持[使用资源管控 (Resource Control) 实现资源隔离](/tidb-resource-control.md)功能。该功能可以将不同优先级的语句放在不同的资源组中执行，并为这些资源组分配不同的配额和优先级，可以达到更好的资源管控效果。在开启资源管控功能后，语句的调度主要受资源组的控制，`PRIORITY` 将不再生效。建议在支持资源管控的版本优先使用资源管控功能。
+> TiDB 从 v6.6.0 版本开始支持[使用资源管控 (Resource Control) 实现资源组限制和流控](/tidb-resource-control-ru-groups.md)功能。该功能可以将不同优先级的语句放在不同的资源组中执行，并为这些资源组分配不同的配额和优先级，可以达到更好的资源管控效果。在开启资源管控功能后，语句的调度主要受资源组的控制，`PRIORITY` 将不再生效。建议在支持资源管控的版本优先使用资源管控功能。
 
 以上两种参数可以结合 TiDB 的 DML 语言进行使用，使用方法举例如下：
 
