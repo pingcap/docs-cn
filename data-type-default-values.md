@@ -45,14 +45,14 @@ TiDB 支持在 `DEFAULT` 子句中指定以下表达式作为字段的默认值�
     * `DATE_FORMAT(NOW(), '%Y-%m-%d %H.%i.%s')`
     * `DATE_FORMAT(NOW(), '%Y-%m-%d %H:%i:%s')`
 * `STR_TO_DATE('1980-01-01', '%Y-%m-%d')`
-* [`CURRENT_TIMESTAMP()`](/functions-and-operators/date-and-time-functions.md)，[`CURRENT_DATE()`](/functions-and-operators/date-and-time-functions.md)：均使用默认的 fsp (fractional seconds precision)
-* [`JSON_OBJECT()`](/functions-and-operators/json-functions.md)，[`JSON_ARRAY()`](/functions-and-operators/json-functions.md), [`JSON_QUOTE()`](/functions-and-operators/json-functions.md)
+* [`CURRENT_TIMESTAMP()`](/functions-and-operators/date-and-time-functions.md) 和 [`CURRENT_DATE()`](/functions-and-operators/date-and-time-functions.md)：均使用默认的时间精度(fractional seconds precision, fsp)
+* [`JSON_OBJECT()`](/functions-and-operators/json-functions.md)，[`JSON_ARRAY()`](/functions-and-operators/json-functions.md)，[`JSON_QUOTE()`](/functions-and-operators/json-functions.md)
 * [`NEXTVAL()`](/functions-and-operators/sequence-functions.md#nextval)
 * [`RAND()`](/functions-and-operators/numeric-functions-and-operators.md)
 * [`UUID()`](/functions-and-operators/miscellaneous-functions.md#uuid)，[`UUID_TO_BIN()`](/functions-and-operators/miscellaneous-functions.md#uuid_to_bin)
 * [`VEC_FROM_TEXT()`](/vector-search-functions-and-operators.md#vec_from_text)
 
-TiDB 支持 `BLOB`、`TEXT` 以及 `JSON` 数据类型分配默认值，但是，你只能使用表达式来设置这些数据类型的默认值，而不能使用字面量。
+TiDB 支持为 `BLOB`、`TEXT` 以及 `JSON` 数据类型分配默认值，但是，你只能使用表达式来设置这些数据类型的默认值，而不能使用字面量。
 
 以下是 `BLOB` 的示例：
 
@@ -73,7 +73,7 @@ CREATE TABLE t3 (
 
 更多关于如何使用 UUID 的内容，请参考 [UUID 最佳实践](/best-practices/uuid.md)。
 
-以下是使用 JSON 的示例：
+以下是使用 `JSON` 的示例：
 
 ```sql
 CREATE TABLE t4 (
@@ -82,7 +82,7 @@ CREATE TABLE t4 (
 );
 ```
 
-以下是 JSON 不被允许的示例：
+以下是使用 `JSON` 时不被允许的示例：
 
 ```sql
 CREATE TABLE t5 (
