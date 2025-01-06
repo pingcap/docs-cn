@@ -81,6 +81,10 @@ Coalesce Partition 是一种减少 Hash 分区表或 Key 分区表中分区数�
 
 从 v5.0 起，TiDB 通过 TiFlash 节点引入了 Massively Parallel Processing (MPP) 架构。这使得大型表连接类查询可以由不同 TiFlash 节点共同分担完成。当 MPP 模式开启后，TiDB 将会根据代价决定是否应该交由 MPP 框架进行计算。MPP 模式下，表连接将通过对 JOIN Key 进行数据计算时重分布（Exchange 操作）的方式把计算压力分摊到各个 TiFlash 执行节点，从而达到加速计算的目的。更多信息请参见[使用 MPP 模式](/tiflash/use-tiflash-mpp-mode.md)。
 
+### Multi-version concurrency control (MVCC)
+
+[MVCC](https://zh.wikipedia.org/wiki/多版本并发控制)（多版本并发控制）是 TiDB 和其他数据库中的一种并发控制机制。它处理事务的内存读取，以实现对 TiDB 的并发访问，从而避免由并发读写冲突引起的阻塞。
+
 ## O
 
 ### Old value
