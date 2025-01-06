@@ -15,6 +15,12 @@ TiDB 版本：8.5.1
 
 - note [#issue](https://github.com/pingcap/${repo-name}/issues/${issue-id}) @[贡献者 GitHub ID](https://github.com/${github-id})
 
+## 操作系统支持变更
+
+- 从 TiDB v8.5.1 起重新支持 CentOS Linux 7。用户现在可以运行在 CentOS Linux 7 上的 TiDB 集群升级到 v8.5.1 版本。
+- 根据 [CentOS Linux EOL](https://www.redhat.com/en/blog/centos-linux-has-reached-its-end-life-eol)，CentOS Linux 7 的上游支持于 2024 年 6 月 30 日终止。从 TiDB v8.4.0 版本开始，我们暂停了对 CentOS Linux 7 的支持，并建议用户使用 Rocky Linux 9.1 及以上的版本。如果在使用 CentOS Linux 7 的情况下升级到 TiDB v8.4.0 或 v8.5.0 版本，将导致集群不可用。
+- 尽管 TiDB v8.5.1 重新支持 CentOS Linux 7，但由于 CentOS Linux 7 已经达到其生命周期的终止（EOL），我们强烈建议用户参考该系统的[官方声明和安全建议](https://www.redhat.com/en/blog/centos-linux-has-reached-its-end-life-eol)，并考虑尽快迁移到受支持的操作系统版本，如 Rocky Linux 9.1 及以上版本。
+
 ## 改进提升
 
 + TiDB
