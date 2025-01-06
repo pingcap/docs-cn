@@ -7,7 +7,7 @@ summary: 了解如何使用 Python 和 TiDB 向量搜索快速开发可执行语
 
 本文将展示如何开发一个简单的 AI 应用，这个 AI 应用实现了简单的**语义搜索**功能。不同于传统的关键字搜索，语义搜索可以智能地理解你的输入，返回更相关的结果。例如，在“狗”、“鱼”和“树”这三条内容中搜索“一种会游泳的动物”时，语义搜索会将“鱼”作为最相关的结果返回。
 
-在本文中，你将使用 [TiDB 向量搜索](/vector-search-overview.md)、Python、[TiDB Vector Python SDK](https://github.com/pingcap/tidb-vector-python) 和 AI 大模型完成这个 AI 应用的开发。
+在本文中，你将使用 [TiDB 向量搜索](/vector-search/vector-search-overview.md)、Python、[TiDB Vector Python SDK](https://github.com/pingcap/tidb-vector-python) 和 AI 大模型完成这个 AI 应用的开发。
 
 > **警告：**
 >
@@ -49,7 +49,7 @@ pip install sqlalchemy pymysql sentence-transformers tidb-vector python-dotenv
 ```
 
 - `tidb-vector`：用于与 TiDB 向量搜索交互的 Python 客户端。
-- [`sentence-transformers`](https://sbert.net)：提供预训练模型的 Python 库，用于从文本生成[向量嵌入](/vector-search-overview.md#向量嵌入)。
+- [`sentence-transformers`](https://sbert.net)：提供预训练模型的 Python 库，用于从文本生成[向量嵌入](/vector-search/vector-search-overview.md#向量嵌入)。
 
 ### 第 3 步：配置 TiDB 集群的连接字符串
 
@@ -117,7 +117,7 @@ TIDB_DATABASE_URL="mysql+pymysql://<USER>:<PASSWORD>@<HOST>:<PORT>/<DATABASE>"
 
 ### 第 4 步：初始化嵌入模型
 
-[嵌入模型](/vector-search-overview.md#嵌入模型)用于将数据转换为[向量嵌入](/vector-search-overview.md#向量嵌入)。本示例将使用预训练模型 [**msmarco-MiniLM-L12-cos-v5**](https://huggingface.co/sentence-transformers/msmarco-MiniLM-L12-cos-v5) 将文本数据转换为向量嵌入。该模型为一个轻量级模型，由 `sentence-transformers` 库提供，可将文本数据转换为 384 维的向量嵌入。
+[嵌入模型](/vector-search/vector-search-overview.md#嵌入模型)用于将数据转换为[向量嵌入](/vector-search/vector-search-overview.md#向量嵌入)。本示例将使用预训练模型 [**msmarco-MiniLM-L12-cos-v5**](https://huggingface.co/sentence-transformers/msmarco-MiniLM-L12-cos-v5) 将文本数据转换为向量嵌入。该模型为一个轻量级模型，由 `sentence-transformers` 库提供，可将文本数据转换为 384 维的向量嵌入。
 
 将以下代码复制到 `example.py` 文件中，完成模型的设置。这段代码初始化了一个 `SentenceTransformer` 实例，并定义了一个 `text_too_embedding()` 函数用于将文本数据转换为向量数据。
 
@@ -229,5 +229,5 @@ Search result ("a swimming animal"):
 
 ## 另请参阅
 
-- [向量数据类型](/vector-search-data-types.md)
-- [向量搜索索引](/vector-search-index.md)
+- [向量数据类型](/vector-search/vector-search-data-types.md)
+- [向量搜索索引](/vector-search/vector-search-index.md)

@@ -5,7 +5,7 @@ summary: 了解如何在 peewee 中通过 TiDB 向量搜索功能存储向量并
 
 # 在 peewee 中使用 TiDB 向量搜索
 
-本文档将展示如何使用 [peewee](https://docs.peewee-orm.com/) 与 [TiDB 向量搜索](/vector-search-overview.md)进行交互，以及如何存储向量和执行向量搜索查询。
+本文档将展示如何使用 [peewee](https://docs.peewee-orm.com/) 与 [TiDB 向量搜索](/vector-search/vector-search-overview.md)进行交互，以及如何存储向量和执行向量搜索查询。
 
 > **警告：**
 >
@@ -250,5 +250,5 @@ results = Document.select(Document, distance).where(distance_expression < 0.2).o
 
 ## 另请参阅
 
-- [向量数据类型](/vector-search-data-types.md)
-- [向量搜索索引](/vector-search-index.md)
+- [向量数据类型](/vector-search/vector-search-data-types.md)
+- [向量搜索索引](/vector-search/vector-search-index.md)

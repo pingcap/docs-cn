@@ -5,7 +5,7 @@ summary: 了解如何在 LlamaIndex 中使用 TiDB 向量搜索。
 
 # 在 LlamaIndex 中使用 TiDB 向量搜索
 
-本文档将展示如何在 [LlamaIndex](https://www.llamaindex.ai) 中使用 [TiDB 向量搜索](/vector-search-overview.md)。
+本文档将展示如何在 [LlamaIndex](https://www.llamaindex.ai) 中使用 [TiDB 向量搜索](/vector-search/vector-search-overview.md)。
 
 > **警告：**
 >
@@ -312,5 +312,5 @@ Empty Response
 
 ## 另请参阅
 
-- [向量数据类型](/vector-search-data-types.md)
-- [向量搜索索引](/vector-search-index.md)
+- [向量数据类型](/vector-search/vector-search-data-types.md)
+- [向量搜索索引](/vector-search/vector-search-index.md)
