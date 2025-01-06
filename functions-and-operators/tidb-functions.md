@@ -16,8 +16,11 @@ summary: 学习使用 TiDB 特有的函数。
 | [`TIDB_DECODE_KEY()`](#tidb_decode_key) | 用于将 TiDB 编码的键输入解码为包含 `_tidb_rowid` 和 `table_id` 的 JSON 结构。一些系统表和日志输出中有 TiDB 编码的键。 |
 | [`TIDB_DECODE_PLAN()`](#tidb_decode_plan) | 用于解码 TiDB 执行计划。 |
 | [`TIDB_DECODE_SQL_DIGESTS()`](#tidb_decode_sql_digests) | 用于在集群中查询一组 SQL digest 所对应的 SQL 语句的归一化形式（即去除格式和参数后的形式）。 |
+| [`TIDB_ENCODE_INDEX_KEY()`](#tidb_encode_index_key) | 对索引键进行编码。 |
+| [`TIDB_ENCODE_RECORD_KEY()`](#tidb_encode_record_key) | 对记录键进行编码。 |
 | [`TIDB_ENCODE_SQL_DIGEST()`](#tidb_encode_sql_digest) | 用于为查询字符串获取 digest。 |
 | [`TIDB_IS_DDL_OWNER()`](#tidb_is_ddl_owner) | 用于检查你连接的 TiDB 实例是否是 DDL Owner。DDL Owner 是代表集群中所有其他节点执行 DDL 语句的 TiDB 实例。 |
+| [`TIDB_MVCC_INFO()`](#tidb_mvcc_info) | 返回关于某个键的多版本并发控制 ([Multi-Version Concurrency Control, MVCC](/glossary.md#multi-version-concurrency-control-mvcc)) 信息。 |
 | [`TIDB_PARSE_TSO()`](#tidb_parse_tso) | 用于从 TiDB TSO 时间戳中提取物理时间戳。参见 [`tidb_current_ts`](/system-variables.md#tidb_current_ts)。 |
 | [`TIDB_PARSE_TSO_LOGICAL()`](#tidb_parse_tso_logical) | 用于从 TiDB TSO 时间戳中提取逻辑时间戳。|
 | [`TIDB_ROW_CHECKSUM()`](#tidb_row_checksum) | 用于查询行数据的 Checksum 值。该函数只能用于 FastPlan 流程的 `SELECT` 语句，即你可通过类似 `SELECT TIDB_ROW_CHECKSUM() FROM t WHERE id = ?` 或 `SELECT TIDB_ROW_CHECKSUM() FROM t WHERE id IN (?, ?, ...)` 的语句进行查询。参见[数据正确性校验](/ticdc/ticdc-integrity-check.md)。 |
@@ -546,5 +549,119 @@ SELECT VITESS_HASH(123);
 +---------------------+
 | 1155070131015363447 |
 +---------------------+
+1 row in set (0.00 sec)
+```
+
+## TIDB_ENCODE_INDEX_KEY
+
+对索引键进行编码。
+
+```sql
+CREATE TABLE t(id int PRIMARY KEY, a int, KEY `idx` (a));
+```
+
+```
+Query OK, 0 rows affected (0.00 sec)
+```
+
+```sql
+INSERT INTO t VALUES(1,1);
+```
+
+```
+Query OK, 1 row affected (0.00 sec)
+```
+
+```sql
+SELECT TIDB_ENCODE_INDEX_KEY('test', 't', 'idx', 1, 1);
+```
+
+```
++----------------------------------------------------------------------------+
+| TIDB_ENCODE_INDEX_KEY('test', 't', 'idx', 1, 1)                            |
++----------------------------------------------------------------------------+
+| 74800000000000007f5f698000000000000001038000000000000001038000000000000001 |
++----------------------------------------------------------------------------+
+1 row in set (0.00 sec)
+```
+
+## TIDB_ENCODE_RECORD_KEY
+
+对记录键进行编码。
+
+```sql
+CREATE TABLE t(id int PRIMARY KEY, a int, KEY `idx` (a));
+```
+
+```
+Query OK, 0 rows affected (0.00 sec)
+```
+
+```sql
+INSERT INTO t VALUES(1,1);
+```
+
+```
+Query OK, 1 row affected (0.00 sec)
+```
+
+```sql
+SELECT TIDB_ENCODE_RECORD_KEY('test', 't', 1);
+```
+
+```
++----------------------------------------+
+| TIDB_ENCODE_RECORD_KEY('test', 't', 1) |
++----------------------------------------+
+| 7480000000000000845f728000000000000001 |
++----------------------------------------+
+1 row in set (0.00 sec)
+```
+
+```sql
+SELECT TIDB_DECODE_KEY('7480000000000000845f728000000000000001');
+```
+
+```
++-----------------------------------------------------------+
+| TIDB_DECODE_KEY('7480000000000000845f728000000000000001') |
++-----------------------------------------------------------+
+| {"id":1,"table_id":"132"}                                 |
++-----------------------------------------------------------+
+1 row in set (0.00 sec)
+```
+
+## TIDB_MVCC_INFO
+
+返回关于某个键的多版本并发控制 ([Multi-Version Concurrency Control, MVCC](/glossary.md#multi-version-concurrency-control-mvcc)) 信息。你可以使用 [`TIDB_ENCODE_INDEX_KEY`](#tidb_encode_index_key) 函数获取键。
+
+```sql
+SELECT JSON_PRETTY(TIDB_MVCC_INFO('74800000000000007f5f698000000000000001038000000000000001038000000000000001')) AS info\G
+```
+
+```
+*************************** 1. row ***************************
+info: [
+  {
+    "key": "74800000000000007f5f698000000000000001038000000000000001038000000000000001",
+    "mvcc": {
+      "info": {
+        "values": [
+          {
+            "start_ts": 454654803134119936,
+            "value": "MA=="
+          }
+        ],
+        "writes": [
+          {
+            "commit_ts": 454654803134119937,
+            "short_value": "MA==",
+            "start_ts": 454654803134119936
+          }
+        ]
+      }
+    }
+  }
+]
 1 row in set (0.00 sec)
 ```
