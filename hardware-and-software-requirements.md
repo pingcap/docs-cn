@@ -33,7 +33,10 @@ summary: TiDB 是一款开源的一站式实时 HTAP 数据库，支持部署在
 
     > **警告：**
     >
-    > - 根据 [CentOS Linux EOL](https://blog.centos.org/2023/04/end-dates-are-coming-for-centos-stream-8-and-centos-linux-7/)，CentOS Linux 7 的上游支持于 2024 年 6 月 30 日终止。从 8.4 DMR 版本开始，TiDB 已结束对 CentOS 7 的支持，建议使用 Rocky Linux 9.1 及以上的版本。如果将运行在 CentOS 7 上的 TiDB 集群升级到 v8.4.0 或之后版本，将导致集群不可用。升级 TiDB 前，请务必检查你的操作系统版本。
+    > - 从 TiDB v8.5.1 起重新支持 CentOS Linux 7。用户现在可以运行在 CentOS Linux 7 上的 TiDB 集群升级到 v8.5.1 版本。
+    >     - 根据 [CentOS Linux EOL](https://www.redhat.com/en/blog/centos-linux-has-reached-its-end-life-eol)，CentOS Linux 7 的上游支持于 2024 年 6 月 30 日终止。从 TiDB v8.4.0 版本开始，我们暂停了对 CentOS Linux 7 的支持，并建议用户使用 Rocky Linux 9.1 及以上的版本。 
+    >     - 如果在使用 CentOS Linux 7 的情况下升级到 TiDB v8.4.0 或 v8.5.0 版本，将导致集群不可用。
+    >     -  尽管 TiDB v8.5.1 重新支持 CentOS Linux 7，但由于 CentOS Linux 7 已经达到其生命周期的终止（EOL），我们强烈建议用户参考该系统的[官方声明和安全建议](https://www.redhat.com/en/blog/centos-linux-has-reached-its-end-life-eol)，并考虑尽快迁移到受支持的操作系统版本，如 Rocky Linux 9.1 及以上版本。
     > - 根据 [Red Hat Enterprise Linux Life Cycle](https://access.redhat.com/support/policy/updates/errata/#Life_Cycle_Dates)，Red Hat Enterprise Linux 7 的 Maintenance Support 于 2024 年 6 月 30 日终止。从 8.4 DMR 版本开始，TiDB 已结束对 Red Hat Enterprise Linux 7 的支持，建议使用 Rocky Linux 9.1 及以上的版本。如果将运行在 Red Hat Enterprise Linux 7 上的 TiDB 集群升级到 v8.4.0 或之后版本，将导致集群不可用。升级 TiDB 前，请务必检查你的操作系统版本。
 
 + 在以下操作系统以及对应的 CPU 架构组合上，你可以编译、构建和部署 TiDB，可使用 OLTP 和 OLAP 以及数据工具的基本功能。但是 TiDB **不保障企业级生产质量要求**：
