@@ -111,16 +111,18 @@ tiup cluster patch {cluster_name} {/tmp/tiflash-v7.5.0-linux-amd64.tar.gz} -R ti
 
 ## 验证回退结果
 
-执行 `display` 命令来查看最新的集群版本 TiDB 版本：
+登录 TiDB，查看最新的集群版本 TiDB 版本：
 
 ```shell
-tiup cluster display <cluster-name>
-```
+SELECT VERSION();
 
 输出结果如下，版本成功回退到 v7.5.0：
 
 ```shell
-Cluster type:       tidb
-Cluster name:       <cluster-name>
-Cluster version:    v7.5.0
++--------------------+
+| version()          |
++--------------------+
+| 5.7.25-TiDB-v7.5.0 |
++--------------------+
+1 row in set (0.00 sec)
 ```
