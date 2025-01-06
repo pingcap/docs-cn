@@ -5,7 +5,7 @@ summary: 了解如何在 Django ORM 中通过 TiDB 向量搜索功能存储向�
 
 # 在 Django ORM 中使用 TiDB 向量搜索
 
-本文档将展示如何使用 [Django](https://www.djangoproject.com/) ORM 与 [TiDB 向量搜索](/vector-search-overview.md)进行交互，以及如何存储向量和执行向量搜索查询。
+本文档将展示如何使用 [Django](https://www.djangoproject.com/) ORM 与 [TiDB 向量搜索](/vector-search/vector-search-overview.md)进行交互，以及如何存储向量和执行向量搜索查询。
 
 > **警告：**
 >
@@ -258,5 +258,5 @@ results = Document.objects.annotate(
 
 ## 另请参阅
 
-- [向量数据类型](/vector-search-data-types.md)
-- [向量搜索索引](/vector-search-index.md)
+- [向量数据类型](/vector-search/vector-search-data-types.md)
+- [向量搜索索引](/vector-search/vector-search-index.md)
