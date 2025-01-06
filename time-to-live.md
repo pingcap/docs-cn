@@ -138,7 +138,7 @@ ALTER TABLE orders TTL_JOB_INTERVAL = '48h';
 
 在执行 TTL 任务时，TiDB 会基于 Region 的数量将表拆分为多个子任务。这些子任务会被分发到不同的 TiDB 节点中执行。通常情况下，单个表的子任务个数最多为 64，但是对于更大规模的集群，比如 TiKV 实例个数超过 64，单个表可拆分成的最大子任务数量和 TiKV 实例个数相等。然而，并非所有表的 TTL 任务都可以被拆分为子任务。请参考[使用限制](#使用限制)以了解哪些表的 TTL 任务不能被拆分。
 
-TiDB 同时也会在集群级别限制并发执行的 TTL 子任务的数。你可以通过修改系统变量 [`tidb_ttl_running_tasks`](/system-variables.md#tidb_ttl_running_tasks-从-v700-版本开始引入) 的值来设置其最大的并行数量。
+TiDB 还会在集群级别限制并发执行的 TTL 子任务数量。你可以通过修改系统变量 [`tidb_ttl_running_tasks`](/system-variables.md#tidb_ttl_running_tasks-从-v700-版本开始引入) 来设置最大并发数量。
 
 如果想禁止 TTL 任务的执行，除了可以设置表属性 `TTL_ENABLE='OFF'` 外，也可以通过设置全局变量 `tidb_ttl_job_enable` 关闭整个集群的 TTL 任务的执行。
 
