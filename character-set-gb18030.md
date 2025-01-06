@@ -5,7 +5,7 @@ summary: 本文介绍 TiDB 对 GB18030 字符集的支持情况。
 
 # GB18030
 
-TiDB 从 v8.4.0 开始支持 GB18030 字符集。本文档介绍 TiDB 对 GB18030 字符集的支持和兼容情况。
+TiDB 从 v9.0.0 开始支持 GB18030-2022 字符集。本文档介绍 TiDB 对 GB18030 字符集的支持和兼容情况。
 
 ```sql
 SHOW CHARACTER SET WHERE CHARSET = 'gb18030';

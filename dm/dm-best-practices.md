@@ -117,7 +117,7 @@ DM 默认会使用悲观 DDL 锁模式。在分库分表迁移与同步场景中
 
 TiDB 默认使用的字符集为 utf8mb4。建议同步上下游及应用统一使用 utf8mb4。如果上游有显式指定的字符集或者排序规则，需要确认 TiDB 是否支持。
 
-从 v6.0.0 起，TiDB 支持 GBK 字符集；从 v8.4.0 起，TiDB 支持 GB18030 字符集。有关字符集的限制详见：
+从 v6.0.0 起，TiDB 支持 GBK 字符集；从 v9.0.0 起，TiDB 支持 GB18030 字符集。有关字符集的限制详见：
 
 - [字符集和排序规则](/character-set-and-collation.md)
 - [GBK 兼容情况](/character-set-gbk.md#与-mysql-的兼容性)

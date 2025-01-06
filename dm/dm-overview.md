@@ -54,7 +54,7 @@ tiup install dm dmctl
 
 + GBK/GB18030 字符集兼容性限制
 
-    - DM 在 v5.4.0 之前不支持将 `charset=GBK` 的表迁移到 TiDB；在 v8.4.0 之前不支持将 `charset=GB18030` 的表迁移到 TiDB。
+    - DM 在 v5.4.0 之前不支持将 `charset=GBK` 的表迁移到 TiDB；在 v9.0.0 之前不支持将 `charset=GB18030` 的表迁移到 TiDB。
 
 + Binlog 兼容性限制
 
