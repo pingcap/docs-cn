@@ -159,7 +159,7 @@ TiDB 会在开发里程碑版本 (Development Milestone Release, DMR) 中引入�
 
 ### Multi-version concurrency control (MVCC)
 
-[MVCC](https://en.wikipedia.org/wiki/Multiversion_concurrency_control)（多版本并发控制）是 TiDB 和其他数据库中的一种并发控制机制。它处理事务的内存读取，以实现对 TiDB 的并发访问，从而避免由并发读写冲突引起的阻塞。
+[MVCC](https://zh.wikipedia.org/wiki/多版本并发控制)（多版本并发控制）是 TiDB 和其他数据库中的一种并发控制机制。它处理事务的内存读取，以实现对 TiDB 的并发访问，从而避免由并发读写冲突引起的阻塞。
 
 ## O
 

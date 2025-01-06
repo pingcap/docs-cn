@@ -633,7 +633,7 @@ SELECT TIDB_DECODE_KEY('7480000000000000845f728000000000000001');
 
 ## TIDB_MVCC_INFO
 
-返回关于某个键的多版本并发控制 ([Multi-Version Concurrency Control, MVCC](/glossary.md#multi-version-concurrency-control-mvcc)) 信息。你可以使用 [`TIDB_ENCODE_INDEX_KEY`](#TIDB_ENCODE_INDEX_KEY) 函数获取键。
+返回关于某个键的多版本并发控制 ([Multi-Version Concurrency Control, MVCC](/glossary.md#multi-version-concurrency-control-mvcc)) 信息。你可以使用 [`TIDB_ENCODE_INDEX_KEY`](#tidb_encode_index_key) 函数获取键。
 
 ```sql
 SELECT JSON_PRETTY(TIDB_MVCC_INFO('74800000000000007f5f698000000000000001038000000000000001038000000000000001')) AS info\G
