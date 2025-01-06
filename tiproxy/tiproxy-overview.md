@@ -67,7 +67,6 @@ TiProxy 不适用于以下场景：
 
 - 使用 TiDB Operator 部署 TiProxy，请参见 [TiDB Operator](https://docs.pingcap.com/zh/tidb-in-kubernetes/stable/deploy-tiproxy) 文档。
 - 使用 TiUP 本地快速部署 TiProxy，请参见[部署 TiProxy](/tiup/tiup-playground.md#部署-tiproxy)。
-- 使用 TiUP 部署 TiProxy，请参见 [TiProxy 安装和使用](/tiproxy/tiproxy-overview.md#安装和使用)。
 
 ### 部署 TiProxy
 
