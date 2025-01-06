@@ -23,7 +23,7 @@ summary: 了解 TiDB 向量搜索功能的限制。
 
 ## 向量搜索索引限制
 
-参考[向量搜索索引 - 使用限制](/vector-search-index.md#使用限制)。
+参考[向量搜索索引 - 使用限制](/vector-search/vector-search-index.md#使用限制)。
 
 ## 工具兼容性
 

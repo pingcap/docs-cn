@@ -5,7 +5,7 @@ summary: 展示如何在 LangChain 中使用 TiDB 向量搜索
 
 # 在 LangChain 中使用 TiDB 向量搜索
 
-本文档将展示如何在 [LangChain](https://python.langchain.com/) 中使用 [TiDB 向量搜索](/vector-search-overview.md)。
+本文档将展示如何在 [LangChain](https://python.langchain.com/) 中使用 [TiDB 向量搜索](/vector-search/vector-search-overview.md)。
 
 > **警告：**
 >
@@ -632,5 +632,5 @@ vector_store.tidb_vector_client.execute("DROP TABLE airplan_routes")
 
 ## 另请参阅
 
-- [向量数据类型](/vector-search-data-types.md)
-- [向量搜索索引](/vector-search-index.md)
+- [向量数据类型](/vector-search/vector-search-data-types.md)
+- [向量搜索索引](/vector-search/vector-search-index.md)

@@ -1,10 +1,10 @@
 ---
-title: TiDB 软件和硬件环境建议配置
+title: TiDB 软件和硬件环境需求
 aliases: ['/docs-cn/dev/hardware-and-software-requirements/','/docs-cn/dev/how-to/deploy/hardware-recommendations/']
-summary: TiDB 是一款开源的一站式实时 HTAP 数据库，支持部署在多种硬件环境和操作系统上。软件和硬件环境建议配置包括操作系统要求、编译和运行依赖库、Docker 镜像依赖、软件配置要求、服务器建议配置、网络要求、磁盘空间要求、客户端 Web 浏览器要求以及 TiFlash 存算分离架构的软硬件要求。
+summary: TiDB 是一款开源的一站式实时 HTAP 数据库，支持部署在多种硬件环境和操作系统上。软件和硬件环境需求包括操作系统要求、编译和运行依赖库、Docker 镜像依赖、软件配置要求、服务器配置要求、网络要求、磁盘空间要求、客户端 Web 浏览器要求以及 TiFlash 存算分离架构的软硬件要求。
 ---
 
-# TiDB 软件和硬件环境建议配置
+# TiDB 软件和硬件环境需求
 
 <!-- Localization note for TiDB:
 
@@ -14,7 +14,7 @@ summary: TiDB 是一款开源的一站式实时 HTAP 数据库，支持部署在
 
 -->
 
-TiDB 作为一款开源一栈式实时 HTAP 数据库，可以很好地部署和运行在 Intel 架构服务器环境、ARM 架构的服务器环境及主流虚拟化环境，并支持绝大多数的主流硬件网络。作为一款高性能数据库系统，TiDB 支持主流的 Linux 操作系统环境。
+本文介绍 TiDB 数据库对软件和硬件环境的需求。TiDB 作为一款开源一栈式实时 HTAP 数据库，可以很好地部署和运行在 Intel 架构服务器环境、ARM 架构的服务器环境及主流虚拟化环境，并支持绝大多数的主流硬件网络。作为一款高性能数据库系统，TiDB 支持主流的 Linux 操作系统环境。
 
 ## 操作系统及平台要求
 
@@ -24,7 +24,7 @@ TiDB 作为一款开源一栈式实时 HTAP 数据库，可以很好地部署和
 |  Amazon Linux 2         |  <ul><li>x86_64</li><li>ARM 64</li></ul>   |
 |  Amazon Linux 2023      |  <ul><li>x86_64</li><li>ARM 64</li></ul>   |
 |  Rocky Linux 9.1 及以上的版本 |  <ul><li>x86_64</li><li>ARM 64</li></ul> |
-| 麒麟欧拉版 V10 SP1/SP2   |   <ul><li>x86_64</li><li>ARM 64</li></ul>   |
+| 麒麟欧拉版 V10 SP1/SP2/SP3（从 v7.5.5 开始支持 SP3）   |   <ul><li>x86_64</li><li>ARM 64</li></ul>   |
 | 统信操作系统 (UOS) V20                 |   <ul><li>x86_64</li><li>ARM 64</li></ul>   |
 | openEuler 22.03 LTS SP1/SP3 |   <ul><li>x86_64</li><li>ARM 64</li></ul>   |
 | macOS 12 (Monterey) 及以上的版本 |  <ul><li>x86_64</li><li>ARM 64</li></ul>  |
@@ -36,14 +36,19 @@ TiDB 作为一款开源一栈式实时 HTAP 数据库，可以很好地部署和
 |  openSUSE Leap 15.5 以上的版本（不包含 Tumbleweed） |  x86_64           |
 |  SUSE Linux Enterprise Server 15  |  x86_64                        |
 
+> **警告：**
+>
+> - 根据 [CentOS Linux EOL](https://www.centos.org/centos-linux-eol/)，CentOS Linux 7 的上游支持已于 2024 年 6 月 30 日终止。从 v8.4.0 版本开始，TiDB 已结束对 CentOS 7 的支持，建议使用 Rocky Linux 9.1 及以上的版本。如果将运行在 CentOS 7 上的 TiDB 集群升级到 v8.4.0 或之后版本，将导致集群不可用。升级 TiDB 前，请务必检查你的操作系统版本。
+> - 根据 [Red Hat Enterprise Linux Life Cycle](https://access.redhat.com/support/policy/updates/errata/#Life_Cycle_Dates)，Red Hat Enterprise Linux 7 的 Maintenance Support 已于 2024 年 6 月 30 日终止。从 v8.4.0 版本开始，TiDB 已结束对 Red Hat Enterprise Linux 7 的支持，建议使用 Rocky Linux 9.1 及以上的版本。如果将运行在 Red Hat Enterprise Linux 7 上的 TiDB 集群升级到 v8.4.0 或之后版本，将导致集群不可用。升级 TiDB 前，请务必检查你的操作系统版本。
+> - 对于以上表格中所列操作系统的 32 位版本，TiDB 在这些 32 位操作系统以及对应的 CPU 架构上**不保障**可编译、可构建以及可部署，或 TiDB 不主动适配这些 32 位的操作系统。
+> - 以上未提及的操作系统版本**也许可以**运行 TiDB，但尚未得到 TiDB 官方支持。
+
 > **注意：**
 >
 > - TiDB 只支持 Red Hat 兼容内核 (RHCK) 的 Oracle Enterprise Linux，不支持 Oracle Enterprise Linux 提供的 Unbreakable Enterprise Kernel。
-> - 根据 [CentOS Linux EOL](https://www.centos.org/centos-linux-eol/)，CentOS Linux 7 的上游支持已于 2024 年 6 月 30 日终止。从 v8.4.0 版本开始，TiDB 已结束对 CentOS 7 的支持，建议使用 Rocky Linux 9.1 及以上的版本。CentOS Linux 8 的上游支持已于 2021 年 12 月 31 日终止，但 CentOS 将继续提供对 CentOS Stream 8 的支持。
-> - 根据 [Red Hat Enterprise Linux Life Cycle](https://access.redhat.com/support/policy/updates/errata/#Life_Cycle_Dates)，Red Hat Enterprise Linux 7 的 Maintenance Support 已于 2024 年 6 月 30 日终止。从 v8.4.0 版本开始，TiDB 已结束对 Red Hat Enterprise Linux 7 的支持，建议使用 Rocky Linux 9.1 及以上的版本。
+> - CentOS Linux 8 的上游支持已于 2021 年 12 月 31 日终止，但 CentOS 将继续提供对 CentOS Stream 8 的支持。
 > - TiDB 将不再支持 Ubuntu 16.04。强烈建议升级到 Ubuntu 18.04 或更高版本。
-> - 对于以上表格中所列操作系统的 32 位版本，TiDB 在这些 32 位操作系统以及对应的 CPU 架构上**不保障**可编译、可构建以及可部署，或 TiDB 不主动适配这些 32 位的操作系统。
-> - 以上未提及的操作系统版本**也许可以**运行 TiDB，但尚未得到 TiDB 官方支持。
+> - 从 v8.4.0 开始，TiDB 依赖 glibc 2.28。如果 glibc 版本不满足要求，建议使用上述表格中支持的操作系统，或将操作系统升级到支持 glibc 2.28 的版本。
 
 ### 编译和运行 TiDB 所依赖的库
 
@@ -84,7 +89,7 @@ TiDB 作为一款开源一栈式实时 HTAP 数据库，可以很好地部署和
 | numa | 2.0.12 及以上 |
 | tar  | 任意      |
 
-## 服务器建议配置
+## 服务器配置要求
 
 TiDB 支持部署和运行在 Intel x86-64 架构的 64 位通用硬件服务器平台或者 ARM 架构的硬件服务器平台。对于开发、测试及生产环境的服务器硬件配置（不包含操作系统 OS 本身的占用）有以下要求和建议：
 

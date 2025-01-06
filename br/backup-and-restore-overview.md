@@ -17,7 +17,7 @@ TiDB 备份恢复功能可以用于满足以下业务的需求：
 
 ## 使用须知
 
-本部分介绍使用 TiDB 备份恢复功能前的注意事项，包括使用限制和使用建议。
+本部分介绍使用 TiDB 备份恢复功能前的注意事项，包括使用限制和使用建议。有关 BR 工具与其他功能或版本间的兼容性，请参考[兼容性](#兼容性)。
 
 ### 使用限制
 
@@ -94,7 +94,7 @@ TiDB 备份恢复功能可以用于满足以下业务的需求：
 
 #### 恢复的性能
 
-- 恢复集群快照数据备份，速度可以达到单 TiKV 存储节点 100 MiB/s，恢复速度具有可扩展性。更详细说明请参考[恢复性能和影响](/br/br-snapshot-guide.md#快照恢复的性能与影响)。
+- 恢复集群快照数据备份，速度可以达到单 TiKV 存储节点 1 GiB/s，恢复速度具有可扩展性。更详细说明请参考[恢复性能和影响](/br/br-snapshot-guide.md#快照恢复的性能与影响)。
 - 恢复日志备份数据，速度可以达到 30 GiB/h。更详细说明请参考 [PITR 的性能指标](/br/br-pitr-guide.md#pitr-的性能指标)。
 
 ## 备份存储
@@ -120,7 +120,7 @@ TiDB 支持将数据备份到 Amazon S3、Google Cloud Storage (GCS)、Azure Blo
 | 全局临时表 | | 确保使用 BR v5.3.0 及以上版本进行备份和恢复，否则会导致全局临时表的表定义错误。 |
 | TiDB Lightning 物理导入模式| |上游数据库使用 TiDB Lightning 物理导入模式导入的数据，无法作为数据日志备份下来。推荐在数据导入后执行一次全量备份，细节参考[上游数据库使用 TiDB Lightning 物理导入模式导入数据的恢复](/faq/backup-and-restore-faq.md#上游数据库使用-tidb-lightning-物理导入模式导入数据时为什么无法使用日志备份功能)。|
 | TiCDC | | BR v8.2.0 及以上版本：如果在恢复的目标集群有 [CheckpointTS](/ticdc/ticdc-architecture.md#checkpointts) 早于 BackupTS 的 Changefeed，BR 会拒绝执行恢复。BR v8.2.0 之前的版本：如果在恢复的目标集群有任何活跃的 TiCDC Changefeed，BR 会拒绝执行恢复。 |
-| 向量搜索 | | 确保使用 BR v8.4.0 及以上版本进行备份与恢复。不支持将带有[向量数据类型](/vector-search-data-types.md)的表恢复至 v8.4.0 之前的 TiDB 集群。 |
+| 向量搜索 | | 确保使用 BR v8.4.0 及以上版本进行备份与恢复。不支持将带有[向量数据类型](/vector-search/vector-search-data-types.md)的表恢复至 v8.4.0 之前的 TiDB 集群。 |
 
 ### 版本间兼容性
 
