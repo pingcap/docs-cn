@@ -172,7 +172,8 @@ TiDB v6.6.0 版本之前的 BR 版本兼容性矩阵：
 
 > **注意：**
 >
-> - 当仅备份用户数据时（全量备份或日志备份），所有版本之间均兼容
+> - 当仅备份用户数据时（全量备份或日志备份），所有版本之间均兼容；不兼容的情况只在 mysql 系统表的恢复上，你可以通过设置 `--with-sys-table=false` 跳过全部跳过恢复系统表以规避该问题，或者使用前面提到的更精细的过滤器仅仅跳过不兼容的系统表 ```
+--filter '*.*' --filter "__TiDB_BR_Temporary_*.*" --filter '!mysql.*' --filter 'mysql.bind_info' --filter 'mysql.user' --filter 'mysql.global_priv' --filter 'mysql.global_grants' --filter 'mysql.default_roles' --filter 'mysql.role_edges' --filter '!sys.*' --filter '!INFORMATION_SCHEMA.*' --filter '!PERFORMANCE_SCHEMA.*' --filter '!METRICS_SCHEMA.*' --filter '!INSPECTION_SCHEMA.*'
 > - "-" 表示该版本在对应场景下没有兼容性限制
 
 ## 探索更多
