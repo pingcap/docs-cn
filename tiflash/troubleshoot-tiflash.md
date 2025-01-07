@@ -72,7 +72,7 @@ aliases: ['/docs-cn/dev/tiflash/troubleshoot-tiflash/','/docs-cn/dev/tiflash/tif
     > - 开启 [Placement Rules](/configure-placement-rules.md) 且存在多条 rule 的情况下，原先的 [`max-replicas`](/pd-configuration-file.md#max-replicas)、[`location-labels`](/pd-configuration-file.md#location-labels) 及 [`isolation-level`](/pd-configuration-file.md#isolation-level) 配置项将不再生效。如果需要调整副本策略，应当使用 Placement Rules 相关接口。
     > - 开启 [Placement Rules](/configure-placement-rules.md) 且只存在一条默认的 rule 的情况下，当改变 `max-replicas`、`location-labels` 或 `isolation-level` 配置项时，系统会自动更新这条默认的 rule。
 
-5. 检查 TiFlash 节点对应 store 所在机器剩余的磁盘空间是否充足。默认情况下当磁盘剩余空间小于该 store 的 capacity 的 20%（通过 low-space-ratio 参数控制）时，PD 不会向 TiFlash 调度数据。
+5. 检查 TiFlash 节点对应 store 所在机器剩余的磁盘空间是否充足。默认情况下当磁盘剩余空间小于该 store 的 capacity 的 20%（通过 [`low-space-ratio`](/pd-configuration-file.md#low-space-ratio) 参数控制）时，PD 不会向 TiFlash 调度数据。
 
 ## 部分查询返回 Region Unavailable 的错误
 
@@ -95,16 +95,16 @@ aliases: ['/docs-cn/dev/tiflash/troubleshoot-tiflash/','/docs-cn/dev/tiflash/tif
 1. 检查是否有某些数据表的 TiFlash 副本数大于缩容后的 TiFlash 节点数：
     
     ```sql
-    SELECT * FROM information_schema.tiflash_replica WHERE REPLICA_COUNT >  'tobe_left_nodes';
+    SELECT * FROM information_schema.tiflash_replica WHERE REPLICA_COUNT > 'tobe_left_nodes';
     ```
 
     `tobe_left_nodes` 表示缩容后的 TiFlash 节点数。
     
     如果查询结果不为空，则需要修改对应表的 TiFlash 副本数。这是因为，当 TiFlash 副本数大于缩容后的 TiFlash 节点数时，PD 不会将 Region peer 从待缩容的 TiFlash 节点上移走，导致 TiFlash 节点无法缩容。
 
-2. 针对需要移除集群中所有 TiFlash 节点的场景，如果 `INFORMATION_SCHEMA.TIFLASH_REPLICA` 表显示集群已经不存在 TiFlash 副本了，但 TiFlash 节点缩容仍然无法成功，请检查最近是否执行过 `DROP TABLE <db-nam>.<table-name>` 或 `DROP DATABASE <db-name>` 操作。
+2. 针对需要移除集群中所有 TiFlash 节点的场景，如果 `INFORMATION_SCHEMA.TIFLASH_REPLICA` 表显示集群已经不存在 TiFlash 副本了，但 TiFlash 节点缩容仍然无法成功，请检查最近是否执行过 `DROP TABLE <db-name>.<table-name>` 或 `DROP DATABASE <db-name>` 操作。
 
-    对于带有 TiFlash 副本的表或数据库，直接执行 `DROP TABLE <db-nam>.<table-name>` 或 `DROP DATABASE <db-name>` 后，TiDB 不会立即清除 PD 上相应的表的 TiFlash 同步规则，而是会等到相应的表满足垃圾回收（GC）条件后才清除这些同步规则。在垃圾回收完成后，TiFlash 节点就可以缩容成功。
+    对于带有 TiFlash 副本的表或数据库，直接执行 `DROP TABLE <db-name>.<table-name>` 或 `DROP DATABASE <db-name>` 后，TiDB 不会立即清除 PD 上相应的表的 TiFlash 同步规则，而是会等到相应的表满足垃圾回收 (GC) 条件后才清除这些同步规则。在垃圾回收完成后，TiFlash 节点就可以缩容成功。
 
     如需在满足垃圾回收条件之前清除 TiFlash 的数据同步规则，可以参考以下步骤手动清除。
     
@@ -112,40 +112,40 @@ aliases: ['/docs-cn/dev/tiflash/troubleshoot-tiflash/','/docs-cn/dev/tiflash/tif
     >
     > 手动清除数据表的 TiFlash 同步规则后，如果对这些表执行 `RECOVER TABLE`、`FLASHBACK TABLE` 或 `FLASHBACK DATABASE` 操作，表的 TiFlash 副本不会恢复。
 
-   1. 查询当前 PD 实例中所有与 TiFlash 相关的数据同步规则。
+    1. 查询当前 PD 实例中所有与 TiFlash 相关的数据同步规则。
 
-    ```shell
-    curl http://<pd_ip>:<pd_port>/pd/api/v1/config/rules/group/tiflash
-    ```
+        ```shell
+        curl http://<pd_ip>:<pd_port>/pd/api/v1/config/rules/group/tiflash
+        ```
 
-    ```
-    [
-      {
-        "group_id": "tiflash",
-        "id": "table-45-r",
-        "override": true,
-        "start_key": "7480000000000000FF2D5F720000000000FA",
-        "end_key": "7480000000000000FF2E00000000000000F8",
-        "role": "learner",
-        "count": 1,
-        "label_constraints": [
+        ```
+        [
           {
-            "key": "engine",
-            "op": "in",
-            "values": [
-              "tiflash"
+            "group_id": "tiflash",
+            "id": "table-45-r",
+            "override": true,
+            "start_key": "7480000000000000FF2D5F720000000000FA",
+            "end_key": "7480000000000000FF2E00000000000000F8",
+            "role": "learner",
+            "count": 1,
+            "label_constraints": [
+              {
+                "key": "engine",
+                "op": "in",
+                "values": [
+                  "tiflash"
+                ]
+              }
             ]
           }
         ]
-      }
-    ]
-    ```
+        ```
 
-   2. 删除所有与 TiFlash 相关的数据同步规则。以 `id` 为 `table-45-r` 的规则为例，通过以下命令可以删除该规则。
+    2. 删除所有与 TiFlash 相关的数据同步规则。以 `id` 为 `table-45-r` 的规则为例，通过以下命令可以删除该规则。
 
-    ```shell
-    curl -v -X DELETE http://<pd_ip>:<pd_port>/pd/api/v1/config/rule/tiflash/table-45-r
-    ```
+        ```shell
+        curl -v -X DELETE http://<pd_ip>:<pd_port>/pd/api/v1/config/rule/tiflash/table-45-r
+        ```
 
 ## TiFlash 分析慢
 
