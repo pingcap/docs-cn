@@ -215,7 +215,7 @@ Query OK, 0 rows affected (0.00 sec)
 
 由于 TiDB 将整张缓存表的数据加载到 TiDB 进程的内存中，并且执行修改操作后缓存会失效，需要重新加载，所以 TiDB 缓存表只适用于表比较小的场景。
 
-目前 TiDB 对于每张缓存表的大小限制为 64 MB。如果表的数据超过了 64 MB，执行 `ALTER TABLE t CACHE` 会失败。
+目前 TiDB 对于每张缓存表的大小限制为 64 MiB。如果表的数据超过了 64 MiB，执行 `ALTER TABLE t CACHE` 会失败。
 
 ## 与其他 TiDB 功能的兼容性限制
 
