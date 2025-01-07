@@ -134,7 +134,7 @@ CREATE TABLE orders (
 ALTER TABLE orders TTL_JOB_INTERVAL = '48h';
 ```
 
-`TTL_JOB_INTERVAL` 的默认值是 `24h` (v8.5 及之前的版本为 `1h`)。
+`TTL_JOB_INTERVAL` 的默认值是 `24h`。在 v8.5 及之前版本中，默认值为 `1h`。
 
 在执行 TTL 任务时，TiDB 会基于 Region 的数量将表拆分为多个子任务。这些子任务会被分发到不同的 TiDB 节点中执行。通常情况下，单个表的子任务个数最多为 64，但是对于更大规模的集群，比如 TiKV 实例个数超过 64，单个表可拆分成的最大子任务数量和 TiKV 实例个数相等。然而，并非所有表的 TTL 任务都可以被拆分为子任务。请参考[使用限制](#使用限制)以了解哪些表的 TTL 任务不能被拆分。
 
