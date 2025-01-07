@@ -52,8 +52,6 @@ summary: 介绍 TiFlash 的常见问题、原因及解决办法。
 
 3. 通过 pd-ctl 查看 TiFlash proxy 状态是否正常：
 
-    {{< copyable "shell-regular" >}}
-
     ```shell
     tiup ctl:nightly pd -u http://${pd-ip}:${pd-port} store
     ```
