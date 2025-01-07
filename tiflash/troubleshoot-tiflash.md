@@ -53,8 +53,6 @@ aliases: ['/docs-cn/dev/tiflash/troubleshoot-tiflash/','/docs-cn/dev/tiflash/tif
 
 3. 通过 pd-ctl 查看 TiFlash proxy 状态是否正常：
 
-    {{< copyable "shell-regular" >}}
-
     ```shell
     tiup ctl:nightly pd -u http://${pd-ip}:${pd-port} store
     ```
