@@ -24,7 +24,7 @@ summary: TiDB 是一款开源的一站式实时 HTAP 数据库，支持部署在
     | 操作系统                                       | 支持的 CPU 架构                         |
     |:-----------------------------------------------|:----------------------------------------|
     | Red Hat Enterprise Linux 8.4 及以上的 8.x 版本 | <ul><li>x86_64</li><li>ARM 64</li></ul> |
-    | CentOS 7.3 及以上的 7.x 版本 （从 v8.5.1 开始支持）| <ul><li>x86_64</li><li>ARM 64</li></ul> |
+    | CentOS 7.3 及以上的 7.x 版本 （v8.5.1 及以上版本支持）| <ul><li>x86_64</li><li>ARM 64</li></ul> |
     | Amazon Linux 2                                 | <ul><li>x86_64</li><li>ARM 64</li></ul> |
     | Amazon Linux 2023       |  <ul><li>x86_64</li><li>ARM 64</li></ul>   |
     | Rocky Linux 9.1 及以上的版本 |  <ul><li>x86_64</li><li>ARM 64</li></ul> |
