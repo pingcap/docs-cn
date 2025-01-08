@@ -1685,13 +1685,13 @@ CREATE TABLE t (a varchar(20), b blob,
 ERROR 8264 (HY000): Global Index is needed for index 'a', since the unique index is not including all partitioning columns, and GLOBAL is not given as IndexOption
 ```
 
-#### 全局索引
+### 全局索引
 
 在引入全局索引 (Global Index) 之前，TiDB 会为每个分区创建一个局部索引 (Local Index)，即一个分区对应一个局部索引。这种索引方式存在一个[使用限制](#分区键主键和唯一键)：主键和唯一键必须包含所有的分区键，以确保数据的全局唯一性。此外，当查询的数据跨越多个分区时，TiDB 需要扫描各个分区的数据才能返回结果。
 
-为解决这些问题，TiDB 从 v8.3.0 开始引入全局索引。全局索引能覆盖整个表的数据，使得主键和唯一键在不包含分区键的情况下仍能保持全局唯一性。此外，全局索引可以在一次操作中访问多个分区的索引数据，而无需对每个分区的本地索引逐一查找，显著提升了针对非分区键的查询性能。
+为解决这些问题，TiDB 从 v8.3.0 开始引入全局索引。全局索引能覆盖整个表的数据，使得主键和唯一键在不包含分区键的情况下仍能保持全局唯一性。此外，全局索引可以在一次操作中访问多个分区的索引数据，而无需对每个分区的本地索引逐一查找，显著提升了针对非分区键的查询性能。从 v9.0.0 开始，非唯一索引也可以创建为全局索引。
 
-如果你需要为主键或唯一键创建全局索引，可以通过在索引定义中添加 `GLOBAL` 关键字来实现。
+如果你需要创建全局索引，可以通过在索引定义中添加 `GLOBAL` 关键字来实现。
 
 > **注意：**
 >
@@ -1704,13 +1704,14 @@ CREATE TABLE t1 (
     col3 INT NOT NULL,
     col4 INT NOT NULL,
     UNIQUE KEY uidx12(col1, col2) GLOBAL,
-    UNIQUE KEY uidx3(col3)
+    UNIQUE KEY uidx3(col3),
+    KEY idx1(col1) GLOBAL
 )
 PARTITION BY HASH(col3)
 PARTITIONS 4;
 ```
 
-在上面示例中，唯一索引 `uidx12` 将成为全局索引，但 `uidx3` 仍是常规的唯一索引。
+在上面示例中，唯一索引 `uidx12` 和非唯一索引 `idx1` 将成为全局索引，但 `uidx3` 仍是常规的唯一索引。
 
 请注意，**聚簇索引**不能成为全局索引，如下例所示：
 
@@ -1742,7 +1743,8 @@ Create Table: CREATE TABLE `t1` (
   `col3` int NOT NULL,
   `col4` int NOT NULL,
   UNIQUE KEY `uidx12` (`col1`,`col2`) /*T![global_index] GLOBAL */,
-  UNIQUE KEY `uidx3` (`col3`)
+  UNIQUE KEY `uidx3` (`col3`),
+  KEY `idx1` (`col1`) /*T![global_index] GLOBAL */
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin
 PARTITION BY HASH (`col3`) PARTITIONS 4
 1 row in set (0.00 sec)
@@ -1761,6 +1763,7 @@ SELECT * FROM information_schema.tidb_indexes WHERE table_name='t1';
 | test         | t1         |          0 | uidx12   |            1 | col1        |     NULL |               | NULL       |        1 | YES        | NO        |         1 |
 | test         | t1         |          0 | uidx12   |            2 | col2        |     NULL |               | NULL       |        1 | YES        | NO        |         1 |
 | test         | t1         |          0 | uidx3    |            1 | col3        |     NULL |               | NULL       |        2 | YES        | NO        |         0 |
+| test         | t1         |          1 | idx1     |            1 | col1        |     NULL |               | NULL       |        3 | YES        | NO        |         1 |
 +--------------+------------+------------+----------+--------------+-------------+----------+---------------+------------+----------+------------+-----------+-----------+
 3 rows in set (0.00 sec)
 ```
@@ -1768,19 +1771,13 @@ SELECT * FROM information_schema.tidb_indexes WHERE table_name='t1';
 在对未分区的表进行分区，或对已分区的表进行重新分区时，可以根据需要将索引更新为全局索引或将其还原为本地索引：
 
 ```sql
-ALTER TABLE t1 PARTITION BY HASH (col1) PARTITIONS 3 UPDATE INDEXES (uidx12 LOCAL, uidx3 GLOBAL);
+ALTER TABLE t1 PARTITION BY HASH (col1) PARTITIONS 3 UPDATE INDEXES (uidx12 LOCAL, uidx3 GLOBAL, idx1 LOCAL);
 ```
 
-##### 全局索引的限制
+#### 全局索引的限制
 
 - 如果索引定义中未显式指定 `GLOBAL` 关键字，TiDB 将默认创建局部索引 (Local Index)。
 - `GLOBAL` 和 `LOCAL` 关键字仅适用于分区表，对非分区表没有影响。即在非分区表中，全局索引和局部索引之间没有区别。
-- 当前仅支持为唯一列创建全局索引 (Unique Global Index)。如果需要对非唯一列创建全局索引，可以通过包含主键形成复合索引。例如，如果非唯一列是 `col3` 而主键是 `col1`，可以通过执行以下 SQL 语句为 `col3` 创建全局索引：
-  
-    ```sql
-    ALTER TABLE ... ADD UNIQUE INDEX(col3, col1) GLOBAL;
-    ```
-
 - 以下 DDL 操作会触发全局索引的更新：`DROP PARTITION`、`TRUNCATE PARTITION` 和 `REORGANIZE PARTITION`。这些 DDL 需等待全局索引更新完成后才会返回结果，耗时会相应增加。尤其是在数据归档场景下，如 `DROP PARTITION` 和 `TRUNCATE PARTITION`，若没有全局索引，通常可以立即完成；但使用全局索引后，耗时会随着所需更新的索引数量的增加而增加。
 - 包含全局索引的表不支持 `EXCHANGE PARTITION`。
 - 默认情况下，分区表的主键为聚簇索引，且必须包含分区键。如果要求主键不包含分区建，可以在建表时显式指定主键为非聚簇的全局索引，例如：`PRIMARY KEY(col1, col2) NONCLUSTERED GLOBAL`。
@@ -1819,8 +1816,6 @@ YEARWEEK()
 ### 兼容性
 
 目前 TiDB 支持 Range 分区、Range Columns 分区、List 分区、List COLUMNS 分区、Hash 分区和 Key 分区，其它的 MySQL 分区类型尚不支持。
-
-分区管理方面，只要底层实现可能会涉及数据挪动的操作，目前都暂不支持。包括且不限于：调整 Hash 分区表的分区数量，修改 Range 分区表的范围，合并分区等。
 
 对于暂不支持的分区类型，在 TiDB 中建表时会忽略分区信息，以普通表的形式创建，并且会报 Warning。
 
@@ -1916,7 +1911,7 @@ select * from t;
 5 rows in set (0.00 sec)
 ```
 
-### 动态裁剪模式
+## 动态裁剪模式
 
 TiDB 访问分区表有两种模式，`dynamic` 和 `static`。从 v6.3.0 开始，默认使用 `dynamic` 模式。但是注意，`dynamic` 模式仅在表级别汇总统计信息（即分区表的全局统计信息）收集完成的情况下生效。如果在全局统计信息未收集完成的情况下启用 `dynamic` 动态裁剪模式，TiDB 仍然会维持 `static` 静态裁剪的状态，直到全局统计信息收集完成。关于全局统计信息的更多信息，请参考[动态裁剪模式下的分区表统计信息](/statistics.md#收集动态裁剪模式下的分区表统计信息)。
 
@@ -2121,7 +2116,7 @@ mysql> explain select /*+ TIDB_INLJ(t1, t2) */ t1.* from t1, t2 where t2.code = 
 
 目前，静态裁剪模式不支持执行计划缓存，包括 Prepare 语句和非 Prepare 语句。
 
-#### 为动态裁剪模式更新所有分区表的统计信息
+### 为动态裁剪模式更新所有分区表的统计信息
 
 1. 找到所有的分区表：
 
