@@ -52,22 +52,16 @@ summary: 介绍 TiFlash 的常见问题、原因及解决办法。
 
 3. 通过 pd-ctl 查看 TiFlash proxy 状态是否正常：
 
-    {{< copyable "shell-regular" >}}
-
     ```shell
-    echo "store" | /path/to/pd-ctl -u http://${pd-ip}:${pd-port}
+    tiup ctl:nightly pd -u http://${pd-ip}:${pd-port} store
     ```
 
     store.labels 中含有 `{"key": "engine", "value": "tiflash"}` 信息的为 TiFlash proxy。
 
-4. 查看 pd buddy 是否正常打印日志（日志路径的对应配置项 [flash.flash_cluster] log 设置的值，默认为 TiFlash 配置文件配置的 tmp 目录下）。
-
-5. 检查配置的副本数是否小于等于集群 TiKV 节点数。若配置的副本数超过 TiKV 节点数，则 PD 不会向 TiFlash 同步数据；
-
-    {{< copyable "shell-regular" >}}
+4. 检查 TiFlash 配置的副本数是否小于等于集群 TiKV 节点数。若配置的副本数超过 TiKV 节点数，则 PD 不会向 TiFlash 同步数据：
 
     ```shell
-    echo 'config placement-rules show' | /path/to/pd-ctl -u http://${pd-ip}:${pd-port}
+    tiup ctl:nightly pd -u http://${pd-ip}:${pd-port} config placement-rules show | grep -C 10 default
     ```
 
     再确认 "default: count" 参数值。
@@ -77,7 +71,7 @@ summary: 介绍 TiFlash 的常见问题、原因及解决办法。
     > - 开启 [Placement Rules](/configure-placement-rules.md) 且存在多条 rule 的情况下，原先的 [`max-replicas`](/pd-configuration-file.md#max-replicas)、[`location-labels`](/pd-configuration-file.md#location-labels) 及 [`isolation-level`](/pd-configuration-file.md#isolation-level) 配置项将不再生效。如果需要调整副本策略，应当使用 Placement Rules 相关接口。
     > - 开启 [Placement Rules](/configure-placement-rules.md) 且只存在一条默认的 rule 的情况下，当改变 `max-replicas`、`location-labels` 或 `isolation-level` 配置项时，系统会自动更新这条默认的 rule。
 
-6. 检查 TiFlash 节点对应 store 所在机器剩余的磁盘空间是否充足。默认情况下当磁盘剩余空间小于该 store 的 capacity 的 20%（通过 low-space-ratio 参数控制）时，PD 不会向 TiFlash 调度数据。
+5. 检查 TiFlash 节点对应 store 所在机器剩余的磁盘空间是否充足。默认情况下当磁盘剩余空间小于该 store 的 capacity 的 20%（通过 [`low-space-ratio`](/pd-configuration-file.md#low-space-ratio) 参数控制）时，PD 不会向 TiFlash 调度数据。
 
 ## 部分查询返回 Region Unavailable 的错误
 
@@ -92,6 +86,65 @@ summary: 介绍 TiFlash 的常见问题、原因及解决办法。
 1. 参照[下线 TiFlash 节点](/scale-tidb-using-tiup.md#方案二手动缩容-tiflash-节点)下线对应的 TiFlash 节点。
 2. 清除该 TiFlash 节点的相关数据。
 3. 重新在集群中部署 TiFlash 节点。
+
+## 缩容 TiFlash 节点慢
+
+可依照如下步骤进行处理：
+
+1. 检查是否有某些数据表的 TiFlash 副本数大于缩容后的 TiFlash 节点数：
+    
+    ```sql
+    SELECT * FROM information_schema.tiflash_replica WHERE REPLICA_COUNT > 'tobe_left_nodes';
+    ```
+
+    `tobe_left_nodes` 表示缩容后的 TiFlash 节点数。
+    
+    如果查询结果不为空，则需要修改对应表的 TiFlash 副本数。这是因为，当 TiFlash 副本数大于缩容后的 TiFlash 节点数时，PD 不会将 Region peer 从待缩容的 TiFlash 节点上移走，导致 TiFlash 节点无法缩容。
+
+2. 针对需要移除集群中所有 TiFlash 节点的场景，如果 `INFORMATION_SCHEMA.TIFLASH_REPLICA` 表显示集群已经不存在 TiFlash 副本了，但 TiFlash 节点缩容仍然无法成功，请检查最近是否执行过 `DROP TABLE <db-name>.<table-name>` 或 `DROP DATABASE <db-name>` 操作。
+
+    对于带有 TiFlash 副本的表或数据库，直接执行 `DROP TABLE <db-name>.<table-name>` 或 `DROP DATABASE <db-name>` 后，TiDB 不会立即清除 PD 上相应的表的 TiFlash 同步规则，而是会等到相应的表满足垃圾回收 (GC) 条件后才清除这些同步规则。在垃圾回收完成后，TiFlash 节点就可以缩容成功。
+
+    如需在满足垃圾回收条件之前清除 TiFlash 的数据同步规则，可以参考以下步骤手动清除。
+    
+    > **注意：**
+    >
+    > 手动清除数据表的 TiFlash 同步规则后，如果对这些表执行 `RECOVER TABLE`、`FLASHBACK TABLE` 或 `FLASHBACK DATABASE` 操作，表的 TiFlash 副本不会恢复。
+
+    1. 查询当前 PD 实例中所有与 TiFlash 相关的数据同步规则。
+
+        ```shell
+        curl http://<pd_ip>:<pd_port>/pd/api/v1/config/rules/group/tiflash
+        ```
+
+        ```
+        [
+          {
+            "group_id": "tiflash",
+            "id": "table-45-r",
+            "override": true,
+            "start_key": "7480000000000000FF2D5F720000000000FA",
+            "end_key": "7480000000000000FF2E00000000000000F8",
+            "role": "learner",
+            "count": 1,
+            "label_constraints": [
+              {
+                "key": "engine",
+                "op": "in",
+                "values": [
+                  "tiflash"
+                ]
+              }
+            ]
+          }
+        ]
+        ```
+
+    2. 删除所有与 TiFlash 相关的数据同步规则。以 `id` 为 `table-45-r` 的规则为例，通过以下命令可以删除该规则。
+
+        ```shell
+        curl -v -X DELETE http://<pd_ip>:<pd_port>/pd/api/v1/config/rule/tiflash/table-45-r
+        ```
 
 ## TiFlash 分析慢
 
