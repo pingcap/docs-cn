@@ -142,34 +142,34 @@ TiDB v6.6.0 版本之前的 BR 版本兼容性矩阵：
 
 #### TiDB v6.5 版本到 v8.5 之间的 BR 版本兼容性矩阵
 
-本节列出了 TiDB v6.5 版本到 v8.5 之间所有长期支持版本（包括 v6.5、v7.1、v7.5、v8.1、v8.5）的 BR 兼容性矩阵。这个矩阵中使用的 BR 版本和对应的 TiDB Server 版本的大版本一致。
+本节列出了 TiDB v6.5 版本到 v8.5 之间所有[长期支持版本 (LTS)](/releases/versioning.md#长期支持版本)（包括 v6.5、v7.1、v7.5、v8.1、v8.5）的 BR 兼容性矩阵。这个矩阵中的 BR 版本与对应的 TiDB Server 的大版本一致。
 
 > **注意：**
 >
-> 已知问题：在 7.2.0 版本中，部分系统表字段改为大小写敏感，可能导致跨版本备份恢复失败。详见 [Issue #43717](https://github.com/pingcap/tidb/issues/43717)。
+> 已知问题：在 v7.2.0 版本中，部分系统表字段改为大小写敏感，可能导致跨版本备份恢复失败。详见 [Issue #43717](https://github.com/pingcap/tidb/issues/43717)。
 
 下表列出了全量备份的兼容性矩阵：
 
 | 备份集群版本 | 兼容的恢复目标集群版本 | 不兼容的恢复目标集群版本 |
 |:---------|:------------|:--------------|
-| 6.5    | 7.1       | 7.5 及以上   |
-| 7.1    | -           | 7.5 及以上   |
-| 7.5    | 7.5 及以上 | -             |
-| 8.1    | 8.1 及以上 | -             |
+| v6.5.0    | v7.1.0       | v7.5.0 及以上   |
+| v7.1.0    | -           | v7.5.0 及以上   |
+| v7.5.0    | v7.5.0 及以上 | -             |
+| v8.1.0    | v8.1.0 及以上 | -             |
 
 下表列出了日志备份的兼容性矩阵：
 
 | 备份集群版本 | 兼容的恢复目标集群版本 | 不兼容的恢复目标集群版本 |
 |:---------|:------------|:--------------|
-| 6.5    | 7.1       | 7.5 及以上   |
-| 7.1    | -           | 7.5 及以上   |
-| 7.5    | 7.5 及以上 | -             |
-| 8.1    | 8.1 及以上 | -             |
+| v6.5.0    | v7.1.0       | v7.5.0 及以上   |
+| v7.1.0    | -           | v7.5.0 及以上   |
+| v7.5.0    | v7.5.0 及以上 | -             |
+| v8.1.0    | v8.1.0 及以上 | -             |
 
 > **注意：**
 >
 > - 当仅备份用户数据时（全量备份或日志备份），所有版本之间均兼容。
-> - 在恢复 mysql 系统表的场景中，会出现不兼容的情况，此时你可以通过设置 `--with-sys-table=false` 跳过恢复全部系统表以规避该问题，或者使用更精细的过滤器仅仅跳过不兼容的系统表，例如：`--filter '*.*' --filter "__TiDB_BR_Temporary_*.*" --filter '!mysql.*' --filter 'mysql.bind_info' --filter 'mysql.user' --filter 'mysql.global_priv' --filter 'mysql.global_grants' --filter 'mysql.default_roles' --filter 'mysql.role_edges' --filter '!sys.*' --filter '!INFORMATION_SCHEMA.*' --filter '!PERFORMANCE_SCHEMA.*' --filter '!METRICS_SCHEMA.*' --filter '!INSPECTION_SCHEMA.*'`
+> - 在恢复 `mysql` 系统表时，可能会出现不兼容情况。为避免此问题，你可以通过设置 `--with-sys-table=false` 跳过恢复所有系统表，或者使用更精细的过滤器仅仅跳过不兼容的系统表，例如：`--filter '*.*' --filter "__TiDB_BR_Temporary_*.*" --filter '!mysql.*' --filter 'mysql.bind_info' --filter 'mysql.user' --filter 'mysql.global_priv' --filter 'mysql.global_grants' --filter 'mysql.default_roles' --filter 'mysql.role_edges' --filter '!sys.*' --filter '!INFORMATION_SCHEMA.*' --filter '!PERFORMANCE_SCHEMA.*' --filter '!METRICS_SCHEMA.*' --filter '!INSPECTION_SCHEMA.*'`。
 > - "-" 表示该版本在对应场景下没有兼容性限制。
 
 ## 探索更多
