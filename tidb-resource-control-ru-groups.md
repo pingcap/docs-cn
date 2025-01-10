@@ -17,6 +17,11 @@ TiDB 资源管控特性提供了两层资源管理能力，包括在 TiDB 层的
 - TiFlash 流控：借助 [TiFlash Pipeline Model 执行模型](/tiflash/tiflash-pipeline-model.md)，可以更精确地获取不同查询的 CPU 消耗情况，并转换为 [Request Unit (RU)](#什么是-request-unit-ru) 进行扣除。流量控制通过令牌桶算法实现。
 - TiFlash 调度：当系统资源不足时，会根据优先级对多个资源组之间的 pipeline task 进行调度。具体逻辑是：首先判断资源组的优先级 `PRIORITY`，然后根据 CPU 使用情况，再结合 `RU_PER_SEC` 进行判断。最终效果是，如果 rg1 和 rg2 的 `PRIORITY` 一样，但是 rg2 的 `RU_PER_SEC` 是 rg1 的两倍，那么 rg2 可使用的 CPU 时间是 rg1 的两倍。
 
+关于如何管控后台任务和管理资源消耗超出预期的查询 (Runaway Queries) 的内容，请参考以下文档：
+
+- [使用资源管控 (Resource Control) 管理后台任务](/tidb-resource-control-background-tasks.md)
+- [管理资源消耗超出预期的查询 (Runaway Queries) ](/tidb-resource-control-runaway-queries.md)
+
 ## 使用场景
 
 资源管控特性的引入对 TiDB 具有里程碑的意义。它能够将一个分布式数据库集群划分成多个逻辑单元，即使个别单元对资源过度使用，也不会挤占其他单元所需的资源。利用该特性：
