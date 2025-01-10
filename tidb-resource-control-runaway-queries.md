@@ -1,6 +1,6 @@
 ---
-title: 管理资源消耗超出预期的查询
-summary: 介绍如何通过资源管控能力来实现对资源消耗超出预期的语句进行控制和降级。
+title: 管理资源消耗超出预期的查询 (Runaway Queries)
+summary: 介绍如何通过资源管控能力来实现对资源消耗超出预期的语句 (Runaway Queries) 进行控制和降级。
 ---
 
 # 管理资源消耗超出预期的查询 (Runaway Queries)
