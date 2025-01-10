@@ -49,7 +49,7 @@ Runaway Query 是指执行时间或消耗资源超出预期的语句。下面使
 
 > **注意：**
 >
-> 如果你想把 Runaway Queries 严格限制在一个资源组内，推荐将 `SWITCH_GROUP` 和 [`QUERY WATCH`](/tidb-resource-control-runaway-queries.md#query-watch-语句说明) 语句一起搭配使用。因为 `QUERY_LIMIT` 只有在查询达到预设条件时才会触发，所以 `SWITCH_GROUP` 在此类场景下可能会出现无法及时将查询切换到目标资源组的情况。
+> 如果你想把 Runaway Queries 严格限制在一个资源组内，推荐将 `SWITCH_GROUP` 和 [`QUERY WATCH`](#query-watch-语句说明) 语句一起搭配使用。因为 `QUERY_LIMIT` 只有在查询达到预设条件时才会触发，所以 `SWITCH_GROUP` 在此类场景下可能会出现无法及时将查询切换到目标资源组的情况。
 
 ## 示例
 
