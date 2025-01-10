@@ -1,8 +1,8 @@
 ---
-title: 限制后台任务资源使用
-summary: 介绍如何通过资源管控能力来实现对后台任务进行控制和限制。
+title: 使用资源管控 (Resource Control) 管理后台任务
+summary: 介绍如何通过资源管控 (Resource Control) 控制后台任务。
 ---
-# 使用资源管控(Resource Control)管理后台任务
+# 使用资源管控 (Resource Control) 管理后台任务
 
 > **警告：**
 >
