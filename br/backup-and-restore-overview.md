@@ -132,12 +132,46 @@ TiDB 支持将数据备份到 Amazon S3、Google Cloud Storage (GCS)、Azure Blo
 
 从 v7.0.0 开始，TiDB 逐步支持通过 SQL 语句来执行备份和恢复操作。因此，强烈建议在备份和恢复集群时使用与 TiDB 集群相同大版本的 BR 工具，并避免跨大版本进行数据备份和恢复操作。这有助于确保恢复操作的顺利执行和数据的一致性。特别是从 v7.6.0 起，BR 默认支持在恢复数据的同时恢复 `mysql` 库下的系统表，即恢复时默认配置为 `--with-sys-table=true`。在跨版本进行数据恢复时，如果遇到 `mysql` 库的系统表结构不同导致类似 `[BR:Restore:ErrRestoreIncompatibleSys]incompatible system table` 异常，你可以通过设置 `--with-sys-table=false` 跳过恢复系统表以规避该问题。
 
+#### TiDB v6.6.0 版本之前的 BR 版本兼容性矩阵
+
 TiDB v6.6.0 版本之前的 BR 版本兼容性矩阵：
 
 | 备份版本（纵向）\ 恢复版本（横向）  | 恢复到 TiDB v6.0 | 恢复到 TiDB v6.1| 恢复到 TiDB v6.2 | 恢复到 TiDB v6.3、v6.4 或 v6.5 | 恢复到 TiDB v6.6 |
 |  ----  |  ----  | ---- | ---- | ---- | ---- |
 | TiDB v6.0、v6.1、v6.2、v6.3、v6.4 或 v6.5 快照备份 | 兼容（已知问题，如果备份数据中包含空库可能导致报错，参考 [#36379](https://github.com/pingcap/tidb/issues/36379)） | 兼容 | 兼容 | 兼容 | 兼容（需使用 v6.6 的 BR） |
 | TiDB v6.3、v6.4、v6.5 或 v6.6 日志备份| 不兼容 | 不兼容 | 不兼容 | 兼容 | 兼容 |
+
+#### TiDB v6.5.0 版本到 v8.5.0 之间的 BR 版本兼容性矩阵
+
+本节列出了 TiDB v6.5.0 版本到 v8.5.0 之间所有[长期支持版本 (LTS)](/releases/versioning.md#长期支持版本)（包括 v6.5.0、v7.1.0、v7.5.0、v8.1.0、v8.5.0）的 BR 兼容性矩阵。这个矩阵中的 BR 版本与对应的 TiDB Server 的大版本一致。
+
+> **注意：**
+>
+> 已知问题：在 v7.2.0 版本中，部分系统表字段改为大小写敏感，可能导致跨版本备份恢复失败。详见 [Issue #43717](https://github.com/pingcap/tidb/issues/43717)。
+
+下表列出了全量备份的兼容性矩阵：
+
+| 备份集群版本 | 兼容的恢复目标集群版本 | 不兼容的恢复目标集群版本 |
+|:---------|:------------|:--------------|
+| v6.5.0    | v7.1.0       | v7.5.0 及以上   |
+| v7.1.0    | -           | v7.5.0 及以上   |
+| v7.5.0    | v7.5.0 及以上 | -             |
+| v8.1.0    | v8.1.0 及以上 | -             |
+
+下表列出了日志备份的兼容性矩阵：
+
+| 备份集群版本 | 兼容的恢复目标集群版本 | 不兼容的恢复目标集群版本 |
+|:---------|:------------|:--------------|
+| v6.5.0    | v7.1.0       | v7.5.0 及以上   |
+| v7.1.0    | -           | v7.5.0 及以上   |
+| v7.5.0    | v7.5.0 及以上 | -             |
+| v8.1.0    | v8.1.0 及以上 | -             |
+
+> **注意：**
+>
+> - 当仅备份用户数据时（全量备份或日志备份），所有版本之间均兼容。
+> - 在恢复 `mysql` 系统表时，可能会出现不兼容情况。为避免此问题，你可以通过设置 `--with-sys-table=false` 跳过恢复所有系统表，或者使用更精细的过滤器仅仅跳过不兼容的系统表，例如：`--filter '*.*' --filter "__TiDB_BR_Temporary_*.*" --filter '!mysql.*' --filter 'mysql.bind_info' --filter 'mysql.user' --filter 'mysql.global_priv' --filter 'mysql.global_grants' --filter 'mysql.default_roles' --filter 'mysql.role_edges' --filter '!sys.*' --filter '!INFORMATION_SCHEMA.*' --filter '!PERFORMANCE_SCHEMA.*' --filter '!METRICS_SCHEMA.*' --filter '!INSPECTION_SCHEMA.*'`。
+> - "-" 表示该版本在对应场景下没有兼容性限制。
 
 ## 探索更多
 

@@ -391,6 +391,7 @@
   - [Load Base Split 使用文档](/configure-load-base-split.md)
   - [Store Limit 使用文档](/configure-store-limit.md)
   - [DDL 执行原理及最佳实践](/ddl-introduction.md)
+  - [数据批量处理](/batch-processing.md)
   - PD 微服务使用文档
     - [PD 微服务概览](/pd-microservices.md)
     - [使用 TiUP 扩容缩容 PD 微服务节点](/scale-microservices-using-tiup.md)
@@ -689,6 +690,7 @@
     - [TiDB 分布式执行框架介绍](/tidb-distributed-execution-framework.md)
     - [TiDB 全局排序](/tidb-global-sort.md)
   - [系统变量](/system-variables.md)
+  - [系统变量索引](/system-variable-reference.md)
   - [服务器状态变量](/status-variables.md)
   - 配置文件参数
     - [tidb-server](/tidb-configuration-file.md)
@@ -941,6 +943,7 @@
       - [乐观事务](/optimistic-transaction.md)
       - [悲观事务](/pessimistic-transaction.md)
       - [非事务 DML 语句](/non-transactional-dml.md)
+      - [Pipelined DML](/pipelined-dml.md)
     - [视图](/views.md)
     - [分区表](/partitioned-table.md)
     - [临时表](/temporary-tables.md)

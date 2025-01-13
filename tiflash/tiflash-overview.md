@@ -26,9 +26,9 @@ TiFlash 推荐使用和 TiKV 不同的节点以做到 Workload 隔离，但在�
 
 TiFlash 暂时无法直接接受数据写入，任何数据必须先写入 TiKV 再同步到 TiFlash。TiFlash 以 learner 角色接入 TiDB 集群，TiFlash 支持表粒度的数据同步，部署后默认情况下不会同步任何数据，需要按照[按表构建 TiFlash 副本](/tiflash/create-tiflash-replicas.md#按表构建-tiflash-副本)一节完成指定表的数据同步。
 
-TiFlash 主要包含三个组件，除了主要的存储引擎组件，另外包含 tiflash proxy 和 pd buddy 组件，其中 tiflash proxy 主要用于处理 Multi-Raft 协议通信的相关工作，pd buddy 负责与 PD 协同工作，将 TiKV 数据按表同步到 TiFlash。
+TiFlash 主要包含两个组件，一个是列式存储引擎组件，另一个是处理 Multi-Raft 协议通信相关工作的 TiFlash proxy 组件。
 
-对于按表构建 TiFlash 副本的流程，TiDB 接收到相应的 DDL 命令后 pd buddy 组件会通过 TiDB 的 status 端口获取到需要同步的数据表信息，然后会将需要同步的数据信息发送到 PD，PD 根据该信息进行相关的数据调度。
+对于按表构建 TiFlash 副本的流程，TiDB 接收到相应的 DDL 命令后，会自动在 PD 创建对应的 [Placement Rules](/configure-placement-rules.md)，PD 根据该信息进行相关的数据调度。
 
 ## 核心特性
 
