@@ -9,7 +9,7 @@ summary: TiDB 数据库中 SHOW [BACKUPS|RESTORES] 的使用概况。
 
 查询 `BACKUP` 任务时，使用 `SHOW BACKUPS` 语句。查询 `RESTORE` 任务时，使用 `SHOW RESTORES` 语句。
 
-执行两个语句均需要 `SUPER` 权限。
+执行 `SHOW BACKUPS` 需要 `SUPER` 或 `BACKUP_ADMIN` 权限。执行 `SHOW RESTORES` 需要 `SUPER` 或 `RESTORE_ADMIN`权限。
 
 不显示用 `br` 命令行工具启动的备份和恢复。
 
