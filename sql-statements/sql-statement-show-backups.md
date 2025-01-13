@@ -5,9 +5,13 @@ summary: TiDB 数据库中 SHOW [BACKUPS|RESTORES] 的使用概况。
 
 # SHOW [BACKUPS|RESTORES]
 
-`SHOW [BACKUPS|RESTORES]` 语句会列出所有队列中或正在执行的 [`BACKUP`](/sql-statements/sql-statement-backup.md) 和 [`RESTORE`](/sql-statements/sql-statement-restore.md) 任务。
+`SHOW [BACKUPS|RESTORES]` 语句会列出所有在 TiDB 实例上队列中的、正在执行的和近期完成的 [`BACKUP`](/sql-statements/sql-statement-backup.md) 和 [`RESTORE`](/sql-statements/sql-statement-restore.md) 任务。
 
-查询 `BACKUP` 任务时，使用 `SHOW BACKUPS` 语句。查询 `RESTORE` 任务时，使用 `SHOW RESTORES` 语句。执行两个语句均需要 `SUPER` 权限。
+查询 `BACKUP` 任务时，使用 `SHOW BACKUPS` 语句。查询 `RESTORE` 任务时，使用 `SHOW RESTORES` 语句。
+
+执行 `SHOW BACKUPS` 需要 `SUPER` 或 `BACKUP_ADMIN` 权限。执行 `SHOW RESTORES` 需要 `SUPER` 或 `RESTORE_ADMIN`权限。
+
+不显示用 `br` 命令行工具启动的备份和恢复。
 
 ## 语法图
 
@@ -39,11 +43,11 @@ SHOW BACKUPS;
 ```
 
 ```sql
-+--------------------------------+---------+----------+---------------------+---------------------+-------------+------------+
-| Destination                    | State   | Progress | Queue_Time          | Execution_Time      | Finish_Time | Connection |
-+--------------------------------+---------+----------+---------------------+---------------------+-------------+------------+
-| s3://example-bucket/backup-01/ | Backup  | 98.38    | 2020-04-12 23:09:03 | 2020-04-12 23:09:25 |        NULL |          4 |
-+--------------------------------+---------+----------+---------------------+---------------------+-------------+------------+
++--------------------------------+---------+----------+---------------------+---------------------+-------------+------------+---------+
+| Destination                    | State   | Progress | Queue_time          | Execution_time      | Finish_time | Connection | Message |
++--------------------------------+---------+----------+---------------------+---------------------+-------------+------------+---------+
+| s3://example-bucket/backup-01/ | Backup  | 98.38    | 2020-04-12 23:09:03 | 2020-04-12 23:09:25 |        NULL |          4 | NULL    |
++--------------------------------+---------+----------+---------------------+---------------------+-------------+------------+---------+
 1 row in set (0.00 sec)
 ```
 
@@ -54,10 +58,19 @@ SHOW BACKUPS;
 | `Destination` | 目标存储的 URL（为避免泄露密钥，所有参数均不显示） |
 | `State` | 任务状态 |
 | `Progress` | 当前状态的进度（百分比） |
-| `Queue Time` | 任务开始排队的时间 |
-| `Execution Time` | 任务开始执行的时间；对于队列中任务，该值为 `0000-00-00 00:00:00` |
-| `Finish_Time` | （暂不适用） |
+| `Queue_time` | 任务开始排队的时间 |
+| `Execution_time` | 任务开始执行的时间；对于队列中任务，该值为 `0000-00-00 00:00:00` |
+| `Finish_time` | 任务完成的时间戳；对于队列中的和运行的任务，该值为 `0000-00-00 00:00:00` |
 | `Connection` | 运行任务的连接 ID |
+| `Message` | 详细信息 |
+
+可能的状态有：
+
+| 状态 | 说明 |
+| :-----|:------------|
+| Backup | 进行备份 |
+| Wait | 等待执行 |
+| Checksum | 运行 checksum 操作 |
 
 连接 ID 可用于在 [`KILL TIDB QUERY`](/sql-statements/sql-statement-kill.md) 语句中取消备份/恢复任务：
 
