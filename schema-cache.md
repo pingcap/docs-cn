@@ -19,7 +19,7 @@ summary: TiDB 对于 schema 信息采用基于 LRU 的缓存机制，在大量�
 - 建议关闭 [`performance.force-init-stats`](/tidb-configuration-file.md#force-init-stats-从-v657-和-v710-版本开始引入) 以减少 TiDB 的启动时间。
 - 如果需要创建大量的表（例如 10 万张以上），建议将参数 [`split-table`](/tidb-configuration-file.md#split-table) 设置为 `false` 以减少 Region 数量，从而降低 TiKV 的内存。
 - 在使用 stale read 功能时，如果使用的 schema 太老，可能会导致全量加载历史的 schema，对性能有很大影响。可以通过调大 [`tidb_schema_version_cache_limit`](/system-variables.md#tidb_schema_version_cache_limit-从-v740-版本开始引入) 来缓解这一问题。
-- 在访问 INFORMATION_SCHEMA 中的系统视图时，如果视图包含库名或表名字段，建议在查询条件中明确指定数据库名和表名，以避免读取过多元数据，进而影响查询性能，甚至导致 TiDB 内存溢出（OOM）问题。
+- 在访问 INFORMATION_SCHEMA 中的系统视图时，如果视图包含库名或表名字段，建议在查询条件中明确指定数据库名和表名，以避免读取过多元数据，进而影响查询性能，甚至导致 TiDB 内存溢出 (OOM) 问题。
 
 ## 已知限制
 
