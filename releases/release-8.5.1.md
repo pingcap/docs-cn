@@ -106,6 +106,7 @@ TiDB 版本：8.5.1
     - note [#issue](https://github.com/pingcap/tiflash/issues/${issue-id}) @[贡献者 GitHub ID](https://github.com/${github-id})
     - (dup): release-7.5.5.md > 错误修复> TiFlash - 修复在存算分离架构下，对新增的列进行查询可能返回错误结果的问题 [#9665](https://github.com/pingcap/tiflash/issues/9665) @[zimulala](https://github.com/zimulala)
     - 修复 TiFlash 可能在内存占用不高的情况下，发生意外拒绝处理 Raft 消息的行为 [#9745](https://github.com/pingcap/tiflash/issues/9745) @[CalvinNeo](https://github.com/CalvinNeo)
+    - 修复 TiFlash `Position` 函数不支持 Collation 的问题 [#9377](https://github.com/pingcap/tiflash/issues/9377) @[xzhangxian1008](https://github.com/xzhangxian1008)
 
 + Tools
 
