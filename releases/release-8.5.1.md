@@ -50,7 +50,7 @@ TiDB 版本：8.5.1
     + Backup & Restore (BR)
 
         - note [#issue](https://github.com/pingcap/tidb/issues/${issue-id}) @[贡献者 GitHub ID](https://github.com/${github-id})
-        - note [#issue](https://github.com/pingcap/tidb/issues/${issue-id}) @[贡献者 GitHub ID](https://github.com/${github-id})
+        - 修复了 PiTR 无法恢复大 Index 的问题。 [#58433](https://github.com/pingcap/tidb/pull/58433) @[YuJuncen](https://github.com/YuJuncen)
 
     + TiCDC
 
