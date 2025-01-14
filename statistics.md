@@ -361,7 +361,7 @@ SHOW COLUMN_STATS_USAGE WHERE db_name = 'test' AND table_name = 't' AND last_ana
 
     ```sql
     SELECT DISTINCT(CONCAT('DROP STATS ', table_schema, '.', table_name, ';'))
-    FROM information_schema.tables ON mysql.stats_histograms
+    FROM information_schema.tables JOIN mysql.stats_histograms
     ON table_id = tidb_table_id
     WHERE stats_ver = 2;
     ```
