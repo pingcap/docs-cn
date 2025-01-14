@@ -90,8 +90,8 @@ TiDB 版本：8.5.1
 
 + TiKV
 
-    - note [#issue](https://github.com/tikv/tikv/issues/${issue-id}) @[贡献者 GitHub ID](https://github.com/${github-id})
-    - note [#issue](https://github.com/tikv/tikv/issues/${issue-id}) @[贡献者 GitHub ID](https://github.com/${github-id})
+    - 修复了处理 GBK/GB18030 编码数据时的编码问题 [#17618](https://github.com/tikv/tikv/issues/17618) @[CbcWestwolf](https://github.com/CbcWestwolf)
+    - 修复了因 In-memory Engine 预加载尚未初始化的副本导致的 panic 问题 [#18046](https://github.com/tikv/tikv/issues/18046) @[overvenus]([https://github.com/overvenus]
     - (dup): release-8.1.2.md > 错误修复> TiKV - 修复 Region Split 后可能无法快速选出 Leader 的问题 [#17602](https://github.com/tikv/tikv/issues/17602) @[LykxSassinator](https://github.com/LykxSassinator)
     - (dup): release-8.1.2.md > 错误修复> TiKV - 修复磁盘卡住时，TiKV 无法向 PD 上报心跳的问题 [#17939](https://github.com/tikv/tikv/issues/17939) @[LykxSassinator](https://github.com/LykxSassinator)
 
