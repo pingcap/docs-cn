@@ -137,7 +137,7 @@ TiProxy 的高可用配置。
 
 + 默认值：`""`
 + 支持热加载：否
-+ 指定虚拟 IP 地址，使用 CIDR 格式表示，例如 `"10.0.1.10/24"`。当集群中部署了多台 TiProxy 时，只有一台 TiProxy 会绑定虚拟 IP。当该 TiProxy 下线时，另外一台 TiProxy 会自动绑定该 IP，确保客户端始终能通过虚拟 IP 连接到可用的 TiProxy。
++ 指定虚拟 IP 地址，使用 CIDR 格式表示，例如 `"10.0.1.10/24"`。当集群中有多台 TiProxy 配置同一虚拟 IP 时，只有一台 TiProxy 会绑定该虚拟 IP。当该 TiProxy 下线时，另外一台 TiProxy 会自动绑定该 IP，确保客户端始终能通过虚拟 IP 连接到可用的 TiProxy。
 
 配置示例：
 
@@ -147,6 +147,8 @@ server_configs:
     ha.virtual-ip: "10.0.1.10/24"
     ha.interface: "eth0"
 ```
+
+当需要隔离计算层资源时，可以配置多个虚拟 IP，并结合[基于标签的负载均衡](/tiproxy/tiproxy-load-balance.md#基于标签的负载均衡)。示例可参见[基于标签的负载均衡](/tiproxy/tiproxy-load-balance.md#基于标签的负载均衡)。
 
 > **注意：**
 >
@@ -249,9 +251,25 @@ TLS 对象字段：
 - 设置 `cert`、`key` 或 `auto-certs` 后支持 TLS 连接，否则不支持 TLS 连接。
 - 可选：如果 `ca` 不为空，则启用服务器端的客户端验证。客户端必须提供证书。如果 `skip-ca` 为 `true` 且 `ca` 不为空，则服务器仅在客户端提供证书时才验证客户端证书。
 
+#### `cert-allowed-cn`
+
++ 默认值：`""`
++ 支持热加载：是
++ 当其他组件通过 TLS 连接 TiProxy 的 [HTTP 状态端口](#api)时，TiProxy 可通过校验调用者证书中的 `Common Name` 以防止非法访问者访问。该配置项指定了合法的调用者的 `Common Name` 列表。设置了该配置项后，`server-http-tls` 必须要开启 TLS，否则该配置项不生效。关于组件间认证调用者身份的详细信息，请参见[认证组件调用者身份](/enable-tls-between-components.md#认证组件调用者身份)。
+
 #### `cluster-tls`
 
 客户端 TLS 对象。用于访问 TiDB 或 PD。
+
+#### `encryption-key-path`
+
++ 默认值：`""`
++ 支持热加载：是
++ 指定流量捕获时用于加密流量文件的密钥的文件路径。该文件须包含一个 256 位（32 字节）的十六进制字符串，并以换行符结尾（即 \n），且不包含其他任何内容。密钥文件示例如下：
+
+```
+3b5896b5be691006e0f71c3040a29495ddcad20b14aff61806940ebd780d3c62
+```
 
 #### `require-backend-tls`
 

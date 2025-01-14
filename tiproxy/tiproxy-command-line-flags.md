@@ -165,6 +165,8 @@ level = 'warning'
 
 - `--output`：（必填）指定流量文件存放的目录。
 - `--duration`：（必填）指定捕获的时长。可选单位为 `m`（分钟）、`h`（小时）或 `d`（天）。例如 `--duration=1h` 指定捕获一小时的流量。
+- `--compress`：（可选）指定是否压缩流量文件。`true` 代表压缩，压缩格式为 gzip，`false` 代表不压缩。默认值为 `true`。
+- `--encryption-method`：（可选）指定加密流量文件的算法。仅支持 `""`, `plaintext` 和 `aes256-ctr`。`""` 和 `plaintext` 代表不加密，`aes256-ctr` 代表使用 AES256-CTR 算法加密。指定加密时，需要同时配置 [encrytion-key-path](/tiproxy/tiproxy-configuration.md#encryption-key-path)。默认值为 `""`。
 
 示例：
 
@@ -181,9 +183,10 @@ tiproxyctl traffic capture --host 10.0.1.10 --port 3080 --output="/tmp/traffic" 
 选项：
 
 - `--username`：（必填）指定回放时使用的数据库用户名。
-- `--password`：（可选）指定以上用户名的密码，默认为空字符串 `""`。
+- `--password`：（可选）指定以上用户名的密码。如未指定，将通过交互模式输入密码。
 - `--input`：（必填）指定流量文件存放的目录。
 - `--speed`：（可选）指定回放速率的倍数，范围为 `[0.1, 10]`，默认为 1，表示原速回放。
+- `--readonly`：（可选）指定是否仅回放只读 SQL。`true` 代表仅回放只读 SQL，`false` 代表回放所有 SQL。默认值为 `false`。
 
 示例：
 
