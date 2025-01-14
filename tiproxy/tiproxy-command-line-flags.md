@@ -186,7 +186,7 @@ tiproxyctl traffic capture --host 10.0.1.10 --port 3080 --output="/tmp/traffic" 
 - `--password`：（可选）指定以上用户名的密码。如未指定，将通过交互模式输入密码。
 - `--input`：（必填）指定流量文件存放的目录。
 - `--speed`：（可选）指定回放速率的倍数，范围为 `[0.1, 10]`，默认为 1，表示原速回放。
-- `--readonly`：（可选）指定是否仅回放只读 SQL。`true` 代表仅回放只读 SQL，`false` 代表回放所有 SQL。默认值为 `false`。
+- `--read_only`：（可选）指定是否仅回放只读 SQL。`true` 代表仅回放只读 SQL，`false` 代表回放所有 SQL。默认值为 `false`。
 
 示例：
 

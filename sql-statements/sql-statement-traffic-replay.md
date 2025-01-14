@@ -8,6 +8,7 @@ summary: TiDB 数据库中 TRAFFIC REPLAY 的使用概况。
 TiDB v9.0 引入了 `TRAFFIC REPLAY` 语法，其功能是向集群中所有 TiProxy 实例发送请求，让 TiProxy 从流量文件回放流量到 TiDB。
 
 `TRAFFIC REPLAY` 有以下选项：
+
 - `USER`：（必填）指定回放时使用的 TiDB 用户名。
 - `PASSWORD`：（可选）指定以上用户名的密码，默认为空字符串 `""`。
 - `SPEED`：（可选）指定回放速率的倍数，范围为 `[0.1, 10]`，默认为 1，表示原速回放。

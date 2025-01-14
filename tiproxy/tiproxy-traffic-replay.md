@@ -40,7 +40,7 @@ summary: 介绍 TiProxy 的流量回放的使用场景和使用步骤。
 
     TiProxy 支持捕获流量到本地和外部存储。捕获到本地时，需要在捕获之后把流量文件手动复制到回放的 TiProxy 集群上，而使用外部存储时不需要手动复制。TiProxy 支持的外部存储包括 Amazon S3、Google Cloud Storage (GCS)、Azure Blob Storage，或者实现 S3 协议的其他文件存储服务。关于外部存储，请参见[外部存储服务的 URI 格式](/external-storage-uri.md)。
 
-    捕获流量需要当前用户具备 [`TRAFFIC_CAPTURE_ADMIN`]() 权限。
+    捕获流量需要当前用户具备 [`TRAFFIC_CAPTURE_ADMIN`](/privilege-management.md#动态权限) 权限。
 
     > **注意：**
     >
@@ -59,7 +59,7 @@ summary: 介绍 TiProxy 的流量回放的使用场景和使用步骤。
 3. 如果流量文件捕获到 TiProxy 本机上，需要将流量文件目录复制到测试集群的 TiProxy 实例上。
 4. 使用 [`TRAFFIC REPLAY`](/sql-statements/sql-statement-traffic-replay.md) 语句回放流量。
 
-    捕获流量需要当前用户具备 [`TRAFFIC_REPLAY_ADMIN`]() 权限。
+    捕获流量需要当前用户具备 [`TRAFFIC_REPLAY_ADMIN`](/privilege-management.md#动态权限) 权限。
 
     默认配置下，SQL 语句的执行速率与生产集群相同，数据库连接也与生产集群一一对应，以模拟生产集群的负载。
 
@@ -71,7 +71,7 @@ summary: 介绍 TiProxy 的流量回放的使用场景和使用步骤。
 
     由于所有流量在用户 `u1` 下运行，请确保 `u1` 能访问所有数据库和表。如果没有这样的用户，则需要创建一个。如果生产集群有资源组，那么回放时 TiProxy 会自动将每个会话的资源组设置为与捕获时相同。因此，要为 `u1` 配置 [`SET RESOURCE GROUP`](/sql-statements/sql-statement-set-resource-group.md) 的[权限](/sql-statements/sql-statement-set-resource-group.md#权限)。
 
-    如果回放所有语句，再次回放前可能需要恢复数据到上次回放之前，以减少报错。如果仅需回放只读语句，可以加上 `READONLY=true` 选项。
+    如果回放所有语句，再次回放前可能需要恢复数据到上次回放之前，以避免数据重复引起的报错。也可以加上 `READ_ONLY=true` 选项，只回放只读语句，避免每次回放前恢复数据。
 
     更多信息，请参考 [`TRAFFIC REPLAY`](/sql-statements/sql-statement-traffic-replay.md)。
 
@@ -117,7 +117,7 @@ summary: 介绍 TiProxy 的流量回放的使用场景和使用步骤。
 
     由于所有流量在用户 `u1` 下运行，请确保 `u1` 能访问所有数据库和表。如果没有这样的用户，则需要创建一个。如果生产集群有资源组，那么回放时 TiProxy 会自动将每个会话的资源组设置为与捕获时相同。因此，要为 `u1` 配置 [`SET RESOURCE GROUP`](/sql-statements/sql-statement-set-resource-group.md) 的[权限](/sql-statements/sql-statement-set-resource-group.md#权限)。
 
-    如果回放所有语句，再次回放前可能需要恢复数据到上次回放之前，以减少报错。如果仅需回放只读语句，可以加上 `--readonly=true` 选项。
+    如果回放所有语句，再次回放前可能需要恢复数据到上次回放之前，以减少报错。也可以加上 `--read_only=true` 选项，只回放只读语句，避免每次回放前恢复数据。
 
     更多信息，请参考 [`tiproxyctl traffic replay`](/tiproxy/tiproxy-command-line-flags.md#traffic-replay)。
 
@@ -126,67 +126,66 @@ summary: 介绍 TiProxy 的流量回放的使用场景和使用步骤。
 
 ## 查看回放报告
 
-    回放完成后，报告存储在测试集群的 `tiproxy_traffic_replay` 数据库下。该数据库包含两个表 `fail` 和 `other_errors`。
+回放完成后，报告存储在测试集群的 `tiproxy_traffic_replay` 数据库下。该数据库包含两个表 `fail` 和 `other_errors`。
 
-    `fail` 表存储运行失败的 SQL 语句，字段说明如下：
+`fail` 表存储运行失败的 SQL 语句，字段说明如下：
 
-    - `replay_start_time`：回放任务的开始时间，用于唯一标识一次回放任务。可用于过滤回放任务。
-    - `cmd_type`：运行错误的命令类型，例如 `Query`（执行普通语句）、`Prepare`（预处理语句）、`Execute`（执行预处理语句）。
-    - `digest`：执行失败的 SQL 语句的指纹。
-    - `sample_stmt`：SQL 语句首次执行失败时的 SQL 文本。
-    - `sample_err_msg`：SQL 语句执行失败的报错信息。
-    - `sample_conn_id`：SQL 语句在流量文件中记录的连接 ID，可用于在流量文件中查看 SQL 语句的执行上下文。
-    - `sample_capture_time`：SQL 语句在流量文件中记录的执行时间，可用于在流量文件中查看 SQL 语句的执行上下文。
-    - `sample_replay_time`：SQL 语句在回放时执行失败的时间，可用于在 TiDB 日志文件中查看错误信息。
-    - `count`：SQL 语句执行失败的次数。
+- `replay_start_time`：回放任务的开始时间，用于唯一标识一次回放任务。可用于过滤回放任务。
+- `cmd_type`：运行错误的命令类型，例如 `Query`（执行普通语句）、`Prepare`（预处理语句）、`Execute`（执行预处理语句）。
+- `digest`：执行失败的 SQL 语句的指纹。
+- `sample_stmt`：SQL 语句首次执行失败时的 SQL 文本。
+- `sample_err_msg`：SQL 语句执行失败的报错信息。
+- `sample_conn_id`：SQL 语句在流量文件中记录的连接 ID，可用于在流量文件中查看 SQL 语句的执行上下文。
+- `sample_capture_time`：SQL 语句在流量文件中记录的执行时间，可用于在流量文件中查看 SQL 语句的执行上下文。
+- `sample_replay_time`：SQL 语句在回放时执行失败的时间，可用于在 TiDB 日志文件中查看错误信息。
+- `count`：SQL 语句执行失败的次数。
 
-    以下是 `fail` 表的输出示例：
+以下是 `fail` 表的输出示例：
 
-    ```sql
-    SELECT * FROM tiproxy_traffic_replay.fail LIMIT 1\G
-    ```
+```sql
+SELECT * FROM tiproxy_traffic_replay.fail LIMIT 1\G
+```
 
-    ```
-    *************************** 1. row ***************************
-      replay_start_time: 2024-10-17 13:05:03
-               cmd_type: StmtExecute
-                 digest: 89c5c505772b8b7e8d5d1eb49f4d47ed914daa2663ed24a85f762daa3cdff43c
-            sample_stmt: INSERT INTO new_order (no_o_id, no_d_id, no_w_id) VALUES (?, ?, ?) params=[3077 6 1]
-         sample_err_msg: ERROR 1062 (23000): Duplicate entry '1-6-3077' for key 'new_order.PRIMARY'
-         sample_conn_id: 1356
-    sample_capture_time: 2024-10-17 12:59:15
-     sample_replay_time: 2024-10-17 13:05:05
-                  count: 4
-    ```
+```
+*************************** 1. row ***************************
+    replay_start_time: 2024-10-17 13:05:03
+            cmd_type: StmtExecute
+                digest: 89c5c505772b8b7e8d5d1eb49f4d47ed914daa2663ed24a85f762daa3cdff43c
+        sample_stmt: INSERT INTO new_order (no_o_id, no_d_id, no_w_id) VALUES (?, ?, ?) params=[3077 6 1]
+        sample_err_msg: ERROR 1062 (23000): Duplicate entry '1-6-3077' for key 'new_order.PRIMARY'
+        sample_conn_id: 1356
+sample_capture_time: 2024-10-17 12:59:15
+    sample_replay_time: 2024-10-17 13:05:05
+                count: 4
+```
 
-    `other_errors` 表存储其他未预期错误，例如网络错误、连接数据库错误。字段说明如下：
+`other_errors` 表存储其他未预期错误，例如网络错误、连接数据库错误。字段说明如下：
 
-    - `replay_start_time`：回放任务的开始时间，用于唯一标识一次回放任务。可用于过滤回放任务。
-    - `err_type`：错误的类型，是一个简短的错误信息，例如 `i/o timeout`。
-    - `sample_err_msg`：错误首次出现时的完整错误信息。
-    - `sample_replay_time`：错误在回放时执行失败的时间，可用于在 TiDB 日志文件中查看错误信息。
-    - `count`：错误出现的次数。
+- `replay_start_time`：回放任务的开始时间，用于唯一标识一次回放任务。可用于过滤回放任务。
+- `err_type`：错误的类型，是一个简短的错误信息，例如 `i/o timeout`。
+- `sample_err_msg`：错误首次出现时的完整错误信息。
+- `sample_replay_time`：错误在回放时执行失败的时间，可用于在 TiDB 日志文件中查看错误信息。
+- `count`：错误出现的次数。
 
-    以下是 `other_errors` 表的输出示例：
+以下是 `other_errors` 表的输出示例：
 
-    ```sql
-    SELECT * FROM tiproxy_traffic_replay.other_errors LIMIT 1\G
-    ```
+```sql
+SELECT * FROM tiproxy_traffic_replay.other_errors LIMIT 1\G
+```
 
-    ```
-    *************************** 1. row ***************************
-     replay_start_time: 2024-10-17 12:57:35
-              err_type: failed to read the connection: EOF
-        sample_err_msg: this is an error from the backend connection: failed to read the connection: EOF
-    sample_replay_time: 2024-10-17 12:57:39
-                 count: 1
-    ```
+```
+*************************** 1. row ***************************
+    replay_start_time: 2024-10-17 12:57:35
+            err_type: failed to read the connection: EOF
+    sample_err_msg: this is an error from the backend connection: failed to read the connection: EOF
+sample_replay_time: 2024-10-17 12:57:39
+                count: 1
+```
 
-    > **注意：**
-    >
-    > - `tiproxy_traffic_replay` 中的表结构在未来版本中可能会改变。不推荐在应用程序开发或工具开发中读取 `tiproxy_traffic_replay` 中的数据。
-    > - 回放不保证连接之间的事务执行顺序与捕获时完全一致，因此可能会误报错误。
-    > - 再次回放时，上一次的回放报告不会自动删除，需要手动删除。
+> **注意：**
+>
+> - `tiproxy_traffic_replay` 中的表结构在未来版本中可能会改变。不推荐在应用程序开发或工具开发中读取 `tiproxy_traffic_replay` 中的数据。
+> - 回放不保证连接之间的事务执行顺序与捕获时完全一致，因此可能会误报错误。
 
 ## 测试吞吐量
 
