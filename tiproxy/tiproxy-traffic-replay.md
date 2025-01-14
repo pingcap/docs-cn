@@ -40,7 +40,7 @@ summary: 介绍 TiProxy 的流量回放的使用场景和使用步骤。
 
     TiProxy 支持捕获流量到本地和外部存储。捕获到本地时，需要在捕获之后把流量文件手动复制到回放的 TiProxy 集群上，而使用外部存储时不需要手动复制。TiProxy 支持的外部存储包括 Amazon S3、Google Cloud Storage (GCS)、Azure Blob Storage，或者实现 S3 协议的其他文件存储服务。关于外部存储，请参见[外部存储服务的 URI 格式](/external-storage-uri.md)。
 
-    捕获流量需要当前用户具备 [`TRAFFIC_CAPTURE_ADMIN`](/privilege-management.md#动态权限) 权限。
+    捕获流量需要当前用户具备 `SUPER` 或 [`TRAFFIC_CAPTURE_ADMIN`](/privilege-management.md#动态权限) 权限。
 
     > **注意：**
     >
@@ -59,7 +59,7 @@ summary: 介绍 TiProxy 的流量回放的使用场景和使用步骤。
 3. 如果流量文件捕获到 TiProxy 本机上，需要将流量文件目录复制到测试集群的 TiProxy 实例上。
 4. 使用 [`TRAFFIC REPLAY`](/sql-statements/sql-statement-traffic-replay.md) 语句回放流量。
 
-    捕获流量需要当前用户具备 [`TRAFFIC_REPLAY_ADMIN`](/privilege-management.md#动态权限) 权限。
+    捕获流量需要当前用户具备 `SUPER` 或 [`TRAFFIC_REPLAY_ADMIN`](/privilege-management.md#动态权限) 权限。
 
     默认配置下，SQL 语句的执行速率与生产集群相同，数据库连接也与生产集群一一对应，以模拟生产集群的负载。
 
@@ -117,7 +117,7 @@ summary: 介绍 TiProxy 的流量回放的使用场景和使用步骤。
 
     由于所有流量在用户 `u1` 下运行，请确保 `u1` 能访问所有数据库和表。如果没有这样的用户，则需要创建一个。如果生产集群有资源组，那么回放时 TiProxy 会自动将每个会话的资源组设置为与捕获时相同。因此，要为 `u1` 配置 [`SET RESOURCE GROUP`](/sql-statements/sql-statement-set-resource-group.md) 的[权限](/sql-statements/sql-statement-set-resource-group.md#权限)。
 
-    如果回放所有语句，再次回放前可能需要恢复数据到上次回放之前，以减少报错。也可以加上 `--read_only=true` 选项，只回放只读语句，避免每次回放前恢复数据。
+    如果回放所有语句，再次回放前可能需要恢复数据到上次回放之前，以减少报错。也可以加上 `--read-only=true` 选项，只回放只读语句，避免每次回放前恢复数据。
 
     更多信息，请参考 [`tiproxyctl traffic replay`](/tiproxy/tiproxy-command-line-flags.md#traffic-replay)。
 
@@ -294,6 +294,15 @@ tiproxyctl traffic cancel --host 10.0.1.10 --port 3080
 
 - TiProxy 仅支持回放 TiProxy 捕获的流量文件，不支持其他文件格式，因此生产集群必须先使用 TiProxy 捕获流量。
 - 不支持回放 [`LOAD DATA`](/sql-statements/sql-statement-load-data.md) 语句。
+- 为安全原因，以下语句和命令不会被捕获和回放：
+
+    - `CREATE USER` 语句
+    - `ALTER USER` 语句
+    - `SET PASSWORD` 语句
+    - `GRANT` 语句
+    - `BACKUP` 语句
+    - `RESTORE` 语句
+    - `IMPORT` 语句
 
 ## 资源
 

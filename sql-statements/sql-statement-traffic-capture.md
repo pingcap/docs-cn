@@ -7,6 +7,8 @@ summary: TiDB 数据库中 TRAFFIC CAPTURE 的使用概况。
 
 TiDB v9.0 引入了 `TRAFFIC CAPTURE` 语法，其功能是向集群中所有 TiProxy 实例发送请求，让 TiProxy 捕获客户端流量到流量文件。
 
+TiProxy 支持捕获流量到本地和外部存储。捕获到本地时，需要在捕获之后把流量文件手动复制到回放的 TiProxy 集群上，而使用外部存储时不需要手动复制。TiProxy 支持的外部存储包括 Amazon S3、Google Cloud Storage (GCS)、Azure Blob Storage，或者实现 S3 协议的其他文件存储服务。关于外部存储，请参见[外部存储服务的 URI 格式](/external-storage-uri.md)。
+
 `TRAFFIC CAPTURE` 有以下选项：
 
 - `DURATION`：（必填）指定捕获的时长。可选单位为 `m`（分钟）、`h`（小时）或 `d`（天）。例如 `DURATION="1h"` 指定捕获一小时的流量。
@@ -45,7 +47,7 @@ TRAFFIC CAPTURE TO "/tmp/traffic" DURATION="1d"
 TRAFFIC CAPTURE TO "s3://external/traffic?access-key=${access-key}&secret-access-key=${secret-access-key}" DURATION="10m"
 ```
 
-流量文件加密，但不压缩：
+捕获时，流量文件自动加密，但不自动压缩：
 
 ```sql
 TRAFFIC CAPTURE TO "/tmp/traffic" DURATION="1h" COMPRESS=false ENCRYPTION_METHOD="aes256-ctr"
