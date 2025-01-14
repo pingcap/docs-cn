@@ -26,7 +26,8 @@ TiDB 版本：8.5.1
 + TiDB
 
     - note [#issue](https://github.com/pingcap/tidb/issues/${issue-id}) @[贡献者 GitHub ID](https://github.com/${github-id})
-    - note [#issue](https://github.com/pingcap/tidb/issues/${issue-id}) @[贡献者 GitHub ID](https://github.com/${github-id})
+    - 支持通过 SQL 动态调整 DDL reorg 的 concurrency 和 batch size 配置[#57526](https://github.com/pingcap/tidb/issues/57526) @[fzzf678](https://github.com/fzzf678)
+    - 在 ADMIN SHOW DDL JOBS 的结果中添加一列注释 [#57526](https://github.com/pingcap/tidb/issues/57526) @[tangenta](https://github.com/tangenta)
 
 + TiKV
 
