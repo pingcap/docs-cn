@@ -1,0 +1,62 @@
+---
+title: TRAFFIC CAPTURE
+summary: TiDB 数据库中 TRAFFIC CAPTURE 的使用概况。
+---
+
+# TRAFFIC CAPTURE
+
+TiDB v9.0 引入了 `TRAFFIC CAPTURE` 语法，其功能是向集群中所有 TiProxy 实例发送请求，让 TiProxy 捕获客户端流量到流量文件。
+
+`TRAFFIC CAPTURE` 有以下选项：
+- `DURATION`：（必填）指定捕获的时长。可选单位为 `m`（分钟）、`h`（小时）或 `d`（天）。例如 `--duration=1h` 指定捕获一小时的流量。
+- `COMPRESS`：（可选）指定是否压缩流量文件。`true` 代表压缩，压缩格式为 gzip，`false` 代表不压缩。默认值为 `true`。
+- `ENCRYPTION_METHOD`：（可选）指定加密流量文件的算法。仅支持 `""`, `plaintext` 和 `aes256-ctr`。`""` 和 `plaintext` 代表不加密，`aes256-ctr` 代表使用 AES256-CTR 算法加密。指定加密时，需要同时配置 [encrytion-key-path](/tiproxy/tiproxy-configuration.md#encryption-key-path)。默认值为 `""`。
+
+捕获流量要求当前用户具有 `SUPER` 或 [`TRAFFIC_CAPTURE_ADMIN`](/privilege-management.md#动态权限) 权限。
+
+## 语法图
+
+```ebnf+diagram
+TrafficStmt ::=
+    "TRAFFIC" "CAPTURE" "TO" stringLit TrafficCaptureOptList
+
+TrafficCaptureOptList ::=
+    TrafficCaptureOpt
+|   TrafficCaptureOptList TrafficCaptureOpt
+
+TrafficCaptureOpt ::=
+    "DURATION" EqOpt stringLit
+|   "ENCRYPTION_METHOD" EqOpt stringLit
+|   "COMPRESS" EqOpt Boolean
+```
+
+## 示例
+
+捕获 1 天流量到 TiProxy 实例的本地 `/tmp/traffic` 目录：
+
+```sql
+TRAFFIC CAPTURE TO "/tmp/traffic" DURATION="1d"
+```
+
+捕获 10 分钟流量到 S3：
+
+```sql
+TRAFFIC CAPTURE TO "s3://external/traffic?access-key=${access-key}&secret-access-key=${secret-access-key}" DURATION="10m"
+```
+
+流量文件加密，但不压缩：
+
+```sql
+TRAFFIC CAPTURE TO "/tmp/traffic" DURATION="1h" COMPRESS=false ENCRYPTION_METHOD="aes256-ctr"
+```
+
+## MySQL 兼容性
+
+该语句是 TiDB 对 MySQL 语法的扩展。
+
+## 另请参阅
+
+* [TiProxy 流量回放](/tiproxy/tiproxy-traffic-replay.md)
+* [TRAFFIC REPLAY](/sql-statements/sql-statement-traffic-replay.md)
+* [CANCEL TRAFFIC JOBS](/sql-statements/sql-statement-cancel-traffic-jobs.md)
+* [SHOW TRAFFIC JOBS](/sql-statements/sql-statement-show-traffic-jobs.md)
