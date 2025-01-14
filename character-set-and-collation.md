@@ -54,7 +54,7 @@ SELECT 'A' = 'a';
 1 row in set (0.00 sec)
 ```
 
-以下展示了不同 Unicode 排序规则如何比较德语中的 `ß` 和 `ss`。可以看到，只有更严格的 Unicode 排序规则将它们视为等价，并返回 `1`（表示 `TRUE`）。
+以下示例展示了不同 Unicode 排序规则如何比较德语中的 `ß` 和 `ss`。可以看到，只有较为严格的 Unicode 排序规则会将它们视为等价，从而返回 `1`（表示 TRUE）。
 
 ```sql
 SELECT
@@ -76,16 +76,16 @@ SELECT
 
 ### 字符集和排序规则的命名
 
-一个字符集可以有多种排序规则。排序规则的命名格式为 `<character_set>_<collation_properties>`。例如，`utf8mb4` 字符集有一个名为 `utf8mb4_bin` 的排序规则，它是 `utf8mb4` 字符集的二进制排序规则。排序规则的多个属性可以在名称中描述，并用 `_` 进行分隔。
+一个字符集可以有多种排序规则。排序规则的命名格式为 `<character_set>_<collation_properties>`。例如，`utf8mb4` 字符集有一个名为 `utf8mb4_bin` 的排序规则，它是 `utf8mb4` 字符集的二进制排序规则。排序规则名称中可以包含多个属性 (collation properties)，以 `_` 进行分隔。
 
 下表介绍了字符集和排序规则的后缀和含义。
 
 | 后缀 | 含义 |
 |---|---|
-| `_bin` | 二进制 |
+| `_bin` | 二进制排序规则 |
 | `_ci` | 不区分大小写 |
 | `_ai_ci` | 不区分重音和大小写 |
-| `_0900_bin` | Unicode UCA 9.0.0，二进制 |
+| `_0900_bin` | Unicode UCA 9.0.0，二进制排序规则 |
 | `_unicode_ci` | （较旧的）Unicode UCA 排序规则，不区分大小写 |
 | `_general_ci` | 较宽松的 Unicode 排序规则，不区分大小写 |
 
@@ -177,7 +177,7 @@ MySQL 限制字符集 `utf8` 为最多 3 个字节。这足以存储在基本多
 
 在 MySQL 和 TiDB 中，`utf8` 和 `utf8mb3` 是同一字符集的别名。
 
-默认情况下，TiDB 也将 `utf8` 字符集限制为最多三字节，以确保在 TiDB 中创建的数据仍能安全地恢复到 MySQL 中。你可以通过将系统变量 [`tidb_check_mb4_value_in_utf8`](/system-variables.md#tidb_check_mb4_value_in_utf8) 的值更改为 `OFF` 来禁用此限制。然而，建议使用 `utf8mb4` 字符集。
+默认情况下，TiDB 也将 `utf8` 字符集限制为最多 3 个字节，以确保在 TiDB 中创建的数据仍能安全地恢复到 MySQL 中。尽管你可以通过将系统变量 [`tidb_check_mb4_value_in_utf8`](/system-variables.md#tidb_check_mb4_value_in_utf8) 的值更改为 `OFF` 来禁用此限制，但建议使用 `utf8mb4` 以获得完整的 Unicode 支持和更好的兼容性。
 
 以下示例演示了在表中插入 4 字节的表情符号字符（emoji 字符）时的默认行为。`utf8` 字符集下 `INSERT` 语句不能执行，`utf8mb4` 字符集下可以执行 `INSERT` 语句：
 
