@@ -1768,7 +1768,9 @@ SELECT * FROM information_schema.tidb_indexes WHERE table_name='t1';
 3 rows in set (0.00 sec)
 ```
 
-在对未分区的表进行分区，或对已分区的表进行重新分区时，可以根据需要将索引更新为全局索引或将其还原为本地索引：
+在对未分区的表进行分区，或对已分区的表进行重新分区时，可以根据需要将索引更新为全局索引或将其还原为本地索引。
+
+下面的 SQL 会将 `t1`  表中的所有索引从全局索引变为局部索引，从局部索引变为全局索引。因为新的分区表是基于 `col1` 做的分区，所以 `uidx3` 必须要是全局索引，而 `uidx12` 和 `idx1` 既可以是全局索引，也可以是局部索引。
 
 ```sql
 ALTER TABLE t1 PARTITION BY HASH (col1) PARTITIONS 3 UPDATE INDEXES (uidx12 LOCAL, uidx3 GLOBAL, idx1 LOCAL);
@@ -1816,6 +1818,8 @@ YEARWEEK()
 ### 兼容性
 
 目前 TiDB 支持 Range 分区、Range Columns 分区、List 分区、List COLUMNS 分区、Hash 分区和 Key 分区，其它的 MySQL 分区类型尚不支持。
+
+分区管理方面，只要底层实现可能会涉及数据挪动的操作，目前都暂不支持。包括且不限于：调整 Hash 分区表的分区数量，修改 Range 分区表的范围，合并分区等。
 
 对于暂不支持的分区类型，在 TiDB 中建表时会忽略分区信息，以普通表的形式创建，并且会报 Warning。
 
