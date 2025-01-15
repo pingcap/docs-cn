@@ -58,15 +58,15 @@ TiDB 版本：8.5.1
     - 修复在缩减 TTL 扫描任务工作线程时，任务取消失败可能导致扫描任务泄漏的问题。 [#57708](https://github.com/pingcap/tidb/issues/57708) @[YangKeao](https://github.com/YangKeao) 
     - 增强了时间戳合法性检查。[#57786](https://github.com/pingcap/tidb/issues/57786) @[MyonKeminta](https://github.com/MyonKeminta) <!--tw@hfxsd: the following 10 notes-->
     - 修复在丢失心跳后，若 TTL 表被删除或禁用，TTL 作业仍继续运行的问题 [#57702](https://github.com/pingcap/tidb/issues/57702) @[YangKeao](https://github.com/YangKeao)
-    - 修复 TTL 作业被取消后，last_job_finish_time 显示不正确的问题 [#58109](https://github.com/pingcap/tidb/issues/58109) @[YangKeao](https://github.com/YangKeao)
+    - 修复 TTL 作业被取消后，`last_job_finish_time` 显示不正确的问题 [#58109](https://github.com/pingcap/tidb/issues/58109) @[YangKeao](https://github.com/YangKeao)
     - 修复 TiDB 丢失心跳时，TTL 任务无法被取消的问题 [#57784](https://github.com/pingcap/tidb/issues/57784) @[YangKeao](https://github.com/YangKeao)
     - 修复某个 TTL 任务丢失心跳会阻塞其他任务获取心跳的问题 [#57915](https://github.com/pingcap/tidb/issues/57915) @[YangKeao](https://github.com/YangKeao)
-    - 修复缩减 TTL 工作线程时，部分过期行未被删除的问题。 [#57990](https://github.com/pingcap/tidb/issues/57990) @[lcwangchao](https://github.com/lcwangchao)
-    - 修复当 TTL 删除速率限制器被中断时，剩余行未重试的问题。[#58205](https://github.com/pingcap/tidb/issues/58205) @[lcwangchao](https://github.com/lcwangchao)
-    - 修复在某些情况下，TTL 可能生成大量警告日志的问题。[#58305](https://github.com/pingcap/tidb/issues/58305) @[lcwangchao](https://github.com/lcwangchao)
-    - 修复在修改 tidb_ttl_delete_rate_limit 时，部分 TTL 任务可能挂起的问题。[#58484](https://github.com/pingcap/tidb/issues/58484) @[lcwangchao](https://github.com/lcwangchao)
-    - 修复执行 REORGANIZE PARTITION 时，数据回填可能导致并发更新被回滚的问题。[#58226](https://github.com/pingcap/tidb/issues/58226) @[mjonss](https://github.com/mjonss)
-    - 修复查询 cluster_slow_query 表时使用 order by 可能导致结果乱序的问题。[#51723](https://github.com/pingcap/tidb/issues/51723) @[Defined2014](https://github.com/Defined2014)
+    - 修复缩减 TTL 工作线程时，部分过期行未被删除的问题 [#57990](https://github.com/pingcap/tidb/issues/57990) @[lcwangchao](https://github.com/lcwangchao)
+    - 修复当 TTL 删除速率限制器被中断时，剩余行未重试的问题 [#58205](https://github.com/pingcap/tidb/issues/58205) @[lcwangchao](https://github.com/lcwangchao)
+    - 修复在某些情况下，TTL 可能生成大量警告日志的问题 [#58305](https://github.com/pingcap/tidb/issues/58305) @[lcwangchao](https://github.com/lcwangchao)
+    - 修复在修改 `tidb_ttl_delete_rate_limit` 时，部分 TTL 任务可能挂起的问题 [#58484](https://github.com/pingcap/tidb/issues/58484) @[lcwangchao](https://github.com/lcwangchao)
+    - 修复执行 `REORGANIZE PARTITION` 时，数据回填可能导致并发更新被回滚的问题 [#58226](https://github.com/pingcap/tidb/issues/58226) @[mjonss](https://github.com/mjonss)
+    - 修复查询 `cluster_slow_query` 表时，使用 `ORDER BY` 可能导致结果乱序的问题 [#51723](https://github.com/pingcap/tidb/issues/51723) @[Defined2014](https://github.com/Defined2014)
 
 + TiKV <!--tw@Oreoxmt: 2 notes-->
 
