@@ -21,13 +21,13 @@ TiDB 版本：8.5.1
 
 + TiDB <!--tw@Oreoxmt: 5 notes-->
 
-    - 支持将只读的用户变量折叠为常量 [#52742](https://github.com/pingcap/tidb/issues/52742) @[winoros](https://github.com/winoros)
+    - 支持将只读的用户自定义变量折叠为常量 [#52742](https://github.com/pingcap/tidb/issues/52742) @[winoros](https://github.com/winoros)
     - 将具有 nulleq 条件的笛卡尔积 Semi Join 转换为具有相等条件的 Semi Join [#57583](https://github.com/pingcap/tidb/issues/57583) @[hawkingrei](https://github.com/hawkingrei)
-    - 统计信息内存缓存的默认阈值为总内存的 20% [#58014](https://github.com/pingcap/tidb/issues/58014) @[hawkingrei](https://github.com/hawkingrei)
+    - 将统计信息内存缓存的默认阈值调整为总内存的 20% [#58014](https://github.com/pingcap/tidb/issues/58014) @[hawkingrei](https://github.com/hawkingrei)
 
 + TiKV <!--tw@Oreoxmt: 1 note-->
 
-    - 增加了对非法 max-ts 更新的检测机制 [#17916](https://github.com/tikv/tikv/issues/17916) @[ekexium](https://github.com/ekexium)
+    - 增加对非法 `max_ts` 更新的检测机制 [#17916](https://github.com/tikv/tikv/issues/17916) @[ekexium](https://github.com/ekexium)
 
 + TiFlash
 
@@ -69,14 +69,14 @@ TiDB 版本：8.5.1
 
 + TiKV <!--tw@Oreoxmt: 2 notes-->
 
-    - 修复了处理 GBK/GB18030 编码数据时的编码问题 [#17618](https://github.com/tikv/tikv/issues/17618) @[CbcWestwolf](https://github.com/CbcWestwolf)
-    - 修复了因 In-memory Engine 预加载尚未初始化的副本导致的 panic 问题 [#18046](https://github.com/tikv/tikv/issues/18046) @[overvenus]([https://github.com/overvenus]
+    - 修复处理 GBK/GB18030 编码数据时可能出现编码失败的问题 [#17618](https://github.com/tikv/tikv/issues/17618) @[CbcWestwolf](https://github.com/CbcWestwolf)
+    - 修复因 TiKV MVCC 内存引擎 (In-Memory Engine, IME) 预加载尚未初始化的副本导致 TiKV panic 的问题 [#18046](https://github.com/tikv/tikv/issues/18046) @[overvenus](https://github.com/overvenus)
     - (dup): release-8.1.2.md > 错误修复> TiKV - 修复 Region Split 后可能无法快速选出 Leader 的问题 [#17602](https://github.com/tikv/tikv/issues/17602) @[LykxSassinator](https://github.com/LykxSassinator)
     - (dup): release-8.1.2.md > 错误修复> TiKV - 修复磁盘卡住时，TiKV 无法向 PD 上报心跳的问题 [#17939](https://github.com/tikv/tikv/issues/17939) @[LykxSassinator](https://github.com/LykxSassinator)
 
 + PD <!--tw@Oreoxmt: 1 note-->
 
-    - 修复 PD 在启用 `@@tidb_enable_tso_follower_proxy` 变量后可能出现的 Panic 问题 [#8950](https://github.com/tikv/pd/issues/8950) @[okJiang](https://github.com/okJiang)
+    - 修复启用 `tidb_enable_tso_follower_proxy` 系统变量后，PD 可能出现 panic 的问题 [#8950](https://github.com/tikv/pd/issues/8950) @[okJiang](https://github.com/okJiang)
     - (dup): release-7.5.5.md > 错误修复> PD - 修复 `evict-leader-scheduler` 在使用相同 Store ID 重复创建后无法正常工作的问题 [#8756](https://github.com/tikv/pd/issues/8756) @[okJiang](https://github.com/okJiang)
 
 + TiFlash <!--tw@qiancai: 2 notes-->
