@@ -161,15 +161,23 @@ SHOW WARNINGS;
 
 ## 清除自增 ID 缓存
 
-显式插入 `AUTO_RANDOM` 列的行为与 `AUTO_INCREMENT` 列一致，你也需要清除自增 ID 缓存，详细信息请参阅[清除自增 ID 缓存](/auto-increment.md#清除自增-id-缓存)。
+显式插入 `AUTO_RANDOM` 列的行为与 `AUTO_INCREMENT` 列一致，你也需要清除自增 ID 缓存。详细信息请参阅[清除自增 ID 缓存](/auto-increment.md#清除自增-id-缓存)。
 
 你可以执行 `ALTER TABLE` 语句设置 `AUTO_RANDOM_BASE = 0` 来清除集群中所有 TiDB 节点的自增 ID 缓存。例如：
 
 ```sql
 ALTER TABLE t AUTO_RANDOM_BASE=0;
-Query OK, 0 rows affected, 1 warning (0.52 sec)
+```
 
+```
+Query OK, 0 rows affected, 1 warning (0.52 sec)
+```
+
+```sql
 SHOW WARNINGS;
+```
+
+```
 +---------+------+-------------------------------------------------------------------------+
 | Level   | Code | Message                                                                 |
 +---------+------+-------------------------------------------------------------------------+
