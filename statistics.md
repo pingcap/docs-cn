@@ -18,7 +18,7 @@ TiDB 使用统计信息作为优化器的输入，用于估算 SQL 语句的执�
 
 TiDB 会定期持久化更新的统计信息，更新周期为 20 * [`stats-lease`](/tidb-configuration-file.md#stats-lease)。`stats-lease` 配置项的默认值为 `3s`，如果将其指定为 `0`，TiDB 将停止自动更新统计信息。
 
-TiDB 根据表的变更次数自动调度 [`ANALYZE`](/sql-statements/sql-statement-analyze-table.md) 来收集这些表的统计信息。统计信息的自动更新由以下系统变量控制。
+TiDB 根据表的变更次数自动调度 [`ANALYZE`](/sql-statements/sql-statement-analyze-table.md) 来收集这些表的统计信息。统计信息的自动更新由下表中的系统变量控制。
 
 |  系统变量名 | 默认值 | 功能描述 |
 | --------- | ----- | --------- |
