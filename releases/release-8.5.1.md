@@ -19,7 +19,7 @@ TiDB 版本：8.5.1
 
 ## 改进提升
 
-+ TiDB
++ TiDB <!--tw@Oreoxmt: 5 notes-->
 
     - 支持通过 SQL 动态调整 DDL reorg 的 concurrency 和 batch size 配置[#57526](https://github.com/pingcap/tidb/issues/57526) @[fzzf678](https://github.com/fzzf678)
     - 在 ADMIN SHOW DDL JOBS 的结果中添加一列注释 [#57526](https://github.com/pingcap/tidb/issues/57526) @[tangenta](https://github.com/tangenta)
@@ -27,7 +27,7 @@ TiDB 版本：8.5.1
     - 将具有 nulleq 条件的笛卡尔积 Semi Join 转换为具有相等条件的 Semi Join [#57583](https://github.com/pingcap/tidb/issues/57583) @[hawkingrei](https://github.com/hawkingrei)
     - 统计信息内存缓存的默认阈值为总内存的 20% [#58014](https://github.com/pingcap/tidb/issues/58014) @[hawkingrei](https://github.com/hawkingrei)
 
-+ TiKV
++ TiKV <!--tw@Oreoxmt: 1 note-->
 
     - 增加了对非法 max-ts 更新的检测机制 [#17916](https://github.com/tikv/tikv/issues/17916) @[ekexium](https://github.com/ekexium)
 
@@ -37,13 +37,13 @@ TiDB 版本：8.5.1
 
 + Tools
 
-    + TiCDC
+    + TiCDC <!--tw@qiancai: 1 note-->
 
         - 减少 TiCDC 在做 Initial Scan 时对与 TiKV 中 cache hit rate 的影响 [#17877](https://github.com/tikv/tikv/issues/17877) @[hicqu](https://github.com/hicqu)
 
 ## 错误修复
 
-+ TiDB
++ TiDB <!--tw@lilin90: the following 9 notes-->
 
     - (dup): release-7.5.5.md > 错误修复> TiDB - 修复查询 TiFlash 系统表中默认超时时间过短的问题 [#57816](https://github.com/pingcap/tidb/issues/57816) @[JaySon-Huang](https://github.com/JaySon-Huang)
     - (dup): release-7.5.5.md > 错误修复> TiDB - 修复设置 `tidb_gogc_tuner_max_value` 和 `tidb_gogc_tuner_min_value` 时，由于最大值为空导致出现错误的 warning 信息的问题 [#57889](https://github.com/pingcap/tidb/issues/57889) @[hawkingrei](https://github.com/hawkingrei)
@@ -57,7 +57,7 @@ TiDB 版本：8.5.1
     - 修复 REORGANIZE PARTITION 操作未正确移除被替换的全局索引以及处理非聚簇表唯一索引的问题。[#56822](https://github.com/pingcap/tidb/issues/56822) @[mjonss](https://github.com/mjonss)
     - 修复分区表 Range INTERVAL 语法糖不支持使用 `MINUTE` 做间隔的问题。[#57698](https://github.com/pingcap/tidb/issues/57698) @[mjonss](https://github.com/mjonss)
     - 修复查询慢日志时，由于时区导致的时间范围错误的问题 [#58452](https://github.com/pingcap/tidb/issues/58452) @[lcwangchao](https://github.com/lcwangchao)
-    - 修复在缩减 TTL 扫描任务工作线程时，任务取消失败可能导致扫描任务泄漏的问题。 [#57708](https://github.com/pingcap/tidb/issues/57708) @[YangKeao](https://github.com/YangKeao)
+    - 修复在缩减 TTL 扫描任务工作线程时，任务取消失败可能导致扫描任务泄漏的问题。 [#57708](https://github.com/pingcap/tidb/issues/57708) @[YangKeao](https://github.com/YangKeao) <!--tw@hfxsd: the following 10 notes-->
     - 修复在丢失心跳后，若 TTL 表被删除或禁用，TTL 作业仍继续运行的问题 [#57702](https://github.com/pingcap/tidb/issues/57702) @[YangKeao](https://github.com/YangKeao)
     - 修复 TTL 作业被取消后，last_job_finish_time 显示不正确的问题 [#58109](https://github.com/pingcap/tidb/issues/58109) @[YangKeao](https://github.com/YangKeao)
     - 修复 TiDB 丢失心跳时，TTL 任务无法被取消的问题 [#57784](https://github.com/pingcap/tidb/issues/57784) @[YangKeao](https://github.com/YangKeao)
@@ -69,19 +69,19 @@ TiDB 版本：8.5.1
     - 修复执行 REORGANIZE PARTITION 时，数据回填可能导致并发更新被回滚的问题。[#58226](https://github.com/pingcap/tidb/issues/58226) @[mjonss](https://github.com/mjonss)
     - 修复查询 cluster_slow_query 表时使用 order by 可能导致结果乱序的问题。[#51723](https://github.com/pingcap/tidb/issues/51723) @[Defined2014](https://github.com/Defined2014)
 
-+ TiKV
++ TiKV <!--tw@Oreoxmt: 2 notes-->
 
     - 修复了处理 GBK/GB18030 编码数据时的编码问题 [#17618](https://github.com/tikv/tikv/issues/17618) @[CbcWestwolf](https://github.com/CbcWestwolf)
     - 修复了因 In-memory Engine 预加载尚未初始化的副本导致的 panic 问题 [#18046](https://github.com/tikv/tikv/issues/18046) @[overvenus]([https://github.com/overvenus]
     - (dup): release-8.1.2.md > 错误修复> TiKV - 修复 Region Split 后可能无法快速选出 Leader 的问题 [#17602](https://github.com/tikv/tikv/issues/17602) @[LykxSassinator](https://github.com/LykxSassinator)
     - (dup): release-8.1.2.md > 错误修复> TiKV - 修复磁盘卡住时，TiKV 无法向 PD 上报心跳的问题 [#17939](https://github.com/tikv/tikv/issues/17939) @[LykxSassinator](https://github.com/LykxSassinator)
 
-+ PD
++ PD <!--tw@Oreoxmt: 1 note-->
 
     - 修复 PD 在启用 `@@tidb_enable_tso_follower_proxy` 变量后可能出现的 Panic 问题 [#8950](https://github.com/tikv/pd/issues/8950) @[okJiang](https://github.com/okJiang)
     - (dup): release-7.5.5.md > 错误修复> PD - 修复 `evict-leader-scheduler` 在使用相同 Store ID 重复创建后无法正常工作的问题 [#8756](https://github.com/tikv/pd/issues/8756) @[okJiang](https://github.com/okJiang)
 
-+ TiFlash
++ TiFlash <!--tw@qiancai: 2 notes-->
 
     - (dup): release-7.5.5.md > 错误修复> TiFlash - 修复在存算分离架构下，对新增的列进行查询可能返回错误结果的问题 [#9665](https://github.com/pingcap/tiflash/issues/9665) @[zimulala](https://github.com/zimulala)
     - 修复 TiFlash 可能在内存占用不高的情况下，发生意外拒绝处理 Raft 消息的行为 [#9745](https://github.com/pingcap/tiflash/issues/9745) @[CalvinNeo](https://github.com/CalvinNeo)
@@ -89,11 +89,11 @@ TiDB 版本：8.5.1
 
 + Tools
 
-    + Backup & Restore (BR)
+    + Backup & Restore (BR) <!--tw@qiancai: 1 note-->
 
         - 修复了 PiTR 无法恢复大 Index 的问题。 [#58433](https://github.com/pingcap/tidb/pull/58433) @[YuJuncen](https://github.com/YuJuncen)
 
-    + TiCDC
+    + TiCDC <!--tw@qiancai: 5 notes-->
 
         - 修复在扩容出新的 TiKV 节点后 Changefeed 可能会卡住的问题 [#11766](https://github.com/pingcap/tiflow/issues/11766) @[lidezhu](https://github.com/lidezhu)
         - 修复 event filter 在处理 rename table DDL 时错误的使用新的表名而不是旧的表名来进行过滤的问题 [#11946](https://github.com/pingcap/tiflow/issues/11946) @[kennytm](https://github.com/kennytm)
