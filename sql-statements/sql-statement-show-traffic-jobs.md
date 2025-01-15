@@ -17,13 +17,13 @@ TiDB v9.0.0 引入了 `SHOW TRAFFIC JOBS` 语法，用于查看集群中所有 T
 
 | 列名 | 说明   |
 | :-------- | :------------- |
-| START_TIME | 该任务的开始时间 |
-| END_TIME | 如果该任务已结束，该列为结束时间，否则为空 |
-| INSTANCE | TiProxy 的实例地址 |
-| TYPE | 表示任务类型，`capture` 代表流量捕获任务，`replay` 代表流量回放任务 |
-| PROGRESS | 该任务的完成百分比 |
-| STATUS | 该任务当前的状态，`running` 代表正在运行，`done` 代表正常完成，`canceled` 代表任务失败 |
-| FAIL_REASON | 如果该任务失败，该列为失败的原因，否则为空 |
+| `START_TIME` | 该任务的开始时间 |
+| `END_TIME` | 如果该任务已结束，该列为结束时间，否则为空 |
+| `INSTANCE` | TiProxy 的实例地址 |
+| `TYPE` | 表示任务类型，`capture` 代表流量捕获任务，`replay` 代表流量回放任务 |
+| `PROGRESS` | 该任务的完成百分比 |
+| `STATUS` | 该任务当前的状态，`running` 表示正在运行，`done` 表示正常完成，`canceled` 表示任务失败 |
+| `FAIL_REASON` | 如果该任务失败，该列为失败的原因，否则为空 |
 
 ## 语法图
 

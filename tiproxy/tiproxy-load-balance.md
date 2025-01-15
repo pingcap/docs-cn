@@ -41,7 +41,7 @@ TiProxy 定时通过 SQL 端口和状态端口检查 TiDB 是否已下线或正�
 2. 配置至少 2 台 TiProxy 实例，用于交易业务的 TiProxy 实例配置 [`labels`](/tiproxy/tiproxy-configuration.md#labels) 为 `{"app"="Order"}`；用于 BI 业务的实例配置 [`labels`](/tiproxy/tiproxy-configuration.md#labels) 为 `{"app"="BI"}`。
 3. 如果同时需要 TiProxy 的高可用，配置至少 4 台 TiProxy 实例，不同业务的实例配置不同的虚拟 IP。例如用于交易业务的 2 台 TiProxy 实例配置虚拟 IP `10.0.1.10/24`，用于 BI 业务的 2 台 TiProxy 实例配置虚拟 IP `10.0.1.20/24`。
 4. 将 TiDB 实例分为 2 组，分别为配置项 [`labels`](/tidb-configuration-file.md#labels) 加上 `"app"="Order"` 和 `"app"="BI"`。 
-5. 如果需要同时隔离存储层的资源，可配置 [Placement Rules](/configure-placement-rules.md) 或[资源管控](/tidb-resource-control.md)。
+5. 如果需要同时隔离存储层的资源，可配置 [Placement Rules](/configure-placement-rules.md) 或[资源管控](/tidb-resource-control-ru-groups.md)。
 6. 交易和 BI 业务的客户端分别连接到 2 个虚拟 IP 地址。
 
 <img src="https://download.pingcap.com/images/docs-cn/tiproxy/tiproxy-balance-label.png" alt="基于标签的负载均衡" width="600" />

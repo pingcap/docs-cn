@@ -70,7 +70,7 @@ summary: 介绍 TiProxy 的流量回放的使用场景和使用步骤。
     TRAFFIC REPLAY FROM "/tmp/traffic" USER="u1" PASSWORD="123456"
     ```
 
-    由于所有流量在用户 `u1` 下运行，请确保 `u1` 能访问所有数据库和表。如果没有这样的用户，则需要创建一个。如果生产集群有资源组，那么回放时 TiProxy 会自动将每个会话的资源组设置为与捕获时相同。因此，要为 `u1` 配置 [`SET RESOURCE GROUP`](/sql-statements/sql-statement-set-resource-group.md) 的[权限](/sql-statements/sql-statement-set-resource-group.md#权限)。
+    由于所有流量在用户 `u1` 下运行，请确保 `u1` 能访问所有数据库和表。如果用户不存在，则需要创建。如果生产集群有[资源组](/tidb-resource-control-ru-groups.md#管理资源组)，那么回放时 TiProxy 会自动将每个会话的资源组设置为与捕获时相同。因此，要为 `u1` 配置 [`SET RESOURCE GROUP`](/sql-statements/sql-statement-set-resource-group.md) 的[权限](/sql-statements/sql-statement-set-resource-group.md#权限)。
 
     如果回放所有语句，再次回放前可能需要恢复数据到上次回放之前，以避免数据重复引起的报错。也可以加上 `READ_ONLY=true` 选项，只回放只读语句，避免每次回放前恢复数据。
 
@@ -116,7 +116,7 @@ summary: 介绍 TiProxy 的流量回放的使用场景和使用步骤。
     tiproxyctl traffic replay --host 10.0.1.10 --port 3080 --username="u1" --password="123456" --input="/tmp/traffic"
     ```
 
-    由于所有流量在用户 `u1` 下运行，请确保 `u1` 能访问所有数据库和表。如果没有这样的用户，则需要创建一个。如果生产集群有资源组，那么回放时 TiProxy 会自动将每个会话的资源组设置为与捕获时相同。因此，要为 `u1` 配置 [`SET RESOURCE GROUP`](/sql-statements/sql-statement-set-resource-group.md) 的[权限](/sql-statements/sql-statement-set-resource-group.md#权限)。
+    由于所有流量在用户 `u1` 下运行，请确保 `u1` 能访问所有数据库和表。如果用户不存在，则需要创建。如果生产集群有[资源组](/tidb-resource-control-ru-groups.md#管理资源组)，那么回放时 TiProxy 会自动将每个会话的资源组设置为与捕获时相同。因此，要为 `u1` 配置 [`SET RESOURCE GROUP`](/sql-statements/sql-statement-set-resource-group.md) 的[权限](/sql-statements/sql-statement-set-resource-group.md#权限)。
 
     如果回放所有语句，再次回放前可能需要恢复数据到上次回放之前，以减少报错。也可以加上 `--read-only=true` 选项，只回放只读语句，避免每次回放前恢复数据。
 

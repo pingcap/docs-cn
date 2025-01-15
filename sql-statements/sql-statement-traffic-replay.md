@@ -16,8 +16,6 @@ TiDB v9.0.0 引入了 `TRAFFIC REPLAY` 语法，用于向集群中所有 TiProxy
 - `SPEED`：（可选）指定回放速率的倍数，范围为 `[0.1, 10]`，默认为 `1`，表示原速回放。
 - `READ_ONLY`：（可选）指定是否仅回放只读 SQL 语句。`true` 表示仅回放只读 SQL 语句，`false` 表示回放只读和写入 SQL 语句。默认值为 `false`。
 
-回放流量需要当前用户具有 `SUPER` 或 [`TRAFFIC_REPLAY_ADMIN`](/privilege-management.md#动态权限) 权限。
-
 ## 语法图
 
 ```ebnf+diagram
