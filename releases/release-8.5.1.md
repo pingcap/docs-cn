@@ -41,7 +41,7 @@ TiDB 版本：8.5.1
 
 ## 错误修复
 
-+ TiDB <!--tw@lilin90: the following 9 notes-->
++ TiDB <!--tw@lilin90: the following 10 notes-->
 
     - (dup): release-7.5.5.md > 错误修复> TiDB - 修复查询 TiFlash 系统表中默认超时时间过短的问题 [#57816](https://github.com/pingcap/tidb/issues/57816) @[JaySon-Huang](https://github.com/JaySon-Huang)
     - (dup): release-7.5.5.md > 错误修复> TiDB - 修复设置 `tidb_gogc_tuner_max_value` 和 `tidb_gogc_tuner_min_value` 时，由于最大值为空导致出现错误的 warning 信息的问题 [#57889](https://github.com/pingcap/tidb/issues/57889) @[hawkingrei](https://github.com/hawkingrei)
@@ -55,7 +55,8 @@ TiDB 版本：8.5.1
     - 修复 REORGANIZE PARTITION 操作未正确移除被替换的全局索引以及处理非聚簇表唯一索引的问题。[#56822](https://github.com/pingcap/tidb/issues/56822) @[mjonss](https://github.com/mjonss)
     - 修复分区表 Range INTERVAL 语法糖不支持使用 `MINUTE` 做间隔的问题。[#57698](https://github.com/pingcap/tidb/issues/57698) @[mjonss](https://github.com/mjonss)
     - 修复查询慢日志时，由于时区导致的时间范围错误的问题 [#58452](https://github.com/pingcap/tidb/issues/58452) @[lcwangchao](https://github.com/lcwangchao)
-    - 修复在缩减 TTL 扫描任务工作线程时，任务取消失败可能导致扫描任务泄漏的问题。 [#57708](https://github.com/pingcap/tidb/issues/57708) @[YangKeao](https://github.com/YangKeao) <!--tw@hfxsd: the following 10 notes-->
+    - 修复在缩减 TTL 扫描任务工作线程时，任务取消失败可能导致扫描任务泄漏的问题。 [#57708](https://github.com/pingcap/tidb/issues/57708) @[YangKeao](https://github.com/YangKeao) 
+    - 增强了时间戳合法性检查。[#57786](https://github.com/pingcap/tidb/issues/57786) @[MyonKeminta](https://github.com/MyonKeminta) <!--tw@hfxsd: the following 10 notes-->
     - 修复在丢失心跳后，若 TTL 表被删除或禁用，TTL 作业仍继续运行的问题 [#57702](https://github.com/pingcap/tidb/issues/57702) @[YangKeao](https://github.com/YangKeao)
     - 修复 TTL 作业被取消后，last_job_finish_time 显示不正确的问题 [#58109](https://github.com/pingcap/tidb/issues/58109) @[YangKeao](https://github.com/YangKeao)
     - 修复 TiDB 丢失心跳时，TTL 任务无法被取消的问题 [#57784](https://github.com/pingcap/tidb/issues/57784) @[YangKeao](https://github.com/YangKeao)
