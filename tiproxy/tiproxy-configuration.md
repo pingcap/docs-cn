@@ -148,7 +148,7 @@ server_configs:
     ha.interface: "eth0"
 ```
 
-当需要隔离计算层资源时，可以配置多个虚拟 IP，并结合[基于标签的负载均衡](/tiproxy/tiproxy-load-balance.md#基于标签的负载均衡)。示例可参见[基于标签的负载均衡](/tiproxy/tiproxy-load-balance.md#基于标签的负载均衡)。
+当需要隔离计算层资源时，可以配置多个虚拟 IP，并结合使用[基于标签的负载均衡](/tiproxy/tiproxy-load-balance.md#基于标签的负载均衡)。示例可参见[基于标签的负载均衡](/tiproxy/tiproxy-load-balance.md#基于标签的负载均衡)。
 
 > **注意：**
 >

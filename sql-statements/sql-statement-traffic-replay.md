@@ -5,14 +5,16 @@ summary: TiDB 数据库中 TRAFFIC REPLAY 的使用概况。
 
 # TRAFFIC REPLAY
 
-TiDB v9.0 引入了 `TRAFFIC REPLAY` 语法，其功能是向集群中所有 TiProxy 实例发送请求，让 TiProxy 从流量文件回放流量到 TiDB。
+TiDB v9.0.0 引入了 `TRAFFIC REPLAY` 语法，用于向集群中所有 TiProxy 实例发送请求，让 TiProxy 从流量文件回放流量到 TiDB。
+
+回放流量需要当前用户具有 `SUPER` 或 [`TRAFFIC_REPLAY_ADMIN`](/privilege-management.md#动态权限) 权限。
 
 `TRAFFIC REPLAY` 有以下选项：
 
 - `USER`：（必填）指定回放时使用的 TiDB 用户名。
 - `PASSWORD`：（可选）指定以上用户名的密码，默认为空字符串 `""`。
-- `SPEED`：（可选）指定回放速率的倍数，范围为 `[0.1, 10]`，默认为 1，表示原速回放。
-- `READ_ONLY`：（可选）指定是否仅回放只读 SQL。`true` 代表仅回放只读 SQL，`false` 代表回放所有 SQL。默认值为 `false`。
+- `SPEED`：（可选）指定回放速率的倍数，范围为 `[0.1, 10]`，默认为 `1`，表示原速回放。
+- `READ_ONLY`：（可选）指定是否仅回放只读 SQL 语句。`true` 表示仅回放只读 SQL 语句，`false` 表示回放只读和写入 SQL 语句。默认值为 `false`。
 
 回放流量需要当前用户具有 `SUPER` 或 [`TRAFFIC_REPLAY_ADMIN`](/privilege-management.md#动态权限) 权限。
 

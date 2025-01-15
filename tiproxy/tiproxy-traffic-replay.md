@@ -25,7 +25,7 @@ summary: 介绍 TiProxy 的流量回放的使用场景和使用步骤。
 
 ## 使用步骤
 
-对于 TiDB v9.0.0 之前的版本，仅支持使用 `tiproxyctl` 连接 TiProxy 进行流量捕获和回放。对于 TiDB v9.0.0 及以上版本，建议使用 SQL 捕获和回放流量。
+在 TiDB v9.0.0 之前，仅支持使用 `tiproxyctl` 连接 TiProxy 进行流量捕获和回放。从 TiDB v9.0.0 开始，建议使用 SQL 捕获和回放流量。
 
 <SimpleTab>
 <div label="使用 SQL">
@@ -57,6 +57,7 @@ summary: 介绍 TiProxy 的流量回放的使用场景和使用步骤。
     流量文件会自动转轮和压缩。更多选项，请参考 [`TRAFFIC CAPTURE`](/sql-statements/sql-statement-traffic-capture.md)。
 
 3. 如果流量文件捕获到 TiProxy 本机上，需要将流量文件目录复制到测试集群的 TiProxy 实例上。
+
 4. 使用 [`TRAFFIC REPLAY`](/sql-statements/sql-statement-traffic-replay.md) 语句回放流量。
 
     捕获流量需要当前用户具备 `SUPER` 或 [`TRAFFIC_REPLAY_ADMIN`](/privilege-management.md#动态权限) 权限。
@@ -227,7 +228,11 @@ tiproxyctl traffic replay --host 10.0.1.10 --port 3080 --username="u1" --passwor
 SHOW TRAFFIC JOBS
 ```
 
-当用户有 [`TRAFFIC_CAPTURE_ADMIN`](/privilege-management.md#动态权限) 权限时，显示流量捕获任务。当用户有 [`TRAFFIC_REPLAY_ADMIN`](/privilege-management.md#动态权限) 权限时，显示流量回放任务。当用户具有 `SUPER` 权限或同时具有两种权限时，既显示流量捕获也显示流量回放任务。
+当前用户拥有的权限不同，执行该语句显示结果也不同。
+
+- 如果用户有 [`TRAFFIC_CAPTURE_ADMIN`](/privilege-management.md#动态权限) 权限，执行该语句显示流量捕获任务。
+- 如果用户有 [`TRAFFIC_REPLAY_ADMIN`](/privilege-management.md#动态权限) 权限，执行该语句显示流量回放任务。
+- 如果用户有 `SUPER` 权限或同时具有上述两种权限，执行该语句同时显示流量捕获和流量回放任务。
 
 例如，如下输出代表有 2 台 TiProxy 正在捕获流量：
 
@@ -243,7 +248,7 @@ SHOW TRAFFIC JOBS
 
 更多信息，请参考 [`SHOW TRAFFIC JOBS`](/sql-statements/sql-statement-show-traffic-jobs.md)。
 
-如果需要取消当前的捕获或回放任务，可使用 [`CANCEL TRAFFIC JOBS`](/sql-statements/sql-statement-cancel-traffic-jobs.md) ：
+如果需要取消当前的捕获或回放任务，可使用 [`CANCEL TRAFFIC JOBS`](/sql-statements/sql-statement-cancel-traffic-jobs.md)：
 
 ```sql
 CANCEL TRAFFIC JOBS
