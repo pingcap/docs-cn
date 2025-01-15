@@ -21,8 +21,6 @@ TiDB 版本：8.5.1
 
 + TiDB <!--tw@Oreoxmt: 5 notes-->
 
-    - 支持通过 SQL 动态调整 DDL reorg 的 concurrency 和 batch size 配置[#57526](https://github.com/pingcap/tidb/issues/57526) @[fzzf678](https://github.com/fzzf678)
-    - 在 ADMIN SHOW DDL JOBS 的结果中添加一列注释 [#57526](https://github.com/pingcap/tidb/issues/57526) @[tangenta](https://github.com/tangenta)
     - 支持将只读的用户变量折叠为常量 [#52742](https://github.com/pingcap/tidb/issues/52742) @[winoros](https://github.com/winoros)
     - 将具有 nulleq 条件的笛卡尔积 Semi Join 转换为具有相等条件的 Semi Join [#57583](https://github.com/pingcap/tidb/issues/57583) @[hawkingrei](https://github.com/hawkingrei)
     - 统计信息内存缓存的默认阈值为总内存的 20% [#58014](https://github.com/pingcap/tidb/issues/58014) @[hawkingrei](https://github.com/hawkingrei)
