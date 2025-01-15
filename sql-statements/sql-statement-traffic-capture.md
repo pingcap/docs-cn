@@ -15,7 +15,7 @@ TiProxy 支持的外部存储包括 Amazon S3、Google Cloud Storage (GCS)、Azu
 
 - `DURATION`：（必填）指定捕获的时长。可选单位为 `m`（分钟）、`h`（小时）或 `d`（天）。例如 `DURATION="1h"`，表示指定捕获一小时的流量。
 - `COMPRESS`：（可选）指定是否压缩流量文件。`true` 表示压缩，压缩格式为 gzip。`false` 表示不压缩。默认值为 `true`。
-- `ENCRYPTION_METHOD`：（可选）指定加密流量文件的算法。仅支持 `""`, `plaintext` 和 `aes256-ctr`。`""` 和 `plaintext` 表示不加密，`aes256-ctr` 表示使用 AES256-CTR 算法加密。指定加密时，需要同时配置 [encrytion-key-path](/tiproxy/tiproxy-configuration.md#encryption-key-path)。默认值为 `""`。
+- `ENCRYPTION_METHOD`：（可选）指定加密流量文件的算法。仅支持 `""`, `plaintext` 和 `aes256-ctr`。`""` 和 `plaintext` 表示不加密，`aes256-ctr` 表示使用 AES256-CTR 算法加密。指定加密时，需要同时配置 [`encrytion-key-path`](/tiproxy/tiproxy-configuration.md#encryption-key-path)。默认值为 `""`。
 
 捕获流量要求当前用户具有 `SUPER` 或 [`TRAFFIC_CAPTURE_ADMIN`](/privilege-management.md#动态权限) 权限。
 

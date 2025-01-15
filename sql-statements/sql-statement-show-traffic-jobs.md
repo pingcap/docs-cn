@@ -23,7 +23,7 @@ TiDB v9.0.0 引入了 `SHOW TRAFFIC JOBS` 语法，用于查看集群中所有 T
 | `TYPE` | 表示任务类型，`capture` 代表流量捕获任务，`replay` 代表流量回放任务 |
 | `PROGRESS` | 该任务的完成百分比 |
 | `STATUS` | 该任务当前的状态，`running` 表示正在运行，`done` 表示正常完成，`canceled` 表示任务失败 |
-| `FAIL_REASON` | 如果该任务失败，该列为失败的原因，否则为空 |
+| `FAIL_REASON` | 如果该任务失败，该列为失败的原因，否则为空。例如 `manually stopped` 表示用户执行 `CANCEL TRAFFIC JOBS` 手动取消任务 |
 
 ## 语法图
 
