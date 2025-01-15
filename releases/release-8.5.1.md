@@ -37,7 +37,7 @@ TiDB 版本：8.5.1
 
     + TiCDC <!--tw@qiancai: 1 note-->
 
-        - 减少 TiCDC 在做 Initial Scan 时对与 TiKV 中 cache hit rate 的影响 [#17877](https://github.com/tikv/tikv/issues/17877) @[hicqu](https://github.com/hicqu)
+        - 提前过滤掉未被 TiCDC 订阅的事件，以避免不必要的资源消耗 [#17877](https://github.com/tikv/tikv/issues/17877) @[hicqu](https://github.com/hicqu)
 
 ## 错误修复
 
@@ -82,19 +82,19 @@ TiDB 版本：8.5.1
 + TiFlash <!--tw@qiancai: 2 notes-->
 
     - (dup): release-7.5.5.md > 错误修复> TiFlash - 修复在存算分离架构下，对新增的列进行查询可能返回错误结果的问题 [#9665](https://github.com/pingcap/tiflash/issues/9665) @[zimulala](https://github.com/zimulala)
-    - 修复 TiFlash 可能在内存占用不高的情况下，发生意外拒绝处理 Raft 消息的行为 [#9745](https://github.com/pingcap/tiflash/issues/9745) @[CalvinNeo](https://github.com/CalvinNeo)
-    - 修复 TiFlash `Position` 函数不支持 Collation 的问题 [#9377](https://github.com/pingcap/tiflash/issues/9377) @[xzhangxian1008](https://github.com/xzhangxian1008)
+    - 修复 TiFlash 在内存占用较低的情况下，可能意外拒绝处理 Raft 消息的问题 [#9745](https://github.com/pingcap/tiflash/issues/9745) @[CalvinNeo](https://github.com/CalvinNeo)
+    - 修复 TiFlash `POSITION()` 函数不支持字符集排序规则的问题 [#9377](https://github.com/pingcap/tiflash/issues/9377) @[xzhangxian1008](https://github.com/xzhangxian1008)
 
 + Tools
 
     + Backup & Restore (BR) <!--tw@qiancai: 1 note-->
 
-        - 修复了 PiTR 无法恢复大 Index 的问题。 [#58433](https://github.com/pingcap/tidb/pull/58433) @[YuJuncen](https://github.com/YuJuncen)
+        - 修复 PITR 无法恢复大于 3072 字节的索引的问题 [#58430](https://github.com/pingcap/tidb/issues/58430) @[YuJuncen](https://github.com/YuJuncen)
 
     + TiCDC <!--tw@qiancai: 5 notes-->
 
-        - 修复在扩容出新的 TiKV 节点后 Changefeed 可能会卡住的问题 [#11766](https://github.com/pingcap/tiflow/issues/11766) @[lidezhu](https://github.com/lidezhu)
-        - 修复 event filter 在处理 rename table DDL 时错误的使用新的表名而不是旧的表名来进行过滤的问题 [#11946](https://github.com/pingcap/tiflow/issues/11946) @[kennytm](https://github.com/kennytm)
-        - 修复在删除 changefeed 后 goroutine 泄漏的问题 [#11954](https://github.com/pingcap/tiflow/issues/11954) @[hicqu](https://github.com/hicqu)
-        - 修复由于 Sarama 客户端乱序重发消息导致 kafka 消息乱序的问题 [#11935](https://github.com/pingcap/tiflow/issues/11935) @[3AceShowHand](https://github.com/3AceShowHand)
-        - 修复 Debezium 协议中 not null timestamp 类型的默认值不正确的问题 [#11966](https://github.com/pingcap/tiflow/issues/11966) @[wk989898](https://github.com/wk989898)
+        - 修复在集群扩容出新的 TiKV 节点后 Changefeed 可能会卡住的问题 [#11766](https://github.com/pingcap/tiflow/issues/11766) @[lidezhu](https://github.com/lidezhu)
+        - 修复 event filter 在处理 `RENAME TABLE` DDL 语句时错误地使用了新的表名而不是旧的表名来进行过滤的问题 [#11946](https://github.com/pingcap/tiflow/issues/11946) @[kennytm](https://github.com/kennytm)
+        - 修复在删除 Changefeed 后 goroutine 泄漏的问题 [#11954](https://github.com/pingcap/tiflow/issues/11954) @[hicqu](https://github.com/hicqu)
+        - 修复由于 Sarama 客户端乱序重发消息导致 Kafka 消息乱序的问题 [#11935](https://github.com/pingcap/tiflow/issues/11935) @[3AceShowHand](https://github.com/3AceShowHand)
+        - 修复 Debezium 协议中 NOT NULL timestamp 类型字段的默认值不正确的问题 [#11966](https://github.com/pingcap/tiflow/issues/11966) @[wk989898](https://github.com/wk989898)
