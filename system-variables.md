@@ -387,7 +387,7 @@ MPP 是 TiFlash 引擎提供的分布式计算框架，允许节点之间的数�
     - `tidb_auto_analyze_start_time='01:00 +0000'`
     - `tidb_auto_analyze_end_time='03:00 +0000'`
 
-  如果参数中的时间包含时区信息，则使用该时区来解析；否则使用当前会话中 `time_zone` 指定的时区解析。例如 `01:00 +0000` 就是 UTC 时间的凌晨 1:00。
+- 如果参数中的时间包含时区信息，则使用该时区来解析；否则使用当前会话中 `time_zone` 指定的时区解析。例如 `01:00 +0000` 就是 UTC 时间的凌晨 1:00。
 
 ### `tidb_auto_analyze_ratio`
 
@@ -410,7 +410,7 @@ MPP 是 TiFlash 引擎提供的分布式计算框架，允许节点之间的数�
     - `tidb_auto_analyze_start_time='01:00 +0000'`
     - `tidb_auto_analyze_end_time='03:00 +0000'`
 
-  如果参数中的时间包含时区信息，则使用该时区来解析；否则使用当前会话中 `time_zone` 指定的时区解析。例如 `01:00 +0000` 就是 UTC 时间的凌晨 1:00。
+- 如果参数中的时间包含时区信息，则使用该时区来解析；否则使用当前会话中 `time_zone` 指定的时区解析。例如 `01:00 +0000` 就是 UTC 时间的凌晨 1:00。
 
 ### `tidb_max_auto_analyze_time` <span class="version-mark">从 v6.1.0 版本开始引入</span>
 
