@@ -239,7 +239,7 @@ TiDB 8.5.0 为长期支持版本 (Long-Term Support Release, LTS)。
 | PD | [`patrol-region-worker-count`](/pd-configuration-file.md#patrol-region-worker-count-从-v850-版本开始引入) | 新增 | 控制 checker 检查 Region 健康状态时，创建 [operator](/glossary.md#operator) 的并发数。|
 | BR | [`--checksum`](/br/br-snapshot-manual.md) | 修改 | 默认值从 `true` 修改为 `false`，即 BR 进行全量备份时，默认不计算表级别的校验和，以提升备份性能。 |
 
-## 操作系统支持变更
+### 操作系统支持变更
 
 升级 TiDB 前，请务必确保你的操作系统版本符合[操作系统及平台要求](/hardware-and-software-requirements.md#操作系统及平台要求)。
 
