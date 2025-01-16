@@ -30,7 +30,7 @@ aliases: ['/zh/tidb/dev/sql-development-specification']
     ```sql
     SELECT gmt_create
     FROM ...
-    WHERE DATE_FORMAT(gmt_create，'%Y%m%d %H:%i:%s') = '20090101 00:00:0'
+    WHERE DATE_FORMAT(gmt_create, '%Y%m%d %H:%i:%s') = '20090101 00:00:00'
     ```
 
     推荐的写法：
@@ -39,8 +39,8 @@ aliases: ['/zh/tidb/dev/sql-development-specification']
 
     ```sql
     SELECT DATE_FORMAT(gmt_create，'%Y%m%d %H:%i:%s')
-    FROM .. .
-    WHERE gmt_create = str_to_date('20090101 00:00:00'，'%Y%m%d %H:%i:s')
+    FROM ...
+    WHERE gmt_create = str_to_date('20090101 00:00:00', '%Y%m%d %H:%i:%s')
     ```
 
 ## 其他规范
@@ -49,7 +49,7 @@ aliases: ['/zh/tidb/dev/sql-development-specification']
 - 用 in/union 替换 or，并注意 in 的个数小于 300。
 - 避免使用 %前缀进行模糊前缀查询。
 - 如应用使用 Multi Statements 执行 SQL，即将多个 SQL 使用分号连接，一次性地发给客户端执行，TiDB 只会返回第一个 SQL 的执行结果。
-- 当使用表达式时，检查其是否支持计算下推到存储层的功能 (TiKV、TiFlash)，否则应有预期 在 TiDB 层需要消耗更多内存、甚至 OOM。计算下推到存储层的功能列表如下：
-    - [TiFlash 支持的计算下推清单](/tiflash/use-tiflash.md#tiflash-支持的计算下推)。
+- 当使用表达式时，检查其是否支持计算下推到存储层的功能 (TiKV、TiFlash)，否则应有预期在 TiDB 层需要消耗更多内存、甚至 OOM。计算下推到存储层的功能列表如下：
+    - [TiFlash 支持的计算下推清单](/tiflash/tiflash-supported-pushdown-calculations.md)。
     - [下推到 TiKV 的表达式列表](/functions-and-operators/expressions-pushed-down.md#下推到-tikv-的表达式列表)。
     - [谓词下推](/predicate-push-down.md#谓词下推)。

@@ -1,12 +1,12 @@
 ---
-title: 创建数据迁移任务
+title: 创建 TiDB Data Migration 数据迁移任务
 summary: 了解在部署 DM 集群后，如何快速创建数据迁移任务。
 aliases: ['/docs-cn/tidb-data-migration/dev/quick-start-create-task/']
 ---
 
-# 创建数据迁移任务
+# 创建 TiDB Data Migration 数据迁移任务
 
-本文档介绍在 DM 集群部署成功后，如何快速创建简单的数据迁移任务。
+本文档介绍在 TiDB Data Migration (DM) 集群部署成功后，如何快速创建简单的数据迁移任务。
 
 ## 使用样例
 
@@ -69,7 +69,7 @@ docker run --rm --name mysql-3307 -p 3307:3307 -e MYSQL_ALLOW_EMPTY_PASSWORD=tru
 {{< copyable "shell-regular" >}}
 
 ```bash
-wget https://download.pingcap.org/tidb-community-server-v6.1.0-linux-amd64.tar.gz
+wget https://download.pingcap.org/tidb-community-server-v8.5.0-linux-amd64.tar.gz
 tar -xzvf tidb-latest-linux-amd64.tar.gz
 mv tidb-latest-linux-amd64/bin/tidb-server ./
 ./tidb-server -P 4000 --store mocktikv --log-file "./tidb.log" &
@@ -91,6 +91,10 @@ mv tidb-latest-linux-amd64/bin/tidb-server ./
 > + DM v1.0.6 及其以后版本可以使用明文密码配置 source 信息。
 
 为了安全，可配置及使用加密后的密码。使用 dmctl 对 MySQL/TiDB 的密码进行加密，以密码为 "123456" 为例：
+
+> **注意：**
+>
+> 从 v8.0.0 开始，DM-master 必须配置 [`secret-key-path`](/dm/dm-master-configuration-file.md) 后才可使用 `dmctl encrypt` 命令。
 
 {{< copyable "shell-regular" >}}
 

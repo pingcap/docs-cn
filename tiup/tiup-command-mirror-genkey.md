@@ -1,5 +1,6 @@
 ---
 title: tiup mirror genkey
+summary: TiUP 镜像命令 genkey 用于生成私钥。管理员有 root.json、index.json、snapshot.json 和 timestamp.json 的修改权限。组件管理员有相关组件的修改权限。普通用户可以下载并使用组件。私钥名默认为 private，可以显示对应的公钥。可以将公钥信息储存为文件。输出包括私钥已存在或已写入，以及公钥内容。
 ---
 
 # tiup mirror genkey
@@ -26,7 +27,7 @@ tiup mirror genkey [flags]
 
 ### -n, --name
 
-- 密钥的名字，该名字决定最终生成的文件名。生成的私钥文件路径为：`${TIUP_HOME}/keys/{name}.json`，其中 `TIUP_HOME` 为 TiUP 的家目录，默认路径为 `$HOME/.tiup`，`name` 为 `-n/--name` 指定的密钥名字。
+- 密钥的名字，该名字决定最终生成的文件名。生成的私钥文件路径为：`${TIUP_HOME}/keys/{name}.json`，其中 `TIUP_HOME` 为 TiUP 的 Home 目录，默认路径为 `$HOME/.tiup`，`name` 为 `-n/--name` 指定的密钥名字。
 - 数据类型：`STRING`
 - 如果不指定该选项，密钥名默认为 `private`。
 

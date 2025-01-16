@@ -1,6 +1,7 @@
 ---
 title: TiDB Sysbench 性能对比测试报告 - v4.0 对比 v3.0
 aliases: ['/docs-cn/dev/benchmark/benchmark-sysbench-v4-vs-v3/']
+summary: TiDB v4.0 在 OLTP 场景下的性能优于 v3.0。Point Select、Update Non-index、Update Index 和 Read Write 性能分别提升了 14%、15%、17% 和 31%。
 ---
 
 # TiDB Sysbench 性能对比测试报告 - v4.0 对比 v3.0
@@ -80,7 +81,6 @@ raftstore.apply-pool-size: 3
 rocksdb.max-background-jobs: 3
 raftdb.max-background-jobs: 3
 raftdb.allow-concurrent-memtable-write: true
-server.request-batch-enable-cross-command: false
 server.grpc-concurrency: 6
 readpool.unified.min-thread-count: 5
 readpool.unified.max-thread-count: 20

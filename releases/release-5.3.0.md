@@ -1,5 +1,6 @@
 ---
 title: TiDB 5.3 Release Notes
+summary: TiDB 5.3.0 版本发布了许多重要的功能和改进，包括临时表、表属性设置、TiDB Dashboard 安全性提升、PD 时间戳处理流程优化、DM 同步性能提升、TiDB Lightning 分布式并行导入等。此外，还修复了许多 bug，提升了稳定性和性能。
 ---
 
 # TiDB 5.3 Release Notes
@@ -223,7 +224,7 @@ TiDB 版本：5.3.0
 
     该功能支持 TiCDC 将 TiDB 集群的增量数据复制到备用关系型数据库 TiDB/Aurora/MySQL/MariaDB，在 TiCDC 正常同步没有延迟的情况下，上游发生灾难后，可以在 5 分钟内将下游集群恢复到上游的某个 snapshot 状态，并且允许丢失的数据小于 30 分钟。即 RTO <= 5min，RPO <= 30min。
 
-    [用户文档](/ticdc/manage-ticdc.md)
+    [用户文档](/ticdc/ticdc-sink-to-mysql.md#灾难场景的最终一致性复制)
 
 - **TiCDC 支持 HTTP 协议 OpenAPI 对 TiCDC 任务进行管理**
 

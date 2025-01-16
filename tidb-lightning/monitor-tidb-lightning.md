@@ -1,6 +1,7 @@
 ---
 title: TiDB Lightning 监控告警
 aliases: ['/docs-cn/dev/tidb-lightning/monitor-tidb-lightning/','/docs-cn/dev/reference/tools/tidb-lightning/monitor/']
+summary: TiDB Lightning 支持使用Prometheus采集监控指标。监控配置需手动部署，配置方法在 tidb-lightning.toml 中。Grafana 面板可用于监控速度、进度、资源使用和存储空间。监控指标包括计数器和直方图，用于计算引擎文件数量、闲置 worker、KV 编码器、处理过的表、引擎文件和 Chunks的状态，以及导入每个表所需时间等。
 ---
 
 # TiDB Lightning 监控告警
@@ -23,13 +24,6 @@ pprof-port = 8289
 ...
 ```
 
-监控的端口也可在 `tikv-importer.toml` 配置：
-
-```toml
-# 状态服务器的监听地址
-status-server-address = '0.0.0.0:8286'
-```
-
 配置 Prometheus 后，`tidb-lightning` 才能发现服务器。配置方法如下，将服务器地址直接添加至 `scrape_configs` 部分：
 
 {{< copyable "" >}}
@@ -37,19 +31,14 @@ status-server-address = '0.0.0.0:8286'
 ```yaml
 ...
 scrape_configs:
-  - job_name: 'lightning'
+  - job_name: 'tidb-lightning'
     static_configs:
       - targets: ['192.168.20.10:8289']
-  - job_name: 'tikv-importer
-    static_configs:
-      - targets: ['192.168.20.9:8286']
 ```
 
 ## Grafana 面板
 
 [Grafana](https://grafana.com/) 的可视化面板可以让你在网页上监控 Prometheus 指标。
-
-使用 TiUP 部署 TiDB 集群时，需要在拓扑配置中添加 Grafana 和 Prometheus，TiUP 会同时部署一套 Grafana + Prometheus 的监控系统。此时需先导入[面板的 JSON 文件](https://raw.githubusercontent.com/pingcap/tidb-ansible/master/scripts/lightning.json)。
 
 ### 第一行：速度面板
 
@@ -139,88 +128,7 @@ scrape_configs:
 
 ## 监控指标
 
-本节将详细描述 `tikv-importer` 和 `tidb-lightning` 的监控指标。
-
-### `tikv-importer`
-
-`tikv-importer` 的监控指标皆以 `tikv_import_*` 为前缀。
-
-- **`tikv_import_rpc_duration`**（直方图）
-
-    完成一次 RPC 用时直方图。标签：
-
-    - **request**：所执行 RPC 请求的类型
-        * `switch_mode` — 将一个 TiKV 节点切换为 import/normal 模式
-        * `open_engine` — 打开引擎文件
-        * `write_engine` — 接收数据并写入引擎文件
-        * `close_engine` — 关闭一个引擎文件
-        * `import_engine` — 导入一个引擎文件到 TiKV 集群中
-        * `cleanup_engine` — 删除一个引擎文件
-        * `compact_cluster` — 显式压缩 TiKV 集群
-        * `upload` — 上传一个 SST 文件
-        * `ingest` — Ingest 一个 SST 文件
-        * `compact` — 显式压缩一个 TiKV 节点
-    - **result**：RPC 请求的执行结果
-        * `ok`
-        * `error`
-
-- **`tikv_import_write_chunk_bytes`**（直方图）
-
-    从 TiDB Lightning 接收的键值对区块大小（未压缩）的直方图。
-
-- **`tikv_import_write_chunk_duration`**（直方图）
-
-    从 `tidb-lightning` 接收每个键值对区块所需时间的直方图。
-
-- **`tikv_import_upload_chunk_bytes`**（直方图）
-
-    上传到 TiKV 的每个 SST 文件区块大小（压缩）的直方图。
-
-- **`tikv_import_range_delivery_duration`**（直方图）
-
-    将一个 range 的键值对发送至 `dispatch-job` 任务所需时间的直方图。
-
-- **`tikv_import_split_sst_duration`**（直方图）
-
-    将 range 从引擎文件中分离到单个 SST 文件中所需时间的直方图。
-
-- **`tikv_import_sst_delivery_duration`**（直方图）
-
-    将 SST 文件从 `dispatch-job` 任务发送到 `ImportSSTJob` 任务所需时间的直方图
-
-- **`tikv_import_sst_recv_duration`**（直方图）
-
-    `ImportSSTJob` 任务接收从 `dispatch-job` 任务发送过来的 SST 文件所需时间的直方图。
-
-- **`tikv_import_sst_upload_duration`**（直方图）
-
-    从 `ImportSSTJob` 任务上传 SST 文件到 TiKV 节点所需时间的直方图。
-
-- **`tikv_import_sst_chunk_bytes`**（直方图）
-
-    上传到 TiKV 节点的 SST 文件（压缩）大小的直方图。
-
-- **`tikv_import_sst_ingest_duration`**（直方图）
-
-    将 SST 文件传入至 TiKV 所需时间的直方图。
-
-- **`tikv_import_each_phase`**（测量仪）
-
-    表示运行阶段。值为 1 时表示在阶段内运行，值为 0 时表示在阶段内运行。标签：
-
-    - **phase**：`prepare` / `import`
-
-- **`tikv_import_wait_store_available_count`**（计数器）
-
-    计算出现 TiKV 节点没有充足空间上传 SST 文件现象的次数。标签：
-
-    - **store_id**： TiKV 存储 ID。
-
-- **`tikv_import_upload_chunk_duration`**（直方图）
-
-    上传到 TiKV 的每个区块所需时间的直方图。
-
-### `tidb-lightning`
+本节将详细描述 `tidb-lightning` 的监控指标。
 
 `tidb-lightning` 的监控指标皆以 `lightning_*` 为前缀。
 

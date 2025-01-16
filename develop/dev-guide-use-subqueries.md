@@ -22,7 +22,7 @@ aliases: ['/zh/tidb/dev/use-subqueries']
 - 派生表（Derived Tables），如 `SELECT t1.s1 FROM (SELECT s1 FROM t2) t1`。
 - 存在性测试（Existential Test），如 `WHERE NOT EXISTS(SELECT ... FROM t2)`，`WHERE t1.a IN (SELECT ... FROM t2)`。
 - 集合比较（Quantified Comparison），如 `WHERE t1.a = ANY(SELECT ... FROM t2)`。
-- 作为比较运算符操作数的子查询, 如 `WHERE t1.a > (SELECT ... FROM t2)`。
+- 作为比较运算符操作数的子查询，如 `WHERE t1.a > (SELECT ... FROM t2)`。
 
 ## 子查询的分类
 
@@ -36,8 +36,6 @@ aliases: ['/zh/tidb/dev/use-subqueries']
 
 例如，想要查找 `authors` 表当中年龄大于总体平均年龄的作家，可以通过将子查询作为比较操作符的操作数来实现：
 
-{{< copyable "sql" >}}
-
 ```sql
 SELECT * FROM authors a1 WHERE (IFNULL(a1.death_year, YEAR(NOW())) - a1.birth_year) > (
     SELECT
@@ -49,15 +47,11 @@ SELECT * FROM authors a1 WHERE (IFNULL(a1.death_year, YEAR(NOW())) - a1.birth_ye
 
 在 TiDB 执行上述查询的时候会先执行一次内层子查询：
 
-{{< copyable "sql" >}}
-
 ```sql
 SELECT AVG(IFNULL(a2.death_year, YEAR(NOW())) - a2.birth_year) AS average_age FROM authors a2;
 ```
 
 假设查询得到的结果为 34，即总体平均年龄为 34，34 将作为常量替换掉原来的子查询。
-
-{{< copyable "sql" >}}
 
 ```sql
 SELECT * FROM authors a1
@@ -96,8 +90,6 @@ WHERE (IFNULL(a1.death_year, YEAR(NOW())) - a1.birth_year) > 34;
 
 例如，假设想要查找那些大于其它相同性别作家的平均年龄的的作家，SQL 语句可以这样写：
 
-{{< copyable "sql" >}}
-
 ```sql
 SELECT * FROM authors a1 WHERE (IFNULL(a1.death_year, YEAR(NOW())) - a1.birth_year) > (
     SELECT
@@ -111,8 +103,6 @@ SELECT * FROM authors a1 WHERE (IFNULL(a1.death_year, YEAR(NOW())) - a1.birth_ye
 ```
 
 TiDB 在处理该 SQL 语句是会将其改写为等价的 Join 查询：
-
-{{< copyable "sql" >}}
 
 ```sql
 SELECT *

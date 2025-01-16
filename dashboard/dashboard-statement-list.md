@@ -14,11 +14,9 @@ aliases: ['/docs-cn/dev/dashboard/dashboard-statement-list/']
 
 可以通过以下两种方法访问 SQL 语句分析页面：
 
-- 登录后，左侧导航条点击 "**SQL 语句分析**" (SQL Statements)。
+* 登录 TiDB Dashboard 后，在左侧导航栏中点击**SQL 语句分析** (SQL Statements)。
 
-  ![访问](/media/dashboard/dashboard-statement-access.png)
-
-- 在浏览器中访问 <http://127.0.0.1:2379/dashboard/#/statement>（将 `127.0.0.1:2379` 替换为实际 PD 实例地址和端口）。
+* 在浏览器中访问 <http://127.0.0.1:2379/dashboard/#/statement>（将 `127.0.0.1:2379` 替换为实际 PD 实例地址和端口）。
 
 SQL 语句分析页面所展示的所有数据都来自于 TiDB Statement 系统表，参见 [Statement Summary Tables](/statement-summary-tables.md) 文档了解该系统表的详细情况。
 
@@ -69,6 +67,12 @@ SQL 语句分析页面所展示的所有数据都来自于 TiDB Statement 系统
 > 由于 Statement 系统表只存放在内存中，关闭此功能后，系统表中的数据会将清空。
 >
 > 数据收集周期和保留时间的值会影响内存占用，因此建议根据实际情况调整，保留时间不宜设置过大。
+
+### Others
+
+[`tidb_stmt_summary_max_stmt_count`](/system-variables.md#tidb_stmt_summary_max_stmt_count-从-v40-版本开始引入) 控制 Statement Summary 系统表保存的 SQL 种类数量。当 SQL 种类超过该值时，会移除最近没有出现的 SQL。这些 SQL 将会被 `DIGEST` 为 `NULL` 的行数据统计。`DIGEST` 为 `NULL` 的行数据在 TiDB Dashboard SQL 语句分析列表页面中将会显示为 `Others`，如下所示：
+
+![Others 行](/media/dashboard/dashboard-statement-other-row.png)
 
 ## 下一步
 

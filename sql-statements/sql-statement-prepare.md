@@ -19,6 +19,12 @@ PrepareSQL ::=
 |   UserVariable
 ```
 
+> **注意：**
+>
+> `PREPARE` 语句最多支持 65535 个占位符。
+
+你可以使用 [`max_prepared_stmt_count`](/system-variables.md#max_prepared_stmt_count) 系统变量来限制当前 TiDB 实例中 `PREPARE` 语句的数量。
+
 ## 示例
 
 {{< copyable "sql" >}}
@@ -68,7 +74,7 @@ Query OK, 0 rows affected (0.00 sec)
 
 ## MySQL 兼容性
 
-`PREPARE` 语句与 MySQL 完全兼容。如发现任何兼容性差异，请在 GitHub 上提交 [issue](https://github.com/pingcap/tidb/issues/new/choose)。
+`PREPARE` 语句与 MySQL 完全兼容。如发现任何兼容性差异，请尝试 [TiDB 支持资源](/support.md)。
 
 ## 另请参阅
 

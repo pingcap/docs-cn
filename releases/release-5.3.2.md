@@ -1,5 +1,6 @@
 ---
 title: TiDB 5.3.2 Release Notes
+summary: TiDB 5.3.2 发布日期为 2022 年 6 月 29 日。该版本存在 bug，建议升级至 v5.3.3。兼容性变更包括修复了 auto ID 超出范围时的问题。TiKV 提升了 Raft 客户端的效率，并修复了多个 bug。TiDB 修复了多个 bug，包括 Amazon S3 数据计算错误和网络连接问题。PD 也修复了多个 bug。TiFlash 修复了存储目录配置错误和数据不一致的问题。BR 和 TiCDC 也有多个 bug 修复。DM 和 TiDB Lightning 也有 bug 修复。
 ---
 
 # TiDB 5.3.2 Release Notes
@@ -7,6 +8,10 @@ title: TiDB 5.3.2 Release Notes
 发版日期：2022 年 6 月 29 日
 
 TiDB 版本：5.3.2
+
+> **警告：**
+>
+> 不建议使用 v5.3.2，因为该版本已知存在 bug，详情参见 [#12934](https://github.com/tikv/tikv/issues/12934)。该 bug 已在 v5.3.3 中修复，建议升级至 [v5.3.3](/releases/release-5.3.3.md)。
 
 ## 兼容性变更
 
@@ -91,7 +96,7 @@ TiDB 版本：5.3.2
     - 修复 TiFlash 节点上遗留了与 Region range 不匹配的数据的问题 [#4414](https://github.com/pingcap/tiflash/issues/4414)
     - 修复在添加一些 `NOT NULL` 的列时报 `TiFlash_schema_error` 的问题 [#4596](https://github.com/pingcap/tiflash/issues/4596)
     - 修复由于 `commit state jump backward` 错误导致 TiFlash 反复崩溃的问题 [#2576](https://github.com/pingcap/tiflash/issues/2576)
-    - 修复大量 INSERT 和 DELETE 操作后可能导致 TiFlash 数据不一致的问题 [#4956](https://github.com/pingcap/tiflash/issues/4956</span>)
+    - 修复大量 INSERT 和 DELETE 操作后可能导致 TiFlash 数据不一致的问题 [#4956](https://github.com/pingcap/tiflash/issues/4956)
     - 修复启用本地隧道时取消 MPP 查询可能导致任务永远挂起的问题 [#4229](https://github.com/pingcap/tiflash/issues/4229)
     - 修复 TiFlash 使用远程读时可能会误报集群 TiFlash 版本不一致的问题 [#3713](https://github.com/pingcap/tiflash/issues/3713)
     - 修复 MPP query 会随机碰到 gRPC keepalive timeout 导致 query 失败的问题 [#4662](https://github.com/pingcap/tiflash/issues/4662)
@@ -154,6 +159,6 @@ TiDB 版本：5.3.2
 
     + TiDB Lightning
 
-        - 修复由 `auto_increment` 列的数据越界导致 local 模式导入失败的问题 [#29737](https://github.com/pingcap/tidb/issues/27937)
+        - 修复由 `auto_increment` 列的数据越界导致 local 模式导入失败的问题 [#27937](https://github.com/pingcap/tidb/issues/27937)
         - 修复前置检查中没有检查本地磁盘空间以及集群是否可用的问题 [#34213](https://github.com/pingcap/tidb/issues/34213)
         - 修复了 checksum 报错 “GC life time is shorter than transaction duration” [#32733](https://github.com/pingcap/tidb/issues/32733)

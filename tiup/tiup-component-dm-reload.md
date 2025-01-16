@@ -1,5 +1,6 @@
 ---
 title: tiup dm reload
+summary: tiup dm reload 命令用于在修改集群配置后重新加载配置。该命令将中控机的配置发布到远端机器，并按顺序重启服务，重启过程中集群可用。语法为 tiup dm reload <cluster-name>。选项包括 -N, --node（重启节点）、-R, --role（重启角色）、--skip-restart（仅刷新配置不重启节点）、-h, --help（输出帮助信息）。输出为 tiup-dm 的执行日志。
 ---
 
 # tiup dm reload

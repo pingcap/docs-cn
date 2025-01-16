@@ -1,6 +1,7 @@
 ---
 title: TiCDC 简介
 aliases: ['/docs-cn/dev/ticdc/ticdc-overview/','/docs-cn/dev/reference/tools/ticdc/overview/']
+summary: TiCDC 是一款 TiDB 增量数据同步工具，适用于多 TiDB 集群的高可用和容灾方案，以及实时同步变更数据到异构系统。其主要特性包括数据容灾复制、双向复制、低延迟的增量数据同步能力等。TiCDC 架构包括 TiKV Server、TiCDC 和 PD，支持将数据同步到 TiDB、MySQL 数据库、Kafka 以及存储服务。目前暂不支持单独使用 RawKV 的 TiKV 集群，创建 SEQUENCE 的 DDL 操作和在同步过程中对 TiCDC 正在同步的表和库进行 BR 数据恢复和 TiDB Lightning 导入。
 ---
 
 # TiCDC 简介
@@ -9,151 +10,135 @@ aliases: ['/docs-cn/dev/ticdc/ticdc-overview/','/docs-cn/dev/reference/tools/tic
 
 ## TiCDC 适用场景
 
-- 数据库灾备：TiCDC 可以用于同构数据库之间的灾备场景，能够在灾难发生时保证主备集群数据的最终一致性，目前该场景仅支持 TiDB 作为主备集群。
-- 数据集成：TiCDC 提供 [TiCDC Canal-JSON Protocol](/ticdc/ticdc-canal-json.md)，支持其他系统订阅数据变更，能够为监控、缓存、全文索引、数据分析、异构数据库的主从复制等场景提供数据源。
+TiCDC 适用于以下场景：
 
-要快速了解 TiCDC 的基本原理和使用方法，建议先观看下面的培训视频（时长 33 分钟）。注意本视频只为学习参考，具体操作步骤和最新功能，请以文档内容为准。
+- 提供多 TiDB 集群，跨区域数据高可用和容灾方案，保证在灾难发生时保证主备集群数据的最终一致性。
+- 提供同步实时变更数据到异构系统的服务，为监控、缓存、全文索引、数据分析、异构数据库使用等场景提供数据源。
 
-<video src="https://tidb-docs.s3.us-east-2.amazonaws.com/compressed+-+Lesson+22.mp4" width="600px" height="450px" controls="controls" poster="https://tidb-docs.s3.us-east-2.amazonaws.com/thumbnail+-+lesson+22.png"></video>
+## TiCDC 主要特性
 
-## TiCDC 架构
+### 核心能力
 
-TiCDC 运行时是一种无状态节点，通过 PD 内部的 etcd 实现高可用。TiCDC 集群支持创建多个同步任务，向多个不同的下游进行数据同步。
+TiCDC 提供了以下核心能力：
 
-TiCDC 的系统架构如下图所示：
+- 提供 TiDB -> TiDB 之间数据容灾复制的能力，实现秒级别 RPO 和分钟级别 RTO
+- 提供 TiDB 之间双向复制的能力，支持通过 TiCDC 构建多写多活的 TiDB 集群
+- 提供 TiDB -> MySQL（或其他兼容 MySQL 协议的数据库）的低延迟的增量数据同步能力
+- 提供 TiDB -> Kafka 增量数据同步能力，推荐的数据格式包含 [Canal-JSON](/ticdc/ticdc-canal-json.md)，[Avro](/ticdc/ticdc-avro-protocol.md)，[Debezium](/ticdc/ticdc-debezium.md) 等
+- 提供 TiDB -> 存储服务（如：Amazon S3、GCS、Azure Blob Storage 和 NFS）增量数据同步能力
+- 提供表级别数据同步能力，支持同步过程中过滤数据库、表、DML、DDL 的能力
+- 高可用架构，无单点故障；支持动态添加、删除 TiCDC 节点
+- 支持通过 [Open API](/ticdc/ticdc-open-api-v2.md) 进行集群管理，包括查询任务状态；动态修改任务配置；动态创建、删除任务等
 
-![TiCDC architecture](/media/ticdc/cdc-architecture.png)
-
-### 系统角色
-
-- TiKV CDC 组件：只输出 key-value (KV) change log。
-    - 内部逻辑拼装 KV change log。
-    - 提供输出 KV change log 的接口，发送数据包括实时 change log 和增量扫的 change log。
-
-- `capture`：TiCDC 运行进程，多个 `capture` 组成一个 TiCDC 集群，负责 KV change log 的同步。
-    - 每个 `capture` 负责拉取一部分 KV change log。
-    - 对拉取的一个或多个 KV change log 进行排序。
-    - 向下游还原事务或按照 TiCDC Open Protocol 进行输出。
-
-## 同步功能介绍
-
-本部分介绍 TiCDC 的同步功能。
-
-### sink 支持
-
-目前 TiCDC sink 模块支持同步数据到以下下游：
-
-- MySQL 协议兼容的数据库，提供最终一致性支持。
-- 以 TiCDC Open Protocol 输出到 Kafka，可实现行级别有序、最终一致性或严格事务一致性三种一致性保证。
-
-### 同步顺序保证和一致性保证
-
-#### 数据同步顺序
+### 数据同步顺序性
 
 - TiCDC 对于所有的 DDL/DML 都能对外输出**至少一次**。
 - TiCDC 在 TiKV/TiCDC 集群故障期间可能会重复发相同的 DDL/DML。对于重复的 DDL/DML：
-    - MySQL sink 可以重复执行 DDL，对于在下游可重入的 DDL （譬如 truncate table）直接执行成功；对于在下游不可重入的 DDL（譬如 create table），执行失败，TiCDC 会忽略错误继续同步。
-    - Kafka sink 会发送重复的消息，但重复消息不会破坏 Resolved Ts 的约束，用户可以在 Kafka 消费端进行过滤。
+    - MySQL sink 可以重复执行 DDL，对于在下游可重入的 DDL（譬如 `TRUNCATE TABLE`）直接执行成功；对于在下游不可重入的 DDL（譬如 `CREATE TABLE`），执行失败，TiCDC 会忽略错误继续同步。
+    - Kafka sink 提供不同的数据分发策略：
+        - 可以按照表、主键或 ts 等策略分发数据到不同 Kafka partition。使用表、主键分发策略，可以保证某一行的更新数据被顺序的发送到相同 partition。
+        - 对所有的分发策略，TiCDC 都会定期发送 Resolved TS 消息到所有的 topic/partition，表示早于该 Resolved TS 的消息都已经发送到 topic/partition，消费程序可以利用 Resolved TS 对多个 topic/partition 的消息进行排序。
+        - Kafka sink 会发送重复的消息，但重复消息不会破坏 Resolved TS 的约束，比如在 changefeed 暂停重启后，可能会按顺序发送 msg1、msg2、msg3、msg2、msg3。你可以在 Kafka 消费端进行过滤。
 
-#### 数据同步一致性
+### 数据同步一致性
 
 - MySQL sink
 
-    - TiCDC 不拆分单表事务，**保证**单表事务的原子性。
-    - TiCDC **不保证**下游事务的执行顺序和上游完全一致。
-    - TiCDC 以表为单位拆分跨表事务，**不保证**跨表事务的原子性。
+    - TiCDC 开启 redo log 后保证数据复制的最终一致性
     - TiCDC **保证**单行的更新与上游更新顺序一致。
+    - TiCDC **不保证**下游事务的执行顺序和上游完全一致。
 
-- Kafka sink
+> **注意：**
+>
+> 从 v6.2 版本起，你可以通过配置 sink URI 参数 [`transaction-atomicity`](/ticdc/ticdc-sink-to-mysql.md#sink-uri-配置-mysqltidb) 来控制 TiCDC 是否拆分单表事务。拆分事务可以大幅降低 MySQL sink 同步大事务的延时和内存消耗。
 
-    - TiCDC 提供不同的数据分发策略，可以按照表、主键或 ts 等策略分发数据到不同 Kafka partition。
-    - 不同分发策略下 consumer 的不同实现方式，可以实现不同级别的一致性，包括行级别有序、最终一致性或跨表事务一致性。
-    - TiCDC 没有提供 Kafka 消费端实现，只提供了 [TiCDC 开放数据协议](/ticdc/ticdc-open-protocol.md)，用户可以依据该协议实现 Kafka 数据的消费端。
+## TiCDC 架构
 
-## 同步限制
+TiCDC 作为 TiDB 的增量数据同步工具，通过 PD 内部的 etcd 实现高可用，通过多个 TiCDC 进程获取 TiKV 节点上的数据改变，在内部进行排序、合并等处理之后，通过多个同步任务 (Changefeed)，同时向多个下游系统进行数据同步。
 
-使用 TiCDC 进行同步的时候，请注意以下相关限制要求以及暂不支持的场景。
+![TiCDC architecture](/media/ticdc/cdc-architecture.png)
 
-### 有效索引的相关要求
+在以上架构图中：
 
-TiCDC 只能同步至少存在一个**有效索引**的表，**有效索引**的定义如下：
+- TiKV Server：代表 TiDB 集群中的 TiKV 节点，当数据发生改变时 TiKV 节点会主动将发生的数据改变以变更日志（KV change logs，简称 change logs）的方式发送给 TiCDC 节点。当然，当 TiCDC 节点发现收到的 change logs 并不是连续的，也会主动发起请求，获得需要的 change logs。
+- TiCDC：代表运行了 TiCDC 进程的各个节点。每个节点都运行一个 TiCDC 进程，每个进程会从 TiKV 节点中拉取一个或者多个表中的数据改变，并通过 Sink 模块同步到下游系统。
+- PD：代表 TiDB 集群中的调度模块，负责集群数据的事实调度，这个模块通常是由 3 个 PD 节点构成的，内部通过 etcd 集群来实现选举等高可用相关的能力。 TiCDC 集群使用了 PD 集群内置的 etcd 集群来保存自己的元数据信息，例如：节点的状态信息，changefeed 配置信息等。
 
-- 主键 (`PRIMARY KEY`) 为有效索引。
-- 同时满足下列条件的唯一索引 (`UNIQUE INDEX`) 为有效索引：
-    - 索引中每一列在表结构中明确定义非空 (`NOT NULL`)。
-    - 索引中不存在虚拟生成列 (`VIRTUAL GENERATED COLUMNS`)。
+另外，从上面的架构图中也可以看到，目前 TiCDC 支持将数据同步到 TiDB、MySQL 数据库、Kafka 以及存储服务等。
 
-TiCDC 从 4.0.8 版本开始，可通过修改任务配置来同步**没有有效索引**的表，但在数据一致性的保证上有所减弱。具体使用方法和注意事项参考[同步没有有效索引的表](/ticdc/manage-ticdc.md#同步没有有效索引的表)。
+## 最佳实践
 
-### 暂不支持的场景
+- 使用 TiCDC 在两个 TiDB 集群间同步数据时，如果上下游的延迟超过 100 ms：
+    - 对于 v6.5.2 之前的版本，推荐将 TiCDC 部署在下游 TiDB 集群所在的区域 (IDC, region)
+    - 经过优化后，对于 v6.5.2 及之后的版本，推荐将 TiCDC 部署在上游集群所在的区域 (IDC, region)。
+- TiCDC 同步的表需要至少存在一个**有效索引**的表，**有效索引**的定义如下：
+
+    - 主键 (`PRIMARY KEY`) 为有效索引。
+    - 唯一索引 (`UNIQUE INDEX`) 中每一列在表结构中明确定义非空 (`NOT NULL`) 且不存在虚拟生成列 (`VIRTUAL GENERATED COLUMNS`)。
+
+- 在使用 TiCDC 实现容灾的场景下，为实现最终一致性，需要配置 [redo log](/ticdc/ticdc-sink-to-mysql.md#灾难场景的最终一致性复制) 并确保 redo log 写入的存储系统在上游发生灾难时可以正常读取。
+
+## TiCDC 处理数据变更的实现原理
+
+本小节主要描述 TiCDC 如何处理上游 DML 产生的数据变更。对于上游 DDL 产生的数据变更，TiCDC 会获取到完整的 DDL SQL 语句，根据下游的 Sink 类型，转换成对应的格式发送给下游，本小节不再赘述。
+
+> **注意：**
+>
+> TiCDC 处理数据变更的逻辑可能会在后续版本发生调整。
+
+MySQL binlog 直接记录了上游执行的所有 DML 操作的 SQL 语句。与 MySQL 不同，TiCDC 则实时监听上游 TiKV 各个 Region Raft Log 的信息，并根据每个事务前后数据的差异生成对应多条 SQL 语句的数据变更信息。TiCDC 只保证输出的变更事件和上游 TiDB 的变更是等价的，不保证能准确还原上游 TiDB 引起数据变更的 SQL 语句。
+
+数据变更信息会包含数据变更类型，以及变更前后的数值。事务前后数据的差异一共可能产生三种事件：
+
+1. `DELETE` 事件：对应会收到一条 `DELETE` 类型的数据变更信息，包含变更前的数据。
+
+2. `INSERT` 事件：对应会收到一条 `PUT` 类型的数据变更信息，包含变更后的数据。
+
+3. `UPDATE` 事件：对应会收到一条 `PUT` 类型的数据变更信息，包含变更前与变更后的数据。
+
+TiCDC 会根据收到的这些数据变更信息，适配各个类型的下游来生成合适格式的数据传输给下游。例如，生成 Canal-JSON、Avro 等格式的数据写入 Kafka 中，或者重新转换成 SQL 语句发送给下游的 MySQL 或者 TiDB。
+
+目前 TiCDC 将数据变更信息适配对应的协议时，对于特定的 `UPDATE` 事件，可能会将其拆成一条 `DELETE` 事件和一条 `INSERT` 事件。详见 [MySQL Sink 拆分 `UPDATE` 事件行为说明](/ticdc/ticdc-split-update-behavior.md#mysql-sink-拆分-update-事件行为说明)及[非 MySQL Sink 拆分主键或唯一键 `UPDATE` 事件](/ticdc/ticdc-split-update-behavior.md#非-mysql-sink-拆分主键或唯一键-update-事件)。
+
+当下游是 MySQL 或者 TiDB 时，因为 TiCDC 并非直接获取原生上游执行的 DML 语句，而是重新根据数据变更信息来生成 SQL 语句，因此不能保证写入下游的 SQL 语句和上游执行的 SQL 语句完全相同，但会保证最终结果的一致性。
+
+例如上游执行了以下 SQL 语句：
+
+```sql
+Create Table t1 (A int Primary Key, B int);
+
+BEGIN;
+Insert Into t1 values(1,2);
+Insert Into t1 values(2,2);
+Insert Into t1 values(3,3);
+Commit;
+
+Update t1 set b = 4 where b = 2;
+```
+
+TiCDC 将根据数据变更信息重新生成 SQL 语句，向下游写以下两条 SQL 语句：
+
+```sql
+INSERT INTO `test.t1` (`A`,`B`) VALUES (1,2),(2,2),(3,3);
+UPDATE `test`.`t1`
+SET `A` = CASE
+        WHEN `A` = 1 THEN 1
+        WHEN `A` = 2 THEN 2
+END, `B` = CASE
+        WHEN `A` = 1 THEN 4
+        WHEN `A` = 2 THEN 4
+END
+WHERE `A` = 1 OR `A` = 2;
+```
+
+## 暂不支持的场景
 
 目前 TiCDC 暂不支持的场景如下：
 
 - 暂不支持单独使用 RawKV 的 TiKV 集群。
 - 暂不支持在 TiDB 中[创建 SEQUENCE 的 DDL 操作](/sql-statements/sql-statement-create-sequence.md)和 [SEQUENCE 函数](/sql-statements/sql-statement-create-sequence.md#sequence-函数)。在上游 TiDB 使用 SEQUENCE 时，TiCDC 将会忽略掉上游执行的 SEQUENCE DDL 操作/函数，但是使用 SEQUENCE 函数的 DML 操作可以正确地同步。
-- 对上游存在较大事务的场景提供部分支持，详见 [TiCDC 是否支持同步大事务？有什么风险吗？](/ticdc/ticdc-faq.md#ticdc-支持同步大事务吗有什么风险吗)
+- 暂不支持对 TiCDC 正在同步的表和库进行 [TiDB Lightning 物理导入](/tidb-lightning/tidb-lightning-physical-import-mode.md)。详情请参考[为什么在上游使用了 TiDB Lightning 和 BR 恢复了数据之后，TiCDC 同步会出现卡顿甚至卡住](/ticdc/ticdc-faq.md#为什么在上游使用了-tidb-lightning-物理导入模式和-br-恢复了数据之后ticdc-同步会出现卡顿甚至卡住)。
+- 在 BR v8.2.0 之前的版本中，当集群存在 TiCDC 同步任务时，BR 不支持进行[数据恢复](/br/backup-and-restore-overview.md)。详情请参考[为什么在上游使用了 TiDB Lightning 和 BR 恢复了数据之后，TiCDC 同步会出现卡顿甚至卡住](/ticdc/ticdc-faq.md#为什么在上游使用了-tidb-lightning-物理导入模式和-br-恢复了数据之后ticdc-同步会出现卡顿甚至卡住)。
+- 从 BR v8.2.0 起，BR 数据恢复对 TiCDC 的限制被放宽：如果所恢复数据的 BackupTS（即备份时间）早于 Changefeed 的 [CheckpointTS](/ticdc/ticdc-architecture.md#checkpointts)（即记录当前同步进度的时间戳），BR 数据恢复可以正常进行。考虑到 BackupTS 通常较早，此时可以认为绝大部分场景下，当集群存在 TiCDC 同步任务时，BR 都可以进行数据恢复。
 
-> **注意：**
->
-> 从 v5.3.0 版本起，TiCDC 不再支持环形同步功能。
-
-## TiCDC 安装和部署
-
-要安装 TiCDC，可以选择随新集群一起部署，也可以对现有 TiDB 集群新增 TiCDC 组件。详请参阅 [TiCDC 安装部署](/ticdc/deploy-ticdc.md)。
-
-## TiCDC 集群管理和同步任务管理
-
-目前支持使用 `cdc cli` 工具或 HTTP 接口来管理 TiCDC 集群状态和数据同步任务。详细操作见：
-
-- [使用 `cdc cli` 工具来管理集群状态和数据同步](/ticdc/manage-ticdc.md#使用-cdc-cli-工具来管理集群状态和数据同步)
-- [使用 OpenAPI 接口管理集群状态和数据同步](/ticdc/ticdc-open-api.md)
-
-## TiCDC 开放数据协议
-
-TiCDC Open Protocol 是一种行级别的数据变更通知协议，为监控、缓存、全文索引、分析引擎、异构数据库的主从复制等提供数据源。TiCDC 遵循 TiCDC Open Protocol，向 MQ (Message Queue) 等第三方数据媒介复制 TiDB 的数据变更。详细信息参考 [TiCDC 开放数据协议](/ticdc/ticdc-open-protocol.md)。
-
-## 兼容性问题
-
-本文介绍了兼容性相关的问题。
-
-### 使用 TiCDC v5.0.0-rc 版本的 `cdc cli` 工具操作 v4.0.x 集群导致不兼容问题
-
-使用 TiCDC v5.0.0-rc 版本的 `cdc cli` 工具操作 v4.0.x 版本的 TiCDC 集群时，可能会遇到如下异常情况：
-
-- 若 TiCDC 集群版本为 v4.0.8 或以下，使用 v5.0.0-rc 版本的 `cdc cli` 创建同步任务 changefeed 时，可能导致 TiCDC 集群陷入异常状态，导致同步卡住。
-- 若 TiCDC 集群版本为 v4.0.9 或以上，使用 v5.0.0-rc 版本的 `cdc cli` 创建同步任务 changefeed，会导致 Old Value 和 Unified Sorter 特性被非预期地默认开启。
-
-处理方案：
-
-使用和 TiCDC 集群版本对应的 `cdc` 可执行文件进行如下操作：
-
-1. 删除使用 v5.0.0-rc 版本创建的 changefeed，例如：`tiup cdc:v4.0.9 cli changefeed remove -c xxxx --pd=xxxxx --force`。
-2. 如果 TiCDC 同步已经卡住，重启 TiCDC 集群，例如：`tiup cluster restart <cluster_name> -R cdc`。
-3. 重新创建 changefeed，例如：`tiup cdc:v4.0.9 cli changefeed create --sink-uri=xxxx --pd=xxx`。
-
-> **注意：**
->
-> 上述问题仅在 `cdc cli` 的版本是 v5.0.0-rc 时存在。未来其他 v5.0.x 版本的 `cdc cli` 可以兼容 v4.0.x 版本的集群。
-
-### `sort-dir` 及 `data-dir` 配置项的兼容性说明
-
-`sort-dir` 配置项用于给 TiCDC 内部的排序器指定临时文件目录，其作用在各版本有过如下兼容性更改：
-
-|  版本  |  `sort-engine` 的使用  |  说明   |  使用建议  |
-|  :---  |    :---               |  :--    | :-- |
-| v4.0.11 及之前的 v4.0 版本，v5.0.0-rc | 作为 changefeed 配置项，给 `file` sorter 和 `unified` Sorter 指定临时文件目录 | 在这些版本中，`file` sorter 和 `unified` sorter **均不是**正式功能 (GA)，不推荐在生产环境中使用。<br/><br/>如果有多个 changefeed 被配置使用了 `unified` 作为 `sort-engine`，那么实际使用的临时文件目录可能是任何一个 changefeed 的 `sort-dir` 配置，且每个 TiCDC 节点上使用的目录可能不一致。 | 不推荐在生产环境中使用 Unified Sorter |
-| v4.0.12，v4.0.13，v5.0.0 及 v5.0.1 | 作为 changefeed 配置项或 `cdc server` 配置项 | 在默认情况下 changefeed 的 `sort-dir` 配置不会生效，而 `cdc server` 的 `sort-dir` 配置默认为 `/tmp/cdc_sort`。建议生产环境下仅配置 `cdc server` 的相关配置。<br /><br />如果你使用 TiUP 部署 TiCDC，建议升级到最新的 TiUP 版本并在 TiCDC server 配置中设置 `sorter.sort-dir` 一项。<br /><br />在 v4.0.13、v5.0.0 和 v5.0.1 中 unified sorter 是默认开启的，如果要将集群升级至这些版本，请确保 TiCDC server 配置中的 `sorter.sort-dir` 已经被正确配置。| 需要通过 `cdc server` 命令行参数（或 TiUP）配置 `sort-dir` |
-|  v4.0.14 及之后的 v4.0 版本，v5.0.3 及之后的 v5.0 版本，更新的版本  | `sort-dir` 被弃用，建议配置 `data-dir` |  `data-dir` 可以通过最新版本的 TiUP 进行配置。这些版本中 unified sorter 是默认开启的，升级时请确保 `data-dir` 已经被正确配置，否则将默认使用 `/tmp/cdc_data`。<br /><br />如果该目录所在设备空间不足，有可能出现硬盘空间不足的问题。之前配置的 changefeed 的 `sort-dir` 配置将会失效。| 需要通过 `cdc server` 命令行参数（或 TiUP）配置 `data-dir` |
-
-### 全局临时表兼容性说明
-
-TiCDC 从 v5.3.0 开始支持[全局临时表](/temporary-tables.md#全局临时表)。
-
-你需要使用 TiCDC v5.3.0 及以上版本同步全局临时表到下游。低于该版本，会导致表定义错误。
-
-如果 TiCDC 的上游集群包含全局临时表，下游集群也必须是 TiDB 5.3.0 及以上版本，否则同步报错。
-
-## TiCDC 常见问题与故障处理
-
-- 使用 TiCDC 过程中经常遇到的问题，请参考 [TiCDC 常见问题](/ticdc/ticdc-faq.md)。
-- 使用 TiCDC 过程中遇到的故障及解决，请参考 [TiCDC 故障处理](/ticdc/troubleshoot-ticdc.md)。
+对上游存在较大事务的场景提供部分支持，详见 [TiCDC 是否支持同步大事务？有什么风险吗？](/ticdc/ticdc-faq.md#ticdc-支持同步大事务吗有什么风险吗)。

@@ -41,7 +41,7 @@ summary: 学习如何定位和分析慢查询。
 - 慢日志记录了 SQL 从解析到返回，几乎所有阶段的耗时，较为全面（在 TiDB Dashboard 中可以直观地查询和分析慢日志）；
 - `explain analyze` 可以拿到 SQL 实际执行中每个执行算子的耗时，对执行耗时有更细分的统计；
 
-总的来说，利用慢日志和 `explain analyze` 可以比较准确地定位查询的瓶颈点，帮助你判断这条 SQL 慢在哪个模块 (TiDB/TiKV) ，慢在哪个阶段，下面会有一些例子。
+总的来说，利用慢日志和 `explain analyze` 可以比较准确地定位查询的瓶颈点，帮助你判断这条 SQL 慢在哪个模块 (TiDB/TiKV)，慢在哪个阶段，下面会有一些例子。
 
 另外在 4.0.3 之后，慢日志中的 `Plan` 字段也会包含 SQL 的执行信息，也就是 `explain analyze` 的结果，这样一来 SQL 的所有耗时信息都可以在慢日志中找到。
 
@@ -57,7 +57,7 @@ summary: 学习如何定位和分析慢查询。
 
 ### TiKV 处理慢
 
-如果是 TiKV 处理慢，可以很明显的通过 `explain analyze` 中看出来。例如下面这个例子，可以看到 `StreamAgg_8` 和 `TableFullScan_15` 这两个 `tikv-task` （在 `task` 列可以看出这两个任务类型是 `cop[tikv]`） 花费了 `170ms`，而 TiDB 部分的算子耗时，减去这 `170ms` 后，耗时占比非常小，说明瓶颈在 TiKV。
+如果是 TiKV 处理慢，可以很明显的通过 `explain analyze` 中看出来。例如下面这个例子，可以看到 `StreamAgg_8` 和 `TableFullScan_15` 这两个 `tikv-task` （在 `task` 列可以看出这两个任务类型是 `cop[tikv]`）花费了 `170ms`，而 TiDB 部分的算子耗时，减去这 `170ms` 后，耗时占比非常小，说明瓶颈在 TiKV。
 
 ```sql
 +----------------------------+---------+---------+-----------+---------------+------------------------------------------------------------------------------+---------------------------------+-----------+------+
@@ -96,9 +96,9 @@ summary: 学习如何定位和分析慢查询。
 
 如上图，发给 `10.6.131.78` 的一个 `cop-task` 等待了 110ms 才被执行，可以判断是当时该实例忙，此时可以打开当时的 CPU 监控辅助判断。
 
-#### 过期 key 多
+#### 过期 MVCC 版本和 key 过多
 
-如果 TiKV 上过期的数据比较多，在扫描的时候则需要处理这些不必要的数据，影响处理速度。
+如果 TiKV 上过期 MVCC 版本过多，或 GC 历史版本数据的保留时间长，导致累积了过多 MVCC。处理这些不必要的 MVCC 版本会影响扫描速度。
 
 这可以通过 `Total_keys` 和 `Processed_keys` 判断，如果两者相差较大，则说明旧版本的 key 太多：
 
@@ -108,11 +108,13 @@ summary: 学习如何定位和分析慢查询。
 ...
 ```
 
+TiDB v8.5.0 引入了内存引擎功能，可以加速这类慢查询。详见 [TiKV MVCC 内存引擎](/tikv-in-memory-engine.md)。
+
 ### 其他关键阶段慢
 
 #### 取 TS 慢
 
-可以对比慢日志中的 `Wait_TS` 和 `Query_time` ，因为 TS 有预取操作，通常来说 `Wait_TS` 应该很低。
+可以对比慢日志中的 `Wait_TS` 和 `Query_time`，因为 TS 有预取操作，通常来说 `Wait_TS` 应该很低。
 
 ```
 # Query_time: 0.0300000
@@ -131,7 +133,7 @@ TiDB 侧 Region 信息可能过期，此时 TiKV 可能返回 `regionMiss` 的�
 
 #### 子查询被提前执行
 
-对于带有非关联子查询的语句，子查询部分可能被提前执行，如：`select * from t1 where a = (select max(a) from t2)` ，`select max(a) from t2` 部分可能在优化阶段被提前执行。这种查询用 `explain analyze` 看不到对应的耗时，如下：
+对于带有非关联子查询的语句，子查询部分可能被提前执行，如：`select * from t1 where a = (select max(a) from t2)`，`select max(a) from t2` 部分可能在优化阶段被提前执行。这种查询用 `explain analyze` 看不到对应的耗时，如下：
 
 ```sql
 mysql> explain analyze select count(*) from t where a=(select max(t1.a) from t t1, t t2 where t1.a=t2.a);
@@ -236,7 +238,7 @@ mysql> explain select * from t t1, t t2 where t1.a>t2.a;
 
 下面是一组例子，假设表结构为 `create table t (id int, a int, b int, c int, primary key(id), key(a), key(b, c))`：
 
-1. `select * from t`: 没有过滤条件，会扫全表，所以会用 `TableFullScan` 算子读取数据；
+1. `select * from t`：没有过滤条件，会扫全表，所以会用 `TableFullScan` 算子读取数据；
 2. `select a from t where a=2`：有过滤条件且只读索引列，所以会用 `IndexReader` 算子读取数据；
 3. `select * from t where a=2`：在 `a` 有过滤条件，但索引 `a` 不能完全覆盖需要读取的内容，因此会采用 `IndexLookup`；
 4. `select b from t where c=3`：多列索引没有前缀条件就用不上，所以会用 `IndexFullScan`；

@@ -1,13 +1,10 @@
 ---
 title: 生成列
 aliases: ['/docs-cn/dev/generated-columns/','/docs-cn/dev/reference/sql/generated-columns/']
+summary: 生成列是由列定义中的表达式计算得到的值。它包括存储生成列和虚拟生成列，存储生成列会将计算得到的值存储起来，而虚拟生成列不会存储其值。生成列可以用于从 JSON 数据类型中解出数据，并为该数据建立索引。在 INSERT 和 UPDATE 语句中，会检查生成列计算得到的值是否满足生成列的定义。生成列的局限性包括不能增加存储生成列，不能转换存储生成列为普通列，不能修改存储生成列的生成列表达式，以及不支持所有的 JSON 函数。
 ---
 
 # 生成列
-
-> **警告：**
->
-> 当前该功能为实验特性，不建议在生产环境中使用。
 
 本文介绍生成列的概念以及用法。
 
@@ -23,7 +20,7 @@ aliases: ['/docs-cn/dev/generated-columns/','/docs-cn/dev/reference/sql/generate
 
 生成列的主要的作用之一：从 JSON 数据类型中解出数据，并为该数据建立索引。
 
-MySQL 5.7 及 TiDB 都不能直接为 JSON 类型的列添加索引，即不支持在如下表结构中的 `address_info` 上建立索引：
+MySQL 8.0 及 TiDB 都不能直接为 JSON 类型的列添加索引，即不支持在如下表结构中的 `address_info` 上建立索引：
 
 {{< copyable "sql" >}}
 
@@ -111,15 +108,18 @@ ERROR 1048 (23000): Column 'city' cannot be null
 
 ## 索引生成列替换
 
-当查询中出现的某个表达式与一个含索引的生成列同等时，TiDB 会将这个表达式替换为对应的生成列，这样就可以在生成查询计划时考虑使用这个索引。
+当查询中出现的某个表达式与一个含索引的生成列严格同等时，TiDB 会将这个表达式替换为对应的生成列，这样就可以在生成查询计划时考虑使用这个索引。
 
-例如，下面的例子为 `a+1` 这个表达式创建生成列并添加索引，从而加速了查询。
+下面的例子为 `a+1` 这个表达式创建生成列并添加索引，从而加速查询。其中，`a` 的列类型是 int，而 `a+1` 的列类型是 bigint。如果将生成列的类型改为 int，就不会发生替换。关于类型转换的规则，可以参见[表达式求值的类型转换](/functions-and-operators/type-conversion-in-expression-evaluation.md)。
 
 {{< copyable "sql" >}}
 
 ```sql
 create table t(a int);
 desc select a+1 from t where a+1=3;
+```
+
+```sql
 +---------------------------+----------+-----------+---------------+--------------------------------+
 | id                        | estRows  | task      | access object | operator info                  |
 +---------------------------+----------+-----------+---------------+--------------------------------+
@@ -129,10 +129,15 @@ desc select a+1 from t where a+1=3;
 |     └─TableFullScan_5     | 10000.00 | cop[tikv] | table:t       | keep order:false, stats:pseudo |
 +---------------------------+----------+-----------+---------------+--------------------------------+
 4 rows in set (0.00 sec)
+```
 
+```sql
 alter table t add column b bigint as (a+1) virtual;
 alter table t add index idx_b(b);
 desc select a+1 from t where a+1=3;
+```
+
+```sql
 +------------------------+---------+-----------+-------------------------+---------------------------------------------+
 | id                     | estRows | task      | access object           | operator info                               |
 +------------------------+---------+-----------+-------------------------+---------------------------------------------+
@@ -144,11 +149,7 @@ desc select a+1 from t where a+1=3;
 
 > **注意：**
 >
-> 只有当待替换的表达式类型和生成列类型严格相等时，才会进行转换。
->
-> 上例中，`a` 的类型是 int，而 `a+1` 的列类型是 bigint，如果将生成列的类型定为 int，就不会发生替换。
->
-> 关于类型转换规则，可以参见[表达式求值的类型转换](/functions-and-operators/type-conversion-in-expression-evaluation.md)。
+> 若待替换的表达式类型和生成列类型都是字符类型，但两种类型长度不同时，仍可通过将系统变量 [`tidb_enable_unsafe_substitute`](/system-variables.md#tidb_enable_unsafe_substitute-从-v630-版本开始引入) 设置为 `ON` 来允许其替换。配置该系统变量时，需要保证生成列计算得到的值严格满足生成列的定义，否则，可能因为长度不同，导致数据截断得到错误的结果。详情见 GitHub issue [#35490](https://github.com/pingcap/tidb/issues/35490#issuecomment-1211658886)。
 
 ## 生成列的局限性
 
@@ -158,4 +159,5 @@ desc select a+1 from t where a+1=3;
 - 不能通过 `ALTER TABLE` 将存储生成列转换为普通列，也不能将普通列转换成存储生成列；
 - 不能通过 `ALTER TABLE` 修改存储生成列的生成列表达式；
 - 并未支持所有的 [JSON 函数](/functions-and-operators/json-functions.md)；
+- 不支持使用 [`NULLIF()` 函数](/functions-and-operators/control-flow-functions.md#nullif)，可以使用 [`CASE` 函数](/functions-and-operators/control-flow-functions.md#case)代替；
 - 目前仅当生成列是虚拟生成列时索引生成列替换规则有效，暂不支持将表达式替换为存储生成列，但仍然可以通过直接使用该生成列本身来使用索引。

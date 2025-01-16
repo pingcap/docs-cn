@@ -11,8 +11,8 @@ aliases: ['/docs-cn/dev/sql-statements/sql-statement-revoke-privileges/','/docs-
 ## 语法图
 
 ```ebnf+diagram
-GrantStmt ::=
-    'GRANT' PrivElemList 'ON' ObjectType PrivLevel 'TO' UserSpecList RequireClauseOpt WithGrantOptionOpt
+RevokeStmt ::=
+    'REVOKE' PrivElemList 'ON' ObjectType PrivLevel 'FROM' UserSpecList
 
 PrivElemList ::=
     PrivElem ( ',' PrivElem )*
@@ -142,7 +142,7 @@ ERROR 1141 (42000): There is no such grant defined for user 'newuser' on host '%
 
 ## MySQL 兼容性
 
-`REVOKE <privileges>` 语句与 MySQL 完全兼容。如发现任何兼容性差异，请在 GitHub 上提交 [issue](https://github.com/pingcap/tidb/issues/new/choose)。
+`REVOKE <privileges>` 语句执行成功后，在 TiDB 中语句执行的结果会在当前连接立即生效，而 [MySQL 中部分权限的结果需要等到之后的连接才生效](https://dev.mysql.com/doc/refman/8.0/en/privilege-changes.html)。见 [TiDB #39356](https://github.com/pingcap/tidb/issues/39356)。
 
 ## 另请参阅
 

@@ -1,12 +1,16 @@
 ---
-title: TiDB Data Migration 快速上手试用
+title: TiDB Data Migration 快速上手指南
 summary: 了解如何快速上手部署试用 TiDB Data Migration 工具。
 aliases: ['/docs-cn/tidb-data-migration/dev/quick-start-with-dm/','/docs-cn/tidb-data-migration/dev/get-started/']
 ---
 
 # TiDB Data Migration 快速上手指南
 
-本文介绍如何快速体验使用数据迁移工具 [TiDB Data Migration](https://github.com/pingcap/dm) (DM) 从 MySQL 迁移数据到 TiDB。此文档用于快速体验 DM 产品功能特性，并不建议适合在生产环境中使用。
+本文介绍如何快速体验使用数据迁移工具 [TiDB Data Migration (DM)](/dm/dm-overview.md) 从 MySQL 迁移数据到 TiDB。此文档用于快速体验 DM 产品功能特性，并不建议适合在生产环境中使用。
+
+> **注意：**
+>
+> 如果目标服务器的操作系统支持 SELinux，请确保 SELinux 已禁用。
 
 ## 第 1 步：部署 DM 集群
 
@@ -32,7 +36,7 @@ aliases: ['/docs-cn/tidb-data-migration/dev/quick-start-with-dm/','/docs-cn/tidb
     {{< copyable "shell-regular" >}}
 
     ```shell
-    tiup dm deploy dm-test 6.0.0 topology.yaml -p
+    tiup dm deploy dm-test 8.5.0 topology.yaml -p
     ```
 
 ## 第 2 步：准备数据源
@@ -49,7 +53,7 @@ aliases: ['/docs-cn/tidb-data-migration/dev/quick-start-with-dm/','/docs-cn/tidb
     from:
       host: "127.0.0.1"
       user: "root"
-      password: "fCxfQ9XKCezSzuCD0Wf5dUD+LsKegSg="  # 使用 tiup dmctl --encrypt "123456" 加密。
+      password: "fCxfQ9XKCezSzuCD0Wf5dUD+LsKegSg="
       port: 3306
     ```
 

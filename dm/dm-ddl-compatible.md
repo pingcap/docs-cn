@@ -1,5 +1,6 @@
 ---
 title: Data Migration DDL 特殊处理说明
+summary: 数据迁移中，根据不同的 DDL 语句和场景，采用不同处理方式。DM 不支持的 DDL 语句会直接跳过。部分 DDL 语句在同步到下游前会进行改写。在合库合表迁移任务中，DDL 同步行为存在变更。Online DDL 特性也会对 DDL 事件进行特殊处理。
 ---
 
 # Data Migration DDL 特殊处理说明
@@ -17,107 +18,107 @@ DM 同步过程中，根据 DDL 语句以及所处场景的不同，将采用不
     </tr>
     <tr>
         <td>transaction</td>
-        <td>`^SAVEPOINT`</td>
+        <td><code>^SAVEPOINT</code></td>
     </tr>
     <tr>
         <td>skip all flush sqls</td>
-        <td>`^FLUSH`</td>
+        <td><code>^FLUSH</code></td>
     </tr>
     <tr>
         <td rowspan="3">table maintenance</td>
-        <td>`^OPTIMIZE\\s+TABLE`</td>
+        <td><code>^OPTIMIZE\\s+TABLE</code></td>
     </tr>
     <tr>
-        <td>`^ANALYZE\\s+TABLE`</td>
+        <td><code>^ANALYZE\\s+TABLE</code></td>
     </tr>
     <tr>
-        <td>`^REPAIR\\s+TABLE`</td>
+        <td><code>^REPAIR\\s+TABLE</code></td>
     </tr>
     <tr>
         <td>temporary table</td>
-        <td>`^DROP\\s+(\\/\\*\\!40005\\s+)?TEMPORARY\\s+(\\*\\/\\s+)?TABLE`</td>
+        <td><code>^DROP\\s+(\\/\\*\\!40005\\s+)?TEMPORARY\\s+(\\*\\/\\s+)?TABLE</code></td>
     </tr>
     <tr>
         <td rowspan="2">trigger</td>
-        <td>`^CREATE\\s+(DEFINER\\s?=.+?)?TRIGGER`</td>
+        <td><code>^CREATE\\s+(DEFINER\\s?=.+?)?TRIGGER</code></td>
     </tr>
     <tr>
-        <td>`^DROP\\s+TRIGGER`</td>
+        <td><code>^DROP\\s+TRIGGER</code></td>
     </tr>
     <tr>
         <td rowspan="3">procedure</td>
-        <td>`^DROP\\s+PROCEDURE`</td>
+        <td><code>^DROP\\s+PROCEDURE</code></td>
     </tr>
     <tr>
-        <td>`^CREATE\\s+(DEFINER\\s?=.+?)?PROCEDURE`</td>
+        <td><code>^CREATE\\s+(DEFINER\\s?=.+?)?PROCEDURE</code></td>
     </tr>
     <tr>
-        <td>`^ALTER\\s+PROCEDURE`</td>
+        <td><code>^ALTER\\s+PROCEDURE</code></td>
     </tr>
     <tr>
         <td rowspan="3">view</td>
-        <td>`^CREATE\\s*(OR REPLACE)?\\s+(ALGORITHM\\s?=.+?)?(DEFINER\\s?=.+?)?\\s+(SQL SECURITY DEFINER)?VIEW`</td>
+        <td><code>^CREATE\\s*(OR REPLACE)?\\s+(ALGORITHM\\s?=.+?)?(DEFINER\\s?=.+?)?\\s+(SQL SECURITY DEFINER)?VIEW</code></td>
     </tr>
     <tr>
-        <td>`^DROP\\s+VIEW`</td>
+        <td><code>^DROP\\s+VIEW</code></td>
     </tr>
     <tr>
-        <td>`^ALTER\\s+(ALGORITHM\\s?=.+?)?(DEFINER\\s?=.+?)?(SQL SECURITY DEFINER)?VIEW`</td>
+        <td><code>^ALTER\\s+(ALGORITHM\\s?=.+?)?(DEFINER\\s?=.+?)?(SQL SECURITY DEFINER)?VIEW</code></td>
     </tr>
     <tr>
         <td rowspan="4">function</td>
-        <td>`^CREATE\\s+(AGGREGATE)?\\s*?FUNCTION`</td>
+        <td><code>^CREATE\\s+(AGGREGATE)?\\s*?FUNCTION</code></td>
     </tr>
     <tr>
-        <td>`^CREATE\\s+(DEFINER\\s?=.+?)?FUNCTION`</td>
+        <td><code>^CREATE\\s+(DEFINER\\s?=.+?)?FUNCTION</code></td>
     </tr>
     <tr>
-        <td>`^ALTER\\s+FUNCTION`</td>
+        <td><code>^ALTER\\s+FUNCTION</code></td>
     </tr>
     <tr>
-        <td>`^DROP\\s+FUNCTION`</td>
+        <td><code>^DROP\\s+FUNCTION</code></td>
     </tr>
     <tr>
         <td rowspan="3">tableSpace</td>
-        <td>`^CREATE\\s+TABLESPACE`</td>
+        <td><code>^CREATE\\s+TABLESPACE</code></td>
     </tr>
     <tr>
-        <td>`^ALTER\\s+TABLESPACE`</td>
+        <td><code>^ALTER\\s+TABLESPACE</code></td>
     </tr>
     <tr>
-        <td>`^DROP\\s+TABLESPACE`</td>
+        <td><code>^DROP\\s+TABLESPACE</code></td>
     </tr>
     <tr>
         <td rowspan="3">event</td>
-        <td>`^CREATE\\s+(DEFINER\\s?=.+?)?EVENT`</td>
+        <td><code>^CREATE\\s+(DEFINER\\s?=.+?)?EVENT</code></td>
     </tr>
     <tr>
-        <td>`^ALTER\\s+(DEFINER\\s?=.+?)?EVENT`</td>
+        <td><code>^ALTER\\s+(DEFINER\\s?=.+?)?EVENT</code></td>
     </tr>
     <tr>
-        <td>`^DROP\\s+EVENT`</td>
+        <td><code>^DROP\\s+EVENT</code></td>
     </tr>
     <tr>
         <td rowspan="7">account management</td>
-        <td>`^GRANT`</td>
+        <td><code>^GRANT</code></td>
     </tr>
     <tr>
-        <td>`^REVOKE`</td>
+        <td><code>^REVOKE</code></td>
     </tr>
     <tr>
-        <td>`^CREATE\\s+USER`</td>
+        <td><code>^CREATE\\s+USER</code></td>
     </tr>
     <tr>
-        <td>`^ALTER\\s+USER`</td>
+        <td><code>^ALTER\\s+USER</code></td>
     </tr>
     <tr>
-        <td>`^RENAME\\s+USER`</td>
+        <td><code>^RENAME\\s+USER</code></td>
     </tr>
     <tr>
-        <td>`^DROP\\s+USER`</td>
+        <td><code>^DROP\\s+USER</code></td>
     </tr>
     <tr>
-        <td>`^DROP\\s+USER`</td>
+        <td><code>^DROP\\s+USER</code></td>
     </tr>
 </table>
 
@@ -129,7 +130,7 @@ DM 同步过程中，根据 DDL 语句以及所处场景的不同，将采用不
 |-|-|
 |`^CREATE DATABASE...`|`^CREATE DATABASE...IF NOT EXISTS`|
 |`^CREATE TABLE...`|`^CREATE TABLE..IF NOT EXISTS`|
-|`^DROP DATABASE...`|`^DROP TABLE...IF EXISTS`|
+|`^DROP DATABASE...`|`^DROP DATABASE...IF EXISTS`|
 |`^DROP TABLE...`|`^DROP TABLE...IF EXISTS`|
 |`^DROP INDEX...`|`^DROP INDEX...IF EXISTS`|
 

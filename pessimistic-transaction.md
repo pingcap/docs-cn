@@ -64,6 +64,8 @@ BEGIN /*T! PESSIMISTIC */;
 
 - 悲观锁会在事务提交或回滚时释放。其他尝试修改这一行的写事务会被阻塞，等待悲观锁的释放。其他尝试*读取*这一行的事务不会被阻塞，因为 TiDB 采用多版本并发控制机制 (MVCC)。
 
+- 需要检查唯一性约束的悲观锁可以通过设置系统变量 [`tidb_constraint_check_in_place_pessimistic`](/system-variables.md#tidb_constraint_check_in_place_pessimistic-从-v630-版本开始引入) 控制是否跳过，详见[约束](/constraints.md#悲观事务)。
+
 - 如果多个事务尝试获取各自的锁，会出现死锁，并被检测器自动检测到。其中一个事务会被随机终止掉并返回兼容 MySQL 的错误码 `1213`。
 
 - 通过 `innodb_lock_wait_timeout` 变量，设置事务等锁的超时时间（默认值为 `50`，单位为秒）。等锁超时后返回兼容 MySQL 的错误码 `1205`。如果多个事务同时等待同一个锁释放，会大致按照事务 `start ts` 顺序获取锁。
@@ -105,7 +107,9 @@ BEGIN /*T! PESSIMISTIC */;
 
 2. TiDB 不支持 `SELECT LOCK IN SHARE MODE`。
 
-    使用这个语句执行的时候，效果和没有加锁是一样的，不会阻塞其他事务的读写。
+    TiDB 默认不支持 `SELECT LOCK IN SHARE MODE` 语法。可以通过启用 [`tidb_enable_noop_functions`](/system-variables.md#tidb_enable_noop_functions-从-v40-版本开始引入) 来兼容 `SELECT LOCK IN SHARE MODE` 语法。此时，该语法的效果和没有加锁一样，不会阻塞其他事务的读写。
+
+    从 v8.3.0 版本开始，TiDB 支持通过启用 [`tidb_enable_shared_lock_promotion`](/system-variables.md#tidb_enable_shared_lock_promotion-从-v830-版本开始引入) 系统变量使 `SELECT LOCK IN SHARE MODE` 语句产生加锁行为。但需要注意，此时加的锁并不是真正的共享锁，而是与 `SELECT FOR UPDATE` 一致，实际加的是排他锁。如果你需要兼容 `SELECT LOCK IN SHARE MODE` 语法的同时，希望与写入相互阻塞、避免读期间数据被并行的写入事务修改，可考虑启用该变量。该变量无论 [`tidb_enable_noop_functions`](/system-variables.md#tidb_enable_noop_functions-从-v40-版本开始引入) 配置如何都会生效。
 
 3. DDL 可能会导致悲观事务提交失败。
 
@@ -143,13 +147,13 @@ TiDB 悲观锁复用了乐观锁的两阶段提交逻辑，重点在 DML 执行�
 
 在两阶段提交之前增加了 Acquire Pessimistic Lock 阶段，简要步骤如下。
 
-1. （同乐观锁）TiDB 收到来自客户端的 begin 请求，获取当前版本号作为本事务的 StartTS。
+1. （同乐观锁）TiDB 收到来自客户端的 begin 请求，获取当前时间戳作为本事务的 StartTS。
 2. TiDB 收到来自客户端的更新数据的请求：TiDB 向 TiKV 发起加悲观锁请求，该锁持久化到 TiKV。
 3. （同乐观锁）客户端发起 commit，TiDB 开始执行与乐观锁一样的两阶段提交。
 
 ![TiDB 中的悲观事务](/media/pessimistic-transaction-in-tidb.png)
 
-相关细节本节不再赘述，详情可阅读 [TiDB 悲观锁实现原理](https://asktug.com/t/topic/33550)。
+相关细节本节不再赘述，详情可阅读 [TiDB 悲观锁实现原理](https://tidb.net/blog/7730ed79)。
 
 ## Pipelined 加锁流程
 
@@ -182,7 +186,7 @@ set config tikv pessimistic-txn.pipelined='false';
 
 TiKV 在 v6.0.0 中引入了内存悲观锁功能。开启内存悲观锁功能后，悲观锁通常只会被存储在 Region leader 的内存中，而不会将锁持久化到磁盘，也不会通过 Raft 协议将锁同步到其他副本，因此可以大大降低悲观事务加锁的开销，提升悲观事务的吞吐并降低延迟。
 
-当内存悲观锁占用的内存达到 Region 或节点的阈值时，加悲观锁会回退为使用 [pipelined 加锁流程](#pipelined-加锁流程)。当 Region 发生合并或 leader 迁移时，为避免悲观锁丢失，TiKV 会将内存悲观锁写入磁盘并同步到其他副本。
+当内存悲观锁占用的内存达到 [Region](/tikv-configuration-file.md#in-memory-peer-size-limit-从-v840-版本开始引入) 或 [TiKV 节点](/tikv-configuration-file.md#in-memory-instance-size-limit-从-v840-版本开始引入)的阈值时，加悲观锁会回退为使用 [pipelined 加锁流程](#pipelined-加锁流程)。当 Region 发生合并或 leader 迁移时，为避免悲观锁丢失，TiKV 会将内存悲观锁写入磁盘并同步到其他副本。
 
 内存悲观锁实现了和 [pipelined 加锁](#pipelined-加锁流程)类似的表现，即集群无异常时不影响加锁表现，但当 TiKV 出现网络隔离或者节点宕机时，事务加的悲观锁可能丢失。
 
@@ -201,4 +205,19 @@ in-memory = false
 
 ```sql
 set config tikv pessimistic-txn.in-memory='false';
+```
+
+从 v8.4.0 开始，你可以通过 [`pessimistic-txn.in-memory-peer-size-limit`](/tikv-configuration-file.md#in-memory-peer-size-limit-从-v840-版本开始引入) 或 [`pessimistic-txn.in-memory-instance-size-limit`](/tikv-configuration-file.md#in-memory-instance-size-limit-从-v840-版本开始引入) 配置项修改 Region 或 TiKV 节点内存悲观锁的内存使用上限：
+
+```toml
+[pessimistic-txn]
+in-memory-peer-size-limit = "512KiB"
+in-memory-instance-size-limit = "100MiB"
+```
+
+也可通过[在线修改 TiKV 配置](/dynamic-config.md#在线修改-tikv-配置)功能动态调整：
+
+```sql
+SET CONFIG tikv `pessimistic-txn.in-memory-peer-size-limit`="512KiB";
+SET CONFIG tikv `pessimistic-txn.in-memory-instance-size-limit`="100MiB";
 ```

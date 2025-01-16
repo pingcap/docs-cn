@@ -36,7 +36,7 @@ DM 同步上游的 binlog 时，会尝试使用下游当前的表结构来解析
 ```sql
 # 上游表结构
 CREATE TABLE `messages` (
-  `id` int(11) NOT NULL,
+  `id` int NOT NULL,
   PRIMARY KEY (`id`)
 )
 ```
@@ -46,7 +46,7 @@ CREATE TABLE `messages` (
 ```sql
 # 下游表结构
 CREATE TABLE `messages` (
-  `id` int(11) NOT NULL,
+  `id` int NOT NULL,
   `message` varchar(255) DEFAULT NULL, # 下游比上游多出的列。
   PRIMARY KEY (`id`)
 )
@@ -61,7 +61,7 @@ CREATE TABLE `messages` (
     ```sql
     # 上游表结构
     CREATE TABLE `messages` (
-    `id` int(11) NOT NULL,
+    `id` int NOT NULL,
     PRIMARY KEY (`id`)
     )
     ```
@@ -78,9 +78,9 @@ CREATE TABLE `messages` (
 
     | 参数            |  描述 |
     | :---           | :--- |
-    | --master-addr  | 指定 dmctl 要连接的集群的任意 DM-master 节点的 `${advertise-addr}`。`${advertise-addr}` 表示 DM-master 向外界宣告的地址。 |
-    | binlog-schema update| 手动更新 schema 信息 |
-    | -s             | 指定 source。`${source-id}` 表示 MySQL 数据源 ID。 |
+    | `--master-addr`  | 指定 dmctl 要连接的集群的任意 DM-master 节点的 `${advertise-addr}`。`${advertise-addr}` 表示 DM-master 向外界宣告的地址。 |
+    | `binlog-schema update` | 手动更新 schema 信息 |
+    | `-s`             | 指定 source。`${source-id}` 表示 MySQL 数据源 ID。 |
     | `${task-name}` | 指定 task。表示数据同步任务配置文件 `task.yaml` 中定义的同步任务名称。|
     | `${database-name}` | 指定 database。表示上游数据库名。 |
     | `${table-name}` | 指定 table。表示上游数据表名。|
@@ -107,5 +107,5 @@ CREATE TABLE `messages` (
     {{< copyable "shell-regular" >}}
 
     ```
-    tiup dmctl --master-addr ${advertise-addr} query-status resume-task ${task-name}
+    tiup dmctl --master-addr ${advertise-addr} query-status ${task-name}
     ```

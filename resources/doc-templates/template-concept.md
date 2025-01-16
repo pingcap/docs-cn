@@ -7,7 +7,7 @@ summary: xxx（一句话介绍该文档的主要内容，请尽可能多地包�
 
 模板说明：
 
-- 本文档为概念介绍类模板，主要包含概念和说明信息。你可直接复制使用，并删除模板中不需要的说明。该类文档示例：[TiDB Binlog](/tidb-binlog/tidb-binlog-overview.md)。
+- 本文档为概念介绍类模板，主要包含概念和说明信息。你可直接复制使用，并删除模板中不需要的说明。该类文档示例：[TiCDC 简介](/ticdc/ticdc-overview.md)。
 - 对于新文档，请在 TOC.md 中合适的位置加目录（思考用户最有可能在目录哪里找文档）。
 - 文内标题级别不可跳级，尽量避免使用五级标题。
 
@@ -62,4 +62,4 @@ xxx
 
 - [TiDB HTAP 形态架构](/tiflash/tiflash-overview.md#整体架构)
 - [深入探索 HTAP](/explore-htap.md)
-- [使用 TiFlash](/tiflash/use-tiflash.md)
+- [使用 TiFlash](/tiflash/tiflash-overview.md#使用-tiflash)

@@ -15,7 +15,7 @@ aliases: ['/docs-cn/tidb-data-migration/dev/usage-scenario-master-slave-switch/'
 > - DM-worker 必须以 GTID sets 模式运行，即对应 source 配置文件中指定 `enable-gtid: true`。
 > - DM 仅支持以下两种切换场景，且必须严格按照各场景的步骤执行操作，否则可能需要根据切换后的 MySQL 实例重新搭建 DM 集群并完整重做数据迁移任务。
 
-有关 GTID sets 的概念解释，请参考 [MySQL 文档](https://dev.mysql.com/doc/refman/5.7/en/replication-gtids-concepts.html#replication-gtids-concepts-gtid-sets)。
+有关 GTID sets 的概念解释，请参考 [MySQL 文档](https://dev.mysql.com/doc/refman/8.0/en/replication-gtids-concepts.html#replication-gtids-concepts-gtid-sets)。
 
 ## 虚拟 IP 环境下切换 DM-worker 与 MySQL 实例的连接
 

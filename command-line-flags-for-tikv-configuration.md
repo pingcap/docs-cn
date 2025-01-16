@@ -1,6 +1,7 @@
 ---
 title: TiKV 配置参数
 aliases: ['/docs-cn/dev/command-line-flags-for-tikv-configuration/','/docs-cn/dev/reference/configuration/tikv-server/configuration/']
+summary: TiKV 配置参数支持文件大小和时间的可读性好的单位转换。命令行参数包括监听地址、对外访问地址、服务状态监听端口、对外访问服务状态地址、配置文件、存储数据的容量、配置信息输出格式、数据存储路径、日志级别、日志文件、PD 地址列表。需要注意的是，PD 地址列表需要使用逗号分隔多个地址。
 ---
 
 # TiKV 配置参数
@@ -48,6 +49,31 @@ TiKV 的命令行参数支持一些可读性好的单位转换。
 + TiKV 存储数据的容量。
 + 默认：0（无限）
 + PD 需要使用这个值来对整个集群做 balance 操作。（提示：你可以使用 10GB 来替代 10737418240，从而简化参数的传递）。
+
+## `--config-info <FORMAT>`
+
++ 按照指定的 `FORMAT` 输出各个配置项的取值信息并退出。
++ `FORMAT` 可选值：`json`。
++ 目前仅支持以 JSON 格式输出每个配置项的名字 (Name)、默认值 (DefaultValue) 和当前配置值 (ValueInFile)。当执行此命令时，若同时指定了 `-C` 或 `--config` 参数，则对应的配置文件包含的配置项会同时输出当前配置值和默认值，其他未指定的配置项仅输出默认值，示例如下：
+
+  ```json
+  {
+    "Component": "TiKV Server",
+    "Version": "6.2.0",
+    "Parameters": [
+      {
+        "Name": "log-level",
+        "DefaultValue": "info",
+        "ValueInFile": "warn"
+      },
+      {
+        "Name": "log-file",
+        "DefaultValue": ""
+      },
+      ...
+    ]
+  }
+  ```
 
 ## `--data-dir`
 

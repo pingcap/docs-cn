@@ -9,7 +9,7 @@ summary: 了解 TiCDC 相关的常见问题。
 
 > **注意：**
 >
-> 本文档 `cdc cli` 命令中指定 PD 地址为 `--pd=http://10.0.10.25:2379`，用户在使用时需根据实际地址进行替换。
+> 本文档 `cdc cli` 命令中指定 server 地址为 `--server=http://127.0.0.1:8300`，在使用时你需要根据实际地址进行替换。
 
 ## TiCDC 创建任务时如何选择 start-ts？
 
@@ -22,16 +22,14 @@ summary: 了解 TiCDC 相关的常见问题。
 
 ## 为什么 TiCDC 创建任务时提示部分表不能同步？
 
-在使用 `cdc cli changefeed create` 创建同步任务时会检查上游表是否符合[同步限制](/ticdc/ticdc-overview.md#同步限制)。如果存在表不满足同步限制，会提示 `some tables are not eligible to replicate` 并列出这些不满足的表。用户选择 `Y` 或 `y` 则会继续创建同步任务，并且同步过程中自动忽略这些表的所有更新。用户选择其他输入，则不会创建同步任务。
+在使用 `cdc cli changefeed create` 创建同步任务时会检查上游表是否符合[同步要求](/ticdc/ticdc-overview.md#最佳实践)。如果存在表不满足同步限制，会提示 `some tables are not eligible to replicate` 并列出这些不满足的表。如果选择 `Y` 或 `y` 则会继续创建同步任务，并且同步过程中自动忽略这些表的所有更新。如果选择其他输入，则不会创建同步任务。
 
 ## 如何查看 TiCDC 同步任务的状态？
 
 可以使用 `cdc cli` 查询同步任务的状态。例如：
 
-{{< copyable "shell-regular" >}}
-
 ```shell
-cdc cli changefeed list --pd=http://10.0.10.25:2379
+cdc cli changefeed list --server=http://127.0.0.1:8300
 ```
 
 上述命令输出如下：
@@ -49,14 +47,116 @@ cdc cli changefeed list --pd=http://10.0.10.25:2379
 ```
 
 * `checkpoint`：即为 TiCDC 已经将该时间点前的数据同步到了下游。
-* `state` 为该同步任务的状态：
-    * `normal`：正常同步。
-    * `stopped`：停止同步（手动暂停或出错）。
-    * `removed`：已删除任务。
+* `state` 为该同步任务的状态，状态的值和含义参考 [TiCDC 同步任务状态](/ticdc/ticdc-changefeed-overview.md#changefeed-状态流转)。
 
 > **注意：**
 >
 > 该功能在 TiCDC 4.0.3 版本引入。
+
+## 上游停止更新后，如何判断 TiCDC 是否已将所有更新同步到下游？
+
+在上游 TiDB 集群停止更新后，可以通过比较上游 TiDB 集群的最新 [TSO](/tso.md) 时间戳与 TiCDC 当前的同步进度判断同步是否完成。如果 TiCDC 的同步进度时间大于或等于上游 TiDB 集群的 TSO，则说明 TiCDC 已同步所有更新。具体操作步骤如下：
+
+1. 获取上游 TiDB 集群的最新 TSO 时间戳。
+
+    > **注意：**
+    >
+    > 请使用 [`TIDB_CURRENT_TSO()`](/functions-and-operators/tidb-functions.md#tidb_current_tso) 函数获取 TSO，而不是 `NOW()` 等查询当前时间的函数。
+
+    以下示例使用 [`TIDB_PARSE_TSO()`](/functions-and-operators/tidb-functions.md#tidb_parse_tso) 将 TSO 转换为可读的时间格式，便于后续比较：
+
+    ```sql
+    BEGIN;
+    SELECT TIDB_PARSE_TSO(TIDB_CURRENT_TSO());
+    ROLLBACK;
+    ```
+
+    输出结果示例如下：
+
+    ```sql
+    +------------------------------------+
+    | TIDB_PARSE_TSO(TIDB_CURRENT_TSO()) |
+    +------------------------------------+
+    | 2024-11-12 20:35:34.848000         |
+    +------------------------------------+
+    ```
+
+2. 获取 TiCDC 当前的同步进度。
+
+    你可以通过以下两种方法之一检查当前的同步进度：
+
+    * **方法一**：查询同步任务的 Checkpoint（推荐）
+
+        使用 [TiCDC 命令行工具](/ticdc/ticdc-manage-changefeed.md) `cdc cli` 查看所有同步任务的 Checkpoint：
+
+        ```shell
+        cdc cli changefeed list --server=http://127.0.0.1:8300
+        ```
+
+        输出结果示例如下：
+
+        ```json
+        [
+          {
+            "id": "syncpoint",
+            "namespace": "default",
+            "summary": {
+              "state": "normal",
+              "tso": 453880043653562372,
+              "checkpoint": "2024-11-12 20:36:01.447",
+              "error": null
+            }
+          }
+        ]
+        ```
+
+        在输出结果中，`"checkpoint": "2024-11-12 20:36:01.447"` 表示 TiCDC 当前的同步进度为 `2024-11-12 20:36:01.447`，即所有在该时间之前的上游 TiDB 变更已同步完成。如果该时间戳大于或等于步骤 1 中获取的上游 TiDB TSO 时间，则表示所有更新已经同步到下游。
+
+    * **方法二**：查询下游 TiDB 的 Syncpoint 信息
+
+        如果下游是 TiDB，并且已启用 [TiCDC Syncpoint 功能](/ticdc/ticdc-upstream-downstream-check.md)，可以通过查询下游 TiDB 的 Syncpoint 信息获取同步进度。
+
+        > **注意：**
+        >
+        > Syncpoint 信息的更新间隔由 [`sync-point-interval`](/ticdc/ticdc-upstream-downstream-check.md#启用-syncpoint) 参数控制。如需获取最新同步进度，建议使用方法一。
+
+        在下游 TiDB 中执行以下 SQL 语句，获取上游 TSO (`primary_ts`) 和下游 TSO (`secondary_ts`) 信息。
+
+        ```sql
+        SELECT * FROM tidb_cdc.syncpoint_v1;
+        ```
+
+        输出结果示例如下：
+
+        ```sql
+        +------------------+------------+--------------------+--------------------+---------------------+
+        | ticdc_cluster_id | changefeed | primary_ts         | secondary_ts       | created_at          |
+        +------------------+------------+--------------------+--------------------+---------------------+
+        | default          | syncpoint  | 453879870259200000 | 453879870545461257 | 2024-11-12 20:25:01 |
+        | default          | syncpoint  | 453879948902400000 | 453879949214351361 | 2024-11-12 20:30:01 |
+        | default          | syncpoint  | 453880027545600000 | 453880027751907329 | 2024-11-12 20:35:00 |
+        +------------------+------------+--------------------+--------------------+---------------------+
+        ```
+
+        在输出结果中，每一行表示上游 TiDB 在 `primary_ts` 时刻的 snapshot 与下游 TiDB 在 `secondary_ts` 时刻的 snapshot 一致。
+
+        要查看同步进度，可以将最新的 `primary_ts` 转换为可读的时间格式：
+
+        ```sql
+        SELECT TIDB_PARSE_TSO(453880027545600000);
+        ```
+
+        转换结果示例如下：
+
+        ```sql
+        +------------------------------------+
+        | TIDB_PARSE_TSO(453880027545600000) |
+        +------------------------------------+
+        | 2024-11-12 20:35:00                |
+        +------------------------------------+
+        ```
+
+        如果 `primary_ts` 对应的时间大于或等于步骤 1 中获取的上游 TiDB 集群的 TSO 时间戳，说明 TiCDC 已经将所有更新同步到下游。
 
 ## TiCDC 的 `gc-ttl` 是什么？
 
@@ -64,10 +164,10 @@ cdc cli changefeed list --pd=http://10.0.10.25:2379
 
 在 TiCDC 中启用了这一功能，用来保证 TiCDC 在不可用、或同步任务中断情况下，可以在 TiKV 内保留 TiCDC 需要消费的数据不被 GC 清理掉。
 
-启动 TiCDC server 时可以通过 `gc-ttl` 指定 GC safepoint 的 TTL，也可以[通过 TiUP 修改](/ticdc/manage-ticdc.md#使用-tiup-修改-ticdc-配置) TiCDC 的 `gc-ttl`，默认值为 24 小时。在 TiCDC 中这个值有如下两重含义：
+启动 TiCDC server 时可以通过 `gc-ttl` 指定 GC safepoint 的 TTL，也可以[通过 TiUP 修改](/ticdc/deploy-ticdc.md#使用-tiup-变更-ticdc-集群配置) TiCDC 的 `gc-ttl`，默认值为 24 小时。在 TiCDC 中这个值有如下两重含义：
 
 - 当 TiCDC 服务全部停止后，由 TiCDC 在 PD 所设置的 GC safepoint 保存的最长时间。
-- TiCDC 中某个同步任务中断或者被手动停止时所能停滞的最长时间，若同步任务停滞时间超过 `gc-ttl` 所设置的值，那么该同步任务就会进入 `failed` 状态，无法被恢复，并且不会继续影响 GC safepoint 的推进。
+- 当 TiCDC 的 GC safepoint 阻塞 TiKV GC 数据时，`gc-ttl` 表示 TiCDC 同步任务的最大同步延迟，若同步任务延迟超过 `gc-ttl` 所设置的值，那么该同步任务就会进入 `failed` 状态，并报 `ErrGCTTLExceeded` 错误，无法被恢复，不再阻塞 GC safepoint 推进。
 
 以上第二种行为是在 TiCDC v4.0.13 版本及之后版本中新增的。目的是为了防止 TiCDC 中某个同步任务停滞时间过长，导致上游 TiKV 集群的 GC safepoint 长时间不推进，保留的旧数据版本过多，进而影响上游集群性能。
 
@@ -75,13 +175,19 @@ cdc cli changefeed list --pd=http://10.0.10.25:2379
 >
 > 在某些应用场景中，比如使用 Dumpling/BR 全量同步后使用 TiCDC 接增量同步时，默认的 `gc-ttl` 为 24 小时可能无法满足需求。此时应该根据实际情况，在启动 TiCDC server 时指定 `gc-ttl` 的值。
 
-## TiCDC GC safepoint 的完整行为是什么
+## TiCDC GC safepoint 的完整行为是什么？
 
 TiCDC 服务启动后，如果有任务开始同步，TiCDC owner 会根据所有同步任务最小的 checkpoint-ts 更新到 PD service GC safepoint，service GC safepoint 可以保证该时间点及之后的数据不被 GC 清理掉。如果 TiCDC 中某个同步任务中断、或者被用户主动停止，则该任务的 checkpoint-ts 不会再改变，PD 对应的 service GC safepoint 最终会停滞在该任务的 checkpoint-ts 处不再更新。
 
 如果该同步任务停滞的时间超过了 `gc-ttl` 指定的时长，那么该同步任务就会进入 `failed` 状态，并且无法被恢复，PD 对应的 service GC safepoint 就会继续推进。
 
-TiCDC 为 service GC safepoint 设置的存活有效期为 24 小时，即 TiCDC 服务中断 24 小时内恢复能保证数据不因 GC 而丢失。
+TiCDC 为 service GC safepoint 设置的默认存活有效期为 24 小时，即 TiCDC 服务中断 24 小时内恢复能保证 TiCDC 继续同步所需的数据不因 GC 而丢失。
+
+## Failed 同步任务失败后如何恢复？
+
+1. 通过 `cdc cli changefeed query` 查询同步任务的错误信息，尽快修复错误。
+2. 调大 `gc-ttl` 的值，给修复错误留出时间，确保错误修复后不会因为同步延迟超过 `gc-ttl` 而导致同步任务进入 `failed` 状态。 
+3. 在评估系统影响后，调大 TiDB 的 [tidb_gc_life_time](/system-variables.md#tidb_gc_life_time-从-v50-版本开始引入) 的值以阻止 GC、保留数据，确保错误修复后不会因为 GC 清理数据而导致同步任务进入 `failed` 状态。
 
 ## 如何理解 TiCDC 时区和上下游数据库系统时区之间的关系？
 
@@ -103,25 +209,22 @@ TiCDC 为 service GC safepoint 设置的存活有效期为 24 小时，即 TiCDC
 在使用 `cdc cli changefeed create` 命令时如果不指定 `--config` 参数，TiCDC 会按照以下默认行为创建同步任务：
 
 * 同步所有的非系统表
-* 开启 old value 功能
-* 不同步不包含[有效索引](/ticdc/ticdc-overview.md#同步限制)的表
+* 只同步包含[有效索引](/ticdc/ticdc-overview.md#最佳实践)的表
 
-## TiCDC 是否支持输出 Canal 格式的变更数据？
+## TiCDC 是否支持输出 Canal 协议的变更数据？
 
-支持。要开启 Canal 格式输出，只需在 `--sink-uri` 中指定 protocol 为 `canal` 即可，例如：
-
-{{< copyable "shell-regular" >}}
+支持。注意：对于 Canal 协议，TiCDC 只支持 JSON 输出格式，对 protobuf 格式尚未提供官方支持。要开启 Canal 协议的输出，只需在 `--sink-uri` 配置中指定 `protocol` 为 `canal-json` 即可。例如：
 
 ```shell
-cdc cli changefeed create --pd=http://10.0.10.25:2379 --sink-uri="kafka://127.0.0.1:9092/cdc-test?kafka-version=2.4.0&protocol=canal" --config changefeed.toml
+cdc cli changefeed create --server=http://127.0.0.1:8300 --sink-uri="kafka://127.0.0.1:9092/cdc-test?kafka-version=2.4.0&protocol=canal-json" --config changefeed.toml
 ```
 
 > **注意：**
 >
 > * 该功能在 TiCDC 4.0.2 版本引入。
-> * 目前 TiCDC 仅支持将 Canal 格式的变更数据输出到 MQ 类的 Sink（例如：Kafka，Pulsar）。
+> * 目前 TiCDC 仅支持将 Canal-JSON 格式的变更数据输出到 MQ 类的 Sink（例如 Kafka）。
 
-更多信息请参考[创建同步任务](/ticdc/manage-ticdc.md#创建同步任务)。
+更多信息请参考 [TiCDC Changefeed 配置参数](/ticdc/ticdc-changefeed-config.md)。
 
 ## 为什么 TiCDC 到 Kafka 的同步任务延时越来越大？
 
@@ -131,13 +234,15 @@ cdc cli changefeed create --pd=http://10.0.10.25:2379 --sink-uri="kafka://127.0.
     * `replica.fetch.max.bytes`，将 Kafka 的 `server.properties` 中该参数调大到 `1073741824` (1 GB)。
     * `fetch.message.max.bytes`，适当调大 `consumer.properties` 中该参数，确保大于 `message.max.bytes`。
 
-## TiCDC 把数据同步到 Kafka 时，是把一个事务内的所有变更都写到一个消息中吗？如果不是，是根据什么划分的？
-
-不是，根据配置的分发策略不同，有不同的划分方式，包括 `default`、`row id`、`table`、`ts`。更多请参考[同步任务配置文件描述](/ticdc/manage-ticdc.md#同步任务配置文件描述)。
-
 ## TiCDC 把数据同步到 Kafka 时，能在 TiDB 中控制单条消息大小的上限吗？
 
-可以通过 `max-message-bytes` 控制每次向 Kafka broker 发送消息的最大数据量（可选，默认值 10MB）；通过 `max-batch-size` 参数指定每条 kafka 消息中变更记录的最大数量，目前仅对 Kafka 的 `protocol` 为 `open-protocol` 时有效（可选，默认值 `16`）。
+对于 Avro 和 Canal-JSON 格式，消息是以行变更为单位发送的，一条 Kafka Message 仅包含一条行变更。一般情况下，消息的大小不会超过 Kafka 单条消息上限，因此，一般不需要限制单条消息大小。如果单条 Kafka 消息大小确实超过 Kafka 上限，请参考[为什么 TiCDC 到 Kafka 的同步任务延时越来越大](/ticdc/ticdc-faq.md#为什么-ticdc-到-kafka-的同步任务延时越来越大)。
+
+对于 Open Protocol 格式，一条 Kafka Message 可能包含多条行变更。因此，有可能存在某条 Kafka Message 消息过大。可以通过 `max-message-bytes` 控制每次向 Kafka broker 发送消息的最大数据量（可选，默认值 10 MB），通过 `max-batch-size` 参数指定每条 kafka 消息中变更记录的最大数量（可选，默认值 `16`）。
+
+## 在一个事务中对一行进行多次修改，TiCDC 会输出多条行变更事件吗？
+
+不会，在进行事务操作时，对于在一个事务内多次修改同一行的情况，TiDB 仅会将最新一次的修改结果发送给 TiKV。因此 TiCDC 仅能获取到最新一次修改的结果。
 
 ## TiCDC 把数据同步到 Kafka 时，一条消息中会不会包含多种数据变更？
 
@@ -174,8 +279,6 @@ Open protocol 的输出中 type = 6 即为 null，比如：
 
 ## 如何区分 TiCDC Open Protocol 中的 Row Changed Event 是 `INSERT` 事件还是 `UPDATE` 事件？
 
-如果没有开启 Old Value 功能，用户无法区分 TiCDC Open Protocol 中的 Row Changed Event 是 `INSERT` 事件还是 `UPDATE` 事件。如果开启了 Old Value 功能，则可以通过事件中的字段判断事件类型：
-
 * 如果同时存在 `"p"` 和 `"u"` 字段为 `UPDATE` 事件
 * 如果只存在 `"u"` 字段则为 `INSERT` 事件
 * 如果只存在 `"d"` 字段则为 `DELETE` 事件
@@ -184,28 +287,42 @@ Open protocol 的输出中 type = 6 即为 null，比如：
 
 ## TiCDC 占用多少 PD 的存储空间
 
-TiCDC 使用 PD 内部的 etcd 来存储元数据并定期更新。因为 etcd 的多版本并发控制 (MVCC) 以及 PD 默认的 compaction 间隔是 1 小时，TiCDC 占用的 PD 存储空间与 1 小时内元数据的版本数量成正比。在 v4.0.5、v4.0.6、v4.0.7 三个版本中 TiCDC 存在元数据写入频繁的问题，如果 1 小时内有 1000 张表创建或调度，就会用尽 etcd 的存储空间，出现 `etcdserver: mvcc: database space exceeded` 错误。出现这种错误后需要清理 etcd 存储空间，参考 [etcd maintaince space-quota](https://etcd.io/docs/v3.4.0/op-guide/maintenance/#space-quota)。推荐使用这三个版本的用户升级到 v4.0.9 及以后版本。
+TiCDC 使用 PD 内部的 etcd 来存储元数据并定期更新。因为 etcd 的多版本并发控制 (MVCC) 以及 PD 默认的 compaction 间隔是 1 小时，TiCDC 占用的 PD 存储空间与 1 小时内元数据的版本数量成正比。在 v4.0.5、v4.0.6、v4.0.7 三个版本中 TiCDC 存在元数据写入频繁的问题，如果 1 小时内有 1000 张表创建或调度，就会用尽 etcd 的存储空间，出现 `etcdserver: mvcc: database space exceeded` 错误。出现这种错误后需要清理 etcd 存储空间，参考 [etcd maintenance space-quota](https://etcd.io/docs/v3.4.0/op-guide/maintenance/#space-quota)。如果你的 TiCDC 版本为 v4.0.5、v4.0.6 或 v4.0.7，建议升级到 v4.0.9 及以后版本。
 
 ## TiCDC 支持同步大事务吗？有什么风险吗？
 
 TiCDC 对大事务（大小超过 5 GB）提供部分支持，根据场景不同可能存在以下风险：
 
-+ 当 TiCDC 内部处理能力不足时，可能出现同步任务报错 `ErrBufferReachLimit`。
-+ 当 TiCDC 内部处理能力不足或 TiCDC 下游吞吐能力不足时，可能出现内存溢出 (OOM)。
+- 可能导致主从同步延迟大幅增高。
+- 当 TiCDC 内部处理能力不足时，可能出现同步任务报错 `ErrBufferReachLimit`。
+- 当 TiCDC 内部处理能力不足或 TiCDC 下游吞吐能力不足时，可能出现内存溢出 (OOM)。
 
-当遇到上述错误时，建议将包含大事务部分的增量数据通过 BR 进行增量恢复，具体操作如下：
+从 v6.2 版本开始，TiCDC 支持拆分单表事务功能，可大幅降低同步大事务的延时和内存消耗。因此，在业务对事务原子性要求不高的场景下，建议通过设置 sink uri 参数 [`transaction-atomicity`](/ticdc/ticdc-sink-to-mysql.md#sink-uri-配置-mysqltidb) 打开拆分事务功能以解决可能出现的同步延迟和 OOM 问题。
 
-1. 记录因为大事务而终止的 changefeed 的 `checkpoint-ts`，将这个 TSO 作为 BR 增量备份的 `--lastbackupts`，并执行[增量备份](/br/br-usage-backup.md#备份-tidb-集群增量数据)。
+如果实际同步过程中仍然遇到了上述错误，建议将包含大事务部分的增量数据通过 BR 进行增量恢复，具体操作如下：
+
+1. 记录因为大事务而终止的 changefeed 的 `checkpoint-ts`，将这个 TSO 作为 BR 增量备份的 `--lastbackupts`，并执行[增量备份](/br/br-incremental-guide.md#对集群进行增量备份)。
 2. 增量备份结束后，可以在 BR 日志输出中找到类似 `["Full backup Failed summary : total backup ranges: 0, total success: 0, total failed: 0"] [BackupTS=421758868510212097]` 的日志，记录其中的 `BackupTS`。
-3. 执行[增量恢复](/br/br-usage-restore.md#恢复增量备份数据)。
+3. 执行[增量恢复](/br/br-incremental-guide.md#恢复增量备份数据)。
 4. 建立一个新的 changefeed，从 `BackupTS` 开始同步任务。
 5. 删除旧的 changefeed。
+
+## TiCDC 是否会将有损 DDL 产生的数据变更同步到下游？
+
+有损 DDL 是指在 TiDB 中执行可能会导致数据改变的 DDL。一些常见的有损 DDL 操作包括：
+
+- 修改列的类型，例如：INT -> VARCHAR
+- 修改列的长度，例如：VARCHAR(20) -> VARCHAR(10)
+- 修改列的精度，例如：DECIMAL(10, 3) -> DECIMAL(10, 2)
+- 修改列的符号（有符号数/无符号数），例如：INT UNSIGNED -> INT SIGNED
+
+在 TiDB v7.1.0 之前，TiCDC 会将一条新旧数据相同的 DML 事件同步到下游。当下游是 MySQL 时，这些 DML 事件不会产生任何数据变更，只有下游接收并执行该 DDL 语句后，数据才会发生变更。但是当下游是 Kafka 或者云存储时，TiCDC 会写入一条无用的数据到下游。
+
+从 TiDB v7.1.0 开始，TiCDC 会过滤掉这些无用的 DML 事件，不再将它们同步到下游。
 
 ## 同步 DDL 到下游 MySQL 5.7 时为什么时间类型字段默认值不一致？
 
 比如上游 TiDB 的建表语句为 `create table test (id int primary key, ts timestamp)`，TiCDC 同步该语句到下游 MySQL 5.7，MySQL 使用默认配置，同步得到的表结构如下所示，timestamp 字段默认值会变成 `CURRENT_TIMESTAMP`：
-
-{{< copyable "sql" >}}
 
 ```sql
 mysql root@127.0.0.1:test> show create table test;
@@ -213,7 +330,7 @@ mysql root@127.0.0.1:test> show create table test;
 | Table | Create Table                                                                     |
 +-------+----------------------------------------------------------------------------------+
 | test  | CREATE TABLE `test` (                                                            |
-|       |   `id` int(11) NOT NULL,                                                         |
+|       |   `id` int NOT NULL,                                                         |
 |       |   `ts` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP, |
 |       |   PRIMARY KEY (`id`)                                                             |
 |       | ) ENGINE=InnoDB DEFAULT CHARSET=latin1                                           |
@@ -223,32 +340,91 @@ mysql root@127.0.0.1:test> show create table test;
 
 产生表结构不一致的原因是 `explicit_defaults_for_timestamp` 的[默认值在 TiDB 和 MySQL 5.7 不同](/mysql-compatibility.md#默认设置)。从 TiCDC v5.0.1/v4.0.13 版本开始，同步到 MySQL 会自动设置 session 变量 `explicit_defaults_for_timestamp = ON`，保证同步时间类型时上下游行为一致。对于 v5.0.1/v4.0.13 以前的版本，同步时间类型时需要注意 `explicit_defaults_for_timestamp` 默认值不同带来的兼容性问题。
 
-## 使用 TiCDC 创建同步任务时将 `enable-old-value` 设置为 `true` 后，为什么上游的 `INSERT`/`UPDATE` 语句经 TiCDC 同步到下游后变为了 `REPLACE INTO`？
+## 使用 TiCDC 创建同步任务时将 `safe-mode` 设置为 `true` 后，为什么上游的 `INSERT`/`UPDATE` 语句经 TiCDC 同步到下游后变为了 `REPLACE INTO`？
 
-TiCDC 创建 changefeed 时会默认指定 `safe-mode` 为 `true`，从而为上游的 `INSERT`/`UPDATE` 语句生成 `REPLACE INTO` 的执行语句。
+TiCDC 提供至少一次的数据同步保证，当下游有重复数据时，会引起写冲突。为了避免该问题，TiCDC 会将 `INSERT` 和 `UPDATE` 语句转成 `REPLACE INTO` 语句。该行为由 `safe-mode` 参数来控制。
 
-目前用户暂时无法修改 `safe-mode` 设置，因此该问题暂无解决办法。
-
-## 数据同步下游的 Sink 为 TiDB 或 MySQL 时，下游数据库的用户需要哪些权限？
-
-Sink 为 TiDB 或 MySQL 时，下游数据库的用户需要以下权限：
-
-- `Select`
-- `Index`
-- `Insert`
-- `Update`
-- `Delete`
-- `Create`
-- `Drop`
-- `Alter`
-- `Create View`
-
-如果要同步 `recover table` 到下游 TiDB，需要有 `Super` 权限。
+在 v6.1.3 版本之前，`safe-mode` 默认为 `true`，即所有的 `INSERT` 和 `UPDATE` 语句都转成 `REPLACE INTO` 语句。在 v6.1.3 及之后版本，系统能自动判断下游是否存在重复数据，`safe-mode` 默认更改为 `false`，当系统判断下游无重复数据时，会直接同步 `INSERT` 和 `UPDATE` 语句。
 
 ## 为什么 TiCDC 需要使用磁盘，什么时候会写磁盘，TiCDC 能否利用内存缓存提升同步性能？
 
 TiCDC 需要磁盘是为了缓冲上游写入高峰时下游消费不及时堆积的数据。TiCDC 正常运行期间都需要写入磁盘，但这通常不是同步吞吐和同步延时的瓶颈，写磁盘对延时影响在百毫秒内。TiCDC 也利用了内存来提升加速读取磁盘中的数据，以提升同步性能。
 
-## 为什么在使用了 TiDB Lightning 和 BR 恢复了数据之后，TiCDC 同步会出现卡顿甚至卡住？
+## 为什么在上游使用了 TiDB Lightning 物理导入模式和 BR 恢复了数据之后，TiCDC 同步会出现卡顿甚至卡住？
 
-目前 TiCDC 还没完全适配 TiDB Lightning 和 BR，请避免在使用 TiCDC 同步的表上使用 TiDB Lightning 和 BR。
+目前 TiCDC 尚未完全适配 TiDB Lightning [物理导入模式 (Physical Import Mode)](/tidb-lightning/tidb-lightning-physical-import-mode.md) 和 BR，请避免在使用 TiCDC 同步的表上使用 TiDB Lightning 物理导入模式和 BR。否则，可能会出现未知的错误，例如 TiCDC 同步卡住、同步延迟大幅增加、或者同步数据丢失。
+
+如果有某些使用 TiCDC 同步的表需要使用 TiDB Lightning 物理导入模式或者 BR 恢复数据，可以这么做：
+
+1. 删除涉及这些表的 TiCDC 同步任务。
+
+2. 使用 TiDB Lightning 物理导入模式或 BR 在 TiCDC 的上游集群和下游集群分别恢复数据。
+
+3. 恢复完成并检查了上下游集群对应表的数据一致性之后，使用上游备份的时间点 (TSO) 作为 TiCDC 同步任务的 `start-ts`，创建新的 TiCDC 同步任务，进行增量同步。例如，假设上游集群的 BR 备份的 snapshot 时间点为 `431434047157698561`，那么可以使用以下命令创建新的 TiCDC 同步任务：
+
+    ```shell
+    cdc cli changefeed create -c "upstream-to-downstream-some-tables" --start-ts=431434047157698561 --sink-uri="mysql://root@127.0.0.1:4000? time-zone="
+    ```
+
+## 为什么恢复暂停的 changefeed 后，changefeed 同步延迟越来越高，数分钟后才恢复正常？
+
+当 changefeed 启动时，为了补齐 changefeed 暂停期间产生的增量数据日志，TiCDC 需要扫描 TiKV 中数据的历史版本，待扫描完毕后，才能够继续推进复制过程，扫描过程可能长达数分钟到数十分钟。
+
+## 在两个异地 TiDB 集群之间同步数据，如何部署 TiCDC？
+
+对于 v6.5.2 之前的版本，建议将 TiCDC 部署在下游 TiDB 集群。这是因为，如果上下游网络延迟较大，例如超过 100 ms 时，由于 MySQL 传输协议的原因，TiCDC 向下游执行 SQL 的延迟会急剧增加，导致系统的吞吐下降。部署在下游能够极大缓解该问题。经过优化后，v6.5.2 及之后的版本建议将 TiCDC 部署在上游集群。
+
+## 如何理解 DML 和 DDL 语句之间的执行顺序？
+
+目前，TiCDC 采用了以下执行顺序：
+
+1. TiCDC 阻塞受 DDL 影响的表的同步进度，直到 DDL `commitTS` 的时间点，以确保在 DDL `commitTS` 之前执行的 DML 先成功同步到下游。
+2. TiCDC 继续同步 DDL。当存在多个 DDL 时，TiCDC 是以串行的方式进行同步的。
+3. 当 DDL 在下游执行完成之后，TiCDC 继续同步 DDL `commitTS` 之后执行的 DML。
+
+## 如何对比上下游数据的一致性？
+
+如果下游是 TiDB 集群或者 MySQL，我们推荐使用 [sync diff inspector](/sync-diff-inspector/sync-diff-inspector-overview.md) 工具进行数据对比。
+
+## 单表数据同步只能在一个 TiCDC 节点上运行，TiCDC 是否考虑使用多个节点同步多表数据？
+
+从 v7.1.0 起，TiCDC 支持 MQ sink 按照 TiKV Region 粒度来同步数据变更日志，实现处理能力上的可扩展性，使得 TiCDC 能够同步 Region 数量庞大的单表。如需开启，请在 [TiCDC 配置文件](/ticdc/ticdc-changefeed-config.md)中配置以下参数：
+
+```toml
+[scheduler]
+enable-table-across-nodes = true
+```
+
+## 上游有运行时间比较长的未提交事务，TiCDC 同步是否会被卡住？
+
+TiDB 有事务超时的机制，当事务运行超过 [`max-txn-ttl`](/tidb-configuration-file.md#max-txn-ttl) 后，会被 TiDB 强制回滚。TiCDC 遇到未提交的事务，会等待其提交后再继续同步其数据，因此会出现同步延迟。
+
+## 为什么通过 TiDB Operator 部署的 TiCDC 集群无法使用 cdc cli 命令进行操作？
+
+因为通过 TiDB Operator 部署的 TiCDC 集群的默认端口号为 8301, 而 cdc cli 命令默认连接的 cdc 服务器的端口号是 8300。在使用 cdc cli 操作 TiCDC 集群时，你需要显式地指定 `--server` 参数，如下：
+
+```shell
+./cdc cli changefeed list --server "127.0.0.1:8301"
+[
+  {
+    "id": "4k-table",
+    "namespace": "default",
+    "summary": {
+      "state": "stopped",
+      "tso": 441832628003799353,
+      "checkpoint": "2023-05-30 22:41:57.910",
+      "error": null
+    }
+  },
+  {
+    "id": "big-table",
+    "namespace": "default",
+    "summary": {
+      "state": "normal",
+      "tso": 441872834546892882,
+      "checkpoint": "2023-06-01 17:18:13.700",
+      "error": null
+    }
+  }
+]
+```

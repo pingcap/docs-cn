@@ -1,6 +1,7 @@
 ---
 title: TiDB 3.1 GA Release Notes
 aliases: ['/docs-cn/dev/releases/release-3.1.0-ga/','/docs-cn/dev/releases/3.1.0-ga/']
+summary: TiDB 3.1 GA 发布说明：兼容性变化包括支持报告状态配置项和 BR 不支持旧版 TiKV 集群恢复。新功能包括展示 coprocessor 任务信息和减少日志冗余信息。PD 优化热点 Region 调度，TiFlash 添加读写负载信息和支持函数下推。TiDB Ansible 新增 TiFlash 监控和优化配置参数。Bug 修复包括修复 merge join 和计算选择率问题。TiKV 修复 replica read 和 restore 问题，TiFlash 修复同步 schema 和数据丢失问题。TiDB Binlog 修复因 TiFlash 相关 DDL job 导致同步中断问题，BR 修复 checksum 和增量备份失败问题。
 ---
 
 # TiDB 3.1 GA Release Notes
@@ -88,6 +89,6 @@ TiDB Ansible 版本：3.1.0 GA
         * 修复因为 TiFlash 相关的 DDL job 导致 Drainer 同步中断的问题 [#948](https://github.com/pingcap/tidb-binlog/pull/948) [#942](https://github.com/pingcap/tidb-binlog/pull/942)
 
     - BR
-    
+
         * 修复关闭 checksum 情况下，仍然执行 checksum 的问题 [#223](https://github.com/pingcap/br/pull/223)
         * 修复 TiDB 开启 auto-random 或 alter-pk 时，增量备份失败的问题 [#230](https://github.com/pingcap/br/pull/230) [#231](https://github.com/pingcap/br/pull/231)

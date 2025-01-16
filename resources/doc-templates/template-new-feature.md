@@ -15,7 +15,7 @@ summary: xxx（一句话介绍该文档的主要内容，请尽可能多地包�
 
 > **警告：**（可选）
 >
-> 当前该功能为实验特性，不建议在生产环境中使用。
+> 该功能目前为实验特性，不建议在生产环境中使用。该功能可能会在未事先通知的情况下发生变化或删除。语法和实现可能会在 GA 前发生变化。如果发现 bug，请在 GitHub 上提 [issue](https://github.com/pingcap/tidb/issues) 反馈。
 
 本文档介绍 XXX 的使用场景、使用方法、使用限制和使用该功能的常见问题。
 
@@ -58,7 +58,7 @@ xxx 在以下场景中使用/有优势：
 
 ## 使用方法/操作步骤
 
-TiDB 提供 x 种 xxx 的使用方法，分别是 xxx 方法 和 xxx 方法。
+TiDB 提供 x 种 xxx 的使用方法，分别是 xxx 方法和 xxx 方法。
 
 在 xxx 情况下，为了 xxx, 推荐使用 xxx 方法。
 
@@ -105,4 +105,4 @@ TiDB 提供 x 种 xxx 的使用方法，分别是 xxx 方法 和 xxx 方法。
 
 - [TiDB HTAP 形态架构](/tiflash/tiflash-overview.md#整体架构)
 - [深入探索 HTAP](/explore-htap.md)
-- [使用 TiFlash](/tiflash/use-tiflash.md)
+- [使用 TiFlash](/tiflash/tiflash-overview.md#使用-tiflash)

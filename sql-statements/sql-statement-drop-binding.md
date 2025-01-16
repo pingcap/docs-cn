@@ -14,26 +14,42 @@ aliases: ['/docs-cn/dev/sql-statements/sql-statement-drop-binding/']
 
 ```ebnf+diagram
 DropBindingStmt ::=
-    'DROP' GlobalScope 'BINDING' 'FOR' BindableStmt ( 'USING' BindableStmt )?
+    'DROP' GlobalScope 'BINDING' 'FOR' ( BindableStmt ( 'USING' BindableStmt )?
+|   'SQL' 'DIGEST' StringLiteralOrUserVariableList )
 
 GlobalScope ::=
     ( 'GLOBAL' | 'SESSION' )?
 
 BindableStmt ::=
     ( SelectStmt | UpdateStmt | InsertIntoStmt | ReplaceIntoStmt | DeleteStmt )
+
+StringLiteralOrUserVariableList ::=
+    ( StringLitOrUserVariable | StringLiteralOrUserVariableList ',' StringLitOrUserVariable )
+
+StringLiteralOrUserVariable ::=
+    ( stringLiteral | UserVariable )
 ```
 
 ## 示例
+
+你可以根据 SQL 语句或 SQL Digest 删除绑定。
+
+根据 SQL Digest 删除绑定时，你需要指定相应的 SQL Digest：
+
+- 既可以通过字符串字面量来指定，也可以通过字符串类型的用户变量来指定。
+- 可以指定多个字符串，同时每个字符串也可以包含多个 digest，注意字符串之间和 digest 之间均需使用逗号隔开。
+
+下面的示例演示如何根据 SQL 语句删除绑定。
 
 {{< copyable "sql" >}}
 
 ```sql
 CREATE TABLE t1 (
-    ->  id INT NOT NULL PRIMARY KEY auto_increment,
-    ->  b INT NOT NULL,
-    ->  pad VARBINARY(255),
-    ->  INDEX(b)
-    -> );
+    id INT NOT NULL PRIMARY KEY auto_increment,
+    b INT NOT NULL,
+    pad VARBINARY(255),
+    INDEX(b)
+   );
 Query OK, 0 rows affected (0.07 sec)
 
 INSERT INTO t1 SELECT NULL, FLOOR(RAND()*1000), RANDOM_BYTES(255) FROM dual;
@@ -86,9 +102,9 @@ EXPLAIN ANALYZE SELECT * FROM t1 WHERE b = 123;
 3 rows in set (0.02 sec)
 
 CREATE SESSION BINDING FOR
-    ->  SELECT * FROM t1 WHERE b = 123
-    -> USING
-    ->  SELECT * FROM t1 IGNORE INDEX (b) WHERE b = 123;
+    SELECT * FROM t1 WHERE b = 123
+   USING
+    SELECT * FROM t1 IGNORE INDEX (b) WHERE b = 123;
 Query OK, 0 rows affected (0.00 sec)
 
 EXPLAIN ANALYZE  SELECT * FROM t1 WHERE b = 123;
@@ -128,6 +144,65 @@ EXPLAIN ANALYZE  SELECT * FROM t1 WHERE b = 123;
 
 SHOW SESSION BINDINGS\G
 Empty set (0.00 sec)
+```
+
+下面的示例演示如何根据 SQL Digest 删除绑定。
+
+```sql
+CREATE TABLE t1(a INT, b INT, c INT, INDEX ia(a));
+CREATE TABLE t2(a INT, b INT, c INT, INDEX ia(a));
+CREATE GLOBAL BINDING FOR SELECT * FROM t1 WHERE a > 1 USING SELECT * FROM t1 USE INDEX (ia) WHERE a > 1;
+CREATE GLOBAL BINDING FOR SELECT * FROM t2 WHERE a < 1 USING SELECT * FROM t2 USE INDEX (ia) WHERE a < 1;
+CREATE GLOBAL BINDING FOR SELECT * FROM t1 JOIN t2 ON t1.b = t2.a USING SELECT /*+ HASH_JOIN(t1) */ * FROM t1 JOIN t2 ON t1.b = t2.a;
+SHOW GLOBAL BINDINGS;
+```
+
+方法一：
+
+```sql
+DROP GLOBAL BINDING FOR SQL DIGEST '31026623c8f22264fe0dfc26f29c69c5c457d6b85960c578ebcf17a967ed7893', '0f38b2e769927ae37981c66f0988c6299b602e03f029e38aa071e656fc321593', '3c8dfc451b0e36afd904cefca5137e68fb051f02964e1958ed60afdadc25f57e';
+SHOW GLOBAL BINDINGS;
+```
+
+方法二：
+
+```sql
+SET @digests='31026623c8f22264fe0dfc26f29c69c5c457d6b85960c578ebcf17a967ed7893, 0f38b2e769927ae37981c66f0988c6299b602e03f029e38aa071e656fc321593, 3c8dfc451b0e36afd904cefca5137e68fb051f02964e1958ed60afdadc25f57e';
+DROP GLOBAL BINDING FOR SQL DIGEST @digests;
+SHOW GLOBAL BINDINGS;
+```
+
+```sql
+> CREATE TABLE t1(a INT, b INT, c INT, INDEX ia(a));
+Query OK, 0 rows affected (0.044 sec)
+
+> CREATE TABLE t2(a INT, b INT, c INT, INDEX ia(a));
+Query OK, 0 rows affected (0.035 sec)
+
+> CREATE GLOBAL BINDING FOR SELECT * FROM t1 WHERE a > 1 USING SELECT * FROM t1 USE INDEX (ia) WHERE a > 1;
+Query OK, 0 rows affected (0.011 sec)
+
+> CREATE GLOBAL BINDING FOR SELECT * FROM t2 WHERE a < 1 USING SELECT * FROM t2 USE INDEX (ia) WHERE a < 1;
+Query OK, 0 rows affected (0.013 sec)
+
+> CREATE GLOBAL BINDING FOR SELECT * FROM t1 JOIN t2 ON t1.b = t2.a USING SELECT /*+ HASH_JOIN(t1) */ * FROM t1 JOIN t2 ON t1.b = t2.a;
+Query OK, 0 rows affected (0.012 sec)
+
+> SHOW GLOBAL BINDINGS;
++---------------------------------------------------------------------------+-----------------------------------------------------------------------------------------+------------+---------+-------------------------+-------------------------+---------+-----------------+--------+------------------------------------------------------------------+-------------+
+| Original_sql                                                              | Bind_sql                                                                                | Default_db | Status  | Create_time             | Update_time             | Charset | Collation       | Source | Sql_digest                                                       | Plan_digest |
++---------------------------------------------------------------------------+-----------------------------------------------------------------------------------------+------------+---------+-------------------------+-------------------------+---------+-----------------+--------+------------------------------------------------------------------+-------------+
+| select * from `test` . `t1` join `test` . `t2` on `t1` . `b` = `t2` . `a` | SELECT /*+ HASH_JOIN(`t1`)*/ * FROM `test`.`t1` JOIN `test`.`t2` ON `t1`.`b` = `t2`.`a` | test       | enabled | 2024-08-11 04:06:49.953 | 2024-08-11 04:06:49.953 | utf8    | utf8_general_ci | manual | 31026623c8f22264fe0dfc26f29c69c5c457d6b85960c578ebcf17a967ed7893 |             |
+| select * from `test` . `t2` where `a` < ?                                 | SELECT * FROM `test`.`t2` USE INDEX (`ia`) WHERE `a` < 1                                | test       | enabled | 2024-08-11 04:06:49.937 | 2024-08-11 04:06:49.937 | utf8    | utf8_general_ci | manual | 0f38b2e769927ae37981c66f0988c6299b602e03f029e38aa071e656fc321593 |             |
+| select * from `test` . `t1` where `a` > ?                                 | SELECT * FROM `test`.`t1` USE INDEX (`ia`) WHERE `a` > 1                                | test       | enabled | 2024-08-11 04:06:49.924 | 2024-08-11 04:06:49.924 | utf8    | utf8_general_ci | manual | 3c8dfc451b0e36afd904cefca5137e68fb051f02964e1958ed60afdadc25f57e |             |
++---------------------------------------------------------------------------+-----------------------------------------------------------------------------------------+------------+---------+-------------------------+-------------------------+---------+-----------------+--------+------------------------------------------------------------------+-------------+
+3 rows in set (0.001 sec)
+
+> DROP GLOBAL BINDING FOR SQL DIGEST '31026623c8f22264fe0dfc26f29c69c5c457d6b85960c578ebcf17a967ed7893', '0f38b2e769927ae37981c66f0988c6299b602e03f029e38aa071e656fc321593', '3c8dfc451b0e36afd904cefca5137e68fb051f02964e1958ed60afdadc25f57e';
+Query OK, 3 rows affected (0.019 sec)
+
+> SHOW GLOBAL BINDINGS;
+Empty set (0.002 sec)
 ```
 
 ## MySQL 兼容性

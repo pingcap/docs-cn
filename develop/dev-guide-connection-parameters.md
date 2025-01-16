@@ -6,14 +6,14 @@ aliases: ['/zh/tidb/dev/connection-parameters']
 
 # 连接池与连接参数
 
-> - 连接池参数 - 连接数配置、探活配置两节摘自 [开发 Java 应用使用 TiDB 的最佳实践 - 连接池](/best-practices/java-app-best-practices.md#连接池)。
-> - 连接参数摘自 [开发 Java 应用使用 TiDB 的最佳实践 - JDBC](/best-practices/java-app-best-practices.md#jdbc)。
+> - 连接池参数 - 连接数配置、探活配置两节摘自[开发 Java 应用使用 TiDB 的最佳实践 - 连接池](/best-practices/java-app-best-practices.md#连接池)。
+> - 连接参数摘自[开发 Java 应用使用 TiDB 的最佳实践 - JDBC](/best-practices/java-app-best-practices.md#jdbc)。
 
 ## 连接池参数
 
 TiDB (MySQL) 连接建立是比较昂贵的操作（至少对于 OLTP 来讲），除了建立 TCP 连接外还需要进行连接鉴权操作，所以客户端通常会把 TiDB (MySQL) 连接保存到连接池中进行复用。
 
-Java 的连接池实现很多 ([HikariCP](https://github.com/brettwooldridge/HikariCP), [tomcat-jdbc](https://tomcat.apache.org/tomcat-7.0-doc/jdbc-pool.html), [durid](https://github.com/alibaba/druid), [c3p0](https://www.mchange.com/projects/c3p0/), [dbcp](https://commons.apache.org/proper/commons-dbcp/))，TiDB 不会限定使用的连接池，应用可以根据业务特点自行选择连接池实现。
+Java 的连接池实现很多 ([HikariCP](https://github.com/brettwooldridge/HikariCP), [tomcat-jdbc](https://tomcat.apache.org/tomcat-10.1-doc/jdbc-pool.html), [druid](https://github.com/alibaba/druid), [c3p0](https://www.mchange.com/projects/c3p0/), [dbcp](https://commons.apache.org/proper/commons-dbcp/))，TiDB 不会限定使用的连接池，应用可以根据业务特点自行选择连接池实现。
 
 ### 连接数配置
 
@@ -27,7 +27,12 @@ Java 的连接池实现很多 ([HikariCP](https://github.com/brettwooldridge/Hik
 
 ### 探活配置
 
-连接池维护到 TiDB 的长连接，TiDB 默认不会主动关闭客户端连接（除非报错），但一般客户端到 TiDB 之间还会有 [LVS](https://en.wikipedia.org/wiki/Linux_Virtual_Server) 或 [HAProxy](https://en.wikipedia.org/wiki/HAProxy) 之类的网络代理，它们通常会在连接空闲一定时间后主动清理连接。除了注意代理的 idle 配置外，连接池还需要进行保活或探测连接。
+连接池维护客户端到 TiDB 的长连接的方式如下：
+
+- v5.4 版本前，TiDB 默认不会主动关闭客户端连接，除非出现报错情况。
+- 从 v5.4 起，TiDB 默认会在连接空闲超过 `28800` 秒（即 8 小时）后，自动关闭客户端连接。你可以使用 TiDB 与 MySQL 兼容的 `wait_timeout` 变量控制此超时时间，详见 [JDBC 查询超时](/develop/dev-guide-timeouts-in-tidb.md#jdbc-查询超时)文档。
+
+此外，客户端到 TiDB 之间通常还会有 [LVS](https://en.wikipedia.org/wiki/Linux_Virtual_Server) 或 [HAProxy](https://en.wikipedia.org/wiki/HAProxy) 之类的网络代理。这些代理通常会在连接空闲超过特定时间（由代理的 idle 配置决定）后主动清理连接。除了关注代理的 idle 配置外，连接池还需要进行保活或探测连接。
 
 如果常在 Java 应用中看到以下错误：
 
@@ -73,7 +78,7 @@ connections = ((core_count * 2) + effective_spindle_count)
 
 这个说明指出：
 
-1. **core_count** 就是 _物理核心数_ ，与你是否开启[超线程](https://en.wikipedia.org/wiki/Hyper-threading)无关。
+1. **core_count** 就是_物理核心数_，与你是否开启[超线程](https://en.wikipedia.org/wiki/Hyper-threading)无关。
 2. 数据被全量缓存时，**effective_spindle_count** 应被设置为 0，随着命中率的下降，会更加接近实际的 HDD 个数。
 3. **这里没有任何基于 _SSD_ 的经验公式。**
 
@@ -116,7 +121,7 @@ Java 应用尽管可以选择在不同的框架中封装，但在最底层一般
 
 对于批量插入更新，如果插入记录较多，可以选择使用 [addBatch/executeBatch API](https://www.tutorialspoint.com/jdbc/jdbc-batch-processing)。通过 addBatch 的方式将多条 SQL 的插入更新记录先缓存在客户端，然后在 executeBatch 时一起发送到数据库服务器。
 
-> 注意
+> **注意：**
 >
 > 对于 MySQL Connector/J 实现，默认 Batch 只是将多次 addBatch 的 SQL 发送时机延迟到调用 executeBatch 的时候，但实际网络发送还是会一条条的发送，通常不会降低与数据库服务器的网络交互次数。
 >
@@ -128,14 +133,18 @@ Java 应用尽管可以选择在不同的框架中封装，但在最底层一般
 
 在 JDBC 中通常有以下两种处理方式：
 
-- 设置 [**FetchSize** 为 `Integer.MIN_VALUE`](https://dev.mysql.com/doc/connector-j/5.1/en/connector-j-reference-implementation-notes.html#ResultSet) 让客户端不缓存，客户端通过 StreamingResult 的方式从网络连接上流式读取执行结果。
-- 使用 Cursor Fetch，首先需[设置 **FetchSize**](http://makejavafaster.blogspot.com/2015/06/jdbc-fetch-size-performance.html) 为正整数，且在 JDBC URL 中配置 `useCursorFetch = true`。
+- 方式一：设置 [**FetchSize** 为 `Integer.MIN_VALUE`](https://dev.mysql.com/doc/connector-j/en/connector-j-reference-implementation-notes.html#ResultSet) 让客户端不缓存，客户端通过 StreamingResult 的方式从网络连接上流式读取执行结果。
+- 方式二：使用 Cursor Fetch，首先需[设置 **FetchSize**](http://makejavafaster.blogspot.com/2015/06/jdbc-fetch-size-performance.html) 为正整数，且在 JDBC URL 中配置 `useCursorFetch = true`。
 
-TiDB 中同时支持两种方式，但更推荐使用第一种将 **FetchSize** 设置为 `Integer.MIN_VALUE` 的方式，比第二种功能实现更简单且执行效率更高。
+TiDB 同时支持以上两种方式，但更推荐使用第一种将 `FetchSize` 设置为 `Integer.MIN_VALUE` 的方式，比第二种功能实现更简单且执行效率更高。
+
+对于第二种方式，TiDB 会先将所有数据加载到 TiDB 节点上，然后根据 `FetchSize` 依次返回给客户端。因此，通常会比第一种方式使用更多内存。如果将 [`tidb_enable_tmp_storage_on_oom`](/system-variables.md#tidb_enable_tmp_storage_on_oom) 设置为 `ON`，可能会触发落盘临时将结果写入硬盘。
+
+如果系统变量 [`tidb_enable_lazy_cursor_fetch`](/system-variables.md#tidb_enable_lazy_cursor_fetch-从-v830-版本开始引入) 设置为 `ON`，TiDB 将尝试仅在客户端请求数据时读取部分数据，以使用更少的内存。更多信息和使用限制，参见系统变量 [`tidb_enable_lazy_cursor_fetch`](/system-variables.md#tidb_enable_lazy_cursor_fetch-从-v830-版本开始引入) 的详细描述。
 
 ### MySQL JDBC 参数
 
-JDBC 实现通常通过 JDBC URL 参数的形式来提供实现相关的配置。这里以 MySQL 官方的 Connector/J 来介绍[参数配置](https://dev.mysql.com/doc/connector-j/5.1/en/connector-j-reference-configuration-properties.html)（如果使用的是 MariaDB，可以参考 [MariaDB 的类似配置](https://mariadb.com/kb/en/library/about-mariadb-connector-j/#optional-url-parameters)）。因为配置项较多，这里主要关注几个可能影响到性能的参数。
+JDBC 实现通常通过 JDBC URL 参数的形式来提供实现相关的配置。这里以 MySQL 官方的 Connector/J 来介绍[参数配置](https://dev.mysql.com/doc/connector-j/en/connector-j-reference-configuration-properties.html)（如果使用的是 MariaDB，可以参考 [MariaDB 的类似配置](https://mariadb.com/kb/en/library/about-mariadb-connector-j/#optional-url-parameters)）。因为配置项较多，这里主要关注几个可能影响到性能的参数。
 
 #### Prepare 相关参数
 
@@ -143,15 +152,13 @@ JDBC 实现通常通过 JDBC URL 参数的形式来提供实现相关的配置�
 
     默认情况下，**useServerPrepStmts** 的值为 `false`，即尽管使用了 Prepare API，也只会在客户端做 “prepare”。因此为了避免服务器重复解析的开销，如果同一条 SQL 语句需要多次使用 Prepare API，则建议设置该选项为 `true`。
 
-    在 TiDB 监控中可以通过 **Query Summary > QPS By Instance** 查看请求命令类型，如果请求中 `COM_QUERY` 被 `COM_STMT_EXECUTE` 或 `COM_STMT_PREPARE` 代替即生效。
+    在 TiDB 监控中可以通过 **Query Summary > CPS By Instance** 查看请求命令类型，如果请求中 `COM_QUERY` 被 `COM_STMT_EXECUTE` 或 `COM_STMT_PREPARE` 代替即生效。
 
 - **cachePrepStmts**
 
     虽然 `useServerPrepStmts = true` 能让服务端执行预处理语句，但默认情况下客户端每次执行完后会 close 预处理语句，并不会复用，这样预处理的效率甚至不如文本执行。所以建议开启 `useServerPrepStmts = true` 后同时配置 `cachePrepStmts = true`，这会让客户端缓存预处理语句。
 
-    在 TiDB 监控中可以通过 **Query Summary > QPS By Instance** 查看请求命令类型，如果类似下图，请求中 `COM_STMT_EXECUTE` 数目远远多于 `COM_STMT_PREPARE` 即生效。
-
-    ![QPS By Instance](/media/develop/IMG_20220406-153503103.png)
+    在 TiDB 监控中可以通过 **Query Summary > CPS By Instance** 查看请求命令类型，如果请求中 `COM_STMT_EXECUTE` 数目远远多于 `COM_STMT_PREPARE` 即生效。
 
     另外，通过 `useConfigs = maxPerformance` 配置会同时配置多个参数，其中也包括 `cachePrepStmts = true`。
 
@@ -161,19 +168,17 @@ JDBC 实现通常通过 JDBC URL 参数的形式来提供实现相关的配置�
 
     在一些场景 SQL 的长度可能超过该配置，导致预处理 SQL 不能复用，建议根据应用 SQL 长度情况决定是否需要调大该值。
 
-    在 TiDB 监控中通过 **Query Summary > QPS by Instance** 查看请求命令类型，如果已经配置了 `cachePrepStmts = true`，但 `COM_STMT_PREPARE` 还是和 `COM_STMT_EXECUTE` 基本相等且有 `COM_STMT_CLOSE`，需要检查这个配置项是否设置得太小。
+    在 TiDB 监控中通过 **Query Summary > CPS By Instance** 查看请求命令类型，如果已经配置了 `cachePrepStmts = true`，但 `COM_STMT_PREPARE` 还是和 `COM_STMT_EXECUTE` 基本相等且有 `COM_STMT_CLOSE`，需要检查这个配置项是否设置得太小。
 
 - **prepStmtCacheSize**
 
     控制缓存的预处理语句数目（默认为 `25`），如果应用需要预处理的 SQL 种类很多且希望复用预处理语句，可以调大该值。
 
-    和上一条类似，在监控中通过 **Query Summary > QPS by Instance** 查看请求中 `COM_STMT_EXECUTE` 数目是否远远多于 `COM_STMT_PREPARE` 来确认是否正常。
+    和上一条类似，在监控中通过 **Query Summary > CPS By Instance** 查看请求中 `COM_STMT_EXECUTE` 数目是否远远多于 `COM_STMT_PREPARE` 来确认是否正常。
 
 #### Batch 相关参数
 
 在进行 batch 写入处理时推荐配置 `rewriteBatchedStatements = true`，在已经使用 `addBatch` 或 `executeBatch` 后默认 JDBC 还是会一条条 SQL 发送，例如：
-
-{{< copyable "" >}}
 
 ```java
 pstmt = prepare("INSERT INTO `t` (`a`) VALUES(?)");
@@ -187,8 +192,6 @@ pstmt.executeBatch();
 
 虽然使用了 batch 但发送到 TiDB 语句还是单独的多条 insert：
 
-{{< copyable "sql" >}}
-
 ```sql
 INSERT INTO `t` (`a`) VALUES(10);
 INSERT INTO `t` (`a`) VALUES(11);
@@ -197,15 +200,11 @@ INSERT INTO `t` (`a`) VALUES(12);
 
 如果设置 `rewriteBatchedStatements = true`，发送到 TiDB 的 SQL 将是：
 
-{{< copyable "sql" >}}
-
 ```sql
 INSERT INTO `t` (`a`) VALUES(10),(11),(12);
 ```
 
 需要注意的是，insert 语句的改写，只能将多个 values 后的值拼接成一整条 SQL, insert 语句如果有其他差异将无法被改写。例如：
-
-{{< copyable "sql" >}}
 
 ```sql
 INSERT INTO `t` (`a`) VALUES (10) ON DUPLICATE KEY UPDATE `a` = 10;
@@ -215,8 +214,6 @@ INSERT INTO `t` (`a`) VALUES (12) ON DUPLICATE KEY UPDATE `a` = 12;
 
 上述 insert 语句将无法被改写成一条语句。该例子中，如果将 SQL 改写成如下形式：
 
-{{< copyable "sql" >}}
-
 ```sql
 INSERT INTO `t` (`a`) VALUES (10) ON DUPLICATE KEY UPDATE `a` = values(`a`);
 INSERT INTO `t` (`a`) VALUES (11) ON DUPLICATE KEY UPDATE `a` = values(`a`);
@@ -225,15 +222,11 @@ INSERT INTO `t` (`a`) VALUES (12) ON DUPLICATE KEY UPDATE `a` = values(`a`);
 
 即可满足改写条件，最终被改写成：
 
-{{< copyable "sql" >}}
-
 ```sql
 INSERT INTO `t` (`a`) VALUES (10), (11), (12) ON DUPLICATE KEY UPDATE `a` = values(`a`);
 ```
 
 批量更新时如果有 3 处或 3 处以上更新，则 SQL 语句会改写为 multiple-queries 的形式并发送，这样可以有效减少客户端到服务器的请求开销，但副作用是会产生较大的 SQL 语句，例如这样：
-
-{{< copyable "sql" >}}
 
 ```sql
 UPDATE `t` SET `a` = 10 WHERE `id` = 1;
@@ -247,20 +240,14 @@ UPDATE `t` SET `a` = 12 WHERE `id` = 3;
 
 通过监控可能会发现，虽然业务只向集群进行 insert 操作，却看到有很多多余的 select 语句。通常这是因为 JDBC 发送了一些查询设置类的 SQL 语句（例如 `select @@session.transaction_read_only`）。这些 SQL 对 TiDB 无用，推荐配置 `useConfigs = maxPerformance` 来避免额外开销。
 
-`useConfigs = maxPerformance` 会包含一组配置：
-
-```conf
-cacheServerConfiguration = true
-useLocalSessionState = true
-elideSetAutoCommits = true
-alwaysSendSetIsolation = false
-enableQueryTimeouts = false
-```
+`useConfigs = maxPerformance` 会包含一组配置，可查看 MySQL Connector/J [8.0 版本](https://github.com/mysql/mysql-connector-j/blob/release/8.0/src/main/resources/com/mysql/cj/configurations/maxPerformance.properties) 或 [5.1 版本](https://github.com/mysql/mysql-connector-j/blob/release/5.1/src/com/mysql/jdbc/configs/maxPerformance.properties) 来确认当前 MySQL Connector/J 中 `maxPerformance` 包含的具体配置。
 
 配置后查看监控，可以看到多余语句减少。
 
 #### 超时参数
 
-TiDB 提供两个与 MySQL 兼容的超时控制参数，**wait_timeout** 和 **max_execution_time**。这两个参数分别控制与 Java 应用连接的空闲超时时间和连接中 SQL 执行的超时时间，即控制 TiDB 与 Java 应用的连接最长闲多久和最长忙多久。这两个参数的默认值都是 0，即默认允许连接无限闲置以及无限忙碌（一个 SQL 语句执行无限的长的时间）。
+TiDB 提供两个与 MySQL 兼容的超时控制参数，[`wait_timeout`](/system-variables.md#wait_timeout) 和 [`max_execution_time`](/system-variables.md#max_execution_time)。这两个参数分别控制与 Java 应用连接的空闲超时时间和连接中 SQL 执行的超时时间，即控制 TiDB 与 Java 应用的连接最长闲多久和最长忙多久。在 TiDB v5.4 及以上版本中，`wait_timeout` 参数默认值为 `28800` 秒，即空闲超时为 8 小时。在 v5.4 之前，`wait_timeout` 参数的默认值为 `0`，即没有时间限制。 `max_execution_time` 参数的默认值为 `0`，即不限制一条 SQL 语句的执行时间。
+
+但是 [`wait_timeout`](/system-variables.md#wait_timeout) 的默认值比较大，在事务已启动但未提交或回滚的情况下，你可能需要更细粒度的控制和更短的超时，以避免持有锁的时间过长。此时，你可以使用 TiDB 在 v7.6.0 引入的 [`tidb_idle_transaction_timeout`](/system-variables.md#tidb_idle_transaction_timeout-从-v760-版本开始引入) 控制用户会话中事务的空闲超时。
 
 但在实际生产环境中，空闲连接和一直无限执行的 SQL 对数据库和应用都有不好的影响。你可以通过在应用的连接字符串中配置这两个参数来避免空闲连接和执行时间过长的 SQL 语句。例如，设置 `sessionVariables=wait_timeout=3600`（1 小时）和 `sessionVariables=max_execution_time=300000`（5 分钟）。

@@ -8,6 +8,8 @@ aliases: ['/docs-cn/dev/tidb-lightning/tidb-lightning-glossary/','/docs-cn/dev/r
 
 本术语表提供了 TiDB Lightning 相关的术语和定义，这些术语会出现在 TiDB Lightning 的日志、监控指标、配置和文档中。
 
+关于 TiDB 相关的术语和定义，请参考 [TiDB 术语表](/glossary.md)。
+
 <!-- A -->
 
 ## A
@@ -16,13 +18,13 @@ aliases: ['/docs-cn/dev/tidb-lightning/tidb-lightning-glossary/','/docs-cn/dev/r
 
 统计信息分析。指重建 TiDB 表中的统计信息，即运行 [`ANALYZE TABLE`](/sql-statements/sql-statement-analyze-table.md) 语句。
 
-因为 TiDB Lightning local backend 直接导入数据到 TiKV，统计信息不会自动更新，所以 TiDB Lightning 在导入后显式地分析每个表。如果不需要该操作，可以将 `post-restore.analyze` 设置为 `false`。
+因为 TiDB Lightning 物理导入模式直接导入数据到 TiKV，统计信息不会自动更新，所以 TiDB Lightning 在导入后显式地分析每个表。如果不需要该操作，可以将 `post-restore.analyze` 设置为 `false`。
 
 ### `AUTO_INCREMENT_ID`
 
 用于为自增列分配默认值的自增 ID 计数器。每张表都有一个相关联的 `AUTO_INCREMENT_ID` 计数器。在 TiDB 中，该计数器还用于分配行 ID。
 
-因为 TiDB Lightning local backend 直接导入数据到 TiKV，`AUTO_INCREMENT_ID` 计数器不会自动更新，所以 TiDB Lightning 显式地将 `AUTO_INCREMENT_ID` 改为一个有效值。即使表中没有自增列，这步仍是会执行。
+因为 TiDB Lightning 物理导入模式直接导入数据到 TiKV，`AUTO_INCREMENT_ID` 计数器不会自动更新，所以 TiDB Lightning 显式地将 `AUTO_INCREMENT_ID` 改为一个有效值。即使表中没有自增列，这步仍是会执行。
 
 <!-- B -->
 
@@ -32,7 +34,7 @@ aliases: ['/docs-cn/dev/tidb-lightning/tidb-lightning-glossary/','/docs-cn/dev/r
 
 也称作 Back end（后端），用于接受 TiDB Lightning 解析结果。
 
-详情参阅 [TiDB Lightning Backends](/tidb-lightning/tidb-lightning-backends.md)。
+详情参阅 [TiDB Lightning Backends](/tidb-lightning/tidb-lightning-overview.md)。
 
 <!-- C -->
 
@@ -54,9 +56,9 @@ aliases: ['/docs-cn/dev/tidb-lightning/tidb-lightning-glossary/','/docs-cn/dev/r
 * 所有键值对的总长度
 * 每个键值对 [CRC-64-ECMA](https://en.wikipedia.org/wiki/Cyclic_redundancy_check) 按位异或的结果
 
-TiDB Lightning 通过比较每个表的[本地校验和](#local-checksum)和[远程校验和](#remote-checksum)来验证导入数据的正确性。如果有任一对校验和不匹配，导入进程就会停止。如果你需要跳过校验和检查，可以将 `post-restore.checksum` 设置为 `false` 。
+TiDB Lightning 通过比较每个表的[本地校验和](#local-checksum)和[远程校验和](#remote-checksum)来验证导入数据的正确性。如果有任一对校验和不匹配，导入进程就会停止。如果你需要跳过校验和检查，可以将 `post-restore.checksum` 设置为 `false`。
 
-遇到校验和不匹配的问题时，参考[常见问题](/tidb-lightning/tidb-lightning-faq.md#checksum-failed-checksum-mismatched-remote-vs-local)进行处理。
+遇到校验和不匹配的问题时，参考[常见问题](/tidb-lightning/troubleshoot-tidb-lightning.md#checksum-failed-checksum-mismatched-remote-vs-local)进行处理。
 
 ### Chunk
 
@@ -118,7 +120,7 @@ TiDB Lightning 通过引擎将数据传送到 TiKV Importer 中。TiDB Lightning
 
 导入模式。指通过降低读取速度和减少空间使用，来优化 TiKV 写入的配置模式。
 
-导入过程中，TiDB Lightning 自动在导入模式和[普通模式](#normal-mode)中来回切换。如果 TiKV 卡在导入模式，你可以使用 `tidb-lightning-ctl` [强制切换回普通模式](/tidb-lightning/tidb-lightning-faq.md#为什么用过-tidb-lightning-之后tidb-集群变得又慢又耗-cpu)。
+导入过程中，TiDB Lightning 自动在导入模式和[普通模式](#normal-mode)中来回切换。如果 TiKV 卡在导入模式，你可以使用 `tidb-lightning-ctl` [强制切换回普通模式](/tidb-lightning/troubleshoot-tidb-lightning.md#使用-tidb-lightning-后tidb-集群变慢cpu-占用高)。
 
 ### Index engine
 

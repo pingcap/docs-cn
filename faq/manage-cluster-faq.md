@@ -1,9 +1,9 @@
 ---
-title: 集群管理 FAQ
+title: TiDB 集群管理常见问题
 summary: 介绍 TiDB 集群管理的常见问题、原因及解决方法。
 ---
 
-# 集群管理 FAQ
+# TiDB 集群管理常见问题
 
 本文介绍管理 TiDB 集群时的常见问题、原因及解决方法。
 
@@ -23,7 +23,7 @@ mysql -h 127.0.0.1 -uroot -P4000
 
 ### TiDB 如何修改数据库系统变量？
 
-和 MySQL 一样，TiDB 也分为静态参数和固态参数，静态参数可以直接通过`set global xxx = n`的方式进行修改，不过新参数值只限于该实例生命周期有效。
+和 MySQL 一样，TiDB 也分为静态参数和固态参数，静态参数可以直接通过 `SET GLOBAL xxx = n` 的方式进行修改，不过新参数值只限于该实例生命周期有效。
 
 ### TiDB (TiKV) 有哪些数据目录？
 
@@ -31,7 +31,7 @@ mysql -h 127.0.0.1 -uroot -P4000
 
 ### TiDB 有哪些系统表？
 
-和 MySQL 类似，TiDB 中也有系统表，用于存放数据库运行时所需信息，具体信息参考 [TiDB 系统表](/mysql-schema.md)文档。
+和 MySQL 类似，TiDB 中也有系统表，用于存放数据库运行时所需信息，具体信息参考 [TiDB 系统表](/mysql-schema/mysql-schema-user.md)文档。
 
 ### TiDB 各节点服务器下是否有日志文件，如何管理？
 
@@ -41,7 +41,7 @@ mysql -h 127.0.0.1 -uroot -P4000
 
 如需快速了解 TiDB 节点、TiKV 节点、PD 节点的配置文件、数据文件及日志文件的相关介绍与其存放位置，建议观看下面的培训视频（时长 9 分钟）。
 
-<video src="https://tidb-docs.s3.us-east-2.amazonaws.com/compressed+-+Lesson+12.mp4" width="600px" height="450px" controls="controls" poster="https://tidb-docs.s3.us-east-2.amazonaws.com/thumbnail+-+lesson+12.png"></video>
+<video src="https://download.pingcap.com/docs-cn/Lesson12_log.mp4" width="100%" height="100%" controls="controls" poster="https://download.pingcap.com/docs-cn/poster_lesson12.png"></video>
 
 ### 如何规范停止 TiDB？
 
@@ -63,28 +63,33 @@ mysql -h 127.0.0.1 -uroot -P4000
 
 ### TiDB 是否支持会话超时？
 
-TiDB 目前支持 [`wait_timeout`](/system-variables.md#wait_timeout) 和 [`interactive_timeout`](/system-variables.md#interactive_timeout) 两种超时。
+TiDB 目前支持 [`wait_timeout`](/system-variables.md#wait_timeout)、[`interactive_timeout`](/system-variables.md#interactive_timeout) 和 [`tidb_idle_transaction_timeout`](/system-variables.md#tidb_idle_transaction_timeout-从-v760-版本开始引入) 三种超时。
 
-### TiDB 生产环境的版本管理策略是怎么样的？如何尽可能避免频繁升级？
+### TiDB 的版本管理策略是怎么样的？
 
-TiDB 版本目前逐步标准化，每次 Release 都包含详细的 Change log，版本功能[变化详情](https://github.com/pingcap/TiDB/releases)，生产环境是否有必要升级取决于业务系统，建议升级之前详细了解前后版本的功能差异。
+关于 TiDB 版本的管理策略，可以参考 [TiDB 版本规则](/releases/versioning.md)。
 
-版本号说明参考：Release Version: `v1.0.3-1-ga80e796`
+### 部署和维护 TiDB 集群的运营成本如何？
 
-- `v1.0.3` 表示 GA 标准版
-- `1` 表示该版本 commit 1 次
-- `ga80e796` 代表版本的 `git-hash`
+TiDB 提供了一些特性和[工具](/ecosystem-tool-user-guide.md)，可以帮助你以低成本管理集群：
+
+- 在运维方面，[TiUP](/tiup/tiup-documentation-guide.md) 作为包管理器，简化了部署、扩缩容、升级和其他运维任务。
+- 在监控方面，[TiDB 监控框架](/tidb-monitoring-framework.md)使用 [Prometheus](https://prometheus.io/) 存储监控和性能指标，使用 [Grafana](https://grafana.com/grafana/) 可视化这些指标。Grafana 内置了数十个面板，覆盖了数百个指标。
+- 在故障诊断方面，[TiDB 集群问题导图](/tidb-troubleshooting-map.md)汇总了 TiDB 服务器和其他组件的常见问题。你可以使用这个导图来诊断和解决遇到的相关问题。
 
 ### 分不清 TiDB master 版本之间的区别，应该怎么办？
 
-TiDB 目前社区非常活跃，在 1.0 GA 版本发布后，还在不断的优化和修改 BUG，因此 TiDB 的版本更新周期比较快，会不定期有新版本发布，请关注我们的[新版本发布官方网站](https://pingcap.com/weekly/)。此外 TiDB 安装推荐[使用 TiUP 进行安装](/production-deployment-using-tiup.md)。此外，在 TiDB 1.0 GA 版本后，对 TiDB 的版本号进行了统一管理，TiDB 的版本可以通过以下两种方式进行查看：
+TiDB 目前社区非常活跃，同时，我们还在不断的优化和修改 BUG，因此 TiDB 的版本更新周期比较快，会不定期有新版本发布，请关注我们的[版本发布时间线](/releases/release-timeline.md)。此外 TiDB 安装推荐[使用 TiUP 进行安装](/production-deployment-using-tiup.md)或[使用 TiDB Operator 进行安装](https://docs.pingcap.com/zh/tidb-in-kubernetes/stable)。TiDB 的版本号目前实现了统一管理，你可以通过如下任意方式查看 TiDB 的版本号：
 
 - 通过 `select tidb_version()` 进行查看
 - 通过执行 `tidb-server -V` 进行查看
 
-### 有没有图形化部署 TiDB 的工具？
+### 如何扩容 TiDB 集群？
 
-有。你可以使用 [TiUniManager](/tiunimanager/tiunimanager-overview.md)，它是一款为分布式数据库 TiDB 打造的管控平台软件和数据库运维管理平台，为 TiDB 提供数据库集群管理功能、主机管理功能和平台管理功能，涵盖了数据库运维人员 (DBA) 在 TiDB 上进行的常用运维操作，帮助 DBA 对 TiDB 进行自动化、自助化和可视化管理。
+可以在不影响线上服务的情况下，对 TiDB 集群进行扩容。
+
+- 如果是使用 [TiUP](/production-deployment-using-tiup.md) 部署的集群，可以参考[使用 TiUP 扩容 TiDB 集群](/scale-tidb-using-tiup.md)。
+- 如果是使用 [TiDB Operator](/tidb-operator-overview.md) 在 Kubernetes 上部署的集群，可以参考[在 Kubernetes 中手动扩容 TiDB 集群](https://docs.pingcap.com/zh/tidb-in-kubernetes/stable/scale-a-tidb-cluster)。
 
 ### TiDB 如何进行水平扩展？
 
@@ -112,10 +117,7 @@ TiDB 目前社区非常活跃，在 1.0 GA 版本发布后，还在不断的优�
 
 ### 为什么事务没有使用异步提交或一阶段提交？
 
-在以下情况中，即使通过系统变量开启了[异步提交](/system-variables.md#tidb_enable_async_commit-从-v50-版本开始引入)和[一阶段提交](/system-variables.md#tidb_enable_1pc-从-v50-版本开始引入)，TiDB 也不会使用这些特性：
-
-- 如果开启了 TiDB Binlog，受 TiDB Binlog 的实现原理限制，TiDB 不会使用异步提交或一阶段提交特性。
-- TiDB 只在事务写入不超过 256 个键值对，以及所有键值对里键的总大小不超过 4 KB 时，才会使用异步提交或一阶段提交特性。这是因为对于写入量大的事务，异步提交不能明显提升执行性能。
+TiDB 只在事务写入不超过 256 个键值对，以及所有键值对里键的总大小不超过 4 KB 时，才会使用异步提交或一阶段提交特性。否则，即使通过系统变量开启了[异步提交](/system-variables.md#tidb_enable_async_commit-从-v50-版本开始引入)和[一阶段提交](/system-variables.md#tidb_enable_1pc-从-v50-版本开始引入)，TiDB 也不会使用这些特性。这是因为对于写入量大的事务，异步提交不能明显提升执行性能。
 
 ## PD 管理
 
@@ -128,6 +130,10 @@ PD 的大部分 API 需要在初始化 TiKV 集群以后才能使用，如果在
 ### PD 启动报错：etcd cluster ID mismatch
 
 PD 启动参数中的 `--initial-cluster` 包含了某个不属于该集群的成员。遇到这个错误时请检查各个成员的所属集群，剔除错误的成员后即可正常启动。
+
+### PD 开启静态加密报错：`[PD:encryption:ErrEncryptionNewMasterKey]fail to get encryption key from file /root/path/file%!(EXTRA string=open /root/path/file: permission denied)`
+
+静态加密不支持将密钥文件存放在 `root` 目录或其子目录下，即使增加读取权限也会报相同的错误。遇到这个报错时，可以将密钥文件存放在非 `root` 目录的路径下。
 
 ### PD 能容忍的时间同步误差是多少？
 
@@ -203,7 +209,7 @@ TiClient Region Error 该指标描述的是在 TiDB-server 作为客户端通过
 
 ### TiDB 同时支持的最大并发连接数？
 
-默认情况下，每个 TiDB 服务器的最大连接数没有限制。如有需要，可以在 `config.toml` 文件中设置 `max-server-connections` 来限制最大连接数。如果并发量过大导致响应时间增加，建议通过添加 TiDB 节点进行扩容。
+默认情况下，每个 TiDB 服务器的最大连接数没有限制。如有需要，可以在 `config.toml` 文件中设置 `instance.max_connections`（或者系统变量 `max_connections`）来限制最大连接数。如果并发量过大导致响应时间增加，建议通过添加 TiDB 节点进行扩容。
 
 ### 如何查看某张表创建的时间？
 
@@ -261,6 +267,12 @@ GROUP BY db_name , table_name;
 ## TiKV 管理
 
 本小节介绍 TiKV 管理中的常见问题、原因及解决方法。
+
+### 如何为合规性或多租户应用程序指定数据位置？
+
+可以使用[放置规则 (Placement Rules)](/placement-rules-in-sql.md) 为合规性或多租户应用程序指定数据位置。
+
+Placement Rules in SQL 用于控制任何连续数据范围的属性，例如副本数量、Raft 角色、放置位置以及规则生效的键范围。
 
 ### TiKV 集群副本建议配置数量是多少，是不是最小高可用配置（3个）最好？
 
@@ -322,7 +334,7 @@ Region 不是前期划分好的，但确实有 Region 分裂机制。当 Region 
 
 ### TiKV 是否有类似 MySQL 的 `innodb_flush_log_trx_commit` 参数，来保证提交数据不丢失？
 
-是的。TiKV 单机的存储引擎目前使用两个 RocksDB 实例，其中一个存储 raft-log。TiKV 有个 sync-log 参数，在 ture 的情况下，每次提交都会强制刷盘到 raft-log，如果发生 crash 后，通过 raft-log 进行 KV 数据的恢复。
+是的。TiKV 单机的存储引擎目前使用两个 RocksDB 实例，其中一个存储 raft-log。TiKV 有个 sync-log 参数，在 true 的情况下，每次提交都会强制刷盘到 raft-log，如果发生 crash 后，通过 raft-log 进行 KV 数据的恢复。
 
 ### 对 WAL 存储有什么推荐的硬件配置，例如 SSD，RAID 级别，RAID 卡 cache 策略，NUMA 设置，文件系统选择，操作系统的 IO 调度策略等？
 
@@ -363,7 +375,10 @@ TiKV 的内存占用主要来自于 RocksDB 的 block-cache，默认为系统总
 
 ### TiDB 数据和 RawKV 数据可存储于同一个 TiKV 集群里吗？
 
-不可以。TiDB 数据（或使用其他事务 API 生成的数据）依赖于一种特殊的键值格式，和 RawKV API 数据（或其他基于 RawKV 的服务生成的数据）并不兼容。
+这取决于你使用的 TiDB 版本以及是否启用了 TiKV API V2 （即 [`storage.api-version = 2`](/tikv-configuration-file.md#api-version-从-v610-版本开始引入)）。
+
+- 如果你使用的是 v6.1.0 或之后版本的 TiDB，并且启用了 TiKV API V2，那么 TiDB 数据和 RawKV 数据可以共存于同一个 TiKV 集群。
+- 否则，不可以将 TiDB 数据和 RawKV 数据存储于同一个 TiKV 集群中，因为 TiDB 数据（或使用事务 API 创建的数据）的 key 的格式与使用 RawKV API 创建的数据（或来自其他基于 RawKV 的服务生成的数据）不兼容。
 
 ## TiDB 测试
 
@@ -392,8 +407,12 @@ TiDB 设计的目标就是针对 MySQL 单台容量限制而被迫做的分库�
 
 ### TiDB 主要备份方式？
 
-目前，数据量大时（大于 1 TB）推荐使用 [BR](/br/backup-and-restore-overview.md) 进行备份。其他场景推荐使用 [Dumpling](/dumpling-overview.md) 进行备份。
+目前，数据量大时（大于 1 TB）推荐使用 [Backup & Restore (BR)](/br/backup-and-restore-overview.md) 进行备份。其他场景推荐使用 [Dumpling](/dumpling-overview.md) 进行备份。
 
 尽管 TiDB 也支持使用 MySQL 官方工具 `mysqldump` 进行数据备份和恢复，但其性能低于 [Dumpling](/dumpling-overview.md)，并且 `mysqldump` 备份和恢复大量数据的耗费更长。
 
-其他 BR 相关问题，可以参考 [BR FAQ](/br/backup-and-restore-faq.md)。
+其他备份恢复相关问题，可以参考[备份与恢复常见问题](/faq/backup-and-restore-faq.md)。
+
+### 备份和恢复的速度如何？
+
+使用 [BR](/br/backup-and-restore-overview.md) 进行备份和恢复时，备份速度大约为每个 TiKV 实例 40 MB/s，恢复速度大约为每个 TiKV 实例 100 MB/s。

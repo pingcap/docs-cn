@@ -18,11 +18,11 @@ summary: 本文介绍如何快速上手体验 TiDB 的 HTAP 功能。
 - HTAP 存储引擎：行存 (Row-store) 与列存 (columnar-store) 同时存在，自动同步，保持强一致性。行存为在线事务处理 OLTP 提供优化，列存则为在线分析处理 OLAP 提供性能优化。
 - HTAP 数据一致性：作为一个分布式事务型的键值数据库，TiKV 提供了满足 ACID 约束的分布式事务接口，并通过 [Raft](https://raft.github.io/raft.pdf) 协议保证了多副本数据一致性以及高可用。TiFlash 通过 Multi-Raft Learner 协议实时从 TiKV 复制数据，确保与 TiKV 之间的数据强一致。
 - HTAP 数据隔离性：TiKV、TiFlash 可按需部署在不同的机器，解决 HTAP 资源隔离的问题。
-- MPP 计算引擎：从 v5.0 版本起，TiFlash 引入了分布式计算框架 [MPP](/tiflash/use-tiflash.md#使用-mpp-模式)，允许节点之间的数据交换并提供高性能、高吞吐的 SQL 算法，可以大幅度缩短分析查询的执行时间。
+- MPP 计算引擎：从 v5.0 版本起，TiFlash 引入了分布式计算框架 [MPP](/tiflash/use-tiflash-mpp-mode.md)，允许节点之间的数据交换并提供高性能、高吞吐的 SQL 算法，可以大幅度缩短分析查询的执行时间。
 
 ## 体验步骤
 
-本文的步骤以 [TPC-H](http://www.tpc.org/tpch/) 数据集为例，通过其中一个查询场景来体验 TiDB HTAP 的便捷性和高性能。TPC-H 是业界较为流行的决策支持（Desision Support）业务 Benchmark。它包含大数据量下，一个业务决策分析系统所需要响应的不同类型高复杂度的即席查询。如果需要体验 TPC-H 完整的 22 条 SQL，可以访问 [tidb-bench 仓库](https://github.com/pingcap/tidb-bench/tree/master/tpch/queries) 或者阅读 TPC-H 官网说明了解如何生成查询语句以及数据。
+本文的步骤以 [TPC-H](http://www.tpc.org/tpch/) 数据集为例，通过其中一个查询场景来体验 TiDB HTAP 的便捷性和高性能。TPC-H 是业界较为流行的决策支持（Decision Support）业务 Benchmark。它包含大数据量下，一个业务决策分析系统所需要响应的不同类型高复杂度的即席查询。如果需要体验 TPC-H 完整的 22 条 SQL，可以访问 [tidb-bench 仓库](https://github.com/pingcap/tidb-bench/tree/master/tpch/queries) 或者阅读 TPC-H 官网说明了解如何生成查询语句以及数据。
 
 ### 第 1 步：部署试用环境
 
@@ -36,7 +36,7 @@ tiup playground
 
 > **注意：**
 >
-> `tiup playground` 命令仅适用于快速上手体验，不适用于生产环境。
+> `tiup playground` 命令仅适用于快速上手体验，不适用于生产环境，也不适用于全面的功能测试和稳定性测试。
 
 ### 第 2 步：准备试用数据
 
@@ -88,7 +88,7 @@ tiup playground
     | test.lineitem |        6001215 | 0.7756G   | 0.0894G    | 0.8651G |
     +---------------+----------------+-----------+------------+---------+
     8 rows in set (0.06 sec)
-     ```
+    ```
 
     这是一个商业订购系统的数据库。其中，`test.nation` 表是国家信息、`test.region` 表是地区信息、`test.part` 表是零件信息、`test.supplier` 表是供货商信息、`test.partsupp` 表是供货商的零件信息、`test.customer` 表是消费者信息、`test.orders` 表是订单信息、`test.lineitem` 表是在线商品的信息。
 
@@ -99,6 +99,7 @@ tiup playground
 {{< copyable "sql" >}}
 
 ```sql
+USE test;
 SELECT
     l_orderkey,
     SUM(
@@ -152,8 +153,8 @@ SELECT * FROM information_schema.tiflash_replica WHERE TABLE_SCHEMA = 'test' and
 
 以上查询结果中：
 
-- `AVAILABLE` 字段表示该表的 TiFlash 副本是否可用。1 代表可用，0 代表不可用。副本状态变为可用之后就不再改变，如果通过 DDL 命令修改副本数则会重新计算同步进度。
-- `PROGRESS` 字段代表同步进度，在 0.0~1.0 之间，1 代表至少 1 个副本已经完成同步。
+- `AVAILABLE` 字段表示该表的 TiFlash 副本是否可用。1 代表可用，0 代表不可用。副本状态变为可用之后就不再改变。
+- `PROGRESS` 字段代表同步进度，在 0.0~1.0 之间，1 代表 TiFlash 副本已经完成同步。
 
 ### 第 5 步：使用 HTAP 更快地分析数据
 
@@ -164,7 +165,8 @@ SELECT * FROM information_schema.tiflash_replica WHERE TABLE_SCHEMA = 'test' and
 {{< copyable "sql" >}}
 
 ```sql
-explain analyze SELECT
+USE test;
+EXPLAIN ANALYZE SELECT
     l_orderkey,
     SUM(
         l_extendedprice * (1 - l_discount)
@@ -193,7 +195,7 @@ limit 10;
 
 如果结果中出现 ExchangeSender 和 ExchangeReceiver 算子，表明 MPP 已生效。
 
-此外，你也可以指定整个查询的各个计算部分都只使用 TiFlash 引擎，详情请参阅[使用 TiDB 读取 TiFlash](/tiflash/use-tiflash.md#使用-tidb-读取-tiflash)。
+此外，你也可以指定整个查询的各个计算部分都只使用 TiFlash 引擎，详情请参阅[使用 TiDB 读取 TiFlash](/tiflash/use-tidb-to-read-tiflash.md)。
 
 你可以对比两次的查询结果和查询性能。
 
@@ -201,4 +203,4 @@ limit 10;
 
 - [TiDB HTAP 形态架构](/tiflash/tiflash-overview.md#整体架构)
 - [深入探索 HTAP](/explore-htap.md)
-- [使用 TiFlash](/tiflash/use-tiflash.md)
+- [使用 TiFlash](/tiflash/tiflash-overview.md#使用-tiflash)

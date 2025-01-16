@@ -10,8 +10,6 @@ aliases: ['/zh/tidb/dev/use-temporary-tables']
 
 假设希望知道 [Bookshop](/develop/dev-guide-bookshop-schema-design.md) 应用当中最年长的作家们的一些情况，可能需要编写多个查询，而这些查询都需要使用到这个最年长作家列表。可以通过下面的 SQL 语句从 `authors` 表当中找出最年长的前 50 位作家作为研究对象。
 
-{{< copyable "sql" >}}
-
 ```sql
 SELECT a.id, a.name, (IFNULL(a.death_year, YEAR(NOW())) - a.birth_year) AS age
 FROM authors a
@@ -55,12 +53,10 @@ TiDB 的临时表分为本地临时表和全局临时表：
 
 在创建本地临时表前，你需要给当前数据库用户添加上 `CREATE TEMPORARY TABLES` 权限。
 
-<SimpleTab>
-<div label="SQL" href="local-sql">
+<SimpleTab groupId="language">
+<div label="SQL" value="sql">
 
-通过 `CREATE TEMPORARY TABLE <table_name>` 语句创建临时表，默认临时表的类型为本地临时表，它只能被当前会话所访问。
-
-{{< copyable "sql" >}}
+在 SQL 中，通过 `CREATE TEMPORARY TABLE <table_name>` 语句创建临时表，默认临时表的类型为本地临时表，它只能被当前会话所访问。
 
 ```sql
 CREATE TEMPORARY TABLE top_50_eldest_authors (
@@ -72,8 +68,6 @@ CREATE TEMPORARY TABLE top_50_eldest_authors (
 ```
 
 在创建完临时表后，你可以通过 `INSERT INTO table_name SELECT ...` 语句，将上述查询得到的结果导入到刚刚创建的临时表当中。
-
-{{< copyable "sql" >}}
 
 ```sql
 INSERT INTO top_50_eldest_authors
@@ -91,9 +85,9 @@ Records: 50  Duplicates: 0  Warnings: 0
 ```
 
 </div>
-<div label="Java" href="local-java">
+<div label="Java" value="java">
 
-{{< copyable "" >}}
+在 Java 中创建本地临时表的示例如下：
 
 ```java
 public List<Author> getTop50EldestAuthorInfo() throws SQLException {
@@ -137,12 +131,10 @@ public List<Author> getTop50EldestAuthorInfo() throws SQLException {
 
 ### 创建全局临时表
 
-<SimpleTab>
-<div label="SQL" href="global-sql">
+<SimpleTab groupId="language">
+<div label="SQL" value="sql">
 
-你可以通过加上 `GLOBAL` 关键字来声明你所创建的是全局临时表。创建全局临时表时必须在末尾 `ON COMMIT DELETE ROWS` 修饰，这表明该全局数据表的所有数据行将在事务结束后被删除。
-
-{{< copyable "sql" >}}
+在 SQL 中，你可以通过加上 `GLOBAL` 关键字来声明你所创建的是全局临时表。创建全局临时表时必须在末尾 `ON COMMIT DELETE ROWS` 修饰，这表明该全局数据表的所有数据行将在事务结束后被删除。
 
 ```sql
 CREATE GLOBAL TEMPORARY TABLE IF NOT EXISTS top_50_eldest_authors_global (
@@ -156,11 +148,9 @@ CREATE GLOBAL TEMPORARY TABLE IF NOT EXISTS top_50_eldest_authors_global (
 在对全局临时表导入数据时，你需要特别注意，你必须通过 `BEGIN` 显式声明事务的开始。否则导入的数据在 `INSERT INTO` 语句执行后就清除掉，因为 Auto Commit 模式下，`INSERT INTO` 语句的执行结束，事务会自动被提交，事务结束，全局临时表的数据便被清空了。
 
 </div>
-<div label="Java" href="global-java">
+<div label="Java" value="java">
 
-在使用全局临时表时，你需要将 Auto Commit 模式先关闭。在 Java 语言当中，你可以通过 `conn.setAutoCommit(false);` 语句来实现，当你使用完成后，可以通过 `conn.commit();` 显式地提交事务。事务在提交或取消后，在事务过程中对全局临时表添加的数据将会被清除。
-
-{{< copyable "" >}}
+在 Java 中使用全局临时表时，你需要将 Auto Commit 模式先关闭。在 Java 语言当中，你可以通过 `conn.setAutoCommit(false);` 语句来实现，当你使用完成后，可以通过 `conn.commit();` 显式地提交事务。事务在提交或取消后，在事务过程中对全局临时表添加的数据将会被清除。
 
 ```java
 public List<Author> getTop50EldestAuthorInfo() throws SQLException {
@@ -230,15 +220,11 @@ public List<Author> getTop50EldestAuthorInfo() throws SQLException {
 
 在临时表准备就绪之后，你便可以像对一般数据表一样对临时表进行查询：
 
-{{< copyable "sql" >}}
-
 ```sql
 SELECT * FROM top_50_eldest_authors;
 ```
 
 你可以通过[表连接](/develop/dev-guide-join-tables.md)将临时表中的数据引用到你的查询当中：
-
-{{< copyable "sql" >}}
 
 ```sql
 EXPLAIN SELECT ANY_VALUE(ta.id) AS author_id, ANY_VALUE(ta.age), ANY_VALUE(ta.name), COUNT(*) AS books
@@ -255,15 +241,11 @@ GROUP BY ta.id;
 
 你可以通过 `DROP TABLE` 或 `DROP TEMPORARY TABLE` 语句手动删除**本地临时表**。例如：
 
-{{< copyable "sql" >}}
-
 ```sql
 DROP TEMPORARY TABLE top_50_eldest_authors;
 ```
 
 你还可以通过 `DROP TABLE` 或 `DROP GLOBAL TEMPORARY TABLE` 语句手动删除**全局临时表**。例如：
-
-{{< copyable "sql" >}}
 
 ```sql
 DROP GLOBAL TEMPORARY TABLE top_50_eldest_authors_global;

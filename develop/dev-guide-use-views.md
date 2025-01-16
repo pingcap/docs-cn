@@ -19,8 +19,6 @@ TiDB 支持视图，视图是一张虚拟表，该虚拟表的结构由创建视
 
 在 TiDB 当中，可以通过 `CREATE VIEW` 语句来将某个较为复杂的查询定义为视图，其语法如下：
 
-{{< copyable "sql" >}}
-
 ```sql
 CREATE VIEW view_name AS query;
 ```
@@ -28,8 +26,6 @@ CREATE VIEW view_name AS query;
 请注意，创建的视图名称不能与已有的视图或表重名。
 
 例如，在[多表连接查询](/develop/dev-guide-join-tables.md) 章节当中，通过 `JOIN` 语句连接 `books` 表和 `ratings` 表查询到了带有平均评分的书籍列表。为了方便后续查询，可以将该查询语句定义为一个视图，SQL 语句如下所示：
-
-{{< copyable "sql" >}}
 
 ```sql
 CREATE VIEW book_with_ratings AS
@@ -42,8 +38,6 @@ GROUP BY b.id;
 ## 查询视图
 
 视图创建完成后，便可以使用 `SELECT` 语句像查询一般数据表一样查询视图。
-
-{{< copyable "sql" >}}
 
 ```sql
 SELECT * FROM book_with_ratings LIMIT 10;
@@ -58,8 +52,6 @@ TiDB 在执行查询视图语句时，会将视图展开成创建视图时定义
 - 先 `DROP VIEW view_name;` 语句删除旧视图，再通过 `CREATE VIEW view_name AS query;` 语句创建新视图的方式来更新视图。
 - 使用 `CREATE OR REPLACE VIEW view_name AS query;` 语句覆盖已存在的同名视图。
 
-{{< copyable "sql" >}}
-
 ```sql
 CREATE OR REPLACE VIEW book_with_ratings AS
 SELECT b.id AS book_id, ANY_VALUE(b.title), ANY_VALUE(b.published_at) AS book_title, AVG(r.score) AS average_score
@@ -71,8 +63,6 @@ GROUP BY b.id;
 ## 获取视图相关信息
 
 ### 使用 `SHOW CREATE TABLE|VIEW view_name` 语句
-
-{{< copyable "sql" >}}
 
 ```sql
 SHOW CREATE VIEW book_with_ratings\G
@@ -90,8 +80,6 @@ collation_connection: utf8mb4_general_ci
 ```
 
 ### 查询 `INFORMATION_SCHEMA.VIEWS` 表
-
-{{< copyable "sql" >}}
 
 ```sql
 SELECT * FROM information_schema.views WHERE TABLE_NAME = 'book_with_ratings'\G
@@ -117,8 +105,6 @@ COLLATION_CONNECTION: utf8mb4_general_ci
 ## 删除视图
 
 通过 `DROP VIEW view_name;` 语句可以删除已经创建的视图。
-
-{{< copyable "sql" >}}
 
 ```sql
 DROP VIEW book_with_ratings;

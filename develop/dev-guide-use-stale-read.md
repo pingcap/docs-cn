@@ -16,8 +16,6 @@ TiDB 提供了语句级别、事务级别、会话级别三种级别的 Stale Re
 
 在 [Bookshop](/develop/dev-guide-bookshop-schema-design.md) 应用程序当中，你可以通过下面的 SQL 语句查询出最新出版的书籍以及它们的价格：
 
-{{< copyable "sql" >}}
-
 ```sql
 SELECT id, title, type, price FROM books ORDER BY published_at DESC LIMIT 5;
 ```
@@ -40,8 +38,6 @@ SELECT id, title, type, price FROM books ORDER BY published_at DESC LIMIT 5;
 看到此时（2022-04-20 15:20:00）的列表中，**The Story of Droolius Caesar** 这本小说的价格为 100.0 元。
 
 于此同时，卖家发现这本书很受欢迎，于是他通过下面的 SQL 语句将这本书的价格高到了 150.0 元。
-
-{{< copyable "sql" >}}
 
 ```sql
 UPDATE books SET price = 150 WHERE id = 3181093216;
@@ -75,12 +71,10 @@ Rows matched: 1  Changed: 1  Warnings: 0
 
 ## 语句级别
 
-<SimpleTab>
-<div label="SQL" href="statement-sql">
+<SimpleTab groupId="language">
+<div label="SQL" value="sql">
 
-你可以在上述价格的查询语句当中添加上 `AS OF TIMESTAMP <datetime>` 语句查看到固定时间点之前这本书的价格。
-
-{{< copyable "sql" >}}
+在 SQL 中，你可以在上述价格的查询语句当中添加上 `AS OF TIMESTAMP <datetime>` 语句查看到固定时间点之前这本书的价格。
 
 ```sql
 SELECT id, title, type, price FROM books AS OF TIMESTAMP '2022-04-20 15:20:00' ORDER BY published_at DESC LIMIT 5;
@@ -107,7 +101,7 @@ SELECT id, title, type, price FROM books AS OF TIMESTAMP '2022-04-20 15:20:00' O
 - `AS OF TIMESTAMP TIDB_BOUNDED_STALENESS('2016-10-08 16:45:26', '2016-10-08 16:45:29')` 表示读取在 2016 年 10 月 8 日 16 点 45 分 26 秒到 29 秒的时间范围内尽可能新的数据。
 - `AS OF TIMESTAMP TIDB_BOUNDED_STALENESS(NOW() - INTERVAL 20 SECOND, NOW())` 表示读取 20 秒前到现在的时间范围内尽可能新的数据。
 
-需要注意的是，设定的时间戳或时间戳的范围不能过早或晚于当前时间。
+需要注意的是，设定的时间戳或时间戳的范围不能过早或晚于当前时间。此外 `NOW()` 默认精确到秒，当精度要求较高时，需要添加参数，例如 `NOW(3)` 精确到毫秒。详情请参考 [MySQL 文档](https://dev.mysql.com/doc/refman/8.0/en/date-and-time-functions.html#function_now)。
 
 过期的数据在 TiDB 当中会由[垃圾回收器](/garbage-collection-overview.md)进行回收，数据在被清除之前会被保留一小段时间，这段时间被称为 [GC Life Time (默认 10 分钟)](/system-variables.md#tidb_gc_life_time-从-v50-版本开始引入)。每次进行 GC 时，将以当前时间减去该时间周期的值作为 **GC Safe Point**。如果尝试读取 GC Safe Point 之前数据，TiDB 会报如下错误：
 
@@ -122,9 +116,9 @@ ERROR 9006 (HY000): cannot set read timestamp to a future time.
 ```
 
 </div>
-<div label="Java" href="statement-java">
+<div label="Java" value="java">
 
-{{< copyable "" >}}
+在 Java 中的示例如下：
 
 ```java
 public class BookDAO {
@@ -194,8 +188,6 @@ public class BookDAO {
 }
 ```
 
-{{< copyable "" >}}
-
 ```java
 List<Book> top5LatestBooks = bookDAO.getTop5LatestBooks();
 
@@ -237,20 +229,16 @@ WARN: GC life time is shorter than transaction duration.
 
 通过 `START TRANSACTION READ ONLY AS OF TIMESTAMP` 语句，你可以开启一个基于历史时间的只读事务，该事务基于所提供的历史时间来读取历史数据。
 
-<SimpleTab>
-<div label="SQL" href="txn-sql">
+<SimpleTab groupId="language">
+<div label="SQL" value="sql">
 
-例如：
-
-{{< copyable "sql" >}}
+在 SQL 中的示例如下：
 
 ```sql
 START TRANSACTION READ ONLY AS OF TIMESTAMP NOW() - INTERVAL 5 SECOND;
 ```
 
 尝试通过 SQL 查询最新书籍的价格，发现 **The Story of Droolius Caesar** 这本书的价格还是更新之前的价格 100.0 元。
-
-{{< copyable "sql" >}}
 
 ```sql
 SELECT id, title, type, price FROM books ORDER BY published_at DESC LIMIT 5;
@@ -287,11 +275,9 @@ SELECT id, title, type, price FROM books ORDER BY published_at DESC LIMIT 5;
 ```
 
 </div>
-<div label="Java" href="txn-java">
+<div label="Java" value="java">
 
-可以先定义一个事务的工具类，将开启事务级别 Stale Read 的命令封装成工具方法。
-
-{{< copyable "" >}}
+在 Java 中，可以先定义一个事务的工具类，将开启事务级别 Stale Read 的命令封装成工具方法。
 
 ```java
 public static class StaleReadHelper {
@@ -309,8 +295,6 @@ public static class StaleReadHelper {
 ```
 
 然后在 `BookDAO` 类当中定义一个通过事务开启 Stale Read 功能的方法，在方法内查询最新的书籍列表，但是不再在查询语句中添加 `AS OF TIMESTAMP`。
-
-{{< copyable "" >}}
 
 ```java
 public class BookDAO {
@@ -352,8 +336,6 @@ public class BookDAO {
 }
 ```
 
-{{< copyable "" >}}
-
 ```java
 List<Book> top5LatestBooks = bookDAO.getTop5LatestBooks();
 
@@ -390,23 +372,19 @@ The latest book price (after the transaction commit): 150
 
 通过 `SET TRANSACTION READ ONLY AS OF TIMESTAMP` 语句，你可以将当前事务或下一个事务设置为基于指定历史时间的只读事务。该事务将会基于所提供的历史时间来读取历史数据。
 
-<SimpleTab>
-<div label="SQL" href="next-txn-sql">
+<SimpleTab groupId="language">
+<div label="SQL" value="sql">
 
 例如，可以通过下面这个 SQL 将已开启的事务切换到只读模式，通过 `AS OF TIMESTAMP` 语句开启能够读取 5 秒前的历史数据 Stale Read 功能。
-
-{{< copyable "sql" >}}
 
 ```sql
 SET TRANSACTION READ ONLY AS OF TIMESTAMP NOW() - INTERVAL 5 SECOND;
 ```
 
 </div>
-<div label="Java" href="next-txn-java">
+<div label="Java" value="java">
 
 可以先定义一个事务的工具类，将开启事务级别 Stale Read 的命令封装成工具方法。
-
-{{< copyable "" >}}
 
 ```java
 public static class TxnHelper {
@@ -423,8 +401,6 @@ public static class TxnHelper {
 ```
 
 然后在 `BookDAO` 类当中定义一个通过事务开启 Stale Read 功能的方法，在方法内查询最新的书籍列表，但是不再在查询语句中添加 `AS OF TIMESTAMP`。
-
-{{< copyable "" >}}
 
 ```java
 public class BookDAO {
@@ -474,31 +450,27 @@ public class BookDAO {
 
 为支持读取历史版本数据，TiDB 从 5.4 版本起引入了一个新的系统变量 `tidb_read_staleness`。系统变量 `tidb_read_staleness` 用于设置当前会话允许读取的历史数据范围，其数据类型为 int，作用域为 SESSION。
 
-<SimpleTab>
-<div label="SQL" href="session-sql">
+<SimpleTab groupId="language">
+<div label="SQL" value="sql">
 
 在会话中开启 Stale Read：
-
-{{< copyable "sql" >}}
 
 ```sql
 SET @@tidb_read_staleness="-5";
 ```
 
-比如，如果该变量的值设置为 -5，TiDB 会在 5 秒时间范围内，保证 TiKV 拥有对应历史版本数据的情况下，选择尽可能新的一个时间戳。
+比如，如果该变量的值设置为 -5，TiDB 会在 5 秒时间范围内，保证 TiKV 或者 TiFlash 拥有对应历史版本数据的情况下，选择尽可能新的一个时间戳。
 
 关闭会话当中的 Stale Read：
-
-{{< copyable "sql" >}}
 
 ```sql
 set @@tidb_read_staleness="";
 ```
 
 </div>
-<div label="Java" href="session-java">
+<div label="Java" value="java">
 
-{{< copyable "" >}}
+在 Java 中示例如下：
 
 ```java
 public static class StaleReadHelper{

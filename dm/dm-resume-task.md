@@ -1,10 +1,10 @@
 ---
-title: 恢复数据迁移任务
+title: 恢复 TiDB Data Migration 数据迁移任务
 summary: 了解 TiDB Data Migration 如何恢复数据迁移任务。
 aliases: ['/docs-cn/tidb-data-migration/dev/resume-task/']
 ---
 
-# 恢复数据迁移任务
+# 恢复 TiDB Data Migration 数据迁移任务
 
 `resume-task` 命令用于恢复处于 `Paused` 状态的数据迁移任务，通常用于在人为处理完造成迁移任务暂停的故障后手动恢复迁移任务。
 

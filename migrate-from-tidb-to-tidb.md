@@ -23,7 +23,7 @@ aliases: ['/zh/tidb/dev/incremental-replication-between-clusters/']
 
 1. 部署集群。
 
-    使用 tiup playground 快速部署上下游测试集群。更多部署信息，请参考 [tiup 官方文档](//tiup/tiup-cluster.md)。
+    使用 TiUP Playground 快速部署上下游测试集群。更多部署信息，请参考 [TiUP 官方文档](/tiup/tiup-cluster.md)。
 
     {{< copyable "shell-regular" >}}
 
@@ -46,11 +46,9 @@ aliases: ['/zh/tidb/dev/incremental-replication-between-clusters/']
     sysbench oltp_write_only --config-file=./tidb-config --tables=10 --table-size=10000 prepare
     ```
 
-    这里通过 sysbench 运行 oltp_write_only 脚本，其将在测试数据库中生成 10 张表 ，每张表包含 10000 行初始数据。tidb-config 的配置如下：
+    这里通过 sysbench 运行 oltp_write_only 脚本，其将在测试数据库中生成 10 张表，每张表包含 10000 行初始数据。tidb-config 的配置如下：
 
-    {{< copyable "shell-regular" >}}
-
-    ```shell
+    ```yaml
     mysql-host=172.16.6.122 # 这里需要替换为实际上游集群 ip
     mysql-port=4000
     mysql-user=root
@@ -75,7 +73,7 @@ aliases: ['/zh/tidb/dev/incremental-replication-between-clusters/']
 
 4. 准备外部存储。
 
-    在全量数据备份中，上下游集群均需访问备份文件，因此推荐使用[外部存储](/br/backup-and-restore-storages.md)存储备份文件，本文中通过 Minio 模拟兼容 S3 的存储服务：
+    在全量数据备份中，上下游集群均需访问备份文件，因此推荐使用[备份存储](/br/backup-and-restore-storages.md)存储备份文件，本文中通过 Minio 模拟兼容 S3 的存储服务：
 
     {{< copyable "shell-regular" >}}
 
@@ -94,10 +92,10 @@ aliases: ['/zh/tidb/dev/incremental-replication-between-clusters/']
 
     上述命令行启动了一个单节点的 minio server 模拟 S3 服务，其相关参数为：
 
-     - Endpoint: <http://${HOST_IP}:6060/>
-     - Access-key: minio
-     - Secret-access-key: miniostorage
-     - Bucket: backup
+    - Endpoint: <http://${HOST_IP}:6060/>
+    - Access-key: minio
+    - Secret-access-key: miniostorage
+    - Bucket: backup
 
     相应的访问链接为：
 
@@ -109,22 +107,35 @@ aliases: ['/zh/tidb/dev/incremental-replication-between-clusters/']
 
 ## 第 2 步：迁移全量数据
 
-搭建好测试环境后，可以使用 [BR](https://github.com/pingcap/br) 工具的备份和恢复功能迁移全量数据。BR 工具有多种[使用方式](/br/br-deployment.md#使用方式)，本文中使用 SQL 语句 [`BACKUP`](/sql-statements/sql-statement-backup.md) 和 [`RESTORE`](/sql-statements/sql-statement-restore.md) 进行备份恢复。
+搭建好测试环境后，可以使用 [BR](https://github.com/pingcap/tidb/tree/master/br) 工具的备份和恢复功能迁移全量数据。BR 工具有多种[使用方式](/br/br-use-overview.md#部署和使用-br)，本文中使用 SQL 语句 [`BACKUP`](/sql-statements/sql-statement-backup.md) 和 [`RESTORE`](/sql-statements/sql-statement-restore.md) 进行备份恢复。
 
 > **注意：**
 >
-> 上下游集群版本不一致时，应检查 BR 工具的[兼容性](/br/backup-and-restore-overview.md#使用前须知)。本文假设上下游集群版本相同。
+> - `BACKUP` 和 `RESTORE` 语句目前为实验特性，不建议在生产环境中使用。该功能可能会在未事先通知的情况下发生变化或删除。如果发现 bug，请在 GitHub 上提 [issue](https://github.com/pingcap/tidb/issues) 反馈。
+> - 在生产集群中，关闭 GC 机制和备份操作会一定程度上降低集群的读性能，建议在业务低峰期进行备份，并设置合适的 `RATE_LIMIT` 限制备份操作对线上业务的影响。
+> - 上下游集群版本不一致时，应检查 BR 工具的[兼容性](/br/backup-and-restore-overview.md#使用须知)。本文假设上下游集群版本相同。
 
 1. 关闭 GC。
 
     为了保证增量迁移过程中新写入的数据不丢失，在开始备份之前，需要关闭上游集群的垃圾回收 (GC) 机制，以确保系统不再清理历史数据。
 
-    {{< copyable "sql" >}}
+    执行如下命令关闭 GC：
 
     ```sql
     MySQL [test]> SET GLOBAL tidb_gc_enable=FALSE;
+    ```
+
+    ```
     Query OK, 0 rows affected (0.01 sec)
+    ```
+
+    查询 `tidb_gc_enable` 的取值，判断 GC 是否已关闭：
+
+    ```sql
     MySQL [test]> SELECT @@global.tidb_gc_enable;
+    ```
+
+    ```
     +-------------------------+：
     | @@global.tidb_gc_enable |
     +-------------------------+
@@ -135,16 +146,17 @@ aliases: ['/zh/tidb/dev/incremental-replication-between-clusters/']
 
     > **注意：**
     >
-    > 在生产集群中，关闭 GC 机制和备份操作会一定程度上降低集群的读性能，建议在业务低峰期进行备份，并设置合适的 RATE_LIMIT 限制备份操作对线上业务的影响。
+    > TiCDC 的 `gc-ttl` 默认为 24 小时。如果备份恢复耗时过长，默认的 `gc-ttl` 可能无法满足需求，从而导致后续的[增量同步任务](#第-3-步迁移增量数据)运行失败。为了避免这种情况，请在启动 TiCDC server 时根据实际需求调整 `gc-ttl` 的值。更多信息，请参考 [TiCDC 的 `gc-ttl` 是什么](/ticdc/ticdc-faq.md#ticdc-的-gc-ttl-是什么)。
 
 2. 备份数据。
 
     在上游集群中执行 BACKUP 语句备份数据：
 
-    {{< copyable "sql" >}}
-
     ```sql
     MySQL [(none)]> BACKUP DATABASE * TO 's3://backup?access-key=minio&secret-access-key=miniostorage&endpoint=http://${HOST_IP}:6060&force-path-style=true' RATE_LIMIT = 120 MB/SECOND;
+    ```
+
+    ```
     +---------------+----------+--------------------+---------------------+---------------------+
     | Destination   | Size     | BackupTS           | Queue Time          | Execution Time      |
     +---------------+----------+--------------------+---------------------+---------------------+
@@ -159,10 +171,11 @@ aliases: ['/zh/tidb/dev/incremental-replication-between-clusters/']
 
     在下游集群中执行 RESTORE 语句恢复数据：
 
-    {{< copyable "sql" >}}
-
     ```sql
     mysql> RESTORE DATABASE * FROM 's3://backup?access-key=minio&secret-access-key=miniostorage&endpoint=http://${HOST_IP}:6060&force-path-style=true';
+    ```
+
+    ```
     +--------------+-----------+--------------------+---------------------+---------------------+
     | Destination  | Size      | BackupTS           | Queue Time          | Execution Time      |
     +--------------+-----------+--------------------+---------------------+---------------------+
@@ -175,17 +188,13 @@ aliases: ['/zh/tidb/dev/incremental-replication-between-clusters/']
 
     通过 [sync-diff-inspector](/sync-diff-inspector/sync-diff-inspector-overview.md) 工具，可以验证上下游数据在某个时间点的一致性。从上述备份和恢复命令的输出可以看到，上游集群备份的时间点为 431434047157698561，下游集群完成数据恢复的时间点为 431434141450371074。
 
-    {{< copyable "shell-regular" >}}
-
     ```shell
     sync_diff_inspector -C ./config.yaml
     ```
 
-    关于 sync-diff-inspector 的配置方法，请参考[配置文件说明](/sync-diff-inspector/sync-diff-inspector-overview.md#配置文件说明)，在本文中，相应的配置为：
+    关于 sync-diff-inspector 的配置方法，请参考[配置文件说明](/sync-diff-inspector/sync-diff-inspector-overview.md#配置文件说明)，在本文中，相应的配置如下：
 
-    {{< copyable "shell-regular" >}}
-
-    ```shell
+    ```toml
     # Diff Configuration.
     ######################### Datasource config #########################
     [data-sources]
@@ -219,31 +228,40 @@ aliases: ['/zh/tidb/dev/incremental-replication-between-clusters/']
 
     在上游集群中，执行以下命令创建从上游到下游集群的同步链路：
 
-    {{< copyable "shell-regular" >}}
-
     ```shell
-    tiup cdc cli changefeed create --pd=http://172.16.6.122:2379 --sink-uri="mysql://root:@172.16.6.125:4000" --changefeed-id="upstream-to-downstream" --start-ts="431434047157698561"
+    tiup cdc cli changefeed create --server=http://172.16.6.122:8300 --sink-uri="mysql://root:@172.16.6.125:4000" --changefeed-id="upstream-to-downstream" --start-ts="431434047157698561"
     ```
 
     以上命令中：
 
-     - --pd：实际的上游集群的地址
-     - --sink-uri：同步任务下游的地址
-     - --changefeed-id：同步任务的 ID，格式需要符合正则表达式 ^[a-zA-Z0-9]+(\-[a-zA-Z0-9]+)*$
-     - --start-ts：TiCDC 同步的起点，需要设置为实际的备份时间点（也就是第二章「备份」小节提到的 BackupTS）
+    - `--server`：TiCDC 集群中任意一个节点的地址
+    - `--sink-uri`：同步任务下游的地址
+    - `--changefeed-id`：同步任务的 ID，格式需要符合正则表达式 ^[a-zA-Z0-9]+(\-[a-zA-Z0-9]+)*$
+    - `--start-ts`：TiCDC 同步的起点，需要设置为实际的备份时间点，也就是[第 2 步：迁移全量数据](/migrate-from-tidb-to-mysql.md#第-2-步迁移全量数据)中 “备份数据” 提到的 BackupTS
 
-    更多关于 changefeed 的配置，请参考[同步任务配置文件描述](/ticdc/manage-ticdc.md#同步任务配置文件描述)。
+    更多关于 changefeed 的配置，请参考 [TiCDC Changefeed 配置参数](/ticdc/ticdc-changefeed-config.md)。
 
 3. 重新开启 GC。
 
     TiCDC 可以保证 GC 只回收已经同步的历史数据。因此，创建完从上游到下游集群的 changefeed 之后，就可以执行如下命令恢复集群的垃圾回收功能。详情请参考 [TiCDC GC safepoint 的完整行为](/ticdc/ticdc-faq.md#ticdc-gc-safepoint-的完整行为是什么)。
 
-    {{< copyable "sql" >}}
+   执行如下命令打开 GC：
 
     ```sql
     MySQL [test]> SET GLOBAL tidb_gc_enable=TRUE;
+    ```
+
+    ```
     Query OK, 0 rows affected (0.01 sec)
+    ```
+
+    查询 `tidb_gc_enable` 的取值，判断 GC 是否已开启：
+
+    ```sql
     MySQL [test]> SELECT @@global.tidb_gc_enable;
+    ```
+
+    ```
     +-------------------------+
     | @@global.tidb_gc_enable |
     +-------------------------+
@@ -254,18 +272,19 @@ aliases: ['/zh/tidb/dev/incremental-replication-between-clusters/']
 
 ## 第 4 步：平滑切换业务
 
-通过 TiCDC 创建上下游的同步链路后，原集群的写入数据会以非常低的延迟同步到新集群，此时可以逐步将读流量迁移到新集群了。观察一段时间，如果新集群表现稳定，就可以将写流量接入新集群，主要分为三个步骤：
+通过 TiCDC 创建上下游的同步链路后，原集群的写入数据会以非常低的延迟同步到新集群，此时可以逐步将读流量迁移到新集群了。观察一段时间，如果新集群表现稳定，就可以将写流量接入新集群，步骤如下：
 
 1. 停止上游集群的写业务。确认上游数据已全部同步到下游后，停止上游到下游集群的 changefeed。
 
-    {{< copyable "shell-regular" >}}
-
     ```shell
     # 停止旧集群到新集群的 changefeed
-    tiup cdc cli changefeed pause -c "upstream-to-downstream" --pd=http://172.16.6.122:2379
+    tiup cdc cli changefeed pause -c "upstream-to-downstream" --server=http://172.16.6.122:8300
 
     # 查看 changefeed 状态
     tiup cdc cli changefeed list
+    ```
+
+    ```
     [
       {
         "id": "upstream-to-downstream",
@@ -281,10 +300,8 @@ aliases: ['/zh/tidb/dev/incremental-replication-between-clusters/']
 
 2. 创建下游到上游集群的 changefeed。由于此时上下游数据是一致的，且没有新数据写入，因此可以不指定 start-ts，默认为当前时间：
 
-    {{< copyable "shell-regular" >}}
-
     ```shell
-    tiup cdc cli changefeed create --pd=http://172.16.6.125:2379 --sink-uri="mysql://root:@172.16.6.122:4000" --changefeed-id="downstream -to-upstream"
+    tiup cdc cli changefeed create --server=http://172.16.6.125:8300 --sink-uri="mysql://root:@172.16.6.122:4000" --changefeed-id="downstream -to-upstream"
     ```
 
 3. 将写业务迁移到下游集群，观察一段时间后，等新集群表现稳定，便可以弃用原集群。

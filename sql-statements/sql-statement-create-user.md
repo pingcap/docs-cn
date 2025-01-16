@@ -12,13 +12,19 @@ aliases: ['/docs-cn/dev/sql-statements/sql-statement-create-user/','/docs-cn/dev
 
 ```ebnf+diagram
 CreateUserStmt ::=
-    'CREATE' 'USER' IfNotExists UserSpecList RequireClauseOpt ConnectionOptions PasswordOrLockOptions
+    'CREATE' 'USER' IfNotExists UserSpecList RequireClauseOpt ConnectionOptions PasswordOption LockOption AttributeOption ResourceGroupNameOption
 
 IfNotExists ::=
     ('IF' 'NOT' 'EXISTS')?
 
 UserSpecList ::=
     UserSpec ( ',' UserSpec )*
+
+RequireClauseOpt ::=
+    ( 'REQUIRE' 'NONE' | 'REQUIRE' 'SSL' | 'REQUIRE' 'X509' | 'REQUIRE' RequireList )?
+
+RequireList ::=
+    ( "ISSUER" stringLit | "SUBJECT" stringLit | "CIPHER" stringLit | "SAN" stringLit | "TOKEN_ISSUER" stringLit )*
 
 UserSpec ::=
     Username AuthOption
@@ -29,6 +35,23 @@ AuthOption ::=
 StringName ::=
     stringLit
 |   Identifier
+
+PasswordOption ::= ( 'PASSWORD' 'EXPIRE' ( 'DEFAULT' | 'NEVER' | 'INTERVAL' N 'DAY' )?
+| 'PASSWORD' 'HISTORY' ( 'DEFAULT' | N )
+| 'PASSWORD' 'REUSE' 'INTERVAL' ( 'DEFAULT' | N 'DAY' )
+| 'PASSWORD' 'REQUIRE' 'CURRENT' 'DEFAULT'
+| 'FAILED_LOGIN_ATTEMPTS' N
+| 'PASSWORD_LOCK_TIME' ( N | 'UNBOUNDED' ) )*
+
+LockOption ::= ( 'ACCOUNT' 'LOCK' | 'ACCOUNT' 'UNLOCK' )?
+
+AttributeOption ::= ( 'COMMENT' CommentString | 'ATTRIBUTE' AttributeString )?
+
+ResourceGroupNameOption::= ( 'RESOURCE' 'GROUP' Identifier)?
+
+RequireClauseOpt ::= ('REQUIRE' ('NONE' | 'SSL' | 'X509' | RequireListElement ('AND'? RequireListElement)*))?
+
+RequireListElement ::= 'ISSUER' Issuer | 'SUBJECT' Subject | 'CIPHER' Cipher | 'SAN' SAN | 'TOKEN_ISSUER' TokenIssuer
 ```
 
 ## 示例
@@ -62,7 +85,7 @@ Query OK, 1 row affected (0.02 sec)
 {{< copyable "sql" >}}
 
 ```sql
-CREATE USER 'newuser3'@'%' REQUIRE SSL IDENTIFIED BY 'newuserpassword';
+CREATE USER 'newuser3'@'%' IDENTIFIED BY 'newuserpassword' REQUIRE SSL;
 ```
 
 ```
@@ -74,20 +97,106 @@ Query OK, 1 row affected (0.02 sec)
 {{< copyable "sql" >}}
 
 ```sql
-CREATE USER 'newuser4'@'%' REQUIRE ISSUER '/C=US/ST=California/L=San Francisco/O=PingCAP' IDENTIFIED BY 'newuserpassword';
+CREATE USER 'newuser4'@'%' IDENTIFIED BY 'newuserpassword' REQUIRE ISSUER '/C=US/ST=California/L=San Francisco/O=PingCAP';
 ```
 
 ```
 Query OK, 1 row affected (0.02 sec)
 ```
 
+创建一个初始状态下被锁住的用户。
+
+{{< copyable "sql" >}}
+
+```sql
+CREATE USER 'newuser5'@'%' ACCOUNT LOCK;
+```
+
+```
+Query OK, 1 row affected (0.02 sec)
+```
+
+创建一个带注释的用户。
+
+```sql
+CREATE USER 'newuser6'@'%' COMMENT 'This user is created only for test';
+SELECT * FROM information_schema.user_attributes;
+```
+
+```
++-----------+------+---------------------------------------------------+
+| USER      | HOST | ATTRIBUTE                                         |
++-----------+------+---------------------------------------------------+
+| newuser6  | %    | {"comment": "This user is created only for test"} |
++-----------+------+---------------------------------------------------+
+1 rows in set (0.00 sec)
+```
+
+创建一个具有邮箱 (`email`) 属性的用户。
+
+```sql
+CREATE USER 'newuser7'@'%' ATTRIBUTE '{"email": "user@pingcap.com"}';
+SELECT * FROM information_schema.user_attributes;
+```
+
+```sql
++-----------+------+---------------------------------------------------+
+| USER      | HOST | ATTRIBUTE                                         |
++-----------+------+---------------------------------------------------+
+| newuser7  | %    | {"email": "user@pingcap.com"} |
++-----------+------+---------------------------------------------------+
+1 rows in set (0.00 sec)
+```
+
+创建一个禁止重复使用最近 5 次密码的用户。
+
+```sql
+CREATE USER 'newuser8'@'%' PASSWORD HISTORY 5;
+```
+
+```
+Query OK, 1 row affected (0.02 sec)
+```
+
+创建一个密码已经手动过期的用户。
+
+```sql
+CREATE USER 'newuser9'@'%' PASSWORD EXPIRE;
+```
+
+```
+Query OK, 1 row affected (0.02 sec)
+```
+
+创建一个使用资源组 `rg1` 的用户：
+
+```sql
+CREATE USER 'newuser7'@'%' RESOURCE GROUP rg1;
+SELECT USER, HOST, USER_ATTRIBUTES FROM MYSQL.USER WHERE USER='newuser7';
+```
+
+```sql
++-----------+------+---------------------------------------------------+
+| USER      | HOST | USER_ATTRIBUTES                                   |
++-----------+------+---------------------------------------------------+
+| newuser7  | %    | {"resource_group": "rg1"} |
++-----------+------+---------------------------------------------------+
+1 rows in set (0.00 sec)
+```
+
 ## MySQL 兼容性
 
-* TiDB 不支持 `WITH MAX_QUERIES_PER_HOUR`、`WITH MAX_UPDATES_PER_HOUR`、`WITH MAX_USER_CONNECTIONS` 等 `CREATE` 选项。
-* TiDB 不支持 `DEFAULT ROLE` 选项。
-* TiDB 不支持 `PASSWORD EXPIRE`、`PASSWORD HISTORY` 等有关密码限制的 `CREATE` 选项。
-* TiDB 不支持 `ACCOUNT LOCK` 和 `ACCOUNT UNLOCK` 选项。
-* 对于 TiDB 尚不支持的 `CREATE` 选项。这些选项可被解析，但会被忽略。
+TiDB 不支持以下 `CREATE USER` 选项。这些选项可被解析，但会被忽略。
+
+* `PASSWORD REQUIRE CURRENT DEFAULT`
+* `WITH MAX_QUERIES_PER_HOUR`
+* `WITH MAX_UPDATES_PER_HOUR`
+* `WITH MAX_USER_CONNECTIONS`
+
+TiDB 也不支持以下 `CREATE USER` 选项。这些选项无法被语法解析器解析。
+
+* `DEFAULT ROLE`
+* `PASSWORD REQUIRE CURRENT OPTIONAL`
 
 ## 另请参阅
 

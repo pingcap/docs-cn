@@ -1,57 +1,59 @@
 ---
-title: 两地三中心部署
-summary: 介绍两地三中心部署方式。
-aliases: ['/docs-cn/dev/three-data-centers-in-two-cities-deployment/']
+title: 双区域多 AZ 部署 TiDB
+summary: 介绍在两个区域多个可用区部署 TiDB 的方式。
 ---
 
-# 两地三中心部署
+# 双区域多 AZ 部署 TiDB
 
-本文档简要介绍两地三中心部署的架构模型及配置。
+本文档简要介绍双区域多可用区 (Availability Zone, AZ) 部署的架构模型及配置。
+
+本文中的区域指的是地理隔离的不同位置，AZ 指的是区域内部划分的相互独立的资源集合，本文描述的方案同样适用于在两个城市部署三个数据中心（两地三中心）的场景。
 
 ## 简介
 
-两地三中心架构，即生产数据中心、同城灾备中心、异地灾备中心的高可用容灾方案。在这种模式下，两个城市的三个数据中心互联互通，如果一个数据中心发生故障或灾难，其他数据中心可以正常运行并对关键业务或全部业务实现接管。相比同城多中心方案，两地三中心具有跨城级高可用能力，可以应对城市级自然灾害。
+双区域多 AZ 架构，即生产数据 AZ、同区域灾备 AZ、跨区域灾备 AZ 的高可用容灾方案。在这种模式下，两个区域的三个 AZ 互联互通，如果一个 AZ 发生故障或灾难，其他 AZ 可以正常运行并对关键业务或全部业务实现接管。相比同区域多 AZ 方案，双区域三 AZ 具有跨区域级高可用能力，可以应对区域级自然灾害。
 
-TiDB 分布式数据库通过 Raft 算法原生支持两地三中心架构的建设，并保证数据库集群数据的一致性和高可用性。而且因同城数据中心网络延迟相对较小，可以把业务流量同时派发到同城两个数据中心，并通过控制 Region Leader 和 PD Leader 分布实现同城数据中心共同负载业务流量的设计。
+TiDB 分布式数据库采用 Raft 算法，可以原生支持双区域三 AZ 架构，并保证集群数据的一致性和高可用。而且，同区域 AZ 网络延迟相对较小，可以把业务流量同时派发到同区域两个 AZ，并通过控制 Region Leader 和 PD Leader 分布实现同区域 AZ 共同负载业务流量。
 
 ## 架构
 
-本文以北京和西安为例，阐述 TiDB 分布式数据库两地三中心架构的部署模型。
+本文以北京和西安部署集群为例，阐述 TiDB 分布式数据库双区域三 AZ 架构的部署模型。
 
-本例中，北京有两个机房 IDC1 和 IDC2，异地西安一个机房 IDC3。北京同城两机房之间网络延迟低于 3 ms，北京与西安之间的网络使用 ISP 专线，延迟约 20 ms。
+假设北京有两个 AZ，AZ1 和 AZ2，西安有一个 AZ，AZ3。北京同区域两 AZ 之间网络延迟低于 3 ms，北京与西安之间的网络使用 ISP 专线，延迟约为 20 ms。
 
 下图为集群部署架构图，具体如下：
 
-- 集群采用两地三中心部署方式，分别为北京 IDC1，北京 IDC2，西安 IDC3；
-- 集群采用 5 副本模式，其中 IDC1 和 IDC2 分别放 2 个副本，IDC3 放 1 个副本；TiKV 按机柜打 Label，既每个机柜上有一份副本。
+- 集群采用双区域三 AZ 部署方式，分别为北京 AZ1，北京 AZ2，西安 AZ3。
+- 集群采用 5 副本模式，其中 AZ1 和 AZ2 分别放 2 份副本，AZ3 放 1 份副本；TiKV 按机柜设置 Label，即每个机柜上有 1 份副本。
 - 副本间通过 Raft 协议保证数据的一致性和高可用，对用户完全透明。
 
-![两地三中心集群架构图](/media/three-data-centers-in-two-cities-deployment-01.png)
+![双区域三 AZ 集群架构图](/media/three-data-centers-in-two-cities-deployment-01.png)
 
-该架构具备高可用能力，同时通过 PD 调度限制了 Region Leader 尽量只出现在同城的两个数据中心，这相比于三数据中心，即 Region Leader 分布不受限制的方案有以下优缺点：
+该架构具备高可用能力，同时通过 PD 调度保证 Region Leader 只出现在同区域的两个 AZ。相比于三 AZ，即 Region Leader 分布不受限制的方案，双区域三 AZ 方案有以下优缺点：
 
 - **优点**
 
-    - Region Leader 都在同城低延迟机房，数据写入速度更优。
-    - 两中心可同时对外提供服务，资源利用率更高。
-    - 可保证任一数据中心失效后，服务可用并且不发生数据丢失。
+    - Region Leader 都在同区域 AZ，延迟低，数据写入速度更优。
+    - 双 AZ 可同时对外提供服务，资源利用率更高。
+    - 任一 AZ 失效后，另一 AZ 接管服务，业务可用并且不发生数据丢失。
 
 - **缺点**
 
-    - 因为数据一致性是基于 Raft 算法实现，当同城两个数据中心同时失效时，因为异地灾备中心只剩下一份副本，不满足 Raft 算法大多数副本存活的要求。最终将导致集群暂时不可用，需要从一副本恢复集群，只会丢失少部分还没同步的热数据。这种情况出现的概率是比较小的。
-    - 由于使用到了网络专线，导致该架构下网络设施成本较高。
-    - 两地三中心需设置 5 副本，数据冗余度增加，增加空间成本。
+    - 因为数据一致性是基于 Raft 算法实现，当同区域两个 AZ 同时失效时，因为远程灾备 AZ 只剩下一份副本，不满足 Raft 算法大多数副本存活的要求。最终将导致集群暂时不可用，需要从一副本恢复集群，丢失少部分还没同步的热数据。这种情况出现概率较小。
+    - 由于使用了网络专线，该架构下网络设施成本较高。
+    - 双区域三 AZ 需设置 5 副本，数据冗余度增加，空间成本攀升。
 
 ### 详细示例
 
-北京、西安两地三中心配置详解：
+北京、西安双区域三 AZ 配置详解：
 
-![两地三中心配置详图](/media/three-data-centers-in-two-cities-deployment-02.png)
+![双区域三 AZ 配置详图](/media/three-data-centers-in-two-cities-deployment-02.png)
 
-- 如上图所示，北京有两个机房 IDC1 和 IDC2，机房 IDC1 中有三套机架 RAC1、RAC2、RAC3，机房 IDC2 有机架 RAC4、RAC5；西安机房 IDC3 有机架 RAC6。
-- 如上图中 RAC1 机架所示，TiDB、PD 服务部署在同一台服务器上，还有两台 TiKV 服务器；每台 TiKV 服务器部署 2 个 TiKV 实例 (tikv-server)，RAC2、RAC4、RAC5、RAC6 类似。
-- 机架 RAC3 上安放 TiDB Server 及中控 + 监控服务器。部署 TiDB Server，用于日常管理维护、备份使用。中控 + 监控服务器上部署 Prometheus、Grafana 以及恢复工具；
-- 另可增加备份服务器，其上部署 Drainer，Drainer 以输出 file 文件的方式将 binlog 数据保存到指定位置，实现增量备份的目的。
+如上图所示，北京有两个可用区 AZ1 和 AZ2，可用区 AZ1 有三套机架 rac1、rac2 和 rac3，可用区 AZ2 有两套机架 rac4 和 rac5；西安可用区 AZ3 有一套机架 rac6。
+
+AZ1 的 rac1 机架中，一台服务器部署了 TiDB 和 PD 服务，另外两台服务器部署了 TiKV 服务，其中，每台 TiKV 服务器部署了两个 TiKV 实例 (tikv-server)，rac2、rac4、rac5 和 rac6 类似。
+
+机架 rac3 上部署了 TiDB Server、中控及监控服务器。TiDB Server 用于日常管理维护和备份。中控和监控服务器上部署了 Prometheus、Grafana 以及恢复工具。
 
 ## 配置
 
@@ -73,7 +75,6 @@ server_configs:
     server.grpc-compression-type: gzip
   pd:
     replication.location-labels:  ["dc","zone","rack","host"]
-    schedule.tolerant-size-ratio: 20.0
 
 pd_servers:
   - host: 10.63.10.10
@@ -97,21 +98,21 @@ tidb_servers:
 tikv_servers:
   - host: 10.63.10.30
     config:
-      server.labels: { dc: "1", zone: "1", rack: "1", host: "30" }
+      server.labels: { az: "1", replication zone: "1", rack: "1", host: "30" }
   - host: 10.63.10.31
     config:
-      server.labels: { dc: "1", zone: "2", rack: "2", host: "31" }
+      server.labels: { az: "1", replication zone: "2", rack: "2", host: "31" }
   - host: 10.63.10.32
     config:
-      server.labels: { dc: "2", zone: "3", rack: "3", host: "32" }
+      server.labels: { az: "2", replication zone: "3", rack: "3", host: "32" }
   - host: 10.63.10.33
     config:
-      server.labels: { dc: "2", zone: "4", rack: "4", host: "33" }
+      server.labels: { az: "2", replication zone: "4", rack: "4", host: "33" }
   - host: 10.63.10.34
     config:
-      server.labels: { dc: "3", zone: "5", rack: "5", host: "34" }
-      raftstore.raft-min-election-timeout-ticks: 1000
-      raftstore.raft-max-election-timeout-ticks: 1200
+      server.labels: { az: "3", replication zone: "5", rack: "5", host: "34" }
+      raftstore.raft-min-election-timeout-ticks: 50
+      raftstore.raft-max-election-timeout-ticks: 60
 
 monitoring_servers:
   - host: 10.63.10.60
@@ -125,7 +126,7 @@ alertmanager_servers:
 
 ### Labels 设计
 
-在两地三中心部署方式下，对于 Labels 的设计需要充分考虑到系统的可用性和容灾能力，建议根据部署的物理结构来定义 DC、ZONE、RACK、HOST 四个等级。
+在双区域三 AZ 部署方式下，对于 Labels 的设计需要充分考虑到系统的可用性和容灾能力，建议根据部署的物理结构来定义 AZ、replication zone、rack 和 host 四个等级。
 
 ![Label 逻辑定义图](/media/three-data-centers-in-two-cities-deployment-03.png)
 
@@ -134,7 +135,7 @@ PD 设置中添加 TiKV label 的等级配置。
 ```
 server_configs:
   pd:
-    replication.location-labels:  ["dc","zone","rack","host"]
+    replication.location-labels:  ["az","replication zone","rack","host"]
 ```
 
 tikv_servers 设置基于 TiKV 真实物理部署位置的 Label 信息，方便 PD 进行全局管理和调度。
@@ -143,61 +144,59 @@ tikv_servers 设置基于 TiKV 真实物理部署位置的 Label 信息，方便
 tikv_servers:
   - host: 10.63.10.30
     config:
-      server.labels: { dc: "1", zone: "1", rack: "1", host: "30" }
+      server.labels: { az: "1", replication zone: "1", rack: "1", host: "30" }
   - host: 10.63.10.31
     config:
-      server.labels: { dc: "1", zone: "2", rack: "2", host: "31" }
+      server.labels: { az: "1", replication zone: "2", rack: "2", host: "31" }
   - host: 10.63.10.32
     config:
-      server.labels: { dc: "2", zone: "3", rack: "3", host: "32" }
+      server.labels: { az: "2", replication zone: "3", rack: "3", host: "32" }
   - host: 10.63.10.33
     config:
-      server.labels: { dc: "2", zone: "4", rack: "4", host: "33" }
+      server.labels: { az: "2", replication zone: "4", rack: "4", host: "33" }
   - host: 10.63.10.34
     config:
-      server.labels: { dc: "3", zone: "5", rack: "5", host: "34" }
+      server.labels: { az: "3", replication zone: "5", rack: "5", host: "34" }
 ```
 
 ### 参数配置优化
 
-在两地三中心的架构部署中，从性能优化的角度，除了常规参数配置外，还需要对集群中相关组件参数进行调整。
+在双区域三 AZ 的架构部署中，从性能优化的角度，除了常规参数配置外，还需要对集群中相关组件参数进行调整。
 
-- 启用 TiKV gRPC 消息压缩。由于涉及到集群中的数据在网络中传输，需要开启 gRPC 消息压缩，降低网络流量。
+- 启用 TiKV gRPC 消息压缩。由于需要在网络中传输集群数据，可开启 gRPC 消息压缩，降低网络流量。
 
     ```
     server.grpc-compression-type: gzip
     ```
 
-- 调整 PD balance 缓冲区大小，提高 PD 容忍度，因为 PD 会根据节点情况计算出各个对象的 score 作为调度的依据，当两个 store 的 leader 或 Region 的得分差距小于指定倍数的 Region size 时，PD 会认为此时 balance 达到均衡状态。
+- 优化跨区域 AZ3 的 TiKV 节点网络，修改 TiKV 的如下参数，拉长跨区域副本参与选举的时间，避免跨区域 TiKV 中的副本参与 Raft 选举。
 
     ```
-    schedule.tolerant-size-ratio: 20.0
+    raftstore.raft-min-election-timeout-ticks: 50
+    raftstore.raft-max-election-timeout-ticks: 60
     ```
 
-- 异地 DC3 TiKV 节点网络优化，单独修改异地 TiKV 此参数，拉长异地副本参与选举的时间，尽量避免异地 TiKV 中的副本参与 Raft 选举。
+> **注意:**
+>
+> 通过 `raftstore.raft-min-election-timeout-ticks` 和 `raftstore.raft-max-election-timeout-ticks` 为 TiKV 节点配置较大的 election timeout tick 可以大幅降低该节点上的 Region 成为 Leader 的概率。但在发生灾难的场景中，如果部分 TiKV 节点宕机，而其它存活的 TiKV 节点 Raft 日志落后，此时只有这个配置了较大的 election timeout tick 的 TiKV 节点上的 Region 能成为 Leader。由于此 TiKV 节点上的 Region 需要至少等待 `raftstore.raft-min-election-timeout-ticks` 设置的时间后才能发起选举，因此尽量避免将此配置值设置得过大，以免在这种场景下影响集群的可用性。
 
-    ```
-    raftstore.raft-min-election-timeout-ticks: 1000
-    raftstore.raft-max-election-timeout-ticks: 1200
-    ```
-
-- 调度设置。在集群启动后，通过 `tiup ctl pd` 工具进行调度策略修改。修改 TiKV Raft 副本数按照安装时规划好的副本数进行设置，在本例中为 5 副本。
+- 调度设置。在集群启动后，通过 `tiup ctl:v<CLUSTER_VERSION> pd` 工具进行调度策略修改。修改 TiKV Raft 副本数按照安装时规划好的副本数进行设置，在本例中为 5 副本。
 
     ```
     config set max-replicas 5
     ```
 
-- 禁止向异地机房调度 Raft Leader，当 Raft Leader 在异地数据中心时，会造成不必要的本地数据中心与异地数据中心间的网络消耗，同时由于网络带宽和延迟的影响，也会对 TiDB 的集群性能产生影响。需要禁用异地中心的 Raft leader 的调度。
+- 禁止向跨区域 AZ 调度 Raft Leader，当 Raft Leader 在跨区域 AZ 时，会造成不必要的本区域 AZ 与远程 AZ 间的网络消耗，同时，网络带宽和延迟也会对 TiDB 的集群性能产生影响。
 
     ```
     config set label-property reject-leader dc 3
     ```
-  
+
     > **注意：**
     >
     > TiDB 5.2 及以上版本默认不支持 `label-property` 配置。若要设置副本策略，请使用 [Placement Rules](/configure-placement-rules.md)。
 
-- 设置 PD 的优先级，为了避免出现异地数据中心的 PD 成为 Leader，可以将本地数据中心的 PD 优先级调高（数字越大，优先级越高），将异地的 PD 优先级调低。
+- 设置 PD 的优先级，为了避免出现跨区域 AZ 的 PD 成为 Leader，可以将本区域 AZ 的 PD 优先级调高（数字越大，优先级越高），将跨区域的 PD 优先级调低。在可用的 PD 节点中，优先级数值最大的节点会直接当选 leader。
 
     ```
     member leader_priority PD-10 5

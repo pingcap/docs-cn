@@ -1,5 +1,6 @@
 ---
 title: tiup cluster restart
+summary: tiup cluster restart 命令用于重启指定集群的所有或部分服务。重启过程中会有一段时间服务不可用。语法为 tiup cluster restart <cluster-name> [flags]。选项包括 -N, --node（strings，默认为 []，表示所有节点），-R, --role（strings，默认为 []，表示所有角色），-h, --help。输出为重启服务的日志。
 ---
 
 # tiup cluster restart

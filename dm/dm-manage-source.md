@@ -1,21 +1,25 @@
 ---
-title: 管理上游数据源
+title: 管理 TiDB Data Migration 上游数据源
 summary: 了解如何管理上游 MySQL 实例。
 aliases: ['/docs-cn/tidb-data-migration/dev/manage-source/']
 ---
 
-# 管理上游数据源配置
+# 管理 TiDB Data Migration 上游数据源
 
-本文介绍了如何使用 [dmctl](/dm/dmctl-introduction.md) 组件来管理数据源配置，包括如何加密数据库密码，数据源操作，查看数据源配置，改变数据源与 DM-worker 的绑定关系。
+[dmctl](/dm/dmctl-introduction.md) 是运维 TiDB Data Migration (DM) 集群的命令行工具。本文介绍了如何使用 dmctl 组件来管理数据源配置，包括如何加密数据库密码，数据源操作，查看数据源配置，改变数据源与 DM-worker 的绑定关系。
 
 ## 加密数据库密码
 
 在 DM 相关配置文件中，推荐使用经 dmctl 加密后的密码。对于同一个原始密码，每次加密后密码不同。
 
+> **注意：**
+>
+> 从 v8.0.0 开始，DM-master 必须配置 [`secret-key-path`](/dm/dm-master-configuration-file.md) 后才可使用 `dmctl encrypt` 命令。
+
 {{< copyable "shell-regular" >}}
 
 ```bash
-./dmctl -encrypt 'abc!@#123'
+./dmctl encrypt 'abc!@#123'
 ```
 
 ```
@@ -33,7 +37,7 @@ help operate-source
 ```
 
 ```
-`create`/`update`/`stop`/`show` upstream MySQL/MariaDB source.
+`create`/`stop`/`show` upstream MySQL/MariaDB source.
 
 Usage:
   dmctl operate-source <operate-type> [config-file ...] [--print-sample-config] [flags]
@@ -49,8 +53,6 @@ Global Flags:
 ### 参数解释
 
 + `create`：创建一个或多个上游的数据库源。创建多个数据源失败时，会尝试回滚到执行命令之前的状态
-
-+ `update`：更新一个上游的数据库源
 
 + `stop`：停止一个或多个上游的数据库源。停止多个数据源失败时，可能有部分数据源已成功停止
 

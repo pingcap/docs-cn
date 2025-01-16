@@ -1,57 +1,22 @@
 ---
-title: 安装部署 FAQ
+title: TiDB 安装部署常见问题
 summary: 介绍 TiDB 集群安装部署的常见问题、原因及解决方法。
 aliases: ['/docs-cn/dev/faq/deploy-and-maintain-faq/']
 ---
 
-# 安装部署 FAQ
+# TiDB 安装部署常见问题
 
 本文介绍 TiDB 集群安装部署的常见问题、原因及解决方法。
 
-## 环境准备 FAQ
+## 软硬件要求 FAQ
 
-操作系统版本要求如下表：
+### TiDB 支持哪些操作系统？
 
-| Linux 操作系统 | 版本 |
-| :--- | :--- |
-| Red Hat Enterprise Linux | 7.3 及以上的 7.x 版本 |
-| CentOS | 7.3 及以上的 7.x 版本 |
-| Oracle Enterprise Linux | 7.3 及以上的 7.x 版本 |
-| Amazon Linux | 2 |
-| Ubuntu LTS | 16.04 及以上的版本 |
+关于 TiDB 支持的操作系统，参见[操作系统及平台要求](/hardware-and-software-requirements.md#操作系统及平台要求)。
 
-### 为什么要在 CentOS 7 上部署 TiDB 集群？
+### TiDB 对开发、测试、生产环境的服务器硬件配置有什么要求？
 
-TiDB 作为一款开源分布式 NewSQL 数据库，可以很好的部署和运行在 Intel 架构服务器环境及主流虚拟化环境，并支持绝大多数的主流硬件网络，作为一款高性能数据库系统，TiDB 支持主流的 Linux 操作系统环境，具体可以参考 TiDB 的[官方部署要求](/hardware-and-software-requirements.md)。
-
-其中 TiDB 在 CentOS 7.3 的环境下进行大量的测试，同时也有很多这个操作系统的部署最佳实践，因此，我们推荐客户在部署 TiDB 的时候使用 CentOS 7.3+ 以上的 Linux 操作系统。
-
-## 硬件要求 FAQ
-
-TiDB 支持部署和运行在 Intel x86-64 架构的 64 位通用硬件服务器平台。对于开发、测试、及生产环境的服务器硬件配置有以下要求和建议：
-
-### 开发及测试环境
-
-| **组件** | **CPU** | **内存** | **本地存储** | **网络** | **实例数量(最低要求)** |
-| --- | --- | --- | --- | --- | --- |
-| TiDB | 8 核+ | 16 GB+ | SAS, 200 GB+ | 千兆网卡 | 1（可与 PD 同机器） |
-| PD | 4 核+ | 8 GB+ | SAS, 200 GB+ | 千兆网卡 | 1（可与 TiDB 同机器） |
-| TiKV | 8 核+ | 32 GB+ | SSD, 200 GB+ | 千兆网卡 | 3 |
-| TiFlash | 32 核 + | 64 GB+ | SSD, 200 GB+ | 千兆网卡 | 1 |
-| TiCDC | 8 核 + | 16 GB+ | SSD, 200 GB+ | 千兆网卡 | 1 |
-|   |   |   |   | 服务器总计 | 6 |
-
-### 生产环境
-
-| **组件** | **CPU** | **内存** | **硬盘类型** | **网络** | **实例数量(最低要求)** |
-| --- | --- | --- | --- | --- | --- |
-| TiDB | 16 核+ | 48 GB+ | SAS | 万兆网卡（2块最佳） | 2 |
-| PD | 8 核+ | 16 GB+ | SSD | 万兆网卡（2块最佳） | 3 |
-| TiKV | 16 核+ | 64 GB+ | SSD | 万兆网卡（2块最佳） | 3 |
-| TiFlash | 48 核+ | 128 GB+ | 至少一块 SSD | 万兆网卡（2 块最佳） | 2 |
-| TiCDC | 16 核+ | 64 GB+ | SSD | 万兆网卡（2 块最佳） | 2 |
-| 监控 | 8 核+ | 16 GB+ | SAS | 千兆网卡 | 1 |
-|   |   |   |   | 服务器总计 | 13 |
+TiDB 支持部署和运行在 Intel x86-64 架构的 64 位通用硬件服务器平台。对于开发、测试、生产环境的服务器硬件配置，参见[服务器配置要求](/hardware-and-software-requirements.md#服务器配置要求)。
 
 ### 两块网卡的目的是？万兆的目的是？
 
@@ -63,7 +28,7 @@ TiDB 支持部署和运行在 Intel x86-64 架构的 64 位通用硬件服务器
 
 ### TiDB 集群各个组件的配置推荐？
 
-- TiDB 需要 CPU 和内存比较好的机器，参考官网配置要求，如果后期需要开启 TiDB Binlog，根据业务量的评估和 GC 时间的要求，也需要本地磁盘大一点，不要求 SSD 磁盘；
+- TiDB 需要 CPU 和内存比较好的机器，参考官网配置要求；
 - PD 里面存了集群元信息，会有频繁的读写请求，对磁盘 I/O 要求相对比较高，磁盘太差会影响整个集群性能，推荐 SSD 磁盘，空间不用太大。另外集群 Region 数量越多对 CPU、内存的要求越高；
 - TiKV 对 CPU、内存、磁盘要求都比较高，一定要用 SSD 磁盘。
 
@@ -71,7 +36,7 @@ TiDB 支持部署和运行在 Intel x86-64 架构的 64 位通用硬件服务器
 
 ## 安装部署 FAQ
 
-如果用于生产环境，推荐使用 TiUP [使用 TiUP 部署](/production-deployment-using-tiup.md) TiDB 集群。
+如果用于生产环境，推荐[使用 TiUP 部署](/production-deployment-using-tiup.md) TiDB 集群。
 
 ### 为什么修改了 TiKV/PD 的 toml 配置文件，却没有生效？
 
@@ -99,25 +64,23 @@ TiDB 支持部署和运行在 Intel x86-64 架构的 64 位通用硬件服务器
 | tidb_version | TiDB 版本 |
 | deployment_method | 部署方式，默认为 binary，可选 docker |
 | process_supervision | 进程监管方式，默认为 systemd，可选 supervise |
-| timezone | 修改部署目标机器时区，默认为 Asia/Shanghai, 可调整，与set_timezone 变量结合使用 |
+| timezone | 修改部署目标机器时区，默认为 Asia/Shanghai，可调整，与 set_timezone 变量结合使用 |
 | set_timezone | 默认为 True，即修改部署目标机器时区，关闭可修改为 False |
 | enable_elk | 目前不支持，请忽略 |
 | enable_firewalld | 开启防火墙，默认不开启 |
 | enable_ntpd | 检测部署目标机器 NTP 服务，默认为 True，请勿关闭 |
 | machine_benchmark | 检测部署目标机器磁盘 IOPS，默认为 True，请勿关闭 |
 | set_hostname | 根据 IP 修改部署目标机器主机名，默认为 False |
-| enable_binlog | 是否部署 pump 并开启 binlog，默认为 False，依赖 Kafka 集群，参见 zookeeper_addrs 变量 |
-| zookeeper_addrs | binlog Kafka 集群的 zookeeper 地址 |
 | enable_slow_query_log | TiDB 慢查询日志记录到单独文件({{ deploy_dir }}/log/tidb_slow_query.log)，默认为 False，记录到 tidb 日志 |
 | deploy_without_tidb | KV 模式，不部署 TiDB 服务，仅部署 PD、TiKV 及监控服务，请将 inventory.ini 文件中 tidb_servers 主机组 IP 设置为空。 |
 
 ### 如何单独记录 TiDB 中的慢查询日志，如何定位慢查询 SQL？
 
-1. TiDB 中，对慢查询的定义在 TiDB 的配置文件中。`slow-threshold: 300`，这个参数是配置慢查询记录阈值的，单位是 ms。
+1. TiDB 中，对慢查询的定义在 TiDB 的配置文件中。`tidb_slow_log_threshold: 300`，这个参数是配置慢查询记录阈值的，单位是 ms。
 
 2. 如果出现了慢查询，可以从 Grafana 监控定位到出现慢查询的 tidb-server 以及时间点，然后在对应节点查找日志中记录的 SQL 信息。
 
-3. 除了日志，还可以通过 `admin show slow` 命令查看，详情可参考 [`admin show slow` 命令](/identify-slow-queries.md#admin-show-slow-命令)。
+3. 除了日志，还可以通过 `ADMIN SHOW SLOW` 命令查看，详情可参考 [`ADMIN SHOW SLOW` 命令](/identify-slow-queries.md#admin-show-slow-命令)。
 
 ### 首次部署 TiDB 集群时，没有配置 tikv 的 Label 信息，在后续如何添加配置 Label？
 
@@ -146,3 +109,9 @@ Direct 模式就是把写入请求直接封装成 I/O 指令发到磁盘，这�
     ```bash
     ./fio -ioengine=psync -bs=32k -fdatasync=1 -thread -rw=randrw -percentage_random=100,0 -size=10G -filename=fio_randread_write_test.txt -name='fio mixed randread and sequential write test' -iodepth=4 -runtime=60 -numjobs=4 -group_reporting --output-format=json --output=fio_randread_write_test.json
     ```
+
+## TiDB 支持在公有云上部署吗？
+
+TiDB 支持在 [Google Cloud GKE](https://docs.pingcap.com/zh/tidb-in-kubernetes/v1.1/deploy-on-gcp-gke)、[AWS EKS](https://docs.pingcap.com/zh/tidb-in-kubernetes/v1.1/deploy-on-aws-eks) 和[阿里云 ACK](https://docs.pingcap.com/zh/tidb-in-kubernetes/v1.1/deploy-on-alibaba-cloud) 上部署使用。
+
+此外，TiDB 云上部署也已在京东云、UCloud 上线。

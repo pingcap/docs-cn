@@ -1,18 +1,18 @@
 ---
 title: TIKV_STORE_STATUS
-summary: 了解 information_schema 表 `TIKV_STORE_STATUS`。
+summary: 了解 INFORMATION_SCHEMA 表 `TIKV_STORE_STATUS`。
 ---
 
 # TIKV_STORE_STATUS
 
-`TIKV_STORE_STATUS` 表通过 PD 的 API 显示了 TiKV 节点的一些基本信息，例如在集群中分配的 ID，地址和端口，状态，容量以及当前节点的 Region leader 的数量。
-
-{{< copyable "sql" >}}
+`TIKV_STORE_STATUS` 表通过 PD 的 API 显示了 TiKV 节点的一些基本信息，例如在集群中分配的 ID、地址和端口、状态、容量以及当前节点的 Region leader 的数量。
 
 ```sql
-USE information_schema;
-DESC tikv_store_status;
+USE INFORMATION_SCHEMA;
+DESC TIKV_STORE_STATUS;
 ```
+
+输出结果如下：
 
 ```sql
 +-------------------+-------------+------+------+---------+-------+
@@ -46,7 +46,7 @@ DESC tikv_store_status;
 * `STORE_ID`：Store 的 ID。
 * `ADDRESS`：Store 的地址。
 * `STORE_STATE`：Store 状态的标识符，与 `STORE_STATE_NAME` 相对应。
-* `STORE_STATE_NAME`：Store 状态的名字，为 `Up` / `Offline` / `Tombstone` 中的一种。
+* `STORE_STATE_NAME`：Store 状态的名字，为 `Up`、`Offline`、`Tombstone` 中的一种。
 * `LABEL`：给 Store 设置的标签。
 * `VERSION`：Store 的版本号。
 * `CAPACITY`：Store 的存储容量。

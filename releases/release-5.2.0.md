@@ -1,5 +1,6 @@
 ---
 title: TiDB 5.2 Release Notes
+summary: TiDB 5.2 版本于 2021 年 8 月 27 日发布。该版本新增了许多功能和改进，包括支持基于部分函数创建表达式索引、提升优化器的估算准确度、锁视图成为 GA 特性等。此外，还修复了多个 bug，提升了稳定性和性能。
 ---
 
 # TiDB 5.2 Release Notes
@@ -20,7 +21,7 @@ TiDB 版本：5.2.0
 - 新增 TiFlash I/O 限流功能，提升 TiFlash 读写稳定性。
 - 为 TiKV 引入新的流控机制代替之前的 RocksDB write stall 流控机制，提升 TiKV 流控稳定性。
 - 简化 Data Migration (DM) 工具运维，降低运维管理的成本。
-- TiCDC 支持 HTTP 协议 OpenAPI 对 TiCDC 任务进行管理，在 Kubernetes 以及 On-Premises 环境下提供更友好的运维方式。(实验特性)
+- TiCDC 支持 HTTP 协议 OpenAPI 对 TiCDC 任务进行管理，在 Kubernetes 以及本地部署环境下提供更友好的运维方式。(实验特性)
 
 ## 兼容性更改
 
@@ -61,7 +62,7 @@ TiDB 版本：5.2.0
 
 - 升级前，请检查系统变量 [`tidb_evolve_plan_baselines`](/system-variables.md#tidb_evolve_plan_baselines-从-v40-版本开始引入) 的值是否为 `ON`。如果为 `ON`，需要将其改成 `OFF`，否则会导致升级失败。
 - v4.0 集群升级到 v5.2 集群后，[`tidb_multi_statement_mode`](/system-variables.md#tidb_multi_statement_mode-从-v4011-版本开始引入) 变量的默认值由 `WARN` 变为 `OFF`。
-- 升级前，请检查 TiDB 配置项 [`feedback-probability`](/tidb-configuration-file.md#feedback-probability) 的值。如果不为 0，升级后会触发 "panic in the recoverable goroutine" 报错，但不影响升级。
+- 升级前，请检查 TiDB 配置项 [`feedback-probability`](https://docs.pingcap.com/zh/tidb/v5.2/tidb-configuration-file#feedback-probability) 的值。如果不为 0，升级后会触发 "panic in the recoverable goroutine" 报错，但不影响升级。
 - 兼容 MySQL 5.7 的 noop 变量 `innodb_default_row_format`，配置此变量无实际效果 [#23541](https://github.com/pingcap/tidb/issues/23541)。
 
 - 从 TiDB 5.2 起，为了提高系统安全性，建议（但不要求）对来自客户端的连接进行传输层加密，TiDB 提供 Auto TLS 功能在 TiDB 服务器端自动配置并开启加密。要使用 Auto TLS 功能，请在 TiDB 升级前将 TiDB 配置文件中的 [`security.auto-tls`](/tidb-configuration-file.md#auto-tls) 设置为 `true`。
@@ -115,7 +116,7 @@ TiDB 版本：5.2.0
     - 对于 Lock View 所属的各张表中的 SQL Digest 列， v5.2 额外增加了一列显示对应的归一化的 SQL 语句文本，无需手动查询 SQL Digest 对应的语句。
     - 增加了 `TIDB_DECODE_SQL_DIGESTS` 函数用于在集群中查询一组 SQL Digest 所对应的 SQL 语句的归一化形式（即去除格式和参数后的形式），简化了查询某一事务历史执行过的语句的操作
     - 在 `DATA_LOCK_WAITS` 和 `DEADLOCKS` 系统表中，增加一列显示 key 中解出的表名、row id、索引值等信息，简化了定位 key 所属的表、解读 key 的内容等信息的操作。
-    - 支持在 `DEADLOCKS` 表中收集可重试的死锁错误的信息，以便于排查因可重试的死锁引发的问题。默认不收集，可通过配置选项 `pessimistic-txn.deadlock-history-collect-retryable` 启用 。
+    - 支持在 `DEADLOCKS` 表中收集可重试的死锁错误的信息，以便于排查因可重试的死锁引发的问题。默认不收集，可通过配置选项 `pessimistic-txn.deadlock-history-collect-retryable` 启用。
     - `TIDB_TRX` 系统表支持区分正在执行查询的事务和闲置中的事务，即将原来的 `Normal` 状态拆分成 `Running` 和 `Idle` 状态。
 
     用户文档：
@@ -161,7 +162,7 @@ TiDB 版本：5.2.0
 
 ### TiDB 数据共享订阅
 
-TiCDC 支持 HTTP 协议 OpenAPI 对 TiCDC 任务进行管理，在 Kubernetes 以及 On-Premises 环境下提供更友好的运维方式。(实验特性）
+TiCDC 支持 HTTP 协议 OpenAPI 对 TiCDC 任务进行管理，在 Kubernetes 以及本地部署环境下提供更友好的运维方式。(实验特性）
 
 [#2411](https://github.com/pingcap/tiflow/issues/2411)
 

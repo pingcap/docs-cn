@@ -117,7 +117,7 @@ from:
 
 ## 第 4 步：升级数据迁移任务
 
-1. 使用 [`operate-source`](/dm/dm-manage-source.md#数据源操作) 命令将 [准备 v2.0+ 的配置文件](#第-1-步准备-v20-的配置文件) 中得到的上游数据库 source 配置加载到 v2.0+ 集群中。
+1. 使用 [`operate-source`](/dm/dm-manage-source.md#数据源操作) 命令将[准备 v2.0+ 的配置文件](#第-1-步准备-v20-的配置文件)中得到的上游数据库 source 配置加载到 v2.0+ 集群中。
 
 2. 在下游 TiDB 中，从 v1.0.x 的数据复制任务对应的增量 checkpoint 表中获取对应的全局 checkpoint 信息。
 

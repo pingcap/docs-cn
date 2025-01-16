@@ -1,9 +1,9 @@
 ---
-title: 创建数据源
+title: 创建 TiDB Data Migration 数据源
 summary: 了解如何为 DM 创建数据源。
 ---
 
-# 创建数据源
+# 创建 TiDB Data Migration 数据源
 
 > **注意：**
 >
@@ -18,6 +18,8 @@ summary: 了解如何为 DM 创建数据源。
 1. （可选）加密数据源密码
 
     在 DM 的配置文件中，推荐使用经 dmctl 加密后的密文密码。按照下面的示例可以获得数据源的密文密码，用于下一步编写数据源配置文件。
+
+    从 v8.0.0 开始，DM-master 必须配置 [`secret-key-path`](/dm/dm-master-configuration-file.md) 后才可使用 `tiup dmctl encrypt` 命令。
 
     {{< copyable "shell-regular" >}}
 
@@ -35,7 +37,7 @@ summary: 了解如何为 DM 创建数据源。
 
     ```yaml
     source-id: "mysql-01"    # 数据源 ID，在数据迁移任务配置和 dmctl 命令行中引用该 source-id 可以关联到对应的数据源
-    
+
     from:
       host: "127.0.0.1"
       port: 3306
@@ -89,7 +91,7 @@ tiup dmctl --master-addr <master-addr> operate-source create ./source-mysql-01.y
     ```bash
     tiup dmctl --master-addr <master-addr> config source mysql-01
     ```
-    
+
     ```
     {
       "result": true,

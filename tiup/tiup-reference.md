@@ -1,5 +1,6 @@
 ---
 title: TiUP 命令概览
+summary: TiUP 是 TiDB 生态的包管理器，管理着诸如 TiDB、PD、TiKV 等组件。它支持执行命令和运行组件，可以通过 `--help` 获取命令信息。选项包括打印二进制文件路径、指定组件路径、指定组件 tag、打印版本和帮助信息。TiUP 包含众多命令和子命令，以及组件清单。
 ---
 
 # TiUP 命令概览
@@ -20,12 +21,12 @@ tiup [flags] <component> [args...]      # 运行组件
 
 ## 选项
 
-### -B, --binary
+### --binary
 
 打印指定组件的二进制文件路径：
 
-- 执行 `tiup -B/--binary <component>` 将打印已安装的 `<component>` 组件的最新稳定版路径，若 `<component>` 组件未安装，则报错
-- 执行 `tiup -B/--binary <component>:<version>` 将打印已经安装的 `<component>` 组件的 `<version>` 版本所在的路径，若该版本未安装，则报错
+- 执行 `tiup --binary <component>` 将打印已安装的 `<component>` 组件的最新稳定版路径，若 `<component>` 组件未安装，则报错
+- 执行 `tiup --binary <component>:<version>` 将打印已经安装的 `<component>` 组件的 `<version>` 版本所在的路径，若该版本未安装，则报错
 - 数据类型：`BOOLEAN`
 - 该选项默认关闭，默认值为 `false`。在命令中添加该选项，并传入 `true` 值或不传值，均可开启此功能。
 
@@ -40,16 +41,6 @@ tiup [flags] <component> [args...]      # 运行组件
 > **注意：**
 >
 > 该选项只能用于 `tiup [flags] <component> [args...]` 格式的命令。
-
-### --skip-version-check
-
-> **注意：**
->
-> 该选项自 `v1.3.0` 版本起**已废弃**。
-
-- 跳过版本号合法性检查，默认指定的版本号只能是 Semantic Version。
-- 数据类型：`BOOLEAN`
-- 该选项默认关闭，默认值为 `false`。在命令中添加该选项，并传入 `true` 值或不传值，均可开启此功能。
 
 ### -T, --tag (string)
 

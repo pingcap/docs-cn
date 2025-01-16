@@ -1,10 +1,10 @@
 ---
-title: 使用 dmctl 运维集群
+title: 使用 dmctl 运维 TiDB Data Migration 集群
 summary: 了解如何使用 dmctl 运维 DM 集群。
 aliases: ['/docs-cn/tidb-data-migration/dev/dmctl-introduction/','/docs-cn/tidb-data-migration/dev/manage-replication-tasks/']
 ---
 
-# 使用 dmctl 运维集群
+# 使用 dmctl 运维 TiDB Data Migration 集群
 
 > **注意：**
 >
@@ -45,13 +45,12 @@ Available Commands:
   binlog-schema   manage or show table schema in schema tracker
   check-task      Checks the configuration file of the task
   config          manage config operations
-  decrypt         Decrypts cipher text to plain text
   encrypt         Encrypts plain text to cipher text
   help            Gets help about any command
   list-member     Lists member information
   offline-member  Offlines member which has been closed
   operate-leader  `evict`/`cancel-evict` the leader
-  operate-source  `create`/`update`/`stop`/`show` upstream MySQL/MariaDB source
+  operate-source  `create`/`stop`/`show` upstream MySQL/MariaDB source
   pause-relay     Pauses DM-worker's relay unit
   pause-task      Pauses a specified running task or all (sub)tasks bound to a source
   purge-relay     Purges relay log files of the DM-worker according to the specified filename
@@ -98,13 +97,12 @@ Available Commands:
   binlog-schema   manage or show table schema in schema tracker
   check-task      Checks the configuration file of the task
   config          manage config operations
-  decrypt         Decrypts cipher text to plain text
   encrypt         Encrypts plain text to cipher text
   help            Gets help about any command
   list-member     Lists member information
   offline-member  Offlines member which has been closed
   operate-leader  `evict`/`cancel-evict` the leader
-  operate-source  `create`/`update`/`stop`/`show` upstream MySQL/MariaDB source
+  operate-source  `create`/`stop`/`show` upstream MySQL/MariaDB source
   pause-relay     Pauses DM-worker's relay unit
   pause-task      Pauses a specified running task or all (sub)tasks bound to a source
   purge-relay     Purges relay log files of the DM-worker according to the specified filename

@@ -26,8 +26,9 @@ desc cluster_info;
 | GIT_HASH       | varchar(64) | YES  |      | NULL    |       |
 | START_TIME     | varchar(32) | YES  |      | NULL    |       |
 | UPTIME         | varchar(32) | YES  |      | NULL    |       |
+| SERVER_ID      | bigint(21)  | YES  |      | NULL    |       |
 +----------------+-------------+------+------+---------+-------+
-7 rows in set (0.00 sec)
+8 rows in set (0.01 sec)
 ```
 
 字段解释：
@@ -39,6 +40,7 @@ desc cluster_info;
 * `GIT_HASH`：编译节点版本时的 Git Commit Hash，用于识别两个节点是否是绝对一致的版本。
 * `START_TIME`：对应节点的启动时间。
 * `UPTIME`：对应节点已经运行的时间。
+* `SERVER_ID`：对应节点的服务器 ID。
 
 {{< copyable "sql" >}}
 
