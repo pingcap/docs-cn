@@ -16,8 +16,8 @@ TiDB 版本：8.5.1
 从 v8.5.1 起，TiDB 重新适配并兼容 CentOS Linux 7。如果你需要在 CentOS 7 上部署 TiDB 8.5 版本或将集群升级到 TiDB 8.5 版本，请部署或升级至 TiDB 8.5.1 或以上版本。
 
 - 因为 CentOS Linux 7 [已于 2024 年 6 月 30 日到达其生命周期的终止（EOL）日期](https://www.redhat.com/en/blog/centos-linux-has-reached-its-end-life-eol)，TiDB 在 v8.4.0 DMR 和 v8.5.0 版本中移除了对 CentOS 7 的兼容性支持和测试，建议使用 Rocky Linux 9.1 及以上的版本。如果在使用 CentOS Linux 7 的情况下将 TiDB 升级到 v8.4.0 DMR 或 v8.5.0 版本，将导致集群不可用的风险。
--  为了更好地服务仍在使用 CentOS Linux 7 的用户，TiDB 从 v8.5.1 版本起恢复了对 CentOS Linux 7 的兼容性支持和测试。然而，由于 CentOS Linux 7 已到达 EOL，强烈建议用户参考该系统的[官方声明和安全建议](https://www.redhat.com/en/blog/centos-linux-has-reached-its-end-life-eol)，将生产环境迁移到 [TiDB 支持的操作系统版本](/hardware-and-software-requirements.md#操作系统及平台要求)，如 Rocky Linux 9.1 及以上版本。
-    
+- 为了更好地服务仍在使用 CentOS Linux 7 的用户，TiDB 从 v8.5.1 版本起恢复了对 CentOS Linux 7 的兼容性支持和测试。然而，由于 CentOS Linux 7 已到达 EOL，强烈建议用户参考该系统的[官方声明和安全建议](https://www.redhat.com/en/blog/centos-linux-has-reached-its-end-life-eol)，将生产环境迁移到 [TiDB 支持的操作系统版本](/hardware-and-software-requirements.md#操作系统及平台要求)，如 Rocky Linux 9.1 及以上版本。
+
 由于 CentOS Linux 7 已到达 EOL，TiDB 将在未来版本中停止对 CentOS Linux 7 的兼容性支持。
 
 ## 改进提升
