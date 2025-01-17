@@ -18,7 +18,7 @@ summary: MySQL 的 `performance_schema` 提供了 `statement summary tables`，�
 
 ## `statements_summary`
 
-`statements_summary` 是 `information_schema` 里的一张系统表，它把 SQL 按 所属资源组、SQL digest 和 plan digest 分组，统计每一组的 SQL 信息。
+`statements_summary` 是 `information_schema` 里的一张系统表，它把 SQL 按所属资源组、SQL digest 和 plan digest 分组，统计每一组的 SQL 信息。
 
 此处的 SQL digest 与 slow log 里的 SQL digest 一样，是把 SQL 规一化后算出的唯一标识符。SQL 的规一化会忽略常量、空白符、大小写的差别。即语法一致的 SQL 语句，其 digest 也相同。
 
