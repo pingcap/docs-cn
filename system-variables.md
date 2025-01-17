@@ -1064,6 +1064,8 @@ mysql> SELECT job_info FROM mysql.analyze_jobs ORDER BY end_time DESC LIMIT 1;
     - `tidb_auto_analyze_start_time='01:00 +0000'`
     - `tidb_auto_analyze_end_time='03:00 +0000'`
 
+- 如果参数中的时间包含时区信息，则使用该时区来解析；否则使用当前会话中 `time_zone` 指定的时区解析。例如 `01:00 +0000` 就是 UTC 时间的凌晨 1:00。
+
 ### `tidb_auto_analyze_partition_batch_size` <span class="version-mark">从 v6.4.0 版本开始引入</span>
 
 - 作用域：GLOBAL
@@ -1100,6 +1102,8 @@ mysql> SELECT job_info FROM mysql.analyze_jobs ORDER BY end_time DESC LIMIT 1;
 
     - `tidb_auto_analyze_start_time='01:00 +0000'`
     - `tidb_auto_analyze_end_time='03:00 +0000'`
+
+- 如果参数中的时间包含时区信息，则使用该时区来解析；否则使用当前会话中 `time_zone` 指定的时区解析。例如 `01:00 +0000` 就是 UTC 时间的凌晨 1:00。
 
 ### `tidb_auto_build_stats_concurrency` <span class="version-mark">从 v6.5.0 版本开始引入</span>
 

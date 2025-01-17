@@ -5,7 +5,7 @@ summary: TiDB 数据库中 DROP COLUMN 的使用概况。
 
 # DROP COLUMN
 
-`DROP COLUMN` 语句用于从指定的表中删除列。在 TiDB 中，`COLUMN` 为在线操作，不会阻塞表中的数据读写。
+`DROP COLUMN` 语句用于从指定的表中删除列。在 TiDB 中，`DROP COLUMN` 为在线操作，不会阻塞表中的数据读写。
 
 ## 语法图
 
