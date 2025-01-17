@@ -7,10 +7,13 @@ summary: 介绍 TiDB 版本发布历史。
 
 <EmailSubscriptionWrapper />
 
-TiDB 历史版本发布声明如下：
+本文列出了所有已发布的 TiDB 版本，按版本号降序排序。
+
+关于 TiDB 长期支持版本 (Long-Term Support, LTS) 的支持时间表，请参阅 [TiDB 版本周期支持策略](https://cn.pingcap.com/tidb-release-support-policy/)。
 
 ## 8.5
 
+- [8.5.1](/releases/release-8.5.1.md): 2025-01-17
 - [8.5.0](/releases/release-8.5.0.md): 2024-12-19
 
 ## 8.4
