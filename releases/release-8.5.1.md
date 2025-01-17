@@ -27,7 +27,7 @@ TiDB 版本：8.5.1
     - 支持将只读的用户自定义变量折叠为常量 [#52742](https://github.com/pingcap/tidb/issues/52742) @[winoros](https://github.com/winoros)
     - 将具有 nulleq 条件的笛卡尔积 Semi Join 转换为等值条件的 Semi Join，以提升查询的执行效率 [#57583](https://github.com/pingcap/tidb/issues/57583) @[hawkingrei](https://github.com/hawkingrei)
     - 将统计信息内存缓存的默认阈值调整为总内存的 20% [#58014](https://github.com/pingcap/tidb/issues/58014) @[hawkingrei](https://github.com/hawkingrei)
-    - 增强了时间戳合法性检查 [#57786](https://github.com/pingcap/tidb/issues/57786) @[MyonKeminta](https://github.com/MyonKeminta)
+    - 增强时间戳合法性检查 [#57786](https://github.com/pingcap/tidb/issues/57786) @[MyonKeminta](https://github.com/MyonKeminta)
 
 + TiKV
 
