@@ -15,7 +15,7 @@ TiDB 版本：8.5.1
 
 从 v8.5.1 起，TiDB 重新适配并兼容 CentOS Linux 7。如果你需要在 CentOS 7 上部署 TiDB 8.5 版本或将集群升级到 TiDB 8.5 版本，请部署或升级至 TiDB 8.5.1 或以上版本。
 
-- 因为 CentOS Linux 7 [已于 2024 年 6 月 30 日到达其生命周期的终止（EOL）日期](https://www.redhat.com/en/blog/centos-linux-has-reached-its-end-life-eol)，TiDB 在 v8.4.0 DMR 和 v8.5.0 版本中移除了对 CentOS 7 的兼容性支持，建议使用 Rocky Linux 9.1 及以上的版本。如果在使用 CentOS Linux 7 的情况下将 TiDB 升级到 v8.4.0 DMR 或 v8.5.0 版本，将导致集群不可用的风险。
+- 因为 CentOS Linux 7 [已于 2024 年 6 月 30 日到达其生命周期的终止 (EOL) 日期](https://www.redhat.com/en/blog/centos-linux-has-reached-its-end-life-eol)，TiDB 在 v8.4.0 DMR 和 v8.5.0 版本中移除了对 CentOS 7 的兼容性支持，建议使用 Rocky Linux 9.1 及以上的版本。如果在使用 CentOS Linux 7 的情况下将 TiDB 升级到 v8.4.0 DMR 或 v8.5.0 版本，将导致集群不可用的风险。
 - 为了更好地服务仍在使用 CentOS Linux 7 的用户，TiDB 从 v8.5.1 版本起恢复了对 CentOS Linux 7 的兼容性测试和支持。然而，由于 CentOS Linux 7 已到达 EOL，强烈建议用户参考该系统的[官方声明和安全建议](https://www.redhat.com/en/blog/centos-linux-has-reached-its-end-life-eol)，将生产环境迁移到 [TiDB 支持的操作系统版本](/hardware-and-software-requirements.md#操作系统及平台要求)，如 Rocky Linux 9.1 及以上版本。
 
 由于 CentOS Linux 7 已到达 EOL，TiDB 将在未来版本中停止对 CentOS Linux 7 的兼容性支持。
@@ -55,10 +55,10 @@ TiDB 版本：8.5.1
     - 修复对统计信息的异常处理不当导致后台任务超时的时候，内存内的统计信息被误删除的问题 [#57901](https://github.com/pingcap/tidb/issues/57901) @[hawkingrei](https://github.com/hawkingrei)
     - 修复执行 `DROP DATABASE` 语句后统计信息未被清理的问题 [#57230](https://github.com/pingcap/tidb/issues/57230) @[Rustin170506](https://github.com/Rustin170506)
     - 修复在构造 `IndexMerge` 时可能丢失部分谓词的问题 [#58476](https://github.com/pingcap/tidb/issues/58476) @[hawkingrei](https://github.com/hawkingrei)
-    - 修复在超过 3000 维向量类型的列上创建向量搜索索引会失败的问题 [#58836](https://github.com/pingcap/tidb/issues/58836) @[breezewish](https://github.com/breezewish)
+    - 修复在超过 3000 维向量类型的列上创建向量搜索索引报错 `KeyTooLong` 的问题 [#58836](https://github.com/pingcap/tidb/issues/58836) @[breezewish](https://github.com/breezewish)
     - 修复 `REORGANIZE PARTITION` 操作未正确移除被替换的全局索引，以及处理非聚簇表唯一索引的问题 [#56822](https://github.com/pingcap/tidb/issues/56822) @[mjonss](https://github.com/mjonss)
     - 修复分区表 Range INTERVAL 语法糖不支持使用 `MINUTE` 做间隔的问题 [#57698](https://github.com/pingcap/tidb/issues/57698) @[mjonss](https://github.com/mjonss)
-    - 修复查询慢日志时，时区导致时间范围错误的问题 [#58452](https://github.com/pingcap/tidb/issues/58452) @[lcwangchao](https://github.com/lcwangchao)
+    - 修复查询慢日志时，更改时区导致返回结果错误的问题 [#58452](https://github.com/pingcap/tidb/issues/58452) @[lcwangchao](https://github.com/lcwangchao)
     - 修复在缩减 TTL 扫描任务的工作线程时，任务取消失败可能导致扫描任务泄漏的问题 [#57708](https://github.com/pingcap/tidb/issues/57708) @[YangKeao](https://github.com/YangKeao) <!--tw@hfxsd: the following 10 notes-->
     - 修复在丢失心跳后，若 TTL 表被删除或禁用，TTL 作业仍继续运行的问题 [#57702](https://github.com/pingcap/tidb/issues/57702) @[YangKeao](https://github.com/YangKeao)
     - 修复 TTL 作业被取消后，`last_job_finish_time` 显示不正确的问题 [#58109](https://github.com/pingcap/tidb/issues/58109) @[YangKeao](https://github.com/YangKeao)
