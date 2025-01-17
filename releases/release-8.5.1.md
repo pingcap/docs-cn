@@ -1,11 +1,11 @@
 ---
 title: TiDB 8.5.1 Release Notes
-summary: 了解 TiDB 8.5.1 版本的兼容性变更、改进提升，以及错误修复。
+summary: 了解 TiDB 8.5.1 版本的操作系统支持变更、改进提升，以及错误修复。
 ---
 
 # TiDB 8.5.1 Release Notes
 
-发版日期：2025 年 x 月 x 日
+发版日期：2025 年 1 月 17 日
 
 TiDB 版本：8.5.1
 
