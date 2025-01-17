@@ -340,7 +340,7 @@ TiDB 版本：8.4.0
 
 升级 TiDB 前，请务必确保你的操作系统版本符合[操作系统及平台要求](/hardware-and-software-requirements.md#操作系统及平台要求)。
 
-- 根据 [CentOS Linux EOL](https://www.centos.org/centos-linux-eol/)，CentOS Linux 7 的上游支持已于 2024 年 6 月 30 日终止。从 v8.4.0 版本开始，TiDB 已结束对 CentOS 7 的支持，建议使用 Rocky Linux 9.1 及以上的版本。如果将运行在 CentOS 7 上的 TiDB 集群升级到 v8.4.0 或之后版本，将导致集群不可用。
+- 根据 [CentOS Linux EOL](https://www.centos.org/centos-linux-eol/)，CentOS Linux 7 的上游支持已于 2024 年 6 月 30 日终止。因此，在 v8.4.0 版本中，TiDB 移除了对 CentOS 7 的支持，建议使用 Rocky Linux 9.1 及以上的版本。如果将运行在 CentOS 7 上的 TiDB 集群升级到 v8.4.0 版本，将导致集群不可用。
 - 根据 [Red Hat Enterprise Linux Life Cycle](https://access.redhat.com/support/policy/updates/errata/#Life_Cycle_Dates)，Red Hat Enterprise Linux 7 的 Maintenance Support 已于 2024 年 6 月 30 日终止。从 v8.4.0 版本开始，TiDB 已结束对 Red Hat Enterprise Linux 7 的支持，建议使用 Rocky Linux 9.1 及以上的版本。如果将运行在 Red Hat Enterprise Linux 7 上的 TiDB 集群升级到 v8.4.0 或之后版本，将导致集群不可用。
 
 ## 移除功能
