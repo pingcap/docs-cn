@@ -327,7 +327,7 @@ TiDB 版本：8.4.0
 | BR | [`--master-key`](/br/br-pitr-manual.md#加密日志备份数据) | 新增 | 设置日志备份数据的主密钥，可以是基于本地磁盘的主密钥或基于云 KMS (Key Management Service) 的主密钥。|
 | BR | [`--master-key-crypter-method`](/br/br-pitr-manual.md#加密日志备份数据) | 新增 | 设置日志备份数据基于主密钥的加密算法，支持 `aes128-ctr`、`aes192-ctr` 和 `aes256-ctr` 三种算法，缺省值为 `plaintext`，表示不加密。 |
 
-## 离线包变更
+### 离线包变更
 
 从 v8.4.0 开始，`TiDB-community-toolkit` [二进制软件包](/binary-package.md)中移除了以下内容：
 
