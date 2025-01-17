@@ -93,7 +93,7 @@ BR 作为 TiDB 的备份恢复工具，可以对 TiDB 集群进行基于时间�
 
 按照上面的部署，TiDB Cluster1 部署在区域 1 (Region 1)，BR 工具定期将集群的数据备份到区域 2 (Region 2)，并且持续将数据改变日志也备份到区域 2。当区域 1 出现灾难导致 Cluster1 无法恢复时，你可以使用备份的数据和数据改变在区域 2 恢复新的集群 Cluster2 对外提供服务。
 
-基于备份恢复的容灾方案，目前，RPO 低于 5 分钟，而 RTO 则取决于需要恢复的集群数据大小，对于 v6.5.0 版本的 BR，其恢复速度可以参考[快照恢复的性能与影响](/br/br-snapshot-guide.md#快照恢复的性能与影响)和 [PITR 的性能与影响](/br//br-pitr-guide.md#pitr-的性能与影响)。通常来说，大部分客户会把跨区域 的备份作为数据安全的最后一道防线，是大多数系统都需要的。对于该方案的详细信息，请参考[基于备份与恢复的容灾方案](/dr-backup-restore.md)。
+基于备份恢复的容灾方案，目前，RPO 低于 5 分钟，而 RTO 则取决于需要恢复的集群数据大小，对于 v6.5.0 版本的 BR，其恢复速度可以参考[快照恢复的性能与影响](/br/br-snapshot-guide.md#快照恢复的性能与影响)和 [PITR 的性能与影响](/br//br-pitr-guide.md#pitr-的性能与影响)。通常来说，大部分客户会把跨区域的备份作为数据安全的最后一道防线，是大多数系统都需要的。对于该方案的详细信息，请参考[基于备份与恢复的容灾方案](/dr-backup-restore.md)。
 
 另外，从 v6.5.0 开始，BR 支持[基于 AWS 上的 EBS 快照的快速恢复](https://docs.pingcap.com/zh/tidb-in-kubernetes/stable/restore-from-aws-s3-by-snapshot)。如果你在 AWS 上运行 TiDB 集群，要求备份过程对集群没有任何影响，并且要求恢复的时间尽量短，可以考虑使用该特性来降低系统的 RTO。
 
