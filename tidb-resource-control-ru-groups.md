@@ -20,7 +20,7 @@ TiDB 资源管控特性提供了两层资源管理能力，包括在 TiDB 层的
 关于如何管控后台任务和管理资源消耗超出预期的查询 (Runaway Queries) 的内容，请参考以下文档：
 
 - [使用资源管控 (Resource Control) 管理后台任务](/tidb-resource-control-background-tasks.md)
-- [管理资源消耗超出预期的查询 (Runaway Queries) ](/tidb-resource-control-runaway-queries.md)
+- [管理资源消耗超出预期的查询 (Runaway Queries)](/tidb-resource-control-runaway-queries.md)
 
 ## 使用场景
 
