@@ -336,7 +336,7 @@ TiDB 版本：8.4.0
 - `binlogctl`
 - `arbiter`
 
-## 操作系统支持变更
+### 操作系统支持变更
 
 升级 TiDB 前，请务必确保你的操作系统版本符合[操作系统及平台要求](/hardware-and-software-requirements.md#操作系统及平台要求)。
 
