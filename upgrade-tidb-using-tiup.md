@@ -63,7 +63,7 @@ summary: TiUP 可用于 TiDB 升级。升级过程中需注意不支持 TiFlash 
 
 以下为从 v8.4.0 升级至当前版本 (v8.5.1) 所需查阅的 release notes。如果从 v8.3.0 或之前版本升级到当前版本，可能也需要考虑和查看中间版本的 [Release Notes](/releases/release-notes.md)。
 
-- TiDB v8.5.0 [兼容性更改](/releases/release-8.5.0.md#compatibility-changes)
+- TiDB v8.5.0 [兼容性更改](/releases/release-8.5.0.md#兼容性更改)
 - TiDB v8.5.1 [Release Notes](/releases/release-8.5.1.md)
 
 ### 2.2 升级 TiUP 或更新 TiUP 离线镜像
