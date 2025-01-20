@@ -108,11 +108,7 @@ TiDB 是一个分布式系统。最基础的 TiDB 测试集群通常由 2 个 Ti
         tiup playground v8.5.1 --db 2 --pd 3 --kv 3
         ```
 
-<<<<<<< HEAD
-        上述命令会在本地下载并启动某个版本的集群（例如 v8.5.1）。最新版本可以通过执行 `tiup list tidb` 来查看。运行结果将显示集群的访问方式：
-=======
         如果要查看当前支持部署的所有 TiDB 版本，执行 `tiup list tidb`。
->>>>>>> 1473bf4d99 (Update TiDB quick start (#19570))
 
 4. 新开启一个 session 以访问 TiDB 数据库和集群端点。
 
@@ -232,11 +228,7 @@ TiDB 是一个分布式系统。最基础的 TiDB 测试集群通常由 2 个 Ti
         tiup playground v8.5.1 --db 2 --pd 3 --kv 3
         ```
 
-<<<<<<< HEAD
-        上述命令会在本地下载并启动某个版本的集群（例如 v8.5.1）。最新版本可以通过执行 `tiup list tidb` 来查看。运行结果将显示集群的访问方式：
-=======
         如果要查看当前支持部署的所有 TiDB 版本，执行 `tiup list tidb`。
->>>>>>> 1473bf4d99 (Update TiDB quick start (#19570))
 
 4. 新开启一个 session 以访问 TiDB 数据库和集群端点。
 
