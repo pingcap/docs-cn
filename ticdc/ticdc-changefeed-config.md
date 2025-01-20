@@ -387,7 +387,7 @@ consistent 中的字段用于配置 Changefeed 的数据一致性。详细信息
 - 默认值：`""`，表示不进行压缩
 - 可选值：`""`、`"lz4"`
 
-#### `flush-concurrency`  <span class="version-mark">从 v6.5.6、v7.1.3、v7.5.1 和 v7.6.0 版本开始引入</span>
+#### `flush-concurrency` <span class="version-mark">从 v6.5.6、v7.1.3、v7.5.1 和 v7.6.0 版本开始引入</span>
 
 - redo log 上传单个文件的并发数。
 - 默认值：`1`，表示禁用并发
