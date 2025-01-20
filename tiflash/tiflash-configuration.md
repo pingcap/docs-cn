@@ -205,6 +205,12 @@ delta_index_cache_size = 0
     ## 从 v5.0 引入，表示 TiFlash Coprocessor 最多同时执行的 cop 请求数量。如果请求数量超过了该配置指定的值，多出的请求会排队等待。如果设为 0 或不设置，则使用默认值，即物理核数的两倍。
     cop_pool_size = 0
 
+    ## 从 v5.0 引入，表示 TiFlash Coprocessor 最多同时处理的 cop 请求数量，包括正在执行的 cop 请求与正在排队等待的 cop 请求。如果请求数量超过了该配置指定的值，则会返回 TiFlash Server is Busy 的错误。-1 表示无限制；0 表示使用默认值，即 10 * cop_pool_size。
+    cop_pool_handle_limit = 0
+
+    ## 从 v5.0 引入，表示 TiFlash 中 cop 请求排队的最长时间。如果一个 cop 请求在请求队列中等待的时间超过该配置指定的值，则会返回 TiFlash Server is Busy 的错误。配置为一个小于等于 0 的值时表示无限制。
+    cop_pool_max_queued_seconds = 15
+
     ## 从 v5.0 引入，表示 TiFlash Coprocessor 最多同时执行的 batch 请求数量。如果请求数量超过了该配置指定的值，多出的请求会排队等待。如果设为 0 或不设置，则使用默认值，即物理核数的两倍。
     batch_cop_pool_size = 0
 
