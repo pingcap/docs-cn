@@ -67,7 +67,7 @@ summary: 了解如何为 TiDB 集群内各组件间开启加密传输。
 
     - TiFlash（从 v4.0.5 版本开始引入）
 
-        在 `tiflash.toml` 文件中设置，将 `http_port` 项改为 `https_port`:
+        在 `tiflash.toml` 文件中设置：
 
         ```toml
         [security]
