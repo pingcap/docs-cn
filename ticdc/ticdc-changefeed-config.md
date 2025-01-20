@@ -264,9 +264,9 @@ use-file-backend = false
 encoding-worker-num = 16
 # 控制 redo 模块中上传文件 worker 的数量，默认值为 8。
 flush-worker-num = 8
-# redo log 文件的压缩行为，可选值为 "" 和 "lz4"。默认值为 ""，表示不进行压缩。
+# redo log 文件的压缩行为，可选值为 "" 和 "lz4"。默认值为 ""，表示不进行压缩。从 v6.5.6、v7.1.3、v7.5.1 和 v7.6.0 版本开始支持。
 compression = ""
-# redo log 上传单个文件的并发数，默认值为 1，表示禁用并发。
+# redo log 上传单个文件的并发数，默认值为 1，表示禁用并发。从 v6.5.6、v7.1.3、v7.5.1 和 v7.6.0 版本开始支持。
 flush-concurrency = 1
 
 [integrity]
