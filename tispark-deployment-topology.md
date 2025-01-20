@@ -23,6 +23,10 @@ summary: 介绍 TiUP 部署包含 TiSpark 组件的 TiDB 集群的拓扑结构�
 | TiSpark | 3 | 8 VCore 16GB * 1 | 10.0.1.21 (master) <br/> 10.0.1.22 (worker) <br/> 10.0.1.23 (worker) | 默认端口 <br/> 全局目录配置 |
 | Monitoring & Grafana | 1 | 4 VCore 8GB * 1 500GB (ssd) | 10.0.1.11 | 默认端口 <br/> 全局目录配置 |
 
+> **注意：**
+>
+> 该表中拓扑实例的 IP 为示例 IP。在实际部署时，请替换为实际的 IP。
+
 ### 拓扑模版
 
 <details>
