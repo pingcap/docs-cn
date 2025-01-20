@@ -262,7 +262,7 @@ void main();
 如果连接成功，在你的终端上会输出所连接集群的版本信息。
 
 ```
-🔌 Connected to TiDB cluster! (TiDB version: 8.0.11-TiDB-v8.4.0)
+🔌 Connected to TiDB cluster! (TiDB version: 8.0.11-TiDB-v8.5.0)
 🆕 Created a new player with ID 1.
 ℹ️ Got Player 1: Player { id: 1, coins: 100, goods: 100 }
 🔢 Added 50 coins and 50 goods to player 1, now player 1 has 150 coins and 150 goods.
@@ -349,7 +349,7 @@ await prisma.player.delete({
 
 你可以使用外键约束或 Prisma Relation Mode 来检查[参照完整性](https://zh.wikipedia.org/wiki/%E5%8F%82%E7%85%A7%E5%AE%8C%E6%95%B4%E6%80%A7)：
 
-- [外键](/foreign-key.md)是 TiDB 从 v6.6.0 开始支持的实验特性，外键允许跨表交叉引用相关数据，外键约束则可以保证相关数据的一致性。
+- [外键](/foreign-key.md)是从 v6.6.0 开始支持的，在 v8.5.0 成为正式功能。外键允许跨表交叉引用相关数据，外键约束则可以保证相关数据的一致性。
 
     > **警告：**
     >

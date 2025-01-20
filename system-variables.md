@@ -716,10 +716,6 @@ mysql> SHOW GLOBAL VARIABLES LIKE 'max_prepared_stmt_count';
 
 ### `pd_enable_follower_handle_region` <span class="version-mark">从 v7.6.0 版本开始引入</span>
 
-> **警告：**
->
-> [Active PD Follower](/tune-region-performance.md#通过-active-pd-follower-提升-pd-region-信息查询服务的扩展能力) 目前为实验特性，不建议在生产环境中使用。该功能可能会在未事先通知的情况下发生变化或删除。如果发现 bug，请在 GitHub 上提 [issue](https://github.com/pingcap/tidb/issues) 反馈。
-
 - 作用域：GLOBAL
 - 是否持久化到集群：是
 - 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：否
@@ -922,7 +918,7 @@ mysql> SHOW GLOBAL VARIABLES LIKE 'max_prepared_stmt_count';
 
 - 作用域：NONE
 - 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：否
-- 默认值：`json_array, json_array_append, json_array_insert, json_contains, json_contains_path, json_depth, json_extract, json_insert, json_keys, json_length, json_merge_patch, json_merge_preserve, json_object, json_pretty, json_quote, json_remove, json_replace, json_search, json_set, json_storage_size, json_type, json_unquote, json_valid, lower, md5, reverse, tidb_shard, upper, vitess_hash`
+- 默认值：`json_array, json_array_append, json_array_insert, json_contains, json_contains_path, json_depth, json_extract, json_insert, json_keys, json_length, json_merge_patch, json_merge_preserve, json_object, json_pretty, json_quote, json_remove, json_replace, json_schema_valid, json_search, json_set, json_storage_size, json_type, json_unquote, json_valid, lower, md5, reverse, tidb_shard, upper, vitess_hash`
 - 这个只读变量用于显示创建[表达式索引](/sql-statements/sql-statement-create-index.md#表达式索引)所允许使用的函数。
 
 ### `tidb_allow_mpp` <span class="version-mark">从 v5.0 版本开始引入</span>
@@ -1007,7 +1003,7 @@ mysql> SHOW CREATE TABLE t;
 | Table | Create Table                                                                                                                                                                                                             |
 +-------+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
 | t     | CREATE TABLE `t` (
-  `a` int(11) DEFAULT NULL,
+  `a` int DEFAULT NULL,
   `b` varchar(10) DEFAULT NULL,
   `c` json DEFAULT NULL,
   `d` blob DEFAULT NULL,
@@ -1069,6 +1065,8 @@ mysql> SELECT job_info FROM mysql.analyze_jobs ORDER BY end_time DESC LIMIT 1;
     - `tidb_auto_analyze_start_time='01:00 +0000'`
     - `tidb_auto_analyze_end_time='03:00 +0000'`
 
+- 如果参数中的时间包含时区信息，则使用该时区来解析；否则使用当前会话中 `time_zone` 指定的时区解析。例如 `01:00 +0000` 就是 UTC 时间的凌晨 1:00。
+
 ### `tidb_auto_analyze_partition_batch_size` <span class="version-mark">从 v6.4.0 版本开始引入</span>
 
 - 作用域：GLOBAL
@@ -1105,6 +1103,8 @@ mysql> SELECT job_info FROM mysql.analyze_jobs ORDER BY end_time DESC LIMIT 1;
 
     - `tidb_auto_analyze_start_time='01:00 +0000'`
     - `tidb_auto_analyze_end_time='03:00 +0000'`
+
+- 如果参数中的时间包含时区信息，则使用该时区来解析；否则使用当前会话中 `time_zone` 指定的时区解析。例如 `01:00 +0000` 就是 UTC 时间的凌晨 1:00。
 
 ### `tidb_auto_build_stats_concurrency` <span class="version-mark">从 v6.5.0 版本开始引入</span>
 
@@ -1516,6 +1516,17 @@ mysql> SELECT job_info FROM mysql.analyze_jobs ORDER BY end_time DESC LIMIT 1;
 - 可选值：`PRIORITY_LOW`、`PRIORITY_NORMAL`、`PRIORITY_HIGH`
 - 这个变量用来设置 `ADD INDEX` 操作 `re-organize` 阶段的执行优先级，可设置为 `PRIORITY_LOW`/`PRIORITY_NORMAL`/`PRIORITY_HIGH`。
 
+### `tidb_ddl_reorg_max_write_speed` <span class="version-mark">从 v7.5.5 和 v8.5.0 版本开始引入</span>
+
+- 作用域：GLOBAL
+- 是否持久化到集群：是
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：否
+- 类型：整数型
+- 默认值：`0`
+- 范围：`[0, 1125899906842624]`（即最大可设置为 1 PiB）
+- 这个变量用于限制每个 TiKV 节点写入的带宽，仅在开启添加索引加速功能时生效（由变量 [`tidb_ddl_enable_fast_reorg`](#tidb_ddl_enable_fast_reorg-从-v630-版本开始引入) 控制）。在数据量特别大的情况下（如数十亿行数据），降低加索引时写入 TiKV 节点的带宽可以有效减少对业务负载的影响。
+- 默认值 `0` 表示不限制写入带宽。默认单位为字节每秒，也可以通过 `'1GiB'`、`'256MiB'` 等格式设置该变量。
+
 ### `tidb_ddl_reorg_worker_cnt`
 
 - 作用域：SESSION | GLOBAL
@@ -1530,18 +1541,15 @@ mysql> SELECT job_info FROM mysql.analyze_jobs ORDER BY end_time DESC LIMIT 1;
 
 ### `tidb_enable_fast_create_table` <span class="version-mark">从 v8.0.0 版本开始引入</span>
 
-> **警告：**
->
-> 该变量目前为实验特性，不建议在生产环境中使用。该功能可能会在未事先通知的情况下发生变化或删除。如果发现 bug，请在 GitHub 上提 [issue](https://github.com/pingcap/tidb/issues) 反馈。
-
 - 作用域：GLOBAL
 - 是否持久化到集群：是
 - 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：否
 - 类型：布尔型
-- 默认值：`OFF`
+- 默认值：`ON`。在 v8.5.0 之前，默认值为 `OFF`。
 - 这个变量用于控制是否开启 [TiDB 加速建表](/accelerated-table-creation.md)。
 - 从 TiDB v8.0.0 开始，支持使用 `tidb_enable_fast_create_table` 加速建表 [`CREATE TABLE`](/sql-statements/sql-statement-create-table.md)。
 - 该变量是由 v7.6.0 中引入的 [`tidb_ddl_version`](https://docs.pingcap.com/zh/tidb/v7.6/system-variables#tidb_ddl_version-从-v760-版本开始引入) 更名而来。从 v8.0.0 开始，`tidb_ddl_version` 不再生效。
+- 从 TiDB v8.5.0 开始，新创建的集群默认开启 TiDB 加速建表功能，即 `tidb_enable_fast_create_table` 默认值为 `ON`。如果从 v8.4.0 及之前版本的集群升级至 v8.5.0 及之后的版本，`tidb_enable_fast_create_table` 的默认值不发生变化。
 
 ### `tidb_default_string_match_selectivity` <span class="version-mark">从 v6.2.0 版本开始引入</span>
 
@@ -1628,18 +1636,7 @@ mysql> SELECT job_info FROM mysql.analyze_jobs ORDER BY end_time DESC LIMIT 1;
 - 可选值：`"standard"`、`"bulk"`
 - 该变量用来设置 DML 语句的执行方式。
     - `"standard"` 表示使用标准的 DML 执行方式，TiDB 事务在提交前缓存在内存中。适用于处理高并发且可能存在冲突的事务场景，为默认推荐使用的执行方式。
-    - `"bulk"` 表示使用批量 DML 执行方式，适合于处理因大量数据写入导致 TiDB 内存使用过多的情况。
-        - 在 TiDB 事务执行过程中，数据不是完全缓存在 TiDB 内存中，而是持续写入 TiKV，以减少内存的占用，同时平滑写入压力。
-        - 只有 `INSERT`、`UPDATE`、`REPLACE` 和 `DELETE` 语句受 `"bulk"` 方式的影响。由于 `"bulk"` 模式流水线执行的方式，其中 `INSERT IGNORE ... ON DUPLICATE UPDATE ...` 的用法可能会在更新造成冲突时报出 `Duplicate entry` 的错误；而在 `"standard"` 模式下，由于设置了 `IGNORE` 关键字，该错误会被忽略，不会返回给用户。
-        - `"bulk"` 方式仅适用于大批量**无冲突数据写入**的场景，不能高效处理写入冲突的场景，写写冲突可能会导致大批量事务提交失败并被回滚。
-        - `"bulk"` 方式只对自动提交 (auto-commit) 的语句生效。当设置为 `"bulk"` 时，[`pessimistic-auto-commit`](/tidb-configuration-file.md#pessimistic-auto-commit) 配置项的效果等同于设置为 `false`。
-        - 使用 `"bulk"` 方式执行语句时，需要确保在语句执行过程中保持[元数据锁](/metadata-lock.md)处于开启状态。
-        - `"bulk"` 方式不可以在[临时表](/temporary-tables.md)、[缓存表](/cached-tables.md)上使用。
-        - `"bulk"` 方式不可以在开启外键约束检查时 (`foreign_key_checks = ON`) 对包含外键的表和被外键引用的表使用。
-        - 当遇到不支持或不兼容的情况时，`"bulk"` 方式会回退到 `"standard"` 方式执行，并返回一条警告信息。你可以通过 [`tidb_last_txn_info`](#tidb_last_txn_info-从-v409-版本开始引入) 查看 `pipelined` 字段，如果为 `true` 则表示是使用 `"bulk"` 方式执行。
-        - 以 `"bulk"` 方式执行超大事务时，事务耗时可能较长。对于这种模式的事务，其事务锁的最大 TTL 为 [`max-txn-ttl`](/tidb-configuration-file.md#max-txn-ttl) 与 24 小时中的较大值。此外，当事务执行时间超过 [`tidb_gc_max_wait_time`](#tidb_gc_max_wait_time-从-v610-版本开始引入) 设定值后，GC 可能会强制回滚事务，导致事务失败。
-        - 以 `"bulk"` 方式执行事务时，事务的大小不受 TiDB 配置项 [`txn-total-size-limit`](/tidb-configuration-file.md#txn-total-size-limit) 的限制。
-        - `"bulk"` 方式由 Pipelined DML 特性实现，详细设计和 GitHub issue 可见 [Pipelined DML](https://github.com/pingcap/tidb/blob/master/docs/design/2024-01-09-pipelined-DML.md) 和 [#50215](https://github.com/pingcap/tidb/issues/50215)。
+    - `"bulk"` 表示使用 Pipelined DML 执行方式，适合于处理因大量数据写入导致 TiDB 内存使用过多的情况。更多信息，请参考 [Pipelined DML](/pipelined-dml.md)。
 
 ### `tidb_enable_1pc` <span class="version-mark">从 v5.0 版本开始引入</span>
 
@@ -2836,8 +2833,7 @@ v5.0 后，用户仍可以单独修改以上系统变量（会有废弃警告）
 
 > **注意：**
 >
-> - 目前，仅 Inner Join 和 Outer Join 类型的连接操作支持优化版的 Hash Join。对于其他类型的连接操作，即使将该变量设成 `optimized`，TiDB 也不会使用优化版的 Hash Join。
-> - 目前，优化版的 Hash Join 不支持在内存使用超限时落盘内存数据。
+> 目前，仅 Inner Join 和 Outer Join 类型的连接操作支持优化版的 Hash Join。对于其他类型的连接操作，即使将该变量设成 `optimized`，TiDB 也不会使用优化版的 Hash Join。
 
 ### `tidb_hashagg_final_concurrency`
 
@@ -4192,13 +4188,17 @@ SHOW WARNINGS;
 
 ### `tidb_partition_prune_mode` <span class="version-mark">从 v5.1 版本开始引入</span>
 
+> **警告：**
+>
+> 从 v8.5.0 开始，将该变量设置为 `static` 或 `static-only` 时会产生警告。该变量将在未来版本中废弃。
+
 - 作用域：SESSION | GLOBAL
 - 是否持久化到集群：是
 - 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：是
 - 类型：枚举型
 - 默认值：`dynamic`
 - 可选值：`static`、`dynamic`、`static-only`、`dynamic-only`
-- 这个变量用来设置是否开启分区表动态裁剪模式。默认值为 `dynamic`。但是注意，`dynamic` 模式仅在表级别汇总统计信息（即 GlobalStats）收集完成的情况下生效。如果选择了 `dynamic` 但 GlobalStats 未收集完成，TiDB 会仍采用 `static` 模式。关于 GlobalStats 更多信息，请参考[动态裁剪模式下的分区表统计信息](/statistics.md#收集动态裁剪模式下的分区表统计信息)。关于动态裁剪模式更多信息，请参考[分区表动态裁剪模式](/partitioned-table.md#动态裁剪模式)。
+- 这个变量用来设置是否开启分区表动态裁剪模式。默认值为 `dynamic`。但是注意，`dynamic` 动态裁剪模式仅在表级别汇总统计信息（即分区表的全局统计信息）收集完成的情况下生效。如果在全局统计信息未收集完成的情况下启用 `dynamic` 动态裁剪模式，TiDB 仍然会维持 `static` 静态裁剪的状态，直到全局统计信息收集完成。关于全局统计信息的更多信息，请参考[动态裁剪模式下的分区表统计信息](/statistics.md#收集动态裁剪模式下的分区表统计信息)。关于动态裁剪模式的更多信息，请参考[分区表动态裁剪模式](/partitioned-table.md#动态裁剪模式)。
 
 ### `tidb_persist_analyze_options` <span class="version-mark">从 v5.4.0 版本开始引入</span>
 
@@ -4440,7 +4440,7 @@ EXPLAIN FORMAT='brief' SELECT COUNT(1) FROM t WHERE a = 1 AND b IS NOT NULL;
 ### `tidb_read_consistency` <span class="version-mark">从 v5.4.0 版本开始引入</span>
 
 - 作用域：SESSION
-- 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：是
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：是（注意当存在[非事务 DML 语句](/non-transactional-dml.md)时，使用 hint 修改该变量的值可能不生效）
 - 类型：字符串
 - 默认值：`strict`
 - 此变量用于控制自动提交的读语句的读一致性。
@@ -4450,7 +4450,7 @@ EXPLAIN FORMAT='brief' SELECT COUNT(1) FROM t WHERE a = 1 AND b IS NOT NULL;
 ### `tidb_read_staleness` <span class="version-mark">从 v5.4.0 版本开始引入</span>
 
 - 作用域：SESSION
-- 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：是
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：否
 - 类型：整数型
 - 默认值：`0`
 - 范围 `[-2147483648, 0]`
@@ -4580,18 +4580,13 @@ EXPLAIN FORMAT='brief' SELECT COUNT(1) FROM t WHERE a = 1 AND b IS NOT NULL;
 - 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：否
 - 类型：枚举型
 - 默认值：`""`
-- 可选值：`""`，`TABLE`，`GLOBAL`
-- TiDB 默认会在建表时为新表分裂 Region。该变量用于控制表的分裂打散策略，TiDB 会根据选择的打散策略进行 Region 打散。适用于批量建表后紧接着批量写入数据，让刚分裂出的 Region 先在 TiKV 分散而不用等待 PD 进行调度。为了保证后续批量写入数据的稳定性，建表语句会等待打散 Region 完成后再返回建表成功，建表语句执行时间会是该变量关闭时的数倍。可选值描述如下：
-    - `""`：默认值，表示不打散表 Region。
-    - `TABLE`：表示在建表时，如果设置了 `PRE_SPLIT_REGIONS` 或者 `SHARD_ROW_ID_BITS` 属性，预分裂多个 Region 的场景下，会按表的粒度对这些表的 Region 进行打散。但是如果在建表时没有设置上述属性，需要快速创建大量表的场景，会导致这些表的 Region 集中在其中几个 TiKV 节点上，造成 Region 分布不均匀。
-    - `GLOBAL`：表示 TiDB 会根据整个集群的数据分布情况来打散新建表的 Region。特别是快速创建大量表的时候，使用 `GLOBAL` 可以有效避免 Region 过度集中在少数几个 TiKV 节点上，确保 Region 在集群中分布均匀。
-- 如果建表时设置了 `SHARD_ROW_ID_BITS` 和 `PRE_SPLIT_REGIONS`，建表成功后会均匀切分出指定数量的 Region。
+- 可选值：`""`，`table`，`global`
+- 如果在建表时设置了 `SHARD_ROW_ID_BITS` 和 `PRE_SPLIT_REGIONS` 参数，则系统会在建表成功后自动将表均匀切分为指定数量的 Region。该变量用于控制这些分裂后的 Region 的打散策略。TiDB 将依据所选的打散策略对 Region 进行处理。需要特别说明的是，由于建表操作会等待 Region 打散完成后才返回成功状态，因此启用该变量可能会显著增加建表语句的执行时间，相较于未启用该变量的情况，执行时间可能会延长数倍。可选值描述如下：
+    - `""`：默认值，表示建表后不打散表的 Region。
+    - `table`：表示在建表时，预分裂多个 Region 的场景下，会按表的粒度对这些表的 Region 进行打散。但是如果在建表时没有设置上述属性，需要快速创建大量表的场景，会导致这些表的 Region 集中在其中几个 TiKV 节点上，造成 Region 分布不均匀。
+    - `global`：表示 TiDB 会根据整个集群的数据分布情况来打散新建表的 Region。特别是快速创建大量表的时候，使用 `global` 可以有效避免 Region 过度集中在少数几个 TiKV 节点上，确保 Region 在集群中分布均匀。
 
 ### `tidb_schema_cache_size` <span class="version-mark">从 v8.0.0 版本开始引入</span>
-
-> **警告：**
->
-> 该特性目前为实验特性，不建议在生产环境中使用。该功能可能会在未事先通知的情况下发生变化或删除。如果发现 bug，请在 GitHub 上提 [issue](https://github.com/pingcap/tidb/issues) 反馈。
 
 - 作用域：GLOBAL
 - 是否持久化到集群：是
@@ -4741,10 +4736,10 @@ Query OK, 0 rows affected, 1 warning (0.00 sec)
 - 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：否
 - 类型：布尔型
 - 默认值：`ON`
-- 分区表在开启[动态裁剪模式](/partitioned-table.md#动态裁剪模式)时，TiDB 会汇总各个分区的统计信息生成 GlobalStats。这个变量用于控制当分区统计信息缺失时生成 GlobalStats 的行为。
+- 分区表在开启[动态裁剪模式](/partitioned-table.md#动态裁剪模式)时，TiDB 会汇总各个分区的统计信息生成全局统计信息。这个变量用于控制当分区统计信息缺失时生成全局统计信息的行为。
 
-    - 当开启该变量时，TiDB 生成 GlobalStats 时会跳过缺失的分区统计信息，不影响 GlobalStats 生成。
-    - 当关闭该变量时，遇到缺失的分区统计信息，TiDB 会停止生成 GlobalStats。
+    - 当开启该变量时，TiDB 生成全局统计信息时会跳过缺失的分区统计信息，不影响全局统计信息的生成。
+    - 当关闭该变量时，遇到缺失的分区统计信息，TiDB 会停止生成全局统计信息。
 
 ### `tidb_skip_utf8_check`
 
@@ -4801,8 +4796,9 @@ Query OK, 0 rows affected, 1 warning (0.00 sec)
 - 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：否
 - 类型：整数型
 - 单位：字节
-- 默认值：`0`，自动设置内部统计信息缓存使用内存的上限为总内存的一半。
-- 这个变量用于控制 TiDB 内部统计信息缓存使用内存的上限。
+- 默认值：`0`，表示自动设置统计信息缓存的内存使用上限为总内存的一半。
+- 范围：`[0, 1099511627776]`
+- 这个变量用于控制 TiDB 统计信息缓存的内存使用上限。
 
 ### `tidb_stats_load_sync_wait` <span class="version-mark">从 v5.4.0 版本开始引入</span>
 
@@ -5556,7 +5552,7 @@ Query OK, 0 rows affected, 1 warning (0.00 sec)
 - 作用域：NONE
 - 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：否
 - 默认值：`8.0.11-TiDB-(tidb version)`
-- 这个变量的值是 MySQL 的版本和 TiDB 的版本，例如 '8.0.11-TiDB-v8.4.0'。
+- 这个变量的值是 MySQL 的版本和 TiDB 的版本，例如 '8.0.11-TiDB-v8.5.0'。
 
 ### `version_comment`
 

@@ -170,7 +170,7 @@ tiup dumpling -u root -P 4000 -h 127.0.0.1 -o /tmp/test --filetype csv --sql 'se
 
     ```shell
     CREATE TABLE `t1` (
-      `id` int(11) DEFAULT NULL
+      `id` int DEFAULT NULL
     ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
     ```
 
@@ -383,3 +383,38 @@ SET GLOBAL tidb_gc_life_time = '10m';
 | --tidb-mem-quota-query | 单条 dumpling 命令导出 SQL 语句的内存限制，单位为 byte。对于 v4.0.10 或以上版本，若不设置该参数，默认使用 TiDB 中的 `mem-quota-query` 配置项值作为内存限制值。对于 v4.0.10 以下版本，该参数值默认为 32 GB | 34359738368 |
 | --params | 为需导出的数据库连接指定 session 变量，可接受的格式: "character_set_client=latin1,character_set_connection=latin1" |
 | -c 或 --compress | 压缩 Dumpling 导出的 CSV、SQL 数据与表结构文件为指定格式，支持 "gzip"、"snappy" 和 "zstd" 压缩算法 | "" |
+
+## 输出文件名模板
+
+`--output-filename-template` 参数用于定义输出文件的命名规则，不包括文件扩展名。它接受符合 [Go `text/template` 语法](https://golang.org/pkg/text/template/) 的字符串。
+
+模板中可定义的字段如下：
+
+* `.DB`：数据库名
+* `.Table`：表名或对象名
+* `.Index`：当一个表被拆分成多个文件时的 0 起始序号，表示正在导出的是哪一部分。例如，`{{printf "%09d" .Index}}` 表示使用 9 位数字格式化 `.Index`，并用前导 0 填充。
+
+数据库名和表名可能包含一些在文件系统中不允许使用的特殊字符，如 `/`。为了解决此问题，Dumpling 提供了 `fn` 函数来对这些特殊字符进行百分号编码：
+
+* U+0000 到 U+001F（控制字符）
+* `/`、`\`、`<`、`>`、`:`、`"`、`*`、`?`（无效的 Windows 路径字符）
+* `.`（数据库名或表名分隔符）
+* `-schema` 中的 `-`
+
+例如，使用 `--output-filename-template '{{fn .Table}}.{{printf "%09d" .Index}}'`，Dumpling 会将表 `db.tbl:normal` 写入 `tbl%3Anormal.000000000.sql`、`tbl%3Anormal.000000001.sql` 等文件中。
+
+除了输出的数据文件名，你还可以通过 `--output-filename-template` 来替换 schema 文件的文件名。下表显示了默认配置。
+
+| 名称 | 内容 |
+|------|---------|
+| data | `{{fn .DB}}.{{fn .Table}}.{{.Index}}` |
+| schema | `{{fn .DB}}-schema-create` |
+| table | `{{fn .DB}}.{{fn .Table}}-schema` |
+| event | `{{fn .DB}}.{{fn .Table}}-schema-post` |
+| function | `{{fn .DB}}.{{fn .Table}}-schema-post` |
+| procedure | `{{fn .DB}}.{{fn .Table}}-schema-post` |
+| sequence | `{{fn .DB}}.{{fn .Table}}-schema-sequence` |
+| trigger | `{{fn .DB}}.{{fn .Table}}-schema-triggers` |
+| view | `{{fn .DB}}.{{fn .Table}}-schema-view` |
+
+例如，使用 `--output-filename-template '{{define "table"}}{{fn .Table}}.$schema{{end}}{{define "data"}}{{fn .Table}}.{{printf "%09d" .Index}}{{end}}'`，Dumpling 会将表 `db.tbl:normal` 的 schema 写入名为 `tbl%3Anormal.$schema.sql` 的文件中，将数据写入 `tbl%3Anormal.000000000.sql`、`tbl%3Anormal.000000001.sql` 等文件中。

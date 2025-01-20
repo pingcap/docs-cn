@@ -200,13 +200,13 @@ TiDB 版本：8.4.0
 
     向量搜索是一种基于数据语义的搜索方法，可以提供更相关的搜索结果。作为 AI 和大语言模型 (LLM) 的核心功能之一，向量搜索可用于检索增强生成 (Retrieval-Augmented Generation, RAG)、语义搜索、推荐系统等多种场景。
 
-    从 v8.4.0 开始，TiDB 支持[向量数据类型](/vector-search-data-types.md)和[向量搜索索引](/vector-search-index.md)，具备强大的向量搜索能力。TiDB 的向量数据类型最多可支持 16383 维度，并支持多种[距离函数](/vector-search-functions-and-operators.md#向量函数)，包括 L2 距离（欧式距离）、余弦距离、负内积和 L1 距离（曼哈顿距离）。
+    从 v8.4.0 开始，TiDB 支持[向量数据类型](/vector-search/vector-search-data-types.md)和[向量搜索索引](/vector-search/vector-search-index.md)，具备强大的向量搜索能力。TiDB 的向量数据类型最多可支持 16383 维度，并支持多种[距离函数](/vector-search/vector-search-functions-and-operators.md#向量函数)，包括 L2 距离（欧式距离）、余弦距离、负内积和 L1 距离（曼哈顿距离）。
 
     在使用时，你只需要创建包含向量数据类型的表，并插入向量数据，即可执行向量搜索查询，也可进行向量数据与传统关系数据的混合查询。
 
-    此外，你可以创建并利用[向量搜索索引](/vector-search-index.md)来提升向量搜索的性能。需要注意的是，TiDB 的向量搜索索引依赖于 TiFlash。在使用向量搜索索引之前，需要确保 TiDB 集群中已部署 TiFlash 节点。
+    此外，你可以创建并利用[向量搜索索引](/vector-search/vector-search-index.md)来提升向量搜索的性能。需要注意的是，TiDB 的向量搜索索引依赖于 TiFlash。在使用向量搜索索引之前，需要确保 TiDB 集群中已部署 TiFlash 节点。
 
-    更多信息，请参考[用户文档](/vector-search-overview.md)。
+    更多信息，请参考[用户文档](/vector-search/vector-search-overview.md)。
 
 ### 数据库管理
 
@@ -327,7 +327,7 @@ TiDB 版本：8.4.0
 | BR | [`--master-key`](/br/br-pitr-manual.md#加密日志备份数据) | 新增 | 设置日志备份数据的主密钥，可以是基于本地磁盘的主密钥或基于云 KMS (Key Management Service) 的主密钥。|
 | BR | [`--master-key-crypter-method`](/br/br-pitr-manual.md#加密日志备份数据) | 新增 | 设置日志备份数据基于主密钥的加密算法，支持 `aes128-ctr`、`aes192-ctr` 和 `aes256-ctr` 三种算法，缺省值为 `plaintext`，表示不加密。 |
 
-## 离线包变更
+### 离线包变更
 
 从 v8.4.0 开始，`TiDB-community-toolkit` [二进制软件包](/binary-package.md)中移除了以下内容：
 
@@ -335,6 +335,13 @@ TiDB 版本：8.4.0
 - `drainer-{version}-linux-{arch}.tar.gz`
 - `binlogctl`
 - `arbiter`
+
+### 操作系统支持变更
+
+升级 TiDB 前，请务必确保你的操作系统版本符合[操作系统及平台要求](/hardware-and-software-requirements.md#操作系统及平台要求)。
+
+- 根据 [CentOS Linux EOL](https://www.centos.org/centos-linux-eol/)，CentOS Linux 7 的上游支持已于 2024 年 6 月 30 日终止。因此，在 v8.4.0 版本中，TiDB 移除了对 CentOS 7 的支持，建议使用 Rocky Linux 9.1 及以上的版本。如果将运行在 CentOS 7 上的 TiDB 集群升级到 v8.4.0 版本，将导致集群不可用。
+- 根据 [Red Hat Enterprise Linux Life Cycle](https://access.redhat.com/support/policy/updates/errata/#Life_Cycle_Dates)，Red Hat Enterprise Linux 7 的 Maintenance Support 已于 2024 年 6 月 30 日终止。从 v8.4.0 版本开始，TiDB 已结束对 Red Hat Enterprise Linux 7 的支持，建议使用 Rocky Linux 9.1 及以上的版本。如果将运行在 Red Hat Enterprise Linux 7 上的 TiDB 集群升级到 v8.4.0 或之后版本，将导致集群不可用。
 
 ## 移除功能
 

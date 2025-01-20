@@ -61,7 +61,12 @@ TiProxy 不适用于以下场景：
 
 ## 安装和使用
 
-本节介绍使用 TiUP 部署和变更 TiProxy 的步骤。使用 TiDB Operator 部署的方式请参阅 [TiDB Operator](https://docs.pingcap.com/zh/tidb-in-kubernetes/stable/deploy-tiproxy) 文档。
+本节介绍使用 TiUP 部署和变更 TiProxy 的步骤。
+
+其他部署方式，请参考以下文档：
+
+- 使用 TiDB Operator 部署 TiProxy，请参见 [TiDB Operator](https://docs.pingcap.com/zh/tidb-in-kubernetes/stable/deploy-tiproxy) 文档。
+- 使用 TiUP 本地快速部署 TiProxy，请参见[部署 TiProxy](/tiup/tiup-playground.md#部署-tiproxy)。
 
 ### 部署 TiProxy
 
@@ -83,9 +88,6 @@ TiProxy 不适用于以下场景：
       tidb:
         security.session-token-signing-cert: "/var/sess/cert.pem"
         security.session-token-signing-key: "/var/sess/key.pem"
-        security.ssl-ca: "/var/ssl/ca.pem"
-        security.ssl-cert: "/var/ssl/cert.pem"
-        security.ssl-key: "/var/ssl/key.pem"
         graceful-wait-before-shutdown: 15
     ```
 
@@ -100,7 +102,7 @@ TiProxy 不适用于以下场景：
 
     建议在拓扑配置里指定 TiProxy 的版本号，这样通过 [`tiup cluster upgrade`](/tiup/tiup-component-cluster-upgrade.md) 升级 TiDB 集群时不会升级 TiProxy，否则升级 TiProxy 会导致客户端连接断开。
 
-    如需配置 TiProxy 配置项，请参阅 [TiProxy 配置](/tiproxy/tiproxy-configuration.md)。
+    如需配置 TiProxy 配置项，请参阅 [TiProxy 配置](/tiproxy/tiproxy-configuration.md)。更多 TiProxy 部署拓扑配置参数，请参阅 [tiproxy-servers 配置参数](/tiup/tiup-cluster-topology-reference.md#tiproxy_servers)。
 
     配置示例：
 
@@ -109,9 +111,6 @@ TiProxy 不适用于以下场景：
       tiproxy: "v1.2.0"
     server_configs:
       tiproxy:
-        security.server-tls.ca: "/var/ssl/ca.pem"
-        security.server-tls.cert: "/var/ssl/cert.pem"
-        security.server-tls.key: "/var/ssl/key.pem"
         ha.virtual-ip: "10.0.1.10/24"
         ha.interface: "eth0"
     ```

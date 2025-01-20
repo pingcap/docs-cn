@@ -18,16 +18,17 @@ TiDB 使用统计信息作为优化器的输入，用于估算 SQL 语句的执�
 
 TiDB 会定期持久化更新的统计信息，更新周期为 20 * [`stats-lease`](/tidb-configuration-file.md#stats-lease)。`stats-lease` 配置项的默认值为 `3s`，如果将其指定为 `0`，TiDB 将停止自动更新统计信息。
 
-TiDB 根据表的变更次数自动调度 [`ANALYZE`](/sql-statements/sql-statement-analyze-table.md) 来收集这些表的统计信息。统计信息的自动更新由 [`tidb_enable_auto_analyze`](/system-variables.md#tidb_enable_auto_analyze-从-v610-版本开始引入) 系统变量和以下 `tidb_auto_analyze%` 变量控制。
+TiDB 根据表的变更次数自动调度 [`ANALYZE`](/sql-statements/sql-statement-analyze-table.md) 来收集这些表的统计信息。统计信息的自动更新由下表中的系统变量控制。
 
 |  系统变量名 | 默认值 | 功能描述 |
 | --------- | ----- | --------- |
-| [`tidb_enable_auto_analyze`](/system-variables.md#tidb_enable_auto_analyze-从-v610-版本开始引入) | `ON` | 是否启用自动更新表的统计信息 |
+| [`tidb_auto_analyze_end_time`](/system-variables.md#tidb_auto_analyze_end_time) | `23:59 +0000` | 一天中允许统计信息自动更新的结束时间 |
 | [`tidb_auto_analyze_ratio`](/system-variables.md#tidb_auto_analyze_ratio) | `0.5` | 自动更新阈值 |
-| [`tidb_auto_analyze_start_time`](/system-variables.md#tidb_auto_analyze_start_time) | `00:00 +0000` | 一天中能够进行自动更新的开始时间 |
-| [`tidb_auto_analyze_end_time`](/system-variables.md#tidb_auto_analyze_end_time) | `23:59 +0000` | 一天中能够进行自动更新的结束时间 |
+| [`tidb_auto_analyze_start_time`](/system-variables.md#tidb_auto_analyze_start_time) | `00:00 +0000` | 一天中允许统计信息自动更新的开始时间 |
 | [`tidb_auto_analyze_partition_batch_size`](/system-variables.md#tidb_auto_analyze_partition_batch_size-从-v640-版本开始引入)   | `128` | TiDB 自动 analyze 分区表（即自动更新分区表的统计信息）时，每次同时 analyze 分区的个数 |
+| [`tidb_enable_auto_analyze`](/system-variables.md#tidb_enable_auto_analyze-从-v610-版本开始引入) | `ON` | 是否启用自动更新表的统计信息 |
 | [`tidb_enable_auto_analyze_priority_queue`](/system-variables.md#tidb_enable_auto_analyze_priority_queue-从-v800-版本开始引入) | `ON` | 是否启用优先队列来调度自动收集统计信息的任务。开启该变量后，TiDB 会优先收集那些更有收集价值的表，例如新创建的索引、发生分区变更的分区表等。同时，TiDB 也会优先处理那些健康度较低的表，将它们安排在队列的前端。 |
+| [`tidb_enable_stats_owner`](/system-variables.md#tidb_enable_stats_owner-从-v840-版本开始引入) | `ON` | 用于设置该 TiDB 实例是否可以运行统计信息自动更新任务 |
 
 当某个表 `tbl` 的修改行数与总行数的比值大于 `tidb_auto_analyze_ratio`，并且当前时间在 `tidb_auto_analyze_start_time` 和 `tidb_auto_analyze_end_time` 之间时，TiDB 会在后台执行 `ANALYZE TABLE tbl` 语句自动更新这个表的统计信息。
 
@@ -179,18 +180,18 @@ ANALYZE TABLE TableName INDEX [IndexNameList] [WITH NUM BUCKETS|TOPN|CMSKETCH DE
 
 #### 收集动态裁剪模式下的分区表统计信息
 
-在分区表开启[动态裁剪模式](/partitioned-table.md#动态裁剪模式)（从 v6.3.0 开始，默认开启）的情况下，TiDB 将收集表级别的汇总统计信息，以下称 GlobalStats。目前 GlobalStats 由分区统计信息合并汇总得到。在动态裁剪模式下，任何分区表的统计信息更新都可能触发 GlobalStats 更新。
+在分区表开启[动态裁剪模式](/partitioned-table.md#动态裁剪模式)（从 v6.3.0 开始，默认开启）的情况下，TiDB 将收集表级别的汇总统计信息，即分区表的全局统计信息。分区表的全局统计信息合并汇总了所有分区的统计信息。在动态裁剪模式下，表中任何分区的统计信息更新都可能触发该表全局统计信息的更新。
 
-如果分区为空，或者某些分区上的列缺失，那么统计信息收集行为将受 [`tidb_skip_missing_partition_stats`](/system-variables.md#tidb_skip_missing_partition_stats-从-v730-版本开始引入) 变量的控制：
+如果某些分区的统计信息为空，或者某些分区中列的统计信息有缺失，那么统计信息收集行为将受 [`tidb_skip_missing_partition_stats`](/system-variables.md#tidb_skip_missing_partition_stats-从-v730-版本开始引入) 变量的控制：
 
-- 当触发 GlobalStats 更新且 [`tidb_skip_missing_partition_stats`](/system-variables.md#tidb_skip_missing_partition_stats-从-v730-版本开始引入) 为 `OFF` 时：
+- 当触发全局统计信息更新且 [`tidb_skip_missing_partition_stats`](/system-variables.md#tidb_skip_missing_partition_stats-从-v730-版本开始引入) 为 `OFF` 时：
 
-    - 如果某些分区缺失统计信息（例如从未进行过 analyze 的新分区），GlobalStats 生成会中断，并显示 warning 信息提示这些分区没有可用的统计信息。
-    - 如果某些分区中缺失某些列的统计信息（这些分区中指定了不同的列进行 analyze），当这些列的统计信息被合并汇总时，GlobalStats 生成会中断，并显示 warning 信息提示某些分区中缺少某些列的统计信息。
+    - 如果某些分区缺失统计信息（例如从未进行过 analyze 的新分区），全局统计信息生成会中断，并显示 warning 信息提示这些分区没有可用的统计信息。
+    - 如果某些分区中缺失某些列的统计信息（这些分区中指定了不同的列进行 analyze），当这些列的统计信息被合并汇总时，全局统计信息生成会中断，并显示 warning 信息提示某些分区中缺少某些列的统计信息。
 
-- 当触发 GlobalStats 更新且 [`tidb_skip_missing_partition_stats`](/system-variables.md#tidb_skip_missing_partition_stats-从-v730-版本开始引入) 为 `ON` 时：
+- 当触发全局统计信息更新且 [`tidb_skip_missing_partition_stats`](/system-variables.md#tidb_skip_missing_partition_stats-从-v730-版本开始引入) 为 `ON` 时：
 
-    - 如果某些分区缺失全部列或部分列的统计信息，TiDB 在生成 GlobalStats 时会跳过这些缺失的分区统计信息，不影响 GlobalStats 生成。
+    - 如果某些分区缺失全部列或部分列的统计信息，TiDB 在生成全局统计信息时会跳过这些缺失的分区统计信息，不影响全局统计信息的生成。
 
 在动态裁剪模式下，分区和分区表的 `ANALYZE` 配置应保持一致。因此，如果在 `ANALYZE TABLE TableName PARTITION PartitionNameList` 语句后指定了 `COLUMNS` 配置或在 `WITH` 后指定了 `OPTIONS` 配置，TiDB 将忽略这些配置并返回 warning 信息提示。
 
@@ -362,7 +363,7 @@ SHOW COLUMN_STATS_USAGE WHERE db_name = 'test' AND table_name = 't' AND last_ana
 
     ```sql
     SELECT DISTINCT(CONCAT('DROP STATS ', table_schema, '.', table_name, ';'))
-    FROM information_schema.tables ON mysql.stats_histograms
+    FROM information_schema.tables JOIN mysql.stats_histograms
     ON table_id = tidb_table_id
     WHERE stats_ver = 2;
     ```

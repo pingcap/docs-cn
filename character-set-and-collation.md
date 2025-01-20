@@ -14,8 +14,6 @@ summary: TiDB 支持的字符集包括 ascii、binary、gbk、latin1、utf8 和 
 
 排序规则 (collation) 是在字符集中比较字符以及字符排序顺序的规则。例如，在二进制排序规则中，比较 `A` 和 `a` 的结果是不一样的：
 
-{{< copyable "sql" >}}
-
 ```sql
 SET NAMES utf8mb4 COLLATE utf8mb4_bin;
 SELECT 'A' = 'a';
@@ -27,7 +25,7 @@ SELECT 'A' = 'a';
 SELECT 'A' = 'a';
 ```
 
-```sql
+```
 +-----------+
 | 'A' = 'a' |
 +-----------+
@@ -40,7 +38,7 @@ SELECT 'A' = 'a';
 SET NAMES utf8mb4 COLLATE utf8mb4_general_ci;
 ```
 
-```sql
+```
 Query OK, 0 rows affected (0.00 sec)
 ```
 
@@ -48,7 +46,7 @@ Query OK, 0 rows affected (0.00 sec)
 SELECT 'A' = 'a';
 ```
 
-```sql
+```
 +-----------+
 | 'A' = 'a' |
 +-----------+
@@ -57,17 +55,50 @@ SELECT 'A' = 'a';
 1 row in set (0.00 sec)
 ```
 
+以下示例展示了不同 Unicode 排序规则如何比较德语中的 `ß` 和 `ss`。可以看到，只有较为严格的 Unicode 排序规则会将它们视为等价，从而返回 `1`（表示 TRUE）。
+
+```sql
+SELECT
+  'ss' COLLATE utf8mb4_general_ci = 'ß',
+  'ss' COLLATE utf8mb4_unicode_ci = 'ß',
+  'ss' COLLATE utf8mb4_0900_ai_ci = 'ß',
+  'ss' COLLATE utf8mb4_0900_bin = 'ß'
+\G
+```
+
+```
+*************************** 1. row ***************************
+'ss' COLLATE utf8mb4_general_ci = 'ß': 0
+'ss' COLLATE utf8mb4_unicode_ci = 'ß': 1
+'ss' COLLATE utf8mb4_0900_ai_ci = 'ß': 1
+  'ss' COLLATE utf8mb4_0900_bin = 'ß': 0
+1 row in set (0.01 sec)
+```
+
+### 字符集和排序规则的命名
+
+一个字符集可以有多种排序规则。排序规则的命名格式为 `<character_set>_<collation_properties>`。例如，`utf8mb4` 字符集有一个名为 `utf8mb4_bin` 的排序规则，它是 `utf8mb4` 字符集的二进制排序规则。排序规则名称中可以包含多个属性 (collation properties)，以 `_` 进行分隔。
+
+下表介绍了字符集和排序规则的后缀和含义。
+
+| 后缀 | 含义 |
+|---|---|
+| `_bin` | 二进制排序规则 |
+| `_ci` | 不区分大小写 |
+| `_ai_ci` | 不区分重音和大小写 |
+| `_0900_bin` | Unicode UCA 9.0.0，二进制排序规则 |
+| `_unicode_ci` | （较旧的）Unicode UCA 排序规则，不区分大小写 |
+| `_general_ci` | 较宽松的 Unicode 排序规则，不区分大小写 |
+
 ## 支持的字符集和排序规则
 
 目前 TiDB 支持以下字符集：
-
-{{< copyable "sql" >}}
 
 ```sql
 SHOW CHARACTER SET;
 ```
 
-```sql
+```
 +---------+-------------------------------------+-------------------+--------+
 | Charset | Description                         | Default collation | Maxlen |
 +---------+-------------------------------------+-------------------+--------+
@@ -87,24 +118,24 @@ TiDB 支持以下排序规则：
 SHOW COLLATION;
 ```
 
-```sql
-+--------------------+---------+------+---------+----------+---------+
-| Collation          | Charset | Id   | Default | Compiled | Sortlen |
-+--------------------+---------+------+---------+----------+---------+
-| ascii_bin          | ascii   |   65 | Yes     | Yes      |       1 |
-| binary             | binary  |   63 | Yes     | Yes      |       1 |
-| gbk_bin            | gbk     |   87 |         | Yes      |       1 |
-| gbk_chinese_ci     | gbk     |   28 | Yes     | Yes      |       1 |
-| latin1_bin         | latin1  |   47 | Yes     | Yes      |       1 |
-| utf8_bin           | utf8    |   83 | Yes     | Yes      |       1 |
-| utf8_general_ci    | utf8    |   33 |         | Yes      |       1 |
-| utf8_unicode_ci    | utf8    |  192 |         | Yes      |       1 |
-| utf8mb4_0900_ai_ci | utf8mb4 |  255 |         | Yes      |       1 |
-| utf8mb4_0900_bin   | utf8mb4 |  309 |         | Yes      |       1 |
-| utf8mb4_bin        | utf8mb4 |   46 | Yes     | Yes      |       1 |
-| utf8mb4_general_ci | utf8mb4 |   45 |         | Yes      |       1 |
-| utf8mb4_unicode_ci | utf8mb4 |  224 |         | Yes      |       1 |
-+--------------------+---------+------+---------+----------+---------+
+```
++--------------------+---------+-----+---------+----------+---------+---------------+
+| Collation          | Charset | Id  | Default | Compiled | Sortlen | Pad_attribute |
++--------------------+---------+-----+---------+----------+---------+---------------+
+| ascii_bin          | ascii   |  65 | Yes     | Yes      |       1 | PAD SPACE     |
+| binary             | binary  |  63 | Yes     | Yes      |       1 | NO PAD        |
+| gbk_bin            | gbk     |  87 |         | Yes      |       1 | PAD SPACE     |
+| gbk_chinese_ci     | gbk     |  28 | Yes     | Yes      |       1 | PAD SPACE     |
+| latin1_bin         | latin1  |  47 | Yes     | Yes      |       1 | PAD SPACE     |
+| utf8_bin           | utf8    |  83 | Yes     | Yes      |       1 | PAD SPACE     |
+| utf8_general_ci    | utf8    |  33 |         | Yes      |       1 | PAD SPACE     |
+| utf8_unicode_ci    | utf8    | 192 |         | Yes      |       8 | PAD SPACE     |
+| utf8mb4_0900_ai_ci | utf8mb4 | 255 |         | Yes      |       0 | NO PAD        |
+| utf8mb4_0900_bin   | utf8mb4 | 309 |         | Yes      |       1 | NO PAD        |
+| utf8mb4_bin        | utf8mb4 |  46 | Yes     | Yes      |       1 | PAD SPACE     |
+| utf8mb4_general_ci | utf8mb4 |  45 |         | Yes      |       1 | PAD SPACE     |
+| utf8mb4_unicode_ci | utf8mb4 | 224 |         | Yes      |       8 | PAD SPACE     |
++--------------------+---------+-----+---------+----------+---------+---------------+
 13 rows in set (0.00 sec)
 ```
 
@@ -122,13 +153,11 @@ SHOW COLLATION;
 
 利用以下的语句可以查看字符集对应的排序规则（以下是[新的排序规则框架](#新框架下的排序规则支持)）下的结果：
 
-{{< copyable "sql" >}}
-
 ```sql
 SHOW COLLATION WHERE Charset = 'utf8mb4';
 ```
 
-```sql
+```
 +--------------------+---------+------+---------+----------+---------+
 | Collation          | Charset | Id   | Default | Compiled | Sortlen |
 +--------------------+---------+------+---------+----------+---------+
@@ -145,9 +174,11 @@ TiDB 对 GBK 字符集的支持详情见 [GBK](/character-set-gbk.md)。
 
 ## TiDB 中的 `utf8` 和 `utf8mb4`
 
-MySQL 限制字符集 `utf8` 为最多 3 个字节。这足以存储在基本多语言平面 (BMP) 中的字符，但不足以存储表情符号 (emoji) 等字符。因此，建议改用字符集`utf8mb4`。
+MySQL 限制字符集 `utf8` 为最多 3 个字节。这足以存储在基本多语言平面 (Basic Multilingual Plane, BMP) 中的字符，但不足以存储表情符号 (emoji) 等字符。对于新安装的系统，建议使用 `utf8mb4` 字符集，并逐步迁移停止使用 `utf8`。
 
-默认情况下，TiDB 同样限制字符集 `utf8` 为最多 3 个字节，以确保 TiDB 中创建的数据可以在 MySQL 中顺利恢复。你可以禁用此功能，方法是将系统变量 [`tidb_check_mb4_value_in_utf8`](/system-variables.md#tidb_check_mb4_value_in_utf8) 的值更改为 `OFF`。
+在 MySQL 和 TiDB 中，`utf8` 和 `utf8mb3` 是同一字符集的别名。
+
+默认情况下，TiDB 也将 `utf8` 字符集限制为最多 3 个字节，以确保在 TiDB 中创建的数据仍能安全地恢复到 MySQL 中。尽管你可以通过将系统变量 [`tidb_check_mb4_value_in_utf8`](/system-variables.md#tidb_check_mb4_value_in_utf8) 的值更改为 `OFF` 来禁用此限制，但建议使用 `utf8mb4` 以获得完整的 Unicode 支持和更好的兼容性。
 
 以下示例演示了在表中插入 4 字节的表情符号字符（emoji 字符）时的默认行为。`utf8` 字符集下 `INSERT` 语句不能执行，`utf8mb4` 字符集下可以执行 `INSERT` 语句：
 
@@ -157,7 +188,7 @@ CREATE TABLE utf8_test (
     ) CHARACTER SET utf8;
 ```
 
-```sql
+```
 Query OK, 0 rows affected (0.09 sec)
 ```
 
@@ -167,7 +198,7 @@ CREATE TABLE utf8m4_test (
     ) CHARACTER SET utf8mb4;
 ```
 
-```sql
+```
 Query OK, 0 rows affected (0.09 sec)
 ```
 
@@ -175,7 +206,7 @@ Query OK, 0 rows affected (0.09 sec)
 INSERT INTO utf8_test VALUES ('😉');
 ```
 
-```sql
+```
 ERROR 1366 (HY000): incorrect utf8 value f09f9889(😉) for column c
 ```
 
@@ -183,7 +214,7 @@ ERROR 1366 (HY000): incorrect utf8 value f09f9889(😉) for column c
 INSERT INTO utf8m4_test VALUES ('😉');
 ```
 
-```sql
+```
 Query OK, 1 row affected (0.02 sec)
 ```
 
@@ -191,7 +222,7 @@ Query OK, 1 row affected (0.02 sec)
 SELECT char_length(c), length(c), c FROM utf8_test;
 ```
 
-```sql
+```
 Empty set (0.01 sec)
 ```
 
@@ -199,7 +230,7 @@ Empty set (0.01 sec)
 SELECT char_length(c), length(c), c FROM utf8m4_test;
 ```
 
-```sql
+```
 +----------------+-----------+------+
 | char_length(c) | length(c) | c    |
 +----------------+-----------+------+
@@ -232,17 +263,13 @@ ALTER DATABASE db_name
 
 通过系统变量 `character_set_database` 和 `collation_database` 可以查看到当前数据库的字符集以及排序规则：
 
-{{< copyable "sql" >}}
-
 ```sql
 CREATE SCHEMA test1 CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
 ```
 
-```sql
+```
 Query OK, 0 rows affected (0.09 sec)
 ```
-
-{{< copyable "sql" >}}
 
 ```sql
 USE test1;
@@ -252,13 +279,11 @@ USE test1;
 Database changed
 ```
 
-{{< copyable "sql" >}}
-
 ```sql
 SELECT @@character_set_database, @@collation_database;
 ```
 
-```sql
+```
 +--------------------------|----------------------+
 | @@character_set_database | @@collation_database |
 +--------------------------|----------------------+
@@ -267,33 +292,27 @@ SELECT @@character_set_database, @@collation_database;
 1 row in set (0.00 sec)
 ```
 
-{{< copyable "sql" >}}
-
 ```sql
 CREATE SCHEMA test2 CHARACTER SET latin1 COLLATE latin1_bin;
 ```
 
-```sql
+```
 Query OK, 0 rows affected (0.09 sec)
 ```
-
-{{< copyable "sql" >}}
 
 ```sql
 USE test2;
 ```
 
-```sql
+```
 Database changed
 ```
-
-{{< copyable "sql" >}}
 
 ```sql
 SELECT @@character_set_database, @@collation_database;
 ```
 
-```sql
+```
 +--------------------------|----------------------+
 | @@character_set_database | @@collation_database |
 +--------------------------|----------------------+
@@ -303,8 +322,6 @@ SELECT @@character_set_database, @@collation_database;
 ```
 
 在 INFORMATION_SCHEMA 中也可以查看到这两个值：
-
-{{< copyable "sql" >}}
 
 ```sql
 SELECT DEFAULT_CHARACTER_SET_NAME, DEFAULT_COLLATION_NAME
@@ -327,13 +344,11 @@ ALTER TABLE tbl_name
 
 例如：
 
-{{< copyable "sql" >}}
-
 ```sql
 CREATE TABLE t1(a int) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
 ```
 
-```sql
+```
 Query OK, 0 rows affected (0.08 sec)
 ```
 
@@ -365,8 +380,6 @@ col_name {ENUM | SET} (val_list)
 
 示例如下：
 
-{{< copyable "sql" >}}
-
 ```sql
 SELECT 'string';
 SELECT _utf8mb4'string';
@@ -394,8 +407,6 @@ SELECT _utf8mb4'string' COLLATE utf8mb4_general_ci;
 
     `SET NAMES` 用来设定客户端会在之后的请求中使用的字符集。`SET NAMES utf8mb4` 表示客户端会在接下来的请求中，都使用 utf8mb4 字符集。服务端也会在之后返回结果的时候使用 utf8mb4 字符集。`SET NAMES 'charset_name'` 语句其实等于下面语句的组合：
 
-    {{< copyable "sql" >}}
-
     ```sql
     SET character_set_client = charset_name;
     SET character_set_results = charset_name;
@@ -407,8 +418,6 @@ SELECT _utf8mb4'string' COLLATE utf8mb4_general_ci;
 * `SET CHARACTER SET 'charset_name'`
 
     跟 `SET NAMES` 类似，等价于下面语句的组合：
-
-    {{< copyable "sql" >}}
 
     ```sql
     SET character_set_client = charset_name;
@@ -451,13 +460,11 @@ SELECT _utf8mb4'string' COLLATE utf8mb4_general_ci;
 
 在 4.0 版本之前，TiDB 中可以指定大部分 MySQL 中的排序规则，并把这些排序规则按照默认排序规则处理，即以编码字节序为字符定序。和 MySQL 不同的是，TiDB 不会处理字符末尾的空格，因此会造成以下的行为区别：
 
-{{< copyable "sql" >}}
-
 ```sql
 CREATE TABLE t(a varchar(20) charset utf8mb4 collate utf8mb4_general_ci PRIMARY KEY);
 ```
 
-```sql
+```
 Query OK, 0 rows affected
 ```
 
@@ -465,7 +472,7 @@ Query OK, 0 rows affected
 INSERT INTO t VALUES ('A');
 ```
 
-```sql
+```
 Query OK, 1 row affected
 ```
 
@@ -473,7 +480,7 @@ Query OK, 1 row affected
 INSERT INTO t VALUES ('a');
 ```
 
-```sql
+```
 Query OK, 1 row affected
 ```
 
@@ -483,7 +490,7 @@ Query OK, 1 row affected
 INSERT INTO t VALUES ('a ');
 ```
 
-```sql
+```
 Query OK, 1 row affected
 ```
 
@@ -499,13 +506,11 @@ TiDB 4.0 新增了完整的排序规则支持框架，从语义上支持了排�
 >
 > 当 `mysql.tidb` 表查询结果和 `new_collations_enabled_on_first_bootstrap` 的值不同时，以 `mysql.tidb` 表的结果为准。
 
-{{< copyable "sql" >}}
-
 ```sql
 SELECT VARIABLE_VALUE FROM mysql.tidb WHERE VARIABLE_NAME='new_collation_enabled';
 ```
 
-```sql
+```
 +----------------+
 | VARIABLE_VALUE |
 +----------------+
@@ -518,13 +523,11 @@ SELECT VARIABLE_VALUE FROM mysql.tidb WHERE VARIABLE_NAME='new_collation_enabled
 
 使用 `utf8_general_ci`、`utf8mb4_general_ci`、`utf8_unicode_ci`、`utf8mb4_unicode_ci`、`utf8mb4_0900_ai_ci` 和 `gbk_chinese_ci` 中任一种时，字符串之间的比较是大小写不敏感 (case-insensitive) 和口音不敏感 (accent-insensitive) 的。同时，TiDB 还修正了排序规则的 `PADDING` 行为：
 
-{{< copyable "sql" >}}
-
 ```sql
 CREATE TABLE t(a varchar(20) charset utf8mb4 collate utf8mb4_general_ci PRIMARY KEY);
 ```
 
-```sql
+```
 Query OK, 0 rows affected (0.00 sec)
 ```
 
@@ -532,7 +535,7 @@ Query OK, 0 rows affected (0.00 sec)
 INSERT INTO t VALUES ('A');
 ```
 
-```sql
+```
 Query OK, 1 row affected (0.00 sec)
 ```
 
@@ -540,7 +543,7 @@ Query OK, 1 row affected (0.00 sec)
 INSERT INTO t VALUES ('a');
 ```
 
-```sql
+```
 ERROR 1062 (23000): Duplicate entry 'a' for key 't.PRIMARY'
 ```
 
@@ -550,7 +553,7 @@ TiDB 兼容了 MySQL 的 case insensitive collation。
 INSERT INTO t VALUES ('a ');
 ```
 
-```sql
+```
 ERROR 1062 (23000): Duplicate entry 'a ' for key 't.PRIMARY'
 ```
 
@@ -585,13 +588,11 @@ binary > utf8mb4_bin > (utf8mb4_general_ci = utf8mb4_unicode_ci) > utf8_bin > (u
 
 TiDB 支持使用 `COLLATE` 子句来指定一个表达式的排序规则，该表达式的 coercibility 值为 `0`，具有最高的优先级。示例如下：
 
-{{< copyable "sql" >}}
-
 ```sql
 SELECT 'a' = _utf8mb4 'A' collate utf8mb4_general_ci;
 ```
 
-```sql
+```
 +-----------------------------------------------+
 | 'a' = _utf8mb4 'A' collate utf8mb4_general_ci |
 +-----------------------------------------------+
