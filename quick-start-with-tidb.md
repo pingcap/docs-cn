@@ -58,7 +58,7 @@ TiDB 是一个分布式系统。最基础的 TiDB 测试集群通常由 2 个 Ti
 
     > **注意：**
     >
-    > v5.2.0 及以上版本的 TiDB 支持在 Apple M1 芯片的机器上运行 `tiup playground`。
+    > v5.2.0 及以上版本的 TiDB 支持在 Apple silicon 芯片的机器上运行 `tiup playground`。
 
 2. 声明全局环境变量。
 
@@ -129,7 +129,7 @@ TiDB 是一个分布式系统。最基础的 TiDB 测试集群通常由 2 个 Ti
 
     - 访问 Prometheus 管理界面：<http://127.0.0.1:9090>。
 
-    - 访问 [TiDB Dashboard](/dashboard/dashboard-intro.md) 页面：<http://127.0.0.1:2379/dashboard> ，默认用户名为 `root`，密码为空。
+    - 访问 [TiDB Dashboard](/dashboard/dashboard-intro.md) 页面：<http://127.0.0.1:2379/dashboard>，默认用户名为 `root`，密码为空。
 
     - 访问 Grafana 界面：<http://127.0.0.1:3000>，默认用户名和密码都为 `admin`。
 
@@ -249,7 +249,7 @@ TiDB 是一个分布式系统。最基础的 TiDB 测试集群通常由 2 个 Ti
 
     - 访问 Prometheus 管理界面：<http://127.0.0.1:9090>。
 
-    - 访问 [TiDB Dashboard](/dashboard/dashboard-intro.md) 页面：<http://127.0.0.1:2379/dashboard> ，默认用户名为 `root`，密码为空。
+    - 访问 [TiDB Dashboard](/dashboard/dashboard-intro.md) 页面：<http://127.0.0.1:2379/dashboard>，默认用户名为 `root`，密码为空。
 
     - 访问 Grafana 界面：<http://127.0.0.1:3000>，默认用户名和密码都为 `admin`。
 
@@ -482,9 +482,9 @@ TiDB 是一个分布式系统。最基础的 TiDB 测试集群通常由 2 个 Ti
         mysql -h 10.0.1.1 -P 4000 -u root
         ```
 
-    - 访问 Grafana 监控页面：<http://{grafana-ip}:3000> ，默认用户名和密码均为 `admin`。
+    - 访问 Grafana 监控页面：<http://{grafana-ip}:3000>，默认用户名和密码均为 `admin`。
 
-    - 访问集群 [TiDB Dashboard](/dashboard/dashboard-intro.md) 监控页面：<http://{pd-ip}:2379/dashboard> ，默认用户名为 `root`，密码为空。
+    - 访问集群 [TiDB Dashboard](/dashboard/dashboard-intro.md) 监控页面：<http://{pd-ip}:2379/dashboard>，默认用户名为 `root`，密码为空。
 
 10. （可选）查看集群列表和拓扑结构：
 
