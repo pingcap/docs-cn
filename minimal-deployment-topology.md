@@ -16,6 +16,10 @@ summary: 介绍 TiDB 集群的最小拓扑。
 | TiKV | 3 | 16 VCore 32 GiB <br/> 2 TiB (NVMe SSD) 用于存储 | 10.0.1.7 <br/> 10.0.1.8 <br/> 10.0.1.9 | 默认端口 <br/> 全局目录配置 |
 | Monitoring & Grafana | 1 | 4 VCore 8 GiB <br/> 500 GiB (SSD) 用于存储 | 10.0.1.10 | 默认端口 <br/> 全局目录配置 |
 
+> **注意：**
+>
+> 该表中拓扑实例的 IP 为示例 IP。在实际部署时，请替换为实际的 IP。
+
 ### 拓扑模版
 
 <details>
