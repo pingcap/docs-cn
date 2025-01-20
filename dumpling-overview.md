@@ -386,24 +386,24 @@ SET GLOBAL tidb_gc_life_time = '10m';
 
 ## 输出文件名模板
 
-`--output-filename-template` 参数定义了所有文件的命名约定，不包括文件扩展名。它接受 [Go `text/template` 语法](https://golang.org/pkg/text/template/) 的字符串。
+`--output-filename-template` 参数用于定义输出文件的命名规则，不包括文件扩展名。它接受符合 [Go `text/template` 语法](https://golang.org/pkg/text/template/) 的字符串。
 
-模板中可用的字段如下：
+模板中可定义的字段如下：
 
 * `.DB`：数据库名
 * `.Table`：表名或对象名
-* `.Index`：当一个表被拆分成多个文件时的 0 基序号，表示正在导出的是哪一部分
+* `.Index`：当一个表被拆分成多个文件时的 0 起始序号，表示正在导出的是哪一部分。例如，`{{printf "%09d" .Index}}` 表示使用 9 位数字格式化 `.Index`，并用前导 0 填充。
 
-数据库和表名可能包含特殊字符，如 /，而这些字符在文件系统中不允许使用。为了解决这个问题，Dumpling 提供了 `fn` 函数来对这些特殊字符进行百分号编码：
+数据库名和表名可能包含一些在文件系统中不允许使用的特殊字符，如 `/`。为了解决此问题，Dumpling 提供了 `fn` 函数来对这些特殊字符进行百分号编码：
 
 * U+0000 到 U+001F（控制字符）
 * `/`、`\`、`<`、`>`、`:`、`"`、`*`、`?`（无效的 Windows 路径字符）
-* `.`（数据库或表名分隔符）
-* `-`，用作 `-schema` 的一部分
+* `.`（数据库名或表名分隔符）
+* `-schema` 中的 `-`
 
-例如，使用 `--output-filename-template '{{fn .Table}}.{{printf "%09d" .Index}}'`，Dumpling 会将表 `"db"."tbl:normal"` 写入名为 `tbl%3Anormal.000000000.sql`、`tbl%3Anormal.000000001.sql` 等文件中。
+例如，使用 `--output-filename-template '{{fn .Table}}.{{printf "%09d" .Index}}'`，Dumpling 会将表 `db.tbl:normal` 写入 `tbl%3Anormal.000000000.sql`、`tbl%3Anormal.000000001.sql` 等文件中。
 
-除了数据文件，你还可以定义命名模板来替换 schema 文件的文件名。下表显示了默认配置。
+除了输出的数据文件名，你还可以通过 `--output-filename-template` 来替换 schema 文件的文件名。下表显示了默认配置。
 
 | 名称 | 内容 |
 |------|---------|
@@ -417,4 +417,4 @@ SET GLOBAL tidb_gc_life_time = '10m';
 | trigger | `{{fn .DB}}.{{fn .Table}}-schema-triggers` |
 | view | `{{fn .DB}}.{{fn .Table}}-schema-view` |
 
-例如，使用 `--output-filename-template '{{define "table"}}{{fn .Table}}.$schema{{end}}{{define "data"}}{{fn .Table}}.{{printf "%09d" .Index}}{{end}}'`，Dumpling 会将表 `"db"."tbl:normal"` 的 schema 写入名为 `tbl%3Anormal.$schema.sql` 的文件中，将数据写入 `tbl%3Anormal.000000000.sql`、`tbl%3Anormal.000000001.sql` 等文件中。
+例如，使用 `--output-filename-template '{{define "table"}}{{fn .Table}}.$schema{{end}}{{define "data"}}{{fn .Table}}.{{printf "%09d" .Index}}{{end}}'`，Dumpling 会将表 `db.tbl:normal` 的 schema 写入名为 `tbl%3Anormal.$schema.sql` 的文件中，将数据写入 `tbl%3Anormal.000000000.sql`、`tbl%3Anormal.000000001.sql` 等文件中。
