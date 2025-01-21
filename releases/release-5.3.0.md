@@ -1,5 +1,6 @@
 ---
 title: TiDB 5.3 Release Notes
+summary: TiDB 5.3.0 版本发布了许多重要的功能和改进，包括临时表、表属性设置、TiDB Dashboard 安全性提升、PD 时间戳处理流程优化、DM 同步性能提升、TiDB Lightning 分布式并行导入等。此外，还修复了许多 bug，提升了稳定性和性能。
 ---
 
 # TiDB 5.3 Release Notes

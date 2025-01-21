@@ -15,14 +15,14 @@ TiDB 是一个兼容 MySQL 的数据库。[SQLAlchemy](https://www.sqlalchemy.or
 
 > **注意**
 >
-> 本文档适用于 TiDB Serverless、TiDB Dedicated 和本地部署的 TiDB。
+> 本文档适用于 TiDB Cloud Serverless、TiDB Cloud Dedicated 和本地部署的 TiDB。
 
 ## 前置需求
 
 - 推荐 [Python 3.8](https://www.python.org/downloads/) 及以上版本。
 - [Git](https://git-scm.com/downloads)。
 - TiDB 集群。如果你还没有 TiDB 集群，可以按照以下方式创建：
-    - （推荐方式）参考[创建 TiDB Serverless 集群](/develop/dev-guide-build-cluster-in-cloud.md#第-1-步创建-tidb-serverless-集群)，创建你自己的 TiDB Cloud 集群。
+    - （推荐方式）参考[创建 TiDB Cloud Serverless 集群](/develop/dev-guide-build-cluster-in-cloud.md#第-1-步创建-tidb-cloud-serverless-集群)，创建你自己的 TiDB Cloud 集群。
     - 参考[部署本地测试 TiDB 集群](/quick-start-with-tidb.md#部署本地测试集群)或[部署正式 TiDB 集群](/production-deployment-using-tiup.md)，创建本地集群。
 
 ## 运行代码并连接到 TiDB
@@ -58,15 +58,20 @@ SQLAlchemy 是一个支持多种数据库的 ORM 库。它是对数据库的高�
 
 <SimpleTab>
 
-<div label="TiDB Serverless">
+<div label="TiDB Cloud Serverless">
 
-1. 在 TiDB Cloud 的 [**Clusters**](https://tidbcloud.com/console/clusters) 页面中，选择你的 TiDB Serverless 集群，进入集群的 **Overview** 页面。
+> **注意：**
+>
+> TiDB Cloud Serverless 集群目前存在一个限制：如果 5 分钟内没有活跃连接，集群将会自动关闭，这会导致所有连接中断。因此，当使用 SQLAlchemy 连接到 TiDB Cloud Serverless 集群时，从连接池中获取的连接可能会遇到 `OperationalError` 报错，例如 `Lost connection to MySQL server during query` 或 `MySQL Connection not available`。为了避免该错误，可将 `pool_recycle` 参数设置为 `300`。更多信息，请参阅 SQLAlchemy 文档 [Dealing with Disconnects](https://docs.sqlalchemy.org/en/20/core/pooling.html#dealing-with-disconnects)。
+
+1. 在 TiDB Cloud 的 [**Clusters**](https://tidbcloud.com/console/clusters) 页面中，选择你的 TiDB Cloud Serverless 集群，进入集群的 **Overview** 页面。
 
 2. 点击右上角的 **Connect** 按钮，将会弹出连接对话框。
 
 3. 确认对话框中的配置和你的运行环境一致。
 
-    - **Endpoint Type** 为 `Public`。
+    - **Connection Type** 为 `Public`。
+    - **Branch** 选择 `main`。
     - **Connect With** 选择 `General`。
     - **Operating System** 为你的运行环境。
 
@@ -74,11 +79,11 @@ SQLAlchemy 是一个支持多种数据库的 ORM 库。它是对数据库的高�
     >
     > 如果你在 Windows Subsystem for Linux (WSL) 中运行，请切换为对应的 Linux 发行版。
 
-4. 如果你还没有设置密码，点击 **Create password** 生成一个随机密码。
+4. 如果你还没有设置密码，点击 **Generate Password** 生成一个随机密码。
 
     > **Tip:**
     >
-    > 如果你之前已经生成过密码，可以直接使用原密码，或点击 **Reset password** 重新生成密码。
+    > 如果你之前已经生成过密码，可以直接使用原密码，或点击 **Reset Password** 重新生成密码。
 
 5. 运行以下命令，将 `.env.example` 复制并重命名为 `.env`：
 
@@ -103,15 +108,17 @@ SQLAlchemy 是一个支持多种数据库的 ORM 库。它是对数据库的高�
 
 </div>
 
-<div label="TiDB Dedicated">
+<div label="TiDB Cloud Dedicated">
 
-1. 在 TiDB Cloud 的 [**Clusters**](https://tidbcloud.com/console/clusters) 页面中，选择你的 TiDB Dedicated 集群，进入集群的 **Overview** 页面。
+1. 在 TiDB Cloud 的 [**Clusters**](https://tidbcloud.com/console/clusters) 页面中，选择你的 TiDB Cloud Dedicated 集群，进入集群的 **Overview** 页面。
 
 2. 点击右上角的 **Connect** 按钮，将会出现连接对话框。
 
-3. 在对话框中点击 **Allow Access from Anywhere**，然后点击 **Download TiDB cluster CA** 下载 TiDB Cloud 提供的 CA 证书。
+3. 在连接对话框中，从 **Connection Type** 下拉列表中选择 **Public**，并点击 **CA cert** 下载 CA 文件。
 
-    更多配置细节，可参考 [TiDB Dedicated 标准连接教程（英文）](https://docs.pingcap.com/tidbcloud/connect-via-standard-connection)。
+    如果你尚未配置 IP 访问列表，请在首次连接前点击 **Configure IP Access List** 或按照[配置 IP 访问列表（英文）](https://docs.pingcap.com/tidbcloud/configure-ip-access-list)中的步骤进行配置。
+
+    除 **Public** 连接类型外，TiDB Cloud Dedicated 还支持 **Private Endpoint** 和 **VPC Peering** 连接类型。详情请参阅[连接 TiDB Cloud Dedicated 集群（英文）](https://docs.pingcap.com/tidbcloud/connect-to-tidb-cluster)。
 
 4. 运行以下命令，将 `.env.example` 复制并重命名为 `.env`：
 
@@ -238,7 +245,7 @@ with Session() as session:
     session.commit()
 ```
 
-更多信息参考[插入数据](/develop/dev-guide-insert-data.md)。
+更多信息参考[插入数据](/develop/dev-guide-insert-data.md)以及 [SQLAlchemy Query](https://docs.sqlalchemy.org/en/20/orm/queryguide/index.html)。
 
 ### 查询数据
 
@@ -248,7 +255,7 @@ with Session() as session:
     print(player)
 ```
 
-更多信息参考[查询数据](/develop/dev-guide-get-data-from-single-table.md)。
+更多信息参考[查询数据](/develop/dev-guide-get-data-from-single-table.md)以及 [SQLAlchemy Query](https://docs.sqlalchemy.org/en/20/orm/queryguide/index.html)。
 
 ### 更新数据
 
@@ -259,7 +266,7 @@ with Session() as session:
     session.commit()
 ```
 
-更多信息参考[更新数据](/develop/dev-guide-update-data.md)。
+更多信息参考[更新数据](/develop/dev-guide-update-data.md)以及 [SQLAlchemy Query](https://docs.sqlalchemy.org/en/20/orm/queryguide/index.html)。
 
 ### 删除数据
 
@@ -270,7 +277,7 @@ with Session() as session:
     session.commit()
 ```
 
-更多信息参考[删除数据](/develop/dev-guide-delete-data.md)。
+更多信息参考[删除数据](/develop/dev-guide-delete-data.md)以及 [SQLAlchemy Query](https://docs.sqlalchemy.org/en/20/orm/queryguide/index.html)。
 
 ## 下一步
 

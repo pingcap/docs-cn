@@ -1,5 +1,6 @@
 ---
 title: tiup cluster stop
+summary: tiup cluster stop 命令用于停止指定集群的所有服务或部分服务。核心服务停止后集群将无法提供服务。语法为 tiup cluster stop <cluster-name>。选项包括 -N, --node（strings，默认为 []，表示所有节点），-R, --role（strings，默认为 []，表示所有角色），-h, --help。停止服务的日志将会输出。
 ---
 
 # tiup cluster stop

@@ -1,5 +1,6 @@
 ---
 title: tiup mirror set
+summary: tiup mirror set 命令用于切换当前镜像，支持本地文件系统和远程网络两种镜像。命令语法为 tiup mirror set <mirror-addr> [flags]，其中 <mirror-addr> 为镜像地址，可以是网络地址或本地文件路径。选项 -r, --root 用于指定根证书。输出为无。
 ---
 
 # tiup mirror set

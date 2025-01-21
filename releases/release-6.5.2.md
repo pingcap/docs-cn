@@ -66,7 +66,7 @@ TiDB 版本：6.5.2
     - 修复在开启 Prepared Plan Cache 的情况下，索引全表扫可能会报错的问题 [#42150](https://github.com/pingcap/tidb/issues/42150) @[fzzf678](https://github.com/fzzf678)
     - 修复在开启 Prepared Plan Cache 时 Index Merge 可能得到错误结果的问题 [#41828](https://github.com/pingcap/tidb/issues/41828) @[qw4990](https://github.com/qw4990)
     - 修复了设置 `max_prepared_stmt_count` 不生效的问题 [#39735](https://github.com/pingcap/tidb/issues/39735) @[xuyifangreeneyes](https://github.com/xuyifangreeneyes)
-    - 修复全局内存控制可能错误地 Kill 内存使用量小于 `tidb_server_memory_limit_sess_min_size` 的 SQL 的问题 [#42662](https://github.com/pingcap/tidb/issues/41828) @[XuHuaiyu](https://github.com/XuHuaiyu)
+    - 修复全局内存控制可能错误地 Kill 内存使用量小于 `tidb_server_memory_limit_sess_min_size` 的 SQL 的问题 [#42662](https://github.com/pingcap/tidb/issues/42662) @[XuHuaiyu](https://github.com/XuHuaiyu)
     - 修复分区表动态裁剪模式下 Index Join 可能导致 panic 的问题 [#40596](https://github.com/pingcap/tidb/issues/40596) @[tiancaiamao](https://github.com/tiancaiamao)
 
 + TiKV
@@ -95,7 +95,7 @@ TiDB 版本：6.5.2
 
     + TiCDC
 
-        - 修复同步到对象存储时，partition 分隔符不生效问题 [#8581](https://github.com/pingcap/tiflow/issues/8581) @[CharlesCheung96](https://github.com/CharlesCheung96) @[hi-rustin](https://github.com/hi-rustin)
+        - 修复同步到对象存储时，partition 分隔符不生效问题 [#8581](https://github.com/pingcap/tiflow/issues/8581) @[CharlesCheung96](https://github.com/CharlesCheung96) @[hi-rustin](https://github.com/Rustin170506)
         - 修复同步到对象存储时，表调度可能导致数据丢失的问题 [#8256](https://github.com/pingcap/tiflow/issues/8256) @[zhaoxinyu](https://github.com/zhaoxinyu)
         - 修复不可重入的 DDL 导致同步卡住的问题 [#8662](https://github.com/pingcap/tiflow/issues/8662) @[hicqu](https://github.com/hicqu)
         - 修复同步到对象存储时，TiCDC 扩缩容可能导致数据丢失的问题 [#8666](https://github.com/pingcap/tiflow/issues/8666) @[CharlesCheung96](https://github.com/CharlesCheung96)

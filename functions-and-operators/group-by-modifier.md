@@ -34,9 +34,11 @@ SELECT count(1) FROM t GROUP BY a,b,c WITH ROLLUP;
 
 ## 准备条件
 
-目前，TiDB 仅在 TiFlash MPP 模式下支持为 `WITH ROLLUP` 语法生成有效的执行计划，因此你的 TiDB 集群需要包含 TiFlash 节点，并且对目标分析表进行了正确的 TiFlash 副本的配置。
+在 v8.3.0 之前版本中，TiDB 仅支持在 [TiFlash MPP 模式](/tiflash/use-tiflash-mpp-mode.md)下为 `WITH ROLLUP` 语法生成有效的执行计划。因此你的 TiDB 集群需要包含 TiFlash 节点，并且对目标分析表进行了正确的 TiFlash 副本的配置。更多信息，请参考[扩容 TiFlash 节点](/scale-tidb-using-tiup.md#扩容-tiflash-节点)。
 
-更多信息，请参考[扩容 TiFlash 节点](/scale-tidb-using-tiup.md#扩容-tiflash-节点)。
+从 v8.3.0 开始，上述限制已被移除。无论 TiDB 集群是否包含 TiFlash 节点，TiDB 都支持为 `WITH ROLLUP` 语法生成有效的执行计划。
+
+你可以通过执行计划中 `Expand` 算子的 `task` 属性判断执行 `Expand` 算子的是 TiDB 还是 TiFlash。更多信息，请参考[如何阅读 ROLLUP 的执行计划](#如何阅读-rollup-的执行计划)。
 
 ## 使用示例
 
@@ -51,7 +53,7 @@ CREATE TABLE bank
     profit  DECIMAL(13, 7)
 );
 
-ALTER TABLE bank SET TIFLASH REPLICA 1; -- 为该表添加一个 TiFlash 副本
+ALTER TABLE bank SET TIFLASH REPLICA 1; -- 在 TiFlash MPP 模式下，为该表添加一个 TiFlash 副本
 
 INSERT INTO bank VALUES(2000, "Jan", 1, 10.3),(2001, "Feb", 2, 22.4),(2000,"Mar", 3, 31.6)
 ```
@@ -156,14 +158,31 @@ SELECT year, month, SUM(profit) AS profit, grouping(year) as grp_year, grouping(
 
 ## 如何阅读 ROLLUP 的执行计划
 
-多维度数据聚合使用了 `Expand` 算子来复制数据以满足多维度分组的需求，每个复制的数据副本都对应一个特定维度的分组。通过 MPP 的数据 shuffle 能力，`Expand` 算子能够快速地在多个 TiFlash 节点之间重新组织和计算大量的数据，充分利用每个节点的计算能力。
+多维度数据聚合使用了 `Expand` 算子来复制数据以满足多维度分组的需求，每个复制的数据副本都对应一个特定维度的分组。在 MPP 模式下，`Expand` 算子能够利用数据 shuffle 快速地在多个节点之间重新组织和计算大量的数据，充分利用每个节点的计算能力。在不包含 TiFlash 节点的 TiDB 集群中，`Expand` 算子因为只在 TiDB 单节点上执行，数据冗余会随着维度分组 (`grouping set`) 数量的增加而增加。
 
 `Expand` 算子的实现类似 `Projection` 算子，但区别在于 `Expand` 是多层级的 `Projection`，具有多层级投影运算表达式。对于每行原始数据行，`Projection` 算子只会生成一行结果输出，而 `Expand` 算子会生成多行结果（行数等于多层级投影运算表达式的层数）。
 
-以下为一个执行计划示例：
+以下为不包含 TiFlash 节点的 TiDB 集群的执行计划示例，其中 `Expand` 算子的 `task` 为 `root`，表示 `Expand` 算子在 TiDB 中执行：
 
 ```sql
-explain SELECT year, month, grouping(year), grouping(month), SUM(profit) AS profit FROM bank GROUP BY year, month WITH ROLLUP;
+EXPLAIN SELECT year, month, grouping(year), grouping(month), SUM(profit) AS profit FROM bank GROUP BY year, month WITH ROLLUP;
++--------------------------------+---------+-----------+---------------+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| id                             | estRows | task      | access object | operator info                                                                                                                                                                                                                        |
++--------------------------------+---------+-----------+---------------+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| Projection_7                   | 2.40    | root      |               | Column#6->Column#12, Column#7->Column#13, grouping(gid)->Column#14, grouping(gid)->Column#15, Column#9->Column#16                                                                                                                    |
+| └─HashAgg_8                    | 2.40    | root      |               | group by:Column#6, Column#7, gid, funcs:sum(test.bank.profit)->Column#9, funcs:firstrow(Column#6)->Column#6, funcs:firstrow(Column#7)->Column#7, funcs:firstrow(gid)->gid                                                            |
+|   └─Expand_12                  | 3.00    | root      |               | level-projection:[test.bank.profit, <nil>->Column#6, <nil>->Column#7, 0->gid],[test.bank.profit, Column#6, <nil>->Column#7, 1->gid],[test.bank.profit, Column#6, Column#7, 3->gid]; schema: [test.bank.profit,Column#6,Column#7,gid] |
+|     └─Projection_14            | 3.00    | root      |               | test.bank.profit, test.bank.year->Column#6, test.bank.month->Column#7                                                                                                                                                                |
+|       └─TableReader_16         | 3.00    | root      |               | data:TableFullScan_15                                                                                                                                                                                                                |
+|         └─TableFullScan_15     | 3.00    | cop[tikv] | table:bank    | keep order:false, stats:pseudo                                                                                                                                                                                                       |
++--------------------------------+---------+-----------+---------------+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+6 rows in set (0.00 sec)
+```
+
+以下为 TiFlash MPP 模式下的执行计划示例，其中 `Expand` 算子的 `task` 为 `mpp[tiflash]`，表示 `Expand` 算子在 TiFlash 中执行：
+
+```sql
+EXPLAIN SELECT year, month, grouping(year), grouping(month), SUM(profit) AS profit FROM bank GROUP BY year, month WITH ROLLUP;
 +----------------------------------------+---------+--------------+---------------+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
 | id                                     | estRows | task         | access object | operator info                                                                                                                                                                                                                        |
 +----------------------------------------+---------+--------------+---------------+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+

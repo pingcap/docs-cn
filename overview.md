@@ -1,6 +1,7 @@
 ---
 title: TiDB 简介
 aliases: ['/docs-cn/dev/overview/','/docs-cn/dev/key-features/','/docs-cn/overview','/docs-cn/stable/overview/','/docs-cn/stable/key-features/']
+summary: TiDB 是 PingCAP 公司自主设计、研发的开源分布式关系型数据库，支持在线事务处理与在线分析处理 (HTAP)。具有水平扩容、金融级高可用、实时 HTAP、云原生的分布式数据库、兼容 MySQL 协议和 MySQL 生态等特性。适用于高可用、强一致性要求高、数据规模大等各种应用场景。具有一键水平扩缩容、金融级高可用、实时 HTAP、云原生的分布式数据库、兼容 MySQL 协议和 MySQL 生态等五大核心特性，以及金融行业、海量数据及高并发的 OLTP、实时 HTAP、数据汇聚、二次加工处理等四大核心应用场景。
 ---
 
 # TiDB 简介
@@ -13,7 +14,7 @@ aliases: ['/docs-cn/dev/overview/','/docs-cn/dev/key-features/','/docs-cn/overvi
 
 -->
 
-[TiDB](https://github.com/pingcap/tidb) 是 [PingCAP](https://pingcap.com/about-cn/) 公司自主设计、研发的开源分布式关系型数据库，是一款同时支持在线事务处理与在线分析处理 (Hybrid Transactional and Analytical Processing, HTAP) 的融合型分布式数据库产品，具备水平扩容或者缩容、金融级高可用、实时 HTAP、云原生的分布式数据库、兼容 MySQL 5.7 协议和 MySQL 生态等重要特性。目标是为用户提供一站式 OLTP (Online Transactional Processing)、OLAP (Online Analytical Processing)、HTAP 解决方案。TiDB 适合高可用、强一致要求较高、数据规模较大等各种应用场景。
+[TiDB](https://github.com/pingcap/tidb) 是 [PingCAP](https://pingcap.com/about-cn/) 公司自主设计、研发的开源分布式关系型数据库，是一款同时支持在线事务处理与在线分析处理 (Hybrid Transactional and Analytical Processing, HTAP) 的融合型分布式数据库产品，具备水平扩容或者缩容、金融级高可用、实时 HTAP、云原生的分布式数据库、兼容 MySQL 协议和 MySQL 生态等重要特性。目标是为用户提供一站式 OLTP (Online Transactional Processing)、OLAP (Online Analytical Processing)、HTAP 解决方案。TiDB 适合高可用、强一致要求较高、数据规模较大等各种应用场景。
 
 关于 TiDB 的关键技术创新，请观看以下视频。
 
@@ -37,9 +38,9 @@ aliases: ['/docs-cn/dev/overview/','/docs-cn/dev/key-features/','/docs-cn/overvi
 
     专为云而设计的分布式数据库，通过 [TiDB Operator](https://docs.pingcap.com/zh/tidb-in-kubernetes/stable/tidb-operator-overview) 可在公有云、私有云、混合云中实现部署工具化、自动化。
 
-- 兼容 MySQL 5.7 协议和 MySQL 生态
+- 兼容 MySQL 协议和 MySQL 生态
 
-    兼容 MySQL 5.7 协议、MySQL 常用的功能、MySQL 生态，应用无需或者修改少量代码即可从 MySQL 迁移到 TiDB。提供丰富的[数据迁移工具](/ecosystem-tool-user-guide.md)帮助应用便捷完成数据迁移。
+    兼容 MySQL 协议、MySQL 常用的功能、MySQL 生态，应用无需或者修改少量代码即可从 MySQL 迁移到 TiDB。提供丰富的[数据迁移工具](/ecosystem-tool-user-guide.md)帮助应用便捷完成数据迁移。
 
 ## 四大核心应用场景
 

@@ -1,5 +1,6 @@
 ---
 title: TiDB 4.0.13 Release Notes
+summary: TiDB 4.0.13 发布，新增 `AUTO_INCREMENT` 变更为 `AUTO_RANDOM` 功能，引入 `infoschema.client_errors_summary` 表。提升内存中统计信息缓存，减少 CPU 使用率。TiKV 提高 `store used size` 计算准确性，返回更多的 Region 以降低 Region miss。PD 优化 TSO 处理时间统计指标，更新 Dashboard 版本。TiFlash 自动清除过期历史数据。BR 支持备份恢复系统库，检查集群版本和备份数据版本。TiCDC 增加流程控制，清理陈旧临时文件，增加 HTTP 接口调用。修复多个 Bug。
 ---
 
 # TiDB 4.0.13 Release Notes

@@ -15,14 +15,14 @@ TiDB 是一个兼容 MySQL 的数据库。[PyMySQL](https://github.com/PyMySQL/P
 
 > **注意**
 >
-> 本文档适用于 TiDB Serverless、TiDB Dedicated 和本地部署的 TiDB。
+> 本文档适用于 TiDB Cloud Serverless、TiDB Cloud Dedicated 和本地部署的 TiDB。
 
 ## 前置需求
 
 - 推荐 [Python 3.8](https://www.python.org/downloads/) 及以上版本。
 - [Git](https://git-scm.com/downloads)。
 - TiDB 集群。如果你还没有 TiDB 集群，可以按照以下方式创建：
-    - （推荐方式）参考[创建 TiDB Serverless 集群](/develop/dev-guide-build-cluster-in-cloud.md#第-1-步创建-tidb-serverless-集群)，创建你自己的 TiDB Cloud 集群。
+    - （推荐方式）参考[创建 TiDB Cloud Serverless 集群](/develop/dev-guide-build-cluster-in-cloud.md#第-1-步创建-tidb-cloud-serverless-集群)，创建你自己的 TiDB Cloud 集群。
     - 参考[部署本地测试 TiDB 集群](/quick-start-with-tidb.md#部署本地测试集群)或[部署正式 TiDB 集群](/production-deployment-using-tiup.md)，创建本地集群。
 
 ## 运行代码并连接到 TiDB
@@ -52,15 +52,16 @@ pip install -r requirements.txt
 
 <SimpleTab>
 
-<div label="TiDB Serverless">
+<div label="TiDB Cloud Serverless">
 
-1. 在 TiDB Cloud 的 [**Clusters**](https://tidbcloud.com/console/clusters) 页面中，选择你的 TiDB Serverless 集群，进入集群的 **Overview** 页面。
+1. 在 TiDB Cloud 的 [**Clusters**](https://tidbcloud.com/console/clusters) 页面中，选择你的 TiDB Cloud Serverless 集群，进入集群的 **Overview** 页面。
 
 2. 点击右上角的 **Connect** 按钮，将会弹出连接对话框。
 
 3. 确认对话框中的配置和你的运行环境一致。
 
-    - **Endpoint Type** 为 `Public`。
+    - **Connection Type** 为 `Public`。
+    - **Branch** 选择 `main`。
     - **Connect With** 选择 `General`。
     - **Operating System** 为你的运行环境。
 
@@ -68,11 +69,11 @@ pip install -r requirements.txt
     >
     > 如果你在 Windows Subsystem for Linux (WSL) 中运行，请切换为对应的 Linux 发行版。
 
-4. 如果你还没有设置密码，点击 **Create password** 生成一个随机密码。
+4. 如果你还没有设置密码，点击 **Generate Password** 生成一个随机密码。
 
     > **Tip:**
     >
-    > 如果你之前已经生成过密码，可以直接使用原密码，或点击 **Reset password** 重新生成密码。
+    > 如果你之前已经生成过密码，可以直接使用原密码，或点击 **Reset Password** 重新生成密码。
 
 5. 运行以下命令，将 `.env.example` 复制并重命名为 `.env`：
 
@@ -97,15 +98,17 @@ pip install -r requirements.txt
 
 </div>
 
-<div label="TiDB Dedicated">
+<div label="TiDB Cloud Dedicated">
 
-1. 在 TiDB Cloud 的 [**Clusters**](https://tidbcloud.com/console/clusters) 页面中，选择你的 TiDB Dedicated 集群，进入集群的 **Overview** 页面。
+1. 在 TiDB Cloud 的 [**Clusters**](https://tidbcloud.com/console/clusters) 页面中，选择你的 TiDB Cloud Dedicated 集群，进入集群的 **Overview** 页面。
 
 2. 点击右上角的 **Connect** 按钮，将会出现连接对话框。
 
-3. 在对话框中点击 **Allow Access from Anywhere**，然后点击 **Download TiDB cluster CA** 下载 TiDB Cloud 提供的 CA 证书。
+3. 在连接对话框中，从 **Connection Type** 下拉列表中选择 **Public**，并点击 **CA cert** 下载 CA 文件。
 
-    更多配置细节，可参考 [TiDB Dedicated 标准连接教程（英文）](https://docs.pingcap.com/tidbcloud/connect-via-standard-connection)。
+    如果你尚未配置 IP 访问列表，请在首次连接前点击 **Configure IP Access List** 或按照[配置 IP 访问列表（英文）](https://docs.pingcap.com/tidbcloud/configure-ip-access-list)中的步骤进行配置。
+
+    除 **Public** 连接类型外，TiDB Cloud Dedicated 还支持 **Private Endpoint** 和 **VPC Peering** 连接类型。详情请参阅[连接 TiDB Cloud Dedicated 集群（英文）](https://docs.pingcap.com/tidbcloud/connect-to-tidb-cluster)。
 
 4. 运行以下命令，将 `.env.example` 复制并重命名为 `.env`：
 
@@ -178,7 +181,6 @@ pip install -r requirements.txt
 from pymysql import Connection
 from pymysql.cursors import DictCursor
 
-
 def get_connection(autocommit: bool = True) -> Connection:
     config = Config()
     db_conf = {
@@ -207,7 +209,7 @@ def get_connection(autocommit: bool = True) -> Connection:
 with get_connection(autocommit=True) as conn:
     with conn.cursor() as cur:
         player = ("1", 1, 1)
-        cursor.execute("INSERT INTO players (id, coins, goods) VALUES (%s, %s, %s)", player)
+        cur.execute("INSERT INTO players (id, coins, goods) VALUES (%s, %s, %s)", player)
 ```
 
 更多信息参考[插入数据](/develop/dev-guide-insert-data.md)。
@@ -228,8 +230,8 @@ with get_connection(autocommit=True) as conn:
 ```python
 with get_connection(autocommit=True) as conn:
     with conn.cursor() as cur:
-        player_id, amount, price="1", 10, 500
-        cursor.execute(
+        player_id, amount, price = "1", 1, 50
+        cur.execute(
             "UPDATE players SET goods = goods + %s, coins = coins + %s WHERE id = %s",
             (-amount, price, player_id),
         )
@@ -243,7 +245,7 @@ with get_connection(autocommit=True) as conn:
 with get_connection(autocommit=True) as conn:
     with conn.cursor() as cur:
         player_id = "1"
-        cursor.execute("DELETE FROM players WHERE id = %s", (player_id,))
+        cur.execute("DELETE FROM players WHERE id = %s", player_id)
 ```
 
 更多信息参考[删除数据](/develop/dev-guide-delete-data.md)。
@@ -258,7 +260,7 @@ Python 驱动程序提供对数据库的底层访问，但要求开发者：
 - 手动管理数据库事务
 - 手动将数据行（在 pymysql 中表示为元组 (tuple) 或者字典 (dict)）映射为数据对象
 
-建议仅在需要编写复杂的 SQL 语句时使用驱动程序。其他情况下，建议使用 [ORM](https://zh.wikipedia.org/wiki/对象关系映射) 框架进行开发，例如 [SQLAlchemy](/develop/dev-guide-sample-application-python-sqlalchemy.md)、[Peewee](/develop/dev-guide-sample-application-python-peewee.md) 和 Django。ORM 可以帮助你：
+建议仅在需要编写复杂的 SQL 语句时使用驱动程序。其他情况下，建议使用 [ORM](https://zh.wikipedia.org/wiki/对象关系映射) 框架进行开发，例如 [SQLAlchemy](/develop/dev-guide-sample-application-python-sqlalchemy.md)、[Peewee](/develop/dev-guide-sample-application-python-peewee.md) 和 [Django](/develop/dev-guide-sample-application-python-django.md)。ORM 可以帮助你：
 
 - 减少管理连接和事务的[模板代码](https://en.wikipedia.org/wiki/Boilerplate_code)
 - 使用数据对象代替大量 SQL 语句来操作数据

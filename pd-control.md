@@ -1,6 +1,7 @@
 ---
 title: PD Control 使用说明
 aliases: ['/docs-cn/dev/pd-control/','/docs-cn/dev/reference/tools/pd-control/']
+summary: PD Control 是 PD 的命令行工具，用于获取集群状态信息和调整集群。
 ---
 
 # PD Control 使用说明
@@ -28,11 +29,11 @@ PD Control 是 PD 的命令行工具，用于获取集群状态信息和调整�
 
 > **注意：**
 >
-> 下载链接中的 `{version}` 为 TiDB 的版本号。例如，amd64 架构的 `v7.5.0` 版本的下载链接为 `https://download.pingcap.org/tidb-community-server-v7.5.0-linux-amd64.tar.gz`。
+> 下载链接中的 `{version}` 为 TiDB 的版本号。例如，amd64 架构的 `v8.5.0` 版本的下载链接为 `https://download.pingcap.org/tidb-community-server-v8.5.0-linux-amd64.tar.gz`。
 
 ### 源码编译
 
-1. [Go](https://golang.org/) 1.21 或以上版本
+1. [Go](https://golang.org/) 1.23 或以上版本
 2. 在 PD 项目根目录使用 `make` 或者 `make pd-ctl` 命令进行编译，生成 bin/pd-ctl
 
 ## 简单例子
@@ -163,8 +164,8 @@ config show
     "leader-schedule-limit": 4,
     "leader-schedule-policy": "count",
     "low-space-ratio": 0.8,
-    "max-merge-region-keys": 200000,
-    "max-merge-region-size": 20,
+    "max-merge-region-keys": 540000,
+    "max-merge-region-size": 54,
     "max-pending-peer-count": 64,
     "max-snapshot-count": 64,
     "max-store-down-time": "30m0s",
@@ -311,14 +312,22 @@ config show cluster-version
     config set region-score-formula-version v2
     ```
 
-- `patrol-region-interval` 控制 replicaChecker 检查 Region 健康状态的运行频率，越短则运行越快，通常状况不需要调整。
+- `patrol-region-interval` 控制 checker 检查 Region 健康状态的运行频率，越短则运行越快，通常状况不需要调整。
 
-    设置 replicaChecker 的运行频率为 10 毫秒：
+    设置 checker 的运行频率为 10 毫秒：
 
     {{< copyable "" >}}
 
     ```bash
     config set patrol-region-interval 10ms
+    ```
+
+- `patrol-region-worker-count` 控制 checker 检查 Region 健康状态时，创建 [operator](/glossary.md#operator) 的并发数。通常情况下，无需调整此配置项。将该配置项设置为大于 1 将启用并发检查。目前该功能为实验特性，不建议在生产环境中使用。
+
+    设置 checker 的并发数为 2：
+
+    ```bash
+    config set patrol-region-worker-count 2
     ```
 
 - `max-store-down-time` 为 PD 认为失联 store 无法恢复的时间，当超过指定的时间没有收到 store 的心跳后，PD 会在其他节点补充副本。
@@ -453,7 +462,7 @@ config show cluster-version
 
 - `store-limit-mode` 用于控制 store 限速机制的模式。主要有两种模式：`auto` 和 `manual`。`auto` 模式下会根据 load 自动进行平衡调整（弃用）。
 
-- `store-limit-version` 用于设置 `store limit` 限制模式，目前提供两种方式：`v1` 和 `v2`。默认值为 `v1`。在 `v1` 模式下，你可以手动修改 `store limit` 以限制单个 TiKV 调度速度。`v2` 模式为实验特性，在 `v2` 模式下，你无需关注 `store limit` 值，PD 将根据 TiKV Snapshot 执行情况动态调整 TiKV 调度速度。详情请参考 [Store Limit v2 原理](/configure-store-limit.md#store-limit-v2-原理)。
+- `store-limit-version` 用于设置 `store limit` 限制模式，目前提供两种方式：`v1` 和 `v2`。默认值为 `v1`。在 `v1` 模式下，你可以手动修改 `store limit` 以限制单个 TiKV 调度速度。在 `v2` 模式下，你无需关注 `store limit` 值，PD 将根据 TiKV Snapshot 执行情况动态调整 TiKV 调度速度。详情请参考 [Store Limit v2 原理](/configure-store-limit.md#store-limit-v2-原理)。
 
     ```bash
     config set store-limit-version v2       // 使用 Store Limit v2
@@ -468,6 +477,123 @@ config show cluster-version
     ```bash
     config set flow-round-by-digit 4
     ```
+
+### `config [show | set service-middleware <option> [<key> <value> | <label> <qps|concurrency> <value>]]`
+
+`service-middleware` 是 PD 中的一个配置模块，主要用于管理和控制 PD 服务的中间件功能，如审计日志、请求速率限制和并发限制等。从 v8.5.0 起，PD 支持通过 `pd-ctl` 修改 `service-middleware` 的以下配置：
+
+- `audit`：控制是否开启 PD 处理 HTTP 请求的审计日志（默认开启）。开启时，`service-middleware` 会在 PD 日志中记录 HTTP 请求的相关信息。
+- `rate-limit`：用于限制 PD 处理 HTTP API 请求的最大速率和最大并发。
+- `grpc-rate-limit`：用于限制 PD 处理 gRPC API 请求的最大速率和最大并发。
+
+> **注意：**
+>
+> 为了避免请求速率限制和并发限制对 PD 性能的影响，不建议修改 `service-middleware` 中的配置。
+
+显示 `service-middleware` 的相关 config 信息：
+
+```bash
+config show service-middleware
+```
+
+```bash
+{
+  "audit": {
+    "enable-audit": "true"
+  },
+  "rate-limit": {
+    "enable-rate-limit": "true",
+    "limiter-config": {}
+  },
+  "grpc-rate-limit": {
+    "enable-grpc-rate-limit": "true",
+    "grpc-limiter-config": {}
+  }
+}
+```
+
+`service-middleware audit` 用于开启或关闭 HTTP 请求的日志审计功能。以关闭该功能为例：
+
+```bash
+config set service-middleware audit enable-audit false
+```
+
+`service-middleware grpc-rate-limit` 用于控制以下 gRPC API 请求的最大速率和并发度：
+
+- `GetRegion`：获取指定 Region 的信息
+- `GetStore`：获取指定 Store 的信息
+- `GetMembers`：获取 PD 集群成员的信息
+
+控制某个 gRPC API 请求的最大速率，以 `GetRegion` API 请求为例：
+
+```bash
+config set service-middleware grpc-rate-limit GetRegion qps 100
+```
+
+控制某个 gRPC API 请求的最大并发度，以 `GetRegion` API 请求为例：
+
+```bash
+config set service-middleware grpc-rate-limit GetRegion concurrency 10
+```
+
+查看修改后的配置：
+
+```bash
+config show service-middleware
+```
+
+```bash
+{
+  "audit": {
+    "enable-audit": "true"
+  },
+  "rate-limit": {
+    "enable-rate-limit": "true",
+    "limiter-config": {}
+  },
+  "grpc-rate-limit": {
+    "enable-grpc-rate-limit": "true",
+    "grpc-limiter-config": {
+      "GetRegion": {
+        "QPS": 100,
+        "QPSBurst": 100, // 根据 QPS 设置自动调整，仅作展示
+        "ConcurrencyLimit": 10
+      }
+    }
+  }
+}
+```
+
+重置上述设置：
+
+```bash
+config set service-middleware grpc-rate-limit GetRegion qps 0
+config set service-middleware grpc-rate-limit GetRegion concurrency 0
+```
+
+`service-middleware rate-limit` 用于控制以下 HTTP API 请求的最大速率和并发度：
+
+- `GetRegion`：获取指定 Region 的信息
+- `GetStore`：获取指定 Store 的信息
+
+控制某个 HTTP API 请求的最大速率，以 `GetRegion` API 请求为例：
+
+```bash
+config set service-middleware rate-limit GetRegion qps 100
+```
+
+控制某个 HTTP API 请求的最大并发度，以 `GetRegion` API 请求为例：
+
+```bash
+config set service-middleware rate-limit GetRegion concurrency 10
+```
+
+重置上述设置：
+
+```bash
+config set service-middleware rate-limit GetRegion qps 0
+config set service-middleware rate-limit GetRegion concurrency 0
+```
 
 ### `config placement-rules [disable | enable | load | save | show | rule-group]`
 
@@ -703,6 +829,20 @@ member leader transfer pd3
 ```
 ......
 ```
+
+指定 PD leader 的优先级：
+
+```bash
+member leader_priority  pd-1 4
+member leader_priority  pd-2 3
+member leader_priority  pd-3 2
+member leader_priority  pd-4 1
+member leader_priority  pd-5 0
+```
+
+> **注意：**
+>
+> 在可用的 PD 节点中，优先级数值最大的节点会直接当选 leader。
 
 ### `operator [check | show | add | remove]`
 
@@ -1097,6 +1237,42 @@ region check miss-peer
 }
 ```
 
+### `resource-manager [command]`
+
+#### 查看资源管控 (Resource Control) 的 controller 配置
+
+```bash
+resource-manager config controller show
+```
+
+```bash
+{
+    "degraded-mode-wait-duration": "0s",
+    "ltb-max-wait-duration": "30s", 
+    "request-unit": {          # RU 的配置，请勿修改
+        "read-base-cost": 0.125,
+        "read-per-batch-base-cost": 0.5,
+        "read-cost-per-byte": 0.0000152587890625,
+        "write-base-cost": 1,
+        "write-per-batch-base-cost": 1,
+        "write-cost-per-byte": 0.0009765625,
+        "read-cpu-ms-cost": 0.3333333333333333
+    },
+    "enable-controller-trace-log": "false"
+}
+```
+
+- `ltb-max-wait-duration`：本地令牌桶 (Local Token Bucket, LTB) 的最大等待时间。默认值为 `30s`，取值范围为 `[0, 24h]`。如果 SQL 请求预估消耗的 [Request Unit (RU)](/tidb-resource-control.md#什么是-request-unit-ru) 超过了当前 LTB 积累的 RU，则需要等待一定时间。如果预估等待时间超过了此最大等待时间，则会提前向应用返回错误 [`ERROR 8252 (HY000) : Exceeded resource group quota limitation`](/error-codes.md)。增大该值可以减少某些突发并发增加、大事务和大查询的情况下容易报错 `ERROR 8252` 的问题。
+- `enable-controller-trace-log`：controller 诊断日志开关。
+
+#### 修改 Resource Control 的 controller 配置
+
+修改 `ltb-max-wait-duration` 的方法如下：
+
+```bash
+pd-ctl resource-manager config controller set ltb-max-wait-duration 30m
+```
+
 ### `scheduler [show | add | remove | pause | resume | config | describe]`
 
 用于显示和控制调度策略。
@@ -1110,8 +1286,8 @@ region check miss-peer
 >> scheduler add grant-leader-scheduler 1                 // 把 store 1 上的所有 Region 的 leader 调度到 store 1
 >> scheduler add evict-leader-scheduler 1                 // 把 store 1 上的所有 Region 的 leader 从 store 1 调度出去
 >> scheduler config evict-leader-scheduler                // v4.0.0 起，展示该调度器具体在哪些 store 上
->> scheduler add shuffle-leader-scheduler                 // 随机交换不同 store 上的 leader
->> scheduler add shuffle-region-scheduler                 // 随机调度不同 store 上的 Region
+>> scheduler config evict-leader-scheduler add-store 2    // 为 store 2 添加 leader 驱逐调度
+>> scheduler config evict-leader-scheduler delete-store 2 // 为 store 2 移除 leader 驱逐调度
 >> scheduler add evict-slow-store-scheduler               // 当有且仅有一个 slow store 时将该 store 上的所有 Region 的 leader 驱逐出去
 >> scheduler remove grant-leader-scheduler-1              // 把对应的调度器删掉，`-1` 对应 store ID
 >> scheduler pause balance-region-scheduler 10            // 暂停运行 balance-region 调度器 10 秒
@@ -1263,6 +1439,30 @@ scheduler config balance-hot-region-scheduler  // 显示 balance-hot-region 调�
 
     ```bash
     scheduler config balance-hot-region-scheduler set enable-for-tiflash true
+    ```
+
+### `scheduler config evict-leader-scheduler`
+
+用于查看和管理 `evict-leader-scheduler` 的配置。
+
+- 在已有 `evict-leader-scheduler` 时，使用 `add-store` 子命令，为指定的 store 添加 leader 驱逐调度：
+
+    ```bash
+    scheduler config evict-leader-scheduler add-store 2       // 为 store 2 添加 leader 驱逐调度
+    ```
+
+- 在已有 `evict-leader-scheduler` 时，使用 `delete-store` 子命令，移除指定 store 的 leader 驱逐调度：
+
+    ```bash
+    scheduler config evict-leader-scheduler delete-store 2    // 为 store 2 移除 leader 驱逐调度
+    ```
+
+    当一个 `evict-leader-scheduler` 的所有 store 配置都被移除后，该调度器也会自动被移除。
+
+- 在已有 `evict-leader-scheduler` 时，使用 `set batch` 子命令修改 `batch` 值。其中，`batch` 用于调整单次调度过程中生成的 Operator 数量，默认值为 `3`，取值范围为 `[1, 10]`。`batch` 值越大，调度速度越快。
+
+    ```bash
+    scheduler config evict-leader-scheduler set batch 10 // 设置 batch 值为 10
     ```
 
 ### `service-gc-safepoint`

@@ -1,6 +1,7 @@
 ---
 title: TiUP 常见运维操作
 aliases: ['/docs-cn/dev/maintain-tidb-using-tiup/','/docs-cn/dev/how-to/maintain/tiup-operations/']
+summary: TiUP 是用于管理 TiDB 集群的工具，可以进行查看集群列表、启动、关闭、修改配置参数、查看状态等常见运维操作。操作简单方便，适合用于 TiDB 集群的管理。
 ---
 
 # TiUP 常见运维操作
@@ -19,7 +20,7 @@ tiup cluster list
 
 ## 启动集群
 
-启动集群操作会按 PD -> TiKV -> Pump -> TiDB -> TiFlash -> Drainer -> TiCDC -> Prometheus -> Grafana -> Alertmanager 的顺序启动整个 TiDB 集群所有组件：
+启动集群操作会按 PD -> TiKV -> TiDB -> TiFlash -> TiCDC -> Prometheus -> Grafana -> Alertmanager 的顺序启动整个 TiDB 集群所有组件：
 
 {{< copyable "shell-regular" >}}
 
@@ -186,7 +187,7 @@ tiup cluster rename ${cluster-name} ${new-name}
 
 ## 关闭集群
 
-关闭集群操作会按 Alertmanager -> Grafana -> Prometheus -> TiCDC -> Drainer -> TiFlash -> TiDB -> Pump -> TiKV -> PD 的顺序关闭整个 TiDB 集群所有组件（同时也会关闭监控组件）：
+关闭集群操作会按 Alertmanager -> Grafana -> Prometheus -> TiCDC -> TiFlash -> TiDB -> TiKV -> PD 的顺序关闭整个 TiDB 集群所有组件（同时也会关闭监控组件）：
 
 {{< copyable "shell-regular" >}}
 

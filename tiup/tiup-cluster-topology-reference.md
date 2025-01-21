@@ -1,5 +1,6 @@
 ---
 title: 通过 TiUP 部署 TiDB 集群的拓扑文件配置
+summary: 介绍通过 TiUP 部署或扩容 TiDB 集群时提供的拓扑文件配置和示例。
 ---
 
 # 通过 TiUP 部署 TiDB 集群的拓扑文件配置
@@ -7,6 +8,8 @@ title: 通过 TiUP 部署 TiDB 集群的拓扑文件配置
 通过 TiUP 部署或扩容 TiDB 集群时，需要提供一份拓扑文件（[示例](https://github.com/pingcap/tiup/blob/master/embed/examples/cluster/topology.example.yaml)）来描述集群拓扑。
 
 同样，修改集群配置也是通过编辑拓扑文件来实现的，区别在于修改配置时仅允许修改部分字段。本文档介绍拓扑文件的各个区块以各区块中的各字段。
+
+使用 TiUP 部署 TiDB 集群时，TiUP 会同时自动部署 Prometheus、Grafana 和 Alertmanager 等监控组件，并且在集群扩容中自动为新增节点添加监控配置。如果需要自定义 Prometheus、Grafana 和 Alertmanager 等监控组件的配置，请参考[自定义监控组件的配置](/tiup/customized-montior-in-tiup-environment.md)。
 
 ## 文件结构
 
@@ -20,11 +23,13 @@ title: 通过 TiUP 部署 TiDB 集群的拓扑文件配置
 - [tidb_servers](/tiup/tiup-cluster-topology-reference.md#tidb_servers)：TiDB 实例的配置，用来指定 TiDB 组件部署到哪些机器上
 - [tikv_servers](/tiup/tiup-cluster-topology-reference.md#tikv_servers)：TiKV 实例的配置，用来指定 TiKV 组件部署到哪些机器上
 - [tiflash_servers](/tiup/tiup-cluster-topology-reference.md#tiflash_servers)：TiFlash 实例的配置，用来指定 TiFlash 组件部署到哪些机器上
-- [pump_servers](/tiup/tiup-cluster-topology-reference.md#pump_servers)：Pump 实例的配置，用来指定 Pump 组件部署到哪些机器上
-- [drainer_servers](/tiup/tiup-cluster-topology-reference.md#drainer_servers)：Drainer 实例的配置，用来指定 Drainer 组件部署到哪些机器上
+- [tiproxy_servers](#tiproxy_servers)：TiProxy 实例的配置，用来指定 TiProxy 组件部署到哪些机器上
+- [kvcdc_servers](/tiup/tiup-cluster-topology-reference.md#kvcdc_servers)：[TiKV-CDC](https://tikv.org/docs/latest/concepts/explore-tikv-features/cdc/cdc-cn/) 实例的配置，用来指定 TiKV-CDC 组件部署到哪些机器上
 - [cdc_servers](/tiup/tiup-cluster-topology-reference.md#cdc_servers)：CDC 实例的配置，用来指定 CDC 组件部署到哪些机器上
 - [tispark_masters](/tiup/tiup-cluster-topology-reference.md#tispark_masters)：TiSpark Master 实例的配置，用来指定 TiSpark Master 组件部署到哪台机器上，仅允许部署一个 TiSpark Master 节点
 - [tispark_workers](/tiup/tiup-cluster-topology-reference.md#tispark_workers)：TiSpark Worker 实例的配置，用来指定 TiSpark Worker 组件部署到哪些机器上
+- [tso_servers](/tiup/tiup-cluster-topology-reference.md#tso_servers)：TSO 实例的配置，用来指定 `tso` 微服务部署在哪些机器上（需要在 [`global`](#global) 中配置 `pd_mode: "ms"` 开启 [PD 微服务](/pd-microservices.md)）
+- [scheduling_servers](/tiup/tiup-cluster-topology-reference.md#scheduling_servers)：Scheduling 实例的配置，用来指定 `scheduling` 微服务部署在哪些机器上（需要在 [`global`](#global) 中配置 `pd_mode: "ms"` 开启 [PD 微服务](/pd-microservices.md)）
 - [monitoring_servers](/tiup/tiup-cluster-topology-reference.md#monitoring_servers)：用来指定 Prometheus 和 NGMonitoring 部署在哪些机器上，TiUP 支持部署多台 Prometheus 实例，但真实投入使用的只有第一个
 - [grafana_servers](/tiup/tiup-cluster-topology-reference.md#grafana_servers)：Grafana 实例的配置，用来指定 Grafana 部署在哪台机器上
 - [alertmanager_servers](/tiup/tiup-cluster-topology-reference.md#alertmanager_servers)：Alertemanager 实例的配置，用来指定 Alertmanager 部署在哪些机器上
@@ -53,8 +58,9 @@ title: 通过 TiUP 部署 TiDB 集群的拓扑文件配置
     - 如果 `log_dir` 为相对路径，那么组件日志将放到 `<deploy_dir>/<log_dir>` 中，其中 `<deploy_dir>` 的计算规则请参考 `deploy_dir` 字段的应用规则
 - `os`：目标机器的操作系统，该字段决定了向目标机器推送适配哪个操作系统的组件，默认值：linux
 - `arch`：目标机器的 CPU 架构，该字段决定了向目标机器推送哪个平台的二进制包，支持 amd64 和 arm64，默认值：amd64
+- `pd_mode`：PD 工作模式。该字段控制是否启用 [PD 微服务](/pd-microservices.md)。取值选项为 "ms"。指定该参数代表启用 PD 微服务模式。
 - `resource_control`：运行时资源控制，该字段下所有配置都将写入 systemd 的 service 文件中，默认无限制。支持控制的资源如下：
-    - `memory_limit`: 限制运行时最大内存，例如 "2G" 表示最多使用 2GB 内存
+    - `memory_limit`：限制运行时最大内存，例如 "2G" 表示最多使用 2GB 内存
     - `cpu_quota`：限制运行时最大 CPU 占用率，例如 "200%"
     - `io_read_bandwidth_max`：读磁盘 I/O 的最大带宽，例如："/dev/disk/by-path/pci-0000:00:1f.2-scsi-0:0:0:0 100M"
     - `io_write_bandwidth_max`：写磁盘 I/O 的最大带宽，例如："/dev/disk/by-path/pci-0000:00:1f.2-scsi-0:0:0:0 100M"
@@ -100,9 +106,10 @@ monitored:
 - `pd`：PD 服务的相关配置，支持的完整配置请参考 [PD 配置文件描述](/pd-configuration-file.md)
 - `tiflash`：TiFlash 服务的相关配置，支持的完整配置请参考 [TiFlash 配置参数](/tiflash/tiflash-configuration.md)
 - `tiflash_learner`：每个 TiFlash 中内置了一个特殊的 TiKV，该配置项用于配置这个特殊的 TiKV，一般不建议修改这个配置项下的内容
-- `pump`：Pump 服务的相关配置，支持的完整配置请参考 [TiDB Binlog 配置说明](/tidb-binlog/tidb-binlog-configuration-file.md#pump)
-- `drainer`：Drainer 服务的相关配置，支持的完整配置请参考 [TiDB Binlog 配置说明](/tidb-binlog/tidb-binlog-configuration-file.md#drainer)
+- `tiproxy`：TiProxy 服务的相关配置，支持的完整配置请参考 [TiProxy 参数配置](/tiproxy/tiproxy-configuration.md)
 - `cdc`：CDC 服务的相关配置，支持的完整配置请参考 [TiCDC 安装部署](/ticdc/deploy-ticdc.md)
+- `tso`：`tso` 微服务的相关配置，支持的完整配置请参考 [TSO 配置文件描述](/tso-configuration-file.md)
+- `scheduling`：`scheduling` 微服务的相关配置，支持的完整配置请参考 [Scheduling 配置文件描述](/scheduling-configuration-file.md)
 
 `server_configs` 配置示例：
 
@@ -139,14 +146,14 @@ server_configs:
 - `tiflash`：TiFlash 组件的版本
 - `pd`：PD 组件的版本
 - `tidb_dashboard`：独立部署的 TiDB Dashboard 组件的版本
-- `pump`：Pump 组件的版本
-- `drainer`：Drainer 组件的版本
 - `cdc`：CDC 组件的版本
 - `kvcdc`：TiKV-CDC 组件的版本
 - `tiproxy`：TiProxy 组件的版本
 - `prometheus`：Prometheus 组件的版本
 - `grafana`：Grafana 组件的版本
 - `alertmanager`：Alertmanager 组件的版本
+- `tso`：TSO 组件的版本
+- `scheduling`：Scheduling 组件的版本
 
 `component_versions` 配置示例：
 
@@ -289,7 +296,7 @@ tikv_servers:
 
 - `host`：指定部署到哪台机器，字段值填 IP 地址，不可省略
 - `ssh_port`：指定连接目标机器进行操作的时候使用的 SSH 端口，若不指定，则使用 global 区块中的 `ssh_port`
-- `tcp_port`：TiFlash TCP 服务的端口，默认 9000
+- `tcp_port`：TiFlash TCP 服务的端口，用于执行内部测试，默认 9000。自 TiUP v1.12.5 起，如果部署的集群版本 >= v7.1.0，则该配置项不生效
 - `flash_service_port`：TiFlash 提供服务的端口，TiDB 通过该端口从 TiFlash 读数据，默认 3930
 - `metrics_port`：TiFlash 的状态端口，用于输出 metric 数据，默认 8234
 - `flash_proxy_port`：内置 TiKV 的端口，默认 20170
@@ -297,7 +304,7 @@ tikv_servers:
 - `deploy_dir`：指定部署目录，若不指定，或指定为相对目录，则按照 `global` 中配置的 `deploy_dir` 生成
 - `data_dir`：指定数据目录，若不指定，或指定为相对目录，则按照 `global` 中配置的 `data_dir` 生成，TiFlash 的数据目录支持多个，采用逗号分割
 - `log_dir`：指定日志目录，若不指定，或指定为相对目录，则按照 `global` 中配置的 `log_dir` 生成
-- `tmp_path`: TiFlash 临时文件的存放路径，默认使用 [`path` 或者 `storage.latest.dir` 的第一个目录] + "/tmp"
+- `tmp_path`：TiFlash 临时文件的存放路径，默认使用 [`path` 或者 `storage.latest.dir` 的第一个目录] + "/tmp"
 - `numa_node`：为该实例分配 NUMA 策略，如果指定了该参数，需要确保目标机装了 [numactl](https://linux.die.net/man/8/numactl)，在指定该参数的情况下会通过 [numactl](https://linux.die.net/man/8/numactl) 分配 cpubind 和 membind 策略。该字段参数为 string 类型，字段值填 NUMA 节点的 ID，例如 "0,1"
 - `config`：该字段配置规则和 `server_configs` 里的 `tiflash` 配置规则相同，若配置了该字段，会将该字段内容和 `server_configs` 里的 `tiflash` 内容合并（若字段重叠，以本字段内容为准），然后生成配置文件并下发到 `host` 指定的机器
 - `learner_config`：每个 TiFlash 中内置了一个特殊的 TiKV 模块，该配置项用于配置这个特殊的 TiKV 模块，一般不建议修改这个配置项下的内容
@@ -309,7 +316,6 @@ tikv_servers:
 
 - `host`
 - `tcp_port`
-- `http_port`
 - `flash_service_port`
 - `flash_proxy_port`
 - `flash_proxy_status_port`
@@ -328,58 +334,65 @@ tiflash_servers:
   - host: 10.0.1.22
 ```
 
-### `pump_servers`
+### `tiproxy_servers`
 
-`pump_servers` 约定了将 TiDB Binlog 组件的 Pump 服务部署到哪些机器上，同时可以指定每台机器上的服务配置。`pump_servers` 是一个数组，每个数组元素包含以下字段：
+`tiproxy_servers` 约定了将 TiProxy 服务部署到哪些机器上，同时可以指定每台机器上的服务配置。`tiproxy_servers` 是一个数组，每个数组元素包含以下字段：
 
-- `host`：指定部署到哪台机器，字段值填 IP 地址，不可省略
-- `ssh_port`：指定连接目标机器进行操作的时候使用的 SSH 端口，若不指定，则使用 `global` 区块中的 `ssh_port`
-- `port`：Pump 服务的监听端口，默认 8250
-- `deploy_dir`：指定部署目录，若不指定，或指定为相对目录，则按照 `global` 中配置的 `deploy_dir` 生成
-- `data_dir`：指定数据目录，若不指定，或指定为相对目录，则按照 `global` 中配置的 `data_dir` 生成
-- `log_dir`：指定日志目录，若不指定，或指定为相对目录，则按照 `global` 中配置的 `log_dir` 生成
-- `numa_node`：为该实例分配 NUMA 策略，如果指定了该参数，需要确保目标机装了 [numactl](https://linux.die.net/man/8/numactl)，在指定该参数的情况下会通过 [numactl](https://linux.die.net/man/8/numactl) 分配 cpubind 和 membind 策略。该字段参数为 string 类型，字段值填 NUMA 节点的 ID，例如 "0,1"
-- `config`：该字段配置规则和 `server_configs` 里的 `pump` 配置规则相同，若配置了该字段，会将该字段内容和 `server_configs` 里的 `pump` 内容合并（若字段重叠，以本字段内容为准），然后生成配置文件并下发到 `host` 指定的机器
-- `os`：`host` 字段所指定的机器的操作系统，若不指定该字段，则默认为 `global` 中的 `os`
-- `arch`：`host` 字段所指定的机器的架构，若不指定该字段，则默认为 `global` 中的 `arch`
-- `resource_control`：针对该服务的资源控制，如果配置了该字段，会将该字段和 `global` 中的 `resource_control` 内容合并（若字段重叠，以本字段内容为准），然后生成 systemd 配置文件并下发到 `host` 指定机器。`resource_control` 的配置规则同 `global` 中的 `resource_control`
+- `host`：指定部署到哪台机器，字段值填 IP 地址，不可省略。
+- `ssh_port`：指定连接目标机器进行操作的时候使用的 SSH 端口，若不指定，则使用 `global` 区块中的 `ssh_port`。
+- `port`：TiProxy SQL 服务的监听端口，默认值：`6000`。
+- `status_port`：TiProxy 状态服务的监听端口，用于外部通过 HTTP 请求查看 TiProxy 服务的状态，默认值：`3080`。
+- `deploy_dir`：指定部署目录，若不指定，或指定为相对目录，则按照 `global` 中配置的 `deploy_dir` 生成。
+- `data_dir`：指定数据目录，若不指定，或指定为相对目录，则按照 `global` 中配置的 `data_dir` 生成。
+- `numa_node`：为该实例分配 NUMA 策略，如果指定了该参数，需要确保目标机装了 [numactl](https://linux.die.net/man/8/numactl)，在指定该参数的情况下会通过 [numactl](https://linux.die.net/man/8/numactl) 分配 cpubind 和 membind 策略。该字段参数为 string 类型，字段值填 NUMA 节点的 ID，例如 `"0,1"`。
+- `config`：该字段配置规则和 `server_configs` 里的 `tiproxy` 配置规则相同，若配置了该字段，会将该字段内容和 `server_configs` 里的 `tiproxy` 内容合并（若字段重叠，以本字段内容为准），然后生成配置文件并下发到 `host` 指定的机器。
+- `os`：`host` 字段所指定的机器的操作系统，若不指定该字段，则默认为 `global` 中的 `os`。
+- `arch`：`host` 字段所指定的机器的架构，若不指定该字段，则默认为 `global` 中的 `arch`。
 
-以上所有字段中，部分字段部署完成之后不能再修改。如下所示：
+在上述字段中，部分字段部署完成之后不能再修改。如下所示：
 
 - `host`
 - `port`
 - `deploy_dir`
 - `data_dir`
-- `log_dir`
 - `arch`
 - `os`
 
-`pump_servers` 配置示例：
+`tiproxy_servers` 配置示例：
 
 ```yaml
-pump_servers:
+tiproxy_servers:
   - host: 10.0.1.21
+    port: 6000
+    status_port: 3080
     config:
-      gc: 7
+      labels: { zone: "zone1" }
   - host: 10.0.1.22
+    port: 6000
+    status_port: 3080
+    config:
+      labels: { zone: "zone2" }
 ```
 
-### `drainer_servers`
+关于更多配置示例，请参见 [TiProxy 部署拓扑](/tiproxy/tiproxy-deployment-topology.md)。
 
-`drainer_servers` 约定了将 TiDB Binlog 组件的 Drainer 服务部署到哪些机器上，同时可以指定每台机器上的服务配置，`drainer_servers` 是一个数组，每个数组元素包含以下字段：
+### `kvcdc_servers`
 
-- `host`：指定部署到哪台机器，字段值填 IP 地址，不可省略
-- `ssh_port`：指定连接目标机器进行操作的时候使用的 SSH 端口，若不指定，则使用 `global` 区块中的 `ssh_port`
-- `port`：Drainer 服务的监听端口，默认 8249
-- `deploy_dir`：指定部署目录，若不指定，或指定为相对目录，则按照 `global` 中配置的 `deploy_dir` 生成
-- `data_dir`：指定数据目录，若不指定，或指定为相对目录，则按照 `global` 中配置的 `data_dir` 生成
-- `log_dir`：指定日志目录，若不指定，或指定为相对目录，则按照 `global` 中配置的 `log_dir` 生成
-- `commit_ts`：[已废弃]Drainer 启动的时候会去读取 checkpoint，如果读取不到，就会使用该字段做为初次启动开始的同步时间点，该字段默认为 -1（从 PD 总获取最新时间戳作为 commit_ts）
+`kvcdc_servers` 约定了将 [TiKV-CDC](https://tikv.org/docs/latest/concepts/explore-tikv-features/cdc/cdc-cn/) 服务部署到哪些机器上，同时可以指定每台机器上的服务配置。`kvcdc_servers` 是一个数组，每个数组元素包含以下字段：
+
+- `host`：指定 TiKV-CDC 部署到哪台机器，字段值填 IP 地址，不可省略。
+- `ssh_port`：指定连接目标机器进行操作时使用的 SSH 端口，若不指定，则使用 `global` 区块中的 `ssh_port`。
+- `port`：TiKV-CDC 服务的监听端口，默认 8600。
+- `deploy_dir`：指定部署目录，若不指定，或指定为相对目录，则按照 `global` 中配置的 `deploy_dir` 生成。
+- `data-dir`：可选项，指定 TiKV-CDC 存储临时文件的目录，主要用于排序。建议确保该目录所在磁盘的可用空间大于等于 500 GiB。
+- `log_dir`：指定日志目录，若不指定，或指定为相对目录，则按照 `global` 中配置的 `log_dir` 生成。
+- `gc-ttl`：可选项，TiKV-CDC 在 PD 设置服务级别 GC safepoint 的 TTL (Time to Live) 时长。同时也是 TiKV-CDC 同步任务暂停的最大时长。单位为秒，默认值为 `86400`，即 24 小时。注意：TiKV-CDC 同步任务的暂停会影响集群 GC safepoint 的推进。`gc-ttl` 越大，同步任务可以暂停的时间越长，但同时会保留更多的过期数据，并占用更多的存储空间。反之亦然。
+- `tz`：TiKV-CDC 服务使用的时区。TiKV-CDC 在内部转换 timestamp 等时间数据类型和向下游同步数据时使用该时区，默认为进程运行本地时区。
 - `numa_node`：为该实例分配 NUMA 策略，如果指定了该参数，需要确保目标机装了 [numactl](https://linux.die.net/man/8/numactl)，在指定该参数的情况下会通过 [numactl](https://linux.die.net/man/8/numactl) 分配 cpubind 和 membind 策略。该字段参数为 string 类型，字段值填 NUMA 节点的 ID，例如 "0,1"
-- `config`：该字段配置规则和 `server_configs` 里的 `drainer` 配置规则相同，若配置了该字段，会将该字段内容和 `server_configs` 里的 `drainer` 内容合并（若字段重叠，以本字段内容为准），然后生成配置文件并下发到 `host` 指定的机器
-- `os`：`host` 字段所指定的机器的操作系统，若不指定该字段，则默认为 `global` 中的 `os`
-- `arch`：`host` 字段所指定的机器的架构，若不指定该字段，则默认为 `global` 中的 `arch`
-- `resource_control`：针对该服务的资源控制，如果配置了该字段，会将该字段和 `global` 中的 `resource_control` 内容合并（若字段重叠，以本字段内容为准），然后生成 systemd 配置文件并下发到 `host` 指定机器。`resource_control` 的配置规则同 `global` 中的 `resource_control`
+- `config`：可选项，指定 TiKV-CDC 使用的配置文件路径。
+- `os`：`host` 字段所指定的机器的操作系统，若不指定该字段，则默认为 `global` 中的 `os`。
+- `arch`：`host` 字段所指定的机器的架构，若不指定该字段，则默认为 `global` 中的 `arch`。
+- `resource_control`：针对该服务的资源控制，如果配置了该字段，会将该字段和 `global` 中的 `resource_control` 内容合并（若字段重叠，以本字段内容为准），然后生成 systemd 配置文件并下发到 `host` 指定机器。`resource_control` 的配置规则同 `global` 中的 `resource_control`。
 
 以上所有字段中，部分字段部署完成之后不能再修改。如下所示：
 
@@ -391,25 +404,12 @@ pump_servers:
 - `arch`
 - `os`
 
-其中 `commit_ts` 字段自 tiup cluster v1.9.2 开始已经废弃，不再被记录到 drainer 的启动脚本中。如果你仍需要配置该参数，请参照下面的示例在 `config` 中配置 `initial-commit-ts` 字段。
-
-`drainer_servers` 配置示例：
+`kvcdc_servers` 配置示例：
 
 ```yaml
-drainer_servers:
+kvcdc_servers:
   - host: 10.0.1.21
-    config:
-      initial-commit-ts: -1
-      syncer.db-type: "mysql"
-      syncer.to.host: "127.0.0.1"
-      syncer.to.user: "root"
-      syncer.to.password: ""
-      syncer.to.port: 3306
-      syncer.ignore-table:
-        - db-name: test
-          tbl-name: log
-        - db-name: test
-          tbl-name: audit
+  - host: 10.0.1.22
 ```
 
 ### `cdc_servers`
@@ -533,6 +533,66 @@ tispark_workers:
   - host: 10.0.1.23
 ```
 
+### `tso_servers`
+
+`tso_servers` 约定了将 `tso` 微服务部署到哪些机器上，同时可以指定每台机器上的服务配置。`tso_servers` 是一个数组，每个数组元素包含以下字段：
+
+- `host`：指定部署到哪台机器，字段值填 IP 地址，不可省略。
+- `ssh_port`：指定连接目标机器进行操作的时候使用的 SSH 端口，若不指定，则使用 `global` 区块中的 `ssh_port`。
+- `port`：`tso` 微服务的监听端口，默认值：`3379`。
+- `deploy_dir`：指定部署目录，若不指定，或指定为相对目录，则按照 `global` 中配置的 `deploy_dir` 生成。
+- `data_dir`：指定数据目录，若不指定，或指定为相对目录，则按照 `global` 中配置的 `data_dir` 生成。
+- `config`：该字段配置规则和 `server_configs` 里的 `tso` 配置规则相同，若配置了该字段，会将该字段内容和 `server_configs` 里的 `tso` 内容合并（若字段重叠，以本字段内容为准），然后生成配置文件并下发到 `host` 指定的机器。
+- `os`：`host` 字段所指定的机器的操作系统，若不指定该字段，则默认为 `global` 中的 `os`。
+- `arch`：`host` 字段所指定的机器的架构，若不指定该字段，则默认为 `global` 中的 `arch`。
+
+在上述字段中，部分字段部署完成之后不能再修改。如下所示：
+
+- `host`
+- `port`
+- `deploy_dir`
+- `data_dir`
+- `arch`
+- `os`
+
+`tso_servers` 配置示例：
+
+```yaml
+tso_servers:
+  - host: 10.0.1.21
+  - host: 10.0.1.22
+```
+
+### `scheduling_servers`
+
+`scheduling_servers` 约定了将 `scheduling` 微服务部署到哪些机器上，同时可以指定每台机器上的服务配置。`scheduling_servers` 是一个数组，每个数组元素包含以下字段：
+
+- `host`：指定部署到哪台机器，字段值填 IP 地址，不可省略。
+- `ssh_port`：指定连接目标机器进行操作的时候使用的 SSH 端口，若不指定，则使用 `global` 区块中的 `ssh_port`。
+- `port`：`scheduling` 微服务的监听端口，默认值：`3379`。
+- `deploy_dir`：指定部署目录，若不指定，或指定为相对目录，则按照 `global` 中配置的 `deploy_dir` 生成。
+- `data_dir`：指定数据目录，若不指定，或指定为相对目录，则按照 `global` 中配置的 `data_dir` 生成。
+- `config`：该字段配置规则和 `server_configs` 里的 `scheduling` 配置规则相同，若配置了该字段，会将该字段内容和 `server_configs` 里的 `scheduling` 内容合并（若字段重叠，以本字段内容为准），然后生成配置文件并下发到 `host` 指定的机器。
+- `os`：`host` 字段所指定的机器的操作系统，若不指定该字段，则默认为 `global` 中的 `os`。
+- `arch`：`host` 字段所指定的机器的架构，若不指定该字段，则默认为 `global` 中的 `arch`。
+
+在上述字段中，部分字段部署完成之后不能再修改。如下所示：
+
+- `host`
+- `port`
+- `deploy_dir`
+- `data_dir`
+- `arch`
+- `os`
+
+`scheduling_servers` 配置示例：
+
+```yaml
+scheduling_servers:
+  - host: 10.0.1.21
+  - host: 10.0.1.22
+```
+
 ### `monitoring_servers`
 
 `monitoring_servers` 约定了将 Prometheus 服务部署到哪台机器上，同时可以指定这台机器上的服务配置，`monitoring_servers` 是一个数组，每个数组元素包含以下字段：
@@ -554,6 +614,8 @@ tispark_workers:
 - `os`：`host` 字段所指定的机器的操作系统，若不指定该字段，则默认为 `global` 中的 `os`
 - `arch`：`host` 字段所指定的机器的架构，若不指定该字段，则默认为 `global` 中的 `arch`
 - `resource_control`：针对该服务的资源控制，如果配置了该字段，会将该字段和 `global` 中的 `resource_control` 内容合并（若字段重叠，以本字段内容为准），然后生成 systemd 配置文件并下发到 `host` 指定机器。`resource_control` 的配置规则同 `global` 中的 `resource_control`
+- `additional_args`：从 TiUP v1.15.0 开始引入，用于配置 Prometheus 额外运行参数。该字段是一个数组，数组元素为 Prometheus 运行参数。例如，要开启 Prometheus 热加载功能，可以将该字段配置为 `--web.enable-lifecycle`
+- `additional_scrape_conf`：自定义 Prometheus scrape 配置。在集群进行 deploy/scale-out/scale-in/reload 操作时，TiUP 会将 `additional_scrape_conf` 字段的内容添加到 Prometheus 配置文件的对应参数中。更多信息，请参考[自定义监控组件的配置](/tiup/customized-montior-in-tiup-environment.md#自定义-prometheus-scrape-配置)
 
 以上所有字段中，部分字段部署完成之后不能再修改。如下所示：
 
@@ -571,6 +633,8 @@ tispark_workers:
 monitoring_servers:
   - host: 10.0.1.11
     rule_dir: /local/rule/dir
+    additional_args:
+    - --web.enable-lifecycle
     remote_config:
       remote_write:
       - queue_config:
@@ -602,6 +666,7 @@ monitoring_servers:
 - `password`：Grafana 对应的密码
 - `dashboard_dir`：该字段指定一个本地目录，该目录中应当含有完整的 `dashboard(*.json)` 文件，这些文件会在集群配置初始化阶段被传输到目标机器上，作为 Grafana 的 dashboards
 - `resource_control`：针对该服务的资源控制，如果配置了该字段，会将该字段和 `global` 中的 `resource_control` 内容合并（若字段重叠，以本字段内容为准），然后生成 systemd 配置文件并下发到 `host` 指定机器。`resource_control` 的配置规则同 `global` 中的 `resource_control`
+- `config`：该字段用于添加 Grafana 自定义配置。在集群进行 deploy/scale-out/scale-in/reload 等操作时，TiUP 会将 `config` 字段的内容添加到 Grafana 的配置文件 `grafana.ini` 中。更多信息，请参考[自定义 Grafana 其他配置](/tiup/customized-montior-in-tiup-environment.md#自定义-grafana-其他配置)
 
 > **注意：**
 >
@@ -642,6 +707,7 @@ grafana_servers:
 - `os`：`host` 字段所指定的机器的操作系统，若不指定该字段，则默认为 `global` 中的 `os`
 - `arch`：`host` 字段所指定的机器的架构，若不指定该字段，则默认为 `global` 中的 `arch`
 - `resource_control`：针对该服务的资源控制，如果配置了该字段，会将该字段和 `global` 中的 `resource_control` 内容合并（若字段重叠，以本字段内容为准），然后生成 systemd 配置文件并下发到 `host` 指定机器。`resource_control` 的配置规则同 `global` 中的 `resource_control`
+- `listen_host`：指定监听地址，从而可以通过代理访问 Alertmanager。推荐使用 `0.0.0.0`。更多信息，请参考[自定义 Alertmanager 配置](/tiup/customized-montior-in-tiup-environment.md#自定义-alertmanager-配置)
 
 以上所有字段中，部分字段部署完成之后不能再修改。如下所示：
 

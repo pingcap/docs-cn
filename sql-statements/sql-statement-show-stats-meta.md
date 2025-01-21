@@ -25,24 +25,19 @@ aliases: ['/docs-cn/dev/sql-statements/sql-statement-show-stats-meta/']
 
 ## 语法图
 
-**ShowStmt**
+```ebnf+diagram
+ShowStatsMetaStmt ::=
+    "SHOW" "STATS_META" ShowLikeOrWhere?
 
-![ShowStmt](/media/sqlgram/ShowStmt.png)
-
-**ShowTargetFiltertable**
-
-![ShowTargetFilterable](/media/sqlgram/ShowTargetFilterable.png)
-
-**ShowLikeOrWhereOpt**
-
-![ShowLikeOrWhereOpt](/media/sqlgram/ShowLikeOrWhereOpt.png)
+ShowLikeOrWhere ::=
+    "LIKE" SimpleExpr
+|   "WHERE" Expression
+```
 
 ## 示例
 
-{{< copyable "sql" >}}
-
 ```sql
-show stats_meta;
+SHOW STATS_META;
 ```
 
 ```sql
@@ -58,10 +53,8 @@ show stats_meta;
 5 rows in set (0.00 sec)
 ```
 
-{{< copyable "sql" >}}
-
 ```sql
-show stats_meta where table_name = 't2';
+SHOW STATS_META WHERE table_name = 't2';
 ```
 
 ```sql
@@ -79,5 +72,5 @@ show stats_meta where table_name = 't2';
 
 ## 另请参阅
 
-* [ANALYZE](/sql-statements/sql-statement-analyze-table.md)
-* [统计信息介绍](/statistics.md)
+* [`ANALYZE`](/sql-statements/sql-statement-analyze-table.md)
+* [常规统计信息](/statistics.md)

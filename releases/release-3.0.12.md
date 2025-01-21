@@ -1,6 +1,7 @@
 ---
 title: TiDB 3.0.12 Release Notes
 aliases: ['/docs-cn/dev/releases/release-3.0.12/','/docs-cn/dev/releases/3.0.12/']
+summary: TiDB 3.0.12 发布日期为 2020 年 3 月 16 日。该版本存在一些已知问题，建议使用最新版本。兼容性变化包括修复慢日志中记录 prewrite binlog 时间计时不准确的问题。新功能包括动态加载已被替换的证书文件，添加配置项，限流功能，以及在 binlog 写入失败时 TiDB 退出。Bug 修复包括保证原子性，悲观锁加锁问题修复，建索引长度超过限制时的报错信息显示，FROM_UNIXTIME 函数小数点位数不正确的问题修复，以及其他问题的修复。
 ---
 
 # TiDB 3.0.12 Release Notes

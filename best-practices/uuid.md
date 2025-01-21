@@ -7,17 +7,17 @@ summary: 了解在 TiDB 中使用 UUID 的最佳实践和策略。
 
 ## UUID 概述
 
-通用唯一标识符（UUID）用作主键而不是 `AUTO_INCREMENT` 整数值时，可以提供以下好处：
+通用唯一标识符 (UUID) 用作主键而不是 [`AUTO_INCREMENT`](/auto-increment.md) 整数值时，可以提供以下好处：
 
 - UUID 可以在多个系统生成，而不会产生冲突。某些情况下可以减少到 TiDB 的网络往返次数，从而提高性能。
 - 绝大多数编程语言和数据库系统都支持 UUID。
-- 用在 URL 中时，UUID 不容易被枚举攻击。相比之下，使用 `auto_increment` 数字，则很容易让发票 ID 或用户 ID 被猜出。
+- 用在 URL 中时，UUID 不容易被枚举攻击。相比之下，使用 `AUTO_INCREMENT` 数字，则很容易让发票 ID 或用户 ID 被猜出。
 
 ## 最佳实践
 
 ### 二进制存储
 
-UUID 文本是一个包含 36 字符的字符串，如 `ab06f63e-8fe7-11ec-a514-5405db7aad56`。使用 `UUID_TO_BIN()` 可将 UUID 文本格式转换为 16 字节的二进制格式。这样，你可以将文本存储在 `BINARY(16)` 列中。检索 UUID 时，可以使用 `BIN_TO_UUID()` 函数再将其转换回文本格式。
+UUID 文本是一个包含 36 字符的字符串，如 `ab06f63e-8fe7-11ec-a514-5405db7aad56`。使用 [`UUID_TO_BIN()`](/functions-and-operators/miscellaneous-functions.md#uuid_to_bin) 可将 UUID 文本格式转换为 16 字节的二进制格式。这样，你可以将文本存储在 [`BINARY(16)`](/data-type-string.md#binary-类型) 列中。检索 UUID 时，可以使用 [`BIN_TO_UUID()`](/functions-and-operators/miscellaneous-functions.md#bin_to_uuid) 函数再将其转换回文本格式。
 
 ### UUID 格式二进制顺序和聚簇主键
 

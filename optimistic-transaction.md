@@ -27,7 +27,7 @@ aliases: ['/docs-cn/dev/optimistic-transaction/','/docs-cn/dev/reference/transac
 2. 客户端发起读请求。
 
     1. TiDB 从 PD 获取数据路由信息，即数据具体存在哪个 TiKV 节点上。
-    2. TiDB 从 TiKV 获取 `start_ts` 版本下对应的数据。
+    2. TiDB 从 TiKV 获取 `start_ts` 版本下对应的数据。
 
 3. 客户端发起写请求。
 
@@ -65,6 +65,10 @@ aliases: ['/docs-cn/dev/optimistic-transaction/','/docs-cn/dev/reference/transac
 
 ## 事务的重试
 
+> **注意：**
+>
+> 从 v8.0.0 开始，[`tidb_disable_txn_auto_retry`](/system-variables.md#tidb_disable_txn_auto_retry) 被废弃，不再支持乐观事务的自动重试。推荐使用[悲观事务模式](/pessimistic-transaction.md)。如果使用乐观事务模式发生冲突，请在应用里捕获错误并重试。
+
 使用乐观事务模型时，在高冲突率的场景中，事务容易发生写写冲突而导致提交失败。MySQL 使用悲观事务模型，在执行写入类型的 SQL 语句的过程中进行加锁并且在 Repeatable Read 隔离级别下使用了当前读的机制，能够读取到最新的数据，所以提交时一般不会出现异常。为了降低应用改造难度，TiDB 提供了数据库内部自动重试机制。
 
 ### 重试机制
@@ -75,7 +79,7 @@ aliases: ['/docs-cn/dev/optimistic-transaction/','/docs-cn/dev/reference/transac
 # 设置是否禁用自动重试，默认为 “on”，即不重试。
 tidb_disable_txn_auto_retry = OFF
 # 控制重试次数，默认为 “10”。只有自动重试启用时该参数才会生效。
-# 当 “tidb_retry_limit= 0” 时，也会禁用自动重试。
+# 当 “tidb_retry_limit = 0” 时，也会禁用自动重试。
 tidb_retry_limit = 10
 ```
 
@@ -119,11 +123,11 @@ TiDB 默认不进行事务重试，因为重试事务可能会导致更新丢失
 
 事务重试的局限性与其原理有关。事务重试可概括为以下三个步骤：
 
-1. 重新获取 `start_ts`。
+1. 重新获取 `start_ts`。
 2. 重新执行包含写操作的 SQL 语句。
 3. 再次进行两阶段提交。
 
-第二步中，重试时仅重新执行包含写操作的 SQL 语句，并不涉及读操作的 SQL 语句。但是当前事务中读到数据的时间与事务真正开始的时间发生了变化，写入的版本变成了重试时获取的 `start_ts` 而非事务一开始时获取的 `start_ts`。因此，当事务中存在依赖查询结果来更新的语句时，重试将无法保证事务原本可重复读的隔离级别，最终可能导致结果与预期出现不一致。
+第二步中，重试时仅重新执行包含写操作的 SQL 语句，并不涉及读操作的 SQL 语句。但是当前事务中读到数据的时间与事务真正开始的时间发生了变化，写入的版本变成了重试时获取的 `start_ts` 而非事务一开始时获取的 `start_ts`。因此，当事务中存在依赖查询结果来更新的语句时，重试将无法保证事务原本可重复读的隔离级别，最终可能导致结果与预期出现不一致。
 
 如果业务可以容忍事务重试导致的异常，或并不关注事务是否以可重复读的隔离级别来执行，则可以开启自动重试。
 

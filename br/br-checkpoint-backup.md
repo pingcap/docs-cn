@@ -35,7 +35,7 @@ aliases: ["/zh/tidb/dev/br-checkpoint"]
 例如，设置 `gcttl` 为 15 小时（54000 秒）来延长 `gc-safepoint` 的保留时间：
 
 ```shell
-br backup full \
+tiup br backup full \
 --storage local:///br_data/ --pd "${PD_IP}:2379" \
 --gcttl 54000
 ```

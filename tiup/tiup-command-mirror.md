@@ -1,5 +1,6 @@
 ---
 title: tiup mirror
+summary: TiUP 中的镜像是一个重要概念，支持本地镜像和远程镜像。命令 `tiup mirror` 用于管理镜像，包括创建、发布、密钥管理等功能。语法为 `tiup mirror <command> [flags]`，支持的子命令包括 genkey、sign、init、set、grant、publish、modify、rotate、clone、merge。详细信息请参考 TiUP 命令清单。
 ---
 
 # tiup mirror

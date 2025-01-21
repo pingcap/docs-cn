@@ -1,5 +1,6 @@
 ---
 title: TiDB 5.3.3 Release Note
+summary: TiDB 5.3.3 发布日期为 2022 年 9 月 14 日。此版本修复了 TiKV 存在的 bug，该 bug 导致在执行 SQL 语句时出现持续报错的问题。影响版本为 v5.3.2 和 v5.4.2，已在 v5.3.3 上修复。如果使用 v5.3.2 的 TiDB 集群，可以升级至 v5.3.3。除升级外，还可以重启无法向 PD 发送 Region 心跳的 TiKV 节点，直至不再有待发送的 Region 心跳为止。
 ---
 
 # TiDB 5.3.3 Release Note

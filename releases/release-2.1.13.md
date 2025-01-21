@@ -1,6 +1,7 @@
 ---
 title: TiDB 2.1.13 Release Notes
 aliases: ['/docs-cn/dev/releases/release-2.1.13/','/docs-cn/dev/releases/2.1.13/']
+summary: TiDB 2.1.13 发布，新增了列属性包含 `AUTO_INCREMENT` 时利用 `SHARD_ROW_ID_BITS` 打散行 ID 功能，优化无效 DDL 元信息存活时间，修复了在大并发场景下 OOM 的问题，新增了 `update-stats` 配置项，新增了 3 个 TiDB 特有语法，修复了某些情况下 `KILL` 语句导致的 panic 问题，增强了 `ADD_DATE` 在某些情况下跟 MySQL 的兼容性，修复了 index join 中内表过滤条件在某些情况下的选择率估计错误的问题。TiKV 修复了因迭代器未检查状态导致系统生成残缺 snapshot 的问题，新增了检查 `block-size` 配置的有效性功能。TiDB Binlog 修复了 Pump 因写入失败时未检查返回值导致偏移量错误问题，Drainer 新增了 `advertise-addr` 配置，支持容器环境中使用桥接模式。
 ---
 
 # TiDB 2.1.13 Release Notes

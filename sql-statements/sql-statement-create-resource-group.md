@@ -49,6 +49,8 @@ ResourceGroupRunawayOptionList ::=
 
 DirectResourceGroupRunawayOption ::=
     "EXEC_ELAPSED" EqOpt stringLit
+|   "PROCESSED_KEYS" EqOpt intLit
+|   "RU" EqOpt intLit
 |   "ACTION" EqOpt ResourceGroupRunawayActionOption
 |   "WATCH" EqOpt ResourceGroupRunawayWatchOption WatchDurationOption
 
@@ -64,6 +66,7 @@ ResourceGroupRunawayActionOption ::=
     DRYRUN
 |   COOLDOWN
 |   KILL
+|   "SWITCH_GROUP" '(' ResourceGroupName ')'
 ```
 
 资源组的 `ResourceGroupName` 是全局唯一的，不允许重复。

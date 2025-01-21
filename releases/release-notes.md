@@ -1,14 +1,55 @@
 ---
 title: TiDB 版本发布历史
 aliases: ['/docs-cn/dev/releases/release-notes/','/docs-cn/dev/releases/rn/']
+summary: 介绍 TiDB 版本发布历史。
 ---
 
 # TiDB 版本发布历史
 
-TiDB 历史版本发布声明如下：
+<EmailSubscriptionWrapper />
+
+本文列出了所有已发布的 TiDB 版本，按版本号降序排序。
+
+关于 TiDB 长期支持版本 (Long-Term Support, LTS) 的支持时间表，请参阅 [TiDB 版本周期支持策略](https://cn.pingcap.com/tidb-release-support-policy/)。
+
+## 8.5
+
+- [8.5.1](/releases/release-8.5.1.md): 2025-01-17
+- [8.5.0](/releases/release-8.5.0.md): 2024-12-19
+
+## 8.4
+
+- [8.4.0-DMR](/releases/release-8.4.0.md): 2024-11-11
+
+## 8.3
+
+- [8.3.0-DMR](/releases/release-8.3.0.md): 2024-08-22
+
+## 8.2
+
+- [8.2.0-DMR](/releases/release-8.2.0.md): 2024-07-11
+
+## 8.1
+
+- [8.1.2](/releases/release-8.1.2.md): 2024-12-26
+- [8.1.1](/releases/release-8.1.1.md): 2024-08-27
+- [8.1.0](/releases/release-8.1.0.md): 2024-05-24
+
+## 8.0
+
+- [8.0.0-DMR](/releases/release-8.0.0.md): 2024-03-29
+
+## 7.6
+
+- [7.6.0-DMR](/releases/release-7.6.0.md): 2024-01-25
 
 ## 7.5
 
+- [7.5.5](/releases/release-7.5.5.md): 2024-12-31
+- [7.5.4](/releases/release-7.5.4.md): 2024-10-15
+- [7.5.3](/releases/release-7.5.3.md): 2024-08-05
+- [7.5.2](/releases/release-7.5.2.md): 2024-06-13
+- [7.5.1](/releases/release-7.5.1.md): 2024-02-29
 - [7.5.0](/releases/release-7.5.0.md): 2023-12-01
 
 ## 7.4
@@ -25,6 +66,10 @@ TiDB 历史版本发布声明如下：
 
 ## 7.1
 
+- [7.1.6](/releases/release-7.1.6.md): 2024-11-21
+- [7.1.5](/releases/release-7.1.5.md): 2024-04-26
+- [7.1.4](/releases/release-7.1.4.md): 2024-03-11
+- [7.1.3](/releases/release-7.1.3.md): 2023-12-21
 - [7.1.2](/releases/release-7.1.2.md): 2023-10-25
 - [7.1.1](/releases/release-7.1.1.md): 2023-07-24
 - [7.1.0](/releases/release-7.1.0.md): 2023-05-31
@@ -39,6 +84,12 @@ TiDB 历史版本发布声明如下：
 
 ## 6.5
 
+- [6.5.11](/releases/release-6.5.11.md): 2024-09-20
+- [6.5.10](/releases/release-6.5.10.md): 2024-06-20
+- [6.5.9](/releases/release-6.5.9.md): 2024-04-12
+- [6.5.8](/releases/release-6.5.8.md): 2024-02-02
+- [6.5.7](/releases/release-6.5.7.md): 2024-01-08
+- [6.5.6](/releases/release-6.5.6.md): 2023-12-07
 - [6.5.5](/releases/release-6.5.5.md): 2023-09-21
 - [6.5.4](/releases/release-6.5.4.md): 2023-08-28
 - [6.5.3](/releases/release-6.5.3.md): 2023-06-14

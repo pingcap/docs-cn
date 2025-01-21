@@ -15,7 +15,7 @@ RELEASE SAVEPOINT identifier
 
 > **警告：**
 >
-> `SAVEPOINT` 特性不支持与 TiDB Binlog 一起使用，也不支持在关闭 [`tidb_constraint_check_in_place_pessimistic`](/system-variables.md#tidb_constraint_check_in_place_pessimistic-从-v630-版本开始引入) 的悲观事务中使用。
+> `SAVEPOINT` 特性不支持在关闭 [`tidb_constraint_check_in_place_pessimistic`](/system-variables.md#tidb_constraint_check_in_place_pessimistic-从-v630-版本开始引入) 的悲观事务中使用。
 
 - `SAVEPOINT` 语句用于在当前事务中，设置一个指定名字保存点。如果已经存在相同名字的保存点，就删除已有的保存点并设置新的保存点。
 
@@ -34,6 +34,19 @@ RELEASE SAVEPOINT identifier
     ```
 
     当事务提交或者回滚后，事务中所有保存点都会被删除。
+
+## 语法图
+
+```ebnf+diagram
+SavepointStmt ::=
+    "SAVEPOINT" Identifier
+
+RollbackToStmt ::=
+    "ROLLBACK" "TO" "SAVEPOINT"? Identifier
+
+ReleaseSavepointStmt ::=
+    "RELEASE" "SAVEPOINT" Identifier
+```
 
 ## 示例
 
@@ -139,6 +152,8 @@ SELECT * FROM t1;
 ## MySQL 兼容性
 
 使用 `ROLLBACK TO SAVEPOINT` 语句将事物回滚到指定保存点时，MySQL 会释放该保存点之后才持有的锁，但在 TiDB 悲观事务中，不会立即释放该保存点之后才持有的锁，而是等到事务提交或者回滚时，才释放全部持有的锁。
+
+TiDB 不支持 MySQL 中的 `ROLLBACK WORK TO SAVEPOINT ...` 语法。
 
 ## 另请参阅
 

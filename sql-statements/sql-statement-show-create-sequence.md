@@ -10,17 +10,12 @@ aliases: ['/docs-cn/dev/sql-statements/sql-statement-show-create-sequence/','/do
 
 ## 语法图
 
-**ShowCreateSequenceStmt:**
-
-![ShowCreateSequenceStmt](/media/sqlgram/ShowCreateSequenceStmt.png)
-
-**TableName:**
-
-![TableName](/media/sqlgram/TableName.png)
+```ebnf+diagram
+ShowCreateSequenceStmt ::=
+    "SHOW" "CREATE" "SEQUENCE" ( SchemaName "." )? TableName
+```
 
 ## 示例
-
-{{< copyable "sql" >}}
 
 ```sql
 CREATE SEQUENCE seq;
@@ -29,8 +24,6 @@ CREATE SEQUENCE seq;
 ```
 Query OK, 0 rows affected (0.03 sec)
 ```
-
-{{< copyable "sql" >}}
 
 ```sql
 SHOW CREATE SEQUENCE seq;
@@ -52,4 +45,5 @@ SHOW CREATE SEQUENCE seq;
 ## 另请参阅
 
 * [CREATE SEQUENCE](/sql-statements/sql-statement-create-sequence.md)
+* [ALTER SEQUENCE](/sql-statements/sql-statement-alter-sequence.md)
 * [DROP SEQUENCE](/sql-statements/sql-statement-drop-sequence.md)

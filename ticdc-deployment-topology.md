@@ -10,7 +10,7 @@ aliases: ['/docs-cn/dev/ticdc-deployment-topology/','/docs-cn/dev/reference/tool
 >
 > TiCDC 从 v4.0.6 起成为正式功能，可用于生产环境。
 
-本文介绍 [TiCDC](/ticdc/ticdc-overview.md) 部署的拓扑，以及如何在最小拓扑的基础上同时部署 TiCDC。TiCDC 是 4.0 版本开始支持的 TiDB 增量数据同步工具，支持多种下游（TiDB、MySQL、Kafka、MQ、存储服务等）。相比于 TiDB Binlog，TiCDC 有延迟更低、天然高可用等优点。
+本文介绍 [TiCDC](/ticdc/ticdc-overview.md) 部署的拓扑，以及如何在最小拓扑的基础上同时部署 TiCDC。TiCDC 是 4.0 版本开始支持的 TiDB 增量数据同步工具，支持多种下游（TiDB、MySQL、Kafka、MQ、存储服务等），有延迟低、天然高可用等优点。
 
 ## 拓扑信息
 
@@ -21,6 +21,10 @@ aliases: ['/docs-cn/dev/ticdc-deployment-topology/','/docs-cn/dev/reference/tool
 | TiKV | 3 | 16 VCore 32GB 2TB (nvme ssd) * 1 | 10.0.1.7 <br/> 10.0.1.8 <br/> 10.0.1.9 | 默认端口 <br/> 全局目录配置 |
 | CDC | 3 | 8 VCore 16GB * 1 | 10.0.1.11 <br/> 10.0.1.12 <br/> 10.0.1.13 | 默认端口 <br/> 全局目录配置 |
 | Monitoring & Grafana | 1 | 4 VCore 8GB * 1 500GB (ssd) | 10.0.1.11 | 默认端口 <br/> 全局目录配置 |
+
+> **注意：**
+>
+> 该表中拓扑实例的 IP 为示例 IP。在实际部署时，请替换为实际的 IP。
 
 ### 拓扑模版
 

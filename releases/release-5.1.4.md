@@ -1,5 +1,6 @@
 ---
 title: TiDB 5.1.4 Release Notes
+summary: TiDB 5.1.4 发布日期为 2022 年 2 月 22 日。此版本包含兼容性更改、提升改进和 Bug 修复。兼容性更改包括系统变量 `tidb_analyze_version` 默认值修改为 `1`，以及 TiKV 在开启 `storage.enable-ttl` 后拒绝 TiDB 请求。提升改进方面，TiDB 支持在 Range 类型分区表中对 `IN` 表达式进行分区裁剪，TiKV 升级了 proc filesystem 版本。Bug 修复方面，修复了多个 TiDB 和 TiKV 的问题，包括内存泄露、配置项不生效、panic 等。Tools 方面也有多个修复和改进，包括 TiCDC、Backup & Restore、TiDB Binlog 和 TiDB Lightning。
 ---
 
 # TiDB 5.1.4 Release Notes
@@ -152,7 +153,7 @@ TiDB 版本：5.1.4
         - 修复人为删除 etcd 任务的状态时导致 TiCDC panic 的问题 [#2980](https://github.com/pingcap/tiflow/issues/2980)
         - 修复在某些 RHEL 发行版上因时区问题导致服务无法启动的问题 [#3584](https://github.com/pingcap/tiflow/issues/3584)
         - 修复 MySQL sink 模块出现死锁时告警过于频繁的问题 [#2706](https://github.com/pingcap/tiflow/issues/2706)
-        - 修复 Canal 和 Maxwell 协议下 TiCDC 没有自动开启 `enable-old-value` 选项的问题 [#3676](https://github.com/pingcap/tiflow/issues/3676)
+        - 修复 Canal 协议下 TiCDC 没有自动开启 `enable-old-value` 选项的问题 [#3676](https://github.com/pingcap/tiflow/issues/3676)
         - 修复 Avro sink 模块不支持解析 JSON 类型列的问题 [#3624](https://github.com/pingcap/tiflow/issues/3624)
         - 修复监控 checkpoint lag 出现负值的问题 [#3010](https://github.com/pingcap/tiflow/issues/3010)
         - 修复在容器环境中 OOM 的问题 [#1798](https://github.com/pingcap/tiflow/issues/1798)

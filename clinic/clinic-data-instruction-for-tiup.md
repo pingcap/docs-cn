@@ -112,7 +112,7 @@ Clinic Server 是部署在云端的云服务，根据数据存储的位置不同
 
 | 诊断数据类型 | 输出文件 | PingCAP Clinic 采集参数 |
 | :------ | :------ |:-------- |
-| 日志 | `m-master.log` | `--include=log` |
+| 日志 | `dm-master.log` | `--include=log` |
 | Error 日志 | `dm-master_stderr.log` | `--include=log` |
 | 配置文件 | `dm-master.toml` | `--include=config` |
 

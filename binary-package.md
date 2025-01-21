@@ -5,7 +5,7 @@ summary: 了解 TiDB 离线包及其包含的内容。
 
 # TiDB 离线包
 
-在[使用 TiUP 离线部署 TiDB](/production-deployment-using-tiup.md#离线部署) 前，你需要在[官方下载页面](https://pingcap.com/zh/product#SelectProduct)选择对应版本的 TiDB server 离线镜像包（包含 TiUP 离线组件包）。
+在[使用 TiUP 离线部署 TiDB](/production-deployment-using-tiup.md#离线部署) 前，你需要在[官方下载页面](https://cn.pingcap.com/product-community/)选择对应版本的 TiDB server 离线镜像包（包含 TiUP 离线组件包）。
 
 TiDB 提供了 amd64 和 arm64 两种架构的离线包。对于每种架构，TiDB 提供了两个二进制离线包：`TiDB-community-server` 软件包和 `TiDB-community-toolkit` 软件包。
 
@@ -31,6 +31,7 @@ TiDB 提供了 amd64 和 arm64 两种架构的离线包。对于每种架构，T
 | diag-{version}-linux-{arch}.tar.gz | 从 v6.0.0 起新增 |
 | influxdb-{version}-linux-{arch}.tar.gz |  |
 | playground-{version}-linux-{arch}.tar.gz |  |
+| tiproxy-{version}-linux-{arch}.tar.gz | 从 v7.6.0 起新增 |
 
 > **注意：**
 >
@@ -58,12 +59,8 @@ TiDB 提供了 amd64 和 arm64 两种架构的离线包。对于每种架构，T
 | errdoc-{version}-linux-{arch}.tar.gz |  |
 | dba-{version}-linux-{arch}.tar.gz |  |
 | PCC-{version}-linux-{arch}.tar.gz |  |
-| pump-{version}-linux-{arch}.tar.gz |  |
-| drainer-{version}-linux-{arch}.tar.gz |  |
-| binlogctl | 从 v6.0.0 起新增 |
 | sync_diff_inspector |  |
 | reparo |  |
-| arbiter |  |
 | server-{version}-linux-{arch}.tar.gz | 从 v6.2.0 起新增 |
 | grafana-{version}-linux-{arch}.tar.gz | 从 v6.2.0 起新增 |
 | alertmanager-{version}-linux-{arch}.tar.gz | 从 v6.2.0 起新增 |

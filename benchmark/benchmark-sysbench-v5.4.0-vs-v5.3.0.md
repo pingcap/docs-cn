@@ -1,5 +1,6 @@
 ---
 title: TiDB Sysbench 性能对比测试报告 - v5.4.0 对比 v5.3.0
+summary: TiDB v5.4.0 在 OLTP 场景下的 Sysbench 性能比 v5.3.0 有所提升，其中写负载性能提升了 2.59% ~ 4.85%。测试环境为 AWS EC2，硬件配置包括 PD、TiKV、TiDB 和 Sysbench 实例。两个版本使用相同的配置，通过 TiUP 部署。测试结果显示 Point Select 性能基本持平，Update Non-index 性能提升了 2.59%，Update Index 性能提升了 4.85%，Read Write 性能提升了 3.30%。
 ---
 
 # TiDB Sysbench 性能对比测试报告 - v5.4.0 对比 v5.3.0

@@ -1,6 +1,7 @@
 ---
 title: TiKV Control 使用说明
 aliases: ['/docs-cn/dev/tikv-control/','/docs-cn/dev/reference/tools/tikv-control/']
+summary: TiKV Control（tikv-ctl）是 TiKV 的命令行工具，用于管理 TiKV 集群。它的安装目录在 `~/.tiup/components/ctl/{VERSION}/` 目录下。通过 TiUP 使用 TiKV Control，可以调用 `tikv-ctl` 工具。通用参数包括远程模式和本地模式，以及两个简单的命令 `--to-hex` 和 `--to-escaped`。其他子命令包括查看 Raft 状态机的信息、查看 Region 的大小、扫描查看给定范围的 MVCC、查看给定 key 的 MVCC、扫描 raw key、打印某个 key 的值、打印 Region 的 properties 信息、手动 compact 单个 TiKV 的数据、手动 compact 整个 TiKV 集群的数据、设置一个 Region 副本为 tombstone 状态、向 TiKV 发出 consistency-check 请求、Dump snapshot 元文件、打印 Raft 状态机出错的 Region、动态修改 TiKV 的配置、强制 Region 从多副本失败状态恢复服务、恢复损坏的 MVCC 数据、Ldb 命令、打印加密元数据、打印损坏的 SST 文件信息、获取一个 Region 的 RegionReadProgress 状态。
 ---
 
 # TiKV Control 使用说明
@@ -594,7 +595,7 @@ tikv-ctl --config=./conf.toml encryption-meta dump-file --path=/path/to/tikv/dat
 /path/to/tikv/data/db/CURRENT: key_id: 9291156302549018620 iv: E3C2FDBF63FC03BFC28F265D7E78283F method: Aes128Ctr
 ```
 
-使用 `encryption-meta dump-key` 打印数据加密密钥。使用本命令的时候，除了在 TiKV 配置文件中指定 TiKV 的数据目录以外，还需要指定当前的主加密密钥。请参阅[静态加密](https://docs.pingcap.com/tidb/v4.0/encryption-at-rest)文档关于配置 TiKV 主加密密钥的说明。使用本命令时 `security.encryption.previous-master-key` 配置项不生效，即使配置文件中使用了该配置，本命令也不会触发更换主加密密钥。
+使用 `encryption-meta dump-key` 打印数据加密密钥。使用本命令的时候，除了在 TiKV 配置文件中指定 TiKV 的数据目录以外，还需要指定当前的主加密密钥。请参阅[静态加密](/encryption-at-rest.md)文档关于配置 TiKV 主加密密钥的说明。使用本命令时 `security.encryption.previous-master-key` 配置项不生效，即使配置文件中使用了该配置，本命令也不会触发更换主加密密钥。
 
 ```
 # conf.toml
@@ -655,9 +656,9 @@ sst meta:
 it isn't easy to handle local data, start key:0101
 overlap region:
 RegionInfo { region: id: 4 end_key: 7480000000000000FF0500000000000000F8 region_epoch { conf_ver: 1 version: 2 } peers { id: 5 store_id: 1 }, leader: Some(id: 5 store_id: 1) }
-suggested operations:
-tikv-ctl ldb --db=data/tikv-21107/db unsafe_remove_sst_file "data/tikv-21107/db/000014.sst"
-tikv-ctl --db=data/tikv-21107/db tombstone -r 4 --pd <endpoint>
+refer operations:
+tikv-ctl ldb --db=/path/to/tikv/db unsafe_remove_sst_file 000014
+tikv-ctl --data-dir=/path/to/tikv tombstone -r 4 --pd <endpoint>
 --------------------------------------------------------
 corruption analysis has completed
 ```
