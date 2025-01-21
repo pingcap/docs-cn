@@ -26,14 +26,14 @@ summary: 列出快照恢复时无法恢复的系统表
     * `request_unit_by_group`
     * `stats_buckets`
     * `stats_extended`
-	* `stats_feedback`
-	* `stats_fm_sketch`
-	* `stats_histograms`
-	* `stats_history`
-	* `stats_meta`
-	* `stats_meta_history`
-	* `stats_table_locked`
-	* `stats_top_n`
+    * `stats_feedback`
+    * `stats_fm_sketch`
+    * `stats_histograms`
+    * `stats_history`
+    * `stats_meta`
+    * `stats_meta_history`
+    * `stats_table_locked`
+    * `stats_top_n`
     * `table_cache_meta`
     * `tidb`
     * `tidb_background_subtask`
