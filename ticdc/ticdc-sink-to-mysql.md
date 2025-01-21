@@ -87,7 +87,7 @@ MTIzNDU2Nzg=
 >
 > 当 Sink URI 的参数中包含特殊字符时，如 `! * ' ( ) ; : @ & = + $ , / ? % # [ ]`，需要对 URI 特殊字符进行转义处理。你可以使用 [URI Encoder](https://www.urlencoder.org/) 工具对 URI 进行转义。
 >
-> 例如，如果连接到下游数据库的用户名为 `R&D (2)`、并要指定证书文件路径为 `/data1/R&D (2).pem` 时，需要对这些参数转义
+> 例如，如果连接到下游数据库的用户名为 `R&D (2)`、并要指定证书文件路径为 `/data1/R&D (2).pem` 时，需要对这些参数进行如下转义：
 >
 > ```shell
 > --sink-uri="mysql://R%26D%20%282%29:MTIzNDU2Nzg%3D@127.0.0.1:3306/?ssl-cert=/data1/R%26D%20%282%29.pem"
