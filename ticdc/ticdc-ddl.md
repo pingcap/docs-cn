@@ -23,7 +23,8 @@ summary: 了解 TiCDC 支持同步的 DDL 和一些特殊情况
 | `CREATE DATABASE` | Y | Y | Y | 
 | `DROP DATABASE` | Y | Y | Y |
 | `ALTER DATABASE CHARACTER SET` | Y | Y | Y |
-| `CREATE INDEX` / `ADD INDEX` | Y | Y [^1] | Y | 
+| `CREATE INDEX` | Y | Y [^1] | Y | 
+| `ADD INDEX` | Y | Y [^1] | Y | 
 | `DROP INDEX` | Y [^2] | N | Y |
 | `ADD PRIMARY KEY` | Y | Y [^1] | Y |
 | `DROP PRIMARY KEY` | Y [^2] | N | Y |
