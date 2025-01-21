@@ -243,7 +243,7 @@ Info: {"upstream_id":7178706266519722477,"namespace":"default","id":"simple-repl
 - 是否使用 partition 作为分隔字符串。
 - 该参数只有当下游为存储服务时，才会生效
 - 默认值：`true`，即一张表中各个 partition 的数据会分不同的目录来存储
-- 建议保持该配置项为 `true` 以避免下游分区表可能丢数据的问题 [#8581](https://github.com/pingcap/tiflow/issues/8581)。使用示例详见[数据变更记录](/ticdc/ticdc-sink-to-cloud-storage.md#数据变更记录)。
+- 注意：后续版本中该配置项将会被废弃，并强制设置成 `true`。建议保持该配置项为默认值，以避免下游分区表可能丢数据的问题。详情请参见 [Issue #11979](https://github.com/pingcap/tiflow/issues/11979)。使用示例详见[数据变更记录](/ticdc/ticdc-sink-to-cloud-storage.md#数据变更记录)。
 
 #### `debezium-disable-schema`
 
