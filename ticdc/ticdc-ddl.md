@@ -20,36 +20,36 @@ summary: 了解 TiCDC 支持同步的 DDL 和一些特殊情况
 
 | DDL | 存在有效索引 | 无有效索引且 `force-replicate` 为默认值 `false`  | 无有效索引且 `force-replicate` 为 `true` |
 |---|:---:|:---:| :---: |
-| create database | Y | Y | Y | 
-| drop database | Y | Y | Y |
-| alter database character set | Y | Y | Y |
-| create index / add index | Y | Y [^1] | Y | 
-| drop index | Y [^2] | N | Y |
-| add primary key | Y | Y [^1] | Y |
-| drop primary key | Y [^2] | N | Y |
-| create table  | Y | N | Y |
-| drop table  | Y | N | Y |
-| add column  | Y | N | Y |
-| drop column | Y | N | Y |
-| truncate table  | Y | N | Y |
-| modify column  | Y | N | Y |
-| rename table  | Y | N | Y |
-| alter column default value | Y | N | Y |
-| alter table comment  | Y | N | Y |
-| rename index  | Y | N | Y |
-| add partition | Y | N | Y |
-| drop partition | Y | N | Y |
-| truncate partition | Y | N | Y |
-| create view | Y | N | Y |
-| drop view | Y | N | Y |
-| alter table character set | Y | N | Y |
-| recover table | Y | N | Y |
-| rebase auto id | Y | N | Y |
-| alter table index visibility | Y | N | Y |
-| exchange partition | Y | N | Y |
-| reorganize partition | Y | N | Y |
-| alter table ttl | Y | N | Y |
-| alter table remove ttl | Y | N | Y |
+| `CREATE DATABASE` | Y | Y | Y | 
+| `DROP DATABASE` | Y | Y | Y |
+| `ALTER DATABASE CHARACTER SET` | Y | Y | Y |
+| `CREATE INDEX` / `ADD INDEX` | Y | Y [^1] | Y | 
+| `DROP INDEX` | Y [^2] | N | Y |
+| `ADD PRIMARY KEY` | Y | Y [^1] | Y |
+| `DROP PRIMARY KEY` | Y [^2] | N | Y |
+| `CREATE TABLE` | Y | N | Y |
+| `DROP TABLE` | Y | N | Y |
+| `ADD COLUMN` | Y | N | Y |
+| `DROP COLUMN` | Y | N | Y |
+| `TRUNCATE TABLE` | Y | N | Y |
+| `MODIFY COLUMN` | Y | N | Y |
+| `RENAME TABLE` | Y | N | Y |
+| `ALTER COLUMN DEFAULT VALUE` | Y | N | Y |
+| `ALTER TABLE COMMENT` | Y | N | Y |
+| `RENAME INDEX` | Y | N | Y |
+| `ADD PARTITION` | Y | N | Y |
+| `DROP PARTITION` | Y | N | Y |
+| `TRUNCATE PARTITION` | Y | N | Y |
+| `CREATE VIEW` | Y | N | Y |
+| `DROP VIEW` | Y | N | Y |
+| `ALTER TABLE CHARACTER SET` | Y | N | Y |
+| `RECOVER TABLE` | Y | N | Y |
+| `REBASE AUTO ID` | Y | N | Y |
+| `ALTER TABLE INDEX VISIBILITY` | Y | N | Y |
+| `EXCHANGE PARTITION` | Y | N | Y |
+| `REORGANIZE PARTITION` | Y | N | Y |
+| `ALTER TABLE TTL` | Y | N | Y |
+| `ALTER TABLE REMOVE TTL` | Y | N | Y |
 
 [^1]: 当上游表不存在有效索引，且未配置 `force-replicate=true`时，该表不会被同步，但是之后在该表上创建**有效索引**的 DDL 会被同步，下游表和上游表结构可能产生不一致从而导致后续数据同步失败。
 [^2]: 删除最后一个**有效索引**的 DDL 不会被同步，并且导致后续数据同步失败。
