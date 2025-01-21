@@ -68,14 +68,14 @@ TiCDC 作为 TiDB 的增量数据同步工具，通过 PD 内部的 etcd 实现�
 
 ## 有效索引
 
-TiCDC一般情况下只会同步存在有效索引的表，有效索引的定义如下：
+一般情况，TiCDC 只会同步存在有效索引的表到下游。当表中的索引满足以下条件之一，即为有效索引：
 
 - 主键 (`PRIMARY KEY`) 为有效索引。
-- 唯一索引 (`UNIQUE INDEX`) 中每一列在表结构中明确定义非空 (`NOT NULL`) 且不存在虚拟生成列 (`VIRTUAL GENERATED COLUMNS`)。
+- 唯一索引 (`UNIQUE INDEX`) 中每一列在表结构中明确定义为非空 (`NOT NULL`) 且不存在虚拟生成列 (`VIRTUAL GENERATED COLUMNS`)。
 
 > **注意：**
 >
-> 在设置 force-replicate=true 后，TiCDC会强制[同步没有有效索引的表](/ticdc/ticdc-manage-changefeed.md#同步没有有效索引的表)。
+> 在设置 `force-replicate=true` 后，TiCDC会强制[同步没有有效索引的表](/ticdc/ticdc-manage-changefeed.md#同步没有有效索引的表)。
 
 ## 最佳实践
 
