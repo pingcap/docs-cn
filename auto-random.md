@@ -78,7 +78,7 @@ tidb> SHOW CREATE TABLE t;
 | Table | Create Table                                                                                                                                                                                                                                                    |
 +-------+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
 | t     | CREATE TABLE `t` (
-  `a` bigint(20) NOT NULL /*T![auto_rand] AUTO_RANDOM(5) */,
+  `a` bigint NOT NULL /*T![auto_rand] AUTO_RANDOM(5) */,
   `b` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`a`) /*T![clustered_index] CLUSTERED */
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin /*T! PRE_SPLIT_REGIONS=2 */ |
@@ -158,6 +158,33 @@ SHOW WARNINGS;
 ## ID 隐式分配规则
 
 `AUTO_RANDOM` 列隐式分配的值和自增列类似，也遵循 session 变量 [`auto_increment_increment`](/system-variables.md#auto_increment_increment) 和 [`auto_increment_offset`](/system-variables.md#auto_increment_offset) 的控制，其中隐式分配值的自增位 (ID) 满足等式 `(ID - auto_increment_offset) % auto_increment_increment == 0`。
+
+## 清除自增 ID 缓存
+
+显式插入数据到 `AUTO_RANDOM` 列的行为与 `AUTO_INCREMENT` 列一致，你也需要清除自增 ID 缓存。详细信息请参阅[清除自增 ID 缓存](/auto-increment.md#清除自增-id-缓存)。
+
+你可以执行 `ALTER TABLE` 语句设置 `AUTO_RANDOM_BASE=0` 来清除集群中所有 TiDB 节点的自增 ID 缓存。例如：
+
+```sql
+ALTER TABLE t AUTO_RANDOM_BASE=0;
+```
+
+```
+Query OK, 0 rows affected, 1 warning (0.52 sec)
+```
+
+```sql
+SHOW WARNINGS;
+```
+
+```
++---------+------+-------------------------------------------------------------------------+
+| Level   | Code | Message                                                                 |
++---------+------+-------------------------------------------------------------------------+
+| Warning | 1105 | Can't reset AUTO_INCREMENT to 0 without FORCE option, using 101 instead |
++---------+------+-------------------------------------------------------------------------+
+1 row in set (0.00 sec)
+```
 
 ## 使用限制
 

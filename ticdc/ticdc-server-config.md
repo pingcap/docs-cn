@@ -28,61 +28,149 @@ summary: 了解 TiCDC 详细的命令行参数和配置文件定义。
 
 ## `cdc server` 配置文件说明
 
-对于 `cdc server` 命令中 `config` 参数指定的配置文件说明如下：
+对于 `cdc server` 命令中 `config` 参数指定的配置文件说明如下。你可以在 [`pkg/cmd/util/ticdc.toml`](https://github.com/pingcap/tiflow/blob/master/pkg/cmd/util/ticdc.toml) 找到默认值的配置文件。
 
-```toml
-# 下面的字段的配置含义与命令行参数相同，但是命令行参数优先级更高。
-addr = "127.0.0.1:8300"
-advertise-addr = ""
-log-file = ""
-log-level = "info"
-data-dir = ""
-gc-ttl = 86400 # 24 h
-tz = "System"
-cluster-id = "default"
-# 控制 GOGC Tuner 自动调节的最大内存阈值（单位为 byte）：设置较小的阈值会提高 GC 频率；设置较大的阈值会降低 GC 频率并使 TiCDC 进程占用更多的内存资源；超过阈值后 GOGC Tuner 会停止工作。默认值为 0，表示禁用 GOGC Tuner。
-gc-tuner-memory-threshold = 0
+<!-- 下面的字段的配置含义与命令行参数相同，但是命令行参数优先级更高 -->
 
-[security]
-  ca-path = ""
-  cert-path = ""
-  key-path = ""
-  # 控制是否开启 TLS 客户端鉴权，默认值为 false。
-  mtls = false
-  # 控制是否使用用户名和密码进行客户端鉴权，默认值为 false。
-  client-user-required = false
-  # 指定可用于客户端鉴权的用户名，列表中不存在的用户的鉴权请求将被直接拒绝。默认值为 null。
-  client-allowed-user = ["username_1", "username_2"]
+### `addr`
 
-# TiCDC 与 etcd 服务间的 session 时长（单位为秒），默认为 10，可选。 
-capture-session-ttl = 10 # 10s
-# TiCDC 集群中的 owner 模块尝试推进同步任务进度的周期，默认值为 `50000000` 纳秒（即 50 毫秒），可选。该参数有两种配置方式：只指定数字（例如，配置为 `40000000` 表示 40000000 纳秒，即 40 毫秒），或同时指定数字和单位（例如，直接配置为 `40ms`）。
-owner-flush-interval = 50000000 # 50 ms
-# TiCDC 集群中的 processor 模块尝试推进同步任务进度的周期，默认值为 `50000000` 纳秒（即 50 毫秒），可选。该参数配置方式与 `owner-flush-interval` 相同。
-processor-flush-interval = 50000000 # 50 ms
+- 示例值：`"127.0.0.1:8300"`
 
-# [log]
-# # 用于指定 zap log 模块内部的错误日志的输出位置。默认是 "stderr"，可选。
-#   error-output = "stderr"
-#   [log.file]
-#     # 单个 log 文件的最大文件大小，单位为 MiB。默认值为 300，可选。
-#     max-size = 300 # 300 MiB
-#     # log 文件最长保留天数，默认值为 `0`，代表永不删除，可选。
-#     max-days = 0
-#     # log 文件的保留个数，默认值为 `0`，代表保留所有 log 文件，可选。
-#     max-backups = 0
+### `advertise-addr`
 
-#[sorter]
-#  Sorter 模块给默认启动的 8 个 pebble DB 共享的 pebble block cache 的大小，单位为 MiB，默认值为 128。 
-#  cache-size-in-mb = 128
-#  Sorter 文件相对于 data-dir 的目录，默认值为 "/tmp/sorter"，可选。  
-#  sorter-dir = "/tmp/sorter"
+- 示例值：`""`
 
-# [kv-client]
-#   单个 Region worker 中可使用的线程数量，默认为 8，可选。  
-#   worker-concurrent = 8
-#   TiCDC 中共享线程池中线程的数量，主要用于处理 KV 事件，默认值为 `0`，表示默认为 CPU 核数的 2 倍，可选。   
-#   worker-pool-size = 0
-#   Region 连接重试时间，默认值为 `60000000000` 纳秒（即 1 分钟），可选。该参数有两种配置方式：只指定数字（例如，配置为 `50000000` 表示 50000000 纳秒，即 50 毫秒），或同时指定数字和单位（例如，直接配置为 `50ms`）。
-#   region-retry-duration = 60000000000
-```
+### `log-file`
+
+- 示例值：`""`
+
+### `log-level`
+
+- 示例值：`"info"`
+
+### `data-dir`
+
+- 示例值：`""`
+
+### `gc-ttl`
+
+- 示例值：`86400` (24h)
+
+### `tz`
+
+- 示例值：`"System"`
+
+### `cluster-id`
+
+- 示例值：`"default"`
+
+### `gc-tuner-memory-threshold`
+
+- 控制 GOGC Tuner 自动调节的最大内存阈值。设置较小的阈值会提高 GC 频率；设置较大的阈值会降低 GC 频率并使 TiCDC 进程占用更多的内存资源；超过阈值后 GOGC Tuner 会停止工作。
+- 默认值：`0`，表示禁用 GOGC Tuner
+- 单位：Byte
+
+### security
+
+#### `ca-path`
+
+- 示例值：`""`
+
+#### `cert-path`
+
+- 示例值：`""`
+
+#### `key-path`
+
+- 示例值：`""`
+
+#### `mtls`
+
+- 控制是否开启 TLS 客户端鉴权。
+- 默认值：`false`
+
+#### `client-user-required`
+
+- 控制是否使用用户名和密码进行客户端鉴权。
+- 默认值：`false`
+
+#### `client-allowed-user`
+
+- 指定可用于客户端鉴权的用户名，列表中不存在的用户的鉴权请求将被直接拒绝。
+- 默认值：`null`
+
+<!-- 示例值：`["username_1", "username_2"]` -->
+
+### `capture-session-ttl`
+
+- TiCDC 与 etcd 服务间的 session 时长。可选。
+- 默认值：`10`
+- 单位：秒
+
+### `owner-flush-interval`
+
+- TiCDC 集群中的 owner 模块尝试推进同步任务进度的周期，默认值为 `50000000` 纳秒（即 50 毫秒）。可选。
+- 该参数有两种配置方式：只指定数字（例如，配置为 `40000000` 表示 40000000 纳秒，即 40 毫秒），或同时指定数字和单位（例如，直接配置为 `40ms`）。
+- 默认值：`50000000`，即 50 毫秒
+
+### `processor-flush-interval`
+
+- TiCDC 集群中的 processor 模块尝试推进同步任务进度的周期，默认值为 `50000000` 纳秒（即 50 毫秒）。可选。
+- 该参数配置方式与 `owner-flush-interval` 相同。
+- 默认值：`50000000`，即 50 毫秒
+
+### log
+
+#### `error-output`
+
+- 用于指定 zap log 模块内部的错误日志的输出位置。可选。
+- 默认值：`"stderr"`
+
+#### log.file
+
+##### `max-size`
+
+- 单个日志文件的最大文件大小。可选。
+- 默认值：`300`
+- 单位：MiB
+
+##### `max-days`
+
+- 日志文件最长保留天数。可选。
+- 默认值：`0`，代表永不删除
+
+##### `max-backups`
+
+- 日志文件的保留个数。可选。
+- 默认值：`0`，代表保留所有日志文件
+
+### sorter
+
+#### `cache-size-in-mb`
+
+- Sorter 模块给默认启动的 8 个 pebble DB 共享的 pebble block cache 的大小。
+- 默认值：`128`
+- 单位：MiB
+
+#### `sorter-dir`
+
+- Sorter 文件相对于 `data-dir` 的目录。可选。
+- 默认值：`"/tmp/sorter"`
+
+### kv-client
+
+#### `worker-concurrent`
+
+- 单个 Region worker 中可使用的线程数量。可选。 
+- 默认值：`8`
+
+#### `worker-pool-size`
+
+- TiCDC 中共享线程池中线程的数量，主要用于处理 KV 事件。可选。
+- 默认值：`0`，表示默认为 CPU 核数的 2 倍
+
+#### `region-retry-duration`
+
+- Region 连接重试时间，默认值为 `60000000000` 纳秒（即 1 分钟）。可选。
+- 该参数有两种配置方式：只指定数字（例如，配置为 `50000000` 表示 50000000 纳秒，即 50 毫秒），或同时指定数字和单位（例如，直接配置为 `50ms`）。
+- 默认值：`60000000000`，即 1 分钟

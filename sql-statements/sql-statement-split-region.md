@@ -359,7 +359,7 @@ region4  [("c", "")                    , maxIndexValue               )
 
 以下全局变量会影响 `PRE_SPLIT_REGIONS` 的行为，需要特别注意：
 
-* `tidb_scatter_region`：该变量用于控制建表完成后是否等待预切分和打散 Region 完成后再返回结果。如果建表后有大批量写入，需要设置该变量值为 `1`，表示等待所有 Region 都切分和打散完成后再返回结果给客户端。否则未打散完成就进行写入会对写入性能影响有较大的影响。
+* [`tidb_scatter_region`](/system-variables.md#tidb_scatter_region)：该变量用于控制建表完成后是否等待预切分和打散 Region 完成后再返回结果。如果建表后有大批量写入，需要设置该变量值为 `global`，表示 TiDB 会根据整个集群的数据分布情况来打散新建表的 Region。否则未打散完成就进行写入会对写入性能影响有较大的影响。
 
 ### pre_split_regions 示例
 

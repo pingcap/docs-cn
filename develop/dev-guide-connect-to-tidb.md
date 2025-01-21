@@ -30,6 +30,22 @@ sudo yum install mysql
 mysql --host <tidb_server_host> --port 4000 -u root -p --comments
 ```
 
+macOS 上的 MySQL v9.0 客户端无法正确加载 `mysql_native_password` 插件，导致连接 TiDB 时报错 `ERROR 2059 (HY000): Authentication plugin 'mysql_native_password' cannot be loaded`。为解决该问题，建议安装并使用 MySQL v8.0 客户端来连接 TiDB 。安装命令如下：
+ 
+```shell
+brew install mysql-client@8.0
+brew unlink mysql
+brew link mysql-client@8.0
+```
+
+如果仍然遇到问题，可以尝试指定 MySQL v8.0 客户端的安装路径来使用 MySQL v8.0 客户端连接 TiDB。连接命令如下：
+
+```shell
+/opt/homebrew/opt/mysql-client@8.0/bin/mysql --comments --host ${YOUR_IP_ADDRESS} --port ${YOUR_PORT_NUMBER} -u ${your_user_name} -p
+```
+
+请使用实际部署的 MySQL v8.0 客户端的安装路径替代上述命令中的 `/opt/homebrew/opt/mysql-client@8.0/bin/mysql`。
+
 </div>
 
 <div label="MySQL Shell">

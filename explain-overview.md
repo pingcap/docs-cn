@@ -145,7 +145,7 @@ Records: 2  Duplicates: 0  Warnings: 0
 
 TiDB 会汇聚 TiKV/TiFlash 上扫描的数据或者计算结果，这种“数据汇聚”算子目前有如下几类：
 
-- **TableReader**：将 TiKV 上底层扫表算子 TableFullScan 或 TableRangeScan 得到的数据进行汇总。
+- **TableReader**：将 TiKV 或 TiFlash 上底层算子得到的数据进行汇总。
 - **IndexReader**：将 TiKV 上底层扫表算子 IndexFullScan 或 IndexRangeScan 得到的数据进行汇总。
 - **IndexLookUp**：先汇总 Build 端 TiKV 扫描上来的 RowID，再去 Probe 端上根据这些 `RowID` 精确地读取 TiKV 上的数据。Build 端是 `IndexFullScan` 或 `IndexRangeScan` 类型的算子，Probe 端是 `TableRowIDScan` 类型的算子。
 - **IndexMerge**：和 `IndexLookupReader` 类似，可以看做是它的扩展，可以同时读取多个索引的数据，有多个 Build 端，一个 Probe 端。执行过程也很类似，先汇总所有 Build 端 TiKV 扫描上来的 RowID，再去 Probe 端上根据这些 RowID 精确地读取 TiKV 上的数据。Build 端是 `IndexFullScan` 或 `IndexRangeScan` 类型的算子，Probe 端是 `TableRowIDScan` 类型的算子。
@@ -174,9 +174,14 @@ Build 总是先于 Probe 执行，并且 Build 总是出现在 Probe 前面。�
 
 ### Task 简介
 
-目前 TiDB 的计算任务分为两种不同的 task：cop task 和 root task。Cop task 是指使用 TiKV 中的 Coprocessor 执行的计算任务，root task 是指在 TiDB 中执行的计算任务。
+目前 TiDB 的计算任务分为四种不同的 task：root task, cop task, batchCop task 和 MPP task。
 
-SQL 优化的目标之一是将计算尽可能地下推到 TiKV 中执行。TiKV 中的 Coprocessor 能支持大部分 SQL 内建函数（包括聚合函数和标量函数）、SQL `LIMIT` 操作、索引扫描和表扫描。
+- root task 是指在 TiDB 中执行的计算任务。
+- cop task 是指使用 TiKV 或 TiFlash 中的 Coprocessor 执行的计算任务。
+- batchCop task 是对 TiFlash cop task 的一种优化，可以在一个任务中执行对多个 Region 的查询。
+- MPP task 是指利用 TiFlash 的 [MPP 模式](/explain-mpp.md)执行查询。
+
+SQL 优化的目标之一是将计算尽可能地下推到 TiKV 或 TiFlash 中执行，以提高查询效率。TiKV 中的 Coprocessor 支持大部分 SQL 内建函数（包括聚合函数和标量函数）、`LIMIT` 操作、索引扫描和表扫描。TiFlash 中的 Coprocessor 与 TiKV 功能类似，但不支持索引扫描。
 
 ### `operator info` 结果
 

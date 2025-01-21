@@ -5,7 +5,9 @@ summary: 了解与 TiProxy 部署和使用相关的配置参数。
 
 # TiProxy 配置文件
 
-本文档介绍了与 TiProxy 部署和使用相关的配置参数。以下是一个配置示例：
+本文档介绍了与 TiProxy 部署和使用相关的配置参数。关于 TiUP 的拓扑文件配置参数，请参阅 [tiproxy-servers 配置参数](/tiup/tiup-cluster-topology-reference.md#tiproxy_servers)。
+
+以下是一个配置示例：
 
 ```toml
 [proxy]
@@ -43,13 +45,13 @@ SQL 端口的配置。
 
 + 默认值：`0.0.0.0:6000`
 + 支持热加载：否
-+ SQL 网关地址。格式为 `<ip>:<port>`。
++ SQL 服务的监听地址。格式为 `<ip>:<port>`。使用 TiUP 或 TiDB Operator 部署 TiProxy 时，此配置项会自动设置。
 
 #### `advertise-addr`
 
 + 默认值：`""`
 + 支持热加载：否
-+ 指定客户端连接 TiProxy 时使用的地址。使用 TiUP 或 TiDB Operator 部署 TiProxy 时，此配置项会自动设置。如果未设置该配置项，将使用该 TiProxy 实例的外部 IP 地址。
++ 指定其他组件连接 TiProxy 时使用的地址，该地址只包含主机名，不包含端口。该地址可能与 [`addr`](#addr) 中的主机名不同。例如，TiProxy 的 TLS 证书中的 `Subject Alternative Name` 只包含域名时，其他组件通过 IP 连接 TiProxy 会失败。使用 TiUP 或 TiDB Operator 部署 TiProxy 时，此配置项会自动设置。如果未设置该配置项，将使用该 TiProxy 实例的外部 IP 地址。
 
 #### `graceful-wait-before-shutdown`
 
@@ -136,6 +138,15 @@ TiProxy 的高可用配置。
 + 默认值：`""`
 + 支持热加载：否
 + 指定虚拟 IP 地址，使用 CIDR 格式表示，例如 `"10.0.1.10/24"`。当集群中部署了多台 TiProxy 时，只有一台 TiProxy 会绑定虚拟 IP。当该 TiProxy 下线时，另外一台 TiProxy 会自动绑定该 IP，确保客户端始终能通过虚拟 IP 连接到可用的 TiProxy。
+
+配置示例：
+
+```yaml
+server_configs:
+  tiproxy:
+    ha.virtual-ip: "10.0.1.10/24"
+    ha.interface: "eth0"
+```
 
 > **注意：**
 >

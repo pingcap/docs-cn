@@ -115,7 +115,7 @@ TiFlash 提供了 3 个全局/会话变量决定是否选择 Broadcast Hash Join
 mysql> DROP TABLE if exists test.employees;
 Query OK, 0 rows affected, 1 warning (0.00 sec)
 mysql> CREATE TABLE test.employees
-(id int(11) NOT NULL,
+(id int NOT NULL,
  fname varchar(30) DEFAULT NULL,
  lname varchar(30) DEFAULT NULL,
  hired date NOT NULL DEFAULT '1970-01-01',
@@ -132,7 +132,7 @@ Query OK, 0 rows affected (0.10 sec)
 mysql> ALTER table test.employees SET tiflash replica 1;
 Query OK, 0 rows affected (0.09 sec)
 mysql> SET tidb_partition_prune_mode=static;
-Query OK, 0 rows affected (0.00 sec)
+Query OK, 0 rows affected, 1 warning (0.00 sec)
 mysql> explain SELECT count(*) FROM test.employees;
 +----------------------------------+----------+-------------------+-------------------------------+-----------------------------------+
 | id                               | estRows  | task              | access object                 | operator info                     |

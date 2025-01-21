@@ -43,10 +43,6 @@ Region 调大以后，如需进一步提高查询的并发度，可以设置 [`c
 
 ## 通过 Active PD Follower 提升 PD Region 信息查询服务的扩展能力
 
-> **警告：**
->
-> Active PD Follower 目前为实验特性，不建议在生产环境中使用。该功能可能会在未事先通知的情况下发生变化或删除。如果发现 bug，请在 GitHub 上提 [issue](https://github.com/pingcap/tidb/issues) 反馈。
-
 当集群的 Region 数量较多时，PD leader 处理心跳和调度任务的开销也较大，可能导致 CPU 资源紧张。如果同时集群中的 TiDB 实例数量较多，查询 Region 信息请求并发量较大，PD leader CPU 压力将变得更大，可能会造成 PD 服务不可用。
 
 为确保服务的高可用性，PD leader 会将 Region 信息实时同步给 PD follower。PD follower 在内存中维护保存 Region 信息，从而具备处理 Region 信息请求的能力。你可以通过设置系统变量 [`pd_enable_follower_handle_region`](/system-variables.md#pd_enable_follower_handle_region-从-v760-版本开始引入) 开启 Active PD Follower 特性。启用该特性后，TiDB 在获取 Region 信息时会将请求均匀地发送到所有 PD 节点上，使 PD follower 也可以直接处理 Region 请求，从而降低减轻 PD leader 的 CPU 压力。

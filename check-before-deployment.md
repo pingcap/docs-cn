@@ -116,7 +116,7 @@ aliases: ['/docs-cn/dev/check-before-deployment/']
 
 ## 检测及关闭系统 swap
 
-TiDB 运行需要有足够的内存。如果想保持性能稳定，则建议永久关闭系统 swap，但可能在内存偏小时触发 OOM 问题；如果想避免此类 OOM 问题，则可只将 swap 优先级调低，但不做永久关闭。
+TiDB 需要充足的内存来运行。如果 TiDB 使用的内存被换出 (swapped out) 然后再换入 (swapped back in)，这可能会导致延迟激增。如果您想保持稳定的性能，建议永久禁用系统 swap，但可能在内存偏小时触发 OOM 问题。如果想避免此类 OOM 问题，则可只将 swap 优先级调低，但不做永久关闭。
 
 - 开启并使用 swap 可能会引入性能抖动问题，对于低延迟、稳定性要求高的数据库服务，建议永久关闭操作系统层 swap。要永久关闭 swap，可使用以下方法：
 
@@ -125,8 +125,8 @@ TiDB 运行需要有足够的内存。如果想保持性能稳定，则建议永
 
         ```bash
         echo "vm.swappiness = 0">> /etc/sysctl.conf
-        swapoff -a
         sysctl -p
+        swapoff -a && swapon -a
         ```
 
 - 如果主机内存偏小，关闭系统 swap 可能会更容易触发 OOM 问题，可参考以如下方法将 swap 优先级调低，但不做永久关闭：
@@ -777,3 +777,7 @@ sudo yum -y install numactl
     ```
 
     你可以执行 `tiup cluster exec --help` 查看的 `tiup cluster exec` 命令的说明信息。
+
+## 关闭 SELinux
+
+使用 [getenforce(8)](https://linux.die.net/man/8/getenforce) 工具检查是否已禁用 SELinux 或设置为宽容模式 (Permissive)。处于强制模式 (Enforcing) 的 SELinux 可能会导致部署失败。有关禁用 SELinux 的说明，请参阅操作系统的文档。
