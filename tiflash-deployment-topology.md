@@ -18,6 +18,10 @@ aliases: ['/docs-cn/dev/tiflash-deployment-topology/']
 | TiFlash | 1 | 32 VCore 64 GB 2TB (nvme ssd) * 1  | 10.0.1.11 | 默认端口 <br/> 全局目录配置 |
 | Monitoring & Grafana | 1 | 4 VCore 8GB * 1 500GB (ssd) | 10.0.1.10 | 默认端口 <br/> 全局目录配置 |
 
+> **注意：**
+>
+> 该表中拓扑实例的 IP 为示例 IP。在实际部署时，请替换为实际的 IP。
+
 ### 拓扑模版
 
 <details>
