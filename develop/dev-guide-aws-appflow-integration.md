@@ -5,11 +5,11 @@ summary: 介绍 TiDB 与 Amazon AppFlow 的逐步集成方式。
 
 # TiDB 与 Amazon AppFlow 集成
 
-Amazon AppFlow 是一项完全托管的集成服务，让您可在软件即服务 (SaaS) 应用程序服务之间安全地传输数据。使用 AppFlow，您可在 TiDB 与许多 Amazon AppFlow 连接器提供者直接传输数据，如 Salesforce、Amazon S3、LinkedIn 及 GitHub 等。你可以查看 AWS 的[支持的数据源与数据目标服务](https://docs.aws.amazon.com/appflow/latest/userguide/app-specific.html)文档，以获取更多信息。
+[Amazon AppFlow](https://aws.amazon.com/appflow/) 是一项完全托管的集成服务，你可以使用 Amazon AppFlow 在软件即服务 (SaaS) 应用程序服务之间安全地传输数据。使用 Amazon AppFlow，你可以在 TiDB 与许多 Amazon AppFlow 连接器提供者直接传输数据，如 Salesforce、Amazon S3、LinkedIn 及 GitHub 等。你可以查看 AWS 的[支持的数据源与数据目标服务](https://docs.aws.amazon.com/appflow/latest/userguide/app-specific.html)文档，以获取更多信息。
 
-本文将介绍如何将 TiDB 与 Amazon AppFlow 集成，并以集成 TiDB Cloud Serverless Tier 集群为例。
+本文将介绍如何将 TiDB 与 Amazon AppFlow 集成，并以集成 TiDB Cloud Serverless 集群为例。
 
-如果你没有 TiDB 集群，你可以创建一个 [Serverless Tier](https://tidbcloud.com/console/clusters) 集群，它是免费的，可以在大约 30 秒内创建。
+如果你还没有 TiDB 集群，可以创建一个免费的 [TiDB Cloud Serverless](https://tidbcloud.com/console/clusters) 集群，仅需约 30 秒即可创建完成。
 
 ## 依赖
 
@@ -66,11 +66,11 @@ git clone https://github.com/pingcap-inc/tidb-appflow-integration
     >
     > - `--guided` 选项使用提示来引导你完成部署。你的输入将被存储在一个配置文件中，默认文件名为 `samconfig.toml`。
     > - 使用 `stack_name` 指定你要部署的 AWS Lambda 的名称。
-    > - 本文使用 AWS 作为 TiDB Cloud Serverless Tier 的云提供商。
+    > - 本文使用 AWS 作为 TiDB Cloud Serverless 的云提供商。
     > - 如需使用 Amazon S3 作为源或目标，需将 AWS Lambda 的区域设置为与 Amazon S3 的区域相同。
-    > - 如果你曾运行过 `sam deploy --guided` 命令。那么，你可以直接运行 `sam deploy` 来代替，SAM CLI 会使用保存的配置文件 `samconfig.toml` 来简化交互。
+    > - 如果你曾运行过 `sam deploy --guided` 命令，可以直接运行 `sam deploy` 来代替，SAM CLI 会使用保存的配置文件 `samconfig.toml` 来简化交互。
 
-    如果你得到相似的输出，这意味着你的 Lambda 已经部署成功。
+    如果你得到相似的输出，这意味着你的 AWS Lambda 已经部署成功。
 
     ```
     Successfully created/updated stack - <stack_name> in <region>
