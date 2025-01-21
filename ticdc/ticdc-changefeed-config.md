@@ -49,8 +49,7 @@ Info: {"upstream_id":7178706266519722477,"namespace":"default","id":"simple-repl
 
 ### `force-replicate`
 
-- 指定是否强制同步不存在有效索引的表。
-- 详情参考 [同步没有有效索引的表](/ticdc/ticdc-manage-changefeed.md#同步没有有效索引的表)
+- 指定是否强制[同步不存在有效索引的表](/ticdc/ticdc-manage-changefeed.md#同步没有有效索引的表)。
 - 默认值: `false`
 
 ### `enable-sync-point` <span class="version-mark">从 v6.3.0 版本开始引入</span>
