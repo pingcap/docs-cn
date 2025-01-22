@@ -75,7 +75,7 @@ TiCDC 作为 TiDB 的增量数据同步工具，通过 PD 内部的 etcd 实现�
 
 > **注意：**
 >
-> 在设置 [`force-replicate`](/ticdc/ticdc-changefeed-config.md#force-replicate) 为 `true` 后，TiCDC会强制[同步没有有效索引的表](/ticdc/ticdc-manage-changefeed.md#同步没有有效索引的表)。
+> 在设置 [`force-replicate`](/ticdc/ticdc-changefeed-config.md#force-replicate) 为 `true` 后，TiCDC 会强制[同步没有有效索引的表](/ticdc/ticdc-manage-changefeed.md#同步没有有效索引的表)。
 
 ## 最佳实践
 
