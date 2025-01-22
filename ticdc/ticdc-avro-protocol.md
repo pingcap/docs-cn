@@ -89,9 +89,6 @@ Key 中的 `fields` 只包含主键或唯一索引列。
 }
 ```
 
-<<<<<<< HEAD
-Value 数据格式默认与 Key 数据格式相同，但是 Value 的 `fields` 中包含了所有的列，而不仅仅是主键列。
-=======
 Value 数据格式默认与 Key 数据格式相同，但是 Value 的 `fields` 中包含了所有的列。
 
 > **注意：**
@@ -124,7 +121,6 @@ cdc cli changefeed create --server=http://127.0.0.1:8300 --changefeed-id="kafka-
   {matcher = ['*.*'], topic = "tidb_{schema}_{table}"},
  ]
  ```
->>>>>>> 523ebe23a0 (ticdc: add note to the Avro protocol (#19636))
 
 如果开启了 [TiDB 扩展字段](#tidb-扩展字段)，那么 Value 数据格式将会变成：
 
