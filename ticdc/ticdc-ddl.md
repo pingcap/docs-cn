@@ -18,16 +18,21 @@ summary: 了解 TiCDC 支持同步的 DDL 和一些特殊情况
 - Y：在该条件下可以同步到下游。
 - N：在该条件下不会同步到下游。
 
+> **注意：** 
+
+> - 当上游表不存在有效索引，且未配置 `force-replicate=true`时，该表不会被同步，但是之后在该表上创建有效索引的 DDL (`CREATE INDEX`、`ADD INDEX` 和 `ADD PRIMARY KEY`）会被同步，下游表和上游表结构可能产生不一致从而导致后续数据同步失败。
+> - 删除最后一个有效索引的 DDL （`DROP INDEX` 和 `DROP PRIMARY KEY`） 不会被同步，并且导致后续数据同步失败。
+
 | DDL | 存在有效索引 | 无有效索引且 `force-replicate` 为默认值 `false`  | 无有效索引且 `force-replicate` 为 `true` |
 |---|:---:|:---:| :---: |
-| `CREATE DATABASE` | Y | Y | Y | 
+| `CREATE DATABASE` | Y | Y | Y |
 | `DROP DATABASE` | Y | Y | Y |
 | `ALTER DATABASE CHARACTER SET` | Y | Y | Y |
-| `CREATE INDEX` | Y | Y [^1] | Y | 
-| `ADD INDEX` | Y | Y [^1] | Y | 
-| `DROP INDEX` | Y [^2] | N | Y |
-| `ADD PRIMARY KEY` | Y | Y [^1] | Y |
-| `DROP PRIMARY KEY` | Y [^2] | N | Y |
+| `CREATE INDEX` | Y | Y | Y |
+| `ADD INDEX` | Y | Y | Y |
+| `DROP INDEX` | Y | N | Y |
+| `ADD PRIMARY KEY` | Y | Y | Y |
+| `DROP PRIMARY KEY` | Y | N | Y |
 | `CREATE TABLE` | Y | N | Y |
 | `DROP TABLE` | Y | N | Y |
 | `ADD COLUMN` | Y | N | Y |
@@ -51,10 +56,6 @@ summary: 了解 TiCDC 支持同步的 DDL 和一些特殊情况
 | `REORGANIZE PARTITION` | Y | N | Y |
 | `ALTER TABLE TTL` | Y | N | Y |
 | `ALTER TABLE REMOVE TTL` | Y | N | Y |
-
-[^1]: 当上游表不存在有效索引，且未配置 `force-replicate=true`时，该表不会被同步，但是之后在该表上创建**有效索引**的 DDL 会被同步，下游表和上游表结构可能产生不一致从而导致后续数据同步失败。
-
-[^2]: 删除最后一个**有效索引**的 DDL 不会被同步，并且导致后续数据同步失败。
 
 ## DDL 同步注意事项
 
