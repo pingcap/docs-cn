@@ -47,6 +47,11 @@ Info: {"upstream_id":7178706266519722477,"namespace":"default","id":"simple-repl
 - 该配置会同时影响 filter 和 sink 相关配置。
 - 默认值：`false`
 
+### `force-replicate`
+
+- 指定是否强制[同步没有有效索引的表](/ticdc/ticdc-manage-changefeed.md#同步没有有效索引的表)。
+- 默认值: `false`
+
 ### `enable-sync-point` <span class="version-mark">从 v6.3.0 版本开始引入</span>
 
 - 是否开启 Syncpoint 功能，从 v6.3.0 开始支持，该功能默认关闭。
