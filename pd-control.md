@@ -1567,7 +1567,7 @@ store remove-tombstone
 
 > **注意：**
 >
-> - store 的 label 更新方法使用的是合并策略。TiKV 进程重启之后，其配置文件中的 store label 将会与 PD 自身存储的 store label 进行合并更新，并持久化合并后的结果。合并过程中如果 PD 侧的 store label 与 TiKV 配置文件有重复项，对应的重复项将会被 TiKV 的 store label 配置覆盖。例如通过 `store label 1 zone=cn` 将 store 1 的 `"zone"` 设置为 `"cn"` 后，如果 TiKV 自身配置了 `zone = "us"` 的 store label，在 TiKV 进程重启后，对应的 `"zone"` 将会被更新为 `"us"`。
+> - store 的 label 更新采用合并策略。TiKV 进程重启后，其配置文件中的 store label 将会与 PD 自身存储的 store label 进行合并，并持久化合并后的结果。在合并过程中，如果 PD 侧的 store label 与 TiKV 配置文件有重复项，TiKV 配置将覆盖 PD 侧的标签。例如，如果通过 `store label 1 zone=cn` 将 store 1 的 `"zone"` 设置为 `"cn"`，但 TiKV 配置文件中已设置 `zone = "us"`，则在 TiKV 重启后，`"zone"` 将被更新为 `"us"`。
 > - 如果希望使用 TiUP 统一管理 store label，你可以在集群重启前，使用 PD Control 的 `store label <id> --force` 命令将 PD 存储的 store label 清空。
 
 #### 设置 store weight
