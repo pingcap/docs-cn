@@ -444,3 +444,11 @@ TiDB 有事务超时的机制，当事务运行超过 [`max-txn-ttl`](/tidb-conf
   }
 ]
 ```
+
+## TiCDC 会同步 DML 操作中的生成列吗？
+
+生成列包括虚拟生成列和存储生成列。TiCDC 会忽略虚拟生成列，而仅同步存储生成列到下游。当下游是 MySQL 或其他与 MySQL 兼容的数据库，而不是 Kakfa 或其他存储服务时，存储生成列也会被忽略。
+
+> **注意：**
+>
+> 当同步存储生成列到 Kafka 或存储服务后，再将其写回 MySQL 时，可能会遇到 `Error 3105 (HY000): The value specified for generated column 'xx' in table 'xxx' is not allowed` 错误。为避免该错误，你可以使用 [Open Protocol](/ticdc/ticdc-open-protocol.md) 进行同步。该协议的输出包含[列的 flag 值](/ticdc/ticdc-open-protocol.md#列标志位)，可以区分是否为生成列。
