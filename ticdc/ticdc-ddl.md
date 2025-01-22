@@ -19,9 +19,9 @@ summary: 了解 TiCDC 支持同步的 DDL 和一些特殊情况
 - N：在该条件下不会同步到下游。
 
 > **注意：** 
-
-> - 当上游表不存在有效索引，且未配置 `force-replicate=true`时，该表不会被同步，但是之后在该表上创建有效索引的 DDL (`CREATE INDEX`、`ADD INDEX` 和 `ADD PRIMARY KEY`）会被同步，下游表和上游表结构可能产生不一致从而导致后续数据同步失败。
-> - 删除最后一个有效索引的 DDL （`DROP INDEX` 和 `DROP PRIMARY KEY`） 不会被同步，并且导致后续数据同步失败。
+>
+> - 当上游表不存在有效索引，且未配置 `force-replicate=true` 时，该表不会被同步，但是之后在该表上创建有效索引的 DDL (`CREATE INDEX`、`ADD INDEX` 和 `ADD PRIMARY KEY`）会被同步，下游表和上游表结构可能产生不一致从而导致后续数据同步失败。
+> - 删除最后一个有效索引的 DDL（`DROP INDEX` 和 `DROP PRIMARY KEY`）不会被同步，并且导致后续数据同步失败。
 
 | DDL | 存在有效索引 | 无有效索引且 `force-replicate` 为默认值 `false`  | 无有效索引且 `force-replicate` 为 `true` |
 |---|:---:|:---:| :---: |
