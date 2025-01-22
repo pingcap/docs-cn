@@ -1,5 +1,6 @@
 ---
 title: tiup telemetry
+summary: TiUP 遥测功能在 v1.11.3 及以上版本默认关闭，以下版本默认开启。开启后会分享使用情况信息给 PingCAP，包括遥测标示符、命令执行情况、部署情况等。不会分享集群准确名字、拓扑结构、配置文件。使用命令 `tiup telemetry` 控制遥测，支持 status、reset、enable、disable 命令。
 ---
 
 # tiup telemetry

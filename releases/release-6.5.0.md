@@ -25,7 +25,7 @@ TiDB 6.5.0 为长期支持版本 (Long-Term Support Release, LTS)。
 - [添加索引加速](/system-variables.md#tidb_ddl_enable_fast_reorg-从-v630-版本开始引入)特性 GA，添加索引的性能约提升为 v6.1.0 的 10 倍。
 - TiDB 全局内存控制特性 GA，通过 [`tidb_server_memory_limit`](/system-variables.md#tidb_server_memory_limit-从-v640-版本开始引入) 即可管理全局内存阈值。
 - 支持高性能、全局单调递增的 [`AUTO_INCREMENT` 列属性](/auto-increment.md#mysql-兼容模式) GA，兼容 MySQL。
-- [`FLASHBACK CLUSTER TO TIMESTAMP`](/sql-statements/sql-statement-flashback-to-timestamp.md) 特性新增对 TiCDC 和 PITR 的兼容性支持，该特性已 GA。
+- [`FLASHBACK CLUSTER TO TIMESTAMP`](/sql-statements/sql-statement-flashback-cluster.md) 特性新增对 TiCDC 和 PITR 的兼容性支持，该特性已 GA。
 - 优化器引入的更精准的代价模型 [Cost Model Version 2](/cost-model.md#cost-model-version-2) GA，同时优化器增强索引合并 [INDEX MERGE](/glossary.md#index-merge) 功能对 `AND` 连接的表达式的支持。
 - 支持下推 `JSON_EXTRACT()` 函数至 TiFlash。
 - 支持[密码管理](/password-management.md)策略，满足密码合规审计需求。
@@ -52,9 +52,9 @@ TiDB 6.5.0 为长期支持版本 (Long-Term Support Release, LTS)。
 
 * 支持通过 `FLASHBACK CLUSTER TO TIMESTAMP` 命令将集群快速回退到特定的时间点 (GA) [#37197](https://github.com/pingcap/tidb/issues/37197) [#13303](https://github.com/tikv/tikv/issues/13303) @[Defined2014](https://github.com/Defined2014) @[bb7133](https://github.com/bb7133) @[JmPotato](https://github.com/JmPotato) @[Connor1996](https://github.com/Connor1996) @[HuSharp](https://github.com/HuSharp) @[CalvinNeo](https://github.com/CalvinNeo)
 
-    TiDB v6.4.0 引入了 [`FLASHBACK CLUSTER TO TIMESTAMP`](/sql-statements/sql-statement-flashback-to-timestamp.md) 语句作为实验特性，支持在 Garbage Collection (GC) life time 内快速回退整个集群到指定的时间点。该功能在 v6.5.0 新增对 TiCDC 和 PITR 的兼容性支持并正式 GA，适用于快速撤消 DML 误操作、支持集群分钟级别的快速回退、支持在时间线上多次回退以确定特定数据更改发生的时间。
+    TiDB v6.4.0 引入了 [`FLASHBACK CLUSTER TO TIMESTAMP`](/sql-statements/sql-statement-flashback-cluster.md) 语句作为实验特性，支持在 Garbage Collection (GC) life time 内快速回退整个集群到指定的时间点。该功能在 v6.5.0 新增对 TiCDC 和 PITR 的兼容性支持并正式 GA，适用于快速撤消 DML 误操作、支持集群分钟级别的快速回退、支持在时间线上多次回退以确定特定数据更改发生的时间。
 
-    更多信息，请参考[用户文档](/sql-statements/sql-statement-flashback-to-timestamp.md)。
+    更多信息，请参考[用户文档](/sql-statements/sql-statement-flashback-cluster.md)。
 
 * 完整支持包含 `INSERT`、`REPLACE`、`UPDATE` 和 `DELETE` 的非事务 DML 语句 [#33485](https://github.com/pingcap/tidb/issues/33485) @[ekexium](https://github.com/ekexium)
 
@@ -353,7 +353,8 @@ TiDB 6.5.0 为长期支持版本 (Long-Term Support Release, LTS)。
 | TiDB | [`server-memory-quota`](/tidb-configuration-file.md#server-memory-quota-从-v409-版本开始引入) | 废弃 | 自 v6.5.0 起，该配置项被废弃。请使用 [`tidb_server_memory_limit`](/system-variables.md#tidb_server_memory_limit-从-v640-版本开始引入) 系统变量进行设置。 |
 | TiDB | [`disconnect-on-expired-password`](/tidb-configuration-file.md#disconnect-on-expired-password-从-v650-版本开始引入) | 新增 | 该配置用于控制 TiDB 服务端是否直接断开密码已过期用户的连接，默认值为 `true`，表示 TiDB 服务端将直接断开密码已过期用户的连接。 |
 | TiKV | `raw-min-ts-outlier-threshold` | 删除 | 从 v6.4.0 起，该配置项被废弃。从 v6.5.0 起，该配置项被删除。 |
-| TiKV | [`cdc.min-ts-interval`](/tikv-configuration-file.md#min-ts-interval) | 修改 | 为了降低 CDC 延迟，该配置的默认值从 `1s` 修改为 `200ms`。 |
+| TiKV | [`raft-engine.bytes-per-sync`](/tikv-configuration-file.md#bytes-per-sync-2) | 废弃 | 从 v6.5.0 起，Raft Engine 在写入日志时不会缓存而是直接落盘，因此该配置项被废弃，且不再生效。 |
+| TiKV | [`cdc.min-ts-interval`](/tikv-configuration-file.md#min-ts-interval) | 修改 | 为了降低 CDC 延迟，该配置的默认值从 `"1s"` 修改为 `"200ms"`。 |
 | TiKV | [`memory-use-ratio`](/tikv-configuration-file.md#memory-use-ratio-从-v650-版本开始引入) | 新增 | 表示 PITR 日志恢复功能中可用内存与系统总内存的占比。 |
 | TiCDC | [`sink.terminator`](/ticdc/ticdc-changefeed-config.md#ticdc-changefeed-配置文件说明) | 新增 | 换行符，用来分隔两个数据变更事件。默认值为空，表示使用 `\r\n` 作为换行符。 |
 | TiCDC | [`sink.date-separator`](/ticdc/ticdc-changefeed-config.md#ticdc-changefeed-配置文件说明) | 新增 | 文件路径的日期分隔类型。可选类型有 `none`、`year`、`month`、`day`。默认值为 `none`，即不使用日期分隔。|

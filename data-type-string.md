@@ -1,6 +1,7 @@
 ---
 title: 字符串类型
 aliases: ['/docs-cn/dev/data-type-string/','/docs-cn/dev/reference/sql/data-types/string/']
+summary: TiDB 支持 MySQL 所有字符串类型，包括 CHAR、VARCHAR、BINARY、VARBINARY、BLOB、TEXT、ENUM 和 SET。CHAR 是定长字符串，长度固定为创建表时声明的长度。VARCHAR 是变长字符串，空间占用大小不得超过 65535 字节。TEXT 是文本串，最大列长为 65535 字节。TINYTEXT 最大列长度为 255。MEDIUMTEXT 最大列长度为 16777215。LONGTEXT 最大列长度为 4294967295。BINARY 存储二进制字符串。VARBINARY 存储二进制字符串。BLOB 是二进制大文件，最大列长度为 65535 字节。TINYBLOB 最大列长度为 255。MEDIUMBLOB 最大列长度为 16777215。LONGBLOB 最大列长度为 4294967295。ENUM 是枚举类型，值必须从固定集合中选取。SET 是集合类型，包含零个或多个值的字符串。
 ---
 
 # 字符串类型
@@ -61,7 +62,7 @@ TINYTEXT [CHARACTER SET charset_name] [COLLATE collation_name]
 
 ### `MEDIUMTEXT` 类型
 
-类似于 [`TEXT`](#text-类型)，区别在于最大列长度为 16,777,215。但由于 [`txn-entry-size-limit`](/tidb-configuration-file.md#txn-entry-size-limit-从-v50-版本开始引入) 的限制，TiDB 中默认单行存储最大不超过 6 MiB，可通过配置项将该限制调整至 120 MiB。
+类似于 [`TEXT`](#text-类型)，区别在于最大列长度为 16,777,215。但由于 [`txn-entry-size-limit`](/tidb-configuration-file.md#txn-entry-size-limit-从-v4010-和-v500-版本开始引入) 的限制，TiDB 中默认单行存储最大不超过 6 MiB，可通过配置项将该限制调整至 120 MiB。
 
 {{< copyable "sql" >}}
 
@@ -71,7 +72,7 @@ MEDIUMTEXT [CHARACTER SET charset_name] [COLLATE collation_name]
 
 ### `LONGTEXT` 类型
 
-类似于 [`TEXT`](#text-类型)，区别在于最大列长度为 4,294,967,295。但由于 [`txn-entry-size-limit`](/tidb-configuration-file.md#txn-entry-size-limit-从-v50-版本开始引入) 的限制，TiDB 中默认单行存储最大不超过 6 MiB，可通过配置项将该限制调整至 120 MiB。
+类似于 [`TEXT`](#text-类型)，区别在于最大列长度为 4,294,967,295。但由于 [`txn-entry-size-limit`](/tidb-configuration-file.md#txn-entry-size-limit-从-v4010-和-v500-版本开始引入) 的限制，TiDB 中默认单行存储最大不超过 6 MiB，可通过配置项将该限制调整至 120 MiB。
 
 {{< copyable "sql" >}}
 
@@ -121,7 +122,7 @@ TINYBLOB
 
 ### `MEDIUMBLOB` 类型
 
-类似于 [`BLOB`](#blob-类型)，区别在于最大列长度为 16,777,215。但由于 [`txn-entry-size-limit`](/tidb-configuration-file.md#txn-entry-size-limit-从-v50-版本开始引入) 的限制，TiDB 中默认单行存储最大不超过 6 MiB，可通过配置项将该限制调整至 120 MiB。
+类似于 [`BLOB`](#blob-类型)，区别在于最大列长度为 16,777,215。但由于 [`txn-entry-size-limit`](/tidb-configuration-file.md#txn-entry-size-limit-从-v4010-和-v500-版本开始引入) 的限制，TiDB 中默认单行存储最大不超过 6 MiB，可通过配置项将该限制调整至 120 MiB。
 
 {{< copyable "sql" >}}
 
@@ -131,7 +132,7 @@ MEDIUMBLOB
 
 ### `LONGBLOB` 类型
 
-类似于 [`BLOB`](#blob-类型)，区别在于最大列长度为 4,294,967,295。但由于 [`txn-entry-size-limit`](/tidb-configuration-file.md#txn-entry-size-limit-从-v50-版本开始引入) 的限制，TiDB 中默认单行存储最大不超过 6 MiB，可通过配置项将该限制调整至 120 MiB。
+类似于 [`BLOB`](#blob-类型)，区别在于最大列长度为 4,294,967,295。但由于 [`txn-entry-size-limit`](/tidb-configuration-file.md#txn-entry-size-limit-从-v4010-和-v500-版本开始引入) 的限制，TiDB 中默认单行存储最大不超过 6 MiB，可通过配置项将该限制调整至 120 MiB。
 
 {{< copyable "sql" >}}
 

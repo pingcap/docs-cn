@@ -8,8 +8,6 @@ aliases: ['/docs-cn/dev/information-schema/information-schema-engines/']
 
 `ENGINES` 表提供了关于存储引擎的信息。从和 MySQL 兼容性上考虑，TiDB 会一直将 InnoDB 描述为唯一支持的引擎。此外，`ENGINES` 表中其它列值也都是定值。
 
-{{< copyable "sql" >}}
-
 ```sql
 USE information_schema;
 DESC engines;
@@ -28,8 +26,6 @@ DESC engines;
 +--------------+-------------+------+------+---------+-------+
 6 rows in set (0.00 sec)
 ```
-
-{{< copyable "sql" >}}
 
 ```sql
 SELECT * FROM engines;
@@ -52,3 +48,7 @@ SELECT * FROM engines;
 * `TRANSACTIONS`：存储引擎是否支持事务。
 * `XA`：存储引擎是否支持 XA 事务。
 * `SAVEPOINTS`：存储引擎是否支持 `savepoints`。
+
+## 另请参阅
+
+- [`SHOW ENGINES`](/sql-statements/sql-statement-show-engines.md)

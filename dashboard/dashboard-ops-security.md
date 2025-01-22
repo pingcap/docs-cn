@@ -1,6 +1,7 @@
 ---
 title: 提高 TiDB Dashboard 安全性
 aliases: ['/docs-cn/dev/dashboard/dashboard-ops-security/']
+summary: TiDB Dashboard 需要提高安全性。建议为 `root` 用户设置强密码或禁用 `root` 账户，并为 TiDB Dashboard 创建最小权限用户。使用防火墙阻止不可信访问，配置反向代理仅代理 TiDB Dashboard，并为反向代理开启 TLS。其他建议的安全措施包括为组件间通信和客户端服务端间通信开启加密传输。
 ---
 
 # 提高 TiDB Dashboard 安全性

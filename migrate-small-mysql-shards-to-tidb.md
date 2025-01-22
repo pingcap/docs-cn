@@ -39,9 +39,9 @@ aliases: ['/zh/tidb/dev/usage-scenario-shard-merge/','/zh/tidb/dev/usage-scenari
 
 ```sql
 CREATE TABLE `sale_01` (
-  `id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `sid` bigint(20) NOT NULL,
-  `pid` bigint(20) NOT NULL,
+  `id` bigint NOT NULL AUTO_INCREMENT,
+  `sid` bigint NOT NULL,
+  `pid` bigint NOT NULL,
   `comment` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `sid` (`sid`)
@@ -52,9 +52,9 @@ CREATE TABLE `sale_01` (
 
 ```sql
 CREATE TABLE `sale` (
-  `id` bigint(20) NOT NULL,
-  `sid` bigint(20) NOT NULL,
-  `pid` bigint(20) NOT NULL,
+  `id` bigint NOT NULL,
+  `sid` bigint NOT NULL,
+  `pid` bigint NOT NULL,
   `comment` varchar(255) DEFAULT NULL,
   INDEX (`id`),
   UNIQUE KEY `sid` (`sid`)

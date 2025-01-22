@@ -20,12 +20,12 @@ TiDB 提供了丰富的数据迁移相关的工具，用于全量迁移、增量
 
 ## [TiDB Lightning](/tidb-lightning/tidb-lightning-overview.md)
 
-| 使用场景 | <span style="font-weight:normal">用于将数据全量导入到 TiDB</span> |
-|---|---|
-| **上游（输入源文件）** | <ul><li>Dumpling 输出的文件</li><li>从 Amazon Aurora 或 Apache Hive 导出的 Parquet 文件</li><li>CSV 文件</li><li>从本地盘或 Amazon S3 云盘读取数据</li></ul>|
-| **下游** | TiDB |
-| **主要优势** | <ul><li>支持快速导入大量数据，实现快速初始化 TiDB 集群的指定表</li><li>支持断点续传</li><li>支持数据过滤</li></ul> |
-| **使用限制** | <ul><li>如果使用[物理导入模式](/tidb-lightning/tidb-lightning-physical-import-mode.md)进行数据导入，TiDB Lightning 运行后，TiDB 集群将无法正常对外提供服务。</li><li>如果你不希望 TiDB 集群的对外服务受到影响，可以参考 TiDB Lightning [逻辑导入模式](/tidb-lightning/tidb-lightning-logical-import-mode.md)中的硬件需求与部署方式进行数据导入。</li></ul> |
+| 使用场景          | <span style="font-weight:normal">用于将数据全量导入到 TiDB</span>                                                                                                                                                                                                                   |
+|---------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| **上游（输入源文件）** | <ul><li>Dumpling 输出的文件</li><li>从 Amazon Aurora、Apache Hive 或 Snowflake 导出的 Parquet 文件</li><li>CSV 文件</li><li>从本地盘或 Amazon S3 云盘读取数据</li></ul>                                                                                                                             |
+| **下游**        | TiDB                                                                                                                                                                                                                                                                      |
+| **主要优势**      | <ul><li>支持快速导入大量数据，实现快速初始化 TiDB 集群的指定表</li><li>支持断点续传</li><li>支持数据过滤</li></ul>                                                                                                                                                                                            |
+| **使用限制**      | <ul><li>如果使用[物理导入模式](/tidb-lightning/tidb-lightning-physical-import-mode.md)进行数据导入，TiDB Lightning 运行后，TiDB 集群将无法正常对外提供服务。</li><li>如果你不希望 TiDB 集群的对外服务受到影响，可以参考 TiDB Lightning [逻辑导入模式](/tidb-lightning/tidb-lightning-logical-import-mode.md)中的硬件需求与部署方式进行数据导入。</li></ul> |
 
 ## [Dumpling](/dumpling-overview.md)
 
@@ -52,7 +52,7 @@ TiDB 提供了丰富的数据迁移相关的工具，用于全量迁移、增量
 | **上游** | TiDB |
 | **下游（输出文件）** | SST，backup.meta 文件，backup.lock 文件 |
 | **主要优势** | <ul><li>适用于向另一个 TiDB 迁移数据。</li><li>支持数据冷备份到外部存储，可以用于灾备恢复。</li></ul> |
-| **使用限制** | <ul><li>BR 恢复到 TiCDC / Drainer 的上游集群时，恢复数据无法由 TiCDC / Drainer 同步到下游。</li><li>BR 只支持在 `mysql.tidb` 表中 `new_collation_enabled` 开关值相同的集群之间进行操作。</li></ul> |
+| **使用限制** | <ul><li>BR 恢复到 TiCDC 的上游集群时，恢复数据无法由 TiCDC 同步到下游。</li><li>BR 只支持在 `mysql.tidb` 表中 `new_collation_enabled` 开关值相同的集群之间进行操作。</li></ul> |
 
 ## [sync-diff-inspector](/sync-diff-inspector/sync-diff-inspector-overview.md)
 
@@ -81,41 +81,52 @@ source ~/.bash_profile
 
 ### 第 2 步：安装组件
 
-你可以通过以下命令查看所有可用组件:
+你可以通过以下命令查看可用组件：
 
 ```shell
 tiup list
 ```
 
-以下输出为所有可用组件：
+输出如下：
 
 ```bash
 Available components:
-Name            Owner    Description
-----            -----    -----------
-bench           pingcap  Benchmark database with different workloads
-br              pingcap  TiDB/TiKV cluster backup restore tool
-cdc             pingcap  CDC is a change data capture tool for TiDB
-client          pingcap  Client to connect playground
-cluster         pingcap  Deploy a TiDB cluster for production
-ctl             pingcap  TiDB controller suite
-dm              pingcap  Data Migration Platform manager
-dmctl           pingcap  dmctl component of Data Migration Platform
-errdoc          pingcap  Document about TiDB errors
-pd-recover      pingcap  PD Recover is a disaster recovery tool of PD, used to recover the PD cluster which cannot start or provide services normally
-playground      pingcap  Bootstrap a local TiDB cluster for fun
-tidb            pingcap  TiDB is an open source distributed HTAP database compatible with the MySQL protocol
-tidb-lightning  pingcap  TiDB Lightning is a tool used for fast full import of large amounts of data into a TiDB cluster
-tiup            pingcap  TiUP is a command-line component management tool that can help to download and install TiDB platform components to the local system
+Name            Owner      Description
+----            -----      -----------
+PCC             community  A tool used to capture plan changes among different versions of TiDB
+bench           pingcap    Benchmark database with different workloads
+br              pingcap    TiDB/TiKV cluster backup restore tool.
+cdc             pingcap    CDC is a change data capture tool for TiDB
+chaosd          community  An easy-to-use Chaos Engineering tool used to inject failures to a physical node
+client          pingcap    Client to connect playground
+cloud           pingcap    CLI tool to manage TiDB Cloud
+cluster         pingcap    Deploy a TiDB cluster for production
+ctl             pingcap    TiDB controller suite
+dm              pingcap    Data Migration Platform manager
+dmctl           pingcap    dmctl component of Data Migration Platform.
+errdoc          pingcap    Document about TiDB errors
+pd-recover      pingcap    PD Recover is a disaster recovery tool of PD, used to recover the PD cluster which cannot start or provide services normally.
+playground      pingcap    Bootstrap a local TiDB cluster for fun
+tidb            pingcap    TiDB is an open source distributed HTAP database compatible with the MySQL protocol.
+tidb-dashboard  pingcap    TiDB Dashboard is a Web UI for monitoring, diagnosing, and managing the TiDB cluster
+tidb-lightning  pingcap    TiDB Lightning is a tool used for fast full import of large amounts of data into a TiDB cluster
+tikv-br         pingcap    TiKV cluster backup restore tool
+tikv-cdc        pingcap    TiKV-CDC is a change data capture tool for TiKV
+tiproxy         pingcap    TiProxy is a database proxy that is based on TiDB.
+tiup            pingcap    TiUP is a command-line component management tool that can help to download and install TiDB platform components to the local system
 ```
 
-选择所需要的组件进行安装
+选择所需要的一个或多个组件进行安装。示例如下：
 
 ```shell
-tiup install dumpling tidb-lightning
+tiup install dm
 ```
 
-> **Note:**
+```shell
+tiup install dm tidb-lightning
+```
+
+> **注意：**
 >
 > 如果需要安装特定版本，可以使用 `tiup install <component>[:version]` 命令.
 

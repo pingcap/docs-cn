@@ -47,7 +47,7 @@ strict-format = true
 [2018/08/10 07:29:08.310 +08:00] [INFO] [main.go:41] ["got signal to exit"] [signal=hangup]
 ```
 
-不推荐在命令行中直接使用 `nohup` 启动进程，推荐[使用脚本启动 `tidb-lightning`](/tidb-lightning/deploy-tidb-lightning.md)。
+不推荐在命令行中直接使用 `nohup` 启动进程，推荐[使用脚本启动 `tidb-lightning`](/get-started-with-tidb-lightning.md#第-4-步启动-tidb-lightning)。
 
 另外，如果从 TiDB Lightning 的 log 的最后一条日志显示遇到的错误是 "Context canceled"，需要在日志中搜索第一条 "ERROR" 级别的日志。在这条日志之前，通常也会紧跟有一条 "got signal to exit"，表示 Lightning 是收到中断信号然后退出的。
 
@@ -101,7 +101,7 @@ tidb-lightning-ctl --config tidb-lightning.toml --switch-mode=normal
 
 2. 把断点存放在外部数据库（修改 `[checkpoint] dsn`），减轻目标集群压力。
 
-3. 参考[如何正确重启 TiDB Lightning](/tidb-lightning/tidb-lightning-faq.md#如何正确重启-tidb-lightning)中的解决办法。
+3. 参考[如何正确重启 TiDB Lightning](/tidb-lightning/tidb-lightning-faq.md#如何正确重启-tidb-lightning) 中的解决办法。
 
 ### `Checkpoint for … has invalid status:`（错误码）
 
@@ -159,7 +159,8 @@ tidb-lightning-ctl --config conf/tidb-lightning.toml --checkpoint-error-destroy=
 
 **解决办法**:
 
-目前无法绕过 TiDB 的限制，只能忽略这张表，确保其它表顺利导入。
+- 使用系统变量 [`tidb_txn_entry_size_limit`](/system-variables.md#tidb_txn_entry_size_limit-从-v760-版本开始引入) 动态增加限制。
+- 注意，TiKV 也有类似的限制。若单个写入请求的数据量大小超出 [`raft-entry-max-size`](/tikv-configuration-file.md#raft-entry-max-size)（默认值为 `8MiB`），TiKV 会拒绝处理该请求。当表中单行的数据量较大时，需要同时修改这两个配置。
 
 ### switch-mode 时遇到 `rpc error: code = Unimplemented ...`
 

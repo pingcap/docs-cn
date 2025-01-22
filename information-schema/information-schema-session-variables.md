@@ -5,7 +5,7 @@ summary: 了解 INFORMATION_SCHEMA 表 `SESSION_VARIABLES`。
 
 # SESSION_VARIABLES
 
-`SESSION_VARIABLES` 表提供了关于 session 变量的信息。表中的数据跟 `SHOW SESSION VARIABLES` 语句执行结果类似。
+`SESSION_VARIABLES` 表提供了关于 session 变量的信息。表中的数据跟 [`SHOW SESSION VARIABLES`](/sql-statements/sql-statement-show-variables.md) 语句执行结果类似。
 
 ```sql
 USE INFORMATION_SCHEMA;

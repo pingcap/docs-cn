@@ -10,84 +10,77 @@ aliases: ['/docs-cn/dev/sql-statements/sql-statement-select/','/docs-cn/dev/refe
 
 ## 语法图
 
-**SelectStmt:**
-
-![SelectStmt](/media/sqlgram/SelectStmt.png)
-
-**FromDual:**
-
-![FromDual](/media/sqlgram/FromDual.png)
-
-**WhereClauseOptional:**
-
-![WhereClauseOptional](/media/sqlgram/WhereClauseOptional.png)
-
-**SelectStmtOpts:**
-
-![SelectStmtOpts](/media/sqlgram/SelectStmtOpts.png)
-
-**SelectStmtFieldList:**
-
-![SelectStmtFieldList](/media/sqlgram/SelectStmtFieldList.png)
-
-**TableRefsClause:**
-
 ```ebnf+diagram
+SelectStmt ::=
+    ( SelectStmtBasic | SelectStmtFromDualTable | SelectStmtFromTable )
+    OrderBy? SelectStmtLimit? SelectLockOpt? SelectStmtIntoOption
+
+SelectStmtBasic ::=
+    "SELECT" SelectStmtOpts Field ("," Field)* ( "HAVING" Expression)?
+
+SelectStmtFromDualTable ::=
+    "SELECT" SelectStmtOpts Field ("," Field)* "FROM" "DUAL" WhereClause?
+
+SelectStmtFromTable ::=
+    "SELECT" SelectStmtOpts Field ("," Field)* "FROM" TableRefsClause
+    WhereClause? GroupByClause? ( "HAVING" Expression)? WindowClause?
+
+SelectStmtOpts ::=
+    TableOptimizerHints DefaultFalseDistictOpt PriorityOpt SelectStmtSQLSmallResult
+    SelectStmtSQLBigResult SelectStmtSQLBufferResult SelectStmtSQLCache SelectStmtCalcFoundRows
+    SelectStmtStraightJoin
+
 TableRefsClause ::=
-    TableRef AsOfClause? ( ',' TableRef AsOfClause? )*
+    TableRef ( ',' TableRef )*
+
+TableRef ::=
+    TableFactor
+|   JoinTable
+
+TableFactor ::=
+    TableName ( "PARTITION" "(" Identifier ("," Identifier)* ")" )? ("AS" TableAlias)? AsOfClause? TableSample?
+
+JoinTable ::=
+    TableRef
+    (
+        ("INNER" | "CROSS")? "JOIN" TableRef JoinClause?
+        | "STRAIGHT_JOIN" TableRef "ON" Expression
+        | ("LEFT" | "RIGHT") "OUTER"? "JOIN" TableRef JoinClause
+        | "NATURAL" ("LEFT" | "RIGHT") "OUTER"? "JOIN" TableFactor
+    )
+
+JoinClause ::=
+    ("ON" Expression
+    | "USING" "(" ColumnNameList ")" )
 
 AsOfClause ::=
     'AS' 'OF' 'TIMESTAMP' Expression
-```
 
-**SelectStmtGroup:**
+SelectStmtLimit ::=
+    ("LIMIT" LimitOption ( ("," | "OFFSET") LimitOption )?
+| "FETCH" ("FIRST" | "NEXT") LimitOption? ("ROW" | "ROWS") "ONLY" )
 
-![SelectStmtGroup](/media/sqlgram/SelectStmtGroup.png)
-
-**HavingClause:**
-
-![HavingClause](/media/sqlgram/HavingClause.png)
-
-**OrderByOptional:**
-
-![OrderByOptional](/media/sqlgram/OrderByOptional.png)
-
-**SelectStmtLimit:**
-
-![SelectStmtLimit](/media/sqlgram/SelectStmtLimit.png)
-
-**FirstOrNext:**
-
-![FirstOrNext](/media/sqlgram/FirstOrNext.png)
-
-**FetchFirstOpt:**
-
-![FetchFirstOpt](/media/sqlgram/FetchFirstOpt.png)
-
-**RowOrRows:**
-
-![RowOrRows](/media/sqlgram/RowOrRows.png)
-
-**SelectLockOpt:**
-
-```ebnf+diagram
-SelectLockOpt ::=
-    ( ( 'FOR' 'UPDATE' ( 'OF' TableList )? 'NOWAIT'? )
-|   ( 'LOCK' 'IN' 'SHARE' 'MODE' ) )?
+SelectLockOpt ::= 
+    ( 'FOR' 'UPDATE' ( 'OF' TableList )? 'NOWAIT'?
+|   'LOCK' 'IN' 'SHARE' 'MODE' )
 
 TableList ::=
     TableName ( ',' TableName )*
-```
 
-**WindowClauseOptional**
+WhereClause ::=
+    "WHERE" Expression
 
-![WindowClauseOptional](/media/sqlgram/WindowClauseOptional.png)
+GroupByClause ::=
+    "GROUP" "BY" Expression
 
-**TableSampleOpt**
+OrderBy ::=
+    "ORDER" "BY" Expression
 
-```ebnf+diagram
-TableSampleOpt ::=
-    'TABLESAMPLE' 'REGIONS()'
+WindowClause ::=
+    "WINDOW" WindowDefinition ("," WindowDefinition)*
+
+TableSample ::=
+    'TABLESAMPLE' 'REGIONS' '(' ')'
 ```
 
 ## 语法元素说明
@@ -111,6 +104,10 @@ TableSampleOpt ::=
 |`FOR UPDATE` | 对查询结果集所有行上锁（对于在查询条件内，但是不在结果集的行，将不会加锁，如事务启动后由其他事务写入的行），以监测其他事务对这些的并发修改。当 TiDB 使用[乐观事务模型](/optimistic-transaction.md)时，语句执行期间不会检测锁，因此，不会像 PostgreSQL 之类的数据库一样，在当前事务结束前阻止其他事务执行 `UPDATE`、`DELETE` 和 `SELECT FOR UPDATE`。在事务的提交阶段 `SELECT FOR UPDATE` 读到的行，也会进行两阶段提交，因此，它们也可以参与事务冲突检测。如发生写入冲突，那么包含 `SELECT FOR UPDATE` 语句的事务会提交失败。如果没有冲突，事务将成功提交，当提交结束时，这些被加锁的行，会产生一个新版本，可以让其他尚未提交的事务，在将来提交时发现写入冲突。当 TiDB 使用[悲观事务模型](/pessimistic-transaction.md)时，其行为与其他数据库基本相同，不一致之处参考[和 MySQL InnoDB 的差异](/pessimistic-transaction.md#和-mysql-innodb-的差异)。TiDB 支持 `FOR UPDATE NOWAIT` 语法，详情可见 [TiDB 中悲观事务模式的行为](/pessimistic-transaction.md#悲观事务模式的行为)。|
 |`LOCK IN SHARE MODE` | TiDB 出于兼容性解析这个语法，但是不做任何处理|
 |`TABLESAMPLE`| 从表中获取一些行的样本数据。|
+
+> **注意：**
+>
+> TiDB 从 v6.6.0 版本开始支持[使用资源管控 (Resource Control) 实现资源隔离](/tidb-resource-control.md)功能。该功能可以将不同优先级的语句放在不同的资源组中执行，并为这些资源组分配不同的配额和优先级，可以达到更好的资源管控效果。在开启资源管控功能后，语句的调度主要受资源组的控制，`HIGH_PRIORITY` 将不再生效。建议在支持资源管控的版本优先使用资源管控功能。
 
 ## 示例
 

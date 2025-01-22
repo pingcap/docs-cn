@@ -1,5 +1,6 @@
 ---
 title: tiup cluster meta restore
+summary: TiUP cluster meta restore 命令用于从备份文件中恢复 TiUP meta 文件。语法为 tiup cluster meta restore <cluster-name> <backup-file>。选项包括 -h, --help，用于输出帮助信息。恢复操作会覆盖当前的 meta 文件，建议仅在 meta 文件丢失的情况下进行恢复。执行日志将作为输出。
 ---
 
 # tiup cluster meta restore

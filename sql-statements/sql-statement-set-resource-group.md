@@ -20,6 +20,13 @@ ResourceGroupName ::=
 |   "DEFAULT"
 ```
 
+## 权限
+
+要执行此命令，需满足以下配置和权限：
+
+1. [`tidb_enable_resource_control`](/system-variables.md#tidb_enable_resource_control-从-v660-版本开始引入) 设置为 `ON`。
+2. 当系统变量 [`tidb_resource_control_strict_mode`](/system-variables.md#tidb_resource_control_strict_mode-从-v820-版本开始引入) 设置为 `ON`时，你需要有 `SUPER` 或者 `RESOURCE_GROUP_ADMIN` 或者 `RESOURCE_GROUP_USER` 权限；当设置为 `OFF` 时，则无需上述权限。
+
 ## 示例
 
 创建一个用户 `user1`，创建两个资源组 `rg1` 和 `rg2`，并将用户 `user1` 绑定资源组 `rg1`。

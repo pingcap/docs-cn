@@ -1,5 +1,6 @@
 ---
 title: tiup cluster disable
+summary: tiup cluster disable 命令用于关闭集群服务在机器重启后的自启动。使用该命令可以指定要关闭自启的集群、节点和角色。如果不指定节点和角色，则默认关闭所有节点和角色的自启动。输出为 tiup-cluster 的执行日志。
 ---
 
 # tiup cluster disable

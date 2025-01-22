@@ -1,5 +1,6 @@
 ---
 title: tiup dm start
+summary: tiup dm start 命令用于启动指定集群的所有或部分服务。命令语法为 tiup dm start <cluster-name>。选项包括 -N, --node（指定要启动的节点），-R, --role（指定要启动的角色），-h, --help（输出帮助信息）。输出为启动日志。
 ---
 
 # tiup dm start

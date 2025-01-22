@@ -16,7 +16,7 @@ aliases: ['/zh/tidb/dev/create-table']
 
 在阅读本页面之前，你需要准备以下事项：
 
-- [使用 TiDB Serverless 构建 TiDB 集群](/develop/dev-guide-build-cluster-in-cloud.md)。
+- [使用 TiDB Cloud Serverless 构建 TiDB 集群](/develop/dev-guide-build-cluster-in-cloud.md)。
 - 阅读[数据库模式概览](/develop/dev-guide-schema-design-overview.md)。
 - [创建一个数据库](/develop/dev-guide-create-database.md)。
 
@@ -180,7 +180,7 @@ CREATE TABLE `bookshop`.`ratings` (
 );
 ```
 
-额外的，如果需更新时也默认填入当前时间，可使用以下语句（但 `ON UPDATE` 后仅可填入[当前时间相关语句](https://pingcap.github.io/sqlgram/#NowSymOptionFraction)，`DEFAULT` 后支持[更多选择](https://pingcap.github.io/sqlgram/#DefaultValueExpr)）：
+此外，如需在数据更新时也默认填入当前时间，可使用以下语句（但 `ON UPDATE` 后仅可填入与当前时间相关的表达式）：
 
 ```sql
 CREATE TABLE `bookshop`.`ratings` (
@@ -191,6 +191,8 @@ CREATE TABLE `bookshop`.`ratings` (
   PRIMARY KEY (`book_id`,`user_id`) CLUSTERED
 );
 ```
+
+关于不同数据类型默认值的更多信息，请参阅[数据类型的默认值](/data-type-default-values.md)。
 
 ### 防止重复
 
@@ -263,7 +265,7 @@ ALTER TABLE `bookshop`.`ratings` SET TIFLASH REPLICA 1;
 
 > **注意：**
 >
-> 如果你的集群，不包含 TiFlash 节点，此 SQL 语句将会报错：`1105 - the tiflash replica count: 1 should be less than the total tiflash server count: 0` 你可以[使用 TiDB Serverless 构建 TiDB 集群](/develop/dev-guide-build-cluster-in-cloud.md#第-1-步创建-tidb-serverless-集群) 来创建一个含有 TiFlash 的集群。
+> 如果你的集群，不包含 TiFlash 节点，此 SQL 语句将会报错：`1105 - the tiflash replica count: 1 should be less than the total tiflash server count: 0` 你可以[使用 TiDB Cloud Serverless 构建 TiDB 集群](/develop/dev-guide-build-cluster-in-cloud.md#第-1-步创建-tidb-cloud-serverless-集群) 来创建一个含有 TiFlash 的集群。
 
 随后正常进行查询即可：
 

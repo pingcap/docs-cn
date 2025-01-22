@@ -10,13 +10,12 @@ aliases: ['/docs-cn/dev/sql-statements/sql-statement-show-builtins/']
 
 ## 语法图
 
-**ShowBuiltinsStmt:**
-
-![ShowBuiltinsStmt](/media/sqlgram/ShowBuiltinsStmt.png)
+```ebnf+diagram
+ShowBuiltinsStmt ::=
+    "SHOW" "BUILTINS"
+```
 
 ## 示例
-
-{{< copyable "sql" >}}
 
 ```sql
 SHOW BUILTINS;
@@ -40,6 +39,7 @@ SHOW BUILTINS;
 | atan2                       |
 | benchmark                   |
 | bin                         |
+| bin_to_uuid                 |
 | bit_count                   |
 | bit_length                  |
 | bitand                      |
@@ -68,6 +68,7 @@ SHOW BUILTINS;
 | crc32                       |
 | curdate                     |
 | current_date                |
+| current_resource_group      |
 | current_role                |
 | current_time                |
 | current_timestamp           |
@@ -87,12 +88,9 @@ SHOW BUILTINS;
 | decode                      |
 | default_func                |
 | degrees                     |
-| des_decrypt                 |
-| des_encrypt                 |
 | div                         |
 | elt                         |
 | encode                      |
-| encrypt                     |
 | eq                          |
 | exp                         |
 | export_set                  |
@@ -111,13 +109,14 @@ SHOW BUILTINS;
 | get_format                  |
 | get_lock                    |
 | getparam                    |
-| getvar                      |
 | greatest                    |
+| grouping                    |
 | gt                          |
 | hex                         |
 | hour                        |
 | if                          |
 | ifnull                      |
+| ilike                       |
 | in                          |
 | inet6_aton                  |
 | inet6_ntoa                  |
@@ -133,6 +132,7 @@ SHOW BUILTINS;
 | is_ipv4_mapped              |
 | is_ipv6                     |
 | is_used_lock                |
+| is_uuid                     |
 | isfalse                     |
 | isnull                      |
 | istrue                      |
@@ -146,16 +146,20 @@ SHOW BUILTINS;
 | json_insert                 |
 | json_keys                   |
 | json_length                 |
+| json_memberof               |
 | json_merge                  |
 | json_merge_patch            |
 | json_merge_preserve         |
 | json_object                 |
+| json_overlaps               |
 | json_pretty                 |
 | json_quote                  |
 | json_remove                 |
 | json_replace                |
+| json_schema_valid           |
 | json_search                 |
 | json_set                    |
+| json_storage_free           |
 | json_storage_size           |
 | json_type                   |
 | json_unquote                |
@@ -203,10 +207,9 @@ SHOW BUILTINS;
 | nulleq                      |
 | oct                         |
 | octet_length                |
-| old_password                |
 | or                          |
 | ord                         |
-| password_func               |
+| password                    |
 | period_add                  |
 | period_diff                 |
 | pi                          |
@@ -220,6 +223,10 @@ SHOW BUILTINS;
 | rand                        |
 | random_bytes                |
 | regexp                      |
+| regexp_instr                |
+| regexp_like                 |
+| regexp_replace              |
+| regexp_substr               |
 | release_all_locks           |
 | release_lock                |
 | repeat                      |
@@ -256,10 +263,21 @@ SHOW BUILTINS;
 | sysdate                     |
 | system_user                 |
 | tan                         |
+| tidb_bounded_staleness      |
+| tidb_current_tso            |
+| tidb_decode_binary_plan     |
 | tidb_decode_key             |
 | tidb_decode_plan            |
+| tidb_decode_sql_digests     |
+| tidb_encode_index_key       |
+| tidb_encode_record_key      |
+| tidb_encode_sql_digest      |
 | tidb_is_ddl_owner           |
+| tidb_mvcc_info              |
 | tidb_parse_tso              |
+| tidb_parse_tso_logical      |
+| tidb_row_checksum           |
+| tidb_shard                  |
 | tidb_version                |
 | time                        |
 | time_format                 |
@@ -271,6 +289,7 @@ SHOW BUILTINS;
 | to_base64                   |
 | to_days                     |
 | to_seconds                  |
+| translate                   |
 | trim                        |
 | truncate                    |
 | ucase                       |
@@ -286,8 +305,18 @@ SHOW BUILTINS;
 | utc_timestamp               |
 | uuid                        |
 | uuid_short                  |
+| uuid_to_bin                 |
 | validate_password_strength  |
+| vec_as_text                 |
+| vec_cosine_distance         |
+| vec_dims                    |
+| vec_from_text               |
+| vec_l1_distance             |
+| vec_l2_distance             |
+| vec_l2_norm                 |
+| vec_negative_inner_product  |
 | version                     |
+| vitess_hash                 |
 | week                        |
 | weekday                     |
 | weekofyear                  |
@@ -296,7 +325,7 @@ SHOW BUILTINS;
 | year                        |
 | yearweek                    |
 +-----------------------------+
-268 rows in set (0.00 sec)
+299 rows in set (0.00 sec)
 ```
 
 ## MySQL 兼容性

@@ -1,5 +1,6 @@
 ---
 title: tiup dm scale-out
+summary: tiup dm scale-out 命令用于集群扩容，内部逻辑与部署类似。首先建立新节点的 SSH 连接，在目标节点上创建必要的目录，然后执行部署并启动服务。命令语法为 tiup dm scale-out <cluster-name> <topology.yaml>。选项包括 -u, --user（string，默认为当前执行命令的用户），-i, --identity_file（string，默认 ~/.ssh/id_rsa），-p, --password，-h, --help。输出为扩容日志。
 ---
 
 # tiup dm scale-out

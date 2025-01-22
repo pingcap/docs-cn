@@ -1,6 +1,7 @@
 ---
 title: TiDB 热点问题处理
 aliases: ['/docs-cn/dev/troubleshoot-hot-spot-issues/']
+summary: TiDB 热点问题处理：介绍定位和解决读写热点问题，包括常见热点场景、确定存在热点问题的方法、使用 TiDB Dashboard 定位热点表、使用 SHARD_ROW_ID_BITS 处理热点表、使用 AUTO_RANDOM 处理自增主键热点表、小表热点的优化、打散读热点。
 ---
 
 # TiDB 热点问题处理
@@ -175,3 +176,7 @@ TiDB 的 Coprocessor Cache 功能支持下推计算结果缓存。开启该功�
 ## 打散读热点
 
 在读热点场景中，热点 TiKV 无法及时处理读请求，导致读请求排队。但是，此时并非所有 TiKV 资源都已耗尽。为了降低延迟，TiDB v7.1.0 引入了负载自适应副本读取功能，允许从其他 TiKV 节点读取副本，而无需在热点 TiKV 节点排队等待。你可以通过 [`tidb_load_based_replica_read_threshold`](/system-variables.md#tidb_load_based_replica_read_threshold-从-v700-版本开始引入) 系统变量控制读请求的排队长度。当 leader 节点的预估排队时间超过该阈值时，TiDB 会优先从 follower 节点读取数据。在读热点的情况下，与不打散读热点相比，该功能可提高读取吞吐量 70%～200%。
+
+## 使用 TiKV MVCC 内存引擎缓解因多版本导致的读热点
+
+在 GC 历史版本数据的保留时间过长、频繁更新或删除时，可能会因扫描大量 MVCC 版本而导致读热点。针对这类热点，可通过开启 [TiKV MVCC 内存引擎](/tikv-in-memory-engine.md)功能缓解。

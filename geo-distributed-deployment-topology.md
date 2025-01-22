@@ -17,6 +17,10 @@ aliases: ['/docs-cn/dev/geo-distributed-deployment-topology/']
 | TiKV | 5 | 16 VCore 32GB 4TB (nvme ssd) * 1 | 10.0.1.11 <br/> 10.0.1.12 <br/> 10.0.1.13 <br/> 10.0.1.14 | 10.0.1.15 | 默认端口 <br/> 全局目录配置 |
 | Monitoring & Grafana | 1 | 4 VCore 8GB * 1 500GB (ssd) | 10.0.1.16 || 默认端口 <br/> 全局目录配置 |
 
+> **注意：**
+>
+> 该表中拓扑实例的 IP 为示例 IP。在实际部署时，请替换为实际的 IP。
+
 ### 拓扑模版
 
 <details>
@@ -132,8 +136,8 @@ tikv_servers:
        host: host1
      readpool.storage.use-unified-pool: true
      readpool.storage.low-concurrency: 10
-     raftstore.raft-min-election-timeout-ticks: 1000
-     raftstore.raft-max-election-timeout-ticks: 1020
+     raftstore.raft-min-election-timeout-ticks: 50
+     raftstore.raft-max-election-timeout-ticks: 60
 monitoring_servers:
  - host: 10.0.1.16
 grafana_servers:
@@ -176,9 +180,13 @@ grafana_servers:
 - 防止异地 TiKV 节点发起不必要的 Raft 选举，需要将异地 TiKV 节点发起选举时经过最少的 tick 个数和最多经过的 tick 个数都调大，这两个参数默认设置均为 `0`。
 
     ```yaml
-    raftstore.raft-min-election-timeout-ticks: 1000
-    raftstore.raft-max-election-timeout-ticks: 1020
+    raftstore.raft-min-election-timeout-ticks: 50
+    raftstore.raft-max-election-timeout-ticks: 60
     ```
+
+> **注意:**
+>
+> 通过 `raftstore.raft-min-election-timeout-ticks` 和 `raftstore.raft-max-election-timeout-ticks` 为 TiKV 节点配置较大的 election timeout tick 可以大幅降低该节点上的 Region 成为 Leader 的概率。但在发生灾难的场景中，如果部分 TiKV 节点宕机，而其它存活的 TiKV 节点 Raft 日志落后，此时只有这个配置了较大的 election timeout tick 的 TiKV 节点上的 Region 能成为 Leader。由于此 TiKV 节点上的 Region 需要至少等待 `raftstore.raft-min-election-timeout-ticks` 设置的时间后才能发起选举，因此尽量避免将此配置值设置得过大，以免在这种场景下影响集群的可用性。
 
 #### PD 参数
 

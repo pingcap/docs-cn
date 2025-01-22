@@ -801,7 +801,17 @@ curl -X 'POST' \
         "export_threads": 4,
         "import_threads": 16,
         "data_dir": "./exported_data",
-        "consistency": "auto"
+        "consistency": "auto",
+        "import_mode": "physical",
+        "sorting_dir": "./sort_dir",
+        "disk_quota": "80G",
+        "checksum": "required",
+        "analyze": "optional",
+        "range_concurrency": 0,
+        "compress-kv-pairs": "",
+        "pd_addr": "",
+        "on_duplicate_logical": "error",
+        "on_duplicate_physical": "none"
       },
       "incr_migrate_conf": {
         "repl_threads": 16,
@@ -891,7 +901,17 @@ curl -X 'POST' \
       "export_threads": 4,
       "import_threads": 16,
       "data_dir": "./exported_data",
-      "consistency": "auto"
+      "consistency": "auto",
+      "import_mode": "physical",
+      "sorting_dir": "./sort_dir",
+      "disk_quota": "80G",
+      "checksum": "required",
+      "analyze": "optional",
+      "range_concurrency": 0,
+      "compress-kv-pairs": "",
+      "pd_addr": "",
+      "on_duplicate_logical": "error",
+      "on_duplicate_physical": "none"
     },
     "incr_migrate_conf": {
       "repl_threads": 16,
@@ -998,7 +1018,17 @@ curl -X 'GET' \
       "export_threads": 4,
       "import_threads": 16,
       "data_dir": "./exported_data",
-      "consistency": "auto"
+      "consistency": "auto",
+      "import_mode": "physical",
+      "sorting_dir": "./sort_dir",
+      "disk_quota": "80G",
+      "checksum": "required",
+      "analyze": "optional",
+      "range_concurrency": 0,
+      "compress-kv-pairs": "",
+      "pd_addr": "",
+      "on_duplicate_logical": "error",
+      "on_duplicate_physical": "none"
     },
     "incr_migrate_conf": {
       "repl_threads": 16,
@@ -1126,7 +1156,17 @@ curl -X 'PUT' \
         "export_threads": 4,
         "import_threads": 16,
         "data_dir": "./exported_data",
-        "consistency": "auto"
+        "consistency": "auto",
+        "import_mode": "physical",
+        "sorting_dir": "./sort_dir",
+        "disk_quota": "80G",
+        "checksum": "required",
+        "analyze": "optional",
+        "range_concurrency": 0,
+        "compress-kv-pairs": "",
+        "pd_addr": "",
+        "on_duplicate_logical": "error",
+        "on_duplicate_physical": "none"
       },
       "incr_migrate_conf": {
         "repl_threads": 16,
@@ -1216,7 +1256,17 @@ curl -X 'PUT' \
       "export_threads": 4,
       "import_threads": 16,
       "data_dir": "./exported_data",
-      "consistency": "auto"
+      "consistency": "auto",
+      "import_mode": "physical",
+      "sorting_dir": "./sort_dir",
+      "disk_quota": "80G",
+      "checksum": "required",
+      "analyze": "optional",
+      "range_concurrency": 0,
+      "compress-kv-pairs": "",
+      "pd_addr": "",
+      "on_duplicate_logical": "error",
+      "on_duplicate_physical": "none"
     },
     "incr_migrate_conf": {
       "repl_threads": 16,
@@ -1296,7 +1346,7 @@ curl -X 'GET' \
       "name": "string",
       "source_name": "string",
       "worker_name": "string",
-      "stage": "runing",
+      "stage": "running",
       "unit": "sync",
       "unresolved_ddl_lock_id": "string",
       "load_status": {
@@ -1433,7 +1483,17 @@ curl -X 'GET' \
           "export_threads": 4,
           "import_threads": 16,
           "data_dir": "./exported_data",
-          "consistency": "auto"
+          "consistency": "auto",
+          "import_mode": "physical",
+          "sorting_dir": "./sort_dir",
+          "disk_quota": "80G",
+          "checksum": "required",
+          "analyze": "optional",
+          "range_concurrency": 0,
+          "compress-kv-pairs": "",
+          "pd_addr": "",
+          "on_duplicate_logical": "error",
+          "on_duplicate_physical": "none"
         },
         "incr_migrate_conf": {
           "repl_threads": 16,
@@ -1555,7 +1615,7 @@ curl -X 'GET' \
 {
   "schema_name": "db1",
   "table_name": "table1",
-  "schema_create_sql": "CREATE TABLE `t1` (`id` int(11) NOT NULL AUTO_INCREMENT,PRIMARY KEY (`id`) /*T![clustered_index] CLUSTERED */) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin"
+  "schema_create_sql": "CREATE TABLE `t1` (`id` int NOT NULL AUTO_INCREMENT,PRIMARY KEY (`id`) /*T![clustered_index] CLUSTERED */) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin"
 }
 ```
 
@@ -1577,7 +1637,7 @@ curl -X 'PUT' \
   -H 'accept: */*' \
   -H 'Content-Type: application/json' \
   -d '{
-  "sql_content": "CREATE TABLE `t1` ( `c1` int(11) DEFAULT NULL, `c2` int(11) DEFAULT NULL, `c3` int(11) DEFAULT NULL) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;",
+  "sql_content": "CREATE TABLE `t1` ( `c1` int DEFAULT NULL, `c2` int DEFAULT NULL, `c3` int DEFAULT NULL) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;",
   "flush": true,
   "sync": true
 }'

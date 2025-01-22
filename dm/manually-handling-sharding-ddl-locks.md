@@ -1,6 +1,7 @@
 ---
 title: 手动处理 Sharding DDL Lock
 aliases: ['/docs-cn/tidb-data-migration/dev/manually-handling-sharding-ddl-locks/','/docs-cn/tidb-data-migration/dev/feature-manually-handling-sharding-ddl-locks/']
+summary: DM 使用 sharding DDL lock 来确保分库分表的 DDL 操作可以正确执行。在异常情况下，需要手动处理异常的 DDL lock。使用 shard-ddl-lock 命令查看 DDL lock 信息，使用 shard-ddl-lock unlock 命令请求 DM-master 解除指定的 DDL lock。支持处理部分 MySQL source 被移除和 unlock 过程中部分 DM-worker 异常停止或网络中断的情况。
 ---
 
 # 手动处理 Sharding DDL Lock
@@ -65,7 +66,7 @@ Use "dmctl shard-ddl-lock [command] --help" for more information about a command
 shard-ddl-lock test
 ```
 
-<details>
+<details open>
 <summary>期望输出</summary>
 
 ```
@@ -183,7 +184,7 @@ SHOW CREATE TABLE shard_db_1.shard_table_1;
 | Table         | Create Table                             |
 +---------------+------------------------------------------+
 | shard_table_1 | CREATE TABLE `shard_table_1` (
-  `c1` int(11) NOT NULL,
+  `c1` int NOT NULL,
   PRIMARY KEY (`c1`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 |
 +---------------+------------------------------------------+
@@ -233,7 +234,7 @@ MySQL 及 DM 操作与处理流程如下：
                 "mode": "pessimistic"
                 "owner": "mysql-replica-01",
                 "DDLs": [
-                    "USE `shard_db`; ALTER TABLE `shard_db`.`shard_table` ADD COLUMN `c2` int(11);"
+                    "USE `shard_db`; ALTER TABLE `shard_db`.`shard_table` ADD COLUMN `c2` int;"
                 ],
                 "synced": [
                     "mysql-replica-01"
@@ -296,8 +297,8 @@ MySQL 及 DM 操作与处理流程如下：
     | Table       | Create Table                                     |
     +-------------+--------------------------------------------------+
     | shard_table | CREATE TABLE `shard_table` (
-      `c1` int(11) NOT NULL,
-      `c2` int(11) DEFAULT NULL,
+      `c1` int NOT NULL,
+      `c2` int DEFAULT NULL,
       PRIMARY KEY (`c1`)
     ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_bin |
     +-------------+--------------------------------------------------+
@@ -365,7 +366,7 @@ MySQL 及 DM 操作与处理流程如下：
                 "mode": "pessimistic"
                 "owner": "mysql-replica-02",
                 "DDLs": [
-                    "USE `shard_db`; ALTER TABLE `shard_db`.`shard_table` ADD COLUMN `c2` int(11);"
+                    "USE `shard_db`; ALTER TABLE `shard_db`.`shard_table` ADD COLUMN `c2` int;"
                 ],
                 "synced": [
                     "mysql-replica-02"

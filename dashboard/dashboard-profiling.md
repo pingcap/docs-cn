@@ -26,6 +26,8 @@ aliases: ['/docs-cn/dev/dashboard/dashboard-profiling/']
 
 - Heap：TiDB、PD、TiKV 实例上各个内部函数的内存占用开销情况
 
+  > 从 v7.5 版本开始，支持获取 TiKV Heap Profile，并且需要 TiDB Dashboard 的运行环境中有 Perl 依赖，否则会报错。
+
 - Mutex：TiDB、PD 实例上各个处于等待状态的 Mutex 情况
 
 - Goroutine：TiDB、PD 实例上各个 Goroutine 的运行状态及调用栈情况
