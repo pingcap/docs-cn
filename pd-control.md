@@ -682,7 +682,7 @@ member
 }
 ```
 
-下线 "pd2"：
+下线 `pd2`：
 
 ```bash
 member delete name pd2
@@ -1524,7 +1524,7 @@ unsafe remove-failed-stores show
 ### 简化 `store` 的输出
 
 ```bash
-store --jq=".stores[].store | { id, address, state_name}"
+store --jq=".stores[].store | {id, address, state_name}"
 ```
 
 ```
@@ -1548,7 +1548,7 @@ store --jq=".stores[] | {id: .store.id, available: .status.available}"
 ### 查询状态不为 Up 的所有节点
 
 ```bash
-store --jq='.stores[].store | select(.state_name!="Up") | { id, address, state_name}'
+store --jq='.stores[].store | select(.state_name!="Up") | {id, address, state_name}'
 ```
 
 ```
@@ -1560,7 +1560,7 @@ store --jq='.stores[].store | select(.state_name!="Up") | { id, address, state_n
 ### 查询所有的 TiFlash 节点
 
 ```bash
-store --jq='.stores[].store | select(.labels | length>0 and contains([{"key":"engine","value":"tiflash"}])) | { id, address, state_name}'
+store --jq='.stores[].store | select(.labels | length>0 and contains([{"key":"engine","value":"tiflash"}])) | {id, address, state_name}'
 ```
 
 ```
