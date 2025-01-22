@@ -91,7 +91,42 @@ Key 中的 `fields` 只包含主键或唯一索引列。
 }
 ```
 
+<<<<<<< HEAD
 Value 数据格式默认与 Key 数据格式相同，但是 Value 的 `fields` 中包含了所有的列，而不仅仅是主键列。
+=======
+Value 数据格式默认与 Key 数据格式相同，但是 Value 的 `fields` 中包含了所有的列。
+
+> **注意：**
+> 
+> Avro 协议在编码 DML 事件时，操作方式如下：
+> 
+> - 对于 Delete 事件，只编码 Key 部分，Value 部分为空。
+> - 对于 Insert 事件，编码所有列数据到 Value 部分。
+> - 对于 Update 事件，只编码更新后的所有列数据到 Value 部分。
+>
+> Avro 协议不会对 Update 和 Delete 事件的旧值进行编码。此外，为了与大多数依赖 `null` 记录来识别删除 (`delete.on.null`) 的 Confluent sink 连接器兼容，即使开启 `enable-tidb-extension` 选项，Delete 事件也不包含 TiDB 扩展字段信息，如 `_tidb_commit_ts`。如果你需要这些功能，请考虑使用其他协议，例如 Canal-JSON 或 Debezium。
+
+## TiDB 扩展字段
+
+默认情况下，Avro 只编码在 DML 事件中发生数据变更的行的所有列数据信息，不收集数据变更的类型和 TiDB 专有的 CommitTS 事务唯一标识信息。为了解决这个问题，TiCDC 在 Avro 协议格式中附加了 TiDB 扩展字段。当 `sink-uri` 中设置 `enable-tidb-extension` 为 `true` （默认为 `false`）后，TiCDC 生成 Avro 消息时，会在 Value 部分新增三个字段：
+
+- `_tidb_op`：DML 的类型，"c" 表示插入，"u" 表示更新。
+- `_tidb_commit_ts`：事务唯一标识信息。
+- `_tidb_commit_physical_time`：事务标识信息中现实时间的时间戳。
+
+配置样例如下所示：
+
+```shell
+cdc cli changefeed create --server=http://127.0.0.1:8300 --changefeed-id="kafka-avro-enable-extension" --sink-uri="kafka://127.0.0.1:9092/topic-name?protocol=avro&enable-tidb-extension=true" --schema-registry=http://127.0.0.1:8081 --config changefeed_config.toml
+```
+
+ ```shell
+ [sink]
+ dispatchers = [
+  {matcher = ['*.*'], topic = "tidb_{schema}_{table}"},
+ ]
+ ```
+>>>>>>> 523ebe23a0 (ticdc: add note to the Avro protocol (#19636))
 
 如果开启了 [TiDB 扩展字段](#tidb-扩展字段)，那么 Value 数据格式将会变成：
 
