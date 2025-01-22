@@ -65,16 +65,23 @@ TiCDC 作为 TiDB 的增量数据同步工具，通过 PD 内部的 etcd 实现�
 
 另外，从上面的架构图中也可以看到，目前 TiCDC 支持将数据同步到 TiDB、MySQL 数据库、Kafka 以及存储服务等。
 
+## 有效索引
+
+一般情况，TiCDC 只会同步存在有效索引的表到下游。当表中的索引满足以下条件之一，即为有效索引：
+
+- 主键 (`PRIMARY KEY`) 为有效索引。
+- 唯一索引 (`UNIQUE INDEX`) 中每一列在表结构中明确定义为非空 (`NOT NULL`) 且不存在虚拟生成列 (`VIRTUAL GENERATED COLUMNS`)。
+
+> **注意：**
+>
+> 在设置 [`force-replicate`](/ticdc/ticdc-changefeed-config.md#force-replicate) 为 `true` 后，TiCDC 会强制[同步没有有效索引的表](/ticdc/ticdc-manage-changefeed.md#同步没有有效索引的表)。
+
 ## 最佳实践
 
 - 使用 TiCDC 在两个 TiDB 集群间同步数据时，如果上下游的延迟超过 100 ms：
     - 对于 v6.5.2 之前的版本，推荐将 TiCDC 部署在下游 TiDB 集群所在的区域 (IDC, region)
     - 经过优化后，对于 v6.5.2 及之后的版本，推荐将 TiCDC 部署在上游集群所在的区域 (IDC, region)。
-- TiCDC 同步的表需要至少存在一个**有效索引**的表，**有效索引**的定义如下：
-
-    - 主键 (`PRIMARY KEY`) 为有效索引。
-    - 唯一索引 (`UNIQUE INDEX`) 中每一列在表结构中明确定义非空 (`NOT NULL`) 且不存在虚拟生成列 (`VIRTUAL GENERATED COLUMNS`)。
-
+- TiCDC 同步的每张表都至少包含一个[有效索引](#有效索引)。
 - 在使用 TiCDC 实现容灾的场景下，为实现最终一致性，需要配置 [redo log](/ticdc/ticdc-sink-to-mysql.md#灾难场景的最终一致性复制) 并确保 redo log 写入的存储系统在上游发生灾难时可以正常读取。
 
 ## TiCDC 处理数据变更的实现原理
