@@ -54,7 +54,7 @@ aliases: ['/docs-cn/tidb-data-migration/dev/quick-start-with-dm/','/docs-cn/tidb
 
 4. 保持 `tiup playground` 在当前终端中运行，并在新终端中执行后续步骤。
 
-    这个 Playground 环境提供了目标 TiDB 数据库和复制引擎（DM-master 和 DM-worker）的运行进程。它将处理的数据流为：MySQL（源）→ DM（复制引擎）→ TiDB（目标）。
+    这个 Playground 环境提供了目标 TiDB 数据库和数据复制引擎（DM-master 和 DM-worker）的运行进程。它将处理的数据流为：MySQL（源数据库）→ DM（数据复制引擎）→ TiDB（目标数据库）。
 
 ## 第 2 步：准备源数据库（可选）
 
@@ -296,13 +296,13 @@ aliases: ['/docs-cn/tidb-data-migration/dev/quick-start-with-dm/','/docs-cn/tidb
 
 ## 第 3 步：配置 TiDB DM 源
 
-After preparing the source MySQL database, configure TiDB DM to connect to it. To do this, create a source configuration file with the connection details and apply the configuration using the `dmctl` tool.
+准备好源 MySQL 数据库后，配置 TiDB DM 连接到它。为此，创建一个包含连接详细信息的源配置文件，并使用 `dmctl` 工具应用该配置。
 
-1. Create a source configuration file `mysql-01.yaml`:
+1. 创建源配置文件 `mysql-01.yaml`：
 
-    > **Note:**
+    > **注意：**
     >
-    > This step assumes you have already created the `tidb-dm` user with replication privileges in the source database, as described in [Step 2](#step-2-prepare-a-source-database-optional).
+    > 这里假设你已经在源数据库中创建了具有数据复制权限的 `tidb-dm` 用户，如[第 2 步](#第-2-步准备源数据库可选)所述。
 
     ```yaml
     source-id: "mysql-01"
@@ -313,17 +313,17 @@ After preparing the source MySQL database, configure TiDB DM to connect to it. T
       port: 3306
     ```
 
-2. Create a DM data source:
+2. 创建 DM 数据源：
 
     ```shell
     tiup dmctl --master-addr 127.0.0.1:8261 operate-source create mysql-01.yaml
     ```
 
-## Step 4: Create a TiDB DM task
+## 第 4 步：创建 TiDB DM 任务
 
-After configuring the source database, you can create a migration task in TiDB DM. This task references the source MySQL instance and defines the connection details for the target TiDB database.
+配置好源数据库后，在 TiDB DM 中创建一个迁移任务，指定 MySQL 实例作为数据源，并定义目标数据库 TiDB 的详细连接信息。
 
-1. Create a DM task configuration file `tiup-playground-task.yaml`:
+1. 创建 DM 任务配置文件 `tiup-playground-task.yaml`：
 
     ```yaml
     # Task
@@ -342,35 +342,35 @@ After configuring the source database, you can create a migration task in TiDB D
       password: ""                # If the password is not empty, it is recommended to use a password encrypted with dmctl.
     ```
 
-2. Start the task using the configuration file:
+2. 使用配置文件启动任务：
 
     ```shell
     tiup dmctl --master-addr 127.0.0.1:8261 start-task tiup-playground-task.yaml
     ```
 
-## Step 5: Verify the data replication
+## 第 5 步：验证迁移数据
 
-After starting the migration task, verify whether data replication is working as expected. Use the `dmctl` tool to check the task status, and connect to the target TiDB database to confirm that the data has been successfully replicated from the source MySQL database.
+启动数据迁移任务后，验证数据复制是否符合预期。使用 `dmctl` 工具检查任务状态，并连接到目标数据库 TiDB，确认数据是否已成功从源数据库 MySQL 复制到了目标数据库 TiDB。
 
-1. Check the status of the TiDB DM task:
+1. 检查 TiDB DM 任务的状态：
 
     ```shell
     tiup dmctl --master-addr 127.0.0.1:8261 query-status
     ```
 
-2. Connect to the TiDB target database:
+2. 连接到目标数据库 TiDB：
 
     ```shell
     mysql --host 127.0.0.1 --port 4000 -u root --prompt 'tidb> '
     ```
 
-3. Verify the replicated data. If you have created the sample data in [Step 2](#step-2-prepare-a-source-database-optional), you will see the `hello_tidb` table replicated from the MySQL source database to the TiDB target database:
+3. 验证迁移的数据。如果在[第 2 步](#第-2-步准备源数据库可选)中创建了示例数据，你将看到从源数据库 MySQL 复制到目标数据库 TiDB 的 `hello_tidb` 表：
 
     ```sql
     SELECT * FROM hello.hello_tidb;
     ```
 
-    The output is as follows:
+    输出如下：
 
     ```sql
     +----+-------------+
@@ -381,23 +381,23 @@ After starting the migration task, verify whether data replication is working as
     1 row in set (0.00 sec)
     ```
 
-## Step 6: Clean up (optional)
+## 第 6 步：清理环境（可选）
 
-After completing your testing, you can clean up the environment by stopping the TiUP Playground, removing the source MySQL instance (if created for testing), and deleting unnecessary files.
+测试完成后，可以清理环境，包括关闭 TiUP Playground、移除 MySQL 实例数据源（如果是专为测试创建的），以及删除不必要的文件。
 
-1. Stop the TiUP Playground:
+1. 停止 TiUP Playground：
 
-    In the terminal where the TiUP Playground is running, press <kbd>Control</kbd>+<kbd>C</kbd> to terminate the process. This stops all TiDB and DM components and deletes the target environment.
+    在运行 TiUP Playground 的终端中，按 <kbd>Control</kbd>+<kbd>C</kbd> 终止进程。这将停止所有的 TiDB 和 DM 组件，并删除目标数据库环境。
 
-2. Stop and remove the source MySQL instance:
+2. 停止和删除数据源 MySQL 实例：
 
-    If you have created a source MySQL instance for testing in [Step 2](#step-2-prepare-a-source-database-optional), stop and remove it by taking the following steps:
+    如果你在[第 2 步](#第-2-步准备源数据库可选)中为测试创建了 MySQL 实例作为数据源，可按以下步骤将其停止和删除：
 
     <SimpleTab groupId="os">
 
     <div label="Docker" value="docker">
 
-    To stop and remove the Docker container:
+    停止和删除 Docker 容器：
 
     ```shell
     docker stop mysql80
@@ -408,37 +408,37 @@ After completing your testing, you can clean up the environment by stopping the 
 
     <div label="macOS" value="macos">
 
-    If you installed MySQL 8.0 using Homebrew solely for testing, stop the service and uninstall it:
+    如果你使用 Homebrew 安装的 MySQL 8.0 仅用于测试，则停止服务并卸载：
 
     ```shell
     brew services stop mysql@8.0
     brew uninstall mysql@8.0
     ```
 
-    > **Note:**
+    > **注意：**
     >
-    > If you want to remove all MySQL data files, delete the MySQL data directory (commonly located at `/opt/homebrew/var/mysql`).
+    > 如果你要删除所有 MySQL 数据文件，则删除 MySQL 数据目录（通常位于 `/opt/homebrew/var/mysql`）。
 
     </div>
 
     <div label="CentOS" value="centos">
 
-    If you installed MySQL 8.0 from the MySQL Yum repository, stop the service and uninstall it:
+    如果你从 MySQL Yum 仓库安装的 MySQL 8.0 仅用于测试，则停止服务并卸载：
 
     ```shell
     sudo systemctl stop mysqld
     sudo yum remove -y mysql-community-server
     ```
 
-    > **Note:**
+    > **注意：**
     >
-    > If you want to remove all MySQL data files, delete the MySQL data directory (commonly located at `/var/lib/mysql`).
+    > 如果你要删除所有 MySQL 数据文件，则删除 MySQL 数据目录（通常位于 `/var/lib/mysql`）。
 
     </div>
 
     <div label="Ubuntu" value="ubuntu">
 
-    If you installed MySQL from the official Ubuntu repository, stop the service and uninstall it:
+    如果你从官方 Ubuntu 仓库安装的 MySQL 仅用于测试，则停止服务并卸载：
 
     ```shell
     sudo systemctl stop mysql
@@ -446,31 +446,31 @@ After completing your testing, you can clean up the environment by stopping the 
     sudo apt-get autoremove -y
     ```
 
-    > **Note:**
+    > **注意：**
     >
-    > If you want to remove all MySQL data files, delete the MySQL data directory (commonly located at `/var/lib/mysql`).
+    > 如果你要删除所有 MySQL 数据文件，则删除 MySQL 数据目录（通常位于 `/var/lib/mysql`）。
 
     </div>
 
     </SimpleTab>
 
-3. Remove the TiDB DM configuration files if they are no longer needed:
+3. 如果不再需要 TiDB DM 配置文件，则删除：
 
     ```shell
     rm mysql-01.yaml tiup-playground-task.yaml
     ```
 
-4. If you no longer need TiUP, you can uninstall it:
+4. 如果不再需要 TiUP，则卸载：
 
     ```shell
     rm -rf ~/.tiup
     ```
 
-## What's next
+## 探索更多
 
-Now that you successfully created a task that migrates data from a source MySQL database to a target TiDB in a testing environment, you can:
+现在，你已经成功在测试环境中完成了一个从源数据库 MySQL 迁移数据到目标数据库 TiDB 的任务，接下来可以：
 
-- Explore [TiDB DM Features](/dm/dm-overview.md)
-- Learn about [TiDB DM Architecture](/dm/dm-arch.md)
-- Set up [TiDB DM for a Proof of Concept or Production](/dm/deploy-a-dm-cluster-using-tiup.md)
-- Configure advanced [DM Tasks](/dm/dm-task-configuration-guide.md)
+- 探索 [TiDB DM 的特性](/dm/dm-overview.md)
+- 了解 [TiDB DM 的架构](/dm/dm-arch.md)
+- [在生产环境中部署 TiDB DM 集群](/dm/deploy-a-dm-cluster-using-tiup.md)
+- 了解 [TiDB DM 数据迁移任务的高级配置](/dm/dm-task-configuration-guide.md)
