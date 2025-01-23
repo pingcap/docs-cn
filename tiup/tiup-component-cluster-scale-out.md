@@ -54,4 +54,6 @@ tiup cluster scale-out <cluster-name> <topology.yaml> [flags]
 
 扩容日志
 
-[<< 返回上一页 - TiUP Cluster 命令清单](/tiup/tiup-component-cluster.md#命令清单)
+## 另请参阅
+
+- [使用 TiUP 扩容 TiDB 集群](/scale-tidb-using-tiup.md)

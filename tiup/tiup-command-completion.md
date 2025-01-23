@@ -42,5 +42,3 @@ source $HOME/.bash_profile
 ```shell
 tiup completion zsh > "${fpath[1]}/_tiup"
 ```
-
-[<< 返回上一页 - TiUP 命令清单](/tiup/tiup-reference.md#命令清单)
