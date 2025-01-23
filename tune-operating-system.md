@@ -69,6 +69,7 @@ cpufreq 是一个动态调整 CPU 频率的模块，可支持五种模式。为�
 ```shell
 echo never > /sys/kernel/mm/transparent_hugepage/enabled
 echo never > /sys/kernel/mm/transparent_hugepage/defrag
+grubby --update-kernel="$KERNEL" --args='transparent_hugepage=never'
 ```
 
 ### 内存——虚拟内存参数
