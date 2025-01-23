@@ -43,7 +43,7 @@ execute 执行阶段为绿色，其他三个阶段偏红色系，如果非绿色
 
 - `execute time`：execute 阶段每秒消耗的数据库时间
 - `tso_wait`：execute 阶段每秒同步等待 TSO 的时间
-- `kv request type`：execute 阶段每秒等待每种 KV 请求类型的时间，总的 KV request 等待时间可能超过 execute time，因为 KV request 是并发的。
+- `kv request type`：execute 阶段每秒等待每种 KV 请求类型的时间，总的 KV 请求等待时间可能超过 execute time，因为 KV 请求是并发的。
 
 绿色系标识代表常规的写 KV 请求（例如 Prewrite 和 Commit），蓝色系标识代表常规的读 KV 请求，其他色系标识需要注意的问题。例如，悲观锁加锁请求为红色，TSO 等待为深褐色。如果非蓝色系或者非绿色系占比明显，意味着执行阶段存在异常的瓶颈。例如，当发生严重锁冲突时，红色的悲观锁时间会占比明显；当负载中 TSO 等待的消耗时间过长时，深褐色会占比明显。
 
@@ -72,7 +72,7 @@ execute 执行阶段为绿色，其他三个阶段偏红色系，如果非绿色
 
 - `total`：所有 TiDB 的连接数
 - `active connections`：所有 TiDB 总的活跃连接数
-- 各个 TiDB 的连接数
+- 各个 TiDB 实例的连接数
 
 ### TiDB CPU/Memory
 
@@ -155,8 +155,8 @@ Connection Idle Duration 指空闲连接的持续时间。
 ### Storage Async Write Duration、Store Duration 和 Apply Duration
 
 - `Storage Async Write Duration`：异步写所花费的时间
-- `Store Duration`：异步写 Store 步骤所花费的时间
-- `Apply Duration`：异步写 Apply 步骤所花费的时间
+- `Store Duration`：异步写入过程中，在存储循环 (store loop) 中所花费的时间
+- `Apply Duration`：异步写入过程中，在应用循环 (apply loop) 中所花费的时间
 
 这三个时间指标都包含所有 TiKV 实例的平均值和 P99 值
 
