@@ -59,7 +59,6 @@ tiup cluster clean <cluster-name> [flags]
 
 tiup-cluster 的执行日志。
 
-
 ## 另请参阅
 
 - [TiUP 常见运维操作](/maintain-tidb-using-tiup.md)

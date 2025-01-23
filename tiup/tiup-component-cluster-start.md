@@ -52,7 +52,6 @@ tiup cluster start <cluster-name> [flags]
 
 启动日志。
 
-
 ## 另请参阅
 
 - [TiUP 常见运维操作](/maintain-tidb-using-tiup.md)

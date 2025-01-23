@@ -47,7 +47,6 @@ tiup cluster stop <cluster-name> [flags]
 
 停止服务的日志。
 
-
 ## 另请参阅
 
 - [TiUP 常见运维操作](/maintain-tidb-using-tiup.md)
