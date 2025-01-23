@@ -272,7 +272,7 @@ Read traffic 和 Write traffic 面板可以帮助你深入分析 TiDB 集群内�
 
 **示例 2：启用 Titan 前后的写流量**
 
-以下示例展示了启用 Titan 前后的性能变化。对于 6 KB 数据量的插入负载，Titan 显著降低了写流量和 compaction I/O，提高了 TiKV 的整体性能和资源利用率。
+以下示例展示了启用 Titan 前后的性能变化。对于 6 KiB 数据量的插入负载，Titan 显著降低了写流量和 compaction I/O，提高了 TiKV 的整体性能和资源利用率。
 
 - 启用 Titan 前的写流量
 
