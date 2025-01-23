@@ -52,6 +52,16 @@ summary: TiUP Cluster 提供了 `check` 子命令，用于检查集群的硬件�
 
 检查部署机是否启用透明大页：建议禁用透明大页。
 
+要检查 THP 是否启用，可以运行以下命令：
+
+```bash
+cat /sys/kernel/mm/transparent_hugepage/enabled
+```
+
+如果结果不是 `never`，你可以使用 `grubby --update-kernel=ALL --args="transparent_hugepage=never"` 修改。
+
+要更改当前运行的配置，你可以选择重启系统，或者运行 `echo never > /sys/kernel/mm/transparent_hugepage/enabled`。
+
 ### 系统限制
 
 检查 /etc/security/limits.conf 中各项 limit 值：
