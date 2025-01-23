@@ -1,5 +1,6 @@
 ---
 title: tiup install
+summary: tiup install 命令用于从镜像仓库下载指定版本的组件包，并在本地解压。当需要运行不存在于镜像仓库中的组件时，会尝试下载并自动运行，若不存在会报错。语法为 tiup install <component1>[version] [component2...N] [flags]。输出包括组件的下载信息，若组件不存在则报错"The component "%s" not found"，若版本不存在则报错"version %s not supported by component %s"。
 ---
 
 # tiup install
@@ -23,5 +24,3 @@ tiup install <component1>[:version] [component2...N] [flags]
 - 正常情况下输出组件的下载信息
 - 若组件不存在则报错 `The component "%s" not found`
 - 若版本不存在则报错 `version %s not supported by component %s`
-
-[<< 返回上一页 - TiUP 命令清单](/tiup/tiup-reference.md#命令清单)

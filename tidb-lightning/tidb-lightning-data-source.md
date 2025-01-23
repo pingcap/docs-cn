@@ -6,11 +6,13 @@ aliases: ['/zh/tidb/dev/migrate-from-csv-using-tidb-lightning/','/docs-cn/dev/ti
 
 # TiDB Lightning 数据源
 
-TiDB Lightning 支持从多种类型的文件导入数据到 TiDB 集群。通过以下配置为 TiDB Lightning 指定数据文件所在位置。
+TiDB Lightning 支持从多种类型的文件导入数据到 TiDB 集群，包括 CSV、SQL、Parquet 文件。
+
+你可以通过以下配置为 TiDB Lightning 指定数据文件所在位置。
 
 ```toml
 [mydumper]
-# 本地源数据目录或 S3 等外部存储 URI。关于外部存储 URI 详情可参考 https://docs.pingcap.com/zh/tidb/v6.6/backup-and-restore-storages#uri-%E6%A0%BC%E5%BC%8F。
+# 本地源数据目录或 S3 等外部存储 URI。关于外部存储 URI 详情可参考 https://docs.pingcap.com/zh/tidb/dev/backup-and-restore-storages#uri-格式。
 data-source-dir = "/data/my_database"
 ```
 
@@ -38,7 +40,7 @@ TiDB Lightning 运行时会按照数据文件的命名规则将数据导入到�
 rename srcdb. tgtdb. *.sql
 ```
 
-修改了文件中的数据库名后，建议删除 `data-source-dir` 目录下包含 `CREATE DATABASE` DDL 语句的 `${db_name}-schema-create.sql` 文件。如果修改的是表名，还需要修改包含 `CREATE TABLE` DDL 语句的 ${db_name}.${table_name}-schema.sql` 文件中的表名。
+修改了文件中的数据库名后，建议删除 `data-source-dir` 目录下包含 `CREATE DATABASE` DDL 语句的 `${db_name}-schema-create.sql` 文件。如果修改的是表名，还需要修改包含 `CREATE TABLE` DDL 语句的 `${db_name}.${table_name}-schema.sql` 文件中的表名。
 
 ### 使用正则表达式在线替换名称
 
@@ -105,7 +107,7 @@ CSV 文件是没有表结构的。要导入 TiDB，就必须为其提供表结�
 
 ### 配置
 
-CSV 格式可在 `tidb-lightning.toml` 文件中 `[mydumper.csv]` 下配置。大部分设置项在 MySQL [`LOAD DATA`] 语句中都有对应的项目。
+CSV 格式可在 `tidb-lightning.toml` 文件中 `[mydumper.csv]` 下配置。大部分设置项在 MySQL 的 [`LOAD DATA`](https://dev.mysql.com/doc/refman/8.0/en/load-data.html) 语句中都有对应的选项。
 
 ```toml
 [mydumper.csv]
@@ -126,7 +128,7 @@ not-null = false
 null = '\N'
 # 是否解析字段内的反斜线转义符。
 backslash-escape = true
-# 是否移除以分隔符结束的行。
+# 是否将 `separator` 字段当作终止符，并移除尾部所有分隔符。
 trim-last-separator = false
 ```
 
@@ -209,7 +211,7 @@ trim-last-separator = false
 
 #### `trim-last-separator`
 
-- 将 `separator` 字段当作终止符，并移除尾部所有分隔符。
+- 是否将 `separator` 字段当作终止符，并移除尾部所有分隔符。
 
     例如有如下 CSV 文件：
 
@@ -335,7 +337,7 @@ TiDB Lightning 在处理 SQL 文件时，由于无法对单个文件进行快速
 
 ## Parquet
 
-TiDB Lightning 目前仅支持由 Amazon Aurora 或者 Hive 导出快照生成的 Parquet 文件。要识别其在 S3 的文件组织形式，需要使用如下配置匹配到所有的数据文件：
+TiDB Lightning 目前仅支持由 Amazon Aurora、Hive 或 Snowflake 导出快照生成的 Parquet 文件。要识别其在 S3 的文件组织形式，需要使用如下配置匹配到所有的数据文件：
 
 ```
 [[mydumper.files]]
@@ -390,7 +392,7 @@ type = '$3'
     - 直接填写期望导入的库名，例如 “db1”。所有匹配到的文件均会导入 “db1”。
 - **table**：目标表名称，值可以为：
     - 正则表达式匹配到的 group 序号，例如 “$2”。
-    - 直接填写期望导入的库名，例如“table1”。所有匹配到的文件均会导入“table1”。
+    - 直接填写期望导入的表名，例如 “table1”。所有匹配到的文件均会导入 “table1”。
 - **type**：文件类型，支持`sql`，`parquet`，`csv`，值可以为：
     - 正则表达式匹配到的 group 序号，例如 “$3”。
 - **key**：文件的序号，即前文所述`${db_name}.${table_name}.001.csv`中的`001`。
@@ -403,35 +405,35 @@ type = '$3'
 * 使用本地已设置的权限访问 S3：
 
     ```bash
-    ./tidb-lightning --tidb-port=4000 --pd-urls=127.0.0.1:2379 --backend=local --sorted-kv-dir=/tmp/sorted-kvs \
+    tiup tidb-lightning --tidb-port=4000 --pd-urls=127.0.0.1:2379 --backend=local --sorted-kv-dir=/tmp/sorted-kvs \
         -d 's3://my-bucket/sql-backup'
     ```
 
 * 使用路径类型的请求模式：
 
     ```bash
-    ./tidb-lightning --tidb-port=4000 --pd-urls=127.0.0.1:2379 --backend=local --sorted-kv-dir=/tmp/sorted-kvs \
+    tiup tidb-lightning --tidb-port=4000 --pd-urls=127.0.0.1:2379 --backend=local --sorted-kv-dir=/tmp/sorted-kvs \
         -d 's3://my-bucket/sql-backup?force-path-style=true&endpoint=http://10.154.10.132:8088'
     ```
 
 * 使用 AWS IAM 角色的 ARN 来访问 S3 数据：
 
     ```bash
-    ./tidb-lightning --tidb-port=4000 --pd-urls=127.0.0.1:2379 --backend=local --sorted-kv-dir=/tmp/sorted-kvs \
+    tiup tidb-lightning --tidb-port=4000 --pd-urls=127.0.0.1:2379 --backend=local --sorted-kv-dir=/tmp/sorted-kvs \
         -d 's3://my-bucket/test-data?role-arn=arn:aws:iam::888888888888:role/my-role'
     ```
 
 * 使用 AWS IAM 用户密钥来访问 S3 数据：
 
     ```bash
-    ./tidb-lightning --tidb-port=4000 --pd-urls=127.0.0.1:2379 --backend=local --sorted-kv-dir=/tmp/sorted-kvs \
+    tiup tidb-lightning --tidb-port=4000 --pd-urls=127.0.0.1:2379 --backend=local --sorted-kv-dir=/tmp/sorted-kvs \
         -d 's3://my-bucket/test-data?access_key={my_access_key}&secret_access_key={my_secret_access_key}'
     ```
 
 * 使用 AWS IAM 角色的密钥以及会话令牌来访问 S3 数据：
 
     ```bash
-    ./tidb-lightning --tidb-port=4000 --pd-urls=127.0.0.1:2379 --backend=local --sorted-kv-dir=/tmp/sorted-kvs \
+    tiup tidb-lightning --tidb-port=4000 --pd-urls=127.0.0.1:2379 --backend=local --sorted-kv-dir=/tmp/sorted-kvs \
         -d 's3://my-bucket/test-data?access_key={my_access_key}&secret_access_key={my_secret_access_key}&session-token={my_session_token}'
     ```
 

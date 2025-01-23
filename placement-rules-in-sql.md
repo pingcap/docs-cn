@@ -50,7 +50,7 @@ tikv-server --labels region=<region>,zone=<zone>,host=<host>
 | --- | --- |
 | 手动部署 | [通过拓扑 label 进行副本调度](/schedule-replicas-by-topology-labels.md) |
 | TiUP 部署 | [跨机房部署拓扑结构](/geo-distributed-deployment-topology.md) |
-| Operator 部署| [在 Kubernetes 中配置 TiDB 集群](https://docs.pingcap.com/zh/tidb-in-kubernetes/stable/configure-a-tidb-cluster#高数据的高可用) |
+| Operator 部署| [在 Kubernetes 中配置 TiDB 集群](https://docs.pingcap.com/zh/tidb-in-kubernetes/stable/configure-a-tidb-cluster#数据的高可用) |
 
 如需查看当前 TiKV 集群中所有可用的标签，可以使用 [`SHOW PLACEMENT LABELS`](/sql-statements/sql-statement-show-placement-labels.md) 语句：
 
@@ -114,7 +114,7 @@ SHOW PLACEMENT LABELS;
     *************************** 1. row ***************************
            Table: t1
     Create Table: CREATE TABLE `t1` (
-      `a` int(11) DEFAULT NULL
+      `a` int DEFAULT NULL
     ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin /*T![placement] PLACEMENT POLICY=`myplacementpolicy` */
     1 row in set (0.00 sec)
     ```
@@ -214,7 +214,7 @@ DROP PLACEMENT POLICY myplacementpolicy;
 | CONSTRAINTS 格式 | 描述 |
 |----------------------------|-----------------------------------------------------------------------------------------------------------|
 | 列表格式  | 如果指定的约束适用于所有副本，可以使用键值对列表格式。键以 `+` 或 `-` 开头。例如：<br/> <ul><li>`[+region=us-east-1]` 表示放置数据在 `region` 标签为 `us-east-1` 的节点上。</li><li>`[+region=us-east-1,-type=fault]` 表示放置数据在 `region` 标签为 `us-east-1` 且 `type` 标签不为 `fault` 的节点上。</li></ul><br/>  |
-| 字典格式 | 如果需要为不同的约束指定不同数量的副本，可以使用字典格式。例如：<br/> <ul><li>`FOLLOWER_CONSTRAINTS="{+region=us-east-1: 1,+region=us-east-2: 1,+region=us-west-1: 1}";` 表示 1 个 follower 位于 `us-east-1`，1 个 follower 位于 `us-east-2`，1 个 follower 位于 `us-west-1`。</li><li>`FOLLOWER_CONSTRAINTS='{"+region=us-east-1,+type=scale-node": 1,"+region=us-west-1": 1}';` 表示 1 个 follower 位于 `us-east-1` 区域中有标签 `type` 为 `scale-node` 的节点上，1 个 follower 位于 `us-west-1`。</li></ul>字典格式支持以 `+` 或 `-` 开头的键，并支持配置特殊的 `#reject-leader` 属性。例如，`FOLLOWER_CONSTRAINTS='{"+region=us-east-1":1, "+region=us-east-2": 2, "+region=us-west-1,#reject-leader": 1}'` 表示当进行容灾时，`us-west-1` 上尽可能驱逐当选的 leader。|
+| 字典格式 | 如果需要为不同的约束指定不同数量的副本，可以使用字典格式。例如：<br/> <ul><li>`FOLLOWER_CONSTRAINTS="{+region=us-east-1: 1,+region=us-east-2: 1,+region=us-west-1: 1}";` 表示 1 个 follower 位于 `us-east-1`，1 个 follower 位于 `us-east-2`，1 个 follower 位于 `us-west-1`。</li><li>`FOLLOWER_CONSTRAINTS='{"+region=us-east-1,+type=scale-node": 1,"+region=us-west-1": 1}';` 表示 1 个 follower 位于 `us-east-1` 区域中有标签 `type` 为 `scale-node` 的节点上，1 个 follower 位于 `us-west-1`。</li></ul>字典格式支持以 `+` 或 `-` 开头的键，并支持配置特殊的 `#evict-leader` 属性。例如，`FOLLOWER_CONSTRAINTS='{"+region=us-east-1":1, "+region=us-east-2": 2, "+region=us-west-1,#evict-leader": 1}'` 表示当进行容灾时，`us-west-1` 上尽可能驱逐当选的 leader。|
 
 > **注意：**
 >
@@ -280,14 +280,14 @@ ALTER TABLE t PLACEMENT POLICY=default; -- 删除表 t 已绑定的放置策略 
 你还可以给表分区指定放置策略。示例如下：
 
 ```sql
-CREATE PLACEMENT POLICY storageforhisotrydata CONSTRAINTS="[+node=history]";
+CREATE PLACEMENT POLICY storageforhistorydata CONSTRAINTS="[+node=history]";
 CREATE PLACEMENT POLICY storagefornewdata CONSTRAINTS="[+node=new]";
 CREATE PLACEMENT POLICY companystandardpolicy CONSTRAINTS="";
 
-CREATE TABLE t1 (id INT, name VARCHAR(50), purchased DATE)
+CREATE TABLE t1 (id INT, name VARCHAR(50), purchased DATE, UNIQUE INDEX idx(id) GLOBAL)
 PLACEMENT POLICY=companystandardpolicy
 PARTITION BY RANGE( YEAR(purchased) ) (
-  PARTITION p0 VALUES LESS THAN (2000) PLACEMENT POLICY=storageforhisotrydata,
+  PARTITION p0 VALUES LESS THAN (2000) PLACEMENT POLICY=storageforhistorydata,
   PARTITION p1 VALUES LESS THAN (2005),
   PARTITION p2 VALUES LESS THAN (2010),
   PARTITION p3 VALUES LESS THAN (2015),
@@ -295,17 +295,18 @@ PARTITION BY RANGE( YEAR(purchased) ) (
 );
 ```
 
-如果没有为表中的某个分区指定任何放置策略，该分区将尝试继承表上可能存在的策略。在上面示例中：
+如果没有为表中的某个分区指定任何放置策略，该分区将尝试继承表上可能存在的策略。如果该表有[全局索引](/partitioned-table.md#全局索引)，索引将应用与该表相同的放置策略。在上面示例中：
 
-- `p0` 分区将会应用 `storageforhisotrydata` 策略
+- `p0` 分区将会应用 `storageforhistorydata` 策略
 - `p4` 分区将会应用 `storagefornewdata` 策略
 - `p1`、`p2`、`p3` 分区将会应用表 `t1` 的放置策略 `companystandardpolicy`
-- 如果 `t1` 没有绑定任何策略，`p1`、`p2`、`p3` 会继承数据库或全局的默认策略
+- 全局索引 `idx` 将应用与表 `t1` 相同的 `companystandardpolicy` 放置策略
+- 如果没有为表 `t1` 指定放置策略，`p1`、`p2` 和 `p3` 分区以及全局索引 `idx` 将继承数据库默认策略或全局默认策略
 
 给分区绑定放置策略后，你可以更改指定分区的放置策略。示例如下：
 
 ```sql
-ALTER TABLE t1 PARTITION p1 PLACEMENT POLICY=storageforhisotrydata;
+ALTER TABLE t1 PARTITION p1 PLACEMENT POLICY=storageforhistorydata;
 ```
 
 ## 高可用场景示例
@@ -379,15 +380,15 @@ SHOW PLACEMENT;
 如果你对 Raft Leader 的分布节点有要求，可以使用如下语句指定：
 
 ```sql
-CREATE PLACEMENT POLICY deploy221_primary_east1 LEADER_CONSTRAINTS="[+region=us-east-1]" FOLLOWER_CONSTRAINTS='{"+region=us-east-1": 1, "+region=us-east-2": 2, "+region=us-west-1: 1}';
+CREATE PLACEMENT POLICY deploy221_primary_east1 LEADER_CONSTRAINTS="[+region=us-east-1]" FOLLOWER_CONSTRAINTS='{"+region=us-east-1": 1, "+region=us-east-2": 2, "+region=us-west-1": 1}';
 ```
 
 该放置策略创建好并绑定到所需的数据后，这些数据的 Raft Leader 副本将会放置在 `LEADER_CONSTRAINTS` 选项指定的 `us-east-1` 区域中，其他副本将会放置在`FOLLOWER_CONSTRAINTS` 选项指定的区域。需要注意的是，如果集群发生故障，比如 Leader 所在区域 `us-east-1` 的节点宕机，这时候即使其他区域设置的都是 `FOLLOWER_CONSTRAINTS`, 也会从中选举出一个新的 Leader，也就是说保证服务可用的优先级是最高的。
 
-在 `us-east-1` 区域故障发生时，如果希望新的 Leader 不要放置在 `us-west-1`，可以配置特殊的 `reject-leader` 属性，驱逐上面新的 Leader:
+在 `us-east-1` 区域故障发生时，如果希望新的 Leader 不要放置在 `us-west-1`，可以配置特殊的 `evict-leader` 属性，驱逐上面新的 Leader:
 
 ```sql
-CREATE PLACEMENT POLICY deploy221_primary_east1 LEADER_CONSTRAINTS="[+region=us-east-1]" FOLLOWER_CONSTRAINTS='{"+region=us-east-1": 1, "+region=us-east-2": 2, "+region=us-west-1,#reject-leader": 1}';
+CREATE PLACEMENT POLICY deploy221_primary_east1 LEADER_CONSTRAINTS="[+region=us-east-1]" FOLLOWER_CONSTRAINTS='{"+region=us-east-1": 1, "+region=us-east-2": 2, "+region=us-west-1,#evict-leader": 1}';
 ```
 
 #### 使用 PRIMARY_REGION 指定
@@ -437,4 +438,3 @@ PLACEMENT POLICY=app_list
 | Backup & Restore (BR) | 6.0 | BR 在 v6.0 之前不支持放置策略的备份与恢复，请参见[恢复 Placement Rule 到集群时为什么会报错？](/faq/backup-and-restore-faq.md#恢复-placement-rule-到集群时为什么会报错) |
 | TiDB Lightning | 暂时不兼容 | 导入包含放置策略的数据时会报错 |
 | TiCDC | 6.0 | 忽略放置策略，不同步策略到下游集群 |
-| TiDB Binlog | 6.0 | 忽略放置策略，不同步策略到下游集群 |

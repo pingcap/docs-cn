@@ -1,5 +1,6 @@
 ---
 title: tiup status
+summary: tiup status 命令用于查看组件的运行信息，包括组件名称、进程 ID、运行状态、启动时间、数据目录、二进制文件路径和启动参数。组件可能处于在线、离线、无法访问、已缩容下线、下线中或未知状态。这些状态来自于 PD 的调度信息。
 ---
 
 # tiup status
@@ -51,5 +52,3 @@ tiup status [flags]
 > TiUP 显示的 `Pending Offline`、PD API 返回的 `Offline` 以及 TiDB Dashboard 显示的 `Leaving` 这三个状态的含义相同。
 
 组件运行状态来自于 PD 的调度信息。更详细的描述请参考 [TiDB 数据库的调度 -- 信息收集](/tidb-scheduling.md#信息收集)。
-
-[<< 返回上一页 - TiUP 命令清单](/tiup/tiup-reference.md#命令清单)

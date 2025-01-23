@@ -5,12 +5,11 @@ summary: TiDB 数据库中外键约束的使用概况。
 
 # 外键约束
 
-从 v6.6.0 开始，TiDB 支持外键以及外键约束功能，外键允许跨表交叉引用相关数据，外键约束则可以保证相关数据的一致性。
+外键允许跨表交叉引用相关数据，外键约束则可以保证相关数据的一致性。从 v6.6.0 开始，TiDB 支持外键以及外键约束功能。从 v8.5.0 开始，该功能成为正式功能。
 
 > **警告：**
 >
-> - 外键功能目前为实验特性，不建议在生产环境中使用。该功能可能会在未事先通知的情况下发生变化或删除。如果发现 bug，请在 GitHub 上提 [issue](https://github.com/pingcap/tidb/issues) 反馈。
-> - 外键功能通常适用于为中小规模的数据提供完整性和一致性约束校验，但是在大数据量和分布式数据库系统下，使用外键可能会导致严重的性能问题，并对系统产生不可预知的影响。如果计划使用外键，请进行充分验证后谨慎使用。
+> 外键功能通常用于强制执行[参照完整性](https://zh.wikipedia.org/wiki/%E5%8F%82%E7%85%A7%E5%AE%8C%E6%95%B4%E6%80%A7)约束检查。使用该功能可能会导致性能下降，在将其应用于性能敏感的场景前，建议先进行全面测试。
 
 外键是在子表中定义的，语法如下：
 
@@ -152,8 +151,8 @@ mysql> SHOW CREATE TABLE child\G
 *************************** 1. row ***************************
        Table: child
 Create Table: CREATE TABLE `child` (
-  `id` int(11) DEFAULT NULL,
-  `pid` int(11) DEFAULT NULL,
+  `id` int DEFAULT NULL,
+  `pid` int DEFAULT NULL,
   KEY `idx_pid` (`pid`),
   CONSTRAINT `fk_1` FOREIGN KEY (`pid`) REFERENCES `test`.`parent` (`id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin
@@ -191,8 +190,8 @@ mysql> SHOW CREATE TABLE child\G
 *************************** 1. row ***************************
        Table: child
 Create Table: CREATE TABLE `child` (
-  `id` int(11) DEFAULT NULL,
-  `pid` int(11) DEFAULT NULL,
+  `id` int DEFAULT NULL,
+  `pid` int DEFAULT NULL,
   KEY `idx_pid` (`pid`),
   CONSTRAINT `fk_1` FOREIGN KEY (`pid`) REFERENCES `test`.`parent` (`id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin
@@ -293,8 +292,8 @@ mysql> SHOW CREATE TABLE child\G
 ***************************[ 1. row ]***************************
 Table        | child
 Create Table | CREATE TABLE `child` (
-  `id` int(11) DEFAULT NULL,
-  `pid` int(11) DEFAULT NULL,
+  `id` int DEFAULT NULL,
+  `pid` int DEFAULT NULL,
   KEY `idx_pid` (`pid`),
   CONSTRAINT `fk_1` FOREIGN KEY (`pid`) REFERENCES `test`.`parent` (`id`) ON DELETE CASCADE /* FOREIGN KEY INVALID */
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin
@@ -302,11 +301,10 @@ Create Table | CREATE TABLE `child` (
 
 ### 与 TiDB 工具的兼容性
 
-- [TiDB Binlog](/tidb-binlog/tidb-binlog-overview.md) 不支持外键功能。
-- [DM](/dm/dm-overview.md) 不兼容外键功能。DM v6.6.0 在同步数据到下游 TiDB 时，会显式关闭下游 TiDB 的 [`foreign_key_checks`](/system-variables.md#foreign_key_checks)，所以由外键产生的级联操作不会从上游同步到下游，进而导致上下游数据不一致。这与 v6.6.0 之前版本 DM 的行为一致。
+- [DM](/dm/dm-overview.md) 不兼容外键功能。DM 在同步数据到下游 TiDB 时，会显式关闭下游 TiDB 的 [`foreign_key_checks`](/system-variables.md#foreign_key_checks)，所以由外键产生的级联操作不会从上游同步到下游，这会导致上下游数据不一致。
 - [TiCDC](/ticdc/ticdc-overview.md) v6.6.0 兼容外键功能。旧版本的 TiCDC 在同步带外键的表时，可能会报错，建议使用 v6.6.0 之前版本 TiCDC 时先关闭下游 TiDB 集群的 `foreign_key_checks`。
 - [BR](/br/backup-and-restore-overview.md) v6.6.0 兼容外键功能。之前版本的 BR 在恢复带外键的表到 v6.6.0 及之后版本的集群时，可能会报错，建议先关闭下游 TiDB 集群的 `foreign_key_checks` 后再恢复集群。
-- [TiDB Lightning](/tidb-lightning/tidb-lightning-overview.md) 导入数据到 TiDB 前，建议先关闭 TiDB 集群的 `foreign_key_checks`。
+- [TiDB Lightning](/tidb-lightning/tidb-lightning-overview.md) 导入数据到 TiDB 前，如果目标表使用了外键，建议先关闭 TiDB 集群的 `foreign_key_checks`。对于 v6.6.0 之前的版本，关闭该系统变量也不会生效，你需要为下游数据库用户添加 `REFERENCES` 权限，或者提前手动在下游数据库中创建好目标表，以确保顺利导入数据。
 - [Dumpling](/dumpling-overview.md) 兼容外键功能。
 - [sync-diff-inspector](/sync-diff-inspector/sync-diff-inspector-overview.md) 在对比上下游数据时，如果上下游数据库的版本不一样，且下游 TiDB 中存在[不生效的外键](#tidb-版本间兼容性)，则 sync-diff-inspector 可能会报上下游表结构不一致的错误。因为 TiDB v6.6.0 会对表结构中不生效的外键添加一条 `/* FOREIGN KEY INVALID */` 注释。
 
@@ -336,8 +334,8 @@ SHOW CREATE TABLE child;
 | Table | Create Table                                                |
 +-------+-------------------------------------------------------------+
 | child | CREATE TABLE `child` (                                      |
-|       |   `id` int(11) DEFAULT NULL,                                |
-|       |   `pid` int(11) DEFAULT NULL                                |
+|       |   `id` int DEFAULT NULL,                                |
+|       |   `pid` int DEFAULT NULL                                |
 |       | ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin |
 +-------+-------------------------------------------------------------+
 ```

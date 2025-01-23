@@ -1,5 +1,6 @@
 ---
 title: tiup mirror grant
+summary: tiup mirror grant 命令用于向当前镜像中添加组件管理员。组件管理员可以发布新组件或修改之前发布的组件。添加管理员时，需将公钥发送给镜像管理员。命令仅支持本地镜像使用。语法：tiup mirror grant <id>。选项：-k, --key（指定管理员密钥）、-n, --name（指定管理员名字）。输出：执行成功无输出，管理员 ID 重复报错，密钥被其他管理员使用报错。
 ---
 
 # tiup mirror grant
@@ -37,5 +38,3 @@ tiup mirror grant <id> [flags]
 - 若执行成功：无输出
 - 若管理员 ID 重复：`Error: owner %s exists`
 - 若密钥已被其他管理员使用：`Error: key %s exists`
-
-[<< 返回上一页 - TiUP Mirror 命令清单](/tiup/tiup-command-mirror.md#命令清单)

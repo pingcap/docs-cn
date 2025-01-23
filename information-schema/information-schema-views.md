@@ -5,7 +5,7 @@ summary: 了解 INFORMATION_SCHEMA 表 `VIEWS`。
 
 # VIEWS
 
-`VIEWS` 表提供了关于 SQL 视图的信息。
+`VIEWS` 表提供了关于 [SQL 视图](/views.md)的信息。
 
 ```sql
 USE INFORMATION_SCHEMA;
@@ -68,3 +68,8 @@ COLLATION_CONNECTION: utf8mb4_0900_ai_ci
 * `SECURITY_TYPE`：`SQL SECURITY` 的值，取值为 `DEFINER` 或 `INVOKER`。
 * `CHARACTER_SET_CLIENT`：在视图创建时 session 变量 `character_set_client` 的值。
 * `COLLATION_CONNECTION`：在视图创建时 session 变量 `collation_connection` 的值。
+
+## 另请参阅
+
+- [`CREATE VIEW`](/sql-statements/sql-statement-create-view.md)
+- [`DROP VIEW`](/sql-statements/sql-statement-drop-view.md)

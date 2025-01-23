@@ -1,5 +1,6 @@
 ---
 title: TiDB 5.4.3 Release Notes
+summary: TiDB 5.4.3 发布，提升了 TiKV 和 Tools 的功能，修复了多个 Bug。包括 TiKV 支持更小的 RocksDB write stall 参数，TiDB 修复了多个查询和执行时可能出现的问题。PD 也修复了一些请求和权限问题。TiFlash 修复了一些函数和并行聚合的错误。Tools 中的 TiDB Lightning 修复了一些数据导入和连接问题，DM 修复了一些数据同步和连接问题，BR 修复了备份恢复和 Region 不均衡的问题，Dumpling 修复了 IPv6 的支持问题。
 ---
 
 # TiDB 5.4.3 Release Notes
@@ -75,7 +76,7 @@ TiDB 版本：5.4.3
 
     + TiDB Lightning
 
-        - 修复 `BIGINT` 类型自增列可能越界的问题 [#27397](https://github.com/pingcap/tidb/issues/27937)
+        - 修复 `BIGINT` 类型自增列可能越界的问题 [#27937](https://github.com/pingcap/tidb/issues/27937)
         - 修复极端情况下去重可能会导致 TiDB Lightning panic 的问题 [#34163](https://github.com/pingcap/tidb/issues/34163)
         - 修复 TiDB Lightning 不支持 Parquet 文件中以斜线 (`/`)、数字、非 ASCII 字符开头的特殊列名的问题 [#36980](https://github.com/pingcap/tidb/issues/36980)
         - 修复了使用 IPv6 host 时无法连接到 TiDB 的问题 [#35880](https://github.com/pingcap/tidb/issues/35880)

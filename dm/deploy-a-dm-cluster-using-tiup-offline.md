@@ -46,7 +46,7 @@ summary: 学习如何使用 TiUP DM 组件来离线部署 TiDB Data Migration �
         tiup mirror clone tidb-dm-${version}-linux-amd64 --os=linux --arch=amd64 \
             --dm-master=${version} --dm-worker=${version} --dmctl=${version} \
             --alertmanager=v0.17.0 --grafana=v4.0.3 --prometheus=v4.0.3 \
-            --tiup=v$(tiup --version|grep 'tiup'|awk -F ' ' '{print $1}') --dm=v$(tiup --version|grep 'tiup'|awk -F ' ' '{print $1}')
+            --dm=v$(tiup --version|grep 'tiup'|awk -F ' ' '{print $1}')
         ```
 
         该命令会在当前目录下创建一个名叫 `tidb-dm-${version}-linux-amd64` 的目录，里面包含 TiUP 管理的组件包。
@@ -127,7 +127,7 @@ alertmanager_servers:
 >
 > - 配置的层次结构使用 `.` 表示。如：`log.slow-threshold`。更多格式说明，请参考 [TiUP 配置参数模版](https://github.com/pingcap/tiup/blob/master/embed/examples/dm/topology.example.yaml)。
 >
-> - 更多参数说明，请参考 [master `config.toml.example`](https://github.com/pingcap/dm/blob/master/dm/master/dm-master.toml)、[worker `config.toml.example`](https://github.com/pingcap/dm/blob/master/dm/worker/dm-worker.toml)。
+> - 更多参数说明，请参考 [master `config.toml.example`](https://github.com/pingcap/tiflow/blob/master/dm/master/dm-master.toml)、[worker `config.toml.example`](https://github.com/pingcap/tiflow/blob/master/dm/worker/dm-worker.toml)。
 >
 > - 需要确保以下组件间端口可正常连通：
 >

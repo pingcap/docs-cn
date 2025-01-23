@@ -1,6 +1,7 @@
 ---
 title: 使用 TiUP bench 组件压测 TiDB
 aliases: ['/docs-cn/dev/tiup/tiup-bench/','/docs-cn/dev/reference/tools/tiup/bench/']
+summary: TiUP bench 组件集成了多种压测 workloads，包括 TPC-C、TPC-H、CH-benCHmark、YCSB 和自定义 SQL 文件。每种压测都有对应的命令和参数，可以通过 TiUP 运行。TPC-C 测试包括准备数据、运行测试、检查一致性和清理数据等步骤。TPC-H 测试也有类似的步骤，包括准备数据、运行测试和清理数据。YCSB 测试可以分别针对 TiDB 和 TiKV 节点进行，包括准备数据和运行测试。此外，还可以通过 RawSQL 文件进行测试，包括准备数据和执行查询。
 ---
 
 # 使用 TiUP bench 组件压测 TiDB
@@ -143,7 +144,15 @@ Flags:
     tiup bench tpch --sf=1 prepare
     ```
 
-2. 运行 TPC-H 测试，根据是否检查结果执行相应命令：
+2. 收集统计信息：
+
+    对于 OLAP 场景，为了确保 TiDB 优化器能够生成最优的执行计划，请执行以下 SQL 语句提前收集统计信息。**务必确保将 [`tidb_analyze_column_options`](/system-variables.md#tidb_analyze_column_options-从-v830-版本开始引入) 系统变量的值设置为 `ALL`，否则统计信息收集可能会导致查询性能显著下降。**
+
+    ```sql
+    set global tidb_analyze_column_options='ALL';
+    ```
+
+3. 运行 TPC-H 测试，根据是否检查结果执行相应命令：
 
     - 检查结果：
 
@@ -157,7 +166,7 @@ Flags:
         tiup bench tpch --count=22 --sf=1 run
         ```
 
-3. 清理数据：
+4. 清理数据：
 
     ```shell
     tiup bench tpch cleanup

@@ -1,6 +1,7 @@
 ---
 title: TiDB 2.1.1 Release Notes
 aliases: ['/docs-cn/dev/releases/release-2.1.1/','/docs-cn/dev/releases/2.1.1/']
+summary: TiDB 2.1.1 版本发布，对系统稳定性、优化器、统计信息和执行引擎做了改进。修复了多个问题，包括时间四舍五入错误、uncompress 函数未检查数据长度、PD 故障获取错误 TSO、不规范语句导致启动失败等。DDL 改变了表的默认字符集和排序规则，增加了控制添加索引速度的变量。PD 修复了配置项无法设置为 0 的问题，避免了 transfer leader 至新创建的 Peer 产生的延迟增加问题。TiKV 也避免了相同的问题。 Lightning 优化了对导入表的 analyze 机制，提升了导入速度。 TiDB Binlog 修复了 pb files 输出 bug。
 ---
 
 # TiDB 2.1.1 Release Notes

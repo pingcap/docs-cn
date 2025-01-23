@@ -1,6 +1,7 @@
 ---
 title: 使用 TiUP 部署运维 TiDB 线上集群
 aliases: ['/docs-cn/dev/tiup/tiup-cluster/','/docs-cn/dev/reference/tools/tiup/cluster/']
+summary: 使用 TiUP 的 cluster 组件可以快速部署生产集群，并提供强大的生产集群管理功能，包括升级、缩容、扩容、操作、审计等。部署集群的命令为 tiup cluster deploy，部署完成后可以通过 tiup cluster list 查看集群列表。启动集群的命令为 tiup cluster start，查看集群状态的命令为 tiup cluster display。可以使用 tiup cluster scale-in 进行集群缩容，tiup cluster scale-out 进行集群扩容。另外，还可以使用 tiup cluster upgrade 进行滚动升级，使用 tiup cluster edit-config 进行配置更新。最后，可以使用 tiup cluster exec 在集群节点机器上执行命令。
 ---
 
 # 使用 TiUP 部署运维 TiDB 线上集群
@@ -61,7 +62,7 @@ Flags:
 tiup cluster deploy <cluster-name> <version> <topology.yaml> [flags]
 ```
 
-该命令需要提供集群的名字、集群使用的 TiDB 版本（例如 `v7.5.0`），以及一个集群的拓扑文件。
+该命令需要提供集群的名字、集群使用的 TiDB 版本（例如 `v8.5.0`），以及一个集群的拓扑文件。
 
 拓扑文件的编写可参考[示例](https://github.com/pingcap/tiup/blob/master/embed/examples/cluster/topology.example.yaml)。以一个最简单的拓扑为例，将下列文件保存为 `/tmp/topology.yaml`：
 
@@ -95,6 +96,9 @@ tiflash_servers:
   - host: 172.16.5.142
   - host: 172.16.5.143
 
+tiproxy_servers:
+  - host: 172.16.5.144
+
 grafana_servers:
   - host: 172.16.5.134
 
@@ -118,12 +122,12 @@ tidb_servers:
 ...
 ```
 
-假如我们想要使用 TiDB 的 v7.5.0 版本，集群名字为 `prod-cluster`，则执行以下命令：
+假如我们想要使用 TiDB 的 v8.5.0 版本，集群名字为 `prod-cluster`，则执行以下命令：
 
 {{< copyable "shell-regular" >}}
 
 ```shell
-tiup cluster deploy -p prod-cluster v7.5.0 /tmp/topology.yaml
+tiup cluster deploy -p prod-cluster v8.5.0 /tmp/topology.yaml
 ```
 
 执行过程中会再次确认拓扑结构并提示输入目标机器上的 root 密码（-p 表示使用密码）：
@@ -131,12 +135,13 @@ tiup cluster deploy -p prod-cluster v7.5.0 /tmp/topology.yaml
 ```bash
 Please confirm your topology:
 TiDB Cluster: prod-cluster
-TiDB Version: v7.5.0
+TiDB Version: v8.5.0
 Type        Host          Ports                            OS/Arch       Directories
 ----        ----          -----                            -------       -----------
 pd          172.16.5.134  2379/2380                        linux/x86_64  deploy/pd-2379,data/pd-2379
 pd          172.16.5.139  2379/2380                        linux/x86_64  deploy/pd-2379,data/pd-2379
 pd          172.16.5.140  2379/2380                        linux/x86_64  deploy/pd-2379,data/pd-2379
+tiproxy     172.16.5.144  6000/3080                        linux/x86_64  deploy/tiproxy-6000
 tikv        172.16.5.134  20160/20180                      linux/x86_64  deploy/tikv-20160,data/tikv-20160
 tikv        172.16.5.139  20160/20180                      linux/x86_64  deploy/tikv-20160,data/tikv-20160
 tikv        172.16.5.140  20160/20180                      linux/x86_64  deploy/tikv-20160,data/tikv-20160
@@ -174,7 +179,7 @@ tiup cluster list
 Starting /root/.tiup/components/cluster/v1.12.3/cluster list
 Name          User  Version    Path                                               PrivateKey
 ----          ----  -------    ----                                               ----------
-prod-cluster  tidb  v7.5.0    /root/.tiup/storage/cluster/clusters/prod-cluster  /root/.tiup/storage/cluster/clusters/prod-cluster/ssh/id_rsa
+prod-cluster  tidb  v8.5.0    /root/.tiup/storage/cluster/clusters/prod-cluster  /root/.tiup/storage/cluster/clusters/prod-cluster/ssh/id_rsa
 ```
 
 ## 启动集群
@@ -202,7 +207,7 @@ tiup cluster display prod-cluster
 ```
 Starting /root/.tiup/components/cluster/v1.12.3/cluster display prod-cluster
 TiDB Cluster: prod-cluster
-TiDB Version: v7.5.0
+TiDB Version: v8.5.0
 ID                  Role        Host          Ports                            OS/Arch       Status  Data Dir              Deploy Dir
 --                  ----        ----          -----                            -------       ------  --------              ----------
 172.16.5.134:3000   grafana     172.16.5.134  3000                             linux/x86_64  Up      -                     deploy/grafana-3000
@@ -219,6 +224,7 @@ ID                  Role        Host          Ports                            O
 172.16.5.134:20160  tikv        172.16.5.134  20160/20180                      linux/x86_64  Up      data/tikv-20160       deploy/tikv-20160
 172.16.5.139:20160  tikv        172.16.5.139  20160/20180                      linux/x86_64  Up      data/tikv-20160       deploy/tikv-20160
 172.16.5.140:20160  tikv        172.16.5.140  20160/20180                      linux/x86_64  Up      data/tikv-20160       deploy/tikv-20160
+172.16.5.144:6000   tiproxy     172.16.5.144  6000/3080                        linux/x86_64  Up      -                     deploy/tiproxy-6000
 ```
 
 Status 列用 `Up` 或者 `Down` 表示该服务是否正常。对于 PD 组件，同时可能会带有 `|L` 表示该 PD 是 Leader，`|UI` 表示该 PD 运行着 [TiDB Dashboard](/dashboard/dashboard-intro.md)。
@@ -231,11 +237,11 @@ Status 列用 `Up` 或者 `Down` 表示该服务是否正常。对于 PD 组件�
 
 缩容即下线服务，最终会将指定的节点从集群中移除，并删除遗留的相关文件。
 
-由于 TiKV、TiFlash 和 TiDB Binlog 组件的下线是异步的（需要先通过 API 执行移除操作）并且下线过程耗时较长（需要持续观察节点是否已经下线成功），所以对 TiKV、TiFlash 和 TiDB Binlog 组件做了特殊处理：
+由于 TiKV 和 TiFlash 组件的下线是异步的（需要先通过 API 执行移除操作）并且下线过程耗时较长（需要持续观察节点是否已经下线成功），所以对 TiKV 和 TiFlash 组件做了特殊处理：
 
-- 对 TiKV、TiFlash 及 Binlog 组件的操作
+- 对 TiKV 和 TiFlash 组件的操作
     - TiUP cluster 通过 API 将其下线后直接退出而不等待下线完成
-    - 等之后再执行集群操作相关的命令时，会检查是否存在已经下线完成的 TiKV、TiFlash 或者 Binlog 节点。如果不存在，则继续执行指定的操作；如果存在，则执行如下操作：
+    - 等之后再执行集群操作相关的命令时，会检查是否存在已经下线完成的 TiKV 或者 TiFlash 节点。如果不存在，则继续执行指定的操作；如果存在，则执行如下操作：
         1. 停止已经下线掉的节点的服务
         2. 清理已经下线掉的节点的相关数据文件
         3. 更新集群的拓扑，移除已经下线掉的节点
@@ -270,7 +276,7 @@ tiup cluster display prod-cluster
 ```
 Starting /root/.tiup/components/cluster/v1.12.3/cluster display prod-cluster
 TiDB Cluster: prod-cluster
-TiDB Version: v7.5.0
+TiDB Version: v8.5.0
 ID                  Role        Host          Ports                            OS/Arch       Status   Data Dir              Deploy Dir
 --                  ----        ----          -----                            -------       ------   --------              ----------
 172.16.5.134:3000   grafana     172.16.5.134  3000                             linux/x86_64  Up       -                     deploy/grafana-3000
@@ -287,6 +293,7 @@ ID                  Role        Host          Ports                            O
 172.16.5.134:20160  tikv        172.16.5.134  20160/20180                      linux/x86_64  Up       data/tikv-20160       deploy/tikv-20160
 172.16.5.139:20160  tikv        172.16.5.139  20160/20180                      linux/x86_64  Up       data/tikv-20160       deploy/tikv-20160
 172.16.5.140:20160  tikv        172.16.5.140  20160/20180                      linux/x86_64  Offline  data/tikv-20160       deploy/tikv-20160
+172.16.5.144:6000   tiproxy     172.16.5.144  6000/3080                        linux/x86_64  Up       -                     deploy/tiproxy-6000
 ```
 
 待 PD 将其数据调度到其他 TiKV 后，该节点会被自动删除。
@@ -370,12 +377,12 @@ Global Flags:
   -y, --yes               跳过所有的确认步骤
 ```
 
-例如，把集群升级到 v7.5.0 的命令为：
+例如，把集群升级到 v8.5.0 的命令为：
 
 {{< copyable "shell-regular" >}}
 
 ```bash
-tiup cluster upgrade tidb-test v7.5.0
+tiup cluster upgrade tidb-test v8.5.0
 ```
 
 ## 更新配置
@@ -555,11 +562,11 @@ tiup cluster audit
 Starting component `cluster`: /home/tidb/.tiup/components/cluster/v1.12.3/cluster audit
 ID      Time                       Command
 --      ----                       -------
-4BLhr0  2023-12-01T23:55:09+08:00  /home/tidb/.tiup/components/cluster/v1.12.3/cluster deploy test v7.5.0 /tmp/topology.yaml
-4BKWjF  2023-12-01T23:36:57+08:00  /home/tidb/.tiup/components/cluster/v1.12.3/cluster deploy test v7.5.0 /tmp/topology.yaml
-4BKVwH  2023-12-01T23:02:08+08:00  /home/tidb/.tiup/components/cluster/v1.12.3/cluster deploy test v7.5.0 /tmp/topology.yaml
-4BKKH1  2023-12-01T16:39:04+08:00  /home/tidb/.tiup/components/cluster/v1.12.3/cluster destroy test
-4BKKDx  2023-12-01T16:36:57+08:00  /home/tidb/.tiup/components/cluster/v1.12.3/cluster deploy test v7.5.0 /tmp/topology.yaml
+4BLhr0  2024-12-05T23:55:09+08:00  /home/tidb/.tiup/components/cluster/v1.12.3/cluster deploy test v8.5.0 /tmp/topology.yaml
+4BKWjF  2024-12-05T23:36:57+08:00  /home/tidb/.tiup/components/cluster/v1.12.3/cluster deploy test v8.5.0 /tmp/topology.yaml
+4BKVwH  2024-12-05T23:02:08+08:00  /home/tidb/.tiup/components/cluster/v1.12.3/cluster deploy test v8.5.0 /tmp/topology.yaml
+4BKKH1  2024-12-05T16:39:04+08:00  /home/tidb/.tiup/components/cluster/v1.12.3/cluster destroy test
+4BKKDx  2024-12-05T16:36:57+08:00  /home/tidb/.tiup/components/cluster/v1.12.3/cluster deploy test v8.5.0 /tmp/topology.yaml
 ```
 
 第一列为 audit-id，如果想看某个命令的执行日志，则传入这个 audit-id：
@@ -600,7 +607,7 @@ tiup cluster exec test-cluster --command='ls /tmp'
 
 ```bash
 Usage:
-  tiup ctl:v<CLUSTER_VERSION> {tidb/pd/tikv/binlog/etcd} [flags]
+  tiup ctl:v<CLUSTER_VERSION> {tidb/pd/tikv/etcd} [flags]
 
 Flags:
   -h, --help   help for tiup
@@ -612,7 +619,6 @@ Flags:
 tidb-ctl [args] = tiup ctl tidb [args]
 pd-ctl [args] = tiup ctl pd [args]
 tikv-ctl [args] = tiup ctl tikv [args]
-binlogctl [args] = tiup ctl bindlog [args]
 etcdctl [args] = tiup ctl etcd [args]
 ```
 
@@ -673,7 +679,7 @@ tiup cluster check <cluster-name> --cluster
 
 此时可以通过命令行参数 `--ssh=system` 启用系统自带命令行：
 
-- 部署集群：`tiup cluster deploy <cluster-name> <version> <topo> --ssh=system`，其中 `<cluster-name>` 为集群名称，`<version>` 为 TiDB 集群版本（例如 `v7.5.0`），`<topo>` 为拓扑文件路径
+- 部署集群：`tiup cluster deploy <cluster-name> <version> <topo> --ssh=system`，其中 `<cluster-name>` 为集群名称，`<version>` 为 TiDB 集群版本（例如 `v8.5.0`），`<topo>` 为拓扑文件路径
 - 启动集群：`tiup cluster start <cluster-name> --ssh=system`
 - 升级集群：`tiup cluster upgrade ... --ssh=system`
 

@@ -186,7 +186,7 @@ Query OK, 0 rows affected (0.28 sec)
 
 > **注意**
 >
-> TiDB 暂不支持 Cube 语法; TiDB 目前仅在 MPP 模式下支持为 `WITH ROLLUP` 语法生成有效的执行计划。
+> TiDB 暂不支持 Cube 语法。
 
 ```sql
 explain SELECT year, month, grouping(year), grouping(month), SUM(profit) AS profit FROM bank GROUP BY year, month WITH ROLLUP;

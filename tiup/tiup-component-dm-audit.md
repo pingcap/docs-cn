@@ -1,5 +1,6 @@
 ---
 title: tiup dm audit
+summary: tiup dm audit 命令用于查看所有集群上的历史命令和执行日志。若不填写 audit-id，则按时间倒序输出操作记录表格，包括 audit-id、命令执行时间和命令。若填写 audit-id，则查看指定的执行日志。选项 -h, --help 用于输出帮助信息，默认关闭。输出包括指定的 audit-id 对应的执行日志或包含 ID、时间和命令字段的表格。
 ---
 
 # tiup dm audit
@@ -30,5 +31,3 @@ tiup dm audit [audit-id] [flags]
     - ID：该条记录对应的 audit-id
     - Time：该条记录对应的命令执行时间
     - Command：该条记录对应的命令
-
-[<< 返回上一页 - TiUP DM 命令清单](/tiup/tiup-component-dm.md#命令清单)

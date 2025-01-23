@@ -122,7 +122,7 @@ binlog-schema list -s mysql-replica-01 task_single db_single t1
     "sources": [
         {
             "result": true,
-            "msg": "CREATE TABLE `t1` ( `c1` int(11) NOT NULL, `c2` int(11) DEFAULT NULL, PRIMARY KEY (`c1`)) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_bin",
+            "msg": "CREATE TABLE `t1` ( `c1` int NOT NULL, `c2` int DEFAULT NULL, PRIMARY KEY (`c1`)) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_bin",
             "source": "mysql-replica-01",
             "worker": "127.0.0.1:8262"
         }
@@ -159,8 +159,8 @@ Global Flags:
 
 ```sql
 CREATE TABLE `t1` (
-    `c1` int(11) NOT NULL,
-    `c2` bigint(11) DEFAULT NULL,
+    `c1` int NOT NULL,
+    `c2` bigint DEFAULT NULL,
     PRIMARY KEY (`c1`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_bin
 ```

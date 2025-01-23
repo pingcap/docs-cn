@@ -14,9 +14,9 @@ summary: 介绍在监控 TiDB 集群时的常见问题、原因及解决方法�
 
 TiDB 使用 Prometheus + Grafana 组成 TiDB 数据库系统的监控系统。用户在 Grafana 上通过 dashboard 可以监控到 TiDB 的各类运行指标，包括
 
-+ 系统资源的监控指标 
-+ 客户端连接与 SQL 运行的指标 
-+ 内部通信和 Region 调度的指标 
++ 系统资源的监控指标
++ 客户端连接与 SQL 运行的指标
++ 内部通信和 Region 调度的指标
 
 通过这些指标，可以让数据库管理员更好的了解到系统的运行状态，运行瓶颈等内容。在监控指标的过程中，我们按照 TiDB 不同的模块，分别列出了各个模块重要的指标项，一般用户只需要关注这些常见的指标项。具体指标请参见[官方文档](/grafana-overview-dashboard.md)。
 
@@ -24,7 +24,7 @@ TiDB 使用 Prometheus + Grafana 组成 TiDB 数据库系统的监控系统。�
 
 可以的，在 Prometheus 启动的机器上，找到启动脚本，然后修改启动参数，然后重启 Prometheus 生效。
 
-```config
+```
 --storage.tsdb.retention="60d"
 ```
 

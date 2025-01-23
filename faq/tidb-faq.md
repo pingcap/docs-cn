@@ -1,6 +1,7 @@
 ---
 title: TiDB 产品常见问题
 aliases: ['/docs-cn/dev/faq/tidb-faq/','/docs-cn/dev/faq/tidb/']
+summary: TiDB 是 PingCAP 公司自主设计、研发的开源分布式关系型数据库，支持在线事务处理与在线分析处理，具备水平扩容、高可用、实时 HTAP、云原生的特性。TiDB 不是基于 MySQL 开发的，而是由 PingCAP 团队完全自主开发的产品。TiDB 易用性很高，支持绝大部分 MySQL 8.0 的语法，但不支持触发器、存储过程、自定义函数等。TiDB 支持分布式事务，兼容 MySQL Client/Driver 的编程语言，支持其他存储引擎，如 TiKV、UniStore 和 MockTiKV。获取 TiDB 知识的途径包括官方文档、官方博客、AskTUG 社区论坛和 PingCAP Education。用户名长度限制为 32 个字符，最大列数为 1017，单行大小不超过 6MB。TiDB 不支持 XA，但支持对列存储引擎的高并发 INSERT 或 UPDATE 操作。
 ---
 
 # TiDB 产品常见问题
@@ -9,7 +10,7 @@ aliases: ['/docs-cn/dev/faq/tidb-faq/','/docs-cn/dev/faq/tidb/']
 
 ### 1.1.1 TiDB 是什么？
 
-[TiDB](https://github.com/pingcap/tidb) 是 [PingCAP](https://pingcap.com/about-cn/) 公司自主设计、研发的开源分布式关系型数据库，是一款同时支持在线事务处理与在线分析处理 (Hybrid Transactional and Analytical Processing, HTAP) 的融合型分布式数据库产品，具备水平扩容或者缩容、金融级高可用、实时 HTAP、云原生的分布式数据库、兼容 MySQL 5.7 协议和 MySQL 生态等重要特性。目标是为用户提供一站式 OLTP (Online Transactional Processing)、OLAP (Online Analytical Processing)、HTAP 解决方案。TiDB 适合高可用、强一致要求较高、数据规模较大等各种应用场景。更多详细信息，请参阅 [TiDB 简介](/overview.md)。
+[TiDB](https://github.com/pingcap/tidb) 是 [PingCAP](https://pingcap.com/about-cn/) 公司自主设计、研发的开源分布式关系型数据库，是一款同时支持在线事务处理与在线分析处理 (Hybrid Transactional and Analytical Processing, HTAP) 的融合型分布式数据库产品，具备水平扩容或者缩容、金融级高可用、实时 HTAP、云原生的分布式数据库、兼容 MySQL 协议和 MySQL 生态等重要特性。目标是为用户提供一站式 OLTP (Online Transactional Processing)、OLAP (Online Analytical Processing)、HTAP 解决方案。TiDB 适合高可用、强一致要求较高、数据规模较大等各种应用场景。更多详细信息，请参阅 [TiDB 简介](/overview.md)。
 
 ### 1.1.2 TiDB 整体架构
 
@@ -31,7 +32,7 @@ TiDB 使用起来很简单，可以将 TiDB 集群当成 MySQL 来用。你可�
 
 ### 1.1.6 TiDB 和 MySQL 兼容性如何？
 
-TiDB 支持绝大部分 MySQL 5.7 的语法，但目前还不支持触发器、存储过程、自定义函数等。详情参见[与 MySQL 兼容性对比](/mysql-compatibility.md)。
+TiDB 支持绝大部分 MySQL 8.0 的语法，但目前还不支持触发器、存储过程、自定义函数等。详情参见[与 MySQL 兼容性对比](/mysql-compatibility.md)。
 
 ### 1.1.7 TiDB 支持分布式事务吗？
 

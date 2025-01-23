@@ -1,11 +1,16 @@
 ---
 title: TiDB 使用限制
 aliases: ['/docs-cn/dev/tidb-limitations/']
+summary: TiDB 中的使用限制包括标识符长度限制、数据库、表、视图、连接总个数限制、单个数据库和表的限制、单行限制、数据类型限制、SQL 语句限制和 TiKV 版本限制。
 ---
 
 # 使用限制
 
 本文会将详细描述 TiDB 中常见的使用限制，包括：标识符长度，最大支持的数据库、表、索引、分区表、序列等的个数。
+
+> **注意：**
+>
+> TiDB 高度兼容 MySQL 协议，也兼容了很多 MySQL 本身的限制，比如单个索引最多可包含 16 列。详细请参考[与 MySQL 兼容性对比](/mysql-compatibility.md) 和 MySQL 官方文档。
 
 ## 标识符长度限制
 
@@ -50,14 +55,14 @@ aliases: ['/docs-cn/dev/tidb-limitations/']
 
 | 类型       | 最大限制（默认值）   |
 |:----------|:----------|
-| Size       | 默认为 6 MiB，可通过 [`txn-entry-size-limit`](/tidb-configuration-file.md#txn-entry-size-limit-从-v50-版本开始引入) 配置项调至 120 MiB |
+| Size       | 默认为 6 MiB，可通过 [`txn-entry-size-limit`](/tidb-configuration-file.md#txn-entry-size-limit-从-v4010-和-v500-版本开始引入) 配置项调至 120 MiB |
 
 ## 数据类型限制
 
 | 类型       | 最大限制   |
 |:----------|:----------|
-| CHAR       | 256 字符      |
-| BINARY     | 256 字节      |
+| CHAR       | 255 字符      |
+| BINARY     | 255 字节      |
 | VARBINARY  | 65535 字节    |
 | VARCHAR    | 16383 字符    |
 | TEXT       | 默认为 6291456 字节（即 6 MiB），可调至 125829120 字节（即 120 MiB）      |

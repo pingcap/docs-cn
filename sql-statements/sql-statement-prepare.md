@@ -19,6 +19,12 @@ PrepareSQL ::=
 |   UserVariable
 ```
 
+> **注意：**
+>
+> `PREPARE` 语句最多支持 65535 个占位符。
+
+你可以使用 [`max_prepared_stmt_count`](/system-variables.md#max_prepared_stmt_count) 系统变量来限制当前 TiDB 实例中 `PREPARE` 语句的数量。
+
 ## 示例
 
 {{< copyable "sql" >}}
