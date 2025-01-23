@@ -217,7 +217,7 @@ StmtPrepare 每秒执行次数远大于 StmtClose，说明应用程序存在 pre
 
 **示例 1：TiKV 资源使用率高**
 
-在以下 TPC-C 负载中，每个 TiDB 和 TiKV 配置了 16 个 CPU，PD 配置了 4 个 CPU。
+在以下 TPC-C 负载中，每个 TiDB 和 TiKV 配置了 16 CPU，PD 配置了 4 CPU。
 
 ![TPC-C](/media/performance/tpcc_cpu_memory.png)
 
