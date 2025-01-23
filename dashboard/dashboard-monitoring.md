@@ -23,7 +23,7 @@ Performance Overview 面板按总分结构对 TiDB、TiKV 和 PD 的性能指标
 
 - **总体概览**：数据库时间和 SQL 执行时间概览。通过颜色优化法，你可以快速识别数据库负载特征和性能瓶颈。
 - **资源负载**：关键指标和资源利用率，包含数据库 QPS、应用和数据库的连接信息和请求命令类型、数据库内部 TSO 和 KV 请求 OPS、TiDB 和 TiKV 的资源使用概况。
--**自上而下的延迟分解**：Query 延迟和连接空闲时间对比、Query 延迟分解、execute 阶段 TSO 请求和 KV 请求的延迟、TiKV 内部写延迟的分解等。
+- **自上而下的延迟分解**：Query 延迟和连接空闲时间对比、Query 延迟分解、execute 阶段 TSO 请求和 KV 请求的延迟、TiKV 内部写延迟的分解等。
 
 以下为 Performance Overview 面板监控说明：
 
@@ -99,7 +99,7 @@ execute 执行阶段为绿色，其他三个阶段偏红色系，如果非绿色
 ### Read Traffic
 
 - `TiDB -> Client`：从 TiDB 到客户端的出站流量统计
-- `Rocksdb -> TiKV`：TiKV 在存储层读操作过程中从 RocksDB 获取的数据流量
+- `Rocksdb -> TiKV`：TiKV 在存储层读操作过程中从 RocksDB 读取的数据流量
 
 ### Write Traffic
 
