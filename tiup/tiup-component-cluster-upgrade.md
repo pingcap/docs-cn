@@ -144,7 +144,6 @@ tiup cluster upgrade <cluster-name> <version> [flags]
 
 升级服务的日志。
 
-[<< 返回上一页 - TiUP Cluster 命令清单](/tiup/tiup-component-cluster.md#命令清单)
 
 ## 另请参阅
 
