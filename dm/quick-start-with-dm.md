@@ -1,6 +1,6 @@
 ---
 title: TiDB Data Migration 快速上手指南
-summary: 了解如何使用 TiUP Playground 快速部署试用 TiDB Data Migration 工具。
+summary: 了解如何使用 TiUP Playground 快速部署试用 TiDB Data Migration 数据迁移工具。
 aliases: ['/docs-cn/tidb-data-migration/dev/quick-start-with-dm/','/docs-cn/tidb-data-migration/dev/get-started/']
 ---
 
