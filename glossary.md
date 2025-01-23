@@ -41,10 +41,6 @@ ACID 是指数据库管理系统在写入或更新资料的过程中，为保证
 
 自动捕获绑定 (Baseline Capturing) 会对符合捕获条件的查询进行捕获，为符合条件的查询生成相应的绑定。通常用于升级时的[计划回退防护](/sql-plan-management.md#升级时的计划回退防护)。
 
-### Binlog
-
-在 TiDB 中，Binlog 指由 TiDB、MySQL 或 MariaDB 生成的一种二进制日志 (binary log)，用于记录 TiDB 或上下游的数据库表结构变更（例如 `CREATE`、`ALTER TABLE` 语句等）和表数据修改（例如 `INSERT`、`DELETE`、`UPDATE` 语句等）。
-
 ### Bucket
 
 一个 [Region](#regionpeerraft-group) 在逻辑上划分为多个小范围，称为 bucket。TiKV 按 bucket 收集查询统计数据，并将 bucket 的情况报告给 PD。详情参见 [Bucket 设计文档](https://github.com/tikv/rfcs/blob/master/text/0082-dynamic-size-region.md#bucket)。
@@ -127,7 +123,6 @@ Dumpling 是一款数据导出工具，用于将存储在 TiDB 或 MySQL 中的�
 
 垃圾回收 (Garbage Collection, GC) 指清理不再需要的旧数据以释放资源的过程。关于 TiKV 垃圾回收过程的详情，请参见[垃圾回收概述](/garbage-collection-overview.md)。
 
-
 ### General Availability (GA)
 
 一个功能 GA (General Availability) 意味着该功能已进行充分测试并可在生产环境中使用。根据每个功能的开发情况不同，TiDB 中的新功能可能会在[开发里程碑版本 (DMR)](#development-milestone-release-dmr) 中 GA，也可能会在[长期支持版本 (LTS)](#long-term-support-lts) 中 GA 。由于 TiDB 不提供基于 DMR 的补丁版本，在生产环境中建议使用 LTS 版本。
@@ -191,8 +186,6 @@ Lock View 特性用于提供关于悲观锁的锁冲突和锁等待的更多信�
 ### Massively Parallel Processing (MPP)
 
 从 v5.0 起，TiDB 通过 TiFlash 节点引入了 Massively Parallel Processing (MPP) 架构。这使得大型表连接类查询可以由不同 TiFlash 节点共同分担完成。当 MPP 模式开启后，TiDB 将会根据代价决定是否应该交由 MPP 框架进行计算。MPP 模式下，表连接将通过对 JOIN Key 进行数据计算时重分布（Exchange 操作）的方式把计算压力分摊到各个 TiFlash 执行节点，从而达到加速计算的目的。更多信息请参见[使用 MPP 模式](/tiflash/use-tiflash-mpp-mode.md)。
-
-详情参见[使用 MPP 模式](/tiflash/use-tiflash-mpp-mode.md)。
 
 ### Multi-version concurrency control (MVCC)
 
@@ -361,12 +354,6 @@ PD 中的 Store 指的是集群中的存储节点，也就是 tikv-server 实例
 ### TiCDC
 
 [TiCDC](/ticdc/ticdc-overview.md) 是一款 TiDB 增量数据同步工具，通过拉取上游 TiKV 的数据变更日志，TiCDC 可以将数据解析为有序的行级变更数据输出到下游。更多关于 TiCDC 的概念和术语，参见 [TiCDC 术语表](/ticdc/ticdc-glossary.md)。
-
-### TiDB Data Migration (DM)
-
-[TiDB Data Migration (DM)](/dm/dm-overview.md) 是一款便捷的数据迁移工具，支持从与 MySQL 协议兼容的数据库（MySQL、MariaDB、Aurora MySQL）到 TiDB 的全量数据迁移和增量数据同步。使用 DM 工具有利于简化数据迁移过程，降低数据迁移运维成本。
-
-更多关于 DM 的概念和术语，参见 [TiDB Data Migration 术语表](/dm/dm-glossary.md)。
 
 ### TiDB Lightning
 
