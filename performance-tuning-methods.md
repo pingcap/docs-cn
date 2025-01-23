@@ -249,7 +249,7 @@ Read traffic 和 Write traffic 面板可以帮助你深入分析 TiDB 集群内�
         [rocksdb.defaultcf.titan]
         min-blob-size = "1KB"
         blob-file-compression = "zstd"
-    ```
+        ```
 
 **示例 1：TPC-C 负载中的读写流量**
 
