@@ -343,7 +343,6 @@ tiflash_servers:
 - `port`：TiProxy SQL 服务的监听端口，默认值：`6000`。
 - `status_port`：TiProxy 状态服务的监听端口，用于外部通过 HTTP 请求查看 TiProxy 服务的状态，默认值：`3080`。
 - `deploy_dir`：指定部署目录，若不指定，或指定为相对目录，则按照 `global` 中配置的 `deploy_dir` 生成。
-- `data_dir`：指定数据目录，若不指定，或指定为相对目录，则按照 `global` 中配置的 `data_dir` 生成。
 - `numa_node`：为该实例分配 NUMA 策略，如果指定了该参数，需要确保目标机装了 [numactl](https://linux.die.net/man/8/numactl)，在指定该参数的情况下会通过 [numactl](https://linux.die.net/man/8/numactl) 分配 cpubind 和 membind 策略。该字段参数为 string 类型，字段值填 NUMA 节点的 ID，例如 `"0,1"`。
 - `config`：该字段配置规则和 `server_configs` 里的 `tiproxy` 配置规则相同，若配置了该字段，会将该字段内容和 `server_configs` 里的 `tiproxy` 内容合并（若字段重叠，以本字段内容为准），然后生成配置文件并下发到 `host` 指定的机器。
 - `os`：`host` 字段所指定的机器的操作系统，若不指定该字段，则默认为 `global` 中的 `os`。
@@ -354,7 +353,6 @@ tiflash_servers:
 - `host`
 - `port`
 - `deploy_dir`
-- `data_dir`
 - `arch`
 - `os`
 
