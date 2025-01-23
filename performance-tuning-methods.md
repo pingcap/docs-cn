@@ -210,14 +210,14 @@ StmtPrepare 每秒执行次数远大于 StmtClose，说明应用程序存在 pre
 
 #### CPU 和内存使用情况
 
-在 TiDB、TiKV 和 PD 的 CPU/Memory 面板中，你可以监控它们各自的逻辑 CPU 使用率和内存消耗情况，例如平均 CPU 利用率、最大 CPU 利用率、CPU 利用率差值（最大 CPU 使用率减去最小 CPU 使用率）、CPU 配额以及最大内存使用率。基于这些指标，你可以确定 TiDB、TiKV 和 PD 的整体资源使用情况。
+在 TiDB、TiKV 和 PD 的 CPU/Memory 面板中，你可以监控它们各自的逻辑 CPU 使用率和内存消耗情况，例如平均 CPU 利用率、最大 CPU 利用率、CPU 利用率差值（最大 CPU 使用率减去最小 CPU 使用率）、CPU quota（可以使用的 CPU 核数）以及最大内存使用率。基于这些指标，你可以确定 TiDB、TiKV 和 PD 的整体资源使用情况。
 
 - 根据 `delta` 值，你可以判断 TiDB 或 TiKV 的 CPU 使用是否存在不均衡的情况。对于 TiDB，较高的 `delta` 值通常意味着应用程序的连接在 TiDB 实例之间分布不均衡；对于 TiKV，较高的 `delta` 值通常意味着集群中存在读写热点。
-- 通过 TiDB、TiKV 和 PD 的资源使用概览，你可以快速判断集群是否存在资源瓶颈，以及是否需要对 TiKV、TiDB 或 PD 进行扩容或升级。
+- 通过 TiDB、TiKV 和 PD 的资源使用概览，你可以快速判断集群是否存在资源瓶颈，以及是否需要对 TiKV、TiDB 或 PD 进行扩容或者硬件配置升级。
 
 **示例 1：TiKV 资源使用率高**
 
-在以下 TPC-C 负载中，每个 TiDB 和 TiKV 配置了 16 CPU，PD 配置了 4 CPU。
+在以下 TPC-C 负载中，每个 TiDB 和 TiKV 配置了 16 核 CPU，PD 配置了 4 核 CPU。
 
 ![TPC-C](/media/performance/tpcc_cpu_memory.png)
 
@@ -232,23 +232,23 @@ StmtPrepare 每秒执行次数远大于 StmtClose，说明应用程序存在 pre
 Read traffic 和 Write traffic 面板可以帮助你深入分析 TiDB 集群内部的流量模式，全面监控从客户端到数据库以及内部组件之间的数据流情况。
 
 - Read traffic （读流量）
-  - `TiDB -> Client`：从 TiDB 到客户端的出站流量统计
-  - `Rocksdb -> TiKV`：TiKV 在存储层读操作期间从 RocksDB 获取的数据流量
+    - `TiDB -> Client`：从 TiDB 到客户端的出站流量统计
+    - `Rocksdb -> TiKV`：TiKV 在存储层读操作期间从 RocksDB 读取的数据流量
 
 - Write traffic （写流量）
-  - `Client -> TiDB`：从客户端到 TiDB 的入站流量统计
-  - `TiDB -> TiKV: general`：前台事务从 TiDB 写入到 TiKV 的速率
-  - `TiDB -> TiKV: internal`：内部事务从 TiDB 写入到 TiKV 的速率
-  - `TiKV -> Rocksdb`：从 TiKV 到 RocksDB 的写操作流量
-  - `RocksDB Compaction`：RocksDB compaction 操作产生的总读写 I/O 流量。如果 `RocksDB Compaction` 明显高于 `TiKV -> Rocksdb`，且你的平均行大小高于 512 字节，你可以通过以下配置来减少 compaction I/O 流量：启用 Titan，将 min-blob-size 设置为 `"512B"` 或 `"1KB"`，将 blob-file-compression 设置为 `"zstd"`。
+    - `Client -> TiDB`：从客户端到 TiDB 的入站流量统计
+    - `TiDB -> TiKV: general`：前台事务从 TiDB 写入到 TiKV 的速率
+    - `TiDB -> TiKV: internal`：内部事务从 TiDB 写入到 TiKV 的速率
+    - `TiKV -> Rocksdb`：从 TiKV 到 RocksDB 的写操作流量
+    - `RocksDB Compaction`：RocksDB compaction 操作产生的总读写 I/O 流量。如果 `RocksDB Compaction` 明显高于 `TiKV -> Rocksdb`，且你的平均行大小高于 512 字节，则可以进行以下配置以减少 compaction I/O 流量：启用 Titan，将 min-blob-size 设置为 `"512B"` 或 `"1KB"`，将 blob-file-compression 设置为 `"zstd"`。
 
-```toml
-[rocksdb.titan]
-enabled = true
-[rocksdb.defaultcf.titan]
-min-blob-size = "1KB"
-blob-file-compression = "zstd"
-```
+        ```toml
+        [rocksdb.titan]
+        enabled = true
+        [rocksdb.defaultcf.titan]
+        min-blob-size = "1KB"
+        blob-file-compression = "zstd"
+    ```
 
 **示例 1：TPC-C 负载中的读写流量**
 
@@ -257,15 +257,15 @@ blob-file-compression = "zstd"
 ![TPC-C](/media/performance/tpcc_read_write_traffic.png)
 
 - 读流量
-  - `TiDB -> Client`：14.2 MB/s
-  - `Rocksdb -> TiKV`：469 MB/s。注意，在提交事务之前，读操作（`SELECT` 语句）和写操作（`INSERT`、`UPDATE` 和 `DELETE` 语句）都需要从 RocksDB 读取数据到 TiKV。
+    - `TiDB -> Client`：14.2 MB/s
+    - `Rocksdb -> TiKV`：469 MB/s。注意，在提交事务之前，读操作（`SELECT` 语句）和写操作（`INSERT`、`UPDATE` 和 `DELETE` 语句）都需要从 RocksDB 读取数据到 TiKV。
 
 - 写流量
-  - `Client -> TiDB`：5.05 MB/s
-  - `TiDB -> TiKV: general`：13.1 MB/s
-  - `TiDB -> TiKV: internal`：5.07 KB/s
-  - `TiKV -> Rocksdb`：109 MB/s
-  - `RocksDB Compaction`：567 MB/s
+    - `Client -> TiDB`：5.05 MB/s
+    - `TiDB -> TiKV: general`：13.1 MB/s
+    - `TiDB -> TiKV: internal`：5.07 KB/s
+    - `TiKV -> Rocksdb`：109 MB/s
+    - `RocksDB Compaction`：567 MB/s
 
 ![TPC-C](/media/performance/tpcc_read_write_traffic.png)
 
@@ -275,25 +275,23 @@ blob-file-compression = "zstd"
 
 - 启用 Titan 前的写流量
 
-![Titan 禁用](/media/performance/titan_disable.png)
+    - `Client -> TiDB`：510 MB/s
+    - `TiDB -> TiKV: general`：187 MB/s
+    - `TiDB -> TiKV: internal`：3.2 KB/s
+    - `TiKV -> Rocksdb`：753 MB/s
+    - `RocksDB Compaction`：10.6 GB/s
 
-  - `Client -> TiDB`：510 MB/s
-  - `TiDB -> TiKV: general`：187 MB/s
-  - `TiDB -> TiKV: internal`：3.2 KB/s
-  - `TiKV -> Rocksdb`：753 MB/s
-  - `RocksDB Compaction`：10.6 GB/s
+    ![Titan 禁用](/media/performance/titan_disable.png)
 
 - 启用 Titan 后的写流量
 
-![Titan 启用](/media/performance/titan_enable.png)
+    - `Client -> TiDB`：586 MB/s
+    - `TiDB -> TiKV: general`：295 MB/s
+    - `TiDB -> TiKV: internal`：3.66 KB/s
+    - `TiKV -> Rocksdb`：1.21 GB/s
+    - `RocksDB Compaction`：4.68 MB/s
 
-  - `Client -> TiDB`：586 MB/s
-  - `TiDB -> TiKV: general`：295 MB/s
-  - `TiDB -> TiKV: internal`：3.66 KB/s
-  - `TiKV -> Rocksdb`：1.21 GB/s
-  - `RocksDB Compaction`：4.68 MB/s
-
-![Titan Enable](/media/performance/titan_enable.png)
+    ![Titan 启用](/media/performance/titan_enable.png)
 
 ### Query 延迟分解和关键的延迟指标
 
