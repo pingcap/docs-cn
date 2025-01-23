@@ -24,7 +24,7 @@ aliases: ['/docs-cn/tidb-data-migration/dev/quick-start-with-dm/','/docs-cn/tidb
 
     > **注意：**
     >
-    > 如果你已经安装了 TiUP，请确保其版本为 v1.16.1 或更高版本，以便使用 `--dm-master` 和 `--dm-worker` 参数。如果要检查当前版本，执行以下命令：
+    > 如果你已经安装了 TiUP，请确保其版本为 v1.16.1 或之后版本，以便使用 `--dm-master` 和 `--dm-worker` 参数。如果要检查当前版本，执行以下命令：
     >
     > ```shell
     > tiup --version
@@ -36,7 +36,7 @@ aliases: ['/docs-cn/tidb-data-migration/dev/quick-start-with-dm/','/docs-cn/tidb
     > tiup update --self
     > ```
 
-2. 启动 TiUP Playground，TiDB 目标数据库，以及 DM 组件：
+2. 启动包含目标数据库 TiDB 和 DM 组件的 TiUP Playground：
 
     ```shell
     tiup playground --dm-master 1 --dm-worker 1 --tiflash 0 --without-monitor
@@ -58,7 +58,7 @@ aliases: ['/docs-cn/tidb-data-migration/dev/quick-start-with-dm/','/docs-cn/tidb
 
 ## 第 2 步：准备源数据库（可选）
 
-你可以使用一个或多个 MySQL 实例作为源数据库。如果你已经有一个兼容 MySQL 的实例，请跳到[第 3 步](#第-3-步配置-tidb-dm-源)；如果没有，则按照以下步骤创建一个用于测试的实例。
+你可以使用一个或多个 MySQL 实例作为源数据库。如果你已经有一个兼容 MySQL 的实例，请跳到[第 3 步](#第-3-步配置-tidb-dm-源)；如果没有，则按照以下步骤创建一个用于测试的 MySQL 实例。
 
 <SimpleTab groupId="os">
 
@@ -81,7 +81,7 @@ aliases: ['/docs-cn/tidb-data-migration/dev/quick-start-with-dm/','/docs-cn/tidb
     docker exec -it mysql80 mysql -uroot -pMyPassw0rd!
     ```
 
-3. 创建一个 DM 测试专用用户，并授予必要的权限：
+3. 创建一个 DM 测试专用用户，并授予测试所需的权限：
 
     ```sql
     CREATE USER 'tidb-dm'@'%'
@@ -120,7 +120,7 @@ aliases: ['/docs-cn/tidb-data-migration/dev/quick-start-with-dm/','/docs-cn/tidb
     brew install mysql@8.0
     ```
 
-2. 使 MySQL 命令可在系统路径中访问：
+2. 将 MySQL 命令添加到系统路径中：
 
     ```shell
     brew link mysql@8.0 --force
@@ -170,7 +170,7 @@ aliases: ['/docs-cn/tidb-data-migration/dev/quick-start-with-dm/','/docs-cn/tidb
 
 在 CentOS 等企业级 Linux 发行版上，你可以从 MySQL Yum 仓库安装 MySQL 8.0。
 
-1. 下载并安装 MySQL Yum 仓库包。对于除 9 以外的 Linux 版本，必须在以下 URL 中将 `el9`（企业级 Linux 版本 9）替换为相应版本，同时保留 `mysql80` 以用于 MySQL 8.0 版本：
+1. 从 [MySQL Yum 仓库下载页面](https://dev.mysql.com/downloads/repo/yum)下载并安装 MySQL Yum 仓库包。对于非 Linux 9 版本，你需要将以下 URL 中的 `el9`（企业级 Linux 9 版本）替换为相应版本，同时保留 `mysql80` 以用于 MySQL 8.0 版本：
 
     ```shell
     sudo yum install -y https://dev.mysql.com/get/mysql80-community-release-el9-1.noarch.rpm
@@ -207,7 +207,7 @@ aliases: ['/docs-cn/tidb-data-migration/dev/quick-start-with-dm/','/docs-cn/tidb
         IDENTIFIED BY 'MyPassw0rd!';
     ```
 
-7. 创建一个 DM 测试专用用户，并授予必要的权限：
+7. 创建一个 DM 测试专用用户，并授予测试所需的权限：
 
     ```sql
     CREATE USER 'tidb-dm'@'%'
@@ -264,7 +264,7 @@ aliases: ['/docs-cn/tidb-data-migration/dev/quick-start-with-dm/','/docs-cn/tidb
     sudo mysql
     ```
 
-5. 创建一个 DM 测试专用用户，并授予必要的权限：
+5. 创建一个 DM 测试专用用户，并授予测试所需的权限：
 
     ```sql
     CREATE USER 'tidb-dm'@'%'
@@ -348,7 +348,7 @@ aliases: ['/docs-cn/tidb-data-migration/dev/quick-start-with-dm/','/docs-cn/tidb
     tiup dmctl --master-addr 127.0.0.1:8261 start-task tiup-playground-task.yaml
     ```
 
-## 第 5 步：验证迁移数据
+## 第 5 步：验证数据复制
 
 启动数据迁移任务后，验证数据复制是否符合预期。使用 `dmctl` 工具检查任务状态，并连接到目标数据库 TiDB，确认数据是否已成功从源数据库 MySQL 复制到了目标数据库 TiDB。
 
@@ -383,21 +383,21 @@ aliases: ['/docs-cn/tidb-data-migration/dev/quick-start-with-dm/','/docs-cn/tidb
 
 ## 第 6 步：清理环境（可选）
 
-测试完成后，可以清理环境，包括关闭 TiUP Playground、移除 MySQL 实例数据源（如果是专为测试创建的），以及删除不必要的文件。
+测试完成后，可以清理环境，包括停止 TiUP Playground、删除 MySQL 实例数据源（如果是专为测试创建的），以及删除不必要的文件。
 
 1. 停止 TiUP Playground：
 
     在运行 TiUP Playground 的终端中，按 <kbd>Control</kbd>+<kbd>C</kbd> 终止进程。这将停止所有的 TiDB 和 DM 组件，并删除目标数据库环境。
 
-2. 停止和删除数据源 MySQL 实例：
+2. 停止并删除数据源 MySQL 实例：
 
-    如果你在[第 2 步](#第-2-步准备源数据库可选)中为测试创建了 MySQL 实例作为数据源，可按以下步骤将其停止和删除：
+    如果你在[第 2 步](#第-2-步准备源数据库可选)中为测试创建了 MySQL 实例作为数据源，可按以下步骤停止并删除它：
 
     <SimpleTab groupId="os">
 
     <div label="Docker" value="docker">
 
-    停止和删除 Docker 容器：
+    停止并删除 Docker 容器：
 
     ```shell
     docker stop mysql80
