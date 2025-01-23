@@ -6,7 +6,7 @@ aliases: ['/docs-cn/tidb-data-migration/dev/quick-start-with-dm/','/docs-cn/tidb
 
 # TiDB Data Migration 快速上手指南
 
-[TiDB Data Migration (DM)](/dm/dm-overview.md) 是一个强大的数据迁移工具，用于将数据从兼容 MySQL 的数据库迁移到 TiDB。本指南将介绍如何使用 [TiUP Playground](/tiup/tiup-playground.md) 在本地快速搭建 TiDB DM 环境，以用于开发和测试。
+[TiDB Data Migration (DM)](/dm/dm-overview.md) 是一个强大的数据迁移工具，用于将数据从兼容 MySQL 的数据库迁移到 TiDB。本指南介绍如何使用 [TiUP Playground](/tiup/tiup-playground.md) 在本地快速搭建用于开发或测试的 TiDB DM 环境，并完成一个将数据从源数据库 MySQL 迁移到目标数据库 TiDB 的简单任务。
 
 > **注意：**
 >
@@ -348,9 +348,9 @@ aliases: ['/docs-cn/tidb-data-migration/dev/quick-start-with-dm/','/docs-cn/tidb
     tiup dmctl --master-addr 127.0.0.1:8261 start-task tiup-playground-task.yaml
     ```
 
-## 第 5 步：验证数据复制
+## 第 5 步：验证数据迁移
 
-启动数据迁移任务后，验证数据复制是否符合预期。使用 `dmctl` 工具检查任务状态，并连接到目标数据库 TiDB，确认数据是否已成功从源数据库 MySQL 复制到了目标数据库 TiDB。
+启动数据迁移任务后，验证数据复制是否符合预期。使用 `dmctl` 工具检查任务状态，并连接到目标数据库 TiDB，确认数据是否已成功从源数据库 MySQL 迁移到了目标数据库 TiDB。
 
 1. 检查 TiDB DM 任务的状态：
 
