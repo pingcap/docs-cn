@@ -1,11 +1,6 @@
 ---
 title: TiDB Data Migration 快速上手指南
-<<<<<<< HEAD
-summary: 了解如何快速上手部署试用 TiDB Data Migration 工具。
-=======
 summary: 了解如何使用 TiUP Playground 快速部署试用 TiDB Data Migration 数据迁移工具。
-aliases: ['/docs-cn/tidb-data-migration/dev/quick-start-with-dm/','/docs-cn/tidb-data-migration/dev/get-started/']
->>>>>>> 5be170b517 (dm: update DM quick start using TiUP Playground (#19637))
 ---
 
 # TiDB Data Migration 快速上手指南
@@ -26,84 +21,6 @@ aliases: ['/docs-cn/tidb-data-migration/dev/quick-start-with-dm/','/docs-cn/tidb
     curl --proto '=https' --tlsv1.2 -sSf https://tiup-mirrors.pingcap.com/install.sh | sh
     ```
 
-<<<<<<< HEAD
-2. 生成 DM 集群最小拓扑文件。
-
-    {{< copyable "shell-regular" >}}
-
-    ```
-    tiup dm template
-    ```
-
-3. 复制输出的配置信息，修改 IP 地址后保存为 `topology.yaml` 文件，使用 TiUP 部署 DM 集群。
-
-    {{< copyable "shell-regular" >}}
-
-    ```shell
-    tiup dm deploy dm-test 8.5.1 topology.yaml -p
-    ```
-
-## 第 2 步：准备数据源
-
-你可以使用一个或多个 MySQL 实例作为上游数据源。
-
-1. 为每一个数据源编写如下配置文件：
-
-    {{< copyable "shell-regular" >}}
-
-    ```yaml
-    source-id: "mysql-01"
-
-    from:
-      host: "127.0.0.1"
-      user: "root"
-      password: "fCxfQ9XKCezSzuCD0Wf5dUD+LsKegSg="
-      port: 3306
-    ```
-
-2. 使用如下命令将数据源增加至 DM 集群。其中，`mysql-01.yaml` 是上一步编写的配置文件。
-
-    {{< copyable "shell-regular" >}}
-
-    ```bash
-    tiup dmctl --master-addr=127.0.0.1:8261 operate-source create mysql-01.yaml # --master-addr 填写 master_servers 其中之一。
-    ```
-
-若环境中并不存在可供测试的 MySQL 实例，可以使用以下方式通过 Docker 快速创建一个测试实例。步骤如下：
-
-1. 编写 MySQL 配置文件：
-
-    {{< copyable "shell-regular" >}}
-
-    ```shell
-    mkdir -p /tmp/mysqltest && cd /tmp/mysqltest
-
-    cat > my.cnf <<EOF
-    [mysqld]
-    bind-address     = 0.0.0.0
-    character-set-server=utf8
-    collation-server=utf8_bin
-    default-storage-engine=INNODB
-    transaction-isolation=READ-COMMITTED
-    server-id        = 100
-    binlog_format    = row
-    log_bin          = /var/lib/mysql/mysql-bin.log
-    show_compatibility_56 = ON
-    EOF
-    ```
-
-2. 使用 Docker 启动 MySQL 实例：
-
-    {{< copyable "shell-regular" >}}
-
-    ```shell
-    docker run --name mysql-01 -v /tmp/mysqltest:/etc/mysql/conf.d -e MYSQL_ROOT_PASSWORD=my-secret-pw -d -p 3306:3306 mysql:5.7
-    ```
-
-3. 待 MySQL 启动后，即可连接该实例。
-
-=======
->>>>>>> 5be170b517 (dm: update DM quick start using TiUP Playground (#19637))
     > **注意：**
     >
     > 如果你已经安装了 TiUP，请确保其版本为 v1.16.1 或之后版本，以便使用 `--dm-master` 和 `--dm-worker` 参数。如果要检查当前版本，执行以下命令：
@@ -121,7 +38,7 @@ aliases: ['/docs-cn/tidb-data-migration/dev/quick-start-with-dm/','/docs-cn/tidb
 2. 启动包含目标数据库 TiDB 和 DM 组件的 TiUP Playground：
 
     ```shell
-    tiup playground --dm-master 1 --dm-worker 1 --tiflash 0 --without-monitor
+    tiup playground v8.5.1 --dm-master 1 --dm-worker 1 --tiflash 0 --without-monitor
     ```
 
 3. 验证环境，查看输出中 TiDB 和 DM 是否已启动：
