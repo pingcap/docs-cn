@@ -60,7 +60,7 @@ TiKV 选择了第二种方式，将整个 Key-Value 空间分成很多段，每�
 
 以下两点非常关键：
 
-- 数据按 Key 切分成多个 Region，每个 Region 的数据仅保存在一个节点上（暂不考虑多副本）。TiDB 系统中的 [PD 组件](/tidb-architecture.md#placement-driver-pd-server)负责将 Region 尽可能均匀地分布在集群节点上，实现存储容量的水平扩展（增加新节点后，会自动调度其他节点上的 Region）和负载均衡（避免某节点存储过多数据而其他节点存储较少）。为了确保上层客户端能访问所需数据，PD 组件会记录 Region 的分布情况，可通过任意 Key 查询其所在的 Region 及其对应的节点（即 Key 的位置路由信息）。
+- 数据按 Key 切分成多个 Region，每个 Region 的数据仅保存在一个节点上（暂不考虑多副本）。TiDB 系统中的 [PD 组件](/tidb-architecture.md)负责将 Region 尽可能均匀地分布在集群节点上，实现存储容量的水平扩展（增加新节点后，会自动调度其他节点上的 Region）和负载均衡（避免某节点存储过多数据而其他节点存储较少）。为了确保上层客户端能访问所需数据，PD 组件会记录 Region 的分布情况，可通过任意 Key 查询其所在的 Region 及其对应的节点（即 Key 的位置路由信息）。
 
 - TiKV 以 Region 为单位进行数据复制，一个 Region 的数据会保存多个副本，称为 Replica。Replica 之间通过 Raft 保持数据一致性，构成一个 Raft Group，其中一个 Replica 作为 Leader，其他作为 Follower。默认情况下，所有读写操作均通过 Leader 进行，读操作在 Leader 上即可完成，而写操作由 Leader 复制给 Follower。
 
