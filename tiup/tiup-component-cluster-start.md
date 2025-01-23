@@ -53,3 +53,7 @@ tiup cluster start <cluster-name> [flags]
 启动日志。
 
 [<< 返回上一页 - TiUP Cluster 命令清单](/tiup/tiup-component-cluster.md#命令清单)
+
+## 另请参阅
+
+- [TiUP 常见运维操作](/maintain-tidb-using-tiup.md)
