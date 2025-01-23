@@ -144,7 +144,6 @@ tiup cluster upgrade <cluster-name> <version> [flags]
 
 升级服务的日志。
 
-
 ## 另请参阅
 
 - [使用 TiUP 升级 TiDB 集群](/upgrade-tidb-using-tiup.md)

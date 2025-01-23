@@ -33,7 +33,6 @@ tiup cluster edit-config <cluster-name> [flags]
 - 正常情况无输出
 - 若修改了不能修改的字段，则保存文件时报错并提示用户重新编辑，不能修改的字段参考[拓扑文件](/tiup/tiup-cluster-topology-reference.md)中的相关描述
 
-
 ## 另请参阅
 
 - [TiUP 常见运维操作](/maintain-tidb-using-tiup.md)
