@@ -70,14 +70,12 @@ tikv_servers:
 tiproxy_servers:
   - host: 10.0.1.11
     deploy_dir: "/tiproxy-deploy"
-    data_dir: "/tiproxy-data"
     port: 6000
     status_port: 3080
     config:
       labels: { zone: "east" }
   - host: 10.0.1.12
     deploy_dir: "/tiproxy-deploy"
-    data_dir: "/tiproxy-data"
     port: 6000
     status_port: 3080
     config:
