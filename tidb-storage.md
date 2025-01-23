@@ -16,7 +16,7 @@ summary: 了解 TiDB 数据库的存储层。
 TiKV 数据存储的两个关键点：
 
 - TiKV 实现了一个巨大的 Map（类似于 C++ 的 std::map），用于存储 Key-Value Pairs（键值对）。
-- Map 中的键值对按照键的二进制顺序有序，可以通过 Seek 方法定位某个键，然后使用 Next 方法以递增顺序获取更大的键值对。
+- Map 中的键值对按照键的二进制顺序排序，可以通过 Seek 方法定位某个键，然后使用 Next 方法以递增顺序获取更大的键值对。
 
 注意，TiKV 的 KV 存储模型与 SQL 中的表无关。本文不讨论 SQL 概念，专注于 TiKV 的高性能、高可靠性和分布式键值存储的实现。
 
@@ -55,14 +55,16 @@ TiKV 选择了第二种方式，将整个 Key-Value 空间分成很多段，每�
 
 将数据划分成 Region 后，TiKV 执行两项重要操作：
 
-- 按 Region 将数据分散到集群中的所有节点，确保每个节点上的 Region 数量大致相同。
+- 按 Region 将数据分散到集群中的所有节点，并尽量保证每个节点上的 Region 数量大致相同。
 - 以 Region 为单位进行 Raft 的复制和成员管理。
 
-这两点非常关键：
+以下两点非常关键：
 
-- 数据按 Key 切分成多个 Region，每个 Region 的数据仅保存在一个节点上（不考虑多副本）。TiDB 系统中的 PD 组件负责将 Region 尽可能均匀分布在集群节点上，实现存储容量的水平扩展（增加新节点后，会自动调度其他节点上的 Region）和负载均衡（避免某节点存储过多数据而其他节点存储较少）。为了确保上层客户端能访问所需数据，PD 组件记录 Region 的分布情况，通过任意 Key 查询其所在的 Region 及其对应的节点（即 Key 的位置路由信息）。关于负责这两项重要工作的 PD 组件，将在后续介绍。
+- 数据按 Key 切分成多个 Region，每个 Region 的数据仅保存在一个节点上（暂不考虑多副本）。TiDB 系统中的 [PD 组件](/tidb-architecture.md#placement-driver-pd-server)负责将 Region 尽可能均匀地分布在集群节点上，实现存储容量的水平扩展（增加新节点后，会自动调度其他节点上的 Region）和负载均衡（避免某节点存储过多数据而其他节点存储较少）。
 
-- TiKV 以 Region 为单位进行数据复制，一个 Region 的数据会保存多个副本，称为 Replica。Replica 之间通过 Raft 保持数据一致性，构成一个 Raft Group，其中一个 Replica 作为 Leader，其他作为 Follower。默认情况下，所有读写操作通过 Leader 进行，读操作在 Leader 上即可完成，而写操作由 Leader 复制给 Follower。
+    为了确保上层客户端能访问所需数据，PD 组件会记录 Region 的分布情况，可通过任意 Key 查询其所在的 Region 及其对应的节点（即 Key 的位置路由信息）。
+
+- TiKV 以 Region 为单位进行数据复制，一个 Region 的数据会保存多个副本，称为 Replica。Replica 之间通过 Raft 保持数据一致性，构成一个 Raft Group，其中一个 Replica 作为 Leader，其他作为 Follower。默认情况下，所有读写操作均通过 Leader 进行，读操作在 Leader 上即可完成，而写操作由 Leader 复制给 Follower。
 
 大家理解了 Region 之后，应该可以理解下面这张图：
 
