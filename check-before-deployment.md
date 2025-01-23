@@ -528,7 +528,7 @@ sudo systemctl enable ntpd.service
 
             > **注意：**
             >
-            > 你也可以在 `--update-kernel` 后指定实际的版本号，例如：`--update-kernel /boot/vmlinuz-3.10.0-957.el7.x86_64`。
+            > 你也可以在 `--update-kernel` 后指定实际的版本号，例如：`--update-kernel /boot/vmlinuz-3.10.0-957.el7.x86_64` 或 `ALL`。
 
         3. 执行 `grubby --info` 命令查看修改后的默认内核配置。
 
