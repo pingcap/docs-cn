@@ -34,4 +34,3 @@ tiup dm list [flags]
 - Version：集群版本
 - Path：集群部署数据在中控机上的路径
 - PrivateKey：连接集群的私钥所在路径
-

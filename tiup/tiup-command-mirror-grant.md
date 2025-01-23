@@ -38,4 +38,3 @@ tiup mirror grant <id> [flags]
 - 若执行成功：无输出
 - 若管理员 ID 重复：`Error: owner %s exists`
 - 若密钥已被其他管理员使用：`Error: key %s exists`
-

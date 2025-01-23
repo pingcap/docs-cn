@@ -34,4 +34,3 @@ tiup cluster audit cleanup [flags]
 ```shell
 clean audit log successfully
 ```
-

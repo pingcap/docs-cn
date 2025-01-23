@@ -24,4 +24,3 @@ tiup dm replay <audit-id> [flags]
 ## 输出
 
 `<audit-id>` 对应的命令的输出。
-

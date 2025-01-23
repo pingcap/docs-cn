@@ -63,4 +63,3 @@ tiup cluster scale-in <cluster-name> [flags]
 ## 输出
 
 缩容日志
-

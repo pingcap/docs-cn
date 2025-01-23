@@ -44,4 +44,3 @@ tiup dm disable <cluster-name> [flags]
 ## 输出
 
 tiup-dm 的执行日志。
-
