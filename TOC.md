@@ -499,7 +499,7 @@
   - TiDB Data Migration
     - [关于 Data Migration](/dm/dm-overview.md)
     - [架构简介](/dm/dm-arch.md)
-    - [快速开始](/dm/quick-start-with-dm.md)
+    - [快速上手](/dm/quick-start-with-dm.md)
     - [最佳实践](/dm/dm-best-practices.md)
     - 部署 DM 集群
       - [软硬件要求](/dm/dm-hardware-and-software-requirements.md)
