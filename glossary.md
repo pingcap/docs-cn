@@ -35,7 +35,7 @@ ACID 是指数据库管理系统在写入或更新资料的过程中，为保证
 
 ### Batch Create Table
 
-批量建表 (Batch Create Table) 是在 TiDB v6.0.0 中引入的新功能，此功能默认开启。当需要恢复的数据中带有大量的表（约 50000 张）时，批量建表功能显著提升数据恢复的速度。详情参见[批量建表](/br/br-batch-create-table.md)。
+批量建表功能 (Batch Create Table) 可以通过批量创建表的方式显著提升多表同时创建的速度。例如，当使用[备份与恢复 (BR)](/br/backup-and-restore-overview.md) 工具恢复数千张表时，该功能有助于缩短整体恢复的整体时长。详情参见[批量建表](/br/br-batch-create-table.md)。
 
 ### Baseline Capturing
 
@@ -53,7 +53,13 @@ ACID 是指数据库管理系统在写入或更新资料的过程中，为保证
 
 ### Cluster
 
-TiDB 数据库以及各组件的集合，部署在多节点服务器上，每个节点上运行实例，向客户端提供服务。
+集群由一组协同工作以提供服务的节点组成。与单节点架构相比，TiDB 采用分布式集群架构，实现了更高的可用性和更强的可扩展性
+在 TiDB 的分布式架构中：
+- TiDB 节点提供可扩展的 SQL 层以供客户端交互。
+- PD 节点提供弹性的元数据层以支持 TiDB。
+- TiKV 节点使用 Raft 协议，为 TiDB 提供高可用、可扩展和有弹性的存储服务。
+
+详情参见 [TiDB 架构](/tidb-architecture.md)。
 
 ### Coalesce Partition
 
@@ -69,11 +75,11 @@ Coalesce Partition 是一种减少 Hash 分区表或 Key 分区表中分区数�
 
 ### Continuous Profiling
 
-持续性能分析 (Continuous Profiling) 是从 TiDB v5.3 起引入的一种从系统调用层面解读资源开销的方法。引入该方法后，TiDB 可提供数据库源码级性能观测，通过火焰图的形式帮助研发、运维人员定位性能问题的根因。详情参见 [TiDB Dashboard 实例性能分析 - 持续分析页面](/dashboard/continuous-profiling.md)。
+持续性能分析 (Continuous Profiling) 是一种从系统调用层面解读资源开销的方法。通过持续性能分析，TiDB 可提供对性能问题的细粒度观测，帮助运维团队使用火焰图定位性能问题的根本原因。详情参见 [TiDB Dashboard 实例性能分析 - 持续分析页面](/dashboard/continuous-profiling.md)。
 
 ### Coprocessor
 
-一种替 TiDB 分担计算的协处理机制。位于存储层（TiKV 或 TiFlash），以 Region 为单位协同处理从 TiDB 下推的计算。
+Coprocessor 是一种替 TiDB 分担计算工作负载的协处理机制。它位于存储层（TiKV 或 TiFlash），以 Region 为单位协同处理从 TiDB 下推的计算。更多信息，请参见[下推到 TiKV 的表达式列表](/functions-and-operators/expressions-pushed-down.md)。
 
 ## D
 
@@ -99,7 +105,7 @@ TiDB 会在开发里程碑版本 (Development Milestone Release, DMR) 中引入�
 
 ### Dumpling
 
-Dumpling 是一款数据导出工具，用于将存储在 TiDB 或 MySQL 中的数据导出为 SQL 或 CSV 格式，用于逻辑全量备份。Dumpling 也支持将数据导出到 Amazon S3 中。详情参见[使用 Dumpling 导出数据](/dumpling-overview.md)。
+Dumpling 是一款数据导出工具，用于将存储在 TiDB、MySQL 或 MariaDB 中的数据导出为 SQL 或 CSV 数据文件，也可用于逻辑全量备份或导出。Dumpling 也支持将数据导出到 Amazon S3 中。详情参见[使用 Dumpling 导出数据](/dumpling-overview.md)。
 
 ### 分布式执行框架 (DXF)
 
@@ -230,9 +236,9 @@ Operator Step 是 Operator 执行过程的一个步骤，一个 Operator 常常�
 
 ### Optimistic transaction
 
-使用乐观并发控制的事务，在并发环境中，外界对数据的操作一般不会造成冲突。开启乐观事务后，TiDB 只在事务最终提交时才会检测冲突。乐观事务模式适合读多写少的并发场景，能提高 TiDB 性能。
+乐观事务是使用乐观并发控制的事务。在并发环境中，外界对数据的操作一般不会造成冲突。开启乐观事务后，TiDB 仅在事务最终提交时才会进行冲突检测。乐观事务模式适合读多写少的并发场景，能提高 TiDB 性能。
 
-自 v3.0.8 开始，TiDB 集群默认使用悲观事务模式。但如果从 3.0.7 及之前版本创建的集群升级到 3.0.8 及之后的版本，不会改变默认事务模式，即只有新创建的集群才会默认使用悲观事务模式。详情参见 [TiDB 乐观事务模型](/optimistic-transaction.md)。
+更多信息，请参见 [TiDB 乐观事务模型](/optimistic-transaction.md)。
 
 ## P
 
@@ -242,7 +248,7 @@ Operator Step 是 Operator 执行过程的一个步骤，一个 Operator 常常�
 
 ### PD Control (pd-ctl)
 
-PD Control（或 pd-ctl）是 PD 的命令行工具，用于获取集群状态信息和调整集群。详情参见 [PD Control 使用说明](/pd-control.md)。
+PD Control (pd-ctl) 是一个命令行工具，用于与集群中的 PD (placement driver) 进行交互。你可以使用它获取集群状态信息以及修改集群。更多信息，请参见 [PD Control 使用说明](/pd-control.md)。
 
 ### Pending/Down
 
@@ -254,7 +260,7 @@ PD 是 [TiDB 架构](/tidb-architecture.md) 中的核心组件之一，负责存
 
 ### Placement Rules
 
-Placement Rules 特性用于通过 SQL 接口配置数据在 TiKV 集群中的放置位置。通过该功能，用户可以将表和分区指定部署至不同的地域、机房、机柜、主机。适用场景包括低成本优化数据高可用策略、保证本地的数据副本可用于本地 Stale Read 读取、遵守数据本地要求等。
+Placement Rules 特性用于配置数据在 TiKV 集群中的放置位置。通过该功能，用户可以将表和分区指定部署至不同的地域、机房、机柜、主机。适用场景包括低成本优化数据高可用策略、保证本地的数据副本可用于本地 Stale Read 读取、遵守数据本地要求。
 
 详情参见 [Placement Rules in SQL](/placement-rules-in-sql.md)。
 
@@ -310,7 +316,7 @@ RU 是 TiDB 中资源使用的统一抽象单位，用于在[资源管控](/tidb
 
 ### RocksDB
 
-一款提供键值存储与读写功能的 LSM-tree 架构引擎，由 Facebook 基于 LevelDB 开发。RocksDB 是 TiKV 的核心存储引擎，用于存储 Raft 日志以及用户数据。
+[RocksDB](https://rocksdb.org/) 是一款提供键值存储与读写功能的 LSM-tree 架构引擎，由 Facebook 基于 LevelDB 开发。RocksDB 是 TiKV 的核心存储引擎。
 
 ## S
 
@@ -325,13 +331,13 @@ Scheduler（调度器）是 PD 中生成调度的组件。PD 中每个调度器�
 
 ### Security Enhanced Mode
 
- Security Enhanced Mode（安全增强模式）用于对 TiDB 管理员进行更细粒度的权限划分。安全增强模式受[安全增强式 Linux](https://zh.wikipedia.org/wiki/安全增强式Linux) 等系统设计的启发，削减拥有 MySQL `SUPER` 权限的用户能力，转而使用细粒度的 `RESTRICTED` 权限作为替代。
+ Security Enhanced Mode（安全增强模式）用于对 TiDB 管理员进行更细粒度的权限划分。受[安全增强式 Linux](https://en.wikipedia.org/wiki/Security-Enhanced_Linux) 等系统设计的启发，SEM 削减了拥有 `SUPER` 权限的用户的能力，转而使用 `RESTRICTED` 细粒度权限作为替代，这些权限必须被显式授予以控制特定的管理操作。
 
 详情参见[系统变量文档 - `tidb_enable_enhanced_security`](/system-variables.md#tidb_enable_enhanced_security)。
 
 ### Stale Read
 
-Stale Read 是一种读取历史数据版本的机制，读取 TiDB 中存储的历史数据版本。通过 Stale Read 功能，你能从指定时间点或时间范围内读取对应的历史数据，从而避免数据同步带来延迟。当使用 Stale Read 时，TiDB 默认会随机选择一个副本来读取数据，因此能利用所有副本。
+Stale Read 是 TiDB 中一种读取机制，用于读取 TiDB 中存储的历史数据版本。通过 Stale Read 功能，你可以从指定时间点或时间范围内读取对应的历史数据，从而缩短存储节点之间数据同步带来的延迟。当使用 Stale Read 时，TiDB 会随机选择一个副本来读取数据，这意味着所有副本都可用于数据读取。
 
 详情参见 [Stale Read](/stale-read.md)。
 
@@ -347,13 +353,13 @@ PD 中的 Store 指的是集群中的存储节点，也就是 tikv-server 实例
 
 ### Temporary table
 
-临时表 (temporary table) 解决了业务中间计算结果的临时存储问题，让用户免于频繁地建表和删表等操作。用户可将业务上的中间计算数据存入临时表，用完数据后 TiDB 自动清理回收临时表。这避免了用户业务过于复杂，减少了表管理开销，并提升了性能。
+临时表 (temporary table) 用于存储业务上的中间计算结果，让用户免于频繁地建表和删表等操作。数据用完后，TiDB 会自动清理并回收临时表。这种方式可以帮助你简化应用程序逻辑，减少表管理开销，并提升性能。
 
 详情参见[临时表](/temporary-tables.md)。
 
 ### TiCDC
 
-[TiCDC](/ticdc/ticdc-overview.md) 是一款 TiDB 增量数据同步工具，通过拉取上游 TiKV 的数据变更日志，TiCDC 可以将数据解析为有序的行级变更数据输出到下游。更多关于 TiCDC 的概念和术语，参见 [TiCDC 术语表](/ticdc/ticdc-glossary.md)。
+[TiCDC](/ticdc/ticdc-overview.md) 是一款数据同步工具，支持将增量数据从 TiDB 复制到各种不同的下游目标系统。目前支持的下游包括 TiDB 实例、MySQL 兼容数据库、对象存储位置和流处理器（如 Kafka 和 Pulsar）。TiCDC 会拉取上游 TiKV 的数据变更日志，将其解析为有序的行级变更数据，然后输出到下游。更多关于 TiCDC 的概念和术语，参见 [TiCDC 术语表](/ticdc/ticdc-glossary.md)。
 
 ### TiDB Lightning
 
@@ -363,7 +369,7 @@ PD 中的 Store 指的是集群中的存储节点，也就是 tikv-server 实例
 
 ### TiFlash
 
-[TiFlash](/tiflash/tiflash-overview.md) 是 TiDB HTAP 形态的关键组件，它是 TiKV 的列存扩展，在提供良好隔离性的同时，也兼顾了强一致性。列存副本通过 Raft Learner 协议异步复制，但是在读取的时候通过 Raft 校对索引配合 MVCC 的方式获得 Snapshot Isolation 的一致性隔离级别。这个架构很好地解决了 HTAP 场景的隔离性以及列存同步的问题。
+[TiFlash](/tiflash/tiflash-overview.md) 是 TiDB HTAP 形态的关键组件，它是 TiKV 的列存扩展，在提供良好隔离性的同时，也兼顾了强一致性。列存副本通过 Raft Learner 协议异步复制 TiKV 的数据。在读取时，它通过 Raft 校对索引配合 MVCC（多版本并发控制） 的方式获得 Snapshot Isolation 的一致性隔离级别。这个架构很好地解决了 HTAP 场景的隔离性以及列存同步的问题，在进行高效分析查询的同时保持实时数据的一致性。
 
 ### Timestamp Oracle (TSO)
 
@@ -371,7 +377,7 @@ PD 中的 Store 指的是集群中的存储节点，也就是 tikv-server 实例
 
 ### TiUP
 
-[TiUP](/tiup/tiup-overview.md) 是 TiDB 于 v4.0 版本引入的包管理工具，用于 TiDB 集群的部署、升级、管理，管理着 TiDB 生态下众多的组件，如 TiDB、PD、TiKV 等。用户想要运行 TiDB 生态中任何组件时，只需要执行 TiUP 一行命令即可，相比以前，大大降低了管理难度。
+[TiUP](/tiup/tiup-overview.md) 是一款包管理工具，用于部署、升级和管理 TiDB 集群，以及管理 TiDB 集群中的各种组件，如 TiDB、PD、TiKV 等。通过使用 TiUP，你可以执行一行命令轻松运行 TiDB 中的任何组件，让管理过程更加简单。
 
 ### Top SQL
 
