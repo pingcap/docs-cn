@@ -53,7 +53,7 @@ ACID 是指数据库管理系统在写入或更新资料的过程中，为保证
 
 ### Cluster
 
-集群由一组协同工作以提供服务的节点组成。与单节点架构相比，TiDB 采用分布式集群架构，实现了更高的可用性和更强的可扩展性
+集群由一组协同工作以提供服务的节点组成。与单节点架构相比，TiDB 采用分布式集群架构，实现了更高的可用性和更强的可扩展性。
 
 在 TiDB 的分布式架构中：
 - TiDB 节点提供可扩展的 SQL 层以供客户端交互。
@@ -332,7 +332,7 @@ Scheduler（调度器）是 PD 中生成调度的组件。PD 中每个调度器�
 
 ### Security Enhanced Mode
 
- Security Enhanced Mode（安全增强模式）用于对 TiDB 管理员进行更细粒度的权限划分。受[安全增强式 Linux](https://en.wikipedia.org/wiki/Security-Enhanced_Linux) 等系统设计的启发，SEM 削减了拥有 `SUPER` 权限的用户的能力，转而使用 `RESTRICTED` 细粒度权限作为替代，这些权限必须被显式授予以控制特定的管理操作。
+ Security Enhanced Mode（安全增强模式）用于对 TiDB 管理员进行更细粒度的权限划分。受[安全增强式 Linux](https://zh.wikipedia.org/wiki/安全增强式Linux) 等系统设计的启发，SEM 削减了拥有 `SUPER` 权限的用户的能力，转而使用 `RESTRICTED` 细粒度权限作为替代，这些权限必须被显式授予以控制特定的管理操作。
 
 详情参见[系统变量文档 - `tidb_enable_enhanced_security`](/system-variables.md#tidb_enable_enhanced_security)。
 
@@ -360,7 +360,7 @@ PD 中的 Store 指的是集群中的存储节点，也就是 tikv-server 实例
 
 ### TiCDC
 
-[TiCDC](/ticdc/ticdc-overview.md) 是一款数据同步工具，支持将增量数据从 TiDB 复制到各种不同的下游目标系统。目前支持的下游包括 TiDB 实例、MySQL 兼容数据库、对象存储位置和流处理器（如 Kafka 和 Pulsar）。TiCDC 会拉取上游 TiKV 的数据变更日志，将其解析为有序的行级变更数据，然后输出到下游。更多关于 TiCDC 的概念和术语，参见 [TiCDC 术语表](/ticdc/ticdc-glossary.md)。
+[TiCDC](/ticdc/ticdc-overview.md) 是一款数据同步工具，支持将增量数据从 TiDB 复制到各种不同的下游目标系统。目前支持的下游包括 TiDB 实例、MySQL 兼容数据库、存储服务和流处理器（如 Kafka 和 Pulsar）。TiCDC 会拉取上游 TiKV 的数据变更日志，将其解析为有序的行级变更数据，然后输出到下游。更多关于 TiCDC 的概念和术语，参见 [TiCDC 术语表](/ticdc/ticdc-glossary.md)。
 
 ### TiDB Lightning
 
@@ -370,7 +370,7 @@ PD 中的 Store 指的是集群中的存储节点，也就是 tikv-server 实例
 
 ### TiFlash
 
-[TiFlash](/tiflash/tiflash-overview.md) 是 TiDB HTAP 形态的关键组件，它是 TiKV 的列存扩展，在提供良好隔离性的同时，也兼顾了强一致性。列存副本通过 Raft Learner 协议异步复制 TiKV 的数据。在读取时，它通过 Raft 校对索引配合 MVCC（多版本并发控制） 的方式获得 Snapshot Isolation 的一致性隔离级别。这个架构很好地解决了 HTAP 场景的隔离性以及列存同步的问题，在进行高效分析查询的同时保持实时数据的一致性。
+[TiFlash](/tiflash/tiflash-overview.md) 是 TiDB HTAP 形态的关键组件，它是 TiKV 的列存扩展，在提供良好隔离性的同时，也兼顾了强一致性。列存副本通过 Raft Learner 协议异步复制 TiKV 的数据。在读取时，它通过 Raft 校对索引配合 MVCC（多版本并发控制）的方式获得 Snapshot Isolation 的一致性隔离级别。这个架构很好地解决了 HTAP 场景的隔离性以及列存同步的问题，在进行高效分析查询的同时保持实时数据的一致性。
 
 ### Timestamp Oracle (TSO)
 
