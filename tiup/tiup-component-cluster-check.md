@@ -10,7 +10,7 @@ title: tiup cluster check
 
 ### 操作系统版本
 
-检查部署机操作系统发行版和版本。关于 TiDB 支持的操作系统版本列表，请参考[操作系统和平台要求](/hardware-and-software-requirements.md#操作系统和平台要求)。
+检查部署机操作系统发行版和版本。关于 TiDB 支持的操作系统版本列表，请参考[操作系统和平台要求](/hardware-and-software-requirements.md#操作系统及平台要求)。
 
 ### CPU EPOLLEXCLUSIVE
 
