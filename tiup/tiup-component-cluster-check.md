@@ -10,7 +10,7 @@ title: tiup cluster check
 
 ### 操作系统版本
 
-检查部署机操作系统发行版和版本：目前仅支持部署在 CentOS 7 的操作系统上，之后随兼容性改进可能支持更多系统版本。
+检查部署机操作系统发行版和版本。关于 TiDB 支持的操作系统版本列表，请参考[操作系统及平台要求](/hardware-and-software-requirements.md#操作系统及平台要求)。
 
 ### CPU EPOLLEXCLUSIVE
 
@@ -18,7 +18,7 @@ title: tiup cluster check
 
 ### numactl
 
-检查部署机是否安装 numactl，若用户配置绑核，则必须安装 numactl。
+检查部署机是否安装 `numactl`，若用户配置绑核，则必须安装 `numactl`。
 
 ### 系统时间
 
@@ -65,7 +65,7 @@ title: tiup cluster check
 
 ### SELinux
 
-检查 SELinux 是否启用：建议用户禁用 SELinux。
+检查 SELinux 是否启用。请务必禁用 SELinux。
 
 ### 防火墙
 
