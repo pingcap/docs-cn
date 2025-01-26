@@ -208,34 +208,90 @@ StmtPrepare 每秒执行次数远大于 StmtClose，说明应用程序存在 pre
 - 每秒总的 KV 请求数据是 35.5，Cop 请求次数是每秒 9.3。
 - KV 处理时间主要来源为 `Cop-internal_stats`，说明 Cop 请求来源于内部的 analyze 操作。
 
-#### TiDB CPU，以及 TiKV CPU 和 IO 使用情况
+#### CPU 和内存使用情况
 
-在 TiDB CPU 和 TiKV CPU/IO MBps 这两个面板中，你可以观察到 TiDB 和 TiKV 的逻辑 CPU 使用率和 IO 吞吐，包含平均、最大和 delta（最大 CPU 使用率减去最小 CPU 使用率），从而用来判定 TiDB 和 TiKV 总体的 CPU 使用率。
+在 TiDB、TiKV 和 PD 的 CPU/Memory 面板中，你可以监控它们各自的逻辑 CPU 使用率和内存消耗情况，例如平均 CPU 利用率、最大 CPU 利用率、CPU 利用率差值（最大 CPU 使用率减去最小 CPU 使用率）、CPU Quota（可以使用的 CPU 核数）以及最大内存使用率。基于这些指标，你可以确定 TiDB、TiKV 和 PD 的整体资源使用情况。
 
-- 通过 `delta` 值，你可以判断 TiDB 是否存在 CPU 使用负载不均衡（通常伴随着应用连接不均衡），TiKV 是否存在热点。
-- 通过 TiDB 和 TiKV 的资源使用概览，你可以快速判断集群是否存在资源瓶颈，最需要扩容的组件是 TiDB 还是 TiKV。
+- 根据 `delta` 值，你可以判断 TiDB 或 TiKV 的 CPU 使用是否存在不均衡的情况。对于 TiDB，较高的 `delta` 值通常意味着应用程序的连接在 TiDB 实例之间分布不均衡；对于 TiKV，较高的 `delta` 值通常意味着集群中存在读写热点。
+- 通过 TiDB、TiKV 和 PD 的资源使用概览，你可以快速判断集群是否存在资源瓶颈，以及是否需要对 TiKV、TiDB 或 PD 进行扩容或者硬件配置升级。
 
-**示例 1：TiDB 资源使用率高**
+**示例 1：TiKV 资源使用率高**
 
-下图负载中，每个 TiDB 和 TiKV 配置 8 CPU。
+在以下 TPC-C 负载中，每个 TiDB 和 TiKV 配置了 16 核 CPU，PD 配置了 4 核 CPU。
 
-![TPC-C](/media/performance/tidb_high_cpu.png)
+![TPC-C](/media/performance/tpcc_cpu_memory.png)
 
-- TiDB 平均 CPU 为 575%。最大 CPU 为 643%，delta CPU 为 136%。
-- TiKV 平均 CPU 为 146%，最大 CPU 215%。delta CPU 为 118%。TiKV 的平均 IO 吞吐为 9.06 MB/s，最大 IO 吞吐为 19.7 MB/s，delta IO 吞吐为 17.1 MB/s。
+- TiDB 的平均、最大和 delta CPU 使用率分别为 761%、934% 和 322%。最大内存使用率为 6.86 GiB。
+- TiKV 的平均、最大和 delta CPU 使用率分别为 1343%、1505% 和 283%。最大内存使用率为 27.1 GiB。
+- PD 的最大 CPU 使用率为 59.1%。最大内存使用率为 221 MiB。
 
-由此可以判断，TiDB 的 CPU 消耗明显更高，并接近于 8 CPU 的瓶颈，可以考虑扩容 TiDB。
+显然，TiKV 消耗了更多的 CPU，在 TPC-C 这样的写密集场景中，这是符合预期的。建议通过扩容 TiKV 来提升性能。
 
-**示例 2：TiKV 资源使用率高**
+#### 数据流量
 
-下图 TPC-C 负载中，每个 TiDB 和 TiKV 配置 16 CPU。
+Read traffic 和 Write traffic 面板可以帮助你深入分析 TiDB 集群内部的流量模式，全面监控从客户端到数据库以及内部组件之间的数据流情况。
 
-![TPC-C](/media/performance/tpcc_cpu_io.png)
+- Read traffic （读流量）
+    - `TiDB -> Client`：从 TiDB 到客户端的出站流量统计
+    - `Rocksdb -> TiKV`：TiKV 在存储层读操作期间从 RocksDB 读取的数据流量
 
-- TiDB 平均 CPU 为 883%。最大 CPU 为 962%，delta CPU 为 153%。
-- TiKV 平均 CPU 为 1288%，最大 CPU 1360%。delta CPU 为 126%。TiKV 的平均 IO 吞吐为 130 MB/s，最大 IO 吞吐为 153 MB/s，delta IO 吞吐为 53.7 MB/s。
+- Write traffic （写流量）
+    - `Client -> TiDB`：从客户端到 TiDB 的入站流量统计
+    - `TiDB -> TiKV: general`：前台事务从 TiDB 写入到 TiKV 的速率
+    - `TiDB -> TiKV: internal`：内部事务从 TiDB 写入到 TiKV 的速率
+    - `TiKV -> Rocksdb`：从 TiKV 到 RocksDB 的写操作流量
+    - `RocksDB Compaction`：RocksDB compaction 操作产生的总读写 I/O 流量。如果 `RocksDB Compaction` 明显高于 `TiKV -> Rocksdb`，且你的平均行大小高于 512 字节，则可以进行以下配置以减少 compaction I/O 流量：启用 Titan，将 `min-blob-size` 设置为 `"512B"` 或 `"1KB"`，将 `blob-file-compression` 设置为 `"zstd"`。
 
-由此可以判断，TiKV 的 CPU 消耗更高，因为 TPC-C 是一个写密集场景，这是正常现象，可以考虑扩容 TiKV 节点提升性能。
+        ```toml
+        [rocksdb.titan]
+        enabled = true
+        [rocksdb.defaultcf.titan]
+        min-blob-size = "1KB"
+        blob-file-compression = "zstd"
+        ```
+
+**示例 1：TPC-C 负载中的读写流量**
+
+以下是 TPC-C 负载中读写流量的示例。
+
+![TPC-C](/media/performance/tpcc_read_write_traffic.png)
+
+- 读流量
+    - `TiDB -> Client`：14.2 MB/s
+    - `Rocksdb -> TiKV`：469 MB/s。注意，在提交事务之前，读操作（`SELECT` 语句）和写操作（`INSERT`、`UPDATE` 和 `DELETE` 语句）都需要从 RocksDB 读取数据到 TiKV。
+
+- 写流量
+    - `Client -> TiDB`：5.05 MB/s
+    - `TiDB -> TiKV: general`：13.1 MB/s
+    - `TiDB -> TiKV: internal`：5.07 KB/s
+    - `TiKV -> Rocksdb`：109 MB/s
+    - `RocksDB Compaction`：567 MB/s
+
+![TPC-C](/media/performance/tpcc_read_write_traffic.png)
+
+**示例 2：启用 Titan 前后的写流量**
+
+以下示例展示了启用 Titan 前后的性能变化。对于 6 KiB 数据量的插入负载，Titan 显著降低了写流量和 compaction I/O，提高了 TiKV 的整体性能和资源利用率。
+
+- 启用 Titan 前的写流量
+
+    - `Client -> TiDB`：510 MB/s
+    - `TiDB -> TiKV: general`：187 MB/s
+    - `TiDB -> TiKV: internal`：3.2 KB/s
+    - `TiKV -> Rocksdb`：753 MB/s
+    - `RocksDB Compaction`：10.6 GB/s
+
+    ![Titan 禁用](/media/performance/titan_disable.png)
+
+- 启用 Titan 后的写流量
+
+    - `Client -> TiDB`：586 MB/s
+    - `TiDB -> TiKV: general`：295 MB/s
+    - `TiDB -> TiKV: internal`：3.66 KB/s
+    - `TiKV -> Rocksdb`：1.21 GB/s
+    - `RocksDB Compaction`：4.68 MB/s
+
+    ![Titan 启用](/media/performance/titan_enable.png)
 
 ### Query 延迟分解和关键的延迟指标
 
