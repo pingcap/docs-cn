@@ -561,6 +561,29 @@ I/O rate limiter 相关的配置项。
 + 可选值：`"read-only"`，`"write-only"`，`"all-io"`
 + 默认值：`"write-only"`
 
+## `storage.max-ts`
+
+### `max-drift`
+
++ 读写请求更新 max-ts 时允许超过 TiKV 缓存的 PD TSO 的最大值。
++ 如果尝试更新的 max-ts 超过 TiKV 缓存的 PD TSO + `max-drift`，认为该请求的来源不合法，会执行 [`action-on-invalid-update`](#action-on-invalid-update) 规定的行为。如果 TiKV 的缓存 PD TSO 没有及时更新，会使用近似方法判断，此时被判定为非法的情况不会导致 panic。
++ 默认值：60s
++ 建议设置为[`cache-sync-interval`](#cache-sync-interval)的 3 倍以上。
+
+### `cache-sync-interval`
+
++ TiKV 更新 PD TSO 缓存的时间间隔。该缓存用于检查 max-ts 更新的合法性。
++ 默认值：15s
+
+### `action-on-invalid-update`
+
++ 当 TiKV 认为更新的 max-ts 不合法时，TiKV 会执行的操作。非法的 `max-ts` 可能导致 TiDB 集群线性一致性和事务并发控制语义被破坏。
++ 可选值：
+    + `"panic"`：TiKV 会 panic。
+    + `"error"`：TiKV 会将错误返回。
+    + `"log"`：TiKV 会打印 error 日志并继续执行。
++ 默认值：`"panic"`
+
 ## pd
 
 ### `enable-forwarding` <span class="version-mark">从 v5.0.0 版本开始引入</span>
