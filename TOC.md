@@ -257,7 +257,10 @@
     - [基于主备集群的容灾](/dr-secondary-cluster.md)
     - [基于多副本的单集群容灾](/dr-multi-replica.md)
     - [基于备份与恢复的容灾](/dr-backup-restore.md)
-  - [使用资源管控 (Resource Control) 实现资源隔离](/tidb-resource-control.md)
+  - 资源管控
+    - [使用资源管控 (Resource Control) 实现资源组限制和流控](/tidb-resource-control-ru-groups.md)
+    - [管理资源消耗超出预期的查询 (Runaway Queries)](/tidb-resource-control-runaway-queries.md)
+    - [限制后台任务资源使用](/tidb-resource-control-background-tasks.md)
   - [修改时区](/configure-time-zone.md)
   - [日常巡检](/daily-check.md)
   - [TiFlash 常用运维操作](/tiflash/maintain-tiflash.md)

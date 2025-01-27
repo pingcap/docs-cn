@@ -5,7 +5,7 @@ summary: 了解 information_schema 表 `RESOURCE_GROUPS`。
 
 # RESOURCE_GROUPS
 
-`RESOURCE_GROUPS` 表展示所有资源组 (resource group) 的信息，见[使用资源管控 (Resource Control) 实现资源隔离](/tidb-resource-control.md)。
+`RESOURCE_GROUPS` 表展示所有资源组 (resource group) 的信息，见[使用资源管控 (Resource Control) 实现资源组限制和流控](/tidb-resource-control-ru-groups.md)。
 
 ```sql
 USE information_schema;
@@ -75,7 +75,7 @@ SELECT * FROM information_schema.resource_groups WHERE NAME = 'rg1'; -- 查看�
 `RESOURCE_GROUPS` 表中列的含义如下：
 
 * `NAME`：资源组名称。
-* `RU_PER_SEC`：资源组的回填速度，单位为每秒回填的 [Request Unit (RU)](/tidb-resource-control.md#什么是-request-unit-ru) 数量。
+* `RU_PER_SEC`：资源组的回填速度，单位为每秒回填的 [Request Unit (RU)](/tidb-resource-control-ru-groups.md#什么是-request-unit-ru) 数量。
 * `PRIORITY`：任务在 TiKV 上处理的绝对优先级。不同的资源按照 `PRIORITY` 的设置进行调度，`PRIORITY` 高的任务会被优先调度。如果资源组的 `PRIORITY` 相同，则会根据 `RU_PER_SEC` 的配置按比例调度。如果不指定 `PRIORITY`，资源组的默认优先级为 `MEDIUM`。
 * `BURSTABLE`：是否允许此资源组超额使用剩余的系统资源。
 
