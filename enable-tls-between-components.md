@@ -109,11 +109,23 @@ aliases: ['/docs-cn/dev/enable-tls-between-components/','/docs-cn/dev/how-to/sec
         cdc server --pd=https://127.0.0.1:2379 --log-file=ticdc.log --addr=0.0.0.0:8301 --advertise-addr=127.0.0.1:8301 --ca=/path/to/ca.pem --cert=/path/to/ticdc-cert.pem --key=/path/to/ticdc-key.pem
         ```
 
+    - TiProxy
+
+        在 `config` 文件中设置，并设置相应的 URL 为 https：
+
+        ```toml
+        [security]
+            [server-http-tls]
+            ca = "/path/to/ca.pem"
+            cert = "/path/to/tiproxy-server.pem"
+            key = "/path/to/tiproxy-server-key.pem"
+        ```
+
     此时 TiDB 集群各个组件间已开启加密传输。
 
     > **注意：**
     >
-    > 若 TiDB 集群各个组件间开启加密传输后，在使用 tidb-ctl、tikv-ctl 或 pd-ctl 工具连接集群时，需要指定 client 证书，示例：
+    > 若 TiDB 集群各个组件间开启加密传输后，在使用 tidb-ctl、tikv-ctl、pd-ctl 或 tiproxyctl 工具连接集群时，需要指定 client 证书，示例：
 
     {{< copyable "shell-regular" >}}
 
@@ -150,7 +162,7 @@ aliases: ['/docs-cn/dev/enable-tls-between-components/','/docs-cn/dev/how-to/sec
 
     ```toml
     [security]
-    cluster-verify-cn = ["tidb", "test-client", "prometheus"]
+    cluster-verify-cn = ["tidb", "tiproxy", "test-client", "prometheus"]
     ```
 
 - TiKV
@@ -168,7 +180,7 @@ aliases: ['/docs-cn/dev/enable-tls-between-components/','/docs-cn/dev/how-to/sec
 
     ```toml
     [security]
-    cert-allowed-cn = ["tidb", "pd", "tikv", "tiflash", "test-client", "prometheus"]
+    cert-allowed-cn = ["tidb", "pd", "tikv", "tiflash", "tiproxy", "test-client", "prometheus"]
     ```
 
 - TiFlash（从 v4.0.5 版本开始引入）
@@ -187,10 +199,19 @@ aliases: ['/docs-cn/dev/enable-tls-between-components/','/docs-cn/dev/how-to/sec
     cert-allowed-cn = ["tidb", "tikv", "tiflash", "prometheus"]
     ```
 
+- TiProxy（从 v1.4.0 版本开始引入）
+
+    在 `config` 文件中设置：
+
+    ```toml
+    [security]
+    cert-allowed-cn = ["tiproxy", "tidb", "test-client", "prometheus"]
+    ```
+
 ## 证书重新加载
 
-- 如果 TiDB 集群部署在本地的数据中心，TiDB、PD、TiKV、TiFlash、TiCDC 和各种 client 在每次新建相互通讯的连接时都会重新读取当前的证书和密钥文件内容，实现证书和密钥的重新加载，无需重启 TiDB 集群。
-- 如果 TiDB 集群部署在自己管理的 Cloud，TLS 证书的签发需要与云服务商的证书管理服务集成，TiDB、PD、TiKV、TiFlash、TiCDC 组件的 TLS 证书支持自动轮换，无需重启 TiDB 集群。
+- 如果 TiDB 集群部署在本地的数据中心，TiDB、PD、TiKV、TiFlash、TiCDC、TiProxy 和各种 client 在每次新建相互通讯的连接时都会重新读取当前的证书和密钥文件内容，实现证书和密钥的重新加载，无需重启 TiDB 集群。
+- 如果 TiDB 集群部署在自己管理的 Cloud，TLS 证书的签发需要与云服务商的证书管理服务集成，TiDB、PD、TiKV、TiFlash、TiCDC、TiProxy 组件的 TLS 证书支持自动轮换，无需重启 TiDB 集群。
 
 ## 证书有效期
 
