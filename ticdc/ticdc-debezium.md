@@ -403,7 +403,7 @@ Key 中的字段仅包含数据库名称。字段解释如下：
 | `payload.source.table`     | 字符串  |  事件发生的数据表的名称。   |
 | `payload.tableChanges` | 数组 | 在 schema 变更后的整个表 schema 的结构化表示。`tableChanges` 字段包含一个数组，其中包括表中每一列的条目。由于结构化表示以 JSON 或 Avro 格式呈现数据，因此消费者可以在不通过 DDL 解析器处理的情况下轻松读取消息。 |
 | `payload.tableChanges.type`     | 字符串   | 描述变更的类型。值为以下之一：`CREATE`，表示表已创建；`ALTER`，表示表已修改；`DROP`，表示表已删除。 |
-| `payload.tableChanges.id`     | 字符串   | 被创建、修改或删除的表的完整标识符。如果是表重命名，则该标识符是 <code><old></code> 和 <code><new></code> 表名的拼接。 |
+| `payload.tableChanges.id`     | 字符串   | 被创建、修改或删除的表的完整标识符。如果是表重命名，则该标识符是 `<old>` 和 `<new>` 表名的拼接。 |
 | `payload.tableChanges.table.defaultCharsetName` | 字符串   | 事件发生的表的字符集。 |
 | `payload.tableChanges.table.primaryKeyColumnNames` | 字符串   | 组成表主键的列的名称列表。 |
 | `payload.tableChanges.table.columns` | 数组   | 变更的表中每一列的元数据。 |
