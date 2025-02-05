@@ -563,17 +563,9 @@ I/O rate limiter 相关的配置项。
 
 ## `storage.max-ts`
 
-### `max-drift` <span class="version-mark">从 v9.0.0 版本开始引入</span>
+`max-ts` 相关的配置项。
 
-+ 读写请求更新 max-ts 时允许超过 TiKV 缓存的 PD TSO 的最大值。
-+ 如果尝试更新的 max-ts 超过 TiKV 缓存的 PD TSO + `max-drift`，认为该请求的来源不合法，会执行 [`action-on-invalid-update`](#action-on-invalid-update) 规定的行为。如果 TiKV 的缓存 PD TSO 没有及时更新，会使用近似方法判断，此时被判定为非法的情况不会导致 panic。
-+ 默认值：60s
-+ 建议设置为[`cache-sync-interval`](#cache-sync-interval)的 3 倍以上。
-
-### `cache-sync-interval` <span class="version-mark">从 v9.0.0 版本开始引入</span>
-
-+ TiKV 更新 PD TSO 缓存的时间间隔。该缓存用于检查 max-ts 更新的合法性。
-+ 默认值：15s
+`max-ts` 是 TiKV 用于保证异步提交 （Async Commit) 和一阶段提交 (1PC) 事务的线性一致性和事务并发控制语义的重要参数。`max-ts` 是当前 TiKV 节点遇见过的最大读时间戳。
 
 ### `action-on-invalid-update` <span class="version-mark">从 v9.0.0 版本开始引入</span>
 
@@ -583,6 +575,18 @@ I/O rate limiter 相关的配置项。
     + `"error"`：TiKV 会将错误返回。
     + `"log"`：TiKV 会打印 error 日志并继续执行。
 + 默认值：`"panic"`
+
+### `cache-sync-interval` <span class="version-mark">从 v9.0.0 版本开始引入</span>
+
++ TiKV 更新 PD TSO 缓存的时间间隔。该缓存用于检查 max-ts 更新的合法性。
++ 默认值：15s
+
+### `max-drift` <span class="version-mark">从 v9.0.0 版本开始引入</span>
+
++ 读写请求更新 max-ts 时允许超过 TiKV 缓存的 PD TSO 的最大值。
++ 如果尝试更新的 max-ts 超过 TiKV 缓存的 PD TSO + `max-drift`，认为该请求的来源不合法，会执行 [`action-on-invalid-update`](#action-on-invalid-update) 规定的行为。如果 TiKV 的缓存 PD TSO 没有及时更新，会使用近似方法判断，此时被判定为非法的情况不会导致 panic。
++ 默认值：60s
++ 建议设置为[`cache-sync-interval`](#cache-sync-interval)的 3 倍以上。
 
 ## pd
 
