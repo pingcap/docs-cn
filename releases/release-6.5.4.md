@@ -16,6 +16,10 @@ TiDB 版本：6.5.4
 - 为了修复当使用 `Cursor Fetch` 获取大结果集时 TiDB 占用大量内存的问题，TiDB 会自动将结果集写入磁盘以释放内存资源 [#43233](https://github.com/pingcap/tidb/issues/43233) @[YangKeao](https://github.com/YangKeao)
 - 默认关闭 RocksDB 的周期性 compaction，使 TiKV RocksDB 的默认行为和 v6.5.0 之前的版本保持一致，避免在升级之后集中产生大量 compaction 影响系统的性能。同时，TiKV 新增 [`rocksdb.[defaultcf|writecf|lockcf].periodic-compaction-seconds`](https://docs.pingcap.com/zh/tidb/v6.5/tikv-configuration-file#periodic-compaction-seconds-从-v654-版本开始引入) 和 [`rocksdb.[defaultcf|writecf|lockcf].ttl`](https://docs.pingcap.com/zh/tidb/v6.5/tikv-configuration-file#ttl-从-v654-版本开始引入) 配置项，支持手动配置 RocksDB 的周期性 compaction [#15355](https://github.com/tikv/tikv/issues/15355) @[LykxSassinator](https://github.com/LykxSassinator)
 
+### 行为变更
+
+- 对于包含多条变更的事务，如果 Update 事件的主键或者非空唯一索引的列值发生改变，TiCDC 会将该其拆分为 Delete 和 Insert 两条事件，并确保将所有事件有序，以保证 Delete 事件在 Insert 事件之前。更多信息，请参考[用户文档](/ticdc/ticdc-split-update-behavior.md#含有多条-update-变更的事务拆分)。
+
 ## 改进提升
 
 + TiDB
@@ -36,7 +40,7 @@ TiDB 版本：6.5.4
 
     - 未开启 Swagger server 时，PD 默认屏蔽 Swagger API [#6786](https://github.com/tikv/pd/issues/6786) @[bufferflies](https://github.com/bufferflies)
     - 提升 etcd 的高可用性 [#6554](https://github.com/tikv/pd/issues/6554) [#6442](https://github.com/tikv/pd/issues/6442) @[lhy1024](https://github.com/lhy1024)
-    - 减少 `GetRegions` 请求的内存占用 [#6855](https://github.com/tikv/pd/issues/6835) @[lhy1024](https://github.com/lhy1024)
+    - 减少 `GetRegions` 请求的内存占用 [#6835](https://github.com/tikv/pd/issues/6835) @[lhy1024](https://github.com/lhy1024)
     - 支持重复使用 HTTP 连接 [#6913](https://github.com/tikv/pd/issues/6913) @[nolouch](https://github.com/nolouch)
 
 + TiFlash
@@ -108,7 +112,7 @@ TiDB 版本：6.5.4
     - 修复 kill 连接之后可能会出现 go coroutine 泄露的问题 [#46034](https://github.com/pingcap/tidb/issues/46034) @[pingyu](https://github.com/pingyu)
     - 修复 `tmp-storage-quota` 配置无法生效的问题 [#45161](https://github.com/pingcap/tidb/issues/45161) [#26806](https://github.com/pingcap/tidb/issues/26806) @[wshwsh12](https://github.com/wshwsh12)
     - 修复集群中有 TiFlash 节点宕机时，TiFlash 副本可能不可用的问题 [#38484](https://github.com/pingcap/tidb/issues/38484) @[hehechen](https://github.com/hehechen)
-    - 修复并发读写 `Config.Lables` 时可能出现数据竞争导致 TiDB crash 的问题 [#45561](https://github.com/pingcap/tidb/issues/45561) @[genliqi](https://github.com/gengliqi)
+    - 修复并发读写 `Config.Labels` 时可能出现数据竞争导致 TiDB crash 的问题 [#45561](https://github.com/pingcap/tidb/issues/45561) @[genliqi](https://github.com/gengliqi)
     - 修复在集群规模大时 client-go 周期性更新 `min-resolved-ts` 可能造成 PD OOM 的问题 [#46664](https://github.com/pingcap/tidb/issues/46664) @[HuSharp](https://github.com/HuSharp)
 
 + TiKV
@@ -128,7 +132,7 @@ TiDB 版本：6.5.4
 
     - 修复当 etcd 已经启动，但 client 尚未连接上 etcd 时，调用 client 会导致 PD panic 的问题 [#6860](https://github.com/tikv/pd/issues/6860) @[HuSharp](https://github.com/HuSharp)
     - 修复 leader 长时间无法退出的问题 [#6918](https://github.com/tikv/pd/issues/6918) @[bufferflies](https://github.com/bufferflies)
-    - 修复 Placement Rule 在使用 `LOCATION_LABLES` 时，SQL 和 Rule Checker 不兼容的问题 [#38605](https://github.com/pingcap/tidb/issues/38605) @[nolouch](https://github.com/nolouch)
+    - 修复 Placement Rule 在使用 `LOCATION_LABELS` 时，SQL 和 Rule Checker 不兼容的问题 [#38605](https://github.com/pingcap/tidb/issues/38605) @[nolouch](https://github.com/nolouch)
     - 修复 PD 可能会非预期地向 Region 添加多个 Learner 的问题 [#5786](https://github.com/tikv/pd/issues/5786) @[HunDunDM](https://github.com/HunDunDM)
     - 修复在 rule checker 选定 peer 时，unhealthy peer 无法被移除的问题 [#6559](https://github.com/tikv/pd/issues/6559) @[nolouch](https://github.com/nolouch)
     - 修复 `unsafe recovery` 中失败的 learner peer 在 `auto-detect` 模式中被忽略的问题 [#6690](https://github.com/tikv/pd/issues/6690) @[v01dstar](https://github.com/v01dstar)
@@ -162,7 +166,7 @@ TiDB 版本：6.5.4
         - 修复下游发生短时间故障导致同步任务卡住的问题 [#9542](https://github.com/pingcap/tiflow/issues/9542) [#9272](https://github.com/pingcap/tiflow/issues/9272)[#9582](https://github.com/pingcap/tiflow/issues/9582) [#9592](https://github.com/pingcap/tiflow/issues/9592) @[hicqu](https://github.com/hicqu)
         - 修复在 TiCDC 节点状态发生改变时可能引发的 panic 问题 [#9354](https://github.com/pingcap/tiflow/issues/9354) @[sdojjy](https://github.com/sdojjy)
         - 修复当 Kafka Sink 遇到错误时可能会无限阻塞同步任务推进的问题 [#9309](https://github.com/pingcap/tiflow/issues/9309) @[hicqu](https://github.com/hicqu)
-        - 修复当下游为 Kafka 时，TiCDC 查询下游的元信息频率过高导致下游负载过大的问题 [#8957](https://github.com/pingcap/tiflow/issues/8957) [#8959](https://github.com/pingcap/tiflow/issues/8959) @[hi-rustin](https://github.com/hi-rustin)
+        - 修复当下游为 Kafka 时，TiCDC 查询下游的元信息频率过高导致下游负载过大的问题 [#8957](https://github.com/pingcap/tiflow/issues/8957) [#8959](https://github.com/pingcap/tiflow/issues/8959) @[hi-rustin](https://github.com/Rustin170506)
         - 修复 TiCDC 部分节点发生网络隔离时可能引发的数据不一致问题 [#9344](https://github.com/pingcap/tiflow/issues/9344) @[CharlesCheung96](https://github.com/CharlesCheung96)
         - 修复在打开 redo log 且下游出现异常时可能会导致同步任务卡住的问题 [#9172](https://github.com/pingcap/tiflow/issues/9172) @[CharlesCheung96](https://github.com/CharlesCheung96)
         - 修复由于 PD 短暂不可用而导致同步任务报错的问题 [#9294](https://github.com/pingcap/tiflow/issues/9294) @[asddongmen](https://github.com/asddongmen)

@@ -1,5 +1,6 @@
 ---
 title: tiup dm replay
+summary: tiup dm replay 命令用于重试集群操作中失败的命令，并跳过已成功的步骤。使用命令时需指定要重试的命令对应的 audit-id，可通过 tiup dm audit 查看历史命令及其 audit-id。命令输出为对应命令的输出。
 ---
 
 # tiup dm replay
@@ -23,5 +24,3 @@ tiup dm replay <audit-id> [flags]
 ## 输出
 
 `<audit-id>` 对应的命令的输出。
-
-[<< 返回上一页 - TiUP DM 命令清单](/tiup/tiup-component-dm.md#命令清单)

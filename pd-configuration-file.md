@@ -1,6 +1,7 @@
 ---
 title: PD 配置文件描述
 aliases: ['/docs-cn/dev/pd-configuration-file/','/docs-cn/dev/reference/configuration/pd-server/configuration-file/']
+summary: PD 配置文件包含了许多参数，如节点名称、数据路径、客户端 URL、广告客户端 URL、节点 URL 等。还包括了一些实验性特性的配置项，如内存限制、GC 触发阈值、GOGC Tuner 等。此外，还有监控、调度、副本、标签、Dashboard、同步模式和资源控制等相关配置项。
 ---
 
 # PD 配置文件描述
@@ -192,8 +193,9 @@ pd-server 相关配置项。
 ### `redact-info-log` <span class="version-mark">从 v5.0 版本开始引入</span>
 
 + 控制 PD 日志脱敏的开关
-+ 该配置项值设为 true 时将对 PD 日志脱敏，遮蔽日志中的用户信息。
-+ 默认值：false
++ 可选值：`false`、`true`、`"marker"`
++ 默认值：`false`
++ 具体使用方法参见[日志脱敏](/log-redaction.md#pd-组件日志脱敏)。
 
 ## log
 
@@ -252,21 +254,37 @@ pd-server 相关配置项。
 
 调度相关的配置项。
 
+> **注意：**
+> 
+> 要修改与调度相关的 PD 配置项，请根据集群的情况选择以下方法之一：
+>
+> - 对于新部署集群，你可以直接在 PD 配置文件中进行修改。
+> - 对于已有集群，请使用命令行工具 [PD Control](/pd-control.md) 进行修改。直接修改 PD 配置文件中与调度相关的配置项不会对已有集群生效。
+
 ### `max-merge-region-size`
 
 + 控制 Region Merge 的 size 上限，当 Region Size 大于指定值时 PD 不会将其与相邻的 Region 合并。
-+ 默认：20
++ 默认：54。在 v8.4.0 之前，默认值为 20；从 v8.4.0 开始，默认值为 54。
 + 单位：MiB
 
 ### `max-merge-region-keys`
 
 + 控制 Region Merge 的 key 上限，当 Region key 大于指定值时 PD 不会将其与相邻的 Region 合并。
-+ 默认：200000
++ 默认：540000。在 v8.4.0 之前，默认值为 200000；从 v8.4.0 开始，默认值为 540000。
 
 ### `patrol-region-interval`
 
-+ 控制 replicaChecker 检查 Region 健康状态的运行频率，越短则运行越快，通常状况不需要调整
++ 控制 checker 检查 Region 健康状态的运行频率，越短则运行越快，通常状况不需要调整
 + 默认：10ms
+
+### `patrol-region-worker-count` <span class="version-mark">从 v8.5.0 版本开始引入</span>
+
+> **警告：**
+>
+> 将该配置项设置为大于 1 将启用并发检查。目前该功能为实验特性，不建议在生产环境中使用。该功能可能会在未事先通知的情况下发生变化或删除。如果发现 bug，请在 GitHub 上提 [issue](https://github.com/tikv/pd/issues)反馈。
+
++ 控制 checker 检查 Region 健康状态时，创建 [operator](/glossary.md#operator) 的并发数。通常情况下，无需调整此配置项。
++ 默认：1
 
 ### `split-merge-interval`
 
@@ -416,26 +434,26 @@ pd-server 相关配置项。
 
 ### `store-limit-version` <span class="version-mark">从 v7.1.0 版本开始引入</span>
 
-> **警告：**
->
-> 在当前版本中，将该配置项设置为 `"v2"` 为实验特性，不建议在生产环境中使用。
-
 + 设置 `store limit` 工作模式
 + 默认值：v1
 + 可选值：
     + v1：在 v1 模式下，你可以手动修改 `store limit` 以限制单个 TiKV 调度速度。
-    + v2：（实验特性）在 v2 模式下，你无需关注 `store limit` 值，PD 将根据 TiKV Snapshot 执行情况动态调整 TiKV 调度速度。详情请参考 [Store Limit v2 原理](/configure-store-limit.md#store-limit-v2-原理)。
+    + v2：在 v2 模式下，你无需关注 `store limit` 值，PD 将根据 TiKV Snapshot 执行情况动态调整 TiKV 调度速度。详情请参考 [Store Limit v2 原理](/configure-store-limit.md#store-limit-v2-原理)。
 
-## label-property
+## label-property（已废弃）
 
-标签相关的配置项。
+标签相关的配置项，只支持 `reject-leader` 类型。
 
-### `key`
+> **注意：**
+>
+> 标签相关的配置项已从 v5.2 开始废弃，建议使用 [Placement Rules](/configure-placement-rules.md#场景二5-副本按-2-2-1-的比例放置在-3-个数据中心且第-3-个中心不产生-leader) 设置副本策略。
+
+### `key`（已废弃）
 
 + 拒绝 leader 的 store 带有的 label key。
 + 默认值：""
 
-### `value`
+### `value`（已废弃）
 
 + 拒绝 leader 的 store 带有的 label value。
 + 默认值：""
@@ -467,15 +485,18 @@ PD 中内置的 [TiDB Dashboard](/dashboard/dashboard-intro.md) 相关配置项�
 
 ### `enable-telemetry`
 
-+ 是否启用 TiDB Dashboard 遥测功能。
+> **警告：**
+>
+> 从 TiDB v8.1.0 开始，TiDB Dashboard 已移除遥测功能，该配置项已不再生效。保留该配置项仅用于与之前版本兼容。
+
++ 在 v8.1.0 之前，用于控制是否启用 TiDB Dashboard 遥测功能。
 + 默认值：false
-+ 参阅[遥测](/telemetry.md)了解该功能详情。
 
 ## `replication-mode`
 
 Region 同步模式相关的配置项。更多详情，请参阅[启用自适应同步模式](/two-data-centers-in-one-city-deployment.md#启用自适应同步模式)。
 
-## Controllor
+## controller
 
 PD 中内置的 [Resource Control](/tidb-resource-control.md) 相关的配置项。
 

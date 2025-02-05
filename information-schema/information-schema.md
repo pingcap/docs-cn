@@ -1,13 +1,14 @@
 ---
 title: Information Schema
 aliases: ['/docs-cn/dev/reference/system-databases/information-schema/','/docs-cn/dev/reference/system-databases/information-schema/','/docs-cn/dev/system-tables/system-table-information-schema/','/zh/tidb/dev/system-table-information-schema/']
+summary: Information Schema 是一种查看系统元数据的 ANSI 标准方法。TiDB 提供了许多自定义的 `INFORMATION_SCHEMA` 表，包括与 MySQL 兼容的表和 TiDB 中的扩展表。这些表提供了关于字符集、排序规则、列、存储引擎、索引、表大小、慢查询等信息，帮助用户进行系统监控和优化。
 ---
 
 # Information Schema
 
 Information Schema 提供了一种查看系统元数据的 ANSI 标准方法。除了包含与 MySQL 兼容的表外，TiDB 还提供了许多自定义的 `INFORMATION_SCHEMA` 表。
 
-许多 `INFORMATION_SCHEMA` 表都有相应的 `SHOW` 命令。查询 `INFORMATION_SCHEMA` 的好处是可以在表之间进行 `join` 操作。
+许多 `INFORMATION_SCHEMA` 表都可以通过相应的 `SHOW` 语句查看。查询 `INFORMATION_SCHEMA` 的好处是可以在表之间进行 `join` 操作。
 
 ## 与 MySQL 兼容的表
 
@@ -70,6 +71,7 @@ Information Schema 提供了一种查看系统元数据的 ANSI 标准方法。�
 | `CLUSTER_SLOW_QUERY`                                                                    | 提供 `SLOW_QUERY` 表的集群级别的视图。                         |
 | `CLUSTER_STATEMENTS_SUMMARY`                                                            | 提供 `STATEMENTS_SUMMARY` 表的集群级别的视图。                 |
 | `CLUSTER_STATEMENTS_SUMMARY_HISTORY`                                                    | 提供 `STATEMENTS_SUMMARY_HISTORY` 表的集群级别的视图。         |
+| `CLUSTER_TIDB_INDEX_USAGE`                                                              | 提供 `TIDB_INDEX_USAGE` 表的集群级别的视图。                           |
 | `CLUSTER_TIDB_TRX`                                                                      | 提供 `TIDB_TRX` 表的集群级别的视图。                           |
 | [`CLUSTER_SYSTEMINFO`](/information-schema/information-schema-cluster-systeminfo.md)    | 提供集群中服务器的内核参数配置的详细信息。                     |
 | [`DATA_LOCK_WAITS`](/information-schema/information-schema-data-lock-waits.md)          | 提供 TiKV 服务器上的等锁信息。                                 |
@@ -92,6 +94,7 @@ Information Schema 提供了一种查看系统元数据的 ANSI 标准方法。�
 | [`TIDB_HOT_REGIONS`](/information-schema/information-schema-tidb-hot-regions.md)        | 提供有关哪些 Region 访问次数最多的统计信息。                   |
 | [`TIDB_HOT_REGIONS_HISTORY`](/information-schema/information-schema-tidb-hot-regions-history.md)| 提供有关哪些 Region 访问次数最多的历史统计信息。                   |
 | [`TIDB_INDEXES`](/information-schema/information-schema-tidb-indexes.md)                | 提供有关 TiDB 表的索引信息。                                   |
+| [`TIDB_INDEX_USAGE`](/information-schema/information-schema-tidb-index-usage.md)        | 提供 TiDB 节点上有关访问索引的统计信息。 ｜
 | [`TIDB_SERVERS_INFO`](/information-schema/information-schema-tidb-servers-info.md)      | 提供 TiDB 服务器的列表                                         |
 | [`TIDB_TRX`](/information-schema/information-schema-tidb-trx.md)                        | 提供 TiDB 节点上正在执行的事务的信息。                         |
 | [`TIFLASH_REPLICA`](/information-schema/information-schema-tiflash-replica.md)          | 提供有关 TiFlash 副本的详细信息。                              |

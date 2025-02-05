@@ -5,7 +5,7 @@ summary: 了解 INFORMATION_SCHEMA 表 `KEYWORDS`。
 
 # KEYWORDS
 
-TiDB 从 v7.6.0 开始提供 `KEYWORDS` 表，你可以使用该表查看 TiDB 中[关键字](/keywords.md)的信息。
+TiDB 从 v7.5.3 和 v7.6.0 开始提供 `KEYWORDS` 表，你可以使用该表查看 TiDB 中[关键字](/keywords.md)的信息。
 
 ```sql
 USE INFORMATION_SCHEMA;

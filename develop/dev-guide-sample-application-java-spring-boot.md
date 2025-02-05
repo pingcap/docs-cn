@@ -16,7 +16,7 @@ TiDB 是一个兼容 MySQL 的数据库。[Spring](https://spring.io/) 是当前
 
 > **注意**
 >
-> 本文档适用于 TiDB Serverless、TiDB Dedicated 和本地部署的 TiDB。
+> 本文档适用于 TiDB Cloud Serverless、TiDB Cloud Dedicated 和本地部署的 TiDB。
 
 ## 前置需求
 
@@ -24,7 +24,7 @@ TiDB 是一个兼容 MySQL 的数据库。[Spring](https://spring.io/) 是当前
 - [Maven](https://maven.apache.org/install.html) **3.8** 及以上版本。
 - [Git](https://git-scm.com/downloads)。
 - TiDB 集群。如果你还没有 TiDB 集群，可以按照以下方式创建：
-    - （推荐方式）参考[创建 TiDB Serverless 集群](/develop/dev-guide-build-cluster-in-cloud.md#第-1-步创建-tidb-serverless-集群)，创建你自己的 TiDB Cloud 集群。
+    - （推荐方式）参考[创建 TiDB Cloud Serverless 集群](/develop/dev-guide-build-cluster-in-cloud.md#第-1-步创建-tidb-cloud-serverless-集群)，创建你自己的 TiDB Cloud 集群。
     - 参考[部署本地测试 TiDB 集群](/quick-start-with-tidb.md#部署本地测试集群)或[部署正式 TiDB 集群](/production-deployment-using-tiup.md)，创建本地集群。
 
 ## 运行代码并连接到 TiDB
@@ -46,15 +46,15 @@ cd tidb-java-springboot-jpa-quickstart
 
 <SimpleTab>
 
-<div label="TiDB Serverless">
+<div label="TiDB Cloud Serverless">
 
-1. 在 TiDB Cloud 的 [**Clusters**](https://tidbcloud.com/console/clusters) 页面中，选择你的 TiDB Serverless 集群，进入集群的 **Overview** 页面。
+1. 在 TiDB Cloud 的 [**Clusters**](https://tidbcloud.com/console/clusters) 页面中，选择你的 TiDB Cloud Serverless 集群，进入集群的 **Overview** 页面。
 
 2. 点击右上角的 **Connect** 按钮，将会弹出连接对话框。
 
 3. 确认对话框中的配置和你的运行环境一致。
 
-    - **Endpoint Type** 为 `Public`。
+    - **Connection Type** 为 `Public`。
     - **Branch** 选择 `main`。
     - **Connect With** 选择 `General`。
     - **Operating System** 为你的运行环境。
@@ -78,7 +78,7 @@ cd tidb-java-springboot-jpa-quickstart
 6. 复制并粘贴对应连接字符串至 `env.sh` 中。需更改部分示例结果如下：
 
     ```shell
-    export TIDB_HOST='{host}'  # e.g. gateway01.ap-northeast-1.prod.aws.tidbcloud.com
+    export TIDB_HOST='{host}'  # e.g. xxxxxx.aws.tidbcloud.com
     export TIDB_PORT='4000'
     export TIDB_USER='{user}'  # e.g. xxxxxx.root
     export TIDB_PASSWORD='{password}'
@@ -88,21 +88,23 @@ cd tidb-java-springboot-jpa-quickstart
 
     注意替换 `{}` 中的占位符为连接对话框中获得的值。
 
-    TiDB Serverless 要求使用 TLS (SSL) connection，因此 `USE_SSL` 的值应为 `true`。
+    TiDB Cloud Serverless 要求使用 TLS (SSL) connection，因此 `USE_SSL` 的值应为 `true`。
 
 7. 保存 `env.sh` 文件。
 
 </div>
 
-<div label="TiDB Dedicated">
+<div label="TiDB Cloud Dedicated">
 
-1. 在 TiDB Cloud 的 [**Clusters**](https://tidbcloud.com/console/clusters) 页面中，选择你的 TiDB Dedicated 集群，进入集群的 **Overview** 页面。
+1. 在 TiDB Cloud 的 [**Clusters**](https://tidbcloud.com/console/clusters) 页面中，选择你的 TiDB Cloud Dedicated 集群，进入集群的 **Overview** 页面。
 
 2. 点击右上角的 **Connect** 按钮，将会出现连接对话框。
 
-3. 在对话框中点击 **Allow Access from Anywhere**。
+3. 在连接对话框中，从 **Connection Type** 下拉列表中选择 **Public**，并点击 **CA cert** 下载 CA 文件。
 
-    更多配置细节，可参考 [TiDB Dedicated 标准连接教程（英文）](https://docs.pingcap.com/tidbcloud/connect-via-standard-connection)。
+    如果你尚未配置 IP 访问列表，请在首次连接前点击 **Configure IP Access List** 或按照[配置 IP 访问列表（英文）](https://docs.pingcap.com/tidbcloud/configure-ip-access-list)中的步骤进行配置。
+
+    除 **Public** 连接类型外，TiDB Cloud Dedicated 还支持 **Private Endpoint** 和 **VPC Peering** 连接类型。详情请参阅[连接 TiDB Cloud Dedicated 集群（英文）](https://docs.pingcap.com/tidbcloud/connect-to-tidb-cluster)。
 
 4. 运行以下命令，将 `env.sh.example` 复制并重命名为 `env.sh`：
 
@@ -113,9 +115,9 @@ cd tidb-java-springboot-jpa-quickstart
 5. 复制并粘贴对应的连接字符串至 `env.sh` 中。需更改部分示例结果如下：
 
     ```shell
-    export TIDB_HOST='{host}'  # e.g. tidb.xxxx.clusters.tidb-cloud.com
+    export TIDB_HOST='{host}'  # e.g. xxxxxx.aws.tidbcloud.com
     export TIDB_PORT='4000'
-    export TIDB_USER='{user}'  # e.g. root
+    export TIDB_USER='{user}'  # e.g. xxxxxx.root
     export TIDB_PASSWORD='{password}'
     export TIDB_DB_NAME='test'
     export USE_SSL='false'
@@ -138,9 +140,9 @@ cd tidb-java-springboot-jpa-quickstart
 2. 复制并粘贴对应 TiDB 的连接字符串至 `env.sh` 中。需更改部分示例结果如下：
 
     ```shell
-    export TIDB_HOST='{host}'
+    export TIDB_HOST='{host}'  # e.g. xxxxxx.aws.tidbcloud.com
     export TIDB_PORT='4000'
-    export TIDB_USER='root'
+    export TIDB_USER='root'  # e.g. xxxxxx.root
     export TIDB_PASSWORD='{password}'
     export TIDB_DB_NAME='test'
     export USE_SSL='false'
@@ -200,9 +202,18 @@ spring:
 - `TIDB_USER`: `"root"`
 - `TIDB_PASSWORD`: `""`
 
-### 数据管理：`@Repository`
+### 数据管理
 
-Spring Data JPA 通过 `@Repository` 接口来管理数据。你需要继承 `JpaRepository` 接口，以使用其提供的增删改查函数。
+Spring Data JPA 通过 `@Entity` 注册数据实体，并绑定数据库的表。
+
+```java
+@Entity
+@Table(name = "player_jpa")
+public class PlayerBean {
+}
+```
+
+`PlayerRepository` 通过继承 `JpaRepository` 接口，由 `JpaRepositoryFactoryBean` 为其自动注册对应的 Repository Bean。同时，`JpaRepository` 接口的默认实现类 `SimpleJpaRepository` 提供了增删改查函数的具体实现。
 
 ```java
 @Repository

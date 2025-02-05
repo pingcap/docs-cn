@@ -179,15 +179,15 @@ TiDB 版本：7.4.0
     - `lightning`：使用 [TiDB Lightning](/tidb-lightning/tidb-lightning-overview.md) 或 [`IMPORT INTO`](/sql-statements/sql-statement-import-into.md) 执行导入任务。
     - `br`：使用 [BR](/br/backup-and-restore-overview.md) 执行数据备份和恢复。目前不支持 PITR。
     - `ddl`：对于 Reorg DDL，控制批量数据回写阶段的资源使用。
-    - `stats`：对应手动执行或系统自动触发的[收集统计信息](/statistics.md#统计信息的收集)任务。
+    - `stats`：对应手动执行或系统自动触发的[收集统计信息](/statistics.md#收集统计信息)任务。
 
   默认情况下，被标记为后台任务的任务类型为空，此时后台任务的管理功能处于关闭状态，其行为与 TiDB v7.4.0 之前版本保持一致。你需要手动修改 `default` 资源组的后台任务类型以开启后台任务管理。
 
     更多信息，请参考[用户文档](/tidb-resource-control.md#管理后台任务)。
 
-* 增强锁定统计信息的能力 [#46351](https://github.com/pingcap/tidb/issues/46351) @[hi-rustin](https://github.com/hi-rustin)
+* 锁定统计信息成为正式功能 (GA) [#46351](https://github.com/pingcap/tidb/issues/46351) @[hi-rustin](https://github.com/Rustin170506)
 
-    在 v7.4.0 中，TiDB 增强了[锁定统计信息](/statistics.md#锁定统计信息)的能力。现在，锁定和解锁统计信息需要与收集统计信息 (`ANALYZE TABLE`) 相同的权限，以确保操作的安全性。此外，还新增了对特定分区的统计信息进行锁定和解锁操作的支持，提高了功能灵活性。当用户对数据库中的查询和执行计划有把握，并且不希望发生变化时，可以使用锁定统计信息来提升统计信息的稳定性。
+    在 v7.4.0 中，TiDB [锁定统计信息](/statistics.md#锁定统计信息)成为正式功能 (GA)。现在，锁定和解锁统计信息需要与收集统计信息 (`ANALYZE TABLE`) 相同的权限，以确保操作的安全性。此外，还新增了对特定分区的统计信息进行锁定和解锁操作的支持，提高了功能灵活性。当用户对数据库中的查询和执行计划有把握，并且不希望发生变化时，可以使用锁定统计信息来提升统计信息的稳定性。
 
     更多信息，请参考[用户文档](/statistics.md#锁定统计信息)。
 
@@ -198,6 +198,14 @@ TiDB 版本：7.4.0
     从 v7.4.0 开始，TiDB 引入系统变量 [`tidb_opt_enable_hash_join`](/system-variables.md#tidb_opt_enable_hash_join-从-v656v712-和-v740-版本开始引入) 对表的哈希连接进行控制。默认开启 (`ON`)。如果你非常确定执行计划中不需要选择表之间的哈希连接，则可以修改变量为 `OFF`，降低执行计划回退的可能性，提升系统稳定性。
 
     更多信息，请参考[用户文档](/system-variables.md#tidb_opt_enable_hash_join-从-v656v712-和-v740-版本开始引入)。
+
+* 控制统计信息缓存成为正式功能 (GA) [#45367](https://github.com/pingcap/tidb/issues/45367) @[hawkingrei](https://github.com/hawkingrei)
+
+    TiDB 实例可以缓存表的统计信息，以加速执行计划的生成，提升 SQL 执行性能。从 v6.1.0 开始，引入了系统变量 [`tidb_stats_cache_mem_quota`](/system-variables.md#tidb_stats_cache_mem_quota-从-v610-版本开始引入)，你可以通过设置该变量，控制统计信息缓存占用的内存上限。当统计信息缓存达到限额时，TiDB 会自动驱逐不活跃的缓存，从而控制实例的内存使用，提升稳定性。
+
+    从 v7.4.0 开始，该功能成为正式功能 (GA)。
+
+    更多信息，请参考[用户文档](/system-variables.md#tidb_stats_cache_mem_quota-从-v610-版本开始引入)。
 
 ### SQL 功能
 
@@ -285,6 +293,7 @@ TiDB 版本：7.4.0
 - 新增函数 [`TIDB_PARSE_TSO_LOGICAL()`](/functions-and-operators/tidb-functions.md#tidb-特有的函数)，用于从 TiDB TSO 时间戳中提取逻辑时间戳。
 
 - 新增表 [`information_schema.CHECK_CONSTRAINTS`](/information-schema/information-schema-check-constraints.md)，提高与 MySQL 8.0 的兼容性。
+- 对于包含多条变更的事务，如果 Update 事件的主键或者非空唯一索引的列值发生改变，TiCDC 会将该其拆分为 Delete 和 Insert 两条事件，并确保将所有事件有序，以保证 Delete 事件在 Insert 事件之前。更多信息，请参考[用户文档](/ticdc/ticdc-split-update-behavior.md#含有多条-update-变更的事务拆分)。
 
 ### 系统变量
 
@@ -319,10 +328,11 @@ TiDB 版本：7.4.0
 | TiCDC | [`large-message-handle-compression`](/ticdc/ticdc-sink-to-kafka.md#ticdc-层数据压缩功能) | 新增 | 控制是否开启编码时的压缩功能，默认为空，即不开启。|
 | TiCDC | [`large-message-handle-option`](/ticdc/ticdc-sink-to-kafka.md#发送大消息到外部存储) | 修改 | 该配置项新增一个可选值 `claim-check`。当设置为 `claim-check` 时，TiCDC Kafka sink 支持在消息大小超过限制时将该条消息发送到外部存储服务，同时向 Kafka 发送一条含有该大消息在外部存储服务中的地址的消息。 |
 
-## 废弃功能
+## 废弃和删除的功能
 
 + [Mydumper](https://docs.pingcap.com/zh/tidb/v4.0/mydumper-overview) 计划在 v7.5.0 中废弃，其绝大部分功能已经被 [Dumpling](/dumpling-overview.md) 取代，强烈建议切换到 Dumpling。
 + TiKV-importer 组件计划在 v7.5.0 中废弃，建议使用 [TiDB Lightning 物理导入模式](/tidb-lightning/tidb-lightning-physical-import-mode.md)作为替代方案。
++ TiCDC 移除 `enable-old-value` 参数 [#9667](https://github.com/pingcap/tiflow/issues/9667) @[3AceShowHand](https://github.com/3AceShowHand)
 
 ## 改进提升
 
@@ -447,7 +457,7 @@ TiDB 版本：7.4.0
         - 修复备份失败时 BR 误报 `resolve lock timeout` 掩盖了实际错误的问题 [#43236](https://github.com/pingcap/tidb/issues/43236) @[YuJuncen](https://github.com/YuJuncen)
         - 修复 PITR 恢复隐式主键可能冲突的问题 [#46520](https://github.com/pingcap/tidb/issues/46520) @[3pointer](https://github.com/3pointer)
         - 修复 PITR 恢复数据元信息 (meta-kv) 出错的问题 [#46578](https://github.com/pingcap/tidb/issues/46578) @[Leavrth](https://github.com/Leavrth)
-        - 修复 BR 集成测试用例出错的问题 [#45561](https://github.com/pingcap/tidb/issues/46561) @[purelind](https://github.com/purelind)
+        - 修复 BR 集成测试用例出错的问题 [#46561](https://github.com/pingcap/tidb/issues/46561) @[purelind](https://github.com/purelind)
 
     + TiCDC
 
@@ -494,4 +504,4 @@ TiDB 版本：7.4.0
 - [shawn0915](https://github.com/shawn0915)
 - [tedyu](https://github.com/tedyu)
 - [yumchina](https://github.com/yumchina)
-- [ZhuohaoHe](https://github.com/ZhuohaoHe)
+- [ZzzhHe](https://github.com/ZzzhHe)

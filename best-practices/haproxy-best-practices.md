@@ -1,6 +1,7 @@
 ---
 title: HAProxy 在 TiDB 中的最佳实践
 aliases: ['/docs-cn/dev/best-practices/haproxy-best-practices/','/docs-cn/dev/reference/best-practices/haproxy/']
+summary: HAProxy 是 TiDB 中实现负载均衡的最佳实践。它提供 TCP 协议下的负载均衡能力，通过连接 HAProxy 提供的浮动 IP 对数据进行操作，实现 TiDB Server 层的负载均衡。HAProxy 提供高可用性、负载均衡、健康检查、会话保持、SSL 支持和监控统计等核心功能。部署 HAProxy 需要满足一定的硬件和软件要求，配置和启动 HAProxy 后即可实现数据库负载均衡。
 ---
 
 # HAProxy 在 TiDB 中的最佳实践
@@ -34,12 +35,12 @@ HAProxy 由 Linux 内核的核心贡献者 Willy Tarreau 于 2000 年编写，�
 
 ### 硬件要求
 
-根据官方文档，对 HAProxy 的服务器硬件配置有以下建议，也可以根据负载均衡环境进行推算，在此基础上提高服务器配置。
+根据[HAProxy 官方文档](https://www.haproxy.com/documentation/haproxy-enterprise/getting-started/installation/linux/)，HAProxy 的服务器硬件的最低配置如下。在 Sysbench `oltp_read_write` 工作负载下，该配置的最高 QPS 约为 50K。你可以根据负载均衡环境进行推算，在此基础上提高服务器配置。
 
 |硬件资源|最低配置|
 |:---|:---|
 |CPU|2 核，3.5 GHz|
-|内存|16 GB|
+|内存|4 GB|
 |存储容量|50 GB（SATA 盘）|
 |网卡|万兆网卡|
 

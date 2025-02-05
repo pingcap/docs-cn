@@ -1,6 +1,7 @@
 ---
 title: TiDB 工具下载
 aliases: ['/docs-cn/dev/download-ecosystem-tools/','/docs-cn/dev/reference/tools/download/']
+summary: 本文介绍如何下载 TiDB 工具包。TiDB 工具包包含常用工具如 Dumpling、TiDB Lightning、BR 等。如果部署环境能访问互联网，可直接通过 TiUP 命令一键部署所需的 TiDB 工具。操作系统需为 Linux，架构为 amd64 或 arm64。下载步骤包括访问 TiDB 社区版页面，找到 TiDB-community-toolkit 软件包并点击立即下载。注意，点击立即下载后默认下载当前 TiDB 的最新发布版本。根据要使用的工具选择安装对应的离线包。
 ---
 
 # TiDB 工具下载
@@ -42,7 +43,6 @@ TiDB 工具包中包含了一些常用的 TiDB 工具，例如数据导出工具
 | [TiDB Lightning](/tidb-lightning/tidb-lightning-overview.md)  | `tidb-lightning-ctl` <br/>`tidb-lightning-{version}-linux-{arch}.tar.gz`  |
 | [TiDB DM (Data Migration)](/dm/dm-overview.md)  | `dm-worker-{version}-linux-{arch}.tar.gz` <br/>`dm-master-{version}-linux-{arch}.tar.gz` <br/>`dmctl-{version}-linux-{arch}.tar.gz`  |
 | [TiCDC](/ticdc/ticdc-overview.md)  | `cdc-{version}-linux-{arch}.tar.gz`  |
-| [TiDB Binlog](/tidb-binlog/tidb-binlog-overview.md)  | `pump-{version}-linux-{arch}.tar.gz` <br/>`drainer-{version}-linux-{arch}.tar.gz` <br/>`binlogctl` <br/>`reparo`  |
 | [Backup & Restore (BR)](/br/backup-and-restore-overview.md)  | `br-{version}-linux-{arch}.tar.gz`  |
 | [sync-diff-inspector](/sync-diff-inspector/sync-diff-inspector-overview.md)  | `sync_diff_inspector`  |
 | [PD Recover](/pd-recover.md)  | `pd-recover-{version}-linux-{arch}.tar.gz` |

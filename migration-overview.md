@@ -48,6 +48,12 @@ summary: 了解各种数据迁移场景和对应的数据迁移方案。
 
 - [从大数据量分库分表 MySQL 合并迁移数据到 TiDB](/migrate-large-mysql-shards-to-tidb.md)
 
+### 将数据从 Vitess 迁移到 TiDB
+
+将数据从 Vitess 迁移到 TiDB，可参考以下文档：
+
+- [从 Vitess 迁移数据到 TiDB](/migrate-from-vitess.md)
+
 ## 从文件迁移数据到 TiDB
 
 - [从 CSV 文件迁移数据到 TiDB](/migrate-from-csv-files-to-tidb.md)

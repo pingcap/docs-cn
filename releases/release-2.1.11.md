@@ -1,6 +1,7 @@
 ---
 title: TiDB 2.1.11 Release Notes
 aliases: ['/docs-cn/dev/releases/release-2.1.11/','/docs-cn/dev/releases/2.1.11/']
+summary: TiDB 2.1.11 发布，修复多表 join 删除错误 schema 问题，更新统计信息合并反馈信息，修复函数返回错误字段类型问题，修复时间计算错误问题，修复与 MySQL 8.0 不兼容问题，支持 SHOW OPEN TABLES 语句，修复 goroutine 泄露问题，修复设置 tidb_snapshot 变量时间格式解析出错问题。PD 修复热点 Region 调度问题，新增热点调度优先级配置项。TiKV 修复 leader, learner 读到空 index 问题，处理锁命令放在高优先级线程池中。TiDB Binlog 新增 GC 删数据限速功能。TiDB Ansible 新增 Drainer 参数。
 ---
 
 # TiDB 2.1.11 Release Notes

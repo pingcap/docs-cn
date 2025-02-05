@@ -1,5 +1,6 @@
 ---
 title: tiup update
+summary: tiup update 命令用于升级已安装的组件或自身。语法为 tiup update [组件名] [版本]，可指定多个组件或版本。选项包括 --all（升级所有组件）、--force（强制升级已安装版本）、--nightly（升级到 nightly 版本）、--self（升级 TiUP 自身）。
 ---
 
 # tiup update
@@ -48,5 +49,3 @@ tiup update [component1][:version] [component2..N] [flags]
 
 - 升级成功：`Updated successfully!`
 - 目标版本不存在：`Error: version %s not supported by component %s`
-
-[<< 返回上一页 - TiUP 命令清单](/tiup/tiup-reference.md#命令清单)

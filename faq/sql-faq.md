@@ -33,7 +33,9 @@ TiDB 包含一个基于成本的优化器。在大多数情况下，优化器会
 
 ## 如何阻止特定的 SQL 语句执行（或者将某个 SQL 语句加入黑名单）？
 
-你可以使用 [`MAX_EXECUTION_TIME`](/optimizer-hints.md#max_execution_timen) Hint 来创建 [SQL 绑定](/sql-plan-management.md#执行计划绑定-sql-binding)，将特定语句的执行时间限制为一个较小的值（例如 1ms）。这样，语句就会在超过限制时自动终止。
+对于 v7.5.0 及以上版本，你可以使用 [`QUERY WATCH`](/sql-statements/sql-statement-query-watch.md) 语句将特定的 SQL 查询加入黑名单。具体使用方法参见[管理资源消耗超出预期的查询 (Runaway Queries)](/tidb-resource-control.md#query-watch-语句说明)。
+
+对于 v7.5.0 之前版本，你可以使用 [`MAX_EXECUTION_TIME`](/optimizer-hints.md#max_execution_timen) Hint 来创建 [SQL 绑定](/sql-plan-management.md#执行计划绑定-sql-binding)，将特定语句的执行时间限制为一个较小的值（例如 1ms）。这样，语句就会在超过限制时自动终止。
 
 例如，要阻止执行 `SELECT * FROM t1, t2 WHERE t1.id = t2.id`，可以使用以下 SQL 绑定将语句的执行时间限制为 1ms：
 
@@ -133,7 +135,7 @@ MySQL 中，返回结果的顺序可能较为固定，因为查询是通过单�
 
 ## TiDB 的 codec 能保证 UTF8 的字符串是 memcomparable 的吗？我们的 key 需要支持 UTF8，有什么编码建议吗？
 
-TiDB 字符集默认就是 UTF8 而且目前只支持 UTF8，字符串就是 memcomparable 格式的。
+TiDB 的默认字符集是 `utf8mb4`，字符串是 memcomparable 格式。关于字符集的更多信息，参见[字符集和排序规则](/character-set-and-collation.md)。
 
 ## 一个事务中的语句数量最大是多少？
 
@@ -152,7 +154,7 @@ TiDB 支持在会话或全局作用域上修改 [`sql_mode`](/system-variables.m
 - 对全局作用域变量的修改，设置后将作用于集群中的其它服务器，并且重启后更改依然有效。因此，你无需在每台 TiDB 服务器上都更改 `sql_mode` 的值。
 - 对会话作用域变量的修改，设置后只影响当前会话，重启后更改消失。
 
-## 用 Sqoop 批量写入 TiDB 数据，虽然配置了 `--batch` 选项，但还是会遇到 `java.sql.BatchUpdateExecption:statement count 5001 exceeds the transaction limitation` 的错误，该如何解决？
+## 用 Sqoop 批量写入 TiDB 数据，虽然配置了 `--batch` 选项，但还是会遇到 `java.sql.BatchUpdateException:statement count 5001 exceeds the transaction limitation` 的错误，该如何解决？
 
 问题原因：在 Sqoop 中，`--batch` 是指每个批次提交 100 条 statement，但是默认每个 statement 包含 100 条 SQL 语句，所以此时 100 * 100 = 10000 条 SQL 语句，超出了 TiDB 的事务限制 5000 条。
 
@@ -205,6 +207,10 @@ TiDB 支持改变[全局](/system-variables.md#tidb_force_priority)或单个语�
 - `LOW_PRIORITY`：该语句为低优先级语句，TiDB 在执行阶段会降低这条语句的优先级
 - `DELAYED`：该语句为正常优先级语句，TiDB 不强制改变这条语句的优先级，与 `tidb_force_priority` 设置为 `NO_PRIORITY` 相同
 
+> **注意：**
+>
+> TiDB 从 v6.6.0 版本开始支持[使用资源管控 (Resource Control) 实现资源隔离](/tidb-resource-control.md)功能。该功能可以将不同优先级的语句放在不同的资源组中执行，并为这些资源组分配不同的配额和优先级，可以达到更好的资源管控效果。在开启资源管控功能后，语句的调度主要受资源组的控制，`PRIORITY` 将不再生效。建议在支持资源管控的版本优先使用资源管控功能。
+
 以上两种参数可以结合 TiDB 的 DML 语言进行使用，使用方法举例如下：
 
 1. 通过在数据库中写 SQL 的方式来调整优先级：
@@ -219,13 +225,13 @@ TiDB 支持改变[全局](/system-variables.md#tidb_force_priority)或单个语�
 
 2. 全表扫会自动调整为低优先级，[`ANALYZE`](/sql-statements/sql-statement-analyze-table.md) 也是默认低优先级。
 
-## 在 TiDB 中 auto analyze 的触发策略是怎样的？
+## 在 TiDB 中 `auto analyze` 的触发策略是怎样的？
 
-触发策略：如果一张新表达到 1000 条记录，并且在 1 分钟内没有写入，会自动触发。
+当一张表或分区表的单个分区达到 1000 条记录，且表或分区的（修改数/当前总行数）比例大于 [`tidb_auto_analyze_ratio`](/system-variables.md#tidb_auto_analyze_ratio) 的时候，会自动触发 [`ANALYZE`](/sql-statements/sql-statement-analyze-table.md) 语句。
 
-当表的（修改数/当前总行数）比例大于 `tidb_auto_analyze_ratio` 的时候，会自动触发 `analyze` 语句。`tidb_auto_analyze_ratio` 的默认值为 0.5，即默认开启触发 auto analyze。为了保险起见，在开启 auto analyze 的时候，`tidb_auto_analyze_ratio` 的最小值为 0.3。但是该变量值不能大于等于 `pseudo-estimate-ratio`（默认值为 0.8），否则会有一段时间使用 pseudo 统计信息，建议设置值为 0.5。
+`tidb_auto_analyze_ratio` 的默认值为 `0.5`，即默认开启触发 `auto analyze`。注意该变量值不建议大于等于 [`pseudo-estimate-ratio`](/tidb-configuration-file.md#pseudo-estimate-ratio)（默认值为 `0.8`），否则优化器可能会使用 pseudo 统计信息。TiDB 从 v5.3.0 开始引入 [`tidb_enable_pseudo_for_outdated_stats`](/system-variables.md#tidb_enable_pseudo_for_outdated_stats-从-v530-版本开始引入) 变量，当设置为 `OFF` 时，即使统计信息过期也不会使用 pseudo 统计信息。
 
-你可以用系统变量 [`tidb_enable_auto_analyze`](/system-variables.md#tidb_enable_auto_analyze-从-v610-版本开始引入) 关闭 auto analyze。
+你可以用系统变量 [`tidb_enable_auto_analyze`](/system-variables.md#tidb_enable_auto_analyze-从-v610-版本开始引入) 关闭 `auto analyze`。
 
 ## 可以使用 Optimizer Hints 控制优化器行为吗？
 
@@ -282,7 +288,7 @@ TiDB 在执行 SQL 语句时，会根据隔离级别确定一个对象的 `schem
 
 ### 触发 Information schema is out of date 错误的原因？
 
-在 v6.5.0 之前，当执行 DML 时，TiDB 超过一个 DDL lease 时间（默认 45s）没能加载到最新的 schema 就可能会报 `Information schema is out of date` 的错误。遇到此错的可能原因如下：
+当执行 DML 时，TiDB 超过一个 DDL lease 时间（默认 45s）没能加载到最新的 schema 就可能会报 `Information schema is out of date` 的错误。遇到此错的可能原因如下：
 
 - 执行此 DML 的 TiDB 被 kill 后准备退出，且此 DML 对应的事务执行时间超过一个 DDL lease，在事务提交时会报这个错误。
 - TiDB 在执行此 DML 时，有一段时间内连不上 PD 或者 TiKV，导致 TiDB 超过一个 DDL lease 时间没有 load schema，或者导致 TiDB 断开与 PD 之间带 keep alive 设置的连接。
@@ -327,7 +333,7 @@ TiDB 在执行 SQL 语句时，会根据隔离级别确定一个对象的 `schem
 
 ### 统计信息收集
 
-详细解读[统计信息](/statistics.md)。
+详细解读[常规统计信息](/statistics.md)。
 
 ### Count 如何加速？
 

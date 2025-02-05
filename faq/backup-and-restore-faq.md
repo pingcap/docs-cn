@@ -110,12 +110,12 @@ Error: failed to check gc safePoint, checkpoint ts 433177834291200000: GC safepo
 
 ## 功能兼容性问题
 
-### 为什么 BR 恢复的数据无法同步到 TiCDC / Drainer 的上游集群？
+### 为什么 BR 恢复的数据无法同步到 TiCDC 的上游集群？
 
 - **BR 恢复的数据无法被同步到下游**，因为恢复时 BR 直接导入 SST 文件，而下游集群目前没有办法获得上游的 SST 文件。
-- 在 4.0.3 版本之前，恢复时产生的 DDL jobs 还可能会让 TiCDC / Drainer 执行异常的 DDL。所以，如果一定要在 TiCDC / Drainer 的上游集群执行恢复，请将 BR 恢复的所有表加入 TiCDC / Drainer 的阻止名单。
+- 在 4.0.3 版本之前，恢复时产生的 DDL jobs 还可能会让 TiCDC 执行异常的 DDL。所以，如果一定要在 TiCDC 的上游集群执行恢复，请将 BR 恢复的所有表加入 TiCDC 的阻止名单。
 
-TiCDC 可以通过配置项中的 [`filter.rules`](https://github.com/pingcap/tiflow/blob/7c3c2336f98153326912f3cf6ea2fbb7bcc4a20c/cmd/changefeed.toml#L16) 项完成，Drainer 则可以通过 [`syncer.ignore-table`](/tidb-binlog/tidb-binlog-configuration-file.md#ignore-table) 完成。
+TiCDC 可以通过配置项中的 [`filter.rules`](https://github.com/pingcap/tiflow/blob/7c3c2336f98153326912f3cf6ea2fbb7bcc4a20c/cmd/changefeed.toml#L16) 项完成。
 
 ### 恢复时为什么会报 `new_collation_enabled` 不匹配？
 
@@ -144,13 +144,13 @@ BR 在 v6.0.0 之前不支持[放置规则](/placement-rules-in-sql.md)，在 v6
 
 该问题一般是因为恢复数据的时候，恢复集群的性能不足导致的。可以从恢复集群的监控或者 TiKV 日志来辅助确认。
 
-要解决这类问题，可以尝试扩大集群资源，以及调小恢复时的并发度 (concurrency)，打开限速 (ratelimit) 设置。
+要解决这类问题，可以尝试扩大集群资源，以及调小恢复时的并发度 (`tikv-max-restore-concurrency`)，打开限速 (`ratelimit`) 设置。
 
 ### 恢复备份数据时，BR 会报错 `entry too large, the max entry size is 6291456, the size of data is 7690800`
 
 你可以尝试降低并发批量建表的大小，将 `--ddl-batch-size` 设置为 `128` 或者更小的值。
 
-在 [`--ddl-batch-size`](/br/br-batch-create-table.md#使用方法) 的值大于 `1` 的情况下，使用 BR 恢复数据时，TiDB 会把执行创建表任务的 DDL job 队列写到 TiKV 上。由于 TiDB 能够一次性发送的 job message 的最大值默认为 `6 MB`（**不建议**修改此值，具体内容，参考 [txn-entry-size-limit](/tidb-configuration-file.md#txn-entry-size-limit-从-v50-版本开始引入) 和 [raft-entry-max-size](/tikv-configuration-file.md#raft-entry-max-size)），TiDB 单次发送的所有表的 schema 大小总和也不应该超过 6 MB。因此，如果你设置的 `--ddl-batch-size` 的值过大，TiDB 单次发送的批量表的 schema 大小就会超出规定值，从而导致 BR 报 `entry too large, the max entry size is 6291456, the size of data is 7690800` 错误。
+在 [`--ddl-batch-size`](/br/br-batch-create-table.md#使用方法) 的值大于 `1` 的情况下，使用 BR 恢复数据时，TiDB 会把执行创建表任务的 DDL job 队列写到 TiKV 上。由于 TiDB 能够一次性发送的 job message 的最大值默认为 `6 MB`（**不建议**修改此值，具体内容，参考 [txn-entry-size-limit](/tidb-configuration-file.md#txn-entry-size-limit-从-v4010-和-v500-版本开始引入) 和 [raft-entry-max-size](/tikv-configuration-file.md#raft-entry-max-size)），TiDB 单次发送的所有表的 schema 大小总和也不应该超过 6 MB。因此，如果你设置的 `--ddl-batch-size` 的值过大，TiDB 单次发送的批量表的 schema 大小就会超出规定值，从而导致 BR 报 `entry too large, the max entry size is 6291456, the size of data is 7690800` 错误。
 
 ### 使用 local storage 的时候，备份的文件会存在哪里？
 
@@ -279,7 +279,7 @@ br restore full -f 'mysql.usertable' -s $external_storage_url --with-sys-table
 
 - 统计信息表（`mysql.stat_*`）(但可以恢复统计信息，详细参考[备份统计信息](/br/br-snapshot-manual.md#备份统计信息))
 - 系统变量表（`mysql.tidb`、`mysql.global_variables`）
-- [其他系统表](https://github.com/pingcap/tidb/blob/master/br/pkg/restore/systable_restore.go#L31)
+- [其他系统表](https://github.com/pingcap/tidb/blob/master/br/pkg/restore/snap_client/systable_restore.go#L31)
 
 ### 恢复的时候，报错 `cannot file rewrite rule`，该如何处理？
 
@@ -324,3 +324,9 @@ BR v4.0.9 备份统计信息使 br 工具消耗过多内存，为保证备份过
 ### 恢复完成后，可以再针对某张表删除后重新恢复吗？
 
 删除某张特定的表后可以再重新进行恢复，但删除时需要使用 `DROP TABLE` 或 `TRUNCATE TABLE` 语句，不能使用 `DELETE FROM` 语句。因为 `DELETE FROM` 只是通过更新 MVCC 版本标记要删除的数据，这些数据直到 GC 后才会被真正删除。
+
+### 恢复统计信息时为什么会占用大量内存？
+
+在 v7.6.0 之前，BR 备份的统计信息数据会与库表信息存放到一起，在恢复的时候加载到内存中。因此，当备份的统计信息数据非常大时，BR 就需要占用大量的内存。
+
+从 v7.6.0 开始，备份的统计信息会单独存放在特定的文件中，当需要恢复某张表的统计信息时，才会加载对应表的统计信息到内存中来，从而可以节省内存空间。

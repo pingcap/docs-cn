@@ -17,7 +17,7 @@ TiDB 备份恢复功能可以用于满足以下业务的需求：
 
 ## 使用须知
 
-本部分介绍使用 TiDB 备份恢复功能前的注意事项，包括使用限制和使用建议。
+本部分介绍使用 TiDB 备份恢复功能前的注意事项，包括使用限制和使用建议。有关 BR 工具与其他功能或版本间的兼容性，请参考[兼容性](#兼容性)。
 
 ### 使用限制
 
@@ -25,6 +25,7 @@ TiDB 备份恢复功能可以用于满足以下业务的需求：
 - PITR 仅支持集群粒度的恢复，不支持对单个 database 或 table 的恢复。
 - PITR 不支持恢复系统表中用户表和权限表的数据。
 - 不支持在一个集群上**同时**运行多个数据备份任务。
+- 不建议备份正在恢复的表，这样备份的数据可能存在异常。
 - PITR 数据恢复任务运行期间，不支持同时运行日志备份任务，也不支持通过 TiCDC 同步数据到下游集群。
 
 ### 使用建议
@@ -93,7 +94,7 @@ TiDB 备份恢复功能可以用于满足以下业务的需求：
 
 #### 恢复的性能
 
-- 恢复集群快照数据备份，速度可以达到单 TiKV 存储节点 100 MiB/s，恢复速度具有可扩展性；BR 只支持恢复数据到新集群，会尽可能多的使用恢复集群的资源。更详细说明请参考[恢复性能和影响](/br/br-snapshot-guide.md#快照恢复的性能与影响)。
+- 恢复集群快照数据备份，速度可以达到单 TiKV 存储节点 1 GiB/s，恢复速度具有可扩展性。更详细说明请参考[恢复性能和影响](/br/br-snapshot-guide.md#快照恢复的性能与影响)。
 - 恢复日志备份数据，速度可以达到 30 GiB/h。更详细说明请参考 [PITR 的性能指标](/br/br-pitr-guide.md#pitr-的性能指标)。
 
 ## 备份存储
@@ -118,6 +119,8 @@ TiDB 支持将数据备份到 Amazon S3、Google Cloud Storage (GCS)、Azure Blo
 | New collation  | [#352](https://github.com/pingcap/br/issues/352)       | 确保恢复时集群的 `mysql.tidb` 表中 `new_collation_enabled` 变量值和备份时的一致，否则会导致数据索引不一致和 checksum 通不过。更多信息，请参考 [FAQ - BR 为什么会报 `new_collations_enabled_on_first_bootstrap` 不匹配？](/faq/backup-and-restore-faq.md#恢复时为什么会报-new_collation_enabled-不匹配)。 |
 | 全局临时表 | | 确保使用 BR v5.3.0 及以上版本进行备份和恢复，否则会导致全局临时表的表定义错误。 |
 | TiDB Lightning 物理导入模式| |上游数据库使用 TiDB Lightning 物理导入模式导入的数据，无法作为数据日志备份下来。推荐在数据导入后执行一次全量备份，细节参考[上游数据库使用 TiDB Lightning 物理导入模式导入数据的恢复](/faq/backup-and-restore-faq.md#上游数据库使用-tidb-lightning-物理导入模式导入数据时为什么无法使用日志备份功能)。|
+| TiCDC | | BR v8.2.0 及以上版本：如果在恢复的目标集群有 [CheckpointTS](/ticdc/ticdc-architecture.md#checkpointts) 早于 BackupTS 的 Changefeed，BR 会拒绝执行恢复。BR v8.2.0 之前的版本：如果在恢复的目标集群有任何活跃的 TiCDC Changefeed，BR 会拒绝执行恢复。 |
+| 向量搜索 | | 确保使用 BR v8.4.0 及以上版本进行备份与恢复。不支持将带有[向量数据类型](/vector-search/vector-search-data-types.md)的表恢复至 v8.4.0 之前的 TiDB 集群。 |
 
 ### 版本间兼容性
 
@@ -129,12 +132,46 @@ TiDB 支持将数据备份到 Amazon S3、Google Cloud Storage (GCS)、Azure Blo
 
 从 v7.0.0 开始，TiDB 逐步支持通过 SQL 语句来执行备份和恢复操作。因此，强烈建议在备份和恢复集群时使用与 TiDB 集群相同大版本的 BR 工具，并避免跨大版本进行数据备份和恢复操作。这有助于确保恢复操作的顺利执行和数据的一致性。特别是从 v7.6.0 起，BR 默认支持在恢复数据的同时恢复 `mysql` 库下的系统表，即恢复时默认配置为 `--with-sys-table=true`。在跨版本进行数据恢复时，如果遇到 `mysql` 库的系统表结构不同导致类似 `[BR:Restore:ErrRestoreIncompatibleSys]incompatible system table` 异常，你可以通过设置 `--with-sys-table=false` 跳过恢复系统表以规避该问题。
 
+#### TiDB v6.6.0 版本之前的 BR 版本兼容性矩阵
+
 TiDB v6.6.0 版本之前的 BR 版本兼容性矩阵：
 
 | 备份版本（纵向）\ 恢复版本（横向）  | 恢复到 TiDB v6.0 | 恢复到 TiDB v6.1| 恢复到 TiDB v6.2 | 恢复到 TiDB v6.3、v6.4 或 v6.5 | 恢复到 TiDB v6.6 |
 |  ----  |  ----  | ---- | ---- | ---- | ---- |
 | TiDB v6.0、v6.1、v6.2、v6.3、v6.4 或 v6.5 快照备份 | 兼容（已知问题，如果备份数据中包含空库可能导致报错，参考 [#36379](https://github.com/pingcap/tidb/issues/36379)） | 兼容 | 兼容 | 兼容 | 兼容（需使用 v6.6 的 BR） |
 | TiDB v6.3、v6.4、v6.5 或 v6.6 日志备份| 不兼容 | 不兼容 | 不兼容 | 兼容 | 兼容 |
+
+#### TiDB v6.5.0 版本到 v8.5.0 之间的 BR 版本兼容性矩阵
+
+本节列出了 TiDB v6.5.0 版本到 v8.5.0 之间所有[长期支持版本 (LTS)](/releases/versioning.md#长期支持版本)（包括 v6.5.0、v7.1.0、v7.5.0、v8.1.0、v8.5.0）的 BR 兼容性矩阵。这个矩阵中的 BR 版本与对应的 TiDB Server 的大版本一致。
+
+> **注意：**
+>
+> 已知问题：在 v7.2.0 版本中，部分系统表字段改为大小写敏感，可能导致跨版本备份恢复失败。详见 [Issue #43717](https://github.com/pingcap/tidb/issues/43717)。
+
+下表列出了全量备份的兼容性矩阵：
+
+| 备份集群版本 | 兼容的恢复目标集群版本 | 不兼容的恢复目标集群版本 |
+|:---------|:------------|:--------------|
+| v6.5.0    | v7.1.0       | v7.5.0 及以上   |
+| v7.1.0    | -           | v7.5.0 及以上   |
+| v7.5.0    | v7.5.0 及以上 | -             |
+| v8.1.0    | v8.1.0 及以上 | -             |
+
+下表列出了日志备份的兼容性矩阵：
+
+| 备份集群版本 | 兼容的恢复目标集群版本 | 不兼容的恢复目标集群版本 |
+|:---------|:------------|:--------------|
+| v6.5.0    | v7.1.0       | v7.5.0 及以上   |
+| v7.1.0    | -           | v7.5.0 及以上   |
+| v7.5.0    | v7.5.0 及以上 | -             |
+| v8.1.0    | v8.1.0 及以上 | -             |
+
+> **注意：**
+>
+> - 当仅备份用户数据时（全量备份或日志备份），所有版本之间均兼容。
+> - 在恢复 `mysql` 系统表时，可能会出现不兼容情况。为避免此问题，你可以通过设置 `--with-sys-table=false` 跳过恢复所有系统表，或者使用更精细的过滤器仅仅跳过不兼容的系统表，例如：`--filter '*.*' --filter "__TiDB_BR_Temporary_*.*" --filter '!mysql.*' --filter 'mysql.bind_info' --filter 'mysql.user' --filter 'mysql.global_priv' --filter 'mysql.global_grants' --filter 'mysql.default_roles' --filter 'mysql.role_edges' --filter '!sys.*' --filter '!INFORMATION_SCHEMA.*' --filter '!PERFORMANCE_SCHEMA.*' --filter '!METRICS_SCHEMA.*' --filter '!INSPECTION_SCHEMA.*'`。
+> - "-" 表示该版本在对应场景下没有兼容性限制。
 
 ## 探索更多
 

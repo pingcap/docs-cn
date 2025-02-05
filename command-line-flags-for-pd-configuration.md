@@ -1,6 +1,7 @@
 ---
 title: PD 配置参数
 aliases: ['/docs-cn/dev/command-line-flags-for-pd-configuration/','/docs-cn/dev/reference/configuration/pd-server/configuration/']
+summary: PD 配置参数可以通过命令行参数或环境变量配置。包括外部访问 PD 的 URL 列表，其他 PD 节点访问某个 PD 节点的 URL 列表，PD 监听的客户端 URL 列表，PD 节点监听其他 PD 节点的 URL 列表，配置文件，PD 存储数据路径，初始化 PD 集群配置，动态加入 PD 集群，Log 级别，Log 文件，是否开启日志切割，当前 PD 的名字，CA 文件路径，包含 X509 证书的 PEM 文件路径，包含 X509 key 的 PEM 文件路径，指定 Prometheus Pushgateway 的地址，强制使用当前节点创建新的集群，输出版本信息并退出。
 ---
 
 # PD 配置参数
@@ -78,7 +79,7 @@ PD 可以通过命令行参数或环境变量配置。
 ## `--name`
 
 + 当前 PD 的名字。
-+ 默认："pd"
++ 默认："pd-${hostname}"
 + 如果你需要启动多个 PD，一定要给 PD 使用不同的名字
 
 ## `--cacert`

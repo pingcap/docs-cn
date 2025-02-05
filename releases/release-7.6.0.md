@@ -111,9 +111,9 @@ TiDB 版本：7.6.0
 
 * 建表性能提升 10 倍（实验特性）[#49752](https://github.com/pingcap/tidb/issues/49752) @[gmhdbjd](https://github.com/gmhdbjd)
 
-    在之前的版本里，将上游数据库上万张表迁移到 TiDB 时，TiDB 创建这些表耗时长，效率低。从 v7.6.0 开始，引入了新的 TiDB DDL V2 架构，你可以通过设置系统变量 [`tidb_ddl_version`](/system-variables.md#tidb_ddl_version-从-v760-版本开始引入) 开启。相比之前的版本，新版本的 DDL 批量建表性能提升了高达 10 倍，从而大幅减少了建表时间。
+    在之前的版本里，将上游数据库上万张表迁移到 TiDB 时，TiDB 创建这些表耗时长，效率低。从 v7.6.0 开始，引入了新的 TiDB DDL V2 架构，你可以通过设置系统变量 [`tidb_ddl_version`](https://docs.pingcap.com/zh/tidb/v7.6/system-variables#tidb_ddl_version-从-v760-版本开始引入) 开启。相比之前的版本，新版本的 DDL 批量建表性能提升了高达 10 倍，从而大幅减少了建表时间。
 
-    更多信息，请参考[用户文档](/ddl-v2.md)。
+    更多信息，请参考[用户文档](https://docs.pingcap.com/zh/tidb/v7.6/ddl-v2)。
 
 * 支持周期性全量数据整理（实验特性）[#12729](https://github.com/tikv/tikv/issues/12729) [afeinberg](https://github.com/afeinberg)
 
@@ -200,7 +200,7 @@ TiDB 版本：7.6.0
 
 * 支持动态调整 TiDB 单行记录大小限制 [#49237](https://github.com/pingcap/tidb/pull/49237) @[zyguan](https://github.com/zyguan)
 
-    在 v7.6.0 之前，事务中单行记录的大小受 TiDB 配置项 [`txn-entry-size-limit`](/tidb-configuration-file.md#txn-entry-size-limit-从-v50-版本开始引入) 限制。如果单行记录的大小超出此限制，TiDB 将返回 `entry too large` 错误。此时，用户需要修改 TiDB 配置文件并重启 TiDB 才能够生效。为降低用户的管理成本，TiDB v7.6.0 新增系统变量 [`tidb_txn_entry_size_limit`](/system-variables.md#tidb_txn_entry_size_limit-从-v760-版本开始引入)，支持动态修改 `txn-entry-size-limit` 配置项的值。该变量的默认值为 `0`，表示默认使用 `txn-entry-size-limit` 配置项的值作为限制。当设置为非 `0` 值时，TiDB 优先使用该变量的值作为事务中的单行记录大小的限制。这一改进旨在提高用户调整系统配置的灵活性，无需重启 TiDB 即可生效。
+    在 v7.6.0 之前，事务中单行记录的大小受 TiDB 配置项 [`txn-entry-size-limit`](/tidb-configuration-file.md#txn-entry-size-limit-从-v4010-和-v500-版本开始引入) 限制。如果单行记录的大小超出此限制，TiDB 将返回 `entry too large` 错误。此时，用户需要修改 TiDB 配置文件并重启 TiDB 才能够生效。为降低用户的管理成本，TiDB v7.6.0 新增系统变量 [`tidb_txn_entry_size_limit`](/system-variables.md#tidb_txn_entry_size_limit-从-v760-版本开始引入)，支持动态修改 `txn-entry-size-limit` 配置项的值。该变量的默认值为 `0`，表示默认使用 `txn-entry-size-limit` 配置项的值作为限制。当设置为非 `0` 值时，TiDB 优先使用该变量的值作为事务中的单行记录大小的限制。这一改进旨在提高用户调整系统配置的灵活性，无需重启 TiDB 即可生效。
 
     更多信息，请参考[用户文档](/system-variables.md#tidb_txn_entry_size_limit-从-v760-版本开始引入)。
 
@@ -208,7 +208,7 @@ TiDB 版本：7.6.0
 
     从 `br` v5.1.0 开始，快照备份时默认自动备份 **mysql schema** 下的系统表数据，但恢复数据时默认不恢复系统表数据。在 v6.2.0 中，`br` 增加恢复参数 `--with-sys-table` 支持恢复数据的同时恢复部分系统表相关数据，提供更多的操作灵活性。
 
-    为了进一步降低用户的管理成本，并提供更直观的默认行为。从 v7.6.0 开始，`br` 默认开启恢复参数 `--with-sys-table`，并支持恢复 `user` 为 `cloud_admin` 的用户数据。这意味着 `br` 默认支持恢复数据的同时恢复部分系统表相关数据，特别是用户账号和表的统计信息数据。这一改进旨在使备份恢复操作更加直观，减轻手动配置的负担，从而提升整体的操作体验。
+    为了进一步降低用户的管理成本，并提供更直观的默认行为。从 v7.6.0 开始，`br` 默认开启恢复参数 `--with-sys-table`。这意味着 `br` 默认支持恢复数据的同时恢复部分系统表相关数据，特别是用户账号和表的统计信息数据。这一改进旨在使备份恢复操作更加直观，减轻手动配置的负担，从而提升整体的操作体验。
 
     更多信息，请参考[用户文档](/br/br-snapshot-guide.md)。
 
@@ -222,7 +222,7 @@ TiDB 版本：7.6.0
     * [Statement Summary Tables](/statement-summary-tables.md) 增加资源组名称、RU 消耗、以及等待资源耗时。
     * 在变量 [`tidb_last_query_info`](/system-variables.md#tidb_last_query_info-从-v4014-版本开始引入) 中增加了 SQL 的 [RU](/tidb-resource-control.md#什么是-request-unit-ru) 消耗信息 `ru_consumption`，你可以利用此变量获取会话中上一条语句的资源消耗。
     * 增加基于[资源组的数据库指标](/grafana-resource-control-dashboard.md)：QPS/TPS、执行时间 (P999/P99/P95)、失败次数、连接数。
-    * 增加系统表 [`request_unit_by_group`](/mysql-schema.md#资源管控相关系统表) 记录资源组每天的历史资源消耗。
+    * 增加系统表 [`request_unit_by_group`](/mysql-schema/mysql-schema.md#资源管控相关系统表) 记录资源组每天的历史资源消耗。
 
   更多信息，请参考[慢查询日志](/identify-slow-queries.md)、[Statement Summary Tables](/statement-summary-tables.md)、[资源管控 (Resource Control) 监控指标详解](/grafana-resource-control-dashboard.md)。
 
@@ -269,11 +269,11 @@ TiDB 版本：7.6.0
 | [`tidb_auto_analyze_partition_batch_size`](/system-variables.md#tidb_auto_analyze_partition_batch_size-从-v640-版本开始引入) | 修改 | 经进一步的测试后，该变量默认值从 `1` 修改为 `128`。 |
 | [`tidb_sysproc_scan_concurrency`](/system-variables.md#tidb_sysproc_scan_concurrency-从-v650-版本开始引入) | 修改 | 在大规模集群里，`scan` 操作的并发度可以调整的更高，以满足 `ANALYZE` 的需要，因此将该变量最大值由 `256` 修改为 `4294967295`。 |
 | [`tidb_analyze_distsql_scan_concurrency`](/system-variables.md#tidb_analyze_distsql_scan_concurrency-从-v760-版本开始引入)       |    新增       |    用于设置执行 `ANALYZE` 时 `scan` 操作的并发度。默认值为 `4`。   |
-| [`tidb_ddl_version`](/system-variables.md#tidb_ddl_version-从-v760-版本开始引入)  |  新增  | 用于控制是否开启 [TiDB DDL V2](/ddl-v2.md)。将该变量的值设置为 `2` 可以开启该功能，设置为 `1` 关闭该功能。默认值为 `1`。开启后，将使用新版本的实现执行 DDL 语句。TiDB DDL V2 对 DDL 功能做了提升，建表 DDL 的执行速度相比 V1 版本提升 10 倍。 |
+| [`tidb_ddl_version`](https://docs.pingcap.com/zh/tidb/v7.6/system-variables#tidb_ddl_version-从-v760-版本开始引入)  |  新增  | 用于控制是否开启 [TiDB DDL V2](https://docs.pingcap.com/zh/tidb/v7.6/ddl-v2)。将该变量的值设置为 `2` 可以开启该功能，设置为 `1` 关闭该功能。默认值为 `1`。开启后，将使用新版本的实现执行 DDL 语句。TiDB DDL V2 对 DDL 功能做了提升，建表 DDL 的执行速度相比 V1 版本提升 10 倍。 |
 | [`tidb_enable_global_index`](/system-variables.md#tidb_enable_global_index-从-v760-版本开始引入)  |  新增  | 用于控制是否支持对分区表创建 `Global index`。默认值为 `OFF`。`Global index` 当前正处于开发阶段，**不推荐修改该变量值**。 |
 | [`tidb_idle_transaction_timeout`](/system-variables.md#tidb_idle_transaction_timeout-从-v760-版本开始引入) | 新增 | 用来控制用户会话中事务的空闲超时。当用户会话处于事务状态且空闲时间超过该变量设定的值时，会话会被 Kill 掉。默认值 `0` 表示没有时间限制。 |
 | [`tidb_opt_enable_fuzzy_binding`](/system-variables.md#tidb_opt_enable_fuzzy_binding-从-v760-版本开始引入) | 新增 | 用于控制是否开启跨数据库绑定执行计划功能，默认值 `OFF` 表示关闭。 |
-| [`tidb_txn_entry_size_limit`](/system-variables.md#tidb_txn_entry_size_limit-从-v760-版本开始引入) | 新增 | 用于动态修改 TiDB 配置项 [`performance.txn-entry-size-limit`](/tidb-configuration-file.md#txn-entry-size-limit-从-v50-版本开始引入)，即限制 TiDB 单行数据的大小。默认值为 `0`，表示默认使用配置项的值。当设置为非 `0` 值时，优先使用该变量的值作为 `txn-entry-size-limit` 的值。 |
+| [`tidb_txn_entry_size_limit`](/system-variables.md#tidb_txn_entry_size_limit-从-v760-版本开始引入) | 新增 | 用于动态修改 TiDB 配置项 [`performance.txn-entry-size-limit`](/tidb-configuration-file.md#txn-entry-size-limit-从-v4010-和-v500-版本开始引入)，即限制 TiDB 单行数据的大小。默认值为 `0`，表示默认使用配置项的值。当设置为非 `0` 值时，优先使用该变量的值作为 `txn-entry-size-limit` 的值。 |
 | [`pd_enable_follower_handle_region`](/system-variables.md#pd_enable_follower_handle_region-从-v760-版本开始引入) | 新增 | 用于控制是否开启 [Active PD Follower](/tune-region-performance.md#通过-active-pd-follower-提升-pd-region-信息查询服务的扩展能力)（实验特性）。当该值为 `OFF` 时，TiDB 仅从 PD leader 获取 Region 信息。当该值为 `ON` 时，TiDB 在获取 Region 信息时会将请求均匀地发送到所有 PD 节点上，因此 PD follower 也可以处理 Region 信息请求，从而减轻 PD leader 的 CPU 压力。 |
 
 ### 配置文件参数
@@ -284,7 +284,7 @@ TiDB 版本：7.6.0
 | TiKV | [`blob-file-compression`](/tikv-configuration-file.md#blob-file-compression) | 修改 | 设置 Titan 中 value 所使用的压缩算法。从 v7.6.0 开始，默认采用 `zstd` 压缩算法。 |
 | TiKV | [`rocksdb.defaultcf.titan.min-blob-size`](/tikv-configuration-file.md#min-blob-size) | 修改 | 从 TiDB v7.6.0 开始，新建集群默认值为 `32KB`。对于已有集群升级到 v7.6.0 版本的情况，默认值为 `1KB` 保持不变。 |
 | TiKV | [`rocksdb.titan.enabled`](/tikv-configuration-file.md#enabled) | 修改 | 开启 Titan 开关。v7.5.0 及更早的版本默认值为 `false`。从 v7.6.0 开始，新建集群默认值是 `true`，已有集群升级到 v7.6.0 或更高版本则会维持原有的配置。 |
-| TiKV | [`gc.num-threads`](/tikv-configuration-file.md#num-threads-从-v760-版本开始引入) | 新增 | 设置当 `enable-compaction-filter` 为 `false` 时 GC 的线程个数。默认值为 `1`。 |
+| TiKV | [`gc.num-threads`](/tikv-configuration-file.md#num-threads-从-v658v714v751-和-v760-版本开始引入) | 新增 | 设置当 `enable-compaction-filter` 为 `false` 时 GC 的线程个数。默认值为 `1`。 |
 | TiKV | [`raftstore.periodic-full-compact-start-times`](/tikv-configuration-file.md#periodic-full-compact-start-times-从-v760-版本开始引入) | 新增 | 设置 TiKV 启动周期性全量数据整理 (Compaction) 的时间。默认值 `[]` 表示默认情况下禁用周期性全量数据整理。 |
 | TiKV | [`raftstore.periodic-full-compact-start-max-cpu`](/tikv-configuration-file.md#periodic-full-compact-start-max-cpu-从-v760-版本开始引入) | 新增 | 设置 TiKV 执行周期性全量数据整理时的 CPU 使用率阈值，默认值为 `0.1`。 |
 | TiKV | [`zstd-dict-size`](/tikv-configuration-file.md#zstd-dict-size) | 新增 | 指定 `zstd` 字典大小，默认值为 `0KB`，表示关闭 `zstd` 字典压缩。 |
@@ -293,8 +293,6 @@ TiDB 版本：7.6.0
 | TiDB Lightning | [`block-size`](/tidb-lightning/tidb-lightning-configuration.md#tidb-lightning-任务配置) | 新增 | 控制物理导入模式 (`backend='local'`) 中本地文件排序的 I/O 区块大小。默认值为 `16KiB`。当 IOPS 成为瓶颈时，可以调大该参数的值以缓解磁盘 IOPS，从而提升数据导入性能。 |
 | BR | [`--granularity`](/br/br-snapshot-guide.md#快照恢复的性能与影响) | 新增 | 通过设置 `--granularity="coarse-grained"` 启用粗粒度的 Region 打散算法（实验特性）进行恢复，加快大规模 Region 场景下的 Region 恢复速度。 |
 | TiCDC | [`compression`](/ticdc/ticdc-changefeed-config.md) | 新增 | 设置 redo log 文件的压缩行为。 |
-| TiCDC | [`encoding-worker-num`](/ticdc/ticdc-changefeed-config.md) | 新增 | 控制 redo 模块中编解码 worker 的数量，默认值为 `16`。 |
-| TiCDC | [`flush-worker-num`](/ticdc/ticdc-changefeed-config.md) | 新增 | 控制 redo 模块中上传文件 worker 的数量，默认值为 `8`。 |
 | TiCDC | [`sink.cloud-storage-config`](/ticdc/ticdc-changefeed-config.md) | 新增 | 设置同步数据到对象存储时自动清理历史数据的功能。 |
 
 ### 系统表
@@ -328,7 +326,7 @@ TiDB 版本：7.6.0
     - 将 `CANCEL IMPORT JOB` 命令调整为同步命令 [#48736](https://github.com/pingcap/tidb/issues/48736) @[D3Hunter](https://github.com/D3Hunter)
     - 提升空表加索引的速度 [#49682](https://github.com/pingcap/tidb/issues/49682) @[zimulala](https://github.com/zimulala)
     - 当关联子查询的列未被上层算子引用时，可以直接消除该关联子查询 [#45822](https://github.com/pingcap/tidb/issues/45822) @[King-Dylan](https://github.com/King-Dylan)
-    - `EXCHANGE PARTITION` 操作会触发统计信息的维护更新 [#47354](https://github.com/pingcap/tidb/issues/47354) @[hi-rustin](https://github.com/hi-rustin)
+    - `EXCHANGE PARTITION` 操作会触发统计信息的维护更新 [#47354](https://github.com/pingcap/tidb/issues/47354) @[hi-rustin](https://github.com/Rustin170506)
     - TiDB 支持构建符合联邦信息处理标准 (FIPS) 要求的二进制文件 [#47948](https://github.com/pingcap/tidb/issues/47948) @[tiancaiamao](https://github.com/tiancaiamao)
     - 改进 TiDB 在处理部分类型转换时的实现，并修复相关问题 [#47945](https://github.com/pingcap/tidb/issues/47945) [#47864](https://github.com/pingcap/tidb/issues/47864) [#47829](https://github.com/pingcap/tidb/issues/47829) [#47816](https://github.com/pingcap/tidb/issues/47816) @[YangKeao](https://github.com/YangKeao) @[lcwangchao](https://github.com/lcwangchao)
     - 在获取 schema 版本时，默认使用 KV timeout 特性读取，减少 meta Region leader 读取慢对 schema 版本更新的影响 [#48125](https://github.com/pingcap/tidb/pull/48125) @[cfzjywxk](https://github.com/cfzjywxk)
@@ -355,6 +353,7 @@ TiDB 版本：7.6.0
 
     + Backup & Restore (BR)
 
+        - 新增全量备份恢复阶段对 Amazon S3 `session-token` 以及 `assume-role` 的认证支持 [#39832](https://github.com/pingcap/tidb/issues/39832) @[3pointer](https://github.com/3pointer)
         - 新增 PITR 对 delete range 场景的集成测试，提升 PITR 稳定性 [#47738](https://github.com/pingcap/tidb/issues/47738) @[Leavrth](https://github.com/Leavrth)
         - 提升了 `RESTORE` 语句在大数据量表场景下的建表性能 [#48301](https://github.com/pingcap/tidb/issues/48301) @[Leavrth](https://github.com/Leavrth)
         - 重构 BR 异常处理机制，提高对未知错误的容忍度 [#47656](https://github.com/pingcap/tidb/issues/47656) @[3pointer](https://github.com/3pointer)
@@ -429,16 +428,16 @@ TiDB 版本：7.6.0
     - 修复当生成列上的索引设置为可见时，可能无法选中 MPP 计划的问题 [#47766](https://github.com/pingcap/tidb/issues/47766) @[AilinKid](https://github.com/AilinKid)
     - 修复 `LIMIT` 可能无法推入到 `OR` 类型的 `Index Merge` 的问题 [#48588](https://github.com/pingcap/tidb/issues/48588) @[AilinKid](https://github.com/AilinKid)
     - 修复 BR 导入后，`mysql.bind_info` 表中可能存在重复的内置 (builtin) 行的问题 [#46527](https://github.com/pingcap/tidb/issues/46527) @[qw4990](https://github.com/qw4990)
-    - 修复删除分区后，分区表的统计信息更新行为不合理的问题 [#48182](https://github.com/pingcap/tidb/issues/48182) @[hi-rustin](https://github.com/hi-rustin)
+    - 修复删除分区后，分区表的统计信息更新行为不合理的问题 [#48182](https://github.com/pingcap/tidb/issues/48182) @[hi-rustin](https://github.com/Rustin170506)
     - 修复并发合并分区表的全局统计信息时可能遇到报错的问题 [#48713](https://github.com/pingcap/tidb/issues/48713) @[hawkingrei](https://github.com/hawkingrei)
     - 修复在具有补齐空格 (PADDING SPACE) 的列上使用 `LIKE` 运算符进行索引范围扫描时，查询结果可能出错的问题 [#48821](https://github.com/pingcap/tidb/issues/48821) @[time-and-fate](https://github.com/time-and-fate)
     - 修复生成列可能触发对内存的并发读写导致数据竞争的问题 [#44919](https://github.com/pingcap/tidb/issues/44919) @[tangenta](https://github.com/tangenta)
     - 修复当指定 `WITH 0 TOPN`（即不收集 TopN 的统计信息）时，`ANALYZE TABLE` 仍然可能收集 Top1 的统计信息的问题 [#49080](https://github.com/pingcap/tidb/issues/49080) @[hawkingrei](https://github.com/hawkingrei)
     - 修复不合法的优化器 hint 可能会导致合法 hint 不生效的问题 [#49308](https://github.com/pingcap/tidb/issues/49308) @[hawkingrei](https://github.com/hawkingrei)
-    - 修复对 Hash 类型的分区表进行分区的增删重组或 `TRUNCATE` 操作时，统计信息没有对应更新的问题 [#48235](https://github.com/pingcap/tidb/issues/48235) [#48233](https://github.com/pingcap/tidb/issues/48233) [#48226](https://github.com/pingcap/tidb/issues/48226) [#48231](https://github.com/pingcap/tidb/issues/48231) @[hi-rustin](https://github.com/hi-rustin)
+    - 修复对 Hash 类型的分区表进行分区的增删重组或 `TRUNCATE` 操作时，统计信息没有对应更新的问题 [#48235](https://github.com/pingcap/tidb/issues/48235) [#48233](https://github.com/pingcap/tidb/issues/48233) [#48226](https://github.com/pingcap/tidb/issues/48226) [#48231](https://github.com/pingcap/tidb/issues/48231) @[hi-rustin](https://github.com/Rustin170506)
     - 修复设置统计信息自动更新的时间窗口后，时间窗口外统计信息仍然可能更新的问题 [#49552](https://github.com/pingcap/tidb/issues/49552) @[hawkingrei](https://github.com/hawkingrei)
-    - 修复从分区表转为非分区表时，旧统计信息不会自动删除的问题 [#49547](https://github.com/pingcap/tidb/issues/49547) @[hi-rustin](https://github.com/hi-rustin)
-    - 修复当使用 `TRUNCATE TABLE` 清空非分区表的数据时，旧统计信息不会自动删除的问题 [#49663](https://github.com/pingcap/tidb/issues/49663) @[hi-rustin](https://github.com/hi-rustin)
+    - 修复从分区表转为非分区表时，旧统计信息不会自动删除的问题 [#49547](https://github.com/pingcap/tidb/issues/49547) @[hi-rustin](https://github.com/Rustin170506)
+    - 修复当使用 `TRUNCATE TABLE` 清空非分区表的数据时，旧统计信息不会自动删除的问题 [#49663](https://github.com/pingcap/tidb/issues/49663) @[hi-rustin](https://github.com/Rustin170506)
     - 修复当查询使用了会强制排序的优化器 hint（例如 `STREAM_AGG()`）且其执行计划包含 `IndexMerge` 时，强制排序可能会失效的问题 [#49605](https://github.com/pingcap/tidb/issues/49605) @[AilinKid](https://github.com/AilinKid)
     - 修复直方图的边界包含 `NULL` 时，直方图统计信息可能无法解析成可读字符串的问题 [#49823](https://github.com/pingcap/tidb/issues/49823) @[AilinKid](https://github.com/AilinKid)
     - 修复查询语句包含 `GROUP_CONCANT(ORDER BY)` 语法时，执行可能出错的问题 [#49986](https://github.com/pingcap/tidb/issues/49986) @[AilinKid](https://github.com/AilinKid)

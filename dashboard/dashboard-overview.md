@@ -1,6 +1,7 @@
 ---
 title: TiDB Dashboard 概况页面
 aliases: ['/docs-cn/dev/dashboard/dashboard-overview/']
+summary: TiDB Dashboard 概况页面显示整个集群的 QPS、查询延迟、Top SQL 语句、最近的慢查询、实例状态和监控及告警信息。登录后默认进入该页面，也可通过左侧导航条点击概况进入。包含最近一小时整个集群的 QPS 和查询延迟，以及最近一段时间内累计耗时最多的 SQL 语句和运行时间超过一定阈值的慢查询。还显示各个实例的节点数和状态，以及提供了便捷的链接方便用户查看详细监控或告警。
 ---
 
 # TiDB Dashboard 概况页面

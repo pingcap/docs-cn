@@ -4,13 +4,7 @@
 
 ## 我能为 TiDB 文档做什么贡献？
 
-🚀 为了给大家带来更好的文档使用体验，首届 TiDB 文档挑战赛 (TiDB Docs Dash) 将于 2024 年 1 月 9 日 - 12 日进行。同时，我们也希望将借此机会将 TiDB 社区成员聚集到一起，为大家带来一次有趣的协作体验。
-
-- 活动详情和奖励，请参考 [2024 TiDB 文档挑战赛来啦！提 PR、提 Issue 来赢取 Bose 耳机、TiDB 限量款机械键盘等超丰富周边吧](https://asktug.com/t/topic/1019364)
-- 活动参与说明：<https://github.com/pingcap/docs-cn/issues/15867>
-- 活动任务列表：<https://github.com/orgs/pingcap/projects/51>
-
-除了以上活动相关任务，你也可以在提升 TiDB 文档质量、易用性、维护效率、翻译效率等方面做贡献，比如：
+你可以在提升 TiDB 文档质量、易用性、维护效率、翻译效率等方面做贡献，比如：
 
 - [改进中文文档](#改进中文文档)
 - [翻译中文文档](#翻译中文文档)
@@ -159,6 +153,12 @@ git push -u origin new-branch-name
 >
 > - 如果你的修改影响多个文档版本 (如 dev、v7.5、v7.4 等)，务必**在 PR 描述框中勾选相应的版本**，后续仓库管理员会为你的 PR 打上相应的 cherry-pick label。
 
+## 预览 EBNF 格式的 SQL 语法图
+
+[TiDB 文档](https://docs.pingcap.com/zh/tidb/stable)提供了大量 SQL 语法图，以帮助用户理解 SQL 语法。例如，[`ALTER INDEX` 文档](https://docs.pingcap.com/zh/tidb/stable/sql-statement-alter-index#语法图)中的语法图。
+
+这些语法图的源代码是使用[扩展巴科斯范式 (EBNF)](https://zh.wikipedia.org/wiki/扩展巴科斯范式) 编写的。在为 SQL 语句添加 EBNF 代码时，可以将代码复制到 <https://kennytm.github.io/website-docs/dist/> 并点击 **Render**，即可轻松预览 EBNF 效果图。
+
 ## 参考资料
 
 <details>
@@ -174,7 +174,7 @@ git push -u origin new-branch-name
 
 1. 查看待认领 PR
 
-    打开 [pingcap/docs-cn PR 翻译任务页面](https://github.com/pingcap/docs-cn/pulls?q=is%3Apr+label%3Atranslation%2Fwelcome+)，即可看到所有打上了 `translation/welcome` label 的 PR。这类 PR 无论是处于 open 还是 closed 状态，均可认领。
+    打开 [pingcap/docs-cn PR 翻译任务页面](https://github.com/pingcap/docs-cn/pulls?q=is%3Apr+label%3Atranslation%2Fwelcome+-label%3Atranslation%2Fdone+)，即可看到所有打上了 `translation/welcome` label 的 PR。这类 PR 只要没有 `translation/done` 的 label，无论是处于 open 还是 closed 状态，均可认领。
 
 2. 认领 PR
 

@@ -63,7 +63,7 @@ mysql -u root -h ${tidb_server_host_IP_address} -P 4000
 ```sql
 Welcome to the MySQL monitor.  Commands end with ; or \g.
 Your MySQL connection id is 3
-Server version: 8.0.11-TiDB-v7.6.0 TiDB Server (Apache License 2.0) Community Edition, MySQL 8.0 compatible
+Server version: 8.0.11-TiDB-v8.5.0 TiDB Server (Apache License 2.0) Community Edition, MySQL 8.0 compatible
 
 Copyright (c) 2000, 2023, Oracle and/or its affiliates. All rights reserved.
 
@@ -131,9 +131,9 @@ Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
 
     ```sql
     CREATE TABLE `tab_tidb` (
-    `id` int(11) NOT NULL AUTO_INCREMENT,
+    `id` int NOT NULL AUTO_INCREMENT,
     `name` varchar(20) NOT NULL DEFAULT '',
-    `age` int(11) NOT NULL DEFAULT 0,
+    `age` int NOT NULL DEFAULT 0,
     `version` varchar(20) NOT NULL DEFAULT '',
     PRIMARY KEY (`id`),
     KEY `idx_age` (`age`));

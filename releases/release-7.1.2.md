@@ -20,6 +20,10 @@ TiDB 版本：7.1.2
 - 新增 TiCDC 配置项 [`sink.csv.binary-encoding-method`](/ticdc/ticdc-changefeed-config.md#ticdc-changefeed-配置文件说明)，控制 CSV 协议中二进制类型数据的编码方式，默认值为 `'base64'` [#9373](https://github.com/pingcap/tiflow/issues/9373) @[CharlesCheung96](https://github.com/CharlesCheung96)
 - 新增 TiCDC 配置项 [`large-message-handle-option`](/ticdc/ticdc-sink-to-kafka.md#处理超过-kafka-topic-限制的消息)。默认为空，即消息大小超过 Kafka Topic 的限制后，同步任务失败。设置为 "handle-key-only" 时，如果消息超过大小，只发送 handle key 以减少消息的大小；如果依旧超过大小，则同步任务失败 [#9680](https://github.com/pingcap/tiflow/issues/9680) @[3AceShowHand](https://github.com/3AceShowHand)
 
+### 行为变更
+
+- 对于包含多条变更的事务，如果 Update 事件的主键或者非空唯一索引的列值发生改变，TiCDC 会将该其拆分为 Delete 和 Insert 两条事件，并确保将所有事件有序，以保证 Delete 事件在 Insert 事件之前。更多信息，请参考[用户文档](/ticdc/ticdc-split-update-behavior.md#含有多条-update-变更的事务拆分)。
+
 ## 改进提升
 
 + TiDB
@@ -103,7 +107,7 @@ TiDB 版本：7.1.2
     - 修复在对分区表和有 Placement Policy 的表进行分区交换后，往分区表中插入数据可能失败的问题 [#45791](https://github.com/pingcap/tidb/issues/45791) @[mjonss](https://github.com/mjonss)
     - 修复使用错误的时区信息对时间字段进行编码的问题 [#46033](https://github.com/pingcap/tidb/issues/46033) @[tangenta](https://github.com/tangenta)
     - 修复当 `tmp` 路径不存在时快速添加索引的 DDL 会卡住的问题 [#45456](https://github.com/pingcap/tidb/issues/45456) @[tangenta](https://github.com/tangenta)
-    - 修复同时升级多个 TiDB 节点时可能阻塞升级过程的问题 [#46288](https://github.com/pingcap/tidb/issues/46228) @[zimulala](https://github.com/zimulala)
+    - 修复同时升级多个 TiDB 节点时可能阻塞升级过程的问题 [#46228](https://github.com/pingcap/tidb/issues/46228) @[zimulala](https://github.com/zimulala)
     - 修复分区表由于 split Region 使用参数有误导致 Region 打散效果差的问题 [#46135](https://github.com/pingcap/tidb/issues/46135) @[zimulala](https://github.com/zimulala)
     - 修复 TiDB 重启后 DDL 操作可能卡住的问题 [#46751](https://github.com/pingcap/tidb/issues/46751) @[wjhuang2016](https://github.com/wjhuang2016)
     - 禁止非整型聚簇索引进行 split table 操作 [#47350](https://github.com/pingcap/tidb/issues/47350) @[tangenta](https://github.com/tangenta)
@@ -164,7 +168,7 @@ TiDB 版本：7.1.2
         - 修复 GCS 上 PITR 恢复失败的问题 [#47022](https://github.com/pingcap/tidb/issues/47022) @[Leavrth](https://github.com/Leavrth)
         - 修复 RawKV 模式下细粒度备份阶段可能出错的问题 [#37085](https://github.com/pingcap/tidb/issues/37085) @[pingyu](https://github.com/pingyu)
         - 修复 PITR 恢复数据元信息 (meta-kv) 出错的问题 [#46578](https://github.com/pingcap/tidb/issues/46578) @[Leavrth](https://github.com/Leavrth)
-        - 修复 BR 集成测试用例出错的问题 [#45561](https://github.com/pingcap/tidb/issues/46561) @[purelind](https://github.com/purelind)
+        - 修复 BR 集成测试用例出错的问题 [#46561](https://github.com/pingcap/tidb/issues/46561) @[purelind](https://github.com/purelind)
         - 将 BR 使用的全局参数 `TableColumnCountLimit` 和 `IndexLimit` 的默认值提升到最大值，修复恢复过程失败的问题 [#45793](https://github.com/pingcap/tidb/issues/45793) @[Leavrth](https://github.com/Leavrth)
         - 修复 br CLI 客户端扫描恢复后的数据时卡住的问题 [#45476](https://github.com/pingcap/tidb/issues/45476) @[3pointer](https://github.com/3pointer)
         - 修复 PITR 可能跳过恢复 `CREATE INDEX` DDL 的问题 [#47482](https://github.com/pingcap/tidb/issues/47482) @[Leavrth](https://github.com/Leavrth)

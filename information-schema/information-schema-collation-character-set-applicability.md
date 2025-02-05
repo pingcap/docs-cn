@@ -47,3 +47,10 @@ SELECT * FROM COLLATION_CHARACTER_SET_APPLICABILITY WHERE character_set_name='ut
 
 * `COLLATION_NAME`：排序规则名称
 * `CHARACTER_SET_NAME`：排序规则所属的字符集名称
+
+## 另请参阅
+
+- [`SHOW CHARACTER SET`](/sql-statements/sql-statement-show-character-set.md)
+- [`SHOW COLLATION`](/sql-statements/sql-statement-show-collation.md)
+- [`INFORMATION_SCHEMA.CHARACTER_SETS`](/information-schema/information-schema-character-sets.md)
+- [`INFORMATION_SCHEMA.COLLATIONS`](/information-schema/information-schema-collations.md)

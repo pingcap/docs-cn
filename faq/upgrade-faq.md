@@ -14,7 +14,7 @@ aliases: ['/docs-cn/dev/faq/upgrade-faq/','/docs-cn/dev/faq/upgrade/']
 
 ### 滚动升级有那些影响？
 
-滚动升级 TiDB 期间，业务运行会受到一定影响。因此，不建议在业务高峰期进行滚动升级。需要配置最小集群拓扑 (TiDB \* 2、PD \* 3、TiKV \* 3)，如果集群环境中有 Pump 和 Drainer 服务，建议先停止 Drainer，然后滚动升级（升级 TiDB 时会升级 Pump）。
+滚动升级 TiDB 期间，业务运行会受到一定影响。因此，不建议在业务高峰期进行滚动升级。需要配置最小集群拓扑 (TiDB \* 2、PD \* 3、TiKV \* 3)。
 
 ### 集群在执行 DDL 请求期间可以进行升级操作吗？
 

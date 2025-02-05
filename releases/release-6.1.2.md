@@ -1,5 +1,6 @@
 ---
 title: TiDB 6.1.2 Release Notes
+summary: TiDB 6.1.2 发布，包括 TiDB、TiKV、Tools 和 Bug 修复。提升改进包括允许在一张表上同时设置数据放置规则和 TiFlash 副本。Bug 修复包括修复数据库级别的权限清理不正确的问题。
 ---
 
 # TiDB 6.1.2 Release Notes
@@ -85,9 +86,9 @@ TiDB 版本：6.1.2
     + TiCDC
 
         - 修复 cdc server 在尚未启动成功前收到 HTTP 请求导致 panic 的问题 [#6838](https://github.com/pingcap/tiflow/issues/6838) @[asddongmen](https://github.com/asddongmen)
-        - 修复升级时日志数量过多的问题 [#7235](https://github.com/pingcap/tiflow/issues/7235) @[hi-rustin](https://github.com/hi-rustin)
-        - 修复 redo log 中错误清理非当前 changefeed 日志文件的问题 [#6413](https://github.com/pingcap/tiflow/issues/6413) @[hi-rustin](https://github.com/hi-rustin)
-        - 修复在一个 etcd 事务中提交太多数据导致 TiCDC 服务不可用问题 [#7131](https://github.com/pingcap/tiflow/issues/7131) @[hi-rustin](https://github.com/hi-rustin)
+        - 修复升级时日志数量过多的问题 [#7235](https://github.com/pingcap/tiflow/issues/7235) @[hi-rustin](https://github.com/Rustin170506)
+        - 修复 redo log 中错误清理非当前 changefeed 日志文件的问题 [#6413](https://github.com/pingcap/tiflow/issues/6413) @[hi-rustin](https://github.com/Rustin170506)
+        - 修复在一个 etcd 事务中提交太多数据导致 TiCDC 服务不可用问题 [#7131](https://github.com/pingcap/tiflow/issues/7131) @[hi-rustin](https://github.com/Rustin170506)
         - 修复 redo log 中不可重入 DDL 重复执行可能导致的数据不一致性问题 [#6927](https://github.com/pingcap/tiflow/issues/6927) @[hicqu](https://github.com/hicqu)
 
     + Backup & Restore (BR)

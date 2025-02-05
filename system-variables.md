@@ -1,5 +1,6 @@
 ---
 title: 系统变量
+summary: 使用 TiDB 系统变量来优化性能或修改运行行为。
 aliases: ['/docs-cn/dev/system-variables/','/docs-cn/dev/reference/configuration/tidb-server/mysql-variables/','/docs-cn/dev/tidb-specific-system-variables/','/docs-cn/dev/reference/configuration/tidb-server/tidb-specific-variables/','/zh/tidb/dev/tidb-specific-system-variables/']
 ---
 
@@ -311,7 +312,7 @@ mysql> SELECT * FROM t1;
 - 类型：枚举型
 - 默认值：`aes-128-ecb`
 - 可选值：`aes-128-ecb`、`aes-192-ecb`、`aes-256-ecb`、`aes-128-cbc`、`aes-192-cbc`、`aes-256-cbc`、`aes-128-ofb`、`aes-192-ofb`、`aes-256-ofb`、`aes-128-cfb`、`aes-192-cfb`、`aes-256-cfb`
-- 该变量用于设置 `AES_ENCRYPT()` 和 `AES_DECRYPT()` 函数的加密模式。
+- 该变量用于设置 [`AES_ENCRYPT()`](/functions-and-operators/encryption-and-compression-functions.md#aes_encrypt) 和 [`AES_DECRYPT()`](/functions-and-operators/encryption-and-compression-functions.md#aes_decrypt) 函数的加密模式。
 
 ### `character_set_client`
 
@@ -415,7 +416,6 @@ mysql> SELECT * FROM t1;
 - 类型：枚举型
 - 默认值：`mysql_native_password`
 - 可选值：`mysql_native_password`，`caching_sha2_password`，`tidb_sm3_password`，`tidb_auth_token`，`authentication_ldap_sasl` 或 `authentication_ldap_simple`。
-- `tidb_auth_token` 认证方式仅用于 TiDB Cloud 内部实现，**不要设置为该值**。
 - 服务器和客户端建立连接时，这个变量用于设置服务器对外通告的默认身份验证方式。如要了解该变量的其他可选值，参见[可用的身份验证插件](/security-compatibility-with-mysql.md#可用的身份验证插件)。
 - 若要在用户登录时使用 `tidb_sm3_password` 插件，需要使用 [TiDB-JDBC](https://github.com/pingcap/mysql-connector-j/tree/release/8.0-sm3) 进行连接。
 
@@ -462,6 +462,16 @@ mysql> SELECT * FROM t1;
 - 该变量是一个只读变量，用来显示 TiDB 是否会直接断开密码已过期用户的连接。当其值为 `ON`，表示 TiDB 会断开密码已过期用户的连接。当其值为 `OFF`，表示 TiDB 会将密码已过期用户的连接置于“沙盒模式”，允许该用户建立连接并执行密码重置操作。
 - 如果需要改变 TiDB 对密码已过期用户连接的处理方式，请在 TiDB 配置文件中的 `[security]` 部分修改 [`disconnect-on-expired-password`](/tidb-configuration-file.md#disconnect-on-expired-password-从-v650-版本开始引入) 选项。
 
+### `div_precision_increment` <span class="version-mark">从 v8.0.0 版本开始引入</span>
+
+- 作用域：SESSION | GLOBAL
+- 是否持久化到集群：是
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：是
+- 类型：整数型
+- 默认值：`4`
+- 范围：`[0, 30]`
+- 这个变量用于控制使用运算符 `/` 执行除法操作时，结果增加的小数位数。该功能与 MySQL 保持一致。
+
 ### `error_count`
 
 - 作用域：SESSION
@@ -487,7 +497,7 @@ mysql> SELECT * FROM t1;
 - 类型：整数型
 - 默认值：`1024`
 - 取值范围：`[4, 18446744073709551615]`
-- 表示 `GROUP_CONCAT()` 函数中，项目的最大缓冲区大小。
+- 表示 `GROUP_CONCAT()` 函数缓冲区的最大长度。
 
 ### `have_openssl`
 
@@ -510,7 +520,7 @@ mysql> SELECT * FROM t1;
 - 作用域：NONE
 - 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：否
 - 默认值：（系统主机名）
-- 这个变量一个只读变量，表示 TiDB server 的主机名。
+- 这个变量为只读变量，表示 TiDB server 的主机名。
 
 ### `identity` <span class="version-mark">从 v5.3.0 版本开始引入</span>
 
@@ -585,14 +595,6 @@ mysql> SELECT * FROM t1;
 - 默认值：`Apache License 2.0`
 - 这个变量表示 TiDB 服务器的安装许可证。
 
-### `log_bin`
-
-- 作用域：NONE
-- 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：否
-- 类型：布尔型
-- 默认值：`OFF`
-- 该变量表示是否使用 [TiDB Binlog](/tidb-binlog/tidb-binlog-overview.md)。
-
 ### `max_connections`
 
 - 作用域：GLOBAL
@@ -617,7 +619,7 @@ mysql> SELECT * FROM t1;
 
 > **注意：**
 >
-> - `max_execution_time` 目前只用于控制只读语句的最大执行时长，实际精度在 100ms 级别，而非更准确的毫秒级别。
+> - 在 v6.4.0 之前，`max_execution_time` 对所有类型的语句生效。从 v6.4.0 开始，该变量只用于控制只读语句的最大执行时长。实际精度在 100ms 级别，而非更准确的毫秒级别。
 > - 对于使用了 [`MAX_EXECUTION_TIME`](/optimizer-hints.md#max_execution_timen) Hint 的 SQL 语句，这些语句的最长执行时间将不受该变量限制，而是由该 Hint 进行限制。你也可以使用该 Hint 来创建 SQL 绑定，详情请参考 [SQL 操作常见问题](/faq/sql-faq.md#如何阻止特定的-sql-语句执行或者将某个-sql-语句加入黑名单)。
 
 ### `max_prepared_stmt_count`
@@ -685,11 +687,12 @@ mysql> SHOW GLOBAL VARIABLES LIKE 'max_prepared_stmt_count';
 - 是否持久化到集群：是
 - 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：是
 - 默认值：`UNSPECIFIED`
-- 可选值：`UNSPECIFIED`，`0`，`1`
+- 可选值：`UNSPECIFIED`，`0`，`1`，`2`
 - 该变量用于指定不同版本的 MPP 执行计划。指定后，TiDB 会选择指定版本的 MPP 执行计划。该变量值含义如下：
-    - `UNSPECIFIED`：表示未指定，此时 TiDB 自动选择最新版本 `1`。
+    - `UNSPECIFIED`：表示未指定，此时 TiDB 自动选择最新版本 `2`。
     - `0`：兼容所有 TiDB 集群版本，MPP 版本大于 `0` 的新特性均不会生效。
     - `1`：从 v6.6.0 版本开始引入，用于开启 TiFlash 带压缩的数据交换，详情参见 [MPP Version 和 Exchange 数据压缩](/explain-mpp.md#mpp-version-和-exchange-数据压缩)。
+    - `2`：从 v7.3.0 版本开始引入，用于确保在 TiFlash 执行出错的情况下，获取到准确的报错信息。
 
 ### `password_history` <span class="version-mark">从 v6.5.0 版本开始引入</span>
 
@@ -712,10 +715,6 @@ mysql> SHOW GLOBAL VARIABLES LIKE 'max_prepared_stmt_count';
 - 该变量用于建立密码重用策略，使 TiDB 基于经过时间限制密码重复使用。该变量默认值为 0，表示禁用基于密码经过时间的密码重用策略。当设置该变量为一个正整数 N 时，表示不允许重复使用最近 N 天内使用过的密码。
 
 ### `pd_enable_follower_handle_region` <span class="version-mark">从 v7.6.0 版本开始引入</span>
-
-> **警告：**
->
-> [Active PD Follower](/tune-region-performance.md#通过-active-pd-follower-提升-pd-region-信息查询服务的扩展能力) 目前为实验特性，不建议在生产环境中使用。该功能可能会在未事先通知的情况下发生变化或删除。如果发现 bug，请在 GitHub 上提 [issue](https://github.com/pingcap/tidb/issues) 反馈。
 
 - 作用域：GLOBAL
 - 是否持久化到集群：是
@@ -782,6 +781,7 @@ mysql> SHOW GLOBAL VARIABLES LIKE 'max_prepared_stmt_count';
 - 该变量控制是否所有 TiDB 的连接都在本地 socket 上进行通信，或使用 TLS。详情见[为 TiDB 客户端服务端间通信开启加密传输](/enable-tls-between-clients-and-servers.md)。
 - 该变量设置为 `ON` 时，必须使用开启 TLS 的会话连接到 TiDB，防止在 TLS 配置不正确时出现锁定的情况。
 - 在 v6.1.0 之前这个开关通过 TiDB 配置文件 (`security.require-secure-transport`) 进行配置，升级到 v6.1.0 时会自动继承原有设置。
+- 从 v6.5.6、v7.1.2、v7.5.1 和 v8.0.0 起，当启用了安全增强模式 (SEM) 时，禁止将 `security.require-secure-transport` 设置为 `ON`。
 
 ### `skip_name_resolve` <span class="version-mark">从 v5.2.0 版本开始引入</span>
 
@@ -809,19 +809,6 @@ mysql> SHOW GLOBAL VARIABLES LIKE 'max_prepared_stmt_count';
 - 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：否
 - 默认值：""
 - 使用 MySQL 协议时，tidb-server 所监听的本地 unix 套接字文件。
-
-### `sql_log_bin`
-
-- 作用域：SESSION | GLOBAL
-- 是否持久化到集群：是
-- 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：否
-- 类型：布尔型
-- 默认值：`ON`
-- 表示是否将更改写入 TiDB Binlog。
-
-> **注意：**
->
-> 不建议将 `sql_log_bin` 设置为全局变量，因为 TiDB 的未来版本可能只允许将其设置为会话变量。
 
 ### `sql_mode`
 
@@ -887,6 +874,7 @@ mysql> SHOW GLOBAL VARIABLES LIKE 'max_prepared_stmt_count';
 - 作用域：SESSION | GLOBAL
 - 是否持久化到集群：是
 - 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：否
+- 类型：整数型
 - 默认值：`4096`
 - 取值范围：`[0, 9223372036854775807]`
 - 单位：字节
@@ -930,8 +918,8 @@ mysql> SHOW GLOBAL VARIABLES LIKE 'max_prepared_stmt_count';
 
 - 作用域：NONE
 - 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：否
-- 默认值：`json_array`、`json_array_append`、`json_array_insert`、`json_contains`、`json_contains_path`、`json_depth`、`json_extract`、`json_insert`、`json_keys`、`json_length`、`json_merge_patch`、`json_merge_preserve`、`json_object`、`json_pretty`、`json_quote`、`json_remove`、`json_replace`、`json_search`、`json_set`、`json_storage_size`、`json_type`、`json_unquote`、`json_valid`、`lower`、`md5`、`reverse`、`tidb_shard`、`upper`、`vitess_hash`
-- 这个变量用于显示创建表达式索引所允许使用的函数。
+- 默认值：`json_array, json_array_append, json_array_insert, json_contains, json_contains_path, json_depth, json_extract, json_insert, json_keys, json_length, json_merge_patch, json_merge_preserve, json_object, json_pretty, json_quote, json_remove, json_replace, json_schema_valid, json_search, json_set, json_storage_size, json_type, json_unquote, json_valid, lower, md5, reverse, tidb_shard, upper, vitess_hash`
+- 这个只读变量用于显示创建[表达式索引](/sql-statements/sql-statement-create-index.md#表达式索引)所允许使用的函数。
 
 ### `tidb_allow_mpp` <span class="version-mark">从 v5.0 版本开始引入</span>
 
@@ -941,8 +929,8 @@ mysql> SHOW GLOBAL VARIABLES LIKE 'max_prepared_stmt_count';
 - 类型：布尔型
 - 默认值：`ON`
 - 这个变量用于控制是否使用 TiFlash 的 MPP 模式执行查询，可以设置的值包括：
-    - 0 或 OFF，代表从不使用 MPP 模式
-    - 1 或 ON，代表由优化器根据代价估算选择是否使用 MPP 模式（默认）
+    - `0` 或 `OFF`，代表从不使用 MPP 模式。如果在 v7.3.0 及之后的版本将该变量值设置为 `0` 或 `OFF`，你需要同时开启 [`tidb_allow_tiflash_cop`](/system-variables.md#tidb_allow_tiflash_cop-从-v730-版本开始引入) 变量，否则可能遇到查询报错。
+    - `1` 或 `ON`，代表由优化器根据代价估算选择是否使用 MPP 模式（默认）。
 
 MPP 是 TiFlash 引擎提供的分布式计算框架，允许节点之间的数据交换并提供高性能、高吞吐的 SQL 算法。MPP 模式选择的详细说明参见[控制是否选择 MPP 模式](/tiflash/use-tiflash-mpp-mode.md#控制是否选择-mpp-模式)。
 
@@ -954,27 +942,40 @@ MPP 是 TiFlash 引擎提供的分布式计算框架，允许节点之间的数�
 - 默认值：`OFF`
 - 这个变量用来控制是否允许通过 `ALTER TABLE MODIFY` 或 `ALTER TABLE CHANGE` 来移除某个列的 `AUTO_INCREMENT` 属性。默认 (`OFF`) 为不允许。
 
-### `tidb_analyze_distsql_scan_concurrency` <span class="version-mark">从 v7.6.0 版本开始引入</span>
+### tidb_analyze_column_options <span class="version-mark">从 v8.3.0 版本开始引入</span>
+
+> **注意：**
+>
+> - 该变量只在 [`tidb_analyze_version`](#tidb_analyze_version-从-v510-版本开始引入) 设置为 `2` 时生效。
+> - 如果将 TiDB 集群从 v8.3.0 之前的版本升级至 v8.3.0 或更高版本，该变量会默认设置为 `ALL`，以保持原有行为。
+> - 从 v8.3.0 开始，对于新部署的 TiDB 集群，该变量默认设置为 `PREDICATE`。
 
 - 作用域：GLOBAL
 - 是否持久化到集群：是
 - 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：否
+- 类型：枚举型
+- 默认值：`PREDICATE`
+- 可选值：`ALL`，`PREDICATE`
+- 该变量控制 `ANALYZE TABLE` 语句的行为。将其设置为 `PREDICATE` 表示仅收集 [predicate columns](/statistics.md#收集部分列的统计信息) 的统计信息；将其设置为 `ALL` 表示收集所有列的统计信息。在使用 OLAP 查询的场景中，建议将其设置为 `ALL`，否则查询性能可能会显著下降。
+
+### `tidb_analyze_distsql_scan_concurrency` <span class="version-mark">从 v7.6.0 版本开始引入</span>
+
+- 作用域：SESSION | GLOBAL
+- 是否持久化到集群：是
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：否
 - 类型：整数型
 - 默认值：`4`
-- 范围：`[1, 4294967295]`
+- 范围：`[0, 4294967295]`。在 v8.2.0 之前版本中，最小值为 `1`。当设置为 `0` 时，TiDB 会根据集群规模自适应调整并发度。
 - 这个变量用来设置执行 `ANALYZE` 时 `scan` 操作的并发度。
 
 ### `tidb_analyze_partition_concurrency`
-
-> **警告：**
->
-> 当前版本中该变量控制的功能尚未完全生效，请保留默认值。
 
 - 作用域：SESSION | GLOBAL
 - 是否持久化到集群：是
 - 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：否
 - 默认值：`2`。TiDB v7.4.0 及其之前版本默认值为 `1`。
-- 这个变量用于 TiDB analyze 分区表时，对分区表统计信息进行读写的并发度。
+- 范围：`[1, 128]`。在 v8.4.0 之前版本中，取值范围是 `[1, 18446744073709551615]`。
+- 这个变量用于 TiDB analyze 分区表时，写入分区表统计信息的并发度。
 
 ### `tidb_analyze_version` <span class="version-mark">从 v5.1.0 版本开始引入</span>
 
@@ -985,14 +986,14 @@ MPP 是 TiFlash 引擎提供的分布式计算框架，允许节点之间的数�
 - 默认值：`2`
 - 范围：`[1, 2]`
 - 这个变量用于控制 TiDB 收集统计信息的行为。
-- 在 v5.3.0 及之后的版本中，该变量的默认值为 `2`，具体可参照[统计信息简介](/statistics.md)文档。如果从 v5.3.0 之前版本的集群升级至 v5.3.0 及之后的版本，`tidb_analyze_version` 的默认值不发生变化。
+- 在 v5.3.0 及之后的版本中，该变量的默认值为 `2`，具体可参照[常规统计信息](/statistics.md)文档。如果从 v5.3.0 之前版本的集群升级至 v5.3.0 及之后的版本，`tidb_analyze_version` 的默认值不发生变化。
 
 ### `tidb_analyze_skip_column_types` <span class="version-mark">从 v7.2.0 版本开始引入</span>
 
 - 作用域：SESSION | GLOBAL
 - 是否持久化到集群：是
 - 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：否
-- 默认值："json,blob,mediumblob,longblob"
+- 默认值："json,blob,mediumblob,longblob,mediumtext,longtext"。在 v8.2.0 之前，默认值为 "json,blob,mediumblob,longblob"。
 - 可选值："json,blob,mediumblob,longblob,text,mediumtext,longtext"
 - 这个变量表示在执行 `ANALYZE` 命令收集统计信息时，跳过哪些类型的列的统计信息收集。该变量仅适用于 [`tidb_analyze_version = 2`](#tidb_analyze_version-从-v510-版本开始引入) 的情况。即使使用 `ANALYZE TABLE t COLUMNS c1, ..., cn` 语法指定列，如果指定的列的类型在 `tidb_analyze_skip_column_types` 中，也不会收集该列的统计信息。
 
@@ -1002,7 +1003,7 @@ mysql> SHOW CREATE TABLE t;
 | Table | Create Table                                                                                                                                                                                                             |
 +-------+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
 | t     | CREATE TABLE `t` (
-  `a` int(11) DEFAULT NULL,
+  `a` int DEFAULT NULL,
   `b` varchar(10) DEFAULT NULL,
   `c` json DEFAULT NULL,
   `d` blob DEFAULT NULL,
@@ -1042,6 +1043,16 @@ mysql> SELECT job_info FROM mysql.analyze_jobs ORDER BY end_time DESC LIMIT 1;
 1 row in set (0.00 sec)
 ```
 
+### `tidb_auto_analyze_concurrency` <span class="version-mark">从 v8.4.0 版本开始引入</span>
+
+- 作用域：GLOBAL
+- 是否持久化到集群：是
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：否
+- 类型：整数型
+- 默认值：`1`
+- 范围：`[1, 2147483647]`
+- 这个变量用来设置单个自动统计信息收集任务内部的并发度。在 v8.4.0 之前的版本中，该并发度固定为 `1`。你可以根据集群资源情况提高该并发度，从而加快统计信息收集任务的执行速度。
+
 ### `tidb_auto_analyze_end_time`
 
 - 作用域：GLOBAL
@@ -1053,6 +1064,8 @@ mysql> SELECT job_info FROM mysql.analyze_jobs ORDER BY end_time DESC LIMIT 1;
 
     - `tidb_auto_analyze_start_time='01:00 +0000'`
     - `tidb_auto_analyze_end_time='03:00 +0000'`
+
+- 如果参数中的时间包含时区信息，则使用该时区来解析；否则使用当前会话中 `time_zone` 指定的时区解析。例如 `01:00 +0000` 就是 UTC 时间的凌晨 1:00。
 
 ### `tidb_auto_analyze_partition_batch_size` <span class="version-mark">从 v6.4.0 版本开始引入</span>
 
@@ -1072,8 +1085,8 @@ mysql> SELECT job_info FROM mysql.analyze_jobs ORDER BY end_time DESC LIMIT 1;
 - 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：否
 - 类型：浮点数
 - 默认值：`0.5`
-- 范围：`[0, 18446744073709551615]`
-- 这个变量用来设置 TiDB 在后台自动执行 [`ANALYZE TABLE`](/sql-statements/sql-statement-analyze-table.md) 更新统计信息的阈值。`0.5` 指的是当表中超过 50% 的行被修改时，触发自动 ANALYZE 更新。可以指定 `tidb_auto_analyze_start_time` 和 `tidb_auto_analyze_end_time` 来限制自动 ANALYZE 的时间
+- 范围：`(0, 1]`，v8.0.0 及之前版本范围为 `[0, 18446744073709551615]`。
+- 这个变量用来设置 TiDB 在后台自动执行 [`ANALYZE TABLE`](/sql-statements/sql-statement-analyze-table.md) 更新统计信息的阈值。`0.5` 指的是当表中超过 50% 的行被修改时，触发自动 ANALYZE 更新。可以指定 `tidb_auto_analyze_start_time` 和 `tidb_auto_analyze_end_time` 来限制自动 ANALYZE 的时间。
 
 > **注意：**
 >
@@ -1090,6 +1103,8 @@ mysql> SELECT job_info FROM mysql.analyze_jobs ORDER BY end_time DESC LIMIT 1;
 
     - `tidb_auto_analyze_start_time='01:00 +0000'`
     - `tidb_auto_analyze_end_time='03:00 +0000'`
+
+- 如果参数中的时间包含时区信息，则使用该时区来解析；否则使用当前会话中 `time_zone` 指定的时区解析。例如 `01:00 +0000` 就是 UTC 时间的凌晨 1:00。
 
 ### `tidb_auto_build_stats_concurrency` <span class="version-mark">从 v6.5.0 版本开始引入</span>
 
@@ -1435,17 +1450,18 @@ mysql> SELECT job_info FROM mysql.analyze_jobs ORDER BY end_time DESC LIMIT 1;
 - 作用域：GLOBAL
 - 是否持久化到集群：是
 - 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：否
-- 默认值：`OFF`
+- 默认值：`ON`
 - 这个变量用于控制是否开启 [TiDB 分布式执行框架](/tidb-distributed-execution-framework.md)。开启分布式执行框架后，DDL 和 Import 等将会由集群中多个 TiDB 节点共同完成。
 - 从 TiDB v7.1.0 开始，支持分布式执行分区表的 [`ADD INDEX`](/sql-statements/sql-statement-add-index.md)。
 - 从 TiDB v7.2.0 开始，支持分布式导入任务 [`IMPORT INTO`](/sql-statements/sql-statement-import-into.md)。
+- 从 TiDB v8.1.0 开始，该变量默认开启。如果要从低版本的集群升级到 v8.1.0 或更高版本，且该集群已开启分布式执行框架，为了避免升级期间 `ADD INDEX` 操作可能导致数据索引不一致的问题，请在升级前关闭分布式执行框架（即将 `tidb_enable_dist_task` 设置为 `OFF`），升级后再手动开启。
 - 该变量由 `tidb_ddl_distribute_reorg` 改名而来。
 
 ### `tidb_cloud_storage_uri` <span class="version-mark">从 v7.4.0 版本开始引入</span>
 
-> **警告：**
+> **注意：**
 >
-> 该变量目前为实验特性，不建议在生产环境中使用。该功能可能会在未事先通知的情况下发生变化或删除。如果发现 bug，请在 GitHub 上提 [issue](https://github.com/pingcap/tidb/issues) 反馈。
+> 目前，[全局排序](/tidb-global-sort.md)会使用大量 TiDB 节点的计算与内存资源。对于在线增加索引等同时有用户业务在运行的场景，建议为集群添加新的 TiDB 节点，为这些 TiDB 节点设置 [`tidb_service_scope`](/system-variables.md#tidb_service_scope-从-v740-版本开始引入)，并连接到这些节点上创建任务。这样分布式框架就会将任务调度到这些节点上，将工作负载与其他 TiDB 节点隔离，以减少执行后端任务（如 `ADD INDEX` 和 `IMPORT INTO`）对用户业务的影响。
 
 - 作用域：GLOBAL
 - 是否持久化到集群：是
@@ -1454,7 +1470,7 @@ mysql> SELECT job_info FROM mysql.analyze_jobs ORDER BY end_time DESC LIMIT 1;
 - 该变量用来指定[全局排序](/tidb-global-sort.md)中使用的 Amazon S3 云存储的 URI。在开启 [TiDB 分布式执行框架](/tidb-distributed-execution-framework.md)后，你可以配置 URI 指向具有访问存储所需权限的云存储路径，以此来实现全局排序的功能。更多详情，参考 [Amazon S3 的 URI 格式](/external-storage-uri.md#amazon-s3-uri-格式)。
 - 以下语句支持全局排序功能：
     - [`ADD INDEX`](/sql-statements/sql-statement-add-index.md) 语句。
-    - 用于将数据导入本地部署的 TiDB 的 [`IMPORT INTO`](/sql-statements/sql-statement-import-into.md) 语句。对于 TiDB Cloud，`IMPORT INTO` 语句不适用全局排序。
+    - 用于将数据导入本地部署的 TiDB 的 [`IMPORT INTO`](/sql-statements/sql-statement-import-into.md) 语句。
 
 ### `tidb_ddl_error_count_limit`
 
@@ -1478,7 +1494,7 @@ mysql> SELECT job_info FROM mysql.analyze_jobs ORDER BY end_time DESC LIMIT 1;
 
 ### `tidb_ddl_reorg_batch_size`
 
-- 作用域：GLOBAL
+- 作用域：SESSION | GLOBAL
 - 是否持久化到集群：是
 - 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：否
 - 类型：整数型
@@ -1487,8 +1503,9 @@ mysql> SELECT job_info FROM mysql.analyze_jobs ORDER BY end_time DESC LIMIT 1;
 - 单位：行
 - 这个变量用来设置 DDL 操作 `re-organize` 阶段的 batch size。比如 `ADD INDEX` 操作，需要回填索引数据，通过并发 `tidb_ddl_reorg_worker_cnt` 个 worker 一起回填数据，每个 worker 以 batch 为单位进行回填。
 
-    - 如果 `ADD INDEX` 操作时有较多 `UPDATE` 操作或者 `REPLACE` 等更新操作，batch size 越大，事务冲突的概率也会越大，此时建议调小 batch size 的值，最小值是 32。
-    - 在没有事务冲突的情况下，batch size 可设为较大值（需要参考 worker 数量，见[线上负载与 `ADD INDEX` 相互影响测试](/benchmark/online-workloads-and-add-index-operations.md)），这样回填数据的速度更快，但是 TiKV 的写入压力也会变大。
+    - 当设置 `tidb_ddl_enable_fast_reorg` 为 `OFF` 时，`ADD INDEX` 会通过事务的方式执行，执行时如果 `ADD INDEX` 的目标列有较多 `UPDATE` 或者 `REPLACE` 等更新操作，batch size 设置的值越大，事务冲突的概率也会越大。此时建议调小 batch size 的值，最小值是 32。
+    - 在没有事务冲突的情况下，或者当 `tidb_ddl_enable_fast_reorg` 为 `ON` 时，batch size 可设为较大值，这样回填数据的速度更快，但是 TiKV 的写入压力也会变大。设置 batch size 时需要参考 `tidb_ddl_reorg_worker_cnt` 的设置值，详情见[线上负载与 `ADD INDEX` 相互影响测试](/benchmark/online-workloads-and-add-index-operations.md)。
+    - 从 v8.3.0 版本开始，该参数支持 SESSION 级别的设置，因此修改 GLOBAL 级别的参数值不会影响当前正在运行的 DDL，而只会对新建 SESSION 中提交的 DDL 生效。
 
 ### `tidb_ddl_reorg_priority`
 
@@ -1499,9 +1516,20 @@ mysql> SELECT job_info FROM mysql.analyze_jobs ORDER BY end_time DESC LIMIT 1;
 - 可选值：`PRIORITY_LOW`、`PRIORITY_NORMAL`、`PRIORITY_HIGH`
 - 这个变量用来设置 `ADD INDEX` 操作 `re-organize` 阶段的执行优先级，可设置为 `PRIORITY_LOW`/`PRIORITY_NORMAL`/`PRIORITY_HIGH`。
 
-### `tidb_ddl_reorg_worker_cnt`
+### `tidb_ddl_reorg_max_write_speed` <span class="version-mark">从 v7.5.5 和 v8.5.0 版本开始引入</span>
 
 - 作用域：GLOBAL
+- 是否持久化到集群：是
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：否
+- 类型：整数型
+- 默认值：`0`
+- 范围：`[0, 1125899906842624]`（即最大可设置为 1 PiB）
+- 这个变量用于限制每个 TiKV 节点写入的带宽，仅在开启添加索引加速功能时生效（由变量 [`tidb_ddl_enable_fast_reorg`](#tidb_ddl_enable_fast_reorg-从-v630-版本开始引入) 控制）。在数据量特别大的情况下（如数十亿行数据），降低加索引时写入 TiKV 节点的带宽可以有效减少对业务负载的影响。
+- 默认值 `0` 表示不限制写入带宽。默认单位为字节每秒，也可以通过 `'1GiB'`、`'256MiB'` 等格式设置该变量。
+
+### `tidb_ddl_reorg_worker_cnt`
+
+- 作用域：SESSION | GLOBAL
 - 是否持久化到集群：是
 - 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：否
 - 类型：整数型
@@ -1509,20 +1537,19 @@ mysql> SELECT job_info FROM mysql.analyze_jobs ORDER BY end_time DESC LIMIT 1;
 - 范围：`[1, 256]`
 - 单位：线程
 - 这个变量用来设置 DDL 操作 `re-organize` 阶段的并发度。
+- 从 v8.3.0 版本开始，该参数支持 SESSION 级别的设置，因此修改 GLOBAL 级别的参数值不会影响当前正在运行的 DDL，而只会对新建 SESSION 中提交的 DDL 生效。
 
-### `tidb_ddl_version` <span class="version-mark">从 v7.6.0 版本开始引入</span>
-
-> **警告：**
->
-> 该变量目前为实验特性，不建议在生产环境中使用。该功能可能会在未事先通知的情况下发生变化或删除。如果发现 bug，请在 GitHub 上提 [issue](https://github.com/pingcap/tidb/issues) 反馈。
+### `tidb_enable_fast_create_table` <span class="version-mark">从 v8.0.0 版本开始引入</span>
 
 - 作用域：GLOBAL
 - 是否持久化到集群：是
 - 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：否
-- 默认值：`1`
-- 取值范围：`1` 或 `2`
-- 这个变量用于控制是否开启 [TiDB DDL V2](/ddl-v2.md)。将该变量的值设置为 `2` 可以开启该功能，设置为 `1` 可以关闭该功能。默认值为 `1`。开启后，将使用 TiDB DDL V2 执行 DDL 语句。
-- 从 TiDB v7.6.0 开始，支持加速建表 [`CREATE TABLE`](/sql-statements/sql-statement-create-table.md)。
+- 类型：布尔型
+- 默认值：`ON`。在 v8.5.0 之前，默认值为 `OFF`。
+- 这个变量用于控制是否开启 [TiDB 加速建表](/accelerated-table-creation.md)。
+- 从 TiDB v8.0.0 开始，支持使用 `tidb_enable_fast_create_table` 加速建表 [`CREATE TABLE`](/sql-statements/sql-statement-create-table.md)。
+- 该变量是由 v7.6.0 中引入的 [`tidb_ddl_version`](https://docs.pingcap.com/zh/tidb/v7.6/system-variables#tidb_ddl_version-从-v760-版本开始引入) 更名而来。从 v8.0.0 开始，`tidb_ddl_version` 不再生效。
+- 从 TiDB v8.5.0 开始，新创建的集群默认开启 TiDB 加速建表功能，即 `tidb_enable_fast_create_table` 默认值为 `ON`。如果从 v8.4.0 及之前版本的集群升级至 v8.5.0 及之后的版本，`tidb_enable_fast_create_table` 的默认值不发生变化。
 
 ### `tidb_default_string_match_selectivity` <span class="version-mark">从 v6.2.0 版本开始引入</span>
 
@@ -1542,7 +1569,7 @@ mysql> SELECT job_info FROM mysql.analyze_jobs ORDER BY end_time DESC LIMIT 1;
 
 > **警告：**
 >
-> 该变量将从 TiDB v8.0.0 开始废弃，废弃后不再支持乐观事务的自动重试。作为替代，当事务冲突时，请在应用捕获错误并重试，或改用[悲观事务模式](/pessimistic-transaction.md)。
+> 从 v8.0.0 开始，该变量被废弃。废弃后，TiDB 不再支持乐观事务的自动重试。作为替代，当使用乐观事务模式发生冲突时，请在应用里捕获错误并重试，或改用[悲观事务模式](/pessimistic-transaction.md)。
 
 - 作用域：SESSION | GLOBAL
 - 是否持久化到集群：是
@@ -1571,6 +1598,9 @@ mysql> SELECT job_info FROM mysql.analyze_jobs ORDER BY end_time DESC LIMIT 1;
 - 这个变量用来设置 scan 操作的并发度。
 - AP 类应用适合较大的值，TP 类应用适合较小的值。对于 AP 类应用，最大值建议不要超过所有 TiKV 节点的 CPU 核数。
 - 若表的分区较多可以适当调小该参数（取决于扫描数据量的大小以及扫描频率），避免 TiKV 内存溢出 (OOM)。
+- 对于仅包含 `LIMIT` 子句的简单查询，如果 `LIMIT` 行数小于 100000，该查询的 scan 操作被下推到 TiKV 时，会将该变量的值视为 `1` 进行处理，以提升执行效率。
+- 对于查询语句 `SELECT MAX/MIN(col) FROM ...`，如果 `col` 列有索引且该索引的顺序与 `MAX(col)` 或 `MIN(col)` 函数所需的顺序一致，TiDB 会将该查询改写为 `SELECT col FROM ... LIMIT 1` 进行处理，该变量的值也将视为 `1` 进行处理。例如，对于 `SELECT MIN(col) FROM ...`，如果 `col` 列有升序排列的索引，TiDB 通过将该查询改写为 `SELECT col FROM ... LIMIT 1`，可以直接读取该索引中第一条数据，从而快速得到 `MIN(col)` 值。
+- 在对 [`SLOW_QUERY`](/information-schema/information-schema-slow-query.md) 表进行查询时，此变量可以控制解析慢日志文件的并发度。
 
 ### `tidb_dml_batch_size`
 
@@ -1593,6 +1623,21 @@ mysql> SELECT job_info FROM mysql.analyze_jobs ORDER BY end_time DESC LIMIT 1;
 >
 > 自 v7.0.0 起，`tidb_dml_batch_size` 对 [`LOAD DATA` 语句](/sql-statements/sql-statement-load-data.md)不再生效。
 
+### `tidb_dml_type` <span class="version-mark">从 v8.0.0 版本开始引入</span>
+
+> **警告：**
+>
+> 批量 DML 执行方式 (`tidb_dml_type = "bulk"`) 目前为实验特性，不建议在生产环境中使用。该功能可能会在未事先通知的情况下发生变化或删除。如果发现 bug，请在 GitHub 上提 [issue](https://github.com/pingcap/tidb/issues) 反馈。在当前版本中，使用批量 DML 执行方式执行超大事务时，可能会影响 TiCDC、TiFlash 和 TiKV 的 resolved-ts 模块的内存使用和执行效率，可能引发 OOM 问题。此外，BR 在遇到锁时也可能被阻塞无法继续执行。因此，不建议在启用这些组件和功能时使用。
+
+- 作用域：SESSION
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：是
+- 类型：字符串
+- 默认值：`"standard"`
+- 可选值：`"standard"`、`"bulk"`
+- 该变量用来设置 DML 语句的执行方式。
+    - `"standard"` 表示使用标准的 DML 执行方式，TiDB 事务在提交前缓存在内存中。适用于处理高并发且可能存在冲突的事务场景，为默认推荐使用的执行方式。
+    - `"bulk"` 表示使用 Pipelined DML 执行方式，适合于处理因大量数据写入导致 TiDB 内存使用过多的情况。更多信息，请参考 [Pipelined DML](/pipelined-dml.md)。
+
 ### `tidb_enable_1pc` <span class="version-mark">从 v5.0 版本开始引入</span>
 
 - 作用域：SESSION | GLOBAL
@@ -1605,7 +1650,6 @@ mysql> SELECT job_info FROM mysql.analyze_jobs ORDER BY end_time DESC LIMIT 1;
 > **注意：**
 >
 > - 对于新创建的集群，默认值为 ON。对于升级版本的集群，如果升级前是 v5.0 以下版本，升级后默认值为 `OFF`。
-> - 启用 TiDB Binlog 后，开启该选项无法获得性能提升。要获得性能提升，建议使用 [TiCDC](/ticdc/ticdc-overview.md) 替代 TiDB Binlog。
 > - 启用该参数仅意味着一阶段提交成为可选的事务提交模式，实际由 TiDB 自行判断选择最合适的提交模式进行事务提交。
 
 ### `tidb_enable_analyze_snapshot` <span class="version-mark">从 v6.2.0 版本开始引入</span>
@@ -1634,7 +1678,6 @@ mysql> SELECT job_info FROM mysql.analyze_jobs ORDER BY end_time DESC LIMIT 1;
 > **注意：**
 >
 > - 对于新创建的集群，默认值为 ON。对于升级版本的集群，如果升级前是 v5.0 以下版本，升级后默认值为 `OFF`。
-> - 启用 TiDB Binlog 后，开启该选项无法获得性能提升。要获得性能提升，建议使用 [TiCDC](/ticdc/ticdc-overview.md) 替代 TiDB Binlog。
 > - 启用该参数仅意味着 Async Commit 成为可选的事务提交模式，实际由 TiDB 自行判断选择最合适的提交模式进行事务提交。
 
 ### `tidb_enable_auto_analyze` <span class="version-mark">从 v6.1.0 版本开始引入</span>
@@ -1646,6 +1689,15 @@ mysql> SELECT job_info FROM mysql.analyze_jobs ORDER BY end_time DESC LIMIT 1;
 - 默认值：`ON`
 - 该变量控制 TiDB 是否以后台操作自动更新表的统计信息。
 - 在 v6.1.0 之前这个开关通过 TiDB 配置文件 (`performance.run-auto-analyze`) 进行配置，升级到 v6.1.0 时会自动继承原有设置。
+
+### `tidb_enable_auto_analyze_priority_queue` <span class="version-mark">从 v8.0.0 版本开始引入</span>
+
+- 作用域：GLOBAL
+- 是否持久化到集群：是
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：否
+- 类型：布尔型
+- 默认值：`ON`
+- 该变量控制是否启用优先队列来调度自动收集统计信息的任务。开启该变量后，TiDB 会优先收集那些更有收集价值的表，例如新创建的索引、发生分区变更的分区表等。同时，TiDB 也会优先处理那些健康度较低的表，将它们安排在队列的前端。
 
 ### `tidb_enable_auto_increment_in_generated`
 
@@ -1719,13 +1771,13 @@ mysql> SELECT job_info FROM mysql.analyze_jobs ORDER BY end_time DESC LIMIT 1;
 - 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：否
 - 类型：布尔型
 - 默认值：`ON`
-- 这个变量用于控制是否同时将各个执行算子的执行信息记录入 slow query log 中。
+- 这个变量用于控制是否同时将各个执行算子的执行信息记录入 slow query log 中，以及是否维护[访问索引有关的统计信息](/information-schema/information-schema-tidb-index-usage.md)。
 
 ### `tidb_enable_column_tracking` <span class="version-mark">从 v5.4.0 版本开始引入</span>
 
 > **警告：**
 >
-> 收集 `PREDICATE COLUMNS` 的统计信息目前为实验特性，不建议在生产环境中使用。
+> 从 v8.3.0 开始，该变量被废弃，TiDB 默认收集 [predicate columns](/glossary.md#predicate-columns) 的统计信息。更多信息，参见 [`tidb_analyze_column_options`](#tidb_analyze_column_options-从-v830-版本开始引入)。
 
 - 作用域：GLOBAL
 - 是否持久化到集群：是
@@ -1756,6 +1808,25 @@ mysql> SELECT job_info FROM mysql.analyze_jobs ORDER BY end_time DESC LIMIT 1;
     - `RESTRICTED_VARIABLES_ADMIN`：能够在 `SHOW [GLOBAL] VARIABLES` 和 `SET` 命令中查看和设置包含敏感内容的变量。
     - `RESTRICTED_USER_ADMIN`：能够阻止其他用户更改或删除用户帐户。
     - `RESTRICTED_CONNECTION_ADMIN`：能够阻止其它用户使用 `KILL` 语句终止连接。
+
+### `tidb_enable_exchange_partition`
+
+- 作用域：SESSION | GLOBAL
+- 是否持久化到集群：是
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：否
+- 类型：布尔型
+- 默认值：`ON`
+- 该变量用于设置是否启用 [`exchange partitions with tables`](/partitioned-table.md#分区管理) 特性。默认值为 `ON`，即默认开启该功能。
+- 该变量自 v6.3.0 开始废弃，其取值将固定为默认值 `ON`，即默认开启 `exchange partitions with tables`。
+
+### `tidb_enable_extended_stats`
+
+- 作用域：SESSION | GLOBAL
+- 是否持久化到集群：是
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：是
+- 类型：布尔型
+- 默认值：`OFF`
+- 该变量指定 TiDB 是否收集[扩展统计信息](/extended-statistics.md)来指导优化器。
 
 ### `tidb_enable_external_ts_read` <span class="version-mark">从 v6.4.0 版本开始引入</span>
 
@@ -1800,25 +1871,6 @@ mysql> SELECT job_info FROM mysql.analyze_jobs ORDER BY end_time DESC LIMIT 1;
     - 如果尚未提交的事务为非只读事务，在事务内执行写入的 SQL 语句会被拒绝。
     - 如果尚未提交的事务已经有数据改动，其提交也会被拒绝。
 - 当集群开启只读模式后，所有用户（包括 `SUPER` 用户）都无法执行可能写入数据的 SQL 语句，除非该用户被显式地授予了 `RESTRICTED_REPLICA_WRITER_ADMIN` 权限。
-
-### `tidb_enable_exchange_partition`
-
-- 作用域：SESSION | GLOBAL
-- 是否持久化到集群：是
-- 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：否
-- 类型：布尔型
-- 默认值：`ON`
-- 该变量用于设置是否启用 [`exchange partitions with tables`](/partitioned-table.md#分区管理) 特性。默认值为 `ON`，即默认开启该功能。
-- 该变量自 v6.3.0 开始废弃，其取值将固定为默认值 `ON`，即默认开启 `exchange partitions with tables`。
-
-### `tidb_enable_extended_stats`
-
-- 作用域：SESSION | GLOBAL
-- 是否持久化到集群：是
-- 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：是
-- 类型：布尔型
-- 默认值：`OFF`
-- 该变量指定 TiDB 是否收集扩展统计信息来指导优化器。
 
 ### `tidb_enable_fast_analyze`
 
@@ -1876,9 +1928,30 @@ mysql> SELECT job_info FROM mysql.analyze_jobs ORDER BY end_time DESC LIMIT 1;
 - 是否持久化到集群：是
 - 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：否
 - 类型：布尔型
+- 默认值：`ON`
+- 该变量控制是否支持为分区表创建[全局索引](/partitioned-table.md#全局索引)。启用此变量后，你可以通过在索引定义中添加 `GLOBAL` 选项创建不包含分区表达式中所有列的唯一索引。
+- 从 v8.4.0 开始，该变量被废弃。其值将固定为默认值 `ON`，即默认启用[全局索引](/partitioned-table.md#全局索引)。
+
+### `tidb_enable_lazy_cursor_fetch` <span class="version-mark">从 v8.3.0 版本开始引入</span>
+
+> **警告：**
+>
+> 该变量控制的功能为实验特性，不建议在生产环境中使用。该功能可能会在未事先通知的情况下发生变化或删除。如果发现 bug，请在 GitHub 上提 [issue](https://github.com/pingcap/tidb/issues) 反馈。
+
+- 作用域：GLOBAL
+- 是否持久化到集群：是
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：否
+- 类型：布尔型
 - 默认值：`OFF`
 - 可选值：`OFF`，`ON`
-- 这个变量用于控制是否支持对分区表创建 `Global index`。`Global index` 当前正处于开发阶段，**不推荐修改该变量值**。
+- 这个变量用于控制 [Cursor Fetch](/develop/dev-guide-connection-parameters.md#使用-streamingresult-流式获取执行结果) 功能的行为。
+    - 当开启 Cursor Fetch 且该变量设置为 `OFF` 时，TiDB 会在语句开始执行时将所有数据读取完成并保存至 TiDB 内存，在后续客户端读取的过程中会依据客户端指定的 `FetchSize` 返回给客户端。如果结果集过大，可能会触发落盘临时将结果写入硬盘。
+    - 当开启 Cursor Fetch 且该变量设置为 `ON` 时，TiDB 不会一次把所有数据读取到 TiDB 节点，而是会随着客户端的读取不断将数据读到 TiDB 节点。
+- 该变量控制的功能存在以下限制：
+    - 不支持处于显式事务中的语句。
+    - 当前仅支持包含且仅包含 `TableReader`、`IndexReader`、`IndexLookUp`、`Projection`、`Selection` 算子的执行计划。
+    - 对于使用 Lazy Cursor Fetch 的语句，执行信息将不会出现在 [statements summary](/statement-summary-tables.md) 和[慢查询日志](/identify-slow-queries.md)中。
+- 对于暂不支持的场景，其行为与将变量设置为 `OFF` 时一致。
 
 ### `tidb_enable_non_prepared_plan_cache`
 
@@ -1918,8 +1991,8 @@ mysql> SELECT job_info FROM mysql.analyze_jobs ORDER BY end_time DESC LIMIT 1;
 - 是否持久化到集群：是
 - 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：否
 - 类型：布尔型
-- 默认值：`ON`
-- 这个变量用来控制是否开启历史统计信息。默认值为 `ON` 表示默认开启历史统计信息。
+- 默认值：`OFF`。在 v8.2.0 之前，默认值为 `ON`。
+- 这个变量用来控制是否开启历史统计信息。默认值为 `OFF`，表示默认关闭历史统计信息。
 
 ### `tidb_enable_historical_stats_for_capture`
 
@@ -1977,6 +2050,7 @@ mysql> SELECT job_info FROM mysql.analyze_jobs ORDER BY end_time DESC LIMIT 1;
 - 类型：布尔型
 - 默认值：`ON`
 - 这个变量用来设置是否开启 `LIST (COLUMNS) TABLE PARTITION` 特性。
+- 从 v8.4.0 开始，该变量被废弃。其值将固定为默认值 `ON`，即默认启用 [List 分区](/partitioned-table.md#list-分区)。
 
 ### `tidb_enable_local_txn`
 
@@ -2089,8 +2163,22 @@ mysql> SELECT job_info FROM mysql.analyze_jobs ORDER BY end_time DESC LIMIT 1;
 - 是否持久化到集群：是
 - 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：是
 - 类型：布尔型
+- 默认值：`ON`。TiDB v8.3.0 及之前版本默认值为 `OFF`。
+- 该变量用于控制当内表上有 `Selection`、`Projection` 或 `Aggregation` 算子时是否支持 Index Join。`OFF` 表示不支持。
+- 如果将集群从 v7.0.0 之前版本升级至 v8.4.0 或之后的版本，该变量默认值为 `OFF`，即默认不支持 Index Join。
+
+### `tidb_enable_instance_plan_cache` <span class="version-mark">从 v8.4.0 版本开始引入</span>
+
+> **警告：**
+>
+> Instance Plan Cache 目前为实验特性，不建议在生产环境中使用。该功能可能会在未事先通知的情况下发生变化或删除。如果发现 bug，请在 GitHub 上提 [issue](https://github.com/pingcap/tidb/issues) 反馈。
+
+- 作用域：GLOBAL
+- 是否持久化到集群：是
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：否
+- 类型：布尔型
 - 默认值：`OFF`
-- 该变量用于控制当内表上有 `Selection`/`Projection` 算子时是否支持 Index Join。`OFF` 表示不支持。
+- 这个变量用于控制是否开启 Instance Plan Cache 功能。该功能实现实例级执行计划缓存，允许同一个 TiDB 实例的所有会话共享执行计划缓存，从而提升内存利用率。开启该功能之前，建议关闭会话级别的 [Prepare 语句执行计划缓存](/sql-prepared-plan-cache.md)和[非 Prepare 语句执行计划缓存](/sql-non-prepared-plan-cache.md)。
 
 ### `tidb_enable_ordered_result_mode`
 
@@ -2129,6 +2217,15 @@ mysql> SELECT job_info FROM mysql.analyze_jobs ORDER BY end_time DESC LIMIT 1;
 - 默认值：`OFF`
 - 这个变量用于控制是否开启 Apply 算子并发，并发数由 `tidb_executor_concurrency` 变量控制。Apply 算子用来处理关联子查询且默认无并发，所以执行速度较慢。打开 Apply 并发开关可增加并发度，提高执行速度。目前默认关闭。
 
+### `tidb_enable_parallel_hashagg_spill` <span class="version-mark">从 v8.0.0 版本开始引入</span>
+
+- 作用域：SESSION | GLOBAL
+- 是否持久化到集群：是
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：否
+- 类型：布尔型
+- 默认值：`ON`
+- 这个变量用来控制 TiDB 是否支持并行 HashAgg 进行落盘。当该变量设置为 `ON` 时，在任意并发条件下，HashAgg 算子都可以根据内存使用情况自动触发数据落盘，从而兼顾性能和数据处理量。因此，不推荐将此变量修改为 `OFF`。从 v8.2.0 开始，将该变量设置为 `OFF` 时会产生警告。该变量将在未来版本中废弃。
+
 ### `tidb_enable_pipelined_window_function`
 
 - 作用域：SESSION | GLOBAL
@@ -2136,7 +2233,7 @@ mysql> SELECT job_info FROM mysql.analyze_jobs ORDER BY end_time DESC LIMIT 1;
 - 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：否
 - 类型：布尔型
 - 默认值：`ON`
-- 该变量指定是否对窗口函数采用流水线的执行算法。
+- 该变量指定是否对[窗口函数](/functions-and-operators/window-functions.md)采用流水线的执行算法。
 
 ### `tidb_enable_plan_cache_for_param_limit` <span class="version-mark">从 v6.6.0 版本开始引入</span>
 
@@ -2235,6 +2332,16 @@ mysql> SELECT job_info FROM mysql.analyze_jobs ORDER BY end_time DESC LIMIT 1;
 - 可选值：`OFF`，`ON`
 - 该变量用于控制 TiDB 是否启用 Chunk 对象缓存。如果为 `ON`，则优先使用缓存中的 Chunk 对象，缓存中找不到申请的对象时才会从系统内存中申请。如果为 `OFF`，则直接从系统内存中申请 Chunk 对象。
 
+### `tidb_enable_shared_lock_promotion` <span class="version-mark">从 v8.3.0 版本开始引入</span>
+
+- 作用域：SESSION | GLOBAL
+- 是否持久化到集群：是
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：否
+- 类型：布尔型
+- 默认值：`OFF`
+- 该变量用于控制是否启用共享锁升级为排他锁的功能。TiDB 默认不支持 `SELECT LOCK IN SHARE MODE`，当该变量值为 `ON` 时，TiDB 会尝试将 `SELECT LOCK IN SHARE MODE` 语句升级为 `SELECT FOR UPDATE` 并真正加悲观锁。该变量默认值为 `OFF`，表示不启用共享锁升级为排他锁的功能。
+- 无论 [`tidb_enable_noop_functions`](#tidb_enable_noop_functions-从-v40-版本开始引入) 是否开启，启用该变量都会对 `SELECT LOCK IN SHARE MODE` 语句生效。
+
 ### `tidb_enable_slow_log`
 
 - 作用域：GLOBAL
@@ -2243,6 +2350,15 @@ mysql> SELECT job_info FROM mysql.analyze_jobs ORDER BY end_time DESC LIMIT 1;
 - 类型：布尔型
 - 默认值：`ON`
 - 这个变量用于控制是否开启 slow log 功能。
+
+### `tidb_enable_stats_owner` <span class="version-mark">从 v8.4.0 版本开始引入</span>
+
+- 作用域：GLOBAL
+- 是否持久化到集群：否，仅作用于当前连接的 TiDB 实例
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：否
+- 默认值：`ON`
+- 可选值：`OFF`、`ON`
+- 用于设置该 TiDB 实例是否可以运行[统计信息自动更新](/statistics.md#自动更新)任务。若当前 TiDB 集群中只有一台 TiDB 实例，则不能禁止该实例运行统计信息自动更新，即不能设置为 `OFF`。
 
 ### `tidb_enable_stmt_summary` <span class="version-mark">从 v3.0.4 版本开始引入</span>
 
@@ -2285,20 +2401,20 @@ Query OK, 0 rows affected (0.09 sec)
 - 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：否
 - 默认值：`ON`
 - 类型：枚举型
-- 可选值：`OFF`，`ON`，`AUTO`
-- 这个变量用来设置是否开启 `TABLE PARTITION` 特性。目前变量支持以下三种值：
-    - 默认值 `ON` 表示开启 TiDB 当前已实现了的分区表类型，目前 Range partition、Hash partition 以及 Range column 单列的场景会生效。
-    - `AUTO` 目前作用和 `ON` 一样。
-    - `OFF` 表示关闭 `TABLE PARTITION` 特性，此时语法还是保持兼容，只是创建的表并不是真正的分区表，而是普通的表。
+- 从 v8.4.0 开始，该变量被废弃。其值将固定为默认值 `ON`，即默认启用[分区表](/partitioned-table.md)。
 
-### `tidb_enable_telemetry` <span class="version-mark">从 v4.0.2 版本开始引入</span>
+### `tidb_enable_telemetry` <span class="version-mark">从 v4.0.2 版本开始引入，从 v8.1.0 版本开始废弃</span>
+
+> **警告：**
+>
+> 从 TiDB v8.1.0 开始，TiDB 已移除遥测功能，该变量已不再生效。保留该变量仅用于与之前版本兼容。
 
 - 作用域：GLOBAL
 - 是否持久化到集群：是
 - 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：否
 - 类型：布尔型
 - 默认值：`OFF`
-- 这个变量用于动态地控制 TiDB 遥测功能是否开启，当前版本默认关闭 TiDB 的遥测功能。当所有 TiDB 实例都设置配置项 [`enable-telemetry`](/tidb-configuration-file.md#enable-telemetry-从-v402-版本开始引入) 为 `false` 时，将忽略该系统变量，并总是关闭 TiDB 遥测功能。参阅[遥测](/telemetry.md)了解该功能详情。
+- 在 v8.1.0 之前，这个变量用于动态地控制 TiDB 遥测功能是否开启。
 
 ### `tidb_enable_tiflash_read_for_write_stmt` <span class="version-mark">从 v6.3.0 版本开始引入</span>
 
@@ -2346,7 +2462,8 @@ Query OK, 0 rows affected (0.09 sec)
 
 > **注意：**
 >
-> 如果 PD leader 的 TSO RPC 延迟升高，但其现象并非由 CPU 使用率达到瓶颈而导致（可能存在网络等问题），此时，打开 TSO Follower Proxy 可能会导致 TiDB 的语句执行延迟上升，从而影响集群的 QPS 表现。
+> - 如果 PD leader 的 TSO RPC 延迟升高，但其现象并非由 CPU 使用率达到瓶颈而导致（可能存在网络等问题），此时，打开 TSO Follower Proxy 可能会导致 TiDB 的语句执行延迟上升，从而影响集群的 QPS 表现。
+> - 该功能与 [`tidb_tso_client_rpc_mode`](#tidb_tso_client_rpc_mode-从-v840-版本开始引入) 不兼容。启用该功能将导致 [`tidb_tso_client_rpc_mode`](#tidb_tso_client_rpc_mode-从-v840-版本开始引入) 不生效。
 
 ### `tidb_enable_unsafe_substitute` <span class="version-mark">从 v6.3.0 版本开始引入</span>
 
@@ -2373,7 +2490,7 @@ Query OK, 0 rows affected (0.09 sec)
 - 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：否
 - 类型：布尔型
 - 默认值：`ON`
-- 这个变量用来控制是否开启窗口函数的支持。默认值 1 代表开启窗口函数的功能。
+- 这个变量用来控制是否开启[窗口函数](/functions-and-operators/window-functions.md)的支持。
 - 由于窗口函数会使用一些保留关键字，可能导致原先可以正常执行的 SQL 语句在升级 TiDB 后无法被解析语法，此时可以将 `tidb_enable_window_function` 设置为 `OFF`。
 
 ### `tidb_enable_row_level_checksum` <span class="version-mark">从 v7.1.0 版本开始引入</span>
@@ -2384,6 +2501,7 @@ Query OK, 0 rows affected (0.09 sec)
 - 类型：布尔型
 - 默认值：`OFF`
 - 这个变量用于控制是否开启 [TiCDC 单行数据正确性校验](/ticdc/ticdc-integrity-check.md)功能。
+- 你可以使用 [`TIDB_ROW_CHECKSUM()`](/functions-and-operators/tidb-functions.md#tidb_row_checksum) 函数查询行数据的 Checksum 值。
 
 ### `tidb_enforce_mpp` <span class="version-mark">从 v5.1 版本开始引入</span>
 
@@ -2449,7 +2567,7 @@ MPP 是 TiFlash 引擎提供的分布式计算框架，允许节点之间的数�
 - 范围：`[1, 256]`
 - 单位：线程
 
-变量用来统一设置各个 SQL 算子的并发度，包括：
+该变量用来统一设置各个 SQL 算子的并发度，包括：
 
 - `index lookup`
 - `index lookup join`
@@ -2457,6 +2575,7 @@ MPP 是 TiFlash 引擎提供的分布式计算框架，允许节点之间的数�
 - `hash aggregation`（partial 和 final 阶段）
 - `window`
 - `projection`
+- `sort`
 
 `tidb_executor_concurrency` 整合了已有的系统变量，方便管理。这些变量所列如下：
 
@@ -2505,6 +2624,10 @@ v5.0 后，用户仍可以单独修改以上系统变量（会有废弃警告）
 - 这个变量用于改变 TiDB server 上执行的语句的默认优先级。例如，你可以通过设置该变量来确保正在执行 OLAP 查询的用户优先级低于正在执行 OLTP 查询的用户。
 - 默认值 `NO_PRIORITY` 表示不强制改变执行语句的优先级。
 
+> **注意：**
+>
+> TiDB 从 v6.6.0 版本开始支持[使用资源管控 (Resource Control) 实现资源隔离](/tidb-resource-control.md)功能。该功能可以将不同优先级的语句放在不同的资源组中执行，并为这些资源组分配不同的配额和优先级，可以达到更好的资源管控效果。在开启资源管控功能后，语句的调度主要受资源组的控制，`PRIORITY` 将不再生效。建议在支持资源管控的版本优先使用资源管控功能。
+
 ### `tidb_gc_concurrency` <span class="version-mark">从 v5.0 版本开始引入</span>
 
 - 作用域：GLOBAL
@@ -2512,9 +2635,14 @@ v5.0 后，用户仍可以单独修改以上系统变量（会有废弃警告）
 - 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：否
 - 类型：整数型
 - 默认值：`-1`
-- 范围：`[1, 256]`
+- 范围：`-1` 或 `[1, 256]`
 - 单位：线程
-- 这个变量用于指定 GC 在[Resolve Locks（清理锁）](/garbage-collection-overview.md#resolve-locks清理锁)步骤中线程的数量。默认值 `-1` 表示由 TiDB 自主判断运行 GC 要使用的线程的数量。
+- 该变量用于控制[垃圾回收 (GC)](/garbage-collection-overview.md) 过程中 [Resolve Locks（清理锁）](/garbage-collection-overview.md#resolve-locks清理锁)的并发线程数。
+- 从 v8.3.0 开始，该变量也用于控制 GC 过程中 [Delete Range（删除区间）](/garbage-collection-overview.md#delete-ranges删除区间)的并发线程数。
+- 默认情况下，该变量值为 `-1`，TiDB 将根据负载情况自动决定适当的线程数。
+- 当设置为 `[1, 256]` 之间的数时：
+    - Resolve Locks（清理锁）直接使用该变量设定值作为线程数。
+    - Delete Range（删除区间）使用该变量设定值的 1/4 作为线程数。
 
 ### `tidb_gc_enable` <span class="version-mark">从 v5.0 版本开始引入</span>
 
@@ -2621,7 +2749,7 @@ v5.0 后，用户仍可以单独修改以上系统变量（会有废弃警告）
 - 默认值：`ON`
 - 这个变量用于指定是否在 slow log 和 statement summary 里包含以二进制格式编码的执行计划。
 - 开启该变量后，即可在 TiDB Dashboard 中查看查询的图形化执行计划。注意，TiDB Dashboard 只显示变量开启时产生的查询的执行计划。
-- 用 `select tidb_decode_binary_plan('xxx...')` SQL 语句可以从编码后的执行计划解析出具体的执行计划。
+- 用 [`SELECT tidb_decode_binary_plan('xxx...')`](/functions-and-operators/tidb-functions.md#tidb_decode_binary_plan) SQL 语句可以从编码后的执行计划解析出具体的执行计划。
 
 ### `tidb_gogc_tuner_max_value` <span class="version-mark">从 v7.5.0 版本开始引入</span>
 
@@ -2688,6 +2816,24 @@ v5.0 后，用户仍可以单独修改以上系统变量（会有废弃警告）
 - 单位：线程
 - 这个变量用来设置 hash join 算法的并发度。
 - 默认值 `-1` 表示使用 `tidb_executor_concurrency` 的值。
+
+### `tidb_hash_join_version` <span class="version-mark">从 v8.4.0 版本开始引入</span>
+
+> **警告：**
+>
+> 该变量控制的功能为实验特性，不建议在生产环境中使用。该功能可能会在未事先通知的情况下发生变化或删除。如果发现 bug，请在 GitHub 上提 [issue](https://github.com/pingcap/tidb/issues) 反馈。
+
+- 作用域：SESSION | GLOBAL
+- 是否持久化到集群：是
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：是
+- 类型：枚举型
+- 默认值：`legacy`
+- 可选值：`legacy`、`optimized`
+- 控制 TiDB 是否使用 Hash Join 算子的优化版。默认值为 `legacy`，代表不使用优化版。若设置为 `optimized`，TiDB 在执行 Hash Join 算子时将使用其优化版，以提升 Hash Join 性能。
+
+> **注意：**
+>
+> 目前，仅 Inner Join 和 Outer Join 类型的连接操作支持优化版的 Hash Join。对于其他类型的连接操作，即使将该变量设成 `optimized`，TiDB 也不会使用优化版的 Hash Join。
 
 ### `tidb_hashagg_final_concurrency`
 
@@ -2848,6 +2994,34 @@ v5.0 后，用户仍可以单独修改以上系统变量（会有废弃警告）
 - 单位：行
 - 这个变量用来设置执行过程中初始 chunk 的行数。默认值是 32，可设置的范围是 1～32。chunk 行数直接影响单个查询所需的内存。可以按照查询中所有的列的总宽度和 chunk 行数来粗略估算单个 chunk 所需内存，并结合执行器的并发数来粗略估算单个查询所需内存总量。建议单个 chunk 内存总量不要超过 16 MiB。
 
+### `tidb_instance_plan_cache_reserved_percentage` <span class="version-mark">从 v8.4.0 版本开始引入</span>
+
+> **警告：**
+>
+> Instance Plan Cache 目前为实验特性，不建议在生产环境中使用。该功能可能会在未事先通知的情况下发生变化或删除。如果发现 bug，请在 GitHub 上提 [issue](https://github.com/pingcap/tidb/issues) 反馈。
+
+- 作用域：GLOBAL
+- 是否持久化到集群：是
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：否
+- 类型：浮点型
+- 默认值：`0.1`
+- 范围：`[0, 1]`
+- 这个变量用于控制内存驱逐后 [Instance Plan Cache](/system-variables.md#tidb_enable_instance_plan_cache-从-v840-版本开始引入) 的空闲内存百分比。当 Instance Plan Cache 使用的内存达到 [`tidb_instance_plan_cache_max_size`](#tidb_instance_plan_cache_max_size-从-v840-版本开始引入) 设置的上限时，TiDB 会按照 Least Recently Used (LRU) 算法开始驱逐内存中的执行计划，直到空闲内存比例超过 [`tidb_instance_plan_cache_reserved_percentage`](#tidb_instance_plan_cache_reserved_percentage-从-v840-版本开始引入) 设定的值。
+
+### `tidb_instance_plan_cache_max_size` <span class="version-mark">从 v8.4.0 版本开始引入</span>
+
+> **警告：**
+>
+> Instance Plan Cache 目前为实验特性，不建议在生产环境中使用。该功能可能会在未事先通知的情况下发生变化或删除。如果发现 bug，请在 GitHub 上提 [issue](https://github.com/pingcap/tidb/issues) 反馈。
+
+- 作用域：GLOBAL
+- 是否持久化到集群：是
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：否
+- 类型：整数型
+- 默认值：`125829120`（即 120 MiB）
+- 单位：字节
+- 这个变量用于设置 [Instance Plan Cache](/system-variables.md#tidb_enable_instance_plan_cache-从-v840-版本开始引入) 的最大内存使用量。
+
 ### `tidb_isolation_read_engines` <span class="version-mark">从 v4.0 版本开始引入</span>
 
 - 作用域：SESSION
@@ -2906,6 +3080,17 @@ v5.0 后，用户仍可以单独修改以上系统变量（会有废弃警告）
 - 类型：字符串
 - 这个变量用来设置基于负载的 replica read 的触发阈值。当 leader 节点的预估排队时间超过阈值时，TiDB 会优先从 follower 节点读取数据。格式为时间，例如 `"100ms"` 或 `"1s"`。详情见 [TiDB 热点问题处理](/troubleshoot-hot-spot-issues.md#打散读热点)。
 
+### `tidb_load_binding_timeout` <span class="version-mark">从 v8.0.0 版本开始引入</span>
+
+- 作用域：GLOBAL
+- 是否持久化到集群：是
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：否
+- 类型：整数型
+- 默认值：`200`
+- 范围：`(0, 2147483647]`
+- 单位：毫秒
+- 这个变量用来控制加载 binding 的超时时间。当加载 binding 的执行时间超过该值时，会停止加载。
+
 ### `tidb_lock_unchanged_keys` <span class="version-mark">从 v7.1.1 和 v7.3.0 版本开始引入</span>
 
 - 作用域：SESSION | GLOBAL
@@ -2930,12 +3115,24 @@ v5.0 后，用户仍可以单独修改以上系统变量（会有废弃警告）
 
 ### `tidb_low_resolution_tso`
 
-- 作用域：SESSION
+- 作用域：SESSION | GLOBAL
 - 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：否
 - 类型：布尔型
 - 默认值：`OFF`
-- 这个变量用来设置是否启用低精度 TSO 特性。开启该功能之后，新事务会使用一个每 2s 更新一次的 TS 来读取数据。
+- 这个变量用来设置是否启用低精度 TSO 特性。开启该功能之后，TiDB 使用缓存 Timestamp 来读取数据。缓存 Timestamp 默认每 2 秒更新一次。从 v8.0.0 开始，你可以通过 [`tidb_low_resolution_tso_update_interval`](#tidb_low_resolution_tso_update_interval-从-v800-版本开始引入) 配置缓存 Timestamp 的更新时间间隔。
 - 主要场景是在可以容忍读到旧数据的情况下，降低小的只读事务获取 TSO 的开销。
+- 从 v8.3.0 版本开始，该变量支持 GLOBAL 作用域。
+
+### `tidb_low_resolution_tso_update_interval` <span class="version-mark">从 v8.0.0 版本开始引入</span>
+
+- 作用域：GLOBAL
+- 是否持久化到集群：是
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：否
+- 类型：整数型
+- 默认值：`2000`
+- 范围：`[10, 60000]`
+- 这个变量用来设置低精度 TSO 特性中使用的缓存 Timestamp 的更新时间间隔，单位为毫秒。
+- 该变量只在低精度 TSO 特性 [`tidb_low_resolution_tso`](#tidb_low_resolution_tso) 启用时有效。
 
 ### `tidb_nontransactional_ignore_error` <span class="version-mark">从 v6.1.0 版本开始引入</span>
 
@@ -3583,6 +3780,110 @@ mysql> desc select count(distinct a) from test.t;
 - 实时统计信息是 TiDB 在运行时根据 DML 语句自动更新的表的总行数以及修改的行数。该变量保持默认值 `moderate` 时，TiDB 会基于实时统计信息来生成执行计划。该变量设为 `determinate` 后，TiDB 在生成执行计划时将不再使用实时统计信息，这会让执行计划相对稳定。
 - 对于长期稳定的 OLTP 业务，或者如果用户对系统已有的执行计划非常确定，则推荐使用 `determinate` 模式减少执行计划跳变的可能。同时还可以结合 [`LOCK STATS`](/sql-statements/sql-statement-lock-stats.md) 来阻止统计信息的更新，进一步稳定执行计划。
 
+### `tidb_opt_ordering_index_selectivity_ratio` <span class="version-mark">从 v8.0.0 版本开始引入</span>
+
+- 作用域：SESSION | GLOBAL
+- 是否持久化到集群：是
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：是
+- 类型：浮点数
+- 默认值：`-1`
+- 范围：`[-1, 1]`
+- 当一个索引满足 SQL 语句中的 `ORDER BY` 和 `LIMIT` 子句，但有部分过滤条件未被该索引覆盖时，该系统变量用于控制该索引的估算行数。
+- 该变量适用的场景与系统变量 [`tidb_opt_ordering_index_selectivity_threshold`](#tidb_opt_ordering_index_selectivity_threshold-从-v700-版本开始引入) 相同。
+- 与 `tidb_opt_ordering_index_selectivity_threshold` 的实现不同，该变量采用范围内符合条件的可能行数的比率或百分比。
+- 取值为 `-1`（默认值）或小于 `0` 时，禁用此变量。取值在 `0` 到 `1` 之间时，对应 0% 到 100% 的比率（例如，`0.5` 对应 `50%`）。
+- 在以下示例中，表 `t` 共有 1,000,000 行数据。示例使用相同查询，但应用了不同的 `tidb_opt_ordering_index_selectivity_ratio` 值。示例中的查询包含一个 `WHERE` 子句谓词，该谓词匹配少量行（1,000,000 中的 9,000 行）。存在一个支持 `ORDER BY a` 的索引（索引 `ia`），但是对 `b` 的过滤不在此索引中。根据实际的数据分布，满足 `WHERE` 子句和 `LIMIT 1` 的行可能在扫描非过滤索引时作为第一行访问到，也可能在几乎处理满足所有行后才找到。
+- 每个示例中都使用了一个索引 hint，用于展示对 estRows 的影响。最终计划选择取决于是否存在代价更低的其他计划。
+- 第一个示例使用默认值 `-1`，使用现有的估算公式。默认行为是，在找到符合条件的行之前，会扫描一小部分行进行估算。
+
+    ```sql
+    > SET SESSION tidb_opt_ordering_index_selectivity_ratio = -1;
+
+    > EXPLAIN SELECT * FROM t USE INDEX (ia) WHERE b <= 9000 ORDER BY a LIMIT 1;
+    +-----------------------------------+---------+-----------+-----------------------+---------------------------------+
+    | id                                | estRows | task      | access object         | operator info                   |
+    +-----------------------------------+---------+-----------+-----------------------+---------------------------------+
+    | Limit_12                          | 1.00    | root      |                       | offset:0, count:1               |
+    | └─Projection_22                   | 1.00    | root      |                       | test.t.a, test.t.b, test.t.c    |
+    |   └─IndexLookUp_21                | 1.00    | root      |                       |                                 |
+    |     ├─IndexFullScan_18(Build)     | 109.20  | cop[tikv] | table:t, index:ia(a)  | keep order:true                 |
+    |     └─Selection_20(Probe)         | 1.00    | cop[tikv] |                       | le(test.t.b, 9000)              |
+    |       └─TableRowIDScan_19         | 109.20  | cop[tikv] | table:t               | keep order:false                |
+    +-----------------------------------+---------+-----------+-----------------------+---------------------------------+
+    ```
+
+- 第二个示例使用 `0`，假设在找到符合条件的行之前，将扫描 0% 的行。
+
+    ```sql
+    > SET SESSION tidb_opt_ordering_index_selectivity_ratio = 0;
+
+    > EXPLAIN SELECT * FROM t USE INDEX (ia) WHERE b <= 9000 ORDER BY a LIMIT 1;
+    +-----------------------------------+---------+-----------+-----------------------+---------------------------------+
+    | id                                | estRows | task      | access object         | operator info                   |
+    +-----------------------------------+---------+-----------+-----------------------+---------------------------------+
+    | Limit_12                          | 1.00    | root      |                       | offset:0, count:1               |
+    | └─Projection_22                   | 1.00    | root      |                       | test.t.a, test.t.b, test.t.c    |
+    |   └─IndexLookUp_21                | 1.00    | root      |                       |                                 |
+    |     ├─IndexFullScan_18(Build)     | 1.00    | cop[tikv] | table:t, index:ia(a)  | keep order:true                 |
+    |     └─Selection_20(Probe)         | 1.00    | cop[tikv] |                       | le(test.t.b, 9000)              |
+    |       └─TableRowIDScan_19         | 1.00    | cop[tikv] | table:t               | keep order:false                |
+    +-----------------------------------+---------+-----------+-----------------------+---------------------------------+
+    ```
+
+- 第三个示例使用 `0.1`，假设在找到符合条件的行之前，将扫描 10% 的行。这个条件的过滤性较强，只有 1% 的行符合条件，因此最坏情况是找到这 1% 之前需要扫描 99% 的行。99% 中的 10% 大约是 9.9%，该数值会反映在 estRows 中。
+
+    ```sql
+    > SET SESSION tidb_opt_ordering_index_selectivity_ratio = 0.1;
+
+    > EXPLAIN SELECT * FROM t USE INDEX (ia) WHERE b <= 9000 ORDER BY a LIMIT 1;
+    +-----------------------------------+----------+-----------+-----------------------+---------------------------------+
+    | id                                | estRows  | task      | access object         | operator info                   |
+    +-----------------------------------+----------+-----------+-----------------------+---------------------------------+
+    | Limit_12                          | 1.00     | root      |                       | offset:0, count:1               |
+    | └─Projection_22                   | 1.00     | root      |                       | test.t.a, test.t.b, test.t.c    |
+    |   └─IndexLookUp_21                | 1.00     | root      |                       |                                 |
+    |     ├─IndexFullScan_18(Build)     | 99085.21 | cop[tikv] | table:t, index:ia(a)  | keep order:true                 |
+    |     └─Selection_20(Probe)         | 1.00     | cop[tikv] |                       | le(test.t.b, 9000)              |
+    |       └─TableRowIDScan_19         | 99085.21 | cop[tikv] | table:t               | keep order:false                |
+    +-----------------------------------+----------+-----------+-----------------------+---------------------------------+
+    ```
+
+- 第四个示例使用 `1.0`，假设在找到符合条件的行之前，将扫描 100% 的行。
+
+    ```sql
+    > SET SESSION tidb_opt_ordering_index_selectivity_ratio = 1;
+
+    > EXPLAIN SELECT * FROM t USE INDEX (ia) WHERE b <= 9000 ORDER BY a LIMIT 1;
+    +-----------------------------------+-----------+-----------+-----------------------+---------------------------------+
+    | id                                | estRows   | task      | access object         | operator info                   |
+    +-----------------------------------+-----------+-----------+-----------------------+---------------------------------+
+    | Limit_12                          | 1.00      | root      |                       | offset:0, count:1               |
+    | └─Projection_22                   | 1.00      | root      |                       | test.t.a, test.t.b, test.t.c    |
+    |   └─IndexLookUp_21                | 1.00      | root      |                       |                                 |
+    |     ├─IndexFullScan_18(Build)     | 990843.14 | cop[tikv] | table:t, index:ia(a)  | keep order:true                 |
+    |     └─Selection_20(Probe)         | 1.00      | cop[tikv] |                       | le(test.t.b, 9000)              |
+    |       └─TableRowIDScan_19         | 990843.14 | cop[tikv] | table:t               | keep order:false                |
+    +-----------------------------------+-----------+-----------+-----------------------+---------------------------------+
+    ```
+
+- 第五个示例也使用 `1.0`，但是增加了一个对 `a` 的谓词，限制了最坏情况下的扫描范围，因为 `WHERE a <= 9000` 匹配了索引，大约有 9,000 行符合条件。考虑到 `b` 上的过滤谓词不在索引中，所有大约 9,000 行在找到符合 `b <= 9000` 的行之前都会被扫描。
+
+    ```sql
+    > SET SESSION tidb_opt_ordering_index_selectivity_ratio = 1;
+
+    > EXPLAIN SELECT * FROM t USE INDEX (ia) WHERE a <= 9000 AND b <= 9000 ORDER BY a LIMIT 1;
+    +------------------------------------+---------+-----------+-----------------------+------------------------------------+
+    | id                                 | estRows | task      | access object         | operator info                      |
+    +------------------------------------+---------+-----------+-----------------------+------------------------------------+
+    | Limit_12                           | 1.00    | root      |                       | offset:0, count:1                  |
+    | └─Projection_22                    | 1.00    | root      |                       | test.t.a, test.t.b, test.t.c       |
+    |   └─IndexLookUp_21                 | 1.00    | root      |                       |                                    |
+    |     ├─IndexRangeScan_18(Build)     | 9074.99 | cop[tikv] | table:t, index:ia(a)  | range:[-inf,9000], keep order:true |
+    |     └─Selection_20(Probe)          | 1.00    | cop[tikv] |                       | le(test.t.b, 9000)                 |
+    |       └─TableRowIDScan_19          | 9074.99 | cop[tikv] | table:t               | keep order:false                   |
+    +------------------------------------+---------+-----------+-----------------------+------------------------------------+
+    ```
+
 ### `tidb_opt_ordering_index_selectivity_threshold` <span class="version-mark">从 v7.0.0 版本开始引入</span>
 
 - 作用域：SESSION | GLOBAL
@@ -3626,12 +3927,16 @@ mysql> desc select count(distinct a) from test.t;
 
 ### `tidb_opt_prefer_range_scan` <span class="version-mark">从 v5.0 版本开始引入</span>
 
+> **注意：**
+>
+> 从 v8.4.0 开始，此变量的默认值从 `OFF` 更改为 `ON`。
+
 - 作用域：SESSION | GLOBAL
 - 是否持久化到集群：是
 - 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：是
 - 类型：布尔型
-- 默认值：`OFF`
-- 将该变量值设为 `ON` 后，优化器总是偏好区间扫描而不是全表扫描。
+- 默认值：`ON`
+- 该变量值为 `ON` 时，对于没有统计信息的表（伪统计信息）或空表（零统计信息），优化器将优先选择区间扫描而不是全表扫描。
 - 在以下示例中，`tidb_opt_prefer_range_scan` 开启前，TiDB 优化器需要执行全表扫描。`tidb_opt_prefer_range_scan` 开启后，优化器选择了索引区间扫描。
 
 ```sql
@@ -3660,11 +3965,17 @@ explain select * from t where age=5;
 
 ### `tidb_opt_projection_push_down` <span class="version-mark">从 v6.1.0 版本开始引入</span>
 
-- 作用域：SESSION
+- 作用域：SESSION | GLOBAL
+- 是否持久化到集群：是
 - 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：是
 - 类型：布尔型
-- 默认值：`OFF`
-- 指定是否允许优化器将 `Projection` 算子下推到 TiKV 或者 TiFlash。
+- 默认值：`ON`。在 v8.3.0 之前，默认值为 `OFF`。
+- 指定是否允许优化器将 `Projection` 算子下推到 TiKV。开启后，优化器可能会将以下三种类型的 `Projection` 算子下推到 TiKV：
+    - 算子顶层表达式全部为 [JSON 查询类函数](/functions-and-operators/json-functions/json-functions-search.md)或 [JSON 值属性类函数](/functions-and-operators/json-functions/json-functions-return.md)，例如 `SELECT JSON_EXTRACT(data, '$.name') FROM users;`。
+    - 算子顶层表达式部分为 JSON 查询类函数或 JSON 值属性类函数，部分为直接的列读取，例如 `SELECT JSON_DEPTH(data), name FROM users;`。
+    - 算子顶层表达式全部为直接的列读取，且输出的列数量小于输入的列数量，例如 `SELECT name FROM users;`。
+- `Projection` 算子最终下推与否，还取决于优化器对查询代价的综合评估。
+- 对于从 v8.3.0 以前的版本升级到 v8.3.0 或更新版本的 TiDB 集群，该变量将默认为 `OFF`。
 
 ### `tidb_opt_range_max_size` <span class="version-mark">从 v6.4.0 版本开始引入</span>
 
@@ -3850,6 +4161,14 @@ SHOW WARNINGS;
 - 默认值：`24.0`
 - 表示 TiFlash 计算的并发数。该变量是[代价模型](/cost-model.md)内部使用的变量，**不建议**修改该变量的值。
 
+## `tidb_opt_use_invisible_indexes` <span class="version-mark">从 v8.0.0 版本开始引入</span>
+
+- 作用域：SESSION
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：是
+- 类型：布尔型
+- 默认值：`OFF`
+- 这个变量用来设置是否允许优化器选择[不可见索引 (Invisible Index)](/sql-statements/sql-statement-create-index.md#不可见索引)。默认情况下，不可见索引由 DML 语句维护，不会被查询优化器使用。当修改变量为 `ON` 时，对该会话中的查询，优化器可以选择不可见索引进行查询优化。
+
 ### `tidb_opt_write_row_id`
 
 - 作用域：SESSION
@@ -3869,13 +4188,17 @@ SHOW WARNINGS;
 
 ### `tidb_partition_prune_mode` <span class="version-mark">从 v5.1 版本开始引入</span>
 
+> **警告：**
+>
+> 从 v8.5.0 开始，将该变量设置为 `static` 或 `static-only` 时会产生警告。该变量将在未来版本中废弃。
+
 - 作用域：SESSION | GLOBAL
 - 是否持久化到集群：是
 - 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：是
 - 类型：枚举型
 - 默认值：`dynamic`
 - 可选值：`static`、`dynamic`、`static-only`、`dynamic-only`
-- 这个变量用来设置是否开启分区表动态裁剪模式。默认值为 `dynamic`。但是注意，`dynamic` 模式仅在表级别汇总统计信息（即 GlobalStats）收集完成的情况下生效。如果选择了 `dynamic` 但 GlobalStats 未收集完成，TiDB 会仍采用 `static` 模式。关于 GlobalStats 更多信息，请参考[动态裁剪模式下的分区表统计信息](/statistics.md#动态裁剪模式下的分区表统计信息)。关于动态裁剪模式更多信息，请参考[分区表动态裁剪模式](/partitioned-table.md#动态裁剪模式)。
+- 这个变量用来设置是否开启分区表动态裁剪模式。默认值为 `dynamic`。但是注意，`dynamic` 动态裁剪模式仅在表级别汇总统计信息（即分区表的全局统计信息）收集完成的情况下生效。如果在全局统计信息未收集完成的情况下启用 `dynamic` 动态裁剪模式，TiDB 仍然会维持 `static` 静态裁剪的状态，直到全局统计信息收集完成。关于全局统计信息的更多信息，请参考[动态裁剪模式下的分区表统计信息](/statistics.md#收集动态裁剪模式下的分区表统计信息)。关于动态裁剪模式的更多信息，请参考[分区表动态裁剪模式](/partitioned-table.md#动态裁剪模式)。
 
 ### `tidb_persist_analyze_options` <span class="version-mark">从 v5.4.0 版本开始引入</span>
 
@@ -3884,7 +4207,7 @@ SHOW WARNINGS;
 - 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：否
 - 类型：布尔型
 - 默认值：`ON`
-- 这个变量用于控制是否开启 [ANALYZE 配置持久化](/statistics.md#analyze-配置持久化)特性。
+- 这个变量用于控制是否开启 [ANALYZE 配置持久化](/statistics.md#持久化-analyze-配置)特性。
 
 ### `tidb_pessimistic_txn_fair_locking` <span class="version-mark">从 v7.0.0 版本开始引入</span>
 
@@ -3931,8 +4254,8 @@ SHOW WARNINGS;
 - 作用域：SESSION | GLOBAL
 - 是否持久化到集群：是
 - 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：是
-- 默认值：`2097152`（即 2 MB）
-- 取值范围：`[0, 9223372036854775807]`，单位为 Byte。支持带单位的内存格式“KB|MB|GB|TB”。`0` 表示表示不设限制。
+- 默认值：`2097152`（即 2 MiB）
+- 取值范围：`[0, 9223372036854775807]`，单位为 Byte。支持带单位的内存格式 "KiB|MiB|GiB|TiB"。`0` 表示表示不设限制。
 - 这个变量用来控制可以缓存的 Prepare 或非 Prepare 语句执行计划的最大大小。超过该值的执行计划将不会被缓存到 Plan Cache 中。详情请参考 [Prepare 语句执行计划缓存](/sql-prepared-plan-cache.md#prepared-plan-cache-的内存管理)和[非 Prepare 语句执行计划缓存](/sql-non-prepared-plan-cache.md#使用方法)。
 
 ### `tidb_pprof_sql_cpu` <span class="version-mark">从 v4.0 版本开始引入</span>
@@ -4046,6 +4369,16 @@ EXPLAIN FORMAT='brief' SELECT COUNT(1) FROM t WHERE a = 1 AND b IS NOT NULL;
 - 这个变量用来控制单个 `SESSION` 的 Prepared Plan Cache 最多能够缓存的计划数量，具体可见 [Prepared Plan Cache 的内存管理](/sql-prepared-plan-cache.md#prepared-plan-cache-的内存管理)。
 - 在 v6.1.0 之前这个开关通过 TiDB 配置文件 (`prepared-plan-cache.capacity`) 进行配置，升级到 v6.1.0 时会自动继承原有设置。
 
+### `tidb_pre_split_regions` <span class="version-mark">从 v8.4.0 版本开始引入</span>
+
+- 作用域：SESSION | GLOBAL
+- 是否持久化到集群：是
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：否
+- 类型：整数型
+- 默认值：`0`
+- 范围：`[0, 15]`
+- 该变量用于设置新建表默认的行分裂分片数。当设置了该变量为非 0 值后，执行 `CREATE TABLE` 语句时，TiDB 会为允许使用 `PRE_SPLIT_REGIONS` 的表（例如 `NONCLUSTERED` 表）自动设定该属性。详见 [`PRE_SPLIT_REGIONS`](/sql-statements/sql-statement-split-region.md#pre_split_regions)。该变量通常与 [`tidb_shard_row_id_bits`](/system-variables.md#tidb_shard_row_id_bits-从-v840-版本开始引入) 配合使用，用于为新建表进行分片以及 Region 预分裂。
+
 ### `tidb_projection_concurrency`
 
 > **警告：**
@@ -4107,7 +4440,7 @@ EXPLAIN FORMAT='brief' SELECT COUNT(1) FROM t WHERE a = 1 AND b IS NOT NULL;
 ### `tidb_read_consistency` <span class="version-mark">从 v5.4.0 版本开始引入</span>
 
 - 作用域：SESSION
-- 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：是
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：是（注意当存在[非事务 DML 语句](/non-transactional-dml.md)时，使用 hint 修改该变量的值可能不生效）
 - 类型：字符串
 - 默认值：`strict`
 - 此变量用于控制自动提交的读语句的读一致性。
@@ -4117,7 +4450,7 @@ EXPLAIN FORMAT='brief' SELECT COUNT(1) FROM t WHERE a = 1 AND b IS NOT NULL;
 ### `tidb_read_staleness` <span class="version-mark">从 v5.4.0 版本开始引入</span>
 
 - 作用域：SESSION
-- 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：是
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：否
 - 类型：整数型
 - 默认值：`0`
 - 范围 `[-2147483648, 0]`
@@ -4137,10 +4470,13 @@ EXPLAIN FORMAT='brief' SELECT COUNT(1) FROM t WHERE a = 1 AND b IS NOT NULL;
 - 作用域：SESSION | GLOBAL
 - 是否持久化到集群：是
 - 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：否
-- 类型：布尔型
+- 类型：枚举型
 - 默认值：`OFF`
+- 可选值：`OFF`、`ON`、`MARKER`
 - 这个变量用于控制在记录 TiDB 日志和慢日志时，是否将 SQL 中的用户信息遮蔽。
-- 将该变量设置为 `1` 即开启后，假设执行的 SQL 为 `insert into t values (1,2)`，在日志中记录的 SQL 会是 `insert into t values (?,?)`，即用户输入的信息被遮蔽。
+- 默认值为 `OFF`，即对用户输入的信息不做任何处理。
+- 将该变量设置为 `ON` 后，用户输入的信息被遮蔽。假设执行的 SQL 为 `INSERT INTO t VALUES (1,2)`，则日志中记录的 SQL 语句为 `INSERT INTO t VALUES (?,?)`。
+- 将该变量设置为 `MARKER` 后，用户输入的信息被标记符号 `‹ ›` 包裹。假设执行的 SQL 为 `INSERT INTO t VALUES (1,2)`，则日志中记录的 SQL 语句为 `INSERT INTO t VALUES (‹1›,‹2›)`。用户数据中的 `‹` 会转义成 `‹‹`，`›` 会转义成 `››`。基于标记后的日志，你可以在展示日志时决定是否对被标记信息进行脱敏处理。
 
 ### `tidb_regard_null_as_point` <span class="version-mark">从 v5.4.0 版本开始引入</span>
 
@@ -4160,6 +4496,8 @@ EXPLAIN FORMAT='brief' SELECT COUNT(1) FROM t WHERE a = 1 AND b IS NOT NULL;
 - 类型：布尔型
 - 默认值：在 v7.2.0 之前版本中为 `OFF`，在 v7.2.0 及之后版本中为 `ON`。
 - 指定是否在子查询中移除 `ORDER BY` 子句。
+- 在 ISO/IEC SQL 标准中，`ORDER BY` 主要用于对顶层查询结果进行排序。对于子查询中的 `ORDER BY`，SQL 标准并不要求子查询结果按 `ORDER BY` 排序。
+- 如果需要对子查询结果排序，通常可以在外层查询中处理，例如使用窗口函数或在外层查询中再次使用 `ORDER BY`。这样做可以确保最终结果集的顺序。
 
 ### `tidb_replica_read` <span class="version-mark">从 v4.0 版本开始引入</span>
 
@@ -4180,6 +4518,16 @@ EXPLAIN FORMAT='brief' SELECT COUNT(1) FROM t WHERE a = 1 AND b IS NOT NULL;
 - 默认值：`""`
 - 可选值：`"ddl"`、`"stats"`、`"br"`、`"lightning"`、`"background"`
 - 显式指定当前会话的任务类型，用于[资源管控](/tidb-resource-control.md)识别并控制。如 `SET @@tidb_request_source_type = "background"`。
+
+### `tidb_resource_control_strict_mode` <span class="version-mark">从 v8.2.0 版本开始引入</span>
+
+- 作用域：GLOBAL
+- 是否持久化到集群：是
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：否
+- 类型：布尔型
+- 默认值：`ON`
+- 该变量是 [`SET RESOURCE GROUP`](/sql-statements/sql-statement-set-resource-group.md) 和优化器 [`RESOURCE_GROUP()`](/optimizer-hints.md#resource_groupresource_group_name) Hint 权限控制的开关。当此变量设置为 `ON` 时，你需要有 `SUPER` 或者 `RESOURCE_GROUP_ADMIN` 或者 `RESOURCE_GROUP_USER` 权限才能使用这两种方式修改当前会话或当前语句绑定的资源组；当此变量设置为 `OFF` 时，则无需上述权限，其行为与不支持此变量的 TiDB 之前版本相同。
+- 从旧版本升级到 v8.2.0 及之后版本时，该功能默认关闭，此时该变量默认值为 `OFF`。
 
 ### `tidb_retry_limit`
 
@@ -4227,13 +4575,28 @@ EXPLAIN FORMAT='brief' SELECT COUNT(1) FROM t WHERE a = 1 AND b IS NOT NULL;
 
 ### `tidb_scatter_region`
 
+- 作用域：SESSION | GLOBAL
+- 是否持久化到集群：是
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：否
+- 类型：枚举型
+- 默认值：`""`
+- 可选值：`""`，`table`，`global`
+- 如果在建表时设置了 `SHARD_ROW_ID_BITS` 和 `PRE_SPLIT_REGIONS` 参数，则系统会在建表成功后自动将表均匀切分为指定数量的 Region。该变量用于控制这些分裂后的 Region 的打散策略。TiDB 将依据所选的打散策略对 Region 进行处理。需要特别说明的是，由于建表操作会等待 Region 打散完成后才返回成功状态，因此启用该变量可能会显著增加建表语句的执行时间，相较于未启用该变量的情况，执行时间可能会延长数倍。可选值描述如下：
+    - `""`：默认值，表示建表后不打散表的 Region。
+    - `table`：表示在建表时，预分裂多个 Region 的场景下，会按表的粒度对这些表的 Region 进行打散。但是如果在建表时没有设置上述属性，需要快速创建大量表的场景，会导致这些表的 Region 集中在其中几个 TiKV 节点上，造成 Region 分布不均匀。
+    - `global`：表示 TiDB 会根据整个集群的数据分布情况来打散新建表的 Region。特别是快速创建大量表的时候，使用 `global` 可以有效避免 Region 过度集中在少数几个 TiKV 节点上，确保 Region 在集群中分布均匀。
+
+### `tidb_schema_cache_size` <span class="version-mark">从 v8.0.0 版本开始引入</span>
+
 - 作用域：GLOBAL
 - 是否持久化到集群：是
 - 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：否
-- 类型：布尔型
-- 默认值：`OFF`
-- TiDB 默认会在建表时为新表分裂 Region。开启该变量后，会在建表语句执行时，同步打散刚分裂出的 Region。适用于批量建表后紧接着批量写入数据，能让刚分裂出的 Region 先在 TiKV 分散而不用等待 PD 进行调度。为了保证后续批量写入数据的稳定性，建表语句会等待打散 Region 完成后再返回建表成功，建表语句执行时间会是该变量关闭时的数倍。
-- 如果建表时设置了 `SHARD_ROW_ID_BITS` 和 `PRE_SPLIT_REGIONS`，建表成功后会均匀切分出指定数量的 Region。
+- 类型：整数型
+- 默认值：`536870912` (512 MiB)
+- 取值范围：`0` 或 `[67108864, 9223372036854775807]`
+- 对 TiDB v8.4.0 以前的版本，该变量默认值为 `0`。
+- 从 TiDB v8.4.0 开始，默认值为 `536870912`（即 512 MiB）。从低版本升级到 v8.4.0 及更高版本后仍然会使用旧值。
+- 这个变量用来控制 TiDB schema 信息缓存的大小。单位为 byte。设置为 `0` 表示不打开缓存限制功能。如需开启，则需要将该变量的值设置在 `[67108864, 9223372036854775807]` 范围内，TiDB 将使用该变量的值做为可用的内存上限，并使用 Least Recently Used (LRU) 算法缓存所需的表，有效降低 schema 信息占用的内存。
 
 ### `tidb_schema_version_cache_limit` <span class="version-mark">从 v7.4.0 版本开始引入</span>
 
@@ -4254,8 +4617,8 @@ EXPLAIN FORMAT='brief' SELECT COUNT(1) FROM t WHERE a = 1 AND b IS NOT NULL;
 - 默认值：`80%`
 - 取值范围：
     - 你可以将该变量值设为百分比格式，表示内存用量占总内存的百分比，取值范围为 `[1%, 99%]`。
-    - 你还可以将变量值设为内存大小，取值范围为 `0` 以及 `[536870912, 9223372036854775807]`，单位为 Byte。支持带单位的内存格式 "KB|MB|GB|TB"。`0` 值表示不设内存限制。
-    - 当设置的内存值小于 512 MB 且不为 0 时，TiDB 将会使用 512 MB 作为替代。
+    - 你还可以将变量值设为内存大小，取值范围为 `0` 以及 `[536870912, 9223372036854775807]`，单位为 Byte。支持带单位的内存格式 "KiB|MiB|GiB|TiB"。`0` 值表示不设内存限制。
+    - 当设置的内存值小于 512 MiB 且不为 0 时，TiDB 将会使用 512 MiB 作为替代。
 - 该变量指定 TiDB 实例的内存限制。TiDB 会在内存用量达到该限制时，对当前内存用量最高的 SQL 语句进行取消 (Cancel) 操作。在该 SQL 语句被成功 Cancel 掉后，TiDB 会尝试调用 Golang GC 立刻回收内存，以最快速度缓解内存压力。
 - 只有内存使用大于 `tidb_server_memory_limit_sess_min_size` 的 SQL 语句会被选定为最优先被 Cancel 的 SQL 语句。
 - 目前 TiDB 一次只能 Cancel 一条 SQL 语句。如果 TiDB 完全 Cancel 掉一条 SQL 语句并回收资源后，内存使用仍然大于该变量所设限制，TiDB 会开始下一次 Cancel 操作。
@@ -4274,24 +4637,19 @@ EXPLAIN FORMAT='brief' SELECT COUNT(1) FROM t WHERE a = 1 AND b IS NOT NULL;
 - 作用域：GLOBAL
 - 是否持久化到集群：是
 - 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：否
-- 默认值：`134217728`（即 128 MB）
-- 取值范围：`[128, 9223372036854775807]`，单位为 Byte。支持带单位的内存格式“KB|MB|GB|TB”。
+- 默认值：`134217728`（即 128 MiB）
+- 取值范围：`[128, 9223372036854775807]`，单位为 Byte。支持带单位的内存格式 "KiB|MiB|GiB|TiB"。
 - 开启内存限制后，TiDB 会终止当前实例上内存用量最高的 SQL 语句。本变量指定此情况下 SQL 语句被终止的最小内存用量。如果 TiDB 实例的内存超限是由许多内存使用量不明显的会话导致的，可以适当调小该变量值，使得更多会话成为 Cancel 的对象。
 
 ### `tidb_service_scope` <span class="version-mark">从 v7.4.0 版本开始引入</span>
 
 - 作用域：GLOBAL
-- 是否持久化到集群：否
+- 是否持久化到集群：否，仅作用于当前连接的 TiDB 实例
 - 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：否
 - 类型：字符串
 - 默认值：""
-- 可选值："" 或 `background`
-- 该变量是一个实例级别的变量，用于控制 [TiDB 分布式执行框架](/tidb-distributed-execution-framework.md) 下各 TiDB 节点的服务范围。当设置 TiDB 节点的 `tidb_service_scope` 为 `background` 时，分布式执行框架将调度该节点执行任务（如 [`ADD INDEX`](/sql-statements/sql-statement-add-index.md) 和 [`IMPORT INTO`](/sql-statements/sql-statement-import-into.md)）。
-
-> **注意：**
->
-> - 如果集群内所有节点均未配置 `tidb_service_scope`，所有节点均会执行分布式执行框架的任务。如果你担心对存量业务有性能影响，可以对其中几个 TiDB 节点设置为 `background`，只有这些节点才会执行分布式执行框架的任务。
-> - 对于新扩容的节点，如果有运行中的分布式执行框架的任务还未调度到各个 TiDB 节点，则这个扩容的节点也会执行分布式执行框架的任务。如果希望避免占用扩容节点的资源，你需要手动设置所有或者部分存量 TiDB 节点的 `tidb_service_scope` 为 `background`，保证配置为 `background` 的节点执行分布式执行框架的任务。
+- 可选值：长度小于或等于 64 的字符串，可用合法字符包括数字 `0-9`、字母 `a-zA-Z`、下划线 `_` 和连字符 `-`
+- 该变量是一个实例级别的变量，用于控制 [TiDB 分布式执行框架](/tidb-distributed-execution-framework.md) 下各 TiDB 节点的服务范围。分布式执行框架会根据该变量的值决定将分布式任务调度到哪些 TiDB 节点上执行，具体规则请参考[任务调度](/tidb-distributed-execution-framework.md#任务调度)。
 
 ### `tidb_session_alias` <span class="version-mark">从 v7.4.0 版本开始引入</span>
 
@@ -4322,6 +4680,16 @@ EXPLAIN FORMAT='brief' SELECT COUNT(1) FROM t WHERE a = 1 AND b IS NOT NULL;
 - 默认值：`9223372036854775807`
 - 范围：`[1, 9223372036854775807]`
 - 该变量设置为 [`AUTO_RANDOM`](/auto-random.md) 或 [`SHARD_ROW_ID_BITS`](/shard-row-id-bits.md) 属性列分配的最大连续 ID 数。通常，`AUTO_RANDOM` ID 或带有 `SHARD_ROW_ID_BITS` 属性的行 ID 在一个事务中是增量和连续的。你可以使用该变量来解决大事务场景下的热点问题。
+
+### `tidb_shard_row_id_bits` <span class="version-mark">从 v8.4.0 版本开始引入</span>
+
+- 作用域：SESSION | GLOBAL
+- 是否持久化到集群：是
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：否
+- 类型：整数型
+- 默认值：`0`
+- 范围：`[0, 15]`
+- 该变量用于设置新建表默认的行 ID 的分片数。当设置了该变量为非 0 值后，执行 `CREATE TABLE` 语句时，TiDB 会为允许使用 `SHARD_ROW_ID_BITS` 的表（例如 `NONCLUSTERED` 表）自动设定该属性。详见 [`SHARD_ROW_ID_BITS`](/shard-row-id-bits.md)。
 
 ### `tidb_simplified_metrics`
 
@@ -4368,10 +4736,10 @@ Query OK, 0 rows affected, 1 warning (0.00 sec)
 - 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：否
 - 类型：布尔型
 - 默认值：`ON`
-- 分区表在开启[动态裁剪模式](/partitioned-table.md#动态裁剪模式)时，TiDB 会汇总各个分区的统计信息生成 GlobalStats。这个变量用于控制当分区统计信息缺失时生成 GlobalStats 的行为。
+- 分区表在开启[动态裁剪模式](/partitioned-table.md#动态裁剪模式)时，TiDB 会汇总各个分区的统计信息生成全局统计信息。这个变量用于控制当分区统计信息缺失时生成全局统计信息的行为。
 
-    - 当开启该变量时，TiDB 生成 GlobalStats 时会跳过缺失的分区统计信息，不影响 GlobalStats 生成。
-    - 当关闭该变量时，遇到缺失的分区统计信息，TiDB 会停止生成 GloablStats。
+    - 当开启该变量时，TiDB 生成全局统计信息时会跳过缺失的分区统计信息，不影响全局统计信息的生成。
+    - 当关闭该变量时，遇到缺失的分区统计信息，TiDB 会停止生成全局统计信息。
 
 ### `tidb_skip_utf8_check`
 
@@ -4396,7 +4764,7 @@ Query OK, 0 rows affected, 1 warning (0.00 sec)
 - 类型：整数型
 - 范围：`[-1, 9223372036854775807]`
 - 单位：毫秒
-- 输出慢日志的耗时阈值。当查询大于这个值，就会当做是一个慢查询，输出到慢查询日志。默认为 300 ms。
+- 输出慢日志的耗时阈值，默认为 300 ms。如果查询耗时大于这个值，会视作一个慢查询，并记录到慢查询日志。注意，当日志的输出级别 [`log.level`](/tidb-configuration-file.md#level) 是 `"debug"` 时，所有查询都会记录到慢日志，不受该变量的限制。
 
 ### `tidb_slow_query_file`
 
@@ -4427,8 +4795,10 @@ Query OK, 0 rows affected, 1 warning (0.00 sec)
 - 是否持久化到集群：是
 - 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：否
 - 类型：整数型
-- 默认值：`0`，自动设置内部统计信息缓存使用内存的上限为总内存的一半。
-- 这个变量用于控制 TiDB 内部统计信息缓存使用内存的上限。
+- 单位：字节
+- 默认值：`0`，表示自动设置统计信息缓存的内存使用上限为总内存的一半。
+- 范围：`[0, 1099511627776]`
+- 这个变量用于控制 TiDB 统计信息缓存的内存使用上限。
 
 ### `tidb_stats_load_sync_wait` <span class="version-mark">从 v5.4.0 版本开始引入</span>
 
@@ -4439,7 +4809,7 @@ Query OK, 0 rows affected, 1 warning (0.00 sec)
 - 默认值：`100`
 - 单位：毫秒
 - 范围：`[0, 2147483647]`
-- 这个变量用于控制是否开启统计信息的同步加载模式（为 `0` 代表不开启，即为异步加载模式），以及开启的情况下，SQL 执行同步加载完整统计信息等待多久后会超时。更多信息，请参考[统计信息的加载](/statistics.md#统计信息的加载)。
+- 这个变量用于控制是否开启统计信息的同步加载模式（为 `0` 代表不开启，即为异步加载模式），以及开启的情况下，SQL 执行同步加载完整统计信息等待多久后会超时。更多信息，请参考[统计信息的加载](/statistics.md#加载统计信息)。
 
 ### `tidb_stats_load_pseudo_timeout` <span class="version-mark">从 v5.4.0 版本开始引入</span>
 
@@ -4539,7 +4909,8 @@ Query OK, 0 rows affected, 1 warning (0.00 sec)
 - 类型：整数型
 - 默认值：`4096`
 - 范围：`[0, 2147483647]`
-- 这个变量用来控制 [Statement Summary Tables](/statement-summary-tables.md)、[`SLOW_QUERY`](/information-schema/information-schema-slow-query.md) 表和 [TiDB Dashboard](/dashboard/dashboard-intro.md) 中显示的 SQL 字符串长度。
+- 单位：字节
+- 这个变量用来控制 [Statement Summary Tables](/statement-summary-tables.md) 和 [TiDB Dashboard](/dashboard/dashboard-intro.md) 中显示的 SQL 字符串长度。
 
 ### `tidb_stmt_summary_max_stmt_count` <span class="version-mark">从 v4.0 版本开始引入</span>
 
@@ -4651,7 +5022,7 @@ Query OK, 0 rows affected, 1 warning (0.00 sec)
 - 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：否
 - 类型：整数型
 - 默认值：`1`
-- 范围：`[1, 4294967295]`，v7.5.0 及之前版本最大值为 `256`。
+- 范围：`[0, 4294967295]`，在 v7.5.0 及之前版本中最大值为 `256`。在 v8.2.0 之前版本中，最小值为 `1`。当设置为 `0` 时，TiDB 会根据集群规模自适应调整并发度。
 - 这个变量用来设置 TiDB 执行内部 SQL 语句（例如统计信息自动更新）时 scan 操作的并发度。
 
 ### `tidb_table_cache_lease` <span class="version-mark">从 v6.0.0 版本开始引入</span>
@@ -4708,7 +5079,37 @@ Query OK, 0 rows affected, 1 warning (0.00 sec)
 
 > **注意：**
 >
-> 如果 PD leader 的 TSO RPC 延迟升高，但其现象并非由 CPU 使用率达到瓶颈而导致（可能存在网络等问题），此时，调高 `tidb_tso_client_batch_max_wait_time` 可能会导致 TiDB 的语句执行延迟上升，影响集群的 QPS 表现。
+> - 如果 PD leader 的 TSO RPC 延迟升高，但其现象并非由 CPU 使用率达到瓶颈而导致（可能存在网络等问题），此时，调高 `tidb_tso_client_batch_max_wait_time` 可能会导致 TiDB 的语句执行延迟上升，影响集群的 QPS 表现。
+> - 该功能与 [`tidb_tso_client_rpc_mode`](#tidb_tso_client_rpc_mode-从-v840-版本开始引入) 不兼容。该变量设为非零值将导致 [`tidb_tso_client_rpc_mode`](#tidb_tso_client_rpc_mode-从-v840-版本开始引入) 不生效。
+
+### `tidb_tso_client_rpc_mode` <span class="version-mark">从 v8.4.0 版本开始引入</span>
+
+- 作用域：GLOBAL
+- 是否持久化到集群：是
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：否
+- 类型：枚举型
+- 默认值：`DEFAULT`
+- 可选值：`DEFAULT`、`PARALLEL`、`PARALLEL-FAST`
+- 这个变量用来设置 TiDB 向 PD 发送 TSO RPC 请求时使用的模式。这里的模式将用于控制 TSO RPC 请求是否并行，调节获取 TS 时消耗在请求攒批阶段的时间，从而在某些场景中减少执行查询时等待 TS 阶段的时间。
+
+    - `DEFAULT`：默认模式。TiDB 会将一段时间内当前节点的所有取 TS 操作攒批到一个 TSO RPC 请求中发送给 PD 批量获取 TS，因而每次取 TS 操作的耗时由等待攒批的时间和进行 RPC 请求的时间组成。在默认模式下，不同的 TSO RPC 请求之间是串行进行的，每个取 TS 操作的平均耗时是实际 TSO RPC 耗时的 1.5 倍左右。
+    - `PARALLEL`：并行模式。在该模式下，TiDB 会尝试将每次攒批的时间缩短到默认模式的 1/2 左右，并尽可能保持两个 TSO RPC 请求同时进行。这样，每个取 TS 的操作的平均耗时理论上最多能缩短到实际 TSO RPC 耗时的 1.25 倍左右，即默认模式的 83% 左右。但是，攒批的效果会降低，TSO RPC 请求的数量会上升到默认模式的两倍左右。
+    - `PARALLEL-FAST`：快速并行模式。与 `PARALLEL` 模式类似，在该模式下，TiDB 会尝试将每次攒批的时间缩短到默认模式 1/4 左右，并尽可能保持 4 个 TSO RPC 请求同时进行。这样，每个取 TS 操作的平均耗时理论上最多能缩短到实际 TSO RPC 耗时的 1.125 倍左右，即默认模式的 75% 左右。但是，攒批的效果会进一步降低，TSO RPC 请求的数量会上升到默认模式的 4 倍左右。
+
+- 当满足以下条件时，可以考虑将该变量设置为 `PARALLEL` 或 `PARALLEL-FAST` 来获得一定的性能提升：
+
+    - TSO 等待时间在 SQL 查询的整体耗时中占比显著。
+    - PD 的 TSO 分配未达到瓶颈。
+    - PD 和 TiDB 节点的 CPU 资源比较充足。
+    - TiDB 到 PD 的网络延迟显著高于 PD 进行 TSO 分配的耗时，即 TSO RPC 请求的耗时主要由网络延迟构成。
+        - TSO RPC 请求的耗时可以通过 Grafana 的 TiDB 面板中 PD Client 分类下的 **PD TSO RPC Duration** 查看。
+        - PD 进行 TSO 分配的耗时可以通过 Grafana 的 PD 面板中 TiDB 分类下的 **PD server TSO handle duration** 查看。
+    - 可以接受 TiDB 到 PD 的 TSO RPC 请求的数量增加 2 倍（对于 `PARALLEL` 模式）或 4 倍（对于 `PARALLEL-FAST`）所带来的额外网络流量。
+
+> **注意：**
+>
+> - `PARALLEL` 和 `PARALLEL-FAST` 这两种模式与 [`tidb_tso_client_batch_max_wait_time`](#tidb_tso_client_batch_max_wait_time-从-v530-版本开始引入) 和 [`tidb_enable_tso_follower_proxy`](#tidb_enable_tso_follower_proxy-从-v530-版本开始引入) 不兼容。如果 [`tidb_tso_client_batch_max_wait_time`](#tidb_tso_client_batch_max_wait_time-从-v530-版本开始引入) 被设为非零值或者 [`tidb_enable_tso_follower_proxy`](#tidb_enable_tso_follower_proxy-从-v530-版本开始引入) 被启用，则 `tidb_tso_client_rpc_mode` 的设置不会生效，并按照 `DEFAULT` 模式执行。
+> - `PARALLEL` 和 `PARALLEL-FAST` 主要用于降低 TiDB 取 TS 操作的平均耗时。对于某些延迟波动较大的情况，如长尾、尖刺问题，这两种模式可能无法带来显著性能改善。
 
 ### `tidb_ttl_delete_rate_limit` <span class="version-mark">从 v6.5.0 版本开始引入</span>
 
@@ -4828,7 +5229,7 @@ Query OK, 0 rows affected, 1 warning (0.00 sec)
 - 默认值：`0`
 - 范围：`[0, 125829120]`
 - 单位：字节
-- 这个变量用于动态修改 TiDB 配置项 [`performance.txn-entry-size-limit`](/tidb-configuration-file.md#txn-entry-size-limit-从-v50-版本开始引入)，其含义与对应配置项相同，即用于限制 TiDB 单行数据的大小。该变量默认值为 `0`，表示默认使用配置项的值。当设置为非 `0` 值时，优先使用该变量的值作为 `txn-entry-size-limit` 的值。
+- 这个变量用于动态修改 TiDB 配置项 [`performance.txn-entry-size-limit`](/tidb-configuration-file.md#txn-entry-size-limit-从-v4010-和-v500-版本开始引入)，其含义与对应配置项相同，即用于限制 TiDB 单行数据的大小。该变量默认值为 `0`，表示默认使用配置项的值。当设置为非 `0` 值时，优先使用该变量的值作为 `txn-entry-size-limit` 的值。
 
 > **注意：**
 >
@@ -4922,7 +5323,7 @@ Query OK, 0 rows affected, 1 warning (0.00 sec)
 - 当窗口函数下推到 TiFlash 执行时，可以通过该变量控制窗口函数执行的并行度。不同取值含义：
 
     * -1: 表示不使用细粒度 shuffle 功能，下推到 TiFlash 的窗口函数以单线程方式执行
-    * 0: 表示使用细粒度 shuffle 功能。如果 [`tidb_max_tiflash_threads`](/system-variables.md#tidb_max_tiflash_threads-从-v610-版本开始引入) 有效（大于 0），则 `tiflash_fine_grained_shuffle_stream_count` 会自动取值为 [`tidb_max_tiflash_threads`](/system-variables.md#tidb_max_tiflash_threads-从-v610-版本开始引入)，否则为默认值 8。最终在 TiFlash 上窗口函数的实际并发度为：min(`tiflash_fine_grained_shuffle_stream_count`，TiFlash 节点物理线程数)
+    * 0: 表示使用细粒度 shuffle 功能。如果 [`tidb_max_tiflash_threads`](/system-variables.md#tidb_max_tiflash_threads-从-v610-版本开始引入) 有效（大于 0），则 `tiflash_fine_grained_shuffle_stream_count` 会自动取值为 [`tidb_max_tiflash_threads`](/system-variables.md#tidb_max_tiflash_threads-从-v610-版本开始引入)，否则会根据 TiFlash 计算节点的 CPU 资源自动推算。最终在 TiFlash 上窗口函数的实际并发度为：min(`tiflash_fine_grained_shuffle_stream_count`，TiFlash 节点物理线程数)
     * 大于 0: 表示使用细粒度 shuffle 功能，下推到 TiFlash 的窗口函数会以多线程方式执行，并发度为： min(`tiflash_fine_grained_shuffle_stream_count`, TiFlash 节点物理线程数)
 - 理论上窗口函数的性能会随着该值的增加线性提升。但是如果设置的值超过实际的物理线程数，反而会导致性能下降。
 
@@ -4968,6 +5369,19 @@ Query OK, 0 rows affected, 1 warning (0.00 sec)
 >
 > - 如果 TiDB 节点未设置[区域属性](/schedule-replicas-by-topology-labels.md#设置-tidb-的-labels可选)，并且 TiFlash 副本选择策略不是 `all_replicas` 时，TiFlash 引擎将忽略 TiFlash 副本选择策略，使用所有 TiFlash 副本进行 TiFlash 查询，并且返回警告 `The variable tiflash_replica_read is ignored`。
 > - 如果 TiFlash 节点未设置[区域属性](/schedule-replicas-by-topology-labels.md#设置-tikv-和-tiflash-的-labels)，则将其视为不属于任何区域的节点。
+
+### `tiflash_hashagg_preaggregation_mode` <span class="version-mark">从 v8.3.0 版本开始引入</span>
+
+- 作用域：SESSION | GLOBAL
+- 是否持久化到集群：是
+- 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：是
+- 类型：枚举型
+- 默认值：`force_preagg`
+- 可选值：`force_preagg`、`force_streaming`、`auto`
+- 该变量用于控制下推到 TiFlash 的两阶段或三阶段 HashAgg 在第一阶段采用哪种预聚合策略：
+    - `force_preagg`：TiFlash 在第一阶段的 HashAgg 中强制进行预聚合操作，与 v8.3.0 之前版本的行为一致
+    - `force_streaming`：TiFlash 直接将数据发送到下一阶段的 HashAgg，不进行预聚合操作
+    - `auto`：TiFlash 根据当前工作负载的聚合度自动选择是否进行预聚合操作
 
 ### `tikv_client_read_timeout` <span class="version-mark">从 v7.4.0 版本开始引入</span>
 
@@ -5138,7 +5552,7 @@ Query OK, 0 rows affected, 1 warning (0.00 sec)
 - 作用域：NONE
 - 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：否
 - 默认值：`8.0.11-TiDB-(tidb version)`
-- 这个变量的值是 MySQL 的版本和 TiDB 的版本，例如 '8.0.11-TiDB-v7.6.0'。
+- 这个变量的值是 MySQL 的版本和 TiDB 的版本，例如 '8.0.11-TiDB-v8.5.0'。
 
 ### `version_comment`
 
@@ -5186,4 +5600,4 @@ Query OK, 0 rows affected, 1 warning (0.00 sec)
 - 是否受 Hint [SET_VAR](/optimizer-hints.md#set_varvar_namevar_value) 控制：否
 - 类型：布尔型
 - 默认值：`ON`
-- 这个变量用于控制计算窗口函数时是否采用高精度模式。
+- 这个变量用于控制计算[窗口函数](/functions-and-operators/window-functions.md)时是否采用高精度模式。

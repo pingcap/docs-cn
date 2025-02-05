@@ -1,5 +1,6 @@
 ---
 title: tiup cluster start
+summary: tiup cluster start 命令用于启动指定集群的所有或部分服务。语法为 tiup cluster start <cluster-name> [flags]。选项包括 --init（以安全方式启动集群）、-N, --node（指定要启动的节点）、-R, --role（指定要启动的角色）、-h, --help。输出为启动日志。
 ---
 
 # tiup cluster start
@@ -51,4 +52,6 @@ tiup cluster start <cluster-name> [flags]
 
 启动日志。
 
-[<< 返回上一页 - TiUP Cluster 命令清单](/tiup/tiup-component-cluster.md#命令清单)
+## 另请参阅
+
+- [TiUP 常见运维操作](/maintain-tidb-using-tiup.md)

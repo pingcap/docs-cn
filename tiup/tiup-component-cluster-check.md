@@ -1,5 +1,6 @@
 ---
 title: tiup cluster check
+summary: TiUP Cluster 提供了 `check` 子命令，用于检查集群的硬件和软件环境是否满足正常运行条件。检查包括操作系统版本、CPU 支持、系统时间、内核参数、磁盘挂载参数等。用户可以通过指定选项来启用 CPU 核心数、内存大小和磁盘性能测试的检查。检查结果将以表格形式输出，包括目标节点、检查项、检查结果和结果描述。
 ---
 
 # tiup cluster check
@@ -10,7 +11,7 @@ title: tiup cluster check
 
 ### 操作系统版本
 
-检查部署机操作系统发行版和版本：目前仅支持部署在 CentOS 7 的操作系统上，之后随兼容性改进可能支持更多系统版本。
+检查部署机操作系统发行版和版本。关于 TiDB 支持的操作系统版本列表，请参考[操作系统及平台要求](/hardware-and-software-requirements.md#操作系统及平台要求)。
 
 ### CPU EPOLLEXCLUSIVE
 
@@ -18,7 +19,7 @@ title: tiup cluster check
 
 ### numactl
 
-检查部署机是否安装 numactl，若用户配置绑核，则必须安装 numactl。
+检查部署机是否安装 `numactl`，若用户配置绑核，则必须安装 `numactl`。
 
 ### 系统时间
 
@@ -51,6 +52,16 @@ title: tiup cluster check
 
 检查部署机是否启用透明大页：建议禁用透明大页。
 
+要检查 THP 是否启用，可以运行以下命令：
+
+```bash
+cat /sys/kernel/mm/transparent_hugepage/enabled
+```
+
+如果结果不是 `never`，你可以使用 `grubby --update-kernel=ALL --args="transparent_hugepage=never"` 修改。
+
+要更改当前运行的配置，你可以选择重启系统，或者运行 `echo never > /sys/kernel/mm/transparent_hugepage/enabled`。
+
 ### 系统限制
 
 检查 /etc/security/limits.conf 中各项 limit 值：
@@ -65,7 +76,7 @@ title: tiup cluster check
 
 ### SELinux
 
-检查 SELinux 是否启用：建议用户禁用 SELinux。
+检查 SELinux 是否启用。请务必禁用 SELinux。
 
 ### 防火墙
 
@@ -250,5 +261,3 @@ tiup cluster check <topology.yml | cluster-name> [flags]
 - Check：检查项
 - Result：检查结果（Pass/Warn/Fail）
 - Message：结果描述
-
-[<< 返回上一页 - TiUP Cluster 命令清单](/tiup/tiup-component-cluster.md#命令清单)

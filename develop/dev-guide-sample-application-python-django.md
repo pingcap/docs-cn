@@ -16,14 +16,14 @@ TiDB 是一个兼容 MySQL 的数据库。[Django](https://www.djangoproject.com
 
 > **注意**
 >
-> 本文档适用于 TiDB Serverless、TiDB Dedicated 和本地部署的 TiDB。
+> 本文档适用于 TiDB Cloud Serverless、TiDB Cloud Dedicated 和本地部署的 TiDB。
 
 ## 前置需求
 
 - 推荐 [Python 3.8](https://www.python.org/downloads/) 及以上版本。
 - [Git](https://git-scm.com/downloads)。
 - TiDB 集群。如果你还没有 TiDB 集群，可以按照以下方式创建：
-    - （推荐方式）参考[创建 TiDB Serverless 集群](/develop/dev-guide-build-cluster-in-cloud.md#第-1-步创建-tidb-serverless-集群)，创建你自己的 TiDB Cloud 集群。
+    - （推荐方式）参考[创建 TiDB Cloud Serverless 集群](/develop/dev-guide-build-cluster-in-cloud.md#第-1-步创建-tidb-cloud-serverless-集群)，创建你自己的 TiDB Cloud 集群。
     - 参考[部署本地测试 TiDB 集群](/quick-start-with-tidb.md#部署本地测试集群)或[部署正式 TiDB 集群](/production-deployment-using-tiup.md)，创建本地集群。
 
 ## 运行代码并连接到 TiDB
@@ -53,7 +53,7 @@ pip install -r requirements.txt
 
 `django-tidb` 是一个为 Django 提供的 TiDB 适配器，它解决了 TiDB 与 Django 之间的兼容性问题。
 
-安装 `django-tidb` 时，请选择与你的 Django 版本匹配的版本。例如，如果你使用的是 `django==4.2.*`，则应安装 `django-tidb==4.2.*`，其中 minor 版本号不需要完全相同。建议使用最新的 minor 版本。
+安装 `django-tidb` 时，请选择与你的 Django 版本匹配的版本。例如，如果你使用的是 `django==4.2.*`，则应安装 `django-tidb>=4.2.0,<4.3.0`，其中 minor 版本号不需要完全相同。建议使用最新的 minor 版本。
 
 更多信息，请参考 [django-tidb 仓库](https://github.com/pingcap/django-tidb)。
 
@@ -63,15 +63,15 @@ pip install -r requirements.txt
 
 <SimpleTab>
 
-<div label="TiDB Serverless">
+<div label="TiDB Cloud Serverless">
 
-1. 在 TiDB Cloud 的 [**Clusters**](https://tidbcloud.com/console/clusters) 页面中，选择你的 TiDB Serverless 集群，进入集群的 **Overview** 页面。
+1. 在 TiDB Cloud 的 [**Clusters**](https://tidbcloud.com/console/clusters) 页面中，选择你的 TiDB Cloud Serverless 集群，进入集群的 **Overview** 页面。
 
 2. 点击右上角的 **Connect** 按钮，将会弹出连接对话框。
 
 3. 确认对话框中的配置和你的运行环境一致。
 
-    - **Endpoint Type** 为 `Public`。
+    - **Connection Type** 为 `Public`。
     - **Branch** 选择 `main`。
     - **Connect With** 选择 `General`。
     - **Operating System** 为你的运行环境。
@@ -95,7 +95,7 @@ pip install -r requirements.txt
 6. 复制并粘贴对应连接字符串至 `.env` 中。示例结果如下：
 
     ```dotenv
-    TIDB_HOST='{host}'  # e.g. gateway01.ap-northeast-1.prod.aws.tidbcloud.com
+    TIDB_HOST='{host}'  # e.g. xxxxxx.aws.tidbcloud.com
     TIDB_PORT='4000'
     TIDB_USER='{user}'  # e.g. xxxxxx.root
     TIDB_PASSWORD='{password}'
@@ -109,15 +109,17 @@ pip install -r requirements.txt
 
 </div>
 
-<div label="TiDB Dedicated">
+<div label="TiDB Cloud Dedicated">
 
-1. 在 TiDB Cloud 的 [**Clusters**](https://tidbcloud.com/console/clusters) 页面中，选择你的 TiDB Dedicated 集群，进入集群的 **Overview** 页面。
+1. 在 TiDB Cloud 的 [**Clusters**](https://tidbcloud.com/console/clusters) 页面中，选择你的 TiDB Cloud Dedicated 集群，进入集群的 **Overview** 页面。
 
 2. 点击右上角的 **Connect** 按钮，将会出现连接对话框。
 
-3. 在对话框中点击 **Allow Access from Anywhere**，然后点击 **Download TiDB cluster CA** 下载 TiDB Cloud 提供的 CA 证书。
+3. 在连接对话框中，从 **Connection Type** 下拉列表中选择 **Public**，并点击 **CA cert** 下载 CA 文件。
 
-    更多配置细节，可参考 [TiDB Dedicated 标准连接教程（英文）](https://docs.pingcap.com/tidbcloud/connect-via-standard-connection)。
+    如果你尚未配置 IP 访问列表，请在首次连接前点击 **Configure IP Access List** 或按照[配置 IP 访问列表（英文）](https://docs.pingcap.com/tidbcloud/configure-ip-access-list)中的步骤进行配置。
+
+    除 **Public** 连接类型外，TiDB Cloud Dedicated 还支持 **Private Endpoint** 和 **VPC Peering** 连接类型。详情请参阅[连接 TiDB Cloud Dedicated 集群（英文）](https://docs.pingcap.com/tidbcloud/connect-to-tidb-cluster)。
 
 4. 运行以下命令，将 `.env.example` 复制并重命名为 `.env`：
 
@@ -128,9 +130,9 @@ pip install -r requirements.txt
 5. 复制并粘贴对应的连接字符串至 `.env` 中。示例结果如下：
 
     ```dotenv
-    TIDB_HOST='{host}'  # e.g. tidb.xxxx.clusters.tidb-cloud.com
+    TIDB_HOST='{host}'  # e.g. xxxxxx.aws.tidbcloud.com
     TIDB_PORT='4000'
-    TIDB_USER='{user}'  # e.g. root
+    TIDB_USER='{user}'  # e.g. xxxxxx.root
     TIDB_PASSWORD='{password}'
     TIDB_DB_NAME='test'
     CA_PATH='{your-downloaded-ca-path}'
@@ -176,6 +178,31 @@ pip install -r requirements.txt
 python manage.py migrate
 ```
 
+```shell
+Operations to perform:
+  Apply all migrations: admin, auth, contenttypes, sample_project, sessions
+Running migrations:
+  Applying contenttypes.0001_initial... OK
+  Applying auth.0001_initial... OK
+  Applying admin.0001_initial... OK
+  Applying admin.0002_logentry_remove_auto_add... OK
+  Applying admin.0003_logentry_add_action_flag_choices... OK
+  Applying contenttypes.0002_remove_content_type_name... OK
+  Applying auth.0002_alter_permission_name_max_length... OK
+  Applying auth.0003_alter_user_email_max_length... OK
+  Applying auth.0004_alter_user_username_opts... OK
+  Applying auth.0005_alter_user_last_login_null... OK
+  Applying auth.0006_require_contenttypes_0002... OK
+  Applying auth.0007_alter_validators_add_error_messages... OK
+  Applying auth.0008_alter_user_username_max_length... OK
+  Applying auth.0009_alter_user_last_name_max_length... OK
+  Applying auth.0010_alter_group_name_max_length... OK
+  Applying auth.0011_update_proxy_permissions... OK
+  Applying auth.0012_alter_user_first_name_max_length... OK
+  Applying sample_project.0001_initial... OK
+  Applying sessions.0001_initial... OK
+```
+
 ### 第 5 步：运行示例应用程序
 
 1. 在开发模式下运行示例应用程序：
@@ -213,18 +240,18 @@ python manage.py migrate
 DATABASES = {
     "default": {
         "ENGINE": "django_tidb",
-        "HOST": ${tidb_host},
-        "PORT": ${tidb_port},
-        "USER": ${tidb_user},
-        "PASSWORD": ${tidb_password},
-        "NAME": ${tidb_db_name},
+        "HOST": '${tidb_host}',
+        "PORT": '${tidb_port}',
+        "USER": '${tidb_user}',
+        "PASSWORD": '${tidb_password}',
+        "NAME": '${tidb_db_name}',
         "OPTIONS": {
             "charset": "utf8mb4",
         },
     }
 }
 
-TIDB_CA_PATH = ${ca_path}
+TIDB_CA_PATH = '${ca_path}'
 if TIDB_CA_PATH:
     DATABASES["default"]["OPTIONS"]["ssl_mode"] = "VERIFY_IDENTITY"
     DATABASES["default"]["OPTIONS"]["ssl"] = {

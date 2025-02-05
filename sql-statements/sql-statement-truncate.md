@@ -12,17 +12,13 @@ aliases: ['/docs-cn/dev/sql-statements/sql-statement-truncate/','/docs-cn/dev/re
 
 ## 语法图
 
-**TruncateTableStmt:**
+```ebnf+diagram
+TruncateTableStmt ::=
+    "TRUNCATE" ( "TABLE" )? TableName
 
-![TruncateTableStmt](/media/sqlgram/TruncateTableStmt.png)
-
-**OptTable:**
-
-![OptTable](/media/sqlgram/OptTable.png)
-
-**TableName:**
-
-![TableName](/media/sqlgram/TableName.png)
+TableName ::=
+    (Identifier ".")? Identifier
+```
 
 ## 示例
 

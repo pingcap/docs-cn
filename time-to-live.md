@@ -162,29 +162,32 @@ TiDB 会定时采集 TTL 的运行时信息，并在 Grafana 中提供了相关�
 + `mysql.tidb_ttl_table_status` 表中包含了所有 TTL 表的上一次执行与正在执行的 TTL 任务的信息。以其中一行为例：
 
     ```sql
-    MySQL [(none)]> SELECT * FROM mysql.tidb_ttl_table_status LIMIT 1\G;
+    TABLE mysql.tidb_ttl_table_status LIMIT 1\G
+    ```
+
+    ```sql
     *************************** 1. row ***************************
                           table_id: 85
-                  parent_table_id: 85
+                   parent_table_id: 85
                   table_statistics: NULL
-                      last_job_id: 0b4a6d50-3041-4664-9516-5525ee6d9f90
-              last_job_start_time: 2023-02-15 20:43:46
+                       last_job_id: 0b4a6d50-3041-4664-9516-5525ee6d9f90
+               last_job_start_time: 2023-02-15 20:43:46
               last_job_finish_time: 2023-02-15 20:44:46
-              last_job_ttl_expire: 2023-02-15 19:43:46
+               last_job_ttl_expire: 2023-02-15 19:43:46
                   last_job_summary: {"total_rows":4369519,"success_rows":4369519,"error_rows":0,"total_scan_task":64,"scheduled_scan_task":64,"finished_scan_task":64}
                     current_job_id: NULL
               current_job_owner_id: NULL
             current_job_owner_addr: NULL
-        current_job_owner_hb_time: NULL
+         current_job_owner_hb_time: NULL
             current_job_start_time: NULL
             current_job_ttl_expire: NULL
-                current_job_state: NULL
+                 current_job_state: NULL
                 current_job_status: NULL
     current_job_status_update_time: NULL
     1 row in set (0.040 sec)
     ```
 
-    其中列 `table_id` 为分区表 ID，而 `parent_table_id` 为表的 ID，与 `infomation_schema.tables` 表中的 ID 对应。如果表不是分区表，则 `table_id` 与 `parent_table_id` 总是相等。
+    其中列 `table_id` 为分区表 ID，而 `parent_table_id` 为表的 ID，与 [`information_schema.tables`](/information-schema/information-schema-tables.md) 表中的 ID 对应。如果表不是分区表，则 `table_id` 与 `parent_table_id` 总是相等。
 
     列 `{last, current}_job_{start_time, finish_time, ttl_expire}` 分别描述了过去和当前 TTL 任务的开始时间、结束时间和过期时间。`last_job_summary` 列描述了上一次 TTL 任务的执行情况，包括总行数、成功行数、失败行数。
 
@@ -192,25 +195,28 @@ TiDB 会定时采集 TTL 的运行时信息，并在 Grafana 中提供了相关�
 + `mysql.tidb_ttl_job_history` 表中记录了 TTL 任务的执行历史。TTL 任务的历史记录将被保存 90 天。以一行为例：
 
     ```sql
-    MySQL [(none)]> SELECT * FROM mysql.tidb_ttl_job_history LIMIT 1\G;
+    TABLE mysql.tidb_ttl_job_history LIMIT 1\G
+    ```
+
+    ```
     *************************** 1. row ***************************
               job_id: f221620c-ab84-4a28-9d24-b47ca2b5a301
             table_id: 85
-      parent_table_id: 85
+     parent_table_id: 85
         table_schema: test_schema
           table_name: TestTable
       partition_name: NULL
-          create_time: 2023-02-15 17:43:46
-          finish_time: 2023-02-15 17:45:46
+         create_time: 2023-02-15 17:43:46
+         finish_time: 2023-02-15 17:45:46
           ttl_expire: 2023-02-15 16:43:46
         summary_text: {"total_rows":9588419,"success_rows":9588419,"error_rows":0,"total_scan_task":63,"scheduled_scan_task":63,"finished_scan_task":63}
         expired_rows: 9588419
         deleted_rows: 9588419
-    error_delete_rows: 0
+   error_delete_rows: 0
               status: finished
     ```
 
-  其中列 `table_id` 为分区表 ID，而 `parent_table_id` 为表的 ID，与 `infomation_schema.tables` 表中的 ID 对应。`table_schema`、`table_name`、`partition_name` 分别对应表示数据库、表名、分区名。`create_time`、`finish_time`、`ttl_expire` 分别表示 TTL 任务的创建时间、结束时间和过期时间。`expired_rows` 与 `deleted_rows` 表示过期行数与成功删除的行数。
+  其中列 `table_id` 为分区表 ID，而 `parent_table_id` 为表的 ID，与 `information_schema.tables` 表中的 ID 对应。`table_schema`、`table_name`、`partition_name` 分别对应表示数据库、表名、分区名。`create_time`、`finish_time`、`ttl_expire` 分别表示 TTL 任务的创建时间、结束时间和过期时间。`expired_rows` 与 `deleted_rows` 表示过期行数与成功删除的行数。
 
 ## TiDB 数据迁移工具兼容性
 
@@ -237,8 +243,16 @@ TTL 功能能够与 TiDB 的迁移、备份、恢复工具一同使用。
 * 不允许在临时表上设置 TTL 属性，包括本地临时表和全局临时表。
 * 具有 TTL 属性的表不支持作为外键约束的主表被其他表引用。
 * 不保证所有过期数据立即被删除，过期数据被删除的时间取决于后台清理任务的调度周期和调度窗口。
-* 对于使用[聚簇索引](/clustered-indexes.md)的表，如果主键的类型不是整数类型或二进制字符串类型，TTL 任务将无法被拆分成多个子任务。这将导致 TTL 任务只能在一个 TiDB 节点上按顺序执行。如果表中的数据量较大，TTL 任务的执行可能会变得缓慢。
-* TTL 无法在 [TiDB Serverless](https://docs.pingcap.com/tidbcloud/select-cluster-tier#tidb-serverless-beta) 集群上使用。
+* 对于使用[聚簇索引](/clustered-indexes.md)的表，仅支持在以下场景中将 TTL 任务拆分成多个子任务：
+    - 主键或者复合主键的第一列为整数或二进制字符串类型。其中，二进制字符串类型主要指下面几种：
+        - `CHAR(N) CHARACTER SET BINARY`
+        - `VARCHAR(N) CHARACTER SET BINARY`
+        - `BINARY(N)`
+        - `VARBINARY(N)`
+        - `BIT(N)`
+    - 主键或者复合主键的第一列的字符集为 `utf8` 或者 `utf8mb4`，且排序规则设置为 `utf8_bin`、 `utf8mb4_bin` 或者 `utf8mb4_0900_bin`。
+* 对于主键第一列的字符集类型是 `utf8` 或者 `utf8mb4` 的表，仅会根据 ASCII 可见字符的范围进行子任务拆分。如果大量的主键值具有相同的 ASCII 前缀，可能会造成任务拆分不均匀。
+* 对于不支持拆分 TTL 子任务的表，TTL 任务只能在一个 TiDB 节点上按顺序执行。此时如果表中的数据量较大，TTL 任务的执行可能会变得缓慢。
 
 ## 常见问题
 

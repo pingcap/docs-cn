@@ -6,7 +6,11 @@ aliases: ['/docs-cn/dev/sql-statements/sql-statement-explain/','/docs-cn/dev/ref
 
 # EXPLAIN
 
-`EXPLAIN` 语句仅用于显示查询的执行计划，而不执行查询。`EXPLAIN ANALYZE` 可执行查询，补充 `EXPLAIN` 语句。如果 `EXPLAIN` 的输出与预期结果不匹配，可考虑在查询的每个表上执行 `ANALYZE TABLE`。
+`EXPLAIN` 语句仅用于显示查询的执行计划，而不执行查询。该语句为 `EXPLAIN ANALYZE` 语句的补充，后者会执行查询。如果 `EXPLAIN` 的输出与预期结果不匹配，可考虑在查询的每个表上执行 `ANALYZE TABLE`，以确保表统计信息是最新的。
+
+> **注意：**
+>
+> 某些子查询会在优化阶段被提前执行以生成可能更优的执行计划，即使是在 `EXPLAIN` 语句中。更详细的说明以及禁用此行为的方法请参见 [`tidb_opt_enable_non_eval_scalar_subquery`](/system-variables.md#tidb_opt_enable_non_eval_scalar_subquery-从-v730-版本开始引入) 和[禁止子查询提前展开](/explain-walkthrough.md#禁止子查询提前执行)。
 
 语句 `DESC` 和 `DESCRIBE` 是 `EXPLAIN` 的别名。`EXPLAIN <tableName>` 的替代用法记录在 [`SHOW [FULL] COLUMNS FROM`](/sql-statements/sql-statement-show-columns-from.md) 下。
 
@@ -48,7 +52,7 @@ ExplainableStmt ::=
 |:----------------|:----------------------------------------------------------------------------------------------------------|
 | id            | 算子的 ID，是算子在整个执行计划中唯一的标识。在 TiDB 2.1 中，ID 会格式化地显示算子的树状结构。数据从孩子结点流向父亲结点，每个算子的父亲结点有且仅有一个。|
 | estRows       | 算子预计将会输出的数据条数，基于统计信息以及算子的执行逻辑估算而来。在 4.0 之前叫 count。 |
-| task          | 算子属于的 task 种类。目前的执行计划分成为两种 task，一种叫 **root** task，在 tidb-server 上执行，一种叫 **cop** task，在 TiKV 或者 TiFlash 上并行执行。当前的执行计划在 task 级别的拓扑关系是一个 root task 后面可以跟许多 cop task，root task 使用 cop task 的输出结果作为输入。cop task 中执行的也即是 TiDB 下推到 TiKV 或者 TiFlash 上的任务，每个 cop task 分散在 TiKV 或者 TiFlash 集群中，由多个进程共同执行。 |
+| task          | 算子属于的 task 类型。目前的执行计划可以分为以下四种 task：**root** task，在 tidb-server 上执行；**cop** task，在 TiKV 或者 TiFlash 上并行执行；**batchCop** task，在 TiFlash 上并行执行；**MPP** task，在 TiFlash 上并行执行。当前的执行计划在 task 级别的拓扑关系是一个 root task 后面可以跟许多其他类型的 task，root task 使用其他类型 task 的输出结果作为输入。其他类型 task 中执行的也即是 TiDB 下推到 TiKV 或者 TiFlash 上的任务，每个 task 分散在 TiKV 或者 TiFlash 集群中，由多个进程共同执行。 |
 | access object | 算子所访问的数据项信息。包括表 `table`，表分区 `partition` 以及使用的索引 `index`（如果有）。只有直接访问数据的算子才拥有这些信息。 |
 | operator info | 算子的其它信息。各个算子的 operator info 各有不同，可参考下面的示例解读。 |
 
@@ -192,10 +196,12 @@ EXPLAIN DELETE FROM t1 WHERE c1=3;
 | FORMAT      | 作用                                                                |
 |-------------|-------------------------------------------------------------------|
 | 未指定         | 未指定 `FORMAT` 时，默认输出格式为 `row`                                                             |
-| `row`       | `EXPLAIN` 语句将以表格格式输出结果。更多信息，可参阅 [TiDB 执行计划概览](/explain-overview.md) |
 | `brief`     | `EXPLAIN` 语句输出结果中的算子 ID 将被简化，较之未指定 `FORMAT` 时输出结果的算子 ID 更为简化      |
 | `dot`       | `EXPLAIN` 语句将输出 DOT 格式的执行计划，可以通过 `dot` 程序（在 `graphviz` 包中）生成 PNG 文件 |
+| `row`       | `EXPLAIN` 语句将以表格格式输出结果。更多信息，可参阅 [TiDB 执行计划概览](/explain-overview.md) |
 | `tidb_json` | `EXPLAIN` 语句将输出 JSON 格式的执行计划，算子信息存放在一个 JSON 数组中           |
+| `verbose`   | `EXPLAIN` 语句将以 `row` 格式输出结果，并在结果中额外包含一个 `estCost` 列，表示查询的代价估算。关于如何使用这种格式的更多信息，请参阅[执行计划管理 (SPM)](/sql-plan-management.md)。|
+| `plan_cache` | `EXPLAIN` 语句将以 `row` 格式输出结果，[执行计划缓存](/sql-non-prepared-plan-cache.md#诊断)信息将作为 warning 显示。
 
 <SimpleTab>
 

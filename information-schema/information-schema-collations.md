@@ -53,3 +53,10 @@ SELECT * FROM collations WHERE character_set_name='utf8mb4';
 * `IS_DEFAULT`：该排序规则是否是所属字符集的默认排序规则
 * `IS_COMPILED`：字符集是否编译到服务器中
 * `SORTLEN`：排序规则在对字符进行排序时，所分配内存的最小长度
+
+## 另请参阅
+
+- [`SHOW CHARACTER SET`](/sql-statements/sql-statement-show-character-set.md)
+- [`SHOW COLLATION`](/sql-statements/sql-statement-show-collation.md)
+- [`INFORMATION_SCHEMA.CHARACTER_SETS`](/information-schema/information-schema-character-sets.md)
+- [`INFORMATION_SCHEMA.COLLATION_CHARACTER_SET_APPLICABILITY`](/information-schema/information-schema-collation-character-set-applicability.md)

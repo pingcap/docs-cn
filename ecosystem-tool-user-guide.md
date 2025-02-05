@@ -1,6 +1,7 @@
 ---
 title: TiDB 工具功能概览
 aliases: ['/docs-cn/dev/ecosystem-tool-user-guide/','/docs-cn/dev/reference/tools/user-guide/','/docs-cn/dev/how-to/migrate/from-mysql/', '/docs-cn/dev/how-to/migrate/incrementally-from-mysql/', '/docs-cn/dev/how-to/migrate/overview/', '/docs-cn/dev/reference/tools/use-guide/']
+summary: TiDB 提供了丰富的工具，包括部署运维工具 TiUP 和 TiDB Operator，数据管理工具如 TiDB Data Migration（DM）、Dumpling、TiDB Lightning、Backup & Restore（BR）、TiCDC、sync-diff-inspector，以及 OLAP 分析工具 TiSpark。这些工具可用于部署、数据迁移、备份恢复、数据校验等多种操作，满足不同需求。
 ---
 
 # TiDB 工具功能概览
@@ -92,7 +93,7 @@ TiDB 提供了 TiUP 和 TiDB Operator 部署运维工具，满足你在不同系
 - TiDB Lightning 的输入：
     - Dumpling 输出文件
     - 其他格式兼容的 CSV 文件
-    - 从 Aurora 或者 Hive 导出的 Parquet 文件
+    - 从 Aurora、Hive 或 Snowflake 导出的 Parquet 文件
 - 适用 TiDB 版本：v2.1 及以上
 - Kubernetes 支持：[使用 TiDB Lightning 快速恢复 Kubernetes 上的 TiDB 集群数据](https://docs.pingcap.com/zh/tidb-in-kubernetes/stable/restore-data-using-tidb-lightning)
 
@@ -119,17 +120,6 @@ TiDB 提供了 TiUP 和 TiDB Operator 部署运维工具，满足你在不同系
 - TiCDC 的输入：TiDB 集群
 - TiCDC 的输出：TiDB 集群、MySQL、Kafka、Confluent
 - 适用 TiDB 版本：v4.0.6 及以上
-
-### TiDB 增量日志同步 - TiDB Binlog
-
-[TiDB Binlog](/tidb-binlog/tidb-binlog-overview.md) 是收集 TiDB 的增量 binlog 数据，并提供准实时同步和备份的工具。该工具可用于 TiDB 集群间的增量数据同步，如将其中一个 TiDB 集群作为另一个 TiDB 集群的从集群。
-
-基本信息：
-
-- TiDB Binlog 的输入：TiDB 集群
-- TiDB Binlog 的输出：TiDB 集群、MySQL、Kafka 或者增量备份文件
-- 适用 TiDB 版本：v2.1 及以上
-- Kubernetes 支持：[TiDB Binlog 运维文档](https://docs.pingcap.com/zh/tidb-in-kubernetes/stable/deploy-tidb-binlog)，[Kubernetes 上的 TiDB Binlog Drainer 配置](https://docs.pingcap.com/zh/tidb-in-kubernetes/stable/configure-tidb-binlog-drainer)
 
 ### 数据校验 - sync-diff-inspector
 

@@ -121,7 +121,7 @@ TiDB 版本：7.2.0
 
     从 v7.2.0 起，新建的集群在启动阶段将默认加载轻量级统计信息，并在加载完成后再对外提供服务。对于从旧版本升级上来的集群，可通过修改 TiDB 配置项 [`lite-init-stats`](/tidb-configuration-file.md#lite-init-stats-从-v710-版本开始引入) 和 [`force-init-stats`](/tidb-configuration-file.md#force-init-stats-从-v657-和-v710-版本开始引入) 为 `true` 开启此功能。
 
-    更多信息，请参考[用户文档](/statistics.md#统计信息的加载)。
+    更多信息，请参考[用户文档](/statistics.md#加载统计信息)。
 
 ### SQL 功能
 
@@ -169,6 +169,10 @@ TiDB 版本：7.2.0
 > **注意：**
 >
 > 以下为从 v7.1.0 升级至当前版本 (v7.2.0) 所需兼容性变更信息。如果从 v7.0.0 或之前版本升级到当前版本，可能也需要考虑和查看中间版本 release notes 中提到的兼容性变更信息。
+
+### 行为变更
+
+- TiCDC 在处理 Update 事件时，如果事件的主键或者非空唯一索引的列值发生改变，则会将该条事件拆分为 Delete 和 Insert 两条事件。更多信息，请参考[用户文档](/ticdc/ticdc-split-update-behavior.md#含有单条-update-变更的事务拆分)。
 
 ### 系统变量
 
@@ -236,7 +240,7 @@ TiDB 版本：7.2.0
     + TiCDC
 
         - 优化同步到对象存储场景下发生 DDL 时存放数据文件目录的结构 [#8891](https://github.com/pingcap/tiflow/issues/8891) @[CharlesCheung96](https://github.com/CharlesCheung96)
-        - 在同步到 Kafka 场景下，支持 OAUTHBEARER 认证方式 [#8865](https://github.com/pingcap/tiflow/issues/8865) @[hi-rustin](https://github.com/hi-rustin)
+        - 在同步到 Kafka 场景下，支持 OAUTHBEARER 认证方式 [#8865](https://github.com/pingcap/tiflow/issues/8865) @[hi-rustin](https://github.com/Rustin170506)
         - 在同步到 Kafka 场景下，对于 `DELETE` 操作，支持选择只输出 Handle Key [#9143](https://github.com/pingcap/tiflow/issues/9143) @[3AceShowHand](https://github.com/3AceShowHand)
 
     + TiDB Data Migration (DM)
@@ -245,7 +249,7 @@ TiDB 版本：7.2.0
 
     + TiDB Lightning
 
-        - 优化导入数据过程中的重试机制，避免因 leader 切换而导致的错误 [#44478](https://github.com/pingcap/tidb/issues/44263) @[lance6716](https://github.com/lance6716)
+        - 优化导入数据过程中的重试机制，避免因 leader 切换而导致的错误 [#44263](https://github.com/pingcap/tidb/issues/44263) @[lance6716](https://github.com/lance6716)
         - 数据导入完成后使用 SQL 方式校验 checksum，提升数据校验的稳定性 [#41941](https://github.com/pingcap/tidb/issues/41941) @[GMHDBJD](https://github.com/GMHDBJD)
         - 优化导入宽表时 TiDB Lightning 发生 OOM 的问题 [#43853](https://github.com/pingcap/tidb/issues/43853) @[D3Hunter](https://github.com/D3Hunter)
 
@@ -259,6 +263,7 @@ TiDB 版本：7.2.0
     - 修复由于 Coprocessor task 中 `TxnScope` 缺失导致 Stale Read 全局优化不生效的问题 [#43365](https://github.com/pingcap/tidb/issues/43365) @[you06](https://github.com/you06)
     - 修复 follower read 未处理 flashback 错误而进行重试，导致查询报错的问题 [#43673](https://github.com/pingcap/tidb/issues/43673) @[you06](https://github.com/you06)
     - 修复 `ON UPDATE` 语句没有正确更新主键导致数据索引不一致的问题 [#44565](https://github.com/pingcap/tidb/issues/44565) @[zyguan](https://github.com/zyguan)
+    - 修复权限表中一些列大小写敏感的问题 [#41048](https://github.com/pingcap/tidb/issues/41048) @[bb7133](https://github.com/bb7133)
     - 修改 `UNIX_TIMESTAMP()` 函数的上限为 `3001-01-19 03:14:07.999999 UTC`，与 MySQL 8.0.28+ 保持一致 [#43987](https://github.com/pingcap/tidb/issues/43987) @[YangKeao](https://github.com/YangKeao)
     - 修复在 ingest 模式下创建索引失败的问题 [#44137](https://github.com/pingcap/tidb/issues/44137) @[tangenta](https://github.com/tangenta)
     - 修复取消处于 rollback 状态的 DDL 任务导致相关元数据出错的问题 [#44143](https://github.com/pingcap/tidb/issues/44143) @[wjhuang2016](https://github.com/wjhuang2016)
@@ -300,10 +305,10 @@ TiDB 版本：7.2.0
 
         - 修复在某些特殊情况下 Resolved TS 不能正常推进的问题 [#8963](https://github.com/pingcap/tiflow/issues/8963) @[CharlesCheung96](https://github.com/CharlesCheung96)
         - 修复使用 Avro 或 CSV 协议场景下 `UPDATE` 操作不能输出旧值的问题 [#9086](https://github.com/pingcap/tiflow/issues/9086) @[3AceShowHand](https://github.com/3AceShowHand)
-        - 修复同步到 Kafka 场景下，读取下游 Metadata 太频繁导致下游压力过大的问题 [#8959](https://github.com/pingcap/tiflow/issues/8959) @[hi-rustin](https://github.com/hi-rustin)
+        - 修复同步到 Kafka 场景下，读取下游 Metadata 太频繁导致下游压力过大的问题 [#8959](https://github.com/pingcap/tiflow/issues/8959) @[hi-rustin](https://github.com/Rustin170506)
         - 修复同步到 TiDB 或 MySQL 场景下，频繁设置下游双向复制相关变量导致下游日志过多的问题 [#9180](https://github.com/pingcap/tiflow/issues/9180) @[asddongmen](https://github.com/asddongmen)
         - 修复 PD 节点宕机导致 TiCDC 节点重启的问题 [#8868](https://github.com/pingcap/tiflow/issues/8868) @[asddongmen](https://github.com/asddongmen)
-        - 修复 TiCDC 同步到 Kafka-on-Pulsar 时不能正确建立连接的问题 [#8892](https://github.com/pingcap/tiflow/issues/8892) @[hi-rustin](https://github.com/hi-rustin)
+        - 修复 TiCDC 同步到 Kafka-on-Pulsar 时不能正确建立连接的问题 [#8892](https://github.com/pingcap/tiflow/issues/8892) @[hi-rustin](https://github.com/Rustin170506)
 
     + TiDB Lightning
 
@@ -320,7 +325,7 @@ TiDB 版本：7.2.0
 - [darraes](https://github.com/darraes)
 - [demoManito](https://github.com/demoManito)
 - [dhysum](https://github.com/dhysum)
-- [HappyUncle](https://github.com/HappyUncle)
+- [happy-v587](https://github.com/happy-v587)
 - [jiyfhust](https://github.com/jiyfhust)
 - [L-maple](https://github.com/L-maple)
 - [nyurik](https://github.com/nyurik)

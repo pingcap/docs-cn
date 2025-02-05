@@ -117,15 +117,31 @@ fetch.message.max.bytes=2147483648
 
 ## TiCDC 同步时，在下游执行 DDL 语句失败会有什么表现，如何恢复？
 
-如果某条 DDL 语句执行失败，同步任务 (changefeed) 会自动停止，checkpoint-ts 断点时间戳为该条出错 DDL 语句的结束时间戳 (finish-ts) 减去一。如果希望让 TiCDC 在下游重试执行这条 DDL 语句，可以使用 `cdc cli changefeed resume` 恢复同步任务。例如：
+如果某条 DDL 语句执行失败，同步任务 (changefeed) 会自动停止，checkpoint-ts 断点时间戳为该条出错 DDL 语句的结束时间戳 (finish-ts)。如果希望让 TiCDC 在下游重试执行这条 DDL 语句，可以使用 `cdc cli changefeed resume` 恢复同步任务。例如：
 
 ```shell
 cdc cli changefeed resume -c test-cf --server=http://127.0.0.1:8300
 ```
 
-如果希望跳过这条出错的 DDL 语句，可以将 changefeed 的 start-ts 设为报错时的 checkpoint-ts 加上一，然后通过 `cdc cli changefeed create` 新建同步任务。假设报错时的 checkpoint-ts 为 `415241823337054209`，可以进行如下操作来跳过该 DDL 语句：
+如果希望跳过这条出错的 DDL 语句，可以通过配置 `ignore-txn-start-ts` 参数跳过指定的 `start-ts` 对应的事务。例如：
+
+1. 首先在 TiCDC 日志中搜寻 `apply job` 字段，确认耗时较长的 DDL 操作的 `start-ts`。
+2. 修改 changefeed 配置，将上述 `start-ts` 添加到 `ignore-txn-start-ts` 配置项中。
+3. 恢复被暂停的 changefeed。
+
+> **注意：**
+> 
+> 虽然将 changefeed 的 `start-ts` 设为报错时的 `checkpoint-ts` 值加上 1，然后重建任务也可以跳过该 DDL 语句，但同时会导致 TiCDC 丢失 `checkpointTs+1` 时刻对应的 DML 数据变更。严禁在生产环境执行这样的操作。
 
 ```shell
 cdc cli changefeed remove --server=http://127.0.0.1:8300 --changefeed-id simple-replication-task
 cdc cli changefeed create --server=http://127.0.0.1:8300 --sink-uri="mysql://root:123456@127.0.0.1:3306/" --changefeed-id="simple-replication-task" --sort-engine="unified" --start-ts 415241823337054210
+```
+
+## 使用 TiCDC 同步消息到 Kafka 时报错 `kafka: client has run out of available brokers to talk to: EOF`，该如何处理？
+
+该问题通常是由于 TiCDC 与 Kafka 集群连接失败导致。你可以通过检查 Kafka 的日志以及网络状况来排查。一个常见的原因是在创建同步任务时没有指定正确的 `kafka-version` 参数，导致 TiCDC 内部的 Kafka client 在访问 Kafka server 时使用了错误的 Kafka API 版本。你可以通过配置 [`--sink-uri`](/ticdc/ticdc-sink-to-kafka.md#sink-uri-配置-kafka) 指定正确的 `kafka-version` 参数来修复。例如：
+
+```shell
+cdc cli changefeed create --server=http://127.0.0.1:8300 --sink-uri "kafka://127.0.0.1:9092/test?topic=test&protocol=open-protocol&kafka-version=2.4.0" 
 ```

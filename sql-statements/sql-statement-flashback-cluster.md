@@ -8,7 +8,12 @@ aliases: ['/zh/tidb/dev/sql-statement-flashback-to-timestamp']
 
 TiDB v6.4.0 引入了 `FLASHBACK CLUSTER TO TIMESTAMP` 语法，其功能是将集群的数据恢复到过去指定的时间点。指定时间点时，你可以使用日期时间和时间函数，日期时间的格式为：'2016-10-08 16:45:26.999'，最小时间精度范围为毫秒，通常可只写到秒，例如 '2016-10-08 16:45:26'。
 
-TiDB v6.5.6、v7.1.3、v7.6.0 开始引入了 `FLASHBACK CLUSTER TO TSO` 的语法，支持使用时间戳 [TSO](/tso.md) 更加精确地指定恢复时间点，实现更加灵活的数据恢复。
+TiDB v6.5.6、v7.1.3、v7.5.1、v7.6.0 开始引入了 `FLASHBACK CLUSTER TO TSO` 的语法，支持使用时间戳 [TSO](/tso.md) 更加精确地指定恢复时间点，实现更加灵活的数据恢复。
+
+> **警告：**
+>
+> - 在指定恢复时间点时，请务必检查 TIMESTAMP 或 TSO 的有效性，避免指定可能超过 PD 当前分配的最大 TSO（参考 Grafana PD 面板上 `Current TSO`）的未来时间。否则，可能破坏并发处理线性一致性以及事务隔离级别，导致严重的数据正确性的问题。
+> - 在 `FLASHBACK CLUSTER` 执行期间，数据清理过程不能保证事务的一致性。在 `FLASHBACK CLUSTER` 执行完成后，如需使用 TiDB 的任何历史版本读取功能（如 [Stale Read](/stale-read.md) 或 [`tidb_snapshot`](/read-historical-data.md)），请确保所选择的历史时间点不在 FLASHBACK 运行的时间范围内。如果读取的历史版本包含未 FLASHBACK 完成的数据，可能会破坏并发处理的线性一致性以及事务隔离级别，导致严重的数据正确性问题。
 
 > **警告：**
 >
@@ -31,8 +36,7 @@ FLASHBACK CLUSTER TO TSO 445494839813079041;
 
 ```ebnf+diagram
 FlashbackToTimestampStmt
-         ::= 'FLASHBACK' 'CLUSTER' 'TO' 'TIMESTAMP' stringLit
-           | 'FLASHBACK' 'CLUSTER' 'TO' 'TSO' LengthNum
+         ::= 'FLASHBACK' 'CLUSTER' 'TO' ('TIMESTAMP' stringLit | 'TSO' LengthNum)
 ```
 
 ## 注意事项

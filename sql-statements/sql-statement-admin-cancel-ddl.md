@@ -12,8 +12,8 @@ summary: TiDB 数据库中 ADMIN CANCEL DDL 的使用概况。
 ## 语法图
 
 ```ebnf+diagram
-AdminStmt ::=
-    'ADMIN' ( 'SHOW' ( 'DDL' ( 'JOBS' Int64Num? WhereClauseOptional | 'JOB' 'QUERIES' NumList )? | TableName 'NEXT_ROW_ID' | 'SLOW' AdminShowSlow ) | 'CHECK' ( 'TABLE' TableNameList | 'INDEX' TableName Identifier ( HandleRange ( ',' HandleRange )* )? ) | 'RECOVER' 'INDEX' TableName Identifier | 'CLEANUP' ( 'INDEX' TableName Identifier | 'TABLE' 'LOCK' TableNameList ) | 'CHECKSUM' 'TABLE' TableNameList | 'CANCEL' 'DDL' 'JOBS' NumList | 'RELOAD' ( 'EXPR_PUSHDOWN_BLACKLIST' | 'OPT_RULE_BLACKLIST' | 'BINDINGS' ) | 'PLUGINS' ( 'ENABLE' | 'DISABLE' ) PluginNameList | 'REPAIR' 'TABLE' TableName CreateTableStmt | ( 'FLUSH' | 'CAPTURE' | 'EVOLVE' ) 'BINDINGS' )
+AdminCancelDDLStmt ::=
+    'ADMIN' 'CANCEL' 'DDL' 'JOBS' NumList
 
 NumList ::=
     Int64Num ( ',' Int64Num )*
@@ -22,8 +22,6 @@ NumList ::=
 ## 示例
 
 可以通过 `ADMIN CANCEL DDL JOBS` 语句取消当前正在运行的 DDL 作业，并返回对应作业是否取消成功：
-
-{{< copyable "sql" >}}
 
 ```sql
 ADMIN CANCEL DDL JOBS job_id [, job_id] ...;
