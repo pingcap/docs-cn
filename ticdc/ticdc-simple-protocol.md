@@ -16,7 +16,7 @@ TiCDC 从 v8.0.0 开始支持 Simple Protocol 编码协议。本文将介绍 TiC
 `sink-uri` 配置：
 
 ```shell
---sink-uri = "kafka://127.0.0.1:9092/topic-name?kafka-version=2.4.0"
+--sink-uri = "kafka://127.0.0.1:9092/topic-name?kafka-version=${kafka_version}"
 ```
 
 changefeed 配置：
