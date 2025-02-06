@@ -569,7 +569,7 @@ I/O rate limiter 相关的配置项。
 
 ### `action-on-invalid-update` <span class="version-mark">从 v9.0.0 版本开始引入</span>
 
-+ 当 TiKV 认为更新的 max-ts 不合法时，TiKV 会执行的操作。非法的 `max-ts` 可能导致 TiDB 集群线性一致性和事务并发控制语义被破坏。
++ 指定当检测到非法的 `max-ts` 更新请求时，TiKV 的处理方式。如果某个读写请求使用的 TS 超过了 TiKV 缓存的 PD TSO + [`max-drift`](#max-drift-从-v900-版本开始引入)，TiKV 会将其视为非法的 `max-ts` 更新请求。非法的 `max-ts` 更新请求可能破坏 TiDB 集群的线性一致性和事务并发控制语义。
 + 可选值：
     + `"panic"`：TiKV 会 panic。
     + `"error"`：TiKV 会返回错误，并终止对该请求的处理。
