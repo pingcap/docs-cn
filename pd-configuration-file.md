@@ -506,7 +506,7 @@ PD 中内置的 [Resource Control](/tidb-resource-control.md) 相关的配置项
 #### `read-base-cost`
 
 + 每次读请求转换成 RU 的基准系数
-+ 默认值: 0.25
++ 默认值：0.125
 
 #### `write-base-cost`
 
